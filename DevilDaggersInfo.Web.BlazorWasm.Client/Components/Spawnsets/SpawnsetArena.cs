@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Core.Spawnset;
+using DevilDaggersInfo.Core.Spawnset.Enums;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Data;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options.LineChart;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Utils;
@@ -107,6 +108,60 @@ public partial class SpawnsetArena
 			_context.Circle(_canvasSize / 2, _canvasSize / 2, shrinkRadius / tileUnit * _tileSize);
 			_context.Stroke();
 		}
+
+		if (SpawnsetBinary.GameMode == GameMode.Race)
+			RenderRaceDagger();
+
+		RenderPlayer();
+
+		void RenderRaceDagger()
+		{
+			(int x, float? y, int z) = SpawnsetBinary.GetRaceDaggerTilePosition();
+			if (!y.HasValue)
+				return;
+
+			float daggerCenterX = _canvasSize / 2 + SpawnsetBinary.RaceDaggerPosition.X / tileUnit * _tileSize;
+			float daggerCenterY = _canvasSize / 2 + SpawnsetBinary.RaceDaggerPosition.Y / tileUnit * _tileSize;
+
+			_context.BeginPath();
+			_context.MoveTo(daggerCenterX, daggerCenterY + 6);
+			_context.LineTo(daggerCenterX + 4, daggerCenterY - 6);
+			_context.LineTo(daggerCenterX + 1, daggerCenterY - 6);
+			_context.LineTo(daggerCenterX + 1, daggerCenterY - 10);
+			_context.LineTo(daggerCenterX - 1, daggerCenterY - 10);
+			_context.LineTo(daggerCenterX - 1, daggerCenterY - 6);
+			_context.LineTo(daggerCenterX - 4, daggerCenterY - 6);
+			_context.ClosePath();
+
+			_context.FillStyle = "#444";
+			_context.Fill();
+
+			_context.StrokeStyle = "#fff";
+			_context.Stroke();
+		}
+
+		void RenderPlayer()
+		{
+			(int x, float? y, int z) = SpawnsetBinary.GetRaceDaggerTilePosition();
+			if (!y.HasValue)
+				return;
+
+			float playerCenterX = _canvasSize / 2;
+			float playerCenterY = _canvasSize / 2;
+
+			_context.BeginPath();
+			_context.MoveTo(playerCenterX, playerCenterY + 3);
+			_context.LineTo(playerCenterX + 3, playerCenterY);
+			_context.LineTo(playerCenterX, playerCenterY - 3);
+			_context.LineTo(playerCenterX - 3, playerCenterY);
+			_context.ClosePath();
+
+			_context.FillStyle = "#f00";
+			_context.Fill();
+
+			_context.StrokeStyle = "#fff";
+			_context.Stroke();
+		}
 	}
 
 	private static Color GetColorFromHeight(float tileHeight)
@@ -151,8 +206,5 @@ public partial class SpawnsetArena
 		};
 	}
 
-	private readonly record struct Color(byte R, byte G, byte B, byte A = 255)
-	{
-		public string GetHexCode() => $"#{R:X2}{G:X2}{B:X2}{A:X2}";
-	}
+	private readonly record struct Color(byte R, byte G, byte B, byte A = 255);
 }
