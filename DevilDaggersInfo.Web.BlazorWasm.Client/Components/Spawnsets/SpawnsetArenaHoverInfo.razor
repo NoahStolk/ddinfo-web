@@ -1,0 +1,35 @@
+<div class="grid grid-cols-2">
+	<div>Tile: {@_x, @_y}</div>
+	<div>Height: @DisplayHeight()</div>
+</div>
+
+@code {
+	private int _x;
+	private int _y;
+	private float _height;
+	private float _actualHeight;
+
+	public void Update(int x, int y, float height, float actualHeight)
+	{
+		_x = x;
+		_y = y;
+		_height = height;
+		_actualHeight = actualHeight;
+
+		StateHasChanged();
+	}
+
+	private string DisplayHeight()
+	{
+		if (_height < -1)
+			return "Void";
+			
+		if (_height == _actualHeight)
+			return _height.ToString("0.00");
+
+		if (_actualHeight < -1)
+			return $"{_height:0.00} (Void)";
+
+		return $"{_height:0.00} ({_actualHeight:0.00})";
+	}
+}

@@ -330,5 +330,55 @@ public class SpawnsetBinary
 		static int Convert(float worldPosition) => (int)MathF.Round(worldPosition / 4) + 25;
 	}
 
+	public float GetShrinkEndTime()
+		=> GetShrinkEndTime(ShrinkStart, ShrinkEnd, ShrinkRate);
+
+	public static float GetShrinkEndTime(float shrinkStart, float shrinkEnd, float shrinkRate)
+	{
+		shrinkStart = Math.Max(shrinkStart, 0);
+		shrinkEnd = Math.Max(shrinkEnd, 0);
+
+		if (shrinkRate <= 0 || shrinkEnd > shrinkStart)
+			return 0;
+
+		return (shrinkStart - shrinkEnd) / shrinkRate;
+	}
+
+	public float GetShrinkTimeForTile(int x, int y)
+		=> GetShrinkTimeForTile(ArenaDimension, ShrinkStart, ShrinkEnd, ShrinkRate, x, y);
+
+	public static float GetShrinkTimeForTile(int arenaDimension, float shrinkStart, float shrinkEnd, float shrinkRate, int x, int y)
+	{
+		const int tileUnit = 4;
+		float shrinkStartInTiles = shrinkStart / tileUnit;
+		float shrinkEndInTiles = shrinkEnd / tileUnit;
+
+		Vector2 middle = new(arenaDimension / 2, arenaDimension / 2);
+		float distance = Vector2.Distance(new(x, y), middle);
+		if (distance > shrinkStartInTiles)
+			return 0;
+
+		if (distance <= shrinkEndInTiles)
+			return float.MaxValue;
+
+		return (shrinkStartInTiles - distance) / shrinkRate * tileUnit;
+	}
+
+	public float GetActualTileHeight(int x, int y, float currentTime)
+		=> GetActualTileHeight(ArenaDimension, ArenaTiles, ShrinkStart, ShrinkEnd, ShrinkRate, x, y, currentTime);
+
+	public static float GetActualTileHeight(int arenaDimension, float[,] arenaTiles, float shrinkStart, float shrinkEnd, float shrinkRate, int x, int y, float currentTime)
+	{
+		if (x < 0 || x >= arenaDimension)
+			throw new ArgumentOutOfRangeException(nameof(x));
+		if (y < 0 || y >= arenaDimension)
+			throw new ArgumentOutOfRangeException(nameof(y));
+
+		float tileHeight = arenaTiles[x, y];
+		float shrinkTime = GetShrinkTimeForTile(arenaDimension, shrinkStart, shrinkEnd, shrinkRate, x, y);
+		float shrinkHeight = Math.Max(0, currentTime - shrinkTime) / 4;
+		return tileHeight - shrinkHeight;
+	}
+
 	#endregion Utilities
 }

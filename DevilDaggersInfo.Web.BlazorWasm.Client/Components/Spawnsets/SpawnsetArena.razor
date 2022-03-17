@@ -15,19 +15,9 @@
 	}
 </div>
 
-<table class="table-fixed mt-2 border-2 border-gray-3">
-	<tbody>
-		@for (int i = 0; i < SpawnsetBinary.ArenaDimension; i++)
-		{
-			<tr>
-				@for (int j = 0; j < SpawnsetBinary.ArenaDimension; j++)
-				{
-					float height = MathF.Round(SpawnsetBinary.ArenaTiles[j, i] * 32 + 64); // Swap coordinates because <tr> elements cannot be vertical.
+<canvas width="@_canvasSize" height="@_canvasSize" id="arena-canvas" @ref="_canvasReference"></canvas>
 
-					string backgroundColorStyle = $"background-color: rgb({height}, {Math.Round(height / 2)}, 0)";
-					<td class="w-2 h-2 border border-black" style="@backgroundColorStyle"></td>
-				}
-			</tr>
-		}
-	</tbody>
-</table>
+<SpawnsetArenaHoverInfo @ref="_spawnsetArenaHoverInfo" />
+
+<div>Time: @CurrentTime.ToString("0.0")</div>
+<input class="w-arena-table slider" type="range" min="0" max="@_sliderMax" step="0.1" @bind="@CurrentTime" @bind:event="oninput" />
