@@ -6,30 +6,32 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices;
 public class DiscordLogFlushBackgroundService : AbstractBackgroundService
 {
 	private readonly LogContainerService _logContainerService;
+	private readonly IWebHostEnvironment _environment;
 
-	public DiscordLogFlushBackgroundService(BackgroundServiceMonitor backgroundServiceMonitor, LogContainerService logContainerService, ILogger<DiscordLogFlushBackgroundService> logger)
+	public DiscordLogFlushBackgroundService(LogContainerService logContainerService, IWebHostEnvironment environment, BackgroundServiceMonitor backgroundServiceMonitor, ILogger<DiscordLogFlushBackgroundService> logger)
 		: base(backgroundServiceMonitor, logger)
 	{
 		_logContainerService = logContainerService;
+		_environment = environment;
 	}
 
 	protected override TimeSpan Interval => TimeSpan.FromSeconds(2);
 
 	protected override async Task ExecuteTaskAsync(CancellationToken stoppingToken)
 	{
-		DiscordChannel? logChannel = DevilDaggersInfoServerConstants.Channels[Channel.MonitoringLog].DiscordChannel;
+		DiscordChannel? logChannel = DiscordServerConstants.GetDiscordChannel(Channel.MonitoringLog, _environment);
 		if (logChannel != null)
 			await _logContainerService.LogToLogChannel(logChannel);
 
-		DiscordChannel? auditLogChannel = DevilDaggersInfoServerConstants.Channels[Channel.MaintainersAuditLog].DiscordChannel;
+		DiscordChannel? auditLogChannel = DiscordServerConstants.GetDiscordChannel(Channel.MaintainersAuditLog, _environment);
 		if (auditLogChannel != null)
 			await _logContainerService.LogToAuditLogChannel(auditLogChannel);
 
-		DiscordChannel? validClLogChannel = DevilDaggersInfoServerConstants.Channels[Channel.MonitoringCustomLeaderboardValid].DiscordChannel;
+		DiscordChannel? validClLogChannel = DiscordServerConstants.GetDiscordChannel(Channel.MonitoringCustomLeaderboardValid, _environment);
 		if (validClLogChannel != null)
 			await _logContainerService.LogClLogsToChannel(true, validClLogChannel);
 
-		DiscordChannel? invalidClLogChannel = DevilDaggersInfoServerConstants.Channels[Channel.MonitoringCustomLeaderboardInvalid].DiscordChannel;
+		DiscordChannel? invalidClLogChannel = DiscordServerConstants.GetDiscordChannel(Channel.MonitoringCustomLeaderboardInvalid, _environment);
 		if (invalidClLogChannel != null)
 			await _logContainerService.LogClLogsToChannel(false, invalidClLogChannel);
 	}

@@ -3,8 +3,11 @@ using DSharpPlus.Entities;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
 
-public static class DevilDaggersInfoServerConstants
+// TODO: Stop using internal.
+public static class DiscordServerConstants
 {
+	internal const long TestChannelId = 813508325705515008;
+
 	internal const ulong BotUserId = 645209987949395969;
 
 	internal const ulong BackgroundServiceMessageId = 856557628816490537;
@@ -22,7 +25,7 @@ public static class DevilDaggersInfoServerConstants
 		{ Channel.MonitoringDatabase, new(856490882371289098) },
 		{ Channel.MonitoringFile, new(856263861372321823) },
 		{ Channel.MonitoringLog, new(727227801664618607) },
-		{ Channel.MonitoringTest, new(813508325705515008) },
+		{ Channel.MonitoringTest, new(TestChannelId) },
 		{ Channel.CustomLeaderboards, new(578316107836817418) },
 	};
 
@@ -31,7 +34,16 @@ public static class DevilDaggersInfoServerConstants
 	public static DiscordMessage? DatabaseMessage { get; private set; }
 	public static DiscordMessage? FileMessage { get; private set; }
 
-	internal static IReadOnlyDictionary<Channel, ChannelWrapper> Channels => _channels;
+	/// <summary>
+	/// Returns the channel based on the <paramref name="channel"/> enum. Always returns the channel for <see cref="Channel.MonitoringTest"/> when running in development.
+	/// </summary>
+	internal static DiscordChannel? GetDiscordChannel(Channel channel, IWebHostEnvironment environment)
+	{
+		if (environment.IsDevelopment())
+			channel = Channel.MonitoringTest;
+
+		return _channels[channel].DiscordChannel;
+	}
 
 	internal static async Task LoadServerChannelsAndMessages(DiscordClient client)
 	{
@@ -58,15 +70,15 @@ public static class DevilDaggersInfoServerConstants
 			FileMessage = await fileChannel.GetMessageAsync(FileMessageId);
 	}
 
-	internal class ChannelWrapper
+	private sealed class ChannelWrapper
 	{
-		internal ChannelWrapper(ulong channelId)
+		public ChannelWrapper(ulong channelId)
 		{
 			ChannelId = channelId;
 		}
 
-		internal ulong ChannelId { get; }
+		public ulong ChannelId { get; }
 
-		internal DiscordChannel? DiscordChannel { get; set; }
+		public DiscordChannel? DiscordChannel { get; set; }
 	}
 }

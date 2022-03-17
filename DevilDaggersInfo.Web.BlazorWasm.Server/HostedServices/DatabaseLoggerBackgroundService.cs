@@ -17,7 +17,7 @@ public class DatabaseLoggerBackgroundService : AbstractBackgroundService
 
 	protected override async Task ExecuteTaskAsync(CancellationToken stoppingToken)
 	{
-		if (DevilDaggersInfoServerConstants.DatabaseMessage == null)
+		if (DiscordServerConstants.DatabaseMessage == null)
 			return;
 
 		using IServiceScope scope = _serviceScopeFactory.CreateScope();
@@ -49,6 +49,6 @@ ORDER BY table_name ASC;")
 			builder.AddFieldObject(table.Table ?? "Null", value, true);
 		}
 
-		await DevilDaggersInfoServerConstants.DatabaseMessage.TryEdit(builder.Build());
+		await DiscordServerConstants.DatabaseMessage.TryEdit(builder.Build());
 	}
 }

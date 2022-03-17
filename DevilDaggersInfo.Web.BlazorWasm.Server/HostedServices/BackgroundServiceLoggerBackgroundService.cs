@@ -14,11 +14,11 @@ public class BackgroundServiceLoggerBackgroundService : AbstractBackgroundServic
 
 	protected override async Task ExecuteTaskAsync(CancellationToken stoppingToken)
 	{
-		if (DevilDaggersInfoServerConstants.BackgroundServiceMessage == null)
+		if (DiscordServerConstants.BackgroundServiceMessage == null)
 			return;
 
 		DiscordEmbed? embed = BackgroundServiceMonitor.BuildDiscordEmbed();
 		if (embed != null)
-			await DevilDaggersInfoServerConstants.BackgroundServiceMessage.TryEdit(embed);
+			await DiscordServerConstants.BackgroundServiceMessage.TryEdit(embed);
 	}
 }

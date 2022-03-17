@@ -9,7 +9,7 @@ IHostBuilder builder = Host.CreateDefaultBuilder(args)
 		webBuilder.UseStaticWebAssets();
 		webBuilder.UseStartup<Startup>();
 	})
-	.ConfigureServices(services => services.AddHostedService<DdInfoDiscordBotService>());
+	.ConfigureServices(services => services.AddHostedService<DiscordBotService>());
 
 IHost app = builder.Build();
 app.Run();

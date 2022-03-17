@@ -422,8 +422,7 @@ public class CustomEntryProcessor
 			builder.AddFieldObject("Score", FormatTimeString(time), true);
 			builder.AddFieldObject("Rank", $"{rank}/{totalPlayers}", true);
 
-			Channel channel = _environment.IsDevelopment() ? Channel.MonitoringTest : Channel.CustomLeaderboards;
-			DiscordChannel? discordChannel = DevilDaggersInfoServerConstants.Channels[channel].DiscordChannel;
+			DiscordChannel? discordChannel = DiscordServerConstants.GetDiscordChannel(Channel.CustomLeaderboards, _environment);
 			if (discordChannel == null)
 				return;
 

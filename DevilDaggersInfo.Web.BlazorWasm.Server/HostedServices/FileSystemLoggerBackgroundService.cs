@@ -17,7 +17,7 @@ public class FileSystemLoggerBackgroundService : AbstractBackgroundService
 
 	protected override async Task ExecuteTaskAsync(CancellationToken stoppingToken)
 	{
-		if (DevilDaggersInfoServerConstants.FileMessage == null)
+		if (DiscordServerConstants.FileMessage == null)
 			return;
 
 		DiscordEmbedBuilder builder = new()
@@ -34,7 +34,7 @@ public class FileSystemLoggerBackgroundService : AbstractBackgroundService
 			builder.AddFieldObject(dataSubDirectory.ToString(), $"`{statistics.Size:n0}` bytes\n`{statistics.FileCount}` files");
 		}
 
-		await DevilDaggersInfoServerConstants.FileMessage.TryEdit(builder.Build());
+		await DiscordServerConstants.FileMessage.TryEdit(builder.Build());
 	}
 
 	private static DirectoryStatistics GetDirectorySize(string folderPath)

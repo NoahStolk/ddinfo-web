@@ -37,7 +37,7 @@ public class CacheLoggerBackgroundService : AbstractBackgroundService
 
 	protected override async Task ExecuteTaskAsync(CancellationToken stoppingToken)
 	{
-		if (DevilDaggersInfoServerConstants.CacheMessage == null)
+		if (DiscordServerConstants.CacheMessage == null)
 			return;
 
 		DiscordEmbedBuilder builder = new()
@@ -51,6 +51,6 @@ public class CacheLoggerBackgroundService : AbstractBackgroundService
 		builder.AddFieldObject(nameof(SpawnsetSummaryCache), _spawnsetSummaryCache.LogState());
 		builder.AddFieldObject(nameof(SpawnsetHashCache), _spawnsetHashCache.LogState());
 
-		await DevilDaggersInfoServerConstants.CacheMessage.TryEdit(builder.Build());
+		await DiscordServerConstants.CacheMessage.TryEdit(builder.Build());
 	}
 }

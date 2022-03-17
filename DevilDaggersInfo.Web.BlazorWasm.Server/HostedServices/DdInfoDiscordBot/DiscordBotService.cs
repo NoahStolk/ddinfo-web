@@ -4,13 +4,13 @@ using DSharpPlus.EventArgs;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
 
-public class DdInfoDiscordBotService : IHostedService
+public class DiscordBotService : IHostedService
 {
 	private readonly IConfiguration _configuration;
 	private readonly IWebHostEnvironment _environment;
 	private readonly LogContainerService _logContainerService;
 
-	public DdInfoDiscordBotService(IConfiguration configuration, IWebHostEnvironment environment, LogContainerService logContainerService)
+	public DiscordBotService(IConfiguration configuration, IWebHostEnvironment environment, LogContainerService logContainerService)
 	{
 		_configuration = configuration;
 		_environment = environment;
@@ -25,7 +25,7 @@ public class DdInfoDiscordBotService : IHostedService
 			TokenType = TokenType.Bot,
 		});
 
-		await DevilDaggersInfoServerConstants.LoadServerChannelsAndMessages(client);
+		await DiscordServerConstants.LoadServerChannelsAndMessages(client);
 
 		client.MessageCreated += async (client, e) =>
 		{
@@ -34,10 +34,10 @@ public class DdInfoDiscordBotService : IHostedService
 				return;
 
 			// React with an emoji when the bot gets mentioned anywhere.
-			if (msg.Contains($"@!{DevilDaggersInfoServerConstants.BotUserId}"))
+			if (msg.Contains($"@!{DiscordServerConstants.BotUserId}"))
 				await e.Message.CreateReactionAsync(DiscordEmoji.FromName(client, ":eye_in_speech_bubble:"));
 
-			if (e.Channel.Id == DevilDaggersInfoServerConstants.Channels[Channel.MonitoringTest].ChannelId && msg.StartsWith("."))
+			if (e.Channel.Id == DiscordServerConstants.TestChannelId && msg.StartsWith("."))
 			{
 				Action<MessageCreateEventArgs>? action = Commands.Actions.FirstOrDefault(a => msg.StartsWith(a.Key)).Value;
 				if (action == null)
@@ -58,7 +58,7 @@ public class DdInfoDiscordBotService : IHostedService
 			if (_environment.IsDevelopment())
 				return;
 
-			DiscordChannel? logChannel = DevilDaggersInfoServerConstants.Channels[Channel.MonitoringLog].DiscordChannel;
+			DiscordChannel? logChannel = DiscordServerConstants.GetDiscordChannel(Channel.MonitoringLog, _environment);
 			if (logChannel != null)
 			{
 				await _logContainerService.LogToLogChannel(logChannel);
