@@ -201,6 +201,6 @@ public class AuditLogger
 
 	private void Log(string? message)
 	{
-		_logContainerService.Add($"[`{_environment.EnvironmentName}`]: {message}");
+		_logContainerService.AddAuditLog($"[`{_environment.EnvironmentName}`]: {message}");
 	}
 }

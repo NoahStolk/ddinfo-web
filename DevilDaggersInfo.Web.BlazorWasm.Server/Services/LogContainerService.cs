@@ -6,6 +6,7 @@ public class LogContainerService
 {
 	private const int _timeoutInSeconds = 1;
 
+	private readonly List<LogEntry> _auditLogEntries = new();
 	private readonly List<LogEntry> _logEntries = new();
 	private readonly List<string> _validClLogs = new();
 	private readonly List<string> _invalidClLogs = new();
@@ -13,6 +14,8 @@ public class LogContainerService
 	public void Add(DiscordEmbed embed) => _logEntries.Add(new(null, embed));
 
 	public void Add(string message) => _logEntries.Add(new(message, null));
+
+	public void AddAuditLog(string message) => _auditLogEntries.Add(new(message, null));
 
 	public void AddClLog(bool valid, string message)
 	{
@@ -22,13 +25,17 @@ public class LogContainerService
 			_invalidClLogs.Add(message);
 	}
 
-	public async Task LogToChannel(DiscordChannel channel)
+	public async Task LogToLogChannel(DiscordChannel logChannel) => await LogEntries(_logEntries, logChannel);
+
+	public async Task LogToAuditLogChannel(DiscordChannel auditLogChannel) => await LogEntries(_auditLogEntries, auditLogChannel);
+
+	private static async Task LogEntries(List<LogEntry> entries, DiscordChannel channel)
 	{
-		while (_logEntries.Count > 0)
+		while (entries.Count > 0)
 		{
-			LogEntry entry = _logEntries[0];
+			LogEntry entry = entries[0];
 			if (await channel.SendMessageAsyncSafe(entry.Message, entry.Embed))
-				_logEntries.RemoveAt(0);
+				entries.RemoveAt(0);
 			else
 				await Task.Delay(TimeSpan.FromSeconds(_timeoutInSeconds));
 		}

@@ -19,7 +19,11 @@ public class DiscordLogFlushBackgroundService : AbstractBackgroundService
 	{
 		DiscordChannel? logChannel = DevilDaggersInfoServerConstants.Channels[Channel.MonitoringLog].DiscordChannel;
 		if (logChannel != null)
-			await _logContainerService.LogToChannel(logChannel);
+			await _logContainerService.LogToLogChannel(logChannel);
+
+		DiscordChannel? auditLogChannel = DevilDaggersInfoServerConstants.Channels[Channel.MaintainersAuditLog].DiscordChannel;
+		if (auditLogChannel != null)
+			await _logContainerService.LogToAuditLogChannel(auditLogChannel);
 
 		DiscordChannel? validClLogChannel = DevilDaggersInfoServerConstants.Channels[Channel.MonitoringCustomLeaderboardValid].DiscordChannel;
 		if (validClLogChannel != null)

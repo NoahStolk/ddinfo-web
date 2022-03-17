@@ -58,11 +58,11 @@ public class DdInfoDiscordBotService : IHostedService
 			if (_environment.IsDevelopment())
 				return;
 
-			DiscordChannel? channel = DevilDaggersInfoServerConstants.Channels[Channel.MonitoringLog].DiscordChannel;
-			if (channel != null)
+			DiscordChannel? logChannel = DevilDaggersInfoServerConstants.Channels[Channel.MonitoringLog].DiscordChannel;
+			if (logChannel != null)
 			{
-				await _logContainerService.LogToChannel(channel);
-				await channel.SendMessageAsyncSafe($"> **Application is shutting down in the `{_environment.EnvironmentName}` environment. Disconnecting from Discord...** :wave:");
+				await _logContainerService.LogToLogChannel(logChannel);
+				await logChannel.SendMessageAsyncSafe($"> **Application is shutting down in the `{_environment.EnvironmentName}` environment. Disconnecting from Discord...** :wave:");
 			}
 		}
 	}
