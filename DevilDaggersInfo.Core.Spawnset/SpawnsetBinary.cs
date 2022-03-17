@@ -358,7 +358,7 @@ public class SpawnsetBinary
 		if (distance > shrinkStartInTiles)
 			return 0;
 
-		if (distance < shrinkEndInTiles)
+		if (distance <= shrinkEndInTiles)
 			return float.MaxValue;
 
 		return (shrinkStartInTiles - distance) / shrinkRate * tileUnit;

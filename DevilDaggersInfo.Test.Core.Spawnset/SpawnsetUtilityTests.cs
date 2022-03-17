@@ -64,7 +64,7 @@ public class SpawnsetUtilityTests
 	[DataRow(30f, 0f, 1f, 25, 22, 18f)]
 	[DataRow(30f, 0f, 1f, 25, 23, 22f)]
 	[DataRow(30f, 0f, 1f, 25, 24, 26f)]
-	[DataRow(30f, 0f, 1f, 25, 25, 30f)]
+	[DataRow(30f, 0f, 1f, 25, 25, float.MaxValue)]
 
 	[DataRow(30f, 0f, 2f, 25, 17, 0f)]
 	[DataRow(30f, 0f, 2f, 25, 18, 1f)]
@@ -74,7 +74,7 @@ public class SpawnsetUtilityTests
 	[DataRow(30f, 0f, 2f, 25, 22, 9f)]
 	[DataRow(30f, 0f, 2f, 25, 23, 11f)]
 	[DataRow(30f, 0f, 2f, 25, 24, 13f)]
-	[DataRow(30f, 0f, 2f, 25, 25, 15f)]
+	[DataRow(30f, 0f, 2f, 25, 25, float.MaxValue)]
 
 	[DataRow(30f, 10f, 2f, 25, 17, 0f)]
 	[DataRow(30f, 10f, 2f, 25, 18, 1f)]
