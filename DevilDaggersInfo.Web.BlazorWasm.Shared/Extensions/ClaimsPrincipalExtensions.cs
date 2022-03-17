@@ -9,4 +9,7 @@ public static class ClaimsPrincipalExtensions
 
 	public static List<string> GetRoles(this ClaimsPrincipal claimsPrincipal)
 		=> claimsPrincipal.FindAll(ClaimTypes.Role).Select(c => c.Value).Where(s => s != null).ToList();
+
+	public static int? GetPlayerId(this ClaimsPrincipal claimsPrincipal)
+		=> int.TryParse(claimsPrincipal.FindFirst("playerId")?.Value, out int playerId) ? playerId : null;
 }

@@ -49,6 +49,11 @@
 			<AuthorizeView>
 				<Authorized>
 					<NavDropdown Text="Profile" IconType="person">
+						@if (_playerId.HasValue)
+						{
+							<NavItem Href="@($"leaderboard/player/{_playerId}")" IconType="person" Text="View" />
+						}
+
 						<NavItem Href="profile/edit" IconType="pencil" Text="Edit" />
 					</NavDropdown>
 					@if (_roles.Count > 0)
@@ -93,6 +98,7 @@
 @code
 {
 	private List<string> _roles = new();
+	private int? _playerId;
 
 	public bool ShowNavMenuMobile { get; set; } = false;
 
@@ -104,6 +110,7 @@
 	{
 		AuthenticationState auth = await Auth.GetAuthenticationStateAsync();
 		_roles = auth.User?.GetRoles() ?? new();
+		_playerId = auth.User?.GetPlayerId();
 	}
 
 	public void SetActive(NavDropdown? navDropdown)
