@@ -84,7 +84,7 @@ public partial class SpawnsetArena
 		if (_context == null)
 			return;
 
-		_context.ClearRect(0, 0, _canvasSize, _canvasSize + 16);
+		_context.ClearRect(0, 0, _canvasSize, _canvasSize);
 		for (int i = 0; i < SpawnsetBinary.ArenaDimension; i++)
 		{
 			for (int j = 0; j < SpawnsetBinary.ArenaDimension; j++)
