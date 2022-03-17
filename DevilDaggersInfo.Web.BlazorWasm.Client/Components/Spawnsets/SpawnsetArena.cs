@@ -28,6 +28,8 @@ public partial class SpawnsetArena
 
 	private float _currentTime;
 
+	private SpawnsetArenaHoverInfo _spawnsetArenaHoverInfo = null!;
+
 	private float CurrentTime
 	{
 		get => _currentTime;
@@ -182,6 +184,13 @@ public partial class SpawnsetArena
 
 		_canvasMouseX = mouseX - canvasBoundingClientRect.Left;
 		_canvasMouseY = mouseY - canvasBoundingClientRect.Top;
+
+		int x = Math.Clamp((int)_canvasMouseX / _tileSize, 0, 50);
+		int y = Math.Clamp((int)_canvasMouseY / _tileSize, 0, 50);
+		float height = SpawnsetBinary.ArenaTiles[x, y];
+		float actualHeight = SpawnsetBinary.GetActualTileHeight(x, y, _currentTime);
+
+		_spawnsetArenaHoverInfo.Update(x, y, height, actualHeight);
 	}
 
 	private static Color FromHsv(float hue, float saturation, float value)
