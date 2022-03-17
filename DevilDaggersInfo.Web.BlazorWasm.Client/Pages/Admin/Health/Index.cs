@@ -180,10 +180,4 @@ public partial class Index
 
 		_sortings[sortingExpression] = !sortDirection;
 	}
-
-	protected override async Task OnAfterRenderAsync(bool firstRender)
-	{
-		if (firstRender)
-			await JsRuntime.InvokeAsync<object>("init");
-	}
 }

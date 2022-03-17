@@ -43,6 +43,7 @@ public partial class BarChart
 	{
 		if (firstRender)
 		{
+			await JsRuntime.InvokeAsync<object>("initChart");
 			await JsRuntime.InvokeAsync<object>("registerChart", DotNetObjectReference.Create(this), UniqueName);
 			await JsRuntime.InvokeAsync<object>("windowResize", DotNetObjectReference.Create(this));
 		}

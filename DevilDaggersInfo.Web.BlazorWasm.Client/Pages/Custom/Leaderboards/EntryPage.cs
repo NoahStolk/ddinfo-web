@@ -222,11 +222,5 @@ public partial class EntryPage
 		AddDataSets(otherEnemiesKilledSets, "Other Enemies Killed");
 	}
 
-	protected override async Task OnAfterRenderAsync(bool firstRender)
-	{
-		if (firstRender)
-			await JsRuntime.InvokeAsync<object>("init");
-	}
-
 	private sealed record Accuracy(int Hit, int Fired, double Acc);
 }

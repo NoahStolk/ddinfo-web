@@ -22,7 +22,7 @@ window.windowResize = (_) => {
 	onResize();
 };
 
-window.init = () => {
+window.initChart = () => {
 	window.charts = [];
 
 	window.addEventListener("resize", onResize);

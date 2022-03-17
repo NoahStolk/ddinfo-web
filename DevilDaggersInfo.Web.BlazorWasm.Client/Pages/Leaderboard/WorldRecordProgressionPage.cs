@@ -79,12 +79,6 @@ public partial class WorldRecordProgressionPage
 		}));
 	}
 
-	protected override async Task OnAfterRenderAsync(bool firstRender)
-	{
-		if (firstRender)
-			await JsRuntime.InvokeAsync<object>("init");
-	}
-
 	private string GetHistoryDateString(DateTime dateTime)
 	{
 		int daysAgo = (int)Math.Round((DateTime.UtcNow - dateTime).TotalDays);

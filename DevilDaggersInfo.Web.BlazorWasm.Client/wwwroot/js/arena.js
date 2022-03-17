@@ -1,4 +1,4 @@
-window.init = () => {
+window.initArena = () => {
 	getBoundingClientRect = (element, _) => { return element.getBoundingClientRect(); };
 }
 

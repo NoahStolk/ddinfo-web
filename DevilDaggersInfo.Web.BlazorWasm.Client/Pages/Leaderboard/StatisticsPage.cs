@@ -176,10 +176,4 @@ public partial class StatisticsPage
 			};
 		});
 	}
-
-	protected override async Task OnAfterRenderAsync(bool firstRender)
-	{
-		if (firstRender)
-			await JsRuntime.InvokeAsync<object>("init");
-	}
 }

@@ -70,7 +70,7 @@ public partial class SpawnsetArena
 	{
 		if (firstRender)
 		{
-			await JsRuntime.InvokeAsync<object>("init");
+			await JsRuntime.InvokeAsync<object>("initArena");
 			await JsRuntime.InvokeAsync<object>("registerArena", DotNetObjectReference.Create(this), "arena");
 		}
 
