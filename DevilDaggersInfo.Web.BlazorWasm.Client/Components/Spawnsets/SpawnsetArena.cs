@@ -46,8 +46,8 @@ public partial class SpawnsetArena
 	protected override void OnInitialized()
 	{
 		// Determine the max tile height to add additional time to the slider.
-		// For example, when the shrink ends at 200, but there is a tile at height 20, we want to add another 88 seconds ((20 + 2) * 4) to the slider so the highest tiles are always visible until they are fully in the void.
-		// Add 2 heights to make sure it is still visible until the height is -2 (the palette should still show something until this height is reached).
+		// For example, when the shrink ends at 200, but there is a tile at height 20, we want to add another 88 seconds ((20 + 2) * 4) to the slider so the shrink transition is always fully visible for all tiles.
+		// Add 2 heights to make sure it is still visible until the height is -2 (the palette should still show something until a height of at least -1 or lower).
 		// Multiply by 4 because a tile falls by 1 unit every 4 seconds.
 		float maxTileHeight = 0;
 		for (int i = 0; i < SpawnsetBinary.ArenaDimension; i++)
@@ -87,10 +87,7 @@ public partial class SpawnsetArena
 				if (tileHeight < -1)
 					continue;
 
-				float shrinkTime = SpawnsetBinary.GetShrinkTimeForTile(i, j);
-				float shrinkHeight = Math.Max(0, _currentTime - shrinkTime) / 4;
-
-				float actualTileHeight = tileHeight - shrinkHeight;
+				float actualTileHeight = SpawnsetBinary.GetActualTileHeight(i, j, _currentTime);
 				Color color = GetColorFromHeight(actualTileHeight);
 				if (color.R == 0 && color.G == 0 && color.B == 0)
 					continue;

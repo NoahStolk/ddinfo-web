@@ -364,5 +364,21 @@ public class SpawnsetBinary
 		return (shrinkStartInTiles - distance) / shrinkRate * tileUnit;
 	}
 
+	public float GetActualTileHeight(int x, int y, float currentTime)
+		=> GetActualTileHeight(ArenaDimension, ArenaTiles, ShrinkStart, ShrinkEnd, ShrinkRate, x, y, currentTime);
+
+	public static float GetActualTileHeight(int arenaDimension, float[,] arenaTiles, float shrinkStart, float shrinkEnd, float shrinkRate, int x, int y, float currentTime)
+	{
+		if (x < 0 || x >= arenaDimension)
+			throw new ArgumentOutOfRangeException(nameof(x));
+		if (y < 0 || y >= arenaDimension)
+			throw new ArgumentOutOfRangeException(nameof(y));
+
+		float tileHeight = arenaTiles[x, y];
+		float shrinkTime = GetShrinkTimeForTile(arenaDimension, shrinkStart, shrinkEnd, shrinkRate, x, y);
+		float shrinkHeight = Math.Max(0, currentTime - shrinkTime) / 4;
+		return tileHeight - shrinkHeight;
+	}
+
 	#endregion Utilities
 }
