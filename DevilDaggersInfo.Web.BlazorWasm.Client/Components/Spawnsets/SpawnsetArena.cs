@@ -169,14 +169,6 @@ public partial class SpawnsetArena
 		}
 	}
 
-	private static Color GetColorFromHeight(float tileHeight)
-	{
-		float h = tileHeight * 3 + 12;
-		float s = (tileHeight + 1.5f) * 0.25f;
-		float v = (tileHeight + 2) * 0.2f;
-		return FromHsv(h, s, v);
-	}
-
 	[JSInvokable]
 	public async ValueTask OnMouseMove(int mouseX, int mouseY)
 	{
@@ -191,6 +183,14 @@ public partial class SpawnsetArena
 		float actualHeight = SpawnsetBinary.GetActualTileHeight(x, y, _currentTime);
 
 		_spawnsetArenaHoverInfo.Update(x, y, height, actualHeight);
+	}
+
+	private static Color GetColorFromHeight(float tileHeight)
+	{
+		float h = tileHeight * 3 + 12;
+		float s = (tileHeight + 1.5f) * 0.25f;
+		float v = (tileHeight + 2) * 0.2f;
+		return FromHsv(h, s, v);
 	}
 
 	private static Color FromHsv(float hue, float saturation, float value)
