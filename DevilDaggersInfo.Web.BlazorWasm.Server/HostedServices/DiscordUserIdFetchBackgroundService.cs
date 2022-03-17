@@ -38,7 +38,7 @@ public class DiscordUserIdFetchBackgroundService : AbstractBackgroundService
 		while (users == null);
 
 		List<int> ids = users.ConvertAll(u => u.LeaderboardId);
-		List<PlayerEntity> players = dbContext.Players.Where(p => ids.Contains(p.Id)).ToList();
+		List<PlayerEntity> players = dbContext.Players.Where(p => ids.Contains(p.Id) && p.DiscordUserId == null).ToList();
 
 		List<(int PlayerId, ulong? OldId, ulong NewId)> logs = new();
 		foreach (PlayerEntity player in players)
