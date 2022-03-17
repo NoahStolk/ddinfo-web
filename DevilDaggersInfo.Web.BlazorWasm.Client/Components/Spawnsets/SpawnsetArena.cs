@@ -67,7 +67,10 @@ public partial class SpawnsetArena
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
 		if (firstRender)
+		{
+			await JsRuntime.InvokeAsync<object>("init");
 			await JsRuntime.InvokeAsync<object>("registerArena", DotNetObjectReference.Create(this), "arena");
+		}
 
 		_context = new Canvas2d("arena-canvas");
 

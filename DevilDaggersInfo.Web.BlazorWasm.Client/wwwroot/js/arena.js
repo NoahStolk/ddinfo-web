@@ -1,3 +1,7 @@
+window.init = () => {
+	getBoundingClientRect = (element, _) => { return element.getBoundingClientRect(); };
+}
+
 window.registerArena = (wrapperComponent) => {
 	const arena = {
 		wrapperComponent: wrapperComponent,
