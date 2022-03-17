@@ -156,7 +156,10 @@ public class AuditLogger
 	public void LogPlayerUpdates(string caller, List<(int PlayerId, string OldValue, string NewValue)> logs)
 	{
 		StringBuilder auditLogger = new();
-		auditLogger.Append(caller).Append(": ").Append(logs.Count).AppendLine(" players were updated.");
+		if (logs.Count == 1)
+			auditLogger.Append(caller).AppendLine(": 1 player was updated.");
+		else
+			auditLogger.Append(caller).Append(": ").Append(logs.Count).AppendLine(" players were updated.");
 		auditLogger.AppendLine("```");
 
 		const string propertyHeader = "PlayerId";
