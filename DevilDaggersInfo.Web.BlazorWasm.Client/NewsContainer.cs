@@ -34,5 +34,10 @@ public static class NewsContainer
 			DateTime = new(2022, 03, 02),
 			Title = "V5.3 Update",
 		},
+		new()
+		{
+			DateTime = new(2022, 03, 18),
+			Title = "V5.4 Update",
+		},
 	};
 }
