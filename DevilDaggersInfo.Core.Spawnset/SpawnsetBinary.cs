@@ -349,7 +349,7 @@ public class SpawnsetBinary
 
 	public static float GetShrinkTimeForTile(int arenaDimension, float shrinkStart, float shrinkEnd, float shrinkRate, int x, int y)
 	{
-		if (shrinkRate <= 0 || shrinkEnd >= shrinkStart)
+		if (shrinkEnd > shrinkStart)
 			return float.MaxValue;
 
 		const int tileUnit = 4;
