@@ -99,7 +99,7 @@ public partial class PlayerPage
 
 	public bool PlayerNotFound { get; set; }
 
-	protected override async Task OnInitializedAsync()
+	protected override async Task OnParametersSetAsync()
 	{
 		GetEntry = await Http.GetEntryById(Id);
 
@@ -120,6 +120,11 @@ public partial class PlayerPage
 		GetSpawnsetNames = await Http.GetSpawnsetsByAuthorId(Id);
 		GetModNames = await Http.GetModsByAuthorId(Id);
 		GetNumberOfCustomLeaderboards = await Http.GetNumberOfCustomLeaderboards();
+
+		_progressionScoreData.Clear();
+		_progressionRankData.Clear();
+		_activityDeathsData.Clear();
+		_activityTimeData.Clear();
 
 		if (GetPlayerHistory.ScoreHistory.Count > 0)
 		{
