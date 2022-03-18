@@ -19,7 +19,7 @@
 
 <SpawnsetArenaHoverInfo @ref="_spawnsetArenaHoverInfo" />
 
-<div>Time: @CurrentTime.ToString("0.0")</div>
+<div class="max-w-arena-table">Time: @CurrentTime.ToString("0.0")</div>
 <div class="max-w-arena-table">
 	<input class="w-full slider" type="range" min="0" max="@_sliderMax" step="0.1" @bind="@CurrentTime" @bind:event="oninput" />
 </div>
