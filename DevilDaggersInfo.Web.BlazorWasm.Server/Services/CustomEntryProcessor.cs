@@ -220,13 +220,14 @@ public class CustomEntryProcessor
 		await TrySendLeaderboardMessage(customLeaderboard, $"`{uploadRequest.PlayerName}` just entered the `{spawnsetName}` leaderboard!", rank, totalPlayers, uploadRequest.Time);
 		Log(uploadRequest, spawnsetName);
 
+		List<int> replayIds = GetExistingReplayIds(customLeaderboard);
 		return new GetUploadSuccess
 		{
 			Message = $"Welcome to the {spawnsetName} leaderboard!",
 			TotalPlayers = totalPlayers,
 			Leaderboard = customLeaderboard.ToGetCustomLeaderboardDdcl(),
 			Category = customLeaderboard.Category,
-			Entries = entries.ConvertAll(e => e.ToGetCustomEntryDdcl()),
+			Entries = entries.ConvertAll(e => e.ToGetCustomEntryDdcl(replayIds.Contains(e.Id))),
 			IsNewPlayerOnThisLeaderboard = true,
 			IsHighscore = true,
 			Rank = rank,
@@ -256,13 +257,14 @@ public class CustomEntryProcessor
 
 		Log(uploadRequest, spawnsetName);
 
+		List<int> replayIds = GetExistingReplayIds(customLeaderboard);
 		return new GetUploadSuccess
 		{
 			Message = $"No new highscore for {customLeaderboard.Spawnset.Name}.",
 			TotalPlayers = entries.Count,
 			Leaderboard = customLeaderboard.ToGetCustomLeaderboardDdcl(),
 			Category = customLeaderboard.Category,
-			Entries = entries.ConvertAll(e => e.ToGetCustomEntryDdcl()),
+			Entries = entries.ConvertAll(e => e.ToGetCustomEntryDdcl(replayIds.Contains(e.Id))),
 			IsNewPlayerOnThisLeaderboard = false,
 			IsHighscore = false,
 		};
@@ -342,13 +344,14 @@ public class CustomEntryProcessor
 		await TrySendLeaderboardMessage(customLeaderboard, $"`{uploadRequest.PlayerName}` just got {FormatTimeString(uploadRequest.Time)} seconds on the `{spawnsetName}` leaderboard, beating their previous highscore of {FormatTimeString(uploadRequest.Time - timeDiff)} by {FormatTimeString(Math.Abs(timeDiff))} seconds!", rank, totalPlayers, uploadRequest.Time);
 		Log(uploadRequest, spawnsetName);
 
+		List<int> replayIds = GetExistingReplayIds(customLeaderboard);
 		return new GetUploadSuccess
 		{
 			Message = $"NEW HIGHSCORE for {customLeaderboard.Spawnset.Name}!",
 			TotalPlayers = totalPlayers,
 			Leaderboard = customLeaderboard.ToGetCustomLeaderboardDdcl(),
 			Category = customLeaderboard.Category,
-			Entries = entries.ConvertAll(e => e.ToGetCustomEntryDdcl()),
+			Entries = entries.ConvertAll(e => e.ToGetCustomEntryDdcl(replayIds.Contains(e.Id))),
 			IsNewPlayerOnThisLeaderboard = false,
 			IsHighscore = true,
 			Rank = rank,
@@ -458,5 +461,13 @@ public class CustomEntryProcessor
 			_logContainerService.AddClLog(false, $":{errorEmoteNameOverride ?? "warning"}: `{TimeUtils.TicksToTimeString(_stopwatch.ElapsedTicks)}` Upload failed for user `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`. {requestInfo}\n**{errorMessage}**");
 		else
 			_logContainerService.AddClLog(true, $":white_check_mark: `{TimeUtils.TicksToTimeString(_stopwatch.ElapsedTicks)}` `{uploadRequest.PlayerName}` just submitted a score of `{FormatTimeString(uploadRequest.Time)}` to `{spawnsetIdentification}`. {requestInfo}");
+	}
+
+	private List<int> GetExistingReplayIds(CustomLeaderboardEntity customLeaderboard)
+	{
+		return customLeaderboard.CustomEntries == null ? new() : customLeaderboard.CustomEntries
+			.Where(ce => IoFile.Exists(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{ce.Id}.ddreplay")))
+			.Select(ce => ce.Id)
+			.ToList();
 	}
 }

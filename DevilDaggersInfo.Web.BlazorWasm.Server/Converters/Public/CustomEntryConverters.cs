@@ -4,7 +4,7 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
 
 public static class CustomEntryConverters
 {
-	public static GetCustomEntryDdcl ToGetCustomEntryDdcl(this CustomEntryEntity customEntry) => new()
+	public static GetCustomEntryDdcl ToGetCustomEntryDdcl(this CustomEntryEntity customEntry, bool hasReplay) => new()
 	{
 		Id = customEntry.Id,
 		PlayerId = customEntry.PlayerId,
@@ -26,6 +26,7 @@ public static class CustomEntryConverters
 		DaggersHit = customEntry.DaggersHit,
 		SubmitDate = customEntry.SubmitDate,
 		Time = customEntry.Time,
+		HasReplay = hasReplay,
 	};
 
 	public static GetCustomEntry ToGetCustomEntry(this CustomEntryEntity customEntry, int rank, bool hasReplay)

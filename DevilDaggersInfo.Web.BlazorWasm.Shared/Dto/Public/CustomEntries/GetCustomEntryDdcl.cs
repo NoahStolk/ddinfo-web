@@ -22,4 +22,5 @@ public class GetCustomEntryDdcl
 	public int LevelUpTime4 { get; init; }
 	public DateTime SubmitDate { get; init; }
 	public string? ClientVersion { get; init; }
+	public bool HasReplay { get; init; }
 }
