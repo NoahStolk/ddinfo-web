@@ -6,6 +6,7 @@ public static class CustomEntryConverters
 {
 	public static GetCustomEntryDdcl ToGetCustomEntryDdcl(this CustomEntryEntity customEntry) => new()
 	{
+		Id = customEntry.Id,
 		PlayerId = customEntry.PlayerId,
 		PlayerName = customEntry.Player.PlayerName,
 		ClientVersion = customEntry.ClientVersion,

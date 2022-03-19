@@ -2,6 +2,7 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
 
 public class GetCustomEntryDdcl
 {
+	public int Id { get; init; }
 	public int PlayerId { get; init; }
 	public string PlayerName { get; init; } = null!;
 	public int Time { get; init; }
