@@ -922,6 +922,27 @@
 	],
 	"DevilDaggersCustomLeaderboards": [
 		{
+			"VersionNumber": "1.8.0.0",
+			"Date": "2022-03-19T00:00:00",
+			"Changes": [
+				{
+					"Description": "Replays can now be downloaded from within the app. Use the arrow keys to navigate and press enter to select the replay you want to view. It will automatically be injected into the game."
+				},
+				{
+					"Description": "Added paging to leaderboards."
+				},
+				{
+					"Description": "UI improvements for leaderboards."
+				},
+				{
+					"Description": "Reduced CPU and memory usage."
+				},
+				{
+					"Description": "Local replays are no longer uploaded."
+				}
+			]
+		},
+		{
 			"VersionNumber": "1.6.0.1",
 			"Date": "2022-03-08T00:00:00",
 			"Changes": [
