@@ -11,6 +11,7 @@ public class GetUploadSuccess
 	public CustomLeaderboardCategory Category { get; init; }
 	public List<GetCustomEntryDdcl> Entries { get; init; } = new();
 	public bool IsNewPlayerOnThisLeaderboard { get; init; }
+	public bool IsHighscore { get; init; }
 
 	public int Rank { get; init; }
 	public int RankDiff { get; init; }

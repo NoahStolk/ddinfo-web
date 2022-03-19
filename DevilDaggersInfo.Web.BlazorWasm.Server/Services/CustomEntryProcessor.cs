@@ -228,6 +228,7 @@ public class CustomEntryProcessor
 			Category = customLeaderboard.Category,
 			Entries = entries.ConvertAll(e => e.ToGetCustomEntryDdcl()),
 			IsNewPlayerOnThisLeaderboard = true,
+			IsHighscore = true,
 			Rank = rank,
 			Time = uploadRequest.Time,
 			EnemiesKilled = uploadRequest.EnemiesKilled,
@@ -263,6 +264,7 @@ public class CustomEntryProcessor
 			Category = customLeaderboard.Category,
 			Entries = entries.ConvertAll(e => e.ToGetCustomEntryDdcl()),
 			IsNewPlayerOnThisLeaderboard = false,
+			IsHighscore = false,
 		};
 	}
 
@@ -348,6 +350,7 @@ public class CustomEntryProcessor
 			Category = customLeaderboard.Category,
 			Entries = entries.ConvertAll(e => e.ToGetCustomEntryDdcl()),
 			IsNewPlayerOnThisLeaderboard = false,
+			IsHighscore = true,
 			Rank = rank,
 			RankDiff = rankDiff,
 			Time = uploadRequest.Time,
