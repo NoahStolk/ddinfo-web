@@ -25,7 +25,7 @@ public class CustomEntriesController : ControllerBase
 	}
 
 	[HttpGet("{id}/replay")]
-	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public ActionResult GetCustomEntryReplayById([Required] int id)
