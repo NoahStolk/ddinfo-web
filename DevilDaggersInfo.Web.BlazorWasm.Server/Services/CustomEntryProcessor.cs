@@ -153,19 +153,7 @@ public class CustomEntryProcessor
 		if (customEntry == null)
 			return await ProcessNewScoreAsync(uploadRequest, customLeaderboard, rank, isAscending, spawnsetName);
 
-		// Due to a bug in the game, we need to manually fix the request's time. The time gains a couple extra ticks if the run is a replay.
-		// We don't want replays to overwrite the real score (this spams messages and is incorrect).
-		// The amount of overflowing ticks varies between 0 and 3 (the longer the run the higher the amount).
-		// Simply reset the time to the original when all data is the same.
-		// TODO: Also apply this to ascending leaderboards.
-		const int timeThreshold = 1000; // 0.1 seconds (or 6 ticks).
-		const int gemThreshold = 2;
-		const int killThreshold = 5;
-		bool isTinyHighscore = uploadRequest.Time > customEntry.Time && uploadRequest.Time < customEntry.Time + timeThreshold;
-		bool gemsAlmostTheSame = uploadRequest.GemsCollected >= customEntry.GemsCollected - gemThreshold && uploadRequest.GemsCollected <= customEntry.GemsCollected + gemThreshold;
-		bool killsAlmostTheSame = uploadRequest.EnemiesKilled >= customEntry.EnemiesKilled - killThreshold && uploadRequest.EnemiesKilled <= customEntry.EnemiesKilled + killThreshold;
-		bool deathTypeTheSame = uploadRequest.DeathType == customEntry.DeathType;
-		if (uploadRequest.IsReplay && !isAscending && isTinyHighscore && gemsAlmostTheSame && killsAlmostTheSame && deathTypeTheSame)
+		if (uploadRequest.IsReplay && await IsReplayFileTheSame(customEntry.Id, uploadRequest.ReplayData))
 			uploadRequest.Time = customEntry.Time;
 
 		// User is already on the leaderboard, but did not get a better score.
@@ -396,6 +384,30 @@ public class CustomEntryProcessor
 	private async Task WriteReplayFile(int customEntryId, byte[] replayData)
 	{
 		await IoFile.WriteAllBytesAsync(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{customEntryId}.ddreplay"), replayData);
+	}
+
+	/// <summary>
+	/// Due to a bug in the game, the final time sometimes gains a couple extra ticks if the run is a replay (more common in longer runs).
+	/// We don't want these replay submissions to overwrite the real score (this spams messages and is incorrect).
+	/// Simply reset the time to the original time when the replay buffer is the same.
+	/// </summary>
+	private async Task<bool> IsReplayFileTheSame(int customEntryId, byte[] newReplay)
+	{
+		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{customEntryId}.ddreplay");
+		if (!IoFile.Exists(path))
+			return false;
+
+		byte[] originalReplay = await IoFile.ReadAllBytesAsync(path);
+		if (originalReplay.Length != newReplay.Length)
+			return false;
+
+		for (int i = 0; i < originalReplay.Length; i++)
+		{
+			if (originalReplay[i] != newReplay[i])
+				return false;
+		}
+
+		return true;
 	}
 
 	private static void UpdateLeaderboardStatistics(CustomLeaderboardEntity customLeaderboard)
