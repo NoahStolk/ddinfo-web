@@ -14,6 +14,7 @@ public static class LeaderboardStatisticsConverters
 
 	public static GetArrayStatistics ToGetArrayStatistics(this ArrayStatistics arrayStatistics) => new()
 	{
+		Accuracy = arrayStatistics.Accuracy.ToGetArrayStatistic(),
 		DaggersFired = arrayStatistics.DaggersFired.ToGetArrayStatistic(),
 		DaggersHit = arrayStatistics.DaggersHit.ToGetArrayStatistic(),
 		Gems = arrayStatistics.Gems.ToGetArrayStatistic(),
