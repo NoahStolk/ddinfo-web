@@ -154,7 +154,10 @@ public class CustomEntryProcessor
 			return await ProcessNewScoreAsync(uploadRequest, customLeaderboard, rank, isAscending, spawnsetName);
 
 		if (uploadRequest.IsReplay && uploadRequest.Time > customEntry.Time - 1000 && uploadRequest.Time < customEntry.Time + 1000 && await IsReplayFileTheSame(customEntry.Id, uploadRequest.ReplayData))
+		{
+			_logger.LogWarning("Score submission replay time was modified because of identical replay (database: {originalTime} - request: {replayTime}).", FormatTimeString(customEntry.Time), FormatTimeString(uploadRequest.Time));
 			uploadRequest.Time = customEntry.Time;
+		}
 
 		// User is already on the leaderboard, but did not get a better score.
 		if (isAscending && customEntry.Time <= uploadRequest.Time || !isAscending && customEntry.Time >= uploadRequest.Time)
