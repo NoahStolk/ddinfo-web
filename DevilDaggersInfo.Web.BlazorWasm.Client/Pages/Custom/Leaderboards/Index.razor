@@ -61,11 +61,21 @@ else
 				<div class="overflow-hidden text-left hidden md:block">@FormatUtils.FormatDateTimeAsTimeAgo(customLeaderboard.DateLastPlayed)</div>
 				<div class="overflow-hidden text-right hidden 2xl:block">@(customLeaderboard.DateCreated < FeatureConstants.TrackingCustomLeaderboardSubmitCounts ? "+" : string.Empty)@customLeaderboard.SubmitCount</div>
 				<div class="overflow-hidden text-right hidden 2xl:block">@customLeaderboard.PlayerCount</div>
-				<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe @(customLeaderboard.IsArchived ? null : CustomLeaderboardDagger.Bronze.ToCssClass())">@(customLeaderboard.TimeBronze.HasValue ? new(customLeaderboard.TimeBronze.Value.ToString(FormatUtils.TimeFormat)) : MarkupUtils.NoDataMarkup)</div>
-				<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe @(customLeaderboard.IsArchived ? null : CustomLeaderboardDagger.Silver.ToCssClass())">@(customLeaderboard.TimeSilver.HasValue ? new(customLeaderboard.TimeSilver.Value.ToString(FormatUtils.TimeFormat)) : MarkupUtils.NoDataMarkup)</div>
-				<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe @(customLeaderboard.IsArchived ? null : CustomLeaderboardDagger.Golden.ToCssClass())">@(customLeaderboard.TimeGolden.HasValue ? new(customLeaderboard.TimeGolden.Value.ToString(FormatUtils.TimeFormat)) : MarkupUtils.NoDataMarkup)</div>
-				<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe @(customLeaderboard.IsArchived ? null : CustomLeaderboardDagger.Devil.ToCssClass())">@(customLeaderboard.TimeDevil.HasValue ? new(customLeaderboard.TimeDevil.Value.ToString(FormatUtils.TimeFormat)) : MarkupUtils.NoDataMarkup)</div>
-				<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe @(customLeaderboard.IsArchived ? null : CustomLeaderboardDagger.Leviathan.ToCssClass())">@(customLeaderboard.TimeLeviathan.HasValue ? new(customLeaderboard.TimeLeviathan.Value.ToString(FormatUtils.TimeFormat)) : MarkupUtils.NoDataMarkup)</div>
+				@if (customLeaderboard.Daggers == null)
+				{
+					for (int j = 0; j < 5; j++)
+					{
+						<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe">@MarkupUtils.NoDataMarkup</div>
+					}
+				}
+				else
+				{
+					<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe @CustomLeaderboardDagger.Bronze.ToCssClass()">@customLeaderboard.Daggers.Bronze.ToString(FormatUtils.TimeFormat)</div>
+					<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe @CustomLeaderboardDagger.Silver.ToCssClass()">@customLeaderboard.Daggers.Silver.ToString(FormatUtils.TimeFormat)</div>
+					<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe @CustomLeaderboardDagger.Golden.ToCssClass()">@customLeaderboard.Daggers.Golden.ToString(FormatUtils.TimeFormat)</div>
+					<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe @CustomLeaderboardDagger.Devil.ToCssClass()">@customLeaderboard.Daggers.Devil.ToString(FormatUtils.TimeFormat)</div>
+					<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe @CustomLeaderboardDagger.Leviathan.ToCssClass()">@customLeaderboard.Daggers.Leviathan.ToString(FormatUtils.TimeFormat)</div>
+				}
 				<div class="overflow-hidden text-left hidden lg:block">@(customLeaderboard.TopPlayer?.ToNoBreakString() ?? MarkupUtils.NoDataMarkup)</div>
 				<div class="overflow-hidden text-right hidden lg:block text-xl font-goethe @(customLeaderboard.WorldRecordDagger.ToCssClass())">@(customLeaderboard.WorldRecord.HasValue ? new(customLeaderboard.WorldRecord.Value.ToString(FormatUtils.TimeFormat)) : MarkupUtils.NoDataMarkup)</div>
 			</div>

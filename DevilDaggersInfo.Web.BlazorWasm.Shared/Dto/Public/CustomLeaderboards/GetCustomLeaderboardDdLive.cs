@@ -10,14 +10,21 @@ public class GetCustomLeaderboardDdLive
 
 	public string SpawnsetAuthorName { get; init; } = null!;
 
+	public GetCustomLeaderboardDaggers? Daggers { get; init; }
+
+	[Obsolete("Use Daggers instead.")]
 	public double? TimeBronze { get; init; }
 
+	[Obsolete("Use Daggers instead.")]
 	public double? TimeSilver { get; init; }
 
+	[Obsolete("Use Daggers instead.")]
 	public double? TimeGolden { get; init; }
 
+	[Obsolete("Use Daggers instead.")]
 	public double? TimeDevil { get; init; }
 
+	[Obsolete("Use Daggers instead.")]
 	public double? TimeLeviathan { get; init; }
 
 	public DateTime? DateLastPlayed { get; init; }

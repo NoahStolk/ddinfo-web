@@ -4,15 +4,22 @@ public class GetCustomLeaderboardDdcl
 {
 	public string SpawnsetName { get; init; } = null!;
 
-	public int? TimeBronze { get; init; }
+	public GetCustomLeaderboardDaggers? Daggers { get; init; }
 
-	public int? TimeSilver { get; init; }
+	[Obsolete("Use Daggers instead.")]
+	public int TimeBronze { get; init; }
 
-	public int? TimeGolden { get; init; }
+	[Obsolete("Use Daggers instead.")]
+	public int TimeSilver { get; init; }
 
-	public int? TimeDevil { get; init; }
+	[Obsolete("Use Daggers instead.")]
+	public int TimeGolden { get; init; }
 
-	public int? TimeLeviathan { get; init; }
+	[Obsolete("Use Daggers instead.")]
+	public int TimeDevil { get; init; }
+
+	[Obsolete("Use Daggers instead.")]
+	public int TimeLeviathan { get; init; }
 
 	public CustomLeaderboardCategory Category { get; init; }
 

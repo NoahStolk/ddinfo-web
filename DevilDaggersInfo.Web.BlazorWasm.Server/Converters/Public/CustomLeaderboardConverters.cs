@@ -7,11 +7,12 @@ public static class CustomLeaderboardConverters
 	public static GetCustomLeaderboardDdcl ToGetCustomLeaderboardDdcl(this CustomLeaderboardEntity customLeaderboard) => new()
 	{
 		SpawnsetName = customLeaderboard.Spawnset.Name,
-		TimeBronze = customLeaderboard.TimeBronze.ZeroIfArchived(customLeaderboard.IsArchived),
-		TimeSilver = customLeaderboard.TimeSilver.ZeroIfArchived(customLeaderboard.IsArchived),
-		TimeGolden = customLeaderboard.TimeGolden.ZeroIfArchived(customLeaderboard.IsArchived),
-		TimeDevil = customLeaderboard.TimeDevil.ZeroIfArchived(customLeaderboard.IsArchived),
-		TimeLeviathan = customLeaderboard.TimeLeviathan.ZeroIfArchived(customLeaderboard.IsArchived),
+		Daggers = ToGetCustomLeaderboardDaggers(customLeaderboard),
+		TimeBronze = customLeaderboard.TimeBronze.ZeroIfArchived(customLeaderboard.IsFeatured),
+		TimeSilver = customLeaderboard.TimeSilver.ZeroIfArchived(customLeaderboard.IsFeatured),
+		TimeGolden = customLeaderboard.TimeGolden.ZeroIfArchived(customLeaderboard.IsFeatured),
+		TimeDevil = customLeaderboard.TimeDevil.ZeroIfArchived(customLeaderboard.IsFeatured),
+		TimeLeviathan = customLeaderboard.TimeLeviathan.ZeroIfArchived(customLeaderboard.IsFeatured),
 		Category = customLeaderboard.Category,
 		IsAscending = customLeaderboard.Category.IsAscending(),
 	};
@@ -21,12 +22,8 @@ public static class CustomLeaderboardConverters
 		Id = customLeaderboard.Id,
 		SpawnsetAuthorName = customLeaderboard.Spawnset.Player.PlayerName,
 		SpawnsetName = customLeaderboard.Spawnset.Name,
-		TimeBronze = customLeaderboard.TimeBronze.NullIfArchived(customLeaderboard.IsArchived).ToSecondsTime(),
-		TimeSilver = customLeaderboard.TimeSilver.NullIfArchived(customLeaderboard.IsArchived).ToSecondsTime(),
-		TimeGolden = customLeaderboard.TimeGolden.NullIfArchived(customLeaderboard.IsArchived).ToSecondsTime(),
-		TimeDevil = customLeaderboard.TimeDevil.NullIfArchived(customLeaderboard.IsArchived).ToSecondsTime(),
-		TimeLeviathan = customLeaderboard.TimeLeviathan.NullIfArchived(customLeaderboard.IsArchived).ToSecondsTime(),
 		IsArchived = customLeaderboard.IsArchived,
+		Daggers = ToGetCustomLeaderboardDaggers(customLeaderboard),
 		DateCreated = customLeaderboard.DateCreated,
 		DateLastPlayed = customLeaderboard.DateLastPlayed,
 		SubmitCount = customLeaderboard.TotalRunsSubmitted,
@@ -42,11 +39,12 @@ public static class CustomLeaderboardConverters
 		SpawnsetName = customLeaderboard.Spawnset.Name,
 		SpawnsetAuthorId = customLeaderboard.Spawnset.PlayerId,
 		SpawnsetAuthorName = customLeaderboard.Spawnset.Player.PlayerName,
-		TimeBronze = customLeaderboard.TimeBronze.NullIfArchived(customLeaderboard.IsArchived).ToSecondsTime(),
-		TimeSilver = customLeaderboard.TimeSilver.NullIfArchived(customLeaderboard.IsArchived).ToSecondsTime(),
-		TimeGolden = customLeaderboard.TimeGolden.NullIfArchived(customLeaderboard.IsArchived).ToSecondsTime(),
-		TimeDevil = customLeaderboard.TimeDevil.NullIfArchived(customLeaderboard.IsArchived).ToSecondsTime(),
-		TimeLeviathan = customLeaderboard.TimeLeviathan.NullIfArchived(customLeaderboard.IsArchived).ToSecondsTime(),
+		Daggers = ToGetCustomLeaderboardDaggers(customLeaderboard),
+		TimeBronze = customLeaderboard.TimeBronze.NullIfArchived(customLeaderboard.IsFeatured).ToSecondsTime(),
+		TimeSilver = customLeaderboard.TimeSilver.NullIfArchived(customLeaderboard.IsFeatured).ToSecondsTime(),
+		TimeGolden = customLeaderboard.TimeGolden.NullIfArchived(customLeaderboard.IsFeatured).ToSecondsTime(),
+		TimeDevil = customLeaderboard.TimeDevil.NullIfArchived(customLeaderboard.IsFeatured).ToSecondsTime(),
+		TimeLeviathan = customLeaderboard.TimeLeviathan.NullIfArchived(customLeaderboard.IsFeatured).ToSecondsTime(),
 		DateCreated = customLeaderboard.DateCreated,
 		DateLastPlayed = customLeaderboard.DateLastPlayed,
 		SubmitCount = customLeaderboard.TotalRunsSubmitted,
@@ -64,11 +62,7 @@ public static class CustomLeaderboardConverters
 		SpawnsetAuthorName = customLeaderboard.Spawnset.Player.PlayerName,
 		SpawnsetHtmlDescription = customLeaderboard.Spawnset.HtmlDescription,
 		SpawnsetName = customLeaderboard.Spawnset.Name,
-		TimeBronze = customLeaderboard.TimeBronze.NullIfArchived(customLeaderboard.IsArchived).ToSecondsTime(),
-		TimeSilver = customLeaderboard.TimeSilver.NullIfArchived(customLeaderboard.IsArchived).ToSecondsTime(),
-		TimeGolden = customLeaderboard.TimeGolden.NullIfArchived(customLeaderboard.IsArchived).ToSecondsTime(),
-		TimeDevil = customLeaderboard.TimeDevil.NullIfArchived(customLeaderboard.IsArchived).ToSecondsTime(),
-		TimeLeviathan = customLeaderboard.TimeLeviathan.NullIfArchived(customLeaderboard.IsArchived).ToSecondsTime(),
+		Daggers = ToGetCustomLeaderboardDaggers(customLeaderboard),
 		DateCreated = customLeaderboard.DateCreated,
 		SubmitCount = customLeaderboard.TotalRunsSubmitted,
 		Category = customLeaderboard.Category,
@@ -82,6 +76,15 @@ public static class CustomLeaderboardConverters
 	};
 
 	private static int? NullIfArchived(this int time, bool isArchived) => isArchived ? null : time;
+	private static GetCustomLeaderboardDaggers? ToGetCustomLeaderboardDaggers(CustomLeaderboardEntity customLeaderboard) => !customLeaderboard.IsFeatured ? null : new()
+	{
+		Bronze = customLeaderboard.TimeBronze.ToSecondsTime(),
+		Silver = customLeaderboard.TimeSilver.ToSecondsTime(),
+		Golden = customLeaderboard.TimeGolden.ToSecondsTime(),
+		Devil = customLeaderboard.TimeDevil.ToSecondsTime(),
+		Leviathan = customLeaderboard.TimeLeviathan.ToSecondsTime(),
+	};
+
 
 	private static int ZeroIfArchived(this int time, bool isArchived) => isArchived ? 0 : time;
 }
