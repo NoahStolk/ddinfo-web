@@ -18,6 +18,8 @@ public class GetCustomLeaderboardOverview
 
 	public double? TimeLeviathan { get; init; }
 
+	public bool IsArchived { get; init; }
+
 	public DateTime? DateLastPlayed { get; init; }
 
 	public DateTime DateCreated { get; init; }

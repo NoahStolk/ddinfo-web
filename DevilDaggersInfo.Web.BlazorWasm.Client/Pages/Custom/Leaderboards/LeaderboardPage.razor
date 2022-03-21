@@ -23,7 +23,7 @@ else
 
 	if (GetCustomLeaderboard.IsArchived)
 	{
-		<p class="text-lg p-1 m-1 bg-dark-red">This leaderboard is archived. You can still submit scores to it, but it won't show up in the list of leaderboards or player statistics.</p>
+		<p class="text-lg p-1 m-1 bg-dark-red">This leaderboard is not featured. You can submit scores to it, but they won't show up in the player statistics.</p>
 	}
 
 	<div class="bg-gray-1 max-w-sm px-1">
@@ -50,28 +50,31 @@ else
 		</div>
 	}
 
-	<div class="grid justify-items-center gap-3 grid-cols-5 my-6 font-goethe text-xl">
-		<div>
-			<img class="mx-auto" src="/images/icons/daggers/bronze.png" />
-			<span class="bronze">@(GetCustomLeaderboard.TimeBronze.ToString(FormatUtils.TimeFormat))</span>
+	@if (!GetCustomLeaderboard.IsArchived)
+	{
+		<div class="grid justify-items-center gap-3 grid-cols-5 my-6 font-goethe text-xl">
+			<div>
+				<img class="mx-auto" src="/images/icons/daggers/bronze.png" />
+				<span class="bronze">@(GetCustomLeaderboard.TimeBronze?.ToString(FormatUtils.TimeFormat))</span>
+			</div>
+			<div>
+				<img class="mx-auto" src="/images/icons/daggers/silver.png" />
+				<span class="silver">@(GetCustomLeaderboard.TimeSilver?.ToString(FormatUtils.TimeFormat))</span>
+			</div>
+			<div>
+				<img class="mx-auto" src="/images/icons/daggers/golden.png" />
+				<span class="golden">@(GetCustomLeaderboard.TimeGolden?.ToString(FormatUtils.TimeFormat))</span>
+			</div>
+			<div>
+				<img class="mx-auto" src="/images/icons/daggers/devil.png" />
+				<span class="devil">@(GetCustomLeaderboard.TimeDevil?.ToString(FormatUtils.TimeFormat))</span>
+			</div>
+			<div>
+				<img class="mx-auto" src="/images/icons/daggers/leviathan.png" />
+				<span class="leviathan">@(GetCustomLeaderboard.TimeLeviathan?.ToString(FormatUtils.TimeFormat))</span>
+			</div>
 		</div>
-		<div>
-			<img class="mx-auto" src="/images/icons/daggers/silver.png" />
-			<span class="silver">@(GetCustomLeaderboard.TimeSilver.ToString(FormatUtils.TimeFormat))</span>
-		</div>
-		<div>
-			<img class="mx-auto" src="/images/icons/daggers/golden.png" />
-			<span class="golden">@(GetCustomLeaderboard.TimeGolden.ToString(FormatUtils.TimeFormat))</span>
-		</div>
-		<div>
-			<img class="mx-auto" src="/images/icons/daggers/devil.png" />
-			<span class="devil">@(GetCustomLeaderboard.TimeDevil.ToString(FormatUtils.TimeFormat))</span>
-		</div>
-		<div>
-			<img class="mx-auto" src="/images/icons/daggers/leviathan.png" />
-			<span class="leviathan">@(GetCustomLeaderboard.TimeLeviathan.ToString(FormatUtils.TimeFormat))</span>
-		</div>
-	</div>
+	}
 
 	<LeaderboardTableInfo />
 

@@ -26,6 +26,7 @@ public static class CustomLeaderboardConverters
 		TimeGolden = customLeaderboard.TimeGolden.NullIfArchived(customLeaderboard.IsArchived).ToSecondsTime(),
 		TimeDevil = customLeaderboard.TimeDevil.NullIfArchived(customLeaderboard.IsArchived).ToSecondsTime(),
 		TimeLeviathan = customLeaderboard.TimeLeviathan.NullIfArchived(customLeaderboard.IsArchived).ToSecondsTime(),
+		IsArchived = customLeaderboard.IsArchived,
 		DateCreated = customLeaderboard.DateCreated,
 		DateLastPlayed = customLeaderboard.DateLastPlayed,
 		SubmitCount = customLeaderboard.TotalRunsSubmitted,
