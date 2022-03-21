@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.CustomLeaderboards;
+
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Services;
 
 public class CustomLeaderboardValidatorService
@@ -11,29 +13,38 @@ public class CustomLeaderboardValidatorService
 		_fileSystemService = fileSystemService;
 	}
 
-	public void ValidateCustomLeaderboard(int spawnsetId, CustomLeaderboardCategory category, double leviathan, double devil, double golden, double silver, double bronze)
+	public void ValidateCustomLeaderboard(int spawnsetId, CustomLeaderboardCategory category, AddCustomLeaderboardDaggers? customLeaderboardDaggers, bool isFeatured)
 	{
-		if (category.IsAscending())
+		if (!Enum.IsDefined(category))
+			throw new CustomLeaderboardValidationException($"Category '{category}' is not defined.");
+
+		if (isFeatured && customLeaderboardDaggers == null)
+			throw new CustomLeaderboardValidationException("Daggers are required for featured leaderboards.");
+
+		if (customLeaderboardDaggers != null)
 		{
-			if (leviathan >= devil)
-				throw new CustomLeaderboardValidationException("For ascending leaderboards, Leviathan time must be smaller than Devil time.");
-			if (devil >= golden)
-				throw new CustomLeaderboardValidationException("For ascending leaderboards, Devil time must be smaller than Golden time.");
-			if (golden >= silver)
-				throw new CustomLeaderboardValidationException("For ascending leaderboards, Golden time must be smaller than Silver time.");
-			if (silver >= bronze)
-				throw new CustomLeaderboardValidationException("For ascending leaderboards, Silver time must be smaller than Bronze time.");
-		}
-		else
-		{
-			if (leviathan <= devil)
-				throw new CustomLeaderboardValidationException("For descending leaderboards, Leviathan time must be greater than Devil time.");
-			if (devil <= golden)
-				throw new CustomLeaderboardValidationException("For descending leaderboards, Devil time must be greater than Golden time.");
-			if (golden <= silver)
-				throw new CustomLeaderboardValidationException("For descending leaderboards, Golden time must be greater than Silver time.");
-			if (silver <= bronze)
-				throw new CustomLeaderboardValidationException("For descending leaderboards, Silver time must be greater than Bronze time.");
+			if (category.IsAscending())
+			{
+				if (customLeaderboardDaggers.Leviathan >= customLeaderboardDaggers.Devil)
+					throw new CustomLeaderboardValidationException("For ascending leaderboards, Leviathan time must be smaller than Devil time.");
+				if (customLeaderboardDaggers.Devil >= customLeaderboardDaggers.Golden)
+					throw new CustomLeaderboardValidationException("For ascending leaderboards, Devil time must be smaller than Golden time.");
+				if (customLeaderboardDaggers.Golden >= customLeaderboardDaggers.Silver)
+					throw new CustomLeaderboardValidationException("For ascending leaderboards, Golden time must be smaller than Silver time.");
+				if (customLeaderboardDaggers.Silver >= customLeaderboardDaggers.Bronze)
+					throw new CustomLeaderboardValidationException("For ascending leaderboards, Silver time must be smaller than Bronze time.");
+			}
+			else
+			{
+				if (customLeaderboardDaggers.Leviathan <= customLeaderboardDaggers.Devil)
+					throw new CustomLeaderboardValidationException("For descending leaderboards, Leviathan time must be greater than Devil time.");
+				if (customLeaderboardDaggers.Devil <= customLeaderboardDaggers.Golden)
+					throw new CustomLeaderboardValidationException("For descending leaderboards, Devil time must be greater than Golden time.");
+				if (customLeaderboardDaggers.Golden <= customLeaderboardDaggers.Silver)
+					throw new CustomLeaderboardValidationException("For descending leaderboards, Golden time must be greater than Silver time.");
+				if (customLeaderboardDaggers.Silver <= customLeaderboardDaggers.Bronze)
+					throw new CustomLeaderboardValidationException("For descending leaderboards, Silver time must be greater than Bronze time.");
+			}
 		}
 
 		var spawnset = _dbContext.Spawnsets

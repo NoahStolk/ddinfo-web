@@ -169,11 +169,12 @@ public static class AuditLoggerExtensions
 		Dictionary<string, string> log = new();
 		AddProperty(log, customLeaderboard.SpawnsetId);
 		AddProperty(log, customLeaderboard.Category);
-		AddProperty(log, customLeaderboard.TimeBronze);
-		AddProperty(log, customLeaderboard.TimeSilver);
-		AddProperty(log, customLeaderboard.TimeGolden);
-		AddProperty(log, customLeaderboard.TimeDevil);
-		AddProperty(log, customLeaderboard.TimeLeviathan);
+		AddProperty(log, customLeaderboard.Daggers?.Bronze ?? 0);
+		AddProperty(log, customLeaderboard.Daggers?.Silver ?? 0);
+		AddProperty(log, customLeaderboard.Daggers?.Golden ?? 0);
+		AddProperty(log, customLeaderboard.Daggers?.Devil ?? 0);
+		AddProperty(log, customLeaderboard.Daggers?.Leviathan ?? 0);
+		AddProperty(log, customLeaderboard.IsFeatured);
 		return log;
 	}
 
@@ -181,12 +182,12 @@ public static class AuditLoggerExtensions
 	{
 		Dictionary<string, string> log = new();
 		AddProperty(log, customLeaderboard.Category);
-		AddProperty(log, customLeaderboard.TimeBronze);
-		AddProperty(log, customLeaderboard.TimeSilver);
-		AddProperty(log, customLeaderboard.TimeGolden);
-		AddProperty(log, customLeaderboard.TimeDevil);
-		AddProperty(log, customLeaderboard.TimeLeviathan);
-		AddProperty(log, customLeaderboard.IsArchived);
+		AddProperty(log, customLeaderboard.Daggers?.Bronze ?? 0);
+		AddProperty(log, customLeaderboard.Daggers?.Silver ?? 0);
+		AddProperty(log, customLeaderboard.Daggers?.Golden ?? 0);
+		AddProperty(log, customLeaderboard.Daggers?.Devil ?? 0);
+		AddProperty(log, customLeaderboard.Daggers?.Leviathan ?? 0);
+		AddProperty(log, customLeaderboard.IsFeatured);
 		return log;
 	}
 
@@ -203,7 +204,7 @@ public static class AuditLoggerExtensions
 		AddProperty(log, customLeaderboard.TimeLeviathan);
 		AddProperty(log, customLeaderboard.DateCreated);
 		AddProperty(log, customLeaderboard.DateLastPlayed);
-		AddProperty(log, customLeaderboard.IsArchived);
+		AddProperty(log, customLeaderboard.IsFeatured);
 		AddProperty(log, customLeaderboard.TotalRunsSubmitted);
 		return log;
 	}

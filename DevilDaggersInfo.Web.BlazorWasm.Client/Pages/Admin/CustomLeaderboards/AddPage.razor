@@ -8,11 +8,15 @@
 <AdminAdd Name="Custom Leaderboard" OverviewUrl="/admin/custom-leaderboards" ApiCall="Http.AddCustomLeaderboard" Model="_addCustomLeaderboard" @ref="_addComponent">
 	<AdminInput Label="Spawnset"><SearchDropdown TKey=int Values="@_spawnsetNames" Converter="s => int.Parse(s)" @bind-Value="@_addCustomLeaderboard.SpawnsetId" /></AdminInput>
 	<AdminInput Label="Category"><SearchDropdown TKey=CustomLeaderboardCategory Values="@(Enum.GetValues<CustomLeaderboardCategory>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<CustomLeaderboardCategory>(s)" ShowDisplayValue=false @bind-Value="@_addCustomLeaderboard.Category" /></AdminInput>
-	<AdminInput Label="Bronze"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addCustomLeaderboard.TimeBronze" /></AdminInput>
-	<AdminInput Label="Silver"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addCustomLeaderboard.TimeSilver" /></AdminInput>
-	<AdminInput Label="Golden"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addCustomLeaderboard.TimeGolden" /></AdminInput>
-	<AdminInput Label="Devil"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addCustomLeaderboard.TimeDevil" /></AdminInput>
-	<AdminInput Label="Leviathan"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addCustomLeaderboard.TimeLeviathan" /></AdminInput>
+	<AdminInput Label="Featured"><InputCheckbox @bind-Value="@_addCustomLeaderboard.IsFeatured" /></AdminInput>
+	@if (_addCustomLeaderboard.IsFeatured)
+	{
+		<AdminInput Label="Bronze"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addCustomLeaderboard.Daggers.Bronze" /></AdminInput>
+		<AdminInput Label="Silver"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addCustomLeaderboard.Daggers.Silver" /></AdminInput>
+		<AdminInput Label="Golden"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addCustomLeaderboard.Daggers.Golden" /></AdminInput>
+		<AdminInput Label="Devil"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addCustomLeaderboard.Daggers.Devil" /></AdminInput>
+		<AdminInput Label="Leviathan"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addCustomLeaderboard.Daggers.Leviathan" /></AdminInput>
+	}
 </AdminAdd>
 
 @code

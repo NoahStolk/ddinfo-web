@@ -6,12 +6,15 @@
 
 <AdminEdit Name="Custom Leaderboard" OverviewUrl="/admin/custom-leaderboards" ApiCall="Http.EditCustomLeaderboardById" Model="_editCustomLeaderboard" Id="Id" @ref="_editComponent">
 	<AdminInput Label="Category"><SearchDropdown TKey=CustomLeaderboardCategory Values="@(Enum.GetValues<CustomLeaderboardCategory>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<CustomLeaderboardCategory>(s)" ShowDisplayValue=false @bind-Value="@_editCustomLeaderboard.Category" /></AdminInput>
-	<AdminInput Label="Bronze"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editCustomLeaderboard.TimeBronze" /></AdminInput>
-	<AdminInput Label="Silver"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editCustomLeaderboard.TimeSilver" /></AdminInput>
-	<AdminInput Label="Golden"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editCustomLeaderboard.TimeGolden" /></AdminInput>
-	<AdminInput Label="Devil"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editCustomLeaderboard.TimeDevil" /></AdminInput>
-	<AdminInput Label="Leviathan"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editCustomLeaderboard.TimeLeviathan" /></AdminInput>
-	<AdminInput Label="Archived"><InputCheckbox @bind-Value="@_editCustomLeaderboard.IsArchived" /></AdminInput>
+	<AdminInput Label="Featured"><InputCheckbox @bind-Value="@_editCustomLeaderboard.IsFeatured" /></AdminInput>
+	@if (_editCustomLeaderboard.IsFeatured)
+	{
+		<AdminInput Label="Bronze"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editCustomLeaderboard.Daggers.Bronze" /></AdminInput>
+		<AdminInput Label="Silver"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editCustomLeaderboard.Daggers.Silver" /></AdminInput>
+		<AdminInput Label="Golden"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editCustomLeaderboard.Daggers.Golden" /></AdminInput>
+		<AdminInput Label="Devil"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editCustomLeaderboard.Daggers.Devil" /></AdminInput>
+		<AdminInput Label="Leviathan"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editCustomLeaderboard.Daggers.Leviathan" /></AdminInput>
+	}
 </AdminEdit>
 
 @code
@@ -30,11 +33,14 @@
 			{
 				Category = getCustomLeaderboard.Category,
 				IsFeatured = getCustomLeaderboard.IsFeatured,
-				TimeBronze = getCustomLeaderboard.TimeBronze,
-				TimeSilver = getCustomLeaderboard.TimeSilver,
-				TimeGolden = getCustomLeaderboard.TimeGolden,
-				TimeDevil = getCustomLeaderboard.TimeDevil,
-				TimeLeviathan = getCustomLeaderboard.TimeLeviathan,
+				Daggers = new()
+				{
+					Bronze = getCustomLeaderboard.TimeBronze,
+					Silver = getCustomLeaderboard.TimeSilver,
+					Golden = getCustomLeaderboard.TimeGolden,
+					Devil = getCustomLeaderboard.TimeDevil,
+					Leviathan = getCustomLeaderboard.TimeLeviathan,
+				},
 			};
 			_editComponent.State = ErrorState.None;
 		}
