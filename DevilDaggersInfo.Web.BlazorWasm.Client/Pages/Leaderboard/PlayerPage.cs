@@ -95,7 +95,6 @@ public partial class PlayerPage
 	public List<GetCustomLeaderboardStatisticsForPlayer>? GetCustomLeaderboardStatistics { get; set; }
 	public List<GetSpawnsetName>? GetSpawnsetNames { get; set; }
 	public List<GetModName>? GetModNames { get; set; }
-	public GetNumberOfCustomLeaderboards? GetNumberOfCustomLeaderboards { get; set; }
 
 	public bool PlayerNotFound { get; set; }
 
@@ -119,7 +118,6 @@ public partial class PlayerPage
 		GetCustomLeaderboardStatistics = await Http.GetCustomLeaderboardStatisticsByPlayerId(Id);
 		GetSpawnsetNames = await Http.GetSpawnsetsByAuthorId(Id);
 		GetModNames = await Http.GetModsByAuthorId(Id);
-		GetNumberOfCustomLeaderboards = await Http.GetNumberOfCustomLeaderboards();
 
 		_progressionScoreData.Clear();
 		_progressionRankData.Clear();

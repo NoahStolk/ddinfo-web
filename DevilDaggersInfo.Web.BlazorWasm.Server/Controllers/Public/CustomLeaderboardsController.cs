@@ -233,22 +233,6 @@ public class CustomLeaderboardsController : ControllerBase
 		};
 	}
 
-	[HttpGet("number-of-custom-leaderboards")]
-	[ProducesResponseType(StatusCodes.Status200OK)]
-	public ActionResult<GetNumberOfCustomLeaderboards> GetNumberOfCustomLeaderboards()
-	{
-		var customLeaderboards = _dbContext.CustomLeaderboards.AsNoTracking().Select(cl => new { cl.Id, cl.Category }).ToList();
-
-		Dictionary<CustomLeaderboardCategory, int> countPerCategory = new();
-		foreach (CustomLeaderboardCategory category in Enum.GetValues<CustomLeaderboardCategory>())
-			countPerCategory[category] = customLeaderboards.Count(cl => cl.Category == category);
-
-		return new GetNumberOfCustomLeaderboards
-		{
-			CountPerCategory = countPerCategory,
-		};
-	}
-
 	[HttpGet("{id}")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
