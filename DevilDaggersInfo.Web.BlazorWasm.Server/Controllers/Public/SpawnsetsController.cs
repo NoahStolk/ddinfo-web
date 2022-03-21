@@ -48,7 +48,6 @@ public class SpawnsetsController : ControllerBase
 		{
 			List<int> spawnsetsWithCustomLeaderboardIds = _dbContext.CustomLeaderboards
 				.AsNoTracking()
-				.Where(cl => !cl.IsArchived)
 				.Select(cl => cl.SpawnsetId)
 				.ToList();
 
