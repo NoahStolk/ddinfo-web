@@ -17,4 +17,6 @@ public class GetCustomLeaderboardStatisticsForPlayer
 	public int DefaultDaggerCount { get; init; }
 
 	public int LeaderboardsPlayedCount { get; init; }
+
+	public int TotalCount { get; init; }
 }

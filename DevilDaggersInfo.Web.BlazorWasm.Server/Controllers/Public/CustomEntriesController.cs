@@ -96,11 +96,16 @@ public class CustomEntriesController : ControllerBase
 			})
 			.ToListAsync();
 
+		Dictionary<CustomLeaderboardCategory, int> customLeaderboardsByCategory = await _dbContext.CustomLeaderboards
+			.AsNoTracking()
+			.GroupBy(cl => cl.Category)
+			.ToDictionaryAsync(g => g.Key, g => g.Count());
+
 		List<GetCustomLeaderboardStatisticsForPlayer> stats = new();
 		foreach (CustomLeaderboardCategory category in Enum.GetValues<CustomLeaderboardCategory>())
 		{
 			var customEntriesByCategory = customEntries.Where(c => c.Category == category);
-			if (!customEntriesByCategory.Any())
+			if (!customEntriesByCategory.Any() || !customLeaderboardsByCategory.ContainsKey(category))
 				continue;
 
 			int leviathanDaggers = 0;
@@ -134,6 +139,7 @@ public class CustomEntriesController : ControllerBase
 				BronzeDaggerCount = bronzeDaggers,
 				DefaultDaggerCount = defaultDaggers,
 				LeaderboardsPlayedCount = played,
+				TotalCount = customLeaderboardsByCategory[category],
 			});
 		}
 

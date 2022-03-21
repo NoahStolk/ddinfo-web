@@ -165,16 +165,14 @@ else
 				if (stats == null)
 					continue;
 
-				_ = GetNumberOfCustomLeaderboards.CountPerCategory.TryGetValue(category, out int total);
-
 				<PlayerCard Title="@($"Custom Leaderboard Statistics ({category})")">
-					<DataField CssClass="odd:bg-gray-2 px-1" Name="Leviathan daggers">@stats.LeviathanDaggerCount / @total</DataField>
-					<DataField CssClass="odd:bg-gray-2 px-1" Name="Devil daggers">@stats.DevilDaggerCount / @total</DataField>
-					<DataField CssClass="odd:bg-gray-2 px-1" Name="Golden daggers">@stats.GoldenDaggerCount / @total</DataField>
-					<DataField CssClass="odd:bg-gray-2 px-1" Name="Silver daggers">@stats.SilverDaggerCount / @total</DataField>
-					<DataField CssClass="odd:bg-gray-2 px-1" Name="Bronze daggers">@stats.BronzeDaggerCount / @total</DataField>
-					<DataField CssClass="odd:bg-gray-2 px-1" Name="Default daggers">@stats.DefaultDaggerCount / @total</DataField>
-					<DataField CssClass="odd:bg-gray-2 px-1" Name="Played">@stats.LeaderboardsPlayedCount / @total</DataField>
+					<DataField CssClass="odd:bg-gray-2 px-1" Name="Leviathan daggers">@stats.LeviathanDaggerCount / @stats.TotalCount</DataField>
+					<DataField CssClass="odd:bg-gray-2 px-1" Name="Devil daggers">@stats.DevilDaggerCount / @stats.TotalCount</DataField>
+					<DataField CssClass="odd:bg-gray-2 px-1" Name="Golden daggers">@stats.GoldenDaggerCount / @stats.TotalCount</DataField>
+					<DataField CssClass="odd:bg-gray-2 px-1" Name="Silver daggers">@stats.SilverDaggerCount / @stats.TotalCount</DataField>
+					<DataField CssClass="odd:bg-gray-2 px-1" Name="Bronze daggers">@stats.BronzeDaggerCount / @stats.TotalCount</DataField>
+					<DataField CssClass="odd:bg-gray-2 px-1" Name="Default daggers">@stats.DefaultDaggerCount / @stats.TotalCount</DataField>
+					<DataField CssClass="odd:bg-gray-2 px-1" Name="Played">@stats.LeaderboardsPlayedCount / @stats.TotalCount</DataField>
 				</PlayerCard>
 			}
 		}
