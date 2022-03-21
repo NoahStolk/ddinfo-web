@@ -121,9 +121,18 @@ public class SpawnsetsController : ControllerBase
 		if (!string.IsNullOrWhiteSpace(nameFilter))
 			query = query.Where(sf => sf.Name.Contains(nameFilter, StringComparison.InvariantCultureIgnoreCase));
 
+		List<int> spawnsetsWithCustomLeaderboardIds = _dbContext.CustomLeaderboards
+			.AsNoTracking()
+			.Select(cl => cl.SpawnsetId)
+			.ToList();
+
 		return query
-			.Where(sf => IoFile.Exists(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), sf.Name)))
-			.Select(sf => ToGetSpawnsetDdse(sf))
+			.Where(s => IoFile.Exists(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), s.Name)))
+			.Select(s =>
+			{
+				SpawnsetSummary spawnsetSummary = _spawnsetSummaryCache.GetSpawnsetSummaryByFilePath(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), s.Name));
+				return s.ToGetSpawnsetDdse(spawnsetSummary, spawnsetsWithCustomLeaderboardIds.Contains(s.Id));
+			})
 			.ToList();
 	}
 
@@ -197,18 +206,6 @@ public class SpawnsetsController : ControllerBase
 
 		byte[] spawnsetBytes = IoFile.ReadAllBytes(path);
 		return MD5.HashData(spawnsetBytes);
-	}
-
-	private GetSpawnsetDdse ToGetSpawnsetDdse(SpawnsetEntity spawnset)
-	{
-		List<int> spawnsetsWithCustomLeaderboardIds = _dbContext.CustomLeaderboards
-			.AsNoTracking()
-			.Where(cl => !cl.IsArchived)
-			.Select(cl => cl.SpawnsetId)
-			.ToList();
-
-		SpawnsetSummary spawnsetSummary = _spawnsetSummaryCache.GetSpawnsetSummaryByFilePath(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), spawnset.Name));
-		return spawnset.ToGetSpawnsetDdse(spawnsetSummary, spawnsetsWithCustomLeaderboardIds.Contains(spawnset.Id));
 	}
 
 	[HttpGet("total-data")]
