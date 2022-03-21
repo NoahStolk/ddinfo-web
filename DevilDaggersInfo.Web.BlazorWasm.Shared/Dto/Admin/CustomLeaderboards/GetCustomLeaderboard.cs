@@ -16,7 +16,7 @@ public class GetCustomLeaderboard
 
 	public double TimeLeviathan { get; init; }
 
-	public bool IsArchived { get; init; }
+	public bool IsFeatured { get; init; }
 
 	public CustomLeaderboardCategory Category { get; init; }
 }

@@ -19,5 +19,5 @@ public class EditCustomLeaderboard
 	[Range(1, 1500)]
 	public double TimeLeviathan { get; set; }
 
-	public bool IsArchived { get; set; }
+	public bool IsFeatured { get; set; }
 }

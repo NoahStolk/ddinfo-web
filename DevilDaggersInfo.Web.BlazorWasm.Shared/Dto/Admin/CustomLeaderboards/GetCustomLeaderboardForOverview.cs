@@ -16,7 +16,7 @@ public class GetCustomLeaderboardForOverview : IAdminOverviewGetDto
 
 	public double TimeLeviathan { get; init; }
 
-	public bool IsArchived { get; init; }
+	public bool IsFeatured { get; init; }
 
 	public DateTime? DateCreated { get; init; }
 

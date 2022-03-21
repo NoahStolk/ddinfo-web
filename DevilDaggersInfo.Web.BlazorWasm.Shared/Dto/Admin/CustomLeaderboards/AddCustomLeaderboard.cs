@@ -20,4 +20,6 @@ public class AddCustomLeaderboard
 
 	[Range(1, 1500)]
 	public double TimeLeviathan { get; set; }
+
+	public bool IsFeatured { get; set; }
 }

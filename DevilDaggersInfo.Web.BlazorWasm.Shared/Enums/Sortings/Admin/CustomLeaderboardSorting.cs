@@ -9,7 +9,7 @@ public enum CustomLeaderboardSorting
 	TimeGolden,
 	TimeDevil,
 	TimeLeviathan,
-	IsArchived,
+	IsFeatured,
 	DateCreated,
 	Category,
 }

@@ -10,7 +10,7 @@ public class GetCustomLeaderboardOverview
 
 	public GetCustomLeaderboardDaggers? Daggers { get; init; }
 
-	public bool IsArchived { get; init; }
+	public bool IsFeatured { get; init; }
 
 	public DateTime? DateLastPlayed { get; init; }
 

@@ -22,8 +22,8 @@ public static class CustomLeaderboardConverters
 		Id = customLeaderboard.Id,
 		SpawnsetAuthorName = customLeaderboard.Spawnset.Player.PlayerName,
 		SpawnsetName = customLeaderboard.Spawnset.Name,
-		IsArchived = customLeaderboard.IsArchived,
 		Daggers = ToGetCustomLeaderboardDaggers(customLeaderboard),
+		IsFeatured = customLeaderboard.IsFeatured,
 		DateCreated = customLeaderboard.DateCreated,
 		DateLastPlayed = customLeaderboard.DateLastPlayed,
 		SubmitCount = customLeaderboard.TotalRunsSubmitted,
@@ -66,7 +66,7 @@ public static class CustomLeaderboardConverters
 		DateCreated = customLeaderboard.DateCreated,
 		SubmitCount = customLeaderboard.TotalRunsSubmitted,
 		Category = customLeaderboard.Category,
-		IsArchived = customLeaderboard.IsArchived,
+		IsFeatured = customLeaderboard.IsFeatured,
 		DateLastPlayed = customLeaderboard.DateLastPlayed,
 		CustomEntries = customLeaderboard.CustomEntries?
 			.OrderBy(ce => ce.Time, customLeaderboard.Category.IsAscending())
@@ -75,7 +75,6 @@ public static class CustomLeaderboardConverters
 			.ToList() ?? new(),
 	};
 
-	private static int? NullIfArchived(this int time, bool isArchived) => isArchived ? null : time;
 	private static GetCustomLeaderboardDaggers? ToGetCustomLeaderboardDaggers(CustomLeaderboardEntity customLeaderboard) => !customLeaderboard.IsFeatured ? null : new()
 	{
 		Bronze = customLeaderboard.TimeBronze.ToSecondsTime(),
@@ -85,6 +84,7 @@ public static class CustomLeaderboardConverters
 		Leviathan = customLeaderboard.TimeLeviathan.ToSecondsTime(),
 	};
 
+	private static int? NullIfArchived(this int time, bool isFeatured) => isFeatured ? time : null;
 
-	private static int ZeroIfArchived(this int time, bool isArchived) => isArchived ? 0 : time;
+	private static int ZeroIfArchived(this int time, bool isFeatured) => isFeatured ? time : 0;
 }

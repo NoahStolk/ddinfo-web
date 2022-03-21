@@ -13,7 +13,7 @@ public static class CustomLeaderboardConverters
 		TimeGolden = customLeaderboard.TimeGolden.ToSecondsTime(),
 		TimeDevil = customLeaderboard.TimeDevil.ToSecondsTime(),
 		TimeLeviathan = customLeaderboard.TimeLeviathan.ToSecondsTime(),
-		IsArchived = customLeaderboard.IsArchived,
+		IsFeatured = customLeaderboard.IsFeatured,
 		DateCreated = customLeaderboard.DateCreated,
 		Category = customLeaderboard.Category,
 	};
@@ -27,7 +27,7 @@ public static class CustomLeaderboardConverters
 		TimeGolden = customLeaderboard.TimeGolden.ToSecondsTime(),
 		TimeDevil = customLeaderboard.TimeDevil.ToSecondsTime(),
 		TimeLeviathan = customLeaderboard.TimeLeviathan.ToSecondsTime(),
-		IsArchived = customLeaderboard.IsArchived,
+		IsFeatured = customLeaderboard.IsFeatured,
 		Category = customLeaderboard.Category,
 	};
 }

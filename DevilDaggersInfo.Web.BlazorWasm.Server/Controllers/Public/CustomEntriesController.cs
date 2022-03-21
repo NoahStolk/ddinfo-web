@@ -93,15 +93,15 @@ public class CustomEntriesController : ControllerBase
 				ce.CustomLeaderboard.TimeGolden,
 				ce.CustomLeaderboard.TimeSilver,
 				ce.CustomLeaderboard.TimeBronze,
-				ce.CustomLeaderboard.IsArchived,
+				ce.CustomLeaderboard.IsFeatured,
 			})
-			.Where(ce => !ce.IsArchived)
+			.Where(ce => ce.IsFeatured)
 			.ToListAsync();
 
 		Dictionary<CustomLeaderboardCategory, int> customLeaderboardsByCategory = await _dbContext.CustomLeaderboards
 			.AsNoTracking()
-			.Select(cl => new { cl.Category, cl.IsArchived })
-			.Where(cl => !cl.IsArchived)
+			.Select(cl => new { cl.Category, cl.IsFeatured })
+			.Where(cl => cl.IsFeatured)
 			.GroupBy(cl => cl.Category)
 			.ToDictionaryAsync(g => g.Key, g => g.Count());
 

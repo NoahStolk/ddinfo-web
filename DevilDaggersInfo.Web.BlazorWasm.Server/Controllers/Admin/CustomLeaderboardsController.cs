@@ -38,7 +38,7 @@ public class CustomLeaderboardsController : ControllerBase
 		{
 			CustomLeaderboardSorting.Category => customLeaderboardsQuery.OrderBy(cl => cl.Category, ascending).ThenBy(cl => cl.Id),
 			CustomLeaderboardSorting.DateCreated => customLeaderboardsQuery.OrderBy(cl => cl.DateCreated, ascending).ThenBy(cl => cl.Id),
-			CustomLeaderboardSorting.IsArchived => customLeaderboardsQuery.OrderBy(cl => cl.IsArchived, ascending).ThenBy(cl => cl.Id),
+			CustomLeaderboardSorting.IsFeatured => customLeaderboardsQuery.OrderBy(cl => cl.IsFeatured, ascending).ThenBy(cl => cl.Id),
 			CustomLeaderboardSorting.SpawnsetName => customLeaderboardsQuery.OrderBy(cl => cl.Spawnset.Name, ascending).ThenBy(cl => cl.Id),
 			CustomLeaderboardSorting.TimeBronze => customLeaderboardsQuery.OrderBy(cl => cl.TimeBronze, ascending).ThenBy(cl => cl.Id),
 			CustomLeaderboardSorting.TimeSilver => customLeaderboardsQuery.OrderBy(cl => cl.TimeSilver, ascending).ThenBy(cl => cl.Id),
@@ -104,6 +104,7 @@ public class CustomLeaderboardsController : ControllerBase
 			TimeGolden = addCustomLeaderboard.TimeGolden.To10thMilliTime(),
 			TimeDevil = addCustomLeaderboard.TimeDevil.To10thMilliTime(),
 			TimeLeviathan = addCustomLeaderboard.TimeLeviathan.To10thMilliTime(),
+			IsFeatured = addCustomLeaderboard.IsFeatured,
 		};
 		_dbContext.CustomLeaderboards.Add(customLeaderboard);
 		await _dbContext.SaveChangesAsync();
@@ -140,7 +141,7 @@ public class CustomLeaderboardsController : ControllerBase
 			TimeGolden = customLeaderboard.TimeGolden.ToSecondsTime(),
 			TimeDevil = customLeaderboard.TimeDevil.ToSecondsTime(),
 			TimeLeviathan = customLeaderboard.TimeLeviathan.ToSecondsTime(),
-			IsArchived = customLeaderboard.IsArchived,
+			IsFeatured = customLeaderboard.IsFeatured,
 		};
 
 		customLeaderboard.Category = editCustomLeaderboard.Category;
@@ -149,7 +150,7 @@ public class CustomLeaderboardsController : ControllerBase
 		customLeaderboard.TimeGolden = editCustomLeaderboard.TimeGolden.To10thMilliTime();
 		customLeaderboard.TimeDevil = editCustomLeaderboard.TimeDevil.To10thMilliTime();
 		customLeaderboard.TimeLeviathan = editCustomLeaderboard.TimeLeviathan.To10thMilliTime();
-		customLeaderboard.IsArchived = editCustomLeaderboard.IsArchived;
+		customLeaderboard.IsFeatured = editCustomLeaderboard.IsFeatured;
 		await _dbContext.SaveChangesAsync();
 
 		_auditLogger.LogEdit(logDto.GetLog(), editCustomLeaderboard.GetLog(), User, customLeaderboard.Id);

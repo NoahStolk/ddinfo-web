@@ -21,7 +21,7 @@ else
 {
 	<Heading Title="@($"Custom Leaderboard - {GetCustomLeaderboard.SpawnsetName}")" />
 
-	if (GetCustomLeaderboard.IsArchived)
+	if (!GetCustomLeaderboard.IsFeatured)
 	{
 		<p class="text-lg p-1 m-1 bg-dark-red">This leaderboard is not featured. You can submit scores to it, but they won't show up in the player statistics.</p>
 	}
