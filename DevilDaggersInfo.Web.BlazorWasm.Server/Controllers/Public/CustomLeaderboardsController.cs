@@ -57,10 +57,9 @@ public class CustomLeaderboardsController : ControllerBase
 		// Build query.
 		IQueryable<CustomLeaderboardEntity> customLeaderboardsQuery = _dbContext.CustomLeaderboards
 			.AsNoTracking()
-			.Where(cl => !cl.IsArchived)
 			.Include(cl => cl.Spawnset)
 				.ThenInclude(sf => sf.Player)
-			.Where(cl => !cl.IsArchived && category == cl.Category);
+			.Where(cl => category == cl.Category);
 
 		// Casing is ignored by default because of IQueryable.
 		if (!string.IsNullOrWhiteSpace(spawnsetFilter))
@@ -160,10 +159,8 @@ public class CustomLeaderboardsController : ControllerBase
 	{
 		List<CustomLeaderboardEntity> customLeaderboards = _dbContext.CustomLeaderboards
 			.AsNoTracking()
-			.Where(cl => !cl.IsArchived)
 			.Include(cl => cl.Spawnset)
 				.ThenInclude(sf => sf.Player)
-			.Where(cl => !cl.IsArchived)
 			.ToList();
 
 		// Query custom entries for world record and amount of players.
