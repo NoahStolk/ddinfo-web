@@ -67,7 +67,6 @@ public class CustomLeaderboardsController : ControllerBase
 	{
 		CustomLeaderboardEntity? customLeaderboard = _dbContext.CustomLeaderboards
 			.AsNoTracking()
-			.Where(cl => !cl.IsArchived)
 			.Include(cl => cl.Spawnset)
 				.ThenInclude(sf => sf.Player)
 			.FirstOrDefault(cl => cl.Id == id);
