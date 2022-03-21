@@ -104,7 +104,7 @@ else
 
 				foreach (GetCustomEntry ce in GetCustomLeaderboard.CustomEntries)
 				{
-					string daggerCssClass = ce.CustomLeaderboardDagger.ToString().ToLower();
+					string daggerCssClass = ce.CustomLeaderboardDagger.ToCssClass();
 
 					string enemiesKilled = ce.EnemiesKilled.ToString(FormatUtils.LeaderboardIntFormat);
 					string enemiesAlive = GetCustomLeaderboard.Category == CustomLeaderboardCategory.TimeAttack ? "0" : ce.EnemiesAlive.ToString(FormatUtils.LeaderboardIntFormat);
