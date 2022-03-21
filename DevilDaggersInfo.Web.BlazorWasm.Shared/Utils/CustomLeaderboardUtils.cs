@@ -4,6 +4,7 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
 
 public static class CustomLeaderboardUtils
 {
+	// TODO: Add unit tests.
 	public static CustomLeaderboardDagger GetDaggerFromTime(CustomLeaderboardCategory category, int time, int leviathan, int devil, int golden, int silver, int bronze)
 	{
 		if (category.IsAscending())

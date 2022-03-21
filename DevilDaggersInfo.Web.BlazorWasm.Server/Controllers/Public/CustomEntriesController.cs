@@ -77,9 +77,9 @@ public class CustomEntriesController : ControllerBase
 
 	[HttpGet("player-stats")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	public ActionResult<List<GetCustomLeaderboardStatisticsForPlayer>> GetCustomLeaderboardStatisticsByPlayerId([Required] int playerId)
+	public async Task<ActionResult<List<GetCustomLeaderboardStatisticsForPlayer>>> GetCustomLeaderboardStatisticsByPlayerId([Required] int playerId)
 	{
-		var customEntries = _dbContext.CustomEntries
+		var customEntries = await _dbContext.CustomEntries
 			.AsNoTracking()
 			.Include(ce => ce.CustomLeaderboard)
 			.Where(cl => cl.PlayerId == playerId)
@@ -94,7 +94,7 @@ public class CustomEntriesController : ControllerBase
 				ce.CustomLeaderboard.TimeSilver,
 				ce.CustomLeaderboard.TimeBronze,
 			})
-			.ToList();
+			.ToListAsync();
 
 		List<GetCustomLeaderboardStatisticsForPlayer> stats = new();
 		foreach (CustomLeaderboardCategory category in Enum.GetValues<CustomLeaderboardCategory>())
