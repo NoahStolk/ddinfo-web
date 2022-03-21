@@ -105,11 +105,6 @@ public partial class PublicApiHttpClient
 		return await SendGetRequest<GetTotalCustomLeaderboardData>($"api/custom-leaderboards/total-data");
 	}
 
-	public async Task<GetNumberOfCustomLeaderboards> GetNumberOfCustomLeaderboards()
-	{
-		return await SendGetRequest<GetNumberOfCustomLeaderboards>($"api/custom-leaderboards/number-of-custom-leaderboards");
-	}
-
 	public async Task<GetCustomLeaderboard> GetCustomLeaderboardById(int id)
 	{
 		return await SendGetRequest<GetCustomLeaderboard>($"api/custom-leaderboards/{id}");
@@ -261,6 +256,11 @@ public partial class PublicApiHttpClient
 	public async Task<List<GetPlayerForLeaderboard>> GetPlayersForLeaderboard()
 	{
 		return await SendGetRequest<List<GetPlayerForLeaderboard>>($"api/players/leaderboard");
+	}
+
+	public async Task<List<GetCommonName>> GetCommonNames()
+	{
+		return await SendGetRequest<List<GetCommonName>>($"api/players/common-names");
 	}
 
 	public async Task<List<GetPlayerForSettings>> GetPlayersForSettings()
