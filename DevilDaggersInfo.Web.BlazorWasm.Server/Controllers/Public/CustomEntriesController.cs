@@ -103,7 +103,8 @@ public class CustomEntriesController : ControllerBase
 			.Select(cl => new { cl.Category, cl.IsFeatured })
 			.Where(cl => cl.IsFeatured)
 			.GroupBy(cl => cl.Category)
-			.ToDictionaryAsync(g => g.Key, g => g.Count());
+			.Select(g => new { Category = g.Key, Count = g.Count() })
+			.ToDictionaryAsync(a => a.Category, a => a.Count);
 
 		List<GetCustomLeaderboardStatisticsForPlayer> stats = new();
 		foreach (CustomLeaderboardCategory category in Enum.GetValues<CustomLeaderboardCategory>())
