@@ -8,7 +8,7 @@ public class AddCustomLeaderboard
 	[Required]
 	public CustomLeaderboardCategory Category { get; set; }
 
-	public AddCustomLeaderboardDaggers? Daggers { get; set; }
+	public AddCustomLeaderboardDaggers Daggers { get; set; } = new();
 
 	[Required]
 	public bool IsFeatured { get; set; }

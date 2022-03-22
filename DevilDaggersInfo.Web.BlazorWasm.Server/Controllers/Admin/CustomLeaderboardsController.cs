@@ -99,11 +99,11 @@ public class CustomLeaderboardsController : ControllerBase
 			DateCreated = DateTime.UtcNow,
 			SpawnsetId = addCustomLeaderboard.SpawnsetId,
 			Category = addCustomLeaderboard.Category,
-			TimeBronze = addCustomLeaderboard.Daggers?.Bronze.To10thMilliTime() ?? 0,
-			TimeSilver = addCustomLeaderboard.Daggers?.Silver.To10thMilliTime() ?? 0,
-			TimeGolden = addCustomLeaderboard.Daggers?.Golden.To10thMilliTime() ?? 0,
-			TimeDevil = addCustomLeaderboard.Daggers?.Devil.To10thMilliTime() ?? 0,
-			TimeLeviathan = addCustomLeaderboard.Daggers?.Leviathan.To10thMilliTime() ?? 0,
+			TimeBronze = addCustomLeaderboard.Daggers.Bronze.To10thMilliTime(),
+			TimeSilver = addCustomLeaderboard.Daggers.Silver.To10thMilliTime(),
+			TimeGolden = addCustomLeaderboard.Daggers.Golden.To10thMilliTime(),
+			TimeDevil = addCustomLeaderboard.Daggers.Devil.To10thMilliTime(),
+			TimeLeviathan = addCustomLeaderboard.Daggers.Leviathan.To10thMilliTime(),
 			IsFeatured = addCustomLeaderboard.IsFeatured,
 		};
 		_dbContext.CustomLeaderboards.Add(customLeaderboard);
@@ -148,11 +148,11 @@ public class CustomLeaderboardsController : ControllerBase
 		};
 
 		customLeaderboard.Category = editCustomLeaderboard.Category;
-		customLeaderboard.TimeBronze = editCustomLeaderboard.Daggers?.Bronze.To10thMilliTime() ?? 0;
-		customLeaderboard.TimeSilver = editCustomLeaderboard.Daggers?.Silver.To10thMilliTime() ?? 0;
-		customLeaderboard.TimeGolden = editCustomLeaderboard.Daggers?.Golden.To10thMilliTime() ?? 0;
-		customLeaderboard.TimeDevil = editCustomLeaderboard.Daggers?.Devil.To10thMilliTime() ?? 0;
-		customLeaderboard.TimeLeviathan = editCustomLeaderboard.Daggers?.Leviathan.To10thMilliTime() ?? 0;
+		customLeaderboard.TimeBronze = editCustomLeaderboard.Daggers.Bronze.To10thMilliTime();
+		customLeaderboard.TimeSilver = editCustomLeaderboard.Daggers.Silver.To10thMilliTime();
+		customLeaderboard.TimeGolden = editCustomLeaderboard.Daggers.Golden.To10thMilliTime();
+		customLeaderboard.TimeDevil = editCustomLeaderboard.Daggers.Devil.To10thMilliTime();
+		customLeaderboard.TimeLeviathan = editCustomLeaderboard.Daggers.Leviathan.To10thMilliTime();
 
 		customLeaderboard.IsFeatured = editCustomLeaderboard.IsFeatured;
 		await _dbContext.SaveChangesAsync();

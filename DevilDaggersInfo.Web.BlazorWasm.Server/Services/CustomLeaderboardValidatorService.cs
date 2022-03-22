@@ -13,16 +13,21 @@ public class CustomLeaderboardValidatorService
 		_fileSystemService = fileSystemService;
 	}
 
-	public void ValidateCustomLeaderboard(int spawnsetId, CustomLeaderboardCategory category, AddCustomLeaderboardDaggers? customLeaderboardDaggers, bool isFeatured)
+	public void ValidateCustomLeaderboard(int spawnsetId, CustomLeaderboardCategory category, AddCustomLeaderboardDaggers customLeaderboardDaggers, bool isFeatured)
 	{
 		if (!Enum.IsDefined(category))
 			throw new CustomLeaderboardValidationException($"Category '{category}' is not defined.");
 
-		if (isFeatured && customLeaderboardDaggers == null)
-			throw new CustomLeaderboardValidationException("Daggers are required for featured leaderboards.");
-
-		if (customLeaderboardDaggers != null)
+		if (isFeatured)
 		{
+			foreach (double dagger in new double[] { customLeaderboardDaggers.Leviathan, customLeaderboardDaggers.Devil, customLeaderboardDaggers.Golden, customLeaderboardDaggers.Silver, customLeaderboardDaggers.Bronze })
+			{
+				const double min = 1;
+				const double max = 1500;
+				if (dagger < min || dagger > max)
+					throw new CustomLeaderboardValidationException($"All daggers times must be between {min} and {max} for featured leaderboards.");
+			}
+
 			if (category.IsAscending())
 			{
 				if (customLeaderboardDaggers.Leviathan >= customLeaderboardDaggers.Devil)

@@ -6,15 +6,7 @@ public class GetCustomLeaderboard
 
 	public int SpawnsetId { get; init; }
 
-	public double TimeBronze { get; init; }
-
-	public double TimeSilver { get; init; }
-
-	public double TimeGolden { get; init; }
-
-	public double TimeDevil { get; init; }
-
-	public double TimeLeviathan { get; init; }
+	public GetCustomLeaderboardDaggers Daggers { get; init; } = new();
 
 	public bool IsFeatured { get; init; }
 
