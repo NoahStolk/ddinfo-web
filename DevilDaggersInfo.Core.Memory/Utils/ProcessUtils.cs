@@ -5,28 +5,11 @@ public static class ProcessUtils
 	public static Process? GetDevilDaggersProcess(SupportedOs supportedOs)
 	{
 		if (supportedOs == SupportedOs.Linux)
-		{
-			foreach (Process process in Process.GetProcesses())
-			{
-				if (process.ProcessName.StartsWith("devildaggers"))
-					return process;
-			}
+			return Array.Find(Process.GetProcesses(), p => p.ProcessName.StartsWith("devildaggers"));
 
-			return null;
-		}
-		else if (supportedOs == SupportedOs.Windows)
-		{
-			foreach (Process process in Process.GetProcessesByName("dd"))
-			{
-				if (process.MainWindowTitle == "Devil Daggers")
-					return process;
-			}
+		if (supportedOs == SupportedOs.Windows)
+			return Array.Find(Process.GetProcessesByName("dd"), p => p.MainWindowTitle == "Devil Daggers");
 
-			return null;
-		}
-		else
-		{
-			throw new PlatformNotSupportedException();
-		}
+		throw new PlatformNotSupportedException();
 	}
 }
