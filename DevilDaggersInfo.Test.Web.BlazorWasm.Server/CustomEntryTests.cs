@@ -69,8 +69,25 @@ public class CustomEntryTests
 		else
 			Assert.Fail("Spawnset could not be parsed.");
 
-		_fakeReplay = new byte[spawnsetFileContents.Length + 88];
-		Buffer.BlockCopy(spawnsetFileContents, 0, _fakeReplay, 88, spawnsetFileContents.Length);
+		_fakeReplay = BuildFakeReplay(spawnsetFileContents);
+	}
+
+	private static byte[] BuildFakeReplay(byte[] spawnsetFileContents)
+	{
+		const string name = "user";
+
+		using MemoryStream ms = new();
+		using BinaryWriter bw = new(ms);
+		bw.Seek(50, SeekOrigin.Begin);
+		bw.Write(name.Length);
+		for (int i = 0; i < name.Length; i++)
+			bw.Write((byte)name[i]);
+
+		bw.Seek(26, SeekOrigin.Current);
+		bw.Write(spawnsetFileContents.Length);
+		bw.Write(spawnsetFileContents);
+
+		return ms.ToArray();
 	}
 
 	[TestMethod]

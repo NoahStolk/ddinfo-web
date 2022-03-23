@@ -77,29 +77,7 @@ public class CustomEntryProcessor
 		if (string.IsNullOrEmpty(spawnsetName))
 			throw LogAndCreateValidationException(uploadRequest, "This spawnset doesn't exist on DevilDaggers.info.");
 
-		// Validate replay buffer.
-		if (uploadRequest.ReplayData == null)
-			throw LogAndCreateValidationException(uploadRequest, "Replay data is required.");
-
-		const int spawnsetOffsetInReplay = 88;
-		if (uploadRequest.ReplayData.Length < spawnsetOffsetInReplay)
-			throw LogAndCreateValidationException(uploadRequest, $"Invalid replay (length {uploadRequest.ReplayData.Length}).");
-
-		// Validate replay buffer spawnset hash in case of replay.
-		if (uploadRequest.IsReplay)
-		{
-			int replaySpawnsetLength = BitConverter.ToInt32(uploadRequest.ReplayData, spawnsetOffsetInReplay - sizeof(int));
-			if (replaySpawnsetLength < 0 || replaySpawnsetLength > SpawnsetConstants.MaxFileSize)
-				throw LogAndCreateValidationException(uploadRequest, $"Invalid replay spawnset size ({replaySpawnsetLength} / {SpawnsetConstants.MaxFileSize}).");
-			if (uploadRequest.ReplayData.Length < spawnsetOffsetInReplay + replaySpawnsetLength)
-				throw LogAndCreateValidationException(uploadRequest, $"Replay spawnset size out of bounds ({replaySpawnsetLength} / {uploadRequest.ReplayData.Length}).");
-
-			byte[] replaySpawnset = new byte[replaySpawnsetLength];
-			Buffer.BlockCopy(uploadRequest.ReplayData, spawnsetOffsetInReplay, replaySpawnset, 0, replaySpawnsetLength);
-
-			if (!ArrayUtils.AreEqual(MD5.HashData(replaySpawnset), uploadRequest.SurvivalHashMd5))
-				throw LogAndCreateValidationException(uploadRequest, "Spawnset in replay does not match detected spawnset.", spawnsetName, "rotating_light");
-		}
+		ValidateReplayBuffer(uploadRequest, spawnsetName);
 
 		// Perform database operations from now on.
 
@@ -164,6 +142,28 @@ public class CustomEntryProcessor
 			return await ProcessNoHighscoreAsync(uploadRequest, customLeaderboard, entries, spawnsetName);
 
 		return await ProcessHighscoreAsync(uploadRequest, customLeaderboard, entries, spawnsetName, isAscending, rank, totalPlayers, customEntry);
+	}
+
+	private void ValidateReplayBuffer(AddUploadRequest uploadRequest, string spawnsetName)
+	{
+		// TODO: Check might be unnecessary.
+		if (uploadRequest.ReplayData == null)
+			throw LogAndCreateValidationException(uploadRequest, "Replay data is required.");
+
+		using MemoryStream ms = new(uploadRequest.ReplayData);
+		using BinaryReader br = new(ms);
+		br.BaseStream.Seek(50, SeekOrigin.Begin);
+		int usernameLength = br.ReadInt32();
+		br.BaseStream.Seek(usernameLength + 26, SeekOrigin.Current);
+
+		// Validate replay buffer spawnset hash.
+		int spawnsetLength = br.ReadInt32();
+		if (spawnsetLength < 0 || spawnsetLength > SpawnsetConstants.MaxFileSize)
+			throw LogAndCreateValidationException(uploadRequest, $"Invalid replay spawnset size ({spawnsetLength} / {SpawnsetConstants.MaxFileSize}).");
+
+		byte[] replaySpawnset = br.ReadBytes(spawnsetLength);
+		if (!ArrayUtils.AreEqual(MD5.HashData(replaySpawnset), uploadRequest.SurvivalHashMd5))
+			throw LogAndCreateValidationException(uploadRequest, "Spawnset in replay does not match detected spawnset.", spawnsetName, "rotating_light");
 	}
 
 	private async Task<GetUploadSuccess> ProcessNewScoreAsync(AddUploadRequest uploadRequest, CustomLeaderboardEntity customLeaderboard, int rank, bool isAscending, string spawnsetName)
