@@ -32,9 +32,6 @@ public class CustomLeaderboardEntity
 
 	public int TotalRunsSubmitted { get; set; }
 
-	[Obsolete("Use IsFeatured instead.")]
-	public bool IsArchived { get; set; }
-
 	public bool IsFeatured { get; set; }
 
 	public List<CustomEntryEntity>? CustomEntries { get; set; }
