@@ -124,21 +124,22 @@ public class CustomEntryProcessor
 
 		// Calculate the new rank.
 		List<CustomEntryEntity> entries = await FetchEntriesFromDatabaseAsync(customLeaderboard, isAscending);
-		int rank = isAscending ? entries.Count(e => e.Time <= uploadRequest.Time) + 1 : entries.Count(e => e.Time >= uploadRequest.Time) + 1;
+		int rank = isAscending ? entries.Count(e => e.Time <= uploadRequest.GetTime()) + 1 : entries.Count(e => e.Time >= uploadRequest.GetTime()) + 1;
 		int totalPlayers = entries.Count;
 
 		CustomEntryEntity? customEntry = entries.Find(e => e.PlayerId == uploadRequest.PlayerId);
 		if (customEntry == null)
 			return await ProcessNewScoreAsync(uploadRequest, customLeaderboard, rank, isAscending, spawnsetName);
 
-		if (uploadRequest.IsReplay && uploadRequest.Time > customEntry.Time - 1000 && uploadRequest.Time < customEntry.Time + 1000 && await IsReplayFileTheSame(customEntry.Id, uploadRequest.ReplayData))
+		if (uploadRequest.IsReplay && uploadRequest.GetTime() > customEntry.Time - 1000 && uploadRequest.GetTime() < customEntry.Time + 1000 && await IsReplayFileTheSame(customEntry.Id, uploadRequest.ReplayData))
 		{
-			_logger.LogWarning("Score submission replay time was modified because of identical replay (database: {originalTime} - request: {replayTime}).", FormatTimeString(customEntry.Time), FormatTimeString(uploadRequest.Time));
+			_logger.LogWarning("Score submission replay time was modified because of identical replay (database: {originalTime} - request: {replayTime}).", FormatTimeString(customEntry.Time), FormatTimeString(uploadRequest.GetTime()));
 			uploadRequest.Time = customEntry.Time;
+			uploadRequest.TimeInSeconds = customEntry.Time.ToSecondsTime();
 		}
 
 		// User is already on the leaderboard, but did not get a better score.
-		if (isAscending && customEntry.Time <= uploadRequest.Time || !isAscending && customEntry.Time >= uploadRequest.Time)
+		if (isAscending && customEntry.Time <= uploadRequest.GetTime() || !isAscending && customEntry.Time >= uploadRequest.GetTime())
 			return await ProcessNoHighscoreAsync(uploadRequest, customLeaderboard, entries, spawnsetName);
 
 		return await ProcessHighscoreAsync(uploadRequest, customLeaderboard, entries, spawnsetName, isAscending, rank, totalPlayers, customEntry);
@@ -172,7 +173,7 @@ public class CustomEntryProcessor
 		CustomEntryEntity newCustomEntry = new()
 		{
 			PlayerId = uploadRequest.PlayerId,
-			Time = uploadRequest.Time,
+			Time = uploadRequest.GetTime(),
 			GemsCollected = uploadRequest.GemsCollected,
 			GemsDespawned = uploadRequest.GemsDespawned,
 			GemsEaten = uploadRequest.GemsEaten,
@@ -184,9 +185,9 @@ public class CustomEntryProcessor
 			EnemiesAlive = uploadRequest.EnemiesAlive,
 			HomingStored = uploadRequest.HomingDaggers,
 			HomingEaten = uploadRequest.HomingDaggersEaten,
-			LevelUpTime2 = uploadRequest.LevelUpTime2,
-			LevelUpTime3 = uploadRequest.LevelUpTime3,
-			LevelUpTime4 = uploadRequest.LevelUpTime4,
+			LevelUpTime2 = uploadRequest.GetLevelUpTime2(),
+			LevelUpTime3 = uploadRequest.GetLevelUpTime3(),
+			LevelUpTime4 = uploadRequest.GetLevelUpTime4(),
 			SubmitDate = DateTime.UtcNow,
 			ClientVersion = uploadRequest.ClientVersion,
 			Client = uploadRequest.Client.GetClientFromString(),
@@ -208,11 +209,11 @@ public class CustomEntryProcessor
 		List<CustomEntryEntity> entries = await FetchEntriesFromDatabaseAsync(customLeaderboard, isAscending);
 		int totalPlayers = entries.Count;
 
-		await TrySendLeaderboardMessage(customLeaderboard, $"`{uploadRequest.PlayerName}` just entered the `{spawnsetName}` leaderboard!", rank, totalPlayers, uploadRequest.Time);
+		await TrySendLeaderboardMessage(customLeaderboard, $"`{uploadRequest.PlayerName}` just entered the `{spawnsetName}` leaderboard!", rank, totalPlayers, newCustomEntry.Time);
 		Log(uploadRequest, spawnsetName);
 
 		List<int> replayIds = GetExistingReplayIds(customLeaderboard);
-		return new GetUploadSuccess
+		return new()
 		{
 			Message = $"Welcome to the {spawnsetName} leaderboard!",
 			TotalPlayers = totalPlayers,
@@ -221,6 +222,20 @@ public class CustomEntryProcessor
 			Entries = entries.ConvertAll(e => e.ToGetCustomEntryDdcl(replayIds.Contains(e.Id))),
 			IsNewPlayerOnThisLeaderboard = true,
 			IsHighscore = true,
+			RankState = new(rank),
+			TimeState = new(newCustomEntry.Time.ToSecondsTime()),
+			EnemiesKilledState = new(newCustomEntry.EnemiesKilled),
+			GemsCollectedState = new(newCustomEntry.GemsCollected),
+			GemsDespawnedState = new(newCustomEntry.GemsDespawned),
+			GemsEatenState = new(newCustomEntry.GemsEaten),
+			DaggersHitState = new(newCustomEntry.DaggersHit),
+			DaggersFiredState = new(newCustomEntry.DaggersFired),
+			EnemiesAliveState = new(newCustomEntry.EnemiesAlive),
+			HomingStoredState = new(newCustomEntry.HomingStored),
+			HomingEatenState = new(newCustomEntry.HomingEaten),
+			LevelUpTime2State = new(newCustomEntry.LevelUpTime2.ToSecondsTime()),
+			LevelUpTime3State = new(newCustomEntry.LevelUpTime3.ToSecondsTime()),
+			LevelUpTime4State = new(newCustomEntry.LevelUpTime4.ToSecondsTime()),
 			Rank = rank,
 			Time = uploadRequest.Time,
 			EnemiesKilled = uploadRequest.EnemiesKilled,
@@ -275,23 +290,23 @@ public class CustomEntryProcessor
 		int oldRank = isAscending ? entries.Count(e => e.Time < customEntry.Time) + 1 : entries.Count(e => e.Time > customEntry.Time) + 1;
 
 		int rankDiff = oldRank - rank;
-		int timeDiff = uploadRequest.Time - customEntry.Time;
+		int timeDiff = uploadRequest.GetTime() - customEntry.Time;
 		int gemsCollectedDiff = uploadRequest.GemsCollected - customEntry.GemsCollected;
 		int enemiesKilledDiff = uploadRequest.EnemiesKilled - customEntry.EnemiesKilled;
 		int daggersFiredDiff = uploadRequest.DaggersFired - customEntry.DaggersFired;
 		int daggersHitDiff = uploadRequest.DaggersHit - customEntry.DaggersHit;
 		int enemiesAliveDiff = uploadRequest.EnemiesAlive - customEntry.EnemiesAlive;
-		int homingDaggersDiff = uploadRequest.HomingDaggers - customEntry.HomingStored;
-		int homingDaggersEatenDiff = uploadRequest.HomingDaggersEaten - customEntry.HomingEaten;
+		int homingStoredDiff = uploadRequest.HomingDaggers - customEntry.HomingStored;
+		int homingEatenDiff = uploadRequest.HomingDaggersEaten - customEntry.HomingEaten;
 		int gemsDespawnedDiff = uploadRequest.GemsDespawned - customEntry.GemsDespawned;
 		int gemsEatenDiff = uploadRequest.GemsEaten - customEntry.GemsEaten;
 		int gemsTotalDiff = uploadRequest.GemsTotal - customEntry.GemsTotal;
-		int levelUpTime2Diff = uploadRequest.LevelUpTime2 - customEntry.LevelUpTime2;
-		int levelUpTime3Diff = uploadRequest.LevelUpTime3 - customEntry.LevelUpTime3;
-		int levelUpTime4Diff = uploadRequest.LevelUpTime4 - customEntry.LevelUpTime4;
+		int levelUpTime2Diff = uploadRequest.GetLevelUpTime2() - customEntry.LevelUpTime2;
+		int levelUpTime3Diff = uploadRequest.GetLevelUpTime3() - customEntry.LevelUpTime3;
+		int levelUpTime4Diff = uploadRequest.GetLevelUpTime4() - customEntry.LevelUpTime4;
 
 		// Update the entry.
-		customEntry.Time = uploadRequest.Time;
+		customEntry.Time = uploadRequest.GetTime();
 		customEntry.EnemiesKilled = uploadRequest.EnemiesKilled;
 		customEntry.GemsCollected = uploadRequest.GemsCollected;
 		customEntry.DaggersFired = uploadRequest.DaggersFired;
@@ -303,9 +318,9 @@ public class CustomEntryProcessor
 		customEntry.GemsEaten = uploadRequest.GemsEaten;
 		customEntry.GemsTotal = uploadRequest.GemsTotal;
 		customEntry.DeathType = uploadRequest.DeathType;
-		customEntry.LevelUpTime2 = uploadRequest.LevelUpTime2;
-		customEntry.LevelUpTime3 = uploadRequest.LevelUpTime3;
-		customEntry.LevelUpTime4 = uploadRequest.LevelUpTime4;
+		customEntry.LevelUpTime2 = uploadRequest.GetLevelUpTime2();
+		customEntry.LevelUpTime3 = uploadRequest.GetLevelUpTime3();
+		customEntry.LevelUpTime4 = uploadRequest.GetLevelUpTime4();
 		customEntry.SubmitDate = DateTime.UtcNow;
 		customEntry.ClientVersion = uploadRequest.ClientVersion;
 		customEntry.Client = uploadRequest.Client.GetClientFromString();
@@ -345,6 +360,20 @@ public class CustomEntryProcessor
 			Entries = entries.ConvertAll(e => e.ToGetCustomEntryDdcl(replayIds.Contains(e.Id))),
 			IsNewPlayerOnThisLeaderboard = false,
 			IsHighscore = true,
+			RankState = new(rank, rankDiff),
+			TimeState = new(customEntry.Time.ToSecondsTime(), timeDiff.ToSecondsTime()),
+			EnemiesKilledState = new(customEntry.EnemiesKilled, enemiesKilledDiff),
+			GemsCollectedState = new(customEntry.GemsCollected, gemsCollectedDiff),
+			GemsDespawnedState = new(customEntry.GemsDespawned, gemsDespawnedDiff),
+			GemsEatenState = new(customEntry.GemsEaten, gemsEatenDiff),
+			DaggersHitState = new(customEntry.DaggersHit, daggersHitDiff),
+			DaggersFiredState = new(customEntry.DaggersFired, daggersFiredDiff),
+			EnemiesAliveState = new(customEntry.EnemiesAlive, enemiesAliveDiff),
+			HomingStoredState = new(customEntry.HomingStored, homingStoredDiff),
+			HomingEatenState = new(customEntry.HomingEaten, homingEatenDiff),
+			LevelUpTime2State = new(customEntry.LevelUpTime2.ToSecondsTime(), levelUpTime2Diff.ToSecondsTime()),
+			LevelUpTime3State = new(customEntry.LevelUpTime3.ToSecondsTime(), levelUpTime3Diff.ToSecondsTime()),
+			LevelUpTime4State = new(customEntry.LevelUpTime4.ToSecondsTime(), levelUpTime4Diff.ToSecondsTime()),
 			Rank = rank,
 			RankDiff = rankDiff,
 			Time = uploadRequest.Time,
@@ -360,9 +389,9 @@ public class CustomEntryProcessor
 			EnemiesAlive = uploadRequest.EnemiesAlive,
 			EnemiesAliveDiff = enemiesAliveDiff,
 			HomingDaggers = uploadRequest.HomingDaggers,
-			HomingDaggersDiff = homingDaggersDiff,
+			HomingDaggersDiff = homingStoredDiff,
 			HomingDaggersEaten = uploadRequest.HomingDaggersEaten,
-			HomingDaggersEatenDiff = homingDaggersEatenDiff,
+			HomingDaggersEatenDiff = homingEatenDiff,
 			GemsDespawned = uploadRequest.GemsDespawned,
 			GemsDespawnedDiff = gemsDespawnedDiff,
 			GemsEaten = uploadRequest.GemsEaten,
@@ -475,7 +504,7 @@ public class CustomEntryProcessor
 		if (!string.IsNullOrEmpty(errorMessage))
 			_logContainerService.AddClLog(false, $":{errorEmoteNameOverride ?? "warning"}: `{TimeUtils.TicksToTimeString(_stopwatch.ElapsedTicks)}` Upload failed for user `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`. {requestInfo}\n**{errorMessage}**");
 		else
-			_logContainerService.AddClLog(true, $":white_check_mark: `{TimeUtils.TicksToTimeString(_stopwatch.ElapsedTicks)}` `{uploadRequest.PlayerName}` just submitted a score of `{FormatTimeString(uploadRequest.Time)}` to `{spawnsetIdentification}`. {requestInfo}");
+			_logContainerService.AddClLog(true, $":white_check_mark: `{TimeUtils.TicksToTimeString(_stopwatch.ElapsedTicks)}` `{uploadRequest.PlayerName}` just submitted a score of `{FormatTimeString(uploadRequest.GetTime())}` to `{spawnsetIdentification}`. {requestInfo}");
 	}
 
 	private List<int> GetExistingReplayIds(CustomLeaderboardEntity customLeaderboard)
