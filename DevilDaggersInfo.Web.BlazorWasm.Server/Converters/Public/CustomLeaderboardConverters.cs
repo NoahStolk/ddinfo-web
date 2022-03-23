@@ -40,11 +40,6 @@ public static class CustomLeaderboardConverters
 		SpawnsetAuthorId = customLeaderboard.Spawnset.PlayerId,
 		SpawnsetAuthorName = customLeaderboard.Spawnset.Player.PlayerName,
 		Daggers = ToGetCustomLeaderboardDaggers(customLeaderboard),
-		TimeBronze = customLeaderboard.TimeBronze.NullIfArchived(customLeaderboard.IsFeatured).ToSecondsTime(),
-		TimeSilver = customLeaderboard.TimeSilver.NullIfArchived(customLeaderboard.IsFeatured).ToSecondsTime(),
-		TimeGolden = customLeaderboard.TimeGolden.NullIfArchived(customLeaderboard.IsFeatured).ToSecondsTime(),
-		TimeDevil = customLeaderboard.TimeDevil.NullIfArchived(customLeaderboard.IsFeatured).ToSecondsTime(),
-		TimeLeviathan = customLeaderboard.TimeLeviathan.NullIfArchived(customLeaderboard.IsFeatured).ToSecondsTime(),
 		DateCreated = customLeaderboard.DateCreated,
 		DateLastPlayed = customLeaderboard.DateLastPlayed,
 		SubmitCount = customLeaderboard.TotalRunsSubmitted,
@@ -83,8 +78,6 @@ public static class CustomLeaderboardConverters
 		Devil = customLeaderboard.TimeDevil.ToSecondsTime(),
 		Leviathan = customLeaderboard.TimeLeviathan.ToSecondsTime(),
 	};
-
-	private static int? NullIfArchived(this int time, bool isFeatured) => isFeatured ? time : null;
 
 	private static int ZeroIfArchived(this int time, bool isFeatured) => isFeatured ? time : 0;
 }
