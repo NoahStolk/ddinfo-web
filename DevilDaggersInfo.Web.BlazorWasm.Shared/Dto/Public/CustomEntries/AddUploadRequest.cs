@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
 
-public class AddUploadRequest
+public record AddUploadRequest
 {
 	[MaxLength(16)]
 	[MinLength(16)]

@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Core.Encryption;
+using DevilDaggersInfo.Core.Extensions;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHashes;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Enums;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Exceptions;
@@ -65,7 +66,7 @@ public class CustomEntryProcessorTests
 
 		byte[] spawnsetFileContents = File.ReadAllBytes(Path.Combine(spawnsetsPath, "V3"));
 		if (SpawnsetBinary.TryParse(spawnsetFileContents, out SpawnsetBinary? spawnsetBinary))
-			_v3Hash = GetSpawnsetHash(spawnsetBinary);
+			_v3Hash = MD5.HashData(spawnsetBinary.ToBytes());
 		else
 			Assert.Fail("Spawnset could not be parsed.");
 
@@ -90,27 +91,31 @@ public class CustomEntryProcessorTests
 		return ms.ToArray();
 	}
 
-	[TestMethod]
-	public async Task ProcessUploadRequest_ExistingPlayer_ExistingEntry_NoHighscore()
+	private AddUploadRequest CreateUploadRequest(double time, int playerId, int status, string clientVersion)
 	{
 		AddUploadRequest uploadRequest = new()
 		{
-			Time = 100000,
-			PlayerId = 1,
-			ClientVersion = TestConstants.DdclVersion,
+			Time = time.To10thMilliTime(),
+			PlayerId = playerId,
+			ClientVersion = clientVersion,
 			SurvivalHashMd5 = _v3Hash,
-			PlayerName = "TestPlayer1",
+			PlayerName = $"TestPlayer{playerId}",
 			Client = "DevilDaggersCustomLeaderboards",
-			Status = 3,
+			Status = status,
 			ReplayData = _fakeReplay,
 			GameData = new(),
 		};
-		uploadRequest.Validation = GetValidation(uploadRequest);
+		uploadRequest.Validation = HttpUtility.HtmlEncode(_encryptionWrapper.EncryptAndEncode(uploadRequest.CreateValidation()));
+		return uploadRequest;
+	}
 
-		GetUploadSuccess? uploadSuccess = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
+	[TestMethod]
+	public async Task ProcessUploadRequest_ExistingPlayer_ExistingEntry_NoHighscore()
+	{
+		AddUploadRequest uploadRequest = CreateUploadRequest(10, 1, 3, TestConstants.DdclVersion);
+		GetUploadSuccess uploadSuccess = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
 
 		_dbContext.Verify(db => db.SaveChangesAsync(default), Times.AtLeastOnce);
-		Assert.IsNotNull(uploadSuccess);
 		Assert.AreEqual(1, uploadSuccess.TotalPlayers);
 		Assert.IsTrue(uploadSuccess.Message.StartsWith("No new highscore"));
 	}
@@ -118,24 +123,10 @@ public class CustomEntryProcessorTests
 	[TestMethod]
 	public async Task ProcessUploadRequest_ExistingPlayer_ExistingEntry_NewHighscore()
 	{
-		AddUploadRequest uploadRequest = new()
-		{
-			Time = 200000,
-			PlayerId = 1,
-			ClientVersion = TestConstants.DdclVersion,
-			SurvivalHashMd5 = _v3Hash,
-			PlayerName = "TestPlayer1",
-			Client = "DevilDaggersCustomLeaderboards",
-			Status = 4,
-			ReplayData = _fakeReplay,
-			GameData = new(),
-		};
-		uploadRequest.Validation = GetValidation(uploadRequest);
-
-		GetUploadSuccess? uploadSuccess = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
+		AddUploadRequest uploadRequest = CreateUploadRequest(20, 1, 4, TestConstants.DdclVersion);
+		GetUploadSuccess uploadSuccess = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
 
 		_dbContext.Verify(db => db.SaveChangesAsync(default), Times.AtLeastOnce);
-		Assert.IsNotNull(uploadSuccess);
 		Assert.AreEqual(1, uploadSuccess.TotalPlayers);
 		Assert.IsTrue(uploadSuccess.Message.StartsWith("NEW HIGHSCORE"));
 	}
@@ -143,51 +134,23 @@ public class CustomEntryProcessorTests
 	[TestMethod]
 	public async Task ProcessUploadRequest_ExistingPlayer_NewEntry()
 	{
-		AddUploadRequest uploadRequest = new()
-		{
-			Time = 200000,
-			PlayerId = 2,
-			ClientVersion = TestConstants.DdclVersion,
-			SurvivalHashMd5 = _v3Hash,
-			PlayerName = "TestPlayer2",
-			Client = "DevilDaggersCustomLeaderboards",
-			Status = 5,
-			ReplayData = _fakeReplay,
-			GameData = new(),
-		};
-		uploadRequest.Validation = GetValidation(uploadRequest);
-
-		GetUploadSuccess? uploadSuccess = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
+		AddUploadRequest uploadRequest = CreateUploadRequest(20, 2, 5, TestConstants.DdclVersion);
+		GetUploadSuccess uploadSuccess = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
 
 		_dbContext.Verify(db => db.CustomEntries.AddAsync(It.Is<CustomEntryEntity>(ce => ce.PlayerId == 2 && ce.Time == 200000), default), Times.Once);
 		_dbContext.Verify(db => db.SaveChangesAsync(default), Times.AtLeastOnce);
-		Assert.IsNotNull(uploadSuccess);
 		Assert.IsTrue(uploadSuccess.Message.StartsWith("Welcome"));
 	}
 
 	[TestMethod]
 	public async Task ProcessUploadRequest_NewPlayer()
 	{
-		AddUploadRequest uploadRequest = new()
-		{
-			Time = 300000,
-			PlayerId = 3,
-			ClientVersion = TestConstants.DdclVersion,
-			SurvivalHashMd5 = _v3Hash,
-			PlayerName = "TestPlayer3",
-			Client = "DevilDaggersCustomLeaderboards",
-			Status = 3,
-			ReplayData = _fakeReplay,
-			GameData = new(),
-		};
-		uploadRequest.Validation = GetValidation(uploadRequest);
-
-		GetUploadSuccess? uploadSuccess = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
+		AddUploadRequest uploadRequest = CreateUploadRequest(30, 3, 3, TestConstants.DdclVersion);
+		GetUploadSuccess uploadSuccess = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
 
 		_dbContext.Verify(db => db.SaveChangesAsync(default), Times.AtLeastOnce);
 		_dbContext.Verify(db => db.Players.AddAsync(It.Is<PlayerEntity>(p => p.Id == 3 && p.PlayerName == "TestPlayer3"), default), Times.Once);
 		_dbContext.Verify(db => db.CustomEntries.AddAsync(It.Is<CustomEntryEntity>(ce => ce.PlayerId == 3 && ce.Time == 300000), default), Times.Once);
-		Assert.IsNotNull(uploadSuccess);
 		Assert.IsTrue(uploadSuccess.Message.StartsWith("Welcome"));
 	}
 
@@ -203,52 +166,17 @@ public class CustomEntryProcessorTests
 	[DataRow(8, false)]
 	public async Task ProcessUploadRequest_InvalidStatus(int status, bool accepted)
 	{
-		AddUploadRequest uploadRequest = new()
-		{
-			Time = 300000,
-			PlayerId = 3,
-			ClientVersion = TestConstants.DdclVersion,
-			SurvivalHashMd5 = _v3Hash,
-			PlayerName = "TestPlayer3",
-			Client = "DevilDaggersCustomLeaderboards",
-			Status = status,
-			ReplayData = _fakeReplay,
-			GameData = new(),
-		};
-		uploadRequest.Validation = GetValidation(uploadRequest);
-
+		AddUploadRequest uploadRequest = CreateUploadRequest(30, 3, status, TestConstants.DdclVersion);
 		if (accepted)
-		{
-			GetUploadSuccess? uploadSuccess = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
-
-			_dbContext.Verify(db => db.SaveChangesAsync(default), Times.AtLeastOnce);
-			_dbContext.Verify(db => db.Players.AddAsync(It.Is<PlayerEntity>(p => p.Id == 3 && p.PlayerName == "TestPlayer3"), default), Times.Once);
-			_dbContext.Verify(db => db.CustomEntries.AddAsync(It.Is<CustomEntryEntity>(ce => ce.PlayerId == 3 && ce.Time == 300000), default), Times.Once);
-			Assert.IsNotNull(uploadSuccess);
-			Assert.IsTrue(uploadSuccess.Message.StartsWith("Welcome"));
-		}
+			await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
 		else
-		{
 			await Assert.ThrowsExceptionAsync<CustomEntryValidationException>(async () => await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest));
-		}
 	}
 
 	[TestMethod]
 	public async Task ProcessUploadRequest_Outdated()
 	{
-		AddUploadRequest uploadRequest = new()
-		{
-			Time = 100000,
-			PlayerId = 1,
-			ClientVersion = "0.0.0.0",
-			SurvivalHashMd5 = _v3Hash,
-			PlayerName = "TestPlayer1",
-			Client = "DevilDaggersCustomLeaderboards",
-			Status = 4,
-			ReplayData = _fakeReplay,
-		};
-		uploadRequest.Validation = GetValidation(uploadRequest);
-
+		AddUploadRequest uploadRequest = CreateUploadRequest(10, 1, 4, "0.0.0.0");
 		CustomEntryValidationException ex = await Assert.ThrowsExceptionAsync<CustomEntryValidationException>(async () => await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest));
 
 		_dbContext.Verify(db => db.SaveChangesAsync(default), Times.Never);
@@ -259,49 +187,11 @@ public class CustomEntryProcessorTests
 	[TestMethod]
 	public async Task ProcessUploadRequest_InvalidValidation()
 	{
-		AddUploadRequest uploadRequest = new()
-		{
-			Time = 100000,
-			PlayerId = 1,
-			ClientVersion = TestConstants.DdclVersion,
-			SurvivalHashMd5 = _v3Hash,
-			PlayerName = "TestPlayer1",
-			Validation = "Malformed validation",
-			Client = "DevilDaggersCustomLeaderboards",
-			Status = 5,
-			ReplayData = _fakeReplay,
-		};
-
+		AddUploadRequest uploadRequest = CreateUploadRequest(10, 1, 4, "0.0.0.0") with { Validation = "Malformed validation" };
 		CustomEntryValidationException ex = await Assert.ThrowsExceptionAsync<CustomEntryValidationException>(async () => await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest));
 
 		_dbContext.Verify(db => db.SaveChangesAsync(default), Times.Never);
 
 		Assert.IsTrue(ex.Message.StartsWith("Could not decrypt"));
 	}
-
-	private string GetValidation(AddUploadRequest uploadRequest)
-	{
-		string toEncrypt = string.Join(
-			";",
-			uploadRequest.PlayerId,
-			uploadRequest.Time,
-			uploadRequest.GemsCollected,
-			uploadRequest.GemsDespawned,
-			uploadRequest.GemsEaten,
-			uploadRequest.GemsTotal,
-			uploadRequest.EnemiesKilled,
-			uploadRequest.DeathType,
-			uploadRequest.DaggersHit,
-			uploadRequest.DaggersFired,
-			uploadRequest.EnemiesAlive,
-			uploadRequest.HomingDaggers,
-			uploadRequest.HomingDaggersEaten,
-			uploadRequest.IsReplay ? 1 : 0,
-			uploadRequest.SurvivalHashMd5.ByteArrayToHexString(),
-			string.Join(",", new int[3] { uploadRequest.LevelUpTime2, uploadRequest.LevelUpTime3, uploadRequest.LevelUpTime4 }));
-		return HttpUtility.HtmlEncode(_encryptionWrapper.EncryptAndEncode(toEncrypt));
-	}
-
-	private static byte[] GetSpawnsetHash(SpawnsetBinary spawnset)
-		=> MD5.HashData(spawnset.ToBytes());
 }
