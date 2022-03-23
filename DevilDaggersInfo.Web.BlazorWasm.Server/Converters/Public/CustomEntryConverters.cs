@@ -22,10 +22,14 @@ public static class CustomEntryConverters
 		LevelUpTime2 = customEntry.LevelUpTime2,
 		LevelUpTime3 = customEntry.LevelUpTime3,
 		LevelUpTime4 = customEntry.LevelUpTime4,
+		LevelUpTime2InSeconds = customEntry.LevelUpTime2.ToSecondsTime(),
+		LevelUpTime3InSeconds = customEntry.LevelUpTime3.ToSecondsTime(),
+		LevelUpTime4InSeconds = customEntry.LevelUpTime4.ToSecondsTime(),
 		DaggersFired = customEntry.DaggersFired,
 		DaggersHit = customEntry.DaggersHit,
 		SubmitDate = customEntry.SubmitDate,
 		Time = customEntry.Time,
+		TimeInSeconds = customEntry.Time.ToSecondsTime(),
 		HasReplay = hasReplay,
 	};
 
