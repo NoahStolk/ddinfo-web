@@ -52,7 +52,7 @@ public record AddUploadRequest
 
 	public string BuildMode { get; init; } = null!;
 
-	public string Validation { get; set; } = null!; // Use set for unit tests.
+	public string Validation { get; init; } = null!;
 
 	public bool IsReplay { get; init; }
 

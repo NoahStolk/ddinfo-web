@@ -105,7 +105,7 @@ public class CustomEntryProcessorTests
 			ReplayData = _fakeReplay,
 			GameData = new(),
 		};
-		uploadRequest.Validation = HttpUtility.HtmlEncode(_encryptionWrapper.EncryptAndEncode(uploadRequest.CreateValidation()));
+		uploadRequest = uploadRequest with { Validation = HttpUtility.HtmlEncode(_encryptionWrapper.EncryptAndEncode(uploadRequest.CreateValidation())) };
 		return uploadRequest;
 	}
 
