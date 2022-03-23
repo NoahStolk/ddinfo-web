@@ -79,7 +79,7 @@ public class ModBinary
 
 	public ModBinary(ModBinaryType modBinaryType)
 	{
-		if (!(modBinaryType is ModBinaryType.Audio or ModBinaryType.Dd))
+		if (modBinaryType is not (ModBinaryType.Audio or ModBinaryType.Dd))
 			throw new NotSupportedException($"Creating mods of type '{modBinaryType}' is not supported.");
 
 		ModBinaryType = modBinaryType;

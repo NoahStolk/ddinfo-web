@@ -11,7 +11,7 @@ using System.Text;
 namespace DevilDaggersInfo.Test.Web.BlazorWasm.Server;
 
 [TestClass]
-public class CustomEntryTests
+public class CustomEntryProcessorTests
 {
 	private readonly Mock<ApplicationDbContext> _dbContext;
 	private readonly CustomEntryProcessor _customEntryProcessor;
@@ -19,7 +19,7 @@ public class CustomEntryTests
 	private readonly byte[] _fakeReplay;
 	private readonly byte[] _v3Hash;
 
-	public CustomEntryTests()
+	public CustomEntryProcessorTests()
 	{
 		MockEntities mockEntities = new();
 
@@ -91,7 +91,7 @@ public class CustomEntryTests
 	}
 
 	[TestMethod]
-	public async Task PostUploadRequest_ExistingPlayer_ExistingEntry_NoHighscore()
+	public async Task ProcessUploadRequest_ExistingPlayer_ExistingEntry_NoHighscore()
 	{
 		AddUploadRequest uploadRequest = new()
 		{
@@ -107,7 +107,7 @@ public class CustomEntryTests
 		};
 		uploadRequest.Validation = GetValidation(uploadRequest);
 
-		GetUploadSuccess? uploadSuccess = (await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest)).Value;
+		GetUploadSuccess? uploadSuccess = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
 
 		_dbContext.Verify(db => db.SaveChangesAsync(default), Times.AtLeastOnce);
 		Assert.IsNotNull(uploadSuccess);
@@ -116,7 +116,7 @@ public class CustomEntryTests
 	}
 
 	[TestMethod]
-	public async Task PostUploadRequest_ExistingPlayer_ExistingEntry_NewHighscore()
+	public async Task ProcessUploadRequest_ExistingPlayer_ExistingEntry_NewHighscore()
 	{
 		AddUploadRequest uploadRequest = new()
 		{
@@ -132,7 +132,7 @@ public class CustomEntryTests
 		};
 		uploadRequest.Validation = GetValidation(uploadRequest);
 
-		GetUploadSuccess? uploadSuccess = (await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest)).Value;
+		GetUploadSuccess? uploadSuccess = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
 
 		_dbContext.Verify(db => db.SaveChangesAsync(default), Times.AtLeastOnce);
 		Assert.IsNotNull(uploadSuccess);
@@ -141,7 +141,7 @@ public class CustomEntryTests
 	}
 
 	[TestMethod]
-	public async Task PostUploadRequest_ExistingPlayer_NewEntry()
+	public async Task ProcessUploadRequest_ExistingPlayer_NewEntry()
 	{
 		AddUploadRequest uploadRequest = new()
 		{
@@ -157,7 +157,7 @@ public class CustomEntryTests
 		};
 		uploadRequest.Validation = GetValidation(uploadRequest);
 
-		GetUploadSuccess? uploadSuccess = (await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest)).Value;
+		GetUploadSuccess? uploadSuccess = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
 
 		_dbContext.Verify(db => db.CustomEntries.AddAsync(It.Is<CustomEntryEntity>(ce => ce.PlayerId == 2 && ce.Time == 200000), default), Times.Once);
 		_dbContext.Verify(db => db.SaveChangesAsync(default), Times.AtLeastOnce);
@@ -166,7 +166,7 @@ public class CustomEntryTests
 	}
 
 	[TestMethod]
-	public async Task PostUploadRequest_NewPlayer()
+	public async Task ProcessUploadRequest_NewPlayer()
 	{
 		AddUploadRequest uploadRequest = new()
 		{
@@ -182,7 +182,7 @@ public class CustomEntryTests
 		};
 		uploadRequest.Validation = GetValidation(uploadRequest);
 
-		GetUploadSuccess? uploadSuccess = (await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest)).Value;
+		GetUploadSuccess? uploadSuccess = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
 
 		_dbContext.Verify(db => db.SaveChangesAsync(default), Times.AtLeastOnce);
 		_dbContext.Verify(db => db.Players.AddAsync(It.Is<PlayerEntity>(p => p.Id == 3 && p.PlayerName == "TestPlayer3"), default), Times.Once);
@@ -191,8 +191,50 @@ public class CustomEntryTests
 		Assert.IsTrue(uploadSuccess.Message.StartsWith("Welcome"));
 	}
 
+	[DataTestMethod]
+	[DataRow(0, false)]
+	[DataRow(1, false)]
+	[DataRow(2, false)]
+	[DataRow(3, true)]
+	[DataRow(4, true)]
+	[DataRow(5, true)]
+	[DataRow(6, false)]
+	[DataRow(7, false)]
+	[DataRow(8, false)]
+	public async Task ProcessUploadRequest_InvalidStatus(int status, bool accepted)
+	{
+		AddUploadRequest uploadRequest = new()
+		{
+			Time = 300000,
+			PlayerId = 3,
+			ClientVersion = TestConstants.DdclVersion,
+			SurvivalHashMd5 = _v3Hash,
+			PlayerName = "TestPlayer3",
+			Client = "DevilDaggersCustomLeaderboards",
+			Status = status,
+			ReplayData = _fakeReplay,
+			GameData = new(),
+		};
+		uploadRequest.Validation = GetValidation(uploadRequest);
+
+		if (accepted)
+		{
+			GetUploadSuccess? uploadSuccess = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
+
+			_dbContext.Verify(db => db.SaveChangesAsync(default), Times.AtLeastOnce);
+			_dbContext.Verify(db => db.Players.AddAsync(It.Is<PlayerEntity>(p => p.Id == 3 && p.PlayerName == "TestPlayer3"), default), Times.Once);
+			_dbContext.Verify(db => db.CustomEntries.AddAsync(It.Is<CustomEntryEntity>(ce => ce.PlayerId == 3 && ce.Time == 300000), default), Times.Once);
+			Assert.IsNotNull(uploadSuccess);
+			Assert.IsTrue(uploadSuccess.Message.StartsWith("Welcome"));
+		}
+		else
+		{
+			await Assert.ThrowsExceptionAsync<CustomEntryValidationException>(async () => await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest));
+		}
+	}
+
 	[TestMethod]
-	public async Task PostUploadRequest_Outdated()
+	public async Task ProcessUploadRequest_Outdated()
 	{
 		AddUploadRequest uploadRequest = new()
 		{
@@ -215,7 +257,7 @@ public class CustomEntryTests
 	}
 
 	[TestMethod]
-	public async Task PostUploadRequest_InvalidValidation()
+	public async Task ProcessUploadRequest_InvalidValidation()
 	{
 		AddUploadRequest uploadRequest = new()
 		{

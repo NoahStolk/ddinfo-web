@@ -36,7 +36,7 @@ public class CustomEntryProcessor
 		_stopwatch = Stopwatch.StartNew();
 	}
 
-	public async Task<ActionResult<GetUploadSuccess>> ProcessUploadRequestAsync(AddUploadRequest uploadRequest)
+	public async Task<GetUploadSuccess> ProcessUploadRequestAsync(AddUploadRequest uploadRequest)
 	{
 		// Check if the submission actually came from an allowed program.
 		string expected = uploadRequest.CreateValidation();
@@ -68,7 +68,7 @@ public class CustomEntryProcessor
 			throw LogAndCreateValidationException(uploadRequest, "Local replays cannot be validated.");
 
 		// Reject other invalid statuses.
-		if (!(uploadRequest.Status is 3 or 4 or 5))
+		if (uploadRequest.Status is not (3 or 4 or 5))
 			throw LogAndCreateValidationException(uploadRequest, $"Game status {uploadRequest.Status} is not valid.", null, "rotating_light");
 
 		// Check for existing spawnset.

@@ -62,7 +62,7 @@ public class ModArchiveProcessor
 				if (binary.Chunks.Count == 0)
 					throw new InvalidModBinaryException($"Mod binary '{binary.Name}' does not contain any assets.");
 
-				if (!(binary.ModBinaryType is ModBinaryType.Audio or ModBinaryType.Dd))
+				if (binary.ModBinaryType is not (ModBinaryType.Audio or ModBinaryType.Dd))
 					throw new InvalidModBinaryException($"Mod binary '{binary.Name}' is a '{binary.ModBinaryType}' mod which is not allowed.");
 
 				string expectedPrefix = BinaryFileNameUtils.GetBinaryPrefix(binary.ModBinaryType, modName);

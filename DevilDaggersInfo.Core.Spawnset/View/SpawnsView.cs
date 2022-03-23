@@ -82,7 +82,7 @@ public class SpawnsView
 				if (spawn.EnemyType != EnemyType.Empty)
 				{
 					EnemyType finalEnemy = spawn.EnemyType;
-					if (i % 3 == 2 && !(gameVersion is GameVersion.V1_0 or GameVersion.V2_0) && finalEnemy == EnemyType.Gigapede)
+					if (i % 3 == 2 && gameVersion is not (GameVersion.V1_0 or GameVersion.V2_0) && finalEnemy == EnemyType.Gigapede)
 						finalEnemy = EnemyType.Ghostpede;
 
 					int noFarmGems = finalEnemy.GetNoFarmGems();
