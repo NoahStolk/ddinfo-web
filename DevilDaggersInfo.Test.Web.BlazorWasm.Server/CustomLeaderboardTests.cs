@@ -52,6 +52,6 @@ public class CustomLeaderboardTests
 		_dbContext.Verify(db => db.SaveChanges(), Times.Never);
 		Assert.IsNotNull(customLeaderboards);
 		Assert.AreEqual(1, customLeaderboards.Results.Count);
-		Assert.IsTrue(customLeaderboards.Results.Any(cl => cl.TimeBronze == 60));
+		Assert.IsTrue(customLeaderboards.Results.Any(cl => cl.Daggers.Bronze == 60));
 	}
 }
