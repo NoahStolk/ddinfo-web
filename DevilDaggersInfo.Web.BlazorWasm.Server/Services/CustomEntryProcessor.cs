@@ -237,7 +237,7 @@ public class CustomEntryProcessor
 			LevelUpTime3State = new(newCustomEntry.LevelUpTime3.ToSecondsTime()),
 			LevelUpTime4State = new(newCustomEntry.LevelUpTime4.ToSecondsTime()),
 			Rank = rank,
-			Time = uploadRequest.Time,
+			Time = uploadRequest.GetTime(),
 			EnemiesKilled = uploadRequest.EnemiesKilled,
 			GemsCollected = uploadRequest.GemsCollected,
 			GemsDespawned = uploadRequest.GemsDespawned,
@@ -247,9 +247,9 @@ public class CustomEntryProcessor
 			EnemiesAlive = uploadRequest.EnemiesAlive,
 			HomingDaggers = uploadRequest.HomingDaggers,
 			HomingDaggersEaten = uploadRequest.HomingDaggersEaten,
-			LevelUpTime2 = uploadRequest.LevelUpTime2,
-			LevelUpTime3 = uploadRequest.LevelUpTime3,
-			LevelUpTime4 = uploadRequest.LevelUpTime4,
+			LevelUpTime2 = uploadRequest.GetLevelUpTime2(),
+			LevelUpTime3 = uploadRequest.GetLevelUpTime3(),
+			LevelUpTime4 = uploadRequest.GetLevelUpTime4(),
 		};
 	}
 
@@ -347,7 +347,7 @@ public class CustomEntryProcessor
 		// Fetch the entries again after having modified the leaderboard.
 		entries = await FetchEntriesFromDatabaseAsync(customLeaderboard, isAscending);
 
-		await TrySendLeaderboardMessage(customLeaderboard, $"`{uploadRequest.PlayerName}` just got {FormatTimeString(uploadRequest.Time)} seconds on the `{spawnsetName}` leaderboard, beating their previous highscore of {FormatTimeString(uploadRequest.Time - timeDiff)} by {FormatTimeString(Math.Abs(timeDiff))} seconds!", rank, totalPlayers, uploadRequest.Time);
+		await TrySendLeaderboardMessage(customLeaderboard, $"`{uploadRequest.PlayerName}` just got {FormatTimeString(uploadRequest.GetTime())} seconds on the `{spawnsetName}` leaderboard, beating their previous highscore of {FormatTimeString(uploadRequest.GetTime() - timeDiff)} by {FormatTimeString(Math.Abs(timeDiff))} seconds!", rank, totalPlayers, uploadRequest.GetTime());
 		Log(uploadRequest, spawnsetName);
 
 		List<int> replayIds = GetExistingReplayIds(customLeaderboard);
@@ -376,7 +376,7 @@ public class CustomEntryProcessor
 			LevelUpTime4State = new(customEntry.LevelUpTime4.ToSecondsTime(), levelUpTime4Diff.ToSecondsTime()),
 			Rank = rank,
 			RankDiff = rankDiff,
-			Time = uploadRequest.Time,
+			Time = uploadRequest.GetTime(),
 			TimeDiff = timeDiff,
 			GemsCollected = uploadRequest.GemsCollected,
 			GemsCollectedDiff = gemsCollectedDiff,
@@ -398,11 +398,11 @@ public class CustomEntryProcessor
 			GemsEatenDiff = gemsEatenDiff,
 			GemsTotal = uploadRequest.GemsTotal,
 			GemsTotalDiff = gemsTotalDiff,
-			LevelUpTime2 = uploadRequest.LevelUpTime2,
+			LevelUpTime2 = uploadRequest.GetLevelUpTime2(),
 			LevelUpTime2Diff = levelUpTime2Diff,
-			LevelUpTime3 = uploadRequest.LevelUpTime3,
+			LevelUpTime3 = uploadRequest.GetLevelUpTime3(),
 			LevelUpTime3Diff = levelUpTime3Diff,
-			LevelUpTime4 = uploadRequest.LevelUpTime4,
+			LevelUpTime4 = uploadRequest.GetLevelUpTime4(),
 			LevelUpTime4Diff = levelUpTime4Diff,
 		};
 	}

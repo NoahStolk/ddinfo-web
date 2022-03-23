@@ -95,7 +95,7 @@ public class CustomEntryProcessorTests
 	{
 		AddUploadRequest uploadRequest = new()
 		{
-			Time = time.To10thMilliTime(),
+			TimeInSeconds = time,
 			PlayerId = playerId,
 			ClientVersion = clientVersion,
 			SurvivalHashMd5 = _v3Hash,

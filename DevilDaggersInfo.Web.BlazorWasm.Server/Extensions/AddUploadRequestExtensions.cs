@@ -9,7 +9,7 @@ public static class AddUploadRequestExtensions
 		return string.Join(
 			";",
 			uploadRequest.PlayerId,
-			uploadRequest.Time,
+			uploadRequest.GetTime(),
 			uploadRequest.GemsCollected,
 			uploadRequest.GemsDespawned,
 			uploadRequest.GemsEaten,
@@ -23,6 +23,6 @@ public static class AddUploadRequestExtensions
 			uploadRequest.HomingDaggersEaten,
 			uploadRequest.IsReplay ? 1 : 0,
 			uploadRequest.SurvivalHashMd5.ByteArrayToHexString(),
-			string.Join(",", uploadRequest.LevelUpTime2, uploadRequest.LevelUpTime3, uploadRequest.LevelUpTime4));
+			string.Join(",", uploadRequest.GetLevelUpTime2(), uploadRequest.GetLevelUpTime3(), uploadRequest.GetLevelUpTime4()));
 	}
 }
