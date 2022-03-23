@@ -6,7 +6,7 @@ public class AddCustomEntry
 
 	public int PlayerId { get; init; }
 
-	public int Time { get; init; }
+	public double Time { get; init; }
 
 	public int GemsCollected { get; init; }
 
@@ -30,11 +30,11 @@ public class AddCustomEntry
 
 	public CustomEntryDeathType DeathType { get; init; }
 
-	public int LevelUpTime2 { get; init; }
+	public double LevelUpTime2 { get; init; }
 
-	public int LevelUpTime3 { get; init; }
+	public double LevelUpTime3 { get; init; }
 
-	public int LevelUpTime4 { get; init; }
+	public double LevelUpTime4 { get; init; }
 
 	public DateTime SubmitDate { get; init; }
 

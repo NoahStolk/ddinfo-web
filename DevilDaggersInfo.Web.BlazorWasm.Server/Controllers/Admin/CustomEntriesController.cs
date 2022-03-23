@@ -118,12 +118,12 @@ public class CustomEntriesController : ControllerBase
 			GemsTotal = addCustomEntry.GemsTotal,
 			HomingStored = addCustomEntry.HomingStored,
 			HomingEaten = addCustomEntry.HomingEaten,
-			LevelUpTime2 = addCustomEntry.LevelUpTime2,
-			LevelUpTime3 = addCustomEntry.LevelUpTime3,
-			LevelUpTime4 = addCustomEntry.LevelUpTime4,
+			LevelUpTime2 = addCustomEntry.LevelUpTime2.To10thMilliTime(),
+			LevelUpTime3 = addCustomEntry.LevelUpTime3.To10thMilliTime(),
+			LevelUpTime4 = addCustomEntry.LevelUpTime4.To10thMilliTime(),
 			PlayerId = addCustomEntry.PlayerId,
 			SubmitDate = addCustomEntry.SubmitDate,
-			Time = addCustomEntry.Time,
+			Time = addCustomEntry.Time.To10thMilliTime(),
 		};
 		_dbContext.CustomEntries.Add(customEntry);
 		await _dbContext.SaveChangesAsync();
@@ -185,12 +185,12 @@ public class CustomEntriesController : ControllerBase
 		customEntry.GemsTotal = editCustomEntry.GemsTotal;
 		customEntry.HomingStored = editCustomEntry.HomingStored;
 		customEntry.HomingEaten = editCustomEntry.HomingEaten;
-		customEntry.LevelUpTime2 = editCustomEntry.LevelUpTime2;
-		customEntry.LevelUpTime3 = editCustomEntry.LevelUpTime3;
-		customEntry.LevelUpTime4 = editCustomEntry.LevelUpTime4;
+		customEntry.LevelUpTime2 = editCustomEntry.LevelUpTime2.To10thMilliTime();
+		customEntry.LevelUpTime3 = editCustomEntry.LevelUpTime3.To10thMilliTime();
+		customEntry.LevelUpTime4 = editCustomEntry.LevelUpTime4.To10thMilliTime();
 		customEntry.PlayerId = editCustomEntry.PlayerId;
 		customEntry.SubmitDate = editCustomEntry.SubmitDate;
-		customEntry.Time = editCustomEntry.Time;
+		customEntry.Time = editCustomEntry.Time.To10thMilliTime();
 		await _dbContext.SaveChangesAsync();
 
 		_auditLogger.LogEdit(logDto.GetLog(), editCustomEntry.GetLog(), User, customEntry.Id);
