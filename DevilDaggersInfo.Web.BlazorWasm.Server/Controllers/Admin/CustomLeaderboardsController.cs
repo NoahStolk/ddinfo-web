@@ -82,6 +82,9 @@ public class CustomLeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult> AddCustomLeaderboard(AddCustomLeaderboard addCustomLeaderboard)
 	{
+		if (addCustomLeaderboard.Category == CustomLeaderboardCategory.Speedrun)
+			return BadRequest("The Speedrun category is obsolete and should not be used anymore. Consider using the Race category.");
+
 		if (_dbContext.CustomLeaderboards.Any(cl => cl.SpawnsetId == addCustomLeaderboard.SpawnsetId))
 			return BadRequest("A leaderboard for this spawnset already exists.");
 
