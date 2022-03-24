@@ -115,7 +115,7 @@ else
 
 		<div class="font-bold">Total</div>
 		<div class="text-right font-bold">@GetTotalCustomLeaderboardData.LeaderboardsPerCategory.Values.Sum().ToString("N0")</div>
-		<div class="text-right font-bold hidden md:block">@GetTotalCustomLeaderboardData.PlayersPerCategory.Values.Sum().ToString("N0")</div>
+		<div class="text-right font-bold hidden md:block">@GetTotalCustomLeaderboardData.TotalPlayers.ToString("N0")</div>
 		<div class="text-right font-bold hidden md:block">@GetTotalCustomLeaderboardData.ScoresPerCategory.Values.Sum().ToString("N0")</div>
 		<div class="text-right font-bold hidden md:block">@GetTotalCustomLeaderboardData.SubmitsPerCategory.Values.Sum().ToString("N0")</div>
 	</div>

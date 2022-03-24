@@ -227,6 +227,7 @@ public class CustomLeaderboardsController : ControllerBase
 			ScoresPerCategory = scoresPerCategory,
 			SubmitsPerCategory = submitsPerCategory,
 			PlayersPerCategory = playersPerCategory,
+			TotalPlayers = customEntries.DistinctBy(ce => ce.PlayerId).Count(),
 		};
 	}
 
