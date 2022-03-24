@@ -10,7 +10,7 @@ public static class CustomLeaderboardCategoryExtensions
 		CustomLeaderboardCategory.TimeAttack => "Kill all enemies as quickly as possible.",
 		CustomLeaderboardCategory.Speedrun => "Jump into the void as quickly as possible. Note that this category has been superseded by the Race category; new Speedrun leaderboards will not be added.",
 		CustomLeaderboardCategory.Pacifist => "Survive as long as you can, but without damaging or killing any enemies.",
-		CustomLeaderboardCategory.Race => "Grab the dagger as fast as you can.",
+		CustomLeaderboardCategory.Race => "Reach the dagger as quickly as possible.",
 		_ => throw new NotSupportedException($"{nameof(CustomLeaderboardCategory)} '{category}' is not supported."),
 	};
 }
