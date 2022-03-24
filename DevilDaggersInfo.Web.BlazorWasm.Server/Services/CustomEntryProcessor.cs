@@ -124,22 +124,23 @@ public class CustomEntryProcessor
 
 		// Calculate the new rank.
 		List<CustomEntryEntity> entries = await FetchEntriesFromDatabaseAsync(customLeaderboard, isAscending);
-		int rank = isAscending ? entries.Count(e => e.Time <= uploadRequest.GetTime()) + 1 : entries.Count(e => e.Time >= uploadRequest.GetTime()) + 1;
+		int requestTimeAsInt = uploadRequest.GetTime();
+		int rank = isAscending ? entries.Count(e => e.Time <= requestTimeAsInt) + 1 : entries.Count(e => e.Time >= requestTimeAsInt) + 1;
 		int totalPlayers = entries.Count;
 
 		CustomEntryEntity? customEntry = entries.Find(e => e.PlayerId == uploadRequest.PlayerId);
 		if (customEntry == null)
 			return await ProcessNewScoreAsync(uploadRequest, customLeaderboard, rank, isAscending, spawnsetName);
 
-		if (uploadRequest.IsReplay && uploadRequest.GetTime() > customEntry.Time - 1000 && uploadRequest.GetTime() < customEntry.Time + 1000 && await IsReplayFileTheSame(customEntry.Id, uploadRequest.ReplayData))
+		// Treat identical replays as no highscore.
+		if (uploadRequest.IsReplay && IsReplayTimeAlmostTheSame(requestTimeAsInt, customEntry.Time) && await IsReplayFileTheSame(customEntry.Id, uploadRequest.ReplayData))
 		{
-			_logger.LogWarning("Score submission replay time was modified because of identical replay (database: {originalTime} - request: {replayTime}).", FormatTimeString(customEntry.Time), FormatTimeString(uploadRequest.GetTime()));
-			uploadRequest.Time = customEntry.Time;
-			uploadRequest.TimeInSeconds = customEntry.Time.ToSecondsTime();
+			_logger.LogWarning("Score submission replay time was modified because of identical replay (database: {originalTime} - request: {replayTime}).", FormatTimeString(customEntry.Time), FormatTimeString(requestTimeAsInt));
+			return await ProcessNoHighscoreAsync(uploadRequest, customLeaderboard, entries, spawnsetName);
 		}
 
 		// User is already on the leaderboard, but did not get a better score.
-		if (isAscending && customEntry.Time <= uploadRequest.GetTime() || !isAscending && customEntry.Time >= uploadRequest.GetTime())
+		if (isAscending && customEntry.Time <= requestTimeAsInt || !isAscending && customEntry.Time >= requestTimeAsInt)
 			return await ProcessNoHighscoreAsync(uploadRequest, customLeaderboard, entries, spawnsetName);
 
 		return await ProcessHighscoreAsync(uploadRequest, customLeaderboard, entries, spawnsetName, isAscending, rank, totalPlayers, customEntry);
@@ -418,10 +419,18 @@ public class CustomEntryProcessor
 		await IoFile.WriteAllBytesAsync(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{customEntryId}.ddreplay"), replayData);
 	}
 
+	private static bool IsReplayTimeAlmostTheSame(int requestTimeAsInt, int databaseTime)
+	{
+		if (requestTimeAsInt == databaseTime)
+			return false;
+
+		const int replayMarginErrorIn10thMillis = 1000;
+		return requestTimeAsInt > databaseTime - replayMarginErrorIn10thMillis && requestTimeAsInt < databaseTime + replayMarginErrorIn10thMillis;
+	}
+
 	/// <summary>
 	/// Due to a bug in the game, the final time sometimes gains a couple extra ticks if the run is a replay (more common in longer runs).
 	/// We don't want these replay submissions to overwrite the real score (this spams messages and is incorrect).
-	/// Simply reset the time to the original time when the replay buffer is the same.
 	/// </summary>
 	private async Task<bool> IsReplayFileTheSame(int customEntryId, byte[] newReplay)
 	{

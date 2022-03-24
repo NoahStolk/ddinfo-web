@@ -16,9 +16,9 @@ public record AddUploadRequest
 	public int ReplayPlayerId { get; init; }
 
 	[Obsolete("Use TimeInSeconds instead.")]
-	public int Time { get; set; } // Use set to fix replay times (bug in DD).
+	public int Time { get; init; }
 
-	public double TimeInSeconds { get; set; } // Use set to fix replay times (bug in DD).
+	public double TimeInSeconds { get; init; }
 
 	public int GemsCollected { get; init; }
 

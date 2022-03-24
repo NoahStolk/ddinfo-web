@@ -153,6 +153,6 @@ public static class CustomEntryConverters
 			=> bytes == null || bytes.Length == 0 ? null : IntegerArrayCompressor.ExtractData(bytes);
 
 		static ushort[]? GetUInt16Arr(byte[]? bytes)
-			=> bytes == null || bytes.Length == 0 ? null : IntegerArrayCompressor.ExtractData(bytes).Select(d => (ushort)d).ToArray();
+			=> bytes == null || bytes.Length == 0 ? null : Array.ConvertAll(IntegerArrayCompressor.ExtractData(bytes), i => (ushort)i);
 	}
 }
