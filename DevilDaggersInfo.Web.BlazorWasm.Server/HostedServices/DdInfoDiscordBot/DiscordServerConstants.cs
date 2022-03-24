@@ -3,17 +3,16 @@ using DSharpPlus.Entities;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
 
-// TODO: Stop using internal.
 public static class DiscordServerConstants
 {
-	internal const long TestChannelId = 813508325705515008;
+	private const ulong _backgroundServiceMessageId = 856557628816490537;
+	private const ulong _cacheMessageId = 856151636368031785;
+	private const ulong _databaseMessageId = 856491602675236894;
+	private const ulong _fileMessageId = 856265036486148146;
 
-	internal const ulong BotUserId = 645209987949395969;
+	public const long TestChannelId = 813508325705515008;
 
-	internal const ulong BackgroundServiceMessageId = 856557628816490537;
-	internal const ulong CacheMessageId = 856151636368031785;
-	internal const ulong DatabaseMessageId = 856491602675236894;
-	internal const ulong FileMessageId = 856265036486148146;
+	public const ulong BotUserId = 645209987949395969;
 
 	private static readonly Dictionary<Channel, ChannelWrapper> _channels = new()
 	{
@@ -37,7 +36,7 @@ public static class DiscordServerConstants
 	/// <summary>
 	/// Returns the channel based on the <paramref name="channel"/> enum. Always returns the channel for <see cref="Channel.MonitoringTest"/> when running in development.
 	/// </summary>
-	internal static DiscordChannel? GetDiscordChannel(Channel channel, IWebHostEnvironment environment)
+	public static DiscordChannel? GetDiscordChannel(Channel channel, IWebHostEnvironment environment)
 	{
 		if (environment.IsDevelopment())
 			channel = Channel.MonitoringTest;
@@ -45,7 +44,7 @@ public static class DiscordServerConstants
 		return _channels[channel].DiscordChannel;
 	}
 
-	internal static async Task LoadServerChannelsAndMessages(DiscordClient client)
+	public static async Task LoadServerChannelsAndMessages(DiscordClient client)
 	{
 		foreach (ChannelWrapper wrapper in _channels.Values)
 		{
@@ -55,19 +54,19 @@ public static class DiscordServerConstants
 
 		DiscordChannel? backgroundServiceChannel = _channels[Channel.MonitoringBackgroundService].DiscordChannel;
 		if (backgroundServiceChannel != null)
-			BackgroundServiceMessage = await backgroundServiceChannel.GetMessageAsync(BackgroundServiceMessageId);
+			BackgroundServiceMessage = await backgroundServiceChannel.GetMessageAsync(_backgroundServiceMessageId);
 
 		DiscordChannel? cacheChannel = _channels[Channel.MonitoringCache].DiscordChannel;
 		if (cacheChannel != null)
-			CacheMessage = await cacheChannel.GetMessageAsync(CacheMessageId);
+			CacheMessage = await cacheChannel.GetMessageAsync(_cacheMessageId);
 
 		DiscordChannel? databaseChannel = _channels[Channel.MonitoringDatabase].DiscordChannel;
 		if (databaseChannel != null)
-			DatabaseMessage = await databaseChannel.GetMessageAsync(DatabaseMessageId);
+			DatabaseMessage = await databaseChannel.GetMessageAsync(_databaseMessageId);
 
 		DiscordChannel? fileChannel = _channels[Channel.MonitoringFile].DiscordChannel;
 		if (fileChannel != null)
-			FileMessage = await fileChannel.GetMessageAsync(FileMessageId);
+			FileMessage = await fileChannel.GetMessageAsync(_fileMessageId);
 	}
 
 	private sealed class ChannelWrapper
