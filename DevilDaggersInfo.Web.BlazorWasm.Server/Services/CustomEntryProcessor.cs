@@ -146,24 +146,6 @@ public class CustomEntryProcessor
 		return await ProcessHighscoreAsync(uploadRequest, customLeaderboard, entries, spawnsetName, isAscending, rank, totalPlayers, customEntry);
 	}
 
-	private void ValidateReplayBuffer(AddUploadRequest uploadRequest, string spawnsetName)
-	{
-		using MemoryStream ms = new(uploadRequest.ReplayData);
-		using BinaryReader br = new(ms);
-		br.BaseStream.Seek(50, SeekOrigin.Begin);
-		int usernameLength = br.ReadInt32();
-		br.BaseStream.Seek(usernameLength + 26, SeekOrigin.Current);
-
-		// Validate replay buffer spawnset hash.
-		int spawnsetLength = br.ReadInt32();
-		if (spawnsetLength < 0 || spawnsetLength > SpawnsetConstants.MaxFileSize)
-			throw LogAndCreateValidationException(uploadRequest, $"Invalid replay spawnset size ({spawnsetLength} / {SpawnsetConstants.MaxFileSize}).");
-
-		byte[] replaySpawnset = br.ReadBytes(spawnsetLength);
-		if (!ArrayUtils.AreEqual(MD5.HashData(replaySpawnset), uploadRequest.SurvivalHashMd5))
-			throw LogAndCreateValidationException(uploadRequest, "Spawnset in replay does not match detected spawnset.", spawnsetName, "rotating_light");
-	}
-
 	private async Task<GetUploadSuccess> ProcessNewScoreAsync(AddUploadRequest uploadRequest, CustomLeaderboardEntity customLeaderboard, int rank, bool isAscending, string spawnsetName)
 	{
 		// Add new custom entry to this leaderboard.
@@ -404,6 +386,24 @@ public class CustomEntryProcessor
 		};
 	}
 
+	private void ValidateReplayBuffer(AddUploadRequest uploadRequest, string spawnsetName)
+	{
+		using MemoryStream ms = new(uploadRequest.ReplayData);
+		using BinaryReader br = new(ms);
+		br.BaseStream.Seek(50, SeekOrigin.Begin);
+		int usernameLength = br.ReadInt32();
+		br.BaseStream.Seek(usernameLength + 26, SeekOrigin.Current);
+
+		// Validate replay buffer spawnset hash.
+		int spawnsetLength = br.ReadInt32();
+		if (spawnsetLength < 0 || spawnsetLength > SpawnsetConstants.MaxFileSize)
+			throw LogAndCreateValidationException(uploadRequest, $"Invalid replay spawnset size ({spawnsetLength} / {SpawnsetConstants.MaxFileSize}).");
+
+		byte[] replaySpawnset = br.ReadBytes(spawnsetLength);
+		if (!ArrayUtils.AreEqual(MD5.HashData(replaySpawnset), uploadRequest.SurvivalHashMd5))
+			throw LogAndCreateValidationException(uploadRequest, "Spawnset in replay does not match detected spawnset.", spawnsetName, "rotating_light");
+	}
+
 	private CustomEntryValidationException LogAndCreateValidationException(AddUploadRequest uploadRequest, string errorMessage, string? spawnsetName = null, string? errorEmoteNameOverride = null)
 	{
 		Log(uploadRequest, spawnsetName, errorMessage, errorEmoteNameOverride);
@@ -435,16 +435,7 @@ public class CustomEntryProcessor
 			return false;
 
 		byte[] originalReplay = await IoFile.ReadAllBytesAsync(path);
-		if (originalReplay.Length != newReplay.Length)
-			return false;
-
-		for (int i = 0; i < originalReplay.Length; i++)
-		{
-			if (originalReplay[i] != newReplay[i])
-				return false;
-		}
-
-		return true;
+		return ArrayUtils.AreEqual(originalReplay, newReplay);
 	}
 
 	private static void UpdateLeaderboardStatistics(CustomLeaderboardEntity customLeaderboard)
