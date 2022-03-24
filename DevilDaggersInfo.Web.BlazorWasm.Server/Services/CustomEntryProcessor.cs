@@ -148,10 +148,6 @@ public class CustomEntryProcessor
 
 	private void ValidateReplayBuffer(AddUploadRequest uploadRequest, string spawnsetName)
 	{
-		// TODO: Check might be unnecessary.
-		if (uploadRequest.ReplayData == null)
-			throw LogAndCreateValidationException(uploadRequest, "Replay data is required.");
-
 		using MemoryStream ms = new(uploadRequest.ReplayData);
 		using BinaryReader br = new(ms);
 		br.BaseStream.Seek(50, SeekOrigin.Begin);
