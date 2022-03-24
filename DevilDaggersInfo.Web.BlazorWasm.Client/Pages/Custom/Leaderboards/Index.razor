@@ -81,28 +81,43 @@ else
 			</div>
 		}
 	}
+
+	<Heading Level="2" Title="Categories" />
+
+	@foreach (CustomLeaderboardCategory category in Enum.GetValues<CustomLeaderboardCategory>())
+	{
+		<div class="flex">
+			<div class="flex-none w-32"><b>@category.ToString()</b></div>
+			<div class="flex-1">@category.GetDescription()</div>
+		</div>
+	}
 }
 
 @if (GetTotalCustomLeaderboardData != null)
 {
-	<div class="grid gap-2 grid-cols-1 md:grid-cols-2 mt-4">
-		<div class="leviathan text-4xl text-center font-goethe">@GetTotalCustomLeaderboardData.LeaderboardsPerCategory.Values.Sum().ToString("N0") LEADERBOARDS</div>
-		<div class="leviathan text-4xl text-center font-goethe">@GetTotalCustomLeaderboardData.PlayersPerCategory.Values.Sum().ToString("N0") PLAYERS</div>
-		<div class="leviathan text-4xl text-center font-goethe">@GetTotalCustomLeaderboardData.ScoresPerCategory.Values.Sum().ToString("N0") SCORES</div>
-		<div class="leviathan text-4xl text-center font-goethe">@GetTotalCustomLeaderboardData.SubmitsPerCategory.Values.Sum().ToString("N0") SUBMISSIONS*</div>
-	</div>
+	<Heading Level="2" Title="Statistics" />
 
-	<div class="grid gap-2 grid-cols-1 md:grid-cols-2 lg:grid-cols-5">
+	<div class="grid grid-cols-2 md:grid-cols-5">
+		<div class="font-bold">Category</div>
+		<div class="text-right font-bold">Leaderboards</div>
+		<div class="text-right font-bold hidden md:block">Players</div>
+		<div class="text-right font-bold hidden md:block">Scores</div>
+		<div class="text-right font-bold hidden md:block">Submissions*</div>
+
 		@foreach (CustomLeaderboardCategory category in Enum.GetValues<CustomLeaderboardCategory>())
 		{
-			<div>
-				<Heading Title="@category.ToString()" Level="3" />
-				<p>@GetTotalCustomLeaderboardData.LeaderboardsPerCategory[category].ToString("N0") leaderboards</p>
-				<p>@GetTotalCustomLeaderboardData.PlayersPerCategory[category].ToString("N0") players</p>
-				<p>@GetTotalCustomLeaderboardData.ScoresPerCategory[category].ToString("N0") scores</p>
-				<p>@GetTotalCustomLeaderboardData.SubmitsPerCategory[category].ToString("N0") submissions*</p>
-			</div>
+			<div>@category.ToString()</div>
+			<div class="text-right">@GetTotalCustomLeaderboardData.LeaderboardsPerCategory[category].ToString("N0")</div>
+			<div class="text-right hidden md:block">@GetTotalCustomLeaderboardData.PlayersPerCategory[category].ToString("N0")</div>
+			<div class="text-right hidden md:block">@GetTotalCustomLeaderboardData.ScoresPerCategory[category].ToString("N0")</div>
+			<div class="text-right hidden md:block">@GetTotalCustomLeaderboardData.SubmitsPerCategory[category].ToString("N0")</div>
 		}
+
+		<div class="font-bold">Total</div>
+		<div class="text-right font-bold">@GetTotalCustomLeaderboardData.LeaderboardsPerCategory.Values.Sum().ToString("N0")</div>
+		<div class="text-right font-bold hidden md:block">@GetTotalCustomLeaderboardData.PlayersPerCategory.Values.Sum().ToString("N0")</div>
+		<div class="text-right font-bold hidden md:block">@GetTotalCustomLeaderboardData.ScoresPerCategory.Values.Sum().ToString("N0")</div>
+		<div class="text-right font-bold hidden md:block">@GetTotalCustomLeaderboardData.SubmitsPerCategory.Values.Sum().ToString("N0")</div>
 	</div>
 
 	<i class="inline-block mt-3">* Submissions are counted since @FeatureConstants.TrackingCustomLeaderboardSubmitCounts.ToString(FormatUtils.DateFormat).</i>
