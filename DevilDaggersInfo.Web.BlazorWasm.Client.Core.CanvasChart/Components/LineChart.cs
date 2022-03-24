@@ -25,7 +25,6 @@ public partial class LineChart
 	private bool _shouldRender = true;
 
 	private double ChartMouseX => _canvasMouseX - Options.ChartMarginXInPx;
-	private double ChartMouseY => _canvasMouseY - Options.ChartMarginYInPx;
 
 	private double ChartWidth => _canvasWidth - Options.ChartMarginXInPx * 2;
 	private double ChartHeight => _canvasHeight - Options.ChartMarginYInPx * 2;
@@ -33,11 +32,23 @@ public partial class LineChart
 	[Inject]
 	public IJSRuntime JsRuntime { get; set; } = null!;
 
-	[Parameter, EditorRequired] public string UniqueName { get; set; } = null!;
-	[Parameter, EditorRequired] public List<LineDataSet> DataSets { get; set; } = null!;
-	[Parameter, EditorRequired] public LineChartDataOptions DataOptions { get; set; } = null!;
-	[Parameter] public LineChartOptions Options { get; set; } = new();
-	[Parameter] public List<MarkupString> HighlighterValues { get; set; } = new();
+	[Parameter]
+	[EditorRequired]
+	public string UniqueName { get; set; } = null!;
+
+	[Parameter]
+	[EditorRequired]
+	public List<LineDataSet> DataSets { get; set; } = null!;
+
+	[Parameter]
+	[EditorRequired]
+	public LineChartDataOptions DataOptions { get; set; } = null!;
+
+	[Parameter]
+	public LineChartOptions Options { get; set; } = new();
+
+	[Parameter]
+	public List<MarkupString> HighlighterValues { get; set; } = new();
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
@@ -283,15 +294,17 @@ public partial class LineChart
 
 		_highlighter.ChangeState();
 
-		//if (Options.HighlighterLineOptions == null)
-		//	return;
+#if false
+		if (_context == null || Options.HighlighterLineOptions == null)
+			return;
 
-		//await _context.SetLineWidthAsync(Options.HighlighterLineOptions.LineThickness);
-		//await _context.SetStrokeStyleAsync(Options.HighlighterLineOptions.LineColor);
-		//await _context.BeginPathAsync();
-		//await _context.MoveToAsync(_canvasMouseX, Options.ChartMarginYInPx);
-		//await _context.LineToAsync(_canvasMouseX, _canvasHeight - Options.ChartMarginYInPx);
-		//await _context.StrokeAsync();
+		_context.LineWidth = Options.HighlighterLineOptions.LineThickness;
+		_context.StrokeStyle = Options.HighlighterLineOptions.LineColor;
+		_context.BeginPath();
+		_context.MoveTo(_canvasMouseX, Options.ChartMarginYInPx);
+		_context.LineTo(_canvasMouseX, _canvasHeight - Options.ChartMarginYInPx);
+		_context.Stroke();
+#endif
 	}
 
 	protected override bool ShouldRender() => _shouldRender;

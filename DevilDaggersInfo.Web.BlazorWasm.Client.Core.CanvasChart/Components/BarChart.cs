@@ -24,7 +24,6 @@ public partial class BarChart
 	private bool _shouldRender = true;
 
 	private double ChartMouseX => _canvasMouseX - Options.ChartMarginXInPx;
-	private double ChartMouseY => _canvasMouseY - Options.ChartMarginYInPx;
 
 	private double ChartWidth => _canvasWidth - Options.ChartMarginXInPx * 2;
 	private double ChartHeight => _canvasHeight - Options.ChartMarginYInPx * 2;
@@ -32,12 +31,27 @@ public partial class BarChart
 	[Inject]
 	public IJSRuntime JsRuntime { get; set; } = null!;
 
-	[Parameter, EditorRequired] public string UniqueName { get; set; } = null!;
-	[Parameter, EditorRequired] public BarDataSet DataSet { get; set; } = null!;
-	[Parameter, EditorRequired] public BarChartDataOptions DataOptions { get; set; } = null!;
-	[Parameter, EditorRequired] public IEnumerable<string> XScaleTexts { get; set; } = null!;
-	[Parameter] public BarChartOptions Options { get; set; } = new();
-	[Parameter] public List<MarkupString> HighlighterValues { get; set; } = new();
+	[Parameter]
+	[EditorRequired]
+	public string UniqueName { get; set; } = null!;
+
+	[Parameter]
+	[EditorRequired]
+	public BarDataSet DataSet { get; set; } = null!;
+
+	[Parameter]
+	[EditorRequired]
+	public BarChartDataOptions DataOptions { get; set; } = null!;
+
+	[Parameter]
+	[EditorRequired]
+	public IEnumerable<string> XScaleTexts { get; set; } = null!;
+
+	[Parameter]
+	public BarChartOptions Options { get; set; } = new();
+
+	[Parameter]
+	public List<MarkupString> HighlighterValues { get; set; } = new();
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
