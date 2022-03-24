@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomLeaderboards;
 
-public class GetCustomLeaderboardDdcl
+public record GetCustomLeaderboardDdcl
 {
 	public string SpawnsetName { get; init; } = null!;
 

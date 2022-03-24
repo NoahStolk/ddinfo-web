@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomLeaderboards;
 
-public class GetTotalCustomLeaderboardData
+public record GetTotalCustomLeaderboardData
 {
 	public Dictionary<CustomLeaderboardCategory, int> LeaderboardsPerCategory { get; init; } = new();
 

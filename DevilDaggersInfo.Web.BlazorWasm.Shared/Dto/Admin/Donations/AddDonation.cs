@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Donations;
 
-public class AddDonation
+public record AddDonation
 {
 	public int PlayerId { get; set; }
 

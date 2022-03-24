@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardStatistics;
 
-public class GetLeaderboardStatistics
+public record GetLeaderboardStatistics
 {
 	public DateTime DateTime { get; init; }
 	public bool IsFetched { get; init; }

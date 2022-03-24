@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Tools;
 
-public class GetTool
+public record GetTool
 {
 	public string Name { get; init; } = null!;
 

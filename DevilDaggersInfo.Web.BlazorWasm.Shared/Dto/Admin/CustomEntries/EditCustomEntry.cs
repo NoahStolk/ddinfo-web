@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.CustomEntries;
 
-public class EditCustomEntry
+public record EditCustomEntry
 {
 	public int CustomLeaderboardId { get; init; }
 

@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Spawnsets;
 
-public class GetSpawnsetByHashCustomEntry
+public record GetSpawnsetByHashCustomEntry
 {
 	public int CustomEntryId { get; init; }
 

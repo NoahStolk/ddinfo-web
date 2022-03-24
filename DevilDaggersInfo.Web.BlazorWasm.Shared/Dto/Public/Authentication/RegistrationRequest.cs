@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Authentication;
 
-public class RegistrationRequest
+public record RegistrationRequest
 {
 	[Required]
 	[StringLength(32, MinimumLength = 2)]

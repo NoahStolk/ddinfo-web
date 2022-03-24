@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Mods;
 
-public class GetModDdae
+public record GetModDdae
 {
 	public string Name { get; init; } = null!;
 

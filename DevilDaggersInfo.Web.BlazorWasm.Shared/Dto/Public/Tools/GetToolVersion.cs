@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Tools;
 
-public class GetToolVersion
+public record GetToolVersion
 {
 	public Version VersionNumber { get; init; } = null!;
 

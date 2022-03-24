@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Players;
 
-public class AddPlayer
+public record AddPlayer
 {
 	[Range(1, int.MaxValue)]
 	public int Id { get; set; }

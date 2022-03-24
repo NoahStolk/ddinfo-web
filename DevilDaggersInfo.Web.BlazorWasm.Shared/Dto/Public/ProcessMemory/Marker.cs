@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.ProcessMemory;
 
-public class Marker
+public record Marker
 {
 	public long Value { get; init; }
 }

@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players;
 
-public class GetPlayerHistory
+public record GetPlayerHistory
 {
 	public int? BestRank { get; init; }
 

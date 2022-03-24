@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
 
-public class AddGameData
+public record AddGameData
 {
 	public int[] GemsCollected { get; init; } = Array.Empty<int>();
 	public int[] EnemiesKilled { get; init; } = Array.Empty<int>();

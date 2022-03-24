@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
 
-public class GetCustomLeaderboardStatisticsForPlayer
+public record GetCustomLeaderboardStatisticsForPlayer
 {
 	public CustomLeaderboardCategory CustomLeaderboardCategory { get; init; }
 

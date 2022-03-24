@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Authentication;
 
-public class UpdateNameRequest
+public record UpdateNameRequest
 {
 	public string CurrentName { get; set; } = null!;
 

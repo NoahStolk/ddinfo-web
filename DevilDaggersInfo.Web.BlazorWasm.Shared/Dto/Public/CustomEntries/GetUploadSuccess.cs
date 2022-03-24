@@ -2,7 +2,7 @@ using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
 
-public class GetUploadSuccess
+public record GetUploadSuccess
 {
 	public string Message { get; init; } = string.Empty;
 

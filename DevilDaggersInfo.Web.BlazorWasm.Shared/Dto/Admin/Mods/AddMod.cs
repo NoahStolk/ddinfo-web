@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Mods;
 
-public class AddMod
+public record AddMod
 {
 	[StringLength(64)]
 	public string Name { get; set; } = null!;

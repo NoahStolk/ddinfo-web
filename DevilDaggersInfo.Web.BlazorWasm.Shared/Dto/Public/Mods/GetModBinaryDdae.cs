@@ -2,7 +2,7 @@ using DevilDaggersInfo.Core.Mod.Enums;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Mods;
 
-public class GetModBinaryDdae
+public record GetModBinaryDdae
 {
 	public string Name { get; init; } = null!;
 

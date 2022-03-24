@@ -2,7 +2,7 @@ using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomLeaderboards;
 
-public class GetCustomLeaderboard
+public record GetCustomLeaderboard
 {
 	public int SpawnsetId { get; init; }
 

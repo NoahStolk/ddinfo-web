@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Spawnsets;
 
-public class AddSpawnset
+public record AddSpawnset
 {
 	[Required]
 	public int PlayerId { get; set; }

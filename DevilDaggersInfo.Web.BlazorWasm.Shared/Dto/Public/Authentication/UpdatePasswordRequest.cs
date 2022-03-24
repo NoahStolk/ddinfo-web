@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Authentication;
 
-public class UpdatePasswordRequest
+public record UpdatePasswordRequest
 {
 	[Required]
 	public string CurrentName { get; set; } = null!;

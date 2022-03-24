@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Leaderboards;
 
-public class GetEntry : IGetEntryDto
+public record GetEntry : IGetEntryDto
 {
 	public int Rank { get; init; }
 

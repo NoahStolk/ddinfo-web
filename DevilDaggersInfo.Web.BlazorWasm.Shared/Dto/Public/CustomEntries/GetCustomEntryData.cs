@@ -2,7 +2,7 @@ using DevilDaggersInfo.Core.Spawnset.Enums;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
 
-public class GetCustomEntryData
+public record GetCustomEntryData
 {
 	public int PlayerId { get; init; }
 

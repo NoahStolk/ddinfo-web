@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.CustomLeaderboards;
 
-public class EditCustomLeaderboard
+public record EditCustomLeaderboard
 {
 	[Required]
 	public CustomLeaderboardCategory Category { get; set; }

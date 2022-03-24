@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players;
 
-public class EditPlayerProfile
+public record EditPlayerProfile
 {
 	[StringLength(2)]
 	public string? CountryCode { get; set; }

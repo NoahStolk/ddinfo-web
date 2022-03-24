@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
 
-public class GetCustomEntry
+public record GetCustomEntry
 {
 	public int Id { get; init; }
 

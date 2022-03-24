@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players;
 
-public class GetCommonName
+public record GetCommonName
 {
 	public int Id { get; set; }
 

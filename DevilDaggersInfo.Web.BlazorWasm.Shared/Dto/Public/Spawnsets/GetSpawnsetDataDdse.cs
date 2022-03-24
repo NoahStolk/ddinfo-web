@@ -2,7 +2,7 @@ using DevilDaggersInfo.Core.Spawnset.Enums;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Spawnsets;
 
-public class GetSpawnsetDataDdse
+public record GetSpawnsetDataDdse
 {
 	public int SpawnVersion { get; init; }
 	public int WorldVersion { get; init; }

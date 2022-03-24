@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Mods;
 
-public class GetTotalModData
+public record GetTotalModData
 {
 	public int Count { get; init; }
 }

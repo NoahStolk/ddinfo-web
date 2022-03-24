@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.WorldRecords;
 
-public class GetWorldRecordEntry
+public record GetWorldRecordEntry
 {
 	public DateTime DateTime { get; init; }
 

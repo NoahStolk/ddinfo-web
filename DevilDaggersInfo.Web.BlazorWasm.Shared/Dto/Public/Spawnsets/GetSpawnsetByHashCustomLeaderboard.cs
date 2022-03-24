@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Spawnsets;
 
-public class GetSpawnsetByHashCustomLeaderboard
+public record GetSpawnsetByHashCustomLeaderboard
 {
 	public int CustomLeaderboardId { get; init; }
 

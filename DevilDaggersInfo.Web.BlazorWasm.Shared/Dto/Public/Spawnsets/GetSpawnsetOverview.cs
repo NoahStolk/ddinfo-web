@@ -2,7 +2,7 @@ using DevilDaggersInfo.Core.Spawnset.Enums;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Spawnsets;
 
-public class GetSpawnsetOverview
+public record GetSpawnsetOverview
 {
 	public int Id { get; init; }
 

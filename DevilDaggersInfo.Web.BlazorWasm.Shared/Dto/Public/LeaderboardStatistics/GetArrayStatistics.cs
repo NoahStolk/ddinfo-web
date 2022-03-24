@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardStatistics;
 
-public class GetArrayStatistics
+public record GetArrayStatistics
 {
 	public GetArrayStatistic Times { get; init; } = null!;
 	public GetArrayStatistic Kills { get; init; } = null!;

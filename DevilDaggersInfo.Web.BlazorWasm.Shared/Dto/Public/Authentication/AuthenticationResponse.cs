@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Authentication;
 
-public class AuthenticationResponse
+public record AuthenticationResponse
 {
 	public int Id { get; init; }
 

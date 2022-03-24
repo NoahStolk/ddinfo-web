@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Players;
 
-public class GetPlayerForOverview : IAdminOverviewGetDto
+public record GetPlayerForOverview : IAdminOverviewGetDto
 {
 	public int Id { get; init; }
 

@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomLeaderboards;
 
-public class GetCustomLeaderboardDaggers
+public record GetCustomLeaderboardDaggers
 {
 	public double Bronze { get; init; }
 

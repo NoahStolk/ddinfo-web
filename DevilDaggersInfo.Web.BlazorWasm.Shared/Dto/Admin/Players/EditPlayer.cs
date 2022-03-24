@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Players;
 
-public class EditPlayer
+public record EditPlayer
 {
 	[StringLength(32)]
 	public string? CommonName { get; set; }

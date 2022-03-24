@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players;
 
-public class GetPlayerSettings
+public record GetPlayerSettings
 {
 	public int? Dpi { get; init; }
 

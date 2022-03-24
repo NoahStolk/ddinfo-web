@@ -2,7 +2,7 @@ using DevilDaggersInfo.Core.Wiki.Enums;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.WorldRecords;
 
-public class GetWorldRecord
+public record GetWorldRecord
 {
 	public DateTime DateTime { get; init; }
 	public GetWorldRecordEntry Entry { get; init; } = null!;

@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players;
 
-public class GetPlayerProfile
+public record GetPlayerProfile
 {
 	public string? CountryCode { get; init; }
 

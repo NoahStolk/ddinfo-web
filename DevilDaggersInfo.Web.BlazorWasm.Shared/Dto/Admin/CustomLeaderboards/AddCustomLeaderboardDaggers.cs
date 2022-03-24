@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.CustomLeaderboards;
 
-public class AddCustomLeaderboardDaggers
+public record AddCustomLeaderboardDaggers
 {
 	public double Bronze { get; set; }
 

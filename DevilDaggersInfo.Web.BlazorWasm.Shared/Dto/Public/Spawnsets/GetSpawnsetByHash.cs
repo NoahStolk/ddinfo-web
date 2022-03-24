@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Spawnsets;
 
-public class GetSpawnsetByHash
+public record GetSpawnsetByHash
 {
 	public int SpawnsetId { get; init; }
 
