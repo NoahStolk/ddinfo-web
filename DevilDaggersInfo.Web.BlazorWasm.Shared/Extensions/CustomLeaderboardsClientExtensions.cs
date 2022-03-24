@@ -8,4 +8,11 @@ public static class CustomLeaderboardsClientExtensions
 		"ddstats-rust" => CustomLeaderboardsClient.DdstatsRust,
 		_ => throw new Exception($"Unknown CustomLeaderboardsClient '{clientString}'."),
 	};
+
+	public static string ToDisplayString(this CustomLeaderboardsClient client) => client switch
+	{
+		CustomLeaderboardsClient.DevilDaggersCustomLeaderboards => "DDCL",
+		CustomLeaderboardsClient.DdstatsRust => "ddstats-rust",
+		_ => throw new Exception($"Unknown CustomLeaderboardsClient '{client}'."),
+	};
 }
