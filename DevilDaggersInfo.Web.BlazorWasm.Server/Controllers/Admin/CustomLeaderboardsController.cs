@@ -127,6 +127,9 @@ public class CustomLeaderboardsController : ControllerBase
 		if (customLeaderboard == null)
 			return NotFound();
 
+		if (customLeaderboard.Category != editCustomLeaderboard.Category && _dbContext.CustomEntries.Any(ce => ce.CustomLeaderboardId == id))
+			return BadRequest("Cannot change category for custom leaderboard with scores.");
+
 		try
 		{
 			_validatorService.ValidateCustomLeaderboard(customLeaderboard.SpawnsetId, editCustomLeaderboard.Category, editCustomLeaderboard.Daggers, editCustomLeaderboard.IsFeatured);
