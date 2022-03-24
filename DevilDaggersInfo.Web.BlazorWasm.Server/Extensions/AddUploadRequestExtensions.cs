@@ -4,6 +4,7 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.Extensions;
 
 public static class AddUploadRequestExtensions
 {
+	// TODO: Move to base library and re-use in DDCL.
 	public static string CreateValidation(this AddUploadRequest uploadRequest)
 	{
 		return string.Join(

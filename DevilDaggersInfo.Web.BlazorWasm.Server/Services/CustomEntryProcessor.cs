@@ -386,6 +386,7 @@ public class CustomEntryProcessor
 		};
 	}
 
+	// TODO: Move to new Core.Replay library.
 	private void ValidateReplayBuffer(AddUploadRequest uploadRequest, string spawnsetName)
 	{
 		using MemoryStream ms = new(uploadRequest.ReplayData);
@@ -455,6 +456,7 @@ public class CustomEntryProcessor
 			.ToListAsync();
 	}
 
+	// TODO: Move to LogContainerService.
 	private async Task TrySendLeaderboardMessage(CustomLeaderboardEntity customLeaderboard, string message, int rank, int totalPlayers, int time)
 	{
 		try
