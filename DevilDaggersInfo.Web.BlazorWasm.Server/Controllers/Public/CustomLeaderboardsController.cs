@@ -1,8 +1,10 @@
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHashes;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Entities.Views;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomLeaderboards;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Public;
+using System.Linq;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
 
@@ -45,7 +47,7 @@ public class CustomLeaderboardsController : ControllerBase
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	public ActionResult<Page<GetCustomLeaderboardOverview>> GetCustomLeaderboards(
+	public async Task<ActionResult<Page<GetCustomLeaderboardOverview>>> GetCustomLeaderboards(
 		CustomLeaderboardCategory category,
 		string? spawnsetFilter = null,
 		string? authorFilter = null,
@@ -73,11 +75,26 @@ public class CustomLeaderboardsController : ControllerBase
 
 		// Query custom entries for world record and amount of players.
 		List<int> customLeaderboardIds = customLeaderboards.ConvertAll(cl => cl.Id);
-		var customEntries = _dbContext.CustomEntries
+		List<CustomEntryBase> customEntries = await _dbContext.CustomEntries
 			.AsNoTracking()
 			.Where(ce => customLeaderboardIds.Contains(ce.CustomLeaderboardId))
 			.Include(ce => ce.Player)
-			.Select(ce => new { ce.Time, ce.Player.PlayerName, ce.CustomLeaderboardId, ce.SubmitDate });
+			.Select(ce => new CustomEntryBase(ce.Time, ce.SubmitDate, ce.CustomLeaderboardId, ce.Player.PlayerName))
+			.ToListAsync();
+
+		// Determine world records.
+		customEntries = customEntries.Sort(category).ToList();
+
+		// Map custom leaderboards with world record data.
+		List<CustomLeaderboardWorldRecord> customLeaderboardWrs = customLeaderboards.ConvertAll(cl =>
+		{
+			CustomEntryBase? wr = customEntries.Find(clwr => clwr.CustomLeaderboardId == cl.Id);
+			return new CustomLeaderboardWorldRecord(
+				cl,
+				wr?.Time,
+				null, // We don't return the ID from this endpoint.
+				wr?.PlayerName);
+		});
 
 		// Build dictionary for amount of players.
 		Dictionary<int, int> customEntryCountByCustomLeaderboardId = new();
@@ -105,20 +122,6 @@ public class CustomLeaderboardsController : ControllerBase
 			CustomLeaderboardSorting.Submits => customLeaderboards.OrderBy(cl => cl.TotalRunsSubmitted, ascending),
 			_ => customLeaderboards.OrderBy(cl => cl.Id, ascending),
 		}).ToList();
-
-		// Determine world records.
-		if (category.IsAscending())
-			customEntries = customEntries.OrderBy(wr => wr.Time).ThenBy(wr => wr.SubmitDate);
-		else
-			customEntries = customEntries.OrderByDescending(wr => wr.Time).ThenBy(wr => wr.SubmitDate);
-
-		// Map custom leaderboards with world record data.
-		List<CustomLeaderboardWorldRecord> customLeaderboardWrs = customLeaderboards
-			.ConvertAll(cl => new CustomLeaderboardWorldRecord(
-				cl,
-				customEntries.FirstOrDefault(clwr => clwr.CustomLeaderboardId == cl.Id)?.Time,
-				null, // We don't return the ID from this endpoint.
-				customEntries.FirstOrDefault(clwr => clwr.CustomLeaderboardId == cl.Id)?.PlayerName));
 
 		// Apply sorting for world records.
 		if (sortBy == CustomLeaderboardSorting.WorldRecord)
