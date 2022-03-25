@@ -105,38 +105,24 @@ public class CustomLeaderboardsController : ControllerBase
 				customEntryCountByCustomLeaderboardId.Add(customLeaderboardId, 1);
 		}
 
-		// Apply regular sorting.
-		customLeaderboards = (sortBy switch
+		customLeaderboardWrs = (sortBy switch
 		{
-			CustomLeaderboardSorting.AuthorName => customLeaderboards.OrderBy(cl => cl.Spawnset.Player.PlayerName, ascending),
-			CustomLeaderboardSorting.DateLastPlayed => customLeaderboards.OrderBy(cl => cl.DateLastPlayed, ascending),
-			CustomLeaderboardSorting.SpawnsetName => customLeaderboards.OrderBy(cl => cl.Spawnset.Name, ascending),
-			CustomLeaderboardSorting.TimeBronze => customLeaderboards.OrderBy(cl => cl.IsFeatured ? cl.TimeBronze : 0, ascending),
-			CustomLeaderboardSorting.TimeSilver => customLeaderboards.OrderBy(cl => cl.IsFeatured ? cl.TimeSilver : 0, ascending),
-			CustomLeaderboardSorting.TimeGolden => customLeaderboards.OrderBy(cl => cl.IsFeatured ? cl.TimeGolden : 0, ascending),
-			CustomLeaderboardSorting.TimeDevil => customLeaderboards.OrderBy(cl => cl.IsFeatured ? cl.TimeDevil : 0, ascending),
-			CustomLeaderboardSorting.TimeLeviathan => customLeaderboards.OrderBy(cl => cl.IsFeatured ? cl.TimeLeviathan : 0, ascending),
-			CustomLeaderboardSorting.DateCreated => customLeaderboards.OrderBy(cl => cl.DateCreated, ascending),
-			CustomLeaderboardSorting.Players => customLeaderboards.OrderBy(cl => customEntryCountByCustomLeaderboardId.ContainsKey(cl.Id) ? customEntryCountByCustomLeaderboardId[cl.Id] : 0, ascending),
-			CustomLeaderboardSorting.Submits => customLeaderboards.OrderBy(cl => cl.TotalRunsSubmitted, ascending),
-			_ => customLeaderboards.OrderBy(cl => cl.Id, ascending),
+			CustomLeaderboardSorting.AuthorName => customLeaderboardWrs.OrderBy(cl => cl.CustomLeaderboard.Spawnset.Player.PlayerName, ascending),
+			CustomLeaderboardSorting.DateLastPlayed => customLeaderboardWrs.OrderBy(cl => cl.CustomLeaderboard.DateLastPlayed, ascending),
+			CustomLeaderboardSorting.SpawnsetName => customLeaderboardWrs.OrderBy(cl => cl.CustomLeaderboard.Spawnset.Name, ascending),
+			CustomLeaderboardSorting.TimeBronze => customLeaderboardWrs.OrderBy(cl => cl.CustomLeaderboard.IsFeatured ? cl.CustomLeaderboard.TimeBronze : 0, ascending),
+			CustomLeaderboardSorting.TimeSilver => customLeaderboardWrs.OrderBy(cl => cl.CustomLeaderboard.IsFeatured ? cl.CustomLeaderboard.TimeSilver : 0, ascending),
+			CustomLeaderboardSorting.TimeGolden => customLeaderboardWrs.OrderBy(cl => cl.CustomLeaderboard.IsFeatured ? cl.CustomLeaderboard.TimeGolden : 0, ascending),
+			CustomLeaderboardSorting.TimeDevil => customLeaderboardWrs.OrderBy(cl => cl.CustomLeaderboard.IsFeatured ? cl.CustomLeaderboard.TimeDevil : 0, ascending),
+			CustomLeaderboardSorting.TimeLeviathan => customLeaderboardWrs.OrderBy(cl => cl.CustomLeaderboard.IsFeatured ? cl.CustomLeaderboard.TimeLeviathan : 0, ascending),
+			CustomLeaderboardSorting.DateCreated => customLeaderboardWrs.OrderBy(cl => cl.CustomLeaderboard.DateCreated, ascending),
+			CustomLeaderboardSorting.Players => customLeaderboardWrs.OrderBy(cl => customEntryCountByCustomLeaderboardId.ContainsKey(cl.CustomLeaderboard.Id) ? customEntryCountByCustomLeaderboardId[cl.CustomLeaderboard.Id] : 0, ascending),
+			CustomLeaderboardSorting.Submits => customLeaderboardWrs.OrderBy(cl => cl.CustomLeaderboard.TotalRunsSubmitted, ascending),
+			CustomLeaderboardSorting.WorldRecord => customLeaderboardWrs.OrderBy(cl => cl.WorldRecord, ascending),
+			CustomLeaderboardSorting.TopPlayer => customLeaderboardWrs.OrderBy(cl => cl.TopPlayerName, ascending),
+			_ => customLeaderboardWrs.OrderBy(cl => cl.CustomLeaderboard.Id, ascending),
 		}).ToList();
 
-		// Apply sorting for world records.
-		if (sortBy == CustomLeaderboardSorting.WorldRecord)
-		{
-			customLeaderboardWrs = ascending
-				? customLeaderboardWrs.OrderBy(clwr => clwr.WorldRecord).ToList()
-				: customLeaderboardWrs.OrderByDescending(clwr => clwr.WorldRecord).ToList();
-		}
-		else if (sortBy == CustomLeaderboardSorting.TopPlayer)
-		{
-			customLeaderboardWrs = ascending
-				? customLeaderboardWrs.OrderBy(clwr => clwr.TopPlayerName).ToList()
-				: customLeaderboardWrs.OrderByDescending(clwr => clwr.TopPlayerName).ToList();
-		}
-
-		// Apply paging.
 		int totalCustomLeaderboards = customLeaderboards.Count;
 		int lastPageIndex = totalCustomLeaderboards / pageSize;
 		customLeaderboardWrs = customLeaderboardWrs
