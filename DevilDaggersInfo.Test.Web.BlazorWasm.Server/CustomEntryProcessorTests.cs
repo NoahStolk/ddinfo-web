@@ -96,6 +96,10 @@ public class CustomEntryProcessorTests
 		AddUploadRequest uploadRequest = new()
 		{
 			TimeInSeconds = time,
+			TimeAsBytes = BitConverter.GetBytes(time),
+			LevelUpTime2AsBytes = BitConverter.GetBytes(0),
+			LevelUpTime3AsBytes = BitConverter.GetBytes(0),
+			LevelUpTime4AsBytes = BitConverter.GetBytes(0),
 			PlayerId = playerId,
 			ClientVersion = clientVersion,
 			SurvivalHashMd5 = _v3Hash,
@@ -104,8 +108,9 @@ public class CustomEntryProcessorTests
 			Status = status,
 			ReplayData = _fakeReplay,
 			GameData = new(),
+			ValidationVersion = 2,
 		};
-		uploadRequest = uploadRequest with { Validation = HttpUtility.HtmlEncode(_encryptionWrapper.EncryptAndEncode(uploadRequest.CreateValidationV1())) };
+		uploadRequest = uploadRequest with { Validation = HttpUtility.HtmlEncode(_encryptionWrapper.EncryptAndEncode(uploadRequest.CreateValidationV2())) };
 		return uploadRequest;
 	}
 
