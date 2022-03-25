@@ -1,5 +1,3 @@
-using DevilDaggersInfo.Core.Extensions;
-
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
 
 public record AddUploadRequest
@@ -15,15 +13,11 @@ public record AddUploadRequest
 
 	public int ReplayPlayerId { get; init; }
 
-	[Obsolete("Use TimeInSeconds instead.")]
-	public int Time { get; init; }
-
 	public double TimeInSeconds { get; init; }
 
-	// TODO: Make required when validation V2 is fully in use.
 	[MaxLength(4)]
 	[MinLength(4)]
-	public byte[]? TimeAsBytes { get; init; }
+	public byte[] TimeAsBytes { get; init; } = null!;
 
 	public int GemsCollected { get; init; }
 
@@ -34,12 +28,6 @@ public record AddUploadRequest
 	public int DaggersHit { get; init; }
 
 	public int EnemiesAlive { get; init; }
-
-	[Obsolete("Use HomingStored instead.")]
-	public int HomingDaggers { get; set; }
-
-	[Obsolete("Use HomingEaten instead.")]
-	public int HomingDaggersEaten { get; init; }
 
 	public int HomingStored { get; set; } // Use set to get rid of negative values.
 
@@ -53,35 +41,23 @@ public record AddUploadRequest
 
 	public byte DeathType { get; init; }
 
-	[Obsolete("Use LevelUpTime2InSeconds instead.")]
-	public int LevelUpTime2 { get; init; }
-
-	[Obsolete("Use LevelUpTime3InSeconds instead.")]
-	public int LevelUpTime3 { get; init; }
-
-	[Obsolete("Use LevelUpTime4InSeconds instead.")]
-	public int LevelUpTime4 { get; init; }
-
 	public double LevelUpTime2InSeconds { get; init; }
 
 	public double LevelUpTime3InSeconds { get; init; }
 
 	public double LevelUpTime4InSeconds { get; init; }
 
-	// TODO: Make required when validation V2 is fully in use.
 	[MaxLength(4)]
 	[MinLength(4)]
-	public byte[]? LevelUpTime2AsBytes { get; init; }
+	public byte[] LevelUpTime2AsBytes { get; init; } = null!;
 
-	// TODO: Make required when validation V2 is fully in use.
 	[MaxLength(4)]
 	[MinLength(4)]
-	public byte[]? LevelUpTime3AsBytes { get; init; }
+	public byte[] LevelUpTime3AsBytes { get; init; } = null!;
 
-	// TODO: Make required when validation V2 is fully in use.
 	[MaxLength(4)]
 	[MinLength(4)]
-	public byte[]? LevelUpTime4AsBytes { get; init; }
+	public byte[] LevelUpTime4AsBytes { get; init; } = null!;
 
 	[StringLength(16)]
 	public string ClientVersion { get; init; } = null!;
@@ -111,16 +87,4 @@ public record AddUploadRequest
 	public byte[] ReplayData { get; init; } = null!;
 
 	public int Status { get; set; }
-
-	public int GetHomingStored() => HomingStored == 0 ? HomingDaggers : HomingStored;
-
-	public int GetHomingEaten() => HomingEaten == 0 ? HomingDaggersEaten : HomingEaten;
-
-	public int GetTime() => TimeInSeconds == 0 ? Time : TimeInSeconds.To10thMilliTime();
-
-	public int GetLevelUpTime2() => LevelUpTime2InSeconds == 0 ? LevelUpTime2 : LevelUpTime2InSeconds.To10thMilliTime();
-
-	public int GetLevelUpTime3() => LevelUpTime3InSeconds == 0 ? LevelUpTime3 : LevelUpTime3InSeconds.To10thMilliTime();
-
-	public int GetLevelUpTime4() => LevelUpTime4InSeconds == 0 ? LevelUpTime4 : LevelUpTime4InSeconds.To10thMilliTime();
 }

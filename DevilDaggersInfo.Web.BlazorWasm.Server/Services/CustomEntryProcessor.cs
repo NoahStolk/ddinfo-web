@@ -37,91 +37,6 @@ public class CustomEntryProcessor
 		_stopwatch = Stopwatch.StartNew();
 	}
 
-	private void ValidateV1(AddUploadRequest uploadRequest)
-	{
-		string expected = uploadRequest.CreateValidationV1();
-		string actual;
-		try
-		{
-			actual = _encryptionWrapper.DecodeAndDecrypt(HttpUtility.HtmlDecode(uploadRequest.Validation));
-		}
-		catch (Exception ex)
-		{
-			_logger.LogError(ex, "Could not decrypt validation '{validation}'.", uploadRequest.Validation);
-			throw LogAndCreateValidationException(uploadRequest, $"Could not decrypt validation '{uploadRequest.Validation}'.", null, "rotating_light");
-		}
-
-		if (actual != expected)
-		{
-			const int floatMarginIn10thMillis = 5;
-			string[] values = actual.Split(';');
-			if (values.Length != 16)
-				throw InvalidValidation($"{values.Length} values instead of 16.");
-
-			if (!int.TryParse(values[0], out int playerId) || playerId != uploadRequest.PlayerId)
-				throw InvalidValidation($"{nameof(uploadRequest.PlayerId)} {playerId} does not match {uploadRequest.PlayerId}.");
-
-			if (!int.TryParse(values[1], out int time) || time < uploadRequest.GetTime() - floatMarginIn10thMillis || time > uploadRequest.GetTime() + floatMarginIn10thMillis)
-				throw InvalidValidation($"{nameof(uploadRequest.TimeInSeconds)} {time} does not match {uploadRequest.GetTime()}.");
-
-			if (!int.TryParse(values[2], out int gemsCollected) || gemsCollected != uploadRequest.GemsCollected)
-				throw InvalidValidation($"{nameof(uploadRequest.GemsCollected)} {gemsCollected} does not match {uploadRequest.GemsCollected}.");
-
-			if (!int.TryParse(values[3], out int gemsDespawned) || gemsDespawned != uploadRequest.GemsDespawned)
-				throw InvalidValidation($"{nameof(uploadRequest.GemsDespawned)} {gemsDespawned} does not match {uploadRequest.GemsDespawned}.");
-
-			if (!int.TryParse(values[4], out int gemsEaten) || gemsEaten != uploadRequest.GemsEaten)
-				throw InvalidValidation($"{nameof(uploadRequest.GemsEaten)} {gemsEaten} does not match {uploadRequest.GemsEaten}.");
-
-			if (!int.TryParse(values[5], out int gemsTotal) || gemsTotal != uploadRequest.GemsTotal)
-				throw InvalidValidation($"{nameof(uploadRequest.GemsTotal)} {gemsTotal} does not match {uploadRequest.GemsTotal}.");
-
-			if (!int.TryParse(values[6], out int enemiesKilled) || enemiesKilled != uploadRequest.EnemiesKilled)
-				throw InvalidValidation($"{nameof(uploadRequest.EnemiesKilled)} {enemiesKilled} does not match {uploadRequest.EnemiesKilled}.");
-
-			if (!byte.TryParse(values[7], out byte deathType) || deathType != uploadRequest.DeathType)
-				throw InvalidValidation($"{nameof(uploadRequest.DeathType)} {deathType} does not match {uploadRequest.DeathType}.");
-
-			if (!int.TryParse(values[8], out int daggersHit) || daggersHit != uploadRequest.DaggersHit)
-				throw InvalidValidation($"{nameof(uploadRequest.DaggersHit)} {daggersHit} does not match {uploadRequest.DaggersHit}.");
-
-			if (!int.TryParse(values[9], out int daggersFired) || daggersFired != uploadRequest.DaggersFired)
-				throw InvalidValidation($"{nameof(uploadRequest.DaggersFired)} {daggersFired} does not match {uploadRequest.DaggersFired}.");
-
-			if (!int.TryParse(values[10], out int enemiesAlive) || enemiesAlive != uploadRequest.EnemiesAlive)
-				throw InvalidValidation($"{nameof(uploadRequest.EnemiesAlive)} {enemiesAlive} does not match {uploadRequest.EnemiesAlive}.");
-
-			if (!int.TryParse(values[11], out int homingStored) || homingStored != uploadRequest.GetHomingStored())
-				throw InvalidValidation($"{nameof(uploadRequest.HomingStored)} {homingStored} does not match {uploadRequest.GetHomingStored()}.");
-
-			if (!int.TryParse(values[12], out int homingEaten) || homingEaten != uploadRequest.GetHomingEaten())
-				throw InvalidValidation($"{nameof(uploadRequest.HomingEaten)} {homingEaten} does not match {uploadRequest.GetHomingEaten()}.");
-
-			if (!int.TryParse(values[13], out int isReplay) || isReplay != (uploadRequest.IsReplay ? 1 : 0))
-				throw InvalidValidation($"{nameof(uploadRequest.IsReplay)} {isReplay} does not match {uploadRequest.IsReplay}.");
-
-			if (values[14] != uploadRequest.SurvivalHashMd5.ByteArrayToHexString())
-				throw InvalidValidation($"{nameof(uploadRequest.SurvivalHashMd5)} {values[14]} does not match {uploadRequest.SurvivalHashMd5.ByteArrayToHexString()}.");
-
-			string[] levelUpTimes = values[15].Split(',');
-			if (levelUpTimes.Length != 3)
-				throw InvalidValidation($"{levelUpTimes.Length} values instead of 3.");
-
-			if (!int.TryParse(levelUpTimes[0], out int levelUpTime2) || levelUpTime2 < uploadRequest.GetLevelUpTime2() - floatMarginIn10thMillis || levelUpTime2 > uploadRequest.GetLevelUpTime2() + floatMarginIn10thMillis)
-				throw InvalidValidation($"{nameof(uploadRequest.LevelUpTime2InSeconds)} {levelUpTime2} does not match {uploadRequest.GetLevelUpTime2()}.");
-
-			if (!int.TryParse(levelUpTimes[1], out int levelUpTime3) || levelUpTime3 < uploadRequest.GetLevelUpTime3() - floatMarginIn10thMillis || levelUpTime3 > uploadRequest.GetLevelUpTime3() + floatMarginIn10thMillis)
-				throw InvalidValidation($"{nameof(uploadRequest.LevelUpTime3InSeconds)} {levelUpTime2} does not match {uploadRequest.GetLevelUpTime3()}.");
-
-			if (!int.TryParse(levelUpTimes[2], out int levelUpTime4) || levelUpTime4 < uploadRequest.GetLevelUpTime4() - floatMarginIn10thMillis || levelUpTime4 > uploadRequest.GetLevelUpTime4() + floatMarginIn10thMillis)
-				throw InvalidValidation($"{nameof(uploadRequest.LevelUpTime4InSeconds)} {levelUpTime2} does not match {uploadRequest.GetLevelUpTime4()}.");
-
-			_logger.LogWarning("Validation {actual} did not exactly match {expected} but was accepted anyway.", actual, expected);
-
-			CustomEntryValidationException InvalidValidation(string additionalInfo) => LogAndCreateValidationException(uploadRequest, $"Invalid submission for {uploadRequest.Validation}.\n`Expected: {expected}`\n`Actual:   {actual}`\n{additionalInfo}", null, "rotating_light");
-		}
-	}
-
 	private void ValidateV2(AddUploadRequest uploadRequest)
 	{
 		string expected = uploadRequest.CreateValidationV2();
@@ -143,9 +58,7 @@ public class CustomEntryProcessor
 	public async Task<GetUploadSuccess> ProcessUploadRequestAsync(AddUploadRequest uploadRequest)
 	{
 		// Check if the submission actually came from an allowed program.
-		if (uploadRequest.ValidationVersion < 2)
-			ValidateV1(uploadRequest);
-		else if (uploadRequest.ValidationVersion == 2)
+		if (uploadRequest.ValidationVersion == 2)
 			ValidateV2(uploadRequest);
 		else
 			throw LogAndCreateValidationException(uploadRequest, $"Validation version '{uploadRequest.ValidationVersion}' is not implemented.");
@@ -211,8 +124,6 @@ public class CustomEntryProcessor
 			throw LogAndCreateValidationException(uploadRequest, $"Counted {uploadRequest.DaggersHit} dagger {(uploadRequest.DaggersHit == 1 ? "hit" : "hits")}. Can't submit score to {CustomLeaderboardCategory.Pacifist} leaderboard.", spawnsetName);
 
 		// Make sure HomingDaggers is not negative (happens rarely as a bug, and also for spawnsets with homing disabled which we don't want to display values for anyway).
-		uploadRequest.HomingDaggers = Math.Max(0, uploadRequest.HomingDaggers);
-		uploadRequest.GameData.HomingDaggers = Array.ConvertAll(uploadRequest.GameData.HomingDaggers, i => Math.Max(0, i));
 		uploadRequest.HomingStored = Math.Max(0, uploadRequest.HomingStored);
 		uploadRequest.GameData.HomingStored = Array.ConvertAll(uploadRequest.GameData.HomingStored, i => Math.Max(0, i));
 
@@ -221,10 +132,10 @@ public class CustomEntryProcessor
 			return await ProcessNewScoreAsync(uploadRequest, customLeaderboard, spawnsetName);
 
 		// Treat identical replays as no highscore.
-		int requestTimeAsInt = uploadRequest.GetTime();
+		int requestTimeAsInt = uploadRequest.TimeInSeconds.To10thMilliTime();
 		if (uploadRequest.IsReplay && IsReplayTimeAlmostTheSame(requestTimeAsInt, customEntry.Time) && await IsReplayFileTheSame(customEntry.Id, uploadRequest.ReplayData))
 		{
-			_logger.LogWarning("Score submission replay time was modified because of identical replay (database: {originalTime} - request: {replayTime}).", FormatTimeString(customEntry.Time), FormatTimeString(requestTimeAsInt));
+			_logger.LogWarning("Score submission replay time was modified because of identical replay (database: {originalTime} - request: {replayTime}).", FormatTimeString(customEntry.Time.ToSecondsTime()), FormatTimeString(uploadRequest.TimeInSeconds));
 			return await ProcessNoHighscoreAsync(uploadRequest, customLeaderboard, spawnsetName);
 		}
 
@@ -242,7 +153,7 @@ public class CustomEntryProcessor
 		CustomEntryEntity newCustomEntry = new()
 		{
 			PlayerId = uploadRequest.PlayerId,
-			Time = uploadRequest.GetTime(),
+			Time = uploadRequest.TimeInSeconds.To10thMilliTime(),
 			GemsCollected = uploadRequest.GemsCollected,
 			GemsDespawned = uploadRequest.GemsDespawned,
 			GemsEaten = uploadRequest.GemsEaten,
@@ -252,11 +163,11 @@ public class CustomEntryProcessor
 			DaggersHit = uploadRequest.DaggersHit,
 			DaggersFired = uploadRequest.DaggersFired,
 			EnemiesAlive = uploadRequest.EnemiesAlive,
-			HomingStored = uploadRequest.GetHomingStored(),
-			HomingEaten = uploadRequest.GetHomingEaten(),
-			LevelUpTime2 = uploadRequest.GetLevelUpTime2(),
-			LevelUpTime3 = uploadRequest.GetLevelUpTime3(),
-			LevelUpTime4 = uploadRequest.GetLevelUpTime4(),
+			HomingStored = uploadRequest.HomingStored,
+			HomingEaten = uploadRequest.HomingEaten,
+			LevelUpTime2 = uploadRequest.LevelUpTime2InSeconds.To10thMilliTime(),
+			LevelUpTime3 = uploadRequest.LevelUpTime3InSeconds.To10thMilliTime(),
+			LevelUpTime4 = uploadRequest.LevelUpTime4InSeconds.To10thMilliTime(),
 			SubmitDate = DateTime.UtcNow,
 			ClientVersion = uploadRequest.ClientVersion,
 			Client = uploadRequest.Client.GetClientFromString(),
@@ -356,21 +267,21 @@ public class CustomEntryProcessor
 		int oldLevelUpTime4 = customEntry.LevelUpTime4;
 
 		// Update score, chart data, stats, and replay.
-		customEntry.Time = uploadRequest.GetTime();
+		customEntry.Time = uploadRequest.TimeInSeconds.To10thMilliTime();
 		customEntry.EnemiesKilled = uploadRequest.EnemiesKilled;
 		customEntry.GemsCollected = uploadRequest.GemsCollected;
 		customEntry.DaggersFired = uploadRequest.DaggersFired;
 		customEntry.DaggersHit = uploadRequest.DaggersHit;
 		customEntry.EnemiesAlive = uploadRequest.EnemiesAlive;
-		customEntry.HomingStored = uploadRequest.GetHomingStored();
-		customEntry.HomingEaten = uploadRequest.GetHomingEaten();
+		customEntry.HomingStored = uploadRequest.HomingStored;
+		customEntry.HomingEaten = uploadRequest.HomingEaten;
 		customEntry.GemsDespawned = uploadRequest.GemsDespawned;
 		customEntry.GemsEaten = uploadRequest.GemsEaten;
 		customEntry.GemsTotal = uploadRequest.GemsTotal;
 		customEntry.DeathType = uploadRequest.DeathType;
-		customEntry.LevelUpTime2 = uploadRequest.GetLevelUpTime2();
-		customEntry.LevelUpTime3 = uploadRequest.GetLevelUpTime3();
-		customEntry.LevelUpTime4 = uploadRequest.GetLevelUpTime4();
+		customEntry.LevelUpTime2 = uploadRequest.LevelUpTime2InSeconds.To10thMilliTime();
+		customEntry.LevelUpTime3 = uploadRequest.LevelUpTime3InSeconds.To10thMilliTime();
+		customEntry.LevelUpTime4 = uploadRequest.LevelUpTime4InSeconds.To10thMilliTime();
 		customEntry.SubmitDate = DateTime.UtcNow;
 		customEntry.ClientVersion = uploadRequest.ClientVersion;
 		customEntry.Client = uploadRequest.Client.GetClientFromString();
@@ -413,7 +324,7 @@ public class CustomEntryProcessor
 		int levelUpTime3Diff = customEntry.LevelUpTime3 - oldLevelUpTime3;
 		int levelUpTime4Diff = customEntry.LevelUpTime4 - oldLevelUpTime4;
 
-		await TrySendLeaderboardMessage(customLeaderboard, $"`{uploadRequest.PlayerName}` just got {FormatTimeString(uploadRequest.GetTime())} seconds on the `{spawnsetName}` leaderboard, beating their previous highscore of {FormatTimeString(uploadRequest.GetTime() - timeDiff)} by {FormatTimeString(Math.Abs(timeDiff))} seconds!", rank, entries.Count, uploadRequest.GetTime());
+		await TrySendLeaderboardMessage(customLeaderboard, $"`{uploadRequest.PlayerName}` just got {FormatTimeString(uploadRequest.TimeInSeconds)} seconds on the `{spawnsetName}` leaderboard, beating their previous highscore of {FormatTimeString(uploadRequest.TimeInSeconds - timeDiff.ToSecondsTime())} by {FormatTimeString(Math.Abs(timeDiff.ToSecondsTime()))} seconds!", rank, entries.Count, uploadRequest.TimeInSeconds.To10thMilliTime());
 		Log(uploadRequest, spawnsetName);
 
 		List<int> replayIds = GetExistingReplayIds(customLeaderboard);
@@ -550,7 +461,7 @@ public class CustomEntryProcessor
 				Color = (customLeaderboard.GetDaggerFromTime(time) ?? CustomLeaderboardDagger.Silver).GetDiscordColor(),
 				Url = $"https://devildaggers.info/custom/leaderboard/{customLeaderboard.Id}",
 			};
-			builder.AddFieldObject("Score", FormatTimeString(time), true);
+			builder.AddFieldObject("Score", FormatTimeString(time.ToSecondsTime()), true);
 			builder.AddFieldObject("Rank", $"{rank}/{totalPlayers}", true);
 
 			DiscordChannel? discordChannel = DiscordServerConstants.GetDiscordChannel(Channel.CustomLeaderboards, _environment);
@@ -565,8 +476,8 @@ public class CustomEntryProcessor
 		}
 	}
 
-	private static string FormatTimeString(int time)
-		=> time.ToSecondsTime().ToString(FormatUtils.TimeFormat);
+	private static string FormatTimeString(double time)
+		=> time.ToString(FormatUtils.TimeFormat);
 
 	private static string GetSpawnsetHashOrName(byte[] spawnsetHash, string? spawnsetName)
 		=> string.IsNullOrEmpty(spawnsetName) ? spawnsetHash.ByteArrayToHexString() : spawnsetName;
@@ -585,7 +496,7 @@ public class CustomEntryProcessor
 		if (!string.IsNullOrEmpty(errorMessage))
 			_logContainerService.AddClLog(false, $":{errorEmoteNameOverride ?? "warning"}: `{TimeUtils.TicksToTimeString(_stopwatch.ElapsedTicks)}` Upload failed for user `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`. {requestInfo}\n**{errorMessage}**");
 		else
-			_logContainerService.AddClLog(true, $":white_check_mark: `{TimeUtils.TicksToTimeString(_stopwatch.ElapsedTicks)}` `{uploadRequest.PlayerName}` just submitted a score of `{FormatTimeString(uploadRequest.GetTime())}` to `{spawnsetIdentification}`. {requestInfo}");
+			_logContainerService.AddClLog(true, $":white_check_mark: `{TimeUtils.TicksToTimeString(_stopwatch.ElapsedTicks)}` `{uploadRequest.PlayerName}` just submitted a score of `{FormatTimeString(uploadRequest.TimeInSeconds)}` to `{spawnsetIdentification}`. {requestInfo}");
 	}
 
 	private List<int> GetExistingReplayIds(CustomLeaderboardEntity customLeaderboard)

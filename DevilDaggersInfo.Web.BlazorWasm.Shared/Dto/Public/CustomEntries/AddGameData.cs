@@ -7,13 +7,6 @@ public record AddGameData
 	public int[] DaggersFired { get; init; } = Array.Empty<int>();
 	public int[] DaggersHit { get; init; } = Array.Empty<int>();
 	public int[] EnemiesAlive { get; init; } = Array.Empty<int>();
-
-	[Obsolete("Use HomingStored instead.")]
-	public int[] HomingDaggers { get; set; } = Array.Empty<int>();
-
-	[Obsolete("Use HomingEaten instead.")]
-	public int[] HomingDaggersEaten { get; init; } = Array.Empty<int>();
-
 	public int[] HomingStored { get; set; } = Array.Empty<int>(); // Use set to get rid of negative values.
 	public int[] HomingEaten { get; init; } = Array.Empty<int>();
 	public int[] GemsDespawned { get; init; } = Array.Empty<int>();
