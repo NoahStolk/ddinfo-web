@@ -17,8 +17,6 @@ public static class CustomEntryConverters
 		GemsDespawned = customEntry.GemsDespawned,
 		GemsEaten = customEntry.GemsEaten,
 		GemsTotal = customEntry.GemsTotal,
-		HomingDaggers = customEntry.HomingStored,
-		HomingDaggersEaten = customEntry.HomingEaten,
 		HomingStored = customEntry.HomingStored,
 		HomingEaten = customEntry.HomingEaten,
 		EnemiesKilled = customEntry.EnemiesKilled,

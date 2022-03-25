@@ -20,12 +20,6 @@ public record GetCustomEntryDdcl
 
 	public int EnemiesAlive { get; init; }
 
-	[Obsolete("Use HomingStored instead.")]
-	public int HomingDaggers { get; init; }
-
-	[Obsolete("Use HomingEaten instead.")]
-	public int HomingDaggersEaten { get; init; }
-
 	public int HomingStored { get; init; }
 
 	public int HomingEaten { get; init; }
