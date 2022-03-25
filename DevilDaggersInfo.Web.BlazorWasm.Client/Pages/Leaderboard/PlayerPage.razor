@@ -165,7 +165,7 @@ else
 				if (stats == null)
 					continue;
 
-				<PlayerCard Title="@($"Custom Leaderboard Statistics ({category})")">
+				<PlayerCard Title="@($"Custom Leaderboard Statistics ({category.ToDisplayString()})")">
 					<DataField CssClass="odd:bg-gray-2 px-1" Name="Leviathan daggers">@stats.LeviathanDaggerCount / @stats.TotalCount</DataField>
 					<DataField CssClass="odd:bg-gray-2 px-1" Name="Devil daggers">@stats.DevilDaggerCount / @stats.TotalCount</DataField>
 					<DataField CssClass="odd:bg-gray-2 px-1" Name="Golden daggers">@stats.GoldenDaggerCount / @stats.TotalCount</DataField>
