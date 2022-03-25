@@ -119,7 +119,7 @@
 	How the end loop speeds up is also hardcoded in the game. How it works exactly is a bit hard to explain however... In the game there is an additional "special" timer used for the end loop. This timer initially increases the same amount as the normal timer, so during the first wave, all the enemies spawn at the exact same speed as they would before the end loop.
 </p>
 <p class="para">
-	The speed up happens after every wave ends; at that point the special timer is sped up by a very small amount. The exact amount for this is 12.5% of a 60th of a second (a game tick), which is 0.0020833 seconds. This means that during the second wave, the special timer increases by 0.0020833 seconds more than the normal timer for every game tick, then 0.0041667 seconds more during the third wave, etc.
+	The speed up happens after every wave ends; at that point the special timer is sped up by a very small amount. The exact amount for this is 12.5% of a game tick (60th of a second), which is 0.0020833 seconds. This means that during the second wave, the special timer increases by 0.0020833 seconds more than the normal timer for every game tick, then 0.0041667 seconds more during the third wave, etc.
 </p>
 <p class="para">
 	Here is the data for the first 10 waves in the original game:
@@ -171,7 +171,7 @@
 <Heading Title="Using The Editor" Level="3" />
 
 <p class="para">
-	Now that the theory is out of the way. We can start using the editor to change the spawns in a spawnset. A good way to start is by adding spawns to an empty spawnset.
+	Now that the theory is out of the way, we can start using the editor to change the spawns in a spawnset. A good way to start is by adding spawns to an empty spawnset.
 </p>
 
 <p class="para">
