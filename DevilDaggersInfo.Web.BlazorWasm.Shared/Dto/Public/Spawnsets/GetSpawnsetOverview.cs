@@ -12,8 +12,6 @@ public record GetSpawnsetOverview
 
 	public DateTime LastUpdated { get; init; }
 
-	public string GameVersion { get; init; } = null!;
-
 	public GameMode GameMode { get; init; }
 
 	public float? LoopLength { get; init; }
@@ -27,6 +25,4 @@ public record GetSpawnsetOverview
 	public HandLevel Hand { get; init; }
 
 	public int AdditionalGems { get; init; }
-
-	public float TimerStart { get; init; }
 }

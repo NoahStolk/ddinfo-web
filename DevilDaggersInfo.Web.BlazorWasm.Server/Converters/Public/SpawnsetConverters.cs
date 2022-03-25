@@ -40,8 +40,6 @@ public static class SpawnsetConverters
 		LoopSpawnCount = spawnsetSummary.LoopSection.SpawnCount,
 		PreLoopLength = spawnsetSummary.PreLoopSection.Length,
 		PreLoopSpawnCount = spawnsetSummary.PreLoopSection.SpawnCount,
-		GameVersion = SpawnsetBinary.GetGameVersionString(spawnsetSummary.WorldVersion, spawnsetSummary.SpawnVersion),
-		TimerStart = spawnsetSummary.TimerStart,
 		AuthorName = spawnset.Player.PlayerName,
 		LastUpdated = spawnset.LastUpdated,
 		Name = spawnset.Name,

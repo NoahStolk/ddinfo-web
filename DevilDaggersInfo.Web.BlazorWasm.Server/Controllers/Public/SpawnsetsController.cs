@@ -82,7 +82,6 @@ public class SpawnsetsController : ControllerBase
 			SpawnsetSorting.Name => spawnsets.OrderBy(s => s.Name, ascending),
 			SpawnsetSorting.AuthorName => spawnsets.OrderBy(s => s.Player.PlayerName, ascending),
 			SpawnsetSorting.LastUpdated => spawnsets.OrderBy(s => s.LastUpdated, ascending),
-			SpawnsetSorting.GameVersion => spawnsets.OrderBy(s => SpawnsetBinary.GetGameVersionString(summaries[s.Id].WorldVersion, summaries[s.Id].SpawnVersion), ascending),
 			SpawnsetSorting.GameMode => spawnsets.OrderBy(s => summaries[s.Id].GameMode, ascending),
 			SpawnsetSorting.LoopLength => spawnsets.OrderBy(s => summaries[s.Id].LoopSection.Length, ascending),
 			SpawnsetSorting.LoopSpawnCount => spawnsets.OrderBy(s => summaries[s.Id].LoopSection.SpawnCount, ascending),
@@ -90,7 +89,6 @@ public class SpawnsetsController : ControllerBase
 			SpawnsetSorting.PreLoopSpawnCount => spawnsets.OrderBy(s => summaries[s.Id].PreLoopSection.SpawnCount, ascending),
 			SpawnsetSorting.Hand => spawnsets.OrderBy(s => summaries[s.Id].HandLevel, ascending),
 			SpawnsetSorting.AdditionalGems => spawnsets.OrderBy(s => summaries[s.Id].AdditionalGems, ascending),
-			SpawnsetSorting.TimerStart => spawnsets.OrderBy(s => summaries[s.Id].TimerStart, ascending),
 			_ => spawnsets.OrderBy(s => s.Id, ascending),
 		}).ToList();
 
