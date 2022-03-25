@@ -193,7 +193,7 @@ public class CustomEntryProcessor
 		await TrySendLeaderboardMessage(customLeaderboard, $"`{uploadRequest.PlayerName}` just entered the `{spawnsetName}` leaderboard!", rank, totalPlayers, newCustomEntry.Time);
 		Log(uploadRequest, spawnsetName);
 
-		List<int> replayIds = GetExistingReplayIds(customLeaderboard);
+		List<int> replayIds = GetExistingReplayIds(entries.ConvertAll(ce => ce.Id));
 		return new()
 		{
 			Message = $"Welcome to the {spawnsetName} leaderboard!",
@@ -231,8 +231,8 @@ public class CustomEntryProcessor
 
 		Log(uploadRequest, spawnsetName);
 
-		List<int> replayIds = GetExistingReplayIds(customLeaderboard);
 		List<CustomEntryDdclResult> entries = await GetOrderedEntries(customLeaderboard.Id, customLeaderboard.Category);
+		List<int> replayIds = GetExistingReplayIds(entries.ConvertAll(ce => ce.Id));
 
 		return new()
 		{
@@ -327,7 +327,7 @@ public class CustomEntryProcessor
 		await TrySendLeaderboardMessage(customLeaderboard, $"`{uploadRequest.PlayerName}` just got {FormatTimeString(uploadRequest.TimeInSeconds)} seconds on the `{spawnsetName}` leaderboard, beating their previous highscore of {FormatTimeString(uploadRequest.TimeInSeconds - timeDiff.ToSecondsTime())} by {FormatTimeString(Math.Abs(timeDiff.ToSecondsTime()))} seconds!", rank, entries.Count, uploadRequest.TimeInSeconds.To10thMilliTime());
 		Log(uploadRequest, spawnsetName);
 
-		List<int> replayIds = GetExistingReplayIds(customLeaderboard);
+		List<int> replayIds = GetExistingReplayIds(entries.ConvertAll(ce => ce.Id));
 		return new()
 		{
 			Message = $"NEW HIGHSCORE for {customLeaderboard.Spawnset.Name}!",
@@ -499,11 +499,8 @@ public class CustomEntryProcessor
 			_logContainerService.AddClLog(true, $":white_check_mark: `{TimeUtils.TicksToTimeString(_stopwatch.ElapsedTicks)}` `{uploadRequest.PlayerName}` just submitted a score of `{FormatTimeString(uploadRequest.TimeInSeconds)}` to `{spawnsetIdentification}`. {requestInfo}");
 	}
 
-	private List<int> GetExistingReplayIds(CustomLeaderboardEntity customLeaderboard)
+	private List<int> GetExistingReplayIds(List<int> customEntryIds)
 	{
-		return customLeaderboard.CustomEntries == null ? new() : customLeaderboard.CustomEntries
-			.Where(ce => IoFile.Exists(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{ce.Id}.ddreplay")))
-			.Select(ce => ce.Id)
-			.ToList();
+		return customEntryIds.Where(id => IoFile.Exists(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{id}.ddreplay"))).ToList();
 	}
 }
