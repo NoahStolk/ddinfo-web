@@ -30,7 +30,7 @@ public static class CustomEntryConverters
 		HasReplay = hasReplay,
 	};
 
-	public static GetCustomEntry ToGetCustomEntry(this CustomEntryEntity customEntry, int rank, bool hasReplay)
+	public static GetCustomEntry ToGetCustomEntry(this CustomEntry customEntry, CustomLeaderboardEntity customLeaderboard, int rank, bool hasReplay)
 	{
 		if (!Version.TryParse(customEntry.ClientVersion, out Version? version))
 			version = new(0, 0, 0, 0);
@@ -45,8 +45,8 @@ public static class CustomEntryConverters
 			Id = customEntry.Id,
 			Rank = rank,
 			PlayerId = customEntry.PlayerId,
-			PlayerName = customEntry.Player.PlayerName,
-			CountryCode = customEntry.Player.CountryCode,
+			PlayerName = customEntry.PlayerName,
+			CountryCode = customEntry.CountryCode,
 			Client = customEntry.Client,
 			ClientVersion = customEntry.ClientVersion,
 			DeathType = customEntry.DeathType,
@@ -64,7 +64,7 @@ public static class CustomEntryConverters
 			DaggersHit = customEntry.DaggersHit,
 			SubmitDate = customEntry.SubmitDate,
 			Time = customEntry.Time.ToSecondsTime(),
-			CustomLeaderboardDagger = customEntry.CustomLeaderboard.GetDaggerFromTime(customEntry.Time),
+			CustomLeaderboardDagger = customLeaderboard.GetDaggerFromTime(customEntry.Time),
 			HasReplay = hasReplay,
 			HasGraphs = hasGraphs,
 		};

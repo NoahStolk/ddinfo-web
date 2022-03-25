@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Web.BlazorWasm.Server.Entities.Views;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
@@ -51,7 +52,7 @@ public static class CustomLeaderboardConverters
 		WorldRecordDagger = worldRecord.HasValue ? customLeaderboard.GetDaggerFromTime(worldRecord.Value) : CustomLeaderboardDagger.Default,
 	};
 
-	public static GetCustomLeaderboard ToGetCustomLeaderboard(this CustomLeaderboardEntity customLeaderboard, List<int> existingReplayIds) => new()
+	public static GetCustomLeaderboard ToGetCustomLeaderboard(this CustomLeaderboardEntity customLeaderboard, List<CustomEntry> customEntries, List<int> existingReplayIds) => new()
 	{
 		SpawnsetId = customLeaderboard.SpawnsetId,
 		SpawnsetAuthorName = customLeaderboard.Spawnset.Player.PlayerName,
@@ -63,11 +64,7 @@ public static class CustomLeaderboardConverters
 		Category = customLeaderboard.Category,
 		IsFeatured = customLeaderboard.IsFeatured,
 		DateLastPlayed = customLeaderboard.DateLastPlayed,
-		CustomEntries = customLeaderboard.CustomEntries?
-			.OrderBy(ce => ce.Time, customLeaderboard.Category.IsAscending())
-			.ThenBy(ce => ce.SubmitDate)
-			.Select((ce, i) => ce.ToGetCustomEntry(i + 1, existingReplayIds.Contains(ce.Id)))
-			.ToList() ?? new(),
+		CustomEntries = customEntries.Select((ce, i) => ce.ToGetCustomEntry(customLeaderboard, i, existingReplayIds.Contains(ce.Id))).ToList(),
 	};
 
 	private static GetCustomLeaderboardDaggers? ToGetCustomLeaderboardDaggers(CustomLeaderboardEntity customLeaderboard) => !customLeaderboard.IsFeatured ? null : new()

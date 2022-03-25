@@ -234,23 +234,50 @@ public class CustomLeaderboardsController : ControllerBase
 	[HttpGet("{id}")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public ActionResult<GetCustomLeaderboard> GetCustomLeaderboardById(int id)
+	public async Task<ActionResult<GetCustomLeaderboard>> GetCustomLeaderboardById(int id)
 	{
-		CustomLeaderboardEntity? customLeaderboard = _dbContext.CustomLeaderboards
+		CustomLeaderboardEntity? customLeaderboard = await _dbContext.CustomLeaderboards
 			.AsNoTracking()
 			.Include(cl => cl.CustomEntries!)
 				.ThenInclude(ce => ce.Player)
 			.Include(cl => cl.Spawnset)
 				.ThenInclude(sf => sf.Player)
-			.FirstOrDefault(cl => cl.Id == id);
+			.FirstOrDefaultAsync(cl => cl.Id == id);
 		if (customLeaderboard == null)
 			return NotFound();
+
+		List<CustomEntry> customEntries = customLeaderboard.CustomEntries!.ConvertAll(ce => new CustomEntry(
+			ce.Time,
+			ce.SubmitDate,
+			ce.Id,
+			ce.CustomLeaderboardId,
+			ce.PlayerId,
+			ce.Player.PlayerName,
+			ce.Player.CountryCode,
+			ce.GemsCollected,
+			ce.GemsDespawned,
+			ce.GemsEaten,
+			ce.GemsTotal,
+			ce.EnemiesAlive,
+			ce.EnemiesKilled,
+			ce.HomingStored,
+			ce.HomingEaten,
+			ce.DeathType,
+			ce.DaggersFired,
+			ce.DaggersHit,
+			ce.LevelUpTime2,
+			ce.LevelUpTime3,
+			ce.LevelUpTime4,
+			ce.Client,
+			ce.ClientVersion));
+
+		customEntries = customEntries.Sort(customLeaderboard.Category).ToList();
 
 		List<int> existingReplayIds = customLeaderboard.CustomEntries == null ? new() : customLeaderboard.CustomEntries
 			.Where(ce => IoFile.Exists(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{ce.Id}.ddreplay")))
 			.Select(ce => ce.Id)
 			.ToList();
-		return customLeaderboard.ToGetCustomLeaderboard(existingReplayIds);
+		return customLeaderboard.ToGetCustomLeaderboard(customEntries, existingReplayIds);
 	}
 
 	private sealed class CustomLeaderboardWorldRecord
