@@ -19,6 +19,8 @@ public static class CustomEntryConverters
 		GemsTotal = customEntry.GemsTotal,
 		HomingDaggers = customEntry.HomingStored,
 		HomingDaggersEaten = customEntry.HomingEaten,
+		HomingStored = customEntry.HomingStored,
+		HomingEaten = customEntry.HomingEaten,
 		EnemiesKilled = customEntry.EnemiesKilled,
 		LevelUpTime2InSeconds = customEntry.LevelUpTime2.ToSecondsTime(),
 		LevelUpTime3InSeconds = customEntry.LevelUpTime3.ToSecondsTime(),
