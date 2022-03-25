@@ -922,6 +922,15 @@
 	],
 	"DevilDaggersCustomLeaderboards": [
 		{
+			"VersionNumber": "1.8.3.0",
+			"Date": "2022-03-25T00:00:00",
+			"Changes": [
+				{
+					"Description": "API updates and fixes."
+				}
+			]
+		},
+		{
 			"VersionNumber": "1.8.2.0",
 			"Date": "2022-03-25T00:00:00",
 			"Changes": [

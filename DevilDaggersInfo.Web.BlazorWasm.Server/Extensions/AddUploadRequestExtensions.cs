@@ -22,7 +22,7 @@ public static class AddUploadRequestExtensions
 			uploadRequest.DaggersFired,
 			uploadRequest.HomingStored,
 			uploadRequest.HomingEaten,
-			uploadRequest.IsReplay ? 1 : 0,
+			uploadRequest.IsReplay,
 			uploadRequest.Status,
 			uploadRequest.SurvivalHashMd5.ByteArrayToHexString(),
 			uploadRequest.LevelUpTime2AsBytes.ByteArrayToHexString(),
