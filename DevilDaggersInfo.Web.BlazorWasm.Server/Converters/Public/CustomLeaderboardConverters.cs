@@ -59,7 +59,7 @@ public static class CustomLeaderboardConverters
 		Category = customLeaderboard.Category,
 		IsFeatured = customLeaderboard.IsFeatured,
 		DateLastPlayed = customLeaderboard.DateLastPlayed,
-		CustomEntries = customEntries.Select((ce, i) => ce.ToGetCustomEntry(customLeaderboard, i, existingReplayIds.Contains(ce.Id))).ToList(),
+		CustomEntries = customEntries.Select((ce, i) => ce.ToGetCustomEntry(customLeaderboard, i + 1, existingReplayIds.Contains(ce.Id))).ToList(),
 	};
 
 	private static GetCustomLeaderboardDaggers? ToGetCustomLeaderboardDaggers(CustomLeaderboardEntity customLeaderboard) => !customLeaderboard.IsFeatured ? null : new()
