@@ -24,7 +24,7 @@ else
 			<Select @onchange="ChangeCategory" class="bg-gray-3 transition-colors duration-100 h-8 rounded text-color-text">
 				@foreach (CustomLeaderboardCategory e in (CustomLeaderboardCategory[])Enum.GetValues(typeof(CustomLeaderboardCategory)))
 				{
-					<option value="@e">@e</option>
+					<option value="@e">@e.ToDisplayString()</option>
 				}
 			</Select>
 		</div>
@@ -87,7 +87,7 @@ else
 	@foreach (CustomLeaderboardCategory category in Enum.GetValues<CustomLeaderboardCategory>())
 	{
 		<div class="flex">
-			<div class="flex-none w-32"><b>@category.ToString()</b></div>
+			<div class="flex-none w-32"><b>@category.ToDisplayString()</b></div>
 			<div class="flex-1">@category.GetDescription()</div>
 		</div>
 	}
@@ -106,7 +106,7 @@ else
 
 		@foreach (CustomLeaderboardCategory category in Enum.GetValues<CustomLeaderboardCategory>())
 		{
-			<div>@category.ToString()</div>
+			<div>@category.ToDisplayString()</div>
 			<div class="text-right">@GetTotalCustomLeaderboardData.LeaderboardsPerCategory[category].ToString("N0")</div>
 			<div class="text-right hidden md:block">@GetTotalCustomLeaderboardData.PlayersPerCategory[category].ToString("N0")</div>
 			<div class="text-right hidden md:block">@GetTotalCustomLeaderboardData.ScoresPerCategory[category].ToString("N0")</div>
