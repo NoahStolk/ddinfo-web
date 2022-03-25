@@ -117,6 +117,8 @@ public class CustomEntryProcessor
 			if (!int.TryParse(levelUpTimes[2], out int levelUpTime4) && (levelUpTime4 < uploadRequest.GetLevelUpTime4() - floatMarginIn10thMillis || levelUpTime4 > uploadRequest.GetLevelUpTime4() + floatMarginIn10thMillis))
 				throw InvalidValidation($"{nameof(uploadRequest.LevelUpTime4InSeconds)} {levelUpTime2} does not match {uploadRequest.GetLevelUpTime4()}.");
 
+			_logger.LogWarning("Validation {actual} did not exactly match {expected} but was accepted anyway.", actual, expected);
+
 			CustomEntryValidationException InvalidValidation(string additionalInfo) => LogAndCreateValidationException(uploadRequest, $"Invalid submission for {uploadRequest.Validation}.\n`Expected: {expected}`\n`Actual:   {actual}`\n{additionalInfo}", null, "rotating_light");
 		}
 
