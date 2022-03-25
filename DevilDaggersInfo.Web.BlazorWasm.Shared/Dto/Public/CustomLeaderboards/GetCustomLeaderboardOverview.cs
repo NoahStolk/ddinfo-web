@@ -24,5 +24,5 @@ public record GetCustomLeaderboardOverview
 
 	public double? WorldRecord { get; init; }
 
-	public CustomLeaderboardDagger WorldRecordDagger { get; init; }
+	public CustomLeaderboardDagger? WorldRecordDagger { get; init; }
 }

@@ -77,7 +77,7 @@ else
 					<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe @CustomLeaderboardDagger.Leviathan.ToCssClass()">@customLeaderboard.Daggers.Leviathan.ToString(FormatUtils.TimeFormat)</div>
 				}
 				<div class="overflow-hidden text-left hidden lg:block">@(customLeaderboard.TopPlayer?.ToNoBreakString() ?? MarkupUtils.NoDataMarkup)</div>
-				<div class="overflow-hidden text-right hidden lg:block text-xl font-goethe @(customLeaderboard.WorldRecordDagger.ToCssClass())">@(customLeaderboard.WorldRecord.HasValue ? new(customLeaderboard.WorldRecord.Value.ToString(FormatUtils.TimeFormat)) : MarkupUtils.NoDataMarkup)</div>
+				<div class="overflow-hidden text-right hidden lg:block text-xl font-goethe @(customLeaderboard.WorldRecordDagger?.ToCssClass())">@(customLeaderboard.WorldRecord.HasValue ? new(customLeaderboard.WorldRecord.Value.ToString(FormatUtils.TimeFormat)) : MarkupUtils.NoDataMarkup)</div>
 			</div>
 		}
 	}

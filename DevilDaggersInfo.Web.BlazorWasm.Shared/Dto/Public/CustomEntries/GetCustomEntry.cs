@@ -14,7 +14,7 @@ public record GetCustomEntry
 
 	public double Time { get; init; }
 
-	public CustomLeaderboardDagger CustomLeaderboardDagger { get; init; }
+	public CustomLeaderboardDagger? CustomLeaderboardDagger { get; init; }
 
 	public int GemsCollected { get; init; }
 

@@ -453,7 +453,7 @@ public class CustomEntryProcessor
 			DiscordEmbedBuilder builder = new()
 			{
 				Title = message,
-				Color = customLeaderboard.GetDaggerFromTime(time).GetDiscordColor(),
+				Color = (customLeaderboard.GetDaggerFromTime(time) ?? CustomLeaderboardDagger.Silver).GetDiscordColor(),
 				Url = $"https://devildaggers.info/custom/leaderboard/{customLeaderboard.Id}",
 			};
 			builder.AddFieldObject("Score", FormatTimeString(time), true);
