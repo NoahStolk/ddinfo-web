@@ -5,7 +5,6 @@ using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options.LineChart;
 using DevilDaggersInfo.Web.BlazorWasm.Client.HttpClients;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Utils;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomLeaderboards;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Leaderboards;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Mods;
@@ -92,7 +91,7 @@ public partial class PlayerPage
 	public GetEntry? GetEntry { get; set; }
 	public GetPlayer? GetPlayer { get; set; }
 	public GetPlayerHistory? GetPlayerHistory { get; set; }
-	public List<GetCustomLeaderboardStatisticsForPlayer>? GetCustomLeaderboardStatistics { get; set; }
+	public List<GetPlayerCustomLeaderboardStatistics>? GetCustomLeaderboardStatistics { get; set; }
 	public List<GetSpawnsetName>? GetSpawnsetNames { get; set; }
 	public List<GetModName>? GetModNames { get; set; }
 

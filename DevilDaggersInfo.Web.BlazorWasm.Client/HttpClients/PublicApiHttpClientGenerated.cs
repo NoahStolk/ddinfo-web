@@ -66,15 +66,6 @@ public partial class PublicApiHttpClient
 		return await SendGetRequest<GetCustomEntryData>($"api/custom-entries/{id}/data");
 	}
 
-	public async Task<List<GetCustomLeaderboardStatisticsForPlayer>> GetCustomLeaderboardStatisticsByPlayerId(int playerId)
-	{
-		Dictionary<string, object?> queryParameters = new()
-		{
-			{ nameof(playerId), playerId }
-		};
-		return await SendGetRequest<List<GetCustomLeaderboardStatisticsForPlayer>>(UrlBuilderUtils.BuildUrlWithQuery($"api/custom-entries/player-stats", queryParameters));
-	}
-
 	public async Task<HttpResponseMessage> SubmitScoreForDdcl(AddUploadRequest uploadRequest)
 	{
 		return await SendRequest(new HttpMethod("POST"), $"api/custom-entries/submit", JsonContent.Create(uploadRequest));
@@ -281,6 +272,11 @@ public partial class PublicApiHttpClient
 	public async Task<GetPlayerHistory> GetPlayerHistoryById(int id)
 	{
 		return await SendGetRequest<GetPlayerHistory>($"api/players/{id}/history");
+	}
+
+	public async Task<List<GetPlayerCustomLeaderboardStatistics>> GetCustomLeaderboardStatisticsByPlayerId(int id)
+	{
+		return await SendGetRequest<List<GetPlayerCustomLeaderboardStatistics>>($"api/players/{id}/custom-leaderboard-statistics");
 	}
 
 	public async Task<GetPlayerProfile> GetProfileByPlayerId(int id)

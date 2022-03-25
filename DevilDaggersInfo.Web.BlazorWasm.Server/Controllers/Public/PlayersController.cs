@@ -2,6 +2,7 @@ using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardHistory;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
 using DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
 using Microsoft.AspNetCore.Authorization;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
@@ -200,6 +201,82 @@ public class PlayersController : ControllerBase
 			ScoreHistory = scoreHistory,
 			Usernames = usernamesHistory.OrderByDescending(kvp => kvp.Value).Select(kvp => kvp.Key).ToList(),
 		};
+	}
+
+	[HttpGet("{id}/custom-leaderboard-statistics")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	public async Task<ActionResult<List<GetPlayerCustomLeaderboardStatistics>>> GetCustomLeaderboardStatisticsByPlayerId([Required] int id)
+	{
+		var customEntries = await _dbContext.CustomEntries
+			.AsNoTracking()
+			.Include(ce => ce.CustomLeaderboard)
+			.Where(cl => cl.PlayerId == id)
+			.Select(ce => new
+			{
+				ce.Time,
+				ce.CustomLeaderboardId,
+				ce.CustomLeaderboard.Category,
+				ce.CustomLeaderboard.TimeLeviathan,
+				ce.CustomLeaderboard.TimeDevil,
+				ce.CustomLeaderboard.TimeGolden,
+				ce.CustomLeaderboard.TimeSilver,
+				ce.CustomLeaderboard.TimeBronze,
+				ce.CustomLeaderboard.IsFeatured,
+			})
+			.Where(ce => ce.IsFeatured)
+			.ToListAsync();
+
+		Dictionary<CustomLeaderboardCategory, int> customLeaderboardsByCategory = await _dbContext.CustomLeaderboards
+			.AsNoTracking()
+			.Select(cl => new { cl.Category, cl.IsFeatured })
+			.Where(cl => cl.IsFeatured)
+			.GroupBy(cl => cl.Category)
+			.Select(g => new { Category = g.Key, Count = g.Count() })
+			.ToDictionaryAsync(a => a.Category, a => a.Count);
+
+		List<GetPlayerCustomLeaderboardStatistics> stats = new();
+		foreach (CustomLeaderboardCategory category in Enum.GetValues<CustomLeaderboardCategory>())
+		{
+			var customEntriesByCategory = customEntries.Where(c => c.Category == category);
+			if (!customEntriesByCategory.Any() || !customLeaderboardsByCategory.ContainsKey(category))
+				continue;
+
+			int leviathanDaggers = 0;
+			int devilDaggers = 0;
+			int goldenDaggers = 0;
+			int silverDaggers = 0;
+			int bronzeDaggers = 0;
+			int defaultDaggers = 0;
+			int played = 0;
+			foreach (var customEntry in customEntriesByCategory)
+			{
+				played++;
+				switch (CustomLeaderboardUtils.GetDaggerFromTime(category, customEntry.Time, customEntry.TimeLeviathan, customEntry.TimeDevil, customEntry.TimeGolden, customEntry.TimeSilver, customEntry.TimeBronze))
+				{
+					case CustomLeaderboardDagger.Leviathan: leviathanDaggers++; break;
+					case CustomLeaderboardDagger.Devil: devilDaggers++; break;
+					case CustomLeaderboardDagger.Golden: goldenDaggers++; break;
+					case CustomLeaderboardDagger.Silver: silverDaggers++; break;
+					case CustomLeaderboardDagger.Bronze: bronzeDaggers++; break;
+					default: defaultDaggers++; break;
+				}
+			}
+
+			stats.Add(new()
+			{
+				CustomLeaderboardCategory = category,
+				LeviathanDaggerCount = leviathanDaggers,
+				DevilDaggerCount = devilDaggers,
+				GoldenDaggerCount = goldenDaggers,
+				SilverDaggerCount = silverDaggers,
+				BronzeDaggerCount = bronzeDaggers,
+				DefaultDaggerCount = defaultDaggers,
+				LeaderboardsPlayedCount = played,
+				TotalCount = customLeaderboardsByCategory[category],
+			});
+		}
+
+		return stats;
 	}
 
 	[Authorize]
