@@ -9,11 +9,6 @@ public static class CustomLeaderboardConverters
 	{
 		SpawnsetName = customLeaderboard.Spawnset.Name,
 		Daggers = ToGetCustomLeaderboardDaggers(customLeaderboard),
-		TimeBronze = customLeaderboard.TimeBronze.ZeroIfArchived(customLeaderboard.IsFeatured),
-		TimeSilver = customLeaderboard.TimeSilver.ZeroIfArchived(customLeaderboard.IsFeatured),
-		TimeGolden = customLeaderboard.TimeGolden.ZeroIfArchived(customLeaderboard.IsFeatured),
-		TimeDevil = customLeaderboard.TimeDevil.ZeroIfArchived(customLeaderboard.IsFeatured),
-		TimeLeviathan = customLeaderboard.TimeLeviathan.ZeroIfArchived(customLeaderboard.IsFeatured),
 		Category = customLeaderboard.Category,
 		IsAscending = customLeaderboard.Category.IsAscending(),
 	};
@@ -75,6 +70,4 @@ public static class CustomLeaderboardConverters
 		Devil = customLeaderboard.TimeDevil.ToSecondsTime(),
 		Leviathan = customLeaderboard.TimeLeviathan.ToSecondsTime(),
 	};
-
-	private static int ZeroIfArchived(this int time, bool isFeatured) => isFeatured ? time : 0;
 }
