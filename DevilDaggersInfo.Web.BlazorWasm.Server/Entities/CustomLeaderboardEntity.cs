@@ -37,5 +37,5 @@ public class CustomLeaderboardEntity
 	public List<CustomEntryEntity>? CustomEntries { get; set; }
 
 	public CustomLeaderboardDagger GetDaggerFromTime(int time)
-		=> IsFeatured ? CustomLeaderboardUtils.GetDaggerFromTime(Category, time, TimeLeviathan, TimeDevil, TimeGolden, TimeSilver, TimeBronze) : CustomLeaderboardDagger.Devil;
+		=> IsFeatured ? CustomLeaderboardUtils.GetDaggerFromTime(Category, time, TimeLeviathan, TimeDevil, TimeGolden, TimeSilver, TimeBronze) : CustomLeaderboardDagger.Silver;
 }

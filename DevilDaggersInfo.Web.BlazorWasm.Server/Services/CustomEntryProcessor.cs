@@ -229,7 +229,7 @@ public class CustomEntryProcessor
 		List<int> replayIds = GetExistingReplayIds(customLeaderboard);
 		List<CustomEntryDdclResult> entries = await GetOrderedEntries(customLeaderboard.Id, customLeaderboard.Category);
 
-		return new GetUploadSuccess
+		return new()
 		{
 			Message = $"No new highscore for {customLeaderboard.Spawnset.Name}.",
 			TotalPlayers = entries.Count,
@@ -323,7 +323,7 @@ public class CustomEntryProcessor
 		Log(uploadRequest, spawnsetName);
 
 		List<int> replayIds = GetExistingReplayIds(customLeaderboard);
-		return new GetUploadSuccess
+		return new()
 		{
 			Message = $"NEW HIGHSCORE for {customLeaderboard.Spawnset.Name}!",
 			TotalPlayers = entries.Count,
