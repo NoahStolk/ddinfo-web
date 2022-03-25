@@ -20,8 +20,8 @@ public static class AddUploadRequestExtensions
 			uploadRequest.DaggersHit,
 			uploadRequest.DaggersFired,
 			uploadRequest.EnemiesAlive,
-			uploadRequest.HomingDaggers,
-			uploadRequest.HomingDaggersEaten,
+			uploadRequest.GetHomingStored(),
+			uploadRequest.GetHomingEaten(),
 			uploadRequest.IsReplay ? 1 : 0,
 			uploadRequest.SurvivalHashMd5.ByteArrayToHexString(),
 			string.Join(",", uploadRequest.GetLevelUpTime2(), uploadRequest.GetLevelUpTime3(), uploadRequest.GetLevelUpTime4()));

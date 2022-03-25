@@ -92,11 +92,11 @@ public class CustomEntryProcessor
 			if (!int.TryParse(values[10], out int enemiesAlive) || enemiesAlive != uploadRequest.EnemiesAlive)
 				throw InvalidValidation($"{nameof(uploadRequest.EnemiesAlive)} {enemiesAlive} does not match {uploadRequest.EnemiesAlive}.");
 
-			if (!int.TryParse(values[11], out int homingStored) || homingStored != uploadRequest.HomingDaggers)
-				throw InvalidValidation($"{nameof(uploadRequest.HomingDaggers)} {homingStored} does not match {uploadRequest.HomingDaggers}.");
+			if (!int.TryParse(values[11], out int homingStored) || homingStored != uploadRequest.GetHomingStored())
+				throw InvalidValidation($"{nameof(uploadRequest.HomingStored)} {homingStored} does not match {uploadRequest.GetHomingStored()}.");
 
-			if (!int.TryParse(values[12], out int homingEaten) || homingEaten != uploadRequest.HomingDaggersEaten)
-				throw InvalidValidation($"{nameof(uploadRequest.HomingDaggersEaten)} {homingEaten} does not match {uploadRequest.HomingDaggersEaten}.");
+			if (!int.TryParse(values[12], out int homingEaten) || homingEaten != uploadRequest.GetHomingEaten())
+				throw InvalidValidation($"{nameof(uploadRequest.HomingEaten)} {homingEaten} does not match {uploadRequest.GetHomingEaten()}.");
 
 			if (!int.TryParse(values[13], out int isReplay) || isReplay != (uploadRequest.IsReplay ? 1 : 0))
 				throw InvalidValidation($"{nameof(uploadRequest.IsReplay)} {isReplay} does not match {uploadRequest.IsReplay}.");
@@ -187,7 +187,7 @@ public class CustomEntryProcessor
 		// At this point, the submission is accepted.
 
 		// Make sure HomingDaggers is not negative (happens rarely as a bug, and also for spawnsets with homing disabled which we don't want to display values for anyway).
-		uploadRequest.HomingDaggers = Math.Max(0, uploadRequest.HomingDaggers);
+		uploadRequest.HomingStored = Math.Max(0, uploadRequest.GetHomingStored());
 		uploadRequest.GameData.HomingDaggers = Array.ConvertAll(uploadRequest.GameData.HomingDaggers, i => Math.Max(0, i));
 
 		CustomEntryEntity? customEntry = _dbContext.CustomEntries.FirstOrDefault(ce => ce.PlayerId == uploadRequest.PlayerId && ce.CustomLeaderboardId == customLeaderboard.Id);
@@ -225,8 +225,8 @@ public class CustomEntryProcessor
 			DaggersHit = uploadRequest.DaggersHit,
 			DaggersFired = uploadRequest.DaggersFired,
 			EnemiesAlive = uploadRequest.EnemiesAlive,
-			HomingStored = uploadRequest.HomingDaggers,
-			HomingEaten = uploadRequest.HomingDaggersEaten,
+			HomingStored = uploadRequest.GetHomingStored(),
+			HomingEaten = uploadRequest.GetHomingEaten(),
 			LevelUpTime2 = uploadRequest.GetLevelUpTime2(),
 			LevelUpTime3 = uploadRequest.GetLevelUpTime3(),
 			LevelUpTime4 = uploadRequest.GetLevelUpTime4(),
@@ -335,8 +335,8 @@ public class CustomEntryProcessor
 		customEntry.DaggersFired = uploadRequest.DaggersFired;
 		customEntry.DaggersHit = uploadRequest.DaggersHit;
 		customEntry.EnemiesAlive = uploadRequest.EnemiesAlive;
-		customEntry.HomingStored = uploadRequest.HomingDaggers;
-		customEntry.HomingEaten = uploadRequest.HomingDaggersEaten;
+		customEntry.HomingStored = uploadRequest.GetHomingStored();
+		customEntry.HomingEaten = uploadRequest.GetHomingEaten();
 		customEntry.GemsDespawned = uploadRequest.GemsDespawned;
 		customEntry.GemsEaten = uploadRequest.GemsEaten;
 		customEntry.GemsTotal = uploadRequest.GemsTotal;

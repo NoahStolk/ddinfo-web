@@ -30,9 +30,15 @@ public record AddUploadRequest
 
 	public int EnemiesAlive { get; init; }
 
-	public int HomingDaggers { get; set; } // Use set to get rid of negative values.
+	[Obsolete("Use HomingStored instead.")]
+	public int HomingDaggers { get; init; }
 
+	[Obsolete("Use HomingEaten instead.")]
 	public int HomingDaggersEaten { get; init; }
+
+	public int HomingStored { get; set; } // Use set to get rid of negative values.
+
+	public int HomingEaten { get; init; }
 
 	public int GemsDespawned { get; init; }
 
@@ -83,6 +89,10 @@ public record AddUploadRequest
 	public byte[] ReplayData { get; init; } = null!;
 
 	public int Status { get; set; }
+
+	public int GetHomingStored() => HomingStored == 0 ? HomingDaggers : HomingStored;
+
+	public int GetHomingEaten() => HomingEaten == 0 ? HomingDaggersEaten : HomingEaten;
 
 	public int GetTime() => TimeInSeconds == 0 ? Time : TimeInSeconds.To10thMilliTime();
 
