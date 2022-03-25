@@ -8,9 +8,6 @@ public record GetCustomEntryDdcl
 
 	public string PlayerName { get; init; } = null!;
 
-	[Obsolete("Use TimeInSeconds instead.")]
-	public int Time { get; init; }
-
 	public double TimeInSeconds { get; init; }
 
 	public int GemsCollected { get; init; }
@@ -34,15 +31,6 @@ public record GetCustomEntryDdcl
 	public int GemsTotal { get; init; }
 
 	public byte DeathType { get; init; }
-
-	[Obsolete("Use LevelUpTime2InSeconds instead.")]
-	public int LevelUpTime2 { get; init; }
-
-	[Obsolete("Use LevelUpTime3InSeconds instead.")]
-	public int LevelUpTime3 { get; init; }
-
-	[Obsolete("Use LevelUpTime4InSeconds instead.")]
-	public int LevelUpTime4 { get; init; }
 
 	public double LevelUpTime2InSeconds { get; init; }
 
