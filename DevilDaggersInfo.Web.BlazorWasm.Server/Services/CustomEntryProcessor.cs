@@ -55,50 +55,50 @@ public class CustomEntryProcessor
 		if (actual != expected)
 		{
 			const int floatMarginIn10thMillis = 5;
-			string[] values = uploadRequest.Validation.Split(';');
+			string[] values = actual.Split(';');
 			if (values.Length != 16)
 				throw InvalidValidation($"{values.Length} values instead of 16.");
 
-			if (!int.TryParse(values[0], out int playerId) && playerId != uploadRequest.PlayerId)
+			if (!int.TryParse(values[0], out int playerId) || playerId != uploadRequest.PlayerId)
 				throw InvalidValidation($"{nameof(uploadRequest.PlayerId)} {playerId} does not match {uploadRequest.PlayerId}.");
 
-			if (!int.TryParse(values[1], out int time) && (time < uploadRequest.GetTime() - floatMarginIn10thMillis || time > uploadRequest.GetTime() + floatMarginIn10thMillis))
+			if (!int.TryParse(values[1], out int time) || time < uploadRequest.GetTime() - floatMarginIn10thMillis || time > uploadRequest.GetTime() + floatMarginIn10thMillis)
 				throw InvalidValidation($"{nameof(uploadRequest.TimeInSeconds)} {time} does not match {uploadRequest.GetTime()}.");
 
-			if (!int.TryParse(values[2], out int gemsCollected) && gemsCollected != uploadRequest.GemsCollected)
+			if (!int.TryParse(values[2], out int gemsCollected) || gemsCollected != uploadRequest.GemsCollected)
 				throw InvalidValidation($"{nameof(uploadRequest.GemsCollected)} {gemsCollected} does not match {uploadRequest.GemsCollected}.");
 
-			if (!int.TryParse(values[3], out int gemsDespawned) && gemsDespawned != uploadRequest.GemsDespawned)
+			if (!int.TryParse(values[3], out int gemsDespawned) || gemsDespawned != uploadRequest.GemsDespawned)
 				throw InvalidValidation($"{nameof(uploadRequest.GemsDespawned)} {gemsDespawned} does not match {uploadRequest.GemsDespawned}.");
 
-			if (!int.TryParse(values[4], out int gemsEaten) && gemsEaten != uploadRequest.GemsEaten)
+			if (!int.TryParse(values[4], out int gemsEaten) || gemsEaten != uploadRequest.GemsEaten)
 				throw InvalidValidation($"{nameof(uploadRequest.GemsEaten)} {gemsEaten} does not match {uploadRequest.GemsEaten}.");
 
-			if (!int.TryParse(values[5], out int gemsTotal) && gemsTotal != uploadRequest.GemsTotal)
+			if (!int.TryParse(values[5], out int gemsTotal) || gemsTotal != uploadRequest.GemsTotal)
 				throw InvalidValidation($"{nameof(uploadRequest.GemsTotal)} {gemsTotal} does not match {uploadRequest.GemsTotal}.");
 
-			if (!int.TryParse(values[6], out int enemiesKilled) && enemiesKilled != uploadRequest.EnemiesKilled)
+			if (!int.TryParse(values[6], out int enemiesKilled) || enemiesKilled != uploadRequest.EnemiesKilled)
 				throw InvalidValidation($"{nameof(uploadRequest.EnemiesKilled)} {enemiesKilled} does not match {uploadRequest.EnemiesKilled}.");
 
-			if (!byte.TryParse(values[7], out byte deathType) && deathType != uploadRequest.DeathType)
+			if (!byte.TryParse(values[7], out byte deathType) || deathType != uploadRequest.DeathType)
 				throw InvalidValidation($"{nameof(uploadRequest.DeathType)} {deathType} does not match {uploadRequest.DeathType}.");
 
-			if (!int.TryParse(values[8], out int daggersHit) && daggersHit != uploadRequest.DaggersHit)
+			if (!int.TryParse(values[8], out int daggersHit) || daggersHit != uploadRequest.DaggersHit)
 				throw InvalidValidation($"{nameof(uploadRequest.DaggersHit)} {daggersHit} does not match {uploadRequest.DaggersHit}.");
 
-			if (!int.TryParse(values[9], out int daggersFired) && daggersFired != uploadRequest.DaggersFired)
+			if (!int.TryParse(values[9], out int daggersFired) || daggersFired != uploadRequest.DaggersFired)
 				throw InvalidValidation($"{nameof(uploadRequest.DaggersFired)} {daggersFired} does not match {uploadRequest.DaggersFired}.");
 
-			if (!int.TryParse(values[10], out int enemiesAlive) && enemiesAlive != uploadRequest.EnemiesAlive)
+			if (!int.TryParse(values[10], out int enemiesAlive) || enemiesAlive != uploadRequest.EnemiesAlive)
 				throw InvalidValidation($"{nameof(uploadRequest.EnemiesAlive)} {enemiesAlive} does not match {uploadRequest.EnemiesAlive}.");
 
-			if (!int.TryParse(values[11], out int homingStored) && homingStored != uploadRequest.HomingDaggers)
+			if (!int.TryParse(values[11], out int homingStored) || homingStored != uploadRequest.HomingDaggers)
 				throw InvalidValidation($"{nameof(uploadRequest.HomingDaggers)} {homingStored} does not match {uploadRequest.HomingDaggers}.");
 
-			if (!int.TryParse(values[12], out int homingEaten) && homingEaten != uploadRequest.HomingDaggersEaten)
+			if (!int.TryParse(values[12], out int homingEaten) || homingEaten != uploadRequest.HomingDaggersEaten)
 				throw InvalidValidation($"{nameof(uploadRequest.HomingDaggersEaten)} {homingEaten} does not match {uploadRequest.HomingDaggersEaten}.");
 
-			if (!int.TryParse(values[13], out int isReplay) && isReplay != (uploadRequest.IsReplay ? 1 : 0))
+			if (!int.TryParse(values[13], out int isReplay) || isReplay != (uploadRequest.IsReplay ? 1 : 0))
 				throw InvalidValidation($"{nameof(uploadRequest.IsReplay)} {isReplay} does not match {uploadRequest.IsReplay}.");
 
 			if (values[14] != uploadRequest.SurvivalHashMd5.ByteArrayToHexString())
@@ -108,13 +108,13 @@ public class CustomEntryProcessor
 			if (levelUpTimes.Length != 3)
 				throw InvalidValidation($"{levelUpTimes.Length} values instead of 3.");
 
-			if (!int.TryParse(levelUpTimes[0], out int levelUpTime2) && (levelUpTime2 < uploadRequest.GetLevelUpTime2() - floatMarginIn10thMillis || levelUpTime2 > uploadRequest.GetLevelUpTime2() + floatMarginIn10thMillis))
+			if (!int.TryParse(levelUpTimes[0], out int levelUpTime2) || levelUpTime2 < uploadRequest.GetLevelUpTime2() - floatMarginIn10thMillis || levelUpTime2 > uploadRequest.GetLevelUpTime2() + floatMarginIn10thMillis)
 				throw InvalidValidation($"{nameof(uploadRequest.LevelUpTime2InSeconds)} {levelUpTime2} does not match {uploadRequest.GetLevelUpTime2()}.");
 
-			if (!int.TryParse(levelUpTimes[1], out int levelUpTime3) && (levelUpTime3 < uploadRequest.GetLevelUpTime3() - floatMarginIn10thMillis || levelUpTime3 > uploadRequest.GetLevelUpTime3() + floatMarginIn10thMillis))
+			if (!int.TryParse(levelUpTimes[1], out int levelUpTime3) || levelUpTime3 < uploadRequest.GetLevelUpTime3() - floatMarginIn10thMillis || levelUpTime3 > uploadRequest.GetLevelUpTime3() + floatMarginIn10thMillis)
 				throw InvalidValidation($"{nameof(uploadRequest.LevelUpTime3InSeconds)} {levelUpTime2} does not match {uploadRequest.GetLevelUpTime3()}.");
 
-			if (!int.TryParse(levelUpTimes[2], out int levelUpTime4) && (levelUpTime4 < uploadRequest.GetLevelUpTime4() - floatMarginIn10thMillis || levelUpTime4 > uploadRequest.GetLevelUpTime4() + floatMarginIn10thMillis))
+			if (!int.TryParse(levelUpTimes[2], out int levelUpTime4) || levelUpTime4 < uploadRequest.GetLevelUpTime4() - floatMarginIn10thMillis || levelUpTime4 > uploadRequest.GetLevelUpTime4() + floatMarginIn10thMillis)
 				throw InvalidValidation($"{nameof(uploadRequest.LevelUpTime4InSeconds)} {levelUpTime2} does not match {uploadRequest.GetLevelUpTime4()}.");
 
 			_logger.LogWarning("Validation {actual} did not exactly match {expected} but was accepted anyway.", actual, expected);
