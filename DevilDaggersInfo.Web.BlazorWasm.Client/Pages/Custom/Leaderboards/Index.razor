@@ -22,9 +22,9 @@ else
 			<input class="bg-black border-gray-3 border-2" value="@AuthorFilter" @onchange="ChangeInputAuthorName" />
 			<span>Category</span>
 			<Select @onchange="ChangeCategory" class="bg-gray-3 transition-colors duration-100 h-8 rounded text-color-text">
-				@foreach (CustomLeaderboardCategory e in (CustomLeaderboardCategory[])Enum.GetValues(typeof(CustomLeaderboardCategory)))
+				@foreach (CustomLeaderboardCategory category in (CustomLeaderboardCategory[])Enum.GetValues(typeof(CustomLeaderboardCategory)))
 				{
-					<option value="@e">@e.ToDisplayString()</option>
+					<option value="@category">@category.ToDisplayString()</option>
 				}
 			</Select>
 		</div>

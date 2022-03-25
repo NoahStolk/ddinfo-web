@@ -32,9 +32,6 @@ public class PlayersController : ControllerBase
 	{
 		return _dbContext.Players
 			.AsNoTracking()
-
-			// TODO: Check if this can be combined without querying entire entity.
-			.Select(p => new { p.Id, p.BanType, p.BanDescription, p.BanResponsibleId, p.CountryCode })
 			.Select(p => new GetPlayerForLeaderboard
 			{
 				Id = p.Id,
