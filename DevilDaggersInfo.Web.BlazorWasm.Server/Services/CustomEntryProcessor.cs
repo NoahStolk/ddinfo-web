@@ -37,10 +37,9 @@ public class CustomEntryProcessor
 		_stopwatch = Stopwatch.StartNew();
 	}
 
-	public async Task<GetUploadSuccess> ProcessUploadRequestAsync(AddUploadRequest uploadRequest)
+	private void ValidateV1(AddUploadRequest uploadRequest)
 	{
-		// Check if the submission actually came from an allowed program.
-		string expected = uploadRequest.CreateValidation();
+		string expected = uploadRequest.CreateValidationV1();
 		string actual;
 		try
 		{
@@ -121,6 +120,35 @@ public class CustomEntryProcessor
 
 			CustomEntryValidationException InvalidValidation(string additionalInfo) => LogAndCreateValidationException(uploadRequest, $"Invalid submission for {uploadRequest.Validation}.\n`Expected: {expected}`\n`Actual:   {actual}`\n{additionalInfo}", null, "rotating_light");
 		}
+	}
+
+	private void ValidateV2(AddUploadRequest uploadRequest)
+	{
+		string expected = uploadRequest.CreateValidationV2();
+		string actual;
+		try
+		{
+			actual = _encryptionWrapper.DecodeAndDecrypt(HttpUtility.HtmlDecode(uploadRequest.Validation));
+		}
+		catch (Exception ex)
+		{
+			_logger.LogError(ex, "Could not decrypt validation '{validation}'.", uploadRequest.Validation);
+			throw LogAndCreateValidationException(uploadRequest, $"Could not decrypt validation '{uploadRequest.Validation}'.", null, "rotating_light");
+		}
+
+		if (actual != expected)
+			throw LogAndCreateValidationException(uploadRequest, $"Invalid submission for {uploadRequest.Validation}.\n`Expected: {expected}`\n`Actual:   {actual}`", null, "rotating_light");
+	}
+
+	public async Task<GetUploadSuccess> ProcessUploadRequestAsync(AddUploadRequest uploadRequest)
+	{
+		// Check if the submission actually came from an allowed program.
+		if (uploadRequest.ValidationVersion < 2)
+			ValidateV1(uploadRequest);
+		else if (uploadRequest.ValidationVersion == 2)
+			ValidateV2(uploadRequest);
+		else
+			throw LogAndCreateValidationException(uploadRequest, $"Validation version '{uploadRequest.ValidationVersion}' is not implemented.");
 
 		// Check for required client and version.
 		var tool = _dbContext.Tools.Select(t => new { t.Name, t.RequiredVersionNumber }).FirstOrDefault(t => t.Name == uploadRequest.Client);
@@ -182,10 +210,6 @@ public class CustomEntryProcessor
 		if (customLeaderboard.Category == CustomLeaderboardCategory.Pacifist && uploadRequest.DaggersHit > 0)
 			throw LogAndCreateValidationException(uploadRequest, $"Counted {uploadRequest.DaggersHit} dagger {(uploadRequest.DaggersHit == 1 ? "hit" : "hits")}. Can't submit score to {CustomLeaderboardCategory.Pacifist} leaderboard.", spawnsetName);
 
-		bool isAscending = customLeaderboard.Category.IsAscending();
-
-		// At this point, the submission is accepted.
-
 		// Make sure HomingDaggers is not negative (happens rarely as a bug, and also for spawnsets with homing disabled which we don't want to display values for anyway).
 		uploadRequest.HomingStored = Math.Max(0, uploadRequest.GetHomingStored());
 		uploadRequest.GameData.HomingDaggers = Array.ConvertAll(uploadRequest.GameData.HomingDaggers, i => Math.Max(0, i));
@@ -203,6 +227,7 @@ public class CustomEntryProcessor
 		}
 
 		// User is already on the leaderboard, but did not get a better score.
+		bool isAscending = customLeaderboard.Category.IsAscending();
 		if (isAscending && customEntry.Time <= requestTimeAsInt || !isAscending && customEntry.Time >= requestTimeAsInt)
 			return await ProcessNoHighscoreAsync(uploadRequest, customLeaderboard, spawnsetName);
 

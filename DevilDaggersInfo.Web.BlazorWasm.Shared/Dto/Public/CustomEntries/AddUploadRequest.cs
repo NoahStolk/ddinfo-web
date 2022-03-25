@@ -20,6 +20,11 @@ public record AddUploadRequest
 
 	public double TimeInSeconds { get; init; }
 
+	// TODO: Make required when validation V2 is fully in use.
+	[MaxLength(4)]
+	[MinLength(4)]
+	public byte[]? TimeAsBytes { get; init; }
+
 	public int GemsCollected { get; init; }
 
 	public int EnemiesKilled { get; init; }
@@ -63,6 +68,21 @@ public record AddUploadRequest
 
 	public double LevelUpTime4InSeconds { get; init; }
 
+	// TODO: Make required when validation V2 is fully in use.
+	[MaxLength(4)]
+	[MinLength(4)]
+	public byte[]? LevelUpTime2AsBytes { get; init; }
+
+	// TODO: Make required when validation V2 is fully in use.
+	[MaxLength(4)]
+	[MinLength(4)]
+	public byte[]? LevelUpTime3AsBytes { get; init; }
+
+	// TODO: Make required when validation V2 is fully in use.
+	[MaxLength(4)]
+	[MinLength(4)]
+	public byte[]? LevelUpTime4AsBytes { get; init; }
+
 	[StringLength(16)]
 	public string ClientVersion { get; init; } = null!;
 
@@ -73,6 +93,8 @@ public record AddUploadRequest
 	public string BuildMode { get; init; } = null!;
 
 	public string Validation { get; init; } = null!;
+
+	public int ValidationVersion { get; init; }
 
 	public bool IsReplay { get; init; }
 
