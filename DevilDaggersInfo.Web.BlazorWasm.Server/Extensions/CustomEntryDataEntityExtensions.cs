@@ -11,8 +11,8 @@ public static class CustomEntryDataEntityExtensions
 		ced.DaggersFiredData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.DaggersFired);
 		ced.DaggersHitData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.DaggersHit);
 		ced.EnemiesAliveData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.EnemiesAlive);
-		ced.HomingStoredData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.HomingDaggers);
-		ced.HomingEatenData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.HomingDaggersEaten);
+		ced.HomingStoredData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.HomingStored.Length == 0 ? uploadRequest.GameData.HomingDaggers : uploadRequest.GameData.HomingStored);
+		ced.HomingEatenData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.HomingEaten.Length == 0 ? uploadRequest.GameData.HomingDaggersEaten : uploadRequest.GameData.HomingEaten);
 		ced.GemsDespawnedData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.GemsDespawned);
 		ced.GemsEatenData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.GemsEaten);
 		ced.GemsTotalData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.GemsTotal);

@@ -36,7 +36,7 @@ public record AddUploadRequest
 	public int EnemiesAlive { get; init; }
 
 	[Obsolete("Use HomingStored instead.")]
-	public int HomingDaggers { get; init; }
+	public int HomingDaggers { get; set; }
 
 	[Obsolete("Use HomingEaten instead.")]
 	public int HomingDaggersEaten { get; init; }
