@@ -1,14 +1,15 @@
+using DevilDaggersInfo.Web.BlazorWasm.Server.Entities.Views;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
 
 public static class CustomEntryConverters
 {
-	public static GetCustomEntryDdcl ToGetCustomEntryDdcl(this CustomEntryEntity customEntry, bool hasReplay) => new()
+	public static GetCustomEntryDdcl ToGetCustomEntryDdcl(this CustomEntryDdclResult customEntry, bool hasReplay) => new()
 	{
 		Id = customEntry.Id,
 		PlayerId = customEntry.PlayerId,
-		PlayerName = customEntry.Player.PlayerName,
+		PlayerName = customEntry.PlayerName,
 		ClientVersion = customEntry.ClientVersion,
 		DeathType = customEntry.DeathType,
 		EnemiesAlive = customEntry.EnemiesAlive,
