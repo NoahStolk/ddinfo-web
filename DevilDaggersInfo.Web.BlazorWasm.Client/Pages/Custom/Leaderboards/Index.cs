@@ -28,6 +28,8 @@ public partial class Index
 
 	public GetTotalCustomLeaderboardData? GetTotalCustomLeaderboardData { get; set; }
 
+	public GetGlobalCustomLeaderboard? GetGlobalCustomLeaderboard { get; set; }
+
 	public int TotalPages => GetCustomLeaderboards == null ? 0 : (GetCustomLeaderboards.TotalResults - 1) / PageSize + 1;
 	public int TotalResults => GetCustomLeaderboards == null ? 0 : GetCustomLeaderboards.TotalResults;
 
@@ -55,6 +57,8 @@ public partial class Index
 		await Fetch();
 
 		GetTotalCustomLeaderboardData = await Http.GetTotalCustomLeaderboardData();
+
+		GetGlobalCustomLeaderboard = await Http.GetGlobalCustomLeaderboardForCategory(CustomLeaderboardCategory.Survival);
 	}
 
 	public async Task ChangePageIndex(int pageIndex)

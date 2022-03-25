@@ -122,3 +122,20 @@ else
 
 	<i class="inline-block mt-3">* Submissions are counted since @FeatureConstants.TrackingCustomLeaderboardSubmitCounts.ToString(FormatUtils.DateFormat).</i>
 }
+
+@if (GetGlobalCustomLeaderboard != null)
+{
+	<Heading Level="2" Title="Global Leaderboard (Survival)" />
+
+	<div class="grid grid-cols-3">
+		<div class="font-bold">Player</div>
+		<div class="font-bold text-right">Points</div>
+		<div class="font-bold text-right">Played</div>
+		@foreach (GetGlobalCustomLeaderboardEntry entry in GetGlobalCustomLeaderboard.Entries)
+		{
+			<div>@entry.PlayerName</div>
+			<div class="text-right">@entry.Points</div>
+			<div class="text-right">@entry.Played</div>
+		}
+	</div>
+}

@@ -140,6 +140,52 @@ public class CustomLeaderboardsController : ControllerBase
 		};
 	}
 
+	[HttpGet("global-leaderboard")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	public async Task<ActionResult<GetGlobalCustomLeaderboard>> GetGlobalCustomLeaderboardForCategory(CustomLeaderboardCategory category)
+	{
+		var customLeaderboards = await _dbContext.CustomLeaderboards
+			.AsNoTracking()
+			.Include(cl => cl.CustomEntries!)
+				.ThenInclude(ce => ce.Player)
+			.Select(cl => new { cl.Category, cl.IsFeatured, cl.CustomEntries }!)
+			.Where(ce => ce.Category == category && ce.IsFeatured)
+			.ToListAsync();
+
+		List<GetGlobalCustomLeaderboardEntry> entries = new();
+		foreach (List<CustomEntryEntity> customEntries in customLeaderboards.Select(cl => cl.CustomEntries!))
+		{
+			int point = customEntries.Count;
+			foreach (CustomEntryEntity customEntry in customEntries.Sort(category))
+			{
+				GetGlobalCustomLeaderboardEntry? entry = entries.Find(ce => ce.PlayerId == customEntry.PlayerId);
+				if (entry == null)
+				{
+					entries.Add(new()
+					{
+						PlayerId = customEntry.PlayerId,
+						PlayerName = customEntry.Player.PlayerName,
+						Points = point,
+						Played = 1,
+					});
+				}
+				else
+				{
+					entry.Points += point;
+					entry.Played++;
+				}
+
+				point--;
+			}
+		}
+
+		return new GetGlobalCustomLeaderboard
+		{
+			Entries = entries.OrderByDescending(ce => ce.Points).ToList(),
+		};
+	}
+
 	[HttpGet("ddlive")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]

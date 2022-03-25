@@ -86,6 +86,15 @@ public partial class PublicApiHttpClient
 		return await SendGetRequest<Page<GetCustomLeaderboardOverview>>(UrlBuilderUtils.BuildUrlWithQuery($"api/custom-leaderboards/", queryParameters));
 	}
 
+	public async Task<GetGlobalCustomLeaderboard> GetGlobalCustomLeaderboardForCategory(CustomLeaderboardCategory category)
+	{
+		Dictionary<string, object?> queryParameters = new()
+		{
+			{ nameof(category), category }
+		};
+		return await SendGetRequest<GetGlobalCustomLeaderboard>(UrlBuilderUtils.BuildUrlWithQuery($"api/custom-leaderboards/global-leaderboard", queryParameters));
+	}
+
 	public async Task<List<GetCustomLeaderboardDdLive>> GetCustomLeaderboardsDdLive()
 	{
 		return await SendGetRequest<List<GetCustomLeaderboardDdLive>>($"api/custom-leaderboards/ddlive");
