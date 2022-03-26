@@ -125,7 +125,7 @@ else
 
 @if (GetGlobalCustomLeaderboard != null)
 {
-	<Heading Level="2" Title="Global Leaderboard (Survival)" />
+	<Heading Level="2" Title="@($"Global Leaderboard ({CategoryEnum.ToDisplayString()})")" />
 
 	<p>
 		Points are given based on rank vs total players. For example, a leaderboard with 10 players will give @(10 * GlobalCustomLeaderboardUtils.RankingMultiplier) points if you're rank 1, @(9 * GlobalCustomLeaderboardUtils.RankingMultiplier) points if you're rank 2, etc. Additionally, daggers achieved will give the following bonus points:
@@ -135,12 +135,12 @@ else
 		{
 			int multiplier = dagger switch
 			{
-				CustomLeaderboardDagger.Leviathan => GlobalCustomLeaderboardUtils.LeviathanMultiplier,
-				CustomLeaderboardDagger.Devil => GlobalCustomLeaderboardUtils.DevilMultiplier,
-				CustomLeaderboardDagger.Golden => GlobalCustomLeaderboardUtils.GoldenMultiplier,
-				CustomLeaderboardDagger.Silver => GlobalCustomLeaderboardUtils.SilverMultiplier,
-				CustomLeaderboardDagger.Bronze => GlobalCustomLeaderboardUtils.BronzeMultiplier,
-				_ => GlobalCustomLeaderboardUtils.DefaultMultiplier,
+				CustomLeaderboardDagger.Leviathan => GlobalCustomLeaderboardUtils.LeviathanBonus,
+				CustomLeaderboardDagger.Devil => GlobalCustomLeaderboardUtils.DevilBonus,
+				CustomLeaderboardDagger.Golden => GlobalCustomLeaderboardUtils.GoldenBonus,
+				CustomLeaderboardDagger.Silver => GlobalCustomLeaderboardUtils.SilverBonus,
+				CustomLeaderboardDagger.Bronze => GlobalCustomLeaderboardUtils.BronzeBonus,
+				_ => GlobalCustomLeaderboardUtils.DefaultBonus,
 			};
 			if (multiplier > 0)
 			{
@@ -149,7 +149,7 @@ else
 		}
 	</ul>
 	<p>
-		There are @GetGlobalCustomLeaderboard.TotalPoints points achievable from @GetGlobalCustomLeaderboard.TotalLeaderboards leaderboards. Non-featured leaderboards are not included.
+		This leaderboard is based on @GetGlobalCustomLeaderboard.TotalLeaderboards @CategoryEnum.ToDisplayString() leaderboards. Non-featured leaderboards are not included. Maximum possible points is @GetGlobalCustomLeaderboard.TotalPoints.
 	</p>
 
 	<div class="grid gap-x-2 grid-cols-11">

@@ -207,7 +207,7 @@ public class CustomLeaderboardsController : ControllerBase
 				.OrderByDescending(ce => ce.Points)
 				.ToList(),
 			TotalLeaderboards = customLeaderboards.Count,
-			TotalPoints = customLeaderboards.Sum(cl => cl.CustomEntries!.Count),
+			TotalPoints = customLeaderboards.Sum(cl => cl.CustomEntries!.Count * GlobalCustomLeaderboardUtils.RankingMultiplier + GlobalCustomLeaderboardUtils.LeviathanBonus),
 		};
 	}
 

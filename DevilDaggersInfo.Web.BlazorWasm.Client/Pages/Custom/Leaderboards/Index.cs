@@ -33,6 +33,8 @@ public partial class Index
 	public int TotalPages => GetCustomLeaderboards == null ? 0 : (GetCustomLeaderboards.TotalResults - 1) / PageSize + 1;
 	public int TotalResults => GetCustomLeaderboards == null ? 0 : GetCustomLeaderboards.TotalResults;
 
+	public CustomLeaderboardCategory CategoryEnum => (CustomLeaderboardCategory)_category;
+
 	private async Task ChangeInputSpawnsetName(ChangeEventArgs e)
 	{
 		SpawnsetFilter = e.Value?.ToString();
@@ -58,7 +60,7 @@ public partial class Index
 
 		GetTotalCustomLeaderboardData = await Http.GetTotalCustomLeaderboardData();
 
-		GetGlobalCustomLeaderboard = await Http.GetGlobalCustomLeaderboardForCategory(CustomLeaderboardCategory.Survival);
+		GetGlobalCustomLeaderboard = await Http.GetGlobalCustomLeaderboardForCategory(CategoryEnum);
 	}
 
 	public async Task ChangePageIndex(int pageIndex)
