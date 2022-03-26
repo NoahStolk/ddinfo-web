@@ -4,6 +4,7 @@ using DevilDaggersInfo.Web.BlazorWasm.Server.Entities.Views;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomLeaderboards;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Public;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
 
@@ -145,35 +146,48 @@ public class CustomLeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult<GetGlobalCustomLeaderboard>> GetGlobalCustomLeaderboardForCategory(CustomLeaderboardCategory category)
 	{
-		var customLeaderboards = await _dbContext.CustomLeaderboards
+		List<CustomLeaderboardEntity> customLeaderboards = await _dbContext.CustomLeaderboards
 			.AsNoTracking()
 			.Include(cl => cl.CustomEntries!)
 				.ThenInclude(ce => ce.Player)
-			.Select(cl => new { cl.Category, cl.IsFeatured, cl.CustomEntries }!)
 			.Where(ce => ce.Category == category && ce.IsFeatured)
 			.ToListAsync();
 
 		List<GetGlobalCustomLeaderboardEntry> entries = new();
-		foreach (List<CustomEntryEntity> customEntries in customLeaderboards.Select(cl => cl.CustomEntries!))
+		foreach (CustomLeaderboardEntity customLeaderboard in customLeaderboards)
 		{
+			List<CustomEntryEntity> customEntries = customLeaderboard.CustomEntries!;
 			int point = customEntries.Count;
 			foreach (CustomEntryEntity customEntry in customEntries.Sort(category))
 			{
 				GetGlobalCustomLeaderboardEntry? entry = entries.Find(ce => ce.PlayerId == customEntry.PlayerId);
+				CustomLeaderboardDagger? dagger = customLeaderboard.GetDaggerFromTime(customEntry.Time);
+				if (!dagger.HasValue)
+				{
+					// TODO: Warning.
+					continue;
+				}
+
 				if (entry == null)
 				{
-					entries.Add(new()
+					entry = new()
 					{
 						PlayerId = customEntry.PlayerId,
 						PlayerName = customEntry.Player.PlayerName,
-						Points = point,
-						Played = 1,
-					});
+					};
+					entries.Add(entry);
 				}
-				else
+
+				entry.Points += point;
+				entry.LeaderboardsPlayedCount++;
+				switch (CustomLeaderboardUtils.GetDaggerFromTime(category, customEntry.Time, customLeaderboard.TimeLeviathan, customLeaderboard.TimeDevil, customLeaderboard.TimeGolden, customLeaderboard.TimeSilver, customLeaderboard.TimeBronze))
 				{
-					entry.Points += point;
-					entry.Played++;
+					case CustomLeaderboardDagger.Leviathan: entry.LeviathanDaggerCount++; break;
+					case CustomLeaderboardDagger.Devil: entry.DevilDaggerCount++; break;
+					case CustomLeaderboardDagger.Golden: entry.GoldenDaggerCount++; break;
+					case CustomLeaderboardDagger.Silver: entry.SilverDaggerCount++; break;
+					case CustomLeaderboardDagger.Bronze: entry.BronzeDaggerCount++; break;
+					default: entry.DefaultDaggerCount++; break;
 				}
 
 				point--;
@@ -183,6 +197,8 @@ public class CustomLeaderboardsController : ControllerBase
 		return new GetGlobalCustomLeaderboard
 		{
 			Entries = entries.OrderByDescending(ce => ce.Points).ToList(),
+			TotalLeaderboards = customLeaderboards.Count,
+			TotalPoints = customLeaderboards.Sum(cl => cl.CustomEntries!.Count),
 		};
 	}
 

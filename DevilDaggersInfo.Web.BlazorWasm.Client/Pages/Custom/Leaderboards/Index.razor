@@ -127,15 +127,54 @@ else
 {
 	<Heading Level="2" Title="Global Leaderboard (Survival)" />
 
-	<div class="grid grid-cols-3">
+	<p>
+		Points are given based on rank vs total players. For example, a leaderboard with 10 players will give 10 points if you're rank 1, 9 points if you're rank 2, etc.
+	</p>
+	<p>
+		Non-featured leaderboards are not included.
+	</p>
+
+	<div class="grid gap-x-2 grid-cols-11">
+		<div class="font-bold text-right">Rank</div>
 		<div class="font-bold">Player</div>
 		<div class="font-bold text-right">Points</div>
-		<div class="font-bold text-right">Played</div>
+		<div class="font-bold text-right">Average points per leaderboard</div>
+		<div class="font-bold text-right">Total played</div>
+		<div class="font-bold text-right">Default daggers</div>
+		<div class="font-bold text-right">Bronze daggers</div>
+		<div class="font-bold text-right">Silver daggers</div>
+		<div class="font-bold text-right">Golden daggers</div>
+		<div class="font-bold text-right">Devil daggers</div>
+		<div class="font-bold text-right">Leviathan daggers</div>
+
+		<div class="font-bold text-right">x</div>
+		<div class="font-bold">TOTAL</div>
+		<div class="font-bold text-right">@GetGlobalCustomLeaderboard.TotalPoints</div>
+		<div class="font-bold text-right">@((GetGlobalCustomLeaderboard.TotalPoints / (float)GetGlobalCustomLeaderboard.TotalLeaderboards).ToString("0.00"))</div>
+		<div class="font-bold text-right">@GetGlobalCustomLeaderboard.TotalLeaderboards</div>
+		<div class="font-bold text-right">@GetGlobalCustomLeaderboard.TotalLeaderboards</div>
+		<div class="font-bold text-right">@GetGlobalCustomLeaderboard.TotalLeaderboards</div>
+		<div class="font-bold text-right">@GetGlobalCustomLeaderboard.TotalLeaderboards</div>
+		<div class="font-bold text-right">@GetGlobalCustomLeaderboard.TotalLeaderboards</div>
+		<div class="font-bold text-right">@GetGlobalCustomLeaderboard.TotalLeaderboards</div>
+		<div class="font-bold text-right">@GetGlobalCustomLeaderboard.TotalLeaderboards</div>
+
+		@{
+			int i = 0;
+		}
 		@foreach (GetGlobalCustomLeaderboardEntry entry in GetGlobalCustomLeaderboard.Entries)
 		{
+			<div class="text-right">@(++i)</div>
 			<div>@entry.PlayerName</div>
 			<div class="text-right">@entry.Points</div>
-			<div class="text-right">@entry.Played</div>
+			<div class="text-right">@((entry.Points / (float)entry.LeaderboardsPlayedCount).ToString("0.00"))</div>
+			<div class="text-right">@entry.LeaderboardsPlayedCount</div>
+			<div class="text-right">@entry.DefaultDaggerCount</div>
+			<div class="text-right">@entry.BronzeDaggerCount</div>
+			<div class="text-right">@entry.SilverDaggerCount</div>
+			<div class="text-right">@entry.GoldenDaggerCount</div>
+			<div class="text-right">@entry.DevilDaggerCount</div>
+			<div class="text-right">@entry.LeviathanDaggerCount</div>
 		}
 	</div>
 }
