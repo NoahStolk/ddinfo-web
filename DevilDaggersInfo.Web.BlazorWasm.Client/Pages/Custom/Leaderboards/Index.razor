@@ -128,10 +128,28 @@ else
 	<Heading Level="2" Title="Global Leaderboard (Survival)" />
 
 	<p>
-		Points are given based on rank vs total players. For example, a leaderboard with 10 players will give 10 points if you're rank 1, 9 points if you're rank 2, etc.
+		Points are given based on rank vs total players. For example, a leaderboard with 10 players will give @(10 * GlobalCustomLeaderboardUtils.RankingMultiplier) points if you're rank 1, @(9 * GlobalCustomLeaderboardUtils.RankingMultiplier) points if you're rank 2, etc. Additionally, daggers achieved will give the following bonus points:
 	</p>
+	<ul class="pl-4">
+		@foreach (CustomLeaderboardDagger dagger in Enum.GetValues<CustomLeaderboardDagger>())
+		{
+			int multiplier = dagger switch
+			{
+				CustomLeaderboardDagger.Leviathan => GlobalCustomLeaderboardUtils.LeviathanMultiplier,
+				CustomLeaderboardDagger.Devil => GlobalCustomLeaderboardUtils.DevilMultiplier,
+				CustomLeaderboardDagger.Golden => GlobalCustomLeaderboardUtils.GoldenMultiplier,
+				CustomLeaderboardDagger.Silver => GlobalCustomLeaderboardUtils.SilverMultiplier,
+				CustomLeaderboardDagger.Bronze => GlobalCustomLeaderboardUtils.BronzeMultiplier,
+				_ => GlobalCustomLeaderboardUtils.DefaultMultiplier,
+			};
+			if (multiplier > 0)
+			{
+				<li class="list-disc">@multiplier per @dagger dagger</li>
+			}
+		}
+	</ul>
 	<p>
-		Non-featured leaderboards are not included.
+		There are @GetGlobalCustomLeaderboard.TotalPoints points achievable from @GetGlobalCustomLeaderboard.TotalLeaderboards leaderboards. Non-featured leaderboards are not included.
 	</p>
 
 	<div class="grid gap-x-2 grid-cols-11">
@@ -146,18 +164,6 @@ else
 		<div class="font-bold text-right">Golden daggers</div>
 		<div class="font-bold text-right">Devil daggers</div>
 		<div class="font-bold text-right">Leviathan daggers</div>
-
-		<div class="font-bold text-right">x</div>
-		<div class="font-bold">TOTAL</div>
-		<div class="font-bold text-right">@GetGlobalCustomLeaderboard.TotalPoints</div>
-		<div class="font-bold text-right">@((GetGlobalCustomLeaderboard.TotalPoints / (float)GetGlobalCustomLeaderboard.TotalLeaderboards).ToString("0.00"))</div>
-		<div class="font-bold text-right">@GetGlobalCustomLeaderboard.TotalLeaderboards</div>
-		<div class="font-bold text-right">@GetGlobalCustomLeaderboard.TotalLeaderboards</div>
-		<div class="font-bold text-right">@GetGlobalCustomLeaderboard.TotalLeaderboards</div>
-		<div class="font-bold text-right">@GetGlobalCustomLeaderboard.TotalLeaderboards</div>
-		<div class="font-bold text-right">@GetGlobalCustomLeaderboard.TotalLeaderboards</div>
-		<div class="font-bold text-right">@GetGlobalCustomLeaderboard.TotalLeaderboards</div>
-		<div class="font-bold text-right">@GetGlobalCustomLeaderboard.TotalLeaderboards</div>
 
 		@{
 			int i = 0;

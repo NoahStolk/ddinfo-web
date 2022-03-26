@@ -4,6 +4,7 @@ using DevilDaggersInfo.Web.BlazorWasm.Server.Entities.Views;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomLeaderboards;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Public;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.InternalModels;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
@@ -153,50 +154,58 @@ public class CustomLeaderboardsController : ControllerBase
 			.Where(ce => ce.Category == category && ce.IsFeatured)
 			.ToListAsync();
 
-		List<GetGlobalCustomLeaderboardEntry> entries = new();
+		Dictionary<int, (string Name, GlobalCustomLeaderboardEntryData Data)> globalData = new();
 		foreach (CustomLeaderboardEntity customLeaderboard in customLeaderboards)
 		{
-			List<CustomEntryEntity> customEntries = customLeaderboard.CustomEntries!;
-			int point = customEntries.Count;
-			foreach (CustomEntryEntity customEntry in customEntries.Sort(category))
+			List<CustomEntryEntity> customEntries = customLeaderboard.CustomEntries!.Sort(category).ToList();
+
+			for (int i = 0; i < customEntries.Count; i++)
 			{
-				GetGlobalCustomLeaderboardEntry? entry = entries.Find(ce => ce.PlayerId == customEntry.PlayerId);
-				CustomLeaderboardDagger? dagger = customLeaderboard.GetDaggerFromTime(customEntry.Time);
-				if (!dagger.HasValue)
+				CustomEntryEntity customEntry = customEntries[i];
+
+				GlobalCustomLeaderboardEntryData data;
+				if (!globalData.ContainsKey(customEntry.PlayerId))
 				{
-					// TODO: Warning.
-					continue;
+					data = new();
+					globalData.Add(customEntry.PlayerId, (customEntry.Player.PlayerName, data));
+				}
+				else
+				{
+					data = globalData[customEntry.PlayerId].Data;
 				}
 
-				if (entry == null)
-				{
-					entry = new()
-					{
-						PlayerId = customEntry.PlayerId,
-						PlayerName = customEntry.Player.PlayerName,
-					};
-					entries.Add(entry);
-				}
+				data.Rankings.Add(new(i + 1, customEntries.Count));
 
-				entry.Points += point;
-				entry.LeaderboardsPlayedCount++;
-				switch (CustomLeaderboardUtils.GetDaggerFromTime(category, customEntry.Time, customLeaderboard.TimeLeviathan, customLeaderboard.TimeDevil, customLeaderboard.TimeGolden, customLeaderboard.TimeSilver, customLeaderboard.TimeBronze))
+				switch (customLeaderboard.GetDaggerFromTime(customEntry.Time) ?? throw new InvalidOperationException("Custom leaderboard without daggers may not be used for processing global custom leaderboard data."))
 				{
-					case CustomLeaderboardDagger.Leviathan: entry.LeviathanDaggerCount++; break;
-					case CustomLeaderboardDagger.Devil: entry.DevilDaggerCount++; break;
-					case CustomLeaderboardDagger.Golden: entry.GoldenDaggerCount++; break;
-					case CustomLeaderboardDagger.Silver: entry.SilverDaggerCount++; break;
-					case CustomLeaderboardDagger.Bronze: entry.BronzeDaggerCount++; break;
-					default: entry.DefaultDaggerCount++; break;
+					case CustomLeaderboardDagger.Leviathan: data.LeviathanCount++; break;
+					case CustomLeaderboardDagger.Devil: data.DevilCount++; break;
+					case CustomLeaderboardDagger.Golden: data.GoldenCount++; break;
+					case CustomLeaderboardDagger.Silver: data.SilverCount++; break;
+					case CustomLeaderboardDagger.Bronze: data.BronzeCount++; break;
+					default: data.DefaultCount++; break;
 				}
-
-				point--;
 			}
 		}
 
 		return new GetGlobalCustomLeaderboard
 		{
-			Entries = entries.OrderByDescending(ce => ce.Points).ToList(),
+			Entries = globalData
+				.Select(kvp => new GetGlobalCustomLeaderboardEntry
+				{
+					DefaultDaggerCount = kvp.Value.Data.DefaultCount,
+					BronzeDaggerCount = kvp.Value.Data.BronzeCount,
+					SilverDaggerCount = kvp.Value.Data.SilverCount,
+					GoldenDaggerCount = kvp.Value.Data.GoldenCount,
+					DevilDaggerCount = kvp.Value.Data.DevilCount,
+					LeviathanDaggerCount = kvp.Value.Data.LeviathanCount,
+					LeaderboardsPlayedCount = kvp.Value.Data.TotalPlayed,
+					PlayerId = kvp.Key,
+					PlayerName = kvp.Value.Name,
+					Points = GlobalCustomLeaderboardUtils.GetPoints(kvp.Value.Data),
+				})
+				.OrderByDescending(ce => ce.Points)
+				.ToList(),
 			TotalLeaderboards = customLeaderboards.Count,
 			TotalPoints = customLeaderboards.Sum(cl => cl.CustomEntries!.Count),
 		};
