@@ -59,8 +59,6 @@ public partial class Index
 		await Fetch();
 
 		GetTotalCustomLeaderboardData = await Http.GetTotalCustomLeaderboardData();
-
-		GetGlobalCustomLeaderboard = await Http.GetGlobalCustomLeaderboardForCategory(CategoryEnum);
 	}
 
 	public async Task ChangePageIndex(int pageIndex)
@@ -116,6 +114,8 @@ public partial class Index
 			PageIndex = TotalPages - 1;
 			NavigationManager.AddOrModifyQueryParameter(QueryParameters.PageIndex, PageIndex);
 		}
+
+		GetGlobalCustomLeaderboard = await Http.GetGlobalCustomLeaderboardForCategory(CategoryEnum);
 	}
 
 	private static class QueryParameters
