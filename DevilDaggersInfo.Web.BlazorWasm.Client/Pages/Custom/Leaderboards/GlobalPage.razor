@@ -7,12 +7,7 @@
 
 <div class="grid gap-2 grid-cols-2 max-w-md mb-2">
 	<span>Category</span>
-	<Select @onchange="ChangeCategory" class="bg-gray-3 transition-colors duration-100 h-8 rounded text-color-text">
-		@foreach (CustomLeaderboardCategory category in (CustomLeaderboardCategory[])Enum.GetValues(typeof(CustomLeaderboardCategory)))
-		{
-			<option value="@category">@category.ToDisplayString()</option>
-		}
-	</Select>
+	<SelectList TValue="CustomLeaderboardCategory" Values="@(Enum.GetValues<CustomLeaderboardCategory>().ToList())" DisplayFunction="@((v) => v.ToDisplayString())" Default="CustomLeaderboardCategory.Survival" CssClass="bg-gray-3 transition-colors duration-100 h-8 rounded text-color-text" />
 </div>
 
 <p>

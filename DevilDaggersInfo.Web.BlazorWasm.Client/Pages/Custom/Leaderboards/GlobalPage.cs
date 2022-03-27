@@ -34,20 +34,4 @@ public partial class GlobalPage
 	{
 		GetGlobalCustomLeaderboard = await Http.GetGlobalCustomLeaderboardForCategory(CategoryEnum);
 	}
-
-	private async Task ChangeCategory(ChangeEventArgs e)
-	{
-		if (!Enum.TryParse<CustomLeaderboardCategory>(e.Value?.ToString(), out CustomLeaderboardCategory category))
-			return;
-
-		Category = (int)category;
-		NavigationManager.AddOrModifyQueryParameter(QueryParameters.Category, Category);
-
-		await Fetch();
-	}
-
-	private static class QueryParameters
-	{
-		public static string Category { get; } = nameof(Category);
-	}
 }
