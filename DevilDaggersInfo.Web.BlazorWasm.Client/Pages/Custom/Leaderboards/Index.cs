@@ -28,12 +28,8 @@ public partial class Index
 
 	public GetTotalCustomLeaderboardData? GetTotalCustomLeaderboardData { get; set; }
 
-	public GetGlobalCustomLeaderboard? GetGlobalCustomLeaderboard { get; set; }
-
 	public int TotalPages => GetCustomLeaderboards == null ? 0 : (GetCustomLeaderboards.TotalResults - 1) / PageSize + 1;
 	public int TotalResults => GetCustomLeaderboards == null ? 0 : GetCustomLeaderboards.TotalResults;
-
-	public CustomLeaderboardCategory CategoryEnum => (CustomLeaderboardCategory)_category;
 
 	private async Task ChangeInputSpawnsetName(ChangeEventArgs e)
 	{
@@ -114,8 +110,6 @@ public partial class Index
 			PageIndex = TotalPages - 1;
 			NavigationManager.AddOrModifyQueryParameter(QueryParameters.PageIndex, PageIndex);
 		}
-
-		GetGlobalCustomLeaderboard = await Http.GetGlobalCustomLeaderboardForCategory(CategoryEnum);
 	}
 
 	private static class QueryParameters

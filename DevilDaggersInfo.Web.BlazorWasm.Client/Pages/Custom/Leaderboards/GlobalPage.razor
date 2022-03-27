@@ -1,0 +1,83 @@
+@page "/custom/leaderboards/global"
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomLeaderboards
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils
+
+<Heading Title="Global Custom Leaderboard" />
+
+<div class="grid gap-2 grid-cols-2 max-w-md mb-2">
+	<span>Category</span>
+	<Select @onchange="ChangeCategory" class="bg-gray-3 transition-colors duration-100 h-8 rounded text-color-text">
+		@foreach (CustomLeaderboardCategory category in (CustomLeaderboardCategory[])Enum.GetValues(typeof(CustomLeaderboardCategory)))
+		{
+			<option value="@category">@category.ToDisplayString()</option>
+		}
+	</Select>
+</div>
+
+<p>
+	Points are given based on rank vs total players. For example, a leaderboard with 10 players will give @(10 * GlobalCustomLeaderboardUtils.RankingMultiplier) points if you're rank 1, @(9 * GlobalCustomLeaderboardUtils.RankingMultiplier) points if you're rank 2, etc. Additionally, daggers achieved will give the following bonus points:
+</p>
+<ul class="pl-4">
+	@foreach (CustomLeaderboardDagger dagger in Enum.GetValues<CustomLeaderboardDagger>())
+	{
+		int multiplier = dagger switch
+		{
+			CustomLeaderboardDagger.Leviathan => GlobalCustomLeaderboardUtils.LeviathanBonus,
+			CustomLeaderboardDagger.Devil => GlobalCustomLeaderboardUtils.DevilBonus,
+			CustomLeaderboardDagger.Golden => GlobalCustomLeaderboardUtils.GoldenBonus,
+			CustomLeaderboardDagger.Silver => GlobalCustomLeaderboardUtils.SilverBonus,
+			CustomLeaderboardDagger.Bronze => GlobalCustomLeaderboardUtils.BronzeBonus,
+			_ => GlobalCustomLeaderboardUtils.DefaultBonus,
+		};
+		if (multiplier > 0)
+		{
+			<li class="list-disc">@multiplier per @dagger dagger</li>
+		}
+	}
+</ul>
+
+@if (GetGlobalCustomLeaderboard == null)
+{
+	<Loading />
+}
+else
+{
+	<Heading Level="2" Title="@($"Global {CategoryEnum.ToDisplayString()} Leaderboard")" />
+
+	<p>
+		This leaderboard is based on @GetGlobalCustomLeaderboard.TotalLeaderboards @CategoryEnum.ToDisplayString() leaderboards. Non-featured leaderboards are not included. Maximum possible points is @GetGlobalCustomLeaderboard.TotalPoints.
+	</p>
+
+	<div class="grid gap-x-2 grid-cols-11">
+		<div class="font-bold text-right">Rank</div>
+		<div class="font-bold">Player</div>
+		<div class="font-bold text-right">Points</div>
+		<div class="font-bold text-right">Average points per leaderboard</div>
+		<div class="font-bold text-right">Total played</div>
+		<div class="font-bold text-right">Default daggers</div>
+		<div class="font-bold text-right">Bronze daggers</div>
+		<div class="font-bold text-right">Silver daggers</div>
+		<div class="font-bold text-right">Golden daggers</div>
+		<div class="font-bold text-right">Devil daggers</div>
+		<div class="font-bold text-right">Leviathan daggers</div>
+
+		@{
+			int i = 0;
+		}
+		@foreach (GetGlobalCustomLeaderboardEntry entry in GetGlobalCustomLeaderboard.Entries)
+		{
+			<div class="text-right">@(++i)</div>
+			<div>@entry.PlayerName</div>
+			<div class="text-right">@entry.Points</div>
+			<div class="text-right">@((entry.Points / (float)entry.LeaderboardsPlayedCount).ToString("0.00"))</div>
+			<div class="text-right">@entry.LeaderboardsPlayedCount</div>
+			<div class="text-right">@entry.DefaultDaggerCount</div>
+			<div class="text-right">@entry.BronzeDaggerCount</div>
+			<div class="text-right">@entry.SilverDaggerCount</div>
+			<div class="text-right">@entry.GoldenDaggerCount</div>
+			<div class="text-right">@entry.DevilDaggerCount</div>
+			<div class="text-right">@entry.LeviathanDaggerCount</div>
+		}
+	</div>
+}
