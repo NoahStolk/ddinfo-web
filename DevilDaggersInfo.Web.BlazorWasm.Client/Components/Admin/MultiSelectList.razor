@@ -2,7 +2,7 @@
 
 <div class="inline-block w-64 bg-gray-1 text-color-text cursor-pointer">
 	<div>
-		<div class="w-full" @onclick="e => _show = !_show"><span class="pl-2">@SelectedDisplayValue</span></div>
+		<div class="w-full" @onclick="e => _show = !_show"><span class="pl-2 select-none">@SelectedDisplayValue</span></div>
 		@if (Values != null)
 		{
 			foreach (string value in Values)

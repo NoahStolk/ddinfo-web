@@ -1,7 +1,9 @@
+using DevilDaggersInfo.Web.BlazorWasm.Server.Entities.Views;
+
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
 
 [Table("CustomEntries")]
-public class CustomEntryEntity
+public class CustomEntryEntity : ISortableCustomEntry
 {
 	[Key]
 	public int Id { get; init; }

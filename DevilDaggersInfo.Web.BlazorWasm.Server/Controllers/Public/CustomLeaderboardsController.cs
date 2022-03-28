@@ -4,6 +4,8 @@ using DevilDaggersInfo.Web.BlazorWasm.Server.Entities.Views;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomLeaderboards;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Public;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.InternalModels;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
 
@@ -137,6 +139,75 @@ public class CustomLeaderboardsController : ControllerBase
 				cl.TopPlayerName,
 				cl.WorldRecord)),
 			TotalResults = totalCustomLeaderboards,
+		};
+	}
+
+	[HttpGet("global-leaderboard")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	public async Task<ActionResult<GetGlobalCustomLeaderboard>> GetGlobalCustomLeaderboardForCategory(CustomLeaderboardCategory category)
+	{
+		List<CustomLeaderboardEntity> customLeaderboards = await _dbContext.CustomLeaderboards
+			.AsNoTracking()
+			.Include(cl => cl.CustomEntries!)
+				.ThenInclude(ce => ce.Player)
+			.Where(ce => ce.Category == category && ce.IsFeatured)
+			.ToListAsync();
+
+		Dictionary<int, (string Name, GlobalCustomLeaderboardEntryData Data)> globalData = new();
+		foreach (CustomLeaderboardEntity customLeaderboard in customLeaderboards)
+		{
+			List<CustomEntryEntity> customEntries = customLeaderboard.CustomEntries!.Sort(category).ToList();
+
+			for (int i = 0; i < customEntries.Count; i++)
+			{
+				CustomEntryEntity customEntry = customEntries[i];
+
+				GlobalCustomLeaderboardEntryData data;
+				if (!globalData.ContainsKey(customEntry.PlayerId))
+				{
+					data = new();
+					globalData.Add(customEntry.PlayerId, (customEntry.Player.PlayerName, data));
+				}
+				else
+				{
+					data = globalData[customEntry.PlayerId].Data;
+				}
+
+				data.Rankings.Add(new(i + 1, customEntries.Count));
+
+				switch (customLeaderboard.GetDaggerFromTime(customEntry.Time) ?? throw new InvalidOperationException("Custom leaderboard without daggers may not be used for processing global custom leaderboard data."))
+				{
+					case CustomLeaderboardDagger.Leviathan: data.LeviathanCount++; break;
+					case CustomLeaderboardDagger.Devil: data.DevilCount++; break;
+					case CustomLeaderboardDagger.Golden: data.GoldenCount++; break;
+					case CustomLeaderboardDagger.Silver: data.SilverCount++; break;
+					case CustomLeaderboardDagger.Bronze: data.BronzeCount++; break;
+					default: data.DefaultCount++; break;
+				}
+			}
+		}
+
+		return new GetGlobalCustomLeaderboard
+		{
+			Entries = globalData
+				.Select(kvp => new GetGlobalCustomLeaderboardEntry
+				{
+					DefaultDaggerCount = kvp.Value.Data.DefaultCount,
+					BronzeDaggerCount = kvp.Value.Data.BronzeCount,
+					SilverDaggerCount = kvp.Value.Data.SilverCount,
+					GoldenDaggerCount = kvp.Value.Data.GoldenCount,
+					DevilDaggerCount = kvp.Value.Data.DevilCount,
+					LeviathanDaggerCount = kvp.Value.Data.LeviathanCount,
+					LeaderboardsPlayedCount = kvp.Value.Data.TotalPlayed,
+					PlayerId = kvp.Key,
+					PlayerName = kvp.Value.Name,
+					Points = GlobalCustomLeaderboardUtils.GetPoints(kvp.Value.Data),
+				})
+				.OrderByDescending(ce => ce.Points)
+				.ToList(),
+			TotalLeaderboards = customLeaderboards.Count,
+			TotalPoints = customLeaderboards.Sum(cl => cl.CustomEntries!.Count * GlobalCustomLeaderboardUtils.RankingMultiplier + GlobalCustomLeaderboardUtils.LeviathanBonus),
 		};
 	}
 

@@ -1,0 +1,63 @@
+@typeparam TValue
+
+<OutsideClickHandler OnClickOutside="OnClickOutside" CssClass="inline-block w-64 bg-gray-3 text-color-text cursor-pointer">
+	<div class="w-full" @onclick="e => _show = !_show"><span class="pl-2 select-none">@DisplayFunction(CurrentValue)</span></div>
+	<div class="@(_show ? "absolute" : "hidden") z-10">
+		<div class="bg-gray-1 border-[#fff8] border-2">
+			<ul class="max-h-screen-half overflow-y-scroll w-64">
+				@{
+					int i = 0;
+					foreach (TValue value in Values)
+					{
+						<li class="cursor-pointer pl-2 @(i++ % 2 == 1 ? "bg-gray-2" : string.Empty) hover:bg-gray-5" @onclick="e => Select(value)">@DisplayFunction(value)</li>
+					}
+				}
+			</ul>
+		</div>
+	</div>
+</OutsideClickHandler>
+
+@code
+{
+	private bool _show = false;
+
+	[Parameter]
+	[EditorRequired]
+	public IReadOnlyList<TValue> Values { get; set; } = null!;
+
+	[Parameter]
+	[EditorRequired]
+	public TValue Default { get; set; } = default!;
+
+	[Parameter]
+	[EditorRequired]
+	public Func<TValue, string> DisplayFunction { get; set; } = null!;
+	
+	[Parameter]
+	[EditorRequired]
+	public EventCallback<TValue> Selected { get; set; }
+
+	[Parameter]
+	public string? CssClass { get; set; }
+
+	public TValue CurrentValue { get; set; } = default!;
+
+	protected override void OnInitialized()
+	{
+		CurrentValue = Default;
+	}
+
+	private void OnClickOutside()
+	{
+		_show = false;
+		StateHasChanged();
+	}
+
+	private async Task Select(TValue value)
+	{
+		CurrentValue = value;
+		_show = false;
+		await Selected.InvokeAsync(value);
+		StateHasChanged();
+	}
+}
