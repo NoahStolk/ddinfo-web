@@ -13,7 +13,7 @@
 					int i = 0;
 					foreach (KeyValuePair<TKey, string> kvp in Values)
 					{
-						<li class="cursor-pointer pl-2 @(i++ % 2 == 1 ? "bg-gray-2" : string.Empty) hover:bg-gray-5" @onclick="e => HandleSelect(kvp.Key)">@DisplayValue(kvp.Key)</li>
+						<li class="cursor-pointer text-lg pl-2 @(i++ % 2 == 1 ? "bg-gray-2" : "bg-gray-1") hover:bg-gray-5" @onclick="e => HandleSelect(kvp.Key)">@DisplayValue(kvp.Key)</li>
 					}
 				}
 			</ul>
