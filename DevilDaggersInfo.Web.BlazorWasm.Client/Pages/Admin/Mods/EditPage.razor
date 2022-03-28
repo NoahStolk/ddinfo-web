@@ -8,17 +8,17 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
 
 <AdminEdit Name="Mod" OverviewUrl="/admin/mods" ApiCall="Http.EditModById" Model="_editMod" Id="Id" @ref="_editComponent">
-	<AdminInput Label="Name"><InputText class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_editMod.Name" /></AdminInput>
-	<AdminInput Label="Author(s)"><MultiSearchDropdown Values="@_playerNames" @bind-Value="@_editMod.PlayerIds" /></AdminInput>
-	<AdminInput Label="Trailer URL"><InputText class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editMod.TrailerUrl" /></AdminInput>
-	<AdminInput Label="HTML description"><InputTextArea class="w-64 h-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_editMod.HtmlDescription" /></AdminInput>
-	<AdminInput Label="Mod types (only for non-hosted)"><MultiSearchDropdown Values="@ModTypes" @bind-Value="@_editMod.ModTypes" /></AdminInput>
-	<AdminInput Label="URL (only for non-hosted)"><InputText class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_editMod.Url" /></AdminInput>
-	<AdminInput Label="Hidden"><InputCheckbox @bind-Value="@_editMod.IsHidden" /></AdminInput>
-	<AdminInput Label="Binaries to delete"><MultiSelectList Values="@_binaryNames" OnToggleAction="StateHasChanged" @bind-Value="@_editMod.BinariesToDelete" /></AdminInput>
-	<AdminInput Label="Binaries"><InputFile @onclick="() => _editMod.Binaries.Clear()" OnChange="LoadBinaries" multiple /></AdminInput>
-	<AdminInput Label="Screenshots to delete"><MultiSelectList Values="@_screenshotNames" OnToggleAction="StateHasChanged" @bind-Value="@_editMod.ScreenshotsToDelete" /></AdminInput>
-	<AdminInput Label="Screenshots"><InputFile @onclick="() => _editMod.Screenshots.Clear()" OnChange="LoadScreenshots" multiple /></AdminInput>
+	<InputWrapper Label="Name"><InputText class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_editMod.Name" /></InputWrapper>
+	<InputWrapper Label="Author(s)"><MultiSearchDropdown Values="@_playerNames" @bind-Value="@_editMod.PlayerIds" /></InputWrapper>
+	<InputWrapper Label="Trailer URL"><InputText class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editMod.TrailerUrl" /></InputWrapper>
+	<InputWrapper Label="HTML description"><InputTextArea class="w-64 h-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_editMod.HtmlDescription" /></InputWrapper>
+	<InputWrapper Label="Mod types (only for non-hosted)"><MultiSearchDropdown Values="@ModTypes" @bind-Value="@_editMod.ModTypes" /></InputWrapper>
+	<InputWrapper Label="URL (only for non-hosted)"><InputText class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_editMod.Url" /></InputWrapper>
+	<InputWrapper Label="Hidden"><InputCheckbox @bind-Value="@_editMod.IsHidden" /></InputWrapper>
+	<InputWrapper Label="Binaries to delete"><MultiSelectList Values="@_binaryNames" OnToggleAction="StateHasChanged" @bind-Value="@_editMod.BinariesToDelete" /></InputWrapper>
+	<InputWrapper Label="Binaries"><InputFile @onclick="() => _editMod.Binaries.Clear()" OnChange="LoadBinaries" multiple /></InputWrapper>
+	<InputWrapper Label="Screenshots to delete"><MultiSelectList Values="@_screenshotNames" OnToggleAction="StateHasChanged" @bind-Value="@_editMod.ScreenshotsToDelete" /></InputWrapper>
+	<InputWrapper Label="Screenshots"><InputFile @onclick="() => _editMod.Screenshots.Clear()" OnChange="LoadScreenshots" multiple /></InputWrapper>
 </AdminEdit>
 
 @if (_editMod.BinariesToDelete.Count > 0)

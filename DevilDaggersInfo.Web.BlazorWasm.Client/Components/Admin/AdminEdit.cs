@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Web.BlazorWasm.Client.Enums;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Extensions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;

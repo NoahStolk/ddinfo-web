@@ -2,33 +2,34 @@
 @inherits BaseAdminPage
 @using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin
 @using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Input
+@using DevilDaggersInfo.Web.BlazorWasm.Client.Enums
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Mods
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Players
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
 
 <AdminAdd Name="Player" OverviewUrl="/admin/players" ApiCall="Http.AddPlayer" Model="_addPlayer" @ref="_addComponent">
-	<AdminInput Label="Id"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addPlayer.Id" /></AdminInput>
-	<AdminInput Label="Common name"><InputText class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_addPlayer.CommonName" /></AdminInput>
-	<AdminInput Label="Discord user ID"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addPlayer.DiscordUserId" /></AdminInput>
-	<AdminInput Label="Country (flag)"><SearchDropdown TKey=string Values="@(UserUtils.CountryNames)" Converter="s => s" @bind-Value="@_addPlayer.CountryCode" /></AdminInput>
-	<AdminInput Label="DPI"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addPlayer.Dpi" /></AdminInput>
-	<AdminInput Label="In-game sens"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_addPlayer.InGameSens" /></AdminInput>
-	<AdminInput Label="FOV"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addPlayer.Fov" /></AdminInput>
-	<AdminInput Label="Gamma"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addPlayer.Gamma" /></AdminInput>
-	<AdminInput Label="Hand"><InputNullableBoolean False="Left" True="Right" @bind-Value="@_addPlayer.IsRightHanded" /></AdminInput>
-	<AdminInput Label="Flash hand"><InputNullableBoolean False="Off" True="On" @bind-Value="@_addPlayer.HasFlashHandEnabled" /></AdminInput>
-	<AdminInput Label="Legacy audio"><InputNullableBoolean False="Off" True="On" @bind-Value="@_addPlayer.UsesLegacyAudio" /></AdminInput>
-	<AdminInput Label="HRTF"><InputNullableBoolean False="Off" True="On" @bind-Value="@_addPlayer.UsesHrtf" /></AdminInput>
-	<AdminInput Label="Invert Y"><InputNullableBoolean False="Off" True="On" @bind-Value="@_addPlayer.UsesInvertY" /></AdminInput>
-	<AdminInput Label="V-sync"><SearchDropdown TKey=VerticalSync Values="@(Enum.GetValues<VerticalSync>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<VerticalSync>(s)" ShowDisplayValue=false @bind-Value="@_addPlayer.VerticalSync" /></AdminInput>
-	<AdminInput Label="Hide donations"><InputCheckbox @bind-Value="@_addPlayer.HideDonations" /></AdminInput>
-	<AdminInput Label="Hide past usernames"><InputCheckbox @bind-Value="@_addPlayer.HidePastUsernames" /></AdminInput>
-	<AdminInput Label="Hide settings"><InputCheckbox @bind-Value="@_addPlayer.HideSettings" /></AdminInput>
-	<AdminInput Label="Mods"><MultiSearchDropdown Values="@_modNames" @bind-Value="@_addPlayer.ModIds" /></AdminInput>
-	<AdminInput Label="Ban type"><SearchDropdown TKey=BanType Values="@(Enum.GetValues<BanType>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<BanType>(s)" ShowDisplayValue=false @bind-Value="@_addPlayer.BanType" /></AdminInput>
-	<AdminInput Label="Ban description"><InputText class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_addPlayer.BanDescription" /></AdminInput>
-	<AdminInput Label="Ban responsible ID (alt owner)"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_addPlayer.BanResponsibleId" /></AdminInput>
-	<AdminInput Label="Banned from DDCL"><InputCheckbox @bind-Value="@_addPlayer.IsBannedFromDdcl" /></AdminInput>
+	<InputWrapper Label="Id"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addPlayer.Id" /></InputWrapper>
+	<InputWrapper Label="Common name"><InputText class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_addPlayer.CommonName" /></InputWrapper>
+	<InputWrapper Label="Discord user ID"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addPlayer.DiscordUserId" /></InputWrapper>
+	<InputWrapper Label="Country (flag)"><SearchDropdown TKey=string Values="@(UserUtils.CountryNames)" Converter="s => s" @bind-Value="@_addPlayer.CountryCode" /></InputWrapper>
+	<InputWrapper Label="DPI"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addPlayer.Dpi" /></InputWrapper>
+	<InputWrapper Label="In-game sens"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_addPlayer.InGameSens" /></InputWrapper>
+	<InputWrapper Label="FOV"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addPlayer.Fov" /></InputWrapper>
+	<InputWrapper Label="Gamma"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addPlayer.Gamma" /></InputWrapper>
+	<InputWrapper Label="Hand"><InputNullableBoolean False="Left" True="Right" @bind-Value="@_addPlayer.IsRightHanded" /></InputWrapper>
+	<InputWrapper Label="Flash hand"><InputNullableBoolean False="Off" True="On" @bind-Value="@_addPlayer.HasFlashHandEnabled" /></InputWrapper>
+	<InputWrapper Label="Legacy audio"><InputNullableBoolean False="Off" True="On" @bind-Value="@_addPlayer.UsesLegacyAudio" /></InputWrapper>
+	<InputWrapper Label="HRTF"><InputNullableBoolean False="Off" True="On" @bind-Value="@_addPlayer.UsesHrtf" /></InputWrapper>
+	<InputWrapper Label="Invert Y"><InputNullableBoolean False="Off" True="On" @bind-Value="@_addPlayer.UsesInvertY" /></InputWrapper>
+	<InputWrapper Label="V-sync"><SearchDropdown TKey=VerticalSync Values="@(Enum.GetValues<VerticalSync>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<VerticalSync>(s)" ShowDisplayValue=false @bind-Value="@_addPlayer.VerticalSync" /></InputWrapper>
+	<InputWrapper Label="Hide donations"><InputCheckbox @bind-Value="@_addPlayer.HideDonations" /></InputWrapper>
+	<InputWrapper Label="Hide past usernames"><InputCheckbox @bind-Value="@_addPlayer.HidePastUsernames" /></InputWrapper>
+	<InputWrapper Label="Hide settings"><InputCheckbox @bind-Value="@_addPlayer.HideSettings" /></InputWrapper>
+	<InputWrapper Label="Mods"><MultiSearchDropdown Values="@_modNames" @bind-Value="@_addPlayer.ModIds" /></InputWrapper>
+	<InputWrapper Label="Ban type"><SearchDropdown TKey=BanType Values="@(Enum.GetValues<BanType>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<BanType>(s)" ShowDisplayValue=false @bind-Value="@_addPlayer.BanType" /></InputWrapper>
+	<InputWrapper Label="Ban description"><InputText class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_addPlayer.BanDescription" /></InputWrapper>
+	<InputWrapper Label="Ban responsible ID (alt owner)"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_addPlayer.BanResponsibleId" /></InputWrapper>
+	<InputWrapper Label="Banned from DDCL"><InputCheckbox @bind-Value="@_addPlayer.IsBannedFromDdcl" /></InputWrapper>
 </AdminAdd>
 
 @code

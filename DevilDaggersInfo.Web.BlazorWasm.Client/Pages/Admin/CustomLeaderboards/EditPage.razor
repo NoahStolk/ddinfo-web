@@ -2,19 +2,20 @@
 @inherits BaseAdminPage
 @using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin
 @using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Input
+@using DevilDaggersInfo.Web.BlazorWasm.Client.Enums
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.CustomLeaderboards
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
 
 <AdminEdit Name="Custom Leaderboard" OverviewUrl="/admin/custom-leaderboards" ApiCall="Http.EditCustomLeaderboardById" Model="_editCustomLeaderboard" Id="Id" @ref="_editComponent">
-	<AdminInput Label="Category"><SearchDropdown TKey=CustomLeaderboardCategory Values="@(Enum.GetValues<CustomLeaderboardCategory>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<CustomLeaderboardCategory>(s)" ShowDisplayValue=false @bind-Value="@_editCustomLeaderboard.Category" /></AdminInput>
-	<AdminInput Label="Featured"><InputCheckbox @bind-Value="@_editCustomLeaderboard.IsFeatured" /></AdminInput>
+	<InputWrapper Label="Category"><SearchDropdown TKey=CustomLeaderboardCategory Values="@(Enum.GetValues<CustomLeaderboardCategory>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<CustomLeaderboardCategory>(s)" ShowDisplayValue=false @bind-Value="@_editCustomLeaderboard.Category" /></InputWrapper>
+	<InputWrapper Label="Featured"><InputCheckbox @bind-Value="@_editCustomLeaderboard.IsFeatured" /></InputWrapper>
 	@if (_editCustomLeaderboard.IsFeatured)
 	{
-		<AdminInput Label="Bronze"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editCustomLeaderboard.Daggers.Bronze" /></AdminInput>
-		<AdminInput Label="Silver"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editCustomLeaderboard.Daggers.Silver" /></AdminInput>
-		<AdminInput Label="Golden"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editCustomLeaderboard.Daggers.Golden" /></AdminInput>
-		<AdminInput Label="Devil"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editCustomLeaderboard.Daggers.Devil" /></AdminInput>
-		<AdminInput Label="Leviathan"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editCustomLeaderboard.Daggers.Leviathan" /></AdminInput>
+		<InputWrapper Label="Bronze"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editCustomLeaderboard.Daggers.Bronze" /></InputWrapper>
+		<InputWrapper Label="Silver"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editCustomLeaderboard.Daggers.Silver" /></InputWrapper>
+		<InputWrapper Label="Golden"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editCustomLeaderboard.Daggers.Golden" /></InputWrapper>
+		<InputWrapper Label="Devil"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editCustomLeaderboard.Daggers.Devil" /></InputWrapper>
+		<InputWrapper Label="Leviathan"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editCustomLeaderboard.Daggers.Leviathan" /></InputWrapper>
 	}
 </AdminEdit>
 

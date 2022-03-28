@@ -2,17 +2,18 @@
 @inherits BaseAdminPage
 @using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin
 @using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Input
+@using DevilDaggersInfo.Web.BlazorWasm.Client.Enums
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Donations
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Players
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
 
 <AdminAdd Name="Donation" OverviewUrl="/admin/donations" ApiCall="Http.AddDonation" Model="_addDonation" @ref="_addComponent">
-	<AdminInput Label="Player"><SearchDropdown TKey=int Values="@_playerNames" Converter="s => int.Parse(s)" @bind-Value="@_addDonation.PlayerId" /></AdminInput>
-	<AdminInput Label="Amount"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addDonation.Amount" /></AdminInput>
-	<AdminInput Label="Currency"><SearchDropdown TKey=Currency Values="@(Enum.GetValues<Currency>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<Currency>(s)" @bind-Value="@_addDonation.Currency" /></AdminInput>
-	<AdminInput Label="ConvertedEuroCentsReceived"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addDonation.ConvertedEuroCentsReceived" /></AdminInput>
-	<AdminInput Label="Note"><InputTextArea class="w-64 h-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_addDonation.Note" /></AdminInput>
-	<AdminInput Label="Refunded"><InputCheckbox @bind-Value="@_addDonation.IsRefunded" /></AdminInput>
+	<InputWrapper Label="Player"><SearchDropdown TKey=int Values="@_playerNames" Converter="s => int.Parse(s)" @bind-Value="@_addDonation.PlayerId" /></InputWrapper>
+	<InputWrapper Label="Amount"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addDonation.Amount" /></InputWrapper>
+	<InputWrapper Label="Currency"><SearchDropdown TKey=Currency Values="@(Enum.GetValues<Currency>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<Currency>(s)" @bind-Value="@_addDonation.Currency" /></InputWrapper>
+	<InputWrapper Label="ConvertedEuroCentsReceived"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addDonation.ConvertedEuroCentsReceived" /></InputWrapper>
+	<InputWrapper Label="Note"><InputTextArea class="w-64 h-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_addDonation.Note" /></InputWrapper>
+	<InputWrapper Label="Refunded"><InputCheckbox @bind-Value="@_addDonation.IsRefunded" /></InputWrapper>
 </AdminAdd>
 
 @code

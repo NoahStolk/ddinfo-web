@@ -1,5 +1,5 @@
 using DevilDaggersInfo.Web.BlazorWasm.Client.Authentication;
-using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin;
+using DevilDaggersInfo.Web.BlazorWasm.Client.Enums;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Extensions;
 using DevilDaggersInfo.Web.BlazorWasm.Client.HttpClients;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players;

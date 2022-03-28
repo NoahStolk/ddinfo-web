@@ -1,8 +1,8 @@
 @page "/profile/edit"
 @using DevilDaggersInfo.Core.Wiki
 @using DevilDaggersInfo.Core.Wiki.Enums
-@using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin
 @using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Input
+@using DevilDaggersInfo.Web.BlazorWasm.Client.Enums
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums	
 @{
@@ -49,20 +49,20 @@ else
 		<DataAnnotationsValidator />
 		<ValidationSummary />
 
-		<AdminInput Label="Country (flag)"><SearchDropdown TKey=string Values="@(UserUtils.CountryNames)" Converter="s => s" @bind-Value="@_editPlayer.CountryCode" /></AdminInput>
-		<AdminInput Label="DPI"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editPlayer.Dpi" /></AdminInput>
-		<AdminInput Label="In-game sens"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_editPlayer.InGameSens" /></AdminInput>
-		<AdminInput Label="FOV"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editPlayer.Fov" /></AdminInput>
-		<AdminInput Label="Gamma"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editPlayer.Gamma" /></AdminInput>
-		<AdminInput Label="Hand"><InputNullableBoolean False="Left" True="Right" @bind-Value="@_editPlayer.IsRightHanded" /></AdminInput>
-		<AdminInput Label="Flash hand"><InputNullableBoolean False="Off" True="On" @bind-Value="@_editPlayer.HasFlashHandEnabled" /></AdminInput>
-		<AdminInput Label="Legacy audio"><InputNullableBoolean False="Off" True="On" @bind-Value="@_editPlayer.UsesLegacyAudio" /></AdminInput>
-		<AdminInput Label="HRTF"><InputNullableBoolean False="Off" True="On" @bind-Value="@_editPlayer.UsesHrtf" /></AdminInput>
-		<AdminInput Label="Invert Y"><InputNullableBoolean False="Off" True="On" @bind-Value="@_editPlayer.UsesInvertY" /></AdminInput>
-		<AdminInput Label="V-sync"><Dropdown TKey=VerticalSync Values="@(Enum.GetValues<VerticalSync>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<VerticalSync>(s)" ShowDisplayValue=false @bind-Value="@_editPlayer.VerticalSync" /></AdminInput>
-		<AdminInput Label="Hide my donations"><InputCheckbox @bind-Value="@_editPlayer.HideDonations" /></AdminInput>
-		<AdminInput Label="Hide my past usernames"><InputCheckbox @bind-Value="@_editPlayer.HidePastUsernames" /></AdminInput>
-		<AdminInput Label="Hide my game settings"><InputCheckbox @bind-Value="@_editPlayer.HideSettings" /></AdminInput>
+		<InputWrapper Label="Country (flag)"><SearchDropdown TKey=string Values="@(UserUtils.CountryNames)" Converter="s => s" @bind-Value="@_editPlayer.CountryCode" /></InputWrapper>
+		<InputWrapper Label="DPI"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editPlayer.Dpi" /></InputWrapper>
+		<InputWrapper Label="In-game sens"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_editPlayer.InGameSens" /></InputWrapper>
+		<InputWrapper Label="FOV"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editPlayer.Fov" /></InputWrapper>
+		<InputWrapper Label="Gamma"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editPlayer.Gamma" /></InputWrapper>
+		<InputWrapper Label="Hand"><InputNullableBoolean False="Left" True="Right" @bind-Value="@_editPlayer.IsRightHanded" /></InputWrapper>
+		<InputWrapper Label="Flash hand"><InputNullableBoolean False="Off" True="On" @bind-Value="@_editPlayer.HasFlashHandEnabled" /></InputWrapper>
+		<InputWrapper Label="Legacy audio"><InputNullableBoolean False="Off" True="On" @bind-Value="@_editPlayer.UsesLegacyAudio" /></InputWrapper>
+		<InputWrapper Label="HRTF"><InputNullableBoolean False="Off" True="On" @bind-Value="@_editPlayer.UsesHrtf" /></InputWrapper>
+		<InputWrapper Label="Invert Y"><InputNullableBoolean False="Off" True="On" @bind-Value="@_editPlayer.UsesInvertY" /></InputWrapper>
+		<InputWrapper Label="V-sync"><Dropdown TKey=VerticalSync Values="@(Enum.GetValues<VerticalSync>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<VerticalSync>(s)" ShowDisplayValue=false @bind-Value="@_editPlayer.VerticalSync" /></InputWrapper>
+		<InputWrapper Label="Hide my donations"><InputCheckbox @bind-Value="@_editPlayer.HideDonations" /></InputWrapper>
+		<InputWrapper Label="Hide my past usernames"><InputCheckbox @bind-Value="@_editPlayer.HidePastUsernames" /></InputWrapper>
+		<InputWrapper Label="Hide my game settings"><InputCheckbox @bind-Value="@_editPlayer.HideSettings" /></InputWrapper>
 
 		@{
 			bool isValid = context.Validate();

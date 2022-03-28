@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin;
+using DevilDaggersInfo.Web.BlazorWasm.Client.Enums;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Client.Extensions;
 
