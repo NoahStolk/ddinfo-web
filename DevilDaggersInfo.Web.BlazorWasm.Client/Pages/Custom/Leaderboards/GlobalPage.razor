@@ -7,7 +7,7 @@
 
 <div class="grid gap-2 grid-cols-2 max-w-md mb-2">
 	<span>Category</span>
-	<SelectList TValue="CustomLeaderboardCategory" Values="@(Enum.GetValues<CustomLeaderboardCategory>().ToList())" DisplayFunction="@((v) => v.ToDisplayString())" Default="CustomLeaderboardCategory.Survival" CssClass="bg-gray-3 transition-colors duration-100 h-8 rounded text-color-text" />
+	<SelectList TValue="CustomLeaderboardCategory" Values="@(Enum.GetValues<CustomLeaderboardCategory>().ToList())" DisplayFunction="@(clc => clc.ToDisplayString())" Default="CategoryEnum" Selected="@(clc => Fetch(clc))" />
 </div>
 
 <p>

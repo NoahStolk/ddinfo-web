@@ -27,11 +27,13 @@ public partial class GlobalPage
 
 	protected async override Task OnParametersSetAsync()
 	{
-		await Fetch();
+		await Fetch(CategoryEnum);
 	}
 
-	private async Task Fetch()
+	private async Task Fetch(CustomLeaderboardCategory category)
 	{
-		GetGlobalCustomLeaderboard = await Http.GetGlobalCustomLeaderboardForCategory(CategoryEnum);
+		Category = Category;
+		NavigationManager.AddOrModifyQueryParameter(nameof(Category), (int)category);
+		GetGlobalCustomLeaderboard = await Http.GetGlobalCustomLeaderboardForCategory(category);
 	}
 }
