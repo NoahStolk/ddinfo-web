@@ -3,7 +3,7 @@
 
 <OutsideClickHandler OnClickOutside="OnClickOutside" CssClass="inline-block w-64 bg-gray-1 text-color-text cursor-pointer">
 	<div class="grid grid-cols-8">
-		<span class="pl-2 col-span-7 select-none" @onclick="e => _show = !_show">@SelectedDisplayValue</span>
+		<span class="pl-2 text-lg col-span-7 select-none" @onclick="e => _show = !_show">@SelectedDisplayValue</span>
 		<span class="w-8 cursor-pointer bg-gray-1 rounded block text-center" @onclick="e => HandleSelect(default)">✕</span>
 	</div>
 	<div class="@(_show ? "absolute" : "hidden") z-10">
@@ -12,12 +12,12 @@
 				<span class="cursor-default w-16">Search:</span>
 				<InputTextImmediate @bind-Value="_searchValue" class="w-48 bg-gray-3 text-color-text" />
 			</div>
-			<ul class="max-h-screen-half overflow-y-scroll w-64">
+			<ul class="bg-gray-1 max-h-screen-half overflow-y-scroll w-64">
 				@{
 					int i = 0;
 					foreach (KeyValuePair<TKey, string> kvp in FilteredItems)
 					{
-						<li class="cursor-pointer pl-2 @(i++ % 2 == 1 ? "bg-gray-2" : string.Empty) hover:bg-gray-5" @onclick="e => HandleSelect(kvp.Key)">@DisplayValue(kvp.Key)</li>
+						<li class="cursor-pointer text-lg pl-2 @(i++ % 2 == 1 ? "bg-gray-2" : "bg-gray-1") hover:bg-gray-5" @onclick="e => HandleSelect(kvp.Key)">@DisplayValue(kvp.Key)</li>
 					}
 				}
 			</ul>

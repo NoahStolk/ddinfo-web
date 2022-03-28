@@ -8,9 +8,9 @@
 
 <AdminAdd Name="Spawnset" OverviewUrl="/admin/spawnsets" ApiCall="Http.AddSpawnset" Model="_addSpawnset" @ref="_addComponent">
 	<InputWrapper Label="Author"><SearchDropdown TKey=int Values="@_playerNames" Converter="s => int.Parse(s)" @bind-Value="@_addSpawnset.PlayerId" /></InputWrapper>
-	<InputWrapper Label="Name"><InputText class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_addSpawnset.Name" /></InputWrapper>
-	<InputWrapper Label="Max display waves"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addSpawnset.MaxDisplayWaves" /></InputWrapper>
-	<InputWrapper Label="HTML description"><InputTextArea class="w-64 h-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_addSpawnset.HtmlDescription" /></InputWrapper>
+	<InputWrapper Label="Name"><InputText class="text-lg w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_addSpawnset.Name" /></InputWrapper>
+	<InputWrapper Label="Max display waves"><InputNumber class="text-lg w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addSpawnset.MaxDisplayWaves" /></InputWrapper>
+	<InputWrapper Label="HTML description"><InputTextArea class="text-lg w-64 h-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_addSpawnset.HtmlDescription" /></InputWrapper>
 	<InputWrapper Label="Practice"><InputCheckbox @bind-Value="@_addSpawnset.IsPractice" /></InputWrapper>
 	<InputWrapper Label="File"><InputFile OnChange="LoadFile" /></InputWrapper>
 </AdminAdd>

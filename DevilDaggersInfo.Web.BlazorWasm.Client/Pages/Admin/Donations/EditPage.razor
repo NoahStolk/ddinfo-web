@@ -9,10 +9,10 @@
 
 <AdminEdit Name="Donation" OverviewUrl="/admin/donations" ApiCall="Http.EditDonationById" Model="_editDonation" Id="Id" @ref="_editComponent">
 	<InputWrapper Label="Player"><SearchDropdown TKey=int Values="@_playerNames" Converter="s => int.Parse(s)" @bind-Value="@_editDonation.PlayerId" /></InputWrapper>
-	<InputWrapper Label="Amount"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editDonation.Amount" /></InputWrapper>
+	<InputWrapper Label="Amount"><InputNumber class="text-lg w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editDonation.Amount" /></InputWrapper>
 	<InputWrapper Label="Currency"><SearchDropdown TKey=Currency Values="@(Enum.GetValues<Currency>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<Currency>(s)" @bind-Value="@_editDonation.Currency" /></InputWrapper>
-	<InputWrapper Label="ConvertedEuroCentsReceived"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editDonation.ConvertedEuroCentsReceived" /></InputWrapper>
-	<InputWrapper Label="Note"><InputTextArea class="w-64 h-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_editDonation.Note" /></InputWrapper>
+	<InputWrapper Label="ConvertedEuroCentsReceived"><InputNumber class="text-lg w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editDonation.ConvertedEuroCentsReceived" /></InputWrapper>
+	<InputWrapper Label="Note"><InputTextArea class="text-lg w-64 h-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_editDonation.Note" /></InputWrapper>
 	<InputWrapper Label="Refunded"><InputCheckbox @bind-Value="@_editDonation.IsRefunded" /></InputWrapper>
 </AdminEdit>
 

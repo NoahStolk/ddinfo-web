@@ -50,10 +50,10 @@ else
 		<ValidationSummary />
 
 		<InputWrapper Label="Country (flag)"><SearchDropdown TKey=string Values="@(UserUtils.CountryNames)" Converter="s => s" @bind-Value="@_editPlayer.CountryCode" /></InputWrapper>
-		<InputWrapper Label="DPI"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editPlayer.Dpi" /></InputWrapper>
-		<InputWrapper Label="In-game sens"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_editPlayer.InGameSens" /></InputWrapper>
-		<InputWrapper Label="FOV"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editPlayer.Fov" /></InputWrapper>
-		<InputWrapper Label="Gamma"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editPlayer.Gamma" /></InputWrapper>
+		<InputWrapper Label="DPI"><InputNumber class="text-lg w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editPlayer.Dpi" /></InputWrapper>
+		<InputWrapper Label="In-game sens"><InputNumber class="text-lg w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_editPlayer.InGameSens" /></InputWrapper>
+		<InputWrapper Label="FOV"><InputNumber class="text-lg w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editPlayer.Fov" /></InputWrapper>
+		<InputWrapper Label="Gamma"><InputNumber class="text-lg w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editPlayer.Gamma" /></InputWrapper>
 		<InputWrapper Label="Hand"><InputNullableBoolean False="Left" True="Right" @bind-Value="@_editPlayer.IsRightHanded" /></InputWrapper>
 		<InputWrapper Label="Flash hand"><InputNullableBoolean False="Off" True="On" @bind-Value="@_editPlayer.HasFlashHandEnabled" /></InputWrapper>
 		<InputWrapper Label="Legacy audio"><InputNullableBoolean False="Off" True="On" @bind-Value="@_editPlayer.UsesLegacyAudio" /></InputWrapper>
@@ -67,6 +67,6 @@ else
 		@{
 			bool isValid = context.Validate();
 		}
-		<button class="btn my-2 px-2 py-1 @(isValid ? enabledStyle : disabledStyle)" type="submit" disabled="@(!isValid)" @onclick="Dismiss">Save</button>
+		<button class="text-lg btn my-2 px-2 py-1 @(isValid ? enabledStyle : disabledStyle)" type="submit" disabled="@(!isValid)" @onclick="Dismiss">Save</button>
 	</EditForm>
 }
