@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin;
+namespace DevilDaggersInfo.Web.BlazorWasm.Client.Components.Input;
 
 public partial class InputNullableBoolean
 {
