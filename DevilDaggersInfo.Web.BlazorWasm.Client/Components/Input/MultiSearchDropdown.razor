@@ -18,12 +18,9 @@
 				<InputTextImmediate @bind-Value="_searchValue" class="w-48 text-lg bg-gray-3 text-color-text" />
 			</div>
 			<ul class="max-h-screen-half overflow-y-scroll w-64">
-				@{
-					int i = 0;
-					foreach (KeyValuePair<int, string> kvp in FilteredItems)
-					{
-						<li class="cursor-pointer text-lg pl-2 @(i++ % 2 == 1 ? "bg-gray-2" : "bg-gray-1") hover:bg-gray-5" @onclick="e => Add(kvp.Key)">@DisplayValue(kvp.Key)</li>
-					}
+				@foreach (KeyValuePair<int, string> kvp in FilteredItems)
+				{
+					<li class="cursor-pointer text-lg pl-2 hover:bg-gray-5" @onclick="e => Add(kvp.Key)">@DisplayValue(kvp.Key)</li>
 				}
 			</ul>
 		</div>

@@ -8,12 +8,12 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
 
 <AdminAdd Name="Mod" OverviewUrl="/admin/mods" ApiCall="Http.AddMod" Model="_addMod" @ref="_addComponent">
-	<InputWrapper Label="Name"><InputText class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_addMod.Name" /></InputWrapper>
+	<InputWrapper Label="Name"><InputText class="admin-input" @bind-Value="@_addMod.Name" /></InputWrapper>
 	<InputWrapper Label="Author(s)"><MultiSearchDropdown Values="@_playerNames" @bind-Value="@_addMod.PlayerIds" /></InputWrapper>
-	<InputWrapper Label="Trailer URL"><InputText class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addMod.TrailerUrl" /></InputWrapper>
-	<InputWrapper Label="HTML description"><InputTextArea class="w-64 h-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_addMod.HtmlDescription" /></InputWrapper>
+	<InputWrapper Label="Trailer URL"><InputText class="admin-input" @bind-Value="_addMod.TrailerUrl" /></InputWrapper>
+	<InputWrapper Label="HTML description"><InputTextArea class="admin-input" @bind-Value="@_addMod.HtmlDescription" /></InputWrapper>
 	<InputWrapper Label="Mod types (only for non-hosted)"><MultiSearchDropdown Values="@ModTypes" @bind-Value="@_addMod.ModTypes" /></InputWrapper>
-	<InputWrapper Label="URL (only for non-hosted)"><InputText class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_addMod.Url" /></InputWrapper>
+	<InputWrapper Label="URL (only for non-hosted)"><InputText class="admin-input" @bind-Value="@_addMod.Url" /></InputWrapper>
 	<InputWrapper Label="Hidden"><InputCheckbox @bind-Value="@_addMod.IsHidden" /></InputWrapper>
 	<InputWrapper Label="Binaries"><InputFile @onclick="() => _addMod.Binaries.Clear()" OnChange="LoadBinaries" multiple /></InputWrapper>
 	<InputWrapper Label="Screenshots"><InputFile @onclick="() => _addMod.Screenshots.Clear()" OnChange="LoadScreenshots" multiple /></InputWrapper>

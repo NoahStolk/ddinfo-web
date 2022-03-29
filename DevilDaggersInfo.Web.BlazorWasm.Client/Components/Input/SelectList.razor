@@ -4,12 +4,11 @@
 	<div class="w-full" @onclick="e => _show = !_show"><span class="pl-2 select-none text-lg">@DisplayFunction(CurrentValue)</span></div>
 	<div class="@(_show ? "absolute" : "hidden") z-10">
 		<div class="bg-gray-1 border-[#fff8] border-2">
-			<ul class="max-h-screen-half overflow-y-scroll w-64">
+			<ul class="max-h-screen-half w-64">
 				@{
-					int i = 0;
 					foreach (TValue value in Values)
 					{
-						<li class="cursor-pointer text-lg pl-2 @(i++ % 2 == 1 ? "bg-gray-2" : "bg-gray-1") hover:bg-gray-5" @onclick="e => Select(value)">@DisplayFunction(value)</li>
+						<li class="cursor-pointer text-lg pl-2 hover:bg-gray-5" @onclick="e => Select(value)">@DisplayFunction(value)</li>
 					}
 				}
 			</ul>

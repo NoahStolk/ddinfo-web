@@ -11,11 +11,11 @@
 	<InputWrapper Label="Featured"><InputCheckbox @bind-Value="@_editCustomLeaderboard.IsFeatured" /></InputWrapper>
 	@if (_editCustomLeaderboard.IsFeatured)
 	{
-		<InputWrapper Label="Bronze"><InputNumber class="text-lg w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editCustomLeaderboard.Daggers.Bronze" /></InputWrapper>
-		<InputWrapper Label="Silver"><InputNumber class="text-lg w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editCustomLeaderboard.Daggers.Silver" /></InputWrapper>
-		<InputWrapper Label="Golden"><InputNumber class="text-lg w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editCustomLeaderboard.Daggers.Golden" /></InputWrapper>
-		<InputWrapper Label="Devil"><InputNumber class="text-lg w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editCustomLeaderboard.Daggers.Devil" /></InputWrapper>
-		<InputWrapper Label="Leviathan"><InputNumber class="text-lg w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editCustomLeaderboard.Daggers.Leviathan" /></InputWrapper>
+		<InputWrapper Label="Bronze"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.Daggers.Bronze" /></InputWrapper>
+		<InputWrapper Label="Silver"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.Daggers.Silver" /></InputWrapper>
+		<InputWrapper Label="Golden"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.Daggers.Golden" /></InputWrapper>
+		<InputWrapper Label="Devil"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.Daggers.Devil" /></InputWrapper>
+		<InputWrapper Label="Leviathan"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.Daggers.Leviathan" /></InputWrapper>
 	}
 </AdminEdit>
 

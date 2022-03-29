@@ -8,14 +8,14 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
 
 <AdminAdd Name="Player" OverviewUrl="/admin/players" ApiCall="Http.AddPlayer" Model="_addPlayer" @ref="_addComponent">
-	<InputWrapper Label="Id"><InputNumber class="text-lg w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addPlayer.Id" /></InputWrapper>
-	<InputWrapper Label="Common name"><InputText class="text-lg w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_addPlayer.CommonName" /></InputWrapper>
-	<InputWrapper Label="Discord user ID"><InputNumber class="text-lg w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addPlayer.DiscordUserId" /></InputWrapper>
+	<InputWrapper Label="Id"><InputNumber class="admin-input" @bind-Value="_addPlayer.Id" /></InputWrapper>
+	<InputWrapper Label="Common name"><InputText class="admin-input" @bind-Value="@_addPlayer.CommonName" /></InputWrapper>
+	<InputWrapper Label="Discord user ID"><InputNumber class="admin-input" @bind-Value="_addPlayer.DiscordUserId" /></InputWrapper>
 	<InputWrapper Label="Country (flag)"><SearchDropdown TKey=string Values="@(UserUtils.CountryNames)" Converter="s => s" @bind-Value="@_addPlayer.CountryCode" /></InputWrapper>
-	<InputWrapper Label="DPI"><InputNumber class="text-lg w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addPlayer.Dpi" /></InputWrapper>
-	<InputWrapper Label="In-game sens"><InputNumber class="text-lg w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_addPlayer.InGameSens" /></InputWrapper>
-	<InputWrapper Label="FOV"><InputNumber class="text-lg w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addPlayer.Fov" /></InputWrapper>
-	<InputWrapper Label="Gamma"><InputNumber class="text-lg w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addPlayer.Gamma" /></InputWrapper>
+	<InputWrapper Label="DPI"><InputNumber class="admin-input" @bind-Value="_addPlayer.Dpi" /></InputWrapper>
+	<InputWrapper Label="In-game sens"><InputNumber class="admin-input" @bind-Value="@_addPlayer.InGameSens" /></InputWrapper>
+	<InputWrapper Label="FOV"><InputNumber class="admin-input" @bind-Value="_addPlayer.Fov" /></InputWrapper>
+	<InputWrapper Label="Gamma"><InputNumber class="admin-input" @bind-Value="_addPlayer.Gamma" /></InputWrapper>
 	<InputWrapper Label="Hand"><InputNullableBoolean False="Left" True="Right" @bind-Value="@_addPlayer.IsRightHanded" /></InputWrapper>
 	<InputWrapper Label="Flash hand"><InputNullableBoolean False="Off" True="On" @bind-Value="@_addPlayer.HasFlashHandEnabled" /></InputWrapper>
 	<InputWrapper Label="Legacy audio"><InputNullableBoolean False="Off" True="On" @bind-Value="@_addPlayer.UsesLegacyAudio" /></InputWrapper>
@@ -27,8 +27,8 @@
 	<InputWrapper Label="Hide settings"><InputCheckbox @bind-Value="@_addPlayer.HideSettings" /></InputWrapper>
 	<InputWrapper Label="Mods"><MultiSearchDropdown Values="@_modNames" @bind-Value="@_addPlayer.ModIds" /></InputWrapper>
 	<InputWrapper Label="Ban type"><SearchDropdown TKey=BanType Values="@(Enum.GetValues<BanType>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<BanType>(s)" ShowDisplayValue=false @bind-Value="@_addPlayer.BanType" /></InputWrapper>
-	<InputWrapper Label="Ban description"><InputText class="text-lg w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_addPlayer.BanDescription" /></InputWrapper>
-	<InputWrapper Label="Ban responsible ID (alt owner)"><InputNumber class="text-lg w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_addPlayer.BanResponsibleId" /></InputWrapper>
+	<InputWrapper Label="Ban description"><InputText class="admin-input" @bind-Value="@_addPlayer.BanDescription" /></InputWrapper>
+	<InputWrapper Label="Ban responsible ID (alt owner)"><InputNumber class="admin-input" @bind-Value="@_addPlayer.BanResponsibleId" /></InputWrapper>
 	<InputWrapper Label="Banned from DDCL"><InputCheckbox @bind-Value="@_addPlayer.IsBannedFromDdcl" /></InputWrapper>
 </AdminAdd>
 

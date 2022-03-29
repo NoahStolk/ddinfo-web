@@ -67,6 +67,10 @@
 	.validation-errors {
 		@apply p-2 rounded bg-dark-red;
 	}
+
+	.admin-input {
+		@apply text-lg w-64 pl-2 bg-gray-1 text-color-text;
+	}
 }
 
 #blazor-error-ui {

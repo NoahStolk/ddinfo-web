@@ -8,13 +8,13 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
 
 <AdminEdit Name="Player" OverviewUrl="/admin/players" ApiCall="Http.EditPlayerById" Model="_editPlayer" Id="Id" @ref="_editComponent">
-	<InputWrapper Label="Common name"><InputText class="text-lg w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_editPlayer.CommonName" /></InputWrapper>
-	<InputWrapper Label="Discord user ID"><InputNumber class="text-lg w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editPlayer.DiscordUserId" /></InputWrapper>
+	<InputWrapper Label="Common name"><InputText class="admin-input" @bind-Value="@_editPlayer.CommonName" /></InputWrapper>
+	<InputWrapper Label="Discord user ID"><InputNumber class="admin-input" @bind-Value="_editPlayer.DiscordUserId" /></InputWrapper>
 	<InputWrapper Label="Country (flag)"><SearchDropdown TKey=string Values="@(UserUtils.CountryNames)" Converter="s => s" @bind-Value="@_editPlayer.CountryCode" /></InputWrapper>
-	<InputWrapper Label="DPI"><InputNumber class="text-lg w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editPlayer.Dpi" /></InputWrapper>
-	<InputWrapper Label="In-game sens"><InputNumber class="text-lg w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_editPlayer.InGameSens" /></InputWrapper>
-	<InputWrapper Label="FOV"><InputNumber class="text-lg w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editPlayer.Fov" /></InputWrapper>
-	<InputWrapper Label="Gamma"><InputNumber class="text-lg w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editPlayer.Gamma" /></InputWrapper>
+	<InputWrapper Label="DPI"><InputNumber class="admin-input" @bind-Value="_editPlayer.Dpi" /></InputWrapper>
+	<InputWrapper Label="In-game sens"><InputNumber class="admin-input" @bind-Value="@_editPlayer.InGameSens" /></InputWrapper>
+	<InputWrapper Label="FOV"><InputNumber class="admin-input" @bind-Value="_editPlayer.Fov" /></InputWrapper>
+	<InputWrapper Label="Gamma"><InputNumber class="admin-input" @bind-Value="_editPlayer.Gamma" /></InputWrapper>
 	<InputWrapper Label="Hand"><InputNullableBoolean False="Left" True="Right" @bind-Value="@_editPlayer.IsRightHanded" /></InputWrapper>
 	<InputWrapper Label="Flash hand"><InputNullableBoolean False="Off" True="On" @bind-Value="@_editPlayer.HasFlashHandEnabled" /></InputWrapper>
 	<InputWrapper Label="Legacy audio"><InputNullableBoolean False="Off" True="On" @bind-Value="@_editPlayer.UsesLegacyAudio" /></InputWrapper>
@@ -26,8 +26,8 @@
 	<InputWrapper Label="Hide settings"><InputCheckbox @bind-Value="@_editPlayer.HideSettings" /></InputWrapper>
 	<InputWrapper Label="Mods"><MultiSearchDropdown Values="@_modNames" @bind-Value="@_editPlayer.ModIds" /></InputWrapper>
 	<InputWrapper Label="Ban type"><SearchDropdown TKey=BanType Values="@(Enum.GetValues<BanType>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<BanType>(s)" ShowDisplayValue=false @bind-Value="@_editPlayer.BanType" /></InputWrapper>
-	<InputWrapper Label="Ban description"><InputText class="text-lg w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_editPlayer.BanDescription" /></InputWrapper>
-	<InputWrapper Label="Ban responsible ID (alt owner)"><InputNumber class="text-lg w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_editPlayer.BanResponsibleId" /></InputWrapper>
+	<InputWrapper Label="Ban description"><InputText class="admin-input" @bind-Value="@_editPlayer.BanDescription" /></InputWrapper>
+	<InputWrapper Label="Ban responsible ID (alt owner)"><InputNumber class="admin-input" @bind-Value="@_editPlayer.BanResponsibleId" /></InputWrapper>
 	<InputWrapper Label="Banned from DDCL"><InputCheckbox @bind-Value="@_editPlayer.IsBannedFromDdcl" /></InputWrapper>
 </AdminEdit>
 
