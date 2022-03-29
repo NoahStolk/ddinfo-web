@@ -20,7 +20,7 @@
 			<ul class="max-h-screen-half overflow-y-scroll w-64">
 				@foreach (KeyValuePair<int, string> kvp in FilteredItems)
 				{
-					<li class="cursor-pointer text-lg pl-2 hover:bg-gray-5" @onclick="e => Add(kvp.Key)">@DisplayValue(kvp.Key)</li>
+					<li class="cursor-pointer text-lg select-none pl-2 hover:bg-gray-5" @onclick="e => Add(kvp.Key)">@DisplayValue(kvp.Key)</li>
 				}
 			</ul>
 		</div>

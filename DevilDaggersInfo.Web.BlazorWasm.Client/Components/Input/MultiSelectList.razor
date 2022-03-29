@@ -1,6 +1,6 @@
 @inherits InputBase<List<string>>
 
-<div class="inline-block w-64 bg-gray-1 text-color-text cursor-pointer">
+<div class="inline-block w-64 bg-gray-1 text-color-text">
 	<div>
 		<div class="w-full" @onclick="e => _show = !_show"><span class="pl-2 text-lg select-none">@SelectedDisplayValue</span></div>
 		@if (Values != null)
@@ -12,7 +12,7 @@
 					@{
 						MarkupString str = CurrentValue?.Contains(value) == true ? new("✕") : new("✓");
 					}
-					<span class="w-8 cursor-pointer text-lg rounded block text-center" @onclick="e => Toggle(value)">@str</span>
+					<span class="w-8 cursor-pointer text-lg select-none rounded block text-center hover:bg-gray-5" @onclick="e => Toggle(value)">@str</span>
 				</div>
 			}
 		}
