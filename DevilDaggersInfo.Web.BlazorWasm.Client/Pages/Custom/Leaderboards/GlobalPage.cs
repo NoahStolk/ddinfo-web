@@ -1,5 +1,6 @@
 using DevilDaggersInfo.Web.BlazorWasm.Client.Extensions;
 using DevilDaggersInfo.Web.BlazorWasm.Client.HttpClients;
+using DevilDaggersInfo.Web.BlazorWasm.Client.Utils;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Constants;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomLeaderboards;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
@@ -9,7 +10,9 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Client.Pages.Custom.Leaderboards;
 
 public partial class GlobalPage
 {
-	private int _category = 1;
+	[Parameter]
+	[SupplyParameterFromQuery]
+	public string Category { get; set; } = "Survival";
 
 	[Inject]
 	public PublicApiHttpClient Http { get; set; } = null!;
@@ -19,21 +22,14 @@ public partial class GlobalPage
 
 	public GetGlobalCustomLeaderboard? GetGlobalCustomLeaderboard { get; set; }
 
-	[Parameter]
-	[SupplyParameterFromQuery]
-	public int Category { get => _category; set => _category = Math.Max(1, value); }
-
-	public CustomLeaderboardCategory CategoryEnum => (CustomLeaderboardCategory)Category;
-
 	protected async override Task OnParametersSetAsync()
 	{
-		await Fetch(CategoryEnum);
+		await Fetch(Category);
 	}
 
-	private async Task Fetch(CustomLeaderboardCategory category)
+	private async Task Fetch(string category)
 	{
-		Category = Category;
-		NavigationManager.AddOrModifyQueryParameter(nameof(Category), (int)category);
-		GetGlobalCustomLeaderboard = await Http.GetGlobalCustomLeaderboardForCategory(category);
+		NavigationManager.AddOrModifyQueryParameter(nameof(Category), category);
+		GetGlobalCustomLeaderboard = await Http.GetGlobalCustomLeaderboardForCategory(EnumConvert.GetCustomLeaderboardCategory(category));
 	}
 }
