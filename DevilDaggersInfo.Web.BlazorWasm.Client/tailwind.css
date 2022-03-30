@@ -72,6 +72,14 @@
 		@apply text-lg w-64 pl-2 bg-gray-1 text-color-text;
 	}
 
+	.input-list-border {
+		@apply bg-gray-1 border-[#fff8] border-2;
+	}
+
+	.input-list {
+		@apply max-h-screen-half w-64 overflow-y-scroll;
+	}
+
 	.input-list-button {
 		@apply w-8 cursor-pointer text-lg select-none rounded block text-center hover:bg-gray-5;
 	}

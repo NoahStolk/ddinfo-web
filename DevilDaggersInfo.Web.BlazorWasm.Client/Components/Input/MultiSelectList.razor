@@ -9,9 +9,14 @@
 			{
 				<div class="grid grid-cols-8 bg-gray-1">
 					<span class="pl-2 text-lg col-span-7">@value</span>
-					<span class="input-list-button" @onclick="e => Toggle(value)">
-						@(CurrentValue?.Contains(value) == true ? new MarkupString("✕") : new MarkupString("✓"))
-					</span>
+					@if (CurrentValue?.Contains(value) == true)
+					{
+						<span class="input-list-button" @onclick="e => Toggle(value)">✕</span>
+					}
+					else
+					{
+						<span class="input-list-button" @onclick="e => Toggle(value)">✓</span>
+					}
 				</div>
 			}
 		}

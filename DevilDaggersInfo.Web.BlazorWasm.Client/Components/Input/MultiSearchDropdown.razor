@@ -7,17 +7,17 @@
 		{
 			<div class="grid grid-cols-8">
 				<span class="pl-2 text-lg col-span-7 cursor-default">@DisplayValue(id)</span>
-				<span class="w-8 cursor-pointer bg-gray-1 rounded block text-center" @onclick="e => Remove(id)">✕</span>
+				<span class="input-list-button" @onclick="e => Remove(id)">✕</span>
 			</div>
 		}
 	</div>
 	<div class="@(_show ? "absolute" : "hidden") z-10">
-		<div class="bg-gray-1 border-[#fff8] border-2">
+		<div class="input-list-border">
 			<div class="p-2 w-64">
 				<span class="cursor-default text-lg w-16">Search:</span>
 				<InputTextImmediate @bind-Value="_searchValue" class="w-48 text-lg bg-gray-3 text-color-text" />
 			</div>
-			<ul class="max-h-screen-half overflow-y-scroll w-64">
+			<ul class="input-list">
 				@foreach (KeyValuePair<int, string> kvp in FilteredItems)
 				{
 					<li class="input-list-entry" @onclick="e => Add(kvp.Key)">@DisplayValue(kvp.Key)</li>

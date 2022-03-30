@@ -7,12 +7,12 @@
 		<span class="input-list-button" @onclick="e => HandleSelect(default)">✕</span>
 	</div>
 	<div class="@(_show ? "absolute" : "hidden") z-10">
-		<div class="bg-gray-1 border-[#fff8] border-2">
+		<div class="input-list-border">
 			<div class="p-2 w-64">
 				<span class="cursor-default text-lg w-16">Search:</span>
 				<InputTextImmediate @bind-Value="_searchValue" class="w-48 bg-gray-3 text-color-text" />
 			</div>
-			<ul class="max-h-screen-half overflow-y-scroll w-64">
+			<ul class="input-list">
 				@{
 					foreach (KeyValuePair<TKey, string> kvp in FilteredItems)
 					{
