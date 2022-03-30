@@ -11,7 +11,7 @@
 			<ul class="max-h-screen-half w-64">
 				@foreach (KeyValuePair<TKey, string> kvp in Values)
 				{
-					<li class="cursor-pointer text-lg pl-2 hover:bg-gray-5" @onclick="e => HandleSelect(kvp.Key)">@DisplayValue(kvp.Key)</li>
+					<li class="input-list-entry" @onclick="e => HandleSelect(kvp.Key)">@DisplayValue(kvp.Key)</li>
 				}
 			</ul>
 		</div>

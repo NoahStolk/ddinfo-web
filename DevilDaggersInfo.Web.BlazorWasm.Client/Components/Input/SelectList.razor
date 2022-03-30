@@ -8,7 +8,7 @@
 				@{
 					foreach (TValue value in Values)
 					{
-						<li class="cursor-pointer text-lg pl-2 hover:bg-gray-5" @onclick="e => Select(value)">@DisplayFunction(value)</li>
+						<li class="input-list-entry" @onclick="e => Select(value)">@DisplayFunction(value)</li>
 					}
 				}
 			</ul>
