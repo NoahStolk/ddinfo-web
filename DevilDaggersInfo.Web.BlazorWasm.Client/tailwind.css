@@ -80,8 +80,12 @@
 		@apply max-h-screen-half w-64 overflow-y-scroll;
 	}
 
+	.input-list-opener {
+		@apply pl-2 text-lg select-none hover:bg-gray-5;
+	}
+
 	.input-list-button {
-		@apply w-8 cursor-pointer text-lg select-none rounded block text-center hover:bg-gray-5;
+		@apply w-8 cursor-pointer text-lg select-none block text-center hover:bg-gray-5;
 	}
 
 	.input-list-entry {

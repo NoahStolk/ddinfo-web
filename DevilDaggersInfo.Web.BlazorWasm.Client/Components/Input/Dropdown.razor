@@ -3,7 +3,7 @@
 
 <OutsideClickHandler OnClickOutside="OnClickOutside" CssClass="inline-block w-64 bg-gray-1 text-color-text cursor-pointer">
 	<div class="grid grid-cols-8">
-		<span class="pl-2 text-lg col-span-7 select-none" @onclick="e => _show = !_show">@SelectedDisplayValue</span>
+		<span class="input-list-opener col-span-7" @onclick="e => _show = !_show">@SelectedDisplayValue</span>
 		<span class="input-list-button" @onclick="e => HandleSelect(default)">✕</span>
 	</div>
 	<div class="@(_show ? "absolute" : "hidden") z-10">
