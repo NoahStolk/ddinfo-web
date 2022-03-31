@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Web.BlazorWasm.Client.Extensions;
+using DevilDaggersInfo.Web.BlazorWasm.Client.Utils;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Constants;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomLeaderboards;
@@ -10,11 +11,13 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Client.Pages.Custom.Leaderboards;
 
 public partial class Index
 {
-	private int _category = 1;
 	private int _pageIndex;
 	private int _pageSize = PagingConstants.PageSizeDefault;
 
-	[Parameter, SupplyParameterFromQuery] public int Category { get => _category; set => _category = Math.Max(1, value); }
+	[Parameter]
+	[SupplyParameterFromQuery]
+	public string Category { get; set; } = "Survival";
+
 	[Parameter, SupplyParameterFromQuery] public string? SpawnsetFilter { get; set; }
 	[Parameter, SupplyParameterFromQuery] public string? AuthorFilter { get; set; }
 	[Parameter, SupplyParameterFromQuery] public int PageIndex { get => _pageIndex; set => _pageIndex = Math.Max(0, value); }
@@ -34,17 +37,17 @@ public partial class Index
 	private async Task ChangeInputSpawnsetName(ChangeEventArgs e)
 	{
 		SpawnsetFilter = e.Value?.ToString();
-		NavigationManager.AddOrModifyQueryParameter(QueryParameters.SpawnsetFilter, SpawnsetFilter);
+		NavigationManager.AddOrModifyQueryParameter(nameof(SpawnsetFilter), SpawnsetFilter);
 
-		await Fetch();
+		await Fetch(Category);
 	}
 
 	private async Task ChangeInputAuthorName(ChangeEventArgs e)
 	{
 		AuthorFilter = e.Value?.ToString();
-		NavigationManager.AddOrModifyQueryParameter(QueryParameters.AuthorFilter, AuthorFilter);
+		NavigationManager.AddOrModifyQueryParameter(nameof(AuthorFilter), AuthorFilter);
 
-		await Fetch();
+		await Fetch(Category);
 	}
 
 	protected override async Task OnInitializedAsync()
@@ -52,7 +55,7 @@ public partial class Index
 		foreach (CustomLeaderboardSorting e in (CustomLeaderboardSorting[])Enum.GetValues(typeof(CustomLeaderboardSorting)))
 			_sortings.Add(e, false);
 
-		await Fetch();
+		await Fetch(Category);
 
 		GetTotalCustomLeaderboardData = await Http.GetTotalCustomLeaderboardData();
 	}
@@ -60,9 +63,9 @@ public partial class Index
 	public async Task ChangePageIndex(int pageIndex)
 	{
 		PageIndex = Math.Clamp(pageIndex, 0, TotalPages - 1);
-		NavigationManager.AddOrModifyQueryParameter(QueryParameters.PageIndex, PageIndex);
+		NavigationManager.AddOrModifyQueryParameter(nameof(PageIndex), PageIndex);
 
-		await Fetch();
+		await Fetch(Category);
 
 		StateHasChanged();
 	}
@@ -73,21 +76,10 @@ public partial class Index
 			return;
 
 		PageSize = pageSize;
-		NavigationManager.AddOrModifyQueryParameter(QueryParameters.PageSize, PageSize);
+		NavigationManager.AddOrModifyQueryParameter(nameof(PageSize), PageSize);
 
 		PageIndex = Math.Clamp(PageIndex, 0, TotalPages - 1);
-		await Fetch();
-	}
-
-	private async Task ChangeCategory(ChangeEventArgs e)
-	{
-		if (!Enum.TryParse<CustomLeaderboardCategory>(e.Value?.ToString(), out CustomLeaderboardCategory category))
-			return;
-
-		Category = (int)category;
-		NavigationManager.AddOrModifyQueryParameter(QueryParameters.Category, Category);
-
-		await Fetch();
+		await Fetch(Category);
 	}
 
 	private async Task Sort(CustomLeaderboardSorting sortBy)
@@ -96,30 +88,26 @@ public partial class Index
 		_sortings[sortBy] = !_sortings[sortBy];
 		Ascending = _sortings[sortBy];
 
-		NavigationManager.AddOrModifyQueryParameters(new(QueryParameters.SortBy, SortBy), new(QueryParameters.Ascending, Ascending));
+		NavigationManager.AddOrModifyQueryParameters(new(nameof(SortBy), SortBy), new(nameof(Ascending), Ascending));
 
-		await Fetch();
+		await Fetch(Category);
 	}
 
-	private async Task Fetch()
+	protected async override Task OnParametersSetAsync()
 	{
-		GetCustomLeaderboards = await Http.GetCustomLeaderboards((CustomLeaderboardCategory)Category, SpawnsetFilter, AuthorFilter, PageIndex, PageSize, SortBy.HasValue ? (CustomLeaderboardSorting)SortBy.Value : CustomLeaderboardSorting.DateLastPlayed, Ascending);
+		await Fetch(Category);
+	}
+
+	private async Task Fetch(string category)
+	{
+		NavigationManager.AddOrModifyQueryParameter(nameof(Category), category);
+
+		GetCustomLeaderboards = await Http.GetCustomLeaderboards(EnumConvert.GetCustomLeaderboardCategory(category), SpawnsetFilter, AuthorFilter, PageIndex, PageSize, SortBy.HasValue ? (CustomLeaderboardSorting)SortBy.Value : CustomLeaderboardSorting.DateLastPlayed, Ascending);
 
 		if (PageIndex >= TotalPages)
 		{
 			PageIndex = TotalPages - 1;
-			NavigationManager.AddOrModifyQueryParameter(QueryParameters.PageIndex, PageIndex);
+			NavigationManager.AddOrModifyQueryParameter(nameof(PageIndex), PageIndex);
 		}
-	}
-
-	private static class QueryParameters
-	{
-		public static string Category { get; } = nameof(Category);
-		public static string SpawnsetFilter { get; } = nameof(SpawnsetFilter);
-		public static string AuthorFilter { get; } = nameof(AuthorFilter);
-		public static string PageIndex { get; } = nameof(PageIndex);
-		public static string PageSize { get; } = nameof(PageSize);
-		public static string SortBy { get; } = nameof(SortBy);
-		public static string Ascending { get; } = nameof(Ascending);
 	}
 }
