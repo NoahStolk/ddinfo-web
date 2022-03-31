@@ -1,8 +1,10 @@
-using DevilDaggersInfo.SourceGen.Web.BlazorWasm.Client.Generators.ApiHttpClient.Endpoints;
-using DevilDaggersInfo.SourceGen.Web.BlazorWasm.Client.Generators.ApiHttpClient.Enums;
-using HttpMethod = DevilDaggersInfo.SourceGen.Web.BlazorWasm.Client.Generators.ApiHttpClient.Enums.HttpMethod;
+using DevilDaggersInfo.SourceGen;
+using DevilDaggersInfo.Web.Tool.ClientGenerator.Extensions;
+using DevilDaggersInfo.Web.Tool.ClientGenerator.Generators.ApiHttpClient.Endpoints;
+using DevilDaggersInfo.Web.Tool.ClientGenerator.Generators.ApiHttpClient.Enums;
+using HttpMethod = DevilDaggersInfo.Web.Tool.ClientGenerator.Generators.ApiHttpClient.Enums.HttpMethod;
 
-namespace DevilDaggersInfo.SourceGen.Web.BlazorWasm.Client.Generators.ApiHttpClient;
+namespace DevilDaggersInfo.Web.Tool.ClientGenerator.Generators.ApiHttpClient;
 
 internal class ApiHttpClientContext
 {

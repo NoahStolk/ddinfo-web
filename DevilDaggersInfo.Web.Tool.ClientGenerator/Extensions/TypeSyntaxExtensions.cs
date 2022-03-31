@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.SourceGen.Web.BlazorWasm.Client.Extensions;
+namespace DevilDaggersInfo.Web.Tool.ClientGenerator.Extensions;
 
 public static class TypeSyntaxExtensions
 {

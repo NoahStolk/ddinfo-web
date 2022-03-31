@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.SourceGen.Web.BlazorWasm.Client.Generators.ApiHttpClient;
+namespace DevilDaggersInfo.Web.Tool.ClientGenerator.Generators.ApiHttpClient;
 
 internal class Parameter
 {

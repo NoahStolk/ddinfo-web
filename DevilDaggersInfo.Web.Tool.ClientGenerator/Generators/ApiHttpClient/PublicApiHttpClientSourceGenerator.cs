@@ -1,7 +1,8 @@
-using DevilDaggersInfo.SourceGen.Web.BlazorWasm.Client.Generators.ApiHttpClient.Endpoints;
-using DevilDaggersInfo.SourceGen.Web.BlazorWasm.Client.Generators.ApiHttpClient.Enums;
+using DevilDaggersInfo.SourceGen;
+using DevilDaggersInfo.Web.Tool.ClientGenerator.Generators.ApiHttpClient.Endpoints;
+using DevilDaggersInfo.Web.Tool.ClientGenerator.Generators.ApiHttpClient.Enums;
 
-namespace DevilDaggersInfo.SourceGen.Web.BlazorWasm.Client.Generators.ApiHttpClient;
+namespace DevilDaggersInfo.Web.Tool.ClientGenerator.Generators.ApiHttpClient;
 
 public static class PublicApiHttpClientSourceGenerator
 {

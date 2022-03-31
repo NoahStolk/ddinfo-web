@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.SourceGen.Web.BlazorWasm.Client.Generators.ApiHttpClient.Enums;
+namespace DevilDaggersInfo.Web.Tool.ClientGenerator.Generators.ApiHttpClient.Enums;
 
 public enum HttpMethod
 {

@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.SourceGen.Web.BlazorWasm.Client.Generators.ApiHttpClient.Endpoints;
+namespace DevilDaggersInfo.Web.Tool.ClientGenerator.Generators.ApiHttpClient.Endpoints;
 
 internal class PatchEndpoint : Endpoint
 {

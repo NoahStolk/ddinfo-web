@@ -1,4 +1,6 @@
-namespace DevilDaggersInfo.SourceGen.Web.BlazorWasm.Client.Generators.ApiHttpClient.Endpoints;
+using DevilDaggersInfo.SourceGen;
+
+namespace DevilDaggersInfo.Web.Tool.ClientGenerator.Generators.ApiHttpClient.Endpoints;
 
 internal class GetEndpoint : Endpoint
 {

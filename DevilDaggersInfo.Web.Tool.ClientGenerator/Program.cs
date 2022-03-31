@@ -1,4 +1,4 @@
-using DevilDaggersInfo.SourceGen.Web.BlazorWasm.Client.Generators.ApiHttpClient;
+using DevilDaggersInfo.Web.Tool.ClientGenerator.Generators.ApiHttpClient;
 
 AdminApiHttpClientSourceGenerator.Execute();
 PublicApiHttpClientSourceGenerator.Execute();
