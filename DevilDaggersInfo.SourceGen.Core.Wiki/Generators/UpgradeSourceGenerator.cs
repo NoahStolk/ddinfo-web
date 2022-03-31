@@ -58,10 +58,4 @@ public static class {_className}
 			.Replace(_upgradeFields, string.Join(Environment.NewLine, fieldLines).IndentCode(1));
 		sourceProductionContext.AddSource(className, SourceText.From(source.WrapCodeInsideWarningSuppressionDirectives().TrimCode(), Encoding.UTF8));
 	}
-
-	private static string ValueOrNull(float? value)
-		=> value.HasValue ? $"{value.Value}f" : "null";
-
-	private static string ValueOrNull(int? value)
-		=> value.HasValue ? value.Value.ToString() : "null";
 }
