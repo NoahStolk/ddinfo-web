@@ -66,4 +66,7 @@ public static class StringExtensions
 		string? sub = Array.Find(values, v => str.StartsWith(v));
 		return sub == null ? str : str.Substring(sub.Length);
 	}
+
+	public static string ToUsingDirective(this string namespaceString)
+		=> $"using {namespaceString};";
 }

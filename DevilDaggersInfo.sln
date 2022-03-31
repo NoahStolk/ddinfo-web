@@ -38,7 +38,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Core.Mod",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Cmd.ExtractMod", "DevilDaggersInfo.Cmd.ExtractMod\DevilDaggersInfo.Cmd.ExtractMod.csproj", "{8A747382-EEA6-433F-B61A-85ABD0706E54}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.SourceGen.Web.BlazorWasm.Client", "DevilDaggersInfo.SourceGen.Web.BlazorWasm.Client\DevilDaggersInfo.SourceGen.Web.BlazorWasm.Client.csproj", "{9178E989-F0E7-44EE-BC27-FD07D06DD5DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Web.Tool.ClientGenerator", "DevilDaggersInfo.Web.Tool.ClientGenerator\DevilDaggersInfo.Web.Tool.ClientGenerator.csproj", "{9178E989-F0E7-44EE-BC27-FD07D06DD5DA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Core.Memory", "DevilDaggersInfo.Core.Memory\DevilDaggersInfo.Core.Memory.csproj", "{4E6B8A02-5C01-4BF4-B398-C3AA588B3940}"
 EndProject
@@ -57,7 +57,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Test.Core.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Test", "DevilDaggersInfo.Test\DevilDaggersInfo.Test.csproj", "{FFBD67EF-A0A6-41BD-8D4D-4AD440D5630F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.SourceGen", "DevilDaggersInfo.SourceGen\DevilDaggersInfo.SourceGen.csproj", "{71600AEE-1165-47E4-B45B-8313ED904E58}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Core.SourceGen", "DevilDaggersInfo.Core.SourceGen\DevilDaggersInfo.Core.SourceGen.csproj", "{71600AEE-1165-47E4-B45B-8313ED904E58}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{DC8824FB-7C87-4391-A12D-109623A76064}"
 EndProject
@@ -184,10 +184,8 @@ Global
 		{3B98ACA6-2DD1-430D-948A-2796E4C4A866} = {7682E92D-1D1A-4238-BFF2-D998A5FD392C}
 		{2BE3E7C9-DEAF-4D2C-ADFC-40EA3FE3D325} = {7682E92D-1D1A-4238-BFF2-D998A5FD392C}
 		{79C2EF91-46DF-4E4D-A083-57C34D15A890} = {DC8824FB-7C87-4391-A12D-109623A76064}
-		{9178E989-F0E7-44EE-BC27-FD07D06DD5DA} = {7682E92D-1D1A-4238-BFF2-D998A5FD392C}
 		{4E3108DD-0F00-45E6-89E9-4F27BCAEF08E} = {DC8824FB-7C87-4391-A12D-109623A76064}
 		{FFBD67EF-A0A6-41BD-8D4D-4AD440D5630F} = {DC8824FB-7C87-4391-A12D-109623A76064}
-		{71600AEE-1165-47E4-B45B-8313ED904E58} = {7682E92D-1D1A-4238-BFF2-D998A5FD392C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E27EC676-81BF-4099-BFC9-20E860CE83A5}

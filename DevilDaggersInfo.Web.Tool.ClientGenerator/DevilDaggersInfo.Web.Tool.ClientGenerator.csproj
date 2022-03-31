@@ -5,6 +5,6 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" PrivateAssets="all" />
-    <ProjectReference Include="..\DevilDaggersInfo.SourceGen\DevilDaggersInfo.SourceGen.csproj" />
+    <ProjectReference Include="..\DevilDaggersInfo.Core.SourceGen\DevilDaggersInfo.Core.SourceGen.csproj" />
   </ItemGroup>
 </Project>

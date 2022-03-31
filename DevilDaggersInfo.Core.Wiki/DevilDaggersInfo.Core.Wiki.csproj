@@ -26,7 +26,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DevilDaggersInfo.Core\DevilDaggersInfo.Core.csproj" />
-    <ProjectReference Include="..\DevilDaggersInfo.SourceGen\DevilDaggersInfo.SourceGen.csproj" OutputItemType="Analyzer" />
+    <ProjectReference Include="..\DevilDaggersInfo.Core.SourceGen\DevilDaggersInfo.Core.SourceGen.csproj" OutputItemType="Analyzer" />
     <ProjectReference Include="..\DevilDaggersInfo.SourceGen.Core.Wiki\DevilDaggersInfo.SourceGen.Core.Wiki.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
   </ItemGroup>
 </Project>
