@@ -46,7 +46,7 @@ public partial class Index
 
 	public GetTotalCustomLeaderboardData? GetTotalCustomLeaderboardData { get; set; }
 
-	public int TotalPages => GetCustomLeaderboards == null ? 0 : (GetCustomLeaderboards.TotalResults - 1) / GetPageSize(PageSize) + 1;
+	public int TotalPages => GetCustomLeaderboards == null ? 0 : (GetCustomLeaderboards.TotalResults - 1) / PagingUtils.GetValidPageSize(PageSize) + 1;
 	public int TotalResults => GetCustomLeaderboards == null ? 0 : GetCustomLeaderboards.TotalResults;
 
 	protected override async Task OnInitializedAsync()
