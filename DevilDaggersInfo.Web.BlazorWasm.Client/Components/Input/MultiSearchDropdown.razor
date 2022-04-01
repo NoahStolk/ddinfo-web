@@ -2,7 +2,7 @@
 
 <OutsideClickHandler OnClickOutside="OnClickOutside" CssClass="inline-block w-64 bg-gray-1 text-color-text">
 	<div>
-		<div class="w-full input-list-opener" @onclick="e => _show = !_show">@SelectedDisplayValue</div>
+		<div class="w-full input-list-opener pl-2" @onclick="e => _show = !_show">@SelectedDisplayValue</div>
 		@foreach (int id in CurrentValue ?? new())
 		{
 			<div class="grid grid-cols-8">

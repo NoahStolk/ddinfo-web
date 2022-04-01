@@ -1,7 +1,7 @@
 @typeparam TValue
 
 <OutsideClickHandler OnClickOutside="OnClickOutside" CssClass="@($"inline-block text-color-text {CssClass} {CssWidthClass}")">
-	<div class="w-full h-full align-text-bottom input-list-opener" @onclick="e => _show = !_show">
+	<div class="w-full h-full input-list-opener @CssOpenerClass" @onclick="e => _show = !_show">
 		@DisplayFunction(CurrentValue)
 	</div>
 	<div class="@(_show ? "absolute" : "hidden") z-10">
@@ -41,6 +41,9 @@
 
 	[Parameter]
 	public string? CssWidthClass { get; set; } = "w-16";
+
+	[Parameter]
+	public string? CssOpenerClass { get; set; }
 
 	public TValue CurrentValue { get; set; } = default!;
 

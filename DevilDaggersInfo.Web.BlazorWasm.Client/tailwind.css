@@ -73,7 +73,7 @@
 	}
 
 	.input-list-opener {
-		@apply cursor-pointer pl-2 text-lg select-none bg-gray-3 hover:bg-gray-6;
+		@apply cursor-pointer text-lg select-none bg-gray-3 hover:bg-gray-6;
 	}
 
 	.input-list-button {
