@@ -22,7 +22,7 @@ else
 			<span>Author name</span>
 			<input class="bg-black border-gray-3 border-2" value="@AuthorFilter" @onchange="ChangeInputAuthorName" />
 			<span>Category</span>
-			<SelectList CssClass="bg-gray-2" TValue="CustomLeaderboardCategory" Values="@(Enum.GetValues<CustomLeaderboardCategory>().ToList())" DisplayFunction="@(clc => clc.ToDisplayString())" Default="EnumConvert.GetCustomLeaderboardCategory(Category)" Selected="@(clc => SetCategory(clc))" />
+			<SelectList CssClass="bg-gray-2" CssClassInputList="w-56" TValue="CustomLeaderboardCategory" Values="@(Enum.GetValues<CustomLeaderboardCategory>().ToList())" DisplayFunction="@(clc => clc.ToDisplayString())" Default="EnumConvert.GetCustomLeaderboardCategory(Category)" Selected="@(clc => SetCategory(clc))" />
 		</div>
 
 		<CascadingValue Value="this">
