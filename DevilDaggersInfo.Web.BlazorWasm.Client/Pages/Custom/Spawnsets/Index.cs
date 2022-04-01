@@ -3,6 +3,7 @@ using DevilDaggersInfo.Web.BlazorWasm.Shared.Constants;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Spawnsets;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Public;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
 using Microsoft.AspNetCore.Components;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Client.Pages.Custom.Spawnsets;
@@ -12,20 +13,43 @@ public partial class Index : IHasNavigation
 	private int _pageIndex;
 	private int _pageSize = PagingConstants.PageSizeDefault;
 
-	[Parameter, SupplyParameterFromQuery] public bool PracticeOnly { get; set; }
-	[Parameter, SupplyParameterFromQuery] public bool WithCustomLeaderboardOnly { get; set; }
-	[Parameter, SupplyParameterFromQuery] public string? SpawnsetFilter { get; set; }
-	[Parameter, SupplyParameterFromQuery] public string? AuthorFilter { get; set; }
-	[Parameter, SupplyParameterFromQuery] public int PageIndex { get => _pageIndex; set => _pageIndex = Math.Max(0, value); }
-	[Parameter, SupplyParameterFromQuery] public int PageSize { get => _pageSize; set => _pageSize = value < PagingConstants.PageSizeMin || value > PagingConstants.PageSizeMax ? PagingConstants.PageSizeDefault : value; }
-	[Parameter, SupplyParameterFromQuery] public int? SortBy { get; set; }
-	[Parameter, SupplyParameterFromQuery] public bool Ascending { get; set; }
+	[Parameter]
+	[SupplyParameterFromQuery]
+	public bool PracticeOnly { get; set; }
+
+	[Parameter]
+	[SupplyParameterFromQuery]
+	public bool WithCustomLeaderboardOnly { get; set; }
+
+	[Parameter]
+	[SupplyParameterFromQuery]
+	public string? SpawnsetFilter { get; set; }
+
+	[Parameter]
+	[SupplyParameterFromQuery]
+	public string? AuthorFilter { get; set; }
+
+	[Parameter]
+	[SupplyParameterFromQuery]
+	public int PageIndex { get; set; }
+
+	[Parameter]
+	[SupplyParameterFromQuery]
+	public int PageSize { get; set; } = PagingConstants.PageSizeDefault;
+
+	[Parameter]
+	[SupplyParameterFromQuery]
+	public int? SortBy { get; set; }
+
+	[Parameter]
+	[SupplyParameterFromQuery]
+	public bool Ascending { get; set; }
 
 	private Dictionary<SpawnsetSorting, bool> _sortings = new();
 
 	public Page<GetSpawnsetOverview>? GetSpawnsets { get; set; }
 
-	public int TotalPages => GetSpawnsets == null ? 0 : (GetSpawnsets.TotalResults - 1) / PageSize + 1;
+	public int TotalPages => GetSpawnsets == null ? 0 : (GetSpawnsets.TotalResults - 1) / PagingUtils.GetValidPageSize(PageSize) + 1;
 	public int TotalResults => GetSpawnsets == null ? 0 : GetSpawnsets.TotalResults;
 
 	protected override async Task OnInitializedAsync()
@@ -100,7 +124,11 @@ public partial class Index : IHasNavigation
 
 	private async Task Fetch()
 	{
-		GetSpawnsets = await Http.GetSpawnsets(PracticeOnly, WithCustomLeaderboardOnly, SpawnsetFilter, AuthorFilter, PageIndex, PageSize, SortBy.HasValue ? (SpawnsetSorting)SortBy.Value : SpawnsetSorting.LastUpdated, Ascending);
+		int pageIndex = Math.Max(0, PageIndex);
+		int pageSize = PagingUtils.GetValidPageSize(PageSize);
+		SpawnsetSorting sortBy = SortBy.HasValue ? (SpawnsetSorting)SortBy.Value : SpawnsetSorting.LastUpdated;
+
+		GetSpawnsets = await Http.GetSpawnsets(PracticeOnly, WithCustomLeaderboardOnly, SpawnsetFilter, AuthorFilter, pageIndex, pageSize, sortBy, Ascending);
 
 		if (PageIndex >= TotalPages)
 		{

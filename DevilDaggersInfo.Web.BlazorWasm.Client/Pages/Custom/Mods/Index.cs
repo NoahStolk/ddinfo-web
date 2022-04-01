@@ -3,6 +3,7 @@ using DevilDaggersInfo.Web.BlazorWasm.Shared.Constants;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Mods;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Public;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
 using Microsoft.AspNetCore.Components;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Client.Pages.Custom.Mods;
@@ -12,19 +13,39 @@ public partial class Index : IHasNavigation
 	private int _pageIndex;
 	private int _pageSize = PagingConstants.PageSizeDefault;
 
-	[Parameter, SupplyParameterFromQuery] public bool HostedOnly { get; set; }
-	[Parameter, SupplyParameterFromQuery] public string? ModFilter { get; set; }
-	[Parameter, SupplyParameterFromQuery] public string? AuthorFilter { get; set; }
-	[Parameter, SupplyParameterFromQuery] public int PageIndex { get => _pageIndex; set => _pageIndex = Math.Max(0, value); }
-	[Parameter, SupplyParameterFromQuery] public int PageSize { get => _pageSize; set => _pageSize = value < PagingConstants.PageSizeMin || value > PagingConstants.PageSizeMax ? PagingConstants.PageSizeDefault : value; }
-	[Parameter, SupplyParameterFromQuery] public int? SortBy { get; set; }
-	[Parameter, SupplyParameterFromQuery] public bool Ascending { get; set; }
+	[Parameter]
+	[SupplyParameterFromQuery]
+	public bool HostedOnly { get; set; }
+
+	[Parameter]
+	[SupplyParameterFromQuery]
+	public string? ModFilter { get; set; }
+
+	[Parameter]
+	[SupplyParameterFromQuery]
+	public string? AuthorFilter { get; set; }
+
+	[Parameter]
+	[SupplyParameterFromQuery]
+	public int PageIndex { get; set; }
+
+	[Parameter]
+	[SupplyParameterFromQuery]
+	public int PageSize { get; set; } = PagingConstants.PageSizeDefault;
+
+	[Parameter]
+	[SupplyParameterFromQuery]
+	public int? SortBy { get; set; }
+
+	[Parameter]
+	[SupplyParameterFromQuery]
+	public bool Ascending { get; set; }
 
 	private Dictionary<ModSorting, bool> _sortings = new();
 
 	public Page<GetModOverview>? GetMods { get; set; }
 
-	public int TotalPages => GetMods == null ? 0 : (GetMods.TotalResults - 1) / PageSize + 1;
+	public int TotalPages => GetMods == null ? 0 : (GetMods.TotalResults - 1) / PagingUtils.GetValidPageSize(PageSize) + 1;
 	public int TotalResults => GetMods == null ? 0 : GetMods.TotalResults;
 
 	protected override async Task OnInitializedAsync()
@@ -91,7 +112,11 @@ public partial class Index : IHasNavigation
 
 	private async Task Fetch()
 	{
-		GetMods = await Http.GetMods(HostedOnly, ModFilter, AuthorFilter, PageIndex, PageSize, SortBy.HasValue ? (ModSorting)SortBy.Value : ModSorting.LastUpdated, Ascending);
+		int pageIndex = Math.Max(0, PageIndex);
+		int pageSize = PagingUtils.GetValidPageSize(PageSize);
+		ModSorting sortBy = SortBy.HasValue ? (ModSorting)SortBy.Value : ModSorting.LastUpdated;
+
+		GetMods = await Http.GetMods(HostedOnly, ModFilter, AuthorFilter, pageIndex, pageSize, sortBy, Ascending);
 
 		if (PageIndex >= TotalPages)
 		{
