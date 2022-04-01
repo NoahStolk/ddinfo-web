@@ -85,7 +85,7 @@
 	}
 
 	.input-list-entry {
-		@apply cursor-pointer text-lg select-none pl-2 bg-gray-3 hover:bg-gray-6;
+		@apply cursor-pointer text-lg select-none pl-2 bg-gray-2 hover:bg-gray-4;
 	}
 }
 
