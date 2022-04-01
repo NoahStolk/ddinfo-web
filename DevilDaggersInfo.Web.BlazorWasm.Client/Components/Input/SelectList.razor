@@ -1,6 +1,6 @@
 @typeparam TValue
 
-<OutsideClickHandler OnClickOutside="OnClickOutside" CssClass="inline-block w-64 bg-gray-1 text-color-text cursor-pointer">
+<OutsideClickHandler OnClickOutside="OnClickOutside" CssClass="@($"inline-block text-color-text cursor-pointer {CssClass}")">
 	<div class="w-full input-list-opener" @onclick="e => _show = !_show">
 		@DisplayFunction(CurrentValue)
 	</div>
