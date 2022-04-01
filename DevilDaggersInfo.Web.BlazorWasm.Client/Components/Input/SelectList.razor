@@ -1,20 +1,18 @@
 @typeparam TValue
 
-<OutsideClickHandler OnClickOutside="OnClickOutside" CssClass="@($"inline-block text-color-text cursor-pointer {CssClass}")">
-	<div class="w-full input-list-opener" @onclick="e => _show = !_show">
+<OutsideClickHandler OnClickOutside="OnClickOutside" CssClass="@($"inline-block text-color-text cursor-pointer {CssClass} {CssWidthClass}")">
+	<div class="w-full h-full align-text-bottom input-list-opener" @onclick="e => _show = !_show">
 		@DisplayFunction(CurrentValue)
 	</div>
 	<div class="@(_show ? "absolute" : "hidden") z-10">
-		<div class="input-list-border">
-			<ul class="max-h-screen-half @CssClassInputList">
-				@{
-					foreach (TValue value in Values)
-					{
-						<li class="input-list-entry" @onclick="e => Select(value)">@DisplayFunction(value)</li>
-					}
+		<ul class="input-list-border max-h-screen-half @CssWidthClass">
+			@{
+				foreach (TValue value in Values)
+				{
+					<li class="input-list-entry" @onclick="e => Select(value)">@DisplayFunction(value)</li>
 				}
-			</ul>
-		</div>
+			}
+		</ul>
 	</div>
 </OutsideClickHandler>
 
@@ -42,7 +40,7 @@
 	public string? CssClass { get; set; }
 
 	[Parameter]
-	public string? CssClassInputList { get; set; }
+	public string? CssWidthClass { get; set; } = "w-16";
 
 	public TValue CurrentValue { get; set; } = default!;
 
