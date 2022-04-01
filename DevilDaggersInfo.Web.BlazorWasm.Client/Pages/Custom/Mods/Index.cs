@@ -10,9 +10,6 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Client.Pages.Custom.Mods;
 
 public partial class Index : IHasNavigation
 {
-	private int _pageIndex;
-	private int _pageSize = PagingConstants.PageSizeDefault;
-
 	[Parameter]
 	[SupplyParameterFromQuery]
 	public bool HostedOnly { get; set; }

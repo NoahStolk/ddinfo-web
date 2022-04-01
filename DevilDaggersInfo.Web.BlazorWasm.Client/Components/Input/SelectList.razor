@@ -1,11 +1,11 @@
 @typeparam TValue
 
-<OutsideClickHandler OnClickOutside="OnClickOutside" CssClass="@($"inline-block text-color-text cursor-pointer {CssClass} {CssWidthClass}")">
+<OutsideClickHandler OnClickOutside="OnClickOutside" CssClass="@($"inline-block text-color-text {CssClass} {CssWidthClass}")">
 	<div class="w-full h-full align-text-bottom input-list-opener" @onclick="e => _show = !_show">
 		@DisplayFunction(CurrentValue)
 	</div>
 	<div class="@(_show ? "absolute" : "hidden") z-10">
-		<ul class="input-list-border max-h-screen-half @CssWidthClass">
+		<ul class="border-[#fff8] border-2 max-h-screen-half @CssWidthClass">
 			@{
 				foreach (TValue value in Values)
 				{

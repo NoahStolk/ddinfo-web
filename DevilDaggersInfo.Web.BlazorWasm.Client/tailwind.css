@@ -72,12 +72,8 @@
 		@apply text-lg w-64 pl-2 bg-gray-1 text-color-text;
 	}
 
-	.input-list-border {
-		@apply border-[#fff8] border-2;
-	}
-
 	.input-list-opener {
-		@apply pl-2 text-lg select-none bg-gray-3 hover:bg-gray-6;
+		@apply cursor-pointer pl-2 text-lg select-none bg-gray-3 hover:bg-gray-6;
 	}
 
 	.input-list-button {
