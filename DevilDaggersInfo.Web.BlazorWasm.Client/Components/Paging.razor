@@ -6,6 +6,7 @@
 	bool l = Component.PageIndex >= Component.TotalPages - 1;
 	const string disabledStyle = "disabled:opacity-50 cursor-default btn-disabled";
 	const string enabledStyle = "btn-gray-light";
+	int pageSize = PagingUtils.GetValidPageSize(Component.PageSize);
 }
 <div class="flex">
 	<div class="w-10 h-10 mx-1">
@@ -20,7 +21,7 @@
 	<div class="w-10 h-10 mx-1">
 		<button disabled="@l" class="@(l ? disabledStyle : enabledStyle) btn" @onclick="() => Component.ChangePageIndex(Component.TotalPages - 1)">@MarkupUtils.NavEnd</button>
 	</div>
-	<SelectList CssClass="relative h-10 bg-gray-2" CssWidthClass="w-10" TValue="int" Values="@(PagingConstants.PageSizeOptions.ToList())" DisplayFunction="@(i => i.ToString())" Default="PagingUtils.GetValidPageSize(PageSize)" Selected="@(i => Component.ChangePageSize(new ChangeEventArgs() { Value = i }))" />
+	<SelectList CssClass="relative h-10 bg-gray-2" CssWidthClass="w-10" TValue="int" Values="@(PagingConstants.PageSizeOptions.ToList())" DisplayFunction="@(i => i.ToString())" Default="pageSize" Selected="@(i => Component.ChangePageSize(new ChangeEventArgs() { Value = i }))" />
 </div>
 @if (Component.TotalResults == 0)
 {
@@ -28,14 +29,11 @@
 }
 else
 {
-	<p class="p-1">Page @(Component.PageIndex + 1) of @Component.TotalPages (@(Component.PageIndex * Component.PageSize + 1) - @Math.Min(Component.TotalResults, (Component.PageIndex + 1) * Component.PageSize) of @Component.TotalResults)</p>
+	<p class="p-1">Page @(Component.PageIndex + 1) of @Component.TotalPages (@(Component.PageIndex * pageSize + 1) - @Math.Min(Component.TotalResults, (Component.PageIndex + 1) * pageSize) of @Component.TotalResults)</p>
 }
 
 @code
 {
 	[CascadingParameter]
 	public IHasNavigation Component { get; set; } = null!;
-
-	[Parameter]
-	public int PageSize { get; set; } = PagingConstants.PageSizeDefault;
 }
