@@ -62,56 +62,45 @@ public partial class Index : IHasNavigation
 		await Fetch();
 	}
 
-	private async Task ChangeInputSpawnsetName(ChangeEventArgs e)
+	private void ChangeInputSpawnsetName(ChangeEventArgs e)
 	{
 		SpawnsetFilter = e.Value?.ToString();
 		NavigationManager.AddOrModifyQueryParameter(nameof(SpawnsetFilter), SpawnsetFilter);
-
-		await Fetch();
 	}
 
-	private async Task ChangeInputAuthorName(ChangeEventArgs e)
+	private void ChangeInputAuthorName(ChangeEventArgs e)
 	{
 		AuthorFilter = e.Value?.ToString();
 		NavigationManager.AddOrModifyQueryParameter(nameof(AuthorFilter), AuthorFilter);
-
-		await Fetch();
 	}
 
-	public async Task ChangePageIndex(int pageIndex)
+	public void ChangePageIndex(int pageIndex)
 	{
 		PageIndex = Math.Clamp(pageIndex, 0, TotalPages - 1);
 		NavigationManager.AddOrModifyQueryParameter(nameof(PageIndex), PageIndex);
-
-		await Fetch();
 	}
 
-	public async Task ChangePageSize(int pageSize)
+	public void ChangePageSize(int pageSize)
 	{
 		PageSize = pageSize;
 		NavigationManager.AddOrModifyQueryParameter(nameof(PageSize), PageSize);
 
 		PageIndex = Math.Clamp(PageIndex, 0, TotalPages - 1);
-		await Fetch();
 	}
 
-	private async Task SetCategory(CustomLeaderboardCategory category)
+	private void SetCategory(CustomLeaderboardCategory category)
 	{
 		Category = EnumConvert.GetString(category);
 		NavigationManager.AddOrModifyQueryParameter(nameof(Category), Category);
-
-		await Fetch();
 	}
 
-	private async Task Sort(CustomLeaderboardSorting sortBy)
+	private void Sort(CustomLeaderboardSorting sortBy)
 	{
 		SortBy = (int)sortBy;
 		_sortings[sortBy] = !_sortings[sortBy];
 		Ascending = _sortings[sortBy];
 
 		NavigationManager.AddOrModifyQueryParameters(new(nameof(SortBy), SortBy), new(nameof(Ascending), Ascending));
-
-		await Fetch();
 	}
 
 	private async Task Fetch()

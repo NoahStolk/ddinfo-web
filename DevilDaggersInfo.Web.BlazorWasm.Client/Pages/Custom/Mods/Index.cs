@@ -45,66 +45,56 @@ public partial class Index : IHasNavigation
 	public int TotalPages => GetMods == null ? 0 : (GetMods.TotalResults - 1) / PagingUtils.GetValidPageSize(PageSize) + 1;
 	public int TotalResults => GetMods == null ? 0 : GetMods.TotalResults;
 
-	protected override async Task OnInitializedAsync()
+	protected override void OnInitialized()
 	{
 		foreach (ModSorting e in (ModSorting[])Enum.GetValues(typeof(ModSorting)))
 			_sortings.Add(e, false);
+	}
 
+	protected async override Task OnParametersSetAsync()
+	{
 		await Fetch();
 	}
 
-	private async Task ChangeInputModName(ChangeEventArgs e)
+	private void ChangeInputModName(ChangeEventArgs e)
 	{
 		ModFilter = e.Value?.ToString();
 		NavigationManager.AddOrModifyQueryParameter(nameof(ModFilter), ModFilter);
-
-		await Fetch();
 	}
 
-	private async Task ChangeInputAuthorName(ChangeEventArgs e)
+	private void ChangeInputAuthorName(ChangeEventArgs e)
 	{
 		AuthorFilter = e.Value?.ToString();
 		NavigationManager.AddOrModifyQueryParameter(nameof(AuthorFilter), AuthorFilter);
-
-		await Fetch();
 	}
 
-	private async Task ChangeInputHostedOnly(ChangeEventArgs e)
+	private void ChangeInputHostedOnly(ChangeEventArgs e)
 	{
 		HostedOnly = bool.TryParse(e.Value?.ToString(), out bool value) && value;
 		NavigationManager.AddOrModifyQueryParameter(nameof(HostedOnly), HostedOnly);
-
-		await Fetch();
 	}
 
-	public async Task ChangePageIndex(int pageIndex)
+	public void ChangePageIndex(int pageIndex)
 	{
 		PageIndex = Math.Clamp(pageIndex, 0, TotalPages - 1);
 		NavigationManager.AddOrModifyQueryParameter(nameof(PageIndex), PageIndex);
-
-		await Fetch();
-
-		StateHasChanged();
 	}
 
-	public async Task ChangePageSize(int pageSize)
+	public void ChangePageSize(int pageSize)
 	{
 		PageSize = pageSize;
 		NavigationManager.AddOrModifyQueryParameter(nameof(PageSize), PageSize);
 
 		PageIndex = Math.Clamp(PageIndex, 0, TotalPages - 1);
-		await Fetch();
 	}
 
-	private async Task Sort(ModSorting sortBy)
+	private void Sort(ModSorting sortBy)
 	{
 		SortBy = (int)sortBy;
 		_sortings[sortBy] = !_sortings[sortBy];
 		Ascending = _sortings[sortBy];
 
 		NavigationManager.AddOrModifyQueryParameters(new(nameof(SortBy), SortBy), new(nameof(Ascending), Ascending));
-
-		await Fetch();
 	}
 
 	private async Task Fetch()

@@ -35,8 +35,8 @@ public partial class AdminOverview<TGetDto, TSorting> : IHasNavigation
 	public int TotalPages => _page == null ? 0 : (_page.TotalResults - 1) / PageSize + 1;
 	public int TotalResults => _page == null ? 0 : _page.TotalResults;
 
-	public int PageIndex { get; set; }
-	public int PageSize { get; set; } = PagingConstants.PageSizeDefault;
+	[Parameter] public int PageIndex { get; set; }
+	[Parameter] public int PageSize { get; set; } = PagingConstants.PageSizeDefault;
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -44,20 +44,22 @@ public partial class AdminOverview<TGetDto, TSorting> : IHasNavigation
 		_username = auth.User?.GetName();
 
 		_sortings = Enum.GetValues<TSorting>().ToDictionary(e => e, _ => true);
+	}
+
+	protected override async Task OnParametersSetAsync()
+	{
 		await Fetch();
 	}
 
-	public async Task ChangePageIndex(int pageIndex)
+	public void ChangePageIndex(int pageIndex)
 	{
 		PageIndex = Math.Clamp(pageIndex, 0, TotalPages - 1);
-		await Fetch();
 	}
 
-	public async Task ChangePageSize(int pageSize)
+	public void ChangePageSize(int pageSize)
 	{
 		PageSize = pageSize;
 		PageIndex = Math.Clamp(PageIndex, 0, TotalPages - 1);
-		await Fetch();
 	}
 
 	public async Task Sort(TSorting sorting)
