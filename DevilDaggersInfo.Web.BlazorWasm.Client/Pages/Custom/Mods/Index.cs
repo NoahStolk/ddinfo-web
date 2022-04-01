@@ -68,9 +68,9 @@ public partial class Index : IHasNavigation
 		NavigationManager.AddOrModifyQueryParameter(nameof(AuthorFilter), AuthorFilter);
 	}
 
-	private void ChangeInputHostedOnly(ChangeEventArgs e)
+	private void ChangeInputHostedOnly(bool value)
 	{
-		HostedOnly = bool.TryParse(e.Value?.ToString(), out bool value) && value;
+		HostedOnly = value;
 		NavigationManager.AddOrModifyQueryParameter(nameof(HostedOnly), HostedOnly);
 	}
 

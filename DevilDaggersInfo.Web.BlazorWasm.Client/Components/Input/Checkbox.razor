@@ -1,0 +1,19 @@
+<button class="@($"border-gray-3 border-2 w-8 h-8 {(CurrentValue ? "bg-red" : "bg-black")}")" @onclick="Toggle"></button>
+
+@code
+{
+	[Parameter]
+	[EditorRequired]
+	public bool CurrentValue { get; set; }
+	
+	[Parameter]
+	[EditorRequired]
+	public EventCallback<bool> Selected { get; set; }
+
+	private async Task Toggle()
+	{
+		CurrentValue = !CurrentValue;
+		await Selected.InvokeAsync(CurrentValue);
+		StateHasChanged();
+	}
+}

@@ -2,6 +2,7 @@
 @inject PublicApiHttpClient Http
 @inject NavigationManager NavigationManager
 @using DevilDaggersInfo.Core.Spawnset.Extensions
+@using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Input
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Spawnsets
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Public
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
@@ -21,9 +22,9 @@ else
 			<span>Author name</span>
 			<input class="bg-black border-gray-3 border-2 w-48" value="@AuthorFilter" @onchange="ChangeInputAuthorName" />
 			<span>Practice only</span>
-			<input type="checkbox" class="bg-black border-gray-3 border-2 w-8" value="@PracticeOnly" @onchange="ChangeInputPracticeOnly" />
+			<Checkbox CurrentValue="@PracticeOnly" Selected="@(b => ChangeInputPracticeOnly(b))" />
 			<span>With leaderboard only</span>
-			<input type="checkbox" class="bg-black border-gray-3 border-2 w-8" value="@WithCustomLeaderboardOnly" @onchange="ChangeInputWithCustomLeaderboardOnly" />
+			<Checkbox CurrentValue="@WithCustomLeaderboardOnly" Selected="@(b => ChangeInputWithCustomLeaderboardOnly(b))" />
 		</div>
 
 		<CascadingValue Value="this">

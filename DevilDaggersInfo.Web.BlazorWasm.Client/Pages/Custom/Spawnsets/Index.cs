@@ -72,15 +72,15 @@ public partial class Index : IHasNavigation
 		NavigationManager.AddOrModifyQueryParameter(nameof(AuthorFilter), AuthorFilter);
 	}
 
-	private void ChangeInputPracticeOnly(ChangeEventArgs e)
+	private void ChangeInputPracticeOnly(bool value)
 	{
-		PracticeOnly = bool.TryParse(e.Value?.ToString(), out bool value) && value;
+		PracticeOnly = value;
 		NavigationManager.AddOrModifyQueryParameter(nameof(PracticeOnly), PracticeOnly);
 	}
 
-	private void ChangeInputWithCustomLeaderboardOnly(ChangeEventArgs e)
+	private void ChangeInputWithCustomLeaderboardOnly(bool value)
 	{
-		WithCustomLeaderboardOnly = bool.TryParse(e.Value?.ToString(), out bool value) && value;
+		WithCustomLeaderboardOnly = value;
 		NavigationManager.AddOrModifyQueryParameter(nameof(WithCustomLeaderboardOnly), WithCustomLeaderboardOnly);
 	}
 
