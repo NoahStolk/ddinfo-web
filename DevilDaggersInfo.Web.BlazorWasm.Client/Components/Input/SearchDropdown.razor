@@ -12,7 +12,7 @@
 				<span class="text-lg w-16">Search:</span>
 				<InputTextImmediate @bind-Value="_searchValue" class="w-48 bg-gray-3 text-color-text" />
 			</div>
-			<ul class="input-list">
+			<ul class="max-h-screen-half w-64 overflow-y-scroll">
 				@{
 					foreach (KeyValuePair<TKey, string> kvp in FilteredItems)
 					{

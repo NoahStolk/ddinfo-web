@@ -8,7 +8,7 @@
 	</div>
 	<div class="@(_show ? "absolute" : "hidden") z-10">
 		<div class="input-list-border">
-			<ul class="input-list">
+			<ul class="max-h-screen-half w-64 overflow-y-scroll">
 				@foreach (KeyValuePair<TKey, string> kvp in Values)
 				{
 					<li class="input-list-entry" @onclick="e => HandleSelect(kvp.Key)">@DisplayValue(kvp.Key)</li>

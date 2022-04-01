@@ -76,10 +76,6 @@
 		@apply bg-gray-1 border-[#fff8] border-2;
 	}
 
-	.input-list {
-		@apply max-h-screen-half w-64 overflow-y-scroll;
-	}
-
 	.input-list-opener {
 		@apply pl-2 text-lg select-none hover:bg-gray-5;
 	}
