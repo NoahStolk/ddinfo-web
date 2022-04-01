@@ -48,6 +48,10 @@ public static class MarkupUtils
 	<rect width='{_lineThickness}' height='{_size}' x='{_size - _lineThickness}' y='{_a}' style='fill: {_fillStyle};' />
 </svg>");
 
+	public static readonly MarkupString Checkmark = new($@"<svg style='margin: 3px;' width='28' height='28'>
+	<polyline points='3,10 10,18 20,4' style='stroke: #d00; stroke-width: 3;' />
+</svg>");
+
 	public static readonly MarkupString NoDataMarkup = new($@"<span style=""color: {NoDataColor};"">N/A</span>");
 
 	public static readonly MarkupString HiddenMarkup = new($@"<span style=""color: {NoDataColor};"">Hidden</span>");
