@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Client.Pages.Custom.Spawnsets;
 
-public partial class Index
+public partial class Index : IHasNavigation
 {
 	private int _pageIndex;
 	private int _pageSize = PagingConstants.PageSizeDefault;
@@ -78,11 +78,8 @@ public partial class Index
 		StateHasChanged();
 	}
 
-	public async Task ChangePageSize(ChangeEventArgs e)
+	public async Task ChangePageSize(int pageSize)
 	{
-		if (!int.TryParse(e.Value?.ToString(), out int pageSize))
-			return;
-
 		PageSize = pageSize;
 		NavigationManager.AddOrModifyQueryParameter(QueryParameters.PageSize, PageSize);
 

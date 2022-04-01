@@ -12,5 +12,5 @@ public interface IHasNavigation
 
 	public Task ChangePageIndex(int pageIndex);
 
-	public Task ChangePageSize(ChangeEventArgs e);
+	public Task ChangePageSize(int pageSize);
 }

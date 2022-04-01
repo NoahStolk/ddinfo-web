@@ -21,7 +21,7 @@
 	<div class="w-10 h-10 mx-1">
 		<button disabled="@l" class="@(l ? disabledStyle : enabledStyle) btn" @onclick="() => Component.ChangePageIndex(Component.TotalPages - 1)">@MarkupUtils.NavEnd</button>
 	</div>
-	<SelectList CssClass="relative h-10 bg-gray-2" CssWidthClass="w-10" TValue="int" Values="@(PagingConstants.PageSizeOptions.ToList())" DisplayFunction="@(i => i.ToString())" Default="pageSize" Selected="@(i => Component.ChangePageSize(new ChangeEventArgs() { Value = i }))" />
+	<SelectList CssClass="relative h-10" CssWidthClass="w-10" TValue="int" Values="@(PagingConstants.PageSizeOptions.ToList())" DisplayFunction="@(i => i.ToString())" Default="pageSize" Selected="@(i => Component.ChangePageSize(i))" />
 </div>
 @if (Component.TotalResults == 0)
 {

@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Web.BlazorWasm.Client.Pages;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Utils;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Constants;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
@@ -8,7 +9,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin;
 
-public partial class AdminOverview<TGetDto, TSorting>
+public partial class AdminOverview<TGetDto, TSorting> : IHasNavigation
 	where TGetDto : IAdminOverviewGetDto
 	where TSorting : struct, Enum
 {
@@ -52,9 +53,8 @@ public partial class AdminOverview<TGetDto, TSorting>
 		await Fetch();
 	}
 
-	public async Task ChangePageSize(ChangeEventArgs e)
+	public async Task ChangePageSize(int pageSize)
 	{
-		_ = int.TryParse(e.Value?.ToString(), out int pageSize);
 		PageSize = pageSize;
 		PageIndex = Math.Clamp(PageIndex, 0, TotalPages - 1);
 		await Fetch();

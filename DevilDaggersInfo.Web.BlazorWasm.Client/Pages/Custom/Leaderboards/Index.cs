@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Client.Pages.Custom.Leaderboards;
 
-public partial class Index
+public partial class Index : IHasNavigation
 {
 	[Parameter]
 	[SupplyParameterFromQuery]
@@ -84,16 +84,10 @@ public partial class Index
 		NavigationManager.AddOrModifyQueryParameter(nameof(PageIndex), PageIndex);
 
 		await Fetch();
-
-		// TODO: ??
-		StateHasChanged();
 	}
 
-	public async Task ChangePageSize(ChangeEventArgs e)
+	public async Task ChangePageSize(int pageSize)
 	{
-		if (!int.TryParse(e.Value?.ToString(), out int pageSize))
-			return;
-
 		PageSize = pageSize;
 		NavigationManager.AddOrModifyQueryParameter(nameof(PageSize), PageSize);
 
