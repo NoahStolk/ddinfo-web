@@ -6,20 +6,18 @@
 		<span class="input-list-opener col-span-7" @onclick="e => _show = !_show">@SelectedDisplayValue</span>
 		<span class="input-list-button" @onclick="e => HandleSelect(default)">✕</span>
 	</div>
-	<div class="@(_show ? "absolute" : "hidden") z-10">
-		<div class="input-list-border">
-			<div class="p-2 w-64">
-				<span class="text-lg w-16">Search:</span>
-				<InputTextImmediate @bind-Value="_searchValue" class="w-48 bg-gray-3 text-color-text" />
-			</div>
-			<ul class="max-h-screen-half w-64 overflow-y-scroll">
-				@{
-					foreach (KeyValuePair<TKey, string> kvp in FilteredItems)
-					{
-						<li class="input-list-entry" @onclick="e => HandleSelect(kvp.Key)">@DisplayValue(kvp.Key)</li>
-					}
-				}
-			</ul>
+	<div class="@(_show ? "absolute" : "hidden") z-10 input-list-border bg-gray-1">
+		<div class="p-2 w-64">
+			<span class="text-lg w-16">Search:</span>
+			<InputTextImmediate @bind-Value="_searchValue" class="w-48 bg-gray-3 text-color-text" />
 		</div>
+		<ul class="max-h-screen-half w-64 overflow-y-scroll">
+			@{
+				foreach (KeyValuePair<TKey, string> kvp in FilteredItems)
+				{
+					<li class="input-list-entry" @onclick="e => HandleSelect(kvp.Key)">@DisplayValue(kvp.Key)</li>
+				}
+			}
+		</ul>
 	</div>
 </OutsideClickHandler>
