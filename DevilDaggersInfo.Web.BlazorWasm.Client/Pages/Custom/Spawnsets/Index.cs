@@ -28,38 +28,6 @@ public partial class Index : IHasNavigation
 	public int TotalPages => GetSpawnsets == null ? 0 : (GetSpawnsets.TotalResults - 1) / PageSize + 1;
 	public int TotalResults => GetSpawnsets == null ? 0 : GetSpawnsets.TotalResults;
 
-	private async Task ChangeInputSpawnsetName(ChangeEventArgs e)
-	{
-		SpawnsetFilter = e.Value?.ToString();
-		NavigationManager.AddOrModifyQueryParameter(QueryParameters.SpawnsetFilter, SpawnsetFilter);
-
-		await Fetch();
-	}
-
-	private async Task ChangeInputAuthorName(ChangeEventArgs e)
-	{
-		AuthorFilter = e.Value?.ToString();
-		NavigationManager.AddOrModifyQueryParameter(QueryParameters.AuthorFilter, AuthorFilter);
-
-		await Fetch();
-	}
-
-	private async Task ChangeInputPracticeOnly(ChangeEventArgs e)
-	{
-		PracticeOnly = bool.TryParse(e.Value?.ToString(), out bool value) && value;
-		NavigationManager.AddOrModifyQueryParameter(QueryParameters.PracticeOnly, PracticeOnly);
-
-		await Fetch();
-	}
-
-	private async Task ChangeInputWithCustomLeaderboardOnly(ChangeEventArgs e)
-	{
-		WithCustomLeaderboardOnly = bool.TryParse(e.Value?.ToString(), out bool value) && value;
-		NavigationManager.AddOrModifyQueryParameter(QueryParameters.WithCustomLeaderboardOnly, WithCustomLeaderboardOnly);
-
-		await Fetch();
-	}
-
 	protected override async Task OnInitializedAsync()
 	{
 		foreach (SpawnsetSorting e in (SpawnsetSorting[])Enum.GetValues(typeof(SpawnsetSorting)))
@@ -68,10 +36,42 @@ public partial class Index : IHasNavigation
 		await Fetch();
 	}
 
+	private async Task ChangeInputSpawnsetName(ChangeEventArgs e)
+	{
+		SpawnsetFilter = e.Value?.ToString();
+		NavigationManager.AddOrModifyQueryParameter(nameof(SpawnsetFilter), SpawnsetFilter);
+
+		await Fetch();
+	}
+
+	private async Task ChangeInputAuthorName(ChangeEventArgs e)
+	{
+		AuthorFilter = e.Value?.ToString();
+		NavigationManager.AddOrModifyQueryParameter(nameof(AuthorFilter), AuthorFilter);
+
+		await Fetch();
+	}
+
+	private async Task ChangeInputPracticeOnly(ChangeEventArgs e)
+	{
+		PracticeOnly = bool.TryParse(e.Value?.ToString(), out bool value) && value;
+		NavigationManager.AddOrModifyQueryParameter(nameof(PracticeOnly), PracticeOnly);
+
+		await Fetch();
+	}
+
+	private async Task ChangeInputWithCustomLeaderboardOnly(ChangeEventArgs e)
+	{
+		WithCustomLeaderboardOnly = bool.TryParse(e.Value?.ToString(), out bool value) && value;
+		NavigationManager.AddOrModifyQueryParameter(nameof(WithCustomLeaderboardOnly), WithCustomLeaderboardOnly);
+
+		await Fetch();
+	}
+
 	public async Task ChangePageIndex(int pageIndex)
 	{
 		PageIndex = Math.Clamp(pageIndex, 0, TotalPages - 1);
-		NavigationManager.AddOrModifyQueryParameter(QueryParameters.PageIndex, PageIndex);
+		NavigationManager.AddOrModifyQueryParameter(nameof(PageIndex), PageIndex);
 
 		await Fetch();
 
@@ -81,7 +81,7 @@ public partial class Index : IHasNavigation
 	public async Task ChangePageSize(int pageSize)
 	{
 		PageSize = pageSize;
-		NavigationManager.AddOrModifyQueryParameter(QueryParameters.PageSize, PageSize);
+		NavigationManager.AddOrModifyQueryParameter(nameof(PageSize), PageSize);
 
 		PageIndex = Math.Clamp(PageIndex, 0, TotalPages - 1);
 		await Fetch();
@@ -93,7 +93,7 @@ public partial class Index : IHasNavigation
 		_sortings[sortBy] = !_sortings[sortBy];
 		Ascending = _sortings[sortBy];
 
-		NavigationManager.AddOrModifyQueryParameters(new(QueryParameters.SortBy, SortBy), new(QueryParameters.Ascending, Ascending));
+		NavigationManager.AddOrModifyQueryParameters(new(nameof(SortBy), SortBy), new(nameof(Ascending), Ascending));
 
 		await Fetch();
 	}
@@ -105,19 +105,7 @@ public partial class Index : IHasNavigation
 		if (PageIndex >= TotalPages)
 		{
 			PageIndex = TotalPages - 1;
-			NavigationManager.AddOrModifyQueryParameter(QueryParameters.PageIndex, PageIndex);
+			NavigationManager.AddOrModifyQueryParameter(nameof(PageIndex), PageIndex);
 		}
-	}
-
-	private static class QueryParameters
-	{
-		public static string SpawnsetFilter { get; } = nameof(SpawnsetFilter);
-		public static string AuthorFilter { get; } = nameof(AuthorFilter);
-		public static string PracticeOnly { get; } = nameof(PracticeOnly);
-		public static string WithCustomLeaderboardOnly { get; } = nameof(WithCustomLeaderboardOnly);
-		public static string PageIndex { get; } = nameof(PageIndex);
-		public static string PageSize { get; } = nameof(PageSize);
-		public static string SortBy { get; } = nameof(SortBy);
-		public static string Ascending { get; } = nameof(Ascending);
 	}
 }
