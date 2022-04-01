@@ -1,8 +1,8 @@
 @inherits InputBase<List<int>>
 
-<OutsideClickHandler OnClickOutside="OnClickOutside" CssClass="inline-block w-64 bg-gray-1 text-color-text cursor-pointer">
+<OutsideClickHandler OnClickOutside="OnClickOutside" CssClass="inline-block w-64 bg-gray-1 text-color-text">
 	<div>
-		<div class="w-full input-list-opener" @onclick="e => _show = !_show">@SelectedDisplayValue</div>
+		<div class="w-full input-list-opener pl-2" @onclick="e => _show = !_show">@SelectedDisplayValue</div>
 		@foreach (int id in CurrentValue ?? new())
 		{
 			<div class="grid grid-cols-8">
@@ -11,18 +11,16 @@
 			</div>
 		}
 	</div>
-	<div class="@(_show ? "absolute" : "hidden") z-10">
-		<div class="input-list-border">
-			<div class="p-2 w-64">
-				<span class="text-lg w-16">Search:</span>
-				<InputTextImmediate @bind-Value="_searchValue" class="w-48 text-lg bg-gray-3 text-color-text" />
-			</div>
-			<ul class="input-list">
-				@foreach (KeyValuePair<int, string> kvp in FilteredItems)
-				{
-					<li class="input-list-entry" @onclick="e => Add(kvp.Key)">@DisplayValue(kvp.Key)</li>
-				}
-			</ul>
+	<div class="@(_show ? "absolute" : "hidden") z-10 bg-gray-1">
+		<div class="p-2 w-64 border-[#fff8] border-t-2 border-r-2 border-l-2">
+			<span class="text-lg w-16">Search:</span>
+			<InputTextImmediate @bind-Value="_searchValue" class="w-48 text-lg bg-gray-3 text-color-text" />
 		</div>
+		<ul class="max-h-screen-half w-64 overflow-y-scroll border-[#fff8] border-b-2 border-r-2 border-l-2">
+			@foreach (KeyValuePair<int, string> kvp in FilteredItems)
+			{
+				<li class="input-list-entry" @onclick="e => Add(kvp.Key)">@DisplayValue(kvp.Key)</li>
+			}
+		</ul>
 	</div>
 </OutsideClickHandler>

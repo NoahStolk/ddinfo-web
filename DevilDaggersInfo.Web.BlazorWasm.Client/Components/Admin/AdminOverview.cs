@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Web.BlazorWasm.Client.Extensions;
+using DevilDaggersInfo.Web.BlazorWasm.Client.Pages;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Utils;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Constants;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
@@ -8,13 +10,10 @@ using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin;
 
-public partial class AdminOverview<TGetDto, TSorting>
+public partial class AdminOverview<TGetDto, TSorting> : IHasNavigation
 	where TGetDto : IAdminOverviewGetDto
 	where TSorting : struct, Enum
 {
-	private TSorting? _sortBy;
-	private bool _ascending = true;
-
 	private Page<TGetDto>? _page;
 	private string? _errorMessage;
 	private bool _errorThrown;
@@ -24,18 +23,44 @@ public partial class AdminOverview<TGetDto, TSorting>
 
 	private string? _username;
 
-	[Parameter, EditorRequired] public string Title { get; set; } = null!;
-	[Parameter, EditorRequired] public Func<int, int, TSorting?, bool, Task<Page<TGetDto>>> ApiCall { get; set; } = null!;
-	[Parameter, EditorRequired] public Func<int, Task<HttpResponseMessage>> DeletionApiCall { get; set; } = null!;
-	[Parameter, EditorRequired] public string GridConfiguration { get; set; } = null!;
-	[Parameter, EditorRequired] public RenderFragment TableHeader { get; set; } = null!;
-	[Parameter, EditorRequired] public RenderFragment<TGetDto> RowTemplate { get; set; } = null!;
+	[Parameter]
+	[EditorRequired]
+	public string Title { get; set; } = null!;
+
+	[Parameter]
+	[EditorRequired]
+	public Func<int, int, TSorting?, bool, Task<Page<TGetDto>>> ApiCall { get; set; } = null!;
+
+	[Parameter]
+	[EditorRequired]
+	public Func<int, Task<HttpResponseMessage>> DeletionApiCall { get; set; } = null!;
+
+	[Parameter]
+	[EditorRequired]
+	public string GridConfiguration { get; set; } = null!;
+
+	[Parameter]
+	[EditorRequired]
+	public RenderFragment TableHeader { get; set; } = null!;
+
+	[Parameter]
+	[EditorRequired]
+	public RenderFragment<TGetDto> RowTemplate { get; set; } = null!;
+
+	[Parameter]
+	public int PageIndex { get; set; }
+
+	[Parameter]
+	public int PageSize { get; set; } = PagingConstants.PageSizeDefault;
+
+	[Parameter]
+	public int? SortBy { get; set; }
+
+	[Parameter]
+	public bool Ascending { get; set; }
 
 	public int TotalPages => _page == null ? 0 : (_page.TotalResults - 1) / PageSize + 1;
 	public int TotalResults => _page == null ? 0 : _page.TotalResults;
-
-	public int PageIndex { get; set; }
-	public int PageSize { get; set; } = PagingConstants.PageSizeDefault;
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -43,36 +68,42 @@ public partial class AdminOverview<TGetDto, TSorting>
 		_username = auth.User?.GetName();
 
 		_sortings = Enum.GetValues<TSorting>().ToDictionary(e => e, _ => true);
+	}
+
+	protected override async Task OnParametersSetAsync()
+	{
 		await Fetch();
 	}
 
-	public async Task ChangePageIndex(int pageIndex)
+	public void ChangePageIndex(int pageIndex)
 	{
 		PageIndex = Math.Clamp(pageIndex, 0, TotalPages - 1);
-		await Fetch();
+
+		// TODO: Get OnParametersSetAsync working or something.
+		Fetch();
 	}
 
-	public async Task ChangePageSize(ChangeEventArgs e)
+	public void ChangePageSize(int pageSize)
 	{
-		_ = int.TryParse(e.Value?.ToString(), out int pageSize);
 		PageSize = pageSize;
 		PageIndex = Math.Clamp(PageIndex, 0, TotalPages - 1);
-		await Fetch();
+
+		// TODO: Get OnParametersSetAsync working or something.
+		Fetch();
 	}
 
-	public async Task Sort(TSorting sorting)
+	public void Sort(TSorting sorting)
 	{
-		_sortBy = sorting;
+		SortBy = (int)(object)sorting;
 		_sortings[sorting] = !_sortings[sorting];
-		_ascending = _sortings[sorting];
-		await Fetch();
+		Ascending = _sortings[sorting];
 	}
 
 	private async Task Fetch()
 	{
 		try
 		{
-			_page = await ApiCall.Invoke(PageIndex, PageSize, _sortBy, _ascending);
+			_page = await ApiCall.Invoke(PageIndex, PageSize, SortBy.HasValue ? (TSorting)(object)SortBy : null, Ascending);
 			_errorMessage = null;
 			StateHasChanged();
 		}
