@@ -1,3 +1,4 @@
+@using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Input
 @using DevilDaggersInfo.Web.BlazorWasm.Client.Pages
 
 @{
@@ -10,12 +11,8 @@
 <button disabled="@f" class="@(f ? disabledStyle : enabledStyle) btn w-10 h-10 mx-1" @onclick="() => Component.ChangePageIndex(Component.PageIndex - 1)">@MarkupUtils.NavPrev</button>
 <button disabled="@l" class="@(l ? disabledStyle : enabledStyle) btn w-10 h-10 mx-1" @onclick="() => Component.ChangePageIndex(Component.PageIndex + 1)">@MarkupUtils.NavNext</button>
 <button disabled="@l" class="@(l ? disabledStyle : enabledStyle) btn w-10 h-10 mx-1" @onclick="() => Component.ChangePageIndex(Component.TotalPages - 1)">@MarkupUtils.NavEnd</button>
-<Select @onchange="Component.ChangePageSize" class="bg-gray-3 transition-colors duration-100 h-10 mx-1 rounded text-color-text relative bottom-[14px]">
-	@foreach (int i in PagingConstants.PageSizeOptions)
-	{
-		<option value="@i">@i</option>
-	}
-</Select>
+
+<SelectList CssClass="relative bottom-[14px]" TValue="int" Values="@(PagingConstants.PageSizeOptions.ToList())" DisplayFunction="@(i => i.ToString())" Default="PageSize" Selected="@(i => Component.ChangePageSize(new ChangeEventArgs() { Value = i }))" />
 @if (Component.TotalResults == 0)
 {
 	<p class="pt-2">Search returned no results.</p>
@@ -27,5 +24,9 @@ else
 
 @code
 {
-	[CascadingParameter] public IHasNavigation Component { get; set; } = null!;
+	[CascadingParameter]
+	public IHasNavigation Component { get; set; } = null!;
+
+	[Parameter]
+	public int PageSize { get; set; } = PagingConstants.PageSizeDefault;
 }
