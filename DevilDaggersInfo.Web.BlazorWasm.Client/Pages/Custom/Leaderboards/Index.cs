@@ -5,6 +5,7 @@ using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomLeaderboards;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Public;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
 using Microsoft.AspNetCore.Components;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Client.Pages.Custom.Leaderboards;
@@ -123,7 +124,7 @@ public partial class Index
 	{
 		CustomLeaderboardCategory category = EnumConvert.GetCustomLeaderboardCategory(Category);
 		int pageIndex = Math.Max(0, PageIndex);
-		int pageSize = GetPageSize(PageSize);
+		int pageSize = PagingUtils.GetValidPageSize(PageSize);
 		CustomLeaderboardSorting sortBy = SortBy.HasValue ? (CustomLeaderboardSorting)SortBy.Value : CustomLeaderboardSorting.DateLastPlayed;
 
 		GetCustomLeaderboards = await Http.GetCustomLeaderboards(category, SpawnsetFilter, AuthorFilter, pageIndex, pageSize, sortBy, Ascending);
@@ -134,6 +135,4 @@ public partial class Index
 			NavigationManager.AddOrModifyQueryParameter(nameof(PageIndex), PageIndex);
 		}
 	}
-
-	private static int GetPageSize(int pageSize) => pageSize < PagingConstants.PageSizeMin || pageSize > PagingConstants.PageSizeMax ? PagingConstants.PageSizeDefault : pageSize;
 }
