@@ -57,7 +57,7 @@ public partial class Index : IHasNavigation
 		GetTotalCustomLeaderboardData = await Http.GetTotalCustomLeaderboardData();
 	}
 
-	protected async override Task OnParametersSetAsync()
+	protected override async Task OnParametersSetAsync()
 	{
 		await Fetch();
 	}

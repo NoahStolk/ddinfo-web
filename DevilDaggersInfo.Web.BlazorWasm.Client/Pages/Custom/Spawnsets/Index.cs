@@ -55,7 +55,7 @@ public partial class Index : IHasNavigation
 			_sortings.Add(e, false);
 	}
 
-	protected async override Task OnParametersSetAsync()
+	protected override async Task OnParametersSetAsync()
 	{
 		await Fetch();
 	}
