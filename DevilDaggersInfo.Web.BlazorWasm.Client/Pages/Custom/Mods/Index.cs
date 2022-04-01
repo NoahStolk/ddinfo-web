@@ -74,18 +74,22 @@ public partial class Index : IHasNavigation
 		NavigationManager.AddOrModifyQueryParameter(nameof(HostedOnly), HostedOnly);
 	}
 
-	public void ChangePageIndex(int pageIndex)
+	public async Task ChangePageIndex(int pageIndex)
 	{
 		PageIndex = Math.Clamp(pageIndex, 0, TotalPages - 1);
 		NavigationManager.AddOrModifyQueryParameter(nameof(PageIndex), PageIndex);
+
+		await Task.CompletedTask;
 	}
 
-	public void ChangePageSize(int pageSize)
+	public async Task ChangePageSize(int pageSize)
 	{
 		PageSize = pageSize;
 		NavigationManager.AddOrModifyQueryParameter(nameof(PageSize), PageSize);
 
 		PageIndex = Math.Clamp(PageIndex, 0, TotalPages - 1);
+
+		await Task.CompletedTask;
 	}
 
 	private void Sort(ModSorting sortBy)

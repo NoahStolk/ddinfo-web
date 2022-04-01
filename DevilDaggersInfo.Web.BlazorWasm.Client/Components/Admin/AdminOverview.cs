@@ -75,21 +75,19 @@ public partial class AdminOverview<TGetDto, TSorting> : IHasNavigation
 		await Fetch();
 	}
 
-	public void ChangePageIndex(int pageIndex)
+	public async Task ChangePageIndex(int pageIndex)
 	{
 		PageIndex = Math.Clamp(pageIndex, 0, TotalPages - 1);
 
-		// TODO: Get OnParametersSetAsync working or something.
-		Fetch();
+		await Fetch();
 	}
 
-	public void ChangePageSize(int pageSize)
+	public async Task ChangePageSize(int pageSize)
 	{
 		PageSize = pageSize;
 		PageIndex = Math.Clamp(PageIndex, 0, TotalPages - 1);
 
-		// TODO: Get OnParametersSetAsync working or something.
-		Fetch();
+		await Fetch();
 	}
 
 	public void Sort(TSorting sorting)

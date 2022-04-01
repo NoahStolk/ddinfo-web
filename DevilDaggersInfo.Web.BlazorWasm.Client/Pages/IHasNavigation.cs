@@ -10,7 +10,7 @@ public interface IHasNavigation
 	public int TotalPages { get; }
 	public int TotalResults { get; }
 
-	public void ChangePageIndex(int pageIndex);
+	public Task ChangePageIndex(int pageIndex);
 
-	public void ChangePageSize(int pageSize);
+	public Task ChangePageSize(int pageSize);
 }
