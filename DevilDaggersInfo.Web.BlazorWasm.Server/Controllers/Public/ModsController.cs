@@ -160,8 +160,9 @@ public class ModsController : ControllerBase
 		var mods = _dbContext.Mods
 			.AsNoTracking()
 			.Include(m => m.PlayerMods)
-			.Where(s => s.PlayerMods.Any(pm => pm.PlayerId == playerId))
-			.Select(s => new { s.Id, s.Name })
+			.Select(m => new { m.Id, m.Name, m.PlayerMods, m.LastUpdated })
+			.Where(m => m.PlayerMods.Any(pm => pm.PlayerId == playerId))
+			.OrderByDescending(m => m.LastUpdated)
 			.ToList();
 
 		return mods.ConvertAll(s => new GetModName

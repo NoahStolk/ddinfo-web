@@ -279,7 +279,12 @@ public class SpawnsetsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public ActionResult<List<GetSpawnsetName>> GetSpawnsetsByAuthorId([Required] int playerId)
 	{
-		var spawnsets = _dbContext.Spawnsets.AsNoTracking().Where(s => s.PlayerId == playerId).Select(s => new { s.Id, s.Name }).ToList();
+		var spawnsets = _dbContext.Spawnsets
+			.AsNoTracking()
+			.Select(s => new { s.Id, s.PlayerId, s.Name, s.LastUpdated })
+			.Where(s => s.PlayerId == playerId)
+			.OrderByDescending(s => s.LastUpdated)
+			.ToList();
 
 		return spawnsets.ConvertAll(s => new GetSpawnsetName
 		{
