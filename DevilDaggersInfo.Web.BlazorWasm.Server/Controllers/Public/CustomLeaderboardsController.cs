@@ -205,6 +205,7 @@ public class CustomLeaderboardsController : ControllerBase
 					Points = GlobalCustomLeaderboardUtils.GetPoints(kvp.Value.Data),
 				})
 				.OrderByDescending(ce => ce.Points)
+				.ThenByDescending(ce => ce.LeaderboardsPlayedCount)
 				.ToList(),
 			TotalLeaderboards = customLeaderboards.Count,
 			TotalPoints = customLeaderboards.Sum(cl => cl.CustomEntries!.Count * GlobalCustomLeaderboardUtils.RankingMultiplier + GlobalCustomLeaderboardUtils.LeviathanBonus),
