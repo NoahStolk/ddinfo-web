@@ -8,16 +8,20 @@
 
 <div class="grid gap-2 grid-cols-2 max-w-md mb-2">
 	<span>Category</span>
-	<SelectList CssClass="bg-gray-1 w-64" CssOpenerClass="pl-2" TValue="CustomLeaderboardCategory" Values="@(Enum.GetValues<CustomLeaderboardCategory>().ToList())" DisplayFunction="@(clc => clc.ToDisplayString())" Default="EnumConvert.GetCustomLeaderboardCategory(Category)" Selected="@(clc => Fetch(EnumConvert.GetString(clc)))" />
+	<SelectList CssClass="bg-gray-1" CssWidthClass="w-64" CssOpenerClass="pl-2" TValue="CustomLeaderboardCategory" Values="@(Enum.GetValues<CustomLeaderboardCategory>().ToList())" DisplayFunction="@(clc => clc.ToDisplayString())" Default="EnumConvert.GetCustomLeaderboardCategory(Category)" Selected="@(clc => Fetch(EnumConvert.GetString(clc)))" />
 </div>
 
-<p>
+<p class="para">
+	Global custom leaderboards are leaderboards based on all leaderboards for a single category.
+</p>
+
+<p class="para">
 	Points are given based on rank vs total players. For example, a leaderboard with 10 players will give @(10 * GlobalCustomLeaderboardUtils.RankingMultiplier) points if you're rank 1, @(9 * GlobalCustomLeaderboardUtils.RankingMultiplier) points if you're rank 2, etc. Additionally, daggers achieved will give the following bonus points:
 </p>
 <ul class="pl-4">
 	@foreach (CustomLeaderboardDagger dagger in Enum.GetValues<CustomLeaderboardDagger>())
 	{
-		int multiplier = dagger switch
+		int bonus = dagger switch
 		{
 			CustomLeaderboardDagger.Leviathan => GlobalCustomLeaderboardUtils.LeviathanBonus,
 			CustomLeaderboardDagger.Devil => GlobalCustomLeaderboardUtils.DevilBonus,
@@ -26,9 +30,9 @@
 			CustomLeaderboardDagger.Bronze => GlobalCustomLeaderboardUtils.BronzeBonus,
 			_ => GlobalCustomLeaderboardUtils.DefaultBonus,
 		};
-		if (multiplier > 0)
+		if (bonus > 0)
 		{
-			<li class="list-disc">@multiplier per @dagger dagger</li>
+			<li class="list-disc">@bonus per @dagger dagger</li>
 		}
 	}
 </ul>
