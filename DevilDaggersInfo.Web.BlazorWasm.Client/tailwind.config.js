@@ -89,6 +89,10 @@ module.exports = {
 				'custom-leaderboards-md': createMinmaxGrid([2, 2, 1.5, 1.5]),
 				'custom-leaderboards-sm': createMinmaxGrid([3, 1]),
 
+				'global-custom-leaderboard-lg': createMinmaxGrid([1, 4, 1, 2, 2, 2, 2, 2, 2, 2, 2]),
+				'global-custom-leaderboard-md': createMinmaxGrid([1, 4, 1, 2, 2]),
+				'global-custom-leaderboard-sm': createMinmaxGrid([1, 4, 1]),
+
 				'mods-xl': createMinmaxGrid([3, 3, 2, 2.5, 1, 1]),
 				'mods-lg': createMinmaxGrid([2, 2, 1, 1.5]),
 				'mods-md': createMinmaxGrid([2, 2, 1, 2]),
