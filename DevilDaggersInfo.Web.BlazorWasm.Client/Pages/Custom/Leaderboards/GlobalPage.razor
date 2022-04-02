@@ -68,7 +68,7 @@ else
 		@foreach (GetGlobalCustomLeaderboardEntry entry in GetGlobalCustomLeaderboard.Entries)
 		{
 			<div class="text-right">@(++i)</div>
-			<div>@entry.PlayerName</div>
+			<div class="overflow-hidden"><a class="link" href="/leaderboard/player/@entry.PlayerId">@entry.PlayerName</a></div>
 			<div class="text-right">@entry.Points</div>
 			<div class="text-right hidden md:block">@((entry.Points / (float)entry.LeaderboardsPlayedCount).ToString("0.00"))</div>
 			<div class="text-right hidden md:block">@entry.LeaderboardsPlayedCount</div>
