@@ -10,7 +10,7 @@
 	string _accuracy = (Leaderboard.DaggersFiredGlobal == 0 ? 0 : Leaderboard.DaggersHitGlobal / (float)Leaderboard.DaggersFiredGlobal).ToString(FormatUtils.AccuracyFormat);
 }
 
-<div class="py-3 grid gap-4 grid-cols-2 lg:grid-cols-6 font-goethe text-xl">
+<div class="py-3 grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-6 font-goethe text-xl">
 	<LeaderboardGlobalIcon TooltipText="TOTAL PLAYERS" IconImageSrc="/images/icons/default-x4/eye4.png">
 		<div class="py-2 devil text-center">@_players</div>
 	</LeaderboardGlobalIcon>
