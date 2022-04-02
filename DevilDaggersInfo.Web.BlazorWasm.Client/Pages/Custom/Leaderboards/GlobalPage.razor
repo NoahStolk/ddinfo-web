@@ -49,18 +49,18 @@ else
 		This leaderboard is based on @GetGlobalCustomLeaderboard.TotalLeaderboards @EnumConvert.GetCustomLeaderboardCategory(Category).ToDisplayString() leaderboards. Non-featured leaderboards are not included. Maximum possible points is @GetGlobalCustomLeaderboard.TotalPoints.
 	</p>
 
-	<div class="grid gap-x-2 grid-cols-11">
+	<div class="grid gap-x-2 grid-cols-3 md:grid-cols-5 lg:grid-cols-11">
 		<div class="font-bold text-right">Rank</div>
 		<div class="font-bold">Player</div>
 		<div class="font-bold text-right">Points</div>
-		<div class="font-bold text-right">Average points per leaderboard</div>
-		<div class="font-bold text-right">Total played</div>
-		<div class="font-bold text-right">Default daggers</div>
-		<div class="font-bold text-right">Bronze daggers</div>
-		<div class="font-bold text-right">Silver daggers</div>
-		<div class="font-bold text-right">Golden daggers</div>
-		<div class="font-bold text-right">Devil daggers</div>
-		<div class="font-bold text-right">Leviathan daggers</div>
+		<div class="font-bold text-right hidden md:block">Average points per leaderboard</div>
+		<div class="font-bold text-right hidden md:block">Total played</div>
+		<div class="font-bold text-right hidden lg:block">Default daggers</div>
+		<div class="font-bold text-right hidden lg:block">Bronze daggers</div>
+		<div class="font-bold text-right hidden lg:block">Silver daggers</div>
+		<div class="font-bold text-right hidden lg:block">Golden daggers</div>
+		<div class="font-bold text-right hidden lg:block">Devil daggers</div>
+		<div class="font-bold text-right hidden lg:block">Leviathan daggers</div>
 
 		@{
 			int i = 0;
@@ -70,14 +70,14 @@ else
 			<div class="text-right">@(++i)</div>
 			<div>@entry.PlayerName</div>
 			<div class="text-right">@entry.Points</div>
-			<div class="text-right">@((entry.Points / (float)entry.LeaderboardsPlayedCount).ToString("0.00"))</div>
-			<div class="text-right">@entry.LeaderboardsPlayedCount</div>
-			<div class="text-right">@entry.DefaultDaggerCount</div>
-			<div class="text-right">@entry.BronzeDaggerCount</div>
-			<div class="text-right">@entry.SilverDaggerCount</div>
-			<div class="text-right">@entry.GoldenDaggerCount</div>
-			<div class="text-right">@entry.DevilDaggerCount</div>
-			<div class="text-right">@entry.LeviathanDaggerCount</div>
+			<div class="text-right hidden md:block">@((entry.Points / (float)entry.LeaderboardsPlayedCount).ToString("0.00"))</div>
+			<div class="text-right hidden md:block">@entry.LeaderboardsPlayedCount</div>
+			<div class="text-right hidden lg:block">@entry.DefaultDaggerCount</div>
+			<div class="text-right hidden lg:block">@entry.BronzeDaggerCount</div>
+			<div class="text-right hidden lg:block">@entry.SilverDaggerCount</div>
+			<div class="text-right hidden lg:block">@entry.GoldenDaggerCount</div>
+			<div class="text-right hidden lg:block">@entry.DevilDaggerCount</div>
+			<div class="text-right hidden lg:block">@entry.LeviathanDaggerCount</div>
 		}
 	</div>
 }
