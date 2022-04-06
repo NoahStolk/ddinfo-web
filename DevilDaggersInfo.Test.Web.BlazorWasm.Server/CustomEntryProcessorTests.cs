@@ -1,5 +1,4 @@
 using DevilDaggersInfo.Core.Encryption;
-using DevilDaggersInfo.Core.Extensions;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHashes;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Enums;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Exceptions;
@@ -7,8 +6,6 @@ using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using System.IO;
-using System.Security.Cryptography;
 using System.Text;
 
 namespace DevilDaggersInfo.Test.Web.BlazorWasm.Server;
@@ -19,7 +16,7 @@ public class CustomEntryProcessorTests
 	private readonly Mock<ApplicationDbContext> _dbContext;
 	private readonly CustomEntryProcessor _customEntryProcessor;
 	private readonly AesBase32Wrapper _encryptionWrapper;
-	private readonly byte[] _fakeReplay;
+	private readonly byte[] _mockReplay;
 	private readonly byte[] _v3Hash;
 
 	public CustomEntryProcessorTests()
@@ -72,10 +69,10 @@ public class CustomEntryProcessorTests
 		else
 			Assert.Fail("Spawnset could not be parsed.");
 
-		_fakeReplay = BuildFakeReplay(spawnsetFileContents);
+		_mockReplay = BuildMockReplay(spawnsetFileContents);
 	}
 
-	private static byte[] BuildFakeReplay(byte[] spawnsetFileContents)
+	private static byte[] BuildMockReplay(byte[] spawnsetFileContents)
 	{
 		const string name = "user";
 
@@ -110,12 +107,11 @@ public class CustomEntryProcessorTests
 			PlayerName = $"TestPlayer{playerId}",
 			Client = "DevilDaggersCustomLeaderboards",
 			Status = status,
-			ReplayData = _fakeReplay,
+			ReplayData = _mockReplay,
 			GameData = new(),
 			ValidationVersion = 2,
 		};
-		uploadRequest = uploadRequest with { Validation = HttpUtility.HtmlEncode(_encryptionWrapper.EncryptAndEncode(uploadRequest.CreateValidationV2())) };
-		return uploadRequest;
+		return uploadRequest with { Validation = HttpUtility.HtmlEncode(_encryptionWrapper.EncryptAndEncode(uploadRequest.CreateValidationV2())) };
 	}
 
 	[TestMethod]
