@@ -1,4 +1,7 @@
 using DevilDaggersInfo.Core.Encryption;
+using DevilDaggersInfo.Core.Replay;
+using DevilDaggersInfo.Core.Replay.Enums;
+using DevilDaggersInfo.Core.Replay.Exceptions;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHashes;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Entities.Views;
@@ -355,22 +358,19 @@ public class CustomEntryProcessor
 		};
 	}
 
-	// TODO: Move to new Core.Replay library.
 	private void ValidateReplayBuffer(AddUploadRequest uploadRequest, string spawnsetName)
 	{
-		using MemoryStream ms = new(uploadRequest.ReplayData);
-		using BinaryReader br = new(ms);
-		br.BaseStream.Seek(50, SeekOrigin.Begin);
-		int usernameLength = br.ReadInt32();
-		br.BaseStream.Seek(usernameLength + 26, SeekOrigin.Current);
+		ReplayBinary replayBinary;
+		try
+		{
+			replayBinary = new(uploadRequest.ReplayData, ReplayBinaryReadComprehensiveness.Header);
+		}
+		catch (Exception ex)
+		{
+			throw LogAndCreateValidationException(uploadRequest, $"Could not parse replay: {ex.Message}", spawnsetName, "rotating_light");
+		}
 
-		// Validate replay buffer spawnset hash.
-		int spawnsetLength = br.ReadInt32();
-		if (spawnsetLength < 0 || spawnsetLength > SpawnsetConstants.MaxFileSize)
-			throw LogAndCreateValidationException(uploadRequest, $"Invalid replay spawnset size ({spawnsetLength} / {SpawnsetConstants.MaxFileSize}).");
-
-		byte[] replaySpawnset = br.ReadBytes(spawnsetLength);
-		if (!ArrayUtils.AreEqual(MD5.HashData(replaySpawnset), uploadRequest.SurvivalHashMd5))
+		if (!ArrayUtils.AreEqual(replayBinary.SpawnsetMd5, uploadRequest.SurvivalHashMd5))
 			throw LogAndCreateValidationException(uploadRequest, "Spawnset in replay does not match detected spawnset.", spawnsetName, "rotating_light");
 	}
 

@@ -6,9 +6,9 @@ public class ModBinary
 
 	private const int _fileHeaderSize = 12;
 
-	private readonly BinaryReadComprehensiveness _readComprehensiveness;
+	private readonly ModBinaryReadComprehensiveness _readComprehensiveness;
 
-	public ModBinary(string fileName, byte[] fileContents, BinaryReadComprehensiveness readComprehensiveness)
+	public ModBinary(string fileName, byte[] fileContents, ModBinaryReadComprehensiveness readComprehensiveness)
 	{
 		ModBinaryType modBinaryType = BinaryFileNameUtils.GetBinaryTypeBasedOnFileName(fileName);
 
@@ -48,7 +48,7 @@ public class ModBinary
 
 		// Read assets.
 		AssetMap = new();
-		if (readComprehensiveness == BinaryReadComprehensiveness.All)
+		if (readComprehensiveness == ModBinaryReadComprehensiveness.All)
 		{
 			// If chunks point to the same asset position; the asset is re-used (TODO: test if this even works in DD -- if not, remove DistinctBy).
 			foreach (ModBinaryChunk chunk in chunks.DistinctBy(c => c.Offset))
@@ -59,7 +59,7 @@ public class ModBinary
 				AssetMap[new(chunk.AssetType, chunk.Name)] = new(buffer);
 			}
 		}
-		else if (readComprehensiveness == BinaryReadComprehensiveness.TocAndLoudness)
+		else if (readComprehensiveness == ModBinaryReadComprehensiveness.TocAndLoudness)
 		{
 			ModBinaryChunk? loudnessChunk = chunks.Find(c => c.IsLoudness());
 			if (loudnessChunk != null)
@@ -86,7 +86,7 @@ public class ModBinary
 		Chunks = new();
 		AssetMap = new();
 
-		_readComprehensiveness = BinaryReadComprehensiveness.All;
+		_readComprehensiveness = ModBinaryReadComprehensiveness.All;
 	}
 
 	public ModBinaryType ModBinaryType { get; }
@@ -119,7 +119,7 @@ public class ModBinary
 
 	public void ExtractAssets(string outputDirectory)
 	{
-		if (_readComprehensiveness != BinaryReadComprehensiveness.All)
+		if (_readComprehensiveness != ModBinaryReadComprehensiveness.All)
 			throw new InvalidOperationException("This mod binary has not been opened for full reading comprehensiveness. Cannot extract assets from mod binary.");
 
 		foreach (KeyValuePair<AssetKey, AssetData> kvp in AssetMap)
@@ -128,7 +128,7 @@ public class ModBinary
 
 	public byte[] Compile()
 	{
-		if (_readComprehensiveness != BinaryReadComprehensiveness.All)
+		if (_readComprehensiveness != ModBinaryReadComprehensiveness.All)
 			throw new InvalidOperationException("This mod binary has not been opened for full reading comprehensiveness. Cannot compile mod binary.");
 
 		const int tocEntrySizeWithoutName = 15;

@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Core.Mod.Enums;
 
-public enum BinaryReadComprehensiveness
+public enum ModBinaryReadComprehensiveness
 {
 	TocOnly,
 	TocAndLoudness,

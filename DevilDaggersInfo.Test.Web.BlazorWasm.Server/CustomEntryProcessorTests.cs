@@ -1,5 +1,4 @@
 using DevilDaggersInfo.Core.Encryption;
-using DevilDaggersInfo.Core.Extensions;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHashes;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Enums;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Exceptions;
@@ -17,7 +16,7 @@ public class CustomEntryProcessorTests
 	private readonly Mock<ApplicationDbContext> _dbContext;
 	private readonly CustomEntryProcessor _customEntryProcessor;
 	private readonly AesBase32Wrapper _encryptionWrapper;
-	private readonly byte[] _fakeReplay;
+	private readonly byte[] _mockReplay;
 	private readonly byte[] _v3Hash;
 
 	public CustomEntryProcessorTests()
@@ -70,21 +69,23 @@ public class CustomEntryProcessorTests
 		else
 			Assert.Fail("Spawnset could not be parsed.");
 
-		_fakeReplay = BuildFakeReplay(spawnsetFileContents);
+		_mockReplay = BuildMockReplay(spawnsetFileContents);
 	}
 
-	private static byte[] BuildFakeReplay(byte[] spawnsetFileContents)
+	private static byte[] BuildMockReplay(byte[] spawnsetFileContents)
 	{
 		const string name = "user";
 
 		using MemoryStream ms = new();
 		using BinaryWriter bw = new(ms);
-		bw.Seek(50, SeekOrigin.Begin);
+		bw.Write(Encoding.Default.GetBytes("ddrpl."));
+		bw.Seek(44, SeekOrigin.Current);
 		bw.Write(name.Length);
 		for (int i = 0; i < name.Length; i++)
 			bw.Write((byte)name[i]);
 
-		bw.Seek(26, SeekOrigin.Current);
+		bw.Seek(10, SeekOrigin.Current);
+		bw.Write(MD5.HashData(spawnsetFileContents));
 		bw.Write(spawnsetFileContents.Length);
 		bw.Write(spawnsetFileContents);
 
@@ -106,12 +107,11 @@ public class CustomEntryProcessorTests
 			PlayerName = $"TestPlayer{playerId}",
 			Client = "DevilDaggersCustomLeaderboards",
 			Status = status,
-			ReplayData = _fakeReplay,
+			ReplayData = _mockReplay,
 			GameData = new(),
 			ValidationVersion = 2,
 		};
-		uploadRequest = uploadRequest with { Validation = HttpUtility.HtmlEncode(_encryptionWrapper.EncryptAndEncode(uploadRequest.CreateValidationV2())) };
-		return uploadRequest;
+		return uploadRequest with { Validation = HttpUtility.HtmlEncode(_encryptionWrapper.EncryptAndEncode(uploadRequest.CreateValidationV2())) };
 	}
 
 	[TestMethod]
