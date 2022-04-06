@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System.IO;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace DevilDaggersInfo.Test.Web.BlazorWasm.Server;
@@ -86,7 +87,8 @@ public class CustomEntryProcessorTests
 		for (int i = 0; i < name.Length; i++)
 			bw.Write((byte)name[i]);
 
-		bw.Seek(26, SeekOrigin.Current);
+		bw.Seek(10, SeekOrigin.Current);
+		bw.Write(MD5.HashData(spawnsetFileContents));
 		bw.Write(spawnsetFileContents.Length);
 		bw.Write(spawnsetFileContents);
 
