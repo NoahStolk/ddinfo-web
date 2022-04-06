@@ -26,19 +26,15 @@ public class ReplayBinary
 		PlayerId = br.ReadInt32();
 		int usernameLength = br.ReadInt32();
 		Username = br.ReadFixedLengthString(usernameLength);
+		br.BaseStream.Seek(2, SeekOrigin.Current);
+		_ = br.ReadInt64(); // Unknown value
+		SpawnsetMd5 = br.ReadBytes(16);
 
 		if (binaryReadComprehensiveness == ReplayBinaryReadComprehensiveness.Header)
 			return;
 
-		br.BaseStream.Seek(2, SeekOrigin.Current);
-		_ = br.ReadInt64(); // Unknown value
-		SpawnsetMd5 = br.ReadBytes(16);
 		int spawnsetLength = br.ReadInt32();
 		SpawnsetBuffer = br.ReadBytes(spawnsetLength);
-
-		if (binaryReadComprehensiveness == ReplayBinaryReadComprehensiveness.HeaderAndSpawnset)
-			return;
-
 		int dataLength = br.ReadInt32();
 		ZLibCompressedTicks = br.ReadBytes(dataLength);
 	}
@@ -54,8 +50,8 @@ public class ReplayBinary
 	public int Kills { get; init; }
 	public int PlayerId { get; init; }
 	public string Username { get; init; }
+	public byte[] SpawnsetMd5 { get; init; }
 
-	public byte[]? SpawnsetMd5 { get; init; }
 	public byte[]? SpawnsetBuffer { get; init; }
 	public byte[]? ZLibCompressedTicks { get; init; }
 }

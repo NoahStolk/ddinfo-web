@@ -14,9 +14,9 @@ public class ReplayBinaryTests
 		string spawnsetFilePath = Path.Combine("Resources", "Forked");
 
 		byte[] replayBuffer = File.ReadAllBytes(replayFilePath);
-		ReplayBinary replayBinary = new(replayBuffer, ReplayBinaryReadComprehensiveness.HeaderAndSpawnset);
-		Assert.IsNotNull(replayBinary.SpawnsetMd5);
+		ReplayBinary replayBinary = new(replayBuffer, ReplayBinaryReadComprehensiveness.All);
 		Assert.IsNotNull(replayBinary.SpawnsetBuffer);
+
 		TestUtils.AssertArrayContentsEqual(replayBinary.SpawnsetMd5, MD5.HashData(replayBinary.SpawnsetBuffer));
 		TestUtils.AssertArrayContentsEqual(File.ReadAllBytes(spawnsetFilePath), replayBinary.SpawnsetBuffer);
 	}
