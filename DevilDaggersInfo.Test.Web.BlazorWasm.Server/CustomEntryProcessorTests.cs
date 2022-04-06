@@ -7,6 +7,7 @@ using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using System.IO;
 using System.Text;
 
 namespace DevilDaggersInfo.Test.Web.BlazorWasm.Server;
@@ -79,7 +80,8 @@ public class CustomEntryProcessorTests
 
 		using MemoryStream ms = new();
 		using BinaryWriter bw = new(ms);
-		bw.Seek(50, SeekOrigin.Begin);
+		bw.Write(Encoding.Default.GetBytes("ddrpl."));
+		bw.Seek(44, SeekOrigin.Current);
 		bw.Write(name.Length);
 		for (int i = 0; i < name.Length; i++)
 			bw.Write((byte)name[i]);

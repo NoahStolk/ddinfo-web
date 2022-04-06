@@ -1,3 +1,5 @@
+using System.Security.Cryptography;
+
 namespace DevilDaggersInfo.Test.Core.Replay;
 
 [TestClass]
@@ -12,7 +14,10 @@ public class ReplayBinaryTests
 		string spawnsetFilePath = Path.Combine("Resources", "Forked");
 
 		byte[] replayBuffer = File.ReadAllBytes(replayFilePath);
-		byte[] spawnsetBuffer = ReplayBinary.GetSpawnsetBuffer(replayBuffer);
-		TestUtils.AssertArrayContentsEqual(File.ReadAllBytes(spawnsetFilePath), spawnsetBuffer);
+		ReplayBinary replayBinary = new(replayBuffer, ReplayBinaryReadComprehensiveness.HeaderAndSpawnset);
+		Assert.IsNotNull(replayBinary.SpawnsetMd5);
+		Assert.IsNotNull(replayBinary.SpawnsetBuffer);
+		TestUtils.AssertArrayContentsEqual(replayBinary.SpawnsetMd5, MD5.HashData(replayBinary.SpawnsetBuffer));
+		TestUtils.AssertArrayContentsEqual(File.ReadAllBytes(spawnsetFilePath), replayBinary.SpawnsetBuffer);
 	}
 }

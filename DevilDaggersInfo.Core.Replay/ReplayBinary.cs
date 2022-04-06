@@ -1,35 +1,61 @@
+using DevilDaggersInfo.Core.Extensions;
+using DevilDaggersInfo.Core.Replay.Enums;
+
 namespace DevilDaggersInfo.Core.Replay;
 
-// TODO: Make non-static.
-public static class ReplayBinary
+public class ReplayBinary
 {
-	public static byte[] GetSpawnsetBuffer(byte[] contents)
+	public ReplayBinary(byte[] contents, ReplayBinaryReadComprehensiveness binaryReadComprehensiveness)
 	{
-		const int preUsernameLength = 50;
-		const int preSpawnsetLength = 26;
-
-		if (contents.Length < preUsernameLength + sizeof(int))
-			throw new InvalidReplayBinaryException("Premature end of replay data. Expected to be able to read until username length.");
-
 		using MemoryStream ms = new(contents);
 		using BinaryReader br = new(ms);
-		br.BaseStream.Seek(preUsernameLength, SeekOrigin.Begin);
+
+		string header = br.ReadFixedLengthString(6);
+		if (header != "ddrpl.")
+			throw new InvalidReplayBinaryException($"'{header}' is not a valid replay header.");
+
+		Version = br.ReadInt32();
+		TimestampSinceGameRelease = br.ReadInt64();
+		Time = br.ReadSingle();
+		StartTime = br.ReadSingle();
+		DaggersFired = br.ReadInt32();
+		DeathType = br.ReadInt32();
+		Gems = br.ReadInt32();
+		DaggersHit = br.ReadInt32();
+		Kills = br.ReadInt32();
+		PlayerId = br.ReadInt32();
 		int usernameLength = br.ReadInt32();
-		if (usernameLength < 0)
-			throw new InvalidReplayBinaryException($"Username length '{usernameLength}' cannot be negative.");
+		Username = br.ReadFixedLengthString(usernameLength);
 
-		if (contents.Length < preUsernameLength + sizeof(int) + usernameLength + preSpawnsetLength + sizeof(int))
-			throw new InvalidReplayBinaryException("Premature end of replay data. Expected to be able to read until spawnset length.");
+		if (binaryReadComprehensiveness == ReplayBinaryReadComprehensiveness.Header)
+			return;
 
-		br.BaseStream.Seek(usernameLength + preSpawnsetLength, SeekOrigin.Current);
-
+		br.BaseStream.Seek(2, SeekOrigin.Current);
+		_ = br.ReadInt64(); // Unknown value
+		SpawnsetMd5 = br.ReadBytes(16);
 		int spawnsetLength = br.ReadInt32();
-		if (spawnsetLength < 0)
-			throw new InvalidReplayBinaryException($"Spawnset length '{spawnsetLength}' cannot be negative.");
+		SpawnsetBuffer = br.ReadBytes(spawnsetLength);
 
-		if (preUsernameLength + sizeof(int) + usernameLength + preSpawnsetLength + sizeof(int) + spawnsetLength > contents.Length)
-			throw new InvalidReplayBinaryException($"Spawnset length '{spawnsetLength}' exceeds the length of the replay data.");
+		if (binaryReadComprehensiveness == ReplayBinaryReadComprehensiveness.HeaderAndSpawnset)
+			return;
 
-		return br.ReadBytes(spawnsetLength);
+		int dataLength = br.ReadInt32();
+		ZLibCompressedTicks = br.ReadBytes(dataLength);
 	}
+
+	public int Version { get; init; }
+	public long TimestampSinceGameRelease { get; init; }
+	public float Time { get; init; }
+	public float StartTime { get; init; }
+	public int DaggersFired { get; init; }
+	public int DeathType { get; init; }
+	public int Gems { get; init; }
+	public int DaggersHit { get; init; }
+	public int Kills { get; init; }
+	public int PlayerId { get; init; }
+	public string Username { get; init; }
+
+	public byte[]? SpawnsetMd5 { get; init; }
+	public byte[]? SpawnsetBuffer { get; init; }
+	public byte[]? ZLibCompressedTicks { get; init; }
 }

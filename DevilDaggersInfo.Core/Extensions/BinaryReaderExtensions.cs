@@ -15,4 +15,15 @@ public static class BinaryReaderExtensions
 
 		return sb.ToString();
 	}
+
+	public static string ReadFixedLengthString(this BinaryReader binaryReader, int length)
+		=> ReadFixedLengthString(binaryReader, length, Encoding.Default);
+
+	public static string ReadFixedLengthString(this BinaryReader binaryReader, int length, Encoding encoding)
+	{
+		if (length <= 0)
+			throw new ArgumentOutOfRangeException(nameof(length));
+
+		return encoding.GetString(binaryReader.ReadBytes(length));
+	}
 }

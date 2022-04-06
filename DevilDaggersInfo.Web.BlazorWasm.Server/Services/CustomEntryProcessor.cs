@@ -1,5 +1,6 @@
 using DevilDaggersInfo.Core.Encryption;
 using DevilDaggersInfo.Core.Replay;
+using DevilDaggersInfo.Core.Replay.Enums;
 using DevilDaggersInfo.Core.Replay.Exceptions;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHashes;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
@@ -359,17 +360,20 @@ public class CustomEntryProcessor
 
 	private void ValidateReplayBuffer(AddUploadRequest uploadRequest, string spawnsetName)
 	{
-		byte[] replaySpawnset;
+		ReplayBinary replayBinary;
 		try
 		{
-			replaySpawnset = ReplayBinary.GetSpawnsetBuffer(uploadRequest.ReplayData);
+			replayBinary = new(uploadRequest.ReplayData, ReplayBinaryReadComprehensiveness.HeaderAndSpawnset);
 		}
-		catch (InvalidReplayBinaryException ex)
+		catch (Exception ex)
 		{
 			throw LogAndCreateValidationException(uploadRequest, $"Could not parse replay: {ex.Message}", spawnsetName, "rotating_light");
 		}
 
-		if (!ArrayUtils.AreEqual(MD5.HashData(replaySpawnset), uploadRequest.SurvivalHashMd5))
+		if (replayBinary.SpawnsetBuffer == null)
+			throw new InvalidOperationException("Did not read spawnset buffer.");
+
+		if (!ArrayUtils.AreEqual(MD5.HashData(replayBinary.SpawnsetBuffer), uploadRequest.SurvivalHashMd5))
 			throw LogAndCreateValidationException(uploadRequest, "Spawnset in replay does not match detected spawnset.", spawnsetName, "rotating_light");
 	}
 
