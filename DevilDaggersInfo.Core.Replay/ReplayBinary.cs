@@ -39,19 +39,19 @@ public class ReplayBinary
 		ZLibCompressedTicks = br.ReadBytes(dataLength);
 	}
 
-	public int Version { get; init; }
-	public long TimestampSinceGameRelease { get; init; }
-	public float Time { get; init; }
-	public float StartTime { get; init; }
-	public int DaggersFired { get; init; }
-	public int DeathType { get; init; }
-	public int Gems { get; init; }
-	public int DaggersHit { get; init; }
-	public int Kills { get; init; }
-	public int PlayerId { get; init; }
-	public string Username { get; init; }
-	public byte[] SpawnsetMd5 { get; init; }
+	public int Version { get; }
+	public long TimestampSinceGameRelease { get; }
+	public float Time { get; }
+	public float StartTime { get; }
+	public int DaggersFired { get; }
+	public int DeathType { get; }
+	public int Gems { get; }
+	public int DaggersHit { get; }
+	public int Kills { get; }
+	public int PlayerId { get; }
+	public string Username { get; }
+	public byte[] SpawnsetMd5 { get; }
 
-	public byte[]? SpawnsetBuffer { get; init; }
-	public byte[]? ZLibCompressedTicks { get; init; }
+	public byte[]? SpawnsetBuffer { get; }
+	public byte[]? ZLibCompressedTicks { get; }
 }
