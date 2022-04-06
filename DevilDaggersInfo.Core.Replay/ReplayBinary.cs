@@ -5,7 +5,7 @@ namespace DevilDaggersInfo.Core.Replay;
 
 public class ReplayBinary
 {
-	public ReplayBinary(byte[] contents, ReplayBinaryReadComprehensiveness binaryReadComprehensiveness)
+	public ReplayBinary(byte[] contents, ReplayBinaryReadComprehensiveness readComprehensiveness)
 	{
 		using MemoryStream ms = new(contents);
 		using BinaryReader br = new(ms);
@@ -30,7 +30,7 @@ public class ReplayBinary
 		_ = br.ReadInt64(); // Unknown value
 		SpawnsetMd5 = br.ReadBytes(16);
 
-		if (binaryReadComprehensiveness == ReplayBinaryReadComprehensiveness.Header)
+		if (readComprehensiveness == ReplayBinaryReadComprehensiveness.Header)
 			return;
 
 		int spawnsetLength = br.ReadInt32();
