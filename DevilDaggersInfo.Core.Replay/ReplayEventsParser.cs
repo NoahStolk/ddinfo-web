@@ -36,7 +36,7 @@ public static class ReplayEventsParser
 			if (e is InitialInputsEvent)
 				parsedInitialInput = true;
 
-			if (e is InitialInputsEvent or InputsEvent)
+			if (e is InitialInputsEvent or InputsEvent or EndEvent)
 			{
 				events.Add(eventsInTick);
 				eventsInTick = new();

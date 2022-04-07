@@ -1,3 +1,5 @@
-﻿namespace DevilDaggersInfo.Core.Replay.Events;
+namespace DevilDaggersInfo.Core.Replay.Events;
 
-public interface IEvent { }
+public interface IEvent
+{
+}

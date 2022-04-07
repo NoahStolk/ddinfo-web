@@ -1,3 +1,6 @@
-﻿namespace DevilDaggersInfo.Core.Replay.Events;
+namespace DevilDaggersInfo.Core.Replay.Events;
 
-public interface IEntityEvent : IEvent { int EntityId { get; } }
+public interface IEntityEvent : IEvent
+{
+	int EntityId { get; }
+}
