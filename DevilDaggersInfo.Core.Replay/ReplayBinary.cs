@@ -1,6 +1,7 @@
 using DevilDaggersInfo.Core.Extensions;
 using DevilDaggersInfo.Core.Replay.Enums;
 using System.IO.Compression;
+using System.Numerics;
 
 namespace DevilDaggersInfo.Core.Replay;
 
@@ -99,9 +100,18 @@ public class ReplayBinary
 	{
 		entityId++;
 
-		return br.ReadByte() switch
+		byte entityType = br.ReadByte();
+		return entityType switch
 		{
 			0x01 => ParseDaggerSpawnEvent(br, entityId),
+			0x03 or 0x04 or 0x05 => ParseSquidSpawnEvent(br, entityType, entityId),
+			0x06 => ParseBoidSpawnEvent(br, entityId),
+			0x07 or 0x0c or 0x0f => ParsePedeSpawnEvent(br, entityType, entityId),
+			0x08 or 0x09 => ParseSpiderSpawnEvent(br, entityType, entityId),
+			0x0a => ParseSpiderEggSpawnEvent(br, entityId),
+			0x0b => ParseLeviathanSpawnEvent(br, entityId),
+			0x0d => ParseThornSpawnEvent(br, entityId),
+			_ => throw new InvalidReplayBinaryException($"Invalid entity type '{entityType}'."),
 		};
 	}
 
@@ -115,7 +125,121 @@ public class ReplayBinary
 
 		return new(entityId, position, orientation, type);
 	}
+
+	private SquidSpawnEvent ParseSquidSpawnEvent(BinaryReader br, byte entityType, int entityId)
+	{
+		SquidType squidType = entityType switch
+		{
+			0x03 => SquidType.Squid1,
+			0x04 => SquidType.Squid2,
+			0x05 => SquidType.Squid3,
+			_ => throw new InvalidOperationException($"Entity type '{entityType}' is not a Squid."),
+		};
+
+		_ = br.ReadInt32();
+		Vector3 position = br.ReadVector3();
+		_ = br.ReadVector3();
+		float rotationInRadians = br.ReadSingle();
+
+		return new(entityId, squidType, position, rotationInRadians);
+	}
+
+	private BoidSpawnEvent ParseBoidSpawnEvent(BinaryReader br, int entityId)
+	{
+		int spawner = br.ReadInt32();
+		byte boidTypeByte = br.ReadByte();
+		Int16Vec3 position = br.ReadInt16Vec3();
+		_ = br.ReadInt16Vec3();
+		_ = br.ReadInt16Vec3();
+		_ = br.ReadInt16Vec3();
+		_ = br.ReadVector3();
+		float speed = br.ReadSingle();
+
+		BoidType boidType = boidTypeByte switch
+		{
+			0x01 => BoidType.Skull1,
+			0x02 => BoidType.Skull2,
+			0x03 => BoidType.Skull3,
+			0x04 => BoidType.Spiderling,
+			0x05 => BoidType.Skull4,
+			_ => throw new InvalidOperationException($"Invalid boid type '{boidTypeByte}'."),
+		};
+
+		return new(entityId, spawner, boidType, position, speed);
+	}
+
+	private PedeSpawnEvent ParsePedeSpawnEvent(BinaryReader br, byte entityType, int entityId)
+	{
+		PedeType pedeType = entityType switch
+		{
+			0x07 => PedeType.Centipede,
+			0x0c => PedeType.Gigapede,
+			0x0f => PedeType.Ghostpede,
+			_ => throw new InvalidOperationException($"Entity type '{entityType}' is not a Pede."),
+		};
+
+		_ = br.ReadInt32();
+		Vector3 position = br.ReadVector3();
+		_ = br.ReadVector3();
+		_ = br.ReadVector3();
+		_ = br.ReadVector3();
+		_ = br.ReadVector3();
+
+		return new(entityId, pedeType, position);
+	}
+
+	private SpiderSpawnEvent ParseSpiderSpawnEvent(BinaryReader br, byte entityType, int entityId)
+	{
+		SpiderType spiderType = entityType switch
+		{
+			0x08 => SpiderType.Spider1,
+			0x09 => SpiderType.Spider2,
+			_ => throw new InvalidOperationException($"Entity type '{entityType}' is not a Spider."),
+		};
+
+		_ = br.ReadInt32();
+		Vector3 position = br.ReadVector3();
+
+		return new(entityId, spiderType, position);
+	}
+
+	private SpiderEggSpawnEvent ParseSpiderEggSpawnEvent(BinaryReader br, int entityId)
+	{
+		_ = br.ReadInt32(); // Spider Egg Type?
+		Vector3 position = br.ReadVector3(); // Not sure
+		_ = br.ReadVector3();
+
+		return new(entityId, position);
+	}
+
+	private LeviathanSpawnEvent ParseLeviathanSpawnEvent(BinaryReader br, int entityId)
+	{
+		_ = br.ReadInt32();
+		return new(entityId);
+	}
+
+	private ThornSpawnEvent ParseThornSpawnEvent(BinaryReader br, int entityId)
+	{
+		_ = br.ReadInt32();
+		Vector3 position = br.ReadVector3(); // Not sure
+		float rotationInRadians = br.ReadSingle(); // Not sure
+		return new(entityId, position, rotationInRadians);
+	}
 }
+
+public readonly record struct ThornSpawnEvent(int EntityId, Vector3 Position, float RotationInRadians) : IEntityEvent;
+
+public readonly record struct LeviathanSpawnEvent(int EntityId) : IEntityEvent;
+
+public readonly record struct SpiderEggSpawnEvent(int EntityId, Vector3 Position) : IEntityEvent;
+
+public readonly record struct SpiderSpawnEvent(int EntityId, SpiderType SpiderType, Vector3 Position) : IEntityEvent;
+
+public readonly record struct PedeSpawnEvent(int EntityId, PedeType PedeType, Vector3 Position) : IEntityEvent;
+
+public readonly record struct BoidSpawnEvent(int EntityId, int SpawnerId, BoidType BoidType, Int16Vec3 Position, float Speed) : IEntityEvent;
+
+public readonly record struct SquidSpawnEvent(int EntityId, SquidType SquidType, Vector3 Position, float RotationInRadians) : IEntityEvent;
 
 public readonly record struct DaggerSpawnEvent(int EntityId, Int16Vec3 Position, Int16Mat3x3 Orientation, byte DaggerType) : IEntityEvent;
 
@@ -126,6 +250,35 @@ public interface IEvent { }
 public readonly record struct Int16Vec3(short X, short Y, short Z);
 
 public readonly record struct Int16Mat3x3(short M11, short M12, short M13, short M21, short M22, short M23, short M31, short M32, short M33);
+
+public enum BoidType : byte
+{
+	Skull1 = 1,
+	Skull2 = 2,
+	Skull3 = 3,
+	Spiderling = 4,
+	Skull4 = 5,
+}
+
+public enum SquidType : byte
+{
+	Squid1 = 1,
+	Squid2 = 2,
+	Squid3 = 3,
+}
+
+public enum PedeType : byte
+{
+	Centipede = 1,
+	Gigapede = 2,
+	Ghostpede = 3,
+}
+
+public enum SpiderType : byte
+{
+	Spider1 = 1,
+	Spider2 = 2,
+}
 
 public enum EventType : byte
 {
@@ -145,4 +298,6 @@ public static class BinaryReaderExtensions
 	public static Int16Vec3 ReadInt16Vec3(this BinaryReader br) => new(br.ReadInt16(), br.ReadInt16(), br.ReadInt16());
 
 	public static Int16Mat3x3 ReadInt16Mat3x3(this BinaryReader br) => new(br.ReadInt16(), br.ReadInt16(), br.ReadInt16(), br.ReadInt16(), br.ReadInt16(), br.ReadInt16(), br.ReadInt16(), br.ReadInt16(), br.ReadInt16());
+
+	public static Vector3 ReadVector3(this BinaryReader br) => new(br.ReadSingle(), br.ReadSingle(), br.ReadSingle());
 }
