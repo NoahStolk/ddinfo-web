@@ -20,4 +20,11 @@ public class ReplayBinaryTests
 		TestUtils.AssertArrayContentsEqual(replayBinary.SpawnsetMd5, MD5.HashData(replayBinary.SpawnsetBuffer));
 		TestUtils.AssertArrayContentsEqual(File.ReadAllBytes(spawnsetFilePath), replayBinary.SpawnsetBuffer);
 	}
+
+	[TestMethod]
+	public void TestEvents()
+	{
+		string replayEventsFilePath = Path.Combine("Resources", "Forked-xvlv.ddevents");
+		ReplayEventsParser.ParseEvents(File.ReadAllBytes(replayEventsFilePath));
+	}
 }

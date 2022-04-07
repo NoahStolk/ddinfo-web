@@ -1,5 +1,4 @@
 using DevilDaggersInfo.Core.Extensions;
-using DevilDaggersInfo.Core.Replay.Enums;
 
 namespace DevilDaggersInfo.Core.Replay;
 
@@ -35,8 +34,8 @@ public class ReplayBinary
 
 		int spawnsetLength = br.ReadInt32();
 		SpawnsetBuffer = br.ReadBytes(spawnsetLength);
-		int dataLength = br.ReadInt32();
-		ZLibCompressedTicks = br.ReadBytes(dataLength);
+		int compressedDataLength = br.ReadInt32();
+		CompressedEvents = br.ReadBytes(compressedDataLength);
 	}
 
 	public int Version { get; }
@@ -53,5 +52,5 @@ public class ReplayBinary
 	public byte[] SpawnsetMd5 { get; }
 
 	public byte[]? SpawnsetBuffer { get; }
-	public byte[]? ZLibCompressedTicks { get; }
+	public byte[]? CompressedEvents { get; }
 }
