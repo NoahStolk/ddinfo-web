@@ -3,22 +3,55 @@
 
 <Heading Level="1" Title="Replay Parser" />
 
+<p class="para">Reverse-engineering of the replay file. Still a work in progress. This page is used for testing mostly.</p>
+
 @if (_notFound)
 {
 	<div>Replay not found.</div>
 }
-else if (_events == null)
+else if (_events == null || _replayBinary == null)
 {
 	<Loading />
 }
 else
 {
-	<div>Processing took @_processingTimeInMs ms</div>
+	<div>Processing file (@FileSizeUtils.Format(_fileSize)) took @_processingTimeInMs ms.</div>
 
 	bool f = _currentSecond <= 0;
 	bool l = _currentSecond >= _events.Count / 60;
 	const string disabledStyle = "disabled:opacity-50 cursor-default btn-disabled";
 	const string enabledStyle = "btn-gray-light";
+
+	<Heading Level="2" Title="Header" />
+
+	<div class="grid grid-cols-2 gap-2 max-w-md">
+		<div>Version</div>
+		<div>@_replayBinary.Version</div>
+		<div>Timestamp</div>
+		<div>@_replayBinary.TimestampSinceGameRelease</div>
+		<div>Time</div>
+		<div>@_replayBinary.Time.ToString(FormatUtils.TimeFormat)</div>
+		<div>Start Time</div>
+		<div>@_replayBinary.StartTime.ToString(FormatUtils.TimeFormat)</div>
+		<div>Kills</div>
+		<div>@_replayBinary.Kills</div>
+		<div>Gems</div>
+		<div>@_replayBinary.Gems</div>
+		<div>Daggers Hit</div>
+		<div>@_replayBinary.DaggersHit</div>
+		<div>Daggers Fired</div>
+		<div>@_replayBinary.DaggersFired</div>
+		<div>Death Type</div>
+		<div>@_replayBinary.DeathType</div>
+		<div>Player ID</div>
+		<div>@_replayBinary.PlayerId</div>
+		<div>Player name</div>
+		<div>@_replayBinary.Username</div>
+		<div>Spawnset MD5</div>
+		<div>@_replayBinary.SpawnsetMd5.ByteArrayToHexString()</div>
+	</div>
+
+	<Heading Level="2" Title="@($"Events {_currentSecond.ToString(FormatUtils.TimeFormat)} - {(_currentSecond + 1).ToString(FormatUtils.TimeFormat)}")" />
 
 	<div class="flex">
 		<div class="w-10 h-10 mx-1">

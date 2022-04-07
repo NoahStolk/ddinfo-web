@@ -9,8 +9,10 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Client.Pages;
 
 public partial class ReplayParser
 {
+	private ReplayBinary? _replayBinary;
 	private List<List<IEvent>>? _events;
 	private long _processingTimeInMs;
+	private int _fileSize;
 	private bool _notFound;
 	private int _currentSecond;
 
@@ -27,18 +29,19 @@ public partial class ReplayParser
 		try
 		{
 			replayBuffer = await Http.GetCustomEntryReplayBufferById(Id);
+			_fileSize = replayBuffer.Length;
 			_notFound = false;
 		}
 		catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
 		{
+			_fileSize = 0;
 			_notFound = true;
 			return;
 		}
 
-		ReplayBinary replayBinary = new(replayBuffer, ReplayBinaryReadComprehensiveness.All);
-
 		Stopwatch sw = Stopwatch.StartNew();
-		_events = ReplayEventsParser.ParseEvents(replayBinary.CompressedEvents!);
+		_replayBinary = new(replayBuffer, ReplayBinaryReadComprehensiveness.All);
+		_events = ReplayEventsParser.ParseEvents(_replayBinary.CompressedEvents!);
 		_processingTimeInMs = sw.ElapsedMilliseconds;
 		sw.Stop();
 	}
