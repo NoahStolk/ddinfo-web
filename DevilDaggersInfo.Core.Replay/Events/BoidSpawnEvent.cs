@@ -1,5 +1,5 @@
 using DevilDaggersInfo.Core.Replay.Enums;
-using DevilDaggersInfo.Core.Replay.Structs;
+using DevilDaggersInfo.Core.Replay.Numerics;
 
 namespace DevilDaggersInfo.Core.Replay.Events;
 

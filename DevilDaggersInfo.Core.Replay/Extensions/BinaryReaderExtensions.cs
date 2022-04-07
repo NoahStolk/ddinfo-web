@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Core.Replay.Structs;
+using DevilDaggersInfo.Core.Replay.Numerics;
 using System.Numerics;
 
 namespace DevilDaggersInfo.Core.Replay.Extensions;
