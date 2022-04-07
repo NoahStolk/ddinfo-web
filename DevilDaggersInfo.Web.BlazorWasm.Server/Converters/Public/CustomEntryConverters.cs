@@ -30,7 +30,7 @@ public static class CustomEntryConverters
 		HasReplay = hasReplay,
 	};
 
-	public static GetCustomEntry ToGetCustomEntry(this CustomEntry customEntry, CustomLeaderboardEntity customLeaderboard, int rank, bool hasReplay)
+	public static GetCustomEntry ToGetCustomEntry(this CustomEntry customEntry, CustomLeaderboardEntity customLeaderboard, int rank)
 	{
 		if (!Version.TryParse(customEntry.ClientVersion, out Version? version))
 			version = new(0, 0, 0, 0);
@@ -65,7 +65,6 @@ public static class CustomEntryConverters
 			SubmitDate = customEntry.SubmitDate,
 			Time = customEntry.Time.ToSecondsTime(),
 			CustomLeaderboardDagger = customLeaderboard.GetDaggerFromTime(customEntry.Time),
-			HasReplay = hasReplay,
 			HasGraphs = hasGraphs,
 		};
 	}

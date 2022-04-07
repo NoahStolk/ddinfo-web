@@ -47,7 +47,7 @@ public static class CustomLeaderboardConverters
 		WorldRecordDagger = worldRecord.HasValue ? customLeaderboard.GetDaggerFromTime(worldRecord.Value) : null,
 	};
 
-	public static GetCustomLeaderboard ToGetCustomLeaderboard(this CustomLeaderboardEntity customLeaderboard, List<CustomEntry> customEntries, List<int> existingReplayIds) => new()
+	public static GetCustomLeaderboard ToGetCustomLeaderboard(this CustomLeaderboardEntity customLeaderboard, List<CustomEntry> customEntries) => new()
 	{
 		SpawnsetId = customLeaderboard.SpawnsetId,
 		SpawnsetAuthorName = customLeaderboard.Spawnset.Player.PlayerName,
@@ -59,7 +59,7 @@ public static class CustomLeaderboardConverters
 		Category = customLeaderboard.Category,
 		IsFeatured = customLeaderboard.IsFeatured,
 		DateLastPlayed = customLeaderboard.DateLastPlayed,
-		CustomEntries = customEntries.Select((ce, i) => ce.ToGetCustomEntry(customLeaderboard, i + 1, existingReplayIds.Contains(ce.Id))).ToList(),
+		CustomEntries = customEntries.Select((ce, i) => ce.ToGetCustomEntry(customLeaderboard, i + 1)).ToList(),
 	};
 
 	private static GetCustomLeaderboardDaggers? ToGetCustomLeaderboardDaggers(CustomLeaderboardEntity customLeaderboard) => !customLeaderboard.IsFeatured ? null : new()

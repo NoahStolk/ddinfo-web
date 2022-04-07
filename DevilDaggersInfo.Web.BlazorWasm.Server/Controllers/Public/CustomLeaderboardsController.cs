@@ -14,13 +14,11 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
 public class CustomLeaderboardsController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
-	private readonly IFileSystemService _fileSystemService;
 	private readonly SpawnsetHashCache _spawnsetHashCache;
 
-	public CustomLeaderboardsController(ApplicationDbContext dbContext, IFileSystemService fileSystemService, SpawnsetHashCache spawnsetHashCache)
+	public CustomLeaderboardsController(ApplicationDbContext dbContext, SpawnsetHashCache spawnsetHashCache)
 	{
 		_dbContext = dbContext;
-		_fileSystemService = fileSystemService;
 		_spawnsetHashCache = spawnsetHashCache;
 	}
 
@@ -331,11 +329,7 @@ public class CustomLeaderboardsController : ControllerBase
 
 		customEntries = customEntries.Sort(customLeaderboard.Category).ToList();
 
-		List<int> existingReplayIds = customLeaderboard.CustomEntries == null ? new() : customLeaderboard.CustomEntries
-			.Where(ce => IoFile.Exists(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{ce.Id}.ddreplay")))
-			.Select(ce => ce.Id)
-			.ToList();
-		return customLeaderboard.ToGetCustomLeaderboard(customEntries, existingReplayIds);
+		return customLeaderboard.ToGetCustomLeaderboard(customEntries);
 	}
 
 	private sealed class CustomLeaderboardWorldRecord

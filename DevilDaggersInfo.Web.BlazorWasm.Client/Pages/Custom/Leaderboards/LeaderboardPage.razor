@@ -136,17 +136,7 @@ else
 								@if (ce.HasGraphs)
 								{
 									<a href="@($"/custom/entry/{ce.Id}")">
-										<Tooltip Text="View graphs"><img class="cursor-pointer inline-block mx-1 mb-1" src="/images/icons/default/eye2.png" /></Tooltip>
-									</a>
-								}
-								else
-								{
-									<img class="inline-block mx-1 mb-1" src="/images/icons/color/eye-gray.png" />
-								}
-								@if (ce.HasReplay)
-								{
-									<a href="@($"api/custom-entries/{ce.Id}/replay")" role="button" target="_top">
-										<Tooltip Text="Download replay"><img class="cursor-pointer inline-block mx-1 mb-1" src="/images/icons/default/eye2.png" /></Tooltip>
+										<Tooltip Text="View run info"><img class="cursor-pointer inline-block mx-1 mb-1" src="/images/icons/default/eye2.png" /></Tooltip>
 									</a>
 								}
 								else

@@ -49,6 +49,4 @@ public record GetCustomEntry
 	public CustomLeaderboardsClient Client { get; init; }
 
 	public bool HasGraphs { get; init; }
-
-	public bool HasReplay { get; init; }
 }
