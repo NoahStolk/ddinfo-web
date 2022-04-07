@@ -4,6 +4,8 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
 
 public record GetCustomEntryData
 {
+	public int CustomEntryId { get; init; }
+
 	public int PlayerId { get; init; }
 
 	public string PlayerName { get; init; } = null!;
@@ -94,4 +96,6 @@ public record GetCustomEntryData
 	public ushort[]? SpiderEggsKilledData { get; init; }
 
 	public HandLevel StartingLevel { get; init; }
+
+	public bool HasReplay { get; init; }
 }

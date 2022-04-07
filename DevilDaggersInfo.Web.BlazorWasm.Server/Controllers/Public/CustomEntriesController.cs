@@ -84,7 +84,7 @@ public class CustomEntriesController : ControllerBase
 
 		SpawnsetSummary ss = _spawnsetSummaryCache.GetSpawnsetSummaryByFilePath(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), customEntry.CustomLeaderboard.Spawnset.Name));
 		EffectivePlayerSettings eps = SpawnsetBinary.GetEffectivePlayerSettings(ss.HandLevel, ss.AdditionalGems);
-		return customEntry.ToGetCustomEntryData(customEntryData, eps.HandLevel);
+		return customEntry.ToGetCustomEntryData(customEntryData, eps.HandLevel, IoFile.Exists(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{id}.ddreplay")));
 	}
 
 	[HttpPost("submit")]

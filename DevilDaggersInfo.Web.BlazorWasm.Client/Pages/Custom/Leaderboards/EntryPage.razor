@@ -17,6 +17,16 @@ else
 {
 	<Heading Title="@($"{GetCustomEntryData.PlayerName}'s score on {GetCustomEntryData.SpawnsetName}")" />
 
+	@if (GetCustomEntryData.HasReplay)
+	{
+		<div>
+			<a class="link" href="@($"api/custom-entries/{GetCustomEntryData.CustomEntryId}/replay")">Download replay</a>
+		</div>
+		<div>
+			<a class="link" href="@($"/replay-parser/{GetCustomEntryData.CustomEntryId}")">View parsed replay data</a>
+		</div>
+	}
+
 	@if (_lineCharts.Count == 0)
 	{
 		<p>No relevant data to display.</p>

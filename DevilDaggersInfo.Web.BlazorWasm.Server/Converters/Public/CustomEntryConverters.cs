@@ -70,10 +70,11 @@ public static class CustomEntryConverters
 		};
 	}
 
-	public static GetCustomEntryData ToGetCustomEntryData(this CustomEntryEntity customEntry, CustomEntryDataEntity? customEntryData, HandLevel startingLevel)
+	public static GetCustomEntryData ToGetCustomEntryData(this CustomEntryEntity customEntry, CustomEntryDataEntity? customEntryData, HandLevel startingLevel, bool hasReplay)
 	{
 		return new()
 		{
+			CustomEntryId = customEntry.Id,
 			PlayerId = customEntry.PlayerId,
 			PlayerName = customEntry.Player.PlayerName,
 			SpawnsetName = customEntry.CustomLeaderboard.Spawnset.Name,
@@ -144,6 +145,7 @@ public static class CustomEntryConverters
 			SpiderEggsKilledData = GetUInt16Arr(customEntryData?.SpiderEggsKilledData),
 
 			StartingLevel = startingLevel,
+			HasReplay = hasReplay,
 		};
 
 		static int[]? GetInt32Arr(byte[]? bytes)
