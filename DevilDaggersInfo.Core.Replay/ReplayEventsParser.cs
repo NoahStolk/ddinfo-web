@@ -4,16 +4,17 @@ namespace DevilDaggersInfo.Core.Replay;
 
 public static class ReplayEventsParser
 {
-	public static List<IEvent> ParseEvents(byte[] compressedEvents)
+	public static List<List<IEvent>> ParseEvents(byte[] compressedEvents)
 	{
 		using MemoryStream ms = new(compressedEvents[2..]);
 		using DeflateStream deflateStream = new(ms, CompressionMode.Decompress, true);
 
 		using BinaryReader br = new(deflateStream);
-		List<IEvent> events = new();
+		List<List<IEvent>> events = new();
 		int entityId = 0;
 		bool parsedInitialInput = false;
 
+		List<IEvent> eventsInTick = new();
 		while (true)
 		{
 			byte eventType = br.ReadByte();
@@ -30,11 +31,18 @@ public static class ReplayEventsParser
 				0x0b => new EndEvent(),
 				_ => throw new InvalidReplayBinaryException($"Invalid event type '{eventType}'."),
 			};
-			events.Add(e);
+			eventsInTick.Add(e);
 
 			if (e is InitialInputsEvent)
 				parsedInitialInput = true;
-			else if (e is EndEvent)
+
+			if (e is InitialInputsEvent or InputsEvent)
+			{
+				events.Add(eventsInTick);
+				eventsInTick = new();
+			}
+
+			if (e is EndEvent)
 				break;
 		}
 
