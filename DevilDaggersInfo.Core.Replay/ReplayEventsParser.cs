@@ -1,9 +1,4 @@
-using DevilDaggersInfo.Core.Replay.Enums;
-using DevilDaggersInfo.Core.Replay.Events;
-using DevilDaggersInfo.Core.Replay.Extensions;
-using DevilDaggersInfo.Core.Replay.Structs;
 using System.IO.Compression;
-using System.Numerics;
 
 namespace DevilDaggersInfo.Core.Replay;
 

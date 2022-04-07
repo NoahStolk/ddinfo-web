@@ -1,6 +1,3 @@
-using DevilDaggersInfo.Core.Replay.Numerics;
-using System.Numerics;
-
 namespace DevilDaggersInfo.Core.Replay.Extensions;
 
 public static class BinaryReaderExtensions
