@@ -20,4 +20,16 @@ public class ReplayBinaryTests
 		TestUtils.AssertArrayContentsEqual(replayBinary.SpawnsetMd5, MD5.HashData(replayBinary.SpawnsetBuffer));
 		TestUtils.AssertArrayContentsEqual(File.ReadAllBytes(spawnsetFilePath), replayBinary.SpawnsetBuffer);
 	}
+
+	[TestMethod]
+	public void TestEvents()
+	{
+		string replayFilePath = Path.Combine("Resources", "Forked-psy.ddreplay");
+
+		byte[] replayBuffer = File.ReadAllBytes(replayFilePath);
+		ReplayBinary replayBinary = new(replayBuffer, ReplayBinaryReadComprehensiveness.All);
+		Assert.IsNotNull(replayBinary.ZLibCompressedEvents);
+
+		replayBinary.ParseEvents();
+	}
 }
