@@ -5,8 +5,8 @@
 {
 	if (_notFound)
 	{
-		<Heading Title="Custom leaderboard score data not found" />
-		<p>This custom leaderboard score (or the data for it) doesn't exist.</p>
+		<Heading Title="Custom leaderboard score not found" />
+		<p>This custom leaderboard score doesn't exist.</p>
 	}
 	else
 	{
@@ -19,8 +19,8 @@ else
 
 	@if (GetCustomEntryData.HasReplay)
 	{
-		<div>
-			<a class="link" href="@($"api/custom-entries/{GetCustomEntryData.CustomEntryId}/replay")">Download replay</a>
+		<div class="px-1 py-2">
+			<a class="btn btn-download px-2 py-1" href="@($"api/custom-entries/{GetCustomEntryData.CustomEntryId}/replay")" role="button" target="_top">Download replay</a>
 		</div>
 		<div>
 			<a class="link" href="@($"/replay-parser/{GetCustomEntryData.CustomEntryId}")">View parsed replay data</a>
