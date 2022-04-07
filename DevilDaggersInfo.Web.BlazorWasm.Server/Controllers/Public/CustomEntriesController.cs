@@ -23,6 +23,19 @@ public class CustomEntriesController : ControllerBase
 		_customEntryProcessor = customEntryProcessor;
 	}
 
+	[HttpGet("{id}/replay-buffer")]
+	[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	public ActionResult<byte[]> GetCustomEntryReplayBufferById([Required] int id)
+	{
+		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{id}.ddreplay");
+		if (!IoFile.Exists(path))
+			return NotFound();
+
+		return IoFile.ReadAllBytes(path);
+	}
+
 	[HttpGet("{id}/replay")]
 	[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]

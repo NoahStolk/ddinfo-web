@@ -56,6 +56,11 @@ public partial class PublicApiHttpClient
 		return await SendRequest(new HttpMethod("POST"), $"api/authentication/update-password", JsonContent.Create(updatePasswordRequest));
 	}
 
+	public async Task<byte[]> GetCustomEntryReplayBufferById(int id)
+	{
+		return await SendGetRequest<byte[]>($"api/custom-entries/{id}/replay-buffer");
+	}
+
 	public async Task<Task> GetCustomEntryReplayById(int id)
 	{
 		return await SendGetRequest<Task>($"api/custom-entries/{id}/replay");
