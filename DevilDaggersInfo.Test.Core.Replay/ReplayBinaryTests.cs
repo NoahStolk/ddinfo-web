@@ -24,12 +24,7 @@ public class ReplayBinaryTests
 	[TestMethod]
 	public void TestEvents()
 	{
-		string replayFilePath = Path.Combine("Resources", "Forked-xvlv.ddevents");
-
-		byte[] replayBuffer = File.ReadAllBytes(replayFilePath);
-		ReplayBinary replayBinary = new(replayBuffer, ReplayBinaryReadComprehensiveness.All);
-		Assert.IsNotNull(replayBinary.CompressedEvents);
-
-		replayBinary.ParseEvents();
+		string replayEventsFilePath = Path.Combine("Resources", "Forked-xvlv.ddevents");
+		ReplayEventsParser.ParseEvents(File.ReadAllBytes(replayEventsFilePath));
 	}
 }

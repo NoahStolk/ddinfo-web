@@ -1,13 +1,9 @@
 using DevilDaggersInfo.Core.Replay.Enums;
 using DevilDaggersInfo.Core.Replay.Events;
+using DevilDaggersInfo.Core.Replay.Extensions;
 using DevilDaggersInfo.Core.Replay.Structs;
-using System;
-using System.Collections.Generic;
 using System.IO.Compression;
-using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DevilDaggersInfo.Core.Replay;
 
@@ -16,12 +12,9 @@ public static class ReplayEventsParser
 	public static List<IEvent> ParseEvents(byte[] compressedEvents)
 	{
 		using MemoryStream ms = new(compressedEvents[2..]);
-		using MemoryStream decompressedEvents = new();
 		using DeflateStream deflateStream = new(ms, CompressionMode.Decompress, true);
-		deflateStream.CopyTo(decompressedEvents);
 
-		using BinaryReader br = new(decompressedEvents);
-
+		using BinaryReader br = new(deflateStream);
 		List<IEvent> events = new();
 		int entityId = 0;
 		bool parsedInitialInput = false;
