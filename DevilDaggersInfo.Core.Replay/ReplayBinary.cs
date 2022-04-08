@@ -6,13 +6,15 @@ namespace DevilDaggersInfo.Core.Replay;
 
 public class ReplayBinary
 {
+	private const string _header = "ddrpl.";
+
 	public ReplayBinary(byte[] contents, ReplayBinaryReadComprehensiveness readComprehensiveness)
 	{
 		using MemoryStream ms = new(contents);
 		using BinaryReader br = new(ms);
 
 		string header = br.ReadFixedLengthString(6);
-		if (header != "ddrpl.")
+		if (header != _header)
 			throw new InvalidReplayBinaryException($"'{header}' is not a valid replay header.");
 
 		Version = br.ReadInt32();
@@ -95,6 +97,7 @@ public class ReplayBinary
 		using MemoryStream ms = new();
 		using BinaryWriter bw = new(ms);
 
+		bw.Write(Encoding.Default.GetBytes(_header));
 		bw.Write(Version);
 		bw.Write(TimestampSinceGameRelease);
 		bw.Write(Time);
