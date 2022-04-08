@@ -4,9 +4,23 @@ namespace DevilDaggersInfo.Core.Replay;
 
 public static class ReplayEventsParser
 {
+	public static byte[] CompileEvents(List<IEvent> events)
+	{
+		using MemoryStream ms = new();
+		using BinaryWriter bw = new(ms);
+
+		foreach (IEvent e in events)
+			e.Write(bw);
+
+		using DeflateStream deflateStream = new(ms, CompressionMode.Compress, true);
+		using MemoryStream output = new();
+		deflateStream.CopyTo(output);
+		return output.ToArray();
+	}
+
 	public static List<List<IEvent>> ParseEvents(byte[] compressedEvents)
 	{
-		using MemoryStream ms = new(compressedEvents[2..]);
+		using MemoryStream ms = new(compressedEvents[2..]); // Skip ZLIB header.
 		using DeflateStream deflateStream = new(ms, CompressionMode.Decompress, true);
 
 		using BinaryReader br = new(deflateStream);
