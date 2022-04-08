@@ -12,16 +12,23 @@ public static class ReplayEventsParser
 		foreach (IEvent e in events)
 			e.Write(bw);
 
-		return Compress(ms);
+		return Compress(ms.ToArray());
 	}
 
-	private static byte[] Compress(Stream input)
+	public static byte[] Compress(byte[] data)
 	{
-		using MemoryStream compressStream = new();
-		using DeflateStream compressor = new(compressStream, CompressionMode.Compress);
-		input.CopyTo(compressor);
-		compressor.Close();
-		return compressStream.ToArray();
+		using MemoryStream memoryStream = new();
+		using (DeflateStream deflateStream = new(memoryStream, CompressionLevel.SmallestSize))
+		{
+			deflateStream.Write(data, 0, data.Length);
+		}
+
+		byte[] compressedData = memoryStream.ToArray();
+
+		byte[] compressedDataWithHeader = new byte[2 + compressedData.Length];
+		Buffer.BlockCopy(new byte[] { 120, 1 }, 0, compressedDataWithHeader, 0, 2);
+		Buffer.BlockCopy(compressedData, 0, compressedDataWithHeader, 2, compressedData.Length);
+		return compressedDataWithHeader;
 	}
 
 	public static List<List<IEvent>> ParseCompressedEvents(byte[] compressedEvents)
