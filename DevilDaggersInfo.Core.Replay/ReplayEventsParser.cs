@@ -133,7 +133,14 @@ public static class ReplayEventsParser
 		bool right = br.ReadBoolean();
 		bool forward = br.ReadBoolean();
 		bool backward = br.ReadBoolean();
-		byte jump = br.ReadByte();
+		byte jumpTypeByte = br.ReadByte();
+		JumpType jump = jumpTypeByte switch
+		{
+			0 => JumpType.None,
+			1 => JumpType.Hop,
+			2 => JumpType.PreciseHop,
+			_ => throw new InvalidOperationException($"Invalid {nameof(JumpType)} '{jumpTypeByte}'."),
+		};
 		bool shoot = br.ReadBoolean();
 		bool shootHoming = br.ReadBoolean();
 		short mouseX = br.ReadInt16();
@@ -153,7 +160,14 @@ public static class ReplayEventsParser
 		bool right = br.ReadBoolean();
 		bool forward = br.ReadBoolean();
 		bool backward = br.ReadBoolean();
-		byte jump = br.ReadByte();
+		byte jumpTypeByte = br.ReadByte();
+		JumpType jump = jumpTypeByte switch
+		{
+			0 => JumpType.None,
+			1 => JumpType.Hop,
+			2 => JumpType.PreciseHop,
+			_ => throw new InvalidOperationException($"Invalid {nameof(JumpType)} '{jumpTypeByte}'."),
+		};
 		bool shoot = br.ReadBoolean();
 		bool shootHoming = br.ReadBoolean();
 		short mouseX = br.ReadInt16();
@@ -215,7 +229,7 @@ public static class ReplayEventsParser
 			0x03 => BoidType.Skull3,
 			0x04 => BoidType.Spiderling,
 			0x05 => BoidType.Skull4,
-			_ => throw new InvalidOperationException($"Invalid boid type '{boidTypeByte}'."),
+			_ => throw new InvalidOperationException($"Invalid {nameof(BoidType)} '{boidTypeByte}'."),
 		};
 
 		return new(entityId, spawner, boidType, position, a, b, c, d, speed);

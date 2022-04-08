@@ -80,7 +80,7 @@ for (int i = 0; i < 1200; i++)
 		movement |= Movement.Left;
 	}
 
-	EndTick(movement, i == 0 || i > 740 && i % 52 == 0 ? 2 : 0, false, false, i < 90 || i > 430 && i < 465 ? 8 : i > 740 ? 6 : 0, i > 800 ? (int)Math.Sin(i / 6f) * 15 : 0);
+	EndTick(movement, i == 0 || i > 740 && i % 52 == 0 ? JumpType.PreciseHop : JumpType.None, false, false, i < 90 || i > 430 && i < 465 ? 8 : i > 740 ? 6 : 0, i > 800 ? (int)Math.Sin(i / 6f) * 15 : 0);
 }
 
 events.Add(new EndEvent());
@@ -88,9 +88,9 @@ events.Add(new EndEvent());
 ReplayBinary two = new(1, 2, events.Count(e => e is InputsEvent) / 60f, 0, 0, 0, 0, 0, 0, 999999, "PEP", File.ReadAllBytes(Path.Combine("Resources", "EmptySpawnset")), ReplayEventsParser.CompileEvents(events));
 File.WriteAllBytes(@"C:\Users\NOAH\AppData\Roaming\DevilDaggers\replays\TEST.ddreplay", two.Compile());
 
-void EndTick(Movement movement, int jump, bool lmb, bool rmb, int mouseX, int mouseY)
+void EndTick(Movement movement, JumpType jump, bool lmb, bool rmb, int mouseX, int mouseY)
 {
-	events.Add(new InputsEvent(movement.HasFlag(Movement.Left), movement.HasFlag(Movement.Right), movement.HasFlag(Movement.Forward), movement.HasFlag(Movement.Backward), (byte)jump, lmb, rmb, (short)mouseX, (short)mouseY));
+	events.Add(new InputsEvent(movement.HasFlag(Movement.Left), movement.HasFlag(Movement.Right), movement.HasFlag(Movement.Forward), movement.HasFlag(Movement.Backward), jump, lmb, rmb, (short)mouseX, (short)mouseY));
 }
 
 [Flags]
