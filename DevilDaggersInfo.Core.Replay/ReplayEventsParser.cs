@@ -49,7 +49,7 @@ public static class ReplayEventsParser
 		return events;
 	}
 
-	private static IEntityEvent ParseSpawnEvent(BinaryReader br, ref int entityId)
+	private static IEvent ParseSpawnEvent(BinaryReader br, ref int entityId)
 	{
 		entityId++;
 
