@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Core.Replay.Events;
 
-public readonly record struct SquidSpawnEvent(int EntityId, SquidType SquidType, int A, Vector3 Position, Vector3 B, float RotationInRadians) : IEvent
+public readonly record struct SquidSpawnEvent(int EntityId, SquidType SquidType, int A, Vector3 Position, Vector3 Direction, float RotationInRadians) : IEvent
 {
 	public void Write(BinaryWriter bw)
 	{
@@ -15,7 +15,7 @@ public readonly record struct SquidSpawnEvent(int EntityId, SquidType SquidType,
 
 		bw.Write(A);
 		bw.Write(Position);
-		bw.Write(B);
+		bw.Write(Direction);
 		bw.Write(RotationInRadians);
 	}
 }

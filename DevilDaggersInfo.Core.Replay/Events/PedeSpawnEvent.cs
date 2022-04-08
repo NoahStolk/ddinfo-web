@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Core.Replay.Events;
 
-public readonly record struct PedeSpawnEvent(int EntityId, PedeType PedeType, int A, Vector3 Position, Vector3 B, Vector3 C, Vector3 D, Vector3 E) : IEvent
+public readonly record struct PedeSpawnEvent(int EntityId, PedeType PedeType, int A, Vector3 Position, Vector3 B, Matrix3x3 Orientation) : IEvent
 {
 	public void Write(BinaryWriter bw)
 	{
@@ -16,8 +16,6 @@ public readonly record struct PedeSpawnEvent(int EntityId, PedeType PedeType, in
 		bw.Write(A);
 		bw.Write(Position);
 		bw.Write(B);
-		bw.Write(C);
-		bw.Write(D);
-		bw.Write(E);
+		bw.Write(Orientation);
 	}
 }

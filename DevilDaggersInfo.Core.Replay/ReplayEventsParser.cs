@@ -129,13 +129,13 @@ public static class ReplayEventsParser
 
 	private static InputsEvent ParseInputsEvent(BinaryReader br)
 	{
-		byte left = br.ReadByte();
-		byte right = br.ReadByte();
-		byte forward = br.ReadByte();
-		byte backward = br.ReadByte();
+		bool left = br.ReadBoolean();
+		bool right = br.ReadBoolean();
+		bool forward = br.ReadBoolean();
+		bool backward = br.ReadBoolean();
 		byte jump = br.ReadByte();
-		byte shoot = br.ReadByte();
-		byte shootHoming = br.ReadByte();
+		bool shoot = br.ReadBoolean();
+		bool shootHoming = br.ReadBoolean();
 		short mouseX = br.ReadInt16();
 		short mouseY = br.ReadInt16();
 
@@ -149,13 +149,13 @@ public static class ReplayEventsParser
 
 	private static InitialInputsEvent ParseInitialInputsEvent(BinaryReader br)
 	{
-		byte left = br.ReadByte();
-		byte right = br.ReadByte();
-		byte forward = br.ReadByte();
-		byte backward = br.ReadByte();
+		bool left = br.ReadBoolean();
+		bool right = br.ReadBoolean();
+		bool forward = br.ReadBoolean();
+		bool backward = br.ReadBoolean();
 		byte jump = br.ReadByte();
-		byte shoot = br.ReadByte();
-		byte shootHoming = br.ReadByte();
+		bool shoot = br.ReadBoolean();
+		bool shootHoming = br.ReadBoolean();
 		short mouseX = br.ReadInt16();
 		short mouseY = br.ReadInt16();
 		float lookSpeed = br.ReadSingle();
@@ -191,10 +191,10 @@ public static class ReplayEventsParser
 
 		int a = br.ReadInt32();
 		Vector3 position = br.ReadVector3();
-		Vector3 b = br.ReadVector3();
+		Vector3 direction = br.ReadVector3();
 		float rotationInRadians = br.ReadSingle();
 
-		return new(entityId, squidType, a, position, b, rotationInRadians);
+		return new(entityId, squidType, a, position, direction, rotationInRadians);
 	}
 
 	private static BoidSpawnEvent ParseBoidSpawnEvent(BinaryReader br, int entityId)
@@ -234,11 +234,9 @@ public static class ReplayEventsParser
 		int a = br.ReadInt32();
 		Vector3 position = br.ReadVector3();
 		Vector3 b = br.ReadVector3();
-		Vector3 c = br.ReadVector3();
-		Vector3 d = br.ReadVector3();
-		Vector3 e = br.ReadVector3();
+		Matrix3x3 orientation = br.ReadMatrix3x3();
 
-		return new(entityId, pedeType, a, position, b, c, d, e);
+		return new(entityId, pedeType, a, position, b, orientation);
 	}
 
 	private static SpiderSpawnEvent ParseSpiderSpawnEvent(BinaryReader br, byte entityType, int entityId)
