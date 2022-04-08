@@ -21,10 +21,19 @@ public class ReplayBinaryTests
 		TestUtils.AssertArrayContentsEqual(File.ReadAllBytes(spawnsetFilePath), replayBinary.SpawnsetBuffer);
 	}
 
-	[TestMethod]
-	public void TestEvents()
+	[DataTestMethod]
+	[DataRow("Forked-psy.ddreplay")]
+	[DataRow("Forked-xvlv.ddreplay")]
+	public void ParseAndCompileEvents(string replayFileName)
 	{
-		string replayEventsFilePath = Path.Combine("Resources", "Forked-xvlv.ddevents");
-		ReplayEventsParser.ParseEvents(File.ReadAllBytes(replayEventsFilePath));
+		string replayFilePath = Path.Combine("Resources", replayFileName);
+		byte[] replayBuffer = File.ReadAllBytes(replayFilePath);
+		ReplayBinary replayBinary = new(replayBuffer, ReplayBinaryReadComprehensiveness.All);
+		Assert.IsNotNull(replayBinary.CompressedEvents);
+
+		List<List<IEvent>> events = ReplayEventsParser.ParseCompressedEvents(replayBinary.CompressedEvents);
+		byte[] compressedEvents = ReplayEventsParser.CompileEvents(events.SelectMany(e => e).ToList());
+
+		TestUtils.AssertArrayContentsEqual(compressedEvents, replayBinary.CompressedEvents);
 	}
 }

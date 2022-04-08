@@ -41,7 +41,7 @@ public partial class ReplayParser
 
 		Stopwatch sw = Stopwatch.StartNew();
 		_replayBinary = new(replayBuffer, ReplayBinaryReadComprehensiveness.All);
-		_events = ReplayEventsParser.ParseEvents(_replayBinary.CompressedEvents!);
+		_events = ReplayEventsParser.ParseCompressedEvents(_replayBinary.CompressedEvents!);
 		_processingTimeInMs = sw.ElapsedMilliseconds;
 		sw.Stop();
 	}
