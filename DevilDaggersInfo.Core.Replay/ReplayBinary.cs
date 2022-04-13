@@ -13,9 +13,10 @@ public class ReplayBinary
 		using MemoryStream ms = new(contents);
 		using BinaryReader br = new(ms);
 
-		string header = br.ReadFixedLengthString(6);
+		byte[] headerBytes = br.ReadBytes(6);
+		string header = Encoding.Default.GetString(headerBytes);
 		if (header != _header)
-			throw new InvalidReplayBinaryException($"'{header}' is not a valid replay header.");
+			throw new InvalidReplayBinaryException($"'{header}' / '{headerBytes.ByteArrayToHexString()}' is not a valid replay header.");
 
 		Version = br.ReadInt32();
 		TimestampSinceGameRelease = br.ReadInt64();
@@ -28,7 +29,8 @@ public class ReplayBinary
 		Kills = br.ReadInt32();
 		PlayerId = br.ReadInt32();
 		int usernameLength = br.ReadInt32();
-		Username = br.ReadFixedLengthString(usernameLength);
+		byte[] usernameBytes = br.ReadBytes(usernameLength);
+		Username = Encoding.Default.GetString(usernameBytes);
 		br.BaseStream.Seek(10, SeekOrigin.Current);
 		SpawnsetMd5 = br.ReadBytes(16);
 

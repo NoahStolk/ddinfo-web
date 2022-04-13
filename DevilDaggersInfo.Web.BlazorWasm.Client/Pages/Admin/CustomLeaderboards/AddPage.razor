@@ -32,7 +32,7 @@
 		try
 		{
 			List<GetSpawnsetName> getSpawnsetNames = await Http.GetSpawnsetNames();
-			_spawnsetNames = getSpawnsetNames.ToDictionary(m => m.Id, m => m.Name);
+			_spawnsetNames = getSpawnsetNames.ToDictionary(sn => sn.Id, sn => sn.Name);
 
 			_addComponent.State = ErrorState.None;
 		}
