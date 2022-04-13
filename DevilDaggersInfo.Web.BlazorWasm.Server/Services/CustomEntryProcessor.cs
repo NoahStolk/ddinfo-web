@@ -122,7 +122,6 @@ public class CustomEntryProcessor
 			throw LogAndCreateValidationException(uploadRequest, $"Counted {uploadRequest.DaggersHit} dagger {(uploadRequest.DaggersHit == 1 ? "hit" : "hits")}. Can't submit score to {CustomLeaderboardCategory.Pacifist} leaderboard.", spawnsetName);
 
 		// Make sure HomingDaggers is not negative (happens rarely as a bug, and also for spawnsets with homing disabled which we don't want to display values for anyway).
-		uploadRequest.HomingStored = Math.Max(0, uploadRequest.HomingStored);
 		uploadRequest.GameData.HomingStored = Array.ConvertAll(uploadRequest.GameData.HomingStored, i => Math.Max(0, i));
 
 		CustomEntryEntity? customEntry = _dbContext.CustomEntries.FirstOrDefault(ce => ce.PlayerId == uploadRequest.PlayerId && ce.CustomLeaderboardId == customLeaderboard.Id);
@@ -161,7 +160,7 @@ public class CustomEntryProcessor
 			DaggersHit = uploadRequest.DaggersHit,
 			DaggersFired = uploadRequest.DaggersFired,
 			EnemiesAlive = uploadRequest.EnemiesAlive,
-			HomingStored = uploadRequest.HomingStored,
+			HomingStored = GetFinalHomingValue(uploadRequest),
 			HomingEaten = uploadRequest.HomingEaten,
 			LevelUpTime2 = uploadRequest.LevelUpTime2InSeconds.To10thMilliTime(),
 			LevelUpTime3 = uploadRequest.LevelUpTime3InSeconds.To10thMilliTime(),
@@ -271,7 +270,7 @@ public class CustomEntryProcessor
 		customEntry.DaggersFired = uploadRequest.DaggersFired;
 		customEntry.DaggersHit = uploadRequest.DaggersHit;
 		customEntry.EnemiesAlive = uploadRequest.EnemiesAlive;
-		customEntry.HomingStored = uploadRequest.HomingStored;
+		customEntry.HomingStored = GetFinalHomingValue(uploadRequest);
 		customEntry.HomingEaten = uploadRequest.HomingEaten;
 		customEntry.GemsDespawned = uploadRequest.GemsDespawned;
 		customEntry.GemsEaten = uploadRequest.GemsEaten;
@@ -351,6 +350,14 @@ public class CustomEntryProcessor
 			LevelUpTime3State = new(customEntry.LevelUpTime3.ToSecondsTime(), levelUpTime3Diff.ToSecondsTime()),
 			LevelUpTime4State = new(customEntry.LevelUpTime4.ToSecondsTime(), levelUpTime4Diff.ToSecondsTime()),
 		};
+	}
+
+	private static int GetFinalHomingValue(AddUploadRequest uploadRequest)
+	{
+		if (uploadRequest.GameData.HomingStored.Length == 0)
+			return 0;
+
+		return uploadRequest.GameData.HomingStored[^1];
 	}
 
 	private void ValidateReplayBuffer(AddUploadRequest uploadRequest, string spawnsetName)

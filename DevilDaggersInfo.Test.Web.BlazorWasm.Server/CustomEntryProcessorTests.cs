@@ -92,7 +92,9 @@ public class CustomEntryProcessorTests
 		return ms.ToArray();
 	}
 
-	private AddUploadRequest CreateUploadRequest(double time, int playerId, int status, string clientVersion)
+	private AddUploadRequest CreateUploadRequest(double time, int playerId, int status, string clientVersion) => CreateUploadRequest(time, playerId, status, clientVersion, new());
+
+	private AddUploadRequest CreateUploadRequest(double time, int playerId, int status, string clientVersion, AddGameData gameData)
 	{
 		AddUploadRequest uploadRequest = new()
 		{
@@ -108,10 +110,38 @@ public class CustomEntryProcessorTests
 			Client = "DevilDaggersCustomLeaderboards",
 			Status = status,
 			ReplayData = _mockReplay,
-			GameData = new(),
+			GameData = gameData,
 			ValidationVersion = 2,
 		};
 		return uploadRequest with { Validation = HttpUtility.HtmlEncode(_encryptionWrapper.EncryptAndEncode(uploadRequest.CreateValidationV2())) };
+	}
+
+	[DataTestMethod]
+	[DataRow(4)]
+	[DataRow(-1)]
+	[DataRow(0)]
+	[DataRow(15)]
+	public async Task TestHomingCount(int final)
+	{
+		AddUploadRequest uploadRequest = CreateUploadRequest(1, 100, 4, TestConstants.DdclVersion, new() { HomingStored = new[] { 1, 2, 3, final } });
+		GetUploadSuccess uploadSuccess = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
+		Assert.AreEqual(Math.Max(0, final), uploadSuccess.HomingStoredState.Value);
+	}
+
+	[TestMethod]
+	public async Task TestHomingCountEmpty()
+	{
+		AddUploadRequest uploadRequest = CreateUploadRequest(1, 100, 4, TestConstants.DdclVersion);
+		GetUploadSuccess uploadSuccess = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
+		Assert.AreEqual(0, uploadSuccess.HomingStoredState.Value);
+	}
+
+	[TestMethod]
+	public async Task TestHomingCountSingle()
+	{
+		AddUploadRequest uploadRequest = CreateUploadRequest(1, 100, 4, TestConstants.DdclVersion, new() { HomingStored = new[] { 30 } });
+		GetUploadSuccess uploadSuccess = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
+		Assert.AreEqual(30, uploadSuccess.HomingStoredState.Value);
 	}
 
 	[TestMethod]
@@ -192,7 +222,7 @@ public class CustomEntryProcessorTests
 	[TestMethod]
 	public async Task ProcessUploadRequest_InvalidValidation()
 	{
-		AddUploadRequest uploadRequest = CreateUploadRequest(10, 1, 4, "0.0.0.0") with { Validation = "Malformed validation" };
+		AddUploadRequest uploadRequest = CreateUploadRequest(10, 1, 4, TestConstants.DdclVersion) with { Validation = "Malformed validation" };
 		CustomEntryValidationException ex = await Assert.ThrowsExceptionAsync<CustomEntryValidationException>(async () => await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest));
 
 		_dbContext.Verify(db => db.SaveChangesAsync(default), Times.Never);

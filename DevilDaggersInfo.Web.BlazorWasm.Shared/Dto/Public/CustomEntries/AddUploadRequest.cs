@@ -29,7 +29,10 @@ public record AddUploadRequest
 
 	public int EnemiesAlive { get; init; }
 
-	public int HomingStored { get; set; } // Use set to get rid of negative values.
+	/// <summary>
+	/// This value is not reliable in game memory and therefore no longer used. It is now only used for the request signature.
+	/// </summary>
+	public int HomingStored { get; init; }
 
 	public int HomingEaten { get; init; }
 
