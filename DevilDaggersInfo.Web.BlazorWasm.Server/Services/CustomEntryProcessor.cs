@@ -74,13 +74,9 @@ public class CustomEntryProcessor
 		if (clientVersionParsed < Version.Parse(tool.RequiredVersionNumber))
 			throw LogAndCreateValidationException(uploadRequest, $"You are using an unsupported and outdated version of {uploadRequest.Client}. Please update the program.");
 
-		// Reject local replays as they can easily be manipulated.
-		if (uploadRequest.Status == 8)
-			throw LogAndCreateValidationException(uploadRequest, "Local replays cannot be validated.");
-
 		// Reject other invalid statuses.
 		if (uploadRequest.Status is not (3 or 4 or 5))
-			throw LogAndCreateValidationException(uploadRequest, $"Game status {uploadRequest.Status} is not valid.", null, "rotating_light");
+			throw LogAndCreateValidationException(uploadRequest, $"Game status {uploadRequest.Status} is not accepted.", null, "rotating_light");
 
 		// Check for existing spawnset.
 		SpawnsetHashCacheData? spawnsetHashData = _spawnsetHashCache.GetSpawnset(uploadRequest.SurvivalHashMd5);
