@@ -29,7 +29,7 @@ public class AuditLogger
 
 		foreach (KeyValuePair<string, string> kvp in dtoLog)
 		{
-			string trimmedKey = kvp.Key.TrimAfter(_loggingMax, true);
+			string trimmedKey = SanitizeLog(kvp.Key);
 			if (trimmedKey.Length > maxL)
 				maxL = trimmedKey.Length;
 		}
@@ -37,7 +37,7 @@ public class AuditLogger
 		auditLogger.AppendFormat($"{{0,-{maxL + paddingL}}}", propertyHeader).AppendLine(valueHeader);
 		auditLogger.AppendLine();
 		foreach (KeyValuePair<string, string> kvp in dtoLog)
-			auditLogger.AppendFormat($"{{0,-{maxL + paddingL}}}", $"+ {kvp.Key.TrimAfter(_loggingMax, true)}").AppendLine(kvp.Value.TrimAfter(_loggingMax, true));
+			auditLogger.AppendFormat($"{{0,-{maxL + paddingL}}}", $"+ {SanitizeLog(kvp.Key)}").AppendLine(SanitizeLog(kvp.Value));
 
 		auditLogger.AppendLine("```");
 
@@ -67,8 +67,8 @@ public class AuditLogger
 			int maxL = propertyHeader.Length, maxR = oldValueHeader.Length;
 			foreach (KeyValuePair<string, string> kvp in oldDtoLog)
 			{
-				string trimmedKey = kvp.Key.TrimAfter(_loggingMax, true);
-				string trimmedValue = kvp.Value.TrimAfter(_loggingMax, true);
+				string trimmedKey = SanitizeLog(kvp.Key);
+				string trimmedValue = SanitizeLog(kvp.Value);
 
 				if (trimmedKey.Length > maxL)
 					maxL = trimmedKey.Length;
@@ -82,7 +82,7 @@ public class AuditLogger
 			{
 				string newValue = dtoLog[kvp.Key];
 				char diff = kvp.Value == newValue ? '=' : '+';
-				auditLogger.AppendFormat($"{{0,-{maxL + paddingL}}}", $"{diff} {kvp.Key}").AppendFormat($"{{0,-{maxR + paddingR}}}", kvp.Value.TrimAfter(_loggingMax, true)).AppendLine(newValue.TrimAfter(_loggingMax, true));
+				auditLogger.AppendFormat($"{{0,-{maxL + paddingL}}}", $"{diff} {kvp.Key}").AppendFormat($"{{0,-{maxR + paddingR}}}", SanitizeLog(kvp.Value)).AppendLine(SanitizeLog(newValue));
 			}
 
 			auditLogger.AppendLine("```");
@@ -123,7 +123,7 @@ public class AuditLogger
 
 		foreach (KeyValuePair<string, string> kvp in entityLog)
 		{
-			string trimmedKey = kvp.Key.TrimAfter(_loggingMax, true);
+			string trimmedKey = SanitizeLog(kvp.Key);
 			if (trimmedKey.Length > maxL)
 				maxL = trimmedKey.Length;
 		}
@@ -131,7 +131,7 @@ public class AuditLogger
 		auditLogger.AppendFormat($"{{0,-{maxL + paddingL}}}", propertyHeader).AppendLine(valueHeader);
 		auditLogger.AppendLine();
 		foreach (KeyValuePair<string, string> kvp in entityLog)
-			auditLogger.AppendFormat($"{{0,-{maxL + paddingL}}}", $"- {kvp.Key.TrimAfter(_loggingMax, true)}").AppendLine(kvp.Value.TrimAfter(_loggingMax, true));
+			auditLogger.AppendFormat($"{{0,-{maxL + paddingL}}}", $"- {SanitizeLog(kvp.Key)}").AppendLine(SanitizeLog(kvp.Value));
 
 		auditLogger.AppendLine("```");
 
@@ -205,5 +205,14 @@ public class AuditLogger
 	private void Log(string? message)
 	{
 		_logContainerService.AddAuditLog($"[`{_environment.EnvironmentName}`]: {message}");
+	}
+
+	private static string SanitizeLog(string log)
+	{
+		return log
+			.Replace("\r", string.Empty)
+			.Replace("\n", string.Empty)
+			.Replace("\t", string.Empty)
+			.TrimAfter(_loggingMax, true);
 	}
 }
