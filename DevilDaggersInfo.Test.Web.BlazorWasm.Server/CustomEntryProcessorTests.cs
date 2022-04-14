@@ -117,31 +117,19 @@ public class CustomEntryProcessorTests
 	}
 
 	[DataTestMethod]
-	[DataRow(4)]
-	[DataRow(-1)]
-	[DataRow(0)]
-	[DataRow(15)]
-	public async Task TestHomingCount(int final)
+	[DataRow(4, new int[] { 1, 2, 3, 4 })]
+	[DataRow(0, new int[] { 1, 2, 3, 0 })]
+	[DataRow(9, new int[] { 1, 2, 3, 9 })]
+	[DataRow(0, new int[] { 1, 2, 3, -1 })]
+	[DataRow(0, new int[] { 0 })]
+	[DataRow(8, new int[] { 8 })]
+	[DataRow(2, new int[] { 3, 2 })]
+	[DataRow(0, new int[] { })]
+	public async Task TestHomingCount(int expected, int[] homingStored)
 	{
-		AddUploadRequest uploadRequest = CreateUploadRequest(1, 100, 4, TestConstants.DdclVersion, new() { HomingStored = new[] { 1, 2, 3, final } });
+		AddUploadRequest uploadRequest = CreateUploadRequest(1, 100, 4, TestConstants.DdclVersion, new() { HomingStored = homingStored });
 		GetUploadSuccess uploadSuccess = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
-		Assert.AreEqual(Math.Max(0, final), uploadSuccess.HomingStoredState.Value);
-	}
-
-	[TestMethod]
-	public async Task TestHomingCountEmpty()
-	{
-		AddUploadRequest uploadRequest = CreateUploadRequest(1, 100, 4, TestConstants.DdclVersion);
-		GetUploadSuccess uploadSuccess = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
-		Assert.AreEqual(0, uploadSuccess.HomingStoredState.Value);
-	}
-
-	[TestMethod]
-	public async Task TestHomingCountSingle()
-	{
-		AddUploadRequest uploadRequest = CreateUploadRequest(1, 100, 4, TestConstants.DdclVersion, new() { HomingStored = new[] { 30 } });
-		GetUploadSuccess uploadSuccess = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
-		Assert.AreEqual(30, uploadSuccess.HomingStoredState.Value);
+		Assert.AreEqual(expected, uploadSuccess.HomingStoredState.Value);
 	}
 
 	[TestMethod]
