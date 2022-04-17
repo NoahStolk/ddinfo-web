@@ -1,0 +1,53 @@
+<h3 class="text-red text-xl pt-4 pb-2 font-goethe">Global Custom Leaderboards</h3>
+<ul class="py-2 pl-4">
+	<li class="list-disc">Added global custom leaderboards which combines every leaderboard in a category into a global leaderboard.</li>
+	<li class="list-disc">The global shows the amount of daggers per player, as well as a scoring system which is based on the daggers and ranking.</li>
+</ul>
+
+<h3 class="text-red text-xl pt-4 pb-2 font-goethe">Custom Leaderboard Score API V2</h3>
+<ul class="py-2 pl-4">
+	<li class="list-disc">Improved performance for score submissions.</li>
+	<li class="list-disc">Replay files are now validated upon submit.</li>
+	<li class="list-disc">Fixed saving incorrect homing stored value upon submit.</li>
+	<li class="list-disc">Fixed replay submissions being able to override highscore by a very small amount.</li>
+	<li class="list-disc">Fixed not always sorting scores by submit date when two scores had equal times.</li>
+</ul>
+
+<h3 class="text-red text-xl pt-4 pb-2 font-goethe">Replay Parsing</h3>
+<ul class="py-2 pl-4">
+	<li class="list-disc">Implemented new library that is able to parse (local) replay files, as well as build replay files from scratch. These features can be used for analyzing gameplay, or possibly for writing a TAS for a certain spawnset.</li>
+	<li class="list-disc">Most of the events have been figured out, but not all is known yet (unknown values are named A, B, C, etc).</li>
+	<li class="list-disc">The parsing feature can be tried out when viewing a custom leaderboard score. It parses the replay and displays all individual events on the page. See <a class="link" href="https://devildaggers.info/replay-parser/1">here</a> for an example.</li>
+	<li class="list-disc">Maybe I'll make a new tool called DevilDaggersReplayEditor some time in the future, who knows...</li>
+</ul>
+
+<h3 class="text-red text-xl pt-4 pb-2 font-goethe">Enhancements</h3>
+<ul class="py-2 pl-4">
+	<li class="list-disc">Added menu item to view own player profile.</li>
+	<li class="list-disc">Dagger times for custom leaderboards can now be optional. These leaderboards are now referred to as "non-featured" rather than "archived".</li>
+	<li class="list-disc">Non-featured leaderboards are now displayed on the custom leaderboard overview page.</li>
+	<li class="list-disc">Non-featured leaderboards are excluded from the player page statistics.</li>
+	<li class="list-disc">Implemented new custom select list component which behaves correctly when reloading the page.</li>
+	<li class="list-disc">Implemented new custom checkbox component which behaves correctly when reloading the page.</li>
+	<li class="list-disc">Improved styling for all input UI.</li>
+	<li class="list-disc">Improved caching behavior for CSS/JS content.</li>
+	<li class="list-disc">New Speedrun leaderboards are now disallowed; use the Race category instead.</li>
+	<li class="list-disc">Descriptions for custom leaderboard categories have been added to the overview page.</li>
+	<li class="list-disc">Improved global statistics API with more data for accuracy stats.</li>
+	<li class="list-disc">Improved mobile page layout for spawnset, mod, and custom leaderboard overviews.</li>
+	<li class="list-disc">Added short descriptions to custom overview pages.</li>
+	<li class="list-disc">Client version is now displayed for custom leaderboard scores (hover over submit date).</li>
+	<li class="list-disc">Mods and spawsets are now ordered correctly on the player page.</li>
+	<li class="list-disc">Moved the "Download replay" button to the custom leaderboard score page itself.</li>
+</ul>
+
+
+<h3 class="text-red text-xl pt-4 pb-2 font-goethe">Fixes</h3>
+<ul class="py-2 pl-4">
+	<li class="list-disc">Fixed some edge cases for spawnset shrink previews.</li>
+	<li class="list-disc">Fixed spawnset shrink previews not taking spawnset start time into account.</li>
+	<li class="list-disc">Fixed incorrect caching behavior on Firefox.</li>
+	<li class="list-disc">Fixed server-side performance issue when fetching spawnsets from within DDSE.</li>
+	<li class="list-disc">Fixed server-side performance issue when fetching custom leaderboard overviews via overview page or via DDLIVE.</li>
+	<li class="list-disc">Fixed incorrect total player count on custom leaderboard overview page.</li>
+</ul>
