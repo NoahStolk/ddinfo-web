@@ -349,16 +349,13 @@ public class SpawnsetBinary
 
 	public static float GetShrinkTimeForTile(int arenaDimension, float shrinkStart, float shrinkEnd, float shrinkRate, int x, int y)
 	{
-		if (shrinkEnd > shrinkStart)
-			return float.MaxValue;
-
 		const int tileUnit = 4;
 		float shrinkStartInTiles = shrinkStart / tileUnit;
 		float shrinkEndInTiles = shrinkEnd / tileUnit;
 
 		Vector2 middle = new(arenaDimension / 2, arenaDimension / 2);
 		float distance = Vector2.Distance(new(x, y), middle);
-		if (distance > shrinkStartInTiles)
+		if (distance > Math.Max(shrinkStartInTiles, shrinkEndInTiles))
 			return 0;
 
 		if (distance <= shrinkEndInTiles)

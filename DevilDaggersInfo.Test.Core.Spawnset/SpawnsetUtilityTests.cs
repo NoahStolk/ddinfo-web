@@ -50,6 +50,7 @@ public class SpawnsetUtilityTests
 	[DataRow(50f, 20f, -1f, 0f)]
 	[DataRow(30f, 40f, 1f, 0f)]
 	[DataRow(6105.9f, 27f, 11.5f, 528.6f)]
+	[DataRow(0f, 29f, 3f, 0f)]
 	public void TestShrinkEndTime(float start, float end, float rate, float expectedFinalShrinkSecond)
 	{
 		Assert.AreEqual(expectedFinalShrinkSecond, SpawnsetBinary.GetShrinkEndTime(start, end, rate), 0.0001);
@@ -87,7 +88,7 @@ public class SpawnsetUtilityTests
 	[DataRow(30f, 10f, 2f, 25, 25, float.MaxValue)]
 
 	[DataRow(30f, 40f, 1f, 25, 25, float.MaxValue)]
-	[DataRow(30f, 40f, 1f, 25, 5, float.MaxValue)]
+	[DataRow(30f, 40f, 1f, 25, 5, 0f)]
 
 	[DataRow(30f, 30f, 1f, 25, 25, float.MaxValue)]
 	[DataRow(30f, 30f, 1f, 25, 5, 0f)]
@@ -97,6 +98,10 @@ public class SpawnsetUtilityTests
 
 	[DataRow(30f, 10f, -1f, 25, 25, float.MaxValue)]
 	[DataRow(30f, 10f, -1f, 25, 5, 0f)]
+
+	[DataRow(0f, 29f, 3f, 25, 25, float.MaxValue)]
+	[DataRow(0f, 29f, 3f, 27, 21, float.MaxValue)]
+	[DataRow(0f, 29f, 3f, 25, 15, 0f)]
 	public void TestShrinkTimeForTile(float start, float end, float rate, int x, int y, float expectedTime)
 	{
 		Assert.AreEqual(expectedTime, SpawnsetBinary.GetShrinkTimeForTile(51, start, end, rate, x, y), 0.0001);
