@@ -3,7 +3,7 @@ using DevilDaggersInfo.Web.BlazorWasm.Client.InternalModels;
 namespace DevilDaggersInfo.Web.BlazorWasm.Client;
 
 /// <summary>
-/// Include the news in the build so we don't rely on static files that will be caching incorrectly.
+/// Include the news in the build so we don't rely on static files that might be cached incorrectly.
 /// </summary>
 public static class NewsContainer
 {
@@ -39,5 +39,10 @@ public static class NewsContainer
 			DateTime = new(2022, 03, 18),
 			Title = "V5.4 Update",
 		},
+		//new()
+		//{
+		//	DateTime = new(2022, 
+		//	Title = "V5.5 Update",
+		//},
 	};
 }
