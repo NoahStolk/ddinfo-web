@@ -213,7 +213,7 @@ public class CustomLeaderboardsController : ControllerBase
 	[HttpGet("ddlive")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	public async Task<ActionResult<List<GetCustomLeaderboardDdLive>>> GetCustomLeaderboardsDdLive()
+	public async Task<ActionResult<List<GetCustomLeaderboardOverviewDdLive>>> GetCustomLeaderboardsOverviewDdLive()
 	{
 		List<CustomLeaderboardEntity> customLeaderboards = _dbContext.CustomLeaderboards
 			.AsNoTracking()
@@ -250,7 +250,7 @@ public class CustomLeaderboardsController : ControllerBase
 
 		return customLeaderboardWrs
 			.OrderByDescending(clwr => clwr.CustomLeaderboard.DateLastPlayed ?? clwr.CustomLeaderboard.DateCreated)
-			.Select(clwr => clwr.CustomLeaderboard.ToGetCustomLeaderboardDdLive(
+			.Select(clwr => clwr.CustomLeaderboard.ToGetCustomLeaderboardOverviewDdLive(
 				customEntryCountByCustomLeaderboardId.ContainsKey(clwr.CustomLeaderboard.Id) ? customEntryCountByCustomLeaderboardId[clwr.CustomLeaderboard.Id] : 0,
 				clwr.TopPlayerId,
 				clwr.TopPlayerName,

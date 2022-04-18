@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomLeaderboards;
 
-public record GetCustomLeaderboardDdLive
+public record GetCustomLeaderboardOverviewDdLive
 {
 	public int Id { get; init; }
 

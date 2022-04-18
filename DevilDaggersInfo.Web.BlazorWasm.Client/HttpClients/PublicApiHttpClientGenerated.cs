@@ -100,9 +100,9 @@ public partial class PublicApiHttpClient
 		return await SendGetRequest<GetGlobalCustomLeaderboard>(UrlBuilderUtils.BuildUrlWithQuery($"api/custom-leaderboards/global-leaderboard", queryParameters));
 	}
 
-	public async Task<List<GetCustomLeaderboardDdLive>> GetCustomLeaderboardsDdLive()
+	public async Task<List<GetCustomLeaderboardOverviewDdLive>> GetCustomLeaderboardsDdLive()
 	{
-		return await SendGetRequest<List<GetCustomLeaderboardDdLive>>($"api/custom-leaderboards/ddlive");
+		return await SendGetRequest<List<GetCustomLeaderboardOverviewDdLive>>($"api/custom-leaderboards/ddlive");
 	}
 
 	public async Task<GetTotalCustomLeaderboardData> GetTotalCustomLeaderboardData()
