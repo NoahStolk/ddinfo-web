@@ -70,9 +70,6 @@ public class CustomLeaderboardValidatorService
 		if (spawnsetBinary.GameMode != requiredGameMode)
 			throw new CustomLeaderboardValidationException($"Game mode must be '{requiredGameMode}' when the custom leaderboard category is '{category}'. The spawnset has game mode '{spawnsetBinary.GameMode}'.");
 
-		if (spawnsetBinary.TimerStart != 0)
-			throw new CustomLeaderboardValidationException("Cannot create a leaderboard for spawnset that uses the TimerStart value. This value is meant for practice and it is confusing to use it with custom leaderboards, as custom leaderboards always use the 'actual' timer value.");
-
 		if (category == CustomLeaderboardCategory.Survival && !spawnsetBinary.HasEndLoop())
 			throw new CustomLeaderboardValidationException($"Custom leaderboard with category {category} must have an end loop.");
 
