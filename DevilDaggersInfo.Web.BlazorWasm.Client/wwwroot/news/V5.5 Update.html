@@ -1,46 +1,46 @@
 <h3 class="text-red text-xl pt-4 pb-2 font-goethe">Global Custom Leaderboards</h3>
-<ul class="py-2 pl-4">
-	<li class="list-disc">Added global custom leaderboards which combines every leaderboard in a category into a global leaderboard.</li>
-	<li class="list-disc">The global shows the amount of daggers per player, as well as a scoring system which is based on the daggers and ranking.</li>
-</ul>
+<p class="para">
+	Added <a class="link" href="/custom/leaderboards/global">global custom leaderboards</a>, there is one global leaderboard for every leaderboard category.
+	The global ranking is based on the ranks and daggers achieved by the player in all the leaderboards for that category.
+	It's still a little bit of a work in progress, but the idea is there.
+</p>
 
 <h3 class="text-red text-xl pt-4 pb-2 font-goethe">Custom Leaderboard Score API V2</h3>
 <ul class="py-2 pl-4">
-	<li class="list-disc">Improved performance for score submissions.</li>
+	<li class="list-disc">Rewritten API with improved performance for score submissions.</li>
 	<li class="list-disc">Replay files are now validated upon submit.</li>
 	<li class="list-disc">Fixed saving incorrect homing stored value upon submit.</li>
 	<li class="list-disc">Fixed replay submissions being able to override highscore by a very small amount.</li>
-	<li class="list-disc">Fixed not always sorting scores by submit date when two scores had equal times.</li>
 </ul>
 
 <h3 class="text-red text-xl pt-4 pb-2 font-goethe">Replay Parsing</h3>
 <ul class="py-2 pl-4">
 	<li class="list-disc">Implemented new library that is able to parse (local) replay files, as well as build replay files from scratch. These features can be used for analyzing gameplay, or possibly for writing a TAS for a certain spawnset.</li>
+	<li class="list-disc">The parsing feature can be tried out when viewing a custom leaderboard score. It parses the replay and displays all individual events on the page. See <a class="link" href="/replay-parser/1">here</a> for an example.</li>
 	<li class="list-disc">Most of the events have been figured out, but not all is known yet (unknown values are named A, B, C, etc).</li>
-	<li class="list-disc">The parsing feature can be tried out when viewing a custom leaderboard score. It parses the replay and displays all individual events on the page. See <a class="link" href="https://devildaggers.info/replay-parser/1">here</a> for an example.</li>
 	<li class="list-disc">Maybe I'll make a new tool called DevilDaggersReplayEditor some time in the future, who knows...</li>
 </ul>
 
 <h3 class="text-red text-xl pt-4 pb-2 font-goethe">Enhancements</h3>
 <ul class="py-2 pl-4">
 	<li class="list-disc">Added menu item to view own player profile.</li>
-	<li class="list-disc">Dagger times for custom leaderboards can now be optional. These leaderboards are now referred to as "non-featured" rather than "archived".</li>
-	<li class="list-disc">Non-featured leaderboards are now displayed on the custom leaderboard overview page.</li>
+	<li class="list-disc">Dagger times for custom leaderboards can now be optional. These leaderboards are referred to as "non-featured".</li>
+	<li class="list-disc">Non-featured leaderboards have replaced "archived" leaderboards.</li>
+	<li class="list-disc">Non-featured leaderboards are now displayed on the custom leaderboard overview page (archived ones were not).</li>
 	<li class="list-disc">Non-featured leaderboards are excluded from the player page statistics.</li>
 	<li class="list-disc">Implemented new custom select list component which behaves correctly when reloading the page.</li>
 	<li class="list-disc">Implemented new custom checkbox component which behaves correctly when reloading the page.</li>
 	<li class="list-disc">Improved styling for all input UI.</li>
 	<li class="list-disc">Improved caching behavior for CSS/JS content.</li>
 	<li class="list-disc">New Speedrun leaderboards are now disallowed; use the Race category instead.</li>
-	<li class="list-disc">Descriptions for custom leaderboard categories have been added to the overview page.</li>
 	<li class="list-disc">Improved global statistics API with more data for accuracy stats.</li>
 	<li class="list-disc">Improved mobile page layout for spawnset, mod, and custom leaderboard overviews.</li>
-	<li class="list-disc">Added short descriptions to custom overview pages.</li>
+	<li class="list-disc">Added descriptions for spawnset, mod, and custom leaderboard overviews.</li>
+	<li class="list-disc">Added descriptions for custom leaderboard categories.</li>
 	<li class="list-disc">Client version is now displayed for custom leaderboard scores (hover over submit date).</li>
 	<li class="list-disc">Mods and spawsets are now ordered correctly on the player page.</li>
 	<li class="list-disc">Moved the "Download replay" button to the custom leaderboard score page itself.</li>
 </ul>
-
 
 <h3 class="text-red text-xl pt-4 pb-2 font-goethe">Fixes</h3>
 <ul class="py-2 pl-4">
@@ -51,3 +51,23 @@
 	<li class="list-disc">Fixed server-side performance issue when fetching custom leaderboard overviews via overview page or via DDLIVE.</li>
 	<li class="list-disc">Fixed incorrect total player count on custom leaderboard overview page.</li>
 </ul>
+
+<h3 class="text-red text-xl pt-4 pb-2 font-goethe">Open Source</h3>
+<p class="para">
+	The entire project is now <a class="link" target="_blank" href="//github.com/NoahStolk/DevilDaggersInfo">open source</a>!
+</p>
+<p class="para">
+	If devildaggers.info is useful to you, please consider giving it a star on GitHub. This lets me know the work is appreciated. ❤️
+</p>
+<p class="para">
+	Open sourcing the project was done for a couple reasons, the most important one being that I just want to share this project with everyone else.
+	I'm quite happy with how it turned out, and don't want it to be lost when I stop working on it.
+</p>
+<p class="para">
+	Another reason is that the two editors are also open source for their own reasons, and I plan to eventually rewrite them to be improved and cross-platform.
+	The new editors would live in this Git repository to keep everything in one place, and to make it easier for them to be embedded on the website.
+	It wouldn't make sense for the source code for the new editors to not be publicly available, so everything is now open to the public.
+</p>
+<p class="para">
+	That being said, I will likely be starting the development for the new editors soon. Will send updates on Discord.
+</p>
