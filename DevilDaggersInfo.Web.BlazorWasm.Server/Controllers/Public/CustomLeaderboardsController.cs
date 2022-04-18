@@ -15,11 +15,13 @@ public class CustomLeaderboardsController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
 	private readonly SpawnsetHashCache _spawnsetHashCache;
+	private readonly IFileSystemService _fileSystemService;
 
-	public CustomLeaderboardsController(ApplicationDbContext dbContext, SpawnsetHashCache spawnsetHashCache)
+	public CustomLeaderboardsController(ApplicationDbContext dbContext, SpawnsetHashCache spawnsetHashCache, IFileSystemService fileSystemService)
 	{
 		_dbContext = dbContext;
 		_spawnsetHashCache = spawnsetHashCache;
+		_fileSystemService = fileSystemService;
 	}
 
 	[HttpHead]
@@ -330,6 +332,56 @@ public class CustomLeaderboardsController : ControllerBase
 		customEntries = customEntries.Sort(customLeaderboard.Category).ToList();
 
 		return customLeaderboard.ToGetCustomLeaderboard(customEntries);
+	}
+
+	[HttpGet("{id}/ddlive")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	public async Task<ActionResult<GetCustomLeaderboardDdLive>> GetCustomLeaderboardByIdDdLive(int id)
+	{
+		CustomLeaderboardEntity? customLeaderboard = await _dbContext.CustomLeaderboards
+			.AsNoTracking()
+			.Include(cl => cl.CustomEntries!)
+				.ThenInclude(ce => ce.Player)
+			.Include(cl => cl.Spawnset)
+				.ThenInclude(sf => sf.Player)
+			.FirstOrDefaultAsync(cl => cl.Id == id);
+		if (customLeaderboard == null)
+			return NotFound();
+
+		List<CustomEntry> customEntries = customLeaderboard.CustomEntries!.ConvertAll(ce => new CustomEntry(
+			ce.Time,
+			ce.SubmitDate,
+			ce.Id,
+			ce.CustomLeaderboardId,
+			ce.PlayerId,
+			ce.Player.PlayerName,
+			ce.Player.CountryCode,
+			ce.GemsCollected,
+			ce.GemsDespawned,
+			ce.GemsEaten,
+			ce.GemsTotal,
+			ce.EnemiesAlive,
+			ce.EnemiesKilled,
+			ce.HomingStored,
+			ce.HomingEaten,
+			ce.DeathType,
+			ce.DaggersFired,
+			ce.DaggersHit,
+			ce.LevelUpTime2,
+			ce.LevelUpTime3,
+			ce.LevelUpTime4,
+			ce.Client,
+			ce.ClientVersion));
+
+		customEntries = customEntries.Sort(customLeaderboard.Category).ToList();
+
+		List<int> customEntryReplayIds = customEntries
+			.Where(ce => IoFile.Exists(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{ce.Id}.ddreplay")))
+			.Select(ce => ce.Id)
+			.ToList();
+
+		return customLeaderboard.ToGetCustomLeaderboardDdLive(customEntries, customEntryReplayIds);
 	}
 
 	private sealed class CustomLeaderboardWorldRecord

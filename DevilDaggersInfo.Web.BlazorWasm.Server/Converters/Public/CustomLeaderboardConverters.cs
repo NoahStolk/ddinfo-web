@@ -62,6 +62,21 @@ public static class CustomLeaderboardConverters
 		CustomEntries = customEntries.Select((ce, i) => ce.ToGetCustomEntry(customLeaderboard, i + 1)).ToList(),
 	};
 
+	public static GetCustomLeaderboardDdLive ToGetCustomLeaderboardDdLive(this CustomLeaderboardEntity customLeaderboard, List<CustomEntry> customEntries, List<int> customEntryReplayIds) => new()
+	{
+		SpawnsetId = customLeaderboard.SpawnsetId,
+		SpawnsetAuthorName = customLeaderboard.Spawnset.Player.PlayerName,
+		SpawnsetHtmlDescription = customLeaderboard.Spawnset.HtmlDescription,
+		SpawnsetName = customLeaderboard.Spawnset.Name,
+		Daggers = ToGetCustomLeaderboardDaggers(customLeaderboard),
+		DateCreated = customLeaderboard.DateCreated,
+		SubmitCount = customLeaderboard.TotalRunsSubmitted,
+		Category = customLeaderboard.Category,
+		IsFeatured = customLeaderboard.IsFeatured,
+		DateLastPlayed = customLeaderboard.DateLastPlayed,
+		CustomEntries = customEntries.Select((ce, i) => ce.ToGetCustomEntryDdLive(customLeaderboard, i + 1, customEntryReplayIds.Contains(ce.Id))).ToList(),
+	};
+
 	private static GetCustomLeaderboardDaggers? ToGetCustomLeaderboardDaggers(CustomLeaderboardEntity customLeaderboard) => !customLeaderboard.IsFeatured ? null : new()
 	{
 		Bronze = customLeaderboard.TimeBronze.ToSecondsTime(),
