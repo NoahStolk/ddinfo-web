@@ -11,7 +11,7 @@
 	<InputWrapper Label="Name"><InputText class="admin-input" @bind-Value="@_editMod.Name" /></InputWrapper>
 	<InputWrapper Label="Author(s)"><MultiSearchDropdown Values="@_playerNames" @bind-Value="@_editMod.PlayerIds" /></InputWrapper>
 	<InputWrapper Label="Trailer URL"><InputText class="admin-input" @bind-Value="_editMod.TrailerUrl" /></InputWrapper>
-	<InputWrapper Label="HTML description"><InputTextArea class="admin-input" @bind-Value="@_editMod.HtmlDescription" /></InputWrapper>
+	<InputWrapper Label="HTML description"><InputTextArea class="admin-input w-full h-64" @bind-Value="@_editMod.HtmlDescription" /></InputWrapper>
 	<InputWrapper Label="Mod types (only for non-hosted)"><MultiSearchDropdown Values="@ModTypes" @bind-Value="@_editMod.ModTypes" /></InputWrapper>
 	<InputWrapper Label="URL (only for non-hosted)"><InputText class="admin-input" @bind-Value="@_editMod.Url" /></InputWrapper>
 	<InputWrapper Label="Hidden"><InputCheckbox @bind-Value="@_editMod.IsHidden" /></InputWrapper>

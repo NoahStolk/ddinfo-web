@@ -10,7 +10,7 @@
 	<InputWrapper Label="Author"><SearchDropdown TKey=int Values="@_playerNames" Converter="s => int.Parse(s)" @bind-Value="@_addSpawnset.PlayerId" /></InputWrapper>
 	<InputWrapper Label="Name"><InputText class="admin-input" @bind-Value="@_addSpawnset.Name" /></InputWrapper>
 	<InputWrapper Label="Max display waves"><InputNumber class="admin-input" @bind-Value="_addSpawnset.MaxDisplayWaves" /></InputWrapper>
-	<InputWrapper Label="HTML description"><InputTextArea class="admin-input" @bind-Value="@_addSpawnset.HtmlDescription" /></InputWrapper>
+	<InputWrapper Label="HTML description"><InputTextArea class="admin-input w-full h-64" @bind-Value="@_addSpawnset.HtmlDescription" /></InputWrapper>
 	<InputWrapper Label="Practice"><InputCheckbox @bind-Value="@_addSpawnset.IsPractice" /></InputWrapper>
 	<InputWrapper Label="File"><InputFile OnChange="LoadFile" /></InputWrapper>
 </AdminAdd>
