@@ -20,6 +20,8 @@ public class UserService : IUserService
 
 	public UserEntity? Authenticate(string name, string password)
 	{
+		name = name.Trim();
+
 		if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(password))
 			return null;
 
@@ -38,6 +40,8 @@ public class UserService : IUserService
 
 	public UserEntity Create(string name, string password)
 	{
+		name = name.Trim();
+
 		if (_dbContext.Users.Any(u => u.Name == name))
 			throw new($"Name '{name}' is already taken.");
 
@@ -59,6 +63,8 @@ public class UserService : IUserService
 
 	public void UpdateName(int id, string name)
 	{
+		name = name.Trim();
+
 		UserEntity? user = _dbContext.Users.Find(id);
 		if (user == null)
 			throw new("User not found.");
