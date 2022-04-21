@@ -26,9 +26,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Core.Asset
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Core.Encryption", "DevilDaggersInfo.Core.Encryption\DevilDaggersInfo.Core.Encryption.csproj", "{6F010EA4-496C-49C5-B947-82BA4EDA2648}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.SourceGen.Core.Wiki", "DevilDaggersInfo.SourceGen.Core.Wiki\DevilDaggersInfo.SourceGen.Core.Wiki.csproj", "{3B98ACA6-2DD1-430D-948A-2796E4C4A866}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Core.Wiki.SourceGen", "DevilDaggersInfo.Core.Wiki.SourceGen\DevilDaggersInfo.Core.Wiki.SourceGen.csproj", "{3B98ACA6-2DD1-430D-948A-2796E4C4A866}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.SourceGen.Core.Asset", "DevilDaggersInfo.SourceGen.Core.Asset\DevilDaggersInfo.SourceGen.Core.Asset.csproj", "{2BE3E7C9-DEAF-4D2C-ADFC-40EA3FE3D325}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Core.Asset.SourceGen", "DevilDaggersInfo.Core.Asset.SourceGen\DevilDaggersInfo.Core.Asset.SourceGen.csproj", "{2BE3E7C9-DEAF-4D2C-ADFC-40EA3FE3D325}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Common", "DevilDaggersInfo.Common\DevilDaggersInfo.Common.csproj", "{A45271DA-D8D2-4BAA-83BA-31115C4FD702}"
 EndProject
@@ -57,9 +57,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Core.Mod.T
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.CommonTest", "DevilDaggersInfo.CommonTest\DevilDaggersInfo.CommonTest.csproj", "{FFBD67EF-A0A6-41BD-8D4D-4AD440D5630F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Core.SourceGen", "DevilDaggersInfo.Core.SourceGen\DevilDaggersInfo.Core.SourceGen.csproj", "{71600AEE-1165-47E4-B45B-8313ED904E58}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SourceGen", "SourceGen", "{7682E92D-1D1A-4238-BFF2-D998A5FD392C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.CommonSourceGen", "DevilDaggersInfo.CommonSourceGen\DevilDaggersInfo.CommonSourceGen.csproj", "{71600AEE-1165-47E4-B45B-8313ED904E58}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart", "DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart\DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.csproj", "{AFE93FD3-7CB5-43AC-816E-987D75F98DDF}"
 EndProject
@@ -192,10 +190,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{3B98ACA6-2DD1-430D-948A-2796E4C4A866} = {7682E92D-1D1A-4238-BFF2-D998A5FD392C}
-		{2BE3E7C9-DEAF-4D2C-ADFC-40EA3FE3D325} = {7682E92D-1D1A-4238-BFF2-D998A5FD392C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E27EC676-81BF-4099-BFC9-20E860CE83A5}
