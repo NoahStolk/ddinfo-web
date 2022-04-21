@@ -14,7 +14,6 @@ internal sealed class GlslFileHandler : IFileHandler
 
 	public byte[] Compile(byte[] buffer)
 	{
-		// TODO: Validate if file contains both "// Vert" and "// Frag" (or without space -- case insensitive).
 		throw new NotImplementedException();
 	}
 
@@ -30,7 +29,6 @@ internal sealed class GlslFileHandler : IFileHandler
 		byte[] fragmentBuffer = new byte[fragmentSize];
 		Buffer.BlockCopy(buffer, nameLength + HeaderSize + vertexSize, fragmentBuffer, 0, fragmentSize);
 
-		// TODO: Add comments at beginning of buffers in case of old shader binaries that don't start with // Vert or // Frag.
 		return vertexBuffer.Concat(fragmentBuffer).ToArray();
 	}
 }

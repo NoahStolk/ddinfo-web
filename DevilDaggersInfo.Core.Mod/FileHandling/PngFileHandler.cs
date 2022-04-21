@@ -6,6 +6,8 @@ namespace DevilDaggersInfo.Core.Mod.FileHandling;
 
 internal sealed class PngFileHandler : IFileHandler
 {
+	private const ushort _header = 16401;
+
 	private static readonly Lazy<PngFileHandler> _lazy = new(() => new());
 
 	private PngFileHandler()
@@ -24,7 +26,7 @@ internal sealed class PngFileHandler : IFileHandler
 
 		byte mipmapCount = MipmapUtils.GetMipmapCount(image.Width, image.Height);
 
-		bw.Write((ushort)16401);
+		bw.Write(_header);
 		bw.Write(image.Width);
 		bw.Write(image.Height);
 		bw.Write(mipmapCount);
@@ -33,7 +35,7 @@ internal sealed class PngFileHandler : IFileHandler
 
 		for (int i = 0; i < mipmapCount; i++)
 		{
-			if (i != 0)
+			if (i > 0)
 				image.Mutate(ipc => ipc.Resize(image.Width / 2, image.Height / 2));
 
 			image.ProcessPixelRows(pixelAccessor =>
@@ -58,14 +60,28 @@ internal sealed class PngFileHandler : IFileHandler
 
 	public byte[] Extract(byte[] buffer)
 	{
-		int width = BitConverter.ToInt32(buffer, 2);
-		int height = BitConverter.ToInt32(buffer, 6);
+		using MemoryStream ms = new(buffer);
+		using BinaryReader br = new(ms);
+		ushort header = br.ReadUInt16();
+		if (header != _header)
+			throw new InvalidModBinaryException($"Invalid texture header. Should be {header} but got {_header}.");
 
-		using Image<Rgba32> image = Image.LoadPixelData<Rgba32>(buffer[HeaderSize..], width, height);
+		int width = br.ReadInt32();
+		int height = br.ReadInt32();
+		if (width < 0 || height < 0)
+			throw new InvalidModBinaryException($"Texture dimensions cannot be negative ({width}x{height}).");
+
+		_ = br.ReadByte(); // Mipmap count
+
+		int minimumSize = width * height * 4 + HeaderSize;
+		if (buffer.Length < minimumSize)
+			throw new InvalidModBinaryException($"Invalid texture. Not enough pixel data for complete texture ({buffer.Length:N0} / {minimumSize:N0}).");
+
+		using Image<Rgba32> image = Image.LoadPixelData<Rgba32>(br.ReadBytes(width * height * 4), width, height);
 		image.Mutate(ipc => ipc.Flip(FlipMode.Vertical));
 
-		using MemoryStream ms = new();
-		image.SaveAsPng(ms);
-		return ms.ToArray();
+		using MemoryStream outputStream = new();
+		image.SaveAsPng(outputStream);
+		return outputStream.ToArray();
 	}
 }
