@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Native.Editor.Asset.Wpf.Services;
+using DevilDaggersInfo.Web.BlazorWasm.Client.Editor.Asset.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
 
@@ -9,6 +11,8 @@ public partial class MainWindow : Window
 	{
 		ServiceCollection serviceCollection = new();
 		serviceCollection.AddWpfBlazorWebView();
+		serviceCollection.AddSingleton<IErrorReporter, ErrorReporter>();
+		serviceCollection.AddSingleton<IFileSystemService, FileSystemService>();
 		Resources.Add("services", serviceCollection.BuildServiceProvider());
 
 		InitializeComponent();
