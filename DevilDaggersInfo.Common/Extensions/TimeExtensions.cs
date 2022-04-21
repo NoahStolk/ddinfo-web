@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Core.Extensions;
+namespace DevilDaggersInfo.Common.Extensions;
 
 public static class TimeExtensions
 {

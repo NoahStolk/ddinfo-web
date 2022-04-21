@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Core.Extensions;
+using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Enums;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Constants;

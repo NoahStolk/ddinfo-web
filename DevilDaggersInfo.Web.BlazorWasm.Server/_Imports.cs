@@ -1,6 +1,6 @@
+global using DevilDaggersInfo.Common.Extensions;
 global using DevilDaggersInfo.Core.Asset;
 global using DevilDaggersInfo.Core.Asset.Enums;
-global using DevilDaggersInfo.Core.Extensions;
 global using DevilDaggersInfo.Core.Mod;
 global using DevilDaggersInfo.Core.Mod.Enums;
 global using DevilDaggersInfo.Core.Mod.Exceptions;
