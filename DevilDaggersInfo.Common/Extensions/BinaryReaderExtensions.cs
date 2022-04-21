@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace DevilDaggersInfo.Core.Extensions;
 
 public static class BinaryReaderExtensions

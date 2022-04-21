@@ -2,10 +2,10 @@
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" />
-    <ProjectReference Include="..\DevilDaggersInfo.Core.Replay\DevilDaggersInfo.Core.Replay.csproj" />
-    <ProjectReference Include="..\DevilDaggersInfo.Core\DevilDaggersInfo.Core.csproj" />
+    <ProjectReference Include="..\DevilDaggersInfo.Common\DevilDaggersInfo.Common.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.Core.Asset\DevilDaggersInfo.Core.Asset.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.Core.Mod\DevilDaggersInfo.Core.Mod.csproj" />
+    <ProjectReference Include="..\DevilDaggersInfo.Core.Replay\DevilDaggersInfo.Core.Replay.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.Core.Spawnset\DevilDaggersInfo.Core.Spawnset.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.Core.Wiki\DevilDaggersInfo.Core.Wiki.csproj" />
   </ItemGroup>
