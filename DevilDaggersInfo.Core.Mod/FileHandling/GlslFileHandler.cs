@@ -19,16 +19,17 @@ internal sealed class GlslFileHandler : IFileHandler
 
 	public byte[] Extract(byte[] buffer)
 	{
-		int nameLength = BitConverter.ToInt32(buffer, 0);
-		int vertexSize = BitConverter.ToInt32(buffer, 4);
-		int fragmentSize = BitConverter.ToInt32(buffer, 8);
+		using MemoryStream ms = new(buffer);
+		using BinaryReader br = new(ms);
 
-		byte[] vertexBuffer = new byte[vertexSize];
-		Buffer.BlockCopy(buffer, nameLength + HeaderSize, vertexBuffer, 0, vertexSize);
+		int nameLength = br.ReadInt32();
+		int vertexSize = br.ReadInt32();
+		int fragmentSize = br.ReadInt32();
+		_ = br.ReadBytes(nameLength); // Name
+		byte[] vertexBuffer = br.ReadBytes(vertexSize);
+		byte[] fragmentBuffer = br.ReadBytes(fragmentSize);
 
-		byte[] fragmentBuffer = new byte[fragmentSize];
-		Buffer.BlockCopy(buffer, nameLength + HeaderSize + vertexSize, fragmentBuffer, 0, fragmentSize);
-
+		// TODO: Return as separate buffers.
 		return vertexBuffer.Concat(fragmentBuffer).ToArray();
 	}
 }
