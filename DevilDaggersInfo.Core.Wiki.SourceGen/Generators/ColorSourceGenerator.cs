@@ -5,7 +5,7 @@ public class ColorSourceGenerator : IIncrementalGenerator
 {
 	private const string _className = $"%{nameof(_className)}%";
 	private const string _colorFields = $"%{nameof(_colorFields)}%";
-	private const string _template = $@"namespace DevilDaggersInfo.Core.Wiki.Colors;
+	private const string _template = $@"namespace DevilDaggersInfo.Core.Wiki;
 
 public static class {_className}
 {{
