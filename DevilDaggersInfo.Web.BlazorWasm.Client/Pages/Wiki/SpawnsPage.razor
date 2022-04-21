@@ -2,17 +2,16 @@
 @inject PublicApiHttpClient Http
 @using DevilDaggersInfo.Core.Spawnset
 @using DevilDaggersInfo.Core.Spawnset.View
+@using DevilDaggersInfo.Core.Wiki.Extensions
+@using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Input
 @using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Spawnsets
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Spawnsets
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
 
 <Heading Title="Spawns" />
 
-<Select @onchange="UpdateGameVersion" class="bg-gray-1 transition-colors duration-100 h-8 py-1 rounded text-color-text">
-	<option value=@GameVersion.V1_0>V1</option>
-	<option value=@GameVersion.V2_0>V2</option>
-	<option value=@GameVersion.V3_0 selected>V3</option>
-</Select>
+<SelectList CssWidthClass="w-48" CssOpenerClass="pl-2" TValue="GameVersion" Values="@_allowedGameVersions" DisplayFunction="@(gv => gv.ToDisplayString())" Default="GameVersion.V3_0" Selected="@(gv => Fetch(gv))" />
+
 <p class="para">
 	These are all the spawn times for Devil Daggers.
 </p>
@@ -25,46 +24,12 @@
 	@note
 </p>
 
-@if (SpawnsView == null)
+@if (_spawnsView == null)
 {
 	<Loading />
 }
 else
 {
-	<SpawnsetSpawns SpawnsView=SpawnsView GameVersion=GameVersion />
-}
-
-@code
-{
-	public GameVersion GameVersion { get; set; } = GameVersion.V3_0;
-
-	public SpawnsView? SpawnsView { get; set; }
-
-	protected override async Task OnInitializedAsync()
-	{
-		await Fetch();
-	}
-
-	private async Task Fetch()
-	{
-		byte[] spawnsetBytes = await Http.GetDefaultSpawnset(GameVersion);
-
-		if (!SpawnsetBinary.TryParse(spawnsetBytes, out SpawnsetBinary? spawnset))
-		{
-			// TODO: Show error with error boundary.
-			return;
-		}
-
-		SpawnsView = new(spawnset, GameVersion);
-	}
-
-	private async Task UpdateGameVersion(ChangeEventArgs e)
-	{
-		SpawnsView = null;
-
-		string? value = e.Value?.ToString();
-		GameVersion = value == null ? GameVersion.V3_0 : Enum.Parse<GameVersion>(value);
-
-		await Fetch();
-	}
+	<SpawnsetSpawns SpawnsView=_spawnsView GameVersion=GameVersion />
+	<button class="btn btn-red px-1" @onclick="() => IncreaseWaveCount(10)">Show more waves</button>
 }
