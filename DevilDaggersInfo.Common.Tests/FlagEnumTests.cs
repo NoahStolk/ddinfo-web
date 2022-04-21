@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Test.Core;
+namespace DevilDaggersInfo.Common.Tests;
 
 [TestClass]
 public class FlagEnumTests

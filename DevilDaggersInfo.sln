@@ -12,15 +12,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Web.Tool.L
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Web.Tool.LeaderboardHighscoreStatsSpreader", "DevilDaggersInfo.Web.Tool.LeaderboardHighscoreStatsSpreader\DevilDaggersInfo.Web.Tool.LeaderboardHighscoreStatsSpreader.csproj", "{B11627A5-9A22-4E5F-8B35-C27869339BA7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Test.Web.BlazorWasm.Server", "DevilDaggersInfo.Test.Web.BlazorWasm.Server\DevilDaggersInfo.Test.Web.BlazorWasm.Server.csproj", "{CB715CD9-FB6A-4E79-B9C0-830833223D91}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Web.BlazorWasm.Server.Tests", "DevilDaggersInfo.Web.BlazorWasm.Server.Tests\DevilDaggersInfo.Web.BlazorWasm.Server.Tests.csproj", "{CB715CD9-FB6A-4E79-B9C0-830833223D91}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Core.Spawnset", "DevilDaggersInfo.Core.Spawnset\DevilDaggersInfo.Core.Spawnset.csproj", "{F899EBF6-12A0-49B8-A163-511F3E92E991}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Test.Core.Spawnset", "DevilDaggersInfo.Test.Core.Spawnset\DevilDaggersInfo.Test.Core.Spawnset.csproj", "{77938023-7892-4211-8E07-03522DF7CFD7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Core.Spawnset.Tests", "DevilDaggersInfo.Core.Spawnset.Tests\DevilDaggersInfo.Core.Spawnset.Tests.csproj", "{77938023-7892-4211-8E07-03522DF7CFD7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Core.Wiki", "DevilDaggersInfo.Core.Wiki\DevilDaggersInfo.Core.Wiki.csproj", "{BA3418E3-BC09-4F07-9A84-79379BA02DCC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Test.Core.Wiki", "DevilDaggersInfo.Test.Core.Wiki\DevilDaggersInfo.Test.Core.Wiki.csproj", "{07BBEC96-50D3-49A2-934F-AC8BB7E8BB0D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Core.Wiki.Tests", "DevilDaggersInfo.Core.Wiki.Tests\DevilDaggersInfo.Core.Wiki.Tests.csproj", "{07BBEC96-50D3-49A2-934F-AC8BB7E8BB0D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Core.Asset", "DevilDaggersInfo.Core.Asset\DevilDaggersInfo.Core.Asset.csproj", "{E855606F-5DFB-407F-979B-C2F25DC05C5D}"
 EndProject
@@ -32,7 +32,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.SourceGen.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Common", "DevilDaggersInfo.Common\DevilDaggersInfo.Common.csproj", "{A45271DA-D8D2-4BAA-83BA-31115C4FD702}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Test.Core", "DevilDaggersInfo.Test.Core\DevilDaggersInfo.Test.Core.csproj", "{79C2EF91-46DF-4E4D-A083-57C34D15A890}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Common.Tests", "DevilDaggersInfo.Common.Tests\DevilDaggersInfo.Common.Tests.csproj", "{79C2EF91-46DF-4E4D-A083-57C34D15A890}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Core.Mod", "DevilDaggersInfo.Core.Mod\DevilDaggersInfo.Core.Mod.csproj", "{1C25E368-6E37-4144-AAC7-EBA5475BD833}"
 EndProject
@@ -53,13 +53,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Test.Core.Mod", "DevilDaggersInfo.Test.Core.Mod\DevilDaggersInfo.Test.Core.Mod.csproj", "{4E3108DD-0F00-45E6-89E9-4F27BCAEF08E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Core.Mod.Tests", "DevilDaggersInfo.Core.Mod.Tests\DevilDaggersInfo.Core.Mod.Tests.csproj", "{4E3108DD-0F00-45E6-89E9-4F27BCAEF08E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.CommonTest", "DevilDaggersInfo.CommonTest\DevilDaggersInfo.CommonTest.csproj", "{FFBD67EF-A0A6-41BD-8D4D-4AD440D5630F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Core.SourceGen", "DevilDaggersInfo.Core.SourceGen\DevilDaggersInfo.Core.SourceGen.csproj", "{71600AEE-1165-47E4-B45B-8313ED904E58}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{DC8824FB-7C87-4391-A12D-109623A76064}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SourceGen", "SourceGen", "{7682E92D-1D1A-4238-BFF2-D998A5FD392C}"
 EndProject
@@ -69,7 +67,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Web.Blazor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Core.Replay", "DevilDaggersInfo.Core.Replay\DevilDaggersInfo.Core.Replay.csproj", "{1FCF3262-FC25-43E1-BDFC-C10CCA94CCAC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Test.Core.Replay", "DevilDaggersInfo.Test.Core.Replay\DevilDaggersInfo.Test.Core.Replay.csproj", "{B8E3A732-CFDA-41B2-8680-9EA868516633}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Core.Replay.Tests", "DevilDaggersInfo.Core.Replay.Tests\DevilDaggersInfo.Core.Replay.Tests.csproj", "{B8E3A732-CFDA-41B2-8680-9EA868516633}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Cmd.CreateReplay", "DevilDaggersInfo.Cmd.CreateReplay\DevilDaggersInfo.Cmd.CreateReplay.csproj", "{6BEED33C-F8F8-4884-85A3-FDD48C7C63E8}"
 EndProject
@@ -196,14 +194,8 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{CB715CD9-FB6A-4E79-B9C0-830833223D91} = {DC8824FB-7C87-4391-A12D-109623A76064}
-		{77938023-7892-4211-8E07-03522DF7CFD7} = {DC8824FB-7C87-4391-A12D-109623A76064}
-		{07BBEC96-50D3-49A2-934F-AC8BB7E8BB0D} = {DC8824FB-7C87-4391-A12D-109623A76064}
 		{3B98ACA6-2DD1-430D-948A-2796E4C4A866} = {7682E92D-1D1A-4238-BFF2-D998A5FD392C}
 		{2BE3E7C9-DEAF-4D2C-ADFC-40EA3FE3D325} = {7682E92D-1D1A-4238-BFF2-D998A5FD392C}
-		{79C2EF91-46DF-4E4D-A083-57C34D15A890} = {DC8824FB-7C87-4391-A12D-109623A76064}
-		{4E3108DD-0F00-45E6-89E9-4F27BCAEF08E} = {DC8824FB-7C87-4391-A12D-109623A76064}
-		{B8E3A732-CFDA-41B2-8680-9EA868516633} = {DC8824FB-7C87-4391-A12D-109623A76064}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E27EC676-81BF-4099-BFC9-20E860CE83A5}
