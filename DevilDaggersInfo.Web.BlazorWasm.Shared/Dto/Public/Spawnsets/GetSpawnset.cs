@@ -14,6 +14,8 @@ public record GetSpawnset
 
 	public string? HtmlDescription { get; init; }
 
+	public int? MaxDisplayWaves { get; init; }
+
 	public DateTime LastUpdated { get; init; }
 
 	public byte[] FileBytes { get; init; } = null!;
