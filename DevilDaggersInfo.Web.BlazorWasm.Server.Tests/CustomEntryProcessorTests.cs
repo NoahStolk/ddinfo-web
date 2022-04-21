@@ -2,13 +2,15 @@ using DevilDaggersInfo.Core.Encryption;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHashes;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Enums;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Exceptions;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Tests.Data;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Tests.Extensions;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System.Text;
 
-namespace DevilDaggersInfo.Test.Web.BlazorWasm.Server;
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Tests;
 
 [TestClass]
 public class CustomEntryProcessorTests

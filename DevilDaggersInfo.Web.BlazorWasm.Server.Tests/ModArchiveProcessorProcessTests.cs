@@ -6,7 +6,7 @@ using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.ModArchives;
 using System.IO.Compression;
 using System.Text;
 
-namespace DevilDaggersInfo.Test.Web.BlazorWasm.Server;
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Tests;
 
 [TestClass]
 public class ModArchiveProcessorProcessTests : ModArchiveProcessorTests

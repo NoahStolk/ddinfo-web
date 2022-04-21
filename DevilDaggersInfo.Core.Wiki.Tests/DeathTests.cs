@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Test.Core.Wiki;
+namespace DevilDaggersInfo.Core.Wiki.Tests;
 
 [TestClass]
 public class DeathTests

@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Test.Core.Mod;
+namespace DevilDaggersInfo.Core.Mod.Tests;
 
 [TestClass]
 public class BinaryFileNameTests

@@ -1,6 +1,6 @@
 using System.Security.Cryptography;
 
-namespace DevilDaggersInfo.Test.Core.Replay;
+namespace DevilDaggersInfo.Core.Replay.Tests;
 
 [TestClass]
 public class ReplayBinaryTests

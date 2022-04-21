@@ -1,9 +1,11 @@
 using DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Admin;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Tests.Data;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Tests.Extensions;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.CustomLeaderboards;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Extensions;
 
-namespace DevilDaggersInfo.Test.Web.BlazorWasm.Server;
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Tests;
 
 [TestClass]
 public class CustomLeaderboardTests

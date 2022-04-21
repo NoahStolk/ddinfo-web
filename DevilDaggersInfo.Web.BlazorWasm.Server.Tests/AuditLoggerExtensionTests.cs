@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Spawnsets;
 
-namespace DevilDaggersInfo.Test.Web.BlazorWasm.Server;
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Tests;
 
 [TestClass]
 public class AuditLoggerExtensionTests

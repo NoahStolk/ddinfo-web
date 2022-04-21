@@ -2,7 +2,7 @@ using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.ModArchives;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Enums;
 using System.IO.Compression;
 
-namespace DevilDaggersInfo.Test.Web.BlazorWasm.Server;
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Tests;
 
 public abstract class ModArchiveProcessorTests
 {

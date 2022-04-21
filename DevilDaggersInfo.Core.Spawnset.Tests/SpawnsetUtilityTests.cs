@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Test.Core.Spawnset;
+namespace DevilDaggersInfo.Core.Spawnset.Tests;
 
 [TestClass]
 public class SpawnsetUtilityTests

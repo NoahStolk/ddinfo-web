@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Test.Web.BlazorWasm.Server.Extensions;
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Tests.Extensions;
 
 public static class MockExtensions
 {
