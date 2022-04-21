@@ -15,9 +15,7 @@
     <PackageReference Include="Moq" />
     <PackageReference Include="MSTest.TestAdapter" />
     <PackageReference Include="MSTest.TestFramework" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\DevilDaggersInfo.Test\DevilDaggersInfo.Test.csproj" />
+    <ProjectReference Include="..\DevilDaggersInfo.CommonTest\DevilDaggersInfo.CommonTest.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.Web.BlazorWasm.Server\DevilDaggersInfo.Web.BlazorWasm.Server.csproj" />
   </ItemGroup>
   <ItemGroup>

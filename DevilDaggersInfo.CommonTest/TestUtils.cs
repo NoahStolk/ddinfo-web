@@ -9,6 +9,6 @@ public static class TestUtils
 	{
 		Assert.AreEqual(expected.Length, actual.Length, "Lengths were not equal.");
 		for (int i = 0; i < expected.Length; i++)
-			Assert.AreEqual(expected[i], actual[i], $"Bytes at position '{i}' were not equal.");
+			Assert.AreEqual(expected[i], actual[i], $"Items at position '{i}' were not equal.");
 	}
 }

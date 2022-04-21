@@ -55,7 +55,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Test.Core.Mod", "DevilDaggersInfo.Test.Core.Mod\DevilDaggersInfo.Test.Core.Mod.csproj", "{4E3108DD-0F00-45E6-89E9-4F27BCAEF08E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Test", "DevilDaggersInfo.Test\DevilDaggersInfo.Test.csproj", "{FFBD67EF-A0A6-41BD-8D4D-4AD440D5630F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.CommonTest", "DevilDaggersInfo.CommonTest\DevilDaggersInfo.CommonTest.csproj", "{FFBD67EF-A0A6-41BD-8D4D-4AD440D5630F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Core.SourceGen", "DevilDaggersInfo.Core.SourceGen\DevilDaggersInfo.Core.SourceGen.csproj", "{71600AEE-1165-47E4-B45B-8313ED904E58}"
 EndProject
@@ -71,7 +71,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Core.Repla
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Test.Core.Replay", "DevilDaggersInfo.Test.Core.Replay\DevilDaggersInfo.Test.Core.Replay.csproj", "{B8E3A732-CFDA-41B2-8680-9EA868516633}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevilDaggersInfo.Cmd.CreateReplay", "DevilDaggersInfo.Cmd.CreateReplay\DevilDaggersInfo.Cmd.CreateReplay.csproj", "{6BEED33C-F8F8-4884-85A3-FDD48C7C63E8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Cmd.CreateReplay", "DevilDaggersInfo.Cmd.CreateReplay\DevilDaggersInfo.Cmd.CreateReplay.csproj", "{6BEED33C-F8F8-4884-85A3-FDD48C7C63E8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -203,7 +203,6 @@ Global
 		{2BE3E7C9-DEAF-4D2C-ADFC-40EA3FE3D325} = {7682E92D-1D1A-4238-BFF2-D998A5FD392C}
 		{79C2EF91-46DF-4E4D-A083-57C34D15A890} = {DC8824FB-7C87-4391-A12D-109623A76064}
 		{4E3108DD-0F00-45E6-89E9-4F27BCAEF08E} = {DC8824FB-7C87-4391-A12D-109623A76064}
-		{FFBD67EF-A0A6-41BD-8D4D-4AD440D5630F} = {DC8824FB-7C87-4391-A12D-109623A76064}
 		{B8E3A732-CFDA-41B2-8680-9EA868516633} = {DC8824FB-7C87-4391-A12D-109623A76064}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
