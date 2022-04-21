@@ -8,6 +8,8 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Client.Pages.Custom.Spawnsets;
 
 public partial class SpawnsetPage
 {
+	private const int _defaultWaveCount = 40;
+
 	private bool _notFound;
 
 	[Inject] public PublicApiHttpClient Http { get; set; } = null!;
@@ -40,7 +42,7 @@ public partial class SpawnsetPage
 		}
 
 		SpawnsetBinary = spawnsetBinary;
-		SpawnsView = new(spawnsetBinary, GameConstants.CurrentVersion);
+		SpawnsView = new(spawnsetBinary, GameConstants.CurrentVersion, GetSpawnset.MaxDisplayWaves ?? _defaultWaveCount);
 		EffectivePlayerSettings = spawnsetBinary.GetEffectivePlayerSettings();
 	}
 }

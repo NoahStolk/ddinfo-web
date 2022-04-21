@@ -55,5 +55,6 @@ public static class SpawnsetConverters
 		Name = spawnset.Name,
 		CustomLeaderboardId = customLeaderboardId,
 		HtmlDescription = spawnset.HtmlDescription,
+		MaxDisplayWaves = spawnset.MaxDisplayWaves,
 	};
 }
