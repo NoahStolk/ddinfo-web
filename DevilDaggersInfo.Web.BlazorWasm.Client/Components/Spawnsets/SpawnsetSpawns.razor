@@ -29,7 +29,7 @@ else
 		{
 			for (int i = 0; i < SpawnsView.Waves.Length; i++)
 			{
-				<div class="font-goethe text-xl bg-dark-red">WAVE @(i + 1)</div>
+				<div class="font-goethe text-xl bg-dark-red pl-1">WAVE @(i + 1)</div>
 				@foreach (SpawnView sv in SpawnsView.Waves[i])
 				{
 					<Spawn SpawnView=sv GameVersion=GameVersion />
