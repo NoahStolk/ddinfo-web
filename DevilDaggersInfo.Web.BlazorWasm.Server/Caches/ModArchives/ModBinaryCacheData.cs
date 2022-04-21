@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Core.Mod.Utils;
+
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Caches.ModArchives;
 
 public class ModBinaryCacheData
@@ -19,7 +21,11 @@ public class ModBinaryCacheData
 
 	public static ModBinaryCacheData CreateFromFile(string fileName, byte[] fileContents)
 	{
-		ModBinary modBinary = new(fileName, fileContents, ModBinaryReadComprehensiveness.TocAndLoudness);
+		ModBinaryType binaryTypeFromFileName = BinaryFileNameUtils.GetBinaryTypeBasedOnFileName(fileName);
+
+		ModBinary modBinary = new(fileContents, ModBinaryReadComprehensiveness.TocAndLoudness);
+		if (modBinary.ModBinaryType != binaryTypeFromFileName)
+			throw new InvalidModBinaryException($"Binary '{fileName}' has type mismatch; file name claims '{binaryTypeFromFileName}' but file contents claim '{modBinary.ModBinaryType}'.");
 
 		List<ModChunkCacheData> chunks = modBinary.Chunks.ConvertAll(c =>
 		{

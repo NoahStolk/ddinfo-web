@@ -13,7 +13,7 @@ public class ModBinaryTests
 	{
 		string filePath = Path.Combine(TestUtils.ResourcePath, fileName);
 		byte[] originalBytes = File.ReadAllBytes(filePath);
-		ModBinary modBinary = new(fileName, originalBytes, ModBinaryReadComprehensiveness.All);
+		ModBinary modBinary = new(originalBytes, ModBinaryReadComprehensiveness.All);
 		byte[] bytes = modBinary.Compile();
 
 		TestUtils.AssertArrayContentsEqual(originalBytes, bytes);
@@ -25,7 +25,7 @@ public class ModBinaryTests
 		const string fileName = "dd-maken";
 		string filePath = Path.Combine(TestUtils.ResourcePath, fileName);
 		byte[] originalBytes = File.ReadAllBytes(filePath);
-		ModBinary modBinary = new(fileName, originalBytes, ModBinaryReadComprehensiveness.TocOnly);
+		ModBinary modBinary = new(originalBytes, ModBinaryReadComprehensiveness.TocOnly);
 
 		Assert.AreEqual(1, modBinary.Chunks.Count);
 		ModBinaryChunk chunk = modBinary.Chunks[0];
@@ -40,7 +40,7 @@ public class ModBinaryTests
 		const string fileName = "dd-nohand";
 		string filePath = Path.Combine(TestUtils.ResourcePath, fileName);
 		byte[] originalBytes = File.ReadAllBytes(filePath);
-		ModBinary modBinary = new(fileName, originalBytes, ModBinaryReadComprehensiveness.TocOnly);
+		ModBinary modBinary = new(originalBytes, ModBinaryReadComprehensiveness.TocOnly);
 
 		Assert.AreEqual(8, modBinary.Chunks.Count);
 

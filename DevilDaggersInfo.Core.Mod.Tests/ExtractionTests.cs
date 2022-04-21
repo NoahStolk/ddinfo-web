@@ -4,12 +4,15 @@ namespace DevilDaggersInfo.Core.Mod.Tests;
 public class ExtractionTests
 {
 	[DataTestMethod]
-	[DataRow("dd-texture", "pedeblackbody", "pedeblackbody.png")]
-	[DataRow("dd-iconmaskhoming", "iconmaskhoming", "iconmaskhoming.png")]
-	public void ExtractTextureAndCompareToSourcePng(string modFileName, string assetName, string sourcePngFileName)
+	[DataRow(ModBinaryType.Dd, "dd-texture", "pedeblackbody", "pedeblackbody.png")]
+	[DataRow(ModBinaryType.Dd, "dd-iconmaskhoming", "iconmaskhoming", "iconmaskhoming.png")]
+	public void ExtractTextureAndCompareToSourcePng(ModBinaryType expectedBinaryType, string modFileName, string assetName, string sourcePngFileName)
 	{
 		string filePath = Path.Combine(TestUtils.ResourcePath, modFileName);
-		ModBinary modBinary = new(modFileName, File.ReadAllBytes(filePath), ModBinaryReadComprehensiveness.All);
+		ModBinary modBinary = new(File.ReadAllBytes(filePath), ModBinaryReadComprehensiveness.All);
+		Assert.AreEqual(expectedBinaryType, modBinary.ModBinaryType);
+		Assert.AreEqual(expectedBinaryType, BinaryFileNameUtils.GetBinaryTypeBasedOnFileName(modFileName));
+
 		KeyValuePair<AssetKey, AssetData> asset = modBinary.AssetMap.First(kvp => kvp.Key.AssetName == assetName);
 
 		byte[] extractedPngContents = AssetConverter.Extract(asset.Key.AssetType, asset.Value);

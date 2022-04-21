@@ -8,24 +8,23 @@ public class ModBinary
 
 	private readonly ModBinaryReadComprehensiveness _readComprehensiveness;
 
-	public ModBinary(string fileName, byte[] fileContents, ModBinaryReadComprehensiveness readComprehensiveness)
+	public ModBinary(byte[] fileContents, ModBinaryReadComprehensiveness readComprehensiveness)
 	{
-		ModBinaryType modBinaryType = BinaryFileNameUtils.GetBinaryTypeBasedOnFileName(fileName);
-
 		if (fileContents.Length < _fileHeaderSize)
-			throw new InvalidModBinaryException($"Binary '{fileName}' is not a valid binary; file must be at least {_fileHeaderSize} bytes in length.");
+			throw new InvalidModBinaryException($"Invalid binary; must be at least {_fileHeaderSize} bytes in length.");
 
 		using MemoryStream ms = new(fileContents);
 		using BinaryReader br = new(ms);
 		ulong fileIdentifier = br.ReadUInt64();
 		if (fileIdentifier != FileIdentifier)
-			throw new InvalidModBinaryException($"Binary '{fileName}' is not a valid binary; incorrect header values.");
+			throw new InvalidModBinaryException("Invalid binary; incorrect header values.");
 
 		uint tocSize = br.ReadUInt32();
 		if (tocSize > fileContents.Length - _fileHeaderSize)
-			throw new InvalidModBinaryException($"Binary '{fileName}' is not a valid binary; TOC size is larger than the remaining amount of file bytes.");
+			throw new InvalidModBinaryException("Invalid binary; TOC size is larger than the remaining amount of bytes.");
 
 		// Read TOC into chunks.
+		ModBinaryType? modBinaryType = null;
 		List<ModBinaryChunk> chunks = new();
 		while (br.BaseStream.Position < _fileHeaderSize + tocSize)
 		{
@@ -44,6 +43,11 @@ public class ModBinary
 			_ = br.ReadInt32();
 
 			chunks.Add(new(name, offset, size, assetType.Value));
+
+			if (!modBinaryType.HasValue)
+				modBinaryType = assetType == AssetType.Audio ? ModBinaryType.Audio : ModBinaryType.Dd;
+			else
+				ValidateAssetType(modBinaryType.Value, assetType.Value);
 		}
 
 		// Read assets.
@@ -71,7 +75,7 @@ public class ModBinary
 			}
 		}
 
-		ModBinaryType = modBinaryType;
+		ModBinaryType = modBinaryType ?? throw new InvalidModBinaryException("Could not automatically determine binary type (most likely because there are no chunks).");
 		Chunks = chunks;
 
 		_readComprehensiveness = readComprehensiveness;
@@ -95,10 +99,7 @@ public class ModBinary
 
 	public void AddAsset(string assetName, AssetType assetType, byte[] fileContents)
 	{
-		if (assetType == AssetType.Audio && ModBinaryType != ModBinaryType.Audio)
-			throw new InvalidModCompilationException($"Cannot add an audio asset to a mod of type '{ModBinaryType}'.");
-		if (assetType != AssetType.Audio && ModBinaryType == ModBinaryType.Audio)
-			throw new InvalidModCompilationException("Cannot add a non-audio asset to an audio mod.");
+		ValidateAssetType(ModBinaryType, assetType);
 
 		AssetMap.Add(new(assetType, assetName), AssetConverter.Compile(assetType, fileContents));
 
@@ -115,6 +116,14 @@ public class ModBinary
 		}
 
 		// TODO: Loudness.
+	}
+
+	private static void ValidateAssetType(ModBinaryType modBinaryType, AssetType assetType)
+	{
+		if (assetType == AssetType.Audio && modBinaryType != ModBinaryType.Audio)
+			throw new InvalidModCompilationException($"Cannot add an audio asset to a mod of type '{modBinaryType}'.");
+		if (assetType != AssetType.Audio && modBinaryType == ModBinaryType.Audio)
+			throw new InvalidModCompilationException("Cannot add a non-audio asset to an audio mod.");
 	}
 
 	public void ExtractAssets(string outputDirectory)
