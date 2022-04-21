@@ -1,9 +1,9 @@
 @using DevilDaggersInfo.Core.Mod
 
 <ul>
-	@foreach (AssetKey ak in _assets)
+	@foreach (AssetKey asset in _assets)
 	{
-		<li>@ak.AssetType - @ak.AssetName</li>
+		<li>@asset.AssetType - @asset.AssetName</li>
 	}
 </ul>
 

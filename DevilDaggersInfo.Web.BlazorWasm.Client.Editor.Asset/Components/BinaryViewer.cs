@@ -18,6 +18,8 @@ public partial class BinaryViewer
 
 	public void ReadBinary()
 	{
+		_assets.Clear();
+
 		IFileSystemService.FileResult? fileResult = FileSystemService.Open();
 		if (fileResult == null)
 			return;
