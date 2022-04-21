@@ -1,3 +1,4 @@
+global using DevilDaggersInfo.CommonTest;
 global using DevilDaggersInfo.Core.Spawnset;
 global using DevilDaggersInfo.Core.Spawnset.Enums;
 global using DevilDaggersInfo.Core.Spawnset.Summary;

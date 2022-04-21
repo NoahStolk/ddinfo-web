@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Test;
+namespace DevilDaggersInfo.CommonTest;
 
 public static class TestUtils
 {
