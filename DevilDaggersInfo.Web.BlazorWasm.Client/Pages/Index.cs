@@ -1,7 +1,6 @@
 using DevilDaggersInfo.Web.BlazorWasm.Client.HttpClients;
 using DevilDaggersInfo.Web.BlazorWasm.Client.InternalModels;
 using Microsoft.AspNetCore.Components;
-using System;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Client.Pages;
 

@@ -1,15 +1,9 @@
 using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Core.Spawnset.Enums;
-using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Data;
-using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options.LineChart;
-using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Utils;
+using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.JsRuntime;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Core.Unmarshalled;
 using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Options;
 using Microsoft.JSInterop;
-using System.Data;
-using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.JsRuntime;
-using System.Numerics;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Client.Components.Spawnsets;
 

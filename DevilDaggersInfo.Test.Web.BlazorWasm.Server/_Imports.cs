@@ -9,8 +9,6 @@ global using DevilDaggersInfo.Web.BlazorWasm.Server.Utils;
 global using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
 global using JetBrains.Annotations;
 global using Microsoft.AspNetCore.Hosting;
-global using Microsoft.AspNetCore.Http;
-global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.Extensions.Hosting;
 global using Microsoft.VisualStudio.TestTools.UnitTesting;

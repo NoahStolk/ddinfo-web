@@ -1,6 +1,4 @@
-using DevilDaggersInfo.Web.BlazorWasm.Client.Extensions;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Pages;
-using DevilDaggersInfo.Web.BlazorWasm.Client.Utils;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Constants;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Extensions;

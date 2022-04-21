@@ -1,7 +1,5 @@
 using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Data;
-using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options.LineChart;
-using DevilDaggersInfo.Web.BlazorWasm.Client.Utils;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Health;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Extensions;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;

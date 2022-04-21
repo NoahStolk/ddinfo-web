@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Components;
-
 namespace DevilDaggersInfo.Web.BlazorWasm.Client.Pages;
 
 public interface IHasNavigation

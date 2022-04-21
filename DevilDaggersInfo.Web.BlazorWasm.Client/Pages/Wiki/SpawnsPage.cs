@@ -1,5 +1,5 @@
-using DevilDaggersInfo.Core.Spawnset.View;
 using DevilDaggersInfo.Core.Spawnset;
+using DevilDaggersInfo.Core.Spawnset.View;
 using Microsoft.AspNetCore.Components;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Client.Pages.Wiki;
