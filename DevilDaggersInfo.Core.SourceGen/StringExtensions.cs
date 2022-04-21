@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace DevilDaggersInfo.SourceGen;
+namespace DevilDaggersInfo.Core.SourceGen;
 
 public static class StringExtensions
 {

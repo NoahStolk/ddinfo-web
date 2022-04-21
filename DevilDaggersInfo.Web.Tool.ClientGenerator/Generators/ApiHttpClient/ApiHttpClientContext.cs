@@ -1,4 +1,4 @@
-using DevilDaggersInfo.SourceGen;
+using DevilDaggersInfo.Core.SourceGen;
 using DevilDaggersInfo.Web.Tool.ClientGenerator.Extensions;
 using DevilDaggersInfo.Web.Tool.ClientGenerator.Generators.ApiHttpClient.Endpoints;
 using DevilDaggersInfo.Web.Tool.ClientGenerator.Generators.ApiHttpClient.Enums;
