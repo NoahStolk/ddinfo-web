@@ -1,6 +1,5 @@
 using DevilDaggersInfo.Core.Spawnset.Enums;
 using DevilDaggersInfo.Core.Spawnset.Extensions;
-using DevilDaggersInfo.Core.Wiki.Colors;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Data;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options.LineChart;
 using DevilDaggersInfo.Web.BlazorWasm.Client.HttpClients;

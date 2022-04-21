@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.SourceGen.Core.Wiki.Generators;
+namespace DevilDaggersInfo.Core.Wiki.SourceGen.Generators;
 
 [Generator]
 public class DaggerSourceGenerator : IIncrementalGenerator

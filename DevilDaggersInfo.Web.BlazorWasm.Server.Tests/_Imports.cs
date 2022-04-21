@@ -1,7 +1,5 @@
 global using DevilDaggersInfo.CommonTest;
 global using DevilDaggersInfo.Core.Spawnset;
-global using DevilDaggersInfo.Test.Web.BlazorWasm.Server.Data;
-global using DevilDaggersInfo.Test.Web.BlazorWasm.Server.Extensions;
 global using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
 global using DevilDaggersInfo.Web.BlazorWasm.Server.Extensions;
 global using DevilDaggersInfo.Web.BlazorWasm.Server.Services;

@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Core.SourceGen;
+using DevilDaggersInfo.CommonSourceGen;
 
 namespace DevilDaggersInfo.Web.Tool.ClientGenerator.Generators.ApiHttpClient.Endpoints;
 
