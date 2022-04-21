@@ -8,7 +8,7 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Client.Editor.Asset.Components;
 
 public partial class BinaryViewer
 {
-	private readonly List<AssetKey> _assets = new();
+	private ModBinary? _binary;
 
 	[Inject]
 	public IErrorReporter ErrorReporter { get; set; } = null!;
@@ -18,7 +18,7 @@ public partial class BinaryViewer
 
 	public void ReadBinary()
 	{
-		_assets.Clear();
+		_binary = null;
 
 		IFileSystemService.FileResult? fileResult = FileSystemService.Open();
 		if (fileResult == null)
@@ -26,8 +26,7 @@ public partial class BinaryViewer
 
 		try
 		{
-			ModBinary modBinary = new(Path.GetFileName(fileResult.Path), fileResult.Contents, ModBinaryReadComprehensiveness.TocOnly);
-			_assets.AddRange(modBinary.Chunks.Select(c => new AssetKey(c.AssetType, c.Name)));
+			_binary = new(fileResult.Contents, ModBinaryReadComprehensiveness.TocOnly);
 		}
 		catch (InvalidModBinaryException ex)
 		{

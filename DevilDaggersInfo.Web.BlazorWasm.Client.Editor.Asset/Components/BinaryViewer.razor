@@ -1,10 +1,17 @@
 @using DevilDaggersInfo.Core.Mod
 
-<ul>
-	@foreach (AssetKey asset in _assets)
-	{
-		<li>@asset.AssetType - @asset.AssetName</li>
-	}
-</ul>
+@if (_binary == null)
+{
+	<div>Select mod</div>
+}
+else
+{
+	<ul>
+		@foreach (ModBinaryChunk chunk in _binary.Chunks)
+		{
+			<li>@chunk.AssetType - @chunk.Name</li>
+		}
+	</ul>
+}
 
 <button @onclick="ReadBinary">Load</button>
