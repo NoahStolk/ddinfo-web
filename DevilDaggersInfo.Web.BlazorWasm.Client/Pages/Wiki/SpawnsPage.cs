@@ -8,7 +8,7 @@ public partial class SpawnsPage
 {
 	private const int _defaultWaveCount = 40;
 
-	private readonly List<GameVersion> _allowedGameVersions = new() { GameVersion.V1_0, GameVersion.V2_0, GameVersion.V3_0 };
+	private readonly IReadOnlyList<GameVersion> _allowedGameVersions = new List<GameVersion> { GameVersion.V1_0, GameVersion.V2_0, GameVersion.V3_0 };
 
 	private int _waveCount = _defaultWaveCount;
 	private SpawnsetBinary? _spawnset;
@@ -32,12 +32,7 @@ public partial class SpawnsPage
 		if (!SpawnsetBinary.TryParse(spawnsetBytes, out _spawnset))
 			return;
 
-		BuildSpawnsView(_spawnset);
-	}
-
-	private void BuildSpawnsView(SpawnsetBinary spawnset)
-	{
-		_spawnsView = new(spawnset, GameVersion, _waveCount);
+		_spawnsView = new(_spawnset, GameVersion, _waveCount);
 	}
 
 	private void IncreaseWaveCount(int amount)
@@ -46,6 +41,6 @@ public partial class SpawnsPage
 			return;
 
 		_waveCount += amount;
-		BuildSpawnsView(_spawnset);
+		_spawnsView = new(_spawnset, GameVersion, _waveCount);
 	}
 }
