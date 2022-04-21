@@ -15,8 +15,8 @@ public class ModArchiveCacheData
 			modTypes |= ModTypes.Audio;
 		if (ddBinary?.Chunks.Any(mccd => mccd.AssetType == AssetType.Shader) == true)
 			modTypes |= ModTypes.Shader;
-		if (ddBinary?.Chunks.Any(mccd => mccd.AssetType == AssetType.ModelBinding || mccd.AssetType == AssetType.Model) == true)
-			modTypes |= ModTypes.Model;
+		if (ddBinary?.Chunks.Any(mccd => mccd.AssetType == AssetType.ObjectBinding || mccd.AssetType == AssetType.Mesh) == true)
+			modTypes |= ModTypes.Mesh;
 		if (ddBinary?.Chunks.Any(mccd => mccd.AssetType == AssetType.Texture) == true)
 			modTypes |= ModTypes.Texture;
 

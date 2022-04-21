@@ -34,8 +34,8 @@ public class ModBinaryCacheData
 				ModBinaryType.Audio => AudioAudio.All.Find(a => a.AssetName == c.Name)?.IsProhibited ?? false,
 				ModBinaryType.Dd => c.AssetType switch
 				{
-					AssetType.ModelBinding => DdModelBindings.All.Find(a => a.AssetName == c.Name)?.IsProhibited ?? false,
-					AssetType.Model => DdModels.All.Find(a => a.AssetName == c.Name)?.IsProhibited ?? false,
+					AssetType.ObjectBinding => DdObjectBindings.All.Find(a => a.AssetName == c.Name)?.IsProhibited ?? false,
+					AssetType.Mesh => DdMeshes.All.Find(a => a.AssetName == c.Name)?.IsProhibited ?? false,
 					AssetType.Shader => DdShaders.All.Find(a => a.AssetName == c.Name)?.IsProhibited ?? false,
 					AssetType.Texture => DdTextures.All.Find(a => a.AssetName == c.Name)?.IsProhibited ?? false,
 					_ => throw new InvalidModBinaryException($"Binary '{fileName}', which is a '{modBinary.ModBinaryType}' binary file, contains an asset of type '{c.AssetType}', which is not supported."),

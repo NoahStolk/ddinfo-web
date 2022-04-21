@@ -19,8 +19,8 @@ public static class {_className}
 	private enum AssetType
 	{
 		Audio,
-		Model,
-		ModelBinding,
+		Mesh,
+		ObjectBinding,
 		Shader,
 		Texture,
 	}
@@ -40,8 +40,8 @@ public static class {_className}
 		AssetType assetType = className.TrimStart("Audio", "Core", "Dd") switch
 		{
 			"Audio" => AssetType.Audio,
-			"ModelBindings" => AssetType.ModelBinding,
-			"Models" => AssetType.Model,
+			"ObjectBindings" => AssetType.ObjectBinding,
+			"Meshes" => AssetType.Mesh,
 			"Shaders" => AssetType.Shader,
 			"Textures" => AssetType.Texture,
 			_ => throw new NotSupportedException(),
@@ -64,8 +64,8 @@ public static class {_className}
 			string ctorParameters = assetType switch
 			{
 				AssetType.Audio => GetCtorParametersAudio(parameters[0], bool.Parse(parameters[1]), float.Parse(parameters[2]), bool.Parse(parameters[3])),
-				AssetType.ModelBinding => GetCtorParametersModelBinding(parameters[0], bool.Parse(parameters[1])),
-				AssetType.Model => GetCtorParametersModel(parameters[0], bool.Parse(parameters[1]), int.Parse(parameters[2]), int.Parse(parameters[3])),
+				AssetType.ObjectBinding => GetCtorParametersObjectBinding(parameters[0], bool.Parse(parameters[1])),
+				AssetType.Mesh => GetCtorParametersMesh(parameters[0], bool.Parse(parameters[1]), int.Parse(parameters[2]), int.Parse(parameters[3])),
 				AssetType.Shader => GetCtorParametersShader(parameters[0], bool.Parse(parameters[1])),
 				AssetType.Texture => GetCtorParametersTexture(parameters[0], bool.Parse(parameters[1]), int.Parse(parameters[2]), int.Parse(parameters[3]), bool.Parse(parameters[4]), parameters.Length > 5 ? parameters[5] : null),
 				_ => throw new NotSupportedException(),
@@ -84,17 +84,17 @@ public static class {_className}
 		static string GetCtorParametersAudio(string assetName, bool isProhibited, float defaultLoudness, bool presentInDefaultLoudness)
 			=> $"{FormatString(assetName)}, {FormatBool(isProhibited)}, {FormatFloat(defaultLoudness)}, {FormatBool(presentInDefaultLoudness)}";
 
-		static string GetCtorParametersModelBinding(string assetName, bool isProhibited)
+		static string GetCtorParametersObjectBinding(string assetName, bool isProhibited)
 			=> $"{FormatString(assetName)}, {FormatBool(isProhibited)}";
 
-		static string GetCtorParametersModel(string assetName, bool isProhibited, int defaultIndexCount, int defaultVertexCount)
+		static string GetCtorParametersMesh(string assetName, bool isProhibited, int defaultIndexCount, int defaultVertexCount)
 			=> $"{FormatString(assetName)}, {FormatBool(isProhibited)}, {defaultIndexCount}, {defaultVertexCount}";
 
 		static string GetCtorParametersShader(string assetName, bool isProhibited)
 			=> $"{FormatString(assetName)}, {FormatBool(isProhibited)}";
 
-		static string GetCtorParametersTexture(string assetName, bool isProhibited, int defaultWidth, int defaultHeight, bool isModelTexture, string? modelBinding)
-			=> $"{FormatString(assetName)}, {FormatBool(isProhibited)}, {defaultWidth}, {defaultHeight}, {isModelTexture.ToString().ToLower()}, {FormatString(modelBinding)}";
+		static string GetCtorParametersTexture(string assetName, bool isProhibited, int defaultWidth, int defaultHeight, bool isTextureForMesh, string? objectBinding)
+			=> $"{FormatString(assetName)}, {FormatBool(isProhibited)}, {defaultWidth}, {defaultHeight}, {isTextureForMesh.ToString().ToLower()}, {FormatString(objectBinding)}";
 
 		static string FormatBool(bool value)
 			=> value.ToString().ToLower();

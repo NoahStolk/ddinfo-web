@@ -4,8 +4,8 @@ namespace DevilDaggersInfo.Core.Mod.Tests;
 public class ModBinaryTests
 {
 	[DataTestMethod]
-	[DataRow("dd-model")]
-	[DataRow("dd-model-shader-texture")]
+	[DataRow("dd-mesh")]
+	[DataRow("dd-mesh-shader-texture")]
 	[DataRow("dd-shader")]
 	[DataRow("dd-skull-1-2-same-texture-copied")]
 	[DataRow("dd-texture")]
@@ -50,7 +50,7 @@ public class ModBinaryTests
 		{
 			ModBinaryChunk chunk = modBinary.Chunks[i];
 			Assert.AreEqual(names[i], chunk.Name);
-			Assert.AreEqual(AssetType.Model, chunk.AssetType);
+			Assert.AreEqual(AssetType.Mesh, chunk.AssetType);
 			Assert.AreEqual(sizes[i], chunk.Size);
 		}
 	}

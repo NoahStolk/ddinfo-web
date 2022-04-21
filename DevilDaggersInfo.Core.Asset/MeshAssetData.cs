@@ -1,8 +1,8 @@
 namespace DevilDaggersInfo.Core.Asset;
 
-public class ModelAssetData : AssetData
+public class MeshAssetData : AssetData
 {
-	public ModelAssetData(string assetName, bool isProhibited, int defaultIndexCount, int defaultVertexCount)
+	public MeshAssetData(string assetName, bool isProhibited, int defaultIndexCount, int defaultVertexCount)
 		: base(assetName, isProhibited)
 	{
 		DefaultIndexCount = defaultIndexCount;
@@ -12,5 +12,5 @@ public class ModelAssetData : AssetData
 	public int DefaultIndexCount { get; }
 	public int DefaultVertexCount { get; }
 
-	public override AssetType AssetType => AssetType.Model;
+	public override AssetType AssetType => AssetType.Mesh;
 }

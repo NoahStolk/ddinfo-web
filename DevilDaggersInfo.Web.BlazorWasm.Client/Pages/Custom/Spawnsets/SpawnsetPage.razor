@@ -78,9 +78,9 @@ else
 				<div class="bg-gray-1 max-w-arena-table px-1">
 					<DataField Name="Effective hand">@EffectivePlayerSettings.HandLevel.ToDisplayString()</DataField>
 					<DataField Name="@($"Effective {(EffectivePlayerSettings.HandLevel is HandLevel.Level1 or HandLevel.Level2 ? "gems" : "homing")}")">@EffectivePlayerSettings.GemsOrHoming</DataField>
-					@if (EffectivePlayerSettings.HandLevel != EffectivePlayerSettings.HandModel)
+					@if (EffectivePlayerSettings.HandLevel != EffectivePlayerSettings.HandMesh)
 					{
-						<DataField Name="Effective hand model">@EffectivePlayerSettings.HandModel.ToDisplayString()</DataField>
+						<DataField Name="Effective hand mesh">@EffectivePlayerSettings.HandMesh.ToDisplayString()</DataField>
 					}
 				</div>
 			</div>
