@@ -1,8 +1,11 @@
+@using DevilDaggersInfo.Core.Asset
 @using DevilDaggersInfo.Core.Mod
+
+<button @onclick="ReadBinary">Load</button>
 
 @if (_binary == null)
 {
-	<div>Select mod</div>
+	<div>No binary selected</div>
 }
 else
 {
@@ -13,5 +16,3 @@ else
 		}
 	</ul>
 }
-
-<button @onclick="ReadBinary">Load</button>
