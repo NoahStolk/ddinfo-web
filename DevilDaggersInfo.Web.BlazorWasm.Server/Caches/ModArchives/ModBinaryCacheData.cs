@@ -27,24 +27,7 @@ public class ModBinaryCacheData
 		if (modBinary.ModBinaryType != binaryTypeFromFileName)
 			throw new InvalidModBinaryException($"Binary '{fileName}' has type mismatch; file name claims '{binaryTypeFromFileName}' but file contents claim '{modBinary.ModBinaryType}'.");
 
-		List<ModChunkCacheData> chunks = modBinary.Chunks.ConvertAll(c =>
-		{
-			bool isProhibited = modBinary.ModBinaryType switch
-			{
-				ModBinaryType.Audio => AudioAudio.All.Find(a => a.AssetName == c.Name)?.IsProhibited ?? false,
-				ModBinaryType.Dd => c.AssetType switch
-				{
-					AssetType.ObjectBinding => DdObjectBindings.All.Find(a => a.AssetName == c.Name)?.IsProhibited ?? false,
-					AssetType.Mesh => DdMeshes.All.Find(a => a.AssetName == c.Name)?.IsProhibited ?? false,
-					AssetType.Shader => DdShaders.All.Find(a => a.AssetName == c.Name)?.IsProhibited ?? false,
-					AssetType.Texture => DdTextures.All.Find(a => a.AssetName == c.Name)?.IsProhibited ?? false,
-					_ => throw new InvalidModBinaryException($"Binary '{fileName}', which is a '{modBinary.ModBinaryType}' binary file, contains an asset of type '{c.AssetType}', which is not supported."),
-				},
-				_ => throw new NotSupportedException($"Binary type '{modBinary.ModBinaryType}' is not supported."),
-			};
-
-			return new ModChunkCacheData(c.Name, c.Size, c.AssetType, isProhibited);
-		});
+		List<ModChunkCacheData> chunks = modBinary.Chunks.ConvertAll(c => new ModChunkCacheData(c.Name, c.Size, c.AssetType, AssetContainer.GetIsProhibited(c.AssetType, c.Name)));
 
 		ModBinaryChunk? loudnessChunk = modBinary.Chunks.Find(c => c.IsLoudness());
 		List<ModifiedLoudnessAssetCacheData>? modifiedLoudnessAssets = null;
