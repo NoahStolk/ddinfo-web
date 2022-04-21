@@ -7,14 +7,10 @@ public static class BinaryFileNameUtils
 		if (fileName.StartsWith("audio"))
 			return ModBinaryType.Audio;
 
-		// TODO: Must be "core" exactly.
-		if (fileName.StartsWith("core"))
-			return ModBinaryType.Core;
-
 		if (fileName.StartsWith("dd"))
 			return ModBinaryType.Dd;
 
-		throw new InvalidModBinaryException($"Binary '{fileName}' must start with 'audio', 'core', or 'dd'.");
+		throw new InvalidModBinaryException($"Binary '{fileName}' must start with 'audio' or 'dd'.");
 	}
 
 	public static string GetBinaryPrefix(ModBinaryType modBinaryType, string modName)
@@ -26,9 +22,6 @@ public static class BinaryFileNameUtils
 	{
 		if (fileName.StartsWith("audio"))
 			return fileName.Replace(GetBinaryPrefix(ModBinaryType.Audio, modName), string.Empty);
-
-		if (fileName.StartsWith("core"))
-			return fileName.Replace(GetBinaryPrefix(ModBinaryType.Core, modName), string.Empty);
 
 		if (fileName.StartsWith("dd"))
 			return fileName.Replace(GetBinaryPrefix(ModBinaryType.Dd, modName), string.Empty);

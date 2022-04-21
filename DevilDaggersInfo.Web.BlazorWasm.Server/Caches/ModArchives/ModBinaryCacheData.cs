@@ -32,7 +32,6 @@ public class ModBinaryCacheData
 			bool isProhibited = modBinary.ModBinaryType switch
 			{
 				ModBinaryType.Audio => AudioAudio.All.Find(a => a.AssetName == c.Name)?.IsProhibited ?? false,
-				ModBinaryType.Core => CoreShaders.All.Find(a => a.AssetName == c.Name)?.IsProhibited ?? false,
 				ModBinaryType.Dd => c.AssetType switch
 				{
 					AssetType.ModelBinding => DdModelBindings.All.Find(a => a.AssetName == c.Name)?.IsProhibited ?? false,

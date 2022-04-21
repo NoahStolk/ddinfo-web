@@ -13,7 +13,7 @@ public class ModArchiveCacheData
 		ModTypes modTypes = ModTypes.None;
 		if (Binaries.Any(mbcd => mbcd.ModBinaryType == ModBinaryType.Audio))
 			modTypes |= ModTypes.Audio;
-		if (Binaries.Any(mbcd => mbcd.ModBinaryType == ModBinaryType.Core) || ddBinary?.Chunks.Any(mccd => mccd.AssetType == AssetType.Shader) == true)
+		if (ddBinary?.Chunks.Any(mccd => mccd.AssetType == AssetType.Shader) == true)
 			modTypes |= ModTypes.Shader;
 		if (ddBinary?.Chunks.Any(mccd => mccd.AssetType == AssetType.ModelBinding || mccd.AssetType == AssetType.Model) == true)
 			modTypes |= ModTypes.Model;
