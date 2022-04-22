@@ -1,0 +1,126 @@
+@page "/custom/leaderboards"
+@using DevilDaggersInfo.Web.Shared.Enums
+@using DevilDaggersInfo.Web.Shared.Enums.Sortings.Public
+@using DevilDaggersInfo.Web.Shared.Dto.Public.CustomLeaderboards
+@inject PublicApiHttpClient Http
+@inject NavigationManager NavigationManager
+
+<Heading Title="Custom Leaderboards" />
+
+<p class="para">
+	Custom leaderboards are leaderboards for custom spawnsets. Read more about how to use spawnsets and participate in custom leaderboards <a class="link" href="/guides/using-spawnsets">here</a>.
+</p>
+
+<p class="para">
+	Check out the global custom leaderboards <a class="link" href="/custom/leaderboards/global">here</a>.
+</p>
+
+@if (GetCustomLeaderboards == null)
+{
+	<Loading />
+}
+else
+{
+	<div class="bg-gray-1 p-2 text-lg">
+		<div class="grid gap-2 grid-cols-2 max-w-md mb-2">
+			<span>Spawnset name</span>
+			<input class="bg-black border-gray-3 border-2 w-48" value="@SpawnsetFilter" @onchange="ChangeInputSpawnsetName" />
+			<span>Author name</span>
+			<input class="bg-black border-gray-3 border-2 w-48" value="@AuthorFilter" @onchange="ChangeInputAuthorName" />
+			<span>Category</span>
+			<SelectList CssWidthClass="w-48" CssOpenerClass="pl-2" TValue="CustomLeaderboardCategory" Values="@(Enum.GetValues<CustomLeaderboardCategory>().ToList())" DisplayFunction="@(clc => clc.ToDisplayString())" Default="EnumConvert.GetCustomLeaderboardCategory(Category)" Selected="@(clc => SetCategory(clc))" />
+		</div>
+
+		<CascadingValue Value="this">
+			<Paging />
+		</CascadingValue>
+	</div>
+
+	@if (GetCustomLeaderboards.Results.Count > 0)
+	{
+		<div class="grid gap-3 grid-cols-custom-leaderboards-sm md:grid-cols-custom-leaderboards-md lg:grid-cols-custom-leaderboards-lg xl:grid-cols-custom-leaderboards-xl 2xl:grid-cols-custom-leaderboards-2xl">
+			<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(CustomLeaderboardSorting.SpawnsetName)">Name</a></div>
+			<div class="hidden md:block"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(CustomLeaderboardSorting.AuthorName)">Author</a></div>
+			<div class="hidden md:block"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(CustomLeaderboardSorting.DateCreated)">Created</a></div>
+			<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(CustomLeaderboardSorting.DateLastPlayed)">Last played</a></div>
+			<div class="hidden 2xl:block text-right"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(CustomLeaderboardSorting.Submits)">Submits</a></div>
+			<div class="hidden 2xl:block text-right"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(CustomLeaderboardSorting.Players)">Players</a></div>
+			<div class="hidden xl:block text-right"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(CustomLeaderboardSorting.TimeBronze)">Bronze</a></div>
+			<div class="hidden xl:block text-right"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(CustomLeaderboardSorting.TimeSilver)">Silver</a></div>
+			<div class="hidden xl:block text-right"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(CustomLeaderboardSorting.TimeGolden)">Golden</a></div>
+			<div class="hidden xl:block text-right"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(CustomLeaderboardSorting.TimeDevil)">Devil</a></div>
+			<div class="hidden xl:block text-right"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(CustomLeaderboardSorting.TimeLeviathan)">Leviathan</a></div>
+			<div class="hidden lg:block"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(CustomLeaderboardSorting.TopPlayer)">Top player</a></div>
+			<div class="hidden lg:block text-right"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(CustomLeaderboardSorting.WorldRecord)">WR</a></div>
+		</div>
+		@for (int i = 0; i < GetCustomLeaderboards.Results.Count; i++)
+		{
+			GetCustomLeaderboardOverview customLeaderboard = GetCustomLeaderboards.Results[i];
+			<div class="grid gap-3 grid-cols-custom-leaderboards-sm md:grid-cols-custom-leaderboards-md lg:grid-cols-custom-leaderboards-lg xl:grid-cols-custom-leaderboards-xl 2xl:grid-cols-custom-leaderboards-2xl h-6 @(i % 2 == 0 ? "bg-gray-1" : string.Empty)">
+				<div class="overflow-hidden"><a class="link" href="/custom/leaderboard/@customLeaderboard.Id">@customLeaderboard.SpawnsetName.ToNoBreakString()</a></div>
+				<div class="overflow-hidden hidden md:block">@customLeaderboard.SpawnsetAuthorName.ToNoBreakString()</div>
+				<div class="overflow-hidden hidden md:block">@customLeaderboard.DateCreated.ToString(StringFormats.DateFormat)</div>
+				<div class="overflow-hidden">@FormatUtils.FormatDateTimeAsTimeAgo(customLeaderboard.DateLastPlayed)</div>
+				<div class="overflow-hidden text-right hidden 2xl:block">@(customLeaderboard.DateCreated < FeatureConstants.TrackingCustomLeaderboardSubmitCounts ? "+" : string.Empty)@customLeaderboard.SubmitCount</div>
+				<div class="overflow-hidden text-right hidden 2xl:block">@customLeaderboard.PlayerCount</div>
+				@if (customLeaderboard.Daggers == null)
+				{
+					for (int j = 0; j < 5; j++)
+					{
+						<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe">@MarkupUtils.NoDataMarkup</div>
+					}
+				}
+				else
+				{
+					<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe @CustomLeaderboardDagger.Bronze.ToCssClass()">@customLeaderboard.Daggers.Bronze.ToString(StringFormats.TimeFormat)</div>
+					<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe @CustomLeaderboardDagger.Silver.ToCssClass()">@customLeaderboard.Daggers.Silver.ToString(StringFormats.TimeFormat)</div>
+					<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe @CustomLeaderboardDagger.Golden.ToCssClass()">@customLeaderboard.Daggers.Golden.ToString(StringFormats.TimeFormat)</div>
+					<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe @CustomLeaderboardDagger.Devil.ToCssClass()">@customLeaderboard.Daggers.Devil.ToString(StringFormats.TimeFormat)</div>
+					<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe @CustomLeaderboardDagger.Leviathan.ToCssClass()">@customLeaderboard.Daggers.Leviathan.ToString(StringFormats.TimeFormat)</div>
+				}
+				<div class="overflow-hidden text-left hidden lg:block">@(customLeaderboard.TopPlayer?.ToNoBreakString() ?? MarkupUtils.NoDataMarkup)</div>
+				<div class="overflow-hidden text-right hidden lg:block text-xl font-goethe @(customLeaderboard.WorldRecordDagger?.ToCssClass())">@(customLeaderboard.WorldRecord.HasValue ? new(customLeaderboard.WorldRecord.Value.ToString(StringFormats.TimeFormat)) : MarkupUtils.NoDataMarkup)</div>
+			</div>
+		}
+	}
+
+	<Heading Level="2" Title="Categories" />
+
+	@foreach (CustomLeaderboardCategory category in Enum.GetValues<CustomLeaderboardCategory>())
+	{
+		<div class="flex">
+			<div class="flex-none w-32"><b>@category.ToDisplayString()</b></div>
+			<div class="flex-1">@category.GetDescription()</div>
+		</div>
+	}
+}
+
+@if (GetTotalCustomLeaderboardData != null)
+{
+	<Heading Level="2" Title="Statistics" />
+
+	<div class="grid grid-cols-2 md:grid-cols-5">
+		<div class="font-bold">Category</div>
+		<div class="text-right font-bold">Leaderboards</div>
+		<div class="text-right font-bold hidden md:block">Players</div>
+		<div class="text-right font-bold hidden md:block">Scores</div>
+		<div class="text-right font-bold hidden md:block">Submissions*</div>
+
+		@foreach (CustomLeaderboardCategory category in Enum.GetValues<CustomLeaderboardCategory>())
+		{
+			<div>@category.ToDisplayString()</div>
+			<div class="text-right">@GetTotalCustomLeaderboardData.LeaderboardsPerCategory[category].ToString("N0")</div>
+			<div class="text-right hidden md:block">@GetTotalCustomLeaderboardData.PlayersPerCategory[category].ToString("N0")</div>
+			<div class="text-right hidden md:block">@GetTotalCustomLeaderboardData.ScoresPerCategory[category].ToString("N0")</div>
+			<div class="text-right hidden md:block">@GetTotalCustomLeaderboardData.SubmitsPerCategory[category].ToString("N0")</div>
+		}
+
+		<div class="font-bold">Total</div>
+		<div class="text-right font-bold">@GetTotalCustomLeaderboardData.LeaderboardsPerCategory.Values.Sum().ToString("N0")</div>
+		<div class="text-right font-bold hidden md:block">@GetTotalCustomLeaderboardData.TotalPlayers.ToString("N0")</div>
+		<div class="text-right font-bold hidden md:block">@GetTotalCustomLeaderboardData.ScoresPerCategory.Values.Sum().ToString("N0")</div>
+		<div class="text-right font-bold hidden md:block">@GetTotalCustomLeaderboardData.SubmitsPerCategory.Values.Sum().ToString("N0")</div>
+	</div>
+
+	<i class="inline-block mt-3 hidden md:block">* Submissions are counted since @FeatureConstants.TrackingCustomLeaderboardSubmitCounts.ToString(StringFormats.DateFormat).</i>
+}

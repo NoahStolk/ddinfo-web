@@ -1,0 +1,29 @@
+@page "/wiki/spawns"
+@using DevilDaggersInfo.Core.Wiki.Extensions
+@inject PublicApiHttpClient Http
+
+<Heading Title="Spawns" />
+
+<SelectList CssWidthClass="w-48" CssOpenerClass="pl-2" TValue="GameVersion" Values="@_allowedGameVersions" DisplayFunction="@(gv => gv.ToDisplayString())" Default="GameVersion.V3_0" Selected="@(gv => Fetch(gv))" />
+
+<p class="para">
+	These are all the spawn times for Devil Daggers.
+</p>
+<p class="para">
+	@{
+		List<Enemy> enemies = new string[] { "Centipede", "Gigapede", "Ghostpede", "Thorn" }.Select(s => Enemies.GetEnemyByName(GameVersion, s)).Where(e => e.HasValue).Select(e => e!.Value).ToList();
+		string enemyString = string.Join(", ", enemies.Select(e => MarkupUtils.EnemyString(e, true))).ReplaceLastOccurrenceOf(", ", " and ");
+		MarkupString note = new($"Note that {enemyString} emerge around 3 seconds later than their actual spawn time.");
+	}
+	@note
+</p>
+
+@if (_spawnsView == null)
+{
+	<Loading />
+}
+else
+{
+	<SpawnsetSpawns SpawnsView=_spawnsView GameVersion=GameVersion />
+	<button class="btn btn-red px-1" @onclick="() => IncreaseWaveCount(10)">Show more waves</button>
+}

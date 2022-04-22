@@ -1,0 +1,17 @@
+@page "/authentication/logout"
+@using DevilDaggersInfo.Web.Client.Authentication
+@inject AdminAuthenticationStateProvider Auth
+@inject NavigationManager Navigation
+
+<Heading Title="Logout" />
+
+<button class="btn btn-gray-light px-2 py-1" @onclick="ClickLogout">Logout</button>
+
+@code
+{
+	private async Task ClickLogout(MouseEventArgs e)
+	{
+		await Auth.SetTokenAsync(null);
+		Navigation.NavigateTo("/", true);
+	}
+}

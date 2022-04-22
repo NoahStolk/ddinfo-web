@@ -1,0 +1,39 @@
+@using DevilDaggersInfo.Web.Client.Enums
+@inject AdminApiHttpClient Http
+
+@switch (State)
+{
+	case DeleteState.Confirm:
+		{
+			<div class="bg-darker-red p-2 rounded">
+				<h4 class="text-xl">Delete?</h4>
+
+				<p class="para">Are you sure you want to delete entity with ID @IdToDelete?</p>
+
+				<button class="btn btn-red w-40 py-1" @onclick="ConfirmDelete">Delete permanently</button>
+				<button class="btn btn-gray-light w-20 py-1" @onclick="Cancel">Cancel</button>
+			</div>
+		}
+		break;
+	case DeleteState.ValidationError:
+		{
+			<ResultBar Title="Validation failed" ResultBarType="ResultBarType.ValidationError" DismissEvent="Cancel">
+				@ApiResponse
+			</ResultBar>
+		}
+		break;
+	case DeleteState.FatalError:
+		{
+			<ResultBar Title="Fatal error" ResultBarType="ResultBarType.FatalError" DismissEvent="Cancel">
+				@ApiResponse
+			</ResultBar>
+		}
+		break;
+	case DeleteState.Ok:
+		{
+			<ResultBar Title="Delete successful" ResultBarType="ResultBarType.Success" DismissEvent="Cancel">
+				Successfully deleted entity with ID @IdToDelete.
+			</ResultBar>
+		}
+		break;
+}

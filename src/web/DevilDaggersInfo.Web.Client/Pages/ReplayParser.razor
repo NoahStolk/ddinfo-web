@@ -1,0 +1,91 @@
+@page "/replay-parser/{Id:int}"
+@using DevilDaggersInfo.Core.Replay.Events
+
+<Heading Level="1" Title="Replay Parser" />
+
+<p class="para">Reverse-engineering of the replay file. Still a work in progress. This page is used for testing mostly.</p>
+
+@if (_notFound)
+{
+	<div>Replay not found.</div>
+}
+else if (_events == null || _replayBinary == null)
+{
+	<Loading />
+}
+else
+{
+	<div>Processing file (@FileSizeUtils.Format(_fileSize)) took @_processingTimeInMs ms.</div>
+
+	bool f = _currentSecond <= 0;
+	bool l = _currentSecond >= _events.Count / 60;
+	const string disabledStyle = "disabled:opacity-50 cursor-default btn-disabled";
+	const string enabledStyle = "btn-gray-light";
+
+	<Heading Level="2" Title="Header" />
+
+	<div class="grid grid-cols-2 gap-x-2 max-w-md">
+		<div>Version</div>
+		<div>@_replayBinary.Version</div>
+		<div>Timestamp</div>
+		<div>@_replayBinary.TimestampSinceGameRelease</div>
+		<div>Time</div>
+		<div>@_replayBinary.Time.ToString(StringFormats.TimeFormat)</div>
+		<div>Start Time</div>
+		<div>@_replayBinary.StartTime.ToString(StringFormats.TimeFormat)</div>
+		<div>Kills</div>
+		<div>@_replayBinary.Kills</div>
+		<div>Gems</div>
+		<div>@_replayBinary.Gems</div>
+		<div>Daggers Hit</div>
+		<div>@_replayBinary.DaggersHit</div>
+		<div>Daggers Fired</div>
+		<div>@_replayBinary.DaggersFired</div>
+		<div>Death Type</div>
+		<div>@_replayBinary.DeathType</div>
+		<div>Player ID</div>
+		<div>@_replayBinary.PlayerId</div>
+		<div>Player Name</div>
+		<div>@_replayBinary.Username</div>
+		<div>Spawnset MD5</div>
+		<div>@_replayBinary.SpawnsetMd5.ByteArrayToHexString()</div>
+	</div>
+
+	<Heading Level="2" Title="@($"Events {_currentSecond.ToString(StringFormats.TimeFormat)} - {(_currentSecond + 1).ToString(StringFormats.TimeFormat)}")" />
+
+	<div class="flex">
+		<div class="w-10 h-10 mx-1">
+			<button disabled="@f" class="@(f ? disabledStyle : enabledStyle) btn" @onclick="() => _currentSecond = 0">@MarkupUtils.NavStart</button>
+		</div>
+		<div class="w-10 h-10 mx-1">
+			<button disabled="@f" class="@(f ? disabledStyle : enabledStyle) btn" @onclick="() => _currentSecond = Math.Max(0, _currentSecond - 5)">@MarkupUtils.NavPrevDouble</button>
+		</div>
+		<div class="w-10 h-10 mx-1">
+			<button disabled="@f" class="@(f ? disabledStyle : enabledStyle) btn" @onclick="() => _currentSecond = Math.Max(0, _currentSecond - 1)">@MarkupUtils.NavPrev</button>
+		</div>
+		<div class="w-10 h-10 mx-1">
+			<button disabled="@l" class="@(l ? disabledStyle : enabledStyle) btn" @onclick="() => _currentSecond = Math.Min(_events.Count / 60, _currentSecond + 1)">@MarkupUtils.NavNext</button>
+		</div>
+		<div class="w-10 h-10 mx-1">
+			<button disabled="@l" class="@(l ? disabledStyle : enabledStyle) btn" @onclick="() => _currentSecond = Math.Min(_events.Count / 60, _currentSecond + 5)">@MarkupUtils.NavNextDouble</button>
+		</div>
+		<div class="w-10 h-10 mx-1">
+			<button disabled="@l" class="@(l ? disabledStyle : enabledStyle) btn" @onclick="() => _currentSecond = _events.Count / 60">@MarkupUtils.NavEnd</button>
+		</div>
+	</div>
+
+	<ul class="pl-4">
+		@for (int i = _currentSecond * 60; i < Math.Min(_events.Count, (_currentSecond + 1) * 60); i++)
+		{
+			<li class="list-disc">
+				<span>Tick @i (@((i / 60f).ToString(StringFormats.TimeFormat)))</span>
+				<ul class="pl-4">
+					@foreach (IEvent e in _events[i])
+					{
+						<li class="list-disc">@e.ToString()</li>
+					}
+				</ul>
+			</li>
+		}
+	</ul>
+}

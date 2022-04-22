@@ -1,0 +1,49 @@
+@page "/tools/survival-editor"
+@using DevilDaggersInfo.Web.Shared.Dto.Public.Tools
+@using DevilDaggersInfo.Web.Shared.Dto.Public.Spawnsets
+@inject PublicApiHttpClient Http
+
+<Heading Title="Devil Daggers Survival Editor" />
+
+@if (GetTool == null || GetTotalSpawnsetData == null)
+{
+	<Loading />
+}
+else
+{
+	<BuildInfo GetTool="GetTool" />
+
+	<img src="/images/tools/ddse.png" class="object-contain max-h-160 pt-3" />
+
+	<Heading Title="Features" Level="2" />
+	<ul class="pl-4">
+		<li class="list-disc">Spawns editor with many useful features such as copying spawns, previewing end loop, speeding up spawns, etc</li>
+		<li class="list-disc">Arena editor with the ability to change tile heights, shrinking controls, arena brightness, etc</li>
+		<li class="list-disc">Practice editor which lets you change the initial timer, hand level, and additional gems</li>
+		<li class="list-disc">Supports reading and writing spawnsets for all three major versions of the game</li>
+		<li class="list-disc">Generate custom arenas with built-in presets</li>
+		<li class="list-disc">Download @(GetTotalSpawnsetData.Count) existing spawnsets from the website to insert them into the game directly</li>
+	</ul>
+
+	<Heading Title="System Requirements" Level="2" />
+	<ul class="pl-4">
+		<li class="list-disc">Windows 8 or later (64-bit)</li>
+	</ul>
+	<p class="para"><i>Note: if you need a Windows 7 build, please contact me.</i></p>
+
+	<RunInfo />
+	<SourceInfo Url="https://github.com/NoahStolk/DevilDaggersSurvivalEditor" />
+	<Versions ToolVersions="GetTool.Changelog" />
+}
+
+@code
+{
+	public GetTool? GetTool { get; set; }
+	public GetTotalSpawnsetData? GetTotalSpawnsetData { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		GetTool = await Http.GetTool("DevilDaggersSurvivalEditor");
+		GetTotalSpawnsetData = await Http.GetTotalSpawnsetData();
+	}
+}

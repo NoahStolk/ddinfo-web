@@ -1,0 +1,51 @@
+@page "/news"
+@using DevilDaggersInfo.Web.Client.InternalModels
+@inject PublicApiHttpClient Http
+
+<Heading Title="News" />
+
+<p class="para">
+	I'll be posting website updates and changelogs here. For tool changelogs please refer to their corresponding pages.
+</p>
+
+@if (NewsItemsContent == null)
+{
+	<Loading />
+}
+else
+{
+	foreach (KeyValuePair<NewsItem, MarkupString> newsItem in NewsItemsContent.OrderByDescending(kvp => kvp.Key.DateTime))
+	{
+		<Heading Level="2" Title="@newsItem.Key.ToDisplayTitle()" />
+
+		<div class="bg-gray-1 px-3 pb-2 my-4">
+			@(newsItem.Value)
+		</div>
+	}
+
+	<p class="para">
+		For older changelogs (2017-2021), please refer to the Discord server.
+	</p>
+}
+
+@code
+{
+	public Dictionary<NewsItem, MarkupString>? NewsItemsContent { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		NewsItemsContent = new();
+		foreach (NewsItem newsItem in NewsContainer.Items)
+		{
+			try
+			{
+				string html = await Http.Client.GetStringAsync(newsItem.GetHtmlPath());
+				NewsItemsContent.Add(newsItem, new(html));
+			}
+			catch
+			{
+				continue;
+			}
+		}
+	}
+}

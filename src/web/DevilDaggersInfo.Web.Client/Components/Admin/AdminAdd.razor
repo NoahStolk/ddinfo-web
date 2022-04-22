@@ -1,0 +1,33 @@
+@inject AdminApiHttpClient Http
+@inject NavigationManager NavigationManager
+@using DevilDaggersInfo.Web.Client.Enums
+@typeparam TModel
+
+<Heading Title="@($"Add {Name}")" />
+
+@switch (State)
+{
+	case ErrorState.ValidationError:
+		{
+			<ResultBar Title="Validation failed" ResultBarType="ResultBarType.ValidationError" DismissEvent="Dismiss">
+				@ErrorMessage
+			</ResultBar>
+		}
+		break;
+	case ErrorState.FatalError:
+		{
+			<ResultBar Title="Fatal error" ResultBarType="ResultBarType.FatalError" DismissEvent="Dismiss">
+				@ErrorMessage
+			</ResultBar>
+		}
+		break;
+}
+
+<EditForm Model="@Model" OnValidSubmit="@OnValidSubmit">
+	<DataAnnotationsValidator />
+	<ValidationSummary />
+
+	@ChildContent
+
+	<button class="btn btn-gray p-2" type="submit">Submit</button>
+</EditForm>

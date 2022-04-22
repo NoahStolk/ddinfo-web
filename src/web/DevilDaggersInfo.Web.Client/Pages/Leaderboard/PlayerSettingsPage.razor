@@ -1,0 +1,15 @@
+@page "/leaderboard/player-settings"
+@inject PublicApiHttpClient Http
+@inject NavigationManager NavigationManager
+
+<Heading Title="Player Settings" />
+
+@if (GetEntries == null)
+{
+	<Loading />
+}
+else
+{
+	<LeaderboardTableInfo />
+	<LeaderboardTableSettings Entries="GetEntries" Players="Players" />
+}

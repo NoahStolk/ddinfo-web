@@ -1,0 +1,11 @@
+@page "/admin"
+@inherits BaseAdminPage
+
+<Heading Title="Admin" />
+
+<ul>
+	@foreach (string cacheType in new[] { "LeaderboardHistory", "LeaderboardStatistics", "ModArchive", "SpawnsetHash", "SpawnsetSummary" })
+	{
+		<li><button class="btn btn-gray px-2 py-1" @onclick="@(async () => await Http.ClearCache(cacheType))">Clear @cacheType cache</button></li>
+	}
+</ul>

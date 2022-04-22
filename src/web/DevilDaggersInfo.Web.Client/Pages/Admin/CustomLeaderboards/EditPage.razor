@@ -1,0 +1,62 @@
+@page "/admin/custom-leaderboards/edit/{Id:int}"
+@using DevilDaggersInfo.Web.Shared.Dto.Admin.CustomLeaderboards
+@using DevilDaggersInfo.Web.Shared.Enums
+@using DevilDaggersInfo.Web.Client.Components.Admin
+@using DevilDaggersInfo.Web.Client.Enums
+@inherits BaseAdminPage
+
+<AdminEdit Name="Custom Leaderboard" OverviewUrl="/admin/custom-leaderboards" ApiCall="Http.EditCustomLeaderboardById" Model="_editCustomLeaderboard" Id="Id" @ref="_editComponent">
+	<InputWrapper Label="Category"><SearchDropdown TKey=CustomLeaderboardCategory Values="@(Enum.GetValues<CustomLeaderboardCategory>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<CustomLeaderboardCategory>(s)" ShowDisplayValue=false @bind-Value="@_editCustomLeaderboard.Category" /></InputWrapper>
+	<InputWrapper Label="Featured"><InputCheckbox @bind-Value="@_editCustomLeaderboard.IsFeatured" /></InputWrapper>
+	@if (_editCustomLeaderboard.IsFeatured)
+	{
+		<InputWrapper Label="Bronze"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.Daggers.Bronze" /></InputWrapper>
+		<InputWrapper Label="Silver"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.Daggers.Silver" /></InputWrapper>
+		<InputWrapper Label="Golden"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.Daggers.Golden" /></InputWrapper>
+		<InputWrapper Label="Devil"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.Daggers.Devil" /></InputWrapper>
+		<InputWrapper Label="Leviathan"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.Daggers.Leviathan" /></InputWrapper>
+	}
+</AdminEdit>
+
+@code
+{
+	private EditCustomLeaderboard _editCustomLeaderboard = new();
+	private AdminEdit<EditCustomLeaderboard> _editComponent = null!;
+
+	[Parameter, EditorRequired] public int Id { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		try
+		{
+			GetCustomLeaderboard getCustomLeaderboard = await Http.GetCustomLeaderboardById(Id);
+			_editCustomLeaderboard = new()
+			{
+				Category = getCustomLeaderboard.Category,
+				IsFeatured = getCustomLeaderboard.IsFeatured,
+				Daggers = new()
+				{
+					Bronze = getCustomLeaderboard.Daggers.Bronze,
+					Silver = getCustomLeaderboard.Daggers.Silver,
+					Golden = getCustomLeaderboard.Daggers.Golden,
+					Devil = getCustomLeaderboard.Daggers.Devil,
+					Leviathan = getCustomLeaderboard.Daggers.Leviathan,
+				},
+			};
+			_editComponent.State = ErrorState.None;
+		}
+		catch (HttpRequestException ex)
+		{
+			if (ex.StatusCode.HasValue)
+				_editComponent.ErrorMessage = $"Error {(int)ex.StatusCode}: {ex.StatusCode}";
+			else
+				_editComponent.ErrorMessage = "An error occurred while sending the request.";
+
+			_editComponent.State = ErrorState.FatalError;
+		}
+		catch (AccessTokenNotAvailableException exception)
+		{
+			exception.Redirect();
+		}
+	}
+}

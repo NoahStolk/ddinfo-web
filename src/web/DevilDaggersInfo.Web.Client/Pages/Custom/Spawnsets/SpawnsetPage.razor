@@ -1,0 +1,91 @@
+@page "/custom/spawnset/{Id:int}"
+@using DevilDaggersInfo.Core.Spawnset.Extensions
+@using DevilDaggersInfo.Core.Spawnset.Enums
+
+@if (GetSpawnset == null)
+{
+	if (_notFound)
+	{
+		<Heading Title="Spawnset not found" />
+		<p>This spawnset doesn't exist. Click <a class="link" href="/custom/spawnsets">here</a> to go back to the spawnsets overview.</p>
+	}
+	else
+	{
+		<Loading />
+	}
+}
+else if (SpawnsetBinary == null || SpawnsView == null)
+{
+	<div>Spawnset could not be parsed.</div>
+}
+else
+{
+	<div class="grid grid-cols-1 lg:grid-cols-spawnset-lg">
+		@*Additional <div> is necessary to make sticky work.*@
+		<div>
+			<div class="lg:sticky lg:top-0 lg:max-h-screen lg:overflow-y-auto lg:pb-4">
+				<Heading Title="@($"Spawnset - {GetSpawnset.Name}")" BreakAll="true" />
+
+				<div class="bg-gray-1 max-w-arena-table px-1">
+					<DataField Name="Author">@GetSpawnset.AuthorName</DataField>
+					<DataField Name="Last updated">@GetSpawnset.LastUpdated.ToString(StringFormats.DateTimeFormat)</DataField>
+					<DataField Name="Practice">@(GetSpawnset.IsPractice ? "Yes" : "No")</DataField>
+					<DataField Name="File size">@FileSizeUtils.Format(GetSpawnset.FileBytes.Length)</DataField>
+
+					<div class="grid grid-cols-2 text-lg">
+						<div class="px-1 py-3">
+							<a class="btn btn-download px-2 py-1" href="@($"/api/spawnsets/{GetSpawnset.Name}/file")" role="button" target="_top">Download spawnset</a>
+						</div>
+						@if (GetSpawnset.CustomLeaderboardId.HasValue)
+						{
+							<div class="px-1 py-3 text-right">
+								<a class="link" href="@($"/custom/leaderboard/{GetSpawnset.CustomLeaderboardId.Value}")">View leaderboard</a>
+							</div>
+						}
+					</div>
+				</div>
+
+				@if (!string.IsNullOrWhiteSpace(GetSpawnset.HtmlDescription))
+				{
+					<Heading Title="Description" Level="2" />
+					<div class="bg-gray-1 max-w-arena-table px-1">
+						@((MarkupString)GetSpawnset.HtmlDescription)
+					</div>
+				}
+
+				<Heading Title="Format" Level="2" />
+				<div class="bg-gray-1 max-w-arena-table px-1">
+					<DataField Name="Game version">@SpawnsetBinary.GetGameVersionString()</DataField>
+					<DataField Name="Game mode">@SpawnsetBinary.GameMode</DataField>
+				</div>
+
+				<SpawnsetArena SpawnsetBinary="SpawnsetBinary" />
+
+				<Heading Title="Settings" Level="2" />
+				<div class="bg-gray-1 max-w-arena-table px-1">
+					<DataField Name="Hand">@SpawnsetBinary.HandLevel.ToDisplayString()</DataField>
+					<DataField Name="Additional gems">@SpawnsetBinary.AdditionalGems</DataField>
+					<DataField Name="Timer Start">@SpawnsetBinary.TimerStart.ToString(StringFormats.TimeFormat)</DataField>
+				</div>
+
+				<Heading Title="Effective Player Settings" Level="2" />
+				<div class="bg-gray-1 max-w-arena-table px-1">
+					<DataField Name="Effective hand">@EffectivePlayerSettings.HandLevel.ToDisplayString()</DataField>
+					<DataField Name="@($"Effective {(EffectivePlayerSettings.HandLevel is HandLevel.Level1 or HandLevel.Level2 ? "gems" : "homing")}")">@EffectivePlayerSettings.GemsOrHoming</DataField>
+					@if (EffectivePlayerSettings.HandLevel != EffectivePlayerSettings.HandMesh)
+					{
+						<DataField Name="Effective hand mesh">@EffectivePlayerSettings.HandMesh.ToDisplayString()</DataField>
+					}
+				</div>
+			</div>
+		</div>
+
+		@*Additional <div> is necessary to make sticky work.*@
+		<div>
+			<div class="lg:pl-4 lg:pt-1">
+				<Heading Title="Spawns" Level="2" />
+				<SpawnsetSpawns SpawnsView=SpawnsView />
+			</div>
+		</div>
+	</div>
+}

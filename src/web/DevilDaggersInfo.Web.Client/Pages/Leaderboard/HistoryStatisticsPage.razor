@@ -1,0 +1,48 @@
+@page "/leaderboard/history/statistics"
+@inject PublicApiHttpClient Http
+
+<Heading Title="Leaderboard History Statistics" />
+
+@if (_statistics == null)
+{
+	<Loading />
+}
+else
+{
+	<div class="grid grid-cols-1 2xl:grid-cols-2">
+		<div>
+			<Heading Title="Total Players" Level="2" />
+			<LineChart DataOptions="_playersOptions" UniqueName="#players-chart" DataSets="_playersData" Options="_playersLineChartOptions" />
+		</div>
+
+		<div>
+			<Heading Title="Top Scores" Level="2" />
+			<LineChart DataOptions="_entrancesOptions" UniqueName="#entrances-chart" DataSets="_entrancesData" Options="_entrancesLineChartOptions" />
+		</div>
+		
+		<div>
+			<Heading Title="Global Time" Level="2" />
+			<LineChart DataOptions="_timeOptions" UniqueName="#time-chart" DataSets="_timeData" Options="_timeLineChartOptions" />
+		</div>
+
+		<div>
+			<Heading Title="Global Deaths" Level="2" />
+			<LineChart DataOptions="_deathsOptions" UniqueName="#deaths-chart" DataSets="_deathsData" Options="_deathsLineChartOptions" />
+		</div>
+
+		<div>
+			<Heading Title="Global Gems" Level="2" />
+			<LineChart DataOptions="_gemsOptions" UniqueName="#gems-chart" DataSets="_gemsData" Options="_gemsLineChartOptions" />
+		</div>
+
+		<div>
+			<Heading Title="Global Kills" Level="2" />
+			<LineChart DataOptions="_killsOptions" UniqueName="#kills-chart" DataSets="_killsData" Options="_killsLineChartOptions" />
+		</div>
+
+		<div>
+			<Heading Title="Global Accuracy" Level="2" />
+			<LineChart DataOptions="_accuracyOptions" UniqueName="#accuracy-chart" DataSets="_accuracyData" Options="_accuracyLineChartOptions" />
+		</div>
+	</div>
+}

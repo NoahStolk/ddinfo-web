@@ -1,0 +1,38 @@
+@using DevilDaggersInfo.Web.Shared.Dto.Public
+
+@{
+	string _players = Leaderboard.TotalPlayers.ToString(StringFormats.LeaderboardIntFormat);
+	string _time = Leaderboard.TimeGlobal.ToString(StringFormats.LeaderboardGlobalTimeFormat);
+	string _kills = Leaderboard.KillsGlobal.ToString(StringFormats.LeaderboardIntFormat);
+	string _gems = Leaderboard.GemsGlobal.ToString(StringFormats.LeaderboardIntFormat);
+	string _deaths = Leaderboard.DeathsGlobal.ToString(StringFormats.LeaderboardIntFormat);
+	string _daggers = FormatUtils.FormatDaggersUInt64(Leaderboard.DaggersHitGlobal, Leaderboard.DaggersFiredGlobal, IsHistory);
+	string _accuracy = (Leaderboard.DaggersFiredGlobal == 0 ? 0 : Leaderboard.DaggersHitGlobal / (float)Leaderboard.DaggersFiredGlobal).ToString(StringFormats.AccuracyFormat);
+}
+
+<div class="py-3 grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-6 font-goethe text-xl">
+	<LeaderboardGlobalIcon TooltipText="TOTAL PLAYERS" IconImageSrc="/images/icons/default-x4/eye4.png">
+		<div class="py-2 devil text-center">@_players</div>
+	</LeaderboardGlobalIcon>
+	<LeaderboardGlobalIcon TooltipText="GLOBAL TIME" IconImageSrc="/images/icons/default-x4/stopwatch.png">
+		<div class="py-2 devil text-center">@_time</div>
+	</LeaderboardGlobalIcon>
+	<LeaderboardGlobalIcon TooltipText="GLOBAL KILLS" IconImageSrc="/images/icons/default-x4/dagger.png">
+		<div class="py-2 devil text-center">@_kills</div>
+	</LeaderboardGlobalIcon>
+	<LeaderboardGlobalIcon TooltipText="GLOBAL GEMS" IconImageSrc="/images/icons/default-x4/gem.png">
+		<div class="py-2 devil text-center">@_gems</div>
+	</LeaderboardGlobalIcon>
+	<LeaderboardGlobalIcon TooltipText="GLOBAL ACCURACY" IconImageSrc="/images/icons/default-x4/crosshair.png">
+		<div class="py-2 text-center"><Tooltip Text="@_daggers"><span class="devil font-goethe text-xl cursor-pointer">@_accuracy</span></Tooltip></div>
+	</LeaderboardGlobalIcon>
+	<LeaderboardGlobalIcon TooltipText="GLOBAL DEATHS" IconImageSrc="/images/icons/default-x4/skull.png">
+		<div class="py-2 devil text-center">@_deaths</div>
+	</LeaderboardGlobalIcon>
+</div>
+
+@code
+{
+	[Parameter, EditorRequired] public IGetLeaderboardGlobalDto Leaderboard { get; set; } = null!;
+	[Parameter] public bool IsHistory { get; set; }
+}

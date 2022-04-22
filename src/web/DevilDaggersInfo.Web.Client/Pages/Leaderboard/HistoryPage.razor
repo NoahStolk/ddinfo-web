@@ -1,0 +1,28 @@
+@page "/leaderboard/history"
+@using DevilDaggersInfo.Web.Shared.Dto.Public.LeaderboardHistory
+@inject PublicApiHttpClient Http
+@inject NavigationManager NavigationManager
+
+@if (GetLeaderboardHistory == null)
+{
+	<Loading />
+}
+else
+{
+	<Heading Title="@($"Leaderboard History - {GetLeaderboardHistory.DateTime.ToString(StringFormats.DateTimeFormat)}")" />
+
+	@if (_reloading)
+	{
+		<Loading />
+	}
+	else if (!DatesEqual(GetLeaderboardHistory.DateTime, _dateTime))
+	{
+		<i>History for @(_dateTime.ToString(StringFormats.DateTimeFormat)) does not exist; falling back to @GetLeaderboardHistory.DateTime.ToString(StringFormats.DateTimeFormat).</i>
+	}
+
+	<DatePicker DateSelected="@(d => UpdateDateTime(d))" />
+
+	<LeaderboardGlobal Leaderboard="GetLeaderboardHistory" IsHistory="true" />
+	<LeaderboardTableInfo />
+	<LeaderboardTable TGetEntryDto="GetEntryHistory" Entries="GetLeaderboardHistory.Entries" Players="Players" IsHistory="true" GameVersion="_gameVersion" />
+}

@@ -1,0 +1,56 @@
+@typeparam TGetDto
+@typeparam TSorting
+@inject AdminApiHttpClient Http
+@inject AuthenticationStateProvider Auth
+@inject NavigationManager NavigationManager
+@using DevilDaggersInfo.Web.Client.Enums
+
+<Heading Title="@Title" />
+
+<p class="para">Hello, @_username</p>
+
+@if (_errorMessage != null)
+{
+	<ResultBar Title="Failed to retrieve overview" ResultBarType="ResultBarType.FatalError" DismissEvent="Dismiss">
+		@_errorMessage
+	</ResultBar>
+}
+
+@if (_page == null)
+{
+	if (!_errorThrown)
+	{
+		<Loading />
+	}
+}
+else
+{
+	<Deletion AfterDelete="Fetch" ApiCall="@DeletionApiCall" @ref="_deletion" />
+
+	<div class="bg-gray-1 p-2 text-lg">
+		<a class="btn btn-green block w-24 mb-2 mx-1" href="@($"{NavigationManager.Uri}/add")">Add new</a>
+
+		<CascadingValue Value="this">
+			<Paging />
+		</CascadingValue>
+	</div>
+
+	<div class="grid gap-2 @GridConfiguration">
+		@TableHeader
+		<div></div>
+		<div></div>
+	</div>
+	<div>
+		@{
+			int i = 0;
+			foreach (TGetDto result in _page.Results)
+			{
+				<div class="grid gap-2 @GridConfiguration @(i++ % 2 == 0 ? "bg-gray-1" : string.Empty)">
+					@RowTemplate(result)
+					<div><a class="link" href="@($"{NavigationManager.Uri}/edit/{result.Id}")">Edit</a></div>
+					<div><a class="link" href="" @onclick="() => _deletion?.Set(result.Id)" @onclick:preventDefault>Delete</a></div>
+				</div>
+			}
+		}
+	</div>
+}

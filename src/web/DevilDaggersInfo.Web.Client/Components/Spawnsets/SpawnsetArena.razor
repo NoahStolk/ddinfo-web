@@ -1,0 +1,24 @@
+@using DevilDaggersInfo.Core.Spawnset.Enums
+<Heading Title="Arena" Level="2" />
+<div class="bg-gray-1 max-w-arena-table px-1">
+	<DataField Name="Start radius">@SpawnsetBinary.ShrinkStart</DataField>
+	<DataField Name="End radius">@SpawnsetBinary.ShrinkEnd</DataField>
+	<DataField Name="Shrinking rate">@SpawnsetBinary.ShrinkRate</DataField>
+	<DataField Name="Brightness">@SpawnsetBinary.Brightness</DataField>
+	@if (SpawnsetBinary.GameMode == GameMode.Race)
+	{
+		(int raceDaggerTileX, float? raceDaggerTileY, int raceDaggerTileZ) = SpawnsetBinary.GetRaceDaggerTilePosition();
+
+		<DataField Name="Race dagger position">X: @SpawnsetBinary.RaceDaggerPosition.X.ToString("0.00") Y: @(raceDaggerTileY.HasValue ? raceDaggerTileY.Value.ToString("0.00") : "-") Z: @SpawnsetBinary.RaceDaggerPosition.Y.ToString("0.00")</DataField>
+		<DataField Name="Race dagger tile">@raceDaggerTileX x @raceDaggerTileZ</DataField>
+	}
+</div>
+
+<canvas width="@_canvasSize" height="@_canvasSize" id="arena-canvas" @ref="_canvasReference"></canvas>
+
+<SpawnsetArenaHoverInfo @ref="_spawnsetArenaHoverInfo" />
+
+<div class="max-w-arena-table">Time: @((CurrentTime + SpawnsetBinary.TimerStart).ToString("0.0"))</div>
+<div class="max-w-arena-table">
+	<input class="w-full slider" type="range" min="0" max="@_sliderMax" step="0.1" @bind="@CurrentTime" @bind:event="oninput" />
+</div>

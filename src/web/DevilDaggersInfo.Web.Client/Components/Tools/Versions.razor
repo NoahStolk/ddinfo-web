@@ -1,0 +1,17 @@
+@using DevilDaggersInfo.Web.Shared.Dto.Public.Tools
+<Heading Title="Changelog" Level="2" />
+
+@foreach (GetToolVersion v in ToolVersions)
+{
+	string title = $"{v.VersionNumber} - {v.Date.ToString(StringFormats.DateFormat)}{(v.Date > FeatureConstants.TrackingToolDownloadCounts ? $" ({v.DownloadCount.ToString("N0")} download{(v.DownloadCount == 1 ? string.Empty : "s")})" : string.Empty)}";
+	<Heading Title="@title" Level="3" />
+	@foreach (GetToolVersionChange c in v.Changes)
+	{
+		<Change GetChange="c" />
+	}
+}
+
+@code
+{
+	[Parameter, EditorRequired] public IReadOnlyList<GetToolVersion> ToolVersions { get; set; } = null!;
+}

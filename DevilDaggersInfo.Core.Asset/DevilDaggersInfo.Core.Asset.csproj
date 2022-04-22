@@ -1,9 +1,0 @@
-<Project Sdk="Microsoft.NET.Sdk">
-  <ItemGroup>
-    <AdditionalFiles Include="Data\**\*" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\DevilDaggersInfo.CommonSourceGen\DevilDaggersInfo.CommonSourceGen.csproj" OutputItemType="Analyzer" />
-    <ProjectReference Include="..\DevilDaggersInfo.Core.Asset.SourceGen\DevilDaggersInfo.Core.Asset.SourceGen.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-  </ItemGroup>
-</Project>
