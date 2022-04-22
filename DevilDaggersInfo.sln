@@ -2,17 +2,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31606.5
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Web.BlazorWasm.Server", "DevilDaggersInfo.Web.BlazorWasm.Server\DevilDaggersInfo.Web.BlazorWasm.Server.csproj", "{595CAB68-C85D-4AAD-B78F-4CC499921E61}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Web.Server", "DevilDaggersInfo.Web.BlazorWasm.Server\DevilDaggersInfo.Web.Server.csproj", "{595CAB68-C85D-4AAD-B78F-4CC499921E61}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Web.BlazorWasm.Client", "DevilDaggersInfo.Web.BlazorWasm.Client\DevilDaggersInfo.Web.BlazorWasm.Client.csproj", "{0F9B44AE-52A6-4BCD-8AC1-72FE4235E356}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Web.Client", "DevilDaggersInfo.Web.BlazorWasm.Client\DevilDaggersInfo.Web.Client.csproj", "{0F9B44AE-52A6-4BCD-8AC1-72FE4235E356}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Web.BlazorWasm.Shared", "DevilDaggersInfo.Web.BlazorWasm.Shared\DevilDaggersInfo.Web.BlazorWasm.Shared.csproj", "{B73F0FEF-0D3B-4B41-8920-34134012F5C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Web.Shared", "DevilDaggersInfo.Web.BlazorWasm.Shared\DevilDaggersInfo.Web.Shared.csproj", "{B73F0FEF-0D3B-4B41-8920-34134012F5C8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Web.Tool.LeaderboardFetcher", "DevilDaggersInfo.Web.Tool.LeaderboardFetcher\DevilDaggersInfo.Web.Tool.LeaderboardFetcher.csproj", "{17BA3EE7-7067-4A07-A978-27D05E8D0CCE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Tool.LeaderboardFetcher", "DevilDaggersInfo.Web.Tool.LeaderboardFetcher\DevilDaggersInfo.Tool.LeaderboardFetcher.csproj", "{17BA3EE7-7067-4A07-A978-27D05E8D0CCE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Web.Tool.LeaderboardHighscoreStatsSpreader", "DevilDaggersInfo.Web.Tool.LeaderboardHighscoreStatsSpreader\DevilDaggersInfo.Web.Tool.LeaderboardHighscoreStatsSpreader.csproj", "{B11627A5-9A22-4E5F-8B35-C27869339BA7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Tool.LeaderboardHighscoreStatsSpreader", "DevilDaggersInfo.Web.Tool.LeaderboardHighscoreStatsSpreader\DevilDaggersInfo.Tool.LeaderboardHighscoreStatsSpreader.csproj", "{B11627A5-9A22-4E5F-8B35-C27869339BA7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Web.BlazorWasm.Server.Tests", "DevilDaggersInfo.Web.BlazorWasm.Server.Tests\DevilDaggersInfo.Web.BlazorWasm.Server.Tests.csproj", "{CB715CD9-FB6A-4E79-B9C0-830833223D91}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Web.Server.Tests", "DevilDaggersInfo.Web.BlazorWasm.Server.Tests\DevilDaggersInfo.Web.Server.Tests.csproj", "{CB715CD9-FB6A-4E79-B9C0-830833223D91}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Core.Spawnset", "DevilDaggersInfo.Core.Spawnset\DevilDaggersInfo.Core.Spawnset.csproj", "{F899EBF6-12A0-49B8-A163-511F3E92E991}"
 EndProject
@@ -38,7 +38,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Core.Mod",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Cmd.ExtractMod", "DevilDaggersInfo.Cmd.ExtractMod\DevilDaggersInfo.Cmd.ExtractMod.csproj", "{8A747382-EEA6-433F-B61A-85ABD0706E54}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Web.Tool.ClientGenerator", "DevilDaggersInfo.Web.Tool.ClientGenerator\DevilDaggersInfo.Web.Tool.ClientGenerator.csproj", "{9178E989-F0E7-44EE-BC27-FD07D06DD5DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Tool.ClientGenerator", "DevilDaggersInfo.Web.Tool.ClientGenerator\DevilDaggersInfo.Tool.ClientGenerator.csproj", "{9178E989-F0E7-44EE-BC27-FD07D06DD5DA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Core.Memory", "DevilDaggersInfo.Core.Memory\DevilDaggersInfo.Core.Memory.csproj", "{4E6B8A02-5C01-4BF4-B398-C3AA588B3940}"
 EndProject
@@ -59,9 +59,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.CommonTest
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.CommonSourceGen", "DevilDaggersInfo.CommonSourceGen\DevilDaggersInfo.CommonSourceGen.csproj", "{71600AEE-1165-47E4-B45B-8313ED904E58}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart", "DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart\DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.csproj", "{AFE93FD3-7CB5-43AC-816E-987D75F98DDF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Razor.Core.CanvasChart", "DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart\DevilDaggersInfo.Razor.Core.CanvasChart.csproj", "{AFE93FD3-7CB5-43AC-816E-987D75F98DDF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Web.BlazorWasm.Client.Core.Unmarshalled", "DevilDaggersInfo.Web.BlazorWasm.Client.Core.Unmarshalled\DevilDaggersInfo.Web.BlazorWasm.Client.Core.Unmarshalled.csproj", "{AE5DAE4E-61EE-4BA6-B21B-2828DF7EEBE3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Razor.Core.Unmarshalled", "DevilDaggersInfo.Web.BlazorWasm.Client.Core.Unmarshalled\DevilDaggersInfo.Razor.Core.Unmarshalled.csproj", "{AE5DAE4E-61EE-4BA6-B21B-2828DF7EEBE3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Core.Replay", "DevilDaggersInfo.Core.Replay\DevilDaggersInfo.Core.Replay.csproj", "{1FCF3262-FC25-43E1-BDFC-C10CCA94CCAC}"
 EndProject
