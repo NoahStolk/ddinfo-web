@@ -8,7 +8,7 @@
 | `common`      | Common functionality        | Nothing                          |
 | `core`        | Core set of features        | `common`, `core`                 |
 | `editor`      | Editor apps                 | `common`, `core`, `razor`        |
-| `razor`       | Razor UI libraries          | `common`, `razor`                |
+| `razor`       | Razor UI libraries          | `common`, `core`, `razor`        |
 | `tests`       | Unit tests                  | Anything                         |
 | `tool`        | Tools for internal usage    | Anything                         |
 | `web`         | Website                     | `common`, `core`, `razor`, `web` |

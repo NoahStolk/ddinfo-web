@@ -1,6 +1,7 @@
 #pragma warning disable CS0105, CS1591, CS8618, S1128, SA1001, SA1027, SA1028, SA1101, SA1122, SA1137, SA1200, SA1201, SA1208, SA1210, SA1309, SA1311, SA1413, SA1503, SA1505, SA1507, SA1508, SA1516, SA1600, SA1601, SA1602, SA1623, SA1649
 using DevilDaggersInfo.Web.Client.Utils;
 using DevilDaggersInfo.Web.Shared.Dto;
+using DevilDaggersInfo.Web.Shared.Dto.Public;
 using DevilDaggersInfo.Web.Shared.Dto.Public.Assets;
 using DevilDaggersInfo.Web.Shared.Dto.Public.Authentication;
 using DevilDaggersInfo.Web.Shared.Dto.Public.CustomEntries;
@@ -9,8 +10,8 @@ using DevilDaggersInfo.Web.Shared.Dto.Public.Donations;
 using DevilDaggersInfo.Web.Shared.Dto.Public.Integrations;
 using DevilDaggersInfo.Web.Shared.Dto.Public.LeaderboardHistory;
 using DevilDaggersInfo.Web.Shared.Dto.Public.LeaderboardHistoryStatistics;
-using DevilDaggersInfo.Web.Shared.Dto.Public.Leaderboards;
 using DevilDaggersInfo.Web.Shared.Dto.Public.LeaderboardStatistics;
+using DevilDaggersInfo.Web.Shared.Dto.Public.Leaderboards;
 using DevilDaggersInfo.Web.Shared.Dto.Public.Mods;
 using DevilDaggersInfo.Web.Shared.Dto.Public.Players;
 using DevilDaggersInfo.Web.Shared.Dto.Public.ProcessMemory;
@@ -99,7 +100,7 @@ public partial class PublicApiHttpClient
 		return await SendGetRequest<GetGlobalCustomLeaderboard>(UrlBuilderUtils.BuildUrlWithQuery($"api/custom-leaderboards/global-leaderboard", queryParameters));
 	}
 
-	public async Task<List<GetCustomLeaderboardOverviewDdLive>> GetCustomLeaderboardsDdLive()
+	public async Task<List<GetCustomLeaderboardOverviewDdLive>> GetCustomLeaderboardsOverviewDdLive()
 	{
 		return await SendGetRequest<List<GetCustomLeaderboardOverviewDdLive>>($"api/custom-leaderboards/ddlive");
 	}
@@ -112,6 +113,11 @@ public partial class PublicApiHttpClient
 	public async Task<GetCustomLeaderboard> GetCustomLeaderboardById(int id)
 	{
 		return await SendGetRequest<GetCustomLeaderboard>($"api/custom-leaderboards/{id}");
+	}
+
+	public async Task<GetCustomLeaderboardDdLive> GetCustomLeaderboardByIdDdLive(int id)
+	{
+		return await SendGetRequest<GetCustomLeaderboardDdLive>($"api/custom-leaderboards/{id}/ddlive");
 	}
 
 	public async Task<List<GetDonator>> GetDonators()
