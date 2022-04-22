@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" />
+    <ProjectReference Include="..\..\common\DevilDaggersInfo.Common\DevilDaggersInfo.Common.csproj" />
+    <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Asset\DevilDaggersInfo.Core.Asset.csproj" />
+    <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Mod\DevilDaggersInfo.Core.Mod.csproj" />
+    <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Replay\DevilDaggersInfo.Core.Replay.csproj" />
+    <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Spawnset\DevilDaggersInfo.Core.Spawnset.csproj" />
+    <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Wiki\DevilDaggersInfo.Core.Wiki.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+</Project>
