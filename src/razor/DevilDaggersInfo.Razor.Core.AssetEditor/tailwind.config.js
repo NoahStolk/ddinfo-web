@@ -24,21 +24,10 @@ module.exports = {
 			'gray-4': '#303030',
 			'gray-5': '#3c3c3c',
 			'gray-6': '#484848',
-			'color-ban': '#666',
-			'color-path': '#faa',
-			'no-data': '#666',
-			'underline-leviathan': '#810017',
-			'underline-devil': '#cb2012',
-			'underline-golden': '#fcbe34',
-			'underline-silver': '#9ca4aa',
-			'underline-bronze': '#765a46',
-			'underline-default': '#434343',
-			'tooltip-background': '#4449',
 		},
 		extend: {
 			fontFamily: {
 				'calibri': ['calibri', 'sans-serif'],
-				'goethe': ['goethe'],
 			},
 			gridTemplateColumns: {
 			},
