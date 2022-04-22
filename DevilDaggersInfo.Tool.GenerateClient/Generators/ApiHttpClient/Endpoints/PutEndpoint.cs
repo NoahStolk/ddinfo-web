@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Tool.ClientGenerator.Generators.ApiHttpClient.Endpoints;
+namespace DevilDaggersInfo.Tool.GenerateClient.Generators.ApiHttpClient.Endpoints;
 
 internal class PutEndpoint : Endpoint
 {

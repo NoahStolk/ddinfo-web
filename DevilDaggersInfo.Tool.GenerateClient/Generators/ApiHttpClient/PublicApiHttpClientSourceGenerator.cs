@@ -1,8 +1,8 @@
 using DevilDaggersInfo.CommonSourceGen;
-using DevilDaggersInfo.Web.Tool.ClientGenerator.Generators.ApiHttpClient.Endpoints;
-using DevilDaggersInfo.Web.Tool.ClientGenerator.Generators.ApiHttpClient.Enums;
+using DevilDaggersInfo.Tool.GenerateClient.Generators.ApiHttpClient.Endpoints;
+using DevilDaggersInfo.Tool.GenerateClient.Generators.ApiHttpClient.Enums;
 
-namespace DevilDaggersInfo.Web.Tool.ClientGenerator.Generators.ApiHttpClient;
+namespace DevilDaggersInfo.Tool.GenerateClient.Generators.ApiHttpClient;
 
 public static class PublicApiHttpClientSourceGenerator
 {

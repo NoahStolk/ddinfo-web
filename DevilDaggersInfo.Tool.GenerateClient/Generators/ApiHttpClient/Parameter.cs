@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Tool.ClientGenerator.Generators.ApiHttpClient;
+namespace DevilDaggersInfo.Tool.GenerateClient.Generators.ApiHttpClient;
 
 internal class Parameter
 {

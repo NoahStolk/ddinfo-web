@@ -4,7 +4,7 @@ using DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
 using System.Text;
 
-namespace DevilDaggersInfo.Web.Tool.LeaderboardHighscoreStatsSpreader;
+namespace DevilDaggersInfo.Tool.DistributeHistoryStats;
 
 public static class HighscoreSpreadUtils
 {

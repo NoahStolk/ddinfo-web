@@ -1,10 +1,11 @@
 using DevilDaggersInfo.CommonSourceGen;
-using DevilDaggersInfo.Web.Tool.ClientGenerator.Extensions;
+using DevilDaggersInfo.Tool.GenerateClient.Extensions;
+using DevilDaggersInfo.Tool.GenerateClient.Generators.ApiHttpClient.Endpoints;
+using DevilDaggersInfo.Tool.GenerateClient.Generators.ApiHttpClient.Enums;
 using DevilDaggersInfo.Web.Tool.ClientGenerator.Generators.ApiHttpClient.Endpoints;
-using DevilDaggersInfo.Web.Tool.ClientGenerator.Generators.ApiHttpClient.Enums;
-using HttpMethod = DevilDaggersInfo.Web.Tool.ClientGenerator.Generators.ApiHttpClient.Enums.HttpMethod;
+using HttpMethod = DevilDaggersInfo.Tool.GenerateClient.Generators.ApiHttpClient.Enums.HttpMethod;
 
-namespace DevilDaggersInfo.Web.Tool.ClientGenerator.Generators.ApiHttpClient;
+namespace DevilDaggersInfo.Tool.GenerateClient.Generators.ApiHttpClient;
 
 internal class ApiHttpClientContext
 {

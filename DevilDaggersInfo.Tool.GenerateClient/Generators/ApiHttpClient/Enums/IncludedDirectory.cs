@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Tool.ClientGenerator.Generators.ApiHttpClient.Enums;
+namespace DevilDaggersInfo.Tool.GenerateClient.Generators.ApiHttpClient.Enums;
 
 internal enum IncludedDirectory
 {
