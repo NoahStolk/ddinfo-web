@@ -1,5 +1,6 @@
 using DevilDaggersInfo.AssetEditor.Wpf.Services;
 using DevilDaggersInfo.Razor.Core.AssetEditor.Services;
+using DevilDaggersInfo.Razor.Core.AssetEditor.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
 
@@ -16,5 +17,7 @@ public partial class MainWindow : Window
 		Resources.Add("services", serviceCollection.BuildServiceProvider());
 
 		InitializeComponent();
+
+		Title = $"Devil Daggers Asset Editor {AssemblyUtils.Version}";
 	}
 }
