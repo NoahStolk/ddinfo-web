@@ -30,7 +30,7 @@ public static class HighscoreSpreadUtils
 	public static Dictionary<string, LeaderboardHistory> GetAllLeaderboards()
 	{
 		Dictionary<string, LeaderboardHistory> leaderboards = new();
-		foreach (string path in Directory.GetFiles(@"C:\Users\NOAH\source\repos\DevilDaggersInfo\DevilDaggersInfo.Web.BlazorWasm.Server\Data\LeaderboardHistory", "*.bin"))
+		foreach (string path in Directory.GetFiles(@"C:\Users\NOAH\source\repos\DevilDaggersInfo\DevilDaggersInfo.Web.Server\Data\LeaderboardHistory", "*.bin"))
 		{
 			byte[] bytes = File.ReadAllBytes(path);
 			leaderboards.Add(path, LeaderboardHistory.CreateFromFile(bytes));

@@ -4,9 +4,9 @@ internal static class Constants
 {
 	private const string _devRoot = @"C:\Users\NOAH\source\repos\DevilDaggersInfo";
 
-	public const string ClientProjectName = "DevilDaggersInfo.Web.BlazorWasm.Client";
-	public const string ServerProjectName = "DevilDaggersInfo.Web.BlazorWasm.Server";
-	public const string SharedProjectName = "DevilDaggersInfo.Web.BlazorWasm.Shared";
+	public const string ClientProjectName = "DevilDaggersInfo.Web.Client";
+	public const string ServerProjectName = "DevilDaggersInfo.Web.Server";
+	public const string SharedProjectName = "DevilDaggersInfo.Web.Shared";
 
 	public static readonly string ClientProjectPath = Path.Combine(_devRoot, ClientProjectName);
 	public static readonly string ServerProjectPath = Path.Combine(_devRoot, ServerProjectName);

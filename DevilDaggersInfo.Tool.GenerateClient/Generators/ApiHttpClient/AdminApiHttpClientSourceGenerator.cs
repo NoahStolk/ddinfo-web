@@ -10,7 +10,7 @@ public static class AdminApiHttpClientSourceGenerator
 	private const string _endpointMethods = $"%{nameof(_endpointMethods)}%";
 	private const string _template = $@"{_usings}
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.HttpClients;
+namespace DevilDaggersInfo.Web.Client.HttpClients;
 
 public partial class AdminApiHttpClient
 {{
@@ -21,7 +21,7 @@ public partial class AdminApiHttpClient
 	public static void Execute()
 	{
 		ApiHttpClientContext apiHttpClientContext = new();
-		apiHttpClientContext.AddUsings("DevilDaggersInfo.Web.BlazorWasm.Client.Utils", "System.Net.Http.Json");
+		apiHttpClientContext.AddUsings("DevilDaggersInfo.Web.Client.Utils", "System.Net.Http.Json");
 		apiHttpClientContext.AddUsings(ClientType.Admin, IncludedDirectory.Dto);
 		apiHttpClientContext.AddUsings(ClientType.Admin, IncludedDirectory.Enums);
 		apiHttpClientContext.AddEndpoints(ClientType.Admin);
