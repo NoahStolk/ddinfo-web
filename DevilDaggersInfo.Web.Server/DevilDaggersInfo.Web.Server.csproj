@@ -19,7 +19,7 @@
     <ProjectReference Include="..\DevilDaggersInfo.Core.Encryption\DevilDaggersInfo.Core.Encryption.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.Core.Mod\DevilDaggersInfo.Core.Mod.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.Core.Replay\DevilDaggersInfo.Core.Replay.csproj" />
-    <ProjectReference Include="..\DevilDaggersInfo.Web.BlazorWasm.Client\DevilDaggersInfo.Web.Client.csproj" />
-    <ProjectReference Include="..\DevilDaggersInfo.Web.BlazorWasm.Shared\DevilDaggersInfo.Web.Shared.csproj" />
+    <ProjectReference Include="..\DevilDaggersInfo.Web.Client\DevilDaggersInfo.Web.Client.csproj" />
+    <ProjectReference Include="..\DevilDaggersInfo.Web.Shared\DevilDaggersInfo.Web.Shared.csproj" />
   </ItemGroup>
 </Project>

@@ -3,6 +3,6 @@
     <OutputType>Exe</OutputType>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DevilDaggersInfo.Web.BlazorWasm.Server\DevilDaggersInfo.Web.Server.csproj" />
+    <ProjectReference Include="..\DevilDaggersInfo.Web.Server\DevilDaggersInfo.Web.Server.csproj" />
   </ItemGroup>
 </Project>

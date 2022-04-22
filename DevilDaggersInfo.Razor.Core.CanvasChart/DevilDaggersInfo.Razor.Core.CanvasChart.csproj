@@ -4,7 +4,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" />
-    <ProjectReference Include="..\DevilDaggersInfo.Web.BlazorWasm.Shared\DevilDaggersInfo.Web.Shared.csproj" />
-    <ProjectReference Include="..\DevilDaggersInfo.Web.BlazorWasm.Client.Core.Unmarshalled\DevilDaggersInfo.Razor.Core.Unmarshalled.csproj" />
+    <ProjectReference Include="..\DevilDaggersInfo.Web.Shared\DevilDaggersInfo.Web.Shared.csproj" />
+    <ProjectReference Include="..\DevilDaggersInfo.Razor.Core.Unmarshalled\DevilDaggersInfo.Razor.Core.Unmarshalled.csproj" />
   </ItemGroup>
 </Project>
