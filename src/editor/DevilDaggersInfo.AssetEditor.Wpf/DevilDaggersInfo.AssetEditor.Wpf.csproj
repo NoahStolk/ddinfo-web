@@ -9,9 +9,4 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Wpf" />
     <ProjectReference Include="..\..\razor\DevilDaggersInfo.Razor.Core.AssetEditor\DevilDaggersInfo.Razor.Core.AssetEditor.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Update="wwwroot\**">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
 </Project>
