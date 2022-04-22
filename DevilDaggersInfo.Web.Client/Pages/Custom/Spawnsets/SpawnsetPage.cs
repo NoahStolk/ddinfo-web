@@ -1,10 +1,10 @@
 using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Core.Spawnset.View;
-using DevilDaggersInfo.Web.BlazorWasm.Client.HttpClients;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Spawnsets;
+using DevilDaggersInfo.Web.Client.HttpClients;
+using DevilDaggersInfo.Web.Shared.Dto.Public.Spawnsets;
 using Microsoft.AspNetCore.Components;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.Pages.Custom.Spawnsets;
+namespace DevilDaggersInfo.Web.Client.Pages.Custom.Spawnsets;
 
 public partial class SpawnsetPage
 {

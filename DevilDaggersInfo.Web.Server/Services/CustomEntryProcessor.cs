@@ -1,12 +1,12 @@
 using DevilDaggersInfo.Core.Encryption;
 using DevilDaggersInfo.Core.Replay;
 using DevilDaggersInfo.Core.Replay.Enums;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
 using DevilDaggersInfo.Web.Server.Caches.SpawnsetHashes;
 using DevilDaggersInfo.Web.Server.Converters.Public;
 using DevilDaggersInfo.Web.Server.Entities.Views;
 using DevilDaggersInfo.Web.Server.HostedServices.DdInfoDiscordBot;
+using DevilDaggersInfo.Web.Shared.Dto.Public.CustomEntries;
+using DevilDaggersInfo.Web.Shared.Utils;
 using DSharpPlus.Entities;
 using System.Web;
 

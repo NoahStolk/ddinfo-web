@@ -1,11 +1,11 @@
 using DevilDaggersInfo.Core.Replay;
 using DevilDaggersInfo.Core.Replay.Enums;
 using DevilDaggersInfo.Core.Replay.Events;
-using DevilDaggersInfo.Web.BlazorWasm.Client.HttpClients;
+using DevilDaggersInfo.Web.Client.HttpClients;
 using Microsoft.AspNetCore.Components;
 using System.Diagnostics;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.Pages;
+namespace DevilDaggersInfo.Web.Client.Pages;
 
 public partial class ReplayParser
 {

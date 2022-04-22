@@ -1,8 +1,8 @@
-using DevilDaggersInfo.Web.BlazorWasm.Client.Extensions;
+using DevilDaggersInfo.Web.Client.Extensions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin;
+namespace DevilDaggersInfo.Web.Client.Components.Admin;
 
 public partial class Deletion
 {

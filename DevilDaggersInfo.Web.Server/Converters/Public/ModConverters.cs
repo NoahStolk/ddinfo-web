@@ -1,5 +1,5 @@
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Mods;
 using DevilDaggersInfo.Web.Server.InternalModels;
+using DevilDaggersInfo.Web.Shared.Dto.Public.Mods;
 
 namespace DevilDaggersInfo.Web.Server.Converters.Public;
 

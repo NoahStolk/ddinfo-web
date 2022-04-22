@@ -1,6 +1,6 @@
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
 using DevilDaggersInfo.Web.Server.Caches.SpawnsetSummaries;
 using DevilDaggersInfo.Web.Server.Converters.Public;
+using DevilDaggersInfo.Web.Shared.Dto.Public.CustomEntries;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Public;
 

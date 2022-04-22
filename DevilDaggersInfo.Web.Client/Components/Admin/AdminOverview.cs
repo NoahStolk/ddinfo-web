@@ -1,12 +1,12 @@
-using DevilDaggersInfo.Web.BlazorWasm.Client.Pages;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Constants;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Extensions;
+using DevilDaggersInfo.Web.Client.Pages;
+using DevilDaggersInfo.Web.Shared.Constants;
+using DevilDaggersInfo.Web.Shared.Dto;
+using DevilDaggersInfo.Web.Shared.Extensions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin;
+namespace DevilDaggersInfo.Web.Client.Components.Admin;
 
 public partial class AdminOverview<TGetDto, TSorting> : IHasNavigation
 	where TGetDto : IAdminOverviewGetDto

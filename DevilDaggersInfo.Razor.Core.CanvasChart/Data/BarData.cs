@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Data;
+namespace DevilDaggersInfo.Razor.Core.CanvasChart.Data;
 
 public class BarData
 {

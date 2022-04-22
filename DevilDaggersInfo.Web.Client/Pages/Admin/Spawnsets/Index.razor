@@ -1,8 +1,8 @@
 @page "/admin/spawnsets"
+@using DevilDaggersInfo.Web.Shared.Dto.Admin.Spawnsets
+@using DevilDaggersInfo.Web.Shared.Enums.Sortings.Admin
+@using DevilDaggersInfo.Web.Client.Components.Admin
 @inherits BaseAdminPage
-@using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin
-@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Spawnsets
-@using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin
 
 <AdminOverview @ref="_overview" TGetDto="GetSpawnsetForOverview" TSorting="SpawnsetSorting" Title="Admin - Spawnsets" ApiCall="(int pageIndex, int pageSize, SpawnsetSorting? sortBy, bool isAscending) => Http.GetSpawnsets(pageIndex, pageSize, sortBy, isAscending)" DeletionApiCall="(int id) => Http.DeleteSpawnsetById(id)" GridConfiguration="grid-cols-admin-spawnsets-sm md:grid-cols-admin-spawnsets-md lg:grid-cols-admin-spawnsets-lg xl:grid-cols-admin-spawnsets-xl">
 	<TableHeader>

@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Donations;
+namespace DevilDaggersInfo.Web.Shared.Dto.Public.Donations;
 
 public record GetDonator
 {

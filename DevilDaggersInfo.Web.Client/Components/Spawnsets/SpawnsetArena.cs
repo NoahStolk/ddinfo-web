@@ -1,11 +1,11 @@
 using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Core.Spawnset.Enums;
-using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.JsRuntime;
-using DevilDaggersInfo.Web.BlazorWasm.Client.Core.Unmarshalled;
+using DevilDaggersInfo.Razor.Core.CanvasChart.JsRuntime;
+using DevilDaggersInfo.Razor.Core.Unmarshalled;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.Components.Spawnsets;
+namespace DevilDaggersInfo.Web.Client.Components.Spawnsets;
 
 public partial class SpawnsetArena
 {

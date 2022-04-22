@@ -1,11 +1,10 @@
 @page "/admin/custom-leaderboards/add"
+@using DevilDaggersInfo.Web.Shared.Dto.Admin.CustomLeaderboards
+@using DevilDaggersInfo.Web.Shared.Dto.Admin.Spawnsets
+@using DevilDaggersInfo.Web.Shared.Enums
+@using DevilDaggersInfo.Web.Client.Components.Admin
+@using DevilDaggersInfo.Web.Client.Enums
 @inherits BaseAdminPage
-@using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin
-@using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Input
-@using DevilDaggersInfo.Web.BlazorWasm.Client.Enums
-@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.CustomLeaderboards
-@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Spawnsets
-@using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
 
 <AdminAdd Name="Custom Leaderboard" OverviewUrl="/admin/custom-leaderboards" ApiCall="Http.AddCustomLeaderboard" Model="_addCustomLeaderboard" @ref="_addComponent">
 	<InputWrapper Label="Spawnset"><SearchDropdown TKey=int Values="@_spawnsetNames" Converter="s => int.Parse(s)" @bind-Value="@_addCustomLeaderboard.SpawnsetId" /></InputWrapper>

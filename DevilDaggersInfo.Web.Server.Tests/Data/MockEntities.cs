@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Web.Shared.Enums;
 using MockQueryable.Moq;
 
 namespace DevilDaggersInfo.Web.Server.Tests.Data;

@@ -1,11 +1,11 @@
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomLeaderboards;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Public;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.InternalModels;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
 using DevilDaggersInfo.Web.Server.Caches.SpawnsetHashes;
 using DevilDaggersInfo.Web.Server.Converters.Public;
 using DevilDaggersInfo.Web.Server.Entities.Views;
+using DevilDaggersInfo.Web.Shared.Dto;
+using DevilDaggersInfo.Web.Shared.Dto.Public.CustomLeaderboards;
+using DevilDaggersInfo.Web.Shared.Enums.Sortings.Public;
+using DevilDaggersInfo.Web.Shared.InternalModels;
+using DevilDaggersInfo.Web.Shared.Utils;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Public;
 

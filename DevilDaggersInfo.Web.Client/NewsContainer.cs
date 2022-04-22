@@ -1,6 +1,6 @@
-using DevilDaggersInfo.Web.BlazorWasm.Client.InternalModels;
+using DevilDaggersInfo.Web.Client.InternalModels;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Client;
+namespace DevilDaggersInfo.Web.Client;
 
 /// <summary>
 /// Include the news in the build so we don't rely on static files that might be cached incorrectly.

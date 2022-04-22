@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options.LineChart;
+namespace DevilDaggersInfo.Razor.Core.CanvasChart.Options.LineChart;
 
 public class LineChartOptions
 {

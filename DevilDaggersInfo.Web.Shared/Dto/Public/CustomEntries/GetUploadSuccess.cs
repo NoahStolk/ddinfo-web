@@ -1,6 +1,6 @@
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomLeaderboards;
+using DevilDaggersInfo.Web.Shared.Dto.Public.CustomLeaderboards;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
+namespace DevilDaggersInfo.Web.Shared.Dto.Public.CustomEntries;
 
 public record GetUploadSuccess
 {

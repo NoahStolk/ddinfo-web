@@ -1,6 +1,6 @@
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.WorldRecords;
 using DevilDaggersInfo.Web.Server.Caches.LeaderboardHistory;
 using DevilDaggersInfo.Web.Server.InternalModels;
+using DevilDaggersInfo.Web.Shared.Dto.Public.WorldRecords;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Public;
 

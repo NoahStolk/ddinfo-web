@@ -1,10 +1,10 @@
-using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Users;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Extensions;
+using DevilDaggersInfo.Web.Client.Components.Admin;
+using DevilDaggersInfo.Web.Shared.Dto.Admin.Users;
+using DevilDaggersInfo.Web.Shared.Extensions;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.Pages.Admin.Users;
+namespace DevilDaggersInfo.Web.Client.Pages.Admin.Users;
 
 public partial class Index
 {

@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Client;
+namespace DevilDaggersInfo.Web.Client;
 
 public static class Constants
 {

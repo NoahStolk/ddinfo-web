@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Tools;
+namespace DevilDaggersInfo.Web.Shared.Dto.Public.Tools;
 
 public record GetToolVersion
 {

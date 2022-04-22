@@ -1,13 +1,13 @@
-using DevilDaggersInfo.Web.BlazorWasm.Client.Authentication;
-using DevilDaggersInfo.Web.BlazorWasm.Client.Enums;
-using DevilDaggersInfo.Web.BlazorWasm.Client.Extensions;
-using DevilDaggersInfo.Web.BlazorWasm.Client.HttpClients;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players;
+using DevilDaggersInfo.Web.Client.Authentication;
+using DevilDaggersInfo.Web.Client.Enums;
+using DevilDaggersInfo.Web.Client.Extensions;
+using DevilDaggersInfo.Web.Client.HttpClients;
+using DevilDaggersInfo.Web.Shared.Dto.Public.Players;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.Pages.Profile;
+namespace DevilDaggersInfo.Web.Client.Pages.Profile;
 
 public partial class EditProfilePage
 {

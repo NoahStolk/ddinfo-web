@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.Core.Unmarshalled;
+namespace DevilDaggersInfo.Razor.Core.Unmarshalled;
 
 /// <summary>
 /// Provides invoking methods to the 2D context of the HTML5 canvas.

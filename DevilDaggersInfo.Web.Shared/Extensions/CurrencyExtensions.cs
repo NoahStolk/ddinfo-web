@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Extensions;
+namespace DevilDaggersInfo.Web.Shared.Extensions;
 
 public static class CurrencyExtensions
 {

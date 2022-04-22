@@ -1,8 +1,8 @@
 @page "/admin/mods"
+@using DevilDaggersInfo.Web.Shared.Dto.Admin.Mods
+@using DevilDaggersInfo.Web.Shared.Enums.Sortings.Admin
+@using DevilDaggersInfo.Web.Client.Components.Admin
 @inherits BaseAdminPage
-@using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin
-@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Mods
-@using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin
 
 <AdminOverview @ref="_overview" TGetDto="GetModForOverview" TSorting="ModSorting" Title="Admin - Mods" ApiCall="(int pageIndex, int pageSize, ModSorting? sortBy, bool isAscending) => Http.GetMods(pageIndex, pageSize, sortBy, isAscending)" DeletionApiCall="(int id) => Http.DeleteModById(id)" GridConfiguration="grid-cols-admin-mods-sm md:grid-cols-admin-mods-md lg:grid-cols-admin-mods-lg xl:grid-cols-admin-mods-xl">
 	<TableHeader>

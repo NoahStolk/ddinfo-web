@@ -1,5 +1,5 @@
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.Entities.Views;
+using DevilDaggersInfo.Web.Shared.Dto.Public.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Server.Converters.Public;
 

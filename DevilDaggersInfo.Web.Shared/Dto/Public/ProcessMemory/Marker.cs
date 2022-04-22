@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.ProcessMemory;
+namespace DevilDaggersInfo.Web.Shared.Dto.Public.ProcessMemory;
 
 public record Marker
 {

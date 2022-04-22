@@ -1,6 +1,6 @@
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
+using DevilDaggersInfo.Web.Shared.Utils;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.InternalModels;
+namespace DevilDaggersInfo.Web.Client.InternalModels;
 
 public class NewsItem
 {

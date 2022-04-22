@@ -1,8 +1,8 @@
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomLeaderboards;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Extensions;
+using DevilDaggersInfo.Web.Shared.Dto.Public.CustomLeaderboards;
+using DevilDaggersInfo.Web.Shared.Extensions;
 using Microsoft.AspNetCore.Components;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.Pages.Custom.Leaderboards;
+namespace DevilDaggersInfo.Web.Client.Pages.Custom.Leaderboards;
 
 public partial class LeaderboardPage
 {

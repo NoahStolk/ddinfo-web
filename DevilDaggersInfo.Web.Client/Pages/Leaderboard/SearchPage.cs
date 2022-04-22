@@ -1,11 +1,10 @@
-using DevilDaggersInfo.Web.BlazorWasm.Client.Extensions;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Leaderboards;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Extensions;
+using DevilDaggersInfo.Web.Client.Extensions;
+using DevilDaggersInfo.Web.Shared.Dto.Public.Leaderboards;
+using DevilDaggersInfo.Web.Shared.Dto.Public.Players;
 using Microsoft.AspNetCore.Components;
 using System.Diagnostics.CodeAnalysis;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.Pages.Leaderboard;
+namespace DevilDaggersInfo.Web.Client.Pages.Leaderboard;
 
 public partial class SearchPage
 {

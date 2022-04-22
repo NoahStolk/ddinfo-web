@@ -1,14 +1,14 @@
 using DevilDaggersInfo.Core.Wiki.Extensions;
-using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Data;
-using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options.LineChart;
-using DevilDaggersInfo.Web.BlazorWasm.Client.HttpClients;
-using DevilDaggersInfo.Web.BlazorWasm.Client.Utils;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.WorldRecords;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
+using DevilDaggersInfo.Razor.Core.CanvasChart.Data;
+using DevilDaggersInfo.Razor.Core.CanvasChart.Options.LineChart;
+using DevilDaggersInfo.Web.Client.HttpClients;
+using DevilDaggersInfo.Web.Client.Utils;
+using DevilDaggersInfo.Web.Shared.Dto.Public.WorldRecords;
+using DevilDaggersInfo.Web.Shared.Utils;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.Pages.Leaderboard;
+namespace DevilDaggersInfo.Web.Client.Pages.Leaderboard;
 
 public partial class WorldRecordProgressionPage
 {

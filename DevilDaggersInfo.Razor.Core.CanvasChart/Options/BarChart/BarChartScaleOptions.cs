@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options.BarChart;
+namespace DevilDaggersInfo.Razor.Core.CanvasChart.Options.BarChart;
 
 public class BarChartScaleOptions
 {

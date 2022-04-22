@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Core.Spawnset.Enums;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
+namespace DevilDaggersInfo.Web.Shared.Dto.Public.CustomEntries;
 
 public record GetCustomEntryData
 {

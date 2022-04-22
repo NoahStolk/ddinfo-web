@@ -1,9 +1,9 @@
 using Blazored.LocalStorage;
-using DevilDaggersInfo.Web.BlazorWasm.Client.Authentication;
+using DevilDaggersInfo.Web.Client.Authentication;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.HttpClients;
+namespace DevilDaggersInfo.Web.Client.HttpClients;
 
 public partial class PublicApiHttpClient : ApiHttpClient
 {

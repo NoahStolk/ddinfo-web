@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.Components.Input;
+namespace DevilDaggersInfo.Web.Client.Components.Input;
 
 public partial class MultiSelectList
 {

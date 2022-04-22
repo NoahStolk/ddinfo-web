@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Health;
+using DevilDaggersInfo.Web.Shared.Dto.Admin.Health;
 using Microsoft.AspNetCore.Authorization;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Admin;

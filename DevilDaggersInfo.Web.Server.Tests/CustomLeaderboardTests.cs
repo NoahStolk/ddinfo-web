@@ -1,9 +1,10 @@
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.CustomLeaderboards;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Extensions;
 using DevilDaggersInfo.Web.Server.Controllers.Admin;
 using DevilDaggersInfo.Web.Server.Tests.Data;
 using DevilDaggersInfo.Web.Server.Tests.Extensions;
+using DevilDaggersInfo.Web.Shared.Dto;
+using DevilDaggersInfo.Web.Shared.Dto.Admin.CustomLeaderboards;
+using DevilDaggersInfo.Web.Shared.Enums;
+using DevilDaggersInfo.Web.Shared.Extensions;
 
 namespace DevilDaggersInfo.Web.Server.Tests;
 

@@ -1,6 +1,6 @@
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
+using DevilDaggersInfo.Web.Shared.Enums;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.Utils;
+namespace DevilDaggersInfo.Web.Client.Utils;
 
 // TODO: Source-generate this for all enums.
 public static class EnumConvert

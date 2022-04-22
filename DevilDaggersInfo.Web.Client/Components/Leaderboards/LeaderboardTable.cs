@@ -1,9 +1,9 @@
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Extensions;
+using DevilDaggersInfo.Web.Shared.Dto.Public;
+using DevilDaggersInfo.Web.Shared.Dto.Public.Players;
+using DevilDaggersInfo.Web.Shared.Extensions;
 using Microsoft.AspNetCore.Components;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.Components.Leaderboards;
+namespace DevilDaggersInfo.Web.Client.Components.Leaderboards;
 
 public partial class LeaderboardTable<TGetEntryDto>
 	where TGetEntryDto : class, IGetEntryDto

@@ -1,14 +1,14 @@
-using DevilDaggersInfo.Web.BlazorWasm.Client.Extensions;
-using DevilDaggersInfo.Web.BlazorWasm.Client.Utils;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Constants;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomLeaderboards;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Public;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
+using DevilDaggersInfo.Web.Client.Extensions;
+using DevilDaggersInfo.Web.Client.Utils;
+using DevilDaggersInfo.Web.Shared.Constants;
+using DevilDaggersInfo.Web.Shared.Dto;
+using DevilDaggersInfo.Web.Shared.Dto.Public.CustomLeaderboards;
+using DevilDaggersInfo.Web.Shared.Enums;
+using DevilDaggersInfo.Web.Shared.Enums.Sortings.Public;
+using DevilDaggersInfo.Web.Shared.Utils;
 using Microsoft.AspNetCore.Components;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.Pages.Custom.Leaderboards;
+namespace DevilDaggersInfo.Web.Client.Pages.Custom.Leaderboards;
 
 public partial class Index : IHasNavigation
 {

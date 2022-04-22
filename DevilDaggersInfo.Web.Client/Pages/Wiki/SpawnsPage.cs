@@ -2,7 +2,7 @@ using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Core.Spawnset.View;
 using Microsoft.AspNetCore.Components;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.Pages.Wiki;
+namespace DevilDaggersInfo.Web.Client.Pages.Wiki;
 
 public partial class SpawnsPage
 {

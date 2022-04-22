@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Mods;
+namespace DevilDaggersInfo.Web.Shared.Dto.Admin.Mods;
 
 public record AddMod
 {

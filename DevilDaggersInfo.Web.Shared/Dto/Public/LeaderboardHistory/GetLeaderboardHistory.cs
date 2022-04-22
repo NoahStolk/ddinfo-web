@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
+namespace DevilDaggersInfo.Web.Shared.Dto.Public.LeaderboardHistory;
 
 public record GetLeaderboardHistory : IGetLeaderboardGlobalDto
 {

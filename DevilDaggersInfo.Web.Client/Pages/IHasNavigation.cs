@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.Pages;
+namespace DevilDaggersInfo.Web.Client.Pages;
 
 public interface IHasNavigation
 {

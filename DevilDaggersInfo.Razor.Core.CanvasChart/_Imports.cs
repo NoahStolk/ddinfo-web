@@ -1,1 +1,1 @@
-global using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Enums;
+global using DevilDaggersInfo.Razor.Core.CanvasChart.Enums;

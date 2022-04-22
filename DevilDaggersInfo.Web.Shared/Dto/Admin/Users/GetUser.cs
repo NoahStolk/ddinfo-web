@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Users;
+namespace DevilDaggersInfo.Web.Shared.Dto.Admin.Users;
 
 public record GetUser
 {

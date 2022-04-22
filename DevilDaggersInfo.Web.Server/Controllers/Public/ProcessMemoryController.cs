@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.ProcessMemory;
+using DevilDaggersInfo.Web.Shared.Dto.Public.ProcessMemory;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Public;
 

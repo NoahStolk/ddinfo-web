@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Integrations;
+using DevilDaggersInfo.Web.Shared.Dto.Public.Integrations;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Public;
 

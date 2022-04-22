@@ -1,7 +1,7 @@
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
 using DevilDaggersInfo.Web.Server.Caches.LeaderboardHistory;
 using DevilDaggersInfo.Web.Server.Caches.LeaderboardStatistics;
 using DevilDaggersInfo.Web.Server.Caches.ModArchives;
+using DevilDaggersInfo.Web.Shared.Utils;
 
 namespace DevilDaggersInfo.Web.Server.HostedServices;
 

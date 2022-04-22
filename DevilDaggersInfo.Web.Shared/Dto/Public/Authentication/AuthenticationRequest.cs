@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Authentication;
+namespace DevilDaggersInfo.Web.Shared.Dto.Public.Authentication;
 
 public record AuthenticationRequest
 {

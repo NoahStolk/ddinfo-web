@@ -1,12 +1,6 @@
 @page "/custom/spawnset/{Id:int}"
-@using DevilDaggersInfo.Core.Spawnset
-@using DevilDaggersInfo.Core.Spawnset.Enums
 @using DevilDaggersInfo.Core.Spawnset.Extensions
-@using DevilDaggersInfo.Core.Spawnset.View
-@using DevilDaggersInfo.Core.Wiki.Enums
-@using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Spawnsets
-@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Spawnsets
-@using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
+@using DevilDaggersInfo.Core.Spawnset.Enums
 
 @if (GetSpawnset == null)
 {
@@ -55,7 +49,7 @@ else
 				{
 					<Heading Title="Description" Level="2" />
 					<div class="bg-gray-1 max-w-arena-table px-1">
-						@((MarkupString)@GetSpawnset.HtmlDescription)
+						@((MarkupString)GetSpawnset.HtmlDescription)
 					</div>
 				}
 

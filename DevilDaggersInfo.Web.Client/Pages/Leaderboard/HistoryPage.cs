@@ -1,9 +1,9 @@
-using DevilDaggersInfo.Web.BlazorWasm.Client.Extensions;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players;
+using DevilDaggersInfo.Web.Client.Extensions;
+using DevilDaggersInfo.Web.Shared.Dto.Public.LeaderboardHistory;
+using DevilDaggersInfo.Web.Shared.Dto.Public.Players;
 using Microsoft.AspNetCore.Components;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.Pages.Leaderboard;
+namespace DevilDaggersInfo.Web.Client.Pages.Leaderboard;
 
 public partial class HistoryPage
 {

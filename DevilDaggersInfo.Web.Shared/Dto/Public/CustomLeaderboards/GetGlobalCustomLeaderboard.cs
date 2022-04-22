@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomLeaderboards;
+namespace DevilDaggersInfo.Web.Shared.Dto.Public.CustomLeaderboards;
 
 public record GetGlobalCustomLeaderboard
 {

@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.CustomEntries;
+using DevilDaggersInfo.Web.Shared.Dto.Admin.CustomEntries;
 
 namespace DevilDaggersInfo.Web.Server.Converters.Admin;
 

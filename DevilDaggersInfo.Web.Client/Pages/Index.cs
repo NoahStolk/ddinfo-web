@@ -1,8 +1,8 @@
-using DevilDaggersInfo.Web.BlazorWasm.Client.HttpClients;
-using DevilDaggersInfo.Web.BlazorWasm.Client.InternalModels;
+using DevilDaggersInfo.Web.Client.HttpClients;
+using DevilDaggersInfo.Web.Client.InternalModels;
 using Microsoft.AspNetCore.Components;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.Pages;
+namespace DevilDaggersInfo.Web.Client.Pages;
 
 public partial class Index
 {

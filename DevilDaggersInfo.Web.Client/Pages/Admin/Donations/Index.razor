@@ -1,8 +1,8 @@
 @page "/admin/donations"
+@using DevilDaggersInfo.Web.Shared.Dto.Admin.Donations
+@using DevilDaggersInfo.Web.Shared.Enums.Sortings.Admin
+@using DevilDaggersInfo.Web.Client.Components.Admin
 @inherits BaseAdminPage
-@using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin
-@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Donations
-@using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin
 
 <AdminOverview @ref="_overview" TGetDto="GetDonationForOverview" TSorting="DonationSorting" Title="Admin - Donations" ApiCall="(int pageIndex, int pageSize, DonationSorting? sortBy, bool isAscending) => Http.GetDonations(pageIndex, pageSize, sortBy, isAscending)" DeletionApiCall="(int id) => Http.DeleteDonationById(id)" GridConfiguration="grid-cols-admin-donations-sm md:grid-cols-admin-donations-md lg:grid-cols-admin-donations-lg xl:grid-cols-admin-donations-xl">
 	<TableHeader>

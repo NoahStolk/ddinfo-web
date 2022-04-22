@@ -1,6 +1,6 @@
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Tools;
 using DevilDaggersInfo.Web.Server.Converters.Public;
 using DevilDaggersInfo.Web.Server.InternalModels;
+using DevilDaggersInfo.Web.Shared.Dto.Public.Tools;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Public;
 

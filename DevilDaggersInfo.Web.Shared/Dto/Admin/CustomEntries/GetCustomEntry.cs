@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.CustomEntries;
+namespace DevilDaggersInfo.Web.Shared.Dto.Admin.CustomEntries;
 
 public record GetCustomEntry
 {

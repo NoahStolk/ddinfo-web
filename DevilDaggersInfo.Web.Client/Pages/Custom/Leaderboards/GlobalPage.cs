@@ -1,10 +1,10 @@
-using DevilDaggersInfo.Web.BlazorWasm.Client.Extensions;
-using DevilDaggersInfo.Web.BlazorWasm.Client.HttpClients;
-using DevilDaggersInfo.Web.BlazorWasm.Client.Utils;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomLeaderboards;
+using DevilDaggersInfo.Web.Client.Extensions;
+using DevilDaggersInfo.Web.Client.HttpClients;
+using DevilDaggersInfo.Web.Client.Utils;
+using DevilDaggersInfo.Web.Shared.Dto.Public.CustomLeaderboards;
 using Microsoft.AspNetCore.Components;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.Pages.Custom.Leaderboards;
+namespace DevilDaggersInfo.Web.Client.Pages.Custom.Leaderboards;
 
 public partial class GlobalPage
 {

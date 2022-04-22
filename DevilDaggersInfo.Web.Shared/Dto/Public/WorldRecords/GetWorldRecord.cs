@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Core.Wiki.Enums;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.WorldRecords;
+namespace DevilDaggersInfo.Web.Shared.Dto.Public.WorldRecords;
 
 public record GetWorldRecord
 {

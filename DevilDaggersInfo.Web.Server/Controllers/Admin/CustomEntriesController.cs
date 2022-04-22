@@ -1,7 +1,7 @@
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.CustomEntries;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin;
 using DevilDaggersInfo.Web.Server.Converters.Admin;
+using DevilDaggersInfo.Web.Shared.Dto;
+using DevilDaggersInfo.Web.Shared.Dto.Admin.CustomEntries;
+using DevilDaggersInfo.Web.Shared.Enums.Sortings.Admin;
 using Microsoft.AspNetCore.Authorization;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Admin;

@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Assets;
+namespace DevilDaggersInfo.Web.Shared.Dto.Public.Assets;
 
 public record GetAssetInfo
 {

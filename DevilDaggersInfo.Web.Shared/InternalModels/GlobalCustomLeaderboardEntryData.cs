@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Shared.InternalModels;
+namespace DevilDaggersInfo.Web.Shared.InternalModels;
 
 public record GlobalCustomLeaderboardEntryData
 {

@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart;
+namespace DevilDaggersInfo.Razor.Core.CanvasChart;
 
 [EventHandler("onmouseleave", typeof(MouseEventArgs), true, true)]
 [EventHandler("onmouseenter", typeof(MouseEventArgs), true, true)]

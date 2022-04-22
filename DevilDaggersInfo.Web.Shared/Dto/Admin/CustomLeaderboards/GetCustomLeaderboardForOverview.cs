@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.CustomLeaderboards;
+namespace DevilDaggersInfo.Web.Shared.Dto.Admin.CustomLeaderboards;
 
 public record GetCustomLeaderboardForOverview : IAdminOverviewGetDto
 {

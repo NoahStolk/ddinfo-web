@@ -1,13 +1,12 @@
-using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Data;
-using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.JsRuntime;
-using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options.BarChart;
-using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Utils;
-using DevilDaggersInfo.Web.BlazorWasm.Client.Core.Unmarshalled;
+using DevilDaggersInfo.Razor.Core.CanvasChart.Data;
+using DevilDaggersInfo.Razor.Core.CanvasChart.JsRuntime;
+using DevilDaggersInfo.Razor.Core.CanvasChart.Options.BarChart;
+using DevilDaggersInfo.Razor.Core.CanvasChart.Utils;
+using DevilDaggersInfo.Razor.Core.Unmarshalled;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using System.Data;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Components;
+namespace DevilDaggersInfo.Razor.Core.CanvasChart.Components;
 
 public partial class BarChart
 {

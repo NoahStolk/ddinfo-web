@@ -1,6 +1,6 @@
 using System.Runtime.Serialization;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.HttpClients;
+namespace DevilDaggersInfo.Web.Client.HttpClients;
 
 [Serializable]
 public class JsonDeserializationException : Exception

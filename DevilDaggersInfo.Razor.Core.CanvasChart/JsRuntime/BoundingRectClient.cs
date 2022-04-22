@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.JsRuntime;
+namespace DevilDaggersInfo.Razor.Core.CanvasChart.JsRuntime;
 
 public class BoundingClientRect
 {

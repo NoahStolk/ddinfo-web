@@ -1,11 +1,10 @@
 @page "/admin/players/add"
+@using DevilDaggersInfo.Web.Shared.Dto.Admin.Players
+@using DevilDaggersInfo.Web.Shared.Enums
+@using DevilDaggersInfo.Web.Client.Components.Admin
+@using DevilDaggersInfo.Web.Client.Enums
+@using DevilDaggersInfo.Web.Shared.Dto.Admin.Mods
 @inherits BaseAdminPage
-@using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin
-@using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Input
-@using DevilDaggersInfo.Web.BlazorWasm.Client.Enums
-@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Mods
-@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Players
-@using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
 
 <AdminAdd Name="Player" OverviewUrl="/admin/players" ApiCall="Http.AddPlayer" Model="_addPlayer" @ref="_addComponent">
 	<InputWrapper Label="Id"><InputNumber class="admin-input" @bind-Value="_addPlayer.Id" /></InputWrapper>

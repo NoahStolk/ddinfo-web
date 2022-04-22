@@ -1,6 +1,6 @@
 using System.Net.Http.Json;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.HttpClients;
+namespace DevilDaggersInfo.Web.Client.HttpClients;
 
 public abstract class ApiHttpClient
 {

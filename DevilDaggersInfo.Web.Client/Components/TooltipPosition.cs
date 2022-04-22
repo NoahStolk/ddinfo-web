@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.Components;
+namespace DevilDaggersInfo.Web.Client.Components;
 
 public enum TooltipPosition
 {

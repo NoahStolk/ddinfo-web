@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Spawnsets;
+using DevilDaggersInfo.Web.Shared.Dto.Admin.Spawnsets;
 
 namespace DevilDaggersInfo.Web.Server.Converters.Admin;
 

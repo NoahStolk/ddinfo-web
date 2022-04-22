@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players;
+using DevilDaggersInfo.Web.Shared.Dto.Public.Players;
 
 namespace DevilDaggersInfo.Web.Server.Converters.Public;
 

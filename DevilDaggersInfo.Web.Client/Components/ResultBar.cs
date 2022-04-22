@@ -1,7 +1,7 @@
-using DevilDaggersInfo.Web.BlazorWasm.Client.Enums;
+using DevilDaggersInfo.Web.Client.Enums;
 using Microsoft.AspNetCore.Components;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.Components;
+namespace DevilDaggersInfo.Web.Client.Components;
 
 public partial class ResultBar
 {

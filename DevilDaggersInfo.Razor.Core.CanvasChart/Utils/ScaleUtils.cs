@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Utils;
+namespace DevilDaggersInfo.Razor.Core.CanvasChart.Utils;
 
 public static class ScaleUtils
 {

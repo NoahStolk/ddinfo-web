@@ -1,10 +1,10 @@
 using DevilDaggersInfo.Core.Encryption;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
 using DevilDaggersInfo.Web.Server.Caches.SpawnsetHashes;
 using DevilDaggersInfo.Web.Server.Enums;
 using DevilDaggersInfo.Web.Server.Exceptions;
 using DevilDaggersInfo.Web.Server.Tests.Data;
 using DevilDaggersInfo.Web.Server.Tests.Extensions;
+using DevilDaggersInfo.Web.Shared.Dto.Public.CustomEntries;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;

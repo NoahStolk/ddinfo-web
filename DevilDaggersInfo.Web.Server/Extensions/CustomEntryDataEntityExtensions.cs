@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
+using DevilDaggersInfo.Web.Shared.Dto.Public.CustomEntries;
 
 namespace DevilDaggersInfo.Web.Server.Extensions;
 

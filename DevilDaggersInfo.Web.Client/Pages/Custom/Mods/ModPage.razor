@@ -1,8 +1,7 @@
 @page "/custom/mod/{Id:int}"
+@using DevilDaggersInfo.Web.Shared.Dto.Public.Mods
 @inject PublicApiHttpClient Http
 @inject NavigationManager NavigationManager
-@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Mods
-@using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
 
 @if (GetMod == null)
 {

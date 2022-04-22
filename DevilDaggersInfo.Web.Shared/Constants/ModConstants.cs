@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Constants;
+namespace DevilDaggersInfo.Web.Shared.Constants;
 
 public static class ModConstants
 {

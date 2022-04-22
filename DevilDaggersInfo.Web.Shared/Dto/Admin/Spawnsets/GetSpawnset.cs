@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Spawnsets;
+namespace DevilDaggersInfo.Web.Shared.Dto.Admin.Spawnsets;
 
 public record GetSpawnset
 {

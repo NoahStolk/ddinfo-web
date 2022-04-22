@@ -1,8 +1,8 @@
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
 using DevilDaggersInfo.Web.Server.Caches.LeaderboardHistory;
 using DevilDaggersInfo.Web.Server.Converters.Public;
 using DevilDaggersInfo.Web.Server.InternalModels;
+using DevilDaggersInfo.Web.Shared.Dto.Public.Players;
+using DevilDaggersInfo.Web.Shared.Utils;
 using Microsoft.AspNetCore.Authorization;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Public;

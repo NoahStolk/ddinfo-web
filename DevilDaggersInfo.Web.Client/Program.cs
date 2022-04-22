@@ -1,11 +1,11 @@
 using Blazored.LocalStorage;
-using DevilDaggersInfo.Web.BlazorWasm.Client.Authentication;
-using DevilDaggersInfo.Web.BlazorWasm.Client.HttpClients;
+using DevilDaggersInfo.Web.Client.Authentication;
+using DevilDaggersInfo.Web.Client.HttpClients;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Client;
+namespace DevilDaggersInfo.Web.Client;
 
 public static class Program
 {

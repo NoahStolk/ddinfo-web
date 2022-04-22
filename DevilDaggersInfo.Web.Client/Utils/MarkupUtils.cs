@@ -1,7 +1,7 @@
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
+using DevilDaggersInfo.Web.Shared.Utils;
 using Microsoft.AspNetCore.Components;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.Utils;
+namespace DevilDaggersInfo.Web.Client.Utils;
 
 public static class MarkupUtils
 {

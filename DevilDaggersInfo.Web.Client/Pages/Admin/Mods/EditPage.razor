@@ -1,11 +1,6 @@
 @page "/admin/mods/edit/{Id:int}"
-@inherits BaseAdminModPage
 @using DevilDaggersInfo.Core.Mod.Utils
-@using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin
-@using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Input
-@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Mods
-@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Players
-@using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
+@inherits BaseAdminModPage
 
 <AdminEdit Name="Mod" OverviewUrl="/admin/mods" ApiCall="Http.EditModById" Model="_editMod" Id="Id" @ref="_editComponent">
 	<InputWrapper Label="Name"><InputText class="admin-input" @bind-Value="@_editMod.Name" /></InputWrapper>

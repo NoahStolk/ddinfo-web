@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.Extensions;
+namespace DevilDaggersInfo.Web.Client.Extensions;
 
 public static class NavigationManagerExtensions
 {

@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.Enums;
+namespace DevilDaggersInfo.Web.Client.Enums;
 
 public enum ErrorState
 {

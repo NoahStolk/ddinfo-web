@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
+using DevilDaggersInfo.Web.Shared.Utils;
 
 namespace DevilDaggersInfo.Web.Server.Entities;
 

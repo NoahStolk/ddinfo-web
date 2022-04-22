@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.CustomLeaderboards;
+using DevilDaggersInfo.Web.Shared.Dto.Admin.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Server.Services;
 

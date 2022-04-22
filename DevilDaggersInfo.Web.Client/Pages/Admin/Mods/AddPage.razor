@@ -1,11 +1,6 @@
 @page "/admin/mods/add"
-@inherits BaseAdminModPage
 @using DevilDaggersInfo.Core.Mod.Utils
-@using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin
-@using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Input
-@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Mods
-@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Players
-@using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
+@inherits BaseAdminModPage
 
 <AdminAdd Name="Mod" OverviewUrl="/admin/mods" ApiCall="Http.AddMod" Model="_addMod" @ref="_addComponent">
 	<InputWrapper Label="Name"><InputText class="admin-input" @bind-Value="@_addMod.Name" /></InputWrapper>

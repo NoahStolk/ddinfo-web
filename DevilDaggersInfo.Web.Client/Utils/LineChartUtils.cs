@@ -1,6 +1,6 @@
-using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options.LineChart;
+using DevilDaggersInfo.Razor.Core.CanvasChart.Options.LineChart;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.Utils;
+namespace DevilDaggersInfo.Web.Client.Utils;
 
 public static class LineChartUtils
 {

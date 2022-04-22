@@ -1,9 +1,9 @@
-using DevilDaggersInfo.Web.BlazorWasm.Client.Authentication;
-using DevilDaggersInfo.Web.BlazorWasm.Client.HttpClients;
+using DevilDaggersInfo.Web.Client.Authentication;
+using DevilDaggersInfo.Web.Client.HttpClients;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.Pages.Admin;
+namespace DevilDaggersInfo.Web.Client.Pages.Admin;
 
 public abstract class BaseAdminPage : ComponentBase
 {

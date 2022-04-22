@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Health;
+namespace DevilDaggersInfo.Web.Shared.Dto.Admin.Health;
 
 public record GetResponseTimes
 {

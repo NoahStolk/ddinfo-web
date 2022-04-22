@@ -1,8 +1,8 @@
 @page "/admin/players"
+@using DevilDaggersInfo.Web.Shared.Dto.Admin.Players
+@using DevilDaggersInfo.Web.Shared.Enums.Sortings.Admin
+@using DevilDaggersInfo.Web.Client.Components.Admin
 @inherits BaseAdminPage
-@using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin
-@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Players
-@using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin
 
 <AdminOverview @ref="_overview" TGetDto="GetPlayerForOverview" TSorting="PlayerSorting" Title="Admin - Players" ApiCall="(int pageIndex, int pageSize, PlayerSorting? sortBy, bool isAscending) => Http.GetPlayers(pageIndex, pageSize, sortBy, isAscending)" DeletionApiCall="(int id) => Http.DeletePlayerById(id)" GridConfiguration="grid-cols-admin-players-sm md:grid-cols-admin-players-md lg:grid-cols-admin-players-lg xl:grid-cols-admin-players-xl">
 	<TableHeader>

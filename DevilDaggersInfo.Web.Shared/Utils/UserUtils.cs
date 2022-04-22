@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
+namespace DevilDaggersInfo.Web.Shared.Utils;
 
 public static class UserUtils
 {

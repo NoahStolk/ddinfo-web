@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.Core.Unmarshalled;
+namespace DevilDaggersInfo.Razor.Core.Unmarshalled;
 
 public enum CompositeOperation
 {

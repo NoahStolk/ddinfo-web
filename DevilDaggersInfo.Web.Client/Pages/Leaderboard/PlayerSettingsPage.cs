@@ -1,7 +1,7 @@
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Leaderboards;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players;
+using DevilDaggersInfo.Web.Shared.Dto.Public.Leaderboards;
+using DevilDaggersInfo.Web.Shared.Dto.Public.Players;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.Pages.Leaderboard;
+namespace DevilDaggersInfo.Web.Client.Pages.Leaderboard;
 
 public partial class PlayerSettingsPage
 {

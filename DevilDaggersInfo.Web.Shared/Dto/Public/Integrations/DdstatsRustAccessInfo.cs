@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Integrations;
+namespace DevilDaggersInfo.Web.Shared.Dto.Public.Integrations;
 
 public record DdstatsRustAccessInfo
 {

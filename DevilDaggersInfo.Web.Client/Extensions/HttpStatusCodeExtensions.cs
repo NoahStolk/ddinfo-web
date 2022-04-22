@@ -1,7 +1,7 @@
-using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin;
-using DevilDaggersInfo.Web.BlazorWasm.Client.Enums;
+using DevilDaggersInfo.Web.Client.Components.Admin;
+using DevilDaggersInfo.Web.Client.Enums;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.Extensions;
+namespace DevilDaggersInfo.Web.Client.Extensions;
 
 public static class HttpStatusCodeExtensions
 {

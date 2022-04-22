@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Spawnsets;
+using DevilDaggersInfo.Web.Shared.Dto.Public.Spawnsets;
 
 namespace DevilDaggersInfo.Web.Server.Converters.Public;
 

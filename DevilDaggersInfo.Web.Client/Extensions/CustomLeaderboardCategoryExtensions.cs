@@ -1,6 +1,6 @@
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
+using DevilDaggersInfo.Web.Shared.Enums;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.Extensions;
+namespace DevilDaggersInfo.Web.Client.Extensions;
 
 public static class CustomLeaderboardCategoryExtensions
 {

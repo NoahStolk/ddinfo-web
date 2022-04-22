@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Enums;
+namespace DevilDaggersInfo.Razor.Core.CanvasChart.Enums;
 
 public enum ScaleDisplayUnit
 {

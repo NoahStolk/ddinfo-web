@@ -1,6 +1,6 @@
-using DevilDaggersInfo.Web.BlazorWasm.Shared.InternalModels;
+using DevilDaggersInfo.Web.Shared.InternalModels;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
+namespace DevilDaggersInfo.Web.Shared.Utils;
 
 public static class GlobalCustomLeaderboardUtils
 {

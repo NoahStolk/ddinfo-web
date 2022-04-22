@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Components;
+namespace DevilDaggersInfo.Razor.Core.CanvasChart.Components;
 
 public partial class ChartHighlighter
 {

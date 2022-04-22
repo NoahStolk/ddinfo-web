@@ -1,12 +1,12 @@
 using Blazored.LocalStorage;
-using DevilDaggersInfo.Web.BlazorWasm.Client.HttpClients;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Authentication;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
+using DevilDaggersInfo.Web.Client.HttpClients;
+using DevilDaggersInfo.Web.Shared.Dto.Public.Authentication;
+using DevilDaggersInfo.Web.Shared.Utils;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.Net.Http.Json;
 using System.Security.Claims;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.Authentication;
+namespace DevilDaggersInfo.Web.Client.Authentication;
 
 public class AdminAuthenticationStateProvider : AuthenticationStateProvider
 {
