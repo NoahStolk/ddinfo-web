@@ -30,7 +30,7 @@ public partial class BinaryViewer
 
 		try
 		{
-			_binary = new(fileResult.Contents, ModBinaryReadComprehensiveness.TocOnly);
+			_binary = new(fileResult.Contents, ModBinaryReadComprehensiveness.All);
 		}
 		catch (Exception ex)
 		{
@@ -40,6 +40,30 @@ public partial class BinaryViewer
 
 	public void ExtractBinary()
 	{
+		if (_binary == null)
+			return;
+
+		string outputDirectory = ""; // TODO
+		_binary.ExtractAssets(outputDirectory);
+	}
+
+	public void ExtractAsset(ModBinaryChunk chunk)
+	{
+		if (_binary == null)
+			return;
+
+		byte[] extractedBuffer;
+		try
+		{
+			extractedBuffer = _binary.ExtractAsset(chunk.Name, chunk.AssetType);
+		}
+		catch (Exception ex)
+		{
+			ErrorReporter.ReportError(ex);
+			return;
+		}
+
+		FileSystemService.Save(extractedBuffer);
 	}
 
 	public void CompileBinary()

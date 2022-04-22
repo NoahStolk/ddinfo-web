@@ -4,6 +4,8 @@ public interface IFileSystemService
 {
 	FileResult? Open();
 
+	void Save(byte[] buffer);
+
 	public class FileResult
 	{
 		public FileResult(string path, byte[] contents)

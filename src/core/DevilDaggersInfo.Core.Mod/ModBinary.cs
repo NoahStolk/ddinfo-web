@@ -135,6 +135,18 @@ public class ModBinary
 			File.WriteAllBytes(Path.Combine(outputDirectory, kvp.Key.AssetName + kvp.Key.AssetType.GetFileExtension()), AssetConverter.Extract(kvp.Key.AssetType, kvp.Value));
 	}
 
+	public byte[] ExtractAsset(string assetName, AssetType assetType)
+	{
+		if (_readComprehensiveness != ModBinaryReadComprehensiveness.All)
+			throw new InvalidOperationException("This mod binary has not been opened for full reading comprehensiveness. Cannot extract assets from mod binary.");
+
+		AssetKey key = new(assetType, assetName);
+		if (!AssetMap.ContainsKey(key))
+			throw new InvalidOperationException($"This mod binary does not contain an asset of type '{assetType}' with name '{assetName}'.");
+
+		return AssetConverter.Extract(assetType, AssetMap[key]);
+	}
+
 	public byte[] Compile()
 	{
 		if (_readComprehensiveness != ModBinaryReadComprehensiveness.All)

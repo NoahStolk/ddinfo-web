@@ -15,4 +15,14 @@ public class FileSystemService : IFileSystemService
 
 		return new(dialog.FileName, File.ReadAllBytes(dialog.FileName));
 	}
+
+	public void Save(byte[] buffer)
+	{
+		SaveFileDialog dialog = new();
+		bool? saveResult = dialog.ShowDialog();
+		if (!saveResult.HasValue || !saveResult.Value)
+			return;
+
+		File.WriteAllBytes(dialog.FileName, buffer);
+	}
 }
