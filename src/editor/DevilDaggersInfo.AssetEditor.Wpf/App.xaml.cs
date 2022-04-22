@@ -1,6 +1,6 @@
 using System.Windows;
 
-namespace DevilDaggersInfo.Native.Editor.Asset.Wpf;
+namespace DevilDaggersInfo.AssetEditor.Wpf;
 
 public partial class App : Application
 {
