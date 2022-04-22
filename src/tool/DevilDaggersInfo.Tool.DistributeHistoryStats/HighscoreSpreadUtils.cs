@@ -1,7 +1,7 @@
+using DevilDaggersInfo.Common;
 using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Core.Wiki.Enums;
 using DevilDaggersInfo.Web.Server.InternalModels;
-using DevilDaggersInfo.Web.Shared.Utils;
 using System.Text;
 
 namespace DevilDaggersInfo.Tool.DistributeHistoryStats;
@@ -30,7 +30,7 @@ public static class HighscoreSpreadUtils
 	public static Dictionary<string, LeaderboardHistory> GetAllLeaderboards()
 	{
 		Dictionary<string, LeaderboardHistory> leaderboards = new();
-		foreach (string path in Directory.GetFiles(@"C:\Users\NOAH\source\repos\DevilDaggersInfo\DevilDaggersInfo.Web.Server\Data\LeaderboardHistory", "*.bin"))
+		foreach (string path in Directory.GetFiles(@"C:\Users\NOAH\source\repos\DevilDaggersInfo\src\web\DevilDaggersInfo.Web.Server\Data\LeaderboardHistory", "*.bin"))
 		{
 			byte[] bytes = File.ReadAllBytes(path);
 			leaderboards.Add(path, LeaderboardHistory.CreateFromFile(bytes));
@@ -60,7 +60,7 @@ public static class HighscoreSpreadUtils
 			_log.AppendLine(leaderboard.DateTime.ToString());
 			foreach (EntryHistory entry in changes)
 			{
-				_log.Append("\tSet missing stats for ").Append(entry.Username).Append(' ').AppendLine(entry.Time.ToString(FormatUtils.TimeFormat));
+				_log.Append("\tSet missing stats for ").Append(entry.Username).Append(' ').AppendLine(entry.Time.ToString(StringFormats.TimeFormat));
 				_log.Append("\t\tGems: ").Append(entry.Gems).AppendLine();
 				_log.Append("\t\tKills: ").Append(entry.Kills).AppendLine();
 				_log.Append("\t\tDeathType: ").AppendLine(Deaths.GetDeathByLeaderboardType(GameVersions.GetGameVersionFromDate(leaderboard.DateTime) ?? GameVersion.V1_0, entry.DeathType)?.Name ?? "Unknown");
