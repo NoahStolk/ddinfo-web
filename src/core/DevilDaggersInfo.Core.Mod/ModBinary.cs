@@ -42,7 +42,7 @@ public class ModBinary
 			int size = br.ReadInt32();
 
 			// Skip invalid chunks (present in default dd binary).
-			if (size <= 0 || offset < _fileHeaderSize + tocSize + 2)
+			if (size <= 0 || offset < _fileHeaderSize + tocSize)
 				continue;
 
 			_ = br.ReadInt32();
