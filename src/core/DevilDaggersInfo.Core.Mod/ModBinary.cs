@@ -40,6 +40,11 @@ public class ModBinary
 
 			int offset = br.ReadInt32();
 			int size = br.ReadInt32();
+
+			// Skip invalid chunks (present in default dd binary).
+			if (size <= 0 || offset < _fileHeaderSize + tocSize)
+				continue;
+
 			_ = br.ReadInt32();
 
 			chunks.Add(new(name, offset, size, assetType.Value));
@@ -135,6 +140,18 @@ public class ModBinary
 			File.WriteAllBytes(Path.Combine(outputDirectory, kvp.Key.AssetName + kvp.Key.AssetType.GetFileExtension()), AssetConverter.Extract(kvp.Key.AssetType, kvp.Value));
 	}
 
+	public byte[] ExtractAsset(string assetName, AssetType assetType)
+	{
+		if (_readComprehensiveness != ModBinaryReadComprehensiveness.All)
+			throw new InvalidOperationException("This mod binary has not been opened for full reading comprehensiveness. Cannot extract assets from mod binary.");
+
+		AssetKey key = new(assetType, assetName);
+		if (!AssetMap.ContainsKey(key))
+			throw new InvalidOperationException($"This mod binary does not contain an asset of type '{assetType}' with name '{assetName}'.");
+
+		return AssetConverter.Extract(assetType, AssetMap[key]);
+	}
+
 	public byte[] Compile()
 	{
 		if (_readComprehensiveness != ModBinaryReadComprehensiveness.All)
@@ -146,27 +163,27 @@ public class ModBinary
 		byte[]? tocBuffer = null;
 		using (MemoryStream tocStream = new())
 		{
-			using BinaryWriter bw = new(tocStream);
+			using BinaryWriter tocWriter = new(tocStream);
 			foreach (KeyValuePair<AssetKey, AssetData> kvp in AssetMap)
 			{
 				AssetKey key = kvp.Key;
 				AssetData assetData = kvp.Value;
 
-				bw.Write((ushort)key.AssetType);
+				tocWriter.Write((ushort)key.AssetType);
 
-				bw.Write(Encoding.Default.GetBytes(key.AssetName));
-				bw.Write((byte)0);
+				tocWriter.Write(Encoding.Default.GetBytes(key.AssetName));
+				tocWriter.Write((byte)0);
 
 				int size = assetData.Buffer.Length;
 
-				bw.Write(offset);
-				bw.Write(size);
-				bw.Write(0);
+				tocWriter.Write(offset);
+				tocWriter.Write(size);
+				tocWriter.Write(0);
 
 				offset += size;
 			}
 
-			bw.Write((short)0);
+			tocWriter.Write((short)0);
 
 			tocBuffer = tocStream.ToArray();
 		}
@@ -178,9 +195,9 @@ public class ModBinary
 		byte[]? assetBuffer = null;
 		using (MemoryStream assetStream = new())
 		{
-			using BinaryWriter bw = new(assetStream);
+			using BinaryWriter assetWriter = new(assetStream);
 			foreach (AssetData assetData in uniqueAssets)
-				bw.Write(assetData.Buffer);
+				assetWriter.Write(assetData.Buffer);
 
 			assetBuffer = assetStream.ToArray();
 		}
