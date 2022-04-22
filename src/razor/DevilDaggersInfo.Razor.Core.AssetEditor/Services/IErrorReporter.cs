@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.Editor.Asset.Services;
+namespace DevilDaggersInfo.Razor.Core.AssetEditor.Services;
 
 public interface IErrorReporter
 {

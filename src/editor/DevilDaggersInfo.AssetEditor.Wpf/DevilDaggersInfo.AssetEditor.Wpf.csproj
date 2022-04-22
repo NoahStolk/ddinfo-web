@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+<Project Sdk="Microsoft.NET.Sdk.Razor">
   <PropertyGroup>
     <TargetFramework>net6.0-windows</TargetFramework>
     <OutputType>WinExe</OutputType>
@@ -7,7 +7,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Wpf" />
-    <ProjectReference Include="..\DevilDaggersInfo.Web.BlazorWasm.Client.Editor.Asset\DevilDaggersInfo.Web.BlazorWasm.Client.Editor.Asset.csproj" />
+    <ProjectReference Include="..\..\razor\DevilDaggersInfo.Razor.Core.AssetEditor\DevilDaggersInfo.Razor.Core.AssetEditor.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="wwwroot\**">

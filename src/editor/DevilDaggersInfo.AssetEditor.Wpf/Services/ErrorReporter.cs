@@ -1,7 +1,7 @@
-using DevilDaggersInfo.Web.BlazorWasm.Client.Editor.Asset.Services;
+using DevilDaggersInfo.Razor.Core.AssetEditor.Services;
 using System.Windows;
 
-namespace DevilDaggersInfo.Native.Editor.Asset.Wpf.Services;
+namespace DevilDaggersInfo.AssetEditor.Wpf.Services;
 
 public class ErrorReporter : IErrorReporter
 {

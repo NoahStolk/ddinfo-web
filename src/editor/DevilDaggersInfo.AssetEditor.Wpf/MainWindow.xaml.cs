@@ -1,9 +1,9 @@
-using DevilDaggersInfo.Native.Editor.Asset.Wpf.Services;
-using DevilDaggersInfo.Web.BlazorWasm.Client.Editor.Asset.Services;
+using DevilDaggersInfo.AssetEditor.Wpf.Services;
+using DevilDaggersInfo.Razor.Core.AssetEditor.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
 
-namespace DevilDaggersInfo.Native.Editor.Asset.Wpf;
+namespace DevilDaggersInfo.AssetEditor.Wpf;
 
 public partial class MainWindow : Window
 {

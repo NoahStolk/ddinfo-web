@@ -1,10 +1,10 @@
 using DevilDaggersInfo.Core.Mod;
 using DevilDaggersInfo.Core.Mod.Enums;
 using DevilDaggersInfo.Core.Mod.Exceptions;
-using DevilDaggersInfo.Web.BlazorWasm.Client.Editor.Asset.Services;
+using DevilDaggersInfo.Razor.Core.AssetEditor.Services;
 using Microsoft.AspNetCore.Components;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.Editor.Asset.Components;
+namespace DevilDaggersInfo.Razor.Core.AssetEditor.Components;
 
 public partial class BinaryViewer
 {
