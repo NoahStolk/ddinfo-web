@@ -5,30 +5,30 @@ public enum Currency
 	/// <summary>
 	/// Euro.
 	/// </summary>
-	Eur,
+	Eur = 0,
 
 	/// <summary>
 	/// US Dollar.
 	/// </summary>
-	Usd,
+	Usd = 1,
 
 	/// <summary>
 	/// Australian Dollar.
 	/// </summary>
-	Aud,
+	Aud = 2,
 
 	/// <summary>
 	/// Great British Pound.
 	/// </summary>
-	Gbp,
+	Gbp = 3,
 
 	/// <summary>
 	/// Singapore Dollar.
 	/// </summary>
-	Sgd,
+	Sgd = 4,
 
 	/// <summary>
 	/// Russian Ruble.
 	/// </summary>
-	Rub,
+	Rub = 5,
 }

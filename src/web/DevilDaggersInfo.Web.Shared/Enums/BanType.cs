@@ -2,10 +2,10 @@ namespace DevilDaggersInfo.Web.Shared.Enums;
 
 public enum BanType : byte
 {
-	NotBanned,
-	Alt,
-	Cheater,
-	Boosted,
-	IllegitimateStats,
-	BlankName,
+	NotBanned = 0,
+	Alt = 1,
+	Cheater = 2,
+	Boosted = 3,
+	IllegitimateStats = 4,
+	BlankName = 5,
 }

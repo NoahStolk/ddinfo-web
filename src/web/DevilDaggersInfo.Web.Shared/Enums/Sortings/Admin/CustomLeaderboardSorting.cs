@@ -2,14 +2,14 @@ namespace DevilDaggersInfo.Web.Shared.Enums.Sortings.Admin;
 
 public enum CustomLeaderboardSorting
 {
-	Id,
-	SpawnsetName,
-	TimeBronze,
-	TimeSilver,
-	TimeGolden,
-	TimeDevil,
-	TimeLeviathan,
-	IsFeatured,
-	DateCreated,
-	Category,
+	Id = 0,
+	SpawnsetName = 1,
+	TimeBronze = 2,
+	TimeSilver = 3,
+	TimeGolden = 4,
+	TimeDevil = 5,
+	TimeLeviathan = 6,
+	IsFeatured = 7,
+	DateCreated = 8,
+	Category = 9,
 }
