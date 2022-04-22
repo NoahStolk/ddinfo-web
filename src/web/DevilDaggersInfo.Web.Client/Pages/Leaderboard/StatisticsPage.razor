@@ -15,7 +15,7 @@ else
 	}
 	else
 	{
-		<p class="py-1">Statistics were last fetched on @_statistics.DateTime.ToString(FormatUtils.DateTimeUtcFormat).</p>
+		<p class="py-1">Statistics were last fetched on @_statistics.DateTime.ToString(StringFormats.DateTimeUtcFormat).</p>
 
 		<Heading Title="Scores" Level="2" />
 		<p>The average time survived for all players is @MarkupUtils.LeaderboardTime(_statistics.GlobalStatistics.Times.Average) seconds.</p>

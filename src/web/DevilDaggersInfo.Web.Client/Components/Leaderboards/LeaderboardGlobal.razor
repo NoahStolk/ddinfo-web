@@ -1,13 +1,13 @@
 @using DevilDaggersInfo.Web.Shared.Dto.Public
 
 @{
-	string _players = Leaderboard.TotalPlayers.ToString(FormatUtils.LeaderboardIntFormat);
-	string _time = Leaderboard.TimeGlobal.ToString(FormatUtils.LeaderboardGlobalTimeFormat);
-	string _kills = Leaderboard.KillsGlobal.ToString(FormatUtils.LeaderboardIntFormat);
-	string _gems = Leaderboard.GemsGlobal.ToString(FormatUtils.LeaderboardIntFormat);
-	string _deaths = Leaderboard.DeathsGlobal.ToString(FormatUtils.LeaderboardIntFormat);
+	string _players = Leaderboard.TotalPlayers.ToString(StringFormats.LeaderboardIntFormat);
+	string _time = Leaderboard.TimeGlobal.ToString(StringFormats.LeaderboardGlobalTimeFormat);
+	string _kills = Leaderboard.KillsGlobal.ToString(StringFormats.LeaderboardIntFormat);
+	string _gems = Leaderboard.GemsGlobal.ToString(StringFormats.LeaderboardIntFormat);
+	string _deaths = Leaderboard.DeathsGlobal.ToString(StringFormats.LeaderboardIntFormat);
 	string _daggers = FormatUtils.FormatDaggersUInt64(Leaderboard.DaggersHitGlobal, Leaderboard.DaggersFiredGlobal, IsHistory);
-	string _accuracy = (Leaderboard.DaggersFiredGlobal == 0 ? 0 : Leaderboard.DaggersHitGlobal / (float)Leaderboard.DaggersFiredGlobal).ToString(FormatUtils.AccuracyFormat);
+	string _accuracy = (Leaderboard.DaggersFiredGlobal == 0 ? 0 : Leaderboard.DaggersHitGlobal / (float)Leaderboard.DaggersFiredGlobal).ToString(StringFormats.AccuracyFormat);
 }
 
 <div class="py-3 grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-6 font-goethe text-xl">

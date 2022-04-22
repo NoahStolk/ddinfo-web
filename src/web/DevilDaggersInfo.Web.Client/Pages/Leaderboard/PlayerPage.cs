@@ -142,13 +142,13 @@ public partial class PlayerPage
 				Dagger dagger = Daggers.GetDaggerFromSeconds(gameVersion ?? GameVersion.V1_0, scoreEntry.Time);
 				return new()
 				{
-					new($"<span style='text-align: right;'>{scoreEntry.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
-					new($"<span style='text-align: right;' class='{dagger.Name.ToLower()}'>{scoreEntry.Time.ToString(FormatUtils.TimeFormat)}</span>"),
+					new($"<span style='text-align: right;'>{scoreEntry.DateTime.ToString(StringFormats.DateFormat)}</span>"),
+					new($"<span style='text-align: right;' class='{dagger.Name.ToLower()}'>{scoreEntry.Time.ToString(StringFormats.TimeFormat)}</span>"),
 					new($"<span style='text-align: right;' class='{dagger.Name.ToLower()}'>{scoreEntry.Username}</span>"),
 					new($"<span style='text-align: right;'>{scoreEntry.Rank}</span>"),
 					new($"<span style='text-align: right;'>{scoreEntry.Gems}</span>"),
 					new($"<span style='text-align: right;'>{scoreEntry.Kills}</span>"),
-					new($"<span style='text-align: right;'>{(scoreEntry.DaggersFired == 0 ? 0 : scoreEntry.DaggersHit / (double)scoreEntry.DaggersFired).ToString(FormatUtils.AccuracyFormat)}</span>"),
+					new($"<span style='text-align: right;'>{(scoreEntry.DaggersFired == 0 ? 0 : scoreEntry.DaggersHit / (double)scoreEntry.DaggersFired).ToString(StringFormats.AccuracyFormat)}</span>"),
 					new($"<span style='text-align: right;'>{MarkupUtils.DeathString(scoreEntry.DeathType, gameVersion ?? GameVersion.V1_0)}</span>"),
 					new($"<span style='text-align: right;'>{gameVersion.GetGameVersionString()}</span>"),
 				};
@@ -171,7 +171,7 @@ public partial class PlayerPage
 				GetPlayerHistoryRankEntry? rankEntry = GetPlayerHistory.RankHistory.Count <= d.Index ? null : GetPlayerHistory.RankHistory[d.Index];
 				return rankEntry == null ? new() : new()
 				{
-					new($"<span style='text-align: right;'>{rankEntry.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
+					new($"<span style='text-align: right;'>{rankEntry.DateTime.ToString(StringFormats.DateFormat)}</span>"),
 					new($"<span style='text-align: right;'>{rankEntry.Rank}</span>"),
 					new($"<span style='text-align: right;'>{GameVersions.GetGameVersionFromDate(rankEntry.DateTime).GetGameVersionString()}</span>"),
 				};
@@ -198,7 +198,7 @@ public partial class PlayerPage
 				GetPlayerHistoryActivityEntry? activityEntry = GetPlayerHistory.ActivityHistory.Count <= d.Index ? null : GetPlayerHistory.ActivityHistory[d.Index];
 				return activityEntry == null ? new() : new()
 				{
-					new($"<span style='text-align: right;'>{activityEntry.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
+					new($"<span style='text-align: right;'>{activityEntry.DateTime.ToString(StringFormats.DateFormat)}</span>"),
 					new($"<span style='color: {ds.Color}; text-align: right;'>{activityEntry.DeathsIncrement.ToString("0.0")}</span>"),
 				};
 			}));
@@ -210,7 +210,7 @@ public partial class PlayerPage
 				GetPlayerHistoryActivityEntry? activityEntry = GetPlayerHistory.ActivityHistory.Count <= d.Index ? null : GetPlayerHistory.ActivityHistory[d.Index];
 				return activityEntry == null ? new() : new()
 				{
-					new($"<span style='text-align: right;'>{activityEntry.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
+					new($"<span style='text-align: right;'>{activityEntry.DateTime.ToString(StringFormats.DateFormat)}</span>"),
 					new($"<span style='color: {ds.Color}; text-align: right;'>{activityEntry.TimeIncrement.ToString("0.0000")}</span>"),
 				};
 			}));

@@ -15,7 +15,7 @@ public partial class HistoryStatisticsPage
 	{
 		HighlighterKeys = new() { "Date", "Players", "Game Version" },
 		GridOptions = new() { MinimumRowHeightInPx = 50 },
-		ScaleYOptions = new() { NumberFormat = FormatUtils.LeaderboardIntFormat },
+		ScaleYOptions = new() { NumberFormat = StringFormats.LeaderboardIntFormat },
 		ChartMarginXInPx = 60,
 		XScaleDisplayUnit = ScaleDisplayUnit.TicksAsDate,
 		Backgrounds = LineChartUtils.GameVersionBackgrounds,
@@ -33,7 +33,7 @@ public partial class HistoryStatisticsPage
 	{
 		HighlighterKeys = new() { "Date", "Global Time" },
 		GridOptions = new() { MinimumRowHeightInPx = 50 },
-		ScaleYOptions = new() { NumberFormat = FormatUtils.LeaderboardIntFormat },
+		ScaleYOptions = new() { NumberFormat = StringFormats.LeaderboardIntFormat },
 		ChartMarginXInPx = 100,
 		XScaleDisplayUnit = ScaleDisplayUnit.TicksAsDate,
 		HighlighterWidth = 320,
@@ -44,7 +44,7 @@ public partial class HistoryStatisticsPage
 	{
 		HighlighterKeys = new() { "Date", "Global Deaths" },
 		GridOptions = new() { MinimumRowHeightInPx = 50 },
-		ScaleYOptions = new() { NumberFormat = FormatUtils.LeaderboardIntFormat },
+		ScaleYOptions = new() { NumberFormat = StringFormats.LeaderboardIntFormat },
 		ChartMarginXInPx = 100,
 		XScaleDisplayUnit = ScaleDisplayUnit.TicksAsDate,
 		Backgrounds = LineChartUtils.GameVersionBackgrounds,
@@ -54,7 +54,7 @@ public partial class HistoryStatisticsPage
 	{
 		HighlighterKeys = new() { "Date", "Global Gems" },
 		GridOptions = new() { MinimumRowHeightInPx = 50 },
-		ScaleYOptions = new() { NumberFormat = FormatUtils.LeaderboardIntFormat },
+		ScaleYOptions = new() { NumberFormat = StringFormats.LeaderboardIntFormat },
 		ChartMarginXInPx = 100,
 		XScaleDisplayUnit = ScaleDisplayUnit.TicksAsDate,
 		Backgrounds = LineChartUtils.GameVersionBackgrounds,
@@ -64,7 +64,7 @@ public partial class HistoryStatisticsPage
 	{
 		HighlighterKeys = new() { "Date", "Global Kills" },
 		GridOptions = new() { MinimumRowHeightInPx = 50 },
-		ScaleYOptions = new() { NumberFormat = FormatUtils.LeaderboardIntFormat },
+		ScaleYOptions = new() { NumberFormat = StringFormats.LeaderboardIntFormat },
 		ChartMarginXInPx = 100,
 		XScaleDisplayUnit = ScaleDisplayUnit.TicksAsDate,
 		Backgrounds = LineChartUtils.GameVersionBackgrounds,
@@ -126,8 +126,8 @@ public partial class HistoryStatisticsPage
 				GetLeaderboardHistoryStatistics? stats = relevantData.Count() <= d.Index ? null : relevantData.ElementAt(d.Index);
 				return stats == null ? new() : new()
 				{
-					new($"<span style='text-align: right;'>{stats.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
-					new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString(FormatUtils.LeaderboardIntFormat)}</span>"),
+					new($"<span style='text-align: right;'>{stats.DateTime.ToString(StringFormats.DateFormat)}</span>"),
+					new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString(StringFormats.LeaderboardIntFormat)}</span>"),
 					new($"<span style='text-align: right;'>{GameVersions.GetGameVersionFromDate(stats.DateTime).GetGameVersionString()}</span>"),
 				};
 			}));
@@ -157,12 +157,12 @@ public partial class HistoryStatisticsPage
 				GetLeaderboardHistoryStatistics? stats = relevantData.Count() <= d.Index ? null : relevantData.ElementAt(d.Index);
 				return stats == null ? new() : new()
 				{
-					new($"<span style='text-align: right;'>{stats.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
-					new($"<span style='color: {top1}; text-align: right;'>{stats.Top1Entrance.ToString(FormatUtils.TimeFormat)}</span>"),
-					new($"<span style='color: {top2}; text-align: right;'>{stats.Top2Entrance.ToString(FormatUtils.TimeFormat)}</span>"),
-					new($"<span style='color: {top3}; text-align: right;'>{stats.Top3Entrance.ToString(FormatUtils.TimeFormat)}</span>"),
-					new($"<span style='color: {top10}; text-align: right;'>{stats.Top10Entrance.ToString(FormatUtils.TimeFormat)}</span>"),
-					new($"<span style='color: {top100}; text-align: right;'>{stats.Top100Entrance.ToString(FormatUtils.TimeFormat)}</span>"),
+					new($"<span style='text-align: right;'>{stats.DateTime.ToString(StringFormats.DateFormat)}</span>"),
+					new($"<span style='color: {top1}; text-align: right;'>{stats.Top1Entrance.ToString(StringFormats.TimeFormat)}</span>"),
+					new($"<span style='color: {top2}; text-align: right;'>{stats.Top2Entrance.ToString(StringFormats.TimeFormat)}</span>"),
+					new($"<span style='color: {top3}; text-align: right;'>{stats.Top3Entrance.ToString(StringFormats.TimeFormat)}</span>"),
+					new($"<span style='color: {top10}; text-align: right;'>{stats.Top10Entrance.ToString(StringFormats.TimeFormat)}</span>"),
+					new($"<span style='color: {top100}; text-align: right;'>{stats.Top100Entrance.ToString(StringFormats.TimeFormat)}</span>"),
 					new($"<span style='text-align: right;'>{GameVersions.GetGameVersionFromDate(stats.DateTime).GetGameVersionString()}</span>"),
 				};
 			}));
@@ -189,8 +189,8 @@ public partial class HistoryStatisticsPage
 				GetLeaderboardHistoryStatistics? stat = relevantData.Count() <= d.Index ? null : relevantData.ElementAt(d.Index);
 				return stat == null ? new() : new List<MarkupString>
 				{
-					new($"<span style='text-align: right;'>{stat.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
-					new($"<span style='color: {ds.Color}; text-align: right;'>{stat.TimeGlobal.ToString(FormatUtils.LeaderboardGlobalTimeFormat)}</span>"),
+					new($"<span style='text-align: right;'>{stat.DateTime.ToString(StringFormats.DateFormat)}</span>"),
+					new($"<span style='color: {ds.Color}; text-align: right;'>{stat.TimeGlobal.ToString(StringFormats.LeaderboardGlobalTimeFormat)}</span>"),
 				};
 			}));
 		}
@@ -212,8 +212,8 @@ public partial class HistoryStatisticsPage
 				GetLeaderboardHistoryStatistics? stat = relevantData.Count() <= d.Index ? null : relevantData.ElementAt(d.Index);
 				return stat == null ? new() : new List<MarkupString>
 				{
-					new($"<span style='text-align: right;'>{stat.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
-					new($"<span style='color: {ds.Color}; text-align: right;'>{valueSelector(stat).ToString(FormatUtils.LeaderboardIntFormat)}</span>"),
+					new($"<span style='text-align: right;'>{stat.DateTime.ToString(StringFormats.DateFormat)}</span>"),
+					new($"<span style='color: {ds.Color}; text-align: right;'>{valueSelector(stat).ToString(StringFormats.LeaderboardIntFormat)}</span>"),
 				};
 			}));
 		}
@@ -234,10 +234,10 @@ public partial class HistoryStatisticsPage
 				GetLeaderboardHistoryStatistics? stat = relevantData.Count() <= d.Index ? null : relevantData.ElementAt(d.Index);
 				return stat == null ? new() : new List<MarkupString>
 				{
-					new($"<span style='text-align: right;'>{stat.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
-					new($"<span style='color: {ds.Color}; text-align: right;'>{converter(stat.DaggersHitGlobal, stat.DaggersFiredGlobal).ToString(FormatUtils.AccuracyFormat)}</span>"),
-					new($"<span style='text-align: right;'>{(stat.DaggersFiredGlobal == 10_000 ? "?" : stat.DaggersHitGlobal.ToString(FormatUtils.LeaderboardIntFormat))}</span>"),
-					new($"<span style='text-align: right;'>{(stat.DaggersFiredGlobal == 10_000 ? "?" : stat.DaggersFiredGlobal.ToString(FormatUtils.LeaderboardIntFormat))}</span>"),
+					new($"<span style='text-align: right;'>{stat.DateTime.ToString(StringFormats.DateFormat)}</span>"),
+					new($"<span style='color: {ds.Color}; text-align: right;'>{converter(stat.DaggersHitGlobal, stat.DaggersFiredGlobal).ToString(StringFormats.AccuracyFormat)}</span>"),
+					new($"<span style='text-align: right;'>{(stat.DaggersFiredGlobal == 10_000 ? "?" : stat.DaggersHitGlobal.ToString(StringFormats.LeaderboardIntFormat))}</span>"),
+					new($"<span style='text-align: right;'>{(stat.DaggersFiredGlobal == 10_000 ? "?" : stat.DaggersFiredGlobal.ToString(StringFormats.LeaderboardIntFormat))}</span>"),
 				};
 			}));
 		}

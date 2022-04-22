@@ -59,7 +59,7 @@ else
 			<div class="grid gap-3 grid-cols-custom-leaderboards-sm md:grid-cols-custom-leaderboards-md lg:grid-cols-custom-leaderboards-lg xl:grid-cols-custom-leaderboards-xl 2xl:grid-cols-custom-leaderboards-2xl h-6 @(i % 2 == 0 ? "bg-gray-1" : string.Empty)">
 				<div class="overflow-hidden"><a class="link" href="/custom/leaderboard/@customLeaderboard.Id">@customLeaderboard.SpawnsetName.ToNoBreakString()</a></div>
 				<div class="overflow-hidden hidden md:block">@customLeaderboard.SpawnsetAuthorName.ToNoBreakString()</div>
-				<div class="overflow-hidden hidden md:block">@customLeaderboard.DateCreated.ToString(FormatUtils.DateFormat)</div>
+				<div class="overflow-hidden hidden md:block">@customLeaderboard.DateCreated.ToString(StringFormats.DateFormat)</div>
 				<div class="overflow-hidden">@FormatUtils.FormatDateTimeAsTimeAgo(customLeaderboard.DateLastPlayed)</div>
 				<div class="overflow-hidden text-right hidden 2xl:block">@(customLeaderboard.DateCreated < FeatureConstants.TrackingCustomLeaderboardSubmitCounts ? "+" : string.Empty)@customLeaderboard.SubmitCount</div>
 				<div class="overflow-hidden text-right hidden 2xl:block">@customLeaderboard.PlayerCount</div>
@@ -72,14 +72,14 @@ else
 				}
 				else
 				{
-					<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe @CustomLeaderboardDagger.Bronze.ToCssClass()">@customLeaderboard.Daggers.Bronze.ToString(FormatUtils.TimeFormat)</div>
-					<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe @CustomLeaderboardDagger.Silver.ToCssClass()">@customLeaderboard.Daggers.Silver.ToString(FormatUtils.TimeFormat)</div>
-					<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe @CustomLeaderboardDagger.Golden.ToCssClass()">@customLeaderboard.Daggers.Golden.ToString(FormatUtils.TimeFormat)</div>
-					<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe @CustomLeaderboardDagger.Devil.ToCssClass()">@customLeaderboard.Daggers.Devil.ToString(FormatUtils.TimeFormat)</div>
-					<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe @CustomLeaderboardDagger.Leviathan.ToCssClass()">@customLeaderboard.Daggers.Leviathan.ToString(FormatUtils.TimeFormat)</div>
+					<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe @CustomLeaderboardDagger.Bronze.ToCssClass()">@customLeaderboard.Daggers.Bronze.ToString(StringFormats.TimeFormat)</div>
+					<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe @CustomLeaderboardDagger.Silver.ToCssClass()">@customLeaderboard.Daggers.Silver.ToString(StringFormats.TimeFormat)</div>
+					<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe @CustomLeaderboardDagger.Golden.ToCssClass()">@customLeaderboard.Daggers.Golden.ToString(StringFormats.TimeFormat)</div>
+					<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe @CustomLeaderboardDagger.Devil.ToCssClass()">@customLeaderboard.Daggers.Devil.ToString(StringFormats.TimeFormat)</div>
+					<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe @CustomLeaderboardDagger.Leviathan.ToCssClass()">@customLeaderboard.Daggers.Leviathan.ToString(StringFormats.TimeFormat)</div>
 				}
 				<div class="overflow-hidden text-left hidden lg:block">@(customLeaderboard.TopPlayer?.ToNoBreakString() ?? MarkupUtils.NoDataMarkup)</div>
-				<div class="overflow-hidden text-right hidden lg:block text-xl font-goethe @(customLeaderboard.WorldRecordDagger?.ToCssClass())">@(customLeaderboard.WorldRecord.HasValue ? new(customLeaderboard.WorldRecord.Value.ToString(FormatUtils.TimeFormat)) : MarkupUtils.NoDataMarkup)</div>
+				<div class="overflow-hidden text-right hidden lg:block text-xl font-goethe @(customLeaderboard.WorldRecordDagger?.ToCssClass())">@(customLeaderboard.WorldRecord.HasValue ? new(customLeaderboard.WorldRecord.Value.ToString(StringFormats.TimeFormat)) : MarkupUtils.NoDataMarkup)</div>
 			</div>
 		}
 	}
@@ -122,5 +122,5 @@ else
 		<div class="text-right font-bold hidden md:block">@GetTotalCustomLeaderboardData.SubmitsPerCategory.Values.Sum().ToString("N0")</div>
 	</div>
 
-	<i class="inline-block mt-3 hidden md:block">* Submissions are counted since @FeatureConstants.TrackingCustomLeaderboardSubmitCounts.ToString(FormatUtils.DateFormat).</i>
+	<i class="inline-block mt-3 hidden md:block">* Submissions are counted since @FeatureConstants.TrackingCustomLeaderboardSubmitCounts.ToString(StringFormats.DateFormat).</i>
 }

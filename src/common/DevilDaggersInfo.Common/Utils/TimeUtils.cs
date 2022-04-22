@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Shared.Utils;
+namespace DevilDaggersInfo.Common.Utils;
 
 public static class TimeUtils
 {

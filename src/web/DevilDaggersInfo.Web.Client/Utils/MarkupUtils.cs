@@ -97,6 +97,6 @@ public static class MarkupUtils
 
 	public static MarkupString LeaderboardTime(double timeInSeconds)
 	{
-		return new($@"<span class=""{Daggers.GetDaggerFromSeconds(GameConstants.CurrentVersion, timeInSeconds).Name.ToLower()} font-goethe text-lg"">{timeInSeconds.ToString(FormatUtils.TimeFormat)}</span>");
+		return new($@"<span class=""{Daggers.GetDaggerFromSeconds(GameConstants.CurrentVersion, timeInSeconds).Name.ToLower()} font-goethe text-lg"">{timeInSeconds.ToString(StringFormats.TimeFormat)}</span>");
 	}
 }

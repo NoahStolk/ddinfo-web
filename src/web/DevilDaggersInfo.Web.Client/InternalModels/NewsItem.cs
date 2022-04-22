@@ -10,5 +10,5 @@ public class NewsItem
 
 	public string GetHtmlPath() => Path.Combine("news", $"{Title}.html");
 
-	public string ToDisplayTitle() => $"{DateTime.ToString(FormatUtils.DateFormat)} - {Title}";
+	public string ToDisplayTitle() => $"{DateTime.ToString(StringFormats.DateFormat)} - {Title}";
 }

@@ -14,7 +14,7 @@ public partial class EntryPage
 {
 	private static readonly Func<LineDataSet, LineData, List<MarkupString>> _initialHighlightTransformation = static (ds, d) => new List<MarkupString>
 	{
-		new($"<span style='text-align: right;'>{d.X.ToString(FormatUtils.TimeFormat)}</span>"),
+		new($"<span style='text-align: right;'>{d.X.ToString(StringFormats.TimeFormat)}</span>"),
 		new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString("0")}</span>"),
 	};
 	private static readonly Func<LineDataSet, LineData, List<MarkupString>> _highlightTransformation = static (ds, d) => new List<MarkupString>

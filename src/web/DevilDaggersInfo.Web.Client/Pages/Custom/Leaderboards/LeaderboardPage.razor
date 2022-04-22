@@ -26,7 +26,7 @@ else
 
 	<div class="bg-gray-1 max-w-sm px-1">
 		<DataField Name="Author">@GetCustomLeaderboard.SpawnsetAuthorName</DataField>
-		<DataField Name="Created">@GetCustomLeaderboard.DateCreated.ToString(FormatUtils.DateTimeFormat)</DataField>
+		<DataField Name="Created">@GetCustomLeaderboard.DateCreated.ToString(StringFormats.DateTimeFormat)</DataField>
 		<DataField Name="Category">@GetCustomLeaderboard.Category.ToDisplayString()</DataField>
 		<DataField Name="Submits">@(GetCustomLeaderboard.DateCreated < FeatureConstants.TrackingCustomLeaderboardSubmitCounts ? "+" : string.Empty)@GetCustomLeaderboard.SubmitCount</DataField>
 
@@ -53,23 +53,23 @@ else
 		<div class="grid justify-items-center gap-3 grid-cols-5 mt-6 font-goethe text-xl">
 			<div>
 				<img class="mx-auto" src="/images/icons/daggers/bronze.png" />
-				<span class="bronze">@(GetCustomLeaderboard.Daggers.Bronze.ToString(FormatUtils.TimeFormat))</span>
+				<span class="bronze">@(GetCustomLeaderboard.Daggers.Bronze.ToString(StringFormats.TimeFormat))</span>
 			</div>
 			<div>
 				<img class="mx-auto" src="/images/icons/daggers/silver.png" />
-				<span class="silver">@(GetCustomLeaderboard.Daggers.Silver.ToString(FormatUtils.TimeFormat))</span>
+				<span class="silver">@(GetCustomLeaderboard.Daggers.Silver.ToString(StringFormats.TimeFormat))</span>
 			</div>
 			<div>
 				<img class="mx-auto" src="/images/icons/daggers/golden.png" />
-				<span class="golden">@(GetCustomLeaderboard.Daggers.Golden.ToString(FormatUtils.TimeFormat))</span>
+				<span class="golden">@(GetCustomLeaderboard.Daggers.Golden.ToString(StringFormats.TimeFormat))</span>
 			</div>
 			<div>
 				<img class="mx-auto" src="/images/icons/daggers/devil.png" />
-				<span class="devil">@(GetCustomLeaderboard.Daggers.Devil.ToString(FormatUtils.TimeFormat))</span>
+				<span class="devil">@(GetCustomLeaderboard.Daggers.Devil.ToString(StringFormats.TimeFormat))</span>
 			</div>
 			<div>
 				<img class="mx-auto" src="/images/icons/daggers/leviathan.png" />
-				<span class="leviathan">@(GetCustomLeaderboard.Daggers.Leviathan.ToString(FormatUtils.TimeFormat))</span>
+				<span class="leviathan">@(GetCustomLeaderboard.Daggers.Leviathan.ToString(StringFormats.TimeFormat))</span>
 			</div>
 		</div>
 	}
@@ -105,21 +105,21 @@ else
 					{
 						string? daggerCssClass = ce.CustomLeaderboardDagger?.ToCssClass();
 
-						string enemiesKilled = ce.EnemiesKilled.ToString(FormatUtils.LeaderboardIntFormat);
-						string enemiesAlive = GetCustomLeaderboard.Category == CustomLeaderboardCategory.TimeAttack ? "0" : ce.EnemiesAlive.ToString(FormatUtils.LeaderboardIntFormat);
-						string gemsCollected = ce.GemsCollected.ToString(FormatUtils.LeaderboardIntFormat);
-						MarkupString gemsDespawned = ce.GemsDespawned.HasValue ? (MarkupString)ce.GemsDespawned.Value.ToString(FormatUtils.LeaderboardIntFormat) : MarkupUtils.NoDataMarkup;
-						MarkupString gemsEaten = ce.GemsEaten.HasValue ? (MarkupString)ce.GemsEaten.Value.ToString(FormatUtils.LeaderboardIntFormat) : MarkupUtils.NoDataMarkup;
+						string enemiesKilled = ce.EnemiesKilled.ToString(StringFormats.LeaderboardIntFormat);
+						string enemiesAlive = GetCustomLeaderboard.Category == CustomLeaderboardCategory.TimeAttack ? "0" : ce.EnemiesAlive.ToString(StringFormats.LeaderboardIntFormat);
+						string gemsCollected = ce.GemsCollected.ToString(StringFormats.LeaderboardIntFormat);
+						MarkupString gemsDespawned = ce.GemsDespawned.HasValue ? (MarkupString)ce.GemsDespawned.Value.ToString(StringFormats.LeaderboardIntFormat) : MarkupUtils.NoDataMarkup;
+						MarkupString gemsEaten = ce.GemsEaten.HasValue ? (MarkupString)ce.GemsEaten.Value.ToString(StringFormats.LeaderboardIntFormat) : MarkupUtils.NoDataMarkup;
 						double accuracyValue = ce.DaggersFired == 0 ? 0 : ce.DaggersHit / (double)ce.DaggersFired;
-						string accuracy = accuracyValue.ToString(FormatUtils.AccuracyFormat);
+						string accuracy = accuracyValue.ToString(StringFormats.AccuracyFormat);
 						string daggers = FormatUtils.FormatDaggersInt32(ce.DaggersHit, ce.DaggersFired, false);
 						MarkupString death = MarkupUtils.CustomLeaderboardDeathString(GetCustomLeaderboard.Category is CustomLeaderboardCategory.TimeAttack or CustomLeaderboardCategory.Race, ce.DeathType, GameConstants.CurrentVersion, "text-xl");
-						string homingStored = ce.HomingStored.ToString(FormatUtils.LeaderboardIntFormat);
-						MarkupString homingEaten = ce.HomingEaten.HasValue ? (MarkupString)ce.HomingEaten.Value.ToString(FormatUtils.LeaderboardIntFormat) : MarkupUtils.NoDataMarkup;
-						MarkupString levelUpTime2 = ce.LevelUpTime2 == 0 ? MarkupUtils.NoDataMarkup : (MarkupString)ce.LevelUpTime2.ToString(FormatUtils.TimeFormat);
-						MarkupString levelUpTime3 = ce.LevelUpTime3 == 0 ? MarkupUtils.NoDataMarkup : (MarkupString)ce.LevelUpTime3.ToString(FormatUtils.TimeFormat);
-						MarkupString levelUpTime4 = ce.LevelUpTime4 == 0 ? MarkupUtils.NoDataMarkup : (MarkupString)ce.LevelUpTime4.ToString(FormatUtils.TimeFormat);
-						string submitDate = ce.SubmitDate.ToString(FormatUtils.DateTimeFormat);
+						string homingStored = ce.HomingStored.ToString(StringFormats.LeaderboardIntFormat);
+						MarkupString homingEaten = ce.HomingEaten.HasValue ? (MarkupString)ce.HomingEaten.Value.ToString(StringFormats.LeaderboardIntFormat) : MarkupUtils.NoDataMarkup;
+						MarkupString levelUpTime2 = ce.LevelUpTime2 == 0 ? MarkupUtils.NoDataMarkup : (MarkupString)ce.LevelUpTime2.ToString(StringFormats.TimeFormat);
+						MarkupString levelUpTime3 = ce.LevelUpTime3 == 0 ? MarkupUtils.NoDataMarkup : (MarkupString)ce.LevelUpTime3.ToString(StringFormats.TimeFormat);
+						MarkupString levelUpTime4 = ce.LevelUpTime4 == 0 ? MarkupUtils.NoDataMarkup : (MarkupString)ce.LevelUpTime4.ToString(StringFormats.TimeFormat);
+						string submitDate = ce.SubmitDate.ToString(StringFormats.DateTimeFormat);
 						string clientVersionString = $"{ce.Client.ToDisplayString()} {ce.ClientVersion}";
 
 						bool grayBackground = i++ % 2 == 0;
@@ -130,7 +130,7 @@ else
 							<EntryFlag CountryCode="@ce.CountryCode" />
 							<EntryUsername DaggerCssClass="@daggerCssClass" LeviathanOffsetStyle="@leviathanOffsetStyle" Id="@ce.PlayerId" Name="@ce.PlayerName" />
 							<div class="text-right whitespace-nowrap">
-								<span class="@daggerCssClass" style="@leviathanOffsetStyle">@ce.Time.ToString(FormatUtils.TimeFormat)</span>
+								<span class="@daggerCssClass" style="@leviathanOffsetStyle">@ce.Time.ToString(StringFormats.TimeFormat)</span>
 								@if (ce.HasGraphs)
 								{
 									<a href="@($"/custom/entry/{ce.Id}")">

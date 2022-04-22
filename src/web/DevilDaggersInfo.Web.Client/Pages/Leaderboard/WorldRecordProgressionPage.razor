@@ -56,9 +56,9 @@ else
 
 		<div class="grid grid-cols-3 xl:grid-cols-5 @(isCurrentWr ? "bg-dark-red" : string.Empty)">
 			<div>@wr.Entry.Username</div>
-			<div>@wr.Entry.Time.ToString(FormatUtils.TimeFormat)</div>
+			<div>@wr.Entry.Time.ToString(StringFormats.TimeFormat)</div>
 			<div>@duration</div>
-			<div class="hidden xl:block">@(wr.WorldRecordImprovement.HasValue ? new MarkupString(wr.WorldRecordImprovement.Value.ToString(FormatUtils.TimeFormat)) : MarkupUtils.NoDataMarkup)</div>
+			<div class="hidden xl:block">@(wr.WorldRecordImprovement.HasValue ? new MarkupString(wr.WorldRecordImprovement.Value.ToString(StringFormats.TimeFormat)) : MarkupUtils.NoDataMarkup)</div>
 			<div class="hidden xl:block">@wr.GameVersion.GetGameVersionString()</div>
 		</div>
 	}

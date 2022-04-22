@@ -30,9 +30,9 @@ else
 		<div>Timestamp</div>
 		<div>@_replayBinary.TimestampSinceGameRelease</div>
 		<div>Time</div>
-		<div>@_replayBinary.Time.ToString(FormatUtils.TimeFormat)</div>
+		<div>@_replayBinary.Time.ToString(StringFormats.TimeFormat)</div>
 		<div>Start Time</div>
-		<div>@_replayBinary.StartTime.ToString(FormatUtils.TimeFormat)</div>
+		<div>@_replayBinary.StartTime.ToString(StringFormats.TimeFormat)</div>
 		<div>Kills</div>
 		<div>@_replayBinary.Kills</div>
 		<div>Gems</div>
@@ -51,7 +51,7 @@ else
 		<div>@_replayBinary.SpawnsetMd5.ByteArrayToHexString()</div>
 	</div>
 
-	<Heading Level="2" Title="@($"Events {_currentSecond.ToString(FormatUtils.TimeFormat)} - {(_currentSecond + 1).ToString(FormatUtils.TimeFormat)}")" />
+	<Heading Level="2" Title="@($"Events {_currentSecond.ToString(StringFormats.TimeFormat)} - {(_currentSecond + 1).ToString(StringFormats.TimeFormat)}")" />
 
 	<div class="flex">
 		<div class="w-10 h-10 mx-1">
@@ -78,7 +78,7 @@ else
 		@for (int i = _currentSecond * 60; i < Math.Min(_events.Count, (_currentSecond + 1) * 60); i++)
 		{
 			<li class="list-disc">
-				<span>Tick @i (@((i / 60f).ToString(FormatUtils.TimeFormat)))</span>
+				<span>Tick @i (@((i / 60f).ToString(StringFormats.TimeFormat)))</span>
 				<ul class="pl-4">
 					@foreach (IEvent e in _events[i])
 					{

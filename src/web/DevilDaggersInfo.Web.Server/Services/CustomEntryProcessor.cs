@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Common;
+using DevilDaggersInfo.Common.Utils;
 using DevilDaggersInfo.Core.Encryption;
 using DevilDaggersInfo.Core.Replay;
 using DevilDaggersInfo.Core.Replay.Enums;
@@ -479,7 +481,7 @@ public class CustomEntryProcessor
 	}
 
 	private static string FormatTimeString(double time)
-		=> time.ToString(FormatUtils.TimeFormat);
+		=> time.ToString(StringFormats.TimeFormat);
 
 	private static string GetSpawnsetHashOrName(byte[] spawnsetHash, string? spawnsetName)
 		=> string.IsNullOrEmpty(spawnsetName) ? spawnsetHash.ByteArrayToHexString() : spawnsetName;

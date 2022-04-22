@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Common.Utils;
 using DevilDaggersInfo.Web.Server.Caches.LeaderboardHistory;
 using DevilDaggersInfo.Web.Server.Caches.LeaderboardStatistics;
 using DevilDaggersInfo.Web.Server.Caches.ModArchives;
@@ -8,7 +9,6 @@ using DevilDaggersInfo.Web.Server.HostedServices;
 using DevilDaggersInfo.Web.Server.Middleware;
 using DevilDaggersInfo.Web.Server.NSwag;
 using DevilDaggersInfo.Web.Server.RewriteRules;
-using DevilDaggersInfo.Web.Shared.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Rewrite;

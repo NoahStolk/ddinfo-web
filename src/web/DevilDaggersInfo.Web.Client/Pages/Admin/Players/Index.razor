@@ -36,11 +36,11 @@
 		<div class="overflow-hidden hidden md:block text-right">@player.DiscordUserId</div>
 		<div class="overflow-hidden hidden md:block text-left">@player.CountryCode</div>
 		<div class="overflow-hidden hidden md:block text-right">@player.Dpi</div>
-		<div class="overflow-hidden hidden md:block text-right">@player.InGameSens?.ToString(FormatUtils.InGameSensFormat)</div>
+		<div class="overflow-hidden hidden md:block text-right">@player.InGameSens?.ToString(StringFormats.InGameSensFormat)</div>
 		<div class="overflow-hidden hidden md:block text-right">@player.Fov</div>
 		<div class="overflow-hidden hidden lg:block text-left">@player.IsRightHanded</div>
 		<div class="overflow-hidden hidden lg:block text-left">@player.HasFlashHandEnabled</div>
-		<div class="overflow-hidden hidden lg:block text-right">@player.Gamma?.ToString(FormatUtils.GammaFormat)</div>
+		<div class="overflow-hidden hidden lg:block text-right">@player.Gamma?.ToString(StringFormats.GammaFormat)</div>
 		<div class="overflow-hidden hidden lg:block text-left">@player.UsesLegacyAudio</div>
 		<div class="overflow-hidden hidden lg:block text-left">@player.UsesHrtf</div>
 		<div class="overflow-hidden hidden xl:block text-left">@player.UsesInvertY</div>

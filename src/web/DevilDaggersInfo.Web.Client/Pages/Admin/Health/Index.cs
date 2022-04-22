@@ -1,8 +1,8 @@
+using DevilDaggersInfo.Common.Utils;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Data;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Options.LineChart;
 using DevilDaggersInfo.Web.Shared.Dto.Admin.Health;
 using DevilDaggersInfo.Web.Shared.Extensions;
-using DevilDaggersInfo.Web.Shared.Utils;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System.Runtime.CompilerServices;

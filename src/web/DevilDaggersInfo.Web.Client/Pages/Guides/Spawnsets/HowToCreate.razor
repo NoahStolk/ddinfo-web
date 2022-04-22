@@ -68,8 +68,8 @@
 			time += delay;
 
 			<div>@MarkupUtils.EnemyString(enemy)</div>
-			<div class="text-right">@delay.ToString(FormatUtils.TimeFormat)</div>
-			<div class="text-right">@time.ToString(FormatUtils.TimeFormat)</div>
+			<div class="text-right">@delay.ToString(StringFormats.TimeFormat)</div>
+			<div class="text-right">@time.ToString(StringFormats.TimeFormat)</div>
 		}
 	}
 </div>
@@ -93,8 +93,8 @@
 			time += delay;
 
 			<div>@MarkupUtils.EnemyString(enemy)</div>
-			<div class="text-right @(bold ? "font-bold" : string.Empty)">@delay.ToString(FormatUtils.TimeFormat)</div>
-			<div class="text-right @(bold ? "font-bold" : string.Empty)">@time.ToString(FormatUtils.TimeFormat)</div>
+			<div class="text-right @(bold ? "font-bold" : string.Empty)">@delay.ToString(StringFormats.TimeFormat)</div>
+			<div class="text-right @(bold ? "font-bold" : string.Empty)">@time.ToString(StringFormats.TimeFormat)</div>
 		}
 	}
 </div>
@@ -157,8 +157,8 @@
 			double length = seconds - start;
 
 			<div class="text-right hidden sm:block">@i</div>
-			<div class="text-right">@((Math.Floor(start * 60) / 60).ToString(FormatUtils.TimeFormat))</div>
-			<div class="text-right">@((Math.Floor(length * 60) / 60).ToString(FormatUtils.TimeFormat))</div>
+			<div class="text-right">@((Math.Floor(start * 60) / 60).ToString(StringFormats.TimeFormat))</div>
+			<div class="text-right">@((Math.Floor(length * 60) / 60).ToString(StringFormats.TimeFormat))</div>
 			<div class="text-right">@(previousLength == 0 ? "-" : (1 - length / previousLength).ToString("0.00%"))</div>
 			<div class="text-right">@(waveModifier.ToString("0.0000000"))</div>
 

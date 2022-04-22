@@ -39,7 +39,7 @@
 				@MarkupUtils.Space
 			}
 		</div>
-		<div class="hidden md:block text-right">@(enemy.FirstSpawnSecond.HasValue ? new MarkupString(enemy.FirstSpawnSecond.Value.ToString(FormatUtils.TimeFormat)) : MarkupUtils.NoDataMarkup)</div>
+		<div class="hidden md:block text-right">@(enemy.FirstSpawnSecond.HasValue ? new MarkupString(enemy.FirstSpawnSecond.Value.ToString(StringFormats.TimeFormat)) : MarkupUtils.NoDataMarkup)</div>
 		<div class="hidden lg:block text-right">@(enemy.HomingDamage.Level3HomingDaggers.HasValue ? new MarkupString(enemy.HomingDamage.Level3HomingDaggers.Value.ToString()) : MarkupUtils.NoDataMarkup)</div>
 		<div class="hidden lg:block text-right">@(enemy.HomingDamage.Level4HomingDaggers.HasValue ? new MarkupString(enemy.HomingDamage.Level4HomingDaggers.Value.ToString()) : MarkupUtils.NoDataMarkup)</div>
 		<div class="hidden lg:block">
@@ -85,7 +85,7 @@
 				<div>First appearance</div>
 				<div>@Enemies.GetFirstAppearance(enemy.Name)?.ToDisplayString()</div>
 				<div>First spawn</div>
-				<div>@(enemy.FirstSpawnSecond.HasValue ? new MarkupString(enemy.FirstSpawnSecond.Value.ToString(FormatUtils.TimeFormat)) : MarkupUtils.NoDataMarkup)</div>
+				<div>@(enemy.FirstSpawnSecond.HasValue ? new MarkupString(enemy.FirstSpawnSecond.Value.ToString(StringFormats.TimeFormat)) : MarkupUtils.NoDataMarkup)</div>
 				<div>Level 3 homing</div>
 				<div>@(enemy.HomingDamage.Level3HomingDaggers.HasValue ? new MarkupString(enemy.HomingDamage.Level3HomingDaggers.Value.ToString()) : MarkupUtils.NoDataMarkup)</div>
 				<div>Level 4 homing</div>

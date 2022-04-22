@@ -28,7 +28,7 @@ else
 
 				<div class="bg-gray-1 max-w-arena-table px-1">
 					<DataField Name="Author">@GetSpawnset.AuthorName</DataField>
-					<DataField Name="Last updated">@GetSpawnset.LastUpdated.ToString(FormatUtils.DateTimeFormat)</DataField>
+					<DataField Name="Last updated">@GetSpawnset.LastUpdated.ToString(StringFormats.DateTimeFormat)</DataField>
 					<DataField Name="Practice">@(GetSpawnset.IsPractice ? "Yes" : "No")</DataField>
 					<DataField Name="File size">@FileSizeUtils.Format(GetSpawnset.FileBytes.Length)</DataField>
 
@@ -65,7 +65,7 @@ else
 				<div class="bg-gray-1 max-w-arena-table px-1">
 					<DataField Name="Hand">@SpawnsetBinary.HandLevel.ToDisplayString()</DataField>
 					<DataField Name="Additional gems">@SpawnsetBinary.AdditionalGems</DataField>
-					<DataField Name="Timer Start">@SpawnsetBinary.TimerStart.ToString(FormatUtils.TimeFormat)</DataField>
+					<DataField Name="Timer Start">@SpawnsetBinary.TimerStart.ToString(StringFormats.TimeFormat)</DataField>
 				</div>
 
 				<Heading Title="Effective Player Settings" Level="2" />

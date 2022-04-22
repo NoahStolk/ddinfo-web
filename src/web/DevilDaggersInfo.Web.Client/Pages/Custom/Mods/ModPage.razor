@@ -21,7 +21,7 @@ else
 
 	<div class="bg-gray-1 max-w-sm px-1">
 		<DataField Name="Author(s)">@string.Join(", ", GetMod.Authors)</DataField>
-		<DataField Name="Last updated">@GetMod.LastUpdated.ToString(FormatUtils.DateTimeFormat)</DataField>
+		<DataField Name="Last updated">@GetMod.LastUpdated.ToString(StringFormats.DateTimeFormat)</DataField>
 		<DataField Name="Prohibited assets">@(GetMod.ContainsProhibitedAssets.HasValue ? GetMod.ContainsProhibitedAssets.Value ? "Yes" : "No" : "Unknown")</DataField>
 		@if (GetMod.ModArchive != null)
 		{

@@ -9,7 +9,7 @@
 }
 else
 {
-	<Heading Title="@($"Leaderboard History - {GetLeaderboardHistory.DateTime.ToString(FormatUtils.DateTimeFormat)}")" />
+	<Heading Title="@($"Leaderboard History - {GetLeaderboardHistory.DateTime.ToString(StringFormats.DateTimeFormat)}")" />
 
 	@if (_reloading)
 	{
@@ -17,7 +17,7 @@ else
 	}
 	else if (!DatesEqual(GetLeaderboardHistory.DateTime, _dateTime))
 	{
-		<i>History for @(_dateTime.ToString(FormatUtils.DateTimeFormat)) does not exist; falling back to @GetLeaderboardHistory.DateTime.ToString(FormatUtils.DateTimeFormat).</i>
+		<i>History for @(_dateTime.ToString(StringFormats.DateTimeFormat)) does not exist; falling back to @GetLeaderboardHistory.DateTime.ToString(StringFormats.DateTimeFormat).</i>
 	}
 
 	<DatePicker DateSelected="@(d => UpdateDateTime(d))" />

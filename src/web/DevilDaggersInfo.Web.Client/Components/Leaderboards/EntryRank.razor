@@ -3,11 +3,11 @@
 <div class="text-right">
 	@if (PlayerId != 0)
 	{
-		<Tooltip Position=TooltipPosition.Right Text="@($"ID: {PlayerId} (click to copy)")"><span class="cursor-pointer font-goethe text-xl" @onclick="CopyToClipboard">@Rank.ToString(FormatUtils.LeaderboardIntFormat)</span></Tooltip>
+		<Tooltip Position=TooltipPosition.Right Text="@($"ID: {PlayerId} (click to copy)")"><span class="cursor-pointer font-goethe text-xl" @onclick="CopyToClipboard">@Rank.ToString(StringFormats.LeaderboardIntFormat)</span></Tooltip>
 	}
 	else
 	{
-		<span class="font-goethe text-xl" style="color: #ff0;">@Rank.ToString(FormatUtils.LeaderboardIntFormat)</span>
+		<span class="font-goethe text-xl" style="color: #ff0;">@Rank.ToString(StringFormats.LeaderboardIntFormat)</span>
 	}
 </div>
 

@@ -1,9 +1,10 @@
+using DevilDaggersInfo.Common;
+using DevilDaggersInfo.Common.Utils;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Data;
 using DevilDaggersInfo.Razor.Core.CanvasChart.JsRuntime;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Options.LineChart;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Utils;
 using DevilDaggersInfo.Razor.Core.Unmarshalled;
-using DevilDaggersInfo.Web.Shared.Utils;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
@@ -169,7 +170,7 @@ public partial class LineChart
 
 			static string RenderScale(ScaleDisplayUnit scaleDisplayUnit, double value, string? numberFormat) => scaleDisplayUnit switch
 			{
-				ScaleDisplayUnit.TicksAsDate => new DateTime((long)value).ToString(FormatUtils.DateFormat),
+				ScaleDisplayUnit.TicksAsDate => new DateTime((long)value).ToString(StringFormats.DateFormat),
 				ScaleDisplayUnit.MinutesAsTime => TimeUtils.MinutesToTimeString((int)value),
 				ScaleDisplayUnit.TicksAsSeconds => TimeUtils.TicksToTimeString(value),
 				_ => value.ToString(numberFormat),

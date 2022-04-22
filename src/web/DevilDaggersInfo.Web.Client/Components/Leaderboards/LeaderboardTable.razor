@@ -80,20 +80,20 @@
 				Dagger dagger = Daggers.GetDaggerFromSeconds(GameVersion, entry.Time);
 				string daggerCssClass = dagger.Name.ToLower();
 
-				string kills = entry.Kills.ToString(FormatUtils.LeaderboardIntFormat);
-				string gems = entry.Gems.ToString(FormatUtils.LeaderboardIntFormat);
+				string kills = entry.Kills.ToString(StringFormats.LeaderboardIntFormat);
+				string gems = entry.Gems.ToString(StringFormats.LeaderboardIntFormat);
 				double accuracyValue = entry.DaggersFired == 0 ? 0 : entry.DaggersHit / (double)entry.DaggersFired;
-				string accuracy = accuracyValue.ToString(FormatUtils.AccuracyFormat);
+				string accuracy = accuracyValue.ToString(StringFormats.AccuracyFormat);
 				string daggers = FormatUtils.FormatDaggersInt32(entry.DaggersHit, entry.DaggersFired, IsHistory);
 				MarkupString death = MarkupUtils.DeathString(entry.DeathType, GameVersion, "text-xl");
 
-				string timeTotal = entry.TimeTotal.ToString(FormatUtils.LeaderboardGlobalTimeFormat);
-				string killsTotal = entry.KillsTotal.ToString(FormatUtils.LeaderboardIntFormat);
-				string gemsTotal = entry.GemsTotal.ToString(FormatUtils.LeaderboardIntFormat);
+				string timeTotal = entry.TimeTotal.ToString(StringFormats.LeaderboardGlobalTimeFormat);
+				string killsTotal = entry.KillsTotal.ToString(StringFormats.LeaderboardIntFormat);
+				string gemsTotal = entry.GemsTotal.ToString(StringFormats.LeaderboardIntFormat);
 				double accuracyValueTotal = entry.DaggersFiredTotal == 0 ? 0 : entry.DaggersHitTotal / (double)entry.DaggersFiredTotal;
-				string accuracyTotal = accuracyValueTotal.ToString(FormatUtils.AccuracyFormat);
+				string accuracyTotal = accuracyValueTotal.ToString(StringFormats.AccuracyFormat);
 				string daggersTotal = FormatUtils.FormatDaggersUInt64(entry.DaggersHitTotal, entry.DaggersFiredTotal, IsHistory);
-				string deathsTotal = entry.DeathsTotal.ToString(FormatUtils.LeaderboardIntFormat);
+				string deathsTotal = entry.DeathsTotal.ToString(StringFormats.LeaderboardIntFormat);
 
 				bool grayBackground = i++ % 2 == 0;
 				string? leviathanOffsetStyle = daggerCssClass == "leviathan" ? LeviathanAnimationUtils.GetStyle(Entries.Count, i) : null;
@@ -102,7 +102,7 @@
 					<EntryRank PlayerId="@entry.Id" Rank="@entry.Rank" />
 					<EntryFlag CountryCode="@player?.CountryCode" />
 					<EntryUsername DaggerCssClass="@daggerCssClass" LeviathanOffsetStyle="@leviathanOffsetStyle" Id="entry.Id" Name="@entry.Username" IsBanned="isBanned" />
-					<div class="text-right @(isBanned ? string.Empty : daggerCssClass)" style="@leviathanOffsetStyle">@entry.Time.ToString(FormatUtils.TimeFormat)</div>
+					<div class="text-right @(isBanned ? string.Empty : daggerCssClass)" style="@leviathanOffsetStyle">@entry.Time.ToString(StringFormats.TimeFormat)</div>
 					<div class="text-right hidden md:block">@kills</div>
 					<div class="text-right hidden md:block">@gems</div>
 					<div class="text-right hidden md:block">

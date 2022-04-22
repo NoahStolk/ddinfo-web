@@ -77,7 +77,7 @@ public partial class StatisticsPage
 				Dagger dagger = Daggers.GetDaggerFromSeconds(GameConstants.CurrentVersion, start);
 				return new()
 				{
-					new($"<span class='{dagger.Name.ToLower()}' style='text-align: right;'>{start.ToString(FormatUtils.TimeFormat)} - {(start + 9.9999).ToString(FormatUtils.TimeFormat)}</span>"),
+					new($"<span class='{dagger.Name.ToLower()}' style='text-align: right;'>{start.ToString(StringFormats.TimeFormat)} - {(start + 9.9999).ToString(StringFormats.TimeFormat)}</span>"),
 					new($"<span style='text-align: right;'>{barData.Y.ToString("0")}</span>"),
 					new($"<span style='text-align: right;'>{(barData.Y / _statistics.TotalEntries).ToString(_percentageFormat)}</span>"),
 				};

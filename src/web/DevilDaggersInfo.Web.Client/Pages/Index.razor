@@ -42,7 +42,7 @@
 }
 else
 {
-	<Heading Level="2" Title="@($"Latest News - {LatestNews.DateTime.ToString(FormatUtils.DateFormat)} - {LatestNews.Title}")" />
+	<Heading Level="2" Title="@($"Latest News - {LatestNews.DateTime.ToString(StringFormats.DateFormat)} - {LatestNews.Title}")" />
 
 	<div class="bg-gray-1 px-3 py-2 my-4">
 		@(LatestNewsContent.Value)

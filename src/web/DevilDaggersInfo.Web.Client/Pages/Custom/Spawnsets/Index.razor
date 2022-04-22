@@ -55,11 +55,11 @@ else
 			<div class="grid gap-3 grid-cols-spawnsets-sm md:grid-cols-spawnsets-md lg:grid-cols-spawnsets-lg xl:grid-cols-spawnsets-xl h-6 @(i % 2 == 0 ? "bg-gray-1" : string.Empty)">
 				<div class="overflow-hidden"><a class="link" href="/custom/spawnset/@spawnset.Id">@spawnset.Name.ToNoBreakString()</a></div>
 				<div class="overflow-hidden hidden md:block">@spawnset.AuthorName.ToNoBreakString()</div>
-				<div class="overflow-hidden hidden md:block">@spawnset.LastUpdated.ToString(FormatUtils.DateFormat)</div>
+				<div class="overflow-hidden hidden md:block">@spawnset.LastUpdated.ToString(StringFormats.DateFormat)</div>
 				<div class="overflow-hidden">@spawnset.GameMode</div>
-				<div class="overflow-hidden hidden xl:block text-right">@(spawnset.LoopLength.HasValue ? (MarkupString)spawnset.LoopLength.Value.ToString(FormatUtils.TimeFormat) : MarkupUtils.NoDataMarkup)</div>
+				<div class="overflow-hidden hidden xl:block text-right">@(spawnset.LoopLength.HasValue ? (MarkupString)spawnset.LoopLength.Value.ToString(StringFormats.TimeFormat) : MarkupUtils.NoDataMarkup)</div>
 				<div class="overflow-hidden hidden xl:block text-right">@spawnset.LoopSpawnCount</div>
-				<div class="overflow-hidden hidden xl:block text-right">@(spawnset.PreLoopLength.HasValue ? (MarkupString)spawnset.PreLoopLength.Value.ToString(FormatUtils.TimeFormat) : MarkupUtils.NoDataMarkup)</div>
+				<div class="overflow-hidden hidden xl:block text-right">@(spawnset.PreLoopLength.HasValue ? (MarkupString)spawnset.PreLoopLength.Value.ToString(StringFormats.TimeFormat) : MarkupUtils.NoDataMarkup)</div>
 				<div class="overflow-hidden hidden xl:block text-right">@spawnset.PreLoopSpawnCount</div>
 				<div class="overflow-hidden hidden lg:block">@spawnset.Hand.ToDisplayString()</div>
 				<div class="overflow-hidden hidden lg:block text-right">@spawnset.AdditionalGems</div>
