@@ -1,3 +1,17 @@
 @page "/"
+@using DevilDaggersInfo.Core.Mod.Enums
 
-<BinaryViewer />
+<button class="btn btn-gray w-32 pb-1" @onclick="() => NewBinary(ModBinaryType.Audio)">New 'audio' binary</button>
+<button class="btn btn-gray w-32 pb-1" @onclick="() => NewBinary(ModBinaryType.Dd)">New 'dd' binary</button>
+<button class="btn btn-gray w-32 pb-1" @onclick="OpenBinary">Open binary</button>
+<button class="btn btn-gray w-32 pb-1" @onclick="ExtractBinary">Extract binary</button>
+<button class="btn btn-gray w-32 pb-1" @onclick="CompileBinary">Compile binary</button>
+
+@if (_binary == null)
+{
+	<div>No binary selected</div>
+}
+else
+{
+	<BinaryViewer BinaryName="@_binaryName" Binary="@_binary" />
+}

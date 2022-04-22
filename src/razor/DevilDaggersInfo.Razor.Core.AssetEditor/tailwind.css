@@ -43,6 +43,10 @@
 	.btn-green {
 		@apply bg-dark-green hover:bg-green;
 	}
+
+	.input-text {
+		@apply bg-gray-3 text-color-text;
+	}
 }
 
 #blazor-error-ui {
