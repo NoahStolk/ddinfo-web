@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Leaderboards;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
+namespace DevilDaggersInfo.Web.Server.Converters.Public;
 
 public static class LeaderboardConverters
 {

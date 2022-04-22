@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Utils;
+namespace DevilDaggersInfo.Web.Server.Utils;
 
 public static class PasswordValidator
 {

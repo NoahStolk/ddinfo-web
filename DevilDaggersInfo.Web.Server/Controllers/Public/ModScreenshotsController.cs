@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
+namespace DevilDaggersInfo.Web.Server.Controllers.Public;
 
 [Route("api/mod-screenshots")]
 [ApiController]

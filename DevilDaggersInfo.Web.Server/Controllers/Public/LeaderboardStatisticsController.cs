@@ -1,8 +1,8 @@
-using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardStatistics;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardStatistics;
+using DevilDaggersInfo.Web.Server.Caches.LeaderboardStatistics;
+using DevilDaggersInfo.Web.Server.Converters.Public;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
+namespace DevilDaggersInfo.Web.Server.Controllers.Public;
 
 [Route("api/leaderboard-statistics")]
 [ApiController]

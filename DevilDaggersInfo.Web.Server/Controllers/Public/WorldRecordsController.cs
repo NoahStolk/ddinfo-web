@@ -1,8 +1,8 @@
-using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardHistory;
-using DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.WorldRecords;
+using DevilDaggersInfo.Web.Server.Caches.LeaderboardHistory;
+using DevilDaggersInfo.Web.Server.InternalModels;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
+namespace DevilDaggersInfo.Web.Server.Controllers.Public;
 
 [Route("api/world-records")]
 [ApiController]

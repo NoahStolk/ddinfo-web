@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Mods;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Admin;
+namespace DevilDaggersInfo.Web.Server.Converters.Admin;
 
 public static class ModConverters
 {

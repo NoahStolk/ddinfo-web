@@ -1,10 +1,10 @@
 global using DevilDaggersInfo.CommonTest;
 global using DevilDaggersInfo.Core.Spawnset;
-global using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
-global using DevilDaggersInfo.Web.BlazorWasm.Server.Extensions;
-global using DevilDaggersInfo.Web.BlazorWasm.Server.Services;
-global using DevilDaggersInfo.Web.BlazorWasm.Server.Utils;
 global using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
+global using DevilDaggersInfo.Web.Server.Entities;
+global using DevilDaggersInfo.Web.Server.Extensions;
+global using DevilDaggersInfo.Web.Server.Services;
+global using DevilDaggersInfo.Web.Server.Utils;
 global using JetBrains.Annotations;
 global using Microsoft.AspNetCore.Hosting;
 global using Microsoft.EntityFrameworkCore;

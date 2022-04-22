@@ -1,7 +1,7 @@
 using NSwag.Generation.Processors;
 using NSwag.Generation.Processors.Contexts;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.NSwag;
+namespace DevilDaggersInfo.Web.Server.NSwag;
 
 public class PublicApiOperationProcessor : IOperationProcessor
 {

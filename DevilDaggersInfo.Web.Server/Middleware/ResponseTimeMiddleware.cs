@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Middleware;
+namespace DevilDaggersInfo.Web.Server.Middleware;
 
 public class ResponseTimeMiddleware
 {

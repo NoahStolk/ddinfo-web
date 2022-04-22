@@ -1,8 +1,8 @@
-using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
-using DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Tools;
+using DevilDaggersInfo.Web.Server.Converters.Public;
+using DevilDaggersInfo.Web.Server.InternalModels;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
+namespace DevilDaggersInfo.Web.Server.Controllers.Public;
 
 [Route("api/tools")]
 [ApiController]

@@ -1,6 +1,6 @@
 using DSharpPlus.Entities;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Extensions;
+namespace DevilDaggersInfo.Web.Server.Extensions;
 
 public static class DSharpExtensions
 {

@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels.Json;
+namespace DevilDaggersInfo.Web.Server.InternalModels.Json;
 
 /// <summary>
 /// This class must correspond to what's stored in the Changelogs.json file.

@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Utils;
+namespace DevilDaggersInfo.Web.Server.Utils;
 
 public static class PngFileUtils
 {

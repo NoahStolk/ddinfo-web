@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.CustomLeaderboards;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Admin;
+namespace DevilDaggersInfo.Web.Server.Converters.Admin;
 
 public static class CustomLeaderboardConverters
 {

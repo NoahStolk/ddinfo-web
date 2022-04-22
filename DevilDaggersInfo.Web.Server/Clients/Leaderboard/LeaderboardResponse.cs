@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Clients.Leaderboard;
+namespace DevilDaggersInfo.Web.Server.Clients.Leaderboard;
 
 public class LeaderboardResponse
 {

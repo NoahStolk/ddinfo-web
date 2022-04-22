@@ -1,6 +1,6 @@
-using DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels.Json;
+using DevilDaggersInfo.Web.Server.InternalModels.Json;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels;
+namespace DevilDaggersInfo.Web.Server.InternalModels;
 
 public class Tool
 {

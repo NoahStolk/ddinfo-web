@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Entities.Views;
+namespace DevilDaggersInfo.Web.Server.Entities.Views;
 
 public record CustomEntry(
 	int Time,

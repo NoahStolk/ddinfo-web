@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Clients.Clubber;
+namespace DevilDaggersInfo.Web.Server.Clients.Clubber;
 
 public class ClubberClient
 {

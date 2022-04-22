@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Caches;
+namespace DevilDaggersInfo.Web.Server.Caches;
 
 public interface ICache
 {

@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Tests;
+namespace DevilDaggersInfo.Web.Server.Tests;
 
 [TestClass]
 public class ModArchiveProcessorTransformTests : ModArchiveProcessorTests

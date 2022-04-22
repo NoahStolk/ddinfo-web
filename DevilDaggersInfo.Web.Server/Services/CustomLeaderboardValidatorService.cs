@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.CustomLeaderboards;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Services;
+namespace DevilDaggersInfo.Web.Server.Services;
 
 public class CustomLeaderboardValidatorService
 {

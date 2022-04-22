@@ -7,7 +7,7 @@ using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Spawnsets;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Extensions;
+namespace DevilDaggersInfo.Web.Server.Extensions;
 
 public static class AuditLoggerExtensions
 {

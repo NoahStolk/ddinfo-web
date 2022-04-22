@@ -1,7 +1,7 @@
-using DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels;
-using DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels.Json;
+using DevilDaggersInfo.Web.Server.InternalModels;
+using DevilDaggersInfo.Web.Server.InternalModels.Json;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Services;
+namespace DevilDaggersInfo.Web.Server.Services;
 
 public interface IToolHelper
 {

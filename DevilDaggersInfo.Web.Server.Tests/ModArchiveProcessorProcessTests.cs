@@ -2,11 +2,11 @@ using DevilDaggersInfo.Core.Asset.Enums;
 using DevilDaggersInfo.Core.Mod;
 using DevilDaggersInfo.Core.Mod.Enums;
 using DevilDaggersInfo.Core.Mod.Utils;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.ModArchives;
+using DevilDaggersInfo.Web.Server.Caches.ModArchives;
 using System.IO.Compression;
 using System.Text;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Tests;
+namespace DevilDaggersInfo.Web.Server.Tests;
 
 [TestClass]
 public class ModArchiveProcessorProcessTests : ModArchiveProcessorTests

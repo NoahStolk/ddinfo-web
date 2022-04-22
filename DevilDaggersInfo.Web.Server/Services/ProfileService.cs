@@ -2,7 +2,7 @@ using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players;
 using System.Net;
 using System.Security.Claims;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Services;
+namespace DevilDaggersInfo.Web.Server.Services;
 
 public class ProfileService
 {

@@ -1,8 +1,8 @@
-using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetSummaries;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
+using DevilDaggersInfo.Web.Server.Caches.SpawnsetSummaries;
+using DevilDaggersInfo.Web.Server.Converters.Public;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
+namespace DevilDaggersInfo.Web.Server.Controllers.Public;
 
 [Route("api/custom-entries")]
 [ApiController]

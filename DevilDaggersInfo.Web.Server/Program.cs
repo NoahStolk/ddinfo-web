@@ -1,6 +1,6 @@
-using DevilDaggersInfo.Web.BlazorWasm.Server;
-using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Logging.Discord;
+using DevilDaggersInfo.Web.Server;
+using DevilDaggersInfo.Web.Server.HostedServices.DdInfoDiscordBot;
+using DevilDaggersInfo.Web.Server.Logging.Discord;
 
 IHostBuilder builder = Host.CreateDefaultBuilder(args)
 	.ConfigureLogging(builder => builder.ClearProviders().AddDiscordLogger())

@@ -1,6 +1,6 @@
 using DSharpPlus.Entities;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Logging.Discord;
+namespace DevilDaggersInfo.Web.Server.Logging.Discord;
 
 public class DiscordLogger : ILogger
 {

@@ -1,7 +1,7 @@
-using DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Mods;
+using DevilDaggersInfo.Web.Server.InternalModels;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
+namespace DevilDaggersInfo.Web.Server.Converters.Public;
 
 public static class ModConverters
 {

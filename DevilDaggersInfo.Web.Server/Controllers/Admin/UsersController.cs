@@ -1,8 +1,8 @@
-using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Admin;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Users;
+using DevilDaggersInfo.Web.Server.Converters.Admin;
 using Microsoft.AspNetCore.Authorization;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Admin;
+namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 
 [Route("api/admin/users")]
 [ApiController]

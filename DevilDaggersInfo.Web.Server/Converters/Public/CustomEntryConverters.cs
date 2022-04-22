@@ -1,7 +1,7 @@
-using DevilDaggersInfo.Web.BlazorWasm.Server.Entities.Views;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
+using DevilDaggersInfo.Web.Server.Entities.Views;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
+namespace DevilDaggersInfo.Web.Server.Converters.Public;
 
 public static class CustomEntryConverters
 {

@@ -1,6 +1,6 @@
-using DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels;
+using DevilDaggersInfo.Web.Server.InternalModels;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices;
+namespace DevilDaggersInfo.Web.Server.HostedServices;
 
 public class LeaderboardHistoryBackgroundService : AbstractBackgroundService
 {

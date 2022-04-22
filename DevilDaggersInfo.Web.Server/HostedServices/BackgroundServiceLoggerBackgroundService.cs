@@ -1,7 +1,7 @@
-using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
+using DevilDaggersInfo.Web.Server.HostedServices.DdInfoDiscordBot;
 using DSharpPlus.Entities;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices;
+namespace DevilDaggersInfo.Web.Server.HostedServices;
 
 public class BackgroundServiceLoggerBackgroundService : AbstractBackgroundService
 {

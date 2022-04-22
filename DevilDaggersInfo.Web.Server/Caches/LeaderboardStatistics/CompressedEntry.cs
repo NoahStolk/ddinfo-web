@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardStatistics;
+namespace DevilDaggersInfo.Web.Server.Caches.LeaderboardStatistics;
 
 public class CompressedEntry
 {

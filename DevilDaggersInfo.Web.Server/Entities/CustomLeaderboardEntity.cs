@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
+namespace DevilDaggersInfo.Web.Server.Entities;
 
 [Table("CustomLeaderboards")]
 public class CustomLeaderboardEntity

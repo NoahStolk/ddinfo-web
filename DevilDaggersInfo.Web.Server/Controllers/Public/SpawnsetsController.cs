@@ -1,11 +1,11 @@
-using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHashes;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetSummaries;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Spawnsets;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Public;
+using DevilDaggersInfo.Web.Server.Caches.SpawnsetHashes;
+using DevilDaggersInfo.Web.Server.Caches.SpawnsetSummaries;
+using DevilDaggersInfo.Web.Server.Converters.Public;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
+namespace DevilDaggersInfo.Web.Server.Controllers.Public;
 
 [Route("api/spawnsets")]
 [ApiController]

@@ -1,11 +1,11 @@
-using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardHistory;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardStatistics;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.ModArchives;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHashes;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetSummaries;
+using DevilDaggersInfo.Web.Server.Caches.LeaderboardHistory;
+using DevilDaggersInfo.Web.Server.Caches.LeaderboardStatistics;
+using DevilDaggersInfo.Web.Server.Caches.ModArchives;
+using DevilDaggersInfo.Web.Server.Caches.SpawnsetHashes;
+using DevilDaggersInfo.Web.Server.Caches.SpawnsetSummaries;
 using Microsoft.AspNetCore.Authorization;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Admin;
+namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 
 [Route("api/admin")]
 [ApiController]

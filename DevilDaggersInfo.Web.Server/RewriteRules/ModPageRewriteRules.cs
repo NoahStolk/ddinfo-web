@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Net.Http.Headers;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.RewriteRules;
+namespace DevilDaggersInfo.Web.Server.RewriteRules;
 
 /// <summary>
 /// Redirects old mod pages from the V4 website. Only the mods that existed at that point are included here (dumped with SQL).

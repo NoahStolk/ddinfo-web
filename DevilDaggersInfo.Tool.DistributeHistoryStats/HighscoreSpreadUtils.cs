@@ -1,7 +1,7 @@
 using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Core.Wiki.Enums;
-using DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
+using DevilDaggersInfo.Web.Server.InternalModels;
 using System.Text;
 
 namespace DevilDaggersInfo.Tool.DistributeHistoryStats;

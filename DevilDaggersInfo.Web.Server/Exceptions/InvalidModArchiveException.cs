@@ -1,6 +1,6 @@
 using System.Runtime.Serialization;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Exceptions;
+namespace DevilDaggersInfo.Web.Server.Exceptions;
 
 [Serializable]
 public class InvalidModArchiveException : Exception

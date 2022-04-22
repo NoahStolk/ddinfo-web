@@ -1,7 +1,7 @@
-using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardStatistics;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardStatistics;
+using DevilDaggersInfo.Web.Server.Caches.LeaderboardStatistics;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
+namespace DevilDaggersInfo.Web.Server.Converters.Public;
 
 public static class LeaderboardStatisticsConverters
 {

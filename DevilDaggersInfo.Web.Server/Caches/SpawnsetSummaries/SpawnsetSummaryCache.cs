@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetSummaries;
+namespace DevilDaggersInfo.Web.Server.Caches.SpawnsetSummaries;
 
 public class SpawnsetSummaryCache : IDynamicCache
 {

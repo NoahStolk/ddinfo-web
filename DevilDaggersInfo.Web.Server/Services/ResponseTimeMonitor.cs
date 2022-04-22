@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Health;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Services;
+namespace DevilDaggersInfo.Web.Server.Services;
 
 public class ResponseTimeMonitor
 {

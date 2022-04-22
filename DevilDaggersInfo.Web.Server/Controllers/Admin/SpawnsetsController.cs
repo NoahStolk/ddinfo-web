@@ -1,11 +1,11 @@
-using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHashes;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Admin;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Spawnsets;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin;
+using DevilDaggersInfo.Web.Server.Caches.SpawnsetHashes;
+using DevilDaggersInfo.Web.Server.Converters.Admin;
 using Microsoft.AspNetCore.Authorization;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Admin;
+namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 
 [Route("api/admin/spawnsets")]
 [ApiController]

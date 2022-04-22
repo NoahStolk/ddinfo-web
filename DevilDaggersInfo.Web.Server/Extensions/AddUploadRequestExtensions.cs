@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Extensions;
+namespace DevilDaggersInfo.Web.Server.Extensions;
 
 // TODO: Move to base library and re-use in DDCL.
 public static class AddUploadRequestExtensions

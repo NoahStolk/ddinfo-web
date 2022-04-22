@@ -1,9 +1,9 @@
-using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardHistory;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardStatistics;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.ModArchives;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
+using DevilDaggersInfo.Web.Server.Caches.LeaderboardHistory;
+using DevilDaggersInfo.Web.Server.Caches.LeaderboardStatistics;
+using DevilDaggersInfo.Web.Server.Caches.ModArchives;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices;
+namespace DevilDaggersInfo.Web.Server.HostedServices;
 
 public class StartupCacheHostedService : IHostedService
 {

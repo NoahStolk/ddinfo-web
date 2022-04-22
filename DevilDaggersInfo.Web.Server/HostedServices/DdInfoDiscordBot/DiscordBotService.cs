@@ -2,7 +2,7 @@ using DSharpPlus;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
+namespace DevilDaggersInfo.Web.Server.HostedServices.DdInfoDiscordBot;
 
 public class DiscordBotService : IHostedService
 {

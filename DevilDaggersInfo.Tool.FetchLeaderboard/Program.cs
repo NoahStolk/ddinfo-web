@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardStatistics;
+using DevilDaggersInfo.Web.Server.Caches.LeaderboardStatistics;
 using System.Diagnostics;
 
 byte[] init = await ExecuteRequest(1);

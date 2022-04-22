@@ -1,7 +1,7 @@
-using DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels;
+using DevilDaggersInfo.Web.Server.InternalModels;
 using System.Security.Claims;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Services;
+namespace DevilDaggersInfo.Web.Server.Services;
 
 public class AuditLogger
 {

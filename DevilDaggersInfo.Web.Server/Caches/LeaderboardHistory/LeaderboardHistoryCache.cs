@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardHistory;
+namespace DevilDaggersInfo.Web.Server.Caches.LeaderboardHistory;
 
 public class LeaderboardHistoryCache : IDynamicCache
 {

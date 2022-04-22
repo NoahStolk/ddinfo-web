@@ -1,5 +1,5 @@
-using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.ModArchives;
+using DevilDaggersInfo.Web.Server.Caches.ModArchives;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels;
+namespace DevilDaggersInfo.Web.Server.InternalModels;
 
 public record ModFileSystemData(ModArchiveCacheData? ModArchive, List<string>? ScreenshotFileNames);

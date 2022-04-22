@@ -1,7 +1,7 @@
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging.Configuration;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Logging.Discord;
+namespace DevilDaggersInfo.Web.Server.Logging.Discord;
 
 public static class DiscordLoggerExtensions
 {

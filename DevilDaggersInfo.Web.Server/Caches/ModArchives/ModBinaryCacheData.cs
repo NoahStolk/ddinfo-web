@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Core.Mod.Utils;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Caches.ModArchives;
+namespace DevilDaggersInfo.Web.Server.Caches.ModArchives;
 
 public class ModBinaryCacheData
 {

@@ -1,6 +1,6 @@
 using MockQueryable.Moq;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Tests.Data;
+namespace DevilDaggersInfo.Web.Server.Tests.Data;
 
 public class MockEntities
 {

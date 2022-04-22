@@ -1,3 +1,3 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels;
+namespace DevilDaggersInfo.Web.Server.InternalModels;
 
 public record FileSystemInformation(string Message, FileSystemInformationType Type);

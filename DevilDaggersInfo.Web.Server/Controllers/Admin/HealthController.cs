@@ -1,7 +1,7 @@
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Health;
 using Microsoft.AspNetCore.Authorization;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Admin;
+namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 
 [Route("api/admin/health")]
 [ApiController]

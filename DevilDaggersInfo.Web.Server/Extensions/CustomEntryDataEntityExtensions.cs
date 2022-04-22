@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Extensions;
+namespace DevilDaggersInfo.Web.Server.Extensions;
 
 public static class CustomEntryDataEntityExtensions
 {

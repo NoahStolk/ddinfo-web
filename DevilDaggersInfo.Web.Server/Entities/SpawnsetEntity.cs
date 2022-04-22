@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
+namespace DevilDaggersInfo.Web.Server.Entities;
 
 [Table("SpawnsetFiles")]
 public class SpawnsetEntity

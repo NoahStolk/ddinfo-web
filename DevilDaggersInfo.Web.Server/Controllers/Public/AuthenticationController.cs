@@ -1,7 +1,7 @@
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Authentication;
 using Microsoft.AspNetCore.Authorization;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
+namespace DevilDaggersInfo.Web.Server.Controllers.Public;
 
 [ApiController]
 [ApiExplorerSettings(IgnoreApi = true)]

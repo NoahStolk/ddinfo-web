@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
+namespace DevilDaggersInfo.Web.Server.HostedServices.DdInfoDiscordBot;
 
 public enum Channel
 {

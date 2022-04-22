@@ -1,6 +1,6 @@
-using DevilDaggersInfo.Web.BlazorWasm.Server.Clients.Clubber;
+using DevilDaggersInfo.Web.Server.Clients.Clubber;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices;
+namespace DevilDaggersInfo.Web.Server.HostedServices;
 
 public class DiscordUserIdFetchBackgroundService : AbstractBackgroundService
 {

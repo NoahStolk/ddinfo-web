@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Options;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Logging.Discord;
+namespace DevilDaggersInfo.Web.Server.Logging.Discord;
 
 public sealed class DiscordLoggerProvider : ILoggerProvider
 {

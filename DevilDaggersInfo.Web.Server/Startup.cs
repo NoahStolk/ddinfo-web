@@ -1,14 +1,14 @@
-using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardHistory;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardStatistics;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.ModArchives;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHashes;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetSummaries;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Clients.Clubber;
-using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Middleware;
-using DevilDaggersInfo.Web.BlazorWasm.Server.NSwag;
-using DevilDaggersInfo.Web.BlazorWasm.Server.RewriteRules;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
+using DevilDaggersInfo.Web.Server.Caches.LeaderboardHistory;
+using DevilDaggersInfo.Web.Server.Caches.LeaderboardStatistics;
+using DevilDaggersInfo.Web.Server.Caches.ModArchives;
+using DevilDaggersInfo.Web.Server.Caches.SpawnsetHashes;
+using DevilDaggersInfo.Web.Server.Caches.SpawnsetSummaries;
+using DevilDaggersInfo.Web.Server.Clients.Clubber;
+using DevilDaggersInfo.Web.Server.HostedServices;
+using DevilDaggersInfo.Web.Server.Middleware;
+using DevilDaggersInfo.Web.Server.NSwag;
+using DevilDaggersInfo.Web.Server.RewriteRules;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Rewrite;
@@ -16,7 +16,7 @@ using Microsoft.IdentityModel.Tokens;
 using NJsonSchema;
 using System.Globalization;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server;
+namespace DevilDaggersInfo.Web.Server;
 
 public class Startup
 {

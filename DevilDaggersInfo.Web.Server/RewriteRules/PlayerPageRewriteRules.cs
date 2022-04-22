@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Net.Http.Headers;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.RewriteRules;
+namespace DevilDaggersInfo.Web.Server.RewriteRules;
 
 public class PlayerPageRewriteRules : IRule
 {
