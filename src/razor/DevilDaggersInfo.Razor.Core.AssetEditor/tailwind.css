@@ -20,31 +20,15 @@
 		@apply text-color-link hover:text-color-link-hover;
 	}
 
-	.code {
-		@apply inline bg-gray-5 font-mono;
-	}
-
-	.path {
-		@apply text-color-path;
-	}
-
 	.para {
 		@apply my-3;
 	}
 
 	.btn {
-		@apply text-lg text-color-text text-center;
-	}
-
-	.btn-disabled {
-		@apply bg-gray-2;
+		@apply text-left pl-1;
 	}
 
 	.btn-gray {
-		@apply bg-gray-1 hover:bg-gray-3;
-	}
-
-	.btn-gray-light {
 		@apply bg-gray-3 hover:bg-gray-6;
 	}
 
@@ -58,10 +42,6 @@
 
 	.btn-green {
 		@apply bg-dark-green hover:bg-green;
-	}
-
-	.btn-download {
-		@apply hover:text-color-text bg-dark-red hover:bg-red;
 	}
 }
 

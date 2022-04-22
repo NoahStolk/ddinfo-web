@@ -1,5 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
   <PropertyGroup>
+    <Version>2.0.0.0-alpha-0</Version>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
     <TailwindBuild>true</TailwindBuild>
   </PropertyGroup>
@@ -17,9 +18,6 @@
     <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Mod\DevilDaggersInfo.Core.Mod.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Content Update="wwwroot\css\app.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Update="wwwroot\tailwind.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

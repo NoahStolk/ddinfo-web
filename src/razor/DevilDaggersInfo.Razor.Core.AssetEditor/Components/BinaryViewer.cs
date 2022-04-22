@@ -15,7 +15,12 @@ public partial class BinaryViewer
 	[Inject]
 	public IFileSystemService FileSystemService { get; set; } = null!;
 
-	public void ReadBinary()
+	public void NewBinary()
+	{
+		_binary = null;
+	}
+
+	public void OpenBinary()
 	{
 		_binary = null;
 
@@ -31,5 +36,13 @@ public partial class BinaryViewer
 		{
 			ErrorReporter.ReportError(ex);
 		}
+	}
+
+	public void ExtractBinary()
+	{
+	}
+
+	public void CompileBinary()
+	{
 	}
 }

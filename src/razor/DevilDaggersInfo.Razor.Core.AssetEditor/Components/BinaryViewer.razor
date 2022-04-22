@@ -1,7 +1,10 @@
 @using DevilDaggersInfo.Core.Asset
 @using DevilDaggersInfo.Core.Mod
 
-<button @onclick="ReadBinary">Load</button>
+<button class="btn btn-gray w-32 pb-1" @onclick="NewBinary">New binary</button>
+<button class="btn btn-gray w-32 pb-1" @onclick="OpenBinary">Open binary</button>
+<button class="btn btn-gray w-32 pb-1" @onclick="ExtractBinary">Extract binary</button>
+<button class="btn btn-gray w-32 pb-1" @onclick="CompileBinary">Compile binary</button>
 
 @if (_binary == null)
 {

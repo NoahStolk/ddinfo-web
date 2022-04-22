@@ -7,7 +7,7 @@
 	xmlns:shared="clr-namespace:DevilDaggersInfo.Razor.Core.AssetEditor;assembly=DevilDaggersInfo.Razor.Core.AssetEditor"
 	xmlns:blazor="clr-namespace:Microsoft.AspNetCore.Components.WebView.Wpf;assembly=Microsoft.AspNetCore.Components.WebView.Wpf"
 	mc:Ignorable="d"
-	Title="Devil Daggers Asset Editor" Height="768" Width="1024" WindowStartupLocation="CenterScreen">
+	Title="Devil Daggers Asset Editor" Width="1024" Height="768" WindowStartupLocation="CenterScreen">
 	<Grid Background="Black">
 		<blazor:BlazorWebView HostPage="wwwroot\index.html" Services="{DynamicResource services}">
 			<blazor:BlazorWebView.RootComponents>
