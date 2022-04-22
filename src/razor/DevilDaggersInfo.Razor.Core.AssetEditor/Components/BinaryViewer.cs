@@ -1,6 +1,5 @@
 using DevilDaggersInfo.Core.Mod;
 using DevilDaggersInfo.Core.Mod.Enums;
-using DevilDaggersInfo.Core.Mod.Exceptions;
 using DevilDaggersInfo.Razor.Core.AssetEditor.Services;
 using Microsoft.AspNetCore.Components;
 
@@ -27,10 +26,6 @@ public partial class BinaryViewer
 		try
 		{
 			_binary = new(fileResult.Contents, ModBinaryReadComprehensiveness.TocOnly);
-		}
-		catch (InvalidModBinaryException ex)
-		{
-			ErrorReporter.ReportError(ex);
 		}
 		catch (Exception ex)
 		{
