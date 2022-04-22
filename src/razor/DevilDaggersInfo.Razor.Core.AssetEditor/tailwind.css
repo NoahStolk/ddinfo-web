@@ -1,0 +1,86 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	@font-face {
+		font-family: 'goethe';
+		src: url('fonts/goethebold.ttf') format('truetype');
+	}
+
+	@font-face {
+		font-family: 'calibri';
+		font-weight: 500;
+		src: url('fonts/calibri-regular.ttf') format('truetype');
+	}
+}
+
+@layer components {
+	.link {
+		@apply text-color-link hover:text-color-link-hover;
+	}
+
+	.code {
+		@apply inline bg-gray-5 font-mono;
+	}
+
+	.path {
+		@apply text-color-path;
+	}
+
+	.para {
+		@apply my-3;
+	}
+
+	.btn {
+		@apply text-lg text-color-text text-center;
+	}
+
+	.btn-disabled {
+		@apply bg-gray-2;
+	}
+
+	.btn-gray {
+		@apply bg-gray-1 hover:bg-gray-3;
+	}
+
+	.btn-gray-light {
+		@apply bg-gray-3 hover:bg-gray-6;
+	}
+
+	.btn-red {
+		@apply bg-dark-red hover:bg-red;
+	}
+
+	.btn-orange {
+		@apply bg-dark-orange hover:bg-orange;
+	}
+
+	.btn-green {
+		@apply bg-dark-green hover:bg-green;
+	}
+
+	.btn-download {
+		@apply hover:text-color-text bg-dark-red hover:bg-red;
+	}
+}
+
+#blazor-error-ui {
+	background: lightyellow;
+	color: black;
+	bottom: 0;
+	box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+	display: none;
+	left: 0;
+	padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+	position: fixed;
+	width: 100%;
+	z-index: 1000;
+}
+
+	#blazor-error-ui .dismiss {
+		cursor: pointer;
+		position: absolute;
+		right: 0.75rem;
+		top: 0.5rem;
+	}
