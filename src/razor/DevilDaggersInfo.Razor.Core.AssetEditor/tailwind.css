@@ -12,7 +12,7 @@
 
 @layer components {
 	.link {
-		@apply text-color-link hover:text-color-link-hover;
+		@apply text-color-link hover:text-color-link-hover cursor-pointer;
 	}
 
 	.para {

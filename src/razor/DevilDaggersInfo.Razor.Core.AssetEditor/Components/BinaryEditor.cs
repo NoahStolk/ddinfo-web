@@ -1,14 +1,20 @@
+using DevilDaggersInfo.Common.Extensions;
+using DevilDaggersInfo.Core.Asset;
 using DevilDaggersInfo.Core.Asset.Enums;
 using DevilDaggersInfo.Core.Asset.Extensions;
 using DevilDaggersInfo.Core.Mod;
 using DevilDaggersInfo.Razor.Core.AssetEditor.Services;
 using Microsoft.AspNetCore.Components;
+using System.Runtime.CompilerServices;
 
 namespace DevilDaggersInfo.Razor.Core.AssetEditor.Components;
 
 public partial class BinaryEditor
 {
 	private readonly List<ModBinaryChunk> _selectedChunks = new();
+	private readonly Dictionary<string, bool> _sorting = new();
+	private readonly Dictionary<ModBinaryChunk, bool> _prohibited = new();
+	private List<ModBinaryChunk> _chunks = new();
 
 	private ModBinary _binary = null!;
 
@@ -25,6 +31,11 @@ public partial class BinaryEditor
 		{
 			_binary = value;
 			_selectedChunks.Clear();
+			_prohibited.Clear();
+			_chunks = _binary.Chunks;
+
+			foreach (ModBinaryChunk chunk in _chunks)
+				_prohibited[chunk] = AssetContainer.GetIsProhibited(chunk.AssetType, chunk.Name);
 		}
 	}
 
@@ -115,4 +126,17 @@ public partial class BinaryEditor
 		AssetType.Mesh => "bg-mesh",
 		_ => "bg-black",
 	};
+
+	private void Sort<TKey>(Func<ModBinaryChunk, TKey> sorting, [CallerArgumentExpression("sorting")] string sortingExpression = "")
+	{
+		bool sortDirection = false;
+		if (_sorting.ContainsKey(sortingExpression))
+			sortDirection = _sorting[sortingExpression];
+		else
+			_sorting.Add(sortingExpression, false);
+
+		_chunks = _chunks.OrderBy(sorting, sortDirection).ToList();
+
+		_sorting[sortingExpression] = !sortDirection;
+	}
 }
