@@ -10,10 +10,14 @@ public class ModBinaryChunk
 		AssetType = assetType;
 	}
 
-	public string Name { get; }
+	public string Name { get; private set; }
 	public int Offset { get; }
 	public int Size { get; }
 	public AssetType AssetType { get; }
 
 	public bool IsLoudness() => AssetType == AssetType.Audio && Name == "loudness";
+
+	public string Enable() => Name = Name.ToLower();
+
+	public string Disable() => Name = Name.ToUpper();
 }

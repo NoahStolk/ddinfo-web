@@ -2,8 +2,7 @@ namespace DevilDaggersInfo.Core.Mod;
 
 public class ModBinary
 {
-	public const long FileIdentifier = 0x013A67723A78683A;
-
+	private const long _fileIdentifier = 0x013A67723A78683A;
 	private const int _fileHeaderSize = 12;
 
 	private readonly ModBinaryReadComprehensiveness _readComprehensiveness;
@@ -16,7 +15,7 @@ public class ModBinary
 		using MemoryStream ms = new(fileContents);
 		using BinaryReader br = new(ms);
 		ulong fileIdentifier = br.ReadUInt64();
-		if (fileIdentifier != FileIdentifier)
+		if (fileIdentifier != _fileIdentifier)
 			throw new InvalidModBinaryException("Invalid binary; incorrect header values.");
 
 		uint tocSize = br.ReadUInt32();
@@ -104,6 +103,9 @@ public class ModBinary
 
 	public void AddAsset(string assetName, AssetType assetType, byte[] fileContents)
 	{
+		if (_readComprehensiveness != ModBinaryReadComprehensiveness.All)
+			throw new InvalidOperationException("This mod binary has not been opened for full reading comprehensiveness. Cannot add assets.");
+
 		ValidateAssetType(ModBinaryType, assetType);
 
 		AssetMap.Add(new(assetType, assetName), AssetConverter.Compile(assetType, fileContents));
@@ -125,12 +127,38 @@ public class ModBinary
 
 	public void RemoveAsset(string assetName, AssetType assetType)
 	{
+		if (_readComprehensiveness != ModBinaryReadComprehensiveness.All)
+			throw new InvalidOperationException("This mod binary has not been opened for full reading comprehensiveness. Cannot remove assets.");
+
 		ModBinaryChunk? chunk = Chunks.Find(c => c.Name == assetName && c.AssetType == assetType);
 		if (chunk == null)
 			return;
 
 		Chunks.Remove(chunk);
 		AssetMap.Remove(new(assetType, assetName));
+	}
+
+	public void EnableAsset(string assetName, AssetType assetType)
+		=> ToggleAsset(assetName, assetType, (c) => c.Enable());
+
+	public void DisableAsset(string assetName, AssetType assetType)
+		=> ToggleAsset(assetName, assetType, (c) => c.Disable());
+
+	private void ToggleAsset(string assetName, AssetType assetType, Action<ModBinaryChunk> action)
+	{
+		if (_readComprehensiveness != ModBinaryReadComprehensiveness.All)
+			throw new InvalidOperationException("This mod binary has not been opened for full reading comprehensiveness. Cannot rename assets.");
+
+		ModBinaryChunk? chunk = Chunks.Find(c => c.Name == assetName && c.AssetType == assetType);
+		if (chunk == null)
+			return;
+
+		action(chunk);
+
+		AssetKey key = new(assetType, assetName);
+		AssetData data = AssetMap[key];
+		AssetMap.Remove(key);
+		AssetMap[new(assetType, chunk.Name)] = data;
 	}
 
 	private static void ValidateAssetType(ModBinaryType modBinaryType, AssetType assetType)
@@ -144,7 +172,7 @@ public class ModBinary
 	public void ExtractAssets(string outputDirectory)
 	{
 		if (_readComprehensiveness != ModBinaryReadComprehensiveness.All)
-			throw new InvalidOperationException("This mod binary has not been opened for full reading comprehensiveness. Cannot extract assets from mod binary.");
+			throw new InvalidOperationException("This mod binary has not been opened for full reading comprehensiveness. Cannot extract assets.");
 
 		foreach (KeyValuePair<AssetKey, AssetData> kvp in AssetMap)
 			File.WriteAllBytes(Path.Combine(outputDirectory, kvp.Key.AssetName + kvp.Key.AssetType.GetFileExtension()), AssetConverter.Extract(kvp.Key.AssetType, kvp.Value));
@@ -153,7 +181,7 @@ public class ModBinary
 	public byte[] ExtractAsset(string assetName, AssetType assetType)
 	{
 		if (_readComprehensiveness != ModBinaryReadComprehensiveness.All)
-			throw new InvalidOperationException("This mod binary has not been opened for full reading comprehensiveness. Cannot extract assets from mod binary.");
+			throw new InvalidOperationException("This mod binary has not been opened for full reading comprehensiveness. Cannot extract assets.");
 
 		AssetKey key = new(assetType, assetName);
 		if (!AssetMap.ContainsKey(key))
@@ -165,7 +193,7 @@ public class ModBinary
 	public byte[] Compile()
 	{
 		if (_readComprehensiveness != ModBinaryReadComprehensiveness.All)
-			throw new InvalidOperationException("This mod binary has not been opened for full reading comprehensiveness. Cannot compile mod binary.");
+			throw new InvalidOperationException("This mod binary has not been opened for full reading comprehensiveness. Cannot compile binary.");
 
 		const int tocEntrySizeWithoutName = 15;
 		int tocBufferSize = tocEntrySizeWithoutName * AssetMap.Count + Chunks.Sum(c => Encoding.Default.GetBytes(c.Name).Length) + sizeof(short);
@@ -213,7 +241,7 @@ public class ModBinary
 		}
 
 		using MemoryStream ms = new();
-		ms.Write(BitConverter.GetBytes(FileIdentifier));
+		ms.Write(BitConverter.GetBytes(_fileIdentifier));
 		ms.Write(BitConverter.GetBytes((uint)tocBuffer.Length));
 		ms.Write(tocBuffer);
 		ms.Write(assetBuffer);

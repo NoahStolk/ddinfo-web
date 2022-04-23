@@ -104,12 +104,14 @@ public partial class BinaryEditor
 
 	private void EnableChunks()
 	{
-
+		foreach (ModBinaryChunk chunk in _selectedChunks)
+			chunk.Enable();
 	}
 
 	private void DisableChunks()
 	{
-
+		foreach (ModBinaryChunk chunk in _selectedChunks)
+			chunk.Disable();
 	}
 
 	public void AddAsset()
