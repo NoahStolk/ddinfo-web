@@ -123,6 +123,16 @@ public class ModBinary
 		// TODO: Loudness.
 	}
 
+	public void RemoveAsset(string assetName, AssetType assetType)
+	{
+		ModBinaryChunk? chunk = Chunks.FirstOrDefault(c => c.Name == assetName && c.AssetType == assetType);
+		if (chunk == null)
+			return;
+
+		Chunks.Remove(chunk);
+		AssetMap.Remove(new(assetType, assetName));
+	}
+
 	private static void ValidateAssetType(ModBinaryType modBinaryType, AssetType assetType)
 	{
 		if (assetType == AssetType.Audio && modBinaryType != ModBinaryType.Audio)

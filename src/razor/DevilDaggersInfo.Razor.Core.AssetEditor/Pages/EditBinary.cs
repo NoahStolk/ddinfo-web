@@ -40,16 +40,7 @@ public partial class EditBinary
 		}
 	}
 
-	public void ExtractBinary()
-	{
-		if (_binary == null)
-			return;
-
-		string outputDirectory = ""; // TODO
-		_binary.ExtractAssets(outputDirectory);
-	}
-
-	public void CompileBinary()
+	public void SaveBinary()
 	{
 		if (_binary == null)
 			return;

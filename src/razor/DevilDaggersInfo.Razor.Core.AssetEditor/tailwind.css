@@ -20,7 +20,7 @@
 	}
 
 	.btn {
-		@apply text-left pl-1;
+		@apply text-left px-1;
 	}
 
 	.btn-gray {

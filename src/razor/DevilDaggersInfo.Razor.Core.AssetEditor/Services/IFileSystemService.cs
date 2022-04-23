@@ -6,6 +6,8 @@ public interface IFileSystemService
 
 	void Save(byte[] buffer);
 
+	string? SelectDirectory();
+
 	public class FileResult
 	{
 		public FileResult(string path, byte[] contents)
