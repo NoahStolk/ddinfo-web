@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Web.Client.Extensions;
 using DevilDaggersInfo.Web.Shared.Dto.Public.Leaderboards;
 using DevilDaggersInfo.Web.Shared.Dto.Public.Players;

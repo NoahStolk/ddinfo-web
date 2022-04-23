@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Shared.Extensions;
+namespace DevilDaggersInfo.Common.Extensions;
 
 public static class IEnumerableExtensions
 {
