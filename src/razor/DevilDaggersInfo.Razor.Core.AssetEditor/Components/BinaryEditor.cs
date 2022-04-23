@@ -57,7 +57,7 @@ public partial class BinaryEditor
 		chunksToDeselect.AddRange(_selectedChunks);
 
 		_selectedChunks.Clear();
-		_selectedChunks.AddRange(Binary.Chunks.Where(c => !chunksToDeselect.Any(ctd => ctd.Name == c.Name && ctd.AssetType == c.AssetType)));
+		_selectedChunks.AddRange(_chunks.Where(c => !chunksToDeselect.Any(ctd => ctd.Name == c.Name && ctd.AssetType == c.AssetType)));
 	}
 
 	private void ToggleSelection(ModBinaryChunk chunk)
