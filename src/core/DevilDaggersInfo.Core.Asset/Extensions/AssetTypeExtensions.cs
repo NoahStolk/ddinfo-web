@@ -12,6 +12,16 @@ public static class AssetTypeExtensions
 		_ => throw new NotSupportedException($"Asset type '{assetType}' is not supported."),
 	};
 
+	public static string ToDisplayString(this AssetType assetType) => assetType switch
+	{
+		AssetType.Audio => "Audio",
+		AssetType.Mesh => "Mesh",
+		AssetType.ObjectBinding => "Object Binding",
+		AssetType.Shader => "Shader",
+		AssetType.Texture => "Texture",
+		_ => throw new NotSupportedException($"Asset type '{assetType}' is not supported."),
+	};
+
 	public static AssetType? GetAssetType(this ushort type) => type switch
 	{
 		0x01 => AssetType.Mesh,

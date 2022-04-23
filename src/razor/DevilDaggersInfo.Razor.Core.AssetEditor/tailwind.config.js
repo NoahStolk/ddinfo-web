@@ -24,6 +24,11 @@ module.exports = {
 			'gray-4': '#303030',
 			'gray-5': '#3c3c3c',
 			'gray-6': '#484848',
+			'audio': '#f0f',
+			'mesh': '#f00',
+			'object-binding': '#08f',
+			'shader': '#0f0',
+			'texture': '#f80',
 		},
 		extend: {
 			fontFamily: {

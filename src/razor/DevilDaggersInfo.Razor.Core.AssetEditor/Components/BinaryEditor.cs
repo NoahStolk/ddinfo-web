@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Core.Asset.Enums;
 using DevilDaggersInfo.Core.Asset.Extensions;
 using DevilDaggersInfo.Core.Mod;
 using DevilDaggersInfo.Razor.Core.AssetEditor.Services;
@@ -104,4 +105,14 @@ public partial class BinaryEditor
 	{
 
 	}
+
+	private static string GetColor(AssetType assetType) => assetType switch
+	{
+		AssetType.Audio => "bg-audio",
+		AssetType.ObjectBinding => "bg-object-binding",
+		AssetType.Shader => "bg-shader",
+		AssetType.Texture => "bg-texture",
+		AssetType.Mesh => "bg-mesh",
+		_ => "bg-black",
+	};
 }

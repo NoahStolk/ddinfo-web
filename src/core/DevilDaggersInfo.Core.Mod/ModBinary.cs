@@ -125,7 +125,7 @@ public class ModBinary
 
 	public void RemoveAsset(string assetName, AssetType assetType)
 	{
-		ModBinaryChunk? chunk = Chunks.FirstOrDefault(c => c.Name == assetName && c.AssetType == assetType);
+		ModBinaryChunk? chunk = Chunks.Find(c => c.Name == assetName && c.AssetType == assetType);
 		if (chunk == null)
 			return;
 
