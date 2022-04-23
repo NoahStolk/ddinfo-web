@@ -23,9 +23,14 @@ public class PlayerNameFetchBackgroundService : AbstractBackgroundService
 
 		IEnumerable<PlayerEntity> players = dbContext.Players.AsEnumerable();
 
+		int attempts = 0;
 		List<EntryResponse>? entries = null;
 		do
 		{
+			attempts++;
+			if (attempts > 5)
+				break;
+
 			entries = await _leaderboardClient.GetEntriesByIds(players.Select(p => p.Id));
 			if (entries == null)
 			{
@@ -36,6 +41,8 @@ public class PlayerNameFetchBackgroundService : AbstractBackgroundService
 			}
 		}
 		while (entries == null);
+		if (entries == null)
+			return;
 
 		List<(int PlayerId, string OldName, string NewName)> logs = new();
 		foreach (EntryResponse entry in entries)

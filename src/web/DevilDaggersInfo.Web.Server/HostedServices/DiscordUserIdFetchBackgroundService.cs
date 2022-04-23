@@ -23,9 +23,14 @@ public class DiscordUserIdFetchBackgroundService : AbstractBackgroundService
 		using IServiceScope scope = _serviceScopeFactory.CreateScope();
 		using ApplicationDbContext dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
+		int attempts = 0;
 		List<DdUser>? users = null;
 		do
 		{
+			attempts++;
+			if (attempts > 5)
+				break;
+
 			users = await _clubberClient.GetUsers();
 			if (users == null)
 			{
@@ -36,6 +41,8 @@ public class DiscordUserIdFetchBackgroundService : AbstractBackgroundService
 			}
 		}
 		while (users == null);
+		if (users == null)
+			return;
 
 		List<int> ids = users.ConvertAll(u => u.LeaderboardId);
 		List<PlayerEntity> players = dbContext.Players.Where(p => ids.Contains(p.Id) && p.DiscordUserId == null).ToList();
