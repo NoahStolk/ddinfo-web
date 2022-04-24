@@ -64,7 +64,7 @@ internal sealed class PngFileHandler : IFileHandler
 		using BinaryReader br = new(ms);
 		ushort header = br.ReadUInt16();
 		if (header != _header)
-			throw new InvalidModBinaryException($"Invalid texture header. Should be {header} but got {_header}.");
+			throw new InvalidModBinaryException($"Invalid texture header. Should be {_header} but got {header}.");
 
 		int width = br.ReadInt32();
 		int height = br.ReadInt32();
