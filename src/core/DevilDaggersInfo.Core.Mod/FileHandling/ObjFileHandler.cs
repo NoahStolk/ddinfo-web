@@ -25,6 +25,7 @@ internal sealed class ObjFileHandler : IFileHandler
 		int indexCount = br.ReadInt32();
 		int vertexCount = br.ReadInt32();
 
+		// TODO: Validate number.
 		_ = br.ReadUInt16();
 
 		Vertex[] vertices = new Vertex[vertexCount];
