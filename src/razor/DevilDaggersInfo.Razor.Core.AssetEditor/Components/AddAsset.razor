@@ -1,0 +1,40 @@
+@using DevilDaggersInfo.Core.Asset
+@using DevilDaggersInfo.Core.Asset.Enums
+@using DevilDaggersInfo.Core.Mod.Enums
+
+<div>Add new asset</div>
+<button class="btn btn-red w-32" @onclick="Cancel">Cancel</button>
+
+@if (_selectedAssetType.HasValue)
+{
+	<div class="max-h-screen-half overflow-y-scroll">
+		@foreach (AssetData asset in AssetContainer.GetAll(_selectedAssetType.Value))
+		{
+			<div class="bg-opacity-10 hover:bg-opacity-50 @(asset.AssetName == _selectedAssetName ? "font-bold bg-opacity-30" : null) @(BinaryEditor.GetColor(_selectedAssetType.Value)) grid gap-x-2 grid-cols-2 px-1 cursor-pointer" @onclick="() => Select(asset.AssetName)">
+				<div>@asset.AssetName</div>
+				<div>@(asset.IsProhibited ? "Prohibited" : null)</div>
+			</div>
+		}
+	</div>
+
+	if (_selectedAssetName != null)
+	{
+		<button class="btn btn-green w-32" @onclick="WriteToBinary">Add to binary</button>
+	}
+}
+else
+{
+	@switch (Editor.Binary.ModBinaryType)
+	{
+		case ModBinaryType.Audio:
+			<div><button class="btn bg-opacity-25 hover:bg-opacity-50 bg-audio" @onclick="() => Open(AssetType.Audio)">Open audio file (.wav)</button></div>
+			break;
+		case ModBinaryType.Dd:
+			<div><button class="btn bg-opacity-25 hover:bg-opacity-50 bg-mesh" @onclick="() => Open(AssetType.Mesh)">Open mesh file (.obj)</button></div>
+			<div><button class="btn bg-opacity-25 hover:bg-opacity-50 bg-object-binding" @onclick="() => Open(AssetType.ObjectBinding)">Open object binding file (.txt)</button></div>
+			<div><button class="btn bg-opacity-25 hover:bg-opacity-50 bg-shader" @onclick="() => Open(AssetType.Shader)">Open vertex shader file (.glsl / .vert)</button></div>
+			<div><button class="btn bg-opacity-25 hover:bg-opacity-50 bg-shader" @onclick="() => Open(AssetType.Shader)">Open fragment shader file (.glsl / .frag)</button></div>
+			<div><button class="btn bg-opacity-25 hover:bg-opacity-50 bg-texture" @onclick="() => Open(AssetType.Texture)">Open texture file (.png)</button></div>
+			break;
+	}
+}

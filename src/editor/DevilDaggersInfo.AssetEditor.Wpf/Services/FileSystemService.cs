@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Core.Asset.Enums;
+using DevilDaggersInfo.Core.Asset.Extensions;
 using DevilDaggersInfo.Razor.Core.AssetEditor.Services;
 using Microsoft.Win32;
 using Ookii.Dialogs.Wpf;
@@ -5,11 +7,34 @@ using System.IO;
 
 namespace DevilDaggersInfo.AssetEditor.Wpf.Services;
 
+/// <summary>
+/// Platform-specific code for interacting with the OS file system.
+/// </summary>
 public class FileSystemService : IFileSystemService
 {
-	public IFileSystemService.FileResult? Open()
+	public string GetAssetTypeFilter(AssetType assetType)
 	{
-		OpenFileDialog dialog = new();
+		string fileExtension = assetType.GetFileExtension();
+
+		string filter = assetType switch
+		{
+			AssetType.Audio => "Audio",
+			AssetType.Mesh => "Mesh",
+			AssetType.ObjectBinding => "Text",
+			AssetType.Shader => "Shader",
+			AssetType.Texture => "Texture",
+			_ => throw new NotSupportedException($"Asset type '{assetType}' is not supported."),
+		};
+
+		return $"{filter} files (*{fileExtension})|*{fileExtension}";
+	}
+
+	public IFileSystemService.FileResult? Open(string extensionFilter)
+	{
+		OpenFileDialog dialog = new()
+		{
+			Filter = extensionFilter,
+		};
 		bool? openResult = dialog.ShowDialog();
 		if (!openResult.HasValue || !openResult.Value)
 			return null;

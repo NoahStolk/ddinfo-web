@@ -1,8 +1,12 @@
+using DevilDaggersInfo.Core.Asset.Enums;
+
 namespace DevilDaggersInfo.Razor.Core.AssetEditor.Services;
 
 public interface IFileSystemService
 {
-	FileResult? Open();
+	string GetAssetTypeFilter(AssetType assetType);
+
+	FileResult? Open(string extensionFilter);
 
 	void Save(byte[] buffer);
 

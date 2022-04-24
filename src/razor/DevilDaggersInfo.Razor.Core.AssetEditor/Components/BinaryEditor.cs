@@ -11,12 +11,26 @@ namespace DevilDaggersInfo.Razor.Core.AssetEditor.Components;
 
 public partial class BinaryEditor
 {
-	private readonly List<ModBinaryChunk> _selectedChunks = new();
 	private readonly Dictionary<string, bool> _sorting = new();
+
+	private readonly List<ModBinaryChunk> _selectedChunks = new();
 	private readonly Dictionary<ModBinaryChunk, bool> _prohibited = new();
 	private List<ModBinaryChunk> _chunks = new();
 
 	private ModBinary _binary = null!;
+
+	private bool _renderAddAsset;
+
+	public bool AddingNewAsset
+	{
+		get => _renderAddAsset;
+		set
+		{
+			_renderAddAsset = value;
+			RebuildChunkVisualization();
+			StateHasChanged();
+		}
+	}
 
 	[Parameter]
 	[EditorRequired]
@@ -30,12 +44,7 @@ public partial class BinaryEditor
 		set
 		{
 			_binary = value;
-			_selectedChunks.Clear();
-			_prohibited.Clear();
-			_chunks = _binary.Chunks;
-
-			foreach (ModBinaryChunk chunk in _chunks)
-				_prohibited[chunk] = AssetContainer.GetIsProhibited(chunk.AssetType, chunk.Name);
+			RebuildChunkVisualization();
 		}
 	}
 
@@ -44,6 +53,16 @@ public partial class BinaryEditor
 
 	[Inject]
 	public IFileSystemService FileSystemService { get; set; } = null!;
+
+	private void RebuildChunkVisualization()
+	{
+		_selectedChunks.Clear();
+		_prohibited.Clear();
+		_chunks = _binary.Chunks;
+
+		foreach (ModBinaryChunk chunk in _chunks)
+			_prohibited[chunk] = AssetContainer.GetIsProhibited(chunk.AssetType, chunk.Name);
+	}
 
 	private void ResetSelection(IEnumerable<ModBinaryChunk> chunks)
 	{
@@ -114,12 +133,7 @@ public partial class BinaryEditor
 			chunk.Disable();
 	}
 
-	public void AddAsset()
-	{
-
-	}
-
-	private static string GetColor(AssetType assetType) => assetType switch
+	public static string GetColor(AssetType assetType) => assetType switch
 	{
 		AssetType.Audio => "bg-audio",
 		AssetType.ObjectBinding => "bg-object-binding",

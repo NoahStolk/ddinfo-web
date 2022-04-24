@@ -7,7 +7,7 @@
 	<div>Type</div>
 	<div>@Binary.ModBinaryType.ToString().ToLower()</div>
 	<div>Name</div>
-	<input type="text" class="input-text w-full" @bind-value="@BinaryName">
+	<div>@BinaryName</div>
 	<div>Chunk count</div>
 	<div>@Binary.Chunks.Count</div>
 	<div>Asset count</div>
@@ -16,36 +16,47 @@
 
 <div class="text-xl pt-2">Assets</div>
 
-<div class="grid gap-1 grid-cols-2 bg-gray-1 p-1">
-	@{
-		string text = _selectedChunks.Count == 1 ? "asset" : "assets";
-	}
-
-	<div><button class="btn btn-green" @onclick="AddAsset">Add asset</button></div>
-	<div><button class="btn btn-red" @onclick="DeleteChunks">Delete @_selectedChunks.Count @text</button></div>
-	<div><button class="btn btn-green" @onclick="EnableChunks">Enable @_selectedChunks.Count @text</button></div>
-	<div><button class="btn btn-orange" @onclick="DisableChunks">Disable @_selectedChunks.Count @text</button></div>
-	<div><button class="btn btn-green" @onclick="ExtractChunks">Extract @_selectedChunks.Count @text</button></div>
-	<div></div>
-	<div><button class="btn btn-gray" @onclick="() => ResetSelection(_chunks)">Select all</button></div>
-	<div><button class="btn btn-gray" @onclick="() => ResetSelection(Enumerable.Empty<ModBinaryChunk>())">Deselect all</button></div>
-	<div><button class="btn btn-gray" @onclick="() => ResetSelection(_chunks.Where(c => _prohibited[c]))">Select prohibited</button></div>
-	<div><button class="btn btn-gray" @onclick="() => ResetSelection(_chunks.Where(c => !_prohibited[c]))">Select unprohibited</button></div>
-	<div><button class="btn btn-gray" @onclick="InvertSelection">Invert selection</button></div>
-</div>
-
-<div class="grid gap-x-2 grid-cols-4 px-1">
-	<div class="font-bold"><a class="link" @onclick="() => Sort(c => c.AssetType)">Type</a></div>
-	<div class="font-bold"><a class="link" @onclick="() => Sort(c => c.Name)">Name</a></div>
-	<div class="font-bold"><a class="link" @onclick="() => Sort(c => _prohibited[c])">Prohibited</a></div>
-	<div class="font-bold text-right"><a class="link" @onclick="() => Sort(c => c.Size)">Size</a></div>
-</div>
-@foreach (ModBinaryChunk chunk in _chunks)
+@if (AddingNewAsset)
 {
-	<div class="grid gap-x-2 grid-cols-4 px-1 cursor-pointer @GetColor(chunk.AssetType) @(_selectedChunks.Contains(chunk) ? "font-bold bg-opacity-30" : "bg-opacity-10") hover:bg-opacity-50" @onclick="() => ToggleSelection(chunk)">
-		<div>@chunk.AssetType.ToDisplayString()</div>
-		<div>@chunk.Name</div>
-		<div>@(_prohibited[chunk] ? "Prohibited" : null)</div>
-		<div class="text-right">@chunk.Size.ToString("N0") bytes</div>
+	<CascadingValue Value="this">
+		<AddAsset />
+	</CascadingValue>
+}
+else
+{
+	<div><button class="btn btn-green" @onclick="() => AddingNewAsset = true">Add new asset</button></div>
+
+	<div class="grid gap-1 grid-cols-2 bg-gray-1 p-1">
+		@{
+			string text = _selectedChunks.Count == 1 ? "asset" : "assets";
+		}
+
+		<div><button class="btn btn-green" @onclick="ExtractChunks">Extract @_selectedChunks.Count @text</button></div>
+		<div><button class="btn btn-red" @onclick="DeleteChunks">Delete @_selectedChunks.Count @text</button></div>
+		<div><button class="btn btn-green" @onclick="EnableChunks">Enable @_selectedChunks.Count @text</button></div>
+		<div><button class="btn btn-orange" @onclick="DisableChunks">Disable @_selectedChunks.Count @text</button></div>
 	</div>
+
+	<div class="grid gap-1 grid-cols-2 bg-gray-1 p-1">
+		<div><button class="btn btn-gray" @onclick="() => ResetSelection(_chunks)">Select all</button></div>
+		<div><button class="btn btn-gray" @onclick="() => ResetSelection(Enumerable.Empty<ModBinaryChunk>())">Deselect all</button></div>
+		<div><button class="btn btn-gray" @onclick="() => ResetSelection(_chunks.Where(c => _prohibited[c]))">Select prohibited</button></div>
+		<div><button class="btn btn-gray" @onclick="InvertSelection">Invert selection</button></div>
+	</div>
+
+	<div class="grid gap-x-2 grid-cols-4 px-1">
+		<div class="font-bold"><a class="link" @onclick="() => Sort(c => c.AssetType)">Type</a></div>
+		<div class="font-bold"><a class="link" @onclick="() => Sort(c => c.Name)">Name</a></div>
+		<div class="font-bold"><a class="link" @onclick="() => Sort(c => _prohibited[c])">Prohibited</a></div>
+		<div class="font-bold text-right"><a class="link" @onclick="() => Sort(c => c.Size)">Size</a></div>
+	</div>
+	@foreach (ModBinaryChunk chunk in _chunks)
+	{
+		<div class="grid gap-x-2 grid-cols-4 px-1 cursor-pointer @GetColor(chunk.AssetType) @(_selectedChunks.Contains(chunk) ? "font-bold bg-opacity-30" : "bg-opacity-10") hover:bg-opacity-50" @onclick="() => ToggleSelection(chunk)">
+			<div>@chunk.AssetType.ToDisplayString()</div>
+			<div>@chunk.Name</div>
+			<div>@(_prohibited[chunk] ? "Prohibited" : null)</div>
+			<div class="text-right">@chunk.Size.ToString("N0") bytes</div>
+		</div>
+	}
 }

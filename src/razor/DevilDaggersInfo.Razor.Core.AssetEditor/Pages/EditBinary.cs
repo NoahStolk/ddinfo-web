@@ -25,13 +25,14 @@ public partial class EditBinary
 	{
 		_binary = null;
 
-		IFileSystemService.FileResult? fileResult = FileSystemService.Open();
+		IFileSystemService.FileResult? fileResult = FileSystemService.Open(string.Empty);
 		if (fileResult == null)
 			return;
 
+		_binaryName = Path.GetFileName(fileResult.Path);
+
 		try
 		{
-			_binaryName = Path.GetFileName(fileResult.Path);
 			_binary = new(fileResult.Contents, ModBinaryReadComprehensiveness.All);
 		}
 		catch (Exception ex)
