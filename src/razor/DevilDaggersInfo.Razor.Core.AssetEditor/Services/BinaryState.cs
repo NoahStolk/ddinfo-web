@@ -6,7 +6,7 @@ using DevilDaggersInfo.Core.Mod;
 using DevilDaggersInfo.Core.Mod.Enums;
 using System.Runtime.CompilerServices;
 
-namespace DevilDaggersInfo.Razor.Core.AssetEditor.State;
+namespace DevilDaggersInfo.Razor.Core.AssetEditor.Services;
 
 public class BinaryState
 {
