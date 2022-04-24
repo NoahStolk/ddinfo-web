@@ -37,7 +37,7 @@ module.exports = {
 			gridTemplateColumns: {
 			},
 			maxHeight: {
-				'screen-half': '50vh',
+				'screen-35': '35vh',
 			},
 			spacing: {
 				'128': '32rem',

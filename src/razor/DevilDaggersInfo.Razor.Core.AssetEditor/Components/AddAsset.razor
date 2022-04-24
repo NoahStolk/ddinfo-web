@@ -7,8 +7,9 @@
 
 @if (_selectedAssetType.HasValue)
 {
-	<div class="max-h-screen-half overflow-y-scroll">
-		@foreach (AssetData asset in AssetContainer.GetAll(_selectedAssetType.Value))
+	<input type="text" class="input-text" @bind-value="_assetNameSearch" @bind-value:event="oninput" />
+	<div class="max-h-screen-35 overflow-y-scroll">
+		@foreach (AssetData asset in GetFilteredAssets())
 		{
 			<div class="bg-opacity-10 hover:bg-opacity-50 @(asset.AssetName == _selectedAssetName ? "font-bold bg-opacity-30" : null) @(BinaryEditor.GetColor(_selectedAssetType.Value)) grid gap-x-2 grid-cols-2 px-1 cursor-pointer" @onclick="() => Select(asset.AssetName)">
 				<div>@asset.AssetName</div>

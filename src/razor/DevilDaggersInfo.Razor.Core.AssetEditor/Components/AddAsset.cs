@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Core.Asset;
 using DevilDaggersInfo.Core.Asset.Enums;
 using DevilDaggersInfo.Core.Mod;
 using DevilDaggersInfo.Razor.Core.AssetEditor.Services;
@@ -7,6 +8,8 @@ namespace DevilDaggersInfo.Razor.Core.AssetEditor.Components;
 
 public partial class AddAsset
 {
+	private string? _assetNameSearch;
+
 	private string? _selectedAssetName;
 	private AssetType? _selectedAssetType;
 	private byte[]? _selectedAssetData;
@@ -19,6 +22,18 @@ public partial class AddAsset
 
 	[Inject]
 	public IFileSystemService FileSystemService { get; set; } = null!;
+
+	private IEnumerable<DevilDaggersInfo.Core.Asset.AssetData> GetFilteredAssets()
+	{
+		if (!_selectedAssetType.HasValue)
+			return Enumerable.Empty<DevilDaggersInfo.Core.Asset.AssetData>();
+
+		List<DevilDaggersInfo.Core.Asset.AssetData> data = AssetContainer.GetAll(_selectedAssetType.Value);
+		if (_assetNameSearch == null)
+			return data;
+
+		return data.Where(a => a.AssetName.Contains(_assetNameSearch));
+	}
 
 	private void Open(AssetType assetType)
 	{
