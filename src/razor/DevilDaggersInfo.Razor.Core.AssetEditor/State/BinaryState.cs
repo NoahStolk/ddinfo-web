@@ -4,7 +4,6 @@ using DevilDaggersInfo.Core.Asset.Enums;
 using DevilDaggersInfo.Core.Asset.Extensions;
 using DevilDaggersInfo.Core.Mod;
 using DevilDaggersInfo.Core.Mod.Enums;
-using DevilDaggersInfo.Razor.Core.AssetEditor.Services;
 using System.Runtime.CompilerServices;
 
 namespace DevilDaggersInfo.Razor.Core.AssetEditor.State;
@@ -99,13 +98,13 @@ public class BinaryState
 	public void EnableChunks()
 	{
 		foreach (ModBinaryChunk chunk in _selectedChunks)
-			chunk.Enable();
+			Binary.EnableAsset(chunk.Name, chunk.AssetType);
 	}
 
 	public void DisableChunks()
 	{
 		foreach (ModBinaryChunk chunk in _selectedChunks)
-			chunk.Disable();
+			Binary.DisableAsset(chunk.Name, chunk.AssetType);
 	}
 
 	public void Sort<TKey>(Func<ModBinaryChunk, TKey> sorting, [CallerArgumentExpression("sorting")] string sortingExpression = "")
