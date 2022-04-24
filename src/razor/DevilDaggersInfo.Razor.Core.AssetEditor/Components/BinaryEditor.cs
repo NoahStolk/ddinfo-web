@@ -32,6 +32,10 @@ public partial class BinaryEditor
 		}
 	}
 
+	public bool IsEmpty => _chunks.Count == 0;
+
+	public bool IsSelectionEmpty => _selectedChunks.Count == 0;
+
 	[Parameter]
 	[EditorRequired]
 	public string? BinaryName { get; set; }

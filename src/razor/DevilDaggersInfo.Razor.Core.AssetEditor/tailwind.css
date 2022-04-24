@@ -11,12 +11,28 @@
 }
 
 @layer components {
+	h1 {
+		@apply text-2xl pt-2 pb-1;
+	}
+
+	h2 {
+		@apply text-xl pt-2 pb-1;
+	}
+
+	h3 {
+		@apply text-lg pt-2 pb-1;
+	}
+
+	p {
+		@apply my-2;
+	}
+
 	.link {
 		@apply text-color-link hover:text-color-link-hover cursor-pointer;
 	}
 
-	.para {
-		@apply my-3;
+	.btn-disabled {
+		@apply bg-gray-3 hover:bg-gray-3 text-gray-9;
 	}
 
 	.btn {

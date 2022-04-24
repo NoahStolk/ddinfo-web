@@ -1,6 +1,8 @@
 @page "/"
 @using DevilDaggersInfo.Core.Mod.Enums
 
+<h1>Editor</h1>
+
 <button class="btn btn-gray w-32 pb-1" @onclick="() => NewBinary(ModBinaryType.Audio)">New 'audio'</button>
 <button class="btn btn-gray w-32 pb-1" @onclick="() => NewBinary(ModBinaryType.Dd)">New 'dd'</button>
 <button class="btn btn-gray w-32 pb-1" @onclick="OpenBinary">Open</button>
@@ -8,7 +10,7 @@
 
 @if (_binary == null)
 {
-	<p class="para">No binary opened. Create a new binary or open an existing one to get started.</p>
+	<p>No binary opened. Create a new binary or open an existing one to get started.</p>
 }
 else
 {
