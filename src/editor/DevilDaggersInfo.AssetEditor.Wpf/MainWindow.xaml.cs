@@ -19,5 +19,7 @@ public partial class MainWindow : Window
 		InitializeComponent();
 
 		Title = $"Devil Daggers Asset Editor {AssemblyUtils.Version}";
+		Width = SystemParameters.WorkArea.Width * 0.6;
+		Height = SystemParameters.WorkArea.Height * 0.6;
 	}
 }

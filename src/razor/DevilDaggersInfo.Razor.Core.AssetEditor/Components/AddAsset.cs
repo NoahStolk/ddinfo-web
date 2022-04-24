@@ -1,6 +1,7 @@
 using DevilDaggersInfo.Core.Asset;
 using DevilDaggersInfo.Core.Asset.Enums;
 using DevilDaggersInfo.Core.Mod;
+using DevilDaggersInfo.Core.Mod.Enums;
 using DevilDaggersInfo.Razor.Core.AssetEditor.Services;
 using Microsoft.AspNetCore.Components;
 
@@ -12,6 +13,8 @@ public partial class AddAsset
 
 	private string? _selectedAssetName;
 	private AssetType? _selectedAssetType;
+
+	private string? _selectedFileName;
 	private byte[]? _selectedAssetData;
 
 	[CascadingParameter]
@@ -23,6 +26,14 @@ public partial class AddAsset
 	[Inject]
 	public IFileSystemService FileSystemService { get; set; } = null!;
 
+	protected override void OnParametersSet()
+	{
+		if (Editor.Binary.ModBinaryType == ModBinaryType.Audio)
+			_selectedAssetType = AssetType.Audio;
+		else
+			_selectedAssetType = null;
+	}
+
 	private IEnumerable<AssetInfo> GetFilteredAssets()
 	{
 		if (!_selectedAssetType.HasValue)
@@ -33,6 +44,15 @@ public partial class AddAsset
 			return data;
 
 		return data.Where(a => a.AssetName.Contains(_assetNameSearch));
+	}
+
+	private void SelectAssetType(AssetType assetType)
+	{
+		_selectedAssetType = assetType;
+		_selectedAssetName = null;
+
+		_selectedFileName = null;
+		_selectedAssetData = null;
 	}
 
 	private void Open(AssetType assetType)
@@ -48,6 +68,8 @@ public partial class AddAsset
 			return;
 
 		_selectedAssetType = assetType;
+
+		_selectedFileName = Path.GetFileName(fileResult.Path);
 		_selectedAssetData = fileResult.Contents;
 	}
 

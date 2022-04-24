@@ -31,12 +31,16 @@
 		@apply text-color-link hover:text-color-link-hover cursor-pointer;
 	}
 
-	.btn-disabled {
-		@apply bg-gray-3 hover:bg-gray-3 text-gray-9;
-	}
-
 	.btn {
 		@apply text-left px-1;
+	}
+
+	.btn-large {
+		@apply text-lg text-center;
+	}
+
+	.btn-disabled {
+		@apply bg-gray-3 hover:bg-gray-3 text-gray-9;
 	}
 
 	.btn-gray {

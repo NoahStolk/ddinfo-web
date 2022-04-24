@@ -37,9 +37,10 @@ module.exports = {
 			fontFamily: {
 				'calibri': ['calibri', 'sans-serif'],
 			},
-			gridTemplateColumns: {
-			},
 			maxHeight: {
+				'screen-35': '35vh',
+			},
+			height: {
 				'screen-35': '35vh',
 			},
 			spacing: {

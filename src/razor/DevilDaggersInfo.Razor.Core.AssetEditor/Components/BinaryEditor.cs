@@ -137,14 +137,18 @@ public partial class BinaryEditor
 			chunk.Disable();
 	}
 
-	public static string GetColor(AssetType assetType) => assetType switch
+	public static string GetBgColor(AssetType assetType) => $"bg-{GetColor(assetType)}";
+
+	public static string GetTextColor(AssetType assetType) => $"text-{GetColor(assetType)}";
+
+	private static string GetColor(AssetType assetType) => assetType switch
 	{
-		AssetType.Audio => "bg-audio",
-		AssetType.ObjectBinding => "bg-object-binding",
-		AssetType.Shader => "bg-shader",
-		AssetType.Texture => "bg-texture",
-		AssetType.Mesh => "bg-mesh",
-		_ => "bg-black",
+		AssetType.Audio => "audio",
+		AssetType.ObjectBinding => "object-binding",
+		AssetType.Shader => "shader",
+		AssetType.Texture => "texture",
+		AssetType.Mesh => "mesh",
+		_ => "black",
 	};
 
 	private void Sort<TKey>(Func<ModBinaryChunk, TKey> sorting, [CallerArgumentExpression("sorting")] string sortingExpression = "")

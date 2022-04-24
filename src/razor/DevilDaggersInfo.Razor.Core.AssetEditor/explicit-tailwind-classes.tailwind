@@ -3,3 +3,8 @@ bg-mesh
 bg-object-binding
 bg-shader
 bg-texture
+text-audio
+text-mesh
+text-object-binding
+text-shader
+text-texture

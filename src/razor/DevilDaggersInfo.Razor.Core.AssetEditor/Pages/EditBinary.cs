@@ -23,12 +23,11 @@ public partial class EditBinary
 
 	public void OpenBinary()
 	{
-		_binary = null;
-
 		IFileSystemService.FileResult? fileResult = FileSystemService.Open(string.Empty);
 		if (fileResult == null)
 			return;
 
+		_binary = null;
 		_binaryName = Path.GetFileName(fileResult.Path);
 
 		try

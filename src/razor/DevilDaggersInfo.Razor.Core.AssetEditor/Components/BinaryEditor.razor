@@ -1,21 +1,6 @@
 @using DevilDaggersInfo.Core.Asset
 @using DevilDaggersInfo.Core.Mod
 
-<h2>Binary</h2>
-
-<div class="grid gap-x-2 grid-cols-2 max-w-md">
-	<div>Type</div>
-	<div>@Binary.ModBinaryType.ToString().ToLower()</div>
-	<div>Name</div>
-	<div>@BinaryName</div>
-	<div>Chunk count</div>
-	<div>@Binary.Chunks.Count</div>
-	<div>Asset count</div>
-	<div>@Binary.AssetMap.Count</div>
-</div>
-
-<h2>Assets</h2>
-
 @if (AddingNewAsset)
 {
 	<CascadingValue Value="this">
@@ -24,7 +9,22 @@
 }
 else
 {
-	<div><button class="btn btn-green" @onclick="() => AddingNewAsset = true">Add new asset</button></div>
+	<h2>Binary</h2>
+
+	<div class="grid gap-x-2 grid-cols-2 max-w-md">
+		<div>Type</div>
+		<div>@Binary.ModBinaryType.ToString().ToLower()</div>
+		<div>Name</div>
+		<div>@BinaryName</div>
+		<div>Chunk count</div>
+		<div>@Binary.Chunks.Count</div>
+		<div>Asset count</div>
+		<div>@Binary.AssetMap.Count</div>
+	</div>
+
+	<h2>Assets</h2>
+
+	<div><button class="btn btn-green btn-large w-32 h-8" @onclick="() => AddingNewAsset = true">Add new asset</button></div>
 
 	string? disabledClass = IsEmpty ? "btn-disabled" : null;
 
@@ -62,7 +62,7 @@ else
 		</div>
 		@foreach (ModBinaryChunk chunk in _chunks)
 		{
-			<div class="grid gap-x-2 grid-cols-4 px-1 cursor-pointer @GetColor(chunk.AssetType) @(_selectedChunks.Contains(chunk) ? "font-bold bg-opacity-30" : "bg-opacity-10") hover:bg-opacity-50" @onclick="() => ToggleSelection(chunk)">
+			<div class="grid gap-x-2 grid-cols-4 px-1 cursor-pointer @GetBgColor(chunk.AssetType) @(_selectedChunks.Contains(chunk) ? "font-bold bg-opacity-30" : "bg-opacity-10") hover:bg-opacity-50" @onclick="() => ToggleSelection(chunk)">
 				<div>@chunk.AssetType.ToDisplayString()</div>
 				<div>@chunk.Name</div>
 				<div>@(_prohibited[chunk] ? "Prohibited" : null)</div>
