@@ -23,12 +23,12 @@ public partial class AddAsset
 	[Inject]
 	public IFileSystemService FileSystemService { get; set; } = null!;
 
-	private IEnumerable<DevilDaggersInfo.Core.Asset.AssetData> GetFilteredAssets()
+	private IEnumerable<AssetInfo> GetFilteredAssets()
 	{
 		if (!_selectedAssetType.HasValue)
-			return Enumerable.Empty<DevilDaggersInfo.Core.Asset.AssetData>();
+			return Enumerable.Empty<AssetInfo>();
 
-		List<DevilDaggersInfo.Core.Asset.AssetData> data = AssetContainer.GetAll(_selectedAssetType.Value);
+		List<AssetInfo> data = AssetContainer.GetAll(_selectedAssetType.Value);
 		if (_assetNameSearch == null)
 			return data;
 

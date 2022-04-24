@@ -47,7 +47,7 @@ public static class {_className}
 			_ => throw new NotSupportedException(),
 		};
 
-		string assetTypeName = $"{assetType}AssetData";
+		string assetTypeName = $"{assetType}AssetInfo";
 
 		string[] lines = fileContents.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
 		string[] fieldLines = new string[lines.Length];

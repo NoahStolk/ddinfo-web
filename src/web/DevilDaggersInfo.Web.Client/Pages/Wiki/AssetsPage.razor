@@ -16,7 +16,7 @@
 	<div><a href="" @onclick:preventDefault class="link text-left" @onclick="() => Sort(ref _audioAudio, _audioAudioSortings, (aad) => aad.IsProhibited)">Prohibited</a></div>
 	<div><a href="" @onclick:preventDefault class="link text-left" @onclick="() => Sort(ref _audioAudio, _audioAudioSortings, (aad) => aad.DefaultLoudness)">Loudness</a></div>
 </div>
-@foreach (AudioAssetData audio in _audioAudio)
+@foreach (AudioAssetInfo audio in _audioAudio)
 {
 	<div class="grid gap-3 grid-cols-3 odd:bg-gray-2">
 		<div class="break-all">@audio.AssetName</div>
@@ -32,7 +32,7 @@
 	<div><a href="" @onclick:preventDefault class="link text-left" @onclick="() => Sort(ref _ddMeshes, _ddMeshesSortings, (mad) => mad.DefaultIndexCount)">Indices</a></div>
 	<div><a href="" @onclick:preventDefault class="link text-left" @onclick="() => Sort(ref _ddMeshes, _ddMeshesSortings, (mad) => mad.DefaultVertexCount)">Vertices</a></div>
 </div>
-@foreach (MeshAssetData mesh in _ddMeshes)
+@foreach (MeshAssetInfo mesh in _ddMeshes)
 {
 	<div class="grid gap-3 grid-cols-4 odd:bg-gray-2">
 		<div class="break-all">@mesh.AssetName</div>
@@ -47,7 +47,7 @@
 	<div><a href="" @onclick:preventDefault class="link text-left" @onclick="() => Sort(ref _ddObjectBindings, _ddObjectBindingsSortings, (mbad) => mbad.AssetName)">Asset</a></div>
 	<div><a href="" @onclick:preventDefault class="link text-left" @onclick="() => Sort(ref _ddObjectBindings, _ddObjectBindingsSortings, (mbad) => mbad.IsProhibited)">Prohibited</a></div>
 </div>
-@foreach (ObjectBindingAssetData objectBinding in _ddObjectBindings)
+@foreach (ObjectBindingAssetInfo objectBinding in _ddObjectBindings)
 {
 	<div class="grid gap-3 grid-cols-2 odd:bg-gray-2">
 		<div class="break-all">@objectBinding.AssetName</div>
@@ -60,7 +60,7 @@
 	<div><a href="" @onclick:preventDefault class="link text-left" @onclick="() => Sort(ref _coreShaders, _coreShadersSortings, (sad) => sad.AssetName)">Asset</a></div>
 	<div><a href="" @onclick:preventDefault class="link text-left" @onclick="() => Sort(ref _coreShaders, _coreShadersSortings, (sad) => sad.IsProhibited)">Prohibited</a></div>
 </div>
-@foreach (ShaderAssetData shader in _coreShaders)
+@foreach (ShaderAssetInfo shader in _coreShaders)
 {
 	<div class="grid gap-3 grid-cols-2 odd:bg-gray-2">
 		<div class="break-all">@shader.AssetName</div>
@@ -73,7 +73,7 @@
 	<div><a href="" @onclick:preventDefault class="link text-left" @onclick="() => Sort(ref _ddShaders, _ddShadersSortings, (sad) => sad.AssetName)">Asset</a></div>
 	<div><a href="" @onclick:preventDefault class="link text-left" @onclick="() => Sort(ref _ddShaders, _ddShadersSortings, (sad) => sad.IsProhibited)">Prohibited</a></div>
 </div>
-@foreach (ShaderAssetData shader in _ddShaders)
+@foreach (ShaderAssetInfo shader in _ddShaders)
 {
 	<div class="grid gap-3 grid-cols-2 odd:bg-gray-2">
 		<div class="break-all">@shader.AssetName</div>
@@ -90,7 +90,7 @@
 	<div><a href="" @onclick:preventDefault class="link text-left" @onclick="() => Sort(ref _ddTextures, _ddTexturesSortings, (tad) => tad.IsTextureForMesh)">For mesh</a></div>
 	<div><a href="" @onclick:preventDefault class="link text-left" @onclick="() => Sort(ref _ddTextures, _ddTexturesSortings, (tad) => tad.ObjectBinding)">Object binding</a></div>
 </div>
-@foreach (TextureAssetData texture in _ddTextures)
+@foreach (TextureAssetInfo texture in _ddTextures)
 {
 	<div class="grid gap-3 grid-cols-6 odd:bg-gray-2">
 		<div class="break-all">@texture.AssetName</div>
@@ -104,12 +104,12 @@
 
 @code
 {
-	private List<AudioAssetData> _audioAudio = AudioAudio.All;
-	private List<MeshAssetData> _ddMeshes = DdMeshes.All;
-	private List<ObjectBindingAssetData> _ddObjectBindings = DdObjectBindings.All;
-	private List<ShaderAssetData> _coreShaders = CoreShaders.All;
-	private List<ShaderAssetData> _ddShaders = DdShaders.All;
-	private List<TextureAssetData> _ddTextures = DdTextures.All;
+	private List<AudioAssetInfo> _audioAudio = AudioAudio.All;
+	private List<MeshAssetInfo> _ddMeshes = DdMeshes.All;
+	private List<ObjectBindingAssetInfo> _ddObjectBindings = DdObjectBindings.All;
+	private List<ShaderAssetInfo> _coreShaders = CoreShaders.All;
+	private List<ShaderAssetInfo> _ddShaders = DdShaders.All;
+	private List<TextureAssetInfo> _ddTextures = DdTextures.All;
 	
 	private Dictionary<string, bool> _audioAudioSortings = new();
 	private Dictionary<string, bool> _ddMeshesSortings = new();

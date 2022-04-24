@@ -2,13 +2,13 @@ namespace DevilDaggersInfo.Core.Asset;
 
 public static class AssetContainer
 {
-	public static List<AssetData> GetAll(AssetType assetType) => assetType switch
+	public static List<AssetInfo> GetAll(AssetType assetType) => assetType switch
 	{
-		AssetType.Audio => AudioAudio.All.Cast<AssetData>().ToList(),
-		AssetType.ObjectBinding => DdObjectBindings.All.Cast<AssetData>().ToList(),
-		AssetType.Mesh => DdMeshes.All.Cast<AssetData>().ToList(),
-		AssetType.Shader => DdShaders.All.Cast<AssetData>().ToList(),
-		AssetType.Texture => DdTextures.All.Cast<AssetData>().ToList(),
+		AssetType.Audio => AudioAudio.All.Cast<AssetInfo>().ToList(),
+		AssetType.ObjectBinding => DdObjectBindings.All.Cast<AssetInfo>().ToList(),
+		AssetType.Mesh => DdMeshes.All.Cast<AssetInfo>().ToList(),
+		AssetType.Shader => DdShaders.All.Cast<AssetInfo>().ToList(),
+		AssetType.Texture => DdTextures.All.Cast<AssetInfo>().ToList(),
 		_ => throw new NotSupportedException($"Asset type '{assetType}' is not supported."),
 	};
 

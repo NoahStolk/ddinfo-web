@@ -1,8 +1,8 @@
 namespace DevilDaggersInfo.Core.Asset;
 
-public class ObjectBindingAssetData : AssetData
+public class ObjectBindingAssetInfo : AssetInfo
 {
-	public ObjectBindingAssetData(string assetName, bool isProhibited)
+	public ObjectBindingAssetInfo(string assetName, bool isProhibited)
 		: base(assetName, isProhibited)
 	{
 	}

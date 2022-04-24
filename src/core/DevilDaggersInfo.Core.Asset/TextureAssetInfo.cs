@@ -1,8 +1,8 @@
 namespace DevilDaggersInfo.Core.Asset;
 
-public class TextureAssetData : AssetData
+public class TextureAssetInfo : AssetInfo
 {
-	public TextureAssetData(string assetName, bool isProhibited, int defaultWidth, int defaultHeight, bool isTextureForMesh, string? objectBinding)
+	public TextureAssetInfo(string assetName, bool isProhibited, int defaultWidth, int defaultHeight, bool isTextureForMesh, string? objectBinding)
 		: base(assetName, isProhibited)
 	{
 		DefaultWidth = defaultWidth;

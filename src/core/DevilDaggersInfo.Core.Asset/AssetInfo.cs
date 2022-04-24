@@ -1,8 +1,8 @@
 namespace DevilDaggersInfo.Core.Asset;
 
-public abstract class AssetData
+public abstract class AssetInfo
 {
-	protected AssetData(string assetName, bool isProhibited)
+	protected AssetInfo(string assetName, bool isProhibited)
 	{
 		AssetName = assetName;
 		IsProhibited = isProhibited;

@@ -1,8 +1,8 @@
 namespace DevilDaggersInfo.Core.Asset;
 
-public class ShaderAssetData : AssetData
+public class ShaderAssetInfo : AssetInfo
 {
-	public ShaderAssetData(string assetName, bool isProhibited)
+	public ShaderAssetInfo(string assetName, bool isProhibited)
 		: base(assetName, isProhibited)
 	{
 	}

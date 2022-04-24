@@ -1,8 +1,8 @@
 namespace DevilDaggersInfo.Core.Asset;
 
-public class MeshAssetData : AssetData
+public class MeshAssetInfo : AssetInfo
 {
-	public MeshAssetData(string assetName, bool isProhibited, int defaultIndexCount, int defaultVertexCount)
+	public MeshAssetInfo(string assetName, bool isProhibited, int defaultIndexCount, int defaultVertexCount)
 		: base(assetName, isProhibited)
 	{
 		DefaultIndexCount = defaultIndexCount;
