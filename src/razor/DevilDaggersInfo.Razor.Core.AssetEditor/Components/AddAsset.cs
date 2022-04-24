@@ -83,9 +83,12 @@ public partial class AddAsset
 		_selectedAssetName = assetName;
 	}
 
-	private void WriteToBinary()
+	private async Task WriteToBinaryAsync()
 	{
+		await Task.Yield();
+
 		_writing = true;
+		StateHasChanged();
 
 		if (_selectedAssetName == null || !_selectedAssetType.HasValue || _selectedAssetData == null)
 		{
