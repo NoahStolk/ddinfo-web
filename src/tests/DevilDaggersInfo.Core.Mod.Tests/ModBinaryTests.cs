@@ -54,4 +54,20 @@ public class ModBinaryTests
 			Assert.AreEqual(sizes[i], chunk.Size);
 		}
 	}
+
+	[TestMethod]
+	public void ValidateAssetTypes()
+	{
+		Assert.IsTrue(ModBinary.IsAssetTypeValid(ModBinaryType.Audio, AssetType.Audio));
+		Assert.IsFalse(ModBinary.IsAssetTypeValid(ModBinaryType.Audio, AssetType.Mesh));
+		Assert.IsFalse(ModBinary.IsAssetTypeValid(ModBinaryType.Audio, AssetType.ObjectBinding));
+		Assert.IsFalse(ModBinary.IsAssetTypeValid(ModBinaryType.Audio, AssetType.Shader));
+		Assert.IsFalse(ModBinary.IsAssetTypeValid(ModBinaryType.Audio, AssetType.Texture));
+
+		Assert.IsFalse(ModBinary.IsAssetTypeValid(ModBinaryType.Dd, AssetType.Audio));
+		Assert.IsTrue(ModBinary.IsAssetTypeValid(ModBinaryType.Dd, AssetType.Mesh));
+		Assert.IsTrue(ModBinary.IsAssetTypeValid(ModBinaryType.Dd, AssetType.ObjectBinding));
+		Assert.IsTrue(ModBinary.IsAssetTypeValid(ModBinaryType.Dd, AssetType.Shader));
+		Assert.IsTrue(ModBinary.IsAssetTypeValid(ModBinaryType.Dd, AssetType.Texture));
+	}
 }

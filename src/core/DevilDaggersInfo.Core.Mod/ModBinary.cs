@@ -50,8 +50,8 @@ public class ModBinary
 
 			if (!modBinaryType.HasValue)
 				modBinaryType = assetType == AssetType.Audio ? ModBinaryType.Audio : ModBinaryType.Dd;
-			else
-				ValidateAssetType(modBinaryType.Value, assetType.Value);
+			else if (!IsAssetTypeValid(modBinaryType.Value, assetType.Value))
+				throw new InvalidModBinaryException($"Asset type '{assetType}' is not compatible with binary type '{modBinaryType}'.");
 		}
 
 		// Read assets.
@@ -106,7 +106,8 @@ public class ModBinary
 		if (_readComprehensiveness != ModBinaryReadComprehensiveness.All)
 			throw new InvalidOperationException("This mod binary has not been opened for full reading comprehensiveness. Cannot add assets.");
 
-		ValidateAssetType(ModBinaryType, assetType);
+		if (!IsAssetTypeValid(ModBinaryType, assetType))
+			throw new InvalidModBinaryException($"Asset type '{assetType}' is not compatible with binary type '{ModBinaryType}'.");
 
 		AssetMap.Add(new(assetType, assetName), AssetConverter.Compile(assetType, fileContents));
 
@@ -161,12 +162,9 @@ public class ModBinary
 		AssetMap[new(assetType, chunk.Name)] = data;
 	}
 
-	private static void ValidateAssetType(ModBinaryType modBinaryType, AssetType assetType)
+	public static bool IsAssetTypeValid(ModBinaryType modBinaryType, AssetType assetType)
 	{
-		if (assetType == AssetType.Audio && modBinaryType != ModBinaryType.Audio)
-			throw new InvalidModCompilationException($"Cannot add an audio asset to a mod of type '{modBinaryType}'.");
-		if (assetType != AssetType.Audio && modBinaryType == ModBinaryType.Audio)
-			throw new InvalidModCompilationException("Cannot add a non-audio asset to an audio mod.");
+		return assetType == AssetType.Audio && modBinaryType == ModBinaryType.Audio || assetType != AssetType.Audio && modBinaryType != ModBinaryType.Audio;
 	}
 
 	public void ExtractAssets(string outputDirectory)
