@@ -5,7 +5,6 @@ using DevilDaggersInfo.Core.Asset.Extensions;
 using DevilDaggersInfo.Core.Mod;
 using DevilDaggersInfo.Core.Mod.Enums;
 using DevilDaggersInfo.Razor.Core.AssetEditor.Services;
-using Microsoft.AspNetCore.Components;
 using System.Runtime.CompilerServices;
 
 namespace DevilDaggersInfo.Razor.Core.AssetEditor.State;
@@ -29,12 +28,6 @@ public class BinaryState
 	public ModBinary Binary { get; private set; } = new(ModBinaryType.Audio);
 
 	public string BinaryName { get; set; } = "(Untitled)";
-
-	[Inject]
-	public IErrorReporter ErrorReporter { get; set; } = null!;
-
-	[Inject]
-	public IFileSystemService FileSystemService { get; set; } = null!;
 
 	public void SetBinary(ModBinary binary)
 	{
@@ -93,26 +86,12 @@ public class BinaryState
 		RebuildChunkVisualization();
 	}
 
-	public void ExtractChunks()
+	public void ExtractChunks(string directory)
 	{
-		string? directory = FileSystemService.SelectDirectory();
-		if (directory == null)
-			return;
-
 		foreach (ModBinaryChunk chunk in _selectedChunks)
 		{
 			string fileName = chunk.Name + chunk.AssetType.GetFileExtension();
-			byte[] extractedBuffer;
-			try
-			{
-				extractedBuffer = Binary.ExtractAsset(chunk.Name, chunk.AssetType);
-			}
-			catch (Exception ex)
-			{
-				ErrorReporter.ReportError(ex);
-				continue;
-			}
-
+			byte[] extractedBuffer = Binary.ExtractAsset(chunk.Name, chunk.AssetType);
 			File.WriteAllBytes(Path.Combine(directory, fileName), extractedBuffer);
 		}
 	}

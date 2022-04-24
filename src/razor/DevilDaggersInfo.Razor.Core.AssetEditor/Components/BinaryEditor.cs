@@ -1,5 +1,5 @@
-using DevilDaggersInfo.Core.Asset.Enums;
 using DevilDaggersInfo.Razor.Core.AssetEditor.Pages;
+using DevilDaggersInfo.Razor.Core.AssetEditor.Services;
 using DevilDaggersInfo.Razor.Core.AssetEditor.State;
 using Microsoft.AspNetCore.Components;
 
@@ -13,17 +13,25 @@ public partial class BinaryEditor
 	[Inject]
 	public BinaryState BinaryState { get; set; } = null!;
 
-	public static string GetBgColor(AssetType assetType) => $"bg-{GetColor(assetType)}";
+	[Inject]
+	public IErrorReporter ErrorReporter { get; set; } = null!;
 
-	public static string GetTextColor(AssetType assetType) => $"text-{GetColor(assetType)}";
+	[Inject]
+	public IFileSystemService FileSystemService { get; set; } = null!;
 
-	private static string GetColor(AssetType assetType) => assetType switch
+	public void ExtractChunks()
 	{
-		AssetType.Audio => "audio",
-		AssetType.ObjectBinding => "object-binding",
-		AssetType.Shader => "shader",
-		AssetType.Texture => "texture",
-		AssetType.Mesh => "mesh",
-		_ => "black",
-	};
+		string? directory = FileSystemService.SelectDirectory();
+		if (directory == null)
+			return;
+
+		try
+		{
+			BinaryState.ExtractChunks(directory);
+		}
+		catch (Exception ex)
+		{
+			ErrorReporter.ReportError(ex);
+		}
+	}
 }

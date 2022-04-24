@@ -1,5 +1,6 @@
 @using DevilDaggersInfo.Core.Asset
 @using DevilDaggersInfo.Core.Mod
+@using DevilDaggersInfo.Razor.Core.AssetEditor.Extensions
 
 <h2>Binary</h2>
 
@@ -24,7 +25,7 @@
 }
 
 <div class="grid gap-1 grid-cols-2 bg-gray-1 p-1">
-	<div><button class="btn @(BinaryState.IsSelectionEmpty ? "btn-disabled" : "btn-green")" disabled="@BinaryState.IsSelectionEmpty" @onclick="BinaryState.ExtractChunks">Extract @BinaryState.SelectedChunks.Count @selectedText</button></div>
+	<div><button class="btn @(BinaryState.IsSelectionEmpty ? "btn-disabled" : "btn-green")" disabled="@BinaryState.IsSelectionEmpty" @onclick="ExtractChunks">Extract @BinaryState.SelectedChunks.Count @selectedText</button></div>
 	<div><button class="btn @(BinaryState.IsSelectionEmpty ? "btn-disabled" : "btn-red")" disabled="@BinaryState.IsSelectionEmpty" @onclick="BinaryState.DeleteChunks">Delete @BinaryState.SelectedChunks.Count @selectedText</button></div>
 	<div><button class="btn @(BinaryState.IsSelectionEmpty ? "btn-disabled" : "btn-green")" disabled="@BinaryState.IsSelectionEmpty" @onclick="BinaryState.EnableChunks">Enable @BinaryState.SelectedChunks.Count @selectedText</button></div>
 	<div><button class="btn @(BinaryState.IsSelectionEmpty ? "btn-disabled" : "btn-orange")" disabled="@BinaryState.IsSelectionEmpty" @onclick="BinaryState.DisableChunks">Disable @BinaryState.SelectedChunks.Count @selectedText</button></div>
@@ -53,7 +54,7 @@ else
 	</div>
 	@foreach (ModBinaryChunk chunk in BinaryState.VisualChunks)
 	{
-		<div class="grid gap-x-2 grid-cols-4 px-1 cursor-pointer @GetBgColor(chunk.AssetType) @(BinaryState.SelectedChunks.Contains(chunk) ? "font-bold bg-opacity-30" : "bg-opacity-10") hover:bg-opacity-50" @onclick="() => BinaryState.ToggleSelection(chunk)">
+		<div class="grid gap-x-2 grid-cols-4 px-1 cursor-pointer @chunk.AssetType.GetBgColor() @(BinaryState.SelectedChunks.Contains(chunk) ? "font-bold bg-opacity-30" : "bg-opacity-10") hover:bg-opacity-50" @onclick="() => BinaryState.ToggleSelection(chunk)">
 			<div>@chunk.AssetType.ToDisplayString()</div>
 			<div>@chunk.Name</div>
 			<div>@(BinaryState.Prohibited[chunk] ? "Prohibited" : null)</div>

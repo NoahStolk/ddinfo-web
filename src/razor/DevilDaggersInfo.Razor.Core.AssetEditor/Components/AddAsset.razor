@@ -2,6 +2,7 @@
 @using DevilDaggersInfo.Core.Asset.Enums
 @using DevilDaggersInfo.Core.Mod
 @using DevilDaggersInfo.Core.Mod.Enums
+@using DevilDaggersInfo.Razor.Core.AssetEditor.Extensions
 
 <h1>Add new asset</h1>
 
@@ -15,8 +16,7 @@
 			if (!ModBinary.IsAssetTypeValid(ModBinaryType.Dd, assetType))
 				continue;
 
-			string bgColor = BinaryEditor.GetBgColor(assetType);
-			<div><button class="btn btn-large w-full h-16 bg-opacity-20 hover:bg-opacity-70 @(_selectedAssetType == assetType ? "bg-opacity-50" : null) @bgColor" @onclick="() => SelectAssetType(assetType)">@assetType.ToDisplayString()</button></div>
+			<div><button class="btn btn-large w-full h-16 bg-opacity-20 hover:bg-opacity-70 @(_selectedAssetType == assetType ? "bg-opacity-50" : null) @assetType.GetBgColor()" @onclick="() => SelectAssetType(assetType)">@assetType.ToDisplayString()</button></div>
 		}
 	</div>
 }
@@ -30,7 +30,7 @@
 	<div class="h-screen-35 max-h-screen-35 overflow-y-scroll mb-2">
 		@foreach (AssetInfo asset in GetFilteredAssets())
 		{
-			<div class="bg-opacity-10 hover:bg-opacity-50 @(asset.AssetName == _selectedAssetName ? "font-bold bg-opacity-30" : null) @(BinaryEditor.GetBgColor(_selectedAssetType.Value)) grid gap-x-2 grid-cols-2 px-1 cursor-pointer" @onclick="() => Select(asset.AssetName)">
+			<div class="bg-opacity-10 hover:bg-opacity-50 @(asset.AssetName == _selectedAssetName ? "font-bold bg-opacity-30" : null) @(_selectedAssetType.Value.GetBgColor()) grid gap-x-2 grid-cols-2 px-1 cursor-pointer" @onclick="() => Select(asset.AssetName)">
 				<div>@asset.AssetName</div>
 				<div>@(asset.IsProhibited ? "Prohibited" : null)</div>
 			</div>
@@ -50,12 +50,12 @@
 		}
 		else
 		{
-			<button class="btn btn-large w-32 h-8 bg-opacity-30 hover:bg-opacity-50 @BinaryEditor.GetBgColor(_selectedAssetType.Value)" @onclick="() => Open(_selectedAssetType.Value)">Select @(_selectedAssetType.Value.GetFileExtension()) file</button>
+			<button class="btn btn-large w-32 h-8 bg-opacity-30 hover:bg-opacity-50 @_selectedAssetType.Value.GetBgColor()" @onclick="() => Open(_selectedAssetType.Value)">Select @(_selectedAssetType.Value.GetFileExtension()) file</button>
 		}
 
 		if (_selectedFileName != null)
 		{
-			<p>@_selectedFileName will be assigned to <span class="@BinaryEditor.GetTextColor(_selectedAssetType.Value)">@(_selectedAssetName)</span>.</p>
+			<p>@_selectedFileName will be assigned to <span class="@_selectedAssetType.Value.GetTextColor()">@(_selectedAssetName)</span>.</p>
 			<button class="btn btn-green btn-large w-32 h-8" @onclick="WriteToBinary">Add to binary</button>
 		}
 	}
