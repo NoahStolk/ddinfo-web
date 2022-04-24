@@ -18,6 +18,7 @@ public partial class AddAsset
 	private string? _selectedFileName;
 	private byte[]? _selectedAssetData;
 
+	private bool _writing;
 	[CascadingParameter]
 	public EditBinary Page { get; set; } = null!;
 
@@ -84,6 +85,8 @@ public partial class AddAsset
 
 	private void WriteToBinary()
 	{
+		_writing = true;
+
 		if (_selectedAssetName == null || !_selectedAssetType.HasValue || _selectedAssetData == null)
 		{
 			ErrorReporter.ReportError("No asset was opened.");

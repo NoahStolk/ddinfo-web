@@ -56,7 +56,7 @@
 		if (_selectedFileName != null)
 		{
 			<p>@_selectedFileName will be assigned to <span class="@_selectedAssetType.Value.GetTextColor()">@(_selectedAssetName)</span>.</p>
-			<button class="btn btn-green btn-large w-32 h-8" @onclick="WriteToBinary">Add to binary</button>
+			<button class="btn @(_writing ? "btn-disabled" : "btn-green") btn-large w-32 h-8" disabled="@_writing" @onclick="WriteToBinary">Add to binary</button>
 		}
 	}
 }
