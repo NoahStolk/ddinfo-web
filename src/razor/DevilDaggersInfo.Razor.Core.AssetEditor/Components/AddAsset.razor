@@ -7,7 +7,7 @@
 
 <button class="btn btn-red btn-large w-32 h-8 mb-2" @onclick="Cancel">Cancel</button>
 
-@if (Editor.Binary.ModBinaryType == ModBinaryType.Dd)
+@if (BinaryState.Binary.ModBinaryType == ModBinaryType.Dd)
 {
 	<div class="grid gap-x-2 grid-cols-4">
 		@foreach (AssetType assetType in Enum.GetValues<AssetType>())

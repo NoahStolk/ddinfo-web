@@ -2,7 +2,9 @@ using DevilDaggersInfo.Core.Asset;
 using DevilDaggersInfo.Core.Asset.Enums;
 using DevilDaggersInfo.Core.Mod;
 using DevilDaggersInfo.Core.Mod.Enums;
+using DevilDaggersInfo.Razor.Core.AssetEditor.Pages;
 using DevilDaggersInfo.Razor.Core.AssetEditor.Services;
+using DevilDaggersInfo.Razor.Core.AssetEditor.State;
 using Microsoft.AspNetCore.Components;
 
 namespace DevilDaggersInfo.Razor.Core.AssetEditor.Components;
@@ -18,7 +20,7 @@ public partial class AddAsset
 	private byte[]? _selectedAssetData;
 
 	[CascadingParameter]
-	public BinaryEditor Editor { get; set; } = null!;
+	public EditBinary Page { get; set; } = null!;
 
 	[Inject]
 	public IErrorReporter ErrorReporter { get; set; } = null!;
@@ -26,9 +28,12 @@ public partial class AddAsset
 	[Inject]
 	public IFileSystemService FileSystemService { get; set; } = null!;
 
+	[Inject]
+	public BinaryState BinaryState { get; set; } = null!;
+
 	protected override void OnParametersSet()
 	{
-		if (Editor.Binary.ModBinaryType == ModBinaryType.Audio)
+		if (BinaryState.Binary.ModBinaryType == ModBinaryType.Audio)
 			_selectedAssetType = AssetType.Audio;
 		else
 			_selectedAssetType = null;
@@ -57,9 +62,9 @@ public partial class AddAsset
 
 	private void Open(AssetType assetType)
 	{
-		if (!ModBinary.IsAssetTypeValid(Editor.Binary.ModBinaryType, assetType))
+		if (!ModBinary.IsAssetTypeValid(BinaryState.Binary.ModBinaryType, assetType))
 		{
-			ErrorReporter.ReportError($"Asset type '{assetType}' is not compatible with binary type '{Editor.Binary.ModBinaryType}'.");
+			ErrorReporter.ReportError($"Asset type '{assetType}' is not compatible with binary type '{BinaryState.Binary.ModBinaryType}'.");
 			return;
 		}
 
@@ -86,7 +91,7 @@ public partial class AddAsset
 			return;
 		}
 
-		if (Editor.Binary.Chunks.Any(c => c.Name == _selectedAssetName && c.AssetType == _selectedAssetType.Value))
+		if (BinaryState.Binary.Chunks.Any(c => c.Name == _selectedAssetName && c.AssetType == _selectedAssetType.Value))
 		{
 			ErrorReporter.ReportError($"An asset of type '{_selectedAssetType.Value}' with name '{_selectedAssetName}' already exists in this binary.");
 			return;
@@ -94,18 +99,18 @@ public partial class AddAsset
 
 		try
 		{
-			Editor.Binary.AddAsset(_selectedAssetName, _selectedAssetType.Value, _selectedAssetData);
+			BinaryState.AddAsset(_selectedAssetName, _selectedAssetType.Value, _selectedAssetData);
 		}
 		catch (Exception ex)
 		{
 			ErrorReporter.ReportError(ex);
 		}
 
-		Editor.AddingNewAsset = false;
+		Page.AddingNewAsset = false;
 	}
 
 	private void Cancel()
 	{
-		Editor.AddingNewAsset = false;
+		Page.AddingNewAsset = false;
 	}
 }

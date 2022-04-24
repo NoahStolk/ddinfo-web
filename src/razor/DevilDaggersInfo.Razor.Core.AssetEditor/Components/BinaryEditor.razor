@@ -1,73 +1,63 @@
 @using DevilDaggersInfo.Core.Asset
 @using DevilDaggersInfo.Core.Mod
 
-@if (AddingNewAsset)
+<h2>Binary</h2>
+
+<div class="grid gap-x-2 grid-cols-2 max-w-md">
+	<div>Type</div>
+	<div>@BinaryState.Binary.ModBinaryType.ToString().ToLower()</div>
+	<div>Name</div>
+	<div>@BinaryState.BinaryName</div>
+	<div>Chunk count</div>
+	<div>@BinaryState.Binary.Chunks.Count</div>
+	<div>Asset count</div>
+	<div>@BinaryState.Binary.AssetMap.Count</div>
+</div>
+
+<h2>Assets</h2>
+
+<div><button class="btn btn-green btn-large w-32 h-8" @onclick="() => Page.AddingNewAsset = true">Add new asset</button></div>
+
+@{
+	string? disabledClass = BinaryState.IsEmpty ? "btn-disabled" : null;
+	string selectedText = BinaryState.SelectedChunks.Count == 1 ? "asset" : "assets";
+}
+
+<div class="grid gap-1 grid-cols-2 bg-gray-1 p-1">
+	<div><button class="btn @(BinaryState.IsSelectionEmpty ? "btn-disabled" : "btn-green")" disabled="@BinaryState.IsSelectionEmpty" @onclick="BinaryState.ExtractChunks">Extract @BinaryState.SelectedChunks.Count @selectedText</button></div>
+	<div><button class="btn @(BinaryState.IsSelectionEmpty ? "btn-disabled" : "btn-red")" disabled="@BinaryState.IsSelectionEmpty" @onclick="BinaryState.DeleteChunks">Delete @BinaryState.SelectedChunks.Count @selectedText</button></div>
+	<div><button class="btn @(BinaryState.IsSelectionEmpty ? "btn-disabled" : "btn-green")" disabled="@BinaryState.IsSelectionEmpty" @onclick="BinaryState.EnableChunks">Enable @BinaryState.SelectedChunks.Count @selectedText</button></div>
+	<div><button class="btn @(BinaryState.IsSelectionEmpty ? "btn-disabled" : "btn-orange")" disabled="@BinaryState.IsSelectionEmpty" @onclick="BinaryState.DisableChunks">Disable @BinaryState.SelectedChunks.Count @selectedText</button></div>
+</div>
+
+<div class="grid gap-1 grid-cols-2 bg-gray-1 p-1">
+	<div><button class="btn @(BinaryState.IsEmpty ? "btn-disabled" : "btn-gray") @disabledClass" disabled="@BinaryState.IsEmpty" @onclick="() => BinaryState.ResetSelection(BinaryState.VisualChunks)">Select all</button></div>
+	<div><button class="btn @(BinaryState.IsEmpty ? "btn-disabled" : "btn-gray") @disabledClass" disabled="@BinaryState.IsEmpty" @onclick="() => BinaryState.ResetSelection(Enumerable.Empty<ModBinaryChunk>())">Deselect all</button></div>
+	<div><button class="btn @(BinaryState.IsEmpty ? "btn-disabled" : "btn-gray") @disabledClass" disabled="@BinaryState.IsEmpty" @onclick="() => BinaryState.ResetSelection(BinaryState.VisualChunks.Where(c => BinaryState.Prohibited[c]))">Select prohibited</button></div>
+	<div><button class="btn @(BinaryState.IsEmpty ? "btn-disabled" : "btn-gray") @disabledClass" disabled="@BinaryState.IsEmpty" @onclick="BinaryState.InvertSelection">Invert selection</button></div>
+</div>
+
+@if (BinaryState.IsEmpty)
 {
-	<CascadingValue Value="this">
-		<AddAsset />
-	</CascadingValue>
+	<p>
+		This binary is empty. Add some assets.
+	</p>
 }
 else
 {
-	<h2>Binary</h2>
-
-	<div class="grid gap-x-2 grid-cols-2 max-w-md">
-		<div>Type</div>
-		<div>@Binary.ModBinaryType.ToString().ToLower()</div>
-		<div>Name</div>
-		<div>@BinaryName</div>
-		<div>Chunk count</div>
-		<div>@Binary.Chunks.Count</div>
-		<div>Asset count</div>
-		<div>@Binary.AssetMap.Count</div>
+	<div class="grid gap-x-2 grid-cols-4 px-1">
+		<div class="font-bold"><a class="link" @onclick="() => BinaryState.Sort(c => c.AssetType)">Type</a></div>
+		<div class="font-bold"><a class="link" @onclick="() => BinaryState.Sort(c => c.Name)">Name</a></div>
+		<div class="font-bold"><a class="link" @onclick="() => BinaryState.Sort(c => BinaryState.Prohibited[c])">Prohibited</a></div>
+		<div class="font-bold text-right"><a class="link" @onclick="() => BinaryState.Sort(c => c.Size)">Size</a></div>
 	</div>
-
-	<h2>Assets</h2>
-
-	<div><button class="btn btn-green btn-large w-32 h-8" @onclick="() => AddingNewAsset = true">Add new asset</button></div>
-
-	string? disabledClass = IsEmpty ? "btn-disabled" : null;
-
-	<div class="grid gap-1 grid-cols-2 bg-gray-1 p-1">
-		@{
-			string text = _selectedChunks.Count == 1 ? "asset" : "assets";
-		}
-
-		<div><button class="btn @(IsSelectionEmpty ? "btn-disabled" : "btn-green")" disabled="@IsSelectionEmpty" @onclick="ExtractChunks">Extract @_selectedChunks.Count @text</button></div>
-		<div><button class="btn @(IsSelectionEmpty ? "btn-disabled" : "btn-red")" disabled="@IsSelectionEmpty" @onclick="DeleteChunks">Delete @_selectedChunks.Count @text</button></div>
-		<div><button class="btn @(IsSelectionEmpty ? "btn-disabled" : "btn-green")" disabled="@IsSelectionEmpty" @onclick="EnableChunks">Enable @_selectedChunks.Count @text</button></div>
-		<div><button class="btn @(IsSelectionEmpty ? "btn-disabled" : "btn-orange")" disabled="@IsSelectionEmpty" @onclick="DisableChunks">Disable @_selectedChunks.Count @text</button></div>
-	</div>
-
-	<div class="grid gap-1 grid-cols-2 bg-gray-1 p-1">
-		<div><button class="btn @(IsEmpty ? "btn-disabled" : "btn-gray") @disabledClass" disabled="@IsEmpty" @onclick="() => ResetSelection(_chunks)">Select all</button></div>
-		<div><button class="btn @(IsEmpty ? "btn-disabled" : "btn-gray") @disabledClass" disabled="@IsEmpty" @onclick="() => ResetSelection(Enumerable.Empty<ModBinaryChunk>())">Deselect all</button></div>
-		<div><button class="btn @(IsEmpty ? "btn-disabled" : "btn-gray") @disabledClass" disabled="@IsEmpty" @onclick="() => ResetSelection(_chunks.Where(c => _prohibited[c]))">Select prohibited</button></div>
-		<div><button class="btn @(IsEmpty ? "btn-disabled" : "btn-gray") @disabledClass" disabled="@IsEmpty" @onclick="InvertSelection">Invert selection</button></div>
-	</div>
-
-	@if (IsEmpty)
+	@foreach (ModBinaryChunk chunk in BinaryState.VisualChunks)
 	{
-		<p>
-			This binary is empty. Add some assets.
-		</p>
-	}
-	else
-	{
-		<div class="grid gap-x-2 grid-cols-4 px-1">
-			<div class="font-bold"><a class="link" @onclick="() => Sort(c => c.AssetType)">Type</a></div>
-			<div class="font-bold"><a class="link" @onclick="() => Sort(c => c.Name)">Name</a></div>
-			<div class="font-bold"><a class="link" @onclick="() => Sort(c => _prohibited[c])">Prohibited</a></div>
-			<div class="font-bold text-right"><a class="link" @onclick="() => Sort(c => c.Size)">Size</a></div>
+		<div class="grid gap-x-2 grid-cols-4 px-1 cursor-pointer @GetBgColor(chunk.AssetType) @(BinaryState.SelectedChunks.Contains(chunk) ? "font-bold bg-opacity-30" : "bg-opacity-10") hover:bg-opacity-50" @onclick="() => BinaryState.ToggleSelection(chunk)">
+			<div>@chunk.AssetType.ToDisplayString()</div>
+			<div>@chunk.Name</div>
+			<div>@(BinaryState.Prohibited[chunk] ? "Prohibited" : null)</div>
+			<div class="text-right">@chunk.Size.ToString("N0") bytes</div>
 		</div>
-		@foreach (ModBinaryChunk chunk in _chunks)
-		{
-			<div class="grid gap-x-2 grid-cols-4 px-1 cursor-pointer @GetBgColor(chunk.AssetType) @(_selectedChunks.Contains(chunk) ? "font-bold bg-opacity-30" : "bg-opacity-10") hover:bg-opacity-50" @onclick="() => ToggleSelection(chunk)">
-				<div>@chunk.AssetType.ToDisplayString()</div>
-				<div>@chunk.Name</div>
-				<div>@(_prohibited[chunk] ? "Prohibited" : null)</div>
-				<div class="text-right">@chunk.Size.ToString("N0") bytes</div>
-			</div>
-		}
 	}
 }
