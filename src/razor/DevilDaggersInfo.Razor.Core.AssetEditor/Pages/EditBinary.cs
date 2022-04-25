@@ -52,6 +52,12 @@ public partial class EditBinary
 
 	public void SaveBinary()
 	{
+		// TODO: Implement.
+		SaveBinaryAs();
+	}
+
+	public void SaveBinaryAs()
+	{
 		if (BinaryState.Binary.Chunks.Count == 0)
 			return;
 
