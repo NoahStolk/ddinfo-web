@@ -24,7 +24,7 @@ public class BinaryState
 
 	public bool IsSelectionEmpty => _selectedChunks.Count == 0;
 
-	public ModBinary Binary { get; private set; } = new(ModBinaryType.Audio);
+	public ModBinary Binary { get; private set; } = new(ModBinaryType.Dd);
 
 	public string BinaryName { get; set; } = "(Untitled)";
 
