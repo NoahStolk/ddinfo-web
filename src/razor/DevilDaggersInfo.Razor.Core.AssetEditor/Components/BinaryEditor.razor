@@ -6,7 +6,7 @@
 
 <div class="grid gap-x-2 grid-cols-2 max-w-md">
 	<div>Type</div>
-	<div>@BinaryState.Binary.ModBinaryType.ToString().ToLower()</div>
+	<div><span class="@GetBinaryTypeBackgroundColor() bg-opacity-60">@BinaryState.Binary.ModBinaryType.ToString().ToLower()</span></div>
 	<div>Name</div>
 	<div>@BinaryState.BinaryName</div>
 	<div>Chunk count</div>

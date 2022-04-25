@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Core.Mod.Enums;
 using DevilDaggersInfo.Razor.Core.AssetEditor.Pages;
 using DevilDaggersInfo.Razor.Core.AssetEditor.Services;
 using Microsoft.AspNetCore.Components;
@@ -32,5 +33,16 @@ public partial class BinaryEditor
 		{
 			ErrorReporter.ReportError(ex);
 		}
+	}
+
+	public string GetBinaryTypeBackgroundColor()
+	{
+		if (BinaryState.Binary.ModBinaryType == ModBinaryType.Audio)
+			return "bg-audio";
+
+		if (BinaryState.Binary.Chunks.Count == 0)
+			return "bg-texture";
+
+		return BinaryState.Binary.Chunks.GroupBy(c => c.AssetType).OrderByDescending(c =>c.Count()).First().Key.GetBgColor();
 	}
 }
