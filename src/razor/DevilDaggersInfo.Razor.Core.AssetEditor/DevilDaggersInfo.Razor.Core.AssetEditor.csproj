@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
   <PropertyGroup>
-    <Version>2.0.0.0-alpha-0</Version>
+    <DateTimeUtcNow>$([System.DateTime]::UtcNow.ToString("yyyy-MM-dd-HH-mm"))</DateTimeUtcNow>
+    <Version>$(DateTimeUtcNow)</Version>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
     <TailwindBuild>true</TailwindBuild>
   </PropertyGroup>

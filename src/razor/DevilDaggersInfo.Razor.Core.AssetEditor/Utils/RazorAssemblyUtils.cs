@@ -2,9 +2,9 @@ using System.Reflection;
 
 namespace DevilDaggersInfo.Razor.Core.AssetEditor.Utils;
 
-public static class AssemblyUtils
+internal static class RazorAssemblyUtils
 {
-	static AssemblyUtils()
+	static RazorAssemblyUtils()
 	{
 		Version = Assembly.GetExecutingAssembly()?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
 	}
