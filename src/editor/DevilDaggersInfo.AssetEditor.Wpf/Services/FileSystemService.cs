@@ -14,20 +14,28 @@ public class FileSystemService : IFileSystemService
 {
 	public string GetAssetTypeFilter(AssetType assetType)
 	{
+		if (assetType == AssetType.Shader)
+			throw new NotSupportedException($"Asset type '{AssetType.Shader}' has multiple file extensions.");
+
 		string fileExtension = assetType.GetFileExtension();
 
-		string filter = assetType switch
+		string fileTypeName = assetType switch
 		{
 			AssetType.Audio => "Audio",
 			AssetType.Mesh => "Mesh",
 			AssetType.ObjectBinding => "Text",
-			AssetType.Shader => "Shader",
 			AssetType.Texture => "Texture",
 			_ => throw new NotSupportedException($"Asset type '{assetType}' is not supported."),
 		};
 
-		return $"{filter} files (*{fileExtension})|*{fileExtension}";
+		return BuildFilter(fileTypeName, fileExtension);
 	}
+
+	public string GetVertexShaderFilter() => BuildFilter("Vertex shader", ".vert");
+
+	public string GetFragmentShaderFilter() => BuildFilter("Fragment shader", ".frag");
+
+	private static string BuildFilter(string fileTypeName, string fileExtension) => $"{fileTypeName} files (*{fileExtension})|*{fileExtension}";
 
 	public IFileSystemService.FileResult? Open(string extensionFilter)
 	{

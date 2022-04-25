@@ -6,6 +6,10 @@ public interface IFileSystemService
 {
 	string GetAssetTypeFilter(AssetType assetType);
 
+	string GetVertexShaderFilter();
+
+	string GetFragmentShaderFilter();
+
 	FileResult? Open(string extensionFilter);
 
 	void Save(byte[] buffer);

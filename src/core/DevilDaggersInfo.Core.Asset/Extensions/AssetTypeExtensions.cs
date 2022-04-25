@@ -7,7 +7,7 @@ public static class AssetTypeExtensions
 		AssetType.Audio => ".wav",
 		AssetType.Mesh => ".obj",
 		AssetType.ObjectBinding => ".txt",
-		AssetType.Shader => ".glsl",
+		AssetType.Shader => throw new NotSupportedException($"Asset type '{AssetType.Shader}' has multiple file extensions."),
 		AssetType.Texture => ".png",
 		_ => throw new NotSupportedException($"Asset type '{assetType}' is not supported."),
 	};

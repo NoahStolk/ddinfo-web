@@ -167,16 +167,6 @@ public class ModBinary
 		return assetType == AssetType.Audio && modBinaryType == ModBinaryType.Audio || assetType != AssetType.Audio && modBinaryType != ModBinaryType.Audio;
 	}
 
-	[Obsolete("Use ExtractAsset instead.")]
-	public void ExtractAssets(string outputDirectory)
-	{
-		if (_readComprehensiveness != ModBinaryReadComprehensiveness.All)
-			throw new InvalidOperationException("This mod binary has not been opened for full reading comprehensiveness. Cannot extract assets.");
-
-		foreach (KeyValuePair<AssetKey, AssetData> kvp in AssetMap)
-			File.WriteAllBytes(Path.Combine(outputDirectory, kvp.Key.AssetName + kvp.Key.AssetType.GetFileExtension()), AssetConverter.Extract(kvp.Key.AssetType, kvp.Value));
-	}
-
 	public byte[] ExtractAsset(string assetName, AssetType assetType)
 	{
 		if (_readComprehensiveness != ModBinaryReadComprehensiveness.All)

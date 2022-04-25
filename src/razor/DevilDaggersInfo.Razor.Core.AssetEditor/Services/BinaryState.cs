@@ -4,6 +4,7 @@ using DevilDaggersInfo.Core.Asset.Enums;
 using DevilDaggersInfo.Core.Asset.Extensions;
 using DevilDaggersInfo.Core.Mod;
 using DevilDaggersInfo.Core.Mod.Enums;
+using System;
 using System.Runtime.CompilerServices;
 
 namespace DevilDaggersInfo.Razor.Core.AssetEditor.Services;
@@ -91,9 +92,28 @@ public class BinaryState
 	{
 		foreach (ModBinaryChunk chunk in _selectedChunks)
 		{
-			string fileName = chunk.Name + chunk.AssetType.GetFileExtension();
 			byte[] extractedBuffer = Binary.ExtractAsset(chunk.Name, chunk.AssetType);
-			File.WriteAllBytes(Path.Combine(directory, fileName), extractedBuffer);
+
+			if (chunk.AssetType == AssetType.Shader)
+			{
+				using MemoryStream ms = new(extractedBuffer);
+				using BinaryReader br = new(ms);
+
+				int nameLength = br.ReadInt32();
+				int vertexSize = br.ReadInt32();
+				int fragmentSize = br.ReadInt32();
+				_ = br.ReadBytes(nameLength); // Name
+				byte[] vertexBuffer = br.ReadBytes(vertexSize);
+				byte[] fragmentBuffer = br.ReadBytes(fragmentSize);
+
+				File.WriteAllBytes(Path.Combine(directory, $"{chunk.Name}.vert"), vertexBuffer);
+				File.WriteAllBytes(Path.Combine(directory, $"{chunk.Name}.frag"), fragmentBuffer);
+			}
+			else
+			{
+				string fileName = chunk.Name + chunk.AssetType.GetFileExtension();
+				File.WriteAllBytes(Path.Combine(directory, fileName), extractedBuffer);
+			}
 		}
 	}
 

@@ -5,6 +5,7 @@ using DevilDaggersInfo.Core.Mod.Enums;
 using DevilDaggersInfo.Razor.Core.AssetEditor.Pages;
 using DevilDaggersInfo.Razor.Core.AssetEditor.Services;
 using Microsoft.AspNetCore.Components;
+using System.Text;
 
 namespace DevilDaggersInfo.Razor.Core.AssetEditor.Components;
 
@@ -12,11 +13,17 @@ public partial class AddAsset
 {
 	private string? _assetNameSearch;
 
-	private string? _selectedAssetName;
 	private AssetType? _selectedAssetType;
+	private string? _selectedAssetName;
 
 	private string? _selectedFileName;
 	private byte[]? _selectedAssetData;
+
+	private string? _selectedVertFileName;
+	private byte[]? _selectedVertData;
+
+	private string? _selectedFragFileName;
+	private byte[]? _selectedFragData;
 
 	private bool _writing;
 	[CascadingParameter]
@@ -58,6 +65,12 @@ public partial class AddAsset
 
 		_selectedFileName = null;
 		_selectedAssetData = null;
+
+		_selectedVertFileName = null;
+		_selectedVertData = null;
+
+		_selectedFragFileName = null;
+		_selectedFragData = null;
 	}
 
 	private void Open(AssetType assetType)
@@ -76,6 +89,43 @@ public partial class AddAsset
 
 		_selectedFileName = Path.GetFileName(fileResult.Path);
 		_selectedAssetData = fileResult.Contents;
+	}
+
+	private void OpenVert() => OpenShader((s) => _selectedVertFileName = s, (d) => _selectedVertData = d, FileSystemService.GetVertexShaderFilter());
+
+	private void OpenFrag() => OpenShader((s) => _selectedFragFileName = s, (d) => _selectedFragData = d, FileSystemService.GetFragmentShaderFilter());
+
+	private void OpenShader(Action<string> setFileName, Action<byte[]> setData, string fileExtension)
+	{
+		if (!ModBinary.IsAssetTypeValid(BinaryState.Binary.ModBinaryType, AssetType.Shader))
+		{
+			ErrorReporter.ReportError($"Asset type '{AssetType.Shader}' is not compatible with binary type '{BinaryState.Binary.ModBinaryType}'.");
+			return;
+		}
+
+		IFileSystemService.FileResult? fileResult = FileSystemService.Open(fileExtension);
+		if (fileResult == null)
+			return;
+
+		_selectedAssetType = AssetType.Shader;
+
+		setFileName(Path.GetFileName(fileResult.Path));
+		setData(fileResult.Contents);
+
+		if (_selectedAssetName != null && _selectedVertData != null && _selectedFragData != null)
+		{
+			using MemoryStream ms = new();
+			using BinaryWriter bw = new(ms);
+
+			bw.Write(_selectedAssetName.Length);
+			bw.Write(_selectedVertData.Length);
+			bw.Write(_selectedFragData.Length);
+			bw.Write(Encoding.Default.GetBytes(_selectedAssetName));
+			bw.Write(_selectedVertData);
+			bw.Write(_selectedFragData);
+
+			_selectedAssetData = ms.ToArray();
+		}
 	}
 
 	private void Select(string assetName)
