@@ -167,6 +167,7 @@ public class ModBinary
 		return assetType == AssetType.Audio && modBinaryType == ModBinaryType.Audio || assetType != AssetType.Audio && modBinaryType != ModBinaryType.Audio;
 	}
 
+	[Obsolete("Use ExtractAsset instead.")]
 	public void ExtractAssets(string outputDirectory)
 	{
 		if (_readComprehensiveness != ModBinaryReadComprehensiveness.All)

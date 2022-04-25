@@ -42,8 +42,10 @@ public class BinaryState
 
 	private void RebuildChunkVisualization()
 	{
-		_selectedChunks.Clear();
 		_prohibited.Clear();
+		_selectedChunks.Clear();
+		_visualChunks.Clear();
+
 		_visualChunks = Binary.Chunks;
 
 		foreach (ModBinaryChunk chunk in _visualChunks)
