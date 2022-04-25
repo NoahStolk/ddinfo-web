@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Core.Mod.Parsers;
+
 namespace DevilDaggersInfo.Core.Mod.FileHandling;
 
 internal sealed class ObjFileHandler : IFileHandler
@@ -14,7 +16,29 @@ internal sealed class ObjFileHandler : IFileHandler
 
 	public byte[] Compile(byte[] buffer)
 	{
-		throw new NotImplementedException();
+		ObjParsingContext parsingContext = new();
+		ParsedObjData parsedObj = parsingContext.Parse(Encoding.Default.GetString(buffer, 0, buffer.Length));
+
+		int vertexCount = parsedObj.Positions.Count;
+
+		using MemoryStream ms = new();
+		using BinaryWriter bw = new(ms);
+		bw.Write((uint)vertexCount);
+		bw.Write((uint)vertexCount);
+		bw.Write((ushort)288);
+
+		for (int i = 0; i < vertexCount; i++)
+		{
+			VertexReference vertRef = parsedObj.Vertices[i];
+			Vertex vertex = new(parsedObj.Positions[vertRef.PositionReference - 1], parsedObj.Normals[vertRef.NormalReference - 1], parsedObj.TexCoords[vertRef.TexCoordReference - 1]);
+			bw.WriteVertex(vertex);
+		}
+
+		for (int i = 0; i < vertexCount; i++)
+			bw.Write(parsedObj.Vertices[i].PositionReference - 1);
+
+		// TODO: Write "closure".
+		return ms.ToArray();
 	}
 
 	public byte[] Extract(byte[] buffer)
