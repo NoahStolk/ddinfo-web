@@ -7,7 +7,7 @@ public class CompilationTests
 	[DataRow("iconmaskhoming.png", "iconmaskhoming", "dd-iconmaskhoming")]
 	public void CompileTextureIntoModBinary(string sourcePngFileName, string assetName, string modFileName)
 	{
-		byte[] sourcePngContents = File.ReadAllBytes(Path.Combine(TestUtils.ResourcePath, sourcePngFileName));
+		byte[] sourcePngContents = File.ReadAllBytes(Path.Combine(TestUtils.ResourcePath, "Texture", sourcePngFileName));
 
 		ModBinary modBinary = new(ModBinaryType.Dd);
 		modBinary.AddAsset(assetName, AssetType.Texture, sourcePngContents);
