@@ -159,6 +159,7 @@ public partial class AddAsset
 		catch (Exception ex)
 		{
 			ErrorReporter.ReportError(ex);
+			return;
 		}
 
 		Page.AddingNewAsset = false;

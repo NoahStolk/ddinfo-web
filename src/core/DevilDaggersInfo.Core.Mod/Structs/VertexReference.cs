@@ -19,5 +19,10 @@ public struct VertexReference
 	public int NormalReference { get; }
 
 	public override string ToString()
-		=> $"{PositionReference}/{TexCoordReference}/{NormalReference}";
+	{
+		if (PositionReference == TexCoordReference && PositionReference == NormalReference)
+			return PositionReference.ToString();
+
+		return $"{PositionReference}/{TexCoordReference}/{NormalReference}";
+	}
 }

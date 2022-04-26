@@ -30,13 +30,13 @@ public class ObjParsingContext
 			if (values.Length == 0)
 				continue;
 
-			string[] coords = values[1..];
+			string[] data = values[1..];
 			switch (values[0])
 			{
-				case "v": ParsePosition(lineNumber, coords); break;
-				case "vt": ParseTexCoord(lineNumber, coords); break;
-				case "vn": ParseNormal(lineNumber, coords); break;
-				case "f": ParseFace(lineNumber, coords); break;
+				case "v": ParsePosition(lineNumber, data); break;
+				case "vt": ParseTexCoord(lineNumber, data); break;
+				case "vn": ParseNormal(lineNumber, data); break;
+				case "f": ParseFace(lineNumber, data); break;
 			}
 		}
 
@@ -54,7 +54,7 @@ public class ObjParsingContext
 	private void ParseTexCoord(int lineNumber, string[] coords)
 	{
 		if (coords.Length < 2)
-			throw new InvalidObjException($"Invalid texture (vt) on line {lineNumber}. Must contain at least 2 coordinates. (Additional coordinates are ignored.)");
+			throw new InvalidObjException($"Invalid texture coordinate (vt) on line {lineNumber}. Must contain at least 2 coordinates. (Additional coordinates are ignored.)");
 
 		_texCoords.Add(new(ParseVertexValue(coords[0]), ParseVertexValue(coords[1])));
 	}

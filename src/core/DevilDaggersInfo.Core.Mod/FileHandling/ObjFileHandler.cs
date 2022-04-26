@@ -25,7 +25,7 @@ internal sealed class ObjFileHandler : IFileHandler
 		using BinaryWriter bw = new(ms);
 		bw.Write((uint)vertexCount);
 		bw.Write((uint)vertexCount);
-		bw.Write((ushort)288);
+		bw.Write((ushort)32);
 
 		for (int i = 0; i < vertexCount; i++)
 		{
@@ -37,7 +37,6 @@ internal sealed class ObjFileHandler : IFileHandler
 		for (int i = 0; i < vertexCount; i++)
 			bw.Write(parsedObj.Vertices[i].PositionReference - 1);
 
-		// TODO: Write "closure".
 		return ms.ToArray();
 	}
 
@@ -49,7 +48,7 @@ internal sealed class ObjFileHandler : IFileHandler
 		int indexCount = br.ReadInt32();
 		int vertexCount = br.ReadInt32();
 
-		// TODO: Validate number.
+		// 32, used to be 288? Not sure what this means, so don't validate it.
 		_ = br.ReadUInt16();
 
 		Vertex[] vertices = new Vertex[vertexCount];
@@ -61,7 +60,7 @@ internal sealed class ObjFileHandler : IFileHandler
 		for (int i = 0; i < indices.Length; i++)
 			indices[i] = br.ReadInt32();
 
-		StringBuilder sb = new("# Vertex Attributes\n");
+		StringBuilder sb = new();
 
 		StringBuilder v = new();
 		StringBuilder vt = new();
@@ -73,17 +72,22 @@ internal sealed class ObjFileHandler : IFileHandler
 			vn.Append("vn ").Append(vertices[i].Normal.X).Append(' ').Append(vertices[i].Normal.Y).Append(' ').Append(vertices[i].Normal.Z).AppendLine();
 		}
 
+		int faceCount = indexCount / 3;
+
+		sb.Append("# ").Append(vertexCount).AppendLine(" positions");
+		sb.Append("# ").Append(vertexCount).AppendLine(" texture coordinates");
+		sb.Append("# ").Append(vertexCount).AppendLine(" normals");
+		sb.Append("# ").Append(faceCount).AppendLine(" faces");
 		sb.Append(v);
 		sb.Append(vt);
 		sb.Append(vn);
 
-		sb.AppendLine("\n# Triangles");
-		for (int i = 0; i < indexCount / 3; i++)
+		for (int i = 0; i < faceCount; i++)
 		{
-			VertexReference vertex1 = new(indices[i * 3] + 1);
-			VertexReference vertex2 = new(indices[i * 3 + 1] + 1);
-			VertexReference vertex3 = new(indices[i * 3 + 2] + 1);
-			sb.Append("f ").Append(vertex1).Append(' ').Append(vertex2).Append(' ').Append(vertex3).AppendLine();
+			VertexReference a = new(indices[i * 3] + 1);
+			VertexReference b = new(indices[i * 3 + 1] + 1);
+			VertexReference c = new(indices[i * 3 + 2] + 1);
+			sb.Append("f ").Append(a).Append(' ').Append(b).Append(' ').Append(c).AppendLine();
 		}
 
 		return Encoding.Default.GetBytes(sb.ToString());

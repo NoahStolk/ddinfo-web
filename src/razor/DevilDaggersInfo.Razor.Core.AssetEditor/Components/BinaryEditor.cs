@@ -43,6 +43,6 @@ public partial class BinaryEditor
 		if (BinaryState.Binary.Chunks.Count == 0)
 			return "bg-texture";
 
-		return BinaryState.Binary.Chunks.GroupBy(c => c.AssetType).OrderByDescending(c =>c.Count()).First().Key.GetBgColor();
+		return BinaryState.Binary.Chunks.GroupBy(c => c.AssetType).OrderByDescending(c => c.Count()).First().Key.GetBgColor();
 	}
 }

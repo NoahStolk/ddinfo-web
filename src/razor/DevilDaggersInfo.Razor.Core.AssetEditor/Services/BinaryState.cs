@@ -4,7 +4,6 @@ using DevilDaggersInfo.Core.Asset.Enums;
 using DevilDaggersInfo.Core.Asset.Extensions;
 using DevilDaggersInfo.Core.Mod;
 using DevilDaggersInfo.Core.Mod.Enums;
-using System;
 using System.Runtime.CompilerServices;
 
 namespace DevilDaggersInfo.Razor.Core.AssetEditor.Services;
