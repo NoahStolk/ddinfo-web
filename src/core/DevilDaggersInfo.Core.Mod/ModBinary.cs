@@ -126,6 +126,9 @@ public class ModBinary
 		// TODO: Loudness.
 	}
 
+	public void RemoveAsset(AssetKey assetKey)
+		=> RemoveAsset(assetKey.AssetName, assetKey.AssetType);
+
 	public void RemoveAsset(string assetName, AssetType assetType)
 	{
 		if (_readComprehensiveness != ModBinaryReadComprehensiveness.All)
@@ -139,8 +142,14 @@ public class ModBinary
 		AssetMap.Remove(new(assetType, assetName));
 	}
 
+	public void EnableAsset(AssetKey assetKey)
+		=> ToggleAsset(assetKey.AssetName, assetKey.AssetType, (c) => c.Enable());
+
 	public void EnableAsset(string assetName, AssetType assetType)
 		=> ToggleAsset(assetName, assetType, (c) => c.Enable());
+
+	public void DisableAsset(AssetKey assetKey)
+		=> ToggleAsset(assetKey.AssetName, assetKey.AssetType, (c) => c.Disable());
 
 	public void DisableAsset(string assetName, AssetType assetType)
 		=> ToggleAsset(assetName, assetType, (c) => c.Disable());
@@ -166,6 +175,9 @@ public class ModBinary
 	{
 		return assetType == AssetType.Audio && modBinaryType == ModBinaryType.Audio || assetType != AssetType.Audio && modBinaryType != ModBinaryType.Audio;
 	}
+
+	public byte[] ExtractAsset(AssetKey assetKey)
+		=> ExtractAsset(assetKey.AssetName, assetKey.AssetType);
 
 	public byte[] ExtractAsset(string assetName, AssetType assetType)
 	{

@@ -4,6 +4,7 @@ using DevilDaggersInfo.Core.Asset.Enums;
 using DevilDaggersInfo.Core.Asset.Extensions;
 using DevilDaggersInfo.Core.Mod;
 using DevilDaggersInfo.Core.Mod.Enums;
+using DevilDaggersInfo.Razor.Core.AssetEditor.Data;
 using System.Runtime.CompilerServices;
 
 namespace DevilDaggersInfo.Razor.Core.AssetEditor.Services;
@@ -12,17 +13,13 @@ public class BinaryState
 {
 	private readonly Dictionary<string, bool> _sorting = new();
 
-	private readonly Dictionary<ModBinaryChunk, bool> _prohibited = new();
-	private readonly List<ModBinaryChunk> _selectedChunks = new();
-	private List<ModBinaryChunk> _visualChunks = new();
+	private Dictionary<AssetKey, VisualAsset> _visualChunks = new();
 
-	public IReadOnlyDictionary<ModBinaryChunk, bool> Prohibited => _prohibited;
-	public IReadOnlyList<ModBinaryChunk> SelectedChunks => _selectedChunks;
-	public IReadOnlyList<ModBinaryChunk> VisualChunks => _visualChunks;
+	public IReadOnlyDictionary<AssetKey, VisualAsset> VisualChunks => _visualChunks;
 
-	public bool IsEmpty => Binary.Chunks.Count == 0;
+	public bool IsEmpty => _visualChunks.Count == 0;
 
-	public bool IsSelectionEmpty => _selectedChunks.Count == 0;
+	public bool IsSelectionEmpty => !_visualChunks.Any(kvp => kvp.Value.IsSelected);
 
 	public ModBinary Binary { get; private set; } = new(ModBinaryType.Dd);
 
@@ -42,46 +39,35 @@ public class BinaryState
 
 	private void RebuildChunkVisualization()
 	{
-		_prohibited.Clear();
-		_selectedChunks.Clear();
 		_visualChunks.Clear();
 
-		_visualChunks = Binary.Chunks;
-
-		foreach (ModBinaryChunk chunk in _visualChunks)
-			_prohibited[chunk] = AssetContainer.GetIsProhibited(chunk.AssetType, chunk.Name);
+		foreach (ModBinaryChunk chunk in Binary.Chunks)
+			_visualChunks.Add(new(chunk.AssetType, chunk.Name), new(chunk.Size, AssetContainer.GetIsProhibited(chunk.AssetType, chunk.Name)));
 	}
 
-	public void ResetSelection(IEnumerable<ModBinaryChunk> chunks)
+	public void ResetSelection(IEnumerable<AssetKey> keys)
 	{
-		_selectedChunks.Clear();
-		_selectedChunks.AddRange(chunks);
+		foreach (KeyValuePair<AssetKey, VisualAsset> kvp in _visualChunks)
+			kvp.Value.IsSelected = keys.Contains(kvp.Key);
 	}
 
 	public void InvertSelection()
 	{
-		List<ModBinaryChunk> chunksToDeselect = new();
-		chunksToDeselect.AddRange(_selectedChunks);
-
-		_selectedChunks.Clear();
-		_selectedChunks.AddRange(_visualChunks.Where(c => !chunksToDeselect.Any(ctd => ctd.Name == c.Name && ctd.AssetType == c.AssetType)));
+		foreach (KeyValuePair<AssetKey, VisualAsset> kvp in _visualChunks)
+			kvp.Value.IsSelected = !kvp.Value.IsSelected;
 	}
 
-	public void ToggleSelection(ModBinaryChunk chunk)
+	public void ToggleSelection(VisualAsset asset)
 	{
-		if (_selectedChunks.Contains(chunk))
-			_selectedChunks.Remove(chunk);
-		else
-			_selectedChunks.Add(chunk);
+		asset.IsSelected = !asset.IsSelected;
 	}
 
 	public void DeleteChunks()
 	{
-		for (int i = _selectedChunks.Count - 1; i >= 0; i--)
+		foreach (KeyValuePair<AssetKey, VisualAsset> kvp in _visualChunks.Where(kvp => kvp.Value.IsSelected))
 		{
-			ModBinaryChunk chunkToDelete = _selectedChunks[i];
-			Binary.RemoveAsset(chunkToDelete.Name, chunkToDelete.AssetType);
-			_selectedChunks.Remove(chunkToDelete);
+			_visualChunks.Remove(kvp.Key);
+			Binary.RemoveAsset(kvp.Key);
 		}
 
 		RebuildChunkVisualization();
@@ -89,11 +75,11 @@ public class BinaryState
 
 	public void ExtractChunks(string directory)
 	{
-		foreach (ModBinaryChunk chunk in _selectedChunks)
+		foreach (AssetKey assetKey in _visualChunks.Select(kvp => kvp.Key))
 		{
-			byte[] extractedBuffer = Binary.ExtractAsset(chunk.Name, chunk.AssetType);
+			byte[] extractedBuffer = Binary.ExtractAsset(assetKey);
 
-			if (chunk.AssetType == AssetType.Shader)
+			if (assetKey.AssetType == AssetType.Shader)
 			{
 				using MemoryStream ms = new(extractedBuffer);
 				using BinaryReader br = new(ms);
@@ -105,12 +91,12 @@ public class BinaryState
 				byte[] vertexBuffer = br.ReadBytes(vertexSize);
 				byte[] fragmentBuffer = br.ReadBytes(fragmentSize);
 
-				File.WriteAllBytes(Path.Combine(directory, $"{chunk.Name}.vert"), vertexBuffer);
-				File.WriteAllBytes(Path.Combine(directory, $"{chunk.Name}.frag"), fragmentBuffer);
+				File.WriteAllBytes(Path.Combine(directory, $"{assetKey.AssetName}.vert"), vertexBuffer);
+				File.WriteAllBytes(Path.Combine(directory, $"{assetKey.AssetName}.frag"), fragmentBuffer);
 			}
 			else
 			{
-				string fileName = chunk.Name + chunk.AssetType.GetFileExtension();
+				string fileName = assetKey.AssetName + assetKey.AssetType.GetFileExtension();
 				File.WriteAllBytes(Path.Combine(directory, fileName), extractedBuffer);
 			}
 		}
@@ -118,17 +104,17 @@ public class BinaryState
 
 	public void EnableChunks()
 	{
-		foreach (ModBinaryChunk chunk in _selectedChunks)
-			Binary.EnableAsset(chunk.Name, chunk.AssetType);
+		foreach (AssetKey assetKey in _visualChunks.Select(kvp => kvp.Key))
+			Binary.EnableAsset(assetKey);
 	}
 
 	public void DisableChunks()
 	{
-		foreach (ModBinaryChunk chunk in _selectedChunks)
-			Binary.DisableAsset(chunk.Name, chunk.AssetType);
+		foreach (AssetKey assetKey in _visualChunks.Select(kvp => kvp.Key))
+			Binary.DisableAsset(assetKey);
 	}
 
-	public void Sort<TKey>(Func<ModBinaryChunk, TKey> sorting, [CallerArgumentExpression("sorting")] string sortingExpression = "")
+	public void Sort<TKey>(Func<KeyValuePair<AssetKey, VisualAsset>, TKey> sorting, [CallerArgumentExpression("sorting")] string sortingExpression = "")
 	{
 		bool sortDirection = false;
 		if (_sorting.ContainsKey(sortingExpression))
@@ -136,7 +122,7 @@ public class BinaryState
 		else
 			_sorting.Add(sortingExpression, false);
 
-		_visualChunks = _visualChunks.OrderBy(sorting, sortDirection).ToList();
+		_visualChunks = _visualChunks.OrderBy(sorting, sortDirection).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
 		_sorting[sortingExpression] = !sortDirection;
 	}
