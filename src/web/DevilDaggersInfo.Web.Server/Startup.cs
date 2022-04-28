@@ -44,8 +44,7 @@ public class Startup
 
 		services.AddRazorPages();
 
-		// Use a transient for ToolHelper so we can update the Changelogs.json file without having to re-instantiate this.
-		services.AddTransient<IToolHelper, ToolHelper>();
+		services.AddTransient<IToolService, ToolService>();
 
 		services.AddTransient<ModArchiveAccessor>();
 		services.AddTransient<ModArchiveProcessor>();
@@ -91,7 +90,7 @@ public class Startup
 			services.AddHostedService<ResponseTimesBackgroundService>();
 		}
 
-		// Hosted services that run once after startup.
+		// Hosted service that run once after startup.
 		services.AddHostedService<StartupCacheHostedService>();
 
 		services.AddAuthentication(options =>

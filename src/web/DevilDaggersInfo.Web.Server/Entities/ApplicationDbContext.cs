@@ -16,7 +16,7 @@ public class ApplicationDbContext : DbContext
 	public virtual DbSet<PlayerEntity> Players => Set<PlayerEntity>();
 	public virtual DbSet<SpawnsetEntity> Spawnsets => Set<SpawnsetEntity>();
 	public virtual DbSet<ToolEntity> Tools => Set<ToolEntity>();
-	public virtual DbSet<ToolStatisticEntity> ToolStatistics => Set<ToolStatisticEntity>();
+	public virtual DbSet<ToolDistributionEntity> ToolDistributions => Set<ToolDistributionEntity>();
 
 	public virtual DbSet<PlayerModEntity> PlayerMods => Set<PlayerModEntity>();
 

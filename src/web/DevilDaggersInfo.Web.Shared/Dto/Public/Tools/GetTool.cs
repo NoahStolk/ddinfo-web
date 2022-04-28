@@ -2,21 +2,15 @@ namespace DevilDaggersInfo.Web.Shared.Dto.Public.Tools;
 
 public record GetTool
 {
-	public string Name { get; init; } = null!;
+	public string Name { get; init; } = string.Empty;
 
-	public string DisplayName { get; init; } = null!;
+	public string DisplayName { get; init; } = string.Empty;
 
-	/// <summary>
-	/// Indicates the current version of the tool on the website.
-	/// </summary>
-	public Version VersionNumber { get; init; } = null!;
+	public string LatestVersionNumber { get; init; } = string.Empty;
 
-	/// <summary>
-	/// Indicates the oldest version of the tool which is still fully compatible with the website.
-	/// </summary>
-	public Version VersionNumberRequired { get; init; } = null!;
+	public string LatestCompatibleVersionNumber { get; init; } = string.Empty;
 
 	public IReadOnlyList<GetToolVersion>? Changelog { get; init; }
 
-	public int FileSize { get; set; }
+	public List<GetToolDistribution> Distributions { get; init; } = new();
 }
