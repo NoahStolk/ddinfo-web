@@ -408,9 +408,15 @@ public partial class PublicApiHttpClient
 		return await SendGetRequest<GetTool>($"api/tools/{toolName}");
 	}
 
-	public async Task<Task> GetToolFile(string toolName)
+	public async Task<ActionResult> GetToolFile(string toolName, ToolPublishMethod publishMethod, ToolBuildType buildType, string version)
 	{
-		return await SendGetRequest<Task>($"api/tools/{toolName}/file");
+		Dictionary<string, object?> queryParameters = new()
+		{
+			{ nameof(publishMethod), publishMethod },
+			{ nameof(buildType), buildType },
+			{ nameof(version), version }
+		};
+		return await SendGetRequest<ActionResult>(UrlBuilderUtils.BuildUrlWithQuery($"api/tools/{toolName}/file", queryParameters));
 	}
 
 	public async Task<GetWorldRecordDataContainer> GetWorldRecordData()
