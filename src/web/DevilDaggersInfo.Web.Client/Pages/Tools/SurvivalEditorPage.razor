@@ -14,15 +14,15 @@ else
 {
 	<BuildInfo GetTool="GetTool" />
 
-	<div class="hidden sm:block grid-cols-4 gap-x-2 max-w-sm">
+	<div class="grid gap-x-2 grid-cols-4 max-w-sm">
 		<div>Windows 8+</div>
 		<div>Windows 7 (requires <a href="//dotnet.microsoft.com/en-us/download/dotnet/6.0">.NET 6 runtime installation</a>)</div>
 		<div>Mac</div>
 		<div>Linux</div>
 		<Distribution Name="@GetTool.Name" PublishMethod="ToolPublishMethod.SelfContained" BuildType="ToolBuildType.WindowsWpf" Version="@GetTool.LatestVersionNumber" />
 		<Distribution Name="@GetTool.Name" PublishMethod="ToolPublishMethod.RequiresDotNet6Runtime" BuildType="ToolBuildType.WindowsWpf" Version="@GetTool.LatestVersionNumber" />
-		<div>?</div>
-		<div>?</div>
+		<div class="px-1 py-2">?</div>
+		<div class="px-1 py-2">?</div>
 	</div>
 
 	<img src="/images/tools/ddse.png" class="object-contain max-h-160 pt-3" />
