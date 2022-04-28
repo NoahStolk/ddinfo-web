@@ -1,0 +1,58 @@
+@using DevilDaggersInfo.Web.Shared.Dto.Public.Tools
+@using DevilDaggersInfo.Web.Shared.Enums
+
+<div class="px-1 py-2">
+	@if (_distribution == null)
+	{
+		<span>N/A</span>
+	}
+	else
+	{
+		<a class="btn btn-download px-2 py-1" href="@GetApiCall()" download="@GetFileName()" role="button" target="_top">Download @_distribution.VersionNumber (@FileSizeUtils.Format(_distribution.FileSize))</a>
+	}
+</div>
+
+@code
+{
+	private GetToolDistribution? _distribution;
+
+	[Parameter]
+	[EditorRequired]
+	public string Name { get; set; } = null!;
+
+	[Parameter]
+	[EditorRequired]
+	public ToolPublishMethod PublishMethod { get; set; }
+
+	[Parameter]
+	[EditorRequired]
+	public ToolBuildType BuildType { get; set; }
+
+	[Parameter]
+	[EditorRequired]
+	public string Version { get; set; } = null!;
+
+	[Inject]
+	public PublicApiHttpClient Http { get; set; } = null!;
+
+	protected override async Task OnInitializedAsync()
+	{
+		try
+		{
+			_distribution = await Http.GetToolDistribution(Name, PublishMethod, BuildType, Version);
+		}
+		catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+		{
+		}
+	}
+
+	private string GetFileName()
+	{
+		return $"{Name}{Version}.zip";
+	}
+
+	private string GetApiCall()
+	{
+		return $"/api/tools/{Name}/file?publishMethod={PublishMethod}&buildType={BuildType}&version={Version}";
+	}
+}

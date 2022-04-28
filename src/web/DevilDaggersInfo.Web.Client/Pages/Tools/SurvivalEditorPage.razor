@@ -1,6 +1,7 @@
 @page "/tools/survival-editor"
 @using DevilDaggersInfo.Web.Shared.Dto.Public.Tools
 @using DevilDaggersInfo.Web.Shared.Dto.Public.Spawnsets
+@using DevilDaggersInfo.Web.Shared.Enums
 @inject PublicApiHttpClient Http
 
 <Heading Title="Devil Daggers Survival Editor" />
@@ -12,6 +13,17 @@
 else
 {
 	<BuildInfo GetTool="GetTool" />
+
+	<div class="hidden sm:block grid-cols-4 gap-x-2 max-w-sm">
+		<div>Windows 8+</div>
+		<div>Windows 7 (requires <a href="//dotnet.microsoft.com/en-us/download/dotnet/6.0">.NET 6 runtime installation</a>)</div>
+		<div>Mac</div>
+		<div>Linux</div>
+		<Distribution Name="@GetTool.Name" PublishMethod="ToolPublishMethod.SelfContained" BuildType="ToolBuildType.WindowsWpf" Version="@GetTool.LatestVersionNumber" />
+		<Distribution Name="@GetTool.Name" PublishMethod="ToolPublishMethod.RequiresDotNet6Runtime" BuildType="ToolBuildType.WindowsWpf" Version="@GetTool.LatestVersionNumber" />
+		<div>?</div>
+		<div>?</div>
+	</div>
 
 	<img src="/images/tools/ddse.png" class="object-contain max-h-160 pt-3" />
 
@@ -27,9 +39,8 @@ else
 
 	<Heading Title="System Requirements" Level="2" />
 	<ul class="pl-4">
-		<li class="list-disc">Windows 8 or later (64-bit)</li>
+		<li class="list-disc">64-bit</li>
 	</ul>
-	<p class="para"><i>Note: if you need a Windows 7 build, please contact me.</i></p>
 
 	<RunInfo />
 	<SourceInfo Url="https://github.com/NoahStolk/DevilDaggersSurvivalEditor" />

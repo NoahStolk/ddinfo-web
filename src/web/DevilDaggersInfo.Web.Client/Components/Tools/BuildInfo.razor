@@ -4,29 +4,9 @@
 	<DataField CssClass="px-1" Left="3" Name="Current version">@GetTool.LatestVersionNumber</DataField>
 	<DataField CssClass="px-1" Left="3" Name="Oldest supported version">@GetTool.LatestCompatibleVersionNumber</DataField>
 	<DataField CssClass="px-1" Left="3" Name="@($"Total downloads (since {FeatureConstants.TrackingToolDownloadCounts.ToString(StringFormats.DateFormat)})")">@GetTool.Changelog?.Sum(v => v.DownloadCount).ToString("N0")</DataField>
-
-	<div class="hidden sm:block grid-cols-4 gap-x-2">
-		<div>Windows 8+</div>
-		<div>Windows 7</div>
-		<div>Mac</div>
-		<div>Linux</div>
-		<div class="px-1 py-2">
-			<a class="btn btn-download px-2 py-1" href="@GetApiCall(ToolPublishMethod.SelfContained, ToolBuildType.WindowsWpf, GetTool.LatestVersionNumber)" download="@GetFileName(GetTool.LatestVersionNumber)" role="button" target="_top">Download</a>
-		</div>
-	</div>
 </div>
 
 @code
 {
 	[Parameter, EditorRequired] public GetTool GetTool { get; set; } = null!;
-
-	private string GetFileName(string version)
-	{
-		return $"{GetTool.Name}{version}.zip";
-	}
-
-	private string GetApiCall(ToolPublishMethod publishMethod, ToolBuildType buildType, string version)
-	{
-		return $"/api/tools/{GetTool.Name}/file?publishMethod={publishMethod}&buildType={buildType}&version={version}";
-	}
 }
