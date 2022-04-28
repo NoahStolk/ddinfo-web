@@ -97,7 +97,7 @@ public class ToolService : IToolService
 
 	private string GetToolDistributionPath(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version)
 	{
-		return Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Tools), name, $"{name}-{version}-{buildType}-{publishMethod}.zip");
+		return Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Tools), $"{name}-{version}-{buildType}-{publishMethod}.zip");
 	}
 
 	#endregion Utils
