@@ -92,7 +92,6 @@ public class ToolService : IToolService
 		if (IoFile.Exists(path))
 			return (int)new FileInfo(path).Length;
 
-		_logger.LogError("Tool file '{path}' does not exist.", path);
 		return 0;
 	}
 
