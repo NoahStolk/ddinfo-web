@@ -4,9 +4,9 @@ public record GetToolVersion
 {
 	public string VersionNumber { get; init; } = string.Empty;
 
-	public DateTime? Date { get; init; }
+	public DateTime Date { get; init; }
 
-	public int DownloadCount { get; init; }
+	public int? DownloadCount { get; init; }
 
-	public IReadOnlyList<GetToolVersionChange>? Changes { get; init; } = new List<GetToolVersionChange>();
+	public IReadOnlyList<GetToolVersionChange> Changes { get; init; } = new List<GetToolVersionChange>();
 }

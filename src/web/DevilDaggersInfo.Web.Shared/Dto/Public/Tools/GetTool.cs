@@ -11,6 +11,4 @@ public record GetTool
 	public string LatestCompatibleVersionNumber { get; init; } = string.Empty;
 
 	public IReadOnlyList<GetToolVersion>? Changelog { get; init; }
-
-	public List<GetToolDistribution> Distributions { get; init; } = new();
 }

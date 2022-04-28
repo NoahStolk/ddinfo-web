@@ -49,7 +49,7 @@ public class ToolService : IToolService
 
 		Dictionary<string, List<ChangelogEntry>> deserialized = JsonConvert.DeserializeObject<Dictionary<string, List<ChangelogEntry>>>(File.ReadAllText(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Tools), "Changelogs.json"))) ?? throw new("Could not deserialize Changelogs.json.");
 		deserialized.TryGetValue(name, out List<ChangelogEntry>? changelog);
-		return tool.ToDto(distributions.ToDictionary(d => d, d => GetToolDistributionFileSize(d.ToolName, d.PublishMethod, d.BuildType, d.VersionNumber)), changelog);
+		return tool.ToDto(distributions, changelog);
 	}
 
 	public byte[]? GetToolDistributionFile(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version)

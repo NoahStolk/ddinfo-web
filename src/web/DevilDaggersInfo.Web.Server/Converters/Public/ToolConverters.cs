@@ -5,34 +5,23 @@ namespace DevilDaggersInfo.Web.Server.Converters.Public;
 
 public static class ToolConverters
 {
-	public static GetTool ToDto(this ToolEntity tool, Dictionary<ToolDistributionEntity, int> distributionsWithFileSize, List<ChangelogEntry>? changelog)
+	public static GetTool ToDto(this ToolEntity tool, List<ToolDistributionEntity> distributions, List<ChangelogEntry>? changelog)
 	{
 		return new()
 		{
-			Changelog = distributionsWithFileSize
-				.Select(d =>
+			Changelog = changelog?.ConvertAll(ce =>
+			{
+				ToolDistributionEntity? distribution = distributions.Find(td => td.VersionNumber == ce.VersionNumber);
+				return new GetToolVersion
 				{
-					ChangelogEntry? changelogEntry = changelog?.Find(ce => ce.VersionNumber == d.Key.VersionNumber);
-					return new GetToolVersion
-					{
-						Changes = changelogEntry?.Changes.Select(c => c.ToDto()).ToList(),
-						Date = changelogEntry?.Date,
-						DownloadCount = d.Key.DownloadCount,
-						VersionNumber = d.Key.VersionNumber,
-					};
-				})
-				.ToList(),
+					Changes = ce.Changes.Select(c => c.ToDto()).ToList(),
+					Date = ce.Date,
+					DownloadCount = distribution?.DownloadCount,
+					VersionNumber = ce.VersionNumber,
+				};
+			}),
 			Name = tool.Name,
 			DisplayName = tool.DisplayName,
-			Distributions = distributionsWithFileSize
-				.Select(d => new GetToolDistribution
-				{
-					BuildType = d.Key.BuildType,
-					VersionNumber = d.Key.VersionNumber,
-					FileSize = d.Value,
-					PublishMethod = d.Key.PublishMethod,
-				})
-				.ToList(),
 			LatestCompatibleVersionNumber = tool.RequiredVersionNumber,
 			LatestVersionNumber = tool.CurrentVersionNumber,
 		};
