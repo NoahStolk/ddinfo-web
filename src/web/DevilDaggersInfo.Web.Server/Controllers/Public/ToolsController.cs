@@ -26,11 +26,24 @@ public class ToolsController : ControllerBase
 		return tool;
 	}
 
+	[HttpGet("{toolName}/distribution")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	public async Task<ActionResult<GetToolDistribution>> GetToolDistribution([Required] string toolName, ToolPublishMethod publishMethod, ToolBuildType buildType, string version)
+	{
+		GetToolDistribution? distribution = await _toolService.GetToolDistributionByVersionAsync(toolName, publishMethod, buildType, version);
+		if (distribution == null)
+			return NotFound();
+
+		return distribution;
+	}
+
 	[HttpGet("{toolName}/file")]
 	[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public async Task<ActionResult> GetToolFile([Required] string toolName, ToolPublishMethod publishMethod, ToolBuildType buildType, string version)
+	public async Task<ActionResult> GetToolDistributionFile([Required] string toolName, ToolPublishMethod publishMethod, ToolBuildType buildType, string version)
 	{
 		GetToolDistribution? distribution = await _toolService.GetToolDistributionByVersionAsync(toolName, publishMethod, buildType, version);
 		if (distribution == null)
