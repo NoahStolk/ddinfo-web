@@ -16,8 +16,8 @@ public static class ToolConverters
 		}),
 		Name = tool.Name,
 		DisplayName = tool.DisplayName,
-		LatestCompatibleVersionNumber = tool.RequiredVersionNumber,
-		LatestVersionNumber = tool.CurrentVersionNumber,
+		VersionNumberRequired = tool.RequiredVersionNumber,
+		VersionNumber = tool.CurrentVersionNumber,
 	};
 
 	public static GetToolDistribution ToDto(this ToolDistributionEntity distribution, ToolPublishMethod publishMethod, ToolBuildType buildType, int fileSize) => new()

@@ -6,9 +6,9 @@ public record GetTool
 
 	public string DisplayName { get; init; } = string.Empty;
 
-	public string LatestVersionNumber { get; init; } = string.Empty;
+	public string VersionNumber { get; init; } = string.Empty;
 
-	public string LatestCompatibleVersionNumber { get; init; } = string.Empty;
+	public string VersionNumberRequired { get; init; } = string.Empty;
 
 	public IReadOnlyList<GetToolVersion>? Changelog { get; init; }
 }
