@@ -61,11 +61,7 @@ public class ToolService : IToolService
 
 	public async Task<GetToolDistribution?> GetToolDistributionByVersionAsync(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version)
 	{
-		// Temporary until DDCL 1.8.3.0 is obsolete.
-		if (name == "DevilDaggersCustomLeaderboards" && buildType == ToolBuildType.WindowsWpf)
-			buildType = ToolBuildType.WindowsConsole;
-
-		ToolDistributionEntity? distribution = await _dbContext.ToolDistributions.AsNoTracking().FirstOrDefaultAsync(t => t.ToolName == name && t.PublishMethod == publishMethod && t.BuildType == buildType && t.VersionNumber == version);
+		ToolDistributionEntity? distribution = await _dbContext.ToolDistributions.AsNoTracking().FirstOrDefaultAsync(td => td.ToolName == name && td.PublishMethod == publishMethod && td.BuildType == buildType && td.VersionNumber == version);
 		return distribution?.ToDto(publishMethod, buildType, GetToolDistributionFileSize(distribution.ToolName, publishMethod, buildType, distribution.VersionNumber));
 	}
 
