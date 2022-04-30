@@ -5,27 +5,20 @@ namespace DevilDaggersInfo.Web.Server.Converters.Public;
 
 public static class ToolConverters
 {
-	public static GetTool ToDto(this ToolEntity tool, List<ToolDistributionEntity> distributions, List<ChangelogEntry>? changelog)
+	public static GetTool ToDto(this ToolEntity tool, Dictionary<string, int> downloadCounts, List<ChangelogEntry>? changelog) => new()
 	{
-		return new()
+		Changelog = changelog?.ConvertAll(ce => new GetToolVersion
 		{
-			Changelog = changelog?.ConvertAll(ce =>
-			{
-				ToolDistributionEntity? distribution = distributions.Find(td => td.VersionNumber == ce.VersionNumber);
-				return new GetToolVersion
-				{
-					Changes = ce.Changes.Select(c => c.ToDto()).ToList(),
-					Date = ce.Date,
-					DownloadCount = distribution?.DownloadCount,
-					VersionNumber = ce.VersionNumber,
-				};
-			}),
-			Name = tool.Name,
-			DisplayName = tool.DisplayName,
-			LatestCompatibleVersionNumber = tool.RequiredVersionNumber,
-			LatestVersionNumber = tool.CurrentVersionNumber,
-		};
-	}
+			Changes = ce.Changes.Select(c => c.ToDto()).ToList(),
+			Date = ce.Date,
+			DownloadCount = downloadCounts.ContainsKey(ce.VersionNumber) ? downloadCounts[ce.VersionNumber] : 0,
+			VersionNumber = ce.VersionNumber,
+		}),
+		Name = tool.Name,
+		DisplayName = tool.DisplayName,
+		LatestCompatibleVersionNumber = tool.RequiredVersionNumber,
+		LatestVersionNumber = tool.CurrentVersionNumber,
+	};
 
 	public static GetToolDistribution ToDto(this ToolDistributionEntity distribution, ToolPublishMethod publishMethod, ToolBuildType buildType, int fileSize) => new()
 	{

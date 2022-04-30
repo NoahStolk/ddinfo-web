@@ -6,7 +6,7 @@
 	if (tv.Changes == null)
 		continue;
 
-	string? downloadCountText = tv.Date > FeatureConstants.TrackingToolDownloadCounts ? $" ({(tv.DownloadCount ?? 0).ToString("N0")} download{(tv.DownloadCount == 1 ? null : "s")})" : null;
+	string? downloadCountText = tv.Date > FeatureConstants.TrackingToolDownloadCounts ? $" ({(tv.DownloadCount).ToString("N0")} download{(tv.DownloadCount == 1 ? null : "s")})" : null;
 	string title = $"{tv.VersionNumber} - {tv.Date.ToString(StringFormats.DateFormat)}{downloadCountText}";
 	<Heading Title="@title" Level="3" />
 	@foreach (GetToolVersionChange c in tv.Changes)

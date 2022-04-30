@@ -6,7 +6,7 @@ public record GetToolVersion
 
 	public DateTime Date { get; init; }
 
-	public int? DownloadCount { get; init; }
+	public int DownloadCount { get; init; }
 
 	public IReadOnlyList<GetToolVersionChange> Changes { get; init; } = new List<GetToolVersionChange>();
 }

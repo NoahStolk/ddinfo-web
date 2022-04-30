@@ -17,6 +17,39 @@ public class ToolService : IToolService
 		_logger = logger;
 	}
 
+	public async Task<GetTool?> GetToolAsync(string name)
+	{
+		ToolEntity? tool = await _dbContext.Tools.AsNoTracking().FirstOrDefaultAsync(t => t.Name == name);
+		if (tool == null)
+			return null;
+
+		Dictionary<string, int> downloads = (await _dbContext.ToolDistributions
+			.AsNoTracking()
+			.Select(td => new { td.ToolName, td.VersionNumber, td.DownloadCount })
+			.Where(td => td.ToolName == name)
+			.ToListAsync())
+			.GroupBy(td => td.VersionNumber)
+			.ToDictionary(td => td.Key, td => td.Sum(g => g.DownloadCount));
+
+		Dictionary<string, List<ChangelogEntry>> deserialized = JsonConvert.DeserializeObject<Dictionary<string, List<ChangelogEntry>>>(File.ReadAllText(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Tools), "Changelogs.json"))) ?? throw new("Could not deserialize Changelogs.json.");
+		deserialized.TryGetValue(name, out List<ChangelogEntry>? changelog);
+		return tool.ToDto(downloads, changelog);
+	}
+
+	public byte[]? GetToolDistributionFile(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version)
+	{
+		string path = GetToolDistributionPath(name, publishMethod, buildType, version);
+		if (!IoFile.Exists(path))
+		{
+			_logger.LogError("Tool distribution file at '{path}' does not exist!", path);
+#pragma warning disable S1168 // Empty arrays and collections should be returned instead of null
+			return null;
+#pragma warning restore S1168 // Empty arrays and collections should be returned instead of null
+		}
+
+		return IoFile.ReadAllBytes(path);
+	}
+
 	public async Task<GetToolDistribution?> GetLatestToolDistributionAsync(string name, ToolPublishMethod publishMethod, ToolBuildType buildType)
 	{
 		ToolEntity? tool = await _dbContext.Tools.FirstOrDefaultAsync(t => t.Name == name);
@@ -34,36 +67,6 @@ public class ToolService : IToolService
 
 		ToolDistributionEntity? distribution = await _dbContext.ToolDistributions.AsNoTracking().FirstOrDefaultAsync(t => t.ToolName == name && t.PublishMethod == publishMethod && t.BuildType == buildType && t.VersionNumber == version);
 		return distribution?.ToDto(publishMethod, buildType, GetToolDistributionFileSize(distribution.ToolName, publishMethod, buildType, distribution.VersionNumber));
-	}
-
-	public async Task<GetTool?> GetToolAsync(string name)
-	{
-		ToolEntity? tool = await _dbContext.Tools.AsNoTracking().FirstOrDefaultAsync(t => t.Name == name);
-		if (tool == null)
-			return null;
-
-		List<ToolDistributionEntity> distributions = await _dbContext.ToolDistributions
-			.AsNoTracking()
-			.Where(td => td.ToolName == name)
-			.ToListAsync();
-
-		Dictionary<string, List<ChangelogEntry>> deserialized = JsonConvert.DeserializeObject<Dictionary<string, List<ChangelogEntry>>>(File.ReadAllText(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Tools), "Changelogs.json"))) ?? throw new("Could not deserialize Changelogs.json.");
-		deserialized.TryGetValue(name, out List<ChangelogEntry>? changelog);
-		return tool.ToDto(distributions, changelog);
-	}
-
-	public byte[]? GetToolDistributionFile(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version)
-	{
-		string path = GetToolDistributionPath(name, publishMethod, buildType, version);
-		if (!IoFile.Exists(path))
-		{
-			_logger.LogError("Tool distribution file at '{path}' does not exist!", path);
-#pragma warning disable S1168 // Empty arrays and collections should be returned instead of null
-			return null;
-#pragma warning restore S1168 // Empty arrays and collections should be returned instead of null
-		}
-
-		return IoFile.ReadAllBytes(path);
 	}
 
 	public async Task UpdateToolDistributionStatisticsAsync(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version)
