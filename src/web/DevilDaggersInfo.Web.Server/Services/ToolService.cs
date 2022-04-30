@@ -52,11 +52,12 @@ public class ToolService : IToolService
 
 	public async Task<GetToolDistribution?> GetLatestToolDistributionAsync(string name, ToolPublishMethod publishMethod, ToolBuildType buildType)
 	{
-		ToolEntity? tool = await _dbContext.Tools.FirstOrDefaultAsync(t => t.Name == name);
-		if (tool == null)
+		List<string> versions = await _dbContext.ToolDistributions.Where(td => td.ToolName == name && td.PublishMethod == publishMethod && td.BuildType == td.BuildType).Select(td => td.VersionNumber).ToListAsync();
+		string? highestVersion = versions.OrderByDescending(Version.Parse).FirstOrDefault();
+		if (highestVersion == null)
 			return null;
 
-		return await GetToolDistributionByVersionAsync(name, publishMethod, buildType, tool.CurrentVersionNumber);
+		return await GetToolDistributionByVersionAsync(name, publishMethod, buildType, highestVersion);
 	}
 
 	public async Task<GetToolDistribution?> GetToolDistributionByVersionAsync(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version)
