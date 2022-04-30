@@ -26,19 +26,6 @@ public class ToolsController : ControllerBase
 		return tool;
 	}
 
-	[HttpGet("{toolName}/distribution")]
-	[ProducesResponseType(StatusCodes.Status200OK)]
-	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public async Task<ActionResult<GetToolDistribution>> GetToolDistribution([Required] string toolName, ToolPublishMethod publishMethod, ToolBuildType buildType, string version)
-	{
-		GetToolDistribution? distribution = await _toolService.GetToolDistributionByVersionAsync(toolName, publishMethod, buildType, version);
-		if (distribution == null)
-			return NotFound();
-
-		return distribution;
-	}
-
 	[HttpGet("{toolName}/file")]
 	[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -56,5 +43,31 @@ public class ToolsController : ControllerBase
 		await _toolService.UpdateToolDistributionStatisticsAsync(toolName, publishMethod, buildType, version);
 
 		return File(bytes, MediaTypeNames.Application.Zip, $"{toolName}{version}.zip");
+	}
+
+	[HttpGet("{toolName}/distribution-latest")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	public async Task<ActionResult<GetToolDistribution>> GetLatestToolDistribution([Required] string toolName, ToolPublishMethod publishMethod, ToolBuildType buildType)
+	{
+		GetToolDistribution? distribution = await _toolService.GetLatestToolDistributionAsync(toolName, publishMethod, buildType);
+		if (distribution == null)
+			return NotFound();
+
+		return distribution;
+	}
+
+	[HttpGet("{toolName}/distribution")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	public async Task<ActionResult<GetToolDistribution>> GetToolDistributionByVersion([Required] string toolName, ToolPublishMethod publishMethod, ToolBuildType buildType, string version)
+	{
+		GetToolDistribution? distribution = await _toolService.GetToolDistributionByVersionAsync(toolName, publishMethod, buildType, version);
+		if (distribution == null)
+			return NotFound();
+
+		return distribution;
 	}
 }
