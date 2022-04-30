@@ -90,7 +90,7 @@ public class Startup
 			services.AddHostedService<ResponseTimesBackgroundService>();
 		}
 
-		// Hosted service that run once after startup.
+		// Hosted service that runs once after startup.
 		services.AddHostedService<StartupCacheHostedService>();
 
 		services.AddAuthentication(options =>
