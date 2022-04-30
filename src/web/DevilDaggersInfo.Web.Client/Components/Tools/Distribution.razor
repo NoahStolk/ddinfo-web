@@ -1,0 +1,74 @@
+@using DevilDaggersInfo.Web.Client.Enums
+@using DevilDaggersInfo.Web.Shared.Dto.Public.Tools
+@using DevilDaggersInfo.Web.Shared.Enums
+
+@if (_distribution != null)
+{
+	<div class="grid gap-x-2 border-2 border-gray-3 p-1 grid-cols-2 sm:grid-cols-6">
+		<div class="sm:col-span-2">
+			@{
+				string apiCall = $"/api/tools/{ToolName}/file?publishMethod={PublishMethod}&buildType={BuildType}&version={_distribution.VersionNumber}";
+				string fileName = $"{ToolName}{_distribution.VersionNumber}.zip";
+				<a class="btn btn-download px-2 py-1" href="@apiCall" download="@fileName" role="button" target="_top">Download @_distribution.VersionNumber</a>
+			}
+		</div>
+		<div class="hidden sm:block">
+			@FileSizeUtils.Format(_distribution.FileSize)
+		</div>
+		<div>
+			@OperatingSystems
+		</div>
+		<div class="hidden sm:block col-span-2">
+			@if (Prerequisites.HasFlag(ToolDistributionPrerequisites.DotNet6DesktopRuntime))
+			{
+				<span>Requires <a class="link" href="//dotnet.microsoft.com/en-us/download/dotnet/6.0">.NET 6 <b>desktop</b> runtime installation <b>(x64)</b></a></span>
+			}
+			else if (Prerequisites.HasFlag(ToolDistributionPrerequisites.DotNet6Runtime))
+			{
+				<span>Requires <a class="link" href="//dotnet.microsoft.com/en-us/download/dotnet/6.0">.NET 6 runtime installation <b>(x64)</b></a></span>
+			}
+			else if (Prerequisites == ToolDistributionPrerequisites.None)
+			{
+				<span>None</span>
+			}
+		</div>
+	</div>
+}
+
+@code
+{
+	private GetToolDistribution? _distribution;
+
+	[Parameter]
+	[EditorRequired]
+	public string ToolName { get; set; } = null!;
+
+	[Parameter]
+	[EditorRequired]
+	public ToolPublishMethod PublishMethod { get; set; }
+
+	[Parameter]
+	[EditorRequired]
+	public ToolBuildType BuildType { get; set; }
+
+	[Parameter]
+	[EditorRequired]
+	public string OperatingSystems { get; set; } = null!;
+
+	[Parameter]
+	public ToolDistributionPrerequisites Prerequisites { get; set; }
+
+	[Inject]
+	public PublicApiHttpClient Http { get; set; } = null!;
+
+	protected override async Task OnInitializedAsync()
+	{
+		try
+		{
+			_distribution = await Http.GetLatestToolDistribution(ToolName, PublishMethod, BuildType);
+		}
+		catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+		{
+		}
+	}
+}

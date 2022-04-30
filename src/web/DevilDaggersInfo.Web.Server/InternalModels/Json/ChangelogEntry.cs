@@ -5,7 +5,7 @@ namespace DevilDaggersInfo.Web.Server.InternalModels.Json;
 /// </summary>
 public class ChangelogEntry
 {
-	public Version VersionNumber { get; init; } = null!;
+	public string VersionNumber { get; init; } = string.Empty;
 
 	public DateTime Date { get; init; }
 

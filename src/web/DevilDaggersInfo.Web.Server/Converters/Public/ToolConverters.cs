@@ -1,4 +1,3 @@
-using DevilDaggersInfo.Web.Server.InternalModels;
 using DevilDaggersInfo.Web.Server.InternalModels.Json;
 using DevilDaggersInfo.Web.Shared.Dto.Public.Tools;
 
@@ -6,33 +5,32 @@ namespace DevilDaggersInfo.Web.Server.Converters.Public;
 
 public static class ToolConverters
 {
-	public static GetTool ToGetTool(this Tool tool, List<ToolStatisticEntity> toolStatistics, int fileSize) => new()
+	public static GetTool ToDto(this ToolEntity tool, Dictionary<string, int> downloadCounts, List<ChangelogEntry>? changelog) => new()
 	{
-		DisplayName = tool.DisplayName,
-		FileSize = fileSize,
+		Changelog = changelog?.ConvertAll(ce => new GetToolVersion
+		{
+			Changes = ce.Changes.Select(c => c.ToDto()).ToList(),
+			Date = ce.Date,
+			DownloadCount = downloadCounts.ContainsKey(ce.VersionNumber) ? downloadCounts[ce.VersionNumber] : 0,
+			VersionNumber = ce.VersionNumber,
+		}),
 		Name = tool.Name,
-		VersionNumber = tool.VersionNumber,
-		VersionNumberRequired = tool.VersionNumberRequired,
-		Changelog = tool.Changelog?
-			.Select(ce => ce.ToGetToolVersion(toolStatistics.Find(ts => ts.VersionNumber == ce.VersionNumber.ToString())))
-			.ToList(),
+		DisplayName = tool.DisplayName,
+		VersionNumberRequired = tool.RequiredVersionNumber,
+		VersionNumber = tool.CurrentVersionNumber,
 	};
 
-	private static GetToolVersion ToGetToolVersion(this ChangelogEntry changelogEntry, ToolStatisticEntity? toolStatistic) => new()
+	public static GetToolDistribution ToDto(this ToolDistributionEntity distribution, ToolPublishMethod publishMethod, ToolBuildType buildType, int fileSize) => new()
 	{
-		Changes = changelogEntry.Changes
-			.Select(c => c.ToGetToolVersionChange())
-			.ToList(),
-		DownloadCount = toolStatistic?.DownloadCount ?? 0,
-		Date = changelogEntry.Date,
-		VersionNumber = changelogEntry.VersionNumber,
+		BuildType = buildType,
+		PublishMethod = publishMethod,
+		VersionNumber = distribution.VersionNumber,
+		FileSize = fileSize,
 	};
 
-	private static GetToolVersionChange ToGetToolVersionChange(this Change change) => new()
+	public static GetToolVersionChange ToDto(this Change change) => new()
 	{
 		Description = change.Description,
-		SubChanges = change.SubChanges?
-			.Select(c => c.ToGetToolVersionChange())
-			.ToList(),
+		SubChanges = change.SubChanges?.Select(c => c.ToDto()).ToList(),
 	};
 }

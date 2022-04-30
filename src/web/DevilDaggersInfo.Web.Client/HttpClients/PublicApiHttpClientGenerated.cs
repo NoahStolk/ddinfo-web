@@ -408,9 +408,36 @@ public partial class PublicApiHttpClient
 		return await SendGetRequest<GetTool>($"api/tools/{toolName}");
 	}
 
-	public async Task<Task> GetToolFile(string toolName)
+	public async Task<Task> GetToolDistributionFile(string toolName, ToolPublishMethod publishMethod, ToolBuildType buildType, string version)
 	{
-		return await SendGetRequest<Task>($"api/tools/{toolName}/file");
+		Dictionary<string, object?> queryParameters = new()
+		{
+			{ nameof(publishMethod), publishMethod },
+			{ nameof(buildType), buildType },
+			{ nameof(version), version }
+		};
+		return await SendGetRequest<Task>(UrlBuilderUtils.BuildUrlWithQuery($"api/tools/{toolName}/file", queryParameters));
+	}
+
+	public async Task<GetToolDistribution> GetLatestToolDistribution(string toolName, ToolPublishMethod publishMethod, ToolBuildType buildType)
+	{
+		Dictionary<string, object?> queryParameters = new()
+		{
+			{ nameof(publishMethod), publishMethod },
+			{ nameof(buildType), buildType }
+		};
+		return await SendGetRequest<GetToolDistribution>(UrlBuilderUtils.BuildUrlWithQuery($"api/tools/{toolName}/distribution-latest", queryParameters));
+	}
+
+	public async Task<GetToolDistribution> GetToolDistributionByVersion(string toolName, ToolPublishMethod publishMethod, ToolBuildType buildType, string version)
+	{
+		Dictionary<string, object?> queryParameters = new()
+		{
+			{ nameof(publishMethod), publishMethod },
+			{ nameof(buildType), buildType },
+			{ nameof(version), version }
+		};
+		return await SendGetRequest<GetToolDistribution>(UrlBuilderUtils.BuildUrlWithQuery($"api/tools/{toolName}/distribution", queryParameters));
 	}
 
 	public async Task<GetWorldRecordDataContainer> GetWorldRecordData()

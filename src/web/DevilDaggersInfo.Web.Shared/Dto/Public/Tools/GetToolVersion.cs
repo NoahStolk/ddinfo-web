@@ -2,7 +2,7 @@ namespace DevilDaggersInfo.Web.Shared.Dto.Public.Tools;
 
 public record GetToolVersion
 {
-	public Version VersionNumber { get; init; } = null!;
+	public string VersionNumber { get; init; } = string.Empty;
 
 	public DateTime Date { get; init; }
 
