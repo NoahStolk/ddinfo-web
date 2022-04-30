@@ -17,8 +17,8 @@ else
 
 	<Heading Title="Distributions" Level="2" />
 	<Distributions>
-		<Distribution ToolName="@GetTool.Name" PublishMethod="ToolPublishMethod.SelfContained" BuildType="ToolBuildType.WindowsConsole" OperatingSystems="Windows 8+" />
-		<Distribution ToolName="@GetTool.Name" PublishMethod="ToolPublishMethod.Default" BuildType="ToolBuildType.WindowsConsole" OperatingSystems="Windows 7+" Prerequisites="ToolDistributionPrerequisites.DotNet6Runtime" />
+		<Distribution ToolName="@GetTool.Name" Note="Recommended" PublishMethod="ToolPublishMethod.SelfContained" BuildType="ToolBuildType.WindowsConsole" OperatingSystems="Windows 8+" Recommended=true />
+		<Distribution ToolName="@GetTool.Name" Note="Use for Windows 7" PublishMethod="ToolPublishMethod.Default" BuildType="ToolBuildType.WindowsConsole" OperatingSystems="Windows 7+" Prerequisites="ToolDistributionPrerequisites.DotNet6Runtime" />
 	</Distributions>
 
 	<img src="/images/tools/ddcl.png" class="object-contain max-h-160 pt-3" />
