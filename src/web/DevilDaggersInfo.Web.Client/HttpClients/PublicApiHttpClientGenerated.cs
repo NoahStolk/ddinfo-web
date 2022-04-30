@@ -408,7 +408,7 @@ public partial class PublicApiHttpClient
 		return await SendGetRequest<GetTool>($"api/tools/{toolName}");
 	}
 
-	public async Task<Task> GetToolDistributionFile(string toolName, ToolPublishMethod publishMethod, ToolBuildType buildType, string version)
+	public async Task<Task> GetToolDistributionFile(string toolName, ToolPublishMethod publishMethod, ToolBuildType buildType, string? version)
 	{
 		Dictionary<string, object?> queryParameters = new()
 		{
