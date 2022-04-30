@@ -30,19 +30,24 @@ public class ToolsController : ControllerBase
 	[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public async Task<ActionResult> GetToolDistributionFile([Required] string toolName, ToolPublishMethod publishMethod, ToolBuildType buildType, string version)
+	public async Task<ActionResult> GetToolDistributionFile([Required] string toolName, ToolPublishMethod publishMethod, ToolBuildType buildType, string? version = null)
 	{
-		GetToolDistribution? distribution = await _toolService.GetToolDistributionByVersionAsync(toolName, publishMethod, buildType, version);
+		GetToolDistribution? distribution;
+		if (version == null)
+			distribution = await _toolService.GetLatestToolDistributionAsync(toolName, publishMethod, buildType);
+		else
+			distribution = await _toolService.GetToolDistributionByVersionAsync(toolName, publishMethod, buildType, version);
+
 		if (distribution == null)
 			return NotFound();
 
-		byte[]? bytes = _toolService.GetToolDistributionFile(toolName, publishMethod, buildType, version);
+		byte[]? bytes = _toolService.GetToolDistributionFile(toolName, publishMethod, buildType, distribution.VersionNumber);
 		if (bytes == null)
 			return NotFound();
 
-		await _toolService.UpdateToolDistributionStatisticsAsync(toolName, publishMethod, buildType, version);
+		await _toolService.UpdateToolDistributionStatisticsAsync(toolName, publishMethod, buildType, distribution.VersionNumber);
 
-		return File(bytes, MediaTypeNames.Application.Zip, $"{toolName}{version}.zip");
+		return File(bytes, MediaTypeNames.Application.Zip, $"{toolName}{distribution.VersionNumber}.zip");
 	}
 
 	[HttpGet("{toolName}/distribution-latest")]
