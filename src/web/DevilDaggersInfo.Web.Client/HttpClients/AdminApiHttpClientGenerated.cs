@@ -8,6 +8,7 @@ using DevilDaggersInfo.Web.Shared.Dto.Admin.Health;
 using DevilDaggersInfo.Web.Shared.Dto.Admin.Mods;
 using DevilDaggersInfo.Web.Shared.Dto.Admin.Players;
 using DevilDaggersInfo.Web.Shared.Dto.Admin.Spawnsets;
+using DevilDaggersInfo.Web.Shared.Dto.Admin.Tools;
 using DevilDaggersInfo.Web.Shared.Dto.Admin.Users;
 using DevilDaggersInfo.Web.Shared.Enums;
 using DevilDaggersInfo.Web.Shared.Enums.Sortings.Admin;
@@ -241,6 +242,11 @@ public partial class AdminApiHttpClient
 	public async Task<HttpResponseMessage> DeleteSpawnsetById(int id)
 	{
 		return await SendRequest(new HttpMethod("DELETE"), $"api/admin/spawnsets/{id}");
+	}
+
+	public async Task<HttpResponseMessage> AddDistribution(AddDistribution distribution)
+	{
+		return await SendRequest(new HttpMethod("POST"), $"api/admin/tools/", JsonContent.Create(distribution));
 	}
 
 	public async Task<List<GetUser>> GetUsers()

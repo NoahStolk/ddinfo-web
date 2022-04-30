@@ -83,6 +83,37 @@ public class ToolService : IToolService
 		await _dbContext.SaveChangesAsync();
 	}
 
+	public async Task AddDistribution(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version, byte[] zipFileContents)
+	{
+		if (!Version.TryParse(version, out _))
+			throw new InvalidOperationException($"'{version}' is not a correct version number.");
+
+		ToolEntity? tool = await _dbContext.Tools.AsNoTracking().FirstOrDefaultAsync(t => t.Name == name);
+		if (tool == null)
+			throw new InvalidOperationException($"Tool with name '{name}' does not exist.");
+
+		if (await _dbContext.ToolDistributions.AnyAsync(td => td.ToolName == name && td.PublishMethod == publishMethod && td.BuildType == buildType && td.VersionNumber == version))
+			throw new InvalidOperationException("Distribution already exists.");
+
+		string path = GetToolDistributionPath(name, publishMethod, buildType, version);
+		if (File.Exists(path))
+			throw new InvalidOperationException("File for distribution already exists, but does not exist in the database. Please review the database and the file system.");
+
+		File.WriteAllBytes(path, zipFileContents);
+
+		ToolDistributionEntity distribution = new()
+		{
+			BuildType = buildType,
+			PublishMethod = publishMethod,
+			ToolName = name,
+			VersionNumber = version,
+		};
+		_dbContext.ToolDistributions.Add(distribution);
+		await _dbContext.SaveChangesAsync();
+
+		_logger.LogWarning("{tool} {version} {buildType} {publishMethod} was published.", name, version, buildType, publishMethod);
+	}
+
 	#region Utils
 
 	private int GetToolDistributionFileSize(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version)
