@@ -15,9 +15,10 @@ else
 {
 	<BuildInfo GetTool="GetTool" />
 
+	<Heading Title="Distributions" Level="2" />
 	<Distributions>
-		<Distribution ToolName="@GetTool.Name" PublishMethod="ToolPublishMethod.SelfContained" BuildType="ToolBuildType.WindowsWpf" DisplayName="DDAE" OperatingSystems="Windows 8+" />
-		<Distribution ToolName="@GetTool.Name" PublishMethod="ToolPublishMethod.RequiresDotNet6Runtime" BuildType="ToolBuildType.WindowsWpf" DisplayName="DDAE" OperatingSystems="Windows 7+" Prerequisites="ToolDistributionPrerequisites.DotNet6DesktopRuntime" />
+		<Distribution ToolName="@GetTool.Name" PublishMethod="ToolPublishMethod.SelfContained" BuildType="ToolBuildType.WindowsWpf" OperatingSystems="Windows 8+" />
+		<Distribution ToolName="@GetTool.Name" PublishMethod="ToolPublishMethod.RequiresDotNet6Runtime" BuildType="ToolBuildType.WindowsWpf" OperatingSystems="Windows 7+" Prerequisites="ToolDistributionPrerequisites.DotNet6DesktopRuntime" />
 	</Distributions>
 
 	<img src="/images/tools/ddae.png" class="object-contain max-h-160 pt-3" />

@@ -14,10 +14,11 @@
 else
 {
 	<BuildInfo GetTool="GetTool" />
-	
+
+	<Heading Title="Distributions" Level="2" />
 	<Distributions>
-		<Distribution ToolName="@GetTool.Name" PublishMethod="ToolPublishMethod.SelfContained" BuildType="ToolBuildType.WindowsConsole" DisplayName="DDCL" OperatingSystems="Windows 8+" />
-		<Distribution ToolName="@GetTool.Name" PublishMethod="ToolPublishMethod.RequiresDotNet6Runtime" BuildType="ToolBuildType.WindowsConsole" DisplayName="DDCL" OperatingSystems="Windows 7+" Prerequisites="ToolDistributionPrerequisites.DotNet6Runtime" />
+		<Distribution ToolName="@GetTool.Name" PublishMethod="ToolPublishMethod.SelfContained" BuildType="ToolBuildType.WindowsConsole" OperatingSystems="Windows 8+" />
+		<Distribution ToolName="@GetTool.Name" PublishMethod="ToolPublishMethod.RequiresDotNet6Runtime" BuildType="ToolBuildType.WindowsConsole" OperatingSystems="Windows 7+" Prerequisites="ToolDistributionPrerequisites.DotNet6Runtime" />
 	</Distributions>
 
 	<img src="/images/tools/ddcl.png" class="object-contain max-h-160 pt-3" />
