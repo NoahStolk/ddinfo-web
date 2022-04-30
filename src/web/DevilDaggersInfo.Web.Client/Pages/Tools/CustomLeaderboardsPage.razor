@@ -1,4 +1,5 @@
 @page "/tools/custom-leaderboards"
+@using DevilDaggersInfo.Web.Client.Enums
 @using DevilDaggersInfo.Web.Shared.Dto.Public.Tools
 @using DevilDaggersInfo.Web.Shared.Dto.Public.CustomLeaderboards
 @using DevilDaggersInfo.Web.Shared.Enums
@@ -13,17 +14,11 @@
 else
 {
 	<BuildInfo GetTool="GetTool" />
-
-	<div class="grid gap-x-2 grid-cols-4 max-w-sm">
-		<div>Windows 8+</div>
-		<div>Windows 7 (requires <a href="//dotnet.microsoft.com/en-us/download/dotnet/6.0">.NET 6 runtime installation</a>)</div>
-		<div>Mac</div>
-		<div>Linux</div>
-		<Distribution Name="@GetTool.Name" PublishMethod="ToolPublishMethod.SelfContained" BuildType="ToolBuildType.WindowsConsole" Version="@GetTool.LatestVersionNumber" />
-		<Distribution Name="@GetTool.Name" PublishMethod="ToolPublishMethod.RequiresDotNet6Runtime" BuildType="ToolBuildType.WindowsConsole" Version="@GetTool.LatestVersionNumber" />
-		<div class="px-1 py-2">?</div>
-		<div class="px-1 py-2">?</div>
-	</div>
+	
+	<Distributions>
+		<Distribution ToolName="@GetTool.Name" PublishMethod="ToolPublishMethod.SelfContained" BuildType="ToolBuildType.WindowsConsole" DisplayName="DDCL" OperatingSystems="Windows 8+" />
+		<Distribution ToolName="@GetTool.Name" PublishMethod="ToolPublishMethod.RequiresDotNet6Runtime" BuildType="ToolBuildType.WindowsConsole" DisplayName="DDCL" OperatingSystems="Windows 7+" Prerequisites="ToolDistributionPrerequisites.DotNet6Runtime" />
+	</Distributions>
 
 	<img src="/images/tools/ddcl.png" class="object-contain max-h-160 pt-3" />
 

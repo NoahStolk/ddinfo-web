@@ -1,0 +1,15 @@
+<div class="hidden sm:grid gap-x-2 grid-cols-4">
+	<div class="font-bold">Download</div>
+	<div class="font-bold">Size</div>
+	<div class="font-bold">OS</div>
+	<div class="font-bold">Prerequisites</div>
+
+	@ChildContent
+</div>
+
+@code
+{
+	[Parameter]
+	[EditorRequired]
+	public RenderFragment ChildContent { get; set; } = null!;
+}

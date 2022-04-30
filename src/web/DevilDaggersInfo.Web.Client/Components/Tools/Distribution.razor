@@ -1,16 +1,36 @@
+@using DevilDaggersInfo.Web.Client.Enums
 @using DevilDaggersInfo.Web.Shared.Dto.Public.Tools
 @using DevilDaggersInfo.Web.Shared.Enums
 
-<div class="px-1 py-2">
-	@if (_distribution == null)
-	{
-		<span>N/A</span>
-	}
-	else
-	{
-		<a class="btn btn-download px-2 py-1" href="@GetApiCall()" download="@GetFileName()" role="button" target="_top">Download @_distribution.VersionNumber (@FileSizeUtils.Format(_distribution.FileSize))</a>
-	}
-</div>
+@if (_distribution == null)
+{
+	<span>Unavailable</span>
+	<span></span>
+	<span></span>
+	<span></span>
+}
+else
+{
+	<div>
+		@{
+			string apiCall = $"/api/tools/{ToolName}/file?publishMethod={PublishMethod}&buildType={BuildType}&version={_distribution.VersionNumber}";
+			string fileName = $"{ToolName}{_distribution.VersionNumber}.zip";
+			<a class="btn btn-download px-2 py-1" href="@apiCall" download="@fileName" role="button" target="_top">Download @DisplayName @_distribution.VersionNumber</a>
+		}
+	</div>
+	<div>@FileSizeUtils.Format(_distribution.FileSize)</div>
+	<div>@OperatingSystems</div>
+	<div>
+		@if (Prerequisites.HasFlag(ToolDistributionPrerequisites.DotNet6DesktopRuntime))
+		{
+			<span>Requires <a href="//dotnet.microsoft.com/en-us/download/dotnet/6.0">.NET 6 desktop runtime installation</a></span>
+		}
+		@if (Prerequisites.HasFlag(ToolDistributionPrerequisites.DotNet6Runtime))
+		{
+			<span>Requires <a href="//dotnet.microsoft.com/en-us/download/dotnet/6.0">.NET 6 runtime installation</a></span>
+		}
+	</div>
+}
 
 @code
 {
@@ -18,7 +38,7 @@
 
 	[Parameter]
 	[EditorRequired]
-	public string Name { get; set; } = null!;
+	public string ToolName { get; set; } = null!;
 
 	[Parameter]
 	[EditorRequired]
@@ -30,7 +50,14 @@
 
 	[Parameter]
 	[EditorRequired]
-	public string Version { get; set; } = null!;
+	public string DisplayName { get; set; } = null!;
+
+	[Parameter]
+	[EditorRequired]
+	public string OperatingSystems { get; set; } = null!;
+
+	[Parameter]
+	public ToolDistributionPrerequisites Prerequisites { get; set; }
 
 	[Inject]
 	public PublicApiHttpClient Http { get; set; } = null!;
@@ -39,20 +66,10 @@
 	{
 		try
 		{
-			_distribution = await Http.GetToolDistribution(Name, PublishMethod, BuildType, Version);
+			_distribution = await Http.GetLatestToolDistribution(ToolName, PublishMethod, BuildType);
 		}
 		catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
 		{
 		}
-	}
-
-	private string GetFileName()
-	{
-		return $"{Name}{Version}.zip";
-	}
-
-	private string GetApiCall()
-	{
-		return $"/api/tools/{Name}/file?publishMethod={PublishMethod}&buildType={BuildType}&version={Version}";
 	}
 }
