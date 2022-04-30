@@ -21,11 +21,11 @@
 		<div class="hidden sm:block col-span-2">
 			@if (Prerequisites.HasFlag(ToolDistributionPrerequisites.DotNet6DesktopRuntime))
 			{
-				<span>Requires <a class="link" href="//dotnet.microsoft.com/en-us/download/dotnet/6.0">.NET 6 desktop runtime installation</a></span>
+				<span>Requires <a class="link" href="//dotnet.microsoft.com/en-us/download/dotnet/6.0">.NET 6 <b>desktop</b> runtime installation <b>(x64)</b></a></span>
 			}
 			else if (Prerequisites.HasFlag(ToolDistributionPrerequisites.DotNet6Runtime))
 			{
-				<span>Requires <a class="link" href="//dotnet.microsoft.com/en-us/download/dotnet/6.0">.NET 6 runtime installation</a></span>
+				<span>Requires <a class="link" href="//dotnet.microsoft.com/en-us/download/dotnet/6.0">.NET 6 runtime installation <b>(x64)</b></a></span>
 			}
 			else if (Prerequisites == ToolDistributionPrerequisites.None)
 			{
