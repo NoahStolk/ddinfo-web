@@ -75,7 +75,7 @@ public class BinaryState
 
 	public void ExtractChunks(string directory)
 	{
-		foreach (AssetKey assetKey in _visualChunks.Select(kvp => kvp.Key))
+		foreach (AssetKey assetKey in _visualChunks.Where(kvp => kvp.Value.IsSelected).Select(kvp => kvp.Key))
 		{
 			byte[] extractedBuffer = Binary.ExtractAsset(assetKey);
 
