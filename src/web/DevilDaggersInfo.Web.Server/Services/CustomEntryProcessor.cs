@@ -323,7 +323,7 @@ public class CustomEntryProcessor
 		int levelUpTime3Diff = customEntry.LevelUpTime3 - oldLevelUpTime3;
 		int levelUpTime4Diff = customEntry.LevelUpTime4 - oldLevelUpTime4;
 
-		await TrySendLeaderboardMessage(customLeaderboard, $"`{uploadRequest.PlayerName}` just got {FormatTimeString(uploadRequest.TimeInSeconds)} seconds on the `{spawnsetName}` leaderboard, beating their previous highscore of {FormatTimeString(uploadRequest.TimeInSeconds - timeDiff.ToSecondsTime())} by {FormatTimeString(Math.Abs(timeDiff.ToSecondsTime()))} seconds!", rank, entries.Count, uploadRequest.TimeInSeconds.To10thMilliTime());
+		await TrySendLeaderboardMessage(customLeaderboard, $"`{uploadRequest.PlayerName}` just got {FormatTimeString(customEntry.Time.ToSecondsTime())} seconds on the `{spawnsetName}` leaderboard, beating their previous highscore of {FormatTimeString((customEntry.Time - timeDiff).ToSecondsTime())} by {FormatTimeString(Math.Abs(timeDiff.ToSecondsTime()))} seconds!", rank, entries.Count, customEntry.Time);
 		Log(uploadRequest, spawnsetName);
 
 		List<int> replayIds = GetExistingReplayIds(entries.ConvertAll(ce => ce.Id));
