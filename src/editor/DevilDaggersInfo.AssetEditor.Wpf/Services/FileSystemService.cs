@@ -17,8 +17,6 @@ public class FileSystemService : IFileSystemService
 		if (assetType == AssetType.Shader)
 			throw new NotSupportedException($"Asset type '{AssetType.Shader}' has multiple file extensions.");
 
-		string fileExtension = assetType.GetFileExtension();
-
 		string fileTypeName = assetType switch
 		{
 			AssetType.Audio => "Audio",
@@ -28,14 +26,18 @@ public class FileSystemService : IFileSystemService
 			_ => throw new NotSupportedException($"Asset type '{assetType}' is not supported."),
 		};
 
-		return BuildFilter(fileTypeName, fileExtension);
+		return BuildFilter(fileTypeName, false, $"*{assetType.GetFileExtension()}");
 	}
 
-	public string GetVertexShaderFilter() => BuildFilter("Vertex shader", ".vert");
+	public string GetVertexShaderFilter() => BuildFilter("Vertex shader", true, "*.vert", "*.glsl");
 
-	public string GetFragmentShaderFilter() => BuildFilter("Fragment shader", ".frag");
+	public string GetFragmentShaderFilter() => BuildFilter("Fragment shader", true, "*.frag", "*.glsl");
 
-	private static string BuildFilter(string fileTypeName, string fileExtension) => $"{fileTypeName} files (*{fileExtension})|*{fileExtension}";
+	private static string BuildFilter(string fileTypeName, bool includeAllFiles, params string[] fileExtensionPatterns)
+	{
+		string patterns = string.Join(";", fileExtensionPatterns);
+		return $"{fileTypeName} files ({patterns})|{patterns}{(includeAllFiles ? "|All files (*.*)|*.*" : null)}";
+	}
 
 	public IFileSystemService.FileResult? Open(string extensionFilter)
 	{
