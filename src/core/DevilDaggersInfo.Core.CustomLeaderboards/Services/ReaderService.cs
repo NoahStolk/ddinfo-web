@@ -1,6 +1,7 @@
 using DevilDaggersCustomLeaderboards.Clients;
 using DevilDaggersInfo.Core.CustomLeaderboards.Memory;
 using System.Diagnostics;
+using System.Text;
 
 namespace DevilDaggersInfo.Core.CustomLeaderboards.Services;
 
@@ -121,6 +122,17 @@ public class ReaderService
 		}
 
 		return gameData;
+	}
+
+	public bool IsReplayValid()
+	{
+		if (Process == null || MainBlock.ReplayLength <= 0 || MainBlock.ReplayLength > 30 * 1024 * 1024)
+			return false;
+
+		byte[] headerBytes = new byte[6];
+		_nativeMemoryService.ReadMemory(Process, MainBlock.ReplayBase, headerBytes, 0, headerBytes.Length);
+		string header = Encoding.Default.GetString(headerBytes);
+		return header == "ddrpl.";
 	}
 
 	public byte[] GetReplayForUpload()

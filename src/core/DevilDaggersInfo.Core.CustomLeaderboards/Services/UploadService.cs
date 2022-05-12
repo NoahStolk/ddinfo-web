@@ -7,13 +7,13 @@ namespace DevilDaggersInfo.Core.CustomLeaderboards.Services;
 public class UploadService
 {
 	private readonly NetworkService _networkService;
-	private readonly ReaderService _memoryService;
+	private readonly ReaderService _readerService;
 	private readonly IEncryptionService _encryptionService;
 
-	public UploadService(NetworkService networkService, ReaderService memoryService, IEncryptionService encryptionService)
+	public UploadService(NetworkService networkService, ReaderService readerService, IEncryptionService encryptionService)
 	{
 		_networkService = networkService;
-		_memoryService = memoryService;
+		_readerService = readerService;
 		_encryptionService = encryptionService;
 	}
 
@@ -23,82 +23,82 @@ public class UploadService
 		Cmd.WriteLine("Checking if this spawnset has a leaderboard...");
 		Cmd.WriteLine();
 
-		if (!await _networkService.CheckIfLeaderboardExists(_memoryService.MainBlock.SurvivalHashMd5))
+		if (!await _networkService.CheckIfLeaderboardExists(_readerService.MainBlock.SurvivalHashMd5))
 			return null;
 
 		Console.Clear();
 		Cmd.WriteLine("Uploading...");
 		Cmd.WriteLine();
 
-		byte[] timeAsBytes = BitConverter.GetBytes(_memoryService.MainBlock.Time);
-		byte[] levelUpTime2AsBytes = BitConverter.GetBytes(_memoryService.MainBlock.LevelUpTime2);
-		byte[] levelUpTime3AsBytes = BitConverter.GetBytes(_memoryService.MainBlock.LevelUpTime3);
-		byte[] levelUpTime4AsBytes = BitConverter.GetBytes(_memoryService.MainBlock.LevelUpTime4);
+		byte[] timeAsBytes = BitConverter.GetBytes(_readerService.MainBlock.Time);
+		byte[] levelUpTime2AsBytes = BitConverter.GetBytes(_readerService.MainBlock.LevelUpTime2);
+		byte[] levelUpTime3AsBytes = BitConverter.GetBytes(_readerService.MainBlock.LevelUpTime3);
+		byte[] levelUpTime4AsBytes = BitConverter.GetBytes(_readerService.MainBlock.LevelUpTime4);
 
 		string toEncrypt = string.Join(
 			";",
-			_memoryService.MainBlock.PlayerId,
+			_readerService.MainBlock.PlayerId,
 			timeAsBytes.ByteArrayToHexString(),
-			_memoryService.MainBlock.GemsCollected,
-			_memoryService.MainBlock.GemsDespawned,
-			_memoryService.MainBlock.GemsEaten,
-			_memoryService.MainBlock.GemsTotal,
-			_memoryService.MainBlock.EnemiesAlive,
-			_memoryService.MainBlock.EnemiesKilled,
-			_memoryService.MainBlock.DeathType,
-			_memoryService.MainBlock.DaggersHit,
-			_memoryService.MainBlock.DaggersFired,
-			_memoryService.MainBlock.HomingStored,
-			_memoryService.MainBlock.HomingEaten,
-			_memoryService.MainBlock.IsReplay,
-			_memoryService.MainBlock.Status,
-			_memoryService.MainBlock.SurvivalHashMd5.ByteArrayToHexString(),
+			_readerService.MainBlock.GemsCollected,
+			_readerService.MainBlock.GemsDespawned,
+			_readerService.MainBlock.GemsEaten,
+			_readerService.MainBlock.GemsTotal,
+			_readerService.MainBlock.EnemiesAlive,
+			_readerService.MainBlock.EnemiesKilled,
+			_readerService.MainBlock.DeathType,
+			_readerService.MainBlock.DaggersHit,
+			_readerService.MainBlock.DaggersFired,
+			_readerService.MainBlock.HomingStored,
+			_readerService.MainBlock.HomingEaten,
+			_readerService.MainBlock.IsReplay,
+			_readerService.MainBlock.Status,
+			_readerService.MainBlock.SurvivalHashMd5.ByteArrayToHexString(),
 			levelUpTime2AsBytes.ByteArrayToHexString(),
 			levelUpTime3AsBytes.ByteArrayToHexString(),
 			levelUpTime4AsBytes.ByteArrayToHexString(),
-			_memoryService.MainBlock.GameMode,
-			_memoryService.MainBlock.TimeAttackOrRaceFinished,
-			_memoryService.MainBlock.ProhibitedMods);
+			_readerService.MainBlock.GameMode,
+			_readerService.MainBlock.TimeAttackOrRaceFinished,
+			_readerService.MainBlock.ProhibitedMods);
 		string validation = _encryptionService.EncryptAndEncode(toEncrypt);
 
 		AddUploadRequest uploadRequest = new()
 		{
-			DaggersFired = _memoryService.MainBlock.DaggersFired,
-			DaggersHit = _memoryService.MainBlock.DaggersHit,
+			DaggersFired = _readerService.MainBlock.DaggersFired,
+			DaggersHit = _readerService.MainBlock.DaggersHit,
 			ClientVersion = clientInfo.ApplicationVersion,
-			DeathType = _memoryService.MainBlock.DeathType,
-			EnemiesAlive = _memoryService.MainBlock.EnemiesAlive,
-			GemsCollected = _memoryService.MainBlock.GemsCollected,
-			GemsDespawned = _memoryService.MainBlock.GemsDespawned,
-			GemsEaten = _memoryService.MainBlock.GemsEaten,
-			GemsTotal = _memoryService.MainBlock.GemsTotal,
-			HomingStored = _memoryService.MainBlock.HomingStored,
-			HomingEaten = _memoryService.MainBlock.HomingEaten,
-			EnemiesKilled = _memoryService.MainBlock.EnemiesKilled,
-			LevelUpTime2InSeconds = _memoryService.MainBlock.LevelUpTime2,
-			LevelUpTime3InSeconds = _memoryService.MainBlock.LevelUpTime3,
-			LevelUpTime4InSeconds = _memoryService.MainBlock.LevelUpTime4,
+			DeathType = _readerService.MainBlock.DeathType,
+			EnemiesAlive = _readerService.MainBlock.EnemiesAlive,
+			GemsCollected = _readerService.MainBlock.GemsCollected,
+			GemsDespawned = _readerService.MainBlock.GemsDespawned,
+			GemsEaten = _readerService.MainBlock.GemsEaten,
+			GemsTotal = _readerService.MainBlock.GemsTotal,
+			HomingStored = _readerService.MainBlock.HomingStored,
+			HomingEaten = _readerService.MainBlock.HomingEaten,
+			EnemiesKilled = _readerService.MainBlock.EnemiesKilled,
+			LevelUpTime2InSeconds = _readerService.MainBlock.LevelUpTime2,
+			LevelUpTime3InSeconds = _readerService.MainBlock.LevelUpTime3,
+			LevelUpTime4InSeconds = _readerService.MainBlock.LevelUpTime4,
 			LevelUpTime2AsBytes = levelUpTime2AsBytes,
 			LevelUpTime3AsBytes = levelUpTime3AsBytes,
 			LevelUpTime4AsBytes = levelUpTime4AsBytes,
-			PlayerId = _memoryService.MainBlock.PlayerId,
-			SurvivalHashMd5 = _memoryService.MainBlock.SurvivalHashMd5,
-			TimeInSeconds = _memoryService.MainBlock.Time,
+			PlayerId = _readerService.MainBlock.PlayerId,
+			SurvivalHashMd5 = _readerService.MainBlock.SurvivalHashMd5,
+			TimeInSeconds = _readerService.MainBlock.Time,
 			TimeAsBytes = timeAsBytes,
-			PlayerName = _memoryService.MainBlock.PlayerName,
-			IsReplay = _memoryService.MainBlock.IsReplay,
+			PlayerName = _readerService.MainBlock.PlayerName,
+			IsReplay = _readerService.MainBlock.IsReplay,
 			Validation = HttpUtility.HtmlEncode(validation),
 			ValidationVersion = 2,
-			GameData = _memoryService.GetGameDataForUpload(),
+			GameData = _readerService.GetGameDataForUpload(),
 			BuildMode = clientInfo.ApplicationBuildMode,
 			OperatingSystem = clientInfo.OperatingSystem,
-			ProhibitedMods = _memoryService.MainBlock.ProhibitedMods,
+			ProhibitedMods = _readerService.MainBlock.ProhibitedMods,
 			Client = clientInfo.ApplicationName,
-			ReplayData = _memoryService.GetReplayForUpload(),
-			Status = _memoryService.MainBlock.Status,
-			ReplayPlayerId = _memoryService.MainBlock.ReplayPlayerId,
-			GameMode = _memoryService.MainBlock.GameMode,
-			TimeAttackOrRaceFinished = _memoryService.MainBlock.TimeAttackOrRaceFinished,
+			ReplayData = _readerService.GetReplayForUpload(),
+			Status = _readerService.MainBlock.Status,
+			ReplayPlayerId = _readerService.MainBlock.ReplayPlayerId,
+			GameMode = _readerService.MainBlock.GameMode,
+			TimeAttackOrRaceFinished = _readerService.MainBlock.TimeAttackOrRaceFinished,
 		};
 
 		return await _networkService.SubmitScore(uploadRequest);
