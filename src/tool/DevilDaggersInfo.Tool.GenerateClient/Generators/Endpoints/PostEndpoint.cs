@@ -1,27 +1,23 @@
-namespace DevilDaggersInfo.Tool.GenerateClient.Generators.ApiHttpClient.Endpoints;
+namespace DevilDaggersInfo.Tool.GenerateClient.Generators.Endpoints;
 
-internal class PutEndpoint : Endpoint
+internal class PostEndpoint : Endpoint
 {
 	private const string _methodName = $"%{nameof(_methodName)}%";
-	private const string _routeParameter = $"%{nameof(_routeParameter)}%";
 	private const string _bodyParameterType = $"%{nameof(_bodyParameterType)}%";
 	private const string _bodyParameter = $"%{nameof(_bodyParameter)}%";
 	private const string _apiRoute = $"%{nameof(_apiRoute)}%";
 	private const string _httpMethod = $"%{nameof(_httpMethod)}%";
-	private const string _endpointTemplate = $@"public async Task<HttpResponseMessage> {_methodName}({_routeParameter}, {_bodyParameterType} {_bodyParameter})
+	private const string _endpointTemplate = $@"public async Task<HttpResponseMessage> {_methodName}({_bodyParameterType} {_bodyParameter})
 {{
 	return await SendRequest(new HttpMethod(""{_httpMethod}""), $""{_apiRoute}"", JsonContent.Create({_bodyParameter}));
 }}
 ";
 
-	public PutEndpoint(string methodName, string apiRoute, Parameter routeParameter, Parameter bodyParameter)
-		: base(HttpMethod.Put, methodName, apiRoute)
+	public PostEndpoint(string methodName, string apiRoute, Parameter bodyParameter)
+		: base(HttpMethod.Post, methodName, apiRoute)
 	{
-		RouteParameter = routeParameter;
 		BodyParameter = bodyParameter;
 	}
-
-	public Parameter RouteParameter { get; }
 
 	public Parameter BodyParameter { get; }
 
@@ -33,7 +29,6 @@ internal class PutEndpoint : Endpoint
 
 		return _endpointTemplate
 			.Replace(_methodName, MethodName)
-			.Replace(_routeParameter, RouteParameter.ToString())
 			.Replace(_bodyParameterType, bodyParameterType)
 			.Replace(_bodyParameter, bodyParameter)
 			.Replace(_httpMethod, HttpMethod.ToString())

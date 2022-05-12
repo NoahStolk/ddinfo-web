@@ -1,6 +1,6 @@
 using DevilDaggersInfo.CommonSourceGen;
 
-namespace DevilDaggersInfo.Tool.GenerateClient.Generators.ApiHttpClient.Endpoints;
+namespace DevilDaggersInfo.Tool.GenerateClient.Generators.Endpoints;
 
 internal class GetEndpoint : Endpoint
 {

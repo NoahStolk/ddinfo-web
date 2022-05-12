@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Tool.GenerateClient.Generators.ApiHttpClient;
+using DevilDaggersInfo.Tool.GenerateClient.Generators;
 
 AdminApiHttpClientSourceGenerator.Execute();
 PublicApiHttpClientSourceGenerator.Execute();

@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Tool.GenerateClient.Generators.ApiHttpClient.Endpoints;
+namespace DevilDaggersInfo.Tool.GenerateClient.Generators.Endpoints;
 
 internal class DeleteEndpoint : Endpoint
 {
