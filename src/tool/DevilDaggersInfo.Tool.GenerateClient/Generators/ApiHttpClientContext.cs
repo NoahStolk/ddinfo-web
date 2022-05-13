@@ -1,6 +1,5 @@
 using DevilDaggersInfo.CommonSourceGen;
 using DevilDaggersInfo.Tool.GenerateClient.Extensions;
-using DevilDaggersInfo.Tool.GenerateClient.Generators.ApiHttpClient.Endpoints;
 using DevilDaggersInfo.Tool.GenerateClient.Generators.Endpoints;
 using DevilDaggersInfo.Tool.GenerateClient.Generators.Enums;
 using HttpMethod = DevilDaggersInfo.Tool.GenerateClient.Generators.Enums.HttpMethod;
