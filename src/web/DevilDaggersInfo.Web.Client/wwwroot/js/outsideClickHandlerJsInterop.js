@@ -1,7 +1,12 @@
 window.outsideClickHandler = {
 	addEvent: function (elementId, dotNetObjectReference) {
 		window.addEventListener("click", (e) => {
-			if (!document.getElementById(elementId).contains(e.target)) {
+			const element = document.getElementById(elementId);
+			if (!element) {
+				return;
+			}
+
+			if (!element.contains(e.target)) {
 				dotNetObjectReference.invokeMethodAsync("InvokeClickOutside");
 			}
 		});
