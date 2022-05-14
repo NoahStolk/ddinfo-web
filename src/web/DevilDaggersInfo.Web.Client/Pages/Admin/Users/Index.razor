@@ -5,8 +5,6 @@
 <AdminAuthorizer Base="this" RequiredRole="@Roles.Admin">
 	<Heading Title="Admin - Users" />
 
-	<p class="para">Hello, @_username</p>
-
 	@if (_users == null)
 	{
 		if (!_errorThrown)

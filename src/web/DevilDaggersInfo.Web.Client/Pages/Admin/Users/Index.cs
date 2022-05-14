@@ -14,15 +14,10 @@ public partial class Index
 
 	private Deletion? _deletion;
 
-	private string? _username;
-
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
 		if (!firstRender)
 			return;
-
-		AuthenticationState auth = await Auth.GetAuthenticationStateAsync();
-		_username = auth.User?.GetName();
 
 		await Fetch();
 	}
