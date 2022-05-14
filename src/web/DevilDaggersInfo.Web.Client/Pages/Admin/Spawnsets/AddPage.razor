@@ -6,7 +6,7 @@
 @using DevilDaggersInfo.Web.Shared.Dto.Admin.Players
 
 <AdminAuthorizer Base="this" RequiredRole="@Roles.Spawnsets">
-	<AdminAdd Name="Spawnset" OverviewUrl="/admin/spawnsets" ApiCall="Http.AddSpawnset" Model="_addSpawnset" @ref="_addComponent">
+	<AdminAdd Name="Spawnset" OverviewUrl="/admin/spawnsets" ApiCall="Http.AddSpawnset" Model="_addSpawnset" OnPopulate="async (ac) => await PopulateAsync(ac)">
 		<InputWrapper Label="Author"><SearchDropdown TKey=int Values="@_playerNames" Converter="s => int.Parse(s)" @bind-Value="@_addSpawnset.PlayerId" /></InputWrapper>
 		<InputWrapper Label="Name"><InputText class="admin-input" @bind-Value="@_addSpawnset.Name" /></InputWrapper>
 		<InputWrapper Label="Max display waves"><InputNumber class="admin-input" @bind-Value="_addSpawnset.MaxDisplayWaves" /></InputWrapper>
@@ -20,30 +20,24 @@
 {
 	private Dictionary<int, string>? _playerNames;
 	private AddSpawnset _addSpawnset = new();
-	private AdminAdd<AddSpawnset>? _addComponent;
 
-	protected override async Task OnInitializedAsync()
+	public async Task PopulateAsync(AdminAdd<AddSpawnset> addComponent)
 	{
-		await base.OnInitializedAsync();
-
-		if (_addComponent == null)
-			return;
-
 		try
 		{
 			List<GetPlayerName> getPlayerNames = await Http.GetPlayerNames();
 			_playerNames = getPlayerNames.ToDictionary(m => m.Id, m => m.PlayerName);
 
-			_addComponent.State = ErrorState.None;
+			addComponent.State = ErrorState.None;
 		}
 		catch (HttpRequestException ex)
 		{
 			if (ex.StatusCode.HasValue)
-				_addComponent.ErrorMessage = $"Error {(int)ex.StatusCode}: {ex.StatusCode}";
+				addComponent.ErrorMessage = $"Error {(int)ex.StatusCode}: {ex.StatusCode}";
 			else
-				_addComponent.ErrorMessage = "An error occurred while sending the request.";
+				addComponent.ErrorMessage = "An error occurred while sending the request.";
 
-			_addComponent.State = ErrorState.FatalError;
+			addComponent.State = ErrorState.FatalError;
 		}
 		catch (AccessTokenNotAvailableException exception)
 		{

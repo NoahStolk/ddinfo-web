@@ -7,7 +7,7 @@
 @using DevilDaggersInfo.Web.Shared.Dto.Admin.Mods
 
 <AdminAuthorizer Base="this" RequiredRole="@Roles.Players">
-	<AdminAdd Name="Player" OverviewUrl="/admin/players" ApiCall="Http.AddPlayer" Model="_addPlayer" @ref="_addComponent">
+	<AdminAdd Name="Player" OverviewUrl="/admin/players" ApiCall="Http.AddPlayer" Model="_addPlayer" OnPopulate="async (ac) => await PopulateAsync(ac)">
 		<InputWrapper Label="Id"><InputNumber class="admin-input" @bind-Value="_addPlayer.Id" /></InputWrapper>
 		<InputWrapper Label="Common name"><InputText class="admin-input" @bind-Value="@_addPlayer.CommonName" /></InputWrapper>
 		<InputWrapper Label="Discord user ID"><InputNumber class="admin-input" @bind-Value="_addPlayer.DiscordUserId" /></InputWrapper>
@@ -37,30 +37,24 @@
 {
 	private Dictionary<int, string>? _modNames;
 	private AddPlayer _addPlayer = new();
-	private AdminAdd<AddPlayer>? _addComponent;
 
-	protected override async Task OnInitializedAsync()
+	public async Task PopulateAsync(AdminAdd<AddPlayer> addComponent)
 	{
-		await base.OnInitializedAsync();
-
-		if (_addComponent == null)
-			return;
-
 		try
 		{
 			List<GetModName> getModNames = await Http.GetModNames();
 			_modNames = getModNames.ToDictionary(m => m.Id, m => m.Name);
 
-			_addComponent.State = ErrorState.None;
+			addComponent.State = ErrorState.None;
 		}
 		catch (HttpRequestException ex)
 		{
 			if (ex.StatusCode.HasValue)
-				_addComponent.ErrorMessage = $"Error {(int)ex.StatusCode}: {ex.StatusCode}";
+				addComponent.ErrorMessage = $"Error {(int)ex.StatusCode}: {ex.StatusCode}";
 			else
-				_addComponent.ErrorMessage = "An error occurred while sending the request.";
+				addComponent.ErrorMessage = "An error occurred while sending the request.";
 
-			_addComponent.State = ErrorState.FatalError;
+			addComponent.State = ErrorState.FatalError;
 		}
 		catch (AccessTokenNotAvailableException exception)
 		{

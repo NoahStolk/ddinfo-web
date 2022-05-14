@@ -7,14 +7,37 @@ namespace DevilDaggersInfo.Web.Client.Components.Admin;
 
 public partial class AdminAdd<TModel>
 {
-	[Parameter, EditorRequired] public string Name { get; set; } = null!;
-	[Parameter, EditorRequired] public string OverviewUrl { get; set; } = null!;
-	[Parameter, EditorRequired] public Func<TModel, Task<HttpResponseMessage>> ApiCall { get; set; } = null!;
-	[Parameter, EditorRequired] public TModel Model { get; set; } = default!;
-	[Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = null!;
+	[Parameter]
+	[EditorRequired]
+	public string Name { get; set; } = null!;
+
+	[Parameter]
+	[EditorRequired]
+	public string OverviewUrl { get; set; } = null!;
+
+	[Parameter]
+	[EditorRequired]
+	public Func<TModel, Task<HttpResponseMessage>> ApiCall { get; set; } = null!;
+
+	[Parameter]
+	[EditorRequired]
+	public TModel Model { get; set; } = default!;
+
+	[Parameter]
+	[EditorRequired]
+	public RenderFragment ChildContent { get; set; } = null!;
+
+	[Parameter]
+	[EditorRequired]
+	public Func<AdminAdd<TModel>, Task> OnPopulate { get; set; } = null!;
 
 	public ErrorState State { get; set; }
 	public string? ErrorMessage { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		await OnPopulate(this);
+	}
 
 	private async Task OnValidSubmit()
 	{

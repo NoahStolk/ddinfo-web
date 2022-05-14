@@ -7,7 +7,7 @@
 @using DevilDaggersInfo.Web.Client.Enums
 
 <AdminAuthorizer Base="this" RequiredRole="@Roles.CustomLeaderboards">
-	<AdminAdd Name="Custom Leaderboard" OverviewUrl="/admin/custom-leaderboards" ApiCall="Http.AddCustomLeaderboard" Model="_addCustomLeaderboard" @ref="_addComponent">
+	<AdminAdd Name="Custom Leaderboard" OverviewUrl="/admin/custom-leaderboards" ApiCall="Http.AddCustomLeaderboard" Model="_addCustomLeaderboard" OnPopulate="async (ac) => await PopulateAsync(ac)">
 		<InputWrapper Label="Spawnset"><SearchDropdown TKey=int Values="@_spawnsetNames" Converter="s => int.Parse(s)" @bind-Value="@_addCustomLeaderboard.SpawnsetId" /></InputWrapper>
 		<InputWrapper Label="Category"><SearchDropdown TKey=CustomLeaderboardCategory Values="@(Enum.GetValues<CustomLeaderboardCategory>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<CustomLeaderboardCategory>(s)" ShowDisplayValue=false @bind-Value="@_addCustomLeaderboard.Category" /></InputWrapper>
 		<InputWrapper Label="Featured"><InputCheckbox @bind-Value="@_addCustomLeaderboard.IsFeatured" /></InputWrapper>
@@ -26,30 +26,24 @@
 {
 	private Dictionary<int, string>? _spawnsetNames;
 	private AddCustomLeaderboard _addCustomLeaderboard = new();
-	private AdminAdd<AddCustomLeaderboard>? _addComponent;
 
-	protected override async Task OnInitializedAsync()
+	public async Task PopulateAsync(AdminAdd<AddCustomLeaderboard> addComponent)
 	{
-		await base.OnInitializedAsync();
-
-		if (_addComponent == null)
-			return;
-
 		try
 		{
 			List<GetSpawnsetName> getSpawnsetNames = await Http.GetSpawnsetNames();
 			_spawnsetNames = getSpawnsetNames.ToDictionary(sn => sn.Id, sn => sn.Name);
 
-			_addComponent.State = ErrorState.None;
+			addComponent.State = ErrorState.None;
 		}
 		catch (HttpRequestException ex)
 		{
 			if (ex.StatusCode.HasValue)
-				_addComponent.ErrorMessage = $"Error {(int)ex.StatusCode}: {ex.StatusCode}";
+				addComponent.ErrorMessage = $"Error {(int)ex.StatusCode}: {ex.StatusCode}";
 			else
-				_addComponent.ErrorMessage = "An error occurred while sending the request.";
+				addComponent.ErrorMessage = "An error occurred while sending the request.";
 
-			_addComponent.State = ErrorState.FatalError;
+			addComponent.State = ErrorState.FatalError;
 		}
 		catch (AccessTokenNotAvailableException exception)
 		{
