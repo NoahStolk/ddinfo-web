@@ -43,6 +43,7 @@
 	{
 		try
 		{
+			_backgroundServices = null;
 			_backgroundServices = await Http.GetBackgroundServices();
 			StateHasChanged();
 		}

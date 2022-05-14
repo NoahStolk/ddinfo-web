@@ -45,6 +45,7 @@
 	{
 		try
 		{
+			_databaseTables = null;
 			_databaseTables = await Http.GetDatabaseInfo();
 			StateHasChanged();
 		}

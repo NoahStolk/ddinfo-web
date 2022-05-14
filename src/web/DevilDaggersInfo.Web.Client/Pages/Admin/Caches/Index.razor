@@ -49,6 +49,7 @@
 	{
 		try
 		{
+			_caches = null;
 			_caches = await Http.GetCaches();
 			StateHasChanged();
 		}

@@ -43,6 +43,7 @@
 	{
 		try
 		{
+			_fileSystemEntries = null;
 			_fileSystemEntries = await Http.GetFileSystemInfo();
 			StateHasChanged();
 		}
