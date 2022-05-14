@@ -183,6 +183,6 @@ public class LeaderboardStatisticsCache : IStaticCache
 		}
 	}
 
-	public string LogState()
-		=> $"`{_entries.Count}` in memory";
+	public int GetCount()
+		=> _entries.Count;
 }

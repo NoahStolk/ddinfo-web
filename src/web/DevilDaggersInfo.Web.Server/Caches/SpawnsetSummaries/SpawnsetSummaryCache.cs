@@ -20,6 +20,6 @@ public class SpawnsetSummaryCache : IDynamicCache
 	public void Clear()
 		=> _cache.Clear();
 
-	public string LogState()
-		=> $"`{_cache.Count}` in memory";
+	public int GetCount()
+		=> _cache.Count;
 }

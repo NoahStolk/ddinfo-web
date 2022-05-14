@@ -3,29 +3,30 @@ using DevilDaggersInfo.Web.Server.Caches.LeaderboardStatistics;
 using DevilDaggersInfo.Web.Server.Caches.ModArchives;
 using DevilDaggersInfo.Web.Server.Caches.SpawnsetHashes;
 using DevilDaggersInfo.Web.Server.Caches.SpawnsetSummaries;
+using DevilDaggersInfo.Web.Shared.Dto.Admin.Caches;
 using Microsoft.AspNetCore.Authorization;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 
-[Route("api/admin")]
+[Route("api/admin/cache")]
 [ApiController]
 [Authorize(Roles = Roles.Admin)]
-public class AdminController : ControllerBase
+public class CachesController : ControllerBase
 {
 	private readonly LeaderboardStatisticsCache _leaderboardStatisticsCache;
 	private readonly LeaderboardHistoryCache _leaderboardHistoryCache;
 	private readonly ModArchiveCache _modArchiveCache;
 	private readonly SpawnsetSummaryCache _spawnsetSummaryCache;
 	private readonly SpawnsetHashCache _spawnsetHashCache;
-	private readonly ILogger<AdminController> _logger;
+	private readonly ILogger<CachesController> _logger;
 
-	public AdminController(
+	public CachesController(
 		LeaderboardStatisticsCache leaderboardStatisticsCache,
 		LeaderboardHistoryCache leaderboardHistoryCache,
 		ModArchiveCache modArchiveCache,
 		SpawnsetSummaryCache spawnsetSummaryCache,
 		SpawnsetHashCache spawnsetHashCache,
-		ILogger<AdminController> logger)
+		ILogger<CachesController> logger)
 	{
 		_leaderboardStatisticsCache = leaderboardStatisticsCache;
 		_leaderboardHistoryCache = leaderboardHistoryCache;
@@ -33,6 +34,20 @@ public class AdminController : ControllerBase
 		_spawnsetSummaryCache = spawnsetSummaryCache;
 		_spawnsetHashCache = spawnsetHashCache;
 		_logger = logger;
+	}
+
+	[HttpGet]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	public ActionResult<List<GetCacheEntry>> GetCaches()
+	{
+		return new List<GetCacheEntry>
+		{
+			new("LeaderboardHistory", _leaderboardHistoryCache.GetCount()),
+			new("LeaderboardStatistics", _leaderboardStatisticsCache.GetCount()),
+			new("ModArchive", _modArchiveCache.GetCount()),
+			new("SpawnsetHash", _spawnsetHashCache.GetCount()),
+			new("SpawnsetSummary", _spawnsetSummaryCache.GetCount()),
+		};
 	}
 
 	[HttpPost("clear-cache")]

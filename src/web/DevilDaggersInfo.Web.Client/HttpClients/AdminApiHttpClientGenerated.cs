@@ -1,6 +1,7 @@
 #pragma warning disable CS0105, CS1591, CS8618, S1128, SA1001, SA1027, SA1028, SA1101, SA1122, SA1137, SA1200, SA1201, SA1208, SA1210, SA1309, SA1311, SA1413, SA1503, SA1505, SA1507, SA1508, SA1516, SA1600, SA1601, SA1602, SA1623, SA1649
 using DevilDaggersInfo.Web.Client.Utils;
 using DevilDaggersInfo.Web.Shared.Dto;
+using DevilDaggersInfo.Web.Shared.Dto.Admin.Caches;
 using DevilDaggersInfo.Web.Shared.Dto.Admin.CustomEntries;
 using DevilDaggersInfo.Web.Shared.Dto.Admin.CustomLeaderboards;
 using DevilDaggersInfo.Web.Shared.Dto.Admin.Donations;
@@ -18,9 +19,14 @@ namespace DevilDaggersInfo.Web.Client.HttpClients;
 
 public partial class AdminApiHttpClient
 {
+	public async Task<List<GetCacheEntry>> GetCaches()
+	{
+		return await SendGetRequest<List<GetCacheEntry>>($"api/admin/cache/");
+	}
+
 	public async Task<HttpResponseMessage> ClearCache(string cacheType)
 	{
-		return await SendRequest(new HttpMethod("POST"), $"api/admin/clear-cache", JsonContent.Create(cacheType));
+		return await SendRequest(new HttpMethod("POST"), $"api/admin/cache/clear-cache", JsonContent.Create(cacheType));
 	}
 
 	public async Task<Page<GetCustomEntryForOverview>> GetCustomEntries(int pageIndex, int pageSize, CustomEntrySorting? sortBy, bool ascending)

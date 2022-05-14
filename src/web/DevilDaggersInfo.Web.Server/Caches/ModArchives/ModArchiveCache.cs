@@ -125,10 +125,6 @@ public class ModArchiveCache : IDynamicCache
 	public void Clear()
 		=> _cache.Clear();
 
-	public string LogState()
-	{
-		int fileCaches = Directory.GetFiles(_fileSystemService.GetPath(DataSubDirectory.ModArchiveCache)).Length;
-
-		return $"`{_cache.Count}` in memory\n`{fileCaches}` in file system";
-	}
+	public int GetCount()
+		=> _cache.Count;
 }
