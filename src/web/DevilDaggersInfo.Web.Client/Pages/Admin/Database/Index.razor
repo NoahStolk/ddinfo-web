@@ -1,0 +1,56 @@
+@page "/admin/database"
+@inherits BaseAdminPage
+@using DevilDaggersInfo.Web.Shared.Dto.Admin.Database
+
+<AdminAuthorizer Base="this" RequiredRole="@Roles.Admin">
+	<Heading Title="Admin - Database" />
+
+	@if (_databaseTables == null)
+	{
+		<Loading />
+	}
+	else
+	{
+		<a class="btn btn-green cursor-pointer block w-40 mb-2 mx-1" @onclick="async () => await Fetch()">Refresh</a>
+
+		<div class="grid gap-x-2 grid-cols-5">
+			<span class="font-bold col-span-2">Name</span>
+			<span class="font-bold text-right">Data Size</span>
+			<span class="font-bold text-right">Index Size</span>
+			<span class="font-bold text-right">Count</span>
+			@foreach (GetDatabaseTableEntry fse in _databaseTables)
+			{
+				<span class="col-span-2">@fse.Name</span>
+				<span class="text-right">@FileSizeUtils.Format(fse.DataSize)</span>
+				<span class="text-right">@FileSizeUtils.Format(fse.IndexSize)</span>
+				<span class="text-right">@fse.Count.ToString("N0")</span>
+			}
+		</div>
+	}
+</AdminAuthorizer>
+
+@code
+{
+	private List<GetDatabaseTableEntry>? _databaseTables;
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (!firstRender)
+			return;
+
+		await Fetch();
+	}
+
+	private async Task Fetch()
+	{
+		try
+		{
+			_databaseTables = await Http.GetDatabaseInfo();
+			StateHasChanged();
+		}
+		catch (AccessTokenNotAvailableException exception)
+		{
+			exception.Redirect();
+		}
+	}
+}

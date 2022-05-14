@@ -80,7 +80,6 @@ public class Startup
 
 		if (!WebHostEnvironment.IsDevelopment())
 		{
-			services.AddHostedService<DatabaseLoggerBackgroundService>();
 			services.AddHostedService<DiscordUserIdFetchBackgroundService>();
 			services.AddHostedService<LeaderboardHistoryBackgroundService>();
 			services.AddHostedService<PlayerNameFetchBackgroundService>();

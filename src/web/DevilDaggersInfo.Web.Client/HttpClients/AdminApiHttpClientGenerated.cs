@@ -5,6 +5,7 @@ using DevilDaggersInfo.Web.Shared.Dto.Admin.BackgroundServices;
 using DevilDaggersInfo.Web.Shared.Dto.Admin.Caches;
 using DevilDaggersInfo.Web.Shared.Dto.Admin.CustomEntries;
 using DevilDaggersInfo.Web.Shared.Dto.Admin.CustomLeaderboards;
+using DevilDaggersInfo.Web.Shared.Dto.Admin.Database;
 using DevilDaggersInfo.Web.Shared.Dto.Admin.Donations;
 using DevilDaggersInfo.Web.Shared.Dto.Admin.FileSystem;
 using DevilDaggersInfo.Web.Shared.Dto.Admin.Health;
@@ -98,6 +99,11 @@ public partial class AdminApiHttpClient
 	public async Task<HttpResponseMessage> DeleteCustomLeaderboardById(int id)
 	{
 		return await SendRequest(new HttpMethod("DELETE"), $"api/admin/custom-leaderboards/{id}");
+	}
+
+	public async Task<List<GetDatabaseTableEntry>> GetDatabaseInfo()
+	{
+		return await SendGetRequest<List<GetDatabaseTableEntry>>($"api/admin/database/");
 	}
 
 	public async Task<Page<GetDonationForOverview>> GetDonations(int pageIndex, int pageSize, DonationSorting? sortBy, bool ascending)
