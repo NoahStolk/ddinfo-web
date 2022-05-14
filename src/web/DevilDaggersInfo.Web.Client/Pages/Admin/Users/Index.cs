@@ -14,10 +14,9 @@ public partial class Index
 
 	private Deletion? _deletion;
 
-	protected override async Task OnAfterRenderAsync(bool firstRender)
+	protected override async Task OnInitializedAsync()
 	{
-		if (!firstRender)
-			return;
+		await base.OnInitializedAsync();
 
 		await Fetch();
 	}

@@ -31,10 +31,9 @@
 {
 	private List<GetFileSystemEntry>? _fileSystemEntries;
 
-	protected override async Task OnAfterRenderAsync(bool firstRender)
+	protected override async Task OnInitializedAsync()
 	{
-		if (!firstRender)
-			return;
+		await base.OnInitializedAsync();
 
 		await Fetch();
 	}

@@ -39,8 +39,10 @@
 	private AddPlayer _addPlayer = new();
 	private AdminAdd<AddPlayer>? _addComponent;
 
-	protected override async Task OnAfterRenderAsync(bool firstRender)
+	protected override async Task OnInitializedAsync()
 	{
+		await base.OnInitializedAsync();
+
 		if (_addComponent == null)
 			return;
 

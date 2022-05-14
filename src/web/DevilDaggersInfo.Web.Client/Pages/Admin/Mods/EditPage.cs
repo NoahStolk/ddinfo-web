@@ -23,8 +23,10 @@ public partial class EditPage
 	private IReadOnlyList<string>? _binaryNames;
 	private IReadOnlyList<string>? _screenshotNames;
 
-	protected override async Task OnAfterRenderAsync(bool firstRender)
+	protected override async Task OnInitializedAsync()
 	{
+		await base.OnInitializedAsync();
+
 		if (_editComponent == null)
 			return;
 

@@ -31,10 +31,9 @@
 {
 	private List<GetBackgroundServiceEntry>? _backgroundServices;
 
-	protected override async Task OnAfterRenderAsync(bool firstRender)
+	protected override async Task OnInitializedAsync()
 	{
-		if (!firstRender)
-			return;
+		await base.OnInitializedAsync();
 
 		await Fetch();
 	}

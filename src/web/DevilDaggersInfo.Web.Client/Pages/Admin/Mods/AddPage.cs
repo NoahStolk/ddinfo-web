@@ -16,8 +16,10 @@ public partial class AddPage
 	private List<string> _binaryFileSizeErrors = new();
 	private List<string> _screenshotFileSizeErrors = new();
 
-	protected override async Task OnAfterRenderAsync(bool firstRender)
+	protected override async Task OnInitializedAsync()
 	{
+		await base.OnInitializedAsync();
+
 		if (_addComponent == null)
 			return;
 

@@ -28,8 +28,10 @@
 	private AddCustomLeaderboard _addCustomLeaderboard = new();
 	private AdminAdd<AddCustomLeaderboard>? _addComponent;
 
-	protected override async Task OnAfterRenderAsync(bool firstRender)
+	protected override async Task OnInitializedAsync()
 	{
+		await base.OnInitializedAsync();
+
 		if (_addComponent == null)
 			return;
 
