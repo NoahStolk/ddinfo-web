@@ -7,6 +7,8 @@ namespace DevilDaggersInfo.Web.Client.Pages.Admin;
 
 public abstract class BaseAdminPage : ComponentBase
 {
+	public List<string> UserRoles { get; private set; } = new();
+
 	[Inject]
 	public AdminAuthenticationStateProvider Auth { get; set; } = null!;
 
@@ -21,5 +23,7 @@ public abstract class BaseAdminPage : ComponentBase
 		AuthenticationState state = await Auth.GetAuthenticationStateAsync();
 		if (state.User?.Identity?.IsAuthenticated != true)
 			NavigationManager.NavigateTo("/authentication/login");
+
+		UserRoles = state.User?.GetRoles() ?? new();
 	}
 }

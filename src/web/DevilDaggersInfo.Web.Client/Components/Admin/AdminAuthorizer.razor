@@ -1,0 +1,34 @@
+@using DevilDaggersInfo.Web.Client.Pages.Admin
+
+@if (AccessGranted == null)
+{
+	<Loading />
+}
+else if (AccessGranted == true)
+{
+	@ChildContent
+}
+else
+{
+	<div class="mt-2 p-2 rounded bg-darker-red">
+		<h4 class="text-xl">Forbidden</h4>
+
+		You do not have permissions.
+	</div>
+}
+
+@code
+{
+	public bool? AccessGranted => RequiredRole == null || Base.UserRoles.Contains(RequiredRole);
+
+	[Parameter]
+	public string? RequiredRole { get; set; }
+
+	[Parameter]
+	[EditorRequired]
+	public RenderFragment ChildContent { get; set; } = null!;
+
+	[Parameter]
+	[EditorRequired]
+	public BaseAdminPage Base { get; set; } = null!;
+}
