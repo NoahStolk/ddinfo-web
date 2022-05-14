@@ -14,7 +14,6 @@ public partial class EditPage
 {
 	private Dictionary<int, string>? _playerNames;
 	private EditMod _editMod = new();
-	private AdminEdit<EditMod>? _editComponent;
 	private List<string> _binaryFileSizeErrors = new();
 	private List<string> _screenshotFileSizeErrors = new();
 
@@ -23,13 +22,8 @@ public partial class EditPage
 	private IReadOnlyList<string>? _binaryNames;
 	private IReadOnlyList<string>? _screenshotNames;
 
-	protected override async Task OnInitializedAsync()
+	private async Task PopulateAsync(AdminEdit<EditMod> editComponent)
 	{
-		await base.OnInitializedAsync();
-
-		if (_editComponent == null)
-			return;
-
 		try
 		{
 			List<GetPlayerName> getPlayerNames = await Http.GetPlayerNames();
@@ -50,16 +44,16 @@ public partial class EditPage
 			_binaryNames = getMod.BinaryNames;
 			_screenshotNames = getMod.ScreenshotNames;
 
-			_editComponent.State = ErrorState.None;
+			editComponent.State = ErrorState.None;
 		}
 		catch (HttpRequestException ex)
 		{
 			if (ex.StatusCode.HasValue)
-				_editComponent.ErrorMessage = $"Error {(int)ex.StatusCode}: {ex.StatusCode}";
+				editComponent.ErrorMessage = $"Error {(int)ex.StatusCode}: {ex.StatusCode}";
 			else
-				_editComponent.ErrorMessage = "An error occurred while sending the request.";
+				editComponent.ErrorMessage = "An error occurred while sending the request.";
 
-			_editComponent.State = ErrorState.FatalError;
+			editComponent.State = ErrorState.FatalError;
 		}
 		catch (AccessTokenNotAvailableException exception)
 		{

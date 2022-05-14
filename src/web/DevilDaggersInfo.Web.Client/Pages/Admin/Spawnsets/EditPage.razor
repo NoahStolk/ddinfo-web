@@ -6,7 +6,7 @@
 @using DevilDaggersInfo.Web.Shared.Dto.Admin.Players
 
 <AdminAuthorizer Base="this" RequiredRole="@Roles.Spawnsets">
-	<AdminEdit Name="Spawnset" OverviewUrl="/admin/spawnsets" ApiCall="Http.EditSpawnsetById" Model="_editSpawnset" Id="Id" @ref="_editComponent">
+	<AdminEdit Name="Spawnset" OverviewUrl="/admin/spawnsets" ApiCall="Http.EditSpawnsetById" Model="_editSpawnset" Id="Id" OnPopulate="async (ec) => await PopulateAsync(ec)">
 		<InputWrapper Label="Author"><SearchDropdown TKey=int Values="@_playerNames" Converter="s => int.Parse(s)" @bind-Value="@_editSpawnset.PlayerId" /></InputWrapper>
 		<InputWrapper Label="Name"><InputText class="admin-input" @bind-Value="@_editSpawnset.Name" /></InputWrapper>
 		<InputWrapper Label="Max display waves"><InputNumber class="admin-input" @bind-Value="_editSpawnset.MaxDisplayWaves" /></InputWrapper>
@@ -19,17 +19,11 @@
 {
 	private Dictionary<int, string>? _playerNames;
 	private EditSpawnset _editSpawnset = new();
-	private AdminEdit<EditSpawnset>? _editComponent;
 
 	[Parameter, EditorRequired] public int Id { get; set; }
 
-	protected override async Task OnInitializedAsync()
+	private async Task PopulateAsync(AdminEdit<EditSpawnset> editComponent)
 	{
-		await base.OnInitializedAsync();
-
-		if (_editComponent == null)
-			return;
-
 		try
 		{
 			List<GetPlayerName> getPlayerNames = await Http.GetPlayerNames();
@@ -44,16 +38,17 @@
 				Name = getSpawnset.Name,
 				PlayerId = getSpawnset.PlayerId,
 			};
-			_editComponent.State = ErrorState.None;
+
+			editComponent.State = ErrorState.None;
 		}
 		catch (HttpRequestException ex)
 		{
 			if (ex.StatusCode.HasValue)
-				_editComponent.ErrorMessage = $"Error {(int)ex.StatusCode}: {ex.StatusCode}";
+				editComponent.ErrorMessage = $"Error {(int)ex.StatusCode}: {ex.StatusCode}";
 			else
-				_editComponent.ErrorMessage = "An error occurred while sending the request.";
+				editComponent.ErrorMessage = "An error occurred while sending the request.";
 
-			_editComponent.State = ErrorState.FatalError;
+			editComponent.State = ErrorState.FatalError;
 		}
 		catch (AccessTokenNotAvailableException exception)
 		{

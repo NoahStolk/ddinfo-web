@@ -7,7 +7,7 @@
 @using DevilDaggersInfo.Web.Shared.Dto.Admin.Mods
 
 <AdminAuthorizer Base="this" RequiredRole="@Roles.Players">
-	<AdminEdit Name="Player" OverviewUrl="/admin/players" ApiCall="Http.EditPlayerById" Model="_editPlayer" Id="Id" @ref="_editComponent">
+	<AdminEdit Name="Player" OverviewUrl="/admin/players" ApiCall="Http.EditPlayerById" Model="_editPlayer" Id="Id" OnPopulate="async (ec) => await PopulateAsync(ec)">
 		<InputWrapper Label="Common name"><InputText class="admin-input" @bind-Value="@_editPlayer.CommonName" /></InputWrapper>
 		<InputWrapper Label="Discord user ID"><InputNumber class="admin-input" @bind-Value="_editPlayer.DiscordUserId" /></InputWrapper>
 		<InputWrapper Label="Country (flag)"><SearchDropdown TKey=string Values="@(UserUtils.CountryNames)" Converter="s => s" @bind-Value="@_editPlayer.CountryCode" /></InputWrapper>
@@ -36,17 +36,11 @@
 {
 	private Dictionary<int, string>? _modNames;
 	private EditPlayer _editPlayer = new();
-	private AdminEdit<EditPlayer>? _editComponent;
 
 	[Parameter, EditorRequired] public int Id { get; set; }
 
-	protected override async Task OnInitializedAsync()
+	private async Task PopulateAsync(AdminEdit<EditPlayer> editComponent)
 	{
-		await base.OnInitializedAsync();
-
-		if (_editComponent == null)
-			return;
-
 		try
 		{
 			List<GetModName> getModNames = await Http.GetModNames();
@@ -77,16 +71,18 @@
 				IsBannedFromDdcl = getPlayer.IsBannedFromDdcl,
 				ModIds = getPlayer.ModIds,
 			};
-			_editComponent.State = ErrorState.None;
+
+			editComponent.State = ErrorState.None;
 		}
 		catch (HttpRequestException ex)
 		{
 			if (ex.StatusCode.HasValue)
-				_editComponent.ErrorMessage = $"Error {(int)ex.StatusCode}: {ex.StatusCode}";
+				editComponent.ErrorMessage = $"Error {(int)ex.StatusCode}: {ex.StatusCode}";
 			else
-				_editComponent.ErrorMessage = "An error occurred while sending the request.";
+				editComponent.ErrorMessage = "An error occurred while sending the request.";
 
-			_editComponent.State = ErrorState.FatalError;
+			editComponent.State = ErrorState.FatalError;
+
 		}
 		catch (AccessTokenNotAvailableException exception)
 		{
