@@ -1,0 +1,60 @@
+@page "/admin/caches"
+@inherits BaseAdminPage
+@using DevilDaggersInfo.Web.Shared.Dto.Admin.Caches
+
+<AdminAuthorizer Base="this" RequiredRole="@Roles.Admin">
+	<Heading Title="Admin - Caches" />
+
+	@if (_caches == null)
+	{
+		<Loading />
+	}
+	else
+	{
+		<a class="btn btn-green cursor-pointer block w-40 mb-2 mx-1" @onclick="async () => await Fetch()">Refresh</a>
+
+		<div class="grid gap-x-2 grid-cols-4">
+			<span class="font-bold col-span-2">Name</span>
+			<span class="font-bold text-right">Count</span>
+			<span class="font-bold">Clear</span>
+			@foreach (GetCacheEntry cache in _caches)
+			{
+				<span class="col-span-2">@cache.Name</span>
+				<span class="text-right">@cache.Count</span>
+				<button class="btn btn-green" @onclick="@(async () => await Clear(cache.Name))">Clear</button>
+			}
+		</div>
+	}
+</AdminAuthorizer>
+
+@code
+{
+	private List<GetCacheEntry>? _caches;
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (!firstRender)
+			return;
+
+		await Fetch();
+	}
+
+	private async Task Clear(string name)
+	{
+		await Http.ClearCache(name);
+		await Fetch();
+	}
+
+	private async Task Fetch()
+	{
+		try
+		{
+			_caches = await Http.GetCaches();
+			StateHasChanged();
+		}
+		catch (AccessTokenNotAvailableException exception)
+		{
+			exception.Redirect();
+		}
+	}
+}
