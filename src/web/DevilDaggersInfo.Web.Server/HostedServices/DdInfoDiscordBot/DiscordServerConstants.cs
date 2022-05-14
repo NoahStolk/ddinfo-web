@@ -5,16 +5,14 @@ namespace DevilDaggersInfo.Web.Server.HostedServices.DdInfoDiscordBot;
 
 public static class DiscordServerConstants
 {
-	public const long TestChannelId = 813508325705515008;
-
-	public const ulong BotUserId = 645209987949395969;
+	public const long TestChannelId = 975077574399131718;
 
 	private static readonly Dictionary<Channel, ChannelWrapper> _channels = new()
 	{
-		{ Channel.MaintainersAuditLog, new(821489129615130684) },
-		{ Channel.MonitoringCustomLeaderboardValid, new(813506112670007306) },
-		{ Channel.MonitoringCustomLeaderboardInvalid, new(952210186859339816) },
-		{ Channel.MonitoringLog, new(727227801664618607) },
+		{ Channel.MaintainersAuditLog, new(975077254046580828) },
+		{ Channel.MonitoringCustomLeaderboardValid, new(975077530732208148) },
+		{ Channel.MonitoringCustomLeaderboardInvalid, new(975077543575175228) },
+		{ Channel.MonitoringLog, new(975077324468920421) },
 		{ Channel.MonitoringTest, new(TestChannelId) },
 		{ Channel.CustomLeaderboards, new(578316107836817418) },
 	};
