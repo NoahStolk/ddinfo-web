@@ -19,7 +19,7 @@ else
 
 @code
 {
-	public bool? AccessGranted => RequiredRole == null || Base.UserRoles.Contains(RequiredRole);
+	public bool? AccessGranted => Base.UserRoles == null ? null : RequiredRole == null || Base.UserRoles.Contains(RequiredRole);
 
 	[Parameter]
 	public string? RequiredRole { get; set; }

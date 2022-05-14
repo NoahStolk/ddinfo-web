@@ -7,7 +7,7 @@ namespace DevilDaggersInfo.Web.Client.Pages.Admin;
 
 public abstract class BaseAdminPage : ComponentBase
 {
-	public List<string> UserRoles { get; private set; } = new();
+	public List<string>? UserRoles { get; private set; }
 
 	[Inject]
 	public AdminAuthenticationStateProvider Auth { get; set; } = null!;
