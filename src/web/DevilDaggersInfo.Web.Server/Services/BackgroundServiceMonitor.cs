@@ -1,4 +1,4 @@
-using DSharpPlus.Entities;
+using DevilDaggersInfo.Web.Shared.Dto.Admin.BackgroundServices;
 
 namespace DevilDaggersInfo.Web.Server.Services;
 
@@ -16,20 +16,12 @@ public class BackgroundServiceMonitor
 			backgroundServiceLog.LastExecuted = lastExecuted;
 	}
 
-	public DiscordEmbed? BuildDiscordEmbed()
+	public List<GetBackgroundServiceEntry> GetEntries()
 	{
-		if (_backgroundServiceLogs.IsEmpty)
-			return null;
-
-		DiscordEmbedBuilder builder = new()
-		{
-			Title = $"Background service {DateTime.UtcNow:yyyy-MM-dd HH:mm:ss} UTC",
-			Color = DiscordColor.White,
-		};
-		foreach (BackgroundServiceLog bsl in _backgroundServiceLogs.OrderBy(bsl => bsl.Name))
-			builder.AddFieldObject(bsl.Name, $"{nameof(BackgroundServiceLog.LastExecuted)} `{bsl.LastExecuted:yyyy-MM-dd HH:mm:ss}` UTC\n{nameof(BackgroundServiceLog.Interval)} `{bsl.Interval:T}`");
-
-		return builder.Build();
+		return _backgroundServiceLogs
+			.OrderBy(bsl => bsl.Name)
+			.Select(bsl => new GetBackgroundServiceEntry(bsl.Name.Replace("BackgroundService", string.Empty), bsl.LastExecuted, bsl.Interval))
+			.ToList();
 	}
 
 	private sealed class BackgroundServiceLog

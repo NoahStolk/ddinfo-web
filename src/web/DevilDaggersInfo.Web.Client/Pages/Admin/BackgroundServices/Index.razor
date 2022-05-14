@@ -1,0 +1,54 @@
+@page "/admin/background-services"
+@inherits BaseAdminPage
+@using DevilDaggersInfo.Web.Shared.Dto.Admin.BackgroundServices
+
+<AdminAuthorizer Base="this" RequiredRole="@Roles.Admin">
+	<Heading Title="Admin - Background Services" />
+
+	@if (_backgroundServices == null)
+	{
+		<Loading />
+	}
+	else
+	{
+		<a class="btn btn-green cursor-pointer block w-40 mb-2 mx-1" @onclick="async () => await Fetch()">Refresh</a>
+
+		<div class="grid gap-x-2 grid-cols-4">
+			<span class="font-bold col-span-2">Name</span>
+			<span class="font-bold text-right">Last executed</span>
+			<span class="font-bold text-right">Interval</span>
+			@foreach (GetBackgroundServiceEntry bgs in _backgroundServices)
+			{
+				<span class="col-span-2">@bgs.Name</span>
+				<span class="text-right">@bgs.LastExecuted.ToString("yyyy-MM-dd HH:mm:ss UTC")</span>
+				<span class="text-right">@bgs.Interval.ToString("T")</span>
+			}
+		</div>
+	}
+</AdminAuthorizer>
+
+@code
+{
+	private List<GetBackgroundServiceEntry>? _backgroundServices;
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (!firstRender)
+			return;
+
+		await Fetch();
+	}
+
+	private async Task Fetch()
+	{
+		try
+		{
+			_backgroundServices = await Http.GetBackgroundServices();
+			StateHasChanged();
+		}
+		catch (AccessTokenNotAvailableException exception)
+		{
+			exception.Redirect();
+		}
+	}
+}

@@ -61,6 +61,7 @@
 						<NavDropdown Text="Admin" IconType="shield">
 							@if (_roles.Contains(Roles.Admin))
 							{
+								<NavItem Href="admin/background-services" IconType="shield" Text="Background Services" />
 								<NavItem Href="admin/caches" IconType="shield" Text="Caches" />
 								<NavItem Href="admin/health" IconType="monitor" Text="Health" />
 								<NavItem Href="admin/tools/add-distribution" IconType="shield" Text="Add Tool" />
