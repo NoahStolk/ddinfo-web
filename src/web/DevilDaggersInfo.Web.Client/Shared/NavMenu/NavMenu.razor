@@ -70,7 +70,6 @@
 								<hr />
 								<NavItem Href="admin/custom-entries" IconType="ellipses" Text="Custom Entries" />
 								<NavItem Href="admin/donations" IconType="heart" Text="Donations" />
-								<NavItem Href="admin/users" IconType="person" Text="Users" />
 							}
 							@if (_roles.Contains(Roles.CustomLeaderboards))
 							{
@@ -83,6 +82,7 @@
 							@if (_roles.Contains(Roles.Players))
 							{
 								<NavItem Href="admin/players" IconType="people" Text="Players" />
+								<NavItem Href="admin/users" IconType="person" Text="Users" />
 							}
 							@if (_roles.Contains(Roles.Spawnsets))
 							{

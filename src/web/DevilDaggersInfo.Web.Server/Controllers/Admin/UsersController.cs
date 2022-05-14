@@ -6,7 +6,6 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 
 [Route("api/admin/users")]
 [ApiController]
-[Authorize(Roles = Roles.Admin)]
 public class UsersController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
@@ -23,6 +22,7 @@ public class UsersController : ControllerBase
 	}
 
 	[HttpGet]
+	[Authorize(Roles = Roles.Players)]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public ActionResult<List<GetUser>> GetUsers()
 	{
@@ -38,6 +38,7 @@ public class UsersController : ControllerBase
 	}
 
 	[HttpGet("{id}")]
+	[Authorize(Roles = Roles.Players)]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public ActionResult<GetUser> GetUserById(int id)
@@ -56,6 +57,7 @@ public class UsersController : ControllerBase
 	}
 
 	[HttpPatch("{id}/toggle-role")]
+	[Authorize(Roles = Roles.Admin)]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult> ToggleRole(int id, ToggleRole toggleRole)
@@ -100,6 +102,7 @@ public class UsersController : ControllerBase
 	}
 
 	[HttpPut("{id}/assign-player")]
+	[Authorize(Roles = Roles.Players)]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -125,6 +128,7 @@ public class UsersController : ControllerBase
 	}
 
 	[HttpPut("{id}/reset-password")]
+	[Authorize(Roles = Roles.Admin)]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult> ResetPasswordForUserById(int id, ResetPassword resetPassword)
@@ -142,6 +146,7 @@ public class UsersController : ControllerBase
 	}
 
 	[HttpDelete("{id}")]
+	[Authorize(Roles = Roles.Admin)]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult> DeleteUserById(int id)

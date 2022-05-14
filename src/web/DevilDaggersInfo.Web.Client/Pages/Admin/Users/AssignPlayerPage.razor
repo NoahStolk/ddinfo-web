@@ -3,7 +3,7 @@
 @using DevilDaggersInfo.Web.Shared.Dto.Admin.Users
 @using DevilDaggersInfo.Web.Shared.Dto.Admin.Players
 
-<AdminAuthorizer Base="this" RequiredRole="@Roles.Admin">
+<AdminAuthorizer Base="this" RequiredRole="@Roles.Players">
 	<Heading Title="Admin - Assign Player" />
 
 	<EditForm Model="@Model" OnValidSubmit="@OnValidSubmit">

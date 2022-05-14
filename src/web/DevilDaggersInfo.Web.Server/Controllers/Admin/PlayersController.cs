@@ -72,7 +72,7 @@ public class PlayersController : ControllerBase
 
 	[HttpGet("names")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	[Authorize(Roles = $"{Roles.Mods},{Roles.Spawnsets}")]
+	[Authorize(Roles = $"{Roles.Players},{Roles.Mods},{Roles.Spawnsets}")]
 	public ActionResult<List<GetPlayerName>> GetPlayerNames()
 	{
 		var players = _dbContext.Players

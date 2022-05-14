@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Web.Client.Components.Admin;
+using DevilDaggersInfo.Web.Shared;
 using DevilDaggersInfo.Web.Shared.Dto.Admin.Users;
 using DevilDaggersInfo.Web.Shared.Extensions;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -13,6 +14,8 @@ public partial class Index
 	private bool _errorThrown;
 
 	private Deletion? _deletion;
+
+	private bool? IsAdmin => UserRoles == null ? null : UserRoles.Contains(Roles.Admin);
 
 	protected override async Task OnInitializedAsync()
 	{
