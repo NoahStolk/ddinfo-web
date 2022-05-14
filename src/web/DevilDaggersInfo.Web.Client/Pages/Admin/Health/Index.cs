@@ -62,8 +62,11 @@ public partial class Index
 	[Inject]
 	public IJSRuntime JsRuntime { get; set; } = null!;
 
-	protected override async Task OnInitializedAsync()
+	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
+		if (!firstRender)
+			return;
+
 		await FetchEntries();
 	}
 
