@@ -58,7 +58,7 @@ public class DiscordBotService : IHostedService
 			if (logChannel != null)
 			{
 				await _logContainerService.LogToLogChannel(logChannel);
-				await logChannel.SendMessageAsyncSafe($"> **Application is shutting down in the `{_environment.EnvironmentName}` environment. Disconnecting from Discord...** :wave:");
+				await logChannel.SendMessageAsyncSafe($"> **Application is shutting down in the `{_environment.EnvironmentName}` environment. Disconnecting from Discord...**");
 			}
 		}
 	}

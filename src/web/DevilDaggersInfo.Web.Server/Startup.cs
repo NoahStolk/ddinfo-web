@@ -227,7 +227,7 @@ public class Startup
 		sb.Append("Role initiation done at ").AppendLine(TimeUtils.TicksToTimeString(sw.ElapsedTicks));
 #endif
 
-			sb.Append("> **Application is now online in the `").Append(env.EnvironmentName).AppendLine("` environment.** :wave:");
+			sb.Append("> **Application is now online in the `").Append(env.EnvironmentName).AppendLine("` environment.**");
 
 			LogContainerService lcs = serviceProvider.GetRequiredService<LogContainerService>();
 			lcs.Add($"{DateTime.UtcNow:HH:mm:ss.fff}: Starting...\n{sb}");
