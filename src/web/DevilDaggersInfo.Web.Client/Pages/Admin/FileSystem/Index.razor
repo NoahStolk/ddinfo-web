@@ -1,0 +1,54 @@
+@page "/admin/file-system"
+@inherits BaseAdminPage
+@using DevilDaggersInfo.Web.Shared.Dto.Admin.FileSystem
+
+<AdminAuthorizer Base="this" RequiredRole="@Roles.Admin">
+	<Heading Title="Admin - File System" />
+
+	@if (_fileSystemEntries == null)
+	{
+		<Loading />
+	}
+	else
+	{
+		<a class="btn btn-green cursor-pointer block w-40 mb-2 mx-1" @onclick="async () => await Fetch()">Refresh</a>
+
+		<div class="grid gap-x-2 grid-cols-4">
+			<span class="font-bold col-span-2">Name</span>
+			<span class="font-bold text-right">Size</span>
+			<span class="font-bold text-right">Count</span>
+			@foreach (GetFileSystemEntry fse in _fileSystemEntries)
+			{
+				<span class="col-span-2">@fse.Name</span>
+				<span class="text-right">@FileSizeUtils.Format(fse.Size)</span>
+				<span class="text-right">@fse.Count.ToString("N0")</span>
+			}
+		</div>
+	}
+</AdminAuthorizer>
+
+@code
+{
+	private List<GetFileSystemEntry>? _fileSystemEntries;
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (!firstRender)
+			return;
+
+		await Fetch();
+	}
+
+	private async Task Fetch()
+	{
+		try
+		{
+			_fileSystemEntries = await Http.GetFileSystemInfo();
+			StateHasChanged();
+		}
+		catch (AccessTokenNotAvailableException exception)
+		{
+			exception.Redirect();
+		}
+	}
+}

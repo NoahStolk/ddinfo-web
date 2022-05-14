@@ -6,6 +6,7 @@ using DevilDaggersInfo.Web.Shared.Dto.Admin.Caches;
 using DevilDaggersInfo.Web.Shared.Dto.Admin.CustomEntries;
 using DevilDaggersInfo.Web.Shared.Dto.Admin.CustomLeaderboards;
 using DevilDaggersInfo.Web.Shared.Dto.Admin.Donations;
+using DevilDaggersInfo.Web.Shared.Dto.Admin.FileSystem;
 using DevilDaggersInfo.Web.Shared.Dto.Admin.Health;
 using DevilDaggersInfo.Web.Shared.Dto.Admin.Mods;
 using DevilDaggersInfo.Web.Shared.Dto.Admin.Players;
@@ -129,6 +130,11 @@ public partial class AdminApiHttpClient
 	public async Task<HttpResponseMessage> DeleteDonationById(int id)
 	{
 		return await SendRequest(new HttpMethod("DELETE"), $"api/admin/donations/{id}");
+	}
+
+	public async Task<List<GetFileSystemEntry>> GetFileSystemInfo()
+	{
+		return await SendGetRequest<List<GetFileSystemEntry>>($"api/admin/file-system/");
 	}
 
 	public async Task<GetResponseTimes> GetResponseTimes(DateTime date)
