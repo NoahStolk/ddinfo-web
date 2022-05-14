@@ -81,7 +81,6 @@ public class Startup
 		if (!WebHostEnvironment.IsDevelopment())
 		{
 			services.AddHostedService<BackgroundServiceLoggerBackgroundService>();
-			services.AddHostedService<CacheLoggerBackgroundService>();
 			services.AddHostedService<DatabaseLoggerBackgroundService>();
 			services.AddHostedService<DiscordUserIdFetchBackgroundService>();
 			services.AddHostedService<FileSystemLoggerBackgroundService>();
