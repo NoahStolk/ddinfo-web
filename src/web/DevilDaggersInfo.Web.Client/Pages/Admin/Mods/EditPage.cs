@@ -14,7 +14,7 @@ public partial class EditPage
 {
 	private Dictionary<int, string>? _playerNames;
 	private EditMod _editMod = new();
-	private AdminEdit<EditMod> _editComponent = null!;
+	private AdminEdit<EditMod>? _editComponent;
 	private List<string> _binaryFileSizeErrors = new();
 	private List<string> _screenshotFileSizeErrors = new();
 
@@ -23,8 +23,11 @@ public partial class EditPage
 	private IReadOnlyList<string>? _binaryNames;
 	private IReadOnlyList<string>? _screenshotNames;
 
-	protected override async Task OnInitializedAsync()
+	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
+		if (_editComponent == null)
+			return;
+
 		try
 		{
 			List<GetPlayerName> getPlayerNames = await Http.GetPlayerNames();

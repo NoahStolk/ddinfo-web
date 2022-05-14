@@ -1,33 +1,38 @@
 @page "/admin/custom-leaderboards/add"
+@inherits BaseAdminPage
 @using DevilDaggersInfo.Web.Shared.Dto.Admin.CustomLeaderboards
 @using DevilDaggersInfo.Web.Shared.Dto.Admin.Spawnsets
 @using DevilDaggersInfo.Web.Shared.Enums
 @using DevilDaggersInfo.Web.Client.Components.Admin
 @using DevilDaggersInfo.Web.Client.Enums
-@inherits BaseAdminPage
 
-<AdminAdd Name="Custom Leaderboard" OverviewUrl="/admin/custom-leaderboards" ApiCall="Http.AddCustomLeaderboard" Model="_addCustomLeaderboard" @ref="_addComponent">
-	<InputWrapper Label="Spawnset"><SearchDropdown TKey=int Values="@_spawnsetNames" Converter="s => int.Parse(s)" @bind-Value="@_addCustomLeaderboard.SpawnsetId" /></InputWrapper>
-	<InputWrapper Label="Category"><SearchDropdown TKey=CustomLeaderboardCategory Values="@(Enum.GetValues<CustomLeaderboardCategory>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<CustomLeaderboardCategory>(s)" ShowDisplayValue=false @bind-Value="@_addCustomLeaderboard.Category" /></InputWrapper>
-	<InputWrapper Label="Featured"><InputCheckbox @bind-Value="@_addCustomLeaderboard.IsFeatured" /></InputWrapper>
-	@if (_addCustomLeaderboard.IsFeatured)
-	{
-		<InputWrapper Label="Bronze"><InputNumber class="admin-input" @bind-Value="_addCustomLeaderboard.Daggers.Bronze" /></InputWrapper>
-		<InputWrapper Label="Silver"><InputNumber class="admin-input" @bind-Value="_addCustomLeaderboard.Daggers.Silver" /></InputWrapper>
-		<InputWrapper Label="Golden"><InputNumber class="admin-input" @bind-Value="_addCustomLeaderboard.Daggers.Golden" /></InputWrapper>
-		<InputWrapper Label="Devil"><InputNumber class="admin-input" @bind-Value="_addCustomLeaderboard.Daggers.Devil" /></InputWrapper>
-		<InputWrapper Label="Leviathan"><InputNumber class="admin-input" @bind-Value="_addCustomLeaderboard.Daggers.Leviathan" /></InputWrapper>
-	}
-</AdminAdd>
+<AdminAuthorizer Base="this" RequiredRole="@Roles.CustomLeaderboards">
+	<AdminAdd Name="Custom Leaderboard" OverviewUrl="/admin/custom-leaderboards" ApiCall="Http.AddCustomLeaderboard" Model="_addCustomLeaderboard" @ref="_addComponent">
+		<InputWrapper Label="Spawnset"><SearchDropdown TKey=int Values="@_spawnsetNames" Converter="s => int.Parse(s)" @bind-Value="@_addCustomLeaderboard.SpawnsetId" /></InputWrapper>
+		<InputWrapper Label="Category"><SearchDropdown TKey=CustomLeaderboardCategory Values="@(Enum.GetValues<CustomLeaderboardCategory>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<CustomLeaderboardCategory>(s)" ShowDisplayValue=false @bind-Value="@_addCustomLeaderboard.Category" /></InputWrapper>
+		<InputWrapper Label="Featured"><InputCheckbox @bind-Value="@_addCustomLeaderboard.IsFeatured" /></InputWrapper>
+		@if (_addCustomLeaderboard.IsFeatured)
+		{
+			<InputWrapper Label="Bronze"><InputNumber class="admin-input" @bind-Value="_addCustomLeaderboard.Daggers.Bronze" /></InputWrapper>
+			<InputWrapper Label="Silver"><InputNumber class="admin-input" @bind-Value="_addCustomLeaderboard.Daggers.Silver" /></InputWrapper>
+			<InputWrapper Label="Golden"><InputNumber class="admin-input" @bind-Value="_addCustomLeaderboard.Daggers.Golden" /></InputWrapper>
+			<InputWrapper Label="Devil"><InputNumber class="admin-input" @bind-Value="_addCustomLeaderboard.Daggers.Devil" /></InputWrapper>
+			<InputWrapper Label="Leviathan"><InputNumber class="admin-input" @bind-Value="_addCustomLeaderboard.Daggers.Leviathan" /></InputWrapper>
+		}
+	</AdminAdd>
+</AdminAuthorizer>
 
 @code
 {
 	private Dictionary<int, string>? _spawnsetNames;
 	private AddCustomLeaderboard _addCustomLeaderboard = new();
-	private AdminAdd<AddCustomLeaderboard> _addComponent = null!;
+	private AdminAdd<AddCustomLeaderboard>? _addComponent;
 
-	protected override async Task OnInitializedAsync()
+	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
+		if (_addComponent == null)
+			return;
+
 		try
 		{
 			List<GetSpawnsetName> getSpawnsetNames = await Http.GetSpawnsetNames();

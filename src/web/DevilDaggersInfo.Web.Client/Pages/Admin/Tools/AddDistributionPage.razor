@@ -1,21 +1,24 @@
 @page "/admin/tools/add-distribution"
+@inherits BaseAdminPage
 @using DevilDaggersInfo.Web.Shared.Dto.Admin.Tools
 @using DevilDaggersInfo.Web.Shared.Enums
 
-<Heading Title="Admin - Add Distribution" />
+<AdminAuthorizer Base="this" RequiredRole="@Roles.Admin">
+	<Heading Title="Admin - Add Distribution" />
 
-<EditForm Model="@Model" OnValidSubmit="@OnValidSubmit">
-	<DataAnnotationsValidator />
-	<ValidationSummary />
+	<EditForm Model="@Model" OnValidSubmit="@OnValidSubmit">
+		<DataAnnotationsValidator />
+		<ValidationSummary />
 
-	<InputWrapper Label="Name"><SearchDropdown TKey=string Values="@_toolNames.ToDictionary(s => s, s => s)" Converter="s => s" ShowDisplayValue=false @bind-Value="@Model.Name" /></InputWrapper>
-	<InputWrapper Label="Version"><InputText class="admin-input" @bind-Value="@Model.Version" /></InputWrapper>
-	<InputWrapper Label="Publish method"><SearchDropdown TKey=ToolPublishMethod Values="@(Enum.GetValues<ToolPublishMethod>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<ToolPublishMethod>(s)" ShowDisplayValue=false @bind-Value="@Model.PublishMethod" /></InputWrapper>
-	<InputWrapper Label="Build type"><SearchDropdown TKey=ToolBuildType Values="@(Enum.GetValues<ToolBuildType>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<ToolBuildType>(s)" ShowDisplayValue=false @bind-Value="@Model.BuildType" /></InputWrapper>
-	<InputWrapper Label="Zip file"><InputFile OnChange="LoadFile" /></InputWrapper>
+		<InputWrapper Label="Name"><SearchDropdown TKey=string Values="@_toolNames.ToDictionary(s => s, s => s)" Converter="s => s" ShowDisplayValue=false @bind-Value="@Model.Name" /></InputWrapper>
+		<InputWrapper Label="Version"><InputText class="admin-input" @bind-Value="@Model.Version" /></InputWrapper>
+		<InputWrapper Label="Publish method"><SearchDropdown TKey=ToolPublishMethod Values="@(Enum.GetValues<ToolPublishMethod>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<ToolPublishMethod>(s)" ShowDisplayValue=false @bind-Value="@Model.PublishMethod" /></InputWrapper>
+		<InputWrapper Label="Build type"><SearchDropdown TKey=ToolBuildType Values="@(Enum.GetValues<ToolBuildType>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<ToolBuildType>(s)" ShowDisplayValue=false @bind-Value="@Model.BuildType" /></InputWrapper>
+		<InputWrapper Label="Zip file"><InputFile OnChange="LoadFile" /></InputWrapper>
 
-	<button class="btn btn-gray p-1" type="submit">Add distribution</button>
-</EditForm>
+		<button class="btn btn-gray p-1" type="submit">Add distribution</button>
+	</EditForm>
+</AdminAuthorizer>
 
 @code
 {
@@ -23,12 +26,6 @@
 
 	[Parameter]
 	public AddDistribution Model { get; set; } = new();
-
-	[Inject]
-	public AdminApiHttpClient Http { get; set; } = null!;
-
-	[Inject]
-	public NavigationManager NavigationManager { get; set; } = null!;
 
 	private async Task LoadFile(InputFileChangeEventArgs e)
 	{

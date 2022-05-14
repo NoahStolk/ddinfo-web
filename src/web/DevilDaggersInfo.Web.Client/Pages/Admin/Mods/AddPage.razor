@@ -1,18 +1,20 @@
 @page "/admin/mods/add"
-@using DevilDaggersInfo.Core.Mod.Utils
 @inherits BaseAdminModPage
+@using DevilDaggersInfo.Core.Mod.Utils
 
-<AdminAdd Name="Mod" OverviewUrl="/admin/mods" ApiCall="Http.AddMod" Model="_addMod" @ref="_addComponent">
-	<InputWrapper Label="Name"><InputText class="admin-input" @bind-Value="@_addMod.Name" /></InputWrapper>
-	<InputWrapper Label="Author(s)"><MultiSearchDropdown Values="@_playerNames" @bind-Value="@_addMod.PlayerIds" /></InputWrapper>
-	<InputWrapper Label="Trailer URL"><InputText class="admin-input" @bind-Value="_addMod.TrailerUrl" /></InputWrapper>
-	<InputWrapper Label="HTML description"><InputTextArea class="admin-input w-full h-64" @bind-Value="@_addMod.HtmlDescription" /></InputWrapper>
-	<InputWrapper Label="Mod types (only for non-hosted)"><MultiSearchDropdown Values="@ModTypes" @bind-Value="@_addMod.ModTypes" /></InputWrapper>
-	<InputWrapper Label="URL (only for non-hosted)"><InputText class="admin-input" @bind-Value="@_addMod.Url" /></InputWrapper>
-	<InputWrapper Label="Hidden"><InputCheckbox @bind-Value="@_addMod.IsHidden" /></InputWrapper>
-	<InputWrapper Label="Binaries"><InputFile @onclick="() => _addMod.Binaries.Clear()" OnChange="LoadBinaries" multiple /></InputWrapper>
-	<InputWrapper Label="Screenshots"><InputFile @onclick="() => _addMod.Screenshots.Clear()" OnChange="LoadScreenshots" multiple /></InputWrapper>
-</AdminAdd>
+<AdminAuthorizer Base="this" RequiredRole="@Roles.Mods">
+	<AdminAdd Name="Mod" OverviewUrl="/admin/mods" ApiCall="Http.AddMod" Model="_addMod" @ref="_addComponent">
+		<InputWrapper Label="Name"><InputText class="admin-input" @bind-Value="@_addMod.Name" /></InputWrapper>
+		<InputWrapper Label="Author(s)"><MultiSearchDropdown Values="@_playerNames" @bind-Value="@_addMod.PlayerIds" /></InputWrapper>
+		<InputWrapper Label="Trailer URL"><InputText class="admin-input" @bind-Value="_addMod.TrailerUrl" /></InputWrapper>
+		<InputWrapper Label="HTML description"><InputTextArea class="admin-input w-full h-64" @bind-Value="@_addMod.HtmlDescription" /></InputWrapper>
+		<InputWrapper Label="Mod types (only for non-hosted)"><MultiSearchDropdown Values="@ModTypes" @bind-Value="@_addMod.ModTypes" /></InputWrapper>
+		<InputWrapper Label="URL (only for non-hosted)"><InputText class="admin-input" @bind-Value="@_addMod.Url" /></InputWrapper>
+		<InputWrapper Label="Hidden"><InputCheckbox @bind-Value="@_addMod.IsHidden" /></InputWrapper>
+		<InputWrapper Label="Binaries"><InputFile @onclick="() => _addMod.Binaries.Clear()" OnChange="LoadBinaries" multiple /></InputWrapper>
+		<InputWrapper Label="Screenshots"><InputFile @onclick="() => _addMod.Screenshots.Clear()" OnChange="LoadScreenshots" multiple /></InputWrapper>
+	</AdminAdd>
+</AdminAuthorizer>
 
 @if (_addMod.Binaries.Count > 0 || _binaryFileSizeErrors.Count > 0)
 {

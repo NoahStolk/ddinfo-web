@@ -1,60 +1,62 @@
 @page "/admin/health"
-@using DevilDaggersInfo.Web.Shared.Dto.Admin.Health
 @inherits BaseAdminPage
+@using DevilDaggersInfo.Web.Shared.Dto.Admin.Health
 
-<Heading Title="Admin - Health" />
+<AdminAuthorizer Base="this" RequiredRole="@Roles.Admin">
+	<Heading Title="Admin - Health" />
 
-<Heading Level="2" Title="Response Times" />
+	<Heading Level="2" Title="Response Times" />
 
-<a class="btn btn-green cursor-pointer block w-40 mb-2 mx-1" @onclick="async () => await FetchEntries()">Refresh</a>
+	<a class="btn btn-green cursor-pointer block w-40 mb-2 mx-1" @onclick="async () => await FetchEntries()">Refresh</a>
 
-<a class="btn btn-green cursor-pointer block w-40 mb-2 mx-1" @onclick="async () => await ForceDump()">Force dump now</a>
+	<a class="btn btn-green cursor-pointer block w-40 mb-2 mx-1" @onclick="async () => await ForceDump()">Force dump now</a>
 
-<DatePicker DateSelected="@(d => UpdateDateTime(d))" />
+	<DatePicker DateSelected="@(d => UpdateDateTime(d))" />
 
-@if (_response == null)
-{
-	<Loading />
-}
-else
-{
-	<div class="grid grid-cols-1 2xl:grid-cols-2">
-		<div>
-			<Heading Title="Total API Traffic" Level="2" />
-			<LineChart DataOptions="_totalTrafficOptions" UniqueName="#total-api-traffic-chart" DataSets="_totalTrafficData" Options="_totalTrafficLineChartOptions" />
+	@if (_response == null)
+	{
+		<Loading />
+	}
+	else
+	{
+		<div class="grid grid-cols-1 2xl:grid-cols-2">
+			<div>
+				<Heading Title="Total API Traffic" Level="2" />
+				<LineChart DataOptions="_totalTrafficOptions" UniqueName="#total-api-traffic-chart" DataSets="_totalTrafficData" Options="_totalTrafficLineChartOptions" />
+			</div>
+
+			<div>
+				<Heading Title="Custom Entry Submit" Level="2" />
+				<LineChart DataOptions="_customEntrySubmitOptions" UniqueName="#custom-entry-submit-chart" DataSets="_customEntrySubmitData" Options="_customEntrySubmitLineChartOptions" />
+			</div>
+
+			<div>
+				<Heading Title="Custom Leaderboard Exists" Level="2" />
+				<LineChart DataOptions="_customLeaderboardExistsOptions" UniqueName="#custom-leaderboard-exists-chart" DataSets="_customLeaderboardExistsData" Options="_customLeaderboardExistsLineChartOptions" />
+			</div>
 		</div>
 
-		<div>
-			<Heading Title="Custom Entry Submit" Level="2" />
-			<LineChart DataOptions="_customEntrySubmitOptions" UniqueName="#custom-entry-submit-chart" DataSets="_customEntrySubmitData" Options="_customEntrySubmitLineChartOptions" />
+		<div class="grid gap-2 grid-cols-5">
+			<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(e => e.Key)">Request</a></div>
+			<div class="text-right"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(e => e.Value.RequestCount)">Request count</a></div>
+			<div class="text-right"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(e => e.Value.AverageResponseTimeTicks)">Avg response time</a></div>
+			<div class="text-right"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(e => e.Value.MinResponseTimeTicks)">Min response time</a></div>
+			<div class="text-right"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(e => e.Value.MaxResponseTimeTicks)">Max response time</a></div>
 		</div>
-
 		<div>
-			<Heading Title="Custom Leaderboard Exists" Level="2" />
-			<LineChart DataOptions="_customLeaderboardExistsOptions" UniqueName="#custom-leaderboard-exists-chart" DataSets="_customLeaderboardExistsData" Options="_customLeaderboardExistsLineChartOptions" />
-		</div>
-	</div>
-
-	<div class="grid gap-2 grid-cols-5">
-		<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(e => e.Key)">Request</a></div>
-		<div class="text-right"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(e => e.Value.RequestCount)">Request count</a></div>
-		<div class="text-right"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(e => e.Value.AverageResponseTimeTicks)">Avg response time</a></div>
-		<div class="text-right"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(e => e.Value.MinResponseTimeTicks)">Min response time</a></div>
-		<div class="text-right"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(e => e.Value.MaxResponseTimeTicks)">Max response time</a></div>
-	</div>
-	<div>
-		@{
-			int i = 0;
-			foreach (KeyValuePair<string, GetRequestPathEntry> kvp in _response.ResponseTimeSummaryByRequestPath)
-			{
-				<div class="grid gap-2 grid-cols-5 @(i++ % 2 == 0 ? "bg-gray-1" : string.Empty)">
-					<div class="overflow-hidden">@kvp.Key</div>
-					<div class="text-right">@kvp.Value.RequestCount</div>
-					<div class="text-right">@TimeUtils.TicksToTimeString(kvp.Value.AverageResponseTimeTicks)</div>
-					<div class="text-right">@TimeUtils.TicksToTimeString(kvp.Value.MinResponseTimeTicks)</div>
-					<div class="text-right">@TimeUtils.TicksToTimeString(kvp.Value.MaxResponseTimeTicks)</div>
-				</div>
+			@{
+				int i = 0;
+				foreach (KeyValuePair<string, GetRequestPathEntry> kvp in _response.ResponseTimeSummaryByRequestPath)
+				{
+					<div class="grid gap-2 grid-cols-5 @(i++ % 2 == 0 ? "bg-gray-1" : string.Empty)">
+						<div class="overflow-hidden">@kvp.Key</div>
+						<div class="text-right">@kvp.Value.RequestCount</div>
+						<div class="text-right">@TimeUtils.TicksToTimeString(kvp.Value.AverageResponseTimeTicks)</div>
+						<div class="text-right">@TimeUtils.TicksToTimeString(kvp.Value.MinResponseTimeTicks)</div>
+						<div class="text-right">@TimeUtils.TicksToTimeString(kvp.Value.MaxResponseTimeTicks)</div>
+					</div>
+				}
 			}
-		}
-	</div>
-}
+		</div>
+	}
+</AdminAuthorizer>

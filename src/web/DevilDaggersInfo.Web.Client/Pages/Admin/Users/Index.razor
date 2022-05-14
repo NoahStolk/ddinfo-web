@@ -1,58 +1,60 @@
 @page "/admin/users"
-@using DevilDaggersInfo.Web.Shared.Dto.Admin.Users
 @inherits BaseAdminPage
+@using DevilDaggersInfo.Web.Shared.Dto.Admin.Users
 
-<Heading Title="Admin - Users" />
+<AdminAuthorizer Base="this" RequiredRole="@Roles.Admin">
+	<Heading Title="Admin - Users" />
 
-<p class="para">Hello, @_username</p>
+	<p class="para">Hello, @_username</p>
 
-@if (_users == null)
-{
-	if (!_errorThrown)
+	@if (_users == null)
 	{
-		<Loading />
-	}
-}
-else
-{
-	<Deletion AfterDelete="Fetch" ApiCall="(int id) => Http.DeleteUserById(id)" @ref="_deletion" />
-
-	<div class="grid gap-2 grid-cols-admin-users-sm md:grid-cols-admin-users-md lg:grid-cols-admin-users-lg xl:grid-cols-admin-users-xl">
-		<div>Id</div>
-		<div>Name</div>
-		<div>Player Id</div>
-		<div>Player Name</div>
-		<div class="hidden xl:block">Admin</div>
-		<div class="hidden xl:block">Custom LBs</div>
-		<div class="hidden xl:block">Mods</div>
-		<div class="hidden xl:block">Players</div>
-		<div class="hidden xl:block">Spawnsets</div>
-		<div></div>
-		<div></div>
-	</div>
-	<div>
-		@{
-			int i = 0;
-			foreach (GetUser user in _users)
-			{
-				<div class="grid gap-2 grid-cols-admin-users-sm md:grid-cols-admin-users-md lg:grid-cols-admin-users-lg xl:grid-cols-admin-users-xl @(i++ % 2 == 0 ? "bg-gray-1" : string.Empty)">
-					<div class="overflow-hidden">@user.Id</div>
-					<div class="overflow-hidden">@user.Name</div>
-					<div class="overflow-hidden">@user.PlayerId</div>
-					<div class="overflow-hidden">@user.PlayerName</div>
-					<div class="hidden xl:block overflow-hidden"><button class="@GetButtonClass(user.IsAdmin)" @onclick="async () => await ToggleRole(user.Id, Roles.Admin)">@GetButtonText(user.IsAdmin)</button></div>
-					<div class="hidden xl:block overflow-hidden"><button class="@GetButtonClass(user.IsCustomLeaderboardsMaintainer)" @onclick="async () => await ToggleRole(user.Id, Roles.CustomLeaderboards)">@GetButtonText(user.IsCustomLeaderboardsMaintainer)</button></div>
-					<div class="hidden xl:block overflow-hidden"><button class="@GetButtonClass(user.IsModsMaintainer)" @onclick="async () => await ToggleRole(user.Id, Roles.Mods)">@GetButtonText(user.IsModsMaintainer)</button></div>
-					<div class="hidden xl:block overflow-hidden"><button class="@GetButtonClass(user.IsPlayersMaintainer)" @onclick="async () => await ToggleRole(user.Id, Roles.Players)">@GetButtonText(user.IsPlayersMaintainer)</button></div>
-					<div class="hidden xl:block overflow-hidden"><button class="@GetButtonClass(user.IsSpawnsetsMaintainer)" @onclick="async () => await ToggleRole(user.Id, Roles.Spawnsets)">@GetButtonText(user.IsSpawnsetsMaintainer)</button></div>
-					<div><a class="link" href="@($"/admin/users/assign-player/{user.Id}")">Assign</a></div>
-					<div><a class="link" href="" @onclick="() => _deletion?.Set(user.Id)" @onclick:preventDefault>Delete</a></div>
-					<div><a class="link" href="@($"/admin/users/reset-password/{user.Id}")">Reset</a></div>
-				</div>
-			}
+		if (!_errorThrown)
+		{
+			<Loading />
 		}
-	</div>
-}
+	}
+	else
+	{
+		<Deletion AfterDelete="Fetch" ApiCall="(int id) => Http.DeleteUserById(id)" @ref="_deletion" />
+
+		<div class="grid gap-2 grid-cols-admin-users-sm md:grid-cols-admin-users-md lg:grid-cols-admin-users-lg xl:grid-cols-admin-users-xl">
+			<div>Id</div>
+			<div>Name</div>
+			<div>Player Id</div>
+			<div>Player Name</div>
+			<div class="hidden xl:block">Admin</div>
+			<div class="hidden xl:block">Custom LBs</div>
+			<div class="hidden xl:block">Mods</div>
+			<div class="hidden xl:block">Players</div>
+			<div class="hidden xl:block">Spawnsets</div>
+			<div></div>
+			<div></div>
+		</div>
+		<div>
+			@{
+				int i = 0;
+				foreach (GetUser user in _users)
+				{
+					<div class="grid gap-2 grid-cols-admin-users-sm md:grid-cols-admin-users-md lg:grid-cols-admin-users-lg xl:grid-cols-admin-users-xl @(i++ % 2 == 0 ? "bg-gray-1" : string.Empty)">
+						<div class="overflow-hidden">@user.Id</div>
+						<div class="overflow-hidden">@user.Name</div>
+						<div class="overflow-hidden">@user.PlayerId</div>
+						<div class="overflow-hidden">@user.PlayerName</div>
+						<div class="hidden xl:block overflow-hidden"><button class="@GetButtonClass(user.IsAdmin)" @onclick="async () => await ToggleRole(user.Id, Roles.Admin)">@GetButtonText(user.IsAdmin)</button></div>
+						<div class="hidden xl:block overflow-hidden"><button class="@GetButtonClass(user.IsCustomLeaderboardsMaintainer)" @onclick="async () => await ToggleRole(user.Id, Roles.CustomLeaderboards)">@GetButtonText(user.IsCustomLeaderboardsMaintainer)</button></div>
+						<div class="hidden xl:block overflow-hidden"><button class="@GetButtonClass(user.IsModsMaintainer)" @onclick="async () => await ToggleRole(user.Id, Roles.Mods)">@GetButtonText(user.IsModsMaintainer)</button></div>
+						<div class="hidden xl:block overflow-hidden"><button class="@GetButtonClass(user.IsPlayersMaintainer)" @onclick="async () => await ToggleRole(user.Id, Roles.Players)">@GetButtonText(user.IsPlayersMaintainer)</button></div>
+						<div class="hidden xl:block overflow-hidden"><button class="@GetButtonClass(user.IsSpawnsetsMaintainer)" @onclick="async () => await ToggleRole(user.Id, Roles.Spawnsets)">@GetButtonText(user.IsSpawnsetsMaintainer)</button></div>
+						<div><a class="link" href="@($"/admin/users/assign-player/{user.Id}")">Assign</a></div>
+						<div><a class="link" href="" @onclick="() => _deletion?.Set(user.Id)" @onclick:preventDefault>Delete</a></div>
+						<div><a class="link" href="@($"/admin/users/reset-password/{user.Id}")">Reset</a></div>
+					</div>
+				}
+			}
+		</div>
+	}
+</AdminAuthorizer>
 
 @code
 {

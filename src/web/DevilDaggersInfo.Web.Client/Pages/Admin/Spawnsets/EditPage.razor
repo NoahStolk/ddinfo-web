@@ -1,28 +1,33 @@
 @page "/admin/spawnsets/edit/{Id:int}"
+@inherits BaseAdminPage
 @using DevilDaggersInfo.Web.Shared.Dto.Admin.Spawnsets
 @using DevilDaggersInfo.Web.Client.Components.Admin
 @using DevilDaggersInfo.Web.Client.Enums
 @using DevilDaggersInfo.Web.Shared.Dto.Admin.Players
-@inherits BaseAdminPage
 
-<AdminEdit Name="Spawnset" OverviewUrl="/admin/spawnsets" ApiCall="Http.EditSpawnsetById" Model="_editSpawnset" Id="Id" @ref="_editComponent">
-	<InputWrapper Label="Author"><SearchDropdown TKey=int Values="@_playerNames" Converter="s => int.Parse(s)" @bind-Value="@_editSpawnset.PlayerId" /></InputWrapper>
-	<InputWrapper Label="Name"><InputText class="admin-input" @bind-Value="@_editSpawnset.Name" /></InputWrapper>
-	<InputWrapper Label="Max display waves"><InputNumber class="admin-input" @bind-Value="_editSpawnset.MaxDisplayWaves" /></InputWrapper>
-	<InputWrapper Label="HTML description"><InputTextArea class="admin-input w-full h-64" @bind-Value="@_editSpawnset.HtmlDescription" /></InputWrapper>
-	<InputWrapper Label="Practice"><InputCheckbox @bind-Value="@_editSpawnset.IsPractice" /></InputWrapper>
-</AdminEdit>
+<AdminAuthorizer Base="this" RequiredRole="@Roles.Spawnsets">
+	<AdminEdit Name="Spawnset" OverviewUrl="/admin/spawnsets" ApiCall="Http.EditSpawnsetById" Model="_editSpawnset" Id="Id" @ref="_editComponent">
+		<InputWrapper Label="Author"><SearchDropdown TKey=int Values="@_playerNames" Converter="s => int.Parse(s)" @bind-Value="@_editSpawnset.PlayerId" /></InputWrapper>
+		<InputWrapper Label="Name"><InputText class="admin-input" @bind-Value="@_editSpawnset.Name" /></InputWrapper>
+		<InputWrapper Label="Max display waves"><InputNumber class="admin-input" @bind-Value="_editSpawnset.MaxDisplayWaves" /></InputWrapper>
+		<InputWrapper Label="HTML description"><InputTextArea class="admin-input w-full h-64" @bind-Value="@_editSpawnset.HtmlDescription" /></InputWrapper>
+		<InputWrapper Label="Practice"><InputCheckbox @bind-Value="@_editSpawnset.IsPractice" /></InputWrapper>
+	</AdminEdit>
+</AdminAuthorizer>
 
 @code
 {
 	private Dictionary<int, string>? _playerNames;
 	private EditSpawnset _editSpawnset = new();
-	private AdminEdit<EditSpawnset> _editComponent = null!;
+	private AdminEdit<EditSpawnset>? _editComponent;
 
 	[Parameter, EditorRequired] public int Id { get; set; }
-
-	protected override async Task OnInitializedAsync()
+	
+	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
+		if (_editComponent == null)
+			return;
+
 		try
 		{
 			List<GetPlayerName> getPlayerNames = await Http.GetPlayerNames();

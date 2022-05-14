@@ -12,12 +12,15 @@ public partial class AddPage
 {
 	private Dictionary<int, string>? _playerNames;
 	private AddMod _addMod = new();
-	private AdminAdd<AddMod> _addComponent = null!;
+	private AdminAdd<AddMod>? _addComponent;
 	private List<string> _binaryFileSizeErrors = new();
 	private List<string> _screenshotFileSizeErrors = new();
 
-	protected override async Task OnInitializedAsync()
+	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
+		if (_addComponent == null)
+			return;
+
 		try
 		{
 			List<GetPlayerName> getPlayerNames = await Http.GetPlayerNames();

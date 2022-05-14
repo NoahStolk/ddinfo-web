@@ -1,32 +1,37 @@
 @page "/admin/custom-leaderboards/edit/{Id:int}"
+@inherits BaseAdminPage
 @using DevilDaggersInfo.Web.Shared.Dto.Admin.CustomLeaderboards
 @using DevilDaggersInfo.Web.Shared.Enums
 @using DevilDaggersInfo.Web.Client.Components.Admin
 @using DevilDaggersInfo.Web.Client.Enums
-@inherits BaseAdminPage
 
-<AdminEdit Name="Custom Leaderboard" OverviewUrl="/admin/custom-leaderboards" ApiCall="Http.EditCustomLeaderboardById" Model="_editCustomLeaderboard" Id="Id" @ref="_editComponent">
-	<InputWrapper Label="Category"><SearchDropdown TKey=CustomLeaderboardCategory Values="@(Enum.GetValues<CustomLeaderboardCategory>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<CustomLeaderboardCategory>(s)" ShowDisplayValue=false @bind-Value="@_editCustomLeaderboard.Category" /></InputWrapper>
-	<InputWrapper Label="Featured"><InputCheckbox @bind-Value="@_editCustomLeaderboard.IsFeatured" /></InputWrapper>
-	@if (_editCustomLeaderboard.IsFeatured)
-	{
-		<InputWrapper Label="Bronze"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.Daggers.Bronze" /></InputWrapper>
-		<InputWrapper Label="Silver"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.Daggers.Silver" /></InputWrapper>
-		<InputWrapper Label="Golden"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.Daggers.Golden" /></InputWrapper>
-		<InputWrapper Label="Devil"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.Daggers.Devil" /></InputWrapper>
-		<InputWrapper Label="Leviathan"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.Daggers.Leviathan" /></InputWrapper>
-	}
-</AdminEdit>
+<AdminAuthorizer Base="this" RequiredRole="@Roles.CustomLeaderboards">
+	<AdminEdit Name="Custom Leaderboard" OverviewUrl="/admin/custom-leaderboards" ApiCall="Http.EditCustomLeaderboardById" Model="_editCustomLeaderboard" Id="Id" @ref="_editComponent">
+		<InputWrapper Label="Category"><SearchDropdown TKey=CustomLeaderboardCategory Values="@(Enum.GetValues<CustomLeaderboardCategory>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<CustomLeaderboardCategory>(s)" ShowDisplayValue=false @bind-Value="@_editCustomLeaderboard.Category" /></InputWrapper>
+		<InputWrapper Label="Featured"><InputCheckbox @bind-Value="@_editCustomLeaderboard.IsFeatured" /></InputWrapper>
+		@if (_editCustomLeaderboard.IsFeatured)
+		{
+			<InputWrapper Label="Bronze"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.Daggers.Bronze" /></InputWrapper>
+			<InputWrapper Label="Silver"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.Daggers.Silver" /></InputWrapper>
+			<InputWrapper Label="Golden"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.Daggers.Golden" /></InputWrapper>
+			<InputWrapper Label="Devil"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.Daggers.Devil" /></InputWrapper>
+			<InputWrapper Label="Leviathan"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.Daggers.Leviathan" /></InputWrapper>
+		}
+	</AdminEdit>
+</AdminAuthorizer>
 
 @code
 {
 	private EditCustomLeaderboard _editCustomLeaderboard = new();
-	private AdminEdit<EditCustomLeaderboard> _editComponent = null!;
+	private AdminEdit<EditCustomLeaderboard>? _editComponent;
 
 	[Parameter, EditorRequired] public int Id { get; set; }
 
-	protected override async Task OnInitializedAsync()
+	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
+		if (_editComponent == null)
+			return;
+
 		try
 		{
 			GetCustomLeaderboard getCustomLeaderboard = await Http.GetCustomLeaderboardById(Id);

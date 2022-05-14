@@ -16,8 +16,11 @@ public partial class Index
 
 	private string? _username;
 
-	protected override async Task OnInitializedAsync()
+	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
+		if (!firstRender)
+			return;
+
 		AuthenticationState auth = await Auth.GetAuthenticationStateAsync();
 		_username = auth.User?.GetName();
 
