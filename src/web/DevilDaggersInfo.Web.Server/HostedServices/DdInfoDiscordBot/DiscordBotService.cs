@@ -27,15 +27,11 @@ public class DiscordBotService : IHostedService
 
 		await DiscordServerConstants.LoadServerChannelsAndMessages(client);
 
-		client.MessageCreated += async (client, e) =>
+		client.MessageCreated += async (_, e) =>
 		{
 			string msg = e.Message.Content.ToLower();
 			if (msg.Length <= 1)
 				return;
-
-			// React with an emoji when the bot gets mentioned anywhere.
-			if (msg.Contains($"@!{DiscordServerConstants.BotUserId}"))
-				await e.Message.CreateReactionAsync(DiscordEmoji.FromName(client, ":eye_in_speech_bubble:"));
 
 			if (e.Channel.Id == DiscordServerConstants.TestChannelId && msg.StartsWith("."))
 			{
