@@ -1,3 +1,5 @@
+#pragma warning disable S4457 // Parameter validation in "async"/"await" methods should be wrapped
+
 namespace DevilDaggersInfo.Web.Server.Clients.Leaderboard;
 
 public class LeaderboardClient
@@ -20,25 +22,29 @@ public class LeaderboardClient
 		_logger = logger;
 	}
 
-	private async Task<byte[]> ExecuteRequest(string url, params KeyValuePair<string?, string?>[] parameters)
+	private async Task<TResponse?> ExecuteAndParse<TResponse>(Func<byte[], TResponse> parser, string url, params KeyValuePair<string?, string?>[] parameters)
+		where TResponse : class
 	{
-		using FormUrlEncodedContent content = new(parameters);
-		using HttpResponseMessage response = await _httpClient.PostAsync(url, content);
-		return await response.Content.ReadAsByteArrayAsync();
+		try
+		{
+			using FormUrlEncodedContent content = new(parameters);
+			using HttpResponseMessage response = await _httpClient.PostAsync(url, content);
+			byte[] bytes = await response.Content.ReadAsByteArrayAsync();
+			return parser(bytes);
+		}
+		catch (Exception ex)
+		{
+			LogError(ex, url, parameters);
+			return null;
+		}
 	}
 
 	public async Task<LeaderboardResponse?> GetLeaderboard(int rankStart)
 	{
-		try
-		{
-			byte[] response = await ExecuteRequest(_getScoresUrl, new KeyValuePair<string?, string?>("offset", (rankStart - 1).ToString()));
-			return _leaderboardResponseParser.ParseGetLeaderboardResponse(response);
-		}
-		catch (Exception ex)
-		{
-			_logger.LogError(ex, "Failed to fetch data from {url} with rank '{rank}'.", _getScoresUrl, rankStart);
-			return null;
-		}
+		return await ExecuteAndParse(
+			b => _leaderboardResponseParser.ParseGetLeaderboardResponse(b),
+			_getScoresUrl,
+			new KeyValuePair<string?, string?>("offset", (rankStart - 1).ToString()));
 	}
 
 	public async Task<List<EntryResponse>?> GetEntriesByName(string name)
@@ -46,43 +52,36 @@ public class LeaderboardClient
 		if (name.Length < 3 || name.Length > 16)
 			throw new ArgumentOutOfRangeException(nameof(name));
 
-		try
-		{
-			byte[] response = await ExecuteRequest(_getUserSearchUrl, new KeyValuePair<string?, string?>("search", name));
-			return _leaderboardResponseParser.ParseGetEntriesByName(response, name);
-		}
-		catch (Exception ex)
-		{
-			_logger.LogError(ex, "Failed to fetch data from {url} with search '{search}'.", _getUserSearchUrl, name);
-			return null;
-		}
+		return await ExecuteAndParse(
+			b => _leaderboardResponseParser.ParseGetEntriesByName(b),
+			_getUserSearchUrl,
+			new KeyValuePair<string?, string?>("search", name));
 	}
 
 	public async Task<List<EntryResponse>?> GetEntriesByIds(IEnumerable<int> ids)
 	{
-		try
-		{
-			byte[] response = await ExecuteRequest(_getUsersByIdsUrl, new KeyValuePair<string?, string?>("uid", string.Join(',', ids)));
-			return _leaderboardResponseParser.ParseGetEntriesByIds(response, ids.Count());
-		}
-		catch (Exception ex)
-		{
-			_logger.LogError(ex, "Failed to fetch data from {url} with {count} ids.", _getUsersByIdsUrl, ids.Count());
-			return null;
-		}
+		return await ExecuteAndParse(
+			b => _leaderboardResponseParser.ParseGetEntriesByIds(b),
+			_getUsersByIdsUrl,
+			new KeyValuePair<string?, string?>("uid", string.Join(',', ids)));
 	}
 
 	public async Task<EntryResponse?> GetEntryById(int id)
 	{
-		try
+		return await ExecuteAndParse(
+			b => _leaderboardResponseParser.ParseGetEntryById(b),
+			_getUserByIdUrl,
+			new KeyValuePair<string?, string?>("uid", id.ToString()));
+	}
+
+	private void LogError(Exception ex, string url, params KeyValuePair<string?, string?>[] parameters)
+	{
+		string error = ex switch
 		{
-			byte[] response = await ExecuteRequest(_getUserByIdUrl, new KeyValuePair<string?, string?>("uid", id.ToString()));
-			return _leaderboardResponseParser.ParseGetEntryById(response);
-		}
-		catch (Exception ex)
-		{
-			_logger.LogError(ex, "Failed to fetch data from {url} with id '{id}'.", _getUserByIdUrl, id);
-			return null;
-		}
+			HttpRequestException => "HTTP error",
+			EndOfStreamException => "incomplete response",
+			_ => "unexpected error",
+		};
+		_logger.LogError(ex, "Error ({error}) while attempting to fetch data from {url} with parameters: {parameters}", error, url, string.Join(", ", parameters.Select(p => $"{p.Key}: {p.Value}")));
 	}
 }
