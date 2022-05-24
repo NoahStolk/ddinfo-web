@@ -4,7 +4,7 @@
 
 <Heading Title="World Record Progression" />
 
-@if (_data == null || _dataOptions == null)
+@if (_worldRecordHolders == null || _worldRecords == null || _dataOptions == null)
 {
 	<Loading />
 }
@@ -13,15 +13,15 @@ else
 	<LineChart DataOptions="_dataOptions" UniqueName="#world-record-progression-chart" DataSets="@_lineDataSets" Options="_lineChartOptions" />
 
 	<Heading Level=2 Title="World Record Holders" />
-	<div class="grid gap-3 grid-cols-2 lg:grid-cols-4 xl:grid-cols-6">
-		<div>Username(s)</div>
-		<div>Total time held</div>
-		<div class="hidden lg:block">Longest time held consecutively</div>
-		<div class="hidden lg:block">World record count</div>
-		<div class="hidden xl:block">First held</div>
-		<div class="hidden xl:block">Last held</div>
+	<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+		<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _worldRecordHolders, _worldRecordHoldersSortings, wrh => (wrh.Usernames.FirstOrDefault() ?? string.Empty).ToLower())">Username(s)</a></div>
+		<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _worldRecordHolders, _worldRecordHoldersSortings, wrh => wrh.TotalTimeHeld)">Total time held</a></div>
+		<div class="hidden md:block"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _worldRecordHolders, _worldRecordHoldersSortings, wrh => wrh.LongestTimeHeldConsecutively)">Longest time held consecutively</a></div>
+		<div class="hidden lg:block"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _worldRecordHolders, _worldRecordHoldersSortings, wrh => wrh.WorldRecordCount)">World record count</a></div>
+		<div class="hidden xl:block"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _worldRecordHolders, _worldRecordHoldersSortings, wrh => wrh.FirstHeld)">First held</a></div>
+		<div class="hidden xl:block"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _worldRecordHolders, _worldRecordHoldersSortings, wrh => wrh.LastHeld)">Last held</a></div>
 	</div>
-	@foreach (GetWorldRecordHolder wrh in _data.WorldRecordHolders.OrderByDescending(wrh => wrh.LastHeld))
+	@foreach (GetWorldRecordHolder wrh in _worldRecordHolders)
 	{
 		bool isCurrentWrHolder = wrh.Id == _currentWorldRecordHolderId;
 		int totalTimeHeld = (int)Math.Round(wrh.TotalTimeHeld.TotalDays);
@@ -30,10 +30,10 @@ else
 		string totalTimeHeldString = $"{totalTimeHeld} day{S(totalTimeHeld)} ({(wrh.TotalTimeHeld / _totalTimeSinceFirstRecord).ToString("0.00%")})";
 		string longestTimeHeldConsecutivelyString = $"{longestTimeHeldConsecutively} day{S(longestTimeHeldConsecutively)}";
 
-		<div class="grid gap-3 grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 @(isCurrentWrHolder ? "bg-dark-red" : string.Empty)">
+		<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 @(isCurrentWrHolder ? "bg-dark-red" : string.Empty)">
 			<div>@string.Join(", ", wrh.Usernames)</div>
 			<div>@totalTimeHeldString</div>
-			<div class="hidden lg:block">@longestTimeHeldConsecutivelyString</div>
+			<div class="hidden md:block">@longestTimeHeldConsecutivelyString</div>
 			<div class="hidden lg:block">@wrh.WorldRecordCount</div>
 			<div class="hidden xl:block">@GetHistoryDateString(wrh.FirstHeld)</div>
 			<div class="hidden xl:block">@(isCurrentWrHolder ? "Now" : GetHistoryDateString(wrh.LastHeld))</div>
@@ -41,23 +41,25 @@ else
 	}
 
 	<Heading Level=2 Title="World Records" />
-	<div class="grid grid-cols-3 xl:grid-cols-5">
-		<div>Player</div>
-		<div>Time</div>
-		<div>Duration</div>
-		<div class="hidden xl:block">Improvement</div>
-		<div class="hidden xl:block">Game version</div>
+	<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+		<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _worldRecords, _worldRecordsSortings, wr => wr.Entry.Username)">Player</a></div>
+		<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _worldRecords, _worldRecordsSortings, wr => wr.Entry.Time)">Time</a></div>
+		<div class="hidden md:block"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _worldRecords, _worldRecordsSortings, wr => wr.DateTime)">Date achieved</a></div>
+		<div class="hidden lg:block"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _worldRecords, _worldRecordsSortings, wr => wr.WorldRecordDuration)">Duration</a></div>
+		<div class="hidden xl:block"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _worldRecords, _worldRecordsSortings, wr => wr.WorldRecordImprovement)">Improvement</a></div>
+		<div class="hidden xl:block"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _worldRecords, _worldRecordsSortings, wr => wr.GameVersion)">Game version</a></div>
 	</div>
-	@foreach (GetWorldRecord wr in _data.WorldRecords.OrderByDescending(wr => wr.GameVersion).ThenByDescending(wr => wr.Entry.Time))
+	@foreach (GetWorldRecord wr in _worldRecords)
 	{
 		bool isCurrentWr = wr.Entry.Time == _currentWorldRecord;
 		int days = (int)Math.Round(wr.WorldRecordDuration.TotalDays);
 		string duration = days == 0 ? "Less than 1 day" : days == 1 ? "1 day" : $"{days} days";
 
-		<div class="grid grid-cols-3 xl:grid-cols-5 @(isCurrentWr ? "bg-dark-red" : string.Empty)">
+		<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 @(isCurrentWr ? "bg-dark-red" : string.Empty)">
 			<div>@wr.Entry.Username</div>
 			<div>@wr.Entry.Time.ToString(StringFormats.TimeFormat)</div>
-			<div>@duration</div>
+			<div class="hidden md:block">@GetHistoryDateString(wr.DateTime)</div>
+			<div class="hidden lg:block">@duration</div>
 			<div class="hidden xl:block">@(wr.WorldRecordImprovement.HasValue ? new MarkupString(wr.WorldRecordImprovement.Value.ToString(StringFormats.TimeFormat)) : MarkupUtils.NoDataMarkup)</div>
 			<div class="hidden xl:block">@wr.GameVersion.GetGameVersionString()</div>
 		</div>
