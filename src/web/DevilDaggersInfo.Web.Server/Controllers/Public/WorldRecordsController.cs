@@ -36,6 +36,9 @@ public class WorldRecordsController : ControllerBase
 			BaseWorldRecord wr = baseWorldRecords[i];
 			BaseWorldRecord? previousWrSameLeaderboard = baseWorldRecords.OrderByDescending(w => w.DateTime).FirstOrDefault(w => w.DateTime < wr.DateTime && GetMajorGameVersion(w.GameVersion) == GetMajorGameVersion(wr.GameVersion));
 
+			// Only display an improvement when this world record is not the first on this leaderboard, and also only when the previous world record did not have a higher time (the world record was reset once during V1 because of an exploit (b0necarver 485.3422)).
+			double? improvement = previousWrSameLeaderboard == null || previousWrSameLeaderboard.Entry.Time > wr.Entry.Time ? null : wr.Entry.Time - previousWrSameLeaderboard.Entry.Time;
+
 			TimeSpan duration;
 			DateTime firstHeld;
 			DateTime lastHeld;
@@ -64,7 +67,7 @@ public class WorldRecordsController : ControllerBase
 				Entry = wr.Entry,
 				GameVersion = wr.GameVersion,
 				WorldRecordDuration = duration,
-				WorldRecordImprovement = previousWrSameLeaderboard == null ? null : wr.Entry.Time - previousWrSameLeaderboard.Entry.Time,
+				WorldRecordImprovement = improvement,
 			});
 
 			BaseWorldRecordHolder? holder = worldRecordHolders.Find(wrh => wrh.Id == wr.Entry.Id);
