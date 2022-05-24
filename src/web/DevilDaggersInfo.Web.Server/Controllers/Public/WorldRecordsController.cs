@@ -34,7 +34,7 @@ public class WorldRecordsController : ControllerBase
 		for (int i = 0; i < baseWorldRecords.Count; i++)
 		{
 			BaseWorldRecord wr = baseWorldRecords[i];
-			BaseWorldRecord? previousWrSameLeaderboard = baseWorldRecords.OrderByDescending(w => w.Entry.Time).FirstOrDefault(w => w.Entry.Time < wr.Entry.Time && GetMajorGameVersion(w.GameVersion) == GetMajorGameVersion(wr.GameVersion));
+			BaseWorldRecord? previousWrSameLeaderboard = baseWorldRecords.OrderByDescending(w => w.DateTime).FirstOrDefault(w => w.DateTime < wr.DateTime && GetMajorGameVersion(w.GameVersion) == GetMajorGameVersion(wr.GameVersion));
 
 			TimeSpan duration;
 			DateTime firstHeld;
