@@ -28,8 +28,8 @@ public class LeaderboardHistoryBackgroundService : AbstractBackgroundService
 		const int leaderboardPageCount = 5;
 		for (int i = 0; i < leaderboardPageCount;)
 		{
-			LeaderboardResponse? part = await _leaderboardClient.GetLeaderboard(100 * i + 1);
-			if (part == null)
+			ResponseWrapper<LeaderboardResponse> wrapper = await _leaderboardClient.GetLeaderboard(100 * i + 1);
+			if (wrapper.HasError)
 			{
 				const int interval = 5;
 				Logger.LogWarning("Couldn't get leaderboard (page {page} of {total}). Waiting {interval} seconds...", i, leaderboardPageCount, interval);
@@ -38,10 +38,11 @@ public class LeaderboardHistoryBackgroundService : AbstractBackgroundService
 				continue;
 			}
 
+			LeaderboardResponse response = wrapper.GetResponse();
 			if (leaderboard == null)
-				leaderboard = part; // The LeaderboardResponse.Entries property here is unused. We use the entries list instead.
+				leaderboard = response; // The LeaderboardResponse.Entries property here is unused. We use the entries local instead.
 
-			entries.AddRange(part.Entries);
+			entries.AddRange(response.Entries);
 
 			i++;
 		}

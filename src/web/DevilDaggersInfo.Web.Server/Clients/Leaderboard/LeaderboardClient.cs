@@ -22,24 +22,27 @@ public class LeaderboardClient
 		_logger = logger;
 	}
 
-	private async Task<TResponse?> ExecuteAndParse<TResponse>(Func<byte[], TResponse> parser, string url, params KeyValuePair<string?, string?>[] parameters)
+	private async Task<ResponseWrapper<TResponse>> ExecuteAndParse<TResponse>(Func<byte[], TResponse> parser, string url, params KeyValuePair<string?, string?>[] parameters)
 		where TResponse : class
 	{
 		try
 		{
 			using FormUrlEncodedContent content = new(parameters);
 			using HttpResponseMessage response = await _httpClient.PostAsync(url, content);
+			if (!response.IsSuccessStatusCode)
+				return new($"The leaderboard servers returned an unsuccessful response (HTTP {response.StatusCode}).");
+
 			byte[] bytes = await response.Content.ReadAsByteArrayAsync();
-			return parser(bytes);
+			return new(parser(bytes));
 		}
 		catch (Exception ex)
 		{
 			LogError(ex, url, parameters);
-			return null;
+			return new("The response from the leaderboard servers could not be parsed.");
 		}
 	}
 
-	public async Task<LeaderboardResponse?> GetLeaderboard(int rankStart)
+	public async Task<ResponseWrapper<LeaderboardResponse>> GetLeaderboard(int rankStart)
 	{
 		return await ExecuteAndParse(
 			b => _leaderboardResponseParser.ParseGetLeaderboardResponse(b),
@@ -47,7 +50,7 @@ public class LeaderboardClient
 			new KeyValuePair<string?, string?>("offset", (rankStart - 1).ToString()));
 	}
 
-	public async Task<List<EntryResponse>?> GetEntriesByName(string name)
+	public async Task<ResponseWrapper<List<EntryResponse>>> GetEntriesByName(string name)
 	{
 		if (name.Length < 3 || name.Length > 16)
 			throw new ArgumentOutOfRangeException(nameof(name));
@@ -58,7 +61,7 @@ public class LeaderboardClient
 			new KeyValuePair<string?, string?>("search", name));
 	}
 
-	public async Task<List<EntryResponse>?> GetEntriesByIds(IEnumerable<int> ids)
+	public async Task<ResponseWrapper<List<EntryResponse>>> GetEntriesByIds(IEnumerable<int> ids)
 	{
 		return await ExecuteAndParse(
 			b => _leaderboardResponseParser.ParseGetEntriesByIds(b),
@@ -66,7 +69,7 @@ public class LeaderboardClient
 			new KeyValuePair<string?, string?>("uid", string.Join(',', ids)));
 	}
 
-	public async Task<EntryResponse?> GetEntryById(int id)
+	public async Task<ResponseWrapper<EntryResponse>> GetEntryById(int id)
 	{
 		return await ExecuteAndParse(
 			b => _leaderboardResponseParser.ParseGetEntryById(b),

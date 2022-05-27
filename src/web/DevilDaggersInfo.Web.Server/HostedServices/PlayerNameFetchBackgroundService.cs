@@ -31,13 +31,17 @@ public class PlayerNameFetchBackgroundService : AbstractBackgroundService
 			if (attempts > 5)
 				break;
 
-			entries = await _leaderboardClient.GetEntriesByIds(players.Select(p => p.Id));
-			if (entries == null)
+			ResponseWrapper<List<EntryResponse>> wrapper = await _leaderboardClient.GetEntriesByIds(players.Select(p => p.Id));
+			if (wrapper.HasError)
 			{
 				const int interval = 5;
 				Logger.LogWarning("Couldn't get entries. Waiting {interval} seconds...", interval);
 
 				await Task.Delay(TimeSpan.FromSeconds(interval), stoppingToken);
+			}
+			else
+			{
+				entries = wrapper.GetResponse();
 			}
 		}
 		while (entries == null);

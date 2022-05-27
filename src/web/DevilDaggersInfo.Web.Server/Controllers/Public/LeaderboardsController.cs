@@ -19,11 +19,11 @@ public class LeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult<GetLeaderboard?>> GetLeaderboard([Range(1, int.MaxValue)] int rankStart = 1)
 	{
-		LeaderboardResponse? leaderboardResponse = await _leaderboardClient.GetLeaderboard(rankStart);
-		if (leaderboardResponse == null)
-			return BadRequest("The requested data could not be retrieved from the leaderboard servers.");
+		ResponseWrapper<LeaderboardResponse> wrapper = await _leaderboardClient.GetLeaderboard(rankStart);
+		if (wrapper.HasError)
+			return BadRequest(wrapper.ErrorMessage);
 
-		return leaderboardResponse.ToGetLeaderboardPublic();
+		return wrapper.GetResponse().ToGetLeaderboardPublic();
 	}
 
 	[HttpGet("entry/by-id")]
@@ -31,11 +31,11 @@ public class LeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult<GetEntry>> GetEntryById([Required, Range(1, int.MaxValue)] int id)
 	{
-		EntryResponse? entryResponse = await _leaderboardClient.GetEntryById(id);
-		if (entryResponse == null)
-			return BadRequest();
+		ResponseWrapper<EntryResponse> wrapper = await _leaderboardClient.GetEntryById(id);
+		if (wrapper.HasError)
+			return BadRequest(wrapper.ErrorMessage);
 
-		return entryResponse.ToGetEntryPublic();
+		return wrapper.GetResponse().ToGetEntryPublic();
 	}
 
 	[HttpGet("entry/by-ids")]
@@ -45,11 +45,11 @@ public class LeaderboardsController : ControllerBase
 	{
 		IEnumerable<int> ids = commaSeparatedIds.Split(',').Where(s => int.TryParse(s, out _)).Select(int.Parse);
 
-		List<EntryResponse>? entriesResponse = await _leaderboardClient.GetEntriesByIds(ids);
-		if (entriesResponse == null)
-			return BadRequest("The requested data could not be retrieved from the leaderboard servers.");
+		ResponseWrapper<List<EntryResponse>> wrapper = await _leaderboardClient.GetEntriesByIds(ids);
+		if (wrapper.HasError)
+			return BadRequest(wrapper.ErrorMessage);
 
-		return entriesResponse.ConvertAll(e => e.ToGetEntryPublic());
+		return wrapper.GetResponse().ConvertAll(e => e.ToGetEntryPublic());
 	}
 
 	[HttpGet("entry/by-username")]
@@ -57,11 +57,11 @@ public class LeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult<List<GetEntry>>> GetEntriesByName([Required, MinLength(3), MaxLength(16)] string name)
 	{
-		List<EntryResponse>? entriesResponse = await _leaderboardClient.GetEntriesByName(name);
-		if (entriesResponse == null)
-			return BadRequest("The requested data could not be retrieved from the leaderboard servers.");
+		ResponseWrapper<List<EntryResponse>> wrapper = await _leaderboardClient.GetEntriesByName(name);
+		if (wrapper.HasError)
+			return BadRequest(wrapper.ErrorMessage);
 
-		return entriesResponse.ConvertAll(e => e.ToGetEntryPublic());
+		return wrapper.GetResponse().ConvertAll(e => e.ToGetEntryPublic());
 	}
 
 	[HttpGet("entry/by-rank")]
@@ -70,14 +70,14 @@ public class LeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult<GetEntry>> GetEntryByRank([Required, Range(1, int.MaxValue)] int rank)
 	{
-		// TODO: Implement separate method that only parses the first entry.
-		LeaderboardResponse? leaderboardResponse = await _leaderboardClient.GetLeaderboard(rank);
-		if (leaderboardResponse == null)
-			return BadRequest("The requested data could not be retrieved from the leaderboard servers.");
+		ResponseWrapper<LeaderboardResponse> wrapper = await _leaderboardClient.GetLeaderboard(rank);
+		if (wrapper.HasError)
+			return BadRequest(wrapper.ErrorMessage);
 
-		if (leaderboardResponse.Entries.Count == 0)
+		LeaderboardResponse leaderboard = wrapper.GetResponse();
+		if (leaderboard.Entries.Count == 0)
 			return NotFound();
 
-		return leaderboardResponse.Entries[0].ToGetEntryPublic();
+		return leaderboard.Entries[0].ToGetEntryPublic();
 	}
 }
