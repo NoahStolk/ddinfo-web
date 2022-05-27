@@ -19,8 +19,7 @@ public class LeaderboardHistoryStatisticsController : ControllerBase
 
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	public ActionResult<List<GetLeaderboardHistoryStatistics>> GetLeaderboardHistoryStatistics()
+	public List<GetLeaderboardHistoryStatistics> GetLeaderboardHistoryStatistics()
 	{
 		string? firstPath = _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory).Where(p => p.EndsWith(".bin")).OrderBy(p => p).FirstOrDefault();
 		if (firstPath == null)
