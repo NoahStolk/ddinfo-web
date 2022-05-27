@@ -99,6 +99,9 @@ public class SpawnsetsController : ControllerBase
 		if (string.IsNullOrWhiteSpace(addSpawnset.Name))
 			return BadRequest("Spawnset name must not be empty or consist of white space only.");
 
+		if (addSpawnset.Name.Any(c => Path.GetInvalidFileNameChars().Contains(c)))
+			return BadRequest("Spawnset name must not contain invalid file name characters.");
+
 		if (!SpawnsetBinary.TryParse(addSpawnset.FileContents, out _))
 			return BadRequest("File could not be parsed to a proper survival file.");
 
@@ -145,6 +148,9 @@ public class SpawnsetsController : ControllerBase
 	{
 		if (string.IsNullOrWhiteSpace(editSpawnset.Name))
 			return BadRequest("Spawnset name must not be empty or consist of white space only.");
+
+		if (editSpawnset.Name.Any(c => Path.GetInvalidFileNameChars().Contains(c)))
+			return BadRequest("Spawnset name must not contain invalid file name characters.");
 
 		if (!_dbContext.Players.Any(p => p.Id == editSpawnset.PlayerId))
 			return BadRequest($"Player with ID '{editSpawnset.PlayerId}' does not exist.");

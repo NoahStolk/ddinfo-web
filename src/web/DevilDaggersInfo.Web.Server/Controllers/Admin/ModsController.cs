@@ -105,6 +105,9 @@ public class ModsController : ControllerBase
 		if (string.IsNullOrWhiteSpace(addMod.Name))
 			return BadRequest("Mod name must not be empty or consist of white space only.");
 
+		if (addMod.Name.Any(c => Path.GetInvalidFileNameChars().Contains(c)))
+			return BadRequest("Mod name must not contain invalid file name characters.");
+
 		if (addMod.PlayerIds == null || addMod.PlayerIds.Count == 0)
 			return BadRequest("Mod must have at least one author.");
 
@@ -167,6 +170,9 @@ public class ModsController : ControllerBase
 	{
 		if (string.IsNullOrWhiteSpace(editMod.Name))
 			return BadRequest("Mod name must not be empty or consist of white space only.");
+
+		if (editMod.Name.Any(c => Path.GetInvalidFileNameChars().Contains(c)))
+			return BadRequest("Mod name must not contain invalid file name characters.");
 
 		if (editMod.PlayerIds == null || editMod.PlayerIds.Count == 0)
 			return BadRequest("Mod must have at least one author.");
