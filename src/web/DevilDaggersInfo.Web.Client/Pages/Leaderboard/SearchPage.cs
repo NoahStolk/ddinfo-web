@@ -12,7 +12,9 @@ public partial class SearchPage
 	private string? _apiError;
 	private bool _loading;
 
-	[Parameter, SupplyParameterFromQuery] public string? Username { get; set; }
+	[Parameter]
+	[SupplyParameterFromQuery]
+	public string? Username { get; set; }
 
 	public List<GetEntry>? GetEntries { get; set; }
 

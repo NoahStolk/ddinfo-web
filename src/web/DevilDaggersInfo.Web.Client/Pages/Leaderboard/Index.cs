@@ -13,7 +13,9 @@ public partial class Index
 
 	private int _maxRank => (GetLeaderboard?.TotalPlayers ?? int.MaxValue) - 99;
 
-	[Parameter, SupplyParameterFromQuery] public int Rank { get => _rank; set => _rank = Math.Max(1, value); }
+	[Parameter]
+	[SupplyParameterFromQuery]
+	public int Rank { get => _rank; set => _rank = Math.Max(1, value); }
 
 	public GetLeaderboard? GetLeaderboard { get; set; }
 
