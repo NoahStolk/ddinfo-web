@@ -30,7 +30,7 @@ public class LeaderboardClient
 			using FormUrlEncodedContent content = new(parameters);
 			using HttpResponseMessage response = await _httpClient.PostAsync(url, content);
 			if (!response.IsSuccessStatusCode)
-				return new($"The leaderboard servers returned an unsuccessful response (HTTP {response.StatusCode}).");
+				return new($"The leaderboard servers returned an unsuccessful response (HTTP {(int)response.StatusCode} {response.StatusCode}).");
 
 			byte[] bytes = await response.Content.ReadAsByteArrayAsync();
 			return new(parser(bytes));
