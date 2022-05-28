@@ -36,7 +36,7 @@ public class CustomEntriesController : ControllerBase
 		return IoFile.ReadAllBytes(path);
 	}
 
-	// FORBIDDEN: DDLIVE is using this endpoint.
+	// FORBIDDEN: Used by DDLIVE.
 	[HttpGet("{id}/replay")]
 	[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
