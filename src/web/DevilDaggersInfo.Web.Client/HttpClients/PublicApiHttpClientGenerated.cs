@@ -63,11 +63,6 @@ public partial class PublicApiHttpClient
 		return await SendGetRequest<GetCustomEntryData>($"api/custom-entries/{id}/data");
 	}
 
-	public async Task<HttpResponseMessage> SubmitScoreForDdcl(AddUploadRequest uploadRequest)
-	{
-		return await SendRequest(new HttpMethod("POST"), $"api/custom-entries/submit", JsonContent.Create(uploadRequest));
-	}
-
 	public async Task<Page<GetCustomLeaderboardOverview>> GetCustomLeaderboards(CustomLeaderboardCategory category, string? spawnsetFilter, string? authorFilter, int pageIndex, int pageSize, CustomLeaderboardSorting? sortBy, bool ascending)
 	{
 		Dictionary<string, object?> queryParameters = new()
@@ -233,11 +228,6 @@ public partial class PublicApiHttpClient
 	public async Task<GetPlayer> GetPlayerById(int id)
 	{
 		return await SendGetRequest<GetPlayer>($"api/players/{id}");
-	}
-
-	public async Task<string> GetPlayerFlagById(int id)
-	{
-		return await SendGetRequest<string>($"api/players/{id}/flag");
 	}
 
 	public async Task<GetPlayerHistory> GetPlayerHistoryById(int id)

@@ -74,15 +74,6 @@ public class PlayersController : ControllerBase
 		return player.ToGetPlayer(isPublicDonator);
 	}
 
-	[HttpGet("{id}/flag")]
-	[ProducesResponseType(StatusCodes.Status200OK)]
-	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	public ActionResult<string> GetPlayerFlagById([Required] int id)
-	{
-		var player = _dbContext.Players.AsNoTracking().Select(p => new { p.Id, p.CountryCode }).FirstOrDefault(p => p.Id == id);
-		return player?.CountryCode ?? string.Empty;
-	}
-
 	// FORBIDDEN: Used by DDLIVE.
 	[HttpGet("{id}/history")]
 	[ProducesResponseType(StatusCodes.Status200OK)]

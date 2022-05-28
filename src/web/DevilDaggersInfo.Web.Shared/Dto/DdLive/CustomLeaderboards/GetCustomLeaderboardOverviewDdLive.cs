@@ -1,5 +1,3 @@
-using DevilDaggersInfo.Web.Shared.Dto.Public.CustomLeaderboards;
-
 namespace DevilDaggersInfo.Web.Shared.Dto.DdLive.CustomLeaderboards;
 
 public record GetCustomLeaderboardOverviewDdLive

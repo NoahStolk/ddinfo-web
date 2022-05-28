@@ -14,7 +14,6 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.IdentityModel.Tokens;
 using NJsonSchema;
-using NSwag;
 using System.Globalization;
 
 namespace DevilDaggersInfo.Web.Server;
@@ -120,6 +119,7 @@ public class Startup
 
 		AddSwaggerDocument("DdLive", "**WARNING:** This API is intended to be used by DDLIVE only.");
 		AddSwaggerDocument("DdstatsRust", "**WARNING:** This API is intended to be used by ddstats-rust only.");
+		AddSwaggerDocument("Clubber", "**WARNING:** This API is intended to be used by Clubber only.");
 
 		void AddSwaggerDocument(string apiNamespace, string description)
 		{

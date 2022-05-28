@@ -26,7 +26,7 @@ public class ModsController : ControllerBase
 		return GetModsRepo(authorFilter, nameFilter, isHostedFilter);
 	}
 
-	// Used by DDSE 2.45.0.0.
+	// Used by DDAE 1.4.0.0.
 	[Obsolete("Use the new route instead.")]
 	[HttpGet("/api/mods/ddae")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
