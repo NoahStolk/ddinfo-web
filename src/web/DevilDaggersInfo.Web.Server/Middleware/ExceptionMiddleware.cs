@@ -17,7 +17,7 @@ public class ExceptionMiddleware
 		{
 			await _next(context);
 		}
-		catch (NotFoundException ex)
+		catch (StatusCodeException ex)
 		{
 			if (context.Response.HasStarted)
 			{
@@ -31,10 +31,20 @@ public class ExceptionMiddleware
 
 			await context.Response.WriteAsJsonAsync(new ProblemDetails
 			{
-				Status = 404,
-				Title = "Not Found",
-				Detail = ex.Message,
+				Status = (int)ex.StatusCode,
+				Title = ex.StatusCode.ToString(),
+				Detail = DisplayException(ex),
 			});
+		}
+
+		static string DisplayException(Exception ex)
+		{
+			string message = $"{ex.GetType().Name}: {ex.Message}";
+
+			if (ex.InnerException == null)
+				return message;
+
+			return message + Environment.NewLine + DisplayException(ex.InnerException);
 		}
 	}
 }

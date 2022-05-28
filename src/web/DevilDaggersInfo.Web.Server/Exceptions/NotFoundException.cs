@@ -1,9 +1,10 @@
+using System.Net;
 using System.Runtime.Serialization;
 
 namespace DevilDaggersInfo.Web.Server.Exceptions;
 
 [Serializable]
-public class NotFoundException : Exception
+public class NotFoundException : StatusCodeException
 {
 	public NotFoundException()
 	{
@@ -23,4 +24,6 @@ public class NotFoundException : Exception
 		: base(info, context)
 	{
 	}
+
+	public override HttpStatusCode StatusCode => HttpStatusCode.NotFound;
 }
