@@ -2,7 +2,6 @@
 using DevilDaggersInfo.Web.Client.Utils;
 using DevilDaggersInfo.Web.Shared.Dto;
 using DevilDaggersInfo.Web.Shared.Dto.Public;
-using DevilDaggersInfo.Web.Shared.Dto.Public.Assets;
 using DevilDaggersInfo.Web.Shared.Dto.Public.Authentication;
 using DevilDaggersInfo.Web.Shared.Dto.Public.CustomEntries;
 using DevilDaggersInfo.Web.Shared.Dto.Public.CustomLeaderboards;
@@ -13,7 +12,6 @@ using DevilDaggersInfo.Web.Shared.Dto.Public.LeaderboardStatistics;
 using DevilDaggersInfo.Web.Shared.Dto.Public.Leaderboards;
 using DevilDaggersInfo.Web.Shared.Dto.Public.Mods;
 using DevilDaggersInfo.Web.Shared.Dto.Public.Players;
-using DevilDaggersInfo.Web.Shared.Dto.Public.ProcessMemory;
 using DevilDaggersInfo.Web.Shared.Dto.Public.Spawnsets;
 using DevilDaggersInfo.Web.Shared.Dto.Public.Tools;
 using DevilDaggersInfo.Web.Shared.Dto.Public.WorldRecords;
@@ -260,15 +258,6 @@ public partial class PublicApiHttpClient
 	public async Task<HttpResponseMessage> UpdateProfileByPlayerId(int id, EditPlayerProfile editPlayerProfile)
 	{
 		return await SendRequest(new HttpMethod("PUT"), $"api/players/{id}/profile", JsonContent.Create(editPlayerProfile));
-	}
-
-	public async Task<Marker> GetMarker(SupportedOperatingSystem operatingSystem)
-	{
-		Dictionary<string, object?> queryParameters = new()
-		{
-			{ nameof(operatingSystem), operatingSystem }
-		};
-		return await SendGetRequest<Marker>(UrlBuilderUtils.BuildUrlWithQuery($"api/process-memory/marker", queryParameters));
 	}
 
 	public async Task<Page<GetSpawnsetOverview>> GetSpawnsets(bool practiceOnly, bool withCustomLeaderboardOnly, string? spawnsetFilter, string? authorFilter, int pageIndex, int pageSize, SpawnsetSorting? sortBy, bool ascending)

@@ -114,6 +114,7 @@ public class Startup
 		AddSwaggerDocument("Dd", "**WARNING:** This API is intended to be used by Devil Daggers only.");
 
 		AddSwaggerDocument("Ddae", "**WARNING:** This API is intended to be used by Devil Daggers Asset Editor only.");
+		AddSwaggerDocument("Ddcl", "**WARNING:** This API is intended to be used by Devil Daggers Custom Leaderboards only.");
 		AddSwaggerDocument("Ddse", "**WARNING:** This API is intended to be used by Devil Daggers Survival Editor only.");
 
 		AddSwaggerDocument("DdLive", "**WARNING:** This API is intended to be used by DDLIVE only.");

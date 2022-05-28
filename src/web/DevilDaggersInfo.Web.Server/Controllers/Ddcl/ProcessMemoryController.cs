@@ -1,8 +1,8 @@
-using DevilDaggersInfo.Web.Shared.Dto.Public.ProcessMemory;
+using DevilDaggersInfo.Web.Shared.Dto.Ddcl.ProcessMemory;
 
-namespace DevilDaggersInfo.Web.Server.Controllers.Public;
+namespace DevilDaggersInfo.Web.Server.Controllers.Ddcl;
 
-[Route("api/process-memory")]
+[Route("api/ddcl/process-memory")]
 [ApiController]
 public class ProcessMemoryController : ControllerBase
 {
@@ -13,7 +13,8 @@ public class ProcessMemoryController : ControllerBase
 		_dbContext = dbContext;
 	}
 
-	[HttpGet("marker")]
+	// FORBIDDEN: Used by ddstats-rust.
+	[HttpGet("/api/process-memory/marker")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public ActionResult<Marker> GetMarker(SupportedOperatingSystem operatingSystem)
