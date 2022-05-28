@@ -352,15 +352,6 @@ public partial class PublicApiHttpClient
 		return await SendGetRequest<GetSpawnsetByHash>(UrlBuilderUtils.BuildUrlWithQuery($"api/spawnsets/by-hash", queryParameters));
 	}
 
-	public async Task<GetSpawnsetNameByHash> GetSpawnsetNameByHash(byte[] hash)
-	{
-		Dictionary<string, object?> queryParameters = new()
-		{
-			{ nameof(hash), hash }
-		};
-		return await SendGetRequest<GetSpawnsetNameByHash>(UrlBuilderUtils.BuildUrlWithQuery($"api/spawnsets/name-by-hash", queryParameters));
-	}
-
 	public async Task<byte[]> GetSpawnsetHash(string fileName)
 	{
 		Dictionary<string, object?> queryParameters = new()
