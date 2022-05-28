@@ -227,11 +227,6 @@ public partial class PublicApiHttpClient
 		return await SendGetRequest<List<GetPlayerForLeaderboard>>($"api/players/leaderboard");
 	}
 
-	public async Task<List<GetCommonName>> GetCommonNames()
-	{
-		return await SendGetRequest<List<GetCommonName>>($"api/players/common-names");
-	}
-
 	public async Task<List<GetPlayerForSettings>> GetPlayersForSettings()
 	{
 		return await SendGetRequest<List<GetPlayerForSettings>>($"api/players/settings");

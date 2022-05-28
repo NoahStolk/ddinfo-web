@@ -284,6 +284,7 @@ public class CustomLeaderboardsController : ControllerBase
 		return customLeaderboard.ToGetCustomLeaderboard(customEntries);
 	}
 
+	// TODO: Move to repository.
 	private sealed class CustomLeaderboardWorldRecord
 	{
 		public CustomLeaderboardWorldRecord(CustomLeaderboardEntity customLeaderboard, int? worldRecord, int? topPlayerId, string? topPlayerName)

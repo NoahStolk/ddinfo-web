@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Shared.Dto.Public.Players;
+namespace DevilDaggersInfo.Web.Shared.Dto.DdLive.Players;
 
 public record GetCommonName
 {

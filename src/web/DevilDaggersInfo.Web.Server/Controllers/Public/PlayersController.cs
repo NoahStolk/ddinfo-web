@@ -43,22 +43,6 @@ public class PlayersController : ControllerBase
 			.ToList();
 	}
 
-	[HttpGet("common-names")]
-	[ProducesResponseType(StatusCodes.Status200OK)]
-	public ActionResult<List<GetCommonName>> GetCommonNames()
-	{
-		return _dbContext.Players
-			.AsNoTracking()
-			.Select(p => new { p.Id, p.CommonName })
-			.Where(p => p.CommonName != null)
-			.Select(p => new GetCommonName
-			{
-				Id = p.Id,
-				CommonName = p.CommonName!,
-			})
-			.ToList();
-	}
-
 	[HttpGet("settings")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public ActionResult<List<GetPlayerForSettings>> GetPlayersForSettings()
