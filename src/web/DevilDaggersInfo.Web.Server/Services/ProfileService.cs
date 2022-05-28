@@ -23,19 +23,19 @@ public class ProfileService
 			throw new UnauthorizedAccessException();
 
 		if (!user.PlayerId.HasValue)
-			throw new InvalidProfileRequestException("User not linked to a player") { ShouldLog = false };
+			throw new InvalidProfileRequestException("User is not linked to a player.");
 
 		if (user.PlayerId != id)
-			throw new InvalidProfileRequestException("Not allowed to access another player's profile") { StatusCode = HttpStatusCode.Forbidden };
+			throw new ForbiddenException("Not allowed to access another player's profile.");
 
 		PlayerEntity? player = await _dbContext.Players
 			.AsNoTracking()
 			.FirstOrDefaultAsync(p => p.Id == id);
 		if (player == null)
-			throw new InvalidProfileRequestException("Player not found") { StatusCode = HttpStatusCode.NotFound };
+			throw new NotFoundException($"Player with ID '{id}' could not be found.");
 
 		if (player.BanType != BanType.NotBanned)
-			throw new InvalidProfileRequestException("Banned player");
+			throw new InvalidProfileRequestException("Player is banned.");
 
 		return new()
 		{
@@ -64,17 +64,17 @@ public class ProfileService
 			throw new UnauthorizedAccessException();
 
 		if (!user.PlayerId.HasValue)
-			throw new InvalidProfileRequestException("User not linked to a player") { ShouldLog = false };
+			throw new InvalidProfileRequestException("User is not linked to a player.");
 
 		if (user.PlayerId != id)
-			throw new InvalidProfileRequestException("Not allowed to access another player's profile") { StatusCode = HttpStatusCode.Forbidden };
+			throw new ForbiddenException("Not allowed to access another player's profile.");
 
 		PlayerEntity? player = await _dbContext.Players.FirstOrDefaultAsync(p => p.Id == id);
 		if (player == null)
-			throw new InvalidProfileRequestException("Player not found") { StatusCode = HttpStatusCode.NotFound };
+			throw new NotFoundException($"Player with ID '{id}' could not be found.");
 
 		if (player.BanType != BanType.NotBanned)
-			throw new InvalidProfileRequestException("Banned player");
+			throw new InvalidProfileRequestException("Player is banned.");
 
 		EditPlayerProfile oldDtoLog = new()
 		{

@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace DevilDaggersInfo.Web.Server.Exceptions;
 
 [Serializable]
-public class InvalidProfileRequestException : Exception
+public class InvalidProfileRequestException : StatusCodeException
 {
 	public InvalidProfileRequestException()
 	{
@@ -25,7 +25,5 @@ public class InvalidProfileRequestException : Exception
 	{
 	}
 
-	public HttpStatusCode StatusCode { get; init; } = HttpStatusCode.BadRequest;
-
-	public bool ShouldLog { get; init; } = true;
+	public override HttpStatusCode StatusCode => HttpStatusCode.BadRequest;
 }

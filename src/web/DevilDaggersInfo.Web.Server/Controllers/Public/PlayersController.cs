@@ -270,15 +270,6 @@ public class PlayersController : ControllerBase
 		{
 			return Unauthorized();
 		}
-		catch (InvalidProfileRequestException ex)
-		{
-			if (ex.ShouldLog)
-				_logger.LogWarning(ex, "Retrieving profile failed.");
-			else
-				_logger.LogInformation(ex, "Retrieving profile failed.");
-
-			return StatusCode((int)ex.StatusCode);
-		}
 	}
 
 	[Authorize]
@@ -298,15 +289,6 @@ public class PlayersController : ControllerBase
 		catch (UnauthorizedAccessException)
 		{
 			return Unauthorized();
-		}
-		catch (InvalidProfileRequestException ex)
-		{
-			if (ex.ShouldLog)
-				_logger.LogWarning(ex, "Updating profile failed.");
-			else
-				_logger.LogInformation(ex, "Updating profile failed.");
-
-			return StatusCode((int)ex.StatusCode);
 		}
 	}
 }
