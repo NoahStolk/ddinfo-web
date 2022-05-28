@@ -3,7 +3,7 @@ using DevilDaggersInfo.Web.Shared.Dto.Dd.Spawnsets;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Dd;
 
-[Route("api/spawnsets")]
+[Route("api/dd/spawnsets")]
 [ApiController]
 public class SpawnsetsController : ControllerBase
 {
@@ -14,7 +14,7 @@ public class SpawnsetsController : ControllerBase
 		_spawnsetHashCache = spawnsetHashCache;
 	}
 
-	[HttpGet("name-by-hash")]
+	[HttpGet("/api/spawnsets/name-by-hash")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public ActionResult<GetSpawnsetNameByHash> GetSpawnsetNameByHash([FromQuery] byte[] hash)

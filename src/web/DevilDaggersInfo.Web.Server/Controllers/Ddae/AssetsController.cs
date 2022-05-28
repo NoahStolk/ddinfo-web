@@ -2,7 +2,7 @@ using DevilDaggersInfo.Web.Shared.Dto.Public.Assets;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Ddae;
 
-[Route("api/assets")]
+[Route("api/ddae/assets")]
 [ApiController]
 public class AssetsController : ControllerBase
 {
@@ -13,7 +13,7 @@ public class AssetsController : ControllerBase
 		_fileSystemService = fileSystemService;
 	}
 
-	[HttpGet("ddae/info")]
+	[HttpGet("/api/assets/ddae/info")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public ActionResult<Dictionary<string, List<GetAssetInfo>>> GetAssetInfoForDdae()
 	{
