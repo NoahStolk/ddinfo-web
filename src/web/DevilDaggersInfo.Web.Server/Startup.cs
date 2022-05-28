@@ -44,39 +44,41 @@ public class Startup
 
 		services.AddRazorPages();
 
-		services.AddTransient<IToolService, ToolService>();
-
+		// Domain services
+		services.AddScoped<CustomEntryProcessor>();
+		services.AddSingleton<IFileSystemService, FileSystemService>();
 		services.AddTransient<ModArchiveAccessor>();
 		services.AddTransient<ModArchiveProcessor>();
 		services.AddTransient<ModScreenshotProcessor>();
-		services.AddTransient<CustomLeaderboardValidator>();
-		services.AddTransient<AuditLogger>();
-
-		services.AddScoped<CustomEntryProcessor>();
-		services.AddScoped<IUserService, UserService>();
 		services.AddScoped<ProfileService>();
+		services.AddTransient<IToolService, ToolService>();
+		services.AddScoped<IUserService, UserService>();
 
+		// Validators
+		services.AddTransient<CustomLeaderboardValidator>();
+
+		// Utilities
+		services.AddTransient<AuditLogger>();
+		services.AddSingleton<LeaderboardResponseParser>();
+
+		// Monitoring
 		services.AddSingleton<BackgroundServiceMonitor>();
 		services.AddSingleton<LogContainerService>();
 		services.AddSingleton<ResponseTimeMonitor>();
-		services.AddSingleton<LeaderboardResponseParser>();
 
-		services.AddSingleton<IFileSystemService, FileSystemService>();
-
+		// Caching
 		services.AddSingleton<LeaderboardHistoryCache>();
 		services.AddSingleton<LeaderboardStatisticsCache>();
 		services.AddSingleton<ModArchiveCache>();
 		services.AddSingleton<SpawnsetSummaryCache>();
 		services.AddSingleton<SpawnsetHashCache>();
 
+		// HTTP clients
 		services.AddHttpClient<ClubberClient>();
 		services.AddHttpClient<LeaderboardClient>();
 
 		// Register this background service first, so it exists last. We want to log when the application exits.
 		services.AddHostedService<DiscordLogFlushBackgroundService>();
-
-		services.AddDataProtection()
-			.PersistKeysToFileSystem(new DirectoryInfo("keys"));
 
 		if (!WebHostEnvironment.IsDevelopment())
 		{
@@ -88,6 +90,9 @@ public class Startup
 
 		// Hosted service that runs once after startup.
 		services.AddHostedService<StartupCacheHostedService>();
+
+		services.AddDataProtection()
+			.PersistKeysToFileSystem(new DirectoryInfo("keys"));
 
 		services.AddAuthentication(options =>
 			{
