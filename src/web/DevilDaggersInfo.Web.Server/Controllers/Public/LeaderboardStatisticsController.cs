@@ -15,6 +15,7 @@ public class LeaderboardStatisticsController : ControllerBase
 		_leaderboardStatisticsCache = leaderboardStatisticsCache;
 	}
 
+	// FORBIDDEN: Used by DDLIVE.
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public ActionResult<GetLeaderboardStatistics> GetLeaderboardStatistics()
@@ -36,24 +37,6 @@ public class LeaderboardStatisticsController : ControllerBase
 			PlayersWithLevel2 = _leaderboardStatisticsCache.PlayersWithLevel2,
 			PlayersWithLevel3Or4 = _leaderboardStatisticsCache.PlayersWithLevel3Or4,
 			GlobalStatistics = _leaderboardStatisticsCache.GlobalArrayStatistics.ToGetArrayStatistics(),
-		};
-	}
-
-	[HttpGet("ddlive")]
-	[ProducesResponseType(StatusCodes.Status200OK)]
-	public ActionResult<GetLeaderboardStatisticsDdLive> GetLeaderboardStatisticsDdLive([Required] LeaderboardStatisticsLimitDdLive top)
-	{
-		return new GetLeaderboardStatisticsDdLive
-		{
-			DateTime = _leaderboardStatisticsCache.FileName == null ? DateTime.MinValue : HistoryUtils.HistoryFileNameToDateTime(_leaderboardStatisticsCache.FileName),
-			IsFetched = _leaderboardStatisticsCache.IsFetched,
-			TotalEntries = _leaderboardStatisticsCache.Entries.Count,
-			Top1000Statistics = (top switch
-			{
-				LeaderboardStatisticsLimitDdLive.Top1000 => _leaderboardStatisticsCache.Top1000ArrayStatistics,
-				LeaderboardStatisticsLimitDdLive.Top100 => _leaderboardStatisticsCache.Top100ArrayStatistics,
-				_ => _leaderboardStatisticsCache.Top10ArrayStatistics,
-			}).ToGetArrayStatistics(),
 		};
 	}
 }

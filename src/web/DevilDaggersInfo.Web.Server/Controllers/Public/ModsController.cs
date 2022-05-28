@@ -81,32 +81,6 @@ public class ModsController : ControllerBase
 		};
 	}
 
-	[HttpGet("ddae")]
-	[ProducesResponseType(StatusCodes.Status200OK)]
-	public List<GetModDdae> GetModsForDdae(string? authorFilter = null, string? nameFilter = null, bool? isHostedFilter = null)
-	{
-		IEnumerable<ModEntity> modsQuery = _dbContext.Mods
-			.AsNoTracking()
-			.Include(am => am.PlayerMods)
-				.ThenInclude(pam => pam.Player)
-			.Where(am => !am.IsHidden);
-
-		if (!string.IsNullOrWhiteSpace(authorFilter))
-			modsQuery = modsQuery.Where(am => am.PlayerMods.Any(pam => pam.Player.PlayerName.Contains(authorFilter, StringComparison.InvariantCultureIgnoreCase)));
-		if (!string.IsNullOrWhiteSpace(nameFilter))
-			modsQuery = modsQuery.Where(am => am.Name.Contains(nameFilter, StringComparison.InvariantCultureIgnoreCase));
-
-		List<ModEntity> mods = modsQuery.ToList();
-
-		Dictionary<ModEntity, ModFileSystemData> data = mods.ToDictionary(m => m, m => _modArchiveAccessor.GetModFileSystemData(m.Name));
-		if (isHostedFilter.HasValue)
-			data = data.Where(kvp => kvp.Value.ModArchive != null).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
-
-		return data
-			.Select(kvp => kvp.Key.ToGetModDdae(kvp.Value))
-			.ToList();
-	}
-
 	[HttpGet("{id}")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -136,6 +110,7 @@ public class ModsController : ControllerBase
 		};
 	}
 
+	// FORBIDDEN: Used by DDAE 1.4.0.0.
 	[HttpGet("{modName}/file")]
 	[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]

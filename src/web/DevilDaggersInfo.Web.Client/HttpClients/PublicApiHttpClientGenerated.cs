@@ -2,19 +2,16 @@
 using DevilDaggersInfo.Web.Client.Utils;
 using DevilDaggersInfo.Web.Shared.Dto;
 using DevilDaggersInfo.Web.Shared.Dto.Public;
-using DevilDaggersInfo.Web.Shared.Dto.Public.Assets;
 using DevilDaggersInfo.Web.Shared.Dto.Public.Authentication;
 using DevilDaggersInfo.Web.Shared.Dto.Public.CustomEntries;
 using DevilDaggersInfo.Web.Shared.Dto.Public.CustomLeaderboards;
 using DevilDaggersInfo.Web.Shared.Dto.Public.Donations;
-using DevilDaggersInfo.Web.Shared.Dto.Public.Integrations;
 using DevilDaggersInfo.Web.Shared.Dto.Public.LeaderboardHistory;
 using DevilDaggersInfo.Web.Shared.Dto.Public.LeaderboardHistoryStatistics;
 using DevilDaggersInfo.Web.Shared.Dto.Public.LeaderboardStatistics;
 using DevilDaggersInfo.Web.Shared.Dto.Public.Leaderboards;
 using DevilDaggersInfo.Web.Shared.Dto.Public.Mods;
 using DevilDaggersInfo.Web.Shared.Dto.Public.Players;
-using DevilDaggersInfo.Web.Shared.Dto.Public.ProcessMemory;
 using DevilDaggersInfo.Web.Shared.Dto.Public.Spawnsets;
 using DevilDaggersInfo.Web.Shared.Dto.Public.Tools;
 using DevilDaggersInfo.Web.Shared.Dto.Public.WorldRecords;
@@ -26,11 +23,6 @@ namespace DevilDaggersInfo.Web.Client.HttpClients;
 
 public partial class PublicApiHttpClient
 {
-	public async Task<Dictionary<string, List<GetAssetInfo>>> GetAssetInfoForDdae()
-	{
-		return await SendGetRequest<Dictionary<string, List<GetAssetInfo>>>($"api/assets/ddae/info");
-	}
-
 	public async Task<HttpResponseMessage> Authenticate(AuthenticationRequest authenticationRequest)
 	{
 		return await SendRequest(new HttpMethod("POST"), $"api/authentication/authenticate", JsonContent.Create(authenticationRequest));
@@ -71,11 +63,6 @@ public partial class PublicApiHttpClient
 		return await SendGetRequest<GetCustomEntryData>($"api/custom-entries/{id}/data");
 	}
 
-	public async Task<HttpResponseMessage> SubmitScoreForDdcl(AddUploadRequest uploadRequest)
-	{
-		return await SendRequest(new HttpMethod("POST"), $"api/custom-entries/submit", JsonContent.Create(uploadRequest));
-	}
-
 	public async Task<Page<GetCustomLeaderboardOverview>> GetCustomLeaderboards(CustomLeaderboardCategory category, string? spawnsetFilter, string? authorFilter, int pageIndex, int pageSize, CustomLeaderboardSorting? sortBy, bool ascending)
 	{
 		Dictionary<string, object?> queryParameters = new()
@@ -100,11 +87,6 @@ public partial class PublicApiHttpClient
 		return await SendGetRequest<GetGlobalCustomLeaderboard>(UrlBuilderUtils.BuildUrlWithQuery($"api/custom-leaderboards/global-leaderboard", queryParameters));
 	}
 
-	public async Task<List<GetCustomLeaderboardOverviewDdLive>> GetCustomLeaderboardsOverviewDdLive()
-	{
-		return await SendGetRequest<List<GetCustomLeaderboardOverviewDdLive>>($"api/custom-leaderboards/ddlive");
-	}
-
 	public async Task<GetTotalCustomLeaderboardData> GetTotalCustomLeaderboardData()
 	{
 		return await SendGetRequest<GetTotalCustomLeaderboardData>($"api/custom-leaderboards/total-data");
@@ -115,19 +97,9 @@ public partial class PublicApiHttpClient
 		return await SendGetRequest<GetCustomLeaderboard>($"api/custom-leaderboards/{id}");
 	}
 
-	public async Task<GetCustomLeaderboardDdLive> GetCustomLeaderboardByIdDdLive(int id)
-	{
-		return await SendGetRequest<GetCustomLeaderboardDdLive>($"api/custom-leaderboards/{id}/ddlive");
-	}
-
 	public async Task<List<GetDonator>> GetDonators()
 	{
 		return await SendGetRequest<List<GetDonator>>($"api/donations/donators");
-	}
-
-	public async Task<DdstatsRustAccessInfo> GetDdstatsRustAccessInfo()
-	{
-		return await SendGetRequest<DdstatsRustAccessInfo>($"api/integrations/ddstats-rust");
 	}
 
 	public async Task<GetLeaderboardHistory> GetLeaderboardHistory(DateTime dateTime)
@@ -194,15 +166,6 @@ public partial class PublicApiHttpClient
 		return await SendGetRequest<GetLeaderboardStatistics>($"api/leaderboard-statistics/");
 	}
 
-	public async Task<GetLeaderboardStatisticsDdLive> GetLeaderboardStatisticsDdLive(LeaderboardStatisticsLimitDdLive top)
-	{
-		Dictionary<string, object?> queryParameters = new()
-		{
-			{ nameof(top), top }
-		};
-		return await SendGetRequest<GetLeaderboardStatisticsDdLive>(UrlBuilderUtils.BuildUrlWithQuery($"api/leaderboard-statistics/ddlive", queryParameters));
-	}
-
 	public async Task<Page<GetModOverview>> GetMods(bool onlyHosted, string? modFilter, string? authorFilter, int pageIndex, int pageSize, ModSorting? sortBy, bool ascending)
 	{
 		Dictionary<string, object?> queryParameters = new()
@@ -216,17 +179,6 @@ public partial class PublicApiHttpClient
 			{ nameof(ascending), ascending }
 		};
 		return await SendGetRequest<Page<GetModOverview>>(UrlBuilderUtils.BuildUrlWithQuery($"api/mods/", queryParameters));
-	}
-
-	public async Task<List<GetModDdae>> GetModsForDdae(string? authorFilter, string? nameFilter, bool? isHostedFilter)
-	{
-		Dictionary<string, object?> queryParameters = new()
-		{
-			{ nameof(authorFilter), authorFilter },
-			{ nameof(nameFilter), nameFilter },
-			{ nameof(isHostedFilter), isHostedFilter }
-		};
-		return await SendGetRequest<List<GetModDdae>>(UrlBuilderUtils.BuildUrlWithQuery($"api/mods/ddae", queryParameters));
 	}
 
 	public async Task<GetMod> GetModById(int id)
@@ -268,11 +220,6 @@ public partial class PublicApiHttpClient
 		return await SendGetRequest<List<GetPlayerForLeaderboard>>($"api/players/leaderboard");
 	}
 
-	public async Task<List<GetCommonName>> GetCommonNames()
-	{
-		return await SendGetRequest<List<GetCommonName>>($"api/players/common-names");
-	}
-
 	public async Task<List<GetPlayerForSettings>> GetPlayersForSettings()
 	{
 		return await SendGetRequest<List<GetPlayerForSettings>>($"api/players/settings");
@@ -281,11 +228,6 @@ public partial class PublicApiHttpClient
 	public async Task<GetPlayer> GetPlayerById(int id)
 	{
 		return await SendGetRequest<GetPlayer>($"api/players/{id}");
-	}
-
-	public async Task<string> GetPlayerFlagById(int id)
-	{
-		return await SendGetRequest<string>($"api/players/{id}/flag");
 	}
 
 	public async Task<GetPlayerHistory> GetPlayerHistoryById(int id)
@@ -308,15 +250,6 @@ public partial class PublicApiHttpClient
 		return await SendRequest(new HttpMethod("PUT"), $"api/players/{id}/profile", JsonContent.Create(editPlayerProfile));
 	}
 
-	public async Task<Marker> GetMarker(SupportedOperatingSystem operatingSystem)
-	{
-		Dictionary<string, object?> queryParameters = new()
-		{
-			{ nameof(operatingSystem), operatingSystem }
-		};
-		return await SendGetRequest<Marker>(UrlBuilderUtils.BuildUrlWithQuery($"api/process-memory/marker", queryParameters));
-	}
-
 	public async Task<Page<GetSpawnsetOverview>> GetSpawnsets(bool practiceOnly, bool withCustomLeaderboardOnly, string? spawnsetFilter, string? authorFilter, int pageIndex, int pageSize, SpawnsetSorting? sortBy, bool ascending)
 	{
 		Dictionary<string, object?> queryParameters = new()
@@ -333,16 +266,6 @@ public partial class PublicApiHttpClient
 		return await SendGetRequest<Page<GetSpawnsetOverview>>(UrlBuilderUtils.BuildUrlWithQuery($"api/spawnsets/", queryParameters));
 	}
 
-	public async Task<List<GetSpawnsetDdse>> GetSpawnsetsForDdse(string? authorFilter, string? nameFilter)
-	{
-		Dictionary<string, object?> queryParameters = new()
-		{
-			{ nameof(authorFilter), authorFilter },
-			{ nameof(nameFilter), nameFilter }
-		};
-		return await SendGetRequest<List<GetSpawnsetDdse>>(UrlBuilderUtils.BuildUrlWithQuery($"api/spawnsets/ddse", queryParameters));
-	}
-
 	public async Task<GetSpawnsetByHash> GetSpawnsetByHash(byte[] hash)
 	{
 		Dictionary<string, object?> queryParameters = new()
@@ -350,15 +273,6 @@ public partial class PublicApiHttpClient
 			{ nameof(hash), hash }
 		};
 		return await SendGetRequest<GetSpawnsetByHash>(UrlBuilderUtils.BuildUrlWithQuery($"api/spawnsets/by-hash", queryParameters));
-	}
-
-	public async Task<GetSpawnsetNameByHash> GetSpawnsetNameByHash(byte[] hash)
-	{
-		Dictionary<string, object?> queryParameters = new()
-		{
-			{ nameof(hash), hash }
-		};
-		return await SendGetRequest<GetSpawnsetNameByHash>(UrlBuilderUtils.BuildUrlWithQuery($"api/spawnsets/name-by-hash", queryParameters));
 	}
 
 	public async Task<byte[]> GetSpawnsetHash(string fileName)

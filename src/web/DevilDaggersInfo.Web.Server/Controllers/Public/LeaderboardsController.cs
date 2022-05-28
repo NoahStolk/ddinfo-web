@@ -26,6 +26,7 @@ public class LeaderboardsController : ControllerBase
 		return wrapper.GetResponse().ToGetLeaderboardPublic();
 	}
 
+	// FORBIDDEN: Used by DDLIVE.
 	[HttpGet("entry/by-id")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]

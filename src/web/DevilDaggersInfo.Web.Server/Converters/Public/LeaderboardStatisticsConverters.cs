@@ -5,7 +5,7 @@ namespace DevilDaggersInfo.Web.Server.Converters.Public;
 
 public static class LeaderboardStatisticsConverters
 {
-	public static GetArrayStatistic ToGetArrayStatistic(this ArrayStatistic arrayStatistic) => new()
+	private static GetArrayStatistic ToGetArrayStatistic(this ArrayStatistic arrayStatistic) => new()
 	{
 		Average = arrayStatistic.Average,
 		Median = arrayStatistic.Median,

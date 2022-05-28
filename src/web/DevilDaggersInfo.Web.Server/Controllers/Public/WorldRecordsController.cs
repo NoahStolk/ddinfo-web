@@ -121,6 +121,7 @@ public class WorldRecordsController : ControllerBase
 		};
 	}
 
+	// TODO: Move to repository.
 	private List<BaseWorldRecord> GetBaseWorldRecords()
 	{
 		DateTime? previousDate = null;

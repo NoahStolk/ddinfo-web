@@ -13,6 +13,9 @@ public class ToolsController : ControllerBase
 		_toolService = toolService;
 	}
 
+	// FORBIDDEN: Used by DDSE 2.45.0.0.
+	// FORBIDDEN: Used by DDAE 1.4.0.0.
+	// FORBIDDEN: Used by DDCL 1.8.3.0.
 	[HttpGet("{toolName}")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -26,6 +29,8 @@ public class ToolsController : ControllerBase
 		return tool;
 	}
 
+	// FORBIDDEN: Used by DDSE 2.45.0.0.
+	// FORBIDDEN: Used by DDAE 1.4.0.0.
 	[HttpGet("{toolName}/file")]
 	[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -50,6 +55,9 @@ public class ToolsController : ControllerBase
 		return File(bytes, MediaTypeNames.Application.Zip, $"{toolName}{distribution.VersionNumber}.zip");
 	}
 
+	// FORBIDDEN: Used by DDSE 2.45.0.0.
+	// FORBIDDEN: Used by DDAE 1.4.0.0.
+	// FORBIDDEN: Used by DDCL 1.8.3.0.
 	[HttpGet("{toolName}/distribution-latest")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]

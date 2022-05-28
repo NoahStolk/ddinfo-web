@@ -108,21 +108,39 @@ public class Startup
 				};
 			});
 
-		services.AddSwaggerDocument(config =>
+		AddSwaggerDocument("Public", "This is the main API for DevilDaggers.info. **WARNING:** It is not recommended to use these endpoints as they may change at any time based on the website client requirements. Use at your own risk.");
+		AddSwaggerDocument("Admin", "This is the admin API for DevilDaggers.info. Requires an authenticated and authorized user.");
+
+		AddSwaggerDocument("Dd", "**WARNING:** This API is intended to be used by Devil Daggers only.");
+
+		AddSwaggerDocument("Ddae", "**WARNING:** This API is intended to be used by Devil Daggers Asset Editor only.");
+		AddSwaggerDocument("Ddcl", "**WARNING:** This API is intended to be used by Devil Daggers Custom Leaderboards only.");
+		AddSwaggerDocument("Ddse", "**WARNING:** This API is intended to be used by Devil Daggers Survival Editor only.");
+
+		AddSwaggerDocument("DdLive", "**WARNING:** This API is intended to be used by DDLIVE only.");
+		AddSwaggerDocument("DdstatsRust", "**WARNING:** This API is intended to be used by ddstats-rust only.");
+		AddSwaggerDocument("Clubber", "**WARNING:** This API is intended to be used by Clubber only.");
+
+		void AddSwaggerDocument(string apiNamespace, string description)
 		{
-			config.PostProcess = document =>
+			services.AddSwaggerDocument(config =>
 			{
-				document.Info.Title = "DevilDaggers.Info API";
-				document.Info.Contact = new()
+				config.PostProcess = document =>
 				{
-					Name = "Noah Stolk",
-					Url = "//noahstolk.com/",
+					document.Info.Title = $"DevilDaggers.Info API ({apiNamespace.ToUpper()})";
+					document.Info.Description = description;
+					document.Info.Contact = new()
+					{
+						Name = "Noah Stolk",
+						Url = "//noahstolk.com/",
+					};
 				};
-			};
-			config.OperationProcessors.Insert(0, new PublicApiOperationProcessor());
-			config.SchemaType = SchemaType.OpenApi3;
-			config.GenerateEnumMappingDescription = true;
-		});
+				config.DocumentName = apiNamespace.ToUpper();
+				config.OperationProcessors.Insert(0, new ApiOperationProcessor(apiNamespace));
+				config.SchemaType = SchemaType.OpenApi3;
+				config.GenerateEnumMappingDescription = true;
+			});
+		}
 	}
 
 	public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
