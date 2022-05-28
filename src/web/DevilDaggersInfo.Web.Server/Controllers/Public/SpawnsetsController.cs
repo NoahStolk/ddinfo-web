@@ -106,33 +106,6 @@ public class SpawnsetsController : ControllerBase
 		};
 	}
 
-	[HttpGet("ddse")]
-	[ProducesResponseType(StatusCodes.Status200OK)]
-	public List<GetSpawnsetDdse> GetSpawnsetsForDdse(string? authorFilter = null, string? nameFilter = null)
-	{
-		IEnumerable<SpawnsetEntity> query = _dbContext.Spawnsets.AsNoTracking().Include(sf => sf.Player);
-
-		if (!string.IsNullOrWhiteSpace(authorFilter))
-			query = query.Where(sf => sf.Player.PlayerName.Contains(authorFilter, StringComparison.InvariantCultureIgnoreCase));
-
-		if (!string.IsNullOrWhiteSpace(nameFilter))
-			query = query.Where(sf => sf.Name.Contains(nameFilter, StringComparison.InvariantCultureIgnoreCase));
-
-		List<int> spawnsetsWithCustomLeaderboardIds = _dbContext.CustomLeaderboards
-			.AsNoTracking()
-			.Select(cl => cl.SpawnsetId)
-			.ToList();
-
-		return query
-			.Where(s => IoFile.Exists(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), s.Name)))
-			.Select(s =>
-			{
-				SpawnsetSummary spawnsetSummary = _spawnsetSummaryCache.GetSpawnsetSummaryByFilePath(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), s.Name));
-				return s.ToGetSpawnsetDdse(spawnsetSummary, spawnsetsWithCustomLeaderboardIds.Contains(s.Id));
-			})
-			.ToList();
-	}
-
 	[HttpGet("by-hash")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -203,6 +176,7 @@ public class SpawnsetsController : ControllerBase
 		};
 	}
 
+	// FORBIDDEN: Used by DDSE 2.45.0.0.
 	[HttpGet("{fileName}/file")]
 	[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]

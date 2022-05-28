@@ -333,16 +333,6 @@ public partial class PublicApiHttpClient
 		return await SendGetRequest<Page<GetSpawnsetOverview>>(UrlBuilderUtils.BuildUrlWithQuery($"api/spawnsets/", queryParameters));
 	}
 
-	public async Task<List<GetSpawnsetDdse>> GetSpawnsetsForDdse(string? authorFilter, string? nameFilter)
-	{
-		Dictionary<string, object?> queryParameters = new()
-		{
-			{ nameof(authorFilter), authorFilter },
-			{ nameof(nameFilter), nameFilter }
-		};
-		return await SendGetRequest<List<GetSpawnsetDdse>>(UrlBuilderUtils.BuildUrlWithQuery($"api/spawnsets/ddse", queryParameters));
-	}
-
 	public async Task<GetSpawnsetByHash> GetSpawnsetByHash(byte[] hash)
 	{
 		Dictionary<string, object?> queryParameters = new()
