@@ -26,11 +26,6 @@ namespace DevilDaggersInfo.Web.Client.HttpClients;
 
 public partial class PublicApiHttpClient
 {
-	public async Task<Dictionary<string, List<GetAssetInfo>>> GetAssetInfoForDdae()
-	{
-		return await SendGetRequest<Dictionary<string, List<GetAssetInfo>>>($"api/assets/ddae/info");
-	}
-
 	public async Task<HttpResponseMessage> Authenticate(AuthenticationRequest authenticationRequest)
 	{
 		return await SendRequest(new HttpMethod("POST"), $"api/authentication/authenticate", JsonContent.Create(authenticationRequest));
@@ -216,17 +211,6 @@ public partial class PublicApiHttpClient
 			{ nameof(ascending), ascending }
 		};
 		return await SendGetRequest<Page<GetModOverview>>(UrlBuilderUtils.BuildUrlWithQuery($"api/mods/", queryParameters));
-	}
-
-	public async Task<List<GetModDdae>> GetModsForDdae(string? authorFilter, string? nameFilter, bool? isHostedFilter)
-	{
-		Dictionary<string, object?> queryParameters = new()
-		{
-			{ nameof(authorFilter), authorFilter },
-			{ nameof(nameFilter), nameFilter },
-			{ nameof(isHostedFilter), isHostedFilter }
-		};
-		return await SendGetRequest<List<GetModDdae>>(UrlBuilderUtils.BuildUrlWithQuery($"api/mods/ddae", queryParameters));
 	}
 
 	public async Task<GetMod> GetModById(int id)

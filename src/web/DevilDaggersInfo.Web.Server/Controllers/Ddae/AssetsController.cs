@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Web.Shared.Dto.Public.Assets;
 
-namespace DevilDaggersInfo.Web.Server.Controllers.Public;
+namespace DevilDaggersInfo.Web.Server.Controllers.Ddae;
 
 [Route("api/assets")]
 [ApiController]
