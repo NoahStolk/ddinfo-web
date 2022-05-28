@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Web.Shared.Dto.Public.Assets;
+using DevilDaggersInfo.Web.Shared.Dto.Ddae.Assets;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Ddae;
 

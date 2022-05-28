@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Shared.Dto.Public.Assets;
+namespace DevilDaggersInfo.Web.Shared.Dto.Ddae.Assets;
 
 public record GetAssetInfo
 {
