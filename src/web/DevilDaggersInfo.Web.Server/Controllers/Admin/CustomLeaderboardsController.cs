@@ -88,14 +88,7 @@ public class CustomLeaderboardsController : ControllerBase
 		if (_dbContext.CustomLeaderboards.Any(cl => cl.SpawnsetId == addCustomLeaderboard.SpawnsetId))
 			return BadRequest("A leaderboard for this spawnset already exists.");
 
-		try
-		{
-			_validator.ValidateCustomLeaderboard(addCustomLeaderboard.SpawnsetId, addCustomLeaderboard.Category, addCustomLeaderboard.Daggers, addCustomLeaderboard.IsFeatured);
-		}
-		catch (CustomLeaderboardValidationException ex)
-		{
-			return BadRequest(ex.Message);
-		}
+		_validator.ValidateCustomLeaderboard(addCustomLeaderboard.SpawnsetId, addCustomLeaderboard.Category, addCustomLeaderboard.Daggers, addCustomLeaderboard.IsFeatured);
 
 		CustomLeaderboardEntity customLeaderboard = new()
 		{
@@ -130,14 +123,7 @@ public class CustomLeaderboardsController : ControllerBase
 		if (customLeaderboard.Category != editCustomLeaderboard.Category && _dbContext.CustomEntries.Any(ce => ce.CustomLeaderboardId == id))
 			return BadRequest("Cannot change category for custom leaderboard with scores.");
 
-		try
-		{
-			_validator.ValidateCustomLeaderboard(customLeaderboard.SpawnsetId, editCustomLeaderboard.Category, editCustomLeaderboard.Daggers, editCustomLeaderboard.IsFeatured);
-		}
-		catch (CustomLeaderboardValidationException ex)
-		{
-			return BadRequest(ex.Message);
-		}
+		_validator.ValidateCustomLeaderboard(customLeaderboard.SpawnsetId, editCustomLeaderboard.Category, editCustomLeaderboard.Daggers, editCustomLeaderboard.IsFeatured);
 
 		EditCustomLeaderboard logDto = new()
 		{

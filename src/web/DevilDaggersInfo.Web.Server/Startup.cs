@@ -244,8 +244,8 @@ public class Startup
 			sb.Append("Configuration done at ").AppendLine(TimeUtils.TicksToTimeString(sw.ElapsedTicks));
 
 #if ROLES
-		CreateRolesIfNotExist(serviceProvider);
-		sb.Append("Role initiation done at ").AppendLine(TimeUtils.TicksToTimeString(sw.ElapsedTicks));
+			CreateRolesIfNotExist(serviceProvider);
+			sb.Append("Role initiation done at ").AppendLine(TimeUtils.TicksToTimeString(sw.ElapsedTicks));
 #endif
 
 			sb.Append("> **Application is now online in the `").Append(env.EnvironmentName).AppendLine("` environment.**");

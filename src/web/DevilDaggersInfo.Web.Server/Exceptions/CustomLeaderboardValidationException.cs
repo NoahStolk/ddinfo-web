@@ -1,9 +1,10 @@
+using System.Net;
 using System.Runtime.Serialization;
 
 namespace DevilDaggersInfo.Web.Server.Exceptions;
 
 [Serializable]
-public class CustomLeaderboardValidationException : Exception
+public class CustomLeaderboardValidationException : StatusCodeException
 {
 	public CustomLeaderboardValidationException()
 	{
@@ -23,4 +24,6 @@ public class CustomLeaderboardValidationException : Exception
 		: base(info, context)
 	{
 	}
+
+	public override HttpStatusCode StatusCode => HttpStatusCode.BadRequest;
 }
