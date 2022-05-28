@@ -122,20 +122,7 @@ public class ModsController : ControllerBase
 
 		List<FileSystemInformation> fsi = new();
 		if (addMod.Binaries.Count > 0)
-		{
-			try
-			{
-				await _modArchiveProcessor.ProcessModBinaryUploadAsync(addMod.Name, addMod.Binaries, fsi);
-			}
-			catch (InvalidModArchiveException ex)
-			{
-				return BadRequest($"The mod archive is invalid. {ex.Message}");
-			}
-			catch (InvalidModBinaryException ex)
-			{
-				return BadRequest($"A mod binary inside the mod archive is invalid. {ex.Message}");
-			}
-		}
+			await _modArchiveProcessor.ProcessModBinaryUploadAsync(addMod.Name, addMod.Binaries, fsi);
 
 		if (addMod.Screenshots.Count > 0)
 			_modScreenshotProcessor.ProcessModScreenshotUpload(addMod.Name, addMod.Screenshots, fsi);
@@ -194,20 +181,9 @@ public class ModsController : ControllerBase
 
 		List<FileSystemInformation> fsi = new();
 
-		try
-		{
-			bool isUpdated = await _modArchiveProcessor.TransformBinariesInModArchiveAsync(mod.Name, editMod.Name, editMod.BinariesToDelete, editMod.Binaries, fsi);
-			if (isUpdated)
-				mod.LastUpdated = DateTime.UtcNow;
-		}
-		catch (InvalidModArchiveException ex)
-		{
-			return BadRequest($"The mod archive is invalid. {ex.Message}");
-		}
-		catch (InvalidModBinaryException ex)
-		{
-			return BadRequest($"A mod binary inside the mod archive is invalid. {ex.Message}");
-		}
+		bool isUpdated = await _modArchiveProcessor.TransformBinariesInModArchiveAsync(mod.Name, editMod.Name, editMod.BinariesToDelete, editMod.Binaries, fsi);
+		if (isUpdated)
+			mod.LastUpdated = DateTime.UtcNow;
 
 		_modScreenshotProcessor.MoveScreenshotsDirectory(mod.Name, editMod.Name, fsi);
 

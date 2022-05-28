@@ -74,19 +74,13 @@ public class ModArchiveProcessor
 					throw new InvalidModBinaryException($"Name of mod binary '{binary.Name}' must not be equal to '{expectedPrefix}'.");
 			}
 		}
-		catch (InvalidModArchiveException)
+		catch (Exception ex)
 		{
 			if (IoFile.Exists(zipFilePath))
 				IoFile.Delete(zipFilePath);
 
-			throw;
-		}
-		catch (InvalidModBinaryException)
-		{
-			if (IoFile.Exists(zipFilePath))
-				IoFile.Delete(zipFilePath);
-
-			throw;
+			// Rethrow any exception as an invalid mod archive exception, so the middleware can handle it.
+			throw new InvalidModArchiveException("Processing the mod archive failed.", ex);
 		}
 
 		fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(zipFilePath)} (`{FileSizeUtils.Format(zipBytes.Length)}`) with {(binaries.Count == 1 ? "binary" : "binaries")} {string.Join(", ", binaries.Select(kvp => $"`{BinaryFileNameUtils.SanitizeModBinaryFileName(kvp.Key, modName)}`"))} was added.", FileSystemInformationType.Add));

@@ -1,9 +1,10 @@
+using System.Net;
 using System.Runtime.Serialization;
 
 namespace DevilDaggersInfo.Web.Server.Exceptions;
 
 [Serializable]
-public class InvalidModArchiveException : Exception
+public class InvalidModArchiveException : StatusCodeException
 {
 	public InvalidModArchiveException()
 	{
@@ -23,4 +24,6 @@ public class InvalidModArchiveException : Exception
 		: base(info, context)
 	{
 	}
+
+	public override HttpStatusCode StatusCode => HttpStatusCode.BadRequest;
 }
