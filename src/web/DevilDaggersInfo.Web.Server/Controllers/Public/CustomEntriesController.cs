@@ -1,5 +1,6 @@
 using DevilDaggersInfo.Web.Server.Caches.SpawnsetSummaries;
 using DevilDaggersInfo.Web.Server.Converters.Public;
+using DevilDaggersInfo.Web.Server.Repositories;
 using DevilDaggersInfo.Web.Shared.Dto.Public.CustomEntries;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Public;
@@ -11,12 +12,14 @@ public class CustomEntriesController : ControllerBase
 	private readonly ApplicationDbContext _dbContext;
 	private readonly SpawnsetSummaryCache _spawnsetSummaryCache;
 	private readonly IFileSystemService _fileSystemService;
+	private readonly CustomEntryRepository _customEntryRepository;
 
-	public CustomEntriesController(ApplicationDbContext dbContext, SpawnsetSummaryCache spawnsetSummaryCache, IFileSystemService fileSystemService)
+	public CustomEntriesController(ApplicationDbContext dbContext, SpawnsetSummaryCache spawnsetSummaryCache, IFileSystemService fileSystemService, CustomEntryRepository customEntryRepository)
 	{
 		_dbContext = dbContext;
 		_spawnsetSummaryCache = spawnsetSummaryCache;
 		_fileSystemService = fileSystemService;
+		_customEntryRepository = customEntryRepository;
 	}
 
 	[HttpGet("{id}/replay-buffer")]
@@ -40,26 +43,8 @@ public class CustomEntriesController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public ActionResult GetCustomEntryReplayById([Required] int id)
 	{
-		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{id}.ddreplay");
-		if (!IoFile.Exists(path))
-			return NotFound();
-
-		var customEntry = _dbContext.CustomEntries
-			.AsNoTracking()
-			.Select(ce => new
-			{
-				ce.Id,
-				ce.CustomLeaderboard.SpawnsetId,
-				SpawnsetName = ce.CustomLeaderboard.Spawnset.Name,
-				ce.PlayerId,
-				ce.Player.PlayerName,
-			})
-			.FirstOrDefault(ce => ce.Id == id);
-		if (customEntry == null)
-			return NotFound();
-
-		string fileName = $"{customEntry.SpawnsetId}-{customEntry.SpawnsetName}-{customEntry.PlayerId}-{customEntry.PlayerName}.ddreplay";
-		return File(IoFile.ReadAllBytes(path), MediaTypeNames.Application.Octet, fileName);
+		(string fileName, byte[] contents) = _customEntryRepository.GetCustomEntryReplayById(id);
+		return File(contents, MediaTypeNames.Application.Octet, fileName);
 	}
 
 	[HttpGet("{id}/data")]

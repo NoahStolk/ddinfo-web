@@ -8,6 +8,7 @@ using DevilDaggersInfo.Web.Server.Clients.Clubber;
 using DevilDaggersInfo.Web.Server.HostedServices;
 using DevilDaggersInfo.Web.Server.Middleware;
 using DevilDaggersInfo.Web.Server.NSwag;
+using DevilDaggersInfo.Web.Server.Repositories;
 using DevilDaggersInfo.Web.Server.RewriteRules;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.DataProtection;
@@ -51,6 +52,9 @@ public class Startup
 		services.AddScoped<ProfileService>();
 		services.AddTransient<IToolService, ToolService>();
 		services.AddScoped<IUserService, UserService>();
+
+		// Repositories
+		services.AddTransient<CustomEntryRepository>();
 
 		// Validators
 		services.AddTransient<CustomLeaderboardValidator>();
