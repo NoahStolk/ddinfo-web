@@ -30,10 +30,10 @@ public class CustomLeaderboardTests
 
 		Mock<AuditLogger> auditLogger = new(environment.Object, new LogContainerService());
 		Mock<IFileSystemService> fileSystemService = new();
-		CustomLeaderboardValidatorService clvs = new(_dbContext.Object, fileSystemService.Object);
+		CustomLeaderboardValidator validator = new(_dbContext.Object, fileSystemService.Object);
 
 		// TODO: Use repository.
-		_customLeaderboardsController = new CustomLeaderboardsController(_dbContext.Object, clvs, auditLogger.Object);
+		_customLeaderboardsController = new CustomLeaderboardsController(_dbContext.Object, validator, auditLogger.Object);
 	}
 
 	[TestMethod]

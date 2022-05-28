@@ -49,7 +49,7 @@ public class Startup
 		services.AddTransient<ModArchiveAccessor>();
 		services.AddTransient<ModArchiveProcessor>();
 		services.AddTransient<ModScreenshotProcessor>();
-		services.AddTransient<CustomLeaderboardValidatorService>();
+		services.AddTransient<CustomLeaderboardValidator>();
 		services.AddTransient<AuditLogger>();
 
 		services.AddScoped<CustomEntryProcessor>();

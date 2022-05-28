@@ -12,13 +12,13 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 public class CustomLeaderboardsController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
-	private readonly CustomLeaderboardValidatorService _validatorService;
+	private readonly CustomLeaderboardValidator _validator;
 	private readonly AuditLogger _auditLogger;
 
-	public CustomLeaderboardsController(ApplicationDbContext dbContext, CustomLeaderboardValidatorService validatorService, AuditLogger auditLogger)
+	public CustomLeaderboardsController(ApplicationDbContext dbContext, CustomLeaderboardValidator validator, AuditLogger auditLogger)
 	{
 		_dbContext = dbContext;
-		_validatorService = validatorService;
+		_validator = validator;
 		_auditLogger = auditLogger;
 	}
 
@@ -90,7 +90,7 @@ public class CustomLeaderboardsController : ControllerBase
 
 		try
 		{
-			_validatorService.ValidateCustomLeaderboard(addCustomLeaderboard.SpawnsetId, addCustomLeaderboard.Category, addCustomLeaderboard.Daggers, addCustomLeaderboard.IsFeatured);
+			_validator.ValidateCustomLeaderboard(addCustomLeaderboard.SpawnsetId, addCustomLeaderboard.Category, addCustomLeaderboard.Daggers, addCustomLeaderboard.IsFeatured);
 		}
 		catch (CustomLeaderboardValidationException ex)
 		{
@@ -132,7 +132,7 @@ public class CustomLeaderboardsController : ControllerBase
 
 		try
 		{
-			_validatorService.ValidateCustomLeaderboard(customLeaderboard.SpawnsetId, editCustomLeaderboard.Category, editCustomLeaderboard.Daggers, editCustomLeaderboard.IsFeatured);
+			_validator.ValidateCustomLeaderboard(customLeaderboard.SpawnsetId, editCustomLeaderboard.Category, editCustomLeaderboard.Daggers, editCustomLeaderboard.IsFeatured);
 		}
 		catch (CustomLeaderboardValidationException ex)
 		{

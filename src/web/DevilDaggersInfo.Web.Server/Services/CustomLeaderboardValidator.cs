@@ -2,12 +2,12 @@ using DevilDaggersInfo.Web.Shared.Dto.Admin.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Server.Services;
 
-public class CustomLeaderboardValidatorService
+public class CustomLeaderboardValidator
 {
 	private readonly ApplicationDbContext _dbContext;
 	private readonly IFileSystemService _fileSystemService;
 
-	public CustomLeaderboardValidatorService(ApplicationDbContext dbContext, IFileSystemService fileSystemService)
+	public CustomLeaderboardValidator(ApplicationDbContext dbContext, IFileSystemService fileSystemService)
 	{
 		_dbContext = dbContext;
 		_fileSystemService = fileSystemService;
