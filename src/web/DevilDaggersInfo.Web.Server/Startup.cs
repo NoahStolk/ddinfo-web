@@ -203,7 +203,6 @@ public class Startup
 
 		if (env.IsDevelopment())
 		{
-			app.UseDeveloperExceptionPage();
 			app.UseMigrationsEndPoint();
 			app.UseWebAssemblyDebugging();
 		}
