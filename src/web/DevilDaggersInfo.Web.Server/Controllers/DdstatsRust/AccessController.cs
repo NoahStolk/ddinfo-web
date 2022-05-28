@@ -1,19 +1,19 @@
-using DevilDaggersInfo.Web.Shared.Dto.Public.Integrations;
+using DevilDaggersInfo.Web.Shared.Dto.DdstatsRust.Access;
 
-namespace DevilDaggersInfo.Web.Server.Controllers.Public;
+namespace DevilDaggersInfo.Web.Server.Controllers.DdstatsRust;
 
-[Route("api/integrations")]
+[Route("api/ddstats-rust/access")]
 [ApiController]
-public class IntegrationsController : ControllerBase
+public class AccessController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
 
-	public IntegrationsController(ApplicationDbContext dbContext)
+	public AccessController(ApplicationDbContext dbContext)
 	{
 		_dbContext = dbContext;
 	}
 
-	[HttpGet("ddstats-rust")]
+	[HttpGet("/api/integrations/ddstats-rust")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public ActionResult<DdstatsRustAccessInfo> GetDdstatsRustAccessInfo()
 	{

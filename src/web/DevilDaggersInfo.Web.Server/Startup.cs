@@ -113,6 +113,7 @@ public class Startup
 		AddSwaggerDocument("Dd", "This API is intended to be used by Devil Daggers only.");
 		AddSwaggerDocument("Ddae", "This API is intended to be used by Devil Daggers Asset Editor only.");
 		AddSwaggerDocument("Ddse", "This API is intended to be used by Devil Daggers Survival Editor only.");
+		AddSwaggerDocument("DdstatsRust", "This API is intended to be used by ddstats-rust only.");
 
 		void AddSwaggerDocument(string apiNamespace, string description)
 		{

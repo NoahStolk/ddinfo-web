@@ -7,7 +7,6 @@ using DevilDaggersInfo.Web.Shared.Dto.Public.Authentication;
 using DevilDaggersInfo.Web.Shared.Dto.Public.CustomEntries;
 using DevilDaggersInfo.Web.Shared.Dto.Public.CustomLeaderboards;
 using DevilDaggersInfo.Web.Shared.Dto.Public.Donations;
-using DevilDaggersInfo.Web.Shared.Dto.Public.Integrations;
 using DevilDaggersInfo.Web.Shared.Dto.Public.LeaderboardHistory;
 using DevilDaggersInfo.Web.Shared.Dto.Public.LeaderboardHistoryStatistics;
 using DevilDaggersInfo.Web.Shared.Dto.Public.LeaderboardStatistics;
@@ -118,11 +117,6 @@ public partial class PublicApiHttpClient
 	public async Task<List<GetDonator>> GetDonators()
 	{
 		return await SendGetRequest<List<GetDonator>>($"api/donations/donators");
-	}
-
-	public async Task<DdstatsRustAccessInfo> GetDdstatsRustAccessInfo()
-	{
-		return await SendGetRequest<DdstatsRustAccessInfo>($"api/integrations/ddstats-rust");
 	}
 
 	public async Task<GetLeaderboardHistory> GetLeaderboardHistory(DateTime dateTime)
