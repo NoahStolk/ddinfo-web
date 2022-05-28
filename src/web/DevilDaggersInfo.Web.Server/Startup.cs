@@ -154,6 +154,7 @@ public class Startup
 		CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
 
 		app.UseMiddleware<ResponseTimeMiddleware>();
+		app.UseMiddleware<ExceptionMiddleware>();
 
 		// Do not change order of redirects.
 		RewriteOptions options = new RewriteOptions()
