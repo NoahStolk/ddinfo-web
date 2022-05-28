@@ -173,15 +173,6 @@ public partial class PublicApiHttpClient
 		return await SendGetRequest<GetLeaderboardStatistics>($"api/leaderboard-statistics/");
 	}
 
-	public async Task<GetLeaderboardStatisticsDdLive> GetLeaderboardStatisticsDdLive(LeaderboardStatisticsLimitDdLive top)
-	{
-		Dictionary<string, object?> queryParameters = new()
-		{
-			{ nameof(top), top }
-		};
-		return await SendGetRequest<GetLeaderboardStatisticsDdLive>(UrlBuilderUtils.BuildUrlWithQuery($"api/leaderboard-statistics/ddlive", queryParameters));
-	}
-
 	public async Task<Page<GetModOverview>> GetMods(bool onlyHosted, string? modFilter, string? authorFilter, int pageIndex, int pageSize, ModSorting? sortBy, bool ascending)
 	{
 		Dictionary<string, object?> queryParameters = new()
