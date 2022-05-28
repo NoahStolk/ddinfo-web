@@ -25,11 +25,7 @@ public class CustomEntriesController : ControllerBase
 		{
 			return await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
 		}
-		catch (CustomEntryValidationException ex)
-		{
-			return new BadRequestObjectResult(new ProblemDetails { Title = ex.Message });
-		}
-		catch (Exception ex)
+		catch (Exception ex) when (ex is not CustomEntryValidationException)
 		{
 			ex.Data[nameof(uploadRequest.ClientVersion)] = uploadRequest.ClientVersion;
 			ex.Data[nameof(uploadRequest.OperatingSystem)] = uploadRequest.OperatingSystem;

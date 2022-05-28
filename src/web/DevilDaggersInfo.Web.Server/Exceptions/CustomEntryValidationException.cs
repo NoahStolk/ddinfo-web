@@ -1,9 +1,10 @@
+using System.Net;
 using System.Runtime.Serialization;
 
 namespace DevilDaggersInfo.Web.Server.Exceptions;
 
 [Serializable]
-public class CustomEntryValidationException : Exception
+public class CustomEntryValidationException : StatusCodeException
 {
 	public CustomEntryValidationException()
 	{
@@ -23,4 +24,6 @@ public class CustomEntryValidationException : Exception
 		: base(info, context)
 	{
 	}
+
+	public override HttpStatusCode StatusCode => HttpStatusCode.BadRequest;
 }
