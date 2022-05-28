@@ -15,6 +15,7 @@ public class LeaderboardStatisticsController : ControllerBase
 		_leaderboardStatisticsCache = leaderboardStatisticsCache;
 	}
 
+	// FORBIDDEN: DDLIVE is using this endpoint.
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public ActionResult<GetLeaderboardStatistics> GetLeaderboardStatistics()

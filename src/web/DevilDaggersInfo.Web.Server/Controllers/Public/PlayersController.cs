@@ -56,6 +56,7 @@ public class PlayersController : ControllerBase
 		return players.Where(p => p.HasSettings()).Select(p => p.ToGetPlayerForSettings()).ToList();
 	}
 
+	// FORBIDDEN: DDLIVE is using this endpoint.
 	[HttpGet("{id}")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -82,6 +83,7 @@ public class PlayersController : ControllerBase
 		return player?.CountryCode ?? string.Empty;
 	}
 
+	// FORBIDDEN: DDLIVE is using this endpoint.
 	[HttpGet("{id}/history")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
