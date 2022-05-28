@@ -110,9 +110,13 @@ public class Startup
 			});
 
 		AddSwaggerDocument("Public", "This is the main API for DevilDaggers.info. Specifications may change based on the website client requirements. Use at your own risk.");
+
 		AddSwaggerDocument("Dd", "This API is intended to be used by Devil Daggers only.");
+
 		AddSwaggerDocument("Ddae", "This API is intended to be used by Devil Daggers Asset Editor only.");
 		AddSwaggerDocument("Ddse", "This API is intended to be used by Devil Daggers Survival Editor only.");
+
+		AddSwaggerDocument("DdLive", "This API is intended to be used by DDLIVE only.");
 		AddSwaggerDocument("DdstatsRust", "This API is intended to be used by ddstats-rust only.");
 
 		void AddSwaggerDocument(string apiNamespace, string description)

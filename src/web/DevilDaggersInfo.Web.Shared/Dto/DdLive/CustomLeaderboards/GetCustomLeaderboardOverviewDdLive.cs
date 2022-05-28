@@ -1,4 +1,6 @@
-namespace DevilDaggersInfo.Web.Shared.Dto.Public.CustomLeaderboards;
+using DevilDaggersInfo.Web.Shared.Dto.Public.CustomLeaderboards;
+
+namespace DevilDaggersInfo.Web.Shared.Dto.DdLive.CustomLeaderboards;
 
 public record GetCustomLeaderboardOverviewDdLive
 {
@@ -10,7 +12,7 @@ public record GetCustomLeaderboardOverviewDdLive
 
 	public string SpawnsetAuthorName { get; init; } = null!;
 
-	public GetCustomLeaderboardDaggers? Daggers { get; init; }
+	public GetCustomLeaderboardDaggersDdLive? Daggers { get; init; }
 
 	public DateTime? DateLastPlayed { get; init; }
 

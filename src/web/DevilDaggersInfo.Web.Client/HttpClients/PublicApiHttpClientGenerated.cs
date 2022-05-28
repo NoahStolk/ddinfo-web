@@ -94,11 +94,6 @@ public partial class PublicApiHttpClient
 		return await SendGetRequest<GetGlobalCustomLeaderboard>(UrlBuilderUtils.BuildUrlWithQuery($"api/custom-leaderboards/global-leaderboard", queryParameters));
 	}
 
-	public async Task<List<GetCustomLeaderboardOverviewDdLive>> GetCustomLeaderboardsOverviewDdLive()
-	{
-		return await SendGetRequest<List<GetCustomLeaderboardOverviewDdLive>>($"api/custom-leaderboards/ddlive");
-	}
-
 	public async Task<GetTotalCustomLeaderboardData> GetTotalCustomLeaderboardData()
 	{
 		return await SendGetRequest<GetTotalCustomLeaderboardData>($"api/custom-leaderboards/total-data");
@@ -107,11 +102,6 @@ public partial class PublicApiHttpClient
 	public async Task<GetCustomLeaderboard> GetCustomLeaderboardById(int id)
 	{
 		return await SendGetRequest<GetCustomLeaderboard>($"api/custom-leaderboards/{id}");
-	}
-
-	public async Task<GetCustomLeaderboardDdLive> GetCustomLeaderboardByIdDdLive(int id)
-	{
-		return await SendGetRequest<GetCustomLeaderboardDdLive>($"api/custom-leaderboards/{id}/ddlive");
 	}
 
 	public async Task<List<GetDonator>> GetDonators()

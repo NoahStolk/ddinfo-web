@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Web.Shared.Dto.Public.CustomEntries;
 
-namespace DevilDaggersInfo.Web.Shared.Dto.Public.CustomLeaderboards;
+namespace DevilDaggersInfo.Web.Shared.Dto.DdLive.CustomLeaderboards;
 
 public record GetCustomLeaderboardDdLive
 {
@@ -12,7 +12,7 @@ public record GetCustomLeaderboardDdLive
 
 	public string? SpawnsetHtmlDescription { get; init; }
 
-	public GetCustomLeaderboardDaggers? Daggers { get; init; }
+	public GetCustomLeaderboardDaggersDdLive? Daggers { get; init; }
 
 	public DateTime? DateLastPlayed { get; init; }
 
