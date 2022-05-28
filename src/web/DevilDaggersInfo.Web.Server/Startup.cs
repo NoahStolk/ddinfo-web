@@ -38,8 +38,6 @@ public class Startup
 		services.AddDbContext<ApplicationDbContext>(options =>
 			options.UseMySql(Configuration.GetConnectionString("DefaultConnection"), MySqlServerVersion.LatestSupportedServerVersion, providerOptions => providerOptions.EnableRetryOnFailure(5)));
 
-		services.AddDatabaseDeveloperPageExceptionFilter();
-
 		services.AddControllersWithViews();
 
 		services.AddRazorPages();
