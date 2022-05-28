@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.IdentityModel.Tokens;
 using NJsonSchema;
+using NSwag;
 using System.Globalization;
 
 namespace DevilDaggersInfo.Web.Server;
@@ -108,21 +109,30 @@ public class Startup
 				};
 			});
 
-		services.AddSwaggerDocument(config =>
+		AddSwaggerDocument("Public", "This is the main API for DevilDaggers.info. Specifications may change based on the website client requirements. Use at your own risk.");
+		AddSwaggerDocument("Dd", "This API is intended to be used by Devil Daggers only.");
+		AddSwaggerDocument("Ddse", "This API is intended to be used by Devil Daggers Survival Editor only.");
+
+		void AddSwaggerDocument(string apiNamespace, string description)
 		{
-			config.PostProcess = document =>
+			services.AddSwaggerDocument(config =>
 			{
-				document.Info.Title = "DevilDaggers.Info API";
-				document.Info.Contact = new()
+				config.PostProcess = document =>
 				{
-					Name = "Noah Stolk",
-					Url = "//noahstolk.com/",
+					document.Info.Title = $"DevilDaggers.Info API ({apiNamespace.ToUpper()})";
+					document.Info.Description = description;
+					document.Info.Contact = new()
+					{
+						Name = "Noah Stolk",
+						Url = "//noahstolk.com/",
+					};
 				};
-			};
-			config.OperationProcessors.Insert(0, new PublicApiOperationProcessor());
-			config.SchemaType = SchemaType.OpenApi3;
-			config.GenerateEnumMappingDescription = true;
-		});
+				config.DocumentName = apiNamespace.ToUpper();
+				config.OperationProcessors.Insert(0, new ApiOperationProcessor(apiNamespace));
+				config.SchemaType = SchemaType.OpenApi3;
+				config.GenerateEnumMappingDescription = true;
+			});
+		}
 	}
 
 	public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
