@@ -1,10 +1,10 @@
-namespace DevilDaggersInfo.Web.Shared.Dto.Public.CustomLeaderboards;
+namespace DevilDaggersInfo.Web.Shared.Dto.Ddcl.CustomLeaderboards;
 
 public record GetCustomLeaderboardDdcl
 {
 	public string SpawnsetName { get; init; } = null!;
 
-	public GetCustomLeaderboardDaggers? Daggers { get; init; }
+	public GetCustomLeaderboardDaggersDdcl? Daggers { get; init; }
 
 	public CustomLeaderboardCategory Category { get; init; }
 

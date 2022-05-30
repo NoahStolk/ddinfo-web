@@ -34,4 +34,12 @@ public class CustomEntryRepository
 		string fileName = $"{customEntry.SpawnsetId}-{customEntry.SpawnsetName}-{customEntry.PlayerId}-{customEntry.PlayerName}.ddreplay";
 		return (fileName, IoFile.ReadAllBytes(path));
 	}
+
+	public List<int> GetExistingCustomEntryReplayIds(List<int> ids)
+	{
+		return ids
+			.Where(id => IoFile.Exists(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{id}.ddreplay")))
+			.Select(id => id)
+			.ToList();
+	}
 }

@@ -55,6 +55,7 @@ public class Startup
 
 		// Repositories
 		services.AddTransient<CustomEntryRepository>();
+		services.AddTransient<CustomLeaderboardRepository>();
 
 		// Validators
 		services.AddTransient<CustomLeaderboardValidator>();
