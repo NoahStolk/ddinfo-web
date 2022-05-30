@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Web.Server.Caches.SpawnsetHashes;
 using DevilDaggersInfo.Web.Server.Converters.Public;
-using DevilDaggersInfo.Web.Server.Entities.Views;
+using DevilDaggersInfo.Web.Server.InternalModels.CustomEntries;
 using DevilDaggersInfo.Web.Shared.Dto;
 using DevilDaggersInfo.Web.Shared.Dto.Public.CustomLeaderboards;
 using DevilDaggersInfo.Web.Shared.Enums.Sortings.Public;

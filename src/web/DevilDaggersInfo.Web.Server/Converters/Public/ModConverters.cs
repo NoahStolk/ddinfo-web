@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Web.Server.InternalModels;
+using DevilDaggersInfo.Web.Server.InternalModels.Mods;
 using DevilDaggersInfo.Web.Shared.Dto.Public.Mods;
 
 namespace DevilDaggersInfo.Web.Server.Converters.Public;

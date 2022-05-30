@@ -1,5 +1,5 @@
 using DevilDaggersInfo.Web.Server.Caches.ModArchives;
-using DevilDaggersInfo.Web.Server.InternalModels;
+using DevilDaggersInfo.Web.Server.InternalModels.Mods;
 
 namespace DevilDaggersInfo.Web.Server.Services;
 

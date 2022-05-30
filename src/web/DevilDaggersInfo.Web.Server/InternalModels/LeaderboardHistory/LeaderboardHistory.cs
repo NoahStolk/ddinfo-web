@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Server.InternalModels;
+namespace DevilDaggersInfo.Web.Server.InternalModels.LeaderboardHistory;
 
 public class LeaderboardHistory
 {

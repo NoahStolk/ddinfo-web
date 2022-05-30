@@ -1,5 +1,5 @@
 using DevilDaggersInfo.Web.Server.Converters.Ddae;
-using DevilDaggersInfo.Web.Server.InternalModels;
+using DevilDaggersInfo.Web.Server.InternalModels.Mods;
 using DevilDaggersInfo.Web.Shared.Dto.Ddae.Mods;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Ddae;

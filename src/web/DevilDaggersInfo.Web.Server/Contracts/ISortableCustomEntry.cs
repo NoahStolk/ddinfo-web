@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Server.Entities.Views;
+namespace DevilDaggersInfo.Web.Server.Contracts;
 
 public interface ISortableCustomEntry
 {

@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Web.Server.Entities.Views;
+using DevilDaggersInfo.Web.Server.InternalModels.CustomEntries;
 using DevilDaggersInfo.Web.Shared.Dto.Public.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Server.Converters.Public;

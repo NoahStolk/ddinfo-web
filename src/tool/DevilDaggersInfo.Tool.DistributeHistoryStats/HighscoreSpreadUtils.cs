@@ -1,7 +1,7 @@
 using DevilDaggersInfo.Common;
 using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Core.Wiki.Enums;
-using DevilDaggersInfo.Web.Server.InternalModels;
+using DevilDaggersInfo.Web.Server.InternalModels.LeaderboardHistory;
 using System.Text;
 
 namespace DevilDaggersInfo.Tool.DistributeHistoryStats;

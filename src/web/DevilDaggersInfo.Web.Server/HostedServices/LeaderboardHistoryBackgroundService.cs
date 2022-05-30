@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Web.Server.InternalModels;
+using DevilDaggersInfo.Web.Server.InternalModels.LeaderboardHistory;
 
 namespace DevilDaggersInfo.Web.Server.HostedServices;
 

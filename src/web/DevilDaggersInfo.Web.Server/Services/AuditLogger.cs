@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Web.Server.InternalModels;
+using DevilDaggersInfo.Web.Server.InternalModels.AuditLog;
 using System.Security.Claims;
 
 namespace DevilDaggersInfo.Web.Server.Services;

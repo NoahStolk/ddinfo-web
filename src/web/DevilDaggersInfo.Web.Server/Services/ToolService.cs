@@ -1,5 +1,5 @@
 using DevilDaggersInfo.Web.Server.Converters.Public;
-using DevilDaggersInfo.Web.Server.InternalModels.Json;
+using DevilDaggersInfo.Web.Server.InternalModels.Changelog;
 using DevilDaggersInfo.Web.Shared.Dto.Public.Tools;
 
 namespace DevilDaggersInfo.Web.Server.Services;

@@ -1,5 +1,5 @@
 using DevilDaggersInfo.Web.Server.Converters.DdLive;
-using DevilDaggersInfo.Web.Server.Entities.Views;
+using DevilDaggersInfo.Web.Server.InternalModels.CustomEntries;
 using DevilDaggersInfo.Web.Shared.Dto.DdLive.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.DdLive;

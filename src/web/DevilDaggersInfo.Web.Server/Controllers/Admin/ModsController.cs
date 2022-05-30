@@ -1,5 +1,6 @@
 using DevilDaggersInfo.Web.Server.Converters.Admin;
-using DevilDaggersInfo.Web.Server.InternalModels;
+using DevilDaggersInfo.Web.Server.InternalModels.AuditLog;
+using DevilDaggersInfo.Web.Server.InternalModels.Mods;
 using DevilDaggersInfo.Web.Shared.Dto;
 using DevilDaggersInfo.Web.Shared.Dto.Admin.Mods;
 using DevilDaggersInfo.Web.Shared.Enums.Sortings.Admin;

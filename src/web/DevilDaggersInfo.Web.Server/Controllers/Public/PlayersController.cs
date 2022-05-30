@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Web.Server.Caches.LeaderboardHistory;
 using DevilDaggersInfo.Web.Server.Converters.Public;
-using DevilDaggersInfo.Web.Server.InternalModels;
+using DevilDaggersInfo.Web.Server.InternalModels.LeaderboardHistory;
 using DevilDaggersInfo.Web.Shared.Dto.Public.Players;
 using DevilDaggersInfo.Web.Shared.Utils;
 using Microsoft.AspNetCore.Authorization;

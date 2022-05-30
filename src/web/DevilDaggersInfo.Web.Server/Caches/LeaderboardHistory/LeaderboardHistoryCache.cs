@@ -2,15 +2,15 @@ namespace DevilDaggersInfo.Web.Server.Caches.LeaderboardHistory;
 
 public class LeaderboardHistoryCache : IDynamicCache
 {
-	private readonly ConcurrentDictionary<string, InternalModels.LeaderboardHistory> _cache = new();
+	private readonly ConcurrentDictionary<string, InternalModels.LeaderboardHistory.LeaderboardHistory> _cache = new();
 
-	public InternalModels.LeaderboardHistory GetLeaderboardHistoryByFilePath(string filePath)
+	public InternalModels.LeaderboardHistory.LeaderboardHistory GetLeaderboardHistoryByFilePath(string filePath)
 	{
 		string name = Path.GetFileNameWithoutExtension(filePath);
 		if (_cache.ContainsKey(name))
 			return _cache[name];
 
-		InternalModels.LeaderboardHistory lb = InternalModels.LeaderboardHistory.CreateFromFile(File.ReadAllBytes(filePath));
+		InternalModels.LeaderboardHistory.LeaderboardHistory lb = InternalModels.LeaderboardHistory.LeaderboardHistory.CreateFromFile(File.ReadAllBytes(filePath));
 		_cache.TryAdd(name, lb);
 		return lb;
 	}

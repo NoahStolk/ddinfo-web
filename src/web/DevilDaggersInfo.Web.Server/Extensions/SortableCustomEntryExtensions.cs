@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Web.Server.Entities.Views;
+using DevilDaggersInfo.Web.Server.Contracts;
 
 namespace DevilDaggersInfo.Web.Server.Extensions;
 
