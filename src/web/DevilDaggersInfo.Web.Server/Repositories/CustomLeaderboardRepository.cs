@@ -12,7 +12,7 @@ public class CustomLeaderboardRepository
 		_dbContext = dbContext;
 	}
 
-	public async Task<List<CustomLeaderboardOverview>> GetSortedCustomLeaderboardOverviewsAsync(
+	public async Task<(List<CustomLeaderboardOverview> CustomLeaderboards, int TotalCount)> GetSortedCustomLeaderboardOverviewsAsync(
 		CustomLeaderboardCategory category,
 		string? spawnsetFilter = null,
 		string? authorFilter = null,
@@ -94,11 +94,15 @@ public class CustomLeaderboardRepository
 		int totalCustomLeaderboards = customLeaderboards.Count;
 		int lastPageIndex = totalCustomLeaderboards / pageSize;
 
-		return customLeaderboardWrs
-			.Skip(Math.Min(pageIndex, lastPageIndex) * pageSize)
-			.Take(pageSize)
-			.Select(cl => ToOverview(cl, customEntryCountByCustomLeaderboardId))
-			.ToList();
+		return new()
+		{
+			CustomLeaderboards = customLeaderboardWrs
+				.Skip(Math.Min(pageIndex, lastPageIndex) * pageSize)
+				.Take(pageSize)
+				.Select(cl => ToOverview(cl, customEntryCountByCustomLeaderboardId))
+				.ToList(),
+			TotalCount = totalCustomLeaderboards,
+		};
 	}
 
 	public async Task<List<CustomLeaderboardOverview>> GetCustomLeaderboardOverviewsAsync()
