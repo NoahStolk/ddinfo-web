@@ -92,8 +92,8 @@ flowchart TD;
 ```mermaid
 flowchart TD;
 
-    database[Database]
-    filesystem[File system]
+    database[(Database)]
+    filesystem[(File system)]
     server[Server]
     api[API]
 	devildaggersinfo[DevilDaggers.info]
@@ -108,8 +108,8 @@ flowchart TD;
 	class database,filesystem,server,api,devildaggersinfo,ddse,ddcl,ddae ddinfo;
 	class devildaggers,ddstatsrust,ddlive,clubber external;
 
-    classDef ddinfo fill:#aa0,stroke:#333,stroke-width:4px;
-    classDef external fill:#0a0,stroke:#333,stroke-width:4px;
+    classDef ddinfo fill:#a60,stroke:#333,stroke-width:4px;
+    classDef external fill:#60a,stroke:#333,stroke-width:4px;
 	
 	server --> database
 	server --> filesystem
