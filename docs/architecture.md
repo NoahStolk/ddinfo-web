@@ -103,7 +103,7 @@ flowchart TD;
 	ddae_legacy --> ddcore_legacy
 ```
 
-## API hierarchy
+## Data hierarchy
 
 ```mermaid
 flowchart TD;
@@ -120,15 +120,17 @@ flowchart TD;
     ddstatsrust[ddstats-rust]
     ddlive[DDLIVE]
     clubber[Clubber]
+	devildaggersleaderboards{Devil Daggers leaderboards}
 	
 	class database,filesystem,server,api,devildaggersinfo,ddse,ddcl,ddae ddinfo;
-	class devildaggers,ddstatsrust,ddlive,clubber external;
+	class devildaggers,ddstatsrust,ddlive,clubber,devildaggersleaderboards external;
 
     classDef ddinfo fill:#a60,stroke:#333,stroke-width:4px;
     classDef external fill:#60a,stroke:#333,stroke-width:4px;
 	
 	server --> database
 	server --> filesystem
+	server --> devildaggersleaderboards
 
 	api --> server
 
