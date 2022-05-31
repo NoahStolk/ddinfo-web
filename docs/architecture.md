@@ -20,8 +20,6 @@ Tests, tools, and source generators are omitted for clarity.
 ```mermaid
 flowchart TD;
 
-	%% DevilDaggersInfo
-
     asseteditor_wpf[AssetEditor.Wpf]
     cmd_createreplay[Cmd.CreateReplay]
     cmd_extractmod[Cmd.ExtractMod]
@@ -57,39 +55,45 @@ flowchart TD;
     classDef web_server fill:#6a6,stroke:#333,stroke-width:4px;
     classDef web_shared fill:#00a,stroke:#333,stroke-width:4px;
 
-	asseteditor_wpf --> razor_core_asseteditor
+	subgraph Tool
+		asseteditor_wpf --> razor_core_asseteditor
+	end
 
-	cmd_createreplay --> core_replay
+	subgraph Cmd
+		cmd_createreplay --> core_replay
+		cmd_extractmod --> core_mod
+	end
 	
-	cmd_extractmod --> core_mod
+	subgraph Core
+		core_mod --> core_asset
+		core_mod --> common
 	
-	core_mod --> core_asset
-	core_mod --> common
+		core_replay --> common
 	
-	core_replay --> common
+		core_spawnset --> core_wiki
 	
-	core_spawnset --> core_wiki
+		core_wiki --> common
 	
-	core_wiki --> common
+		razor_core_asseteditor --> core_mod
 	
-	razor_core_asseteditor --> core_mod
+		razor_core_canvaschart --> razor_core_unmarshalled
+		razor_core_canvaschart --> common
+	end
 	
-	razor_core_canvaschart --> razor_core_unmarshalled
-	razor_core_canvaschart --> common
-
-	web_client --> razor_core_canvaschart
-	web_client --> web_shared
+	subgraph Web
+		web_client --> web_shared
+		web_server --> web_client
+	end
 	
 	web_server --> core_encryption
-	web_server --> web_client
+	
+	web_client --> razor_core_canvaschart
 	
 	web_shared --> common
 	web_shared --> core_mod
 	web_shared --> core_replay
 	web_shared --> core_spawnset
 	
-	%% Legacy
-
 	ddse_legacy[DDSE 2]
 	ddcl_legacy[DDCL 1]
 	ddae_legacy[DDAE 1]
@@ -99,8 +103,10 @@ flowchart TD;
 
 	classDef legacy fill:#666,stroke:#333,stroke-width:4px;
 	
-	ddse_legacy --> ddcore_legacy
-	ddae_legacy --> ddcore_legacy
+	subgraph Legacy
+		ddse_legacy --> ddcore_legacy
+		ddae_legacy --> ddcore_legacy
+	end
 ```
 
 ## Data hierarchy
@@ -108,20 +114,20 @@ flowchart TD;
 ```mermaid
 flowchart TD;
 
-    database[(Database)]
-    filesystem[(File system)]
-    server[Server]
-    api[API]
-	devildaggersinfo[DevilDaggers.info]
+    database[(DevilDaggers.info database)]
+    filesystem[(DevilDaggers.info file system)]
+    server[DevilDaggers.info server]
+    api[DevilDaggers.info API]
+	devildaggersinfo[DevilDaggers.info website]
     devildaggers[Devil Daggers]
-    ddse[Devil Daggers Survival Editor]
-    ddcl[Devil Daggers Custom Leaderboards]
-    ddae[Devil Daggers Asset Editor]
+    ddse[DDSE]
+    ddcl[DDCL]
+    ddae[DDAE]
     ddstatsrust[ddstats-rust]
     ddlive[DDLIVE]
     clubberserver[Clubber server]
     clubberapi[Clubber API]
-	devildaggersleaderboards{Devil Daggers leaderboards}
+	devildaggersleaderboards[Devil Daggers leaderboards API]
 	
 	class database,filesystem,server,api,devildaggersinfo,ddse,ddcl,ddae ddinfo;
 	class devildaggers,ddstatsrust,ddlive,clubberserver,clubberapi,devildaggersleaderboards external;
