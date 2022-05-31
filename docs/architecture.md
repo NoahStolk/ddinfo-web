@@ -124,7 +124,7 @@ flowchart TD;
 	devildaggersleaderboards{Devil Daggers leaderboards}
 	
 	class database,filesystem,server,api,devildaggersinfo,ddse,ddcl,ddae ddinfo;
-	class devildaggers,ddstatsrust,ddlive,clubber,devildaggersleaderboards external;
+	class devildaggers,ddstatsrust,ddlive,clubberserver,clubberapi,devildaggersleaderboards external;
 
     classDef ddinfo fill:#a60,stroke:#333,stroke-width:4px;
     classDef external fill:#60a,stroke:#333,stroke-width:4px;
