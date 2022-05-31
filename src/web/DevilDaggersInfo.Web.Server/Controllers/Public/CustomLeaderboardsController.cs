@@ -4,8 +4,6 @@ using DevilDaggersInfo.Web.Server.Repositories;
 using DevilDaggersInfo.Web.Shared.Dto;
 using DevilDaggersInfo.Web.Shared.Dto.Public.CustomLeaderboards;
 using DevilDaggersInfo.Web.Shared.Enums.Sortings.Public;
-using DevilDaggersInfo.Web.Shared.InternalModels;
-using DevilDaggersInfo.Web.Shared.Utils;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Public;
 
@@ -13,12 +11,10 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Public;
 [ApiController]
 public class CustomLeaderboardsController : ControllerBase
 {
-	private readonly ApplicationDbContext _dbContext;
 	private readonly CustomLeaderboardRepository _customLeaderboardRepository;
 
-	public CustomLeaderboardsController(ApplicationDbContext dbContext, CustomLeaderboardRepository customLeaderboardRepository)
+	public CustomLeaderboardsController(CustomLeaderboardRepository customLeaderboardRepository)
 	{
-		_dbContext = dbContext;
 		_customLeaderboardRepository = customLeaderboardRepository;
 	}
 
@@ -35,7 +31,6 @@ public class CustomLeaderboardsController : ControllerBase
 		bool ascending = false)
 	{
 		(List<CustomLeaderboardOverview> cls, int total) = await _customLeaderboardRepository.GetSortedCustomLeaderboardOverviewsAsync(category, spawnsetFilter, authorFilter, pageIndex, pageSize, sortBy, ascending);
-
 		return new Page<GetCustomLeaderboardOverview>
 		{
 			Results = cls.ConvertAll(cl => cl.ToGetCustomLeaderboardOverview()),
@@ -48,97 +43,43 @@ public class CustomLeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult<GetGlobalCustomLeaderboard>> GetGlobalCustomLeaderboardForCategory(CustomLeaderboardCategory category)
 	{
-		List<CustomLeaderboardEntity> customLeaderboards = await _dbContext.CustomLeaderboards
-			.AsNoTracking()
-			.Include(cl => cl.CustomEntries!)
-				.ThenInclude(ce => ce.Player)
-			.Where(ce => ce.Category == category && ce.IsFeatured)
-			.ToListAsync();
-
-		Dictionary<int, (string Name, GlobalCustomLeaderboardEntryData Data)> globalData = new();
-		foreach (CustomLeaderboardEntity customLeaderboard in customLeaderboards)
-		{
-			List<CustomEntryEntity> customEntries = customLeaderboard.CustomEntries!.Sort(category).ToList();
-
-			for (int i = 0; i < customEntries.Count; i++)
-			{
-				CustomEntryEntity customEntry = customEntries[i];
-
-				GlobalCustomLeaderboardEntryData data;
-				if (!globalData.ContainsKey(customEntry.PlayerId))
-				{
-					data = new();
-					globalData.Add(customEntry.PlayerId, (customEntry.Player.PlayerName, data));
-				}
-				else
-				{
-					data = globalData[customEntry.PlayerId].Data;
-				}
-
-				data.Rankings.Add(new(i + 1, customEntries.Count));
-
-				switch (customLeaderboard.GetDaggerFromTime(customEntry.Time) ?? throw new InvalidOperationException("Custom leaderboard without daggers may not be used for processing global custom leaderboard data."))
-				{
-					case CustomLeaderboardDagger.Leviathan: data.LeviathanCount++; break;
-					case CustomLeaderboardDagger.Devil: data.DevilCount++; break;
-					case CustomLeaderboardDagger.Golden: data.GoldenCount++; break;
-					case CustomLeaderboardDagger.Silver: data.SilverCount++; break;
-					case CustomLeaderboardDagger.Bronze: data.BronzeCount++; break;
-					default: data.DefaultCount++; break;
-				}
-			}
-		}
-
+		GlobalCustomLeaderboard globalCustomLeaderboard = await _customLeaderboardRepository.GetGlobalCustomLeaderboardAsync(category);
 		return new GetGlobalCustomLeaderboard
 		{
-			Entries = globalData
-				.Select(kvp => new GetGlobalCustomLeaderboardEntry
+			Entries = globalCustomLeaderboard.Entries
+				.ConvertAll(e => new GetGlobalCustomLeaderboardEntry
 				{
-					DefaultDaggerCount = kvp.Value.Data.DefaultCount,
-					BronzeDaggerCount = kvp.Value.Data.BronzeCount,
-					SilverDaggerCount = kvp.Value.Data.SilverCount,
-					GoldenDaggerCount = kvp.Value.Data.GoldenCount,
-					DevilDaggerCount = kvp.Value.Data.DevilCount,
-					LeviathanDaggerCount = kvp.Value.Data.LeviathanCount,
-					LeaderboardsPlayedCount = kvp.Value.Data.TotalPlayed,
-					PlayerId = kvp.Key,
-					PlayerName = kvp.Value.Name,
-					Points = GlobalCustomLeaderboardUtils.GetPoints(kvp.Value.Data),
+					DefaultDaggerCount = e.DefaultDaggerCount,
+					BronzeDaggerCount = e.BronzeDaggerCount,
+					SilverDaggerCount = e.SilverDaggerCount,
+					GoldenDaggerCount = e.GoldenDaggerCount,
+					DevilDaggerCount = e.DevilDaggerCount,
+					LeviathanDaggerCount = e.LeviathanDaggerCount,
+					LeaderboardsPlayedCount = e.LeaderboardsPlayedCount,
+					PlayerId = e.PlayerId,
+					PlayerName = e.PlayerName,
+					Points = e.Points,
 				})
 				.OrderByDescending(ce => ce.Points)
 				.ThenByDescending(ce => ce.LeaderboardsPlayedCount)
 				.ToList(),
-			TotalLeaderboards = customLeaderboards.Count,
-			TotalPoints = customLeaderboards.Sum(cl => cl.CustomEntries!.Count * GlobalCustomLeaderboardUtils.RankingMultiplier + GlobalCustomLeaderboardUtils.LeviathanBonus),
+			TotalLeaderboards = globalCustomLeaderboard.TotalLeaderboards,
+			TotalPoints = globalCustomLeaderboard.TotalPoints,
 		};
 	}
 
 	[HttpGet("total-data")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	public ActionResult<GetTotalCustomLeaderboardData> GetTotalCustomLeaderboardData()
+	public async Task<ActionResult<GetTotalCustomLeaderboardData>> GetTotalCustomLeaderboardData()
 	{
-		var customLeaderboards = _dbContext.CustomLeaderboards.AsNoTracking().Select(cl => new { cl.Id, cl.Category, cl.TotalRunsSubmitted }).ToList();
-		var customEntries = _dbContext.CustomEntries.AsNoTracking().Select(ce => new { ce.PlayerId, ce.CustomLeaderboard.Category }).ToList();
-
-		Dictionary<CustomLeaderboardCategory, int> leaderboardsPerCategory = new();
-		Dictionary<CustomLeaderboardCategory, int> scoresPerCategory = new();
-		Dictionary<CustomLeaderboardCategory, int> submitsPerCategory = new();
-		Dictionary<CustomLeaderboardCategory, int> playersPerCategory = new();
-		foreach (CustomLeaderboardCategory category in Enum.GetValues<CustomLeaderboardCategory>())
-		{
-			leaderboardsPerCategory[category] = customLeaderboards.Count(cl => cl.Category == category);
-			scoresPerCategory[category] = customEntries.Count(cl => cl.Category == category);
-			submitsPerCategory[category] = customLeaderboards.Where(cl => cl.Category == category).Sum(cl => cl.TotalRunsSubmitted);
-			playersPerCategory[category] = customEntries.Where(cl => cl.Category == category).DistinctBy(cl => cl.PlayerId).Count();
-		}
-
+		CustomLeaderboardsTotalData totalData = await _customLeaderboardRepository.GetCustomLeaderboardsTotalDataAsync();
 		return new GetTotalCustomLeaderboardData
 		{
-			LeaderboardsPerCategory = leaderboardsPerCategory,
-			ScoresPerCategory = scoresPerCategory,
-			SubmitsPerCategory = submitsPerCategory,
-			PlayersPerCategory = playersPerCategory,
-			TotalPlayers = customEntries.DistinctBy(ce => ce.PlayerId).Count(),
+			LeaderboardsPerCategory = totalData.LeaderboardsPerCategory,
+			PlayersPerCategory = totalData.PlayersPerCategory,
+			ScoresPerCategory = totalData.ScoresPerCategory,
+			SubmitsPerCategory = totalData.SubmitsPerCategory,
+			TotalPlayers = totalData.TotalPlayers,
 		};
 	}
 
