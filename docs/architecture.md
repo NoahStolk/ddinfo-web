@@ -119,7 +119,8 @@ flowchart TD;
     ddae[Devil Daggers Asset Editor]
     ddstatsrust[ddstats-rust]
     ddlive[DDLIVE]
-    clubber[Clubber]
+    clubberserver[Clubber server]
+    clubberapi[Clubber API]
 	devildaggersleaderboards{Devil Daggers leaderboards}
 	
 	class database,filesystem,server,api,devildaggersinfo,ddse,ddcl,ddae ddinfo;
@@ -131,7 +132,7 @@ flowchart TD;
 	server --> database
 	server --> filesystem
 	server --> devildaggersleaderboards
-	server --> clubber
+	server --> clubberapi
 
 	api --> server
 
@@ -142,5 +143,5 @@ flowchart TD;
 	devildaggers --> api
 	ddstatsrust --> api
 	ddlive --> api
-	clubber --> api
+	clubberserver --> api
 ```
