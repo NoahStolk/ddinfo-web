@@ -131,6 +131,7 @@ flowchart TD;
 	server --> database
 	server --> filesystem
 	server --> devildaggersleaderboards
+	server --> clubber
 
 	api --> server
 
