@@ -15,15 +15,13 @@
 
 ## Project hierarchy
 
-Tests, tools, and source generators are omitted for clarity.
+Tests, tools, source generators, and common libraries are omitted for clarity.
 
 ```mermaid
 flowchart TD;
-
     asseteditor_wpf[AssetEditor.Wpf]
     cmd_createreplay[Cmd.CreateReplay]
     cmd_extractmod[Cmd.ExtractMod]
-    common[Common]
     core_asset[Core.Asset]
     core_encryption[Core.Encryption]
     core_mod[Core.Mod]
@@ -37,73 +35,68 @@ flowchart TD;
     web_server[Web.Server]
     web_shared[Web.Shared]
 	
+	ddse_legacy[DDSE 2]
+	ddcl_legacy[DDCL 1]
+	ddae_legacy[DDAE 1]
+	ddcore_legacy[DevilDaggersCore.Wpf]
+
 	class asseteditor_wpf ui;
 	class cmd_createreplay,cmd_extractmod cmd;
-	class common common;
 	class core_asset,core_encryption,core_mod,core_replay,core_spawnset,core_wiki core;
 	class razor_core_asseteditor,razor_core_canvaschart,razor_core_unmarshalled razor_core;
 	class web_client web_client;
 	class web_server web_server;
 	class web_shared web_shared;
 
+	class ddse_legacy,ddcl_legacy,ddae_legacy,ddcore_legacy legacy;
+
     classDef ui fill:#a00,stroke:#333,stroke-width:4px;
     classDef cmd fill:#0a0,stroke:#333,stroke-width:4px;
-    classDef common fill:#000,stroke:#333,stroke-width:4px;
     classDef core fill:#006,stroke:#333,stroke-width:4px;
     classDef razor_core fill:#066,stroke:#333,stroke-width:4px;
     classDef web_client fill:#a66,stroke:#333,stroke-width:4px;
     classDef web_server fill:#6a6,stroke:#333,stroke-width:4px;
     classDef web_shared fill:#00a,stroke:#333,stroke-width:4px;
 
+	classDef legacy fill:#666,stroke:#333,stroke-width:4px;
+
+	subgraph Core
+        core_encryption
+        core_replay
+
+		core_mod --> core_asset
+		core_spawnset --> core_wiki
+	end
+
+    subgraph Razor Core
+		razor_core_asseteditor ----> core_mod
+		razor_core_canvaschart --> razor_core_unmarshalled
+    end
+
+	subgraph Web
+        web_client ----> razor_core_canvaschart
+		web_client --> web_shared
+        
+        web_server --> core_encryption
+		web_server --> web_client
+        
+        web_shared ----> core_mod
+        web_shared ----> core_replay
+        web_shared ----> core_spawnset
+	end
+	
 	subgraph Tool
-		asseteditor_wpf --> razor_core_asseteditor
+		asseteditor_wpf ----> razor_core_asseteditor
 	end
 
 	subgraph Cmd
-		cmd_createreplay --> core_replay
-		cmd_extractmod --> core_mod
+		cmd_createreplay ----> core_replay
+		cmd_extractmod ----> core_mod
 	end
-	
-	subgraph Core
-		core_mod --> core_asset
-		core_mod --> common
-	
-		core_replay --> common
-	
-		core_spawnset --> core_wiki
-	
-		core_wiki --> common
-	
-		razor_core_asseteditor --> core_mod
-	
-		razor_core_canvaschart --> razor_core_unmarshalled
-		razor_core_canvaschart --> common
-	end
-	
-	subgraph Web
-		web_client --> web_shared
-		web_server --> web_client
-	end
-	
-	web_server --> core_encryption
-	
-	web_client --> razor_core_canvaschart
-	
-	web_shared --> common
-	web_shared --> core_mod
-	web_shared --> core_replay
-	web_shared --> core_spawnset
-	
-	ddse_legacy[DDSE 2]
-	ddcl_legacy[DDCL 1]
-	ddae_legacy[DDAE 1]
-	ddcore_legacy[DevilDaggersCore.Wpf]
-
-	class ddse_legacy,ddcl_legacy,ddae_legacy,ddcore_legacy legacy;
-
-	classDef legacy fill:#666,stroke:#333,stroke-width:4px;
 	
 	subgraph Legacy
+        ddcl_legacy
+
 		ddse_legacy --> ddcore_legacy
 		ddae_legacy --> ddcore_legacy
 	end
@@ -113,7 +106,6 @@ flowchart TD;
 
 ```mermaid
 flowchart TD;
-
     database[(DevilDaggers.info database)]
     filesystem[(DevilDaggers.info file system)]
     server[DevilDaggers.info server]
@@ -135,19 +127,32 @@ flowchart TD;
     classDef ddinfo fill:#a60,stroke:#333,stroke-width:4px;
     classDef external fill:#60a,stroke:#333,stroke-width:4px;
 	
-	server --> database
-	server --> filesystem
-	server --> devildaggersleaderboards
-	server --> clubberapi
+    subgraph External
+        devildaggers
+        ddstatsrust
+        ddlive
+        clubberserver
+        clubberapi
+        devildaggersleaderboards
+    end
 
-	api --> server
+    devildaggers --> api
+    ddstatsrust --> api
+    ddlive --> api
+    clubberserver --> api
 
-	devildaggersinfo --> api
-	ddse --> api
-	ddcl --> api
-	ddae --> api
-	devildaggers --> api
-	ddstatsrust --> api
-	ddlive --> api
-	clubberserver --> api
+    server --> devildaggersleaderboards
+    server --> clubberapi
+    
+    subgraph DevilDaggers.info
+        server --> database
+        server --> filesystem
+
+        api --> server
+
+        devildaggersinfo --> api
+        ddse --> api
+        ddcl --> api
+        ddae --> api
+    end
 ```
