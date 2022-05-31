@@ -106,9 +106,10 @@ flowchart TD;
     clubber[Clubber]
 	
 	class database,filesystem,server,api,devildaggersinfo,ddse,ddcl,ddae ddinfo;
+	class devildaggers,ddstatsrust,ddlive,clubber external;
 
     classDef ddinfo fill:#aa0,stroke:#333,stroke-width:4px;
-    classDef default fill:#0a0,stroke:#333,stroke-width:4px;
+    classDef external fill:#0a0,stroke:#333,stroke-width:4px;
 	
 	server --> database
 	server --> filesystem
@@ -120,7 +121,7 @@ flowchart TD;
 	ddse --> api
 	ddcl --> api
 	ddae --> api
-	ddstats-rust --> api
+	ddstatsrust --> api
 	ddlive --> api
 	clubber --> api
 ```
