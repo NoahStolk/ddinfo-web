@@ -98,6 +98,9 @@ flowchart TD;
 	class ddse_legacy,ddcl_legacy,ddae_legacy,ddcore_legacy legacy;
 
 	classDef legacy fill:#666,stroke:#333,stroke-width:4px;
+	
+	ddse_legacy --> ddcore_legacy
+	ddae_legacy --> ddcore_legacy
 ```
 
 ## API hierarchy
