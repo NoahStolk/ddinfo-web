@@ -19,21 +19,21 @@ Tests, tools, source generators, and common libraries are omitted for clarity.
 
 ```mermaid
 flowchart TD;
-    asseteditor_wpf[AssetEditor.Wpf]
-    cmd_createreplay[Cmd.CreateReplay]
-    cmd_extractmod[Cmd.ExtractMod]
-    core_asset[Core.Asset]
-    core_encryption[Core.Encryption]
-    core_mod[Core.Mod]
-    core_replay[Core.Replay]
-    core_spawnset[Core.Spawnset]
-    core_wiki[Core.Wiki]
-    razor_core_asseteditor[Razor.Core.AssetEditor]
-    razor_core_canvaschart[Razor.Core.CanvasChart]
-    razor_core_unmarshalled[Razor.Core.Unmarshalled]
-    web_client[Web.Client]
-    web_server[Web.Server]
-    web_shared[Web.Shared]
+	asseteditor_wpf[AssetEditor.Wpf]
+	cmd_createreplay[Cmd.CreateReplay]
+	cmd_extractmod[Cmd.ExtractMod]
+	core_asset[Core.Asset]
+	core_encryption[Core.Encryption]
+	core_mod[Core.Mod]
+	core_replay[Core.Replay]
+	core_spawnset[Core.Spawnset]
+	core_wiki[Core.Wiki]
+	razor_core_asseteditor[Razor.Core.AssetEditor]
+	razor_core_canvaschart[Razor.Core.CanvasChart]
+	razor_core_unmarshalled[Razor.Core.Unmarshalled]
+	web_client[Web.Client]
+	web_server[Web.Server]
+	web_shared[Web.Shared]
 	
 	ddse_legacy[DDSE 2]
 	ddcl_legacy[DDCL 1]
@@ -50,39 +50,39 @@ flowchart TD;
 
 	class ddse_legacy,ddcl_legacy,ddae_legacy,ddcore_legacy legacy;
 
-    classDef ui fill:#a00,stroke:#333,stroke-width:4px;
-    classDef cmd fill:#0a0,stroke:#333,stroke-width:4px;
-    classDef core fill:#006,stroke:#333,stroke-width:4px;
-    classDef razor_core fill:#066,stroke:#333,stroke-width:4px;
-    classDef web_client fill:#a66,stroke:#333,stroke-width:4px;
-    classDef web_server fill:#6a6,stroke:#333,stroke-width:4px;
-    classDef web_shared fill:#00a,stroke:#333,stroke-width:4px;
+	classDef ui fill:#a00,stroke:#333,stroke-width:4px;
+	classDef cmd fill:#0a0,stroke:#333,stroke-width:4px;
+	classDef core fill:#006,stroke:#333,stroke-width:4px;
+	classDef razor_core fill:#066,stroke:#333,stroke-width:4px;
+	classDef web_client fill:#a66,stroke:#333,stroke-width:4px;
+	classDef web_server fill:#6a6,stroke:#333,stroke-width:4px;
+	classDef web_shared fill:#00a,stroke:#333,stroke-width:4px;
 
 	classDef legacy fill:#666,stroke:#333,stroke-width:4px;
 
 	subgraph Core
-        core_encryption
-        core_replay
+		core_encryption
+		core_replay
 
 		core_mod --> core_asset
 		core_spawnset --> core_wiki
 	end
 
-    subgraph Razor Core
+	subgraph Razor Core
 		razor_core_asseteditor ----> core_mod
 		razor_core_canvaschart --> razor_core_unmarshalled
-    end
+	end
 
 	subgraph Web
-        web_client ----> razor_core_canvaschart
+		web_client ----> razor_core_canvaschart
 		web_client --> web_shared
         
-        web_server --> core_encryption
+		web_server --> core_encryption
 		web_server --> web_client
         
-        web_shared ----> core_mod
-        web_shared ----> core_replay
-        web_shared ----> core_spawnset
+		web_shared ----> core_mod
+		web_shared ----> core_replay
+		web_shared ----> core_spawnset
 	end
 	
 	subgraph Tool
@@ -95,7 +95,7 @@ flowchart TD;
 	end
 	
 	subgraph Legacy
-        ddcl_legacy
+		ddcl_legacy
 
 		ddse_legacy --> ddcore_legacy
 		ddae_legacy --> ddcore_legacy
@@ -106,53 +106,53 @@ flowchart TD;
 
 ```mermaid
 flowchart TD;
-    database[(DevilDaggers.info database)]
-    filesystem[(DevilDaggers.info file system)]
-    server[DevilDaggers.info server]
-    api[DevilDaggers.info API]
-	devildaggersinfo[DevilDaggers.info website]
-    devildaggers[Devil Daggers]
-    ddse[DDSE]
-    ddcl[DDCL]
-    ddae[DDAE]
-    ddstatsrust[ddstats-rust]
-    ddlive[DDLIVE]
-    clubberserver[Clubber server]
-    clubberapi[Clubber API]
+	database[(Database)]
+	filesystem[(File system)]
+	server[Server]
+	api[API]
+	devildaggersinfo[Website]
+	devildaggers[Devil Daggers]
+	ddse[DDSE]
+	ddcl[DDCL]
+	ddae[DDAE]
+	ddstatsrust[ddstats-rust]
+	ddlive[DDLIVE]
+	clubberserver[Clubber server]
+	clubberapi[Clubber API]
 	devildaggersleaderboards[Devil Daggers leaderboards API]
 	
 	class database,filesystem,server,api,devildaggersinfo,ddse,ddcl,ddae ddinfo;
 	class devildaggers,ddstatsrust,ddlive,clubberserver,clubberapi,devildaggersleaderboards external;
-
-    classDef ddinfo fill:#a60,stroke:#333,stroke-width:4px;
-    classDef external fill:#60a,stroke:#333,stroke-width:4px;
 	
-    subgraph External
-        devildaggers
-        ddstatsrust
-        ddlive
-        clubberserver
-        clubberapi
-        devildaggersleaderboards
-    end
-
-    devildaggers --> api
-    ddstatsrust --> api
-    ddlive --> api
-    clubberserver --> api
-
-    server --> devildaggersleaderboards
-    server --> clubberapi
-    
-    subgraph DevilDaggers.info
-        server --> database
-        server --> filesystem
-
-        api --> server
-
-        devildaggersinfo --> api
-        ddse --> api
-        ddcl --> api
-        ddae --> api
-    end
+	classDef ddinfo fill:#a60,stroke:#333,stroke-width:4px;
+	classDef external fill:#60a,stroke:#333,stroke-width:4px;
+	
+	subgraph External
+		devildaggers
+		ddstatsrust
+		ddlive
+		clubberserver
+		clubberapi
+		devildaggersleaderboards
+	end
+	
+	devildaggers --> api
+	ddstatsrust --> api
+	ddlive --> api
+	clubberserver --> api
+	
+	server --> devildaggersleaderboards
+	server --> clubberapi
+	
+	subgraph DevilDaggers.info
+		server --> database
+		server --> filesystem
+		
+		api --> server
+		
+		devildaggersinfo --> api
+		ddse --> api
+		ddcl --> api
+		ddae --> api
+	end
 ```
