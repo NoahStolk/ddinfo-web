@@ -20,22 +20,22 @@ Tests, tools, and source generators are omitted for clarity.
 ```mermaid
 flowchart TD;
 
-    asseteditor_wpf[DevilDaggersInfo.AssetEditor.Wpf]
-    cmd_createreplay[DevilDaggersInfo.Cmd.CreateReplay]
-    cmd_extractmod[DevilDaggersInfo.Cmd.ExtractMod]
-    common[DevilDaggersInfo.Common]
-    core_asset[DevilDaggersInfo.Core.Asset]
-    core_encryption[DevilDaggersInfo.Core.Encryption]
-    core_mod[DevilDaggersInfo.Core.Mod]
-    core_replay[DevilDaggersInfo.Core.Replay]
-    core_spawnset[DevilDaggersInfo.Core.Spawnset]
-    core_wiki[DevilDaggersInfo.Core.Wiki]
-    razor_core_asseteditor[DevilDaggersInfo.Razor.Core.AssetEditor]
-    razor_core_canvaschart[DevilDaggersInfo.Razor.Core.CanvasChart]
-    razor_core_unmarshalled[DevilDaggersInfo.Razor.Core.Unmarshalled]
-    web_client[DevilDaggersInfo.Web.Client]
-    web_server[DevilDaggersInfo.Web.Server]
-    web_shared[DevilDaggersInfo.Web.Shared]
+    asseteditor_wpf[AssetEditor.Wpf]
+    cmd_createreplay[Cmd.CreateReplay]
+    cmd_extractmod[Cmd.ExtractMod]
+    common[Common]
+    core_asset[Core.Asset]
+    core_encryption[Core.Encryption]
+    core_mod[Core.Mod]
+    core_replay[Core.Replay]
+    core_spawnset[Core.Spawnset]
+    core_wiki[Core.Wiki]
+    razor_core_asseteditor[Razor.Core.AssetEditor]
+    razor_core_canvaschart[Razor.Core.CanvasChart]
+    razor_core_unmarshalled[Razor.Core.Unmarshalled]
+    web_client[Web.Client]
+    web_server[Web.Server]
+    web_shared[Web.Shared]
 	
 	class asseteditor_wpf ui;
 	class cmd_createreplay,cmd_extractmod cmd;
@@ -85,4 +85,42 @@ flowchart TD;
 	web_shared --> core_mod
 	web_shared --> core_replay
 	web_shared --> core_spawnset
+```
+
+## API hierarchy
+
+```mermaid
+flowchart TD;
+
+    database[Database]
+    filesystem[File system]
+    server[Server]
+    api[API]
+	devildaggersinfo[DevilDaggers.info]
+    devildaggers[Devil Daggers]
+    ddse[Devil Daggers Survival Editor]
+    ddcl[Devil Daggers Custom Leaderboards]
+    ddae[Devil Daggers Asset Editor]
+    ddstatsrust[ddstats-rust]
+    ddlive[DDLIVE]
+    clubber[Clubber]
+	
+	class database,filesystem,server,api,devildaggersinfo,ddse,ddcl,ddae ddinfo;
+
+    classDef ddinfo fill:#aa0,stroke:#333,stroke-width:4px;
+    classDef default fill:#0a0,stroke:#333,stroke-width:4px;
+	
+	server --> database
+	server --> filesystem
+
+	api --> server
+
+	devildaggersinfo --> api
+	devildaggers --> api
+	ddse --> api
+	ddcl --> api
+	ddae --> api
+	ddstats-rust --> api
+	ddlive --> api
+	clubber --> api
 ```
