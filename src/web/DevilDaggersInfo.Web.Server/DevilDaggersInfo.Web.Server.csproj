@@ -17,5 +17,6 @@
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" />
     <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Encryption\DevilDaggersInfo.Core.Encryption.csproj" />
     <ProjectReference Include="..\..\web\DevilDaggersInfo.Web.Client\DevilDaggersInfo.Web.Client.csproj" />
+    <ProjectReference Include="..\DevilDaggersInfo.Web.Api.Dd\DevilDaggersInfo.Web.Api.Dd.csproj" />
   </ItemGroup>
 </Project>

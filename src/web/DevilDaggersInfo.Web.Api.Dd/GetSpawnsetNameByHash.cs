@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Shared.Dto.Dd.Spawnsets;
+namespace DevilDaggersInfo.Web.Api.Dd;
 
 public record GetSpawnsetNameByHash
 {
