@@ -1,49 +1,78 @@
-using DevilDaggersInfo.Web.Server.InternalModels.CustomEntries;
+using DevilDaggersInfo.Web.Server.InternalModels.CustomLeaderboards;
 using DevilDaggersInfo.Web.Shared.Dto.DdLive.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Server.Converters.DdLive;
 
 public static class CustomLeaderboardConverters
 {
-	public static GetCustomLeaderboardOverviewDdLive ToGetCustomLeaderboardOverviewDdLive(this CustomLeaderboardEntity customLeaderboard, int playerCount, int? topPlayerId, string? topPlayerName, int? worldRecord) => new()
+	public static GetCustomLeaderboardOverviewDdLive ToGetCustomLeaderboardOverviewDdLive(this CustomLeaderboardOverview customLeaderboard) => new()
 	{
 		Id = customLeaderboard.Id,
-		SpawnsetName = customLeaderboard.Spawnset.Name,
-		SpawnsetAuthorId = customLeaderboard.Spawnset.PlayerId,
-		SpawnsetAuthorName = customLeaderboard.Spawnset.Player.PlayerName,
-		Daggers = customLeaderboard.ToGetCustomLeaderboardDaggers(),
+		SpawnsetName = customLeaderboard.SpawnsetName,
+		SpawnsetAuthorId = customLeaderboard.SpawnsetAuthorId,
+		SpawnsetAuthorName = customLeaderboard.SpawnsetAuthorName,
+		Daggers = customLeaderboard.Daggers?.ToGetCustomLeaderboardDaggers(),
 		DateCreated = customLeaderboard.DateCreated,
 		DateLastPlayed = customLeaderboard.DateLastPlayed,
 		SubmitCount = customLeaderboard.TotalRunsSubmitted,
-		PlayerCount = playerCount,
+		PlayerCount = customLeaderboard.PlayerCount,
 		Category = customLeaderboard.Category,
-		TopPlayerId = topPlayerId,
-		TopPlayerName = topPlayerName,
-		WorldRecord = worldRecord.ToSecondsTime(),
-		WorldRecordDagger = worldRecord.HasValue ? customLeaderboard.GetDaggerFromTime(worldRecord.Value) : null,
+		TopPlayerId = customLeaderboard.WorldRecord?.PlayerId,
+		TopPlayerName = customLeaderboard.WorldRecord?.PlayerName,
+		WorldRecord = customLeaderboard.WorldRecord?.Time.ToSecondsTime(),
+		WorldRecordDagger = customLeaderboard.WorldRecord?.Dagger,
 	};
 
-	public static GetCustomLeaderboardDdLive ToGetCustomLeaderboardDdLive(this CustomLeaderboardEntity customLeaderboard, List<CustomEntry> customEntries, List<int> customEntryReplayIds) => new()
+	public static GetCustomLeaderboardDdLive ToGetCustomLeaderboardDdLive(this SortedCustomLeaderboard customLeaderboard, List<int> customEntryReplayIds) => new()
 	{
 		SpawnsetId = customLeaderboard.SpawnsetId,
-		SpawnsetAuthorName = customLeaderboard.Spawnset.Player.PlayerName,
-		SpawnsetHtmlDescription = customLeaderboard.Spawnset.HtmlDescription,
-		SpawnsetName = customLeaderboard.Spawnset.Name,
-		Daggers = customLeaderboard.ToGetCustomLeaderboardDaggers(),
+		SpawnsetAuthorName = customLeaderboard.SpawnsetAuthorName,
+		SpawnsetHtmlDescription = customLeaderboard.SpawnsetHtmlDescription,
+		SpawnsetName = customLeaderboard.SpawnsetName,
+		Daggers = customLeaderboard.Daggers?.ToGetCustomLeaderboardDaggers(),
 		DateCreated = customLeaderboard.DateCreated,
 		SubmitCount = customLeaderboard.TotalRunsSubmitted,
 		Category = customLeaderboard.Category,
-		IsFeatured = customLeaderboard.IsFeatured,
+		IsFeatured = customLeaderboard.Daggers != null,
 		DateLastPlayed = customLeaderboard.DateLastPlayed,
-		CustomEntries = customEntries.Select((ce, i) => ce.ToGetCustomEntryDdLive(customLeaderboard, i + 1, customEntryReplayIds.Contains(ce.Id))).ToList(),
+		CustomEntries = customLeaderboard.CustomEntries.ConvertAll(ce => ce.ToGetCustomEntryDdLive(customEntryReplayIds.Contains(ce.Id))),
 	};
 
-	private static GetCustomLeaderboardDaggersDdLive? ToGetCustomLeaderboardDaggers(this CustomLeaderboardEntity customLeaderboard) => !customLeaderboard.IsFeatured ? null : new()
+	private static GetCustomLeaderboardDaggersDdLive? ToGetCustomLeaderboardDaggers(this CustomLeaderboardDaggers customLeaderboard) => new()
 	{
-		Bronze = customLeaderboard.TimeBronze.ToSecondsTime(),
-		Silver = customLeaderboard.TimeSilver.ToSecondsTime(),
-		Golden = customLeaderboard.TimeGolden.ToSecondsTime(),
-		Devil = customLeaderboard.TimeDevil.ToSecondsTime(),
-		Leviathan = customLeaderboard.TimeLeviathan.ToSecondsTime(),
+		Bronze = customLeaderboard.Bronze.ToSecondsTime(),
+		Silver = customLeaderboard.Silver.ToSecondsTime(),
+		Golden = customLeaderboard.Golden.ToSecondsTime(),
+		Devil = customLeaderboard.Devil.ToSecondsTime(),
+		Leviathan = customLeaderboard.Leviathan.ToSecondsTime(),
+	};
+
+	private static GetCustomEntryDdLive ToGetCustomEntryDdLive(this CustomEntry customEntry, bool hasReplay) => new()
+	{
+		Id = customEntry.Id,
+		Rank = customEntry.Rank,
+		PlayerId = customEntry.PlayerId,
+		PlayerName = customEntry.PlayerName,
+		CountryCode = customEntry.CountryCode,
+		Client = customEntry.Client,
+		ClientVersion = customEntry.ClientVersion,
+		DeathType = customEntry.DeathType,
+		EnemiesAlive = customEntry.EnemiesAlive,
+		GemsCollected = customEntry.GemsCollected,
+		GemsDespawned = customEntry.GemsDespawned,
+		GemsEaten = customEntry.GemsEaten,
+		HomingStored = customEntry.HomingStored,
+		HomingEaten = customEntry.HomingEaten,
+		EnemiesKilled = customEntry.EnemiesKilled,
+		LevelUpTime2 = customEntry.LevelUpTime2.ToSecondsTime(),
+		LevelUpTime3 = customEntry.LevelUpTime3.ToSecondsTime(),
+		LevelUpTime4 = customEntry.LevelUpTime4.ToSecondsTime(),
+		DaggersFired = customEntry.DaggersFired,
+		DaggersHit = customEntry.DaggersHit,
+		SubmitDate = customEntry.SubmitDate,
+		Time = customEntry.Time.ToSecondsTime(),
+		CustomLeaderboardDagger = customEntry.CustomLeaderboardDagger,
+		HasGraphs = customEntry.HasGraphs,
+		HasReplay = hasReplay,
 	};
 }

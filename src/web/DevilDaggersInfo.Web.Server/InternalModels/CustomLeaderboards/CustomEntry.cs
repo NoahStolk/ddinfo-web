@@ -1,22 +1,20 @@
-namespace DevilDaggersInfo.Web.Server.Entities;
+namespace DevilDaggersInfo.Web.Server.InternalModels.CustomLeaderboards;
 
-[Table("CustomEntries")]
-public class CustomEntryEntity
+public class CustomEntry
 {
-	[Key]
 	public int Id { get; init; }
 
-	public int CustomLeaderboardId { get; set; }
-
-	[ForeignKey(nameof(CustomLeaderboardId))]
-	public CustomLeaderboardEntity CustomLeaderboard { get; set; } = null!;
+	public int Rank { get; init; }
 
 	public int PlayerId { get; set; }
 
-	[ForeignKey(nameof(PlayerId))]
-	public PlayerEntity Player { get; set; } = null!;
+	public string PlayerName { get; set; } = null!;
+
+	public string? CountryCode { get; set; }
 
 	public int Time { get; set; }
+
+	public CustomLeaderboardDagger? CustomLeaderboardDagger { get; init; }
 
 	public int GemsCollected { get; set; }
 
@@ -30,13 +28,13 @@ public class CustomEntryEntity
 
 	public int HomingStored { get; set; }
 
-	public int HomingEaten { get; set; }
+	public int? HomingEaten { get; set; }
 
-	public int GemsDespawned { get; set; }
+	public int? GemsDespawned { get; set; }
 
-	public int GemsEaten { get; set; }
+	public int? GemsEaten { get; set; }
 
-	public int GemsTotal { get; set; }
+	public int? GemsTotal { get; set; }
 
 	public byte DeathType { get; set; }
 
@@ -48,10 +46,13 @@ public class CustomEntryEntity
 
 	public DateTime SubmitDate { get; set; }
 
-	[StringLength(16)]
 	public string ClientVersion { get; set; } = null!;
 
 	public CustomLeaderboardsClient Client { get; set; }
 
 	public double Accuracy => DaggersFired == 0 ? 0 : DaggersHit / (double)DaggersFired;
+
+	public bool HasGraphs => Client != CustomLeaderboardsClient.DevilDaggersCustomLeaderboards || ClientVersionParsed >= FeatureConstants.DdclGraphs;
+
+	private Version ClientVersionParsed => Version.TryParse(ClientVersion, out Version? version) ? version : new(0, 0, 0, 0);
 }

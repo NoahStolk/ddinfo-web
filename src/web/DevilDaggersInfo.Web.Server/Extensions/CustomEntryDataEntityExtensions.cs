@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Web.Shared.Dto.Public.CustomEntries;
+using DevilDaggersInfo.Web.Shared.Dto.Ddcl.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Server.Extensions;
 

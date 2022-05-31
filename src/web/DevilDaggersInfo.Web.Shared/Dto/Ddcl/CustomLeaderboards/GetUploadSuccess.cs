@@ -1,6 +1,4 @@
-using DevilDaggersInfo.Web.Shared.Dto.Public.CustomLeaderboards;
-
-namespace DevilDaggersInfo.Web.Shared.Dto.Public.CustomEntries;
+namespace DevilDaggersInfo.Web.Shared.Dto.Ddcl.CustomLeaderboards;
 
 public record GetUploadSuccess
 {

@@ -1,11 +1,8 @@
-using DevilDaggersInfo.Web.Server.Contracts;
-
 namespace DevilDaggersInfo.Web.Server.Extensions;
 
 public static class SortableCustomEntryExtensions
 {
-	public static IOrderedEnumerable<T> Sort<T>(this IEnumerable<T> customEntries, CustomLeaderboardCategory category)
-		where T : ISortableCustomEntry
+	public static IOrderedEnumerable<CustomEntryEntity> Sort(this IEnumerable<CustomEntryEntity> customEntries, CustomLeaderboardCategory category)
 	{
 		if (category.IsAscending())
 			return customEntries.OrderBy(wr => wr.Time).ThenBy(wr => wr.SubmitDate);

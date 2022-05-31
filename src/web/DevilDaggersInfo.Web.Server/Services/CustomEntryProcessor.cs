@@ -4,11 +4,9 @@ using DevilDaggersInfo.Core.Encryption;
 using DevilDaggersInfo.Core.Replay;
 using DevilDaggersInfo.Core.Replay.Enums;
 using DevilDaggersInfo.Web.Server.Caches.SpawnsetHashes;
-using DevilDaggersInfo.Web.Server.Converters.Public;
+using DevilDaggersInfo.Web.Server.Converters.Ddcl;
 using DevilDaggersInfo.Web.Server.HostedServices.DdInfoDiscordBot;
-using DevilDaggersInfo.Web.Server.InternalModels.CustomEntries;
-using DevilDaggersInfo.Web.Shared.Dto.Public.CustomEntries;
-using DevilDaggersInfo.Web.Shared.Utils;
+using DevilDaggersInfo.Web.Shared.Dto.Ddcl.CustomLeaderboards;
 using DSharpPlus.Entities;
 using System.Web;
 
@@ -185,7 +183,7 @@ public class CustomEntryProcessor
 		await WriteReplayFile(newCustomEntry.Id, uploadRequest.ReplayData);
 
 		// Calculate rank.
-		List<CustomEntryDdclResult> entries = await GetOrderedEntries(customLeaderboard.Id, customLeaderboard.Category);
+		List<CustomEntryEntity> entries = await GetOrderedEntries(customLeaderboard.Id, customLeaderboard.Category);
 		int rank = GetRank(entries, uploadRequest.PlayerId);
 		int totalPlayers = entries.Count;
 
@@ -230,7 +228,7 @@ public class CustomEntryProcessor
 
 		Log(uploadRequest, spawnsetName);
 
-		List<CustomEntryDdclResult> entries = await GetOrderedEntries(customLeaderboard.Id, customLeaderboard.Category);
+		List<CustomEntryEntity> entries = await GetOrderedEntries(customLeaderboard.Id, customLeaderboard.Category);
 		List<int> replayIds = GetExistingReplayIds(entries.ConvertAll(ce => ce.Id));
 
 		return new()
@@ -248,7 +246,7 @@ public class CustomEntryProcessor
 	private async Task<GetUploadSuccess> ProcessHighscoreAsync(AddUploadRequest uploadRequest, CustomLeaderboardEntity customLeaderboard, string spawnsetName, CustomEntryEntity customEntry)
 	{
 		// Store old stats.
-		List<CustomEntryDdclResult> entries = await GetOrderedEntries(customLeaderboard.Id, customLeaderboard.Category);
+		List<CustomEntryEntity> entries = await GetOrderedEntries(customLeaderboard.Id, customLeaderboard.Category);
 		int oldRank = GetRank(entries, uploadRequest.PlayerId);
 		int oldTime = customEntry.Time;
 		int oldGemsCollected = customEntry.GemsCollected;
@@ -418,40 +416,18 @@ public class CustomEntryProcessor
 		customLeaderboard.TotalRunsSubmitted++;
 	}
 
-	private async Task<List<CustomEntryDdclResult>> GetOrderedEntries(int customLeaderboardId, CustomLeaderboardCategory category)
+	private async Task<List<CustomEntryEntity>> GetOrderedEntries(int customLeaderboardId, CustomLeaderboardCategory category)
 	{
-		List<CustomEntryDdclResult> entries = await _dbContext.CustomEntries
+		List<CustomEntryEntity> entries = await _dbContext.CustomEntries
 			.AsNoTracking()
 			.Include(ce => ce.Player)
 			.Where(ce => ce.CustomLeaderboardId == customLeaderboardId)
-			.Select(ce => new CustomEntryDdclResult(
-				ce.Time,
-				ce.SubmitDate,
-				ce.Id,
-				ce.CustomLeaderboardId,
-				ce.PlayerId,
-				ce.Player.PlayerName,
-				ce.GemsCollected,
-				ce.GemsDespawned,
-				ce.GemsEaten,
-				ce.GemsTotal,
-				ce.EnemiesAlive,
-				ce.EnemiesKilled,
-				ce.HomingStored,
-				ce.HomingEaten,
-				ce.DeathType,
-				ce.DaggersFired,
-				ce.DaggersHit,
-				ce.LevelUpTime2,
-				ce.LevelUpTime3,
-				ce.LevelUpTime4,
-				ce.ClientVersion))
 			.ToListAsync();
 
 		return entries.Sort(category).ToList();
 	}
 
-	private static int GetRank(List<CustomEntryDdclResult> orderedEntries, int playerId)
+	private static int GetRank(List<CustomEntryEntity> orderedEntries, int playerId)
 		=> orderedEntries.ConvertAll(ce => ce.PlayerId).IndexOf(playerId) + 1;
 
 	// TODO: Move to LogContainerService.

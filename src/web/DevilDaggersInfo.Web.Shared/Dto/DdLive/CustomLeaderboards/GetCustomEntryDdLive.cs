@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Shared.Dto.Public.CustomEntries;
+namespace DevilDaggersInfo.Web.Shared.Dto.DdLive.CustomLeaderboards;
 
 public record GetCustomEntryDdLive
 {
