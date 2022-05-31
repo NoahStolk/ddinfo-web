@@ -108,9 +108,9 @@ flowchart TD;
 
 ```mermaid
 flowchart TD;
+	ddcl[DDCL 2]
 	ddae[DDAE 2]
 	ddse[DDSE 3]
-	ddcl[DDCL 2]
 	ddre[DDRE 1]
 
 	core_asset[Core.Asset]
@@ -138,8 +138,8 @@ flowchart TD;
 	api_ddrust[Web.Api.DdstatsRust]
 	api_main[Web.Api.Main]
 	api_admin[Web.Api.Admin]
-	api_ddae[Web.Api.Ddae]
 	api_ddcl[Web.Api.Ddcl]
+	api_ddae[Web.Api.Ddae]
 	api_ddse[Web.Api.Ddse]
 	api_ddre[Web.Api.Ddre]
 
@@ -172,8 +172,8 @@ flowchart TD;
 	end
 
 	subgraph Api Tool
-		api_ddae
 		api_ddcl
+		api_ddae
 		api_ddse
 		api_ddre
 	end
@@ -196,8 +196,8 @@ flowchart TD;
 	web_server ----> api_ddrust
 	web_server ----> api_main
 	web_server ----> api_admin
-	web_server ----> api_ddae
 	web_server ----> api_ddcl
+	web_server ----> api_ddae
 	web_server ----> api_ddse
 	web_server ----> api_ddre
 
@@ -225,13 +225,13 @@ flowchart TD;
 	end
 
 	subgraph Tool
-		ddae ----> razor_core_asseteditor
 		ddcl ----> core_customleaderboards
+		ddae ----> razor_core_asseteditor
 		ddse ----> razor_core_survivaleditor
 		ddre ----> razor_core_replayeditor
 
-		ddae ----> api_ddae
 		ddcl ----> api_ddcl
+		ddae ----> api_ddae
 		ddse ----> api_ddse
 		ddre ----> api_ddre
 	end
