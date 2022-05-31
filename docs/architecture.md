@@ -20,6 +20,8 @@ Tests, tools, and source generators are omitted for clarity.
 ```mermaid
 flowchart TD;
 
+	%% DevilDaggersInfo
+
     asseteditor_wpf[AssetEditor.Wpf]
     cmd_createreplay[Cmd.CreateReplay]
     cmd_extractmod[Cmd.ExtractMod]
@@ -85,6 +87,17 @@ flowchart TD;
 	web_shared --> core_mod
 	web_shared --> core_replay
 	web_shared --> core_spawnset
+	
+	%% Legacy
+
+	ddse_legacy[DDSE 2]
+	ddcl_legacy[DDCL 1]
+	ddae_legacy[DDAE 1]
+	ddcore_legacy[DevilDaggersCore.Wpf]
+
+	class ddse_legacy,ddcl_legacy,ddae_legacy,ddcore_legacy legacy;
+
+	classDef legacy fill:#666,stroke:#333,stroke-width:4px;
 ```
 
 ## API hierarchy
@@ -117,10 +130,10 @@ flowchart TD;
 	api --> server
 
 	devildaggersinfo --> api
-	devildaggers --> api
 	ddse --> api
 	ddcl --> api
 	ddae --> api
+	devildaggers --> api
 	ddstatsrust --> api
 	ddlive --> api
 	clubber --> api
