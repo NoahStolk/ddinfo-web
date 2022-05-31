@@ -15,7 +15,6 @@
     <PackageReference Include="Microsoft.AspNetCore.Components" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebView" />
-    <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Asset\DevilDaggersInfo.Core.Asset.csproj" />
     <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Mod\DevilDaggersInfo.Core.Mod.csproj" />
   </ItemGroup>
   <ItemGroup>

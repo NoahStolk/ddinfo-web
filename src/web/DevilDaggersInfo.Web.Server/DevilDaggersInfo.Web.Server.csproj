@@ -15,11 +15,7 @@
     </PackageReference>
     <PackageReference Include="NSwag.AspNetCore" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" />
-    <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Asset\DevilDaggersInfo.Core.Asset.csproj" />
     <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Encryption\DevilDaggersInfo.Core.Encryption.csproj" />
-    <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Mod\DevilDaggersInfo.Core.Mod.csproj" />
-    <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Replay\DevilDaggersInfo.Core.Replay.csproj" />
     <ProjectReference Include="..\..\web\DevilDaggersInfo.Web.Client\DevilDaggersInfo.Web.Client.csproj" />
-    <ProjectReference Include="..\..\web\DevilDaggersInfo.Web.Shared\DevilDaggersInfo.Web.Shared.csproj" />
   </ItemGroup>
 </Project>
