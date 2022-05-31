@@ -20,22 +20,31 @@ Tests, tools, and source generators are omitted for clarity.
 ```mermaid
 flowchart TD;
 
-    asseteditor_wpf[DevilDaggersInfo.AssetEditor.Wpf]
-    cmd_createreplay[DevilDaggersInfo.Cmd.CreateReplay]
-    cmd_extractmod[DevilDaggersInfo.Cmd.ExtractMod]
-    common[DevilDaggersInfo.Common]
-    core_asset[DevilDaggersInfo.Core.Asset]
-    core_encryption[DevilDaggersInfo.Core.Encryption]
-    core_mod[DevilDaggersInfo.Core.Mod]
-    core_replay[DevilDaggersInfo.Core.Replay]
-    core_spawnset[DevilDaggersInfo.Core.Spawnset]
-    core_wiki[DevilDaggersInfo.Core.Wiki]
-    razor_core_asseteditor[DevilDaggersInfo.Razor.Core.AssetEditor]
-    razor_core_canvaschart[DevilDaggersInfo.Razor.Core.CanvasChart]
-    razor_core_unmarshalled[DevilDaggersInfo.Razor.Core.Unmarshalled]
-    web_client[DevilDaggersInfo.Web.Client]
-    web_server[DevilDaggersInfo.Web.Server]
-    web_shared[DevilDaggersInfo.Web.Shared]
+    asseteditor_wpf:::ui[DevilDaggersInfo.AssetEditor.Wpf]
+    cmd_createreplay:::cmd[DevilDaggersInfo.Cmd.CreateReplay]
+    cmd_extractmod:::cmd[DevilDaggersInfo.Cmd.ExtractMod]
+    common:::common[DevilDaggersInfo.Common]
+    core_asset:::core[DevilDaggersInfo.Core.Asset]
+    core_encryption:::core[DevilDaggersInfo.Core.Encryption]
+    core_mod:::core[DevilDaggersInfo.Core.Mod]
+    core_replay:::core[DevilDaggersInfo.Core.Replay]
+    core_spawnset:::core[DevilDaggersInfo.Core.Spawnset]
+    core_wiki:::core[DevilDaggersInfo.Core.Wiki]
+    razor_core_asseteditor:::razor_core[DevilDaggersInfo.Razor.Core.AssetEditor]
+    razor_core_canvaschart:::razor_core[DevilDaggersInfo.Razor.Core.CanvasChart]
+    razor_core_unmarshalled:::razor_core[DevilDaggersInfo.Razor.Core.Unmarshalled]
+    web_client:::web_client[DevilDaggersInfo.Web.Client]
+    web_server:::web_server[DevilDaggersInfo.Web.Server]
+    web_shared:::web_shared[DevilDaggersInfo.Web.Shared]
+	
+    classDef ui fill:#a00,stroke:#333,stroke-width:4px;
+    classDef cmd fill:#0a0,stroke:#333,stroke-width:4px;
+    classDef common fill:#000,stroke:#333,stroke-width:4px;
+    classDef core fill:#006,stroke:#333,stroke-width:4px;
+    classDef razor_core fill:#066,stroke:#333,stroke-width:4px;
+    classDef web_client fill:#a66,stroke:#333,stroke-width:4px;
+    classDef web_server fill:#6a6,stroke:#333,stroke-width:4px;
+    classDef web_shared fill:#00a,stroke:#333,stroke-width:4px;
 
 	asseteditor_wpf --> razor_core_asseteditor
 
