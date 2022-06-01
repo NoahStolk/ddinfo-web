@@ -17,6 +17,8 @@
     <PackageReference Include="System.Net.Http.Json" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\api\DevilDaggersInfo.Api.Admin\DevilDaggersInfo.Api.Admin.csproj" />
+    <ProjectReference Include="..\..\api\DevilDaggersInfo.Api.Main\DevilDaggersInfo.Api.Main.csproj" />
     <ProjectReference Include="..\..\razor\DevilDaggersInfo.Razor.Core.CanvasChart\DevilDaggersInfo.Razor.Core.CanvasChart.csproj" />
     <ProjectReference Include="..\..\web\DevilDaggersInfo.Web.Shared\DevilDaggersInfo.Web.Shared.csproj" />
   </ItemGroup>

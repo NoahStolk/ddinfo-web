@@ -122,14 +122,11 @@ flowchart TD;
 	web_server ----> api_dd
 	web_server ----> api_ddlive
 	web_server ----> api_ddrust
-	web_server ----> api_main
-	web_server ----> api_admin
+	web_client ----> api_main
+	web_client ----> api_admin
 	web_server ----> api_ddcl
 	web_server ----> api_ddae
 	web_server ----> api_ddse
-
-	web_server ----> api_dd
-	web_server ----> api_ddrust
 
 	subgraph Cmd
 		cmd_createreplay ----> core_replay
@@ -234,8 +231,8 @@ flowchart TD;
 	web_server ----> api_clubber
 	web_server ----> api_ddlive
 	web_server ----> api_ddrust
-	web_server ----> api_main
-	web_server ----> api_admin
+	web_client ----> api_main
+	web_client ----> api_admin
 	web_server ----> api_ddcl
 	web_server ----> api_ddae
 	web_server ----> api_ddse
