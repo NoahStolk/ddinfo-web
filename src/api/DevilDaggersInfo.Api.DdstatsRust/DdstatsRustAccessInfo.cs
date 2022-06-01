@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Api.DdstatsRust;
+namespace DevilDaggersInfo.Api.DdstatsRust;
 
 public record DdstatsRustAccessInfo
 {

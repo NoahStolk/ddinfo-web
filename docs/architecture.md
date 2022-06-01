@@ -2,16 +2,17 @@
 
 ## Project types and dependencies
 
-| **Subfolder** | **Project type**            | **Can depend on**                |
-|---------------|-----------------------------|----------------------------------|
-| `cmd`         | Console apps (experimental) | `common`, `core`                 |
-| `common`      | Common functionality        | Nothing                          |
-| `core`        | Core set of features        | `common`, `core`                 |
-| `editor`      | Editor apps                 | `common`, `core`, `razor`        |
-| `razor`       | Razor UI libraries          | `common`, `core`, `razor`        |
-| `tests`       | Unit tests                  | Anything                         |
-| `tool`        | Tools for internal usage    | Anything                         |
-| `web`         | Website                     | `common`, `core`, `razor`, `web` |
+| **Subfolder** | **Project type**            | **Can depend on**                       |
+|---------------|-----------------------------|-----------------------------------------|
+| `api`         | API specifications          | Nothing                                 |
+| `app`         | UI apps                     | `api`, `common`, `core`, `razor`        |
+| `cmd`         | Console apps                | `api`, `common`, `core`                 |
+| `common`      | Common functionality        | Nothing                                 |
+| `core`        | Core set of features        | `common`, `core`                        |
+| `razor`       | Razor UI libraries          | `common`, `core`, `razor`               |
+| `tests`       | Unit tests                  | Anything                                |
+| `tool`        | Tools for internal usage    | Anything                                |
+| `web`         | Website                     | `api`, `common`, `core`, `razor`, `web` |
 
 ## Project hierarchy
 

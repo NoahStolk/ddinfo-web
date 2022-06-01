@@ -17,7 +17,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
     - name: Remove WPF projects
-      run: dotnet sln src/DevilDaggersInfo.sln remove src/editor/DevilDaggersInfo.AssetEditor.Wpf/DevilDaggersInfo.AssetEditor.Wpf.csproj
+      run: dotnet sln src/DevilDaggersInfo.sln remove src/app/DevilDaggersInfo.AssetEditor.Wpf/DevilDaggersInfo.AssetEditor.Wpf.csproj
     - name: Build
       run: dotnet build src/DevilDaggersInfo.sln -c Release
     - name: Test

@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Web.Api.Dd;
+using DevilDaggersInfo.Api.Dd;
 using DevilDaggersInfo.Web.Server.Caches.SpawnsetHashes;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Dd;
