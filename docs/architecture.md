@@ -36,6 +36,8 @@ flowchart TD;
 	web_client[Web.Client]
 	web_server[Web.Server]
 	web_shared[Web.Shared]
+	api_dd[Web.Api.Dd]
+	api_ddrust[Web.Api.DdstatsRust]
 
 	ddse_legacy[DDSE 2]
 	ddcl_legacy[DDCL 1]
@@ -49,6 +51,7 @@ flowchart TD;
 	class web_client web_client;
 	class web_server web_server;
 	class web_shared web_shared;
+	class api_dd,api_ddrust api;
 
 	class ddse_legacy,ddcl_legacy,ddae_legacy,ddcore_legacy legacy;
 
@@ -59,6 +62,7 @@ flowchart TD;
 	classDef web_client fill:#a66,stroke:#333,stroke-width:4px;
 	classDef web_server fill:#6a6,stroke:#333,stroke-width:4px;
 	classDef web_shared fill:#00a,stroke:#333,stroke-width:4px;
+	classDef api fill:#660,stroke:#333,stroke-width:4px;
 
 	classDef legacy fill:#666,stroke:#333,stroke-width:4px;
 
@@ -90,6 +94,14 @@ flowchart TD;
 	subgraph Tool
 		asseteditor_wpf ----> razor_core_asseteditor
 	end
+
+	subgraph Api External
+		api_dd
+		api_ddrust
+	end
+
+	web_server ----> api_dd
+	web_server ----> api_ddrust
 
 	subgraph Cmd
 		cmd_createreplay ----> core_replay
