@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Web.Shared.Dto.DdstatsRust.Access;
+using DevilDaggersInfo.Web.Api.DdstatsRust;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.DdstatsRust;
 
