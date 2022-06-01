@@ -37,8 +37,14 @@ flowchart TD;
 	web_client[Web.Client]
 	web_server[Web.Server]
 	web_shared[Web.Shared]
-	api_dd[Web.Api.Dd]
-	api_ddrust[Web.Api.DdstatsRust]
+	api_dd[Api.Dd]
+	api_ddlive[Api.DdLive]
+	api_ddrust[Api.DdstatsRust]
+	api_main[Api.Main]
+	api_admin[Api.Admin]
+	api_ddcl[Api.Ddcl]
+	api_ddae[Api.Ddae]
+	api_ddse[Api.Ddse]
 
 	ddse_legacy[DDSE 2]
 	ddcl_legacy[DDCL 1]
@@ -52,7 +58,7 @@ flowchart TD;
 	class web_client web_client;
 	class web_server web_server;
 	class web_shared web_shared;
-	class api_dd,api_ddrust api;
+	class api_dd,api_ddlive,api_ddrust,api_main,api_admin,api_ddcl,api_ddae,api_ddse api;
 
 	class ddse_legacy,ddcl_legacy,ddae_legacy,ddcore_legacy legacy;
 
@@ -95,11 +101,32 @@ flowchart TD;
 	subgraph Tool
 		asseteditor_wpf ----> razor_core_asseteditor
 	end
+	
+	subgraph Api Tool
+		api_ddcl
+		api_ddae
+		api_ddse
+	end
 
 	subgraph Api External
 		api_dd
+		api_ddlive
 		api_ddrust
 	end
+
+	subgraph Api Web
+		api_main
+		api_admin
+	end
+
+	web_server ----> api_dd
+	web_server ----> api_ddlive
+	web_server ----> api_ddrust
+	web_server ----> api_main
+	web_server ----> api_admin
+	web_server ----> api_ddcl
+	web_server ----> api_ddae
+	web_server ----> api_ddse
 
 	web_server ----> api_dd
 	web_server ----> api_ddrust
@@ -145,16 +172,16 @@ flowchart TD;
 	web_server_domain[Web.Server.Domain]
 	web_shared[Web.Shared]
 
-	api_dd[Web.Api.Dd]
-	api_clubber[Web.Api.Clubber]
-	api_ddlive[Web.Api.DdLive]
-	api_ddrust[Web.Api.DdstatsRust]
-	api_main[Web.Api.Main]
-	api_admin[Web.Api.Admin]
-	api_ddcl[Web.Api.Ddcl]
-	api_ddae[Web.Api.Ddae]
-	api_ddse[Web.Api.Ddse]
-	api_ddre[Web.Api.Ddre]
+	api_dd[Api.Dd]
+	api_clubber[Api.Clubber]
+	api_ddlive[Api.DdLive]
+	api_ddrust[Api.DdstatsRust]
+	api_main[Api.Main]
+	api_admin[Api.Admin]
+	api_ddcl[Api.Ddcl]
+	api_ddae[Api.Ddae]
+	api_ddse[Api.Ddse]
+	api_ddre[Api.Ddre]
 
 	class ddae,ddse,ddre ui;
 	class ddcl cmd;
