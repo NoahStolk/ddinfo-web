@@ -1,6 +1,4 @@
-using DevilDaggersInfo.Core.Mod.Enums;
-
-namespace DevilDaggersInfo.Web.Shared.Dto.Ddae.Mods;
+namespace DevilDaggersInfo.Api.Ddae.Mods;
 
 public record GetModBinaryDdae
 {

@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Shared.Dto.Ddae.Mods;
+namespace DevilDaggersInfo.Api.Ddae.Mods;
 
 public record GetModDdae
 {
