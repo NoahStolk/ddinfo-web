@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Web.Server.Entities.Enums;
 
 namespace DevilDaggersInfo.Web.Shared.Extensions;
@@ -12,6 +13,6 @@ public static class CustomLeaderboardCategoryExtensions
 		CustomLeaderboardCategory.Survival or CustomLeaderboardCategory.Speedrun or CustomLeaderboardCategory.Pacifist => GameMode.Survival,
 		CustomLeaderboardCategory.TimeAttack => GameMode.TimeAttack,
 		CustomLeaderboardCategory.Race => GameMode.Race,
-		_ => throw new NotSupportedException($"{nameof(CustomLeaderboardCategory)} {category} is not supported."),
+		_ => throw new InvalidEnumConversionException(category),
 	};
 }

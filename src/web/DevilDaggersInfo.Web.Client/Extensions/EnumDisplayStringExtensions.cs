@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Api.Main.CustomLeaderboards;
+using DevilDaggersInfo.Common.Exceptions;
 
 namespace DevilDaggersInfo.Web.Client.Extensions;
 
@@ -8,7 +9,7 @@ public static class EnumDisplayStringExtensions
 	{
 		CustomLeaderboardsClient.DevilDaggersCustomLeaderboards => "DDCL",
 		CustomLeaderboardsClient.DdstatsRust => "ddstats-rust",
-		_ => throw new Exception($"Unknown CustomLeaderboardsClient '{client}'."),
+		_ => throw new InvalidEnumConversionException(client),
 	};
 
 	public static string ToDisplayString(this CustomLeaderboardCategory category) => category switch
@@ -18,6 +19,6 @@ public static class EnumDisplayStringExtensions
 		CustomLeaderboardCategory.Speedrun => nameof(CustomLeaderboardCategory.Speedrun),
 		CustomLeaderboardCategory.Race => nameof(CustomLeaderboardCategory.Race),
 		CustomLeaderboardCategory.Pacifist => nameof(CustomLeaderboardCategory.Pacifist),
-		_ => throw new NotSupportedException($"{nameof(CustomLeaderboardCategory)} '{category}' is not supported."),
+		_ => throw new InvalidEnumConversionException(category),
 	};
 }

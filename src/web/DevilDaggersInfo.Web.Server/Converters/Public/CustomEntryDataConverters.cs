@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Common.Exceptions;
 using MainApi = DevilDaggersInfo.Api.Main;
 
 namespace DevilDaggersInfo.Web.Server.Converters.Public;
@@ -95,6 +96,6 @@ public static class CustomEntryDataConverters
 		HandLevel.Level2 => MainApi.Spawnsets.HandLevel.Level2,
 		HandLevel.Level3 => MainApi.Spawnsets.HandLevel.Level3,
 		HandLevel.Level4 => MainApi.Spawnsets.HandLevel.Level4,
-		_ => throw new NotSupportedException($"Hand level {handLevel} is not supported."),
+		_ => throw new InvalidEnumConversionException(handLevel),
 	};
 }

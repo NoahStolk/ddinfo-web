@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Web.Server.InternalModels.CustomLeaderboards;
 using MainApi = DevilDaggersInfo.Api.Main.CustomLeaderboards;
 
@@ -81,6 +82,6 @@ public static class CustomLeaderboardConverters
 		CustomLeaderboardDagger.Golden => MainApi.CustomLeaderboardDagger.Golden,
 		CustomLeaderboardDagger.Devil => MainApi.CustomLeaderboardDagger.Devil,
 		CustomLeaderboardDagger.Leviathan => MainApi.CustomLeaderboardDagger.Leviathan,
-		_ => throw new NotSupportedException($"Custom leaderboard dagger {customLeaderboardDagger} is not supported."),
+		_ => throw new InvalidEnumConversionException(customLeaderboardDagger),
 	};
 }

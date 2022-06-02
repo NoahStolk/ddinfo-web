@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Api.Main.Spawnsets;
+using DevilDaggersInfo.Common.Exceptions;
 
 namespace DevilDaggersInfo.Web.Client.Extensions;
 
@@ -10,6 +11,6 @@ public static class HandLevelExtensions
 		HandLevel.Level2 => "Level 2",
 		HandLevel.Level3 => "Level 3",
 		HandLevel.Level4 => "Level 4",
-		_ => throw new NotSupportedException($"{nameof(HandLevel)} {handLevel} is not supported."),
+		_ => throw new InvalidEnumConversionException(handLevel),
 	};
 }

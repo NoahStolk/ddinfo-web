@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Common.Exceptions;
+
 namespace DevilDaggersInfo.Core.Asset;
 
 public static class AssetContainer
@@ -9,7 +11,7 @@ public static class AssetContainer
 		AssetType.Mesh => DdMeshes.All.Cast<AssetInfo>().ToList(),
 		AssetType.Shader => DdShaders.All.Cast<AssetInfo>().ToList(),
 		AssetType.Texture => DdTextures.All.Cast<AssetInfo>().ToList(),
-		_ => throw new NotSupportedException($"Asset type '{assetType}' is not supported."),
+		_ => throw new InvalidEnumConversionException(assetType),
 	};
 
 	public static bool GetIsProhibited(AssetType assetType, string assetName) => assetType switch
@@ -19,6 +21,6 @@ public static class AssetContainer
 		AssetType.Mesh => DdMeshes.All.Find(a => a.AssetName == assetName)?.IsProhibited ?? false,
 		AssetType.Shader => DdShaders.All.Find(a => a.AssetName == assetName)?.IsProhibited ?? false,
 		AssetType.Texture => DdTextures.All.Find(a => a.AssetName == assetName)?.IsProhibited ?? false,
-		_ => throw new NotSupportedException($"Asset type '{assetType}' is not supported."),
+		_ => throw new InvalidEnumConversionException(assetType),
 	};
 }

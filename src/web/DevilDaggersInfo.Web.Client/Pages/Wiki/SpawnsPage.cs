@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Core.Spawnset.View;
 using DevilDaggersInfo.Core.Wiki.Enums;
@@ -36,7 +37,7 @@ public partial class SpawnsPage
 			GameVersion.V3_0 => Api.Main.WorldRecords.GameVersion.V3_0,
 			GameVersion.V2_0 => Api.Main.WorldRecords.GameVersion.V2_0,
 			GameVersion.V1_0 => Api.Main.WorldRecords.GameVersion.V1_0,
-			_ => throw new NotSupportedException($"Game version {GameVersion} is not supported."),
+			_ => throw new InvalidEnumConversionException(gameVersion),
 		});
 		if (!SpawnsetBinary.TryParse(spawnsetBytes, out _spawnset))
 			return;

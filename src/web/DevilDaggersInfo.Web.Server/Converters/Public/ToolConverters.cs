@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Web.Server.Entities.Enums;
 using DevilDaggersInfo.Web.Server.InternalModels.Changelog;
 using MainApi = DevilDaggersInfo.Api.Main.Tools;
@@ -39,13 +40,13 @@ public static class ToolConverters
 	{
 		ToolBuildType.WindowsWpf => MainApi.ToolBuildType.WindowsWpf,
 		ToolBuildType.WindowsConsole => MainApi.ToolBuildType.WindowsConsole,
-		_ => throw new NotSupportedException($"Tool build type '{buildType}' is not supported."),
+		_ => throw new InvalidEnumConversionException(buildType),
 	};
 
 	private static MainApi.ToolPublishMethod ToMainApi(this ToolPublishMethod publishMethod) => publishMethod switch
 	{
 		ToolPublishMethod.Default => MainApi.ToolPublishMethod.Default,
 		ToolPublishMethod.SelfContained => MainApi.ToolPublishMethod.SelfContained,
-		_ => throw new NotSupportedException($"Tool publish method '{publishMethod}' is not supported."),
+		_ => throw new InvalidEnumConversionException(publishMethod),
 	};
 }

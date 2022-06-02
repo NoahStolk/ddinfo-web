@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Common.Exceptions;
+
 namespace DevilDaggersInfo.Core.Wiki.Extensions;
 
 public static class GameVersionExtensions
@@ -17,6 +19,6 @@ public static class GameVersionExtensions
 		GameVersion.V3_0 => "V3",
 		GameVersion.V3_1 => "V3.1",
 		GameVersion.V3_2 => "V3.2",
-		_ => throw new NotSupportedException($"{nameof(GameVersion)} '{gameVersion}' is not supported."),
+		_ => throw new InvalidEnumConversionException(gameVersion),
 	};
 }

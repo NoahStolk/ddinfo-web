@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Common.Exceptions;
 using DdseApi = DevilDaggersInfo.Api.Ddse.Spawnsets;
 
 namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Ddse;
@@ -36,6 +37,6 @@ public static class SpawnsetConverters
 		GameMode.Survival => DdseApi.GameMode.Survival,
 		GameMode.TimeAttack => DdseApi.GameMode.TimeAttack,
 		GameMode.Race => DdseApi.GameMode.Race,
-		_ => throw new InvalidOperationException($"Cannot convert game mode '{gameMode}' to a DDSE API model."),
+		_ => throw new InvalidEnumConversionException(gameMode),
 	};
 }

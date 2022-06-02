@@ -1,5 +1,6 @@
 using DevilDaggersInfo.Api.Main.CustomLeaderboards;
 using DevilDaggersInfo.Api.Main.Spawnsets;
+using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Core.Spawnset.Extensions;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Data;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Options.LineChart;
@@ -101,7 +102,7 @@ public partial class EntryPage
 				HandLevel.Level2 => Core.Spawnset.Enums.HandLevel.Level2,
 				HandLevel.Level3 => Core.Spawnset.Enums.HandLevel.Level3,
 				HandLevel.Level4 => Core.Spawnset.Enums.HandLevel.Level4,
-				_ => throw new NotSupportedException($"Hand {i} is not supported."),
+				_ => throw new InvalidEnumConversionException(i),
 			}).GetUpgradeByHandLevel();
 			string color = !upgrade.HasValue ? "#fff2" : $"{upgrade.Value.Color.HexCode}08";
 			_backgrounds.Add(new() { Color = color, ChartEndXValue = nextLevelUp == 0 ? _time : nextLevelUp });
