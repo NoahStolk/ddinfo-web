@@ -1,5 +1,6 @@
 using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Core.Spawnset.View;
+using DevilDaggersInfo.Core.Wiki.Enums;
 using Microsoft.AspNetCore.Components;
 
 namespace DevilDaggersInfo.Web.Client.Pages.Wiki;
@@ -28,7 +29,15 @@ public partial class SpawnsPage
 		_waveCount = _defaultWaveCount;
 		GameVersion = gameVersion;
 
-		byte[] spawnsetBytes = await Http.GetDefaultSpawnset(GameVersion);
+		byte[] spawnsetBytes = await Http.GetDefaultSpawnset(GameVersion switch
+		{
+			GameVersion.V3_2 => Api.Main.WorldRecords.GameVersion.V3_2,
+			GameVersion.V3_1 => Api.Main.WorldRecords.GameVersion.V3_1,
+			GameVersion.V3_0 => Api.Main.WorldRecords.GameVersion.V3_0,
+			GameVersion.V2_0 => Api.Main.WorldRecords.GameVersion.V2_0,
+			GameVersion.V1_0 => Api.Main.WorldRecords.GameVersion.V1_0,
+			_ => throw new NotSupportedException($"Game version {GameVersion} is not supported."),
+		});
 		if (!SpawnsetBinary.TryParse(spawnsetBytes, out _spawnset))
 			return;
 

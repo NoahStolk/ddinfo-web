@@ -1,11 +1,10 @@
-using DevilDaggersInfo.Api.Main.CustomLeaderboards;
-using DevilDaggersInfo.Api.Main.Spawnsets;
+using MainApi = DevilDaggersInfo.Api.Main;
 
 namespace DevilDaggersInfo.Web.Server.Converters.Public;
 
 public static class CustomEntryDataConverters
 {
-	public static GetCustomEntryData ToGetCustomEntryData(this CustomEntryEntity customEntry, CustomEntryDataEntity? customEntryData, HandLevel startingLevel, bool hasReplay)
+	public static MainApi.CustomLeaderboards.GetCustomEntryData ToGetCustomEntryData(this CustomEntryEntity customEntry, CustomEntryDataEntity? customEntryData, HandLevel startingLevel, bool hasReplay)
 	{
 		return new()
 		{
@@ -30,7 +29,7 @@ public static class CustomEntryDataConverters
 			DaggersHit = customEntry.DaggersHit,
 			SubmitDate = customEntry.SubmitDate,
 			Time = customEntry.Time.ToSecondsTime(),
-			CustomLeaderboardDagger = customEntry.CustomLeaderboard.GetDaggerFromTime(customEntry.Time),
+			CustomLeaderboardDagger = customEntry.CustomLeaderboard.GetDaggerFromTime(customEntry.Time)?.ToMainApi(),
 
 			GemsCollectedData = GetInt32Arr(customEntryData?.GemsCollectedData),
 			EnemiesKilledData = GetInt32Arr(customEntryData?.EnemiesKilledData),
@@ -79,7 +78,7 @@ public static class CustomEntryDataConverters
 			GhostpedesKilledData = GetUInt16Arr(customEntryData?.GhostpedesKilledData),
 			SpiderEggsKilledData = GetUInt16Arr(customEntryData?.SpiderEggsKilledData),
 
-			StartingLevel = startingLevel,
+			StartingLevel = startingLevel.ToMainApi(),
 			HasReplay = hasReplay,
 		};
 
@@ -89,4 +88,13 @@ public static class CustomEntryDataConverters
 		static ushort[]? GetUInt16Arr(byte[]? bytes)
 			=> bytes == null || bytes.Length == 0 ? null : Array.ConvertAll(IntegerArrayCompressor.ExtractData(bytes), i => (ushort)i);
 	}
+
+	private static MainApi.Spawnsets.HandLevel ToMainApi(this HandLevel handLevel) => handLevel switch
+	{
+		HandLevel.Level1 => MainApi.Spawnsets.HandLevel.Level1,
+		HandLevel.Level2 => MainApi.Spawnsets.HandLevel.Level2,
+		HandLevel.Level3 => MainApi.Spawnsets.HandLevel.Level3,
+		HandLevel.Level4 => MainApi.Spawnsets.HandLevel.Level4,
+		_ => throw new NotSupportedException($"Hand level {handLevel} is not supported."),
+	};
 }

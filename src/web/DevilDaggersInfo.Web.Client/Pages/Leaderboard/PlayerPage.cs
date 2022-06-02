@@ -2,6 +2,7 @@ using DevilDaggersInfo.Api.Main.Leaderboards;
 using DevilDaggersInfo.Api.Main.Mods;
 using DevilDaggersInfo.Api.Main.Players;
 using DevilDaggersInfo.Api.Main.Spawnsets;
+using DevilDaggersInfo.Core.Wiki.Enums;
 using DevilDaggersInfo.Core.Wiki.Extensions;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Data;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Options.LineChart;

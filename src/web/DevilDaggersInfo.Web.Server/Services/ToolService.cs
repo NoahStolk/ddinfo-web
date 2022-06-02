@@ -1,9 +1,10 @@
-using DevilDaggersInfo.Api.Main.Tools;
 using DevilDaggersInfo.Web.Server.Converters.Public;
 using DevilDaggersInfo.Web.Server.InternalModels.Changelog;
+using MainApi = DevilDaggersInfo.Api.Main.Tools;
 
 namespace DevilDaggersInfo.Web.Server.Services;
 
+// TODO: Implement domain models and use repository.
 public class ToolService : IToolService
 {
 	private readonly ApplicationDbContext _dbContext;
@@ -17,7 +18,7 @@ public class ToolService : IToolService
 		_logger = logger;
 	}
 
-	public async Task<GetTool?> GetToolAsync(string name)
+	public async Task<MainApi.GetTool?> GetToolAsync(string name)
 	{
 		ToolEntity? tool = await _dbContext.Tools.AsNoTracking().FirstOrDefaultAsync(t => t.Name == name);
 		if (tool == null)
@@ -33,7 +34,7 @@ public class ToolService : IToolService
 
 		Dictionary<string, List<ChangelogEntry>> deserialized = JsonConvert.DeserializeObject<Dictionary<string, List<ChangelogEntry>>>(File.ReadAllText(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Tools), "Changelogs.json"))) ?? throw new("Could not deserialize Changelogs.json.");
 		deserialized.TryGetValue(name, out List<ChangelogEntry>? changelog);
-		return tool.ToDto(downloads, changelog);
+		return tool.ToMainApi(downloads, changelog);
 	}
 
 	public byte[]? GetToolDistributionFile(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version)
@@ -50,7 +51,7 @@ public class ToolService : IToolService
 		return IoFile.ReadAllBytes(path);
 	}
 
-	public async Task<GetToolDistribution?> GetLatestToolDistributionAsync(string name, ToolPublishMethod publishMethod, ToolBuildType buildType)
+	public async Task<MainApi.GetToolDistribution?> GetLatestToolDistributionAsync(string name, ToolPublishMethod publishMethod, ToolBuildType buildType)
 	{
 		List<string> versions = await _dbContext.ToolDistributions.Where(td => td.ToolName == name && td.PublishMethod == publishMethod && td.BuildType == buildType).Select(td => td.VersionNumber).ToListAsync();
 		string? highestVersion = versions.OrderByDescending(Version.Parse).FirstOrDefault();
@@ -60,10 +61,10 @@ public class ToolService : IToolService
 		return await GetToolDistributionByVersionAsync(name, publishMethod, buildType, highestVersion);
 	}
 
-	public async Task<GetToolDistribution?> GetToolDistributionByVersionAsync(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version)
+	public async Task<MainApi.GetToolDistribution?> GetToolDistributionByVersionAsync(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version)
 	{
 		ToolDistributionEntity? distribution = await _dbContext.ToolDistributions.AsNoTracking().FirstOrDefaultAsync(td => td.ToolName == name && td.PublishMethod == publishMethod && td.BuildType == buildType && td.VersionNumber == version);
-		return distribution?.ToDto(publishMethod, buildType, GetToolDistributionFileSize(distribution.ToolName, publishMethod, buildType, distribution.VersionNumber));
+		return distribution?.ToMainApi(publishMethod, buildType, GetToolDistributionFileSize(distribution.ToolName, publishMethod, buildType, distribution.VersionNumber));
 	}
 
 	public async Task UpdateToolDistributionStatisticsAsync(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version)

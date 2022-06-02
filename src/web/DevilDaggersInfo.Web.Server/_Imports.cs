@@ -20,7 +20,6 @@ global using DevilDaggersInfo.Web.Server.Services;
 global using DevilDaggersInfo.Web.Server.Utils;
 global using DevilDaggersInfo.Web.Shared;
 global using DevilDaggersInfo.Web.Shared.Constants;
-global using DevilDaggersInfo.Web.Shared.Enums;
 global using DevilDaggersInfo.Web.Shared.Extensions;
 global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.EntityFrameworkCore;

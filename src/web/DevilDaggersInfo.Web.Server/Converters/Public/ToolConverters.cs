@@ -1,15 +1,16 @@
-using DevilDaggersInfo.Api.Main.Tools;
 using DevilDaggersInfo.Web.Server.InternalModels.Changelog;
+using DevilDaggersInfo.Web.Shared.Enums;
+using MainApi = DevilDaggersInfo.Api.Main.Tools;
 
 namespace DevilDaggersInfo.Web.Server.Converters.Public;
 
 public static class ToolConverters
 {
-	public static GetTool ToDto(this ToolEntity tool, Dictionary<string, int> downloadCounts, List<ChangelogEntry>? changelog) => new()
+	public static MainApi.GetTool ToMainApi(this ToolEntity tool, Dictionary<string, int> downloadCounts, List<ChangelogEntry>? changelog) => new()
 	{
-		Changelog = changelog?.ConvertAll(ce => new GetToolVersion
+		Changelog = changelog?.ConvertAll(ce => new MainApi.GetToolVersion
 		{
-			Changes = ce.Changes.Select(c => c.ToDto()).ToList(),
+			Changes = ce.Changes.Select(c => c.ToMainApi()).ToList(),
 			Date = ce.Date,
 			DownloadCount = downloadCounts.ContainsKey(ce.VersionNumber) ? downloadCounts[ce.VersionNumber] : 0,
 			VersionNumber = ce.VersionNumber,
@@ -20,17 +21,31 @@ public static class ToolConverters
 		VersionNumber = tool.CurrentVersionNumber,
 	};
 
-	public static GetToolDistribution ToDto(this ToolDistributionEntity distribution, ToolPublishMethod publishMethod, ToolBuildType buildType, int fileSize) => new()
+	public static MainApi.GetToolDistribution ToMainApi(this ToolDistributionEntity distribution, ToolPublishMethod publishMethod, ToolBuildType buildType, int fileSize) => new()
 	{
-		BuildType = buildType,
-		PublishMethod = publishMethod,
+		BuildType = buildType.ToMainApi(),
+		PublishMethod = publishMethod.ToMainApi(),
 		VersionNumber = distribution.VersionNumber,
 		FileSize = fileSize,
 	};
 
-	public static GetToolVersionChange ToDto(this Change change) => new()
+	public static MainApi.GetToolVersionChange ToMainApi(this Change change) => new()
 	{
 		Description = change.Description,
-		SubChanges = change.SubChanges?.Select(c => c.ToDto()).ToList(),
+		SubChanges = change.SubChanges?.Select(c => c.ToMainApi()).ToList(),
+	};
+
+	private static MainApi.ToolBuildType ToMainApi(this ToolBuildType buildType) => buildType switch
+	{
+		ToolBuildType.WindowsWpf => MainApi.ToolBuildType.WindowsWpf,
+		ToolBuildType.WindowsConsole => MainApi.ToolBuildType.WindowsConsole,
+		_ => throw new NotSupportedException($"Tool build type '{buildType}' is not supported."),
+	};
+
+	private static MainApi.ToolPublishMethod ToMainApi(this ToolPublishMethod publishMethod) => publishMethod switch
+	{
+		ToolPublishMethod.Default => MainApi.ToolPublishMethod.Default,
+		ToolPublishMethod.SelfContained => MainApi.ToolPublishMethod.SelfContained,
+		_ => throw new NotSupportedException($"Tool publish method '{publishMethod}' is not supported."),
 	};
 }

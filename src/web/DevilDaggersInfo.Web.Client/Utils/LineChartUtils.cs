@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Core.Wiki.Enums;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Options.LineChart;
 
 namespace DevilDaggersInfo.Web.Client.Utils;

@@ -1,4 +1,6 @@
-namespace DevilDaggersInfo.Web.Shared.Extensions;
+using DevilDaggersInfo.Api.Main.Donations;
+
+namespace DevilDaggersInfo.Web.Client.Extensions;
 
 public static class CurrencyExtensions
 {

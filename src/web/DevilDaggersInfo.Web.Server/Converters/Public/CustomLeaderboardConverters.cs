@@ -1,11 +1,12 @@
-using DevilDaggersInfo.Api.Main.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.InternalModels.CustomLeaderboards;
+using DevilDaggersInfo.Web.Shared.Enums;
+using MainApi = DevilDaggersInfo.Api.Main.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Server.Converters.Public;
 
 public static class CustomLeaderboardConverters
 {
-	public static GetCustomLeaderboardOverview ToGetCustomLeaderboardOverview(this CustomLeaderboardOverview customLeaderboard) => new()
+	public static MainApi.GetCustomLeaderboardOverview ToGetCustomLeaderboardOverview(this CustomLeaderboardOverview customLeaderboard) => new()
 	{
 		Id = customLeaderboard.Id,
 		SpawnsetAuthorName = customLeaderboard.SpawnsetAuthorName,
@@ -18,10 +19,10 @@ public static class CustomLeaderboardConverters
 		PlayerCount = customLeaderboard.PlayerCount,
 		TopPlayer = customLeaderboard.WorldRecord?.PlayerName,
 		WorldRecord = customLeaderboard.WorldRecord?.Time.ToSecondsTime(),
-		WorldRecordDagger = customLeaderboard.WorldRecord?.Dagger,
+		WorldRecordDagger = customLeaderboard.WorldRecord?.Dagger?.ToMainApi(),
 	};
 
-	public static GetCustomLeaderboard ToGetCustomLeaderboard(this SortedCustomLeaderboard customLeaderboard) => new()
+	public static MainApi.GetCustomLeaderboard ToGetCustomLeaderboard(this SortedCustomLeaderboard customLeaderboard) => new()
 	{
 		SpawnsetId = customLeaderboard.SpawnsetId,
 		SpawnsetAuthorName = customLeaderboard.SpawnsetAuthorName,
@@ -36,7 +37,7 @@ public static class CustomLeaderboardConverters
 		CustomEntries = customLeaderboard.CustomEntries.ConvertAll(ce => ce.ToGetCustomEntry()),
 	};
 
-	private static GetCustomEntry ToGetCustomEntry(this CustomEntry customEntry) => new()
+	private static MainApi.GetCustomEntry ToGetCustomEntry(this CustomEntry customEntry) => new()
 	{
 		Id = customEntry.Id,
 		Rank = customEntry.Rank,
@@ -60,16 +61,27 @@ public static class CustomLeaderboardConverters
 		DaggersHit = customEntry.DaggersHit,
 		SubmitDate = customEntry.SubmitDate,
 		Time = customEntry.Time.ToSecondsTime(),
-		CustomLeaderboardDagger = customEntry.CustomLeaderboardDagger,
+		CustomLeaderboardDagger = customEntry.CustomLeaderboardDagger?.ToMainApi(),
 		HasGraphs = customEntry.HasGraphs,
 	};
 
-	private static GetCustomLeaderboardDaggers? ToGetCustomLeaderboardDaggers(this CustomLeaderboardDaggers customLeaderboard) => new()
+	private static MainApi.GetCustomLeaderboardDaggers? ToGetCustomLeaderboardDaggers(this CustomLeaderboardDaggers customLeaderboard) => new()
 	{
 		Bronze = customLeaderboard.Bronze.ToSecondsTime(),
 		Silver = customLeaderboard.Silver.ToSecondsTime(),
 		Golden = customLeaderboard.Golden.ToSecondsTime(),
 		Devil = customLeaderboard.Devil.ToSecondsTime(),
 		Leviathan = customLeaderboard.Leviathan.ToSecondsTime(),
+	};
+
+	private static MainApi.CustomLeaderboardDagger ToMainApi(this CustomLeaderboardDagger customLeaderboardDagger) => customLeaderboardDagger switch
+	{
+		CustomLeaderboardDagger.Default => MainApi.CustomLeaderboardDagger.Default,
+		CustomLeaderboardDagger.Bronze => MainApi.CustomLeaderboardDagger.Bronze,
+		CustomLeaderboardDagger.Silver => MainApi.CustomLeaderboardDagger.Silver,
+		CustomLeaderboardDagger.Golden => MainApi.CustomLeaderboardDagger.Golden,
+		CustomLeaderboardDagger.Devil => MainApi.CustomLeaderboardDagger.Devil,
+		CustomLeaderboardDagger.Leviathan => MainApi.CustomLeaderboardDagger.Leviathan,
+		_ => throw new NotSupportedException($"Custom leaderboard dagger {customLeaderboardDagger} is not supported."),
 	};
 }

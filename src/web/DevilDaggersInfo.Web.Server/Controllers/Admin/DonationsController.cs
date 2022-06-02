@@ -1,5 +1,5 @@
+using DevilDaggersInfo.Api.Admin;
 using DevilDaggersInfo.Api.Admin.Donations;
-using DevilDaggersInfo.Api.Main;
 using DevilDaggersInfo.Web.Server.Converters.Admin;
 using Microsoft.AspNetCore.Authorization;
 

@@ -74,7 +74,7 @@ public class CustomLeaderboardsController : ControllerBase
 		CustomLeaderboardsTotalData totalData = await _customLeaderboardRepository.GetCustomLeaderboardsTotalDataAsync();
 		return new GetTotalCustomLeaderboardData
 		{
-			LeaderboardsPerCategory = totalData.LeaderboardsPerCategory,
+			LeaderboardsPerCategory = totalData.LeaderboardsPerCategory.ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
 			PlayersPerCategory = totalData.PlayersPerCategory,
 			ScoresPerCategory = totalData.ScoresPerCategory,
 			SubmitsPerCategory = totalData.SubmitsPerCategory,
