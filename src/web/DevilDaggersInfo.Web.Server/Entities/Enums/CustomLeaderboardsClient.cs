@@ -1,6 +1,6 @@
 using System.Runtime.Serialization;
 
-namespace DevilDaggersInfo.Web.Shared.Enums;
+namespace DevilDaggersInfo.Web.Server.Entities.Enums;
 
 public enum CustomLeaderboardsClient
 {

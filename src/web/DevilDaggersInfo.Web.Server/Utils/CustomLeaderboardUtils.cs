@@ -1,6 +1,6 @@
-using DevilDaggersInfo.Web.Shared.Extensions;
+using DevilDaggersInfo.Web.Server.Entities.Enums;
 
-namespace DevilDaggersInfo.Web.Shared.Utils;
+namespace DevilDaggersInfo.Web.Server.Utils;
 
 public static class CustomLeaderboardUtils
 {

@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Shared.Enums;
+namespace DevilDaggersInfo.Web.Server.Entities.Enums;
 
 public enum VerticalSync : byte
 {

@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Core.Spawnset.Enums;
+using DevilDaggersInfo.Web.Server.Entities.Enums;
 
 namespace DevilDaggersInfo.Web.Shared.Extensions;
 

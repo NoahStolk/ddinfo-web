@@ -1,5 +1,5 @@
+using DevilDaggersInfo.Web.Server.Entities.Enums;
 using DevilDaggersInfo.Web.Server.InternalModels.Changelog;
-using DevilDaggersInfo.Web.Shared.Enums;
 using MainApi = DevilDaggersInfo.Api.Main.Tools;
 
 namespace DevilDaggersInfo.Web.Server.Converters.Public;

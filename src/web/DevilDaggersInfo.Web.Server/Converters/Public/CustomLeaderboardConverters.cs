@@ -1,5 +1,4 @@
 using DevilDaggersInfo.Web.Server.InternalModels.CustomLeaderboards;
-using DevilDaggersInfo.Web.Shared.Enums;
 using MainApi = DevilDaggersInfo.Api.Main.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Server.Converters.Public;
