@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Api.Main.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.Converters.Public;
 using DevilDaggersInfo.Web.Server.InternalModels.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.Repositories;

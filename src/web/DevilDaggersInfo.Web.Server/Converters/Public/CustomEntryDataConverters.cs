@@ -1,4 +1,5 @@
-using DevilDaggersInfo.Web.Shared.Dto.Public.CustomEntries;
+using DevilDaggersInfo.Api.Main.CustomLeaderboards;
+using DevilDaggersInfo.Api.Main.Spawnsets;
 
 namespace DevilDaggersInfo.Web.Server.Converters.Public;
 

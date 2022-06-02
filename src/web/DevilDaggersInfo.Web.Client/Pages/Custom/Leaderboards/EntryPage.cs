@@ -1,9 +1,10 @@
+using DevilDaggersInfo.Api.Main.CustomLeaderboards;
+using DevilDaggersInfo.Api.Main.Spawnsets;
 using DevilDaggersInfo.Core.Spawnset.Enums;
 using DevilDaggersInfo.Core.Spawnset.Extensions;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Data;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Options.LineChart;
 using DevilDaggersInfo.Web.Client.HttpClients;
-using DevilDaggersInfo.Web.Shared.Dto.Public.CustomEntries;
 using DevilDaggersInfo.Web.Shared.Utils;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;

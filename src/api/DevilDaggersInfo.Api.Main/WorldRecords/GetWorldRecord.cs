@@ -1,0 +1,14 @@
+namespace DevilDaggersInfo.Web.Shared.Dto.Public.WorldRecords;
+
+public record GetWorldRecord
+{
+	public DateTime DateTime { get; init; }
+
+	public GetWorldRecordEntry Entry { get; init; } = null!;
+
+	public GameVersion? GameVersion { get; init; }
+
+	public TimeSpan WorldRecordDuration { get; init; }
+
+	public double? WorldRecordImprovement { get; init; }
+}

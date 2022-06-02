@@ -1,7 +1,7 @@
+using DevilDaggersInfo.Api.Main.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.Caches.SpawnsetSummaries;
 using DevilDaggersInfo.Web.Server.Converters.Public;
 using DevilDaggersInfo.Web.Server.Repositories;
-using DevilDaggersInfo.Web.Shared.Dto.Public.CustomEntries;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Public;
 

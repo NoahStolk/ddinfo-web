@@ -3,9 +3,7 @@ using DevilDaggersInfo.Web.Client.Utils;
 using DevilDaggersInfo.Web.Shared.Dto;
 using DevilDaggersInfo.Web.Shared.Dto.Public;
 using DevilDaggersInfo.Web.Shared.Dto.Public.Authentication;
-using DevilDaggersInfo.Web.Shared.Dto.Public.CustomEntries;
 using DevilDaggersInfo.Web.Shared.Dto.Public.CustomLeaderboards;
-using DevilDaggersInfo.Web.Shared.Dto.Public.Donations;
 using DevilDaggersInfo.Web.Shared.Dto.Public.LeaderboardHistory;
 using DevilDaggersInfo.Web.Shared.Dto.Public.LeaderboardHistoryStatistics;
 using DevilDaggersInfo.Web.Shared.Dto.Public.LeaderboardStatistics;
@@ -18,6 +16,9 @@ using DevilDaggersInfo.Web.Shared.Dto.Public.WorldRecords;
 using DevilDaggersInfo.Web.Shared.Enums;
 using DevilDaggersInfo.Web.Shared.Enums.Sortings.Public;
 using System.Net.Http.Json;
+using DevilDaggersInfo.Api.Main.CustomLeaderboards;
+using DevilDaggersInfo.Api.Main.Donations;
+using DevilDaggersInfo.Api.Main.Players;
 
 namespace DevilDaggersInfo.Web.Client.HttpClients;
 
