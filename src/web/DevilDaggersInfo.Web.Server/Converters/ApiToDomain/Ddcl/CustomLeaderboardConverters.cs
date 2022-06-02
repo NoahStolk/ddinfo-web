@@ -1,9 +1,9 @@
 using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.InternalModels.CustomLeaderboards;
 
-namespace DevilDaggersInfo.Web.Server.Converters.Ddcl;
+namespace DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Ddcl;
 
-public static class ApiToDomain
+public static class CustomLeaderboardConverters
 {
 	public static UploadRequest ToDomain(this AddUploadRequest uploadRequest) => new(
 		survivalHashMd5: uploadRequest.SurvivalHashMd5,

@@ -1,9 +1,9 @@
 using DevilDaggersInfo.Web.Server.InternalModels.CustomLeaderboards;
 using DdclApi = DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
 
-namespace DevilDaggersInfo.Web.Server.Converters.Ddcl;
+namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Ddcl;
 
-public static class DomainToApi
+public static class CustomLeaderboardConverters
 {
 	public static DdclApi.GetUploadSuccess ToDdclApi(this UploadResponse uploadResponse) => new()
 	{
