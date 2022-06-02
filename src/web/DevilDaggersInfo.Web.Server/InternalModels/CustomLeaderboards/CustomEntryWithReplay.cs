@@ -1,6 +1,6 @@
-namespace DevilDaggersInfo.Web.Shared.Dto.Ddcl.CustomLeaderboards;
+namespace DevilDaggersInfo.Web.Server.InternalModels.CustomLeaderboards;
 
-public record GetCustomEntryDdcl
+public class CustomEntryWithReplay
 {
 	public int Id { get; init; }
 
@@ -8,7 +8,7 @@ public record GetCustomEntryDdcl
 
 	public string PlayerName { get; init; } = null!;
 
-	public double TimeInSeconds { get; init; }
+	public int Time { get; init; }
 
 	public int GemsCollected { get; init; }
 
@@ -22,25 +22,25 @@ public record GetCustomEntryDdcl
 
 	public int HomingStored { get; init; }
 
-	public int HomingEaten { get; init; }
+	public int? HomingEaten { get; init; }
 
-	public int GemsDespawned { get; init; }
+	public int? GemsDespawned { get; init; }
 
-	public int GemsEaten { get; init; }
+	public int? GemsEaten { get; init; }
 
-	public int GemsTotal { get; init; }
+	public int? GemsTotal { get; init; }
 
 	public byte DeathType { get; init; }
 
-	public double LevelUpTime2InSeconds { get; init; }
+	public int LevelUpTime2 { get; init; }
 
-	public double LevelUpTime3InSeconds { get; init; }
+	public int LevelUpTime3 { get; init; }
 
-	public double LevelUpTime4InSeconds { get; init; }
+	public int LevelUpTime4 { get; init; }
 
 	public DateTime SubmitDate { get; init; }
 
-	public string? ClientVersion { get; init; }
+	public string ClientVersion { get; init; } = null!;
 
 	public bool HasReplay { get; init; }
 }

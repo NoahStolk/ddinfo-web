@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Shared.Constants;
+namespace DevilDaggersInfo.Api.Ddcl;
 
 public static class ReplayConstants
 {

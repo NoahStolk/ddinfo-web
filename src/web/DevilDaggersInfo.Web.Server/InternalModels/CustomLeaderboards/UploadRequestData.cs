@@ -1,6 +1,6 @@
-namespace DevilDaggersInfo.Web.Shared.Dto.Ddcl.CustomLeaderboards;
+namespace DevilDaggersInfo.Web.Server.InternalModels.CustomLeaderboards;
 
-public record AddGameData
+public class UploadRequestData
 {
 	public int[] GemsCollected { get; init; } = Array.Empty<int>();
 	public int[] EnemiesKilled { get; init; } = Array.Empty<int>();

@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Web.Shared.Dto.Ddcl.ProcessMemory;
+using DevilDaggersInfo.Api.Ddcl.ProcessMemory;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Ddcl;
 

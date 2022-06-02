@@ -4,9 +4,8 @@ using DevilDaggersInfo.Core.Encryption;
 using DevilDaggersInfo.Core.Replay;
 using DevilDaggersInfo.Core.Replay.Enums;
 using DevilDaggersInfo.Web.Server.Caches.SpawnsetHashes;
-using DevilDaggersInfo.Web.Server.Converters.Ddcl;
 using DevilDaggersInfo.Web.Server.HostedServices.DdInfoDiscordBot;
-using DevilDaggersInfo.Web.Shared.Dto.Ddcl.CustomLeaderboards;
+using DevilDaggersInfo.Web.Server.InternalModels.CustomLeaderboards;
 using DSharpPlus.Entities;
 using System.Web;
 
@@ -39,7 +38,7 @@ public class CustomEntryProcessor
 		_stopwatch = Stopwatch.StartNew();
 	}
 
-	private void ValidateV2(AddUploadRequest uploadRequest)
+	private void ValidateV2(UploadRequest uploadRequest)
 	{
 		string expected = uploadRequest.CreateValidationV2();
 		string actual;
@@ -57,7 +56,7 @@ public class CustomEntryProcessor
 			throw LogAndCreateValidationException(uploadRequest, $"Invalid submission for {uploadRequest.Validation}.\n`Expected: {expected}`\n`Actual:   {actual}`", null, "rotating_light");
 	}
 
-	public async Task<GetUploadSuccess> ProcessUploadRequestAsync(AddUploadRequest uploadRequest)
+	public async Task<UploadResponse> ProcessUploadRequestAsync(UploadRequest uploadRequest)
 	{
 		// Check if the submission actually came from an allowed program.
 		if (uploadRequest.ValidationVersion == 2)
@@ -144,7 +143,7 @@ public class CustomEntryProcessor
 		return await ProcessHighscoreAsync(uploadRequest, customLeaderboard, spawnsetName, customEntry);
 	}
 
-	private async Task<GetUploadSuccess> ProcessNewScoreAsync(AddUploadRequest uploadRequest, CustomLeaderboardEntity customLeaderboard, string spawnsetName)
+	private async Task<UploadResponse> ProcessNewScoreAsync(UploadRequest uploadRequest, CustomLeaderboardEntity customLeaderboard, string spawnsetName)
 	{
 		// Add new custom entry to this leaderboard.
 		CustomEntryEntity newCustomEntry = new()
@@ -173,7 +172,7 @@ public class CustomEntryProcessor
 		await _dbContext.CustomEntries.AddAsync(newCustomEntry);
 
 		CustomEntryDataEntity newCustomEntryData = new() { CustomEntry = newCustomEntry };
-		newCustomEntryData.Populate(uploadRequest);
+		newCustomEntryData.Populate(uploadRequest.GameData);
 		await _dbContext.CustomEntryData.AddAsync(newCustomEntryData);
 
 		UpdateLeaderboardStatistics(customLeaderboard);
@@ -195,9 +194,9 @@ public class CustomEntryProcessor
 		{
 			Message = $"Welcome to the {spawnsetName} leaderboard!",
 			TotalPlayers = totalPlayers,
-			Leaderboard = customLeaderboard.ToGetCustomLeaderboardDdcl(),
+			Leaderboard = ToLeaderboardSummary(customLeaderboard),
 			Category = customLeaderboard.Category,
-			Entries = entries.ConvertAll(e => e.ToGetCustomEntryDdcl(replayIds.Contains(e.Id))),
+			Entries = entries.ConvertAll(e => ToEntryWithReplay(e, replayIds)),
 			IsNewPlayerOnThisLeaderboard = true,
 			IsHighscore = true,
 			RankState = new(rank),
@@ -218,7 +217,48 @@ public class CustomEntryProcessor
 		};
 	}
 
-	private async Task<GetUploadSuccess> ProcessNoHighscoreAsync(AddUploadRequest uploadRequest, CustomLeaderboardEntity customLeaderboard, string spawnsetName)
+	private static CustomEntryWithReplay ToEntryWithReplay(CustomEntryEntity e, List<int> replayIds) => new()
+	{
+		ClientVersion = e.ClientVersion,
+		DaggersFired = e.DaggersFired,
+		DaggersHit = e.DaggersHit,
+		DeathType = e.DeathType,
+		EnemiesAlive = e.EnemiesAlive,
+		EnemiesKilled = e.EnemiesKilled,
+		GemsCollected = e.GemsCollected,
+		GemsDespawned = e.GemsDespawned,
+		GemsEaten = e.GemsEaten,
+		GemsTotal = e.GemsTotal,
+		HasReplay = replayIds.Contains(e.Id),
+		Id = e.Id,
+		HomingEaten = e.HomingEaten,
+		HomingStored = e.HomingStored,
+		LevelUpTime2 = e.LevelUpTime2,
+		LevelUpTime3 = e.LevelUpTime3,
+		LevelUpTime4 = e.LevelUpTime4,
+		PlayerId = e.PlayerId,
+		PlayerName = e.Player.PlayerName,
+		SubmitDate = e.SubmitDate,
+		Time = e.Time,
+	};
+
+	private static CustomLeaderboardSummary ToLeaderboardSummary(CustomLeaderboardEntity customLeaderboard) => new()
+	{
+		Category = customLeaderboard.Category,
+		Daggers = !customLeaderboard.IsFeatured ? null : new()
+		{
+			Bronze = customLeaderboard.TimeBronze,
+			Silver = customLeaderboard.TimeSilver,
+			Golden = customLeaderboard.TimeGolden,
+			Devil = customLeaderboard.TimeDevil,
+			Leviathan = customLeaderboard.TimeLeviathan,
+		},
+		Id = customLeaderboard.Id,
+		SpawnsetId = customLeaderboard.SpawnsetId,
+		SpawnsetName = customLeaderboard.Spawnset.Name,
+	};
+
+	private async Task<UploadResponse> ProcessNoHighscoreAsync(UploadRequest uploadRequest, CustomLeaderboardEntity customLeaderboard, string spawnsetName)
 	{
 		if (!uploadRequest.IsReplay)
 		{
@@ -235,15 +275,15 @@ public class CustomEntryProcessor
 		{
 			Message = $"No new highscore for {customLeaderboard.Spawnset.Name}.",
 			TotalPlayers = entries.Count,
-			Leaderboard = customLeaderboard.ToGetCustomLeaderboardDdcl(),
+			Leaderboard = ToLeaderboardSummary(customLeaderboard),
 			Category = customLeaderboard.Category,
-			Entries = entries.ConvertAll(e => e.ToGetCustomEntryDdcl(replayIds.Contains(e.Id))),
+			Entries = entries.ConvertAll(e => ToEntryWithReplay(e, replayIds)),
 			IsNewPlayerOnThisLeaderboard = false,
 			IsHighscore = false,
 		};
 	}
 
-	private async Task<GetUploadSuccess> ProcessHighscoreAsync(AddUploadRequest uploadRequest, CustomLeaderboardEntity customLeaderboard, string spawnsetName, CustomEntryEntity customEntry)
+	private async Task<UploadResponse> ProcessHighscoreAsync(UploadRequest uploadRequest, CustomLeaderboardEntity customLeaderboard, string spawnsetName, CustomEntryEntity customEntry)
 	{
 		// Store old stats.
 		List<CustomEntryEntity> entries = await GetOrderedEntries(customLeaderboard.Id, customLeaderboard.Category);
@@ -287,12 +327,12 @@ public class CustomEntryProcessor
 		if (customEntryData == null)
 		{
 			customEntryData = new() { CustomEntryId = customEntry.Id };
-			customEntryData.Populate(uploadRequest);
+			customEntryData.Populate(uploadRequest.GameData);
 			await _dbContext.CustomEntryData.AddAsync(customEntryData);
 		}
 		else
 		{
-			customEntryData.Populate(uploadRequest);
+			customEntryData.Populate(uploadRequest.GameData);
 		}
 
 		UpdateLeaderboardStatistics(customLeaderboard);
@@ -329,9 +369,9 @@ public class CustomEntryProcessor
 		{
 			Message = $"NEW HIGHSCORE for {customLeaderboard.Spawnset.Name}!",
 			TotalPlayers = entries.Count,
-			Leaderboard = customLeaderboard.ToGetCustomLeaderboardDdcl(),
+			Leaderboard = ToLeaderboardSummary(customLeaderboard),
 			Category = customLeaderboard.Category,
-			Entries = entries.ConvertAll(e => e.ToGetCustomEntryDdcl(replayIds.Contains(e.Id))),
+			Entries = entries.ConvertAll(e => ToEntryWithReplay(e, replayIds)),
 			IsNewPlayerOnThisLeaderboard = false,
 			IsHighscore = true,
 			RankState = new(rank, rankDiff),
@@ -352,7 +392,7 @@ public class CustomEntryProcessor
 		};
 	}
 
-	private static int GetFinalHomingValue(AddUploadRequest uploadRequest)
+	private static int GetFinalHomingValue(UploadRequest uploadRequest)
 	{
 		if (uploadRequest.GameData.HomingStored.Length == 0)
 			return 0;
@@ -360,7 +400,7 @@ public class CustomEntryProcessor
 		return uploadRequest.GameData.HomingStored[^1];
 	}
 
-	private void ValidateReplayBuffer(AddUploadRequest uploadRequest, string spawnsetName)
+	private void ValidateReplayBuffer(UploadRequest uploadRequest, string spawnsetName)
 	{
 		ReplayBinary replayBinary;
 		try
@@ -376,7 +416,7 @@ public class CustomEntryProcessor
 			throw LogAndCreateValidationException(uploadRequest, "Spawnset in replay does not match detected spawnset.", spawnsetName, "rotating_light");
 	}
 
-	private CustomEntryValidationException LogAndCreateValidationException(AddUploadRequest uploadRequest, string errorMessage, string? spawnsetName = null, string? errorEmoteNameOverride = null)
+	private CustomEntryValidationException LogAndCreateValidationException(UploadRequest uploadRequest, string errorMessage, string? spawnsetName = null, string? errorEmoteNameOverride = null)
 	{
 		Log(uploadRequest, spawnsetName, errorMessage, errorEmoteNameOverride);
 		return new CustomEntryValidationException(errorMessage);
@@ -462,7 +502,7 @@ public class CustomEntryProcessor
 	private static string GetSpawnsetHashOrName(byte[] spawnsetHash, string? spawnsetName)
 		=> string.IsNullOrEmpty(spawnsetName) ? spawnsetHash.ByteArrayToHexString() : spawnsetName;
 
-	private void Log(AddUploadRequest uploadRequest, string? spawnsetName, string? errorMessage = null, string? errorEmoteNameOverride = null)
+	private void Log(UploadRequest uploadRequest, string? spawnsetName, string? errorMessage = null, string? errorEmoteNameOverride = null)
 	{
 		_stopwatch.Stop();
 

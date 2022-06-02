@@ -1,4 +1,6 @@
-using DevilDaggersInfo.Web.Shared.Dto.Ddcl.CustomLeaderboards;
+using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
+using DevilDaggersInfo.Web.Server.Converters.Ddcl;
+using DevilDaggersInfo.Web.Server.InternalModels.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Ddcl;
 
@@ -23,7 +25,8 @@ public class CustomEntriesController : ControllerBase
 	{
 		try
 		{
-			return await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
+			UploadResponse response = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest.ToDomain());
+			return response.ToDdclApi();
 		}
 		catch (Exception ex) when (ex is not CustomEntryValidationException)
 		{

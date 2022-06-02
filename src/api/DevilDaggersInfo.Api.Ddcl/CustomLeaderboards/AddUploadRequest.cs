@@ -1,4 +1,6 @@
-namespace DevilDaggersInfo.Web.Shared.Dto.Ddcl.CustomLeaderboards;
+using System.ComponentModel.DataAnnotations;
+
+namespace DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
 
 public record AddUploadRequest
 {

@@ -2,9 +2,9 @@ using DevilDaggersInfo.Core.Encryption;
 using DevilDaggersInfo.Web.Server.Caches.SpawnsetHashes;
 using DevilDaggersInfo.Web.Server.Enums;
 using DevilDaggersInfo.Web.Server.Exceptions;
+using DevilDaggersInfo.Web.Server.InternalModels.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.Tests.Data;
 using DevilDaggersInfo.Web.Server.Tests.Extensions;
-using DevilDaggersInfo.Web.Shared.Dto.Ddcl.CustomLeaderboards;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -94,28 +94,95 @@ public class CustomEntryProcessorTests
 		return ms.ToArray();
 	}
 
-	private AddUploadRequest CreateUploadRequest(double time, int playerId, int status, string clientVersion) => CreateUploadRequest(time, playerId, status, clientVersion, new());
+	private UploadRequest CreateUploadRequest(float time, int playerId, int status, string clientVersion) => CreateUploadRequest(time, playerId, status, clientVersion, new());
 
-	private AddUploadRequest CreateUploadRequest(double time, int playerId, int status, string clientVersion, AddGameData gameData)
+	private UploadRequest CreateUploadRequest(float time, int playerId, int status, string clientVersion, UploadRequestData gameData, string? validation = null)
 	{
-		AddUploadRequest uploadRequest = new()
-		{
-			TimeInSeconds = time,
-			TimeAsBytes = BitConverter.GetBytes(time),
-			LevelUpTime2AsBytes = BitConverter.GetBytes(0),
-			LevelUpTime3AsBytes = BitConverter.GetBytes(0),
-			LevelUpTime4AsBytes = BitConverter.GetBytes(0),
-			PlayerId = playerId,
-			ClientVersion = clientVersion,
-			SurvivalHashMd5 = _v3Hash,
-			PlayerName = $"TestPlayer{playerId}",
-			Client = "DevilDaggersCustomLeaderboards",
-			Status = status,
-			ReplayData = _mockReplay,
-			GameData = gameData,
-			ValidationVersion = 2,
-		};
-		return uploadRequest with { Validation = HttpUtility.HtmlEncode(_encryptionWrapper.EncryptAndEncode(uploadRequest.CreateValidationV2())) };
+		const float levelUpTime2 = 0;
+		const float levelUpTime3 = 0;
+		const float levelUpTime4 = 0;
+
+		byte[] timeAsBytes = BitConverter.GetBytes(time);
+		const int gemsCollected = 0;
+		const int gemsDespawned = 0;
+		const int gemsEaten = 0;
+		const int gemsTotal = 0;
+		const int enemiesAlive = 0;
+		const int enemiesKilled = 0;
+		const byte deathType = 0;
+		const int daggersHit = 0;
+		const int daggersFired = 0;
+		const int homingStored = 0;
+		const int homingEaten = 0;
+		const bool isReplay = false;
+		byte[] levelUpTime2AsBytes = BitConverter.GetBytes(levelUpTime2);
+		byte[] levelUpTime3AsBytes = BitConverter.GetBytes(levelUpTime3);
+		byte[] levelUpTime4AsBytes = BitConverter.GetBytes(levelUpTime4);
+		const int gameMode = 0;
+		const bool timeAttackOrRaceFinished = false;
+		const bool prohibitedMods = false;
+
+		string calculatedValidation = UploadRequest.CreateValidationV2(
+			playerId: playerId,
+			timeAsBytes: timeAsBytes,
+			gemsCollected: gemsCollected,
+			gemsDespawned: gemsDespawned,
+			gemsEaten: gemsEaten,
+			gemsTotal: gemsTotal,
+			enemiesAlive: enemiesAlive,
+			enemiesKilled: enemiesKilled,
+			deathType: deathType,
+			daggersHit: daggersHit,
+			daggersFired: daggersFired,
+			homingStored: homingStored,
+			homingEaten: homingEaten,
+			isReplay: isReplay,
+			status: status,
+			survivalHashMd5: _v3Hash,
+			levelUpTime2AsBytes: levelUpTime2AsBytes,
+			levelUpTime3AsBytes: levelUpTime3AsBytes,
+			levelUpTime4AsBytes: levelUpTime4AsBytes,
+			gameMode: gameMode,
+			timeAttackOrRaceFinished: timeAttackOrRaceFinished,
+			prohibitedMods: prohibitedMods);
+
+		return new(
+			survivalHashMd5: _v3Hash,
+			playerId: playerId,
+			playerName: $"TestPlayer{playerId}",
+			replayPlayerId: 0,
+			timeInSeconds: time,
+			timeAsBytes: timeAsBytes,
+			gemsCollected: gemsCollected,
+			enemiesKilled: enemiesKilled,
+			daggersFired: daggersFired,
+			daggersHit: daggersHit,
+			enemiesAlive: enemiesAlive,
+			homingStored: homingStored,
+			homingEaten: homingEaten,
+			gemsDespawned: gemsDespawned,
+			gemsEaten: gemsEaten,
+			gemsTotal: gemsTotal,
+			deathType: deathType,
+			levelUpTime2InSeconds: levelUpTime2,
+			levelUpTime3InSeconds: levelUpTime3,
+			levelUpTime4InSeconds: levelUpTime4,
+			levelUpTime2AsBytes: BitConverter.GetBytes(levelUpTime2),
+			levelUpTime3AsBytes: BitConverter.GetBytes(levelUpTime3),
+			levelUpTime4AsBytes: BitConverter.GetBytes(levelUpTime4),
+			clientVersion: clientVersion,
+			client: "DevilDaggersCustomLeaderboards",
+			operatingSystem: "Windows",
+			buildMode: "Release",
+			validation: validation ?? HttpUtility.HtmlEncode(_encryptionWrapper.EncryptAndEncode(calculatedValidation)),
+			validationVersion: 2,
+			isReplay: isReplay,
+			prohibitedMods: prohibitedMods,
+			gameMode: gameMode,
+			timeAttackOrRaceFinished: timeAttackOrRaceFinished,
+			gameData: gameData,
+			replayData: _mockReplay,
+			status: status);
 	}
 
 	[DataTestMethod]
@@ -129,16 +196,16 @@ public class CustomEntryProcessorTests
 	[DataRow(0, new int[] { })]
 	public async Task TestHomingCount(int expected, int[] homingStored)
 	{
-		AddUploadRequest uploadRequest = CreateUploadRequest(1, 100, 4, TestConstants.DdclVersion, new() { HomingStored = homingStored });
-		GetUploadSuccess uploadSuccess = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
+		UploadRequest uploadRequest = CreateUploadRequest(1, 100, 4, TestConstants.DdclVersion, new() { HomingStored = homingStored });
+		UploadResponse uploadSuccess = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
 		Assert.AreEqual(expected, uploadSuccess.HomingStoredState.Value);
 	}
 
 	[TestMethod]
 	public async Task ProcessUploadRequest_ExistingPlayer_ExistingEntry_NoHighscore()
 	{
-		AddUploadRequest uploadRequest = CreateUploadRequest(10, 1, 3, TestConstants.DdclVersion);
-		GetUploadSuccess uploadSuccess = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
+		UploadRequest uploadRequest = CreateUploadRequest(10, 1, 3, TestConstants.DdclVersion);
+		UploadResponse uploadSuccess = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
 
 		_dbContext.Verify(db => db.SaveChangesAsync(default), Times.AtLeastOnce);
 		Assert.AreEqual(1, uploadSuccess.TotalPlayers);
@@ -148,8 +215,8 @@ public class CustomEntryProcessorTests
 	[TestMethod]
 	public async Task ProcessUploadRequest_ExistingPlayer_ExistingEntry_NewHighscore()
 	{
-		AddUploadRequest uploadRequest = CreateUploadRequest(20, 1, 4, TestConstants.DdclVersion);
-		GetUploadSuccess uploadSuccess = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
+		UploadRequest uploadRequest = CreateUploadRequest(20, 1, 4, TestConstants.DdclVersion);
+		UploadResponse uploadSuccess = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
 
 		_dbContext.Verify(db => db.SaveChangesAsync(default), Times.AtLeastOnce);
 		Assert.AreEqual(1, uploadSuccess.TotalPlayers);
@@ -159,8 +226,8 @@ public class CustomEntryProcessorTests
 	[TestMethod]
 	public async Task ProcessUploadRequest_ExistingPlayer_NewEntry()
 	{
-		AddUploadRequest uploadRequest = CreateUploadRequest(20, 2, 5, TestConstants.DdclVersion);
-		GetUploadSuccess uploadSuccess = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
+		UploadRequest uploadRequest = CreateUploadRequest(20, 2, 5, TestConstants.DdclVersion);
+		UploadResponse uploadSuccess = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
 
 		_dbContext.Verify(db => db.CustomEntries.AddAsync(It.Is<CustomEntryEntity>(ce => ce.PlayerId == 2 && ce.Time == 200000), default), Times.Once);
 		_dbContext.Verify(db => db.SaveChangesAsync(default), Times.AtLeastOnce);
@@ -170,8 +237,8 @@ public class CustomEntryProcessorTests
 	[TestMethod]
 	public async Task ProcessUploadRequest_NewPlayer()
 	{
-		AddUploadRequest uploadRequest = CreateUploadRequest(30, 3, 3, TestConstants.DdclVersion);
-		GetUploadSuccess uploadSuccess = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
+		UploadRequest uploadRequest = CreateUploadRequest(30, 3, 3, TestConstants.DdclVersion);
+		UploadResponse uploadSuccess = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
 
 		_dbContext.Verify(db => db.SaveChangesAsync(default), Times.AtLeastOnce);
 		_dbContext.Verify(db => db.Players.AddAsync(It.Is<PlayerEntity>(p => p.Id == 3 && p.PlayerName == "TestPlayer3"), default), Times.Once);
@@ -191,7 +258,7 @@ public class CustomEntryProcessorTests
 	[DataRow(8, false)]
 	public async Task ProcessUploadRequest_InvalidStatus(int status, bool accepted)
 	{
-		AddUploadRequest uploadRequest = CreateUploadRequest(30, 3, status, TestConstants.DdclVersion);
+		UploadRequest uploadRequest = CreateUploadRequest(30, 3, status, TestConstants.DdclVersion);
 		if (accepted)
 			await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
 		else
@@ -201,7 +268,7 @@ public class CustomEntryProcessorTests
 	[TestMethod]
 	public async Task ProcessUploadRequest_Outdated()
 	{
-		AddUploadRequest uploadRequest = CreateUploadRequest(10, 1, 4, "0.0.0.0");
+		UploadRequest uploadRequest = CreateUploadRequest(10, 1, 4, "0.0.0.0");
 		CustomEntryValidationException ex = await Assert.ThrowsExceptionAsync<CustomEntryValidationException>(async () => await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest));
 
 		_dbContext.Verify(db => db.SaveChangesAsync(default), Times.Never);
@@ -212,7 +279,7 @@ public class CustomEntryProcessorTests
 	[TestMethod]
 	public async Task ProcessUploadRequest_InvalidValidation()
 	{
-		AddUploadRequest uploadRequest = CreateUploadRequest(10, 1, 4, TestConstants.DdclVersion) with { Validation = "Malformed validation" };
+		UploadRequest uploadRequest = CreateUploadRequest(10, 1, 4, TestConstants.DdclVersion, new(), "Malformed validation");
 		CustomEntryValidationException ex = await Assert.ThrowsExceptionAsync<CustomEntryValidationException>(async () => await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest));
 
 		_dbContext.Verify(db => db.SaveChangesAsync(default), Times.Never);

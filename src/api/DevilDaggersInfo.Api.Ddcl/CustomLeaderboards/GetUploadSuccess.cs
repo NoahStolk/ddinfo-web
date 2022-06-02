@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Shared.Dto.Ddcl.CustomLeaderboards;
+namespace DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
 
 public record GetUploadSuccess
 {
