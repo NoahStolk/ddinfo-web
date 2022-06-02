@@ -98,4 +98,15 @@ public static class CustomEntryDataConverters
 		HandLevel.Level4 => MainApi.Spawnsets.HandLevel.Level4,
 		_ => throw new InvalidEnumConversionException(handLevel),
 	};
+
+	private static MainApi.CustomLeaderboards.CustomLeaderboardDagger ToMainApi(this CustomLeaderboardDagger customLeaderboardDagger) => customLeaderboardDagger switch
+	{
+		CustomLeaderboardDagger.Default => MainApi.CustomLeaderboards.CustomLeaderboardDagger.Default,
+		CustomLeaderboardDagger.Bronze => MainApi.CustomLeaderboards.CustomLeaderboardDagger.Bronze,
+		CustomLeaderboardDagger.Silver => MainApi.CustomLeaderboards.CustomLeaderboardDagger.Silver,
+		CustomLeaderboardDagger.Golden => MainApi.CustomLeaderboards.CustomLeaderboardDagger.Golden,
+		CustomLeaderboardDagger.Devil => MainApi.CustomLeaderboards.CustomLeaderboardDagger.Devil,
+		CustomLeaderboardDagger.Leviathan => MainApi.CustomLeaderboards.CustomLeaderboardDagger.Leviathan,
+		_ => throw new InvalidEnumConversionException(customLeaderboardDagger),
+	};
 }

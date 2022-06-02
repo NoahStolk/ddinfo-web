@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Common.Exceptions;
+using DevilDaggersInfo.Web.Server.Entities.Enums;
 using DevilDaggersInfo.Web.Server.InternalModels.CustomLeaderboards;
 using MainApi = DevilDaggersInfo.Api.Main.CustomLeaderboards;
 
@@ -44,7 +45,7 @@ public static class CustomLeaderboardConverters
 		PlayerId = customEntry.PlayerId,
 		PlayerName = customEntry.PlayerName,
 		CountryCode = customEntry.CountryCode,
-		Client = customEntry.Client,
+		Client = customEntry.Client.ToMainApi(),
 		ClientVersion = customEntry.ClientVersion,
 		DeathType = customEntry.DeathType,
 		EnemiesAlive = customEntry.EnemiesAlive,
@@ -83,5 +84,12 @@ public static class CustomLeaderboardConverters
 		CustomLeaderboardDagger.Devil => MainApi.CustomLeaderboardDagger.Devil,
 		CustomLeaderboardDagger.Leviathan => MainApi.CustomLeaderboardDagger.Leviathan,
 		_ => throw new InvalidEnumConversionException(customLeaderboardDagger),
+	};
+
+	private static MainApi.CustomLeaderboardsClient ToMainApi(this CustomLeaderboardsClient customLeaderboardsClient) => customLeaderboardsClient switch
+	{
+		CustomLeaderboardsClient.DdstatsRust => MainApi.CustomLeaderboardsClient.DdstatsRust,
+		CustomLeaderboardsClient.DevilDaggersCustomLeaderboards => MainApi.CustomLeaderboardsClient.DevilDaggersCustomLeaderboards,
+		_ => throw new InvalidEnumConversionException(customLeaderboardsClient),
 	};
 }
