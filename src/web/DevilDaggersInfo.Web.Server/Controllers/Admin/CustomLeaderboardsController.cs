@@ -1,5 +1,6 @@
 using DevilDaggersInfo.Api.Admin;
 using DevilDaggersInfo.Api.Admin.CustomLeaderboards;
+using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Admin;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Admin;
 using Microsoft.AspNetCore.Authorization;
 
@@ -119,14 +120,14 @@ public class CustomLeaderboardsController : ControllerBase
 		if (customLeaderboard == null)
 			return NotFound();
 
-		if (customLeaderboard.Category != editCustomLeaderboard.Category && _dbContext.CustomEntries.Any(ce => ce.CustomLeaderboardId == id))
+		if (customLeaderboard.Category != editCustomLeaderboard.Category.ToDomain() && _dbContext.CustomEntries.Any(ce => ce.CustomLeaderboardId == id))
 			return BadRequest("Cannot change category for custom leaderboard with scores.");
 
-		_validator.ValidateCustomLeaderboard(customLeaderboard.SpawnsetId, editCustomLeaderboard.Category, editCustomLeaderboard.Daggers, editCustomLeaderboard.IsFeatured);
+		_validator.ValidateCustomLeaderboard(customLeaderboard.SpawnsetId, editCustomLeaderboard.Category.ToDomain(), editCustomLeaderboard.Daggers.ToDomain(), editCustomLeaderboard.IsFeatured);
 
 		EditCustomLeaderboard logDto = new()
 		{
-			Category = customLeaderboard.Category,
+			Category = customLeaderboard.Category.ToAdminApi(),
 			Daggers = new()
 			{
 				Bronze = customLeaderboard.TimeBronze.ToSecondsTime(),
@@ -138,7 +139,7 @@ public class CustomLeaderboardsController : ControllerBase
 			IsFeatured = customLeaderboard.IsFeatured,
 		};
 
-		customLeaderboard.Category = editCustomLeaderboard.Category;
+		customLeaderboard.Category = editCustomLeaderboard.Category.ToDomain();
 		customLeaderboard.TimeBronze = editCustomLeaderboard.Daggers.Bronze.To10thMilliTime();
 		customLeaderboard.TimeSilver = editCustomLeaderboard.Daggers.Silver.To10thMilliTime();
 		customLeaderboard.TimeGolden = editCustomLeaderboard.Daggers.Golden.To10thMilliTime();

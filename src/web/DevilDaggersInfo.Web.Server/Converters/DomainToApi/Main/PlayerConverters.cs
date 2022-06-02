@@ -47,7 +47,7 @@ public static class PlayerConverters
 		},
 	};
 
-	private static MainApi.VerticalSync ToMainApi(this VerticalSync verticalSync) => verticalSync switch
+	public static MainApi.VerticalSync ToMainApi(this VerticalSync verticalSync) => verticalSync switch
 	{
 		VerticalSync.Unknown => MainApi.VerticalSync.Unknown,
 		VerticalSync.Off => MainApi.VerticalSync.Off,
