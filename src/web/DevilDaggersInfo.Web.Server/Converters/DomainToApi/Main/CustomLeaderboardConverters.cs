@@ -1,5 +1,6 @@
 using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Web.Server.Entities.Enums;
+using DevilDaggersInfo.Web.Server.Enums;
 using DevilDaggersInfo.Web.Server.InternalModels.CustomLeaderboards;
 using MainApi = DevilDaggersInfo.Api.Main.CustomLeaderboards;
 
@@ -159,6 +160,16 @@ public static class CustomLeaderboardConverters
 		static ushort[]? GetUInt16Arr(byte[]? bytes)
 			=> bytes == null || bytes.Length == 0 ? null : Array.ConvertAll(IntegerArrayCompressor.ExtractData(bytes), i => (ushort)i);
 	}
+
+	public static MainApi.CustomLeaderboardCategory ToMainApi(this CustomLeaderboardCategory customLeaderboardCategory) => customLeaderboardCategory switch
+	{
+		CustomLeaderboardCategory.Survival => MainApi.CustomLeaderboardCategory.Survival,
+		CustomLeaderboardCategory.TimeAttack => MainApi.CustomLeaderboardCategory.TimeAttack,
+		CustomLeaderboardCategory.Speedrun => MainApi.CustomLeaderboardCategory.Speedrun,
+		CustomLeaderboardCategory.Race => MainApi.CustomLeaderboardCategory.Race,
+		CustomLeaderboardCategory.Pacifist => MainApi.CustomLeaderboardCategory.Pacifist,
+		_ => throw new InvalidEnumConversionException(customLeaderboardCategory),
+	};
 
 	private static MainApi.CustomLeaderboardDagger ToMainApi(this CustomLeaderboardDagger customLeaderboardDagger) => customLeaderboardDagger switch
 	{

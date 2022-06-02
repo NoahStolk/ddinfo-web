@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Web.Server.Entities.Enums;
+using DevilDaggersInfo.Web.Server.Enums;
 using DevilDaggersInfo.Web.Server.InternalModels.CustomLeaderboards;
 using DevilDaggersInfo.Web.Shared.InternalModels;
 using DevilDaggersInfo.Web.Shared.Utils;
