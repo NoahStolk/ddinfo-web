@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Shared.Enums;
+namespace DevilDaggersInfo.Api.Ddcl.ProcessMemory;
 
 public enum SupportedOperatingSystem
 {

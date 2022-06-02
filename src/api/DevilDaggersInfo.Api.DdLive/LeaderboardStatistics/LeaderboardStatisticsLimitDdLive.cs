@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Shared.Enums;
+namespace DevilDaggersInfo.Api.DdLive.LeaderboardStatistics;
 
 public enum LeaderboardStatisticsLimitDdLive
 {
