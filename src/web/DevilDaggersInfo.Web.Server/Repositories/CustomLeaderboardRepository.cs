@@ -1,5 +1,5 @@
+using DevilDaggersInfo.Api.Main.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.InternalModels.CustomLeaderboards;
-using DevilDaggersInfo.Web.Shared.Enums.Sortings.Public;
 using DevilDaggersInfo.Web.Shared.InternalModels;
 using DevilDaggersInfo.Web.Shared.Utils;
 

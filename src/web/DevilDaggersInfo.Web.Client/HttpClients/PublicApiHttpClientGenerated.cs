@@ -1,24 +1,19 @@
 #pragma warning disable CS0105, CS1591, CS8618, S1128, SA1001, SA1027, SA1028, SA1101, SA1122, SA1137, SA1200, SA1201, SA1208, SA1210, SA1309, SA1311, SA1413, SA1503, SA1505, SA1507, SA1508, SA1516, SA1600, SA1601, SA1602, SA1623, SA1649
-using DevilDaggersInfo.Web.Client.Utils;
-using DevilDaggersInfo.Web.Shared.Dto;
-using DevilDaggersInfo.Web.Shared.Dto.Public;
-using DevilDaggersInfo.Web.Shared.Dto.Public.Authentication;
-using DevilDaggersInfo.Web.Shared.Dto.Public.CustomLeaderboards;
-using DevilDaggersInfo.Web.Shared.Dto.Public.LeaderboardHistory;
-using DevilDaggersInfo.Web.Shared.Dto.Public.LeaderboardHistoryStatistics;
-using DevilDaggersInfo.Web.Shared.Dto.Public.LeaderboardStatistics;
-using DevilDaggersInfo.Web.Shared.Dto.Public.Leaderboards;
-using DevilDaggersInfo.Web.Shared.Dto.Public.Mods;
-using DevilDaggersInfo.Web.Shared.Dto.Public.Players;
-using DevilDaggersInfo.Web.Shared.Dto.Public.Spawnsets;
-using DevilDaggersInfo.Web.Shared.Dto.Public.Tools;
-using DevilDaggersInfo.Web.Shared.Dto.Public.WorldRecords;
-using DevilDaggersInfo.Web.Shared.Enums;
-using DevilDaggersInfo.Web.Shared.Enums.Sortings.Public;
-using System.Net.Http.Json;
+using DevilDaggersInfo.Api.Main;
+using DevilDaggersInfo.Api.Main.Authentication;
 using DevilDaggersInfo.Api.Main.CustomLeaderboards;
 using DevilDaggersInfo.Api.Main.Donations;
+using DevilDaggersInfo.Api.Main.LeaderboardHistory;
+using DevilDaggersInfo.Api.Main.LeaderboardHistoryStatistics;
+using DevilDaggersInfo.Api.Main.LeaderboardStatistics;
+using DevilDaggersInfo.Api.Main.Leaderboards;
+using DevilDaggersInfo.Api.Main.Mods;
 using DevilDaggersInfo.Api.Main.Players;
+using DevilDaggersInfo.Api.Main.Spawnsets;
+using DevilDaggersInfo.Api.Main.Tools;
+using DevilDaggersInfo.Api.Main.WorldRecords;
+using DevilDaggersInfo.Web.Client.Utils;
+using System.Net.Http.Json;
 
 namespace DevilDaggersInfo.Web.Client.HttpClients;
 

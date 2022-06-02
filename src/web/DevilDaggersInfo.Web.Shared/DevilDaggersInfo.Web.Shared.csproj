@@ -9,7 +9,4 @@
   <ItemGroup>
     <SupportedPlatform Include="browser" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Dto\Public\" />
-  </ItemGroup>
 </Project>

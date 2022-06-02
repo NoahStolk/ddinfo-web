@@ -1,30 +1,39 @@
 using DevilDaggersInfo.CommonSourceGen;
 using DevilDaggersInfo.Tool.GenerateClient.Generators.Endpoints;
-using DevilDaggersInfo.Tool.GenerateClient.Generators.Enums;
 
 namespace DevilDaggersInfo.Tool.GenerateClient.Generators;
 
-public static class PublicApiHttpClientSourceGenerator
+public class HttpClientSourceGenerator
 {
 	private const string _usings = $"%{nameof(_usings)}%";
+	private const string _className = $"%{nameof(_className)}%";
 	private const string _endpointMethods = $"%{nameof(_endpointMethods)}%";
 	private const string _template = $@"{_usings}
 
 namespace DevilDaggersInfo.Web.Client.HttpClients;
 
-public partial class PublicApiHttpClient
+public partial class {_className}
 {{
 {_endpointMethods}
 }}
 ";
 
-	public static void Execute()
+	private readonly string _controllersSubDirectory;
+	private readonly string _partialClassName;
+	private readonly string _outputPath;
+
+	public HttpClientSourceGenerator(string controllersSubDirectory, string partialClassName, string outputPath)
+	{
+		_controllersSubDirectory = controllersSubDirectory;
+		_partialClassName = partialClassName;
+		_outputPath = outputPath;
+	}
+
+	public void Execute()
 	{
 		ApiHttpClientContext apiHttpClientContext = new();
 		apiHttpClientContext.AddUsings("DevilDaggersInfo.Web.Client.Utils", "System.Net.Http.Json");
-		apiHttpClientContext.AddUsings(ClientType.Public, IncludedDirectory.Dto);
-		apiHttpClientContext.AddUsings(ClientType.Public, IncludedDirectory.Enums);
-		apiHttpClientContext.AddEndpoints(ClientType.Public);
+		apiHttpClientContext.AddEndpoints(_controllersSubDirectory);
 
 		List<string> endpointMethods = new();
 		foreach (Endpoint endpoint in apiHttpClientContext.Endpoints)
@@ -32,7 +41,8 @@ public partial class PublicApiHttpClient
 
 		string code = _template
 			.Replace(_usings, string.Join(Environment.NewLine, apiHttpClientContext.GetOrderedUsingDirectives()))
+			.Replace(_className, _partialClassName)
 			.Replace(_endpointMethods, string.Join(Environment.NewLine, endpointMethods).IndentCode(1));
-		File.WriteAllText(Path.Combine(Constants.ClientProjectPath, "HttpClients", "PublicApiHttpClientGenerated.cs"), code.WrapCodeInsideWarningSuppressionDirectives().TrimCode());
+		File.WriteAllText(_outputPath, code.WrapCodeInsideWarningSuppressionDirectives().TrimCode());
 	}
 }

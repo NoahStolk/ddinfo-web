@@ -1,5 +1,5 @@
+using DevilDaggersInfo.Api.Main;
 using DevilDaggersInfo.Web.Server.Converters.Admin;
-using DevilDaggersInfo.Web.Shared.Dto;
 using DevilDaggersInfo.Web.Shared.Dto.Admin.Donations;
 using DevilDaggersInfo.Web.Shared.Enums.Sortings.Admin;
 using Microsoft.AspNetCore.Authorization;

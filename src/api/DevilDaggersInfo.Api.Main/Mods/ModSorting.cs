@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Shared.Enums.Sortings.Public;
+namespace DevilDaggersInfo.Api.Main.Mods;
 
 public enum ModSorting
 {
