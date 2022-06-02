@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Web.Shared.Dto.Admin.Mods;
+using DevilDaggersInfo.Api.Admin.Mods;
 
 namespace DevilDaggersInfo.Web.Server.Converters.Admin;
 

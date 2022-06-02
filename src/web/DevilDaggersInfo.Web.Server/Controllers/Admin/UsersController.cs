@@ -1,5 +1,5 @@
+using DevilDaggersInfo.Api.Admin.Users;
 using DevilDaggersInfo.Web.Server.Converters.Admin;
-using DevilDaggersInfo.Web.Shared.Dto.Admin.Users;
 using Microsoft.AspNetCore.Authorization;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Admin;

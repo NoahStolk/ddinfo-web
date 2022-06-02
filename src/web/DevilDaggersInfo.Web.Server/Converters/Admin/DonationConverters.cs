@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Web.Shared.Dto.Admin.Donations;
+using DevilDaggersInfo.Api.Admin.Donations;
 
 namespace DevilDaggersInfo.Web.Server.Converters.Admin;
 

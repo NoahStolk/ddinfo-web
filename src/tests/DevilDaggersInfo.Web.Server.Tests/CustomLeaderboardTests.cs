@@ -1,8 +1,8 @@
+using DevilDaggersInfo.Api.Admin.CustomLeaderboards;
 using DevilDaggersInfo.Api.Main;
 using DevilDaggersInfo.Web.Server.Controllers.Admin;
 using DevilDaggersInfo.Web.Server.Tests.Data;
 using DevilDaggersInfo.Web.Server.Tests.Extensions;
-using DevilDaggersInfo.Web.Shared.Dto.Admin.CustomLeaderboards;
 using DevilDaggersInfo.Web.Shared.Enums;
 using DevilDaggersInfo.Web.Shared.Extensions;
 

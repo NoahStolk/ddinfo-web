@@ -1,8 +1,8 @@
 @page "/admin/mods"
 @inherits BaseAdminPage
-@using DevilDaggersInfo.Web.Shared.Dto.Admin.Mods
-@using DevilDaggersInfo.Web.Shared.Enums.Sortings.Admin
+@using DevilDaggersInfo.Api.Admin.Mods
 @using DevilDaggersInfo.Web.Client.Components.Admin
+@using DevilDaggersInfo.Web.Shared.Enums.Sortings.Admin
 
 <AdminAuthorizer Base="this" RequiredRole="@Roles.Mods">
 	<AdminOverview @ref="_overview" TGetDto="GetModForOverview" TSorting="ModSorting" Title="Admin - Mods" ApiCall="(int pageIndex, int pageSize, ModSorting? sortBy, bool isAscending) => Http.GetMods(pageIndex, pageSize, sortBy, isAscending)" DeletionApiCall="(int id) => Http.DeleteModById(id)" GridConfiguration="grid-cols-admin-mods-sm md:grid-cols-admin-mods-md lg:grid-cols-admin-mods-lg xl:grid-cols-admin-mods-xl">

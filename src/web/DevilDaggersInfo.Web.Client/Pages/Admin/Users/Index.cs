@@ -1,6 +1,6 @@
+using DevilDaggersInfo.Api.Admin.Users;
 using DevilDaggersInfo.Web.Client.Components.Admin;
 using DevilDaggersInfo.Web.Shared;
-using DevilDaggersInfo.Web.Shared.Dto.Admin.Users;
 using DevilDaggersInfo.Web.Shared.Extensions;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;

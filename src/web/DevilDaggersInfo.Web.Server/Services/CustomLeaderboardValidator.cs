@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Web.Shared.Dto.Admin.CustomLeaderboards;
+using DevilDaggersInfo.Api.Admin.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Server.Services;
 

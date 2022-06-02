@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Web.Shared.Dto.Admin.Spawnsets;
+using DevilDaggersInfo.Api.Admin.Spawnsets;
 
 namespace DevilDaggersInfo.Web.Server.Tests;
 

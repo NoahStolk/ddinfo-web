@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Web.Shared.Dto.Admin.CustomEntries;
+using DevilDaggersInfo.Api.Admin.CustomEntries;
 
 namespace DevilDaggersInfo.Web.Server.Converters.Admin;
 
