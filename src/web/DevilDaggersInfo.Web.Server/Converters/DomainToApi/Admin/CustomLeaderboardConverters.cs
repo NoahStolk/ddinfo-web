@@ -2,7 +2,7 @@ using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Web.Server.Entities.Enums;
 using AdminApi = DevilDaggersInfo.Api.Admin.CustomLeaderboards;
 
-namespace DevilDaggersInfo.Web.Server.Converters.Admin;
+namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Admin;
 
 public static class CustomLeaderboardConverters
 {

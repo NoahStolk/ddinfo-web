@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Api.Admin;
 using DevilDaggersInfo.Api.Admin.CustomEntries;
-using DevilDaggersInfo.Web.Server.Converters.Admin;
+using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Admin;
 using DevilDaggersInfo.Web.Server.Enums;
 using Microsoft.AspNetCore.Authorization;
 

@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Api.Admin.Users;
 
-namespace DevilDaggersInfo.Web.Server.Converters.Admin;
+namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Admin;
 
 public static class UserConverters
 {

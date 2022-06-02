@@ -1,7 +1,7 @@
 using DevilDaggersInfo.Web.Server.Entities.Enums;
 using AdminApi = DevilDaggersInfo.Api.Admin.Mods;
 
-namespace DevilDaggersInfo.Web.Server.Converters.Admin;
+namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Admin;
 
 public static class ModConverters
 {
