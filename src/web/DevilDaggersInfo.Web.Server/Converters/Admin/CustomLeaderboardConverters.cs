@@ -1,10 +1,12 @@
-using DevilDaggersInfo.Api.Admin.CustomLeaderboards;
+using DevilDaggersInfo.Common.Exceptions;
+using DevilDaggersInfo.Web.Server.Entities.Enums;
+using AdminApi = DevilDaggersInfo.Api.Admin.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Server.Converters.Admin;
 
 public static class CustomLeaderboardConverters
 {
-	public static GetCustomLeaderboardForOverview ToGetCustomLeaderboardForOverview(this CustomLeaderboardEntity customLeaderboard) => new()
+	public static AdminApi.GetCustomLeaderboardForOverview ToGetCustomLeaderboardForOverview(this CustomLeaderboardEntity customLeaderboard) => new()
 	{
 		Id = customLeaderboard.Id,
 		SpawnsetName = customLeaderboard.Spawnset.Name,
@@ -18,10 +20,10 @@ public static class CustomLeaderboardConverters
 		},
 		IsFeatured = customLeaderboard.IsFeatured,
 		DateCreated = customLeaderboard.DateCreated,
-		Category = customLeaderboard.Category,
+		Category = customLeaderboard.Category.ToAdminApi(),
 	};
 
-	public static GetCustomLeaderboard ToGetCustomLeaderboard(this CustomLeaderboardEntity customLeaderboard) => new()
+	public static AdminApi.GetCustomLeaderboard ToGetCustomLeaderboard(this CustomLeaderboardEntity customLeaderboard) => new()
 	{
 		Id = customLeaderboard.Id,
 		SpawnsetId = customLeaderboard.SpawnsetId,
@@ -34,6 +36,16 @@ public static class CustomLeaderboardConverters
 			Leviathan = customLeaderboard.TimeLeviathan.ToSecondsTime(),
 		},
 		IsFeatured = customLeaderboard.IsFeatured,
-		Category = customLeaderboard.Category,
+		Category = customLeaderboard.Category.ToAdminApi(),
+	};
+
+	public static AdminApi.CustomLeaderboardCategory ToAdminApi(this CustomLeaderboardCategory customLeaderboardCategory) => customLeaderboardCategory switch
+	{
+		CustomLeaderboardCategory.Survival => AdminApi.CustomLeaderboardCategory.Survival,
+		CustomLeaderboardCategory.TimeAttack => AdminApi.CustomLeaderboardCategory.TimeAttack,
+		CustomLeaderboardCategory.Speedrun => AdminApi.CustomLeaderboardCategory.Speedrun,
+		CustomLeaderboardCategory.Race => AdminApi.CustomLeaderboardCategory.Race,
+		CustomLeaderboardCategory.Pacifist => AdminApi.CustomLeaderboardCategory.Pacifist,
+		_ => throw new InvalidEnumConversionException(customLeaderboardCategory),
 	};
 }

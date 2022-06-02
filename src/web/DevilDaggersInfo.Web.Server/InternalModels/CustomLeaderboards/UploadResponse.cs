@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Web.Server.Entities.Enums;
+
 namespace DevilDaggersInfo.Web.Server.InternalModels.CustomLeaderboards;
 
 public class UploadResponse
@@ -7,8 +9,6 @@ public class UploadResponse
 	public int TotalPlayers { get; init; }
 
 	public CustomLeaderboardSummary Leaderboard { get; init; } = null!;
-
-	public CustomLeaderboardCategory Category { get; init; }
 
 	public List<CustomEntryWithReplay> Entries { get; init; } = new();
 

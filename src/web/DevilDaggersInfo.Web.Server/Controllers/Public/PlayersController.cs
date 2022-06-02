@@ -1,9 +1,10 @@
-using DevilDaggersInfo.Api.Main.CustomLeaderboards;
-using DevilDaggersInfo.Api.Main.Players;
 using DevilDaggersInfo.Web.Server.Caches.LeaderboardHistory;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
+using DevilDaggersInfo.Web.Server.Entities.Enums;
+using DevilDaggersInfo.Web.Server.Enums;
 using DevilDaggersInfo.Web.Server.InternalModels.LeaderboardHistory;
 using Microsoft.AspNetCore.Authorization;
+using MainApi = DevilDaggersInfo.Api.Main.Players;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Public;
 
@@ -28,11 +29,11 @@ public class PlayersController : ControllerBase
 
 	[HttpGet("leaderboard")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	public ActionResult<List<GetPlayerForLeaderboard>> GetPlayersForLeaderboard()
+	public ActionResult<List<MainApi.GetPlayerForLeaderboard>> GetPlayersForLeaderboard()
 	{
 		return _dbContext.Players
 			.AsNoTracking()
-			.Select(p => new GetPlayerForLeaderboard
+			.Select(p => new MainApi.GetPlayerForLeaderboard
 			{
 				Id = p.Id,
 				BanType = p.BanType,
@@ -45,7 +46,7 @@ public class PlayersController : ControllerBase
 
 	[HttpGet("settings")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	public ActionResult<List<GetPlayerForSettings>> GetPlayersForSettings()
+	public ActionResult<List<MainApi.GetPlayerForSettings>> GetPlayersForSettings()
 	{
 		List<PlayerEntity> players = _dbContext.Players
 			.AsNoTracking()
@@ -61,7 +62,7 @@ public class PlayersController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public ActionResult<GetPlayer> GetPlayerById([Required] int id)
+	public ActionResult<MainApi.GetPlayer> GetPlayerById([Required] int id)
 	{
 		PlayerEntity? player = _dbContext.Players
 			.AsNoTracking()
@@ -78,7 +79,7 @@ public class PlayersController : ControllerBase
 	[HttpGet("{id}/history")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	public GetPlayerHistory GetPlayerHistoryById([Required, Range(1, int.MaxValue)] int id)
+	public MainApi.GetPlayerHistory GetPlayerHistoryById([Required, Range(1, int.MaxValue)] int id)
 	{
 		var player = _dbContext.Players
 			.AsNoTracking()
@@ -91,15 +92,15 @@ public class PlayersController : ControllerBase
 		Dictionary<string, int> usernamesHistory = new();
 
 		int? scorePreviousForScoreHistory = null;
-		List<GetPlayerHistoryScoreEntry> scoreHistory = new();
+		List<MainApi.GetPlayerHistoryScoreEntry> scoreHistory = new();
 
 		int? rankPreviousForRankHistory = null;
-		List<GetPlayerHistoryRankEntry> rankHistory = new();
+		List<MainApi.GetPlayerHistoryRankEntry> rankHistory = new();
 
 		ulong? totalDeathsForActivityHistory = null;
 		ulong? totalTimeForActivityHistory = null;
 		DateTime? datePreviousForActivityHistory = null;
-		List<GetPlayerHistoryActivityEntry> activityHistory = new();
+		List<MainApi.GetPlayerHistoryActivityEntry> activityHistory = new();
 
 		foreach (string leaderboardHistoryPath in _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory).Where(p => p.EndsWith(".bin")))
 		{
@@ -166,7 +167,7 @@ public class PlayersController : ControllerBase
 			}
 		}
 
-		return new GetPlayerHistory
+		return new MainApi.GetPlayerHistory
 		{
 			ActivityHistory = activityHistory,
 			BestRank = bestRank,
@@ -179,7 +180,7 @@ public class PlayersController : ControllerBase
 
 	[HttpGet("{id}/custom-leaderboard-statistics")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	public async Task<ActionResult<List<GetPlayerCustomLeaderboardStatistics>>> GetCustomLeaderboardStatisticsByPlayerId([Required] int id)
+	public async Task<ActionResult<List<MainApi.GetPlayerCustomLeaderboardStatistics>>> GetCustomLeaderboardStatisticsByPlayerId([Required] int id)
 	{
 		var customEntries = await _dbContext.CustomEntries
 			.AsNoTracking()
@@ -208,7 +209,7 @@ public class PlayersController : ControllerBase
 			.Select(g => new { Category = g.Key, Count = g.Count() })
 			.ToDictionaryAsync(a => a.Category, a => a.Count);
 
-		List<GetPlayerCustomLeaderboardStatistics> stats = new();
+		List<MainApi.GetPlayerCustomLeaderboardStatistics> stats = new();
 		foreach (CustomLeaderboardCategory category in Enum.GetValues<CustomLeaderboardCategory>())
 		{
 			var customEntriesByCategory = customEntries.Where(c => c.Category == category);
@@ -260,7 +261,7 @@ public class PlayersController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
 	[ProducesResponseType(StatusCodes.Status403Forbidden)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public async Task<ActionResult<GetPlayerProfile>> GetProfileByPlayerId([Required] int id)
+	public async Task<ActionResult<MainApi.GetPlayerProfile>> GetProfileByPlayerId([Required] int id)
 	{
 		try
 		{
@@ -279,7 +280,7 @@ public class PlayersController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
 	[ProducesResponseType(StatusCodes.Status403Forbidden)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public async Task<ActionResult> UpdateProfileByPlayerId([Required] int id, EditPlayerProfile editPlayerProfile)
+	public async Task<ActionResult> UpdateProfileByPlayerId([Required] int id, MainApi.EditPlayerProfile editPlayerProfile)
 	{
 		try
 		{

@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Web.Server.Enums;
 using DevilDaggersInfo.Web.Server.InternalModels.AuditLog;
 
 namespace DevilDaggersInfo.Web.Server.Services;

@@ -9,7 +9,7 @@ public static class CustomLeaderboardConverters
 {
 	public static DdclApi.GetUploadSuccess ToDdclApi(this UploadResponse uploadResponse) => new()
 	{
-		Category = uploadResponse.Category.ToDdclApi(),
+		Category = uploadResponse.Leaderboard.Category.ToDdclApi(),
 		DaggersFiredState = uploadResponse.DaggersFiredState.ToDdclApi(),
 		DaggersHitState = uploadResponse.DaggersHitState.ToDdclApi(),
 		EnemiesAliveState = uploadResponse.EnemiesAliveState.ToDdclApi(),

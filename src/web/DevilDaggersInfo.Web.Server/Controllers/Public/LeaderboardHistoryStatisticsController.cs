@@ -1,5 +1,6 @@
 using DevilDaggersInfo.Api.Main.LeaderboardHistoryStatistics;
 using DevilDaggersInfo.Web.Server.Caches.LeaderboardHistory;
+using DevilDaggersInfo.Web.Server.Enums;
 using DevilDaggersInfo.Web.Server.InternalModels.LeaderboardHistory;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Public;

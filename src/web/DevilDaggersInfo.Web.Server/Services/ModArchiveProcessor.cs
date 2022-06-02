@@ -1,5 +1,6 @@
 using DevilDaggersInfo.Core.Mod.Utils;
 using DevilDaggersInfo.Web.Server.Caches.ModArchives;
+using DevilDaggersInfo.Web.Server.Enums;
 using DevilDaggersInfo.Web.Server.InternalModels.AuditLog;
 using DevilDaggersInfo.Web.Shared.Utils;
 

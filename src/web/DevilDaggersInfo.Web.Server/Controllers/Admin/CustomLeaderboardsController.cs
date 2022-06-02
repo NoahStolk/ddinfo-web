@@ -87,13 +87,13 @@ public class CustomLeaderboardsController : ControllerBase
 		if (_dbContext.CustomLeaderboards.Any(cl => cl.SpawnsetId == addCustomLeaderboard.SpawnsetId))
 			return BadRequest("A leaderboard for this spawnset already exists.");
 
-		_validator.ValidateCustomLeaderboard(addCustomLeaderboard.SpawnsetId, addCustomLeaderboard.Category, addCustomLeaderboard.Daggers, addCustomLeaderboard.IsFeatured);
+		_validator.ValidateCustomLeaderboard(addCustomLeaderboard.SpawnsetId, addCustomLeaderboard.Category.ToDomain(), addCustomLeaderboard.Daggers.ToDomain(), addCustomLeaderboard.IsFeatured);
 
 		CustomLeaderboardEntity customLeaderboard = new()
 		{
 			DateCreated = DateTime.UtcNow,
 			SpawnsetId = addCustomLeaderboard.SpawnsetId,
-			Category = addCustomLeaderboard.Category,
+			Category = addCustomLeaderboard.Category.ToDomain(),
 			TimeBronze = addCustomLeaderboard.Daggers.Bronze.To10thMilliTime(),
 			TimeSilver = addCustomLeaderboard.Daggers.Silver.To10thMilliTime(),
 			TimeGolden = addCustomLeaderboard.Daggers.Golden.To10thMilliTime(),

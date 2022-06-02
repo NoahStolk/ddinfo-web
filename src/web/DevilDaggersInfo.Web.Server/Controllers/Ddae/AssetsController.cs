@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Api.Ddae.Assets;
+using DevilDaggersInfo.Web.Server.Enums;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Ddae;
 

@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Web.Server.Enums;
 using DevilDaggersInfo.Web.Server.InternalModels.LeaderboardHistory;
 
 namespace DevilDaggersInfo.Web.Server.HostedServices;

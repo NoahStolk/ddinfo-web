@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Web.Server.Entities.Enums;
+using DevilDaggersInfo.Web.Server.Enums;
 
 namespace DevilDaggersInfo.Web.Server.Utils;
 

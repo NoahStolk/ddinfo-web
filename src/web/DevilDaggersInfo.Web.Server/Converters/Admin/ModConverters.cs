@@ -1,13 +1,14 @@
-using DevilDaggersInfo.Api.Admin.Mods;
+using DevilDaggersInfo.Web.Server.Entities.Enums;
+using AdminApi = DevilDaggersInfo.Api.Admin.Mods;
 
 namespace DevilDaggersInfo.Web.Server.Converters.Admin;
 
 public static class ModConverters
 {
-	public static GetModForOverview ToGetModForOverview(this ModEntity mod) => new()
+	public static AdminApi.GetModForOverview ToGetModForOverview(this ModEntity mod) => new()
 	{
 		Id = mod.Id,
-		ModTypes = mod.ModTypes,
+		ModTypes = mod.ModTypes.ToAdminApi(),
 		HtmlDescription = mod.HtmlDescription?.TrimAfter(40, true),
 		IsHidden = mod.IsHidden,
 		LastUpdated = mod.LastUpdated,
@@ -16,10 +17,10 @@ public static class ModConverters
 		Url = mod.Url?.TrimAfter(40, true),
 	};
 
-	public static GetMod ToGetMod(this ModEntity mod, List<string>? binaryNames, List<string>? screenshotNames) => new()
+	public static AdminApi.GetMod ToGetMod(this ModEntity mod, List<string>? binaryNames, List<string>? screenshotNames) => new()
 	{
 		Id = mod.Id,
-		ModTypes = mod.ModTypes,
+		ModTypes = mod.ModTypes.ToAdminApi(),
 		HtmlDescription = mod.HtmlDescription,
 		IsHidden = mod.IsHidden,
 		LastUpdated = mod.LastUpdated,
@@ -30,4 +31,7 @@ public static class ModConverters
 		BinaryNames = binaryNames,
 		ScreenshotNames = screenshotNames,
 	};
+
+	// TODO: Remove cast.
+	private static AdminApi.ModTypes ToAdminApi(this ModTypes modTypes) => (AdminApi.ModTypes)modTypes;
 }
