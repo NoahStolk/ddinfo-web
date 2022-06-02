@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Web.Shared.Dto.Public.Tools;
+using DevilDaggersInfo.Api.Main.Tools;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Public;
 

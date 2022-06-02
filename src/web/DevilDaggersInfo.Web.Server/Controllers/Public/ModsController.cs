@@ -1,7 +1,7 @@
+using DevilDaggersInfo.Api.Main.Mods;
 using DevilDaggersInfo.Web.Server.Converters.Public;
 using DevilDaggersInfo.Web.Server.InternalModels.Mods;
 using DevilDaggersInfo.Web.Shared.Dto;
-using DevilDaggersInfo.Web.Shared.Dto.Public.Mods;
 using DevilDaggersInfo.Web.Shared.Enums.Sortings.Public;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Public;

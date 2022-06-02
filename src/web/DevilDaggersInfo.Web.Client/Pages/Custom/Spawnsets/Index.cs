@@ -1,7 +1,7 @@
+using DevilDaggersInfo.Api.Main.Spawnsets;
 using DevilDaggersInfo.Web.Client.Extensions;
 using DevilDaggersInfo.Web.Shared.Constants;
 using DevilDaggersInfo.Web.Shared.Dto;
-using DevilDaggersInfo.Web.Shared.Dto.Public.Spawnsets;
 using DevilDaggersInfo.Web.Shared.Enums.Sortings.Public;
 using DevilDaggersInfo.Web.Shared.Utils;
 using Microsoft.AspNetCore.Components;

@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Shared.Dto.Public;
+namespace DevilDaggersInfo.Api.Main;
 
 public interface IGetLeaderboardGlobalDto
 {

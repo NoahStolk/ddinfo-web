@@ -1,6 +1,4 @@
-using DevilDaggersInfo.Api.Main.CustomLeaderboards;
-
-namespace DevilDaggersInfo.Web.Shared.Dto.Public.CustomLeaderboards;
+namespace DevilDaggersInfo.Api.Main.CustomLeaderboards;
 
 public record GetCustomLeaderboard
 {

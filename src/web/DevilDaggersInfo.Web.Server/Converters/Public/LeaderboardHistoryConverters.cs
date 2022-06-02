@@ -1,5 +1,5 @@
+using DevilDaggersInfo.Api.Main.LeaderboardHistory;
 using DevilDaggersInfo.Web.Server.InternalModels.LeaderboardHistory;
-using DevilDaggersInfo.Web.Shared.Dto.Public.LeaderboardHistory;
 
 namespace DevilDaggersInfo.Web.Server.Converters.Public;
 

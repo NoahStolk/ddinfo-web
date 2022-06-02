@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Web.Shared.Dto.Public.Players;
+using DevilDaggersInfo.Api.Main.Players;
 
 namespace DevilDaggersInfo.Web.Server.Converters.Public;
 

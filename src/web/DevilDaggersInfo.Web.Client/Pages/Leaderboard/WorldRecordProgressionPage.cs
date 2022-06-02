@@ -1,10 +1,10 @@
+using DevilDaggersInfo.Api.Main.WorldRecords;
 using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Core.Wiki.Extensions;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Data;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Options.LineChart;
 using DevilDaggersInfo.Web.Client.HttpClients;
 using DevilDaggersInfo.Web.Client.Utils;
-using DevilDaggersInfo.Web.Shared.Dto.Public.WorldRecords;
 using DevilDaggersInfo.Web.Shared.Utils;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;

@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Web.Shared.Dto.Public.Spawnsets;
+using DevilDaggersInfo.Api.Main.Spawnsets;
 
 namespace DevilDaggersInfo.Web.Server.Converters.Public;
 

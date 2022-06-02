@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Shared.Dto.Public.LeaderboardHistoryStatistics;
+namespace DevilDaggersInfo.Api.Main.LeaderboardHistoryStatistics;
 
 public record GetLeaderboardHistoryStatistics
 {

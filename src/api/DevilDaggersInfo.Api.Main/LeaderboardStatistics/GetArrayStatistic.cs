@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Shared.Dto.Public.LeaderboardStatistics;
+namespace DevilDaggersInfo.Api.Main.LeaderboardStatistics;
 
 public record GetArrayStatistic
 {

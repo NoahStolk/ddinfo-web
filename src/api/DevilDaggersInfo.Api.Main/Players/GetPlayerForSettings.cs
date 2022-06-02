@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Shared.Dto.Public.Players;
+namespace DevilDaggersInfo.Api.Main.Players;
 
 public record GetPlayerForSettings
 {

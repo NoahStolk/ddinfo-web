@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Web.Shared.Dto.Public.Leaderboards;
+using DevilDaggersInfo.Api.Main.Leaderboards;
 
 namespace DevilDaggersInfo.Web.Server.Converters.Public;
 

@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Shared.Dto.Public.Mods;
+namespace DevilDaggersInfo.Api.Main.Mods;
 
 [Flags]
 public enum ModTypes

@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Shared.Extensions;
+namespace DevilDaggersInfo.Web.Server.Extensions;
 
 public static class CustomLeaderboardsClientExtensions
 {
@@ -7,12 +7,5 @@ public static class CustomLeaderboardsClientExtensions
 		"DevilDaggersCustomLeaderboards" => CustomLeaderboardsClient.DevilDaggersCustomLeaderboards,
 		"ddstats-rust" => CustomLeaderboardsClient.DdstatsRust,
 		_ => throw new Exception($"Unknown CustomLeaderboardsClient '{clientString}'."),
-	};
-
-	public static string ToDisplayString(this CustomLeaderboardsClient client) => client switch
-	{
-		CustomLeaderboardsClient.DevilDaggersCustomLeaderboards => "DDCL",
-		CustomLeaderboardsClient.DdstatsRust => "ddstats-rust",
-		_ => throw new Exception($"Unknown CustomLeaderboardsClient '{client}'."),
 	};
 }

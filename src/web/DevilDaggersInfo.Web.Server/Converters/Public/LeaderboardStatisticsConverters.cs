@@ -1,5 +1,5 @@
+using DevilDaggersInfo.Api.Main.LeaderboardStatistics;
 using DevilDaggersInfo.Web.Server.Caches.LeaderboardStatistics;
-using DevilDaggersInfo.Web.Shared.Dto.Public.LeaderboardStatistics;
 
 namespace DevilDaggersInfo.Web.Server.Converters.Public;
 

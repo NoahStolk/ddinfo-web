@@ -1,5 +1,5 @@
-using DevilDaggersInfo.Web.Shared.Dto.Public.Leaderboards;
-using DevilDaggersInfo.Web.Shared.Dto.Public.Players;
+using DevilDaggersInfo.Api.Main.Leaderboards;
+using DevilDaggersInfo.Api.Main.Players;
 
 namespace DevilDaggersInfo.Web.Client.Pages.Leaderboard;
 

@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Web.Shared.Enums;
+using DevilDaggersInfo.Api.Main.CustomLeaderboards;
 using Microsoft.AspNetCore.Components;
 
 namespace DevilDaggersInfo.Web.Client.Extensions;

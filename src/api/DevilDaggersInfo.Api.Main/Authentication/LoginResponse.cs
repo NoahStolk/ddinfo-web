@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Shared.Dto.Public.Authentication;
+namespace DevilDaggersInfo.Api.Main.Authentication;
 
 public record LoginResponse
 {

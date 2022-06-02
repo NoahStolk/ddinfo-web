@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Shared.Dto.Public.LeaderboardHistory;
+namespace DevilDaggersInfo.Api.Main.LeaderboardHistory;
 
 public record GetEntryHistory : IGetEntryDto
 {

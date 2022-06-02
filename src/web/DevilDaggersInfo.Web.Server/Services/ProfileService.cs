@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Web.Shared.Dto.Public.Players;
+using DevilDaggersInfo.Api.Main.Players;
 using System.Net;
 using System.Security.Claims;
 

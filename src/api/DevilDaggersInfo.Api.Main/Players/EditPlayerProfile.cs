@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace DevilDaggersInfo.Web.Shared.Dto.Public.Players;
+namespace DevilDaggersInfo.Api.Main.Players;
 
 public record EditPlayerProfile
 {

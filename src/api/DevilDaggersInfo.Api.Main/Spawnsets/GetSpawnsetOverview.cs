@@ -1,6 +1,4 @@
-using DevilDaggersInfo.Core.Spawnset.Enums;
-
-namespace DevilDaggersInfo.Web.Shared.Dto.Public.Spawnsets;
+namespace DevilDaggersInfo.Api.Main.Spawnsets;
 
 public record GetSpawnsetOverview
 {

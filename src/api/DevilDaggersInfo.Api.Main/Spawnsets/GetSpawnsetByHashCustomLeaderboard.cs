@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Shared.Dto.Public.Spawnsets;
+namespace DevilDaggersInfo.Api.Main.Spawnsets;
 
 public record GetSpawnsetByHashCustomLeaderboard
 {

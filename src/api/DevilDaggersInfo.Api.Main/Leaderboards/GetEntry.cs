@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Shared.Dto.Public.Leaderboards;
+namespace DevilDaggersInfo.Api.Main.Leaderboards;
 
 public record GetEntry : IGetEntryDto
 {

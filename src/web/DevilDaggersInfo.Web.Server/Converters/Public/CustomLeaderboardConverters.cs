@@ -1,6 +1,5 @@
 using DevilDaggersInfo.Api.Main.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.InternalModels.CustomLeaderboards;
-using DevilDaggersInfo.Web.Shared.Dto.Public.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Server.Converters.Public;
 

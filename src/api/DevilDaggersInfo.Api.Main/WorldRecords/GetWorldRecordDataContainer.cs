@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Shared.Dto.Public.WorldRecords;
+namespace DevilDaggersInfo.Api.Main.WorldRecords;
 
 public record GetWorldRecordDataContainer
 {
