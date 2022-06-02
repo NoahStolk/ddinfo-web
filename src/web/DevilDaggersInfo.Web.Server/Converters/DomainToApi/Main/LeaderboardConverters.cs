@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Api.Main.Leaderboards;
 
-namespace DevilDaggersInfo.Web.Server.Converters.Public;
+namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 
 public static class LeaderboardConverters
 {

@@ -1,7 +1,7 @@
 using DevilDaggersInfo.Api.Main.LeaderboardStatistics;
 using DevilDaggersInfo.Web.Server.Caches.LeaderboardStatistics;
 
-namespace DevilDaggersInfo.Web.Server.Converters.Public;
+namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 
 public static class LeaderboardStatisticsConverters
 {

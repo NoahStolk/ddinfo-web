@@ -2,7 +2,7 @@ using DevilDaggersInfo.Api.Main;
 using DevilDaggersInfo.Api.Main.Spawnsets;
 using DevilDaggersInfo.Web.Server.Caches.SpawnsetHashes;
 using DevilDaggersInfo.Web.Server.Caches.SpawnsetSummaries;
-using DevilDaggersInfo.Web.Server.Converters.Public;
+using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Public;
 

@@ -1,7 +1,7 @@
 using DevilDaggersInfo.Api.Main.LeaderboardHistory;
 using DevilDaggersInfo.Web.Server.InternalModels.LeaderboardHistory;
 
-namespace DevilDaggersInfo.Web.Server.Converters.Public;
+namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 
 public static class LeaderboardHistoryConverters
 {

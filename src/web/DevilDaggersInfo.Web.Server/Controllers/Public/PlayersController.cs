@@ -1,7 +1,7 @@
 using DevilDaggersInfo.Api.Main.CustomLeaderboards;
 using DevilDaggersInfo.Api.Main.Players;
 using DevilDaggersInfo.Web.Server.Caches.LeaderboardHistory;
-using DevilDaggersInfo.Web.Server.Converters.Public;
+using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 using DevilDaggersInfo.Web.Server.InternalModels.LeaderboardHistory;
 using Microsoft.AspNetCore.Authorization;
 

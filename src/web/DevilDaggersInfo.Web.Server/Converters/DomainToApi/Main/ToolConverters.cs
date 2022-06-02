@@ -3,7 +3,7 @@ using DevilDaggersInfo.Web.Server.Entities.Enums;
 using DevilDaggersInfo.Web.Server.InternalModels.Changelog;
 using MainApi = DevilDaggersInfo.Api.Main.Tools;
 
-namespace DevilDaggersInfo.Web.Server.Converters.Public;
+namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 
 public static class ToolConverters
 {
