@@ -2,30 +2,25 @@ using DdseApi = DevilDaggersInfo.Api.Ddse.Spawnsets;
 
 namespace DevilDaggersInfo.Web.Server.Converters.Ddse;
 
-public static class SpawnsetConverters
+// TODO: Use actual domain models.
+public static class DomainToApi
 {
-	public static DdseApi.GetSpawnsetDdse ToGetSpawnsetDdse(this SpawnsetEntity spawnset, SpawnsetSummary spawnsetSummary, bool hasCustomLeaderboard) => new()
+	public static DdseApi.GetSpawnsetDdse ToDdseApi(this SpawnsetEntity spawnset, SpawnsetSummary spawnsetSummary, bool hasCustomLeaderboard) => new()
 	{
 		MaxDisplayWaves = spawnset.MaxDisplayWaves,
 		HtmlDescription = spawnset.HtmlDescription,
 		LastUpdated = spawnset.LastUpdated,
-		SpawnsetData = spawnsetSummary.ToGetSpawnsetDataDdse(),
+		SpawnsetData = spawnsetSummary.ToDdseApi(),
 		Name = spawnset.Name,
 		AuthorName = spawnset.Player.PlayerName,
 		HasCustomLeaderboard = hasCustomLeaderboard,
 		IsPractice = spawnset.IsPractice,
 	};
 
-	private static DdseApi.GetSpawnsetDataDdse ToGetSpawnsetDataDdse(this SpawnsetSummary spawnsetSummary) => new()
+	private static DdseApi.GetSpawnsetDataDdse ToDdseApi(this SpawnsetSummary spawnsetSummary) => new()
 	{
 		AdditionalGems = spawnsetSummary.EffectivePlayerSettings.GemsOrHoming,
-		GameMode = spawnsetSummary.GameMode switch
-		{
-			GameMode.Survival => DdseApi.GameMode.Survival,
-			GameMode.TimeAttack => DdseApi.GameMode.TimeAttack,
-			GameMode.Race => DdseApi.GameMode.Race,
-			_ => throw new InvalidOperationException($"Cannot convert game mode '{spawnsetSummary.GameMode}' to a DDSE API model."),
-		},
+		GameMode = spawnsetSummary.GameMode.ToDdseApi(),
 		Hand = (byte)spawnsetSummary.EffectivePlayerSettings.HandLevel,
 		LoopLength = spawnsetSummary.LoopSection.Length,
 		LoopSpawnCount = spawnsetSummary.LoopSection.SpawnCount,
@@ -34,5 +29,13 @@ public static class SpawnsetConverters
 		SpawnVersion = spawnsetSummary.SpawnVersion,
 		TimerStart = spawnsetSummary.TimerStart,
 		WorldVersion = spawnsetSummary.WorldVersion,
+	};
+
+	private static DdseApi.GameMode ToDdseApi(this GameMode gameMode) => gameMode switch
+	{
+		GameMode.Survival => DdseApi.GameMode.Survival,
+		GameMode.TimeAttack => DdseApi.GameMode.TimeAttack,
+		GameMode.Race => DdseApi.GameMode.Race,
+		_ => throw new InvalidOperationException($"Cannot convert game mode '{gameMode}' to a DDSE API model."),
 	};
 }

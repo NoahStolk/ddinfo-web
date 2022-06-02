@@ -55,7 +55,7 @@ public class ModsController : ControllerBase
 			data = data.Where(kvp => kvp.Value.ModArchive != null).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
 		return data
-			.Select(kvp => kvp.Key.ToGetModDdae(kvp.Value))
+			.Select(kvp => kvp.Key.ToDdaeApi(kvp.Value))
 			.ToList();
 	}
 

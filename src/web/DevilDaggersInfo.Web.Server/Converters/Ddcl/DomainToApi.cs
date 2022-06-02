@@ -80,7 +80,7 @@ public static class DomainToApi
 		CustomLeaderboardCategory.Speedrun => DdclApi.CustomLeaderboardCategory.Speedrun,
 		CustomLeaderboardCategory.Race => DdclApi.CustomLeaderboardCategory.Race,
 		CustomLeaderboardCategory.Pacifist => DdclApi.CustomLeaderboardCategory.Pacifist,
-		_ => throw new InvalidOperationException($"Cannot convert custom leaderboard category '{customLeaderboardCategory}' to DDCL API model."),
+		_ => throw new InvalidOperationException($"Cannot convert custom leaderboard category '{customLeaderboardCategory}' to a DDCL API model."),
 	};
 
 	private static DdclApi.GetScoreState<T> ToDdclApi<T>(this UploadResponseScoreState<T> scoreState)
