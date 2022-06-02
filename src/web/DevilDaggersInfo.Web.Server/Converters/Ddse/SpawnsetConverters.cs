@@ -1,10 +1,10 @@
-using DevilDaggersInfo.Web.Shared.Dto.Ddse.Spawnsets;
+using DdseApi = DevilDaggersInfo.Api.Ddse.Spawnsets;
 
 namespace DevilDaggersInfo.Web.Server.Converters.Ddse;
 
 public static class SpawnsetConverters
 {
-	public static GetSpawnsetDdse ToGetSpawnsetDdse(this SpawnsetEntity spawnset, SpawnsetSummary spawnsetSummary, bool hasCustomLeaderboard) => new()
+	public static DdseApi.GetSpawnsetDdse ToGetSpawnsetDdse(this SpawnsetEntity spawnset, SpawnsetSummary spawnsetSummary, bool hasCustomLeaderboard) => new()
 	{
 		MaxDisplayWaves = spawnset.MaxDisplayWaves,
 		HtmlDescription = spawnset.HtmlDescription,
@@ -16,10 +16,16 @@ public static class SpawnsetConverters
 		IsPractice = spawnset.IsPractice,
 	};
 
-	private static GetSpawnsetDataDdse ToGetSpawnsetDataDdse(this SpawnsetSummary spawnsetSummary) => new()
+	private static DdseApi.GetSpawnsetDataDdse ToGetSpawnsetDataDdse(this SpawnsetSummary spawnsetSummary) => new()
 	{
 		AdditionalGems = spawnsetSummary.EffectivePlayerSettings.GemsOrHoming,
-		GameMode = spawnsetSummary.GameMode,
+		GameMode = spawnsetSummary.GameMode switch
+		{
+			GameMode.Survival => DdseApi.GameMode.Survival,
+			GameMode.TimeAttack => DdseApi.GameMode.TimeAttack,
+			GameMode.Race => DdseApi.GameMode.Race,
+			_ => throw new InvalidOperationException($"Cannot convert game mode '{spawnsetSummary.GameMode}' to a DDSE API model."),
+		},
 		Hand = (byte)spawnsetSummary.EffectivePlayerSettings.HandLevel,
 		LoopLength = spawnsetSummary.LoopSection.Length,
 		LoopSpawnCount = spawnsetSummary.LoopSection.SpawnCount,

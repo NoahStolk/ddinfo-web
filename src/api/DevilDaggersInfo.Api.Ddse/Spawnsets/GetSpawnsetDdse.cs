@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Shared.Dto.Ddse.Spawnsets;
+namespace DevilDaggersInfo.Api.Ddse.Spawnsets;
 
 public record GetSpawnsetDdse
 {

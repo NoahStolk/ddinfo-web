@@ -1,6 +1,6 @@
+using DevilDaggersInfo.Api.Ddse.Spawnsets;
 using DevilDaggersInfo.Web.Server.Caches.SpawnsetSummaries;
 using DevilDaggersInfo.Web.Server.Converters.Ddse;
-using DevilDaggersInfo.Web.Shared.Dto.Ddse.Spawnsets;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Ddse;
 
