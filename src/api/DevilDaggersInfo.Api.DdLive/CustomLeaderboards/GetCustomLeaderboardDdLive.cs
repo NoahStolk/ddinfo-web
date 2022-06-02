@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Shared.Dto.DdLive.CustomLeaderboards;
+namespace DevilDaggersInfo.Api.DdLive.CustomLeaderboards;
 
 public record GetCustomLeaderboardDdLive
 {

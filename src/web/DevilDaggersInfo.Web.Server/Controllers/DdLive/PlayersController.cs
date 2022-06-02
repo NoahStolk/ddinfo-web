@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Web.Shared.Dto.DdLive.Players;
+using DevilDaggersInfo.Api.DdLive.Players;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.DdLive;
 

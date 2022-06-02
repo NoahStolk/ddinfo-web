@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Shared.Dto.DdLive.LeaderboardStatistics;
+namespace DevilDaggersInfo.Api.DdLive.LeaderboardStatistics;
 
 public record GetLeaderboardStatisticsDdLive
 {
