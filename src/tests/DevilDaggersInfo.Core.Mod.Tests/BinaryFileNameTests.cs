@@ -5,14 +5,15 @@ public class BinaryFileNameTests
 {
 	private const string _modName = "testmod";
 
-	// TODO: Test empty mod name.
-	[DataRow($"audio-{_modName}-main", _modName, $"audio-{_modName}-main")]
-	[DataRow($"_audio-{_modName}-main", _modName, $"audio-{_modName}-main")]
-	[DataRow($"_dd_{_modName}_main", _modName, $"dd-{_modName}-main")]
-	[DataRow("_audiodiporg", "dip", "audio-dip-org")]
+	[DataRow(ModBinaryType.Audio, $"audio-{_modName}-main", _modName, $"audio-{_modName}-main")]
+	[DataRow(ModBinaryType.Audio, $"_audio-{_modName}-main", _modName, $"audio-{_modName}-main")]
+	[DataRow(ModBinaryType.Dd, $"_dd_{_modName}_main", _modName, $"dd-{_modName}-main")]
+	[DataRow(ModBinaryType.Audio, "_audiodiporg", "dip", "audio-dip-org")]
+	[DataRow(ModBinaryType.Audio, "_dddiporg", "dip", "audio-dip-org")]
+	[DataRow(ModBinaryType.Dd, "main", "", "dd--main")]
 	[DataTestMethod]
-	public void TestBinaryFileNameSanitization(string fileName, string modName, string expectedSanitizedBinaryFileName)
+	public void TestBinaryFileNameSanitization(ModBinaryType modBinaryType, string fileName, string modName, string expectedSanitizedBinaryFileName)
 	{
-		Assert.AreEqual(expectedSanitizedBinaryFileName, BinaryFileNameUtils.SanitizeModBinaryFileName(fileName, modName));
+		Assert.AreEqual(expectedSanitizedBinaryFileName, BinaryFileNameUtils.SanitizeModBinaryFileName(modBinaryType, fileName, modName));
 	}
 }

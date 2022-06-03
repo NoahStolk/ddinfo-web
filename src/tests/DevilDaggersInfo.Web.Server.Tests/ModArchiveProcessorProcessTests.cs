@@ -29,7 +29,7 @@ public class ModArchiveProcessorProcessTests : ModArchiveProcessorTests
 
 		ModBinaryCacheData processedBinary = GetProcessedBinaryFromArchiveEntry(archive.Entries[0]);
 		Assert.AreEqual(ModBinaryType.Dd, processedBinary.ModBinaryType);
-		Assert.AreEqual(BinaryFileNameUtils.SanitizeModBinaryFileName(binaryName, modName), processedBinary.Name);
+		Assert.AreEqual(BinaryFileNameUtils.SanitizeModBinaryFileName(ModBinaryType.Dd, binaryName, modName), processedBinary.Name);
 		Assert.AreEqual(1, processedBinary.Chunks.Count);
 		Assert.AreEqual(assetName, processedBinary.Chunks[0].Name);
 		Assert.AreEqual(AssetType.ObjectBinding, processedBinary.Chunks[0].AssetType);
@@ -55,7 +55,7 @@ public class ModArchiveProcessorProcessTests : ModArchiveProcessorTests
 
 		ModBinaryCacheData processedBinary = GetProcessedBinaryFromArchiveEntry(archive.Entries[0]);
 		Assert.AreEqual(ModBinaryType.Dd, processedBinary.ModBinaryType);
-		Assert.AreEqual(BinaryFileNameUtils.SanitizeModBinaryFileName(binaryName, modName), processedBinary.Name);
+		Assert.AreEqual(BinaryFileNameUtils.SanitizeModBinaryFileName(ModBinaryType.Dd, binaryName, modName), processedBinary.Name);
 		Assert.AreEqual(2, processedBinary.Chunks.Count);
 		Assert.AreEqual(assetName1, processedBinary.Chunks[0].Name);
 		Assert.AreEqual(AssetType.ObjectBinding, processedBinary.Chunks[0].AssetType);
@@ -93,7 +93,7 @@ public class ModArchiveProcessorProcessTests : ModArchiveProcessorTests
 
 		ModBinaryCacheData processedBinary1 = GetProcessedBinaryFromArchiveEntry(archive.Entries[0]);
 		Assert.AreEqual(ModBinaryType.Dd, processedBinary1.ModBinaryType);
-		Assert.AreEqual(BinaryFileNameUtils.SanitizeModBinaryFileName(binaryName1, modName), processedBinary1.Name);
+		Assert.AreEqual(BinaryFileNameUtils.SanitizeModBinaryFileName(ModBinaryType.Dd, binaryName1, modName), processedBinary1.Name);
 		Assert.AreEqual(2, processedBinary1.Chunks.Count);
 		Assert.AreEqual(assetName1, processedBinary1.Chunks[0].Name);
 		Assert.AreEqual(AssetType.ObjectBinding, processedBinary1.Chunks[0].AssetType);
@@ -102,7 +102,7 @@ public class ModArchiveProcessorProcessTests : ModArchiveProcessorTests
 
 		ModBinaryCacheData processedBinary2 = GetProcessedBinaryFromArchiveEntry(archive.Entries[1]);
 		Assert.AreEqual(ModBinaryType.Dd, processedBinary2.ModBinaryType);
-		Assert.AreEqual(BinaryFileNameUtils.SanitizeModBinaryFileName(binaryName2, modName), processedBinary2.Name);
+		Assert.AreEqual(BinaryFileNameUtils.SanitizeModBinaryFileName(ModBinaryType.Dd, binaryName2, modName), processedBinary2.Name);
 		Assert.AreEqual(2, processedBinary2.Chunks.Count);
 		Assert.AreEqual(assetName1, processedBinary2.Chunks[0].Name);
 		Assert.AreEqual(AssetType.ObjectBinding, processedBinary2.Chunks[0].AssetType);
