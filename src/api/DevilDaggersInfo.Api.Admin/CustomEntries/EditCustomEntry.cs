@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersInfo.Api.Admin.CustomEntries;
 
-public record EditCustomEntry
+public class EditCustomEntry
 {
 	public int CustomLeaderboardId { get; init; }
 

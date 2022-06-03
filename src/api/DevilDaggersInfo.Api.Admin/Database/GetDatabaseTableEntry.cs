@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Api.Admin.Database;
 
-public record GetDatabaseTableEntry
+public class GetDatabaseTableEntry
 {
 	public GetDatabaseTableEntry(string name, int count, int dataSize, int indexSize)
 	{

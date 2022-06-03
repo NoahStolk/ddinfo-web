@@ -2,7 +2,7 @@ using DevilDaggersInfo.Api.Admin;
 
 namespace DevilDaggersInfo.Api.Admin.Spawnsets;
 
-public record GetSpawnsetForOverview : IAdminOverviewGetDto
+public class GetSpawnsetForOverview : IAdminOverviewGetDto
 {
 	public int Id { get; init; }
 

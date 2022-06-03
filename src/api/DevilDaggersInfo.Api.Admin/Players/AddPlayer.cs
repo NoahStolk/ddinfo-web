@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersInfo.Api.Admin.Players;
 
-public record AddPlayer
+public class AddPlayer
 {
 	[Range(1, int.MaxValue)]
 	public int Id { get; set; }

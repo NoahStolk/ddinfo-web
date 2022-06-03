@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Api.Admin.Players;
 
-public record GetPlayerForOverview : IAdminOverviewGetDto
+public class GetPlayerForOverview : IAdminOverviewGetDto
 {
 	public int Id { get; init; }
 

@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Api.Admin.Health;
 
-public record GetResponseTimes
+public class GetResponseTimes
 {
 	public Dictionary<string, GetRequestPathEntry> ResponseTimeSummaryByRequestPath { get; set; } = new();
 

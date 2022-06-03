@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Api.Admin.Mods;
 
-public record GetMod
+public class GetMod
 {
 	public int Id { get; init; }
 

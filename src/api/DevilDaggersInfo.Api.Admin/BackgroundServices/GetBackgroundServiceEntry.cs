@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Api.Admin.BackgroundServices;
 
-public record GetBackgroundServiceEntry
+public class GetBackgroundServiceEntry
 {
 	public GetBackgroundServiceEntry(string name, DateTime lastExecuted, TimeSpan interval)
 	{

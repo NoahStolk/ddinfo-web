@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Api.Admin.FileSystem;
 
-public record GetFileSystemEntry
+public class GetFileSystemEntry
 {
 	public GetFileSystemEntry(string name, int count, long size)
 	{

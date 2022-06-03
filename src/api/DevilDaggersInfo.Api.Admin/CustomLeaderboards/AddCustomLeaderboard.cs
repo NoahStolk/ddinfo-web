@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersInfo.Api.Admin.CustomLeaderboards;
 
-public record AddCustomLeaderboard
+public class AddCustomLeaderboard
 {
 	[Required]
 	public int SpawnsetId { get; set; }

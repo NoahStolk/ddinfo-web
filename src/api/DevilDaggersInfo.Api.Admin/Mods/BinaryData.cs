@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersInfo.Api.Admin.Mods;
 
-public record BinaryData
+public class BinaryData
 {
 	/// <summary>
 	/// This name should not contain the type prefix or the mod name.

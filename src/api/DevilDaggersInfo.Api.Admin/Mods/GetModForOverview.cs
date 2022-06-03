@@ -2,7 +2,7 @@ using DevilDaggersInfo.Api.Admin;
 
 namespace DevilDaggersInfo.Api.Admin.Mods;
 
-public record GetModForOverview : IAdminOverviewGetDto
+public class GetModForOverview : IAdminOverviewGetDto
 {
 	public int Id { get; init; }
 

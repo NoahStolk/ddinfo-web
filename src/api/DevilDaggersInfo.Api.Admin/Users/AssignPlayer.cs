@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Api.Admin.Users;
 
-public record AssignPlayer
+public class AssignPlayer
 {
 	public int PlayerId { get; set; }
 }

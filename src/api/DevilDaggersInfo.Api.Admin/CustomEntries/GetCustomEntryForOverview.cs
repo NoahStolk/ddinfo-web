@@ -2,7 +2,7 @@ using DevilDaggersInfo.Api.Admin;
 
 namespace DevilDaggersInfo.Api.Admin.CustomEntries;
 
-public record GetCustomEntryForOverview : IAdminOverviewGetDto
+public class GetCustomEntryForOverview : IAdminOverviewGetDto
 {
 	public int Id { get; init; }
 

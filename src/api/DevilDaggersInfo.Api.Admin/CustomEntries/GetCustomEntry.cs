@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Api.Admin.CustomEntries;
 
-public record GetCustomEntry
+public class GetCustomEntry
 {
 	public int Id { get; init; }
 

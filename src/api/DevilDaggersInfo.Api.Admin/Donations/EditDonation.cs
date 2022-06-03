@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersInfo.Api.Admin.Donations;
 
-public record EditDonation
+public class EditDonation
 {
 	public int PlayerId { get; set; }
 

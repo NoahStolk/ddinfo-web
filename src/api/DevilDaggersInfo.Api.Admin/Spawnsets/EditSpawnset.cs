@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersInfo.Api.Admin.Spawnsets;
 
-public record EditSpawnset
+public class EditSpawnset
 {
 	[Required]
 	public int PlayerId { get; set; }

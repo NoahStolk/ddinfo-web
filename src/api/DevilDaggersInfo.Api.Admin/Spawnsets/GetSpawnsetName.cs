@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Api.Admin.Spawnsets;
 
-public record GetSpawnsetName
+public class GetSpawnsetName
 {
 	public int Id { get; init; }
 

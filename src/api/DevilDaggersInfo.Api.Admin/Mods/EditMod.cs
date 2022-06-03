@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersInfo.Api.Admin.Mods;
 
-public record EditMod
+public class EditMod
 {
 	[StringLength(64)]
 	public string Name { get; set; } = null!;

@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Api.Admin.Users;
 
-public record GetUser
+public class GetUser
 {
 	public int Id { get; init; }
 
