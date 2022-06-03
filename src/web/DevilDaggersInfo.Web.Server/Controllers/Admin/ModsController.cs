@@ -5,6 +5,7 @@ using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Admin;
 using DevilDaggersInfo.Web.Server.InternalModels.AuditLog;
 using DevilDaggersInfo.Web.Server.InternalModels.Mods;
 using Microsoft.AspNetCore.Authorization;
+using System.Collections.Generic;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 
@@ -123,10 +124,7 @@ public class ModsController : ControllerBase
 
 		List<FileSystemInformation> fsi = new();
 		if (addMod.Binaries.Count > 0)
-		{
-			Dictionary<BinaryName, byte[]> binaries = addMod.Binaries.ToDictionary(b => GetBinaryName(b.Name, b.Data), b => b.Data);
-			await _modArchiveProcessor.ProcessModBinaryUploadAsync(addMod.Name, binaries, fsi);
-		}
+			await _modArchiveProcessor.ProcessModBinaryUploadAsync(addMod.Name, GetBinaryNames(addMod.Binaries), fsi);
 
 		if (addMod.Screenshots.Count > 0)
 			_modScreenshotProcessor.ProcessModScreenshotUpload(addMod.Name, addMod.Screenshots, fsi);
@@ -152,10 +150,22 @@ public class ModsController : ControllerBase
 		return Ok(mod.Id);
 	}
 
-	private static BinaryName GetBinaryName(string name, byte[] contents)
+	// TODO: Move to service.
+	private static Dictionary<BinaryName, byte[]> GetBinaryNames(List<BinaryData> binaries)
 	{
-		ModBinary modBinary = new(contents, ModBinaryReadComprehensiveness.TypeOnly);
-		return new(modBinary.ModBinaryType, name);
+		Dictionary<BinaryName, byte[]> dict = new();
+
+		foreach (BinaryData binaryData in binaries)
+		{
+			ModBinary modBinary = new(binaryData.Data, ModBinaryReadComprehensiveness.TypeOnly);
+			BinaryName binaryName = new(modBinary.ModBinaryType, binaryData.Name);
+			if (dict.ContainsKey(binaryName))
+				throw new InvalidModArchiveException("Binary names must all be unique.");
+
+			dict.Add(binaryName, binaryData.Data);
+		}
+
+		return dict;
 	}
 
 	[HttpPut("{id}")]
@@ -191,8 +201,7 @@ public class ModsController : ControllerBase
 
 		List<FileSystemInformation> fsi = new();
 
-		Dictionary<BinaryName, byte[]> binaries = editMod.Binaries.ToDictionary(b => GetBinaryName(b.Name, b.Data), b => b.Data);
-		bool isUpdated = await _modArchiveProcessor.TransformBinariesInModArchiveAsync(mod.Name, editMod.Name, editMod.BinariesToDelete.ConvertAll(s => BinaryName.Parse(s, mod.Name)), binaries, fsi);
+		bool isUpdated = await _modArchiveProcessor.TransformBinariesInModArchiveAsync(mod.Name, editMod.Name, editMod.BinariesToDelete.ConvertAll(s => BinaryName.Parse(s, mod.Name)), GetBinaryNames(editMod.Binaries), fsi);
 		if (isUpdated)
 			mod.LastUpdated = DateTime.UtcNow;
 
