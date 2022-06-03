@@ -21,7 +21,7 @@ public partial class AdminEdit<TModel>
 
 	[Parameter]
 	[EditorRequired]
-	public TModel? Model { get; set; }
+	public TModel Model { get; set; } = default!;
 
 	[Parameter]
 	[EditorRequired]
@@ -45,9 +45,6 @@ public partial class AdminEdit<TModel>
 
 	private async Task OnValidSubmit()
 	{
-		if (Model == null)
-			return;
-
 		try
 		{
 			HttpResponseMessage hrm = await ApiCall.Invoke(Id, Model);
