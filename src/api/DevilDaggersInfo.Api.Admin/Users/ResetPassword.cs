@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Api.Admin.Users;
 
-public class ResetPassword
+public record ResetPassword
 {
 	public string NewPassword { get; set; } = null!;
 }

@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Api.Admin.Donations;
 
-public class GetDonation
+public record GetDonation
 {
 	public int Id { get; init; }
 

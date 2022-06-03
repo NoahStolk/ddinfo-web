@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Api.Admin.Health;
 
-public class GetRequestPathEntry
+public record GetRequestPathEntry
 {
 	public int RequestCount { get; set; }
 

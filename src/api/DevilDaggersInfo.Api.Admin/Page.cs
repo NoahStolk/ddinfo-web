@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Api.Admin;
 
-public class Page<T>
+public record Page<T>
 {
 	public List<T> Results { get; init; } = null!;
 

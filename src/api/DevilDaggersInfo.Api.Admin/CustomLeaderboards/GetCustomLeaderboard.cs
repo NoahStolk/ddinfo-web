@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Api.Admin.CustomLeaderboards;
 
-public class GetCustomLeaderboard
+public record GetCustomLeaderboard
 {
 	public int Id { get; init; }
 

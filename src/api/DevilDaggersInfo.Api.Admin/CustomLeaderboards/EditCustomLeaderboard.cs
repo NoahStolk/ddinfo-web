@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersInfo.Api.Admin.CustomLeaderboards;
 
-public class EditCustomLeaderboard
+public record EditCustomLeaderboard
 {
 	[Required]
 	public CustomLeaderboardCategory Category { get; set; }

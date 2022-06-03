@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Api.Admin.CustomLeaderboards;
 
-public class GetCustomLeaderboardDaggers
+public record GetCustomLeaderboardDaggers
 {
 	public double Bronze { get; init; }
 

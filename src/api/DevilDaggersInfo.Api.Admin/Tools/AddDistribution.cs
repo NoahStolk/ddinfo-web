@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Api.Admin.Tools;
 
-public class AddDistribution
+public record AddDistribution
 {
 	public string Name { get; set; } = null!;
 

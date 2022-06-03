@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Api.Admin.Users;
 
-public class ToggleRole
+public record ToggleRole
 {
 	public string RoleName { get; set; } = null!;
 }

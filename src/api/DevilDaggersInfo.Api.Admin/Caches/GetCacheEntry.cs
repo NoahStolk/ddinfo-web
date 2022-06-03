@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Api.Admin.Caches;
 
-public class GetCacheEntry
+public record GetCacheEntry
 {
 	public GetCacheEntry(string name, int count)
 	{
