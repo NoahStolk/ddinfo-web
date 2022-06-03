@@ -13,7 +13,7 @@ public partial class GlobalPage
 	public string Category { get; set; } = "Survival";
 
 	[Inject]
-	public PublicApiHttpClient Http { get; set; } = null!;
+	public MainApiHttpClient Http { get; set; } = null!;
 
 	[Inject]
 	public NavigationManager NavigationManager { get; set; } = null!;

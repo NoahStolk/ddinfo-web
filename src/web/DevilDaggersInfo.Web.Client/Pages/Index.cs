@@ -19,7 +19,7 @@ public partial class Index
 	};
 
 	[Inject]
-	public PublicApiHttpClient Http { get; set; } = null!;
+	public MainApiHttpClient Http { get; set; } = null!;
 
 	public NewsItem? LatestNews { get; set; }
 

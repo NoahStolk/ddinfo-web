@@ -18,7 +18,7 @@ using System.Net.Http.Json;
 
 namespace DevilDaggersInfo.Web.Client.HttpClients;
 
-public partial class PublicApiHttpClient
+public partial class MainApiHttpClient
 {
 	public async Task<HttpResponseMessage> Authenticate(AuthenticationRequest authenticationRequest)
 	{

@@ -5,9 +5,9 @@ using System.Net.Http.Json;
 
 namespace DevilDaggersInfo.Web.Client.HttpClients;
 
-public partial class PublicApiHttpClient : ApiHttpClient
+public partial class MainApiHttpClient : ApiHttpClient
 {
-	public PublicApiHttpClient(HttpClient client, ILocalStorageService localStorageService)
+	public MainApiHttpClient(HttpClient client, ILocalStorageService localStorageService)
 		: base(client, localStorageService)
 	{
 	}

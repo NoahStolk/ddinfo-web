@@ -1,7 +1,7 @@
 using DevilDaggersInfo.Api.Main.Tools;
 using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Main;
 
-namespace DevilDaggersInfo.Web.Server.Controllers.Public;
+namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 
 [Route("api/tools")]
 [ApiController]

@@ -1,7 +1,7 @@
 using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Web.Server.Entities.Enums;
 
-namespace DevilDaggersInfo.Web.Shared.Extensions;
+namespace DevilDaggersInfo.Web.Server.Extensions;
 
 public static class CustomLeaderboardCategoryExtensions
 {

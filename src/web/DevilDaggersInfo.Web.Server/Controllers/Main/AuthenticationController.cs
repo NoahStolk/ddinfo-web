@@ -1,7 +1,7 @@
 using DevilDaggersInfo.Api.Main.Authentication;
 using Microsoft.AspNetCore.Authorization;
 
-namespace DevilDaggersInfo.Web.Server.Controllers.Public;
+namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 
 [ApiController]
 [ApiExplorerSettings(IgnoreApi = true)]

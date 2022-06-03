@@ -1,7 +1,7 @@
 using DevilDaggersInfo.Api.Main.Donations;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 
-namespace DevilDaggersInfo.Web.Server.Controllers.Public;
+namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 
 [Route("api/donations")]
 [ApiController]

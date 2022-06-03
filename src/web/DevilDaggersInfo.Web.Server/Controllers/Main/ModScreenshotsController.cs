@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Web.Server.Enums;
 
-namespace DevilDaggersInfo.Web.Server.Controllers.Public;
+namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 
 [Route("api/mod-screenshots")]
 [ApiController]

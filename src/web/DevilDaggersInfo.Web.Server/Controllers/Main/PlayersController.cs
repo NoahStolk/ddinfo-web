@@ -6,7 +6,7 @@ using DevilDaggersInfo.Web.Server.Enums;
 using DevilDaggersInfo.Web.Server.InternalModels.LeaderboardHistory;
 using Microsoft.AspNetCore.Authorization;
 
-namespace DevilDaggersInfo.Web.Server.Controllers.Public;
+namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 
 [Route("api/players")]
 [ApiController]

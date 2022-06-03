@@ -2,7 +2,6 @@ using DevilDaggersInfo.Web.Server.Controllers.Admin;
 using DevilDaggersInfo.Web.Server.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Tests.Data;
 using DevilDaggersInfo.Web.Server.Tests.Extensions;
-using DevilDaggersInfo.Web.Shared.Extensions;
 using AdminApi = DevilDaggersInfo.Api.Admin;
 
 namespace DevilDaggersInfo.Web.Server.Tests;

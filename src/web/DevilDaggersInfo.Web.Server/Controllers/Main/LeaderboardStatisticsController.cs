@@ -2,7 +2,7 @@ using DevilDaggersInfo.Api.Main.LeaderboardStatistics;
 using DevilDaggersInfo.Web.Server.Caches.LeaderboardStatistics;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 
-namespace DevilDaggersInfo.Web.Server.Controllers.Public;
+namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 
 [Route("api/leaderboard-statistics")]
 [ApiController]

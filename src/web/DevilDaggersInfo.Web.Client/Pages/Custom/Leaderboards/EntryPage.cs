@@ -33,7 +33,7 @@ public partial class EntryPage
 	[Parameter, EditorRequired] public int Id { get; set; }
 
 	[Inject]
-	public PublicApiHttpClient Http { get; set; } = null!;
+	public MainApiHttpClient Http { get; set; } = null!;
 
 	[Inject]
 	public IJSRuntime JsRuntime { get; set; } = null!;

@@ -27,7 +27,7 @@ public partial class EditProfilePage
 	public NavigationManager NavigationManager { get; set; } = null!;
 
 	[Inject]
-	public PublicApiHttpClient Http { get; set; } = null!;
+	public MainApiHttpClient Http { get; set; } = null!;
 
 	protected override async Task OnInitializedAsync()
 	{

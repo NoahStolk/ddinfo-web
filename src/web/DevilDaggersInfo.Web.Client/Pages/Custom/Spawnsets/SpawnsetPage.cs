@@ -12,7 +12,7 @@ public partial class SpawnsetPage
 
 	private bool _notFound;
 
-	[Inject] public PublicApiHttpClient Http { get; set; } = null!;
+	[Inject] public MainApiHttpClient Http { get; set; } = null!;
 	[Inject] public NavigationManager NavigationManager { get; set; } = null!;
 
 	[Parameter, EditorRequired] public int Id { get; set; }

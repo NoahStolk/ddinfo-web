@@ -13,9 +13,9 @@ public class AdminAuthenticationStateProvider : AuthenticationStateProvider
 	public const string LocalStorageAuthKey = "auth";
 
 	private readonly ILocalStorageService _localStorageService;
-	private readonly PublicApiHttpClient _httpClient;
+	private readonly MainApiHttpClient _httpClient;
 
-	public AdminAuthenticationStateProvider(ILocalStorageService localStorageService, PublicApiHttpClient httpClient)
+	public AdminAuthenticationStateProvider(ILocalStorageService localStorageService, MainApiHttpClient httpClient)
 	{
 		_localStorageService = localStorageService;
 		_httpClient = httpClient;

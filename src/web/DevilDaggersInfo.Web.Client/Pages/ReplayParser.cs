@@ -21,7 +21,7 @@ public partial class ReplayParser
 	public int Id { get; set; }
 
 	[Inject]
-	public PublicApiHttpClient Http { get; set; } = null!;
+	public MainApiHttpClient Http { get; set; } = null!;
 
 	protected override async Task OnParametersSetAsync()
 	{
