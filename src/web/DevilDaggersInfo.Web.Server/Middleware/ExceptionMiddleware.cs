@@ -29,17 +29,19 @@ public class ExceptionMiddleware
 			context.Response.StatusCode = (int)ex.StatusCode;
 			context.Response.ContentType = "application/problem+json; charset=utf-8";
 
-			await context.Response.WriteAsync(DisplayException(ex));
+			await context.Response.WriteAsJsonAsync(new ProblemDetails
+			{
+				Status = (int)ex.StatusCode,
+				Title = DisplayException(ex),
+			});
 		}
 
 		static string DisplayException(Exception ex)
 		{
-			string message = $"{ex.GetType().Name}: {ex.Message}";
-
 			if (ex.InnerException == null)
-				return message;
+				return ex.Message;
 
-			return message + Environment.NewLine + DisplayException(ex.InnerException);
+			return ex.Message + Environment.NewLine + DisplayException(ex.InnerException);
 		}
 	}
 }
