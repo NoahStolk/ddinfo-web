@@ -1,6 +1,11 @@
+using DevilDaggersInfo.Core.Asset.Enums;
+using DevilDaggersInfo.Core.Mod;
+using DevilDaggersInfo.Core.Mod.Enums;
+using DevilDaggersInfo.Core.Mod.Utils;
 using DevilDaggersInfo.Web.Server.Caches.ModArchives;
 using DevilDaggersInfo.Web.Server.Enums;
 using System.IO.Compression;
+using System.Text;
 
 namespace DevilDaggersInfo.Web.Server.Tests;
 
@@ -46,5 +51,25 @@ public abstract class ModArchiveProcessorTests
 		}
 
 		return ModBinaryCacheData.CreateFromFile(entry.Name, extractedContents);
+	}
+
+	protected static string GetBinaryNameWithPrefix(ModBinaryType modBinaryType, string modName, string binaryName)
+	{
+		return BinaryFileNameUtils.GetBinaryPrefix(modBinaryType, modName) + binaryName;
+	}
+
+	protected static ModBinary CreateWithBinding(string assetName)
+	{
+		ModBinary binary = new(ModBinaryType.Dd);
+		binary.AddAsset(assetName, AssetType.ObjectBinding, Encoding.Default.GetBytes("shader = \"boid\""));
+		return binary;
+	}
+
+	protected static ModBinary CreateWithBindingAndTexture(string shaderName, string textureName)
+	{
+		ModBinary binary = new(ModBinaryType.Dd);
+		binary.AddAsset(shaderName, AssetType.ObjectBinding, Encoding.Default.GetBytes("shader = \"boid\""));
+		binary.AddAsset(textureName, AssetType.Texture, File.ReadAllBytes(Path.Combine(TestUtils.ResourcePath, "Textures", "green.png")));
+		return binary;
 	}
 }

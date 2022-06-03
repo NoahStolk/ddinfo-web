@@ -18,9 +18,7 @@ public class ModArchiveProcessorProcessTests : ModArchiveProcessorTests
 		const string binaryName = "main";
 		const string assetName = "binding";
 
-		ModBinary binary = new(ModBinaryType.Dd);
-		binary.AddAsset(assetName, AssetType.ObjectBinding, Encoding.Default.GetBytes("shader = \"boid\""));
-
+		ModBinary binary = CreateWithBinding(assetName);
 		await Processor.ProcessModBinaryUploadAsync(modName, new Dictionary<string, byte[]> { [binaryName] = binary.Compile() }, new());
 
 		string zipFilePath = Accessor.GetModArchivePath(modName);
@@ -43,10 +41,7 @@ public class ModArchiveProcessorProcessTests : ModArchiveProcessorTests
 		const string assetName1 = "binding";
 		const string assetName2 = "texture";
 
-		ModBinary binary = new(ModBinaryType.Dd);
-		binary.AddAsset(assetName1, AssetType.ObjectBinding, Encoding.Default.GetBytes("shader = \"boid\""));
-		binary.AddAsset(assetName2, AssetType.Texture, File.ReadAllBytes(Path.Combine(TestUtils.ResourcePath, "Textures", "green.png")));
-
+		ModBinary binary = CreateWithBindingAndTexture(assetName1, assetName2);
 		await Processor.ProcessModBinaryUploadAsync(modName, new Dictionary<string, byte[]> { [binaryName] = binary.Compile() }, new());
 
 		string zipFilePath = Accessor.GetModArchivePath(modName);
@@ -72,14 +67,8 @@ public class ModArchiveProcessorProcessTests : ModArchiveProcessorTests
 		const string assetName1 = "binding";
 		const string assetName2 = "texture";
 
-		ModBinary binary1 = new(ModBinaryType.Dd);
-		binary1.AddAsset(assetName1, AssetType.ObjectBinding, Encoding.Default.GetBytes("shader = \"boid\""));
-		binary1.AddAsset(assetName2, AssetType.Texture, File.ReadAllBytes(Path.Combine(TestUtils.ResourcePath, "Textures", "green.png")));
-
-		ModBinary binary2 = new(ModBinaryType.Dd);
-		binary2.AddAsset(assetName1, AssetType.ObjectBinding, Encoding.Default.GetBytes("shader = \"egg\""));
-		binary2.AddAsset(assetName2, AssetType.Texture, File.ReadAllBytes(Path.Combine(TestUtils.ResourcePath, "Textures", "blue.png")));
-
+		ModBinary binary1 = CreateWithBindingAndTexture(assetName1, assetName2);
+		ModBinary binary2 = CreateWithBindingAndTexture(assetName1, assetName2);
 		Dictionary<string, byte[]> binaries = new()
 		{
 			[binaryName1] = binary1.Compile(),
