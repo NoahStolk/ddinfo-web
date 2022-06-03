@@ -30,7 +30,7 @@ public static class BinaryFileNameUtils
 	}
 
 #pragma warning disable S3267 // Loops should be simplified with "LINQ" expressions
-	public static string SanitizeModBinaryFileName(string fileName, string modName)
+	public static string SanitizeModBinaryFileName(ModBinaryType modBinaryType, string fileName, string modName)
 	{
 		List<(ModBinaryType Type, string Prefix)> typePrefixesToRemove = new();
 		foreach (ModBinaryType type in Enum.GetValues<ModBinaryType>())
@@ -46,15 +46,11 @@ public static class BinaryFileNameUtils
 			typePrefixesToRemove.Add((type, typeString));
 		}
 
-		ModBinaryType? modBinaryType = null;
 		string binaryName = fileName;
 		foreach ((ModBinaryType type, string prefix) in typePrefixesToRemove)
 		{
 			if (binaryName.StartsWith(prefix))
-			{
 				binaryName = binaryName.Replace(prefix, string.Empty);
-				modBinaryType = type;
-			}
 		}
 
 		if (modName.Length > 0)
@@ -66,7 +62,7 @@ public static class BinaryFileNameUtils
 			}
 		}
 
-		return $"{(modBinaryType ?? ModBinaryType.Dd).ToString().ToLower()}-{modName}-{binaryName}";
+		return $"{modBinaryType.ToString().ToLower()}-{modName}-{binaryName}";
 	}
 #pragma warning restore S3267 // Loops should be simplified with "LINQ" expressions
 }

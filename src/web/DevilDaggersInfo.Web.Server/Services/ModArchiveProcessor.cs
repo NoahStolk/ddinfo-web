@@ -27,6 +27,8 @@ public class ModArchiveProcessor
 		if (usedSpace > ModConstants.BinaryMaxHostingSpace)
 			throw new($"Cannot upload mod with binaries because the limit of {ModConstants.BinaryMaxHostingSpace:N0} bytes is exceeded.");
 
+		Dictionary<string, ModBinaryType> determinedTypes = binaries.ToDictionary(kvp => kvp.Key, kvp => new ModBinary(kvp.Value, ModBinaryReadComprehensiveness.TypeOnly).ModBinaryType);
+
 		// Add binaries to new zip archive.
 		string zipFilePath = _modArchiveAccessor.GetModArchivePath(modName);
 
@@ -35,7 +37,7 @@ public class ModArchiveProcessor
 			using ZipArchive archive = ZipFile.Open(zipFilePath, ZipArchiveMode.Create);
 			foreach (KeyValuePair<string, byte[]> binary in binaries)
 			{
-				string binaryName = BinaryFileNameUtils.SanitizeModBinaryFileName(binary.Key, modName);
+				string binaryName = BinaryFileNameUtils.SanitizeModBinaryFileName(determinedTypes[binary.Key], binary.Key, modName);
 				using Stream entry = archive.CreateEntry(binaryName, CompressionLevel.SmallestSize).Open();
 				using MemoryStream ms = new(binary.Value);
 				await ms.CopyToAsync(entry);
@@ -84,7 +86,7 @@ public class ModArchiveProcessor
 			throw new InvalidModArchiveException("Processing the mod archive failed.", ex);
 		}
 
-		fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(zipFilePath)} (`{FileSizeUtils.Format(zipBytes.Length)}`) with {(binaries.Count == 1 ? "binary" : "binaries")} {string.Join(", ", binaries.Select(kvp => $"`{BinaryFileNameUtils.SanitizeModBinaryFileName(kvp.Key, modName)}`"))} was added.", FileSystemInformationType.Add));
+		fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(zipFilePath)} (`{FileSizeUtils.Format(zipBytes.Length)}`) with {(binaries.Count == 1 ? "binary" : "binaries")} {string.Join(", ", binaries.Select(kvp => $"`{BinaryFileNameUtils.SanitizeModBinaryFileName(determinedTypes[kvp.Key], kvp.Key, modName)}`"))} was added.", FileSystemInformationType.Add));
 	}
 
 	/// <summary>
@@ -116,7 +118,12 @@ public class ModArchiveProcessor
 				}
 			}
 
-			string? firstCollision = keptBinaries.Keys.FirstOrDefault(keptName => newBinaries.Any(kvp => BinaryFileNameUtils.SanitizeModBinaryFileName(kvp.Key, newModName) == BinaryFileNameUtils.SanitizeModBinaryFileName(keptName, newModName)));
+			Dictionary<string, ModBinaryType> keptDeterminedTypes = keptBinaries.ToDictionary(kvp => kvp.Key, kvp => new ModBinary(kvp.Value, ModBinaryReadComprehensiveness.TypeOnly).ModBinaryType);
+			Dictionary<string, ModBinaryType> newDeterminedTypes = newBinaries.ToDictionary(kvp => kvp.Key, kvp => new ModBinary(kvp.Value, ModBinaryReadComprehensiveness.TypeOnly).ModBinaryType);
+
+			string? firstCollision = keptBinaries.Keys
+				.FirstOrDefault(keptName => newBinaries
+					.Any(kvp => BinaryFileNameUtils.SanitizeModBinaryFileName(newDeterminedTypes[kvp.Key], kvp.Key, newModName) == BinaryFileNameUtils.SanitizeModBinaryFileName(keptDeterminedTypes[keptName], keptName, newModName)));
 			if (firstCollision != null)
 				throw new InvalidModArchiveException($"Cannot append binary '{firstCollision}' to mod archive because it already contains a binary with the exact same name. Either request the old binary to be deleted or rename the new binary.");
 		}
