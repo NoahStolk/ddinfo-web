@@ -1,9 +1,10 @@
 using DevilDaggersInfo.Web.Server.Entities.Enums;
+using DevilDaggersInfo.Web.Server.InternalModels.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Server.Entities;
 
 [Table("CustomEntries")]
-public class CustomEntryEntity
+public class CustomEntryEntity : ISortableCustomEntry
 {
 	[Key]
 	public int Id { get; init; }

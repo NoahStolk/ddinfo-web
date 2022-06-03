@@ -1,10 +1,12 @@
 using DevilDaggersInfo.Web.Server.Entities.Enums;
+using DevilDaggersInfo.Web.Server.InternalModels.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Server.Extensions;
 
 public static class SortableCustomEntryExtensions
 {
-	public static IOrderedEnumerable<CustomEntryEntity> Sort(this IEnumerable<CustomEntryEntity> customEntries, CustomLeaderboardCategory category)
+	public static IOrderedEnumerable<T> Sort<T>(this IEnumerable<T> customEntries, CustomLeaderboardCategory category)
+		where T : ISortableCustomEntry
 	{
 		if (category.IsAscending())
 			return customEntries.OrderBy(wr => wr.Time).ThenBy(wr => wr.SubmitDate);

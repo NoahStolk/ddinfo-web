@@ -43,10 +43,11 @@ public class CustomLeaderboardRepository
 
 		// Query custom entries for world record and amount of players.
 		List<int> customLeaderboardIds = customLeaderboards.ConvertAll(cl => cl.Id);
-		List<CustomEntryEntity> customEntries = await _dbContext.CustomEntries
+		List<CustomEntrySummary> customEntries = await _dbContext.CustomEntries
 			.AsNoTracking()
-			.Where(ce => customLeaderboardIds.Contains(ce.CustomLeaderboardId))
 			.Include(ce => ce.Player)
+			.Select(ce => new CustomEntrySummary { CustomLeaderboardId = ce.CustomLeaderboardId, PlayerId = ce.PlayerId, PlayerName = ce.Player.PlayerName, Time = ce.Time, SubmitDate = ce.SubmitDate })
+			.Where(ce => customLeaderboardIds.Contains(ce.CustomLeaderboardId))
 			.ToListAsync();
 
 		// Determine world records.
@@ -55,12 +56,12 @@ public class CustomLeaderboardRepository
 		// Map custom leaderboards with world record data.
 		List<CustomLeaderboardWorldRecord> customLeaderboardWrs = customLeaderboards.ConvertAll(cl =>
 		{
-			CustomEntryEntity? worldRecord = customEntries.Find(clwr => clwr.CustomLeaderboardId == cl.Id);
+			CustomEntrySummary? worldRecord = customEntries.Find(clwr => clwr.CustomLeaderboardId == cl.Id);
 			CustomLeaderboardOverviewWorldRecord? worldRecordModel = worldRecord == null ? null : new()
 			{
 				Time = worldRecord.Time,
 				PlayerId = worldRecord.PlayerId,
-				PlayerName = worldRecord.Player.PlayerName,
+				PlayerName = worldRecord.PlayerName,
 				Dagger = cl.GetDaggerFromTime(worldRecord.Time),
 			};
 			return new CustomLeaderboardWorldRecord(cl, worldRecordModel);
@@ -118,22 +119,23 @@ public class CustomLeaderboardRepository
 
 		// Query custom entries for world record and amount of players.
 		List<int> customLeaderboardIds = customLeaderboards.ConvertAll(cl => cl.Id);
-		List<CustomEntryEntity> customEntries = await _dbContext.CustomEntries
+		List<CustomEntrySummary> customEntries = await _dbContext.CustomEntries
 			.AsNoTracking()
-			.Where(ce => customLeaderboardIds.Contains(ce.CustomLeaderboardId))
 			.Include(ce => ce.Player)
+			.Select(ce => new CustomEntrySummary { CustomLeaderboardId = ce.CustomLeaderboardId, PlayerId = ce.PlayerId, PlayerName = ce.Player.PlayerName, Time = ce.Time, SubmitDate = ce.SubmitDate })
+			.Where(ce => customLeaderboardIds.Contains(ce.CustomLeaderboardId))
 			.ToListAsync();
 
 		// Map custom leaderboards with world record data.
 		List<CustomLeaderboardWorldRecord> customLeaderboardWrs = new();
 		foreach (CustomLeaderboardEntity cl in customLeaderboards)
 		{
-			CustomEntryEntity? worldRecord = customEntries.Where(ce => ce.CustomLeaderboardId == cl.Id).Sort(cl.Category).FirstOrDefault();
+			CustomEntrySummary? worldRecord = customEntries.Where(ce => ce.CustomLeaderboardId == cl.Id).Sort(cl.Category).FirstOrDefault();
 			CustomLeaderboardOverviewWorldRecord? worldRecordModel = worldRecord == null ? null : new()
 			{
 				Time = worldRecord.Time,
 				PlayerId = worldRecord.PlayerId,
-				PlayerName = worldRecord.Player.PlayerName,
+				PlayerName = worldRecord.PlayerName,
 				Dagger = cl.GetDaggerFromTime(worldRecord.Time),
 			};
 			customLeaderboardWrs.Add(new(cl, worldRecordModel));
