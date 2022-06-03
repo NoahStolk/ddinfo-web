@@ -58,8 +58,8 @@ public class ModsController : ControllerBase
 
 		modDtos = (sortBy switch
 		{
-			ModSorting.Name => modDtos.OrderBy(m => m.Name, ascending),
-			ModSorting.Authors => modDtos.OrderBy(m => m.Authors.FirstOrDefault(), ascending),
+			ModSorting.Name => modDtos.OrderBy(m => m.Name.ToLower(), ascending),
+			ModSorting.Authors => modDtos.OrderBy(m => m.Authors.FirstOrDefault()?.ToLower(), ascending),
 			ModSorting.LastUpdated => modDtos.OrderBy(m => m.LastUpdated, ascending),
 			ModSorting.ModTypes => modDtos.OrderBy(m => m.ModTypes, ascending),
 			ModSorting.Hosted => modDtos.OrderBy(m => m.IsHosted, ascending),

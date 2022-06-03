@@ -80,8 +80,8 @@ public class SpawnsetsController : ControllerBase
 
 		spawnsets = (sortBy switch
 		{
-			SpawnsetSorting.Name => spawnsets.OrderBy(s => s.Name, ascending),
-			SpawnsetSorting.AuthorName => spawnsets.OrderBy(s => s.Player.PlayerName, ascending),
+			SpawnsetSorting.Name => spawnsets.OrderBy(s => s.Name.ToLower(), ascending),
+			SpawnsetSorting.AuthorName => spawnsets.OrderBy(s => s.Player.PlayerName.ToLower(), ascending),
 			SpawnsetSorting.LastUpdated => spawnsets.OrderBy(s => s.LastUpdated, ascending),
 			SpawnsetSorting.GameMode => spawnsets.OrderBy(s => summaries[s.Id].GameMode, ascending),
 			SpawnsetSorting.LoopLength => spawnsets.OrderBy(s => summaries[s.Id].LoopSection.Length, ascending),
