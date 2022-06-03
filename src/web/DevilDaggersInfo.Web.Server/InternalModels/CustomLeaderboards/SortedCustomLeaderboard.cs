@@ -14,7 +14,7 @@ public class SortedCustomLeaderboard
 
 	public string SpawnsetAuthorName { get; init; } = null!;
 
-	public string SpawnsetHtmlDescription { get; init; } = null!;
+	public string? SpawnsetHtmlDescription { get; init; }
 
 	public CustomLeaderboardCategory Category { get; init; }
 

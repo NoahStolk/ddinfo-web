@@ -221,6 +221,8 @@ public class CustomLeaderboardRepository
 			DateCreated = customLeaderboard.DateCreated,
 			DateLastPlayed = customLeaderboard.DateLastPlayed,
 			Id = customLeaderboard.Id,
+			SpawnsetHtmlDescription = customLeaderboard.Spawnset.HtmlDescription,
+			SpawnsetName = customLeaderboard.Spawnset.Name,
 			SpawnsetAuthorId = customLeaderboard.Spawnset.PlayerId,
 			SpawnsetAuthorName = customLeaderboard.Spawnset.Player.PlayerName,
 			SpawnsetId = customLeaderboard.SpawnsetId,
