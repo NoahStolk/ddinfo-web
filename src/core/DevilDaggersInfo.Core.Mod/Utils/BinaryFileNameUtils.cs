@@ -26,7 +26,7 @@ public static class BinaryFileNameUtils
 		if (fileName.StartsWith("dd"))
 			return fileName.Replace(GetBinaryPrefix(ModBinaryType.Dd, modName), string.Empty);
 
-		return fileName;
+		throw new InvalidModBinaryException($"Binary '{fileName}' must start with 'audio' or 'dd'.");
 	}
 
 #pragma warning disable S3267 // Loops should be simplified with "LINQ" expressions
