@@ -1,0 +1,21 @@
+@if (Info.Count > 0)
+{
+	<Heading Title="@Title" Level="4" />
+	<ul class="pl-4">
+		@foreach (string fileSizeError in Info)
+		{
+			<li class="list-disc text-red">@fileSizeError</li>
+		}
+	</ul>
+}
+
+@code
+{
+	[EditorRequired]
+	[Parameter]
+	public List<string> Info { get; set; } = new();
+
+	[EditorRequired]
+	[Parameter]
+	public string Title { get; set; } = string.Empty;
+}

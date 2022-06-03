@@ -14,61 +14,31 @@
 		<InputWrapper Label="Mod types (only for non-hosted)"><MultiSearchDropdown Values="@ModTypes" @bind-Value="@_editMod.ModTypes" /></InputWrapper>
 		<InputWrapper Label="URL (only for non-hosted)"><InputText class="admin-input" @bind-Value="@_editMod.Url" /></InputWrapper>
 		<InputWrapper Label="Hidden"><InputCheckbox @bind-Value="@_editMod.IsHidden" /></InputWrapper>
-		<InputWrapper Label="Binaries to delete"><MultiSelectList Values="@_binaryNames" OnToggleAction="StateHasChanged" @bind-Value="@_editMod.BinariesToDelete" /></InputWrapper>
-		<InputWrapper Label="Binaries"><InputFile @onclick="() => _editMod.Binaries.Clear()" OnChange="LoadBinaries" multiple /></InputWrapper>
-		<InputWrapper Label="Screenshots to delete"><MultiSelectList Values="@_screenshotNames" OnToggleAction="StateHasChanged" @bind-Value="@_editMod.ScreenshotsToDelete" /></InputWrapper>
-		<InputWrapper Label="Screenshots"><InputFile @onclick="() => _editMod.Screenshots.Clear()" OnChange="LoadScreenshots" multiple /></InputWrapper>
-	</AdminEdit>
-</AdminAuthorizer>
 
-@if (_editMod.BinariesToDelete.Count > 0)
-{
-	<p class="text-red">Binaries to delete</p>
-	<ul class="pl-4">
-		@foreach (string binaryName in _editMod.BinariesToDelete)
-		{
-			<li class="list-disc">@binaryName</li>
-		}
-	</ul>
-}
-@if (_editMod.Binaries.Count > 0 || _binaryFileSizeErrors.Count > 0)
-{
-	<p class="text-red">Binaries to upload</p>
-	<ul class="pl-4">
+		<Heading Title="Binaries" Level="3" />
+
+		<InputWrapper Label="Binaries to delete"><MultiSelectList Values="@_binaryNames" OnToggleAction="StateHasChanged" @bind-Value="@_editMod.BinariesToDelete" /></InputWrapper>
+		<InfoList Title="Binaries to delete" Info="_editMod.BinariesToDelete" />
+
+		<InputWrapper Label="Select new binaries"><InputFile @onclick="() => _editMod.Binaries.Clear()" OnChange="LoadBinaries" multiple /></InputWrapper>
 		@foreach (BinaryData bd in _editMod.Binaries)
 		{
 			ModBinary b = new(bd.Data, ModBinaryReadComprehensiveness.TypeOnly);
-			<li class="list-disc">@bd.Name (will be renamed to @(new BinaryName(b.ModBinaryType, bd.Name).ToFullName(_editMod.Name ?? string.Empty)))</li>
+			<div class="pl-4">
+				<InputWrapper Label="New binary"><InputTextImmediate class="admin-input" @bind-Value="bd.Name" /></InputWrapper>
+				<span>Will be renamed to @(new BinaryName(b.ModBinaryType, bd.Name).ToFullName(_editMod.Name ?? string.Empty))</span>
+			</div>
 		}
-		@foreach (string fileSizeError in _binaryFileSizeErrors)
-		{
-			<li class="list-disc text-red">@fileSizeError</li>
-		}
-	</ul>
-}
-@if (_editMod.ScreenshotsToDelete.Count > 0)
-{
-	<p class="text-red">Screenshots to delete</p>
-	<ul class="pl-4">
-		@foreach (string screenshot in _editMod.ScreenshotsToDelete)
-		{
-			<li class="list-disc">@screenshot</li>
-		}
-	</ul>
-}
-@if (_editMod.Screenshots.Count > 0 || _screenshotFileSizeErrors.Count > 0)
-{
-	<p class="text-red">Screenshots to upload</p>
-	<ul class="pl-4">
-		@{
-			foreach (string screenshot in _editMod.Screenshots.OrderBy(kvp => kvp.Key).Select(kvp => kvp.Key))
-			{
-				<li class="list-disc">@screenshot</li>
-			}
-			foreach (string fileSizeError in _screenshotFileSizeErrors)
-			{
-				<li class="list-disc text-red">@fileSizeError</li>
-			}
-		}
-	</ul>
-}
+		<InfoList Title="Binary errors" Info="_binaryFileSizeErrors" />
+
+		<Heading Title="Screenshots" Level="3" />
+
+		<InputWrapper Label="Screenshots to delete"><MultiSelectList Values="@_screenshotNames" OnToggleAction="StateHasChanged" @bind-Value="@_editMod.ScreenshotsToDelete" /></InputWrapper>
+		<InfoList Title="Screenshots to delete" Info="_editMod.ScreenshotsToDelete" />
+
+		<InputWrapper Label="Select new screenshots"><InputFile @onclick="() => _editMod.Screenshots.Clear()" OnChange="LoadScreenshots" multiple /></InputWrapper>
+		<InfoList Title="Screenshots to upload" Info="_editMod.Screenshots.OrderBy(kvp => kvp.Key).Select(kvp => kvp.Key).ToList()" />
+		<InfoList Title="Screenshots errors" Info="_screenshotFileSizeErrors" />
+
+	</AdminEdit>
+</AdminAuthorizer>
