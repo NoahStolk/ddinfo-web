@@ -8,6 +8,33 @@ namespace DevilDaggersInfo.Web.Server.Tests;
 [TestClass]
 public class ModArchiveProcessorTransformTests : ModArchiveProcessorTests
 {
+	[TestMethod]
+	public async Task Transform_Rename()
+	{
+		const string modName = "mod";
+		const string newModName = "mod-renamed";
+		const string binaryName1 = "main1";
+		const string binaryName2 = "main2";
+		const string assetName = "binding";
+
+		ModBinary binary1 = CreateWithBinding(assetName);
+		ModBinary binary2 = CreateWithBinding(assetName);
+		Dictionary<string, byte[]> binaries = new()
+		{
+			[binaryName1] = binary1.Compile(),
+			[binaryName2] = binary2.Compile(),
+		};
+		await Processor.ProcessModBinaryUploadAsync(modName, binaries, new());
+
+		await Processor.TransformBinariesInModArchiveAsync(modName, newModName, new(), new(), new());
+
+		string zipFilePath = Accessor.GetModArchivePath(newModName);
+		using ZipArchive archive = ZipFile.Open(zipFilePath, ZipArchiveMode.Read);
+		Assert.AreEqual(2, archive.Entries.Count);
+		Assert.AreEqual(GetBinaryNameWithPrefix(binary1.ModBinaryType, newModName, binaryName1), archive.Entries[0].Name);
+		Assert.AreEqual(GetBinaryNameWithPrefix(binary2.ModBinaryType, newModName, binaryName2), archive.Entries[1].Name);
+	}
+
 	[DataTestMethod]
 	[DataRow("mod", "mod")]
 	[DataRow("mod", "mod-renamed")]
