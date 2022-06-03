@@ -15,7 +15,7 @@ public class CustomLeaderboardRepository
 		_dbContext = dbContext;
 	}
 
-	public async Task<(List<CustomLeaderboardOverview> CustomLeaderboards, int TotalCount)> GetSortedCustomLeaderboardOverviewsAsync(
+	public async Task<(List<CustomLeaderboardOverview> CustomLeaderboards, int TotalCount)> GetCustomLeaderboardOverviewsAsync(
 		CustomLeaderboardCategory category,
 		string? spawnsetFilter = null,
 		string? authorFilter = null,

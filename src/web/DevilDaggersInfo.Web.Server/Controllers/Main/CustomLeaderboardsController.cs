@@ -30,7 +30,7 @@ public class CustomLeaderboardsController : ControllerBase
 		CustomLeaderboardSorting? sortBy = null,
 		bool ascending = false)
 	{
-		(List<CustomLeaderboardOverview> cls, int total) = await _customLeaderboardRepository.GetSortedCustomLeaderboardOverviewsAsync(category.ToDomain(), spawnsetFilter, authorFilter, pageIndex, pageSize, sortBy?.ToDomain(), ascending);
+		(List<CustomLeaderboardOverview> cls, int total) = await _customLeaderboardRepository.GetCustomLeaderboardOverviewsAsync(category.ToDomain(), spawnsetFilter, authorFilter, pageIndex, pageSize, sortBy?.ToDomain(), ascending);
 		return new Page<GetCustomLeaderboardOverview>
 		{
 			Results = cls.ConvertAll(cl => cl.ToGetCustomLeaderboardOverview()),
