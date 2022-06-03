@@ -26,15 +26,10 @@ public class ExceptionMiddleware
 			}
 
 			context.Response.Clear();
-			context.Response.StatusCode = 404;
+			context.Response.StatusCode = (int)ex.StatusCode;
 			context.Response.ContentType = "application/problem+json; charset=utf-8";
 
-			await context.Response.WriteAsJsonAsync(new ProblemDetails
-			{
-				Status = (int)ex.StatusCode,
-				Title = ex.StatusCode.ToString(),
-				Detail = DisplayException(ex),
-			});
+			await context.Response.WriteAsync(DisplayException(ex));
 		}
 
 		static string DisplayException(Exception ex)
