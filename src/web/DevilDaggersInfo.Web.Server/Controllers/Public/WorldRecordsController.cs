@@ -1,6 +1,9 @@
+using DevilDaggersInfo.Api.Main.WorldRecords;
+using DevilDaggersInfo.Core.Wiki.Enums;
 using DevilDaggersInfo.Web.Server.Caches.LeaderboardHistory;
+using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
+using DevilDaggersInfo.Web.Server.Enums;
 using DevilDaggersInfo.Web.Server.InternalModels.LeaderboardHistory;
-using DevilDaggersInfo.Web.Shared.Dto.Public.WorldRecords;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Public;
 
@@ -65,7 +68,7 @@ public class WorldRecordsController : ControllerBase
 			{
 				DateTime = wr.DateTime,
 				Entry = wr.Entry,
-				GameVersion = wr.GameVersion,
+				GameVersion = wr.GameVersion?.ToMainApi(),
 				WorldRecordDuration = duration,
 				WorldRecordImprovement = improvement,
 			});

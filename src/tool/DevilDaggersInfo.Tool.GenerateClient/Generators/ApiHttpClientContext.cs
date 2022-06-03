@@ -1,7 +1,6 @@
 using DevilDaggersInfo.CommonSourceGen;
 using DevilDaggersInfo.Tool.GenerateClient.Extensions;
 using DevilDaggersInfo.Tool.GenerateClient.Generators.Endpoints;
-using DevilDaggersInfo.Tool.GenerateClient.Generators.Enums;
 using HttpMethod = DevilDaggersInfo.Tool.GenerateClient.Generators.Enums.HttpMethod;
 
 namespace DevilDaggersInfo.Tool.GenerateClient.Generators;
@@ -16,35 +15,24 @@ internal class ApiHttpClientContext
 
 	public void AddUsings(params string[] usings) => _usings.AddRange(usings);
 
-	public void AddUsings(ClientType clientType, IncludedDirectory includedDirectory)
+	public void AddEndpoints(string controllersSubDirectory)
 	{
-		string usingPrefix = $"{Constants.SharedProjectName}.{includedDirectory}";
-
-		_usings.Add(usingPrefix);
-
-		string path = Path.Combine(Constants.SharedProjectPath, includedDirectory.ToString());
-		foreach (string directory in Directory.GetDirectories(path, "*", SearchOption.AllDirectories))
-		{
-			int csFileCount = Directory.GetFiles(directory, "*.cs").Length;
-			if (csFileCount == 0)
-				continue;
-
-			string? directoryName = directory.TrimStart(path);
-
-			if (directoryName.Contains(clientType.ToString()))
-				_usings.Add(usingPrefix + directoryName.Replace('\\', '.'));
-		}
-	}
-
-	public void AddEndpoints(ClientType clientType)
-	{
-		foreach (string controllerFilePath in Directory.GetFiles(Path.Combine(Constants.ServerProjectPath, "Controllers", clientType.ToString())))
+		foreach (string controllerFilePath in Directory.GetFiles(Path.Combine(Constants.ServerProjectPath, "Controllers", controllersSubDirectory)))
 			_endpoints.AddRange(ExtractEndpoints(CSharpSyntaxTree.ParseText(File.ReadAllText(controllerFilePath))));
 	}
 
-	private static IEnumerable<Endpoint> ExtractEndpoints(SyntaxTree syntaxTree)
+	private IEnumerable<Endpoint> ExtractEndpoints(SyntaxTree syntaxTree)
 	{
 		SyntaxNode root = syntaxTree.GetRoot();
+
+		foreach (UsingDirectiveSyntax u in root.DescendantNodes().Where(sn => sn.IsKind(SyntaxKind.UsingDirective)).Cast<UsingDirectiveSyntax>().ToList())
+		{
+			string ns = u.Name.ToString();
+			if (!ns.StartsWith("DevilDaggersInfo.Api") || _usings.Contains(ns))
+				continue;
+
+			_usings.Add(ns);
+		}
 
 		// Find class.
 		ClassDeclarationSyntax? cds = (ClassDeclarationSyntax?)root.DescendantNodes().FirstOrDefault(sn => sn.IsKind(SyntaxKind.ClassDeclaration));
@@ -60,7 +48,7 @@ internal class ApiHttpClientContext
 		if (routeAttribute == null)
 			yield break;
 
-		string apiRoute = routeAttribute.GetRouteAttributeStringValue();
+		string controllerRoute = routeAttribute.GetRouteAttributeStringValue();
 
 		// Find all methods.
 		foreach (MethodDeclarationSyntax mds in cds.Members.OfType<MethodDeclarationSyntax>())
@@ -88,7 +76,7 @@ internal class ApiHttpClientContext
 				throw new NotSupportedException($"Multiple route parameters for endpoint '{methodName}' are not supported: {string.Join(", ", routeParameters)}");
 
 			List<Parameter> nonRouteParameters = allParameters.Except(routeParameters).ToList();
-			string fullRoute = $"{apiRoute}/{endpointRoute}";
+			string fullRoute = $"{controllerRoute}/{endpointRoute}";
 
 			yield return result.HttpMethod switch
 			{

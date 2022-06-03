@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Web.Shared.Dto.Admin.Database;
+using DevilDaggersInfo.Api.Admin.Database;
 using Microsoft.AspNetCore.Authorization;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Admin;

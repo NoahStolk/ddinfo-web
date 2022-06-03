@@ -1,4 +1,5 @@
-using DevilDaggersInfo.Web.Shared.Dto.Public.Tools;
+using DevilDaggersInfo.Api.Main.Tools;
+using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Main;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Public;
 
@@ -39,18 +40,18 @@ public class ToolsController : ControllerBase
 	{
 		GetToolDistribution? distribution;
 		if (version == null)
-			distribution = await _toolService.GetLatestToolDistributionAsync(toolName, publishMethod, buildType);
+			distribution = await _toolService.GetLatestToolDistributionAsync(toolName, publishMethod.ToDomain(), buildType.ToDomain());
 		else
-			distribution = await _toolService.GetToolDistributionByVersionAsync(toolName, publishMethod, buildType, version);
+			distribution = await _toolService.GetToolDistributionByVersionAsync(toolName, publishMethod.ToDomain(), buildType.ToDomain(), version);
 
 		if (distribution == null)
 			return NotFound();
 
-		byte[]? bytes = _toolService.GetToolDistributionFile(toolName, publishMethod, buildType, distribution.VersionNumber);
+		byte[]? bytes = _toolService.GetToolDistributionFile(toolName, publishMethod.ToDomain(), buildType.ToDomain(), distribution.VersionNumber);
 		if (bytes == null)
 			return NotFound();
 
-		await _toolService.UpdateToolDistributionStatisticsAsync(toolName, publishMethod, buildType, distribution.VersionNumber);
+		await _toolService.UpdateToolDistributionStatisticsAsync(toolName, publishMethod.ToDomain(), buildType.ToDomain(), distribution.VersionNumber);
 
 		return File(bytes, MediaTypeNames.Application.Zip, $"{toolName}{distribution.VersionNumber}.zip");
 	}
@@ -64,7 +65,7 @@ public class ToolsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult<GetToolDistribution>> GetLatestToolDistribution([Required] string toolName, ToolPublishMethod publishMethod, ToolBuildType buildType)
 	{
-		GetToolDistribution? distribution = await _toolService.GetLatestToolDistributionAsync(toolName, publishMethod, buildType);
+		GetToolDistribution? distribution = await _toolService.GetLatestToolDistributionAsync(toolName, publishMethod.ToDomain(), buildType.ToDomain());
 		if (distribution == null)
 			return NotFound();
 
@@ -77,7 +78,7 @@ public class ToolsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult<GetToolDistribution>> GetToolDistributionByVersion([Required] string toolName, ToolPublishMethod publishMethod, ToolBuildType buildType, string version)
 	{
-		GetToolDistribution? distribution = await _toolService.GetToolDistributionByVersionAsync(toolName, publishMethod, buildType, version);
+		GetToolDistribution? distribution = await _toolService.GetToolDistributionByVersionAsync(toolName, publishMethod.ToDomain(), buildType.ToDomain(), version);
 		if (distribution == null)
 			return NotFound();
 

@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Web.Server.Entities.Enums;
+
 namespace DevilDaggersInfo.Web.Server.Entities;
 
 [Table("AssetMods")]

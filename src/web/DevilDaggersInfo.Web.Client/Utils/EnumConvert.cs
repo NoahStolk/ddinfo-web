@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Web.Shared.Enums;
+using DevilDaggersInfo.Api.Main.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Client.Utils;
 

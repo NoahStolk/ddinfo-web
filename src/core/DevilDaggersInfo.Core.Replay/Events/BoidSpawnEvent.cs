@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Common.Exceptions;
+
 namespace DevilDaggersInfo.Core.Replay.Events;
 
 public readonly record struct BoidSpawnEvent(int EntityId, int SpawnerId, BoidType BoidType, Int16Vec3 Position, Int16Vec3 A, Int16Vec3 B, Int16Vec3 C, Vector3 D, float Speed) : IEvent
@@ -15,7 +17,7 @@ public readonly record struct BoidSpawnEvent(int EntityId, int SpawnerId, BoidTy
 			BoidType.Skull3 => 0x03,
 			BoidType.Spiderling => 0x04,
 			BoidType.Skull4 => 0x05,
-			_ => throw new InvalidOperationException($"Invalid {nameof(BoidType)} '{BoidType}'."),
+			_ => throw new InvalidEnumConversionException(BoidType),
 		}));
 		bw.Write(Position);
 		bw.Write(A);

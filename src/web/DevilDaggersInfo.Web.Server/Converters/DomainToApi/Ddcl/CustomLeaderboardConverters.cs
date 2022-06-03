@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Common.Exceptions;
+using DevilDaggersInfo.Web.Server.Entities.Enums;
 using DevilDaggersInfo.Web.Server.InternalModels.CustomLeaderboards;
 using DdclApi = DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
 
@@ -7,7 +9,7 @@ public static class CustomLeaderboardConverters
 {
 	public static DdclApi.GetUploadSuccess ToDdclApi(this UploadResponse uploadResponse) => new()
 	{
-		Category = uploadResponse.Category.ToDdclApi(),
+		Category = uploadResponse.Leaderboard.Category.ToDdclApi(),
 		DaggersFiredState = uploadResponse.DaggersFiredState.ToDdclApi(),
 		DaggersHitState = uploadResponse.DaggersHitState.ToDdclApi(),
 		EnemiesAliveState = uploadResponse.EnemiesAliveState.ToDdclApi(),
@@ -80,7 +82,7 @@ public static class CustomLeaderboardConverters
 		CustomLeaderboardCategory.Speedrun => DdclApi.CustomLeaderboardCategory.Speedrun,
 		CustomLeaderboardCategory.Race => DdclApi.CustomLeaderboardCategory.Race,
 		CustomLeaderboardCategory.Pacifist => DdclApi.CustomLeaderboardCategory.Pacifist,
-		_ => throw new InvalidOperationException($"Cannot convert custom leaderboard category '{customLeaderboardCategory}' to a DDCL API model."),
+		_ => throw new InvalidEnumConversionException(customLeaderboardCategory),
 	};
 
 	private static DdclApi.GetScoreState<T> ToDdclApi<T>(this UploadResponseScoreState<T> scoreState)

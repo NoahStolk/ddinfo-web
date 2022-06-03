@@ -1,10 +1,9 @@
 using DevilDaggersInfo.Web.Server.Controllers.Admin;
+using DevilDaggersInfo.Web.Server.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Tests.Data;
 using DevilDaggersInfo.Web.Server.Tests.Extensions;
-using DevilDaggersInfo.Web.Shared.Dto;
-using DevilDaggersInfo.Web.Shared.Dto.Admin.CustomLeaderboards;
-using DevilDaggersInfo.Web.Shared.Enums;
 using DevilDaggersInfo.Web.Shared.Extensions;
+using AdminApi = DevilDaggersInfo.Api.Admin;
 
 namespace DevilDaggersInfo.Web.Server.Tests;
 
@@ -50,7 +49,7 @@ public class CustomLeaderboardTests
 	[TestMethod]
 	public void GetCustomLeaderboards()
 	{
-		Page<GetCustomLeaderboardForOverview>? customLeaderboards = _customLeaderboardsController.GetCustomLeaderboards().Value;
+		AdminApi.Page<AdminApi.CustomLeaderboards.GetCustomLeaderboardForOverview>? customLeaderboards = _customLeaderboardsController.GetCustomLeaderboards().Value;
 
 		_dbContext.Verify(db => db.SaveChanges(), Times.Never);
 		Assert.IsNotNull(customLeaderboards);

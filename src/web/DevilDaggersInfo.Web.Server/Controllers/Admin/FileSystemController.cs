@@ -1,4 +1,5 @@
-using DevilDaggersInfo.Web.Shared.Dto.Admin.FileSystem;
+using DevilDaggersInfo.Api.Admin.FileSystem;
+using DevilDaggersInfo.Web.Server.Enums;
 using Microsoft.AspNetCore.Authorization;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Admin;

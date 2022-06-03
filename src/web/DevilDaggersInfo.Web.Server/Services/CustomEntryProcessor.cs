@@ -4,6 +4,8 @@ using DevilDaggersInfo.Core.Encryption;
 using DevilDaggersInfo.Core.Replay;
 using DevilDaggersInfo.Core.Replay.Enums;
 using DevilDaggersInfo.Web.Server.Caches.SpawnsetHashes;
+using DevilDaggersInfo.Web.Server.Entities.Enums;
+using DevilDaggersInfo.Web.Server.Enums;
 using DevilDaggersInfo.Web.Server.HostedServices.DdInfoDiscordBot;
 using DevilDaggersInfo.Web.Server.InternalModels.CustomLeaderboards;
 using DSharpPlus.Entities;
@@ -195,7 +197,6 @@ public class CustomEntryProcessor
 			Message = $"Welcome to the {spawnsetName} leaderboard!",
 			TotalPlayers = totalPlayers,
 			Leaderboard = ToLeaderboardSummary(customLeaderboard),
-			Category = customLeaderboard.Category,
 			Entries = entries.ConvertAll(e => ToEntryWithReplay(e, replayIds)),
 			IsNewPlayerOnThisLeaderboard = true,
 			IsHighscore = true,
@@ -276,7 +277,6 @@ public class CustomEntryProcessor
 			Message = $"No new highscore for {customLeaderboard.Spawnset.Name}.",
 			TotalPlayers = entries.Count,
 			Leaderboard = ToLeaderboardSummary(customLeaderboard),
-			Category = customLeaderboard.Category,
 			Entries = entries.ConvertAll(e => ToEntryWithReplay(e, replayIds)),
 			IsNewPlayerOnThisLeaderboard = false,
 			IsHighscore = false,
@@ -370,7 +370,6 @@ public class CustomEntryProcessor
 			Message = $"NEW HIGHSCORE for {customLeaderboard.Spawnset.Name}!",
 			TotalPlayers = entries.Count,
 			Leaderboard = ToLeaderboardSummary(customLeaderboard),
-			Category = customLeaderboard.Category,
 			Entries = entries.ConvertAll(e => ToEntryWithReplay(e, replayIds)),
 			IsNewPlayerOnThisLeaderboard = false,
 			IsHighscore = true,

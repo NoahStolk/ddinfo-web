@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Web.Server.Enums;
+
 namespace DevilDaggersInfo.Web.Server.InternalModels.CustomLeaderboards;
 
 public class CustomLeaderboardOverviewWorldRecord

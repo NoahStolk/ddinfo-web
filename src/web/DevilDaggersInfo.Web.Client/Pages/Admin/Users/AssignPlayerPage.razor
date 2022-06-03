@@ -1,7 +1,7 @@
 @page "/admin/users/assign-player/{Id:int}"
 @inherits BaseAdminPage
-@using DevilDaggersInfo.Web.Shared.Dto.Admin.Users
-@using DevilDaggersInfo.Web.Shared.Dto.Admin.Players
+@using DevilDaggersInfo.Api.Admin.Users
+@using DevilDaggersInfo.Api.Admin.Players
 
 <AdminAuthorizer Base="this" RequiredRole="@Roles.Players">
 	<Heading Title="Admin - Assign Player" />

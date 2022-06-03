@@ -1,6 +1,8 @@
-using DevilDaggersInfo.Web.Shared.Dto.Public.Players;
-using System.Net;
+using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Main;
+using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
+using DevilDaggersInfo.Web.Server.Entities.Enums;
 using System.Security.Claims;
+using MainApi = DevilDaggersInfo.Api.Main.Players;
 
 namespace DevilDaggersInfo.Web.Server.Services;
 
@@ -15,7 +17,7 @@ public class ProfileService
 		_auditLogger = auditLogger;
 	}
 
-	public async Task<GetPlayerProfile> GetProfileAsync(ClaimsPrincipal claimsPrincipal, int id)
+	public async Task<MainApi.GetPlayerProfile> GetProfileAsync(ClaimsPrincipal claimsPrincipal, int id)
 	{
 		string? userName = claimsPrincipal.GetName();
 		UserEntity? user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Name == userName);
@@ -52,11 +54,11 @@ public class ProfileService
 			UsesHrtf = player.UsesHrtf,
 			UsesInvertY = player.UsesInvertY,
 			UsesLegacyAudio = player.UsesLegacyAudio,
-			VerticalSync = player.VerticalSync,
+			VerticalSync = player.VerticalSync.ToMainApi(),
 		};
 	}
 
-	public async Task UpdateProfileAsync(ClaimsPrincipal claimsPrincipal, int id, EditPlayerProfile editPlayerProfile)
+	public async Task UpdateProfileAsync(ClaimsPrincipal claimsPrincipal, int id, MainApi.EditPlayerProfile editPlayerProfile)
 	{
 		string? userName = claimsPrincipal.GetName();
 		UserEntity? user = _dbContext.Users.FirstOrDefault(u => u.Name == userName);
@@ -76,7 +78,7 @@ public class ProfileService
 		if (player.BanType != BanType.NotBanned)
 			throw new InvalidProfileRequestException("Player is banned.");
 
-		EditPlayerProfile oldDtoLog = new()
+		MainApi.EditPlayerProfile oldDtoLog = new()
 		{
 			CountryCode = player.CountryCode,
 			Dpi = player.Dpi,
@@ -88,7 +90,7 @@ public class ProfileService
 			UsesLegacyAudio = player.UsesLegacyAudio,
 			UsesHrtf = player.UsesHrtf,
 			UsesInvertY = player.UsesInvertY,
-			VerticalSync = player.VerticalSync,
+			VerticalSync = player.VerticalSync.ToMainApi(),
 			HideSettings = player.HideSettings,
 			HideDonations = player.HideDonations,
 			HidePastUsernames = player.HidePastUsernames,
@@ -107,7 +109,7 @@ public class ProfileService
 		player.UsesHrtf = editPlayerProfile.UsesHrtf;
 		player.UsesInvertY = editPlayerProfile.UsesInvertY;
 		player.UsesLegacyAudio = editPlayerProfile.UsesLegacyAudio;
-		player.VerticalSync = editPlayerProfile.VerticalSync;
+		player.VerticalSync = editPlayerProfile.VerticalSync.ToDomain();
 
 		await _dbContext.SaveChangesAsync();
 

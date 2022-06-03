@@ -1,6 +1,7 @@
+using DevilDaggersInfo.Api.Main.LeaderboardHistory;
+using DevilDaggersInfo.Api.Main.Players;
+using DevilDaggersInfo.Core.Wiki.Enums;
 using DevilDaggersInfo.Web.Client.Extensions;
-using DevilDaggersInfo.Web.Shared.Dto.Public.LeaderboardHistory;
-using DevilDaggersInfo.Web.Shared.Dto.Public.Players;
 using Microsoft.AspNetCore.Components;
 
 namespace DevilDaggersInfo.Web.Client.Pages.Leaderboard;

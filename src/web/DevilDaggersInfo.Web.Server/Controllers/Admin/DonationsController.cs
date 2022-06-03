@@ -1,7 +1,7 @@
-using DevilDaggersInfo.Web.Server.Converters.Admin;
-using DevilDaggersInfo.Web.Shared.Dto;
-using DevilDaggersInfo.Web.Shared.Dto.Admin.Donations;
-using DevilDaggersInfo.Web.Shared.Enums.Sortings.Admin;
+using DevilDaggersInfo.Api.Admin;
+using DevilDaggersInfo.Api.Admin.Donations;
+using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Admin;
+using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Admin;
 using Microsoft.AspNetCore.Authorization;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
@@ -83,7 +83,7 @@ public class DonationsController : ControllerBase
 		{
 			Amount = addDonation.Amount,
 			ConvertedEuroCentsReceived = addDonation.ConvertedEuroCentsReceived,
-			Currency = addDonation.Currency,
+			Currency = addDonation.Currency.ToDomain(),
 			DateReceived = DateTime.UtcNow,
 			IsRefunded = addDonation.IsRefunded,
 			Note = addDonation.Note,
@@ -114,7 +114,7 @@ public class DonationsController : ControllerBase
 		{
 			Amount = donation.Amount,
 			ConvertedEuroCentsReceived = donation.ConvertedEuroCentsReceived,
-			Currency = donation.Currency,
+			Currency = donation.Currency.ToAdminApi(),
 			IsRefunded = donation.IsRefunded,
 			Note = donation.Note,
 			PlayerId = donation.PlayerId,
@@ -122,7 +122,7 @@ public class DonationsController : ControllerBase
 
 		donation.Amount = editDonation.Amount;
 		donation.ConvertedEuroCentsReceived = editDonation.ConvertedEuroCentsReceived;
-		donation.Currency = editDonation.Currency;
+		donation.Currency = editDonation.Currency.ToDomain();
 		donation.IsRefunded = editDonation.IsRefunded;
 		donation.Note = editDonation.Note;
 		donation.PlayerId = editDonation.PlayerId;

@@ -1,4 +1,5 @@
-using DevilDaggersInfo.Web.Shared.Dto.Admin.Health;
+using DevilDaggersInfo.Api.Admin.Health;
+using DevilDaggersInfo.Web.Server.Enums;
 
 namespace DevilDaggersInfo.Web.Server.Services;
 

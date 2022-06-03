@@ -1,4 +1,5 @@
-using DevilDaggersInfo.Web.Shared.Dto.Admin.Tools;
+using DevilDaggersInfo.Api.Admin.Tools;
+using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Admin;
 using Microsoft.AspNetCore.Authorization;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
@@ -20,7 +21,7 @@ public class ToolsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult> AddDistribution(AddDistribution distribution)
 	{
-		await _toolService.AddDistribution(distribution.Name, distribution.PublishMethod, distribution.BuildType, distribution.Version, distribution.ZipFileContents);
+		await _toolService.AddDistribution(distribution.Name, distribution.PublishMethod.ToDomain(), distribution.BuildType.ToDomain(), distribution.Version, distribution.ZipFileContents);
 		return Ok();
 	}
 }

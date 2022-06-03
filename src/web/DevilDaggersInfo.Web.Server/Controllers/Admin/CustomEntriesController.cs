@@ -1,7 +1,7 @@
-using DevilDaggersInfo.Web.Server.Converters.Admin;
-using DevilDaggersInfo.Web.Shared.Dto;
-using DevilDaggersInfo.Web.Shared.Dto.Admin.CustomEntries;
-using DevilDaggersInfo.Web.Shared.Enums.Sortings.Admin;
+using DevilDaggersInfo.Api.Admin;
+using DevilDaggersInfo.Api.Admin.CustomEntries;
+using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Admin;
+using DevilDaggersInfo.Web.Server.Enums;
 using Microsoft.AspNetCore.Authorization;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Admin;

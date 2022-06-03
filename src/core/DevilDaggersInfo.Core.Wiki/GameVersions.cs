@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Common.Exceptions;
+
 namespace DevilDaggersInfo.Core.Wiki;
 
 public static class GameVersions
@@ -22,6 +24,6 @@ public static class GameVersions
 		GameVersion.V3_0 => new(2016, 9, 19),
 		GameVersion.V3_1 => new(2021, 2, 19),
 		GameVersion.V3_2 => new(2021, 10, 27),
-		_ => throw new NotSupportedException($"{nameof(GameVersion)} '{gameVersion}' does not have a release date."),
+		_ => throw new InvalidEnumConversionException(gameVersion),
 	};
 }

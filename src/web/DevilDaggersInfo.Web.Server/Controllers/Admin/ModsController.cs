@@ -1,9 +1,9 @@
-using DevilDaggersInfo.Web.Server.Converters.Admin;
+using DevilDaggersInfo.Api.Admin;
+using DevilDaggersInfo.Api.Admin.Mods;
+using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Admin;
+using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Admin;
 using DevilDaggersInfo.Web.Server.InternalModels.AuditLog;
 using DevilDaggersInfo.Web.Server.InternalModels.Mods;
-using DevilDaggersInfo.Web.Shared.Dto;
-using DevilDaggersInfo.Web.Shared.Dto.Admin.Mods;
-using DevilDaggersInfo.Web.Shared.Enums.Sortings.Admin;
 using Microsoft.AspNetCore.Authorization;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
@@ -130,7 +130,7 @@ public class ModsController : ControllerBase
 
 		ModEntity mod = new()
 		{
-			ModTypes = addMod.ModTypes?.ToFlagEnum<ModTypes>() ?? ModTypes.None,
+			ModTypes = (addMod.ModTypes?.ToFlagEnum<ModTypes>() ?? ModTypes.None).ToDomain(),
 			HtmlDescription = addMod.HtmlDescription,
 			IsHidden = addMod.IsHidden,
 			LastUpdated = DateTime.UtcNow,
@@ -204,7 +204,7 @@ public class ModsController : ControllerBase
 			PlayerIds = mod.PlayerMods.ConvertAll(pam => pam.PlayerId),
 		};
 
-		mod.ModTypes = editMod.ModTypes?.ToFlagEnum<ModTypes>() ?? ModTypes.None;
+		mod.ModTypes = (editMod.ModTypes?.ToFlagEnum<ModTypes>() ?? ModTypes.None).ToDomain();
 		mod.HtmlDescription = editMod.HtmlDescription;
 		mod.IsHidden = editMod.IsHidden;
 		mod.Name = editMod.Name;

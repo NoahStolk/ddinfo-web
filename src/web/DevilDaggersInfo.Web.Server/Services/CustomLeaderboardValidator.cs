@@ -1,4 +1,6 @@
-using DevilDaggersInfo.Web.Shared.Dto.Admin.CustomLeaderboards;
+using DevilDaggersInfo.Web.Server.Entities.Enums;
+using DevilDaggersInfo.Web.Server.Enums;
+using DevilDaggersInfo.Web.Server.InternalModels.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Server.Services;
 
@@ -13,7 +15,7 @@ public class CustomLeaderboardValidator
 		_fileSystemService = fileSystemService;
 	}
 
-	public void ValidateCustomLeaderboard(int spawnsetId, CustomLeaderboardCategory category, AddCustomLeaderboardDaggers customLeaderboardDaggers, bool isFeatured)
+	public void ValidateCustomLeaderboard(int spawnsetId, CustomLeaderboardCategory category, CustomLeaderboardDaggers customLeaderboardDaggers, bool isFeatured)
 	{
 		if (!Enum.IsDefined(category))
 			throw new CustomLeaderboardValidationException($"Category '{category}' is not defined.");

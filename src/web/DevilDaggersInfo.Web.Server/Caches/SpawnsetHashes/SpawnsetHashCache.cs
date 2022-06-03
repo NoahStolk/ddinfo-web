@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Web.Server.Enums;
+
 namespace DevilDaggersInfo.Web.Server.Caches.SpawnsetHashes;
 
 public class SpawnsetHashCache : IDynamicCache

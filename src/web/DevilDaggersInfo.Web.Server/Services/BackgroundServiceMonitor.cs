@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Web.Shared.Dto.Admin.BackgroundServices;
+using DevilDaggersInfo.Api.Admin.BackgroundServices;
 
 namespace DevilDaggersInfo.Web.Server.Services;
 

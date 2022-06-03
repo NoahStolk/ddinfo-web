@@ -1,10 +1,9 @@
 @page "/admin/players/edit/{Id:int}"
 @inherits BaseAdminPage
-@using DevilDaggersInfo.Web.Shared.Dto.Admin.Players
-@using DevilDaggersInfo.Web.Shared.Enums
+@using DevilDaggersInfo.Api.Admin.Mods
+@using DevilDaggersInfo.Api.Admin.Players
 @using DevilDaggersInfo.Web.Client.Components.Admin
 @using DevilDaggersInfo.Web.Client.Enums
-@using DevilDaggersInfo.Web.Shared.Dto.Admin.Mods
 
 <AdminAuthorizer Base="this" RequiredRole="@Roles.Players">
 	<AdminEdit Name="Player" OverviewUrl="/admin/players" ApiCall="Http.EditPlayerById" Model="_editPlayer" Id="Id" OnPopulate="async (ec) => await PopulateAsync(ec)">

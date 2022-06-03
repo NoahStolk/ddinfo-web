@@ -1,5 +1,6 @@
 namespace DevilDaggersInfo.Web.Shared.Constants;
 
+// TODO: Remove?
 public static class AuthenticationConstants
 {
 	public const string PasswordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{12,40}$";

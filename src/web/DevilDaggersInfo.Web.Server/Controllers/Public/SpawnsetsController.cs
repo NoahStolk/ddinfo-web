@@ -1,9 +1,10 @@
+using DevilDaggersInfo.Api.Main;
+using DevilDaggersInfo.Api.Main.GameVersions;
+using DevilDaggersInfo.Api.Main.Spawnsets;
 using DevilDaggersInfo.Web.Server.Caches.SpawnsetHashes;
 using DevilDaggersInfo.Web.Server.Caches.SpawnsetSummaries;
-using DevilDaggersInfo.Web.Server.Converters.Public;
-using DevilDaggersInfo.Web.Shared.Dto;
-using DevilDaggersInfo.Web.Shared.Dto.Public.Spawnsets;
-using DevilDaggersInfo.Web.Shared.Enums.Sortings.Public;
+using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
+using DevilDaggersInfo.Web.Server.Enums;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Public;
 

@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Common.Exceptions;
+using DevilDaggersInfo.Web.Server.Entities.Enums;
 using DevilDaggersInfo.Web.Server.InternalModels.Mods;
 using DdaeApi = DevilDaggersInfo.Api.Ddae.Mods;
 
@@ -34,7 +36,7 @@ public static class ModConverters
 	{
 		ModBinaryType.Audio => DdaeApi.ModBinaryType.Audio,
 		ModBinaryType.Dd => DdaeApi.ModBinaryType.Dd,
-		_ => throw new NotSupportedException($"Mod binary type '{modBinaryType}' cannot be converted to a DDAE API model."),
+		_ => throw new InvalidEnumConversionException(modBinaryType),
 	};
 
 	// TODO: Remove cast.

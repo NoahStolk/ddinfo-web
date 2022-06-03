@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Common.Exceptions;
+
 namespace DevilDaggersInfo.Core.Replay.Events;
 
 public readonly record struct SquidSpawnEvent(int EntityId, SquidType SquidType, int A, Vector3 Position, Vector3 Direction, float RotationInRadians) : IEvent
@@ -10,7 +12,7 @@ public readonly record struct SquidSpawnEvent(int EntityId, SquidType SquidType,
 			SquidType.Squid1 => 0x03,
 			SquidType.Squid2 => 0x04,
 			SquidType.Squid3 => 0x05,
-			_ => throw new InvalidOperationException($"Invalid {nameof(SquidType)} '{SquidType}'."),
+			_ => throw new InvalidEnumConversionException(SquidType),
 		}));
 
 		bw.Write(A);

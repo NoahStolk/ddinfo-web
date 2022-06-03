@@ -1,9 +1,9 @@
 @page "/admin/spawnsets/edit/{Id:int}"
 @inherits BaseAdminPage
-@using DevilDaggersInfo.Web.Shared.Dto.Admin.Spawnsets
+@using DevilDaggersInfo.Api.Admin.Spawnsets
+@using DevilDaggersInfo.Api.Admin.Players
 @using DevilDaggersInfo.Web.Client.Components.Admin
 @using DevilDaggersInfo.Web.Client.Enums
-@using DevilDaggersInfo.Web.Shared.Dto.Admin.Players
 
 <AdminAuthorizer Base="this" RequiredRole="@Roles.Spawnsets">
 	<AdminEdit Name="Spawnset" OverviewUrl="/admin/spawnsets" ApiCall="Http.EditSpawnsetById" Model="_editSpawnset" Id="Id" OnPopulate="async (ec) => await PopulateAsync(ec)">

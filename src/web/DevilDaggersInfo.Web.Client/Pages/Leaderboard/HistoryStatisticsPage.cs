@@ -1,8 +1,8 @@
+using DevilDaggersInfo.Api.Main.LeaderboardHistoryStatistics;
 using DevilDaggersInfo.Core.Wiki.Extensions;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Data;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Options.LineChart;
 using DevilDaggersInfo.Web.Client.Utils;
-using DevilDaggersInfo.Web.Shared.Dto.Public.LeaderboardHistoryStatistics;
 using DevilDaggersInfo.Web.Shared.Utils;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;

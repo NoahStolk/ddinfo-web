@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Web.Server.Entities.Enums;
+
 namespace DevilDaggersInfo.Web.Server.Caches.ModArchives;
 
 public class ModArchiveCacheData

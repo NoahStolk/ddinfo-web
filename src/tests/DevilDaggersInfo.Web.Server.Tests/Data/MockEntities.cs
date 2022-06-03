@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Web.Shared.Enums;
+using DevilDaggersInfo.Web.Server.Entities.Enums;
 using MockQueryable.Moq;
 
 namespace DevilDaggersInfo.Web.Server.Tests.Data;

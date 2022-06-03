@@ -1,3 +1,6 @@
+using DevilDaggersInfo.Common.Exceptions;
+using DevilDaggersInfo.Web.Server.Entities.Enums;
+using DevilDaggersInfo.Web.Server.Enums;
 using DevilDaggersInfo.Web.Server.InternalModels.CustomLeaderboards;
 using DdLiveApi = DevilDaggersInfo.Api.DdLive.CustomLeaderboards;
 
@@ -83,7 +86,7 @@ public static class CustomLeaderboardConverters
 		CustomLeaderboardCategory.Speedrun => DdLiveApi.CustomLeaderboardCategory.Speedrun,
 		CustomLeaderboardCategory.Race => DdLiveApi.CustomLeaderboardCategory.Race,
 		CustomLeaderboardCategory.Pacifist => DdLiveApi.CustomLeaderboardCategory.Pacifist,
-		_ => throw new InvalidOperationException($"Cannot convert custom leaderboard category '{customLeaderboardCategory}' to a DDLIVE API model."),
+		_ => throw new InvalidEnumConversionException(customLeaderboardCategory),
 	};
 
 	private static DdLiveApi.CustomLeaderboardDagger? ToDdLiveApi(this CustomLeaderboardDagger? customLeaderboardDagger) => customLeaderboardDagger switch
@@ -95,13 +98,13 @@ public static class CustomLeaderboardConverters
 		CustomLeaderboardDagger.Devil => DdLiveApi.CustomLeaderboardDagger.Devil,
 		CustomLeaderboardDagger.Leviathan => DdLiveApi.CustomLeaderboardDagger.Leviathan,
 		null => null,
-		_ => throw new InvalidOperationException($"Cannot convert custom leaderboard dagger '{customLeaderboardDagger}' to a DDLIVE API model."),
+		_ => throw new InvalidEnumConversionException(customLeaderboardDagger),
 	};
 
 	private static DdLiveApi.CustomLeaderboardsClient ToDdLiveApi(this CustomLeaderboardsClient customLeaderboardsClient) => customLeaderboardsClient switch
 	{
 		CustomLeaderboardsClient.DdstatsRust => DdLiveApi.CustomLeaderboardsClient.DdstatsRust,
 		CustomLeaderboardsClient.DevilDaggersCustomLeaderboards => DdLiveApi.CustomLeaderboardsClient.DevilDaggersCustomLeaderboards,
-		_ => throw new InvalidOperationException($"Cannot convert custom leaderboards client '{customLeaderboardsClient}' to a DDLIVE API model."),
+		_ => throw new InvalidEnumConversionException(customLeaderboardsClient),
 	};
 }

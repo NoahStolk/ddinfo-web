@@ -1,7 +1,7 @@
+using DevilDaggersInfo.Api.Main.CustomLeaderboards;
 using DevilDaggersInfo.Web.Client.Extensions;
 using DevilDaggersInfo.Web.Client.HttpClients;
 using DevilDaggersInfo.Web.Client.Utils;
-using DevilDaggersInfo.Web.Shared.Dto.Public.CustomLeaderboards;
 using Microsoft.AspNetCore.Components;
 
 namespace DevilDaggersInfo.Web.Client.Pages.Custom.Leaderboards;

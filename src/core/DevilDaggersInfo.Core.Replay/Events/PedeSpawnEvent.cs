@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Common.Exceptions;
+
 namespace DevilDaggersInfo.Core.Replay.Events;
 
 public readonly record struct PedeSpawnEvent(int EntityId, PedeType PedeType, int A, Vector3 Position, Vector3 B, Matrix3x3 Orientation) : IEvent
@@ -10,7 +12,7 @@ public readonly record struct PedeSpawnEvent(int EntityId, PedeType PedeType, in
 			PedeType.Centipede => 0x07,
 			PedeType.Gigapede => 0x0c,
 			PedeType.Ghostpede => 0x0f,
-			_ => throw new InvalidOperationException($"Invalid {nameof(PedeType)} '{PedeType}'."),
+			_ => throw new InvalidEnumConversionException(PedeType),
 		}));
 
 		bw.Write(A);

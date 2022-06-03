@@ -1,8 +1,9 @@
+using DevilDaggersInfo.Api.Main.Players;
 using DevilDaggersInfo.Web.Server.Caches.LeaderboardHistory;
-using DevilDaggersInfo.Web.Server.Converters.Public;
+using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
+using DevilDaggersInfo.Web.Server.Entities.Enums;
+using DevilDaggersInfo.Web.Server.Enums;
 using DevilDaggersInfo.Web.Server.InternalModels.LeaderboardHistory;
-using DevilDaggersInfo.Web.Shared.Dto.Public.Players;
-using DevilDaggersInfo.Web.Shared.Utils;
 using Microsoft.AspNetCore.Authorization;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Public;
@@ -15,15 +16,13 @@ public class PlayersController : ControllerBase
 	private readonly IFileSystemService _fileSystemService;
 	private readonly LeaderboardHistoryCache _leaderboardHistoryCache;
 	private readonly ProfileService _profileService;
-	private readonly ILogger<PlayersController> _logger;
 
-	public PlayersController(ApplicationDbContext dbContext, IFileSystemService fileSystemService, LeaderboardHistoryCache leaderboardHistoryCache, ProfileService profileService, ILogger<PlayersController> logger)
+	public PlayersController(ApplicationDbContext dbContext, IFileSystemService fileSystemService, LeaderboardHistoryCache leaderboardHistoryCache, ProfileService profileService)
 	{
 		_dbContext = dbContext;
 		_fileSystemService = fileSystemService;
 		_leaderboardHistoryCache = leaderboardHistoryCache;
 		_profileService = profileService;
-		_logger = logger;
 	}
 
 	[HttpGet("leaderboard")]
@@ -35,7 +34,7 @@ public class PlayersController : ControllerBase
 			.Select(p => new GetPlayerForLeaderboard
 			{
 				Id = p.Id,
-				BanType = p.BanType,
+				BanType = p.BanType.ToMainApi(),
 				BanDescription = p.BanDescription,
 				BanResponsibleId = p.BanResponsibleId,
 				CountryCode = p.CountryCode,
@@ -49,7 +48,7 @@ public class PlayersController : ControllerBase
 	{
 		List<PlayerEntity> players = _dbContext.Players
 			.AsNoTracking()
-			.Where(p => p.BanType == BanType.NotBanned && !p.HideSettings)
+			.Where(p => p.BanType == Entities.Enums.BanType.NotBanned && !p.HideSettings)
 			.ToList();
 
 		// Note; cannot evaluate HasSettings() against database (IQueryable).
@@ -238,7 +237,7 @@ public class PlayersController : ControllerBase
 
 			stats.Add(new()
 			{
-				CustomLeaderboardCategory = category,
+				CustomLeaderboardCategory = category.ToMainApi(),
 				LeviathanDaggerCount = leviathanDaggers,
 				DevilDaggerCount = devilDaggers,
 				GoldenDaggerCount = goldenDaggers,

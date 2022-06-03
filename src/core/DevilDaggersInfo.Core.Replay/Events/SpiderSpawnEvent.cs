@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Common.Exceptions;
+
 namespace DevilDaggersInfo.Core.Replay.Events;
 
 public readonly record struct SpiderSpawnEvent(int EntityId, SpiderType SpiderType, int A, Vector3 Position) : IEvent
@@ -9,7 +11,7 @@ public readonly record struct SpiderSpawnEvent(int EntityId, SpiderType SpiderTy
 		{
 			SpiderType.Spider1 => 0x08,
 			SpiderType.Spider2 => 0x09,
-			_ => throw new InvalidOperationException($"Invalid {nameof(SpiderType)} '{SpiderType}'."),
+			_ => throw new InvalidEnumConversionException(SpiderType),
 		}));
 
 		bw.Write(A);
