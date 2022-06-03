@@ -4,7 +4,6 @@ using DevilDaggersInfo.Core.Mod.Enums;
 using DevilDaggersInfo.Core.Mod.Utils;
 using DevilDaggersInfo.Web.Server.Caches.ModArchives;
 using System.IO.Compression;
-using System.Text;
 
 namespace DevilDaggersInfo.Web.Server.Tests;
 
