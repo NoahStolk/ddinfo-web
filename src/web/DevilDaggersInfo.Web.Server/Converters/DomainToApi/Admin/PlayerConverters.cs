@@ -58,7 +58,7 @@ public static class PlayerConverters
 		ModIds = player.PlayerMods.ConvertAll(pam => pam.ModId),
 	};
 
-	private static AdminApi.BanType ToAdminApi(this BanType banType) => banType switch
+	public static AdminApi.BanType ToAdminApi(this BanType banType) => banType switch
 	{
 		BanType.NotBanned => AdminApi.BanType.NotBanned,
 		BanType.Alt => AdminApi.BanType.Alt,
@@ -69,7 +69,7 @@ public static class PlayerConverters
 		_ => throw new InvalidEnumConversionException(banType),
 	};
 
-	private static AdminApi.VerticalSync ToAdminApi(this VerticalSync verticalSync) => verticalSync switch
+	public static AdminApi.VerticalSync ToAdminApi(this VerticalSync verticalSync) => verticalSync switch
 	{
 		VerticalSync.Unknown => AdminApi.VerticalSync.Unknown,
 		VerticalSync.Off => AdminApi.VerticalSync.Off,

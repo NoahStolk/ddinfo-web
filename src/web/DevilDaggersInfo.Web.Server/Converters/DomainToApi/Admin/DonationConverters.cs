@@ -29,7 +29,7 @@ public static class DonationConverters
 		PlayerId = donation.PlayerId,
 	};
 
-	private static AdminApi.Currency ToAdminApi(this Currency currency) => currency switch
+	public static AdminApi.Currency ToAdminApi(this Currency currency) => currency switch
 	{
 		Currency.Eur => AdminApi.Currency.Eur,
 		Currency.Usd => AdminApi.Currency.Usd,

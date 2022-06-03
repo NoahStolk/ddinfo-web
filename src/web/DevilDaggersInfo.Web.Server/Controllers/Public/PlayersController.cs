@@ -16,15 +16,13 @@ public class PlayersController : ControllerBase
 	private readonly IFileSystemService _fileSystemService;
 	private readonly LeaderboardHistoryCache _leaderboardHistoryCache;
 	private readonly ProfileService _profileService;
-	private readonly ILogger<PlayersController> _logger;
 
-	public PlayersController(ApplicationDbContext dbContext, IFileSystemService fileSystemService, LeaderboardHistoryCache leaderboardHistoryCache, ProfileService profileService, ILogger<PlayersController> logger)
+	public PlayersController(ApplicationDbContext dbContext, IFileSystemService fileSystemService, LeaderboardHistoryCache leaderboardHistoryCache, ProfileService profileService)
 	{
 		_dbContext = dbContext;
 		_fileSystemService = fileSystemService;
 		_leaderboardHistoryCache = leaderboardHistoryCache;
 		_profileService = profileService;
-		_logger = logger;
 	}
 
 	[HttpGet("leaderboard")]
@@ -36,7 +34,7 @@ public class PlayersController : ControllerBase
 			.Select(p => new MainApi.GetPlayerForLeaderboard
 			{
 				Id = p.Id,
-				BanType = p.BanType,
+				BanType = p.BanType.ToMainApi(),
 				BanDescription = p.BanDescription,
 				BanResponsibleId = p.BanResponsibleId,
 				CountryCode = p.CountryCode,
@@ -239,7 +237,7 @@ public class PlayersController : ControllerBase
 
 			stats.Add(new()
 			{
-				CustomLeaderboardCategory = category,
+				CustomLeaderboardCategory = category.ToMainApi(),
 				LeviathanDaggerCount = leviathanDaggers,
 				DevilDaggerCount = devilDaggers,
 				GoldenDaggerCount = goldenDaggers,

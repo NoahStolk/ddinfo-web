@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Common.Exceptions;
+using DevilDaggersInfo.Web.Client.Components.Admin;
 using DevilDaggersInfo.Web.Server.Entities.Enums;
 using MainApi = DevilDaggersInfo.Api.Main.Players;
 
@@ -45,6 +46,17 @@ public static class PlayerConverters
 			UsesInvertY = player.UsesInvertY,
 			VerticalSync = player.VerticalSync.ToMainApi(),
 		},
+	};
+
+	public static MainApi.BanType ToMainApi(this BanType banType) => banType switch
+	{
+		BanType.NotBanned => MainApi.BanType.NotBanned,
+		BanType.Alt => MainApi.BanType.Alt,
+		BanType.Cheater => MainApi.BanType.Cheater,
+		BanType.Boosted => MainApi.BanType.Boosted,
+		BanType.IllegitimateStats => MainApi.BanType.IllegitimateStats,
+		BanType.BlankName => MainApi.BanType.BlankName,
+		_ => throw new InvalidEnumConversionException(banType),
 	};
 
 	public static MainApi.VerticalSync ToMainApi(this VerticalSync verticalSync) => verticalSync switch

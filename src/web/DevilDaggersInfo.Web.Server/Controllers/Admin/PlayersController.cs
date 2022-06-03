@@ -1,5 +1,6 @@
 using DevilDaggersInfo.Api.Admin;
 using DevilDaggersInfo.Api.Admin.Players;
+using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Admin;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Admin;
 using Microsoft.AspNetCore.Authorization;
 
@@ -163,8 +164,8 @@ public class PlayersController : ControllerBase
 			UsesLegacyAudio = addPlayer.UsesLegacyAudio,
 			UsesHrtf = addPlayer.UsesHrtf,
 			UsesInvertY = addPlayer.UsesInvertY,
-			VerticalSync = addPlayer.VerticalSync,
-			BanType = addPlayer.BanType,
+			VerticalSync = addPlayer.VerticalSync.ToDomain(),
+			BanType = addPlayer.BanType.ToDomain(),
 			BanDescription = addPlayer.BanDescription,
 			BanResponsibleId = addPlayer.BanResponsibleId,
 			IsBannedFromDdcl = addPlayer.IsBannedFromDdcl,
@@ -245,14 +246,14 @@ public class PlayersController : ControllerBase
 			UsesLegacyAudio = player.UsesLegacyAudio,
 			UsesHrtf = player.UsesHrtf,
 			UsesInvertY = player.UsesInvertY,
-			VerticalSync = player.VerticalSync,
+			VerticalSync = player.VerticalSync.ToAdminApi(),
 			HideSettings = player.HideSettings,
 			HideDonations = player.HideDonations,
 			HidePastUsernames = player.HidePastUsernames,
 			ModIds = player.PlayerMods.ConvertAll(pam => pam.ModId),
 			BanDescription = player.BanDescription,
 			BanResponsibleId = player.BanResponsibleId,
-			BanType = player.BanType,
+			BanType = player.BanType.ToAdminApi(),
 			IsBannedFromDdcl = player.IsBannedFromDdcl,
 		};
 
@@ -269,13 +270,13 @@ public class PlayersController : ControllerBase
 		player.UsesLegacyAudio = editPlayer.UsesLegacyAudio;
 		player.UsesHrtf = editPlayer.UsesHrtf;
 		player.UsesInvertY = editPlayer.UsesInvertY;
-		player.VerticalSync = editPlayer.VerticalSync;
+		player.VerticalSync = editPlayer.VerticalSync.ToDomain();
 		player.HideSettings = editPlayer.HideSettings;
 		player.HideDonations = editPlayer.HideDonations;
 		player.HidePastUsernames = editPlayer.HidePastUsernames;
 		player.BanDescription = editPlayer.BanDescription;
 		player.BanResponsibleId = editPlayer.BanResponsibleId;
-		player.BanType = editPlayer.BanType;
+		player.BanType = editPlayer.BanType.ToDomain();
 		player.IsBannedFromDdcl = editPlayer.IsBannedFromDdcl;
 
 		UpdatePlayerMods(editPlayer.ModIds ?? new(), player.Id);

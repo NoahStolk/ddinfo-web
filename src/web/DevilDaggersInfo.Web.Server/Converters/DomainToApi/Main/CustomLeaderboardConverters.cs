@@ -33,7 +33,7 @@ public static class CustomLeaderboardConverters
 		Daggers = customLeaderboard.Daggers?.ToGetCustomLeaderboardDaggers(),
 		DateCreated = customLeaderboard.DateCreated,
 		SubmitCount = customLeaderboard.TotalRunsSubmitted,
-		Category = customLeaderboard.Category,
+		Category = customLeaderboard.Category.ToMainApi(),
 		IsFeatured = customLeaderboard.Daggers != null,
 		DateLastPlayed = customLeaderboard.DateLastPlayed,
 		CustomEntries = customLeaderboard.CustomEntries.ConvertAll(ce => ce.ToGetCustomEntry()),
