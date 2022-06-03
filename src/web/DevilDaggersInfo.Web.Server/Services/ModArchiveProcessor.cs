@@ -1,9 +1,7 @@
-using DevilDaggersInfo.Core.Mod.Utils;
 using DevilDaggersInfo.Web.Server.Caches.ModArchives;
 using DevilDaggersInfo.Web.Server.Enums;
 using DevilDaggersInfo.Web.Server.InternalModels.AuditLog;
 using DevilDaggersInfo.Web.Shared.Utils;
-using System.Linq;
 
 namespace DevilDaggersInfo.Web.Server.Services;
 
@@ -77,7 +75,7 @@ public class ModArchiveProcessor
 			throw new InvalidModArchiveException("Processing the mod archive failed.", ex);
 		}
 
-		fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(zipFilePath)} (`{FileSizeUtils.Format(zipBytes.Length)}`) with {(binaries.Count == 1 ? "binary" : "binaries")} {string.Join(", ", binaries.Keys)} was added.", FileSystemInformationType.Add));
+		fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(zipFilePath)} (`{FileSizeUtils.Format(zipBytes.Length)}`) with {(binaries.Count == 1 ? "binary" : "binaries")} was added. Binaries:\n{string.Join("\n", binaries.Keys.Select(bn => $"- `{bn.ToFullName(modName)}`"))}", FileSystemInformationType.Add));
 	}
 
 	/// <summary>

@@ -26,7 +26,7 @@
 		@foreach (BinaryData bd in _addMod.Binaries)
 		{
 			ModBinary b = new(bd.Data, ModBinaryReadComprehensiveness.TypeOnly);
-			<li class="list-disc">@bd.Name (will be renamed to @(new BinaryName(b.ModBinaryType, bd.Name).ToFullName(_addMod.Name ?? string.Empty))))</li>
+			<li class="list-disc">@bd.Name (will be renamed to @(new BinaryName(b.ModBinaryType, bd.Name).ToFullName(_addMod.Name ?? string.Empty)))</li>
 		}
 		@foreach (string fileSizeError in _binaryFileSizeErrors)
 		{
