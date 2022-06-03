@@ -123,7 +123,10 @@ public class ModsController : ControllerBase
 
 		List<FileSystemInformation> fsi = new();
 		if (addMod.Binaries.Count > 0)
-			await _modArchiveProcessor.ProcessModBinaryUploadAsync(addMod.Name, addMod.Binaries, fsi);
+		{
+			Dictionary<BinaryName, byte[]> binaries = addMod.Binaries.ToDictionary(b => GetBinaryName(b.Name, b.Data), b => b.Data);
+			await _modArchiveProcessor.ProcessModBinaryUploadAsync(addMod.Name, binaries, fsi);
+		}
 
 		if (addMod.Screenshots.Count > 0)
 			_modScreenshotProcessor.ProcessModScreenshotUpload(addMod.Name, addMod.Screenshots, fsi);
@@ -139,7 +142,7 @@ public class ModsController : ControllerBase
 			Url = addMod.Url ?? string.Empty,
 		};
 		_dbContext.Mods.Add(mod);
-		_dbContext.SaveChanges(); // Save changes here so PlayerMods entities can be assigned properly.
+		await _dbContext.SaveChangesAsync(); // Save changes here so PlayerMods entities can be assigned properly.
 
 		UpdatePlayerMods(addMod.PlayerIds ?? new(), mod.Id);
 		await _dbContext.SaveChangesAsync();
@@ -147,6 +150,12 @@ public class ModsController : ControllerBase
 		_auditLogger.LogAdd(addMod.GetLog(), User, mod.Id, fsi);
 
 		return Ok(mod.Id);
+	}
+
+	private static BinaryName GetBinaryName(string name, byte[] contents)
+	{
+		ModBinary modBinary = new(contents, ModBinaryReadComprehensiveness.TypeOnly);
+		return new(modBinary.ModBinaryType, name);
 	}
 
 	[HttpPut("{id}")]
@@ -182,7 +191,8 @@ public class ModsController : ControllerBase
 
 		List<FileSystemInformation> fsi = new();
 
-		bool isUpdated = await _modArchiveProcessor.TransformBinariesInModArchiveAsync(mod.Name, editMod.Name, editMod.BinariesToDelete, editMod.Binaries, fsi);
+		Dictionary<BinaryName, byte[]> binaries = editMod.Binaries.ToDictionary(b => GetBinaryName(b.Name, b.Data), b => b.Data);
+		bool isUpdated = await _modArchiveProcessor.TransformBinariesInModArchiveAsync(mod.Name, editMod.Name, editMod.BinariesToDelete.ConvertAll(s => BinaryName.Parse(s, mod.Name)), binaries, fsi);
 		if (isUpdated)
 			mod.LastUpdated = DateTime.UtcNow;
 
@@ -210,7 +220,7 @@ public class ModsController : ControllerBase
 		mod.Name = editMod.Name;
 		mod.TrailerUrl = editMod.TrailerUrl;
 		mod.Url = editMod.Url ?? string.Empty;
-		_dbContext.SaveChanges(); // Save changes here so PlayerMods entities can be assigned properly.
+		await _dbContext.SaveChangesAsync(); // Save changes here so PlayerMods entities can be assigned properly.
 
 		UpdatePlayerMods(editMod.PlayerIds ?? new(), mod.Id);
 		await _dbContext.SaveChangesAsync();

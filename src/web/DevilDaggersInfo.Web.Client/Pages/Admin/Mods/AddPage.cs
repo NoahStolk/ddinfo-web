@@ -41,7 +41,8 @@ public partial class AddPage
 
 	private async Task LoadBinaries(InputFileChangeEventArgs e)
 	{
-		_addMod.Binaries = await GetFiles(e, ModConstants.BinaryMaxFiles, ModConstants.BinaryMaxFileSize, _binaryFileSizeErrors);
+		Dictionary<string, byte[]> files = await GetFiles(e, ModConstants.BinaryMaxFiles, ModConstants.BinaryMaxFileSize, _binaryFileSizeErrors);
+		_addMod.Binaries = files.Select(kvp => new BinaryData { Name = kvp.Key, Data = kvp.Value }).ToList();
 	}
 
 	private async Task LoadScreenshots(InputFileChangeEventArgs e)

@@ -39,6 +39,13 @@ public abstract class ModArchiveProcessorTests
 	protected ModArchiveProcessor Processor { get; }
 
 	[AssertionMethod]
+	protected static void AssertBinaryName(BinaryName binaryName, string name, string modName)
+	{
+		Assert.AreEqual(binaryName.ToFullName(modName), name);
+		Assert.AreEqual(binaryName, BinaryName.Parse(name, modName));
+	}
+
+	[AssertionMethod]
 	protected static ModBinaryCacheData GetProcessedBinaryFromArchiveEntry(ZipArchiveEntry entry)
 	{
 		Assert.IsFalse(string.IsNullOrEmpty(entry.Name));
@@ -51,11 +58,6 @@ public abstract class ModArchiveProcessorTests
 		}
 
 		return ModBinaryCacheData.CreateFromFile(entry.Name, extractedContents);
-	}
-
-	protected static string GetBinaryNameWithPrefix(ModBinaryType modBinaryType, string modName, string binaryName)
-	{
-		return BinaryFileNameUtils.GetBinaryPrefix(modBinaryType, modName) + binaryName;
 	}
 
 	protected static ModBinary CreateWithBinding(string assetName)

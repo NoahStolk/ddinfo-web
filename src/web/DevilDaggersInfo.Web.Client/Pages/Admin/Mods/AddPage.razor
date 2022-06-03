@@ -1,5 +1,6 @@
 @page "/admin/mods/add"
 @inherits BaseAdminModPage
+@using DevilDaggersInfo.Api.Admin.Mods
 @using DevilDaggersInfo.Core.Mod
 @using DevilDaggersInfo.Core.Mod.Enums
 @using DevilDaggersInfo.Core.Mod.Utils
@@ -22,10 +23,10 @@
 {
 	<p class="text-red">Binaries to upload</p>
 	<ul class="pl-4">
-		@foreach (KeyValuePair<string, byte[]> kvp in _addMod.Binaries)
+		@foreach (BinaryData bd in _addMod.Binaries)
 		{
-			ModBinary b = new(kvp.Value, ModBinaryReadComprehensiveness.TypeOnly);
-			<li class="list-disc">@kvp.Key (will be renamed to @(BinaryFileNameUtils.SanitizeModBinaryFileName(b.ModBinaryType, kvp.Key, _addMod.Name ?? string.Empty)))</li>
+			ModBinary b = new(bd.Data, ModBinaryReadComprehensiveness.TypeOnly);
+			<li class="list-disc">@bd.Name (will be renamed to @(new BinaryName(b.ModBinaryType, bd.Name).ToFullName(_addMod.Name ?? string.Empty))))</li>
 		}
 		@foreach (string fileSizeError in _binaryFileSizeErrors)
 		{

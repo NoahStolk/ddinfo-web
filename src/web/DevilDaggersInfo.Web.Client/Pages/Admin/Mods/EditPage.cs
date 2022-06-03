@@ -63,7 +63,8 @@ public partial class EditPage
 
 	private async Task LoadBinaries(InputFileChangeEventArgs e)
 	{
-		_editMod.Binaries = await GetFiles(e, ModConstants.BinaryMaxFiles, ModConstants.BinaryMaxFileSize, _binaryFileSizeErrors);
+		Dictionary<string, byte[]> files = await GetFiles(e, ModConstants.BinaryMaxFiles, ModConstants.BinaryMaxFileSize, _binaryFileSizeErrors);
+		_editMod.Binaries = files.Select(kvp => new BinaryData { Name = kvp.Key, Data = kvp.Value }).ToList();
 	}
 
 	private async Task LoadScreenshots(InputFileChangeEventArgs e)

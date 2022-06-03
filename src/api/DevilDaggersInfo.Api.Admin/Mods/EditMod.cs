@@ -1,4 +1,3 @@
-using DevilDaggersInfo.Api.Admin;
 using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersInfo.Api.Admin.Mods;
@@ -26,7 +25,7 @@ public record EditMod
 	public List<string> BinariesToDelete { get; set; } = new();
 
 	[MaxLength(ModConstants.BinaryMaxFiles, ErrorMessage = ModConstants.BinaryMaxFilesErrorMessage)]
-	public Dictionary<string, byte[]> Binaries { get; set; } = new();
+	public List<BinaryData> Binaries { get; set; } = new();
 
 	public List<string> ScreenshotsToDelete { get; set; } = new();
 

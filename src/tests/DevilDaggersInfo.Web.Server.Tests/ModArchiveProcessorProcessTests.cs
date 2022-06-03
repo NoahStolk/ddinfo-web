@@ -1,7 +1,6 @@
 using DevilDaggersInfo.Core.Asset.Enums;
 using DevilDaggersInfo.Core.Mod;
 using DevilDaggersInfo.Core.Mod.Enums;
-using DevilDaggersInfo.Core.Mod.Utils;
 using DevilDaggersInfo.Web.Server.Caches.ModArchives;
 using System.IO.Compression;
 
@@ -10,11 +9,12 @@ namespace DevilDaggersInfo.Web.Server.Tests;
 [TestClass]
 public class ModArchiveProcessorProcessTests : ModArchiveProcessorTests
 {
+	// TODO: Add a failing test where the ModBinaryType is incorrect.
 	[TestMethod]
 	public async Task ProcessNewMod_1Binary_1Asset()
 	{
 		const string modName = "mod";
-		const string binaryName = "main";
+		BinaryName binaryName = new(ModBinaryType.Dd, "main");
 		const string assetName = "binding";
 
 		ModBinary binary = CreateWithBinding(assetName);
@@ -26,7 +26,7 @@ public class ModArchiveProcessorProcessTests : ModArchiveProcessorTests
 
 		ModBinaryCacheData processedBinary = GetProcessedBinaryFromArchiveEntry(archive.Entries[0]);
 		Assert.AreEqual(ModBinaryType.Dd, processedBinary.ModBinaryType);
-		Assert.AreEqual(BinaryFileNameUtils.SanitizeModBinaryFileName(ModBinaryType.Dd, binaryName, modName), processedBinary.Name);
+		AssertBinaryName(binaryName, processedBinary.Name, modName);
 		Assert.AreEqual(1, processedBinary.Chunks.Count);
 		Assert.AreEqual(assetName, processedBinary.Chunks[0].Name);
 		Assert.AreEqual(AssetType.ObjectBinding, processedBinary.Chunks[0].AssetType);
@@ -36,7 +36,7 @@ public class ModArchiveProcessorProcessTests : ModArchiveProcessorTests
 	public async Task ProcessNewMod_1Binary_2Assets()
 	{
 		const string modName = "mod";
-		const string binaryName = "main";
+		BinaryName binaryName = new(ModBinaryType.Dd, "main");
 		const string assetName1 = "binding";
 		const string assetName2 = "texture";
 
@@ -49,7 +49,7 @@ public class ModArchiveProcessorProcessTests : ModArchiveProcessorTests
 
 		ModBinaryCacheData processedBinary = GetProcessedBinaryFromArchiveEntry(archive.Entries[0]);
 		Assert.AreEqual(ModBinaryType.Dd, processedBinary.ModBinaryType);
-		Assert.AreEqual(BinaryFileNameUtils.SanitizeModBinaryFileName(ModBinaryType.Dd, binaryName, modName), processedBinary.Name);
+		AssertBinaryName(binaryName, processedBinary.Name, modName);
 		Assert.AreEqual(2, processedBinary.Chunks.Count);
 		Assert.AreEqual(assetName1, processedBinary.Chunks[0].Name);
 		Assert.AreEqual(AssetType.ObjectBinding, processedBinary.Chunks[0].AssetType);
@@ -61,14 +61,14 @@ public class ModArchiveProcessorProcessTests : ModArchiveProcessorTests
 	public async Task ProcessNewMod_2Binaries_2Assets()
 	{
 		const string modName = "mod";
-		const string binaryName1 = "main";
-		const string binaryName2 = "test";
+		BinaryName binaryName1 = new(ModBinaryType.Dd, "main");
+		BinaryName binaryName2 = new(ModBinaryType.Dd, "test");
 		const string assetName1 = "binding";
 		const string assetName2 = "texture";
 
 		ModBinary binary1 = CreateWithBindingAndTexture(assetName1, assetName2);
 		ModBinary binary2 = CreateWithBindingAndTexture(assetName1, assetName2);
-		Dictionary<string, byte[]> binaries = new()
+		Dictionary<BinaryName, byte[]> binaries = new()
 		{
 			[binaryName1] = binary1.Compile(),
 			[binaryName2] = binary2.Compile(),
@@ -81,7 +81,7 @@ public class ModArchiveProcessorProcessTests : ModArchiveProcessorTests
 
 		ModBinaryCacheData processedBinary1 = GetProcessedBinaryFromArchiveEntry(archive.Entries[0]);
 		Assert.AreEqual(ModBinaryType.Dd, processedBinary1.ModBinaryType);
-		Assert.AreEqual(BinaryFileNameUtils.SanitizeModBinaryFileName(ModBinaryType.Dd, binaryName1, modName), processedBinary1.Name);
+		AssertBinaryName(binaryName1, processedBinary1.Name, modName);
 		Assert.AreEqual(2, processedBinary1.Chunks.Count);
 		Assert.AreEqual(assetName1, processedBinary1.Chunks[0].Name);
 		Assert.AreEqual(AssetType.ObjectBinding, processedBinary1.Chunks[0].AssetType);
@@ -90,7 +90,7 @@ public class ModArchiveProcessorProcessTests : ModArchiveProcessorTests
 
 		ModBinaryCacheData processedBinary2 = GetProcessedBinaryFromArchiveEntry(archive.Entries[1]);
 		Assert.AreEqual(ModBinaryType.Dd, processedBinary2.ModBinaryType);
-		Assert.AreEqual(BinaryFileNameUtils.SanitizeModBinaryFileName(ModBinaryType.Dd, binaryName2, modName), processedBinary2.Name);
+		AssertBinaryName(binaryName2, processedBinary2.Name, modName);
 		Assert.AreEqual(2, processedBinary2.Chunks.Count);
 		Assert.AreEqual(assetName1, processedBinary2.Chunks[0].Name);
 		Assert.AreEqual(AssetType.ObjectBinding, processedBinary2.Chunks[0].AssetType);
