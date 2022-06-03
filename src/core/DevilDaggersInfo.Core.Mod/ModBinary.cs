@@ -49,9 +49,15 @@ public class ModBinary
 			chunks.Add(new(name, offset, size, assetType.Value));
 
 			if (!modBinaryType.HasValue)
+			{
 				modBinaryType = assetType == AssetType.Audio ? ModBinaryType.Audio : ModBinaryType.Dd;
+				if (readComprehensiveness == ModBinaryReadComprehensiveness.TypeOnly)
+					break;
+			}
 			else if (!IsAssetTypeValid(modBinaryType.Value, assetType.Value))
+			{
 				throw new InvalidModBinaryException($"Asset type '{assetType}' is not compatible with binary type '{modBinaryType}'.");
+			}
 		}
 
 		// Read assets.
