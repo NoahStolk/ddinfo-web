@@ -22,12 +22,14 @@ public class CustomLeaderboardValidator
 
 		if (isFeatured)
 		{
-			foreach (double dagger in new double[] { customLeaderboardDaggers.Leviathan, customLeaderboardDaggers.Devil, customLeaderboardDaggers.Golden, customLeaderboardDaggers.Silver, customLeaderboardDaggers.Bronze })
+			foreach (int dagger in new int[] { customLeaderboardDaggers.Leviathan, customLeaderboardDaggers.Devil, customLeaderboardDaggers.Golden, customLeaderboardDaggers.Silver, customLeaderboardDaggers.Bronze })
 			{
-				const double min = 1;
-				const double max = 1500;
+				const int scale = 10000;
+
+				const int min = 1 * scale;
+				const int max = 1500 * scale;
 				if (dagger < min || dagger > max)
-					throw new CustomLeaderboardValidationException($"All daggers times must be between {min} and {max} for featured leaderboards.");
+					throw new CustomLeaderboardValidationException($"All daggers times must be between {min / scale} and {max / scale} for featured leaderboards.");
 			}
 
 			if (category.IsAscending())
