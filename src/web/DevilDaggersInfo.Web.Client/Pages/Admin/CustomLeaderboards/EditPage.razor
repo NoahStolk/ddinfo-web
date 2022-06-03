@@ -22,7 +22,7 @@
 
 @code
 {
-	private EditCustomLeaderboard _editCustomLeaderboard = new();
+	private readonly EditCustomLeaderboard _editCustomLeaderboard = new();
 
 	[Parameter, EditorRequired] public int Id { get; set; }
 
@@ -31,19 +31,13 @@
 		try
 		{
 			GetCustomLeaderboard getCustomLeaderboard = await Http.GetCustomLeaderboardById(Id);
-			_editCustomLeaderboard = new()
-			{
-				Category = getCustomLeaderboard.Category,
-				IsFeatured = getCustomLeaderboard.IsFeatured,
-				Daggers = new()
-				{
-					Bronze = getCustomLeaderboard.Daggers.Bronze,
-					Silver = getCustomLeaderboard.Daggers.Silver,
-					Golden = getCustomLeaderboard.Daggers.Golden,
-					Devil = getCustomLeaderboard.Daggers.Devil,
-					Leviathan = getCustomLeaderboard.Daggers.Leviathan,
-				},
-			};
+			_editCustomLeaderboard.Category = getCustomLeaderboard.Category;
+			_editCustomLeaderboard.IsFeatured = getCustomLeaderboard.IsFeatured;
+			_editCustomLeaderboard.Daggers.Bronze = getCustomLeaderboard.Daggers.Bronze;
+			_editCustomLeaderboard.Daggers.Silver = getCustomLeaderboard.Daggers.Silver;
+			_editCustomLeaderboard.Daggers.Golden = getCustomLeaderboard.Daggers.Golden;
+			_editCustomLeaderboard.Daggers.Devil = getCustomLeaderboard.Daggers.Devil;
+			_editCustomLeaderboard.Daggers.Leviathan = getCustomLeaderboard.Daggers.Leviathan;
 
 			editComponent.State = ErrorState.None;
 		}

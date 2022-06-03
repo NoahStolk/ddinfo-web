@@ -19,7 +19,7 @@
 @code
 {
 	private Dictionary<int, string>? _playerNames;
-	private AddDonation _addDonation = new();
+	private readonly AddDonation _addDonation = new();
 
 	public async Task PopulateAsync(AdminAdd<AddDonation> addComponent)
 	{

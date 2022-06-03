@@ -24,7 +24,7 @@
 @code
 {
 	private Dictionary<int, string>? _spawnsetNames;
-	private AddCustomLeaderboard _addCustomLeaderboard = new();
+	private readonly AddCustomLeaderboard _addCustomLeaderboard = new();
 
 	public async Task PopulateAsync(AdminAdd<AddCustomLeaderboard> addComponent)
 	{

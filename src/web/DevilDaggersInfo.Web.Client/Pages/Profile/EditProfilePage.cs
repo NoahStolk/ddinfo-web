@@ -15,7 +15,7 @@ public partial class EditProfilePage
 	private int _playerId;
 	private bool? _linked;
 
-	private EditPlayerProfile _editPlayer = new();
+	private readonly EditPlayerProfile _editPlayer = new();
 
 	public ErrorState State { get; set; }
 	public string? Message { get; set; }
@@ -40,23 +40,20 @@ public partial class EditProfilePage
 		try
 		{
 			GetPlayerProfile getPlayer = await Http.GetProfileByPlayerId(_playerId);
-			_editPlayer = new()
-			{
-				CountryCode = getPlayer.CountryCode,
-				Dpi = getPlayer.Dpi,
-				Fov = getPlayer.Fov,
-				Gamma = getPlayer.Gamma,
-				HasFlashHandEnabled = getPlayer.HasFlashHandEnabled,
-				HideDonations = getPlayer.HideDonations,
-				HidePastUsernames = getPlayer.HidePastUsernames,
-				HideSettings = getPlayer.HideSettings,
-				InGameSens = getPlayer.InGameSens,
-				IsRightHanded = getPlayer.IsRightHanded,
-				UsesLegacyAudio = getPlayer.UsesLegacyAudio,
-				UsesHrtf = getPlayer.UsesHrtf,
-				UsesInvertY = getPlayer.UsesInvertY,
-				VerticalSync = getPlayer.VerticalSync,
-			};
+			_editPlayer.CountryCode = getPlayer.CountryCode;
+			_editPlayer.Dpi = getPlayer.Dpi;
+			_editPlayer.Fov = getPlayer.Fov;
+			_editPlayer.Gamma = getPlayer.Gamma;
+			_editPlayer.HasFlashHandEnabled = getPlayer.HasFlashHandEnabled;
+			_editPlayer.HideDonations = getPlayer.HideDonations;
+			_editPlayer.HidePastUsernames = getPlayer.HidePastUsernames;
+			_editPlayer.HideSettings = getPlayer.HideSettings;
+			_editPlayer.InGameSens = getPlayer.InGameSens;
+			_editPlayer.IsRightHanded = getPlayer.IsRightHanded;
+			_editPlayer.UsesLegacyAudio = getPlayer.UsesLegacyAudio;
+			_editPlayer.UsesHrtf = getPlayer.UsesHrtf;
+			_editPlayer.UsesInvertY = getPlayer.UsesInvertY;
+			_editPlayer.VerticalSync = getPlayer.VerticalSync;
 			State = ErrorState.None;
 		}
 		catch (HttpRequestException ex)
@@ -76,7 +73,7 @@ public partial class EditProfilePage
 
 	private async Task OnValidSubmit()
 	{
-		if (_editPlayer == null || _playerId == 0 || !_linked.HasValue || !_linked.Value)
+		if (_playerId == 0 || !_linked.HasValue || !_linked.Value)
 			return;
 
 		try

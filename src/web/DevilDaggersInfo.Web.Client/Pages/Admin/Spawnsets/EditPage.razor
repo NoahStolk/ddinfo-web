@@ -18,7 +18,7 @@
 @code
 {
 	private Dictionary<int, string>? _playerNames;
-	private EditSpawnset _editSpawnset = new();
+	private readonly EditSpawnset _editSpawnset = new();
 
 	[Parameter, EditorRequired] public int Id { get; set; }
 
@@ -30,14 +30,11 @@
 			_playerNames = getPlayerNames.ToDictionary(m => m.Id, m => m.PlayerName);
 
 			GetSpawnset getSpawnset = await Http.GetSpawnsetById(Id);
-			_editSpawnset = new()
-			{
-				HtmlDescription = getSpawnset.HtmlDescription,
-				IsPractice = getSpawnset.IsPractice,
-				MaxDisplayWaves = getSpawnset.MaxDisplayWaves,
-				Name = getSpawnset.Name,
-				PlayerId = getSpawnset.PlayerId,
-			};
+			_editSpawnset.HtmlDescription = getSpawnset.HtmlDescription;
+			_editSpawnset.IsPractice = getSpawnset.IsPractice;
+			_editSpawnset.MaxDisplayWaves = getSpawnset.MaxDisplayWaves;
+			_editSpawnset.Name = getSpawnset.Name;
+			_editSpawnset.PlayerId = getSpawnset.PlayerId;
 
 			editComponent.State = ErrorState.None;
 		}

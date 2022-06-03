@@ -19,7 +19,7 @@
 @code
 {
 	private Dictionary<int, string>? _playerNames;
-	private AddSpawnset _addSpawnset = new();
+	private readonly AddSpawnset _addSpawnset = new();
 
 	public async Task PopulateAsync(AdminAdd<AddSpawnset> addComponent)
 	{

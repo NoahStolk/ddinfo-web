@@ -11,7 +11,7 @@ namespace DevilDaggersInfo.Web.Client.Pages.Admin.Mods;
 public partial class AddPage
 {
 	private Dictionary<int, string>? _playerNames;
-	private AddMod _addMod = new();
+	private readonly AddMod _addMod = new();
 	private List<string> _binaryFileSizeErrors = new();
 	private List<string> _screenshotFileSizeErrors = new();
 

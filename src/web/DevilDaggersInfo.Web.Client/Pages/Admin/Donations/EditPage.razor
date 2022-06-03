@@ -19,7 +19,7 @@
 @code
 {
 	private Dictionary<int, string>? _playerNames;
-	private EditDonation _editDonation = new();
+	private readonly EditDonation _editDonation = new();
 
 	[Parameter, EditorRequired] public int Id { get; set; }
 
@@ -31,16 +31,13 @@
 			_playerNames = getPlayerNames.ToDictionary(m => m.Id, m => m.PlayerName);
 
 			GetDonation getDonation = await Http.GetDonationById(Id);
-			_editDonation = new()
-			{
-				Amount = getDonation.Amount,
-				ConvertedEuroCentsReceived = getDonation.ConvertedEuroCentsReceived,
-				Currency = getDonation.Currency,
-				IsRefunded = getDonation.IsRefunded,
-				Note = getDonation.Note,
-				PlayerId = getDonation.PlayerId,
-			};
-			
+			_editDonation.Amount = getDonation.Amount;
+			_editDonation.ConvertedEuroCentsReceived = getDonation.ConvertedEuroCentsReceived;
+			_editDonation.Currency = getDonation.Currency;
+			_editDonation.IsRefunded = getDonation.IsRefunded;
+			_editDonation.Note = getDonation.Note;
+			_editDonation.PlayerId = getDonation.PlayerId;
+
 			editComponent.State = ErrorState.None;
 		}
 		catch (HttpRequestException ex)

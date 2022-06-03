@@ -13,7 +13,7 @@ namespace DevilDaggersInfo.Web.Client.Pages.Admin.Mods;
 public partial class EditPage
 {
 	private Dictionary<int, string>? _playerNames;
-	private EditMod _editMod = new();
+	private readonly EditMod _editMod = new();
 	private List<string> _binaryFileSizeErrors = new();
 	private List<string> _screenshotFileSizeErrors = new();
 
@@ -30,16 +30,13 @@ public partial class EditPage
 			_playerNames = getPlayerNames.ToDictionary(m => m.Id, m => m.PlayerName);
 
 			GetMod getMod = await Http.GetModById(Id);
-			_editMod = new()
-			{
-				ModTypes = getMod.ModTypes.AsEnumerable().ToList(),
-				HtmlDescription = getMod.HtmlDescription,
-				IsHidden = getMod.IsHidden,
-				Name = getMod.Name,
-				PlayerIds = getMod.PlayerIds,
-				TrailerUrl = getMod.TrailerUrl,
-				Url = getMod.Url,
-			};
+			_editMod.ModTypes = getMod.ModTypes.AsEnumerable().ToList();
+			_editMod.HtmlDescription = getMod.HtmlDescription;
+			_editMod.IsHidden = getMod.IsHidden;
+			_editMod.Name = getMod.Name;
+			_editMod.PlayerIds = getMod.PlayerIds;
+			_editMod.TrailerUrl = getMod.TrailerUrl;
+			_editMod.Url = getMod.Url;
 
 			_binaryNames = getMod.BinaryNames;
 			_screenshotNames = getMod.ScreenshotNames;

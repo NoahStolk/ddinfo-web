@@ -34,7 +34,7 @@
 @code
 {
 	private Dictionary<int, string>? _modNames;
-	private EditPlayer _editPlayer = new();
+	private readonly EditPlayer _editPlayer = new();
 
 	[Parameter, EditorRequired] public int Id { get; set; }
 
@@ -46,30 +46,27 @@
 			_modNames = getModNames.ToDictionary(m => m.Id, m => m.Name);
 
 			GetPlayer getPlayer = await Http.GetPlayerById(Id);
-			_editPlayer = new()
-			{
-				CommonName = getPlayer.CommonName,
-				DiscordUserId = (long?)getPlayer.DiscordUserId,
-				CountryCode = getPlayer.CountryCode,
-				Dpi = getPlayer.Dpi,
-				Fov = getPlayer.Fov,
-				Gamma = getPlayer.Gamma,
-				HasFlashHandEnabled = getPlayer.HasFlashHandEnabled,
-				HideDonations = getPlayer.HideDonations,
-				HidePastUsernames = getPlayer.HidePastUsernames,
-				HideSettings = getPlayer.HideSettings,
-				InGameSens = getPlayer.InGameSens,
-				IsRightHanded = getPlayer.IsRightHanded,
-				UsesLegacyAudio = getPlayer.UsesLegacyAudio,
-				UsesHrtf = getPlayer.UsesHrtf,
-				UsesInvertY = getPlayer.UsesInvertY,
-				VerticalSync = getPlayer.VerticalSync,
-				BanDescription = getPlayer.BanDescription,
-				BanResponsibleId = getPlayer.BanResponsibleId,
-				BanType = getPlayer.BanType,
-				IsBannedFromDdcl = getPlayer.IsBannedFromDdcl,
-				ModIds = getPlayer.ModIds,
-			};
+			_editPlayer.CommonName = getPlayer.CommonName;
+			_editPlayer.DiscordUserId = (long?)getPlayer.DiscordUserId;
+			_editPlayer.CountryCode = getPlayer.CountryCode;
+			_editPlayer.Dpi = getPlayer.Dpi;
+			_editPlayer.Fov = getPlayer.Fov;
+			_editPlayer.Gamma = getPlayer.Gamma;
+			_editPlayer.HasFlashHandEnabled = getPlayer.HasFlashHandEnabled;
+			_editPlayer.HideDonations = getPlayer.HideDonations;
+			_editPlayer.HidePastUsernames = getPlayer.HidePastUsernames;
+			_editPlayer.HideSettings = getPlayer.HideSettings;
+			_editPlayer.InGameSens = getPlayer.InGameSens;
+			_editPlayer.IsRightHanded = getPlayer.IsRightHanded;
+			_editPlayer.UsesLegacyAudio = getPlayer.UsesLegacyAudio;
+			_editPlayer.UsesHrtf = getPlayer.UsesHrtf;
+			_editPlayer.UsesInvertY = getPlayer.UsesInvertY;
+			_editPlayer.VerticalSync = getPlayer.VerticalSync;
+			_editPlayer.BanDescription = getPlayer.BanDescription;
+			_editPlayer.BanResponsibleId = getPlayer.BanResponsibleId;
+			_editPlayer.BanType = getPlayer.BanType;
+			_editPlayer.IsBannedFromDdcl = getPlayer.IsBannedFromDdcl;
+			_editPlayer.ModIds = getPlayer.ModIds;
 
 			editComponent.State = ErrorState.None;
 		}
