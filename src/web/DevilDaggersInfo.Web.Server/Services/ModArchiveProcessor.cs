@@ -92,6 +92,11 @@ public class ModArchiveProcessor
 	/// <summary>
 	/// Transforms the mod archive.
 	/// </summary>
+	/// <param name="originalModName">The original name of the mod.</param>
+	/// <param name="newModName">The new name of the mod. The original mod will be deleted and all the binaries will be recreated according to the new name.</param>
+	/// <param name="binariesToDelete">The names of the binaries to delete. These must correspond to the exact full names (with correct scheme and prefix), and must also use the original name of the mod.</param>
+	/// <param name="newBinaries">The names and contents of the new binaries to add to the archive. This happens after any renaming and rebuilding has completed. The names will be renamed according to the scheme if necessary.</param>
+	/// <param name="fileSystemInformation">File system information used to log the changes made to the file system.</param>
 	/// <returns>Whether the binary contents were changed.</returns>
 	public async Task<bool> TransformBinariesInModArchiveAsync(string originalModName, string newModName, List<string> binariesToDelete, Dictionary<string, byte[]> newBinaries, List<FileSystemInformation> fileSystemInformation)
 	{

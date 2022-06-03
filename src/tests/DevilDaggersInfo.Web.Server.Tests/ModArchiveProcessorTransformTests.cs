@@ -8,10 +8,11 @@ namespace DevilDaggersInfo.Web.Server.Tests;
 [TestClass]
 public class ModArchiveProcessorTransformTests : ModArchiveProcessorTests
 {
-	[TestMethod]
-	public async Task Transform_Remove1()
+	[DataTestMethod]
+	[DataRow("mod", "mod")]
+	[DataRow("mod", "mod-renamed")]
+	public async Task Transform_Remove1(string modName, string newModName)
 	{
-		const string modName = "mod";
 		const string binaryName1 = "main";
 		const string binaryName2 = "binaryToDelete";
 		const string assetName = "binding";
@@ -25,18 +26,19 @@ public class ModArchiveProcessorTransformTests : ModArchiveProcessorTests
 		};
 		await Processor.ProcessModBinaryUploadAsync(modName, binaries, new());
 
-		await Processor.TransformBinariesInModArchiveAsync(modName, modName, new() { GetBinaryNameWithPrefix(binary2.ModBinaryType, modName, binaryName2) }, new(), new());
+		await Processor.TransformBinariesInModArchiveAsync(modName, newModName, new() { GetBinaryNameWithPrefix(binary2.ModBinaryType, modName, binaryName2) }, new(), new());
 
-		string zipFilePath = Accessor.GetModArchivePath(modName);
+		string zipFilePath = Accessor.GetModArchivePath(newModName);
 		using ZipArchive archive = ZipFile.Open(zipFilePath, ZipArchiveMode.Read);
 		Assert.AreEqual(1, archive.Entries.Count);
-		Assert.AreEqual(GetBinaryNameWithPrefix(binary1.ModBinaryType, modName, binaryName1), archive.Entries[0].Name);
+		Assert.AreEqual(GetBinaryNameWithPrefix(binary1.ModBinaryType, newModName, binaryName1), archive.Entries[0].Name);
 	}
 
-	[TestMethod]
-	public async Task Transform_Add1()
+	[DataTestMethod]
+	[DataRow("mod", "mod")]
+	[DataRow("mod", "mod-renamed")]
+	public async Task Transform_Add1(string modName, string newModName)
 	{
-		const string modName = "mod";
 		const string binaryName1 = "main1";
 		const string binaryName2 = "main2";
 		const string binaryName3 = "new";
@@ -52,20 +54,21 @@ public class ModArchiveProcessorTransformTests : ModArchiveProcessorTests
 		await Processor.ProcessModBinaryUploadAsync(modName, binaries, new());
 
 		ModBinary binary3 = CreateWithBinding(assetName);
-		await Processor.TransformBinariesInModArchiveAsync(modName, modName, new(), new() { { GetBinaryNameWithPrefix(binary3.ModBinaryType, modName, binaryName3), binary3.Compile() } }, new());
+		await Processor.TransformBinariesInModArchiveAsync(modName, newModName, new(), new() { { binaryName3, binary3.Compile() } }, new());
 
-		string zipFilePath = Accessor.GetModArchivePath(modName);
+		string zipFilePath = Accessor.GetModArchivePath(newModName);
 		using ZipArchive archive = ZipFile.Open(zipFilePath, ZipArchiveMode.Read);
 		Assert.AreEqual(3, archive.Entries.Count);
-		Assert.AreEqual(GetBinaryNameWithPrefix(binary1.ModBinaryType, modName, binaryName1), archive.Entries[0].Name);
-		Assert.AreEqual(GetBinaryNameWithPrefix(binary2.ModBinaryType, modName, binaryName2), archive.Entries[1].Name);
-		Assert.AreEqual(GetBinaryNameWithPrefix(binary3.ModBinaryType, modName, binaryName3), archive.Entries[2].Name);
+		Assert.AreEqual(GetBinaryNameWithPrefix(binary1.ModBinaryType, newModName, binaryName1), archive.Entries[0].Name);
+		Assert.AreEqual(GetBinaryNameWithPrefix(binary2.ModBinaryType, newModName, binaryName2), archive.Entries[1].Name);
+		Assert.AreEqual(GetBinaryNameWithPrefix(binary3.ModBinaryType, newModName, binaryName3), archive.Entries[2].Name);
 	}
 
-	[TestMethod]
-	public async Task Transform_Remove1_Add1()
+	[DataTestMethod]
+	[DataRow("mod", "mod")]
+	[DataRow("mod", "mod-renamed")]
+	public async Task Transform_Remove1_Add1(string modName, string newModName)
 	{
-		const string modName = "mod";
 		const string binaryName1 = "main1";
 		const string binaryName2 = "binaryToDelete";
 		const string binaryName3 = "new";
@@ -81,19 +84,20 @@ public class ModArchiveProcessorTransformTests : ModArchiveProcessorTests
 		await Processor.ProcessModBinaryUploadAsync(modName, binaries, new());
 
 		ModBinary binary3 = CreateWithBinding(assetName);
-		await Processor.TransformBinariesInModArchiveAsync(modName, modName, new() { GetBinaryNameWithPrefix(binary2.ModBinaryType, modName, binaryName2) }, new() { { GetBinaryNameWithPrefix(binary3.ModBinaryType, modName, binaryName3), binary3.Compile() } }, new());
+		await Processor.TransformBinariesInModArchiveAsync(modName, newModName, new() { GetBinaryNameWithPrefix(binary2.ModBinaryType, modName, binaryName2) }, new() { { binaryName3, binary3.Compile() } }, new());
 
-		string zipFilePath = Accessor.GetModArchivePath(modName);
+		string zipFilePath = Accessor.GetModArchivePath(newModName);
 		using ZipArchive archive = ZipFile.Open(zipFilePath, ZipArchiveMode.Read);
 		Assert.AreEqual(2, archive.Entries.Count);
-		Assert.AreEqual(GetBinaryNameWithPrefix(binary1.ModBinaryType, modName, binaryName1), archive.Entries[0].Name);
-		Assert.AreEqual(GetBinaryNameWithPrefix(binary3.ModBinaryType, modName, binaryName3), archive.Entries[1].Name);
+		Assert.AreEqual(GetBinaryNameWithPrefix(binary1.ModBinaryType, newModName, binaryName1), archive.Entries[0].Name);
+		Assert.AreEqual(GetBinaryNameWithPrefix(binary3.ModBinaryType, newModName, binaryName3), archive.Entries[1].Name);
 	}
 
-	[TestMethod]
-	public async Task Transform_Remove1_Add1_SameName_Fail()
+	[DataTestMethod]
+	[DataRow("mod", "mod")]
+	[DataRow("mod", "mod-renamed")]
+	public async Task Transform_Remove1_Add1_SameName_Fail(string modName, string newModName)
 	{
-		const string modName = "mod";
 		const string binaryName1 = "main1";
 		const string binaryName2 = "main1"; // Same name, should fail
 		const string assetName = "binding";
@@ -103,7 +107,7 @@ public class ModArchiveProcessorTransformTests : ModArchiveProcessorTests
 		await Processor.ProcessModBinaryUploadAsync(modName, binaries, new());
 
 		ModBinary binary2 = CreateWithBinding(assetName);
-		await Assert.ThrowsExceptionAsync<InvalidModArchiveException>(async () => await Processor.TransformBinariesInModArchiveAsync(modName, modName, new(), new() { { GetBinaryNameWithPrefix(binary2.ModBinaryType, modName, binaryName2), binary2.Compile() } }, new()));
+		await Assert.ThrowsExceptionAsync<InvalidModArchiveException>(async () => await Processor.TransformBinariesInModArchiveAsync(modName, newModName, new(), new() { { binaryName2, binary2.Compile() } }, new()));
 
 		string zipFilePath = Accessor.GetModArchivePath(modName);
 		using ZipArchive archive = ZipFile.Open(zipFilePath, ZipArchiveMode.Read);
@@ -111,10 +115,11 @@ public class ModArchiveProcessorTransformTests : ModArchiveProcessorTests
 		Assert.AreEqual(GetBinaryNameWithPrefix(binary1.ModBinaryType, modName, binaryName1), archive.Entries[0].Name);
 	}
 
-	[TestMethod]
-	public async Task Transform_Replace1()
+	[DataTestMethod]
+	[DataRow("mod", "mod")]
+	[DataRow("mod", "mod-renamed")]
+	public async Task Transform_Replace1(string modName, string newModName)
 	{
-		const string modName = "mod";
 		const string binaryName1 = "main1";
 		const string binaryName2 = "main1"; // Same name, but original is removed first, so should succeed
 		const string assetName1 = "binding";
@@ -125,12 +130,12 @@ public class ModArchiveProcessorTransformTests : ModArchiveProcessorTests
 		await Processor.ProcessModBinaryUploadAsync(modName, binaries, new());
 
 		ModBinary binary2 = CreateWithBinding(assetName2);
-		await Processor.TransformBinariesInModArchiveAsync(modName, modName, new() { GetBinaryNameWithPrefix(binary1.ModBinaryType, modName, binaryName1) }, new() { { GetBinaryNameWithPrefix(binary2.ModBinaryType, modName, binaryName2), binary2.Compile() } }, new());
+		await Processor.TransformBinariesInModArchiveAsync(modName, newModName, new() { GetBinaryNameWithPrefix(binary1.ModBinaryType, modName, binaryName1) }, new() { { binaryName2, binary2.Compile() } }, new());
 
-		string zipFilePath = Accessor.GetModArchivePath(modName);
+		string zipFilePath = Accessor.GetModArchivePath(newModName);
 		using ZipArchive archive = ZipFile.Open(zipFilePath, ZipArchiveMode.Read);
 		Assert.AreEqual(1, archive.Entries.Count);
-		Assert.AreEqual(GetBinaryNameWithPrefix(binary1.ModBinaryType, modName, binaryName2), archive.Entries[0].Name);
+		Assert.AreEqual(GetBinaryNameWithPrefix(binary1.ModBinaryType, newModName, binaryName2), archive.Entries[0].Name);
 
 		// Test if the asset name is actually updated.
 		ModBinaryCacheData modBinaryCacheData = GetProcessedBinaryFromArchiveEntry(archive.Entries[0]);
