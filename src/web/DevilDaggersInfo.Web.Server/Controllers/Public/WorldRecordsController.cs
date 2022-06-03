@@ -1,8 +1,9 @@
+using DevilDaggersInfo.Api.Main.WorldRecords;
+using DevilDaggersInfo.Core.Wiki.Enums;
 using DevilDaggersInfo.Web.Server.Caches.LeaderboardHistory;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 using DevilDaggersInfo.Web.Server.Enums;
 using DevilDaggersInfo.Web.Server.InternalModels.LeaderboardHistory;
-using MainApi = DevilDaggersInfo.Api.Main.WorldRecords;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Public;
 
@@ -25,12 +26,12 @@ public class WorldRecordsController : ControllerBase
 
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	public MainApi.GetWorldRecordDataContainer GetWorldRecordData()
+	public GetWorldRecordDataContainer GetWorldRecordData()
 	{
 		List<BaseWorldRecord> baseWorldRecords = GetBaseWorldRecords();
 		List<BaseWorldRecordHolder> worldRecordHolders = new();
 
-		List<MainApi.GetWorldRecord> worldRecords = new();
+		List<GetWorldRecord> worldRecords = new();
 
 		TimeSpan heldConsecutively = default;
 		for (int i = 0; i < baseWorldRecords.Count; i++)
@@ -98,7 +99,7 @@ public class WorldRecordsController : ControllerBase
 		{
 			WorldRecordHolders = worldRecordHolders
 				.OrderByDescending(wrh => wrh.TotalTimeHeld)
-				.Select(bwrh => new MainApi.GetWorldRecordHolder
+				.Select(bwrh => new GetWorldRecordHolder
 				{
 					FirstHeld = bwrh.FirstHeld,
 					Id = bwrh.Id,
@@ -155,7 +156,7 @@ public class WorldRecordsController : ControllerBase
 				// If the WR was submitted by an alt, we need to manually fix the ID by looking up the main ID in the database.
 				int? mainPlayerId = _dbContext.Players.AsNoTracking().Select(p => new { p.Id, p.BanResponsibleId }).FirstOrDefault(p => p.Id == firstPlace.Id)?.BanResponsibleId;
 
-				MainApi.GetWorldRecordEntry getWorldRecordEntry = new()
+				GetWorldRecordEntry getWorldRecordEntry = new()
 				{
 					DateTime = leaderboard.DateTime,
 					Id = mainPlayerId ?? firstPlace.Id,
@@ -179,7 +180,7 @@ public class WorldRecordsController : ControllerBase
 			=> new((a.Ticks + b.Ticks) / 2);
 	}
 
-	private sealed record BaseWorldRecord(DateTime DateTime, MainApi.GetWorldRecordEntry Entry, GameVersion? GameVersion);
+	private sealed record BaseWorldRecord(DateTime DateTime, GetWorldRecordEntry Entry, GameVersion? GameVersion);
 
 	private sealed class BaseWorldRecordHolder
 	{

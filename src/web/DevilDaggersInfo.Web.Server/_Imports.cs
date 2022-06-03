@@ -8,7 +8,6 @@ global using DevilDaggersInfo.Core.Spawnset;
 global using DevilDaggersInfo.Core.Spawnset.Enums;
 global using DevilDaggersInfo.Core.Spawnset.Summary;
 global using DevilDaggersInfo.Core.Wiki;
-global using DevilDaggersInfo.Core.Wiki.Enums;
 global using DevilDaggersInfo.Core.Wiki.Objects;
 global using DevilDaggersInfo.Core.Wiki.Structs;
 global using DevilDaggersInfo.Web.Server.Clients.Leaderboard;

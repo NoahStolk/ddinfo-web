@@ -1,6 +1,7 @@
 @page "/wiki/spawns"
-@using DevilDaggersInfo.Core.Wiki.Enums
+@using DevilDaggersInfo.Api.Main.GameVersions
 @using DevilDaggersInfo.Core.Wiki.Extensions
+@using DevilDaggersInfo.Web.Client.Converters.ApiToCore
 @inject PublicApiHttpClient Http
 
 <Heading Title="Spawns" />
@@ -12,7 +13,7 @@
 </p>
 <p class="para">
 	@{
-		List<Enemy> enemies = new string[] { "Centipede", "Gigapede", "Ghostpede", "Thorn" }.Select(s => Enemies.GetEnemyByName(GameVersion, s)).Where(e => e.HasValue).Select(e => e!.Value).ToList();
+		List<Enemy> enemies = new string[] { "Centipede", "Gigapede", "Ghostpede", "Thorn" }.Select(s => Enemies.GetEnemyByName(GameVersion.ToCore(), s)).Where(e => e.HasValue).Select(e => e!.Value).ToList();
 		string enemyString = string.Join(", ", enemies.Select(e => MarkupUtils.EnemyString(e, true))).ReplaceLastOccurrenceOf(", ", " and ");
 		MarkupString note = new($"Note that {enemyString} emerge around 3 seconds later than their actual spawn time.");
 	}
@@ -25,6 +26,6 @@
 }
 else
 {
-	<SpawnsetSpawns SpawnsView=_spawnsView GameVersion=GameVersion />
+	<SpawnsetSpawns SpawnsView=_spawnsView GameVersion=GameVersion.ToCore() />
 	<button class="btn btn-red px-1" @onclick="() => IncreaseWaveCount(10)">Show more waves</button>
 }

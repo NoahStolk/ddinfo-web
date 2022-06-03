@@ -1,8 +1,9 @@
-using MainApi = DevilDaggersInfo.Api.Main.WorldRecords;
+using DevilDaggersInfo.Core.Wiki.Enums;
+using MainApi = DevilDaggersInfo.Api.Main.GameVersions;
 
 namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 
-public static class WorldRecordConverters
+public static class GameVersionConverters
 {
 	public static MainApi.GameVersion ToMainApi(this GameVersion gameVersion) => gameVersion switch
 	{

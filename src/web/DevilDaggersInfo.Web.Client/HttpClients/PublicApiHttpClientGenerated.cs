@@ -3,6 +3,7 @@ using DevilDaggersInfo.Api.Main;
 using DevilDaggersInfo.Api.Main.Authentication;
 using DevilDaggersInfo.Api.Main.CustomLeaderboards;
 using DevilDaggersInfo.Api.Main.Donations;
+using DevilDaggersInfo.Api.Main.GameVersions;
 using DevilDaggersInfo.Api.Main.LeaderboardHistory;
 using DevilDaggersInfo.Api.Main.LeaderboardHistoryStatistics;
 using DevilDaggersInfo.Api.Main.LeaderboardStatistics;

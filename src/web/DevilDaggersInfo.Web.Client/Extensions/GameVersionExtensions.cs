@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Api.Main.WorldRecords;
+using DevilDaggersInfo.Api.Main.GameVersions;
 using DevilDaggersInfo.Common.Exceptions;
 
 namespace DevilDaggersInfo.Web.Client.Extensions;

@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Api.Main.WorldRecords;
+namespace DevilDaggersInfo.Api.Main.GameVersions;
 
 public enum GameVersion
 {
