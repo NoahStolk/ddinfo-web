@@ -41,6 +41,8 @@ public partial class AdminEdit<TModel>
 	protected override async Task OnInitializedAsync()
 	{
 		await OnPopulate(this);
+
+		StateHasChanged();
 	}
 
 	private async Task OnValidSubmit()
