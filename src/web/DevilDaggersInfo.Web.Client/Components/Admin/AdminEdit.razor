@@ -23,18 +23,11 @@
 		break;
 }
 
-@if (Model == null)
-{
-	<Loading />
-}
-else
-{
-	<EditForm Model="@Model" OnValidSubmit="@OnValidSubmit">
-		<DataAnnotationsValidator />
-		<ValidationSummary />
+<EditForm Model="@Model" OnValidSubmit="@OnValidSubmit">
+	<DataAnnotationsValidator />
+	<ValidationSummary />
 
-		@ChildContent
+	@ChildContent
 
-		<button class="btn btn-gray p-2" type="submit">Submit</button>
-	</EditForm>
-}
+	<button class="btn btn-gray p-2" type="submit">Submit</button>
+</EditForm>
