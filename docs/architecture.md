@@ -39,6 +39,7 @@ flowchart TD;
 	web_server[Web.Server]
 	web_server_domain[Web.Server.Domain]
 	web_core_claims[Web.Core.Claims]
+	api_clubber[Api.Clubber]
 	api_dd[Api.Dd]
 	api_ddlive[Api.DdLive]
 	api_ddrust[Api.DdstatsRust]
@@ -60,7 +61,7 @@ flowchart TD;
 	class web_client web_client;
 	class web_server,web_server_domain web_server;
 	class web_core_claims web_core;
-	class api_dd,api_ddlive,api_ddrust,api_main,api_admin,api_ddcl,api_ddae,api_ddse api;
+	class api_clubber,api_dd,api_ddlive,api_ddrust,api_main,api_admin,api_ddcl,api_ddae,api_ddse api;
 
 	class ddse_legacy,ddcl_legacy,ddae_legacy,ddcore_legacy legacy;
 
@@ -115,6 +116,7 @@ flowchart TD;
 	end
 
 	subgraph Api External
+		api_clubber
 		api_dd
 		api_ddlive
 		api_ddrust
@@ -125,6 +127,7 @@ flowchart TD;
 		api_admin
 	end
 
+	web_server ----> api_clubber
 	web_server ----> api_dd
 	web_server ----> api_ddlive
 	web_server ----> api_ddrust
