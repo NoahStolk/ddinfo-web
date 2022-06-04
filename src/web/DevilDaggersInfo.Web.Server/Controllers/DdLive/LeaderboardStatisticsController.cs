@@ -24,7 +24,7 @@ public class LeaderboardStatisticsController : ControllerBase
 			DateTime = _leaderboardStatisticsCache.FileName == null ? DateTime.MinValue : HistoryUtils.HistoryFileNameToDateTime(_leaderboardStatisticsCache.FileName),
 			IsFetched = _leaderboardStatisticsCache.IsFetched,
 			TotalEntries = _leaderboardStatisticsCache.Entries.Count,
-			Top1000Statistics = (top switch
+			Statistics = (top switch
 			{
 				LeaderboardStatisticsLimitDdLive.Top1000 => _leaderboardStatisticsCache.Top1000ArrayStatistics,
 				LeaderboardStatisticsLimitDdLive.Top100 => _leaderboardStatisticsCache.Top100ArrayStatistics,
@@ -35,14 +35,25 @@ public class LeaderboardStatisticsController : ControllerBase
 
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	public ActionResult<GetLeaderboardStatisticsDdLive> GetLeaderboardStatisticsDdLive([Required] LeaderboardStatisticsLimitDdLive top)
+	public ActionResult<GetLeaderboardStatisticsDdLive> GetLeaderboardStatisticsDdLive(LeaderboardStatisticsLimitDdLive? top)
 	{
+		if (top == null)
+		{
+			return new GetLeaderboardStatisticsDdLive
+			{
+				DateTime = _leaderboardStatisticsCache.FileName == null ? DateTime.MinValue : HistoryUtils.HistoryFileNameToDateTime(_leaderboardStatisticsCache.FileName),
+				IsFetched = _leaderboardStatisticsCache.IsFetched,
+				TotalEntries = _leaderboardStatisticsCache.Entries.Count,
+				Statistics = _leaderboardStatisticsCache.GlobalArrayStatistics.ToGetArrayStatisticsDdLive(),
+			};
+		}
+
 		return new GetLeaderboardStatisticsDdLive
 		{
 			DateTime = _leaderboardStatisticsCache.FileName == null ? DateTime.MinValue : HistoryUtils.HistoryFileNameToDateTime(_leaderboardStatisticsCache.FileName),
 			IsFetched = _leaderboardStatisticsCache.IsFetched,
 			TotalEntries = _leaderboardStatisticsCache.Entries.Count,
-			Top1000Statistics = (top switch
+			Statistics = (top switch
 			{
 				LeaderboardStatisticsLimitDdLive.Top1000 => _leaderboardStatisticsCache.Top1000ArrayStatistics,
 				LeaderboardStatisticsLimitDdLive.Top100 => _leaderboardStatisticsCache.Top100ArrayStatistics,

@@ -8,5 +8,7 @@ public record GetLeaderboardStatisticsDdLive
 
 	public int TotalEntries { get; init; }
 
-	public GetArrayStatisticsDdLive Top1000Statistics { get; init; } = null!;
+	public GetArrayStatisticsDdLive Statistics { get; init; } = null!;
+
+	public GetArrayStatisticsDdLive Top1000Statistics => Statistics;
 }
