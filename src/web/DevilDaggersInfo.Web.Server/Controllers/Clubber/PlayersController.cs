@@ -23,7 +23,6 @@ public class PlayersController : ControllerBase
 		return player?.CountryCode ?? string.Empty;
 	}
 
-	[Obsolete("Use the new route instead.")]
 	[HttpGet("{id}/country-code")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]

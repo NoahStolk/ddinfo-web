@@ -13,7 +13,24 @@ public class PlayersController : ControllerBase
 		_dbContext = dbContext;
 	}
 
+	[Obsolete("Use the new route instead.")]
 	[HttpGet("/api/players/common-names")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	public ActionResult<List<GetCommonName>> GetCommonNamesObsolete()
+	{
+		return _dbContext.Players
+			.AsNoTracking()
+			.Select(p => new { p.Id, p.CommonName })
+			.Where(p => p.CommonName != null)
+			.Select(p => new GetCommonName
+			{
+				Id = p.Id,
+				CommonName = p.CommonName!,
+			})
+			.ToList();
+	}
+
+	[HttpGet("common-names")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public ActionResult<List<GetCommonName>> GetCommonNames()
 	{
