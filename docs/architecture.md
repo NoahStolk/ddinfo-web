@@ -36,6 +36,7 @@ flowchart TD;
 	razor_core_unmarshalled[Razor.Core.Unmarshalled]
 	web_client[Web.Client]
 	web_server[Web.Server]
+	web_server_domain[Web.Server.Domain]
 	web_shared[Web.Shared]
 	api_dd[Api.Dd]
 	api_ddlive[Api.DdLive]
@@ -56,7 +57,7 @@ flowchart TD;
 	class core_asset,core_encryption,core_mod,core_replay,core_spawnset,core_wiki core;
 	class razor_core_asseteditor,razor_core_canvaschart,razor_core_unmarshalled razor_core;
 	class web_client web_client;
-	class web_server web_server;
+	class web_server,web_server_domain web_server;
 	class web_shared web_shared;
 	class api_dd,api_ddlive,api_ddrust,api_main,api_admin,api_ddcl,api_ddae,api_ddse api;
 
@@ -92,6 +93,7 @@ flowchart TD;
 
 		web_server --> core_encryption
 		web_server --> web_client
+		web_server --> web_server_domain
 
 		web_shared ----> core_mod
 		web_shared ----> core_replay
