@@ -12,34 +12,34 @@
 	Global custom leaderboards are leaderboards based on all leaderboards for a single category.
 </p>
 
-<p class="para">
-	Points are given based on rank vs total players. For example, a leaderboard with 10 players will give @(10 * GlobalCustomLeaderboardUtils.RankingMultiplier) points if you're rank 1, @(9 * GlobalCustomLeaderboardUtils.RankingMultiplier) points if you're rank 2, etc. Additionally, daggers achieved will give the following bonus points:
-</p>
-<ul class="pl-4">
-	@foreach (CustomLeaderboardDagger dagger in Enum.GetValues<CustomLeaderboardDagger>())
-	{
-		int bonus = dagger switch
-		{
-			CustomLeaderboardDagger.Leviathan => GlobalCustomLeaderboardUtils.LeviathanBonus,
-			CustomLeaderboardDagger.Devil => GlobalCustomLeaderboardUtils.DevilBonus,
-			CustomLeaderboardDagger.Golden => GlobalCustomLeaderboardUtils.GoldenBonus,
-			CustomLeaderboardDagger.Silver => GlobalCustomLeaderboardUtils.SilverBonus,
-			CustomLeaderboardDagger.Bronze => GlobalCustomLeaderboardUtils.BronzeBonus,
-			_ => GlobalCustomLeaderboardUtils.DefaultBonus,
-		};
-		if (bonus > 0)
-		{
-			<li class="list-disc">@bonus per @dagger dagger</li>
-		}
-	}
-</ul>
-
 @if (GetGlobalCustomLeaderboard == null)
 {
 	<Loading />
 }
 else
 {
+	<p class="para">
+		Points are given based on rank vs total players. For example, a leaderboard with 10 players will give @(10 * GetGlobalCustomLeaderboard.RankingMultiplier) points if you're rank 1, @(9 * GetGlobalCustomLeaderboard.RankingMultiplier) points if you're rank 2, etc. Additionally, daggers achieved will give the following bonus points:
+	</p>
+	<ul class="pl-4">
+		@foreach (CustomLeaderboardDagger dagger in Enum.GetValues<CustomLeaderboardDagger>())
+		{
+			int bonus = dagger switch
+			{
+				CustomLeaderboardDagger.Leviathan => GetGlobalCustomLeaderboard.LeviathanBonus,
+				CustomLeaderboardDagger.Devil => GetGlobalCustomLeaderboard.DevilBonus,
+				CustomLeaderboardDagger.Golden => GetGlobalCustomLeaderboard.GoldenBonus,
+				CustomLeaderboardDagger.Silver => GetGlobalCustomLeaderboard.SilverBonus,
+				CustomLeaderboardDagger.Bronze => GetGlobalCustomLeaderboard.BronzeBonus,
+				_ => GetGlobalCustomLeaderboard.DefaultBonus,
+			};
+			if (bonus > 0)
+			{
+				<li class="list-disc">@bonus per @dagger dagger</li>
+			}
+		}
+	</ul>
+
 	<Heading Level="2" Title="@($"Global {EnumConvert.GetCustomLeaderboardCategory(Category).ToDisplayString()} Leaderboard")" />
 
 	<p>

@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Api.Main.Authentication;
+using DevilDaggersInfo.Web.Server.Domain.Services;
 using Microsoft.AspNetCore.Authorization;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Main;

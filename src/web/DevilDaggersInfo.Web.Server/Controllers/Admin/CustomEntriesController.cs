@@ -1,7 +1,11 @@
 using DevilDaggersInfo.Api.Admin;
 using DevilDaggersInfo.Api.Admin.CustomEntries;
+using DevilDaggersInfo.Web.Client;
+using DevilDaggersInfo.Web.Core.Claims;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Admin;
-using DevilDaggersInfo.Web.Server.Enums;
+using DevilDaggersInfo.Web.Server.Domain.Extensions;
+using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
+using DevilDaggersInfo.Web.Server.Domain.Services;
 using Microsoft.AspNetCore.Authorization;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
@@ -12,10 +16,10 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 public class CustomEntriesController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
-	private readonly AuditLogger _auditLogger;
+	private readonly IAuditLogger _auditLogger;
 	private readonly IFileSystemService _fileSystemService;
 
-	public CustomEntriesController(ApplicationDbContext dbContext, AuditLogger auditLogger, IFileSystemService fileSystemService)
+	public CustomEntriesController(ApplicationDbContext dbContext, IAuditLogger auditLogger, IFileSystemService fileSystemService)
 	{
 		_dbContext = dbContext;
 		_auditLogger = auditLogger;
@@ -26,7 +30,7 @@ public class CustomEntriesController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public ActionResult<Page<GetCustomEntryForOverview>> GetCustomEntries(
 		[Range(0, 1000)] int pageIndex = 0,
-		[Range(PagingConstants.PageSizeMin, PagingConstants.PageSizeMax)] int pageSize = PagingConstants.PageSizeDefault,
+		[Range(Constants.PageSizeMin, Constants.PageSizeMax)] int pageSize = Constants.PageSizeDefault,
 		CustomEntrySorting? sortBy = null,
 		bool ascending = false)
 	{

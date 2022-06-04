@@ -1,8 +1,12 @@
 using DevilDaggersInfo.Api.Admin;
 using DevilDaggersInfo.Api.Admin.Spawnsets;
-using DevilDaggersInfo.Web.Server.Caches.SpawnsetHashes;
+using DevilDaggersInfo.Web.Client;
+using DevilDaggersInfo.Web.Core.Claims;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Admin;
-using DevilDaggersInfo.Web.Server.Enums;
+using DevilDaggersInfo.Web.Server.Domain.Extensions;
+using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
+using DevilDaggersInfo.Web.Server.Domain.Models.Spawnsets;
+using DevilDaggersInfo.Web.Server.Domain.Services;
 using Microsoft.AspNetCore.Authorization;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
@@ -14,9 +18,9 @@ public class SpawnsetsController : ControllerBase
 	private readonly ApplicationDbContext _dbContext;
 	private readonly IFileSystemService _fileSystemService;
 	private readonly SpawnsetHashCache _spawnsetHashCache;
-	private readonly AuditLogger _auditLogger;
+	private readonly IAuditLogger _auditLogger;
 
-	public SpawnsetsController(ApplicationDbContext dbContext, IFileSystemService fileSystemService, SpawnsetHashCache spawnsetHashCache, AuditLogger auditLogger)
+	public SpawnsetsController(ApplicationDbContext dbContext, IFileSystemService fileSystemService, SpawnsetHashCache spawnsetHashCache, IAuditLogger auditLogger)
 	{
 		_dbContext = dbContext;
 		_fileSystemService = fileSystemService;
@@ -29,7 +33,7 @@ public class SpawnsetsController : ControllerBase
 	[Authorize(Roles = Roles.Spawnsets)]
 	public ActionResult<Page<GetSpawnsetForOverview>> GetSpawnsets(
 		[Range(0, 1000)] int pageIndex = 0,
-		[Range(PagingConstants.PageSizeMin, PagingConstants.PageSizeMax)] int pageSize = PagingConstants.PageSizeDefault,
+		[Range(Constants.PageSizeMin, Constants.PageSizeMax)] int pageSize = Constants.PageSizeDefault,
 		SpawnsetSorting? sortBy = null,
 		bool ascending = false)
 	{

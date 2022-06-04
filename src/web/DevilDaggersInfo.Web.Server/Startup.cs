@@ -1,14 +1,10 @@
 using DevilDaggersInfo.Common.Utils;
-using DevilDaggersInfo.Web.Server.Caches.LeaderboardHistory;
-using DevilDaggersInfo.Web.Server.Caches.LeaderboardStatistics;
-using DevilDaggersInfo.Web.Server.Caches.ModArchives;
-using DevilDaggersInfo.Web.Server.Caches.SpawnsetHashes;
-using DevilDaggersInfo.Web.Server.Caches.SpawnsetSummaries;
 using DevilDaggersInfo.Web.Server.Clients.Clubber;
+using DevilDaggersInfo.Web.Server.Domain.Repositories;
+using DevilDaggersInfo.Web.Server.Domain.Services;
 using DevilDaggersInfo.Web.Server.HostedServices;
 using DevilDaggersInfo.Web.Server.Middleware;
 using DevilDaggersInfo.Web.Server.NSwag;
-using DevilDaggersInfo.Web.Server.Repositories;
 using DevilDaggersInfo.Web.Server.RewriteRules;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.DataProtection;
@@ -61,11 +57,13 @@ public class Startup
 		services.AddTransient<CustomLeaderboardValidator>();
 
 		// Utilities
-		services.AddTransient<AuditLogger>();
+		services.AddTransient<IAuditLogger, AuditLogger>();
 		services.AddSingleton<LeaderboardResponseParser>();
 
 		// Monitoring
 		services.AddSingleton<BackgroundServiceMonitor>();
+		services.AddSingleton<ICustomLeaderboardSubmissionLogger, CustomLeaderboardSubmissionLogger>();
+		services.AddScoped<IFileSystemLogger, FileSystemLogger>();
 		services.AddSingleton<LogContainerService>();
 		services.AddSingleton<ResponseTimeMonitor>();
 

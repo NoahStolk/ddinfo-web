@@ -1,7 +1,11 @@
 using DevilDaggersInfo.Api.Admin;
 using DevilDaggersInfo.Api.Admin.CustomLeaderboards;
+using DevilDaggersInfo.Web.Client;
+using DevilDaggersInfo.Web.Core.Claims;
 using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Admin;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Admin;
+using DevilDaggersInfo.Web.Server.Domain.Extensions;
+using DevilDaggersInfo.Web.Server.Domain.Services;
 using Microsoft.AspNetCore.Authorization;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
@@ -13,9 +17,9 @@ public class CustomLeaderboardsController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
 	private readonly CustomLeaderboardValidator _validator;
-	private readonly AuditLogger _auditLogger;
+	private readonly IAuditLogger _auditLogger;
 
-	public CustomLeaderboardsController(ApplicationDbContext dbContext, CustomLeaderboardValidator validator, AuditLogger auditLogger)
+	public CustomLeaderboardsController(ApplicationDbContext dbContext, CustomLeaderboardValidator validator, IAuditLogger auditLogger)
 	{
 		_dbContext = dbContext;
 		_validator = validator;
@@ -26,7 +30,7 @@ public class CustomLeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public ActionResult<Page<GetCustomLeaderboardForOverview>> GetCustomLeaderboards(
 		[Range(0, 1000)] int pageIndex = 0,
-		[Range(PagingConstants.PageSizeMin, PagingConstants.PageSizeMax)] int pageSize = PagingConstants.PageSizeDefault,
+		[Range(Constants.PageSizeMin, Constants.PageSizeMax)] int pageSize = Constants.PageSizeDefault,
 		CustomLeaderboardSorting? sortBy = null,
 		bool ascending = false)
 	{

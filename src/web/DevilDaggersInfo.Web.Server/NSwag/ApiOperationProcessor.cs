@@ -7,7 +7,7 @@ public class ApiOperationProcessor : IOperationProcessor
 {
 	private readonly string _apiName;
 
-	public ApiOperationProcessor(string	apiName)
+	public ApiOperationProcessor(string apiName)
 	{
 		_apiName = apiName;
 	}

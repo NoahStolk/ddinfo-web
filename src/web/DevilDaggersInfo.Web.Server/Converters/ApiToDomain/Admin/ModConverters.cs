@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Web.Server.Entities.Enums;
+using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using AdminApi = DevilDaggersInfo.Api.Admin.Mods;
 
 namespace DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Admin;

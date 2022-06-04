@@ -1,7 +1,8 @@
 using DevilDaggersInfo.Api.Ddae.Mods;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Ddae;
-using DevilDaggersInfo.Web.Server.Enums;
-using DevilDaggersInfo.Web.Server.InternalModels.Mods;
+using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
+using DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;
+using DevilDaggersInfo.Web.Server.Domain.Services;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Ddae;
 

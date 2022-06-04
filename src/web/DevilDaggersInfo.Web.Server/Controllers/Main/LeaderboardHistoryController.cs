@@ -1,7 +1,7 @@
 using DevilDaggersInfo.Api.Main.LeaderboardHistory;
-using DevilDaggersInfo.Web.Server.Caches.LeaderboardHistory;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
-using DevilDaggersInfo.Web.Server.InternalModels.LeaderboardHistory;
+using DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardHistory;
+using DevilDaggersInfo.Web.Server.Domain.Services;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 

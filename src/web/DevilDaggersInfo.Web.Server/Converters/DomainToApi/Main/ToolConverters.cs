@@ -1,33 +1,41 @@
 using DevilDaggersInfo.Common.Exceptions;
-using DevilDaggersInfo.Web.Server.Entities.Enums;
-using DevilDaggersInfo.Web.Server.InternalModels.Changelog;
+using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
+using DevilDaggersInfo.Web.Server.Domain.Models.Tools;
 using MainApi = DevilDaggersInfo.Api.Main.Tools;
 
 namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 
 public static class ToolConverters
 {
-	public static MainApi.GetTool ToMainApi(this ToolEntity tool, Dictionary<string, int> downloadCounts, List<ChangelogEntry>? changelog) => new()
+	public static MainApi.GetTool ToMainApi(this Tool tool) => new()
 	{
-		Changelog = changelog?.ConvertAll(ce => new MainApi.GetToolVersion
-		{
-			Changes = ce.Changes.Select(c => c.ToMainApi()).ToList(),
-			Date = ce.Date,
-			DownloadCount = downloadCounts.ContainsKey(ce.VersionNumber) ? downloadCounts[ce.VersionNumber] : 0,
-			VersionNumber = ce.VersionNumber,
-		}),
-		Name = tool.Name,
+		Changelog = tool.Changelog?.Select(tv => ToMainApi(tv)).ToList(),
 		DisplayName = tool.DisplayName,
-		VersionNumberRequired = tool.RequiredVersionNumber,
-		VersionNumber = tool.CurrentVersionNumber,
+		Name = tool.Name,
+		VersionNumber = tool.VersionNumber,
+		VersionNumberRequired = tool.VersionNumberRequired,
 	};
 
-	public static MainApi.GetToolDistribution ToMainApi(this ToolDistributionEntity distribution, ToolPublishMethod publishMethod, ToolBuildType buildType, int fileSize) => new()
+	private static MainApi.GetToolVersion ToMainApi(this ToolVersion toolVersion) => new()
 	{
-		BuildType = buildType.ToMainApi(),
-		PublishMethod = publishMethod.ToMainApi(),
+		Changes = toolVersion.Changes.Select(tvc => tvc.ToMainApi()).ToList(),
+		Date = toolVersion.Date,
+		DownloadCount = toolVersion.DownloadCount,
+		VersionNumber = toolVersion.VersionNumber,
+	};
+
+	private static MainApi.GetToolVersionChange ToMainApi(this ToolVersionChange toolVersionChange) => new()
+	{
+		Description = toolVersionChange.Description,
+		SubChanges = toolVersionChange.SubChanges?.Select(tvc => tvc.ToMainApi()).ToList(),
+	};
+
+	public static MainApi.GetToolDistribution ToMainApi(this ToolDistribution distribution) => new()
+	{
+		BuildType = distribution.BuildType.ToMainApi(),
+		PublishMethod = distribution.PublishMethod.ToMainApi(),
 		VersionNumber = distribution.VersionNumber,
-		FileSize = fileSize,
+		FileSize = distribution.FileSize,
 	};
 
 	public static MainApi.GetToolVersionChange ToMainApi(this Change change) => new()

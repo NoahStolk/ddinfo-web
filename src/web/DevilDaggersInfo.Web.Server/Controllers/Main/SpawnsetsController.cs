@@ -1,10 +1,11 @@
 using DevilDaggersInfo.Api.Main;
 using DevilDaggersInfo.Api.Main.GameVersions;
 using DevilDaggersInfo.Api.Main.Spawnsets;
-using DevilDaggersInfo.Web.Server.Caches.SpawnsetHashes;
-using DevilDaggersInfo.Web.Server.Caches.SpawnsetSummaries;
+using DevilDaggersInfo.Web.Client;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
-using DevilDaggersInfo.Web.Server.Enums;
+using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
+using DevilDaggersInfo.Web.Server.Domain.Models.Spawnsets;
+using DevilDaggersInfo.Web.Server.Domain.Services;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 
@@ -36,7 +37,7 @@ public class SpawnsetsController : ControllerBase
 		string? spawnsetFilter = null,
 		string? authorFilter = null,
 		[Range(0, 1000)] int pageIndex = 0,
-		[Range(PagingConstants.PageSizeMin, PagingConstants.PageSizeMax)] int pageSize = PagingConstants.PageSizeDefault,
+		[Range(Constants.PageSizeMin, Constants.PageSizeMax)] int pageSize = Constants.PageSizeDefault,
 		SpawnsetSorting? sortBy = null,
 		bool ascending = false)
 	{

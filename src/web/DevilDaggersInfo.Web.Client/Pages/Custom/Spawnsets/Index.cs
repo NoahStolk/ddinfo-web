@@ -1,8 +1,7 @@
 using DevilDaggersInfo.Api.Main;
 using DevilDaggersInfo.Api.Main.Spawnsets;
 using DevilDaggersInfo.Web.Client.Extensions;
-using DevilDaggersInfo.Web.Shared.Constants;
-using DevilDaggersInfo.Web.Shared.Utils;
+using DevilDaggersInfo.Web.Client.Utils;
 using Microsoft.AspNetCore.Components;
 
 namespace DevilDaggersInfo.Web.Client.Pages.Custom.Spawnsets;
@@ -31,7 +30,7 @@ public partial class Index : IHasNavigation
 
 	[Parameter]
 	[SupplyParameterFromQuery]
-	public int PageSize { get; set; } = PagingConstants.PageSizeDefault;
+	public int PageSize { get; set; } = Constants.PageSizeDefault;
 
 	[Parameter]
 	[SupplyParameterFromQuery]

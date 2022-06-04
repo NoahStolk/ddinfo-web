@@ -59,7 +59,7 @@ else
 				<div class="overflow-hidden hidden md:block">@customLeaderboard.SpawnsetAuthorName.ToNoBreakString()</div>
 				<div class="overflow-hidden hidden md:block">@customLeaderboard.DateCreated.ToString(StringFormats.DateFormat)</div>
 				<div class="overflow-hidden">@FormatUtils.FormatDateTimeAsTimeAgo(customLeaderboard.DateLastPlayed)</div>
-				<div class="overflow-hidden text-right hidden 2xl:block">@(customLeaderboard.DateCreated < FeatureConstants.TrackingCustomLeaderboardSubmitCounts ? "+" : string.Empty)@customLeaderboard.SubmitCount</div>
+				<div class="overflow-hidden text-right hidden 2xl:block">@(customLeaderboard.DateCreated < Constants.TrackingCustomLeaderboardSubmitCounts ? "+" : string.Empty)@customLeaderboard.SubmitCount</div>
 				<div class="overflow-hidden text-right hidden 2xl:block">@customLeaderboard.PlayerCount</div>
 				@if (customLeaderboard.Daggers == null)
 				{
@@ -120,5 +120,5 @@ else
 		<div class="text-right font-bold hidden md:block">@GetTotalCustomLeaderboardData.SubmitsPerCategory.Values.Sum().ToString("N0")</div>
 	</div>
 
-	<i class="inline-block mt-3 hidden md:block">* Submissions are counted since @FeatureConstants.TrackingCustomLeaderboardSubmitCounts.ToString(StringFormats.DateFormat).</i>
+	<i class="inline-block mt-3 hidden md:block">* Submissions are counted since @Constants.TrackingCustomLeaderboardSubmitCounts.ToString(StringFormats.DateFormat).</i>
 }

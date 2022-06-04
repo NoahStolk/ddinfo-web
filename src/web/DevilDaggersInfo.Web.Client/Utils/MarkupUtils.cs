@@ -1,5 +1,4 @@
 using DevilDaggersInfo.Core.Wiki.Enums;
-using DevilDaggersInfo.Web.Shared.Utils;
 using Microsoft.AspNetCore.Components;
 
 namespace DevilDaggersInfo.Web.Client.Utils;

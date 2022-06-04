@@ -1,7 +1,9 @@
 using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Ddcl;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Ddcl;
-using DevilDaggersInfo.Web.Server.InternalModels.CustomLeaderboards;
+using DevilDaggersInfo.Web.Server.Domain.Exceptions;
+using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
+using DevilDaggersInfo.Web.Server.Domain.Services;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Ddcl;
 

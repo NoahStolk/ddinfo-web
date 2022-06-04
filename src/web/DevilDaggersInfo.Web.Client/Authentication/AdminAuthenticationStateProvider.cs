@@ -1,7 +1,7 @@
 using Blazored.LocalStorage;
 using DevilDaggersInfo.Api.Main.Authentication;
 using DevilDaggersInfo.Web.Client.HttpClients;
-using DevilDaggersInfo.Web.Shared.Utils;
+using DevilDaggersInfo.Web.Core.Claims;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.Net.Http.Json;
 using System.Security.Claims;

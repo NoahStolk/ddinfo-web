@@ -8,7 +8,6 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -23,5 +22,6 @@
     <ProjectReference Include="..\..\api\DevilDaggersInfo.Api.DdstatsRust\DevilDaggersInfo.Api.DdstatsRust.csproj" />
     <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Encryption\DevilDaggersInfo.Core.Encryption.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.Web.Client\DevilDaggersInfo.Web.Client.csproj" />
+    <ProjectReference Include="..\DevilDaggersInfo.Web.Server.Domain\DevilDaggersInfo.Web.Server.Domain.csproj" />
   </ItemGroup>
 </Project>

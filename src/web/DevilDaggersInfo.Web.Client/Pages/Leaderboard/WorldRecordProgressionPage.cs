@@ -5,7 +5,6 @@ using DevilDaggersInfo.Razor.Core.CanvasChart.Data;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Options.LineChart;
 using DevilDaggersInfo.Web.Client.HttpClients;
 using DevilDaggersInfo.Web.Client.Utils;
-using DevilDaggersInfo.Web.Shared.Utils;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System.Runtime.CompilerServices;
@@ -69,8 +68,8 @@ public partial class WorldRecordProgressionPage
 			if (wr == null)
 				return new();
 
-			Core.Wiki.Enums.GameVersion? gameVersion = GameVersions.GetGameVersionFromDate(wr.DateTime);
-			Dagger dagger = Daggers.GetDaggerFromSeconds(gameVersion ?? Core.Wiki.Enums.GameVersion.V1_0, wr.Entry.Time);
+			DevilDaggersInfo.Core.Wiki.Enums.GameVersion? gameVersion = GameVersions.GetGameVersionFromDate(wr.DateTime);
+			Dagger dagger = Daggers.GetDaggerFromSeconds(gameVersion ?? DevilDaggersInfo.Core.Wiki.Enums.GameVersion.V1_0, wr.Entry.Time);
 			return new()
 			{
 				new($"<span style='text-align: right;'>{wr.DateTime.ToString(StringFormats.DateFormat)}</span>"),
@@ -79,7 +78,7 @@ public partial class WorldRecordProgressionPage
 				new($"<span style='text-align: right;'>{wr.Entry.Gems}</span>"),
 				new($"<span style='text-align: right;'>{wr.Entry.Kills}</span>"),
 				new($"<span style='text-align: right;'>{(wr.Entry.DaggersFired == 0 ? 0 : wr.Entry.DaggersHit / (double)wr.Entry.DaggersFired).ToString(StringFormats.AccuracyFormat)}</span>"),
-				new($"<span style='text-align: right;'>{MarkupUtils.DeathString(wr.Entry.DeathType, gameVersion ?? Core.Wiki.Enums.GameVersion.V1_0)}</span>"),
+				new($"<span style='text-align: right;'>{MarkupUtils.DeathString(wr.Entry.DeathType, gameVersion ?? DevilDaggersInfo.Core.Wiki.Enums.GameVersion.V1_0)}</span>"),
 				new($"<span style='text-align: right;'>{gameVersion.GetGameVersionString()}</span>"),
 			};
 		}));

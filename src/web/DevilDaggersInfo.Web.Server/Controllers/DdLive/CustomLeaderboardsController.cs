@@ -1,7 +1,7 @@
 using DevilDaggersInfo.Api.DdLive.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.DdLive;
-using DevilDaggersInfo.Web.Server.InternalModels.CustomLeaderboards;
-using DevilDaggersInfo.Web.Server.Repositories;
+using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
+using DevilDaggersInfo.Web.Server.Domain.Repositories;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.DdLive;
 

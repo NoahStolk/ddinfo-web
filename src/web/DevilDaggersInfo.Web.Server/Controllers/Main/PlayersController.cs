@@ -1,9 +1,13 @@
 using DevilDaggersInfo.Api.Main.Players;
-using DevilDaggersInfo.Web.Server.Caches.LeaderboardHistory;
+using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Main;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
-using DevilDaggersInfo.Web.Server.Entities.Enums;
-using DevilDaggersInfo.Web.Server.Enums;
-using DevilDaggersInfo.Web.Server.InternalModels.LeaderboardHistory;
+using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
+using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
+using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
+using DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardHistory;
+using DevilDaggersInfo.Web.Server.Domain.Models.Players;
+using DevilDaggersInfo.Web.Server.Domain.Services;
+using DevilDaggersInfo.Web.Server.Domain.Utils;
 using Microsoft.AspNetCore.Authorization;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Main;
@@ -48,7 +52,7 @@ public class PlayersController : ControllerBase
 	{
 		List<PlayerEntity> players = _dbContext.Players
 			.AsNoTracking()
-			.Where(p => p.BanType == Entities.Enums.BanType.NotBanned && !p.HideSettings)
+			.Where(p => p.BanType == Domain.Entities.Enums.BanType.NotBanned && !p.HideSettings)
 			.ToList();
 
 		// Note; cannot evaluate HasSettings() against database (IQueryable).
@@ -263,7 +267,8 @@ public class PlayersController : ControllerBase
 	{
 		try
 		{
-			return await _profileService.GetProfileAsync(User, id);
+			PlayerProfile playerProfile = await _profileService.GetProfileAsync(User, id);
+			return playerProfile.ToMainApi();
 		}
 		catch (UnauthorizedAccessException)
 		{
@@ -282,7 +287,7 @@ public class PlayersController : ControllerBase
 	{
 		try
 		{
-			await _profileService.UpdateProfileAsync(User, id, editPlayerProfile);
+			await _profileService.UpdateProfileAsync(User, id, editPlayerProfile.ToDomain());
 			return Ok();
 		}
 		catch (UnauthorizedAccessException)

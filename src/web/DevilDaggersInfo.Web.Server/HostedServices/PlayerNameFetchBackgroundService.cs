@@ -1,12 +1,14 @@
+using DevilDaggersInfo.Web.Server.Domain.Services;
+
 namespace DevilDaggersInfo.Web.Server.HostedServices;
 
 public class PlayerNameFetchBackgroundService : AbstractBackgroundService
 {
 	private readonly IServiceScopeFactory _serviceScopeFactory;
-	private readonly AuditLogger _auditLogger;
+	private readonly IAuditLogger _auditLogger;
 	private readonly LeaderboardClient _leaderboardClient;
 
-	public PlayerNameFetchBackgroundService(IServiceScopeFactory serviceScopeFactory, AuditLogger auditLogger, LeaderboardClient leaderboardClient, BackgroundServiceMonitor backgroundServiceMonitor, ILogger<LeaderboardHistoryBackgroundService> logger)
+	public PlayerNameFetchBackgroundService(IServiceScopeFactory serviceScopeFactory, IAuditLogger auditLogger, LeaderboardClient leaderboardClient, BackgroundServiceMonitor backgroundServiceMonitor, ILogger<LeaderboardHistoryBackgroundService> logger)
 		: base(backgroundServiceMonitor, logger)
 	{
 		_serviceScopeFactory = serviceScopeFactory;

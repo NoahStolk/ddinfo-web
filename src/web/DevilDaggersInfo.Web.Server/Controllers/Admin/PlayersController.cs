@@ -1,7 +1,11 @@
 using DevilDaggersInfo.Api.Admin;
 using DevilDaggersInfo.Api.Admin.Players;
+using DevilDaggersInfo.Web.Client;
+using DevilDaggersInfo.Web.Core.Claims;
 using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Admin;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Admin;
+using DevilDaggersInfo.Web.Server.Domain.Extensions;
+using DevilDaggersInfo.Web.Server.Domain.Services;
 using Microsoft.AspNetCore.Authorization;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
@@ -11,10 +15,10 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 public class PlayersController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
-	private readonly AuditLogger _auditLogger;
+	private readonly IAuditLogger _auditLogger;
 	private readonly LeaderboardClient _leaderboardClient;
 
-	public PlayersController(ApplicationDbContext dbContext, AuditLogger auditLogger, LeaderboardClient leaderboardClient)
+	public PlayersController(ApplicationDbContext dbContext, IAuditLogger auditLogger, LeaderboardClient leaderboardClient)
 	{
 		_dbContext = dbContext;
 		_auditLogger = auditLogger;
@@ -26,7 +30,7 @@ public class PlayersController : ControllerBase
 	[Authorize(Roles = Roles.Players)]
 	public ActionResult<Page<GetPlayerForOverview>> GetPlayers(
 		[Range(0, 1000)] int pageIndex = 0,
-		[Range(PagingConstants.PageSizeMin, PagingConstants.PageSizeMax)] int pageSize = PagingConstants.PageSizeDefault,
+		[Range(Constants.PageSizeMin, Constants.PageSizeMax)] int pageSize = Constants.PageSizeDefault,
 		PlayerSorting? sortBy = null,
 		bool ascending = false)
 	{

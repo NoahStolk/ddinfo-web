@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Common.Exceptions;
-using DevilDaggersInfo.Web.Server.Entities.Enums;
-using DevilDaggersInfo.Web.Server.InternalModels.Mods;
+using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
+using DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;
 using DdaeApi = DevilDaggersInfo.Api.Ddae.Mods;
 
 namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Ddae;

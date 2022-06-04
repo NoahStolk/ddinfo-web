@@ -5,7 +5,7 @@ using DevilDaggersInfo.Api.Admin.Mods;
 using DevilDaggersInfo.Api.Admin.Players;
 using DevilDaggersInfo.Api.Admin.Spawnsets;
 using DevilDaggersInfo.Api.Main.Players;
-using DevilDaggersInfo.Web.Shared.Utils;
+using DevilDaggersInfo.Web.Client.Utils;
 
 namespace DevilDaggersInfo.Web.Server.Extensions;
 
@@ -261,26 +261,6 @@ public static class AuditLoggerExtensions
 		AddProperty(log, player.HideDonations);
 		AddProperty(log, player.HidePastUsernames);
 		log.Add(nameof(player.ModIds), player.ModIds == null ? string.Empty : string.Join(", ", player.ModIds.ConvertAll(i => i.ToString())));
-		return log;
-	}
-
-	public static Dictionary<string, string> GetLog(this EditPlayerProfile player)
-	{
-		Dictionary<string, string> log = new();
-		AddProperty(log, player.CountryCode);
-		AddProperty(log, player.Dpi);
-		AddProperty(log, player.InGameSens);
-		AddProperty(log, player.Fov);
-		AddProperty(log, player.IsRightHanded);
-		AddProperty(log, player.HasFlashHandEnabled);
-		AddProperty(log, player.Gamma);
-		AddProperty(log, player.UsesLegacyAudio);
-		AddProperty(log, player.UsesHrtf);
-		AddProperty(log, player.UsesInvertY);
-		AddProperty(log, player.VerticalSync);
-		AddProperty(log, player.HideSettings);
-		AddProperty(log, player.HideDonations);
-		AddProperty(log, player.HidePastUsernames);
 		return log;
 	}
 

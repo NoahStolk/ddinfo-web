@@ -1,7 +1,11 @@
 using DevilDaggersInfo.Api.Admin;
 using DevilDaggersInfo.Api.Admin.Donations;
+using DevilDaggersInfo.Web.Client;
+using DevilDaggersInfo.Web.Core.Claims;
 using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Admin;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Admin;
+using DevilDaggersInfo.Web.Server.Domain.Extensions;
+using DevilDaggersInfo.Web.Server.Domain.Services;
 using Microsoft.AspNetCore.Authorization;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
@@ -12,9 +16,9 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 public class DonationsController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
-	private readonly AuditLogger _auditLogger;
+	private readonly IAuditLogger _auditLogger;
 
-	public DonationsController(ApplicationDbContext dbContext, AuditLogger auditLogger)
+	public DonationsController(ApplicationDbContext dbContext, IAuditLogger auditLogger)
 	{
 		_dbContext = dbContext;
 		_auditLogger = auditLogger;
@@ -24,7 +28,7 @@ public class DonationsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public ActionResult<Page<GetDonationForOverview>> GetDonations(
 		[Range(0, 1000)] int pageIndex = 0,
-		[Range(PagingConstants.PageSizeMin, PagingConstants.PageSizeMax)] int pageSize = PagingConstants.PageSizeDefault,
+		[Range(Constants.PageSizeMin, Constants.PageSizeMax)] int pageSize = Constants.PageSizeDefault,
 		DonationSorting? sortBy = null,
 		bool ascending = false)
 	{
