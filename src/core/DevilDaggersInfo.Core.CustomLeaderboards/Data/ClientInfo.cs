@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Api.Ddcl.Tools;
+
 namespace DevilDaggersInfo.Core.CustomLeaderboards.Data;
 
 // TODO: Use IOptions.
@@ -6,5 +8,5 @@ public record ClientInfo(
 	string ApplicationName,
 	string ApplicationVersion,
 	string ApplicationBuildMode,
-	string PublishMethod,
-	string BuildType);
+	ToolPublishMethod PublishMethod,
+	ToolBuildType BuildType);
