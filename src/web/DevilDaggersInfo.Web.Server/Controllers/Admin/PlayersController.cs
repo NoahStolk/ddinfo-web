@@ -1,5 +1,7 @@
 using DevilDaggersInfo.Api.Admin;
 using DevilDaggersInfo.Api.Admin.Players;
+using DevilDaggersInfo.Web.Client;
+using DevilDaggersInfo.Web.Core.Claims;
 using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Admin;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Admin;
 using DevilDaggersInfo.Web.Server.Domain.Extensions;
@@ -28,7 +30,7 @@ public class PlayersController : ControllerBase
 	[Authorize(Roles = Roles.Players)]
 	public ActionResult<Page<GetPlayerForOverview>> GetPlayers(
 		[Range(0, 1000)] int pageIndex = 0,
-		[Range(PagingConstants.PageSizeMin, PagingConstants.PageSizeMax)] int pageSize = PagingConstants.PageSizeDefault,
+		[Range(Constants.PageSizeMin, Constants.PageSizeMax)] int pageSize = Constants.PageSizeDefault,
 		PlayerSorting? sortBy = null,
 		bool ascending = false)
 	{

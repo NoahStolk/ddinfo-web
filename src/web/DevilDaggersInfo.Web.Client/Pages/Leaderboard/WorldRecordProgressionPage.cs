@@ -5,7 +5,6 @@ using DevilDaggersInfo.Razor.Core.CanvasChart.Data;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Options.LineChart;
 using DevilDaggersInfo.Web.Client.HttpClients;
 using DevilDaggersInfo.Web.Client.Utils;
-using DevilDaggersInfo.Web.Shared.Utils;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System.Runtime.CompilerServices;

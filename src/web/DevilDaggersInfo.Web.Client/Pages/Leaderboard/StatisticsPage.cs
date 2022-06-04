@@ -2,7 +2,6 @@ using DevilDaggersInfo.Api.Main.LeaderboardStatistics;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Data;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Options.BarChart;
 using DevilDaggersInfo.Web.Client.Utils;
-using DevilDaggersInfo.Web.Shared.Utils;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 

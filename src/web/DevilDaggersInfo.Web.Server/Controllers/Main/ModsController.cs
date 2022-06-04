@@ -1,5 +1,6 @@
 using DevilDaggersInfo.Api.Main;
 using DevilDaggersInfo.Api.Main.Mods;
+using DevilDaggersInfo.Web.Client;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;
@@ -30,7 +31,7 @@ public class ModsController : ControllerBase
 		string? modFilter = null,
 		string? authorFilter = null,
 		[Range(0, 1000)] int pageIndex = 0,
-		[Range(PagingConstants.PageSizeMin, PagingConstants.PageSizeMax)] int pageSize = PagingConstants.PageSizeDefault,
+		[Range(Constants.PageSizeMin, Constants.PageSizeMax)] int pageSize = Constants.PageSizeDefault,
 		ModSorting? sortBy = null,
 		bool ascending = false)
 	{

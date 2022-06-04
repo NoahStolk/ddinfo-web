@@ -1,5 +1,5 @@
 using DevilDaggersInfo.Api.Admin.Mods;
-using DevilDaggersInfo.Web.Shared.Utils;
+using DevilDaggersInfo.Web.Client.Utils;
 using Microsoft.AspNetCore.Components.Forms;
 
 namespace DevilDaggersInfo.Web.Client.Pages.Admin.Mods;

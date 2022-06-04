@@ -1,7 +1,6 @@
 using DevilDaggersInfo.Api.Admin;
 using DevilDaggersInfo.Web.Client.Pages;
 using DevilDaggersInfo.Web.Core.Claims;
-using DevilDaggersInfo.Web.Shared.Constants;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
@@ -49,7 +48,7 @@ public partial class AdminOverview<TGetDto, TSorting> : IHasNavigation
 	public int PageIndex { get; set; }
 
 	[Parameter]
-	public int PageSize { get; set; } = PagingConstants.PageSizeDefault;
+	public int PageSize { get; set; } = Constants.PageSizeDefault;
 
 	[Parameter]
 	public int? SortBy { get; set; }

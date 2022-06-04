@@ -38,7 +38,6 @@ flowchart TD;
 	web_client[Web.Client]
 	web_server[Web.Server]
 	web_server_domain[Web.Server.Domain]
-	web_shared[Web.Shared]
 	web_core_claims[Web.Core.Claims]
 	api_dd[Api.Dd]
 	api_ddlive[Api.DdLive]
@@ -60,7 +59,7 @@ flowchart TD;
 	class razor_core_asseteditor,razor_core_canvaschart,razor_core_unmarshalled razor_core;
 	class web_client web_client;
 	class web_server,web_server_domain web_server;
-	class web_shared,web_core_claims web_core;
+	class web_core_claims web_core;
 	class api_dd,api_ddlive,api_ddrust,api_main,api_admin,api_ddcl,api_ddae,api_ddse api;
 
 	class ddse_legacy,ddcl_legacy,ddae_legacy,ddcore_legacy legacy;
@@ -91,8 +90,10 @@ flowchart TD;
 
 	subgraph Web
 		web_client ----> razor_core_canvaschart
-		web_client --> web_shared
-		web_client --> web_core_claims
+		web_client ----> web_core_claims
+		web_client ----> core_mod
+		web_client ----> core_replay
+		web_client ----> core_spawnset
 
 		web_server --> core_encryption
 		web_server --> web_client
@@ -101,10 +102,6 @@ flowchart TD;
 		web_server_domain --> core_mod
 		web_server_domain --> core_spawnset
 		web_server_domain --> web_core_claims
-
-		web_shared ----> core_mod
-		web_shared ----> core_replay
-		web_shared ----> core_spawnset
 	end
 
 	subgraph Tool

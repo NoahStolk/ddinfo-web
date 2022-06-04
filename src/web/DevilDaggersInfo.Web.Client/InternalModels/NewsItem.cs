@@ -1,5 +1,3 @@
-using DevilDaggersInfo.Web.Shared.Utils;
-
 namespace DevilDaggersInfo.Web.Client.InternalModels;
 
 public class NewsItem

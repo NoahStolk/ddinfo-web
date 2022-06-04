@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Shared;
+namespace DevilDaggersInfo.Web.Core.Claims;
 
 public static class Roles
 {

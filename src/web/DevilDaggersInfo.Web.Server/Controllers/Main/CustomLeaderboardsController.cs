@@ -1,5 +1,6 @@
 using DevilDaggersInfo.Api.Main;
 using DevilDaggersInfo.Api.Main.CustomLeaderboards;
+using DevilDaggersInfo.Web.Client;
 using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Main;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 using DevilDaggersInfo.Web.Server.Domain.Repositories;
@@ -27,7 +28,7 @@ public class CustomLeaderboardsController : ControllerBase
 		string? spawnsetFilter = null,
 		string? authorFilter = null,
 		[Range(0, 1000)] int pageIndex = 0,
-		[Range(PagingConstants.PageSizeMin, PagingConstants.PageSizeMax)] int pageSize = PagingConstants.PageSizeDefault,
+		[Range(Constants.PageSizeMin, Constants.PageSizeMax)] int pageSize = Constants.PageSizeDefault,
 		CustomLeaderboardSorting? sortBy = null,
 		bool ascending = false)
 	{
