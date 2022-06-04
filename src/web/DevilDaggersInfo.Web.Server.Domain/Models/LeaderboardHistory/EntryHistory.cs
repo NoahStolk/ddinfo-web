@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Server.InternalModels.LeaderboardHistory;
+namespace DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardHistory;
 
 public class EntryHistory
 {

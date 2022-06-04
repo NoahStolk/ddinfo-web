@@ -1,5 +1,4 @@
 using DevilDaggersInfo.Common.Utils;
-using DevilDaggersInfo.Web.Server.Caches.LeaderboardHistory;
 using DevilDaggersInfo.Web.Server.Caches.LeaderboardStatistics;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Services;
