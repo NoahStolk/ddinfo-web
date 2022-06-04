@@ -1,5 +1,4 @@
 using DevilDaggersInfo.Api.Ddse.Spawnsets;
-using DevilDaggersInfo.Web.Server.Caches.SpawnsetSummaries;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Ddse;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Services;

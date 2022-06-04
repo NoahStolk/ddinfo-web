@@ -1,6 +1,7 @@
-using DevilDaggersInfo.Web.Server.Domain.Services;
+using DevilDaggersInfo.Core.Spawnset.Summary;
+using System.Collections.Concurrent;
 
-namespace DevilDaggersInfo.Web.Server.Caches.SpawnsetSummaries;
+namespace DevilDaggersInfo.Web.Server.Domain.Services;
 
 public class SpawnsetSummaryCache : IDynamicCache
 {

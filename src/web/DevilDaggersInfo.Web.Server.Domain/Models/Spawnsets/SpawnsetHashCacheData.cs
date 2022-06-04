@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Server.Caches.SpawnsetHashes;
+namespace DevilDaggersInfo.Web.Server.Domain.Models.Spawnsets;
 
 public class SpawnsetHashCacheData
 {
