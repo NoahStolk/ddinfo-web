@@ -1,13 +1,8 @@
 global using DevilDaggersInfo.CommonTest;
 global using DevilDaggersInfo.Core.Spawnset;
 global using DevilDaggersInfo.Web.Server.Domain.Entities;
-global using DevilDaggersInfo.Web.Server.Extensions;
-global using DevilDaggersInfo.Web.Server.Services;
-global using DevilDaggersInfo.Web.Server.Utils;
 global using JetBrains.Annotations;
-global using Microsoft.AspNetCore.Hosting;
 global using Microsoft.EntityFrameworkCore;
-global using Microsoft.Extensions.Hosting;
 global using Microsoft.VisualStudio.TestTools.UnitTesting;
 global using Moq;
 global using System.Linq.Expressions;
