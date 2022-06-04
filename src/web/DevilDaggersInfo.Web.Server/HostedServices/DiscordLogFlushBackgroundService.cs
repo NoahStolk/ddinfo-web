@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Web.Server.Domain.Services;
 using DevilDaggersInfo.Web.Server.HostedServices.DdInfoDiscordBot;
 using DSharpPlus.Entities;
 
@@ -5,13 +6,17 @@ namespace DevilDaggersInfo.Web.Server.HostedServices;
 
 public class DiscordLogFlushBackgroundService : AbstractBackgroundService
 {
+	private const int _timeoutInSeconds = 1;
+
 	private readonly LogContainerService _logContainerService;
+	private readonly ICustomLeaderboardSubmissionLogger _customLeaderboardSubmissionLogger;
 	private readonly IWebHostEnvironment _environment;
 
-	public DiscordLogFlushBackgroundService(LogContainerService logContainerService, IWebHostEnvironment environment, BackgroundServiceMonitor backgroundServiceMonitor, ILogger<DiscordLogFlushBackgroundService> logger)
+	public DiscordLogFlushBackgroundService(LogContainerService logContainerService, ICustomLeaderboardSubmissionLogger customLeaderboardSubmissionLogger, IWebHostEnvironment environment, BackgroundServiceMonitor backgroundServiceMonitor, ILogger<DiscordLogFlushBackgroundService> logger)
 		: base(backgroundServiceMonitor, logger)
 	{
 		_logContainerService = logContainerService;
+		_customLeaderboardSubmissionLogger = customLeaderboardSubmissionLogger;
 		_environment = environment;
 	}
 
@@ -29,10 +34,22 @@ public class DiscordLogFlushBackgroundService : AbstractBackgroundService
 
 		DiscordChannel? validClLogChannel = DiscordServerConstants.GetDiscordChannel(Channel.MonitoringCustomLeaderboardValid, _environment);
 		if (validClLogChannel != null)
-			await _logContainerService.LogClLogsToChannel(true, validClLogChannel);
+			await LogClLogsToChannel(true, validClLogChannel);
 
 		DiscordChannel? invalidClLogChannel = DiscordServerConstants.GetDiscordChannel(Channel.MonitoringCustomLeaderboardInvalid, _environment);
 		if (invalidClLogChannel != null)
-			await _logContainerService.LogClLogsToChannel(false, invalidClLogChannel);
+			await LogClLogsToChannel(false, invalidClLogChannel);
+	}
+
+	private async Task LogClLogsToChannel(bool valid, DiscordChannel channel)
+	{
+		IReadOnlyList<string> logs = _customLeaderboardSubmissionLogger.GetLogs(valid);
+		if (logs.Count > 0)
+		{
+			if (await channel.SendMessageAsyncSafe(string.Join(Environment.NewLine, logs)))
+				_customLeaderboardSubmissionLogger.ClearLogs(valid);
+			else
+				await Task.Delay(TimeSpan.FromSeconds(_timeoutInSeconds));
+		}
 	}
 }

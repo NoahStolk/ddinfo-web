@@ -58,11 +58,12 @@ public class Startup
 
 		// Utilities
 		services.AddTransient<AuditLogger>();
-		services.AddScoped<IFileSystemLogger, FileSystemLogger>();
 		services.AddSingleton<LeaderboardResponseParser>();
 
 		// Monitoring
 		services.AddSingleton<BackgroundServiceMonitor>();
+		services.AddSingleton<ICustomLeaderboardSubmissionLogger, CustomLeaderboardSubmissionLogger>();
+		services.AddScoped<IFileSystemLogger, FileSystemLogger>();
 		services.AddSingleton<LogContainerService>();
 		services.AddSingleton<ResponseTimeMonitor>();
 
