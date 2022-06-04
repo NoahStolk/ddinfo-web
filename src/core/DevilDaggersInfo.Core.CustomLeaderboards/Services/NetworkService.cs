@@ -1,4 +1,6 @@
 using DevilDaggersCustomLeaderboards.Clients;
+using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
+using DevilDaggersInfo.Api.Ddcl.ProcessMemory;
 using DevilDaggersInfo.Core.CustomLeaderboards.Data;
 using DevilDaggersInfo.Core.CustomLeaderboards.Utils;
 using Microsoft.Extensions.Logging;

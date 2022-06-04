@@ -1,4 +1,4 @@
-using DevilDaggersCustomLeaderboards.Clients;
+using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
 using DevilDaggersInfo.Core.CustomLeaderboards.Enums;
 
 namespace DevilDaggersInfo.Core.CustomLeaderboards.Utils;
