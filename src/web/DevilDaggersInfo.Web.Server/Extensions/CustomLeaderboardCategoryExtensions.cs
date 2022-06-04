@@ -1,13 +1,10 @@
 using DevilDaggersInfo.Common.Exceptions;
-using DevilDaggersInfo.Web.Server.Entities.Enums;
+using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 
 namespace DevilDaggersInfo.Web.Server.Extensions;
 
 public static class CustomLeaderboardCategoryExtensions
 {
-	public static bool IsAscending(this CustomLeaderboardCategory category)
-		=> category is CustomLeaderboardCategory.TimeAttack or CustomLeaderboardCategory.Speedrun or CustomLeaderboardCategory.Race;
-
 	public static GameMode GetRequiredGameModeForCategory(this CustomLeaderboardCategory category) => category switch
 	{
 		CustomLeaderboardCategory.Survival or CustomLeaderboardCategory.Speedrun or CustomLeaderboardCategory.Pacifist => GameMode.Survival,

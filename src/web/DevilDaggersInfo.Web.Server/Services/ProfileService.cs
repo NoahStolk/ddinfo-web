@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Main;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
-using DevilDaggersInfo.Web.Server.Entities.Enums;
+using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using System.Security.Claims;
 using MainApi = DevilDaggersInfo.Api.Main.Players;
 

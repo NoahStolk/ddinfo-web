@@ -1,5 +1,3 @@
-using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
-using DevilDaggersInfo.Core.Spawnset.View;
 using DevilDaggersInfo.Web.Server.Constants;
 
 namespace DevilDaggersInfo.Web.Server.InternalModels.CustomLeaderboards;

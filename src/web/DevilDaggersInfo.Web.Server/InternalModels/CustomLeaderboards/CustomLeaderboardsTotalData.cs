@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Web.Server.Entities.Enums;
+using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 
 namespace DevilDaggersInfo.Web.Server.InternalModels.CustomLeaderboards;
 

@@ -1,6 +1,6 @@
 global using DevilDaggersInfo.CommonTest;
 global using DevilDaggersInfo.Core.Spawnset;
-global using DevilDaggersInfo.Web.Server.Entities;
+global using DevilDaggersInfo.Web.Server.Domain.Entities;
 global using DevilDaggersInfo.Web.Server.Extensions;
 global using DevilDaggersInfo.Web.Server.Services;
 global using DevilDaggersInfo.Web.Server.Utils;

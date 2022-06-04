@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Web.Server.Entities.Enums;
+using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using MainApi = DevilDaggersInfo.Api.Main.Tools;
 
 namespace DevilDaggersInfo.Web.Server.Services;

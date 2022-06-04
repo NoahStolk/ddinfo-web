@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
+
 namespace DevilDaggersInfo.Web.Server.InternalModels.CustomLeaderboards;
 
 public class CustomEntrySummary : ISortableCustomEntry

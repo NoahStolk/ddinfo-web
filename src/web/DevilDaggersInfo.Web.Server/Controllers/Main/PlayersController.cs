@@ -1,7 +1,9 @@
 using DevilDaggersInfo.Api.Main.Players;
 using DevilDaggersInfo.Web.Server.Caches.LeaderboardHistory;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
-using DevilDaggersInfo.Web.Server.Entities.Enums;
+using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
+using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
+using DevilDaggersInfo.Web.Server.Domain.Utils;
 using DevilDaggersInfo.Web.Server.Enums;
 using DevilDaggersInfo.Web.Server.InternalModels.LeaderboardHistory;
 using Microsoft.AspNetCore.Authorization;
@@ -48,7 +50,7 @@ public class PlayersController : ControllerBase
 	{
 		List<PlayerEntity> players = _dbContext.Players
 			.AsNoTracking()
-			.Where(p => p.BanType == Entities.Enums.BanType.NotBanned && !p.HideSettings)
+			.Where(p => p.BanType == Domain.Entities.Enums.BanType.NotBanned && !p.HideSettings)
 			.ToList();
 
 		// Note; cannot evaluate HasSettings() against database (IQueryable).

@@ -1,5 +1,5 @@
 using DevilDaggersInfo.Common.Exceptions;
-using DevilDaggersInfo.Web.Server.Entities.Enums;
+using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using MainApi = DevilDaggersInfo.Api.Main.Donations;
 
 namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
