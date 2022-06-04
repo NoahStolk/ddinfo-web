@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Web.Server.Domain.Utils;
+
 namespace DevilDaggersInfo.Web.Server.Tests;
 
 [TestClass]

@@ -1,20 +1,25 @@
 using DevilDaggersInfo.Common;
+using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Common.Utils;
 using DevilDaggersInfo.Core.Encryption;
 using DevilDaggersInfo.Core.Replay;
 using DevilDaggersInfo.Core.Replay.Enums;
+using DevilDaggersInfo.Core.Spawnset.Enums;
+using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
+using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Extensions;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Models.Spawnsets;
-using DevilDaggersInfo.Web.Server.Domain.Services;
 using DevilDaggersInfo.Web.Server.Domain.Utils;
-using DevilDaggersInfo.Web.Server.HostedServices.DdInfoDiscordBot;
-using DSharpPlus.Entities;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using System.Diagnostics;
 using System.Web;
 
-namespace DevilDaggersInfo.Web.Server.Services;
+namespace DevilDaggersInfo.Web.Server.Domain.Services;
 
 public class CustomEntryProcessor
 {
@@ -22,19 +27,17 @@ public class CustomEntryProcessor
 	private readonly ILogger<CustomEntryProcessor> _logger;
 	private readonly SpawnsetHashCache _spawnsetHashCache;
 	private readonly IFileSystemService _fileSystemService;
-	private readonly IWebHostEnvironment _environment;
 	private readonly ICustomLeaderboardSubmissionLogger _submissionLogger;
 
 	private readonly AesBase32Wrapper _encryptionWrapper;
 	private readonly Stopwatch _stopwatch;
 
-	public CustomEntryProcessor(ApplicationDbContext dbContext, ILogger<CustomEntryProcessor> logger, SpawnsetHashCache spawnsetHashCache, IFileSystemService fileSystemService, IWebHostEnvironment environment, IConfiguration configuration, ICustomLeaderboardSubmissionLogger submissionLogger)
+	public CustomEntryProcessor(ApplicationDbContext dbContext, ILogger<CustomEntryProcessor> logger, SpawnsetHashCache spawnsetHashCache, IFileSystemService fileSystemService, IConfiguration configuration, ICustomLeaderboardSubmissionLogger submissionLogger)
 	{
 		_dbContext = dbContext;
 		_logger = logger;
 		_spawnsetHashCache = spawnsetHashCache;
 		_fileSystemService = fileSystemService;
-		_environment = environment;
 		_submissionLogger = submissionLogger;
 
 		IConfigurationSection section = configuration.GetRequiredSection("CustomLeaderboardSecrets");
@@ -191,7 +194,13 @@ public class CustomEntryProcessor
 		int rank = GetRank(entries, uploadRequest.PlayerId);
 		int totalPlayers = entries.Count;
 
-		await TrySendLeaderboardMessage(customLeaderboard, $"`{uploadRequest.PlayerName}` just entered the `{spawnsetName}` leaderboard!", rank, totalPlayers, newCustomEntry.Time);
+		_submissionLogger.LogHighscore(
+			customLeaderboard.GetDaggerFromTime(newCustomEntry.Time) ?? CustomLeaderboardDagger.Silver,
+			customLeaderboard.Id,
+			$"`{uploadRequest.PlayerName}` just entered the `{spawnsetName}` leaderboard!",
+			rank,
+			totalPlayers,
+			newCustomEntry.Time);
 		Log(uploadRequest, spawnsetName);
 
 		List<int> replayIds = GetExistingReplayIds(entries.ConvertAll(ce => ce.Id));
@@ -364,7 +373,13 @@ public class CustomEntryProcessor
 		int levelUpTime3Diff = customEntry.LevelUpTime3 - oldLevelUpTime3;
 		int levelUpTime4Diff = customEntry.LevelUpTime4 - oldLevelUpTime4;
 
-		await TrySendLeaderboardMessage(customLeaderboard, $"`{uploadRequest.PlayerName}` just got {FormatTimeString(customEntry.Time.ToSecondsTime())} seconds on the `{spawnsetName}` leaderboard, beating their previous highscore of {FormatTimeString((customEntry.Time - timeDiff).ToSecondsTime())} by {FormatTimeString(Math.Abs(timeDiff.ToSecondsTime()))} seconds!", rank, entries.Count, customEntry.Time);
+		_submissionLogger.LogHighscore(
+			customLeaderboard.GetDaggerFromTime(customEntry.Time) ?? CustomLeaderboardDagger.Silver,
+			customLeaderboard.Id,
+			$"`{uploadRequest.PlayerName}` just got {FormatTimeString(customEntry.Time.ToSecondsTime())} seconds on the `{spawnsetName}` leaderboard, beating their previous highscore of {FormatTimeString((customEntry.Time - timeDiff).ToSecondsTime())} by {FormatTimeString(Math.Abs(timeDiff.ToSecondsTime()))} seconds!",
+			rank,
+			entries.Count,
+			customEntry.Time);
 		Log(uploadRequest, spawnsetName);
 
 		List<int> replayIds = GetExistingReplayIds(entries.ConvertAll(ce => ce.Id));
@@ -426,7 +441,7 @@ public class CustomEntryProcessor
 
 	private async Task WriteReplayFile(int customEntryId, byte[] replayData)
 	{
-		await IoFile.WriteAllBytesAsync(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{customEntryId}.ddreplay"), replayData);
+		await File.WriteAllBytesAsync(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{customEntryId}.ddreplay"), replayData);
 	}
 
 	private static bool IsReplayTimeAlmostTheSame(int requestTimeAsInt, int databaseTime)
@@ -440,15 +455,16 @@ public class CustomEntryProcessor
 
 	/// <summary>
 	/// Due to a bug in the game, the final time sometimes gains a couple extra ticks if the run is a replay (more common in longer runs).
-	/// We don't want these replay submissions to overwrite the real score (this spams messages and is incorrect).
+	/// If a player first submitted the actual score (non-replay) and then watches the same replay again, it will sent a higher score the second time.
+	/// We don't want these replay submissions to overwrite the original score. To work around this, simply check if the replay buffer is exactly the same as the original.
 	/// </summary>
 	private async Task<bool> IsReplayFileTheSame(int customEntryId, byte[] newReplay)
 	{
 		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{customEntryId}.ddreplay");
-		if (!IoFile.Exists(path))
+		if (!File.Exists(path))
 			return false;
 
-		byte[] originalReplay = await IoFile.ReadAllBytesAsync(path);
+		byte[] originalReplay = await File.ReadAllBytesAsync(path);
 		return ArrayUtils.AreEqual(originalReplay, newReplay);
 	}
 
@@ -471,32 +487,6 @@ public class CustomEntryProcessor
 
 	private static int GetRank(List<CustomEntryEntity> orderedEntries, int playerId)
 		=> orderedEntries.ConvertAll(ce => ce.PlayerId).IndexOf(playerId) + 1;
-
-	// TODO: Move to LogContainerService.
-	private async Task TrySendLeaderboardMessage(CustomLeaderboardEntity customLeaderboard, string message, int rank, int totalPlayers, int time)
-	{
-		try
-		{
-			DiscordEmbedBuilder builder = new()
-			{
-				Title = message,
-				Color = (customLeaderboard.GetDaggerFromTime(time) ?? CustomLeaderboardDagger.Silver).GetDiscordColor(),
-				Url = $"https://devildaggers.info/custom/leaderboard/{customLeaderboard.Id}",
-			};
-			builder.AddFieldObject("Score", FormatTimeString(time.ToSecondsTime()), true);
-			builder.AddFieldObject("Rank", $"{rank}/{totalPlayers}", true);
-
-			DiscordChannel? discordChannel = DiscordServerConstants.GetDiscordChannel(Channel.CustomLeaderboards, _environment);
-			if (discordChannel == null)
-				return;
-
-			await discordChannel.SendMessageAsyncSafe(null, builder.Build());
-		}
-		catch (Exception ex)
-		{
-			_logger.LogError(ex, "Error while attempting to send leaderboard message.");
-		}
-	}
 
 	private static string FormatTimeString(double time)
 		=> time.ToString(StringFormats.TimeFormat);
@@ -523,6 +513,6 @@ public class CustomEntryProcessor
 
 	private List<int> GetExistingReplayIds(List<int> customEntryIds)
 	{
-		return customEntryIds.Where(id => IoFile.Exists(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{id}.ddreplay"))).ToList();
+		return customEntryIds.Where(id => File.Exists(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{id}.ddreplay"))).ToList();
 	}
 }

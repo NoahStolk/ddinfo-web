@@ -1,9 +1,12 @@
+using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.Domain.Services;
 
 namespace DevilDaggersInfo.Web.Server.Services;
 
 public class CustomLeaderboardSubmissionLogger : ICustomLeaderboardSubmissionLogger
 {
+	private readonly List<CustomLeaderboardHighscoreLog> _highscoreLogs = new();
+
 	private readonly List<string> _validClLogs = new();
 	private readonly List<string> _invalidClLogs = new();
 
@@ -24,5 +27,20 @@ public class CustomLeaderboardSubmissionLogger : ICustomLeaderboardSubmissionLog
 			_validClLogs.Add(message);
 		else
 			_invalidClLogs.Add(message);
+	}
+
+	public void LogHighscore(CustomLeaderboardDagger dagger, int customLeaderboardId, string message, int rank, int totalPlayers, int time)
+	{
+		_highscoreLogs.Add(new(dagger, customLeaderboardId, message, rank, totalPlayers, time));
+	}
+
+	public List<CustomLeaderboardHighscoreLog> GetHighscoreLogs()
+	{
+		return _highscoreLogs;
+	}
+
+	public void ClearHighscoreLogs()
+	{
+		_highscoreLogs.Clear();
 	}
 }

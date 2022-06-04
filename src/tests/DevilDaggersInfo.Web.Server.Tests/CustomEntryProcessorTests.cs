@@ -46,7 +46,6 @@ public class CustomEntryProcessorTests
 		Mock<ILogger<SpawnsetHashCache>> spawnsetHashCacheLogger = new();
 		Mock<SpawnsetHashCache> spawnsetHashCache = new(fileSystemService.Object, spawnsetHashCacheLogger.Object);
 		Mock<ILogger<CustomEntryProcessor>> customEntryProcessorLogger = new();
-		Mock<IWebHostEnvironment> environment = new();
 
 		const string secret = "secretsecretsecr";
 		Dictionary<string, object> appSettings = new()
@@ -63,7 +62,7 @@ public class CustomEntryProcessorTests
 		IConfigurationRoot configuration = builder.Build();
 
 		_encryptionWrapper = new(secret, secret, secret);
-		_customEntryProcessor = new(_dbContext.Object, customEntryProcessorLogger.Object, spawnsetHashCache.Object, fileSystemService.Object, environment.Object, configuration, new LogContainerService());
+		_customEntryProcessor = new(_dbContext.Object, customEntryProcessorLogger.Object, spawnsetHashCache.Object, fileSystemService.Object, configuration, new Mock<ICustomLeaderboardSubmissionLogger>().Object);
 
 		byte[] spawnsetFileContents = File.ReadAllBytes(Path.Combine(spawnsetsPath, "V3"));
 		if (SpawnsetBinary.TryParse(spawnsetFileContents, out SpawnsetBinary? spawnsetBinary))

@@ -1,6 +1,8 @@
+using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
+using DevilDaggersInfo.Web.Server.Domain.Utils;
 
-namespace DevilDaggersInfo.Web.Server.Extensions;
+namespace DevilDaggersInfo.Web.Server.Domain.Extensions;
 
 public static class CustomEntryDataEntityExtensions
 {

@@ -1,6 +1,7 @@
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
+using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 
-namespace DevilDaggersInfo.Web.Server.Extensions;
+namespace DevilDaggersInfo.Web.Server.Domain.Extensions;
 
 public static class CustomLeaderboardsClientExtensions
 {
@@ -8,6 +9,6 @@ public static class CustomLeaderboardsClientExtensions
 	{
 		"DevilDaggersCustomLeaderboards" => CustomLeaderboardsClient.DevilDaggersCustomLeaderboards,
 		"ddstats-rust" => CustomLeaderboardsClient.DdstatsRust,
-		_ => throw new Exception($"Unknown CustomLeaderboardsClient '{clientString}'."),
+		_ => throw new CustomEntryValidationException($"Unknown CustomLeaderboardsClient '{clientString}'."),
 	};
 }

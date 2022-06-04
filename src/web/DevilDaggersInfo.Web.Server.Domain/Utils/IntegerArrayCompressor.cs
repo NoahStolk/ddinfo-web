@@ -1,4 +1,6 @@
-namespace DevilDaggersInfo.Web.Server.Utils;
+using System.Collections;
+
+namespace DevilDaggersInfo.Web.Server.Domain.Utils;
 
 public static class IntegerArrayCompressor
 {
@@ -20,8 +22,10 @@ public static class IntegerArrayCompressor
 			return Array.Empty<byte>();
 
 		byte bitCount = GetBitCount(data.Max());
-		BitArray bitArray = new(new byte[] { bitCount });
-		bitArray.Length = 8 + data.Length * bitCount;
+		BitArray bitArray = new(new byte[] { bitCount })
+		{
+			Length = 8 + data.Length * bitCount,
+		};
 
 		for (int i = 0; i < data.Length; i++)
 		{
