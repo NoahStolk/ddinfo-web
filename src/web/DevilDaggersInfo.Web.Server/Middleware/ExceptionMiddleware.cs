@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Web.Server.Domain.Exceptions;
+
 namespace DevilDaggersInfo.Web.Server.Middleware;
 
 public class ExceptionMiddleware

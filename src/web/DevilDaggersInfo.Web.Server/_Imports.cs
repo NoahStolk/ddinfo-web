@@ -12,7 +12,7 @@ global using DevilDaggersInfo.Core.Wiki.Objects;
 global using DevilDaggersInfo.Core.Wiki.Structs;
 global using DevilDaggersInfo.Web.Server.Clients.Leaderboard;
 global using DevilDaggersInfo.Web.Server.Domain.Entities;
-global using DevilDaggersInfo.Web.Server.Exceptions;
+global using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 global using DevilDaggersInfo.Web.Server.Extensions;
 global using DevilDaggersInfo.Web.Server.Services;
 global using DevilDaggersInfo.Web.Server.Utils;

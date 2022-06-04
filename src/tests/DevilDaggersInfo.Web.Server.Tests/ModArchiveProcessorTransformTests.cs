@@ -1,7 +1,7 @@
 using DevilDaggersInfo.Core.Mod;
 using DevilDaggersInfo.Core.Mod.Enums;
 using DevilDaggersInfo.Web.Server.Caches.ModArchives;
-using DevilDaggersInfo.Web.Server.Exceptions;
+using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using System.IO.Compression;
 
 namespace DevilDaggersInfo.Web.Server.Tests;

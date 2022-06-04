@@ -2,7 +2,8 @@ using DevilDaggersInfo.Core.Asset.Enums;
 using DevilDaggersInfo.Core.Mod;
 using DevilDaggersInfo.Core.Mod.Enums;
 using DevilDaggersInfo.Web.Server.Caches.ModArchives;
-using DevilDaggersInfo.Web.Server.Enums;
+using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
+using DevilDaggersInfo.Web.Server.Domain.Services;
 using System.IO.Compression;
 using System.Text;
 

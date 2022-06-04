@@ -1,7 +1,7 @@
 using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Extensions;
-using DevilDaggersInfo.Web.Server.InternalModels.CustomLeaderboards;
+using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 using DdclApi = DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Ddcl;

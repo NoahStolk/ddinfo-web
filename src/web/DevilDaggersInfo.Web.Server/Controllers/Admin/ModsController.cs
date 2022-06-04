@@ -2,6 +2,7 @@ using DevilDaggersInfo.Api.Admin;
 using DevilDaggersInfo.Api.Admin.Mods;
 using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Admin;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Admin;
+using DevilDaggersInfo.Web.Server.Domain.Extensions;
 using DevilDaggersInfo.Web.Server.InternalModels.AuditLog;
 using DevilDaggersInfo.Web.Server.InternalModels.Mods;
 using Microsoft.AspNetCore.Authorization;

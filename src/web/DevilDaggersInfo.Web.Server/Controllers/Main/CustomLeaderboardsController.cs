@@ -2,8 +2,9 @@ using DevilDaggersInfo.Api.Main;
 using DevilDaggersInfo.Api.Main.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Main;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
-using DevilDaggersInfo.Web.Server.InternalModels.CustomLeaderboards;
-using DevilDaggersInfo.Web.Server.Repositories;
+using DevilDaggersInfo.Web.Server.Domain.Repositories;
+using DevilDaggersInfo.Web.Server.Domain.Utils;
+using Model = DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 
@@ -30,7 +31,7 @@ public class CustomLeaderboardsController : ControllerBase
 		CustomLeaderboardSorting? sortBy = null,
 		bool ascending = false)
 	{
-		(List<CustomLeaderboardOverview> cls, int total) = await _customLeaderboardRepository.GetCustomLeaderboardOverviewsAsync(category.ToDomain(), spawnsetFilter, authorFilter, pageIndex, pageSize, sortBy?.ToDomain(), ascending);
+		(List<Model.CustomLeaderboardOverview> cls, int total) = await _customLeaderboardRepository.GetCustomLeaderboardOverviewsAsync(category.ToDomain(), spawnsetFilter, authorFilter, pageIndex, pageSize, sortBy?.ToDomain(), ascending);
 		return new Page<GetCustomLeaderboardOverview>
 		{
 			Results = cls.ConvertAll(cl => cl.ToGetCustomLeaderboardOverview()),
@@ -43,7 +44,7 @@ public class CustomLeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult<GetGlobalCustomLeaderboard>> GetGlobalCustomLeaderboardForCategory(CustomLeaderboardCategory category)
 	{
-		GlobalCustomLeaderboard globalCustomLeaderboard = await _customLeaderboardRepository.GetGlobalCustomLeaderboardAsync(category.ToDomain());
+		Model.GlobalCustomLeaderboard globalCustomLeaderboard = await _customLeaderboardRepository.GetGlobalCustomLeaderboardAsync(category.ToDomain());
 		return new GetGlobalCustomLeaderboard
 		{
 			Entries = globalCustomLeaderboard.Entries
@@ -65,6 +66,13 @@ public class CustomLeaderboardsController : ControllerBase
 				.ToList(),
 			TotalLeaderboards = globalCustomLeaderboard.TotalLeaderboards,
 			TotalPoints = globalCustomLeaderboard.TotalPoints,
+			DefaultBonus = GlobalCustomLeaderboardUtils.DefaultBonus,
+			BronzeBonus = GlobalCustomLeaderboardUtils.BronzeBonus,
+			SilverBonus = GlobalCustomLeaderboardUtils.SilverBonus,
+			GoldenBonus = GlobalCustomLeaderboardUtils.GoldenBonus,
+			DevilBonus = GlobalCustomLeaderboardUtils.DevilBonus,
+			LeviathanBonus = GlobalCustomLeaderboardUtils.LeviathanBonus,
+			RankingMultiplier = GlobalCustomLeaderboardUtils.RankingMultiplier,
 		};
 	}
 
@@ -72,7 +80,7 @@ public class CustomLeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public async Task<ActionResult<GetTotalCustomLeaderboardData>> GetTotalCustomLeaderboardData()
 	{
-		CustomLeaderboardsTotalData totalData = await _customLeaderboardRepository.GetCustomLeaderboardsTotalDataAsync();
+		Model.CustomLeaderboardsTotalData totalData = await _customLeaderboardRepository.GetCustomLeaderboardsTotalDataAsync();
 		return new GetTotalCustomLeaderboardData
 		{
 			LeaderboardsPerCategory = totalData.LeaderboardsPerCategory.ToDictionary(kvp => kvp.Key.ToMainApi(), kvp => kvp.Value),
@@ -88,7 +96,7 @@ public class CustomLeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult<GetCustomLeaderboard>> GetCustomLeaderboardById(int id)
 	{
-		SortedCustomLeaderboard cl = await _customLeaderboardRepository.GetSortedCustomLeaderboardByIdAsync(id);
+		Model.SortedCustomLeaderboard cl = await _customLeaderboardRepository.GetSortedCustomLeaderboardByIdAsync(id);
 		return cl.ToGetCustomLeaderboard();
 	}
 }

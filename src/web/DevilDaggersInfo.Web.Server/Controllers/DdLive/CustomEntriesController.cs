@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Web.Server.Repositories;
+using DevilDaggersInfo.Web.Server.Domain.Repositories;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.DdLive;
 
