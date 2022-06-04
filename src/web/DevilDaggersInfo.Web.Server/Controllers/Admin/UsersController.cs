@@ -10,11 +10,11 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 public class UsersController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
-	private readonly AuditLogger _auditLogger;
+	private readonly IAuditLogger _auditLogger;
 	private readonly IUserService _userService;
 	private readonly ILogger<UsersController> _logger;
 
-	public UsersController(ApplicationDbContext dbContext, AuditLogger auditLogger, IUserService userService, ILogger<UsersController> logger)
+	public UsersController(ApplicationDbContext dbContext, IAuditLogger auditLogger, IUserService userService, ILogger<UsersController> logger)
 	{
 		_dbContext = dbContext;
 		_auditLogger = auditLogger;
@@ -95,9 +95,9 @@ public class UsersController : ControllerBase
 		await _dbContext.SaveChangesAsync();
 
 		if (assigned)
-			_auditLogger.LogRoleAssign(user, roleName);
+			_auditLogger.LogRoleAssign(user.Name, roleName);
 		else
-			_auditLogger.LogRoleRevoke(user, roleName);
+			_auditLogger.LogRoleRevoke(user.Name, roleName);
 
 		return Ok();
 	}

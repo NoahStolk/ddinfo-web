@@ -1,9 +1,11 @@
 using DevilDaggersInfo.Api.Main.Players;
+using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Main;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardHistory;
+using DevilDaggersInfo.Web.Server.Domain.Models.Players;
 using DevilDaggersInfo.Web.Server.Domain.Services;
 using DevilDaggersInfo.Web.Server.Domain.Utils;
 using Microsoft.AspNetCore.Authorization;
@@ -265,7 +267,8 @@ public class PlayersController : ControllerBase
 	{
 		try
 		{
-			return await _profileService.GetProfileAsync(User, id);
+			PlayerProfile playerProfile = await _profileService.GetProfileAsync(User, id);
+			return playerProfile.ToMainApi();
 		}
 		catch (UnauthorizedAccessException)
 		{
@@ -284,7 +287,7 @@ public class PlayersController : ControllerBase
 	{
 		try
 		{
-			await _profileService.UpdateProfileAsync(User, id, editPlayerProfile);
+			await _profileService.UpdateProfileAsync(User, id, editPlayerProfile.ToDomain());
 			return Ok();
 		}
 		catch (UnauthorizedAccessException)

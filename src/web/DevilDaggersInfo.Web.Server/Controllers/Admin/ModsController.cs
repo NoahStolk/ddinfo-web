@@ -14,13 +14,13 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 public class ModsController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
-	private readonly AuditLogger _auditLogger;
+	private readonly IAuditLogger _auditLogger;
 	private readonly ModArchiveAccessor _modArchiveAccessor;
 	private readonly ModArchiveProcessor _modArchiveProcessor;
 	private readonly ModScreenshotProcessor _modScreenshotProcessor;
 	private readonly IFileSystemLogger _fileSystemLogger;
 
-	public ModsController(ApplicationDbContext dbContext, AuditLogger auditLogger, ModArchiveAccessor modArchiveAccessor, ModArchiveProcessor modArchiveProcessor, ModScreenshotProcessor modScreenshotProcessor, IFileSystemLogger fileSystemLogger)
+	public ModsController(ApplicationDbContext dbContext, IAuditLogger auditLogger, ModArchiveAccessor modArchiveAccessor, ModArchiveProcessor modArchiveProcessor, ModScreenshotProcessor modScreenshotProcessor, IFileSystemLogger fileSystemLogger)
 	{
 		_dbContext = dbContext;
 		_auditLogger = auditLogger;

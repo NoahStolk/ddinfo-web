@@ -3,6 +3,7 @@ using DevilDaggersInfo.Api.Admin.Players;
 using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Admin;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Admin;
 using DevilDaggersInfo.Web.Server.Domain.Extensions;
+using DevilDaggersInfo.Web.Server.Domain.Services;
 using Microsoft.AspNetCore.Authorization;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
@@ -12,10 +13,10 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 public class PlayersController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
-	private readonly AuditLogger _auditLogger;
+	private readonly IAuditLogger _auditLogger;
 	private readonly LeaderboardClient _leaderboardClient;
 
-	public PlayersController(ApplicationDbContext dbContext, AuditLogger auditLogger, LeaderboardClient leaderboardClient)
+	public PlayersController(ApplicationDbContext dbContext, IAuditLogger auditLogger, LeaderboardClient leaderboardClient)
 	{
 		_dbContext = dbContext;
 		_auditLogger = auditLogger;

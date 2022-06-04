@@ -1,10 +1,11 @@
 using DevilDaggersInfo.Web.Core.Claims;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
+using DevilDaggersInfo.Web.Server.Domain.Services;
 using System.Security.Claims;
 
 namespace DevilDaggersInfo.Web.Server.Services;
 
-public class AuditLogger
+public class AuditLogger : IAuditLogger
 {
 	private const int _loggingMax = 60;
 
@@ -141,18 +142,11 @@ public class AuditLogger
 		Log(auditLogger.ToString());
 	}
 
-	public void LogRoleAssign(UserEntity user, string roleName) => LogRoleChange("ASSIGN", user, roleName);
+	public void LogRoleAssign(string userName, string roleName) => LogRoleChange("ASSIGN", userName, roleName);
 
-	public void LogRoleRevoke(UserEntity user, string roleName) => LogRoleChange("REVOKE", user, roleName);
+	public void LogRoleRevoke(string userName, string roleName) => LogRoleChange("REVOKE", userName, roleName);
 
-	private void LogRoleChange(string action, UserEntity user, string roleName) => Log($"`{action} ROLE '{roleName}'` for user `{user.Name}`. Make sure to login again for this to take effect in the browser.");
-
-	public void LogFileSystemInformation(List<FileSystemInformation>? fileSystemInformation = null)
-	{
-		StringBuilder auditLogger = new();
-		AddFileSystemInformation(auditLogger, fileSystemInformation);
-		Log(auditLogger.ToString());
-	}
+	private void LogRoleChange(string action, string userName, string roleName) => Log($"`{action} ROLE '{roleName}'` for user `{userName}`. Make sure to login again for this to take effect in the browser.");
 
 	public void LogPlayerUpdates(string caller, List<(int PlayerId, string OldValue, string NewValue)> logs)
 	{

@@ -1,14 +1,15 @@
 using DevilDaggersInfo.Web.Server.Clients.Clubber;
+using DevilDaggersInfo.Web.Server.Domain.Services;
 
 namespace DevilDaggersInfo.Web.Server.HostedServices;
 
 public class DiscordUserIdFetchBackgroundService : AbstractBackgroundService
 {
 	private readonly IServiceScopeFactory _serviceScopeFactory;
-	private readonly AuditLogger _auditLogger;
+	private readonly IAuditLogger _auditLogger;
 	private readonly ClubberClient _clubberClient;
 
-	public DiscordUserIdFetchBackgroundService(IServiceScopeFactory serviceScopeFactory, AuditLogger auditLogger, ClubberClient clubberClient, BackgroundServiceMonitor backgroundServiceMonitor, ILogger<LeaderboardHistoryBackgroundService> logger)
+	public DiscordUserIdFetchBackgroundService(IServiceScopeFactory serviceScopeFactory, IAuditLogger auditLogger, ClubberClient clubberClient, BackgroundServiceMonitor backgroundServiceMonitor, ILogger<LeaderboardHistoryBackgroundService> logger)
 		: base(backgroundServiceMonitor, logger)
 	{
 		_serviceScopeFactory = serviceScopeFactory;

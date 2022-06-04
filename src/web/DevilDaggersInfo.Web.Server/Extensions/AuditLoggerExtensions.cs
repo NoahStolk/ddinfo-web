@@ -264,26 +264,6 @@ public static class AuditLoggerExtensions
 		return log;
 	}
 
-	public static Dictionary<string, string> GetLog(this EditPlayerProfile player)
-	{
-		Dictionary<string, string> log = new();
-		AddProperty(log, player.CountryCode);
-		AddProperty(log, player.Dpi);
-		AddProperty(log, player.InGameSens);
-		AddProperty(log, player.Fov);
-		AddProperty(log, player.IsRightHanded);
-		AddProperty(log, player.HasFlashHandEnabled);
-		AddProperty(log, player.Gamma);
-		AddProperty(log, player.UsesLegacyAudio);
-		AddProperty(log, player.UsesHrtf);
-		AddProperty(log, player.UsesInvertY);
-		AddProperty(log, player.VerticalSync);
-		AddProperty(log, player.HideSettings);
-		AddProperty(log, player.HideDonations);
-		AddProperty(log, player.HidePastUsernames);
-		return log;
-	}
-
 	public static Dictionary<string, string> GetLog(this PlayerEntity player)
 	{
 		Dictionary<string, string> log = new();

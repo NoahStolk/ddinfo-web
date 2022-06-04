@@ -16,9 +16,9 @@ public class SpawnsetsController : ControllerBase
 	private readonly ApplicationDbContext _dbContext;
 	private readonly IFileSystemService _fileSystemService;
 	private readonly SpawnsetHashCache _spawnsetHashCache;
-	private readonly AuditLogger _auditLogger;
+	private readonly IAuditLogger _auditLogger;
 
-	public SpawnsetsController(ApplicationDbContext dbContext, IFileSystemService fileSystemService, SpawnsetHashCache spawnsetHashCache, AuditLogger auditLogger)
+	public SpawnsetsController(ApplicationDbContext dbContext, IFileSystemService fileSystemService, SpawnsetHashCache spawnsetHashCache, IAuditLogger auditLogger)
 	{
 		_dbContext = dbContext;
 		_fileSystemService = fileSystemService;

@@ -1,24 +1,26 @@
 using DevilDaggersInfo.Web.Core.Claims;
-using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Main;
-using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
+using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
+using DevilDaggersInfo.Web.Server.Domain.Exceptions;
+using DevilDaggersInfo.Web.Server.Domain.Extensions;
+using DevilDaggersInfo.Web.Server.Domain.Models.Players;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
-using MainApi = DevilDaggersInfo.Api.Main.Players;
 
-namespace DevilDaggersInfo.Web.Server.Services;
+namespace DevilDaggersInfo.Web.Server.Domain.Services;
 
 public class ProfileService
 {
 	private readonly ApplicationDbContext _dbContext;
-	private readonly AuditLogger _auditLogger;
+	private readonly IAuditLogger _auditLogger;
 
-	public ProfileService(ApplicationDbContext dbContext, AuditLogger auditLogger)
+	public ProfileService(ApplicationDbContext dbContext, IAuditLogger auditLogger)
 	{
 		_dbContext = dbContext;
 		_auditLogger = auditLogger;
 	}
 
-	public async Task<MainApi.GetPlayerProfile> GetProfileAsync(ClaimsPrincipal claimsPrincipal, int id)
+	public async Task<PlayerProfile> GetProfileAsync(ClaimsPrincipal claimsPrincipal, int id)
 	{
 		string? userName = claimsPrincipal.GetName();
 		UserEntity? user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Name == userName);
@@ -55,11 +57,11 @@ public class ProfileService
 			UsesHrtf = player.UsesHrtf,
 			UsesInvertY = player.UsesInvertY,
 			UsesLegacyAudio = player.UsesLegacyAudio,
-			VerticalSync = player.VerticalSync.ToMainApi(),
+			VerticalSync = player.VerticalSync,
 		};
 	}
 
-	public async Task UpdateProfileAsync(ClaimsPrincipal claimsPrincipal, int id, MainApi.EditPlayerProfile editPlayerProfile)
+	public async Task UpdateProfileAsync(ClaimsPrincipal claimsPrincipal, int id, PlayerProfile editPlayerProfile)
 	{
 		string? userName = claimsPrincipal.GetName();
 		UserEntity? user = _dbContext.Users.FirstOrDefault(u => u.Name == userName);
@@ -79,7 +81,7 @@ public class ProfileService
 		if (player.BanType != BanType.NotBanned)
 			throw new InvalidProfileRequestException("Player is banned.");
 
-		MainApi.EditPlayerProfile oldDtoLog = new()
+		PlayerProfile oldLog = new()
 		{
 			CountryCode = player.CountryCode,
 			Dpi = player.Dpi,
@@ -91,7 +93,7 @@ public class ProfileService
 			UsesLegacyAudio = player.UsesLegacyAudio,
 			UsesHrtf = player.UsesHrtf,
 			UsesInvertY = player.UsesInvertY,
-			VerticalSync = player.VerticalSync.ToMainApi(),
+			VerticalSync = player.VerticalSync,
 			HideSettings = player.HideSettings,
 			HideDonations = player.HideDonations,
 			HidePastUsernames = player.HidePastUsernames,
@@ -110,10 +112,10 @@ public class ProfileService
 		player.UsesHrtf = editPlayerProfile.UsesHrtf;
 		player.UsesInvertY = editPlayerProfile.UsesInvertY;
 		player.UsesLegacyAudio = editPlayerProfile.UsesLegacyAudio;
-		player.VerticalSync = editPlayerProfile.VerticalSync.ToDomain();
+		player.VerticalSync = editPlayerProfile.VerticalSync;
 
 		await _dbContext.SaveChangesAsync();
 
-		_auditLogger.LogEdit(oldDtoLog.GetLog(), editPlayerProfile.GetLog(), claimsPrincipal, player.Id);
+		_auditLogger.LogEdit(oldLog.GetLog(), editPlayerProfile.GetLog(), claimsPrincipal, player.Id);
 	}
 }

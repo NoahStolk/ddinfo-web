@@ -3,6 +3,7 @@ using DevilDaggersInfo.Api.Admin.Donations;
 using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Admin;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Admin;
 using DevilDaggersInfo.Web.Server.Domain.Extensions;
+using DevilDaggersInfo.Web.Server.Domain.Services;
 using Microsoft.AspNetCore.Authorization;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
@@ -13,9 +14,9 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 public class DonationsController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
-	private readonly AuditLogger _auditLogger;
+	private readonly IAuditLogger _auditLogger;
 
-	public DonationsController(ApplicationDbContext dbContext, AuditLogger auditLogger)
+	public DonationsController(ApplicationDbContext dbContext, IAuditLogger auditLogger)
 	{
 		_dbContext = dbContext;
 		_auditLogger = auditLogger;

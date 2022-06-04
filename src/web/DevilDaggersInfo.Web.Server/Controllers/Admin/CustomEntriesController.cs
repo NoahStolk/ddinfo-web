@@ -14,10 +14,10 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 public class CustomEntriesController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
-	private readonly AuditLogger _auditLogger;
+	private readonly IAuditLogger _auditLogger;
 	private readonly IFileSystemService _fileSystemService;
 
-	public CustomEntriesController(ApplicationDbContext dbContext, AuditLogger auditLogger, IFileSystemService fileSystemService)
+	public CustomEntriesController(ApplicationDbContext dbContext, IAuditLogger auditLogger, IFileSystemService fileSystemService)
 	{
 		_dbContext = dbContext;
 		_auditLogger = auditLogger;

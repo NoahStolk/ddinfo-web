@@ -15,9 +15,9 @@ public class CustomLeaderboardsController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
 	private readonly CustomLeaderboardValidator _validator;
-	private readonly AuditLogger _auditLogger;
+	private readonly IAuditLogger _auditLogger;
 
-	public CustomLeaderboardsController(ApplicationDbContext dbContext, CustomLeaderboardValidator validator, AuditLogger auditLogger)
+	public CustomLeaderboardsController(ApplicationDbContext dbContext, CustomLeaderboardValidator validator, IAuditLogger auditLogger)
 	{
 		_dbContext = dbContext;
 		_validator = validator;

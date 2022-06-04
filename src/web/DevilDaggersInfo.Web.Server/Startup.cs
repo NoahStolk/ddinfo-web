@@ -57,7 +57,7 @@ public class Startup
 		services.AddTransient<CustomLeaderboardValidator>();
 
 		// Utilities
-		services.AddTransient<AuditLogger>();
+		services.AddTransient<IAuditLogger, AuditLogger>();
 		services.AddSingleton<LeaderboardResponseParser>();
 
 		// Monitoring
