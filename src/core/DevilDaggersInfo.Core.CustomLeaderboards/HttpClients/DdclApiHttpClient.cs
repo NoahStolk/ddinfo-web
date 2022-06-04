@@ -7,7 +7,7 @@ public partial class DdclApiHttpClient
 {
 	private readonly HttpClient _client;
 
-	protected DdclApiHttpClient(HttpClient client)
+	public DdclApiHttpClient(HttpClient client)
 	{
 		_client = client;
 	}

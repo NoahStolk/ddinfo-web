@@ -6,33 +6,45 @@ namespace DevilDaggersInfo.Tool.GenerateClient.Generators;
 public class HttpClientSourceGenerator
 {
 	private const string _usings = $"%{nameof(_usings)}%";
+	private const string _namespace = $"%{nameof(_namespace)}%";
 	private const string _className = $"%{nameof(_className)}%";
 	private const string _endpointMethods = $"%{nameof(_endpointMethods)}%";
 	private const string _template = $@"{_usings}
 
-namespace DevilDaggersInfo.Web.Client.HttpClients;
+namespace {_namespace};
 
 public partial class {_className}
 {{
 {_endpointMethods}
+
+	private static string BuildUrlWithQuery(string baseUrl, Dictionary<string, object?> queryParameters)
+	{{
+		if (queryParameters.Count == 0)
+			return baseUrl;
+
+		string queryParameterString = string.Join('&', queryParameters.Select(kvp => $""{{kvp.Key}}={{kvp.Value}}""));
+		return $""{{baseUrl.TrimEnd('/')}}?{{queryParameterString}}"";
+	}}
 }}
 ";
 
 	private readonly string _controllersSubDirectory;
-	private readonly string _partialClassName;
+	private readonly string _namespaceForGeneratedClass;
+	private readonly string _classNameForGeneratedClass;
 	private readonly string _outputPath;
 
-	public HttpClientSourceGenerator(string controllersSubDirectory, string partialClassName, string outputPath)
+	public HttpClientSourceGenerator(string controllersSubDirectory, string namespaceForGeneratedClass, string classNameForGeneratedClass, string outputPath)
 	{
 		_controllersSubDirectory = controllersSubDirectory;
-		_partialClassName = partialClassName;
+		_namespaceForGeneratedClass = namespaceForGeneratedClass;
+		_classNameForGeneratedClass = classNameForGeneratedClass;
 		_outputPath = outputPath;
 	}
 
 	public void Execute()
 	{
 		ApiHttpClientContext apiHttpClientContext = new();
-		apiHttpClientContext.AddUsings("DevilDaggersInfo.Web.Client.Utils", "System.Net.Http.Json");
+		apiHttpClientContext.AddUsings("System.Net.Http.Json");
 		apiHttpClientContext.AddEndpoints(_controllersSubDirectory);
 
 		List<string> endpointMethods = new();
@@ -41,7 +53,8 @@ public partial class {_className}
 
 		string code = _template
 			.Replace(_usings, string.Join(Environment.NewLine, apiHttpClientContext.GetOrderedUsingDirectives()))
-			.Replace(_className, _partialClassName)
+			.Replace(_namespace, _namespaceForGeneratedClass)
+			.Replace(_className, _classNameForGeneratedClass)
 			.Replace(_endpointMethods, string.Join(Environment.NewLine, endpointMethods).IndentCode(1));
 		File.WriteAllText(_outputPath, code.WrapCodeInsideWarningSuppressionDirectives().TrimCode());
 	}

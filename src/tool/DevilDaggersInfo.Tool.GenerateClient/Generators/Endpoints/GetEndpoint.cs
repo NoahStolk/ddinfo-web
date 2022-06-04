@@ -20,7 +20,7 @@ internal class GetEndpoint : Endpoint
 	{{
 {_queryParameters}
 	}};
-	return await SendGetRequest<{_returnType}>(UrlBuilderUtils.BuildUrlWithQuery($""{_apiRoute}"", queryParameters));
+	return await SendGetRequest<{_returnType}>(BuildUrlWithQuery($""{_apiRoute}"", queryParameters));
 }}
 ";
 

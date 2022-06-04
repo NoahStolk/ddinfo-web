@@ -1,7 +1,7 @@
-using DevilDaggersCustomLeaderboards.Clients;
 using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
 using DevilDaggersInfo.Api.Ddcl.ProcessMemory;
 using DevilDaggersInfo.Core.CustomLeaderboards.Data;
+using DevilDaggersInfo.Core.CustomLeaderboards.HttpClients;
 using DevilDaggersInfo.Core.CustomLeaderboards.Utils;
 using Microsoft.Extensions.Logging;
 
@@ -16,7 +16,7 @@ public class NetworkService
 #endif
 
 	private readonly ILogger<NetworkService> _logger;
-	private readonly DevilDaggersInfoApiClient _apiClient;
+	private readonly DdclApiHttpClient _apiClient;
 
 	public NetworkService(ILogger<NetworkService> logger)
 	{
