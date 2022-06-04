@@ -1,7 +1,7 @@
 using DevilDaggersInfo.Core.Asset.Enums;
 using DevilDaggersInfo.Core.Mod;
 using DevilDaggersInfo.Core.Mod.Enums;
-using DevilDaggersInfo.Web.Server.Caches.ModArchives;
+using DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;
 using System.IO.Compression;
 
 namespace DevilDaggersInfo.Web.Server.Tests;
@@ -18,7 +18,7 @@ public class ModArchiveProcessorProcessTests : ModArchiveProcessorTests
 		const string assetName = "binding";
 
 		ModBinary binary = CreateWithBinding(assetName);
-		await Processor.ProcessModBinaryUploadAsync(modName, new() { [binaryName] = binary.Compile() }, new());
+		await Processor.ProcessModBinaryUploadAsync(modName, new() { [binaryName] = binary.Compile() });
 
 		string zipFilePath = Accessor.GetModArchivePath(modName);
 		using ZipArchive archive = ZipFile.Open(zipFilePath, ZipArchiveMode.Read);
@@ -41,7 +41,7 @@ public class ModArchiveProcessorProcessTests : ModArchiveProcessorTests
 		const string assetName2 = "texture";
 
 		ModBinary binary = CreateWithBindingAndTexture(assetName1, assetName2);
-		await Processor.ProcessModBinaryUploadAsync(modName, new() { [binaryName] = binary.Compile() }, new());
+		await Processor.ProcessModBinaryUploadAsync(modName, new() { [binaryName] = binary.Compile() });
 
 		string zipFilePath = Accessor.GetModArchivePath(modName);
 		using ZipArchive archive = ZipFile.Open(zipFilePath, ZipArchiveMode.Read);
@@ -73,7 +73,7 @@ public class ModArchiveProcessorProcessTests : ModArchiveProcessorTests
 			[binaryName1] = binary1.Compile(),
 			[binaryName2] = binary2.Compile(),
 		};
-		await Processor.ProcessModBinaryUploadAsync(modName, binaries, new());
+		await Processor.ProcessModBinaryUploadAsync(modName, binaries);
 
 		string zipFilePath = Accessor.GetModArchivePath(modName);
 		using ZipArchive archive = ZipFile.Open(zipFilePath, ZipArchiveMode.Read);

@@ -1,4 +1,6 @@
-namespace DevilDaggersInfo.Web.Server.Caches.ModArchives;
+using DevilDaggersInfo.Core.Asset.Enums;
+
+namespace DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;
 
 public class ModChunkCacheData
 {

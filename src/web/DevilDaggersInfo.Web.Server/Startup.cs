@@ -1,7 +1,6 @@
 using DevilDaggersInfo.Common.Utils;
 using DevilDaggersInfo.Web.Server.Caches.LeaderboardHistory;
 using DevilDaggersInfo.Web.Server.Caches.LeaderboardStatistics;
-using DevilDaggersInfo.Web.Server.Caches.ModArchives;
 using DevilDaggersInfo.Web.Server.Caches.SpawnsetHashes;
 using DevilDaggersInfo.Web.Server.Caches.SpawnsetSummaries;
 using DevilDaggersInfo.Web.Server.Clients.Clubber;
@@ -63,6 +62,7 @@ public class Startup
 
 		// Utilities
 		services.AddTransient<AuditLogger>();
+		services.AddScoped<IFileSystemLogger, FileSystemLogger>();
 		services.AddSingleton<LeaderboardResponseParser>();
 
 		// Monitoring

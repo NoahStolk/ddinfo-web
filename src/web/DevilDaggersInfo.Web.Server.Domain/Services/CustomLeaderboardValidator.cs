@@ -6,10 +6,9 @@ using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Extensions;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
-using DevilDaggersInfo.Web.Server.Domain.Services;
 using Microsoft.EntityFrameworkCore;
 
-namespace DevilDaggersInfo.Web.Server.Services;
+namespace DevilDaggersInfo.Web.Server.Domain.Services;
 
 public class CustomLeaderboardValidator
 {

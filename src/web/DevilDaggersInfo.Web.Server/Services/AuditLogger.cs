@@ -1,5 +1,4 @@
-using DevilDaggersInfo.Web.Server.Enums;
-using DevilDaggersInfo.Web.Server.InternalModels.AuditLog;
+using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using System.Security.Claims;
 
 namespace DevilDaggersInfo.Web.Server.Services;

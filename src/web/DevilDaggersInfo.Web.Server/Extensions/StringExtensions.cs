@@ -7,7 +7,7 @@ public static class StringExtensions
 		if (s.Length <= count)
 			return s;
 
-		string subString = s.Substring(0, count);
+		string subString = s[..count];
 		return appendThreePeriods ? $"{subString}..." : subString;
 	}
 }

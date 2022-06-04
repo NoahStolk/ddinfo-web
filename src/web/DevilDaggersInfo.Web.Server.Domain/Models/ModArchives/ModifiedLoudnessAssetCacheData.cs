@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Server.Caches.ModArchives;
+namespace DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;
 
 public class ModifiedLoudnessAssetCacheData
 {

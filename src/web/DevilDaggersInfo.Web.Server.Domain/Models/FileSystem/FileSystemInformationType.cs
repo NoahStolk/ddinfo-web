@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Server.Enums;
+namespace DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 
 public enum FileSystemInformationType
 {

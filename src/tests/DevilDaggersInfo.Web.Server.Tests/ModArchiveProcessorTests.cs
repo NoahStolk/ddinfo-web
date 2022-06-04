@@ -1,9 +1,10 @@
 using DevilDaggersInfo.Core.Asset.Enums;
 using DevilDaggersInfo.Core.Mod;
 using DevilDaggersInfo.Core.Mod.Enums;
-using DevilDaggersInfo.Web.Server.Caches.ModArchives;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
+using DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;
 using DevilDaggersInfo.Web.Server.Domain.Services;
+using DevilDaggersInfo.Web.Server.Domain.Utils;
 using System.IO.Compression;
 using System.Text;
 
@@ -31,7 +32,7 @@ public abstract class ModArchiveProcessorTests
 
 		Cache = new(fileSystemService.Object);
 		Accessor = new(fileSystemService.Object, Cache);
-		Processor = new(fileSystemService.Object, Cache, Accessor);
+		Processor = new(fileSystemService.Object, Cache, Accessor, new Mock<IFileSystemLogger>().Object);
 	}
 
 	protected ModArchiveCache Cache { get; }

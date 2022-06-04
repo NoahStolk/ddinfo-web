@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Server.Utils;
+namespace DevilDaggersInfo.Web.Server.Domain.Utils;
 
 public static class PngFileUtils
 {

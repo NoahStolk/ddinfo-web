@@ -1,9 +1,7 @@
-using DevilDaggersInfo.Web.Server.Caches.ModArchives;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
-using DevilDaggersInfo.Web.Server.Domain.Services;
-using DevilDaggersInfo.Web.Server.InternalModels.Mods;
+using DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;
 
-namespace DevilDaggersInfo.Web.Server.Services;
+namespace DevilDaggersInfo.Web.Server.Domain.Services;
 
 public class ModArchiveAccessor
 {
@@ -18,14 +16,14 @@ public class ModArchiveAccessor
 
 	public string GetModArchivePath(string modName) => Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Mods), $"{modName}.zip");
 
-	public bool ModArchiveExists(string modName) => IoFile.Exists(GetModArchivePath(modName));
+	public bool ModArchiveExists(string modName) => File.Exists(GetModArchivePath(modName));
 
 	public ModFileSystemData GetModFileSystemData(string modName)
 	{
 		string modArchivePath = GetModArchivePath(modName);
 		string modScreenshotsDirectory = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ModScreenshots), modName);
 
-		ModArchiveCacheData? modArchiveCacheData = IoFile.Exists(modArchivePath) ? _modArchiveCache.GetArchiveDataByFilePath(modArchivePath) : null;
+		ModArchiveCacheData? modArchiveCacheData = File.Exists(modArchivePath) ? _modArchiveCache.GetArchiveDataByFilePath(modArchivePath) : null;
 		List<string>? screenshotFileNames = Directory.Exists(modScreenshotsDirectory) ? Directory.GetFiles(modScreenshotsDirectory).Select(p => Path.GetFileName(p)).ToList() : null;
 
 		return new(modArchiveCacheData, screenshotFileNames);

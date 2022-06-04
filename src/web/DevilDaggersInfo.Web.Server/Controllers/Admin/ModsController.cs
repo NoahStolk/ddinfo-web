@@ -3,8 +3,8 @@ using DevilDaggersInfo.Api.Admin.Mods;
 using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Admin;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Admin;
 using DevilDaggersInfo.Web.Server.Domain.Extensions;
-using DevilDaggersInfo.Web.Server.InternalModels.AuditLog;
-using DevilDaggersInfo.Web.Server.InternalModels.Mods;
+using DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;
+using DevilDaggersInfo.Web.Server.Domain.Services;
 using Microsoft.AspNetCore.Authorization;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
@@ -18,14 +18,16 @@ public class ModsController : ControllerBase
 	private readonly ModArchiveAccessor _modArchiveAccessor;
 	private readonly ModArchiveProcessor _modArchiveProcessor;
 	private readonly ModScreenshotProcessor _modScreenshotProcessor;
+	private readonly IFileSystemLogger _fileSystemLogger;
 
-	public ModsController(ApplicationDbContext dbContext, AuditLogger auditLogger, ModArchiveAccessor modArchiveAccessor, ModArchiveProcessor modArchiveProcessor, ModScreenshotProcessor modScreenshotProcessor)
+	public ModsController(ApplicationDbContext dbContext, AuditLogger auditLogger, ModArchiveAccessor modArchiveAccessor, ModArchiveProcessor modArchiveProcessor, ModScreenshotProcessor modScreenshotProcessor, IFileSystemLogger fileSystemLogger)
 	{
 		_dbContext = dbContext;
 		_auditLogger = auditLogger;
 		_modArchiveAccessor = modArchiveAccessor;
 		_modArchiveProcessor = modArchiveProcessor;
 		_modScreenshotProcessor = modScreenshotProcessor;
+		_fileSystemLogger = fileSystemLogger;
 	}
 
 	[HttpGet]
@@ -122,12 +124,11 @@ public class ModsController : ControllerBase
 				return BadRequest($"Player with ID '{playerId}' does not exist.");
 		}
 
-		List<FileSystemInformation> fsi = new();
 		if (addMod.Binaries.Count > 0)
-			await _modArchiveProcessor.ProcessModBinaryUploadAsync(addMod.Name, GetBinaryNames(addMod.Binaries), fsi);
+			await _modArchiveProcessor.ProcessModBinaryUploadAsync(addMod.Name, GetBinaryNames(addMod.Binaries));
 
 		if (addMod.Screenshots.Count > 0)
-			_modScreenshotProcessor.ProcessModScreenshotUpload(addMod.Name, addMod.Screenshots, fsi);
+			_modScreenshotProcessor.ProcessModScreenshotUpload(addMod.Name, addMod.Screenshots);
 
 		ModEntity mod = new()
 		{
@@ -145,7 +146,7 @@ public class ModsController : ControllerBase
 		UpdatePlayerMods(addMod.PlayerIds ?? new(), mod.Id);
 		await _dbContext.SaveChangesAsync();
 
-		_auditLogger.LogAdd(addMod.GetLog(), User, mod.Id, fsi);
+		_auditLogger.LogAdd(addMod.GetLog(), User, mod.Id, _fileSystemLogger.Flush());
 
 		return Ok(mod.Id);
 	}
@@ -199,18 +200,16 @@ public class ModsController : ControllerBase
 		if (mod.Name != editMod.Name && _dbContext.Mods.Any(m => m.Name == editMod.Name))
 			return BadRequest($"Mod with name '{editMod.Name}' already exists.");
 
-		List<FileSystemInformation> fsi = new();
-
-		bool isUpdated = await _modArchiveProcessor.TransformBinariesInModArchiveAsync(mod.Name, editMod.Name, editMod.BinariesToDelete.ConvertAll(s => BinaryName.Parse(s, mod.Name)), GetBinaryNames(editMod.Binaries), fsi);
+		bool isUpdated = await _modArchiveProcessor.TransformBinariesInModArchiveAsync(mod.Name, editMod.Name, editMod.BinariesToDelete.ConvertAll(s => BinaryName.Parse(s, mod.Name)), GetBinaryNames(editMod.Binaries));
 		if (isUpdated)
 			mod.LastUpdated = DateTime.UtcNow;
 
-		_modScreenshotProcessor.MoveScreenshotsDirectory(mod.Name, editMod.Name, fsi);
+		_modScreenshotProcessor.MoveScreenshotsDirectory(mod.Name, editMod.Name);
 
 		foreach (string screenshotToDelete in editMod.ScreenshotsToDelete)
-			_modScreenshotProcessor.DeleteScreenshot(editMod.Name, screenshotToDelete, fsi);
+			_modScreenshotProcessor.DeleteScreenshot(editMod.Name, screenshotToDelete);
 
-		_modScreenshotProcessor.ProcessModScreenshotUpload(editMod.Name, editMod.Screenshots, fsi);
+		_modScreenshotProcessor.ProcessModScreenshotUpload(editMod.Name, editMod.Screenshots);
 
 		EditMod logDto = new()
 		{
@@ -234,7 +233,7 @@ public class ModsController : ControllerBase
 		UpdatePlayerMods(editMod.PlayerIds ?? new(), mod.Id);
 		await _dbContext.SaveChangesAsync();
 
-		_auditLogger.LogEdit(logDto.GetLog(), editMod.GetLog(), User, mod.Id, fsi);
+		_auditLogger.LogEdit(logDto.GetLog(), editMod.GetLog(), User, mod.Id, _fileSystemLogger.Flush());
 
 		return Ok();
 	}
@@ -249,14 +248,13 @@ public class ModsController : ControllerBase
 		if (mod == null)
 			return NotFound();
 
-		List<FileSystemInformation> fileSystemInformation = new();
-		_modArchiveProcessor.DeleteModFilesAndClearCache(mod.Name, fileSystemInformation);
-		_modScreenshotProcessor.DeleteScreenshotsDirectory(mod.Name, fileSystemInformation);
+		_modArchiveProcessor.DeleteModFilesAndClearCache(mod.Name);
+		_modScreenshotProcessor.DeleteScreenshotsDirectory(mod.Name);
 
 		_dbContext.Mods.Remove(mod);
 		await _dbContext.SaveChangesAsync();
 
-		_auditLogger.LogDelete(mod.GetLog(), User, mod.Id, fileSystemInformation);
+		_auditLogger.LogDelete(mod.GetLog(), User, mod.Id, _fileSystemLogger.Flush());
 
 		return Ok();
 	}

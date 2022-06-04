@@ -1,7 +1,12 @@
+using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
-using DevilDaggersInfo.Web.Server.Domain.Services;
+using DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;
+using DevilDaggersInfo.Web.Server.Domain.Utils;
+using Newtonsoft.Json;
+using System.Collections.Concurrent;
+using System.IO.Compression;
 
-namespace DevilDaggersInfo.Web.Server.Caches.ModArchives;
+namespace DevilDaggersInfo.Web.Server.Domain.Services;
 
 public class ModArchiveCache : IDynamicCache
 {

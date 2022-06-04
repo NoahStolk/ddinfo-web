@@ -1,6 +1,11 @@
+using DevilDaggersInfo.Core.Asset;
+using DevilDaggersInfo.Core.Mod;
+using DevilDaggersInfo.Core.Mod.Enums;
+using DevilDaggersInfo.Core.Mod.Exceptions;
 using DevilDaggersInfo.Core.Mod.Utils;
+using System.Text;
 
-namespace DevilDaggersInfo.Web.Server.Caches.ModArchives;
+namespace DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;
 
 public class ModBinaryCacheData
 {

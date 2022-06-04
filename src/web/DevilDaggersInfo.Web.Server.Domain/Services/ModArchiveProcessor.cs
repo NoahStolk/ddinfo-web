@@ -1,26 +1,30 @@
-using DevilDaggersInfo.Web.Server.Caches.ModArchives;
+using DevilDaggersInfo.Core.Mod;
+using DevilDaggersInfo.Core.Mod.Exceptions;
+using DevilDaggersInfo.Web.Server.Domain.Constants;
+using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
-using DevilDaggersInfo.Web.Server.Domain.Services;
-using DevilDaggersInfo.Web.Server.Enums;
-using DevilDaggersInfo.Web.Server.InternalModels.AuditLog;
-using DevilDaggersInfo.Web.Shared.Utils;
+using DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;
+using DevilDaggersInfo.Web.Server.Domain.Utils;
+using System.IO.Compression;
 
-namespace DevilDaggersInfo.Web.Server.Services;
+namespace DevilDaggersInfo.Web.Server.Domain.Services;
 
 public class ModArchiveProcessor
 {
 	private readonly IFileSystemService _fileSystemService;
 	private readonly ModArchiveCache _modArchiveCache;
 	private readonly ModArchiveAccessor _modArchiveAccessor;
+	private readonly IFileSystemLogger _fileSystemLogger;
 
-	public ModArchiveProcessor(IFileSystemService fileSystemService, ModArchiveCache modArchiveCache, ModArchiveAccessor modArchiveAccessor)
+	public ModArchiveProcessor(IFileSystemService fileSystemService, ModArchiveCache modArchiveCache, ModArchiveAccessor modArchiveAccessor, IFileSystemLogger fileSystemLogger)
 	{
 		_fileSystemService = fileSystemService;
 		_modArchiveCache = modArchiveCache;
 		_modArchiveAccessor = modArchiveAccessor;
+		_fileSystemLogger = fileSystemLogger;
 	}
 
-	public async Task ProcessModBinaryUploadAsync(string modName, Dictionary<BinaryName, byte[]> binaries, List<FileSystemInformation> fileSystemInformation)
+	public async Task ProcessModBinaryUploadAsync(string modName, Dictionary<BinaryName, byte[]> binaries)
 	{
 		// Validate if there is enough space.
 		DirectoryInfo modDirectory = new(_fileSystemService.GetPath(DataSubDirectory.Mods));
@@ -43,14 +47,14 @@ public class ModArchiveProcessor
 		}
 		catch
 		{
-			if (IoFile.Exists(zipFilePath))
-				IoFile.Delete(zipFilePath);
+			if (File.Exists(zipFilePath))
+				File.Delete(zipFilePath);
 
 			throw;
 		}
 
 		// Read and extract the new zip file to validate it and to fill the cache if everything is OK.
-		byte[] zipBytes = IoFile.ReadAllBytes(zipFilePath);
+		byte[] zipBytes = File.ReadAllBytes(zipFilePath);
 
 		try
 		{
@@ -70,14 +74,14 @@ public class ModArchiveProcessor
 		}
 		catch (Exception ex)
 		{
-			if (IoFile.Exists(zipFilePath))
-				IoFile.Delete(zipFilePath);
+			if (File.Exists(zipFilePath))
+				File.Delete(zipFilePath);
 
 			// Rethrow any exception as an invalid mod archive exception, so the middleware can handle it.
 			throw new InvalidModArchiveException("Processing the mod archive failed.", ex);
 		}
 
-		fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(zipFilePath)} (`{FileSizeUtils.Format(zipBytes.Length)}`) with {(binaries.Count == 1 ? "binary" : "binaries")} was added. Binaries:\n{string.Join("\n", binaries.Keys.Select(bn => $"- `{bn.ToFullName(modName)}`"))}", FileSystemInformationType.Add));
+		_fileSystemLogger.ModArchiveAdded(zipFilePath, zipBytes.Length, modName, binaries);
 	}
 
 	/// <summary>
@@ -87,9 +91,8 @@ public class ModArchiveProcessor
 	/// <param name="newModName">The new name of the mod. The original mod will be deleted and all the binaries will be recreated according to the new name.</param>
 	/// <param name="binariesToDelete">The names of the binaries to delete.</param>
 	/// <param name="newBinaries">The names and contents of the new binaries to add to the archive.</param>
-	/// <param name="fileSystemInformation">Instances used to log the changes made to the file system.</param>
 	/// <returns>Whether the binary contents were changed.</returns>
-	public async Task<bool> TransformBinariesInModArchiveAsync(string originalModName, string newModName, List<BinaryName> binariesToDelete, Dictionary<BinaryName, byte[]> newBinaries, List<FileSystemInformation> fileSystemInformation)
+	public async Task<bool> TransformBinariesInModArchiveAsync(string originalModName, string newModName, List<BinaryName> binariesToDelete, Dictionary<BinaryName, byte[]> newBinaries)
 	{
 		bool hasAnyBinaryContentChanges = binariesToDelete.Count > 0 || newBinaries.Count > 0;
 		if (!hasAnyBinaryContentChanges && originalModName == newModName)
@@ -127,9 +130,9 @@ public class ModArchiveProcessor
 		Dictionary<BinaryName, byte[]> combinedBinaries = keptBinaries.Concat(newBinaries).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
 		// Delete the original archive and process the new combined binaries.
-		DeleteModFilesAndClearCache(originalModName, fileSystemInformation);
+		DeleteModFilesAndClearCache(originalModName);
 
-		await ProcessModBinaryUploadAsync(newModName, combinedBinaries, fileSystemInformation);
+		await ProcessModBinaryUploadAsync(newModName, combinedBinaries);
 
 		return hasAnyBinaryContentChanges;
 	}
@@ -138,33 +141,33 @@ public class ModArchiveProcessor
 	/// Deletes the mod archive and the mod archive cache for this mod, and also clears the memory cache.
 	/// <b>This method does not delete mod screenshot files</b>.
 	/// </summary>
-	public void DeleteModFilesAndClearCache(string modName, List<FileSystemInformation> fileSystemInformation)
+	public void DeleteModFilesAndClearCache(string modName)
 	{
 		// Delete archive zip file.
 		string archivePath = _modArchiveAccessor.GetModArchivePath(modName);
-		if (IoFile.Exists(archivePath))
+		if (File.Exists(archivePath))
 		{
-			IoFile.Delete(archivePath);
-			fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(archivePath)} was deleted because removal was requested.", FileSystemInformationType.Delete));
+			File.Delete(archivePath);
+			_fileSystemLogger.FileDeleted(archivePath);
 
 			// Clear entire memory cache (can't clear individual entries).
 			_modArchiveCache.Clear();
 		}
 		else
 		{
-			fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(archivePath)} was not deleted because it does not exist.", FileSystemInformationType.NotFound));
+			_fileSystemLogger.FileNotDeletedBecauseNotFound(archivePath);
 		}
 
 		// Clear file cache for this mod.
 		string cachePath = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ModArchiveCache), $"{modName}.json");
-		if (IoFile.Exists(cachePath))
+		if (File.Exists(cachePath))
 		{
-			IoFile.Delete(cachePath);
-			fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(cachePath)} was deleted because removal was requested.", FileSystemInformationType.Delete));
+			File.Delete(cachePath);
+			_fileSystemLogger.FileDeleted(cachePath);
 		}
 		else
 		{
-			fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(cachePath)} was not deleted because it does not exist.", FileSystemInformationType.NotFound));
+			_fileSystemLogger.FileNotDeletedBecauseNotFound(cachePath);
 		}
 	}
 }

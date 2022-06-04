@@ -1,6 +1,8 @@
+using DevilDaggersInfo.Core.Asset.Enums;
+using DevilDaggersInfo.Core.Mod.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 
-namespace DevilDaggersInfo.Web.Server.Caches.ModArchives;
+namespace DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;
 
 public class ModArchiveCacheData
 {

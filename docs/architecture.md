@@ -94,6 +94,9 @@ flowchart TD;
 		web_server --> core_encryption
 		web_server --> web_client
 		web_server --> web_server_domain
+		
+		web_server_domain --> core_mod
+		web_server_domain --> core_spawnset
 
 		web_shared ----> core_mod
 		web_shared ----> core_replay
@@ -169,7 +172,6 @@ flowchart TD;
 	web_client[Web.Client]
 	web_server[Web.Server]
 	web_server_domain[Web.Server.Domain]
-	web_shared[Web.Shared]
 
 	api_dd[Api.Dd]
 	api_clubber[Api.Clubber]
@@ -188,7 +190,6 @@ flowchart TD;
 	class razor_core_asseteditor,razor_core_survivaleditor,razor_core_replayeditor,razor_core_canvaschart,razor_core_unmarshalled razor_core;
 	class web_client web_client;
 	class web_server,web_server_domain web_server;
-	class web_shared web_shared;
 	class api_dd,api_clubber,api_ddlive,api_ddrust,api_ddae,api_ddcl,api_ddse,api_ddre,api_main,api_admin api;
 
 	classDef ui fill:#a00,stroke:#333,stroke-width:4px;
@@ -197,7 +198,6 @@ flowchart TD;
 	classDef razor_core fill:#066,stroke:#333,stroke-width:4px;
 	classDef web_client fill:#a66,stroke:#333,stroke-width:4px;
 	classDef web_server fill:#6a6,stroke:#333,stroke-width:4px;
-	classDef web_shared fill:#00a,stroke:#333,stroke-width:4px;
 	classDef api fill:#660,stroke:#333,stroke-width:4px;
 
 	subgraph Core
@@ -252,15 +252,17 @@ flowchart TD;
 
 	subgraph Web
 		web_client ----> razor_core_canvaschart
-		web_client --> web_shared
 
 		web_server --> core_encryption
 		web_server --> web_client
 		web_server --> web_server_domain
+		web_server_domain --> core_mod
+		web_server_domain --> core_replay
+		web_server_domain --> core_spawnset
 
-		web_shared ----> core_mod
-		web_shared ----> core_replay
-		web_shared ----> core_spawnset
+		web_client ----> core_mod
+		web_client ----> core_replay
+		web_client ----> core_spawnset
 	end
 
 	subgraph Tool

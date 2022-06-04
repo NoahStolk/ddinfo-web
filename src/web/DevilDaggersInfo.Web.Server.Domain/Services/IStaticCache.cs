@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Server.Caches;
+namespace DevilDaggersInfo.Web.Server.Domain.Services;
 
 public interface IStaticCache : ICache
 {
