@@ -1,3 +1,5 @@
+using System.IO.Compression;
+
 namespace DevilDaggersInfo.Web.Server.Domain.Utils;
 
 public static class StreamUtils

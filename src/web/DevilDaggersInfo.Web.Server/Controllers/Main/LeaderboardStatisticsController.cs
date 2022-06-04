@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Api.Main.LeaderboardStatistics;
-using DevilDaggersInfo.Web.Server.Caches.LeaderboardStatistics;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
+using DevilDaggersInfo.Web.Server.Domain.Services;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 

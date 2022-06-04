@@ -1,4 +1,6 @@
-namespace DevilDaggersInfo.Web.Server.Caches.LeaderboardStatistics;
+using DevilDaggersInfo.Common.Extensions;
+
+namespace DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardStatistics;
 
 public class ArrayStatistics
 {

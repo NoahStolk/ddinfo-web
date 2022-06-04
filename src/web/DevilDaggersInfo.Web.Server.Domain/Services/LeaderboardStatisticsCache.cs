@@ -1,7 +1,11 @@
+using DevilDaggersInfo.Common.Extensions;
+using DevilDaggersInfo.Core.Wiki;
+using DevilDaggersInfo.Core.Wiki.Objects;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
-using DevilDaggersInfo.Web.Server.Domain.Services;
+using DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardStatistics;
+using Microsoft.Extensions.Logging;
 
-namespace DevilDaggersInfo.Web.Server.Caches.LeaderboardStatistics;
+namespace DevilDaggersInfo.Web.Server.Domain.Services;
 
 public class LeaderboardStatisticsCache : IStaticCache
 {
@@ -83,7 +87,7 @@ public class LeaderboardStatisticsCache : IStaticCache
 			}
 		}
 
-		_entries.Sort((CompressedEntry x, CompressedEntry y) => -x.Time.CompareTo(y.Time));
+		_entries.Sort((x, y) => -x.Time.CompareTo(y.Time));
 
 		foreach (Death death in Deaths.GetDeaths(GameConstants.CurrentVersion))
 			DeathsStatistics.Add(death, 0);
