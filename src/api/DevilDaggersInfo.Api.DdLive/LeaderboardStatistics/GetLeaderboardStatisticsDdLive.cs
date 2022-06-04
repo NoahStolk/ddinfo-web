@@ -9,7 +9,4 @@ public record GetLeaderboardStatisticsDdLive
 	public int TotalEntries { get; init; }
 
 	public GetArrayStatisticsDdLive Statistics { get; init; } = null!;
-
-	[Obsolete("Use Statistics instead.")]
-	public GetArrayStatisticsDdLive Top1000Statistics => Statistics;
 }

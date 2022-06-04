@@ -18,26 +18,6 @@ public class CustomLeaderboardsController : ControllerBase
 		_customLeaderboardRepository = customLeaderboardRepository;
 	}
 
-	[Obsolete("Use the new route instead.")]
-	[HttpGet("/api/custom-leaderboards/ddlive")]
-	[ProducesResponseType(StatusCodes.Status200OK)]
-	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	public async Task<ActionResult<List<GetCustomLeaderboardOverviewDdLive>>> GetCustomLeaderboardsOverviewDdLiveObsolete()
-	{
-		List<CustomLeaderboardOverview> cls = await _customLeaderboardRepository.GetCustomLeaderboardOverviewsAsync();
-		return cls.ConvertAll(cl => cl.ToGetCustomLeaderboardOverviewDdLive());
-	}
-
-	[Obsolete("Use the new route instead.")]
-	[HttpGet("/api/custom-leaderboards/{id}/ddlive")]
-	[ProducesResponseType(StatusCodes.Status200OK)]
-	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public async Task<ActionResult<GetCustomLeaderboardDdLive>> GetCustomLeaderboardByIdDdLiveObsolete(int id)
-	{
-		SortedCustomLeaderboard cl = await _customLeaderboardRepository.GetSortedCustomLeaderboardByIdAsync(id);
-		return cl.ToGetCustomLeaderboardDdLive(_customEntryRepository.GetExistingCustomEntryReplayIds(cl.CustomEntries.ConvertAll(ce => ce.Id)));
-	}
-
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
