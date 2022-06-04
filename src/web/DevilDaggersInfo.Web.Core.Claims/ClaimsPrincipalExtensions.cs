@@ -1,6 +1,6 @@
 using System.Security.Claims;
 
-namespace DevilDaggersInfo.Web.Shared.Extensions;
+namespace DevilDaggersInfo.Web.Core.Claims;
 
 public static class ClaimsPrincipalExtensions
 {

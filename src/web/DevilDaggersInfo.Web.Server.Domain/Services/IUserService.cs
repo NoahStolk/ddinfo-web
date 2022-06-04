@@ -1,4 +1,6 @@
-namespace DevilDaggersInfo.Web.Server.Services;
+using DevilDaggersInfo.Web.Server.Domain.Entities;
+
+namespace DevilDaggersInfo.Web.Server.Domain.Services;
 
 public interface IUserService
 {

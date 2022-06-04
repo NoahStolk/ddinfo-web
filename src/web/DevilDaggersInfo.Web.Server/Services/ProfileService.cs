@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Web.Core.Claims;
 using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Main;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;

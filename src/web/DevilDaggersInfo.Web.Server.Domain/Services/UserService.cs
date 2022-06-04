@@ -1,9 +1,15 @@
-using DevilDaggersInfo.Web.Shared.Utils;
+using DevilDaggersInfo.Web.Core.Claims;
+using DevilDaggersInfo.Web.Server.Domain.Entities;
+using DevilDaggersInfo.Web.Server.Domain.Utils;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text;
 
-namespace DevilDaggersInfo.Web.Server.Services;
+namespace DevilDaggersInfo.Web.Server.Domain.Services;
 
 public class UserService : IUserService
 {

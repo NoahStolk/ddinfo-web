@@ -1,6 +1,6 @@
 using System.Security.Claims;
 
-namespace DevilDaggersInfo.Web.Shared.Utils;
+namespace DevilDaggersInfo.Web.Core.Claims;
 
 public static class ClaimsIdentityUtils
 {

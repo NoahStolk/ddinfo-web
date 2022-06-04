@@ -1,6 +1,9 @@
+using DevilDaggersInfo.Web.Server.Domain.Constants;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.RegularExpressions;
 
-namespace DevilDaggersInfo.Web.Server.Utils;
+namespace DevilDaggersInfo.Web.Server.Domain.Utils;
 
 public static class PasswordValidator
 {

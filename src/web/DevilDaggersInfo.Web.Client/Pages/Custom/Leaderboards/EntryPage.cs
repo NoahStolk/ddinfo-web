@@ -98,10 +98,10 @@ public partial class EntryPage
 
 			Upgrade? upgrade = (i switch
 			{
-				HandLevel.Level1 => Core.Spawnset.Enums.HandLevel.Level1,
-				HandLevel.Level2 => Core.Spawnset.Enums.HandLevel.Level2,
-				HandLevel.Level3 => Core.Spawnset.Enums.HandLevel.Level3,
-				HandLevel.Level4 => Core.Spawnset.Enums.HandLevel.Level4,
+				HandLevel.Level1 => DevilDaggersInfo.Core.Spawnset.Enums.HandLevel.Level1,
+				HandLevel.Level2 => DevilDaggersInfo.Core.Spawnset.Enums.HandLevel.Level2,
+				HandLevel.Level3 => DevilDaggersInfo.Core.Spawnset.Enums.HandLevel.Level3,
+				HandLevel.Level4 => DevilDaggersInfo.Core.Spawnset.Enums.HandLevel.Level4,
 				_ => throw new InvalidEnumConversionException(i),
 			}).GetUpgradeByHandLevel();
 			string color = !upgrade.HasValue ? "#fff2" : $"{upgrade.Value.Color.HexCode}08";

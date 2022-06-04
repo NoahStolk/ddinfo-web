@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Web.Core.Claims;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using System.Security.Claims;
 
