@@ -10,14 +10,7 @@ public static class Constants
 
 	public static DateTime TrackingToolDownloadCounts { get; } = new(2020, 9, 20);
 
-	// NOTE: Duplicate code (Api.Admin).
-	public const int BinaryMaxFileSize = 256 * 1024 * 1024;
-	public const int BinaryMaxFiles = 80;
-
-	// NOTE: Duplicate code (Api.Admin).
-	public const int ScreenshotMaxFileSize = 1024 * 1024;
-	public const int ScreenshotMaxFiles = 16;
-
+	// TODO: Move to main and admin API projects?
 	public const int PageSizeDefault = 25;
 	public const int PageSizeMin = 15;
 	public const int PageSizeMax = 35;

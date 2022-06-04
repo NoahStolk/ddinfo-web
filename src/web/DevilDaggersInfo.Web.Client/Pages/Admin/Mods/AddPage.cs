@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Api.Admin;
 using DevilDaggersInfo.Api.Admin.Mods;
 using DevilDaggersInfo.Api.Admin.Players;
 using DevilDaggersInfo.Web.Client.Components.Admin;
@@ -40,12 +41,12 @@ public partial class AddPage
 
 	private async Task LoadBinaries(InputFileChangeEventArgs e)
 	{
-		Dictionary<string, byte[]> files = await GetFiles(e, Constants.BinaryMaxFiles, Constants.BinaryMaxFileSize, _binaryFileSizeErrors);
+		Dictionary<string, byte[]> files = await GetFiles(e, ModConstants.BinaryMaxFiles, ModConstants.BinaryMaxFileSize, _binaryFileSizeErrors);
 		_addMod.Binaries = files.Select(kvp => new BinaryData { Name = kvp.Key, Data = kvp.Value }).ToList();
 	}
 
 	private async Task LoadScreenshots(InputFileChangeEventArgs e)
 	{
-		_addMod.Screenshots = await GetFiles(e, Constants.ScreenshotMaxFiles, Constants.ScreenshotMaxFileSize, _screenshotFileSizeErrors);
+		_addMod.Screenshots = await GetFiles(e, ModConstants.ScreenshotMaxFiles, ModConstants.ScreenshotMaxFileSize, _screenshotFileSizeErrors);
 	}
 }
