@@ -1,13 +1,13 @@
-using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
+using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
-using DevilDaggersInfo.Web.Server.Domain.Services;
-using DevilDaggersInfo.Web.Server.InternalModels.Changelog;
-using MainApi = DevilDaggersInfo.Api.Main.Tools;
+using DevilDaggersInfo.Web.Server.Domain.Models.Tools;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
-namespace DevilDaggersInfo.Web.Server.Services;
+namespace DevilDaggersInfo.Web.Server.Domain.Services;
 
-// TODO: Implement domain models and use repository.
 public class ToolService : IToolService
 {
 	private readonly ApplicationDbContext _dbContext;
@@ -21,7 +21,7 @@ public class ToolService : IToolService
 		_logger = logger;
 	}
 
-	public async Task<MainApi.GetTool?> GetToolAsync(string name)
+	public async Task<Tool?> GetToolAsync(string name)
 	{
 		ToolEntity? tool = await _dbContext.Tools.AsNoTracking().FirstOrDefaultAsync(t => t.Name == name);
 		if (tool == null)
@@ -37,13 +37,32 @@ public class ToolService : IToolService
 
 		Dictionary<string, List<ChangelogEntry>> deserialized = JsonConvert.DeserializeObject<Dictionary<string, List<ChangelogEntry>>>(File.ReadAllText(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Tools), "Changelogs.json"))) ?? throw new("Could not deserialize Changelogs.json.");
 		deserialized.TryGetValue(name, out List<ChangelogEntry>? changelog);
-		return tool.ToMainApi(downloads, changelog);
+		return new()
+		{
+			Changelog = changelog?.ConvertAll(ce => new ToolVersion
+			{
+				Changes = ce.Changes.Select(c => ToModel(c)).ToList(),
+				Date = ce.Date,
+				DownloadCount = downloads.ContainsKey(ce.VersionNumber) ? downloads[ce.VersionNumber] : 0,
+				VersionNumber = ce.VersionNumber,
+			}),
+			Name = tool.Name,
+			DisplayName = tool.DisplayName,
+			VersionNumberRequired = tool.RequiredVersionNumber,
+			VersionNumber = tool.CurrentVersionNumber,
+		};
+
+		static ToolVersionChange ToModel(Change change) => new()
+		{
+			Description = change.Description,
+			SubChanges = change.SubChanges?.Select(c => ToModel(c)).ToList(),
+		};
 	}
 
 	public byte[]? GetToolDistributionFile(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version)
 	{
 		string path = GetToolDistributionPath(name, publishMethod, buildType, version);
-		if (!IoFile.Exists(path))
+		if (!File.Exists(path))
 		{
 			_logger.LogError("Tool distribution file at '{path}' does not exist!", path);
 #pragma warning disable S1168 // Empty arrays and collections should be returned instead of null
@@ -51,10 +70,10 @@ public class ToolService : IToolService
 #pragma warning restore S1168 // Empty arrays and collections should be returned instead of null
 		}
 
-		return IoFile.ReadAllBytes(path);
+		return File.ReadAllBytes(path);
 	}
 
-	public async Task<MainApi.GetToolDistribution?> GetLatestToolDistributionAsync(string name, ToolPublishMethod publishMethod, ToolBuildType buildType)
+	public async Task<ToolDistribution?> GetLatestToolDistributionAsync(string name, ToolPublishMethod publishMethod, ToolBuildType buildType)
 	{
 		List<string> versions = await _dbContext.ToolDistributions.Where(td => td.ToolName == name && td.PublishMethod == publishMethod && td.BuildType == buildType).Select(td => td.VersionNumber).ToListAsync();
 		string? highestVersion = versions.OrderByDescending(Version.Parse).FirstOrDefault();
@@ -64,10 +83,19 @@ public class ToolService : IToolService
 		return await GetToolDistributionByVersionAsync(name, publishMethod, buildType, highestVersion);
 	}
 
-	public async Task<MainApi.GetToolDistribution?> GetToolDistributionByVersionAsync(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version)
+	public async Task<ToolDistribution?> GetToolDistributionByVersionAsync(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version)
 	{
 		ToolDistributionEntity? distribution = await _dbContext.ToolDistributions.AsNoTracking().FirstOrDefaultAsync(td => td.ToolName == name && td.PublishMethod == publishMethod && td.BuildType == buildType && td.VersionNumber == version);
-		return distribution?.ToMainApi(publishMethod, buildType, GetToolDistributionFileSize(distribution.ToolName, publishMethod, buildType, distribution.VersionNumber));
+		if (distribution == null)
+			return null;
+
+		return new()
+		{
+			BuildType = buildType,
+			PublishMethod = publishMethod,
+			VersionNumber = distribution.VersionNumber,
+			FileSize = GetToolDistributionFileSize(distribution.ToolName, publishMethod, buildType, distribution.VersionNumber),
+		};
 	}
 
 	public async Task UpdateToolDistributionStatisticsAsync(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version)
@@ -119,12 +147,10 @@ public class ToolService : IToolService
 		_logger.LogWarning("{tool} {version} {buildType} {publishMethod} was published.", name, version, buildType, publishMethod);
 	}
 
-	#region Utils
-
 	private int GetToolDistributionFileSize(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version)
 	{
 		string path = GetToolDistributionPath(name, publishMethod, buildType, version);
-		if (IoFile.Exists(path))
+		if (File.Exists(path))
 			return (int)new FileInfo(path).Length;
 
 		return 0;
@@ -134,6 +160,4 @@ public class ToolService : IToolService
 	{
 		return Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Tools), $"{name}-{version}-{buildType}-{publishMethod}.zip");
 	}
-
-	#endregion Utils
 }

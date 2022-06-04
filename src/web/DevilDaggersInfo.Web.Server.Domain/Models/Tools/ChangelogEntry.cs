@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Server.InternalModels.Changelog;
+namespace DevilDaggersInfo.Web.Server.Domain.Models.Tools;
 
 /// <summary>
 /// This class must correspond to what's stored in the Changelogs.json file.

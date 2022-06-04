@@ -1,15 +1,15 @@
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
-using MainApi = DevilDaggersInfo.Api.Main.Tools;
+using DevilDaggersInfo.Web.Server.Domain.Models.Tools;
 
-namespace DevilDaggersInfo.Web.Server.Services;
+namespace DevilDaggersInfo.Web.Server.Domain.Services;
 
 public interface IToolService
 {
-	Task<MainApi.GetToolDistribution?> GetLatestToolDistributionAsync(string name, ToolPublishMethod publishMethod, ToolBuildType buildType);
+	Task<ToolDistribution?> GetLatestToolDistributionAsync(string name, ToolPublishMethod publishMethod, ToolBuildType buildType);
 
-	Task<MainApi.GetToolDistribution?> GetToolDistributionByVersionAsync(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version);
+	Task<ToolDistribution?> GetToolDistributionByVersionAsync(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version);
 
-	Task<MainApi.GetTool?> GetToolAsync(string name);
+	Task<Tool?> GetToolAsync(string name);
 
 	byte[]? GetToolDistributionFile(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version);
 
