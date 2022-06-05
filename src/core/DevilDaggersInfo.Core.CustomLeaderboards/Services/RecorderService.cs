@@ -79,7 +79,9 @@ public class RecorderService
 			_uploadSuccess = null;
 		}
 
+#if TODO
 		GuiUtils.WriteRecording(_readerService.Process, _readerService.MainBlock, _readerService.MainBlockPrevious);
+#endif
 
 		await Task.Delay(TimeSpan.FromMilliseconds(_mainLoopSleepMilliseconds));
 		Console.SetCursorPosition(0, 0);
@@ -151,6 +153,7 @@ public class RecorderService
 
 		Console.SetCursorPosition(0, 2);
 
+#if TODO
 		_uploadSuccess.WriteLeaderboard(_readerService.MainBlock.PlayerId, _selectedIndex, _pageIndex);
 
 		Cmd.WriteLine();
@@ -161,6 +164,7 @@ public class RecorderService
 			_uploadSuccess.WriteStats(_finalRecordedMainBlock);
 
 		Cmd.WriteLine();
+#endif
 	}
 
 	private string? ValidateRunLocally()
