@@ -8,3 +8,7 @@ updates:
     directory: "/src/web/DevilDaggersInfo.Web.Client"
     schedule:
       interval: daily
+  - package-ecosystem: npm
+    directory: "/src/razor-core/DevilDaggersInfo.Razor.Core.AssetEditor"
+    schedule:
+      interval: daily
