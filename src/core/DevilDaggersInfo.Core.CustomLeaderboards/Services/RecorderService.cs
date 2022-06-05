@@ -1,8 +1,10 @@
-using DevilDaggersCustomLeaderboards.Clients;
+using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
+using DevilDaggersInfo.Core.CustomLeaderboards.Data;
 using DevilDaggersInfo.Core.CustomLeaderboards.Enums;
 using DevilDaggersInfo.Core.CustomLeaderboards.Memory;
 using DevilDaggersInfo.Core.CustomLeaderboards.Utils;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace DevilDaggersInfo.Core.CustomLeaderboards.Services;
 
@@ -14,6 +16,7 @@ public class RecorderService
 	private readonly ReaderService _readerService;
 	private readonly UploadService _uploadService;
 	private readonly ILogger<RecorderService> _logger;
+	private readonly IOptions<ClientInfo> _clientInfo;
 
 	private bool _isRecording = true;
 	private long _marker;
@@ -22,12 +25,13 @@ public class RecorderService
 	private GetUploadSuccess? _uploadSuccess;
 	private MainBlock _finalRecordedMainBlock;
 
-	public RecorderService(NetworkService networkService, ReaderService readerService, UploadService uploadService, ILogger<RecorderService> logger)
+	public RecorderService(NetworkService networkService, ReaderService readerService, UploadService uploadService, ILogger<RecorderService> logger, IOptions<ClientInfo> clientInfo)
 	{
 		_networkService = networkService;
 		_readerService = readerService;
 		_uploadService = uploadService;
 		_logger = logger;
+		_clientInfo = clientInfo;
 	}
 
 	public async Task Record()
@@ -112,7 +116,7 @@ public class RecorderService
 		string? errorMessage = ValidateRunLocally();
 		if (errorMessage == null)
 		{
-			GetUploadSuccess? uploadSuccess = await _uploadService.UploadRun();
+			GetUploadSuccess? uploadSuccess = await _uploadService.UploadRun(_clientInfo.Value);
 			if (uploadSuccess != null)
 			{
 				_uploadSuccess = uploadSuccess;

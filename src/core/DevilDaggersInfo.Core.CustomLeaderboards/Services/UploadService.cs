@@ -1,4 +1,4 @@
-using DevilDaggersCustomLeaderboards.Clients;
+using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
 using DevilDaggersInfo.Core.CustomLeaderboards.Data;
 using System.Web;
 
