@@ -76,7 +76,7 @@ internal class ApiHttpClientContext
 				throw new NotSupportedException($"Multiple route parameters for endpoint '{methodName}' are not supported: {string.Join(", ", routeParameters)}");
 
 			List<Parameter> nonRouteParameters = allParameters.Except(routeParameters).ToList();
-			string fullRoute = $"{controllerRoute}/{endpointRoute}";
+			string fullRoute = endpointRoute.StartsWith('/') ? endpointRoute : $"{controllerRoute}/{endpointRoute}";
 
 			yield return result.HttpMethod switch
 			{
