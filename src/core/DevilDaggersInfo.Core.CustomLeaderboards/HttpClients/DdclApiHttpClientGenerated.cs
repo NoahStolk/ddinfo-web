@@ -10,7 +10,25 @@ public partial class DdclApiHttpClient
 {
 	public async Task<HttpResponseMessage> SubmitScoreForDdcl(AddUploadRequest uploadRequest)
 	{
-		return await SendRequest(new HttpMethod("POST"), $"api/ddcl/custom-entries//api/custom-entries/submit", JsonContent.Create(uploadRequest));
+		return await SendRequest(new HttpMethod("POST"), $"/api/custom-entries/submit", JsonContent.Create(uploadRequest));
+	}
+
+	public async Task<HttpResponseMessage> CustomLeaderboardExistsBySpawnsetHashObsolete(byte[] hash)
+	{
+		Dictionary<string, object?> queryParameters = new()
+		{
+			{ nameof(hash), hash }
+		};
+		return await SendRequest(new HttpMethod("HEAD"), BuildUrlWithQuery($"/api/custom-leaderboards", queryParameters));
+	}
+
+	public async Task<HttpResponseMessage> CustomLeaderboardExistsBySpawnsetHash(byte[] hash)
+	{
+		Dictionary<string, object?> queryParameters = new()
+		{
+			{ nameof(hash), hash }
+		};
+		return await SendRequest(new HttpMethod("HEAD"), BuildUrlWithQuery($"api/ddcl/custom-leaderboards/", queryParameters));
 	}
 
 	public async Task<Marker> GetMarkerObsolete(SupportedOperatingSystem operatingSystem)
@@ -19,7 +37,7 @@ public partial class DdclApiHttpClient
 		{
 			{ nameof(operatingSystem), operatingSystem }
 		};
-		return await SendGetRequest<Marker>(BuildUrlWithQuery($"api/ddcl/process-memory//api/process-memory/marker", queryParameters));
+		return await SendGetRequest<Marker>(BuildUrlWithQuery($"/api/process-memory/marker", queryParameters));
 	}
 
 	public async Task<Marker> GetMarker(SupportedOperatingSystem operatingSystem)

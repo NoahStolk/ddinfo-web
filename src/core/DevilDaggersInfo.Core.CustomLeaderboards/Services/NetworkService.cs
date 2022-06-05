@@ -6,6 +6,7 @@ using DevilDaggersInfo.Core.CustomLeaderboards.HttpClients;
 using DevilDaggersInfo.Core.CustomLeaderboards.Utils;
 using Microsoft.Extensions.Logging;
 using System.Net;
+using System.Net.Http.Json;
 
 namespace DevilDaggersInfo.Core.CustomLeaderboards.Services;
 
@@ -102,7 +103,7 @@ public class NetworkService
 		{
 			try
 			{
-				await _apiClient.CustomLeaderboards_CustomLeaderboardExistsBySpawnsetHashAsync(survivalHashMd5);
+				await _apiClient.CustomLeaderboardExistsBySpawnsetHash(survivalHashMd5);
 
 				return true;
 			}
@@ -130,11 +131,11 @@ public class NetworkService
 		try
 		{
 			HttpResponseMessage hrm = await _apiClient.SubmitScoreForDdcl(uploadRequest);
-			return hrm.Content.ReadAsJsonAsync();
+			return await hrm.Content.ReadFromJsonAsync<GetUploadSuccess>();
 		}
 		catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.BadRequest)
 		{
-			Cmd.WriteLine("Upload failed", ex.Result?.Title ?? "Empty response", ColorUtils.Error);
+			Cmd.WriteLine("Upload failed", ex.Message ?? "Empty response", ColorUtils.Error);
 			return null;
 		}
 		catch (Exception ex)
