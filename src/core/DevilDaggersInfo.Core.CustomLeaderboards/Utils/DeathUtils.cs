@@ -1,5 +1,6 @@
 namespace DevilDaggersInfo.Core.CustomLeaderboards.Utils;
 
+// TODO: Reference Core.Wiki?
 public static class DeathUtils
 {
 	private static readonly Dictionary<byte, string> _names = new()

@@ -1,9 +1,8 @@
 using DevilDaggersInfo.Api.Ddcl.Tools;
 
-namespace DevilDaggersInfo.Core.CustomLeaderboards.Data;
+namespace DevilDaggersInfo.Core.CustomLeaderboards.Configuration;
 
-// TODO: Use IOptions.
-public record ClientInfo(
+public record ClientOptions(
 	string OperatingSystem,
 	string ApplicationName,
 	string ApplicationVersion,

@@ -1,10 +1,10 @@
 using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
 using DevilDaggersInfo.Api.Ddcl.ProcessMemory;
 using DevilDaggersInfo.Api.Ddcl.Tools;
-using DevilDaggersInfo.Core.CustomLeaderboards.Data;
+using DevilDaggersInfo.Core.CustomLeaderboards.Configuration;
 using DevilDaggersInfo.Core.CustomLeaderboards.HttpClients;
-using DevilDaggersInfo.Core.CustomLeaderboards.Utils;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System.Net;
 using System.Net.Http.Json;
 
@@ -12,49 +12,22 @@ namespace DevilDaggersInfo.Core.CustomLeaderboards.Services;
 
 public class NetworkService
 {
-#if TESTING
-	public static readonly string BaseUrl = "https://localhost:44318";
-#else
-	public static readonly string BaseUrl = "https://devildaggers.info";
-#endif
+//#if TESTING
+//	public static readonly string BaseUrl = "https://localhost:44318";
+//#else
+//	public static readonly string BaseUrl = "https://devildaggers.info";
+//#endif
 
 	private readonly ILogger<NetworkService> _logger;
 	private readonly DdclApiHttpClient _apiClient;
 
-	public NetworkService(ILogger<NetworkService> logger)
+	public NetworkService(ILogger<NetworkService> logger, IOptions<HostOptions> hostOptions)
 	{
 		_logger = logger;
-		_apiClient = new(new() { BaseAddress = new(BaseUrl) });
+		_apiClient = new(new() { BaseAddress = new(hostOptions.Value.HostBaseUrl) });
 	}
 
-	public async Task CheckForUpdates(ClientInfo clientInfo)
-	{
-		Cmd.WriteLine("Checking for updates...");
-
-		GetUpdate? update = await GetTool(clientInfo);
-		Console.Clear();
-
-		if (update == null)
-		{
-			Cmd.WriteLine($"Failed to check for updates (host: {BaseUrl}).\n\n(Press any key to continue.)", ColorUtils.Error);
-			Console.ReadKey();
-			return;
-		}
-
-		Version localVersion = Version.Parse(clientInfo.ApplicationVersion);
-		if (localVersion < Version.Parse(update.VersionNumberRequired))
-		{
-			Cmd.WriteLine($"You are using an unsupported and outdated version of {clientInfo.ApplicationName} ({clientInfo.ApplicationVersion}).\n\nYou must use version {update.VersionNumberRequired} or higher in order to submit scores.\n\nPlease update the program.\n\n(Press any key to continue.)", ColorUtils.Error);
-			Console.ReadKey();
-		}
-		else if (localVersion < Version.Parse(update.VersionNumber))
-		{
-			Cmd.WriteLine($"{clientInfo.ApplicationName} version {update.VersionNumber} is available.\n\n(Press any key to continue.)", ColorUtils.Warning);
-			Console.ReadKey();
-		}
-	}
-
-	private async Task<GetUpdate?> GetTool(ClientInfo clientInfo)
+	public async Task<GetUpdate?> GetUpdate(ClientOptions clientInfo)
 	{
 		const int maxAttempts = 5;
 		for (int i = 0; i < maxAttempts; i++)
@@ -65,10 +38,7 @@ public class NetworkService
 			}
 			catch (Exception ex)
 			{
-				_logger.LogError("Error while trying to retrieve tool.", ex);
-				string message = $"An error occurred while trying to check for updates. Retrying in 1 second... (attempt {i + 1} out of {maxAttempts})";
-				Cmd.WriteLine(message, string.Empty, ColorUtils.Error);
-
+				_logger.LogError(ex, "Error while trying to retrieve tool (attempt {attempt} out of {maxAttempts}).", i + 1, maxAttempts);
 				await Task.Delay(TimeSpan.FromSeconds(1));
 			}
 		}
@@ -87,10 +57,7 @@ public class NetworkService
 			}
 			catch (Exception ex)
 			{
-				_logger.LogError("Error while trying to get marker.", ex);
-				const string message = "An error occurred while trying to retrieve marker. Retrying in 1 second...";
-				Cmd.WriteLine(message, string.Empty, ColorUtils.Error);
-
+				_logger.LogError(ex, "Error while trying to get marker.");
 				await Task.Delay(TimeSpan.FromSeconds(1));
 			}
 		}
@@ -109,16 +76,11 @@ public class NetworkService
 			}
 			catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
 			{
-				Cmd.WriteLine("This spawnset does not have a leaderboard.", string.Empty, ColorUtils.Warning);
-
 				return false;
 			}
 			catch (Exception ex)
 			{
-				_logger.LogError("Error while trying to check for existing leaderboard.", ex);
-				string message = $"An error occurred while trying to check for existing leaderboard. Retrying in 1 second... (attempt {i + 1} out of {maxAttempts})";
-				Cmd.WriteLine(message, string.Empty, ColorUtils.Error);
-
+				_logger.LogError(ex, "Error while trying to check for existing leaderboard (attempt {attempt} out of {maxAttempts}).", i + 1, maxAttempts);
 				await Task.Delay(TimeSpan.FromSeconds(1));
 			}
 		}
@@ -135,12 +97,11 @@ public class NetworkService
 		}
 		catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.BadRequest)
 		{
-			Cmd.WriteLine("Upload failed", ex.Message ?? "Empty response", ColorUtils.Error);
+			// TODO: Return bad request message.
 			return null;
 		}
 		catch (Exception ex)
 		{
-			Cmd.WriteLine("Upload failed", ex.Message, ColorUtils.Error);
 			_logger.LogError(ex, "Error trying to submit score");
 			return null;
 		}

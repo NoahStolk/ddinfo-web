@@ -1,5 +1,5 @@
 using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
-using DevilDaggersInfo.Core.CustomLeaderboards.Data;
+using DevilDaggersInfo.Core.CustomLeaderboards.Configuration;
 using System.Web;
 
 namespace DevilDaggersInfo.Core.CustomLeaderboards.Services;
@@ -17,18 +17,10 @@ public class UploadService
 		_encryptionService = encryptionService;
 	}
 
-	public async Task<GetUploadSuccess?> UploadRun(ClientInfo clientInfo)
+	public async Task<GetUploadSuccess?> UploadRun(ClientOptions clientInfo)
 	{
-		Console.Clear();
-		Cmd.WriteLine("Checking if this spawnset has a leaderboard...");
-		Cmd.WriteLine();
-
-		if (!await _networkService.CheckIfLeaderboardExists(_readerService.MainBlock.SurvivalHashMd5))
-			return null;
-
-		Console.Clear();
-		Cmd.WriteLine("Uploading...");
-		Cmd.WriteLine();
+		//if (!await _networkService.CheckIfLeaderboardExists(_readerService.MainBlock.SurvivalHashMd5))
+		//	return null;
 
 		byte[] timeAsBytes = BitConverter.GetBytes(_readerService.MainBlock.Time);
 		byte[] levelUpTime2AsBytes = BitConverter.GetBytes(_readerService.MainBlock.LevelUpTime2);

@@ -1,5 +1,5 @@
 using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
-using DevilDaggersInfo.Core.CustomLeaderboards.Data;
+using DevilDaggersInfo.Core.CustomLeaderboards.Configuration;
 using DevilDaggersInfo.Core.CustomLeaderboards.Enums;
 using DevilDaggersInfo.Core.CustomLeaderboards.Memory;
 using DevilDaggersInfo.Core.CustomLeaderboards.Utils;
@@ -16,7 +16,7 @@ public class RecorderService
 	private readonly ReaderService _readerService;
 	private readonly UploadService _uploadService;
 	private readonly ILogger<RecorderService> _logger;
-	private readonly IOptions<ClientInfo> _clientInfo;
+	private readonly IOptions<ClientOptions> _clientInfo;
 
 	private bool _isRecording = true;
 	private long _marker;
@@ -25,7 +25,7 @@ public class RecorderService
 	private GetUploadSuccess? _uploadSuccess;
 	private MainBlock _finalRecordedMainBlock;
 
-	public RecorderService(NetworkService networkService, ReaderService readerService, UploadService uploadService, ILogger<RecorderService> logger, IOptions<ClientInfo> clientInfo)
+	public RecorderService(NetworkService networkService, ReaderService readerService, UploadService uploadService, ILogger<RecorderService> logger, IOptions<ClientOptions> clientInfo)
 	{
 		_networkService = networkService;
 		_readerService = readerService;
