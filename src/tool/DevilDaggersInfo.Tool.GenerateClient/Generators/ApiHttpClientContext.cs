@@ -104,6 +104,11 @@ internal class ApiHttpClientContext
 					methodName,
 					fullRoute,
 					routeParameters.Count != 1 ? throw new NotSupportedException($"DELETE endpoint '{methodName}' must have exactly 1 route parameter: {string.Join(", ", routeParameters)}") : routeParameters[0]),
+				HttpMethod.Head => new HeadEndpoint(
+					methodName,
+					fullRoute,
+					routeParameters.FirstOrDefault(),
+					nonRouteParameters),
 				_ => throw new NotSupportedException($"Endpoint with HTTP method '{result.HttpMethod}' is not supported."),
 			};
 		}
@@ -130,6 +135,10 @@ internal class ApiHttpClientContext
 		AttributeSyntax? httpDeleteAttribute = mds.GetAttributeFromMember("HttpDelete");
 		if (httpDeleteAttribute != null)
 			return new(httpDeleteAttribute, HttpMethod.Delete);
+
+		AttributeSyntax? httpHeadAttribute = mds.GetAttributeFromMember("HttpHead");
+		if (httpHeadAttribute != null)
+			return new(httpHeadAttribute, HttpMethod.Head);
 
 		return null;
 	}
