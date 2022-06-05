@@ -17,6 +17,15 @@ public class CustomEntryRepository
 		_fileSystemService = fileSystemService;
 	}
 
+	public byte[] GetCustomEntryReplayBufferById(int id)
+	{
+		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{id}.ddreplay");
+		if (!File.Exists(path))
+			throw new NotFoundException($"Replay file with ID '{id}' could not be found.");
+
+		return File.ReadAllBytes(path);
+	}
+
 	public (string FileName, byte[] Contents) GetCustomEntryReplayById(int id)
 	{
 		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{id}.ddreplay");

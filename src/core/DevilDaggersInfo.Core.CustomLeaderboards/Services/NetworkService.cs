@@ -150,11 +150,7 @@ public class NetworkService
 	{
 		try
 		{
-			FileResponse fr = await _apiClient.CustomEntries_GetCustomEntryReplayByIdAsync(customEntryId);
-
-			using MemoryStream ms = new();
-			fr.Stream.CopyTo(ms);
-			return ms.ToArray();
+			return (await _apiClient.GetCustomEntryReplayBufferById(customEntryId)).Data;
 		}
 		catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
 		{

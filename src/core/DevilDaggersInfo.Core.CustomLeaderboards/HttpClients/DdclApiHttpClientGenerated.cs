@@ -8,6 +8,11 @@ namespace DevilDaggersInfo.Core.CustomLeaderboards.HttpClients;
 
 public partial class DdclApiHttpClient
 {
+	public async Task<GetCustomEntryReplayBuffer> GetCustomEntryReplayBufferById(int id)
+	{
+		return await SendGetRequest<GetCustomEntryReplayBuffer>($"api/ddcl/custom-entries/{id}/replay-buffer");
+	}
+
 	public async Task<HttpResponseMessage> SubmitScoreForDdcl(AddUploadRequest uploadRequest)
 	{
 		return await SendRequest(new HttpMethod("POST"), $"/api/custom-entries/submit", JsonContent.Create(uploadRequest));

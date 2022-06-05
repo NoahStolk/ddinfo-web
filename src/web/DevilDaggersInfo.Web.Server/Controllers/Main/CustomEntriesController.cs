@@ -24,16 +24,12 @@ public class CustomEntriesController : ControllerBase
 	}
 
 	[HttpGet("{id}/replay-buffer")]
-	[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+	[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)] // TODO: Remove incorrect response type FileContentResult.
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public ActionResult<byte[]> GetCustomEntryReplayBufferById([Required] int id)
 	{
-		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{id}.ddreplay");
-		if (!IoFile.Exists(path))
-			return NotFound();
-
-		return IoFile.ReadAllBytes(path);
+		return _customEntryRepository.GetCustomEntryReplayBufferById(id);
 	}
 
 	// FORBIDDEN: Used by DDLIVE.
