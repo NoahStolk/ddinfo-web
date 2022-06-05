@@ -19,9 +19,6 @@ public class UploadService
 
 	public async Task<GetUploadSuccess?> UploadRun(ClientOptions clientInfo)
 	{
-		//if (!await _networkService.CheckIfLeaderboardExists(_readerService.MainBlock.SurvivalHashMd5))
-		//	return null;
-
 		byte[] timeAsBytes = BitConverter.GetBytes(_readerService.MainBlock.Time);
 		byte[] levelUpTime2AsBytes = BitConverter.GetBytes(_readerService.MainBlock.LevelUpTime2);
 		byte[] levelUpTime3AsBytes = BitConverter.GetBytes(_readerService.MainBlock.LevelUpTime3);
