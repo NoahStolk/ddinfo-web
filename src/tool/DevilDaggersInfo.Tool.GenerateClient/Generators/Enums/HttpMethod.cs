@@ -7,4 +7,5 @@ public enum HttpMethod
 	Put,
 	Patch,
 	Delete,
+	Head,
 }

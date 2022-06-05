@@ -13,7 +13,6 @@ using DevilDaggersInfo.Api.Admin.Players;
 using DevilDaggersInfo.Api.Admin.Spawnsets;
 using DevilDaggersInfo.Api.Admin.Tools;
 using DevilDaggersInfo.Api.Admin.Users;
-using DevilDaggersInfo.Web.Client.Utils;
 using System.Net.Http.Json;
 
 namespace DevilDaggersInfo.Web.Client.HttpClients;
@@ -44,7 +43,7 @@ public partial class AdminApiHttpClient
 			{ nameof(sortBy), sortBy },
 			{ nameof(ascending), ascending }
 		};
-		return await SendGetRequest<Page<GetCustomEntryForOverview>>(UrlBuilderUtils.BuildUrlWithQuery($"api/admin/custom-entries/", queryParameters));
+		return await SendGetRequest<Page<GetCustomEntryForOverview>>(BuildUrlWithQuery($"api/admin/custom-entries/", queryParameters));
 	}
 
 	public async Task<GetCustomEntry> GetCustomEntryById(int id)
@@ -76,7 +75,7 @@ public partial class AdminApiHttpClient
 			{ nameof(sortBy), sortBy },
 			{ nameof(ascending), ascending }
 		};
-		return await SendGetRequest<Page<GetCustomLeaderboardForOverview>>(UrlBuilderUtils.BuildUrlWithQuery($"api/admin/custom-leaderboards/", queryParameters));
+		return await SendGetRequest<Page<GetCustomLeaderboardForOverview>>(BuildUrlWithQuery($"api/admin/custom-leaderboards/", queryParameters));
 	}
 
 	public async Task<GetCustomLeaderboard> GetCustomLeaderboardById(int id)
@@ -113,7 +112,7 @@ public partial class AdminApiHttpClient
 			{ nameof(sortBy), sortBy },
 			{ nameof(ascending), ascending }
 		};
-		return await SendGetRequest<Page<GetDonationForOverview>>(UrlBuilderUtils.BuildUrlWithQuery($"api/admin/donations/", queryParameters));
+		return await SendGetRequest<Page<GetDonationForOverview>>(BuildUrlWithQuery($"api/admin/donations/", queryParameters));
 	}
 
 	public async Task<GetDonation> GetDonationById(int id)
@@ -147,7 +146,7 @@ public partial class AdminApiHttpClient
 		{
 			{ nameof(date), date }
 		};
-		return await SendGetRequest<GetResponseTimes>(UrlBuilderUtils.BuildUrlWithQuery($"api/admin/health/", queryParameters));
+		return await SendGetRequest<GetResponseTimes>(BuildUrlWithQuery($"api/admin/health/", queryParameters));
 	}
 
 	public async Task<HttpResponseMessage> ForceDump(string? unused)
@@ -164,7 +163,7 @@ public partial class AdminApiHttpClient
 			{ nameof(sortBy), sortBy },
 			{ nameof(ascending), ascending }
 		};
-		return await SendGetRequest<Page<GetModForOverview>>(UrlBuilderUtils.BuildUrlWithQuery($"api/admin/mods/", queryParameters));
+		return await SendGetRequest<Page<GetModForOverview>>(BuildUrlWithQuery($"api/admin/mods/", queryParameters));
 	}
 
 	public async Task<List<GetModName>> GetModNames()
@@ -201,7 +200,7 @@ public partial class AdminApiHttpClient
 			{ nameof(sortBy), sortBy },
 			{ nameof(ascending), ascending }
 		};
-		return await SendGetRequest<Page<GetPlayerForOverview>>(UrlBuilderUtils.BuildUrlWithQuery($"api/admin/players/", queryParameters));
+		return await SendGetRequest<Page<GetPlayerForOverview>>(BuildUrlWithQuery($"api/admin/players/", queryParameters));
 	}
 
 	public async Task<List<GetPlayerName>> GetPlayerNames()
@@ -238,7 +237,7 @@ public partial class AdminApiHttpClient
 			{ nameof(sortBy), sortBy },
 			{ nameof(ascending), ascending }
 		};
-		return await SendGetRequest<Page<GetSpawnsetForOverview>>(UrlBuilderUtils.BuildUrlWithQuery($"api/admin/spawnsets/", queryParameters));
+		return await SendGetRequest<Page<GetSpawnsetForOverview>>(BuildUrlWithQuery($"api/admin/spawnsets/", queryParameters));
 	}
 
 	public async Task<List<GetSpawnsetName>> GetSpawnsetNames()
@@ -301,6 +300,15 @@ public partial class AdminApiHttpClient
 		return await SendRequest(new HttpMethod("DELETE"), $"api/admin/users/{id}");
 	}
 
+
+	private static string BuildUrlWithQuery(string baseUrl, Dictionary<string, object?> queryParameters)
+	{
+		if (queryParameters.Count == 0)
+			return baseUrl;
+
+		string queryParameterString = string.Join('&', queryParameters.Select(kvp => $"{kvp.Key}={kvp.Value}"));
+		return $"{baseUrl.TrimEnd('/')}?{queryParameterString}";
+	}
 }
 
 #pragma warning restore CS0105, CS1591, CS8618, S1128, SA1001, SA1027, SA1028, SA1101, SA1122, SA1137, SA1200, SA1201, SA1208, SA1210, SA1309, SA1311, SA1413, SA1503, SA1505, SA1507, SA1508, SA1516, SA1600, SA1601, SA1602, SA1623, SA1649

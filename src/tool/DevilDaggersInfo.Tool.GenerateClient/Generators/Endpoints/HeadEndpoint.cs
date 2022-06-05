@@ -2,39 +2,37 @@ using DevilDaggersInfo.CommonSourceGen;
 
 namespace DevilDaggersInfo.Tool.GenerateClient.Generators.Endpoints;
 
-internal class GetEndpoint : Endpoint
+internal class HeadEndpoint : Endpoint
 {
-	private const string _returnType = $"%{nameof(_returnType)}%";
 	private const string _methodName = $"%{nameof(_methodName)}%";
 	private const string _methodParameters = $"%{nameof(_methodParameters)}%";
 	private const string _queryParameters = $"%{nameof(_queryParameters)}%";
 	private const string _apiRoute = $"%{nameof(_apiRoute)}%";
-	private const string _endpointTemplate = $@"public async Task<{_returnType}> {_methodName}({_methodParameters})
+	private const string _httpMethod = $"%{nameof(_httpMethod)}%";
+	private const string _endpointTemplate = $@"public async Task<HttpResponseMessage> {_methodName}({_methodParameters})
 {{
-	return await SendGetRequest<{_returnType}>($""{_apiRoute}"");
+	return await SendRequest(new HttpMethod(""{_httpMethod}""), $""{_apiRoute}"");
 }}
 ";
-	private const string _endpointWithQueryTemplate = $@"public async Task<{_returnType}> {_methodName}({_methodParameters})
+	private const string _endpointWithQueryTemplate = $@"public async Task<HttpResponseMessage> {_methodName}({_methodParameters})
 {{
 	Dictionary<string, object?> queryParameters = new()
 	{{
 {_queryParameters}
 	}};
-	return await SendGetRequest<{_returnType}>(BuildUrlWithQuery($""{_apiRoute}"", queryParameters));
+	return await SendRequest(new HttpMethod(""{_httpMethod}""), BuildUrlWithQuery($""{_apiRoute}"", queryParameters));
 }}
 ";
 
-	public GetEndpoint(string methodName, string apiRoute, Parameter? routeParameter, List<Parameter> queryParameters, string returnType)
-		: base(HttpMethod.Get, methodName, apiRoute)
+	public HeadEndpoint(string methodName, string apiRoute, Parameter? routeParameter, List<Parameter> queryParameters)
+		: base(HttpMethod.Head, methodName, apiRoute)
 	{
 		QueryParameters = queryParameters;
 		RouteParameter = routeParameter;
-		ReturnType = returnType;
 	}
 
 	public Parameter? RouteParameter { get; }
 	public List<Parameter> QueryParameters { get; }
-	public string ReturnType { get; }
 
 	public override string Build()
 	{
@@ -48,21 +46,21 @@ internal class GetEndpoint : Endpoint
 		if (QueryParameters.Count == 0)
 		{
 			return _endpointTemplate
-				.Replace(_returnType, ReturnType)
 				.Replace(_methodName, MethodName)
 				.Replace(_methodParameters, methodParameters)
+				.Replace(_httpMethod, HttpMethod.ToString())
 				.Replace(_apiRoute, ApiRoute);
 		}
 
 		string queryParameters = string.Join($",{Environment.NewLine}", QueryParameters.ConvertAll(p => $"{{ nameof({p.Name}), {p.Name} }}"));
 		return _endpointWithQueryTemplate
-			.Replace(_returnType, ReturnType)
 			.Replace(_methodName, MethodName)
 			.Replace(_methodParameters, methodParameters)
 			.Replace(_queryParameters, queryParameters.IndentCode(2))
+			.Replace(_httpMethod, HttpMethod.ToString())
 			.Replace(_apiRoute, ApiRoute);
 	}
 
 	public override string ToString()
-		=> $"{HttpMethod} {ApiRoute} {ReturnType} {MethodName}({string.Join(", ", RouteParameter)} | {string.Join(", ", QueryParameters)})";
+		=> $"{HttpMethod} {ApiRoute} {MethodName}({string.Join(", ", RouteParameter)} | {string.Join(", ", QueryParameters)})";
 }

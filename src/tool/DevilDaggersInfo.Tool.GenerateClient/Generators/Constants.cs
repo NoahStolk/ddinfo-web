@@ -2,11 +2,10 @@ namespace DevilDaggersInfo.Tool.GenerateClient.Generators;
 
 internal static class Constants
 {
-	private const string _devRootWeb = @"C:\Users\NOAH\source\repos\DevilDaggersInfo\src\web";
+	private const string _devRoot = @"C:\Users\NOAH\source\repos\DevilDaggersInfo\src";
 
-	public const string ClientProjectName = "DevilDaggersInfo.Web.Client";
-	public const string ServerProjectName = "DevilDaggersInfo.Web.Server";
+	public static readonly string ServerProjectPath = Path.Combine(_devRoot, "web", "DevilDaggersInfo.Web.Server");
 
-	public static readonly string ClientProjectPath = Path.Combine(_devRootWeb, ClientProjectName);
-	public static readonly string ServerProjectPath = Path.Combine(_devRootWeb, ServerProjectName);
+	public static readonly string ClientProjectPath = Path.Combine(_devRoot, "web", "DevilDaggersInfo.Web.Client");
+	public static readonly string CoreClProjectPath = Path.Combine(_devRoot, "core", "DevilDaggersInfo.Core.CustomLeaderboards");
 }

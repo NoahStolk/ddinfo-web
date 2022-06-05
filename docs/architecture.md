@@ -2,18 +2,18 @@
 
 ## Project types and dependencies
 
-| **Subfolder** | **Project type**            | **Can depend on**                            |
-|---------------|-----------------------------|----------------------------------------------|
-| `api`         | API specifications          | Nothing                                      |
-| `app`         | UI apps                     | `api`, `common`, `core`, `razor-core`        |
-| `cmd`         | Console apps                | `api`, `common`, `core`                      |
-| `common`      | Common functionality        | Nothing                                      |
-| `core`        | Core set of features        | `common`, `core`                             |
-| `razor-core`  | Razor UI libraries          | `common`, `core`, `razor-core`               |
-| `tests`       | Unit tests                  | Anything                                     |
-| `tool`        | Tools for internal usage    | Anything                                     |
-| `web`         | Website                     | `api`, `common`, `core`, `razor-core`, `web` |
-| `web-core`    | Shared web logic            | `common`, `core`, `web-core`                 |
+| **Subfolder** | **Project type**            | **Can depend on**                                        |
+|---------------|-----------------------------|----------------------------------------------------------|
+| `api`         | API specifications          | Nothing                                                  |
+| `app`         | UI apps                     | `api`, `common`, `core`, `razor-core`                    |
+| `cmd`         | Console apps                | `api`, `common`, `core`                                  |
+| `common`      | Common functionality        | Nothing                                                  |
+| `core`        | Core set of features        | `api`, `common`, `core`                                  |
+| `razor-core`  | Razor UI libraries          | `api`, `common`, `core`, `razor-core`                    |
+| `tests`       | Unit tests                  | Anything                                                 |
+| `tool`        | Tools for internal usage    | Anything                                                 |
+| `web`         | Website                     | `api`, `common`, `core`, `razor-core`, `web-core`, `web` |
+| `web-core`    | Shared web logic            | `api`, `common`, `core`, `web-core`                      |
 
 ## Project hierarchy
 
@@ -27,6 +27,7 @@ flowchart TD;
 	cmd_createreplay[Cmd.CreateReplay]
 	cmd_extractmod[Cmd.ExtractMod]
 	core_asset[Core.Asset]
+	core_customleaderboards[Core.CustomLeaderboards]
 	core_encryption[Core.Encryption]
 	core_mod[Core.Mod]
 	core_replay[Core.Replay]
@@ -56,7 +57,7 @@ flowchart TD;
 
 	class asseteditor_wpf ui;
 	class cmd_createreplay,cmd_extractmod cmd;
-	class core_asset,core_encryption,core_mod,core_replay,core_spawnset,core_wiki core;
+	class core_asset,core_customleaderboards,core_encryption,core_mod,core_replay,core_spawnset,core_wiki core;
 	class razor_core_asseteditor,razor_core_canvaschart,razor_core_unmarshalled razor_core;
 	class web_client web_client;
 	class web_server,web_server_domain web_server;
@@ -82,6 +83,8 @@ flowchart TD;
 
 		core_mod --> core_asset
 		core_spawnset --> core_wiki
+
+		core_customleaderboards -----> core_encryption
 	end
 
 	subgraph Razor Core
@@ -113,6 +116,8 @@ flowchart TD;
 		api_ddcl
 		api_ddae
 		api_ddse
+
+		core_customleaderboards -----> api_ddcl
 	end
 
 	subgraph Api External

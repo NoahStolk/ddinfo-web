@@ -1,8 +1,8 @@
 using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Ddcl;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Ddcl;
-using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
+using DevilDaggersInfo.Web.Server.Domain.Repositories;
 using DevilDaggersInfo.Web.Server.Domain.Services;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Ddcl;
@@ -13,11 +13,25 @@ public class CustomEntriesController : ControllerBase
 {
 	private readonly ILogger<CustomEntriesController> _logger;
 	private readonly CustomEntryProcessor _customEntryProcessor;
+	private readonly CustomEntryRepository _customEntryRepository;
 
-	public CustomEntriesController(ILogger<CustomEntriesController> logger, CustomEntryProcessor customEntryProcessor)
+	public CustomEntriesController(ILogger<CustomEntriesController> logger, CustomEntryProcessor customEntryProcessor, CustomEntryRepository customEntryRepository)
 	{
 		_logger = logger;
 		_customEntryProcessor = customEntryProcessor;
+		_customEntryRepository = customEntryRepository;
+	}
+
+	[HttpGet("{id}/replay-buffer")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	public ActionResult<GetCustomEntryReplayBuffer> GetCustomEntryReplayBufferById([Required] int id)
+	{
+		return new GetCustomEntryReplayBuffer
+		{
+			Data = _customEntryRepository.GetCustomEntryReplayBufferById(id),
+		};
 	}
 
 	// FORBIDDEN: Used by ddstats-rust (currently not working however (2022-05-28)).

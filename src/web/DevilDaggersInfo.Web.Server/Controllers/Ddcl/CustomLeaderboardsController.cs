@@ -20,7 +20,20 @@ public class CustomLeaderboardsController : ControllerBase
 	[HttpHead("/api/custom-leaderboards")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	public async Task<ActionResult> CustomLeaderboardExistsBySpawnsetHashObsolete([FromQuery] byte[] hash)
+	{
+		return await CustomLeaderboardExistsBySpawnsetHashRepo(hash);
+	}
+
+	[HttpHead]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult> CustomLeaderboardExistsBySpawnsetHash([FromQuery] byte[] hash)
+	{
+		return await CustomLeaderboardExistsBySpawnsetHashRepo(hash);
+	}
+
+	private async Task<ActionResult> CustomLeaderboardExistsBySpawnsetHashRepo(byte[] hash)
 	{
 		SpawnsetHashCacheData? data = _spawnsetHashCache.GetSpawnset(hash);
 		if (data == null)
