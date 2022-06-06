@@ -76,6 +76,8 @@ public partial class Recorder : IDisposable
 		if (!uploadRun)
 			return;
 
+		// TODO: We need to stop the timer here so it doesn't re-read memory while we're uploading the run...
+		// When the validation is built, then the memory is re-read, and then we create the request, it will be invalid.
 		if (!ReaderService.MainBlock.StatsLoaded)
 		{
 			await Task.Delay(TimeSpan.FromSeconds(0.5));

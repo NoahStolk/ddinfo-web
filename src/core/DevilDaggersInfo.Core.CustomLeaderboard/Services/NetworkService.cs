@@ -86,11 +86,11 @@ public class NetworkService
 		try
 		{
 			HttpResponseMessage hrm = await _apiClient.SubmitScoreForDdcl(uploadRequest);
-			return await hrm.Content.ReadFromJsonAsync<GetUploadSuccess>();
-		}
-		catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.BadRequest)
-		{
-			// TODO: Return bad request message.
+			if (hrm.IsSuccessStatusCode)
+				return await hrm.Content.ReadFromJsonAsync<GetUploadSuccess>();
+
+			// TODO: Return the error.
+			string error = await hrm.Content.ReadAsStringAsync();
 			return null;
 		}
 		catch (Exception ex)
