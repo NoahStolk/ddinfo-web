@@ -1,5 +1,4 @@
 using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
-using DevilDaggersInfo.Core.CustomLeaderboard.Configuration;
 using System.Web;
 
 namespace DevilDaggersInfo.Core.CustomLeaderboard.Services;
@@ -9,15 +8,17 @@ public class UploadService
 	private readonly NetworkService _networkService;
 	private readonly ReaderService _readerService;
 	private readonly IEncryptionService _encryptionService;
+	private readonly IClientConfiguration _clientConfiguration;
 
-	public UploadService(NetworkService networkService, ReaderService readerService, IEncryptionService encryptionService)
+	public UploadService(NetworkService networkService, ReaderService readerService, IEncryptionService encryptionService, IClientConfiguration clientConfiguration)
 	{
 		_networkService = networkService;
 		_readerService = readerService;
 		_encryptionService = encryptionService;
+		_clientConfiguration = clientConfiguration;
 	}
 
-	public async Task<GetUploadSuccess?> UploadRun(ClientOptions clientInfo)
+	public async Task<GetUploadSuccess?> UploadRun()
 	{
 		byte[] timeAsBytes = BitConverter.GetBytes(_readerService.MainBlock.Time);
 		byte[] levelUpTime2AsBytes = BitConverter.GetBytes(_readerService.MainBlock.LevelUpTime2);
@@ -54,7 +55,7 @@ public class UploadService
 		{
 			DaggersFired = _readerService.MainBlock.DaggersFired,
 			DaggersHit = _readerService.MainBlock.DaggersHit,
-			ClientVersion = clientInfo.ApplicationVersion,
+			ClientVersion = _clientConfiguration.GetApplicationVersion(),
 			DeathType = _readerService.MainBlock.DeathType,
 			EnemiesAlive = _readerService.MainBlock.EnemiesAlive,
 			GemsCollected = _readerService.MainBlock.GemsCollected,
@@ -79,10 +80,10 @@ public class UploadService
 			Validation = HttpUtility.HtmlEncode(validation),
 			ValidationVersion = 2,
 			GameData = _readerService.GetGameDataForUpload(),
-			BuildMode = clientInfo.ApplicationBuildMode,
-			OperatingSystem = clientInfo.OperatingSystem,
+			BuildMode = _clientConfiguration.GetBuildMode(),
+			OperatingSystem = _clientConfiguration.GetOperatingSystem().ToString(),
 			ProhibitedMods = _readerService.MainBlock.ProhibitedMods,
-			Client = clientInfo.ApplicationName,
+			Client = _clientConfiguration.GetApplicationName(),
 			ReplayData = _readerService.GetReplayForUpload(),
 			Status = _readerService.MainBlock.Status,
 			ReplayPlayerId = _readerService.MainBlock.ReplayPlayerId,
