@@ -17,146 +17,7 @@
 
 ## Project hierarchy
 
-Tests, tools, source generators, and common libraries are omitted for clarity.
-
-### Current
-
-```mermaid
-flowchart TD;
-	asseteditor_wpf[AssetEditor.Wpf]
-	cmd_createreplay[Cmd.CreateReplay]
-	cmd_extractmod[Cmd.ExtractMod]
-	core_asset[Core.Asset]
-	core_customleaderboard[Core.CustomLeaderboard]
-	core_encryption[Core.Encryption]
-	core_mod[Core.Mod]
-	core_nativeinterface[Core.NativeInterface]
-	core_replay[Core.Replay]
-	core_spawnset[Core.Spawnset]
-	core_wiki[Core.Wiki]
-	razor_core_asseteditor[Razor.Core.AssetEditor]
-	razor_core_canvaschart[Razor.Core.CanvasChart]
-	razor_core_unmarshalled[Razor.Core.Unmarshalled]
-	web_client[Web.Client]
-	web_server[Web.Server]
-	web_server_domain[Web.Server.Domain]
-	web_core_claims[Web.Core.Claims]
-	api_clubber[Api.Clubber]
-	api_dd[Api.Dd]
-	api_ddlive[Api.DdLive]
-	api_ddrust[Api.DdstatsRust]
-	api_main[Api.Main]
-	api_admin[Api.Admin]
-	api_ddcl[Api.Ddcl]
-	api_ddae[Api.Ddae]
-	api_ddse[Api.Ddse]
-
-	ddse_legacy[DDSE 2]
-	ddcl_legacy[DDCL 1]
-	ddae_legacy[DDAE 1]
-	ddcore_legacy[DevilDaggersCore.Wpf]
-
-	class asseteditor_wpf ui;
-	class cmd_createreplay,cmd_extractmod cmd;
-	class core_asset,core_customleaderboard,core_encryption,core_mod,core_nativeinterface,core_replay,core_spawnset,core_wiki core;
-	class razor_core_asseteditor,razor_core_canvaschart,razor_core_unmarshalled razor_core;
-	class web_client web_client;
-	class web_server,web_server_domain web_server;
-	class web_core_claims web_core;
-	class api_clubber,api_dd,api_ddlive,api_ddrust,api_main,api_admin,api_ddcl,api_ddae,api_ddse api;
-
-	class ddse_legacy,ddcl_legacy,ddae_legacy,ddcore_legacy legacy;
-
-	classDef ui fill:#a00,stroke:#333,stroke-width:4px;
-	classDef cmd fill:#0a0,stroke:#333,stroke-width:4px;
-	classDef core fill:#006,stroke:#333,stroke-width:4px;
-	classDef razor_core fill:#066,stroke:#333,stroke-width:4px;
-	classDef web_client fill:#a66,stroke:#333,stroke-width:4px;
-	classDef web_server fill:#6a6,stroke:#333,stroke-width:4px;
-	classDef web_core fill:#00a,stroke:#333,stroke-width:4px;
-	classDef api fill:#660,stroke:#333,stroke-width:4px;
-
-	classDef legacy fill:#666,stroke:#333,stroke-width:4px;
-
-	subgraph Core
-		core_encryption
-		core_nativeinterface
-		core_replay
-
-		core_mod --> core_asset
-		core_spawnset --> core_wiki
-
-		core_customleaderboard -----> core_encryption
-	end
-
-	subgraph Razor Core
-		razor_core_asseteditor ----> core_mod
-		razor_core_asseteditor ----> core_nativeinterface
-		razor_core_canvaschart --> razor_core_unmarshalled
-	end
-
-	subgraph Web
-		web_client ----> razor_core_canvaschart
-		web_client ----> web_core_claims
-		web_client ----> core_mod
-		web_client ----> core_replay
-		web_client ----> core_spawnset
-
-		web_server --> core_encryption
-		web_server --> web_client
-		web_server --> web_server_domain
-		
-		web_server_domain --> core_mod
-		web_server_domain --> core_spawnset
-		web_server_domain --> web_core_claims
-	end
-
-	subgraph Tool
-		asseteditor_wpf ----> razor_core_asseteditor
-	end
-	
-	subgraph Api Tool
-		api_ddcl
-		api_ddae
-		api_ddse
-
-		core_customleaderboard -----> api_ddcl
-	end
-
-	subgraph Api External
-		api_clubber
-		api_dd
-		api_ddlive
-		api_ddrust
-	end
-
-	subgraph Api Web
-		api_main
-		api_admin
-	end
-
-	web_server ----> api_clubber
-	web_server ----> api_dd
-	web_server ----> api_ddlive
-	web_server ----> api_ddrust
-	web_client ----> api_main
-	web_client ----> api_admin
-	web_server ----> api_ddcl
-	web_server ----> api_ddae
-	web_server ----> api_ddse
-
-	subgraph Cmd
-		cmd_createreplay ----> core_replay
-		cmd_extractmod ----> core_mod
-	end
-
-	subgraph Legacy
-		ddcl_legacy
-
-		ddse_legacy --> ddcore_legacy
-		ddae_legacy --> ddcore_legacy
-	end
-```
+Tests, internal tools, source generators, console apps, and common libraries are omitted for clarity.
 
 ### End state
 
@@ -282,6 +143,7 @@ flowchart TD;
 		web_server --> core_encryption
 		web_server --> web_client
 		web_server --> web_server_domain
+
 		web_server_domain --> core_mod
 		web_server_domain --> core_replay
 		web_server_domain --> core_spawnset
