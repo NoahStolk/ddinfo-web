@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Core.CustomLeaderboards.Services;
+namespace DevilDaggersInfo.Core.CustomLeaderboard.Services;
 
 public interface IEncryptionService
 {

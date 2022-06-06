@@ -1,11 +1,11 @@
 using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
-using DevilDaggersInfo.Core.CustomLeaderboards.Configuration;
-using DevilDaggersInfo.Core.CustomLeaderboards.Enums;
-using DevilDaggersInfo.Core.CustomLeaderboards.Memory;
+using DevilDaggersInfo.Core.CustomLeaderboard.Configuration;
+using DevilDaggersInfo.Core.CustomLeaderboard.Enums;
+using DevilDaggersInfo.Core.CustomLeaderboard.Memory;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace DevilDaggersInfo.Core.CustomLeaderboards.Services;
+namespace DevilDaggersInfo.Core.CustomLeaderboard.Services;
 
 public class RecorderService
 {

@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Api.Ddcl.Tools;
 
-namespace DevilDaggersInfo.Core.CustomLeaderboards.Configuration;
+namespace DevilDaggersInfo.Core.CustomLeaderboard.Configuration;
 
 public record ClientOptions(
 	string OperatingSystem,

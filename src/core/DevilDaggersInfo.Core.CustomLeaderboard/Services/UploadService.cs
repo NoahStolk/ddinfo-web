@@ -1,8 +1,8 @@
 using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
-using DevilDaggersInfo.Core.CustomLeaderboards.Configuration;
+using DevilDaggersInfo.Core.CustomLeaderboard.Configuration;
 using System.Web;
 
-namespace DevilDaggersInfo.Core.CustomLeaderboards.Services;
+namespace DevilDaggersInfo.Core.CustomLeaderboard.Services;
 
 public class UploadService
 {

@@ -1,9 +1,9 @@
 using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
-using DevilDaggersInfo.Core.CustomLeaderboards.Memory;
+using DevilDaggersInfo.Core.CustomLeaderboard.Memory;
 using System.Diagnostics;
 using System.Text;
 
-namespace DevilDaggersInfo.Core.CustomLeaderboards.Services;
+namespace DevilDaggersInfo.Core.CustomLeaderboard.Services;
 
 public class ReaderService
 {

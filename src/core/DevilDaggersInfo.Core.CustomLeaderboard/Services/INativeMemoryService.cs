@@ -1,6 +1,6 @@
 using System.Diagnostics;
 
-namespace DevilDaggersInfo.Core.CustomLeaderboards.Services;
+namespace DevilDaggersInfo.Core.CustomLeaderboard.Services;
 
 public interface INativeMemoryService
 {

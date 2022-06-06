@@ -1,22 +1,22 @@
 using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
 using DevilDaggersInfo.Api.Ddcl.ProcessMemory;
 using DevilDaggersInfo.Api.Ddcl.Tools;
-using DevilDaggersInfo.Core.CustomLeaderboards.Configuration;
+using DevilDaggersInfo.Core.CustomLeaderboard.Configuration;
 using DevilDaggersInfo.Core.CustomLeaderboards.HttpClients;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Net;
 using System.Net.Http.Json;
 
-namespace DevilDaggersInfo.Core.CustomLeaderboards.Services;
+namespace DevilDaggersInfo.Core.CustomLeaderboard.Services;
 
 public class NetworkService
 {
-//#if TESTING
-//	public static readonly string BaseUrl = "https://localhost:44318";
-//#else
-//	public static readonly string BaseUrl = "https://devildaggers.info";
-//#endif
+	//#if TESTING
+	//	public static readonly string BaseUrl = "https://localhost:44318";
+	//#else
+	//	public static readonly string BaseUrl = "https://devildaggers.info";
+	//#endif
 
 	private readonly ILogger<NetworkService> _logger;
 	private readonly DdclApiHttpClient _apiClient;
