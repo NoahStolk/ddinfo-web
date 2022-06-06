@@ -6,8 +6,10 @@ using Microsoft.AspNetCore.Components;
 
 namespace DevilDaggersInfo.Razor.Core.CustomLeaderboard.Pages;
 
-public partial class Recorder
+public partial class Recorder : IDisposable
 {
+	private Timer? _timer;
+
 	private long? _marker;
 	private bool _isRecording = true;
 	private MainBlock _finalRecordedMainBlock;
@@ -25,15 +27,22 @@ public partial class Recorder
 	[Inject]
 	public UploadService UploadService { get; set; } = null!;
 
-	protected override async Task OnAfterRenderAsync(bool firstRender)
+	public void Dispose()
 	{
-		while (true)
-		{
-			await Task.Delay(50);
-			await Record();
+		_timer?.Dispose();
+	}
 
-			StateHasChanged();
-		}
+	protected override void OnInitialized()
+	{
+		_timer = new(
+			callback: async _ =>
+			{
+				await Record();
+				await InvokeAsync(StateHasChanged);
+			},
+			state: null,
+			dueTime: 0,
+			period: 50);
 	}
 
 	private async Task Record()

@@ -1,0 +1,29 @@
+@typeparam T
+@using DevilDaggersInfo.Core.CustomLeaderboard.Memory
+
+@{
+	T c = Selector(Recording.Block);
+	T p = Selector(Recording.BlockPrevious);
+	bool equal = c.Equals(p);
+}
+
+<span style="@(equal ? null : $"color: #{ColorCode}")">
+	@(Format == null ? c : Format(c))
+</span>
+
+@code
+{
+	[CascadingParameter]
+	public Recording Recording { get; set; } = null!;
+
+	[Parameter]
+	[EditorRequired]
+	public Func<MainBlock, T> Selector { get; set; } = null!;
+
+	[Parameter]
+	[EditorRequired]
+	public string ColorCode { get; set; } = null!;
+
+	[Parameter]
+	public Func<T, string>? Format { get; set; }
+}

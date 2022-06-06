@@ -1,9 +1,11 @@
 @page "/"
 
-<span>@_marker</span>
+<div class="grid grid-cols-2">
+	<span>Marker:</span>
+	<span>@_marker</span>
 
-<span>@_isRecording</span>
+	<span>Recording:</span>
+	<span>@_isRecording</span>
+</div>
 
-<span>@_finalRecordedMainBlock</span>
-
-<span>@_uploadSuccess</span>
+<Recording Block="ReaderService.MainBlock" BlockPrevious="ReaderService.MainBlockPrevious" />

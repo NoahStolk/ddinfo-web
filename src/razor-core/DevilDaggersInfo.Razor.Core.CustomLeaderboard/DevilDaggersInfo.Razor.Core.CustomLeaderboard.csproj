@@ -17,6 +17,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebView" />
     <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.CustomLeaderboard\DevilDaggersInfo.Core.CustomLeaderboard.csproj" />
     <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.NativeInterface\DevilDaggersInfo.Core.NativeInterface.csproj" />
+    <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Wiki\DevilDaggersInfo.Core.Wiki.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="package-lock.json">
