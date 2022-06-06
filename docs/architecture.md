@@ -23,10 +23,10 @@ Tests, internal tools, source generators, console apps, and common libraries are
 
 ```mermaid
 flowchart TD;
-	ddcl[DDCL 2]
 	ddae[DDAE 2]
-	ddse[DDSE 3]
+	ddcl[DDCL 2]
 	ddre[DDRE 1]
+	ddse[DDSE 3]
 
 	core_asset[Core.Asset]
 	core_customleaderboard[Core.CustomLeaderboards]
@@ -41,12 +41,14 @@ flowchart TD;
 	razor_core_customleaderboard[Razor.Core.CustomLeaderboard]
 	razor_core_replayeditor[Razor.Core.ReplayEditor]
 	razor_core_survivaleditor[Razor.Core.SurvivalEditor]
+
 	razor_core_canvaschart[Razor.Core.CanvasChart]
 	razor_core_unmarshalled[Razor.Core.Unmarshalled]
 
 	web_client[Web.Client]
 	web_server[Web.Server]
 	web_server_domain[Web.Server.Domain]
+
 	web_core_claims[Web.Core.Claims]
 
 	api_dd[Api.Dd]
@@ -55,26 +57,31 @@ flowchart TD;
 	api_ddrust[Api.DdstatsRust]
 	api_main[Api.Main]
 	api_admin[Api.Admin]
-	api_ddcl[Api.Ddcl]
 	api_ddae[Api.Ddae]
-	api_ddse[Api.Ddse]
+	api_ddcl[Api.Ddcl]
 	api_ddre[Api.Ddre]
+	api_ddse[Api.Ddse]
+
+	class api_dd,api_clubber,api_ddlive,api_ddrust,api_ddae,api_ddcl,api_ddre,api_ddse,api_main,api_admin api;
+	classDef api fill:#660,stroke:#333,stroke-width:4px;
 
 	class ddae,ddcl,ddre,ddse app;
-	class core_asset,core_customleaderboard,core_encryption,core_mod,core_nativeinterface,core_replay,core_spawnset,core_wiki core;
-	class razor_core_asseteditor,razor_core_customleaderboard,razor_core_replayeditor,razor_core_survivaleditor,razor_core_canvaschart,razor_core_unmarshalled razor_core;
-	class web_client web_client;
-	class web_server,web_server_domain web_server;
-	class web_core_claims web_core;
-	class api_dd,api_clubber,api_ddlive,api_ddrust,api_ddae,api_ddcl,api_ddse,api_ddre,api_main,api_admin api;
-
 	classDef app fill:#a00,stroke:#333,stroke-width:4px;
+
+	class core_asset,core_customleaderboard,core_encryption,core_mod,core_nativeinterface,core_replay,core_spawnset,core_wiki core;
 	classDef core fill:#006,stroke:#333,stroke-width:4px;
+
+	class razor_core_asseteditor,razor_core_customleaderboard,razor_core_replayeditor,razor_core_survivaleditor,razor_core_canvaschart,razor_core_unmarshalled razor_core;
 	classDef razor_core fill:#066,stroke:#333,stroke-width:4px;
+
+	class web_client web_client;
 	classDef web_client fill:#a66,stroke:#333,stroke-width:4px;
-	classDef web_server fill:#6a6,stroke:#333,stroke-width:4px;
+
+	class web_core_claims web_core;
 	classDef web_core fill:#00a,stroke:#333,stroke-width:4px;
-	classDef api fill:#660,stroke:#333,stroke-width:4px;
+
+	class web_server,web_server_domain web_server;
+	classDef web_server fill:#6a6,stroke:#333,stroke-width:4px;
 
 	subgraph Core
 		core_customleaderboard
@@ -88,10 +95,10 @@ flowchart TD;
 	end
 
 	subgraph Api Tool
-		api_ddcl
 		api_ddae
-		api_ddse
+		api_ddcl
 		api_ddre
+		api_ddse
 	end
 
 	subgraph Api External
@@ -110,12 +117,12 @@ flowchart TD;
 	web_server ----> api_clubber
 	web_server ----> api_ddlive
 	web_server ----> api_ddrust
-	web_client ----> api_main
-	web_client ----> api_admin
-	web_server ----> api_ddcl
+	web_client --> api_main
+	web_client --> api_admin
 	web_server ----> api_ddae
-	web_server ----> api_ddse
+	web_server ----> api_ddcl
 	web_server ----> api_ddre
+	web_server ----> api_ddse
 
 	subgraph Razor Core Web
 		razor_core_canvaschart --> razor_core_unmarshalled
@@ -134,7 +141,7 @@ flowchart TD;
 	end
 
 	subgraph Web
-		web_client ----> razor_core_canvaschart
+		web_client --> razor_core_canvaschart
 		web_client ----> web_core_claims
 		web_client ----> core_mod
 		web_client ----> core_replay
