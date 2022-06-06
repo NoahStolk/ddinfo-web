@@ -27,7 +27,7 @@ flowchart TD;
 	cmd_createreplay[Cmd.CreateReplay]
 	cmd_extractmod[Cmd.ExtractMod]
 	core_asset[Core.Asset]
-	core_customleaderboards[Core.CustomLeaderboards]
+	core_customleaderboard[Core.CustomLeaderboard]
 	core_encryption[Core.Encryption]
 	core_mod[Core.Mod]
 	core_replay[Core.Replay]
@@ -57,7 +57,7 @@ flowchart TD;
 
 	class asseteditor_wpf ui;
 	class cmd_createreplay,cmd_extractmod cmd;
-	class core_asset,core_customleaderboards,core_encryption,core_mod,core_replay,core_spawnset,core_wiki core;
+	class core_asset,core_customleaderboard,core_encryption,core_mod,core_replay,core_spawnset,core_wiki core;
 	class razor_core_asseteditor,razor_core_canvaschart,razor_core_unmarshalled razor_core;
 	class web_client web_client;
 	class web_server,web_server_domain web_server;
@@ -84,7 +84,7 @@ flowchart TD;
 		core_mod --> core_asset
 		core_spawnset --> core_wiki
 
-		core_customleaderboards -----> core_encryption
+		core_customleaderboard -----> core_encryption
 	end
 
 	subgraph Razor Core
@@ -117,7 +117,7 @@ flowchart TD;
 		api_ddae
 		api_ddse
 
-		core_customleaderboards -----> api_ddcl
+		core_customleaderboard -----> api_ddcl
 	end
 
 	subgraph Api External
@@ -165,7 +165,7 @@ flowchart TD;
 	ddre[DDRE 1]
 
 	core_asset[Core.Asset]
-	core_customleaderboards[Core.CustomLeaderboards]
+	core_customleaderboard[Core.CustomLeaderboards]
 	core_encryption[Core.Encryption]
 	core_mod[Core.Mod]
 	core_replay[Core.Replay]
@@ -196,7 +196,7 @@ flowchart TD;
 
 	class ddae,ddse,ddre ui;
 	class ddcl cmd;
-	class core_asset,core_customleaderboards,core_encryption,core_mod,core_replay,core_spawnset,core_wiki core;
+	class core_asset,core_customleaderboard,core_encryption,core_mod,core_replay,core_spawnset,core_wiki core;
 	class razor_core_asseteditor,razor_core_survivaleditor,razor_core_replayeditor,razor_core_canvaschart,razor_core_unmarshalled razor_core;
 	class web_client web_client;
 	class web_server,web_server_domain web_server;
@@ -213,11 +213,11 @@ flowchart TD;
 	classDef api fill:#660,stroke:#333,stroke-width:4px;
 
 	subgraph Core
-		core_customleaderboards
+		core_customleaderboard
 		core_encryption
 		core_replay
 
-		core_customleaderboards --> core_encryption
+		core_customleaderboard --> core_encryption
 		core_mod --> core_asset
 		core_spawnset --> core_wiki
 	end
@@ -279,7 +279,7 @@ flowchart TD;
 	end
 
 	subgraph Tool
-		ddcl ----> core_customleaderboards
+		ddcl ----> core_customleaderboard
 		ddae ----> razor_core_asseteditor
 		ddse ----> razor_core_survivaleditor
 		ddre ----> razor_core_replayeditor
