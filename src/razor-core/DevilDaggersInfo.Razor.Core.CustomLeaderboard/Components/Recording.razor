@@ -12,34 +12,45 @@
 	
 	<div class="grid grid-cols-2 mb-2 max-w-md">
 		<span>Gems</span>
-		<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.GemsCollected)" ColorCode="f00" /></span>
+		<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.GemsCollected)" ColorCode="#f00" /></span>
 
 		<span>Gems despawned</span>
-		<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.GemsDespawned)" ColorCode="888" /></span>
+		<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.GemsDespawned)" ColorCode="#888" /></span>
 
 		<span>Gems eaten</span>
-		<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.GemsEaten)" ColorCode="0f0" /></span>
+		<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.GemsEaten)" ColorCode="#0f0" /></span>
 
 		<span>Gems total</span>
-		<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.GemsTotal)" ColorCode="800" /></span>
+		<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.GemsTotal)" ColorCode="#800" /></span>
 	</div>
 	
 	<div class="grid grid-cols-2 mb-2 max-w-md">
 		<span>Homing stored</span>
-		<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.HomingStored)" ColorCode="f04" /></span>
+		<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.HomingStored)" ColorCode="#f0f" /></span>
 
 		<span>Homing eaten</span>
-		<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.HomingEaten)" ColorCode="0f0" /></span>
+		<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.HomingEaten)" ColorCode="#808" /></span>
+	</div>
+	
+	<div class="grid grid-cols-2 mb-2 max-w-md">
+		<span>Daggers fired</span>
+		<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.DaggersFired)" ColorCode="#ff0" /></span>
+
+		<span>Daggers hit</span>
+		<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.DaggersHit)" ColorCode="#f40" /></span>
+
+		<span>Accuracy</span>
+		<span class="text-right"><RecordingValue T="float" Selector="@((b) => (b.DaggersHit / (float)b.DaggersFired))" ColorCode="#fa0" Format="@(f => f.ToString("0.00%"))" /></span>
 	</div>
 	
 	<div class="grid grid-cols-4 mb-2 max-w-md">
 		<span class="col-span-2">Enemies</span>
-		<span>Alive</span>
-		<span>Killed</span>
+		<span class="text-right">Alive</span>
+		<span class="text-right">Killed</span>
 
 		<span class="col-span-2">Total</span>
-		<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.EnemiesAlive)" ColorCode="884" /></span>
-		<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.EnemiesKilled)" ColorCode="f00" /></span>
+		<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.EnemiesAlive)" ColorCode="#884" /></span>
+		<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.EnemiesKilled)" ColorCode="#f00" /></span>
 
 		<span class="col-span-2">Skull I</span>
 		<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.Skull1sAlive)" ColorCode="@EnemiesV3_2.Skull1.Color.HexCode" /></span>
