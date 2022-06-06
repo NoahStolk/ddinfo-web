@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Core.Mod.Enums;
+using DevilDaggersInfo.Core.NativeInterface;
 using DevilDaggersInfo.Razor.Core.AssetEditor.Services;
 using Microsoft.AspNetCore.Components;
 
@@ -19,10 +20,10 @@ public partial class EditBinary
 	}
 
 	[Inject]
-	public IErrorReporter ErrorReporter { get; set; } = null!;
+	public INativeErrorReporter ErrorReporter { get; set; } = null!;
 
 	[Inject]
-	public IFileSystemService FileSystemService { get; set; } = null!;
+	public INativeFileSystemService FileSystemService { get; set; } = null!;
 
 	[Inject]
 	public BinaryState BinaryState { get; set; } = null!;
@@ -35,7 +36,7 @@ public partial class EditBinary
 
 	public void OpenBinary()
 	{
-		IFileSystemService.FileResult? fileResult = FileSystemService.Open(string.Empty);
+		INativeFileSystemService.FileResult? fileResult = FileSystemService.OpenFile(string.Empty);
 		if (fileResult == null)
 			return;
 
@@ -62,6 +63,6 @@ public partial class EditBinary
 			return;
 
 		byte[] compiledBinary = BinaryState.Binary.Compile();
-		FileSystemService.Save(compiledBinary);
+		FileSystemService.SaveDataToFile(compiledBinary);
 	}
 }

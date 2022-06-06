@@ -30,6 +30,7 @@ flowchart TD;
 	core_customleaderboard[Core.CustomLeaderboard]
 	core_encryption[Core.Encryption]
 	core_mod[Core.Mod]
+	core_nativeinterface[Core.NativeInterface]
 	core_replay[Core.Replay]
 	core_spawnset[Core.Spawnset]
 	core_wiki[Core.Wiki]
@@ -57,7 +58,7 @@ flowchart TD;
 
 	class asseteditor_wpf ui;
 	class cmd_createreplay,cmd_extractmod cmd;
-	class core_asset,core_customleaderboard,core_encryption,core_mod,core_replay,core_spawnset,core_wiki core;
+	class core_asset,core_customleaderboard,core_encryption,core_mod,core_nativeinterface,core_replay,core_spawnset,core_wiki core;
 	class razor_core_asseteditor,razor_core_canvaschart,razor_core_unmarshalled razor_core;
 	class web_client web_client;
 	class web_server,web_server_domain web_server;
@@ -79,6 +80,7 @@ flowchart TD;
 
 	subgraph Core
 		core_encryption
+		core_nativeinterface
 		core_replay
 
 		core_mod --> core_asset
@@ -89,6 +91,7 @@ flowchart TD;
 
 	subgraph Razor Core
 		razor_core_asseteditor ----> core_mod
+		razor_core_asseteditor ----> core_nativeinterface
 		razor_core_canvaschart --> razor_core_unmarshalled
 	end
 
@@ -168,13 +171,15 @@ flowchart TD;
 	core_customleaderboard[Core.CustomLeaderboards]
 	core_encryption[Core.Encryption]
 	core_mod[Core.Mod]
+	core_nativeinterface[Core.NativeInterface]
 	core_replay[Core.Replay]
 	core_spawnset[Core.Spawnset]
 	core_wiki[Core.Wiki]
 
 	razor_core_asseteditor[Razor.Core.AssetEditor]
-	razor_core_survivaleditor[Razor.Core.SurvivalEditor]
+	razor_core_customleaderboard[Razor.Core.CustomLeaderboard]
 	razor_core_replayeditor[Razor.Core.ReplayEditor]
+	razor_core_survivaleditor[Razor.Core.SurvivalEditor]
 	razor_core_canvaschart[Razor.Core.CanvasChart]
 	razor_core_unmarshalled[Razor.Core.Unmarshalled]
 
@@ -194,17 +199,15 @@ flowchart TD;
 	api_ddse[Api.Ddse]
 	api_ddre[Api.Ddre]
 
-	class ddae,ddse,ddre ui;
-	class ddcl cmd;
-	class core_asset,core_customleaderboard,core_encryption,core_mod,core_replay,core_spawnset,core_wiki core;
-	class razor_core_asseteditor,razor_core_survivaleditor,razor_core_replayeditor,razor_core_canvaschart,razor_core_unmarshalled razor_core;
+	class ddae,ddcl,ddre,ddse app;
+	class core_asset,core_customleaderboard,core_encryption,core_mod,core_nativeinterface,core_replay,core_spawnset,core_wiki core;
+	class razor_core_asseteditor,razor_core_customleaderboard,razor_core_replayeditor,razor_core_survivaleditor,razor_core_canvaschart,razor_core_unmarshalled razor_core;
 	class web_client web_client;
 	class web_server,web_server_domain web_server;
 	class web_core_claims web_core;
 	class api_dd,api_clubber,api_ddlive,api_ddrust,api_ddae,api_ddcl,api_ddse,api_ddre,api_main,api_admin api;
 
-	classDef ui fill:#a00,stroke:#333,stroke-width:4px;
-	classDef cmd fill:#0a0,stroke:#333,stroke-width:4px;
+	classDef app fill:#a00,stroke:#333,stroke-width:4px;
 	classDef core fill:#006,stroke:#333,stroke-width:4px;
 	classDef razor_core fill:#066,stroke:#333,stroke-width:4px;
 	classDef web_client fill:#a66,stroke:#333,stroke-width:4px;
@@ -215,6 +218,7 @@ flowchart TD;
 	subgraph Core
 		core_customleaderboard
 		core_encryption
+		core_nativeinterface
 		core_replay
 
 		core_customleaderboard --> core_encryption
@@ -258,8 +262,14 @@ flowchart TD;
 
 	subgraph Razor Core Tool
 		razor_core_asseteditor ----> core_mod
-		razor_core_survivaleditor ----> core_spawnset
+		razor_core_customleaderboard ----> core_customleaderboard
 		razor_core_replayeditor ----> core_replay
+		razor_core_survivaleditor ----> core_spawnset
+
+		razor_core_asseteditor ----> core_nativeinterface
+		razor_core_customleaderboard ----> core_nativeinterface
+		razor_core_replayeditor ----> core_nativeinterface
+		razor_core_survivaleditor ----> core_nativeinterface
 	end
 
 	subgraph Web
@@ -279,15 +289,15 @@ flowchart TD;
 	end
 
 	subgraph Tool
-		ddcl ----> core_customleaderboard
 		ddae ----> razor_core_asseteditor
-		ddse ----> razor_core_survivaleditor
+		ddcl ----> razor_core_customleaderboard
 		ddre ----> razor_core_replayeditor
+		ddse ----> razor_core_survivaleditor
 
-		ddcl ----> api_ddcl
 		ddae ----> api_ddae
-		ddse ----> api_ddse
+		ddcl ----> api_ddcl
 		ddre ----> api_ddre
+		ddse ----> api_ddse
 	end
 ```
 

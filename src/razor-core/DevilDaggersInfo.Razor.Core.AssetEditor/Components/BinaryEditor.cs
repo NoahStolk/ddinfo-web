@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Core.Mod.Enums;
+using DevilDaggersInfo.Core.NativeInterface;
 using DevilDaggersInfo.Razor.Core.AssetEditor.Pages;
 using DevilDaggersInfo.Razor.Core.AssetEditor.Services;
 using Microsoft.AspNetCore.Components;
@@ -14,10 +15,10 @@ public partial class BinaryEditor
 	public BinaryState BinaryState { get; set; } = null!;
 
 	[Inject]
-	public IErrorReporter ErrorReporter { get; set; } = null!;
+	public INativeErrorReporter ErrorReporter { get; set; } = null!;
 
 	[Inject]
-	public IFileSystemService FileSystemService { get; set; } = null!;
+	public INativeFileSystemService FileSystemService { get; set; } = null!;
 
 	public void ExtractChunks()
 	{

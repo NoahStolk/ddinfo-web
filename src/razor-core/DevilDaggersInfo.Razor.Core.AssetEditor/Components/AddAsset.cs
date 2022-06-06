@@ -2,6 +2,7 @@ using DevilDaggersInfo.Core.Asset;
 using DevilDaggersInfo.Core.Asset.Enums;
 using DevilDaggersInfo.Core.Mod;
 using DevilDaggersInfo.Core.Mod.Enums;
+using DevilDaggersInfo.Core.NativeInterface;
 using DevilDaggersInfo.Razor.Core.AssetEditor.Pages;
 using DevilDaggersInfo.Razor.Core.AssetEditor.Services;
 using Microsoft.AspNetCore.Components;
@@ -30,10 +31,13 @@ public partial class AddAsset
 	public EditBinary Page { get; set; } = null!;
 
 	[Inject]
-	public IErrorReporter ErrorReporter { get; set; } = null!;
+	public INativeErrorReporter ErrorReporter { get; set; } = null!;
 
 	[Inject]
-	public IFileSystemService FileSystemService { get; set; } = null!;
+	public INativeFileSystemService FileSystemService { get; set; } = null!;
+
+	[Inject]
+	public IAssetEditorFileFilterService FileFilterService { get; set; } = null!;
 
 	[Inject]
 	public BinaryState BinaryState { get; set; } = null!;
@@ -81,7 +85,7 @@ public partial class AddAsset
 			return;
 		}
 
-		IFileSystemService.FileResult? fileResult = FileSystemService.Open(FileSystemService.GetAssetTypeFilter(assetType));
+		INativeFileSystemService.FileResult? fileResult = FileSystemService.OpenFile(FileFilterService.GetAssetTypeFilter(assetType));
 		if (fileResult == null)
 			return;
 
@@ -91,9 +95,9 @@ public partial class AddAsset
 		_selectedAssetData = fileResult.Contents;
 	}
 
-	private void OpenVert() => OpenShader((s) => _selectedVertFileName = s, (d) => _selectedVertData = d, FileSystemService.GetVertexShaderFilter());
+	private void OpenVert() => OpenShader((s) => _selectedVertFileName = s, (d) => _selectedVertData = d, FileFilterService.GetVertexShaderFilter());
 
-	private void OpenFrag() => OpenShader((s) => _selectedFragFileName = s, (d) => _selectedFragData = d, FileSystemService.GetFragmentShaderFilter());
+	private void OpenFrag() => OpenShader((s) => _selectedFragFileName = s, (d) => _selectedFragData = d, FileFilterService.GetFragmentShaderFilter());
 
 	private void OpenShader(Action<string> setFileName, Action<byte[]> setData, string fileExtension)
 	{
@@ -103,7 +107,7 @@ public partial class AddAsset
 			return;
 		}
 
-		IFileSystemService.FileResult? fileResult = FileSystemService.Open(fileExtension);
+		INativeFileSystemService.FileResult? fileResult = FileSystemService.OpenFile(fileExtension);
 		if (fileResult == null)
 			return;
 
