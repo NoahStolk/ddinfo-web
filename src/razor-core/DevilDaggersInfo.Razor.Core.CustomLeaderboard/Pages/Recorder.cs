@@ -19,11 +19,12 @@ public partial class Recorder : IDisposable
 
 	private enum State
 	{
-		Recording = 0,
-		WaitingForRestart = 1,
-		WaitingForLocalReplay = 2,
-		Uploading = 3,
-		WaitingForStatsAndReplay = 4,
+		Recording,
+		WaitingForRestart,
+		WaitingForLocalReplay,
+		WaitingForLeaderboardReplay,
+		Uploading,
+		WaitingForStatsAndReplay,
 	}
 
 	[Inject]
@@ -81,9 +82,10 @@ public partial class Recorder : IDisposable
 				return;
 			}
 
-			if (ReaderService.MainBlock.Status == (int)GameStatus.LocalReplay)
+			GameStatus status = (GameStatus)ReaderService.MainBlock.Status;
+			if (status is GameStatus.LocalReplay or GameStatus.OwnReplayFromLeaderboard)
 			{
-				_state = State.WaitingForLocalReplay;
+				_state = status == GameStatus.LocalReplay ? State.WaitingForLocalReplay : State.WaitingForLeaderboardReplay;
 				return;
 			}
 
