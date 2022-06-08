@@ -2,6 +2,16 @@
 
 <h2>@UploadSuccess.Message</h2>
 
+<div class="grid grid-cols-4 m-2 p-2">
+	@foreach (GetCustomEntry entry in UploadSuccess.SortedEntries)
+	{
+		<span>@entry.Rank</span>
+		<span>@entry.PlayerName</span>
+		<span class="text-right">@entry.TimeInSeconds.ToString("N4")</span>
+		<span>@entry.HasReplay</span>
+	}
+</div>
+
 @code
 {
 	[Parameter]

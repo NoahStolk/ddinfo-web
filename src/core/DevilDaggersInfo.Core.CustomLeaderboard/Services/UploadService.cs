@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
+using DevilDaggersInfo.Core.CustomLeaderboard.Models;
 using System.Web;
 
 namespace DevilDaggersInfo.Core.CustomLeaderboard.Services;
@@ -18,7 +19,7 @@ public class UploadService
 		_clientConfiguration = clientConfiguration;
 	}
 
-	public async Task<GetUploadSuccess?> UploadRun()
+	public async Task<SubmissionResponseWrapper> UploadRun()
 	{
 		byte[] timeAsBytes = BitConverter.GetBytes(_readerService.MainBlock.Time);
 		byte[] levelUpTime2AsBytes = BitConverter.GetBytes(_readerService.MainBlock.LevelUpTime2);

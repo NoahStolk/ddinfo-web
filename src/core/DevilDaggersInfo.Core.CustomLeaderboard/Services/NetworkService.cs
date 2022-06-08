@@ -1,6 +1,7 @@
 using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
 using DevilDaggersInfo.Api.Ddcl.ProcessMemory;
 using DevilDaggersInfo.Api.Ddcl.Tools;
+using DevilDaggersInfo.Core.CustomLeaderboard.Models;
 using DevilDaggersInfo.Core.CustomLeaderboards.HttpClients;
 using Microsoft.Extensions.Logging;
 using System.Net;
@@ -81,22 +82,25 @@ public class NetworkService
 		return false;
 	}
 
-	public async Task<GetUploadSuccess?> SubmitScore(AddUploadRequest uploadRequest)
+	public async Task<SubmissionResponseWrapper> SubmitScore(AddUploadRequest uploadRequest)
 	{
 		try
 		{
 			HttpResponseMessage hrm = await _apiClient.SubmitScoreForDdcl(uploadRequest);
 			if (hrm.IsSuccessStatusCode)
-				return await hrm.Content.ReadFromJsonAsync<GetUploadSuccess>();
+			{
+				GetUploadSuccess success = await hrm.Content.ReadFromJsonAsync<GetUploadSuccess>() ?? throw new InvalidOperationException($"Could not deserialize the response as '{nameof(GetUploadSuccess)}'.");
+				return new(success);
+			}
 
-			// TODO: Return the error.
 			string error = await hrm.Content.ReadAsStringAsync();
-			return null;
+			return new(error);
 		}
 		catch (Exception ex)
 		{
-			_logger.LogError(ex, "Error trying to submit score");
-			return null;
+			const string message = "Error trying to submit score";
+			_logger.LogError(ex, message);
+			return new(message);
 		}
 	}
 

@@ -1,6 +1,6 @@
-using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
 using DevilDaggersInfo.Core.CustomLeaderboard.Enums;
 using DevilDaggersInfo.Core.CustomLeaderboard.Memory;
+using DevilDaggersInfo.Core.CustomLeaderboard.Models;
 using DevilDaggersInfo.Core.CustomLeaderboard.Services;
 using Microsoft.AspNetCore.Components;
 
@@ -13,7 +13,7 @@ public partial class Recorder : IDisposable
 	private long? _marker;
 	private State _state;
 	private MainBlock _finalRecordedMainBlock;
-	private GetUploadSuccess? _uploadSuccess;
+	private SubmissionResponseWrapper? _submissionResponseWrapper;
 	private string? _localError;
 	private bool? _leaderboardExists;
 
@@ -121,12 +121,8 @@ public partial class Recorder : IDisposable
 			if (!_leaderboardExists.Value)
 				return;
 
-			GetUploadSuccess? uploadSuccess = await UploadService.UploadRun();
-			if (uploadSuccess != null)
-			{
-				_uploadSuccess = uploadSuccess;
-				_finalRecordedMainBlock = ReaderService.MainBlock;
-			}
+			_submissionResponseWrapper = await UploadService.UploadRun();
+			_finalRecordedMainBlock = ReaderService.MainBlock;
 		}
 
 		_state = State.CompletedUpload;
@@ -134,7 +130,7 @@ public partial class Recorder : IDisposable
 
 	private void ClearUploadState()
 	{
-		_uploadSuccess = null;
+		_submissionResponseWrapper = null;
 		_localError = null;
 		_leaderboardExists = null;
 	}
