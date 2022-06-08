@@ -23,6 +23,7 @@ public partial class Recorder : IDisposable
 		WaitingForRestart = 1,
 		WaitingForLocalReplay = 2,
 		Uploading = 3,
+		WaitingForStatsAndReplay = 4,
 	}
 
 	[Inject]
@@ -94,6 +95,8 @@ public partial class Recorder : IDisposable
 		bool uploadRun = justDied && (ReaderService.MainBlock.GameMode == 0 || ReaderService.MainBlock.TimeAttackOrRaceFinished);
 		if (!uploadRun)
 			return;
+
+		_state = State.WaitingForStatsAndReplay;
 
 		// TODO: We need to pause the timer here so it doesn't re-read memory while we're uploading the run...
 		// When the validation is built, then the memory is re-read, and then we create the request, it will be invalid.
