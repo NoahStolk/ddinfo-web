@@ -2,7 +2,7 @@
 @using DevilDaggersInfo.Core.Wiki
 
 <CascadingValue Value="this">
-	<div class="grid grid-cols-2 mb-2 max-w-md">
+	<div class="grid grid-cols-2 mb-2">
 		<span>Player</span>
 		<span class="text-right">@Block.PlayerName</span>
 
@@ -10,7 +10,7 @@
 		<span class="text-right">@Block.Time.ToString("N4")</span>
 	</div>
 	
-	<div class="grid grid-cols-2 mb-2 max-w-md">
+	<div class="grid grid-cols-2 mb-2">
 		<span>Gems</span>
 		<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.GemsCollected)" ColorCode="#f00" /></span>
 
@@ -24,7 +24,7 @@
 		<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.GemsTotal)" ColorCode="#800" /></span>
 	</div>
 	
-	<div class="grid grid-cols-2 mb-2 max-w-md">
+	<div class="grid grid-cols-2 mb-2">
 		<span>Homing stored</span>
 		<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.HomingStored)" ColorCode="#f0f" /></span>
 
@@ -32,7 +32,7 @@
 		<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.HomingEaten)" ColorCode="#808" /></span>
 	</div>
 	
-	<div class="grid grid-cols-2 mb-2 max-w-md">
+	<div class="grid grid-cols-2 mb-2">
 		<span>Daggers fired</span>
 		<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.DaggersFired)" ColorCode="#ff0" /></span>
 
@@ -43,7 +43,7 @@
 		<span class="text-right"><RecordingValue T="float" Selector="@((b) => (b.DaggersHit / (float)b.DaggersFired))" ColorCode="#fa0" Format="@(f => f.ToString("0.00%"))" /></span>
 	</div>
 	
-	<div class="grid grid-cols-4 mb-2 max-w-md">
+	<div class="grid grid-cols-4 mb-2">
 		<span class="col-span-2">Enemies</span>
 		<span class="text-right">Alive</span>
 		<span class="text-right">Killed</span>
