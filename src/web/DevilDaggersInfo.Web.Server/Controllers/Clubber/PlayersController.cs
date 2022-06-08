@@ -13,16 +13,6 @@ public class PlayersController : ControllerBase
 		_dbContext = dbContext;
 	}
 
-	[Obsolete("Use the new route instead.")]
-	[HttpGet("/api/players/{id}/flag")]
-	[ProducesResponseType(StatusCodes.Status200OK)]
-	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	public ActionResult<string> GetPlayerFlagById([Required] int id)
-	{
-		var player = _dbContext.Players.AsNoTracking().Select(p => new { p.Id, p.CountryCode }).FirstOrDefault(p => p.Id == id);
-		return player?.CountryCode ?? string.Empty;
-	}
-
 	[HttpGet("{id}/country-code")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
