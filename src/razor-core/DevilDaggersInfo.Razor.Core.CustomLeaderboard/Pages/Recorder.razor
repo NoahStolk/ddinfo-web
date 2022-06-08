@@ -1,11 +1,32 @@
 @page "/"
 
-<div class="grid grid-cols-2">
-	<span>Marker:</span>
-	<span>@_marker</span>
+<div class="grid grid-cols-2 max-w-lg">
+	<div class="grid grid-cols-2">
+		<span>Marker</span>
+		<span>@(_marker?.ToString("X") ?? "Fetching...")</span>
 
-	<span>Recording:</span>
-	<span>@_isRecording</span>
+		<span>Devil Daggers process</span>
+		<span>@(ReaderService.HasProcess ? "Attached" : "Waiting...")</span>
+
+		<span>Memory initialized</span>
+		<span>@(ReaderService.IsInitialized ? "Done" : "Waiting...")</span>
+
+		<span>Status</span>
+		<span>@(_state)</span>
+
+		<Recording Block="ReaderService.MainBlock" BlockPrevious="ReaderService.MainBlockPrevious" />
+	</div>
+
+	<div class="grid grid-cols-2">
+		<span>Local validation</span>
+		<span>@(_localError)</span>
+
+		<span>Leaderboard exists</span>
+		<span>@(_leaderboardExists)</span>
+
+		if (@_uploadSuccess != null)
+		{
+			<Leaderboard UploadSuccess="_uploadSuccess" />
+		}
+	</div>
 </div>
-
-<Recording Block="ReaderService.MainBlock" BlockPrevious="ReaderService.MainBlockPrevious" />

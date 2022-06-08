@@ -27,6 +27,9 @@ public class ReaderService
 	public MainBlock MainBlockPrevious { get; private set; }
 	public MainBlock MainBlock { get; private set; }
 
+	public bool HasProcess => _process != null;
+	public bool IsInitialized => _isInitialized;
+
 	public bool FindWindow()
 	{
 		_process = _nativeMemoryService.GetDevilDaggersProcess();

@@ -11,9 +11,19 @@ public partial class Recorder : IDisposable
 	private Timer? _timer;
 
 	private long? _marker;
-	private bool _isRecording = true;
+	private State _state;
 	private MainBlock _finalRecordedMainBlock;
 	private GetUploadSuccess? _uploadSuccess;
+	private string? _localError;
+	private bool? _leaderboardExists;
+
+	private enum State
+	{
+		Recording = 0,
+		WaitingForRestart = 1,
+		WaitingForLocalReplay = 2,
+		Uploading = 3,
+	}
 
 	[Inject]
 	public IClientConfiguration ClientConfiguration { get; set; } = null!;
@@ -62,13 +72,22 @@ public partial class Recorder : IDisposable
 
 		ReaderService.Scan();
 
-		if (!_isRecording)
+		if (_state != State.Recording)
 		{
-			if (ReaderService.MainBlock.Time == ReaderService.MainBlockPrevious.Time || ReaderService.MainBlock.Status == (int)GameStatus.LocalReplay)
+			if (ReaderService.MainBlock.Time == ReaderService.MainBlockPrevious.Time)
+			{
+				_state = State.WaitingForRestart;
 				return;
+			}
 
-			_isRecording = true;
-			_uploadSuccess = null;
+			if (ReaderService.MainBlock.Status == (int)GameStatus.LocalReplay)
+			{
+				_state = State.WaitingForLocalReplay;
+				return;
+			}
+
+			_state = State.Recording;
+			ClearUploadState();
 		}
 
 		bool justDied = !ReaderService.MainBlock.IsPlayerAlive && ReaderService.MainBlockPrevious.IsPlayerAlive;
@@ -76,7 +95,7 @@ public partial class Recorder : IDisposable
 		if (!uploadRun)
 			return;
 
-		// TODO: We need to stop the timer here so it doesn't re-read memory while we're uploading the run...
+		// TODO: We need to pause the timer here so it doesn't re-read memory while we're uploading the run...
 		// When the validation is built, then the memory is re-read, and then we create the request, it will be invalid.
 		if (!ReaderService.MainBlock.StatsLoaded)
 		{
@@ -90,25 +109,28 @@ public partial class Recorder : IDisposable
 			return;
 		}
 
-		_isRecording = false;
+		_state = State.Uploading;
 
-		string? errorMessage = ReaderService.ValidateRunLocally();
-		if (errorMessage == null)
+		_localError = ReaderService.ValidateRunLocally();
+		if (_localError == null)
 		{
+			_leaderboardExists = await NetworkService.CheckIfLeaderboardExists(ReaderService.MainBlock.SurvivalHashMd5);
+			if (!_leaderboardExists.Value)
+				return;
+
 			GetUploadSuccess? uploadSuccess = await UploadService.UploadRun();
 			if (uploadSuccess != null)
 			{
 				_uploadSuccess = uploadSuccess;
 				_finalRecordedMainBlock = ReaderService.MainBlock;
 			}
-			else
-			{
-				await Task.Delay(TimeSpan.FromSeconds(0.5));
-			}
 		}
-		else
-		{
-			await Task.Delay(TimeSpan.FromSeconds(0.5));
-		}
+	}
+
+	private void ClearUploadState()
+	{
+		_uploadSuccess = null;
+		_localError = null;
+		_leaderboardExists = null;
 	}
 }
