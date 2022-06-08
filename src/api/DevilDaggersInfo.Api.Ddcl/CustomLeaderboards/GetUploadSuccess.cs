@@ -4,16 +4,27 @@ public record GetUploadSuccess
 {
 	public string Message { get; init; } = string.Empty;
 
-	public int TotalPlayers { get; init; }
-
-	public GetCustomLeaderboardDdcl Leaderboard { get; init; } = null!;
+	public SubmissionType SubmissionType { get; init; }
 
 	public CustomLeaderboardCategory Category { get; init; }
 
+	public string SpawnsetName { get; init; } = string.Empty;
+
+	public List<GetCustomEntry> SortedEntries { get; init; } = new();
+
+	[Obsolete("Use SortedEntries.Count instead.")] // Used by DDCL 1.8.3
+	public int TotalPlayers { get; init; }
+
+	[Obsolete("Use individual properties instead.")] // Used by DDCL 1.8.3
+	public GetCustomLeaderboardDdcl Leaderboard { get; init; } = null!;
+
+	[Obsolete("Use SortedEntries instead.")] // Used by DDCL 1.8.3
 	public List<GetCustomEntryDdcl> Entries { get; init; } = new();
 
+	[Obsolete("Use SubmissionType instead.")] // Used by DDCL 1.8.3
 	public bool IsNewPlayerOnThisLeaderboard { get; init; }
 
+	[Obsolete("Use SubmissionType instead.")] // Used by DDCL 1.8.3
 	public bool IsHighscore { get; init; }
 
 	public GetScoreState<int> RankState { get; init; }

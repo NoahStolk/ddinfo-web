@@ -207,7 +207,7 @@ public class CustomEntryProcessorTests
 		UploadResponse uploadSuccess = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
 
 		_dbContext.Verify(db => db.SaveChangesAsync(default), Times.AtLeastOnce);
-		Assert.AreEqual(1, uploadSuccess.TotalPlayers);
+		Assert.AreEqual(1, uploadSuccess.SortedEntries.Count);
 		Assert.IsTrue(uploadSuccess.Message.StartsWith("No new highscore"));
 	}
 
@@ -218,7 +218,7 @@ public class CustomEntryProcessorTests
 		UploadResponse uploadSuccess = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
 
 		_dbContext.Verify(db => db.SaveChangesAsync(default), Times.AtLeastOnce);
-		Assert.AreEqual(1, uploadSuccess.TotalPlayers);
+		Assert.AreEqual(1, uploadSuccess.SortedEntries.Count);
 		Assert.IsTrue(uploadSuccess.Message.StartsWith("NEW HIGHSCORE"));
 	}
 

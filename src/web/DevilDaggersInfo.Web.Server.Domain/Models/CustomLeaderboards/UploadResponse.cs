@@ -4,15 +4,11 @@ public class UploadResponse
 {
 	public string Message { get; init; } = string.Empty;
 
-	public int TotalPlayers { get; init; }
+	public SubmissionType SubmissionType { get; init; }
 
 	public CustomLeaderboardSummary Leaderboard { get; init; } = null!;
 
-	public List<CustomEntryWithReplay> Entries { get; init; } = new();
-
-	public bool IsNewPlayerOnThisLeaderboard { get; init; }
-
-	public bool IsHighscore { get; init; }
+	public List<CustomEntryWithReplay> SortedEntries { get; init; } = new();
 
 	public UploadResponseScoreState<int> RankState { get; init; }
 
