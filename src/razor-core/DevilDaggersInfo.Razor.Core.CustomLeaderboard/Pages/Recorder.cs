@@ -23,8 +23,10 @@ public partial class Recorder : IDisposable
 		WaitingForRestart,
 		WaitingForLocalReplay,
 		WaitingForLeaderboardReplay,
+		WaitingForStats,
+		WaitingForReplay,
 		Uploading,
-		WaitingForStatsAndReplay,
+		CompletedUpload,
 	}
 
 	[Inject]
@@ -59,6 +61,10 @@ public partial class Recorder : IDisposable
 
 	private async Task Record()
 	{
+		// Don't start more threads and alter the main block when we are uploading.
+		if (_state is State.WaitingForStats or State.WaitingForReplay or State.Uploading)
+			return;
+
 		if (!_marker.HasValue)
 		{
 			_marker = await NetworkService.GetMarker(ClientConfiguration.GetOperatingSystem());
@@ -98,21 +104,13 @@ public partial class Recorder : IDisposable
 		if (!uploadRun)
 			return;
 
-		_state = State.WaitingForStatsAndReplay;
-
-		// TODO: We need to pause the timer here so it doesn't re-read memory while we're uploading the run...
-		// When the validation is built, then the memory is re-read, and then we create the request, it will be invalid.
-		if (!ReaderService.MainBlock.StatsLoaded)
-		{
+		_state = State.WaitingForStats;
+		while (!ReaderService.MainBlock.StatsLoaded)
 			await Task.Delay(TimeSpan.FromSeconds(0.5));
-			return;
-		}
 
-		if (!ReaderService.IsReplayValid())
-		{
+		_state = State.WaitingForReplay;
+		while (!ReaderService.IsReplayValid())
 			await Task.Delay(TimeSpan.FromSeconds(0.5));
-			return;
-		}
 
 		_state = State.Uploading;
 
@@ -130,6 +128,8 @@ public partial class Recorder : IDisposable
 				_finalRecordedMainBlock = ReaderService.MainBlock;
 			}
 		}
+
+		_state = State.CompletedUpload;
 	}
 
 	private void ClearUploadState()
