@@ -1,37 +1,38 @@
 @page "/"
 
-<div class="grid grid-cols-2">
-	<div class="grid grid-cols-2">
-		<span>Marker</span>
-		<span>@(_marker == null ? "Fetching..." : $"0x{_marker.Value:X16}")</span>
+<div class="grid grid-cols-2 max-w-md m-2 p-2 bg-[#111]">
+	<span>Marker</span>
+	<span>@(_marker == null ? "Fetching..." : $"0x{_marker.Value:X16}")</span>
 
-		<span>Devil Daggers process</span>
-		<span>@(ReaderService.HasProcess ? "Attached" : "Waiting...")</span>
+	<span>Devil Daggers process</span>
+	<span>@(ReaderService.HasProcess ? "Attached" : "Waiting...")</span>
 
-		<span>Memory initialized</span>
-		<span>@(ReaderService.IsInitialized ? "Done" : "Waiting...")</span>
+	<span>Memory initialized</span>
+	<span>@(ReaderService.IsInitialized ? "Done" : "Waiting...")</span>
 
-		<span>Status</span>
-		<span>@(_state)</span>
+	<span>State</span>
+	<span>@(_state)</span>
+</div>
 
-		<div>
-			<Recording Block="ReaderService.MainBlock" BlockPrevious="ReaderService.MainBlockPrevious" />
-		</div>
-	</div>
+<div class="max-w-md m-2 p-2 bg-[#100]">
+	@if (ReaderService.IsInitialized)
+	{
+		<Recording Block="ReaderService.MainBlock" BlockPrevious="ReaderService.MainBlockPrevious" />
+	}
+</div>
 
-	<div class="grid grid-cols-2">
-		<span>Local validation</span>
-		<span>@(_localError)</span>
+<div class="grid grid-cols-2 m-2 p-2 bg-[#210]">
+	<span>Local validation</span>
+	<span>@(_localError)</span>
 
-		<span>Leaderboard exists?</span>
-		<span>@(_leaderboardExists)</span>
+	<span>Leaderboard exists?</span>
+	<span>@(_leaderboardExists)</span>
 
-		<span>Upload</span>
-		<span>TODO</span>
+	<span>Upload</span>
+	<span>TODO</span>
 
-		@if (_uploadSuccess != null)
-		{
-			<Leaderboard UploadSuccess="_uploadSuccess" />
-		}
-	</div>
+	@if (_uploadSuccess != null)
+	{
+		<Leaderboard UploadSuccess="_uploadSuccess" />
+	}
 </div>
