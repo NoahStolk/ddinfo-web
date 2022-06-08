@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
+using DevilDaggersInfo.Core.CustomLeaderboard.Enums;
 using DevilDaggersInfo.Core.CustomLeaderboard.Memory;
 using System.Diagnostics;
 using System.Text;
@@ -11,6 +12,8 @@ public class ReaderService
 	private const int _statesBufferSize = 112;
 
 	private long _memoryBlockAddress;
+	private Process? _process;
+	private bool _isInitialized;
 
 	private readonly INativeMemoryService _nativeMemoryService;
 
@@ -19,40 +22,44 @@ public class ReaderService
 		_nativeMemoryService = nativeMemoryService;
 	}
 
-	public bool IsInitialized { get; set; }
-
-	public Process? Process { get; private set; }
-
 	public byte[] Buffer { get; } = new byte[_bufferSize];
 
 	public MainBlock MainBlockPrevious { get; private set; }
 	public MainBlock MainBlock { get; private set; }
 
-	public void FindWindow()
+	public bool HasProcess => _process != null;
+	public bool IsInitialized => _isInitialized;
+
+	public bool FindWindow()
 	{
-		Process = _nativeMemoryService.GetDevilDaggersProcess();
+		_process = _nativeMemoryService.GetDevilDaggersProcess();
+		if (_process == null)
+			_isInitialized = false;
+
+		return _process != null;
 	}
 
-	public void Initialize(long ddstatsMarkerOffset)
+	public bool Initialize(long ddstatsMarkerOffset)
 	{
-		if (IsInitialized || Process?.MainModule == null)
-			return;
+		if (_isInitialized || _process?.MainModule == null)
+			return _isInitialized;
 
-		long? memoryBlockAddress = GetMemoryBlockAddress(Process, ddstatsMarkerOffset);
+		long? memoryBlockAddress = GetMemoryBlockAddress(_process, ddstatsMarkerOffset);
 		if (!memoryBlockAddress.HasValue)
-			return;
+			return _isInitialized;
 
 		_memoryBlockAddress = memoryBlockAddress.Value;
 
-		IsInitialized = true;
+		_isInitialized = true;
+		return _isInitialized;
 	}
 
 	public void Scan()
 	{
-		if (Process == null)
+		if (_process == null)
 			return;
 
-		_nativeMemoryService.ReadMemory(Process, _memoryBlockAddress, Buffer, 0, _bufferSize);
+		_nativeMemoryService.ReadMemory(_process, _memoryBlockAddress, Buffer, 0, _bufferSize);
 
 		MainBlockPrevious = MainBlock;
 		MainBlock = new(Buffer);
@@ -60,11 +67,11 @@ public class ReaderService
 
 	public AddGameData GetGameDataForUpload()
 	{
-		if (Process == null)
+		if (_process == null)
 			return new();
 
 		byte[] buffer = new byte[_statesBufferSize * MainBlock.StatsCount];
-		_nativeMemoryService.ReadMemory(Process, MainBlock.StatsBase, buffer, 0, buffer.Length);
+		_nativeMemoryService.ReadMemory(_process, MainBlock.StatsBase, buffer, 0, buffer.Length);
 
 		AddGameData gameData = new();
 
@@ -124,36 +131,52 @@ public class ReaderService
 		return gameData;
 	}
 
+	public string? ValidateRunLocally()
+	{
+		const float minimalTime = 0.01f;
+
+		if (MainBlock.PlayerId <= 0)
+			return $"Invalid player ID '{MainBlock.PlayerId}'.";
+
+		if (MainBlock.Time < minimalTime)
+			return $"Timer is under {minimalTime:0.0000}. Unable to validate.";
+
+		if (MainBlock.Status == (int)GameStatus.LocalReplay)
+			return "Local replays are not uploaded.";
+
+		return null;
+	}
+
 	public bool IsReplayValid()
 	{
-		if (Process == null || MainBlock.ReplayLength <= 0 || MainBlock.ReplayLength > 30 * 1024 * 1024)
+		if (_process == null || MainBlock.ReplayLength <= 0 || MainBlock.ReplayLength > 30 * 1024 * 1024)
 			return false;
 
 		byte[] headerBytes = new byte[6];
-		_nativeMemoryService.ReadMemory(Process, MainBlock.ReplayBase, headerBytes, 0, headerBytes.Length);
+		_nativeMemoryService.ReadMemory(_process, MainBlock.ReplayBase, headerBytes, 0, headerBytes.Length);
 		string header = Encoding.Default.GetString(headerBytes);
 		return header == "ddrpl.";
 	}
 
 	public byte[] GetReplayForUpload()
 	{
-		if (Process == null)
+		if (_process == null)
 			return Array.Empty<byte>();
 
 		byte[] buffer = new byte[MainBlock.ReplayLength];
-		_nativeMemoryService.ReadMemory(Process, MainBlock.ReplayBase, buffer, 0, buffer.Length);
+		_nativeMemoryService.ReadMemory(_process, MainBlock.ReplayBase, buffer, 0, buffer.Length);
 
 		return buffer;
 	}
 
 	public void WriteReplayToMemory(byte[] replay)
 	{
-		if (Process == null)
+		if (_process == null)
 			return;
 
-		_nativeMemoryService.WriteMemory(Process, MainBlock.ReplayBase, replay, 0, replay.Length);
-		_nativeMemoryService.WriteMemory(Process, _memoryBlockAddress + 312, BitConverter.GetBytes(replay.Length), 0, sizeof(int));
-		_nativeMemoryService.WriteMemory(Process, _memoryBlockAddress + 316, new byte[] { 1 }, 0, 1);
+		_nativeMemoryService.WriteMemory(_process, MainBlock.ReplayBase, replay, 0, replay.Length);
+		_nativeMemoryService.WriteMemory(_process, _memoryBlockAddress + 312, BitConverter.GetBytes(replay.Length), 0, sizeof(int));
+		_nativeMemoryService.WriteMemory(_process, _memoryBlockAddress + 316, new byte[] { 1 }, 0, 1);
 	}
 
 	private long? GetMemoryBlockAddress(Process process, long ddstatsMarkerOffset)

@@ -4,6 +4,8 @@ public class CustomEntryWithReplay
 {
 	public int Id { get; init; }
 
+	public int Rank { get; init; }
+
 	public int PlayerId { get; init; }
 
 	public string PlayerName { get; init; } = null!;

@@ -1,10 +1,9 @@
 using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
 using DevilDaggersInfo.Api.Ddcl.ProcessMemory;
 using DevilDaggersInfo.Api.Ddcl.Tools;
-using DevilDaggersInfo.Core.CustomLeaderboard.Configuration;
+using DevilDaggersInfo.Core.CustomLeaderboard.Models;
 using DevilDaggersInfo.Core.CustomLeaderboards.HttpClients;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using System.Net;
 using System.Net.Http.Json;
 
@@ -12,29 +11,27 @@ namespace DevilDaggersInfo.Core.CustomLeaderboard.Services;
 
 public class NetworkService
 {
-	//#if TESTING
-	//	public static readonly string BaseUrl = "https://localhost:44318";
-	//#else
-	//	public static readonly string BaseUrl = "https://devildaggers.info";
-	//#endif
-
 	private readonly ILogger<NetworkService> _logger;
+	private readonly IClientConfiguration _clientConfiguration;
+
 	private readonly DdclApiHttpClient _apiClient;
 
-	public NetworkService(ILogger<NetworkService> logger, IOptions<HostOptions> hostOptions)
+	public NetworkService(ILogger<NetworkService> logger, IClientConfiguration clientConfiguration)
 	{
 		_logger = logger;
-		_apiClient = new(new() { BaseAddress = new(hostOptions.Value.HostBaseUrl) });
+		_clientConfiguration = clientConfiguration;
+
+		_apiClient = new(new() { BaseAddress = new(clientConfiguration.GetHostBaseUrl()) });
 	}
 
-	public async Task<GetUpdate?> GetUpdate(ClientOptions clientInfo)
+	public async Task<GetUpdate?> GetUpdate()
 	{
 		const int maxAttempts = 5;
 		for (int i = 0; i < maxAttempts; i++)
 		{
 			try
 			{
-				return await _apiClient.GetUpdates(clientInfo.PublishMethod, clientInfo.BuildType);
+				return await _apiClient.GetUpdates(_clientConfiguration.GetToolPublishMethod(), _clientConfiguration.GetToolBuildType());
 			}
 			catch (Exception ex)
 			{
@@ -46,20 +43,17 @@ public class NetworkService
 		return null;
 	}
 
-	public async Task<long> GetMarker()
+	public async Task<long?> GetMarker(SupportedOperatingSystem supportedOperatingSystem)
 	{
-		while (true)
+		try
 		{
-			try
-			{
-				Marker marker = await _apiClient.GetMarker(SupportedOperatingSystem.Windows);
-				return marker.Value;
-			}
-			catch (Exception ex)
-			{
-				_logger.LogError(ex, "Error while trying to get marker.");
-				await Task.Delay(TimeSpan.FromSeconds(1));
-			}
+			Marker marker = await _apiClient.GetMarker(supportedOperatingSystem);
+			return marker.Value;
+		}
+		catch (Exception ex)
+		{
+			_logger.LogError(ex, "Error while trying to get marker.");
+			return null;
 		}
 	}
 
@@ -88,22 +82,25 @@ public class NetworkService
 		return false;
 	}
 
-	public async Task<GetUploadSuccess?> SubmitScore(AddUploadRequest uploadRequest)
+	public async Task<SubmissionResponseWrapper> SubmitScore(AddUploadRequest uploadRequest)
 	{
 		try
 		{
 			HttpResponseMessage hrm = await _apiClient.SubmitScoreForDdcl(uploadRequest);
-			return await hrm.Content.ReadFromJsonAsync<GetUploadSuccess>();
-		}
-		catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.BadRequest)
-		{
-			// TODO: Return bad request message.
-			return null;
+			if (hrm.IsSuccessStatusCode)
+			{
+				GetUploadSuccess success = await hrm.Content.ReadFromJsonAsync<GetUploadSuccess>() ?? throw new InvalidOperationException($"Could not deserialize the response as '{nameof(GetUploadSuccess)}'.");
+				return new(success);
+			}
+
+			string error = await hrm.Content.ReadAsStringAsync();
+			return new(error);
 		}
 		catch (Exception ex)
 		{
-			_logger.LogError(ex, "Error trying to submit score");
-			return null;
+			const string message = "Error trying to submit score";
+			_logger.LogError(ex, message);
+			return new(message);
 		}
 	}
 

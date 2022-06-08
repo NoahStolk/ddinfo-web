@@ -207,11 +207,9 @@ public class CustomEntryProcessor
 		return new()
 		{
 			Message = $"Welcome to the {spawnsetName} leaderboard!",
-			TotalPlayers = totalPlayers,
 			Leaderboard = ToLeaderboardSummary(customLeaderboard),
-			Entries = entries.ConvertAll(e => ToEntryWithReplay(e, replayIds)),
-			IsNewPlayerOnThisLeaderboard = true,
-			IsHighscore = true,
+			SortedEntries = entries.Select((e, i) => ToEntryWithReplay(e, i, replayIds)).ToList(),
+			SubmissionType = SubmissionType.FirstScore,
 			RankState = new(rank),
 			TimeState = new(newCustomEntry.Time.ToSecondsTime()),
 			EnemiesKilledState = new(newCustomEntry.EnemiesKilled),
@@ -230,29 +228,30 @@ public class CustomEntryProcessor
 		};
 	}
 
-	private static CustomEntryWithReplay ToEntryWithReplay(CustomEntryEntity e, List<int> replayIds) => new()
+	private static CustomEntryWithReplay ToEntryWithReplay(CustomEntryEntity customEntry, int rank, List<int> replayIds) => new()
 	{
-		ClientVersion = e.ClientVersion,
-		DaggersFired = e.DaggersFired,
-		DaggersHit = e.DaggersHit,
-		DeathType = e.DeathType,
-		EnemiesAlive = e.EnemiesAlive,
-		EnemiesKilled = e.EnemiesKilled,
-		GemsCollected = e.GemsCollected,
-		GemsDespawned = e.GemsDespawned,
-		GemsEaten = e.GemsEaten,
-		GemsTotal = e.GemsTotal,
-		HasReplay = replayIds.Contains(e.Id),
-		Id = e.Id,
-		HomingEaten = e.HomingEaten,
-		HomingStored = e.HomingStored,
-		LevelUpTime2 = e.LevelUpTime2,
-		LevelUpTime3 = e.LevelUpTime3,
-		LevelUpTime4 = e.LevelUpTime4,
-		PlayerId = e.PlayerId,
-		PlayerName = e.Player.PlayerName,
-		SubmitDate = e.SubmitDate,
-		Time = e.Time,
+		ClientVersion = customEntry.ClientVersion,
+		DaggersFired = customEntry.DaggersFired,
+		DaggersHit = customEntry.DaggersHit,
+		DeathType = customEntry.DeathType,
+		EnemiesAlive = customEntry.EnemiesAlive,
+		EnemiesKilled = customEntry.EnemiesKilled,
+		GemsCollected = customEntry.GemsCollected,
+		GemsDespawned = customEntry.GemsDespawned,
+		GemsEaten = customEntry.GemsEaten,
+		GemsTotal = customEntry.GemsTotal,
+		HasReplay = replayIds.Contains(customEntry.Id),
+		Id = customEntry.Id,
+		HomingEaten = customEntry.HomingEaten,
+		HomingStored = customEntry.HomingStored,
+		LevelUpTime2 = customEntry.LevelUpTime2,
+		LevelUpTime3 = customEntry.LevelUpTime3,
+		LevelUpTime4 = customEntry.LevelUpTime4,
+		PlayerId = customEntry.PlayerId,
+		PlayerName = customEntry.Player.PlayerName,
+		Rank = rank,
+		SubmitDate = customEntry.SubmitDate,
+		Time = customEntry.Time,
 	};
 
 	private static CustomLeaderboardSummary ToLeaderboardSummary(CustomLeaderboardEntity customLeaderboard) => new()
@@ -287,11 +286,9 @@ public class CustomEntryProcessor
 		return new()
 		{
 			Message = $"No new highscore for {customLeaderboard.Spawnset.Name}.",
-			TotalPlayers = entries.Count,
 			Leaderboard = ToLeaderboardSummary(customLeaderboard),
-			Entries = entries.ConvertAll(e => ToEntryWithReplay(e, replayIds)),
-			IsNewPlayerOnThisLeaderboard = false,
-			IsHighscore = false,
+			SortedEntries = entries.Select((e, i) => ToEntryWithReplay(e, i, replayIds)).ToList(),
+			SubmissionType = SubmissionType.NoHighscore,
 		};
 	}
 
@@ -386,11 +383,9 @@ public class CustomEntryProcessor
 		return new()
 		{
 			Message = $"NEW HIGHSCORE for {customLeaderboard.Spawnset.Name}!",
-			TotalPlayers = entries.Count,
 			Leaderboard = ToLeaderboardSummary(customLeaderboard),
-			Entries = entries.ConvertAll(e => ToEntryWithReplay(e, replayIds)),
-			IsNewPlayerOnThisLeaderboard = false,
-			IsHighscore = true,
+			SortedEntries = entries.Select((e, i) => ToEntryWithReplay(e, i, replayIds)).ToList(),
+			SubmissionType = SubmissionType.NewHighscore,
 			RankState = new(rank, rankDiff),
 			TimeState = new(customEntry.Time.ToSecondsTime(), timeDiff.ToSecondsTime()),
 			EnemiesKilledState = new(customEntry.EnemiesKilled, enemiesKilledDiff),

@@ -1,0 +1,49 @@
+@page "/"
+
+<div class="grid grid-cols-2 max-w-md m-2 p-2 bg-[#111]">
+	<span>Marker</span>
+	<span>@(_marker == null ? "Fetching..." : $"0x{_marker.Value:X16}")</span>
+
+	<span>Devil Daggers process</span>
+	<span>@(ReaderService.HasProcess ? "Attached" : "Waiting...")</span>
+
+	<span>Memory initialized</span>
+	<span>@(ReaderService.IsInitialized ? "Done" : "Waiting...")</span>
+
+	<span>State</span>
+	<span>@(_state)</span>
+</div>
+
+@if (ReaderService.IsInitialized)
+{
+	<div class="max-w-md m-2 p-2 bg-[#100]">
+		<Recording Block="ReaderService.MainBlock" BlockPrevious="ReaderService.MainBlockPrevious" />
+	</div>
+}
+
+<div class="grid grid-cols-2 m-2 p-2 bg-[#210]">
+	<span>Local validation</span>
+	<span>@(_localError)</span>
+
+	<span>Existing leaderboard</span>
+	<span>@(_leaderboardExists)</span>
+
+	<span>Upload</span>
+	<span>TODO</span>
+
+	@if (_submissionResponseWrapper != null)
+	{
+		if (_submissionResponseWrapper.HasError)
+		{
+			<span>Error: @_submissionResponseWrapper.ErrorMessage</span>
+		}
+		else
+		{
+			<Leaderboard UploadSuccess="_submissionResponseWrapper.Response" />
+		}
+	}
+	else
+	{
+		<span>Nothing uploaded</span>
+	}
+</div>

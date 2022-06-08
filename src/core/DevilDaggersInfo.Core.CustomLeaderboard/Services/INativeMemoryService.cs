@@ -8,5 +8,5 @@ public interface INativeMemoryService
 
 	void ReadMemory(Process process, long address, byte[] bytes, int offset, int size);
 
-	Process GetDevilDaggersProcess();
+	Process? GetDevilDaggersProcess();
 }
