@@ -208,7 +208,7 @@ public class CustomEntryProcessor
 		{
 			Message = $"Welcome to the {spawnsetName} leaderboard!",
 			Leaderboard = ToLeaderboardSummary(customLeaderboard),
-			SortedEntries = entries.Select((e, i) => ToEntryWithReplay(e, i + 1, replayIds)).ToList(),
+			SortedEntries = entries.Select((e, i) => ToEntryWithReplay(e, i + 1, customLeaderboard.GetDaggerFromTime(e.Time), replayIds)).ToList(),
 			SubmissionType = SubmissionType.FirstScore,
 			RankState = new(rank),
 			TimeState = new(newCustomEntry.Time.ToSecondsTime()),
@@ -245,7 +245,7 @@ public class CustomEntryProcessor
 		{
 			Message = $"No new highscore for {customLeaderboard.Spawnset.Name}.",
 			Leaderboard = ToLeaderboardSummary(customLeaderboard),
-			SortedEntries = entries.Select((e, i) => ToEntryWithReplay(e, i + 1, replayIds)).ToList(),
+			SortedEntries = entries.Select((e, i) => ToEntryWithReplay(e, i + 1, customLeaderboard.GetDaggerFromTime(e.Time), replayIds)).ToList(),
 			SubmissionType = SubmissionType.NoHighscore,
 		};
 	}
@@ -342,7 +342,7 @@ public class CustomEntryProcessor
 		{
 			Message = $"NEW HIGHSCORE for {customLeaderboard.Spawnset.Name}!",
 			Leaderboard = ToLeaderboardSummary(customLeaderboard),
-			SortedEntries = entries.Select((e, i) => ToEntryWithReplay(e, i + 1, replayIds)).ToList(),
+			SortedEntries = entries.Select((e, i) => ToEntryWithReplay(e, i + 1, customLeaderboard.GetDaggerFromTime(e.Time), replayIds)).ToList(),
 			SubmissionType = SubmissionType.NewHighscore,
 			RankState = new(rank, rankDiff),
 			TimeState = new(customEntry.Time.ToSecondsTime(), timeDiff.ToSecondsTime()),
@@ -469,7 +469,7 @@ public class CustomEntryProcessor
 		return customEntryIds.Where(id => File.Exists(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{id}.ddreplay"))).ToList();
 	}
 
-	private static CustomEntryWithReplay ToEntryWithReplay(CustomEntryEntity customEntry, int rank, List<int> replayIds) => new()
+	private static CustomEntryWithReplay ToEntryWithReplay(CustomEntryEntity customEntry, int rank, CustomLeaderboardDagger? dagger, List<int> replayIds) => new()
 	{
 		ClientVersion = customEntry.ClientVersion,
 		DaggersFired = customEntry.DaggersFired,
@@ -493,6 +493,7 @@ public class CustomEntryProcessor
 		Rank = rank,
 		SubmitDate = customEntry.SubmitDate,
 		Time = customEntry.Time,
+		CustomLeaderboardDagger = dagger,
 	};
 
 	private static CustomLeaderboardSummary ToLeaderboardSummary(CustomLeaderboardEntity customLeaderboard) => new()

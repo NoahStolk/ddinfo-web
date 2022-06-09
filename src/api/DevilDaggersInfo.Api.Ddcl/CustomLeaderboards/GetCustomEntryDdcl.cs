@@ -1,5 +1,6 @@
 namespace DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
 
+[Obsolete("Use GetCustomEntry instead.")]
 public record GetCustomEntryDdcl
 {
 	public int Id { get; init; }

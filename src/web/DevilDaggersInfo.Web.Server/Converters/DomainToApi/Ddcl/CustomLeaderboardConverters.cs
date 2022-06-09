@@ -99,6 +99,19 @@ public static class CustomLeaderboardConverters
 		Rank = customEntry.Rank,
 		SubmitDate = customEntry.SubmitDate,
 		TimeInSeconds = customEntry.Time.ToSecondsTime(),
+		CustomLeaderboardDagger = customEntry.CustomLeaderboardDagger.ToDdclApi(),
+	};
+
+	private static DdclApi.CustomLeaderboardDagger? ToDdclApi(this CustomLeaderboardDagger? customLeaderboardDagger) => customLeaderboardDagger switch
+	{
+		CustomLeaderboardDagger.Default => DdclApi.CustomLeaderboardDagger.Default,
+		CustomLeaderboardDagger.Bronze => DdclApi.CustomLeaderboardDagger.Bronze,
+		CustomLeaderboardDagger.Silver => DdclApi.CustomLeaderboardDagger.Silver,
+		CustomLeaderboardDagger.Golden => DdclApi.CustomLeaderboardDagger.Golden,
+		CustomLeaderboardDagger.Devil => DdclApi.CustomLeaderboardDagger.Devil,
+		CustomLeaderboardDagger.Leviathan => DdclApi.CustomLeaderboardDagger.Leviathan,
+		null => null,
+		_ => throw new InvalidEnumConversionException(customLeaderboardDagger),
 	};
 
 	private static DdclApi.GetCustomEntryDdcl ToDdclApiObsolete(this CustomEntryWithReplay customEntry) => new()

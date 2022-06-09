@@ -12,6 +12,8 @@ public class CustomEntryWithReplay
 
 	public int Time { get; init; }
 
+	public CustomLeaderboardDagger? CustomLeaderboardDagger { get; init; }
+
 	public int GemsCollected { get; init; }
 
 	public int EnemiesKilled { get; init; }

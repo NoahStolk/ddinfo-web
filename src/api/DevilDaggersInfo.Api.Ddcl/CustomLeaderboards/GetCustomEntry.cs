@@ -43,4 +43,6 @@ public record GetCustomEntry
 	public DateTime SubmitDate { get; init; }
 
 	public bool HasReplay { get; init; }
+
+	public CustomLeaderboardDagger? CustomLeaderboardDagger { get; init; }
 }
