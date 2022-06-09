@@ -208,7 +208,7 @@ public class CustomEntryProcessor
 		{
 			Message = $"Welcome to the {spawnsetName} leaderboard!",
 			Leaderboard = ToLeaderboardSummary(customLeaderboard),
-			SortedEntries = entries.Select((e, i) => ToEntryWithReplay(e, i, replayIds)).ToList(),
+			SortedEntries = entries.Select((e, i) => ToEntryWithReplay(e, i + 1, replayIds)).ToList(),
 			SubmissionType = SubmissionType.FirstScore,
 			RankState = new(rank),
 			TimeState = new(newCustomEntry.Time.ToSecondsTime()),
@@ -228,48 +228,6 @@ public class CustomEntryProcessor
 		};
 	}
 
-	private static CustomEntryWithReplay ToEntryWithReplay(CustomEntryEntity customEntry, int rank, List<int> replayIds) => new()
-	{
-		ClientVersion = customEntry.ClientVersion,
-		DaggersFired = customEntry.DaggersFired,
-		DaggersHit = customEntry.DaggersHit,
-		DeathType = customEntry.DeathType,
-		EnemiesAlive = customEntry.EnemiesAlive,
-		EnemiesKilled = customEntry.EnemiesKilled,
-		GemsCollected = customEntry.GemsCollected,
-		GemsDespawned = customEntry.GemsDespawned,
-		GemsEaten = customEntry.GemsEaten,
-		GemsTotal = customEntry.GemsTotal,
-		HasReplay = replayIds.Contains(customEntry.Id),
-		Id = customEntry.Id,
-		HomingEaten = customEntry.HomingEaten,
-		HomingStored = customEntry.HomingStored,
-		LevelUpTime2 = customEntry.LevelUpTime2,
-		LevelUpTime3 = customEntry.LevelUpTime3,
-		LevelUpTime4 = customEntry.LevelUpTime4,
-		PlayerId = customEntry.PlayerId,
-		PlayerName = customEntry.Player.PlayerName,
-		Rank = rank,
-		SubmitDate = customEntry.SubmitDate,
-		Time = customEntry.Time,
-	};
-
-	private static CustomLeaderboardSummary ToLeaderboardSummary(CustomLeaderboardEntity customLeaderboard) => new()
-	{
-		Category = customLeaderboard.Category,
-		Daggers = !customLeaderboard.IsFeatured ? null : new()
-		{
-			Bronze = customLeaderboard.TimeBronze,
-			Silver = customLeaderboard.TimeSilver,
-			Golden = customLeaderboard.TimeGolden,
-			Devil = customLeaderboard.TimeDevil,
-			Leviathan = customLeaderboard.TimeLeviathan,
-		},
-		Id = customLeaderboard.Id,
-		SpawnsetId = customLeaderboard.SpawnsetId,
-		SpawnsetName = customLeaderboard.Spawnset.Name,
-	};
-
 	private async Task<UploadResponse> ProcessNoHighscoreAsync(UploadRequest uploadRequest, CustomLeaderboardEntity customLeaderboard, string spawnsetName)
 	{
 		if (!uploadRequest.IsReplay)
@@ -287,7 +245,7 @@ public class CustomEntryProcessor
 		{
 			Message = $"No new highscore for {customLeaderboard.Spawnset.Name}.",
 			Leaderboard = ToLeaderboardSummary(customLeaderboard),
-			SortedEntries = entries.Select((e, i) => ToEntryWithReplay(e, i, replayIds)).ToList(),
+			SortedEntries = entries.Select((e, i) => ToEntryWithReplay(e, i + 1, replayIds)).ToList(),
 			SubmissionType = SubmissionType.NoHighscore,
 		};
 	}
@@ -384,7 +342,7 @@ public class CustomEntryProcessor
 		{
 			Message = $"NEW HIGHSCORE for {customLeaderboard.Spawnset.Name}!",
 			Leaderboard = ToLeaderboardSummary(customLeaderboard),
-			SortedEntries = entries.Select((e, i) => ToEntryWithReplay(e, i, replayIds)).ToList(),
+			SortedEntries = entries.Select((e, i) => ToEntryWithReplay(e, i + 1, replayIds)).ToList(),
 			SubmissionType = SubmissionType.NewHighscore,
 			RankState = new(rank, rankDiff),
 			TimeState = new(customEntry.Time.ToSecondsTime(), timeDiff.ToSecondsTime()),
@@ -510,4 +468,46 @@ public class CustomEntryProcessor
 	{
 		return customEntryIds.Where(id => File.Exists(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{id}.ddreplay"))).ToList();
 	}
+
+	private static CustomEntryWithReplay ToEntryWithReplay(CustomEntryEntity customEntry, int rank, List<int> replayIds) => new()
+	{
+		ClientVersion = customEntry.ClientVersion,
+		DaggersFired = customEntry.DaggersFired,
+		DaggersHit = customEntry.DaggersHit,
+		DeathType = customEntry.DeathType,
+		EnemiesAlive = customEntry.EnemiesAlive,
+		EnemiesKilled = customEntry.EnemiesKilled,
+		GemsCollected = customEntry.GemsCollected,
+		GemsDespawned = customEntry.GemsDespawned,
+		GemsEaten = customEntry.GemsEaten,
+		GemsTotal = customEntry.GemsTotal,
+		HasReplay = replayIds.Contains(customEntry.Id),
+		Id = customEntry.Id,
+		HomingEaten = customEntry.HomingEaten,
+		HomingStored = customEntry.HomingStored,
+		LevelUpTime2 = customEntry.LevelUpTime2,
+		LevelUpTime3 = customEntry.LevelUpTime3,
+		LevelUpTime4 = customEntry.LevelUpTime4,
+		PlayerId = customEntry.PlayerId,
+		PlayerName = customEntry.Player.PlayerName,
+		Rank = rank,
+		SubmitDate = customEntry.SubmitDate,
+		Time = customEntry.Time,
+	};
+
+	private static CustomLeaderboardSummary ToLeaderboardSummary(CustomLeaderboardEntity customLeaderboard) => new()
+	{
+		Category = customLeaderboard.Category,
+		Daggers = !customLeaderboard.IsFeatured ? null : new()
+		{
+			Bronze = customLeaderboard.TimeBronze,
+			Silver = customLeaderboard.TimeSilver,
+			Golden = customLeaderboard.TimeGolden,
+			Devil = customLeaderboard.TimeDevil,
+			Leviathan = customLeaderboard.TimeLeviathan,
+		},
+		Id = customLeaderboard.Id,
+		SpawnsetId = customLeaderboard.SpawnsetId,
+		SpawnsetName = customLeaderboard.Spawnset.Name,
+	};
 }
