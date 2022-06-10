@@ -64,13 +64,8 @@ public class NetworkService
 		{
 			try
 			{
-				await _apiClient.CustomLeaderboardExistsBySpawnsetHash(survivalHashMd5);
-
-				return true;
-			}
-			catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
-			{
-				return false;
+				HttpResponseMessage hrm = await _apiClient.CustomLeaderboardExistsBySpawnsetHash(survivalHashMd5);
+				return hrm.IsSuccessStatusCode;
 			}
 			catch (Exception ex)
 			{
