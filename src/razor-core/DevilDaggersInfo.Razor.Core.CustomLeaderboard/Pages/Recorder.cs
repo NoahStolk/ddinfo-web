@@ -51,10 +51,12 @@ public partial class Recorder : IDisposable
 			{
 				await Record();
 				await InvokeAsync(StateHasChanged);
+
+				_timer?.Change(50, Timeout.Infinite);
 			},
 			state: null,
 			dueTime: 0,
-			period: 50);
+			period: Timeout.Infinite);
 	}
 
 	private async Task Record()
