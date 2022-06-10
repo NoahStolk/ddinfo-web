@@ -54,7 +54,8 @@ public class CustomLeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult> CustomLeaderboardExistsBySpawnsetHashObsolete([FromQuery] byte[] hash)
 	{
-		return await CustomLeaderboardExistsBySpawnsetHashRepo(hash);
+		await CustomLeaderboardExistsBySpawnsetHashRepo(hash);
+		return Ok();
 	}
 
 	[HttpHead]
@@ -62,24 +63,23 @@ public class CustomLeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult> CustomLeaderboardExistsBySpawnsetHash([FromQuery] byte[] hash)
 	{
-		return await CustomLeaderboardExistsBySpawnsetHashRepo(hash);
+		await CustomLeaderboardExistsBySpawnsetHashRepo(hash);
+		return Ok();
 	}
 
-	private async Task<ActionResult> CustomLeaderboardExistsBySpawnsetHashRepo(byte[] hash)
+	private async Task CustomLeaderboardExistsBySpawnsetHashRepo(byte[] hash)
 	{
 		SpawnsetHashCacheData? data = _spawnsetHashCache.GetSpawnset(hash);
 		if (data == null)
-			return NotFound();
+			throw new NotFoundException();
 
 		var spawnset = await _dbContext.Spawnsets
 			.Select(s => new { s.Id, s.Name })
 			.FirstOrDefaultAsync(s => s.Name == data.Name);
 		if (spawnset == null)
-			return NotFound();
+			throw new NotFoundException();
 
 		if (!await _dbContext.CustomLeaderboards.AnyAsync(cl => cl.SpawnsetId == spawnset.Id))
-			return NotFound();
-
-		return Ok();
+			throw new NotFoundException();
 	}
 }
