@@ -4,7 +4,7 @@ using DevilDaggersInfo.Api.Ddcl.ProcessMemory;
 using DevilDaggersInfo.Api.Ddcl.Tools;
 using System.Net.Http.Json;
 
-namespace DevilDaggersInfo.Core.CustomLeaderboards.HttpClients;
+namespace DevilDaggersInfo.Core.CustomLeaderboard.HttpClients;
 
 public partial class DdclApiHttpClient
 {
@@ -16,6 +16,15 @@ public partial class DdclApiHttpClient
 	public async Task<HttpResponseMessage> SubmitScoreForDdcl(AddUploadRequest uploadRequest)
 	{
 		return await SendRequest(new HttpMethod("POST"), $"/api/custom-entries/submit", JsonContent.Create(uploadRequest));
+	}
+
+	public async Task<GetCustomLeaderboard> GetCustomLeaderboardByHash(byte[] hash)
+	{
+		Dictionary<string, object?> queryParameters = new()
+		{
+			{ nameof(hash), hash }
+		};
+		return await SendGetRequest<GetCustomLeaderboard>(BuildUrlWithQuery($"api/ddcl/custom-leaderboards/{id}", queryParameters));
 	}
 
 	public async Task<HttpResponseMessage> CustomLeaderboardExistsBySpawnsetHashObsolete(byte[] hash)

@@ -7,5 +7,5 @@ internal static class Constants
 	public static readonly string ServerProjectPath = Path.Combine(_devRoot, "web", "DevilDaggersInfo.Web.Server");
 
 	public static readonly string ClientProjectPath = Path.Combine(_devRoot, "web", "DevilDaggersInfo.Web.Client");
-	public static readonly string CoreClProjectPath = Path.Combine(_devRoot, "core", "DevilDaggersInfo.Core.CustomLeaderboards");
+	public static readonly string CoreClProjectPath = Path.Combine(_devRoot, "core", "DevilDaggersInfo.Core.CustomLeaderboard");
 }
