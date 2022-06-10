@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Server.Domain.Utils;
+namespace DevilDaggersInfo.Common.Utils;
 
 public static class ArrayUtils
 {

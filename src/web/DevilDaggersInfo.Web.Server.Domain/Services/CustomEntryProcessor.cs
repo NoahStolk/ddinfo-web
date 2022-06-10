@@ -12,7 +12,6 @@ using DevilDaggersInfo.Web.Server.Domain.Extensions;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Models.Spawnsets;
-using DevilDaggersInfo.Web.Server.Domain.Utils;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
