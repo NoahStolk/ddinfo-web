@@ -9,6 +9,6 @@ public enum GameStatus
 	Dead = 4,
 	OwnReplayFromLastRun = 5,
 	OwnReplayFromLeaderboard = 6,
-	OtherPlayersReplay = 7,
+	OtherPlayersReplayFromLeaderboard = 7,
 	LocalReplay = 8,
 }
