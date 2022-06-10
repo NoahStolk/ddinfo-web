@@ -19,13 +19,6 @@
 	<div class="max-w-md m-2 p-2 border-solid border-2 border-[#411]">
 		<Recording Block="ReaderService.MainBlock" BlockPrevious="ReaderService.MainBlockPrevious" />
 	</div>
-
-	@if (_customLeaderboard != null)
-	{
-		<div class="max-w-lg m-2 p-2 border-solid border-2 border-[#411]">
-			<Leaderboard CustomLeaderboard="_customLeaderboard" />
-		</div>
-	}
 }
 
 @if (_submissionResponseWrapper != null)
@@ -40,5 +33,12 @@
 			<div class="text-green">Upload successful</div>
 			@*TODO: Show diff with previous PB.*@
 		}
+	</div>
+}
+
+@if (_customLeaderboard != null)
+{
+	<div class="max-w-lg m-2 p-2 border-solid border-2 border-[#411]">
+		<Leaderboard CustomLeaderboard="_customLeaderboard" />
 	</div>
 }

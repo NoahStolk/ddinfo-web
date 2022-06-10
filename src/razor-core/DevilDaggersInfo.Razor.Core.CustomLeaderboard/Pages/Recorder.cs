@@ -113,5 +113,7 @@ public partial class Recorder : IDisposable
 		_state = State.Uploading;
 		_submissionResponseWrapper = await UploadService.UploadRun(ReaderService.MainBlock);
 		_state = State.CompletedUpload;
+
+		_customLeaderboard = await NetworkService.GetLeaderboard(ReaderService.MainBlock.SurvivalHashMd5);
 	}
 }
