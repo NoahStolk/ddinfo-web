@@ -8,7 +8,7 @@ public class UploadResponse
 
 	public CustomLeaderboardSummary Leaderboard { get; init; } = null!;
 
-	public List<CustomEntryWithReplay> SortedEntries { get; init; } = new();
+	public List<CustomEntry> SortedEntries { get; init; } = new();
 
 	public UploadResponseScoreState<int> RankState { get; init; }
 

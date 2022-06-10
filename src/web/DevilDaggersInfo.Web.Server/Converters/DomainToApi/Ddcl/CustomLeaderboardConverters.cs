@@ -30,11 +30,19 @@ public static class CustomLeaderboardConverters
 		LevelUpTime4State = uploadResponse.LevelUpTime4State.ToDdclApi(),
 		Message = uploadResponse.Message,
 		RankState = uploadResponse.RankState.ToDdclApi(),
-		SortedEntries = uploadResponse.SortedEntries.ConvertAll(e => e.ToDdclApi()),
 		SpawnsetName = uploadResponse.Leaderboard.SpawnsetName,
 		SubmissionType = uploadResponse.SubmissionType.ToDdclApi(),
 		TimeState = uploadResponse.TimeState.ToDdclApi(),
 		TotalPlayers = uploadResponse.SortedEntries.Count,
+	};
+
+	public static DdclApi.GetCustomLeaderboard ToDdclApi(this SortedCustomLeaderboard sortedCustomLeaderboard) => new()
+	{
+		Category = sortedCustomLeaderboard.Category.ToDdclApi(),
+		Daggers = sortedCustomLeaderboard.Daggers?.ToDdclApi(),
+		IsAscending = sortedCustomLeaderboard.Category.IsAscending(),
+		SortedEntries = sortedCustomLeaderboard.CustomEntries.ConvertAll(ce => ce.ToDdclApi()),
+		SpawnsetName = sortedCustomLeaderboard.SpawnsetName,
 	};
 
 	private static DdclApi.GetCustomLeaderboardDdcl ToDdclApi(this CustomLeaderboardSummary customLeaderboard) => new()
@@ -76,7 +84,7 @@ public static class CustomLeaderboardConverters
 		where T : struct
 		=> new(scoreState.Value, scoreState.ValueDifference);
 
-	private static DdclApi.GetCustomEntry ToDdclApi(this CustomEntryWithReplay customEntry) => new()
+	private static DdclApi.GetCustomEntry ToDdclApi(this CustomEntry customEntry) => new()
 	{
 		DaggersFired = customEntry.DaggersFired,
 		DaggersHit = customEntry.DaggersHit,
@@ -114,7 +122,7 @@ public static class CustomLeaderboardConverters
 		_ => throw new InvalidEnumConversionException(customLeaderboardDagger),
 	};
 
-	private static DdclApi.GetCustomEntryDdcl ToDdclApiObsolete(this CustomEntryWithReplay customEntry) => new()
+	private static DdclApi.GetCustomEntryDdcl ToDdclApiObsolete(this CustomEntry customEntry) => new()
 	{
 		ClientVersion = customEntry.ClientVersion,
 		DaggersFired = customEntry.DaggersFired,

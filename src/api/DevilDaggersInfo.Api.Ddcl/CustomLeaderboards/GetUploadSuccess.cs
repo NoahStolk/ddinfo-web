@@ -6,25 +6,25 @@ public record GetUploadSuccess
 
 	public SubmissionType SubmissionType { get; init; }
 
-	public CustomLeaderboardCategory Category { get; init; }
-
+	[Obsolete("Will be removed.")] // Used by DDCL 1.8.3
 	public string SpawnsetName { get; init; } = string.Empty;
 
-	public List<GetCustomEntry> SortedEntries { get; init; } = new();
+	[Obsolete("Will be removed.")] // Used by DDCL 1.8.3
+	public CustomLeaderboardCategory Category { get; init; }
 
-	[Obsolete("Use SortedEntries.Count instead.")] // Used by DDCL 1.8.3
+	[Obsolete("Will be removed.")] // Used by DDCL 1.8.3
 	public int TotalPlayers { get; init; }
 
-	[Obsolete("Use individual properties instead.")] // Used by DDCL 1.8.3
+	[Obsolete("Will be removed.")] // Used by DDCL 1.8.3
 	public GetCustomLeaderboardDdcl Leaderboard { get; init; } = null!;
 
-	[Obsolete("Use SortedEntries instead.")] // Used by DDCL 1.8.3
+	[Obsolete("Will be removed.")] // Used by DDCL 1.8.3
 	public List<GetCustomEntryDdcl> Entries { get; init; } = new();
 
-	[Obsolete("Use SubmissionType instead.")] // Used by DDCL 1.8.3
+	[Obsolete("Will be removed.")] // Used by DDCL 1.8.3
 	public bool IsNewPlayerOnThisLeaderboard { get; init; }
 
-	[Obsolete("Use SubmissionType instead.")] // Used by DDCL 1.8.3
+	[Obsolete("Will be removed.")] // Used by DDCL 1.8.3
 	public bool IsHighscore { get; init; }
 
 	public GetScoreState<int> RankState { get; init; }

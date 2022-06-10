@@ -53,6 +53,8 @@ public class CustomEntry
 
 	public CustomLeaderboardsClient Client { get; set; }
 
+	public bool HasReplay { get; init; }
+
 	public double Accuracy => DaggersFired == 0 ? 0 : DaggersHit / (double)DaggersFired;
 
 	public bool HasGraphs => Client != CustomLeaderboardsClient.DevilDaggersCustomLeaderboards || ClientVersionParsed >= FeatureConstants.DdclGraphs;
