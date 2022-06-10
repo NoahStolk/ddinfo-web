@@ -3,20 +3,22 @@
 
 <div>@UploadSuccess.Message</div>
 
-<div class="grid gap-x-2 grid-cols-6 m-2 p-2">
+<div class="grid gap-x-2 grid-cols-7 m-2 p-2">
 	@foreach (GetCustomEntry entry in UploadSuccess.SortedEntries)
 	{
 		string color = (entry.CustomLeaderboardDagger ?? CustomLeaderboardDagger.Silver).GetColorCode();
 		<span class="text-right">@entry.Rank</span>
 		<span class="col-span-2" style="color: @color;">@entry.PlayerName</span>
 		<span class="col-span-2 text-right" style="color: @color;">@entry.TimeInSeconds.ToString("N4")</span>
-		<span>@entry.HasReplay</span>
+		<span class="col-span-2">
+			@if (entry.HasReplay)
+			{
+				<a class="link" @onclick="@(async () => await InjectReplay(entry.Id))">View replay</a>
+			}
+			else
+			{
+				@:Replay not available
+			}
+		</span>
 	}
 </div>
-
-@code
-{
-	[Parameter]
-	[EditorRequired]
-	public GetUploadSuccess UploadSuccess { get; set; } = null!;
-}
