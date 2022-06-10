@@ -266,7 +266,7 @@ public partial class MainApiHttpClient
 	{
 		Dictionary<string, object?> queryParameters = new()
 		{
-			{ nameof(hash), hash }
+			{ nameof(hash), Convert.ToBase64String(hash) }
 		};
 		return await SendGetRequest<GetSpawnsetByHash>(BuildUrlWithQuery($"api/spawnsets/by-hash", queryParameters));
 	}

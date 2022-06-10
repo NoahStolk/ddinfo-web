@@ -54,7 +54,7 @@ internal class GetEndpoint : Endpoint
 				.Replace(_apiRoute, ApiRoute);
 		}
 
-		string queryParameters = string.Join($",{Environment.NewLine}", QueryParameters.ConvertAll(p => $"{{ nameof({p.Name}), {p.Name} }}"));
+		string queryParameters = string.Join($",{Environment.NewLine}", QueryParameters.ConvertAll(p => p.Build()));
 		return _endpointWithQueryTemplate
 			.Replace(_returnType, ReturnType)
 			.Replace(_methodName, MethodName)

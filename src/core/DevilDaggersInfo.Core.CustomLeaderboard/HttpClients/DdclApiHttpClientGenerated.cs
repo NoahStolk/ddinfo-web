@@ -22,7 +22,7 @@ public partial class DdclApiHttpClient
 	{
 		Dictionary<string, object?> queryParameters = new()
 		{
-			{ nameof(hash), hash }
+			{ nameof(hash), Convert.ToBase64String(hash) }
 		};
 		return await SendGetRequest<GetCustomLeaderboard>(BuildUrlWithQuery($"api/ddcl/custom-leaderboards/", queryParameters));
 	}
@@ -31,7 +31,7 @@ public partial class DdclApiHttpClient
 	{
 		Dictionary<string, object?> queryParameters = new()
 		{
-			{ nameof(hash), hash }
+			{ nameof(hash), Convert.ToBase64String(hash) }
 		};
 		return await SendRequest(new HttpMethod("HEAD"), BuildUrlWithQuery($"/api/custom-leaderboards", queryParameters));
 	}
@@ -40,7 +40,7 @@ public partial class DdclApiHttpClient
 	{
 		Dictionary<string, object?> queryParameters = new()
 		{
-			{ nameof(hash), hash }
+			{ nameof(hash), Convert.ToBase64String(hash) }
 		};
 		return await SendRequest(new HttpMethod("HEAD"), BuildUrlWithQuery($"api/ddcl/custom-leaderboards/", queryParameters));
 	}
