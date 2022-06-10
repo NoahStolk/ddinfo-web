@@ -131,22 +131,6 @@ public class ReaderService
 		return gameData;
 	}
 
-	public string? ValidateRunLocally()
-	{
-		const float minimalTime = 0.01f;
-
-		if (MainBlock.PlayerId <= 0)
-			return $"Invalid player ID '{MainBlock.PlayerId}'.";
-
-		if (MainBlock.Time < minimalTime)
-			return $"Timer is under {minimalTime:0.0000}. Unable to validate.";
-
-		if (MainBlock.Status == (int)GameStatus.LocalReplay)
-			return "Local replays are not uploaded.";
-
-		return null;
-	}
-
 	public bool IsReplayValid()
 	{
 		if (_process == null || MainBlock.ReplayLength <= 0 || MainBlock.ReplayLength > 30 * 1024 * 1024)

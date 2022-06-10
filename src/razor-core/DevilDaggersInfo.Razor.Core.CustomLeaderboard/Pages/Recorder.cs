@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
 using DevilDaggersInfo.Core.CustomLeaderboard.Enums;
 using DevilDaggersInfo.Core.CustomLeaderboard.Memory;
 using DevilDaggersInfo.Core.CustomLeaderboard.Models;
@@ -13,9 +14,7 @@ public partial class Recorder : IDisposable
 	private long? _marker;
 	private State _state;
 	private SubmissionResponseWrapper? _submissionResponseWrapper;
-	private MainBlock? _finalRecordedMainBlock;
-	private string? _localError;
-	private bool? _leaderboardExists;
+	private GetCustomLeaderboard? _customLeaderboard;
 
 	private enum State
 	{
@@ -88,19 +87,20 @@ public partial class Recorder : IDisposable
 				return;
 			}
 
-			GameStatus status = (GameStatus)ReaderService.MainBlock.Status;
-			if (status is GameStatus.LocalReplay or GameStatus.OwnReplayFromLeaderboard)
-			{
-				_state = status == GameStatus.LocalReplay ? State.WaitingForLocalReplay : State.WaitingForLeaderboardReplay;
-				return;
-			}
-
 			_state = State.Recording;
-			ClearUploadState();
+			_submissionResponseWrapper = null;
 		}
 
+		if (_customLeaderboard == null || ReaderService.MainBlock.SurvivalHashMd5 != ReaderService.MainBlockPrevious.SurvivalHashMd5)
+			_customLeaderboard = await NetworkService.GetLeaderboard(ReaderService.MainBlock.SurvivalHashMd5);
+
+		GameStatus status = (GameStatus)ReaderService.MainBlock.Status;
+		bool waitForLocalOrLbReplay = status is GameStatus.LocalReplay or GameStatus.OwnReplayFromLeaderboard;
+		if (waitForLocalOrLbReplay)
+			_state = status == GameStatus.LocalReplay ? State.WaitingForLocalReplay : State.WaitingForLeaderboardReplay;
+
 		bool justDied = !ReaderService.MainBlock.IsPlayerAlive && ReaderService.MainBlockPrevious.IsPlayerAlive;
-		bool uploadRun = justDied && (ReaderService.MainBlock.GameMode == 0 || ReaderService.MainBlock.TimeAttackOrRaceFinished);
+		bool uploadRun = !waitForLocalOrLbReplay && justDied && (ReaderService.MainBlock.GameMode == 0 || ReaderService.MainBlock.TimeAttackOrRaceFinished);
 		if (!uploadRun)
 			return;
 
@@ -113,26 +113,7 @@ public partial class Recorder : IDisposable
 			await Task.Delay(TimeSpan.FromSeconds(0.5));
 
 		_state = State.Uploading;
-
-		_localError = ReaderService.ValidateRunLocally();
-		if (_localError == null)
-		{
-			_leaderboardExists = await NetworkService.CheckIfLeaderboardExists(ReaderService.MainBlock.SurvivalHashMd5);
-			if (!_leaderboardExists.Value)
-				return;
-
-			_submissionResponseWrapper = await UploadService.UploadRun();
-			_finalRecordedMainBlock = ReaderService.MainBlock;
-		}
-
+		_submissionResponseWrapper = await UploadService.UploadRun();
 		_state = State.CompletedUpload;
-	}
-
-	private void ClearUploadState()
-	{
-		_submissionResponseWrapper = null;
-		_finalRecordedMainBlock = null;
-		_localError = null;
-		_leaderboardExists = null;
 	}
 }

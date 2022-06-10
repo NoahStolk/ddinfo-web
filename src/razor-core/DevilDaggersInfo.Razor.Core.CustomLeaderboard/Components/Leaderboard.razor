@@ -1,10 +1,10 @@
 @using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards
 @using DevilDaggersInfo.Razor.Core.CustomLeaderboard.Extensions
 
-<div>@UploadSuccess.Message</div>
+<div>@CustomLeaderboard.SpawnsetName</div>
 
 <div class="grid gap-x-2 grid-cols-7 m-2 p-2">
-	@foreach (GetCustomEntry entry in UploadSuccess.SortedEntries)
+	@foreach (GetCustomEntry entry in CustomLeaderboard.SortedEntries)
 	{
 		string color = (entry.CustomLeaderboardDagger ?? CustomLeaderboardDagger.Silver).GetColorCode();
 		<span class="text-right">@entry.Rank</span>

@@ -8,7 +8,7 @@ public partial class Leaderboard
 {
 	[Parameter]
 	[EditorRequired]
-	public GetUploadSuccess UploadSuccess { get; set; } = null!;
+	public GetCustomLeaderboard CustomLeaderboard { get; set; } = null!;
 
 	[Inject]
 	public NetworkService NetworkService { get; set; } = null!;

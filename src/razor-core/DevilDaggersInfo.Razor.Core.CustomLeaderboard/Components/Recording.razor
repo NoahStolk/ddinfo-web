@@ -7,8 +7,16 @@
 
 <CascadingValue Value="this">
 	<div class="grid grid-cols-2 mb-2">
-		<span>Player</span>
-		<span class="text-right">@Block.PlayerName</span>
+		@if (status is GameStatus.OwnReplayFromLeaderboard or GameStatus.OtherPlayersReplayFromLeaderboard or GameStatus.LocalReplay)
+		{
+			<span>Player</span>
+			<span class="text-right">@Block.ReplayPlayerName (@Block.ReplayPlayerId)</span>
+		}
+		else
+		{
+			<span>Player</span>
+			<span class="text-right">@Block.PlayerName (@Block.PlayerId)</span>
+		}
 
 		<span>Status</span>
 		<span class="text-right">@status</span>

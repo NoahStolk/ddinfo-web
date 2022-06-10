@@ -21,6 +21,10 @@ public class UploadService
 
 	public async Task<SubmissionResponseWrapper> UploadRun()
 	{
+		bool leaderboardExists = await _networkService.CheckIfLeaderboardExists(_readerService.MainBlock.SurvivalHashMd5);
+		if (!leaderboardExists)
+			return new("This leaderboard does not exist.");
+
 		byte[] timeAsBytes = BitConverter.GetBytes(_readerService.MainBlock.Time);
 		byte[] levelUpTime2AsBytes = BitConverter.GetBytes(_readerService.MainBlock.LevelUpTime2);
 		byte[] levelUpTime3AsBytes = BitConverter.GetBytes(_readerService.MainBlock.LevelUpTime3);

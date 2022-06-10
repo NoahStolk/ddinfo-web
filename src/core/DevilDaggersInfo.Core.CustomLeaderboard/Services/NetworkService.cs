@@ -104,6 +104,25 @@ public class NetworkService
 		}
 	}
 
+	public async Task<GetCustomLeaderboard?> GetLeaderboard(byte[] hash)
+	{
+		const int maxAttempts = 5;
+		for (int i = 0; i < maxAttempts; i++)
+		{
+			try
+			{
+				return await _apiClient.GetCustomLeaderboardByHash(hash);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex, "Error while trying to retrieve leaderboard (attempt {attempt} out of {maxAttempts}).", i + 1, maxAttempts);
+				await Task.Delay(TimeSpan.FromSeconds(1));
+			}
+		}
+
+		return null;
+	}
+
 	public async Task<byte[]?> GetReplay(int customEntryId)
 	{
 		try

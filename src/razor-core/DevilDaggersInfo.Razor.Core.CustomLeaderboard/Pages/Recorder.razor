@@ -17,46 +17,27 @@
 @if (ReaderService.IsInitialized)
 {
 	<div class="max-w-md m-2 p-2 border-solid border-2 border-[#411]">
-		<Recording Block="_finalRecordedMainBlock ?? ReaderService.MainBlock" BlockPrevious="_finalRecordedMainBlock ?? ReaderService.MainBlockPrevious" />
+		<Recording Block="ReaderService.MainBlock" BlockPrevious="ReaderService.MainBlockPrevious" />
 	</div>
+
+	@if (_customLeaderboard != null)
+	{
+		<Leaderboard CustomLeaderboard="_customLeaderboard" />
+	}
 }
 
-@if (_state is State.Uploading or State.WaitingForRestart)
-{
-	<div class="max-w-lg m-2 p-2 border-solid border-2 border-[#411]">
-		@if (_localError != null)
-		{
-			<div class="text-red">Local validation failed: @_localError</div>
-		}
-		else
-		{
-			<div class="text-green">Local validation OK</div>
-			@if (!_leaderboardExists.HasValue)
-			{
-				<div class="text-yellow">Checking if leaderboard exists...</div>
-			}
-			else if (!_leaderboardExists.Value)
-			{
-				<div class="text-red">Leaderboard does not exist</div>
-			}
-			else
-			{
-				<div class="text-green">Leaderboard exists</div>
-
-				@if (_submissionResponseWrapper == null)
-				{
-					<div class="text-yellow">Uploading...</div>
-				}
-				else if (_submissionResponseWrapper.HasError)
-				{
-					<div class="text-red">Server error: @_submissionResponseWrapper.ErrorMessage</div>
-				}
-				else
-				{
-					<div class="text-green">Upload successful</div>
-					<Leaderboard UploadSuccess="_submissionResponseWrapper.Response" />
-				}
-			}
-		}
-	</div>
-}
+<div class="max-w-lg m-2 p-2 border-solid border-2 border-[#411]">
+	@if (_submissionResponseWrapper == null)
+	{
+		<div class="text-yellow">Uploading...</div>
+	}
+	else if (_submissionResponseWrapper.HasError)
+	{
+		<div class="text-red">Server error: @_submissionResponseWrapper.ErrorMessage</div>
+	}
+	else
+	{
+		<div class="text-green">Upload successful</div>
+		@*TODO: Show diff with previous PB.*@
+	}
+</div>
