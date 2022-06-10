@@ -13,10 +13,12 @@ namespace DevilDaggersInfo.Web.Server.Domain.Repositories;
 public class CustomLeaderboardRepository
 {
 	private readonly ApplicationDbContext _dbContext;
+	private readonly CustomEntryRepository _customEntryRepository;
 
-	public CustomLeaderboardRepository(ApplicationDbContext dbContext)
+	public CustomLeaderboardRepository(ApplicationDbContext dbContext, CustomEntryRepository customEntryRepository)
 	{
 		_dbContext = dbContext;
+		_customEntryRepository = customEntryRepository;
 	}
 
 	public async Task<(List<CustomLeaderboardOverview> CustomLeaderboards, int TotalCount)> GetCustomLeaderboardOverviewsAsync(
@@ -173,10 +175,12 @@ public class CustomLeaderboardRepository
 		if (customLeaderboard == null)
 			throw new NotFoundException($"Custom leaderboard '{id}' could not be found.");
 
+		List<int> existingReplayIds = _customEntryRepository.GetExistingCustomEntryReplayIds(customLeaderboard.CustomEntries!.ConvertAll(ce => ce.Id));
+
 		return new()
 		{
 			Category = customLeaderboard.Category,
-			CustomEntries = customLeaderboard.CustomEntries!
+			CustomEntries = customLeaderboard.CustomEntries
 				.Sort(customLeaderboard.Category)
 				.Select((ce, i) =>
 				{
@@ -200,6 +204,7 @@ public class CustomLeaderboardRepository
 						GemsDespawned = hasV3_1Values ? ce.GemsDespawned : null,
 						GemsEaten = hasV3_1Values ? ce.GemsEaten : null,
 						GemsTotal = hasV3_1Values ? ce.GemsTotal : null,
+						HasReplay = existingReplayIds.Contains(ce.Id),
 						HomingEaten = hasHomingEatenValue ? ce.HomingEaten : null,
 						HomingStored = ce.HomingStored,
 						Id = ce.Id,
