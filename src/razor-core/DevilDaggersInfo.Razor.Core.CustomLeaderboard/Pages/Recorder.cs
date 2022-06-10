@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
+using DevilDaggersInfo.Common.Utils;
 using DevilDaggersInfo.Core.CustomLeaderboard.Enums;
 using DevilDaggersInfo.Core.CustomLeaderboard.Models;
 using DevilDaggersInfo.Core.CustomLeaderboard.Services;
@@ -88,7 +89,7 @@ public partial class Recorder : IDisposable
 			_submissionResponseWrapper = null;
 		}
 
-		if (_customLeaderboard == null || ReaderService.MainBlock.SurvivalHashMd5 != ReaderService.MainBlockPrevious.SurvivalHashMd5)
+		if (_customLeaderboard == null || !ArrayUtils.AreEqual(ReaderService.MainBlock.SurvivalHashMd5, ReaderService.MainBlockPrevious.SurvivalHashMd5))
 			_customLeaderboard = await NetworkService.GetLeaderboard(ReaderService.MainBlock.SurvivalHashMd5);
 
 		GameStatus status = (GameStatus)ReaderService.MainBlock.Status;
