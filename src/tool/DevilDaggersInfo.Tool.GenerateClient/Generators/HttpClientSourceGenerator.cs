@@ -16,7 +16,6 @@ namespace {_namespace};
 public partial class {_className}
 {{
 {_endpointMethods}
-
 	private static string BuildUrlWithQuery(string baseUrl, Dictionary<string, object?> queryParameters)
 	{{
 		if (queryParameters.Count == 0)

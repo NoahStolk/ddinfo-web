@@ -9,6 +9,7 @@ public static class StringExtensions
 		"CS0105",
 		"CS1591",
 		"CS8618",
+		"RCS1214",
 		"S1128",
 		"SA1001",
 		"SA1027",
