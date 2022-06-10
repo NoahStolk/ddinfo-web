@@ -141,7 +141,7 @@ public class NetworkService
 		}
 		catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
 		{
-			_logger.LogError(ex, "Discrepancy in API: custom entry ID {id} does not have a replay.", customEntryId);
+			_logger.LogWarning(ex, "Custom entry ID {id} does not have a replay.", customEntryId);
 			return null;
 		}
 		catch (Exception ex)

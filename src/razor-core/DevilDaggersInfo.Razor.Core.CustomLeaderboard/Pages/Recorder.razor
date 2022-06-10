@@ -26,7 +26,7 @@
 	<div class="max-w-lg m-2 p-2 border-solid border-2 border-[#411]">
 		@if (_submissionResponseWrapper.HasError)
 		{
-			<div class="text-red">Server error: @_submissionResponseWrapper.ErrorMessage</div>
+			<div class="text-red">@_submissionResponseWrapper.ErrorMessage</div>
 		}
 		else
 		{
@@ -38,7 +38,7 @@
 
 @if (_customLeaderboard != null)
 {
-	<div class="max-w-lg m-2 p-2 border-solid border-2 border-[#411]">
+	<div class="min-w-xl m-2 p-2 border-solid border-2 border-[#411]">
 		<Leaderboard CustomLeaderboard="_customLeaderboard" />
 	</div>
 }
