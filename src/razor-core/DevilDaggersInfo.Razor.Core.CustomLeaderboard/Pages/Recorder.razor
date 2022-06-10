@@ -22,22 +22,23 @@
 
 	@if (_customLeaderboard != null)
 	{
-		<Leaderboard CustomLeaderboard="_customLeaderboard" />
+		<div class="max-w-lg m-2 p-2 border-solid border-2 border-[#411]">
+			<Leaderboard CustomLeaderboard="_customLeaderboard" />
+		</div>
 	}
 }
 
-<div class="max-w-lg m-2 p-2 border-solid border-2 border-[#411]">
-	@if (_submissionResponseWrapper == null)
-	{
-		<div class="text-yellow">Uploading...</div>
-	}
-	else if (_submissionResponseWrapper.HasError)
-	{
-		<div class="text-red">Server error: @_submissionResponseWrapper.ErrorMessage</div>
-	}
-	else
-	{
-		<div class="text-green">Upload successful</div>
-		@*TODO: Show diff with previous PB.*@
-	}
-</div>
+@if (_submissionResponseWrapper != null)
+{
+	<div class="max-w-lg m-2 p-2 border-solid border-2 border-[#411]">
+		@if (_submissionResponseWrapper.HasError)
+		{
+			<div class="text-red">Server error: @_submissionResponseWrapper.ErrorMessage</div>
+		}
+		else
+		{
+			<div class="text-green">Upload successful</div>
+			@*TODO: Show diff with previous PB.*@
+		}
+	</div>
+}
