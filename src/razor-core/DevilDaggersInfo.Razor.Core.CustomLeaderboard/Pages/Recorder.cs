@@ -1,6 +1,5 @@
 using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
 using DevilDaggersInfo.Core.CustomLeaderboard.Enums;
-using DevilDaggersInfo.Core.CustomLeaderboard.Memory;
 using DevilDaggersInfo.Core.CustomLeaderboard.Models;
 using DevilDaggersInfo.Core.CustomLeaderboard.Services;
 using Microsoft.AspNetCore.Components;
@@ -60,10 +59,6 @@ public partial class Recorder : IDisposable
 
 	private async Task Record()
 	{
-		// Don't start more threads and alter the main block when we are uploading.
-		if (_state is State.WaitingForStats or State.WaitingForReplay or State.Uploading)
-			return;
-
 		if (!_marker.HasValue)
 		{
 			_marker = await NetworkService.GetMarker(ClientConfiguration.GetOperatingSystem());
@@ -113,7 +108,7 @@ public partial class Recorder : IDisposable
 			await Task.Delay(TimeSpan.FromSeconds(0.5));
 
 		_state = State.Uploading;
-		_submissionResponseWrapper = await UploadService.UploadRun();
+		_submissionResponseWrapper = await UploadService.UploadRun(ReaderService.MainBlock);
 		_state = State.CompletedUpload;
 	}
 }
