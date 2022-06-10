@@ -1,7 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
 
-namespace DevilDaggersInfo.Core.CustomLeaderboards.HttpClients;
+namespace DevilDaggersInfo.Core.CustomLeaderboard.HttpClients;
 
 public partial class DdclApiHttpClient
 {

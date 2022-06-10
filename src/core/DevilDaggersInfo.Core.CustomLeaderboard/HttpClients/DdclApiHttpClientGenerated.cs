@@ -24,7 +24,7 @@ public partial class DdclApiHttpClient
 		{
 			{ nameof(hash), hash }
 		};
-		return await SendGetRequest<GetCustomLeaderboard>(BuildUrlWithQuery($"api/ddcl/custom-leaderboards/{id}", queryParameters));
+		return await SendGetRequest<GetCustomLeaderboard>(BuildUrlWithQuery($"api/ddcl/custom-leaderboards/", queryParameters));
 	}
 
 	public async Task<HttpResponseMessage> CustomLeaderboardExistsBySpawnsetHashObsolete(byte[] hash)

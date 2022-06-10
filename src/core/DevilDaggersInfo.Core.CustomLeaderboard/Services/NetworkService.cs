@@ -1,8 +1,8 @@
 using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
 using DevilDaggersInfo.Api.Ddcl.ProcessMemory;
 using DevilDaggersInfo.Api.Ddcl.Tools;
+using DevilDaggersInfo.Core.CustomLeaderboard.HttpClients;
 using DevilDaggersInfo.Core.CustomLeaderboard.Models;
-using DevilDaggersInfo.Core.CustomLeaderboards.HttpClients;
 using Microsoft.Extensions.Logging;
 using System.Net;
 using System.Net.Http.Json;
