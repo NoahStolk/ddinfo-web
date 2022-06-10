@@ -12,8 +12,8 @@ public partial class Recorder : IDisposable
 
 	private long? _marker;
 	private State _state;
-	private MainBlock _finalRecordedMainBlock;
 	private SubmissionResponseWrapper? _submissionResponseWrapper;
+	private MainBlock? _finalRecordedMainBlock;
 	private string? _localError;
 	private bool? _leaderboardExists;
 
@@ -131,6 +131,7 @@ public partial class Recorder : IDisposable
 	private void ClearUploadState()
 	{
 		_submissionResponseWrapper = null;
+		_finalRecordedMainBlock = null;
 		_localError = null;
 		_leaderboardExists = null;
 	}
