@@ -5,6 +5,8 @@ using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Extensions;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
+using DevilDaggersInfo.Web.Server.Domain.Models.Spawnsets;
+using DevilDaggersInfo.Web.Server.Domain.Services;
 using DevilDaggersInfo.Web.Server.Domain.Utils;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,11 +16,13 @@ public class CustomLeaderboardRepository
 {
 	private readonly ApplicationDbContext _dbContext;
 	private readonly CustomEntryRepository _customEntryRepository;
+	private readonly SpawnsetHashCache _spawnsetHashCache;
 
-	public CustomLeaderboardRepository(ApplicationDbContext dbContext, CustomEntryRepository customEntryRepository)
+	public CustomLeaderboardRepository(ApplicationDbContext dbContext, CustomEntryRepository customEntryRepository, SpawnsetHashCache spawnsetHashCache)
 	{
 		_dbContext = dbContext;
 		_customEntryRepository = customEntryRepository;
+		_spawnsetHashCache = spawnsetHashCache;
 	}
 
 	public async Task<(List<CustomLeaderboardOverview> CustomLeaderboards, int TotalCount)> GetCustomLeaderboardOverviewsAsync(
@@ -331,6 +335,27 @@ public class CustomLeaderboardRepository
 			TotalLeaderboards = customLeaderboards.Count,
 			TotalPoints = customLeaderboards.Sum(cl => cl.CustomEntries!.Count * GlobalCustomLeaderboardUtils.RankingMultiplier + GlobalCustomLeaderboardUtils.LeviathanBonus),
 		};
+	}
+
+	public async Task<int> GetCustomLeaderboardIdBySpawnsetHashAsync(byte[] hash)
+	{
+		SpawnsetHashCacheData? data = _spawnsetHashCache.GetSpawnset(hash);
+		if (data == null)
+			throw new NotFoundException();
+
+		var spawnset = await _dbContext.Spawnsets
+			.Select(s => new { s.Id, s.Name })
+			.FirstOrDefaultAsync(s => s.Name == data.Name);
+		if (spawnset == null)
+			throw new NotFoundException();
+
+		var customLeaderboard = await _dbContext.CustomLeaderboards
+			.Select(cl => new { cl.Id, cl.SpawnsetId })
+			.FirstOrDefaultAsync(cl => cl.SpawnsetId == spawnset.Id);
+		if (customLeaderboard == null)
+			throw new NotFoundException();
+
+		return customLeaderboard.Id;
 	}
 
 	private static CustomLeaderboardOverview ToOverview(CustomLeaderboardWorldRecord cl, Dictionary<int, int> customEntryCountByCustomLeaderboardId) => new()
