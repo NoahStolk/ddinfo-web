@@ -53,7 +53,7 @@
 			<span class="text-right">@entry.GemsCollected</span>
 			<span class="text-right">@entry.GemsDespawned</span>
 			<span class="text-right">@entry.GemsEaten</span>
-			<span class="text-right">@(entry.DaggersFired == 0 ? 0 : entry.DaggersHit / entry.DaggersFired)</span>
+			<span class="text-right">@((entry.DaggersFired == 0 ? 0 : entry.DaggersHit / (float)entry.DaggersFired).ToString("0.00%"))</span>
 			<span class="text-right" style="color: @death.Color.HexCode">@death.Name</span>
 			<span class="text-right">@entry.HomingStored</span>
 			<span class="text-right">@entry.HomingEaten</span>
