@@ -23,8 +23,17 @@ public class CustomLeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult<List<GetCustomLeaderboardOverviewDdLive>>> GetCustomLeaderboardsOverviewDdLive()
 	{
-		List<CustomLeaderboardOverview> cls = await _customLeaderboardRepository.GetCustomLeaderboardOverviewsAsync();
-		return cls.ConvertAll(cl => cl.ToGetCustomLeaderboardOverviewDdLive());
+		Domain.Models.Page<CustomLeaderboardOverview> cls = await _customLeaderboardRepository.GetCustomLeaderboardOverviewsAsync(
+			category: null,
+			spawnsetFilter: null,
+			authorFilter: null,
+			pageIndex: 0,
+			pageSize: int.MaxValue,
+			sortBy: CustomLeaderboardSorting.DateLastPlayed,
+			ascending: false,
+			selectedPlayerId: null,
+			onlyFeatured: false);
+		return cls.Results.ConvertAll(cl => cl.ToGetCustomLeaderboardOverviewDdLive());
 	}
 
 	[HttpGet("{id}")]

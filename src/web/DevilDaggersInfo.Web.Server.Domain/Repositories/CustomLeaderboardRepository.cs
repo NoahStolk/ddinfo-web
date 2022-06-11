@@ -4,6 +4,7 @@ using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Extensions;
+using DevilDaggersInfo.Web.Server.Domain.Models;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.Domain.Models.Spawnsets;
 using DevilDaggersInfo.Web.Server.Domain.Services;
@@ -25,21 +26,28 @@ public class CustomLeaderboardRepository
 		_spawnsetHashCache = spawnsetHashCache;
 	}
 
-	public async Task<(List<CustomLeaderboardOverview> CustomLeaderboards, int TotalCount)> GetCustomLeaderboardOverviewsAsync(
-		CustomLeaderboardCategory category,
+	public async Task<Page<CustomLeaderboardOverview>> GetCustomLeaderboardOverviewsAsync(
+		CustomLeaderboardCategory? category,
 		string? spawnsetFilter,
 		string? authorFilter,
 		int pageIndex,
 		int pageSize,
 		CustomLeaderboardSorting? sortBy,
-		bool ascending)
+		bool ascending,
+		int? selectedPlayerId,
+		bool onlyFeatured)
 	{
 		// Build query.
 		IQueryable<CustomLeaderboardEntity> customLeaderboardsQuery = _dbContext.CustomLeaderboards
 			.AsNoTracking()
 			.Include(cl => cl.Spawnset)
-				.ThenInclude(sf => sf.Player)
-			.Where(cl => category == cl.Category);
+				.ThenInclude(sf => sf.Player);
+
+		if (category.HasValue)
+			customLeaderboardsQuery = customLeaderboardsQuery.Where(cl => category == cl.Category);
+
+		if (onlyFeatured)
+			customLeaderboardsQuery = customLeaderboardsQuery.Where(cl => cl.IsFeatured);
 
 		// Casing is ignored by default because of IQueryable.
 		if (!string.IsNullOrWhiteSpace(spawnsetFilter))
@@ -49,9 +57,9 @@ public class CustomLeaderboardRepository
 			customLeaderboardsQuery = customLeaderboardsQuery.Where(cl => cl.Spawnset.Player.PlayerName.Contains(authorFilter));
 
 		// Execute query.
-		List<CustomLeaderboardEntity> customLeaderboards = customLeaderboardsQuery.ToList();
+		List<CustomLeaderboardEntity> customLeaderboards = await customLeaderboardsQuery.ToListAsync();
 
-		// Query custom entries for world record and amount of players.
+		// Query custom entries for additional data.
 		List<int> customLeaderboardIds = customLeaderboards.ConvertAll(cl => cl.Id);
 		List<CustomEntrySummary> customEntries = await _dbContext.CustomEntries
 			.AsNoTracking()
@@ -60,83 +68,6 @@ public class CustomLeaderboardRepository
 			.Where(ce => customLeaderboardIds.Contains(ce.CustomLeaderboardId))
 			.ToListAsync();
 
-		// Determine world records.
-		customEntries = customEntries.Sort(category).ToList();
-
-		// Map custom leaderboards with world record data.
-		List<CustomLeaderboardData> customLeaderboardWrs = customLeaderboards.ConvertAll(cl =>
-		{
-			CustomEntrySummary? worldRecord = customEntries.Find(clwr => clwr.CustomLeaderboardId == cl.Id);
-			CustomLeaderboardOverviewWorldRecord? worldRecordModel = worldRecord == null ? null : new()
-			{
-				Time = worldRecord.Time,
-				PlayerId = worldRecord.PlayerId,
-				PlayerName = worldRecord.PlayerName,
-				Dagger = cl.GetDaggerFromTime(worldRecord.Time),
-			};
-			return new CustomLeaderboardData(cl, worldRecordModel, null);
-		});
-
-		// Build dictionary for amount of players.
-		Dictionary<int, int> customEntryCountByCustomLeaderboardId = new();
-		foreach (int customLeaderboardId in customEntries.Select(ce => ce.CustomLeaderboardId))
-		{
-			if (customEntryCountByCustomLeaderboardId.ContainsKey(customLeaderboardId))
-				customEntryCountByCustomLeaderboardId[customLeaderboardId]++;
-			else
-				customEntryCountByCustomLeaderboardId.Add(customLeaderboardId, 1);
-		}
-
-		customLeaderboardWrs = (sortBy switch
-		{
-			CustomLeaderboardSorting.AuthorName => customLeaderboardWrs.OrderBy(cl => cl.CustomLeaderboard.Spawnset.Player.PlayerName.ToLower(), ascending),
-			CustomLeaderboardSorting.DateLastPlayed => customLeaderboardWrs.OrderBy(cl => cl.CustomLeaderboard.DateLastPlayed, ascending),
-			CustomLeaderboardSorting.SpawnsetName => customLeaderboardWrs.OrderBy(cl => cl.CustomLeaderboard.Spawnset.Name.ToLower(), ascending),
-			CustomLeaderboardSorting.TimeBronze => customLeaderboardWrs.OrderBy(cl => cl.CustomLeaderboard.IsFeatured ? cl.CustomLeaderboard.TimeBronze : 0, ascending),
-			CustomLeaderboardSorting.TimeSilver => customLeaderboardWrs.OrderBy(cl => cl.CustomLeaderboard.IsFeatured ? cl.CustomLeaderboard.TimeSilver : 0, ascending),
-			CustomLeaderboardSorting.TimeGolden => customLeaderboardWrs.OrderBy(cl => cl.CustomLeaderboard.IsFeatured ? cl.CustomLeaderboard.TimeGolden : 0, ascending),
-			CustomLeaderboardSorting.TimeDevil => customLeaderboardWrs.OrderBy(cl => cl.CustomLeaderboard.IsFeatured ? cl.CustomLeaderboard.TimeDevil : 0, ascending),
-			CustomLeaderboardSorting.TimeLeviathan => customLeaderboardWrs.OrderBy(cl => cl.CustomLeaderboard.IsFeatured ? cl.CustomLeaderboard.TimeLeviathan : 0, ascending),
-			CustomLeaderboardSorting.DateCreated => customLeaderboardWrs.OrderBy(cl => cl.CustomLeaderboard.DateCreated, ascending),
-			CustomLeaderboardSorting.Players => customLeaderboardWrs.OrderBy(cl => customEntryCountByCustomLeaderboardId.ContainsKey(cl.CustomLeaderboard.Id) ? customEntryCountByCustomLeaderboardId[cl.CustomLeaderboard.Id] : 0, ascending),
-			CustomLeaderboardSorting.Submits => customLeaderboardWrs.OrderBy(cl => cl.CustomLeaderboard.TotalRunsSubmitted, ascending),
-			CustomLeaderboardSorting.WorldRecord => customLeaderboardWrs.OrderBy(cl => cl.WorldRecord?.Time, ascending),
-			CustomLeaderboardSorting.TopPlayer => customLeaderboardWrs.OrderBy(cl => cl.WorldRecord?.PlayerName.ToLower(), ascending),
-			_ => customLeaderboardWrs.OrderBy(cl => cl.CustomLeaderboard.Id, ascending),
-		}).ToList();
-
-		int totalCustomLeaderboards = customLeaderboards.Count;
-		int lastPageIndex = totalCustomLeaderboards / pageSize;
-
-		return new()
-		{
-			CustomLeaderboards = customLeaderboardWrs
-				.Skip(Math.Min(pageIndex, lastPageIndex) * pageSize)
-				.Take(pageSize)
-				.Select(cl => ToOverview(cl, customEntryCountByCustomLeaderboardId))
-				.ToList(),
-			TotalCount = totalCustomLeaderboards,
-		};
-	}
-
-	public async Task<List<CustomLeaderboardOverview>> GetCustomLeaderboardOverviewsAsync(int? selectedPlayerId = null)
-	{
-		List<CustomLeaderboardEntity> customLeaderboards = await _dbContext.CustomLeaderboards
-			.AsNoTracking()
-			.Include(cl => cl.Spawnset)
-				.ThenInclude(sf => sf.Player)
-			.ToListAsync();
-
-		// Query custom entries for world record and amount of players.
-		List<int> customLeaderboardIds = customLeaderboards.ConvertAll(cl => cl.Id);
-		List<CustomEntrySummary> customEntries = await _dbContext.CustomEntries
-			.AsNoTracking()
-			.Include(ce => ce.Player)
-			.Select(ce => new CustomEntrySummary { CustomLeaderboardId = ce.CustomLeaderboardId, PlayerId = ce.PlayerId, PlayerName = ce.Player.PlayerName, Time = ce.Time, SubmitDate = ce.SubmitDate })
-			.Where(ce => customLeaderboardIds.Contains(ce.CustomLeaderboardId))
-			.ToListAsync();
-
-		// Map custom leaderboards with world record data.
 		List<CustomLeaderboardData> customLeaderboardData = new();
 		foreach (CustomLeaderboardEntity cl in customLeaderboards)
 		{
@@ -159,23 +90,37 @@ public class CustomLeaderboardRepository
 				Time = selectedEntry.Time,
 			};
 
-			customLeaderboardData.Add(new(cl, worldRecordModel, selectedPlayerStatsModel));
+			customLeaderboardData.Add(new(cl, worldRecordModel, selectedPlayerStatsModel, sortedCustomEntries.Count));
 		}
 
-		// Build dictionary for amount of players.
-		Dictionary<int, int> customEntryCountByCustomLeaderboardId = new();
-		foreach (int customLeaderboardId in customEntries.Select(ce => ce.CustomLeaderboardId))
+		customLeaderboardData = (sortBy switch
 		{
-			if (customEntryCountByCustomLeaderboardId.ContainsKey(customLeaderboardId))
-				customEntryCountByCustomLeaderboardId[customLeaderboardId]++;
-			else
-				customEntryCountByCustomLeaderboardId.Add(customLeaderboardId, 1);
-		}
+			CustomLeaderboardSorting.AuthorName => customLeaderboardData.OrderBy(cl => cl.CustomLeaderboard.Spawnset.Player.PlayerName.ToLower(), ascending),
+			CustomLeaderboardSorting.DateLastPlayed => customLeaderboardData.OrderBy(cl => cl.CustomLeaderboard.DateLastPlayed ?? cl.CustomLeaderboard.DateCreated, ascending),
+			CustomLeaderboardSorting.SpawnsetName => customLeaderboardData.OrderBy(cl => cl.CustomLeaderboard.Spawnset.Name.ToLower(), ascending),
+			CustomLeaderboardSorting.TimeBronze => customLeaderboardData.OrderBy(cl => cl.CustomLeaderboard.IsFeatured ? cl.CustomLeaderboard.TimeBronze : 0, ascending),
+			CustomLeaderboardSorting.TimeSilver => customLeaderboardData.OrderBy(cl => cl.CustomLeaderboard.IsFeatured ? cl.CustomLeaderboard.TimeSilver : 0, ascending),
+			CustomLeaderboardSorting.TimeGolden => customLeaderboardData.OrderBy(cl => cl.CustomLeaderboard.IsFeatured ? cl.CustomLeaderboard.TimeGolden : 0, ascending),
+			CustomLeaderboardSorting.TimeDevil => customLeaderboardData.OrderBy(cl => cl.CustomLeaderboard.IsFeatured ? cl.CustomLeaderboard.TimeDevil : 0, ascending),
+			CustomLeaderboardSorting.TimeLeviathan => customLeaderboardData.OrderBy(cl => cl.CustomLeaderboard.IsFeatured ? cl.CustomLeaderboard.TimeLeviathan : 0, ascending),
+			CustomLeaderboardSorting.DateCreated => customLeaderboardData.OrderBy(cl => cl.CustomLeaderboard.DateCreated, ascending),
+			CustomLeaderboardSorting.Players => customLeaderboardData.OrderBy(cl => cl.PlayerCount, ascending),
+			CustomLeaderboardSorting.Submits => customLeaderboardData.OrderBy(cl => cl.CustomLeaderboard.TotalRunsSubmitted, ascending),
+			CustomLeaderboardSorting.WorldRecord => customLeaderboardData.OrderBy(cl => cl.WorldRecord?.Time, ascending),
+			CustomLeaderboardSorting.TopPlayer => customLeaderboardData.OrderBy(cl => cl.WorldRecord?.PlayerName.ToLower(), ascending),
+			_ => customLeaderboardData.OrderBy(cl => cl.CustomLeaderboard.Id, ascending),
+		}).ToList();
 
-		return customLeaderboardData
-			.OrderByDescending(clwr => clwr.CustomLeaderboard.DateLastPlayed ?? clwr.CustomLeaderboard.DateCreated)
-			.Select(cl => ToOverview(cl, customEntryCountByCustomLeaderboardId))
-			.ToList();
+		int totalCustomLeaderboards = customLeaderboards.Count;
+		int lastPageIndex = totalCustomLeaderboards / pageSize;
+
+		return new(
+			results: customLeaderboardData
+				.Skip(Math.Min(pageIndex, lastPageIndex) * pageSize)
+				.Take(pageSize)
+				.Select(cl => ToOverview(cl))
+				.ToList(),
+			totalResults: totalCustomLeaderboards);
 	}
 
 	public async Task<SortedCustomLeaderboard> GetSortedCustomLeaderboardByIdAsync(int id)
@@ -369,7 +314,7 @@ public class CustomLeaderboardRepository
 		return customLeaderboard.Id;
 	}
 
-	private static CustomLeaderboardOverview ToOverview(CustomLeaderboardData cl, Dictionary<int, int> customEntryCountByCustomLeaderboardId) => new()
+	private static CustomLeaderboardOverview ToOverview(CustomLeaderboardData cl) => new()
 	{
 		Category = cl.CustomLeaderboard.Category,
 		Daggers = !cl.CustomLeaderboard.IsFeatured ? null : new()
@@ -383,7 +328,7 @@ public class CustomLeaderboardRepository
 		DateCreated = cl.CustomLeaderboard.DateCreated,
 		DateLastPlayed = cl.CustomLeaderboard.DateLastPlayed,
 		Id = cl.CustomLeaderboard.Id,
-		PlayerCount = customEntryCountByCustomLeaderboardId.ContainsKey(cl.CustomLeaderboard.Id) ? customEntryCountByCustomLeaderboardId[cl.CustomLeaderboard.Id] : 0,
+		PlayerCount = cl.PlayerCount,
 		SelectedPlayerStats = cl.SelectedPlayerStats,
 		SpawnsetAuthorId = cl.CustomLeaderboard.Spawnset.PlayerId,
 		SpawnsetAuthorName = cl.CustomLeaderboard.Spawnset.Player.PlayerName,
@@ -401,15 +346,17 @@ public class CustomLeaderboardRepository
 
 	private sealed class CustomLeaderboardData
 	{
-		public CustomLeaderboardData(CustomLeaderboardEntity customLeaderboard, CustomLeaderboardOverviewWorldRecord? worldRecord, CustomLeaderboardOverviewSelectedPlayerStats? selectedPlayerStats)
+		public CustomLeaderboardData(CustomLeaderboardEntity customLeaderboard, CustomLeaderboardOverviewWorldRecord? worldRecord, CustomLeaderboardOverviewSelectedPlayerStats? selectedPlayerStats, int playerCount)
 		{
 			CustomLeaderboard = customLeaderboard;
 			WorldRecord = worldRecord;
 			SelectedPlayerStats = selectedPlayerStats;
+			PlayerCount = playerCount;
 		}
 
 		public CustomLeaderboardEntity CustomLeaderboard { get; }
 		public CustomLeaderboardOverviewWorldRecord? WorldRecord { get; }
 		public CustomLeaderboardOverviewSelectedPlayerStats? SelectedPlayerStats { get; }
+		public int PlayerCount { get; }
 	}
 }

@@ -1,4 +1,6 @@
+using DevilDaggersInfo.Api.Ddcl;
 using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
+using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Ddcl;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Ddcl;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.Domain.Repositories;
@@ -28,10 +30,28 @@ public class CustomLeaderboardsController : ControllerBase
 
 	[HttpGet("overview")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	public async Task<ActionResult<List<GetCustomLeaderboardForOverview>>> GetCustomLeaderboardOverview(int selectedPlayerId)
+	public async Task<ActionResult<Page<GetCustomLeaderboardForOverview>>> GetCustomLeaderboardOverview(
+		CustomLeaderboardCategory category,
+		int pageIndex,
+		int pageSize,
+		int selectedPlayerId,
+		bool onlyFeatured)
 	{
-		List<CustomLeaderboardOverview> customLeaderboards = await _customLeaderboardRepository.GetCustomLeaderboardOverviewsAsync(selectedPlayerId);
-		return customLeaderboards.ConvertAll(cl => cl.ToDdclApi());
+		Domain.Models.Page<CustomLeaderboardOverview> customLeaderboards = await _customLeaderboardRepository.GetCustomLeaderboardOverviewsAsync(
+			category: category.ToDomain(),
+			spawnsetFilter: null,
+			authorFilter: null,
+			pageIndex: pageIndex,
+			pageSize: pageSize,
+			sortBy: CustomLeaderboardSorting.DateLastPlayed,
+			ascending: false,
+			selectedPlayerId: selectedPlayerId,
+			onlyFeatured: onlyFeatured);
+		return new Page<GetCustomLeaderboardForOverview>
+		{
+			Results = customLeaderboards.Results.ConvertAll(cl => cl.ToDdclApi()),
+			TotalResults = customLeaderboards.TotalResults,
+		};
 	}
 
 	[HttpHead("exists")]

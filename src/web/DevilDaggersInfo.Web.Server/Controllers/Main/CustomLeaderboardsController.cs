@@ -32,11 +32,20 @@ public class CustomLeaderboardsController : ControllerBase
 		CustomLeaderboardSorting? sortBy = null,
 		bool ascending = false)
 	{
-		(List<Model.CustomLeaderboardOverview> cls, int total) = await _customLeaderboardRepository.GetCustomLeaderboardOverviewsAsync(category.ToDomain(), spawnsetFilter, authorFilter, pageIndex, pageSize, sortBy?.ToDomain(), ascending);
+		Domain.Models.Page<Model.CustomLeaderboardOverview> cls = await _customLeaderboardRepository.GetCustomLeaderboardOverviewsAsync(
+			category: category.ToDomain(),
+			spawnsetFilter: spawnsetFilter,
+			authorFilter: authorFilter,
+			pageIndex: pageIndex,
+			pageSize: pageSize,
+			sortBy: sortBy?.ToDomain(),
+			ascending: ascending,
+			selectedPlayerId: null,
+			onlyFeatured: false);
 		return new Page<GetCustomLeaderboardOverview>
 		{
-			Results = cls.ConvertAll(cl => cl.ToGetCustomLeaderboardOverview()),
-			TotalResults = total,
+			Results = cls.Results.ConvertAll(cl => cl.ToGetCustomLeaderboardOverview()),
+			TotalResults = cls.TotalResults,
 		};
 	}
 
