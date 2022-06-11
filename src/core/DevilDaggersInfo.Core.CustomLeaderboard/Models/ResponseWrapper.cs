@@ -1,17 +1,15 @@
-using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
-
 namespace DevilDaggersInfo.Core.CustomLeaderboard.Models;
 
-public class SubmissionResponseWrapper
+public class ResponseWrapper<T>
 {
-	private readonly GetUploadSuccess? _response;
+	private readonly T? _response;
 
-	public SubmissionResponseWrapper(GetUploadSuccess response)
+	public ResponseWrapper(T response)
 	{
 		_response = response;
 	}
 
-	public SubmissionResponseWrapper(string errorMessage)
+	public ResponseWrapper(string errorMessage)
 	{
 		ErrorMessage = errorMessage;
 	}
@@ -24,7 +22,7 @@ public class SubmissionResponseWrapper
 	/// Returns the fetched response, or throws an <see cref="InvalidOperationException"/> when the response is <see langword="null"/>.
 	/// Make sure to check <see cref="HasError"/> before calling this method.
 	/// </summary>
-	public GetUploadSuccess Response
+	public T Response
 	{
 		get
 		{

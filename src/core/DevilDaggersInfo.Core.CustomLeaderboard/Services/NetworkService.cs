@@ -11,8 +11,6 @@ namespace DevilDaggersInfo.Core.CustomLeaderboard.Services;
 
 public class NetworkService
 {
-	private readonly List<Guid> _blockedHashes = new();
-
 	private readonly ILogger<NetworkService> _logger;
 	private readonly IClientConfiguration _clientConfiguration;
 
@@ -79,7 +77,7 @@ public class NetworkService
 		return false;
 	}
 
-	public async Task<SubmissionResponseWrapper> SubmitScore(AddUploadRequest uploadRequest)
+	public async Task<ResponseWrapper<GetUploadSuccess>> SubmitScore(AddUploadRequest uploadRequest)
 	{
 		try
 		{
@@ -101,27 +99,19 @@ public class NetworkService
 		}
 	}
 
-	public async Task<GetCustomLeaderboard?> GetLeaderboard(byte[] hash)
+	public async Task<ResponseWrapper<GetCustomLeaderboard>> GetLeaderboard(byte[] hash)
 	{
-		Guid guidHash = new(hash);
-		if (_blockedHashes.Contains(guidHash))
-		{
-			_logger.LogInformation("Skipping hash {hash} because it is blocked.", guidHash);
-			return null;
-		}
-
 		const int maxAttempts = 5;
 		for (int i = 0; i < maxAttempts; i++)
 		{
 			try
 			{
-				return await _apiClient.GetCustomLeaderboardBySpawnsetHash(hash);
+				GetCustomLeaderboard lb = await _apiClient.GetCustomLeaderboardBySpawnsetHash(hash);
+				return new(lb);
 			}
 			catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
 			{
-				_logger.LogInformation("Hash {hash} does not resolve to a leaderboard and will be added to the block list.", guidHash);
-				_blockedHashes.Add(guidHash);
-				return null;
+				return new(ex.Message);
 			}
 			catch (Exception ex)
 			{
@@ -130,7 +120,7 @@ public class NetworkService
 			}
 		}
 
-		return null;
+		return new("Couldn't retrieve leaderboard after 5 attempts.");
 	}
 
 	public async Task<byte[]?> GetReplay(int customEntryId)

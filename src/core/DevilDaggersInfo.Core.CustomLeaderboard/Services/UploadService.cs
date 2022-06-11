@@ -20,7 +20,7 @@ public class UploadService
 		_clientConfiguration = clientConfiguration;
 	}
 
-	public async Task<SubmissionResponseWrapper> UploadRun(MainBlock block)
+	public async Task<ResponseWrapper<GetUploadSuccess>> UploadRun(MainBlock block)
 	{
 		bool leaderboardExists = await _networkService.CheckIfLeaderboardExists(block.SurvivalHashMd5);
 		if (!leaderboardExists)

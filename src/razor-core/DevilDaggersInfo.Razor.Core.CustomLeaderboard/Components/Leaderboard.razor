@@ -4,40 +4,45 @@
 @using DevilDaggersInfo.Core.Wiki.Objects
 @using DevilDaggersInfo.Razor.Core.CustomLeaderboard.Extensions
 
-<div>@CustomLeaderboard.SpawnsetName</div>
+@if (!CustomLeaderboard.HasError)
+{
+	GetCustomLeaderboard leaderboard = CustomLeaderboard.Response;
 
-<div class="grid gap-x-2 grid-cols-custom-leaderboard m-2 p-2">
-	@foreach (GetCustomEntry entry in CustomLeaderboard.SortedEntries)
-	{
-		string color = (entry.CustomLeaderboardDagger ?? CustomLeaderboardDagger.Silver).GetColorCode();
-		Death death = Deaths.GetDeathByLeaderboardType(GameVersion.V3_2, entry.DeathType) ?? DeathsV3_2.Unknown;
+	<div>@leaderboard.SpawnsetName</div>
 
-		<span class="text-right">@entry.Rank</span>
-		<span class="col-span-2" style="color: @color;">@entry.PlayerName</span>
-		<span class="text-right" style="color: @color;">@entry.TimeInSeconds.ToString("N4")</span>
-		<span>
-			@if (entry.HasReplay)
-			{
-				<a class="link" @onclick="@(async () => await InjectReplay(entry.Id))">
-					<img class="cursor-pointer inline-block mx-1 mb-1" src="images/eye.png" />
-				</a>
-			}
-			else
-			{
-				<img class="cursor-pointer inline-block mx-1 mb-1" src="images/eye-gray.png" />
-			}
-		</span>
-		<span class="text-right">@entry.EnemiesKilled</span>
-		<span class="text-right">@entry.EnemiesAlive</span>
-		<span class="text-right">@entry.GemsCollected</span>
-		<span class="text-right">@entry.GemsDespawned</span>
-		<span class="text-right">@entry.GemsEaten</span>
-		<span class="text-right">@(entry.DaggersFired == 0 ? 0 : entry.DaggersHit / entry.DaggersFired)</span>
-		<span class="text-right" style="color: @death.Color.HexCode">@death.Name</span>
-		<span class="text-right">@entry.HomingStored</span>
-		<span class="text-right">@entry.HomingEaten</span>
-		<span class="text-right">@entry.LevelUpTime2InSeconds.ToString("N4")</span>
-		<span class="text-right">@entry.LevelUpTime3InSeconds.ToString("N4")</span>
-		<span class="text-right">@entry.LevelUpTime4InSeconds.ToString("N4")</span>
-	}
-</div>
+	<div class="grid gap-x-2 grid-cols-custom-leaderboard m-2 p-2">
+		@foreach (GetCustomEntry entry in leaderboard.SortedEntries)
+		{
+			string color = (entry.CustomLeaderboardDagger ?? CustomLeaderboardDagger.Silver).GetColorCode();
+			Death death = Deaths.GetDeathByLeaderboardType(GameVersion.V3_2, entry.DeathType) ?? DeathsV3_2.Unknown;
+
+			<span class="text-right">@entry.Rank</span>
+			<span class="col-span-2" style="color: @color;">@entry.PlayerName</span>
+			<span class="text-right" style="color: @color;">@entry.TimeInSeconds.ToString("N4")</span>
+			<span>
+				@if (entry.HasReplay)
+				{
+					<a class="link" @onclick="@(async () => await InjectReplay(entry.Id))">
+						<img class="cursor-pointer inline-block mx-1 mb-1" src="images/eye.png" />
+					</a>
+				}
+				else
+				{
+					<img class="cursor-pointer inline-block mx-1 mb-1" src="images/eye-gray.png" />
+				}
+			</span>
+			<span class="text-right">@entry.EnemiesKilled</span>
+			<span class="text-right">@entry.EnemiesAlive</span>
+			<span class="text-right">@entry.GemsCollected</span>
+			<span class="text-right">@entry.GemsDespawned</span>
+			<span class="text-right">@entry.GemsEaten</span>
+			<span class="text-right">@(entry.DaggersFired == 0 ? 0 : entry.DaggersHit / entry.DaggersFired)</span>
+			<span class="text-right" style="color: @death.Color.HexCode">@death.Name</span>
+			<span class="text-right">@entry.HomingStored</span>
+			<span class="text-right">@entry.HomingEaten</span>
+			<span class="text-right">@entry.LevelUpTime2InSeconds.ToString("N4")</span>
+			<span class="text-right">@entry.LevelUpTime3InSeconds.ToString("N4")</span>
+			<span class="text-right">@entry.LevelUpTime4InSeconds.ToString("N4")</span>
+		}
+	</div>
+}

@@ -4,6 +4,7 @@ using DevilDaggersInfo.Core.CustomLeaderboard.Enums;
 using DevilDaggersInfo.Core.CustomLeaderboard.Models;
 using DevilDaggersInfo.Core.CustomLeaderboard.Services;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Logging;
 
 namespace DevilDaggersInfo.Razor.Core.CustomLeaderboard.Pages;
 
@@ -13,8 +14,8 @@ public partial class Recorder : IDisposable
 
 	private long? _marker;
 	private State _state;
-	private SubmissionResponseWrapper? _submissionResponseWrapper;
-	private GetCustomLeaderboard? _customLeaderboard;
+	private ResponseWrapper<GetUploadSuccess>? _submissionResponseWrapper;
+	private ResponseWrapper<GetCustomLeaderboard>? _customLeaderboard;
 
 	private enum State
 	{
@@ -27,6 +28,9 @@ public partial class Recorder : IDisposable
 		Uploading,
 		CompletedUpload,
 	}
+
+	[Inject]
+	public ILogger<Recorder> Logger { get; set; } = null!;
 
 	[Inject]
 	public IClientConfiguration ClientConfiguration { get; set; } = null!;
@@ -90,7 +94,10 @@ public partial class Recorder : IDisposable
 		}
 
 		if (_customLeaderboard == null || !ArrayUtils.AreEqual(ReaderService.MainBlock.SurvivalHashMd5, ReaderService.MainBlockPrevious.SurvivalHashMd5))
+		{
+			Logger.LogInformation("Fetching leaderboard because of hash change.");
 			_customLeaderboard = await NetworkService.GetLeaderboard(ReaderService.MainBlock.SurvivalHashMd5);
+		}
 
 		GameStatus status = (GameStatus)ReaderService.MainBlock.Status;
 		bool waitForLocalOrLbReplay = status is GameStatus.LocalReplay or GameStatus.OwnReplayFromLeaderboard;

@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
+using DevilDaggersInfo.Core.CustomLeaderboard.Models;
 using DevilDaggersInfo.Core.CustomLeaderboard.Services;
 using Microsoft.AspNetCore.Components;
 
@@ -8,7 +9,7 @@ public partial class Leaderboard
 {
 	[Parameter]
 	[EditorRequired]
-	public GetCustomLeaderboard CustomLeaderboard { get; set; } = null!;
+	public ResponseWrapper<GetCustomLeaderboard> CustomLeaderboard { get; set; } = null!;
 
 	[Inject]
 	public NetworkService NetworkService { get; set; } = null!;
