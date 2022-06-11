@@ -131,14 +131,14 @@ public class NetworkService
 		return new("Couldn't retrieve leaderboard after 5 attempts.");
 	}
 
-	public async Task<ResponseWrapper<Page<GetCustomLeaderboardForOverview>>> GetLeaderboardOverview(int selectedPlayerId)
+	public async Task<ResponseWrapper<Page<GetCustomLeaderboardForOverview>>> GetLeaderboardOverview(CustomLeaderboardCategory category, int pageIndex, int pageSize, int selectedPlayerId, bool onlyFeatured)
 	{
 		const int maxAttempts = 5;
 		for (int i = 0; i < maxAttempts; i++)
 		{
 			try
 			{
-				Page<GetCustomLeaderboardForOverview> overview = await _apiClient.GetCustomLeaderboardOverview(CustomLeaderboardCategory.Survival, 0, 20, selectedPlayerId, true);
+				Page<GetCustomLeaderboardForOverview> overview = await _apiClient.GetCustomLeaderboardOverview(category, pageIndex, pageSize, selectedPlayerId, onlyFeatured);
 				return new(overview);
 			}
 			catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.NotFound)

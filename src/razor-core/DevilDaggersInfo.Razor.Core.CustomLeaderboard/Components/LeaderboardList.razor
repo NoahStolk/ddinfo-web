@@ -4,6 +4,9 @@
 @using DevilDaggersInfo.Core.CustomLeaderboard.Services
 @using DevilDaggersInfo.Razor.Core.CustomLeaderboard.Extensions
 
+<button @onclick="@(() => SetPageIndexAsync(PageIndex - 1))">Prev</button>
+<button @onclick="@(() => SetPageIndexAsync(PageIndex + 1))">Next</button>
+
 @if (_leaderboards == null)
 {
 	<span>Loading...</span>
@@ -64,9 +67,27 @@ else
 	[EditorRequired]
 	public int SelectedPlayerId { get; set; }
 
+	[Parameter]
+	public CustomLeaderboardCategory Category { get; set; } = CustomLeaderboardCategory.Survival;
+
+	[Parameter]
+	public int PageIndex { get; set; }
+
 	protected override async Task OnParametersSetAsync()
 	{
-		_leaderboards = await NetworkService.GetLeaderboardOverview(SelectedPlayerId);
+		await UpdateListAsync();
+	}
+
+	private async Task SetPageIndexAsync(int pageIndex)
+	{
+		PageIndex = Math.Max(0, pageIndex);
+		_leaderboards = null;
+		await UpdateListAsync();
+	}
+
+	private async Task UpdateListAsync()
+	{
+		_leaderboards = await NetworkService.GetLeaderboardOverview(Category, PageIndex, 20, SelectedPlayerId, true);
 	}
 
 	public async Task InjectSpawnset(int spawnsetId)
