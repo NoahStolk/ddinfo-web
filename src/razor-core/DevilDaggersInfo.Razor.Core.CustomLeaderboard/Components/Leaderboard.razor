@@ -11,6 +11,23 @@
 	<div>@leaderboard.SpawnsetName</div>
 
 	<div class="grid gap-x-2 grid-cols-custom-leaderboard m-2 p-2">
+		<span class="text-right">Rank</span>
+		<span class="col-span-2">Player</span>
+		<span class="text-right">Time</span>
+		<span>Replay</span>
+		<span class="text-right">Kills</span>
+		<span class="text-right">Enemies Alive</span>
+		<span class="text-right">Gems</span>
+		<span class="text-right">Gems Despawned</span>
+		<span class="text-right">Gems Eaten</span>
+		<span class="text-right">Accuracy</span>
+		<span class="text-right">Death</span>
+		<span class="text-right">Homing Stored</span>
+		<span class="text-right">Homing Eaten</span>
+		<span class="text-right">Level 2</span>
+		<span class="text-right">Level 3</span>
+		<span class="text-right">Level 4</span>
+
 		@foreach (GetCustomEntry entry in leaderboard.SortedEntries)
 		{
 			string color = (entry.CustomLeaderboardDagger ?? CustomLeaderboardDagger.Silver).GetColorCode();
@@ -28,7 +45,7 @@
 				}
 				else
 				{
-					<img class="cursor-pointer inline-block mx-1 mb-1" src="images/eye-gray.png" />
+					<img class="inline-block mx-1 mb-1" src="images/eye-gray.png" />
 				}
 			</span>
 			<span class="text-right">@entry.EnemiesKilled</span>
