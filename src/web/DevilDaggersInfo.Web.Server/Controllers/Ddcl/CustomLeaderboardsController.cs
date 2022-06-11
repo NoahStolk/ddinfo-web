@@ -29,6 +29,14 @@ public class CustomLeaderboardsController : ControllerBase
 	// FORBIDDEN: Used by ddstats-rust.
 	// TODO: Remove when DDCL 1.8.3.0 is obsolete.
 	[HttpHead("/api/custom-leaderboards")]
+	[HttpGet("overview")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	public async Task<ActionResult<List<GetCustomLeaderboardForOverview>>> GetCustomLeaderboardOverview(int selectedPlayerId)
+	{
+		List<CustomLeaderboardOverview> customLeaderboards = await _customLeaderboardRepository.GetCustomLeaderboardOverviewsAsync(selectedPlayerId);
+		return customLeaderboards.ConvertAll(cl => cl.ToDdclApi());
+	}
+
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult> CustomLeaderboardExistsBySpawnsetHashObsolete([FromQuery] byte[] hash)

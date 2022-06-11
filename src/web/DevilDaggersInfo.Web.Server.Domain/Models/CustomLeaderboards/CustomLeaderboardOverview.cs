@@ -24,7 +24,9 @@ public class CustomLeaderboardOverview
 
 	public int TotalRunsSubmitted { get; init; }
 
+	public int PlayerCount { get; init; }
+
 	public CustomLeaderboardOverviewWorldRecord? WorldRecord { get; init; }
 
-	public int PlayerCount { get; init; }
+	public CustomLeaderboardOverviewSelectedPlayerStats? SelectedPlayerStats { get; init; }
 }

@@ -64,7 +64,7 @@ public class CustomLeaderboardRepository
 		customEntries = customEntries.Sort(category).ToList();
 
 		// Map custom leaderboards with world record data.
-		List<CustomLeaderboardWorldRecord> customLeaderboardWrs = customLeaderboards.ConvertAll(cl =>
+		List<CustomLeaderboardData> customLeaderboardWrs = customLeaderboards.ConvertAll(cl =>
 		{
 			CustomEntrySummary? worldRecord = customEntries.Find(clwr => clwr.CustomLeaderboardId == cl.Id);
 			CustomLeaderboardOverviewWorldRecord? worldRecordModel = worldRecord == null ? null : new()
@@ -74,7 +74,7 @@ public class CustomLeaderboardRepository
 				PlayerName = worldRecord.PlayerName,
 				Dagger = cl.GetDaggerFromTime(worldRecord.Time),
 			};
-			return new CustomLeaderboardWorldRecord(cl, worldRecordModel);
+			return new CustomLeaderboardData(cl, worldRecordModel, null);
 		});
 
 		// Build dictionary for amount of players.
@@ -119,7 +119,7 @@ public class CustomLeaderboardRepository
 		};
 	}
 
-	public async Task<List<CustomLeaderboardOverview>> GetCustomLeaderboardOverviewsAsync()
+	public async Task<List<CustomLeaderboardOverview>> GetCustomLeaderboardOverviewsAsync(int? selectedPlayerId = null)
 	{
 		List<CustomLeaderboardEntity> customLeaderboards = await _dbContext.CustomLeaderboards
 			.AsNoTracking()
@@ -137,10 +137,12 @@ public class CustomLeaderboardRepository
 			.ToListAsync();
 
 		// Map custom leaderboards with world record data.
-		List<CustomLeaderboardWorldRecord> customLeaderboardWrs = new();
+		List<CustomLeaderboardData> customLeaderboardData = new();
 		foreach (CustomLeaderboardEntity cl in customLeaderboards)
 		{
-			CustomEntrySummary? worldRecord = customEntries.Where(ce => ce.CustomLeaderboardId == cl.Id).Sort(cl.Category).FirstOrDefault();
+			List<CustomEntrySummary> sortedCustomEntries = customEntries.Where(ce => ce.CustomLeaderboardId == cl.Id).Sort(cl.Category).ToList();
+
+			CustomEntrySummary? worldRecord = sortedCustomEntries.Count == 0 ? null : sortedCustomEntries[0];
 			CustomLeaderboardOverviewWorldRecord? worldRecordModel = worldRecord == null ? null : new()
 			{
 				Time = worldRecord.Time,
@@ -148,7 +150,16 @@ public class CustomLeaderboardRepository
 				PlayerName = worldRecord.PlayerName,
 				Dagger = cl.GetDaggerFromTime(worldRecord.Time),
 			};
-			customLeaderboardWrs.Add(new(cl, worldRecordModel));
+
+			CustomEntrySummary? selectedEntry = sortedCustomEntries.Find(ce => ce.PlayerId == selectedPlayerId);
+			CustomLeaderboardOverviewSelectedPlayerStats? selectedPlayerStatsModel = selectedEntry == null ? null : new()
+			{
+				Dagger = cl.GetDaggerFromTime(selectedEntry.Time),
+				Rank = sortedCustomEntries.IndexOf(selectedEntry) + 1,
+				Time = selectedEntry.Time,
+			};
+
+			customLeaderboardData.Add(new(cl, worldRecordModel, selectedPlayerStatsModel));
 		}
 
 		// Build dictionary for amount of players.
@@ -161,7 +172,7 @@ public class CustomLeaderboardRepository
 				customEntryCountByCustomLeaderboardId.Add(customLeaderboardId, 1);
 		}
 
-		return customLeaderboardWrs
+		return customLeaderboardData
 			.OrderByDescending(clwr => clwr.CustomLeaderboard.DateLastPlayed ?? clwr.CustomLeaderboard.DateCreated)
 			.Select(cl => ToOverview(cl, customEntryCountByCustomLeaderboardId))
 			.ToList();
@@ -358,7 +369,7 @@ public class CustomLeaderboardRepository
 		return customLeaderboard.Id;
 	}
 
-	private static CustomLeaderboardOverview ToOverview(CustomLeaderboardWorldRecord cl, Dictionary<int, int> customEntryCountByCustomLeaderboardId) => new()
+	private static CustomLeaderboardOverview ToOverview(CustomLeaderboardData cl, Dictionary<int, int> customEntryCountByCustomLeaderboardId) => new()
 	{
 		Category = cl.CustomLeaderboard.Category,
 		Daggers = !cl.CustomLeaderboard.IsFeatured ? null : new()
@@ -373,6 +384,7 @@ public class CustomLeaderboardRepository
 		DateLastPlayed = cl.CustomLeaderboard.DateLastPlayed,
 		Id = cl.CustomLeaderboard.Id,
 		PlayerCount = customEntryCountByCustomLeaderboardId.ContainsKey(cl.CustomLeaderboard.Id) ? customEntryCountByCustomLeaderboardId[cl.CustomLeaderboard.Id] : 0,
+		SelectedPlayerStats = cl.SelectedPlayerStats,
 		SpawnsetAuthorId = cl.CustomLeaderboard.Spawnset.PlayerId,
 		SpawnsetAuthorName = cl.CustomLeaderboard.Spawnset.Player.PlayerName,
 		SpawnsetId = cl.CustomLeaderboard.SpawnsetId,
@@ -387,15 +399,17 @@ public class CustomLeaderboardRepository
 		},
 	};
 
-	private sealed class CustomLeaderboardWorldRecord
+	private sealed class CustomLeaderboardData
 	{
-		public CustomLeaderboardWorldRecord(CustomLeaderboardEntity customLeaderboard, CustomLeaderboardOverviewWorldRecord? worldRecord)
+		public CustomLeaderboardData(CustomLeaderboardEntity customLeaderboard, CustomLeaderboardOverviewWorldRecord? worldRecord, CustomLeaderboardOverviewSelectedPlayerStats? selectedPlayerStats)
 		{
 			CustomLeaderboard = customLeaderboard;
 			WorldRecord = worldRecord;
+			SelectedPlayerStats = selectedPlayerStats;
 		}
 
 		public CustomLeaderboardEntity CustomLeaderboard { get; }
 		public CustomLeaderboardOverviewWorldRecord? WorldRecord { get; }
+		public CustomLeaderboardOverviewSelectedPlayerStats? SelectedPlayerStats { get; }
 	}
 }

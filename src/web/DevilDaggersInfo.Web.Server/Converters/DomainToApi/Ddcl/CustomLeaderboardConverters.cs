@@ -45,6 +45,18 @@ public static class CustomLeaderboardConverters
 		SpawnsetName = sortedCustomLeaderboard.SpawnsetName,
 	};
 
+	public static DdclApi.GetCustomLeaderboardForOverview ToDdclApi(this CustomLeaderboardOverview customLeaderboard) => new()
+	{
+		Category = customLeaderboard.Category.ToDdclApi(),
+		Daggers = customLeaderboard.Daggers?.ToDdclApi(),
+		PlayerCount = customLeaderboard.PlayerCount,
+		SelectedPlayerStats = customLeaderboard.SelectedPlayerStats?.ToDdclApi(),
+		SpawnsetId = customLeaderboard.SpawnsetId,
+		SpawnsetName = customLeaderboard.SpawnsetName,
+		SubmitCount = customLeaderboard.TotalRunsSubmitted,
+		WorldRecord = customLeaderboard.WorldRecord?.ToDdclApi(),
+	};
+
 	private static DdclApi.GetCustomLeaderboardDdcl ToDdclApi(this CustomLeaderboardSummary customLeaderboard) => new()
 	{
 		Category = customLeaderboard.Category.ToDdclApi(),
@@ -53,7 +65,7 @@ public static class CustomLeaderboardConverters
 		SpawnsetName = customLeaderboard.SpawnsetName,
 	};
 
-	private static DdclApi.GetCustomLeaderboardDaggersDdcl ToDdclApi(this CustomLeaderboardDaggers customLeaderboardDaggers) => new()
+	public static DdclApi.GetCustomLeaderboardDaggersDdcl ToDdclApi(this CustomLeaderboardDaggers customLeaderboardDaggers) => new()
 	{
 		Bronze = customLeaderboardDaggers.Bronze.ToSecondsTime(),
 		Silver = customLeaderboardDaggers.Silver.ToSecondsTime(),
@@ -62,7 +74,20 @@ public static class CustomLeaderboardConverters
 		Leviathan = customLeaderboardDaggers.Leviathan.ToSecondsTime(),
 	};
 
-	private static DdclApi.CustomLeaderboardCategory ToDdclApi(this CustomLeaderboardCategory customLeaderboardCategory) => customLeaderboardCategory switch
+	public static DdclApi.GetCustomLeaderboardSelectedPlayerStats ToDdclApi(this CustomLeaderboardOverviewSelectedPlayerStats customLeaderboardOverviewSelectedPlayerStats) => new()
+	{
+		Dagger = customLeaderboardOverviewSelectedPlayerStats.Dagger.ToDdclApi(),
+		Rank = customLeaderboardOverviewSelectedPlayerStats.Rank,
+		Time = customLeaderboardOverviewSelectedPlayerStats.Time.ToSecondsTime(),
+	};
+
+	public static DdclApi.GetCustomLeaderboardWorldRecord ToDdclApi(this CustomLeaderboardOverviewWorldRecord customLeaderboardOverviewWorldRecord) => new()
+	{
+		Dagger = customLeaderboardOverviewWorldRecord.Dagger.ToDdclApi(),
+		Time = customLeaderboardOverviewWorldRecord.Time.ToSecondsTime(),
+	};
+
+	public static DdclApi.CustomLeaderboardCategory ToDdclApi(this CustomLeaderboardCategory customLeaderboardCategory) => customLeaderboardCategory switch
 	{
 		CustomLeaderboardCategory.Survival => DdclApi.CustomLeaderboardCategory.Survival,
 		CustomLeaderboardCategory.TimeAttack => DdclApi.CustomLeaderboardCategory.TimeAttack,
