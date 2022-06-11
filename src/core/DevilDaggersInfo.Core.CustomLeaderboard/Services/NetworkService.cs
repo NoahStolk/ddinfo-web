@@ -123,6 +123,30 @@ public class NetworkService
 		return new("Couldn't retrieve leaderboard after 5 attempts.");
 	}
 
+	public async Task<ResponseWrapper<List<GetCustomLeaderboardForOverview>>> GetLeaderboardOverview(int selectedPlayerId)
+	{
+		const int maxAttempts = 5;
+		for (int i = 0; i < maxAttempts; i++)
+		{
+			try
+			{
+				List<GetCustomLeaderboardForOverview> overview = await _apiClient.GetCustomLeaderboardOverview(selectedPlayerId);
+				return new(overview);
+			}
+			catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+			{
+				return new(ex.Message);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex, "Error while trying to retrieve leaderboard overview (attempt {attempt} out of {maxAttempts}).", i + 1, maxAttempts);
+				await Task.Delay(TimeSpan.FromSeconds(1));
+			}
+		}
+
+		return new("Couldn't retrieve leaderboard overview after 5 attempts.");
+	}
+
 	public async Task<byte[]?> GetReplay(int customEntryId)
 	{
 		try
@@ -137,6 +161,24 @@ public class NetworkService
 		catch (Exception ex)
 		{
 			_logger.LogError(ex, "Error while trying to download replay.");
+			return null;
+		}
+	}
+
+	public async Task<byte[]?> GetSpawnset(int spawnsetId)
+	{
+		try
+		{
+			return (await _apiClient.GetSpawnsetBufferById(spawnsetId)).Data;
+		}
+		catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+		{
+			_logger.LogWarning(ex, "Spawnset {id} was not found.", spawnsetId);
+			return null;
+		}
+		catch (Exception ex)
+		{
+			_logger.LogError(ex, "Error while trying to download spawnset.");
 			return null;
 		}
 	}

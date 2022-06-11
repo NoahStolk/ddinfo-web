@@ -19,6 +19,8 @@
 	<div class="max-w-md m-2 p-2 border-solid border-2 border-[#411]">
 		<Recording Block="ReaderService.MainBlock" BlockPrevious="ReaderService.MainBlockPrevious" />
 	</div>
+
+	<LeaderboardList SelectedPlayerId="@ReaderService.MainBlock.PlayerId" />
 }
 
 @if (_submissionResponseWrapper != null)

@@ -72,6 +72,11 @@ public partial class DdclApiHttpClient
 		return await SendGetRequest<Marker>(BuildUrlWithQuery($"api/ddcl/process-memory/marker", queryParameters));
 	}
 
+	public async Task<GetSpawnsetBuffer> GetSpawnsetBufferById(int id)
+	{
+		return await SendGetRequest<GetSpawnsetBuffer>($"api/ddcl/spawnsets/{id}/buffer");
+	}
+
 	public async Task<GetUpdate> GetUpdates(ToolPublishMethod publishMethod, ToolBuildType buildType)
 	{
 		Dictionary<string, object?> queryParameters = new()

@@ -1,0 +1,81 @@
+@using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards
+@using DevilDaggersInfo.Core.CustomLeaderboard.Models
+@using DevilDaggersInfo.Core.CustomLeaderboard.Services
+@using DevilDaggersInfo.Razor.Core.CustomLeaderboard.Extensions
+
+@if (_leaderboards == null)
+{
+	<span>Loading...</span>
+}
+else if (_leaderboards.HasError)
+{
+	<span class="text-red">Error while fetching leaderboard overview</span>
+}
+else
+{
+	<div class="grid gap-x-2 grid-cols-6 m-2 p-2">
+		<span>Spawnset</span>
+		<span>Category</span>
+		<span class="text-right">Rank</span>
+		<span class="text-right">Score</span>
+		<span class="text-right">Next dagger</span>
+		<span class="text-right">World record</span>
+
+		@foreach (GetCustomLeaderboardForOverview leaderboard in _leaderboards.Response.Take(10))
+		{
+			string? daggerColor = leaderboard.SelectedPlayerStats?.Dagger?.GetColorCode();
+			string? worldRecordDaggerColor = leaderboard.WorldRecord?.Dagger?.GetColorCode();
+
+			<a class="link" @onclick="@(async () => await InjectSpawnset(leaderboard.SpawnsetId))">@leaderboard.SpawnsetName</a>
+			<span>@leaderboard.Category</span>
+
+			@if (leaderboard.SelectedPlayerStats == null)
+			{
+				<span class="text-right">N/A</span>
+				<span class="text-right">N/A</span>
+			}
+			else
+			{
+				<span class="text-right">@leaderboard.SelectedPlayerStats.Rank / @leaderboard.PlayerCount</span>
+				<span class="text-right" style="color: @daggerColor;">@leaderboard.SelectedPlayerStats.Time.ToString("N4")</span>
+			}
+
+			<span class="text-right">TODO</span>
+
+			@if (leaderboard.WorldRecord == null)
+			{
+				<span class="text-right">N/A</span>
+			}
+			else
+			{
+				<span class="text-right" style="color: @worldRecordDaggerColor;">@leaderboard.WorldRecord.Time.ToString("N4")</span>
+			}
+		}
+	</div>
+}
+
+@code
+{
+	private ResponseWrapper<List<GetCustomLeaderboardForOverview>>? _leaderboards;
+
+	[Inject]
+	public NetworkService NetworkService { get; set; } = null!;
+
+	[Parameter]
+	[EditorRequired]
+	public int SelectedPlayerId { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		_leaderboards = await NetworkService.GetLeaderboardOverview(SelectedPlayerId);
+	}
+
+	public async Task InjectSpawnset(int spawnsetId)
+	{
+		byte[]? spawnset = await NetworkService.GetSpawnset(spawnsetId);
+
+		// TODO: Get path from running process and refactor to platform-specific DI service interface.
+		if (spawnset != null)
+			File.WriteAllBytes(@"C:\Program Files (x86)\Steam\steamapps\common\devildaggers\mods\survival", spawnset);
+	}
+}
