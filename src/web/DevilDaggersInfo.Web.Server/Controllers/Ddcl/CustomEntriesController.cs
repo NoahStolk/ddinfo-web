@@ -35,9 +35,28 @@ public class CustomEntriesController : ControllerBase
 	}
 
 	// FORBIDDEN: Used by ddstats-rust (currently not working however (2022-05-28)).
-	// TODO: Implement new route.
 	[Obsolete("Use the new route.")]
 	[HttpPost("/api/custom-entries/submit")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	public async Task<ActionResult<GetUploadSuccess>> SubmitScoreForDdclObsolete([FromBody] AddUploadRequest uploadRequest)
+	{
+		try
+		{
+			UploadResponse response = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest.ToDomain());
+			return response.ToDdclApi();
+		}
+		catch (Exception ex) when (ex is not CustomEntryValidationException)
+		{
+			ex.Data[nameof(uploadRequest.ClientVersion)] = uploadRequest.ClientVersion;
+			ex.Data[nameof(uploadRequest.OperatingSystem)] = uploadRequest.OperatingSystem;
+			ex.Data[nameof(uploadRequest.BuildMode)] = uploadRequest.BuildMode;
+			_logger.LogError(ex, "Upload failed for user `{playerName}` (`{playerId}`) for `{spawnset}`.", uploadRequest.PlayerName, uploadRequest.PlayerId, uploadRequest.SurvivalHashMd5.ByteArrayToHexString());
+			throw;
+		}
+	}
+
+	[HttpPost("submit")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult<GetUploadSuccess>> SubmitScoreForDdcl([FromBody] AddUploadRequest uploadRequest)
