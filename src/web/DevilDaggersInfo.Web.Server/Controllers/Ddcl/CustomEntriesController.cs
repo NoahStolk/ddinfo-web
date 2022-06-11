@@ -35,6 +35,8 @@ public class CustomEntriesController : ControllerBase
 	}
 
 	// FORBIDDEN: Used by ddstats-rust (currently not working however (2022-05-28)).
+	// TODO: Implement new route.
+	[Obsolete("Use the new route.")]
 	[HttpPost("/api/custom-entries/submit")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]

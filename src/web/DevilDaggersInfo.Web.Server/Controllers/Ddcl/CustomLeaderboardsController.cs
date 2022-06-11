@@ -45,6 +45,7 @@ public class CustomLeaderboardsController : ControllerBase
 
 	// FORBIDDEN: Used by ddstats-rust.
 	// TODO: Remove when DDCL 1.8.3.0 is obsolete.
+	[Obsolete("Use the new 'exists' route.")]
 	[HttpHead("/api/custom-leaderboards")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
