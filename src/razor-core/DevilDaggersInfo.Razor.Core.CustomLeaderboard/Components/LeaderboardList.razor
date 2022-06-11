@@ -14,9 +14,8 @@ else if (_leaderboards.HasError)
 }
 else
 {
-	<div class="grid gap-x-2 grid-cols-6 m-2 p-2">
+	<div class="grid gap-x-2 grid-cols-5 m-2 p-2">
 		<span class="font-bold">Spawnset</span>
-		<span class="font-bold">Category</span>
 		<span class="font-bold text-right">Rank</span>
 		<span class="font-bold text-right">Score</span>
 		<span class="font-bold text-right">Next dagger</span>
@@ -28,7 +27,6 @@ else
 			string? worldRecordDaggerColor = leaderboard.WorldRecord?.Dagger?.GetColorCode();
 
 			<a class="link" @onclick="@(async () => await InjectSpawnset(leaderboard.SpawnsetId))">@leaderboard.SpawnsetName</a>
-			<span>@leaderboard.Category</span>
 
 			@if (leaderboard.SelectedPlayerStats == null)
 			{
