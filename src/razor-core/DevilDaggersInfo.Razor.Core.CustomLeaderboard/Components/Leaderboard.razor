@@ -20,7 +20,7 @@
 		<span class="font-bold text-right">Gems Despawned</span>
 		<span class="font-bold text-right">Gems Eaten</span>
 		<span class="font-bold text-right">Accuracy</span>
-		<span class="font-bold text-right">Death</span>
+		<span class="font-bold text-center">Death</span>
 		<span class="font-bold text-right">Homing Stored</span>
 		<span class="font-bold text-right">Homing Eaten</span>
 		<span class="font-bold text-right">Level 2</span>
@@ -33,8 +33,8 @@
 			Death death = Deaths.GetDeathByLeaderboardType(GameVersion.V3_2, entry.DeathType) ?? DeathsV3_2.Unknown;
 
 			<span class="text-right">@entry.Rank</span>
-			<span class="col-span-2" style="color: @color;">@entry.PlayerName</span>
-			<span class="text-right" style="color: @color;">
+			<span class="col-span-2 whitespace-nowrap" style="color: @color;">@entry.PlayerName</span>
+			<span class="text-right whitespace-nowrap" style="color: @color;">
 				@entry.TimeInSeconds.ToString("N4")
 
 				@if (entry.HasReplay)
@@ -54,7 +54,7 @@
 			<span class="text-right">@entry.GemsDespawned</span>
 			<span class="text-right">@entry.GemsEaten</span>
 			<span class="text-right">@((entry.DaggersFired == 0 ? 0 : entry.DaggersHit / (float)entry.DaggersFired).ToString("0.00%"))</span>
-			<span class="text-right" style="color: @death.Color.HexCode">@death.Name</span>
+			<span class="text-center" style="color: @death.Color.HexCode">@death.Name</span>
 			<span class="text-right">@entry.HomingStored</span>
 			<span class="text-right">@entry.HomingEaten</span>
 			<span class="text-right">@entry.LevelUpTime2InSeconds.ToString("N4")</span>

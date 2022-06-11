@@ -17,11 +17,13 @@
 <div class="max-w-md m-2 p-2 border-solid border-2 border-[#411]">
 	<Recording Block="ReaderService.MainBlock" BlockPrevious="ReaderService.MainBlockPrevious" />
 </div>
-<LeaderboardList SelectedPlayerId="@ReaderService.MainBlock.PlayerId" />
+<div class="min-w-[800px] m-2 p-2 border-solid border-2 border-[#411]">
+	<LeaderboardList SelectedPlayerId="@ReaderService.MainBlock.PlayerId" />
+</div>
 
 @if (_submissionResponseWrapper != null)
 {
-	<div class="max-w-lg m-2 p-2 border-solid border-2 border-[#411]">
+	<div class="min-w-lg m-2 p-2 border-solid border-2 border-[#411]">
 		@if (_submissionResponseWrapper.HasError)
 		{
 			<div class="text-red">@_submissionResponseWrapper.ErrorMessage</div>
@@ -36,7 +38,7 @@
 
 @if (_customLeaderboard != null)
 {
-	<div class="min-w-xl m-2 p-2 border-solid border-2 border-[#411]">
+	<div class="min-w-[1270px] m-2 p-2 border-solid border-2 border-[#411]">
 		<Leaderboard CustomLeaderboard="_customLeaderboard" />
 	</div>
 }
