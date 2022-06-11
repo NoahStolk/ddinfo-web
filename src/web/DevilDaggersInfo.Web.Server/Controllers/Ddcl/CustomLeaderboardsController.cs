@@ -16,19 +16,16 @@ public class CustomLeaderboardsController : ControllerBase
 		_customLeaderboardRepository = customLeaderboardRepository;
 	}
 
-	[HttpGet]
+	[HttpGet("by-hash")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public async Task<ActionResult<GetCustomLeaderboard>> GetCustomLeaderboardByHash([FromQuery] byte[] hash)
+	public async Task<ActionResult<GetCustomLeaderboard>> GetCustomLeaderboardBySpawnsetHash([FromQuery] byte[] hash)
 	{
 		int customLeaderboardId = await _customLeaderboardRepository.GetCustomLeaderboardIdBySpawnsetHashAsync(hash);
 		SortedCustomLeaderboard customLeaderboard = await _customLeaderboardRepository.GetSortedCustomLeaderboardByIdAsync(customLeaderboardId);
 		return customLeaderboard.ToDdclApi();
 	}
 
-	// FORBIDDEN: Used by ddstats-rust.
-	// TODO: Remove when DDCL 1.8.3.0 is obsolete.
-	[HttpHead("/api/custom-leaderboards")]
 	[HttpGet("overview")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public async Task<ActionResult<List<GetCustomLeaderboardForOverview>>> GetCustomLeaderboardOverview(int selectedPlayerId)
@@ -37,18 +34,21 @@ public class CustomLeaderboardsController : ControllerBase
 		return customLeaderboards.ConvertAll(cl => cl.ToDdclApi());
 	}
 
+	[HttpHead("exists")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public async Task<ActionResult> CustomLeaderboardExistsBySpawnsetHashObsolete([FromQuery] byte[] hash)
+	public async Task<ActionResult> CustomLeaderboardExistsBySpawnsetHash([FromQuery] byte[] hash)
 	{
 		await _customLeaderboardRepository.GetCustomLeaderboardIdBySpawnsetHashAsync(hash);
 		return Ok();
 	}
 
-	[HttpHead]
+	// FORBIDDEN: Used by ddstats-rust.
+	// TODO: Remove when DDCL 1.8.3.0 is obsolete.
+	[HttpHead("/api/custom-leaderboards")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public async Task<ActionResult> CustomLeaderboardExistsBySpawnsetHash([FromQuery] byte[] hash)
+	public async Task<ActionResult> CustomLeaderboardExistsBySpawnsetHashObsolete([FromQuery] byte[] hash)
 	{
 		await _customLeaderboardRepository.GetCustomLeaderboardIdBySpawnsetHashAsync(hash);
 		return Ok();

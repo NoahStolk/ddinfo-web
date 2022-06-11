@@ -115,7 +115,7 @@ public class NetworkService
 		{
 			try
 			{
-				return await _apiClient.GetCustomLeaderboardByHash(hash);
+				return await _apiClient.GetCustomLeaderboardBySpawnsetHash(hash);
 			}
 			catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
 			{

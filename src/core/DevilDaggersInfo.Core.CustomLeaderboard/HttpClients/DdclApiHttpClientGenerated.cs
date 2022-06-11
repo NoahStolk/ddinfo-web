@@ -18,13 +18,31 @@ public partial class DdclApiHttpClient
 		return await SendRequest(new HttpMethod("POST"), $"/api/custom-entries/submit", JsonContent.Create(uploadRequest));
 	}
 
-	public async Task<GetCustomLeaderboard> GetCustomLeaderboardByHash(byte[] hash)
+	public async Task<GetCustomLeaderboard> GetCustomLeaderboardBySpawnsetHash(byte[] hash)
 	{
 		Dictionary<string, object?> queryParameters = new()
 		{
 			{ nameof(hash), Convert.ToBase64String(hash) }
 		};
-		return await SendGetRequest<GetCustomLeaderboard>(BuildUrlWithQuery($"api/ddcl/custom-leaderboards/", queryParameters));
+		return await SendGetRequest<GetCustomLeaderboard>(BuildUrlWithQuery($"api/ddcl/custom-leaderboards/by-hash", queryParameters));
+	}
+
+	public async Task<List<GetCustomLeaderboardForOverview>> GetCustomLeaderboardOverview(int selectedPlayerId)
+	{
+		Dictionary<string, object?> queryParameters = new()
+		{
+			{ nameof(selectedPlayerId), selectedPlayerId }
+		};
+		return await SendGetRequest<List<GetCustomLeaderboardForOverview>>(BuildUrlWithQuery($"api/ddcl/custom-leaderboards/overview", queryParameters));
+	}
+
+	public async Task<HttpResponseMessage> CustomLeaderboardExistsBySpawnsetHash(byte[] hash)
+	{
+		Dictionary<string, object?> queryParameters = new()
+		{
+			{ nameof(hash), Convert.ToBase64String(hash) }
+		};
+		return await SendRequest(new HttpMethod("HEAD"), BuildUrlWithQuery($"api/ddcl/custom-leaderboards/exists", queryParameters));
 	}
 
 	public async Task<HttpResponseMessage> CustomLeaderboardExistsBySpawnsetHashObsolete(byte[] hash)
@@ -34,15 +52,6 @@ public partial class DdclApiHttpClient
 			{ nameof(hash), Convert.ToBase64String(hash) }
 		};
 		return await SendRequest(new HttpMethod("HEAD"), BuildUrlWithQuery($"/api/custom-leaderboards", queryParameters));
-	}
-
-	public async Task<HttpResponseMessage> CustomLeaderboardExistsBySpawnsetHash(byte[] hash)
-	{
-		Dictionary<string, object?> queryParameters = new()
-		{
-			{ nameof(hash), Convert.ToBase64String(hash) }
-		};
-		return await SendRequest(new HttpMethod("HEAD"), BuildUrlWithQuery($"api/ddcl/custom-leaderboards/", queryParameters));
 	}
 
 	public async Task<Marker> GetMarkerObsolete(SupportedOperatingSystem operatingSystem)
