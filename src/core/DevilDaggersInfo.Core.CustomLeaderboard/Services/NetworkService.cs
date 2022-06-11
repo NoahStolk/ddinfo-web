@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Api.Ddcl;
 using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
 using DevilDaggersInfo.Api.Ddcl.ProcessMemory;
 using DevilDaggersInfo.Api.Ddcl.Tools;
@@ -65,7 +66,14 @@ public class NetworkService
 			try
 			{
 				HttpResponseMessage hrm = await _apiClient.CustomLeaderboardExistsBySpawnsetHash(survivalHashMd5);
-				return hrm.IsSuccessStatusCode;
+				if (hrm.StatusCode == HttpStatusCode.OK)
+					return true;
+
+				if (hrm.StatusCode == HttpStatusCode.NotFound)
+					return false;
+
+				string error = await hrm.Content.ReadAsStringAsync();
+				throw new HttpRequestException($"Unexpected status code '{hrm.StatusCode}': {error}"); // TODO: Do not retry.
 			}
 			catch (Exception ex)
 			{
@@ -123,14 +131,14 @@ public class NetworkService
 		return new("Couldn't retrieve leaderboard after 5 attempts.");
 	}
 
-	public async Task<ResponseWrapper<List<GetCustomLeaderboardForOverview>>> GetLeaderboardOverview(int selectedPlayerId)
+	public async Task<ResponseWrapper<Page<GetCustomLeaderboardForOverview>>> GetLeaderboardOverview(int selectedPlayerId)
 	{
 		const int maxAttempts = 5;
 		for (int i = 0; i < maxAttempts; i++)
 		{
 			try
 			{
-				List<GetCustomLeaderboardForOverview> overview = await _apiClient.GetCustomLeaderboardOverview(selectedPlayerId);
+				Page<GetCustomLeaderboardForOverview> overview = await _apiClient.GetCustomLeaderboardOverview(CustomLeaderboardCategory.Survival, 0, 20, selectedPlayerId, true);
 				return new(overview);
 			}
 			catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.NotFound)

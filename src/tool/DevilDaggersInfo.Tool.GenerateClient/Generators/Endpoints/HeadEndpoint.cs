@@ -52,7 +52,7 @@ internal class HeadEndpoint : Endpoint
 				.Replace(_apiRoute, ApiRoute);
 		}
 
-		string queryParameters = string.Join($",{Environment.NewLine}", QueryParameters.ConvertAll(p => p.Build()));
+		string queryParameters = string.Join($",{Environment.NewLine}", QueryParameters.ConvertAll(p => p.BuildAsQueryParameter()));
 		return _endpointWithQueryTemplate
 			.Replace(_methodName, MethodName)
 			.Replace(_methodParameters, methodParameters)

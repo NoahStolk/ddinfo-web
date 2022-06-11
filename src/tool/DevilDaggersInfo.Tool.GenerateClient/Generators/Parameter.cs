@@ -11,9 +11,10 @@ internal class Parameter
 	public string Type { get; }
 	public string Name { get; }
 
-	public string Build()
+	public string BuildAsQueryParameter()
 	{
-		string value = Type == "byte[]" ? $"Convert.ToBase64String({Name})" : Name;
+		// TODO: Probably need to do Uri.EscapeDataString for all types. Need to test later.
+		string value = Type == "byte[]" ? $"Uri.EscapeDataString(Convert.ToBase64String({Name}))" : Name;
 		return $"{{ nameof({Name}), {value} }}";
 	}
 
