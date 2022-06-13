@@ -171,6 +171,11 @@ public partial class AdminApiHttpClient
 		return await SendRequest(new HttpMethod("PUT"), $"api/admin/markers/{name}", JsonContent.Create(value));
 	}
 
+	public async Task<HttpResponseMessage> TestException(string message)
+	{
+		return await SendRequest(new HttpMethod("POST"), $"api/admin/logging/", JsonContent.Create(message));
+	}
+
 	public async Task<Page<GetModForOverview>> GetMods(int pageIndex, int pageSize, ModSorting? sortBy, bool ascending)
 	{
 		Dictionary<string, object?> queryParameters = new()
