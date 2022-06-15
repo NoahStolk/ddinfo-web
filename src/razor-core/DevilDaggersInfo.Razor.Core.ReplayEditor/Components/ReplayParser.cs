@@ -2,7 +2,7 @@ using DevilDaggersInfo.Core.Replay;
 using DevilDaggersInfo.Core.Replay.Events;
 using Microsoft.AspNetCore.Components;
 
-namespace DevilDaggersInfo.Razor.Core.ReplayEditor;
+namespace DevilDaggersInfo.Razor.Core.ReplayEditor.Components;
 
 public partial class ReplayParser
 {

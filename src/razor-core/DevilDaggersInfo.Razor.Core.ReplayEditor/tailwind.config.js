@@ -27,39 +27,11 @@ module.exports = {
 			'gray-7': '#545454',
 			'gray-8': '#606060',
 			'gray-9': '#6c6c6c',
-			'audio': '#f0f',
-			'mesh': '#f00',
-			'object-binding': '#08f',
-			'shader': '#0f0',
-			'texture': '#f80',
 		},
 		extend: {
 			fontFamily: {
 				'calibri': ['calibri', 'sans-serif'],
 			},
-			maxHeight: {
-				'screen-35': '35vh',
-			},
-			height: {
-				'screen-35': '35vh',
-			},
-			spacing: {
-				'128': '32rem',
-				'160': '40rem',
-				'192': '48rem',
-				'224': '56rem',
-				'256': '64rem',
-			},
-			transitionProperty: {
-				'width': 'width',
-				'spacing': 'margin, padding',
-			},
-		},
-	},
-	variants: {
-		extend: {
-			backgroundColor: ['even', 'odd'],
-			opacity: ['disabled'],
 		},
 	},
 };
