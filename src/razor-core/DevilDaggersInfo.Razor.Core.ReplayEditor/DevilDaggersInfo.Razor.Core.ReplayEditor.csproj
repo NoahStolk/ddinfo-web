@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+  <PropertyGroup>
+    <DateTimeUtcNow>$([System.DateTime]::UtcNow.ToString("yyyy-MM-dd-HH-mm"))</DateTimeUtcNow>
+    <Version>$(DateTimeUtcNow)</Version>
+    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+    <TailwindBuild>true</TailwindBuild>
+  </PropertyGroup>
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" />
+    <ProjectReference Include="..\..\common\DevilDaggersInfo.Common\DevilDaggersInfo.Common.csproj" />
+    <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.NativeInterface\DevilDaggersInfo.Core.NativeInterface.csproj" />
+    <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Replay\DevilDaggersInfo.Core.Replay.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Update="package-lock.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="package.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\tailwind.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Target Name="npm install" BeforeTargets="tailwind build" Inputs="package.json" Outputs="node_modules/.install-stamp">
+    <Exec Command="npm -v" ContinueOnError="true">
+      <Output TaskParameter="ExitCode" PropertyName="error" />
+    </Exec>
+    <Error Condition="'$(error)' != '0'" Text="NPM installation not found" />
+    <Exec Command="npm install" />
+    <Touch Files="node_modules/.install-stamp" AlwaysCreate="true" />
+  </Target>
+  <Target Name="tailwind build" AfterTargets="Build" Condition="'$(TailwindBuild)' == 'true'">
+    <Message Text="Tailwind build target running..." Importance="high"></Message>
+    <Exec Command="npm run build" Condition="'$(Configuration)' == 'Debug'" />
+    <Exec Command="npm run publish" Condition="'$(Configuration)' == 'Release'" />
+  </Target>
+</Project>

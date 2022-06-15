@@ -1,0 +1,77 @@
+@using DevilDaggersInfo.Common
+@using DevilDaggersInfo.Common.Extensions
+@using DevilDaggersInfo.Core.Replay.Events
+
+@{
+	bool f = _currentSecond <= 0;
+	bool l = _currentSecond >= _events.Count / 60;
+	const string disabledStyle = "disabled:opacity-50 cursor-default btn-disabled";
+	const string enabledStyle = "btn-gray-light";
+}
+
+<h2 class="text-red text-2xl pt-4 pb-2 font-goethe">Header</h2>
+
+<div class="grid grid-cols-2 gap-x-2 max-w-md">
+	<div>Version</div>
+	<div>@ReplayBinary.Version</div>
+	<div>Timestamp</div>
+	<div>@ReplayBinary.TimestampSinceGameRelease</div>
+	<div>Time</div>
+	<div>@ReplayBinary.Time.ToString(StringFormats.TimeFormat)</div>
+	<div>Start Time</div>
+	<div>@ReplayBinary.StartTime.ToString(StringFormats.TimeFormat)</div>
+	<div>Kills</div>
+	<div>@ReplayBinary.Kills</div>
+	<div>Gems</div>
+	<div>@ReplayBinary.Gems</div>
+	<div>Daggers Hit</div>
+	<div>@ReplayBinary.DaggersHit</div>
+	<div>Daggers Fired</div>
+	<div>@ReplayBinary.DaggersFired</div>
+	<div>Death Type</div>
+	<div>@ReplayBinary.DeathType</div>
+	<div>Player ID</div>
+	<div>@ReplayBinary.PlayerId</div>
+	<div>Player Name</div>
+	<div>@ReplayBinary.Username</div>
+	<div>Spawnset MD5</div>
+	<div>@ReplayBinary.SpawnsetMd5.ByteArrayToHexString()</div>
+</div>
+
+<h2 class="text-red text-2xl pt-4 pb-2 font-goethe">Events @_currentSecond.ToString(StringFormats.TimeFormat) - @((_currentSecond + 1).ToString(StringFormats.TimeFormat))</h2>
+
+<div class="flex">
+	<div class="w-10 h-10 mx-1">
+		<button disabled="@f" class="@(f ? disabledStyle : enabledStyle) btn" @onclick="() => _currentSecond = 0">|</button>
+	</div>
+	<div class="w-10 h-10 mx-1">
+		<button disabled="@f" class="@(f ? disabledStyle : enabledStyle) btn" @onclick="() => _currentSecond = Math.Max(0, _currentSecond - 5)">--</button>
+	</div>
+	<div class="w-10 h-10 mx-1">
+		<button disabled="@f" class="@(f ? disabledStyle : enabledStyle) btn" @onclick="() => _currentSecond = Math.Max(0, _currentSecond - 1)">-</button>
+	</div>
+	<div class="w-10 h-10 mx-1">
+		<button disabled="@l" class="@(l ? disabledStyle : enabledStyle) btn" @onclick="() => _currentSecond = Math.Min(_events.Count / 60, _currentSecond + 1)">+</button>
+	</div>
+	<div class="w-10 h-10 mx-1">
+		<button disabled="@l" class="@(l ? disabledStyle : enabledStyle) btn" @onclick="() => _currentSecond = Math.Min(_events.Count / 60, _currentSecond + 5)">++</button>
+	</div>
+	<div class="w-10 h-10 mx-1">
+		<button disabled="@l" class="@(l ? disabledStyle : enabledStyle) btn" @onclick="() => _currentSecond = _events.Count / 60">|</button>
+	</div>
+</div>
+
+<ul class="pl-4">
+	@for (int i = _currentSecond * 60; i < Math.Min(_events.Count, (_currentSecond + 1) * 60); i++)
+	{
+		<li class="list-disc">
+			<span>Tick @i (@((i / 60f).ToString(StringFormats.TimeFormat)))</span>
+			<ul class="pl-4">
+				@foreach (IEvent e in _events[i])
+				{
+					<li class="list-disc">@e.ToString()</li>
+				}
+			</ul>
+		</li>
+	}
+</ul>
