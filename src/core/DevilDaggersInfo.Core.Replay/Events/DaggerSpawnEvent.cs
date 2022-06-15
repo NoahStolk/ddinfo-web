@@ -1,5 +1,10 @@
 namespace DevilDaggersInfo.Core.Replay.Events;
 
+/*
+1 lvl 1
+2 lvl 2
+6 lvl 4 homing
+*/
 public readonly record struct DaggerSpawnEvent(int EntityId, int A, Int16Vec3 Position, Int16Mat3x3 Orientation, byte B, byte DaggerType) : IEvent
 {
 	public void Write(BinaryWriter bw)
