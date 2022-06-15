@@ -4,6 +4,8 @@
 @using DevilDaggersInfo.Web.Client.Components.Admin
 
 <AdminAuthorizer Base="this" RequiredRole="@Roles.CustomLeaderboards">
+	<a href="/admin/custom-leaderboards/edit-marker">Edit marker</a>
+
 	<AdminOverview @ref="_overview" TGetDto="GetCustomLeaderboardForOverview" TSorting="CustomLeaderboardSorting" Title="Admin - Custom Leaderboards" ApiCall="(int pageIndex, int pageSize, CustomLeaderboardSorting? sortBy, bool isAscending) => Http.GetCustomLeaderboards(pageIndex, pageSize, sortBy, isAscending)" DeletionApiCall="(int id) => Http.DeleteCustomLeaderboardById(id)" GridConfiguration="grid-cols-admin-custom-leaderboards-sm md:grid-cols-admin-custom-leaderboards-md lg:grid-cols-admin-custom-leaderboards-lg xl:grid-cols-admin-custom-leaderboards-xl">
 		<TableHeader>
 			<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(CustomLeaderboardSorting.Id)" @onclick:preventDefault>Id</a>
