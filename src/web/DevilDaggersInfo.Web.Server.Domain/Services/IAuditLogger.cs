@@ -12,8 +12,6 @@ public interface IAuditLogger
 
 	void LogEdit(Dictionary<string, string> oldDtoLog, Dictionary<string, string> dtoLog, ClaimsPrincipal claimsPrincipal, int id, List<FileSystemInformation>? fileSystemInformation = null, [CallerMemberName] string endpointName = "");
 
-	void LogPlayerUpdates(string caller, List<(int PlayerId, string OldValue, string NewValue)> logs);
-
 	void LogRoleAssign(string userName, string roleName);
 
 	void LogRoleRevoke(string userName, string roleName);

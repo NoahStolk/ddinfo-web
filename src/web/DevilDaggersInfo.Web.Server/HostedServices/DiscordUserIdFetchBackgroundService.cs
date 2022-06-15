@@ -1,19 +1,16 @@
 using DevilDaggersInfo.Web.Server.Clients.Clubber;
-using DevilDaggersInfo.Web.Server.Domain.Services;
 
 namespace DevilDaggersInfo.Web.Server.HostedServices;
 
 public class DiscordUserIdFetchBackgroundService : AbstractBackgroundService
 {
 	private readonly IServiceScopeFactory _serviceScopeFactory;
-	private readonly IAuditLogger _auditLogger;
 	private readonly ClubberClient _clubberClient;
 
-	public DiscordUserIdFetchBackgroundService(IServiceScopeFactory serviceScopeFactory, IAuditLogger auditLogger, ClubberClient clubberClient, BackgroundServiceMonitor backgroundServiceMonitor, ILogger<LeaderboardHistoryBackgroundService> logger)
+	public DiscordUserIdFetchBackgroundService(IServiceScopeFactory serviceScopeFactory, ClubberClient clubberClient, BackgroundServiceMonitor backgroundServiceMonitor, ILogger<LeaderboardHistoryBackgroundService> logger)
 		: base(backgroundServiceMonitor, logger)
 	{
 		_serviceScopeFactory = serviceScopeFactory;
-		_auditLogger = auditLogger;
 		_clubberClient = clubberClient;
 	}
 
@@ -61,9 +58,5 @@ public class DiscordUserIdFetchBackgroundService : AbstractBackgroundService
 
 		if (logs.Count > 0)
 			await dbContext.SaveChangesAsync(stoppingToken);
-
-		const int chunk = 20;
-		for (int i = 0; i < logs.Count; i += chunk)
-			_auditLogger.LogPlayerUpdates(nameof(DiscordUserIdFetchBackgroundService), logs.Skip(i).Take(chunk).Select(l => (l.PlayerId, l.OldId?.ToString() ?? "NULL", l.NewId.ToString())).ToList());
 	}
 }

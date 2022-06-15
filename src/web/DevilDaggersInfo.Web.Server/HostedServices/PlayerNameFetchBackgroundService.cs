@@ -1,18 +1,14 @@
-using DevilDaggersInfo.Web.Server.Domain.Services;
-
 namespace DevilDaggersInfo.Web.Server.HostedServices;
 
 public class PlayerNameFetchBackgroundService : AbstractBackgroundService
 {
 	private readonly IServiceScopeFactory _serviceScopeFactory;
-	private readonly IAuditLogger _auditLogger;
 	private readonly LeaderboardClient _leaderboardClient;
 
-	public PlayerNameFetchBackgroundService(IServiceScopeFactory serviceScopeFactory, IAuditLogger auditLogger, LeaderboardClient leaderboardClient, BackgroundServiceMonitor backgroundServiceMonitor, ILogger<LeaderboardHistoryBackgroundService> logger)
+	public PlayerNameFetchBackgroundService(IServiceScopeFactory serviceScopeFactory, LeaderboardClient leaderboardClient, BackgroundServiceMonitor backgroundServiceMonitor, ILogger<LeaderboardHistoryBackgroundService> logger)
 		: base(backgroundServiceMonitor, logger)
 	{
 		_serviceScopeFactory = serviceScopeFactory;
-		_auditLogger = auditLogger;
 		_leaderboardClient = leaderboardClient;
 	}
 
@@ -63,9 +59,5 @@ public class PlayerNameFetchBackgroundService : AbstractBackgroundService
 
 		if (logs.Count > 0)
 			await dbContext.SaveChangesAsync(stoppingToken);
-
-		const int chunk = 20;
-		for (int i = 0; i < logs.Count; i += chunk)
-			_auditLogger.LogPlayerUpdates(nameof(PlayerNameFetchBackgroundService), logs.Skip(i).Take(chunk).ToList());
 	}
 }

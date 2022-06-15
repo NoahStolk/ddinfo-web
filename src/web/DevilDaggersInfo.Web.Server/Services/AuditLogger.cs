@@ -148,31 +148,6 @@ public class AuditLogger : IAuditLogger
 
 	private void LogRoleChange(string action, string userName, string roleName) => Log($"`{action} ROLE '{roleName}'` for user `{userName}`. Make sure to login again for this to take effect in the browser.");
 
-	public void LogPlayerUpdates(string caller, List<(int PlayerId, string OldValue, string NewValue)> logs)
-	{
-		StringBuilder auditLogger = new();
-		if (logs.Count == 1)
-			auditLogger.Append(caller).AppendLine(": 1 player was updated.");
-		else
-			auditLogger.Append(caller).Append(": ").Append(logs.Count).AppendLine(" players were updated.");
-		auditLogger.AppendLine("```");
-
-		const string propertyHeader = "PlayerId";
-		const string oldValueHeader = "Old value";
-		const string newValueHeader = "New value";
-		int paddingL = Math.Max(propertyHeader.Length, logs.Max(l => l.PlayerId.ToString().Length)) + 2;
-		int paddingR = Math.Max(oldValueHeader.Length, logs.Max(l => l.OldValue.Length)) + 2;
-
-		auditLogger.AppendFormat($"{{0,-{paddingL}}}", propertyHeader).AppendFormat($"{{0,-{paddingR}}}", oldValueHeader).AppendLine(newValueHeader);
-		auditLogger.AppendLine();
-		foreach ((int playerId, string oldValue, string newValue) in logs)
-			auditLogger.AppendFormat($"{{0,-{paddingL}}}", playerId).AppendFormat($"{{0,-{paddingR}}}", oldValue).AppendLine(newValue);
-
-		auditLogger.AppendLine("```");
-
-		Log(auditLogger.ToString());
-	}
-
 	private static StringBuilder GetAuditLogger(ClaimsPrincipal claimsPrincipal, int id, string endpointName) => new($"`{endpointName}` by `{claimsPrincipal.GetName() ?? "?"}` for ID `{id}`\n");
 
 	private static void AddFileSystemInformation(StringBuilder auditLogger, List<FileSystemInformation>? auditLogFileSystemInformation)
