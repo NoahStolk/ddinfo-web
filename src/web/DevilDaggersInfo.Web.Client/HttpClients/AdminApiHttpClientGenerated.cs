@@ -154,6 +154,16 @@ public partial class AdminApiHttpClient
 		return await SendRequest(new HttpMethod("POST"), $"api/admin/health/force-dump", JsonContent.Create(unused));
 	}
 
+	public async Task<List<string>> GetMarkers()
+	{
+		return await SendGetRequest<List<string>>($"api/admin/markers/");
+	}
+
+	public async Task<HttpResponseMessage> EditMarker(string name, long value)
+	{
+		return await SendRequest(new HttpMethod("PUT"), $"api/admin/markers/{name}", JsonContent.Create(value));
+	}
+
 	public async Task<Page<GetModForOverview>> GetMods(int pageIndex, int pageSize, ModSorting? sortBy, bool ascending)
 	{
 		Dictionary<string, object?> queryParameters = new()

@@ -1,0 +1,58 @@
+@page "/admin/custom-leaderboards/edit-marker"
+@inherits BaseAdminPage
+@using DevilDaggersInfo.Web.Client.Components.Admin
+@using DevilDaggersInfo.Web.Client.Enums
+
+<AdminAuthorizer Base="this" RequiredRole="@Roles.CustomLeaderboards">
+	<Heading Title="Admin - Edit Marker" />
+
+	<EditForm Model="@_markerModel" OnValidSubmit="@OnValidSubmit">
+		<DataAnnotationsValidator />
+		<ValidationSummary />
+
+		<InputWrapper Label="Name"><SearchDropdown TKey=string Values="_values" Converter="s => s" ShowDisplayValue="false" @bind-Value="@_markerModel.Name" /></InputWrapper>
+		<InputWrapper Label="Value (decimal)"><InputNumber class="admin-input" @bind-Value="_markerModel.Value" /></InputWrapper>
+
+		<p class="font-bold">
+			After editing, please be sure to test if submitting a run via DDCL works.
+		</p>
+
+		<button class="btn btn-gray p-2" type="submit">Submit</button>
+	</EditForm>
+</AdminAuthorizer>
+
+@code
+{
+	private readonly MarkerModel _markerModel = new();
+
+	private Dictionary<string, string> _values = new();
+
+	protected override async Task OnInitializedAsync()
+	{
+		await base.OnInitializedAsync();
+
+		_values = (await Http.GetMarkers()).ToDictionary(s => s, s => s);
+	}
+
+	private async Task OnValidSubmit()
+	{
+		try
+		{
+			HttpResponseMessage hrm = await Http.EditMarker(_markerModel.Name, _markerModel.Value);
+
+			if (hrm.StatusCode == HttpStatusCode.OK)
+				NavigationManager.NavigateTo("/admin/custom-leaderboards");
+		}
+		catch (AccessTokenNotAvailableException exception)
+		{
+			exception.Redirect();
+		}
+	}
+
+	private class MarkerModel
+	{
+		public string Name { get; set; } = "WindowsSteam";
+
+		public long Value { get; set; }
+	}
+}
