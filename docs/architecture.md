@@ -2,19 +2,41 @@
 
 ## Project types and dependencies
 
+### Library layer
+
 | **Subfolder** | **Project type**            | **Can depend on**                                        |
 |---------------|-----------------------------|----------------------------------------------------------|
 | `api`         | API specifications          | Nothing                                                  |
-| `app`         | UI apps                     | `api`, `common`, `core`, `razor-core`, `razor`           |
-| `cmd`         | Console apps                | `api`, `common`, `core`                                  |
 | `common`      | Common functionality        | Nothing                                                  |
 | `core`        | Core set of features        | `common`, `core`                                         |
-| `razor`       | Razor UI libraries          | `api`, `common`, `core`, `razor-core`                    |
+
+### UI layer
+
+| **Subfolder** | **Project type**            | **Can depend on**                                        |
+|---------------|-----------------------------|----------------------------------------------------------|
 | `razor-core`  | Reusable Razor UI libraries | `api`, `common`, `core`, `razor-core`                    |
+
+### App layer
+
+| **Subfolder** | **Project type**            | **Can depend on**                                        |
+|---------------|-----------------------------|----------------------------------------------------------|
+| `app`         | UI apps                     | `common`, `core`, `razor-core`, `razor`                  |
+| `razor`       | Razor UI libraries          | `common`, `core`, `razor-core`                           |
+
+### Web layer
+
+| **Subfolder** | **Project type**            | **Can depend on**                                        |
+|---------------|-----------------------------|----------------------------------------------------------|
+| `web`         | Website (client and server) | `api`, `common`, `core`, `razor-core`, `web-core`, `web` |
+| `web-core`    | Reusable web logic          | `common`, `core`, `web-core`                             |
+
+### Miscellaneous
+
+| **Subfolder** | **Project type**            | **Can depend on**                                        |
+|---------------|-----------------------------|----------------------------------------------------------|
+| `cmd`         | Console apps                | `common`, `core`                                         |
 | `tests`       | Unit tests                  | Anything                                                 |
 | `tool`        | Tools for internal usage    | Anything                                                 |
-| `web`         | Website                     | `api`, `common`, `core`, `razor-core`, `web-core`, `web` |
-| `web-core`    | Shared web logic            | `api`, `common`, `core`, `web-core`                      |
 
 ## Project hierarchy
 
