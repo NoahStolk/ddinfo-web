@@ -1,7 +1,7 @@
 using DevilDaggersInfo.Api.Ddcl.ProcessMemory;
 using DevilDaggersInfo.Api.Ddcl.Tools;
 
-namespace DevilDaggersInfo.Core.CustomLeaderboard.Services;
+namespace DevilDaggersInfo.Razor.CustomLeaderboard.Services;
 
 public interface IClientConfiguration
 {

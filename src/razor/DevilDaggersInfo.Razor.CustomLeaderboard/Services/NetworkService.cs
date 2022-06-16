@@ -2,15 +2,14 @@ using DevilDaggersInfo.Api.Ddcl;
 using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
 using DevilDaggersInfo.Api.Ddcl.ProcessMemory;
 using DevilDaggersInfo.Api.Ddcl.Tools;
-using DevilDaggersInfo.Core.CustomLeaderboard.HttpClients;
-using DevilDaggersInfo.Core.CustomLeaderboard.Models;
+using DevilDaggersInfo.Razor.CustomLeaderboard.HttpClients;
+using DevilDaggersInfo.Razor.CustomLeaderboard.Models;
 using Microsoft.Extensions.Logging;
 using System.Net;
 using System.Net.Http.Json;
 
-namespace DevilDaggersInfo.Core.CustomLeaderboard.Services;
+namespace DevilDaggersInfo.Razor.CustomLeaderboard.Services;
 
-// TODO: Move this service to Razor DDCL library. Core project cannot depend on API project.
 public class NetworkService
 {
 	private readonly ILogger<NetworkService> _logger;

@@ -5,7 +5,7 @@ using DevilDaggersInfo.Api.Ddcl.ProcessMemory;
 using DevilDaggersInfo.Api.Ddcl.Tools;
 using System.Net.Http.Json;
 
-namespace DevilDaggersInfo.Core.CustomLeaderboard.HttpClients;
+namespace DevilDaggersInfo.Razor.CustomLeaderboard.HttpClients;
 
 public partial class DdclApiHttpClient
 {
