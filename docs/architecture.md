@@ -5,10 +5,11 @@
 | **Subfolder** | **Project type**            | **Can depend on**                                        |
 |---------------|-----------------------------|----------------------------------------------------------|
 | `api`         | API specifications          | Nothing                                                  |
-| `app`         | UI apps                     | `api`, `common`, `core`, `razor-core`                    |
+| `app`         | UI apps                     | `api`, `common`, `core`, `razor-core`, `razor`           |
 | `cmd`         | Console apps                | `api`, `common`, `core`                                  |
 | `common`      | Common functionality        | Nothing                                                  |
-| `core`        | Core set of features        | `api`, `common`, `core`                                  |
+| `core`        | Core set of features        | `common`, `core`                                         |
+| `razor`       | Razor UI                    | `api`, `common`, `core`, `razor-core`                    |
 | `razor-core`  | Razor UI libraries          | `api`, `common`, `core`, `razor-core`                    |
 | `tests`       | Unit tests                  | Anything                                                 |
 | `tool`        | Tools for internal usage    | Anything                                                 |
@@ -37,10 +38,10 @@ flowchart TD;
 	core_spawnset[Core.Spawnset]
 	core_wiki[Core.Wiki]
 
-	razor_core_asseteditor[Razor.Core.AssetEditor]
-	razor_core_customleaderboard[Razor.Core.CustomLeaderboard]
-	razor_core_replayeditor[Razor.Core.ReplayEditor]
-	razor_core_survivaleditor[Razor.Core.SurvivalEditor]
+	razor_asseteditor[Razor.Core.AssetEditor]
+	razor_customleaderboard[Razor.Core.CustomLeaderboard]
+	razor_replayeditor[Razor.Core.ReplayEditor]
+	razor_survivaleditor[Razor.Core.SurvivalEditor]
 
 	razor_core_canvaschart[Razor.Core.CanvasChart]
 	razor_core_unmarshalled[Razor.Core.Unmarshalled]
@@ -71,8 +72,11 @@ flowchart TD;
 	class core_asset,core_customleaderboard,core_encryption,core_mod,core_nativeinterface,core_replay,core_spawnset,core_wiki core;
 	classDef core fill:#006,stroke:#333,stroke-width:4px;
 
-	class razor_core_asseteditor,razor_core_customleaderboard,razor_core_replayeditor,razor_core_survivaleditor,razor_core_canvaschart,razor_core_unmarshalled razor_core;
-	classDef razor_core fill:#066,stroke:#333,stroke-width:4px;
+	class razor_asseteditor,razor_customleaderboard,razor_replayeditor,razor_survivaleditor razor;
+	classDef razor fill:#800,stroke:#333,stroke-width:4px;
+
+	class razor_core_canvaschart,razor_core_unmarshalled razor_core;
+	classDef razor_core fill:#500,stroke:#333,stroke-width:4px;
 
 	class web_client web_client;
 	classDef web_client fill:#a66,stroke:#333,stroke-width:4px;
@@ -101,6 +105,11 @@ flowchart TD;
 		api_ddse
 	end
 
+	razor_asseteditor --> api_ddae
+	razor_customleaderboard --> api_ddcl
+	razor_replayeditor --> api_ddre
+	razor_survivaleditor --> api_ddse
+
 	subgraph Api External
 		api_dd
 		api_clubber
@@ -124,20 +133,20 @@ flowchart TD;
 	web_server ----> api_ddre
 	web_server ----> api_ddse
 
-	subgraph Razor Core Web
+	subgraph Razor Core
 		razor_core_canvaschart --> razor_core_unmarshalled
 	end
 
-	subgraph Razor Core Tool
-		razor_core_asseteditor ----> core_mod
-		razor_core_customleaderboard ----> core_customleaderboard
-		razor_core_replayeditor ----> core_replay
-		razor_core_survivaleditor ----> core_spawnset
+	subgraph Razor
+		razor_asseteditor ----> core_mod
+		razor_customleaderboard ----> core_customleaderboard
+		razor_replayeditor ----> core_replay
+		razor_survivaleditor ----> core_spawnset
 
-		razor_core_asseteditor ----> core_nativeinterface
-		razor_core_customleaderboard ----> core_nativeinterface
-		razor_core_replayeditor ----> core_nativeinterface
-		razor_core_survivaleditor ----> core_nativeinterface
+		razor_asseteditor ----> core_nativeinterface
+		razor_customleaderboard ----> core_nativeinterface
+		razor_replayeditor ----> core_nativeinterface
+		razor_survivaleditor ----> core_nativeinterface
 	end
 
 	subgraph Web
@@ -158,15 +167,10 @@ flowchart TD;
 	end
 
 	subgraph Tool
-		ddae ----> razor_core_asseteditor
-		ddcl ----> razor_core_customleaderboard
-		ddre ----> razor_core_replayeditor
-		ddse ----> razor_core_survivaleditor
-
-		ddae ----> api_ddae
-		ddcl ----> api_ddcl
-		ddre ----> api_ddre
-		ddse ----> api_ddse
+		ddae --> razor_asseteditor
+		ddcl --> razor_customleaderboard
+		ddre --> razor_replayeditor
+		ddse --> razor_survivaleditor
 	end
 ```
 

@@ -10,6 +10,7 @@ using System.Net.Http.Json;
 
 namespace DevilDaggersInfo.Core.CustomLeaderboard.Services;
 
+// TODO: Move this service to Razor DDCL library. Core project cannot depend on API project.
 public class NetworkService
 {
 	private readonly ILogger<NetworkService> _logger;

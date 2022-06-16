@@ -9,7 +9,7 @@ public partial class ReplayParserPage
 
 	public void OpenReplay()
 	{
-		byte[] bytes = File.ReadAllBytes(@"C:\Users\NOAH\AppData\Roaming\DevilDaggers\replays\dagger-spawn-analysis_2.09-xvlv-0be4fdf5[22a5f347].ddreplay");
+		byte[] bytes = File.ReadAllBytes(@"C:\Users\NOAH\AppData\Roaming\DevilDaggers\replays\dagger-down-test_5.56-xvlv-0be523f3[22a5f347].ddreplay");
 		_replayBinary = new(bytes, ReplayBinaryReadComprehensiveness.All);
 	}
 }
