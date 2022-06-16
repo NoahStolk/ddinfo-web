@@ -6,25 +6,31 @@
 <AdminAuthorizer Base="this" RequiredRole="@Roles.CustomLeaderboards">
 	<Heading Title="Admin - Edit Marker" />
 
-	<InputWrapper Label="Name"><SearchDropdown TKey=string Values="_values" Converter="s => s" @bind-Value="@_markerName" /></InputWrapper>
-	<InputWrapper Label="Value (decimal)"><InputNumber class="admin-input" @bind-Value="_markerValue" /></InputWrapper>
+	<EditForm Model="@_markerModel" OnValidSubmit="@OnValidSubmit">
+		<DataAnnotationsValidator />
+		<ValidationSummary />
 
-	<p class="font-bold">
-		After editing, please be sure to test if submitting a run via DDCL works.
-	</p>
+		<InputWrapper Label="Name"><SearchDropdown TKey=string Values="_values" Converter="s => s" ShowDisplayValue="false" @bind-Value="@_markerModel.Name" /></InputWrapper>
+		<InputWrapper Label="Value (decimal)"><InputNumber class="admin-input" @bind-Value="_markerModel.Value" /></InputWrapper>
 
-	<button class="btn btn-gray p-1" @onclick="OnValidSubmit">Edit marker</button>
+		<p class="font-bold">
+			After editing, please be sure to test if submitting a run via DDCL works.
+		</p>
+
+		<button class="btn btn-gray p-2" type="submit">Submit</button>
+	</EditForm>
 </AdminAuthorizer>
 
 @code
 {
-	private Dictionary<string, string> _values = new();
+	private readonly MarkerModel _markerModel = new();
 
-	private string _markerName = "WindowsSteam";
-	private long _markerValue;
+	private Dictionary<string, string> _values = new();
 
 	protected override async Task OnInitializedAsync()
 	{
+		await base.OnInitializedAsync();
+
 		_values = (await Http.GetMarkers()).ToDictionary(s => s, s => s);
 	}
 
@@ -32,7 +38,7 @@
 	{
 		try
 		{
-			HttpResponseMessage hrm = await Http.EditMarker(_markerName, _markerValue);
+			HttpResponseMessage hrm = await Http.EditMarker(_markerModel.Name, _markerModel.Value);
 
 			if (hrm.StatusCode == HttpStatusCode.OK)
 				NavigationManager.NavigateTo("/admin/custom-leaderboards");
@@ -41,5 +47,12 @@
 		{
 			exception.Redirect();
 		}
+	}
+
+	private class MarkerModel
+	{
+		public string Name { get; set; } = "WindowsSteam";
+
+		public long Value { get; set; }
 	}
 }

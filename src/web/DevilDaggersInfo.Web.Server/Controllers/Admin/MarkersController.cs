@@ -27,7 +27,7 @@ public class MarkersController : ControllerBase
 	[HttpPut("{name}")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	public async Task<ActionResult> EditMarker(string name, [Required] long value)
+	public async Task<ActionResult> EditMarker(string name, [Required, FromBody] long value)
 	{
 		MarkerEntity? marker = await _dbContext.Markers.FirstOrDefaultAsync(m => m.Name == name);
 		if (marker == null)
