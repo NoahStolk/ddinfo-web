@@ -1,9 +1,0 @@
-@page "/"
-@using DevilDaggersInfo.Core.Replay.Events
-@using DevilDaggersInfo.Razor.Core.ReplayEditor
-
-<button @onclick="OpenReplay">Open replay</button>
-@if (_replayBinary != null)
-{
-	<ReplayParser ReplayBinary="_replayBinary" />
-}

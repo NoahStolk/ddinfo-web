@@ -9,8 +9,8 @@
 | `cmd`         | Console apps                | `api`, `common`, `core`                                  |
 | `common`      | Common functionality        | Nothing                                                  |
 | `core`        | Core set of features        | `common`, `core`                                         |
-| `razor`       | Razor UI                    | `api`, `common`, `core`, `razor-core`                    |
-| `razor-core`  | Razor UI libraries          | `api`, `common`, `core`, `razor-core`                    |
+| `razor`       | Razor UI libraries          | `api`, `common`, `core`, `razor-core`                    |
+| `razor-core`  | Reusable Razor UI libraries | `api`, `common`, `core`, `razor-core`                    |
 | `tests`       | Unit tests                  | Anything                                                 |
 | `tool`        | Tools for internal usage    | Anything                                                 |
 | `web`         | Website                     | `api`, `common`, `core`, `razor-core`, `web-core`, `web` |
