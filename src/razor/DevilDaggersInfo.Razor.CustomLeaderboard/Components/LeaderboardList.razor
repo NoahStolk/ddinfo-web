@@ -1,8 +1,9 @@
 @using DevilDaggersInfo.Api.Ddcl
 @using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards
-@using DevilDaggersInfo.Core.CustomLeaderboard.Models
 @using DevilDaggersInfo.Core.CustomLeaderboard.Services
 @using DevilDaggersInfo.Razor.CustomLeaderboard.Extensions
+@using DevilDaggersInfo.Razor.CustomLeaderboard.Models
+@using DevilDaggersInfo.Razor.CustomLeaderboard.Services
 
 <button @onclick="@(() => SetPageIndexAsync(PageIndex - 1))">Prev</button>
 <button @onclick="@(() => SetPageIndexAsync(PageIndex + 1))">Next</button>

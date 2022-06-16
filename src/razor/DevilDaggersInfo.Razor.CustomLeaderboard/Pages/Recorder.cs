@@ -1,8 +1,9 @@
 using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
 using DevilDaggersInfo.Common.Utils;
 using DevilDaggersInfo.Core.CustomLeaderboard.Enums;
-using DevilDaggersInfo.Core.CustomLeaderboard.Models;
 using DevilDaggersInfo.Core.CustomLeaderboard.Services;
+using DevilDaggersInfo.Razor.CustomLeaderboard.Models;
+using DevilDaggersInfo.Razor.CustomLeaderboard.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 

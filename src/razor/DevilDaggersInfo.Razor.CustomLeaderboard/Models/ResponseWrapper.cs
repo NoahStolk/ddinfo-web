@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Core.CustomLeaderboard.Models;
+namespace DevilDaggersInfo.Razor.CustomLeaderboard.Models;
 
 public class ResponseWrapper<T>
 {

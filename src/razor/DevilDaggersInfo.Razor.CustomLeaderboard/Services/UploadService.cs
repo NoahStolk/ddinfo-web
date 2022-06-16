@@ -1,9 +1,11 @@
 using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
+using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Core.CustomLeaderboard.Memory;
-using DevilDaggersInfo.Core.CustomLeaderboard.Models;
+using DevilDaggersInfo.Core.CustomLeaderboard.Services;
+using DevilDaggersInfo.Razor.CustomLeaderboard.Models;
 using System.Web;
 
-namespace DevilDaggersInfo.Core.CustomLeaderboard.Services;
+namespace DevilDaggersInfo.Razor.CustomLeaderboard.Services;
 
 public class UploadService
 {
@@ -57,6 +59,8 @@ public class UploadService
 			block.ProhibitedMods);
 		string validation = _encryptionService.EncryptAndEncode(toEncrypt);
 
+		byte[] statsBuffer = _readerService.GetStatsBuffer();
+
 		AddUploadRequest uploadRequest = new()
 		{
 			DaggersFired = block.DaggersFired,
@@ -85,7 +89,7 @@ public class UploadService
 			IsReplay = block.IsReplay,
 			Validation = HttpUtility.HtmlEncode(validation),
 			ValidationVersion = 2,
-			GameData = _readerService.GetGameDataForUpload(),
+			GameData = GetGameDataForUpload(statsBuffer),
 			BuildMode = _clientConfiguration.GetBuildMode(),
 			OperatingSystem = _clientConfiguration.GetOperatingSystem().ToString(),
 			ProhibitedMods = block.ProhibitedMods,
@@ -98,5 +102,65 @@ public class UploadService
 		};
 
 		return await _networkService.SubmitScore(uploadRequest);
+	}
+
+	private AddGameData GetGameDataForUpload(byte[] statsBuffer)
+	{
+		AddGameData gameData = new();
+
+		using MemoryStream ms = new(statsBuffer);
+		using BinaryReader br = new(ms);
+		for (int i = 0; i < _readerService.MainBlock.StatsCount; i++)
+		{
+			gameData.GemsCollected.Add(br.ReadInt32());
+			gameData.EnemiesKilled.Add(br.ReadInt32());
+			gameData.DaggersFired.Add(br.ReadInt32());
+			gameData.DaggersHit.Add(br.ReadInt32());
+			gameData.EnemiesAlive.Add(br.ReadInt32());
+			_ = br.ReadInt32(); // Skip level gems.
+			gameData.HomingStored.Add(br.ReadInt32());
+			gameData.GemsDespawned.Add(br.ReadInt32());
+			gameData.GemsEaten.Add(br.ReadInt32());
+			gameData.GemsTotal.Add(br.ReadInt32());
+			gameData.HomingEaten.Add(br.ReadInt32());
+
+			gameData.Skull1sAlive.Add(br.ReadUInt16());
+			gameData.Skull2sAlive.Add(br.ReadUInt16());
+			gameData.Skull3sAlive.Add(br.ReadUInt16());
+			gameData.SpiderlingsAlive.Add(br.ReadUInt16());
+			gameData.Skull4sAlive.Add(br.ReadUInt16());
+			gameData.Squid1sAlive.Add(br.ReadUInt16());
+			gameData.Squid2sAlive.Add(br.ReadUInt16());
+			gameData.Squid3sAlive.Add(br.ReadUInt16());
+			gameData.CentipedesAlive.Add(br.ReadUInt16());
+			gameData.GigapedesAlive.Add(br.ReadUInt16());
+			gameData.Spider1sAlive.Add(br.ReadUInt16());
+			gameData.Spider2sAlive.Add(br.ReadUInt16());
+			gameData.LeviathansAlive.Add(br.ReadUInt16());
+			gameData.OrbsAlive.Add(br.ReadUInt16());
+			gameData.ThornsAlive.Add(br.ReadUInt16());
+			gameData.GhostpedesAlive.Add(br.ReadUInt16());
+			gameData.SpiderEggsAlive.Add(br.ReadUInt16());
+
+			gameData.Skull1sKilled.Add(br.ReadUInt16());
+			gameData.Skull2sKilled.Add(br.ReadUInt16());
+			gameData.Skull3sKilled.Add(br.ReadUInt16());
+			gameData.SpiderlingsKilled.Add(br.ReadUInt16());
+			gameData.Skull4sKilled.Add(br.ReadUInt16());
+			gameData.Squid1sKilled.Add(br.ReadUInt16());
+			gameData.Squid2sKilled.Add(br.ReadUInt16());
+			gameData.Squid3sKilled.Add(br.ReadUInt16());
+			gameData.CentipedesKilled.Add(br.ReadUInt16());
+			gameData.GigapedesKilled.Add(br.ReadUInt16());
+			gameData.Spider1sKilled.Add(br.ReadUInt16());
+			gameData.Spider2sKilled.Add(br.ReadUInt16());
+			gameData.LeviathansKilled.Add(br.ReadUInt16());
+			gameData.OrbsKilled.Add(br.ReadUInt16());
+			gameData.ThornsKilled.Add(br.ReadUInt16());
+			gameData.GhostpedesKilled.Add(br.ReadUInt16());
+			gameData.SpiderEggsKilled.Add(br.ReadUInt16());
+		}
+
+		return gameData;
 	}
 }
