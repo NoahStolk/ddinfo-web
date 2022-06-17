@@ -56,7 +56,7 @@ else
 				<Heading Title="Format" Level="2" />
 				<div class="bg-gray-1 max-w-arena-table px-1">
 					<DataField Name="Game version">@SpawnsetBinary.GetGameVersionString()</DataField>
-					<DataField Name="Game mode">@SpawnsetBinary.GameMode</DataField>
+					<DataField Name="Game mode">@SpawnsetBinary.GameMode.ToDisplayString()</DataField>
 				</div>
 
 				<SpawnsetArena SpawnsetBinary="SpawnsetBinary" />

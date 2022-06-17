@@ -1,6 +1,7 @@
 @page "/custom/spawnsets"
-@using DevilDaggersInfo.Core.Spawnset.Extensions
 @using DevilDaggersInfo.Api.Main.Spawnsets
+@using DevilDaggersInfo.Core.Spawnset.Extensions
+@using DevilDaggersInfo.Web.Client.Extensions
 @inject MainApiHttpClient Http
 @inject NavigationManager NavigationManager
 
@@ -55,7 +56,7 @@ else
 				<div class="overflow-hidden"><a class="link" href="/custom/spawnset/@spawnset.Id">@spawnset.Name.ToNoBreakString()</a></div>
 				<div class="overflow-hidden hidden md:block">@spawnset.AuthorName.ToNoBreakString()</div>
 				<div class="overflow-hidden hidden md:block">@spawnset.LastUpdated.ToString(StringFormats.DateFormat)</div>
-				<div class="overflow-hidden">@spawnset.GameMode</div>
+				<div class="overflow-hidden">@spawnset.GameMode.ToDisplayString()</div>
 				<div class="overflow-hidden hidden xl:block text-right">@(spawnset.LoopLength.HasValue ? (MarkupString)spawnset.LoopLength.Value.ToString(StringFormats.TimeFormat) : MarkupUtils.NoDataMarkup)</div>
 				<div class="overflow-hidden hidden xl:block text-right">@spawnset.LoopSpawnCount</div>
 				<div class="overflow-hidden hidden xl:block text-right">@(spawnset.PreLoopLength.HasValue ? (MarkupString)spawnset.PreLoopLength.Value.ToString(StringFormats.TimeFormat) : MarkupUtils.NoDataMarkup)</div>
