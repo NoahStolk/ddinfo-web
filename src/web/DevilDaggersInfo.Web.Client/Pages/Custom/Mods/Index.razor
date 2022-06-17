@@ -38,7 +38,7 @@ else
 			<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ModSorting.LastUpdated)">Last updated</a></div>
 			<div class="hidden md:block"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ModSorting.ModTypes)">Type</a></div>
 			<div class="hidden xl:block text-right"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ModSorting.Hosted)">Hosted</a></div>
-			<div class="hidden xl:block text-right"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ModSorting.ProhibitedAssets)">Prohibited assets</a></div>
+			<div class="hidden xl:block text-right"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ModSorting.ProhibitedAssets)">Prohibited binaries</a></div>
 		</div>
 		@for (int i = 0; i < GetMods.Results.Count; i++)
 		{

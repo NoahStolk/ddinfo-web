@@ -99,4 +99,12 @@ public static class MarkupUtils
 	{
 		return new($@"<span class=""{Daggers.GetDaggerFromSeconds(GameConstants.CurrentVersion, timeInSeconds).Name.ToLower()} font-goethe text-lg"">{timeInSeconds.ToString(StringFormats.TimeFormat)}</span>");
 	}
+
+	public static MarkupString ProhibitedString(bool isProhibited)
+	{
+		if (isProhibited)
+			return new($"<span class='text-orange'>Prohibited</span>");
+
+		return new($"<span class='text-green'>OK</span>");
+	}
 }

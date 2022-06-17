@@ -22,7 +22,7 @@ else
 	<div class="bg-gray-1 max-w-sm px-1">
 		<DataField Name="Author(s)">@string.Join(", ", GetMod.Authors)</DataField>
 		<DataField Name="Last updated">@GetMod.LastUpdated.ToString(StringFormats.DateTimeFormat)</DataField>
-		<DataField Name="Prohibited assets">@(GetMod.ContainsProhibitedAssets.HasValue ? GetMod.ContainsProhibitedAssets.Value ? "Yes" : "No" : "Unknown")</DataField>
+		<DataField Name="Prohibited binaries">@(GetMod.ContainsProhibitedAssets.HasValue ? GetMod.ContainsProhibitedAssets.Value ? "Yes" : "No" : "Unknown")</DataField>
 		@if (GetMod.ModArchive != null)
 		{
 			<DataField Name="File size">@FileSizeUtils.Format(GetMod.ModArchive.FileSize)</DataField>
@@ -99,7 +99,7 @@ else
 		<div class="bg-gray-2 grid gap-3 grid-cols-mod-binaries-xs sm:grid-cols-mod-binaries-sm md:grid-cols-mod-binaries-md lg:grid-cols-mod-binaries-lg">
 			<div>Binary</div>
 			<div class="hidden sm:block">Type</div>
-			<div class="hidden md:block">Prohibited assets</div>
+			<div class="hidden md:block">Prohibited for 1000+</div>
 			<div class="hidden lg:block text-right">Assets</div>
 			<div class="hidden lg:block text-right">Size (extracted)</div>
 		</div>
@@ -108,7 +108,7 @@ else
 			<div class="grid gap-3 odd:bg-gray-1 grid-cols-mod-binaries-xs sm:grid-cols-mod-binaries-sm md:grid-cols-mod-binaries-md lg:grid-cols-mod-binaries-lg">
 				<div class="break-all">@binary.Name</div>
 				<div class="hidden sm:block">@binary.ModBinaryType.ToString().ToLower()</div>
-				<div class="hidden md:block">@(binary.ContainsProhibitedAssets ? "Yes" : "No")</div>
+				<div class="hidden md:block">@MarkupUtils.ProhibitedString(binary.ContainsProhibitedAssets)</div>
 				<div class="hidden lg:block text-right">@binary.Assets.Count</div>
 				<div class="hidden lg:block text-right">@FileSizeUtils.Format(binary.Size)</div>
 			</div>
@@ -119,7 +119,7 @@ else
 			<div>Asset</div>
 			<div class="hidden sm:block">Binary</div>
 			<div class="hidden md:block">Type</div>
-			<div class="hidden lg:block">Prohibited</div>
+			<div class="hidden lg:block">Prohibited for 1000+</div>
 			<div class="hidden lg:block text-right">Size (extracted)</div>
 		</div>
 		@foreach (GetModBinary binary in GetMod.ModArchive.Binaries.OrderBy(b => b.Name))
@@ -130,7 +130,7 @@ else
 					<div class="break-all">@asset.Name</div>
 					<div class="hidden sm:block break-all">@binary.Name</div>
 					<div class="hidden md:block">@asset.Type</div>
-					<div class="hidden lg:block">@(asset.IsProhibited ? "Yes" : "No")</div>
+					<div class="hidden lg:block">@MarkupUtils.ProhibitedString(asset.IsProhibited)</div>
 					<div class="hidden lg:block text-right">@FileSizeUtils.Format(asset.Size)</div>
 				</div>
 			}
@@ -142,7 +142,7 @@ else
 			<div class="bg-gray-2 grid gap-3 grid-cols-mod-assets-xs sm:grid-cols-mod-assets-sm md:grid-cols-mod-assets-md lg:grid-cols-mod-assets-lg">
 				<div>Asset</div>
 				<div class="hidden sm:block">Binary</div>
-				<div class="hidden md:block">Prohibited</div>
+				<div class="hidden md:block">Prohibited for 1000+</div>
 				<div class="hidden lg:block text-right">Default loudness</div>
 				<div class="hidden lg:block text-right">Modified loudness</div>
 			</div>
@@ -153,7 +153,7 @@ else
 					<div class="grid gap-3 odd:bg-gray-1 grid-cols-mod-assets-xs sm:grid-cols-mod-assets-sm md:grid-cols-mod-assets-md lg:grid-cols-mod-assets-lg">
 						<div class="break-all">@asset.AssetName</div>
 						<div class="hidden sm:block break-all">@binary.Name</div>
-						<div class="hidden md:block">@(asset.IsProhibited ? "Yes" : "No")</div>
+						<div class="hidden md:block">@MarkupUtils.ProhibitedString(asset.IsProhibited)</div>
 						<div class="hidden lg:block text-right">@asset.DefaultLoudness.ToString("0.0")</div>
 						<div class="hidden lg:block text-right">@asset.ModifiedLoudness.ToString("0.0")</div>
 					</div>
