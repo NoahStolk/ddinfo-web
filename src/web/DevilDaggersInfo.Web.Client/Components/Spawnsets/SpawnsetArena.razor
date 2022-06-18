@@ -1,10 +1,10 @@
 @using DevilDaggersInfo.Core.Spawnset.Enums
 <Heading Title="Arena" Level="2" />
 <div class="bg-gray-1 max-w-arena-table px-1">
-	<DataField Name="Start radius">@SpawnsetBinary.ShrinkStart</DataField>
-	<DataField Name="End radius">@SpawnsetBinary.ShrinkEnd</DataField>
-	<DataField Name="Shrinking rate">@SpawnsetBinary.ShrinkRate</DataField>
-	<DataField Name="Brightness">@SpawnsetBinary.Brightness</DataField>
+	<DataField Name="Start radius">@SpawnsetBinary.ShrinkStart.ToString("0.###")</DataField>
+	<DataField Name="End radius">@SpawnsetBinary.ShrinkEnd.ToString("0.###")</DataField>
+	<DataField Name="Shrinking rate">@SpawnsetBinary.ShrinkRate.ToString("0.###")</DataField>
+	<DataField Name="Brightness">@SpawnsetBinary.Brightness.ToString("0.###")</DataField>
 	@if (SpawnsetBinary.GameMode == GameMode.Race)
 	{
 		(int raceDaggerTileX, float? raceDaggerTileY, int raceDaggerTileZ) = SpawnsetBinary.GetRaceDaggerTilePosition();
