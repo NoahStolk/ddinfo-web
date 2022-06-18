@@ -14,7 +14,9 @@
 	}
 </div>
 
-<canvas width="@_canvasSize" height="@_canvasSize" id="arena-canvas" @ref="_canvasReference"></canvas>
+<div class="relative max-w-arena-table" id="arena">
+	<canvas width="@_canvasSize" height="@_canvasSize" id="arena-canvas" @ref="_canvasReference"></canvas>
+</div>
 
 <SpawnsetArenaHoverInfo @ref="_spawnsetArenaHoverInfo" />
 

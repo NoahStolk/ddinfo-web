@@ -9,8 +9,8 @@ namespace DevilDaggersInfo.Web.Client.Components.Spawnsets;
 
 public partial class SpawnsetArena
 {
-	private const int _canvasSize = _tileSize * 51;
-	private const int _tileSize = 8;
+	private int _canvasSize;
+	private float _tileSize;
 
 	private Canvas2d? _context;
 	private object? _canvasReference;
@@ -65,10 +65,20 @@ public partial class SpawnsetArena
 		if (firstRender)
 		{
 			await JsRuntime.InvokeAsync<object>("initArena");
-			await JsRuntime.InvokeAsync<object>("registerArena", DotNetObjectReference.Create(this), "arena");
+			await JsRuntime.InvokeAsync<object>("registerArena", DotNetObjectReference.Create(this));
+			await JsRuntime.InvokeAsync<object>("windowResize");
 		}
 
 		_context = new Canvas2d("arena-canvas");
+
+		Render();
+	}
+
+	[JSInvokable]
+	public void OnResize(double wrapperSize)
+	{
+		_canvasSize = (int)wrapperSize;
+		_tileSize = _canvasSize / 51f;
 
 		Render();
 	}
@@ -92,7 +102,7 @@ public partial class SpawnsetArena
 				if (color.R == 0 && color.G == 0 && color.B == 0)
 					continue;
 
-				_context.DrawTile(i, j, color.R, color.G, color.B);
+				_context.DrawTile(i, j, color.R, color.G, color.B, _tileSize);
 			}
 		}
 
@@ -171,8 +181,8 @@ public partial class SpawnsetArena
 		_canvasMouseX = mouseX - canvasBoundingClientRect.Left;
 		_canvasMouseY = mouseY - canvasBoundingClientRect.Top;
 
-		int x = Math.Clamp((int)_canvasMouseX / _tileSize, 0, 50);
-		int y = Math.Clamp((int)_canvasMouseY / _tileSize, 0, 50);
+		int x = Math.Clamp((int)(_canvasMouseX / _tileSize), 0, 50);
+		int y = Math.Clamp((int)(_canvasMouseY / _tileSize), 0, 50);
 		float height = SpawnsetBinary.ArenaTiles[x, y];
 		float actualHeight = SpawnsetBinary.GetActualTileHeight(x, y, _currentTime);
 

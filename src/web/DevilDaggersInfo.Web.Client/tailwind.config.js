@@ -99,7 +99,7 @@ module.exports = {
 				'mods-sm': createMinmaxGrid([3, 1]),
 
 				// Spawnsets
-				'spawnset-lg': '28rem auto',
+				'spawnset-xl': '34rem auto', // 34rem = 544px (must be larger than arena-table which is 512px)
 
 				// Leaderboards
 				'custom-leaderboard-2xl': '36px 32px minmax(64px, 100%) minmax(120px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(48px, 5%) minmax(120px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(72px, 5%) minmax(72px, 5%) minmax(72px, 5%) minmax(144px, 5%)',
@@ -147,7 +147,7 @@ module.exports = {
 				'lb-name': '1.5rem',
 			},
 			maxWidth: {
-				'arena-table': '410px', // 8 * 51 + 2
+				'arena-table': '512px', // 10 * 51 + 2
 			},
 			spacing: {
 				'128': '32rem',
@@ -157,7 +157,7 @@ module.exports = {
 				'256': '64rem',
 				'16-9': '56.25%',
 				'16-9/2': '28.125%',
-				'arena-table': '410px', // 8 * 51 + 2
+				'arena-table': '512px', // 10 * 51 + 2
 				'screen-width': 'calc(100% - 3rem)',
 			},
 			transitionProperty: {

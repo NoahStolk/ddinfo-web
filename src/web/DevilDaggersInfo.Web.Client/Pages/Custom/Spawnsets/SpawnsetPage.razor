@@ -20,10 +20,10 @@ else if (SpawnsetBinary == null || SpawnsView == null)
 }
 else
 {
-	<div class="grid grid-cols-1 lg:grid-cols-spawnset-lg">
+	<div class="grid grid-cols-1 xl:grid-cols-spawnset-xl">
 		@*Additional <div> is necessary to make sticky work.*@
 		<div>
-			<div class="lg:sticky lg:top-0 lg:max-h-screen lg:overflow-y-auto lg:pb-4">
+			<div class="xl:sticky xl:top-0 xl:max-h-screen xl:overflow-y-auto xl:pb-4">
 				<Heading Title="@($"Spawnset - {GetSpawnset.Name}")" BreakAll="true" />
 
 				<div class="bg-gray-1 max-w-arena-table px-1">
@@ -82,7 +82,7 @@ else
 
 		@*Additional <div> is necessary to make sticky work.*@
 		<div>
-			<div class="lg:pl-4 lg:pt-1">
+			<div class="xl:pl-4 xl:pt-1">
 				<Heading Title="Spawns" Level="2" />
 				<SpawnsetSpawns SpawnsView=SpawnsView />
 			</div>

@@ -2,7 +2,7 @@ function onResize() {
 	for (let i = 0; i < window.charts.length; i++) {
 		const chart = window.charts[i];
 		if (!chart || !chart.canvas) {
-			console.log("Chart at index " + i + " is null or doesn't have a canvas");
+			console.log("Chart at index " + i + " is null or doesn't have a canvas.");
 			return;
 		}
 
@@ -32,18 +32,18 @@ window.initChart = () => {
 window.registerChart = (chartWrapperComponent, chartName) => {
 	const canvasContainer = document.getElementById(chartName);
 	if (!canvasContainer) {
-		console.log("Cannot find element with ID " + chartName);
+		console.log("Cannot find element with ID '" + chartName + "'.");
 		return;
 	}
 
 	const canvasElements = canvasContainer.getElementsByTagName('canvas');
 	if (!canvasElements || canvasElements.length === 0) {
-		console.log("Cannot find canvas in element with ID " + chartName);
+		console.log("Cannot find canvas in element with ID '" + chartName + "'.");
 		return;
 	}
 
 	if (canvasElements.length > 1) {
-		console.log("Multiple canvas elements found in element with ID " + chartName);
+		console.log("Multiple canvas elements found in element with ID '" + chartName + "'.");
 		return;
 	}
 

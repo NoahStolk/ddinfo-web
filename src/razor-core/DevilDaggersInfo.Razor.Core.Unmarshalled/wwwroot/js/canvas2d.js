@@ -409,8 +409,8 @@ window.c2d = {
 		const r = jsi.readInt32(d, 12);
 		const g = jsi.readInt32(d, 16);
 		const b = jsi.readInt32(d, 20);
+		const tileSize = jsi.readFloat(d, 24);
 
-		const tileSize = 8;
 		const border = 1;
 
 		dc.strokeStyle = "rgba(" + r + ", " + g + ", " + b + ", 0.75)";

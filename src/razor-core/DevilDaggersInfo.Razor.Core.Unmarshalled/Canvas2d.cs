@@ -537,6 +537,6 @@ public class Canvas2d : Canvas
 	public void Restore()
 		=> Invoke("c2d.restore");
 
-	public void DrawTile(int x, int y, int r, int g, int b)
-		=> Invoke("c2d.drawTile", x, y, r, g, b);
+	public void DrawTile(int x, int y, int r, int g, int b, float tileSize)
+		=> Invoke("c2d.drawTile", x, y, r, g, b, tileSize);
 }
