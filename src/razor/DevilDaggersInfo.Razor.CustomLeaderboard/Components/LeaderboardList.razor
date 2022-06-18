@@ -5,8 +5,12 @@
 @using DevilDaggersInfo.Razor.CustomLeaderboard.Models
 @using DevilDaggersInfo.Razor.CustomLeaderboard.Services
 
-<button @onclick="@(() => SetPageIndexAsync(PageIndex - 1))">Prev</button>
-<button @onclick="@(() => SetPageIndexAsync(PageIndex + 1))">Next</button>
+<div>Select a spawnset to play</div>
+
+<button class="bg-dark-red hover:bg-red px-1" @onclick="@(() => SetPageIndexAsync(PageIndex - 1))">Prev</button>
+<button class="bg-dark-red hover:bg-red px-1" @onclick="@(() => SetPageIndexAsync(PageIndex + 1))">Next</button>
+
+<div>Page @(PageIndex + 1) of @TotalPages</div>
 
 @if (_leaderboards == null)
 {
@@ -18,19 +22,21 @@ else if (_leaderboards.HasError)
 }
 else
 {
-	<div class="grid gap-x-2 grid-cols-5 m-2 p-2">
+	<div class="grid gap-x-2 grid-cols-5">
 		<span class="font-bold">Spawnset</span>
 		<span class="font-bold text-right">Rank</span>
 		<span class="font-bold text-right">Score</span>
 		<span class="font-bold text-right">Next dagger</span>
 		<span class="font-bold text-right">World record</span>
+	</div>
 
-		@foreach (GetCustomLeaderboardForOverview leaderboard in _leaderboards.Response.Results)
-		{
-			string? daggerColor = leaderboard.SelectedPlayerStats?.Dagger?.GetColorCode();
-			string? worldRecordDaggerColor = leaderboard.WorldRecord?.Dagger?.GetColorCode();
+	@foreach (GetCustomLeaderboardForOverview leaderboard in _leaderboards.Response.Results)
+	{
+		string? daggerColor = leaderboard.SelectedPlayerStats?.Dagger?.GetColorCode();
+		string? worldRecordDaggerColor = leaderboard.WorldRecord?.Dagger?.GetColorCode();
 
-			<a class="link" @onclick="@(async () => await InjectSpawnset(leaderboard.SpawnsetId))">@leaderboard.SpawnsetName</a>
+		<div class="grid gap-x-2 grid-cols-5 hover:bg-dark-red cursor-pointer" @onclick="@(async () => await InjectSpawnset(leaderboard.SpawnsetId))">
+			<span>@leaderboard.SpawnsetName</span>
 
 			@if (leaderboard.SelectedPlayerStats == null)
 			{
@@ -53,13 +59,17 @@ else
 			{
 				<span class="text-right" style="color: @worldRecordDaggerColor;">@leaderboard.WorldRecord.Time.ToString("N4")</span>
 			}
-		}
-	</div>
+		</div>
+	}
 }
 
 @code
 {
+	private const int _pageSize = 20;
+
 	private ResponseWrapper<Page<GetCustomLeaderboardForOverview>>? _leaderboards;
+
+	private int TotalPages => _leaderboards == null || _leaderboards.HasError ? 0 : (int)Math.Ceiling(_leaderboards.Response.TotalResults / (double)_pageSize);
 
 	[Inject]
 	public NetworkService NetworkService { get; set; } = null!;
@@ -81,14 +91,16 @@ else
 
 	private async Task SetPageIndexAsync(int pageIndex)
 	{
-		PageIndex = Math.Max(0, pageIndex);
-		_leaderboards = null;
+		if (pageIndex < 0 || pageIndex > TotalPages - 1)
+			return;
+
+		PageIndex = pageIndex;
 		await UpdateListAsync();
 	}
 
 	private async Task UpdateListAsync()
 	{
-		_leaderboards = await NetworkService.GetLeaderboardOverview(Category, PageIndex, 20, SelectedPlayerId, true);
+		_leaderboards = await NetworkService.GetLeaderboardOverview(Category, PageIndex, _pageSize, SelectedPlayerId, true);
 	}
 
 	public async Task InjectSpawnset(int spawnsetId)
