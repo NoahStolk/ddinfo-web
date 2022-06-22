@@ -20,7 +20,7 @@ public class UpdatesController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public async Task<ActionResult<GetUpdate>> GetUpdates(ToolPublishMethod publishMethod, ToolBuildType buildType)
+	public async Task<ActionResult<GetUpdate>> GetUpdates([Required] ToolPublishMethod publishMethod, [Required] ToolBuildType buildType)
 	{
 		const string toolName = "DevilDaggersCustomLeaderboards";
 		Tool tool = await _toolService.GetToolAsync(toolName) ?? throw new("DDCL not found in tool service.");

@@ -31,7 +31,7 @@ public class CustomLeaderboardsController : ControllerBase
 	[HttpGet("overview")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public async Task<ActionResult<Page<GetCustomLeaderboardForOverview>>> GetCustomLeaderboardOverview(
-		CustomLeaderboardCategory category,
+		[Required] CustomLeaderboardCategory category,
 		int pageIndex,
 		int pageSize,
 		int selectedPlayerId,

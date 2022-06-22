@@ -24,7 +24,7 @@ public class CustomLeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult<Page<GetCustomLeaderboardOverview>>> GetCustomLeaderboards(
-		CustomLeaderboardCategory category,
+		[Required] CustomLeaderboardCategory category,
 		string? spawnsetFilter = null,
 		string? authorFilter = null,
 		[Range(0, 1000)] int pageIndex = 0,
@@ -32,10 +32,6 @@ public class CustomLeaderboardsController : ControllerBase
 		CustomLeaderboardSorting? sortBy = null,
 		bool ascending = false)
 	{
-		// Not sure who is doing this and why this isn't rejected by the default ASP.NET Core middleware.
-		if (category == 0)
-			category = CustomLeaderboardCategory.Survival;
-
 		Domain.Models.Page<Model.CustomLeaderboardOverview> cls = await _customLeaderboardRepository.GetCustomLeaderboardOverviewsAsync(
 			category: category.ToDomain(),
 			spawnsetFilter: spawnsetFilter,
@@ -56,7 +52,7 @@ public class CustomLeaderboardsController : ControllerBase
 	[HttpGet("global-leaderboard")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	public async Task<ActionResult<GetGlobalCustomLeaderboard>> GetGlobalCustomLeaderboardForCategory(CustomLeaderboardCategory category)
+	public async Task<ActionResult<GetGlobalCustomLeaderboard>> GetGlobalCustomLeaderboardForCategory([Required] CustomLeaderboardCategory category)
 	{
 		Model.GlobalCustomLeaderboard globalCustomLeaderboard = await _customLeaderboardRepository.GetGlobalCustomLeaderboardAsync(category.ToDomain());
 		return new GetGlobalCustomLeaderboard

@@ -39,7 +39,7 @@ public class ToolsController : ControllerBase
 	[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public async Task<ActionResult> GetToolDistributionFile([Required] string toolName, ToolPublishMethod publishMethod, ToolBuildType buildType, string? version = null)
+	public async Task<ActionResult> GetToolDistributionFile([Required] string toolName, [Required] ToolPublishMethod publishMethod, [Required] ToolBuildType buildType, string? version = null)
 	{
 		ToolDistribution? distribution;
 		if (version == null)
@@ -66,7 +66,7 @@ public class ToolsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public async Task<ActionResult<GetToolDistribution>> GetLatestToolDistribution([Required] string toolName, ToolPublishMethod publishMethod, ToolBuildType buildType)
+	public async Task<ActionResult<GetToolDistribution>> GetLatestToolDistribution([Required] string toolName, [Required] ToolPublishMethod publishMethod, [Required] ToolBuildType buildType)
 	{
 		ToolDistribution? distribution = await _toolService.GetLatestToolDistributionAsync(toolName, publishMethod.ToDomain(), buildType.ToDomain());
 		if (distribution == null)
@@ -79,7 +79,7 @@ public class ToolsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public async Task<ActionResult<GetToolDistribution>> GetToolDistributionByVersion([Required] string toolName, ToolPublishMethod publishMethod, ToolBuildType buildType, string version)
+	public async Task<ActionResult<GetToolDistribution>> GetToolDistributionByVersion([Required] string toolName, [Required] ToolPublishMethod publishMethod, [Required] ToolBuildType buildType, string version)
 	{
 		ToolDistribution? distribution = await _toolService.GetToolDistributionByVersionAsync(toolName, publishMethod.ToDomain(), buildType.ToDomain(), version);
 		if (distribution == null)

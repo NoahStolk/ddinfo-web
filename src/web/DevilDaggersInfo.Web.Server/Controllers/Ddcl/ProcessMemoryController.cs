@@ -18,7 +18,7 @@ public class ProcessMemoryController : ControllerBase
 	[HttpGet("/api/process-memory/marker")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	public ActionResult<Marker> GetMarkerObsolete(SupportedOperatingSystem operatingSystem)
+	public ActionResult<Marker> GetMarkerObsolete([Required] SupportedOperatingSystem operatingSystem)
 	{
 		return GetMarkerRepo(operatingSystem);
 	}
@@ -26,12 +26,12 @@ public class ProcessMemoryController : ControllerBase
 	[HttpGet("marker")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	public ActionResult<Marker> GetMarker(SupportedOperatingSystem operatingSystem)
+	public ActionResult<Marker> GetMarker([Required] SupportedOperatingSystem operatingSystem)
 	{
 		return GetMarkerRepo(operatingSystem);
 	}
 
-	private ActionResult<Marker> GetMarkerRepo(SupportedOperatingSystem operatingSystem)
+	private ActionResult<Marker> GetMarkerRepo([Required] SupportedOperatingSystem operatingSystem)
 	{
 		string name = operatingSystem switch
 		{
