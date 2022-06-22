@@ -32,6 +32,10 @@ public class CustomLeaderboardsController : ControllerBase
 		CustomLeaderboardSorting? sortBy = null,
 		bool ascending = false)
 	{
+		// Not sure who is doing this and why this isn't rejected by the default ASP.NET Core middleware.
+		if (category == 0)
+			category = CustomLeaderboardCategory.Survival;
+
 		Domain.Models.Page<Model.CustomLeaderboardOverview> cls = await _customLeaderboardRepository.GetCustomLeaderboardOverviewsAsync(
 			category: category.ToDomain(),
 			spawnsetFilter: spawnsetFilter,

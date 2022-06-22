@@ -7,9 +7,9 @@ namespace DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Main;
 
 public static class CustomLeaderboardConverters
 {
+	// TODO: Use better enums (static members) instead of default integer enums.
 	public static CustomLeaderboardCategory ToDomain(this MainApi.CustomLeaderboardCategory customLeaderboardCategory) => customLeaderboardCategory switch
 	{
-		0 => CustomLeaderboardCategory.Survival, // Temporary workaround for rare client bug. TODO: Use better enums (static members) instead of default integer enums.
 		MainApi.CustomLeaderboardCategory.Survival => CustomLeaderboardCategory.Survival,
 		MainApi.CustomLeaderboardCategory.TimeAttack => CustomLeaderboardCategory.TimeAttack,
 		MainApi.CustomLeaderboardCategory.Speedrun => CustomLeaderboardCategory.Speedrun,
