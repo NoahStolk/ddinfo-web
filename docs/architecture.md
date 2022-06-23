@@ -20,8 +20,8 @@
 
 | **Subfolder** | **Project type**            | **Can depend on**                                        |
 |---------------|-----------------------------|----------------------------------------------------------|
-| `app`         | UI apps                     | `common`, `core`, `razor-core`, `razor`                  |
-| `razor`       | Razor UI libraries          | `common`, `core`, `razor-core`                           |
+| `app`         | UI app heads                | `common`, `core`, `razor-core`, `razor`                  |
+| `razor`       | Razor UI libraries for apps | `common`, `core`, `razor-core`                           |
 
 ### Web layer
 
@@ -107,7 +107,7 @@ flowchart TD;
 	classDef web_core fill:#00a,stroke:#333,stroke-width:4px;
 
 	class web_server,web_server_domain web_server;
-	classDef web_server fill:#6a6,stroke:#333,stroke-width:4px;
+	classDef web_server fill:#383,stroke:#333,stroke-width:4px;
 
 	subgraph Core
 		core_customleaderboard
@@ -118,9 +118,11 @@ flowchart TD;
 		core_customleaderboard --> core_encryption
 		core_mod --> core_asset
 		core_spawnset --> core_wiki
+
+		razor_core_canvaschart --> razor_core_unmarshalled
 	end
 
-	subgraph Api Tool
+	subgraph Api App
 		api_ddae
 		api_ddcl
 		api_ddre
@@ -155,10 +157,6 @@ flowchart TD;
 	web_server ----> api_ddre
 	web_server ----> api_ddse
 
-	subgraph Razor Core
-		razor_core_canvaschart --> razor_core_unmarshalled
-	end
-
 	subgraph Razor
 		razor_asseteditor ----> core_mod
 		razor_customleaderboard ----> core_customleaderboard
@@ -188,7 +186,7 @@ flowchart TD;
 		web_server_domain --> web_core_claims
 	end
 
-	subgraph Tool
+	subgraph App
 		ddae --> razor_asseteditor
 		ddcl --> razor_customleaderboard
 		ddre --> razor_replayeditor
