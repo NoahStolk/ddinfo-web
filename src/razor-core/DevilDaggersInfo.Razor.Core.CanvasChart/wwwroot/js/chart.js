@@ -18,7 +18,7 @@ function onResize() {
 	}
 }
 
-window.windowResize = (_) => {
+window.chartInitialResize = (_) => {
 	onResize();
 };
 

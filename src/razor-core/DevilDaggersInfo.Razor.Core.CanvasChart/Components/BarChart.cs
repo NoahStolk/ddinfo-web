@@ -58,7 +58,7 @@ public partial class BarChart
 		{
 			await JsRuntime.InvokeAsync<object>("initChart");
 			await JsRuntime.InvokeAsync<object>("registerChart", DotNetObjectReference.Create(this), UniqueName);
-			await JsRuntime.InvokeAsync<object>("windowResize", DotNetObjectReference.Create(this));
+			await JsRuntime.InvokeAsync<object>("chartInitialResize", DotNetObjectReference.Create(this));
 		}
 
 		_context = new Canvas2d($"{UniqueName}-canvas");

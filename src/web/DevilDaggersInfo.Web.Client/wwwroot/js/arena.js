@@ -9,7 +9,7 @@ function onArenaResize() {
 	window.arena.wrapperComponent.invokeMethodAsync('OnResize', arenaSize);
 }
 
-window.windowResize = () => {
+window.arenaInitialResize = () => {
 	onArenaResize();
 };
 

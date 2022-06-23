@@ -66,7 +66,7 @@ public partial class SpawnsetArena
 		{
 			await JsRuntime.InvokeAsync<object>("initArena");
 			await JsRuntime.InvokeAsync<object>("registerArena", DotNetObjectReference.Create(this));
-			await JsRuntime.InvokeAsync<object>("windowResize");
+			await JsRuntime.InvokeAsync<object>("arenaInitialResize");
 		}
 
 		_context = new Canvas2d("arena-canvas");
