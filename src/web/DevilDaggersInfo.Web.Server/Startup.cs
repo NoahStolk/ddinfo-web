@@ -133,7 +133,7 @@ public class Startup
 			{
 				config.PostProcess = document =>
 				{
-					document.Info.Title = $"DevilDaggers.Info API ({apiNamespace.ToUpper()})";
+					document.Info.Title = $"DevilDaggers.info API ({apiNamespace.ToUpper()})";
 					document.Info.Description = description;
 					document.Info.Contact = new()
 					{
