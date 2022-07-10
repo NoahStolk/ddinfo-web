@@ -74,7 +74,6 @@ public class ToolService : IToolService
 		return File.ReadAllBytes(path);
 	}
 
-	// TODO: Unit test.
 	public async Task<ToolDistribution?> GetLatestToolDistributionAsync(string name, ToolPublishMethod publishMethod, ToolBuildType buildType)
 	{
 		List<string> versions = await _dbContext.ToolDistributions.Where(td => td.ToolName == name && td.PublishMethod == publishMethod && td.BuildType == buildType).Select(td => td.VersionNumber).ToListAsync();

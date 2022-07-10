@@ -17,7 +17,6 @@ using DevilDaggersInfo.Web.Server.Domain.Utils;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Semver;
 using System.Diagnostics;
 using System.Web;
 
