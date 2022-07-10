@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Core.Versioning;
 using DevilDaggersInfo.Web.Server.Domain.Constants;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 
@@ -59,5 +60,5 @@ public class CustomEntry
 
 	public bool HasGraphs => Client != CustomLeaderboardsClient.DevilDaggersCustomLeaderboards || ClientVersionParsed >= FeatureConstants.DdclGraphs;
 
-	private Version ClientVersionParsed => Version.TryParse(ClientVersion, out Version? version) ? version : new(0, 0, 0, 0);
+	private AppVersion ClientVersionParsed => AppVersion.TryParse(ClientVersion, out AppVersion? version) ? version : new(0, 0, 0);
 }

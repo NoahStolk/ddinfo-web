@@ -15,6 +15,7 @@ public class MockEntities
 		PropertyInfo[] properties = typeof(MockEntities).GetProperties();
 
 		MockDbSetTools = GetEntities<ToolEntity>().AsQueryable().BuildMockDbSet();
+		MockDbSetToolDistributions = GetEntities<ToolDistributionEntity>().AsQueryable().BuildMockDbSet();
 		MockDbSetPlayers = GetEntities<PlayerEntity>().AsQueryable().BuildMockDbSet();
 		MockDbSetSpawnsets = GetEntities<SpawnsetEntity>().AsQueryable().BuildMockDbSet();
 		MockDbSetCustomLeaderboards = GetEntities<CustomLeaderboardEntity>().AsQueryable().BuildMockDbSet();
@@ -28,6 +29,7 @@ public class MockEntities
 	}
 
 	public Mock<DbSet<ToolEntity>> MockDbSetTools { get; }
+	public Mock<DbSet<ToolDistributionEntity>> MockDbSetToolDistributions { get; }
 	public Mock<DbSet<PlayerEntity>> MockDbSetPlayers { get; }
 	public Mock<DbSet<SpawnsetEntity>> MockDbSetSpawnsets { get; }
 	public Mock<DbSet<CustomLeaderboardEntity>> MockDbSetCustomLeaderboards { get; }
@@ -38,6 +40,46 @@ public class MockEntities
 	{
 		Name = "DevilDaggersCustomLeaderboards",
 		RequiredVersionNumber = "1.2.0.0",
+	};
+
+	public ToolDistributionEntity Ddse2_WindowsWpf_Old { get; } = new()
+	{
+		ToolName = "DevilDaggersSurvivalEditor",
+		VersionNumber = "2.0.0.0",
+		BuildType = ToolBuildType.WindowsWpf,
+		PublishMethod = ToolPublishMethod.SelfContained,
+	};
+
+	public ToolDistributionEntity Ddse2_WindowsWpf { get; } = new()
+	{
+		ToolName = "DevilDaggersSurvivalEditor",
+		VersionNumber = "2.45.0.0",
+		BuildType = ToolBuildType.WindowsWpf,
+		PublishMethod = ToolPublishMethod.SelfContained,
+	};
+
+	public ToolDistributionEntity Ddse2_WindowsWpf_Windows7 { get; } = new()
+	{
+		ToolName = "DevilDaggersSurvivalEditor",
+		VersionNumber = "2.45.0.0",
+		BuildType = ToolBuildType.WindowsWpf,
+		PublishMethod = ToolPublishMethod.Default,
+	};
+
+	public ToolDistributionEntity Ddse3_WindowsPhotino { get; } = new()
+	{
+		ToolName = "DevilDaggersSurvivalEditor",
+		VersionNumber = "3.0.0-alpha.0",
+		BuildType = (ToolBuildType)2,
+		PublishMethod = ToolPublishMethod.SelfContained,
+	};
+
+	public ToolDistributionEntity Ddse3_LinuxPhotino { get; } = new()
+	{
+		ToolName = "DevilDaggersSurvivalEditor",
+		VersionNumber = "3.0.0-alpha.0",
+		BuildType = (ToolBuildType)3,
+		PublishMethod = ToolPublishMethod.SelfContained,
 	};
 
 	public PlayerEntity TestPlayer1 { get; } = new()

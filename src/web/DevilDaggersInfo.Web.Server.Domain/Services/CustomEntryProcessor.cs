@@ -5,6 +5,7 @@ using DevilDaggersInfo.Core.Encryption;
 using DevilDaggersInfo.Core.Replay;
 using DevilDaggersInfo.Core.Replay.Enums;
 using DevilDaggersInfo.Core.Spawnset.Enums;
+using DevilDaggersInfo.Core.Versioning;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
@@ -12,6 +13,7 @@ using DevilDaggersInfo.Web.Server.Domain.Extensions;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Models.Spawnsets;
+using DevilDaggersInfo.Web.Server.Domain.Utils;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -76,8 +78,8 @@ public class CustomEntryProcessor
 		if (tool == null)
 			throw LogAndCreateValidationException(uploadRequest, $"'{uploadRequest.Client}' is not a known tool and submissions will not be accepted.");
 
-		Version clientVersionParsed = Version.Parse(uploadRequest.ClientVersion);
-		if (clientVersionParsed < Version.Parse(tool.RequiredVersionNumber))
+		AppVersion clientVersionParsed = AppVersion.Parse(uploadRequest.ClientVersion);
+		if (clientVersionParsed < AppVersion.Parse(tool.RequiredVersionNumber))
 			throw LogAndCreateValidationException(uploadRequest, $"You are using an unsupported and outdated version of {uploadRequest.Client}. Please update the program.");
 
 		// Reject other invalid statuses.
