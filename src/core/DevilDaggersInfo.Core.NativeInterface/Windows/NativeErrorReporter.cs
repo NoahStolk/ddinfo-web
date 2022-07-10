@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Core.NativeInterface;
 
-namespace DevilDaggersInfo.App.AssetEditor.Photino.Services;
+namespace DevilDaggersInfo.Core.NativeInterface.Windows;
 
 public class NativeErrorReporter : INativeErrorReporter
 {
