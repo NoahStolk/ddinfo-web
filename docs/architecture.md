@@ -203,7 +203,7 @@ flowchart TD;
 	server[Server]
 	api[API]
 	devildaggersinfo[Website]
-	devildaggers[Devil Daggers]
+	devildaggers[Devil Daggers (game)]
 	ddse[DDSE]
 	ddcl[DDCL]
 	ddae[DDAE]
@@ -211,7 +211,7 @@ flowchart TD;
 	ddlive[DDLIVE]
 	clubberserver[Clubber server]
 	clubberapi[Clubber API]
-	devildaggersleaderboards[Devil Daggers leaderboards API]
+	devildaggersleaderboards[Devil Daggers (leaderboards server)]
 
 	class database,filesystem,server,api,devildaggersinfo,ddse,ddcl,ddae ddinfo;
 	class devildaggers,ddstatsrust,ddlive,clubberserver,clubberapi,devildaggersleaderboards external;
