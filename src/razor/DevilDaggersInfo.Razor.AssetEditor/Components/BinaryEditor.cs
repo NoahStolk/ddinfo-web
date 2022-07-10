@@ -1,8 +1,8 @@
 using DevilDaggersInfo.Core.Mod.Enums;
 using DevilDaggersInfo.Core.NativeInterface;
-using DevilDaggersInfo.Razor.AssetEditor.Extensions;
 using DevilDaggersInfo.Razor.AssetEditor.Pages;
-using DevilDaggersInfo.Razor.AssetEditor.Services;
+using DevilDaggersInfo.Razor.AssetEditor.Store.State;
+using Fluxor;
 using Microsoft.AspNetCore.Components;
 
 namespace DevilDaggersInfo.Razor.AssetEditor.Components;
@@ -13,7 +13,7 @@ public partial class BinaryEditor
 	public EditBinary Page { get; set; } = null!;
 
 	[Inject]
-	public BinaryState BinaryState { get; set; } = null!;
+	public IState<BinaryEditorState> BinaryState { get; set; } = null!;
 
 	[Inject]
 	public INativeErrorReporter ErrorReporter { get; set; } = null!;
@@ -29,7 +29,7 @@ public partial class BinaryEditor
 
 		try
 		{
-			BinaryState.ExtractChunks(directory);
+			BinaryState.Value.ExtractChunks(directory);
 		}
 		catch (Exception ex)
 		{
@@ -39,12 +39,12 @@ public partial class BinaryEditor
 
 	public string GetBinaryTypeBackgroundColor()
 	{
-		if (BinaryState.Binary.ModBinaryType == ModBinaryType.Audio)
+		if (BinaryState.Value.Binary.ModBinaryType == ModBinaryType.Audio)
 			return "bg-audio";
 
-		if (BinaryState.Binary.Chunks.Count == 0)
+		if (BinaryState.Value.Binary.Chunks.Count == 0)
 			return "bg-texture";
 
-		return BinaryState.Binary.Chunks.GroupBy(c => c.AssetType).OrderByDescending(c => c.Count()).First().Key.GetBgColor();
+		return BinaryState.Value.Binary.Chunks.GroupBy(c => c.AssetType).OrderByDescending(c => c.Count()).First().Key.GetBgColor();
 	}
 }

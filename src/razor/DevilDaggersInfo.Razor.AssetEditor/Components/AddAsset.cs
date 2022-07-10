@@ -5,6 +5,8 @@ using DevilDaggersInfo.Core.Mod.Enums;
 using DevilDaggersInfo.Core.NativeInterface;
 using DevilDaggersInfo.Razor.AssetEditor.Pages;
 using DevilDaggersInfo.Razor.AssetEditor.Services;
+using DevilDaggersInfo.Razor.AssetEditor.Store.State;
+using Fluxor;
 using Microsoft.AspNetCore.Components;
 using System.Text;
 
@@ -27,6 +29,7 @@ public partial class AddAsset
 	private byte[]? _selectedFragData;
 
 	private bool _writing;
+
 	[CascadingParameter]
 	public EditBinary Page { get; set; } = null!;
 
@@ -40,11 +43,13 @@ public partial class AddAsset
 	public IAssetEditorFileFilterService FileFilterService { get; set; } = null!;
 
 	[Inject]
-	public BinaryState BinaryState { get; set; } = null!;
+	public IState<BinaryEditorState> BinaryState { get; set; } = null!;
 
 	protected override void OnParametersSet()
 	{
-		if (BinaryState.Binary.ModBinaryType == ModBinaryType.Audio)
+		base.OnParametersSet();
+
+		if (BinaryState.Value.Binary.ModBinaryType == ModBinaryType.Audio)
 			_selectedAssetType = AssetType.Audio;
 		else
 			_selectedAssetType = null;
@@ -79,9 +84,9 @@ public partial class AddAsset
 
 	private void Open(AssetType assetType)
 	{
-		if (!ModBinary.IsAssetTypeValid(BinaryState.Binary.ModBinaryType, assetType))
+		if (!ModBinary.IsAssetTypeValid(BinaryState.Value.Binary.ModBinaryType, assetType))
 		{
-			ErrorReporter.ReportError($"Asset type '{assetType}' is not compatible with binary type '{BinaryState.Binary.ModBinaryType}'.");
+			ErrorReporter.ReportError($"Asset type '{assetType}' is not compatible with binary type '{BinaryState.Value.Binary.ModBinaryType}'.");
 			return;
 		}
 
@@ -101,9 +106,9 @@ public partial class AddAsset
 
 	private void OpenShader(Action<string> setFileName, Action<byte[]> setData, string fileExtension)
 	{
-		if (!ModBinary.IsAssetTypeValid(BinaryState.Binary.ModBinaryType, AssetType.Shader))
+		if (!ModBinary.IsAssetTypeValid(BinaryState.Value.Binary.ModBinaryType, AssetType.Shader))
 		{
-			ErrorReporter.ReportError($"Asset type '{AssetType.Shader}' is not compatible with binary type '{BinaryState.Binary.ModBinaryType}'.");
+			ErrorReporter.ReportError($"Asset type '{AssetType.Shader}' is not compatible with binary type '{BinaryState.Value.Binary.ModBinaryType}'.");
 			return;
 		}
 
@@ -150,7 +155,7 @@ public partial class AddAsset
 			return;
 		}
 
-		if (BinaryState.Binary.Chunks.Any(c => c.Name == _selectedAssetName && c.AssetType == _selectedAssetType.Value))
+		if (BinaryState.Value.Binary.Chunks.Any(c => c.Name == _selectedAssetName && c.AssetType == _selectedAssetType.Value))
 		{
 			ErrorReporter.ReportError($"An asset of type '{_selectedAssetType.Value}' with name '{_selectedAssetName}' already exists in this binary.");
 			return;
@@ -158,7 +163,7 @@ public partial class AddAsset
 
 		try
 		{
-			BinaryState.AddAsset(_selectedAssetName, _selectedAssetType.Value, _selectedAssetData);
+			BinaryState.Value.AddAsset(_selectedAssetName, _selectedAssetType.Value, _selectedAssetData);
 		}
 		catch (Exception ex)
 		{

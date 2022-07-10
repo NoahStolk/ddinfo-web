@@ -1,6 +1,7 @@
-using DevilDaggersInfo.Core.Mod.Enums;
 using DevilDaggersInfo.Core.NativeInterface;
 using DevilDaggersInfo.Razor.AssetEditor.Services;
+using DevilDaggersInfo.Razor.AssetEditor.Store.State;
+using Fluxor;
 using Microsoft.AspNetCore.Components;
 
 namespace DevilDaggersInfo.Razor.AssetEditor.Pages;
@@ -20,36 +21,13 @@ public partial class EditBinary
 	}
 
 	[Inject]
-	public INativeErrorReporter ErrorReporter { get; set; } = null!;
-
-	[Inject]
 	public INativeFileSystemService FileSystemService { get; set; } = null!;
 
 	[Inject]
-	public BinaryState BinaryState { get; set; } = null!;
+	public StateFacade StateFacade { get; set; } = null!;
 
-	public void NewBinary(ModBinaryType modBinaryType)
-	{
-		BinaryState.SetBinary(new(modBinaryType));
-		BinaryState.BinaryName = "(Untitled)";
-	}
-
-	public void OpenBinary()
-	{
-		INativeFileSystemService.FileResult? fileResult = FileSystemService.OpenFile(string.Empty);
-		if (fileResult == null)
-			return;
-
-		try
-		{
-			BinaryState.SetBinary(new(fileResult.Contents, ModBinaryReadComprehensiveness.All));
-			BinaryState.BinaryName = Path.GetFileName(fileResult.Path);
-		}
-		catch (Exception ex)
-		{
-			ErrorReporter.ReportError(ex);
-		}
-	}
+	[Inject]
+	public IState<BinaryEditorState> BinaryEditorState { get; set; } = null!;
 
 	public void SaveBinary()
 	{
@@ -59,10 +37,10 @@ public partial class EditBinary
 
 	public void SaveBinaryAs()
 	{
-		if (BinaryState.Binary.Chunks.Count == 0)
+		if (BinaryEditorState.Value.Binary.Chunks.Count == 0)
 			return;
 
-		byte[] compiledBinary = BinaryState.Binary.Compile();
+		byte[] compiledBinary = BinaryEditorState.Value.Binary.Compile();
 		FileSystemService.SaveDataToFile(compiledBinary);
 	}
 }

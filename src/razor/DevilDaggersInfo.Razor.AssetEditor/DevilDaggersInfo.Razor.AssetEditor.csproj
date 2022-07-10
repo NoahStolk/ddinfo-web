@@ -9,6 +9,7 @@
     <SupportedPlatform Include="browser" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Fluxor.Blazor.Web" />
     <PackageReference Include="Microsoft.AspNetCore.Components" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" />
     <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Mod\DevilDaggersInfo.Core.Mod.csproj" />

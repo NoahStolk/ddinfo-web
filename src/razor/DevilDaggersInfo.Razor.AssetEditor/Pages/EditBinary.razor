@@ -1,4 +1,5 @@
 @page "/"
+@inherits FluxorComponent
 @using DevilDaggersInfo.Core.Mod.Enums
 
 <h1>Editor</h1>
@@ -11,11 +12,11 @@
 }
 else
 {
-	<button class="btn btn-gray w-32 pb-1" @onclick="() => NewBinary(ModBinaryType.Audio)">New 'audio'</button>
-	<button class="btn btn-gray w-32 pb-1" @onclick="() => NewBinary(ModBinaryType.Dd)">New 'dd'</button>
-	<button class="btn btn-gray w-32 pb-1" @onclick="OpenBinary">Open</button>
-	<button class="btn @(BinaryState.IsEmpty ? "btn-disabled" : "btn-gray") w-32 pb-1" @onclick="SaveBinary" disabled="@BinaryState.IsEmpty">Save</button>
-	<button class="btn @(BinaryState.IsEmpty ? "btn-disabled" : "btn-gray") w-32 pb-1" @onclick="SaveBinaryAs" disabled="@BinaryState.IsEmpty">Save as</button>
+	<button class="btn btn-gray w-32 pb-1" @onclick="() => StateFacade.NewBinary(ModBinaryType.Audio)">New 'audio'</button>
+	<button class="btn btn-gray w-32 pb-1" @onclick="() => StateFacade.NewBinary(ModBinaryType.Dd)">New 'dd'</button>
+	<button class="btn btn-gray w-32 pb-1" @onclick="() => StateFacade.OpenBinary()">Open</button>
+	<button class="btn @(BinaryEditorState.Value.IsEmpty ? "btn-disabled" : "btn-gray") w-32 pb-1" @onclick="SaveBinary" disabled="@BinaryEditorState.Value.IsEmpty">Save</button>
+	<button class="btn @(BinaryEditorState.Value.IsEmpty ? "btn-disabled" : "btn-gray") w-32 pb-1" @onclick="SaveBinaryAs" disabled="@BinaryEditorState.Value.IsEmpty">Save as</button>
 
 	<CascadingValue Value="this">
 		<BinaryEditor />

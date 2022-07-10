@@ -3,17 +3,22 @@ using DevilDaggersInfo.Core.Asset;
 using DevilDaggersInfo.Core.Asset.Enums;
 using DevilDaggersInfo.Core.Asset.Extensions;
 using DevilDaggersInfo.Core.Mod;
-using DevilDaggersInfo.Core.Mod.Enums;
 using DevilDaggersInfo.Razor.AssetEditor.Data;
 using System.Runtime.CompilerServices;
 
-namespace DevilDaggersInfo.Razor.AssetEditor.Services;
+namespace DevilDaggersInfo.Razor.AssetEditor.Store.State;
 
-public class BinaryState
+public class BinaryEditorState
 {
 	private readonly Dictionary<string, bool> _sorting = new();
 
 	private Dictionary<AssetKey, VisualAsset> _visualChunks = new();
+
+	public BinaryEditorState(ModBinary binary, string binaryName)
+	{
+		Binary = binary;
+		BinaryName = binaryName;
+	}
 
 	public IReadOnlyDictionary<AssetKey, VisualAsset> VisualChunks => _visualChunks;
 
@@ -21,15 +26,9 @@ public class BinaryState
 
 	public bool IsSelectionEmpty => !_visualChunks.Any(kvp => kvp.Value.IsSelected);
 
-	public ModBinary Binary { get; private set; } = new(ModBinaryType.Dd);
+	public ModBinary Binary { get; }
 
-	public string BinaryName { get; set; } = "(Untitled)";
-
-	public void SetBinary(ModBinary binary)
-	{
-		Binary = binary;
-		RebuildChunkVisualization();
-	}
+	public string BinaryName { get; }
 
 	public void AddAsset(string assetName, AssetType assetType, byte[] fileContents)
 	{

@@ -1,18 +1,19 @@
 @using DevilDaggersInfo.Core.Asset
 @using DevilDaggersInfo.Core.Mod
 @using DevilDaggersInfo.Razor.AssetEditor.Extensions
+@inherits FluxorComponent
 
 <h2>Binary</h2>
 
 <div class="grid gap-x-2 grid-cols-2 max-w-md">
 	<div>Type</div>
-	<div><span class="@GetBinaryTypeBackgroundColor() bg-opacity-60">@BinaryState.Binary.ModBinaryType.ToString().ToLower()</span></div>
+	<div><span class="@GetBinaryTypeBackgroundColor() bg-opacity-60">@BinaryState.Value.Binary.ModBinaryType.ToString().ToLower()</span></div>
 	<div>Name</div>
-	<div>@BinaryState.BinaryName</div>
+	<div>@BinaryState.Value.BinaryName</div>
 	<div>Chunk count</div>
-	<div>@BinaryState.Binary.Chunks.Count</div>
+	<div>@BinaryState.Value.Binary.Chunks.Count</div>
 	<div>Asset count</div>
-	<div>@BinaryState.Binary.AssetMap.Count</div>
+	<div>@BinaryState.Value.Binary.AssetMap.Count</div>
 </div>
 
 <h2>Assets</h2>
@@ -20,26 +21,26 @@
 <div><button class="btn btn-green btn-large w-32 h-8" @onclick="() => Page.AddingNewAsset = true">Add new asset</button></div>
 
 @{
-	string? disabledClass = BinaryState.IsEmpty ? "btn-disabled" : null;
-	int selectedCount = BinaryState.VisualChunks.Count(c => c.Value.IsSelected);
+	string? disabledClass = BinaryState.Value.IsEmpty ? "btn-disabled" : null;
+	int selectedCount = BinaryState.Value.VisualChunks.Count(c => c.Value.IsSelected);
 	string selectedText = selectedCount == 1 ? "asset" : "assets";
 }
 
 <div class="grid gap-1 grid-cols-2 bg-gray-1 p-1">
-	<div><button class="btn @(BinaryState.IsSelectionEmpty ? "btn-disabled" : "btn-green")" disabled="@BinaryState.IsSelectionEmpty" @onclick="ExtractChunks">Extract @selectedCount @selectedText</button></div>
-	<div><button class="btn @(BinaryState.IsSelectionEmpty ? "btn-disabled" : "btn-red")" disabled="@BinaryState.IsSelectionEmpty" @onclick="BinaryState.DeleteChunks">Delete @selectedCount @selectedText</button></div>
-	<div><button class="btn @(BinaryState.IsSelectionEmpty ? "btn-disabled" : "btn-green")" disabled="@BinaryState.IsSelectionEmpty" @onclick="BinaryState.EnableChunks">Enable @selectedCount @selectedText</button></div>
-	<div><button class="btn @(BinaryState.IsSelectionEmpty ? "btn-disabled" : "btn-orange")" disabled="@BinaryState.IsSelectionEmpty" @onclick="BinaryState.DisableChunks">Disable @selectedCount @selectedText</button></div>
+	<div><button class="btn @(BinaryState.Value.IsSelectionEmpty ? "btn-disabled" : "btn-green")" disabled="@BinaryState.Value.IsSelectionEmpty" @onclick="ExtractChunks">Extract @selectedCount @selectedText</button></div>
+	<div><button class="btn @(BinaryState.Value.IsSelectionEmpty ? "btn-disabled" : "btn-red")" disabled="@BinaryState.Value.IsSelectionEmpty" @onclick="BinaryState.Value.DeleteChunks">Delete @selectedCount @selectedText</button></div>
+	<div><button class="btn @(BinaryState.Value.IsSelectionEmpty ? "btn-disabled" : "btn-green")" disabled="@BinaryState.Value.IsSelectionEmpty" @onclick="BinaryState.Value.EnableChunks">Enable @selectedCount @selectedText</button></div>
+	<div><button class="btn @(BinaryState.Value.IsSelectionEmpty ? "btn-disabled" : "btn-orange")" disabled="@BinaryState.Value.IsSelectionEmpty" @onclick="BinaryState.Value.DisableChunks">Disable @selectedCount @selectedText</button></div>
 </div>
 
 <div class="grid gap-1 grid-cols-2 bg-gray-1 p-1">
-	<div><button class="btn @(BinaryState.IsEmpty ? "btn-disabled" : "btn-gray") @disabledClass" disabled="@BinaryState.IsEmpty" @onclick="() => BinaryState.ResetSelection(BinaryState.VisualChunks.Select(c => c.Key))">Select all</button></div>
-	<div><button class="btn @(BinaryState.IsEmpty ? "btn-disabled" : "btn-gray") @disabledClass" disabled="@BinaryState.IsEmpty" @onclick="() => BinaryState.ResetSelection(Enumerable.Empty<AssetKey>())">Deselect all</button></div>
-	<div><button class="btn @(BinaryState.IsEmpty ? "btn-disabled" : "btn-gray") @disabledClass" disabled="@BinaryState.IsEmpty" @onclick="() => BinaryState.ResetSelection(BinaryState.VisualChunks.Where(c => c.Value.IsProhibited).Select(c => c.Key))">Select prohibited</button></div>
-	<div><button class="btn @(BinaryState.IsEmpty ? "btn-disabled" : "btn-gray") @disabledClass" disabled="@BinaryState.IsEmpty" @onclick="BinaryState.InvertSelection">Invert selection</button></div>
+	<div><button class="btn @(BinaryState.Value.IsEmpty ? "btn-disabled" : "btn-gray") @disabledClass" disabled="@BinaryState.Value.IsEmpty" @onclick="() => BinaryState.Value.ResetSelection(BinaryState.Value.VisualChunks.Select(c => c.Key))">Select all</button></div>
+	<div><button class="btn @(BinaryState.Value.IsEmpty ? "btn-disabled" : "btn-gray") @disabledClass" disabled="@BinaryState.Value.IsEmpty" @onclick="() => BinaryState.Value.ResetSelection(Enumerable.Empty<AssetKey>())">Deselect all</button></div>
+	<div><button class="btn @(BinaryState.Value.IsEmpty ? "btn-disabled" : "btn-gray") @disabledClass" disabled="@BinaryState.Value.IsEmpty" @onclick="() => BinaryState.Value.ResetSelection(BinaryState.Value.VisualChunks.Where(c => c.Value.IsProhibited).Select(c => c.Key))">Select prohibited</button></div>
+	<div><button class="btn @(BinaryState.Value.IsEmpty ? "btn-disabled" : "btn-gray") @disabledClass" disabled="@BinaryState.Value.IsEmpty" @onclick="BinaryState.Value.InvertSelection">Invert selection</button></div>
 </div>
 
-@if (BinaryState.IsEmpty)
+@if (BinaryState.Value.IsEmpty)
 {
 	<p>
 		This binary is empty. Add some assets.
@@ -48,12 +49,12 @@
 else
 {
 	<div class="grid gap-x-2 grid-cols-4 px-1">
-		<div class="font-bold"><a class="link" @onclick="() => BinaryState.Sort(c => c.Key.AssetType)">Type</a></div>
-		<div class="font-bold"><a class="link" @onclick="() => BinaryState.Sort(c => c.Key.AssetName)">Name</a></div>
-		<div class="font-bold"><a class="link" @onclick="() => BinaryState.Sort(c => c.Value.IsProhibited)">Prohibited</a></div>
-		<div class="font-bold text-right"><a class="link" @onclick="() => BinaryState.Sort(c => c.Value.Size)">Size</a></div>
+		<div class="font-bold"><a class="link" @onclick="() => BinaryState.Value.Sort(c => c.Key.AssetType)">Type</a></div>
+		<div class="font-bold"><a class="link" @onclick="() => BinaryState.Value.Sort(c => c.Key.AssetName)">Name</a></div>
+		<div class="font-bold"><a class="link" @onclick="() => BinaryState.Value.Sort(c => c.Value.IsProhibited)">Prohibited</a></div>
+		<div class="font-bold text-right"><a class="link" @onclick="() => BinaryState.Value.Sort(c => c.Value.Size)">Size</a></div>
 	</div>
-	@foreach (var kvp in BinaryState.VisualChunks)
+	@foreach (var kvp in BinaryState.Value.VisualChunks)
 	{
 		<div class="grid gap-x-2 grid-cols-4 px-1 cursor-pointer @kvp.Key.AssetType.GetBgColor() @(kvp.Value.IsSelected ? "font-bold bg-opacity-30" : "bg-opacity-10") hover:bg-opacity-50" @onclick="() => kvp.Value.IsSelected = !kvp.Value.IsSelected">
 			<div>@kvp.Key.AssetType.ToDisplayString()</div>
