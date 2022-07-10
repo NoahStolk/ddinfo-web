@@ -16,6 +16,7 @@ public class UpdatesController : ControllerBase
 		_toolService = toolService;
 	}
 
+	// TODO: Make this endpoint generic for all tools.
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]

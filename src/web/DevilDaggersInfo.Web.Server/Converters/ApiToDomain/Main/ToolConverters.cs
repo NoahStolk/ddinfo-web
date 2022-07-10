@@ -10,6 +10,8 @@ public static class ToolConverters
 	{
 		MainApi.ToolBuildType.WindowsWpf => ToolBuildType.WindowsWpf,
 		MainApi.ToolBuildType.WindowsConsole => ToolBuildType.WindowsConsole,
+		MainApi.ToolBuildType.WindowsPhotino => ToolBuildType.WindowsPhotino,
+		MainApi.ToolBuildType.LinuxPhotino => ToolBuildType.LinuxPhotino,
 		_ => throw new InvalidEnumConversionException(buildType),
 	};
 
