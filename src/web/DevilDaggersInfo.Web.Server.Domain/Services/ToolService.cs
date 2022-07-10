@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Core.Versioning;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
@@ -73,10 +74,11 @@ public class ToolService : IToolService
 		return File.ReadAllBytes(path);
 	}
 
+	// TODO: Unit test.
 	public async Task<ToolDistribution?> GetLatestToolDistributionAsync(string name, ToolPublishMethod publishMethod, ToolBuildType buildType)
 	{
 		List<string> versions = await _dbContext.ToolDistributions.Where(td => td.ToolName == name && td.PublishMethod == publishMethod && td.BuildType == buildType).Select(td => td.VersionNumber).ToListAsync();
-		string? highestVersion = versions.OrderByDescending(Version.Parse).FirstOrDefault();
+		string? highestVersion = versions.OrderByDescending(AppVersion.Parse).FirstOrDefault();
 		if (highestVersion == null)
 			return null;
 
@@ -118,7 +120,7 @@ public class ToolService : IToolService
 
 	public async Task AddDistribution(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version, byte[] zipFileContents)
 	{
-		if (!Version.TryParse(version, out _))
+		if (!AppVersion.TryParse(version, out _))
 			throw new InvalidOperationException($"'{version}' is not a correct version number.");
 
 		ToolEntity? tool = await _dbContext.Tools.AsNoTracking().FirstOrDefaultAsync(t => t.Name == name);

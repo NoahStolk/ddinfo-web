@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Common.Extensions;
+using DevilDaggersInfo.Core.Versioning;
 using DevilDaggersInfo.Web.Server.Domain.Constants;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
@@ -10,6 +11,7 @@ using DevilDaggersInfo.Web.Server.Domain.Models.Spawnsets;
 using DevilDaggersInfo.Web.Server.Domain.Services;
 using DevilDaggersInfo.Web.Server.Domain.Utils;
 using Microsoft.EntityFrameworkCore;
+using Semver;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Repositories;
 
@@ -145,7 +147,7 @@ public class CustomLeaderboardRepository
 				.Select((ce, i) =>
 				{
 					bool isDdcl = ce.Client == CustomLeaderboardsClient.DevilDaggersCustomLeaderboards;
-					Version clientVersionParsed = Version.TryParse(ce.ClientVersion, out Version? version) ? version : new(0, 0, 0, 0);
+					AppVersion clientVersionParsed = AppVersion.TryParse(ce.ClientVersion, out AppVersion? version) ? version : new(0, 0, 0);
 					bool hasV3_1Values = !isDdcl || clientVersionParsed >= FeatureConstants.DdclV3_1;
 					bool hasHomingEatenValue = !isDdcl || clientVersionParsed >= FeatureConstants.DdclHomingEaten;
 
