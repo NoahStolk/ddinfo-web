@@ -8,5 +8,5 @@ public static class FeatureConstants
 
 	public static AppVersion DdclHomingEaten { get; } = new(0, 14, 5);
 
-	public static AppVersion DdclV3_1 { get; } = new(0, 10, 4);
+	public static AppVersion DdclV3_1 { get; } = new(0, 14, 1);
 }
