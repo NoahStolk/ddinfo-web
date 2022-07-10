@@ -33,9 +33,9 @@ public class AppVersionTests
 	[TestMethod]
 	public void TestComparison_Default()
 	{
-		AppVersion a = new(1, 0, 0);
-		AppVersion b = new(1, 1, 0);
-		AppVersion c = new(1, 0, 0);
+		AppVersion a = new(1, 2, 0);
+		AppVersion b = new(1, 11, 0);
+		AppVersion c = new(1, 2, 0);
 
 		// A
 		Assert.IsTrue(a < b);
@@ -53,9 +53,9 @@ public class AppVersionTests
 	[TestMethod]
 	public void TestComparison_Build()
 	{
-		AppVersion a = new(0, 0, 0, 0);
-		AppVersion b = new(0, 0, 0, 1);
-		AppVersion c = new(0, 0, 0, 1);
+		AppVersion a = new(0, 0, 0, 9);
+		AppVersion b = new(0, 0, 0, 12);
+		AppVersion c = new(0, 0, 0, 12);
 
 		// A
 		Assert.IsTrue(a < b);
@@ -77,26 +77,38 @@ public class AppVersionTests
 		AppVersion b = new(2, 0, 0, 0, true);
 		AppVersion c = new(2, 0, 0, 1, true);
 		AppVersion d = new(2, 0, 0, 0, false);
+		AppVersion e = new(2, 0, 0, 0, true);
 
 		// A
 		Assert.IsTrue(a < b);
 		Assert.IsTrue(a < c);
 		Assert.IsTrue(a < d);
+		Assert.IsTrue(a < e);
 
 		Assert.IsTrue(b > a);
 		Assert.IsTrue(c > a);
 		Assert.IsTrue(d > a);
+		Assert.IsTrue(e > a);
 
 		// B
 		Assert.IsTrue(b < c);
 		Assert.IsTrue(b < d);
+		Assert.IsTrue(b == e);
 
 		Assert.IsTrue(c > b);
 		Assert.IsTrue(d > b);
+		Assert.IsTrue(e == b);
 
 		// C
 		Assert.IsTrue(c < d);
+		Assert.IsTrue(c > e);
 
 		Assert.IsTrue(d > c);
+		Assert.IsTrue(e < c);
+
+		// D
+		Assert.IsTrue(d > e);
+
+		Assert.IsTrue(e < d);
 	}
 }
