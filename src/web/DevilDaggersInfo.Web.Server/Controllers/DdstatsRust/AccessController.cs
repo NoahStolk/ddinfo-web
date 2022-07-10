@@ -21,9 +21,6 @@ public class AccessController : ControllerBase
 		if (ddstatsRust == null)
 			throw new("ddstats-rust not found in database.");
 
-		return new DdstatsRustAccessInfo
-		{
-			RequiredVersion = Version.Parse(ddstatsRust.RequiredVersionNumber),
-		};
+		return new DdstatsRustAccessInfo { RequiredVersion = ddstatsRust.RequiredVersionNumber };
 	}
 }
