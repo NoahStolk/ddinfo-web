@@ -20,7 +20,7 @@ else
 	<Heading Title="@($"Mod - {GetMod.Name}")" BreakAll="true" />
 
 	<div class="bg-gray-1 max-w-sm px-1">
-		<DataField Name="Author(s)">@string.Join(", ", GetMod.Authors)</DataField>
+		<DataField Name="Author(s)"><span class="whitespace-nowrap">@string.Join(", ", GetMod.Authors)</span></DataField>
 		<DataField Name="Last updated">@GetMod.LastUpdated.ToString(StringFormats.DateTimeFormat)</DataField>
 		<DataField Name="Prohibited binaries">@(GetMod.ContainsProhibitedAssets.HasValue ? GetMod.ContainsProhibitedAssets.Value ? "Yes" : "No" : "Unknown")</DataField>
 		@if (GetMod.ModArchive != null)
