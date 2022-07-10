@@ -23,7 +23,7 @@ namespace DevilDaggersInfo.Core.Versioning;
 /// <item>2.0.0.0</item>
 /// </list>
 /// </summary>
-public record AppVersion
+public record AppVersion : IComparable<AppVersion>
 {
 	public AppVersion(int major, int minor, int patch, int build = 0, bool isAlpha = false)
 	{
@@ -124,5 +124,16 @@ public record AppVersion
 			throw new InvalidAppVersionException($"Patch must be a non-negative integer. It can optionally contain the exact string {alphaId} at the end to indicate that this is an alpha version.");
 
 		return new(major, minor, patch, build, isAlpha);
+	}
+
+	public int CompareTo(AppVersion? other)
+	{
+		if (other == null)
+			return 1;
+
+		if (this == other)
+			return 0;
+
+		return this < other ? -1 : 1;
 	}
 }
