@@ -641,7 +641,7 @@
 					"Description": "Added timeout for web requests so the application doesn't keep waiting when the website is offline."
 				},
 				{
-					"Description": "Fixed tile elements not updating colors after rounding or randomising."
+					"Description": "Fixed tile elements not updating colors after rounding or randomizing."
 				},
 				{
 					"Description": "The spawns editor scrollbar now scrolls to the end when adding new spawns."
@@ -1594,7 +1594,7 @@
 					"Description": "Added descriptions and tags to most model bindings."
 				},
 				{
-					"Description": "Fixed feather assets not being listed as blocked."
+					"Description": "Fixed feather assets not being listed as prohibited."
 				},
 				{
 					"Description": "Minor UI improvements."
