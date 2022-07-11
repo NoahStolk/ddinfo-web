@@ -161,7 +161,7 @@ public static class ReplayEventsParser
 		bool forward = br.ReadBoolean();
 		bool backward = br.ReadBoolean();
 		byte jumpTypeByte = br.ReadByte();
-		JumpType jump = jumpTypeByte switch
+		JumpType jumpType = jumpTypeByte switch
 		{
 			0 => JumpType.None,
 			1 => JumpType.Hop,
@@ -179,7 +179,7 @@ public static class ReplayEventsParser
 		if (end != expectedEnd)
 			throw new InvalidReplayBinaryException($"Invalid end of inputs event. Should be {expectedEnd} but got {end}.");
 
-		return new(left, right, forward, backward, jump, shoot, shootHoming, mouseX, mouseY, lookSpeed);
+		return new(left, right, forward, backward, jumpType, shoot, shootHoming, mouseX, mouseY, lookSpeed);
 	}
 
 	private static DaggerSpawnEvent ParseDaggerSpawnEvent(BinaryReader br, int entityId)
@@ -188,9 +188,19 @@ public static class ReplayEventsParser
 		Int16Vec3 position = br.ReadInt16Vec3();
 		Int16Mat3x3 orientation = br.ReadInt16Mat3x3();
 		bool isShot = br.ReadBoolean();
-		byte type = br.ReadByte();
+		byte daggerTypeByte = br.ReadByte();
+		DaggerType daggerType = daggerTypeByte switch
+		{
+			1 => DaggerType.Level1,
+			2 => DaggerType.Level2,
+			3 => DaggerType.Level3,
+			4 => DaggerType.Level3Homing,
+			5 => DaggerType.Level4,
+			6 => DaggerType.Level4Homing,
+			_ => throw new InvalidOperationException($"Invalid {nameof(DaggerType)} '{daggerTypeByte}'."),
+		};
 
-		return new(entityId, a, position, orientation, isShot, type);
+		return new(entityId, a, position, orientation, isShot, daggerType);
 	}
 
 	private static SquidSpawnEvent ParseSquidSpawnEvent(BinaryReader br, byte entityType, int entityId)
