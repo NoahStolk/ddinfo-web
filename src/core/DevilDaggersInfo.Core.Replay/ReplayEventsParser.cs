@@ -116,10 +116,25 @@ public static class ReplayEventsParser
 		return new(entityId, targetPosition);
 	}
 
-	private static HitEvent ParseHitEvent(BinaryReader br)
+	private static IEvent ParseHitEvent(BinaryReader br)
 	{
-		int entityId = br.ReadInt32(); // In case of daggers, this indicates that the dagger with this ID is to be deleted from the scene.
-		return new(entityId, br.ReadInt32(), br.ReadInt32());
+		// Examples:
+		// 1. When a dagger is deleted from the scene; A is the entity ID of the dagger and B is 0.
+		// 2. When a dagger is eaten by Ghostpede; A is the entity ID of the Ghostpede and B is the entity ID of the dagger.
+		int entityIdA = br.ReadInt32();
+		if (entityIdA == 0)
+			return ParseDeathEvent(br);
+
+		int entityIdB = br.ReadInt32();
+		int c = br.ReadInt32();
+		return new HitEvent(entityIdA, entityIdB, c);
+	}
+
+	private static DeathEvent ParseDeathEvent(BinaryReader br)
+	{
+		int deathType = br.ReadInt32();
+		_ = br.ReadInt32();
+		return new(deathType);
 	}
 
 	private static TransmuteEvent ParseTransmuteEvent(BinaryReader br)
@@ -185,7 +200,7 @@ public static class ReplayEventsParser
 
 	private static DaggerSpawnEvent ParseDaggerSpawnEvent(BinaryReader br, int entityId)
 	{
-		int a = br.ReadInt32(); // Always 0? Tested with Level 3 hand.
+		int a = br.ReadInt32(); // Always 0
 		Int16Vec3 position = br.ReadInt16Vec3();
 		Int16Mat3x3 orientation = br.ReadInt16Mat3x3();
 		bool isShot = br.ReadBoolean();
