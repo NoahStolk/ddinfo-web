@@ -118,7 +118,8 @@ public static class ReplayEventsParser
 
 	private static HitEvent ParseHitEvent(BinaryReader br)
 	{
-		return new(br.ReadInt32(), br.ReadInt32(), br.ReadInt32());
+		int entityId = br.ReadInt32(); // In case of daggers, this indicates that the dagger with this ID is to be deleted from the scene.
+		return new(entityId, br.ReadInt32(), br.ReadInt32());
 	}
 
 	private static TransmuteEvent ParseTransmuteEvent(BinaryReader br)
@@ -184,7 +185,7 @@ public static class ReplayEventsParser
 
 	private static DaggerSpawnEvent ParseDaggerSpawnEvent(BinaryReader br, int entityId)
 	{
-		int a = br.ReadInt32();
+		int a = br.ReadInt32(); // Always 0? Tested with Level 3 hand.
 		Int16Vec3 position = br.ReadInt16Vec3();
 		Int16Mat3x3 orientation = br.ReadInt16Mat3x3();
 		bool isShot = br.ReadBoolean();
@@ -280,9 +281,9 @@ public static class ReplayEventsParser
 
 	private static SpiderEggSpawnEvent ParseSpiderEggSpawnEvent(BinaryReader br, int entityId)
 	{
-		int a = br.ReadInt32(); // Spider Egg Type?
+		int a = br.ReadInt32(); // This holds value 2 for both Spider Egg I and II...
 		Vector3 position = br.ReadVector3(); // Not sure
-		Vector3 b = br.ReadVector3();
+		Vector3 b = br.ReadVector3(); // Target position?
 
 		return new(entityId, a, position, b);
 	}
