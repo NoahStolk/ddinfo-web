@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace DevilDaggersInfo.Core.NativeInterface.Windows;
 
-public class NativeMemoryService : INativeMemoryService
+public class WindowsMemoryService : INativeMemoryService
 {
 	public Process? GetDevilDaggersProcess()
 		=> Array.Find(Process.GetProcessesByName("dd"), p => p.MainWindowTitle == "Devil Daggers");

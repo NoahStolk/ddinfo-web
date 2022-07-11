@@ -6,7 +6,7 @@ namespace DevilDaggersInfo.Core.NativeInterface.Windows;
 /// <summary>
 /// Platform-specific code for interacting with the Windows file system.
 /// </summary>
-public class NativeFileSystemService : INativeFileSystemService
+public class WindowsFileSystemService : INativeFileSystemService
 {
 	public INativeFileSystemService.FileResult? OpenFile(string? extensionFilter)
 	{

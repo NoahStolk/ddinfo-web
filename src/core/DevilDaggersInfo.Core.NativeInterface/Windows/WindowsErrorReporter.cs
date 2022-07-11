@@ -2,7 +2,7 @@ using DevilDaggersInfo.Core.NativeInterface;
 
 namespace DevilDaggersInfo.Core.NativeInterface.Windows;
 
-public class NativeErrorReporter : INativeErrorReporter
+public class WindowsErrorReporter : INativeErrorReporter
 {
 	public void ReportError(Exception exception)
 	{
