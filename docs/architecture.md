@@ -110,11 +110,8 @@ flowchart TD;
 	classDef web_server fill:#383,stroke:#333,stroke-width:4px;
 
 	subgraph Core
-		core_customleaderboard
-		core_encryption
-		core_nativeinterface
-
 		core_customleaderboard --> core_encryption
+		core_customleaderboard --> core_nativeinterface
 		core_mod --> core_asset
 		core_replay --> core_spawnset
 		core_spawnset --> core_wiki

@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Core.CustomLeaderboard.Memory;
+using DevilDaggersInfo.Core.NativeInterface;
 using System.Diagnostics;
 using System.Text;
 
