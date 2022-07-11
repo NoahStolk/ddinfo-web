@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Razor.ReplayEditor.Store.Features.ReplayBinaryFeature.Actions;
+using DevilDaggersInfo.Razor.ReplayEditor.Store.Features.ReplayEditorFeature.Actions;
 using DevilDaggersInfo.Razor.ReplayEditor.Store.State;
 using Fluxor;
 
