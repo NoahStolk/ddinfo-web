@@ -1,15 +1,49 @@
 @using DevilDaggersInfo.Common
+@using DevilDaggersInfo.Core.Replay.Enums
 @using DevilDaggersInfo.Core.Replay.Events
+@using DevilDaggersInfo.Razor.ReplayEditor.Services
+@using DevilDaggersInfo.Razor.ReplayEditor.Store.State
+@using Fluxor
+@inject StateFacade StateFacade
+@inject IState<ReplayEditorState> ReplayEditorState
 
-<li class="list-disc">
-	<span>Tick @TickIndex (@((TickIndex / 60f).ToString(StringFormats.TimeFormat)))</span>
+@{
+	IInputsEvent? input = Events.FirstOrDefault(e => e is InputsEvent or InitialInputsEvent) as IInputsEvent;
+	bool isOpen = ReplayEditorState.Value.OpenedTicks.Contains(TickIndex);
+}
+
+<div class="grid gap-4 grid-cols-4 max-w-xl">
+	<span class="text-right">@TickIndex</span>
+	<span class="text-right">@((TickIndex / 60f).ToString(StringFormats.TimeFormat))</span>
+
+	<div>
+		@if (input != null)
+		{
+			<span class="@(input.Forward ? "text-red" : null)">W</span>
+			<span class="@(input.Left ? "text-red" : null)">A</span>
+			<span class="@(input.Backward ? "text-red" : null)">S</span>
+			<span class="@(input.Right ? "text-red" : null)">D</span>
+			<span class="@(input.Jump != JumpType.None ? "text-red" : null)">[Jump]</span>
+			<span class="@(input.Shoot ? "text-red" : null)">L</span>
+			<span class="@(input.ShootHoming ? "text-red" : null)">R</span>
+		}
+	</div>
+
+	<button @onclick="() => StateFacade.ToggleTick(TickIndex)">@(isOpen ? "-" : "+")</button>
+</div>
+
+@if (isOpen)
+{
 	<ul class="pl-4">
 		@foreach (IEvent e in Events)
 		{
+			if (e == input)
+				continue;
+
 			<li class="list-disc">@e.ToString()</li>
 		}
 	</ul>
-</li>
+}
 
 @code
 {

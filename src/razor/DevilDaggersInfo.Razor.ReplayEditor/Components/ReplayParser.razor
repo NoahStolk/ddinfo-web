@@ -6,14 +6,15 @@
 @using DevilDaggersInfo.Razor.ReplayEditor.Store.State
 @using Fluxor
 @inherits FluxorComponent
+@inject IState<ReplayBinaryState> ReplayBinaryState
 @inject IState<ReplayEditorState> ReplayEditorState
 @inject StateFacade StateFacade
 
 @{
-	ReplayBinary replayBinary = ReplayEditorState.Value.ReplayBinary;
+	ReplayBinary replayBinary = ReplayBinaryState.Value.ReplayBinary;
 	int startTick = ReplayEditorState.Value.StartTick;
 	int endTick = ReplayEditorState.Value.EndTick;
-	List<List<IEvent>> events = ReplayEventsParser.ParseCompressedEvents(ReplayEditorState.Value.ReplayBinary.CompressedEvents!);
+	List<List<IEvent>> events = ReplayEventsParser.ParseCompressedEvents(ReplayBinaryState.Value.ReplayBinary.CompressedEvents!);
 
 	bool f = startTick <= 0;
 	bool l = endTick >= events.Count - 1;
@@ -73,9 +74,14 @@
 	</div>
 </div>
 
-<ul class="pl-4">
-	@for (int i = startTick; i < Math.Min(events.Count, endTick); i++)
-	{
-		<ReplayTick TickIndex="i" Events="events[i]" />
-	}
-</ul>
+<div class="grid gap-4 grid-cols-4 max-w-xl">
+	<span class="font-bold text-right">Tick</span>
+	<span class="font-bold text-right">Time</span>
+	<span class="font-bold">Inputs</span>
+	<span class="font-bold">Show events</span>
+</div>
+
+@for (int i = startTick; i < Math.Min(events.Count, endTick); i++)
+{
+	<ReplayTick TickIndex="i" Events="events[i]" />
+}

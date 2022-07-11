@@ -2,7 +2,8 @@ using DevilDaggersInfo.Core.NativeInterface;
 using DevilDaggersInfo.Core.NativeInterface.Utils;
 using DevilDaggersInfo.Core.Replay;
 using DevilDaggersInfo.Core.Replay.Enums;
-using DevilDaggersInfo.Razor.ReplayEditor.Store.Features.ReplayEditor.Actions;
+using DevilDaggersInfo.Razor.ReplayEditor.Store.Features.ReplayBinaryFeature.Actions;
+using DevilDaggersInfo.Razor.ReplayEditor.Store.Features.ReplayEditorFeature.Actions;
 using Fluxor;
 
 namespace DevilDaggersInfo.Razor.ReplayEditor.Services;
@@ -34,12 +35,11 @@ public class StateFacade
 
 	public void SelectTickRange(int startTick, int endTick)
 	{
-		if (startTick < 0)
-			startTick = 0;
-
-		if (endTick <= startTick)
-			endTick = startTick + 1;
-
 		_dispatcher.Dispatch(new SelectTickRangeAction(startTick, endTick));
+	}
+
+	public void ToggleTick(int tick)
+	{
+		_dispatcher.Dispatch(new ToggleTickAction(tick));
 	}
 }
