@@ -113,10 +113,10 @@ flowchart TD;
 		core_customleaderboard
 		core_encryption
 		core_nativeinterface
-		core_replay
 
 		core_customleaderboard --> core_encryption
 		core_mod --> core_asset
+		core_replay --> core_spawnset
 		core_spawnset --> core_wiki
 
 		razor_core_canvaschart --> razor_core_unmarshalled
