@@ -1,10 +1,22 @@
 @using DevilDaggersInfo.Common
 @using DevilDaggersInfo.Common.Extensions
+@using DevilDaggersInfo.Core.Replay
 @using DevilDaggersInfo.Core.Replay.Events
+@using DevilDaggersInfo.Razor.ReplayEditor.Services
+@using DevilDaggersInfo.Razor.ReplayEditor.Store.State
+@using Fluxor
+@inherits FluxorComponent
+@inject IState<ReplayEditorState> ReplayEditorState
+@inject StateFacade StateFacade
 
 @{
-	bool f = _currentSecond <= 0;
-	bool l = _currentSecond >= _events.Count / 60;
+	ReplayBinary replayBinary = ReplayEditorState.Value.ReplayBinary;
+	int startTick = ReplayEditorState.Value.StartTick;
+	int endTick = ReplayEditorState.Value.EndTick;
+	List<List<IEvent>> events = ReplayEventsParser.ParseCompressedEvents(ReplayEditorState.Value.ReplayBinary.CompressedEvents!);
+
+	bool f = startTick <= 0;
+	bool l = endTick >= events.Count - 1;
 	const string disabledStyle = "disabled:opacity-50 cursor-default btn-disabled";
 	const string enabledStyle = "btn-gray-light";
 }
@@ -13,61 +25,61 @@
 
 <div class="grid grid-cols-2 gap-x-2 max-w-md">
 	<div>Version</div>
-	<div>@ReplayBinary.Version</div>
+	<div>@replayBinary.Version</div>
 	<div>Timestamp</div>
-	<div>@ReplayBinary.TimestampSinceGameRelease</div>
+	<div>@replayBinary.TimestampSinceGameRelease</div>
 	<div>Time</div>
-	<div>@ReplayBinary.Time.ToString(StringFormats.TimeFormat)</div>
+	<div>@replayBinary.Time.ToString(StringFormats.TimeFormat)</div>
 	<div>Start Time</div>
-	<div>@ReplayBinary.StartTime.ToString(StringFormats.TimeFormat)</div>
+	<div>@replayBinary.StartTime.ToString(StringFormats.TimeFormat)</div>
 	<div>Kills</div>
-	<div>@ReplayBinary.Kills</div>
+	<div>@replayBinary.Kills</div>
 	<div>Gems</div>
-	<div>@ReplayBinary.Gems</div>
+	<div>@replayBinary.Gems</div>
 	<div>Daggers Hit</div>
-	<div>@ReplayBinary.DaggersHit</div>
+	<div>@replayBinary.DaggersHit</div>
 	<div>Daggers Fired</div>
-	<div>@ReplayBinary.DaggersFired</div>
+	<div>@replayBinary.DaggersFired</div>
 	<div>Death Type</div>
-	<div>@ReplayBinary.DeathType</div>
+	<div>@replayBinary.DeathType</div>
 	<div>Player ID</div>
-	<div>@ReplayBinary.PlayerId</div>
+	<div>@replayBinary.PlayerId</div>
 	<div>Player Name</div>
-	<div>@ReplayBinary.Username</div>
+	<div>@replayBinary.Username</div>
 	<div>Spawnset MD5</div>
-	<div>@ReplayBinary.SpawnsetMd5.ByteArrayToHexString()</div>
+	<div>@replayBinary.SpawnsetMd5.ByteArrayToHexString()</div>
 </div>
 
-<h2 class="text-red text-2xl pt-4 pb-2 font-goethe">Events @_currentSecond.ToString(StringFormats.TimeFormat) - @((_currentSecond + 1).ToString(StringFormats.TimeFormat))</h2>
+<h2 class="text-red text-2xl pt-4 pb-2 font-goethe">Events @startTick - @endTick (@((startTick / 60f).ToString(StringFormats.TimeFormat)) - @((endTick / 60f).ToString(StringFormats.TimeFormat)))</h2>
 
 <div class="flex">
 	<div class="w-10 h-10 mx-1">
-		<button disabled="@f" class="@(f ? disabledStyle : enabledStyle) btn" @onclick="() => _currentSecond = 0">|</button>
+		<button disabled="@f" class="@(f ? disabledStyle : enabledStyle) btn" @onclick="() => StateFacade.SelectTickRange(0, 60)">|</button>
 	</div>
 	<div class="w-10 h-10 mx-1">
-		<button disabled="@f" class="@(f ? disabledStyle : enabledStyle) btn" @onclick="() => _currentSecond = Math.Max(0, _currentSecond - 5)">--</button>
+		<button disabled="@f" class="@(f ? disabledStyle : enabledStyle) btn" @onclick="() => StateFacade.SelectTickRange(startTick - 300, endTick - 300)">--</button>
 	</div>
 	<div class="w-10 h-10 mx-1">
-		<button disabled="@f" class="@(f ? disabledStyle : enabledStyle) btn" @onclick="() => _currentSecond = Math.Max(0, _currentSecond - 1)">-</button>
+		<button disabled="@f" class="@(f ? disabledStyle : enabledStyle) btn" @onclick="() => StateFacade.SelectTickRange(startTick - 60, endTick - 60)">-</button>
 	</div>
 	<div class="w-10 h-10 mx-1">
-		<button disabled="@l" class="@(l ? disabledStyle : enabledStyle) btn" @onclick="() => _currentSecond = Math.Min(_events.Count / 60, _currentSecond + 1)">+</button>
+		<button disabled="@l" class="@(l ? disabledStyle : enabledStyle) btn" @onclick="() => StateFacade.SelectTickRange(startTick + 60, endTick + 60)">+</button>
 	</div>
 	<div class="w-10 h-10 mx-1">
-		<button disabled="@l" class="@(l ? disabledStyle : enabledStyle) btn" @onclick="() => _currentSecond = Math.Min(_events.Count / 60, _currentSecond + 5)">++</button>
+		<button disabled="@l" class="@(l ? disabledStyle : enabledStyle) btn" @onclick="() => StateFacade.SelectTickRange(startTick + 300, endTick + 300)">++</button>
 	</div>
 	<div class="w-10 h-10 mx-1">
-		<button disabled="@l" class="@(l ? disabledStyle : enabledStyle) btn" @onclick="() => _currentSecond = _events.Count / 60">|</button>
+		<button disabled="@l" class="@(l ? disabledStyle : enabledStyle) btn" @onclick="() => StateFacade.SelectTickRange(events.Count - 60, events.Count)">|</button>
 	</div>
 </div>
 
 <ul class="pl-4">
-	@for (int i = _currentSecond * 60; i < Math.Min(_events.Count, (_currentSecond + 1) * 60); i++)
+	@for (int i = startTick; i < Math.Min(events.Count, endTick); i++)
 	{
 		<li class="list-disc">
 			<span>Tick @i (@((i / 60f).ToString(StringFormats.TimeFormat)))</span>
 			<ul class="pl-4">
-				@foreach (IEvent e in _events[i])
+				@foreach (IEvent e in events[i])
 				{
 					<li class="list-disc">@e.ToString()</li>
 				}

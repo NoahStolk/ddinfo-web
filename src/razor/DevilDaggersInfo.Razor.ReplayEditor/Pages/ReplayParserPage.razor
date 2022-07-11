@@ -1,9 +1,10 @@
 @page "/"
 @using DevilDaggersInfo.Core.Replay.Events
 @using DevilDaggersInfo.Razor.ReplayEditor
+@using DevilDaggersInfo.Razor.ReplayEditor.Services
+@inherits FluxorComponent
+@inject StateFacade StateFacade
 
-<button @onclick="OpenReplay">Open replay</button>
-@if (_replayBinary != null)
-{
-	<ReplayParser ReplayBinary="_replayBinary" />
-}
+<button @onclick="StateFacade.NewReplay">New replay</button>
+<button @onclick="StateFacade.OpenReplayFile">Open replay</button>
+<ReplayParser />
