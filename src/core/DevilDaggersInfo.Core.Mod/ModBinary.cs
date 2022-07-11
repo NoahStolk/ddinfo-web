@@ -7,6 +7,7 @@ public class ModBinary
 
 	private readonly ModBinaryReadComprehensiveness _readComprehensiveness;
 
+	// TODO: Split class in three parts and remove ModBinaryReadComprehensiveness.
 	public ModBinary(byte[] fileContents, ModBinaryReadComprehensiveness readComprehensiveness)
 	{
 		if (fileContents.Length < _fileHeaderSize)

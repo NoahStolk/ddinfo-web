@@ -112,8 +112,8 @@ public static class ReplayEventsParser
 	private static EntityTargetEvent ParseEntityTargetEvent(BinaryReader br)
 	{
 		int entityId = br.ReadInt32();
-		Int16Vec3 position = br.ReadInt16Vec3();
-		return new(entityId, position);
+		Int16Vec3 targetPosition = br.ReadInt16Vec3();
+		return new(entityId, targetPosition);
 	}
 
 	private static HitEvent ParseHitEvent(BinaryReader br)

@@ -23,7 +23,7 @@
 			<span class="@(input.Left ? "text-red" : null)">A</span>
 			<span class="@(input.Backward ? "text-red" : null)">S</span>
 			<span class="@(input.Right ? "text-red" : null)">D</span>
-			<span class="@(input.Jump != JumpType.None ? "text-red" : null)">[Jump]</span>
+			<span class="@(GetJumpColor(input.Jump))">[Jump]</span>
 			<span class="@(input.Shoot ? "text-red" : null)">L</span>
 			<span class="@(input.ShootHoming ? "text-red" : null)">R</span>
 			<span class="@(input.MouseX != 0 ? "text-red" : null)">X: @input.MouseX</span>
@@ -56,4 +56,11 @@
 	[Parameter]
 	[EditorRequired]
 	public List<IEvent> Events { get; set; } = null!;
+
+	private static string? GetJumpColor(JumpType jumpType) => jumpType switch
+	{
+		JumpType.PreciseHop => "text-red",
+		JumpType.Hop => "text-orange",
+		_ => null,
+	};
 }
