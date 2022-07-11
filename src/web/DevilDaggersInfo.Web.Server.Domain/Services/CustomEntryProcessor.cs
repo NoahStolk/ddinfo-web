@@ -373,17 +373,17 @@ public class CustomEntryProcessor
 
 	private void ValidateReplayBuffer(UploadRequest uploadRequest, string spawnsetName)
 	{
-		ReplayBinary replayBinary;
+		ReplayBinaryHeader replayBinaryHeader;
 		try
 		{
-			replayBinary = new(uploadRequest.ReplayData, ReplayBinaryReadComprehensiveness.Header);
+			replayBinaryHeader = ReplayBinaryHeader.CreateFromByteArray(uploadRequest.ReplayData);
 		}
 		catch (Exception ex)
 		{
 			throw LogAndCreateValidationException(uploadRequest, $"Could not parse replay: {ex.Message}", spawnsetName, "rotating_light");
 		}
 
-		if (!ArrayUtils.AreEqual(replayBinary.SpawnsetMd5, uploadRequest.SurvivalHashMd5))
+		if (!ArrayUtils.AreEqual(replayBinaryHeader.SpawnsetMd5, uploadRequest.SurvivalHashMd5))
 			throw LogAndCreateValidationException(uploadRequest, "Spawnset in replay does not match detected spawnset.", spawnsetName, "rotating_light");
 	}
 

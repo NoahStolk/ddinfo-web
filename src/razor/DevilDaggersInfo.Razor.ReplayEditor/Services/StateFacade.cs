@@ -30,7 +30,7 @@ public class StateFacade
 		if (fileResult == null)
 			return;
 
-		_dispatcher.Dispatch(new OpenReplayAction(new(fileResult.Contents, ReplayBinaryReadComprehensiveness.All), Path.GetFileName(fileResult.Path)));
+		_dispatcher.Dispatch(new OpenReplayAction(new(fileResult.Contents), Path.GetFileName(fileResult.Path)));
 	}
 
 	public void SelectTickRange(int startTick, int endTick)

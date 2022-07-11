@@ -14,11 +14,10 @@ public class ReplayBinaryTests
 		string spawnsetFilePath = Path.Combine("Resources", "Forked");
 
 		byte[] replayBuffer = File.ReadAllBytes(replayFilePath);
-		ReplayBinary replayBinary = new(replayBuffer, ReplayBinaryReadComprehensiveness.All);
-		Assert.IsNotNull(replayBinary.SpawnsetBuffer);
+		ReplayBinary replayBinary = new(replayBuffer);
 
-		TestUtils.AssertArrayContentsEqual(replayBinary.SpawnsetMd5, MD5.HashData(replayBinary.SpawnsetBuffer));
-		TestUtils.AssertArrayContentsEqual(File.ReadAllBytes(spawnsetFilePath), replayBinary.SpawnsetBuffer);
+		TestUtils.AssertArrayContentsEqual(replayBinary.Header.SpawnsetMd5, MD5.HashData(replayBinary.Header.SpawnsetBuffer));
+		TestUtils.AssertArrayContentsEqual(File.ReadAllBytes(spawnsetFilePath), replayBinary.Header.SpawnsetBuffer);
 	}
 
 	[DataTestMethod]
@@ -28,7 +27,7 @@ public class ReplayBinaryTests
 	{
 		string replayFilePath = Path.Combine("Resources", replayFileName);
 		byte[] replayBuffer = File.ReadAllBytes(replayFilePath);
-		ReplayBinary replayBinary = new(replayBuffer, ReplayBinaryReadComprehensiveness.All);
+		ReplayBinary replayBinary = new(replayBuffer);
 		Assert.IsNotNull(replayBinary.CompressedEvents);
 
 		List<List<IEvent>> events = ReplayEventsParser.ParseCompressedEvents(replayBinary.CompressedEvents);
