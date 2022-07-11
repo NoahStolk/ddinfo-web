@@ -99,27 +99,29 @@
 	<span>Show ticks without events</span>
 </div>
 
-@foreach (SwitchableEventType switchableEventType in Enum.GetValues<SwitchableEventType>())
-{
-	<div>
+<div class="grid grid-cols-4 max-w-[1024px]">
+	@foreach (SwitchableEventType switchableEventType in Enum.GetValues<SwitchableEventType>())
+	{
 		@if (!ReplayEditorState.Value.ShownEventTypes.ContainsKey(switchableEventType))
 		{
 			<span class="text-red">ERROR: Invalid state; ShownEventTypes does not contain @switchableEventType.</span>
 			continue;
 		}
 
-		@if (ReplayEditorState.Value.ShownEventTypes[switchableEventType])
-		{
-			<input type="checkbox" @onchange="() => StateFacade.ToggleShowEventTypes(switchableEventType)" checked />
-		}
-		else
-		{
-			<input type="checkbox" @onchange="() => StateFacade.ToggleShowEventTypes(switchableEventType)" />
-		}
+		<div>
+			@if (ReplayEditorState.Value.ShownEventTypes[switchableEventType])
+			{
+				<input type="checkbox" @onchange="() => StateFacade.ToggleShowEventTypes(switchableEventType)" checked />
+			}
+			else
+			{
+				<input type="checkbox" @onchange="() => StateFacade.ToggleShowEventTypes(switchableEventType)" />
+			}
 
-		<span>Show @switchableEventType</span>
-	</div>
-}
+			<span>Show @switchableEventType</span>
+		</div>
+	}
+</div>
 
 <button class="btn btn-gray" @onclick="StateFacade.ShowAllEvents">Show all events</button>
 <button class="btn btn-gray" @onclick="StateFacade.HideAllEvents">Hide all events</button>
@@ -131,37 +133,46 @@
 	<span class="font-bold col-span-2">Events</span>
 </div>
 
-@for (int i = startTick; i < Math.Min(replayBinary.EventsPerTick.Count, endTick); i++)
-{
-	IEnumerable<IEvent> events = replayBinary.EventsPerTick[i];
-
-	foreach (KeyValuePair<SwitchableEventType, bool> kvp in ReplayEditorState.Value.ShownEventTypes)
+@{
+	bool separator = false;
+	@for (int i = startTick; i < Math.Min(replayBinary.EventsPerTick.Count, endTick); i++)
 	{
-		if (kvp.Value)
-			continue;
+		IEnumerable<IEvent> events = replayBinary.EventsPerTick[i];
 
-		events = kvp.Key switch
+		foreach (KeyValuePair<SwitchableEventType, bool> kvp in ReplayEditorState.Value.ShownEventTypes)
 		{
-			SwitchableEventType.BoidSpawnEvent => events.Where(e => e is not BoidSpawnEvent),
-			SwitchableEventType.DaggerSpawnEvent => events.Where(e => e is not DaggerSpawnEvent),
-			SwitchableEventType.EntityOrientationEvent => events.Where(e => e is not EntityOrientationEvent),
-			SwitchableEventType.EntityPositionEvent => events.Where(e => e is not EntityPositionEvent),
-			SwitchableEventType.EntityTargetEvent => events.Where(e => e is not EntityTargetEvent),
-			SwitchableEventType.GemEvent => events.Where(e => e is not GemEvent),
-			SwitchableEventType.HitEvent => events.Where(e => e is not HitEvent),
-			SwitchableEventType.LeviathanSpawnEvent => events.Where(e => e is not LeviathanSpawnEvent),
-			SwitchableEventType.PedeSpawnEvent => events.Where(e => e is not PedeSpawnEvent),
-			SwitchableEventType.SpiderEggSpawnEvent => events.Where(e => e is not SpiderEggSpawnEvent),
-			SwitchableEventType.SpiderSpawnEvent => events.Where(e => e is not SpiderSpawnEvent),
-			SwitchableEventType.SquidSpawnEvent => events.Where(e => e is not SquidSpawnEvent),
-			SwitchableEventType.ThornSpawnEvent => events.Where(e => e is not ThornSpawnEvent),
-			SwitchableEventType.TransmuteEvent => events.Where(e => e is not TransmuteEvent),
-			_ => events,
-		};
-	}
+			if (kvp.Value)
+				continue;
 
-	if (!(!ReplayEditorState.Value.ShowTicksWithoutEvents && !events.Any(e => e is not IInputsEvent)))
-	{
-		<ReplayTick TickIndex="i" Events="events.ToList()" />
+			events = kvp.Key switch
+			{
+				SwitchableEventType.BoidSpawnEvent => events.Where(e => e is not BoidSpawnEvent),
+				SwitchableEventType.DaggerSpawnEvent => events.Where(e => e is not DaggerSpawnEvent),
+				SwitchableEventType.EntityOrientationEvent => events.Where(e => e is not EntityOrientationEvent),
+				SwitchableEventType.EntityPositionEvent => events.Where(e => e is not EntityPositionEvent),
+				SwitchableEventType.EntityTargetEvent => events.Where(e => e is not EntityTargetEvent),
+				SwitchableEventType.GemEvent => events.Where(e => e is not GemEvent),
+				SwitchableEventType.HitEvent => events.Where(e => e is not HitEvent),
+				SwitchableEventType.LeviathanSpawnEvent => events.Where(e => e is not LeviathanSpawnEvent),
+				SwitchableEventType.PedeSpawnEvent => events.Where(e => e is not PedeSpawnEvent),
+				SwitchableEventType.SpiderEggSpawnEvent => events.Where(e => e is not SpiderEggSpawnEvent),
+				SwitchableEventType.SpiderSpawnEvent => events.Where(e => e is not SpiderSpawnEvent),
+				SwitchableEventType.SquidSpawnEvent => events.Where(e => e is not SquidSpawnEvent),
+				SwitchableEventType.ThornSpawnEvent => events.Where(e => e is not ThornSpawnEvent),
+				SwitchableEventType.TransmuteEvent => events.Where(e => e is not TransmuteEvent),
+				_ => events,
+			};
+		}
+
+		if (!(!ReplayEditorState.Value.ShowTicksWithoutEvents && !events.Any(e => e is not IInputsEvent)))
+		{
+			separator = false;
+			<ReplayTick TickIndex="i" Events="events.ToList()" />
+		}
+		else if (!separator)
+		{
+			separator = true;
+			<span class="text-center text-sm text-gray">[Hidden ticks]</span>
+		}
 	}
 }

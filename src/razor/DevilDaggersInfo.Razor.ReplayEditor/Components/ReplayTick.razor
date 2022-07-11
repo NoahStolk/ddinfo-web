@@ -10,7 +10,7 @@
 @{
 	IInputsEvent? input = Events.FirstOrDefault(e => e is InputsEvent or InitialInputsEvent) as IInputsEvent;
 	bool isOpen = ReplayEditorState.Value.OpenedTicks.Contains(TickIndex);
-	int eventCount = input == null ? Events.Count : Events.Count - 1;
+	int eventCount = Events.Count(e => !HideActualEvent(e));
 	string eventsString = eventCount == 1 ? "event" : "events";
 }
 
@@ -31,6 +31,10 @@
 			<span class="@(input.MouseX != 0 ? "text-red" : null)">X: @input.MouseX</span>
 			<span class="@(input.MouseY != 0 ? "text-red" : null)">Y: @input.MouseY</span>
 		}
+		else if (Events.Any(e => e is EndEvent))
+		{
+			<span class="text-red">End of replay</span>
+		}
 	</div>
 
 	<button class="col-span-2 btn btn-gray" @onclick="() => StateFacade.ToggleTick(TickIndex)">@(isOpen ? $"Hide {eventCount} {eventsString}" : $"Show {eventCount} {eventsString}")</button>
@@ -41,7 +45,7 @@
 	<ul class="pl-4">
 		@foreach (IEvent e in Events)
 		{
-			if (e == input)
+			if (HideActualEvent(e))
 				continue;
 
 			<li class="list-disc">@e.ToString()</li>
@@ -65,4 +69,7 @@
 		JumpType.Hop => "text-orange",
 		_ => null,
 	};
+
+	private static bool HideActualEvent(IEvent e)
+		=> e is IInputsEvent or EndEvent;
 }
