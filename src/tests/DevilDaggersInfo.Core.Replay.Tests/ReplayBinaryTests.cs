@@ -28,10 +28,8 @@ public class ReplayBinaryTests
 		string replayFilePath = Path.Combine("Resources", replayFileName);
 		byte[] replayBuffer = File.ReadAllBytes(replayFilePath);
 		ReplayBinary replayBinary = new(replayBuffer);
-		Assert.IsNotNull(replayBinary.CompressedEvents);
 
-		List<List<IEvent>> events = ReplayEventsParser.ParseCompressedEvents(replayBinary.CompressedEvents);
-		byte[] compressedEvents = ReplayEventsParser.CompileEvents(events.SelectMany(e => e).ToList());
+		byte[] compressedEvents = ReplayEventsParser.CompileEvents(replayBinary.EventsPerTick.SelectMany(e => e).ToList());
 
 		// Validate header.
 		for (int i = 0; i < 2; i++)

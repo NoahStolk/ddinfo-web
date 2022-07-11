@@ -1,7 +1,6 @@
 using DevilDaggersInfo.Core.NativeInterface;
 using DevilDaggersInfo.Core.NativeInterface.Utils;
 using DevilDaggersInfo.Core.Replay;
-using DevilDaggersInfo.Core.Replay.Enums;
 using DevilDaggersInfo.Razor.ReplayEditor.Store.Features.ReplayBinaryFeature.Actions;
 using DevilDaggersInfo.Razor.ReplayEditor.Store.Features.ReplayEditorFeature.Actions;
 using Fluxor;

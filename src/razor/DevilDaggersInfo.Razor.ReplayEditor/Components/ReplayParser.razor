@@ -14,10 +14,9 @@
 	ReplayBinary replayBinary = ReplayBinaryState.Value.ReplayBinary;
 	int startTick = ReplayEditorState.Value.StartTick;
 	int endTick = ReplayEditorState.Value.EndTick;
-	List<List<IEvent>> events = ReplayEventsParser.ParseCompressedEvents(ReplayBinaryState.Value.ReplayBinary.CompressedEvents);
 
 	bool f = startTick <= 0;
-	bool l = endTick >= events.Count - 1;
+	bool l = endTick >= replayBinary.EventsPerTick.Count - 1;
 	const string disabledStyle = "disabled:opacity-50 cursor-default btn-disabled";
 	const string enabledStyle = "btn-gray-light";
 }
@@ -70,7 +69,7 @@
 		<button disabled="@l" class="@(l ? disabledStyle : enabledStyle) btn" @onclick="() => StateFacade.SelectTickRange(startTick + 300, endTick + 300)">++</button>
 	</div>
 	<div class="w-10 h-10 mx-1">
-		<button disabled="@l" class="@(l ? disabledStyle : enabledStyle) btn" @onclick="() => StateFacade.SelectTickRange(events.Count - 60, events.Count)">|</button>
+		<button disabled="@l" class="@(l ? disabledStyle : enabledStyle) btn" @onclick="() => StateFacade.SelectTickRange(replayBinary.EventsPerTick.Count - 60, replayBinary.EventsPerTick.Count)">|</button>
 	</div>
 </div>
 
@@ -81,7 +80,7 @@
 	<span class="font-bold">Show events</span>
 </div>
 
-@for (int i = startTick; i < Math.Min(events.Count, endTick); i++)
+@for (int i = startTick; i < Math.Min(replayBinary.EventsPerTick.Count, endTick); i++)
 {
-	<ReplayTick TickIndex="i" Events="events[i]" />
+	<ReplayTick TickIndex="i" Events="replayBinary.EventsPerTick[i]" />
 }

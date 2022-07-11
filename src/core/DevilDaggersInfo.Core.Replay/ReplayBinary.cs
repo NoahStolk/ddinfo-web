@@ -13,16 +13,19 @@ public class ReplayBinary
 
 		int compressedDataLength = br.ReadInt32();
 		CompressedEvents = br.ReadBytes(compressedDataLength);
+		EventsPerTick = ReplayEventsParser.ParseCompressedEvents(CompressedEvents);
 	}
 
 	public ReplayBinary(ReplayBinaryHeader header, byte[] compressedEvents)
 	{
 		Header = header;
 		CompressedEvents = compressedEvents;
+		EventsPerTick = ReplayEventsParser.ParseCompressedEvents(CompressedEvents);
 	}
 
 	public ReplayBinaryHeader Header { get; }
 	public byte[] CompressedEvents { get; }
+	public List<List<IEvent>> EventsPerTick { get; }
 
 	public static ReplayBinary CreateDefault()
 	{

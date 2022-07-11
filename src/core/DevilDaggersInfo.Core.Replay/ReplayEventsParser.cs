@@ -187,7 +187,7 @@ public static class ReplayEventsParser
 		int a = br.ReadInt32();
 		Int16Vec3 position = br.ReadInt16Vec3();
 		Int16Mat3x3 orientation = br.ReadInt16Mat3x3();
-		byte b = br.ReadByte();
+		byte b = br.ReadByte(); // This is probably a boolean indicating shot or rapid.
 		byte type = br.ReadByte();
 
 		return new(entityId, a, position, orientation, b, type);
