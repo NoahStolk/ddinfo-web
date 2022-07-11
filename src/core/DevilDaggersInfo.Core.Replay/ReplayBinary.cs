@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Core.Spawnset;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -89,6 +90,26 @@ public class ReplayBinary
 
 	public byte[]? SpawnsetBuffer { get; }
 	public byte[]? CompressedEvents { get; }
+
+	public static ReplayBinary CreateDefault()
+	{
+		SpawnsetBinary spawnset = SpawnsetBinary.CreateDefault();
+		byte[] compressedEvents = ReplayEventsParser.CompileEvents(new List<IEvent> { new EndEvent() });
+		return new(
+			version: 1,
+			timestampSinceGameRelease: 0,
+			time: 0,
+			startTime: 0,
+			daggersFired: 0,
+			deathType: 0,
+			gems: 0,
+			daggersHit: 0,
+			kills: 0,
+			playerId: 0,
+			username: string.Empty,
+			spawnsetBuffer: spawnset.ToBytes(),
+			compressedEvents: compressedEvents);
+	}
 
 	public byte[] Compile()
 	{
