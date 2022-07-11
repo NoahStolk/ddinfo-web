@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Core.Replay.Events;
 
-public readonly record struct InitialInputsEvent(bool Left, bool Right, bool Forward, bool Backward, JumpType Jump, bool Shoot, bool ShootHoming, short MouseX, short MouseY, float LookSpeed) : IEvent
+public readonly record struct InitialInputsEvent(bool Left, bool Right, bool Forward, bool Backward, JumpType Jump, bool Shoot, bool ShootHoming, short MouseX, short MouseY, float LookSpeed) : IInputsEvent
 {
 	public void Write(BinaryWriter bw)
 	{
