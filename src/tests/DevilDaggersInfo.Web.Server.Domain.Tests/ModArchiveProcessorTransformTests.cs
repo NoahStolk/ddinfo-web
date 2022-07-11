@@ -4,7 +4,7 @@ using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;
 using System.IO.Compression;
 
-namespace DevilDaggersInfo.Web.Server.Tests;
+namespace DevilDaggersInfo.Web.Server.Domain.Tests;
 
 [TestClass]
 public class ModArchiveProcessorTransformTests : ModArchiveProcessorTests

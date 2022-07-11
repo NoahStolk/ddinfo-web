@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Web.Server.Domain.Utils;
 
-namespace DevilDaggersInfo.Web.Server.Tests;
+namespace DevilDaggersInfo.Web.Server.Domain.Tests;
 
 [TestClass]
 public class PasswordValidationTests

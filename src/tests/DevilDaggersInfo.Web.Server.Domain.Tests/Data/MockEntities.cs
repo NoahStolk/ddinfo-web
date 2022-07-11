@@ -1,7 +1,7 @@
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using MockQueryable.Moq;
 
-namespace DevilDaggersInfo.Web.Server.Tests.Data;
+namespace DevilDaggersInfo.Web.Server.Domain.Tests.Data;
 
 public class MockEntities
 {

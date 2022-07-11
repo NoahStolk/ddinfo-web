@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Server.Tests.Data;
+namespace DevilDaggersInfo.Web.Server.Domain.Tests.Data;
 
 public static class TestConstants
 {

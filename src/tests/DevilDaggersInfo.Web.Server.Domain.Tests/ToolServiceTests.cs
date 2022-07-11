@@ -2,8 +2,8 @@ using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Models.Tools;
 using DevilDaggersInfo.Web.Server.Domain.Services;
-using DevilDaggersInfo.Web.Server.Tests.Data;
-using DevilDaggersInfo.Web.Server.Tests.Extensions;
+using DevilDaggersInfo.Web.Server.Domain.Tests.Data;
+using DevilDaggersInfo.Web.Server.Domain.Tests.Extensions;
 using Microsoft.Extensions.Logging;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Tests;

@@ -8,7 +8,7 @@ using DevilDaggersInfo.Web.Server.Domain.Utils;
 using System.IO.Compression;
 using System.Text;
 
-namespace DevilDaggersInfo.Web.Server.Tests;
+namespace DevilDaggersInfo.Web.Server.Domain.Tests;
 
 public abstract class ModArchiveProcessorTests
 {

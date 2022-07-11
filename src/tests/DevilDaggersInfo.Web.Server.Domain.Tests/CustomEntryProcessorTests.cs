@@ -3,14 +3,14 @@ using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Services;
-using DevilDaggersInfo.Web.Server.Tests.Data;
-using DevilDaggersInfo.Web.Server.Tests.Extensions;
+using DevilDaggersInfo.Web.Server.Domain.Tests.Data;
+using DevilDaggersInfo.Web.Server.Domain.Tests.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System.Text;
 
-namespace DevilDaggersInfo.Web.Server.Tests;
+namespace DevilDaggersInfo.Web.Server.Domain.Tests;
 
 [TestClass]
 public class CustomEntryProcessorTests
