@@ -1,8 +1,7 @@
-using DevilDaggersInfo.Core.NativeInterface;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-namespace DevilDaggersInfo.App.CustomLeaderboard.Photino.Services;
+namespace DevilDaggersInfo.Core.NativeInterface.Windows;
 
 public class NativeMemoryService : INativeMemoryService
 {
