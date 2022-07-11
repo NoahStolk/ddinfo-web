@@ -76,14 +76,6 @@
 <ul class="pl-4">
 	@for (int i = startTick; i < Math.Min(events.Count, endTick); i++)
 	{
-		<li class="list-disc">
-			<span>Tick @i (@((i / 60f).ToString(StringFormats.TimeFormat)))</span>
-			<ul class="pl-4">
-				@foreach (IEvent e in events[i])
-				{
-					<li class="list-disc">@e.ToString()</li>
-				}
-			</ul>
-		</li>
+		<ReplayTick TickIndex="i" Events="events[i]" />
 	}
 </ul>

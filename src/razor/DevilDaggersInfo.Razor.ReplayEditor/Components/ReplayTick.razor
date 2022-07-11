@@ -1,0 +1,23 @@
+@using DevilDaggersInfo.Common
+@using DevilDaggersInfo.Core.Replay.Events
+
+<li class="list-disc">
+	<span>Tick @TickIndex (@((TickIndex / 60f).ToString(StringFormats.TimeFormat)))</span>
+	<ul class="pl-4">
+		@foreach (IEvent e in Events)
+		{
+			<li class="list-disc">@e.ToString()</li>
+		}
+	</ul>
+</li>
+
+@code
+{
+	[Parameter]
+	[EditorRequired]
+	public int TickIndex { get; set; }
+
+	[Parameter]
+	[EditorRequired]
+	public List<IEvent> Events { get; set; } = null!;
+}

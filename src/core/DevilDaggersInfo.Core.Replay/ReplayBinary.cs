@@ -97,7 +97,7 @@ public class ReplayBinary
 		byte[] compressedEvents = ReplayEventsParser.CompileEvents(new List<IEvent> { new EndEvent() });
 		return new(
 			version: 1,
-			timestampSinceGameRelease: 0,
+			timestampSinceGameRelease: 0, // TODO: Convert current time to timestamp.
 			time: 0,
 			startTime: 0,
 			daggersFired: 0,
