@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
+namespace DevilDaggersInfo.Api.Ddcl.Spawnsets;
 
 public record GetSpawnsetBuffer
 {
