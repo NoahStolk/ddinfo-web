@@ -49,7 +49,7 @@ else
 				<div class="overflow-hidden">@mod.LastUpdated.ToString(StringFormats.DateFormat)</div>
 				<div class="overflow-hidden hidden md:block">@mod.ModTypes.ToNoBreakString()</div>
 				<div class="overflow-hidden text-right hidden xl:block">@(mod.IsHosted ? "Yes" : "No")</div>
-				<div class="overflow-hidden text-right hidden xl:block">@(mod.ContainsProhibitedAssets.HasValue ? mod.ContainsProhibitedAssets.Value ? (MarkupString)"Yes" : (MarkupString)"No" : MarkupUtils.NoDataMarkup)</div>
+				<div class="overflow-hidden text-right hidden xl:block">@(mod.ContainsProhibitedAssets.HasValue ? mod.ContainsProhibitedAssets.Value ? (MarkupString)"Yes" : (MarkupString)"No" : MarkupStrings.NoDataMarkup)</div>
 			</div>
 		}
 	}
