@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Razor.ReplayEditor.Enums;
 using DevilDaggersInfo.Razor.ReplayEditor.Store.State;
 using Fluxor;
 
@@ -12,6 +13,8 @@ public class ReplayEditorFeature : Feature<ReplayEditorState>
 		return new(
 			StartTick: 0,
 			EndTick: 60,
-			OpenedTicks: new());
+			OpenedTicks: new(),
+			ShowTicksWithoutEvents: true,
+			ShownEventTypes: Enum.GetValues<SwitchableEventType>().ToDictionary(e => e, _ => true));
 	}
 }

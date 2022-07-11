@@ -10,9 +10,11 @@
 @{
 	IInputsEvent? input = Events.FirstOrDefault(e => e is InputsEvent or InitialInputsEvent) as IInputsEvent;
 	bool isOpen = ReplayEditorState.Value.OpenedTicks.Contains(TickIndex);
+	int eventCount = input == null ? Events.Count : Events.Count - 1;
+	string eventsString = eventCount == 1 ? "event" : "events";
 }
 
-<div class="grid gap-4 grid-cols-7 max-w-xl">
+<div class="grid gap-4 grid-cols-8 max-w-xl">
 	<span class="text-right">@TickIndex</span>
 	<span class="text-right">@((TickIndex / 60f).ToString(StringFormats.TimeFormat))</span>
 
@@ -31,7 +33,7 @@
 		}
 	</div>
 
-	<button @onclick="() => StateFacade.ToggleTick(TickIndex)">@(isOpen ? "-" : "+")</button>
+	<button class="col-span-2 btn btn-gray" @onclick="() => StateFacade.ToggleTick(TickIndex)">@(isOpen ? $"Hide {eventCount} {eventsString}" : $"Show {eventCount} {eventsString}")</button>
 </div>
 
 @if (isOpen)

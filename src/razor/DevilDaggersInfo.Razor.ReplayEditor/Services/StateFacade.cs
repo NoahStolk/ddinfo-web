@@ -1,6 +1,7 @@
 using DevilDaggersInfo.Core.NativeInterface;
 using DevilDaggersInfo.Core.NativeInterface.Utils;
 using DevilDaggersInfo.Core.Replay;
+using DevilDaggersInfo.Razor.ReplayEditor.Enums;
 using DevilDaggersInfo.Razor.ReplayEditor.Store.Features.ReplayBinaryFeature.Actions;
 using DevilDaggersInfo.Razor.ReplayEditor.Store.Features.ReplayEditorFeature.Actions;
 using Fluxor;
@@ -40,5 +41,25 @@ public class StateFacade
 	public void ToggleTick(int tick)
 	{
 		_dispatcher.Dispatch(new ToggleTickAction(tick));
+	}
+
+	public void ToggleShowTicksWithoutEvents()
+	{
+		_dispatcher.Dispatch(new ToggleShowTicksWithoutEventsAction());
+	}
+
+	public void ToggleShowEventTypes(SwitchableEventType switchableEventType)
+	{
+		_dispatcher.Dispatch(new ToggleShowEventTypeAction(switchableEventType));
+	}
+
+	public void ShowAllEvents()
+	{
+		_dispatcher.Dispatch(new ToggleAllEventsAction(true));
+	}
+
+	public void HideAllEvents()
+	{
+		_dispatcher.Dispatch(new ToggleAllEventsAction(false));
 	}
 }

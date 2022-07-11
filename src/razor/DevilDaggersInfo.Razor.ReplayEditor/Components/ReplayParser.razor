@@ -5,6 +5,7 @@
 @using DevilDaggersInfo.Core.Wiki
 @using DevilDaggersInfo.Core.Wiki.Enums
 @using DevilDaggersInfo.Core.Wiki.Objects
+@using DevilDaggersInfo.Razor.ReplayEditor.Enums
 @using DevilDaggersInfo.Razor.ReplayEditor.Services
 @using DevilDaggersInfo.Razor.ReplayEditor.Store.State
 @using Fluxor
@@ -85,14 +86,82 @@
 	</div>
 </div>
 
-<div class="grid gap-4 grid-cols-7 max-w-xl">
+<div>
+	@if (ReplayEditorState.Value.ShowTicksWithoutEvents)
+	{
+		<input type="checkbox" @onchange="StateFacade.ToggleShowTicksWithoutEvents" checked />
+	}
+	else
+	{
+		<input type="checkbox" @onchange="StateFacade.ToggleShowTicksWithoutEvents" />
+	}
+
+	<span>Show ticks without events</span>
+</div>
+
+@foreach (SwitchableEventType switchableEventType in Enum.GetValues<SwitchableEventType>())
+{
+	<div>
+		@if (!ReplayEditorState.Value.ShownEventTypes.ContainsKey(switchableEventType))
+		{
+			<span class="text-red">ERROR: Invalid state; ShownEventTypes does not contain @switchableEventType.</span>
+			continue;
+		}
+
+		@if (ReplayEditorState.Value.ShownEventTypes[switchableEventType])
+		{
+			<input type="checkbox" @onchange="() => StateFacade.ToggleShowEventTypes(switchableEventType)" checked />
+		}
+		else
+		{
+			<input type="checkbox" @onchange="() => StateFacade.ToggleShowEventTypes(switchableEventType)" />
+		}
+
+		<span>Show @switchableEventType</span>
+	</div>
+}
+
+<button class="btn btn-gray" @onclick="StateFacade.ShowAllEvents">Show all events</button>
+<button class="btn btn-gray" @onclick="StateFacade.HideAllEvents">Hide all events</button>
+
+<div class="grid gap-4 grid-cols-8 max-w-xl">
 	<span class="font-bold text-right">Tick</span>
 	<span class="font-bold text-right">Time</span>
 	<span class="font-bold col-span-4">Inputs</span>
-	<span class="font-bold">Show events</span>
+	<span class="font-bold col-span-2">Events</span>
 </div>
 
 @for (int i = startTick; i < Math.Min(replayBinary.EventsPerTick.Count, endTick); i++)
 {
-	<ReplayTick TickIndex="i" Events="replayBinary.EventsPerTick[i]" />
+	IEnumerable<IEvent> events = replayBinary.EventsPerTick[i];
+
+	foreach (KeyValuePair<SwitchableEventType, bool> kvp in ReplayEditorState.Value.ShownEventTypes)
+	{
+		if (kvp.Value)
+			continue;
+
+		events = kvp.Key switch
+		{
+			SwitchableEventType.BoidSpawnEvent => events.Where(e => e is not BoidSpawnEvent),
+			SwitchableEventType.DaggerSpawnEvent => events.Where(e => e is not DaggerSpawnEvent),
+			SwitchableEventType.EntityOrientationEvent => events.Where(e => e is not EntityOrientationEvent),
+			SwitchableEventType.EntityPositionEvent => events.Where(e => e is not EntityPositionEvent),
+			SwitchableEventType.EntityTargetEvent => events.Where(e => e is not EntityTargetEvent),
+			SwitchableEventType.GemEvent => events.Where(e => e is not GemEvent),
+			SwitchableEventType.HitEvent => events.Where(e => e is not HitEvent),
+			SwitchableEventType.LeviathanSpawnEvent => events.Where(e => e is not LeviathanSpawnEvent),
+			SwitchableEventType.PedeSpawnEvent => events.Where(e => e is not PedeSpawnEvent),
+			SwitchableEventType.SpiderEggSpawnEvent => events.Where(e => e is not SpiderEggSpawnEvent),
+			SwitchableEventType.SpiderSpawnEvent => events.Where(e => e is not SpiderSpawnEvent),
+			SwitchableEventType.SquidSpawnEvent => events.Where(e => e is not SquidSpawnEvent),
+			SwitchableEventType.ThornSpawnEvent => events.Where(e => e is not ThornSpawnEvent),
+			SwitchableEventType.TransmuteEvent => events.Where(e => e is not TransmuteEvent),
+			_ => events,
+		};
+	}
+
+	if (!(!ReplayEditorState.Value.ShowTicksWithoutEvents && !events.Any(e => e is not IInputsEvent)))
+	{
+		<ReplayTick TickIndex="i" Events="events.ToList()" />
+	}
 }
