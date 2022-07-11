@@ -2,6 +2,9 @@
 @using DevilDaggersInfo.Common.Extensions
 @using DevilDaggersInfo.Core.Replay
 @using DevilDaggersInfo.Core.Replay.Events
+@using DevilDaggersInfo.Core.Wiki
+@using DevilDaggersInfo.Core.Wiki.Enums
+@using DevilDaggersInfo.Core.Wiki.Objects
 @using DevilDaggersInfo.Razor.ReplayEditor.Services
 @using DevilDaggersInfo.Razor.ReplayEditor.Store.State
 @using Fluxor
@@ -19,6 +22,8 @@
 	bool l = endTick >= replayBinary.EventsPerTick.Count - 1;
 	const string disabledStyle = "disabled:opacity-50 cursor-default btn-disabled";
 	const string enabledStyle = "btn-gray-light";
+
+	Death? death = Deaths.GetDeathByLeaderboardType(GameVersion.V3_2, (byte)replayBinary.Header.DeathType);
 }
 
 <h2 class="text-red text-2xl pt-4 pb-2 font-goethe">Header</h2>
@@ -41,7 +46,14 @@
 	<div>Daggers Fired</div>
 	<div>@replayBinary.Header.DaggersFired</div>
 	<div>Death Type</div>
-	<div>@replayBinary.Header.DeathType</div>
+	@if (death.HasValue)
+	{
+		<div style="color: @death.Value.Color.HexCode">@death.Value.Name</div>
+	}
+	else
+	{
+		<div>Invalid death type</div>
+	}
 	<div>Player ID</div>
 	<div>@replayBinary.Header.PlayerId</div>
 	<div>Player Name</div>
@@ -73,10 +85,10 @@
 	</div>
 </div>
 
-<div class="grid gap-4 grid-cols-4 max-w-xl">
+<div class="grid gap-4 grid-cols-7 max-w-xl">
 	<span class="font-bold text-right">Tick</span>
 	<span class="font-bold text-right">Time</span>
-	<span class="font-bold">Inputs</span>
+	<span class="font-bold col-span-4">Inputs</span>
 	<span class="font-bold">Show events</span>
 </div>
 

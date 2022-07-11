@@ -12,11 +12,11 @@
 	bool isOpen = ReplayEditorState.Value.OpenedTicks.Contains(TickIndex);
 }
 
-<div class="grid gap-4 grid-cols-4 max-w-xl">
+<div class="grid gap-4 grid-cols-7 max-w-xl">
 	<span class="text-right">@TickIndex</span>
 	<span class="text-right">@((TickIndex / 60f).ToString(StringFormats.TimeFormat))</span>
 
-	<div>
+	<div class="col-span-4">
 		@if (input != null)
 		{
 			<span class="@(input.Forward ? "text-red" : null)">W</span>
@@ -26,6 +26,8 @@
 			<span class="@(input.Jump != JumpType.None ? "text-red" : null)">[Jump]</span>
 			<span class="@(input.Shoot ? "text-red" : null)">L</span>
 			<span class="@(input.ShootHoming ? "text-red" : null)">R</span>
+			<span class="@(input.MouseX != 0 ? "text-red" : null)">X: @input.MouseX</span>
+			<span class="@(input.MouseY != 0 ? "text-red" : null)">Y: @input.MouseY</span>
 		}
 	</div>
 
