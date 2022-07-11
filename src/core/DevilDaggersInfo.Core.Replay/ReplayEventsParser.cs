@@ -187,10 +187,10 @@ public static class ReplayEventsParser
 		int a = br.ReadInt32();
 		Int16Vec3 position = br.ReadInt16Vec3();
 		Int16Mat3x3 orientation = br.ReadInt16Mat3x3();
-		byte b = br.ReadByte(); // This is probably a boolean indicating shot or rapid.
+		bool isShot = br.ReadBoolean();
 		byte type = br.ReadByte();
 
-		return new(entityId, a, position, orientation, b, type);
+		return new(entityId, a, position, orientation, isShot, type);
 	}
 
 	private static SquidSpawnEvent ParseSquidSpawnEvent(BinaryReader br, byte entityType, int entityId)

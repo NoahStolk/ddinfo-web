@@ -5,7 +5,7 @@ namespace DevilDaggersInfo.Core.Replay.Events;
 2 lvl 2
 6 lvl 4 homing
 */
-public readonly record struct DaggerSpawnEvent(int EntityId, int A, Int16Vec3 Position, Int16Mat3x3 Orientation, byte B, byte DaggerType) : IEvent
+public readonly record struct DaggerSpawnEvent(int EntityId, int A, Int16Vec3 Position, Int16Mat3x3 Orientation, bool IsShot, byte DaggerType) : IEvent
 {
 	public void Write(BinaryWriter bw)
 	{
@@ -15,7 +15,7 @@ public readonly record struct DaggerSpawnEvent(int EntityId, int A, Int16Vec3 Po
 		bw.Write(A);
 		bw.Write(Position);
 		bw.Write(Orientation);
-		bw.Write(B);
+		bw.Write(IsShot);
 		bw.Write(DaggerType);
 	}
 }
