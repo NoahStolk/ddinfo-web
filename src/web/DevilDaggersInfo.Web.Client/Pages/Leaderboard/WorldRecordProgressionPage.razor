@@ -60,7 +60,7 @@ else
 			<div>@wr.Entry.Time.ToString(StringFormats.TimeFormat)</div>
 			<div class="hidden md:block">@GetHistoryDateString(wr.DateTime)</div>
 			<div class="hidden lg:block">@duration</div>
-			<div class="hidden xl:block">@(wr.WorldRecordImprovement.HasValue ? new MarkupString(wr.WorldRecordImprovement.Value.ToString(StringFormats.TimeFormat)) : MarkupUtils.NoDataMarkup)</div>
+			<div class="hidden xl:block">@(wr.WorldRecordImprovement.HasValue ? new MarkupString(wr.WorldRecordImprovement.Value.ToString(StringFormats.TimeFormat)) : MarkupStrings.NoDataMarkup)</div>
 			<div class="hidden xl:block">@wr.GameVersion.GetGameVersionString()</div>
 		</div>
 	}

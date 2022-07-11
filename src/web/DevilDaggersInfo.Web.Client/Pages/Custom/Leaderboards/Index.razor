@@ -65,7 +65,7 @@ else
 				{
 					for (int j = 0; j < 5; j++)
 					{
-						<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe">@MarkupUtils.NoDataMarkup</div>
+						<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe">@MarkupStrings.NoDataMarkup</div>
 					}
 				}
 				else
@@ -76,8 +76,8 @@ else
 					<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe @CustomLeaderboardDagger.Devil.ToCssClass()">@customLeaderboard.Daggers.Devil.ToString(StringFormats.TimeFormat)</div>
 					<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe @CustomLeaderboardDagger.Leviathan.ToCssClass()">@customLeaderboard.Daggers.Leviathan.ToString(StringFormats.TimeFormat)</div>
 				}
-				<div class="overflow-hidden text-left hidden lg:block">@(customLeaderboard.TopPlayer?.ToNoBreakString() ?? MarkupUtils.NoDataMarkup)</div>
-				<div class="overflow-hidden text-right hidden lg:block text-xl font-goethe @(customLeaderboard.WorldRecordDagger?.ToCssClass())">@(customLeaderboard.WorldRecord.HasValue ? new(customLeaderboard.WorldRecord.Value.ToString(StringFormats.TimeFormat)) : MarkupUtils.NoDataMarkup)</div>
+				<div class="overflow-hidden text-left hidden lg:block">@(customLeaderboard.TopPlayer?.ToNoBreakString() ?? MarkupStrings.NoDataMarkup)</div>
+				<div class="overflow-hidden text-right hidden lg:block text-xl font-goethe @(customLeaderboard.WorldRecordDagger?.ToCssClass())">@(customLeaderboard.WorldRecord.HasValue ? new(customLeaderboard.WorldRecord.Value.ToString(StringFormats.TimeFormat)) : MarkupStrings.NoDataMarkup)</div>
 			</div>
 		}
 	}

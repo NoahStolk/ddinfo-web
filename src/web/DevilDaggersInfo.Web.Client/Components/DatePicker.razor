@@ -1,14 +1,14 @@
 @using System.Globalization
 
 <div class="bg-gray-1 max-w-sm text-center py-2">
-	<button class="btn btn-gray-light w-10 h-10" @onclick="PreviousYear">@MarkupUtils.NavPrevDouble</button>
-	<button class="btn btn-gray-light w-10 h-10" @onclick="PreviousMonth">@MarkupUtils.NavPrev</button>
+	<button class="btn btn-gray-light w-10 h-10" @onclick="PreviousYear">@MarkupStrings.NavPrevDouble</button>
+	<button class="btn btn-gray-light w-10 h-10" @onclick="PreviousMonth">@MarkupStrings.NavPrev</button>
 	<div class="inline-block">
 		<div class="text-center">@_year</div>
 		<div class="text-center text-sm">@_monthNames[_month - 1]</div>
 	</div>
-	<button class="btn btn-gray-light w-10 h-10" @onclick="NextMonth">@MarkupUtils.NavNext</button>
-	<button class="btn btn-gray-light w-10 h-10" @onclick="NextYear">@MarkupUtils.NavNextDouble</button>
+	<button class="btn btn-gray-light w-10 h-10" @onclick="NextMonth">@MarkupStrings.NavNext</button>
+	<button class="btn btn-gray-light w-10 h-10" @onclick="NextYear">@MarkupStrings.NavNextDouble</button>
 
 	@{
 		int daysInMonth = DateTime.DaysInMonth(_year, _month);

@@ -31,12 +31,12 @@
 			@foreach (GameVersion gv in Enemies.GetAppearances(enemy.Name))
 			{
 				@gv.ToDisplayString()
-				@MarkupUtils.Space
+				@MarkupStrings.Space
 			}
 		</div>
-		<div class="hidden md:block text-right">@(enemy.FirstSpawnSecond.HasValue ? new MarkupString(enemy.FirstSpawnSecond.Value.ToString(StringFormats.TimeFormat)) : MarkupUtils.NoDataMarkup)</div>
-		<div class="hidden lg:block text-right">@(enemy.HomingDamage.Level3HomingDaggers.HasValue ? new MarkupString(enemy.HomingDamage.Level3HomingDaggers.Value.ToString()) : MarkupUtils.NoDataMarkup)</div>
-		<div class="hidden lg:block text-right">@(enemy.HomingDamage.Level4HomingDaggers.HasValue ? new MarkupString(enemy.HomingDamage.Level4HomingDaggers.Value.ToString()) : MarkupUtils.NoDataMarkup)</div>
+		<div class="hidden md:block text-right">@(enemy.FirstSpawnSecond.HasValue ? new MarkupString(enemy.FirstSpawnSecond.Value.ToString(StringFormats.TimeFormat)) : MarkupStrings.NoDataMarkup)</div>
+		<div class="hidden lg:block text-right">@(enemy.HomingDamage.Level3HomingDaggers.HasValue ? new MarkupString(enemy.HomingDamage.Level3HomingDaggers.Value.ToString()) : MarkupStrings.NoDataMarkup)</div>
+		<div class="hidden lg:block text-right">@(enemy.HomingDamage.Level4HomingDaggers.HasValue ? new MarkupString(enemy.HomingDamage.Level4HomingDaggers.Value.ToString()) : MarkupStrings.NoDataMarkup)</div>
 		<div class="hidden lg:block">
 			@if (enemy.SpawnedBy.Length == 0)
 			{
@@ -47,7 +47,7 @@
 				foreach (Enemy e in enemy.SpawnedBy)
 				{
 					@MarkupUtils.EnemyString(e)
-					@MarkupUtils.Space
+					@MarkupStrings.Space
 				}
 			}
 		</div>
@@ -80,11 +80,11 @@
 				<div>First appearance</div>
 				<div>@Enemies.GetFirstAppearance(enemy.Name)?.ToDisplayString()</div>
 				<div>First spawn</div>
-				<div>@(enemy.FirstSpawnSecond.HasValue ? new MarkupString(enemy.FirstSpawnSecond.Value.ToString(StringFormats.TimeFormat)) : MarkupUtils.NoDataMarkup)</div>
+				<div>@(enemy.FirstSpawnSecond.HasValue ? new MarkupString(enemy.FirstSpawnSecond.Value.ToString(StringFormats.TimeFormat)) : MarkupStrings.NoDataMarkup)</div>
 				<div>Level 3 homing</div>
-				<div>@(enemy.HomingDamage.Level3HomingDaggers.HasValue ? new MarkupString(enemy.HomingDamage.Level3HomingDaggers.Value.ToString()) : MarkupUtils.NoDataMarkup)</div>
+				<div>@(enemy.HomingDamage.Level3HomingDaggers.HasValue ? new MarkupString(enemy.HomingDamage.Level3HomingDaggers.Value.ToString()) : MarkupStrings.NoDataMarkup)</div>
 				<div>Level 4 homing</div>
-				<div>@(enemy.HomingDamage.Level4HomingDaggers.HasValue ? new MarkupString(enemy.HomingDamage.Level4HomingDaggers.Value.ToString()) : MarkupUtils.NoDataMarkup)</div>
+				<div>@(enemy.HomingDamage.Level4HomingDaggers.HasValue ? new MarkupString(enemy.HomingDamage.Level4HomingDaggers.Value.ToString()) : MarkupStrings.NoDataMarkup)</div>
 				<div>Spawned by</div>
 				<div>
 					@if (enemy.SpawnedBy.Length == 0)
@@ -96,7 +96,7 @@
 						foreach (Enemy e in enemy.SpawnedBy)
 						{
 							@MarkupUtils.EnemyString(e)
-							@MarkupUtils.Space
+							@MarkupStrings.Space
 						}
 					}
 				</div>
@@ -178,10 +178,10 @@
 				{
 					<div class="text-right">@(Math.Ceiling(enemy.Hp / (double)upgrade.DefaultDamage.DaggersPerShot))</div>
 				}
-				<div class="text-right">@(enemy.HomingDamage.Level3HomingDaggers.HasValue ? new MarkupString(enemy.HomingDamage.Level3HomingDaggers.Value.ToString()) : MarkupUtils.NoDataMarkup)</div>
+				<div class="text-right">@(enemy.HomingDamage.Level3HomingDaggers.HasValue ? new MarkupString(enemy.HomingDamage.Level3HomingDaggers.Value.ToString()) : MarkupStrings.NoDataMarkup)</div>
 				@if (GameVersion != GameVersion.V1_0)
 				{
-					<div class="text-right">@(enemy.HomingDamage.Level4HomingDaggers.HasValue ? new MarkupString(enemy.HomingDamage.Level4HomingDaggers.Value.ToString()) : MarkupUtils.NoDataMarkup)</div>
+					<div class="text-right">@(enemy.HomingDamage.Level4HomingDaggers.HasValue ? new MarkupString(enemy.HomingDamage.Level4HomingDaggers.Value.ToString()) : MarkupStrings.NoDataMarkup)</div>
 				}
 			}
 		}

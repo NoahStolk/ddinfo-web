@@ -21,7 +21,7 @@
 	bool f = startTick <= 0;
 	bool l = endTick >= replayBinary.EventsPerTick.Count - 1;
 	const string disabledStyle = "disabled:opacity-50 cursor-default btn-disabled";
-	const string enabledStyle = "btn-gray-light";
+	const string enabledStyle = "btn-gray";
 
 	Death? death = Deaths.GetDeathByLeaderboardType(GameVersion.V3_2, (byte)replayBinary.Header.DeathType);
 }
@@ -66,22 +66,22 @@
 
 <div class="flex">
 	<div class="w-10 h-10 mx-1">
-		<button disabled="@f" class="@(f ? disabledStyle : enabledStyle) btn" @onclick="() => StateFacade.SelectTickRange(0, 60)">|</button>
+		<button disabled="@f" class="@(f ? disabledStyle : enabledStyle) btn" @onclick="() => StateFacade.SelectTickRange(0, 60)">@MarkupStrings.NavStart</button>
 	</div>
 	<div class="w-10 h-10 mx-1">
-		<button disabled="@f" class="@(f ? disabledStyle : enabledStyle) btn" @onclick="() => StateFacade.SelectTickRange(startTick - 300, endTick - 300)">--</button>
+		<button disabled="@f" class="@(f ? disabledStyle : enabledStyle) btn" @onclick="() => StateFacade.SelectTickRange(startTick - 300, endTick - 300)">@MarkupStrings.NavPrevDouble</button>
 	</div>
 	<div class="w-10 h-10 mx-1">
-		<button disabled="@f" class="@(f ? disabledStyle : enabledStyle) btn" @onclick="() => StateFacade.SelectTickRange(startTick - 60, endTick - 60)">-</button>
+		<button disabled="@f" class="@(f ? disabledStyle : enabledStyle) btn" @onclick="() => StateFacade.SelectTickRange(startTick - 60, endTick - 60)">@MarkupStrings.NavPrev</button>
 	</div>
 	<div class="w-10 h-10 mx-1">
-		<button disabled="@l" class="@(l ? disabledStyle : enabledStyle) btn" @onclick="() => StateFacade.SelectTickRange(startTick + 60, endTick + 60)">+</button>
+		<button disabled="@l" class="@(l ? disabledStyle : enabledStyle) btn" @onclick="() => StateFacade.SelectTickRange(startTick + 60, endTick + 60)">@MarkupStrings.NavNext</button>
 	</div>
 	<div class="w-10 h-10 mx-1">
-		<button disabled="@l" class="@(l ? disabledStyle : enabledStyle) btn" @onclick="() => StateFacade.SelectTickRange(startTick + 300, endTick + 300)">++</button>
+		<button disabled="@l" class="@(l ? disabledStyle : enabledStyle) btn" @onclick="() => StateFacade.SelectTickRange(startTick + 300, endTick + 300)">@MarkupStrings.NavNextDouble</button>
 	</div>
 	<div class="w-10 h-10 mx-1">
-		<button disabled="@l" class="@(l ? disabledStyle : enabledStyle) btn" @onclick="() => StateFacade.SelectTickRange(replayBinary.EventsPerTick.Count - 60, replayBinary.EventsPerTick.Count)">|</button>
+		<button disabled="@l" class="@(l ? disabledStyle : enabledStyle) btn" @onclick="() => StateFacade.SelectTickRange(replayBinary.EventsPerTick.Count - 60, replayBinary.EventsPerTick.Count)">@MarkupStrings.NavEnd</button>
 	</div>
 </div>
 

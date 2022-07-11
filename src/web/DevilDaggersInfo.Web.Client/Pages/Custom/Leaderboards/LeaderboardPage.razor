@@ -107,17 +107,17 @@ else
 						string enemiesKilled = ce.EnemiesKilled.ToString(StringFormats.LeaderboardIntFormat);
 						string enemiesAlive = GetCustomLeaderboard.Category == CustomLeaderboardCategory.TimeAttack ? "0" : ce.EnemiesAlive.ToString(StringFormats.LeaderboardIntFormat);
 						string gemsCollected = ce.GemsCollected.ToString(StringFormats.LeaderboardIntFormat);
-						MarkupString gemsDespawned = ce.GemsDespawned.HasValue ? (MarkupString)ce.GemsDespawned.Value.ToString(StringFormats.LeaderboardIntFormat) : MarkupUtils.NoDataMarkup;
-						MarkupString gemsEaten = ce.GemsEaten.HasValue ? (MarkupString)ce.GemsEaten.Value.ToString(StringFormats.LeaderboardIntFormat) : MarkupUtils.NoDataMarkup;
+						MarkupString gemsDespawned = ce.GemsDespawned.HasValue ? (MarkupString)ce.GemsDespawned.Value.ToString(StringFormats.LeaderboardIntFormat) : MarkupStrings.NoDataMarkup;
+						MarkupString gemsEaten = ce.GemsEaten.HasValue ? (MarkupString)ce.GemsEaten.Value.ToString(StringFormats.LeaderboardIntFormat) : MarkupStrings.NoDataMarkup;
 						double accuracyValue = ce.DaggersFired == 0 ? 0 : ce.DaggersHit / (double)ce.DaggersFired;
 						string accuracy = accuracyValue.ToString(StringFormats.AccuracyFormat);
 						string daggers = FormatUtils.FormatDaggersInt32(ce.DaggersHit, ce.DaggersFired, false);
 						MarkupString death = MarkupUtils.CustomLeaderboardDeathString(GetCustomLeaderboard.Category is CustomLeaderboardCategory.TimeAttack or CustomLeaderboardCategory.Race, ce.DeathType, GameConstants.CurrentVersion, "text-xl");
 						string homingStored = ce.HomingStored.ToString(StringFormats.LeaderboardIntFormat);
-						MarkupString homingEaten = ce.HomingEaten.HasValue ? (MarkupString)ce.HomingEaten.Value.ToString(StringFormats.LeaderboardIntFormat) : MarkupUtils.NoDataMarkup;
-						MarkupString levelUpTime2 = ce.LevelUpTime2 == 0 ? MarkupUtils.NoDataMarkup : (MarkupString)ce.LevelUpTime2.ToString(StringFormats.TimeFormat);
-						MarkupString levelUpTime3 = ce.LevelUpTime3 == 0 ? MarkupUtils.NoDataMarkup : (MarkupString)ce.LevelUpTime3.ToString(StringFormats.TimeFormat);
-						MarkupString levelUpTime4 = ce.LevelUpTime4 == 0 ? MarkupUtils.NoDataMarkup : (MarkupString)ce.LevelUpTime4.ToString(StringFormats.TimeFormat);
+						MarkupString homingEaten = ce.HomingEaten.HasValue ? (MarkupString)ce.HomingEaten.Value.ToString(StringFormats.LeaderboardIntFormat) : MarkupStrings.NoDataMarkup;
+						MarkupString levelUpTime2 = ce.LevelUpTime2 == 0 ? MarkupStrings.NoDataMarkup : (MarkupString)ce.LevelUpTime2.ToString(StringFormats.TimeFormat);
+						MarkupString levelUpTime3 = ce.LevelUpTime3 == 0 ? MarkupStrings.NoDataMarkup : (MarkupString)ce.LevelUpTime3.ToString(StringFormats.TimeFormat);
+						MarkupString levelUpTime4 = ce.LevelUpTime4 == 0 ? MarkupStrings.NoDataMarkup : (MarkupString)ce.LevelUpTime4.ToString(StringFormats.TimeFormat);
 						string submitDate = ce.SubmitDate.ToString(StringFormats.DateTimeFormat);
 						string clientVersionString = $"{ce.Client.ToDisplayString()} {ce.ClientVersion}";
 

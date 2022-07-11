@@ -1,6 +1,7 @@
 using DevilDaggersInfo.Api.Main.LeaderboardStatistics;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Data;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Options.BarChart;
+using DevilDaggersInfo.Razor.Core.Components;
 using DevilDaggersInfo.Web.Client.Utils;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -132,7 +133,7 @@ public partial class StatisticsPage
 			};
 		});
 
-		List<BarData> daggersSet = _statistics.DaggersStatistics.Select((kvp, i) => new BarData(Daggers.GetDaggerByName(GameConstants.CurrentVersion, kvp.Key)?.Color.HexCode ?? MarkupUtils.NoDataColor, kvp.Value, i)).ToList();
+		List<BarData> daggersSet = _statistics.DaggersStatistics.Select((kvp, i) => new BarData(Daggers.GetDaggerByName(GameConstants.CurrentVersion, kvp.Key)?.Color.HexCode ?? MarkupStrings.NoDataColor, kvp.Value, i)).ToList();
 		const double daggersScale = 20000.0;
 		_daggersDataOptions = new(0, daggersScale, Math.Ceiling(_statistics.DaggersStatistics.Max(kvp => kvp.Value) / daggersScale) * daggersScale);
 		_daggersData = new(daggersSet, (ds, i) =>
@@ -147,7 +148,7 @@ public partial class StatisticsPage
 			};
 		});
 
-		List<BarData> deathsSet = _statistics.DeathsStatistics.Select((kvp, i) => new BarData(Deaths.GetDeathByName(GameConstants.CurrentVersion, kvp.Key)?.Color.HexCode ?? MarkupUtils.NoDataColor, kvp.Value, i)).ToList();
+		List<BarData> deathsSet = _statistics.DeathsStatistics.Select((kvp, i) => new BarData(Deaths.GetDeathByName(GameConstants.CurrentVersion, kvp.Key)?.Color.HexCode ?? MarkupStrings.NoDataColor, kvp.Value, i)).ToList();
 		const double deathsScale = 20000.0;
 		_deathsDataOptions = new(0, deathsScale, Math.Ceiling(_statistics.DeathsStatistics.Max(kvp => kvp.Value) / deathsScale) * deathsScale);
 		_deathsData = new(deathsSet, (ds, i) =>
@@ -161,7 +162,7 @@ public partial class StatisticsPage
 			};
 		});
 
-		List<BarData> enemiesSet = _statistics.EnemiesStatistics.Select((kvp, i) => new BarData(Enemies.GetEnemyByName(GameConstants.CurrentVersion, kvp.Key)?.Color.HexCode ?? MarkupUtils.NoDataColor, kvp.Value, i)).ToList();
+		List<BarData> enemiesSet = _statistics.EnemiesStatistics.Select((kvp, i) => new BarData(Enemies.GetEnemyByName(GameConstants.CurrentVersion, kvp.Key)?.Color.HexCode ?? MarkupStrings.NoDataColor, kvp.Value, i)).ToList();
 		const double enemiesScale = 50000.0;
 		_enemiesDataOptions = new(0, enemiesScale, Math.Ceiling(_statistics.EnemiesStatistics.Max(kvp => kvp.Value) / enemiesScale) * enemiesScale);
 		_enemiesData = new(enemiesSet, (ds, i) =>
