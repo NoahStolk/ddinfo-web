@@ -121,6 +121,7 @@ public static class ReplayEventsParser
 		// Examples:
 		// 1. When a dagger is deleted from the scene; A is the entity ID of the dagger and B is 0.
 		// 2. When a dagger is eaten by Ghostpede; A is the entity ID of the Ghostpede and B is the entity ID of the dagger.
+		// 3. When a Level 4 homing splash 'dagger' hits a Squid I; A is the entity ID of the Squid I and B is the entity ID of the homing splash 'dagger'.
 		int entityIdA = br.ReadInt32();
 		if (entityIdA == 0)
 			return ParseDeathEvent(br);
@@ -213,6 +214,7 @@ public static class ReplayEventsParser
 			4 => DaggerType.Level3Homing,
 			5 => DaggerType.Level4,
 			6 => DaggerType.Level4Homing,
+			7 => DaggerType.Level4HomingSplash,
 			_ => throw new InvalidOperationException($"Invalid {nameof(DaggerType)} '{daggerTypeByte}'."),
 		};
 

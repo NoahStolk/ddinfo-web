@@ -8,4 +8,5 @@ public enum DaggerType : byte
 	Level3Homing = 4,
 	Level4 = 5,
 	Level4Homing = 6,
+	Level4HomingSplash = 7,
 }
