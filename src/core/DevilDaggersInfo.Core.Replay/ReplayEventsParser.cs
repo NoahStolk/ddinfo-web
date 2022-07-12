@@ -84,10 +84,15 @@ public static class ReplayEventsParser
 		return entityType switch
 		{
 			0x01 => ParseDaggerSpawnEvent(br, entityId),
-			0x03 or 0x04 or 0x05 => ParseSquidSpawnEvent(br, entityType, entityId),
+			0x03 => ParseSquidSpawnEvent(br, SquidType.Squid1, entityId),
+			0x04 => ParseSquidSpawnEvent(br, SquidType.Squid2, entityId),
+			0x05 => ParseSquidSpawnEvent(br, SquidType.Squid3, entityId),
 			0x06 => ParseBoidSpawnEvent(br, entityId),
-			0x07 or 0x0c or 0x0f => ParsePedeSpawnEvent(br, entityType, entityId),
-			0x08 or 0x09 => ParseSpiderSpawnEvent(br, entityType, entityId),
+			0x07 => ParsePedeSpawnEvent(br, PedeType.Centipede, entityId),
+			0x0c => ParsePedeSpawnEvent(br, PedeType.Gigapede, entityId),
+			0x0f => ParsePedeSpawnEvent(br, PedeType.Ghostpede, entityId),
+			0x08 => ParseSpiderSpawnEvent(br, SpiderType.Spider1, entityId),
+			0x09 => ParseSpiderSpawnEvent(br, SpiderType.Spider2, entityId),
 			0x0a => ParseSpiderEggSpawnEvent(br, entityId),
 			0x0b => ParseLeviathanSpawnEvent(br, entityId),
 			0x0d => ParseThornSpawnEvent(br, entityId),
@@ -221,16 +226,8 @@ public static class ReplayEventsParser
 		return new(entityId, a, position, orientation, isShot, daggerType);
 	}
 
-	private static SquidSpawnEvent ParseSquidSpawnEvent(BinaryReader br, byte entityType, int entityId)
+	private static SquidSpawnEvent ParseSquidSpawnEvent(BinaryReader br, SquidType squidType, int entityId)
 	{
-		SquidType squidType = entityType switch
-		{
-			0x03 => SquidType.Squid1,
-			0x04 => SquidType.Squid2,
-			0x05 => SquidType.Squid3,
-			_ => throw new InvalidOperationException($"Entity type '{entityType}' is not a Squid."),
-		};
-
 		int a = br.ReadInt32();
 		Vector3 position = br.ReadVector3();
 		Vector3 direction = br.ReadVector3();
@@ -263,16 +260,8 @@ public static class ReplayEventsParser
 		return new(entityId, spawner, boidType, position, a, b, c, d, speed);
 	}
 
-	private static PedeSpawnEvent ParsePedeSpawnEvent(BinaryReader br, byte entityType, int entityId)
+	private static PedeSpawnEvent ParsePedeSpawnEvent(BinaryReader br, PedeType pedeType, int entityId)
 	{
-		PedeType pedeType = entityType switch
-		{
-			0x07 => PedeType.Centipede,
-			0x0c => PedeType.Gigapede,
-			0x0f => PedeType.Ghostpede,
-			_ => throw new InvalidOperationException($"Entity type '{entityType}' is not a Pede."),
-		};
-
 		int a = br.ReadInt32();
 		Vector3 position = br.ReadVector3();
 		Vector3 b = br.ReadVector3();
@@ -281,15 +270,8 @@ public static class ReplayEventsParser
 		return new(entityId, pedeType, a, position, b, orientation);
 	}
 
-	private static SpiderSpawnEvent ParseSpiderSpawnEvent(BinaryReader br, byte entityType, int entityId)
+	private static SpiderSpawnEvent ParseSpiderSpawnEvent(BinaryReader br, SpiderType spiderType, int entityId)
 	{
-		SpiderType spiderType = entityType switch
-		{
-			0x08 => SpiderType.Spider1,
-			0x09 => SpiderType.Spider2,
-			_ => throw new InvalidOperationException($"Entity type '{entityType}' is not a Spider."),
-		};
-
 		int a = br.ReadInt32();
 		Vector3 position = br.ReadVector3();
 
