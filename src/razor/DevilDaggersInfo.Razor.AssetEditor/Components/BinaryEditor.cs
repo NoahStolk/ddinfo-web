@@ -1,5 +1,5 @@
 using DevilDaggersInfo.Core.Mod.Enums;
-using DevilDaggersInfo.Core.NativeInterface;
+using DevilDaggersInfo.Core.NativeInterface.Services;
 using DevilDaggersInfo.Razor.AssetEditor.Pages;
 using DevilDaggersInfo.Razor.AssetEditor.Store.State;
 using Fluxor;

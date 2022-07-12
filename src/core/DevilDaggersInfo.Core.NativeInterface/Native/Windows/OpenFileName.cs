@@ -1,6 +1,6 @@
 using System.Runtime.InteropServices;
 
-namespace DevilDaggersInfo.Core.NativeInterface.Windows.Native;
+namespace DevilDaggersInfo.Core.NativeInterface.Native.Windows;
 
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 public class OpenFileName

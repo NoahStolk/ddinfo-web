@@ -1,7 +1,8 @@
+using DevilDaggersInfo.Core.NativeInterface.Services;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-namespace DevilDaggersInfo.Core.NativeInterface.Windows;
+namespace DevilDaggersInfo.Core.NativeInterface.Services.Windows;
 
 public class WindowsMemoryService : INativeMemoryService
 {

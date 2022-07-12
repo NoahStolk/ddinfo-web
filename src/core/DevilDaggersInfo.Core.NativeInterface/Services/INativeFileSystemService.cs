@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Core.NativeInterface;
+namespace DevilDaggersInfo.Core.NativeInterface.Services;
 
 public interface INativeFileSystemService
 {

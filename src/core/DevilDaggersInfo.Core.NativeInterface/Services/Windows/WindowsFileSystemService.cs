@@ -1,7 +1,8 @@
-using DevilDaggersInfo.Core.NativeInterface.Windows.Native;
+using DevilDaggersInfo.Core.NativeInterface.Native.Windows;
+using DevilDaggersInfo.Core.NativeInterface.Services;
 using System.Runtime.InteropServices;
 
-namespace DevilDaggersInfo.Core.NativeInterface.Windows;
+namespace DevilDaggersInfo.Core.NativeInterface.Services.Windows;
 
 /// <summary>
 /// Platform-specific code for interacting with the Windows file system.

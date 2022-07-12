@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Core.NativeInterface;
+using DevilDaggersInfo.Core.NativeInterface.Services;
 using DevilDaggersInfo.Core.NativeInterface.Utils;
 using DevilDaggersInfo.Core.Replay;
 using DevilDaggersInfo.Razor.ReplayEditor.Enums;
