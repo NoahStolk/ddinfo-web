@@ -20,22 +20,28 @@ public class ReplayBinaryTests
 		TestUtils.AssertArrayContentsEqual(File.ReadAllBytes(spawnsetFilePath), replayBinary.Header.SpawnsetBuffer);
 	}
 
-	[DataTestMethod]
-	[DataRow("Forked-psy.ddreplay")]
-	[DataRow("Forked-xvlv.ddreplay")]
-	public void ParseAndCompileEvents(string replayFileName)
+	[TestMethod]
+	public void ParseAndCompileEvents()
 	{
-		string replayFilePath = Path.Combine("Resources", replayFileName);
-		byte[] replayBuffer = File.ReadAllBytes(replayFilePath);
-		ReplayBinary replayBinary = new(replayBuffer);
+		ReplayBinary replayBinary = ReplayBinary.CreateDefault();
+		replayBinary.EventsPerTick.Clear();
+		replayBinary.EventsPerTick.Add(new() { new InitialInputsEvent(true, false, false, false, JumpType.None, true, false, 0, 0, 0.2f) });
 
-		byte[] compressedEvents = ReplayEventsParser.CompileEvents(replayBinary.EventsPerTick.SelectMany(e => e).ToList());
+		for (int i = 0; i < 30; i++)
+			replayBinary.EventsPerTick.Add(new() { new BoidSpawnEvent(i + 1, 0, BoidType.Skull4, default, default, default, default, default, 10), new InputsEvent(true, false, false, false, JumpType.None, false, false, 10, 0) });
 
-		// Validate header.
-		for (int i = 0; i < 2; i++)
-			Assert.AreEqual(replayBinary.CompressedEvents[i], compressedEvents[i]);
+		replayBinary.EventsPerTick.Add(new() { new EndEvent() });
 
-		// The buffers vary slightly so we can't test this reliably.
-		// TestUtils.AssertArrayContentsEqual(compressedEvents, replayBinary.CompressedEvents);
+		byte[] replayBuffer = replayBinary.Compile();
+
+		ReplayBinary replayBinaryFromBuffer = new(replayBuffer);
+
+		Assert.AreEqual(replayBinary.EventsPerTick.Count, replayBinaryFromBuffer.EventsPerTick.Count);
+		for (int i = 0; i < replayBinary.EventsPerTick.Count; i++)
+		{
+			Assert.AreEqual(replayBinary.EventsPerTick[i].Count, replayBinaryFromBuffer.EventsPerTick[i].Count);
+			for (int j = 0; j < replayBinary.EventsPerTick[i].Count; j++)
+				Assert.AreEqual(replayBinary.EventsPerTick[i][j], replayBinaryFromBuffer.EventsPerTick[i][j]);
+		}
 	}
 }

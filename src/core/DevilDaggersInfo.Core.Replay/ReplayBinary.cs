@@ -12,19 +12,16 @@ public class ReplayBinary
 		Header = ReplayBinaryHeader.CreateFromBinaryReader(br);
 
 		int compressedDataLength = br.ReadInt32();
-		CompressedEvents = br.ReadBytes(compressedDataLength);
-		EventsPerTick = ReplayEventsParser.ParseCompressedEvents(CompressedEvents);
+		EventsPerTick = ReplayEventsParser.ParseCompressedEvents(br.ReadBytes(compressedDataLength));
 	}
 
 	public ReplayBinary(ReplayBinaryHeader header, byte[] compressedEvents)
 	{
 		Header = header;
-		CompressedEvents = compressedEvents;
-		EventsPerTick = ReplayEventsParser.ParseCompressedEvents(CompressedEvents);
+		EventsPerTick = ReplayEventsParser.ParseCompressedEvents(compressedEvents);
 	}
 
 	public ReplayBinaryHeader Header { get; }
-	public byte[] CompressedEvents { get; }
 	public List<List<IEvent>> EventsPerTick { get; }
 
 	public static ReplayBinary CreateDefault()
@@ -56,8 +53,10 @@ public class ReplayBinary
 		using BinaryWriter bw = new(ms);
 
 		bw.Write(Header.ToBytes());
-		bw.Write(CompressedEvents.Length);
-		bw.Write(CompressedEvents);
+
+		byte[] compressedEvents = ReplayEventsParser.CompileEvents(EventsPerTick.SelectMany(e => e).ToList());
+		bw.Write(compressedEvents.Length);
+		bw.Write(compressedEvents);
 
 		return ms.ToArray();
 	}
