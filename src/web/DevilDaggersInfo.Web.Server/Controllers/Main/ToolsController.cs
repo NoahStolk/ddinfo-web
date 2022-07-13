@@ -39,7 +39,7 @@ public class ToolsController : ControllerBase
 	[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public async Task<ActionResult> GetToolDistributionFile([Required] string toolName, [Required] ToolPublishMethod publishMethod, [Required] ToolBuildType buildType, string? version = null)
+	public async Task<ActionResult> GetToolDistributionFile([Required] string toolName, ToolPublishMethod publishMethod, ToolBuildType buildType, string? version = null)
 	{
 		ToolDistribution? distribution;
 		if (version == null)
