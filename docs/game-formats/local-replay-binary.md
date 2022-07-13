@@ -15,7 +15,7 @@
 | 32-bit integer                                                                                                |                            4 | Player ID                    | N/A (depends on run)          |
 | 32-bit integer                                                                                                |                            4 | Username length              | N/A (depends on run)          |
 | String                                                                                                        |              Username length | Username                     | N/A (depends on run)          |
-| ?                                                                                                             |                           10 | ?                            | `0000 68DAA3BE 49F1A661`      |
+| ?                                                                                                             |                           10 | ?                            | ?                             |
 | MD5 hash byte array                                                                                           |                           16 | Spawnset hash                | N/A (depends on spawnset)     |
 | 32-bit integer                                                                                                |                            4 | Spawnset length              | N/A (depends on spawnset)     |
 | [Spawnset](https://github.com/NoahStolk/DevilDaggersInfo/blob/master/docs/game-formats/spawnset-binary.md)    |              Spawnset length | Spawnset                     | N/A (depends on spawnset)     |

@@ -17,35 +17,35 @@ Every event starts with an event type, which is a single byte. After that, addit
 
 ### Event types
 
-| Event type                   | Value  |   Size (excluding event type byte itself)   |
-|------------------------------|--------|---------------------------------------------|
-| [Spawn event](#spawn-events) | `0x00` | Variable, see [entity types](#entity-types) |
-| Entity position event        | `0x01` |                                         10  |
-| Entity orientation event     | `0x02` |                                         22  |
-| Entity target event          | `0x04` |                                         10  |
-| Hit event                    | `0x05` |                                         12  |
-| Gem event                    | `0x06` |                                          0  |
-| Transmute event              | `0x07` |                                         28  |
-| Inputs event                 | `0x09` |          12 (16 for the first inputs event) |
-| End event                    | `0x0b` |                                          0  |
+| Event type                                            | Value  |   Size (excluding event type byte itself)   |
+|-------------------------------------------------------|--------|---------------------------------------------|
+| [Spawn event](#spawn-events)                          | `0x00` | Variable, see [entity types](#entity-types) |
+| [Entity position event](#entity-position-event)       | `0x01` |                                         10  |
+| [Entity orientation event](#entity-orientation-event) | `0x02` |                                         22  |
+| [Entity target event](#entity-target-event)           | `0x04` |                                         10  |
+| [Hit event](#hit-event)                               | `0x05` |                                         12  |
+| Gem event                                             | `0x06` |                                          0  |
+| [Transmute event](#transmute-event)                   | `0x07` |                                         28  |
+| [Inputs event](#inputs-event)                         | `0x09` |          12 (16 for the first inputs event) |
+| End event                                             | `0x0b` |                                          0  |
 
 ### <a id="entity-types"></a>Entity types ###
 
-| Entity type                  | Value  | Size (excluding entity type byte itself) |
-|------------------------------|--------|------------------------------------------|
-| Dagger                       | `0x01` |                                       30 |
-| Squid I                      | `0x03` |                                       32 |
-| Squid II                     | `0x04` |                                       32 |
-| Squid III                    | `0x05` |                                       32 |
-| Boid (skulls and spiderling) | `0x06` |                                       45 |
-| Centipede                    | `0x07` |                                       64 |
-| Gigapede                     | `0x0c` |                                       64 |
-| Ghostpede                    | `0x0f` |                                       64 |
-| Spider I                     | `0x08` |                                       16 |
-| Spider II                    | `0x09` |                                       16 |
-| Spider Egg (I and II)        | `0x0a` |                                       28 |
-| Leviathan                    | `0x0b` |                                        4 |
-| Thorn                        | `0x0d` |                                       20 |
+| Entity type                                       | Value  | Size (excluding entity type byte itself) |
+|---------------------------------------------------|--------|------------------------------------------|
+| [Dagger](#dagger-spawn-event)                     | `0x01` |                                       30 |
+| [Squid I](#squid-spawn-event)                     | `0x03` |                                       32 |
+| [Squid II](#squid-spawn-event)                    | `0x04` |                                       32 |
+| [Squid III](#squid-spawn-event)                   | `0x05` |                                       32 |
+| [Boid (skulls and spiderling)](#boid-spawn-event) | `0x06` |                                       45 |
+| [Centipede](#pede-spawn-event)                    | `0x07` |                                       64 |
+| [Gigapede](#pede-spawn-event)                     | `0x0c` |                                       64 |
+| [Ghostpede](#pede-spawn-event)                    | `0x0f` |                                       64 |
+| [Spider I](#spider-spawn-event)                   | `0x08` |                                       16 |
+| [Spider II](#spider-spawn-event)                  | `0x09` |                                       16 |
+| [Spider Egg (I and II)](#spider-egg-spawn-event)  | `0x0a` |                                       28 |
+| [Leviathan](#leviathan-spawn-event)               | `0x0b` |                                        4 |
+| [Thorn](#thorn-spawn-event)                       | `0x0d` |                                       20 |
 
 ### <a id="spawn-events"></a>Spawn events ###
 
