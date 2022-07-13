@@ -155,16 +155,35 @@ public static class ReplayEventsParser
 		bool right = br.ReadBoolean();
 		bool forward = br.ReadBoolean();
 		bool backward = br.ReadBoolean();
+
 		byte jumpTypeByte = br.ReadByte();
-		JumpType jump = jumpTypeByte switch
+		JumpType jumpType = jumpTypeByte switch
 		{
 			0 => JumpType.None,
-			1 => JumpType.Hop,
-			2 => JumpType.PreciseHop,
+			1 => JumpType.Hold,
+			2 => JumpType.StartedPress,
 			_ => throw new InvalidOperationException($"Invalid {nameof(JumpType)} '{jumpTypeByte}'."),
 		};
-		bool shoot = br.ReadBoolean();
-		bool shootHoming = br.ReadBoolean();
+
+		// TODO: Get rid of duplicate code and write extension method byte.ToShootType etc.
+		byte shootTypeByte = br.ReadByte();
+		ShootType shootType = shootTypeByte switch
+		{
+			0 => ShootType.None,
+			1 => ShootType.Hold,
+			2 => ShootType.Release,
+			_ => throw new InvalidOperationException($"Invalid {nameof(ShootType)} '{shootTypeByte}'."),
+		};
+
+		byte shootTypeByteHoming = br.ReadByte();
+		ShootType shootTypeHoming = shootTypeByteHoming switch
+		{
+			0 => ShootType.None,
+			1 => ShootType.Hold,
+			2 => ShootType.Release,
+			_ => throw new InvalidOperationException($"Invalid {nameof(ShootType)} '{shootTypeByteHoming}'."),
+		};
+
 		short mouseX = br.ReadInt16();
 		short mouseY = br.ReadInt16();
 
@@ -173,7 +192,7 @@ public static class ReplayEventsParser
 		if (end != expectedEnd)
 			throw new InvalidReplayBinaryException($"Invalid end of inputs event. Should be {expectedEnd} but got {end}.");
 
-		return new(left, right, forward, backward, jump, shoot, shootHoming, mouseX, mouseY);
+		return new(left, right, forward, backward, jumpType, shootType, shootTypeHoming, mouseX, mouseY);
 	}
 
 	private static InitialInputsEvent ParseInitialInputsEvent(BinaryReader br)
@@ -182,16 +201,34 @@ public static class ReplayEventsParser
 		bool right = br.ReadBoolean();
 		bool forward = br.ReadBoolean();
 		bool backward = br.ReadBoolean();
+
 		byte jumpTypeByte = br.ReadByte();
 		JumpType jumpType = jumpTypeByte switch
 		{
 			0 => JumpType.None,
-			1 => JumpType.Hop,
-			2 => JumpType.PreciseHop,
+			1 => JumpType.Hold,
+			2 => JumpType.StartedPress,
 			_ => throw new InvalidOperationException($"Invalid {nameof(JumpType)} '{jumpTypeByte}'."),
 		};
-		bool shoot = br.ReadBoolean();
-		bool shootHoming = br.ReadBoolean();
+
+		byte shootTypeByte = br.ReadByte();
+		ShootType shootType = shootTypeByte switch
+		{
+			0 => ShootType.None,
+			1 => ShootType.Hold,
+			2 => ShootType.Release,
+			_ => throw new InvalidOperationException($"Invalid {nameof(ShootType)} '{shootTypeByte}'."),
+		};
+
+		byte shootTypeByteHoming = br.ReadByte();
+		ShootType shootTypeHoming = shootTypeByteHoming switch
+		{
+			0 => ShootType.None,
+			1 => ShootType.Hold,
+			2 => ShootType.Release,
+			_ => throw new InvalidOperationException($"Invalid {nameof(ShootType)} '{shootTypeByteHoming}'."),
+		};
+
 		short mouseX = br.ReadInt16();
 		short mouseY = br.ReadInt16();
 		float lookSpeed = br.ReadSingle();
@@ -201,7 +238,7 @@ public static class ReplayEventsParser
 		if (end != expectedEnd)
 			throw new InvalidReplayBinaryException($"Invalid end of inputs event. Should be {expectedEnd} but got {end}.");
 
-		return new(left, right, forward, backward, jumpType, shoot, shootHoming, mouseX, mouseY, lookSpeed);
+		return new(left, right, forward, backward, jumpType, shootType, shootTypeHoming, mouseX, mouseY, lookSpeed);
 	}
 
 	private static DaggerSpawnEvent ParseDaggerSpawnEvent(BinaryReader br, int entityId)

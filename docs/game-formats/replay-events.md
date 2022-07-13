@@ -227,9 +227,9 @@ Input events mark the end of the game tick. They are always the last event in th
 | uint8 (bool) |    1 | Holding right                                                          |
 | uint8 (bool) |    1 | Holding forward                                                        |
 | uint8 (bool) |    1 | Holding backward                                                       |
-| uint8        |    1 | [Jump type](#jump-types)                                               |
-| uint8 (bool) |    1 | Holding shoot                                                          |
-| uint8 (bool) |    1 | Holding shoot homing                                                   |
+| uint8        |    1 | [Jump](#jump-types)                                                    |
+| uint8        |    1 | [Shoot](#shoot-types)                                                  |
+| uint8        |    1 | [Shoot homing](#shoot-types)                                           |
 | int16        |    2 | Relative mouse offset X                                                |
 | int16        |    2 | Relative mouse offset Y                                                |
 | float32      |    4 | Look speed (only present in the first inputs event)                    |
@@ -237,8 +237,16 @@ Input events mark the end of the game tick. They are always the last event in th
 
 #### <a id="jump-types"></a>Jump types ####
 
-| Jump type      | Value  |
-|----------------|--------|
-| None           | `0x00` |
-| Holding space  | `0x01` |
-| Pressing space | `0x02` |
+| Jump type     | Value  |
+|---------------|--------|
+| None          | `0x00` |
+| Holding jump  | `0x01` |
+| Pressing jump | `0x02` |
+
+#### <a id="shoot-types"></a>Shoot types ####
+
+| Shoot type            | Value  |
+|-----------------------|--------|
+| None                  | `0x00` |
+| Holding shoot input   | `0x01` |
+| Releasing shoot input | `0x02` |

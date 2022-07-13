@@ -12,9 +12,9 @@ public interface IInputsEvent : IEvent
 
 	public JumpType Jump { get; }
 
-	public bool Shoot { get; }
+	public ShootType Shoot { get; }
 
-	public bool ShootHoming { get; }
+	public ShootType ShootHoming { get; }
 
 	public short MouseX { get; }
 
