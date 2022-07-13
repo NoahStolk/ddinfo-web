@@ -9,7 +9,7 @@ Data is compressed using ZLIB. In order to get raw event data, make sure to:
 
 ### <a id="entity-ids"></a>Entity IDs ###
 
-Event types work with entity IDs, which are integer values. An entity in Devil Daggers is an enemy or a dagger. Every entity has its own ID which can be referenced to from other events. The entity IDs are not stored, but can be defined by reading the [spawn events](#spawn-events) in order. The first entity spawning in the replay will have ID 1, the second entity will have ID 2, etc. It is thought that entity ID 0 is reserved for the player (used in the hit event).
+Events work with entity IDs, which are integer values. An entity in Devil Daggers is an enemy or a dagger. Every entity has its own ID which can be referenced to from other events. The entity IDs are not stored, but can be defined by reading the [spawn events](#spawn-events) in order. The first entity spawning in the replay will have ID 1, the second entity will have ID 2, etc. It is thought that entity ID 0 is reserved for the player (used in the hit event when the player dies).
 
 ## Raw replay events
 
