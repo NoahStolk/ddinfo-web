@@ -157,32 +157,13 @@ public static class ReplayEventsParser
 		bool backward = br.ReadBoolean();
 
 		byte jumpTypeByte = br.ReadByte();
-		JumpType jumpType = jumpTypeByte switch
-		{
-			0 => JumpType.None,
-			1 => JumpType.Hold,
-			2 => JumpType.StartedPress,
-			_ => throw new InvalidOperationException($"Invalid {nameof(JumpType)} '{jumpTypeByte}'."),
-		};
+		JumpType jumpType = jumpTypeByte.ToJumpType();
 
-		// TODO: Get rid of duplicate code and write extension method byte.ToShootType etc.
 		byte shootTypeByte = br.ReadByte();
-		ShootType shootType = shootTypeByte switch
-		{
-			0 => ShootType.None,
-			1 => ShootType.Hold,
-			2 => ShootType.Release,
-			_ => throw new InvalidOperationException($"Invalid {nameof(ShootType)} '{shootTypeByte}'."),
-		};
+		ShootType shootType = shootTypeByte.ToShootType();
 
 		byte shootTypeByteHoming = br.ReadByte();
-		ShootType shootTypeHoming = shootTypeByteHoming switch
-		{
-			0 => ShootType.None,
-			1 => ShootType.Hold,
-			2 => ShootType.Release,
-			_ => throw new InvalidOperationException($"Invalid {nameof(ShootType)} '{shootTypeByteHoming}'."),
-		};
+		ShootType shootTypeHoming = shootTypeByteHoming.ToShootType();
 
 		short mouseX = br.ReadInt16();
 		short mouseY = br.ReadInt16();
@@ -203,31 +184,13 @@ public static class ReplayEventsParser
 		bool backward = br.ReadBoolean();
 
 		byte jumpTypeByte = br.ReadByte();
-		JumpType jumpType = jumpTypeByte switch
-		{
-			0 => JumpType.None,
-			1 => JumpType.Hold,
-			2 => JumpType.StartedPress,
-			_ => throw new InvalidOperationException($"Invalid {nameof(JumpType)} '{jumpTypeByte}'."),
-		};
+		JumpType jumpType = jumpTypeByte.ToJumpType();
 
 		byte shootTypeByte = br.ReadByte();
-		ShootType shootType = shootTypeByte switch
-		{
-			0 => ShootType.None,
-			1 => ShootType.Hold,
-			2 => ShootType.Release,
-			_ => throw new InvalidOperationException($"Invalid {nameof(ShootType)} '{shootTypeByte}'."),
-		};
+		ShootType shootType = shootTypeByte.ToShootType();
 
 		byte shootTypeByteHoming = br.ReadByte();
-		ShootType shootTypeHoming = shootTypeByteHoming switch
-		{
-			0 => ShootType.None,
-			1 => ShootType.Hold,
-			2 => ShootType.Release,
-			_ => throw new InvalidOperationException($"Invalid {nameof(ShootType)} '{shootTypeByteHoming}'."),
-		};
+		ShootType shootTypeHoming = shootTypeByteHoming.ToShootType();
 
 		short mouseX = br.ReadInt16();
 		short mouseY = br.ReadInt16();
@@ -248,17 +211,7 @@ public static class ReplayEventsParser
 		Int16Mat3x3 orientation = br.ReadInt16Mat3x3();
 		bool isShot = br.ReadBoolean();
 		byte daggerTypeByte = br.ReadByte();
-		DaggerType daggerType = daggerTypeByte switch
-		{
-			1 => DaggerType.Level1,
-			2 => DaggerType.Level2,
-			3 => DaggerType.Level3,
-			4 => DaggerType.Level3Homing,
-			5 => DaggerType.Level4,
-			6 => DaggerType.Level4Homing,
-			7 => DaggerType.Level4HomingSplash,
-			_ => throw new InvalidOperationException($"Invalid {nameof(DaggerType)} '{daggerTypeByte}'."),
-		};
+		DaggerType daggerType = daggerTypeByte.ToDaggerType();
 
 		return new(entityId, a, position, orientation, isShot, daggerType);
 	}
@@ -283,16 +236,7 @@ public static class ReplayEventsParser
 		Int16Vec3 c = br.ReadInt16Vec3();
 		Vector3 d = br.ReadVector3();
 		float speed = br.ReadSingle();
-
-		BoidType boidType = boidTypeByte switch
-		{
-			0x01 => BoidType.Skull1,
-			0x02 => BoidType.Skull2,
-			0x03 => BoidType.Skull3,
-			0x04 => BoidType.Spiderling,
-			0x05 => BoidType.Skull4,
-			_ => throw new InvalidOperationException($"Invalid {nameof(BoidType)} '{boidTypeByte}'."),
-		};
+		BoidType boidType = boidTypeByte.ToBoidType();
 
 		return new(entityId, spawner, boidType, position, a, b, c, d, speed);
 	}
