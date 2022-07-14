@@ -25,10 +25,10 @@ public class ReplayBinaryTests
 	{
 		ReplayBinary replayBinary = ReplayBinary.CreateDefault();
 		replayBinary.EventsPerTick.Clear();
-		replayBinary.EventsPerTick.Add(new() { new InitialInputsEvent(true, false, false, false, JumpType.None, true, false, 0, 0, 0.2f) });
+		replayBinary.EventsPerTick.Add(new() { new InitialInputsEvent(true, false, false, false, JumpType.None, ShootType.Hold, ShootType.None, 0, 0, 0.2f) });
 
 		for (int i = 0; i < 30; i++)
-			replayBinary.EventsPerTick.Add(new() { new BoidSpawnEvent(i + 1, 0, BoidType.Skull4, default, default, default, default, default, 10), new InputsEvent(true, false, false, false, JumpType.None, false, false, 10, 0) });
+			replayBinary.EventsPerTick.Add(new() { new BoidSpawnEvent(i + 1, 0, BoidType.Skull4, default, default, default, default, default, 10), new InputsEvent(true, false, false, false, JumpType.None, ShootType.None, ShootType.None, 10, 0) });
 
 		replayBinary.EventsPerTick.Add(new() { new EndEvent() });
 
