@@ -317,11 +317,11 @@ public static class ReplayEventsParser
 
 	private static SpiderEggSpawnEvent ParseSpiderEggSpawnEvent(BinaryReader br, int entityId)
 	{
-		int a = br.ReadInt32(); // This holds value 2 for both Spider Egg I and II...
+		int spawnerEntityId = br.ReadInt32();
 		Vector3 position = br.ReadVector3(); // Not sure
 		Vector3 b = br.ReadVector3(); // Target position?
 
-		return new(entityId, a, position, b);
+		return new(entityId, spawnerEntityId, position, b);
 	}
 
 	private static LeviathanSpawnEvent ParseLeviathanSpawnEvent(BinaryReader br, int entityId)
