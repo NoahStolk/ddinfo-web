@@ -13,7 +13,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Components" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" />
     <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Mod\DevilDaggersInfo.Core.Mod.csproj" />
-    <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.NativeInterface\DevilDaggersInfo.Core.NativeInterface.csproj" />
+    <ProjectReference Include="..\..\app-core\DevilDaggersInfo.App.Core.NativeInterface\DevilDaggersInfo.App.Core.NativeInterface.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="package-lock.json">
