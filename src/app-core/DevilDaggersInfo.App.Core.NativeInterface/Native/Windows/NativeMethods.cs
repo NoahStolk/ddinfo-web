@@ -1,6 +1,6 @@
 using System.Runtime.InteropServices;
 
-namespace DevilDaggersInfo.Core.NativeInterface.Native.Windows;
+namespace DevilDaggersInfo.App.Core.NativeInterface.Native.Windows;
 
 internal static class NativeMethods
 {

@@ -1,7 +1,7 @@
 using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
+using DevilDaggersInfo.App.Core.CustomLeaderboard.Memory;
+using DevilDaggersInfo.App.Core.CustomLeaderboard.Services;
 using DevilDaggersInfo.Common.Extensions;
-using DevilDaggersInfo.Core.CustomLeaderboard.Memory;
-using DevilDaggersInfo.Core.CustomLeaderboard.Services;
 using DevilDaggersInfo.Razor.CustomLeaderboard.Models;
 using System.Web;
 
