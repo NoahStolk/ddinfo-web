@@ -123,7 +123,7 @@ Every event starts with an event type, which is a single byte. After that, addit
 
 | Data type      | Size | Meaning              |
 |----------------|------|----------------------|
-| int32          |    4 | N/A (hardcoded at 2) |
+| int32          |    4 | Spawner entity ID    |
 | vec3<float32>  |   12 | Position?            |
 | vec3<float32>? |   12 | Target position?     |
 

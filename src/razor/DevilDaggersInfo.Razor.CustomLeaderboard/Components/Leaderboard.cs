@@ -1,5 +1,5 @@
 using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
-using DevilDaggersInfo.Core.CustomLeaderboard.Services;
+using DevilDaggersInfo.App.Core.CustomLeaderboard.Services;
 using DevilDaggersInfo.Razor.CustomLeaderboard.Models;
 using DevilDaggersInfo.Razor.CustomLeaderboard.Services;
 using Microsoft.AspNetCore.Components;

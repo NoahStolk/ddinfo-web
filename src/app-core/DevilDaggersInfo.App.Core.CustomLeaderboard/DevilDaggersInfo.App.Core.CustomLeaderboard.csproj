@@ -3,7 +3,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging" />
     <PackageReference Include="Newtonsoft.Json" />
     <ProjectReference Include="..\..\common\DevilDaggersInfo.Common\DevilDaggersInfo.Common.csproj" />
-    <ProjectReference Include="..\DevilDaggersInfo.Core.Encryption\DevilDaggersInfo.Core.Encryption.csproj" />
-    <ProjectReference Include="..\DevilDaggersInfo.Core.NativeInterface\DevilDaggersInfo.Core.NativeInterface.csproj" />
+    <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Encryption\DevilDaggersInfo.Core.Encryption.csproj" />
+    <ProjectReference Include="..\DevilDaggersInfo.App.Core.NativeInterface\DevilDaggersInfo.App.Core.NativeInterface.csproj" />
   </ItemGroup>
 </Project>

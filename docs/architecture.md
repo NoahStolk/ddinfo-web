@@ -2,41 +2,44 @@
 
 ## Project types and dependencies
 
+The project type `*-core`/`core` are reusable libraries that one or more groups of other project types can depend on, including the group itself. For example, a `razor-core` project can depend on another `razor-core` project, but a `razor` project cannot depend on another `razor` project.
+
 ### Library layer
 
-| **Subfolder** | **Project type**            | **Can depend on**                                        |
-|---------------|-----------------------------|----------------------------------------------------------|
-| `api`         | API specifications          | Nothing                                                  |
-| `common`      | Common functionality        | Nothing                                                  |
-| `core`        | Core set of features        | `common`, `core`                                         |
+| **Subfolder** | **Project type**              | **Can depend on**                                        |
+|---------------|-------------------------------|----------------------------------------------------------|
+| `api`         | API specifications            | Nothing                                                  |
+| `common`      | Common functionality          | Nothing                                                  |
+| `core`        | Core set of features          | `common`, `core`                                         |
 
 ### UI layer
 
-| **Subfolder** | **Project type**            | **Can depend on**                                        |
-|---------------|-----------------------------|----------------------------------------------------------|
-| `razor-core`  | Reusable Razor UI libraries | `api`, `common`, `core`, `razor-core`                    |
+| **Subfolder** | **Project type**              | **Can depend on**                                        |
+|---------------|-------------------------------|----------------------------------------------------------|
+| `razor-core`  | Reusable Razor UI libraries   | `api`, `common`, `core`, `razor-core`                    |
 
 ### App layer
 
-| **Subfolder** | **Project type**            | **Can depend on**                                        |
-|---------------|-----------------------------|----------------------------------------------------------|
-| `app`         | UI app heads                | `common`, `core`, `razor-core`, `razor`                  |
-| `razor`       | Razor UI libraries for apps | `common`, `core`, `razor-core`                           |
+| **Subfolder** | **Project type**              | **Can depend on**                                        |
+|---------------|-------------------------------|----------------------------------------------------------|
+| `app`         | UI app heads                  | `common`, `core`, `razor-core`, `razor`                  |
+| `app-core`    | Core set of features for apps | `common`, `core`                                         |
+| `razor`       | Razor UI libraries for apps   | `app-core`, `common`, `core`, `razor-core`               |
 
 ### Web layer
 
-| **Subfolder** | **Project type**            | **Can depend on**                                        |
-|---------------|-----------------------------|----------------------------------------------------------|
-| `web`         | Website (client and server) | `api`, `common`, `core`, `razor-core`, `web-core`, `web` |
-| `web-core`    | Reusable web logic          | `common`, `core`, `web-core`                             |
+| **Subfolder** | **Project type**              | **Can depend on**                                        |
+|---------------|-------------------------------|----------------------------------------------------------|
+| `web`         | Website (client and server)   | `api`, `common`, `core`, `razor-core`, `web-core`, `web` |
+| `web-core`    | Reusable web logic            | `common`, `core`, `web-core`                             |
 
 ### Miscellaneous
 
-| **Subfolder** | **Project type**            | **Can depend on**                                        |
-|---------------|-----------------------------|----------------------------------------------------------|
-| `cmd`         | Console apps                | `common`, `core`                                         |
-| `tests`       | Unit tests                  | Anything                                                 |
-| `tool`        | Tools for internal usage    | Anything                                                 |
+| **Subfolder** | **Project type**              | **Can depend on**                                        |
+|---------------|-------------------------------|----------------------------------------------------------|
+| `cmd`         | Console apps                  | `common`, `core`                                         |
+| `tests`       | Unit tests                    | Anything                                                 |
+| `tool`        | Tools for internal usage      | Anything                                                 |
 
 ## Project hierarchy
 

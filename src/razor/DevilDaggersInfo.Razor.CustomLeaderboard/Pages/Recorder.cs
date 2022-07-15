@@ -1,7 +1,7 @@
 using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
+using DevilDaggersInfo.App.Core.CustomLeaderboard.Enums;
+using DevilDaggersInfo.App.Core.CustomLeaderboard.Services;
 using DevilDaggersInfo.Common.Utils;
-using DevilDaggersInfo.Core.CustomLeaderboard.Enums;
-using DevilDaggersInfo.Core.CustomLeaderboard.Services;
 using DevilDaggersInfo.Razor.CustomLeaderboard.Models;
 using DevilDaggersInfo.Razor.CustomLeaderboard.Services;
 using Microsoft.AspNetCore.Components;

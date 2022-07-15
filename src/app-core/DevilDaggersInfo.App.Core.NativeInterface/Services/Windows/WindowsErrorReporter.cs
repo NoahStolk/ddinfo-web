@@ -1,6 +1,4 @@
-using DevilDaggersInfo.Core.NativeInterface.Services;
-
-namespace DevilDaggersInfo.Core.NativeInterface.Services.Windows;
+namespace DevilDaggersInfo.App.Core.NativeInterface.Services.Windows;
 
 public class WindowsErrorReporter : INativeErrorReporter
 {
