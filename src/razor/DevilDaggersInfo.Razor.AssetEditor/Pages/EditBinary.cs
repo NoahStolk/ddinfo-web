@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Core.NativeInterface.Services;
+using DevilDaggersInfo.App.Core.NativeInterface.Services;
 using DevilDaggersInfo.Razor.AssetEditor.Services;
 using DevilDaggersInfo.Razor.AssetEditor.Store.State;
 using Fluxor;

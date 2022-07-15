@@ -1,5 +1,5 @@
-using DevilDaggersInfo.Core.NativeInterface.Services;
-using DevilDaggersInfo.Core.NativeInterface.Utils;
+using DevilDaggersInfo.App.Core.NativeInterface.Services;
+using DevilDaggersInfo.App.Core.NativeInterface.Utils;
 using DevilDaggersInfo.Core.Replay;
 using DevilDaggersInfo.Razor.ReplayEditor.Enums;
 using DevilDaggersInfo.Razor.ReplayEditor.Store.Features.ReplayBinaryFeature.Actions;

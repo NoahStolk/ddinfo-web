@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace DevilDaggersInfo.Core.NativeInterface.Utils;
+namespace DevilDaggersInfo.App.Core.NativeInterface.Utils;
 
 public static class FileDialogFilterUtils
 {

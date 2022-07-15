@@ -1,9 +1,9 @@
-using DevilDaggersInfo.Core.CustomLeaderboard.Memory;
-using DevilDaggersInfo.Core.NativeInterface.Services;
+using DevilDaggersInfo.App.Core.CustomLeaderboard.Memory;
+using DevilDaggersInfo.App.Core.NativeInterface.Services;
 using System.Diagnostics;
 using System.Text;
 
-namespace DevilDaggersInfo.Core.CustomLeaderboard.Services;
+namespace DevilDaggersInfo.App.Core.CustomLeaderboard.Services;
 
 public class ReaderService
 {

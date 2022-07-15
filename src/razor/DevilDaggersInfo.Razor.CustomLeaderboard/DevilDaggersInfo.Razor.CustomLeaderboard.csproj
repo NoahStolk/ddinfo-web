@@ -12,8 +12,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Components" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" />
     <ProjectReference Include="..\..\api\DevilDaggersInfo.Api.Ddcl\DevilDaggersInfo.Api.Ddcl.csproj" />
-    <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.CustomLeaderboard\DevilDaggersInfo.Core.CustomLeaderboard.csproj" />
-    <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.NativeInterface\DevilDaggersInfo.Core.NativeInterface.csproj" />
+    <ProjectReference Include="..\..\app-core\DevilDaggersInfo.App.Core.CustomLeaderboard\DevilDaggersInfo.App.Core.CustomLeaderboard.csproj" />
     <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Wiki\DevilDaggersInfo.Core.Wiki.csproj" />
   </ItemGroup>
   <ItemGroup>
