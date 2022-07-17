@@ -11,6 +11,8 @@ public interface IToolService
 
 	Task<Tool?> GetToolAsync(string name);
 
+	Task<List<ToolDistribution>> GetLatestToolDistributionsAsync(OperatingSystemType operatingSystem);
+
 	byte[]? GetToolDistributionFile(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version);
 
 	Task UpdateToolDistributionStatisticsAsync(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version);

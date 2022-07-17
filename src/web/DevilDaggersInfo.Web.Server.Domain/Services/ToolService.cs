@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Core.Versioning;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
@@ -72,6 +73,34 @@ public class ToolService : IToolService
 		}
 
 		return File.ReadAllBytes(path);
+	}
+
+	public async Task<List<ToolDistribution>> GetLatestToolDistributionsAsync(OperatingSystemType operatingSystem)
+	{
+		IQueryable<ToolDistributionEntity> distributionsQuery = operatingSystem switch
+		{
+			OperatingSystemType.Windows => _dbContext.ToolDistributions.Where(td => td.PublishMethod == ToolPublishMethod.SelfContained && (td.BuildType == ToolBuildType.WindowsWpf || td.BuildType == ToolBuildType.WindowsConsole || td.BuildType == ToolBuildType.WindowsPhotino)),
+			OperatingSystemType.Windows7 => _dbContext.ToolDistributions.Where(td => td.PublishMethod == ToolPublishMethod.Default && (td.BuildType == ToolBuildType.WindowsWpf || td.BuildType == ToolBuildType.WindowsConsole || td.BuildType == ToolBuildType.WindowsPhotino)),
+			OperatingSystemType.Linux => _dbContext.ToolDistributions.Where(td => td.PublishMethod == ToolPublishMethod.SelfContained && td.BuildType == ToolBuildType.LinuxPhotino),
+			_ => throw new InvalidEnumConversionException(operatingSystem),
+		};
+
+		List<ToolDistribution> distributions = new();
+		foreach (ToolDistributionEntity distribution in await distributionsQuery.OrderByDescending(td => AppVersion.Parse(td.VersionNumber)).ToListAsync())
+		{
+			if (distributions.Any(td => td.Name == distribution.ToolName && td.BuildType == distribution.BuildType && td.PublishMethod == distribution.PublishMethod))
+				continue;
+
+			distributions.Add(new ToolDistribution
+			{
+				BuildType = distribution.BuildType,
+				FileSize = GetToolDistributionFileSize(distribution.ToolName, distribution.PublishMethod, distribution.BuildType, distribution.VersionNumber),
+				PublishMethod = distribution.PublishMethod,
+				VersionNumber = distribution.VersionNumber,
+			});
+		}
+
+		return distributions;
 	}
 
 	public async Task<ToolDistribution?> GetLatestToolDistributionAsync(string name, ToolPublishMethod publishMethod, ToolBuildType buildType)

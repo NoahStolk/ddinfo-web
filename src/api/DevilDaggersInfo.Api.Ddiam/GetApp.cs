@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Api.Ddiam;
 
-public record GetTool
+public record GetApp
 {
 	public string Name { get; init; } = null!;
 
