@@ -92,6 +92,7 @@ public class ToolService : IToolService
 
 		return new()
 		{
+			Name = name,
 			BuildType = buildType,
 			PublishMethod = publishMethod,
 			VersionNumber = distribution.VersionNumber,
