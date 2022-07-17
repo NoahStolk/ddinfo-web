@@ -1,17 +1,20 @@
+@using DevilDaggersInfo.Razor.AppManager.Extensions
 @using DevilDaggersInfo.Razor.AppManager.Models
+@using DevilDaggersInfo.Razor.AppManager.Services
 @using DevilDaggersInfo.Razor.AppManager.Store.State
 @using Fluxor
 @inherits FluxorComponent
+@inject StateFacade StateFacade
 @inject IState<AppListState> AppListState
 
 <h2>Installed</h2>
-<div class="grid cols-5">
+<div class="grid grid-cols-7 max-w-[1024px]">
 	@foreach (AppEntry app in AppListState.Value.LocalApps)
 	{
 		<div>image</div>
-		<div>@app.Name</div>
+		<div class="col-span-2">@app.Name</div>
 		<div>@app.Version</div>
-		<div>@app.BuildType</div>
+		<div class="col-span-2">@app.BuildType.ToDisplayString()</div>
 		<div>
 			<button>Update</button>
 			<button>Delete</button>
@@ -20,18 +23,28 @@
 </div>
 
 <h2>Not installed</h2>
-<div class="grid cols-5">
+<div class="grid grid-cols-7 max-w-[1024px]">
 	@foreach (AppEntry app in AppListState.Value.OnlineApps)
 	{
 		if (AppListState.Value.LocalApps.Any(la => la.BuildType == app.BuildType && la.Name == app.Name))
 			continue;
 
 		<div>image</div>
-		<div>@app.Name</div>
+		<div class="col-span-2">@app.Name</div>
 		<div>@app.Version</div>
-		<div>@app.BuildType</div>
+		<div class="col-span-2">@app.BuildType.ToDisplayString()</div>
 		<div>
 			<button>Download</button>
 		</div>
 	}
 </div>
+
+@code
+{
+	protected override void OnInitialized()
+	{
+		base.OnInitialized();
+
+		StateFacade.LoadAppLists();
+	}
+}
