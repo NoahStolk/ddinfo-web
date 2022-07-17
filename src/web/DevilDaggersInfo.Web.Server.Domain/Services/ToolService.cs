@@ -93,6 +93,7 @@ public class ToolService : IToolService
 
 			distributions.Add(new ToolDistribution
 			{
+				Name = distribution.ToolName,
 				BuildType = distribution.BuildType,
 				FileSize = GetToolDistributionFileSize(distribution.ToolName, distribution.PublishMethod, distribution.BuildType, distribution.VersionNumber),
 				PublishMethod = distribution.PublishMethod,
