@@ -77,16 +77,16 @@ public class ToolService : IToolService
 
 	public async Task<List<ToolDistribution>> GetLatestToolDistributionsAsync(OperatingSystemType operatingSystem)
 	{
-		IQueryable<ToolDistributionEntity> distributionsQuery = operatingSystem switch
+		List<ToolDistributionEntity> distributionEntities = await (operatingSystem switch
 		{
 			OperatingSystemType.Windows => _dbContext.ToolDistributions.Where(td => td.PublishMethod == ToolPublishMethod.SelfContained && (td.BuildType == ToolBuildType.WindowsWpf || td.BuildType == ToolBuildType.WindowsConsole || td.BuildType == ToolBuildType.WindowsPhotino)),
 			OperatingSystemType.Windows7 => _dbContext.ToolDistributions.Where(td => td.PublishMethod == ToolPublishMethod.Default && (td.BuildType == ToolBuildType.WindowsWpf || td.BuildType == ToolBuildType.WindowsConsole || td.BuildType == ToolBuildType.WindowsPhotino)),
 			OperatingSystemType.Linux => _dbContext.ToolDistributions.Where(td => td.PublishMethod == ToolPublishMethod.SelfContained && td.BuildType == ToolBuildType.LinuxPhotino),
 			_ => throw new InvalidEnumConversionException(operatingSystem),
-		};
+		}).ToListAsync();
 
 		List<ToolDistribution> distributions = new();
-		foreach (ToolDistributionEntity distribution in await distributionsQuery.OrderByDescending(td => AppVersion.Parse(td.VersionNumber)).ToListAsync())
+		foreach (ToolDistributionEntity distribution in distributionEntities.OrderByDescending(td => AppVersion.Parse(td.VersionNumber)))
 		{
 			if (distributions.Any(td => td.Name == distribution.ToolName && td.BuildType == distribution.BuildType && td.PublishMethod == distribution.PublishMethod))
 				continue;
