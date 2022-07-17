@@ -1,0 +1,20 @@
+@using DevilDaggersInfo.Core.Replay.Events
+@using DevilDaggersInfo.Razor.ReplayEditor.Store.State
+@using Fluxor
+@inject IState<ReplayBinaryState> ReplayBinaryState
+
+@if (Event is EntityTargetEvent entityTargetEvent)
+{
+	<span>@entityTargetEvent.EntityId (@(ReplayBinaryState.Value.ReplayBinary.EntityTypes[entityTargetEvent.EntityId])) - @entityTargetEvent.TargetPosition</span>
+}
+else
+{
+	<span>@Event.ToString()</span>
+}
+
+@code
+{
+	[Parameter]
+	[EditorRequired]
+	public IEvent Event { get; set; } = null!;
+}
