@@ -13,7 +13,7 @@ public record AppEntry(string Name, AppVersion Version, BuildType BuildType)
 		appEntry = null;
 
 		string[] parts = fileName.Split(_separator);
-		if (parts.Length != 4)
+		if (parts.Length != 3)
 			return false;
 
 		AppVersion version;
