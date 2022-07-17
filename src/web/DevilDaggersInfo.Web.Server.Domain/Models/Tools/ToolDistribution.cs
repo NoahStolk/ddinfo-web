@@ -4,6 +4,8 @@ namespace DevilDaggersInfo.Web.Server.Domain.Models.Tools;
 
 public class ToolDistribution
 {
+	public string Name { get; set; } = string.Empty;
+
 	public string VersionNumber { get; set; } = string.Empty;
 
 	public int FileSize { get; set; }
