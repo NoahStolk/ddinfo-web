@@ -1,12 +1,15 @@
 @page "/"
+@using DevilDaggersInfo.Razor.AppManager.Components
 @using DevilDaggersInfo.Razor.AppManager.Services
 @using DevilDaggersInfo.Razor.AppManager.Store.State
 @using Fluxor
 @inherits FluxorComponent
 @inject StateFacade StateFacade
-@inject IState<ManagerState> ManagerState
+@inject IState<InstallationDirectoryState> InstallationDirectoryState
 
 <div class="grid cols-2">
 	<span>Installation directory</span>
-	<span>@ManagerState.Value.InstallationDirectory</span>
+	<span>@InstallationDirectoryState.Value.InstallationDirectory</span>
 </div>
+
+<AppList />

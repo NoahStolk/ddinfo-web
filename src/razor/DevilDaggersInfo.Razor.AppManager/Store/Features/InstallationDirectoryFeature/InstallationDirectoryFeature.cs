@@ -3,13 +3,14 @@ using Fluxor;
 
 namespace DevilDaggersInfo.Razor.AppManager.Store.Features.ManagerFeature;
 
-public class ManagerFeature : Feature<ManagerState>
+public class InstallationDirectoryFeature : Feature<InstallationDirectoryState>
 {
 	public override string GetName() => "Manager";
 
-	protected override ManagerState GetInitialState()
+	protected override InstallationDirectoryState GetInitialState()
 	{
 		string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-		return new(Path.Combine(appData, "DevilDaggersInfo"));
+		string installationDirectory = Path.Combine(appData, "DevilDaggersInfo");
+		return new(installationDirectory);
 	}
 }

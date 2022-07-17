@@ -1,0 +1,37 @@
+@using DevilDaggersInfo.Razor.AppManager.Models
+@using DevilDaggersInfo.Razor.AppManager.Store.State
+@using Fluxor
+@inherits FluxorComponent
+@inject IState<AppListState> AppListState
+
+<h2>Installed</h2>
+<div class="grid cols-5">
+	@foreach (AppEntry app in AppListState.Value.LocalApps)
+	{
+		<div>image</div>
+		<div>@app.Name</div>
+		<div>@app.Version</div>
+		<div>@app.BuildType</div>
+		<div>
+			<button>Update</button>
+			<button>Delete</button>
+		</div>
+	}
+</div>
+
+<h2>Not installed</h2>
+<div class="grid cols-5">
+	@foreach (AppEntry app in AppListState.Value.OnlineApps)
+	{
+		if (AppListState.Value.LocalApps.Any(la => la.BuildType == app.BuildType && la.Name == app.Name))
+			continue;
+
+		<div>image</div>
+		<div>@app.Name</div>
+		<div>@app.Version</div>
+		<div>@app.BuildType</div>
+		<div>
+			<button>Download</button>
+		</div>
+	}
+</div>
