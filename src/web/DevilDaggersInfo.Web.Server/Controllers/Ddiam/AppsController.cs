@@ -1,7 +1,7 @@
+using DevilDaggersInfo.Api.Ddiam;
 using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Ddiam;
-using DevilDaggersInfo.Web.Server.Domain.Models.Tools;
+using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Ddiam;
 using DevilDaggersInfo.Web.Server.Domain.Services;
-using ApiDdiam = DevilDaggersInfo.Api.Ddiam;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Ddiam;
 
@@ -18,14 +18,15 @@ public class AppsController : ControllerBase
 
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	public async Task<ActionResult<List<ApiDdiam.GetApp>>> GetApps([Required] ApiDdiam.OperatingSystemType os)
+	public async Task<ActionResult<List<GetApp>>> GetApps([Required] OperatingSystemType os)
 	{
-		List<ToolDistribution> tools = await _toolService.GetLatestToolDistributionsAsync(os.ToDomain());
+		List<Domain.Models.Tools.ToolDistribution> tools = await _toolService.GetLatestToolDistributionsAsync(os.ToDomain());
 
-		return tools.ConvertAll(t => new ApiDdiam.GetApp
+		return tools.ConvertAll(td => new GetApp
 		{
-			Name = t.Name,
-			Version = t.VersionNumber,
+			Name = td.Name,
+			Version = td.VersionNumber,
+			BuildType = td.BuildType.ToApi(),
 		});
 	}
 }
