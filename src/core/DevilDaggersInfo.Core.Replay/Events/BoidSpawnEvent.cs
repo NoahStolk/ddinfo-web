@@ -2,14 +2,14 @@ using DevilDaggersInfo.Common.Exceptions;
 
 namespace DevilDaggersInfo.Core.Replay.Events;
 
-public readonly record struct BoidSpawnEvent(int EntityId, int SpawnerId, BoidType BoidType, Int16Vec3 Position, Int16Vec3 A, Int16Vec3 B, Int16Vec3 C, Vector3 D, float Speed) : IEvent
+public readonly record struct BoidSpawnEvent(int EntityId, int SpawnerEntityId, BoidType BoidType, Int16Vec3 Position, Int16Vec3 A, Int16Vec3 B, Int16Vec3 C, Vector3 D, float Speed) : IEvent
 {
 	public void Write(BinaryWriter bw)
 	{
 		bw.Write((byte)0x00);
 		bw.Write((byte)0x06);
 
-		bw.Write(SpawnerId);
+		bw.Write(SpawnerEntityId);
 		bw.Write((byte)(BoidType switch
 		{
 			BoidType.Skull1 => 0x01,

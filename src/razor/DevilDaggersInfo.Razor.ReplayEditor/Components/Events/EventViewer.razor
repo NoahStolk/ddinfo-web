@@ -1,0 +1,23 @@
+<div class="bg-gray-1 border border-gray-2 max-w-[1366px]">
+	<div class="bg-gray-2 font-bold">@Title</div>
+	<div class="grid @GridConfig font-bold">@Head</div>
+	<div class="grid @GridConfig">@Body</div>
+</div>
+
+@code
+{
+	[Parameter]
+	[EditorRequired]
+	public string Title { get; set; } = null!;
+
+	[Parameter]
+	public string? GridConfig { get; set; }
+
+	[Parameter]
+	[EditorRequired]
+	public RenderFragment Head { get; set; } = null!;
+
+	[Parameter]
+	[EditorRequired]
+	public RenderFragment Body { get; set; } = null!;
+}

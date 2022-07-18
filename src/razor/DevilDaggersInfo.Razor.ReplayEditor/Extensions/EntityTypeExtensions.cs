@@ -10,11 +10,11 @@ public static class EntityTypeExtensions
 	{
 		EntityType.Level1Dagger => UpgradeColors.Level1,
 		EntityType.Level2Dagger => UpgradeColors.Level2,
-		EntityType.Level3Dagger => UpgradeColors.Level3,
-		EntityType.Level3HomingDagger => UpgradeColors.Level3, // TODO: Different colors.
-		EntityType.Level4Dagger => UpgradeColors.Level4,
-		EntityType.Level4HomingDagger => UpgradeColors.Level4, // TODO: Different colors.
-		EntityType.Level4HomingSplash => UpgradeColors.Level4, // TODO: Different colors.
+		EntityType.Level3Dagger => UpgradeColors.Level3, // TODO: Different color.
+		EntityType.Level3HomingDagger => UpgradeColors.Level3,
+		EntityType.Level4Dagger => UpgradeColors.Level4, // TODO: Different color.
+		EntityType.Level4HomingDagger => UpgradeColors.Level4,
+		EntityType.Level4HomingSplash => UpgradeColors.Level4, // TODO: Different color.
 		EntityType.Squid1 => EnemyColors.Squid1,
 		EntityType.Squid2 => EnemyColors.Squid2,
 		EntityType.Squid3 => EnemyColors.Squid3,
@@ -31,7 +31,7 @@ public static class EntityTypeExtensions
 		EntityType.SpiderEgg => EnemyColors.SpiderEgg1,
 		EntityType.Leviathan => EnemyColors.Leviathan,
 		EntityType.Thorn => EnemyColors.Thorn,
-		EntityType.Player => new(64, 64, 255),
+		EntityType.Player => new(95, 95, 255),
 		_ => new(255, 255, 255),
 	};
 

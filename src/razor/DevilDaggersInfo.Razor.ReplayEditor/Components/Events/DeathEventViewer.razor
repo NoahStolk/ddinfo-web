@@ -1,0 +1,34 @@
+@using DevilDaggersInfo.Core.Replay.Events
+@using DevilDaggersInfo.Core.Wiki
+@using DevilDaggersInfo.Core.Wiki.Enums
+@using DevilDaggersInfo.Core.Wiki.Objects
+@using DevilDaggersInfo.Razor.ReplayEditor.Store.State
+@using DevilDaggersInfo.Razor.ReplayEditor.Utils
+@using Fluxor
+
+@{
+	Death? death = Deaths.GetDeathByLeaderboardType(GameVersion.V3_2, (byte)Event.DeathType);
+}
+
+<EventViewer Title="Death">
+	<Head>
+		<span>Death type</span>
+	</Head>
+	<Body>
+		@if (death.HasValue)
+		{
+			<span style="color: @death.Value.Color.HexCode">@death.Value.Name</span>
+		}
+		else
+		{
+			<span>Invalid death type</span>
+		}
+	</Body>
+</EventViewer>
+
+@code
+{
+	[Parameter]
+	[EditorRequired]
+	public DeathEvent Event { get; set; }
+}

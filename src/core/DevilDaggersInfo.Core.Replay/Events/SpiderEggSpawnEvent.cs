@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Core.Replay.Events;
 
-public readonly record struct SpiderEggSpawnEvent(int EntityId, int SpawnerEntityId, Vector3 Position, Vector3 B) : IEvent
+public readonly record struct SpiderEggSpawnEvent(int EntityId, int SpawnerEntityId, Vector3 Position, Vector3 TargetPosition) : IEvent
 {
 	public void Write(BinaryWriter bw)
 	{
@@ -9,6 +9,6 @@ public readonly record struct SpiderEggSpawnEvent(int EntityId, int SpawnerEntit
 
 		bw.Write(SpawnerEntityId);
 		bw.Write(Position);
-		bw.Write(B);
+		bw.Write(TargetPosition);
 	}
 }

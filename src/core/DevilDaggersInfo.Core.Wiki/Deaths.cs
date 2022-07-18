@@ -26,6 +26,7 @@ public static class Deaths
 		return death == default ? null : death;
 	}
 
+	// TODO: Rename to GetDeathByType.
 	public static Death? GetDeathByLeaderboardType(GameVersion gameVersion, byte leaderboardDeathType, bool skipUnknown = true)
 	{
 		Death death = GetDeaths(gameVersion, skipUnknown).Find(d => d.LeaderboardDeathType == leaderboardDeathType);

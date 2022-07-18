@@ -1,50 +1,71 @@
 @using DevilDaggersInfo.Core.Replay.Enums
 @using DevilDaggersInfo.Core.Replay.Events
 @using DevilDaggersInfo.Core.Wiki.Structs
+@using DevilDaggersInfo.Razor.ReplayEditor.Components.Events
 @using DevilDaggersInfo.Razor.ReplayEditor.Extensions
 @using DevilDaggersInfo.Razor.ReplayEditor.Store.State
 @using Fluxor
 @inject IState<ReplayBinaryState> ReplayBinaryState
 
-@if (Event is EntityTargetEvent entityTargetEvent)
+@if (Event is BoidSpawnEvent boidSpawnEvent)
 {
-	<div class="grid grid-cols-3 max-w-xl">
-		<span class="font-bold">Entity ID</span>
-		<span class="font-bold">Entity type</span>
-		<span class="font-bold">Target position</span>
-		<span>@entityTargetEvent.EntityId</span>
-		@EntityType(entityTargetEvent.EntityId, ReplayBinaryState.Value.ReplayBinary.EntityTypes)
-		<span>@entityTargetEvent.TargetPosition</span>
-	</div>
+	<BoidSpawnEventViewer Event="boidSpawnEvent" />
 }
-else if (Event is EntityPositionEvent entityPositionEvent)
+else if (Event is DaggerSpawnEvent daggerSpawnEvent)
 {
-	<div class="grid grid-cols-3 max-w-xl">
-		<span class="font-bold">Entity ID</span>
-		<span class="font-bold">Entity type</span>
-		<span class="font-bold">Position</span>
-		<span>@entityPositionEvent.EntityId</span>
-		@EntityType(entityPositionEvent.EntityId, ReplayBinaryState.Value.ReplayBinary.EntityTypes)
-		<span>@entityPositionEvent.Position</span>
-	</div>
-}
-else if (Event is EntityOrientationEvent entityOrientationEvent)
-{
-	<div class="grid grid-cols-3 max-w-xl">
-		<span class="font-bold">Entity ID</span>
-		<span class="font-bold">Entity type</span>
-		<span class="font-bold">Orientation</span>
-		<span>@entityOrientationEvent.EntityId</span>
-		@EntityType(entityOrientationEvent.EntityId, ReplayBinaryState.Value.ReplayBinary.EntityTypes)
-		<span>@entityOrientationEvent.Orientation</span>
-	</div>
+	<DaggerSpawnEventViewer Event="daggerSpawnEvent" />
 }
 else if (Event is DeathEvent deathEvent)
 {
-	<div class="grid grid-cols-1 max-w-xl">
-		<span class="font-bold">Death type</span>
-		<span>@deathEvent.DeathType</span>
-	</div>
+	<DeathEventViewer Event="deathEvent" />
+}
+else if (Event is EntityOrientationEvent entityOrientationEvent)
+{
+	<EntityOrientationEventViewer Event="entityOrientationEvent" />
+}
+else if (Event is EntityPositionEvent entityPositionEvent)
+{
+	<EntityPositionEventViewer Event="entityPositionEvent" />
+}
+else if (Event is EntityTargetEvent entityTargetEvent)
+{
+	<EntityTargetEventViewer Event="entityTargetEvent" />
+}
+else if (Event is GemEvent)
+{
+	<GemEventViewer />
+}
+else if (Event is HitEvent hitEvent)
+{
+	<HitEventViewer Event="hitEvent" />
+}
+else if (Event is LeviathanSpawnEvent leviathanSpawnEvent)
+{
+	<LeviathanSpawnEventViewer Event="leviathanSpawnEvent" />
+}
+else if (Event is PedeSpawnEvent pedeSpawnEvent)
+{
+	<PedeSpawnEventViewer Event="pedeSpawnEvent" />
+}
+else if (Event is SpiderEggSpawnEvent spiderEggSpawnEvent)
+{
+	<SpiderEggSpawnEventViewer Event="spiderEggSpawnEvent" />
+}
+else if (Event is SpiderSpawnEvent spiderSpawnEvent)
+{
+	<SpiderSpawnEventViewer Event="spiderSpawnEvent" />
+}
+else if (Event is SquidSpawnEvent squidSpawnEvent)
+{
+	<SquidSpawnEventViewer Event="squidSpawnEvent" />
+}
+else if (Event is ThornSpawnEvent thornSpawnEvent)
+{
+	<ThornSpawnEventViewer Event="thornSpawnEvent" />
+}
+else if (Event is TransmuteEvent transmuteEvent)
+{
+	<TransmuteEventViewer Event="transmuteEvent" />
 }
 else
 {
@@ -56,11 +77,4 @@ else
 	[Parameter]
 	[EditorRequired]
 	public IEvent Event { get; set; } = null!;
-
-	private static MarkupString EntityType(int entityId, List<EntityType> entityTypes)
-	{
-		EntityType entityType = entityTypes[entityId];
-		Color color = entityType.GetColor();
-		return new($"<span style='color: {color.HexCode};'>{entityType.ToDisplayString()}</span>");
-	}
 }
