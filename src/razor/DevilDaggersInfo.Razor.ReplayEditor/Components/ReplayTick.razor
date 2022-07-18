@@ -42,15 +42,15 @@
 
 @if (isOpen)
 {
-	<ul class="pl-4">
+	<div>
 		@foreach (IEvent e in Events)
 		{
 			if (HideActualEvent(e))
 				continue;
 
-			<li class="list-disc"><ReplayEvent Event="e" /></li>
+			<ReplayEvent Event="e" />
 		}
-	</ul>
+	</div>
 }
 
 @code

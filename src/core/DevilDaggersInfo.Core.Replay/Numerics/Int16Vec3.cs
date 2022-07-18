@@ -11,4 +11,7 @@ public readonly record struct Int16Vec3(short X, short Y, short Z)
 			(short)(a.Y + b.Y),
 			(short)(a.Z + b.Z));
 	}
+
+	public override string ToString()
+		=> $"{{ {X}, {Y}, {Z} }}";
 }
