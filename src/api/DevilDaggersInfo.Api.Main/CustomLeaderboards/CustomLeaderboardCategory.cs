@@ -7,4 +7,5 @@ public enum CustomLeaderboardCategory
 	Speedrun = 3,
 	Race = 4,
 	Pacifist = 5,
+	RaceNoShooting = 6,
 }

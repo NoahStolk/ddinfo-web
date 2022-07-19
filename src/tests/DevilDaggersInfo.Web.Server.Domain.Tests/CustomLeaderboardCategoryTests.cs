@@ -15,5 +15,6 @@ public class CustomLeaderboardCategoryTests
 		Assert.IsTrue(CustomLeaderboardCategory.TimeAttack.IsAscending());
 		Assert.IsTrue(CustomLeaderboardCategory.Speedrun.IsAscending());
 		Assert.IsTrue(CustomLeaderboardCategory.Race.IsAscending());
+		Assert.IsTrue(CustomLeaderboardCategory.RaceNoShooting.IsAscending());
 	}
 }
