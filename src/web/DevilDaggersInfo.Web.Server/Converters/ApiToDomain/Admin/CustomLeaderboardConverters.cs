@@ -23,6 +23,7 @@ public static class CustomLeaderboardConverters
 		AdminApi.CustomLeaderboardCategory.Speedrun => CustomLeaderboardCategory.Speedrun,
 		AdminApi.CustomLeaderboardCategory.Race => CustomLeaderboardCategory.Race,
 		AdminApi.CustomLeaderboardCategory.Pacifist => CustomLeaderboardCategory.Pacifist,
+		AdminApi.CustomLeaderboardCategory.RaceNoShooting => CustomLeaderboardCategory.RaceNoShooting,
 		_ => throw new InvalidEnumConversionException(customLeaderboardCategory),
 	};
 }

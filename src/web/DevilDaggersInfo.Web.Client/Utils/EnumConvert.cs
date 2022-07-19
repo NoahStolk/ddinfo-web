@@ -11,7 +11,8 @@ public static class EnumConvert
 		CustomLeaderboardCategory.Speedrun => nameof(CustomLeaderboardCategory.Speedrun),
 		CustomLeaderboardCategory.Race => nameof(CustomLeaderboardCategory.Race),
 		CustomLeaderboardCategory.Pacifist => nameof(CustomLeaderboardCategory.Pacifist),
-		_ => "Survival",
+		CustomLeaderboardCategory.RaceNoShooting => nameof(CustomLeaderboardCategory.RaceNoShooting),
+		_ => nameof(CustomLeaderboardCategory.Survival),
 	};
 
 	public static CustomLeaderboardCategory GetCustomLeaderboardCategory(string str) => str switch
@@ -20,6 +21,7 @@ public static class EnumConvert
 		nameof(CustomLeaderboardCategory.Speedrun) => CustomLeaderboardCategory.Speedrun,
 		nameof(CustomLeaderboardCategory.Race) => CustomLeaderboardCategory.Race,
 		nameof(CustomLeaderboardCategory.Pacifist) => CustomLeaderboardCategory.Pacifist,
+		nameof(CustomLeaderboardCategory.RaceNoShooting) => CustomLeaderboardCategory.RaceNoShooting,
 		_ => CustomLeaderboardCategory.Survival,
 	};
 }

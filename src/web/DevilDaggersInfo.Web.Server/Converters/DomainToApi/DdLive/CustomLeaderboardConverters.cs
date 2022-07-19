@@ -85,6 +85,7 @@ public static class CustomLeaderboardConverters
 		CustomLeaderboardCategory.Speedrun => DdLiveApi.CustomLeaderboardCategory.Speedrun,
 		CustomLeaderboardCategory.Race => DdLiveApi.CustomLeaderboardCategory.Race,
 		CustomLeaderboardCategory.Pacifist => DdLiveApi.CustomLeaderboardCategory.Pacifist,
+		CustomLeaderboardCategory.RaceNoShooting => DdLiveApi.CustomLeaderboardCategory.RaceNoShooting,
 		_ => throw new InvalidEnumConversionException(customLeaderboardCategory),
 	};
 
