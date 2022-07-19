@@ -34,7 +34,7 @@ public record GetCustomEntry
 
 	public int? GemsEaten { get; init; }
 
-	public byte DeathType { get; init; }
+	public byte? DeathType { get; init; }
 
 	public double LevelUpTime2 { get; init; }
 

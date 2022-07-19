@@ -1,5 +1,6 @@
 using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
+using DevilDaggersInfo.Web.Server.Domain.Extensions;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.Domain.Utils;
 using MainApi = DevilDaggersInfo.Api.Main.CustomLeaderboards;
@@ -36,10 +37,10 @@ public static class CustomLeaderboardConverters
 		Category = customLeaderboard.Category.ToMainApi(),
 		IsFeatured = customLeaderboard.Daggers != null,
 		DateLastPlayed = customLeaderboard.DateLastPlayed,
-		CustomEntries = customLeaderboard.CustomEntries.ConvertAll(ce => ce.ToGetCustomEntry()),
+		CustomEntries = customLeaderboard.CustomEntries.ConvertAll(ce => ce.ToGetCustomEntry(customLeaderboard.Category)),
 	};
 
-	private static MainApi.GetCustomEntry ToGetCustomEntry(this CustomEntry customEntry) => new()
+	private static MainApi.GetCustomEntry ToGetCustomEntry(this CustomEntry customEntry, CustomLeaderboardCategory category) => new()
 	{
 		Id = customEntry.Id,
 		Rank = customEntry.Rank,
@@ -48,7 +49,7 @@ public static class CustomLeaderboardConverters
 		CountryCode = customEntry.CountryCode,
 		Client = customEntry.Client.ToMainApi(),
 		ClientVersion = customEntry.ClientVersion,
-		DeathType = customEntry.DeathType,
+		DeathType = category.IsTimeAttackOrRace() ? null : customEntry.DeathType,
 		EnemiesAlive = customEntry.EnemiesAlive,
 		GemsCollected = customEntry.GemsCollected,
 		GemsDespawned = customEntry.GemsDespawned,

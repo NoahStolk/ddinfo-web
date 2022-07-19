@@ -112,7 +112,7 @@ else
 						double accuracyValue = ce.DaggersFired == 0 ? 0 : ce.DaggersHit / (double)ce.DaggersFired;
 						string accuracy = accuracyValue.ToString(StringFormats.AccuracyFormat);
 						string daggers = FormatUtils.FormatDaggersInt32(ce.DaggersHit, ce.DaggersFired, false);
-						MarkupString death = MarkupUtils.CustomLeaderboardDeathString(GetCustomLeaderboard.Category is CustomLeaderboardCategory.TimeAttack or CustomLeaderboardCategory.Race or CustomLeaderboardCategory.RaceNoShooting, ce.DeathType, GameConstants.CurrentVersion, "text-xl");
+						MarkupString death = MarkupUtils.CustomLeaderboardDeathString(ce.DeathType, GameConstants.CurrentVersion, "text-xl");
 						string homingStored = ce.HomingStored.ToString(StringFormats.LeaderboardIntFormat);
 						MarkupString homingEaten = ce.HomingEaten.HasValue ? (MarkupString)ce.HomingEaten.Value.ToString(StringFormats.LeaderboardIntFormat) : MarkupStrings.NoDataMarkup;
 						MarkupString levelUpTime2 = ce.LevelUpTime2 == 0 ? MarkupStrings.NoDataMarkup : (MarkupString)ce.LevelUpTime2.ToString(StringFormats.TimeFormat);

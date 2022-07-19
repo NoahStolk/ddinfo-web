@@ -11,12 +11,12 @@ public static class MarkupUtils
 		return new($@"<span class=""font-goethe text-lg {dagger.Name.ToLower()}"">{dagger.Name} Dagger</span>");
 	}
 
-	public static MarkupString CustomLeaderboardDeathString(bool timeAttackOrRace, byte deathType, GameVersion gameVersion = GameConstants.CurrentVersion, string textSizeClass = "text-lg")
+	public static MarkupString CustomLeaderboardDeathString(byte? deathType, GameVersion gameVersion = GameConstants.CurrentVersion, string textSizeClass = "text-lg")
 	{
-		if (timeAttackOrRace)
+		if (!deathType.HasValue)
 			return new($@"<span style=""color: {MarkupStrings.NoDataColor};"" class=""font-goethe {textSizeClass}"">N/A</span>");
 
-		return DeathString(deathType, gameVersion, textSizeClass);
+		return DeathString(deathType.Value, gameVersion, textSizeClass);
 	}
 
 	public static MarkupString DeathString(byte deathType, GameVersion gameVersion = GameConstants.CurrentVersion, string textSizeClass = "text-lg")

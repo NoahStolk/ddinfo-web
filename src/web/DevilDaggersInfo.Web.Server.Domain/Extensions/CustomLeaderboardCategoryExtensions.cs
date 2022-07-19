@@ -16,4 +16,7 @@ public static class CustomLeaderboardCategoryExtensions
 		CustomLeaderboardCategory.Race or CustomLeaderboardCategory.RaceNoShooting => GameMode.Race,
 		_ => throw new InvalidEnumConversionException(category),
 	};
+
+	public static bool IsTimeAttackOrRace(this CustomLeaderboardCategory category)
+		=> category is CustomLeaderboardCategory.TimeAttack or CustomLeaderboardCategory.Race or CustomLeaderboardCategory.RaceNoShooting;
 }

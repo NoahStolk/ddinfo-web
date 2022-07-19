@@ -122,7 +122,7 @@ public class CustomEntryProcessor
 			throw LogAndCreateValidationException(uploadRequest, $"Incorrect game mode '{(GameMode)uploadRequest.GameMode}' for category '{customLeaderboard.Category}'. Must be '{requiredGameMode}'.", spawnsetName);
 
 		// Validate TimeAttack and Race.
-		if (customLeaderboard.Category is CustomLeaderboardCategory.TimeAttack or CustomLeaderboardCategory.Race or CustomLeaderboardCategory.RaceNoShooting && !uploadRequest.TimeAttackOrRaceFinished)
+		if (customLeaderboard.Category.IsTimeAttackOrRace() && !uploadRequest.TimeAttackOrRaceFinished)
 			throw LogAndCreateValidationException(uploadRequest, $"Didn't complete the {customLeaderboard.Category} spawnset.", spawnsetName);
 
 		if (customLeaderboard.Category == CustomLeaderboardCategory.RaceNoShooting && uploadRequest.DaggersFired > 0)
