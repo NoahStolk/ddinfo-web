@@ -13,11 +13,11 @@
 	string eventsString = eventCount == 1 ? "event" : "events";
 }
 
-<div class="grid gap-4 grid-cols-6 max-w-[1366px]">
+<div class="grid gap-4 grid-cols-12 max-w-[1366px]">
 	<span class="text-right">@TickIndex</span>
 	<span class="text-right">@((TickIndex / 60f).ToString(StringFormats.TimeFormat))</span>
 
-	<div class="col-span-4">
+	<div class="col-span-10">
 		@if (input != null)
 		{
 			<span class="@(input.Forward ? "text-red" : null)">W</span>
@@ -34,17 +34,17 @@
 		{
 			<span class="text-red">End of replay</span>
 		}
+
+		<div>
+			@foreach (IEvent e in Events)
+			{
+				if (HideActualEvent(e))
+					continue;
+
+				<ReplayEvent Event="e" />
+			}
+		</div>
 	</div>
-</div>
-
-<div>
-	@foreach (IEvent e in Events)
-	{
-		if (HideActualEvent(e))
-			continue;
-
-		<ReplayEvent Event="e" />
-	}
 </div>
 
 @code
