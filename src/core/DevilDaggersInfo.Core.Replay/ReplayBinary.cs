@@ -29,6 +29,13 @@ public class ReplayBinary<TReplayBinaryHeader>
 		EntityTypes = DetermineEntityTypes(EventsPerTick.SelectMany(e => e).ToList());
 	}
 
+	public ReplayBinary(TReplayBinaryHeader header, List<List<IEvent>> eventsPerTick)
+	{
+		Header = header;
+		EventsPerTick = eventsPerTick;
+		EntityTypes = DetermineEntityTypes(EventsPerTick.SelectMany(e => e).ToList());
+	}
+
 	public TReplayBinaryHeader Header { get; }
 	public List<List<IEvent>> EventsPerTick { get; }
 	public List<EntityType> EntityTypes { get; }

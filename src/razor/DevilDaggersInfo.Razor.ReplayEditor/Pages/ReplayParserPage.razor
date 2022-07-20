@@ -7,5 +7,6 @@
 
 <button @onclick="StateFacade.NewReplay">New replay</button>
 <button @onclick="StateFacade.OpenReplayFile">Open replay</button>
+<button @onclick="async () => await StateFacade.OpenLeaderboardReplayAsync(234946)">Open replay from leaderboard</button>
 <button @onclick="StateFacade.OpenCurrentReplayInGame">Open current replay in game</button>
 <ReplayParser />

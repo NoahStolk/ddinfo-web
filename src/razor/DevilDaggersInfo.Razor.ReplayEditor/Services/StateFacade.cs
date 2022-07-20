@@ -34,6 +34,24 @@ public class StateFacade
 			return;
 
 		_dispatcher.Dispatch(new OpenReplayAction(new(fileResult.Contents), Path.GetFileName(fileResult.Path)));
+
+		_dispatcher.Dispatch(new SelectTickRangeAction(0, 60));
+	}
+
+	public async Task OpenLeaderboardReplayAsync(int playerId)
+	{
+		using FormUrlEncodedContent content = new(new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("replay", playerId.ToString()) });
+		using HttpClient httpClient = new();
+		using HttpResponseMessage response = await httpClient.PostAsync("http://dd.hasmodai.com/backend16/get_replay.php", content);
+
+		// TODO: Dispatch failure action.
+		if (!response.IsSuccessStatusCode)
+			throw new($"The leaderboard servers returned an unsuccessful response (HTTP {(int)response.StatusCode} {response.StatusCode}).");
+
+		byte[] bytes = await response.Content.ReadAsByteArrayAsync();
+		_dispatcher.Dispatch(new OpenLeaderboardReplayAction(new(bytes), playerId));
+
+		_dispatcher.Dispatch(new SelectTickRangeAction(0, 60));
 	}
 
 	// TODO: Move to NativeInterface project.
