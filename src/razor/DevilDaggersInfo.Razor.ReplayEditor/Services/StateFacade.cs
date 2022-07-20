@@ -86,11 +86,6 @@ public class StateFacade
 		_dispatcher.Dispatch(new SelectTickRangeAction(startTick, endTick));
 	}
 
-	public void ToggleTick(int tick)
-	{
-		_dispatcher.Dispatch(new ToggleTickAction(tick));
-	}
-
 	public void ToggleShowTicksWithoutEvents()
 	{
 		_dispatcher.Dispatch(new ToggleShowTicksWithoutEventsAction());
@@ -101,13 +96,13 @@ public class StateFacade
 		_dispatcher.Dispatch(new ToggleShowEventTypeAction(switchableEventType));
 	}
 
-	public void ShowAllEvents()
+	public void EnableAllEventTypes()
 	{
-		_dispatcher.Dispatch(new ToggleAllEventsAction(true));
+		_dispatcher.Dispatch(new ToggleAllEventTypesAction(true));
 	}
 
-	public void HideAllEvents()
+	public void DisableAllEventTypes()
 	{
-		_dispatcher.Dispatch(new ToggleAllEventsAction(false));
+		_dispatcher.Dispatch(new ToggleAllEventTypesAction(false));
 	}
 }

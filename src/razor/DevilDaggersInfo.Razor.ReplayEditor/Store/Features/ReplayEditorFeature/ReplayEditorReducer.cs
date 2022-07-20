@@ -21,18 +21,6 @@ public static class ReplayEditorReducer
 	}
 
 	[ReducerMethod]
-	public static ReplayEditorState ReduceToggleTickAction(ReplayEditorState state, ToggleTickAction action)
-	{
-		List<int> openedTicks = new(state.OpenedTicks);
-		if (openedTicks.Contains(action.Tick))
-			openedTicks.Remove(action.Tick);
-		else
-			openedTicks.Add(action.Tick);
-
-		return state with { OpenedTicks = openedTicks };
-	}
-
-	[ReducerMethod]
 	public static ReplayEditorState ReduceToggleShowTicksWithoutEventsAction(ReplayEditorState state, ToggleShowTicksWithoutEventsAction action)
 	{
 		return state with { ShowTicksWithoutEvents = !state.ShowTicksWithoutEvents };
@@ -51,11 +39,8 @@ public static class ReplayEditorReducer
 	}
 
 	[ReducerMethod]
-	public static ReplayEditorState ReduceToggleAllEvents(ReplayEditorState state, ToggleAllEventsAction action)
+	public static ReplayEditorState ReduceToggleAllEventTypes(ReplayEditorState state, ToggleAllEventTypesAction action)
 	{
-		if (action.Show)
-			return state with { OpenedTicks = Enumerable.Range(state.StartTick, state.EndTick - state.StartTick).ToList() };
-
-		return state with { OpenedTicks = new() };
+		return state with { ShownEventTypes = Enum.GetValues<SwitchableEventType>().ToDictionary(e => e, _ => action.Show) };
 	}
 }

@@ -13,7 +13,6 @@ public class ReplayEditorFeature : Feature<ReplayEditorState>
 		return new(
 			StartTick: 0,
 			EndTick: 60,
-			OpenedTicks: new(),
 			ShowTicksWithoutEvents: true,
 			ShownEventTypes: Enum.GetValues<SwitchableEventType>().ToDictionary(e => e, _ => true));
 	}
