@@ -9,4 +9,9 @@
 <button @onclick="StateFacade.OpenReplayFile">Open replay</button>
 <button @onclick="async () => await StateFacade.OpenLeaderboardReplayAsync(234946)">Open replay from leaderboard</button>
 <button @onclick="StateFacade.OpenCurrentReplayInGame">Open current replay in game</button>
+
+<div>
+	<span class="font-bold bg-[#600] p-1 text-lg">ALPHA NOTICE: DDRE is currently in a very early build and everything is still subject to change. The program claims to be an 'editor' but no editing functionality currently exists.</span>
+</div>
+
 <ReplayParser />
