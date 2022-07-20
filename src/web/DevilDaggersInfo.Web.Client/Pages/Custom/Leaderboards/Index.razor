@@ -87,7 +87,7 @@ else
 	@foreach (CustomLeaderboardCategory category in Enum.GetValues<CustomLeaderboardCategory>())
 	{
 		<div class="flex">
-			<div class="flex-none w-32"><b>@category.ToDisplayString()</b></div>
+			<div class="flex-none w-64"><b>@category.ToDisplayString()</b></div>
 			<div class="flex-1">@category.GetDescription()</div>
 		</div>
 	}
