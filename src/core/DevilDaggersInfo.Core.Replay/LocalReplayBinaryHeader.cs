@@ -4,11 +4,11 @@ using System.Text;
 
 namespace DevilDaggersInfo.Core.Replay;
 
-public class ReplayBinaryHeader
+public class LocalReplayBinaryHeader
 {
 	private const string _header = "ddrpl.";
 
-	public ReplayBinaryHeader(
+	public LocalReplayBinaryHeader(
 		int version,
 		long timestampSinceGameRelease,
 		float time,
@@ -51,19 +51,19 @@ public class ReplayBinaryHeader
 	public byte[] SpawnsetMd5 { get; }
 	public byte[] SpawnsetBuffer { get; }
 
-	public static ReplayBinaryHeader CreateFromByteArray(byte[] contents)
+	public static LocalReplayBinaryHeader CreateFromByteArray(byte[] contents)
 	{
 		using MemoryStream ms = new(contents);
 		using BinaryReader br = new(ms);
 		return CreateFromBinaryReader(br);
 	}
 
-	public static ReplayBinaryHeader CreateFromBinaryReader(BinaryReader br)
+	public static LocalReplayBinaryHeader CreateFromBinaryReader(BinaryReader br)
 	{
 		byte[] headerBytes = br.ReadBytes(6);
 		string header = Encoding.Default.GetString(headerBytes);
 		if (header != _header)
-			throw new InvalidReplayBinaryException($"'{header}' / '{headerBytes.ByteArrayToHexString()}' is not a valid replay header.");
+			throw new InvalidReplayBinaryException($"'{header}' / '{headerBytes.ByteArrayToHexString()}' is not a valid local replay header.");
 
 		int version = br.ReadInt32();
 		long timestampSinceGameRelease = br.ReadInt64();

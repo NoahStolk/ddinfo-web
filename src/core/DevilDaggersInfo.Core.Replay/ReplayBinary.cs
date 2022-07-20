@@ -10,21 +10,21 @@ public class ReplayBinary
 		using MemoryStream ms = new(contents);
 		using BinaryReader br = new(ms);
 
-		Header = ReplayBinaryHeader.CreateFromBinaryReader(br);
+		Header = LocalReplayBinaryHeader.CreateFromBinaryReader(br);
 
 		int compressedDataLength = br.ReadInt32();
 		EventsPerTick = ReplayEventsParser.ParseCompressedEvents(br.ReadBytes(compressedDataLength));
 		EntityTypes = DetermineEntityTypes(EventsPerTick.SelectMany(e => e).ToList());
 	}
 
-	public ReplayBinary(ReplayBinaryHeader header, byte[] compressedEvents)
+	public ReplayBinary(LocalReplayBinaryHeader header, byte[] compressedEvents)
 	{
 		Header = header;
 		EventsPerTick = ReplayEventsParser.ParseCompressedEvents(compressedEvents);
 		EntityTypes = DetermineEntityTypes(EventsPerTick.SelectMany(e => e).ToList());
 	}
 
-	public ReplayBinaryHeader Header { get; }
+	public LocalReplayBinaryHeader Header { get; }
 	public List<List<IEvent>> EventsPerTick { get; }
 	public List<EntityType> EntityTypes { get; }
 
@@ -93,7 +93,7 @@ public class ReplayBinary
 	{
 		SpawnsetBinary spawnset = SpawnsetBinary.CreateDefault();
 		byte[] spawnsetBuffer = spawnset.ToBytes();
-		ReplayBinaryHeader header = new(
+		LocalReplayBinaryHeader header = new(
 			version: 1,
 			timestampSinceGameRelease: 0, // TODO: Convert current time to timestamp.
 			time: 0,

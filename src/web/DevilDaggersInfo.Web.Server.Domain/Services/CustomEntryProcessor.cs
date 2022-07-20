@@ -376,10 +376,10 @@ public class CustomEntryProcessor
 
 	private void ValidateReplayBuffer(UploadRequest uploadRequest, string spawnsetName)
 	{
-		ReplayBinaryHeader replayBinaryHeader;
+		LocalReplayBinaryHeader replayBinaryHeader;
 		try
 		{
-			replayBinaryHeader = ReplayBinaryHeader.CreateFromByteArray(uploadRequest.ReplayData);
+			replayBinaryHeader = LocalReplayBinaryHeader.CreateFromByteArray(uploadRequest.ReplayData);
 		}
 		catch (Exception ex)
 		{
