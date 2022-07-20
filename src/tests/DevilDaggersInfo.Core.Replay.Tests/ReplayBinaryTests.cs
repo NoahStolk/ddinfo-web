@@ -14,7 +14,7 @@ public class ReplayBinaryTests
 		string spawnsetFilePath = Path.Combine("Resources", "Forked");
 
 		byte[] replayBuffer = File.ReadAllBytes(replayFilePath);
-		ReplayBinary replayBinary = new(replayBuffer);
+		ReplayBinary<LocalReplayBinaryHeader> replayBinary = new(replayBuffer);
 
 		TestUtils.AssertArrayContentsEqual(replayBinary.Header.SpawnsetMd5, MD5.HashData(replayBinary.Header.SpawnsetBuffer));
 		TestUtils.AssertArrayContentsEqual(File.ReadAllBytes(spawnsetFilePath), replayBinary.Header.SpawnsetBuffer);
@@ -23,7 +23,7 @@ public class ReplayBinaryTests
 	[TestMethod]
 	public void ParseAndCompileEvents()
 	{
-		ReplayBinary replayBinary = ReplayBinary.CreateDefault();
+		ReplayBinary<LocalReplayBinaryHeader> replayBinary = ReplayBinary<LocalReplayBinaryHeader>.CreateDefault();
 		replayBinary.EventsPerTick.Clear();
 		replayBinary.EventsPerTick.Add(new() { new InitialInputsEvent(true, false, false, false, JumpType.None, ShootType.Hold, ShootType.None, 0, 0, 0.2f) });
 
@@ -34,7 +34,7 @@ public class ReplayBinaryTests
 
 		byte[] replayBuffer = replayBinary.Compile();
 
-		ReplayBinary replayBinaryFromBuffer = new(replayBuffer);
+		ReplayBinary<LocalReplayBinaryHeader> replayBinaryFromBuffer = new(replayBuffer);
 
 		Assert.AreEqual(replayBinary.EventsPerTick.Count, replayBinaryFromBuffer.EventsPerTick.Count);
 		for (int i = 0; i < replayBinary.EventsPerTick.Count; i++)
