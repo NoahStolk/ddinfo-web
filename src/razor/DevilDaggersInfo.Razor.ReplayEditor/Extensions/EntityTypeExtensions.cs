@@ -31,7 +31,7 @@ public static class EntityTypeExtensions
 		EntityType.SpiderEgg => EnemyColors.SpiderEgg1,
 		EntityType.Leviathan => EnemyColors.Leviathan,
 		EntityType.Thorn => EnemyColors.Thorn,
-		EntityType.Player => new(95, 95, 255),
+		EntityType.Zero => new(95, 95, 255),
 		_ => new(255, 255, 255),
 	};
 
@@ -54,6 +54,7 @@ public static class EntityTypeExtensions
 		EntityType.Spider1 => "Spider I",
 		EntityType.Spider2 => "Spider II",
 		EntityType.SpiderEgg => "Spider Egg",
+		EntityType.Zero => "Player / Void / Other",
 		_ => entityType.ToString(),
 	};
 }

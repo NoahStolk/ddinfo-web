@@ -25,5 +25,5 @@ public enum EntityType
 	SpiderEgg,
 	Leviathan,
 	Thorn,
-	Player,
+	Zero,
 }

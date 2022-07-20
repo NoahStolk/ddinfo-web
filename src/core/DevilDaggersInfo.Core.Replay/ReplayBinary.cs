@@ -42,7 +42,7 @@ public class ReplayBinary<TReplayBinaryHeader>
 
 	private static List<EntityType> DetermineEntityTypes(List<IEvent> events)
 	{
-		List<EntityType> entities = new() { EntityType.Player };
+		List<EntityType> entities = new() { EntityType.Zero };
 
 		foreach (IEvent e in events)
 		{
