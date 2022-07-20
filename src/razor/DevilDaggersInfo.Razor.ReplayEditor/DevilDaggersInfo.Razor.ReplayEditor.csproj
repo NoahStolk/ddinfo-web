@@ -4,7 +4,6 @@
     <Version>$(DateTimeUtcNow)</Version>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
     <TailwindBuild>true</TailwindBuild>
-    <EnablePreviewFeatures>true</EnablePreviewFeatures>
   </PropertyGroup>
   <ItemGroup>
     <SupportedPlatform Include="browser" />
