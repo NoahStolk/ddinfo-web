@@ -1,30 +1,30 @@
 using DevilDaggersInfo.Common.Exceptions;
-using DevilDaggersInfo.Core.Spawnset;
 
 namespace DevilDaggersInfo.Core.Replay;
 
-public class ReplayBinary
+public class ReplayBinary<TReplayBinaryHeader>
+	where TReplayBinaryHeader : IReplayBinaryHeader<TReplayBinaryHeader>
 {
 	public ReplayBinary(byte[] contents)
 	{
 		using MemoryStream ms = new(contents);
 		using BinaryReader br = new(ms);
 
-		Header = LocalReplayBinaryHeader.CreateFromBinaryReader(br);
+		Header = TReplayBinaryHeader.CreateFromBinaryReader(br);
 
 		int compressedDataLength = br.ReadInt32();
 		EventsPerTick = ReplayEventsParser.ParseCompressedEvents(br.ReadBytes(compressedDataLength));
 		EntityTypes = DetermineEntityTypes(EventsPerTick.SelectMany(e => e).ToList());
 	}
 
-	public ReplayBinary(LocalReplayBinaryHeader header, byte[] compressedEvents)
+	public ReplayBinary(TReplayBinaryHeader header, byte[] compressedEvents)
 	{
 		Header = header;
 		EventsPerTick = ReplayEventsParser.ParseCompressedEvents(compressedEvents);
 		EntityTypes = DetermineEntityTypes(EventsPerTick.SelectMany(e => e).ToList());
 	}
 
-	public LocalReplayBinaryHeader Header { get; }
+	public TReplayBinaryHeader Header { get; }
 	public List<List<IEvent>> EventsPerTick { get; }
 	public List<EntityType> EntityTypes { get; }
 
@@ -89,27 +89,11 @@ public class ReplayBinary
 		return entities;
 	}
 
-	public static ReplayBinary CreateDefault()
+	public static ReplayBinary<TReplayBinaryHeader> CreateDefault()
 	{
-		SpawnsetBinary spawnset = SpawnsetBinary.CreateDefault();
-		byte[] spawnsetBuffer = spawnset.ToBytes();
-		LocalReplayBinaryHeader header = new(
-			version: 1,
-			timestampSinceGameRelease: 0, // TODO: Convert current time to timestamp.
-			time: 0,
-			startTime: 0,
-			daggersFired: 0,
-			deathType: 0,
-			gems: 0,
-			daggersHit: 0,
-			kills: 0,
-			playerId: 0,
-			username: string.Empty,
-			spawnsetBuffer: spawnsetBuffer);
-
 		return new(
-			header: header,
-			compressedEvents: ReplayEventsParser.CompileEvents(new List<IEvent> { new EndEvent() }));
+			header: TReplayBinaryHeader.CreateDefault(),
+			compressedEvents: ReplayEventsParser.CompileEvents(new List<IEvent> { new EndEvent() })); // TODO: Check if this is valid by saving this default empty replay and playing it in DD.
 	}
 
 	public byte[] Compile()

@@ -15,7 +15,7 @@
 @inject StateFacade StateFacade
 
 @{
-	ReplayBinary replayBinary = ReplayBinaryState.Value.ReplayBinary;
+	ReplayBinary<LocalReplayBinaryHeader> replayBinary = ReplayBinaryState.Value.ReplayBinary;
 	int startTick = ReplayEditorState.Value.StartTick;
 	int endTick = ReplayEditorState.Value.EndTick;
 

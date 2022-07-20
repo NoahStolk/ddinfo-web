@@ -1,10 +1,11 @@
 using DevilDaggersInfo.Common.Utils;
+using DevilDaggersInfo.Core.Spawnset;
 using System.Security.Cryptography;
 using System.Text;
 
 namespace DevilDaggersInfo.Core.Replay;
 
-public class LocalReplayBinaryHeader
+public class LocalReplayBinaryHeader : IReplayBinaryHeader<LocalReplayBinaryHeader>
 {
 	private const string _header = "ddrpl.";
 
@@ -98,6 +99,25 @@ public class LocalReplayBinaryHeader
 			kills: kills,
 			playerId: playerId,
 			username: username,
+			spawnsetBuffer: spawnsetBuffer);
+	}
+
+	public static LocalReplayBinaryHeader CreateDefault()
+	{
+		SpawnsetBinary spawnset = SpawnsetBinary.CreateDefault();
+		byte[] spawnsetBuffer = spawnset.ToBytes();
+		return new(
+			version: 1,
+			timestampSinceGameRelease: 0, // TODO: Convert current time to timestamp.
+			time: 0,
+			startTime: 0,
+			daggersFired: 0,
+			deathType: 0,
+			gems: 0,
+			daggersHit: 0,
+			kills: 0,
+			playerId: 0,
+			username: string.Empty,
 			spawnsetBuffer: spawnsetBuffer);
 	}
 

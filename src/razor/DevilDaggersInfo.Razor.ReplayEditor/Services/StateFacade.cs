@@ -24,7 +24,7 @@ public class StateFacade
 
 	public void NewReplay()
 	{
-		_dispatcher.Dispatch(new OpenReplayAction(ReplayBinary.CreateDefault(), "(Untitled)"));
+		_dispatcher.Dispatch(new OpenReplayAction(ReplayBinary<LocalReplayBinaryHeader>.CreateDefault(), "(Untitled)"));
 	}
 
 	public void OpenReplayFile()

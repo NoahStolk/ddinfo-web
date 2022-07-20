@@ -10,7 +10,7 @@ public class ReplayBinaryFeature : Feature<ReplayBinaryState>
 
 	protected override ReplayBinaryState GetInitialState()
 	{
-		ReplayBinary replayBinary = ReplayBinary.CreateDefault();
+		ReplayBinary<LocalReplayBinaryHeader> replayBinary = ReplayBinary<LocalReplayBinaryHeader>.CreateDefault();
 		return new(replayBinary, "(Untitled)");
 	}
 }
