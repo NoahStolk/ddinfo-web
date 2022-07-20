@@ -12,7 +12,12 @@ public class ReplayBinary<TReplayBinaryHeader>
 
 		Header = TReplayBinaryHeader.CreateFromBinaryReader(br);
 
-		int compressedDataLength = br.ReadInt32();
+		int compressedDataLength;
+		if (TReplayBinaryHeader.UsesLengthPrefixedEvents)
+			compressedDataLength = br.ReadInt32();
+		else
+			compressedDataLength = (int)(contents.Length - br.BaseStream.Position);
+
 		EventsPerTick = ReplayEventsParser.ParseCompressedEvents(br.ReadBytes(compressedDataLength));
 		EntityTypes = DetermineEntityTypes(EventsPerTick.SelectMany(e => e).ToList());
 	}

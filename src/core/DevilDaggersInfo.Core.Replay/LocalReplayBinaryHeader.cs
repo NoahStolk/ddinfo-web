@@ -52,6 +52,8 @@ public class LocalReplayBinaryHeader : IReplayBinaryHeader<LocalReplayBinaryHead
 	public byte[] SpawnsetMd5 { get; }
 	public byte[] SpawnsetBuffer { get; }
 
+	public static bool UsesLengthPrefixedEvents => true;
+
 	public static LocalReplayBinaryHeader CreateFromByteArray(byte[] contents)
 	{
 		using MemoryStream ms = new(contents);
