@@ -1,11 +1,10 @@
 using DevilDaggersInfo.App.Core.NativeInterface.Services;
 using DevilDaggersInfo.Core.Replay;
 using System.Diagnostics;
-using System.Text;
 
 namespace DevilDaggersInfo.App.Core.GameMemory;
 
-public class ReaderService
+public class GameMemoryReaderService
 {
 	private const int _bufferSize = 319;
 	private const int _statesBufferSize = 112;
@@ -16,7 +15,7 @@ public class ReaderService
 
 	private readonly INativeMemoryService _nativeMemoryService;
 
-	public ReaderService(INativeMemoryService nativeMemoryService)
+	public GameMemoryReaderService(INativeMemoryService nativeMemoryService)
 	{
 		_nativeMemoryService = nativeMemoryService;
 	}
@@ -29,38 +28,20 @@ public class ReaderService
 	public bool HasProcess => _process != null;
 	public bool IsInitialized => _isInitialized;
 
-	public bool FindWindow()
-	{
-		_process = _nativeMemoryService.GetDevilDaggersProcess();
-		if (_process == null)
-			_isInitialized = false;
-
-		return _process != null;
-	}
-
 	public bool Initialize(long ddstatsMarkerOffset)
 	{
-		if (_isInitialized || _process?.MainModule == null)
+		_process = _nativeMemoryService.GetDevilDaggersProcess();
+		if (_process == null || _process.MainModule == null)
+		{
+			_isInitialized = false;
 			return _isInitialized;
+		}
 
-		long? memoryBlockAddress = GetMemoryBlockAddress(_process, ddstatsMarkerOffset);
-		if (!memoryBlockAddress.HasValue)
-			return _isInitialized;
-
-		_memoryBlockAddress = memoryBlockAddress.Value;
-
+		byte[] pointerBytes = new byte[sizeof(long)];
+		_nativeMemoryService.ReadMemory(_process, _process.MainModule.BaseAddress.ToInt64() + ddstatsMarkerOffset, pointerBytes, 0, sizeof(long));
+		_memoryBlockAddress = BitConverter.ToInt64(pointerBytes);
 		_isInitialized = true;
 		return _isInitialized;
-
-		long? GetMemoryBlockAddress(Process process, long ddstatsMarkerOffset)
-		{
-			if (process.MainModule == null)
-				return null;
-
-			byte[] pointerBytes = new byte[sizeof(long)];
-			_nativeMemoryService.ReadMemory(process, process.MainModule.BaseAddress.ToInt64() + ddstatsMarkerOffset, pointerBytes, 0, sizeof(long));
-			return BitConverter.ToInt64(pointerBytes);
-		}
 	}
 
 	public void Scan()

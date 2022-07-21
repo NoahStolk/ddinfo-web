@@ -39,7 +39,7 @@ public partial class Recorder : IDisposable
 	public NetworkService NetworkService { get; set; } = null!;
 
 	[Inject]
-	public ReaderService ReaderService { get; set; } = null!;
+	public GameMemoryReaderService ReaderService { get; set; } = null!;
 
 	[Inject]
 	public UploadService UploadService { get; set; } = null!;
@@ -72,9 +72,6 @@ public partial class Recorder : IDisposable
 			if (!_marker.HasValue)
 				return;
 		}
-
-		if (!ReaderService.FindWindow())
-			return;
 
 		if (!ReaderService.Initialize(_marker.Value))
 			return;

@@ -9,11 +9,11 @@ namespace DevilDaggersInfo.Razor.CustomLeaderboard.Services;
 public class UploadService
 {
 	private readonly NetworkService _networkService;
-	private readonly ReaderService _readerService;
+	private readonly GameMemoryReaderService _readerService;
 	private readonly IEncryptionService _encryptionService;
 	private readonly IClientConfiguration _clientConfiguration;
 
-	public UploadService(NetworkService networkService, ReaderService readerService, IEncryptionService encryptionService, IClientConfiguration clientConfiguration)
+	public UploadService(NetworkService networkService, GameMemoryReaderService readerService, IEncryptionService encryptionService, IClientConfiguration clientConfiguration)
 	{
 		_networkService = networkService;
 		_readerService = readerService;

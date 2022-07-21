@@ -16,7 +16,7 @@ public partial class Leaderboard
 	public NetworkService NetworkService { get; set; } = null!;
 
 	[Inject]
-	public ReaderService ReaderService { get; set; } = null!;
+	public GameMemoryReaderService ReaderService { get; set; } = null!;
 
 	public async Task InjectReplay(int customEntryId)
 	{
