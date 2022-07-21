@@ -1,11 +1,12 @@
+using DevilDaggersInfo.App.Core.GameMemory;
 using DevilDaggersInfo.App.Core.NativeInterface.Services;
 using DevilDaggersInfo.App.Core.NativeInterface.Utils;
 using DevilDaggersInfo.Core.Replay;
+using DevilDaggersInfo.Core.Replay.Exceptions;
 using DevilDaggersInfo.Razor.ReplayEditor.Enums;
 using DevilDaggersInfo.Razor.ReplayEditor.Store.Features.ReplayBinaryFeature.Actions;
 using DevilDaggersInfo.Razor.ReplayEditor.Store.Features.ReplayEditorFeature.Actions;
 using Fluxor;
-using System.Diagnostics;
 
 namespace DevilDaggersInfo.Razor.ReplayEditor.Services;
 
@@ -13,13 +14,13 @@ public class StateFacade
 {
 	private readonly IDispatcher _dispatcher;
 	private readonly INativeFileSystemService _fileSystemService;
-	private readonly INativeMemoryService _nativeMemoryService;
+	private readonly GameMemoryReaderService _readerService;
 
-	public StateFacade(IDispatcher dispatcher, INativeFileSystemService fileSystemService, INativeMemoryService nativeMemoryService)
+	public StateFacade(IDispatcher dispatcher, INativeFileSystemService fileSystemService, GameMemoryReaderService readerService)
 	{
 		_dispatcher = dispatcher;
 		_fileSystemService = fileSystemService;
-		_nativeMemoryService = nativeMemoryService;
+		_readerService = readerService;
 	}
 
 	public void NewReplay()
@@ -35,7 +36,15 @@ public class StateFacade
 		if (fileResult == null)
 			return;
 
-		_dispatcher.Dispatch(new OpenReplayAction(new(fileResult.Contents), Path.GetFileName(fileResult.Path)));
+		try
+		{
+			ReplayBinary<LocalReplayBinaryHeader> localReplay = new(fileResult.Contents);
+			_dispatcher.Dispatch(new OpenReplayAction(localReplay, Path.GetFileName(fileResult.Path)));
+		}
+		catch (InvalidReplayBinaryException ex)
+		{
+			// TODO: Dispatch failure action.
+		}
 
 		_dispatcher.Dispatch(new SelectTickRangeAction(0, 60));
 	}
@@ -50,37 +59,45 @@ public class StateFacade
 		if (!response.IsSuccessStatusCode)
 			throw new($"The leaderboard servers returned an unsuccessful response (HTTP {(int)response.StatusCode} {response.StatusCode}).");
 
-		byte[] bytes = await response.Content.ReadAsByteArrayAsync();
-		_dispatcher.Dispatch(new OpenLeaderboardReplayAction(new(bytes), playerId));
+		byte[] responseData = await response.Content.ReadAsByteArrayAsync();
+
+		try
+		{
+			ReplayBinary<LeaderboardReplayBinaryHeader> leaderboardReplay = new(responseData);
+			_dispatcher.Dispatch(new OpenLeaderboardReplayAction(leaderboardReplay, playerId));
+		}
+		catch (InvalidReplayBinaryException ex)
+		{
+			// TODO: Dispatch failure action.
+		}
 
 		_dispatcher.Dispatch(new SelectTickRangeAction(0, 60));
 	}
 
-	// TODO: Move to NativeInterface project.
 	public void OpenCurrentReplayInGame()
 	{
 		const long ddstatsMarkerOffset = 2452928; // TODO: Get from API.
-
-		Process? process = _nativeMemoryService.GetDevilDaggersProcess();
-		if (process == null || process.MainModule == null)
+		if (!_readerService.Initialize(ddstatsMarkerOffset))
+		{
+			// TODO: Dispatch failure action.
 			return;
+		}
 
-		byte[] pointerBytes = new byte[sizeof(long)];
-		_nativeMemoryService.ReadMemory(process, process.MainModule.BaseAddress.ToInt64() + ddstatsMarkerOffset, pointerBytes, 0, sizeof(long));
-		long ddstatsAddress = BitConverter.ToInt64(pointerBytes);
+		_readerService.Scan();
 
-		byte[] replayPointerBytes = new byte[sizeof(long)];
-		_nativeMemoryService.ReadMemory(process, ddstatsAddress + 304, replayPointerBytes, 0, sizeof(long));
-		long replayAddress = BitConverter.ToInt64(replayPointerBytes);
+		byte[] replayData = _readerService.ReadReplayFromMemory();
 
-		byte[] replayBufferLengthBytes = new byte[sizeof(int)];
-		_nativeMemoryService.ReadMemory(process, ddstatsAddress + 312, replayBufferLengthBytes, 0, sizeof(int));
-		int replayBufferLength = BitConverter.ToInt32(replayBufferLengthBytes);
+		try
+		{
+			ReplayBinary<LocalReplayBinaryHeader> memoryReplay = new(replayData);
+			_dispatcher.Dispatch(new OpenReplayAction(memoryReplay, "Replay from game memory"));
+		}
+		catch (InvalidReplayBinaryException ex)
+		{
+			// TODO: Dispatch failure action.
+		}
 
-		byte[] replayData = new byte[replayBufferLength];
-		_nativeMemoryService.ReadMemory(process, replayAddress, replayData, 0, replayBufferLength);
-
-		_dispatcher.Dispatch(new OpenReplayAction(new(replayData), "Replay from game memory"));
+		_dispatcher.Dispatch(new SelectTickRangeAction(0, 60));
 	}
 
 	public void SelectTickRange(int startTick, int endTick)

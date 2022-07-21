@@ -161,14 +161,15 @@ flowchart TD;
 
 	subgraph Razor
 		razor_asseteditor ----> core_mod
-		razor_customleaderboard ----> app_core_gamememory
 		razor_customleaderboard ----> core_encryption
 		razor_replayeditor ----> core_replay
 		razor_survivaleditor ----> core_spawnset
+		
+		razor_customleaderboard ----> app_core_gamememory
+		razor_replayeditor ----> app_core_gamememory
 
 		razor_appmanager --> app_core_nativeinterface
 		razor_asseteditor --> app_core_nativeinterface
-		razor_replayeditor --> app_core_nativeinterface
 		razor_survivaleditor --> app_core_nativeinterface
 	end
 

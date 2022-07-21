@@ -12,7 +12,7 @@
     <PackageReference Include="Fluxor.Blazor.Web" />
     <PackageReference Include="Microsoft.AspNetCore.Components" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" />
-    <ProjectReference Include="..\..\app-core\DevilDaggersInfo.App.Core.NativeInterface\DevilDaggersInfo.App.Core.NativeInterface.csproj" />
+    <ProjectReference Include="..\..\app-core\DevilDaggersInfo.App.Core.GameMemory\DevilDaggersInfo.App.Core.GameMemory.csproj" />
     <ProjectReference Include="..\..\common\DevilDaggersInfo.Common\DevilDaggersInfo.Common.csproj" />
     <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Replay\DevilDaggersInfo.Core.Replay.csproj" />
     <ProjectReference Include="..\..\razor-core\DevilDaggersInfo.Razor.Core.Components\DevilDaggersInfo.Razor.Core.Components.csproj" />
