@@ -40,7 +40,7 @@ public class ModBinaryCacheData
 		{
 			byte[] loudnessBytes = new byte[loudnessChunk.Size];
 			Buffer.BlockCopy(fileContents, loudnessChunk.Offset, loudnessBytes, 0, loudnessChunk.Size);
-			string loudnessString = Encoding.Default.GetString(loudnessBytes);
+			string loudnessString = Encoding.UTF8.GetString(loudnessBytes);
 			modifiedLoudnessAssets = ReadModifiedLoudnessValues(loudnessString);
 		}
 

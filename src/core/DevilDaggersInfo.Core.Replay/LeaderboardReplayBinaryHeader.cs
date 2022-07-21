@@ -8,7 +8,7 @@ public class LeaderboardReplayBinaryHeader : IReplayBinaryHeader<LeaderboardRepl
 {
 	// TODO: Use byte[] when C# 11 officially comes out and remove the byte[] field.
 	private const string _identifier = "DF_RPL2";
-	private static readonly byte[] _identifierBytes = Encoding.Default.GetBytes(_identifier);
+	private static readonly byte[] _identifierBytes = Encoding.UTF8.GetBytes(_identifier);
 
 	public LeaderboardReplayBinaryHeader(string username, byte[] unknownBuffer)
 	{
@@ -35,12 +35,12 @@ public class LeaderboardReplayBinaryHeader : IReplayBinaryHeader<LeaderboardRepl
 			if (identifier == null)
 				throw new InvalidReplayBinaryException("Leaderboard replay identifier could not be determined.");
 
-			throw new InvalidReplayBinaryException($"'{Encoding.Default.GetString(identifier)}' / '{identifier.ByteArrayToHexString()}' is not a valid leaderboard replay identifier.");
+			throw new InvalidReplayBinaryException($"'{Encoding.UTF8.GetString(identifier)}' / '{identifier.ByteArrayToHexString()}' is not a valid leaderboard replay identifier.");
 		}
 
 		short usernameLength = br.ReadInt16();
 		byte[] usernameBytes = br.ReadBytes(usernameLength);
-		string username = Encoding.Default.GetString(usernameBytes);
+		string username = Encoding.UTF8.GetString(usernameBytes);
 
 		short unknownLength = br.ReadInt16();
 		byte[] unknownBuffer = br.ReadBytes(unknownLength);
@@ -77,9 +77,9 @@ public class LeaderboardReplayBinaryHeader : IReplayBinaryHeader<LeaderboardRepl
 		using MemoryStream ms = new();
 		using BinaryWriter bw = new(ms);
 
-		bw.Write(Encoding.Default.GetBytes(_identifier));
+		bw.Write(Encoding.UTF8.GetBytes(_identifier));
 		bw.Write((short)Username.Length);
-		bw.Write(Encoding.Default.GetBytes(Username));
+		bw.Write(Encoding.UTF8.GetBytes(Username));
 		bw.Write((short)UnknownBuffer.Length);
 		bw.Write(UnknownBuffer);
 

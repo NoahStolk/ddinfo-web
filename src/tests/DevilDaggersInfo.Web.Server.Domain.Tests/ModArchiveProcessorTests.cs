@@ -64,14 +64,14 @@ public abstract class ModArchiveProcessorTests
 	protected static ModBinary CreateWithBinding(string assetName)
 	{
 		ModBinary binary = new(ModBinaryType.Dd);
-		binary.AddAsset(assetName, AssetType.ObjectBinding, Encoding.Default.GetBytes("shader = \"boid\""));
+		binary.AddAsset(assetName, AssetType.ObjectBinding, Encoding.UTF8.GetBytes("shader = \"boid\""));
 		return binary;
 	}
 
 	protected static ModBinary CreateWithBindingAndTexture(string shaderName, string textureName)
 	{
 		ModBinary binary = new(ModBinaryType.Dd);
-		binary.AddAsset(shaderName, AssetType.ObjectBinding, Encoding.Default.GetBytes("shader = \"boid\""));
+		binary.AddAsset(shaderName, AssetType.ObjectBinding, Encoding.UTF8.GetBytes("shader = \"boid\""));
 		binary.AddAsset(textureName, AssetType.Texture, File.ReadAllBytes(Path.Combine(TestUtils.ResourcePath, "Textures", "green.png")));
 		return binary;
 	}

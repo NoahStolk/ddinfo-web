@@ -58,7 +58,7 @@ public class ReplayBinaryTests
 	[DataRow("drdpl.", false)]
 	public void TestValidateLocalReplayHeaderIdentifier(string identifier, bool isValid)
 	{
-		byte[] identifierBytes = Encoding.Default.GetBytes(identifier);
+		byte[] identifierBytes = Encoding.UTF8.GetBytes(identifier);
 		Assert.AreEqual(isValid, LocalReplayBinaryHeader.IdentifierIsValid(identifierBytes, out _));
 	}
 
@@ -74,7 +74,7 @@ public class ReplayBinaryTests
 	[DataRow("D_FRPL2", false)]
 	public void TestValidateLeaderboardReplayHeaderIdentifier(string identifier, bool isValid)
 	{
-		byte[] identifierBytes = Encoding.Default.GetBytes(identifier);
+		byte[] identifierBytes = Encoding.UTF8.GetBytes(identifier);
 		Assert.AreEqual(isValid, LeaderboardReplayBinaryHeader.IdentifierIsValid(identifierBytes, out _));
 	}
 }

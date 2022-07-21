@@ -79,7 +79,7 @@ public class CustomEntryProcessorTests
 
 		using MemoryStream ms = new();
 		using BinaryWriter bw = new(ms);
-		bw.Write(Encoding.Default.GetBytes("ddrpl."));
+		bw.Write(Encoding.UTF8.GetBytes("ddrpl."));
 		bw.Seek(44, SeekOrigin.Current);
 		bw.Write(name.Length);
 		for (int i = 0; i < name.Length; i++)

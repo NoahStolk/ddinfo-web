@@ -10,7 +10,7 @@ public class LocalReplayBinaryHeader : IReplayBinaryHeader<LocalReplayBinaryHead
 {
 	// TODO: Use byte[] when C# 11 officially comes out and remove the byte[] field.
 	private const string _identifier = "ddrpl.";
-	private static readonly byte[] _identifierBytes = Encoding.Default.GetBytes(_identifier);
+	private static readonly byte[] _identifierBytes = Encoding.UTF8.GetBytes(_identifier);
 
 	public LocalReplayBinaryHeader(
 		int version,
@@ -73,7 +73,7 @@ public class LocalReplayBinaryHeader : IReplayBinaryHeader<LocalReplayBinaryHead
 			if (identifier == null)
 				throw new InvalidReplayBinaryException("Local replay identifier could not be determined.");
 
-			throw new InvalidReplayBinaryException($"'{Encoding.Default.GetString(identifier)}' / '{identifier.ByteArrayToHexString()}' is not a valid local replay identifier.");
+			throw new InvalidReplayBinaryException($"'{Encoding.UTF8.GetString(identifier)}' / '{identifier.ByteArrayToHexString()}' is not a valid local replay identifier.");
 		}
 
 		int version = br.ReadInt32();
@@ -88,7 +88,7 @@ public class LocalReplayBinaryHeader : IReplayBinaryHeader<LocalReplayBinaryHead
 		int playerId = br.ReadInt32();
 		int usernameLength = br.ReadInt32();
 		byte[] usernameBytes = br.ReadBytes(usernameLength);
-		string username = Encoding.Default.GetString(usernameBytes);
+		string username = Encoding.UTF8.GetString(usernameBytes);
 		br.BaseStream.Seek(10, SeekOrigin.Current);
 		byte[] spawnsetMd5 = br.ReadBytes(16);
 		int spawnsetLength = br.ReadInt32();
@@ -153,7 +153,7 @@ public class LocalReplayBinaryHeader : IReplayBinaryHeader<LocalReplayBinaryHead
 		using MemoryStream ms = new();
 		using BinaryWriter bw = new(ms);
 
-		bw.Write(Encoding.Default.GetBytes(_identifier));
+		bw.Write(Encoding.UTF8.GetBytes(_identifier));
 		bw.Write(Version);
 		bw.Write(TimestampSinceGameRelease);
 		bw.Write(Time);
@@ -165,7 +165,7 @@ public class LocalReplayBinaryHeader : IReplayBinaryHeader<LocalReplayBinaryHead
 		bw.Write(Kills);
 		bw.Write(PlayerId);
 		bw.Write(Username.Length);
-		bw.Write(Encoding.Default.GetBytes(Username));
+		bw.Write(Encoding.UTF8.GetBytes(Username));
 		bw.Seek(10, SeekOrigin.Current);
 		bw.Write(SpawnsetMd5);
 		bw.Write(SpawnsetBuffer.Length);

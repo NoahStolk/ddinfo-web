@@ -121,7 +121,7 @@ public class ModBinary
 		Chunks.Clear();
 
 		const int tocEntrySizeWithoutName = 15;
-		int offset = _fileHeaderSize + tocEntrySizeWithoutName * AssetMap.Count + AssetMap.Sum(kvp => Encoding.Default.GetBytes(kvp.Key.AssetName).Length) + 2;
+		int offset = _fileHeaderSize + tocEntrySizeWithoutName * AssetMap.Count + AssetMap.Sum(kvp => Encoding.UTF8.GetBytes(kvp.Key.AssetName).Length) + 2;
 		foreach (KeyValuePair<AssetKey, AssetData> kvp in AssetMap)
 		{
 			int size = kvp.Value.Buffer.Length;
@@ -204,7 +204,7 @@ public class ModBinary
 			throw new InvalidOperationException("This mod binary has not been opened for full reading comprehensiveness. Cannot compile binary.");
 
 		const int tocEntrySizeWithoutName = 15;
-		int tocBufferSize = tocEntrySizeWithoutName * AssetMap.Count + Chunks.Sum(c => Encoding.Default.GetBytes(c.Name).Length) + sizeof(short);
+		int tocBufferSize = tocEntrySizeWithoutName * AssetMap.Count + Chunks.Sum(c => Encoding.UTF8.GetBytes(c.Name).Length) + sizeof(short);
 		int offset = _fileHeaderSize + tocBufferSize;
 		byte[]? tocBuffer = null;
 		using (MemoryStream tocStream = new())
@@ -217,7 +217,7 @@ public class ModBinary
 
 				tocWriter.Write((ushort)key.AssetType);
 
-				tocWriter.Write(Encoding.Default.GetBytes(key.AssetName));
+				tocWriter.Write(Encoding.UTF8.GetBytes(key.AssetName));
 				tocWriter.Write((byte)0);
 
 				int size = assetData.Buffer.Length;

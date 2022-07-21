@@ -17,7 +17,7 @@ internal sealed class ObjFileHandler : IFileHandler
 	public byte[] Compile(byte[] buffer)
 	{
 		ObjParsingContext parsingContext = new();
-		ParsedObjData parsedObj = parsingContext.Parse(Encoding.Default.GetString(buffer, 0, buffer.Length));
+		ParsedObjData parsedObj = parsingContext.Parse(Encoding.UTF8.GetString(buffer, 0, buffer.Length));
 
 		int vertexCount = parsedObj.Positions.Count;
 
@@ -90,6 +90,6 @@ internal sealed class ObjFileHandler : IFileHandler
 			sb.Append("f ").Append(a).Append(' ').Append(b).Append(' ').Append(c).AppendLine();
 		}
 
-		return Encoding.Default.GetBytes(sb.ToString());
+		return Encoding.UTF8.GetBytes(sb.ToString());
 	}
 }

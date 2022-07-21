@@ -129,7 +129,7 @@ public partial class AddAsset
 			bw.Write(_selectedAssetName.Length);
 			bw.Write(_selectedVertData.Length);
 			bw.Write(_selectedFragData.Length);
-			bw.Write(Encoding.Default.GetBytes(_selectedAssetName));
+			bw.Write(Encoding.UTF8.GetBytes(_selectedAssetName));
 			bw.Write(_selectedVertData);
 			bw.Write(_selectedFragData);
 
