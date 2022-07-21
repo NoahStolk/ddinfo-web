@@ -1,5 +1,5 @@
 using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
-using DevilDaggersInfo.App.Core.CustomLeaderboard;
+using DevilDaggersInfo.App.Core.GameMemory;
 using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Razor.CustomLeaderboard.Models;
 using System.Web;

@@ -55,13 +55,14 @@ flowchart TD;
 	ddse[DDSE 3]
 
 	core_asset[Core.Asset]
-	core_customleaderboard[Core.CustomLeaderboards]
 	core_encryption[Core.Encryption]
 	core_mod[Core.Mod]
-	core_nativeinterface[Core.NativeInterface]
 	core_replay[Core.Replay]
 	core_spawnset[Core.Spawnset]
 	core_wiki[Core.Wiki]
+
+	app_core_gamememory[App.Core.GameMemory]
+	app_core_nativeinterface[App.Core.NativeInterface]
 
 	razor_asseteditor[Razor.Core.AssetEditor]
 	razor_customleaderboard[Razor.Core.CustomLeaderboard]
@@ -94,7 +95,10 @@ flowchart TD;
 	class ddae,ddcl,ddre,ddse app;
 	classDef app fill:#a00,stroke:#333,stroke-width:4px;
 
-	class core_asset,core_customleaderboard,core_encryption,core_mod,core_nativeinterface,core_replay,core_spawnset,core_wiki core;
+	class app_core_gamememory,app_core_nativeinterface app_core;
+	classDef app_core fill:#306,stroke:#333,stroke-width:4px;
+
+	class core_asset,core_encryption,core_mod,core_replay,core_spawnset,core_wiki core;
 	classDef core fill:#006,stroke:#333,stroke-width:4px;
 
 	class razor_asseteditor,razor_customleaderboard,razor_replayeditor,razor_survivaleditor razor;
@@ -113,13 +117,17 @@ flowchart TD;
 	classDef web_server fill:#383,stroke:#333,stroke-width:4px;
 
 	subgraph Core
-		core_customleaderboard --> core_encryption
-		core_customleaderboard --> core_nativeinterface
+		core_encryption
+
 		core_mod --> core_asset
 		core_replay --> core_spawnset
 		core_spawnset --> core_wiki
 
 		razor_core_canvaschart --> razor_core_unmarshalled
+	end
+
+	subgraph App Core
+		app_core_gamememory --> app_core_nativeinterface
 	end
 
 	subgraph Api App
@@ -159,14 +167,15 @@ flowchart TD;
 
 	subgraph Razor
 		razor_asseteditor ----> core_mod
-		razor_customleaderboard ----> core_customleaderboard
+		razor_customleaderboard ----> app_core_gamememory
+		razor_customleaderboard ----> core_encryption
 		razor_replayeditor ----> core_replay
 		razor_survivaleditor ----> core_spawnset
 
-		razor_asseteditor ----> core_nativeinterface
-		razor_customleaderboard ----> core_nativeinterface
-		razor_replayeditor ----> core_nativeinterface
-		razor_survivaleditor ----> core_nativeinterface
+		razor_asseteditor ----> app_core_nativeinterface
+		razor_customleaderboard ----> app_core_nativeinterface
+		razor_replayeditor ----> app_core_nativeinterface
+		razor_survivaleditor ----> app_core_nativeinterface
 	end
 
 	subgraph Web

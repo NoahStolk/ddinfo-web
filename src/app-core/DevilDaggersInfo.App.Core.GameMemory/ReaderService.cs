@@ -2,7 +2,7 @@ using DevilDaggersInfo.App.Core.NativeInterface.Services;
 using System.Diagnostics;
 using System.Text;
 
-namespace DevilDaggersInfo.App.Core.CustomLeaderboard;
+namespace DevilDaggersInfo.App.Core.GameMemory;
 
 public class ReaderService
 {
