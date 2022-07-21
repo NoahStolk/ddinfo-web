@@ -1,4 +1,5 @@
 using System.Security.Cryptography;
+using System.Text;
 
 namespace DevilDaggersInfo.Core.Replay.Tests;
 
@@ -43,5 +44,37 @@ public class ReplayBinaryTests
 			for (int j = 0; j < replayBinary.EventsPerTick[i].Count; j++)
 				Assert.AreEqual(replayBinary.EventsPerTick[i][j], replayBinaryFromBuffer.EventsPerTick[i][j]);
 		}
+	}
+
+	[DataTestMethod]
+	[DataRow("ddrpl.", true)]
+	[DataRow("ddrpl..", true)]
+	[DataRow("ddrpl..abc", true)]
+	[DataRow("ddRpl.", false)]
+	[DataRow("ddrpl", false)]
+	[DataRow("dd", false)]
+	[DataRow("DF_RPL2", false)]
+	[DataRow("", false)]
+	[DataRow("drdpl.", false)]
+	public void TestValidateLocalReplayHeaderIdentifier(string identifier, bool isValid)
+	{
+		byte[] identifierBytes = Encoding.Default.GetBytes(identifier);
+		Assert.AreEqual(isValid, LocalReplayBinaryHeader.IdentifierIsValid(identifierBytes, out _));
+	}
+
+	[DataTestMethod]
+	[DataRow("DF_RPL2", true)]
+	[DataRow("DF_RPL22", true)]
+	[DataRow("DF_RPL22abc", true)]
+	[DataRow("Df_RPL2", false)]
+	[DataRow("DF_RPL", false)]
+	[DataRow("DF", false)]
+	[DataRow("ddrpl.", false)]
+	[DataRow("", false)]
+	[DataRow("D_FRPL2", false)]
+	public void TestValidateLeaderboardReplayHeaderIdentifier(string identifier, bool isValid)
+	{
+		byte[] identifierBytes = Encoding.Default.GetBytes(identifier);
+		Assert.AreEqual(isValid, LeaderboardReplayBinaryHeader.IdentifierIsValid(identifierBytes, out _));
 	}
 }

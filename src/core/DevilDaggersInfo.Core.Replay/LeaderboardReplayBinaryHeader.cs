@@ -1,10 +1,14 @@
+using DevilDaggersInfo.Common.Utils;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace DevilDaggersInfo.Core.Replay;
 
 public class LeaderboardReplayBinaryHeader : IReplayBinaryHeader<LeaderboardReplayBinaryHeader>
 {
-	private const string _header = "DF_RPL2";
+	// TODO: Use byte[] when C# 11 officially comes out and remove the byte[] field.
+	private const string _identifier = "DF_RPL2";
+	private static readonly byte[] _identifierBytes = Encoding.Default.GetBytes(_identifier);
 
 	public LeaderboardReplayBinaryHeader(string username, byte[] unknownBuffer)
 	{
@@ -26,10 +30,13 @@ public class LeaderboardReplayBinaryHeader : IReplayBinaryHeader<LeaderboardRepl
 
 	public static LeaderboardReplayBinaryHeader CreateFromBinaryReader(BinaryReader br)
 	{
-		byte[] headerBytes = br.ReadBytes(7);
-		string header = Encoding.Default.GetString(headerBytes);
-		if (header != _header)
-			throw new InvalidReplayBinaryException($"'{header}' / '{headerBytes.ByteArrayToHexString()}' is not a valid leaderboard replay header.");
+		if (!IdentifierIsValid(br, out byte[]? identifier))
+		{
+			if (identifier == null)
+				throw new InvalidReplayBinaryException("Leaderboard replay identifier could not be determined.");
+
+			throw new InvalidReplayBinaryException($"'{Encoding.Default.GetString(identifier)}' / '{identifier.ByteArrayToHexString()}' is not a valid leaderboard replay identifier.");
+		}
 
 		short usernameLength = br.ReadInt16();
 		byte[] usernameBytes = br.ReadBytes(usernameLength);
@@ -43,6 +50,23 @@ public class LeaderboardReplayBinaryHeader : IReplayBinaryHeader<LeaderboardRepl
 			unknownBuffer: unknownBuffer);
 	}
 
+	public static bool IdentifierIsValid(byte[] contents, [MaybeNullWhen(false)] out byte[]? identifier)
+	{
+		using MemoryStream ms = new(contents);
+		using BinaryReader br = new(ms);
+		return IdentifierIsValid(br, out identifier);
+	}
+
+	public static bool IdentifierIsValid(BinaryReader br, [MaybeNullWhen(false)] out byte[]? identifier)
+	{
+		identifier = null;
+		if (br.BaseStream.Position > br.BaseStream.Length - _identifier.Length)
+			return false;
+
+		identifier = br.ReadBytes(_identifier.Length);
+		return ArrayUtils.AreEqual(_identifierBytes, identifier);
+	}
+
 	public static LeaderboardReplayBinaryHeader CreateDefault()
 	{
 		return new(string.Empty, Array.Empty<byte>());
@@ -53,7 +77,7 @@ public class LeaderboardReplayBinaryHeader : IReplayBinaryHeader<LeaderboardRepl
 		using MemoryStream ms = new();
 		using BinaryWriter bw = new(ms);
 
-		bw.Write(Encoding.Default.GetBytes(_header));
+		bw.Write(Encoding.Default.GetBytes(_identifier));
 		bw.Write((short)Username.Length);
 		bw.Write(Encoding.Default.GetBytes(Username));
 		bw.Write((short)UnknownBuffer.Length);

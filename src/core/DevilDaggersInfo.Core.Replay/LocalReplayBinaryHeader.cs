@@ -1,5 +1,6 @@
 using DevilDaggersInfo.Common.Utils;
 using DevilDaggersInfo.Core.Spawnset;
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -7,7 +8,9 @@ namespace DevilDaggersInfo.Core.Replay;
 
 public class LocalReplayBinaryHeader : IReplayBinaryHeader<LocalReplayBinaryHeader>
 {
-	private const string _header = "ddrpl.";
+	// TODO: Use byte[] when C# 11 officially comes out and remove the byte[] field.
+	private const string _identifier = "ddrpl.";
+	private static readonly byte[] _identifierBytes = Encoding.Default.GetBytes(_identifier);
 
 	public LocalReplayBinaryHeader(
 		int version,
@@ -54,6 +57,8 @@ public class LocalReplayBinaryHeader : IReplayBinaryHeader<LocalReplayBinaryHead
 
 	public static bool UsesLengthPrefixedEvents => true;
 
+	public static int IdentifierLength => _identifier.Length;
+
 	public static LocalReplayBinaryHeader CreateFromByteArray(byte[] contents)
 	{
 		using MemoryStream ms = new(contents);
@@ -63,10 +68,13 @@ public class LocalReplayBinaryHeader : IReplayBinaryHeader<LocalReplayBinaryHead
 
 	public static LocalReplayBinaryHeader CreateFromBinaryReader(BinaryReader br)
 	{
-		byte[] headerBytes = br.ReadBytes(6);
-		string header = Encoding.Default.GetString(headerBytes);
-		if (header != _header)
-			throw new InvalidReplayBinaryException($"'{header}' / '{headerBytes.ByteArrayToHexString()}' is not a valid local replay header.");
+		if (!IdentifierIsValid(br, out byte[]? identifier))
+		{
+			if (identifier == null)
+				throw new InvalidReplayBinaryException("Local replay identifier could not be determined.");
+
+			throw new InvalidReplayBinaryException($"'{Encoding.Default.GetString(identifier)}' / '{identifier.ByteArrayToHexString()}' is not a valid local replay identifier.");
+		}
 
 		int version = br.ReadInt32();
 		long timestampSinceGameRelease = br.ReadInt64();
@@ -104,6 +112,23 @@ public class LocalReplayBinaryHeader : IReplayBinaryHeader<LocalReplayBinaryHead
 			spawnsetBuffer: spawnsetBuffer);
 	}
 
+	public static bool IdentifierIsValid(byte[] contents, [MaybeNullWhen(false)] out byte[]? identifier)
+	{
+		using MemoryStream ms = new(contents);
+		using BinaryReader br = new(ms);
+		return IdentifierIsValid(br, out identifier);
+	}
+
+	public static bool IdentifierIsValid(BinaryReader br, [MaybeNullWhen(false)] out byte[]? identifier)
+	{
+		identifier = null;
+		if (br.BaseStream.Position > br.BaseStream.Length - _identifier.Length)
+			return false;
+
+		identifier = br.ReadBytes(_identifier.Length);
+		return ArrayUtils.AreEqual(_identifierBytes, identifier);
+	}
+
 	public static LocalReplayBinaryHeader CreateDefault()
 	{
 		SpawnsetBinary spawnset = SpawnsetBinary.CreateDefault();
@@ -128,7 +153,7 @@ public class LocalReplayBinaryHeader : IReplayBinaryHeader<LocalReplayBinaryHead
 		using MemoryStream ms = new();
 		using BinaryWriter bw = new(ms);
 
-		bw.Write(Encoding.Default.GetBytes(_header));
+		bw.Write(Encoding.Default.GetBytes(_identifier));
 		bw.Write(Version);
 		bw.Write(TimestampSinceGameRelease);
 		bw.Write(Time);
