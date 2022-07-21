@@ -93,7 +93,7 @@ public class UploadService
 			OperatingSystem = _clientConfiguration.GetOperatingSystem().ToString(),
 			ProhibitedMods = block.ProhibitedMods,
 			Client = _clientConfiguration.GetApplicationName(),
-			ReplayData = _readerService.GetReplayForUpload(),
+			ReplayData = _readerService.ReadReplayFromMemory(),
 			Status = block.Status,
 			ReplayPlayerId = block.ReplayPlayerId,
 			GameMode = block.GameMode,

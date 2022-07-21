@@ -50,6 +50,16 @@ public class ReaderService
 
 		_isInitialized = true;
 		return _isInitialized;
+
+		long? GetMemoryBlockAddress(Process process, long ddstatsMarkerOffset)
+		{
+			if (process.MainModule == null)
+				return null;
+
+			byte[] pointerBytes = new byte[sizeof(long)];
+			_nativeMemoryService.ReadMemory(process, process.MainModule.BaseAddress.ToInt64() + ddstatsMarkerOffset, pointerBytes, 0, sizeof(long));
+			return BitConverter.ToInt64(pointerBytes);
+		}
 	}
 
 	public void Scan()
@@ -85,7 +95,7 @@ public class ReaderService
 		return header == "ddrpl.";
 	}
 
-	public byte[] GetReplayForUpload()
+	public byte[] ReadReplayFromMemory()
 	{
 		if (_process == null)
 			return Array.Empty<byte>();
@@ -104,15 +114,5 @@ public class ReaderService
 		_nativeMemoryService.WriteMemory(_process, MainBlock.ReplayBase, replay, 0, replay.Length);
 		_nativeMemoryService.WriteMemory(_process, _memoryBlockAddress + 312, BitConverter.GetBytes(replay.Length), 0, sizeof(int));
 		_nativeMemoryService.WriteMemory(_process, _memoryBlockAddress + 316, new byte[] { 1 }, 0, 1);
-	}
-
-	private long? GetMemoryBlockAddress(Process process, long ddstatsMarkerOffset)
-	{
-		if (process.MainModule == null)
-			return null;
-
-		byte[] pointerBytes = new byte[sizeof(long)];
-		_nativeMemoryService.ReadMemory(process, process.MainModule.BaseAddress.ToInt64() + ddstatsMarkerOffset, pointerBytes, 0, sizeof(long));
-		return BitConverter.ToInt64(pointerBytes);
 	}
 }
