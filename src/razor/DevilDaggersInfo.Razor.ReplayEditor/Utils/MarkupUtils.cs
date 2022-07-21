@@ -9,7 +9,7 @@ public static class MarkupUtils
 	public static MarkupString EntityType(int entityId, List<EntityType> entityTypes)
 	{
 		if (entityId < 0 || entityId >= entityTypes.Count)
-			return new("Invalid entity ID");
+			return new($"{entityId} (<span style='color: red;'>???</span>)");
 
 		EntityType entityType = entityTypes[entityId];
 		return new($"{entityId} (<span style='color: {entityType.GetColor().HexCode};'>{entityType.ToDisplayString()}</span>)");
