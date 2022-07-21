@@ -2,7 +2,7 @@
 
 using System.Text;
 
-namespace DevilDaggersInfo.App.Core.CustomLeaderboard.Memory;
+namespace DevilDaggersInfo.App.Core.CustomLeaderboard;
 
 public readonly record struct MainBlock
 {

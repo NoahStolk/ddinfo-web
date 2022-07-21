@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.App.Core.CustomLeaderboard.Enums;
+namespace DevilDaggersInfo.App.Core.CustomLeaderboard;
 
 public enum GameStatus
 {

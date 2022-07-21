@@ -1,6 +1,5 @@
 using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
-using DevilDaggersInfo.App.Core.CustomLeaderboard.Enums;
-using DevilDaggersInfo.App.Core.CustomLeaderboard.Services;
+using DevilDaggersInfo.App.Core.CustomLeaderboard;
 using DevilDaggersInfo.Common.Utils;
 using DevilDaggersInfo.Razor.CustomLeaderboard.Models;
 using DevilDaggersInfo.Razor.CustomLeaderboard.Services;
