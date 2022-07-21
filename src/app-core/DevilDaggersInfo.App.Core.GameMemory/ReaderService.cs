@@ -1,4 +1,5 @@
 using DevilDaggersInfo.App.Core.NativeInterface.Services;
+using DevilDaggersInfo.Core.Replay;
 using System.Diagnostics;
 using System.Text;
 
@@ -88,11 +89,9 @@ public class ReaderService
 		if (_process == null || MainBlock.ReplayLength <= 0 || MainBlock.ReplayLength > 30 * 1024 * 1024)
 			return false;
 
-		// TODO: Probably want to read more data and parse LocalReplayBinaryHeader. That way we could validate more data based on the recorded run.
-		byte[] headerBytes = new byte[6];
+		byte[] headerBytes = new byte[LocalReplayBinaryHeader.IdentifierLength];
 		_nativeMemoryService.ReadMemory(_process, MainBlock.ReplayBase, headerBytes, 0, headerBytes.Length);
-		string header = Encoding.Default.GetString(headerBytes);
-		return header == "ddrpl.";
+		return LocalReplayBinaryHeader.IdentifierIsValid(headerBytes, out _);
 	}
 
 	public byte[] ReadReplayFromMemory()
