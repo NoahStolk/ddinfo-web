@@ -49,6 +49,7 @@ Tests, internal tools, source generators, console apps, and common libraries are
 
 ```mermaid
 flowchart TD;
+	ddiam[DDIAM 1]
 	ddae[DDAE 2]
 	ddcl[DDCL 2]
 	ddre[DDRE 1]
@@ -64,10 +65,11 @@ flowchart TD;
 	app_core_gamememory[App.Core.GameMemory]
 	app_core_nativeinterface[App.Core.NativeInterface]
 
-	razor_asseteditor[Razor.Core.AssetEditor]
-	razor_customleaderboard[Razor.Core.CustomLeaderboard]
-	razor_replayeditor[Razor.Core.ReplayEditor]
-	razor_survivaleditor[Razor.Core.SurvivalEditor]
+	razor_appmanager[Razor.AppManager]
+	razor_asseteditor[Razor.AssetEditor]
+	razor_customleaderboard[Razor.CustomLeaderboard]
+	razor_replayeditor[Razor.ReplayEditor]
+	razor_survivaleditor[Razor.SurvivalEditor]
 
 	razor_core_canvaschart[Razor.Core.CanvasChart]
 	razor_core_unmarshalled[Razor.Core.Unmarshalled]
@@ -84,15 +86,16 @@ flowchart TD;
 	api_ddrust[Api.DdstatsRust]
 	api_main[Api.Main]
 	api_admin[Api.Admin]
+	api_ddiam[Api.Ddiam]
 	api_ddae[Api.Ddae]
 	api_ddcl[Api.Ddcl]
 	api_ddre[Api.Ddre]
 	api_ddse[Api.Ddse]
 
-	class api_dd,api_clubber,api_ddlive,api_ddrust,api_ddae,api_ddcl,api_ddre,api_ddse,api_main,api_admin api;
+	class api_dd,api_clubber,api_ddlive,api_ddrust,api_ddiam,api_ddae,api_ddcl,api_ddre,api_ddse,api_main,api_admin api;
 	classDef api fill:#660,stroke:#333,stroke-width:4px;
 
-	class ddae,ddcl,ddre,ddse app;
+	class ddiam,ddae,ddcl,ddre,ddse app;
 	classDef app fill:#a00,stroke:#333,stroke-width:4px;
 
 	class app_core_gamememory,app_core_nativeinterface app_core;
@@ -101,7 +104,7 @@ flowchart TD;
 	class core_asset,core_encryption,core_mod,core_replay,core_spawnset,core_wiki core;
 	classDef core fill:#006,stroke:#333,stroke-width:4px;
 
-	class razor_asseteditor,razor_customleaderboard,razor_replayeditor,razor_survivaleditor razor;
+	class razor_appmanager,razor_asseteditor,razor_customleaderboard,razor_replayeditor,razor_survivaleditor razor;
 	classDef razor fill:#800,stroke:#333,stroke-width:4px;
 
 	class razor_core_canvaschart,razor_core_unmarshalled razor_core;
@@ -131,39 +134,30 @@ flowchart TD;
 	end
 
 	subgraph Api App
+		api_ddiam
 		api_ddae
 		api_ddcl
 		api_ddre
 		api_ddse
 	end
 
+	razor_appmanager --> api_ddiam
 	razor_asseteditor --> api_ddae
 	razor_customleaderboard --> api_ddcl
 	razor_replayeditor --> api_ddre
 	razor_survivaleditor --> api_ddse
 
-	subgraph Api External
-		api_dd
-		api_clubber
-		api_ddlive
-		api_ddrust
-	end
-
-	subgraph Api Web
-		api_main
-		api_admin
-	end
-
-	web_server ----> api_dd
-	web_server ----> api_clubber
-	web_server ----> api_ddlive
-	web_server ----> api_ddrust
+	web_server --> api_dd
+	web_server --> api_clubber
+	web_server --> api_ddlive
+	web_server --> api_ddrust
 	web_client --> api_main
 	web_client --> api_admin
-	web_server ----> api_ddae
-	web_server ----> api_ddcl
-	web_server ----> api_ddre
-	web_server ----> api_ddse
+	web_server --> api_ddiam
+	web_server --> api_ddae
+	web_server --> api_ddcl
+	web_server --> api_ddre
+	web_server --> api_ddse
 
 	subgraph Razor
 		razor_asseteditor ----> core_mod
@@ -172,20 +166,20 @@ flowchart TD;
 		razor_replayeditor ----> core_replay
 		razor_survivaleditor ----> core_spawnset
 
-		razor_asseteditor ----> app_core_nativeinterface
-		razor_customleaderboard ----> app_core_nativeinterface
-		razor_replayeditor ----> app_core_nativeinterface
-		razor_survivaleditor ----> app_core_nativeinterface
+		razor_appmanager --> app_core_nativeinterface
+		razor_asseteditor --> app_core_nativeinterface
+		razor_replayeditor --> app_core_nativeinterface
+		razor_survivaleditor --> app_core_nativeinterface
 	end
 
 	subgraph Web
-		web_client --> razor_core_canvaschart
-		web_client ----> web_core_claims
+		web_client ----> razor_core_canvaschart
+		web_client --> web_core_claims
 		web_client ----> core_mod
 		web_client ----> core_replay
 		web_client ----> core_spawnset
 
-		web_server --> core_encryption
+		web_server ------> core_encryption
 		web_server --> web_client
 		web_server --> web_server_domain
 
@@ -193,9 +187,17 @@ flowchart TD;
 		web_server_domain --> core_replay
 		web_server_domain --> core_spawnset
 		web_server_domain --> web_core_claims
+
+		api_dd
+		api_clubber
+		api_ddlive
+		api_ddrust
+		api_main
+		api_admin
 	end
 
 	subgraph App
+		ddiam --> razor_appmanager
 		ddae --> razor_asseteditor
 		ddcl --> razor_customleaderboard
 		ddre --> razor_replayeditor
