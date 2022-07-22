@@ -39,6 +39,6 @@ public abstract class ApiHttpClient
 		if (response.StatusCode != HttpStatusCode.OK)
 			throw new HttpRequestException(await response.Content.ReadAsStringAsync(), null, response.StatusCode);
 
-		return await response.Content.ReadFromJsonAsync<T>() ?? throw new JsonDeserializationException($"Deserialization error in {url} for JSON '{response.Content}'.");
+		return await response.Content.ReadFromJsonAsync<T>() ?? throw new InvalidDataException($"Deserialization error in {url} for JSON '{response.Content}'.");
 	}
 }
