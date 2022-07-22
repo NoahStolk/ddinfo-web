@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Api.Ddcl.ProcessMemory;
+using DevilDaggersInfo.Web.Server.Domain.Repositories;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Ddcl;
 
@@ -6,11 +7,11 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Ddcl;
 [ApiController]
 public class ProcessMemoryController : ControllerBase
 {
-	private readonly ApplicationDbContext _dbContext;
+	private readonly MarkerRepository _markerRepository;
 
-	public ProcessMemoryController(ApplicationDbContext dbContext)
+	public ProcessMemoryController(MarkerRepository markerRepository)
 	{
-		_dbContext = dbContext;
+		_markerRepository = markerRepository;
 	}
 
 	// FORBIDDEN: Used by ddstats-rust.
@@ -18,32 +19,22 @@ public class ProcessMemoryController : ControllerBase
 	[HttpGet("/api/process-memory/marker")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	public ActionResult<Marker> GetMarkerObsolete([Required] SupportedOperatingSystem operatingSystem)
-	{
-		return GetMarkerRepo(operatingSystem);
-	}
+	public async Task<ActionResult<Marker>> GetMarkerObsolete([Required] SupportedOperatingSystem operatingSystem)
+		=> await GetMarkerRepo(operatingSystem);
 
 	[HttpGet("marker")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	public ActionResult<Marker> GetMarker([Required] SupportedOperatingSystem operatingSystem)
-	{
-		return GetMarkerRepo(operatingSystem);
-	}
+	public async Task<ActionResult<Marker>> GetMarker([Required] SupportedOperatingSystem operatingSystem)
+		=> await GetMarkerRepo(operatingSystem);
 
-	private ActionResult<Marker> GetMarkerRepo([Required] SupportedOperatingSystem operatingSystem)
+	private async Task<Marker> GetMarkerRepo(SupportedOperatingSystem operatingSystem) => new Marker
 	{
-		string name = operatingSystem switch
+		Value = await _markerRepository.GetMarkerAsync(operatingSystem switch
 		{
 			SupportedOperatingSystem.Windows => "WindowsSteam",
 			SupportedOperatingSystem.Linux => "LinuxSteam",
 			_ => throw new UnsupportedOperatingSystemException($"Operating system '{operatingSystem}' is not supported."),
-		};
-
-		MarkerEntity? marker = _dbContext.Markers.FirstOrDefault(m => m.Name == name);
-		if (marker == null)
-			throw new($"Marker key '{name}' was not found in database.");
-
-		return new Marker { Value = marker.Value };
-	}
+		}),
+	};
 }
