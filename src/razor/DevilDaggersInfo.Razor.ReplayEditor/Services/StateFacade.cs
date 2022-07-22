@@ -64,8 +64,7 @@ public class StateFacade
 		long ddstatsMarkerOffset;
 		try
 		{
-			// TODO: Cache this value.
-			ddstatsMarkerOffset = await _networkService.GetMarker(Api.Ddre.ProcessMemory.SupportedOperatingSystem.Windows); // TODO: Use Linux on Linux.
+			ddstatsMarkerOffset = await _networkService.GetMarkerAsync(Api.Ddre.ProcessMemory.SupportedOperatingSystem.Windows); // TODO: Use Linux on Linux.
 		}
 		catch (Exception ex)
 		{
