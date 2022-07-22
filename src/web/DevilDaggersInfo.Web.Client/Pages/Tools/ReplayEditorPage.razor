@@ -1,0 +1,46 @@
+@page "/tools/replay-editor"
+@using DevilDaggersInfo.Api.Main.Tools
+@using DevilDaggersInfo.Web.Client.Enums
+@inject MainApiHttpClient Http
+
+<Heading Title="Devil Daggers Replay Editor" />
+
+@if (GetTool == null)
+{
+	<Loading />
+}
+else
+{
+	<ToolInfo GetTool="GetTool" />
+
+	<Heading Title="Distributions" Level="2" />
+	<Distributions>
+		<Distribution ToolName="@GetTool.Name" Note="Recommended" PublishMethod="ToolPublishMethod.SelfContained" BuildType="ToolBuildType.WindowsPhotino" OperatingSystems="Windows 8+" Recommended=true />
+	</Distributions>
+
+	<img src="/images/tools/ddre.png" class="object-contain max-h-160 pt-3" />
+
+	<Heading Title="Features" Level="2" />
+	<ul class="pl-4">
+		<li class="list-disc">Viewing decoded replay events from local replays, leaderboard replays, and directly from game memory</li>
+	</ul>
+
+	<Heading Title="System Requirements" Level="2" />
+	<ul class="pl-4">
+		<li class="list-disc">N/A</li>
+	</ul>
+
+	<RunInfo />
+	<SourceInfo Url="https://github.com/NoahStolk/DevilDaggersInfo/tree/master/src/razor/DevilDaggersInfo.Razor.ReplayEditor" />
+	<Versions ToolVersions="GetTool.Changelog" />
+}
+
+@code
+{
+	public GetTool? GetTool { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		GetTool = await Http.GetTool("DevilDaggersReplayEditor");
+	}
+}
