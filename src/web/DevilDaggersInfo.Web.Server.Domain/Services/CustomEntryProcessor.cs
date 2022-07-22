@@ -18,6 +18,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Web;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Services;
@@ -50,7 +51,7 @@ public class CustomEntryProcessor
 	private void ValidateV2(UploadRequest uploadRequest)
 	{
 		string expected = uploadRequest.CreateValidationV2();
-		string actual;
+		string? actual = null;
 		try
 		{
 			actual = _encryptionWrapper.DecodeAndDecrypt(HttpUtility.HtmlDecode(uploadRequest.Validation));
@@ -58,11 +59,11 @@ public class CustomEntryProcessor
 		catch (Exception ex)
 		{
 			_logger.LogError(ex, "Could not decrypt validation '{validation}'.", uploadRequest.Validation);
-			throw LogAndCreateValidationException(uploadRequest, $"Could not decrypt validation '{uploadRequest.Validation}'.", null, "rotating_light");
+			LogAndThrowValidationException(uploadRequest, $"Could not decrypt validation '{uploadRequest.Validation}'.", null, "rotating_light");
 		}
 
 		if (actual != expected)
-			throw LogAndCreateValidationException(uploadRequest, $"Invalid submission for {uploadRequest.Validation}.\n`Expected: {expected}`\n`Actual:   {actual}`", null, "rotating_light");
+			LogAndThrowValidationException(uploadRequest, $"Invalid submission for {uploadRequest.Validation}.\n`Expected: {expected}`\n`Actual:   {actual}`", null, "rotating_light");
 	}
 
 	public async Task<UploadResponse> ProcessUploadRequestAsync(UploadRequest uploadRequest)
@@ -71,26 +72,26 @@ public class CustomEntryProcessor
 		if (uploadRequest.ValidationVersion == 2)
 			ValidateV2(uploadRequest);
 		else
-			throw LogAndCreateValidationException(uploadRequest, $"Validation version '{uploadRequest.ValidationVersion}' is not implemented.");
+			LogAndThrowValidationException(uploadRequest, $"Validation version '{uploadRequest.ValidationVersion}' is not implemented.");
 
 		// Check for required client and version.
 		var tool = _dbContext.Tools.Select(t => new { t.Name, t.RequiredVersionNumber }).FirstOrDefault(t => t.Name == uploadRequest.Client);
 		if (tool == null)
-			throw LogAndCreateValidationException(uploadRequest, $"'{uploadRequest.Client}' is not a known tool and submissions will not be accepted.");
+			LogAndThrowValidationException(uploadRequest, $"'{uploadRequest.Client}' is not a known tool and submissions will not be accepted.");
 
 		AppVersion clientVersionParsed = AppVersion.Parse(uploadRequest.ClientVersion);
 		if (clientVersionParsed < AppVersion.Parse(tool.RequiredVersionNumber))
-			throw LogAndCreateValidationException(uploadRequest, $"You are using an unsupported and outdated version of {uploadRequest.Client}. Please update the program.");
+			LogAndThrowValidationException(uploadRequest, $"You are using an unsupported and outdated version of {uploadRequest.Client}. Please update the program.");
 
 		// Reject other invalid statuses.
 		if (uploadRequest.Status is not (3 or 4 or 5))
-			throw LogAndCreateValidationException(uploadRequest, $"Game status {uploadRequest.Status} is not accepted.", null, "rotating_light");
+			LogAndThrowValidationException(uploadRequest, $"Game status {uploadRequest.Status} is not accepted.", null, "rotating_light");
 
 		// Check for existing spawnset.
 		SpawnsetHashCacheData? spawnsetHashData = _spawnsetHashCache.GetSpawnset(uploadRequest.SurvivalHashMd5);
 		string? spawnsetName = spawnsetHashData?.Name;
 		if (string.IsNullOrEmpty(spawnsetName))
-			throw LogAndCreateValidationException(uploadRequest, "This spawnset doesn't exist on DevilDaggers.info.");
+			LogAndThrowValidationException(uploadRequest, "This spawnset doesn't exist on DevilDaggers.info.");
 
 		ValidateReplayBuffer(uploadRequest, spawnsetName);
 
@@ -108,29 +109,29 @@ public class CustomEntryProcessor
 		}
 		else if (player.IsBannedFromDdcl)
 		{
-			throw LogAndCreateValidationException(uploadRequest, "Banned.", spawnsetName, "rotating_light");
+			LogAndThrowValidationException(uploadRequest, "Banned.", spawnsetName, "rotating_light");
 		}
 
 		// Check for existing leaderboard.
 		CustomLeaderboardEntity? customLeaderboard = await _dbContext.CustomLeaderboards.Include(cl => cl.Spawnset).FirstOrDefaultAsync(cl => cl.Spawnset.Name == spawnsetName);
 		if (customLeaderboard == null)
-			throw LogAndCreateValidationException(uploadRequest, "This spawnset exists on DevilDaggers.info, but doesn't have a leaderboard.", spawnsetName);
+			LogAndThrowValidationException(uploadRequest, "This spawnset exists on DevilDaggers.info, but doesn't have a leaderboard.", spawnsetName);
 
 		// Validate game mode.
 		GameMode requiredGameMode = customLeaderboard.Category.GetRequiredGameModeForCategory();
 		if (uploadRequest.GameMode != (byte)requiredGameMode)
-			throw LogAndCreateValidationException(uploadRequest, $"Incorrect game mode '{(GameMode)uploadRequest.GameMode}' for category '{customLeaderboard.Category}'. Must be '{requiredGameMode}'.", spawnsetName);
+			LogAndThrowValidationException(uploadRequest, $"Incorrect game mode '{(GameMode)uploadRequest.GameMode}' for category '{customLeaderboard.Category}'. Must be '{requiredGameMode}'.", spawnsetName);
 
 		// Validate TimeAttack and Race.
 		if (customLeaderboard.Category.IsTimeAttackOrRace() && !uploadRequest.TimeAttackOrRaceFinished)
-			throw LogAndCreateValidationException(uploadRequest, $"Didn't complete the {customLeaderboard.Category} spawnset.", spawnsetName);
+			LogAndThrowValidationException(uploadRequest, $"Didn't complete the {customLeaderboard.Category} spawnset.", spawnsetName);
 
 		if (customLeaderboard.Category == CustomLeaderboardCategory.RaceNoShooting && uploadRequest.DaggersFired > 0)
-			throw LogAndCreateValidationException(uploadRequest, $"Counted {uploadRequest.DaggersFired} {(uploadRequest.DaggersFired == 1 ? "dagger" : "daggers")} fired. Can't submit score to {CustomLeaderboardCategory.RaceNoShooting} leaderboard.", spawnsetName);
+			LogAndThrowValidationException(uploadRequest, $"Counted {uploadRequest.DaggersFired} {(uploadRequest.DaggersFired == 1 ? "dagger" : "daggers")} fired. Can't submit score to {CustomLeaderboardCategory.RaceNoShooting} leaderboard.", spawnsetName);
 
 		// Validate Pacifist.
 		if (customLeaderboard.Category == CustomLeaderboardCategory.Pacifist && uploadRequest.EnemiesKilled > 0)
-			throw LogAndCreateValidationException(uploadRequest, $"Counted {uploadRequest.EnemiesKilled} {(uploadRequest.EnemiesKilled == 1 ? "kill" : "kills")}. Can't submit score to {CustomLeaderboardCategory.Pacifist} leaderboard.", spawnsetName);
+			LogAndThrowValidationException(uploadRequest, $"Counted {uploadRequest.EnemiesKilled} {(uploadRequest.EnemiesKilled == 1 ? "kill" : "kills")}. Can't submit score to {CustomLeaderboardCategory.Pacifist} leaderboard.", spawnsetName);
 
 		// Make sure HomingDaggers is not negative (happens rarely as a bug, and also for spawnsets with homing disabled which we don't want to display values for anyway).
 		uploadRequest.GameData.HomingStored = Array.ConvertAll(uploadRequest.GameData.HomingStored, i => Math.Max(0, i));
@@ -376,24 +377,25 @@ public class CustomEntryProcessor
 
 	private void ValidateReplayBuffer(UploadRequest uploadRequest, string spawnsetName)
 	{
-		LocalReplayBinaryHeader replayBinaryHeader;
+		LocalReplayBinaryHeader? replayBinaryHeader = null;
 		try
 		{
 			replayBinaryHeader = LocalReplayBinaryHeader.CreateFromByteArray(uploadRequest.ReplayData);
 		}
 		catch (Exception ex)
 		{
-			throw LogAndCreateValidationException(uploadRequest, $"Could not parse replay: {ex.Message}", spawnsetName, "rotating_light");
+			LogAndThrowValidationException(uploadRequest, $"Could not parse replay: {ex.Message}", spawnsetName, "rotating_light");
 		}
 
 		if (!ArrayUtils.AreEqual(replayBinaryHeader.SpawnsetMd5, uploadRequest.SurvivalHashMd5))
-			throw LogAndCreateValidationException(uploadRequest, "Spawnset in replay does not match detected spawnset.", spawnsetName, "rotating_light");
+			LogAndThrowValidationException(uploadRequest, "Spawnset in replay does not match detected spawnset.", spawnsetName, "rotating_light");
 	}
 
-	private CustomEntryValidationException LogAndCreateValidationException(UploadRequest uploadRequest, string errorMessage, string? spawnsetName = null, string? errorEmoteNameOverride = null)
+	[DoesNotReturn]
+	private void LogAndThrowValidationException(UploadRequest uploadRequest, string errorMessage, string? spawnsetName = null, string? errorEmoteNameOverride = null)
 	{
 		Log(uploadRequest, spawnsetName, errorMessage, errorEmoteNameOverride);
-		return new CustomEntryValidationException(errorMessage);
+		throw new CustomEntryValidationException(errorMessage);
 	}
 
 	private async Task WriteReplayFile(int customEntryId, byte[] replayData)
