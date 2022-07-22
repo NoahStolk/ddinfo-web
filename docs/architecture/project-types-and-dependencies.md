@@ -66,6 +66,7 @@ flowchart TD;
 	core_spawnset[Core.Spawnset]
 	core_wiki[Core.Wiki]
 
+	app_core_apiclient[App.Core.ApiClient]
 	app_core_gamememory[App.Core.GameMemory]
 	app_core_nativeinterface[App.Core.NativeInterface]
 
@@ -76,6 +77,7 @@ flowchart TD;
 	razor_survivaleditor[Razor.SurvivalEditor]
 
 	razor_core_canvaschart[Razor.Core.CanvasChart]
+	razor_core_components[Razor.Core.Components]
 	razor_core_unmarshalled[Razor.Core.Unmarshalled]
 
 	web_client[Web.Client]
@@ -102,7 +104,7 @@ flowchart TD;
 	class ddiam,ddae,ddcl,ddre,ddse app;
 	classDef app fill:#a00,stroke:#333,stroke-width:4px;
 
-	class app_core_gamememory,app_core_nativeinterface app_core;
+	class app_core_apiclient,app_core_gamememory,app_core_nativeinterface app_core;
 	classDef app_core fill:#306,stroke:#333,stroke-width:4px;
 
 	class core_asset,core_encryption,core_mod,core_replay,core_spawnset,core_wiki core;
@@ -111,7 +113,7 @@ flowchart TD;
 	class razor_appmanager,razor_asseteditor,razor_customleaderboard,razor_replayeditor,razor_survivaleditor razor;
 	classDef razor fill:#800,stroke:#333,stroke-width:4px;
 
-	class razor_core_canvaschart,razor_core_unmarshalled razor_core;
+	class razor_core_canvaschart,razor_core_components,razor_core_unmarshalled razor_core;
 	classDef razor_core fill:#500,stroke:#333,stroke-width:4px;
 
 	class web_client web_client;
@@ -125,6 +127,8 @@ flowchart TD;
 
 	subgraph Core
 		core_encryption
+
+		razor_core_components
 
 		core_mod --> core_asset
 		core_replay --> core_spawnset
@@ -150,6 +154,18 @@ flowchart TD;
 	razor_customleaderboard --> api_ddcl
 	razor_replayeditor --> api_ddre
 	razor_survivaleditor --> api_ddse
+
+	razor_appmanager --> app_core_apiclient
+	razor_asseteditor --> app_core_apiclient
+	razor_customleaderboard --> app_core_apiclient
+	razor_replayeditor --> app_core_apiclient
+	razor_survivaleditor --> app_core_apiclient
+
+	razor_appmanager --> razor_core_components
+	razor_asseteditor --> razor_core_components
+	razor_customleaderboard --> razor_core_components
+	razor_replayeditor --> razor_core_components
+	razor_survivaleditor --> razor_core_components
 
 	web_server --> api_dd
 	web_server --> api_clubber
@@ -179,6 +195,7 @@ flowchart TD;
 
 	subgraph Web
 		web_client ----> razor_core_canvaschart
+		web_client ----> razor_core_components
 		web_client --> web_core_claims
 		web_client ----> core_mod
 		web_client ----> core_replay
