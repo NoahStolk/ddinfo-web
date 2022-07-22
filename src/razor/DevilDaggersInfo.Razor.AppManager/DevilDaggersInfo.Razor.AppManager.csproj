@@ -13,6 +13,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Components" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" />
     <ProjectReference Include="..\..\api\DevilDaggersInfo.Api.Ddiam\DevilDaggersInfo.Api.Ddiam.csproj" />
+    <ProjectReference Include="..\..\app-core\DevilDaggersInfo.App.Core.ApiClient\DevilDaggersInfo.App.Core.ApiClient.csproj" />
     <ProjectReference Include="..\..\app-core\DevilDaggersInfo.App.Core.NativeInterface\DevilDaggersInfo.App.Core.NativeInterface.csproj" />
     <ProjectReference Include="..\..\common\DevilDaggersInfo.Common\DevilDaggersInfo.Common.csproj" />
     <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Versioning\DevilDaggersInfo.Core.Versioning.csproj" />

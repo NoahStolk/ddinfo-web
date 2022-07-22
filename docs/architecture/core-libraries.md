@@ -6,6 +6,7 @@ There are currently four types of core libraries.
 
 | **Project**              | **Reasoning**                                                        |
 |--------------------------|----------------------------------------------------------------------|
+| App.Core.ApiClient       | Provides API client base functionality for apps                      |
 | App.Core.GameMemory      | Only apps are able to access game memory                             |
 | App.Core.NativeInterface | Only apps are able to access native functionality through interfaces |
 
