@@ -43,7 +43,7 @@ public class StateFacade
 		try
 		{
 			ReplayBinary<LocalReplayBinaryHeader> localReplay = new(fileResult.Contents);
-			_dispatcher.Dispatch(new OpenReplayAction(localReplay, Path.GetFileName(fileResult.Path)));
+			_dispatcher.Dispatch(new OpenReplayAction(localReplay, Path.GetFileNameWithoutExtension(fileResult.Path)));
 		}
 		catch (InvalidReplayBinaryException ex)
 		{

@@ -29,6 +29,12 @@
 			<span class="@GetShootColor(input.ShootHoming)">R</span>
 			<span class="@(input.MouseX != 0 ? "text-red" : null)">X: @input.MouseX</span>
 			<span class="@(input.MouseY != 0 ? "text-red" : null)">Y: @input.MouseY</span>
+
+			@if (input is InitialInputsEvent initial)
+			{
+				<br />
+				<span>LookSpeed: @((initial.LookSpeed).ToString("0.00000")) (@((initial.LookSpeed * 500 / 3).ToString("0.00")))</span>
+			}
 		}
 		else if (Events.Any(e => e is EndEvent))
 		{
