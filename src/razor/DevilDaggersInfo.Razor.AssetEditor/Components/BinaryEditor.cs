@@ -33,7 +33,7 @@ public partial class BinaryEditor
 		}
 		catch (Exception ex)
 		{
-			ErrorReporter.ReportError(ex);
+			ErrorReporter.ReportError("Could not extract chunks", "An error occurred while extracting chunks.", ex);
 		}
 	}
 

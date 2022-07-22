@@ -86,7 +86,7 @@ public partial class AddAsset
 	{
 		if (!ModBinary.IsAssetTypeValid(BinaryState.Value.Binary.ModBinaryType, assetType))
 		{
-			ErrorReporter.ReportError($"Asset type '{assetType}' is not compatible with binary type '{BinaryState.Value.Binary.ModBinaryType}'.");
+			ErrorReporter.ReportError("Invalid asset type", $"Asset type '{assetType}' is not compatible with binary type '{BinaryState.Value.Binary.ModBinaryType}'.");
 			return;
 		}
 
@@ -108,7 +108,7 @@ public partial class AddAsset
 	{
 		if (!ModBinary.IsAssetTypeValid(BinaryState.Value.Binary.ModBinaryType, AssetType.Shader))
 		{
-			ErrorReporter.ReportError($"Asset type '{AssetType.Shader}' is not compatible with binary type '{BinaryState.Value.Binary.ModBinaryType}'.");
+			ErrorReporter.ReportError("Invalid asset type", $"Asset type '{AssetType.Shader}' is not compatible with binary type '{BinaryState.Value.Binary.ModBinaryType}'.");
 			return;
 		}
 
@@ -151,13 +151,13 @@ public partial class AddAsset
 
 		if (_selectedAssetName == null || !_selectedAssetType.HasValue || _selectedAssetData == null)
 		{
-			ErrorReporter.ReportError("No asset was opened.");
+			ErrorReporter.ReportError("No asset", "No asset was opened.");
 			return;
 		}
 
 		if (BinaryState.Value.Binary.Chunks.Any(c => c.Name == _selectedAssetName && c.AssetType == _selectedAssetType.Value))
 		{
-			ErrorReporter.ReportError($"An asset of type '{_selectedAssetType.Value}' with name '{_selectedAssetName}' already exists in this binary.");
+			ErrorReporter.ReportError("Conflicting asset", $"An asset of type '{_selectedAssetType.Value}' with name '{_selectedAssetName}' already exists in this binary.");
 			return;
 		}
 
@@ -167,7 +167,7 @@ public partial class AddAsset
 		}
 		catch (Exception ex)
 		{
-			ErrorReporter.ReportError(ex);
+			ErrorReporter.ReportError("Could not add asset", "An error occurred while adding the asset.", ex);
 			return;
 		}
 
