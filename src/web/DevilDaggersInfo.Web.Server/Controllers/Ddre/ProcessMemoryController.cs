@@ -17,7 +17,7 @@ public class ProcessMemoryController : ControllerBase
 	[HttpGet("marker")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	public async Task<ActionResult<Marker>> GetMarker([Required] SupportedOperatingSystem operatingSystem) => new Marker
+	public async Task<ActionResult<GetMarker>> GetMarker([Required] SupportedOperatingSystem operatingSystem) => new GetMarker
 	{
 		Value = await _markerRepository.GetMarkerAsync(operatingSystem switch
 		{

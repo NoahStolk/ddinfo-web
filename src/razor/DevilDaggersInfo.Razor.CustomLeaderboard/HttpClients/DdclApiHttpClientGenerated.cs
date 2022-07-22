@@ -65,22 +65,22 @@ public partial class DdclApiHttpClient
 		return await SendRequest(new HttpMethod("HEAD"), BuildUrlWithQuery($"/api/custom-leaderboards", queryParameters));
 	}
 
-	public async Task<Marker> GetMarkerObsolete(SupportedOperatingSystem operatingSystem)
+	public async Task<GetMarker> GetMarkerObsolete(SupportedOperatingSystem operatingSystem)
 	{
 		Dictionary<string, object?> queryParameters = new()
 		{
 			{ nameof(operatingSystem), operatingSystem }
 		};
-		return await SendGetRequest<Marker>(BuildUrlWithQuery($"/api/process-memory/marker", queryParameters));
+		return await SendGetRequest<GetMarker>(BuildUrlWithQuery($"/api/process-memory/marker", queryParameters));
 	}
 
-	public async Task<Marker> GetMarker(SupportedOperatingSystem operatingSystem)
+	public async Task<GetMarker> GetMarker(SupportedOperatingSystem operatingSystem)
 	{
 		Dictionary<string, object?> queryParameters = new()
 		{
 			{ nameof(operatingSystem), operatingSystem }
 		};
-		return await SendGetRequest<Marker>(BuildUrlWithQuery($"api/ddcl/process-memory/marker", queryParameters));
+		return await SendGetRequest<GetMarker>(BuildUrlWithQuery($"api/ddcl/process-memory/marker", queryParameters));
 	}
 
 	public async Task<GetSpawnsetBuffer> GetSpawnsetBufferById(int id)

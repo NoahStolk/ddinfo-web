@@ -48,7 +48,7 @@ public class NetworkService
 	{
 		try
 		{
-			Marker marker = await _apiClient.GetMarker(supportedOperatingSystem);
+			GetMarker marker = await _apiClient.GetMarker(supportedOperatingSystem);
 			return marker.Value;
 		}
 		catch (Exception ex)

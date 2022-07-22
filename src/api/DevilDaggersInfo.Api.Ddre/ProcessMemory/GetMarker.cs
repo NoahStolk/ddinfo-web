@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Api.Ddre.ProcessMemory;
 
-public record Marker
+public record GetMarker
 {
 	public long Value { get; init; }
 }

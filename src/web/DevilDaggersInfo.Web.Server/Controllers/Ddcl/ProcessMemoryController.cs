@@ -19,16 +19,16 @@ public class ProcessMemoryController : ControllerBase
 	[HttpGet("/api/process-memory/marker")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	public async Task<ActionResult<Marker>> GetMarkerObsolete([Required] SupportedOperatingSystem operatingSystem)
+	public async Task<ActionResult<GetMarker>> GetMarkerObsolete([Required] SupportedOperatingSystem operatingSystem)
 		=> await GetMarkerRepo(operatingSystem);
 
 	[HttpGet("marker")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	public async Task<ActionResult<Marker>> GetMarker([Required] SupportedOperatingSystem operatingSystem)
+	public async Task<ActionResult<GetMarker>> GetMarker([Required] SupportedOperatingSystem operatingSystem)
 		=> await GetMarkerRepo(operatingSystem);
 
-	private async Task<Marker> GetMarkerRepo(SupportedOperatingSystem operatingSystem) => new Marker
+	private async Task<GetMarker> GetMarkerRepo(SupportedOperatingSystem operatingSystem) => new GetMarker
 	{
 		Value = await _markerRepository.GetMarkerAsync(operatingSystem switch
 		{
