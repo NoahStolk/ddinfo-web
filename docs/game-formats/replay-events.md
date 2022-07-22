@@ -1,6 +1,6 @@
 # Replay events
 
-Either a [local replay binary](https://github.com/NoahStolk/DevilDaggersInfo/blob/master/docs/game-formats/local-replay-binary.md) or a replay hosted on the Devil Daggers leaderboard servers contains replay events at the end of the data.
+Either a [local replay binary](local-replay-binary.md) or a [replay hosted on the Devil Daggers leaderboard servers](leaderboard-replay-binary.md) contains replay events at the end of the data.
 
 Data is compressed using ZLIB. In order to get raw event data, make sure to:
 
