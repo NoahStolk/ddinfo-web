@@ -4,6 +4,7 @@ using DevilDaggersInfo.App.Core.NativeInterface.Utils;
 using DevilDaggersInfo.Core.Replay;
 using DevilDaggersInfo.Core.Replay.Exceptions;
 using DevilDaggersInfo.Razor.ReplayEditor.Enums;
+using DevilDaggersInfo.Razor.ReplayEditor.Store.Features.LeaderboardBrowserFeature.Actions;
 using DevilDaggersInfo.Razor.ReplayEditor.Store.Features.ReplayBinaryFeature.Actions;
 using DevilDaggersInfo.Razor.ReplayEditor.Store.Features.ReplayEditorFeature.Actions;
 using Fluxor;
@@ -53,31 +54,9 @@ public class StateFacade
 		_dispatcher.Dispatch(new SelectTickRangeAction(0, 60));
 	}
 
-	public async Task OpenLeaderboardReplayAsync(int playerId)
+	public void DownloadLeaderboardReplay(int playerId)
 	{
-		using FormUrlEncodedContent content = new(new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("replay", playerId.ToString()) });
-		using HttpClient httpClient = new();
-		using HttpResponseMessage response = await httpClient.PostAsync("http://dd.hasmodai.com/backend16/get_replay.php", content);
-
-		if (!response.IsSuccessStatusCode)
-		{
-			_errorReporter.ReportError("Could not fetch leaderboard replay", $"The leaderboard servers returned an unsuccessful response (HTTP {(int)response.StatusCode} {response.StatusCode}).");
-			return;
-		}
-
-		byte[] responseData = await response.Content.ReadAsByteArrayAsync();
-
-		try
-		{
-			ReplayBinary<LeaderboardReplayBinaryHeader> leaderboardReplay = new(responseData);
-			_dispatcher.Dispatch(new OpenLeaderboardReplayAction(leaderboardReplay, playerId));
-		}
-		catch (InvalidReplayBinaryException ex)
-		{
-			_errorReporter.ReportError("Could not parse leaderboard replay", "The leaderboard replay could not be parsed.", ex);
-		}
-
-		_dispatcher.Dispatch(new SelectTickRangeAction(0, 60));
+		_dispatcher.Dispatch(new DownloadLeaderboardReplayAction(playerId));
 	}
 
 	public async Task OpenCurrentReplayInGame()
