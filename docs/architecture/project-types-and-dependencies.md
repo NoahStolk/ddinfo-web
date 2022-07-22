@@ -1,8 +1,8 @@
-# Architecture
+# Project types and dependencies
 
-## Project types and dependencies
+## Layers
 
-The project type `*-core`/`core` are reusable libraries that one or more groups of other project types can depend on, including the group itself. For example, a `razor-core` project can depend on another `razor-core` project, but a `razor` project cannot depend on another `razor` project.
+DevilDaggersInfo is separated into layers, then into project types, then into individual projects (C# projects).
 
 ### Library layer
 
@@ -41,11 +41,15 @@ The project type `*-core`/`core` are reusable libraries that one or more groups 
 | `tests`       | Unit tests                    | Anything                                                 |
 | `tool`        | Tools for internal usage      | Anything                                                 |
 
-## Project hierarchy
+## Forbidden dependencies
 
-Tests, internal tools, source generators, console apps, and common libraries are omitted for clarity.
+In order to keep the architecture clean, certain dependencies are forbidden. The [core libraries](core-libraries.md) are reusable libraries that one or more other project types can depend on, including libraries of the project type itself. For example, a `razor-core` project can depend on another `razor-core` project, but a `razor` project (which is not a core library) cannot depend on another `razor` project.
 
-### End state
+## Separated app heads
+
+The UI logic for each app lives in its own UI library. These are not tied to app heads. This allows the apps to switch between framework very easily. For instance, a .NET MAUI version for DDAE could easily be created without affecting the current Photino version of the app.
+
+## End state chart
 
 ```mermaid
 flowchart TD;
@@ -203,64 +207,5 @@ flowchart TD;
 		ddcl --> razor_customleaderboard
 		ddre --> razor_replayeditor
 		ddse --> razor_survivaleditor
-	end
-```
-
-## Data hierarchy
-
-```mermaid
-flowchart TD;
-	database[(Database)]
-	filesystem[(File system)]
-	server[Server]
-	api[API]
-	devildaggersinfo[Website]
-	devildaggers[Devil Daggers game]
-	ddse[DDSE]
-	ddcl[DDCL]
-	ddae[DDAE]
-	ddre[DDRE]
-	ddiam[DDIAM]
-	ddstatsrust[ddstats-rust]
-	ddlive[DDLIVE]
-	clubberserver[Clubber server]
-	clubberapi[Clubber API]
-	devildaggersleaderboards[Devil Daggers leaderboards server]
-
-	class database,filesystem,server,api,devildaggersinfo,ddse,ddcl,ddae,ddre,ddiam ddinfo;
-	class devildaggers,ddstatsrust,ddlive,clubberserver,clubberapi,devildaggersleaderboards external;
-
-	classDef ddinfo fill:#a60,stroke:#333,stroke-width:4px;
-	classDef external fill:#60a,stroke:#333,stroke-width:4px;
-
-	subgraph External
-		devildaggers
-		ddstatsrust
-		ddlive
-		clubberserver
-		clubberapi
-		devildaggersleaderboards
-	end
-
-	devildaggers --> api
-	ddstatsrust --> api
-	ddlive --> api
-	clubberserver --> api
-
-	server --> devildaggersleaderboards
-	server --> clubberapi
-
-	subgraph DevilDaggers.info
-		server --> database
-		server --> filesystem
-
-		api --> server
-
-		devildaggersinfo --> api
-		ddse --> api
-		ddcl --> api
-		ddae --> api
-		ddre --> api
-		ddiam --> api
 	end
 ```
