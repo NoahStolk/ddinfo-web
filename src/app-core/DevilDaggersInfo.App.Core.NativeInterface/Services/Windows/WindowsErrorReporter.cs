@@ -1,13 +1,15 @@
+using DevilDaggersInfo.App.Core.NativeInterface.Native.Windows;
+
 namespace DevilDaggersInfo.App.Core.NativeInterface.Services.Windows;
 
 public class WindowsErrorReporter : INativeErrorReporter
 {
-	public void ReportError(Exception exception)
+	public void ReportError(string title, string message, Exception? exception = null)
 	{
-		// TODO: Log exception.
-	}
+		if (exception != null)
+			message += Environment.NewLine + exception.Message;
 
-	public void ReportError(string message)
-	{
+		// TODO: Log exception.
+		NativeMethods.MessageBox(IntPtr.Zero, message, title, 0);
 	}
 }

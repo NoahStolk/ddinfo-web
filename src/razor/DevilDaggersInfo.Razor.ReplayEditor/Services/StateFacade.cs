@@ -16,13 +16,15 @@ public class StateFacade
 	private readonly INativeFileSystemService _fileSystemService;
 	private readonly GameMemoryReaderService _readerService;
 	private readonly NetworkService _networkService;
+	private readonly INativeErrorReporter _errorReporter;
 
-	public StateFacade(IDispatcher dispatcher, INativeFileSystemService fileSystemService, GameMemoryReaderService readerService, NetworkService networkService)
+	public StateFacade(IDispatcher dispatcher, INativeFileSystemService fileSystemService, GameMemoryReaderService readerService, NetworkService networkService, INativeErrorReporter errorReporter)
 	{
 		_dispatcher = dispatcher;
 		_fileSystemService = fileSystemService;
 		_readerService = readerService;
 		_networkService = networkService;
+		_errorReporter = errorReporter;
 	}
 
 	public void NewReplay()
@@ -45,7 +47,7 @@ public class StateFacade
 		}
 		catch (InvalidReplayBinaryException ex)
 		{
-			// TODO: Dispatch failure action.
+			_errorReporter.ReportError("Could not parse local replay", "The local replay could not be parsed.", ex);
 		}
 
 		_dispatcher.Dispatch(new SelectTickRangeAction(0, 60));
@@ -57,9 +59,11 @@ public class StateFacade
 		using HttpClient httpClient = new();
 		using HttpResponseMessage response = await httpClient.PostAsync("http://dd.hasmodai.com/backend16/get_replay.php", content);
 
-		// TODO: Dispatch failure action.
 		if (!response.IsSuccessStatusCode)
-			throw new($"The leaderboard servers returned an unsuccessful response (HTTP {(int)response.StatusCode} {response.StatusCode}).");
+		{
+			_errorReporter.ReportError("Could not fetch leaderboard replay", $"The leaderboard servers returned an unsuccessful response (HTTP {(int)response.StatusCode} {response.StatusCode}).");
+			return;
+		}
 
 		byte[] responseData = await response.Content.ReadAsByteArrayAsync();
 
@@ -70,7 +74,7 @@ public class StateFacade
 		}
 		catch (InvalidReplayBinaryException ex)
 		{
-			// TODO: Dispatch failure action.
+			_errorReporter.ReportError("Could not parse leaderboard replay", "The leaderboard replay could not be parsed.", ex);
 		}
 
 		_dispatcher.Dispatch(new SelectTickRangeAction(0, 60));
@@ -81,17 +85,18 @@ public class StateFacade
 		long ddstatsMarkerOffset;
 		try
 		{
+			// TODO: Cache this value.
 			ddstatsMarkerOffset = await _networkService.GetMarker(Api.Ddre.ProcessMemory.SupportedOperatingSystem.Windows); // TODO: Use Linux on Linux.
 		}
 		catch (Exception ex)
 		{
-			// TODO: Dispatch failure action.
+			_errorReporter.ReportError("Could not fetch marker", "Could not fetch marker from the DevilDaggers.info API.", ex);
 			return;
 		}
 
 		if (!_readerService.Initialize(ddstatsMarkerOffset))
 		{
-			// TODO: Dispatch failure action.
+			_errorReporter.ReportError("Could not initialize game memory", "Make sure the game is open.");
 			return;
 		}
 
@@ -106,7 +111,7 @@ public class StateFacade
 		}
 		catch (InvalidReplayBinaryException ex)
 		{
-			// TODO: Dispatch failure action.
+			_errorReporter.ReportError("Could not parse replay from game memory", "The replay from game memory could not be parsed.", ex);
 		}
 
 		_dispatcher.Dispatch(new SelectTickRangeAction(0, 60));

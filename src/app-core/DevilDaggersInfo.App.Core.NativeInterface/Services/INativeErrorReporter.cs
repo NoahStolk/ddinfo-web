@@ -2,7 +2,5 @@ namespace DevilDaggersInfo.App.Core.NativeInterface.Services;
 
 public interface INativeErrorReporter
 {
-	void ReportError(Exception exception);
-
-	void ReportError(string message);
+	void ReportError(string title, string message, Exception? exception = null);
 }
