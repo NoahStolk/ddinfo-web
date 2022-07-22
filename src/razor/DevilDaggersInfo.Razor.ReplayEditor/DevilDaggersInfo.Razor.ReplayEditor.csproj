@@ -9,17 +9,6 @@
     <SupportedPlatform Include="browser" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Fluxor.Blazor.Web" />
-    <PackageReference Include="Microsoft.AspNetCore.Components" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" />
-    <ProjectReference Include="..\..\api\DevilDaggersInfo.Api.Ddre\DevilDaggersInfo.Api.Ddre.csproj" />
-    <ProjectReference Include="..\..\app-core\DevilDaggersInfo.App.Core.ApiClient\DevilDaggersInfo.App.Core.ApiClient.csproj" />
-    <ProjectReference Include="..\..\app-core\DevilDaggersInfo.App.Core.GameMemory\DevilDaggersInfo.App.Core.GameMemory.csproj" />
-    <ProjectReference Include="..\..\common\DevilDaggersInfo.Common\DevilDaggersInfo.Common.csproj" />
-    <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Replay\DevilDaggersInfo.Core.Replay.csproj" />
-    <ProjectReference Include="..\..\razor-core\DevilDaggersInfo.Razor.Core.Components\DevilDaggersInfo.Razor.Core.Components.csproj" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Remove="package-lock.json" />
     <Content Remove="package.json" />
     <Content Update="wwwroot\**\*">
@@ -39,4 +28,15 @@
     <Exec Command="npm run build" Condition="'$(Configuration)' == 'Debug'" />
     <Exec Command="npm run publish" Condition="'$(Configuration)' == 'Release'" />
   </Target>
+  <ItemGroup>
+    <PackageReference Include="Fluxor.Blazor.Web" />
+    <PackageReference Include="Microsoft.AspNetCore.Components" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" />
+    <ProjectReference Include="..\..\api\DevilDaggersInfo.Api.Ddre\DevilDaggersInfo.Api.Ddre.csproj" />
+    <ProjectReference Include="..\..\app-core\DevilDaggersInfo.App.Core.ApiClient\DevilDaggersInfo.App.Core.ApiClient.csproj" />
+    <ProjectReference Include="..\..\app-core\DevilDaggersInfo.App.Core.GameMemory\DevilDaggersInfo.App.Core.GameMemory.csproj" />
+    <ProjectReference Include="..\..\common\DevilDaggersInfo.Common\DevilDaggersInfo.Common.csproj" />
+    <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Replay\DevilDaggersInfo.Core.Replay.csproj" />
+    <ProjectReference Include="..\..\razor-core\DevilDaggersInfo.Razor.Core.Components\DevilDaggersInfo.Razor.Core.Components.csproj" />
+  </ItemGroup>
 </Project>

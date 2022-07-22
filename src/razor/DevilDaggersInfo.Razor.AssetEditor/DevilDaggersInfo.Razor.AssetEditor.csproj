@@ -9,13 +9,6 @@
     <SupportedPlatform Include="browser" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Fluxor.Blazor.Web" />
-    <PackageReference Include="Microsoft.AspNetCore.Components" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" />
-    <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Mod\DevilDaggersInfo.Core.Mod.csproj" />
-    <ProjectReference Include="..\..\app-core\DevilDaggersInfo.App.Core.NativeInterface\DevilDaggersInfo.App.Core.NativeInterface.csproj" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Remove="package-lock.json" />
     <Content Remove="package.json" />
     <Content Update="wwwroot\**\*">
@@ -35,4 +28,11 @@
     <Exec Command="npm run build" Condition="'$(Configuration)' == 'Debug'" />
     <Exec Command="npm run publish" Condition="'$(Configuration)' == 'Release'" />
   </Target>
+  <ItemGroup>
+    <PackageReference Include="Fluxor.Blazor.Web" />
+    <PackageReference Include="Microsoft.AspNetCore.Components" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" />
+    <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Mod\DevilDaggersInfo.Core.Mod.csproj" />
+    <ProjectReference Include="..\..\app-core\DevilDaggersInfo.App.Core.NativeInterface\DevilDaggersInfo.App.Core.NativeInterface.csproj" />
+  </ItemGroup>
 </Project>
