@@ -47,7 +47,7 @@ public static class NewsContainer
 		new()
 		{
 			DateTime = new(2022, 07, 22),
-			Title = "V5.6 Update",
+			Title = "V5.6 Update and Replay Editor Alpha",
 		},
 	};
 }
