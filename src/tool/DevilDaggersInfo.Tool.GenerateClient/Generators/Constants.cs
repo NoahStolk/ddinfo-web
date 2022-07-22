@@ -9,4 +9,5 @@ internal static class Constants
 	public static readonly string ClientProjectPath = Path.Combine(_devRoot, "web", "DevilDaggersInfo.Web.Client");
 	public static readonly string RazorIamProjectPath = Path.Combine(_devRoot, "razor", "DevilDaggersInfo.Razor.AppManager");
 	public static readonly string RazorClProjectPath = Path.Combine(_devRoot, "razor", "DevilDaggersInfo.Razor.CustomLeaderboard");
+	public static readonly string RazorReProjectPath = Path.Combine(_devRoot, "razor", "DevilDaggersInfo.Razor.ReplayEditor");
 }

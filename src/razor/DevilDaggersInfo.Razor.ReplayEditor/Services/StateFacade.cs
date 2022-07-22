@@ -15,12 +15,14 @@ public class StateFacade
 	private readonly IDispatcher _dispatcher;
 	private readonly INativeFileSystemService _fileSystemService;
 	private readonly GameMemoryReaderService _readerService;
+	private readonly NetworkService _networkService;
 
-	public StateFacade(IDispatcher dispatcher, INativeFileSystemService fileSystemService, GameMemoryReaderService readerService)
+	public StateFacade(IDispatcher dispatcher, INativeFileSystemService fileSystemService, GameMemoryReaderService readerService, NetworkService networkService)
 	{
 		_dispatcher = dispatcher;
 		_fileSystemService = fileSystemService;
 		_readerService = readerService;
+		_networkService = networkService;
 	}
 
 	public void NewReplay()
@@ -74,9 +76,19 @@ public class StateFacade
 		_dispatcher.Dispatch(new SelectTickRangeAction(0, 60));
 	}
 
-	public void OpenCurrentReplayInGame()
+	public async Task OpenCurrentReplayInGame()
 	{
-		const long ddstatsMarkerOffset = 2452928; // TODO: Get from API.
+		long ddstatsMarkerOffset;
+		try
+		{
+			ddstatsMarkerOffset = await _networkService.GetMarker(Api.Ddre.ProcessMemory.SupportedOperatingSystem.Windows); // TODO: Use Linux on Linux.
+		}
+		catch (Exception ex)
+		{
+			// TODO: Dispatch failure action.
+			return;
+		}
+
 		if (!_readerService.Initialize(ddstatsMarkerOffset))
 		{
 			// TODO: Dispatch failure action.
