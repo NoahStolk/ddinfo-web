@@ -49,7 +49,98 @@ In order to keep the architecture clean, certain dependencies are forbidden. The
 
 The UI logic for each app lives in its own UI library. These are not tied to app heads. This allows the apps to switch between framework very easily. For instance, a .NET MAUI version for DDAE could easily be created without affecting the current Photino version of the app.
 
-## End state chart
+## End state chart (summary)
+
+```mermaid
+flowchart TD;
+	apps[Apps]
+	razor[Razor libs]
+	app_core[App Core libs]
+
+	core[Core libs]
+
+	razor_core[Razor Core libs]
+
+	web_client[Web.Client]
+	web_server[Web.Server]
+	web_server_domain[Web.Server.Domain]
+	web_core_claims[Web.Core.Claims]
+
+	api_ext[API external]
+	api_web[API web]
+	api_app[API apps]
+
+	class api_ext,api_web,api_app api;
+	classDef api fill:#660,stroke:#333,stroke-width:4px;
+
+	class apps app;
+	classDef app fill:#a00,stroke:#333,stroke-width:4px;
+
+	class app_core app_core;
+	classDef app_core fill:#306,stroke:#333,stroke-width:4px;
+
+	class core core;
+	classDef core fill:#006,stroke:#333,stroke-width:4px;
+
+	class razor razor;
+	classDef razor fill:#800,stroke:#333,stroke-width:4px;
+
+	class razor_core razor_core;
+	classDef razor_core fill:#500,stroke:#333,stroke-width:4px;
+
+	class web_client web_client;
+	classDef web_client fill:#a66,stroke:#333,stroke-width:4px;
+
+	class web_core_claims web_core;
+	classDef web_core fill:#00a,stroke:#333,stroke-width:4px;
+
+	class web_server,web_server_domain web_server;
+	classDef web_server fill:#383,stroke:#333,stroke-width:4px;
+
+	apps --> razor
+
+	razor --> razor_core
+	razor --> app_core
+	razor --> api_app
+
+	web_server --> api_ext
+	web_client --> api_web
+	web_server --> api_app
+
+	subgraph App <-> Web
+		api_app
+	end
+
+	subgraph Core
+		core
+		razor_core
+	end
+
+	subgraph App
+		apps
+
+		razor ----> core
+		razor ----> app_core
+	end
+
+	subgraph Web
+		web_client ----> razor_core
+		web_client --> web_core_claims
+		web_client ----> core
+
+		web_server ------> core
+		web_server --> web_client
+		web_server --> web_server_domain
+
+		web_server_domain --> core
+		web_server_domain --> web_core_claims
+
+		api_ext
+		api_web
+	end
+```
+
+## End state chart (detailed)
 
 ```mermaid
 flowchart TD;
@@ -138,6 +229,8 @@ flowchart TD;
 	end
 
 	subgraph App Core
+		app_core_apiclient
+
 		app_core_gamememory --> app_core_nativeinterface
 	end
 
