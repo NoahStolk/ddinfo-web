@@ -105,7 +105,7 @@ public class ReplayBinary<TReplayBinaryHeader>
 	{
 		return new(
 			header: TReplayBinaryHeader.CreateDefault(),
-			compressedEvents: ReplayEventsParser.CompileEvents(new List<IEvent> { new EndEvent() })); // TODO: Check if this is valid by saving this default empty replay and playing it in DD.
+			compressedEvents: ReplayEventsParser.CompileEvents(new List<IEvent> { default(EndEvent) })); // TODO: Check if this is valid by saving this default empty replay and playing it in DD. Might need an initial inputs event.
 	}
 
 	public byte[] Compile()
