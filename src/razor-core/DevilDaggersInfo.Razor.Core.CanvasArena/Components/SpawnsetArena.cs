@@ -11,7 +11,7 @@ public partial class SpawnsetArena
 	private int _canvasSize;
 	private float _tileSize;
 
-	private Canvas2d? _context;
+	private CanvasArena? _context;
 	private object? _canvasReference;
 
 	private double _canvasMouseX;
@@ -39,7 +39,7 @@ public partial class SpawnsetArena
 			await JsRuntime.InvokeAsync<object>("arenaInitialResize");
 		}
 
-		_context = new Canvas2d("arena-canvas");
+		_context = new CanvasArena("arena-canvas");
 
 		Render();
 	}
