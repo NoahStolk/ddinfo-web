@@ -1,4 +1,7 @@
+@using DevilDaggersInfo.Core.Spawnset
 @using DevilDaggersInfo.Core.Spawnset.Enums
+@using DevilDaggersInfo.Razor.Core.CanvasArena
+
 <Heading Title="Arena" Level="2" />
 <div class="bg-gray-1 max-w-arena-table px-1">
 	<DataField Name="Start radius">@SpawnsetBinary.ShrinkStart.ToString("0.###")</DataField>
@@ -14,13 +17,8 @@
 	}
 </div>
 
-<div class="relative max-w-arena-table" id="arena">
-	<canvas width="@_canvasSize" height="@_canvasSize" id="arena-canvas" @ref="_canvasReference"></canvas>
-</div>
-
-<SpawnsetArenaHoverInfo @ref="_spawnsetArenaHoverInfo" />
-
-<div class="max-w-arena-table">Time: @((CurrentTime + SpawnsetBinary.TimerStart).ToString("0.0"))</div>
-<div class="max-w-arena-table">
-	<input class="w-full slider" type="range" min="0" max="@_sliderMax" step="0.1" @bind="@CurrentTime" @bind:event="oninput" />
-</div>
+@code {
+	[Parameter]
+	[EditorRequired]
+	public SpawnsetBinary SpawnsetBinary { get; set; } = null!;
+}

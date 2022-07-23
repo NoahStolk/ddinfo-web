@@ -1,0 +1,38 @@
+@using DevilDaggersInfo.Core.Spawnset
+@using DevilDaggersInfo.Razor.Core.CanvasArena.Components
+
+<SpawnsetArena SpawnsetBinary="SpawnsetBinary" CurrentTime="_currentTime" />
+
+<div class="max-w-arena-table">Time: @((_currentTime + SpawnsetBinary.TimerStart).ToString("0.0"))</div>
+<div class="max-w-arena-table">
+	<input class="w-full slider" type="range" min="0" max="@_sliderMax" step="0.1" @bind="@_currentTime" @bind:event="oninput" />
+</div>
+
+@code {
+	private float _sliderMax;
+	private float _currentTime;
+
+	[Parameter]
+	[EditorRequired]
+	public SpawnsetBinary SpawnsetBinary { get; set; } = null!;
+
+	protected override void OnInitialized()
+	{
+		// Determine the max tile height to add additional time to the slider.
+		// For example, when the shrink ends at 200, but there is a tile at height 20, we want to add another 88 seconds ((20 + 2) * 4) to the slider so the shrink transition is always fully visible for all tiles.
+		// Add 2 heights to make sure it is still visible until the height is -2 (the palette should still show something until a height of at least -1 or lower).
+		// Multiply by 4 because a tile falls by 1 unit every 4 seconds.
+		float maxTileHeight = 0;
+		for (int i = 0; i < SpawnsetBinary.ArenaDimension; i++)
+		{
+			for (int j = 0; j < SpawnsetBinary.ArenaDimension; j++)
+			{
+				float tileHeight = SpawnsetBinary.ArenaTiles[i, j];
+				if (maxTileHeight < tileHeight)
+					maxTileHeight = tileHeight;
+			}
+		}
+
+		_sliderMax = SpawnsetBinary.GetShrinkEndTime() + (maxTileHeight + 2) * 4;
+	}
+}

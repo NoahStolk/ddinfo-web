@@ -22,6 +22,7 @@
     <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Mod\DevilDaggersInfo.Core.Mod.csproj" />
     <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Replay\DevilDaggersInfo.Core.Replay.csproj" />
     <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Spawnset\DevilDaggersInfo.Core.Spawnset.csproj" />
+    <ProjectReference Include="..\..\razor-core\DevilDaggersInfo.Razor.Core.CanvasArena\DevilDaggersInfo.Razor.Core.CanvasArena.csproj" />
     <ProjectReference Include="..\..\razor-core\DevilDaggersInfo.Razor.Core.CanvasChart\DevilDaggersInfo.Razor.Core.CanvasChart.csproj" />
     <ProjectReference Include="..\..\razor-core\DevilDaggersInfo.Razor.Core.Components\DevilDaggersInfo.Razor.Core.Components.csproj" />
     <ProjectReference Include="..\..\web-core\DevilDaggersInfo.Web.Core.Claims\DevilDaggersInfo.Web.Core.Claims.csproj" />

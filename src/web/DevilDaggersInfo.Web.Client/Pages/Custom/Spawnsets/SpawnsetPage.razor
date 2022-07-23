@@ -1,6 +1,7 @@
 @page "/custom/spawnset/{Id:int}"
 @using DevilDaggersInfo.Core.Spawnset.Extensions
 @using DevilDaggersInfo.Core.Spawnset.Enums
+@using DevilDaggersInfo.Razor.Core.CanvasArena.Components
 
 @if (GetSpawnset == null)
 {
@@ -58,8 +59,9 @@ else
 					<DataField Name="Game version">@SpawnsetBinary.GetGameVersionString()</DataField>
 					<DataField Name="Game mode">@SpawnsetBinary.GameMode.ToDisplayString()</DataField>
 				</div>
-
-				<SpawnsetArena SpawnsetBinary="SpawnsetBinary" />
+				
+				<SpawnsetArenaData SpawnsetBinary="SpawnsetBinary" />
+				<SpawnsetArenaWrapper SpawnsetBinary="SpawnsetBinary" />
 
 				<Heading Title="Settings" Level="2" />
 				<div class="bg-gray-1 max-w-arena-table px-1">
@@ -84,7 +86,7 @@ else
 		<div>
 			<div class="xl:pl-4 xl:pt-1">
 				<Heading Title="Spawns" Level="2" />
-				<SpawnsetSpawns SpawnsView=SpawnsView />
+				<SpawnsetSpawns SpawnsView="SpawnsView" />
 			</div>
 		</div>
 	</div>

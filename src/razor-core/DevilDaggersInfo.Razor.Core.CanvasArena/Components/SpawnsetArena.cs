@@ -1,64 +1,34 @@
 using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Core.Spawnset.Enums;
 using DevilDaggersInfo.Razor.Core.Canvas;
-using DevilDaggersInfo.Razor.Core.CanvasChart.JsRuntime;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
-namespace DevilDaggersInfo.Web.Client.Components.Spawnsets;
+namespace DevilDaggersInfo.Razor.Core.CanvasArena.Components;
 
 public partial class SpawnsetArena
 {
 	private int _canvasSize;
 	private float _tileSize;
 
-	private Canvas2d? _context;
+	private CanvasArena? _context;
 	private object? _canvasReference;
 
 	private double _canvasMouseX;
 	private double _canvasMouseY;
 
-	private float _sliderMax;
-
-	private float _currentTime;
-
 	private SpawnsetArenaHoverInfo _spawnsetArenaHoverInfo = null!;
-
-	private float CurrentTime
-	{
-		get => _currentTime;
-		set
-		{
-			_currentTime = value;
-			Render();
-		}
-	}
 
 	[Inject]
 	public IJSRuntime JsRuntime { get; set; } = null!;
 
-	[Parameter, EditorRequired]
+	[Parameter]
+	[EditorRequired]
 	public SpawnsetBinary SpawnsetBinary { get; set; } = null!;
 
-	protected override void OnInitialized()
-	{
-		// Determine the max tile height to add additional time to the slider.
-		// For example, when the shrink ends at 200, but there is a tile at height 20, we want to add another 88 seconds ((20 + 2) * 4) to the slider so the shrink transition is always fully visible for all tiles.
-		// Add 2 heights to make sure it is still visible until the height is -2 (the palette should still show something until a height of at least -1 or lower).
-		// Multiply by 4 because a tile falls by 1 unit every 4 seconds.
-		float maxTileHeight = 0;
-		for (int i = 0; i < SpawnsetBinary.ArenaDimension; i++)
-		{
-			for (int j = 0; j < SpawnsetBinary.ArenaDimension; j++)
-			{
-				float tileHeight = SpawnsetBinary.ArenaTiles[i, j];
-				if (maxTileHeight < tileHeight)
-					maxTileHeight = tileHeight;
-			}
-		}
-
-		_sliderMax = SpawnsetBinary.GetShrinkEndTime() + (maxTileHeight + 2) * 4;
-	}
+	[Parameter]
+	[EditorRequired]
+	public float CurrentTime { get; set; }
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
@@ -69,7 +39,7 @@ public partial class SpawnsetArena
 			await JsRuntime.InvokeAsync<object>("arenaInitialResize");
 		}
 
-		_context = new Canvas2d("arena-canvas");
+		_context = new CanvasArena("arena-canvas");
 
 		Render();
 	}
@@ -97,7 +67,7 @@ public partial class SpawnsetArena
 				if (tileHeight < -1)
 					continue;
 
-				float actualTileHeight = SpawnsetBinary.GetActualTileHeight(i, j, _currentTime);
+				float actualTileHeight = SpawnsetBinary.GetActualTileHeight(i, j, CurrentTime);
 				Color color = GetColorFromHeight(actualTileHeight);
 				if (color.R == 0 && color.G == 0 && color.B == 0)
 					continue;
@@ -108,13 +78,13 @@ public partial class SpawnsetArena
 
 		const int tileUnit = 4; // Tiles are 4 units in width/length in the game.
 		float shrinkEndTime = SpawnsetBinary.GetShrinkEndTime();
-		float shrinkRadius = shrinkEndTime == 0 ? SpawnsetBinary.ShrinkStart : Math.Max((SpawnsetBinary.ShrinkStart - _currentTime / shrinkEndTime * (SpawnsetBinary.ShrinkStart - SpawnsetBinary.ShrinkEnd)), SpawnsetBinary.ShrinkEnd);
+		float shrinkRadius = shrinkEndTime == 0 ? SpawnsetBinary.ShrinkStart : Math.Max(SpawnsetBinary.ShrinkStart - CurrentTime / shrinkEndTime * (SpawnsetBinary.ShrinkStart - SpawnsetBinary.ShrinkEnd), SpawnsetBinary.ShrinkEnd);
 		if (shrinkRadius > 0 && shrinkRadius <= 100)
 		{
 			_context.StrokeStyle = "#f08";
 			_context.LineWidth = 1;
 			_context.BeginPath();
-			_context.Circle(_canvasSize / 2, _canvasSize / 2, shrinkRadius / tileUnit * _tileSize);
+			_context.Circle(_canvasSize / 2f, _canvasSize / 2f, shrinkRadius / tileUnit * _tileSize);
 			_context.Stroke();
 		}
 
@@ -125,7 +95,7 @@ public partial class SpawnsetArena
 
 		void RenderRaceDagger()
 		{
-			(int x, float? y, int z) = SpawnsetBinary.GetRaceDaggerTilePosition();
+			(_, float? y, _) = SpawnsetBinary.GetRaceDaggerTilePosition();
 			if (!y.HasValue)
 				return;
 
@@ -151,12 +121,8 @@ public partial class SpawnsetArena
 
 		void RenderPlayer()
 		{
-			(int x, float? y, int z) = SpawnsetBinary.GetRaceDaggerTilePosition();
-			if (!y.HasValue)
-				return;
-
-			float playerCenterX = _canvasSize / 2;
-			float playerCenterY = _canvasSize / 2;
+			float playerCenterX = _canvasSize / 2f;
+			float playerCenterY = _canvasSize / 2f;
 
 			_context.BeginPath();
 			_context.MoveTo(playerCenterX, playerCenterY + 3);
@@ -184,7 +150,7 @@ public partial class SpawnsetArena
 		int x = Math.Clamp((int)(_canvasMouseX / _tileSize), 0, 50);
 		int y = Math.Clamp((int)(_canvasMouseY / _tileSize), 0, 50);
 		float height = SpawnsetBinary.ArenaTiles[x, y];
-		float actualHeight = SpawnsetBinary.GetActualTileHeight(x, y, _currentTime);
+		float actualHeight = SpawnsetBinary.GetActualTileHeight(x, y, CurrentTime);
 
 		_spawnsetArenaHoverInfo.Update(x, y, height, actualHeight);
 	}
@@ -202,10 +168,10 @@ public partial class SpawnsetArena
 		saturation = Math.Clamp(saturation, 0, 1);
 		value = Math.Clamp(value, 0, 1);
 
-		int hi = (int)(MathF.Floor(hue / 60)) % 6;
+		int hi = (int)MathF.Floor(hue / 60) % 6;
 		float f = hue / 60 - MathF.Floor(hue / 60);
 
-		value = value * 255;
+		value *= 255;
 		byte v = (byte)value;
 		byte p = (byte)(value * (1 - saturation));
 		byte q = (byte)(value * (1 - f * saturation));
