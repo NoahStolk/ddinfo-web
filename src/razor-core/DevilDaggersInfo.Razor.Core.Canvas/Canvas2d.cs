@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Razor.Core.Unmarshalled;
+namespace DevilDaggersInfo.Razor.Core.Canvas;
 
 /// <summary>
 /// Provides invoking methods to the 2D context of the HTML5 canvas.
@@ -537,6 +537,7 @@ public class Canvas2d : Canvas
 	public void Restore()
 		=> Invoke("c2d.restore");
 
+	// TODO: Move.
 	public void DrawTile(int x, int y, int r, int g, int b, float tileSize)
 		=> Invoke("c2d.drawTile", x, y, r, g, b, tileSize);
 }

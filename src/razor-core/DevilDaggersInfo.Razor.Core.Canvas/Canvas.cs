@@ -1,6 +1,6 @@
 using Microsoft.JSInterop.WebAssembly;
 
-namespace DevilDaggersInfo.Razor.Core.Unmarshalled;
+namespace DevilDaggersInfo.Razor.Core.Canvas;
 
 public abstract class Canvas
 {

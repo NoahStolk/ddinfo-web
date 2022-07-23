@@ -1,7 +1,7 @@
 using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Core.Spawnset.Enums;
+using DevilDaggersInfo.Razor.Core.Canvas;
 using DevilDaggersInfo.Razor.Core.CanvasChart.JsRuntime;
-using DevilDaggersInfo.Razor.Core.Unmarshalled;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 

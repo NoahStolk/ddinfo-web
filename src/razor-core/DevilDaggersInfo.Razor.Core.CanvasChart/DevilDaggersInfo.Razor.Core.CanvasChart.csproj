@@ -5,6 +5,6 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" />
     <ProjectReference Include="..\..\common\DevilDaggersInfo.Common\DevilDaggersInfo.Common.csproj" />
-    <ProjectReference Include="..\DevilDaggersInfo.Razor.Core.Unmarshalled\DevilDaggersInfo.Razor.Core.Unmarshalled.csproj" />
+    <ProjectReference Include="..\DevilDaggersInfo.Razor.Core.Canvas\DevilDaggersInfo.Razor.Core.Canvas.csproj" />
   </ItemGroup>
 </Project>

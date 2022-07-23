@@ -169,7 +169,7 @@ flowchart TD;
 
 	razor_core_canvaschart[Razor.Core.CanvasChart]
 	razor_core_components[Razor.Core.Components]
-	razor_core_unmarshalled[Razor.Core.Unmarshalled]
+	razor_core_canvas[Razor.Core.Canvas]
 
 	web_client[Web.Client]
 	web_server[Web.Server]
@@ -204,7 +204,7 @@ flowchart TD;
 	class razor_appmanager,razor_asseteditor,razor_customleaderboard,razor_replayeditor,razor_survivaleditor razor;
 	classDef razor fill:#800,stroke:#333,stroke-width:4px;
 
-	class razor_core_canvaschart,razor_core_components,razor_core_unmarshalled razor_core;
+	class razor_core_canvaschart,razor_core_components,razor_core_canvas razor_core;
 	classDef razor_core fill:#500,stroke:#333,stroke-width:4px;
 
 	class web_client web_client;
@@ -225,7 +225,7 @@ flowchart TD;
 		core_replay --> core_spawnset
 		core_spawnset --> core_wiki
 
-		razor_core_canvaschart --> razor_core_unmarshalled
+		razor_core_canvaschart --> razor_core_canvas
 	end
 
 	subgraph App Core

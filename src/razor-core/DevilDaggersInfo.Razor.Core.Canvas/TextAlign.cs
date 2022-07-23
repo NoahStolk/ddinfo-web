@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Razor.Core.Unmarshalled;
+namespace DevilDaggersInfo.Razor.Core.Canvas;
 
 public enum TextAlign
 {

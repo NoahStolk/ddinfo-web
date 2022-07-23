@@ -24,11 +24,11 @@ There are currently four types of core libraries.
 
 ## `razor-core`
 
-| **Project**             | **Reasoning**                                   |
-|-------------------------|-------------------------------------------------|
-| Razor.Core.CanvasChart  | Any UI project may want to render canvas charts |
-| Razor.Core.Components   | Any UI project has access to these components   |
-| Razor.Core.Unmarshalled | Required by Razor.Core.CanvasChart              |
+| **Project**             | **Reasoning**                                                      |
+|-------------------------|--------------------------------------------------------------------|
+| Razor.Core.CanvasChart  | Any UI project may want to render canvas charts                    |
+| Razor.Core.Components   | Any UI project has access to these components                      |
+| Razor.Core.Canvas       | Required by Razor.Core.CanvasChart to render to the canvas element |
 
 ## `web-core`
 

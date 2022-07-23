@@ -1,8 +1,8 @@
+using DevilDaggersInfo.Razor.Core.Canvas;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Data;
 using DevilDaggersInfo.Razor.Core.CanvasChart.JsRuntime;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Options.BarChart;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Utils;
-using DevilDaggersInfo.Razor.Core.Unmarshalled;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
