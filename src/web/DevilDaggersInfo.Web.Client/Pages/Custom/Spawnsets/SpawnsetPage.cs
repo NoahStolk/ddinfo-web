@@ -12,10 +12,15 @@ public partial class SpawnsetPage
 
 	private bool _notFound;
 
-	[Inject] public MainApiHttpClient Http { get; set; } = null!;
-	[Inject] public NavigationManager NavigationManager { get; set; } = null!;
+	[Inject]
+	public MainApiHttpClient Http { get; set; } = null!;
 
-	[Parameter, EditorRequired] public int Id { get; set; }
+	[Inject]
+	public NavigationManager NavigationManager { get; set; } = null!;
+
+	[Parameter]
+	[EditorRequired]
+	public int Id { get; set; }
 
 	public GetSpawnset? GetSpawnset { get; set; }
 
