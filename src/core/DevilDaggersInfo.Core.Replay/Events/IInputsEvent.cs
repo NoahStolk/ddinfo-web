@@ -2,21 +2,21 @@ namespace DevilDaggersInfo.Core.Replay.Events;
 
 public interface IInputsEvent : IEvent
 {
-	public bool Left { get; }
+	bool Left { get; }
 
-	public bool Right { get; }
+	bool Right { get; }
 
-	public bool Forward { get; }
+	bool Forward { get; }
 
-	public bool Backward { get; }
+	bool Backward { get; }
 
-	public JumpType Jump { get; }
+	JumpType Jump { get; }
 
-	public ShootType Shoot { get; }
+	ShootType Shoot { get; }
 
-	public ShootType ShootHoming { get; }
+	ShootType ShootHoming { get; }
 
-	public short MouseX { get; }
+	short MouseX { get; }
 
-	public short MouseY { get; }
+	short MouseY { get; }
 }
