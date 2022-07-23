@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Core.Replay.Events.Interfaces;
+
 namespace DevilDaggersInfo.Core.Replay.Events;
 
 public readonly record struct InitialInputsEvent(bool Left, bool Right, bool Forward, bool Backward, JumpType Jump, ShootType Shoot, ShootType ShootHoming, short MouseX, short MouseY, float LookSpeed) : IInputsEvent

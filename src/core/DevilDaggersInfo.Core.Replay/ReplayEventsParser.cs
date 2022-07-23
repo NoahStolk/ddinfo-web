@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Core.Replay.Events.Interfaces;
 using System.IO.Compression;
 
 namespace DevilDaggersInfo.Core.Replay;
