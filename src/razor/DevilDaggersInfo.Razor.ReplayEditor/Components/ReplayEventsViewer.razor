@@ -1,6 +1,7 @@
 @using DevilDaggersInfo.Common
 @using DevilDaggersInfo.Core.Replay
 @using DevilDaggersInfo.Core.Replay.Events
+@using DevilDaggersInfo.Core.Replay.Events.Interfaces
 @using DevilDaggersInfo.Razor.ReplayEditor.Enums
 @using DevilDaggersInfo.Razor.ReplayEditor.Services
 @using DevilDaggersInfo.Razor.ReplayEditor.Store.State
@@ -16,7 +17,7 @@
 	int endTick = ReplayEditorState.Value.EndTick;
 
 	bool f = startTick <= 0;
-	bool l = endTick >= replayBinary.EventsPerTick.Count - 1;
+	bool l = endTick >= replayBinary.EventsData.TickCount - 1;
 	const string disabledStyle = "disabled:opacity-50 cursor-default btn-disabled";
 	const string enabledStyle = "btn-gray";
 }
@@ -40,7 +41,7 @@
 		<button disabled="@l" class="@(l ? disabledStyle : enabledStyle) btn" @onclick="() => StateFacade.SelectTickRange(startTick + 300, endTick + 300)">@MarkupStrings.NavNextDouble</button>
 	</div>
 	<div class="w-10 h-10 mx-1">
-		<button disabled="@l" class="@(l ? disabledStyle : enabledStyle) btn" @onclick="() => StateFacade.SelectTickRange(replayBinary.EventsPerTick.Count - 60, replayBinary.EventsPerTick.Count)">@MarkupStrings.NavEnd</button>
+		<button disabled="@l" class="@(l ? disabledStyle : enabledStyle) btn" @onclick="() => StateFacade.SelectTickRange(replayBinary.EventsData.TickCount - 60, replayBinary.EventsData.TickCount)">@MarkupStrings.NavEnd</button>
 	</div>
 </div>
 
@@ -94,9 +95,22 @@
 
 @{
 	bool separator = false;
-	@for (int i = startTick; i < Math.Min(replayBinary.EventsPerTick.Count, endTick); i++)
+
+	// Ranges don't work on IReadOnlyList<T>, so create an array.
+	IEvent[] eventsArray = replayBinary.EventsData.Events.ToArray();
+	@for (int i = startTick; i < Math.Min(replayBinary.EventsData.TickCount, endTick); i++)
 	{
-		IEnumerable<IEvent> events = replayBinary.EventsPerTick[i];
+		IEnumerable<IEvent> events;
+		int start = replayBinary.EventsData.EventOffsetsPerTick[i];
+		if (i >= replayBinary.EventsData.TickCount)
+		{
+			events = eventsArray[start..];
+		}
+		else
+		{
+			int end = replayBinary.EventsData.EventOffsetsPerTick[i + 1];
+			events = eventsArray[start..end];
+		}
 
 		foreach (KeyValuePair<SwitchableEventType, bool> kvp in ReplayEditorState.Value.ShownEventTypes)
 		{

@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Core.Replay.Events;
+namespace DevilDaggersInfo.Core.Replay.Events.Interfaces;
 
 public interface IEvent
 {

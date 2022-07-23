@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Core.Replay.Events.Interfaces;
+
 namespace DevilDaggersInfo.Core.Replay.Events;
 
 // TODO: One of these vectors is likely the skull position when it is transmuted.

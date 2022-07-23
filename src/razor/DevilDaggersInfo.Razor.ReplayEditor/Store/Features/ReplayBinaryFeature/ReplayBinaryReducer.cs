@@ -17,7 +17,7 @@ public static class ReplayBinaryReducer
 	public static ReplayBinaryState ReduceOpenLeaderboardBinaryAction(ReplayBinaryState state, OpenLeaderboardReplayAction action)
 	{
 		LocalReplayBinaryHeader header = new(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, string.Empty, Array.Empty<byte>());
-		ReplayBinary<LocalReplayBinaryHeader> localReplay = new(header, action.ReplayBinary.EventsPerTick);
+		ReplayBinary<LocalReplayBinaryHeader> localReplay = new(header, action.ReplayBinary.EventsData);
 
 		return new(localReplay, $"Leaderboard replay from {action.ReplayBinary.Header.Username} ({action.PlayerId}) - Converted to local replay");
 	}

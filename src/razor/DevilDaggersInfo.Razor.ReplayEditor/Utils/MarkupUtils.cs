@@ -6,7 +6,7 @@ namespace DevilDaggersInfo.Razor.ReplayEditor.Utils;
 
 public static class MarkupUtils
 {
-	public static MarkupString EntityType(int entityId, List<EntityType> entityTypes)
+	public static MarkupString EntityType(int entityId, IReadOnlyList<EntityType> entityTypes)
 	{
 		if (entityId < 0 || entityId >= entityTypes.Count)
 			return new($"{entityId} (<span style='color: red;'>???</span>)");

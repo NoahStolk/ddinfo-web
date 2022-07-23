@@ -1,47 +1,21 @@
+using DevilDaggersInfo.Core.Replay.Events.Interfaces;
 using System.IO.Compression;
 
 namespace DevilDaggersInfo.Core.Replay;
 
 public static class ReplayEventsParser
 {
-	public static byte[] CompileEvents(List<IEvent> events)
+	public static ReplayEventsData Parse(byte[] compressedEvents)
 	{
-		using MemoryStream ms = new();
-		using BinaryWriter bw = new(ms);
+		ReplayEventsData eventsData = new();
 
-		foreach (IEvent e in events)
-			e.Write(bw);
-
-		return Compress(ms.ToArray());
-	}
-
-	private static byte[] Compress(byte[] data)
-	{
-		using MemoryStream memoryStream = new();
-		using (DeflateStream deflateStream = new(memoryStream, CompressionLevel.SmallestSize))
-		{
-			deflateStream.Write(data, 0, data.Length);
-		}
-
-		byte[] compressedData = memoryStream.ToArray();
-
-		byte[] compressedDataWithHeader = new byte[2 + compressedData.Length];
-		Buffer.BlockCopy(new byte[] { 120, 1 }, 0, compressedDataWithHeader, 0, 2);
-		Buffer.BlockCopy(compressedData, 0, compressedDataWithHeader, 2, compressedData.Length);
-		return compressedDataWithHeader;
-	}
-
-	public static List<List<IEvent>> ParseCompressedEvents(byte[] compressedEvents)
-	{
 		using MemoryStream ms = new(compressedEvents[2..]); // Skip ZLIB header.
 		using DeflateStream deflateStream = new(ms, CompressionMode.Decompress, true);
-
 		using BinaryReader br = new(deflateStream);
-		List<List<IEvent>> events = new();
+
 		int entityId = 0;
 		bool parsedInitialInput = false;
 
-		List<IEvent> eventsInTick = new();
 		while (true)
 		{
 			byte eventType = br.ReadByte();
@@ -58,22 +32,16 @@ public static class ReplayEventsParser
 				0x0b => default(EndEvent),
 				_ => throw new InvalidReplayBinaryException($"Invalid event type '{eventType}'."),
 			};
-			eventsInTick.Add(e);
+			eventsData.AddEvent(e);
 
 			if (e is InitialInputsEvent)
 				parsedInitialInput = true;
-
-			if (e is InitialInputsEvent or InputsEvent or EndEvent)
-			{
-				events.Add(eventsInTick);
-				eventsInTick = new();
-			}
 
 			if (e is EndEvent)
 				break;
 		}
 
-		return events;
+		return eventsData;
 	}
 
 	private static IEvent ParseSpawnEvent(BinaryReader br, ref int entityId)
