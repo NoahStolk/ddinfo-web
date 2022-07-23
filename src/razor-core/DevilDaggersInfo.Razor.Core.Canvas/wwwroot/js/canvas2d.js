@@ -402,6 +402,7 @@ window.c2d = {
 		dc.restore();
 	},
 
+	// TODO: Move.
 	drawTile: function (d) {
 		const dc = c2d.getContext(d);
 		const x = jsi.readInt32(d, 4);
