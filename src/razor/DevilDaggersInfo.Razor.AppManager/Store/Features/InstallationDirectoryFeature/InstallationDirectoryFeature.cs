@@ -1,7 +1,7 @@
 using DevilDaggersInfo.Razor.AppManager.Store.State;
 using Fluxor;
 
-namespace DevilDaggersInfo.Razor.AppManager.Store.Features.ManagerFeature;
+namespace DevilDaggersInfo.Razor.AppManager.Store.Features.InstallationDirectoryFeature;
 
 public class InstallationDirectoryFeature : Feature<InstallationDirectoryState>
 {

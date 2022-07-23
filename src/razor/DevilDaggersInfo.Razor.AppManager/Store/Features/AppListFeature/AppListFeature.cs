@@ -1,7 +1,7 @@
 using DevilDaggersInfo.Razor.AppManager.Store.State;
 using Fluxor;
 
-namespace DevilDaggersInfo.Razor.AppManager.Store.Features.AppList;
+namespace DevilDaggersInfo.Razor.AppManager.Store.Features.AppListFeature;
 
 public class AppListFeature : Feature<AppListState>
 {
