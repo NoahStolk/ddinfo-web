@@ -12,8 +12,8 @@
 		<span>Target position?</span>
 	</Head>
 	<Body>
-		<span>@MarkupUtils.EntityType(Event.EntityId, ReplayBinaryState.Value.ReplayBinary.EntityTypes)</span>
-		<span>@MarkupUtils.EntityType(Event.SpawnerEntityId, ReplayBinaryState.Value.ReplayBinary.EntityTypes)</span>
+		<span>@MarkupUtils.EntityType(Event.EntityId, ReplayBinaryState.Value.ReplayBinary.EventsData.EntityTypes)</span>
+		<span>@MarkupUtils.EntityType(Event.SpawnerEntityId, ReplayBinaryState.Value.ReplayBinary.EventsData.EntityTypes)</span>
 		<span>@Event.Position.ToString("0.00")</span>
 		<span>@Event.TargetPosition.ToString("0.00")</span>
 	</Body>
