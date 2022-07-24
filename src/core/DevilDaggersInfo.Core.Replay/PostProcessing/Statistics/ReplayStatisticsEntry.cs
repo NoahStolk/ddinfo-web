@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Core.Replay.Statistics;
+namespace DevilDaggersInfo.Core.Replay.PostProcessing.Statistics;
 
 public readonly record struct ReplayStatisticsEntry(
 	int GemsCollected,

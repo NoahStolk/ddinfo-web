@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Core.Replay.Events.Interfaces;
 
-namespace DevilDaggersInfo.Core.Replay.Statistics;
+namespace DevilDaggersInfo.Core.Replay.PostProcessing.Statistics;
 
 public class ReplayStatisticsBuilder
 {
