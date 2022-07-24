@@ -1,0 +1,57 @@
+@using DevilDaggersInfo.Common
+@using DevilDaggersInfo.Core.Replay.PostProcessing.Timeline
+@using DevilDaggersInfo.Razor.ReplayEditor.Services
+@using DevilDaggersInfo.Razor.ReplayEditor.Store.State
+@using DevilDaggersInfo.Razor.ReplayEditor.Utils
+@using Fluxor
+@inherits FluxorComponent
+@inject IState<ReplayBinaryState> ReplayBinaryState
+@inject StateFacade StateFacade
+
+<h2>@_currentTick (@((_currentTick / 60f).ToString(StringFormats.TimeFormat)))</h2>
+<input class="w-full slider" type="range" min="0" max="@ReplayBinaryState.Value.ReplayBinary.EventsData.TickCount" step="1" @bind="@_currentTick" @bind:event="oninput" />
+
+<div class="max-w-lg bg-gray-2">
+	<div class="grid gap-x-1 grid-cols-2">
+		<span class="font-bold">Entity</span>
+		<span class="font-bold">HP</span>
+
+		@{
+			int amount = 0;
+			foreach (EnemyTimeline timeline in _timelines.OrderByDescending(t => t.EntityId))
+			{
+				if (amount > 50)
+					continue;
+
+				int? hp = timeline.GetHp(_currentTick);
+				if (!hp.HasValue)
+					continue;
+
+				amount++;
+				<span>@MarkupUtils.EntityType(timeline.EntityId, ReplayBinaryState.Value.ReplayBinary.EventsData.EntityTypes)</span>
+				if (hp <= 0)
+				{
+					<span class="text-red">Dead</span>
+				}
+				else
+				{
+					<span>@hp</span>
+				}
+			}
+		}
+	</div>
+</div>
+
+@code {
+	 // TODO: Use Flux state.
+	private int _currentTick;
+	private List<EnemyTimeline> _timelines = new();
+
+	protected override void OnInitialized()
+	{
+		base.OnInitialized();
+	
+		EnemyTimelineBuilder builder = new();
+		_timelines = builder.Build(ReplayBinaryState.Value.ReplayBinary.EventsData.Events);
+	}
+}
