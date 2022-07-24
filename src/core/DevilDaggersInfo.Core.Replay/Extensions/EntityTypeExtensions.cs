@@ -35,6 +35,7 @@ public static class EntityTypeExtensions
 		EntityType.Skull2 => 20,
 		EntityType.Skull3 => 100,
 		EntityType.Skull4 => 300,
+		EntityType.Leviathan => 0, // TODO: Find out why this occurs.
 		_ => throw new InvalidOperationException($"{nameof(EntityType)} '{entityType}' cannot be transmuted."),
 	};
 
