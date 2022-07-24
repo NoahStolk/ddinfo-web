@@ -21,7 +21,7 @@ public static class ReplayEventsParser
 			byte eventType = br.ReadByte();
 			IEvent e = eventType switch
 			{
-				0x00 => ParseSpawnEvent(br, ref entityId),
+				0x00 => ParseEntitySpawnEvent(br, ref entityId),
 				0x01 => ParseEntityPositionEvent(br),
 				0x02 => ParseEntityOrientationEvent(br),
 				0x04 => ParseEntityTargetEvent(br),
@@ -44,7 +44,7 @@ public static class ReplayEventsParser
 		return eventsData;
 	}
 
-	private static IEvent ParseSpawnEvent(BinaryReader br, ref int entityId)
+	private static IEntitySpawnEvent ParseEntitySpawnEvent(BinaryReader br, ref int entityId)
 	{
 		entityId++;
 
