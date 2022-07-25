@@ -28,7 +28,7 @@
     <ProjectReference Include="..\..\web-core\DevilDaggersInfo.Web.Core.Claims\DevilDaggersInfo.Web.Core.Claims.csproj" />
   </ItemGroup>
   <Target Name="tailwind build" BeforeTargets="Compile" Condition="'$(TailwindBuild)' == 'true'">
-    <Exec Command="..\..\tw.exe -i tailwind.css -o wwwroot\tailwind.css" ContinueOnError="true">
+    <Exec Command="..\..\tw.exe -i tailwind.css -o wwwroot\tailwind.css --minify" ContinueOnError="true">
       <Output TaskParameter="ExitCode" PropertyName="ErrorCode"/>
     </Exec>
     <Error Condition="'$(ErrorCode)' != '0'" Text="Error building CSS file"/>
