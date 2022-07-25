@@ -3,30 +3,20 @@
     <DateTimeUtcNow>$([System.DateTime]::UtcNow.ToString("yyyy-MM-dd-HH-mm"))</DateTimeUtcNow>
     <Version>$(DateTimeUtcNow)</Version>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
-    <TailwindBuild>true</TailwindBuild>
   </PropertyGroup>
   <ItemGroup>
     <SupportedPlatform Include="browser" />
   </ItemGroup>
   <ItemGroup>
-    <Content Remove="package-lock.json" />
-    <Content Remove="package.json" />
     <Content Update="wwwroot\**\*">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <Target Name="npm install" BeforeTargets="tailwind build" Inputs="package.json" Outputs="node_modules/.install-stamp">
-    <Exec Command="npm -v" ContinueOnError="true">
-      <Output TaskParameter="ExitCode" PropertyName="error" />
+  <Target Name="tailwind build" BeforeTargets="Compile" Condition="'$(TailwindBuild)' == 'true'">
+    <Exec Command="..\..\tw.exe -i tailwind.css -o wwwroot\tailwind.css --minify" ContinueOnError="true">
+      <Output TaskParameter="ExitCode" PropertyName="ErrorCode"/>
     </Exec>
-    <Error Condition="'$(error)' != '0'" Text="NPM installation not found" />
-    <Exec Command="npm install" />
-    <Touch Files="node_modules/.install-stamp" AlwaysCreate="true" />
-  </Target>
-  <Target Name="tailwind build" AfterTargets="Build" Condition="'$(TailwindBuild)' == 'true'">
-    <Message Text="Tailwind build target running..." Importance="high"></Message>
-    <Exec Command="npm run build" Condition="'$(Configuration)' == 'Debug'" />
-    <Exec Command="npm run publish" Condition="'$(Configuration)' == 'Release'" />
+    <Error Condition="'$(ErrorCode)' != '0'" Text="Error building CSS file"/>
   </Target>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components" />
