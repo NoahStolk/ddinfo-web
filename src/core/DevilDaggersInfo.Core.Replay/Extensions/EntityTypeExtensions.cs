@@ -39,7 +39,7 @@ public static class EntityTypeExtensions
 		_ => throw new InvalidOperationException($"{nameof(EntityType)} '{entityType}' cannot be transmuted."),
 	};
 
-	// TODO: Take enemy parts into account.
+	// TODO: Take enemy parts into account? May not be needed.
 	public static int GetDamage(this EntityType enemyType, EntityType daggerType)
 	{
 		if (!enemyType.IsEnemy())
