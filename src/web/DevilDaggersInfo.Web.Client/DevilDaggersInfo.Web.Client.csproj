@@ -27,17 +27,10 @@
     <ProjectReference Include="..\..\razor-core\DevilDaggersInfo.Razor.Core.Components\DevilDaggersInfo.Razor.Core.Components.csproj" />
     <ProjectReference Include="..\..\web-core\DevilDaggersInfo.Web.Core.Claims\DevilDaggersInfo.Web.Core.Claims.csproj" />
   </ItemGroup>
-  <Target Name="npm install" BeforeTargets="tailwind build" Inputs="package.json" Outputs="node_modules/.install-stamp">
-    <Exec Command="npm -v" ContinueOnError="true">
-      <Output TaskParameter="ExitCode" PropertyName="error" />
+  <Target Name="tailwind build" BeforeTargets="Compile" Condition="'$(TailwindBuild)' == 'true'">
+    <Exec Command="..\..\tw.exe -i tailwind.css -o wwwroot\tailwind.css" ContinueOnError="true">
+      <Output TaskParameter="ExitCode" PropertyName="ErrorCode"/>
     </Exec>
-    <Error Condition="'$(error)' != '0'" Text="NPM installation not found" />
-    <Exec Command="npm install" />
-    <Touch Files="node_modules/.install-stamp" AlwaysCreate="true" />
-  </Target>
-  <Target Name="tailwind build" AfterTargets="Build" Condition="'$(TailwindBuild)' == 'true'">
-    <Message Text="Tailwind build target running..." Importance="high"></Message>
-    <Exec Command="npm run build" Condition="'$(Configuration)' == 'Debug'" />
-    <Exec Command="npm run publish" Condition="'$(Configuration)' == 'Release'" />
+    <Error Condition="'$(ErrorCode)' != '0'" Text="Error building CSS file"/>
   </Target>
 </Project>
