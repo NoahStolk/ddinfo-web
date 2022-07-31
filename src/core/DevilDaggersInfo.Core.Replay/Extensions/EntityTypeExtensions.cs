@@ -8,6 +8,18 @@ public static class EntityTypeExtensions
 	public static bool IsDagger(this EntityType entityType)
 		=> entityType is EntityType.Level1Dagger or EntityType.Level2Dagger or EntityType.Level3Dagger or EntityType.Level3HomingDagger or EntityType.Level4Dagger or EntityType.Level4HomingDagger or EntityType.Level4HomingSplash;
 
+	public static DaggerType GetDaggerType(this EntityType entityType) => entityType switch
+	{
+		EntityType.Level1Dagger => DaggerType.Level1,
+		EntityType.Level2Dagger => DaggerType.Level2,
+		EntityType.Level3Dagger => DaggerType.Level3,
+		EntityType.Level3HomingDagger => DaggerType.Level3Homing,
+		EntityType.Level4Dagger => DaggerType.Level4,
+		EntityType.Level4HomingDagger => DaggerType.Level4Homing,
+		EntityType.Level4HomingSplash => DaggerType.Level4HomingSplash,
+		_ => throw new InvalidOperationException($"{nameof(EntityType)} '{entityType}' is not a dagger."),
+	};
+
 	public static int GetInitialHp(this EntityType entityType) => entityType switch
 	{
 		EntityType.Skull1 => 1,
