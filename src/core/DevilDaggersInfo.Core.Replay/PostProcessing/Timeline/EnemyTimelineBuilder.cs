@@ -34,6 +34,9 @@ public class EnemyTimelineBuilder
 					continue;
 
 				int damage = enemy.EntityType.GetDamage(daggerType.Value);
+				if (damage == 0)
+					continue;
+
 				if (enemy.HpPerTick.ContainsKey(currentTick))
 					enemy.HpPerTick[currentTick] -= damage;
 				else

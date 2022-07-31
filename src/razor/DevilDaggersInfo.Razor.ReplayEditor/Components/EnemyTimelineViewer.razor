@@ -43,14 +43,14 @@
 </div>
 
 @code {
-	 // TODO: Use Flux state.
+	// TODO: Use Flux state.
 	private int _currentTick;
 	private List<EnemyTimeline> _timelines = new();
 
 	protected override void OnInitialized()
 	{
 		base.OnInitialized();
-	
+
 		EnemyTimelineBuilder builder = new();
 		_timelines = builder.Build(ReplayBinaryState.Value.ReplayBinary.EventsData.Events);
 	}

@@ -58,15 +58,10 @@ public static class EntityTypeExtensions
 				EntityType.Leviathan => 1,
 				_ => 10,
 			},
-			EntityType.Level4HomingDagger => enemyType switch
-			{
-				EntityType.Ghostpede => 0,
-				EntityType.Leviathan => 1,
-				_ => 10,
-			},
+			EntityType.Level4HomingDagger => 0,
 			EntityType.Level4HomingSplash => enemyType switch
 			{
-				EntityType.Leviathan => 1, // TODO: Not sure? Might be 0. Test by changing Leviathan HP to 2 and firing a single homing dagger into it.
+				EntityType.Leviathan => 1,
 				_ => 10, // Pretty sure Ghostpede actually takes damage from splash.
 			},
 			_ => 0,
