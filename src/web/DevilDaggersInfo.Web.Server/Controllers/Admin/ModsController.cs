@@ -125,7 +125,7 @@ public class ModsController : ControllerBase
 		}
 
 		if (addMod.Binaries.Count > 0)
-			await _modArchiveProcessor.ProcessModBinaryUploadAsync(addMod.Name, GetBinaryNames(addMod.Binaries));
+			await _modArchiveProcessor.ProcessModBinaryUploadAsync(addMod.Name, _modService.GetBinaryNames(addMod.Binaries.ConvertAll(bd => (bd.Name, bd.Data))));
 
 		if (addMod.Screenshots.Count > 0)
 			_modScreenshotProcessor.ProcessModScreenshotUpload(addMod.Name, addMod.Screenshots);
@@ -149,24 +149,6 @@ public class ModsController : ControllerBase
 		_auditLogger.LogAdd(addMod.GetLog(), User, mod.Id, _fileSystemLogger.Flush());
 
 		return Ok(mod.Id);
-	}
-
-	// TODO: Move to service.
-	private static Dictionary<BinaryName, byte[]> GetBinaryNames(List<BinaryData> binaries)
-	{
-		Dictionary<BinaryName, byte[]> dict = new();
-
-		foreach (BinaryData binaryData in binaries)
-		{
-			ModBinary modBinary = new(binaryData.Data, ModBinaryReadComprehensiveness.TypeOnly);
-			BinaryName binaryName = new(modBinary.ModBinaryType, binaryData.Name);
-			if (dict.ContainsKey(binaryName))
-				throw new InvalidModArchiveException("Binary names must all be unique.");
-
-			dict.Add(binaryName, binaryData.Data);
-		}
-
-		return dict;
 	}
 
 	[HttpPut("{id}")]
@@ -196,7 +178,7 @@ public class ModsController : ControllerBase
 		if (mod.Name != editMod.Name && _dbContext.Mods.Any(m => m.Name == editMod.Name))
 			return BadRequest($"Mod with name '{editMod.Name}' already exists.");
 
-		bool isUpdated = await _modArchiveProcessor.TransformBinariesInModArchiveAsync(mod.Name, editMod.Name, editMod.BinariesToDelete.ConvertAll(s => BinaryName.Parse(s, mod.Name)), GetBinaryNames(editMod.Binaries));
+		bool isUpdated = await _modArchiveProcessor.TransformBinariesInModArchiveAsync(mod.Name, editMod.Name, editMod.BinariesToDelete.ConvertAll(s => BinaryName.Parse(s, mod.Name)), _modService.GetBinaryNames(editMod.Binaries.ConvertAll(bd => (bd.Name, bd.Data))));
 		if (isUpdated)
 			mod.LastUpdated = DateTime.UtcNow;
 
