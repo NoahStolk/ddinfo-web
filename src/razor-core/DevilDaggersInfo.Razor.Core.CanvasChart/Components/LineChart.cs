@@ -1,6 +1,7 @@
 using DevilDaggersInfo.Common;
 using DevilDaggersInfo.Common.Utils;
 using DevilDaggersInfo.Razor.Core.Canvas;
+using DevilDaggersInfo.Razor.Core.Canvas.JSRuntime;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Data;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Options.LineChart;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Utils;
@@ -11,7 +12,7 @@ namespace DevilDaggersInfo.Razor.Core.CanvasChart.Components;
 
 public partial class LineChart
 {
-	private UnmarshalledCanvas2d? _context;
+	private Canvas2d? _context;
 	private object? _canvasReference;
 	private ChartHighlighter? _highlighter;
 
@@ -30,6 +31,9 @@ public partial class LineChart
 
 	[Inject]
 	public IJSRuntime JsRuntime { get; set; } = null!;
+
+	[Inject]
+	public IJSRuntimeWrapper JsRuntimeWrapper { get; set; } = null!;
 
 	[Parameter]
 	[EditorRequired]
@@ -58,7 +62,7 @@ public partial class LineChart
 			await JsRuntime.InvokeAsync<object>("chartInitialResize", DotNetObjectReference.Create(this));
 		}
 
-		_context = new UnmarshalledCanvas2d((IJSUnmarshalledRuntime)JsRuntime, $"{UniqueName}-canvas");
+		_context = new Canvas2d(JsRuntimeWrapper, $"{UniqueName}-canvas");
 
 		Render();
 	}

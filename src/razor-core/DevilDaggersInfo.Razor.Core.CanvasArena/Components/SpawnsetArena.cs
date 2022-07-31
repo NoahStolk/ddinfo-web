@@ -1,6 +1,7 @@
 using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Core.Spawnset.Enums;
 using DevilDaggersInfo.Razor.Core.Canvas;
+using DevilDaggersInfo.Razor.Core.Canvas.JSRuntime;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
@@ -8,10 +9,13 @@ namespace DevilDaggersInfo.Razor.Core.CanvasArena.Components;
 
 public partial class SpawnsetArena
 {
+	// Currently only allow one arena.
+	private const string _canvasId = "arena-canvas";
+
 	private int _canvasSize;
 	private float _tileSize;
 
-	private UnmarshalledCanvasArena? _context;
+	private CanvasArena? _context;
 	private object? _canvasReference;
 
 	private double _canvasMouseX;
@@ -21,6 +25,9 @@ public partial class SpawnsetArena
 
 	[Inject]
 	public IJSRuntime JsRuntime { get; set; } = null!;
+
+	[Inject]
+	public IJSRuntimeWrapper JsRuntimeWrapper { get; set; } = null!;
 
 	[Parameter]
 	[EditorRequired]
@@ -39,7 +46,7 @@ public partial class SpawnsetArena
 			await JsRuntime.InvokeAsync<object>("arenaInitialResize");
 		}
 
-		_context = new UnmarshalledCanvasArena((IJSUnmarshalledRuntime)JsRuntime, "arena-canvas");
+		_context = new CanvasArena(JsRuntimeWrapper, _canvasId);
 
 		Render();
 	}

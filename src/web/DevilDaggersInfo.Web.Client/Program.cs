@@ -1,9 +1,11 @@
 using Blazored.LocalStorage;
+using DevilDaggersInfo.Razor.Core.Canvas.JSRuntime;
 using DevilDaggersInfo.Web.Client.Authentication;
 using DevilDaggersInfo.Web.Client.HttpClients;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.JSInterop;
 
 namespace DevilDaggersInfo.Web.Client;
 
@@ -28,6 +30,8 @@ public static class Program
 
 		builder.Services.AddHttpClient<MainApiHttpClient>(client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
 		builder.Services.AddHttpClient<AdminApiHttpClient>(client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
+
+		builder.Services.AddSingleton<IJSRuntimeWrapper, UnmarshalledRuntimeWrapper>(serviceProvider => new((IJSUnmarshalledRuntime)serviceProvider.GetRequiredService<IJSRuntime>()));
 
 		builder.Services.AddBlazoredLocalStorage();
 
