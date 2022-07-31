@@ -39,7 +39,7 @@ public static class EntityTypeExtensions
 		_ => throw new InvalidOperationException($"{nameof(EntityType)} '{entityType}' cannot be transmuted."),
 	};
 
-	// TODO: Take enemy parts into account? May not be needed.
+	// TODO: Take enemy parts (UserData) into account? Some parts being damaged does 0 damage, like spider/squid body, or empty pede segment.
 	public static int GetDamage(this EntityType enemyType, EntityType daggerType)
 	{
 		if (!enemyType.IsEnemy())
