@@ -21,8 +21,9 @@ public class ModsController : ControllerBase
 	private readonly ModArchiveProcessor _modArchiveProcessor;
 	private readonly ModScreenshotProcessor _modScreenshotProcessor;
 	private readonly IFileSystemLogger _fileSystemLogger;
+	private readonly ModService _modService;
 
-	public ModsController(ApplicationDbContext dbContext, IAuditLogger auditLogger, ModArchiveAccessor modArchiveAccessor, ModArchiveProcessor modArchiveProcessor, ModScreenshotProcessor modScreenshotProcessor, IFileSystemLogger fileSystemLogger)
+	public ModsController(ApplicationDbContext dbContext, IAuditLogger auditLogger, ModArchiveAccessor modArchiveAccessor, ModArchiveProcessor modArchiveProcessor, ModScreenshotProcessor modScreenshotProcessor, IFileSystemLogger fileSystemLogger, ModService modService)
 	{
 		_dbContext = dbContext;
 		_auditLogger = auditLogger;
@@ -30,6 +31,7 @@ public class ModsController : ControllerBase
 		_modArchiveProcessor = modArchiveProcessor;
 		_modScreenshotProcessor = modScreenshotProcessor;
 		_fileSystemLogger = fileSystemLogger;
+		_modService = modService;
 	}
 
 	[HttpGet]
@@ -108,11 +110,7 @@ public class ModsController : ControllerBase
 	[Authorize(Roles = Roles.Mods)]
 	public async Task<ActionResult> AddMod(AddMod addMod)
 	{
-		if (string.IsNullOrWhiteSpace(addMod.Name))
-			return BadRequest("Mod name must not be empty or consist of white space only.");
-
-		if (addMod.Name.Any(c => Path.GetInvalidFileNameChars().Contains(c)))
-			return BadRequest("Mod name must not contain invalid file name characters.");
+		_modService.ValidateName(addMod.Name);
 
 		if (addMod.PlayerIds == null || addMod.PlayerIds.Count == 0)
 			return BadRequest("Mod must have at least one author.");
@@ -178,11 +176,7 @@ public class ModsController : ControllerBase
 	[Authorize(Roles = Roles.Mods)]
 	public async Task<ActionResult> EditModById(int id, EditMod editMod)
 	{
-		if (string.IsNullOrWhiteSpace(editMod.Name))
-			return BadRequest("Mod name must not be empty or consist of white space only.");
-
-		if (editMod.Name.Any(c => Path.GetInvalidFileNameChars().Contains(c)))
-			return BadRequest("Mod name must not contain invalid file name characters.");
+		_modService.ValidateName(editMod.Name);
 
 		if (editMod.PlayerIds == null || editMod.PlayerIds.Count == 0)
 			return BadRequest("Mod must have at least one author.");

@@ -45,7 +45,9 @@ public class Startup
 		services.AddTransient<ModArchiveAccessor>();
 		services.AddTransient<ModArchiveProcessor>();
 		services.AddTransient<ModScreenshotProcessor>();
+		services.AddTransient<ModService>();
 		services.AddScoped<ProfileService>();
+		services.AddTransient<SpawnsetService>();
 		services.AddTransient<IToolService, ToolService>();
 		services.AddScoped<IUserService, UserService>();
 

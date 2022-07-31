@@ -19,13 +19,15 @@ public class SpawnsetsController : ControllerBase
 	private readonly IFileSystemService _fileSystemService;
 	private readonly SpawnsetHashCache _spawnsetHashCache;
 	private readonly IAuditLogger _auditLogger;
+	private readonly SpawnsetService _spawnsetService;
 
-	public SpawnsetsController(ApplicationDbContext dbContext, IFileSystemService fileSystemService, SpawnsetHashCache spawnsetHashCache, IAuditLogger auditLogger)
+	public SpawnsetsController(ApplicationDbContext dbContext, IFileSystemService fileSystemService, SpawnsetHashCache spawnsetHashCache, IAuditLogger auditLogger, SpawnsetService spawnsetService)
 	{
 		_dbContext = dbContext;
 		_fileSystemService = fileSystemService;
 		_spawnsetHashCache = spawnsetHashCache;
 		_auditLogger = auditLogger;
+		_spawnsetService = spawnsetService;
 	}
 
 	[HttpGet]
@@ -100,11 +102,7 @@ public class SpawnsetsController : ControllerBase
 	[Authorize(Roles = Roles.Spawnsets)]
 	public async Task<ActionResult> AddSpawnset(AddSpawnset addSpawnset)
 	{
-		if (string.IsNullOrWhiteSpace(addSpawnset.Name))
-			return BadRequest("Spawnset name must not be empty or consist of white space only.");
-
-		if (addSpawnset.Name.Any(c => Path.GetInvalidFileNameChars().Contains(c)))
-			return BadRequest("Spawnset name must not contain invalid file name characters.");
+		_spawnsetService.ValidateName(addSpawnset.Name);
 
 		if (!SpawnsetBinary.TryParse(addSpawnset.FileContents, out _))
 			return BadRequest("File could not be parsed to a proper survival file.");
@@ -150,11 +148,7 @@ public class SpawnsetsController : ControllerBase
 	[Authorize(Roles = Roles.Spawnsets)]
 	public async Task<ActionResult> EditSpawnsetById(int id, EditSpawnset editSpawnset)
 	{
-		if (string.IsNullOrWhiteSpace(editSpawnset.Name))
-			return BadRequest("Spawnset name must not be empty or consist of white space only.");
-
-		if (editSpawnset.Name.Any(c => Path.GetInvalidFileNameChars().Contains(c)))
-			return BadRequest("Spawnset name must not contain invalid file name characters.");
+		_spawnsetService.ValidateName(editSpawnset.Name);
 
 		if (!_dbContext.Players.Any(p => p.Id == editSpawnset.PlayerId))
 			return BadRequest($"Player with ID '{editSpawnset.PlayerId}' does not exist.");
