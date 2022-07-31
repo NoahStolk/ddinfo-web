@@ -1,11 +1,11 @@
-using Microsoft.JSInterop;
+using DevilDaggersInfo.Razor.Core.Canvas.JSRuntime;
 
 namespace DevilDaggersInfo.Razor.Core.Canvas;
 
 /// <summary>
 /// Provides invoking methods to the 2D context of the HTML5 canvas.
 /// </summary>
-public class UnmarshalledCanvas2d : UnmarshalledCanvas
+public class Canvas2d : Canvas
 {
 	private string? _fillStyle;
 	private string? _strokeStyle;
@@ -23,8 +23,8 @@ public class UnmarshalledCanvas2d : UnmarshalledCanvas
 	private float? _shadowOffsetX;
 	private float? _shadowOffsetY;
 
-	public UnmarshalledCanvas2d(IJSUnmarshalledRuntime runtime, string id)
-		: base(runtime, id)
+	public Canvas2d(IJSRuntimeWrapper wrapper, string id)
+		: base(wrapper, id)
 	{
 	}
 
@@ -325,7 +325,6 @@ public class UnmarshalledCanvas2d : UnmarshalledCanvas
 	public void ClearRect(double x, double y, double width, double height)
 		=> ClearRect((float)x, (float)y, (float)width, (float)height);
 
-	// TODO: Use in .NET 7? [System.Runtime.InteropServices.JavaScript.JSImport("c2d.clearRect")]
 	public void ClearRect(float x, float y, float width, float height)
 		=> Invoke("c2d.clearRect", x, y, width, height);
 
