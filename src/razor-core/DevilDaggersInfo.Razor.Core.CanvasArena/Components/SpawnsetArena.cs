@@ -53,6 +53,22 @@ public partial class SpawnsetArena
 		Render();
 	}
 
+	[JSInvokable]
+	public async ValueTask OnMouseMove(int mouseX, int mouseY)
+	{
+		BoundingClientRect canvasBoundingClientRect = await JsRuntime.InvokeAsync<BoundingClientRect>("getBoundingClientRect", _canvasReference);
+
+		_canvasMouseX = mouseX - canvasBoundingClientRect.Left;
+		_canvasMouseY = mouseY - canvasBoundingClientRect.Top;
+
+		int x = Math.Clamp((int)(_canvasMouseX / _tileSize), 0, 50);
+		int y = Math.Clamp((int)(_canvasMouseY / _tileSize), 0, 50);
+		float height = SpawnsetBinary.ArenaTiles[x, y];
+		float actualHeight = SpawnsetBinary.GetActualTileHeight(x, y, CurrentTime);
+
+		_spawnsetArenaHoverInfo.Update(x, y, height, actualHeight);
+	}
+
 	private void Render()
 	{
 		if (_context == null)
@@ -137,22 +153,6 @@ public partial class SpawnsetArena
 			_context.StrokeStyle = "#fff";
 			_context.Stroke();
 		}
-	}
-
-	[JSInvokable]
-	public async ValueTask OnMouseMove(int mouseX, int mouseY)
-	{
-		BoundingClientRect canvasBoundingClientRect = await JsRuntime.InvokeAsync<BoundingClientRect>("getBoundingClientRect", _canvasReference);
-
-		_canvasMouseX = mouseX - canvasBoundingClientRect.Left;
-		_canvasMouseY = mouseY - canvasBoundingClientRect.Top;
-
-		int x = Math.Clamp((int)(_canvasMouseX / _tileSize), 0, 50);
-		int y = Math.Clamp((int)(_canvasMouseY / _tileSize), 0, 50);
-		float height = SpawnsetBinary.ArenaTiles[x, y];
-		float actualHeight = SpawnsetBinary.GetActualTileHeight(x, y, CurrentTime);
-
-		_spawnsetArenaHoverInfo.Update(x, y, height, actualHeight);
 	}
 
 	private static Color GetColorFromHeight(float tileHeight)
