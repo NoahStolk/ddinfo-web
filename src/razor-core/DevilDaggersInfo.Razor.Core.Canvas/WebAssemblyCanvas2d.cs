@@ -463,7 +463,7 @@ public class WebAssemblyCanvas2d : WebAssemblyCanvas
 		=> Circle((float)x, (float)y, (float)radius);
 
 	public void Circle(float x, float y, float radius)
-		=> Arc(x, y, radius, 0.0f, (float)(Math.PI * 2));
+		=> Arc(x, y, radius, 0.0f, MathF.PI * 2);
 
 	public void ArcTo(double x1, double y1, double x2, double y2, double radius)
 		=> ArcTo((float)x1, (float)y1, (float)x2, (float)y2, (float)radius);
@@ -480,7 +480,7 @@ public class WebAssemblyCanvas2d : WebAssemblyCanvas
 	public void Ellipse(double x, double y, double radiusX, double radiusY, double rotation = 0, double startAngle = 0, double endAngle = Math.PI * 2, bool anticlockwise = false)
 		=> Ellipse((float)x, (float)y, (float)radiusX, (float)radiusY, (float)rotation, (float)startAngle, (float)endAngle, anticlockwise);
 
-	public void Ellipse(float x, float y, float radiusX, float radiusY, float rotation = 0f, float startAngle = 0f, float endAngle = (float)(Math.PI * 2), bool anticlockwise = false)
+	public void Ellipse(float x, float y, float radiusX, float radiusY, float rotation = 0f, float startAngle = 0f, float endAngle = MathF.PI * 2, bool anticlockwise = false)
 		=> Invoke("c2d.ellipse", x, y, radiusX, radiusY, rotation, startAngle, endAngle, anticlockwise ? 1 : 0);
 
 	public void Fill()
