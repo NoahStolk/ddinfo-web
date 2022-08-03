@@ -38,6 +38,7 @@ window.registerArena = (wrapperComponent) => {
 	window.arena = arena;
 };
 
+// TODO: Move to webAssemblyArena.js file.
 window.drawTile = (d) => {
 	const dc = c2d.getContext(d);
 	const x = jsi.readInt32(d, 4);
