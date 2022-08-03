@@ -54,7 +54,7 @@
 
 @if (SpawnsetBinary.TryParse(replayBinary.Header.SpawnsetBuffer, out SpawnsetBinary? spawnset))
 {
-	<SpawnsetArena SpawnsetBinary="spawnset" CurrentTime="0" />
+	<WebViewSpawnsetArena SpawnsetBinary="spawnset" CurrentTime="0" />
 }
 else
 {
