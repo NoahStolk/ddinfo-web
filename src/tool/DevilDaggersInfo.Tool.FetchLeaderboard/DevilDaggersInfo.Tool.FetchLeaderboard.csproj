@@ -1,8 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <OutputType>Exe</OutputType>
   </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\web\DevilDaggersInfo.Web.Server\DevilDaggersInfo.Web.Server.csproj" />
   </ItemGroup>
+
 </Project>

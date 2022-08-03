@@ -1,4 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
   <PropertyGroup>
     <DateTimeUtcNow>$([System.DateTime]::UtcNow.ToString("yyyy-MM-dd-HH-mm"))</DateTimeUtcNow>
     <Version>5.6.0.0-$(DateTimeUtcNow)</Version>
@@ -6,6 +7,7 @@
     <IntermediateOutputPath>obj</IntermediateOutputPath>
     <RunAnalyzers>false</RunAnalyzers>
   </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Blazored.LocalStorage" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" />
@@ -15,6 +17,7 @@
     <PackageReference Include="Microsoft.Extensions.Http" />
     <PackageReference Include="System.Net.Http.Json" />
   </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\api\DevilDaggersInfo.Api.Admin\DevilDaggersInfo.Api.Admin.csproj" />
     <ProjectReference Include="..\..\api\DevilDaggersInfo.Api.Main\DevilDaggersInfo.Api.Main.csproj" />
@@ -26,10 +29,12 @@
     <ProjectReference Include="..\..\razor-core\DevilDaggersInfo.Razor.Core.Components\DevilDaggersInfo.Razor.Core.Components.csproj" />
     <ProjectReference Include="..\..\web-core\DevilDaggersInfo.Web.Core.Claims\DevilDaggersInfo.Web.Core.Claims.csproj" />
   </ItemGroup>
+
   <Target Name="tailwind build" BeforeTargets="Compile" Condition="'$(TailwindBuild)' == 'true'">
     <Exec Command="..\..\tw.exe -i tailwind.css -o wwwroot\tailwind.css --minify" ContinueOnError="true">
       <Output TaskParameter="ExitCode" PropertyName="ErrorCode"/>
     </Exec>
     <Error Condition="'$(ErrorCode)' != '0'" Text="Error building CSS file"/>
   </Target>
+
 </Project>

@@ -1,6 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
+
   <ItemGroup>
     <ProjectReference Include="..\..\common\DevilDaggersInfo.Common\DevilDaggersInfo.Common.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.Core.Spawnset\DevilDaggersInfo.Core.Spawnset.csproj" />
   </ItemGroup>
+
 </Project>

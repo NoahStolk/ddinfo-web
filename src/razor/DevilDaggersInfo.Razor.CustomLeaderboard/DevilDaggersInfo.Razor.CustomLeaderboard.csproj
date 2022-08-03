@@ -1,30 +1,39 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
+
   <PropertyGroup>
     <DateTimeUtcNow>$([System.DateTime]::UtcNow.ToString("yyyy-MM-dd-HH-mm"))</DateTimeUtcNow>
     <Version>$(DateTimeUtcNow)</Version>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
   </PropertyGroup>
+
   <ItemGroup>
     <SupportedPlatform Include="browser" />
   </ItemGroup>
+
   <ItemGroup>
     <Content Update="wwwroot\**\*">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+
   <Target Name="tailwind build" BeforeTargets="Compile" Condition="'$(TailwindBuild)' == 'true'">
     <Exec Command="..\..\tw.exe -i tailwind.css -o wwwroot\tailwind.css --minify" ContinueOnError="true">
       <Output TaskParameter="ExitCode" PropertyName="ErrorCode"/>
     </Exec>
     <Error Condition="'$(ErrorCode)' != '0'" Text="Error building CSS file"/>
   </Target>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\api\DevilDaggersInfo.Api.Ddcl\DevilDaggersInfo.Api.Ddcl.csproj" />
     <ProjectReference Include="..\..\app-core\DevilDaggersInfo.App.Core.ApiClient\DevilDaggersInfo.App.Core.ApiClient.csproj" />
     <ProjectReference Include="..\..\app-core\DevilDaggersInfo.App.Core.GameMemory\DevilDaggersInfo.App.Core.GameMemory.csproj" />
     <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Encryption\DevilDaggersInfo.Core.Encryption.csproj" />
     <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Wiki\DevilDaggersInfo.Core.Wiki.csproj" />
   </ItemGroup>
+
 </Project>

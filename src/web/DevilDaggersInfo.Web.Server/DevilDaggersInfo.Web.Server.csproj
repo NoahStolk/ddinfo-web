@@ -1,8 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
+
   <PropertyGroup>
     <UserSecretsId>DevilDaggersInfo.Web.BlazorWasm.Server-263F51EE-93E3-4591-979C-D593FC68F5E7</UserSecretsId>
     <IncludeOpenAPIAnalyzers>true</IncludeOpenAPIAnalyzers>
   </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="DSharpPlus" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
@@ -14,6 +16,9 @@
     </PackageReference>
     <PackageReference Include="NSwag.AspNetCore" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\api\DevilDaggersInfo.Api.Clubber\DevilDaggersInfo.Api.Clubber.csproj" />
     <ProjectReference Include="..\..\api\DevilDaggersInfo.Api.Ddae\DevilDaggersInfo.Api.Ddae.csproj" />
     <ProjectReference Include="..\..\api\DevilDaggersInfo.Api.Ddcl\DevilDaggersInfo.Api.Ddcl.csproj" />
@@ -27,4 +32,5 @@
     <ProjectReference Include="..\DevilDaggersInfo.Web.Client\DevilDaggersInfo.Web.Client.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.Web.Server.Domain\DevilDaggersInfo.Web.Server.Domain.csproj" />
   </ItemGroup>
+
 </Project>

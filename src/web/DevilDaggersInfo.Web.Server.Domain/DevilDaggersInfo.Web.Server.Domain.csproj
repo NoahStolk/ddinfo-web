@@ -1,10 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
+
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" />
     <PackageReference Include="Newtonsoft.Json" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" />
   </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\common\DevilDaggersInfo.Common\DevilDaggersInfo.Common.csproj" />
     <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Encryption\DevilDaggersInfo.Core.Encryption.csproj" />
@@ -14,4 +16,5 @@
     <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Versioning\DevilDaggersInfo.Core.Versioning.csproj" />
     <ProjectReference Include="..\..\web-core\DevilDaggersInfo.Web.Core.Claims\DevilDaggersInfo.Web.Core.Claims.csproj" />
   </ItemGroup>
+
 </Project>
