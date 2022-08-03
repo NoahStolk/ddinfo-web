@@ -1,13 +1,12 @@
 using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Core.Spawnset.Enums;
-using DevilDaggersInfo.Razor.Core.Canvas;
-using DevilDaggersInfo.Razor.Core.Canvas.JSRuntime;
+using DevilDaggersInfo.Razor.Core.Canvas.JS;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
 namespace DevilDaggersInfo.Razor.Core.CanvasArena.Components;
 
-public partial class SpawnsetArena
+public partial class WebAssemblySpawnsetArena
 {
 	// Currently only allow one arena.
 	private const string _canvasId = "arena-canvas";
@@ -15,7 +14,7 @@ public partial class SpawnsetArena
 	private int _canvasSize;
 	private float _tileSize;
 
-	private CanvasArena? _context;
+	private WebAssemblyCanvasArena? _context;
 	private object? _canvasReference;
 
 	private double _canvasMouseX;
@@ -24,10 +23,10 @@ public partial class SpawnsetArena
 	private SpawnsetArenaHoverInfo _spawnsetArenaHoverInfo = null!;
 
 	[Inject]
-	public IJSRuntime JsRuntime { get; set; } = null!;
+	public IJSRuntime JSRuntime { get; set; } = null!;
 
 	[Inject]
-	public IJSRuntimeWrapper JsRuntimeWrapper { get; set; } = null!;
+	public IJSUnmarshalledRuntime JSUnmarshalledRuntime { get; set; } = null!;
 
 	[Parameter]
 	[EditorRequired]
@@ -41,12 +40,12 @@ public partial class SpawnsetArena
 	{
 		if (firstRender)
 		{
-			await JsRuntime.InvokeAsync<object>("initArena");
-			await JsRuntime.InvokeAsync<object>("registerArena", DotNetObjectReference.Create(this));
-			await JsRuntime.InvokeAsync<object>("arenaInitialResize");
+			await JSRuntime.InvokeAsync<object>("initArena");
+			await JSRuntime.InvokeAsync<object>("registerArena", DotNetObjectReference.Create(this));
+			await JSRuntime.InvokeAsync<object>("arenaInitialResize");
 		}
 
-		_context = new CanvasArena(JsRuntimeWrapper, _canvasId);
+		_context = new WebAssemblyCanvasArena(_canvasId, new(JSUnmarshalledRuntime));
 
 		Render();
 	}
@@ -63,7 +62,7 @@ public partial class SpawnsetArena
 	[JSInvokable]
 	public async ValueTask OnMouseMove(int mouseX, int mouseY)
 	{
-		BoundingClientRect canvasBoundingClientRect = await JsRuntime.InvokeAsync<BoundingClientRect>("getBoundingClientRect", _canvasReference);
+		BoundingClientRect canvasBoundingClientRect = await JSRuntime.InvokeAsync<BoundingClientRect>("getBoundingClientRect", _canvasReference);
 
 		_canvasMouseX = mouseX - canvasBoundingClientRect.Left;
 		_canvasMouseY = mouseY - canvasBoundingClientRect.Top;

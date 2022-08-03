@@ -1,11 +1,9 @@
+using DevilDaggersInfo.Razor.Core.Canvas.JS;
 using DevilDaggersInfo.Razor.Core.Canvas.JSRuntime;
 
 namespace DevilDaggersInfo.Razor.Core.Canvas;
 
-/// <summary>
-/// Provides invoking methods to the 2D context of the HTML5 canvas.
-/// </summary>
-public class Canvas2d : Canvas
+public class WebAssemblyCanvas2d : WebAssemblyCanvas
 {
 	private string? _fillStyle;
 	private string? _strokeStyle;
@@ -23,8 +21,8 @@ public class Canvas2d : Canvas
 	private float? _shadowOffsetX;
 	private float? _shadowOffsetY;
 
-	public Canvas2d(IJSRuntimeWrapper wrapper, string id)
-		: base(wrapper, id)
+	public WebAssemblyCanvas2d(string id, WebAssemblyRuntimeWrapper runtimeWrapper)
+		: base(id, runtimeWrapper)
 	{
 	}
 

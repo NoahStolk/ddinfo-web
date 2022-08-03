@@ -2,11 +2,11 @@ using Microsoft.JSInterop;
 
 namespace DevilDaggersInfo.Razor.Core.Canvas.JSRuntime;
 
-public class UnmarshalledRuntimeWrapper : IJSRuntimeWrapper
+public class WebAssemblyRuntimeWrapper
 {
 	private readonly IJSUnmarshalledRuntime _runtime;
 
-	public UnmarshalledRuntimeWrapper(IJSUnmarshalledRuntime runtime)
+	public WebAssemblyRuntimeWrapper(IJSUnmarshalledRuntime runtime)
 	{
 		_runtime = runtime;
 	}
