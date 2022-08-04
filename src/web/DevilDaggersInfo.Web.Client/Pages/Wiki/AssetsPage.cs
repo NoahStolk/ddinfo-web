@@ -1,6 +1,5 @@
 using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Core.Asset;
-using Microsoft.AspNetCore.Components;
 using System.Runtime.CompilerServices;
 
 namespace DevilDaggersInfo.Web.Client.Pages.Wiki;

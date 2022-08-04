@@ -2,7 +2,6 @@ using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Core.Spawnset.Enums;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using System.Diagnostics;
 
 namespace DevilDaggersInfo.Razor.Core.CanvasArena.Components;
 

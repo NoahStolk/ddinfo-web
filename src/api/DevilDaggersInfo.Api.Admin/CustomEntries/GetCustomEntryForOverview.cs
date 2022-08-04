@@ -1,5 +1,3 @@
-using DevilDaggersInfo.Api.Admin;
-
 namespace DevilDaggersInfo.Api.Admin.CustomEntries;
 
 public record GetCustomEntryForOverview : IAdminOverviewGetDto

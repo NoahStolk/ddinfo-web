@@ -56,7 +56,7 @@ public class FileSystemLogger : IFileSystemLogger
 	}
 
 	public void ModArchiveAdded(string filePath, int fileSize, string modName, Dictionary<BinaryName, byte[]> binaries)
-{
+	{
 		_logs.Add(new($"File {_fileSystemService.FormatPath(filePath)} (`{FileSizeUtils.Format(fileSize)}`) with {(binaries.Count == 1 ? "binary" : "binaries")} was added. Binaries:\n{string.Join("\n", binaries.Keys.Select(bn => $"- `{bn.ToFullName(modName)}`"))}", FileSystemInformationType.Add));
 	}
 

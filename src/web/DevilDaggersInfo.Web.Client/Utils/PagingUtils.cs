@@ -1,5 +1,3 @@
-using DevilDaggersInfo.Web.Client;
-
 namespace DevilDaggersInfo.Web.Client.Utils;
 
 public static class PagingUtils

@@ -1,7 +1,6 @@
 using DevilDaggersInfo.Api.Admin.Users;
 using DevilDaggersInfo.Web.Client.Components.Admin;
 using DevilDaggersInfo.Web.Core.Claims;
-using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 
 namespace DevilDaggersInfo.Web.Client.Pages.Admin.Users;

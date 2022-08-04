@@ -1,5 +1,4 @@
 using DevilDaggersInfo.Core.Wiki.Enums;
-using Microsoft.AspNetCore.Components;
 
 namespace DevilDaggersInfo.Web.Client.Pages.Wiki;
 

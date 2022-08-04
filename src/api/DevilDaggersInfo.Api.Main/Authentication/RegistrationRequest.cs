@@ -1,4 +1,3 @@
-using DevilDaggersInfo.Api.Main;
 using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersInfo.Api.Main.Authentication;

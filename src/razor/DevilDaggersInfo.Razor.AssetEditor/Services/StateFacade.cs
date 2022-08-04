@@ -18,7 +18,7 @@ public class StateFacade
 	}
 
 	public void NewBinary(ModBinaryType modBinaryType)
-{
+	{
 		_dispatcher.Dispatch(new OpenBinaryAction(new(modBinaryType), "(Untitled)"));
 	}
 
