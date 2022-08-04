@@ -1,48 +1,19 @@
 using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Core.Spawnset.Enums;
-using DevilDaggersInfo.Razor.Core.Canvas.JS;
-using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using System.Diagnostics;
 
 namespace DevilDaggersInfo.Razor.Core.CanvasArena.Components;
 
 public partial class WebViewSpawnsetArena
 {
-	// Currently only allow one arena.
-	private const string _canvasId = "arena-canvas";
-
 	private CancellationTokenSource _renderCts = new();
 
-	private int _canvasSize;
-	private float _tileSize;
-
 	private WebViewCanvasArena? _context;
-	private object? _canvasReference;
-
-	private double _canvasMouseX;
-	private double _canvasMouseY;
-
-	private SpawnsetArenaHoverInfo _spawnsetArenaHoverInfo = null!;
-
-	[Inject]
-	public IJSRuntime JSRuntime { get; set; } = null!;
-
-	[Parameter]
-	[EditorRequired]
-	public SpawnsetBinary SpawnsetBinary { get; set; } = null!;
-
-	[Parameter]
-	[EditorRequired]
-	public float CurrentTime { get; set; }
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
-		if (firstRender)
-		{
-			await JSRuntime.InvokeAsync<object>("initArena");
-			await JSRuntime.InvokeAsync<object>("registerArena", DotNetObjectReference.Create(this));
-			await JSRuntime.InvokeAsync<object>("arenaInitialResize");
-		}
+		await base.OnAfterRenderAsync(firstRender);
 
 		_context = new WebViewCanvasArena(_canvasId, new(JSRuntime));
 
@@ -55,26 +26,8 @@ public partial class WebViewSpawnsetArena
 		_renderCts.Cancel();
 		_renderCts = new();
 
-		_canvasSize = (int)wrapperSize;
-		_tileSize = _canvasSize / 51f;
-
+		Resize(wrapperSize);
 		await RenderAsync(_renderCts.Token);
-	}
-
-	[JSInvokable]
-	public async ValueTask OnMouseMove(int mouseX, int mouseY)
-	{
-		BoundingClientRect canvasBoundingClientRect = await JSRuntime.InvokeAsync<BoundingClientRect>("getBoundingClientRect", _canvasReference);
-
-		_canvasMouseX = mouseX - canvasBoundingClientRect.Left;
-		_canvasMouseY = mouseY - canvasBoundingClientRect.Top;
-
-		int x = Math.Clamp((int)(_canvasMouseX / _tileSize), 0, 50);
-		int y = Math.Clamp((int)(_canvasMouseY / _tileSize), 0, 50);
-		float height = SpawnsetBinary.ArenaTiles[x, y];
-		float actualHeight = SpawnsetBinary.GetActualTileHeight(x, y, CurrentTime);
-
-		_spawnsetArenaHoverInfo.Update(x, y, height, actualHeight);
 	}
 
 	private async Task RenderAsync(CancellationToken cancellationToken)
@@ -82,7 +35,7 @@ public partial class WebViewSpawnsetArena
 		if (_context == null)
 			return;
 
-		await _context.ClearRectAsync(0, 0, _canvasSize, _canvasSize);
+		await _context.ClearRectAsync(0, 0, CanvasSize, CanvasSize);
 
 		if (cancellationToken.IsCancellationRequested)
 			return;
@@ -103,7 +56,7 @@ public partial class WebViewSpawnsetArena
 				if (color.R == 0 && color.G == 0 && color.B == 0)
 					continue;
 
-				await _context.DrawTileAsync(i, j, color.R, color.G, color.B, _tileSize);
+				await _context.DrawTileAsync(i, j, color.R, color.G, color.B, TileSize);
 			}
 		}
 
@@ -115,7 +68,7 @@ public partial class WebViewSpawnsetArena
 			await _context.SetStrokeStyleAsync("#f08");
 			await _context.SetLineWidthAsync(1);
 			await _context.BeginPathAsync();
-			await _context.CircleAsync(_canvasSize / 2f, _canvasSize / 2f, shrinkRadius / tileUnit * _tileSize);
+			await _context.CircleAsync(CanvasSize / 2f, CanvasSize / 2f, shrinkRadius / tileUnit * TileSize);
 			await _context.StrokeAsync();
 		}
 
@@ -133,8 +86,8 @@ public partial class WebViewSpawnsetArena
 			if (!y.HasValue)
 				return;
 
-			float daggerCenterX = _canvasSize / 2 + SpawnsetBinary.RaceDaggerPosition.X / tileUnit * _tileSize;
-			float daggerCenterY = _canvasSize / 2 + SpawnsetBinary.RaceDaggerPosition.Y / tileUnit * _tileSize;
+			float daggerCenterX = CanvasSize / 2 + SpawnsetBinary.RaceDaggerPosition.X / tileUnit * TileSize;
+			float daggerCenterY = CanvasSize / 2 + SpawnsetBinary.RaceDaggerPosition.Y / tileUnit * TileSize;
 
 			await _context.BeginPathAsync();
 			await _context.MoveToAsync(daggerCenterX, daggerCenterY + 6);
@@ -155,8 +108,8 @@ public partial class WebViewSpawnsetArena
 
 		async Task RenderPlayerAsync()
 		{
-			float playerCenterX = _canvasSize / 2f;
-			float playerCenterY = _canvasSize / 2f;
+			float playerCenterX = CanvasSize / 2f;
+			float playerCenterY = CanvasSize / 2f;
 
 			await _context.BeginPathAsync();
 			await _context.MoveToAsync(playerCenterX, playerCenterY + 3);

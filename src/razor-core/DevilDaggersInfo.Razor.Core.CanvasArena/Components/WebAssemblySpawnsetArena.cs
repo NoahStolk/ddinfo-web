@@ -1,49 +1,21 @@
 using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Core.Spawnset.Enums;
-using DevilDaggersInfo.Razor.Core.Canvas.JS;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using System.Diagnostics;
 
 namespace DevilDaggersInfo.Razor.Core.CanvasArena.Components;
 
 public partial class WebAssemblySpawnsetArena
 {
-	// Currently only allow one arena.
-	private const string _canvasId = "arena-canvas";
-
-	private int _canvasSize;
-	private float _tileSize;
-
 	private WebAssemblyCanvasArena? _context;
-	private object? _canvasReference;
-
-	private double _canvasMouseX;
-	private double _canvasMouseY;
-
-	private SpawnsetArenaHoverInfo _spawnsetArenaHoverInfo = null!;
-
-	[Inject]
-	public IJSRuntime JSRuntime { get; set; } = null!;
 
 	[Inject]
 	public IJSUnmarshalledRuntime JSUnmarshalledRuntime { get; set; } = null!;
 
-	[Parameter]
-	[EditorRequired]
-	public SpawnsetBinary SpawnsetBinary { get; set; } = null!;
-
-	[Parameter]
-	[EditorRequired]
-	public float CurrentTime { get; set; }
-
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
-		if (firstRender)
-		{
-			await JSRuntime.InvokeAsync<object>("initArena");
-			await JSRuntime.InvokeAsync<object>("registerArena", DotNetObjectReference.Create(this));
-			await JSRuntime.InvokeAsync<object>("arenaInitialResize");
-		}
+		await base.OnAfterRenderAsync(firstRender);
 
 		_context = new WebAssemblyCanvasArena(_canvasId, new(JSUnmarshalledRuntime));
 
@@ -53,26 +25,8 @@ public partial class WebAssemblySpawnsetArena
 	[JSInvokable]
 	public void OnResize(double wrapperSize)
 	{
-		_canvasSize = (int)wrapperSize;
-		_tileSize = _canvasSize / 51f;
-
+		Resize(wrapperSize);
 		Render();
-	}
-
-	[JSInvokable]
-	public async ValueTask OnMouseMove(int mouseX, int mouseY)
-	{
-		BoundingClientRect canvasBoundingClientRect = await JSRuntime.InvokeAsync<BoundingClientRect>("getBoundingClientRect", _canvasReference);
-
-		_canvasMouseX = mouseX - canvasBoundingClientRect.Left;
-		_canvasMouseY = mouseY - canvasBoundingClientRect.Top;
-
-		int x = Math.Clamp((int)(_canvasMouseX / _tileSize), 0, 50);
-		int y = Math.Clamp((int)(_canvasMouseY / _tileSize), 0, 50);
-		float height = SpawnsetBinary.ArenaTiles[x, y];
-		float actualHeight = SpawnsetBinary.GetActualTileHeight(x, y, CurrentTime);
-
-		_spawnsetArenaHoverInfo.Update(x, y, height, actualHeight);
 	}
 
 	private void Render()
@@ -80,7 +34,7 @@ public partial class WebAssemblySpawnsetArena
 		if (_context == null)
 			return;
 
-		_context.ClearRect(0, 0, _canvasSize, _canvasSize);
+		_context.ClearRect(0, 0, CanvasSize, CanvasSize);
 		for (int i = 0; i < SpawnsetBinary.ArenaDimension; i++)
 		{
 			for (int j = 0; j < SpawnsetBinary.ArenaDimension; j++)
@@ -94,7 +48,7 @@ public partial class WebAssemblySpawnsetArena
 				if (color.R == 0 && color.G == 0 && color.B == 0)
 					continue;
 
-				_context.DrawTile(i, j, color.R, color.G, color.B, _tileSize);
+				_context.DrawTile(i, j, color.R, color.G, color.B, TileSize);
 			}
 		}
 
@@ -106,7 +60,7 @@ public partial class WebAssemblySpawnsetArena
 			_context.StrokeStyle = "#f08";
 			_context.LineWidth = 1;
 			_context.BeginPath();
-			_context.Circle(_canvasSize / 2f, _canvasSize / 2f, shrinkRadius / tileUnit * _tileSize);
+			_context.Circle(CanvasSize / 2f, CanvasSize / 2f, shrinkRadius / tileUnit * TileSize);
 			_context.Stroke();
 		}
 
@@ -121,8 +75,8 @@ public partial class WebAssemblySpawnsetArena
 			if (!y.HasValue)
 				return;
 
-			float daggerCenterX = _canvasSize / 2 + SpawnsetBinary.RaceDaggerPosition.X / tileUnit * _tileSize;
-			float daggerCenterY = _canvasSize / 2 + SpawnsetBinary.RaceDaggerPosition.Y / tileUnit * _tileSize;
+			float daggerCenterX = CanvasSize / 2 + SpawnsetBinary.RaceDaggerPosition.X / tileUnit * TileSize;
+			float daggerCenterY = CanvasSize / 2 + SpawnsetBinary.RaceDaggerPosition.Y / tileUnit * TileSize;
 
 			_context.BeginPath();
 			_context.MoveTo(daggerCenterX, daggerCenterY + 6);
@@ -143,8 +97,8 @@ public partial class WebAssemblySpawnsetArena
 
 		void RenderPlayer()
 		{
-			float playerCenterX = _canvasSize / 2f;
-			float playerCenterY = _canvasSize / 2f;
+			float playerCenterX = CanvasSize / 2f;
+			float playerCenterY = CanvasSize / 2f;
 
 			_context.BeginPath();
 			_context.MoveTo(playerCenterX, playerCenterY + 3);
