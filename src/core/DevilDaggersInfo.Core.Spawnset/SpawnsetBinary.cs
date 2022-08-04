@@ -212,7 +212,30 @@ public class SpawnsetBinary
 	#region Utilities
 
 	public static SpawnsetBinary CreateDefault()
-		=> new(6, 9, 50, 20, 0.025f, 60, GameMode.Survival, 51, new float[51, 51], default, Array.Empty<Spawn>(), HandLevel.Level1, 0, 0);
+	{
+		const int arenaSize = 51;
+		const int center = arenaSize / 2;
+		const float shrinkStart = 50;
+
+		Vector2 centerPoint = new(center);
+
+		float[,] arena = new float[arenaSize, arenaSize];
+
+		for (int i = 0; i < arenaSize; i++)
+		{
+			for (int j = 0; j < arenaSize; j++)
+			{
+				const int tileSize = 4;
+				const int halfTile = tileSize / 2;
+				const float radius = (shrinkStart - halfTile) / tileSize;
+				const float radiusSquared = radius * radius;
+				bool inside = Vector2.DistanceSquared(centerPoint, new Vector2(i, j)) < radiusSquared;
+				arena[i, j] = inside ? 0 : -1000;
+			}
+		}
+
+		return new(6, 9, shrinkStart, 20, 0.025f, 60, GameMode.Survival, arenaSize, arena, default, Array.Empty<Spawn>(), HandLevel.Level1, 0, 0);
+	}
 
 	public static bool IsEmptySpawn(int enemyType)
 		=> enemyType < 0 || enemyType > 9;
