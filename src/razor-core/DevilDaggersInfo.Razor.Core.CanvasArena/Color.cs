@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Razor.Core.CanvasArena;
 
-public readonly record struct Color(byte R, byte G, byte B, byte A = 255)
+public readonly record struct Color(byte R, byte G, byte B)
 {
 	public static Color GetColorFromHeight(float tileHeight)
 	{
