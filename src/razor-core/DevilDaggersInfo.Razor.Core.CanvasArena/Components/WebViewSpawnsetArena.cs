@@ -17,7 +17,7 @@ public partial class WebViewSpawnsetArena
 
 		_context = new WebViewCanvasArena(_canvasId, new(JSRuntime));
 
-		await RenderAsync(CancellationToken.None);
+		await RenderAsync(_renderCts.Token);
 	}
 
 	[JSInvokable]
