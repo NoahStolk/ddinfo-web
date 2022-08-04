@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Razor.Core.Canvas;
+using DevilDaggersInfo.Razor.Core.Canvas.JS;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Data;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Options.BarChart;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Utils;
@@ -9,7 +10,7 @@ namespace DevilDaggersInfo.Razor.Core.CanvasChart.Components;
 
 public partial class BarChart
 {
-	private Canvas2d? _context;
+	private WebAssemblyCanvas2d? _context;
 	private object? _canvasReference;
 	private ChartHighlighter? _highlighter;
 
@@ -27,7 +28,10 @@ public partial class BarChart
 	private double ChartHeight => _canvasHeight - Options.ChartMarginYInPx * 2;
 
 	[Inject]
-	public IJSRuntime JsRuntime { get; set; } = null!;
+	public IJSRuntime JSRuntime { get; set; } = null!;
+
+	[Inject]
+	public IJSUnmarshalledRuntime JSUnmarshalledRuntime { get; set; } = null!;
 
 	[Parameter]
 	[EditorRequired]
@@ -55,12 +59,12 @@ public partial class BarChart
 	{
 		if (firstRender)
 		{
-			await JsRuntime.InvokeAsync<object>("initChart");
-			await JsRuntime.InvokeAsync<object>("registerChart", DotNetObjectReference.Create(this), UniqueName);
-			await JsRuntime.InvokeAsync<object>("chartInitialResize", DotNetObjectReference.Create(this));
+			await JSRuntime.InvokeAsync<object>("initChart");
+			await JSRuntime.InvokeAsync<object>("registerChart", DotNetObjectReference.Create(this), UniqueName);
+			await JSRuntime.InvokeAsync<object>("chartInitialResize", DotNetObjectReference.Create(this));
 		}
 
-		_context = new Canvas2d($"{UniqueName}-canvas");
+		_context = new WebAssemblyCanvas2d($"{UniqueName}-canvas", new(JSUnmarshalledRuntime));
 
 		Render();
 	}
@@ -189,7 +193,7 @@ public partial class BarChart
 	[JSInvokable]
 	public async ValueTask OnMouseMove(int mouseX, int mouseY)
 	{
-		BoundingClientRect canvasBoundingClientRect = await JsRuntime.InvokeAsync<BoundingClientRect>("getBoundingClientRect", _canvasReference);
+		BoundingClientRect canvasBoundingClientRect = await JSRuntime.InvokeAsync<BoundingClientRect>("getBoundingClientRect", _canvasReference);
 
 		_canvasMouseX = mouseX - canvasBoundingClientRect.Left;
 		_canvasMouseY = mouseY - canvasBoundingClientRect.Top;

@@ -1,7 +1,7 @@
 @using DevilDaggersInfo.Core.Spawnset
 @using DevilDaggersInfo.Razor.Core.CanvasArena.Components
 
-<SpawnsetArena SpawnsetBinary="SpawnsetBinary" CurrentTime="_currentTime" />
+<WebAssemblySpawnsetArena SpawnsetBinary="SpawnsetBinary" CurrentTime="_currentTime" />
 
 <div class="max-w-arena-table">Time: @((_currentTime + SpawnsetBinary.TimerStart).ToString("0.0"))</div>
 <div class="max-w-arena-table">

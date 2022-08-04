@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Razor.Core.Canvas;
+namespace DevilDaggersInfo.Razor.Core.Canvas.JS;
 
 public enum TextBaseline
 {
