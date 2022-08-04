@@ -11,6 +11,8 @@ public partial class WebViewSpawnsetArena
 	// Currently only allow one arena.
 	private const string _canvasId = "arena-canvas";
 
+	private CancellationTokenSource _renderCts = new();
+
 	private int _canvasSize;
 	private float _tileSize;
 
@@ -44,16 +46,19 @@ public partial class WebViewSpawnsetArena
 
 		_context = new WebViewCanvasArena(_canvasId, new(JSRuntime));
 
-		await RenderAsync();
+		await RenderAsync(CancellationToken.None);
 	}
 
 	[JSInvokable]
 	public async Task OnResize(double wrapperSize)
 	{
+		_renderCts.Cancel();
+		_renderCts = new();
+
 		_canvasSize = (int)wrapperSize;
 		_tileSize = _canvasSize / 51f;
 
-		await RenderAsync();
+		await RenderAsync(_renderCts.Token);
 	}
 
 	[JSInvokable]
@@ -72,16 +77,23 @@ public partial class WebViewSpawnsetArena
 		_spawnsetArenaHoverInfo.Update(x, y, height, actualHeight);
 	}
 
-	private async Task RenderAsync()
+	private async Task RenderAsync(CancellationToken cancellationToken)
 	{
 		if (_context == null)
 			return;
 
 		await _context.ClearRectAsync(0, 0, _canvasSize, _canvasSize);
+
+		if (cancellationToken.IsCancellationRequested)
+			return;
+
 		for (int i = 0; i < SpawnsetBinary.ArenaDimension; i++)
 		{
 			for (int j = 0; j < SpawnsetBinary.ArenaDimension; j++)
 			{
+				if (cancellationToken.IsCancellationRequested)
+					return;
+
 				float tileHeight = SpawnsetBinary.ArenaTiles[i, j];
 				if (tileHeight < -1)
 					continue;
@@ -106,6 +118,9 @@ public partial class WebViewSpawnsetArena
 			await _context.CircleAsync(_canvasSize / 2f, _canvasSize / 2f, shrinkRadius / tileUnit * _tileSize);
 			await _context.StrokeAsync();
 		}
+
+		if (cancellationToken.IsCancellationRequested)
+			return;
 
 		if (SpawnsetBinary.GameMode == GameMode.Race)
 			await RenderRaceDaggerAsync();

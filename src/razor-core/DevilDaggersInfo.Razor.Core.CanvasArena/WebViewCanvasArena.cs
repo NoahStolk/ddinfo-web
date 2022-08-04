@@ -10,7 +10,6 @@ public class WebViewCanvasArena : WebViewCanvas2d
 	{
 	}
 
-	// TODO: Make marshalled JS function.
 	public async Task DrawTileAsync(int x, int y, int r, int g, int b, float tileSize)
 		=> await InvokeAsync("window.drawTile", x, y, r, g, b, tileSize);
 }
