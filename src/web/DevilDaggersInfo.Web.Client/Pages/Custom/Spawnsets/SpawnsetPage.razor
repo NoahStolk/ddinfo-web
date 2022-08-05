@@ -28,7 +28,7 @@ else
 				<Heading Title="@($"Spawnset - {GetSpawnset.Name}")" BreakAll="true" />
 
 				<div class="bg-gray-1 max-w-arena-table px-1">
-					<DataField Name="Author">@GetSpawnset.AuthorName</DataField>
+					<DataField Name="Author"><span class="whitespace-nowrap">@GetSpawnset.AuthorName</span></DataField>
 					<DataField Name="Last updated">@GetSpawnset.LastUpdated.ToString(StringFormats.DateTimeFormat)</DataField>
 					<DataField Name="Practice">@(GetSpawnset.IsPractice ? "Yes" : "No")</DataField>
 					<DataField Name="File size">@FileSizeUtils.Format(GetSpawnset.FileBytes.Length)</DataField>

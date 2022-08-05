@@ -24,7 +24,7 @@ else
 	}
 
 	<div class="bg-gray-1 max-w-sm px-1">
-		<DataField Name="Author">@GetCustomLeaderboard.SpawnsetAuthorName</DataField>
+		<DataField Name="Author"><span class="whitespace-nowrap">@GetCustomLeaderboard.SpawnsetAuthorName</span></DataField>
 		<DataField Name="Created">@GetCustomLeaderboard.DateCreated.ToString(StringFormats.DateTimeFormat)</DataField>
 		<DataField Name="Category">@GetCustomLeaderboard.Category.ToDisplayString()</DataField>
 		<DataField Name="Submits">@(GetCustomLeaderboard.DateCreated < Constants.TrackingCustomLeaderboardSubmitCounts ? "+" : string.Empty)@GetCustomLeaderboard.SubmitCount</DataField>
