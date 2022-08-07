@@ -22,7 +22,7 @@ DevilDaggersInfo is separated into layers, then into project types, then into in
 
 | **Subfolder** | **Project type**                                          | **Can depend on**                                                 |
 |---------------|-----------------------------------------------------------|-------------------------------------------------------------------|
-| `app`         | UI app heads                                              | `common`, `core`, `razor-core`, `razor`                           |
+| `app`         | UI app heads that run natively                            | `common`, `core`, `razor-core`, `razor`                           |
 | `app-core`    | Core set of features for apps                             | `common`, `core`                                                  |
 | `razor`       | Razor UI libraries for apps                               | `app-core`, `common`, `core`, `razor-core`                        |
 
@@ -30,7 +30,7 @@ DevilDaggersInfo is separated into layers, then into project types, then into in
 
 | **Subfolder** | **Project type**                                          | **Can depend on**                                                 |
 |---------------|----------------------------------------------------- -----|-------------------------------------------------------------------|
-| `web-client`  | Client app that runs in the browser (Blazor WebAssembly)  | `api`, `common`, `core`, `razor-core`, `razor`, `web-core`,       |
+| `web-client`  | Client apps that run in the browser (Blazor WebAssembly)  | `api`, `common`, `core`, `razor-core`, `razor`, `web-core`,       |
 | `web-core`    | Reusable web logic                                        | `common`, `core`, `web-core`                                      |
 | `web-server`  | Server code base (ASP.NET Core)                           | `api`, `common`, `core`, `web-client`, `web-core`, `web-server`   |
 
