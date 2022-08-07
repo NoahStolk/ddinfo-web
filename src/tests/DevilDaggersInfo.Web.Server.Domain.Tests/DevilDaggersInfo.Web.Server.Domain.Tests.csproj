@@ -24,7 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\common\DevilDaggersInfo.CommonTest\DevilDaggersInfo.CommonTest.csproj" />
-    <ProjectReference Include="..\..\web\DevilDaggersInfo.Web.Server.Domain\DevilDaggersInfo.Web.Server.Domain.csproj" />
+    <ProjectReference Include="..\..\web-server\DevilDaggersInfo.Web.Server.Domain\DevilDaggersInfo.Web.Server.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
