@@ -6,40 +6,41 @@ DevilDaggersInfo is separated into layers, then into project types, then into in
 
 ### Library layer
 
-| **Subfolder** | **Project type**              | **Can depend on**                                        |
-|---------------|-------------------------------|----------------------------------------------------------|
-| `api`         | API specifications            | Nothing                                                  |
-| `common`      | Common functionality          | Nothing                                                  |
-| `core`        | Core set of features          | `common`, `core`                                         |
+| **Subfolder** | **Project type**                                          | **Can depend on**                                                 |
+|---------------|-----------------------------------------------------------|-------------------------------------------------------------------|
+| `api`         | API specifications                                        | Nothing                                                           |
+| `common`      | Common functionality                                      | Nothing                                                           |
+| `core`        | Core set of features                                      | `common`, `core`                                                  |
 
 ### UI layer
 
-| **Subfolder** | **Project type**              | **Can depend on**                                        |
-|---------------|-------------------------------|----------------------------------------------------------|
-| `razor-core`  | Reusable Razor UI libraries   | `api`, `common`, `core`, `razor-core`                    |
+| **Subfolder** | **Project type**                                          | **Can depend on**                                                 |
+|---------------|----------------------------------------------------- -----|-------------------------------------------------------------------|
+| `razor-core`  | Reusable Razor UI libraries                               | `api`, `common`, `core`, `razor-core`                             |
 
 ### App layer
 
-| **Subfolder** | **Project type**              | **Can depend on**                                        |
-|---------------|-------------------------------|----------------------------------------------------------|
-| `app`         | UI app heads                  | `common`, `core`, `razor-core`, `razor`                  |
-| `app-core`    | Core set of features for apps | `common`, `core`                                         |
-| `razor`       | Razor UI libraries for apps   | `app-core`, `common`, `core`, `razor-core`               |
+| **Subfolder** | **Project type**                                          | **Can depend on**                                                 |
+|---------------|-----------------------------------------------------------|-------------------------------------------------------------------|
+| `app`         | UI app heads                                              | `common`, `core`, `razor-core`, `razor`                           |
+| `app-core`    | Core set of features for apps                             | `common`, `core`                                                  |
+| `razor`       | Razor UI libraries for apps                               | `app-core`, `common`, `core`, `razor-core`                        |
 
 ### Web layer
 
-| **Subfolder** | **Project type**              | **Can depend on**                                        |
-|---------------|-------------------------------|----------------------------------------------------------|
-| `web`         | Website (client and server)   | `api`, `common`, `core`, `razor-core`, `web-core`, `web` |
-| `web-core`    | Reusable web logic            | `common`, `core`, `web-core`                             |
+| **Subfolder** | **Project type**                                          | **Can depend on**                                                 |
+|---------------|----------------------------------------------------- -----|-------------------------------------------------------------------|
+| `web-client`  | Client app that runs in the browser (Blazor WebAssembly)  | `api`, `common`, `core`, `razor-core`, `razor`, `web-core`,       |
+| `web-core`    | Reusable web logic                                        | `common`, `core`, `web-core`                                      |
+| `web-server`  | Server code base (ASP.NET Core)                           | `api`, `common`, `core`, `web-client`, `web-core`, `web-server`   |
 
 ### Miscellaneous
 
-| **Subfolder** | **Project type**              | **Can depend on**                                        |
-|---------------|-------------------------------|----------------------------------------------------------|
-| `cmd`         | Console apps                  | `common`, `core`                                         |
-| `tests`       | Unit tests                    | Anything                                                 |
-| `tool`        | Tools for internal usage      | Anything                                                 |
+| **Subfolder** | **Project type**                                          | **Can depend on**                                                 |
+|---------------|----------------------------------------------------- -----|-------------------------------------------------------------------|
+| `cmd`         | Console apps                                              | `common`, `core`                                                  |
+| `tests`       | Unit tests                                                | Anything                                                          |
+| `tool`        | Tools for internal usage                                  | Anything                                                          |
 
 ## Forbidden dependencies
 
@@ -50,6 +51,8 @@ In order to keep the architecture clean, certain dependencies are forbidden. The
 The UI logic for each app lives in its own UI library. These are not tied to app heads. This allows the apps to switch between framework very easily. For instance, a .NET MAUI version for DDAE could easily be created without affecting the current Photino version of the app.
 
 ## End state chart (summary)
+
+(May be outdated)
 
 ```mermaid
 flowchart TD;
@@ -141,6 +144,8 @@ flowchart TD;
 ```
 
 ## End state chart (detailed)
+
+(May be outdated)
 
 ```mermaid
 flowchart TD;
