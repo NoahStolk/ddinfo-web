@@ -7,6 +7,8 @@ namespace DevilDaggersInfo.Web.Client.Components.Admin;
 
 public partial class AdminEdit<TModel>
 {
+	private bool _submitting;
+
 	[Parameter]
 	[EditorRequired]
 	public string Name { get; set; } = null!;
@@ -47,6 +49,8 @@ public partial class AdminEdit<TModel>
 
 	private async Task OnValidSubmit()
 	{
+		_submitting = true;
+
 		try
 		{
 			HttpResponseMessage hrm = await ApiCall.Invoke(Id, Model);
@@ -65,6 +69,8 @@ public partial class AdminEdit<TModel>
 		{
 			exception.Redirect();
 		}
+
+		_submitting = false;
 	}
 
 	private void Dismiss()

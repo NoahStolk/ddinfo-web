@@ -29,5 +29,10 @@
 
 	@ChildContent
 
-	<button class="btn btn-gray p-2" type="submit">Submit</button>
+	@{
+		const string disabledStyle = "disabled:opacity-50 cursor-default btn-disabled";
+		const string enabledStyle = "btn-gray";
+	}
+
+	<button disabled="@_submitting" class="@(_submitting ? disabledStyle : enabledStyle) btn p-2" type="submit">Submit</button>
 </EditForm>
