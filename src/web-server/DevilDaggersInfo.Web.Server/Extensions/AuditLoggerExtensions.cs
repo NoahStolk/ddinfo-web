@@ -3,49 +3,11 @@ using DevilDaggersInfo.Api.Admin.CustomLeaderboards;
 using DevilDaggersInfo.Api.Admin.Donations;
 using DevilDaggersInfo.Api.Admin.Mods;
 using DevilDaggersInfo.Api.Admin.Players;
-using DevilDaggersInfo.Api.Admin.Spawnsets;
-using DevilDaggersInfo.Web.Client.Utils;
 
 namespace DevilDaggersInfo.Web.Server.Extensions;
 
 public static class AuditLoggerExtensions
 {
-	public static Dictionary<string, string> GetLog(this AddSpawnset spawnset)
-	{
-		Dictionary<string, string> log = new();
-		AddProperty(log, spawnset.Name);
-		AddProperty(log, spawnset.PlayerId);
-		AddProperty(log, spawnset.MaxDisplayWaves);
-		AddProperty(log, spawnset.IsPractice);
-		AddProperty(log, spawnset.HtmlDescription);
-		log.Add(nameof(AddSpawnset.FileContents), FileSizeUtils.Format(spawnset.FileContents.Length));
-		return log;
-	}
-
-	public static Dictionary<string, string> GetLog(this EditSpawnset spawnset)
-	{
-		Dictionary<string, string> log = new();
-		AddProperty(log, spawnset.Name);
-		AddProperty(log, spawnset.PlayerId);
-		AddProperty(log, spawnset.MaxDisplayWaves);
-		AddProperty(log, spawnset.IsPractice);
-		AddProperty(log, spawnset.HtmlDescription);
-		return log;
-	}
-
-	public static Dictionary<string, string> GetLog(this SpawnsetEntity spawnset)
-	{
-		Dictionary<string, string> log = new();
-		AddProperty(log, spawnset.Id);
-		AddProperty(log, spawnset.Name);
-		AddProperty(log, spawnset.PlayerId);
-		AddProperty(log, spawnset.MaxDisplayWaves);
-		AddProperty(log, spawnset.IsPractice);
-		AddProperty(log, spawnset.HtmlDescription);
-		AddProperty(log, spawnset.LastUpdated);
-		return log;
-	}
-
 	public static Dictionary<string, string> GetLog(this AddMod mod)
 	{
 		Dictionary<string, string> log = new();

@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Web.Server.Domain.Commands.Spawnsets;
+using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Models.Players;
 using System.Runtime.CompilerServices;
 
@@ -5,6 +7,41 @@ namespace DevilDaggersInfo.Web.Server.Domain.Extensions;
 
 public static class AuditLoggerExtensions
 {
+	public static Dictionary<string, string> GetLog(this AddSpawnset spawnset)
+	{
+		Dictionary<string, string> log = new();
+		AddProperty(log, spawnset.Name);
+		AddProperty(log, spawnset.PlayerId);
+		AddProperty(log, spawnset.MaxDisplayWaves);
+		AddProperty(log, spawnset.IsPractice);
+		AddProperty(log, spawnset.HtmlDescription);
+		return log;
+	}
+
+	public static Dictionary<string, string> GetLog(this EditSpawnset spawnset)
+	{
+		Dictionary<string, string> log = new();
+		AddProperty(log, spawnset.Name);
+		AddProperty(log, spawnset.PlayerId);
+		AddProperty(log, spawnset.MaxDisplayWaves);
+		AddProperty(log, spawnset.IsPractice);
+		AddProperty(log, spawnset.HtmlDescription);
+		return log;
+	}
+
+	public static Dictionary<string, string> GetLog(this SpawnsetEntity spawnset)
+	{
+		Dictionary<string, string> log = new();
+		AddProperty(log, spawnset.Id);
+		AddProperty(log, spawnset.Name);
+		AddProperty(log, spawnset.PlayerId);
+		AddProperty(log, spawnset.MaxDisplayWaves);
+		AddProperty(log, spawnset.IsPractice);
+		AddProperty(log, spawnset.HtmlDescription);
+		AddProperty(log, spawnset.LastUpdated);
+		return log;
+	}
+
 	public static Dictionary<string, string> GetLog(this PlayerProfile player)
 	{
 		Dictionary<string, string> log = new();
