@@ -155,8 +155,6 @@ public class Startup
 
 	public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
 	{
-		Stopwatch sw = Stopwatch.StartNew();
-
 		CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
 		CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
 
@@ -244,21 +242,19 @@ public class Startup
 
 		if (!env.IsDevelopment())
 		{
-			StringBuilder sb = new();
-			sb.Append("Configuration done at ").AppendLine(TimeUtils.TicksToTimeString(sw.ElapsedTicks));
-
 #if ROLES
 			CreateRolesIfNotExist(serviceProvider);
-			sb.Append("Role initiation done at ").AppendLine(TimeUtils.TicksToTimeString(sw.ElapsedTicks));
 #endif
+			Stopwatch sw = Stopwatch.StartNew();
 
+			StringBuilder sb = new();
 			sb.Append("> **Application is now online in the `").Append(env.EnvironmentName).AppendLine("` environment.**");
 
 			LogContainerService lcs = serviceProvider.GetRequiredService<LogContainerService>();
 			lcs.Add($"{DateTime.UtcNow:HH:mm:ss.fff}: Starting...\n{sb}");
-		}
 
-		sw.Stop();
+			sw.Stop();
+		}
 	}
 
 #if ROLES
