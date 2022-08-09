@@ -38,6 +38,8 @@ public class Startup
 
 		services.AddRazorPages();
 
+		services.AddHttpContextAccessor();
+
 		// Domain services
 		services.AddScoped<CustomEntryProcessor>();
 		services.AddSingleton<IFileSystemService, FileSystemService>();
