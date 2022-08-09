@@ -1,4 +1,6 @@
 using DevilDaggersInfo.Web.Core.Claims;
+using DevilDaggersInfo.Web.Server.Domain.Extensions;
+using DevilDaggersInfo.Web.Server.Domain.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -8,11 +10,13 @@ namespace DevilDaggersInfo.Web.Server.Domain.Entities;
 public class ApplicationDbContext : DbContext
 {
 	private readonly IHttpContextAccessor _httpContextAccessor;
+	private readonly ILogContainerService _logContainerService;
 
-	public ApplicationDbContext(DbContextOptions options, IHttpContextAccessor httpContextAccessor)
+	public ApplicationDbContext(DbContextOptions options, IHttpContextAccessor httpContextAccessor, ILogContainerService logContainerService)
 		: base(options)
 	{
 		_httpContextAccessor = httpContextAccessor;
+		_logContainerService = logContainerService;
 	}
 
 	public virtual DbSet<CustomEntryEntity> CustomEntries => Set<CustomEntryEntity>();
@@ -33,10 +37,6 @@ public class ApplicationDbContext : DbContext
 	public virtual DbSet<UserEntity> Users => Set<UserEntity>();
 	public virtual DbSet<RoleEntity> Roles => Set<RoleEntity>();
 	public virtual DbSet<UserRoleEntity> UserRoles => Set<UserRoleEntity>();
-
-	public virtual DbSet<AuditLogAddEntity> AuditLogAdds => Set<AuditLogAddEntity>();
-	public virtual DbSet<AuditLogDeleteEntity> AuditLogDeletes => Set<AuditLogDeleteEntity>();
-	public virtual DbSet<AuditLogEditEntity> AuditLogEdits => Set<AuditLogEditEntity>();
 
 #if DEBUG
 	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.LogTo(Console.WriteLine);
@@ -89,37 +89,14 @@ public class ApplicationDbContext : DbContext
 
 	public void BuildAuditLogs()
 	{
-		DateTime dateTime = DateTime.UtcNow;
 		string? username = _httpContextAccessor.HttpContext?.User?.GetName();
-		int userId = Users.FirstOrDefault(u => u.Name == username)?.Id ?? 0;
 
 		IEnumerable<EntityEntry> entityEntries = ChangeTracker.Entries();
 		foreach (EntityEntry addedOrDeletedEntityEntry in entityEntries.Where(e => e.State == EntityState.Added || e.State == EntityState.Deleted))
 		{
 			Type entityType = addedOrDeletedEntityEntry.Entity.GetType();
 			if (addedOrDeletedEntityEntry.Entity is IAuditable entity)
-			{
-				if (addedOrDeletedEntityEntry.State == EntityState.Added)
-				{
-					AuditLogAdds.Add(new AuditLogAddEntity
-					{
-						DateTime = dateTime,
-						EntityName = entityType.Name,
-						EntityId = entity.Id,
-						AddedByUserId = userId,
-					});
-				}
-				else
-				{
-					AuditLogDeletes.Add(new AuditLogDeleteEntity
-					{
-						DateTime = dateTime,
-						EntityName = entityType.Name,
-						EntityId = entity.Id,
-						DeletedByUserId = userId,
-					});
-				}
-			}
+				_logContainerService.AddAuditLog($"`{entityType.Name}` with ID `{entity.Id}` was {(addedOrDeletedEntityEntry.State == EntityState.Added ? "added" : "deleted")} by {username}.");
 		}
 
 		foreach (EntityEntry modifiedEntityEntry in entityEntries.Where(e => e.State == EntityState.Modified))
@@ -128,19 +105,16 @@ public class ApplicationDbContext : DbContext
 			if (modifiedEntityEntry.Entity is not IAuditable entity)
 				return;
 
+			List<string> logs = new();
 			foreach (PropertyEntry modifiedProperty in modifiedEntityEntry.Properties.Where(c => c.IsModified))
 			{
-				AuditLogEdits.Add(new AuditLogEditEntity
-				{
-					DateTime = dateTime,
-					EntityName = entityType.Name,
-					EntityId = entity.Id,
-					ChangedByUserId = userId,
-					PropertyName = modifiedProperty.Metadata.PropertyInfo?.Name ?? string.Empty,
-					OriginalValue = modifiedProperty.OriginalValue?.ToString() ?? string.Empty,
-					CurrentValue = modifiedProperty.CurrentValue?.ToString() ?? string.Empty,
-				});
+				string property = modifiedProperty.Metadata.PropertyInfo?.Name ?? "<null>";
+				string oldValue = modifiedProperty.OriginalValue?.ToString()?.TrimAfter(25, true) ?? "<null>";
+				string newValue = modifiedProperty.CurrentValue?.ToString()?.TrimAfter(25, true) ?? "<null>";
+				logs.Add($"**{property}**: ~~{oldValue}~~ {newValue}");
 			}
+
+			_logContainerService.AddAuditLog($"`{entityType.Name}` with ID `{entity.Id}` was edited by {username}:\n{string.Join("\n- ", logs)}");
 		}
 	}
 }
