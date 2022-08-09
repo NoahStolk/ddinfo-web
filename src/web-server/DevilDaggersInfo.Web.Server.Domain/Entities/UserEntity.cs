@@ -1,7 +1,7 @@
 namespace DevilDaggersInfo.Web.Server.Domain.Entities;
 
 [Table("Users")]
-public class UserEntity
+public class UserEntity : IAuditable
 {
 	[Key]
 	public int Id { get; set; }

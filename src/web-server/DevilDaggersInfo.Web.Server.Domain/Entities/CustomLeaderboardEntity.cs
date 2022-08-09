@@ -5,7 +5,7 @@ using DevilDaggersInfo.Web.Server.Domain.Utils;
 namespace DevilDaggersInfo.Web.Server.Domain.Entities;
 
 [Table("CustomLeaderboards")]
-public class CustomLeaderboardEntity
+public class CustomLeaderboardEntity : IAuditable
 {
 	[Key]
 	public int Id { get; init; }

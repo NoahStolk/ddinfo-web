@@ -1,12 +1,18 @@
+using DevilDaggersInfo.Web.Core.Claims;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Entities;
 
 public class ApplicationDbContext : DbContext
 {
-	public ApplicationDbContext(DbContextOptions options)
+	private readonly IHttpContextAccessor _httpContextAccessor;
+
+	public ApplicationDbContext(DbContextOptions options, IHttpContextAccessor httpContextAccessor)
 		: base(options)
 	{
+		_httpContextAccessor = httpContextAccessor;
 	}
 
 	public virtual DbSet<CustomEntryEntity> CustomEntries => Set<CustomEntryEntity>();
@@ -27,6 +33,10 @@ public class ApplicationDbContext : DbContext
 	public virtual DbSet<UserEntity> Users => Set<UserEntity>();
 	public virtual DbSet<RoleEntity> Roles => Set<RoleEntity>();
 	public virtual DbSet<UserRoleEntity> UserRoles => Set<UserRoleEntity>();
+
+	public virtual DbSet<AuditLogAddEntity> AuditLogAdds => Set<AuditLogAddEntity>();
+	public virtual DbSet<AuditLogDeleteEntity> AuditLogDeletes => Set<AuditLogDeleteEntity>();
+	public virtual DbSet<AuditLogEditEntity> AuditLogEdits => Set<AuditLogEditEntity>();
 
 #if DEBUG
 	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.LogTo(Console.WriteLine);
@@ -63,5 +73,74 @@ public class ApplicationDbContext : DbContext
 			.HasForeignKey(ur => ur.RoleName);
 
 		base.OnModelCreating(modelBuilder);
+	}
+
+	public override int SaveChanges()
+	{
+		BuildAuditLogs();
+		return base.SaveChanges();
+	}
+
+	public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+	{
+		BuildAuditLogs();
+		return await base.SaveChangesAsync(cancellationToken);
+	}
+
+	public void BuildAuditLogs()
+	{
+		DateTime dateTime = DateTime.UtcNow;
+		string? username = _httpContextAccessor.HttpContext?.User?.GetName();
+		int userId = Users.FirstOrDefault(u => u.Name == username)?.Id ?? 0;
+
+		IEnumerable<EntityEntry> entityEntries = ChangeTracker.Entries();
+		foreach (EntityEntry addedOrDeletedEntityEntry in entityEntries.Where(e => e.State == EntityState.Added || e.State == EntityState.Deleted))
+		{
+			Type entityType = addedOrDeletedEntityEntry.Entity.GetType();
+			if (addedOrDeletedEntityEntry.Entity is IAuditable entity)
+			{
+				if (addedOrDeletedEntityEntry.State == EntityState.Added)
+				{
+					AuditLogAdds.Add(new AuditLogAddEntity
+					{
+						DateTime = dateTime,
+						EntityName = entityType.Name,
+						EntityId = entity.Id,
+						AddedByUserId = userId,
+					});
+				}
+				else
+				{
+					AuditLogDeletes.Add(new AuditLogDeleteEntity
+					{
+						DateTime = dateTime,
+						EntityName = entityType.Name,
+						EntityId = entity.Id,
+						DeletedByUserId = userId,
+					});
+				}
+			}
+		}
+
+		foreach (EntityEntry modifiedEntityEntry in entityEntries.Where(e => e.State == EntityState.Modified))
+		{
+			Type entityType = modifiedEntityEntry.Entity.GetType();
+			if (modifiedEntityEntry.Entity is not IAuditable entity)
+				return;
+
+			foreach (PropertyEntry modifiedProperty in modifiedEntityEntry.Properties.Where(c => c.IsModified))
+			{
+				AuditLogEdits.Add(new AuditLogEditEntity
+				{
+					DateTime = dateTime,
+					EntityName = entityType.Name,
+					EntityId = entity.Id,
+					ChangedByUserId = userId,
+					PropertyName = modifiedProperty.Metadata.PropertyInfo?.Name ?? string.Empty,
+					OriginalValue = modifiedProperty.OriginalValue?.ToString() ?? string.Empty,
+					CurrentValue = modifiedProperty.CurrentValue?.ToString() ?? string.Empty,
+				});
+			}
+		}
 	}
 }
