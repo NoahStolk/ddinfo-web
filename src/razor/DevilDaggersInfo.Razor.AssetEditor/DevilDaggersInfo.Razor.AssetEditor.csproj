@@ -18,9 +18,9 @@
 
   <Target Name="tailwind build" BeforeTargets="Compile" Condition="'$(TailwindBuild)' == 'true'">
     <Exec Command="..\..\tw.exe -i tailwind.css -o wwwroot\tailwind.css --minify" ContinueOnError="true">
-      <Output TaskParameter="ExitCode" PropertyName="ErrorCode"/>
+      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
     </Exec>
-    <Error Condition="'$(ErrorCode)' != '0'" Text="Error building CSS file"/>
+    <Error Condition="'$(ErrorCode)' != '0'" Text="Error building CSS file" />
   </Target>
 
   <ItemGroup>
