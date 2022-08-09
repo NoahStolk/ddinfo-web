@@ -2,7 +2,7 @@ using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Web.Server.Domain.Constants;
 using DevilDaggersInfo.Web.Server.Domain.Utils;
 
-namespace DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
+namespace DevilDaggersInfo.Web.Server.Domain.Commands.CustomEntries;
 
 public class UploadRequest
 {
