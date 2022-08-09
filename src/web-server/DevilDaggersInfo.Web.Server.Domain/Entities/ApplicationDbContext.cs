@@ -114,7 +114,7 @@ public class ApplicationDbContext : DbContext
 				logs.Add($"**{property}**: ~~{oldValue}~~ {newValue}");
 			}
 
-			_logContainerService.AddAuditLog($"`{entityType.Name}` with ID `{entity.Id}` was edited by {username}:\n{string.Join("\n- ", logs)}");
+			_logContainerService.AddAuditLog($"`{entityType.Name}` with ID `{entity.Id}` was edited by {username}:\n- {string.Join("\n- ", logs)}");
 		}
 	}
 }
