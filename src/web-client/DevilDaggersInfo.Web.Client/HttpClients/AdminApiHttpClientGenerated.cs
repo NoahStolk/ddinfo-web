@@ -161,6 +161,26 @@ public partial class AdminApiHttpClient
 		return await SendRequest(new HttpMethod("POST"), $"api/admin/health/force-dump", JsonContent.Create(unused));
 	}
 
+	public async Task<HttpResponseMessage> TestException(string? message)
+	{
+		return await SendRequest(new HttpMethod("POST"), $"api/admin/logging/test-exception", JsonContent.Create(message));
+	}
+
+	public async Task<HttpResponseMessage> LogError(string? message)
+	{
+		return await SendRequest(new HttpMethod("POST"), $"api/admin/logging/log-error", JsonContent.Create(message));
+	}
+
+	public async Task<HttpResponseMessage> LogWarning(string? message)
+	{
+		return await SendRequest(new HttpMethod("POST"), $"api/admin/logging/log-warning", JsonContent.Create(message));
+	}
+
+	public async Task<HttpResponseMessage> LogInfo(string? message)
+	{
+		return await SendRequest(new HttpMethod("POST"), $"api/admin/logging/log-info", JsonContent.Create(message));
+	}
+
 	public async Task<List<string>> GetMarkers()
 	{
 		return await SendGetRequest<List<string>>($"api/admin/markers/");
