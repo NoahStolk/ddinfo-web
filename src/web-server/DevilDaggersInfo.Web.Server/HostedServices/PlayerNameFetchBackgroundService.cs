@@ -1,11 +1,13 @@
+using DevilDaggersInfo.Web.Server.Domain.Services;
+
 namespace DevilDaggersInfo.Web.Server.HostedServices;
 
 public class PlayerNameFetchBackgroundService : AbstractBackgroundService
 {
 	private readonly IServiceScopeFactory _serviceScopeFactory;
-	private readonly LeaderboardClient _leaderboardClient;
+	private readonly IDdLeaderboardService _leaderboardClient;
 
-	public PlayerNameFetchBackgroundService(IServiceScopeFactory serviceScopeFactory, LeaderboardClient leaderboardClient, BackgroundServiceMonitor backgroundServiceMonitor, ILogger<LeaderboardHistoryBackgroundService> logger)
+	public PlayerNameFetchBackgroundService(IServiceScopeFactory serviceScopeFactory, IDdLeaderboardService leaderboardClient, BackgroundServiceMonitor backgroundServiceMonitor, ILogger<LeaderboardHistoryBackgroundService> logger)
 		: base(backgroundServiceMonitor, logger)
 	{
 		_serviceScopeFactory = serviceScopeFactory;
@@ -22,24 +24,23 @@ public class PlayerNameFetchBackgroundService : AbstractBackgroundService
 		IEnumerable<PlayerEntity> players = dbContext.Players.AsEnumerable();
 
 		int attempts = 0;
-		List<EntryResponse>? entries = null;
+		List<IDdLeaderboardService.EntryResponse>? entries = null;
 		do
 		{
 			attempts++;
 			if (attempts > 5)
 				break;
 
-			ResponseWrapper<List<EntryResponse>> wrapper = await _leaderboardClient.GetEntriesByIds(players.Select(p => p.Id));
-			if (wrapper.HasError)
+			try
+			{
+				entries = await _leaderboardClient.GetEntriesByIds(players.Select(p => p.Id));
+			}
+			catch (DdLeaderboardException)
 			{
 				const int interval = 5;
 				Logger.LogWarning("Couldn't get entries. Waiting {interval} seconds...", interval);
 
 				await Task.Delay(TimeSpan.FromSeconds(interval), stoppingToken);
-			}
-			else
-			{
-				entries = wrapper.GetResponse();
 			}
 		}
 		while (entries == null);
@@ -47,7 +48,7 @@ public class PlayerNameFetchBackgroundService : AbstractBackgroundService
 			return;
 
 		List<(int PlayerId, string OldName, string NewName)> logs = new();
-		foreach (EntryResponse entry in entries)
+		foreach (IDdLeaderboardService.EntryResponse entry in entries)
 		{
 			PlayerEntity? player = players.FirstOrDefault(p => p.Id == entry.Id);
 			if (player == null || player.PlayerName == entry.Username)

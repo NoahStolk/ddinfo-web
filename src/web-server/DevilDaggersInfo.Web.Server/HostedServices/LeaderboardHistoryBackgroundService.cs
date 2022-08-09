@@ -7,9 +7,9 @@ namespace DevilDaggersInfo.Web.Server.HostedServices;
 public class LeaderboardHistoryBackgroundService : AbstractBackgroundService
 {
 	private readonly IFileSystemService _fileSystemService;
-	private readonly LeaderboardClient _leaderboardClient;
+	private readonly IDdLeaderboardService _leaderboardClient;
 
-	public LeaderboardHistoryBackgroundService(IFileSystemService fileSystemService, LeaderboardClient leaderboardClient, BackgroundServiceMonitor backgroundServiceMonitor, ILogger<LeaderboardHistoryBackgroundService> logger)
+	public LeaderboardHistoryBackgroundService(IFileSystemService fileSystemService, IDdLeaderboardService leaderboardClient, BackgroundServiceMonitor backgroundServiceMonitor, ILogger<LeaderboardHistoryBackgroundService> logger)
 		: base(backgroundServiceMonitor, logger)
 	{
 		_fileSystemService = fileSystemService;
@@ -24,25 +24,27 @@ public class LeaderboardHistoryBackgroundService : AbstractBackgroundService
 		if (HistoryFileExistsForDate(DateTime.UtcNow))
 			return;
 
-		LeaderboardResponse? leaderboard = null;
-		List<EntryResponse> entries = new();
+		IDdLeaderboardService.LeaderboardResponse? leaderboard = null;
+		List<IDdLeaderboardService.EntryResponse> entries = new();
 
 		const int leaderboardPageCount = 5;
 		for (int i = 0; i < leaderboardPageCount;)
 		{
-			ResponseWrapper<LeaderboardResponse> wrapper = await _leaderboardClient.GetLeaderboard(100 * i + 1);
-			if (wrapper.HasError)
+			IDdLeaderboardService.LeaderboardResponse response;
+			try
+			{
+				response = await _leaderboardClient.GetLeaderboard(100 * i + 1);
+			}
+			catch (DdLeaderboardException)
 			{
 				const int interval = 5;
 				Logger.LogWarning("Couldn't get leaderboard (page {page} of {total}). Waiting {interval} seconds...", i, leaderboardPageCount, interval);
 
 				await Task.Delay(TimeSpan.FromSeconds(interval), stoppingToken);
-				continue;
+				continue; // Continue without increasing i, so the request is retried.
 			}
 
-			LeaderboardResponse response = wrapper.GetResponse();
-			if (leaderboard == null)
-				leaderboard = response; // The LeaderboardResponse.Entries property here is unused. We use the entries local instead.
+			leaderboard ??= response; // The LeaderboardResponse.Entries property here is unused. We use the entries local instead.
 
 			entries.AddRange(response.Entries);
 
@@ -71,7 +73,7 @@ public class LeaderboardHistoryBackgroundService : AbstractBackgroundService
 		return false;
 	}
 
-	private static LeaderboardHistory ConvertToHistoryModel(LeaderboardResponse leaderboard, List<EntryResponse> entries) => new()
+	private static LeaderboardHistory ConvertToHistoryModel(IDdLeaderboardService.LeaderboardResponse leaderboard, List<IDdLeaderboardService.EntryResponse> entries) => new()
 	{
 		DaggersFiredGlobal = leaderboard.DaggersFiredGlobal,
 		DaggersHitGlobal = leaderboard.DaggersHitGlobal,
