@@ -32,7 +32,7 @@ public abstract class ModArchiveProcessorTests
 
 		Cache = new(fileSystemService.Object);
 		Accessor = new(fileSystemService.Object, Cache);
-		Processor = new(fileSystemService.Object, Cache, Accessor, new Mock<IFileSystemLogger>().Object);
+		Processor = new(fileSystemService.Object, Cache, Accessor);
 	}
 
 	protected ModArchiveCache Cache { get; }

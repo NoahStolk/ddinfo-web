@@ -11,14 +11,12 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 public class UsersController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
-	private readonly IAuditLogger _auditLogger;
 	private readonly IUserService _userService;
 	private readonly ILogger<UsersController> _logger;
 
-	public UsersController(ApplicationDbContext dbContext, IAuditLogger auditLogger, IUserService userService, ILogger<UsersController> logger)
+	public UsersController(ApplicationDbContext dbContext, IUserService userService, ILogger<UsersController> logger)
 	{
 		_dbContext = dbContext;
-		_auditLogger = auditLogger;
 		_userService = userService;
 		_logger = logger;
 	}
@@ -77,15 +75,12 @@ public class UsersController : ControllerBase
 			return NotFound();
 
 		UserRoleEntity? userRole = user.UserRoles!.Find(ur => ur.RoleName == roleName);
-		bool assigned;
 		if (userRole != null)
 		{
-			assigned = false;
 			_dbContext.UserRoles.Remove(userRole);
 		}
 		else
 		{
-			assigned = true;
 			_dbContext.UserRoles.Add(new UserRoleEntity
 			{
 				RoleName = roleName,
@@ -94,11 +89,6 @@ public class UsersController : ControllerBase
 		}
 
 		await _dbContext.SaveChangesAsync();
-
-		if (assigned)
-			_auditLogger.LogRoleAssign(user.Name, roleName);
-		else
-			_auditLogger.LogRoleRevoke(user.Name, roleName);
 
 		return Ok();
 	}
@@ -159,8 +149,6 @@ public class UsersController : ControllerBase
 
 		_dbContext.Users.Remove(user);
 		await _dbContext.SaveChangesAsync();
-
-		_auditLogger.LogDelete(user.GetLog(), User, user.Id);
 
 		return Ok();
 	}

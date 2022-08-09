@@ -3,7 +3,6 @@ using DevilDaggersInfo.Web.Server.Domain.Commands.Players;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
-using DevilDaggersInfo.Web.Server.Domain.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
@@ -12,12 +11,10 @@ namespace DevilDaggersInfo.Web.Server.Domain.Services;
 public class PlayerService
 {
 	private readonly ApplicationDbContext _dbContext;
-	private readonly IAuditLogger _auditLogger;
 
-	public PlayerService(ApplicationDbContext dbContext, IAuditLogger auditLogger)
+	public PlayerService(ApplicationDbContext dbContext)
 	{
 		_dbContext = dbContext;
-		_auditLogger = auditLogger;
 	}
 
 	public async Task UpdateProfileAsync(ClaimsPrincipal claimsPrincipal, int id, EditPlayerProfile editPlayerProfile)
@@ -40,24 +37,6 @@ public class PlayerService
 		if (player.BanType != BanType.NotBanned)
 			throw new InvalidProfileRequestException("Player is banned.");
 
-		EditPlayerProfile oldLog = new()
-		{
-			CountryCode = player.CountryCode,
-			Dpi = player.Dpi,
-			InGameSens = player.InGameSens,
-			Fov = player.Fov,
-			IsRightHanded = player.IsRightHanded,
-			HasFlashHandEnabled = player.HasFlashHandEnabled,
-			Gamma = player.Gamma,
-			UsesLegacyAudio = player.UsesLegacyAudio,
-			UsesHrtf = player.UsesHrtf,
-			UsesInvertY = player.UsesInvertY,
-			VerticalSync = player.VerticalSync,
-			HideSettings = player.HideSettings,
-			HideDonations = player.HideDonations,
-			HidePastUsernames = player.HidePastUsernames,
-		};
-
 		player.CountryCode = editPlayerProfile.CountryCode;
 		player.Dpi = editPlayerProfile.Dpi;
 		player.Fov = editPlayerProfile.Fov;
@@ -74,7 +53,5 @@ public class PlayerService
 		player.VerticalSync = editPlayerProfile.VerticalSync;
 
 		await _dbContext.SaveChangesAsync();
-
-		_auditLogger.LogEdit(oldLog.GetLog(), editPlayerProfile.GetLog(), claimsPrincipal, player.Id);
 	}
 }

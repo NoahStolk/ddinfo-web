@@ -4,8 +4,6 @@ using DevilDaggersInfo.Web.Client;
 using DevilDaggersInfo.Web.Core.Claims;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Admin;
 using DevilDaggersInfo.Web.Server.Domain.Extensions;
-using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
-using DevilDaggersInfo.Web.Server.Domain.Models.Spawnsets;
 using DevilDaggersInfo.Web.Server.Domain.Services;
 using Microsoft.AspNetCore.Authorization;
 
@@ -16,17 +14,11 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 public class SpawnsetsController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
-	private readonly IFileSystemService _fileSystemService;
-	private readonly SpawnsetHashCache _spawnsetHashCache;
-	private readonly IAuditLogger _auditLogger;
 	private readonly SpawnsetService _spawnsetService;
 
-	public SpawnsetsController(ApplicationDbContext dbContext, IFileSystemService fileSystemService, SpawnsetHashCache spawnsetHashCache, IAuditLogger auditLogger, SpawnsetService spawnsetService)
+	public SpawnsetsController(ApplicationDbContext dbContext, SpawnsetService spawnsetService)
 	{
 		_dbContext = dbContext;
-		_fileSystemService = fileSystemService;
-		_spawnsetHashCache = spawnsetHashCache;
-		_auditLogger = auditLogger;
 		_spawnsetService = spawnsetService;
 	}
 
@@ -102,17 +94,15 @@ public class SpawnsetsController : ControllerBase
 	[Authorize(Roles = Roles.Spawnsets)]
 	public async Task<ActionResult> AddSpawnset(AddSpawnset addSpawnset)
 	{
-		await _spawnsetService.AddSpawnsetAsync(
-			new Domain.Commands.Spawnsets.AddSpawnset
-			{
-				FileContents = addSpawnset.FileContents,
-				HtmlDescription = addSpawnset.HtmlDescription,
-				IsPractice = addSpawnset.IsPractice,
-				MaxDisplayWaves = addSpawnset.MaxDisplayWaves,
-				Name = addSpawnset.Name,
-				PlayerId = addSpawnset.PlayerId,
-			},
-			User);
+		await _spawnsetService.AddSpawnsetAsync(new Domain.Commands.Spawnsets.AddSpawnset
+		{
+			FileContents = addSpawnset.FileContents,
+			HtmlDescription = addSpawnset.HtmlDescription,
+			IsPractice = addSpawnset.IsPractice,
+			MaxDisplayWaves = addSpawnset.MaxDisplayWaves,
+			Name = addSpawnset.Name,
+			PlayerId = addSpawnset.PlayerId,
+		});
 
 		return Ok();
 	}
@@ -124,17 +114,15 @@ public class SpawnsetsController : ControllerBase
 	[Authorize(Roles = Roles.Spawnsets)]
 	public async Task<ActionResult> EditSpawnsetById(int id, EditSpawnset editSpawnset)
 	{
-		await _spawnsetService.EditSpawnsetAsync(
-			new Domain.Commands.Spawnsets.EditSpawnset
-			{
-				HtmlDescription = editSpawnset.HtmlDescription,
-				IsPractice = editSpawnset.IsPractice,
-				MaxDisplayWaves = editSpawnset.MaxDisplayWaves,
-				Name = editSpawnset.Name,
-				PlayerId = editSpawnset.PlayerId,
-				SpawnsetId = id,
-			},
-			User);
+		await _spawnsetService.EditSpawnsetAsync(new Domain.Commands.Spawnsets.EditSpawnset
+		{
+			HtmlDescription = editSpawnset.HtmlDescription,
+			IsPractice = editSpawnset.IsPractice,
+			MaxDisplayWaves = editSpawnset.MaxDisplayWaves,
+			Name = editSpawnset.Name,
+			PlayerId = editSpawnset.PlayerId,
+			SpawnsetId = id,
+		});
 
 		return Ok();
 	}
@@ -146,7 +134,7 @@ public class SpawnsetsController : ControllerBase
 	[Authorize(Roles = Roles.Spawnsets)]
 	public async Task<ActionResult> DeleteSpawnsetById(int id)
 	{
-		await _spawnsetService.DeleteSpawnsetAsync(id, User);
+		await _spawnsetService.DeleteSpawnsetAsync(id);
 
 		return Ok();
 	}

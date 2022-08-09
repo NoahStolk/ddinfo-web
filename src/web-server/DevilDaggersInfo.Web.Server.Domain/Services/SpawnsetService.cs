@@ -2,10 +2,8 @@ using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Web.Server.Domain.Commands.Spawnsets;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
-using DevilDaggersInfo.Web.Server.Domain.Extensions;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Models.Spawnsets;
-using System.Security.Claims;
 using System.Security.Cryptography;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Services;
@@ -15,18 +13,15 @@ public class SpawnsetService
 	private readonly SpawnsetHashCache _spawnsetHashCache;
 	private readonly ApplicationDbContext _dbContext;
 	private readonly IFileSystemService _fileSystemService;
-	private readonly IAuditLogger _auditLogger;
 
-	public SpawnsetService(SpawnsetHashCache spawnsetHashCache, ApplicationDbContext dbContext, IFileSystemService fileSystemService, IAuditLogger auditLogger)
+	public SpawnsetService(SpawnsetHashCache spawnsetHashCache, ApplicationDbContext dbContext, IFileSystemService fileSystemService)
 	{
 		_spawnsetHashCache = spawnsetHashCache;
 		_dbContext = dbContext;
 		_fileSystemService = fileSystemService;
-		_auditLogger = auditLogger;
 	}
 
-	// TODO: Get ClaimsPrincipal from HttpContextAccessor.
-	public async Task AddSpawnsetAsync(AddSpawnset addSpawnset, ClaimsPrincipal claimsPrincipal)
+	public async Task AddSpawnsetAsync(AddSpawnset addSpawnset)
 	{
 		ValidateName(addSpawnset.Name);
 
@@ -61,11 +56,9 @@ public class SpawnsetService
 		};
 		_dbContext.Spawnsets.Add(spawnset);
 		await _dbContext.SaveChangesAsync();
-
-		_auditLogger.LogAdd(addSpawnset.GetLog(), claimsPrincipal, spawnset.Id, new() { new($"File {_fileSystemService.FormatPath(path)} was added.", FileSystemInformationType.Add) });
 	}
 
-	public async Task EditSpawnsetAsync(EditSpawnset editSpawnset, ClaimsPrincipal claimsPrincipal)
+	public async Task EditSpawnsetAsync(EditSpawnset editSpawnset)
 	{
 		ValidateName(editSpawnset.Name);
 
@@ -76,7 +69,6 @@ public class SpawnsetService
 		if (spawnset == null)
 			throw new NotFoundException($"Spawnset with ID '{editSpawnset.SpawnsetId}' does not exist.");
 
-		string? moveInfo = null;
 		if (spawnset.Name != editSpawnset.Name)
 		{
 			if (_dbContext.Spawnsets.Any(m => m.Name == editSpawnset.Name))
@@ -86,17 +78,7 @@ public class SpawnsetService
 			string oldPath = Path.Combine(directory, spawnset.Name);
 			string newPath = Path.Combine(directory, editSpawnset.Name);
 			File.Move(oldPath, newPath);
-			moveInfo = $"File {_fileSystemService.FormatPath(oldPath)} was moved to {_fileSystemService.FormatPath(newPath)}.";
 		}
-
-		EditSpawnset logDto = new()
-		{
-			HtmlDescription = spawnset.HtmlDescription,
-			IsPractice = spawnset.IsPractice,
-			MaxDisplayWaves = spawnset.MaxDisplayWaves,
-			Name = spawnset.Name,
-			PlayerId = spawnset.PlayerId,
-		};
 
 		// Do not update LastUpdated here. This value is based only on the file which cannot be edited.
 		spawnset.HtmlDescription = editSpawnset.HtmlDescription;
@@ -105,11 +87,9 @@ public class SpawnsetService
 		spawnset.Name = editSpawnset.Name;
 		spawnset.PlayerId = editSpawnset.PlayerId;
 		await _dbContext.SaveChangesAsync();
-
-		_auditLogger.LogEdit(logDto.GetLog(), editSpawnset.GetLog(), claimsPrincipal, spawnset.Id, moveInfo == null ? null : new() { new(moveInfo, FileSystemInformationType.Move) });
 	}
 
-	public async Task DeleteSpawnsetAsync(int id, ClaimsPrincipal claimsPrincipal)
+	public async Task DeleteSpawnsetAsync(int id)
 	{
 		SpawnsetEntity? spawnset = _dbContext.Spawnsets.FirstOrDefault(s => s.Id == id);
 		if (spawnset == null)
@@ -128,12 +108,9 @@ public class SpawnsetService
 
 		_dbContext.Spawnsets.Remove(spawnset);
 		await _dbContext.SaveChangesAsync();
-
-		string message = fileExists ? $"File {_fileSystemService.FormatPath(path)} was deleted." : $"File {_fileSystemService.FormatPath(path)} was not deleted because it does not exist.";
-		_auditLogger.LogDelete(spawnset.GetLog(), claimsPrincipal, spawnset.Id, new() { new(message, fileExists ? FileSystemInformationType.Delete : FileSystemInformationType.NotFoundUnexpected) });
 	}
 
-	public void ValidateName(string name)
+	private static void ValidateName(string name)
 	{
 		if (string.IsNullOrWhiteSpace(name))
 			throw new AdminDomainException("Spawnset name must not be empty or consist of white space only.");

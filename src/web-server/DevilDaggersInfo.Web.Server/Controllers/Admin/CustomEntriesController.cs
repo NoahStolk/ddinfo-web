@@ -16,13 +16,11 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 public class CustomEntriesController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
-	private readonly IAuditLogger _auditLogger;
 	private readonly IFileSystemService _fileSystemService;
 
-	public CustomEntriesController(ApplicationDbContext dbContext, IAuditLogger auditLogger, IFileSystemService fileSystemService)
+	public CustomEntriesController(ApplicationDbContext dbContext, IFileSystemService fileSystemService)
 	{
 		_dbContext = dbContext;
-		_auditLogger = auditLogger;
 		_fileSystemService = fileSystemService;
 	}
 
@@ -132,8 +130,6 @@ public class CustomEntriesController : ControllerBase
 		_dbContext.CustomEntries.Add(customEntry);
 		await _dbContext.SaveChangesAsync();
 
-		_auditLogger.LogAdd(addCustomEntry.GetLog(), User, customEntry.Id);
-
 		return Ok(customEntry.Id);
 	}
 
@@ -152,29 +148,6 @@ public class CustomEntriesController : ControllerBase
 		CustomEntryEntity? customEntry = _dbContext.CustomEntries.FirstOrDefault(ce => ce.Id == id);
 		if (customEntry == null)
 			return NotFound();
-
-		EditCustomEntry logDto = new()
-		{
-			ClientVersion = customEntry.ClientVersion,
-			CustomLeaderboardId = customEntry.CustomLeaderboardId,
-			DaggersFired = customEntry.DaggersFired,
-			DaggersHit = customEntry.DaggersHit,
-			DeathType = (CustomEntryDeathType)customEntry.DeathType,
-			EnemiesAlive = customEntry.EnemiesAlive,
-			EnemiesKilled = customEntry.EnemiesKilled,
-			GemsCollected = customEntry.GemsCollected,
-			GemsDespawned = customEntry.GemsDespawned,
-			GemsEaten = customEntry.GemsEaten,
-			GemsTotal = customEntry.GemsTotal,
-			HomingStored = customEntry.HomingStored,
-			HomingEaten = customEntry.HomingEaten,
-			LevelUpTime2 = customEntry.LevelUpTime2,
-			LevelUpTime3 = customEntry.LevelUpTime3,
-			LevelUpTime4 = customEntry.LevelUpTime4,
-			PlayerId = customEntry.PlayerId,
-			SubmitDate = customEntry.SubmitDate,
-			Time = customEntry.Time,
-		};
 
 		customEntry.ClientVersion = editCustomEntry.ClientVersion;
 		customEntry.CustomLeaderboardId = editCustomEntry.CustomLeaderboardId;
@@ -196,8 +169,6 @@ public class CustomEntriesController : ControllerBase
 		customEntry.SubmitDate = editCustomEntry.SubmitDate;
 		customEntry.Time = editCustomEntry.Time.To10thMilliTime();
 		await _dbContext.SaveChangesAsync();
-
-		_auditLogger.LogEdit(logDto.GetLog(), editCustomEntry.GetLog(), User, customEntry.Id);
 
 		return Ok();
 	}
@@ -222,9 +193,6 @@ public class CustomEntriesController : ControllerBase
 		bool fileExists = IoFile.Exists(path);
 		if (fileExists)
 			IoFile.Delete(path);
-
-		string message = fileExists ? $"File {_fileSystemService.FormatPath(path)} was deleted." : $"File {_fileSystemService.FormatPath(path)} was not deleted because it does not exist.";
-		_auditLogger.LogDelete(customEntry.GetLog(), User, customEntry.Id, new() { new(message, fileExists ? FileSystemInformationType.Delete : FileSystemInformationType.NotFound) });
 
 		return Ok();
 	}

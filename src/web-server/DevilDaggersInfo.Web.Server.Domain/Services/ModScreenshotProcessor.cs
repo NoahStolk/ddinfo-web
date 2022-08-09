@@ -6,12 +6,10 @@ namespace DevilDaggersInfo.Web.Server.Domain.Services;
 public class ModScreenshotProcessor
 {
 	private readonly IFileSystemService _fileSystemService;
-	private readonly IFileSystemLogger _fileSystemLogger;
 
-	public ModScreenshotProcessor(IFileSystemService fileSystemService, IFileSystemLogger fileSystemLogger)
+	public ModScreenshotProcessor(IFileSystemService fileSystemService)
 	{
 		_fileSystemService = fileSystemService;
-		_fileSystemLogger = fileSystemLogger;
 	}
 
 	public void ProcessModScreenshotUpload(string modName, Dictionary<string, byte[]> screenshots)
@@ -19,13 +17,10 @@ public class ModScreenshotProcessor
 		string modScreenshotsDirectory = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ModScreenshots), modName);
 		Directory.CreateDirectory(modScreenshotsDirectory);
 		int i = 0;
-		foreach (KeyValuePair<string, byte[]> kvp in screenshots.OrderBy(kvp => kvp.Key))
+		foreach (byte[] screenshotContents in screenshots.OrderBy(kvp => kvp.Key).Select(kvp => kvp.Value))
 		{
-			if (!PngFileUtils.HasValidPngHeader(kvp.Value))
-			{
-				_fileSystemLogger.FileNotAddedBecauseInvalid(kvp.Key, "Invalid PNG file.");
+			if (!PngFileUtils.HasValidPngHeader(screenshotContents))
 				continue;
-			}
 
 			string path;
 			do
@@ -35,8 +30,7 @@ public class ModScreenshotProcessor
 			}
 			while (File.Exists(path));
 
-			File.WriteAllBytes(path, kvp.Value);
-			_fileSystemLogger.FileAdded(path);
+			File.WriteAllBytes(path, screenshotContents);
 		}
 	}
 
@@ -45,28 +39,14 @@ public class ModScreenshotProcessor
 		string screenshotsDirectory = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ModScreenshots), modName);
 		string screenshotFilePath = Path.Combine(screenshotsDirectory, screenshotFileName);
 		if (File.Exists(screenshotFilePath))
-		{
 			File.Delete(screenshotFilePath);
-			_fileSystemLogger.FileDeleted(screenshotFilePath);
-		}
-		else
-		{
-			_fileSystemLogger.FileNotDeletedBecauseNotFound(screenshotFilePath);
-		}
 	}
 
 	public void DeleteScreenshotsDirectory(string modName)
 	{
 		string screenshotsDirectory = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ModScreenshots), modName);
 		if (Directory.Exists(screenshotsDirectory))
-		{
 			Directory.Delete(screenshotsDirectory, true);
-			_fileSystemLogger.DirectoryDeleted(screenshotsDirectory);
-		}
-		else
-		{
-			_fileSystemLogger.DirectoryNotDeletedBecauseNotFound(screenshotsDirectory);
-		}
 	}
 
 	public void MoveScreenshotsDirectory(string originalModName, string newModName)
@@ -80,11 +60,6 @@ public class ModScreenshotProcessor
 		{
 			string newScreenshotsDirectory = Path.Combine(screenshotsDirectory, newModName);
 			Directory.Move(oldScreenshotsDirectory, newScreenshotsDirectory);
-			_fileSystemLogger.DirectoryMoved(oldScreenshotsDirectory, newScreenshotsDirectory);
-		}
-		else
-		{
-			_fileSystemLogger.DirectoryNotMovedBecauseNotFound(oldScreenshotsDirectory);
 		}
 	}
 }

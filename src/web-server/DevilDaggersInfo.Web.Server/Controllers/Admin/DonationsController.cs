@@ -5,7 +5,6 @@ using DevilDaggersInfo.Web.Core.Claims;
 using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Admin;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Admin;
 using DevilDaggersInfo.Web.Server.Domain.Extensions;
-using DevilDaggersInfo.Web.Server.Domain.Services;
 using Microsoft.AspNetCore.Authorization;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
@@ -16,12 +15,10 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 public class DonationsController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
-	private readonly IAuditLogger _auditLogger;
 
-	public DonationsController(ApplicationDbContext dbContext, IAuditLogger auditLogger)
+	public DonationsController(ApplicationDbContext dbContext)
 	{
 		_dbContext = dbContext;
-		_auditLogger = auditLogger;
 	}
 
 	[HttpGet]
@@ -96,8 +93,6 @@ public class DonationsController : ControllerBase
 		_dbContext.Donations.Add(donation);
 		await _dbContext.SaveChangesAsync();
 
-		_auditLogger.LogAdd(addDonation.GetLog(), User, donation.Id);
-
 		return Ok(donation.Id);
 	}
 
@@ -114,16 +109,6 @@ public class DonationsController : ControllerBase
 		if (donation == null)
 			return NotFound();
 
-		EditDonation logDto = new()
-		{
-			Amount = donation.Amount,
-			ConvertedEuroCentsReceived = donation.ConvertedEuroCentsReceived,
-			Currency = donation.Currency.ToAdminApi(),
-			IsRefunded = donation.IsRefunded,
-			Note = donation.Note,
-			PlayerId = donation.PlayerId,
-		};
-
 		donation.Amount = editDonation.Amount;
 		donation.ConvertedEuroCentsReceived = editDonation.ConvertedEuroCentsReceived;
 		donation.Currency = editDonation.Currency.ToDomain();
@@ -131,8 +116,6 @@ public class DonationsController : ControllerBase
 		donation.Note = editDonation.Note;
 		donation.PlayerId = editDonation.PlayerId;
 		await _dbContext.SaveChangesAsync();
-
-		_auditLogger.LogEdit(logDto.GetLog(), editDonation.GetLog(), User, donation.Id);
 
 		return Ok();
 	}
@@ -148,8 +131,6 @@ public class DonationsController : ControllerBase
 
 		_dbContext.Donations.Remove(donation);
 		await _dbContext.SaveChangesAsync();
-
-		_auditLogger.LogDelete(donation.GetLog(), User, donation.Id);
 
 		return Ok();
 	}

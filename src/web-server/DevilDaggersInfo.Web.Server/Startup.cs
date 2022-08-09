@@ -61,13 +61,11 @@ public class Startup
 		services.AddTransient<CustomLeaderboardValidator>();
 
 		// Utilities
-		services.AddTransient<IAuditLogger, AuditLogger>();
 		services.AddSingleton<LeaderboardResponseParser>();
 
 		// Monitoring
 		services.AddSingleton<BackgroundServiceMonitor>();
 		services.AddSingleton<ICustomLeaderboardSubmissionLogger, CustomLeaderboardSubmissionLogger>();
-		services.AddScoped<IFileSystemLogger, FileSystemLogger>();
 		services.AddSingleton<LogContainerService>();
 		services.AddSingleton<ResponseTimeMonitor>();
 

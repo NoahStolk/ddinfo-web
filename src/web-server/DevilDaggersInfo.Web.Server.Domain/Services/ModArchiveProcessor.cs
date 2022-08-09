@@ -14,14 +14,12 @@ public class ModArchiveProcessor
 	private readonly IFileSystemService _fileSystemService;
 	private readonly ModArchiveCache _modArchiveCache;
 	private readonly ModArchiveAccessor _modArchiveAccessor;
-	private readonly IFileSystemLogger _fileSystemLogger;
 
-	public ModArchiveProcessor(IFileSystemService fileSystemService, ModArchiveCache modArchiveCache, ModArchiveAccessor modArchiveAccessor, IFileSystemLogger fileSystemLogger)
+	public ModArchiveProcessor(IFileSystemService fileSystemService, ModArchiveCache modArchiveCache, ModArchiveAccessor modArchiveAccessor)
 	{
 		_fileSystemService = fileSystemService;
 		_modArchiveCache = modArchiveCache;
 		_modArchiveAccessor = modArchiveAccessor;
-		_fileSystemLogger = fileSystemLogger;
 	}
 
 	public async Task ProcessModBinaryUploadAsync(string modName, Dictionary<BinaryName, byte[]> binaries)
@@ -80,8 +78,6 @@ public class ModArchiveProcessor
 			// Rethrow any exception as an invalid mod archive exception, so the middleware can handle it.
 			throw new InvalidModArchiveException("Processing the mod archive failed.", ex);
 		}
-
-		_fileSystemLogger.ModArchiveAdded(zipFilePath, zipBytes.Length, modName, binaries);
 	}
 
 	/// <summary>
@@ -148,26 +144,14 @@ public class ModArchiveProcessor
 		if (File.Exists(archivePath))
 		{
 			File.Delete(archivePath);
-			_fileSystemLogger.FileDeleted(archivePath);
 
 			// Clear entire memory cache (can't clear individual entries).
 			_modArchiveCache.Clear();
-		}
-		else
-		{
-			_fileSystemLogger.FileNotDeletedBecauseNotFound(archivePath);
 		}
 
 		// Clear file cache for this mod.
 		string cachePath = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ModArchiveCache), $"{modName}.json");
 		if (File.Exists(cachePath))
-		{
 			File.Delete(cachePath);
-			_fileSystemLogger.FileDeleted(cachePath);
-		}
-		else
-		{
-			_fileSystemLogger.FileNotDeletedBecauseNotFound(cachePath);
-		}
 	}
 }
