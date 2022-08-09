@@ -15,12 +15,12 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 public class PlayersController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
-	private readonly IDdLeaderboardService _leaderboardClient;
+	private readonly PlayerService _playerService;
 
-	public PlayersController(ApplicationDbContext dbContext, IDdLeaderboardService leaderboardClient)
+	public PlayersController(ApplicationDbContext dbContext, PlayerService playerService)
 	{
 		_dbContext = dbContext;
-		_leaderboardClient = leaderboardClient;
+		_playerService = playerService;
 	}
 
 	[HttpGet]
@@ -113,49 +113,12 @@ public class PlayersController : ControllerBase
 	[Authorize(Roles = Roles.Players)]
 	public async Task<ActionResult> AddPlayer(AddPlayer addPlayer)
 	{
-		if (addPlayer.BanType != BanType.NotBanned)
-		{
-			if (!string.IsNullOrWhiteSpace(addPlayer.CountryCode))
-				return BadRequest("Banned players must not have a country code.");
-
-			if (addPlayer.Dpi.HasValue ||
-				addPlayer.InGameSens.HasValue ||
-				addPlayer.Fov.HasValue ||
-				addPlayer.IsRightHanded.HasValue ||
-				addPlayer.HasFlashHandEnabled.HasValue ||
-				addPlayer.Gamma.HasValue ||
-				addPlayer.UsesLegacyAudio.HasValue ||
-				addPlayer.UsesHrtf.HasValue ||
-				addPlayer.UsesInvertY.HasValue ||
-				addPlayer.VerticalSync != VerticalSync.Unknown)
-			{
-				return BadRequest("Banned players must not have settings.");
-			}
-		}
-		else
-		{
-			if (!string.IsNullOrWhiteSpace(addPlayer.BanDescription))
-				return BadRequest("BanDescription must only be used for banned players.");
-
-			if (addPlayer.BanResponsibleId.HasValue)
-				return BadRequest("BanResponsibleId must only be used for banned players.");
-		}
-
-		if (_dbContext.Players.Any(p => p.Id == addPlayer.Id))
-			return Conflict($"Player with ID '{addPlayer.Id}' already exists.");
-
-		foreach (int modId in addPlayer.ModIds ?? new())
-		{
-			if (!_dbContext.Mods.Any(m => m.Id == modId))
-				return BadRequest($"Mod with ID '{modId}' does not exist.");
-		}
-
-		PlayerEntity player = new()
+		await _playerService.AddPlayerAsync(new Domain.Commands.Players.AddPlayer
 		{
 			Id = addPlayer.Id,
-			PlayerName = await GetPlayerName(addPlayer.Id),
+			ModIds = addPlayer.ModIds,
 			CommonName = addPlayer.CommonName,
-			DiscordUserId = (ulong?)addPlayer.DiscordUserId,
+			DiscordUserId = addPlayer.DiscordUserId,
 			CountryCode = addPlayer.CountryCode,
 			Dpi = addPlayer.Dpi,
 			InGameSens = addPlayer.InGameSens,
@@ -174,14 +137,8 @@ public class PlayersController : ControllerBase
 			HideSettings = addPlayer.HideSettings,
 			HideDonations = addPlayer.HideDonations,
 			HidePastUsernames = addPlayer.HidePastUsernames,
-		};
-		_dbContext.Players.Add(player);
-		_dbContext.SaveChanges(); // Save changes here so PlayerMod entities can be assigned properly.
-
-		UpdatePlayerMods(addPlayer.ModIds ?? new(), player.Id);
-		await _dbContext.SaveChangesAsync();
-
-		return Ok(player.Id);
+		});
+		return Ok();
 	}
 
 	[HttpPut("{id}")]
@@ -191,72 +148,31 @@ public class PlayersController : ControllerBase
 	[Authorize(Roles = Roles.Players)]
 	public async Task<ActionResult> EditPlayerById(int id, EditPlayer editPlayer)
 	{
-		if (editPlayer.BanType != BanType.NotBanned)
+		await _playerService.EditPlayerAsync(new Domain.Commands.Players.EditPlayer
 		{
-			if (!string.IsNullOrWhiteSpace(editPlayer.CountryCode))
-				return BadRequest("Banned players must not have a country code.");
-
-			if (editPlayer.Dpi.HasValue ||
-				editPlayer.InGameSens.HasValue ||
-				editPlayer.Fov.HasValue ||
-				editPlayer.IsRightHanded.HasValue ||
-				editPlayer.HasFlashHandEnabled.HasValue ||
-				editPlayer.Gamma.HasValue ||
-				editPlayer.UsesLegacyAudio.HasValue ||
-				editPlayer.UsesHrtf.HasValue ||
-				editPlayer.UsesInvertY.HasValue ||
-				editPlayer.VerticalSync != VerticalSync.Unknown)
-			{
-				return BadRequest("Banned players must not have settings.");
-			}
-		}
-		else
-		{
-			if (!string.IsNullOrWhiteSpace(editPlayer.BanDescription))
-				return BadRequest("BanDescription must only be used for banned players.");
-
-			if (editPlayer.BanResponsibleId.HasValue)
-				return BadRequest("BanResponsibleId must only be used for banned players.");
-		}
-
-		foreach (int modId in editPlayer.ModIds ?? new())
-		{
-			if (!_dbContext.Mods.Any(m => m.Id == modId))
-				return BadRequest($"Mod with ID '{modId}' does not exist.");
-		}
-
-		PlayerEntity? player = _dbContext.Players
-			.AsSingleQuery()
-			.Include(p => p.PlayerMods)
-			.FirstOrDefault(p => p.Id == id);
-		if (player == null)
-			return NotFound();
-
-		player.PlayerName = await GetPlayerName(id);
-		player.CommonName = editPlayer.CommonName;
-		player.DiscordUserId = (ulong?)editPlayer.DiscordUserId;
-		player.CountryCode = editPlayer.CountryCode;
-		player.Dpi = editPlayer.Dpi;
-		player.InGameSens = editPlayer.InGameSens;
-		player.Fov = editPlayer.Fov;
-		player.IsRightHanded = editPlayer.IsRightHanded;
-		player.HasFlashHandEnabled = editPlayer.HasFlashHandEnabled;
-		player.Gamma = editPlayer.Gamma;
-		player.UsesLegacyAudio = editPlayer.UsesLegacyAudio;
-		player.UsesHrtf = editPlayer.UsesHrtf;
-		player.UsesInvertY = editPlayer.UsesInvertY;
-		player.VerticalSync = editPlayer.VerticalSync.ToDomain();
-		player.HideSettings = editPlayer.HideSettings;
-		player.HideDonations = editPlayer.HideDonations;
-		player.HidePastUsernames = editPlayer.HidePastUsernames;
-		player.BanDescription = editPlayer.BanDescription;
-		player.BanResponsibleId = editPlayer.BanResponsibleId;
-		player.BanType = editPlayer.BanType.ToDomain();
-		player.IsBannedFromDdcl = editPlayer.IsBannedFromDdcl;
-
-		UpdatePlayerMods(editPlayer.ModIds ?? new(), player.Id);
-		await _dbContext.SaveChangesAsync();
-
+			Id = id,
+			BanDescription = editPlayer.BanDescription,
+			BanResponsibleId = editPlayer.BanResponsibleId,
+			BanType = editPlayer.BanType.ToDomain(),
+			CommonName = editPlayer.CommonName,
+			CountryCode = editPlayer.CountryCode,
+			DiscordUserId = editPlayer.DiscordUserId,
+			Dpi = editPlayer.Dpi,
+			Fov = editPlayer.Fov,
+			Gamma = editPlayer.Gamma,
+			HasFlashHandEnabled = editPlayer.HasFlashHandEnabled,
+			HideDonations = editPlayer.HideDonations,
+			HideSettings = editPlayer.HideSettings,
+			HidePastUsernames = editPlayer.HidePastUsernames,
+			InGameSens = editPlayer.InGameSens,
+			IsBannedFromDdcl = editPlayer.IsBannedFromDdcl,
+			IsRightHanded = editPlayer.IsRightHanded,
+			ModIds = editPlayer.ModIds,
+			UsesHrtf = editPlayer.UsesHrtf,
+			UsesInvertY = editPlayer.UsesInvertY,
+			UsesLegacyAudio = editPlayer.UsesLegacyAudio,
+			VerticalSync = editPlayer.VerticalSync.ToDomain(),
+		});
 		return Ok();
 	}
 
@@ -267,49 +183,7 @@ public class PlayersController : ControllerBase
 	[Authorize(Roles = Roles.Players)]
 	public async Task<ActionResult> DeletePlayerById(int id)
 	{
-		PlayerEntity? player = _dbContext.Players.FirstOrDefault(p => p.Id == id);
-		if (player == null)
-			return NotFound();
-
-		if (_dbContext.CustomEntries.Any(ce => ce.PlayerId == id))
-			return BadRequest("Player with custom leaderboard scores cannot be deleted.");
-
-		if (_dbContext.Donations.Any(d => d.PlayerId == id))
-			return BadRequest("Player with donations cannot be deleted.");
-
-		if (_dbContext.PlayerMods.Any(pam => pam.PlayerId == id))
-			return BadRequest("Player with mods cannot be deleted.");
-
-		if (_dbContext.Spawnsets.Any(sf => sf.PlayerId == id))
-			return BadRequest("Player with spawnsets cannot be deleted.");
-
-		_dbContext.Players.Remove(player);
-		await _dbContext.SaveChangesAsync();
-
+		await _playerService.DeletePlayerAsync(id);
 		return Ok();
-	}
-
-	private async Task<string> GetPlayerName(int id)
-	{
-		try
-		{
-			return (await _leaderboardClient.GetEntryById(id)).Username;
-		}
-		catch
-		{
-			return string.Empty;
-		}
-	}
-
-	private void UpdatePlayerMods(List<int> modIds, int playerId)
-	{
-		foreach (PlayerModEntity newEntity in modIds.ConvertAll(ami => new PlayerModEntity { ModId = ami, PlayerId = playerId }))
-		{
-			if (!_dbContext.PlayerMods.Any(pam => pam.ModId == newEntity.ModId && pam.PlayerId == newEntity.PlayerId))
-				_dbContext.PlayerMods.Add(newEntity);
-		}
-
-		foreach (PlayerModEntity entityToRemove in _dbContext.PlayerMods.Where(pam => pam.PlayerId == playerId && !modIds.Contains(pam.ModId)))
-			_dbContext.PlayerMods.Remove(entityToRemove);
 	}
 }
