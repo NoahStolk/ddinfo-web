@@ -79,7 +79,7 @@ public static class {_className}
 			.Replace(_assetTypeName, assetTypeName)
 			.Replace(_assetFields, string.Join(Environment.NewLine, fieldLines).IndentCode(1));
 
-		sourceProductionContext.AddSource(className, SourceText.From(source.WrapCodeInsideWarningSuppressionDirectives().TrimCode(), Encoding.UTF8));
+		sourceProductionContext.AddSource(className, SourceText.From(source.BuildSource(), Encoding.UTF8));
 
 		static string GetCtorParametersAudio(string assetName, bool isProhibited, float defaultLoudness, bool presentInDefaultLoudness)
 			=> $"{FormatString(assetName)}, {FormatBool(isProhibited)}, {FormatFloat(defaultLoudness)}, {FormatBool(presentInDefaultLoudness)}";

@@ -55,6 +55,6 @@ public partial class {_className}
 			.Replace(_namespace, _namespaceForGeneratedClass)
 			.Replace(_className, _classNameForGeneratedClass)
 			.Replace(_endpointMethods, string.Join(Environment.NewLine, endpointMethods).IndentCode(1));
-		File.WriteAllText(_outputPath, code.WrapCodeInsideWarningSuppressionDirectives().TrimCode());
+		File.WriteAllText(_outputPath, code.BuildSource());
 	}
 }
