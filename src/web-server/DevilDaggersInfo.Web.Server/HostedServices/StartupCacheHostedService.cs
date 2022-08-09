@@ -8,7 +8,7 @@ public class StartupCacheHostedService : IHostedService
 {
 	private readonly IWebHostEnvironment _env;
 	private readonly IFileSystemService _fileSystemService;
-	private readonly LogContainerService _logContainerService;
+	private readonly ILogContainerService _logContainerService;
 	private readonly LeaderboardStatisticsCache _leaderboardStatisticsCache;
 	private readonly LeaderboardHistoryCache _leaderboardHistoryCache;
 	private readonly ModArchiveCache _modArchiveCache;
@@ -16,7 +16,7 @@ public class StartupCacheHostedService : IHostedService
 	public StartupCacheHostedService(
 		IWebHostEnvironment env,
 		IFileSystemService fileSystemService,
-		LogContainerService logContainerService,
+		ILogContainerService logContainerService,
 		LeaderboardStatisticsCache leaderboardStatisticsCache,
 		LeaderboardHistoryCache leaderboardHistoryCache,
 		ModArchiveCache modArchiveCache)
@@ -60,7 +60,7 @@ public class StartupCacheHostedService : IHostedService
 		sb.Append("- `ModArchiveCache` initiation done at ").AppendLine(TimeUtils.TicksToTimeString(sw.ElapsedTicks));
 
 		if (!_env.IsDevelopment())
-			_logContainerService.Add($"{DateTime.UtcNow:HH:mm:ss.fff}: Initiating caches...\n{sb}");
+			_logContainerService.AddLog($"{DateTime.UtcNow:HH:mm:ss.fff}: Initiating caches...\n{sb}");
 
 		sw.Stop();
 	}

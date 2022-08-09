@@ -1,4 +1,3 @@
-using DevilDaggersInfo.Common.Utils;
 using DevilDaggersInfo.Web.Server.Clients.Clubber;
 using DevilDaggersInfo.Web.Server.Domain.Repositories;
 using DevilDaggersInfo.Web.Server.Domain.Services;
@@ -66,7 +65,7 @@ public class Startup
 		// Monitoring
 		services.AddSingleton<BackgroundServiceMonitor>();
 		services.AddSingleton<ICustomLeaderboardSubmissionLogger, CustomLeaderboardSubmissionLogger>();
-		services.AddSingleton<LogContainerService>();
+		services.AddSingleton<ILogContainerService, LogContainerService>();
 		services.AddSingleton<ResponseTimeMonitor>();
 
 		// Caching
@@ -250,8 +249,8 @@ public class Startup
 			StringBuilder sb = new();
 			sb.Append("> **Application is now online in the `").Append(env.EnvironmentName).AppendLine("` environment.**");
 
-			LogContainerService lcs = serviceProvider.GetRequiredService<LogContainerService>();
-			lcs.Add($"{DateTime.UtcNow:HH:mm:ss.fff}: Starting...\n{sb}");
+			ILogContainerService lcs = serviceProvider.GetRequiredService<ILogContainerService>();
+			lcs.AddLog($"{DateTime.UtcNow:HH:mm:ss.fff}: Starting...\n{sb}");
 
 			sw.Stop();
 		}
