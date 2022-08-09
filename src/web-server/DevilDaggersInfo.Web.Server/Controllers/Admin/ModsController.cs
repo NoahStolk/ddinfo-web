@@ -16,21 +16,17 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 public class ModsController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
-	private readonly IAuditLogger _auditLogger;
 	private readonly ModArchiveAccessor _modArchiveAccessor;
 	private readonly ModArchiveProcessor _modArchiveProcessor;
 	private readonly ModScreenshotProcessor _modScreenshotProcessor;
-	private readonly IFileSystemLogger _fileSystemLogger;
 	private readonly ModService _modService;
 
-	public ModsController(ApplicationDbContext dbContext, IAuditLogger auditLogger, ModArchiveAccessor modArchiveAccessor, ModArchiveProcessor modArchiveProcessor, ModScreenshotProcessor modScreenshotProcessor, IFileSystemLogger fileSystemLogger, ModService modService)
+	public ModsController(ApplicationDbContext dbContext, ModArchiveAccessor modArchiveAccessor, ModArchiveProcessor modArchiveProcessor, ModScreenshotProcessor modScreenshotProcessor, ModService modService)
 	{
 		_dbContext = dbContext;
-		_auditLogger = auditLogger;
 		_modArchiveAccessor = modArchiveAccessor;
 		_modArchiveProcessor = modArchiveProcessor;
 		_modScreenshotProcessor = modScreenshotProcessor;
-		_fileSystemLogger = fileSystemLogger;
 		_modService = modService;
 	}
 
@@ -146,8 +142,6 @@ public class ModsController : ControllerBase
 		UpdatePlayerMods(addMod.PlayerIds ?? new(), mod.Id);
 		await _dbContext.SaveChangesAsync();
 
-		_auditLogger.LogAdd(addMod.GetLog(), User, mod.Id, _fileSystemLogger.Flush());
-
 		return Ok(mod.Id);
 	}
 
@@ -189,17 +183,6 @@ public class ModsController : ControllerBase
 
 		_modScreenshotProcessor.ProcessModScreenshotUpload(editMod.Name, editMod.Screenshots);
 
-		EditMod logDto = new()
-		{
-			ModTypes = mod.ModTypes.AsEnumerable().ToList(),
-			HtmlDescription = mod.HtmlDescription,
-			IsHidden = mod.IsHidden,
-			Name = mod.Name,
-			TrailerUrl = mod.TrailerUrl,
-			Url = mod.Url,
-			PlayerIds = mod.PlayerMods.ConvertAll(pam => pam.PlayerId),
-		};
-
 		mod.ModTypes = (editMod.ModTypes?.ToFlagEnum<ModTypes>() ?? ModTypes.None).ToDomain();
 		mod.HtmlDescription = editMod.HtmlDescription;
 		mod.IsHidden = editMod.IsHidden;
@@ -210,8 +193,6 @@ public class ModsController : ControllerBase
 
 		UpdatePlayerMods(editMod.PlayerIds ?? new(), mod.Id);
 		await _dbContext.SaveChangesAsync();
-
-		_auditLogger.LogEdit(logDto.GetLog(), editMod.GetLog(), User, mod.Id, _fileSystemLogger.Flush());
 
 		return Ok();
 	}
@@ -231,8 +212,6 @@ public class ModsController : ControllerBase
 
 		_dbContext.Mods.Remove(mod);
 		await _dbContext.SaveChangesAsync();
-
-		_auditLogger.LogDelete(mod.GetLog(), User, mod.Id, _fileSystemLogger.Flush());
 
 		return Ok();
 	}

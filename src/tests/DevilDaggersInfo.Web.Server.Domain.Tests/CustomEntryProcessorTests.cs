@@ -6,6 +6,7 @@ using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Services;
 using DevilDaggersInfo.Web.Server.Domain.Tests.Data;
 using DevilDaggersInfo.Web.Server.Domain.Tests.Extensions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -27,7 +28,7 @@ public class CustomEntryProcessorTests
 		MockEntities mockEntities = new();
 
 		DbContextOptionsBuilder<ApplicationDbContext> optionsBuilder = new();
-		_dbContext = new Mock<ApplicationDbContext>(optionsBuilder.Options)
+		_dbContext = new Mock<ApplicationDbContext>(optionsBuilder.Options, new Mock<IHttpContextAccessor>().Object, new Mock<ILogContainerService>().Object)
 			.SetUpDbSet(db => db.Tools, mockEntities.MockDbSetTools)
 			.SetUpDbSet(db => db.Players, mockEntities.MockDbSetPlayers)
 			.SetUpDbSet(db => db.Spawnsets, mockEntities.MockDbSetSpawnsets)

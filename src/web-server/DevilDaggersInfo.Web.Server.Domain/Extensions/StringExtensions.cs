@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Server.Extensions;
+namespace DevilDaggersInfo.Web.Server.Domain.Extensions;
 
 public static class StringExtensions
 {

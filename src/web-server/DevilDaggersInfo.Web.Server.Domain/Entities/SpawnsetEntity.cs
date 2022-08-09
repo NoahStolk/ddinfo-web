@@ -1,7 +1,7 @@
 namespace DevilDaggersInfo.Web.Server.Domain.Entities;
 
 [Table("SpawnsetFiles")]
-public class SpawnsetEntity
+public class SpawnsetEntity : IAuditable
 {
 	[Key]
 	public int Id { get; init; }

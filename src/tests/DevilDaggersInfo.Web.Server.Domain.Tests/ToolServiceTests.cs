@@ -4,6 +4,7 @@ using DevilDaggersInfo.Web.Server.Domain.Models.Tools;
 using DevilDaggersInfo.Web.Server.Domain.Services;
 using DevilDaggersInfo.Web.Server.Domain.Tests.Data;
 using DevilDaggersInfo.Web.Server.Domain.Tests.Extensions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Tests;
@@ -24,7 +25,7 @@ public class ToolServiceTests
 		fileSystemService.Setup(m => m.GetPath(DataSubDirectory.Tools)).Returns(toolsPath);
 
 		DbContextOptionsBuilder<ApplicationDbContext> optionsBuilder = new();
-		_dbContext = new Mock<ApplicationDbContext>(optionsBuilder.Options).SetUpDbSet(db => db.ToolDistributions, mockEntities.MockDbSetToolDistributions);
+		_dbContext = new Mock<ApplicationDbContext>(optionsBuilder.Options, new Mock<IHttpContextAccessor>().Object, new Mock<ILogContainerService>().Object).SetUpDbSet(db => db.ToolDistributions, mockEntities.MockDbSetToolDistributions);
 		_toolService = new(_dbContext.Object, fileSystemService.Object, new Mock<ILogger<ToolService>>().Object);
 	}
 

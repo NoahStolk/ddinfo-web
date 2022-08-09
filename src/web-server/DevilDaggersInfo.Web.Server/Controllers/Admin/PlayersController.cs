@@ -5,7 +5,6 @@ using DevilDaggersInfo.Web.Core.Claims;
 using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Admin;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Admin;
 using DevilDaggersInfo.Web.Server.Domain.Extensions;
-using DevilDaggersInfo.Web.Server.Domain.Services;
 using Microsoft.AspNetCore.Authorization;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
@@ -15,13 +14,11 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 public class PlayersController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
-	private readonly IAuditLogger _auditLogger;
 	private readonly LeaderboardClient _leaderboardClient;
 
-	public PlayersController(ApplicationDbContext dbContext, IAuditLogger auditLogger, LeaderboardClient leaderboardClient)
+	public PlayersController(ApplicationDbContext dbContext, LeaderboardClient leaderboardClient)
 	{
 		_dbContext = dbContext;
-		_auditLogger = auditLogger;
 		_leaderboardClient = leaderboardClient;
 	}
 
@@ -183,8 +180,6 @@ public class PlayersController : ControllerBase
 		UpdatePlayerMods(addPlayer.ModIds ?? new(), player.Id);
 		await _dbContext.SaveChangesAsync();
 
-		_auditLogger.LogAdd(addPlayer.GetLog(), User, player.Id);
-
 		return Ok(player.Id);
 	}
 
@@ -236,31 +231,6 @@ public class PlayersController : ControllerBase
 		if (player == null)
 			return NotFound();
 
-		EditPlayer oldDtoLog = new()
-		{
-			CommonName = player.CommonName,
-			DiscordUserId = (long?)player.DiscordUserId,
-			CountryCode = player.CountryCode,
-			Dpi = player.Dpi,
-			InGameSens = player.InGameSens,
-			Fov = player.Fov,
-			IsRightHanded = player.IsRightHanded,
-			HasFlashHandEnabled = player.HasFlashHandEnabled,
-			Gamma = player.Gamma,
-			UsesLegacyAudio = player.UsesLegacyAudio,
-			UsesHrtf = player.UsesHrtf,
-			UsesInvertY = player.UsesInvertY,
-			VerticalSync = player.VerticalSync.ToAdminApi(),
-			HideSettings = player.HideSettings,
-			HideDonations = player.HideDonations,
-			HidePastUsernames = player.HidePastUsernames,
-			ModIds = player.PlayerMods.ConvertAll(pam => pam.ModId),
-			BanDescription = player.BanDescription,
-			BanResponsibleId = player.BanResponsibleId,
-			BanType = player.BanType.ToAdminApi(),
-			IsBannedFromDdcl = player.IsBannedFromDdcl,
-		};
-
 		player.PlayerName = await GetPlayerName(id);
 		player.CommonName = editPlayer.CommonName;
 		player.DiscordUserId = (ulong?)editPlayer.DiscordUserId;
@@ -285,8 +255,6 @@ public class PlayersController : ControllerBase
 
 		UpdatePlayerMods(editPlayer.ModIds ?? new(), player.Id);
 		await _dbContext.SaveChangesAsync();
-
-		_auditLogger.LogEdit(oldDtoLog.GetLog(), editPlayer.GetLog(), User, player.Id);
 
 		return Ok();
 	}
@@ -316,8 +284,6 @@ public class PlayersController : ControllerBase
 
 		_dbContext.Players.Remove(player);
 		await _dbContext.SaveChangesAsync();
-
-		_auditLogger.LogDelete(player.GetLog(), User, player.Id);
 
 		return Ok();
 	}

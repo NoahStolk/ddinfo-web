@@ -8,14 +8,17 @@ namespace DevilDaggersInfo.Web.Server.HostedServices;
 
 public class DiscordLogFlushBackgroundService : AbstractBackgroundService
 {
-	private const int _timeoutInSeconds = 1;
-
-	private readonly LogContainerService _logContainerService;
+	private readonly ILogContainerService _logContainerService;
 	private readonly ICustomLeaderboardSubmissionLogger _customLeaderboardSubmissionLogger;
 	private readonly IWebHostEnvironment _environment;
 	private readonly ILogger<DiscordLogFlushBackgroundService> _logger;
 
-	public DiscordLogFlushBackgroundService(LogContainerService logContainerService, ICustomLeaderboardSubmissionLogger customLeaderboardSubmissionLogger, IWebHostEnvironment environment, BackgroundServiceMonitor backgroundServiceMonitor, ILogger<DiscordLogFlushBackgroundService> logger)
+	public DiscordLogFlushBackgroundService(
+		ILogContainerService logContainerService,
+		ICustomLeaderboardSubmissionLogger customLeaderboardSubmissionLogger,
+		IWebHostEnvironment environment,
+		BackgroundServiceMonitor backgroundServiceMonitor,
+		ILogger<DiscordLogFlushBackgroundService> logger)
 		: base(backgroundServiceMonitor, logger)
 	{
 		_logContainerService = logContainerService;
@@ -30,11 +33,11 @@ public class DiscordLogFlushBackgroundService : AbstractBackgroundService
 	{
 		DiscordChannel? logChannel = DiscordServerConstants.GetDiscordChannel(Channel.MonitoringLog, _environment);
 		if (logChannel != null)
-			await _logContainerService.LogToLogChannel(logChannel);
+			await LogToLogChannel(logChannel);
 
 		DiscordChannel? auditLogChannel = DiscordServerConstants.GetDiscordChannel(Channel.MaintainersAuditLog, _environment);
 		if (auditLogChannel != null)
-			await _logContainerService.LogToAuditLogChannel(auditLogChannel);
+			await LogToAuditLogChannel(auditLogChannel);
 
 		DiscordChannel? validClLogChannel = DiscordServerConstants.GetDiscordChannel(Channel.MonitoringCustomLeaderboardValid, _environment);
 		if (validClLogChannel != null)
@@ -52,13 +55,15 @@ public class DiscordLogFlushBackgroundService : AbstractBackgroundService
 
 	private async Task LogClLogsToChannel(bool valid, DiscordChannel channel)
 	{
+		const int timeoutInSeconds = 1;
+
 		IReadOnlyList<string> logs = _customLeaderboardSubmissionLogger.GetLogs(valid);
 		if (logs.Count > 0)
 		{
 			if (await channel.SendMessageAsyncSafe(string.Join(Environment.NewLine, logs)))
 				_customLeaderboardSubmissionLogger.ClearLogs(valid);
 			else
-				await Task.Delay(TimeSpan.FromSeconds(_timeoutInSeconds));
+				await Task.Delay(TimeSpan.FromSeconds(timeoutInSeconds));
 		}
 	}
 
@@ -88,5 +93,23 @@ public class DiscordLogFlushBackgroundService : AbstractBackgroundService
 
 		static string FormatTimeString(double time)
 			=> time.ToString(StringFormats.TimeFormat);
+	}
+
+	private async Task LogToLogChannel(DiscordChannel logChannel) => await LogEntries(_logContainerService.LogEntries, logChannel);
+
+	private async Task LogToAuditLogChannel(DiscordChannel auditLogChannel) => await LogEntries(_logContainerService.AuditLogEntries, auditLogChannel);
+
+	private static async Task LogEntries(List<string> entries, DiscordChannel channel)
+	{
+		const int timeoutInSeconds = 1;
+
+		while (entries.Count > 0)
+		{
+			string entry = entries[0];
+			if (await channel.SendMessageAsyncSafe(entry))
+				entries.RemoveAt(0);
+			else
+				await Task.Delay(TimeSpan.FromSeconds(timeoutInSeconds));
+		}
 	}
 }

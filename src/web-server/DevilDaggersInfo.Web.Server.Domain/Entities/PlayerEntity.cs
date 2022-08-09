@@ -3,7 +3,7 @@ using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 namespace DevilDaggersInfo.Web.Server.Domain.Entities;
 
 [Table("Players")]
-public class PlayerEntity
+public class PlayerEntity : IAuditable
 {
 	[Key]
 	public int Id { get; set; }

@@ -3,7 +3,7 @@ using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 namespace DevilDaggersInfo.Web.Server.Domain.Entities;
 
 [Table("AssetMods")]
-public class ModEntity
+public class ModEntity : IAuditable
 {
 	[Key]
 	public int Id { get; init; }

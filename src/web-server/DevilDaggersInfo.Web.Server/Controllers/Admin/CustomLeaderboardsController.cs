@@ -17,13 +17,11 @@ public class CustomLeaderboardsController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
 	private readonly CustomLeaderboardValidator _validator;
-	private readonly IAuditLogger _auditLogger;
 
-	public CustomLeaderboardsController(ApplicationDbContext dbContext, CustomLeaderboardValidator validator, IAuditLogger auditLogger)
+	public CustomLeaderboardsController(ApplicationDbContext dbContext, CustomLeaderboardValidator validator)
 	{
 		_dbContext = dbContext;
 		_validator = validator;
-		_auditLogger = auditLogger;
 	}
 
 	[HttpGet]
@@ -109,8 +107,6 @@ public class CustomLeaderboardsController : ControllerBase
 		_dbContext.CustomLeaderboards.Add(customLeaderboard);
 		await _dbContext.SaveChangesAsync();
 
-		_auditLogger.LogAdd(addCustomLeaderboard.GetLog(), User, customLeaderboard.Id);
-
 		return Ok(customLeaderboard.Id);
 	}
 
@@ -129,20 +125,6 @@ public class CustomLeaderboardsController : ControllerBase
 
 		_validator.ValidateCustomLeaderboard(customLeaderboard.SpawnsetId, editCustomLeaderboard.Category.ToDomain(), editCustomLeaderboard.Daggers.ToDomain(), editCustomLeaderboard.IsFeatured);
 
-		EditCustomLeaderboard logDto = new()
-		{
-			Category = customLeaderboard.Category.ToAdminApi(),
-			Daggers = new()
-			{
-				Bronze = customLeaderboard.TimeBronze.ToSecondsTime(),
-				Silver = customLeaderboard.TimeSilver.ToSecondsTime(),
-				Golden = customLeaderboard.TimeGolden.ToSecondsTime(),
-				Devil = customLeaderboard.TimeDevil.ToSecondsTime(),
-				Leviathan = customLeaderboard.TimeLeviathan.ToSecondsTime(),
-			},
-			IsFeatured = customLeaderboard.IsFeatured,
-		};
-
 		customLeaderboard.Category = editCustomLeaderboard.Category.ToDomain();
 		customLeaderboard.TimeBronze = editCustomLeaderboard.Daggers.Bronze.To10thMilliTime();
 		customLeaderboard.TimeSilver = editCustomLeaderboard.Daggers.Silver.To10thMilliTime();
@@ -152,8 +134,6 @@ public class CustomLeaderboardsController : ControllerBase
 
 		customLeaderboard.IsFeatured = editCustomLeaderboard.IsFeatured;
 		await _dbContext.SaveChangesAsync();
-
-		_auditLogger.LogEdit(logDto.GetLog(), editCustomLeaderboard.GetLog(), User, customLeaderboard.Id);
 
 		return Ok();
 	}
@@ -173,8 +153,6 @@ public class CustomLeaderboardsController : ControllerBase
 
 		_dbContext.CustomLeaderboards.Remove(customLeaderboard);
 		await _dbContext.SaveChangesAsync();
-
-		_auditLogger.LogDelete(customLeaderboard.GetLog(), User, customLeaderboard.Id);
 
 		return Ok();
 	}

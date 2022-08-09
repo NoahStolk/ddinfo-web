@@ -1,4 +1,3 @@
-using DevilDaggersInfo.Common.Utils;
 using DevilDaggersInfo.Web.Server.Clients.Clubber;
 using DevilDaggersInfo.Web.Server.Domain.Repositories;
 using DevilDaggersInfo.Web.Server.Domain.Services;
@@ -39,6 +38,8 @@ public class Startup
 
 		services.AddRazorPages();
 
+		services.AddHttpContextAccessor();
+
 		// Domain services
 		services.AddScoped<CustomEntryProcessor>();
 		services.AddSingleton<IFileSystemService, FileSystemService>();
@@ -61,14 +62,12 @@ public class Startup
 		services.AddTransient<CustomLeaderboardValidator>();
 
 		// Utilities
-		services.AddTransient<IAuditLogger, AuditLogger>();
 		services.AddSingleton<LeaderboardResponseParser>();
 
 		// Monitoring
 		services.AddSingleton<BackgroundServiceMonitor>();
 		services.AddSingleton<ICustomLeaderboardSubmissionLogger, CustomLeaderboardSubmissionLogger>();
-		services.AddScoped<IFileSystemLogger, FileSystemLogger>();
-		services.AddSingleton<LogContainerService>();
+		services.AddSingleton<ILogContainerService, LogContainerService>();
 		services.AddSingleton<ResponseTimeMonitor>();
 
 		// Caching
@@ -157,8 +156,6 @@ public class Startup
 
 	public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
 	{
-		Stopwatch sw = Stopwatch.StartNew();
-
 		CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
 		CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
 
@@ -246,21 +243,19 @@ public class Startup
 
 		if (!env.IsDevelopment())
 		{
-			StringBuilder sb = new();
-			sb.Append("Configuration done at ").AppendLine(TimeUtils.TicksToTimeString(sw.ElapsedTicks));
-
 #if ROLES
 			CreateRolesIfNotExist(serviceProvider);
-			sb.Append("Role initiation done at ").AppendLine(TimeUtils.TicksToTimeString(sw.ElapsedTicks));
 #endif
+			Stopwatch sw = Stopwatch.StartNew();
 
+			StringBuilder sb = new();
 			sb.Append("> **Application is now online in the `").Append(env.EnvironmentName).AppendLine("` environment.**");
 
-			LogContainerService lcs = serviceProvider.GetRequiredService<LogContainerService>();
-			lcs.Add($"{DateTime.UtcNow:HH:mm:ss.fff}: Starting...\n{sb}");
-		}
+			ILogContainerService lcs = serviceProvider.GetRequiredService<ILogContainerService>();
+			lcs.AddLog($"{DateTime.UtcNow:HH:mm:ss.fff}: Starting...\n{sb}");
 
-		sw.Stop();
+			sw.Stop();
+		}
 	}
 
 #if ROLES

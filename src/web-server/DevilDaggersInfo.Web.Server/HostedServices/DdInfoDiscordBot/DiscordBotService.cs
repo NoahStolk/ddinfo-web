@@ -8,13 +8,11 @@ public class DiscordBotService : IHostedService
 {
 	private readonly IConfiguration _configuration;
 	private readonly IWebHostEnvironment _environment;
-	private readonly LogContainerService _logContainerService;
 
-	public DiscordBotService(IConfiguration configuration, IWebHostEnvironment environment, LogContainerService logContainerService)
+	public DiscordBotService(IConfiguration configuration, IWebHostEnvironment environment)
 	{
 		_configuration = configuration;
 		_environment = environment;
-		_logContainerService = logContainerService;
 	}
 
 	public async Task StartAsync(CancellationToken cancellationToken)
@@ -56,10 +54,7 @@ public class DiscordBotService : IHostedService
 
 			DiscordChannel? logChannel = DiscordServerConstants.GetDiscordChannel(Channel.MonitoringLog, _environment);
 			if (logChannel != null)
-			{
-				await _logContainerService.LogToLogChannel(logChannel);
 				await logChannel.SendMessageAsyncSafe($"> **Application is shutting down in the `{_environment.EnvironmentName}` environment. Disconnecting from Discord...**");
-			}
 		}
 	}
 

@@ -1,12 +1,22 @@
+using DevilDaggersInfo.Web.Core.Claims;
+using DevilDaggersInfo.Web.Server.Domain.Extensions;
+using DevilDaggersInfo.Web.Server.Domain.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Entities;
 
 public class ApplicationDbContext : DbContext
 {
-	public ApplicationDbContext(DbContextOptions options)
+	private readonly IHttpContextAccessor _httpContextAccessor;
+	private readonly ILogContainerService _logContainerService;
+
+	public ApplicationDbContext(DbContextOptions options, IHttpContextAccessor httpContextAccessor, ILogContainerService logContainerService)
 		: base(options)
 	{
+		_httpContextAccessor = httpContextAccessor;
+		_logContainerService = logContainerService;
 	}
 
 	public virtual DbSet<CustomEntryEntity> CustomEntries => Set<CustomEntryEntity>();
@@ -63,5 +73,48 @@ public class ApplicationDbContext : DbContext
 			.HasForeignKey(ur => ur.RoleName);
 
 		base.OnModelCreating(modelBuilder);
+	}
+
+	public override int SaveChanges()
+	{
+		BuildAuditLogs();
+		return base.SaveChanges();
+	}
+
+	public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+	{
+		BuildAuditLogs();
+		return await base.SaveChangesAsync(cancellationToken);
+	}
+
+	public void BuildAuditLogs()
+	{
+		string? username = _httpContextAccessor.HttpContext?.User?.GetName();
+
+		IEnumerable<EntityEntry> entityEntries = ChangeTracker.Entries();
+		foreach (EntityEntry addedOrDeletedEntityEntry in entityEntries.Where(e => e.State == EntityState.Added || e.State == EntityState.Deleted))
+		{
+			Type entityType = addedOrDeletedEntityEntry.Entity.GetType();
+			if (addedOrDeletedEntityEntry.Entity is IAuditable entity)
+				_logContainerService.AddAuditLog($"`{entityType.Name}` with ID `{entity.Id}` was {(addedOrDeletedEntityEntry.State == EntityState.Added ? "added" : "deleted")} by {username}.");
+		}
+
+		foreach (EntityEntry modifiedEntityEntry in entityEntries.Where(e => e.State == EntityState.Modified))
+		{
+			Type entityType = modifiedEntityEntry.Entity.GetType();
+			if (modifiedEntityEntry.Entity is not IAuditable entity)
+				return;
+
+			List<string> logs = new();
+			foreach (PropertyEntry modifiedProperty in modifiedEntityEntry.Properties.Where(c => c.IsModified))
+			{
+				string property = modifiedProperty.Metadata.PropertyInfo?.Name ?? "<null>";
+				string oldValue = modifiedProperty.OriginalValue?.ToString()?.TrimAfter(25, true) ?? "<null>";
+				string newValue = modifiedProperty.CurrentValue?.ToString()?.TrimAfter(25, true) ?? "<null>";
+				logs.Add($"**{property}**: ~~{oldValue}~~ {newValue}");
+			}
+
+			_logContainerService.AddAuditLog($"`{entityType.Name}` with ID `{entity.Id}` was edited by {username}:\n- {string.Join("\n- ", logs)}");
+		}
 	}
 }
