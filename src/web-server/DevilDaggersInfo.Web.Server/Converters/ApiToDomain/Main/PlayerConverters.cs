@@ -1,13 +1,13 @@
 using DevilDaggersInfo.Common.Exceptions;
+using DevilDaggersInfo.Web.Server.Domain.Commands.Players;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
-using DevilDaggersInfo.Web.Server.Domain.Models.Players;
 using MainApi = DevilDaggersInfo.Api.Main.Players;
 
 namespace DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Main;
 
 public static class PlayerConverters
 {
-	public static PlayerProfile ToDomain(this MainApi.EditPlayerProfile editPlayerProfile) => new()
+	public static EditPlayerProfile ToDomain(this MainApi.EditPlayerProfile editPlayerProfile) => new()
 	{
 		CountryCode = editPlayerProfile.CountryCode,
 		Dpi = editPlayerProfile.Dpi,

@@ -1,6 +1,6 @@
+using DevilDaggersInfo.Web.Server.Domain.Commands.Players;
 using DevilDaggersInfo.Web.Server.Domain.Commands.Spawnsets;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
-using DevilDaggersInfo.Web.Server.Domain.Models.Players;
 using System.Runtime.CompilerServices;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Extensions;
@@ -42,7 +42,7 @@ public static class AuditLoggerExtensions
 		return log;
 	}
 
-	public static Dictionary<string, string> GetLog(this PlayerProfile player)
+	public static Dictionary<string, string> GetLog(this EditPlayerProfile player)
 	{
 		Dictionary<string, string> log = new();
 		AddProperty(log, player.CountryCode);

@@ -1,67 +1,26 @@
 using DevilDaggersInfo.Web.Core.Claims;
+using DevilDaggersInfo.Web.Server.Domain.Commands.Players;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Extensions;
-using DevilDaggersInfo.Web.Server.Domain.Models.Players;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Services;
 
-public class ProfileService
+public class PlayerService
 {
 	private readonly ApplicationDbContext _dbContext;
 	private readonly IAuditLogger _auditLogger;
 
-	public ProfileService(ApplicationDbContext dbContext, IAuditLogger auditLogger)
+	public PlayerService(ApplicationDbContext dbContext, IAuditLogger auditLogger)
 	{
 		_dbContext = dbContext;
 		_auditLogger = auditLogger;
 	}
 
-	public async Task<PlayerProfile> GetProfileAsync(ClaimsPrincipal claimsPrincipal, int id)
-	{
-		string? userName = claimsPrincipal.GetName();
-		UserEntity? user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Name == userName);
-		if (user == null)
-			throw new UnauthorizedAccessException();
-
-		if (!user.PlayerId.HasValue)
-			throw new InvalidProfileRequestException("User is not linked to a player.");
-
-		if (user.PlayerId != id)
-			throw new ForbiddenException("Not allowed to access another player's profile.");
-
-		PlayerEntity? player = await _dbContext.Players
-			.AsNoTracking()
-			.FirstOrDefaultAsync(p => p.Id == id);
-		if (player == null)
-			throw new NotFoundException($"Player with ID '{id}' could not be found.");
-
-		if (player.BanType != BanType.NotBanned)
-			throw new InvalidProfileRequestException("Player is banned.");
-
-		return new()
-		{
-			CountryCode = player.CountryCode,
-			Dpi = player.Dpi,
-			Fov = player.Fov,
-			Gamma = player.Gamma,
-			HasFlashHandEnabled = player.HasFlashHandEnabled,
-			HideDonations = player.HideDonations,
-			HidePastUsernames = player.HidePastUsernames,
-			HideSettings = player.HideSettings,
-			InGameSens = player.InGameSens,
-			IsRightHanded = player.IsRightHanded,
-			UsesHrtf = player.UsesHrtf,
-			UsesInvertY = player.UsesInvertY,
-			UsesLegacyAudio = player.UsesLegacyAudio,
-			VerticalSync = player.VerticalSync,
-		};
-	}
-
-	public async Task UpdateProfileAsync(ClaimsPrincipal claimsPrincipal, int id, PlayerProfile editPlayerProfile)
+	public async Task UpdateProfileAsync(ClaimsPrincipal claimsPrincipal, int id, EditPlayerProfile editPlayerProfile)
 	{
 		string? userName = claimsPrincipal.GetName();
 		UserEntity? user = _dbContext.Users.FirstOrDefault(u => u.Name == userName);
@@ -81,7 +40,7 @@ public class ProfileService
 		if (player.BanType != BanType.NotBanned)
 			throw new InvalidProfileRequestException("Player is banned.");
 
-		PlayerProfile oldLog = new()
+		EditPlayerProfile oldLog = new()
 		{
 			CountryCode = player.CountryCode,
 			Dpi = player.Dpi,

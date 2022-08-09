@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
+namespace DevilDaggersInfo.Web.Server.Domain.Commands.CustomEntries;
 
 public class UploadRequestData
 {

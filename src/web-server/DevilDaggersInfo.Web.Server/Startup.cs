@@ -46,7 +46,7 @@ public class Startup
 		services.AddTransient<ModArchiveProcessor>();
 		services.AddTransient<ModScreenshotProcessor>();
 		services.AddTransient<ModService>();
-		services.AddScoped<ProfileService>();
+		services.AddScoped<PlayerService>();
 		services.AddTransient<SpawnsetService>();
 		services.AddTransient<IToolService, ToolService>();
 		services.AddScoped<IUserService, UserService>();
@@ -55,6 +55,7 @@ public class Startup
 		services.AddTransient<CustomEntryRepository>();
 		services.AddTransient<CustomLeaderboardRepository>();
 		services.AddTransient<MarkerRepository>();
+		services.AddScoped<PlayerRepository>();
 
 		// Validators
 		services.AddTransient<CustomLeaderboardValidator>();
