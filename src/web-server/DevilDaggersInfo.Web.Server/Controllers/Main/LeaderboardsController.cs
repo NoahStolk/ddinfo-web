@@ -1,5 +1,6 @@
 using DevilDaggersInfo.Api.Main.Leaderboards;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
+using DevilDaggersInfo.Web.Server.Domain.Services;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 
@@ -7,9 +8,9 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 [ApiController]
 public class LeaderboardsController : ControllerBase
 {
-	private readonly LeaderboardClient _leaderboardClient;
+	private readonly IDdLeaderboardService _leaderboardClient;
 
-	public LeaderboardsController(LeaderboardClient leaderboardClient)
+	public LeaderboardsController(IDdLeaderboardService leaderboardClient)
 	{
 		_leaderboardClient = leaderboardClient;
 	}
@@ -19,11 +20,7 @@ public class LeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult<GetLeaderboard?>> GetLeaderboard([Range(1, int.MaxValue)] int rankStart = 1)
 	{
-		ResponseWrapper<LeaderboardResponse> wrapper = await _leaderboardClient.GetLeaderboard(rankStart);
-		if (wrapper.HasError)
-			return BadRequest(wrapper.ErrorMessage);
-
-		return wrapper.GetResponse().ToGetLeaderboardPublic();
+		return (await _leaderboardClient.GetLeaderboard(rankStart)).ToGetLeaderboardPublic();
 	}
 
 	// FORBIDDEN: Used by DDLIVE.
@@ -32,11 +29,7 @@ public class LeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult<GetEntry>> GetEntryById([Required, Range(1, int.MaxValue)] int id)
 	{
-		ResponseWrapper<EntryResponse> wrapper = await _leaderboardClient.GetEntryById(id);
-		if (wrapper.HasError)
-			return BadRequest(wrapper.ErrorMessage);
-
-		return wrapper.GetResponse().ToGetEntryPublic();
+		return (await _leaderboardClient.GetEntryById(id)).ToGetEntryPublic();
 	}
 
 	[HttpGet("entry/by-ids")]
@@ -46,11 +39,7 @@ public class LeaderboardsController : ControllerBase
 	{
 		IEnumerable<int> ids = commaSeparatedIds.Split(',').Where(s => int.TryParse(s, out _)).Select(int.Parse);
 
-		ResponseWrapper<List<EntryResponse>> wrapper = await _leaderboardClient.GetEntriesByIds(ids);
-		if (wrapper.HasError)
-			return BadRequest(wrapper.ErrorMessage);
-
-		return wrapper.GetResponse().ConvertAll(e => e.ToGetEntryPublic());
+		return (await _leaderboardClient.GetEntriesByIds(ids)).ConvertAll(e => e.ToGetEntryPublic());
 	}
 
 	[HttpGet("entry/by-username")]
@@ -58,11 +47,7 @@ public class LeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult<List<GetEntry>>> GetEntriesByName([Required, MinLength(3), MaxLength(16)] string name)
 	{
-		ResponseWrapper<List<EntryResponse>> wrapper = await _leaderboardClient.GetEntriesByName(name);
-		if (wrapper.HasError)
-			return BadRequest(wrapper.ErrorMessage);
-
-		return wrapper.GetResponse().ConvertAll(e => e.ToGetEntryPublic());
+		return (await _leaderboardClient.GetEntriesByName(name)).ConvertAll(e => e.ToGetEntryPublic());
 	}
 
 	[HttpGet("entry/by-rank")]
@@ -71,11 +56,8 @@ public class LeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult<GetEntry>> GetEntryByRank([Required, Range(1, int.MaxValue)] int rank)
 	{
-		ResponseWrapper<LeaderboardResponse> wrapper = await _leaderboardClient.GetLeaderboard(rank);
-		if (wrapper.HasError)
-			return BadRequest(wrapper.ErrorMessage);
+		IDdLeaderboardService.LeaderboardResponse leaderboard = await _leaderboardClient.GetLeaderboard(rank);
 
-		LeaderboardResponse leaderboard = wrapper.GetResponse();
 		if (leaderboard.Entries.Count == 0)
 			return NotFound();
 

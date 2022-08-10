@@ -1,10 +1,11 @@
 using DevilDaggersInfo.Api.Main.Leaderboards;
+using DevilDaggersInfo.Web.Server.Domain.Services;
 
 namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 
 public static class LeaderboardConverters
 {
-	public static GetLeaderboard ToGetLeaderboardPublic(this LeaderboardResponse leaderboardResponse) => new()
+	public static GetLeaderboard ToGetLeaderboardPublic(this IDdLeaderboardService.LeaderboardResponse leaderboardResponse) => new()
 	{
 		DaggersFiredGlobal = leaderboardResponse.DaggersFiredGlobal,
 		DaggersHitGlobal = leaderboardResponse.DaggersHitGlobal,
@@ -17,7 +18,7 @@ public static class LeaderboardConverters
 		TimeGlobal = leaderboardResponse.TimeGlobal == 0 ? 0 : leaderboardResponse.TimeGlobal.ToSecondsTime(),
 	};
 
-	public static GetEntry ToGetEntryPublic(this EntryResponse entryResponse) => new()
+	public static GetEntry ToGetEntryPublic(this IDdLeaderboardService.EntryResponse entryResponse) => new()
 	{
 		DaggersFired = entryResponse.DaggersFired,
 		DaggersFiredTotal = entryResponse.DaggersFiredTotal,

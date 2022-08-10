@@ -5,6 +5,7 @@ using DevilDaggersInfo.Web.Core.Claims;
 using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Admin;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Admin;
 using DevilDaggersInfo.Web.Server.Domain.Extensions;
+using DevilDaggersInfo.Web.Server.Domain.Services;
 using Microsoft.AspNetCore.Authorization;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
@@ -14,9 +15,9 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 public class PlayersController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
-	private readonly LeaderboardClient _leaderboardClient;
+	private readonly IDdLeaderboardService _leaderboardClient;
 
-	public PlayersController(ApplicationDbContext dbContext, LeaderboardClient leaderboardClient)
+	public PlayersController(ApplicationDbContext dbContext, IDdLeaderboardService leaderboardClient)
 	{
 		_dbContext = dbContext;
 		_leaderboardClient = leaderboardClient;
@@ -290,11 +291,14 @@ public class PlayersController : ControllerBase
 
 	private async Task<string> GetPlayerName(int id)
 	{
-		ResponseWrapper<EntryResponse> wrapper = await _leaderboardClient.GetEntryById(id);
-		if (wrapper.HasError)
+		try
+		{
+			return (await _leaderboardClient.GetEntryById(id)).Username;
+		}
+		catch
+		{
 			return string.Empty;
-
-		return wrapper.GetResponse().Username;
+		}
 	}
 
 	private void UpdatePlayerMods(List<int> modIds, int playerId)

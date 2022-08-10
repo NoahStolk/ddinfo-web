@@ -1,13 +1,15 @@
+using DevilDaggersInfo.Web.Server.Domain.Services;
+
 namespace DevilDaggersInfo.Web.Server.Clients.Leaderboard;
 
 public class LeaderboardResponseParser
 {
-	public LeaderboardResponse ParseGetLeaderboardResponse(byte[] response)
+	public IDdLeaderboardService.LeaderboardResponse ParseGetLeaderboardResponse(byte[] response)
 	{
 		using MemoryStream ms = new(response);
 		using BinaryReader br = new(ms);
 
-		LeaderboardResponse leaderboard = new()
+		IDdLeaderboardService.LeaderboardResponse leaderboard = new()
 		{
 			DateTime = DateTime.UtcNow,
 		};
@@ -27,7 +29,7 @@ public class LeaderboardResponseParser
 		br.BaseStream.Seek(4, SeekOrigin.Current);
 		for (int i = 0; i < leaderboard.TotalEntries; i++)
 		{
-			EntryResponse entry = new();
+			IDdLeaderboardService.EntryResponse entry = new();
 
 			short usernameLength = br.ReadInt16();
 			entry.Username = Encoding.UTF8.GetString(br.ReadBytes(usernameLength));
@@ -54,12 +56,12 @@ public class LeaderboardResponseParser
 		return leaderboard;
 	}
 
-	public List<EntryResponse> ParseGetEntriesByName(byte[] response)
+	public List<IDdLeaderboardService.EntryResponse> ParseGetEntriesByName(byte[] response)
 	{
 		using MemoryStream ms = new(response);
 		using BinaryReader br = new(ms);
 
-		List<EntryResponse> entries = new();
+		List<IDdLeaderboardService.EntryResponse> entries = new();
 
 		br.BaseStream.Seek(11, SeekOrigin.Begin);
 		short totalResults = br.ReadInt16();
@@ -67,7 +69,7 @@ public class LeaderboardResponseParser
 		br.BaseStream.Seek(6, SeekOrigin.Current);
 		for (int i = 0; i < Math.Min((short)100, totalResults); i++)
 		{
-			EntryResponse entry = new();
+			IDdLeaderboardService.EntryResponse entry = new();
 
 			short usernameLength = br.ReadInt16();
 			entry.Username = Encoding.UTF8.GetString(br.ReadBytes(usernameLength));
@@ -96,12 +98,12 @@ public class LeaderboardResponseParser
 		return entries;
 	}
 
-	public List<EntryResponse> ParseGetEntriesByIds(byte[] response)
+	public List<IDdLeaderboardService.EntryResponse> ParseGetEntriesByIds(byte[] response)
 	{
 		using MemoryStream ms = new(response);
 		using BinaryReader br = new(ms);
 
-		List<EntryResponse> entries = new();
+		List<IDdLeaderboardService.EntryResponse> entries = new();
 
 		br.BaseStream.Seek(19, SeekOrigin.Begin);
 		while (br.BaseStream.Position < br.BaseStream.Length)
@@ -113,7 +115,7 @@ public class LeaderboardResponseParser
 		return entries;
 	}
 
-	public EntryResponse ParseGetEntryById(byte[] response)
+	public IDdLeaderboardService.EntryResponse ParseGetEntryById(byte[] response)
 	{
 		using MemoryStream ms = new(response);
 		using BinaryReader br = new(ms);
@@ -123,9 +125,9 @@ public class LeaderboardResponseParser
 		return ReadEntry(br);
 	}
 
-	private static EntryResponse ReadEntry(BinaryReader br)
+	private static IDdLeaderboardService.EntryResponse ReadEntry(BinaryReader br)
 	{
-		EntryResponse entry = new();
+		IDdLeaderboardService.EntryResponse entry = new();
 
 		short usernameLength = br.ReadInt16();
 		entry.Username = Encoding.UTF8.GetString(br.ReadBytes(usernameLength));
