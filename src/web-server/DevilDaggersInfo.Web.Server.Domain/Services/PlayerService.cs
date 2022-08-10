@@ -21,33 +21,21 @@ public class PlayerService
 
 	public async Task AddPlayerAsync(AddPlayer addPlayer)
 	{
-		if (addPlayer.BanType != BanType.NotBanned)
-		{
-			if (!string.IsNullOrWhiteSpace(addPlayer.CountryCode))
-				throw new AdminDomainException("Banned players must not have a country code.");
-
-			if (addPlayer.Dpi.HasValue ||
-				addPlayer.InGameSens.HasValue ||
-				addPlayer.Fov.HasValue ||
-				addPlayer.IsRightHanded.HasValue ||
-				addPlayer.HasFlashHandEnabled.HasValue ||
-				addPlayer.Gamma.HasValue ||
-				addPlayer.UsesLegacyAudio.HasValue ||
-				addPlayer.UsesHrtf.HasValue ||
-				addPlayer.UsesInvertY.HasValue ||
-				addPlayer.VerticalSync != VerticalSync.Unknown)
-			{
-				throw new AdminDomainException("Banned players must not have settings.");
-			}
-		}
-		else
-		{
-			if (!string.IsNullOrWhiteSpace(addPlayer.BanDescription))
-				throw new AdminDomainException("BanDescription must only be used for banned players.");
-
-			if (addPlayer.BanResponsibleId.HasValue)
-				throw new AdminDomainException("BanResponsibleId must only be used for banned players.");
-		}
+		Validate(
+			banType: addPlayer.BanType,
+			countryCode: addPlayer.CountryCode,
+			dpi: addPlayer.Dpi,
+			inGameSens: addPlayer.InGameSens,
+			fov: addPlayer.Fov,
+			isRightHanded: addPlayer.IsRightHanded,
+			hasFlashHandEnabled: addPlayer.HasFlashHandEnabled,
+			gamma: addPlayer.Gamma,
+			usesLegacyAudio: addPlayer.UsesLegacyAudio,
+			usesHrtf: addPlayer.UsesHrtf,
+			usesInvertY: addPlayer.UsesInvertY,
+			verticalSync: addPlayer.VerticalSync,
+			banDescription: addPlayer.BanDescription,
+			banResponsibleId: addPlayer.BanResponsibleId);
 
 		if (_dbContext.Players.Any(p => p.Id == addPlayer.Id))
 			throw new AdminDomainException($"Player with ID '{addPlayer.Id}' already exists.");
@@ -92,33 +80,21 @@ public class PlayerService
 
 	public async Task EditPlayerAsync(EditPlayer editPlayer)
 	{
-		if (editPlayer.BanType != BanType.NotBanned)
-		{
-			if (!string.IsNullOrWhiteSpace(editPlayer.CountryCode))
-				throw new AdminDomainException("Banned players must not have a country code.");
-
-			if (editPlayer.Dpi.HasValue ||
-				editPlayer.InGameSens.HasValue ||
-				editPlayer.Fov.HasValue ||
-				editPlayer.IsRightHanded.HasValue ||
-				editPlayer.HasFlashHandEnabled.HasValue ||
-				editPlayer.Gamma.HasValue ||
-				editPlayer.UsesLegacyAudio.HasValue ||
-				editPlayer.UsesHrtf.HasValue ||
-				editPlayer.UsesInvertY.HasValue ||
-				editPlayer.VerticalSync != VerticalSync.Unknown)
-			{
-				throw new AdminDomainException("Banned players must not have settings.");
-			}
-		}
-		else
-		{
-			if (!string.IsNullOrWhiteSpace(editPlayer.BanDescription))
-				throw new AdminDomainException("BanDescription must only be used for banned players.");
-
-			if (editPlayer.BanResponsibleId.HasValue)
-				throw new AdminDomainException("BanResponsibleId must only be used for banned players.");
-		}
+		Validate(
+			banType: editPlayer.BanType,
+			countryCode: editPlayer.CountryCode,
+			dpi: editPlayer.Dpi,
+			inGameSens: editPlayer.InGameSens,
+			fov: editPlayer.Fov,
+			isRightHanded: editPlayer.IsRightHanded,
+			hasFlashHandEnabled: editPlayer.HasFlashHandEnabled,
+			gamma: editPlayer.Gamma,
+			usesLegacyAudio: editPlayer.UsesLegacyAudio,
+			usesHrtf: editPlayer.UsesHrtf,
+			usesInvertY: editPlayer.UsesInvertY,
+			verticalSync: editPlayer.VerticalSync,
+			banDescription: editPlayer.BanDescription,
+			banResponsibleId: editPlayer.BanResponsibleId);
 
 		foreach (int modId in editPlayer.ModIds ?? new())
 		{
@@ -240,5 +216,50 @@ public class PlayerService
 
 		foreach (PlayerModEntity entityToRemove in _dbContext.PlayerMods.Where(pam => pam.PlayerId == playerId && !modIds.Contains(pam.ModId)))
 			_dbContext.PlayerMods.Remove(entityToRemove);
+	}
+
+	private static void Validate(
+		BanType banType,
+		string? countryCode,
+		int? dpi,
+		float? inGameSens,
+		int? fov,
+		bool? isRightHanded,
+		bool? hasFlashHandEnabled,
+		float? gamma,
+		bool? usesLegacyAudio,
+		bool? usesHrtf,
+		bool? usesInvertY,
+		VerticalSync verticalSync,
+		string? banDescription,
+		int? banResponsibleId)
+	{
+		if (banType != BanType.NotBanned)
+		{
+			if (!string.IsNullOrWhiteSpace(countryCode))
+				throw new AdminDomainException("Banned players must not have a country code.");
+
+			if (dpi.HasValue ||
+				inGameSens.HasValue ||
+				fov.HasValue ||
+				isRightHanded.HasValue ||
+				hasFlashHandEnabled.HasValue ||
+				gamma.HasValue ||
+				usesLegacyAudio.HasValue ||
+				usesHrtf.HasValue ||
+				usesInvertY.HasValue ||
+				verticalSync != VerticalSync.Unknown)
+			{
+				throw new AdminDomainException("Banned players must not have settings.");
+			}
+		}
+		else
+		{
+			if (!string.IsNullOrWhiteSpace(banDescription))
+				throw new AdminDomainException("BanDescription must only be used for banned players.");
+
+			if (banResponsibleId.HasValue)
+				throw new AdminDomainException("BanResponsibleId must only be used for banned players.");
+		}
 	}
 }
