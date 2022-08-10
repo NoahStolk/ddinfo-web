@@ -11,12 +11,12 @@ namespace DevilDaggersInfo.Web.Server.Domain.Services;
 public class PlayerService
 {
 	private readonly ApplicationDbContext _dbContext;
-	private readonly LeaderboardClient _leaderboardClient;
+	private readonly IDdLeaderboardService _ddLeaderboardService;
 
-	public PlayerService(ApplicationDbContext dbContext, LeaderboardClient leaderboardClient)
+	public PlayerService(ApplicationDbContext dbContext, IDdLeaderboardService ddLeaderboardService)
 	{
 		_dbContext = dbContext;
-		_leaderboardClient = leaderboardClient;
+		_ddLeaderboardService = ddLeaderboardService;
 	}
 
 	public async Task AddPlayerAsync(AddPlayer addPlayer)
@@ -220,11 +220,14 @@ public class PlayerService
 
 	private async Task<string> GetPlayerName(int id)
 	{
-		ResponseWrapper<EntryResponse> wrapper = await _leaderboardClient.GetEntryById(id);
-		if (wrapper.HasError)
+		try
+		{
+			return (await _ddLeaderboardService.GetEntryById(id)).Username;
+		}
+		catch
+		{
 			return string.Empty;
-
-		return wrapper.GetResponse().Username;
+		}
 	}
 
 	private void UpdatePlayerMods(List<int> modIds, int playerId)
