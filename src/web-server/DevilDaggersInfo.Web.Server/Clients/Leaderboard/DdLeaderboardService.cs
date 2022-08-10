@@ -5,7 +5,7 @@ using DevilDaggersInfo.Web.Server.Domain.Services;
 
 namespace DevilDaggersInfo.Web.Server.Clients.Leaderboard;
 
-public class LeaderboardClient : IDdLeaderboardService
+public class DdLeaderboardService : IDdLeaderboardService
 {
 	private const string _getScoresUrl = "http://dd.hasmodai.com/backend15/get_scores.php";
 	private const string _getUserSearchUrl = "http://dd.hasmodai.com/backend16/get_user_search_public.php";
@@ -14,9 +14,9 @@ public class LeaderboardClient : IDdLeaderboardService
 
 	private readonly HttpClient _httpClient;
 	private readonly LeaderboardResponseParser _leaderboardResponseParser;
-	private readonly ILogger<LeaderboardClient> _logger;
+	private readonly ILogger<DdLeaderboardService> _logger;
 
-	public LeaderboardClient(HttpClient httpClient, LeaderboardResponseParser leaderboardResponseParser, ILogger<LeaderboardClient> logger)
+	public DdLeaderboardService(HttpClient httpClient, LeaderboardResponseParser leaderboardResponseParser, ILogger<DdLeaderboardService> logger)
 	{
 		_httpClient = httpClient;
 		_leaderboardResponseParser = leaderboardResponseParser;

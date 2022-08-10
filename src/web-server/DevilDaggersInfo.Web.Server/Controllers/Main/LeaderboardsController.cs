@@ -10,7 +10,7 @@ public class LeaderboardsController : ControllerBase
 {
 	private readonly IDdLeaderboardService _leaderboardClient;
 
-	public LeaderboardsController(LeaderboardClient leaderboardClient)
+	public LeaderboardsController(IDdLeaderboardService leaderboardClient)
 	{
 		_leaderboardClient = leaderboardClient;
 	}

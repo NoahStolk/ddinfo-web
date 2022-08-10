@@ -15,9 +15,9 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 public class PlayersController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
-	private readonly LeaderboardClient _leaderboardClient;
+	private readonly IDdLeaderboardService _leaderboardClient;
 
-	public PlayersController(ApplicationDbContext dbContext, LeaderboardClient leaderboardClient)
+	public PlayersController(ApplicationDbContext dbContext, IDdLeaderboardService leaderboardClient)
 	{
 		_dbContext = dbContext;
 		_leaderboardClient = leaderboardClient;
