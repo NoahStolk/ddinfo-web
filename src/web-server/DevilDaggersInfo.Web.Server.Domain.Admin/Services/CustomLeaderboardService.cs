@@ -1,8 +1,8 @@
+using DevilDaggersInfo.Api.Admin.CustomLeaderboards;
+using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Types.Core.Spawnsets;
 using DevilDaggersInfo.Types.Web;
-using DevilDaggersInfo.Web.Server.Domain.Admin.Commands.CustomLeaderboards;
-using DevilDaggersInfo.Web.Server.Domain.Admin.Commands.CustomLeaderboards.Models;
 using DevilDaggersInfo.Web.Server.Domain.Admin.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
@@ -39,34 +39,34 @@ public class CustomLeaderboardService
 			DateCreated = DateTime.UtcNow,
 			SpawnsetId = addCustomLeaderboard.SpawnsetId,
 			Category = addCustomLeaderboard.Category,
-			TimeBronze = addCustomLeaderboard.Daggers.Bronze,
-			TimeSilver = addCustomLeaderboard.Daggers.Silver,
-			TimeGolden = addCustomLeaderboard.Daggers.Golden,
-			TimeDevil = addCustomLeaderboard.Daggers.Devil,
-			TimeLeviathan = addCustomLeaderboard.Daggers.Leviathan,
+			TimeBronze = addCustomLeaderboard.Daggers.Bronze.To10thMilliTime(),
+			TimeSilver = addCustomLeaderboard.Daggers.Silver.To10thMilliTime(),
+			TimeGolden = addCustomLeaderboard.Daggers.Golden.To10thMilliTime(),
+			TimeDevil = addCustomLeaderboard.Daggers.Devil.To10thMilliTime(),
+			TimeLeviathan = addCustomLeaderboard.Daggers.Leviathan.To10thMilliTime(),
 			IsFeatured = addCustomLeaderboard.IsFeatured,
 		};
 		_dbContext.CustomLeaderboards.Add(customLeaderboard);
 		await _dbContext.SaveChangesAsync();
 	}
 
-	public async Task EditCustomLeaderboardAsync(EditCustomLeaderboard editCustomLeaderboard)
+	public async Task EditCustomLeaderboardAsync(int id, EditCustomLeaderboard editCustomLeaderboard)
 	{
-		CustomLeaderboardEntity? customLeaderboard = _dbContext.CustomLeaderboards.FirstOrDefault(cl => cl.Id == editCustomLeaderboard.Id);
+		CustomLeaderboardEntity? customLeaderboard = _dbContext.CustomLeaderboards.FirstOrDefault(cl => cl.Id == id);
 		if (customLeaderboard == null)
-			throw new NotFoundException($"Custom leaderboard with ID '{editCustomLeaderboard.Id}' does not exist.");
+			throw new NotFoundException($"Custom leaderboard with ID '{id}' does not exist.");
 
-		if (customLeaderboard.Category != editCustomLeaderboard.Category && _dbContext.CustomEntries.Any(ce => ce.CustomLeaderboardId == editCustomLeaderboard.Id))
+		if (customLeaderboard.Category != editCustomLeaderboard.Category && _dbContext.CustomEntries.Any(ce => ce.CustomLeaderboardId == id))
 			throw new AdminDomainException("Cannot change category for custom leaderboard with scores.");
 
 		ValidateCustomLeaderboard(customLeaderboard.SpawnsetId, editCustomLeaderboard.Category, editCustomLeaderboard.Daggers, editCustomLeaderboard.IsFeatured);
 
 		customLeaderboard.Category = editCustomLeaderboard.Category;
-		customLeaderboard.TimeBronze = editCustomLeaderboard.Daggers.Bronze;
-		customLeaderboard.TimeSilver = editCustomLeaderboard.Daggers.Silver;
-		customLeaderboard.TimeGolden = editCustomLeaderboard.Daggers.Golden;
-		customLeaderboard.TimeDevil = editCustomLeaderboard.Daggers.Devil;
-		customLeaderboard.TimeLeviathan = editCustomLeaderboard.Daggers.Leviathan;
+		customLeaderboard.TimeBronze = editCustomLeaderboard.Daggers.Bronze.To10thMilliTime();
+		customLeaderboard.TimeSilver = editCustomLeaderboard.Daggers.Silver.To10thMilliTime();
+		customLeaderboard.TimeGolden = editCustomLeaderboard.Daggers.Golden.To10thMilliTime();
+		customLeaderboard.TimeDevil = editCustomLeaderboard.Daggers.Devil.To10thMilliTime();
+		customLeaderboard.TimeLeviathan = editCustomLeaderboard.Daggers.Leviathan.To10thMilliTime();
 
 		customLeaderboard.IsFeatured = editCustomLeaderboard.IsFeatured;
 		await _dbContext.SaveChangesAsync();
@@ -85,21 +85,19 @@ public class CustomLeaderboardService
 		await _dbContext.SaveChangesAsync();
 	}
 
-	private void ValidateCustomLeaderboard(int spawnsetId, CustomLeaderboardCategory category, CustomLeaderboardDaggers customLeaderboardDaggers, bool isFeatured)
+	private void ValidateCustomLeaderboard(int spawnsetId, CustomLeaderboardCategory category, AddCustomLeaderboardDaggers customLeaderboardDaggers, bool isFeatured)
 	{
 		if (!Enum.IsDefined(category))
 			throw new CustomLeaderboardValidationException($"Category '{category}' is not defined.");
 
 		if (isFeatured)
 		{
-			foreach (int dagger in new int[] { customLeaderboardDaggers.Leviathan, customLeaderboardDaggers.Devil, customLeaderboardDaggers.Golden, customLeaderboardDaggers.Silver, customLeaderboardDaggers.Bronze })
+			foreach (double dagger in new[] { customLeaderboardDaggers.Leviathan, customLeaderboardDaggers.Devil, customLeaderboardDaggers.Golden, customLeaderboardDaggers.Silver, customLeaderboardDaggers.Bronze })
 			{
-				const int scale = 10000;
-
-				const int min = 1 * scale;
-				const int max = 1500 * scale;
+				const int min = 1;
+				const int max = 1500;
 				if (dagger < min || dagger > max)
-					throw new CustomLeaderboardValidationException($"All daggers times must be between {min / scale} and {max / scale} for featured leaderboards.");
+					throw new CustomLeaderboardValidationException($"All daggers times must be between {min} and {max} for featured leaderboards.");
 			}
 
 			if (category.IsAscending())

@@ -1,5 +1,5 @@
+using DevilDaggersInfo.Api.Admin.Spawnsets;
 using DevilDaggersInfo.Core.Spawnset;
-using DevilDaggersInfo.Web.Server.Domain.Admin.Commands.Spawnsets;
 using DevilDaggersInfo.Web.Server.Domain.Admin.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
@@ -60,16 +60,16 @@ public class SpawnsetService
 		await _dbContext.SaveChangesAsync();
 	}
 
-	public async Task EditSpawnsetAsync(EditSpawnset editSpawnset)
+	public async Task EditSpawnsetAsync(int id, EditSpawnset editSpawnset)
 	{
 		ValidateName(editSpawnset.Name);
 
 		if (!_dbContext.Players.Any(p => p.Id == editSpawnset.PlayerId))
 			throw new AdminDomainException($"Player with ID '{editSpawnset.PlayerId}' does not exist.");
 
-		SpawnsetEntity? spawnset = _dbContext.Spawnsets.FirstOrDefault(s => s.Id == editSpawnset.SpawnsetId);
+		SpawnsetEntity? spawnset = _dbContext.Spawnsets.FirstOrDefault(s => s.Id == id);
 		if (spawnset == null)
-			throw new NotFoundException($"Spawnset with ID '{editSpawnset.SpawnsetId}' does not exist.");
+			throw new NotFoundException($"Spawnset with ID '{id}' does not exist.");
 
 		if (spawnset.Name != editSpawnset.Name)
 		{

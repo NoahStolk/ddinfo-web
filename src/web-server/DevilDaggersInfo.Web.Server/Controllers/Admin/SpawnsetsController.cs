@@ -50,16 +50,7 @@ public class SpawnsetsController : ControllerBase
 	[Authorize(Roles = Roles.Spawnsets)]
 	public async Task<ActionResult> AddSpawnset(AddSpawnset addSpawnset)
 	{
-		await _spawnsetService.AddSpawnsetAsync(new Domain.Admin.Commands.Spawnsets.AddSpawnset
-		{
-			FileContents = addSpawnset.FileContents,
-			HtmlDescription = addSpawnset.HtmlDescription,
-			IsPractice = addSpawnset.IsPractice,
-			MaxDisplayWaves = addSpawnset.MaxDisplayWaves,
-			Name = addSpawnset.Name,
-			PlayerId = addSpawnset.PlayerId,
-		});
-
+		await _spawnsetService.AddSpawnsetAsync(addSpawnset);
 		return Ok();
 	}
 
@@ -70,16 +61,7 @@ public class SpawnsetsController : ControllerBase
 	[Authorize(Roles = Roles.Spawnsets)]
 	public async Task<ActionResult> EditSpawnsetById(int id, EditSpawnset editSpawnset)
 	{
-		await _spawnsetService.EditSpawnsetAsync(new Domain.Admin.Commands.Spawnsets.EditSpawnset
-		{
-			HtmlDescription = editSpawnset.HtmlDescription,
-			IsPractice = editSpawnset.IsPractice,
-			MaxDisplayWaves = editSpawnset.MaxDisplayWaves,
-			Name = editSpawnset.Name,
-			PlayerId = editSpawnset.PlayerId,
-			SpawnsetId = id,
-		});
-
+		await _spawnsetService.EditSpawnsetAsync(id, editSpawnset);
 		return Ok();
 	}
 
@@ -91,7 +73,6 @@ public class SpawnsetsController : ControllerBase
 	public async Task<ActionResult> DeleteSpawnsetById(int id)
 	{
 		await _spawnsetService.DeleteSpawnsetAsync(id);
-
 		return Ok();
 	}
 }
