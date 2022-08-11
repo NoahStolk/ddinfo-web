@@ -1,5 +1,4 @@
 using DevilDaggersInfo.Common.Exceptions;
-using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Server.Domain.Extensions;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 using DdclApi = DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
@@ -76,14 +75,14 @@ public static class CustomLeaderboardConverters
 
 	public static DdclApi.GetCustomLeaderboardSelectedPlayerStats ToDdclApi(this CustomLeaderboardOverviewSelectedPlayerStats customLeaderboardOverviewSelectedPlayerStats) => new()
 	{
-		Dagger = customLeaderboardOverviewSelectedPlayerStats.Dagger.ToDdclApi(),
+		Dagger = customLeaderboardOverviewSelectedPlayerStats.Dagger,
 		Rank = customLeaderboardOverviewSelectedPlayerStats.Rank,
 		Time = customLeaderboardOverviewSelectedPlayerStats.Time.ToSecondsTime(),
 	};
 
 	public static DdclApi.GetCustomLeaderboardWorldRecord ToDdclApi(this CustomLeaderboardOverviewWorldRecord customLeaderboardOverviewWorldRecord) => new()
 	{
-		Dagger = customLeaderboardOverviewWorldRecord.Dagger.ToDdclApi(),
+		Dagger = customLeaderboardOverviewWorldRecord.Dagger,
 		Time = customLeaderboardOverviewWorldRecord.Time.ToSecondsTime(),
 	};
 
@@ -122,19 +121,7 @@ public static class CustomLeaderboardConverters
 		Rank = customEntry.Rank,
 		SubmitDate = customEntry.SubmitDate,
 		TimeInSeconds = customEntry.Time.ToSecondsTime(),
-		CustomLeaderboardDagger = customEntry.CustomLeaderboardDagger.ToDdclApi(),
-	};
-
-	private static Types.Web.CustomLeaderboardDagger? ToDdclApi(this CustomLeaderboardDagger? customLeaderboardDagger) => customLeaderboardDagger switch
-	{
-		CustomLeaderboardDagger.Default => Types.Web.CustomLeaderboardDagger.Default,
-		CustomLeaderboardDagger.Bronze => Types.Web.CustomLeaderboardDagger.Bronze,
-		CustomLeaderboardDagger.Silver => Types.Web.CustomLeaderboardDagger.Silver,
-		CustomLeaderboardDagger.Golden => Types.Web.CustomLeaderboardDagger.Golden,
-		CustomLeaderboardDagger.Devil => Types.Web.CustomLeaderboardDagger.Devil,
-		CustomLeaderboardDagger.Leviathan => Types.Web.CustomLeaderboardDagger.Leviathan,
-		null => null,
-		_ => throw new InvalidEnumConversionException(customLeaderboardDagger),
+		CustomLeaderboardDagger = customEntry.CustomLeaderboardDagger,
 	};
 
 	private static DdclApi.GetCustomEntryDdcl ToDdclApiObsolete(this CustomEntry customEntry) => new()

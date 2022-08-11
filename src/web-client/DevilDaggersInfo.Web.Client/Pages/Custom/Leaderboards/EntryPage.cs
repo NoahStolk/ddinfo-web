@@ -96,14 +96,7 @@ public partial class EntryPage
 				_ => 0,
 			};
 
-			Upgrade? upgrade = (i switch
-			{
-				HandLevel.Level1 => Types.Core.Spawnsets.HandLevel.Level1,
-				HandLevel.Level2 => Types.Core.Spawnsets.HandLevel.Level2,
-				HandLevel.Level3 => Types.Core.Spawnsets.HandLevel.Level3,
-				HandLevel.Level4 => Types.Core.Spawnsets.HandLevel.Level4,
-				_ => throw new InvalidEnumConversionException(i),
-			}).GetUpgradeByHandLevel();
+			Upgrade? upgrade = i.GetUpgradeByHandLevel();
 			string color = !upgrade.HasValue ? "#fff2" : $"{upgrade.Value.Color.HexCode}08";
 			_backgrounds.Add(new() { Color = color, ChartEndXValue = nextLevelUp == 0 ? _time : nextLevelUp });
 			if (nextLevelUp == 0)
