@@ -1,6 +1,5 @@
 namespace DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 
-// Use API model when main domain is a separated library.
 public enum CustomLeaderboardSorting
 {
 	SpawnsetName = 0,
