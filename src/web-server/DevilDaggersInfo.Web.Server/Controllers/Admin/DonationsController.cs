@@ -3,8 +3,7 @@ using DevilDaggersInfo.Api.Admin.Donations;
 using DevilDaggersInfo.Web.Client;
 using DevilDaggersInfo.Web.Core.Claims;
 using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Admin;
-using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Admin;
-using DevilDaggersInfo.Web.Server.Domain.Extensions;
+using DevilDaggersInfo.Web.Server.Domain.Admin.Repositories;
 using Microsoft.AspNetCore.Authorization;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
@@ -15,62 +14,29 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 public class DonationsController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
+	private readonly DonationRepository _donationRepository;
 
-	public DonationsController(ApplicationDbContext dbContext)
+	public DonationsController(ApplicationDbContext dbContext, DonationRepository donationRepository)
 	{
 		_dbContext = dbContext;
+		_donationRepository = donationRepository;
 	}
 
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	public ActionResult<Page<GetDonationForOverview>> GetDonations(
+	public async Task<ActionResult<Page<GetDonationForOverview>>> GetDonations(
 		[Range(0, 1000)] int pageIndex = 0,
 		[Range(Constants.PageSizeMin, Constants.PageSizeMax)] int pageSize = Constants.PageSizeDefault,
 		DonationSorting? sortBy = null,
 		bool ascending = false)
-	{
-		IQueryable<DonationEntity> donationsQuery = _dbContext.Donations
-			.AsNoTracking()
-			.Include(d => d.Player);
-
-		donationsQuery = sortBy switch
-		{
-			DonationSorting.Amount => donationsQuery.OrderBy(d => d.Amount, ascending).ThenBy(d => d.Id),
-			DonationSorting.ConvertedEuroCentsReceived => donationsQuery.OrderBy(d => d.ConvertedEuroCentsReceived, ascending).ThenBy(d => d.Id),
-			DonationSorting.Currency => donationsQuery.OrderBy(d => d.Currency, ascending).ThenBy(d => d.Id),
-			DonationSorting.DateReceived => donationsQuery.OrderBy(d => d.DateReceived, ascending).ThenBy(d => d.Id),
-			DonationSorting.IsRefunded => donationsQuery.OrderBy(d => d.IsRefunded, ascending).ThenBy(d => d.Id),
-			DonationSorting.Note => donationsQuery.OrderBy(d => d.Note, ascending).ThenBy(d => d.Id),
-			DonationSorting.PlayerName => donationsQuery.OrderBy(d => d.Player.PlayerName, ascending).ThenBy(d => d.Id),
-			_ => donationsQuery.OrderBy(d => d.Id, ascending),
-		};
-
-		List<DonationEntity> donations = donationsQuery
-			.Skip(pageIndex * pageSize)
-			.Take(pageSize)
-			.ToList();
-
-		return new Page<GetDonationForOverview>
-		{
-			Results = donations.ConvertAll(d => d.ToGetDonationForOverview()),
-			TotalResults = _dbContext.Donations.Count(),
-		};
-	}
+		=> await _donationRepository.GetDonationsAsync(pageIndex, pageSize, sortBy, ascending);
 
 	[HttpGet("{id}")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	[Authorize(Roles = Roles.Spawnsets)]
-	public ActionResult<GetDonation> GetDonationById(int id)
-	{
-		DonationEntity? donation = _dbContext.Donations
-			.AsNoTracking()
-			.FirstOrDefault(d => d.Id == id);
-		if (donation == null)
-			return NotFound();
-
-		return donation.ToGetDonation();
-	}
+	public async Task<ActionResult<GetDonation>> GetDonationById(int id)
+		=> await _donationRepository.GetDonationAsync(id);
 
 	[HttpPost]
 	[ProducesResponseType(StatusCodes.Status200OK)]

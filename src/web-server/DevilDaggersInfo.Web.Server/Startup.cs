@@ -65,6 +65,10 @@ public class Startup
 
 		// Admin repositories
 		services.AddTransient<Domain.Admin.Repositories.CustomLeaderboardRepository>();
+		services.AddTransient<Domain.Admin.Repositories.DonationRepository>();
+		services.AddTransient<Domain.Admin.Repositories.ModRepository>();
+		services.AddTransient<Domain.Admin.Repositories.PlayerRepository>();
+		services.AddTransient<Domain.Admin.Repositories.SpawnsetRepository>();
 
 		// Utilities
 		services.AddSingleton<LeaderboardResponseParser>();

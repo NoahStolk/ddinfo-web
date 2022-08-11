@@ -1,7 +1,8 @@
 using DevilDaggersInfo.Api.Admin.Spawnsets;
+using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Extensions;
 
-namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Admin;
+namespace DevilDaggersInfo.Web.Server.Domain.Admin.Converters;
 
 public static class SpawnsetConverters
 {

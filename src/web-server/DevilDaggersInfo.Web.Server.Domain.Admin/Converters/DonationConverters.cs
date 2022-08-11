@@ -1,8 +1,9 @@
 using DevilDaggersInfo.Common.Exceptions;
+using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using AdminApi = DevilDaggersInfo.Api.Admin.Donations;
 
-namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Admin;
+namespace DevilDaggersInfo.Web.Server.Domain.Admin.Converters;
 
 public static class DonationConverters
 {
