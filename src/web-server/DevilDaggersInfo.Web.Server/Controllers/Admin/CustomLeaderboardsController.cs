@@ -3,9 +3,8 @@ using DevilDaggersInfo.Api.Admin.CustomLeaderboards;
 using DevilDaggersInfo.Web.Client;
 using DevilDaggersInfo.Web.Core.Claims;
 using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Admin;
-using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Admin;
+using DevilDaggersInfo.Web.Server.Domain.Admin.Repositories;
 using DevilDaggersInfo.Web.Server.Domain.Admin.Services;
-using DevilDaggersInfo.Web.Server.Domain.Extensions;
 using Microsoft.AspNetCore.Authorization;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
@@ -15,69 +14,29 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 [Authorize(Roles = Roles.CustomLeaderboards)]
 public class CustomLeaderboardsController : ControllerBase
 {
-	private readonly ApplicationDbContext _dbContext;
+	private readonly CustomLeaderboardRepository _customLeaderboardRepository;
 	private readonly CustomLeaderboardService _customLeaderboardService;
 
-	public CustomLeaderboardsController(ApplicationDbContext dbContext, CustomLeaderboardService customLeaderboardService)
+	public CustomLeaderboardsController(CustomLeaderboardRepository customLeaderboardRepository, CustomLeaderboardService customLeaderboardService)
 	{
-		_dbContext = dbContext;
+		_customLeaderboardRepository = customLeaderboardRepository;
 		_customLeaderboardService = customLeaderboardService;
 	}
 
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	public ActionResult<Page<GetCustomLeaderboardForOverview>> GetCustomLeaderboards(
+	public async Task<ActionResult<Page<GetCustomLeaderboardForOverview>>> GetCustomLeaderboards(
 		[Range(0, 1000)] int pageIndex = 0,
 		[Range(Constants.PageSizeMin, Constants.PageSizeMax)] int pageSize = Constants.PageSizeDefault,
 		CustomLeaderboardSorting? sortBy = null,
 		bool ascending = false)
-	{
-		IQueryable<CustomLeaderboardEntity> customLeaderboardsQuery = _dbContext.CustomLeaderboards
-			.AsNoTracking()
-			.Include(cl => cl.Spawnset);
-
-		customLeaderboardsQuery = sortBy switch
-		{
-			CustomLeaderboardSorting.Category => customLeaderboardsQuery.OrderBy(cl => cl.Category, ascending).ThenBy(cl => cl.Id),
-			CustomLeaderboardSorting.DateCreated => customLeaderboardsQuery.OrderBy(cl => cl.DateCreated, ascending).ThenBy(cl => cl.Id),
-			CustomLeaderboardSorting.IsFeatured => customLeaderboardsQuery.OrderBy(cl => cl.IsFeatured, ascending).ThenBy(cl => cl.Id),
-			CustomLeaderboardSorting.SpawnsetName => customLeaderboardsQuery.OrderBy(cl => cl.Spawnset.Name, ascending).ThenBy(cl => cl.Id),
-			CustomLeaderboardSorting.TimeBronze => customLeaderboardsQuery.OrderBy(cl => cl.TimeBronze, ascending).ThenBy(cl => cl.Id),
-			CustomLeaderboardSorting.TimeSilver => customLeaderboardsQuery.OrderBy(cl => cl.TimeSilver, ascending).ThenBy(cl => cl.Id),
-			CustomLeaderboardSorting.TimeGolden => customLeaderboardsQuery.OrderBy(cl => cl.TimeGolden, ascending).ThenBy(cl => cl.Id),
-			CustomLeaderboardSorting.TimeDevil => customLeaderboardsQuery.OrderBy(cl => cl.TimeDevil, ascending).ThenBy(cl => cl.Id),
-			CustomLeaderboardSorting.TimeLeviathan => customLeaderboardsQuery.OrderBy(cl => cl.TimeLeviathan, ascending).ThenBy(cl => cl.Id),
-			_ => customLeaderboardsQuery.OrderBy(cl => cl.Id, ascending),
-		};
-
-		List<CustomLeaderboardEntity> customLeaderboards = customLeaderboardsQuery
-			.Skip(pageIndex * pageSize)
-			.Take(pageSize)
-			.ToList();
-
-		return new Page<GetCustomLeaderboardForOverview>
-		{
-			Results = customLeaderboards.ConvertAll(cl => cl.ToGetCustomLeaderboardForOverview()),
-			TotalResults = _dbContext.CustomLeaderboards.Count(),
-		};
-	}
+		=> await _customLeaderboardRepository.GetCustomLeaderboardsAsync(pageIndex, pageSize, sortBy, ascending);
 
 	[HttpGet("{id}")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public ActionResult<GetCustomLeaderboard> GetCustomLeaderboardById(int id)
-	{
-		CustomLeaderboardEntity? customLeaderboard = _dbContext.CustomLeaderboards
-			.AsNoTracking()
-			.Include(cl => cl.Spawnset)
-				.ThenInclude(sf => sf.Player)
-			.FirstOrDefault(cl => cl.Id == id);
-
-		if (customLeaderboard == null)
-			return NotFound($"Leaderboard with ID '{id}' was not found.");
-
-		return customLeaderboard.ToGetCustomLeaderboard();
-	}
+	public async Task<ActionResult<GetCustomLeaderboard>> GetCustomLeaderboardById(int id)
+		=> await _customLeaderboardRepository.GetCustomLeaderboardAsync(id);
 
 	[HttpPost]
 	[ProducesResponseType(StatusCodes.Status200OK)]

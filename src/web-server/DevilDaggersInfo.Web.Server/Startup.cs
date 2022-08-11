@@ -63,6 +63,9 @@ public class Startup
 		services.AddTransient<PlayerService>();
 		services.AddTransient<SpawnsetService>();
 
+		// Admin repositories
+		services.AddTransient<Domain.Admin.Repositories.CustomLeaderboardRepository>();
+
 		// Utilities
 		services.AddSingleton<LeaderboardResponseParser>();
 
