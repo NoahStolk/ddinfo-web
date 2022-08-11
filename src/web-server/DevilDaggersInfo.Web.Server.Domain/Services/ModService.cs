@@ -131,7 +131,7 @@ public class ModService
 			_dbContext.PlayerMods.Remove(entityToRemove);
 	}
 
-	public static void ValidateName(string name)
+	private static void ValidateName(string name)
 	{
 		if (string.IsNullOrWhiteSpace(name))
 			throw new AdminDomainException("Mod name must not be empty or consist of white space only.");
@@ -144,7 +144,7 @@ public class ModService
 			throw new AdminDomainException("Mod name must not contain the + character.");
 	}
 
-	public Dictionary<BinaryName, byte[]> GetBinaryNames(List<(string Name, byte[] Data)> binaries)
+	private static Dictionary<BinaryName, byte[]> GetBinaryNames(List<(string Name, byte[] Data)> binaries)
 	{
 		Dictionary<BinaryName, byte[]> dict = new();
 

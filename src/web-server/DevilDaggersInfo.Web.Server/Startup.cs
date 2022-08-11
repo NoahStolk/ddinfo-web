@@ -59,7 +59,7 @@ public class Startup
 		services.AddScoped<PlayerRepository>();
 
 		// Validators
-		services.AddTransient<CustomLeaderboardValidator>();
+		services.AddTransient<CustomLeaderboardService>();
 
 		// Utilities
 		services.AddSingleton<LeaderboardResponseParser>();

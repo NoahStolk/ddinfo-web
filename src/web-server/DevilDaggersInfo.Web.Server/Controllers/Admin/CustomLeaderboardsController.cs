@@ -16,12 +16,12 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 public class CustomLeaderboardsController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
-	private readonly CustomLeaderboardValidator _validator;
+	private readonly CustomLeaderboardService _customLeaderboardService;
 
-	public CustomLeaderboardsController(ApplicationDbContext dbContext, CustomLeaderboardValidator validator)
+	public CustomLeaderboardsController(ApplicationDbContext dbContext, CustomLeaderboardService customLeaderboardService)
 	{
 		_dbContext = dbContext;
-		_validator = validator;
+		_customLeaderboardService = customLeaderboardService;
 	}
 
 	[HttpGet]
@@ -84,30 +84,21 @@ public class CustomLeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult> AddCustomLeaderboard(AddCustomLeaderboard addCustomLeaderboard)
 	{
-		if (addCustomLeaderboard.Category == CustomLeaderboardCategory.Speedrun)
-			return BadRequest("The Speedrun category is obsolete and should not be used anymore. Consider using the Race category.");
-
-		if (_dbContext.CustomLeaderboards.Any(cl => cl.SpawnsetId == addCustomLeaderboard.SpawnsetId))
-			return BadRequest("A leaderboard for this spawnset already exists.");
-
-		_validator.ValidateCustomLeaderboard(addCustomLeaderboard.SpawnsetId, addCustomLeaderboard.Category.ToDomain(), addCustomLeaderboard.Daggers.ToDomain(), addCustomLeaderboard.IsFeatured);
-
-		CustomLeaderboardEntity customLeaderboard = new()
+		await _customLeaderboardService.AddCustomLeaderboardAsync(new Domain.Commands.CustomLeaderboards.AddCustomLeaderboard
 		{
-			DateCreated = DateTime.UtcNow,
-			SpawnsetId = addCustomLeaderboard.SpawnsetId,
 			Category = addCustomLeaderboard.Category.ToDomain(),
-			TimeBronze = addCustomLeaderboard.Daggers.Bronze.To10thMilliTime(),
-			TimeSilver = addCustomLeaderboard.Daggers.Silver.To10thMilliTime(),
-			TimeGolden = addCustomLeaderboard.Daggers.Golden.To10thMilliTime(),
-			TimeDevil = addCustomLeaderboard.Daggers.Devil.To10thMilliTime(),
-			TimeLeviathan = addCustomLeaderboard.Daggers.Leviathan.To10thMilliTime(),
+			Daggers = new Domain.Commands.CustomLeaderboards.Models.CustomLeaderboardDaggers
+			{
+				Bronze = addCustomLeaderboard.Daggers.Bronze.To10thMilliTime(),
+				Silver = addCustomLeaderboard.Daggers.Silver.To10thMilliTime(),
+				Golden = addCustomLeaderboard.Daggers.Golden.To10thMilliTime(),
+				Devil = addCustomLeaderboard.Daggers.Devil.To10thMilliTime(),
+				Leviathan = addCustomLeaderboard.Daggers.Leviathan.To10thMilliTime(),
+			},
 			IsFeatured = addCustomLeaderboard.IsFeatured,
-		};
-		_dbContext.CustomLeaderboards.Add(customLeaderboard);
-		await _dbContext.SaveChangesAsync();
-
-		return Ok(customLeaderboard.Id);
+			SpawnsetId = addCustomLeaderboard.SpawnsetId,
+		});
+		return Ok();
 	}
 
 	[HttpPut("{id}")]
@@ -116,25 +107,20 @@ public class CustomLeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult> EditCustomLeaderboardById(int id, EditCustomLeaderboard editCustomLeaderboard)
 	{
-		CustomLeaderboardEntity? customLeaderboard = _dbContext.CustomLeaderboards.FirstOrDefault(cl => cl.Id == id);
-		if (customLeaderboard == null)
-			return NotFound();
-
-		if (customLeaderboard.Category != editCustomLeaderboard.Category.ToDomain() && _dbContext.CustomEntries.Any(ce => ce.CustomLeaderboardId == id))
-			return BadRequest("Cannot change category for custom leaderboard with scores.");
-
-		_validator.ValidateCustomLeaderboard(customLeaderboard.SpawnsetId, editCustomLeaderboard.Category.ToDomain(), editCustomLeaderboard.Daggers.ToDomain(), editCustomLeaderboard.IsFeatured);
-
-		customLeaderboard.Category = editCustomLeaderboard.Category.ToDomain();
-		customLeaderboard.TimeBronze = editCustomLeaderboard.Daggers.Bronze.To10thMilliTime();
-		customLeaderboard.TimeSilver = editCustomLeaderboard.Daggers.Silver.To10thMilliTime();
-		customLeaderboard.TimeGolden = editCustomLeaderboard.Daggers.Golden.To10thMilliTime();
-		customLeaderboard.TimeDevil = editCustomLeaderboard.Daggers.Devil.To10thMilliTime();
-		customLeaderboard.TimeLeviathan = editCustomLeaderboard.Daggers.Leviathan.To10thMilliTime();
-
-		customLeaderboard.IsFeatured = editCustomLeaderboard.IsFeatured;
-		await _dbContext.SaveChangesAsync();
-
+		await _customLeaderboardService.EditCustomLeaderboardAsync(new Domain.Commands.CustomLeaderboards.EditCustomLeaderboard
+		{
+			Category = editCustomLeaderboard.Category.ToDomain(),
+			Daggers = new Domain.Commands.CustomLeaderboards.Models.CustomLeaderboardDaggers
+			{
+				Bronze = editCustomLeaderboard.Daggers.Bronze.To10thMilliTime(),
+				Silver = editCustomLeaderboard.Daggers.Silver.To10thMilliTime(),
+				Golden = editCustomLeaderboard.Daggers.Golden.To10thMilliTime(),
+				Devil = editCustomLeaderboard.Daggers.Devil.To10thMilliTime(),
+				Leviathan = editCustomLeaderboard.Daggers.Leviathan.To10thMilliTime(),
+			},
+			Id = id,
+			IsFeatured = editCustomLeaderboard.IsFeatured,
+		});
 		return Ok();
 	}
 
@@ -144,16 +130,7 @@ public class CustomLeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult> DeleteCustomLeaderboardById(int id)
 	{
-		CustomLeaderboardEntity? customLeaderboard = _dbContext.CustomLeaderboards.FirstOrDefault(cl => cl.Id == id);
-		if (customLeaderboard == null)
-			return NotFound();
-
-		if (_dbContext.CustomEntries.Any(ce => ce.CustomLeaderboardId == id))
-			return BadRequest("Custom leaderboard with scores cannot be deleted.");
-
-		_dbContext.CustomLeaderboards.Remove(customLeaderboard);
-		await _dbContext.SaveChangesAsync();
-
+		await _customLeaderboardService.DeleteCustomLeaderboardAsync(id);
 		return Ok();
 	}
 }

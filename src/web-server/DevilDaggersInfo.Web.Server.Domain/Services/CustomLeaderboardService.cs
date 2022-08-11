@@ -1,27 +1,89 @@
 using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Core.Spawnset.Enums;
+using DevilDaggersInfo.Web.Server.Domain.Commands.CustomLeaderboards;
+using DevilDaggersInfo.Web.Server.Domain.Commands.CustomLeaderboards.Models;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Extensions;
-using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using Microsoft.EntityFrameworkCore;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Services;
 
-public class CustomLeaderboardValidator
+public class CustomLeaderboardService
 {
 	private readonly ApplicationDbContext _dbContext;
 	private readonly IFileSystemService _fileSystemService;
 
-	public CustomLeaderboardValidator(ApplicationDbContext dbContext, IFileSystemService fileSystemService)
+	public CustomLeaderboardService(ApplicationDbContext dbContext, IFileSystemService fileSystemService)
 	{
 		_dbContext = dbContext;
 		_fileSystemService = fileSystemService;
 	}
 
-	public void ValidateCustomLeaderboard(int spawnsetId, CustomLeaderboardCategory category, CustomLeaderboardDaggers customLeaderboardDaggers, bool isFeatured)
+	public async Task AddCustomLeaderboardAsync(AddCustomLeaderboard addCustomLeaderboard)
+	{
+		if (addCustomLeaderboard.Category == CustomLeaderboardCategory.Speedrun)
+			throw new AdminDomainException("The Speedrun category is obsolete and should not be used anymore. Consider using the Race category.");
+
+		if (_dbContext.CustomLeaderboards.Any(cl => cl.SpawnsetId == addCustomLeaderboard.SpawnsetId))
+			throw new AdminDomainException("A leaderboard for this spawnset already exists.");
+
+		ValidateCustomLeaderboard(addCustomLeaderboard.SpawnsetId, addCustomLeaderboard.Category, addCustomLeaderboard.Daggers, addCustomLeaderboard.IsFeatured);
+
+		CustomLeaderboardEntity customLeaderboard = new()
+		{
+			DateCreated = DateTime.UtcNow,
+			SpawnsetId = addCustomLeaderboard.SpawnsetId,
+			Category = addCustomLeaderboard.Category,
+			TimeBronze = addCustomLeaderboard.Daggers.Bronze,
+			TimeSilver = addCustomLeaderboard.Daggers.Silver,
+			TimeGolden = addCustomLeaderboard.Daggers.Golden,
+			TimeDevil = addCustomLeaderboard.Daggers.Devil,
+			TimeLeviathan = addCustomLeaderboard.Daggers.Leviathan,
+			IsFeatured = addCustomLeaderboard.IsFeatured,
+		};
+		_dbContext.CustomLeaderboards.Add(customLeaderboard);
+		await _dbContext.SaveChangesAsync();
+	}
+
+	public async Task EditCustomLeaderboardAsync(EditCustomLeaderboard editCustomLeaderboard)
+	{
+		CustomLeaderboardEntity? customLeaderboard = _dbContext.CustomLeaderboards.FirstOrDefault(cl => cl.Id == editCustomLeaderboard.Id);
+		if (customLeaderboard == null)
+			throw new NotFoundException($"Custom leaderboard with ID '{editCustomLeaderboard.Id}' does not exist.");
+
+		if (customLeaderboard.Category != editCustomLeaderboard.Category && _dbContext.CustomEntries.Any(ce => ce.CustomLeaderboardId == editCustomLeaderboard.Id))
+			throw new AdminDomainException("Cannot change category for custom leaderboard with scores.");
+
+		ValidateCustomLeaderboard(customLeaderboard.SpawnsetId, editCustomLeaderboard.Category, editCustomLeaderboard.Daggers, editCustomLeaderboard.IsFeatured);
+
+		customLeaderboard.Category = editCustomLeaderboard.Category;
+		customLeaderboard.TimeBronze = editCustomLeaderboard.Daggers.Bronze;
+		customLeaderboard.TimeSilver = editCustomLeaderboard.Daggers.Silver;
+		customLeaderboard.TimeGolden = editCustomLeaderboard.Daggers.Golden;
+		customLeaderboard.TimeDevil = editCustomLeaderboard.Daggers.Devil;
+		customLeaderboard.TimeLeviathan = editCustomLeaderboard.Daggers.Leviathan;
+
+		customLeaderboard.IsFeatured = editCustomLeaderboard.IsFeatured;
+		await _dbContext.SaveChangesAsync();
+	}
+
+	public async Task DeleteCustomLeaderboardAsync(int id)
+	{
+		CustomLeaderboardEntity? customLeaderboard = _dbContext.CustomLeaderboards.FirstOrDefault(cl => cl.Id == id);
+		if (customLeaderboard == null)
+			throw new NotFoundException($"Custom leaderboard with ID '{id}' does not exist.");
+
+		if (_dbContext.CustomEntries.Any(ce => ce.CustomLeaderboardId == id))
+			throw new AdminDomainException("Custom leaderboard with scores cannot be deleted.");
+
+		_dbContext.CustomLeaderboards.Remove(customLeaderboard);
+		await _dbContext.SaveChangesAsync();
+	}
+
+	private void ValidateCustomLeaderboard(int spawnsetId, CustomLeaderboardCategory category, CustomLeaderboardDaggers customLeaderboardDaggers, bool isFeatured)
 	{
 		if (!Enum.IsDefined(category))
 			throw new CustomLeaderboardValidationException($"Category '{category}' is not defined.");
