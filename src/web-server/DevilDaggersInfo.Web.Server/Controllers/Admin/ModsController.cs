@@ -50,22 +50,7 @@ public class ModsController : ControllerBase
 	[Authorize(Roles = Roles.Mods)]
 	public async Task<ActionResult> AddMod(AddMod addMod)
 	{
-		await _modService.AddModAsync(new Domain.Admin.Commands.Mods.AddMod
-		{
-			Name = addMod.Name,
-			Binaries = addMod.Binaries.ConvertAll(b => new Domain.Admin.Commands.Mods.Models.BinaryData
-			{
-				Data = b.Data,
-				Name = b.Name,
-			}),
-			HtmlDescription = addMod.HtmlDescription,
-			IsHidden = addMod.IsHidden,
-			ModTypes = addMod.ModTypes,
-			PlayerIds = addMod.PlayerIds,
-			Screenshots = addMod.Screenshots,
-			TrailerUrl = addMod.TrailerUrl,
-			Url = addMod.Url,
-		});
+		await _modService.AddModAsync(addMod);
 		return Ok();
 	}
 
@@ -76,25 +61,7 @@ public class ModsController : ControllerBase
 	[Authorize(Roles = Roles.Mods)]
 	public async Task<ActionResult> EditModById(int id, EditMod editMod)
 	{
-		await _modService.EditModAsync(new Domain.Admin.Commands.Mods.EditMod
-		{
-			Binaries = editMod.Binaries.ConvertAll(b => new Domain.Admin.Commands.Mods.Models.BinaryData
-			{
-				Data = b.Data,
-				Name = b.Name,
-			}),
-			BinariesToDelete = editMod.BinariesToDelete,
-			HtmlDescription = editMod.HtmlDescription,
-			Id = id,
-			IsHidden = editMod.IsHidden,
-			ModTypes = editMod.ModTypes,
-			Name = editMod.Name,
-			PlayerIds = editMod.PlayerIds,
-			Screenshots = editMod.Screenshots,
-			ScreenshotsToDelete = editMod.ScreenshotsToDelete,
-			TrailerUrl = editMod.TrailerUrl,
-			Url = editMod.Url,
-		});
+		await _modService.EditModAsync(id, editMod);
 		return Ok();
 	}
 

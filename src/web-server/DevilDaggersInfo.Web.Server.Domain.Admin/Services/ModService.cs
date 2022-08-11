@@ -1,10 +1,9 @@
+using DevilDaggersInfo.Api.Admin.Mods;
 using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Core.Mod;
 using DevilDaggersInfo.Core.Mod.Enums;
-using DevilDaggersInfo.Web.Server.Domain.Admin.Commands.Mods;
 using DevilDaggersInfo.Web.Server.Domain.Admin.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
-using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Services;
 using Microsoft.EntityFrameworkCore;
@@ -48,7 +47,7 @@ public class ModService
 
 		ModEntity mod = new()
 		{
-			ModTypes = addMod.ModTypes?.ToFlagEnum<ModTypes>() ?? ModTypes.None,
+			ModTypes = addMod.ModTypes?.ToFlagEnum<Entities.Enums.ModTypes>() ?? Entities.Enums.ModTypes.None,
 			HtmlDescription = addMod.HtmlDescription,
 			IsHidden = addMod.IsHidden,
 			LastUpdated = DateTime.UtcNow,
@@ -63,7 +62,7 @@ public class ModService
 		await _dbContext.SaveChangesAsync();
 	}
 
-	public async Task EditModAsync(EditMod editMod)
+	public async Task EditModAsync(int id, EditMod editMod)
 	{
 		ValidateName(editMod.Name);
 
@@ -78,9 +77,9 @@ public class ModService
 
 		ModEntity? mod = _dbContext.Mods
 			.Include(m => m.PlayerMods)
-			.FirstOrDefault(m => m.Id == editMod.Id);
+			.FirstOrDefault(m => m.Id == id);
 		if (mod == null)
-			throw new NotFoundException($"Mod with ID '{editMod.Id}' does not exist.");
+			throw new NotFoundException($"Mod with ID '{id}' does not exist.");
 
 		if (mod.Name != editMod.Name && _dbContext.Mods.Any(m => m.Name == editMod.Name))
 			throw new AdminDomainException($"Mod with name '{editMod.Name}' already exists.");
@@ -96,7 +95,7 @@ public class ModService
 
 		_modScreenshotProcessor.ProcessModScreenshotUpload(editMod.Name, editMod.Screenshots);
 
-		mod.ModTypes = editMod.ModTypes?.ToFlagEnum<ModTypes>() ?? ModTypes.None;
+		mod.ModTypes = editMod.ModTypes?.ToFlagEnum<Entities.Enums.ModTypes>() ?? Entities.Enums.ModTypes.None;
 		mod.HtmlDescription = editMod.HtmlDescription;
 		mod.IsHidden = editMod.IsHidden;
 		mod.Name = editMod.Name;
