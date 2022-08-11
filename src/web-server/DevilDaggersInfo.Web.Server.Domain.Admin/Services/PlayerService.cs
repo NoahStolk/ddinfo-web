@@ -1,7 +1,7 @@
-using DevilDaggersInfo.Web.Server.Domain.Admin.Commands.Players;
+using DevilDaggersInfo.Api.Admin.Players;
+using DevilDaggersInfo.Web.Server.Domain.Admin.Converters;
 using DevilDaggersInfo.Web.Server.Domain.Admin.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
-using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Services;
 using Microsoft.EntityFrameworkCore;
@@ -22,7 +22,7 @@ public class PlayerService
 	public async Task AddPlayerAsync(AddPlayer addPlayer)
 	{
 		Validate(
-			banType: addPlayer.BanType,
+			banType: addPlayer.BanType.ToDomain(),
 			countryCode: addPlayer.CountryCode,
 			dpi: addPlayer.Dpi,
 			inGameSens: addPlayer.InGameSens,
@@ -33,7 +33,7 @@ public class PlayerService
 			usesLegacyAudio: addPlayer.UsesLegacyAudio,
 			usesHrtf: addPlayer.UsesHrtf,
 			usesInvertY: addPlayer.UsesInvertY,
-			verticalSync: addPlayer.VerticalSync,
+			verticalSync: addPlayer.VerticalSync.ToDomain(),
 			banDescription: addPlayer.BanDescription,
 			banResponsibleId: addPlayer.BanResponsibleId);
 
@@ -62,8 +62,8 @@ public class PlayerService
 			UsesLegacyAudio = addPlayer.UsesLegacyAudio,
 			UsesHrtf = addPlayer.UsesHrtf,
 			UsesInvertY = addPlayer.UsesInvertY,
-			VerticalSync = addPlayer.VerticalSync,
-			BanType = addPlayer.BanType,
+			VerticalSync = addPlayer.VerticalSync.ToDomain(),
+			BanType = addPlayer.BanType.ToDomain(),
 			BanDescription = addPlayer.BanDescription,
 			BanResponsibleId = addPlayer.BanResponsibleId,
 			IsBannedFromDdcl = addPlayer.IsBannedFromDdcl,
@@ -78,10 +78,10 @@ public class PlayerService
 		await _dbContext.SaveChangesAsync();
 	}
 
-	public async Task EditPlayerAsync(EditPlayer editPlayer)
+	public async Task EditPlayerAsync(int id, EditPlayer editPlayer)
 	{
 		Validate(
-			banType: editPlayer.BanType,
+			banType: editPlayer.BanType.ToDomain(),
 			countryCode: editPlayer.CountryCode,
 			dpi: editPlayer.Dpi,
 			inGameSens: editPlayer.InGameSens,
@@ -92,7 +92,7 @@ public class PlayerService
 			usesLegacyAudio: editPlayer.UsesLegacyAudio,
 			usesHrtf: editPlayer.UsesHrtf,
 			usesInvertY: editPlayer.UsesInvertY,
-			verticalSync: editPlayer.VerticalSync,
+			verticalSync: editPlayer.VerticalSync.ToDomain(),
 			banDescription: editPlayer.BanDescription,
 			banResponsibleId: editPlayer.BanResponsibleId);
 
@@ -104,11 +104,11 @@ public class PlayerService
 
 		PlayerEntity? player = _dbContext.Players
 			.Include(p => p.PlayerMods)
-			.FirstOrDefault(p => p.Id == editPlayer.Id);
+			.FirstOrDefault(p => p.Id == id);
 		if (player == null)
-			throw new NotFoundException($"Player with ID '{editPlayer.Id}' does not exist.");
+			throw new NotFoundException($"Player with ID '{id}' does not exist.");
 
-		player.PlayerName = await GetPlayerName(editPlayer.Id);
+		player.PlayerName = await GetPlayerName(id);
 		player.CommonName = editPlayer.CommonName;
 		player.DiscordUserId = (ulong?)editPlayer.DiscordUserId;
 		player.CountryCode = editPlayer.CountryCode;
@@ -121,13 +121,13 @@ public class PlayerService
 		player.UsesLegacyAudio = editPlayer.UsesLegacyAudio;
 		player.UsesHrtf = editPlayer.UsesHrtf;
 		player.UsesInvertY = editPlayer.UsesInvertY;
-		player.VerticalSync = editPlayer.VerticalSync;
+		player.VerticalSync = editPlayer.VerticalSync.ToDomain();
 		player.HideSettings = editPlayer.HideSettings;
 		player.HideDonations = editPlayer.HideDonations;
 		player.HidePastUsernames = editPlayer.HidePastUsernames;
 		player.BanDescription = editPlayer.BanDescription;
 		player.BanResponsibleId = editPlayer.BanResponsibleId;
-		player.BanType = editPlayer.BanType;
+		player.BanType = editPlayer.BanType.ToDomain();
 		player.IsBannedFromDdcl = editPlayer.IsBannedFromDdcl;
 
 		UpdatePlayerMods(editPlayer.ModIds ?? new(), player.Id);
@@ -181,7 +181,7 @@ public class PlayerService
 	}
 
 	private static void Validate(
-		BanType banType,
+		Entities.Enums.BanType banType,
 		string? countryCode,
 		int? dpi,
 		float? inGameSens,
@@ -192,11 +192,11 @@ public class PlayerService
 		bool? usesLegacyAudio,
 		bool? usesHrtf,
 		bool? usesInvertY,
-		VerticalSync verticalSync,
+		Entities.Enums.VerticalSync verticalSync,
 		string? banDescription,
 		int? banResponsibleId)
 	{
-		if (banType != BanType.NotBanned)
+		if (banType != Entities.Enums.BanType.NotBanned)
 		{
 			if (!string.IsNullOrWhiteSpace(countryCode))
 				throw new AdminDomainException("Banned players must not have a country code.");
@@ -210,7 +210,7 @@ public class PlayerService
 				usesLegacyAudio.HasValue ||
 				usesHrtf.HasValue ||
 				usesInvertY.HasValue ||
-				verticalSync != VerticalSync.Unknown)
+				verticalSync != Entities.Enums.VerticalSync.Unknown)
 			{
 				throw new AdminDomainException("Banned players must not have settings.");
 			}

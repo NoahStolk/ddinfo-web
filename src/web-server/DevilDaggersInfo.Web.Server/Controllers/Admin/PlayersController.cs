@@ -2,7 +2,6 @@ using DevilDaggersInfo.Api.Admin;
 using DevilDaggersInfo.Api.Admin.Players;
 using DevilDaggersInfo.Web.Client;
 using DevilDaggersInfo.Web.Core.Claims;
-using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Admin;
 using DevilDaggersInfo.Web.Server.Domain.Admin.Repositories;
 using DevilDaggersInfo.Web.Server.Domain.Admin.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -52,31 +51,7 @@ public class PlayersController : ControllerBase
 	[Authorize(Roles = Roles.Players)]
 	public async Task<ActionResult> AddPlayer(AddPlayer addPlayer)
 	{
-		await _playerService.AddPlayerAsync(new Domain.Admin.Commands.Players.AddPlayer
-		{
-			Id = addPlayer.Id,
-			ModIds = addPlayer.ModIds,
-			CommonName = addPlayer.CommonName,
-			DiscordUserId = addPlayer.DiscordUserId,
-			CountryCode = addPlayer.CountryCode,
-			Dpi = addPlayer.Dpi,
-			InGameSens = addPlayer.InGameSens,
-			Fov = addPlayer.Fov,
-			IsRightHanded = addPlayer.IsRightHanded,
-			HasFlashHandEnabled = addPlayer.HasFlashHandEnabled,
-			Gamma = addPlayer.Gamma,
-			UsesLegacyAudio = addPlayer.UsesLegacyAudio,
-			UsesHrtf = addPlayer.UsesHrtf,
-			UsesInvertY = addPlayer.UsesInvertY,
-			VerticalSync = addPlayer.VerticalSync.ToDomain(),
-			BanType = addPlayer.BanType.ToDomain(),
-			BanDescription = addPlayer.BanDescription,
-			BanResponsibleId = addPlayer.BanResponsibleId,
-			IsBannedFromDdcl = addPlayer.IsBannedFromDdcl,
-			HideSettings = addPlayer.HideSettings,
-			HideDonations = addPlayer.HideDonations,
-			HidePastUsernames = addPlayer.HidePastUsernames,
-		});
+		await _playerService.AddPlayerAsync(addPlayer);
 		return Ok();
 	}
 
@@ -87,31 +62,7 @@ public class PlayersController : ControllerBase
 	[Authorize(Roles = Roles.Players)]
 	public async Task<ActionResult> EditPlayerById(int id, EditPlayer editPlayer)
 	{
-		await _playerService.EditPlayerAsync(new Domain.Admin.Commands.Players.EditPlayer
-		{
-			Id = id,
-			BanDescription = editPlayer.BanDescription,
-			BanResponsibleId = editPlayer.BanResponsibleId,
-			BanType = editPlayer.BanType.ToDomain(),
-			CommonName = editPlayer.CommonName,
-			CountryCode = editPlayer.CountryCode,
-			DiscordUserId = editPlayer.DiscordUserId,
-			Dpi = editPlayer.Dpi,
-			Fov = editPlayer.Fov,
-			Gamma = editPlayer.Gamma,
-			HasFlashHandEnabled = editPlayer.HasFlashHandEnabled,
-			HideDonations = editPlayer.HideDonations,
-			HideSettings = editPlayer.HideSettings,
-			HidePastUsernames = editPlayer.HidePastUsernames,
-			InGameSens = editPlayer.InGameSens,
-			IsBannedFromDdcl = editPlayer.IsBannedFromDdcl,
-			IsRightHanded = editPlayer.IsRightHanded,
-			ModIds = editPlayer.ModIds,
-			UsesHrtf = editPlayer.UsesHrtf,
-			UsesInvertY = editPlayer.UsesInvertY,
-			UsesLegacyAudio = editPlayer.UsesLegacyAudio,
-			VerticalSync = editPlayer.VerticalSync.ToDomain(),
-		});
+		await _playerService.EditPlayerAsync(id, editPlayer);
 		return Ok();
 	}
 
