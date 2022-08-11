@@ -22,7 +22,7 @@ public class PlayerProfileService
 		string? userName = claimsPrincipal.GetName();
 		UserEntity? user = _dbContext.Users.FirstOrDefault(u => u.Name == userName);
 		if (user == null)
-			throw new UnauthorizedAccessException();
+			throw new UnauthorizedException();
 
 		if (!user.PlayerId.HasValue)
 			throw new InvalidProfileRequestException("User is not linked to a player.");

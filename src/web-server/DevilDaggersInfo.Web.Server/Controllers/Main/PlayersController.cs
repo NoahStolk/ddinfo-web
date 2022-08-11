@@ -268,15 +268,8 @@ public class PlayersController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult<GetPlayerProfile>> GetProfileByPlayerId([Required] int id)
 	{
-		try
-		{
-			PlayerProfile playerProfile = await _profileRepository.GetProfileAsync(User, id);
-			return playerProfile.ToMainApi();
-		}
-		catch (UnauthorizedAccessException)
-		{
-			return Unauthorized();
-		}
+		PlayerProfile playerProfile = await _profileRepository.GetProfileAsync(User, id);
+		return playerProfile.ToMainApi();
 	}
 
 	[Authorize]
@@ -288,14 +281,7 @@ public class PlayersController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult> UpdateProfileByPlayerId([Required] int id, EditPlayerProfile editPlayerProfile)
 	{
-		try
-		{
-			await _profileService.UpdateProfileAsync(User, id, editPlayerProfile.ToDomain());
-			return Ok();
-		}
-		catch (UnauthorizedAccessException) // TODO: Use status code exception.
-		{
-			return Unauthorized();
-		}
+		await _profileService.UpdateProfileAsync(User, id, editPlayerProfile.ToDomain());
+		return Ok();
 	}
 }
