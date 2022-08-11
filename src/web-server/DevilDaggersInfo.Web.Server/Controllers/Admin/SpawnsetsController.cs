@@ -3,8 +3,8 @@ using DevilDaggersInfo.Api.Admin.Spawnsets;
 using DevilDaggersInfo.Web.Client;
 using DevilDaggersInfo.Web.Core.Claims;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Admin;
+using DevilDaggersInfo.Web.Server.Domain.Admin.Services;
 using DevilDaggersInfo.Web.Server.Domain.Extensions;
-using DevilDaggersInfo.Web.Server.Domain.Services;
 using Microsoft.AspNetCore.Authorization;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
@@ -94,7 +94,7 @@ public class SpawnsetsController : ControllerBase
 	[Authorize(Roles = Roles.Spawnsets)]
 	public async Task<ActionResult> AddSpawnset(AddSpawnset addSpawnset)
 	{
-		await _spawnsetService.AddSpawnsetAsync(new Domain.Commands.Spawnsets.AddSpawnset
+		await _spawnsetService.AddSpawnsetAsync(new Domain.Admin.Commands.Spawnsets.AddSpawnset
 		{
 			FileContents = addSpawnset.FileContents,
 			HtmlDescription = addSpawnset.HtmlDescription,
@@ -114,7 +114,7 @@ public class SpawnsetsController : ControllerBase
 	[Authorize(Roles = Roles.Spawnsets)]
 	public async Task<ActionResult> EditSpawnsetById(int id, EditSpawnset editSpawnset)
 	{
-		await _spawnsetService.EditSpawnsetAsync(new Domain.Commands.Spawnsets.EditSpawnset
+		await _spawnsetService.EditSpawnsetAsync(new Domain.Admin.Commands.Spawnsets.EditSpawnset
 		{
 			HtmlDescription = editSpawnset.HtmlDescription,
 			IsPractice = editSpawnset.IsPractice,

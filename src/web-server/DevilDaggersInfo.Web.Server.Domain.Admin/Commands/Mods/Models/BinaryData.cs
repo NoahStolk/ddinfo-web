@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Server.Domain.Commands.Mods.Models;
+namespace DevilDaggersInfo.Web.Server.Domain.Admin.Commands.Mods.Models;
 
 public record BinaryData
 {

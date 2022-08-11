@@ -4,8 +4,8 @@ using DevilDaggersInfo.Web.Client;
 using DevilDaggersInfo.Web.Core.Claims;
 using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Admin;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Admin;
+using DevilDaggersInfo.Web.Server.Domain.Admin.Services;
 using DevilDaggersInfo.Web.Server.Domain.Extensions;
-using DevilDaggersInfo.Web.Server.Domain.Services;
 using Microsoft.AspNetCore.Authorization;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
@@ -84,10 +84,10 @@ public class CustomLeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult> AddCustomLeaderboard(AddCustomLeaderboard addCustomLeaderboard)
 	{
-		await _customLeaderboardService.AddCustomLeaderboardAsync(new Domain.Commands.CustomLeaderboards.AddCustomLeaderboard
+		await _customLeaderboardService.AddCustomLeaderboardAsync(new Domain.Admin.Commands.CustomLeaderboards.AddCustomLeaderboard
 		{
 			Category = addCustomLeaderboard.Category.ToDomain(),
-			Daggers = new Domain.Commands.CustomLeaderboards.Models.CustomLeaderboardDaggers
+			Daggers = new Domain.Admin.Commands.CustomLeaderboards.Models.CustomLeaderboardDaggers
 			{
 				Bronze = addCustomLeaderboard.Daggers.Bronze.To10thMilliTime(),
 				Silver = addCustomLeaderboard.Daggers.Silver.To10thMilliTime(),
@@ -107,10 +107,10 @@ public class CustomLeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult> EditCustomLeaderboardById(int id, EditCustomLeaderboard editCustomLeaderboard)
 	{
-		await _customLeaderboardService.EditCustomLeaderboardAsync(new Domain.Commands.CustomLeaderboards.EditCustomLeaderboard
+		await _customLeaderboardService.EditCustomLeaderboardAsync(new Domain.Admin.Commands.CustomLeaderboards.EditCustomLeaderboard
 		{
 			Category = editCustomLeaderboard.Category.ToDomain(),
-			Daggers = new Domain.Commands.CustomLeaderboards.Models.CustomLeaderboardDaggers
+			Daggers = new Domain.Admin.Commands.CustomLeaderboards.Models.CustomLeaderboardDaggers
 			{
 				Bronze = editCustomLeaderboard.Daggers.Bronze.To10thMilliTime(),
 				Silver = editCustomLeaderboard.Daggers.Silver.To10thMilliTime(),

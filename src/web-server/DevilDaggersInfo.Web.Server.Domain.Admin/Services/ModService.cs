@@ -1,13 +1,14 @@
 using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Core.Mod;
 using DevilDaggersInfo.Core.Mod.Enums;
-using DevilDaggersInfo.Web.Server.Domain.Commands.Mods;
+using DevilDaggersInfo.Web.Server.Domain.Admin.Commands.Mods;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
+using DevilDaggersInfo.Web.Server.Domain.Services;
 using Microsoft.EntityFrameworkCore;
 
-namespace DevilDaggersInfo.Web.Server.Domain.Services;
+namespace DevilDaggersInfo.Web.Server.Domain.Admin.Services;
 
 public class ModService
 {

@@ -1,7 +1,9 @@
-namespace DevilDaggersInfo.Web.Server.Domain.Commands.Spawnsets;
+namespace DevilDaggersInfo.Web.Server.Domain.Admin.Commands.Spawnsets;
 
-public record AddSpawnset
+public record EditSpawnset
 {
+	public int SpawnsetId { get; init; }
+
 	public int PlayerId { get; init; }
 
 	public string Name { get; init; } = null!;
@@ -11,6 +13,4 @@ public record AddSpawnset
 	public string? HtmlDescription { get; init; }
 
 	public bool IsPractice { get; init; }
-
-	public byte[] FileContents { get; init; } = null!;
 }

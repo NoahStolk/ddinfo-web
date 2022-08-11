@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Server.Domain.Commands.CustomLeaderboards.Models;
+namespace DevilDaggersInfo.Web.Server.Domain.Admin.Commands.CustomLeaderboards.Models;
 
 public record CustomLeaderboardDaggers
 {

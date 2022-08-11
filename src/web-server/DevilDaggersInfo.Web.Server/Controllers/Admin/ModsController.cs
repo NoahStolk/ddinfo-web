@@ -3,6 +3,7 @@ using DevilDaggersInfo.Api.Admin.Mods;
 using DevilDaggersInfo.Web.Client;
 using DevilDaggersInfo.Web.Core.Claims;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Admin;
+using DevilDaggersInfo.Web.Server.Domain.Admin.Services;
 using DevilDaggersInfo.Web.Server.Domain.Extensions;
 using DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;
 using DevilDaggersInfo.Web.Server.Domain.Services;
@@ -101,10 +102,10 @@ public class ModsController : ControllerBase
 	[Authorize(Roles = Roles.Mods)]
 	public async Task<ActionResult> AddMod(AddMod addMod)
 	{
-		await _modService.AddModAsync(new Domain.Commands.Mods.AddMod
+		await _modService.AddModAsync(new Domain.Admin.Commands.Mods.AddMod
 		{
 			Name = addMod.Name,
-			Binaries = addMod.Binaries.ConvertAll(b => new Domain.Commands.Mods.Models.BinaryData
+			Binaries = addMod.Binaries.ConvertAll(b => new Domain.Admin.Commands.Mods.Models.BinaryData
 			{
 				Data = b.Data,
 				Name = b.Name,
@@ -127,9 +128,9 @@ public class ModsController : ControllerBase
 	[Authorize(Roles = Roles.Mods)]
 	public async Task<ActionResult> EditModById(int id, EditMod editMod)
 	{
-		await _modService.EditModAsync(new Domain.Commands.Mods.EditMod
+		await _modService.EditModAsync(new Domain.Admin.Commands.Mods.EditMod
 		{
-			Binaries = editMod.Binaries.ConvertAll(b => new Domain.Commands.Mods.Models.BinaryData
+			Binaries = editMod.Binaries.ConvertAll(b => new Domain.Admin.Commands.Mods.Models.BinaryData
 			{
 				Data = b.Data,
 				Name = b.Name,

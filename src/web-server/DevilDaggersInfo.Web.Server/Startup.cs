@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Web.Server.Clients.Clubber;
+using DevilDaggersInfo.Web.Server.Domain.Admin.Services;
 using DevilDaggersInfo.Web.Server.Domain.Repositories;
 using DevilDaggersInfo.Web.Server.Domain.Services;
 using DevilDaggersInfo.Web.Server.HostedServices;
@@ -48,6 +49,7 @@ public class Startup
 		services.AddTransient<ModScreenshotProcessor>();
 		services.AddTransient<ModService>();
 		services.AddScoped<PlayerService>();
+		services.AddScoped<PlayerProfileService>();
 		services.AddTransient<SpawnsetService>();
 		services.AddTransient<IToolService, ToolService>();
 		services.AddScoped<IUserService, UserService>();
@@ -56,7 +58,7 @@ public class Startup
 		services.AddTransient<CustomEntryRepository>();
 		services.AddTransient<CustomLeaderboardRepository>();
 		services.AddTransient<MarkerRepository>();
-		services.AddScoped<PlayerRepository>();
+		services.AddScoped<PlayerProfileRepository>();
 
 		// Validators
 		services.AddTransient<CustomLeaderboardService>();
