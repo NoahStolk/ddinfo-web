@@ -2,8 +2,7 @@ using DevilDaggersInfo.Api.Admin;
 using DevilDaggersInfo.Api.Admin.CustomEntries;
 using DevilDaggersInfo.Web.Client;
 using DevilDaggersInfo.Web.Core.Claims;
-using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Admin;
-using DevilDaggersInfo.Web.Server.Domain.Extensions;
+using DevilDaggersInfo.Web.Server.Domain.Admin.Repositories;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -17,79 +16,29 @@ public class CustomEntriesController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
 	private readonly IFileSystemService _fileSystemService;
+	private readonly CustomEntryRepository _customEntryRepository;
 
-	public CustomEntriesController(ApplicationDbContext dbContext, IFileSystemService fileSystemService)
+	public CustomEntriesController(ApplicationDbContext dbContext, IFileSystemService fileSystemService, CustomEntryRepository customEntryRepository)
 	{
 		_dbContext = dbContext;
 		_fileSystemService = fileSystemService;
+		_customEntryRepository = customEntryRepository;
 	}
 
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	public ActionResult<Page<GetCustomEntryForOverview>> GetCustomEntries(
+	public async Task<ActionResult<Page<GetCustomEntryForOverview>>> GetCustomEntries(
 		[Range(0, 1000)] int pageIndex = 0,
 		[Range(Constants.PageSizeMin, Constants.PageSizeMax)] int pageSize = Constants.PageSizeDefault,
 		CustomEntrySorting? sortBy = null,
 		bool ascending = false)
-	{
-		IQueryable<CustomEntryEntity> customEntriesQuery = _dbContext.CustomEntries
-			.AsNoTracking()
-			.AsSingleQuery()
-			.Include(ce => ce.Player)
-			.Include(ce => ce.CustomLeaderboard)
-				.ThenInclude(cl => cl.Spawnset);
-
-		customEntriesQuery = sortBy switch
-		{
-			CustomEntrySorting.ClientVersion => customEntriesQuery.OrderBy(ce => ce.ClientVersion, ascending).ThenBy(ce => ce.Id),
-			CustomEntrySorting.DaggersFired => customEntriesQuery.OrderBy(ce => ce.DaggersFired, ascending).ThenBy(ce => ce.Id),
-			CustomEntrySorting.DaggersHit => customEntriesQuery.OrderBy(ce => ce.DaggersHit, ascending).ThenBy(ce => ce.Id),
-			CustomEntrySorting.DeathType => customEntriesQuery.OrderBy(ce => ce.DeathType, ascending).ThenBy(ce => ce.Id),
-			CustomEntrySorting.EnemiesAlive => customEntriesQuery.OrderBy(ce => ce.EnemiesAlive, ascending).ThenBy(ce => ce.Id),
-			CustomEntrySorting.EnemiesKilled => customEntriesQuery.OrderBy(ce => ce.EnemiesKilled, ascending).ThenBy(ce => ce.Id),
-			CustomEntrySorting.GemsCollected => customEntriesQuery.OrderBy(ce => ce.GemsCollected, ascending).ThenBy(ce => ce.Id),
-			CustomEntrySorting.GemsDespawned => customEntriesQuery.OrderBy(ce => ce.GemsDespawned, ascending).ThenBy(ce => ce.Id),
-			CustomEntrySorting.GemsEaten => customEntriesQuery.OrderBy(ce => ce.GemsEaten, ascending).ThenBy(ce => ce.Id),
-			CustomEntrySorting.GemsTotal => customEntriesQuery.OrderBy(ce => ce.GemsTotal, ascending).ThenBy(ce => ce.Id),
-			CustomEntrySorting.HomingStored => customEntriesQuery.OrderBy(ce => ce.HomingStored, ascending).ThenBy(ce => ce.Id),
-			CustomEntrySorting.HomingEaten => customEntriesQuery.OrderBy(ce => ce.HomingEaten, ascending).ThenBy(ce => ce.Id),
-			CustomEntrySorting.LevelUpTime2 => customEntriesQuery.OrderBy(ce => ce.LevelUpTime2, ascending).ThenBy(ce => ce.Id),
-			CustomEntrySorting.LevelUpTime3 => customEntriesQuery.OrderBy(ce => ce.LevelUpTime3, ascending).ThenBy(ce => ce.Id),
-			CustomEntrySorting.LevelUpTime4 => customEntriesQuery.OrderBy(ce => ce.LevelUpTime4, ascending).ThenBy(ce => ce.Id),
-			CustomEntrySorting.PlayerName => customEntriesQuery.OrderBy(ce => ce.Player.PlayerName, ascending).ThenBy(ce => ce.Id),
-			CustomEntrySorting.SpawnsetName => customEntriesQuery.OrderBy(ce => ce.CustomLeaderboard.Spawnset.Name, ascending).ThenBy(ce => ce.Id),
-			CustomEntrySorting.SubmitDate => customEntriesQuery.OrderBy(ce => ce.SubmitDate, ascending).ThenBy(ce => ce.Id),
-			CustomEntrySorting.Time => customEntriesQuery.OrderBy(ce => ce.Time, ascending).ThenBy(ce => ce.Id),
-			_ => customEntriesQuery.OrderBy(ce => ce.Id, ascending),
-		};
-
-		List<CustomEntryEntity> customEntries = customEntriesQuery
-			.Skip(pageIndex * pageSize)
-			.Take(pageSize)
-			.ToList();
-
-		return new Page<GetCustomEntryForOverview>
-		{
-			Results = customEntries.ConvertAll(ce => ce.ToGetCustomEntryForOverview()),
-			TotalResults = _dbContext.CustomEntries.Count(),
-		};
-	}
+		=> await _customEntryRepository.GetCustomEntriesAsync(pageIndex, pageSize, sortBy, ascending);
 
 	[HttpGet("{id}")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public ActionResult<GetCustomEntry> GetCustomEntryById(int id)
-	{
-		CustomEntryEntity? customEntry = _dbContext.CustomEntries
-			.AsNoTracking()
-			.Include(ce => ce.CustomLeaderboard)
-			.FirstOrDefault(cl => cl.Id == id);
-
-		if (customEntry == null)
-			return NotFound($"Custom entry with ID '{id}' was not found.");
-
-		return customEntry.ToGetCustomEntry();
-	}
+	public async Task<ActionResult<GetCustomEntry>> GetCustomEntryById(int id)
+		=> await _customEntryRepository.GetCustomEntryAsync(id);
 
 	[HttpPost]
 	[ProducesResponseType(StatusCodes.Status200OK)]

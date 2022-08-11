@@ -64,11 +64,13 @@ public class Startup
 		services.AddTransient<SpawnsetService>();
 
 		// Admin repositories
+		services.AddTransient<Domain.Admin.Repositories.CustomEntryRepository>();
 		services.AddTransient<Domain.Admin.Repositories.CustomLeaderboardRepository>();
 		services.AddTransient<Domain.Admin.Repositories.DonationRepository>();
 		services.AddTransient<Domain.Admin.Repositories.ModRepository>();
 		services.AddTransient<Domain.Admin.Repositories.PlayerRepository>();
 		services.AddTransient<Domain.Admin.Repositories.SpawnsetRepository>();
+		services.AddTransient<Domain.Admin.Repositories.UserRepository>();
 
 		// Utilities
 		services.AddSingleton<LeaderboardResponseParser>();

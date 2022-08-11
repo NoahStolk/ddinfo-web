@@ -1,6 +1,7 @@
 using DevilDaggersInfo.Api.Admin.CustomEntries;
+using DevilDaggersInfo.Web.Server.Domain.Entities;
 
-namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Admin;
+namespace DevilDaggersInfo.Web.Server.Domain.Admin.Converters;
 
 public static class CustomEntryConverters
 {

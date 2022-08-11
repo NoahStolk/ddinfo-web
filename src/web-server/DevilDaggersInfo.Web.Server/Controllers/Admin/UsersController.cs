@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Api.Admin.Users;
 using DevilDaggersInfo.Web.Core.Claims;
-using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Admin;
+using DevilDaggersInfo.Web.Server.Domain.Admin.Repositories;
 using DevilDaggersInfo.Web.Server.Domain.Services;
 using Microsoft.AspNetCore.Authorization;
 
@@ -11,12 +11,14 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 public class UsersController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
+	private readonly UserRepository _userRepository;
 	private readonly IUserService _userService;
 	private readonly ILogger<UsersController> _logger;
 
-	public UsersController(ApplicationDbContext dbContext, IUserService userService, ILogger<UsersController> logger)
+	public UsersController(ApplicationDbContext dbContext, UserRepository userRepository, IUserService userService, ILogger<UsersController> logger)
 	{
 		_dbContext = dbContext;
+		_userRepository = userRepository;
 		_userService = userService;
 		_logger = logger;
 	}
@@ -24,37 +26,15 @@ public class UsersController : ControllerBase
 	[HttpGet]
 	[Authorize(Roles = Roles.Players)]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	public ActionResult<List<GetUser>> GetUsers()
-	{
-		List<UserEntity> users = _dbContext.Users
-			.AsNoTracking()
-			.Include(u => u.UserRoles!)
-				.ThenInclude(ur => ur.Role)
-			.Include(u => u.Player)
-			.OrderBy(u => u.Id)
-			.ToList();
-
-		return users.ConvertAll(u => u.ToGetUser());
-	}
+	public async Task<ActionResult<List<GetUser>>> GetUsers()
+		=> await _userRepository.GetUsersAsync();
 
 	[HttpGet("{id}")]
 	[Authorize(Roles = Roles.Players)]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public ActionResult<GetUser> GetUserById(int id)
-	{
-		UserEntity? user = _dbContext.Users
-			.AsNoTracking()
-			.Include(u => u.UserRoles!)
-				.ThenInclude(ur => ur.Role)
-			.Include(u => u.Player)
-			.FirstOrDefault(u => u.Id == id);
-
-		if (user == null)
-			return NotFound();
-
-		return user.ToGetUser();
-	}
+	public async Task<ActionResult<GetUser>> GetUserById(int id)
+		=> await _userRepository.GetUserAsync(id);
 
 	[HttpPatch("{id}/toggle-role")]
 	[Authorize(Roles = Roles.Admin)]
