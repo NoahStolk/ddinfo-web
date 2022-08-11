@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 
-namespace DevilDaggersInfo.Web.Server.Domain.Commands.Players;
+namespace DevilDaggersInfo.Web.Server.Domain.Admin.Commands.Players;
 
 public record AddPlayer
 {

@@ -31,7 +31,7 @@
     <ProjectReference Include="..\..\api\DevilDaggersInfo.Api.DdstatsRust\DevilDaggersInfo.Api.DdstatsRust.csproj" />
     <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Encryption\DevilDaggersInfo.Core.Encryption.csproj" />
     <ProjectReference Include="..\..\web-client\DevilDaggersInfo.Web.Client\DevilDaggersInfo.Web.Client.csproj" />
-    <ProjectReference Include="..\DevilDaggersInfo.Web.Server.Domain\DevilDaggersInfo.Web.Server.Domain.csproj" />
+    <ProjectReference Include="..\DevilDaggersInfo.Web.Server.Domain.Admin\DevilDaggersInfo.Web.Server.Domain.Admin.csproj" />
   </ItemGroup>
 
 </Project>

@@ -4,8 +4,8 @@ using DevilDaggersInfo.Web.Client;
 using DevilDaggersInfo.Web.Core.Claims;
 using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Admin;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Admin;
+using DevilDaggersInfo.Web.Server.Domain.Admin.Services;
 using DevilDaggersInfo.Web.Server.Domain.Extensions;
-using DevilDaggersInfo.Web.Server.Domain.Services;
 using Microsoft.AspNetCore.Authorization;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
@@ -113,7 +113,7 @@ public class PlayersController : ControllerBase
 	[Authorize(Roles = Roles.Players)]
 	public async Task<ActionResult> AddPlayer(AddPlayer addPlayer)
 	{
-		await _playerService.AddPlayerAsync(new Domain.Commands.Players.AddPlayer
+		await _playerService.AddPlayerAsync(new Domain.Admin.Commands.Players.AddPlayer
 		{
 			Id = addPlayer.Id,
 			ModIds = addPlayer.ModIds,
@@ -148,7 +148,7 @@ public class PlayersController : ControllerBase
 	[Authorize(Roles = Roles.Players)]
 	public async Task<ActionResult> EditPlayerById(int id, EditPlayer editPlayer)
 	{
-		await _playerService.EditPlayerAsync(new Domain.Commands.Players.EditPlayer
+		await _playerService.EditPlayerAsync(new Domain.Admin.Commands.Players.EditPlayer
 		{
 			Id = id,
 			BanDescription = editPlayer.BanDescription,

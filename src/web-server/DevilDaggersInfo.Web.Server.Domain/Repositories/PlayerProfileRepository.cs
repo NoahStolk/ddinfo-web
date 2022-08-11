@@ -8,11 +8,11 @@ using System.Security.Claims;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Repositories;
 
-public class PlayerRepository
+public class PlayerProfileRepository
 {
 	private readonly ApplicationDbContext _dbContext;
 
-	public PlayerRepository(ApplicationDbContext dbContext)
+	public PlayerProfileRepository(ApplicationDbContext dbContext)
 	{
 		_dbContext = dbContext;
 	}

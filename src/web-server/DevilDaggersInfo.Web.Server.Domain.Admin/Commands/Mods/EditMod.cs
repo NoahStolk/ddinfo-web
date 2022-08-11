@@ -1,6 +1,6 @@
-using DevilDaggersInfo.Web.Server.Domain.Commands.Mods.Models;
+using DevilDaggersInfo.Web.Server.Domain.Admin.Commands.Mods.Models;
 
-namespace DevilDaggersInfo.Web.Server.Domain.Commands.Mods;
+namespace DevilDaggersInfo.Web.Server.Domain.Admin.Commands.Mods;
 
 public record EditMod
 {

@@ -1,7 +1,7 @@
-using DevilDaggersInfo.Web.Server.Domain.Commands.CustomLeaderboards.Models;
+using DevilDaggersInfo.Web.Server.Domain.Admin.Commands.CustomLeaderboards.Models;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 
-namespace DevilDaggersInfo.Web.Server.Domain.Commands.CustomLeaderboards;
+namespace DevilDaggersInfo.Web.Server.Domain.Admin.Commands.CustomLeaderboards;
 
 public record EditCustomLeaderboard
 {

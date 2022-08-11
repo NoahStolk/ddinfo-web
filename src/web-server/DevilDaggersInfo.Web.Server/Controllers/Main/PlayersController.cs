@@ -20,16 +20,16 @@ public class PlayersController : ControllerBase
 	private readonly ApplicationDbContext _dbContext;
 	private readonly IFileSystemService _fileSystemService;
 	private readonly LeaderboardHistoryCache _leaderboardHistoryCache;
-	private readonly PlayerService _playerService;
-	private readonly PlayerRepository _playerRepository;
+	private readonly PlayerProfileService _profileService;
+	private readonly PlayerProfileRepository _profileRepository;
 
-	public PlayersController(ApplicationDbContext dbContext, IFileSystemService fileSystemService, LeaderboardHistoryCache leaderboardHistoryCache, PlayerService playerService, PlayerRepository playerRepository)
+	public PlayersController(ApplicationDbContext dbContext, IFileSystemService fileSystemService, LeaderboardHistoryCache leaderboardHistoryCache, PlayerProfileService profileService, PlayerProfileRepository profileRepository)
 	{
 		_dbContext = dbContext;
 		_fileSystemService = fileSystemService;
 		_leaderboardHistoryCache = leaderboardHistoryCache;
-		_playerService = playerService;
-		_playerRepository = playerRepository;
+		_profileService = profileService;
+		_profileRepository = profileRepository;
 	}
 
 	[HttpGet("leaderboard")]
@@ -270,7 +270,7 @@ public class PlayersController : ControllerBase
 	{
 		try
 		{
-			PlayerProfile playerProfile = await _playerRepository.GetProfileAsync(User, id);
+			PlayerProfile playerProfile = await _profileRepository.GetProfileAsync(User, id);
 			return playerProfile.ToMainApi();
 		}
 		catch (UnauthorizedAccessException)
@@ -290,10 +290,10 @@ public class PlayersController : ControllerBase
 	{
 		try
 		{
-			await _playerService.UpdateProfileAsync(User, id, editPlayerProfile.ToDomain());
+			await _profileService.UpdateProfileAsync(User, id, editPlayerProfile.ToDomain());
 			return Ok();
 		}
-		catch (UnauthorizedAccessException)
+		catch (UnauthorizedAccessException) // TODO: Use status code exception.
 		{
 			return Unauthorized();
 		}
