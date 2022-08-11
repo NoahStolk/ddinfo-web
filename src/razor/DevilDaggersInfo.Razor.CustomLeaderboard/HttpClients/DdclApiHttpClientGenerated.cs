@@ -11,6 +11,7 @@ using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
 using DevilDaggersInfo.Api.Ddcl.ProcessMemory;
 using DevilDaggersInfo.Api.Ddcl.Spawnsets;
 using DevilDaggersInfo.Api.Ddcl.Tools;
+using DevilDaggersInfo.Types.Web;
 using System.Net.Http.Json;
 
 namespace DevilDaggersInfo.Razor.CustomLeaderboard.HttpClients;

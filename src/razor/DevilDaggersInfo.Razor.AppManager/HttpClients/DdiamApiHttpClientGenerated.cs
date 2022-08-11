@@ -7,6 +7,7 @@
 #nullable enable
 
 using DevilDaggersInfo.Api.Ddiam;
+using DevilDaggersInfo.Types.Web;
 using System.Net.Http.Json;
 
 namespace DevilDaggersInfo.Razor.AppManager.HttpClients;

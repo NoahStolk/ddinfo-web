@@ -1,10 +1,10 @@
 using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Core.Spawnset.Enums;
+using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Server.Domain.Admin.Commands.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.Domain.Admin.Commands.CustomLeaderboards.Models;
 using DevilDaggersInfo.Web.Server.Domain.Admin.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
-using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Extensions;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;

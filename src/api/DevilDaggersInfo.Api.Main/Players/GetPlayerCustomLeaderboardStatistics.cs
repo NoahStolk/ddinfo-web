@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Api.Main.CustomLeaderboards;
+using DevilDaggersInfo.Types.Web;
 
 namespace DevilDaggersInfo.Api.Main.Players;
 

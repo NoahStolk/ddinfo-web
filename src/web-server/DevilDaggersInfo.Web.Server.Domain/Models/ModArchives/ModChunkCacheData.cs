@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Core.Asset.Enums;
+using DevilDaggersInfo.Types.Core;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;
 

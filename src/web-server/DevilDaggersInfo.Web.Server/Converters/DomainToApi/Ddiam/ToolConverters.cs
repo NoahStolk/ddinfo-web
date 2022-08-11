@@ -1,5 +1,5 @@
 using DevilDaggersInfo.Common.Exceptions;
-using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
+using DevilDaggersInfo.Types.Web;
 
 namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Ddiam;
 

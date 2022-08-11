@@ -2,6 +2,7 @@ using DevilDaggersInfo.Api.Admin.Mods;
 using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Core.Mod;
 using DevilDaggersInfo.Core.Mod.Enums;
+using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Server.Domain.Admin.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
@@ -47,7 +48,7 @@ public class ModService
 
 		ModEntity mod = new()
 		{
-			ModTypes = addMod.ModTypes?.ToFlagEnum<Entities.Enums.ModTypes>() ?? Entities.Enums.ModTypes.None,
+			ModTypes = addMod.ModTypes?.ToFlagEnum<ModTypes>() ?? ModTypes.None,
 			HtmlDescription = addMod.HtmlDescription,
 			IsHidden = addMod.IsHidden,
 			LastUpdated = DateTime.UtcNow,
@@ -95,7 +96,7 @@ public class ModService
 
 		_modScreenshotProcessor.ProcessModScreenshotUpload(editMod.Name, editMod.Screenshots);
 
-		mod.ModTypes = editMod.ModTypes?.ToFlagEnum<Entities.Enums.ModTypes>() ?? Entities.Enums.ModTypes.None;
+		mod.ModTypes = editMod.ModTypes?.ToFlagEnum<ModTypes>() ?? ModTypes.None;
 		mod.HtmlDescription = editMod.HtmlDescription;
 		mod.IsHidden = editMod.IsHidden;
 		mod.Name = editMod.Name;

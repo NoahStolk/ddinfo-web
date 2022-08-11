@@ -5,6 +5,7 @@ namespace DevilDaggersInfo.Tool.GenerateClient.Generators;
 
 public class HttpClientSourceGenerator
 {
+	// TODO: Use """ strings.
 	private const string _usings = $"%{nameof(_usings)}%";
 	private const string _namespace = $"%{nameof(_namespace)}%";
 	private const string _className = $"%{nameof(_className)}%";
@@ -43,6 +44,7 @@ public partial class {_className}
 	public void Execute()
 	{
 		ApiHttpClientContext apiHttpClientContext = new();
+		apiHttpClientContext.AddUsings("DevilDaggersInfo.Types.Web");
 		apiHttpClientContext.AddUsings("System.Net.Http.Json");
 		apiHttpClientContext.AddEndpoints(_controllersSubDirectory);
 

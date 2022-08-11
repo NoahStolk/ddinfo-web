@@ -4,6 +4,7 @@ using DevilDaggersInfo.Api.Ddcl.ProcessMemory;
 using DevilDaggersInfo.Api.Ddcl.Tools;
 using DevilDaggersInfo.Razor.CustomLeaderboard.HttpClients;
 using DevilDaggersInfo.Razor.CustomLeaderboard.Models;
+using DevilDaggersInfo.Types.Web;
 using Microsoft.Extensions.Logging;
 using System.Net;
 using System.Net.Http.Json;

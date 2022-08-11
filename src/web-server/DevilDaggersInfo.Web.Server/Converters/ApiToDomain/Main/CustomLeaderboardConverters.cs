@@ -1,5 +1,4 @@
 using DevilDaggersInfo.Common.Exceptions;
-using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 using MainApi = DevilDaggersInfo.Api.Main.CustomLeaderboards;
 
@@ -7,18 +6,6 @@ namespace DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Main;
 
 public static class CustomLeaderboardConverters
 {
-	// TODO: Use better enums (static members) instead of default integer enums.
-	public static CustomLeaderboardCategory ToDomain(this MainApi.CustomLeaderboardCategory customLeaderboardCategory) => customLeaderboardCategory switch
-	{
-		MainApi.CustomLeaderboardCategory.Survival => CustomLeaderboardCategory.Survival,
-		MainApi.CustomLeaderboardCategory.TimeAttack => CustomLeaderboardCategory.TimeAttack,
-		MainApi.CustomLeaderboardCategory.Speedrun => CustomLeaderboardCategory.Speedrun,
-		MainApi.CustomLeaderboardCategory.Race => CustomLeaderboardCategory.Race,
-		MainApi.CustomLeaderboardCategory.Pacifist => CustomLeaderboardCategory.Pacifist,
-		MainApi.CustomLeaderboardCategory.RaceNoShooting => CustomLeaderboardCategory.RaceNoShooting,
-		_ => throw new InvalidEnumConversionException(customLeaderboardCategory),
-	};
-
 	public static CustomLeaderboardSorting ToDomain(this MainApi.CustomLeaderboardSorting customLeaderboardSorting) => customLeaderboardSorting switch
 	{
 		MainApi.CustomLeaderboardSorting.SpawnsetName => CustomLeaderboardSorting.SpawnsetName,

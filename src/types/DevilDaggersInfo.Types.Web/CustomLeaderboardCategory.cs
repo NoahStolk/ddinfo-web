@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Api.Main.CustomLeaderboards;
+namespace DevilDaggersInfo.Types.Web;
 
 public enum CustomLeaderboardCategory
 {

@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Api.Main.Donations;
+using DevilDaggersInfo.Types.Web;
 
 namespace DevilDaggersInfo.Web.Client.Extensions;
 

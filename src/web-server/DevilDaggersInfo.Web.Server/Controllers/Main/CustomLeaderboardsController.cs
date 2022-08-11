@@ -1,5 +1,6 @@
 using DevilDaggersInfo.Api.Main;
 using DevilDaggersInfo.Api.Main.CustomLeaderboards;
+using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Client;
 using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Main;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
@@ -33,7 +34,7 @@ public class CustomLeaderboardsController : ControllerBase
 		bool ascending = false)
 	{
 		Domain.Models.Page<Model.CustomLeaderboardOverview> cls = await _customLeaderboardRepository.GetCustomLeaderboardOverviewsAsync(
-			category: category.ToDomain(),
+			category: category,
 			spawnsetFilter: spawnsetFilter,
 			authorFilter: authorFilter,
 			pageIndex: pageIndex,
@@ -54,7 +55,7 @@ public class CustomLeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult<GetGlobalCustomLeaderboard>> GetGlobalCustomLeaderboardForCategory([Required] CustomLeaderboardCategory category)
 	{
-		Model.GlobalCustomLeaderboard globalCustomLeaderboard = await _customLeaderboardRepository.GetGlobalCustomLeaderboardAsync(category.ToDomain());
+		Model.GlobalCustomLeaderboard globalCustomLeaderboard = await _customLeaderboardRepository.GetGlobalCustomLeaderboardAsync(category);
 		return new GetGlobalCustomLeaderboard
 		{
 			Entries = globalCustomLeaderboard.Entries
@@ -93,10 +94,10 @@ public class CustomLeaderboardsController : ControllerBase
 		Model.CustomLeaderboardsTotalData totalData = await _customLeaderboardRepository.GetCustomLeaderboardsTotalDataAsync();
 		return new GetTotalCustomLeaderboardData
 		{
-			LeaderboardsPerCategory = totalData.LeaderboardsPerCategory.ToDictionary(kvp => kvp.Key.ToMainApi(), kvp => kvp.Value),
-			PlayersPerCategory = totalData.PlayersPerCategory.ToDictionary(kvp => kvp.Key.ToMainApi(), kvp => kvp.Value),
-			ScoresPerCategory = totalData.ScoresPerCategory.ToDictionary(kvp => kvp.Key.ToMainApi(), kvp => kvp.Value),
-			SubmitsPerCategory = totalData.SubmitsPerCategory.ToDictionary(kvp => kvp.Key.ToMainApi(), kvp => kvp.Value),
+			LeaderboardsPerCategory = totalData.LeaderboardsPerCategory.ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
+			PlayersPerCategory = totalData.PlayersPerCategory.ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
+			ScoresPerCategory = totalData.ScoresPerCategory.ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
+			SubmitsPerCategory = totalData.SubmitsPerCategory.ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
 			TotalPlayers = totalData.TotalPlayers,
 		};
 	}

@@ -1,5 +1,5 @@
 using DevilDaggersInfo.Common.Exceptions;
-using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
+using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Server.Domain.Extensions;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 using DdclApi = DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
@@ -10,7 +10,7 @@ public static class CustomLeaderboardConverters
 {
 	public static DdclApi.GetUploadSuccess ToDdclApi(this UploadResponse uploadResponse) => new()
 	{
-		Category = uploadResponse.Leaderboard.Category.ToDdclApi(),
+		Category = uploadResponse.Leaderboard.Category,
 		DaggersFiredState = uploadResponse.DaggersFiredState.ToDdclApi(),
 		DaggersHitState = uploadResponse.DaggersHitState.ToDdclApi(),
 		EnemiesAliveState = uploadResponse.EnemiesAliveState.ToDdclApi(),
@@ -38,7 +38,7 @@ public static class CustomLeaderboardConverters
 
 	public static DdclApi.GetCustomLeaderboard ToDdclApi(this SortedCustomLeaderboard sortedCustomLeaderboard) => new()
 	{
-		Category = sortedCustomLeaderboard.Category.ToDdclApi(),
+		Category = sortedCustomLeaderboard.Category,
 		Daggers = sortedCustomLeaderboard.Daggers?.ToDdclApi(),
 		IsAscending = sortedCustomLeaderboard.Category.IsAscending(),
 		SortedEntries = sortedCustomLeaderboard.CustomEntries.ConvertAll(ce => ce.ToDdclApi()),
@@ -47,7 +47,7 @@ public static class CustomLeaderboardConverters
 
 	public static DdclApi.GetCustomLeaderboardForOverview ToDdclApi(this CustomLeaderboardOverview customLeaderboard) => new()
 	{
-		Category = customLeaderboard.Category.ToDdclApi(),
+		Category = customLeaderboard.Category,
 		Daggers = customLeaderboard.Daggers?.ToDdclApi(),
 		PlayerCount = customLeaderboard.PlayerCount,
 		SelectedPlayerStats = customLeaderboard.SelectedPlayerStats?.ToDdclApi(),
@@ -59,7 +59,7 @@ public static class CustomLeaderboardConverters
 
 	private static DdclApi.GetCustomLeaderboardDdcl ToDdclApi(this CustomLeaderboardSummary customLeaderboard) => new()
 	{
-		Category = customLeaderboard.Category.ToDdclApi(),
+		Category = customLeaderboard.Category,
 		Daggers = customLeaderboard.Daggers?.ToDdclApi(),
 		IsAscending = customLeaderboard.Category.IsAscending(),
 		SpawnsetName = customLeaderboard.SpawnsetName,
@@ -85,17 +85,6 @@ public static class CustomLeaderboardConverters
 	{
 		Dagger = customLeaderboardOverviewWorldRecord.Dagger.ToDdclApi(),
 		Time = customLeaderboardOverviewWorldRecord.Time.ToSecondsTime(),
-	};
-
-	public static DdclApi.CustomLeaderboardCategory ToDdclApi(this CustomLeaderboardCategory customLeaderboardCategory) => customLeaderboardCategory switch
-	{
-		CustomLeaderboardCategory.Survival => DdclApi.CustomLeaderboardCategory.Survival,
-		CustomLeaderboardCategory.TimeAttack => DdclApi.CustomLeaderboardCategory.TimeAttack,
-		CustomLeaderboardCategory.Speedrun => DdclApi.CustomLeaderboardCategory.Speedrun,
-		CustomLeaderboardCategory.Race => DdclApi.CustomLeaderboardCategory.Race,
-		CustomLeaderboardCategory.Pacifist => DdclApi.CustomLeaderboardCategory.Pacifist,
-		CustomLeaderboardCategory.RaceNoShooting => DdclApi.CustomLeaderboardCategory.RaceNoShooting,
-		_ => throw new InvalidEnumConversionException(customLeaderboardCategory),
 	};
 
 	private static DdclApi.SubmissionType ToDdclApi(this SubmissionType submissionType) => submissionType switch

@@ -1,5 +1,3 @@
-using DevilDaggersInfo.Common.Exceptions;
-using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;
 using MainApi = DevilDaggersInfo.Api.Main.Mods;
 
@@ -14,7 +12,7 @@ public static class ModConverters
 		Id = mod.Id,
 		IsHosted = modFileSystemData.ModArchive != null,
 		LastUpdated = mod.LastUpdated,
-		ModTypes = (modFileSystemData.ModArchive?.GetModTypes() ?? mod.ModTypes).ToMainApi(),
+		ModTypes = modFileSystemData.ModArchive?.GetModTypes() ?? mod.ModTypes,
 		Name = mod.Name,
 	};
 
@@ -29,14 +27,14 @@ public static class ModConverters
 		{
 			Binaries = modFileSystemData.ModArchive.Binaries.ConvertAll(b => new MainApi.GetModBinary
 			{
-				ModBinaryType = b.ModBinaryType.ToMainApi(),
+				ModBinaryType = b.ModBinaryType,
 				Name = b.Name,
 				Size = b.Size,
 				Assets = b.Chunks.ConvertAll(c => new MainApi.GetModAsset
 				{
 					Name = c.Name,
 					Size = c.Size,
-					Type = c.AssetType.ToMainApi(),
+					Type = c.AssetType,
 					IsProhibited = c.IsProhibited,
 				}),
 				ContainsProhibitedAssets = b.ContainsProhibitedAssets(),
@@ -51,30 +49,10 @@ public static class ModConverters
 			FileSize = modFileSystemData.ModArchive.FileSize,
 			FileSizeExtracted = modFileSystemData.ModArchive.FileSizeExtracted,
 		},
-		ModTypes = (modFileSystemData.ModArchive?.GetModTypes() ?? mod.ModTypes).ToMainApi(),
+		ModTypes = modFileSystemData.ModArchive?.GetModTypes() ?? mod.ModTypes,
 		Name = mod.Name,
 		ScreenshotFileNames = modFileSystemData?.ScreenshotFileNames,
 		TrailerUrl = mod.TrailerUrl,
 		Url = mod.Url,
-	};
-
-	private static MainApi.ModBinaryType ToMainApi(this ModBinaryType modBinaryType) => modBinaryType switch
-	{
-		ModBinaryType.Audio => MainApi.ModBinaryType.Audio,
-		ModBinaryType.Dd => MainApi.ModBinaryType.Dd,
-		_ => throw new InvalidEnumConversionException(modBinaryType),
-	};
-
-	// TODO: Remove cast.
-	private static MainApi.ModTypes ToMainApi(this ModTypes modTypes) => (MainApi.ModTypes)modTypes;
-
-	private static MainApi.AssetType ToMainApi(this AssetType assetType) => assetType switch
-	{
-		AssetType.ObjectBinding => MainApi.AssetType.ObjectBinding,
-		AssetType.Shader => MainApi.AssetType.Shader,
-		AssetType.Mesh => MainApi.AssetType.Mesh,
-		AssetType.Audio => MainApi.AssetType.Audio,
-		AssetType.Texture => MainApi.AssetType.Texture,
-		_ => throw new InvalidEnumConversionException(assetType),
 	};
 }

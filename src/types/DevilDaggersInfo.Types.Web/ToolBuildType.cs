@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Api.Ddcl.Tools;
+namespace DevilDaggersInfo.Types.Web;
 
 public enum ToolBuildType : byte
 {

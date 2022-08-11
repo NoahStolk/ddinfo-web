@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Api.Main.Donations;
+namespace DevilDaggersInfo.Types.Web;
 
 public enum Currency
 {

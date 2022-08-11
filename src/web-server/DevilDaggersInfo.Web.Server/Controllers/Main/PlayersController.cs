@@ -1,7 +1,7 @@
 using DevilDaggersInfo.Api.Main.Players;
+using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Main;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
-using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardHistory;
@@ -41,7 +41,7 @@ public class PlayersController : ControllerBase
 			.Select(p => new GetPlayerForLeaderboard
 			{
 				Id = p.Id,
-				BanType = p.BanType.ToMainApi(),
+				BanType = p.BanType,
 				BanDescription = p.BanDescription,
 				BanResponsibleId = p.BanResponsibleId,
 				CountryCode = p.CountryCode,
@@ -55,7 +55,7 @@ public class PlayersController : ControllerBase
 	{
 		List<PlayerEntity> players = _dbContext.Players
 			.AsNoTracking()
-			.Where(p => p.BanType == Domain.Entities.Enums.BanType.NotBanned && !p.HideSettings)
+			.Where(p => p.BanType == BanType.NotBanned && !p.HideSettings)
 			.ToList();
 
 		// Note; cannot evaluate HasSettings() against database (IQueryable).
@@ -244,7 +244,7 @@ public class PlayersController : ControllerBase
 
 			stats.Add(new()
 			{
-				CustomLeaderboardCategory = category.ToMainApi(),
+				CustomLeaderboardCategory = category,
 				LeviathanDaggerCount = leviathanDaggers,
 				DevilDaggerCount = devilDaggers,
 				GoldenDaggerCount = goldenDaggers,

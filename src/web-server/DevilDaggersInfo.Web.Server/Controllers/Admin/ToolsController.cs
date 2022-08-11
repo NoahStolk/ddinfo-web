@@ -23,7 +23,7 @@ public class ToolsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult> AddDistribution(AddDistribution distribution)
 	{
-		await _toolService.AddDistribution(distribution.Name, distribution.PublishMethod.ToDomain(), distribution.BuildType.ToDomain(), distribution.Version, distribution.ZipFileContents);
+		await _toolService.AddDistribution(distribution.Name, distribution.PublishMethod, distribution.BuildType, distribution.Version, distribution.ZipFileContents);
 		return Ok();
 	}
 }

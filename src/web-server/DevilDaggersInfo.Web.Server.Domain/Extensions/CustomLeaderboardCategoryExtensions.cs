@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Core.Spawnset.Enums;
-using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
+using DevilDaggersInfo.Types.Web;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Extensions;
 

@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Api.Ddcl.Tools;
+using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Ddcl;
 using DevilDaggersInfo.Web.Server.Domain.Models.Tools;
 using DevilDaggersInfo.Web.Server.Domain.Services;

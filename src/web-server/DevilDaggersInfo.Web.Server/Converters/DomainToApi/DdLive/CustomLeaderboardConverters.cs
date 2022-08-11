@@ -1,5 +1,5 @@
 using DevilDaggersInfo.Common.Exceptions;
-using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
+using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 using DdLiveApi = DevilDaggersInfo.Api.DdLive.CustomLeaderboards;
 
@@ -18,7 +18,7 @@ public static class CustomLeaderboardConverters
 		DateLastPlayed = customLeaderboard.DateLastPlayed,
 		SubmitCount = customLeaderboard.TotalRunsSubmitted,
 		PlayerCount = customLeaderboard.PlayerCount,
-		Category = customLeaderboard.Category.ToDdLiveApi(),
+		Category = customLeaderboard.Category,
 		TopPlayerId = customLeaderboard.WorldRecord?.PlayerId,
 		TopPlayerName = customLeaderboard.WorldRecord?.PlayerName,
 		WorldRecord = customLeaderboard.WorldRecord?.Time.ToSecondsTime(),
@@ -34,7 +34,7 @@ public static class CustomLeaderboardConverters
 		Daggers = customLeaderboard.Daggers?.ToGetCustomLeaderboardDaggers(),
 		DateCreated = customLeaderboard.DateCreated,
 		SubmitCount = customLeaderboard.TotalRunsSubmitted,
-		Category = customLeaderboard.Category.ToDdLiveApi(),
+		Category = customLeaderboard.Category,
 		IsFeatured = customLeaderboard.Daggers != null,
 		DateLastPlayed = customLeaderboard.DateLastPlayed,
 		CustomEntries = customLeaderboard.CustomEntries.ConvertAll(ce => ce.ToGetCustomEntryDdLive(customEntryReplayIds.Contains(ce.Id))),
@@ -76,17 +76,6 @@ public static class CustomLeaderboardConverters
 		CustomLeaderboardDagger = customEntry.CustomLeaderboardDagger.ToDdLiveApi(),
 		HasGraphs = customEntry.HasGraphs,
 		HasReplay = hasReplay,
-	};
-
-	private static DdLiveApi.CustomLeaderboardCategory ToDdLiveApi(this CustomLeaderboardCategory customLeaderboardCategory) => customLeaderboardCategory switch
-	{
-		CustomLeaderboardCategory.Survival => DdLiveApi.CustomLeaderboardCategory.Survival,
-		CustomLeaderboardCategory.TimeAttack => DdLiveApi.CustomLeaderboardCategory.TimeAttack,
-		CustomLeaderboardCategory.Speedrun => DdLiveApi.CustomLeaderboardCategory.Speedrun,
-		CustomLeaderboardCategory.Race => DdLiveApi.CustomLeaderboardCategory.Race,
-		CustomLeaderboardCategory.Pacifist => DdLiveApi.CustomLeaderboardCategory.Pacifist,
-		CustomLeaderboardCategory.RaceNoShooting => DdLiveApi.CustomLeaderboardCategory.RaceNoShooting,
-		_ => throw new InvalidEnumConversionException(customLeaderboardCategory),
 	};
 
 	private static DdLiveApi.CustomLeaderboardDagger? ToDdLiveApi(this CustomLeaderboardDagger? customLeaderboardDagger) => customLeaderboardDagger switch

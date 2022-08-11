@@ -1,5 +1,5 @@
 using DevilDaggersInfo.Common.Exceptions;
-using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
+using DevilDaggersInfo.Types.Core;
 using DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;
 using DdaeApi = DevilDaggersInfo.Api.Ddae.Mods;
 
@@ -26,7 +26,7 @@ public static class ModConverters
 			FileSize = modFileSystemData.ModArchive.FileSize,
 			FileSizeExtracted = modFileSystemData.ModArchive.FileSizeExtracted,
 		},
-		AssetModTypes = (modFileSystemData.ModArchive?.GetModTypes() ?? mod.ModTypes).ToDdaeApi(),
+		AssetModTypes = modFileSystemData.ModArchive?.GetModTypes() ?? mod.ModTypes,
 		Name = mod.Name,
 		ScreenshotFileNames = modFileSystemData.ScreenshotFileNames ?? new(),
 		TrailerUrl = mod.TrailerUrl,
@@ -38,7 +38,4 @@ public static class ModConverters
 		ModBinaryType.Dd => DdaeApi.ModBinaryType.Dd,
 		_ => throw new InvalidEnumConversionException(modBinaryType),
 	};
-
-	// TODO: Remove cast.
-	private static DdaeApi.ModTypes ToDdaeApi(this ModTypes modTypes) => (DdaeApi.ModTypes)modTypes;
 }

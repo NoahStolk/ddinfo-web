@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Api.Admin.Players;
+namespace DevilDaggersInfo.Types.Web;
 
 public enum VerticalSync : byte
 {

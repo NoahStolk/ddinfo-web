@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
+namespace DevilDaggersInfo.Types.Web;
 
 public enum ToolPublishMethod : byte
 {

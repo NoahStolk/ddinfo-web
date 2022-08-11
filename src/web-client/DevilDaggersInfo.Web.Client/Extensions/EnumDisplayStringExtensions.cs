@@ -1,6 +1,7 @@
 using DevilDaggersInfo.Api.Main.CustomLeaderboards;
 using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Core.Spawnset.Enums;
+using DevilDaggersInfo.Types.Web;
 using MainApi = DevilDaggersInfo.Api.Main;
 
 namespace DevilDaggersInfo.Web.Client.Extensions;

@@ -37,6 +37,7 @@
     <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Replay\DevilDaggersInfo.Core.Replay.csproj" />
     <ProjectReference Include="..\..\razor-core\DevilDaggersInfo.Razor.Core.CanvasArena\DevilDaggersInfo.Razor.Core.CanvasArena.csproj" />
     <ProjectReference Include="..\..\razor-core\DevilDaggersInfo.Razor.Core.Components\DevilDaggersInfo.Razor.Core.Components.csproj" />
+    <ProjectReference Include="..\..\types\DevilDaggersInfo.Types.Web\DevilDaggersInfo.Types.Web.csproj" />
   </ItemGroup>
 
 </Project>
