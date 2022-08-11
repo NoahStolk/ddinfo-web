@@ -1,6 +1,6 @@
-using DevilDaggersInfo.Core.Replay.Enums;
 using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Core.Wiki.Structs;
+using DevilDaggersInfo.Types.Core.Replays;
 
 namespace DevilDaggersInfo.Razor.ReplayEditor.Extensions;
 

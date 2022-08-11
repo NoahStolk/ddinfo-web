@@ -1,5 +1,6 @@
 using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Core.Replay.Events.Interfaces;
+using DevilDaggersInfo.Types.Core.Replays;
 
 namespace DevilDaggersInfo.Core.Replay.Events;
 

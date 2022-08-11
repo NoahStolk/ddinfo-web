@@ -4,6 +4,7 @@ using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Core.Spawnset.Extensions;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Data;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Options.LineChart;
+using DevilDaggersInfo.Types.Core.Spawnsets;
 using DevilDaggersInfo.Web.Client.HttpClients;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -97,10 +98,10 @@ public partial class EntryPage
 
 			Upgrade? upgrade = (i switch
 			{
-				HandLevel.Level1 => DevilDaggersInfo.Core.Spawnset.Enums.HandLevel.Level1,
-				HandLevel.Level2 => DevilDaggersInfo.Core.Spawnset.Enums.HandLevel.Level2,
-				HandLevel.Level3 => DevilDaggersInfo.Core.Spawnset.Enums.HandLevel.Level3,
-				HandLevel.Level4 => DevilDaggersInfo.Core.Spawnset.Enums.HandLevel.Level4,
+				HandLevel.Level1 => Types.Core.Spawnsets.HandLevel.Level1,
+				HandLevel.Level2 => Types.Core.Spawnsets.HandLevel.Level2,
+				HandLevel.Level3 => Types.Core.Spawnsets.HandLevel.Level3,
+				HandLevel.Level4 => Types.Core.Spawnsets.HandLevel.Level4,
 				_ => throw new InvalidEnumConversionException(i),
 			}).GetUpgradeByHandLevel();
 			string color = !upgrade.HasValue ? "#fff2" : $"{upgrade.Value.Color.HexCode}08";

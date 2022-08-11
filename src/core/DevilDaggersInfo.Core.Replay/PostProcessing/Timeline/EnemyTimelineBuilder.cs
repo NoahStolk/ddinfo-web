@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Core.Replay.Events.Interfaces;
+using DevilDaggersInfo.Types.Core.Replays;
 
 namespace DevilDaggersInfo.Core.Replay.PostProcessing.Timeline;
 

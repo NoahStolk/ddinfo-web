@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Core.Wiki.Enums;
+using DevilDaggersInfo.Types.Core.Wiki;
 
 namespace DevilDaggersInfo.Web.Client.Pages.Wiki;
 

@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Core.Spawnset.Enums;
+namespace DevilDaggersInfo.Types.Core.Spawnsets;
 
 public enum EnemyType
 {

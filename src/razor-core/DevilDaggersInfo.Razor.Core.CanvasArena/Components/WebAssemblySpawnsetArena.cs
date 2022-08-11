@@ -1,5 +1,5 @@
 using DevilDaggersInfo.Core.Spawnset;
-using DevilDaggersInfo.Core.Spawnset.Enums;
+using DevilDaggersInfo.Types.Core.Spawnsets;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 

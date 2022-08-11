@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Types.Core.Wiki;
+
 namespace DevilDaggersInfo.Core.Wiki.Tests;
 
 [TestClass]

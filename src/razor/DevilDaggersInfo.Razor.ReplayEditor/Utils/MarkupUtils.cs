@@ -1,5 +1,5 @@
-using DevilDaggersInfo.Core.Replay.Enums;
 using DevilDaggersInfo.Razor.ReplayEditor.Extensions;
+using DevilDaggersInfo.Types.Core.Replays;
 using Microsoft.AspNetCore.Components;
 
 namespace DevilDaggersInfo.Razor.ReplayEditor.Utils;

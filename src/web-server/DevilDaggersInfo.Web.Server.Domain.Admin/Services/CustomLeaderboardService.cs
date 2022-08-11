@@ -1,5 +1,5 @@
 using DevilDaggersInfo.Core.Spawnset;
-using DevilDaggersInfo.Core.Spawnset.Enums;
+using DevilDaggersInfo.Types.Core.Spawnsets;
 using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Server.Domain.Admin.Commands.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.Domain.Admin.Commands.CustomLeaderboards.Models;

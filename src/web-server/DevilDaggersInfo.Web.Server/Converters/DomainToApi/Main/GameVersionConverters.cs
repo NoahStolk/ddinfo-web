@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Core.Wiki.Enums;
+using DevilDaggersInfo.Types.Core.Wiki;
 using MainApi = DevilDaggersInfo.Api.Main.GameVersions;
 
 namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;

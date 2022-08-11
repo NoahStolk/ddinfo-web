@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Core.Wiki.Enums;
+namespace DevilDaggersInfo.Types.Core.Wiki;
 
 public enum GameVersion
 {

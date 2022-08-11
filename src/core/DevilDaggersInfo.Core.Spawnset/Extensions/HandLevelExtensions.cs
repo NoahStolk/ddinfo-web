@@ -1,5 +1,7 @@
 using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Core.Wiki.Objects;
+using DevilDaggersInfo.Types.Core.Spawnsets;
+using DevilDaggersInfo.Types.Core.Wiki;
 
 namespace DevilDaggersInfo.Core.Spawnset.Extensions;
 
