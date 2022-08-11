@@ -2,7 +2,6 @@ using DevilDaggersInfo.Api.Admin;
 using DevilDaggersInfo.Api.Admin.Mods;
 using DevilDaggersInfo.Web.Client;
 using DevilDaggersInfo.Web.Core.Claims;
-using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Admin;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Admin;
 using DevilDaggersInfo.Web.Server.Domain.Extensions;
 using DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;
@@ -17,16 +16,12 @@ public class ModsController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
 	private readonly ModArchiveAccessor _modArchiveAccessor;
-	private readonly ModArchiveProcessor _modArchiveProcessor;
-	private readonly ModScreenshotProcessor _modScreenshotProcessor;
 	private readonly ModService _modService;
 
-	public ModsController(ApplicationDbContext dbContext, ModArchiveAccessor modArchiveAccessor, ModArchiveProcessor modArchiveProcessor, ModScreenshotProcessor modScreenshotProcessor, ModService modService)
+	public ModsController(ApplicationDbContext dbContext, ModArchiveAccessor modArchiveAccessor, ModService modService)
 	{
 		_dbContext = dbContext;
 		_modArchiveAccessor = modArchiveAccessor;
-		_modArchiveProcessor = modArchiveProcessor;
-		_modScreenshotProcessor = modScreenshotProcessor;
 		_modService = modService;
 	}
 
@@ -106,43 +101,23 @@ public class ModsController : ControllerBase
 	[Authorize(Roles = Roles.Mods)]
 	public async Task<ActionResult> AddMod(AddMod addMod)
 	{
-		_modService.ValidateName(addMod.Name);
-
-		if (addMod.PlayerIds == null || addMod.PlayerIds.Count == 0)
-			return BadRequest("Mod must have at least one author.");
-
-		if (_dbContext.Mods.Any(m => m.Name == addMod.Name))
-			return BadRequest($"Mod with name '{addMod.Name}' already exists.");
-
-		foreach (int playerId in addMod.PlayerIds)
+		await _modService.AddModAsync(new Domain.Commands.Mods.AddMod
 		{
-			if (!_dbContext.Players.Any(p => p.Id == playerId))
-				return BadRequest($"Player with ID '{playerId}' does not exist.");
-		}
-
-		if (addMod.Binaries.Count > 0)
-			await _modArchiveProcessor.ProcessModBinaryUploadAsync(addMod.Name, _modService.GetBinaryNames(addMod.Binaries.ConvertAll(bd => (bd.Name, bd.Data))));
-
-		if (addMod.Screenshots.Count > 0)
-			_modScreenshotProcessor.ProcessModScreenshotUpload(addMod.Name, addMod.Screenshots);
-
-		ModEntity mod = new()
-		{
-			ModTypes = (addMod.ModTypes?.ToFlagEnum<ModTypes>() ?? ModTypes.None).ToDomain(),
+			Name = addMod.Name,
+			Binaries = addMod.Binaries.ConvertAll(b => new Domain.Commands.Mods.Models.BinaryData
+			{
+				Data = b.Data,
+				Name = b.Name,
+			}),
 			HtmlDescription = addMod.HtmlDescription,
 			IsHidden = addMod.IsHidden,
-			LastUpdated = DateTime.UtcNow,
-			Name = addMod.Name,
+			ModTypes = addMod.ModTypes,
+			PlayerIds = addMod.PlayerIds,
+			Screenshots = addMod.Screenshots,
 			TrailerUrl = addMod.TrailerUrl,
-			Url = addMod.Url ?? string.Empty,
-		};
-		_dbContext.Mods.Add(mod);
-		await _dbContext.SaveChangesAsync(); // Save changes here so PlayerMods entities can be assigned properly.
-
-		UpdatePlayerMods(addMod.PlayerIds ?? new(), mod.Id);
-		await _dbContext.SaveChangesAsync();
-
-		return Ok(mod.Id);
+			Url = addMod.Url,
+		});
+		return Ok();
 	}
 
 	[HttpPut("{id}")]
@@ -152,48 +127,25 @@ public class ModsController : ControllerBase
 	[Authorize(Roles = Roles.Mods)]
 	public async Task<ActionResult> EditModById(int id, EditMod editMod)
 	{
-		_modService.ValidateName(editMod.Name);
-
-		if (editMod.PlayerIds == null || editMod.PlayerIds.Count == 0)
-			return BadRequest("Mod must have at least one author.");
-
-		foreach (int playerId in editMod.PlayerIds)
+		await _modService.EditModAsync(new Domain.Commands.Mods.EditMod
 		{
-			if (!_dbContext.Players.Any(p => p.Id == playerId))
-				return BadRequest($"Player with ID '{playerId}' does not exist.");
-		}
-
-		ModEntity? mod = _dbContext.Mods
-			.Include(m => m.PlayerMods)
-			.FirstOrDefault(m => m.Id == id);
-		if (mod == null)
-			return NotFound();
-
-		if (mod.Name != editMod.Name && _dbContext.Mods.Any(m => m.Name == editMod.Name))
-			return BadRequest($"Mod with name '{editMod.Name}' already exists.");
-
-		bool isUpdated = await _modArchiveProcessor.TransformBinariesInModArchiveAsync(mod.Name, editMod.Name, editMod.BinariesToDelete.ConvertAll(s => BinaryName.Parse(s, mod.Name)), _modService.GetBinaryNames(editMod.Binaries.ConvertAll(bd => (bd.Name, bd.Data))));
-		if (isUpdated)
-			mod.LastUpdated = DateTime.UtcNow;
-
-		_modScreenshotProcessor.MoveScreenshotsDirectory(mod.Name, editMod.Name);
-
-		foreach (string screenshotToDelete in editMod.ScreenshotsToDelete)
-			_modScreenshotProcessor.DeleteScreenshot(editMod.Name, screenshotToDelete);
-
-		_modScreenshotProcessor.ProcessModScreenshotUpload(editMod.Name, editMod.Screenshots);
-
-		mod.ModTypes = (editMod.ModTypes?.ToFlagEnum<ModTypes>() ?? ModTypes.None).ToDomain();
-		mod.HtmlDescription = editMod.HtmlDescription;
-		mod.IsHidden = editMod.IsHidden;
-		mod.Name = editMod.Name;
-		mod.TrailerUrl = editMod.TrailerUrl;
-		mod.Url = editMod.Url ?? string.Empty;
-		await _dbContext.SaveChangesAsync(); // Save changes here so PlayerMods entities can be assigned properly.
-
-		UpdatePlayerMods(editMod.PlayerIds ?? new(), mod.Id);
-		await _dbContext.SaveChangesAsync();
-
+			Binaries = editMod.Binaries.ConvertAll(b => new Domain.Commands.Mods.Models.BinaryData
+			{
+				Data = b.Data,
+				Name = b.Name,
+			}),
+			BinariesToDelete = editMod.BinariesToDelete,
+			HtmlDescription = editMod.HtmlDescription,
+			Id = id,
+			IsHidden = editMod.IsHidden,
+			ModTypes = editMod.ModTypes,
+			Name = editMod.Name,
+			PlayerIds = editMod.PlayerIds,
+			Screenshots = editMod.Screenshots,
+			ScreenshotsToDelete = editMod.ScreenshotsToDelete,
+			TrailerUrl = editMod.TrailerUrl,
+			Url = editMod.Url,
+		});
 		return Ok();
 	}
 
@@ -203,28 +155,7 @@ public class ModsController : ControllerBase
 	[Authorize(Roles = Roles.Mods)]
 	public async Task<ActionResult> DeleteModById(int id)
 	{
-		ModEntity? mod = _dbContext.Mods.FirstOrDefault(m => m.Id == id);
-		if (mod == null)
-			return NotFound();
-
-		_modArchiveProcessor.DeleteModFilesAndClearCache(mod.Name);
-		_modScreenshotProcessor.DeleteScreenshotsDirectory(mod.Name);
-
-		_dbContext.Mods.Remove(mod);
-		await _dbContext.SaveChangesAsync();
-
+		await _modService.DeleteModAsync(id);
 		return Ok();
-	}
-
-	private void UpdatePlayerMods(List<int> playerIds, int modId)
-	{
-		foreach (PlayerModEntity newEntity in playerIds.ConvertAll(pi => new PlayerModEntity { ModId = modId, PlayerId = pi }))
-		{
-			if (!_dbContext.PlayerMods.Any(pam => pam.ModId == newEntity.ModId && pam.PlayerId == newEntity.PlayerId))
-				_dbContext.PlayerMods.Add(newEntity);
-		}
-
-		foreach (PlayerModEntity entityToRemove in _dbContext.PlayerMods.Where(pam => pam.ModId == modId && !playerIds.Contains(pam.PlayerId)))
-			_dbContext.PlayerMods.Remove(entityToRemove);
 	}
 }
