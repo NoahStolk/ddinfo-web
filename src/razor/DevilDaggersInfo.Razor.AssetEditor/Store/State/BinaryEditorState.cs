@@ -3,7 +3,7 @@ using DevilDaggersInfo.Core.Asset;
 using DevilDaggersInfo.Core.Asset.Extensions;
 using DevilDaggersInfo.Core.Mod;
 using DevilDaggersInfo.Razor.AssetEditor.Data;
-using DevilDaggersInfo.Types.Core;
+using DevilDaggersInfo.Types.Core.Assets;
 using System.Runtime.CompilerServices;
 
 namespace DevilDaggersInfo.Razor.AssetEditor.Store.State;

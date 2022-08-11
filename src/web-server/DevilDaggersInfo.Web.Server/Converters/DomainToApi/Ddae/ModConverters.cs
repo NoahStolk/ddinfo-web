@@ -1,5 +1,5 @@
 using DevilDaggersInfo.Common.Exceptions;
-using DevilDaggersInfo.Types.Core;
+using DevilDaggersInfo.Types.Core.Mods;
 using DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;
 using DdaeApi = DevilDaggersInfo.Api.Ddae.Mods;
 

@@ -1,5 +1,5 @@
 using DevilDaggersInfo.Common.Exceptions;
-using DevilDaggersInfo.Types.Core;
+using DevilDaggersInfo.Types.Core.Assets;
 
 namespace DevilDaggersInfo.Core.Mod.FileHandling;
 

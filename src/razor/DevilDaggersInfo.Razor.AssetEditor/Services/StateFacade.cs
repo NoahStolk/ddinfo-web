@@ -2,7 +2,7 @@ using DevilDaggersInfo.App.Core.NativeInterface.Services;
 using DevilDaggersInfo.Core.Mod;
 using DevilDaggersInfo.Core.Mod.Enums;
 using DevilDaggersInfo.Razor.AssetEditor.Store.Features.BinaryEditor.Actions;
-using DevilDaggersInfo.Types.Core;
+using DevilDaggersInfo.Types.Core.Mods;
 using Fluxor;
 
 namespace DevilDaggersInfo.Razor.AssetEditor.Services;
