@@ -1,7 +1,8 @@
+using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using System.Net;
 using System.Runtime.Serialization;
 
-namespace DevilDaggersInfo.Web.Server.Domain.Exceptions;
+namespace DevilDaggersInfo.Web.Server.Domain.Admin.Exceptions;
 
 [Serializable]
 public class AdminDomainException : StatusCodeException
