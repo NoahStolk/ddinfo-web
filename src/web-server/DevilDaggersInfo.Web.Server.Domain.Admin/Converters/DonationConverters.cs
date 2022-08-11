@@ -1,6 +1,4 @@
-using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
-using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using AdminApi = DevilDaggersInfo.Api.Admin.Donations;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Admin.Converters;
@@ -12,7 +10,7 @@ public static class DonationConverters
 		Id = donation.Id,
 		Amount = donation.Amount,
 		ConvertedEuroCentsReceived = donation.ConvertedEuroCentsReceived,
-		Currency = donation.Currency.ToAdminApi(),
+		Currency = donation.Currency,
 		DateReceived = donation.DateReceived,
 		IsRefunded = donation.IsRefunded,
 		Note = donation.Note,
@@ -24,20 +22,9 @@ public static class DonationConverters
 		Id = donation.Id,
 		Amount = donation.Amount,
 		ConvertedEuroCentsReceived = donation.ConvertedEuroCentsReceived,
-		Currency = donation.Currency.ToAdminApi(),
+		Currency = donation.Currency,
 		IsRefunded = donation.IsRefunded,
 		Note = donation.Note,
 		PlayerId = donation.PlayerId,
-	};
-
-	public static AdminApi.Currency ToAdminApi(this Currency currency) => currency switch
-	{
-		Currency.Eur => AdminApi.Currency.Eur,
-		Currency.Usd => AdminApi.Currency.Usd,
-		Currency.Aud => AdminApi.Currency.Aud,
-		Currency.Gbp => AdminApi.Currency.Gbp,
-		Currency.Sgd => AdminApi.Currency.Sgd,
-		Currency.Rub => AdminApi.Currency.Rub,
-		_ => throw new InvalidEnumConversionException(currency),
 	};
 }

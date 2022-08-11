@@ -1,5 +1,3 @@
-using DevilDaggersInfo.Common.Exceptions;
-using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 using AdminApi = DevilDaggersInfo.Api.Admin.CustomLeaderboards;
 
@@ -14,16 +12,5 @@ public static class CustomLeaderboardConverters
 		Golden = addCustomLeaderboardDaggers.Golden.To10thMilliTime(),
 		Devil = addCustomLeaderboardDaggers.Devil.To10thMilliTime(),
 		Leviathan = addCustomLeaderboardDaggers.Leviathan.To10thMilliTime(),
-	};
-
-	public static CustomLeaderboardCategory ToDomain(this AdminApi.CustomLeaderboardCategory customLeaderboardCategory) => customLeaderboardCategory switch
-	{
-		AdminApi.CustomLeaderboardCategory.Survival => CustomLeaderboardCategory.Survival,
-		AdminApi.CustomLeaderboardCategory.TimeAttack => CustomLeaderboardCategory.TimeAttack,
-		AdminApi.CustomLeaderboardCategory.Speedrun => CustomLeaderboardCategory.Speedrun,
-		AdminApi.CustomLeaderboardCategory.Race => CustomLeaderboardCategory.Race,
-		AdminApi.CustomLeaderboardCategory.Pacifist => CustomLeaderboardCategory.Pacifist,
-		AdminApi.CustomLeaderboardCategory.RaceNoShooting => CustomLeaderboardCategory.RaceNoShooting,
-		_ => throw new InvalidEnumConversionException(customLeaderboardCategory),
 	};
 }

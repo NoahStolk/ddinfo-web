@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Types.Core.Mods;
+
 namespace DevilDaggersInfo.Api.Ddae.Mods;
 
 public record GetModBinaryDdae

@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Types.Core.Mods;
+
 namespace DevilDaggersInfo.Core.Mod;
 
 public readonly record struct BinaryName(ModBinaryType BinaryType, string Name)

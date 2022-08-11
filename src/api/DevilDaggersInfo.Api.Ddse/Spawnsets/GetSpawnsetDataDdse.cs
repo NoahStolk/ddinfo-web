@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Types.Core.Spawnsets;
+
 namespace DevilDaggersInfo.Api.Ddse.Spawnsets;
 
 public record GetSpawnsetDataDdse

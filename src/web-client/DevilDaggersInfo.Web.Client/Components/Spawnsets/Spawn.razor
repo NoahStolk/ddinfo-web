@@ -1,7 +1,7 @@
 @using DevilDaggersInfo.Core.Spawnset.Extensions
 @using DevilDaggersInfo.Core.Spawnset.View
-@using DevilDaggersInfo.Core.Spawnset.Enums
-@using DevilDaggersInfo.Core.Wiki.Enums
+@using DevilDaggersInfo.Types.Core.Spawnsets
+@using DevilDaggersInfo.Types.Core.Wiki
 <div class="grid gap-3 grid-cols-5 font-goethe text-lg">
 	<div class="text-right">@SpawnView.Seconds.ToString(StringFormats.TimeFormat)</div>
 	<div style="color: @SpawnView.EnemyType.GetColor(GameVersion).HexCode;">@SpawnView.EnemyType.GetName(GameVersion)</div>

@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Types.Core.Replays;
+
 namespace DevilDaggersInfo.Core.Replay.Extensions;
 
 public static class PrimitiveExtensions

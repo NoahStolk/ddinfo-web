@@ -28,10 +28,8 @@ internal class ApiHttpClientContext
 		foreach (UsingDirectiveSyntax u in root.DescendantNodes().Where(sn => sn.IsKind(SyntaxKind.UsingDirective)).Cast<UsingDirectiveSyntax>().ToList())
 		{
 			string ns = u.Name.ToString();
-			if (!ns.StartsWith("DevilDaggersInfo.Api") || _usings.Contains(ns))
-				continue;
-
-			_usings.Add(ns);
+			if ((ns.StartsWith("DevilDaggersInfo.Api") || ns.StartsWith("DevilDaggersInfo.Types")) && !_usings.Contains(ns))
+				_usings.Add(ns);
 		}
 
 		// Find class.

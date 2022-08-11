@@ -45,7 +45,7 @@ public class CustomLeaderboardsController : ControllerBase
 	{
 		await _customLeaderboardService.AddCustomLeaderboardAsync(new Domain.Admin.Commands.CustomLeaderboards.AddCustomLeaderboard
 		{
-			Category = addCustomLeaderboard.Category.ToDomain(),
+			Category = addCustomLeaderboard.Category,
 			Daggers = new Domain.Admin.Commands.CustomLeaderboards.Models.CustomLeaderboardDaggers
 			{
 				Bronze = addCustomLeaderboard.Daggers.Bronze.To10thMilliTime(),
@@ -68,7 +68,7 @@ public class CustomLeaderboardsController : ControllerBase
 	{
 		await _customLeaderboardService.EditCustomLeaderboardAsync(new Domain.Admin.Commands.CustomLeaderboards.EditCustomLeaderboard
 		{
-			Category = editCustomLeaderboard.Category.ToDomain(),
+			Category = editCustomLeaderboard.Category,
 			Daggers = new Domain.Admin.Commands.CustomLeaderboards.Models.CustomLeaderboardDaggers
 			{
 				Bronze = editCustomLeaderboard.Daggers.Bronze.To10thMilliTime(),

@@ -1,5 +1,5 @@
 using DevilDaggersInfo.Core.Mod;
-using DevilDaggersInfo.Core.Mod.Enums;
+using DevilDaggersInfo.Types.Core.Mods;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;
 using System.IO.Compression;

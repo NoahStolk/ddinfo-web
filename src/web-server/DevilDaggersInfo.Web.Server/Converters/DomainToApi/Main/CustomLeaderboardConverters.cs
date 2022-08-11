@@ -1,5 +1,6 @@
 using DevilDaggersInfo.Common.Exceptions;
-using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
+using DevilDaggersInfo.Types.Core.Spawnsets;
+using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Server.Domain.Extensions;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.Domain.Utils;
@@ -22,7 +23,7 @@ public static class CustomLeaderboardConverters
 		PlayerCount = customLeaderboard.PlayerCount,
 		TopPlayer = customLeaderboard.WorldRecord?.PlayerName,
 		WorldRecord = customLeaderboard.WorldRecord?.Time.ToSecondsTime(),
-		WorldRecordDagger = customLeaderboard.WorldRecord?.Dagger?.ToMainApi(),
+		WorldRecordDagger = customLeaderboard.WorldRecord?.Dagger,
 	};
 
 	public static MainApi.GetCustomLeaderboard ToGetCustomLeaderboard(this SortedCustomLeaderboard customLeaderboard) => new()
@@ -34,7 +35,7 @@ public static class CustomLeaderboardConverters
 		Daggers = customLeaderboard.Daggers?.ToGetCustomLeaderboardDaggers(),
 		DateCreated = customLeaderboard.DateCreated,
 		SubmitCount = customLeaderboard.TotalRunsSubmitted,
-		Category = customLeaderboard.Category.ToMainApi(),
+		Category = customLeaderboard.Category,
 		IsFeatured = customLeaderboard.Daggers != null,
 		DateLastPlayed = customLeaderboard.DateLastPlayed,
 		CustomEntries = customLeaderboard.CustomEntries.ConvertAll(ce => ce.ToGetCustomEntry(customLeaderboard.Category)),
@@ -47,7 +48,7 @@ public static class CustomLeaderboardConverters
 		PlayerId = customEntry.PlayerId,
 		PlayerName = customEntry.PlayerName,
 		CountryCode = customEntry.CountryCode,
-		Client = customEntry.Client.ToMainApi(),
+		Client = customEntry.Client,
 		ClientVersion = customEntry.ClientVersion,
 		DeathType = category.IsTimeAttackOrRace() ? null : customEntry.DeathType,
 		EnemiesAlive = customEntry.EnemiesAlive,
@@ -64,7 +65,7 @@ public static class CustomLeaderboardConverters
 		DaggersHit = customEntry.DaggersHit,
 		SubmitDate = customEntry.SubmitDate,
 		Time = customEntry.Time.ToSecondsTime(),
-		CustomLeaderboardDagger = customEntry.CustomLeaderboardDagger?.ToMainApi(),
+		CustomLeaderboardDagger = customEntry.CustomLeaderboardDagger,
 		HasGraphs = customEntry.HasGraphs,
 	};
 
@@ -102,7 +103,7 @@ public static class CustomLeaderboardConverters
 			DaggersHit = customEntry.DaggersHit,
 			SubmitDate = customEntry.SubmitDate,
 			Time = customEntry.Time.ToSecondsTime(),
-			CustomLeaderboardDagger = customEntry.CustomLeaderboard.GetDaggerFromTime(customEntry.Time)?.ToMainApi(),
+			CustomLeaderboardDagger = customEntry.CustomLeaderboard.GetDaggerFromTime(customEntry.Time),
 
 			GemsCollectedData = GetInt32Arr(customEntryData?.GemsCollectedData),
 			EnemiesKilledData = GetInt32Arr(customEntryData?.EnemiesKilledData),
@@ -151,7 +152,7 @@ public static class CustomLeaderboardConverters
 			GhostpedesKilledData = GetUInt16Arr(customEntryData?.GhostpedesKilledData),
 			SpiderEggsKilledData = GetUInt16Arr(customEntryData?.SpiderEggsKilledData),
 
-			StartingLevel = startingLevel.ToMainApi(),
+			StartingLevel = startingLevel,
 			HasReplay = hasReplay,
 		};
 
@@ -161,33 +162,4 @@ public static class CustomLeaderboardConverters
 		static ushort[]? GetUInt16Arr(byte[]? bytes)
 			=> bytes == null || bytes.Length == 0 ? null : Array.ConvertAll(IntegerArrayCompressor.ExtractData(bytes), i => (ushort)i);
 	}
-
-	public static MainApi.CustomLeaderboardCategory ToMainApi(this CustomLeaderboardCategory customLeaderboardCategory) => customLeaderboardCategory switch
-	{
-		CustomLeaderboardCategory.Survival => MainApi.CustomLeaderboardCategory.Survival,
-		CustomLeaderboardCategory.TimeAttack => MainApi.CustomLeaderboardCategory.TimeAttack,
-		CustomLeaderboardCategory.Speedrun => MainApi.CustomLeaderboardCategory.Speedrun,
-		CustomLeaderboardCategory.Race => MainApi.CustomLeaderboardCategory.Race,
-		CustomLeaderboardCategory.Pacifist => MainApi.CustomLeaderboardCategory.Pacifist,
-		CustomLeaderboardCategory.RaceNoShooting => MainApi.CustomLeaderboardCategory.RaceNoShooting,
-		_ => throw new InvalidEnumConversionException(customLeaderboardCategory),
-	};
-
-	private static MainApi.CustomLeaderboardDagger ToMainApi(this CustomLeaderboardDagger customLeaderboardDagger) => customLeaderboardDagger switch
-	{
-		CustomLeaderboardDagger.Default => MainApi.CustomLeaderboardDagger.Default,
-		CustomLeaderboardDagger.Bronze => MainApi.CustomLeaderboardDagger.Bronze,
-		CustomLeaderboardDagger.Silver => MainApi.CustomLeaderboardDagger.Silver,
-		CustomLeaderboardDagger.Golden => MainApi.CustomLeaderboardDagger.Golden,
-		CustomLeaderboardDagger.Devil => MainApi.CustomLeaderboardDagger.Devil,
-		CustomLeaderboardDagger.Leviathan => MainApi.CustomLeaderboardDagger.Leviathan,
-		_ => throw new InvalidEnumConversionException(customLeaderboardDagger),
-	};
-
-	private static MainApi.CustomLeaderboardsClient ToMainApi(this CustomLeaderboardsClient customLeaderboardsClient) => customLeaderboardsClient switch
-	{
-		CustomLeaderboardsClient.DdstatsRust => MainApi.CustomLeaderboardsClient.DdstatsRust,
-		CustomLeaderboardsClient.DevilDaggersCustomLeaderboards => MainApi.CustomLeaderboardsClient.DevilDaggersCustomLeaderboards,
-		_ => throw new InvalidEnumConversionException(customLeaderboardsClient),
-	};
 }

@@ -1,5 +1,5 @@
-using DevilDaggersInfo.Core.Wiki.Enums;
 using DevilDaggersInfo.Razor.Core.Components;
+using DevilDaggersInfo.Types.Core.Wiki;
 using Microsoft.AspNetCore.Components;
 
 namespace DevilDaggersInfo.Web.Client.Utils;

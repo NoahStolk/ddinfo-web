@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Types.Core.Replays;
 using System.Security.Cryptography;
 using System.Text;
 

@@ -1,5 +1,4 @@
 using DevilDaggersInfo.Api.Main.Donations;
-using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 
@@ -42,7 +41,7 @@ public class DonationsController : ControllerBase
 						{
 							Amount = d.Amount,
 							ConvertedEuroCentsReceived = d.ConvertedEuroCentsReceived,
-							Currency = d.Currency.ToMainApi(),
+							Currency = d.Currency,
 							IsRefunded = d.IsRefunded,
 						})
 						.ToList(),

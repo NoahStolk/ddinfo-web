@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Types.Web;
+
 namespace DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
 
 public record GetCustomLeaderboard

@@ -1,5 +1,5 @@
-using DevilDaggersInfo.Core.Wiki.Enums;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Options.LineChart;
+using DevilDaggersInfo.Types.Core.Wiki;
 
 namespace DevilDaggersInfo.Web.Client.Utils;
 

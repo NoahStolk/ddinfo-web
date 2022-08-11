@@ -1,5 +1,5 @@
 using DevilDaggersInfo.Api.Ddcl.ProcessMemory;
-using DevilDaggersInfo.Api.Ddcl.Tools;
+using DevilDaggersInfo.Types.Web;
 
 namespace DevilDaggersInfo.Razor.CustomLeaderboard.Services;
 

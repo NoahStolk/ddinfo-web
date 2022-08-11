@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Core.Asset.Enums;
+using DevilDaggersInfo.Types.Core.Assets;
 
 namespace DevilDaggersInfo.Razor.AssetEditor.Services;
 

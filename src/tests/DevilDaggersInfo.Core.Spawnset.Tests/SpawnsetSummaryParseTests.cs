@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Types.Core.Spawnsets;
+
 namespace DevilDaggersInfo.Core.Spawnset.Tests;
 
 [TestClass]

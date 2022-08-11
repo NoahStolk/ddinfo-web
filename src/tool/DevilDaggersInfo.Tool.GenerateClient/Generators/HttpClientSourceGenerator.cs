@@ -5,6 +5,7 @@ namespace DevilDaggersInfo.Tool.GenerateClient.Generators;
 
 public class HttpClientSourceGenerator
 {
+	// TODO: Use """ strings.
 	private const string _usings = $"%{nameof(_usings)}%";
 	private const string _namespace = $"%{nameof(_namespace)}%";
 	private const string _className = $"%{nameof(_className)}%";

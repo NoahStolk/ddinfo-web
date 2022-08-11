@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Types.Core.Assets;
+
 namespace DevilDaggersInfo.Api.Main.Mods;
 
 public record GetModAsset

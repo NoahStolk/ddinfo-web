@@ -1,5 +1,4 @@
-using DevilDaggersInfo.Common.Exceptions;
-using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
+using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Server.Domain.Models.Players;
 using MainApi = DevilDaggersInfo.Api.Main.Players;
 
@@ -22,7 +21,7 @@ public static class PlayerConverters
 		UsesHrtf = editPlayerProfile.UsesHrtf,
 		UsesInvertY = editPlayerProfile.UsesInvertY,
 		UsesLegacyAudio = editPlayerProfile.UsesLegacyAudio,
-		VerticalSync = editPlayerProfile.VerticalSync.ToMainApi(),
+		VerticalSync = editPlayerProfile.VerticalSync,
 	};
 
 	public static MainApi.GetPlayer ToGetPlayer(this PlayerEntity player, bool isPublicDonator) => new()
@@ -43,7 +42,7 @@ public static class PlayerConverters
 			UsesLegacyAudio = player.UsesLegacyAudio,
 			UsesHrtf = player.UsesHrtf,
 			UsesInvertY = player.UsesInvertY,
-			VerticalSync = player.VerticalSync.ToMainApi(),
+			VerticalSync = player.VerticalSync,
 		},
 	};
 
@@ -62,27 +61,7 @@ public static class PlayerConverters
 			UsesLegacyAudio = player.UsesLegacyAudio,
 			UsesHrtf = player.UsesHrtf,
 			UsesInvertY = player.UsesInvertY,
-			VerticalSync = player.VerticalSync.ToMainApi(),
+			VerticalSync = player.VerticalSync,
 		},
-	};
-
-	public static MainApi.BanType ToMainApi(this BanType banType) => banType switch
-	{
-		BanType.NotBanned => MainApi.BanType.NotBanned,
-		BanType.Alt => MainApi.BanType.Alt,
-		BanType.Cheater => MainApi.BanType.Cheater,
-		BanType.Boosted => MainApi.BanType.Boosted,
-		BanType.IllegitimateStats => MainApi.BanType.IllegitimateStats,
-		BanType.BlankName => MainApi.BanType.BlankName,
-		_ => throw new InvalidEnumConversionException(banType),
-	};
-
-	public static MainApi.VerticalSync ToMainApi(this VerticalSync verticalSync) => verticalSync switch
-	{
-		VerticalSync.Unknown => MainApi.VerticalSync.Unknown,
-		VerticalSync.Off => MainApi.VerticalSync.Off,
-		VerticalSync.On => MainApi.VerticalSync.On,
-		VerticalSync.Adaptive => MainApi.VerticalSync.Adaptive,
-		_ => throw new InvalidEnumConversionException(verticalSync),
 	};
 }

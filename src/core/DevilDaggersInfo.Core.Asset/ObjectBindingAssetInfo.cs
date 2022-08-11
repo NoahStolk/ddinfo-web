@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Types.Core.Assets;
+
 namespace DevilDaggersInfo.Core.Asset;
 
 public class ObjectBindingAssetInfo : AssetInfo

@@ -1,6 +1,6 @@
-using DevilDaggersInfo.Core.Asset.Enums;
 using DevilDaggersInfo.Core.Mod;
-using DevilDaggersInfo.Core.Mod.Enums;
+using DevilDaggersInfo.Types.Core.Assets;
+using DevilDaggersInfo.Types.Core.Mods;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;
 using DevilDaggersInfo.Web.Server.Domain.Services;

@@ -1,5 +1,5 @@
-using DevilDaggersInfo.Core.Mod.Enums;
 using DevilDaggersInfo.Razor.AssetEditor.Store.State;
+using DevilDaggersInfo.Types.Core.Mods;
 using Fluxor;
 
 namespace DevilDaggersInfo.Razor.AssetEditor.Store.Features.BinaryEditor;

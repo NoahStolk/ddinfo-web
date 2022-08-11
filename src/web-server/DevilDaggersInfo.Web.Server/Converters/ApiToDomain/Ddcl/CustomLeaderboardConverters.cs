@@ -1,7 +1,4 @@
-using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Commands.CustomEntries;
-using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
-using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 using DdclApi = DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Ddcl;
@@ -91,15 +88,4 @@ public static class CustomLeaderboardConverters
 		},
 		replayData: uploadRequest.ReplayData,
 		status: uploadRequest.Status);
-
-	public static CustomLeaderboardCategory ToDomain(this DdclApi.CustomLeaderboardCategory customLeaderboardCategory) => customLeaderboardCategory switch
-	{
-		DdclApi.CustomLeaderboardCategory.Survival => CustomLeaderboardCategory.Survival,
-		DdclApi.CustomLeaderboardCategory.TimeAttack => CustomLeaderboardCategory.TimeAttack,
-		DdclApi.CustomLeaderboardCategory.Speedrun => CustomLeaderboardCategory.Speedrun,
-		DdclApi.CustomLeaderboardCategory.Race => CustomLeaderboardCategory.Race,
-		DdclApi.CustomLeaderboardCategory.Pacifist => CustomLeaderboardCategory.Pacifist,
-		DdclApi.CustomLeaderboardCategory.RaceNoShooting => CustomLeaderboardCategory.RaceNoShooting,
-		_ => throw new InvalidEnumConversionException(customLeaderboardCategory),
-	};
 }

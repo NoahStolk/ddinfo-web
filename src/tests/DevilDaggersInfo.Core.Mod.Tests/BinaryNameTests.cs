@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Types.Core.Mods;
+
 namespace DevilDaggersInfo.Core.Mod.Tests;
 
 [TestClass]

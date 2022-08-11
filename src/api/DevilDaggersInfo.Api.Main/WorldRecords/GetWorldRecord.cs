@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Api.Main.GameVersions;
+using DevilDaggersInfo.Types.Core.Wiki;
 
 namespace DevilDaggersInfo.Api.Main.WorldRecords;
 

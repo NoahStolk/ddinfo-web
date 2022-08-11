@@ -1,5 +1,3 @@
-using DevilDaggersInfo.Common.Exceptions;
-using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Models.Tools;
 using MainApi = DevilDaggersInfo.Api.Main.Tools;
 
@@ -9,7 +7,7 @@ public static class ToolConverters
 {
 	public static MainApi.GetTool ToMainApi(this Tool tool) => new()
 	{
-		Changelog = tool.Changelog?.Select(tv => ToMainApi(tv)).ToList(),
+		Changelog = tool.Changelog?.Select(ToMainApi).ToList(),
 		DisplayName = tool.DisplayName,
 		Name = tool.Name,
 		VersionNumber = tool.VersionNumber,
@@ -32,8 +30,8 @@ public static class ToolConverters
 
 	public static MainApi.GetToolDistribution ToMainApi(this ToolDistribution distribution) => new()
 	{
-		BuildType = distribution.BuildType.ToMainApi(),
-		PublishMethod = distribution.PublishMethod.ToMainApi(),
+		BuildType = distribution.BuildType,
+		PublishMethod = distribution.PublishMethod,
 		VersionNumber = distribution.VersionNumber,
 		FileSize = distribution.FileSize,
 	};
@@ -42,21 +40,5 @@ public static class ToolConverters
 	{
 		Description = change.Description,
 		SubChanges = change.SubChanges?.Select(c => c.ToMainApi()).ToList(),
-	};
-
-	private static MainApi.ToolBuildType ToMainApi(this ToolBuildType buildType) => buildType switch
-	{
-		ToolBuildType.WindowsWpf => MainApi.ToolBuildType.WindowsWpf,
-		ToolBuildType.WindowsConsole => MainApi.ToolBuildType.WindowsConsole,
-		ToolBuildType.WindowsPhotino => MainApi.ToolBuildType.WindowsPhotino,
-		ToolBuildType.LinuxPhotino => MainApi.ToolBuildType.LinuxPhotino,
-		_ => throw new InvalidEnumConversionException(buildType),
-	};
-
-	private static MainApi.ToolPublishMethod ToMainApi(this ToolPublishMethod publishMethod) => publishMethod switch
-	{
-		ToolPublishMethod.Default => MainApi.ToolPublishMethod.Default,
-		ToolPublishMethod.SelfContained => MainApi.ToolPublishMethod.SelfContained,
-		_ => throw new InvalidEnumConversionException(publishMethod),
 	};
 }

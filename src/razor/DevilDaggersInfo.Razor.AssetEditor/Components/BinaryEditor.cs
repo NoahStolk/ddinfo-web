@@ -1,7 +1,7 @@
 using DevilDaggersInfo.App.Core.NativeInterface.Services;
-using DevilDaggersInfo.Core.Mod.Enums;
 using DevilDaggersInfo.Razor.AssetEditor.Pages;
 using DevilDaggersInfo.Razor.AssetEditor.Store.State;
+using DevilDaggersInfo.Types.Core.Mods;
 using Fluxor;
 using Microsoft.AspNetCore.Components;
 

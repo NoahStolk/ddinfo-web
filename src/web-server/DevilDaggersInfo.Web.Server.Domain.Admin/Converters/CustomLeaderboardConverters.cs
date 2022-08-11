@@ -1,7 +1,5 @@
-using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
-using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using AdminApi = DevilDaggersInfo.Api.Admin.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Admin.Converters;
@@ -22,7 +20,7 @@ public static class CustomLeaderboardConverters
 		},
 		IsFeatured = customLeaderboard.IsFeatured,
 		DateCreated = customLeaderboard.DateCreated,
-		Category = customLeaderboard.Category.ToAdminApi(),
+		Category = customLeaderboard.Category,
 	};
 
 	public static AdminApi.GetCustomLeaderboard ToGetCustomLeaderboard(this CustomLeaderboardEntity customLeaderboard) => new()
@@ -38,17 +36,6 @@ public static class CustomLeaderboardConverters
 			Leviathan = customLeaderboard.TimeLeviathan.ToSecondsTime(),
 		},
 		IsFeatured = customLeaderboard.IsFeatured,
-		Category = customLeaderboard.Category.ToAdminApi(),
-	};
-
-	public static AdminApi.CustomLeaderboardCategory ToAdminApi(this CustomLeaderboardCategory customLeaderboardCategory) => customLeaderboardCategory switch
-	{
-		CustomLeaderboardCategory.Survival => AdminApi.CustomLeaderboardCategory.Survival,
-		CustomLeaderboardCategory.TimeAttack => AdminApi.CustomLeaderboardCategory.TimeAttack,
-		CustomLeaderboardCategory.Speedrun => AdminApi.CustomLeaderboardCategory.Speedrun,
-		CustomLeaderboardCategory.Race => AdminApi.CustomLeaderboardCategory.Race,
-		CustomLeaderboardCategory.Pacifist => AdminApi.CustomLeaderboardCategory.Pacifist,
-		CustomLeaderboardCategory.RaceNoShooting => AdminApi.CustomLeaderboardCategory.RaceNoShooting,
-		_ => throw new InvalidEnumConversionException(customLeaderboardCategory),
+		Category = customLeaderboard.Category,
 	};
 }

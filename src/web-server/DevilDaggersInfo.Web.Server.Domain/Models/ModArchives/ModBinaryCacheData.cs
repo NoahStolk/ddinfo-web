@@ -3,6 +3,7 @@ using DevilDaggersInfo.Core.Mod;
 using DevilDaggersInfo.Core.Mod.Enums;
 using DevilDaggersInfo.Core.Mod.Exceptions;
 using DevilDaggersInfo.Core.Mod.Utils;
+using DevilDaggersInfo.Types.Core.Mods;
 using System.Text;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;

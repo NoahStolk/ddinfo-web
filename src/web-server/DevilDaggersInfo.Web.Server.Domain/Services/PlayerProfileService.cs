@@ -1,7 +1,7 @@
+using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Core.Claims;
 using DevilDaggersInfo.Web.Server.Domain.Commands.Players;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
-using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
