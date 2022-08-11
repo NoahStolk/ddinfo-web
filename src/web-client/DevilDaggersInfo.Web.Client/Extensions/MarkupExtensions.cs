@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Api.Main.CustomLeaderboards;
+using DevilDaggersInfo.Types.Web;
 using Microsoft.AspNetCore.Components;
 
 namespace DevilDaggersInfo.Web.Client.Extensions;

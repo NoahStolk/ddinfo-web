@@ -23,7 +23,7 @@ public static class CustomLeaderboardConverters
 		PlayerCount = customLeaderboard.PlayerCount,
 		TopPlayer = customLeaderboard.WorldRecord?.PlayerName,
 		WorldRecord = customLeaderboard.WorldRecord?.Time.ToSecondsTime(),
-		WorldRecordDagger = customLeaderboard.WorldRecord?.Dagger?.ToMainApi(),
+		WorldRecordDagger = customLeaderboard.WorldRecord?.Dagger,
 	};
 
 	public static MainApi.GetCustomLeaderboard ToGetCustomLeaderboard(this SortedCustomLeaderboard customLeaderboard) => new()
@@ -65,7 +65,7 @@ public static class CustomLeaderboardConverters
 		DaggersHit = customEntry.DaggersHit,
 		SubmitDate = customEntry.SubmitDate,
 		Time = customEntry.Time.ToSecondsTime(),
-		CustomLeaderboardDagger = customEntry.CustomLeaderboardDagger?.ToMainApi(),
+		CustomLeaderboardDagger = customEntry.CustomLeaderboardDagger,
 		HasGraphs = customEntry.HasGraphs,
 	};
 
@@ -103,7 +103,7 @@ public static class CustomLeaderboardConverters
 			DaggersHit = customEntry.DaggersHit,
 			SubmitDate = customEntry.SubmitDate,
 			Time = customEntry.Time.ToSecondsTime(),
-			CustomLeaderboardDagger = customEntry.CustomLeaderboard.GetDaggerFromTime(customEntry.Time)?.ToMainApi(),
+			CustomLeaderboardDagger = customEntry.CustomLeaderboard.GetDaggerFromTime(customEntry.Time),
 
 			GemsCollectedData = GetInt32Arr(customEntryData?.GemsCollectedData),
 			EnemiesKilledData = GetInt32Arr(customEntryData?.EnemiesKilledData),
@@ -152,7 +152,7 @@ public static class CustomLeaderboardConverters
 			GhostpedesKilledData = GetUInt16Arr(customEntryData?.GhostpedesKilledData),
 			SpiderEggsKilledData = GetUInt16Arr(customEntryData?.SpiderEggsKilledData),
 
-			StartingLevel = startingLevel.ToMainApi(),
+			StartingLevel = startingLevel,
 			HasReplay = hasReplay,
 		};
 
@@ -162,15 +162,4 @@ public static class CustomLeaderboardConverters
 		static ushort[]? GetUInt16Arr(byte[]? bytes)
 			=> bytes == null || bytes.Length == 0 ? null : Array.ConvertAll(IntegerArrayCompressor.ExtractData(bytes), i => (ushort)i);
 	}
-
-	private static MainApi.CustomLeaderboardDagger ToMainApi(this CustomLeaderboardDagger customLeaderboardDagger) => customLeaderboardDagger switch
-	{
-		CustomLeaderboardDagger.Default => MainApi.CustomLeaderboardDagger.Default,
-		CustomLeaderboardDagger.Bronze => MainApi.CustomLeaderboardDagger.Bronze,
-		CustomLeaderboardDagger.Silver => MainApi.CustomLeaderboardDagger.Silver,
-		CustomLeaderboardDagger.Golden => MainApi.CustomLeaderboardDagger.Golden,
-		CustomLeaderboardDagger.Devil => MainApi.CustomLeaderboardDagger.Devil,
-		CustomLeaderboardDagger.Leviathan => MainApi.CustomLeaderboardDagger.Leviathan,
-		_ => throw new InvalidEnumConversionException(customLeaderboardDagger),
-	};
 }

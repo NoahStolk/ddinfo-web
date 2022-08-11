@@ -1,5 +1,3 @@
-using DevilDaggersInfo.Common.Exceptions;
-using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 using DdLiveApi = DevilDaggersInfo.Api.DdLive.CustomLeaderboards;
 
@@ -22,7 +20,7 @@ public static class CustomLeaderboardConverters
 		TopPlayerId = customLeaderboard.WorldRecord?.PlayerId,
 		TopPlayerName = customLeaderboard.WorldRecord?.PlayerName,
 		WorldRecord = customLeaderboard.WorldRecord?.Time.ToSecondsTime(),
-		WorldRecordDagger = customLeaderboard.WorldRecord?.Dagger.ToDdLiveApi(),
+		WorldRecordDagger = customLeaderboard.WorldRecord?.Dagger,
 	};
 
 	public static DdLiveApi.GetCustomLeaderboardDdLive ToGetCustomLeaderboardDdLive(this SortedCustomLeaderboard customLeaderboard, List<int> customEntryReplayIds) => new()
@@ -56,7 +54,7 @@ public static class CustomLeaderboardConverters
 		PlayerId = customEntry.PlayerId,
 		PlayerName = customEntry.PlayerName,
 		CountryCode = customEntry.CountryCode,
-		Client = customEntry.Client.ToDdLiveApi(),
+		Client = customEntry.Client,
 		ClientVersion = customEntry.ClientVersion,
 		DeathType = customEntry.DeathType,
 		EnemiesAlive = customEntry.EnemiesAlive,
@@ -73,27 +71,8 @@ public static class CustomLeaderboardConverters
 		DaggersHit = customEntry.DaggersHit,
 		SubmitDate = customEntry.SubmitDate,
 		Time = customEntry.Time.ToSecondsTime(),
-		CustomLeaderboardDagger = customEntry.CustomLeaderboardDagger.ToDdLiveApi(),
+		CustomLeaderboardDagger = customEntry.CustomLeaderboardDagger,
 		HasGraphs = customEntry.HasGraphs,
 		HasReplay = hasReplay,
-	};
-
-	private static DdLiveApi.CustomLeaderboardDagger? ToDdLiveApi(this CustomLeaderboardDagger? customLeaderboardDagger) => customLeaderboardDagger switch
-	{
-		CustomLeaderboardDagger.Default => DdLiveApi.CustomLeaderboardDagger.Default,
-		CustomLeaderboardDagger.Bronze => DdLiveApi.CustomLeaderboardDagger.Bronze,
-		CustomLeaderboardDagger.Silver => DdLiveApi.CustomLeaderboardDagger.Silver,
-		CustomLeaderboardDagger.Golden => DdLiveApi.CustomLeaderboardDagger.Golden,
-		CustomLeaderboardDagger.Devil => DdLiveApi.CustomLeaderboardDagger.Devil,
-		CustomLeaderboardDagger.Leviathan => DdLiveApi.CustomLeaderboardDagger.Leviathan,
-		null => null,
-		_ => throw new InvalidEnumConversionException(customLeaderboardDagger),
-	};
-
-	private static DdLiveApi.CustomLeaderboardsClient ToDdLiveApi(this CustomLeaderboardsClient customLeaderboardsClient) => customLeaderboardsClient switch
-	{
-		CustomLeaderboardsClient.DdstatsRust => DdLiveApi.CustomLeaderboardsClient.DdstatsRust,
-		CustomLeaderboardsClient.DevilDaggersCustomLeaderboards => DdLiveApi.CustomLeaderboardsClient.DevilDaggersCustomLeaderboards,
-		_ => throw new InvalidEnumConversionException(customLeaderboardsClient),
 	};
 }

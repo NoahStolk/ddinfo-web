@@ -125,14 +125,14 @@ public static class CustomLeaderboardConverters
 		CustomLeaderboardDagger = customEntry.CustomLeaderboardDagger.ToDdclApi(),
 	};
 
-	private static DdclApi.CustomLeaderboardDagger? ToDdclApi(this CustomLeaderboardDagger? customLeaderboardDagger) => customLeaderboardDagger switch
+	private static Types.Web.CustomLeaderboardDagger? ToDdclApi(this CustomLeaderboardDagger? customLeaderboardDagger) => customLeaderboardDagger switch
 	{
-		CustomLeaderboardDagger.Default => DdclApi.CustomLeaderboardDagger.Default,
-		CustomLeaderboardDagger.Bronze => DdclApi.CustomLeaderboardDagger.Bronze,
-		CustomLeaderboardDagger.Silver => DdclApi.CustomLeaderboardDagger.Silver,
-		CustomLeaderboardDagger.Golden => DdclApi.CustomLeaderboardDagger.Golden,
-		CustomLeaderboardDagger.Devil => DdclApi.CustomLeaderboardDagger.Devil,
-		CustomLeaderboardDagger.Leviathan => DdclApi.CustomLeaderboardDagger.Leviathan,
+		CustomLeaderboardDagger.Default => Types.Web.CustomLeaderboardDagger.Default,
+		CustomLeaderboardDagger.Bronze => Types.Web.CustomLeaderboardDagger.Bronze,
+		CustomLeaderboardDagger.Silver => Types.Web.CustomLeaderboardDagger.Silver,
+		CustomLeaderboardDagger.Golden => Types.Web.CustomLeaderboardDagger.Golden,
+		CustomLeaderboardDagger.Devil => Types.Web.CustomLeaderboardDagger.Devil,
+		CustomLeaderboardDagger.Leviathan => Types.Web.CustomLeaderboardDagger.Leviathan,
 		null => null,
 		_ => throw new InvalidEnumConversionException(customLeaderboardDagger),
 	};

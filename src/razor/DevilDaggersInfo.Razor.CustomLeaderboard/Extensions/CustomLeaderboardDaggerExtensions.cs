@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
+using DevilDaggersInfo.Types.Web;
 
 namespace DevilDaggersInfo.Razor.CustomLeaderboard.Extensions;
 

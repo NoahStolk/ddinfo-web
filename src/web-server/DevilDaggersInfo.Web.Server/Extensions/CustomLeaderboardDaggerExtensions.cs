@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
+using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Server.HostedServices.DdInfoDiscordBot;
 using DSharpPlus.Entities;
 

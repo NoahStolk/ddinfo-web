@@ -33,12 +33,4 @@ public static class EnumDisplayStringExtensions
 		GameMode.Race => nameof(GameMode.Race),
 		_ => throw new InvalidEnumConversionException(gameMode),
 	};
-
-	public static string ToDisplayString(this MainApi.Spawnsets.GameMode gameMode) => gameMode switch
-	{
-		MainApi.Spawnsets.GameMode.Survival => nameof(MainApi.Spawnsets.GameMode.Survival),
-		MainApi.Spawnsets.GameMode.TimeAttack => "Time Attack",
-		MainApi.Spawnsets.GameMode.Race => nameof(MainApi.Spawnsets.GameMode.Race),
-		_ => throw new InvalidEnumConversionException(gameMode),
-	};
 }

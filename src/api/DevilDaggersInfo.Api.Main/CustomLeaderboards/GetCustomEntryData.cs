@@ -1,4 +1,5 @@
-using DevilDaggersInfo.Api.Main.Spawnsets;
+using DevilDaggersInfo.Types.Core.Spawnsets;
+using DevilDaggersInfo.Types.Web;
 
 namespace DevilDaggersInfo.Api.Main.CustomLeaderboards;
 
