@@ -1,11 +1,11 @@
+using DevilDaggersInfo.Api.Admin.Donations;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
-using AdminApi = DevilDaggersInfo.Api.Admin.Donations;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Admin.Converters;
 
 public static class DonationConverters
 {
-	public static AdminApi.GetDonationForOverview ToGetDonationForOverview(this DonationEntity donation) => new()
+	public static GetDonationForOverview ToGetDonationForOverview(this DonationEntity donation) => new()
 	{
 		Id = donation.Id,
 		Amount = donation.Amount,
@@ -17,7 +17,7 @@ public static class DonationConverters
 		PlayerName = donation.Player.PlayerName,
 	};
 
-	public static AdminApi.GetDonation ToGetDonation(this DonationEntity donation) => new()
+	public static GetDonation ToGetDonation(this DonationEntity donation) => new()
 	{
 		Id = donation.Id,
 		Amount = donation.Amount,

@@ -1,11 +1,11 @@
+using DevilDaggersInfo.Api.Admin.Players;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
-using AdminApi = DevilDaggersInfo.Api.Admin.Players;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Admin.Converters;
 
 public static class PlayerConverters
 {
-	public static AdminApi.GetPlayerForOverview ToGetPlayerForOverview(this PlayerEntity player) => new()
+	public static GetPlayerForOverview ToGetPlayerForOverview(this PlayerEntity player) => new()
 	{
 		Id = player.Id,
 		PlayerName = player.PlayerName,
@@ -31,7 +31,7 @@ public static class PlayerConverters
 		VerticalSync = player.VerticalSync,
 	};
 
-	public static AdminApi.GetPlayer ToGetPlayer(this PlayerEntity player) => new()
+	public static GetPlayer ToGetPlayer(this PlayerEntity player) => new()
 	{
 		Id = player.Id,
 		CommonName = player.CommonName,

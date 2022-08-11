@@ -1,12 +1,12 @@
+using DevilDaggersInfo.Api.Admin.Mods;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Extensions;
-using AdminApi = DevilDaggersInfo.Api.Admin.Mods;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Admin.Converters;
 
 public static class ModConverters
 {
-	public static AdminApi.GetModForOverview ToGetModForOverview(this ModEntity mod) => new()
+	public static GetModForOverview ToGetModForOverview(this ModEntity mod) => new()
 	{
 		Id = mod.Id,
 		ModTypes = mod.ModTypes,
@@ -18,7 +18,7 @@ public static class ModConverters
 		Url = mod.Url?.TrimAfter(40, true),
 	};
 
-	public static AdminApi.GetMod ToGetMod(this ModEntity mod, List<string>? binaryNames, List<string>? screenshotNames) => new()
+	public static GetMod ToGetMod(this ModEntity mod, List<string>? binaryNames, List<string>? screenshotNames) => new()
 	{
 		Id = mod.Id,
 		ModTypes = mod.ModTypes,

@@ -1,12 +1,12 @@
+using DevilDaggersInfo.Api.Admin.CustomLeaderboards;
 using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
-using AdminApi = DevilDaggersInfo.Api.Admin.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Admin.Converters;
 
 public static class CustomLeaderboardConverters
 {
-	public static AdminApi.GetCustomLeaderboardForOverview ToGetCustomLeaderboardForOverview(this CustomLeaderboardEntity customLeaderboard) => new()
+	public static GetCustomLeaderboardForOverview ToGetCustomLeaderboardForOverview(this CustomLeaderboardEntity customLeaderboard) => new()
 	{
 		Id = customLeaderboard.Id,
 		SpawnsetName = customLeaderboard.Spawnset.Name,
@@ -23,7 +23,7 @@ public static class CustomLeaderboardConverters
 		Category = customLeaderboard.Category,
 	};
 
-	public static AdminApi.GetCustomLeaderboard ToGetCustomLeaderboard(this CustomLeaderboardEntity customLeaderboard) => new()
+	public static GetCustomLeaderboard ToGetCustomLeaderboard(this CustomLeaderboardEntity customLeaderboard) => new()
 	{
 		Id = customLeaderboard.Id,
 		SpawnsetId = customLeaderboard.SpawnsetId,
