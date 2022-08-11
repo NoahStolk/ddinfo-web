@@ -89,7 +89,10 @@ public class ApplicationDbContext : DbContext
 
 	public void BuildAuditLogs()
 	{
+		// Only log when a change was made by a user.
 		string? username = _httpContextAccessor.HttpContext?.User?.GetName();
+		if (username == null)
+			return;
 
 		IEnumerable<EntityEntry> entityEntries = ChangeTracker.Entries();
 		foreach (EntityEntry addedOrDeletedEntityEntry in entityEntries.Where(e => e.State == EntityState.Added || e.State == EntityState.Deleted))
