@@ -1,5 +1,3 @@
-using DevilDaggersInfo.Common.Exceptions;
-using DevilDaggersInfo.Types.Core.Spawnsets;
 using DdseApi = DevilDaggersInfo.Api.Ddse.Spawnsets;
 
 namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Ddse;
@@ -22,7 +20,7 @@ public static class SpawnsetConverters
 	private static DdseApi.GetSpawnsetDataDdse ToDdseApi(this SpawnsetSummary spawnsetSummary) => new()
 	{
 		AdditionalGems = spawnsetSummary.EffectivePlayerSettings.GemsOrHoming,
-		GameMode = spawnsetSummary.GameMode.ToDdseApi(),
+		GameMode = spawnsetSummary.GameMode,
 		Hand = (byte)spawnsetSummary.EffectivePlayerSettings.HandLevel,
 		LoopLength = spawnsetSummary.LoopSection.Length,
 		LoopSpawnCount = spawnsetSummary.LoopSection.SpawnCount,
@@ -31,13 +29,5 @@ public static class SpawnsetConverters
 		SpawnVersion = spawnsetSummary.SpawnVersion,
 		TimerStart = spawnsetSummary.TimerStart,
 		WorldVersion = spawnsetSummary.WorldVersion,
-	};
-
-	private static DdseApi.GameMode ToDdseApi(this GameMode gameMode) => gameMode switch
-	{
-		GameMode.Survival => DdseApi.GameMode.Survival,
-		GameMode.TimeAttack => DdseApi.GameMode.TimeAttack,
-		GameMode.Race => DdseApi.GameMode.Race,
-		_ => throw new InvalidEnumConversionException(gameMode),
 	};
 }

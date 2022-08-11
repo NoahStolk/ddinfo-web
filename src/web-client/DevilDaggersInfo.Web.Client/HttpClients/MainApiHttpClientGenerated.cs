@@ -10,7 +10,6 @@ using DevilDaggersInfo.Api.Main;
 using DevilDaggersInfo.Api.Main.Authentication;
 using DevilDaggersInfo.Api.Main.CustomLeaderboards;
 using DevilDaggersInfo.Api.Main.Donations;
-using DevilDaggersInfo.Api.Main.GameVersions;
 using DevilDaggersInfo.Api.Main.LeaderboardHistory;
 using DevilDaggersInfo.Api.Main.LeaderboardHistoryStatistics;
 using DevilDaggersInfo.Api.Main.LeaderboardStatistics;
@@ -20,6 +19,7 @@ using DevilDaggersInfo.Api.Main.Players;
 using DevilDaggersInfo.Api.Main.Spawnsets;
 using DevilDaggersInfo.Api.Main.Tools;
 using DevilDaggersInfo.Api.Main.WorldRecords;
+using DevilDaggersInfo.Types.Core.Wiki;
 using DevilDaggersInfo.Types.Web;
 using System.Net.Http.Json;
 

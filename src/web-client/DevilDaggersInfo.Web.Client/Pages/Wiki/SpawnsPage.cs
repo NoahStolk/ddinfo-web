@@ -1,7 +1,6 @@
-using DevilDaggersInfo.Api.Main.GameVersions;
 using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Core.Spawnset.View;
-using DevilDaggersInfo.Web.Client.Converters.ApiToCore;
+using DevilDaggersInfo.Types.Core.Wiki;
 using Microsoft.AspNetCore.Components;
 
 namespace DevilDaggersInfo.Web.Client.Pages.Wiki;
@@ -34,7 +33,7 @@ public partial class SpawnsPage
 		if (!SpawnsetBinary.TryParse(spawnsetBytes, out _spawnset))
 			return;
 
-		_spawnsView = new(_spawnset, GameVersion.ToCore(), _waveCount);
+		_spawnsView = new(_spawnset, GameVersion, _waveCount);
 	}
 
 	private void IncreaseWaveCount(int amount)
@@ -43,6 +42,6 @@ public partial class SpawnsPage
 			return;
 
 		_waveCount += amount;
-		_spawnsView = new(_spawnset, GameVersion.ToCore(), _waveCount);
+		_spawnsView = new(_spawnset, GameVersion, _waveCount);
 	}
 }

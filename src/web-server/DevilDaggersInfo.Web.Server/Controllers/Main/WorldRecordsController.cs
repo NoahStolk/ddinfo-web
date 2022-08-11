@@ -68,7 +68,7 @@ public class WorldRecordsController : ControllerBase
 			{
 				DateTime = wr.DateTime,
 				Entry = wr.Entry,
-				GameVersion = wr.GameVersion?.ToMainApi(),
+				GameVersion = wr.GameVersion,
 				WorldRecordDuration = duration,
 				WorldRecordImprovement = improvement,
 			});

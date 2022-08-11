@@ -7,7 +7,6 @@
 #nullable enable
 
 using DevilDaggersInfo.Api.Ddre.ProcessMemory;
-using DevilDaggersInfo.Types.Web;
 using System.Net.Http.Json;
 
 namespace DevilDaggersInfo.Razor.ReplayEditor.HttpClients;

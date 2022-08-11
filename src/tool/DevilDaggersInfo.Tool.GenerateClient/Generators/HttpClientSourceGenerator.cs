@@ -44,7 +44,6 @@ public partial class {_className}
 	public void Execute()
 	{
 		ApiHttpClientContext apiHttpClientContext = new();
-		apiHttpClientContext.AddUsings("DevilDaggersInfo.Types.Web");
 		apiHttpClientContext.AddUsings("System.Net.Http.Json");
 		apiHttpClientContext.AddEndpoints(_controllersSubDirectory);
 

@@ -20,7 +20,6 @@ using DevilDaggersInfo.Api.Admin.Players;
 using DevilDaggersInfo.Api.Admin.Spawnsets;
 using DevilDaggersInfo.Api.Admin.Tools;
 using DevilDaggersInfo.Api.Admin.Users;
-using DevilDaggersInfo.Types.Web;
 using System.Net.Http.Json;
 
 namespace DevilDaggersInfo.Web.Client.HttpClients;
