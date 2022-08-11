@@ -47,10 +47,7 @@ public class Startup
 		services.AddTransient<ModArchiveAccessor>();
 		services.AddTransient<ModArchiveProcessor>();
 		services.AddTransient<ModScreenshotProcessor>();
-		services.AddTransient<ModService>();
-		services.AddScoped<PlayerService>();
 		services.AddScoped<PlayerProfileService>();
-		services.AddTransient<SpawnsetService>();
 		services.AddTransient<IToolService, ToolService>();
 		services.AddScoped<IUserService, UserService>();
 
@@ -60,8 +57,11 @@ public class Startup
 		services.AddTransient<MarkerRepository>();
 		services.AddScoped<PlayerProfileRepository>();
 
-		// Validators
+		// Admin domain services
 		services.AddTransient<CustomLeaderboardService>();
+		services.AddTransient<ModService>();
+		services.AddTransient<PlayerService>();
+		services.AddTransient<SpawnsetService>();
 
 		// Utilities
 		services.AddSingleton<LeaderboardResponseParser>();
@@ -72,7 +72,7 @@ public class Startup
 		services.AddSingleton<ILogContainerService, LogContainerService>();
 		services.AddSingleton<ResponseTimeMonitor>();
 
-		// Caching
+		// Caching services
 		services.AddSingleton<LeaderboardHistoryCache>();
 		services.AddSingleton<LeaderboardStatisticsCache>();
 		services.AddSingleton<ModArchiveCache>();
