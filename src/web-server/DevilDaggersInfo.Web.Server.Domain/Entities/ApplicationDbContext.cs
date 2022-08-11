@@ -97,14 +97,15 @@ public class ApplicationDbContext : DbContext
 		IEnumerable<EntityEntry> entityEntries = ChangeTracker.Entries();
 		foreach (EntityEntry addedOrDeletedEntityEntry in entityEntries.Where(e => e.State == EntityState.Added || e.State == EntityState.Deleted))
 		{
-			Type entityType = addedOrDeletedEntityEntry.Entity.GetType();
 			if (addedOrDeletedEntityEntry.Entity is IAuditable entity)
+			{
+				Type entityType = addedOrDeletedEntityEntry.Entity.GetType();
 				_logContainerService.AddAuditLog($"`{entityType.Name}` with ID `{entity.Id}` was {(addedOrDeletedEntityEntry.State == EntityState.Added ? "added" : "deleted")} by {username}.");
+			}
 		}
 
 		foreach (EntityEntry modifiedEntityEntry in entityEntries.Where(e => e.State == EntityState.Modified))
 		{
-			Type entityType = modifiedEntityEntry.Entity.GetType();
 			if (modifiedEntityEntry.Entity is not IAuditable entity)
 				return;
 
@@ -117,6 +118,7 @@ public class ApplicationDbContext : DbContext
 				logs.Add($"**{property}**: ~~{oldValue}~~ {newValue}");
 			}
 
+			Type entityType = modifiedEntityEntry.Entity.GetType();
 			_logContainerService.AddAuditLog($"`{entityType.Name}` with ID `{entity.Id}` was edited by {username}:\n- {string.Join("\n- ", logs)}");
 		}
 	}
