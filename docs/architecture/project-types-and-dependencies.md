@@ -6,41 +6,42 @@ DevilDaggersInfo is separated into layers, then into project types, then into in
 
 ### Library layer
 
-| **Subfolder** | **Project type**                                          | **Can depend on**                                                 |
-|---------------|-----------------------------------------------------------|-------------------------------------------------------------------|
-| `api`         | API specifications                                        | Nothing                                                           |
-| `common`      | Common functionality                                      | Nothing                                                           |
-| `core`        | Core set of features                                      | `common`, `core`                                                  |
+| **Subfolder** | **Project type**                                          | **Can depend on**                                                          |
+|---------------|-----------------------------------------------------------|----------------------------------------------------------------------------|
+| `api`         | API specifications                                        | `types`                                                                    |
+| `common`      | Common functionality                                      | Nothing                                                                    |
+| `core`        | Core set of features                                      | `common`, `core`, `types (Core only)`                                      |
+| `types`       | [Enum types](types-libraries.md)                          | Nothing                                                                    |
 
 ### UI layer
 
-| **Subfolder** | **Project type**                                          | **Can depend on**                                                 |
-|---------------|----------------------------------------------------- -----|-------------------------------------------------------------------|
-| `razor-core`  | Reusable Razor UI libraries                               | `api`, `common`, `core`, `razor-core`                             |
+| **Subfolder** | **Project type**                                          | **Can depend on**                                                          |
+|---------------|----------------------------------------------------- -----|----------------------------------------------------------------------------|
+| `razor-core`  | Reusable Razor UI libraries                               | `api`, `common`, `core`, `razor-core`, `types`                             |
 
 ### App layer
 
-| **Subfolder** | **Project type**                                          | **Can depend on**                                                 |
-|---------------|-----------------------------------------------------------|-------------------------------------------------------------------|
-| `app`         | UI app heads that run natively                            | `common`, `core`, `razor-core`, `razor`                           |
-| `app-core`    | Core set of features for apps                             | `common`, `core`                                                  |
-| `razor`       | Razor UI libraries for apps                               | `app-core`, `common`, `core`, `razor-core`                        |
+| **Subfolder** | **Project type**                                          | **Can depend on**                                                          |
+|---------------|-----------------------------------------------------------|----------------------------------------------------------------------------|
+| `app`         | UI app heads that run natively                            | `common`, `core`, `razor-core`, `razor`, `types`                           |
+| `app-core`    | Core set of features for apps                             | `common`, `core`                                                           |
+| `razor`       | Razor UI libraries for apps                               | `app-core`, `common`, `core`, `razor-core`, `types`                        |
 
 ### Web layer
 
-| **Subfolder** | **Project type**                                          | **Can depend on**                                                 |
-|---------------|----------------------------------------------------- -----|-------------------------------------------------------------------|
-| `web-client`  | Client apps that run in the browser (Blazor WebAssembly)  | `api`, `common`, `core`, `razor-core`, `razor`, `web-core`,       |
-| `web-core`    | Reusable web logic                                        | `common`, `core`, `web-core`                                      |
-| `web-server`  | Server code base (ASP.NET Core)                           | `api`, `common`, `core`, `web-client`, `web-core`, `web-server`   |
+| **Subfolder** | **Project type**                                          | **Can depend on**                                                          |
+|---------------|----------------------------------------------------- -----|----------------------------------------------------------------------------|
+| `web-client`  | Client apps that run in the browser (Blazor WebAssembly)  | `api`, `common`, `core`, `razor-core`, `razor`, `types`, `web-core`,       |
+| `web-core`    | Reusable web logic                                        | `common`, `core`, `web-core`                                               |
+| `web-server`  | Server code base (ASP.NET Core)                           | `api`, `common`, `core`, `types`, `web-client`, `web-core`, `web-server`   |
 
 ### Miscellaneous
 
-| **Subfolder** | **Project type**                                          | **Can depend on**                                                 |
-|---------------|----------------------------------------------------- -----|-------------------------------------------------------------------|
-| `cmd`         | Console apps                                              | `common`, `core`                                                  |
-| `tests`       | Unit tests                                                | Anything                                                          |
-| `tool`        | Tools for internal usage                                  | Anything                                                          |
+| **Subfolder** | **Project type**                                          | **Can depend on**                                                          |
+|---------------|----------------------------------------------------- -----|----------------------------------------------------------------------------|
+| `cmd`         | Console apps                                              | `common`, `core`                                                           |
+| `tests`       | Unit tests                                                | Anything                                                                   |
+| `tool`        | Tools for internal usage                                  | Anything                                                                   |
 
 ## Forbidden dependencies
 
