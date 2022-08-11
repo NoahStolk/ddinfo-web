@@ -1,4 +1,3 @@
-using DevilDaggersInfo.Api.Main.CustomLeaderboards;
 using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Types.Web;
 

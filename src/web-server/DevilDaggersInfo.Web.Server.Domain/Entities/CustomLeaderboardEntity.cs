@@ -1,5 +1,4 @@
 using DevilDaggersInfo.Types.Web;
-using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.Domain.Utils;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Entities;

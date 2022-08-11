@@ -1,5 +1,3 @@
-using DevilDaggersInfo.Types.Core.Wiki;
-
 namespace DevilDaggersInfo.Core.Wiki;
 
 public static class Deaths

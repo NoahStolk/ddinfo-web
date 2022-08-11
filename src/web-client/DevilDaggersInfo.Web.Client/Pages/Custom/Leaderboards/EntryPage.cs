@@ -1,6 +1,4 @@
 using DevilDaggersInfo.Api.Main.CustomLeaderboards;
-using DevilDaggersInfo.Api.Main.Spawnsets;
-using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Core.Spawnset.Extensions;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Data;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Options.LineChart;

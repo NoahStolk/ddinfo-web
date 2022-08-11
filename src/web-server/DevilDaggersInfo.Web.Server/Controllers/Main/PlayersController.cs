@@ -2,7 +2,6 @@ using DevilDaggersInfo.Api.Main.Players;
 using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Main;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
-using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardHistory;
 using DevilDaggersInfo.Web.Server.Domain.Models.Players;
