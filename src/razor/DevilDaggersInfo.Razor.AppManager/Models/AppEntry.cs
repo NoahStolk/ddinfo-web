@@ -1,10 +1,10 @@
-using DevilDaggersInfo.Api.Ddiam;
 using DevilDaggersInfo.Core.Versioning;
+using DevilDaggersInfo.Types.Web;
 using System.Diagnostics.CodeAnalysis;
 
 namespace DevilDaggersInfo.Razor.AppManager.Models;
 
-public record AppEntry(string Name, AppVersion Version, BuildType BuildType)
+public record AppEntry(string Name, AppVersion Version, ToolBuildType BuildType)
 {
 	private const char _separator = '_';
 
@@ -26,7 +26,7 @@ public record AppEntry(string Name, AppVersion Version, BuildType BuildType)
 			return false;
 		}
 
-		if (!Enum.TryParse(parts[2], out BuildType buildType))
+		if (!Enum.TryParse(parts[2], out ToolBuildType buildType))
 			return false;
 
 		appEntry = new(parts[0], version, buildType);

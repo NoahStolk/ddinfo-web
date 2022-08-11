@@ -1,6 +1,5 @@
 using DevilDaggersInfo.Api.Ddiam;
 using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Ddiam;
-using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Ddiam;
 using DevilDaggersInfo.Web.Server.Domain.Services;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Ddiam;
@@ -26,7 +25,7 @@ public class AppsController : ControllerBase
 		{
 			Name = td.Name,
 			Version = td.VersionNumber,
-			BuildType = td.BuildType.ToApi(),
+			BuildType = td.BuildType,
 		});
 	}
 }
