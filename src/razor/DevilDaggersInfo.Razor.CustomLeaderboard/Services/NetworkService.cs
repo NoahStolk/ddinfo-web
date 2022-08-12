@@ -79,20 +79,11 @@ public class NetworkService
 
 	public async Task<GetUploadSuccess> SubmitScore(AddUploadRequest uploadRequest)
 	{
-		try
-		{
-			HttpResponseMessage hrm = await _apiClient.SubmitScoreForDdcl(uploadRequest);
-			if (hrm.IsSuccessStatusCode)
-				return await hrm.Content.ReadFromJsonAsync<GetUploadSuccess>() ?? throw new InvalidOperationException($"Could not deserialize the response as '{nameof(GetUploadSuccess)}'.");
+		HttpResponseMessage hrm = await _apiClient.SubmitScoreForDdcl(uploadRequest);
+		if (hrm.IsSuccessStatusCode)
+			return await hrm.Content.ReadFromJsonAsync<GetUploadSuccess>() ?? throw new InvalidOperationException($"Could not deserialize the response as '{nameof(GetUploadSuccess)}'.");
 
-			throw new(await hrm.Content.ReadAsStringAsync());
-		}
-		catch (Exception ex)
-		{
-			const string message = "Error trying to submit score";
-			_logger.LogError(ex, message);
-			throw new(message);
-		}
+		throw new(await hrm.Content.ReadAsStringAsync());
 	}
 
 	public async Task<GetCustomLeaderboard> GetLeaderboard(byte[] hash)

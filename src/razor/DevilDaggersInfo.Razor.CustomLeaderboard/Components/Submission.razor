@@ -7,13 +7,13 @@
 
 @if (State.Value.UploadError != null)
 {
-	<div class="text-red">Upload failed</div>
+	<div class="text-2xl text-red">Upload failed</div>
 
-	<div class="text-red">@State.Value.UploadError</div>
+	<div>@State.Value.UploadError</div>
 }
 else if (State.Value.UploadSuccess != null)
 {
-	<div class="text-green">Upload successful @FormatTimeAgo()</div>
+	<div class="text-2xl text-green">Upload successful @FormatTimeAgo()</div>
 
 	<div>@State.Value.UploadSuccess.Message</div>
 	@*switch (State.Value.UploadSuccess.SubmissionType)
@@ -79,7 +79,7 @@ else
 		if (diff < TimeSpan.FromDays(1))
 			return $"({hours} hour{S(hours)} and {minutes} minute{S(minutes)} ago)";
 
-		return State.Value.LastSuccessfulUpload.Value.ToString(StringFormats.DateTimeFormat);
+		return $"({State.Value.LastSuccessfulUpload.Value.ToString(StringFormats.DateTimeFormat)})";
 
 		static string S(int value)
 			=> value == 1 ? string.Empty : "s";
