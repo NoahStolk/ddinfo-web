@@ -16,7 +16,7 @@ DevilDaggersInfo is separated into layers, then into project types, then into in
 ### UI layer
 
 | **Subfolder** | **Project type**                                          | **Can depend on**                                                          |
-|---------------|----------------------------------------------------- -----|----------------------------------------------------------------------------|
+|---------------|-----------------------------------------------------------|----------------------------------------------------------------------------|
 | `razor-core`  | Reusable Razor UI libraries                               | `api`, `common`, `core`, `razor-core`, `types`                             |
 
 ### App layer
@@ -30,7 +30,7 @@ DevilDaggersInfo is separated into layers, then into project types, then into in
 ### Web layer
 
 | **Subfolder** | **Project type**                                          | **Can depend on**                                                          |
-|---------------|----------------------------------------------------- -----|----------------------------------------------------------------------------|
+|---------------|-----------------------------------------------------------|----------------------------------------------------------------------------|
 | `web-client`  | Client apps that run in the browser (Blazor WebAssembly)  | `api`, `common`, `core`, `razor-core`, `razor`, `types`, `web-core`,       |
 | `web-core`    | Reusable web logic                                        | `common`, `core`, `web-core`                                               |
 | `web-server`  | Server code base (ASP.NET Core)                           | `api`, `common`, `core`, `types`, `web-client`, `web-core`, `web-server`   |
@@ -38,7 +38,7 @@ DevilDaggersInfo is separated into layers, then into project types, then into in
 ### Miscellaneous
 
 | **Subfolder** | **Project type**                                          | **Can depend on**                                                          |
-|---------------|----------------------------------------------------- -----|----------------------------------------------------------------------------|
+|---------------|-----------------------------------------------------------|----------------------------------------------------------------------------|
 | `cmd`         | Console apps                                              | `common`, `core`                                                           |
 | `tests`       | Unit tests                                                | Anything                                                                   |
 | `tool`        | Tools for internal usage                                  | Anything                                                                   |
