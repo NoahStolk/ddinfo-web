@@ -77,6 +77,7 @@ public static class CustomLeaderboardConverters
 		Leviathan = customLeaderboard.Leviathan.ToSecondsTime(),
 	};
 
+	// TODO: Use domain models?
 	public static MainApi.GetCustomEntryData ToGetCustomEntryData(this CustomEntryEntity customEntry, CustomEntryDataEntity? customEntryData, HandLevel startingLevel, bool hasReplay)
 	{
 		return new()

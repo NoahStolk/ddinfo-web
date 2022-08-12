@@ -3,6 +3,7 @@ using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 
 namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 
+// TODO: Move elsewhere; this isn't part of the domain.
 public static class LeaderboardConverters
 {
 	public static GetLeaderboard ToGetLeaderboardPublic(this IDdLeaderboardService.LeaderboardResponse leaderboardResponse) => new()

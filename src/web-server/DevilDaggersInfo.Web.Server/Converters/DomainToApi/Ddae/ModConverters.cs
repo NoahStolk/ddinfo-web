@@ -3,7 +3,7 @@ using DdaeApi = DevilDaggersInfo.Api.Ddae.Mods;
 
 namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Ddae;
 
-// TODO: Use actual domain models.
+// TODO: Use domain models.
 public static class ModConverters
 {
 	public static DdaeApi.GetModDdae ToDdaeApi(this ModEntity mod, ModFileSystemData modFileSystemData) => new()
