@@ -49,7 +49,7 @@ public class Startup
 		services.AddTransient<ModScreenshotProcessor>();
 		services.AddScoped<PlayerProfileService>();
 		services.AddTransient<ToolService>();
-		services.AddScoped<IUserService, UserService>();
+		services.AddScoped<UserService>();
 
 		// Repositories
 		services.AddTransient<CustomEntryRepository>();

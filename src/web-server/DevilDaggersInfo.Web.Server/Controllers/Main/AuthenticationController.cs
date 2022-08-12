@@ -9,10 +9,10 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 [Route("api/authentication")]
 public class AuthenticationController : ControllerBase
 {
-	private readonly IUserService _userService;
+	private readonly UserService _userService;
 	private readonly ILogger<AuthenticationController> _logger;
 
-	public AuthenticationController(IUserService userService, ILogger<AuthenticationController> logger)
+	public AuthenticationController(UserService userService, ILogger<AuthenticationController> logger)
 	{
 		_userService = userService;
 		_logger = logger;

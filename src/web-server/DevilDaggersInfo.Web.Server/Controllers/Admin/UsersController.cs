@@ -12,10 +12,10 @@ public class UsersController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
 	private readonly UserRepository _userRepository;
-	private readonly IUserService _userService;
+	private readonly UserService _userService;
 	private readonly ILogger<UsersController> _logger;
 
-	public UsersController(ApplicationDbContext dbContext, UserRepository userRepository, IUserService userService, ILogger<UsersController> logger)
+	public UsersController(ApplicationDbContext dbContext, UserRepository userRepository, UserService userService, ILogger<UsersController> logger)
 	{
 		_dbContext = dbContext;
 		_userRepository = userRepository;

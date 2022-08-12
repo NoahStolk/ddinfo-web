@@ -11,7 +11,7 @@ using System.Text;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Services;
 
-public class UserService : IUserService
+public class UserService
 {
 	private readonly ApplicationDbContext _dbContext;
 	private readonly IConfiguration _configuration;
