@@ -1,25 +1,30 @@
 @page "/"
 @inherits FluxorComponent
 
-<div class="grid grid-cols-2 max-w-md m-2 p-2 border-solid border-2 border-[#111]">
-	<span>Marker</span>
-	<span>@(_marker == null ? "Fetching..." : $"0x{_marker.Value:X16}")</span>
+<div class="grid grid-cols-4 m-2 p-2 border-solid border-2 border-[#811]">
+	<div>
+		<div class="grid grid-cols-2 m-2 p-2 border-solid border-2 border-[#114]">
+			<span>Marker</span>
+			<span>@(_marker == null ? "Fetching..." : $"0x{_marker.Value:X16}")</span>
 
-	<span>Devil Daggers process</span>
-	<span>@(ReaderService.HasProcess ? "Attached" : "Waiting...")</span>
+			<span>Devil Daggers process</span>
+			<span>@(ReaderService.HasProcess ? "Attached" : "Waiting...")</span>
 
-	<span>Memory initialized</span>
-	<span>@(ReaderService.IsInitialized ? "Done" : "Waiting...")</span>
+			<span>Memory initialized</span>
+			<span>@(ReaderService.IsInitialized ? "Done" : "Waiting...")</span>
 
-	<span>State</span>
-	<span>@(_state)</span>
-</div>
+			<span>State</span>
+			<span>@(_state)</span>
+		</div>
 
-<div class="max-w-md m-2 p-2 border-solid border-2 border-[#411]">
-	<Recording Block="ReaderService.MainBlock" BlockPrevious="ReaderService.MainBlockPrevious" />
-</div>
-<div class="min-w-[800px] m-2 p-2 border-solid border-2 border-[#411]">
-	<LeaderboardList />
+		<div class="m-2 p-2 border-solid border-2 border-[#411]">
+			<Recording Block="ReaderService.MainBlock" BlockPrevious="ReaderService.MainBlockPrevious" />
+		</div>
+	</div>
+
+	<div class="col-span-3 m-2 p-2 border-solid border-2 border-[#411]">
+		<LeaderboardList />
+	</div>
 </div>
 
 @if (_submissionResponseWrapper != null)
