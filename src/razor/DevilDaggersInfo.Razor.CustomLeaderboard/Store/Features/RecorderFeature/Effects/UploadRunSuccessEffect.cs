@@ -1,4 +1,5 @@
-using DevilDaggersInfo.Razor.CustomLeaderboard.Services;
+using DevilDaggersInfo.App.Core.GameMemory;
+using DevilDaggersInfo.Razor.CustomLeaderboard.Store.Features.LeaderboardFeature.Actions;
 using DevilDaggersInfo.Razor.CustomLeaderboard.Store.Features.RecorderFeature.Actions;
 using Fluxor;
 
@@ -6,29 +7,16 @@ namespace DevilDaggersInfo.Razor.CustomLeaderboard.Store.Features.RecorderFeatur
 
 public class UploadRunSuccessEffect : Effect<UploadRunSuccessAction>
 {
-	private readonly NetworkService _networkService;
-	private readonly StateFacade _stateFacade;
+	private readonly GameMemoryReaderService _gameMemoryService;
 
-	public UploadRunSuccessEffect(NetworkService networkService, StateFacade stateFacade)
+	public UploadRunSuccessEffect(GameMemoryReaderService gameMemoryService)
 	{
-		_networkService = networkService;
-		_stateFacade = stateFacade;
+		_gameMemoryService = gameMemoryService;
 	}
 
 	public override async Task HandleAsync(UploadRunSuccessAction action, IDispatcher dispatcher)
 	{
-#if TODO
-		try
-		{
-			int spawnsetId = await _networkService.GetSpawnsetIdByHash(ReaderService.MainBlock.SurvivalHashMd5);
-			_stateFacade.SetSpawnset(lb.SpawnsetId);
-
-			dispatcher.Dispatch(new SetLeaderboardAction());
-		}
-		catch (Exception ex)
-		{
-			// dispatcher.Dispatch(new UploadRunFailureAction(ex.Message));
-		}
-#endif
+		await Task.Yield();
+		dispatcher.Dispatch(new DownloadLeaderboardAction(_gameMemoryService.MainBlock.SurvivalHashMd5));
 	}
 }
