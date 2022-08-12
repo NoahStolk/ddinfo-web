@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Api.Dd;
 using DevilDaggersInfo.Web.Server.Domain.Models.Spawnsets;
-using DevilDaggersInfo.Web.Server.Domain.Services;
+using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Dd;
 

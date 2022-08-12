@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Api.Admin.Caches;
 using DevilDaggersInfo.Web.Core.Claims;
-using DevilDaggersInfo.Web.Server.Domain.Services;
+using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 using Microsoft.AspNetCore.Authorization;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Admin;

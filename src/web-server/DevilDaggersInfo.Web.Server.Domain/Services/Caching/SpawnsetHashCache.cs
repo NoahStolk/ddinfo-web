@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 using System.Collections.Concurrent;
 using System.Security.Cryptography;
 
-namespace DevilDaggersInfo.Web.Server.Domain.Services;
+namespace DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 
 public class SpawnsetHashCache
 {

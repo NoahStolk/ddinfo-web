@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 using System.Collections.Concurrent;
 using System.IO.Compression;
 
-namespace DevilDaggersInfo.Web.Server.Domain.Services;
+namespace DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 
 public class ModArchiveCache
 {

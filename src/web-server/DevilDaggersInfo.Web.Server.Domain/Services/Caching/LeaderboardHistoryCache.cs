@@ -1,7 +1,7 @@
 using DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardHistory;
 using System.Collections.Concurrent;
 
-namespace DevilDaggersInfo.Web.Server.Domain.Services;
+namespace DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 
 public class LeaderboardHistoryCache
 {

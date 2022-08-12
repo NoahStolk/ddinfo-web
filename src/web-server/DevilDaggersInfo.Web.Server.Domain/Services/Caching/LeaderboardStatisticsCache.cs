@@ -6,7 +6,7 @@ using DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardStatistics;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 using Microsoft.Extensions.Logging;
 
-namespace DevilDaggersInfo.Web.Server.Domain.Services;
+namespace DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 
 public class LeaderboardStatisticsCache
 {

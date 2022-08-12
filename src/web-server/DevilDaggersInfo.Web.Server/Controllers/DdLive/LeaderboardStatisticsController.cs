@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Api.DdLive.LeaderboardStatistics;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.DdLive;
-using DevilDaggersInfo.Web.Server.Domain.Services;
+using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.DdLive;
 
