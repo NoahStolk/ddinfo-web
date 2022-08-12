@@ -1,6 +1,4 @@
 using DevilDaggersInfo.Web.Server.Clients.Clubber;
-using DevilDaggersInfo.Web.Server.Domain.Main.Repositories;
-using DevilDaggersInfo.Web.Server.Domain.Main.Services;
 using DevilDaggersInfo.Web.Server.Domain.Repositories;
 using DevilDaggersInfo.Web.Server.Domain.Services;
 using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
@@ -60,10 +58,11 @@ public class Startup
 		services.AddTransient<ToolRepository>();
 
 		// Main domain services
-		services.AddScoped<PlayerProfileService>();
+		services.AddScoped<Domain.Main.Services.PlayerProfileService>();
 
-		// Main domain repositories
-		services.AddScoped<PlayerProfileRepository>();
+		// Main repositories
+		services.AddScoped<Domain.Main.Repositories.PlayerProfileRepository>();
+		services.AddTransient<Domain.Main.Repositories.DonationRepository>();
 
 		// Admin domain services
 		services.AddTransient<Domain.Admin.Services.CustomEntryService>();
