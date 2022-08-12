@@ -52,4 +52,24 @@ public class PlayerRepository
 		bool isPublicDonator = !player.HideDonations && _dbContext.Donations.Any(d => d.PlayerId == id && !d.IsRefunded && d.ConvertedEuroCentsReceived > 0);
 		return Player.FromEntity(player, isPublicDonator);
 	}
+
+	public async Task<List<PlayerCommonName>> GetCommonNamesAsync()
+	{
+		return await _dbContext.Players
+			.AsNoTracking()
+			.Select(p => new { p.Id, p.CommonName })
+			.Where(p => p.CommonName != null)
+			.Select(p => new PlayerCommonName
+			{
+				Id = p.Id,
+				CommonName = p.CommonName!,
+			})
+			.ToListAsync();
+	}
+
+	public async Task<string?> GetPlayerCountryCodeAsync(int id)
+	{
+		var player = await _dbContext.Players.AsNoTracking().Select(p => new { p.Id, p.CountryCode }).FirstOrDefaultAsync(p => p.Id == id);
+		return player?.CountryCode;
+	}
 }

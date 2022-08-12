@@ -1,4 +1,6 @@
 using DevilDaggersInfo.Api.DdLive.Players;
+using DevilDaggersInfo.Web.Server.Domain.Models.Players;
+using DevilDaggersInfo.Web.Server.Domain.Repositories;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.DdLive;
 
@@ -6,26 +8,22 @@ namespace DevilDaggersInfo.Web.Server.Controllers.DdLive;
 [ApiController]
 public class PlayersController : ControllerBase
 {
-	private readonly ApplicationDbContext _dbContext;
+	private readonly PlayerRepository _playerRepository;
 
-	public PlayersController(ApplicationDbContext dbContext)
+	public PlayersController(PlayerRepository playerRepository)
 	{
-		_dbContext = dbContext;
+		_playerRepository = playerRepository;
 	}
 
 	[HttpGet("common-names")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	public ActionResult<List<GetCommonName>> GetCommonNames()
+	public async Task<ActionResult<List<GetCommonName>>> GetCommonNames()
 	{
-		return _dbContext.Players
-			.AsNoTracking()
-			.Select(p => new { p.Id, p.CommonName })
-			.Where(p => p.CommonName != null)
-			.Select(p => new GetCommonName
-			{
-				Id = p.Id,
-				CommonName = p.CommonName!,
-			})
-			.ToList();
+		List<PlayerCommonName> commonNames = await _playerRepository.GetCommonNamesAsync();
+		return commonNames.ConvertAll(cn => new GetCommonName
+		{
+			CommonName = cn.CommonName,
+			Id = cn.Id,
+		});
 	}
 }

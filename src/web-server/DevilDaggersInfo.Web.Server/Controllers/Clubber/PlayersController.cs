@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Api.Clubber;
+using DevilDaggersInfo.Web.Server.Domain.Repositories;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Clubber;
 
@@ -6,22 +7,21 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Clubber;
 [ApiController]
 public class PlayersController : ControllerBase
 {
-	private readonly ApplicationDbContext _dbContext;
+	private readonly PlayerRepository _playerRepository;
 
-	public PlayersController(ApplicationDbContext dbContext)
+	public PlayersController(PlayerRepository playerRepository)
 	{
-		_dbContext = dbContext;
+		_playerRepository = playerRepository;
 	}
 
 	[HttpGet("{id}/country-code")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	public ActionResult<GetPlayerCountryCode> GetPlayerCountryCodeById([Required] int id)
+	public async Task<ActionResult<GetPlayerCountryCode>> GetPlayerCountryCodeById([Required] int id)
 	{
-		var player = _dbContext.Players.AsNoTracking().Select(p => new { p.Id, p.CountryCode }).FirstOrDefault(p => p.Id == id);
 		return new GetPlayerCountryCode
 		{
-			CountryCode = player?.CountryCode,
+			CountryCode = await _playerRepository.GetPlayerCountryCodeAsync(id),
 		};
 	}
 }
