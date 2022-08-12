@@ -13,17 +13,6 @@ public static class EnumDisplayStringExtensions
 		_ => throw new InvalidEnumConversionException(client),
 	};
 
-	public static string ToDisplayString(this CustomLeaderboardCategory category) => category switch
-	{
-		CustomLeaderboardCategory.Survival => nameof(CustomLeaderboardCategory.Survival),
-		CustomLeaderboardCategory.TimeAttack => "Time Attack",
-		CustomLeaderboardCategory.Speedrun => nameof(CustomLeaderboardCategory.Speedrun),
-		CustomLeaderboardCategory.Race => nameof(CustomLeaderboardCategory.Race),
-		CustomLeaderboardCategory.Pacifist => nameof(CustomLeaderboardCategory.Pacifist),
-		CustomLeaderboardCategory.RaceNoShooting => "Race (no shooting)",
-		_ => throw new InvalidEnumConversionException(category),
-	};
-
 	public static string ToDisplayString(this GameMode gameMode) => gameMode switch
 	{
 		GameMode.Survival => nameof(GameMode.Survival),

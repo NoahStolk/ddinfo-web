@@ -11,7 +11,7 @@ DevilDaggersInfo is separated into layers, then into project types, then into in
 | `api`         | API specifications                                        | `types`                                                                    |
 | `common`      | Common functionality                                      | Nothing                                                                    |
 | `core`        | Core set of features                                      | `common`, `core`, `types (Core only)`                                      |
-| `types`       | [Enum types](types-libraries.md)                          | Nothing                                                                    |
+| `types`       | [Enum types](types-libraries.md)                          | `common`                                                                   |
 
 ### UI layer
 
