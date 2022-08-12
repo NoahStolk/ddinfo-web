@@ -1,6 +1,7 @@
 using DevilDaggersInfo.App.Core.GameMemory;
 using DevilDaggersInfo.Razor.CustomLeaderboard.Store.Features.LeaderboardFeature.Actions;
 using DevilDaggersInfo.Razor.CustomLeaderboard.Store.Features.LeaderboardListFeature.Actions;
+using DevilDaggersInfo.Razor.CustomLeaderboard.Store.Features.SpawnsetFeature.Actions;
 using DevilDaggersInfo.Razor.CustomLeaderboard.Store.State;
 using Fluxor;
 using System.Security.Cryptography;
@@ -11,12 +12,14 @@ public class StateFacade
 {
 	private readonly IDispatcher _dispatcher;
 	private readonly IState<LeaderboardState> _leaderboardState;
+	private readonly IState<SpawnsetState> _spawnsetState;
 	private readonly GameMemoryReaderService _gameMemoryReaderService;
 
-	public StateFacade(IDispatcher dispatcher, IState<LeaderboardState> leaderboardState, GameMemoryReaderService gameMemoryReaderService)
+	public StateFacade(IDispatcher dispatcher, IState<LeaderboardState> leaderboardState, IState<SpawnsetState> spawnsetState, GameMemoryReaderService gameMemoryReaderService)
 	{
 		_dispatcher = dispatcher;
 		_leaderboardState = leaderboardState;
+		_spawnsetState = spawnsetState;
 		_gameMemoryReaderService = gameMemoryReaderService;
 	}
 
@@ -35,16 +38,16 @@ public class StateFacade
 	{
 		_dispatcher.Dispatch(new DownloadSpawnsetAction(spawnsetId));
 
-		if (_leaderboardState.Value.Spawnset != null)
-		{
-			byte[] spawnsetBytes = _leaderboardState.Value.Spawnset.ToBytes();
+		if (_spawnsetState.Value.Spawnset == null)
+			return;
 
-			// TODO: Get path from running process and refactor to platform-specific DI service interface.
-			File.WriteAllBytes(@"C:\Program Files (x86)\Steam\steamapps\common\devildaggers\mods\survival", spawnsetBytes);
+		byte[] spawnsetBytes = _spawnsetState.Value.Spawnset.ToBytes();
 
-			byte[] hash = MD5.HashData(spawnsetBytes); // TODO: Find different way to hash.
-			_dispatcher.Dispatch(new DownloadLeaderboardAction(hash));
-		}
+		// TODO: Get path from running process and refactor to platform-specific DI service interface.
+		File.WriteAllBytes(@"C:\Program Files (x86)\Steam\steamapps\common\devildaggers\mods\survival", spawnsetBytes);
+
+		byte[] hash = MD5.HashData(spawnsetBytes); // TODO: Find different way to hash.
+		_dispatcher.Dispatch(new DownloadLeaderboardAction(hash));
 	}
 
 	public void SetReplay(int customEntryId)

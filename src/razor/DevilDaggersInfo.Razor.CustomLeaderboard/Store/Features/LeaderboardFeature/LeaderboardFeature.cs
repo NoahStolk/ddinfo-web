@@ -7,5 +7,5 @@ public class LeaderboardFeature : Feature<LeaderboardState>
 {
 	public override string GetName() => "Leaderboard";
 
-	protected override LeaderboardState GetInitialState() => new(false, null, null, null);
+	protected override LeaderboardState GetInitialState() => new(false, null, null);
 }

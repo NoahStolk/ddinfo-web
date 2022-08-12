@@ -1,9 +1,9 @@
 using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Razor.CustomLeaderboard.Services;
-using DevilDaggersInfo.Razor.CustomLeaderboard.Store.Features.LeaderboardFeature.Actions;
+using DevilDaggersInfo.Razor.CustomLeaderboard.Store.Features.SpawnsetFeature.Actions;
 using Fluxor;
 
-namespace DevilDaggersInfo.Razor.CustomLeaderboard.Store.Features.LeaderboardFeature.Effects;
+namespace DevilDaggersInfo.Razor.CustomLeaderboard.Store.Features.SpawnsetFeature.Effects;
 
 public class DownloadSpawnsetEffect : Effect<DownloadSpawnsetAction>
 {
