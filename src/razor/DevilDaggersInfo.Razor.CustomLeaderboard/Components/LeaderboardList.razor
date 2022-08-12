@@ -46,7 +46,7 @@
 		string? daggerColor = leaderboard.SelectedPlayerStats?.Dagger?.GetColorCode();
 		string? worldRecordDaggerColor = leaderboard.WorldRecord?.Dagger?.GetColorCode();
 
-		<div class="grid gap-x-2 grid-cols-5 hover:bg-dark-red cursor-pointer" @onclick="@(() => StateFacade.SetLeaderboard(leaderboard.SpawnsetId))">
+		<div class="grid gap-x-2 grid-cols-5 hover:bg-dark-red cursor-pointer" @onclick="@(() => StateFacade.SetSpawnset(leaderboard.SpawnsetId))">
 			<span>@leaderboard.SpawnsetName</span>
 
 			@if (leaderboard.SelectedPlayerStats == null)

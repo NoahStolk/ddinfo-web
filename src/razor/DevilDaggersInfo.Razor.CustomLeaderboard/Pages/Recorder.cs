@@ -14,7 +14,6 @@ public partial class Recorder : IDisposable
 	private long? _marker;
 	private State _state;
 	private GetUploadSuccess? _submissionResponseWrapper;
-	private GetCustomLeaderboard? _customLeaderboard;
 
 	private enum State
 	{
@@ -43,13 +42,20 @@ public partial class Recorder : IDisposable
 	[Inject]
 	public UploadService UploadService { get; set; } = null!;
 
+	[Inject]
+	public StateFacade StateFacade { get; set; } = null!;
+
 	public void Dispose()
 	{
+		base.Dispose();
+
 		_timer?.Dispose();
 	}
 
 	protected override void OnInitialized()
 	{
+		base.OnInitialized();
+
 		_timer = new(
 			callback: async _ =>
 			{
@@ -89,10 +95,13 @@ public partial class Recorder : IDisposable
 			_submissionResponseWrapper = null;
 		}
 
-		if (_customLeaderboard == null || !ArrayUtils.AreEqual(ReaderService.MainBlock.SurvivalHashMd5, ReaderService.MainBlockPrevious.SurvivalHashMd5))
+		if (!ArrayUtils.AreEqual(ReaderService.MainBlock.SurvivalHashMd5, ReaderService.MainBlockPrevious.SurvivalHashMd5))
 		{
 			Logger.LogInformation("Fetching leaderboard because of hash change.");
-			_customLeaderboard = await NetworkService.GetLeaderboard(ReaderService.MainBlock.SurvivalHashMd5);
+#if TODO
+			int spawnsetId = await NetworkService.GetSpawnsetIdByHash(ReaderService.MainBlock.SurvivalHashMd5);
+			StateFacade.SetSpawnset(lb.SpawnsetId);
+#endif
 		}
 
 		GameStatus status = (GameStatus)ReaderService.MainBlock.Status;
@@ -117,6 +126,10 @@ public partial class Recorder : IDisposable
 		_submissionResponseWrapper = await UploadService.UploadRun(ReaderService.MainBlock);
 		_state = State.CompletedUpload;
 
-		_customLeaderboard = await NetworkService.GetLeaderboard(ReaderService.MainBlock.SurvivalHashMd5);
+		// Refresh the leaderboard after submit.
+#if TODO
+		int spawnsetId = await NetworkService.GetSpawnsetIdByHash(ReaderService.MainBlock.SurvivalHashMd5);
+		StateFacade.SetSpawnset(lb.SpawnsetId);
+#endif
 	}
 }

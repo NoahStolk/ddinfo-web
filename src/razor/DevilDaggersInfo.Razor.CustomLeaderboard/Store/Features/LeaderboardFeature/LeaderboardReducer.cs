@@ -7,20 +7,14 @@ namespace DevilDaggersInfo.Razor.CustomLeaderboard.Store.Features.LeaderboardFea
 public static class LeaderboardReducer
 {
 	[ReducerMethod]
-	public static LeaderboardState ReduceDownloadLeaderboardAction(LeaderboardState state, DownloadLeaderboardAction action)
-	{
-		return new(true, null, state.Leaderboard);
-	}
-
-	[ReducerMethod]
 	public static LeaderboardState ReduceDownloadLeaderboardSuccessAction(LeaderboardState state, DownloadLeaderboardSuccessAction action)
 	{
-		return new(false, null, action.Leaderboard);
+		return new(null, action.Leaderboard);
 	}
 
 	[ReducerMethod]
 	public static LeaderboardState ReduceDownloadLeaderboardFailureAction(LeaderboardState state, DownloadLeaderboardFailureAction action)
 	{
-		return new(false, action.Error, null);
+		return new(action.Error, null);
 	}
 }
