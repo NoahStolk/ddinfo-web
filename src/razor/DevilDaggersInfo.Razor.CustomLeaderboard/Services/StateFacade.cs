@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Razor.CustomLeaderboard.Store.Features.LeaderboardListFeature.Actions;
+using DevilDaggersInfo.Razor.CustomLeaderboard.Store.Features.RecordingFeature.Actions;
 using DevilDaggersInfo.Razor.CustomLeaderboard.Store.Features.SpawnsetFeature.Actions;
 using Fluxor;
 
@@ -34,5 +35,10 @@ public class StateFacade
 		//byte[]? replayData = await NetworkService.GetReplay(customEntryId);
 		//if (replayData != null)
 		//	_gameMemoryReaderService.WriteReplayToMemory(replayData);
+	}
+
+	public void ToggleShowEnemyStats()
+	{
+		_dispatcher.Dispatch(new ToggleShowEnemyStatsAction());
 	}
 }

@@ -1,6 +1,11 @@
 @inherits FluxorComponent
 @using DevilDaggersInfo.App.Core.GameMemory
 @using DevilDaggersInfo.Core.Wiki
+@using DevilDaggersInfo.Razor.CustomLeaderboard.Services
+@using DevilDaggersInfo.Razor.CustomLeaderboard.Store.State
+@using Fluxor
+@inject IState<RecordingState> State
+@inject StateFacade StateFacade
 @{
 	GameStatus status = (GameStatus)Block.Status;
 }
@@ -62,83 +67,87 @@
 			<span class="text-right"><RecordingValue T="float" Selector="@((b) => (b.DaggersFired == 0 ? 0 : b.DaggersHit / (float)b.DaggersFired))" ColorCode="#fa0" Format="@(f => f.ToString("0.00%"))" /></span>
 		</div>
 
-		<div class="grid grid-cols-4">
-			<span class="col-span-2">Enemies</span>
-			<span class="text-right">Alive</span>
-			<span class="text-right">Killed</span>
+		<button class="btn bg-dark-red hover:bg-red" @onclick="() => StateFacade.ToggleShowEnemyStats()">Show/hide enemies</button>
+		@if (State.Value.ShowEnemyStats)
+		{
+			<div class="grid grid-cols-4">
+				<span class="col-span-2">Enemies</span>
+				<span class="text-right">Alive</span>
+				<span class="text-right">Killed</span>
 
-			<span class="col-span-2">Total</span>
-			<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.EnemiesAlive)" ColorCode="#884" /></span>
-			<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.EnemiesKilled)" ColorCode="#f00" /></span>
+				<span class="col-span-2">Total</span>
+				<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.EnemiesAlive)" ColorCode="#884" /></span>
+				<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.EnemiesKilled)" ColorCode="#f00" /></span>
 
-			<span class="col-span-2">Skull I</span>
-			<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.Skull1sAlive)" ColorCode="@EnemiesV3_2.Skull1.Color.HexCode" /></span>
-			<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.Skull1sKilled)" ColorCode="@EnemiesV3_2.Skull1.Color.HexCode" /></span>
+				<span class="col-span-2">Skull I</span>
+				<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.Skull1sAlive)" ColorCode="@EnemiesV3_2.Skull1.Color.HexCode" /></span>
+				<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.Skull1sKilled)" ColorCode="@EnemiesV3_2.Skull1.Color.HexCode" /></span>
 
-			<span class="col-span-2">Skull II</span>
-			<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.Skull2sAlive)" ColorCode="@EnemiesV3_2.Skull2.Color.HexCode" /></span>
-			<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.Skull2sKilled)" ColorCode="@EnemiesV3_2.Skull2.Color.HexCode" /></span>
+				<span class="col-span-2">Skull II</span>
+				<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.Skull2sAlive)" ColorCode="@EnemiesV3_2.Skull2.Color.HexCode" /></span>
+				<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.Skull2sKilled)" ColorCode="@EnemiesV3_2.Skull2.Color.HexCode" /></span>
 
-			<span class="col-span-2">Skull III</span>
-			<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.Skull3sAlive)" ColorCode="@EnemiesV3_2.Skull3.Color.HexCode" /></span>
-			<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.Skull3sKilled)" ColorCode="@EnemiesV3_2.Skull3.Color.HexCode" /></span>
+				<span class="col-span-2">Skull III</span>
+				<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.Skull3sAlive)" ColorCode="@EnemiesV3_2.Skull3.Color.HexCode" /></span>
+				<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.Skull3sKilled)" ColorCode="@EnemiesV3_2.Skull3.Color.HexCode" /></span>
 
-			<span class="col-span-2">Skull IV</span>
-			<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.Skull4sAlive)" ColorCode="@EnemiesV3_2.Skull4.Color.HexCode" /></span>
-			<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.Skull4sKilled)" ColorCode="@EnemiesV3_2.Skull4.Color.HexCode" /></span>
+				<span class="col-span-2">Skull IV</span>
+				<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.Skull4sAlive)" ColorCode="@EnemiesV3_2.Skull4.Color.HexCode" /></span>
+				<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.Skull4sKilled)" ColorCode="@EnemiesV3_2.Skull4.Color.HexCode" /></span>
 
-			<span class="col-span-2">Squid I</span>
-			<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.Squid1sAlive)" ColorCode="@EnemiesV3_2.Squid1.Color.HexCode" /></span>
-			<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.Squid1sKilled)" ColorCode="@EnemiesV3_2.Squid1.Color.HexCode" /></span>
+				<span class="col-span-2">Squid I</span>
+				<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.Squid1sAlive)" ColorCode="@EnemiesV3_2.Squid1.Color.HexCode" /></span>
+				<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.Squid1sKilled)" ColorCode="@EnemiesV3_2.Squid1.Color.HexCode" /></span>
 
-			<span class="col-span-2">Squid II</span>
-			<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.Squid2sAlive)" ColorCode="@EnemiesV3_2.Squid2.Color.HexCode" /></span>
-			<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.Squid2sKilled)" ColorCode="@EnemiesV3_2.Squid2.Color.HexCode" /></span>
+				<span class="col-span-2">Squid II</span>
+				<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.Squid2sAlive)" ColorCode="@EnemiesV3_2.Squid2.Color.HexCode" /></span>
+				<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.Squid2sKilled)" ColorCode="@EnemiesV3_2.Squid2.Color.HexCode" /></span>
 
-			<span class="col-span-2">Squid III</span>
-			<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.Squid3sAlive)" ColorCode="@EnemiesV3_2.Squid3.Color.HexCode" /></span>
-			<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.Squid3sKilled)" ColorCode="@EnemiesV3_2.Squid3.Color.HexCode" /></span>
+				<span class="col-span-2">Squid III</span>
+				<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.Squid3sAlive)" ColorCode="@EnemiesV3_2.Squid3.Color.HexCode" /></span>
+				<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.Squid3sKilled)" ColorCode="@EnemiesV3_2.Squid3.Color.HexCode" /></span>
 
-			<span class="col-span-2">Spider I</span>
-			<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.Spider1sAlive)" ColorCode="@EnemiesV3_2.Spider1.Color.HexCode" /></span>
-			<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.Spider1sKilled)" ColorCode="@EnemiesV3_2.Spider1.Color.HexCode" /></span>
+				<span class="col-span-2">Spider I</span>
+				<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.Spider1sAlive)" ColorCode="@EnemiesV3_2.Spider1.Color.HexCode" /></span>
+				<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.Spider1sKilled)" ColorCode="@EnemiesV3_2.Spider1.Color.HexCode" /></span>
 
-			<span class="col-span-2">Spider II</span>
-			<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.Spider2sAlive)" ColorCode="@EnemiesV3_2.Spider2.Color.HexCode" /></span>
-			<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.Spider2sKilled)" ColorCode="@EnemiesV3_2.Spider2.Color.HexCode" /></span>
+				<span class="col-span-2">Spider II</span>
+				<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.Spider2sAlive)" ColorCode="@EnemiesV3_2.Spider2.Color.HexCode" /></span>
+				<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.Spider2sKilled)" ColorCode="@EnemiesV3_2.Spider2.Color.HexCode" /></span>
 
-			<span class="col-span-2">Spider Egg</span>
-			<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.SpiderEggsAlive)" ColorCode="@EnemiesV3_2.SpiderEgg1.Color.HexCode" /></span>
-			<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.SpiderEggsKilled)" ColorCode="@EnemiesV3_2.SpiderEgg1.Color.HexCode" /></span>
+				<span class="col-span-2">Spider Egg</span>
+				<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.SpiderEggsAlive)" ColorCode="@EnemiesV3_2.SpiderEgg1.Color.HexCode" /></span>
+				<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.SpiderEggsKilled)" ColorCode="@EnemiesV3_2.SpiderEgg1.Color.HexCode" /></span>
 
-			<span class="col-span-2">Spiderling</span>
-			<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.SpiderlingsAlive)" ColorCode="@EnemiesV3_2.Spiderling.Color.HexCode" /></span>
-			<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.SpiderlingsKilled)" ColorCode="@EnemiesV3_2.Spiderling.Color.HexCode" /></span>
+				<span class="col-span-2">Spiderling</span>
+				<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.SpiderlingsAlive)" ColorCode="@EnemiesV3_2.Spiderling.Color.HexCode" /></span>
+				<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.SpiderlingsKilled)" ColorCode="@EnemiesV3_2.Spiderling.Color.HexCode" /></span>
 
-			<span class="col-span-2">Centipede</span>
-			<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.CentipedesAlive)" ColorCode="@EnemiesV3_2.Centipede.Color.HexCode" /></span>
-			<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.CentipedesKilled)" ColorCode="@EnemiesV3_2.Centipede.Color.HexCode" /></span>
+				<span class="col-span-2">Centipede</span>
+				<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.CentipedesAlive)" ColorCode="@EnemiesV3_2.Centipede.Color.HexCode" /></span>
+				<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.CentipedesKilled)" ColorCode="@EnemiesV3_2.Centipede.Color.HexCode" /></span>
 
-			<span class="col-span-2">Gigapede</span>
-			<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.GigapedesAlive)" ColorCode="@EnemiesV3_2.Gigapede.Color.HexCode" /></span>
-			<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.GigapedesKilled)" ColorCode="@EnemiesV3_2.Gigapede.Color.HexCode" /></span>
+				<span class="col-span-2">Gigapede</span>
+				<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.GigapedesAlive)" ColorCode="@EnemiesV3_2.Gigapede.Color.HexCode" /></span>
+				<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.GigapedesKilled)" ColorCode="@EnemiesV3_2.Gigapede.Color.HexCode" /></span>
 
-			<span class="col-span-2">Ghostpede</span>
-			<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.GhostpedesAlive)" ColorCode="@EnemiesV3_2.Ghostpede.Color.HexCode" /></span>
-			<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.GhostpedesKilled)" ColorCode="@EnemiesV3_2.Ghostpede.Color.HexCode" /></span>
+				<span class="col-span-2">Ghostpede</span>
+				<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.GhostpedesAlive)" ColorCode="@EnemiesV3_2.Ghostpede.Color.HexCode" /></span>
+				<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.GhostpedesKilled)" ColorCode="@EnemiesV3_2.Ghostpede.Color.HexCode" /></span>
 
-			<span class="col-span-2">Thorn</span>
-			<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.ThornsAlive)" ColorCode="@EnemiesV3_2.Thorn.Color.HexCode" /></span>
-			<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.ThornsKilled)" ColorCode="@EnemiesV3_2.Thorn.Color.HexCode" /></span>
+				<span class="col-span-2">Thorn</span>
+				<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.ThornsAlive)" ColorCode="@EnemiesV3_2.Thorn.Color.HexCode" /></span>
+				<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.ThornsKilled)" ColorCode="@EnemiesV3_2.Thorn.Color.HexCode" /></span>
 
-			<span class="col-span-2">Leviathan</span>
-			<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.LeviathansAlive)" ColorCode="@EnemiesV3_2.Leviathan.Color.HexCode" /></span>
-			<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.LeviathansKilled)" ColorCode="@EnemiesV3_2.Leviathan.Color.HexCode" /></span>
+				<span class="col-span-2">Leviathan</span>
+				<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.LeviathansAlive)" ColorCode="@EnemiesV3_2.Leviathan.Color.HexCode" /></span>
+				<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.LeviathansKilled)" ColorCode="@EnemiesV3_2.Leviathan.Color.HexCode" /></span>
 
-			<span class="col-span-2">Orb</span>
-			<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.OrbsAlive)" ColorCode="@EnemiesV3_2.TheOrb.Color.HexCode" /></span>
-			<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.OrbsKilled)" ColorCode="@EnemiesV3_2.TheOrb.Color.HexCode" /></span>
-		</div>
+				<span class="col-span-2">Orb</span>
+				<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.OrbsAlive)" ColorCode="@EnemiesV3_2.TheOrb.Color.HexCode" /></span>
+				<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.OrbsKilled)" ColorCode="@EnemiesV3_2.TheOrb.Color.HexCode" /></span>
+			</div>
+		}
 	}
 </CascadingValue>
 

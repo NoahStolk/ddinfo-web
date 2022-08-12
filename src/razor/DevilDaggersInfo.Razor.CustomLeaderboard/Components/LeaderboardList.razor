@@ -15,8 +15,8 @@
 <div>Select a spawnset to play</div>
 
 <div class="h-16">
-	<button class="bg-dark-red hover:bg-red px-1" @onclick="@(() => StateFacade.SetPageIndex(State.Value.PageIndex - 1))">Prev</button>
-	<button class="bg-dark-red hover:bg-red px-1" @onclick="@(() => StateFacade.SetPageIndex(State.Value.PageIndex + 1))">Next</button>
+	<button class="btn bg-dark-red hover:bg-red" @onclick="@(() => StateFacade.SetPageIndex(State.Value.PageIndex - 1))">Prev</button>
+	<button class="btn bg-dark-red hover:bg-red" @onclick="@(() => StateFacade.SetPageIndex(State.Value.PageIndex + 1))">Next</button>
 
 	@if (State.Value.IsLoading)
 	{
