@@ -163,9 +163,9 @@ Devil Daggers stores various read-only data in memory so it can easily be read b
 | Ghostpedes killed          |    108 | 16-bit integer           |             2 |
 | Spider eggs killed         |    110 | 16-bit integer           |             2 |
 
-## Game status
+## Game statuses
 
-| Meaning                     | Value |
+| Game status                 | Value |
 |-----------------------------|-------|
 | Title                       |     0 |
 | Menu                        |     1 |
