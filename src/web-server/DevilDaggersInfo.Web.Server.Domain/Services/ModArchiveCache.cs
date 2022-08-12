@@ -8,7 +8,7 @@ using System.IO.Compression;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Services;
 
-public class ModArchiveCache : IDynamicCache
+public class ModArchiveCache
 {
 	private readonly object _fileStreamLock = new();
 

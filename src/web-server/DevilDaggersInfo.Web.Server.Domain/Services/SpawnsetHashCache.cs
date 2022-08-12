@@ -8,7 +8,7 @@ using System.Security.Cryptography;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Services;
 
-public class SpawnsetHashCache : IDynamicCache
+public class SpawnsetHashCache
 {
 	private readonly ConcurrentBag<SpawnsetHashCacheData> _cache = new();
 

@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Services;
 
-public class SpawnsetSummaryCache : IDynamicCache
+public class SpawnsetSummaryCache
 {
 	private readonly ConcurrentDictionary<string, SpawnsetSummary> _cache = new();
 
