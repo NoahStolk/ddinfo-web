@@ -32,6 +32,7 @@
     <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Encryption\DevilDaggersInfo.Core.Encryption.csproj" />
     <ProjectReference Include="..\..\web-client\DevilDaggersInfo.Web.Client\DevilDaggersInfo.Web.Client.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.Web.Server.Domain.Admin\DevilDaggersInfo.Web.Server.Domain.Admin.csproj" />
+    <ProjectReference Include="..\DevilDaggersInfo.Web.Server.Domain.Main\DevilDaggersInfo.Web.Server.Domain.Main.csproj" />
   </ItemGroup>
 
 </Project>
