@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Razor.CustomLeaderboard.Enums;
+using DevilDaggersInfo.Razor.CustomLeaderboard.Store.Features.LeaderboardFeature.Actions;
 using DevilDaggersInfo.Razor.CustomLeaderboard.Store.Features.LeaderboardListFeature.Actions;
 using DevilDaggersInfo.Razor.CustomLeaderboard.Store.Features.RecorderFeature.Actions;
 using DevilDaggersInfo.Razor.CustomLeaderboard.Store.Features.RecordingFeature.Actions;
@@ -41,9 +42,7 @@ public class StateFacade
 
 	public void SetReplay(int customEntryId)
 	{
-		//byte[]? replayData = await NetworkService.GetReplay(customEntryId);
-		//if (replayData != null)
-		//	_gameMemoryReaderService.WriteReplayToMemory(replayData);
+		_dispatcher.Dispatch(new SetReplayAction(customEntryId));
 	}
 
 	public void ToggleShowEnemyStats()
