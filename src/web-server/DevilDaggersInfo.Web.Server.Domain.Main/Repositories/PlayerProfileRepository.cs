@@ -1,12 +1,12 @@
+using DevilDaggersInfo.Api.Main.Players;
 using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Core.Claims;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
-using DevilDaggersInfo.Web.Server.Domain.Models.Players;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
-namespace DevilDaggersInfo.Web.Server.Domain.Repositories;
+namespace DevilDaggersInfo.Web.Server.Domain.Main.Repositories;
 
 public class PlayerProfileRepository
 {
@@ -17,7 +17,7 @@ public class PlayerProfileRepository
 		_dbContext = dbContext;
 	}
 
-	public async Task<PlayerProfile> GetProfileAsync(ClaimsPrincipal claimsPrincipal, int id)
+	public async Task<GetPlayerProfile> GetProfileAsync(ClaimsPrincipal claimsPrincipal, int id)
 	{
 		string? userName = claimsPrincipal.GetName();
 		UserEntity? user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Name == userName);

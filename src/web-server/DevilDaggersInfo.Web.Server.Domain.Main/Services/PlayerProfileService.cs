@@ -1,12 +1,12 @@
+using DevilDaggersInfo.Api.Main.Players;
 using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Core.Claims;
-using DevilDaggersInfo.Web.Server.Domain.Commands.Players;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
-namespace DevilDaggersInfo.Web.Server.Domain.Services;
+namespace DevilDaggersInfo.Web.Server.Domain.Main.Services;
 
 public class PlayerProfileService
 {

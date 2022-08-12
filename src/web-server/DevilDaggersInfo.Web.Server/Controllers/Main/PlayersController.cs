@@ -2,11 +2,11 @@ using DevilDaggersInfo.Api.Main.Players;
 using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Main;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
+using DevilDaggersInfo.Web.Server.Domain.Main.Repositories;
+using DevilDaggersInfo.Web.Server.Domain.Main.Services;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardHistory;
 using DevilDaggersInfo.Web.Server.Domain.Models.Players;
-using DevilDaggersInfo.Web.Server.Domain.Repositories;
-using DevilDaggersInfo.Web.Server.Domain.Services;
 using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 using DevilDaggersInfo.Web.Server.Domain.Utils;
@@ -268,10 +268,7 @@ public class PlayersController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status403Forbidden)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult<GetPlayerProfile>> GetProfileByPlayerId([Required] int id)
-	{
-		PlayerProfile playerProfile = await _profileRepository.GetProfileAsync(User, id);
-		return playerProfile.ToMainApi();
-	}
+		=> await _profileRepository.GetProfileAsync(User, id);
 
 	[Authorize]
 	[HttpPut("{id}/profile")]
@@ -282,7 +279,7 @@ public class PlayersController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult> UpdateProfileByPlayerId([Required] int id, EditPlayerProfile editPlayerProfile)
 	{
-		await _profileService.UpdateProfileAsync(User, id, editPlayerProfile.ToDomain());
+		await _profileService.UpdateProfileAsync(User, id, editPlayerProfile);
 		return Ok();
 	}
 }
