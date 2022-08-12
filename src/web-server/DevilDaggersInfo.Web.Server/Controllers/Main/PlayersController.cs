@@ -5,6 +5,7 @@ using DevilDaggersInfo.Web.Server.Domain.Main.Repositories;
 using DevilDaggersInfo.Web.Server.Domain.Main.Services;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardHistory;
+using DevilDaggersInfo.Web.Server.Domain.Repositories;
 using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 using DevilDaggersInfo.Web.Server.Domain.Utils;
@@ -19,46 +20,34 @@ public class PlayersController : ControllerBase
 	private readonly ApplicationDbContext _dbContext;
 	private readonly IFileSystemService _fileSystemService;
 	private readonly LeaderboardHistoryCache _leaderboardHistoryCache;
+	private readonly PlayerRepository _playerRepository;
 	private readonly PlayerProfileService _profileService;
 	private readonly PlayerProfileRepository _profileRepository;
 
-	public PlayersController(ApplicationDbContext dbContext, IFileSystemService fileSystemService, LeaderboardHistoryCache leaderboardHistoryCache, PlayerProfileService profileService, PlayerProfileRepository profileRepository)
+	public PlayersController(ApplicationDbContext dbContext, IFileSystemService fileSystemService, LeaderboardHistoryCache leaderboardHistoryCache, PlayerRepository playerRepository, PlayerProfileService profileService, PlayerProfileRepository profileRepository)
 	{
 		_dbContext = dbContext;
 		_fileSystemService = fileSystemService;
 		_leaderboardHistoryCache = leaderboardHistoryCache;
+		_playerRepository = playerRepository;
 		_profileService = profileService;
 		_profileRepository = profileRepository;
 	}
 
 	[HttpGet("leaderboard")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	public ActionResult<List<GetPlayerForLeaderboard>> GetPlayersForLeaderboard()
+	public async Task<ActionResult<List<GetPlayerForLeaderboard>>> GetPlayersForLeaderboard()
 	{
-		return _dbContext.Players
-			.AsNoTracking()
-			.Select(p => new GetPlayerForLeaderboard
-			{
-				Id = p.Id,
-				BanType = p.BanType,
-				BanDescription = p.BanDescription,
-				BanResponsibleId = p.BanResponsibleId,
-				CountryCode = p.CountryCode,
-			})
-			.ToList();
+		List<Domain.Models.Players.PlayerForLeaderboard> players = await _playerRepository.GetPlayersForLeaderboardAsync();
+		return players.ConvertAll(p => p.ToGetPlayerForLeaderboard());
 	}
 
 	[HttpGet("settings")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	public ActionResult<List<GetPlayerForSettings>> GetPlayersForSettings()
+	public async Task<ActionResult<List<GetPlayerForSettings>>> GetPlayersForSettings()
 	{
-		List<PlayerEntity> players = _dbContext.Players
-			.AsNoTracking()
-			.Where(p => p.BanType == BanType.NotBanned && !p.HideSettings)
-			.ToList();
-
-		// Note; cannot evaluate HasSettings() against database (IQueryable).
-		return players.Where(p => p.HasSettings()).Select(p => p.ToGetPlayerForSettings()).ToList();
+		List<Domain.Models.Players.PlayerForSettings> players = await _playerRepository.GetPlayersForSettingsAsync();
+		return players.ConvertAll(p => p.ToGetPlayerForSettings());
 	}
 
 	// FORBIDDEN: Used by DDLIVE.
@@ -66,17 +55,10 @@ public class PlayersController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public ActionResult<GetPlayer> GetPlayerById([Required] int id)
+	public async Task<ActionResult<GetPlayer>> GetPlayerById([Required] int id)
 	{
-		PlayerEntity? player = _dbContext.Players
-			.AsNoTracking()
-			.FirstOrDefault(p => p.Id == id);
-		if (player == null)
-			return NotFound();
-
-		bool isPublicDonator = !player.HideDonations && _dbContext.Donations.Any(d => d.PlayerId == id && !d.IsRefunded && d.ConvertedEuroCentsReceived > 0);
-
-		return player.ToGetPlayer(isPublicDonator);
+		Domain.Models.Players.Player player = await _playerRepository.GetPlayerAsync(id);
+		return player.ToGetPlayer();
 	}
 
 	// FORBIDDEN: Used by DDLIVE.

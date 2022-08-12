@@ -1,48 +1,47 @@
-using DevilDaggersInfo.Types.Web;
-using MainApi = DevilDaggersInfo.Api.Main.Players;
+using DevilDaggersInfo.Api.Main.Players;
+using DevilDaggersInfo.Web.Server.Domain.Models.Players;
 
 namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 
 public static class PlayerConverters
 {
-	public static MainApi.GetPlayer ToGetPlayer(this PlayerEntity player, bool isPublicDonator) => new()
+	public static GetPlayerForLeaderboard ToGetPlayerForLeaderboard(this PlayerForLeaderboard player) => new()
+	{
+		BanDescription = player.BanDescription,
+		BanResponsibleId = player.BanResponsibleId,
+		BanType = player.BanType,
+		CountryCode = player.CountryCode,
+		Id = player.Id,
+	};
+
+	public static GetPlayerForSettings ToGetPlayerForSettings(this PlayerForSettings player) => new()
+	{
+		CountryCode = player.CountryCode,
+		Id = player.Id,
+		Settings = player.Settings.ToGetPlayerSettings(),
+	};
+
+	public static GetPlayer ToGetPlayer(this Player player) => new()
 	{
 		BanDescription = player.BanDescription,
 		CountryCode = player.CountryCode,
 		Id = player.Id,
-		IsBanned = player.BanType != BanType.NotBanned,
-		IsPublicDonator = isPublicDonator,
-		Settings = !player.HasVisibleSettings() ? null : new()
-		{
-			Dpi = player.Dpi,
-			Fov = player.Fov,
-			Gamma = player.Gamma,
-			InGameSens = player.InGameSens,
-			IsRightHanded = player.IsRightHanded,
-			UsesFlashHand = player.HasFlashHandEnabled,
-			UsesLegacyAudio = player.UsesLegacyAudio,
-			UsesHrtf = player.UsesHrtf,
-			UsesInvertY = player.UsesInvertY,
-			VerticalSync = player.VerticalSync,
-		},
+		IsBanned = player.IsBanned,
+		IsPublicDonator = player.IsPublicDonator,
+		Settings = player.Settings?.ToGetPlayerSettings(),
 	};
 
-	public static MainApi.GetPlayerForSettings ToGetPlayerForSettings(this PlayerEntity player) => new()
+	public static GetPlayerSettings ToGetPlayerSettings(this PlayerSettings settings) => new()
 	{
-		CountryCode = player.CountryCode,
-		Id = player.Id,
-		Settings = new()
-		{
-			Dpi = player.Dpi,
-			Fov = player.Fov,
-			Gamma = player.Gamma,
-			UsesFlashHand = player.HasFlashHandEnabled,
-			InGameSens = player.InGameSens,
-			IsRightHanded = player.IsRightHanded,
-			UsesLegacyAudio = player.UsesLegacyAudio,
-			UsesHrtf = player.UsesHrtf,
-			UsesInvertY = player.UsesInvertY,
-			VerticalSync = player.VerticalSync,
-		},
+		Dpi = settings.Dpi,
+		Fov = settings.Fov,
+		Gamma = settings.Gamma,
+		InGameSens = settings.InGameSens,
+		IsRightHanded = settings.IsRightHanded,
+		UsesFlashHand = settings.UsesFlashHand,
+		UsesLegacyAudio = settings.UsesLegacyAudio,
+		UsesHrtf = settings.UsesHrtf,
+		UsesInvertY = settings.UsesInvertY,
+		VerticalSync = settings.VerticalSync,
 	};
 }

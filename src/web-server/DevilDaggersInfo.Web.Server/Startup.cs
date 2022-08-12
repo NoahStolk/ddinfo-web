@@ -50,15 +50,20 @@ public class Startup
 		services.AddTransient<ModArchiveAccessor>();
 		services.AddTransient<ModArchiveProcessor>();
 		services.AddTransient<ModScreenshotProcessor>();
-		services.AddScoped<PlayerProfileService>();
 		services.AddScoped<UserManager>();
 
 		// Repositories
 		services.AddTransient<CustomEntryRepository>();
 		services.AddTransient<CustomLeaderboardRepository>();
 		services.AddTransient<MarkerRepository>();
-		services.AddScoped<PlayerProfileRepository>();
+		services.AddTransient<PlayerRepository>();
 		services.AddTransient<ToolRepository>();
+
+		// Main domain services
+		services.AddScoped<PlayerProfileService>();
+
+		// Main domain repositories
+		services.AddScoped<PlayerProfileRepository>();
 
 		// Admin domain services
 		services.AddTransient<Domain.Admin.Services.CustomEntryService>();
