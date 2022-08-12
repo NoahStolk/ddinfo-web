@@ -2,11 +2,13 @@
 @using DevilDaggersInfo.Api.Ddcl
 @using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards
 @using DevilDaggersInfo.App.Core.GameMemory
+@using DevilDaggersInfo.Razor.Core.Components.Components
 @using DevilDaggersInfo.Razor.CustomLeaderboard.Extensions
 @using DevilDaggersInfo.Razor.CustomLeaderboard.Services
 @using DevilDaggersInfo.Razor.CustomLeaderboard.Store.State
 @using DevilDaggersInfo.Razor.CustomLeaderboard.Utils
 @using DevilDaggersInfo.Types.Web
+@using DevilDaggersInfo.Types.Web.Extensions
 @using Fluxor
 @inject IState<LeaderboardListState> State
 @inject NetworkService NetworkService
@@ -17,6 +19,7 @@
 <div class="h-16">
 	<button class="btn bg-dark-red hover:bg-red" @onclick="@(() => StateFacade.SetPageIndex(State.Value.PageIndex - 1))">Prev</button>
 	<button class="btn bg-dark-red hover:bg-red" @onclick="@(() => StateFacade.SetPageIndex(State.Value.PageIndex + 1))">Next</button>
+	<SelectList CssWidthClass="w-48" CssOpenerClass="pl-2" TValue="CustomLeaderboardCategory" Values="@(Enum.GetValues<CustomLeaderboardCategory>().ToList())" DisplayFunction="@(clc => clc.ToDisplayString())" Default="CustomLeaderboardCategory.Survival" Selected="@(clc => StateFacade.SetCategory(clc))" />
 
 	@if (State.Value.IsLoading)
 	{

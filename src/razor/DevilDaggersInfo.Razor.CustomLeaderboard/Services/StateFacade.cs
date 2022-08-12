@@ -3,6 +3,7 @@ using DevilDaggersInfo.Razor.CustomLeaderboard.Store.Features.LeaderboardListFea
 using DevilDaggersInfo.Razor.CustomLeaderboard.Store.Features.RecorderFeature.Actions;
 using DevilDaggersInfo.Razor.CustomLeaderboard.Store.Features.RecordingFeature.Actions;
 using DevilDaggersInfo.Razor.CustomLeaderboard.Store.Features.SpawnsetFeature.Actions;
+using DevilDaggersInfo.Types.Web;
 using Fluxor;
 
 namespace DevilDaggersInfo.Razor.CustomLeaderboard.Services;
@@ -24,6 +25,12 @@ public class StateFacade
 	public void SetPageIndex(int pageIndex)
 	{
 		_dispatcher.Dispatch(new SetPageIndexAction(pageIndex));
+		_dispatcher.Dispatch(new FetchLeaderboardsAction());
+	}
+
+	public void SetCategory(CustomLeaderboardCategory category)
+	{
+		_dispatcher.Dispatch(new SetCategoryAction(category));
 		_dispatcher.Dispatch(new FetchLeaderboardsAction());
 	}
 

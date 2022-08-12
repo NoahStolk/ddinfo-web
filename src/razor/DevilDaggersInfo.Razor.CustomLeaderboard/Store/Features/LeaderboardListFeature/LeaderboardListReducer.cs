@@ -15,6 +15,12 @@ public static class LeaderboardListReducer
 	}
 
 	[ReducerMethod]
+	public static LeaderboardListState ReduceSetCategoryAction(LeaderboardListState state, SetCategoryAction action)
+	{
+		return new(false, null, state.Leaderboards, state.SelectedPlayerId, action.Category, state.PageIndex, state.PageSize);
+	}
+
+	[ReducerMethod]
 	public static LeaderboardListState ReduceFetchLeaderboardsAction(LeaderboardListState state, FetchLeaderboardsAction action)
 	{
 		return new(true, null, state.Leaderboards, state.SelectedPlayerId, state.Category, state.PageIndex, state.PageSize);
