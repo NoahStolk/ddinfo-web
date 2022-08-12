@@ -11,13 +11,13 @@ using System.Text;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Services;
 
-public class UserService
+public class UserManager
 {
 	private readonly ApplicationDbContext _dbContext;
 	private readonly IConfiguration _configuration;
-	private readonly ILogger<UserService> _logger;
+	private readonly ILogger<UserManager> _logger;
 
-	public UserService(ApplicationDbContext context, IConfiguration configuration, ILogger<UserService> logger)
+	public UserManager(ApplicationDbContext context, IConfiguration configuration, ILogger<UserManager> logger)
 	{
 		_dbContext = context;
 		_configuration = configuration;

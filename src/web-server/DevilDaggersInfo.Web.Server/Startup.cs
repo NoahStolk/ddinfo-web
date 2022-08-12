@@ -50,7 +50,7 @@ public class Startup
 		services.AddTransient<ModScreenshotProcessor>();
 		services.AddScoped<PlayerProfileService>();
 		services.AddTransient<ToolService>();
-		services.AddScoped<UserService>();
+		services.AddScoped<UserManager>();
 
 		// Repositories
 		services.AddTransient<CustomEntryRepository>();
@@ -67,6 +67,7 @@ public class Startup
 		services.AddTransient<Domain.Admin.Services.PlayerService>();
 		services.AddTransient<Domain.Admin.Services.SpawnsetService>();
 		services.AddTransient<Domain.Admin.Services.ToolService>();
+		services.AddTransient<Domain.Admin.Services.UserService>();
 
 		// Admin repositories
 		services.AddTransient<Domain.Admin.Repositories.CustomEntryRepository>();

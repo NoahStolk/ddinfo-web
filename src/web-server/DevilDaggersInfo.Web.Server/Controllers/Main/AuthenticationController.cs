@@ -9,12 +9,12 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 [Route("api/authentication")]
 public class AuthenticationController : ControllerBase
 {
-	private readonly UserService _userService;
+	private readonly UserManager _userManager;
 	private readonly ILogger<AuthenticationController> _logger;
 
-	public AuthenticationController(UserService userService, ILogger<AuthenticationController> logger)
+	public AuthenticationController(UserManager userManager, ILogger<AuthenticationController> logger)
 	{
-		_userService = userService;
+		_userManager = userManager;
 		_logger = logger;
 	}
 
@@ -23,7 +23,7 @@ public class AuthenticationController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public ActionResult<AuthenticationResponse> Authenticate([FromBody] AuthenticationRequest authenticationRequest)
 	{
-		UserEntity? user = _userService.GetUserByJwt(authenticationRequest.Jwt);
+		UserEntity? user = _userManager.GetUserByJwt(authenticationRequest.Jwt);
 		if (user == null)
 			return BadRequest("Failed to authenticate. The token is invalid.");
 
@@ -41,14 +41,14 @@ public class AuthenticationController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public ActionResult<LoginResponse> Login([FromBody] LoginRequest loginRequest)
 	{
-		UserEntity? user = _userService.Authenticate(loginRequest.Name, loginRequest.Password);
+		UserEntity? user = _userManager.Authenticate(loginRequest.Name, loginRequest.Password);
 		if (user == null)
 		{
 			_logger.LogInformation("User '{name}' failed to login.", loginRequest.Name);
 			return BadRequest("Username or password is incorrect.");
 		}
 
-		string tokenString = _userService.GenerateJwt(user);
+		string tokenString = _userManager.GenerateJwt(user);
 
 		_logger.LogInformation("User '{name}' logged in successfully.", loginRequest.Name);
 		return new LoginResponse
@@ -69,7 +69,7 @@ public class AuthenticationController : ControllerBase
 
 		try
 		{
-			_userService.Create(registrationRequest.Name, registrationRequest.Password);
+			_userManager.Create(registrationRequest.Name, registrationRequest.Password);
 			_logger.LogInformation("User '{name}' registered successfully.", registrationRequest.Name);
 			return Ok();
 		}
@@ -89,7 +89,7 @@ public class AuthenticationController : ControllerBase
 		if (updateNameRequest.NewName == updateNameRequest.CurrentName)
 			return BadRequest("The same username was entered.");
 
-		UserEntity? user = _userService.Authenticate(updateNameRequest.CurrentName, updateNameRequest.CurrentPassword);
+		UserEntity? user = _userManager.Authenticate(updateNameRequest.CurrentName, updateNameRequest.CurrentPassword);
 		if (user == null)
 		{
 			_logger.LogInformation("User '{name}' failed to authenticate while attempting to update name.", updateNameRequest.CurrentName);
@@ -98,7 +98,7 @@ public class AuthenticationController : ControllerBase
 
 		try
 		{
-			_userService.UpdateName(user.Id, updateNameRequest.NewName);
+			_userManager.UpdateName(user.Id, updateNameRequest.NewName);
 			_logger.LogInformation("User '{oldName}' changed their name to '{newName}'.", updateNameRequest.CurrentName, updateNameRequest.NewName);
 			return Ok();
 		}
@@ -121,7 +121,7 @@ public class AuthenticationController : ControllerBase
 		if (updatePasswordRequest.NewPassword == updatePasswordRequest.CurrentPassword)
 			return BadRequest("The same password was entered.");
 
-		UserEntity? user = _userService.Authenticate(updatePasswordRequest.CurrentName, updatePasswordRequest.CurrentPassword);
+		UserEntity? user = _userManager.Authenticate(updatePasswordRequest.CurrentName, updatePasswordRequest.CurrentPassword);
 		if (user == null)
 		{
 			_logger.LogInformation("User '{name}' failed to authenticate while attempting to update password.", updatePasswordRequest.CurrentName);
@@ -130,7 +130,7 @@ public class AuthenticationController : ControllerBase
 
 		try
 		{
-			_userService.UpdatePassword(user.Id, updatePasswordRequest.NewPassword);
+			_userManager.UpdatePassword(user.Id, updatePasswordRequest.NewPassword);
 			return Ok();
 		}
 		catch (Exception ex)

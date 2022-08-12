@@ -1,7 +1,7 @@
 using DevilDaggersInfo.Api.Admin.Users;
 using DevilDaggersInfo.Web.Core.Claims;
 using DevilDaggersInfo.Web.Server.Domain.Admin.Repositories;
-using DevilDaggersInfo.Web.Server.Domain.Services;
+using DevilDaggersInfo.Web.Server.Domain.Admin.Services;
 using Microsoft.AspNetCore.Authorization;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
@@ -10,17 +10,13 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 [ApiController]
 public class UsersController : ControllerBase
 {
-	private readonly ApplicationDbContext _dbContext;
 	private readonly UserRepository _userRepository;
 	private readonly UserService _userService;
-	private readonly ILogger<UsersController> _logger;
 
-	public UsersController(ApplicationDbContext dbContext, UserRepository userRepository, UserService userService, ILogger<UsersController> logger)
+	public UsersController(UserRepository userRepository, UserService userService)
 	{
-		_dbContext = dbContext;
 		_userRepository = userRepository;
 		_userService = userService;
-		_logger = logger;
 	}
 
 	[HttpGet]
@@ -42,34 +38,7 @@ public class UsersController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult> ToggleRole(int id, ToggleRole toggleRole)
 	{
-		string roleName = toggleRole.RoleName;
-
-		if (!_dbContext.Roles.Any(r => r.Name == roleName))
-			return NotFound();
-
-		UserEntity? user = _dbContext.Users
-			.Include(u => u.UserRoles!)
-				.ThenInclude(ur => ur.Role)
-			.FirstOrDefault(u => u.Id == id);
-		if (user == null)
-			return NotFound();
-
-		UserRoleEntity? userRole = user.UserRoles!.Find(ur => ur.RoleName == roleName);
-		if (userRole != null)
-		{
-			_dbContext.UserRoles.Remove(userRole);
-		}
-		else
-		{
-			_dbContext.UserRoles.Add(new UserRoleEntity
-			{
-				RoleName = roleName,
-				UserId = id,
-			});
-		}
-
-		await _dbContext.SaveChangesAsync();
-
+		await _userService.ToggleRoleAsync(id, toggleRole);
 		return Ok();
 	}
 
@@ -80,22 +49,7 @@ public class UsersController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult> AssignPlayer(int id, AssignPlayer assignPlayer)
 	{
-		UserEntity? user = _dbContext.Users.FirstOrDefault(u => u.Id == id);
-		if (user == null)
-			return NotFound($"User with ID '{id}' was not found.");
-
-		var player = _dbContext.Players.Select(p => new { p.Id, p.PlayerName }).FirstOrDefault(p => p.Id == assignPlayer.PlayerId);
-		if (player == null)
-			return NotFound($"Player with ID '{assignPlayer.PlayerId}' was not found.");
-
-		if (_dbContext.Users.Any(u => u.PlayerId == player.Id))
-			return BadRequest($"Player with ID '{player.Id}' is already linked.");
-
-		user.PlayerId = player.Id;
-		await _dbContext.SaveChangesAsync();
-
-		_logger.LogWarning("Player '{playerName}' ({playerId}) was linked to user '{userName}' ({userId}).", player.PlayerName, player.Id, user.Name, user.Id);
-
+		await _userService.AssignPlayerAsync(id, assignPlayer);
 		return Ok();
 	}
 
@@ -105,15 +59,7 @@ public class UsersController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult> ResetPasswordForUserById(int id, ResetPassword resetPassword)
 	{
-		UserEntity? user = _dbContext.Users.FirstOrDefault(u => u.Id == id);
-		if (user == null)
-			return NotFound();
-
-		_userService.UpdatePassword(id, resetPassword.NewPassword);
-		await _dbContext.SaveChangesAsync();
-
-		_logger.LogWarning("Password was reset for user '{user}'.", user.Name);
-
+		await _userService.ResetPasswordForUser(id, resetPassword);
 		return Ok();
 	}
 
@@ -123,13 +69,7 @@ public class UsersController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult> DeleteUserById(int id)
 	{
-		UserEntity? user = _dbContext.Users.FirstOrDefault(u => u.Id == id);
-		if (user == null)
-			return NotFound();
-
-		_dbContext.Users.Remove(user);
-		await _dbContext.SaveChangesAsync();
-
+		await _userService.DeleteUser(id);
 		return Ok();
 	}
 }
