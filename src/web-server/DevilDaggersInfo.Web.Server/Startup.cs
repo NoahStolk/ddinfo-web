@@ -59,6 +59,7 @@ public class Startup
 
 		// Main domain services
 		services.AddScoped<Domain.Main.Services.PlayerProfileService>();
+		services.AddScoped<Domain.Main.Services.AuthenticationService>();
 
 		// Main repositories
 		services.AddScoped<Domain.Main.Repositories.PlayerProfileRepository>();
