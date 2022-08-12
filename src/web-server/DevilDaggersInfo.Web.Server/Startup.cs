@@ -1,5 +1,4 @@
 using DevilDaggersInfo.Web.Server.Clients.Clubber;
-using DevilDaggersInfo.Web.Server.Domain.Admin.Services;
 using DevilDaggersInfo.Web.Server.Domain.Repositories;
 using DevilDaggersInfo.Web.Server.Domain.Services;
 using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
@@ -60,10 +59,11 @@ public class Startup
 		services.AddScoped<PlayerProfileRepository>();
 
 		// Admin domain services
-		services.AddTransient<CustomLeaderboardService>();
-		services.AddTransient<ModService>();
-		services.AddTransient<PlayerService>();
-		services.AddTransient<SpawnsetService>();
+		services.AddTransient<Domain.Admin.Services.CustomLeaderboardService>();
+		services.AddTransient<Domain.Admin.Services.ModService>();
+		services.AddTransient<Domain.Admin.Services.PlayerService>();
+		services.AddTransient<Domain.Admin.Services.SpawnsetService>();
+		services.AddTransient<Domain.Admin.Services.ToolService>();
 
 		// Admin repositories
 		services.AddTransient<Domain.Admin.Repositories.CustomEntryRepository>();

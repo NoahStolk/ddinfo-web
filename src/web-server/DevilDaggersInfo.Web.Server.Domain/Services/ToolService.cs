@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Services;
 
-// TODO: Split off to repository.
+// TODO: Refactor to repository.
 public class ToolService
 {
 	private readonly ApplicationDbContext _dbContext;
@@ -65,7 +65,7 @@ public class ToolService
 
 	public byte[]? GetToolDistributionFile(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version)
 	{
-		string path = GetToolDistributionPath(name, publishMethod, buildType, version);
+		string path = _fileSystemService.GetToolDistributionPath(name, publishMethod, buildType, version);
 		if (!File.Exists(path))
 		{
 			_logger.LogError("Tool distribution file at '{path}' does not exist!", path);
@@ -150,48 +150,12 @@ public class ToolService
 		await _dbContext.SaveChangesAsync();
 	}
 
-	public async Task AddDistribution(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version, byte[] zipFileContents)
-	{
-		if (!AppVersion.TryParse(version, out _))
-			throw new InvalidOperationException($"'{version}' is not a correct version number.");
-
-		ToolEntity? tool = await _dbContext.Tools.AsNoTracking().FirstOrDefaultAsync(t => t.Name == name);
-		if (tool == null)
-			throw new InvalidOperationException($"Tool with name '{name}' does not exist.");
-
-		if (await _dbContext.ToolDistributions.AnyAsync(td => td.ToolName == name && td.PublishMethod == publishMethod && td.BuildType == buildType && td.VersionNumber == version))
-			throw new InvalidOperationException("Distribution already exists.");
-
-		string path = GetToolDistributionPath(name, publishMethod, buildType, version);
-		if (File.Exists(path))
-			throw new InvalidOperationException("File for distribution already exists, but does not exist in the database. Please review the database and the file system.");
-
-		File.WriteAllBytes(path, zipFileContents);
-
-		ToolDistributionEntity distribution = new()
-		{
-			BuildType = buildType,
-			PublishMethod = publishMethod,
-			ToolName = name,
-			VersionNumber = version,
-		};
-		_dbContext.ToolDistributions.Add(distribution);
-		await _dbContext.SaveChangesAsync();
-
-		_logger.LogWarning("{tool} {version} {buildType} {publishMethod} was published.", name, version, buildType, publishMethod);
-	}
-
 	private int GetToolDistributionFileSize(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version)
 	{
-		string path = GetToolDistributionPath(name, publishMethod, buildType, version);
+		string path = _fileSystemService.GetToolDistributionPath(name, publishMethod, buildType, version);
 		if (File.Exists(path))
 			return (int)new FileInfo(path).Length;
 
 		return 0;
-	}
-
-	private string GetToolDistributionPath(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version)
-	{
-		return Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Tools), $"{name}-{version}-{buildType}-{publishMethod}.zip");
 	}
 }

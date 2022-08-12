@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 
@@ -48,5 +49,10 @@ public class FileSystemService : IFileSystemService
 			return $"`{path}`";
 
 		return $"`{path[path.IndexOf(rootIndicator)..]}`";
+	}
+
+	public string GetToolDistributionPath(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version)
+	{
+		return Path.Combine(GetPath(DataSubDirectory.Tools), $"{name}-{version}-{buildType}-{publishMethod}.zip");
 	}
 }

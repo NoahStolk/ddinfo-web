@@ -1,0 +1,53 @@
+using DevilDaggersInfo.Core.Versioning;
+using DevilDaggersInfo.Types.Web;
+using DevilDaggersInfo.Web.Server.Domain.Entities;
+using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+
+namespace DevilDaggersInfo.Web.Server.Domain.Admin.Services;
+
+public class ToolService
+{
+	private readonly ApplicationDbContext _dbContext;
+	private readonly IFileSystemService _fileSystemService;
+	private readonly ILogger<ToolService> _logger;
+
+	public ToolService(ApplicationDbContext dbContext, IFileSystemService fileSystemService, ILogger<ToolService> logger)
+	{
+		_dbContext = dbContext;
+		_fileSystemService = fileSystemService;
+		_logger = logger;
+	}
+
+	public async Task AddDistribution(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version, byte[] zipFileContents)
+	{
+		if (!AppVersion.TryParse(version, out _))
+			throw new InvalidOperationException($"'{version}' is not a correct version number.");
+
+		ToolEntity? tool = await _dbContext.Tools.AsNoTracking().FirstOrDefaultAsync(t => t.Name == name);
+		if (tool == null)
+			throw new InvalidOperationException($"Tool with name '{name}' does not exist.");
+
+		if (await _dbContext.ToolDistributions.AnyAsync(td => td.ToolName == name && td.PublishMethod == publishMethod && td.BuildType == buildType && td.VersionNumber == version))
+			throw new InvalidOperationException("Distribution already exists.");
+
+		string path = _fileSystemService.GetToolDistributionPath(name, publishMethod, buildType, version);
+		if (File.Exists(path))
+			throw new InvalidOperationException("File for distribution already exists, but does not exist in the database. Please review the database and the file system.");
+
+		File.WriteAllBytes(path, zipFileContents);
+
+		ToolDistributionEntity distribution = new()
+		{
+			BuildType = buildType,
+			PublishMethod = publishMethod,
+			ToolName = name,
+			VersionNumber = version,
+		};
+		_dbContext.ToolDistributions.Add(distribution);
+		await _dbContext.SaveChangesAsync();
+
+		_logger.LogWarning("{tool} {version} {buildType} {publishMethod} was published.", name, version, buildType, publishMethod);
+	}
+}
