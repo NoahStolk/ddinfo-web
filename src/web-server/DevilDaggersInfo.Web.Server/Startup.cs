@@ -63,6 +63,7 @@ public class Startup
 
 		// Main repositories
 		services.AddTransient<Domain.Main.Repositories.DonationRepository>();
+		services.AddTransient<Domain.Main.Repositories.LeaderboardHistoryStatisticsRepository>();
 		services.AddScoped<Domain.Main.Repositories.PlayerProfileRepository>();
 		services.AddTransient<Domain.Main.Repositories.WorldRecordRepository>();
 
