@@ -163,21 +163,8 @@ public class NetworkService
 		}
 	}
 
-	public async Task<byte[]?> GetSpawnset(int spawnsetId)
+	public async Task<byte[]> GetSpawnset(int spawnsetId)
 	{
-		try
-		{
-			return (await _apiClient.GetSpawnsetBufferById(spawnsetId)).Data;
-		}
-		catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
-		{
-			_logger.LogWarning(ex, "Spawnset {id} was not found.", spawnsetId);
-			return null;
-		}
-		catch (Exception ex)
-		{
-			_logger.LogError(ex, "Error while trying to download spawnset.");
-			return null;
-		}
+		return (await _apiClient.GetSpawnsetBufferById(spawnsetId)).Data;
 	}
 }

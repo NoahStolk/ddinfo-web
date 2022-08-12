@@ -1,15 +1,23 @@
+using DevilDaggersInfo.App.Core.GameMemory;
+using DevilDaggersInfo.Razor.CustomLeaderboard.Store.Features.LeaderboardFeature.Actions;
 using DevilDaggersInfo.Razor.CustomLeaderboard.Store.Features.LeaderboardListFeature.Actions;
+using DevilDaggersInfo.Razor.CustomLeaderboard.Store.State;
 using Fluxor;
+using System.Security.Cryptography;
 
 namespace DevilDaggersInfo.Razor.CustomLeaderboard.Services;
 
 public class StateFacade
 {
 	private readonly IDispatcher _dispatcher;
+	private readonly IState<LeaderboardState> _leaderboardState;
+	private readonly GameMemoryReaderService _gameMemoryReaderService;
 
-	public StateFacade(IDispatcher dispatcher)
+	public StateFacade(IDispatcher dispatcher, IState<LeaderboardState> leaderboardState, GameMemoryReaderService gameMemoryReaderService)
 	{
 		_dispatcher = dispatcher;
+		_leaderboardState = leaderboardState;
+		_gameMemoryReaderService = gameMemoryReaderService;
 	}
 
 	public void LoadLeaderboards()
@@ -21,5 +29,28 @@ public class StateFacade
 	{
 		_dispatcher.Dispatch(new SetPageIndexAction(pageIndex));
 		_dispatcher.Dispatch(new FetchLeaderboardsAction());
+	}
+
+	public void SetLeaderboard(int spawnsetId)
+	{
+		_dispatcher.Dispatch(new DownloadSpawnsetAction(spawnsetId));
+
+		if (_leaderboardState.Value.Spawnset != null)
+		{
+			byte[] spawnsetBytes = _leaderboardState.Value.Spawnset.ToBytes();
+
+			// TODO: Get path from running process and refactor to platform-specific DI service interface.
+			File.WriteAllBytes(@"C:\Program Files (x86)\Steam\steamapps\common\devildaggers\mods\survival", spawnsetBytes);
+
+			byte[] hash = MD5.HashData(spawnsetBytes); // TODO: Find different way to hash.
+			_dispatcher.Dispatch(new DownloadLeaderboardAction(hash));
+		}
+	}
+
+	public void SetReplay(int customEntryId)
+	{
+		//byte[]? replayData = await NetworkService.GetReplay(customEntryId);
+		//if (replayData != null)
+		//	_gameMemoryReaderService.WriteReplayToMemory(replayData);
 	}
 }

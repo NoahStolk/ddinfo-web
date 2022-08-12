@@ -3,12 +3,17 @@
 @using DevilDaggersInfo.Core.Wiki
 @using DevilDaggersInfo.Core.Wiki.Objects
 @using DevilDaggersInfo.Razor.CustomLeaderboard.Extensions
+@using DevilDaggersInfo.Razor.CustomLeaderboard.Services
+@using DevilDaggersInfo.Razor.CustomLeaderboard.Store.State
 @using DevilDaggersInfo.Types.Core.Wiki
 @using DevilDaggersInfo.Types.Web
+@using Fluxor
+@inject StateFacade StateFacade
+@inject IState<LeaderboardState> State
 
-@if (CustomLeaderboard != null)
+@if (State.Value.Leaderboard != null)
 {
-	GetCustomLeaderboard leaderboard = CustomLeaderboard;
+	GetCustomLeaderboard leaderboard = State.Value.Leaderboard;
 
 	<div>@leaderboard.SpawnsetName</div>
 
@@ -41,7 +46,7 @@
 
 				@if (entry.HasReplay)
 				{
-					<a class="link" @onclick="@(async () => await InjectReplay(entry.Id))">
+					<a class="link" @onclick="@(() => StateFacade.SetReplay(entry.Id))">
 						<img class="cursor-pointer inline-block mx-1 mb-1" src="images/eye.png" />
 					</a>
 				}

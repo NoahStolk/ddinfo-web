@@ -46,7 +46,7 @@
 		string? daggerColor = leaderboard.SelectedPlayerStats?.Dagger?.GetColorCode();
 		string? worldRecordDaggerColor = leaderboard.WorldRecord?.Dagger?.GetColorCode();
 
-		<div class="grid gap-x-2 grid-cols-5 hover:bg-dark-red cursor-pointer" @onclick="@(async () => await InjectSpawnset(leaderboard.SpawnsetId))">
+		<div class="grid gap-x-2 grid-cols-5 hover:bg-dark-red cursor-pointer" @onclick="@(() => StateFacade.SetLeaderboard(leaderboard.SpawnsetId))">
 			<span>@leaderboard.SpawnsetName</span>
 
 			@if (leaderboard.SelectedPlayerStats == null)
@@ -81,14 +81,5 @@
 		base.OnInitialized();
 
 		StateFacade.LoadLeaderboards();
-	}
-
-	public async Task InjectSpawnset(int spawnsetId)
-	{
-		byte[]? spawnset = await NetworkService.GetSpawnset(spawnsetId);
-
-		// TODO: Get path from running process and refactor to platform-specific DI service interface.
-		if (spawnset != null)
-			File.WriteAllBytes(@"C:\Program Files (x86)\Steam\steamapps\common\devildaggers\mods\survival", spawnset);
 	}
 }

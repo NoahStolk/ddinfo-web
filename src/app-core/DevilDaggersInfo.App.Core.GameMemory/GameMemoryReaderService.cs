@@ -4,6 +4,7 @@ using System.Diagnostics;
 
 namespace DevilDaggersInfo.App.Core.GameMemory;
 
+// TODO: Rename to GameMemoryService.
 public class GameMemoryReaderService
 {
 	private const int _bufferSize = 319;
