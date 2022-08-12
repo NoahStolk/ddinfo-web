@@ -8,9 +8,9 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Ddiam;
 [ApiController]
 public class AppsController : ControllerBase
 {
-	private readonly IToolService _toolService;
+	private readonly ToolService _toolService;
 
-	public AppsController(IToolService toolService)
+	public AppsController(ToolService toolService)
 	{
 		_toolService = toolService;
 	}

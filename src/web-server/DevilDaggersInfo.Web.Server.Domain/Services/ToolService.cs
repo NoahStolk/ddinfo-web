@@ -10,9 +10,8 @@ using Newtonsoft.Json;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Services;
 
-// TODO: Remove interface.
 // TODO: Split off to repository.
-public class ToolService : IToolService
+public class ToolService
 {
 	private readonly ApplicationDbContext _dbContext;
 	private readonly IFileSystemService _fileSystemService;

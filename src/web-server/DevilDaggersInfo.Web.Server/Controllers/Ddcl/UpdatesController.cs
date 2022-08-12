@@ -9,9 +9,9 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Ddcl;
 [ApiController]
 public class UpdatesController : ControllerBase
 {
-	private readonly IToolService _toolService;
+	private readonly ToolService _toolService;
 
-	public UpdatesController(IToolService toolService)
+	public UpdatesController(ToolService toolService)
 	{
 		_toolService = toolService;
 	}

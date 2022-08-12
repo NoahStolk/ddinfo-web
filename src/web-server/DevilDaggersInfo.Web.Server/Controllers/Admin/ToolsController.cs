@@ -10,9 +10,9 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 [Authorize(Roles = Roles.Admin)]
 public class ToolsController : ControllerBase
 {
-	private readonly IToolService _toolService;
+	private readonly ToolService _toolService;
 
-	public ToolsController(IToolService toolService)
+	public ToolsController(ToolService toolService)
 	{
 		_toolService = toolService;
 	}

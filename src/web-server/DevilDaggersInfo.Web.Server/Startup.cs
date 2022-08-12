@@ -48,7 +48,7 @@ public class Startup
 		services.AddTransient<ModArchiveProcessor>();
 		services.AddTransient<ModScreenshotProcessor>();
 		services.AddScoped<PlayerProfileService>();
-		services.AddTransient<IToolService, ToolService>();
+		services.AddTransient<ToolService>();
 		services.AddScoped<IUserService, UserService>();
 
 		// Repositories
