@@ -6,6 +6,7 @@
 @using Fluxor
 @inject IState<RecordingState> State
 @inject IState<RecorderState> RecorderState
+@inject IState<SpawnsetState> SpawnsetState
 @inject StateFacade StateFacade
 @{
 	GameStatus status = (GameStatus)Block.Status;
@@ -151,14 +152,3 @@
 		}
 	}
 </CascadingValue>
-
-@code
-{
-	[Parameter]
-	[EditorRequired]
-	public MainBlock Block { get; set; }
-
-	[Parameter]
-	[EditorRequired]
-	public MainBlock BlockPrevious { get; set; }
-}

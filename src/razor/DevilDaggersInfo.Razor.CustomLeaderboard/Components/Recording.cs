@@ -9,6 +9,14 @@ namespace DevilDaggersInfo.Razor.CustomLeaderboard.Components;
 
 public partial class Recording
 {
+	[Parameter]
+	[EditorRequired]
+	public MainBlock Block { get; set; }
+
+	[Parameter]
+	[EditorRequired]
+	public MainBlock BlockPrevious { get; set; }
+
 	[Inject]
 	public ILogger<Recording> Logger { get; set; } = null!;
 
@@ -37,6 +45,12 @@ public partial class Recording
 		}
 
 		ReaderService.Scan();
+
+		// TODO: Load spawnset and leaderboard if empty (on startup).
+		//if (SpawnsetState.Value.Spawnset == null)
+		//{
+		//	StateFacade.SetSpawnset()
+		//}
 
 		if (state.State != RecorderStateType.Recording)
 		{
