@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
 using DevilDaggersInfo.App.Core.GameMemory;
 using DevilDaggersInfo.Razor.CustomLeaderboard.Services;
 using DevilDaggersInfo.Razor.CustomLeaderboard.Store.Features.RecorderFeature.Actions;
@@ -20,8 +21,8 @@ public class UploadRunEffect : Effect<UploadRunAction>
 	{
 		try
 		{
-			await _uploadService.UploadRun(_gameMemoryService.MainBlock);
-			dispatcher.Dispatch(new UploadRunSuccessAction());
+			GetUploadSuccess uploadSuccess = await _uploadService.UploadRun(_gameMemoryService.MainBlock);
+			dispatcher.Dispatch(new UploadRunSuccessAction(uploadSuccess));
 		}
 		catch (Exception ex)
 		{

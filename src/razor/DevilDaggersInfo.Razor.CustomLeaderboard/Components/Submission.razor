@@ -1,4 +1,5 @@
 @inherits FluxorComponent
+@using DevilDaggersInfo.Common
 @using DevilDaggersInfo.Razor.CustomLeaderboard.Store.State
 @using Fluxor
 @inject IState<RecorderState> State
@@ -7,11 +8,59 @@
 {
 	<div class="text-red">@State.Value.UploadError</div>
 }
-else if (State.Value.LastSuccessfulUpload.HasValue)
+else if (State.Value.UploadSuccess != null)
 {
-	<div class="text-green">Upload successful (@(DateTime.Now - State.Value.LastSuccessfulUpload) ago)</div>
+	<div class="text-green">Upload successful @FormatTimeAgo()</div>
+	<div class="grid grid-cols-2">
+		<span>@State.Value.UploadSuccess.RankState</span>
+		<span>@State.Value.UploadSuccess.TimeState</span>
+		<span>@State.Value.UploadSuccess.GemsCollectedState</span>
+		<span>@State.Value.UploadSuccess.EnemiesKilledState</span>
+	</div>
 }
 else
 {
-	<div>...</div>
+	<div>(Nothing uploaded)</div>
+}
+
+@code
+{
+	protected override async Task OnInitializedAsync()
+	{
+		await base.OnInitializedAsync();
+
+		using PeriodicTimer timer = new(TimeSpan.FromSeconds(5));
+		while (await timer.WaitForNextTickAsync())
+		{
+			if (State.Value.UploadSuccess != null)
+				StateHasChanged();
+		}
+	}
+
+	private string FormatTimeAgo()
+	{
+		if (!State.Value.LastSuccessfulUpload.HasValue)
+			return string.Empty;
+
+		TimeSpan diff = DateTime.Now - State.Value.LastSuccessfulUpload.Value;
+		if (diff < TimeSpan.FromSeconds(5))
+			return "(just now)";
+
+		int seconds = diff.Seconds;
+		if (diff < TimeSpan.FromMinutes(1))
+			return $"({seconds} second{S(seconds)} ago)";
+
+		int minutes = diff.Minutes;
+		if (diff < TimeSpan.FromHours(1))
+			return $"({minutes} minute{S(minutes)} ago)";
+
+		int hours = diff.Hours;
+		if (diff < TimeSpan.FromDays(1))
+			return $"({hours} hour{S(hours)} and {minutes} minute{S(minutes)} ago)";
+
+		return State.Value.LastSuccessfulUpload.Value.ToString(StringFormats.DateTimeFormat);
+
+		static string S(int value)
+			=> value == 1 ? string.Empty : "s";
+	}
 }
