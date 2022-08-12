@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 
-namespace DevilDaggersInfo.Web.Server.Domain.Services;
+namespace DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 
 public interface IFileSystemService
 {

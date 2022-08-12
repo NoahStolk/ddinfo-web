@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Api.Main.Leaderboards;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
-using DevilDaggersInfo.Web.Server.Domain.Services;
+using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 
