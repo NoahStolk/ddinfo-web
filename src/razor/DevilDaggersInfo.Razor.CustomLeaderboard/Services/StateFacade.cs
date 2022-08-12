@@ -1,4 +1,6 @@
+using DevilDaggersInfo.Razor.CustomLeaderboard.Enums;
 using DevilDaggersInfo.Razor.CustomLeaderboard.Store.Features.LeaderboardListFeature.Actions;
+using DevilDaggersInfo.Razor.CustomLeaderboard.Store.Features.RecorderFeature.Actions;
 using DevilDaggersInfo.Razor.CustomLeaderboard.Store.Features.RecordingFeature.Actions;
 using DevilDaggersInfo.Razor.CustomLeaderboard.Store.Features.SpawnsetFeature.Actions;
 using Fluxor;
@@ -40,5 +42,20 @@ public class StateFacade
 	public void ToggleShowEnemyStats()
 	{
 		_dispatcher.Dispatch(new ToggleShowEnemyStatsAction());
+	}
+
+	public void FetchMarker()
+	{
+		_dispatcher.Dispatch(new FetchMarkerAction());
+	}
+
+	public void SetState(RecorderStateType state)
+	{
+		_dispatcher.Dispatch(new SetStateAction(state));
+	}
+
+	public void UploadRun()
+	{
+		_dispatcher.Dispatch(new UploadRunAction());
 	}
 }

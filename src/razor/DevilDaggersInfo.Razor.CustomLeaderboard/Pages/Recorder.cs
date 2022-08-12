@@ -1,7 +1,8 @@
-using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
 using DevilDaggersInfo.App.Core.GameMemory;
-using DevilDaggersInfo.Common.Utils;
+using DevilDaggersInfo.Razor.CustomLeaderboard.Enums;
 using DevilDaggersInfo.Razor.CustomLeaderboard.Services;
+using DevilDaggersInfo.Razor.CustomLeaderboard.Store.State;
+using Fluxor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 
@@ -9,36 +10,14 @@ namespace DevilDaggersInfo.Razor.CustomLeaderboard.Pages;
 
 public partial class Recorder
 {
-	private long? _marker;
-	private State _state;
-	private GetUploadSuccess? _submissionResponseWrapper;
-
-	private enum State
-	{
-		Recording,
-		WaitingForRestart,
-		WaitingForLocalReplay,
-		WaitingForLeaderboardReplay,
-		WaitingForStats,
-		WaitingForReplay,
-		Uploading,
-		CompletedUpload,
-	}
+	[Inject]
+	public IState<RecorderState> State { get; set; } = null!;
 
 	[Inject]
 	public ILogger<Recorder> Logger { get; set; } = null!;
 
 	[Inject]
-	public IClientConfiguration ClientConfiguration { get; set; } = null!;
-
-	[Inject]
-	public NetworkService NetworkService { get; set; } = null!;
-
-	[Inject]
 	public GameMemoryReaderService ReaderService { get; set; } = null!;
-
-	[Inject]
-	public UploadService UploadService { get; set; } = null!;
 
 	[Inject]
 	public StateFacade StateFacade { get; set; } = null!;
@@ -57,65 +36,61 @@ public partial class Recorder
 
 	private async Task Record()
 	{
-		if (!_marker.HasValue)
+		RecorderState state = State.Value;
+		if (!state.Marker.HasValue)
 		{
-			_marker = await NetworkService.GetMarker(ClientConfiguration.GetOperatingSystem());
-			if (!_marker.HasValue)
-				return;
-		}
-
-		if (!ReaderService.Initialize(_marker.Value))
+			StateFacade.FetchMarker();
 			return;
+		}
 
 		ReaderService.Scan();
 
-		if (_state != State.Recording)
+		if (state.State != RecorderStateType.Recording)
 		{
 			if (ReaderService.MainBlock.Time == ReaderService.MainBlockPrevious.Time)
 			{
-				_state = State.WaitingForRestart;
+				StateFacade.SetState(RecorderStateType.WaitingForRestart);
 				return;
 			}
 
-			_state = State.Recording;
-			_submissionResponseWrapper = null;
+			StateFacade.SetState(RecorderStateType.Recording);
 		}
 
+#if TODO
 		if (ReaderService.MainBlock.SurvivalHashMd5 != null && ReaderService.MainBlockPrevious.SurvivalHashMd5 != null && !ArrayUtils.AreEqual(ReaderService.MainBlock.SurvivalHashMd5, ReaderService.MainBlockPrevious.SurvivalHashMd5))
 		{
-#if TODO
 			Logger.LogInformation("Fetching leaderboard because of hash change.");
 			int spawnsetId = await NetworkService.GetSpawnsetIdByHash(ReaderService.MainBlock.SurvivalHashMd5);
 			StateFacade.SetSpawnset(lb.SpawnsetId);
-#endif
 		}
+#endif
 
 		GameStatus status = (GameStatus)ReaderService.MainBlock.Status;
-		bool waitForLocalOrLbReplay = status is GameStatus.LocalReplay or GameStatus.OwnReplayFromLeaderboard;
-		if (waitForLocalOrLbReplay)
-			_state = status == GameStatus.LocalReplay ? State.WaitingForLocalReplay : State.WaitingForLeaderboardReplay;
+		if (status == GameStatus.LocalReplay)
+		{
+			StateFacade.SetState(RecorderStateType.WaitingForLocalReplay);
+			return;
+		}
+
+		if (status == GameStatus.OwnReplayFromLeaderboard)
+		{
+			StateFacade.SetState(RecorderStateType.WaitingForLeaderboardReplay);
+			return;
+		}
 
 		bool justDied = !ReaderService.MainBlock.IsPlayerAlive && ReaderService.MainBlockPrevious.IsPlayerAlive;
-		bool uploadRun = !waitForLocalOrLbReplay && justDied && (ReaderService.MainBlock.GameMode == 0 || ReaderService.MainBlock.TimeAttackOrRaceFinished);
+		bool uploadRun = justDied && (ReaderService.MainBlock.GameMode == 0 || ReaderService.MainBlock.TimeAttackOrRaceFinished);
 		if (!uploadRun)
 			return;
 
-		_state = State.WaitingForStats;
+		StateFacade.SetState(RecorderStateType.WaitingForStats);
 		while (!ReaderService.MainBlock.StatsLoaded)
 			await Task.Delay(TimeSpan.FromSeconds(0.5));
 
-		_state = State.WaitingForReplay;
+		StateFacade.SetState(RecorderStateType.WaitingForReplay);
 		while (!ReaderService.IsReplayValid())
 			await Task.Delay(TimeSpan.FromSeconds(0.5));
 
-		_state = State.Uploading;
-		_submissionResponseWrapper = await UploadService.UploadRun(ReaderService.MainBlock);
-		_state = State.CompletedUpload;
-
-		// Refresh the leaderboard after submit.
-#if TODO
-		int spawnsetId = await NetworkService.GetSpawnsetIdByHash(ReaderService.MainBlock.SurvivalHashMd5);
-		StateFacade.SetSpawnset(lb.SpawnsetId);
-#endif
+		StateFacade.UploadRun();
 	}
 }

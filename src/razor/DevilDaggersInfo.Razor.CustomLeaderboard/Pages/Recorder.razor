@@ -1,11 +1,13 @@
 @page "/"
+@using DevilDaggersInfo.Razor.CustomLeaderboard.Store.State
+@using Fluxor
 @inherits FluxorComponent
 
 <div class="grid grid-cols-4 m-2 p-2 border-solid border-2 border-[#811]">
 	<div>
 		<div class="grid grid-cols-2 m-2 p-2 border-solid border-2 border-[#114]">
 			<span>Marker</span>
-			<span>@(_marker == null ? "Fetching..." : $"0x{_marker.Value:X16}")</span>
+			<span>@(State.Value.Marker == null ? "Fetching..." : $"0x{State.Value.Marker.Value:X16}")</span>
 
 			<span>Devil Daggers process</span>
 			<span>@(ReaderService.HasProcess ? "Attached" : "Waiting...")</span>
@@ -14,11 +16,15 @@
 			<span>@(ReaderService.IsInitialized ? "Done" : "Waiting...")</span>
 
 			<span>State</span>
-			<span>@(_state)</span>
+			<span>@(State.Value.Marker)</span>
 		</div>
 
 		<div class="m-2 p-2 border-solid border-2 border-[#411]">
 			<Recording Block="ReaderService.MainBlock" BlockPrevious="ReaderService.MainBlockPrevious" />
+		</div>
+
+		<div class="m-2 p-2 border-solid border-2 border-[#411]">
+			<Submission />
 		</div>
 	</div>
 
@@ -26,13 +32,6 @@
 		<LeaderboardList />
 	</div>
 </div>
-
-@if (_submissionResponseWrapper != null)
-{
-	<div class="min-w-lg m-2 p-2 border-solid border-2 border-[#411]">
-		<div class="text-green">Upload successful</div>
-	</div>
-}
 
 <div class="min-w-[1270px] m-2 p-2 border-solid border-2 border-[#411]">
 	<Leaderboard />

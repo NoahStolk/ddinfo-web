@@ -44,18 +44,10 @@ public class NetworkService
 		return null;
 	}
 
-	public async Task<long?> GetMarker(SupportedOperatingSystem supportedOperatingSystem)
+	public async Task<long> GetMarker(SupportedOperatingSystem supportedOperatingSystem)
 	{
-		try
-		{
-			GetMarker marker = await _apiClient.GetMarker(supportedOperatingSystem);
-			return marker.Value;
-		}
-		catch (Exception ex)
-		{
-			_logger.LogError(ex, "Error while trying to get marker.");
-			return null;
-		}
+		GetMarker marker = await _apiClient.GetMarker(supportedOperatingSystem);
+		return marker.Value;
 	}
 
 	public async Task<bool> CheckIfLeaderboardExists(byte[] survivalHashMd5)
