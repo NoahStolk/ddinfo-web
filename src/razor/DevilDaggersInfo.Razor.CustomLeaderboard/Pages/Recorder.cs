@@ -7,10 +7,8 @@ using Microsoft.Extensions.Logging;
 
 namespace DevilDaggersInfo.Razor.CustomLeaderboard.Pages;
 
-public partial class Recorder : IDisposable
+public partial class Recorder
 {
-	private Timer? _timer;
-
 	private long? _marker;
 	private State _state;
 	private GetUploadSuccess? _submissionResponseWrapper;
@@ -45,28 +43,16 @@ public partial class Recorder : IDisposable
 	[Inject]
 	public StateFacade StateFacade { get; set; } = null!;
 
-	public void Dispose()
+	protected override async Task OnInitializedAsync()
 	{
-		base.Dispose();
+		await base.OnInitializedAsync();
 
-		_timer?.Dispose();
-	}
-
-	protected override void OnInitialized()
-	{
-		base.OnInitialized();
-
-		_timer = new(
-			callback: async _ =>
-			{
-				await Record();
-				await InvokeAsync(StateHasChanged);
-
-				_timer?.Change(50, Timeout.Infinite);
-			},
-			state: null,
-			dueTime: 0,
-			period: Timeout.Infinite);
+		using PeriodicTimer timer = new(TimeSpan.FromMilliseconds(100));
+		while (await timer.WaitForNextTickAsync())
+		{
+			await Record();
+			await InvokeAsync(StateHasChanged);
+		}
 	}
 
 	private async Task Record()
@@ -97,8 +83,8 @@ public partial class Recorder : IDisposable
 
 		if (ReaderService.MainBlock.SurvivalHashMd5 != null && ReaderService.MainBlockPrevious.SurvivalHashMd5 != null && !ArrayUtils.AreEqual(ReaderService.MainBlock.SurvivalHashMd5, ReaderService.MainBlockPrevious.SurvivalHashMd5))
 		{
-			Logger.LogInformation("Fetching leaderboard because of hash change.");
 #if TODO
+			Logger.LogInformation("Fetching leaderboard because of hash change.");
 			int spawnsetId = await NetworkService.GetSpawnsetIdByHash(ReaderService.MainBlock.SurvivalHashMd5);
 			StateFacade.SetSpawnset(lb.SpawnsetId);
 #endif
