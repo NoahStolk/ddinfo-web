@@ -1,7 +1,6 @@
 using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
 using DevilDaggersInfo.App.Core.GameMemory;
 using DevilDaggersInfo.Common.Utils;
-using DevilDaggersInfo.Razor.CustomLeaderboard.Models;
 using DevilDaggersInfo.Razor.CustomLeaderboard.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
@@ -14,8 +13,8 @@ public partial class Recorder : IDisposable
 
 	private long? _marker;
 	private State _state;
-	private ResponseWrapper<GetUploadSuccess>? _submissionResponseWrapper;
-	private ResponseWrapper<GetCustomLeaderboard>? _customLeaderboard;
+	private GetUploadSuccess? _submissionResponseWrapper;
+	private GetCustomLeaderboard? _customLeaderboard;
 
 	private enum State
 	{

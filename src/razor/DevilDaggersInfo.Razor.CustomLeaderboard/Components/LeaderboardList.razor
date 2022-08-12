@@ -1,28 +1,38 @@
+@inherits FluxorComponent
 @using DevilDaggersInfo.Api.Ddcl
 @using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards
 @using DevilDaggersInfo.App.Core.GameMemory
 @using DevilDaggersInfo.Razor.CustomLeaderboard.Extensions
-@using DevilDaggersInfo.Razor.CustomLeaderboard.Models
 @using DevilDaggersInfo.Razor.CustomLeaderboard.Services
+@using DevilDaggersInfo.Razor.CustomLeaderboard.Store.State
+@using DevilDaggersInfo.Razor.CustomLeaderboard.Utils
 @using DevilDaggersInfo.Types.Web
+@using Fluxor
+@inject IState<LeaderboardListState> State
+@inject NetworkService NetworkService
+@inject StateFacade StateFacade
 
 <div>Select a spawnset to play</div>
 
-<button class="bg-dark-red hover:bg-red px-1" @onclick="@(() => SetPageIndexAsync(PageIndex - 1))">Prev</button>
-<button class="bg-dark-red hover:bg-red px-1" @onclick="@(() => SetPageIndexAsync(PageIndex + 1))">Next</button>
+<div class="h-16">
+	<button class="bg-dark-red hover:bg-red px-1" @onclick="@(() => StateFacade.SetPageIndex(State.Value.PageIndex - 1))">Prev</button>
+	<button class="bg-dark-red hover:bg-red px-1" @onclick="@(() => StateFacade.SetPageIndex(State.Value.PageIndex + 1))">Next</button>
 
-<div>Page @(PageIndex + 1) of @TotalPages</div>
+	@if (State.Value.IsLoading)
+	{
+		<div>Loading...</div>
+	}
+	else if (State.Value.Error != null)
+	{
+		<div class="text-red">Error while fetching leaderboard overview</div>
+		<div class="text-red">@State.Value.Error</div>
+	}
+</div>
 
-@if (_leaderboards == null)
+@if (State.Value.Leaderboards != null)
 {
-	<span>Loading...</span>
-}
-else if (_leaderboards.HasError)
-{
-	<span class="text-red">Error while fetching leaderboard overview</span>
-}
-else
-{
+	<div>Page @(State.Value.PageIndex + 1) of @PageUtils.GetTotalPages(State.Value.PageSize, State.Value.Leaderboards.TotalResults)</div>
+
 	<div class="grid gap-x-2 grid-cols-5">
 		<span class="font-bold">Spawnset</span>
 		<span class="font-bold text-right">Rank</span>
@@ -31,7 +41,7 @@ else
 		<span class="font-bold text-right">World record</span>
 	</div>
 
-	@foreach (GetCustomLeaderboardForOverview leaderboard in _leaderboards.Response.Results)
+	@foreach (GetCustomLeaderboardForOverview leaderboard in State.Value.Leaderboards.Results)
 	{
 		string? daggerColor = leaderboard.SelectedPlayerStats?.Dagger?.GetColorCode();
 		string? worldRecordDaggerColor = leaderboard.WorldRecord?.Dagger?.GetColorCode();
@@ -66,42 +76,11 @@ else
 
 @code
 {
-	private const int _pageSize = 20;
-
-	private ResponseWrapper<Page<GetCustomLeaderboardForOverview>>? _leaderboards;
-
-	private int TotalPages => _leaderboards == null || _leaderboards.HasError ? 0 : (int)Math.Ceiling(_leaderboards.Response.TotalResults / (double)_pageSize);
-
-	[Inject]
-	public NetworkService NetworkService { get; set; } = null!;
-
-	[Parameter]
-	[EditorRequired]
-	public int SelectedPlayerId { get; set; }
-
-	[Parameter]
-	public CustomLeaderboardCategory Category { get; set; } = CustomLeaderboardCategory.Survival;
-
-	[Parameter]
-	public int PageIndex { get; set; }
-
-	protected override async Task OnParametersSetAsync()
+	protected override void OnInitialized()
 	{
-		await UpdateListAsync();
-	}
+		base.OnInitialized();
 
-	private async Task SetPageIndexAsync(int pageIndex)
-	{
-		if (pageIndex < 0 || pageIndex > TotalPages - 1)
-			return;
-
-		PageIndex = pageIndex;
-		await UpdateListAsync();
-	}
-
-	private async Task UpdateListAsync()
-	{
-		_leaderboards = await NetworkService.GetLeaderboardOverview(Category, PageIndex, _pageSize, SelectedPlayerId, true);
+		StateFacade.LoadLeaderboards();
 	}
 
 	public async Task InjectSpawnset(int spawnsetId)

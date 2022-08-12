@@ -1,7 +1,6 @@
 using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
 using DevilDaggersInfo.App.Core.GameMemory;
 using DevilDaggersInfo.Common.Extensions;
-using DevilDaggersInfo.Razor.CustomLeaderboard.Models;
 using System.Web;
 
 namespace DevilDaggersInfo.Razor.CustomLeaderboard.Services;
@@ -21,11 +20,11 @@ public class UploadService
 		_clientConfiguration = clientConfiguration;
 	}
 
-	public async Task<ResponseWrapper<GetUploadSuccess>> UploadRun(MainBlock block)
+	public async Task<GetUploadSuccess> UploadRun(MainBlock block)
 	{
 		bool leaderboardExists = await _networkService.CheckIfLeaderboardExists(block.SurvivalHashMd5);
 		if (!leaderboardExists)
-			return new("This leaderboard does not exist.");
+			throw new("This leaderboard does not exist.");
 
 		byte[] timeAsBytes = BitConverter.GetBytes(block.Time);
 		byte[] levelUpTime2AsBytes = BitConverter.GetBytes(block.LevelUpTime2);

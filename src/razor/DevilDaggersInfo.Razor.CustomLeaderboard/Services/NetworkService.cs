@@ -3,7 +3,6 @@ using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
 using DevilDaggersInfo.Api.Ddcl.ProcessMemory;
 using DevilDaggersInfo.Api.Ddcl.Tools;
 using DevilDaggersInfo.Razor.CustomLeaderboard.HttpClients;
-using DevilDaggersInfo.Razor.CustomLeaderboard.Models;
 using DevilDaggersInfo.Types.Web;
 using Microsoft.Extensions.Logging;
 using System.Net;
@@ -86,41 +85,36 @@ public class NetworkService
 		return false;
 	}
 
-	public async Task<ResponseWrapper<GetUploadSuccess>> SubmitScore(AddUploadRequest uploadRequest)
+	public async Task<GetUploadSuccess> SubmitScore(AddUploadRequest uploadRequest)
 	{
 		try
 		{
 			HttpResponseMessage hrm = await _apiClient.SubmitScoreForDdcl(uploadRequest);
 			if (hrm.IsSuccessStatusCode)
-			{
-				GetUploadSuccess success = await hrm.Content.ReadFromJsonAsync<GetUploadSuccess>() ?? throw new InvalidOperationException($"Could not deserialize the response as '{nameof(GetUploadSuccess)}'.");
-				return new(success);
-			}
+				return await hrm.Content.ReadFromJsonAsync<GetUploadSuccess>() ?? throw new InvalidOperationException($"Could not deserialize the response as '{nameof(GetUploadSuccess)}'.");
 
-			string error = await hrm.Content.ReadAsStringAsync();
-			return new(error);
+			throw new(await hrm.Content.ReadAsStringAsync());
 		}
 		catch (Exception ex)
 		{
 			const string message = "Error trying to submit score";
 			_logger.LogError(ex, message);
-			return new(message);
+			throw new(message);
 		}
 	}
 
-	public async Task<ResponseWrapper<GetCustomLeaderboard>> GetLeaderboard(byte[] hash)
+	public async Task<GetCustomLeaderboard> GetLeaderboard(byte[] hash)
 	{
 		const int maxAttempts = 5;
 		for (int i = 0; i < maxAttempts; i++)
 		{
 			try
 			{
-				GetCustomLeaderboard lb = await _apiClient.GetCustomLeaderboardBySpawnsetHash(hash);
-				return new(lb);
+				return await _apiClient.GetCustomLeaderboardBySpawnsetHash(hash);
 			}
 			catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
 			{
-				return new(ex.Message);
+				throw new("Not found");
 			}
 			catch (Exception ex)
 			{
@@ -129,22 +123,17 @@ public class NetworkService
 			}
 		}
 
-		return new("Couldn't retrieve leaderboard after 5 attempts.");
+		throw new("Couldn't retrieve leaderboard after 5 attempts.");
 	}
 
-	public async Task<ResponseWrapper<Page<GetCustomLeaderboardForOverview>>> GetLeaderboardOverview(CustomLeaderboardCategory category, int pageIndex, int pageSize, int selectedPlayerId, bool onlyFeatured)
+	public async Task<Page<GetCustomLeaderboardForOverview>> GetLeaderboardOverview(CustomLeaderboardCategory category, int pageIndex, int pageSize, int selectedPlayerId, bool onlyFeatured)
 	{
 		const int maxAttempts = 5;
 		for (int i = 0; i < maxAttempts; i++)
 		{
 			try
 			{
-				Page<GetCustomLeaderboardForOverview> overview = await _apiClient.GetCustomLeaderboardOverview(category, pageIndex, pageSize, selectedPlayerId, onlyFeatured);
-				return new(overview);
-			}
-			catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
-			{
-				return new(ex.Message);
+				return await _apiClient.GetCustomLeaderboardOverview(category, pageIndex, pageSize, selectedPlayerId, onlyFeatured);
 			}
 			catch (Exception ex)
 			{
@@ -153,7 +142,7 @@ public class NetworkService
 			}
 		}
 
-		return new("Couldn't retrieve leaderboard overview after 5 attempts.");
+		throw new Exception("Couldn't retrieve leaderboard overview after 5 attempts.");
 	}
 
 	public async Task<byte[]?> GetReplay(int customEntryId)

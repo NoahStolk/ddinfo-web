@@ -1,4 +1,5 @@
 @page "/"
+@inherits FluxorComponent
 
 <div class="grid grid-cols-2 max-w-md m-2 p-2 border-solid border-2 border-[#111]">
 	<span>Marker</span>
@@ -18,21 +19,13 @@
 	<Recording Block="ReaderService.MainBlock" BlockPrevious="ReaderService.MainBlockPrevious" />
 </div>
 <div class="min-w-[800px] m-2 p-2 border-solid border-2 border-[#411]">
-	<LeaderboardList SelectedPlayerId="@ReaderService.MainBlock.PlayerId" />
+	<LeaderboardList />
 </div>
 
 @if (_submissionResponseWrapper != null)
 {
 	<div class="min-w-lg m-2 p-2 border-solid border-2 border-[#411]">
-		@if (_submissionResponseWrapper.HasError)
-		{
-			<div class="text-red">@_submissionResponseWrapper.ErrorMessage</div>
-		}
-		else
-		{
-			<div class="text-green">Upload successful</div>
-			@*TODO: Show diff with previous PB.*@
-		}
+		<div class="text-green">Upload successful</div>
 	</div>
 }
 

@@ -1,3 +1,4 @@
+@inherits FluxorComponent
 @using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards
 @using DevilDaggersInfo.Core.Wiki
 @using DevilDaggersInfo.Core.Wiki.Objects
@@ -5,9 +6,9 @@
 @using DevilDaggersInfo.Types.Core.Wiki
 @using DevilDaggersInfo.Types.Web
 
-@if (!CustomLeaderboard.HasError)
+@if (CustomLeaderboard != null)
 {
-	GetCustomLeaderboard leaderboard = CustomLeaderboard.Response;
+	GetCustomLeaderboard leaderboard = CustomLeaderboard;
 
 	<div>@leaderboard.SpawnsetName</div>
 

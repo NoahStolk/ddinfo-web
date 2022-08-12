@@ -24,6 +24,7 @@
   </Target>
 
   <ItemGroup>
+    <PackageReference Include="Fluxor.Blazor.Web" />
     <PackageReference Include="Microsoft.AspNetCore.Components" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" />
   </ItemGroup>
