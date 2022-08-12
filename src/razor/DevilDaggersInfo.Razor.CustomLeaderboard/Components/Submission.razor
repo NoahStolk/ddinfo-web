@@ -1,4 +1,5 @@
 @inherits FluxorComponent
+@using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards
 @using DevilDaggersInfo.Common
 @using DevilDaggersInfo.Razor.CustomLeaderboard.Store.State
 @using Fluxor
@@ -6,17 +7,37 @@
 
 @if (State.Value.UploadError != null)
 {
+	<div class="text-red">Upload failed</div>
+
 	<div class="text-red">@State.Value.UploadError</div>
 }
 else if (State.Value.UploadSuccess != null)
 {
 	<div class="text-green">Upload successful @FormatTimeAgo()</div>
-	<div class="grid grid-cols-2">
-		<span>@State.Value.UploadSuccess.RankState</span>
-		<span>@State.Value.UploadSuccess.TimeState</span>
-		<span>@State.Value.UploadSuccess.GemsCollectedState</span>
-		<span>@State.Value.UploadSuccess.EnemiesKilledState</span>
-	</div>
+
+	<div>@State.Value.UploadSuccess.Message</div>
+	@*switch (State.Value.UploadSuccess.SubmissionType)
+	{
+		case SubmissionType.NewHighscore:
+			<div>NEW HIGHSCORE!</div>
+			break;
+		case SubmissionType.NoHighscore:
+			<div>No new highscore</div>
+			break;
+		case SubmissionType.FirstScore:
+			<div>Welcome to the leaderboard</div>
+			break;
+	}*@
+
+	@if (State.Value.UploadSuccess.SubmissionType != SubmissionType.NoHighscore)
+	{
+		<div class="grid grid-cols-2">
+			<span>@State.Value.UploadSuccess.RankState</span>
+			<span>@State.Value.UploadSuccess.TimeState</span>
+			<span>@State.Value.UploadSuccess.GemsCollectedState</span>
+			<span>@State.Value.UploadSuccess.EnemiesKilledState</span>
+		</div>
+	}
 }
 else
 {

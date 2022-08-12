@@ -56,15 +56,6 @@ public partial class Recorder
 			StateFacade.SetState(RecorderStateType.Recording);
 		}
 
-#if TODO
-		if (ReaderService.MainBlock.SurvivalHashMd5 != null && ReaderService.MainBlockPrevious.SurvivalHashMd5 != null && !ArrayUtils.AreEqual(ReaderService.MainBlock.SurvivalHashMd5, ReaderService.MainBlockPrevious.SurvivalHashMd5))
-		{
-			Logger.LogInformation("Fetching leaderboard because of hash change.");
-			int spawnsetId = await NetworkService.GetSpawnsetIdByHash(ReaderService.MainBlock.SurvivalHashMd5);
-			StateFacade.SetSpawnset(lb.SpawnsetId);
-		}
-#endif
-
 		GameStatus status = (GameStatus)ReaderService.MainBlock.Status;
 		if (status == GameStatus.LocalReplay)
 		{
