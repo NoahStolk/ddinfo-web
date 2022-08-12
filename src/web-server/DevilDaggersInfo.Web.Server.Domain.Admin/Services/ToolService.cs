@@ -1,5 +1,6 @@
 using DevilDaggersInfo.Core.Versioning;
 using DevilDaggersInfo.Types.Web;
+using DevilDaggersInfo.Web.Server.Domain.Admin.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 using Microsoft.EntityFrameworkCore;
@@ -23,18 +24,18 @@ public class ToolService
 	public async Task AddDistribution(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version, byte[] zipFileContents)
 	{
 		if (!AppVersion.TryParse(version, out _))
-			throw new InvalidOperationException($"'{version}' is not a correct version number.");
+			throw new AdminDomainException($"'{version}' is not a correct version number.");
 
 		ToolEntity? tool = await _dbContext.Tools.AsNoTracking().FirstOrDefaultAsync(t => t.Name == name);
 		if (tool == null)
-			throw new InvalidOperationException($"Tool with name '{name}' does not exist.");
+			throw new AdminDomainException($"Tool with name '{name}' does not exist.");
 
 		if (await _dbContext.ToolDistributions.AnyAsync(td => td.ToolName == name && td.PublishMethod == publishMethod && td.BuildType == buildType && td.VersionNumber == version))
-			throw new InvalidOperationException("Distribution already exists.");
+			throw new AdminDomainException("Distribution already exists.");
 
 		string path = _fileSystemService.GetToolDistributionPath(name, publishMethod, buildType, version);
 		if (File.Exists(path))
-			throw new InvalidOperationException("File for distribution already exists, but does not exist in the database. Please review the database and the file system.");
+			throw new AdminDomainException("File for distribution already exists, but does not exist in the database. Please review the database and the file system.");
 
 		File.WriteAllBytes(path, zipFileContents);
 
