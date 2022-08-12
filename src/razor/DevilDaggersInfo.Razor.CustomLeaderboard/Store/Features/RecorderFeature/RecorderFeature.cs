@@ -8,5 +8,5 @@ public class RecorderFeature : Feature<RecorderState>
 {
 	public override string GetName() => "Recorder";
 
-	protected override RecorderState GetInitialState() => new(RecorderStateType.WaitingForGame, null);
+	protected override RecorderState GetInitialState() => new(RecorderStateType.WaitingForGame, null, null, null);
 }

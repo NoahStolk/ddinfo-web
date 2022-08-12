@@ -1,3 +1,17 @@
-<div>
-	Submission
-</div>
+@inherits FluxorComponent
+@using DevilDaggersInfo.Razor.CustomLeaderboard.Store.State
+@using Fluxor
+@inject IState<RecorderState> State
+
+@if (State.Value.UploadError != null)
+{
+	<div class="text-red">@State.Value.UploadError</div>
+}
+else if (State.Value.LastSuccessfulUpload.HasValue)
+{
+	<div class="text-green">Upload successful (@(DateTime.Now - State.Value.LastSuccessfulUpload) ago)</div>
+}
+else
+{
+	<div>...</div>
+}
