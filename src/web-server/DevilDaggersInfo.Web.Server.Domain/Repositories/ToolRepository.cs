@@ -9,16 +9,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
-namespace DevilDaggersInfo.Web.Server.Domain.Services;
+namespace DevilDaggersInfo.Web.Server.Domain.Repositories;
 
-// TODO: Refactor to repository.
-public class ToolService
+public class ToolRepository
 {
 	private readonly ApplicationDbContext _dbContext;
 	private readonly IFileSystemService _fileSystemService;
-	private readonly ILogger<ToolService> _logger;
+	private readonly ILogger<ToolRepository> _logger;
 
-	public ToolService(ApplicationDbContext dbContext, IFileSystemService fileSystemService, ILogger<ToolService> logger)
+	public ToolRepository(ApplicationDbContext dbContext, IFileSystemService fileSystemService, ILogger<ToolRepository> logger)
 	{
 		_dbContext = dbContext;
 		_fileSystemService = fileSystemService;
@@ -132,6 +131,7 @@ public class ToolService
 		};
 	}
 
+	// TODO: Move to service?
 	public async Task UpdateToolDistributionStatisticsAsync(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version)
 	{
 		ToolDistributionEntity? distribution = await _dbContext.ToolDistributions.FirstOrDefaultAsync(td => td.ToolName == name && td.PublishMethod == publishMethod && td.BuildType == buildType && td.VersionNumber == version);

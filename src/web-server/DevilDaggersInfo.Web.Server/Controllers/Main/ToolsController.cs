@@ -2,7 +2,7 @@ using DevilDaggersInfo.Api.Main.Tools;
 using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 using DevilDaggersInfo.Web.Server.Domain.Models.Tools;
-using DevilDaggersInfo.Web.Server.Domain.Services;
+using DevilDaggersInfo.Web.Server.Domain.Repositories;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 
@@ -10,11 +10,11 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 [ApiController]
 public class ToolsController : ControllerBase
 {
-	private readonly ToolService _toolService;
+	private readonly ToolRepository _toolRepository;
 
-	public ToolsController(ToolService toolService)
+	public ToolsController(ToolRepository toolRepository)
 	{
-		_toolService = toolService;
+		_toolRepository = toolRepository;
 	}
 
 	// FORBIDDEN: Used by DDSE 2.45.0.0.
@@ -26,7 +26,7 @@ public class ToolsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult<GetTool>> GetTool([Required] string toolName)
 	{
-		Tool? tool = await _toolService.GetToolAsync(toolName);
+		Tool? tool = await _toolRepository.GetToolAsync(toolName);
 		if (tool == null)
 			return NotFound();
 
@@ -43,18 +43,18 @@ public class ToolsController : ControllerBase
 	{
 		ToolDistribution? distribution;
 		if (version == null)
-			distribution = await _toolService.GetLatestToolDistributionAsync(toolName, publishMethod, buildType);
+			distribution = await _toolRepository.GetLatestToolDistributionAsync(toolName, publishMethod, buildType);
 		else
-			distribution = await _toolService.GetToolDistributionByVersionAsync(toolName, publishMethod, buildType, version);
+			distribution = await _toolRepository.GetToolDistributionByVersionAsync(toolName, publishMethod, buildType, version);
 
 		if (distribution == null)
 			return NotFound();
 
-		byte[]? bytes = _toolService.GetToolDistributionFile(toolName, publishMethod, buildType, distribution.VersionNumber);
+		byte[]? bytes = _toolRepository.GetToolDistributionFile(toolName, publishMethod, buildType, distribution.VersionNumber);
 		if (bytes == null)
 			return NotFound();
 
-		await _toolService.UpdateToolDistributionStatisticsAsync(toolName, publishMethod, buildType, distribution.VersionNumber);
+		await _toolRepository.UpdateToolDistributionStatisticsAsync(toolName, publishMethod, buildType, distribution.VersionNumber);
 
 		return File(bytes, MediaTypeNames.Application.Zip, $"{toolName}{distribution.VersionNumber}.zip");
 	}
@@ -68,7 +68,7 @@ public class ToolsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult<GetToolDistribution>> GetLatestToolDistribution([Required] string toolName, [Required] ToolPublishMethod publishMethod, [Required] ToolBuildType buildType)
 	{
-		ToolDistribution? distribution = await _toolService.GetLatestToolDistributionAsync(toolName, publishMethod, buildType);
+		ToolDistribution? distribution = await _toolRepository.GetLatestToolDistributionAsync(toolName, publishMethod, buildType);
 		if (distribution == null)
 			return NotFound();
 
@@ -81,7 +81,7 @@ public class ToolsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult<GetToolDistribution>> GetToolDistributionByVersion([Required] string toolName, [Required] ToolPublishMethod publishMethod, [Required] ToolBuildType buildType, string version)
 	{
-		ToolDistribution? distribution = await _toolService.GetToolDistributionByVersionAsync(toolName, publishMethod, buildType, version);
+		ToolDistribution? distribution = await _toolRepository.GetToolDistributionByVersionAsync(toolName, publishMethod, buildType, version);
 		if (distribution == null)
 			return NotFound();
 

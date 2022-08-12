@@ -1,7 +1,7 @@
 using DevilDaggersInfo.Api.Ddcl.Tools;
 using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Server.Domain.Models.Tools;
-using DevilDaggersInfo.Web.Server.Domain.Services;
+using DevilDaggersInfo.Web.Server.Domain.Repositories;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Ddcl;
 
@@ -9,11 +9,11 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Ddcl;
 [ApiController]
 public class UpdatesController : ControllerBase
 {
-	private readonly ToolService _toolService;
+	private readonly ToolRepository _toolRepository;
 
-	public UpdatesController(ToolService toolService)
+	public UpdatesController(ToolRepository toolRepository)
 	{
-		_toolService = toolService;
+		_toolRepository = toolRepository;
 	}
 
 	// TODO: Make this endpoint generic for all tools.
@@ -24,8 +24,8 @@ public class UpdatesController : ControllerBase
 	public async Task<ActionResult<GetUpdate>> GetUpdates([Required] ToolPublishMethod publishMethod, [Required] ToolBuildType buildType)
 	{
 		const string toolName = "DevilDaggersCustomLeaderboards";
-		Tool tool = await _toolService.GetToolAsync(toolName) ?? throw new("DDCL not found in tool service.");
-		ToolDistribution? toolDistribution = await _toolService.GetLatestToolDistributionAsync(toolName, publishMethod, buildType) ?? throw new("No versions of DDCL found in tool service.");
+		Tool tool = await _toolRepository.GetToolAsync(toolName) ?? throw new("DDCL not found in tool service.");
+		ToolDistribution? toolDistribution = await _toolRepository.GetLatestToolDistributionAsync(toolName, publishMethod, buildType) ?? throw new("No versions of DDCL found in tool service.");
 		return new GetUpdate
 		{
 			VersionNumber = toolDistribution.VersionNumber,

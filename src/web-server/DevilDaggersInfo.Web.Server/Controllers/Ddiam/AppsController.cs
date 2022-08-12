@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Api.Ddiam;
 using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Ddiam;
-using DevilDaggersInfo.Web.Server.Domain.Services;
+using DevilDaggersInfo.Web.Server.Domain.Repositories;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Ddiam;
 
@@ -8,18 +8,18 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Ddiam;
 [ApiController]
 public class AppsController : ControllerBase
 {
-	private readonly ToolService _toolService;
+	private readonly ToolRepository _toolRepository;
 
-	public AppsController(ToolService toolService)
+	public AppsController(ToolRepository toolRepository)
 	{
-		_toolService = toolService;
+		_toolRepository = toolRepository;
 	}
 
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public async Task<ActionResult<List<GetApp>>> GetApps([Required] OperatingSystemType os)
 	{
-		List<Domain.Models.Tools.ToolDistribution> tools = await _toolService.GetLatestToolDistributionsAsync(os.ToDomain());
+		List<Domain.Models.Tools.ToolDistribution> tools = await _toolRepository.GetLatestToolDistributionsAsync(os.ToDomain());
 
 		return tools.ConvertAll(td => new GetApp
 		{

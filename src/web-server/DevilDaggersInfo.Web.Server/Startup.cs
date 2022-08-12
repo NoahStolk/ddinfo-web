@@ -51,7 +51,6 @@ public class Startup
 		services.AddTransient<ModArchiveProcessor>();
 		services.AddTransient<ModScreenshotProcessor>();
 		services.AddScoped<PlayerProfileService>();
-		services.AddTransient<ToolService>();
 		services.AddScoped<UserManager>();
 
 		// Repositories
@@ -59,6 +58,7 @@ public class Startup
 		services.AddTransient<CustomLeaderboardRepository>();
 		services.AddTransient<MarkerRepository>();
 		services.AddScoped<PlayerProfileRepository>();
+		services.AddTransient<ToolRepository>();
 
 		// Admin domain services
 		services.AddTransient<Domain.Admin.Services.CustomEntryService>();
