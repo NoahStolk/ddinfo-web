@@ -95,7 +95,7 @@ public partial class Recorder : IDisposable
 			_submissionResponseWrapper = null;
 		}
 
-		if (!ArrayUtils.AreEqual(ReaderService.MainBlock.SurvivalHashMd5, ReaderService.MainBlockPrevious.SurvivalHashMd5))
+		if (ReaderService.MainBlock.SurvivalHashMd5 != null && ReaderService.MainBlockPrevious.SurvivalHashMd5 != null && !ArrayUtils.AreEqual(ReaderService.MainBlock.SurvivalHashMd5, ReaderService.MainBlockPrevious.SurvivalHashMd5))
 		{
 			Logger.LogInformation("Fetching leaderboard because of hash change.");
 #if TODO
