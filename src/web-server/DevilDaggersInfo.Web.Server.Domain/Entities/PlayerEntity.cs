@@ -55,4 +55,21 @@ public class PlayerEntity : IAuditable
 	public bool HidePastUsernames { get; set; }
 
 	public List<PlayerModEntity> PlayerMods { get; set; } = new();
+
+	public bool HasVisibleSettings()
+		=> !HideSettings && HasSettings();
+
+	public bool HasSettings()
+	{
+		return Dpi.HasValue ||
+			InGameSens.HasValue ||
+			Fov.HasValue ||
+			IsRightHanded.HasValue ||
+			HasFlashHandEnabled.HasValue ||
+			Gamma.HasValue ||
+			UsesLegacyAudio.HasValue ||
+			UsesHrtf.HasValue ||
+			UsesInvertY.HasValue ||
+			VerticalSync != VerticalSync.Unknown;
+	}
 }
