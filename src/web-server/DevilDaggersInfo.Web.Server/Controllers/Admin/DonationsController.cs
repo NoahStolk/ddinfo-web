@@ -3,6 +3,7 @@ using DevilDaggersInfo.Api.Admin.Donations;
 using DevilDaggersInfo.Web.Client;
 using DevilDaggersInfo.Web.Core.Claims;
 using DevilDaggersInfo.Web.Server.Domain.Admin.Repositories;
+using DevilDaggersInfo.Web.Server.Domain.Admin.Services;
 using Microsoft.AspNetCore.Authorization;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
@@ -12,13 +13,13 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 [Authorize(Roles = Roles.Admin)]
 public class DonationsController : ControllerBase
 {
-	private readonly ApplicationDbContext _dbContext;
 	private readonly DonationRepository _donationRepository;
+	private readonly DonationService _donationService;
 
-	public DonationsController(ApplicationDbContext dbContext, DonationRepository donationRepository)
+	public DonationsController(DonationRepository donationRepository, DonationService donationService)
 	{
-		_dbContext = dbContext;
 		_donationRepository = donationRepository;
+		_donationService = donationService;
 	}
 
 	[HttpGet]
@@ -42,23 +43,8 @@ public class DonationsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult> AddDonation(AddDonation addDonation)
 	{
-		if (!_dbContext.Players.Any(p => p.Id == addDonation.PlayerId))
-			return BadRequest($"Player with ID '{addDonation.PlayerId}' does not exist.");
-
-		DonationEntity donation = new()
-		{
-			Amount = addDonation.Amount,
-			ConvertedEuroCentsReceived = addDonation.ConvertedEuroCentsReceived,
-			Currency = addDonation.Currency,
-			DateReceived = DateTime.UtcNow,
-			IsRefunded = addDonation.IsRefunded,
-			Note = addDonation.Note,
-			PlayerId = addDonation.PlayerId,
-		};
-		_dbContext.Donations.Add(donation);
-		await _dbContext.SaveChangesAsync();
-
-		return Ok(donation.Id);
+		await _donationService.AddDonationAsync(addDonation);
+		return Ok();
 	}
 
 	[HttpPut("{id}")]
@@ -67,21 +53,7 @@ public class DonationsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult> EditDonationById(int id, EditDonation editDonation)
 	{
-		if (!_dbContext.Players.Any(p => p.Id == editDonation.PlayerId))
-			return BadRequest($"Player with ID '{editDonation.PlayerId}' does not exist.");
-
-		DonationEntity? donation = _dbContext.Donations.FirstOrDefault(d => d.Id == id);
-		if (donation == null)
-			return NotFound();
-
-		donation.Amount = editDonation.Amount;
-		donation.ConvertedEuroCentsReceived = editDonation.ConvertedEuroCentsReceived;
-		donation.Currency = editDonation.Currency;
-		donation.IsRefunded = editDonation.IsRefunded;
-		donation.Note = editDonation.Note;
-		donation.PlayerId = editDonation.PlayerId;
-		await _dbContext.SaveChangesAsync();
-
+		await _donationService.EditDonationAsync(id, editDonation);
 		return Ok();
 	}
 
@@ -90,13 +62,7 @@ public class DonationsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult> DeleteDonationById(int id)
 	{
-		DonationEntity? donation = _dbContext.Donations.FirstOrDefault(d => d.Id == id);
-		if (donation == null)
-			return NotFound();
-
-		_dbContext.Donations.Remove(donation);
-		await _dbContext.SaveChangesAsync();
-
+		await _donationService.DeleteDonationAsync(id);
 		return Ok();
 	}
 }

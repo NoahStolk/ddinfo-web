@@ -61,6 +61,7 @@ public class Startup
 		// Admin domain services
 		services.AddTransient<Domain.Admin.Services.CustomEntryService>();
 		services.AddTransient<Domain.Admin.Services.CustomLeaderboardService>();
+		services.AddTransient<Domain.Admin.Services.DonationService>();
 		services.AddTransient<Domain.Admin.Services.ModService>();
 		services.AddTransient<Domain.Admin.Services.PlayerService>();
 		services.AddTransient<Domain.Admin.Services.SpawnsetService>();
