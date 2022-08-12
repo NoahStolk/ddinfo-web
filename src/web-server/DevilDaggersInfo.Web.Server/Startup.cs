@@ -62,6 +62,7 @@ public class Startup
 		services.AddTransient<Domain.Admin.Services.CustomEntryService>();
 		services.AddTransient<Domain.Admin.Services.CustomLeaderboardService>();
 		services.AddTransient<Domain.Admin.Services.DonationService>();
+		services.AddTransient<Domain.Admin.Services.MarkerService>();
 		services.AddTransient<Domain.Admin.Services.ModService>();
 		services.AddTransient<Domain.Admin.Services.PlayerService>();
 		services.AddTransient<Domain.Admin.Services.SpawnsetService>();
@@ -71,6 +72,7 @@ public class Startup
 		services.AddTransient<Domain.Admin.Repositories.CustomEntryRepository>();
 		services.AddTransient<Domain.Admin.Repositories.CustomLeaderboardRepository>();
 		services.AddTransient<Domain.Admin.Repositories.DonationRepository>();
+		services.AddTransient<Domain.Admin.Repositories.MarkerRepository>();
 		services.AddTransient<Domain.Admin.Repositories.ModRepository>();
 		services.AddTransient<Domain.Admin.Repositories.PlayerRepository>();
 		services.AddTransient<Domain.Admin.Repositories.SpawnsetRepository>();
