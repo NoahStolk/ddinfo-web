@@ -58,12 +58,13 @@ public class Startup
 		services.AddTransient<ToolRepository>();
 
 		// Main domain services
-		services.AddScoped<Domain.Main.Services.PlayerProfileService>();
 		services.AddScoped<Domain.Main.Services.AuthenticationService>();
+		services.AddScoped<Domain.Main.Services.PlayerProfileService>();
 
 		// Main repositories
-		services.AddScoped<Domain.Main.Repositories.PlayerProfileRepository>();
 		services.AddTransient<Domain.Main.Repositories.DonationRepository>();
+		services.AddScoped<Domain.Main.Repositories.PlayerProfileRepository>();
+		services.AddTransient<Domain.Main.Repositories.WorldRecordRepository>();
 
 		// Admin domain services
 		services.AddTransient<Domain.Admin.Services.CustomEntryService>();
