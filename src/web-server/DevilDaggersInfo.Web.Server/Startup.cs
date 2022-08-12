@@ -59,6 +59,7 @@ public class Startup
 		services.AddScoped<PlayerProfileRepository>();
 
 		// Admin domain services
+		services.AddTransient<Domain.Admin.Services.CustomEntryService>();
 		services.AddTransient<Domain.Admin.Services.CustomLeaderboardService>();
 		services.AddTransient<Domain.Admin.Services.ModService>();
 		services.AddTransient<Domain.Admin.Services.PlayerService>();
