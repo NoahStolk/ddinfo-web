@@ -2,25 +2,18 @@ using DevilDaggersInfo.App.Core.GameMemory;
 using DevilDaggersInfo.Razor.CustomLeaderboard.Enums;
 using DevilDaggersInfo.Razor.CustomLeaderboard.Services;
 using DevilDaggersInfo.Razor.CustomLeaderboard.Store.State;
-using Fluxor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 
-namespace DevilDaggersInfo.Razor.CustomLeaderboard.Pages;
+namespace DevilDaggersInfo.Razor.CustomLeaderboard.Components;
 
-public partial class Recorder
+public partial class Recording
 {
 	[Inject]
-	public IState<RecorderState> State { get; set; } = null!;
-
-	[Inject]
-	public ILogger<Recorder> Logger { get; set; } = null!;
+	public ILogger<Recording> Logger { get; set; } = null!;
 
 	[Inject]
 	public GameMemoryReaderService ReaderService { get; set; } = null!;
-
-	[Inject]
-	public StateFacade StateFacade { get; set; } = null!;
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -36,7 +29,7 @@ public partial class Recorder
 
 	private async Task Record()
 	{
-		RecorderState state = State.Value;
+		RecorderState state = RecorderState.Value;
 		if (!state.Marker.HasValue)
 		{
 			StateFacade.FetchMarker();

@@ -1,13 +1,20 @@
 @page "/"
+@using DevilDaggersInfo.App.Core.GameMemory
+@using DevilDaggersInfo.Core.Spawnset
+@using DevilDaggersInfo.Razor.Core.CanvasArena.Components
 @using DevilDaggersInfo.Razor.CustomLeaderboard.Store.State
 @using Fluxor
+@inject GameMemoryReaderService ReaderService
+@inject IState<RecorderState> RecorderState
+@inject IState<SpawnsetState> SpawnsetState
+
 @inherits FluxorComponent
 
 <div class="grid grid-cols-4 m-2 p-2 border-solid border-2 border-[#811]">
 	<div>
 		<div class="grid grid-cols-2 m-2 p-2 border-solid border-2 border-[#114]">
 			<span>Marker</span>
-			<span>@(State.Value.Marker == null ? "Fetching..." : $"0x{State.Value.Marker.Value:X16}")</span>
+			<span>@(RecorderState.Value.Marker == null ? "Fetching..." : $"0x{RecorderState.Value.Marker.Value:X16}")</span>
 
 			<span>Devil Daggers process</span>
 			<span>@(ReaderService.HasProcess ? "Attached" : "Waiting...")</span>
@@ -16,7 +23,7 @@
 			<span>@(ReaderService.IsInitialized ? "Done" : "Waiting...")</span>
 
 			<span>State</span>
-			<span>@(State.Value.State)</span>
+			<span>@RecorderState.Value.State</span>
 		</div>
 
 		<div class="m-2 p-2 border-solid border-2 border-[#411]">
@@ -33,6 +40,16 @@
 	</div>
 </div>
 
-<div class="min-w-[1270px] m-2 p-2 border-solid border-2 border-[#411]">
-	<Leaderboard />
+<div class="grid grid-cols-4 m-2 p-2 border-solid border-2 border-[#811]">
+	<div>
+		@if (SpawnsetState.Value.Spawnset != null)
+		{
+			<div class="max-w-arena">
+				<WebViewSpawnsetArena SpawnsetBinary="SpawnsetState.Value.Spawnset" CurrentTime="0" />
+			</div>
+		}
+	</div>
+	<div class="col-span-3 min-w-[1270px] m-2 p-2 border-solid border-2 border-[#411]">
+		<Leaderboard />
+	</div>
 </div>
