@@ -2,11 +2,15 @@
 @using DevilDaggersInfo.App.Core.GameMemory
 @using DevilDaggersInfo.Core.Spawnset
 @using DevilDaggersInfo.Razor.Core.CanvasArena.Components
+@using DevilDaggersInfo.Razor.CustomLeaderboard.Services
 @using DevilDaggersInfo.Razor.CustomLeaderboard.Store.State
 @using Fluxor
 @inject GameMemoryReaderService ReaderService
 @inject IState<RecorderState> RecorderState
 @inject IState<SpawnsetState> SpawnsetState
+@inject NetworkService NetworkService
+@inject IClientConfiguration ClientConfiguration
+@inject StateFacade StateFacade
 
 @inherits FluxorComponent
 
