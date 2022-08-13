@@ -9,4 +9,6 @@ public class CustomLeaderboardOverviewSelectedPlayerStats
 	public int Time { get; init; }
 
 	public CustomLeaderboardDagger? Dagger { get; init; }
+
+	public CustomLeaderboardOverviewSelectedPlayerNextDagger? NextDagger { get; init; }
 }

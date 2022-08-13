@@ -9,4 +9,6 @@ public record GetCustomLeaderboardSelectedPlayerStats
 	public double Time { get; init; }
 
 	public CustomLeaderboardDagger? Dagger { get; init; }
+
+	public GetCustomLeaderboardSelectedPlayerNextDagger? NextDagger { get; init; }
 }

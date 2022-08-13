@@ -11,6 +11,7 @@ using DevilDaggersInfo.Web.Server.Domain.Models.Spawnsets;
 using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 using DevilDaggersInfo.Web.Server.Domain.Utils;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Repositories;
 
@@ -84,13 +85,7 @@ public class CustomLeaderboardRepository
 			};
 
 			CustomEntrySummary? selectedEntry = sortedCustomEntries.Find(ce => ce.PlayerId == selectedPlayerId);
-			CustomLeaderboardOverviewSelectedPlayerStats? selectedPlayerStatsModel = selectedEntry == null ? null : new()
-			{
-				Dagger = cl.GetDaggerFromTime(selectedEntry.Time),
-				Rank = sortedCustomEntries.IndexOf(selectedEntry) + 1,
-				Time = selectedEntry.Time,
-			};
-
+			CustomLeaderboardOverviewSelectedPlayerStats? selectedPlayerStatsModel = GetSelectedStats(cl, sortedCustomEntries, selectedEntry);
 			customLeaderboardData.Add(new(cl, worldRecordModel, selectedPlayerStatsModel, sortedCustomEntries.Count));
 		}
 
@@ -344,6 +339,30 @@ public class CustomLeaderboardRepository
 			Dagger = cl.CustomLeaderboard.GetDaggerFromTime(cl.WorldRecord.Time),
 		},
 	};
+
+	[return: NotNullIfNotNull("selectedEntry")]
+	private static CustomLeaderboardOverviewSelectedPlayerStats? GetSelectedStats(CustomLeaderboardEntity cl, List<CustomEntrySummary> sortedCustomEntries, CustomEntrySummary? selectedEntry)
+	{
+		if (selectedEntry == null)
+			return null;
+
+		CustomLeaderboardDagger? dagger = cl.GetDaggerFromTime(selectedEntry.Time);
+		return new()
+		{
+			Dagger = dagger,
+			Rank = sortedCustomEntries.IndexOf(selectedEntry) + 1,
+			Time = selectedEntry.Time,
+			NextDagger = dagger switch
+			{
+				CustomLeaderboardDagger.Default => new() { Dagger = CustomLeaderboardDagger.Bronze, Time = cl.TimeBronze },
+				CustomLeaderboardDagger.Bronze => new() { Dagger = CustomLeaderboardDagger.Silver, Time = cl.TimeSilver },
+				CustomLeaderboardDagger.Silver => new() { Dagger = CustomLeaderboardDagger.Golden, Time = cl.TimeGolden },
+				CustomLeaderboardDagger.Golden => new() { Dagger = CustomLeaderboardDagger.Devil, Time = cl.TimeDevil },
+				CustomLeaderboardDagger.Devil => new() { Dagger = CustomLeaderboardDagger.Leviathan, Time = cl.TimeLeviathan },
+				_ => null,
+			},
+		};
+	}
 
 	private sealed class CustomLeaderboardData
 	{

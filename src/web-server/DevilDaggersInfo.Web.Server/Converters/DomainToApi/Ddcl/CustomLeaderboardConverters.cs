@@ -78,6 +78,11 @@ public static class CustomLeaderboardConverters
 		Dagger = customLeaderboardOverviewSelectedPlayerStats.Dagger,
 		Rank = customLeaderboardOverviewSelectedPlayerStats.Rank,
 		Time = customLeaderboardOverviewSelectedPlayerStats.Time.ToSecondsTime(),
+		NextDagger = customLeaderboardOverviewSelectedPlayerStats.NextDagger == null ? null : new()
+		{
+			Dagger = customLeaderboardOverviewSelectedPlayerStats.NextDagger.Dagger,
+			Time = customLeaderboardOverviewSelectedPlayerStats.NextDagger.Time.ToSecondsTime(),
+		},
 	};
 
 	public static DdclApi.GetCustomLeaderboardWorldRecord ToDdclApi(this CustomLeaderboardOverviewWorldRecord customLeaderboardOverviewWorldRecord) => new()
