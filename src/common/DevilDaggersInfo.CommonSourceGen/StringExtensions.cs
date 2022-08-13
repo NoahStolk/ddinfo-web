@@ -85,4 +85,7 @@ public static class StringExtensions
 
 	public static string ToUsingDirective(this string namespaceString)
 		=> $"using {namespaceString};";
+
+	public static string[] ExtractLines(this string str)
+		=> str.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray();
 }

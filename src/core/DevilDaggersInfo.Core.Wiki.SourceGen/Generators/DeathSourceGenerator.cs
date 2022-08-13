@@ -31,7 +31,7 @@ public static class {_className}
 		if (fileContents == null)
 			return;
 
-		string[] lines = fileContents.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+		string[] lines = fileContents.ExtractLines();
 		string[] fieldLines = new string[lines.Length];
 
 		for (int i = 0; i < lines.Length; i++)
