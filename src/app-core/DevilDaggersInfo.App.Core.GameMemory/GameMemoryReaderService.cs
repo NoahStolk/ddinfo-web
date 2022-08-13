@@ -96,4 +96,16 @@ public class GameMemoryReaderService
 		_nativeMemoryService.WriteMemory(_process, _memoryBlockAddress + 312, BitConverter.GetBytes(replay.Length), 0, sizeof(int));
 		_nativeMemoryService.WriteMemory(_process, _memoryBlockAddress + 316, new byte[] { 1 }, 0, 1);
 	}
+
+	public string? GetPathToSurvivalFile()
+	{
+		if (_process?.MainModule?.FileName == null)
+			return null;
+
+		string? dir = Path.GetDirectoryName(_process.MainModule.FileName);
+		if (dir == null)
+			return null;
+
+		return Path.Combine(dir, "mods", "survival");
+	}
 }
