@@ -46,8 +46,6 @@
 
 	@foreach (GetCustomLeaderboardForOverview leaderboard in State.Value.Leaderboards.Results)
 	{
-		string? daggerColor = leaderboard.SelectedPlayerStats?.Dagger?.GetColorCode();
-		string? worldRecordDaggerColor = leaderboard.WorldRecord?.Dagger?.GetColorCode();
 
 		<div class="grid gap-x-2 grid-cols-5 hover:bg-dark-red cursor-pointer" @onclick="@(() => StateFacade.SetSpawnset(leaderboard.SpawnsetId))">
 			<span>@leaderboard.SpawnsetName</span>
@@ -56,14 +54,26 @@
 			{
 				<span class="text-right">-</span>
 				<span class="text-right">-</span>
+				<span class="text-right">-</span>
 			}
 			else
 			{
+				string? daggerColor = leaderboard.SelectedPlayerStats.Dagger?.GetColorCode();
+
 				<span class="text-right">@leaderboard.SelectedPlayerStats.Rank / @leaderboard.PlayerCount</span>
 				<span class="text-right" style="color: @daggerColor;">@leaderboard.SelectedPlayerStats.Time.ToString("N4")</span>
-			}
 
-			<span class="text-right">TODO</span>
+				@if (@leaderboard.SelectedPlayerStats.NextDagger == null)
+				{
+					<span class="text-right">-</span>
+				}
+				else
+				{
+					string? nextDaggerColor = leaderboard.SelectedPlayerStats.NextDagger.Dagger.GetColorCode();
+
+					<span class="text-right" style="color: @nextDaggerColor;">@leaderboard.SelectedPlayerStats.NextDagger.Time.ToString("N4")</span>
+				}
+			}
 
 			@if (leaderboard.WorldRecord == null)
 			{
@@ -71,6 +81,8 @@
 			}
 			else
 			{
+				string? worldRecordDaggerColor = leaderboard.WorldRecord.Dagger?.GetColorCode();
+
 				<span class="text-right" style="color: @worldRecordDaggerColor;">@leaderboard.WorldRecord.Time.ToString("N4")</span>
 			}
 		</div>
