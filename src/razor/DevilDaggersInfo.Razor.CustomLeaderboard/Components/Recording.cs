@@ -46,6 +46,11 @@ public partial class Recording
 
 		ReaderService.Scan();
 
+		if (LeaderboardListState.Value.SelectedPlayerId != ReaderService.MainBlock.PlayerId)
+		{
+			StateFacade.SetSelectedPlayerId(ReaderService.MainBlock.PlayerId);
+		}
+
 		// TODO: Load spawnset and leaderboard if empty (on startup).
 		//if (SpawnsetState.Value.Spawnset == null)
 		//{

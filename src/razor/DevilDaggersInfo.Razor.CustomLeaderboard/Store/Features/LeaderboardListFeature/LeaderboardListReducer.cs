@@ -21,6 +21,12 @@ public static class LeaderboardListReducer
 	}
 
 	[ReducerMethod]
+	public static LeaderboardListState ReduceSetSelectedPlayerIdAction(LeaderboardListState state, SetSelectedPlayerIdAction action)
+	{
+		return new(false, null, state.Leaderboards, action.SelectedPlayerId, state.Category, state.PageIndex, state.PageSize);
+	}
+
+	[ReducerMethod]
 	public static LeaderboardListState ReduceFetchLeaderboardsAction(LeaderboardListState state, FetchLeaderboardsAction action)
 	{
 		return new(true, null, state.Leaderboards, state.SelectedPlayerId, state.Category, state.PageIndex, state.PageSize);

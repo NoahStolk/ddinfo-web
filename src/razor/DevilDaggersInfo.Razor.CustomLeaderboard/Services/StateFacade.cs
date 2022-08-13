@@ -35,6 +35,12 @@ public class StateFacade
 		_dispatcher.Dispatch(new FetchLeaderboardsAction());
 	}
 
+	public void SetSelectedPlayerId(int selectedPlayerId)
+	{
+		_dispatcher.Dispatch(new SetSelectedPlayerIdAction(selectedPlayerId));
+		_dispatcher.Dispatch(new FetchLeaderboardsAction());
+	}
+
 	public void SetSpawnset(int spawnsetId)
 	{
 		_dispatcher.Dispatch(new DownloadSpawnsetAction(spawnsetId));
