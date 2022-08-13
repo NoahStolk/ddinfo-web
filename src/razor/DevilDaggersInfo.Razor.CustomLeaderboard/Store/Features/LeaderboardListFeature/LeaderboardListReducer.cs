@@ -17,7 +17,7 @@ public static class LeaderboardListReducer
 	[ReducerMethod]
 	public static LeaderboardListState ReduceSetCategoryAction(LeaderboardListState state, SetCategoryAction action)
 	{
-		return new(false, null, state.Leaderboards, state.SelectedPlayerId, action.Category, state.PageIndex, state.PageSize);
+		return new(false, null, state.Leaderboards, state.SelectedPlayerId, action.Category, 0, state.PageSize);
 	}
 
 	[ReducerMethod]
