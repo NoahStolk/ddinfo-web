@@ -9,22 +9,29 @@ namespace DevilDaggersInfo.Razor.CustomLeaderboard.Components;
 
 public partial class Recording
 {
+	private Timer? _timer;
+
 	[Inject]
 	public ILogger<Recording> Logger { get; set; } = null!;
 
 	[Inject]
 	public GameMemoryReaderService ReaderService { get; set; } = null!;
 
-	protected override async Task OnInitializedAsync()
+	protected override void OnInitialized()
 	{
-		await base.OnInitializedAsync();
+		base.OnInitialized();
 
-		using PeriodicTimer timer = new(TimeSpan.FromMilliseconds(100));
-		while (await timer.WaitForNextTickAsync())
-		{
-			await Record();
-			await InvokeAsync(StateHasChanged);
-		}
+		_timer = new(
+			callback: async _ =>
+			{
+				await Record();
+				await InvokeAsync(StateHasChanged);
+
+				_timer?.Change(50, Timeout.Infinite);
+			},
+			state: null,
+			dueTime: 0,
+			period: Timeout.Infinite);
 	}
 
 	private async Task Record()
