@@ -13,6 +13,7 @@
 }
 else if (State.Value.UploadSuccess != null)
 {
+	@*TODO: Use Fluxor state for time ago.*@
 	<div class="text-2xl text-green">Upload successful @FormatTimeAgo()</div>
 
 	<div>@State.Value.UploadSuccess.Message</div>
@@ -46,18 +47,6 @@ else
 
 @code
 {
-	protected override async Task OnInitializedAsync()
-	{
-		await base.OnInitializedAsync();
-
-		using PeriodicTimer timer = new(TimeSpan.FromSeconds(5));
-		while (await timer.WaitForNextTickAsync())
-		{
-			if (State.Value.UploadSuccess != null)
-				StateHasChanged();
-		}
-	}
-
 	private string FormatTimeAgo()
 	{
 		if (!State.Value.LastSuccessfulUpload.HasValue)
