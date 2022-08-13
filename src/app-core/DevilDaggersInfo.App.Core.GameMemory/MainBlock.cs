@@ -6,11 +6,11 @@ namespace DevilDaggersInfo.App.Core.GameMemory;
 
 public readonly record struct MainBlock
 {
-	public readonly string Marker;
+	public readonly string Marker = string.Empty;
 	public readonly int FormatVersion;
 
 	public readonly int PlayerId;
-	public readonly string PlayerName;
+	public readonly string PlayerName = string.Empty;
 	public readonly float Time;
 	public readonly int GemsCollected;
 	public readonly int EnemiesKilled;
@@ -66,9 +66,9 @@ public readonly record struct MainBlock
 	public readonly bool IsInGame;
 
 	public readonly int ReplayPlayerId;
-	public readonly string ReplayPlayerName;
+	public readonly string ReplayPlayerName = string.Empty;
 
-	public readonly byte[] SurvivalHashMd5;
+	public readonly byte[] SurvivalHashMd5 = Array.Empty<byte>();
 
 	public readonly float LevelUpTime2;
 	public readonly float LevelUpTime3;
