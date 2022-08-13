@@ -30,12 +30,6 @@ public partial class Recording
 	private async Task Record()
 	{
 		RecorderState state = RecorderState.Value;
-		if (!state.Marker.HasValue)
-		{
-			StateFacade.FetchMarker();
-			return;
-		}
-
 		ReaderService.Scan();
 		StateFacade.SetRecording(ReaderService.MainBlock, ReaderService.MainBlockPrevious);
 

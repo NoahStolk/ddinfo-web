@@ -46,8 +46,18 @@ public class NetworkService
 
 	public async Task<long> GetMarker(SupportedOperatingSystem supportedOperatingSystem)
 	{
-		GetMarker marker = await _apiClient.GetMarker(supportedOperatingSystem);
-		return marker.Value;
+		while (true)
+		{
+			try
+			{
+				GetMarker marker = await _apiClient.GetMarker(supportedOperatingSystem);
+				return marker.Value;
+			}
+			catch
+			{
+				// The app can't run without the marker.
+			}
+		}
 	}
 
 	public async Task<bool> CheckIfLeaderboardExists(byte[] survivalHashMd5)

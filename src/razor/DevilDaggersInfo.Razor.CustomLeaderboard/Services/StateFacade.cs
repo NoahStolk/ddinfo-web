@@ -57,11 +57,6 @@ public class StateFacade
 		_dispatcher.Dispatch(new ToggleShowEnemyStatsAction());
 	}
 
-	public void FetchMarker()
-	{
-		_dispatcher.Dispatch(new FetchMarkerAction());
-	}
-
 	public void SetState(RecorderStateType state)
 	{
 		_dispatcher.Dispatch(new SetStateAction(state));

@@ -14,9 +14,6 @@
 	<div>
 		@*TODO: Use Fluxor state and use separate component.*@
 		<div class="grid grid-cols-2 m-2 p-2 border-solid border-2 border-[#114]">
-			<span>Marker</span>
-			<span>@(RecorderState.Value.Marker == null ? "Fetching..." : $"0x{RecorderState.Value.Marker.Value:X16}")</span>
-
 			<span>Devil Daggers process</span>
 			<span>@(ReaderService.HasProcess ? "Attached" : "Waiting...")</span>
 
@@ -54,3 +51,14 @@
 		<Leaderboard />
 	</div>
 </div>
+
+@code
+{
+	protected override async Task OnInitializedAsync()
+	{
+		await base.OnInitializedAsync();
+
+		long marker = await NetworkService.GetMarker(ClientConfiguration.GetOperatingSystem());
+		ReaderService.Initialize(marker);
+	}
+}

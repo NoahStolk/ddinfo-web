@@ -8,24 +8,6 @@ namespace DevilDaggersInfo.Razor.CustomLeaderboard.Store.Features.RecorderFeatur
 public static class RecorderReducer
 {
 	[ReducerMethod]
-	public static RecorderState ReduceFetchMarkerAction(RecorderState state, FetchMarkerAction action)
-	{
-		return new(RecorderStateType.WaitingForMarker, null, state.UploadError, state.UploadSuccess, state.LastSuccessfulUpload);
-	}
-
-	[ReducerMethod]
-	public static RecorderState ReduceFetchMarkerSuccessAction(RecorderState state, FetchMarkerSuccessAction action)
-	{
-		return new(RecorderStateType.Recording, action.Marker, state.UploadError, state.UploadSuccess, state.LastSuccessfulUpload);
-	}
-
-	[ReducerMethod]
-	public static RecorderState ReduceFetchMarkerFailureAction(RecorderState state, FetchMarkerFailureAction action)
-	{
-		return new(RecorderStateType.WaitingForGame, null, state.UploadError, state.UploadSuccess, state.LastSuccessfulUpload);
-	}
-
-	[ReducerMethod]
 	public static RecorderState ReduceUploadRunAction(RecorderState state, UploadRunAction action)
 	{
 		return new(RecorderStateType.Uploading, state.Marker, state.UploadError, state.UploadSuccess, state.LastSuccessfulUpload);
