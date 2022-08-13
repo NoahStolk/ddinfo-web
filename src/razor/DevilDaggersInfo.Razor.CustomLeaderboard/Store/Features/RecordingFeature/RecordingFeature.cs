@@ -7,5 +7,5 @@ public class RecordingFeature : Feature<RecordingState>
 {
 	public override string GetName() => "Recording";
 
-	protected override RecordingState GetInitialState() => new(false);
+	protected override RecordingState GetInitialState() => new(false, default, default);
 }

@@ -1,3 +1,4 @@
+using DevilDaggersInfo.App.Core.GameMemory;
 using DevilDaggersInfo.Razor.CustomLeaderboard.Enums;
 using DevilDaggersInfo.Razor.CustomLeaderboard.Store.Features.LeaderboardFeature.Actions;
 using DevilDaggersInfo.Razor.CustomLeaderboard.Store.Features.LeaderboardListFeature.Actions;
@@ -64,6 +65,11 @@ public class StateFacade
 	public void SetState(RecorderStateType state)
 	{
 		_dispatcher.Dispatch(new SetStateAction(state));
+	}
+
+	public void SetRecording(MainBlock block, MainBlock blockPrevious)
+	{
+		_dispatcher.Dispatch(new SetRecordingAction(block, blockPrevious));
 	}
 
 	public void UploadRun()

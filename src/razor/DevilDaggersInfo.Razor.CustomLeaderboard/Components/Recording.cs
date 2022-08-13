@@ -9,14 +9,6 @@ namespace DevilDaggersInfo.Razor.CustomLeaderboard.Components;
 
 public partial class Recording
 {
-	[Parameter]
-	[EditorRequired]
-	public MainBlock Block { get; set; }
-
-	[Parameter]
-	[EditorRequired]
-	public MainBlock BlockPrevious { get; set; }
-
 	[Inject]
 	public ILogger<Recording> Logger { get; set; } = null!;
 
@@ -45,6 +37,7 @@ public partial class Recording
 		}
 
 		ReaderService.Scan();
+		StateFacade.SetRecording(ReaderService.MainBlock, ReaderService.MainBlockPrevious);
 
 		if (LeaderboardListState.Value.SelectedPlayerId != ReaderService.MainBlock.PlayerId)
 		{

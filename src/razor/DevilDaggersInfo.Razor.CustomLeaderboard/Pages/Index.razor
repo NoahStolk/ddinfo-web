@@ -12,6 +12,7 @@
 
 <div class="grid grid-cols-4 m-2 p-2 border-solid border-2 border-[#811]">
 	<div>
+		@*TODO: Use Fluxor state and use separate component.*@
 		<div class="grid grid-cols-2 m-2 p-2 border-solid border-2 border-[#114]">
 			<span>Marker</span>
 			<span>@(RecorderState.Value.Marker == null ? "Fetching..." : $"0x{RecorderState.Value.Marker.Value:X16}")</span>
@@ -27,7 +28,7 @@
 		</div>
 
 		<div class="m-2 p-2 border-solid border-2 border-[#411]">
-			<Recording Block="ReaderService.MainBlock" BlockPrevious="ReaderService.MainBlockPrevious" />
+			<Recording />
 		</div>
 
 		<div class="m-2 p-2 border-solid border-2 border-[#411]">
