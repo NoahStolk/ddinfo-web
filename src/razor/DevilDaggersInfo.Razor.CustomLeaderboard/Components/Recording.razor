@@ -9,33 +9,28 @@
 @inject IState<SpawnsetState> SpawnsetState
 @inject IState<LeaderboardListState> LeaderboardListState
 @inject StateFacade StateFacade
-@{
-	MainBlock block = State.Value.Block;
-	MainBlock blockPrev = State.Value.BlockPrevious;
-	GameStatus status = (GameStatus)block.Status;
-}
 
 <div class="grid grid-cols-2 mb-2">
-	@if (status is GameStatus.OwnReplayFromLeaderboard or GameStatus.OtherPlayersReplayFromLeaderboard or GameStatus.LocalReplay)
+	@if ((GameStatus)State.Value.Block.Status is GameStatus.OwnReplayFromLeaderboard or GameStatus.OtherPlayersReplayFromLeaderboard or GameStatus.LocalReplay)
 	{
 		<span>Player</span>
-		<span class="text-right">@block.ReplayPlayerName (@block.ReplayPlayerId)</span>
+		<span class="text-right">@State.Value.Block.ReplayPlayerName (@State.Value.Block.ReplayPlayerId)</span>
 	}
 	else
 	{
 		<span>Player</span>
-		<span class="text-right">@block.PlayerName (@block.PlayerId)</span>
+		<span class="text-right">@State.Value.Block.PlayerName (@State.Value.Block.PlayerId)</span>
 	}
 
 	<span>Status</span>
-	<span class="text-right">@status</span>
+	<span class="text-right">@((GameStatus)State.Value.Block.Status)</span>
 </div>
 
-@if (status is not (GameStatus.Title or GameStatus.Menu or GameStatus.Lobby))
+@if ((GameStatus)State.Value.Block.Status is not (GameStatus.Title or GameStatus.Menu or GameStatus.Lobby))
 {
 	<div class="grid grid-cols-2 mb-2">
 		<span>Time</span>
-		<span class="text-right">@block.Time.ToString("N4")</span>
+		<span class="text-right">@State.Value.Block.Time.ToString("N4")</span>
 	</div>
 
 	<div class="grid grid-cols-2 mb-2">
