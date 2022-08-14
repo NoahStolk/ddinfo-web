@@ -1,8 +1,10 @@
 using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Core.Versioning;
 using DevilDaggersInfo.Types.Web;
+using DevilDaggersInfo.Types.Web.Extensions;
 using DevilDaggersInfo.Web.Server.Domain.Constants;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
+using DevilDaggersInfo.Web.Server.Domain.Entities.Values;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Extensions;
 using DevilDaggersInfo.Web.Server.Domain.Models;
@@ -133,9 +135,55 @@ public class CustomLeaderboardRepository
 
 		List<int> existingReplayIds = _customEntryRepository.GetExistingCustomEntryReplayIds(customLeaderboard.CustomEntries!.ConvertAll(ce => ce.Id));
 
+		List<string> criteria = new();
+		AddCriteria(criteria, customLeaderboard.GemsCollectedCriteria, "Gems collected");
+		AddCriteria(criteria, customLeaderboard.GemsDespawnedCriteria, "Gems despawned");
+		AddCriteria(criteria, customLeaderboard.GemsEatenCriteria, "Gems eaten");
+		AddCriteria(criteria, customLeaderboard.EnemiesKilledCriteria, "Total kills");
+		AddCriteria(criteria, customLeaderboard.DaggersFiredCriteria, "Daggers fired");
+		AddCriteria(criteria, customLeaderboard.DaggersHitCriteria, "Daggers hit");
+		AddCriteria(criteria, customLeaderboard.HomingStoredCriteria, "Homing stored");
+		AddCriteria(criteria, customLeaderboard.HomingEatenCriteria, "Homing eaten");
+
+		AddEnemyCriteria(criteria, customLeaderboard.Skull1KillsCriteria, "Skull I kills");
+		AddEnemyCriteria(criteria, customLeaderboard.Skull2KillsCriteria, "Skull II kills");
+		AddEnemyCriteria(criteria, customLeaderboard.Skull3KillsCriteria, "Skull III kills");
+		AddEnemyCriteria(criteria, customLeaderboard.Skull4KillsCriteria, "Skull IV kills");
+
+		AddEnemyCriteria(criteria, customLeaderboard.SpiderlingKillsCriteria, "Spiderling kills");
+		AddEnemyCriteria(criteria, customLeaderboard.SpiderEggKillsCriteria, "Spider Egg kills");
+
+		AddEnemyCriteria(criteria, customLeaderboard.Squid1KillsCriteria, "Squid I kills");
+		AddEnemyCriteria(criteria, customLeaderboard.Squid2KillsCriteria, "Squid II kills");
+		AddEnemyCriteria(criteria, customLeaderboard.Squid3KillsCriteria, "Squid III kills");
+
+		AddEnemyCriteria(criteria, customLeaderboard.CentipedeKillsCriteria, "Centipede kills");
+		AddEnemyCriteria(criteria, customLeaderboard.GigapedeKillsCriteria, "Gigapede kills");
+		AddEnemyCriteria(criteria, customLeaderboard.GhostpedeKillsCriteria, "Ghostpede kills");
+
+		AddEnemyCriteria(criteria, customLeaderboard.Spider1KillsCriteria, "Spider I kills");
+		AddEnemyCriteria(criteria, customLeaderboard.Spider2KillsCriteria, "Spider II kills");
+
+		AddEnemyCriteria(criteria, customLeaderboard.LeviathanKillsCriteria, "Leviathan kills");
+		AddEnemyCriteria(criteria, customLeaderboard.OrbKillsCriteria, "Orb kills");
+		AddEnemyCriteria(criteria, customLeaderboard.ThornKillsCriteria, "Thorn kills");
+
+		static void AddCriteria(List<string> criteriaList, CustomLeaderboardCriteria criteria, string name)
+		{
+			if (!criteria.IsDefault())
+				criteriaList.Add($"{name} must be {criteria.Operator.Display()} {criteria.Value}.");
+		}
+
+		static void AddEnemyCriteria(List<string> criteriaList, CustomLeaderboardEnemyCriteria criteria, string name)
+		{
+			if (!criteria.IsDefault())
+				criteriaList.Add($"{name} must be {criteria.Operator.Display()} {criteria.Value}.");
+		}
+
 		return new()
 		{
 			Category = customLeaderboard.Category,
+			Criteria = criteria,
 			CustomEntries = customLeaderboard.CustomEntries
 				.Sort(customLeaderboard.Category)
 				.Select((ce, i) =>

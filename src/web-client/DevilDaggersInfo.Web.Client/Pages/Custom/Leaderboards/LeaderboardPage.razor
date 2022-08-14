@@ -48,6 +48,22 @@ else
 		</div>
 	}
 
+	@if (GetCustomLeaderboard.Criteria.Count > 0)
+	{
+		<Heading Title="Criteria" Level="2" />
+		<div class="bg-gray-1 max-w-md px-1">
+			<p class="para">
+				In order to submit to this leaderboard, some criteria must be met:
+			</p>
+			<ul class="pl-4">
+				@foreach (string criteria in GetCustomLeaderboard.Criteria)
+				{
+					<li class="list-disc">@criteria</li>
+				}
+			</ul>
+		</div>
+	}
+
 	@if (GetCustomLeaderboard.Daggers != null)
 	{
 		<div class="grid justify-items-center gap-3 grid-cols-5 mt-6 font-goethe text-xl">

@@ -25,4 +25,6 @@ public record GetCustomLeaderboard
 	public CustomLeaderboardCategory Category { get; init; }
 
 	public List<GetCustomEntry> CustomEntries { get; set; } = new();
+
+	public List<string> Criteria { get; set; } = new();
 }

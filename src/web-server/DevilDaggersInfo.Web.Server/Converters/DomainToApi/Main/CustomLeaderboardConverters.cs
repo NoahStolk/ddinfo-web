@@ -38,6 +38,7 @@ public static class CustomLeaderboardConverters
 		IsFeatured = customLeaderboard.Daggers != null,
 		DateLastPlayed = customLeaderboard.DateLastPlayed,
 		CustomEntries = customLeaderboard.CustomEntries.ConvertAll(ce => ce.ToGetCustomEntry(customLeaderboard.Category)),
+		Criteria = customLeaderboard.Criteria,
 	};
 
 	private static MainApi.GetCustomEntry ToGetCustomEntry(this CustomEntry customEntry, CustomLeaderboardCategory category) => new()
