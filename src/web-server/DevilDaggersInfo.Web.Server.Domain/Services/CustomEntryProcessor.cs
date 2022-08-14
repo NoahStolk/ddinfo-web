@@ -207,7 +207,7 @@ public class CustomEntryProcessor
 		void Handle(UploadRequest uploadRequest, string? spawnsetName, CustomLeaderboardCriteriaOperator op, int expectedValue, int value, string criteriaExpression)
 		{
 			if (!IsValidForCriteria(op, expectedValue, value))
-				LogAndThrowValidationException(uploadRequest, $"Did not meet the {criteriaExpression}.", spawnsetName);
+				LogAndThrowValidationException(uploadRequest, $"Did not meet the {criteriaExpression}. Criteria: {op.Display()} {expectedValue} Value: {value}", spawnsetName);
 		}
 
 		static bool IsValidForCriteria(CustomLeaderboardCriteriaOperator op, int expectedValue, int value) => op switch
