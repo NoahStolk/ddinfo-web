@@ -11,8 +11,6 @@ public static class CustomLeaderboardCategoryExtensions
 		CustomLeaderboardCategory.TimeAttack => "Kill all enemies as quickly as possible.",
 		CustomLeaderboardCategory.Speedrun => "Jump into the void as quickly as possible. Note that this category has been superseded by the Race category; new Speedrun leaderboards will not be added.",
 		CustomLeaderboardCategory.Race => "Reach the dagger as quickly as possible.",
-		CustomLeaderboardCategory.Pacifist => "Survive as long as you can, but without killing any enemies.",
-		CustomLeaderboardCategory.RaceNoShooting => "Reach the dagger as quickly as possible, but without shooting (disallowing dagger jumps).",
 		_ => throw new InvalidEnumConversionException(category),
 	};
 }
