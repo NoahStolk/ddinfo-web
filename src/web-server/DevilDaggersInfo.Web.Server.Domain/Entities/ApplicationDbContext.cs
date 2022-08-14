@@ -95,31 +95,60 @@ public class ApplicationDbContext : DbContext
 			return;
 
 		IEnumerable<EntityEntry> entityEntries = ChangeTracker.Entries();
-		foreach (EntityEntry addedOrDeletedEntityEntry in entityEntries.Where(e => e.State == EntityState.Added || e.State == EntityState.Deleted))
+		foreach (EntityEntry entry in entityEntries.Where(e => e.State == EntityState.Added || e.State == EntityState.Deleted || e.State == EntityState.Modified))
 		{
-			if (addedOrDeletedEntityEntry.Entity is IAuditable entity)
+			if (entry.Entity is not IAuditable entity)
+				continue;
+
+			switch (entry.State)
 			{
-				Type entityType = addedOrDeletedEntityEntry.Entity.GetType();
-				_logContainerService.AddAuditLog($"`{entityType.Name}` with ID `{entity.Id}` was {(addedOrDeletedEntityEntry.State == EntityState.Added ? "added" : "deleted")} by {username}.");
+				case EntityState.Added: LogAddedEntity(username, entry); break;
+				case EntityState.Deleted: LogDeletedEntity(username, entry, entity); break;
+				case EntityState.Modified: LogModifiedEntity(username, entry, entity); break;
 			}
 		}
+	}
 
-		foreach (EntityEntry modifiedEntityEntry in entityEntries.Where(e => e.State == EntityState.Modified))
+	private void LogAddedEntity(string? username, EntityEntry entry)
+	{
+		List<string> logs = new();
+		foreach (PropertyEntry newProperty in entry.Properties)
 		{
-			if (modifiedEntityEntry.Entity is not IAuditable entity)
-				return;
-
-			List<string> logs = new();
-			foreach (PropertyEntry modifiedProperty in modifiedEntityEntry.Properties.Where(c => c.IsModified))
-			{
-				string property = modifiedProperty.Metadata.PropertyInfo?.Name ?? "<null>";
-				string oldValue = modifiedProperty.OriginalValue?.ToString()?.TrimAfter(25, true) ?? "<null>";
-				string newValue = modifiedProperty.CurrentValue?.ToString()?.TrimAfter(25, true) ?? "<null>";
-				logs.Add($"**{property}**: ~~{oldValue}~~ {newValue}");
-			}
-
-			Type entityType = modifiedEntityEntry.Entity.GetType();
-			_logContainerService.AddAuditLog($"`{entityType.Name}` with ID `{entity.Id}` was edited by {username}:\n- {string.Join("\n- ", logs)}");
+			string property = newProperty.Metadata.PropertyInfo?.Name ?? "<null>";
+			string newValue = newProperty.CurrentValue?.ToString()?.TrimAfter(25, true) ?? "<null>";
+			logs.Add($"**{property}**: {newValue}");
 		}
+
+		Type entityType = entry.Entity.GetType();
+		_logContainerService.AddAuditLog($"An entity of type `{entityType.Name}` was added by {username}:\n- {string.Join("\n- ", logs)}");
+	}
+
+	private void LogDeletedEntity(string? username, EntityEntry entry, IAuditable entity)
+	{
+		List<string> logs = new();
+		foreach (PropertyEntry deletedProperty in entry.Properties)
+		{
+			string property = deletedProperty.Metadata.PropertyInfo?.Name ?? "<null>";
+			string deletedValue = deletedProperty.OriginalValue?.ToString()?.TrimAfter(25, true) ?? "<null>";
+			logs.Add($"**{property}**: ~~{deletedValue}~~");
+		}
+
+		Type entityType = entry.Entity.GetType();
+		_logContainerService.AddAuditLog($"`{entityType.Name}` with ID `{entity.Id}` was deleted by {username}:\n- {string.Join("\n- ", logs)}");
+	}
+
+	private void LogModifiedEntity(string? username, EntityEntry entry, IAuditable entity)
+	{
+		List<string> logs = new();
+		foreach (PropertyEntry modifiedProperty in entry.Properties.Where(c => c.IsModified))
+		{
+			string property = modifiedProperty.Metadata.PropertyInfo?.Name ?? "<null>";
+			string oldValue = modifiedProperty.OriginalValue?.ToString()?.TrimAfter(25, true) ?? "<null>";
+			string newValue = modifiedProperty.CurrentValue?.ToString()?.TrimAfter(25, true) ?? "<null>";
+			logs.Add($"**{property}**: ~~{oldValue}~~ {newValue}");
+		}
+
+		Type entityType = entry.Entity.GetType();
+		_logContainerService.AddAuditLog($"`{entityType.Name}` with ID `{entity.Id}` was edited by {username}:\n- {string.Join("\n- ", logs)}");
 	}
 }
