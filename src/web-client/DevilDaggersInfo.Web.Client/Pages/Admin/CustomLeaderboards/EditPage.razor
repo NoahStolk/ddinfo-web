@@ -17,11 +17,33 @@
 			<InputWrapper Label="Devil"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.Daggers.Devil" /></InputWrapper>
 			<InputWrapper Label="Leviathan"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.Daggers.Leviathan" /></InputWrapper>
 		}
+
+		<Heading Level="2" Title="Criteria" />
+
+		<InputWrapper Label="Gems collected operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_editCustomLeaderboard.GemsCollectedCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Gems collected value"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.GemsCollectedCriteria.Value" /></InputWrapper>
+		
+		<InputWrapper Label="Enemies killed operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_editCustomLeaderboard.EnemiesKilledCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Enemies killed value"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.EnemiesKilledCriteria.Value" /></InputWrapper>
+
+		<InputWrapper Label="Daggers fired operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_editCustomLeaderboard.DaggersFiredCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Daggers fired value"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.DaggersFiredCriteria.Value" /></InputWrapper>
+
+		<InputWrapper Label="Daggers hit operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_editCustomLeaderboard.DaggersHitCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Daggers hit value"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.DaggersHitCriteria.Value" /></InputWrapper>
+		
+		<Heading Level="2" Title="Enemy criteria" />
+		
+		<InputWrapper Label="Skull 1 kills operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_editCustomLeaderboard.Skull1KillsCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Skull 1 kills value"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.Skull1KillsCriteria.Value" /></InputWrapper>
 	</AdminEdit>
 </AdminAuthorizer>
 
 @code
 {
+	private readonly Dictionary<CustomLeaderboardCriteriaOperator, string> _operators = Enum.GetValues<CustomLeaderboardCriteriaOperator>().ToDictionary(e => e, e => e.ToString());
+	private readonly Func<string, CustomLeaderboardCriteriaOperator> _operatorConverter = s => Enum.Parse<CustomLeaderboardCriteriaOperator>(s);
+
 	private readonly EditCustomLeaderboard _editCustomLeaderboard = new();
 
 	[Parameter, EditorRequired] public int Id { get; set; }
@@ -38,6 +60,18 @@
 			_editCustomLeaderboard.Daggers.Golden = getCustomLeaderboard.Daggers.Golden;
 			_editCustomLeaderboard.Daggers.Devil = getCustomLeaderboard.Daggers.Devil;
 			_editCustomLeaderboard.Daggers.Leviathan = getCustomLeaderboard.Daggers.Leviathan;
+
+			_editCustomLeaderboard.GemsCollectedCriteria.Operator = getCustomLeaderboard.GemsCollectedCriteria.Operator,
+			_editCustomLeaderboard.EnemiesKilledCriteria.Operator = getCustomLeaderboard.EnemiesKilledCriteria.Operator,
+			_editCustomLeaderboard.DaggersFiredCriteria.Operator = getCustomLeaderboard.DaggersFiredCriteria.Operator,
+			_editCustomLeaderboard.DaggersHitCriteria.Operator = getCustomLeaderboard.DaggersHitCriteria.Operator,
+			_editCustomLeaderboard.Skull1KillsCriteria.Operator = getCustomLeaderboard.Skull1KillsCriteria.Operator,
+			
+			_editCustomLeaderboard.GemsCollectedCriteria.Value = getCustomLeaderboard.GemsCollectedCriteria.Value,
+			_editCustomLeaderboard.EnemiesKilledCriteria.Value = getCustomLeaderboard.EnemiesKilledCriteria.Value,
+			_editCustomLeaderboard.DaggersFiredCriteria.Value = getCustomLeaderboard.DaggersFiredCriteria.Value,
+			_editCustomLeaderboard.DaggersHitCriteria.Value = getCustomLeaderboard.DaggersHitCriteria.Value,
+			_editCustomLeaderboard.Skull1KillsCriteria.Value = getCustomLeaderboard.Skull1KillsCriteria.Value,
 
 			editComponent.State = ErrorState.None;
 		}

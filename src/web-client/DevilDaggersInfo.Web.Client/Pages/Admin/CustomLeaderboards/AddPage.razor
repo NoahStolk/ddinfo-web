@@ -18,11 +18,33 @@
 			<InputWrapper Label="Devil"><InputNumber class="admin-input" @bind-Value="_addCustomLeaderboard.Daggers.Devil" /></InputWrapper>
 			<InputWrapper Label="Leviathan"><InputNumber class="admin-input" @bind-Value="_addCustomLeaderboard.Daggers.Leviathan" /></InputWrapper>
 		}
+
+		<Heading Level="2" Title="Criteria" />
+
+		<InputWrapper Label="Gems collected operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_addCustomLeaderboard.GemsCollectedCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Gems collected value"><InputNumber class="admin-input" @bind-Value="_addCustomLeaderboard.GemsCollectedCriteria.Value" /></InputWrapper>
+		
+		<InputWrapper Label="Enemies killed operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_addCustomLeaderboard.EnemiesKilledCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Enemies killed value"><InputNumber class="admin-input" @bind-Value="_addCustomLeaderboard.EnemiesKilledCriteria.Value" /></InputWrapper>
+
+		<InputWrapper Label="Daggers fired operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_addCustomLeaderboard.DaggersFiredCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Daggers fired value"><InputNumber class="admin-input" @bind-Value="_addCustomLeaderboard.DaggersFiredCriteria.Value" /></InputWrapper>
+
+		<InputWrapper Label="Daggers hit operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_addCustomLeaderboard.DaggersHitCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Daggers hit value"><InputNumber class="admin-input" @bind-Value="_addCustomLeaderboard.DaggersHitCriteria.Value" /></InputWrapper>
+		
+		<Heading Level="2" Title="Enemy criteria" />
+		
+		<InputWrapper Label="Skull 1 kills operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_addCustomLeaderboard.Skull1KillsCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Skull 1 kills value"><InputNumber class="admin-input" @bind-Value="_addCustomLeaderboard.Skull1KillsCriteria.Value" /></InputWrapper>
 	</AdminAdd>
 </AdminAuthorizer>
 
 @code
 {
+	private readonly Dictionary<CustomLeaderboardCriteriaOperator, string> _operators = Enum.GetValues<CustomLeaderboardCriteriaOperator>().ToDictionary(e => e, e => e.ToString());
+	private readonly Func<string, CustomLeaderboardCriteriaOperator> _operatorConverter = s => Enum.Parse<CustomLeaderboardCriteriaOperator>(s);
+
 	private Dictionary<int, string>? _spawnsetNames;
 	private readonly AddCustomLeaderboard _addCustomLeaderboard = new();
 
