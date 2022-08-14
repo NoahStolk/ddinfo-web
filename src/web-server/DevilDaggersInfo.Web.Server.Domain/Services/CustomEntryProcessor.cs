@@ -8,6 +8,7 @@ using DevilDaggersInfo.Types.Core.Spawnsets;
 using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Server.Domain.Commands.CustomEntries;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
+using DevilDaggersInfo.Web.Server.Domain.Entities.Values;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Extensions;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
@@ -20,6 +21,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using System.Web;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Services;
@@ -127,12 +129,7 @@ public class CustomEntryProcessor
 		if (customLeaderboard.Category.IsTimeAttackOrRace() && !uploadRequest.TimeAttackOrRaceFinished)
 			LogAndThrowValidationException(uploadRequest, $"Didn't complete the {customLeaderboard.Category} spawnset.", spawnsetName);
 
-		if (customLeaderboard.Category == CustomLeaderboardCategory.RaceNoShooting && uploadRequest.DaggersFired > 0)
-			LogAndThrowValidationException(uploadRequest, $"Counted {uploadRequest.DaggersFired} {(uploadRequest.DaggersFired == 1 ? "dagger" : "daggers")} fired. Can't submit score to {CustomLeaderboardCategory.RaceNoShooting} leaderboard.", spawnsetName);
-
-		// Validate Pacifist.
-		if (customLeaderboard.Category == CustomLeaderboardCategory.Pacifist && uploadRequest.EnemiesKilled > 0)
-			LogAndThrowValidationException(uploadRequest, $"Counted {uploadRequest.EnemiesKilled} {(uploadRequest.EnemiesKilled == 1 ? "kill" : "kills")}. Can't submit score to {CustomLeaderboardCategory.Pacifist} leaderboard.", spawnsetName);
+		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard);
 
 		// Make sure HomingDaggers is not negative (happens rarely as a bug, and also for spawnsets with homing disabled which we don't want to display values for anyway).
 		uploadRequest.GameData.HomingStored = Array.ConvertAll(uploadRequest.GameData.HomingStored, i => Math.Max(0, i));
@@ -155,6 +152,69 @@ public class CustomEntryProcessor
 			return await ProcessNoHighscoreAsync(uploadRequest, customLeaderboard, spawnsetName);
 
 		return await ProcessHighscoreAsync(uploadRequest, customLeaderboard, spawnsetName, customEntry);
+	}
+
+	private void HandleCriteria(UploadRequest uploadRequest, string? spawnsetName, CustomLeaderboardEntity customLeaderboard)
+	{
+		// TODO: Remove after category is replaced by criteria.
+		if (customLeaderboard.Category == CustomLeaderboardCategory.RaceNoShooting && uploadRequest.DaggersFired > 0)
+			LogAndThrowValidationException(uploadRequest, $"Counted {uploadRequest.DaggersFired} {(uploadRequest.DaggersFired == 1 ? "dagger" : "daggers")} fired. Can't submit score to {CustomLeaderboardCategory.RaceNoShooting} leaderboard.", spawnsetName);
+
+		// TODO: Remove after category is replaced by criteria.
+		if (customLeaderboard.Category == CustomLeaderboardCategory.Pacifist && uploadRequest.EnemiesKilled > 0)
+			LogAndThrowValidationException(uploadRequest, $"Counted {uploadRequest.EnemiesKilled} {(uploadRequest.EnemiesKilled == 1 ? "kill" : "kills")}. Can't submit score to {CustomLeaderboardCategory.Pacifist} leaderboard.", spawnsetName);
+
+		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.GemsCollectedCriteria, uploadRequest.GemsCollected);
+		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.GemsDespawnedCriteria, uploadRequest.GemsDespawned);
+		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.GemsEatenCriteria, uploadRequest.GemsEaten);
+		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.EnemiesKilledCriteria, uploadRequest.EnemiesKilled);
+		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.DaggersFiredCriteria, uploadRequest.DaggersFired);
+		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.DaggersHitCriteria, uploadRequest.DaggersHit);
+		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.HomingStoredCriteria, GetFinalHomingValue(uploadRequest));
+		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.HomingEatenCriteria, uploadRequest.HomingEaten);
+		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.Skull1KillsCriteria, GetFinalEnemyStat(uploadRequest, urd => urd.Skull1sKilled));
+		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.Skull2KillsCriteria, GetFinalEnemyStat(uploadRequest, urd => urd.Skull2sKilled));
+		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.Skull3KillsCriteria, GetFinalEnemyStat(uploadRequest, urd => urd.Skull3sKilled));
+		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.Skull4KillsCriteria, GetFinalEnemyStat(uploadRequest, urd => urd.Skull4sKilled));
+		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.SpiderlingKillsCriteria, GetFinalEnemyStat(uploadRequest, urd => urd.SpiderlingsKilled));
+		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.SpiderEggKillsCriteria, GetFinalEnemyStat(uploadRequest, urd => urd.SpiderEggsKilled));
+		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.Squid1KillsCriteria, GetFinalEnemyStat(uploadRequest, urd => urd.Squid1sKilled));
+		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.Squid2KillsCriteria, GetFinalEnemyStat(uploadRequest, urd => urd.Squid2sKilled));
+		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.Squid3KillsCriteria, GetFinalEnemyStat(uploadRequest, urd => urd.Squid3sKilled));
+		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.CentipedeKillsCriteria, GetFinalEnemyStat(uploadRequest, urd => urd.CentipedesKilled));
+		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.GigapedeKillsCriteria, GetFinalEnemyStat(uploadRequest, urd => urd.GigapedesKilled));
+		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.GhostpedeKillsCriteria, GetFinalEnemyStat(uploadRequest, urd => urd.GhostpedesKilled));
+		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.Spider1KillsCriteria, GetFinalEnemyStat(uploadRequest, urd => urd.Spider1sKilled));
+		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.Spider2KillsCriteria, GetFinalEnemyStat(uploadRequest, urd => urd.Spider2sKilled));
+		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.LeviathanKillsCriteria, GetFinalEnemyStat(uploadRequest, urd => urd.LeviathansKilled));
+		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.OrbKillsCriteria, GetFinalEnemyStat(uploadRequest, urd => urd.OrbsKilled));
+		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.ThornKillsCriteria, GetFinalEnemyStat(uploadRequest, urd => urd.ThornsKilled));
+
+		static int GetFinalEnemyStat(UploadRequest uploadRequest, Func<UploadRequestData, ushort[]> selector)
+		{
+			ushort[] arr = selector(uploadRequest.GameData);
+			return arr.Length == 0 ? 0 : arr[^1];
+		}
+
+		void HandleCriteria(UploadRequest uploadRequest, string? spawnsetName, CustomLeaderboardCriteria criteria, int value, [CallerArgumentExpression("criteria")] string criteriaExpression = "")
+		{
+			if (!IsValidForCriteria(criteria.Operator, criteria.Value, value))
+				LogAndThrowValidationException(uploadRequest, $"Did not meet the {criteriaExpression}.", spawnsetName);
+		}
+
+		void HandleEnemyCriteria(UploadRequest uploadRequest, string? spawnsetName, CustomLeaderboardEnemyCriteria criteria, int value, [CallerArgumentExpression("criteria")] string criteriaExpression = "")
+		{
+			if (!IsValidForCriteria(criteria.Operator, criteria.Value, value))
+				LogAndThrowValidationException(uploadRequest, $"Did not meet the {criteriaExpression}.", spawnsetName);
+		}
+
+		static bool IsValidForCriteria(CustomLeaderboardCriteriaOperator op, int expectedValue, int value) => op switch
+		{
+			CustomLeaderboardCriteriaOperator.Equal => value == expectedValue,
+			CustomLeaderboardCriteriaOperator.LessThan => value < expectedValue,
+			CustomLeaderboardCriteriaOperator.GreaterThan => value > expectedValue,
+			_ => true,
+		};
 	}
 
 	private async Task<UploadResponse> ProcessNewScoreAsync(UploadRequest uploadRequest, CustomLeaderboardEntity customLeaderboard, string spawnsetName)
