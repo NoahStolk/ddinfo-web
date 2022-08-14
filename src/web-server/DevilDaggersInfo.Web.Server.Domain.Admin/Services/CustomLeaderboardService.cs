@@ -3,6 +3,7 @@ using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Types.Core.Spawnsets;
 using DevilDaggersInfo.Types.Web;
+using DevilDaggersInfo.Web.Server.Domain.Admin.Converters;
 using DevilDaggersInfo.Web.Server.Domain.Admin.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
@@ -45,6 +46,11 @@ public class CustomLeaderboardService
 			TimeDevil = addCustomLeaderboard.Daggers.Devil.To10thMilliTime(),
 			TimeLeviathan = addCustomLeaderboard.Daggers.Leviathan.To10thMilliTime(),
 			IsFeatured = addCustomLeaderboard.IsFeatured,
+			GemsCollectedCriteria = addCustomLeaderboard.GemsCollectedCriteria.ToEntity(),
+			EnemiesKilledCriteria = addCustomLeaderboard.EnemiesKilledCriteria.ToEntity(),
+			DaggersFiredCriteria = addCustomLeaderboard.DaggersFiredCriteria.ToEntity(),
+			DaggersHitCriteria = addCustomLeaderboard.DaggersHitCriteria.ToEntity(),
+			Skull1KillsCriteria = addCustomLeaderboard.Skull1KillsCriteria.ToEntity(),
 		};
 		_dbContext.CustomLeaderboards.Add(customLeaderboard);
 		await _dbContext.SaveChangesAsync();
@@ -56,8 +62,28 @@ public class CustomLeaderboardService
 		if (customLeaderboard == null)
 			throw new NotFoundException($"Custom leaderboard with ID '{id}' does not exist.");
 
-		if (customLeaderboard.Category != editCustomLeaderboard.Category && _dbContext.CustomEntries.Any(ce => ce.CustomLeaderboardId == id))
-			throw new AdminDomainException("Cannot change category for custom leaderboard with scores.");
+		if (_dbContext.CustomEntries.Any(ce => ce.CustomLeaderboardId == id))
+		{
+			if (customLeaderboard.Category != editCustomLeaderboard.Category)
+				throw new AdminDomainException("Cannot change category for custom leaderboard with scores.");
+
+			bool anyCriteriaOperatorChanged =
+				customLeaderboard.GemsCollectedCriteria.Operator != editCustomLeaderboard.GemsCollectedCriteria.Operator ||
+				customLeaderboard.EnemiesKilledCriteria.Operator != editCustomLeaderboard.EnemiesKilledCriteria.Operator ||
+				customLeaderboard.DaggersFiredCriteria.Operator != editCustomLeaderboard.DaggersFiredCriteria.Operator ||
+				customLeaderboard.DaggersHitCriteria.Operator != editCustomLeaderboard.DaggersHitCriteria.Operator ||
+				customLeaderboard.Skull1KillsCriteria.Operator != editCustomLeaderboard.Skull1KillsCriteria.Operator;
+
+			bool anyCriteriaValueChanged =
+				customLeaderboard.GemsCollectedCriteria.Value != editCustomLeaderboard.GemsCollectedCriteria.Value ||
+				customLeaderboard.EnemiesKilledCriteria.Value != editCustomLeaderboard.EnemiesKilledCriteria.Value ||
+				customLeaderboard.DaggersFiredCriteria.Value != editCustomLeaderboard.DaggersFiredCriteria.Value ||
+				customLeaderboard.DaggersHitCriteria.Value != editCustomLeaderboard.DaggersHitCriteria.Value ||
+				customLeaderboard.Skull1KillsCriteria.Value != editCustomLeaderboard.Skull1KillsCriteria.Value;
+
+			if (anyCriteriaOperatorChanged || anyCriteriaValueChanged)
+				throw new AdminDomainException("Cannot change criteria for custom leaderboard with scores.");
+		}
 
 		ValidateCustomLeaderboard(customLeaderboard.SpawnsetId, editCustomLeaderboard.Category, editCustomLeaderboard.Daggers, editCustomLeaderboard.IsFeatured);
 
@@ -67,8 +93,13 @@ public class CustomLeaderboardService
 		customLeaderboard.TimeGolden = editCustomLeaderboard.Daggers.Golden.To10thMilliTime();
 		customLeaderboard.TimeDevil = editCustomLeaderboard.Daggers.Devil.To10thMilliTime();
 		customLeaderboard.TimeLeviathan = editCustomLeaderboard.Daggers.Leviathan.To10thMilliTime();
-
 		customLeaderboard.IsFeatured = editCustomLeaderboard.IsFeatured;
+		customLeaderboard.GemsCollectedCriteria = editCustomLeaderboard.GemsCollectedCriteria.ToEntity();
+		customLeaderboard.EnemiesKilledCriteria = editCustomLeaderboard.EnemiesKilledCriteria.ToEntity();
+		customLeaderboard.DaggersFiredCriteria = editCustomLeaderboard.DaggersFiredCriteria.ToEntity();
+		customLeaderboard.DaggersHitCriteria = editCustomLeaderboard.DaggersHitCriteria.ToEntity();
+		customLeaderboard.Skull1KillsCriteria = editCustomLeaderboard.Skull1KillsCriteria.ToEntity();
+
 		await _dbContext.SaveChangesAsync();
 	}
 

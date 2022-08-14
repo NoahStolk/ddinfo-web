@@ -13,4 +13,14 @@ public record GetCustomLeaderboard
 	public bool IsFeatured { get; init; }
 
 	public CustomLeaderboardCategory Category { get; init; }
+
+	public GetCustomLeaderboardCriteria GemsCollectedCriteria { get; set; } = new();
+
+	public GetCustomLeaderboardCriteria EnemiesKilledCriteria { get; set; } = new();
+
+	public GetCustomLeaderboardCriteria DaggersFiredCriteria { get; set; } = new();
+
+	public GetCustomLeaderboardCriteria DaggersHitCriteria { get; set; } = new();
+
+	public GetCustomLeaderboardEnemyCriteria Skull1KillsCriteria { get; set; } = new();
 }
