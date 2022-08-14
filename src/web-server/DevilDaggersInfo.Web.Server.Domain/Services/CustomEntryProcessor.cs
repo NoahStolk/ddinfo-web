@@ -6,6 +6,7 @@ using DevilDaggersInfo.Core.Replay;
 using DevilDaggersInfo.Core.Versioning;
 using DevilDaggersInfo.Types.Core.Spawnsets;
 using DevilDaggersInfo.Types.Web;
+using DevilDaggersInfo.Types.Web.Extensions;
 using DevilDaggersInfo.Web.Server.Domain.Commands.CustomEntries;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Values;
@@ -19,6 +20,7 @@ using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Linq;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
@@ -197,14 +199,14 @@ public class CustomEntryProcessor
 		}
 
 		void HandleCriteria(UploadRequest uploadRequest, string? spawnsetName, CustomLeaderboardCriteria criteria, int value, [CallerArgumentExpression("criteria")] string criteriaExpression = "")
-		{
-			if (!IsValidForCriteria(criteria.Operator, criteria.Value, value))
-				LogAndThrowValidationException(uploadRequest, $"Did not meet the {criteriaExpression}.", spawnsetName);
-		}
+			=> Handle(uploadRequest, spawnsetName, criteria.Operator, criteria.Value, value, criteriaExpression);
 
 		void HandleEnemyCriteria(UploadRequest uploadRequest, string? spawnsetName, CustomLeaderboardEnemyCriteria criteria, int value, [CallerArgumentExpression("criteria")] string criteriaExpression = "")
+			=> Handle(uploadRequest, spawnsetName, criteria.Operator, criteria.Value, value, criteriaExpression);
+
+		void Handle(UploadRequest uploadRequest, string? spawnsetName, CustomLeaderboardCriteriaOperator op, int expectedValue, int value, string criteriaExpression)
 		{
-			if (!IsValidForCriteria(criteria.Operator, criteria.Value, value))
+			if (!IsValidForCriteria(op, expectedValue, value))
 				LogAndThrowValidationException(uploadRequest, $"Did not meet the {criteriaExpression}.", spawnsetName);
 		}
 
