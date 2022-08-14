@@ -215,6 +215,9 @@ public class CustomEntryProcessor
 			CustomLeaderboardCriteriaOperator.Equal => value == expectedValue,
 			CustomLeaderboardCriteriaOperator.LessThan => value < expectedValue,
 			CustomLeaderboardCriteriaOperator.GreaterThan => value > expectedValue,
+			CustomLeaderboardCriteriaOperator.LessThanOrEqual => value <= expectedValue,
+			CustomLeaderboardCriteriaOperator.GreaterThanOrEqual => value >= expectedValue,
+			CustomLeaderboardCriteriaOperator.Modulo => value % expectedValue == 0,
 			_ => true,
 		};
 	}

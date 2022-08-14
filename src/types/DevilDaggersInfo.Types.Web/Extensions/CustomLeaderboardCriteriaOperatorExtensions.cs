@@ -7,6 +7,9 @@ public static class CustomLeaderboardCriteriaOperatorExtensions
 		CustomLeaderboardCriteriaOperator.Equal => "equal to",
 		CustomLeaderboardCriteriaOperator.LessThan => "less than",
 		CustomLeaderboardCriteriaOperator.GreaterThan => "greater than",
+		CustomLeaderboardCriteriaOperator.LessThanOrEqual => "less than or equal to",
+		CustomLeaderboardCriteriaOperator.GreaterThanOrEqual => "greater than or equal to",
+		CustomLeaderboardCriteriaOperator.Modulo => "divisible by",
 		_ => string.Empty,
 	};
 }

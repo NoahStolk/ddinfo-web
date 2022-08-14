@@ -6,4 +6,7 @@ public enum CustomLeaderboardCriteriaOperator : byte
 	Equal = 1,
 	LessThan = 2,
 	GreaterThan = 3,
+	LessThanOrEqual = 4,
+	GreaterThanOrEqual = 5,
+	Modulo = 6,
 }
