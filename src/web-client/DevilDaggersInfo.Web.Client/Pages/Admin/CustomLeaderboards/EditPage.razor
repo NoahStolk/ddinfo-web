@@ -23,6 +23,12 @@
 		<InputWrapper Label="Gems collected operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_editCustomLeaderboard.GemsCollectedCriteria.Operator" /></InputWrapper>
 		<InputWrapper Label="Gems collected value"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.GemsCollectedCriteria.Value" /></InputWrapper>
 		
+		<InputWrapper Label="Gems despawned operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_editCustomLeaderboard.GemsDespawnedCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Gems despawned value"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.GemsDespawnedCriteria.Value" /></InputWrapper>
+		
+		<InputWrapper Label="Gems eaten operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_editCustomLeaderboard.GemsEatenCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Gems eaten value"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.GemsEatenCriteria.Value" /></InputWrapper>
+		
 		<InputWrapper Label="Enemies killed operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_editCustomLeaderboard.EnemiesKilledCriteria.Operator" /></InputWrapper>
 		<InputWrapper Label="Enemies killed value"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.EnemiesKilledCriteria.Value" /></InputWrapper>
 
@@ -32,10 +38,64 @@
 		<InputWrapper Label="Daggers hit operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_editCustomLeaderboard.DaggersHitCriteria.Operator" /></InputWrapper>
 		<InputWrapper Label="Daggers hit value"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.DaggersHitCriteria.Value" /></InputWrapper>
 		
+		<InputWrapper Label="Homing stored operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_editCustomLeaderboard.HomingStoredCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Homing stored value"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.HomingStoredCriteria.Value" /></InputWrapper>
+		
+		<InputWrapper Label="Homing eaten operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_editCustomLeaderboard.HomingEatenCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Homing eaten value"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.HomingEatenCriteria.Value" /></InputWrapper>
+		
 		<Heading Level="2" Title="Enemy criteria" />
 		
 		<InputWrapper Label="Skull 1 kills operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_editCustomLeaderboard.Skull1KillsCriteria.Operator" /></InputWrapper>
 		<InputWrapper Label="Skull 1 kills value"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.Skull1KillsCriteria.Value" /></InputWrapper>
+		
+		<InputWrapper Label="Skull 2 kills operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_editCustomLeaderboard.Skull2KillsCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Skull 2 kills value"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.Skull2KillsCriteria.Value" /></InputWrapper>
+		
+		<InputWrapper Label="Skull 3 kills operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_editCustomLeaderboard.Skull3KillsCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Skull 3 kills value"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.Skull3KillsCriteria.Value" /></InputWrapper>
+		
+		<InputWrapper Label="Skull 4 kills operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_editCustomLeaderboard.Skull4KillsCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Skull 4 kills value"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.Skull4KillsCriteria.Value" /></InputWrapper>
+		
+		<InputWrapper Label="Spiderling kills operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_editCustomLeaderboard.SpiderlingKillsCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Spiderling kills value"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.SpiderlingKillsCriteria.Value" /></InputWrapper>
+		
+		<InputWrapper Label="Spider Egg kills operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_editCustomLeaderboard.SpiderEggKillsCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Spider Egg kills value"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.SpiderEggKillsCriteria.Value" /></InputWrapper>
+		
+		<InputWrapper Label="Squid 1 kills operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_editCustomLeaderboard.Squid1KillsCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Squid 1 kills value"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.Squid1KillsCriteria.Value" /></InputWrapper>
+		
+		<InputWrapper Label="Squid 2 kills operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_editCustomLeaderboard.Squid2KillsCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Squid 2 kills value"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.Squid2KillsCriteria.Value" /></InputWrapper>
+		
+		<InputWrapper Label="Squid 3 kills operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_editCustomLeaderboard.Squid3KillsCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Squid 3 kills value"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.Squid3KillsCriteria.Value" /></InputWrapper>
+		
+		<InputWrapper Label="Centipede kills operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_editCustomLeaderboard.CentipedeKillsCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Centipede kills value"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.CentipedeKillsCriteria.Value" /></InputWrapper>
+		
+		<InputWrapper Label="Gigapede kills operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_editCustomLeaderboard.GigapedeKillsCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Gigapede kills value"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.GigapedeKillsCriteria.Value" /></InputWrapper>
+		
+		<InputWrapper Label="Ghostpede kills operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_editCustomLeaderboard.GhostpedeKillsCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Ghostpede kills value"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.GhostpedeKillsCriteria.Value" /></InputWrapper>
+		
+		<InputWrapper Label="Spider 1 kills operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_editCustomLeaderboard.Spider1KillsCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Spider 1 kills value"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.Spider1KillsCriteria.Value" /></InputWrapper>
+		
+		<InputWrapper Label="Spider 2 kills operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_editCustomLeaderboard.Spider2KillsCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Spider 2 kills value"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.Spider2KillsCriteria.Value" /></InputWrapper>
+		
+		<InputWrapper Label="Leviathan kills operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_editCustomLeaderboard.LeviathanKillsCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Leviathan kills value"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.LeviathanKillsCriteria.Value" /></InputWrapper>
+		
+		<InputWrapper Label="Orb kills operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_editCustomLeaderboard.OrbKillsCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Orb kills value"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.OrbKillsCriteria.Value" /></InputWrapper>
+		
+		<InputWrapper Label="Thorn kills operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_editCustomLeaderboard.ThornKillsCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Thorn kills value"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.ThornKillsCriteria.Value" /></InputWrapper>
 	</AdminEdit>
 </AdminAuthorizer>
 
@@ -61,17 +121,57 @@
 			_editCustomLeaderboard.Daggers.Devil = getCustomLeaderboard.Daggers.Devil;
 			_editCustomLeaderboard.Daggers.Leviathan = getCustomLeaderboard.Daggers.Leviathan;
 
-			_editCustomLeaderboard.GemsCollectedCriteria.Operator = getCustomLeaderboard.GemsCollectedCriteria.Operator,
-			_editCustomLeaderboard.EnemiesKilledCriteria.Operator = getCustomLeaderboard.EnemiesKilledCriteria.Operator,
-			_editCustomLeaderboard.DaggersFiredCriteria.Operator = getCustomLeaderboard.DaggersFiredCriteria.Operator,
-			_editCustomLeaderboard.DaggersHitCriteria.Operator = getCustomLeaderboard.DaggersHitCriteria.Operator,
-			_editCustomLeaderboard.Skull1KillsCriteria.Operator = getCustomLeaderboard.Skull1KillsCriteria.Operator,
+			_editCustomLeaderboard.GemsCollectedCriteria.Operator = getCustomLeaderboard.GemsCollectedCriteria.Operator;
+			_editCustomLeaderboard.GemsDespawnedCriteria.Operator = getCustomLeaderboard.GemsDespawnedCriteria.Operator;
+			_editCustomLeaderboard.GemsEatenCriteria.Operator = getCustomLeaderboard.GemsEatenCriteria.Operator;
+			_editCustomLeaderboard.EnemiesKilledCriteria.Operator = getCustomLeaderboard.EnemiesKilledCriteria.Operator;
+			_editCustomLeaderboard.DaggersFiredCriteria.Operator = getCustomLeaderboard.DaggersFiredCriteria.Operator;
+			_editCustomLeaderboard.DaggersHitCriteria.Operator = getCustomLeaderboard.DaggersHitCriteria.Operator;
+			_editCustomLeaderboard.HomingStoredCriteria.Operator = getCustomLeaderboard.HomingStoredCriteria.Operator;
+			_editCustomLeaderboard.HomingEatenCriteria.Operator = getCustomLeaderboard.HomingEatenCriteria.Operator;
+			_editCustomLeaderboard.Skull1KillsCriteria.Operator = getCustomLeaderboard.Skull1KillsCriteria.Operator;
+			_editCustomLeaderboard.Skull2KillsCriteria.Operator = getCustomLeaderboard.Skull2KillsCriteria.Operator;
+			_editCustomLeaderboard.Skull3KillsCriteria.Operator = getCustomLeaderboard.Skull3KillsCriteria.Operator;
+			_editCustomLeaderboard.Skull4KillsCriteria.Operator = getCustomLeaderboard.Skull4KillsCriteria.Operator;
+			_editCustomLeaderboard.SpiderlingKillsCriteria.Operator = getCustomLeaderboard.SpiderlingKillsCriteria.Operator;
+			_editCustomLeaderboard.SpiderEggKillsCriteria.Operator = getCustomLeaderboard.SpiderEggKillsCriteria.Operator;
+			_editCustomLeaderboard.Squid1KillsCriteria.Operator = getCustomLeaderboard.Squid1KillsCriteria.Operator;
+			_editCustomLeaderboard.Squid2KillsCriteria.Operator = getCustomLeaderboard.Squid2KillsCriteria.Operator;
+			_editCustomLeaderboard.Squid3KillsCriteria.Operator = getCustomLeaderboard.Squid3KillsCriteria.Operator;
+			_editCustomLeaderboard.CentipedeKillsCriteria.Operator = getCustomLeaderboard.CentipedeKillsCriteria.Operator;
+			_editCustomLeaderboard.GigapedeKillsCriteria.Operator = getCustomLeaderboard.GigapedeKillsCriteria.Operator;
+			_editCustomLeaderboard.GhostpedeKillsCriteria.Operator = getCustomLeaderboard.GhostpedeKillsCriteria.Operator;
+			_editCustomLeaderboard.Spider1KillsCriteria.Operator = getCustomLeaderboard.Spider1KillsCriteria.Operator;
+			_editCustomLeaderboard.Spider2KillsCriteria.Operator = getCustomLeaderboard.Spider2KillsCriteria.Operator;
+			_editCustomLeaderboard.LeviathanKillsCriteria.Operator = getCustomLeaderboard.LeviathanKillsCriteria.Operator;
+			_editCustomLeaderboard.OrbKillsCriteria.Operator = getCustomLeaderboard.OrbKillsCriteria.Operator;
+			_editCustomLeaderboard.ThornKillsCriteria.Operator = getCustomLeaderboard.ThornKillsCriteria.Operator;
 			
-			_editCustomLeaderboard.GemsCollectedCriteria.Value = getCustomLeaderboard.GemsCollectedCriteria.Value,
-			_editCustomLeaderboard.EnemiesKilledCriteria.Value = getCustomLeaderboard.EnemiesKilledCriteria.Value,
-			_editCustomLeaderboard.DaggersFiredCriteria.Value = getCustomLeaderboard.DaggersFiredCriteria.Value,
-			_editCustomLeaderboard.DaggersHitCriteria.Value = getCustomLeaderboard.DaggersHitCriteria.Value,
-			_editCustomLeaderboard.Skull1KillsCriteria.Value = getCustomLeaderboard.Skull1KillsCriteria.Value,
+			_editCustomLeaderboard.GemsCollectedCriteria.Value = getCustomLeaderboard.GemsCollectedCriteria.Value;
+			_editCustomLeaderboard.GemsDespawnedCriteria.Value = getCustomLeaderboard.GemsDespawnedCriteria.Value;
+			_editCustomLeaderboard.GemsEatenCriteria.Value = getCustomLeaderboard.GemsEatenCriteria.Value;
+			_editCustomLeaderboard.EnemiesKilledCriteria.Value = getCustomLeaderboard.EnemiesKilledCriteria.Value;
+			_editCustomLeaderboard.DaggersFiredCriteria.Value = getCustomLeaderboard.DaggersFiredCriteria.Value;
+			_editCustomLeaderboard.DaggersHitCriteria.Value = getCustomLeaderboard.DaggersHitCriteria.Value;
+			_editCustomLeaderboard.HomingStoredCriteria.Value = getCustomLeaderboard.HomingStoredCriteria.Value;
+			_editCustomLeaderboard.HomingEatenCriteria.Value = getCustomLeaderboard.HomingEatenCriteria.Value;
+			_editCustomLeaderboard.Skull1KillsCriteria.Value = getCustomLeaderboard.Skull1KillsCriteria.Value;
+			_editCustomLeaderboard.Skull2KillsCriteria.Value = getCustomLeaderboard.Skull2KillsCriteria.Value;
+			_editCustomLeaderboard.Skull3KillsCriteria.Value = getCustomLeaderboard.Skull3KillsCriteria.Value;
+			_editCustomLeaderboard.Skull4KillsCriteria.Value = getCustomLeaderboard.Skull4KillsCriteria.Value;
+			_editCustomLeaderboard.SpiderlingKillsCriteria.Value = getCustomLeaderboard.SpiderlingKillsCriteria.Value;
+			_editCustomLeaderboard.SpiderEggKillsCriteria.Value = getCustomLeaderboard.SpiderEggKillsCriteria.Value;
+			_editCustomLeaderboard.Squid1KillsCriteria.Value = getCustomLeaderboard.Squid1KillsCriteria.Value;
+			_editCustomLeaderboard.Squid2KillsCriteria.Value = getCustomLeaderboard.Squid2KillsCriteria.Value;
+			_editCustomLeaderboard.Squid3KillsCriteria.Value = getCustomLeaderboard.Squid3KillsCriteria.Value;
+			_editCustomLeaderboard.CentipedeKillsCriteria.Value = getCustomLeaderboard.CentipedeKillsCriteria.Value;
+			_editCustomLeaderboard.GigapedeKillsCriteria.Value = getCustomLeaderboard.GigapedeKillsCriteria.Value;
+			_editCustomLeaderboard.GhostpedeKillsCriteria.Value = getCustomLeaderboard.GhostpedeKillsCriteria.Value;
+			_editCustomLeaderboard.Spider1KillsCriteria.Value = getCustomLeaderboard.Spider1KillsCriteria.Value;
+			_editCustomLeaderboard.Spider2KillsCriteria.Value = getCustomLeaderboard.Spider2KillsCriteria.Value;
+			_editCustomLeaderboard.LeviathanKillsCriteria.Value = getCustomLeaderboard.LeviathanKillsCriteria.Value;
+			_editCustomLeaderboard.OrbKillsCriteria.Value = getCustomLeaderboard.OrbKillsCriteria.Value;
+			_editCustomLeaderboard.ThornKillsCriteria.Value = getCustomLeaderboard.ThornKillsCriteria.Value;
 
 			editComponent.State = ErrorState.None;
 		}

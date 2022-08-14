@@ -47,10 +47,30 @@ public class CustomLeaderboardService
 			TimeLeviathan = addCustomLeaderboard.Daggers.Leviathan.To10thMilliTime(),
 			IsFeatured = addCustomLeaderboard.IsFeatured,
 			GemsCollectedCriteria = addCustomLeaderboard.GemsCollectedCriteria.ToEntity(),
+			GemsDespawnedCriteria = addCustomLeaderboard.GemsDespawnedCriteria.ToEntity(),
+			GemsEatenCriteria = addCustomLeaderboard.GemsEatenCriteria.ToEntity(),
 			EnemiesKilledCriteria = addCustomLeaderboard.EnemiesKilledCriteria.ToEntity(),
 			DaggersFiredCriteria = addCustomLeaderboard.DaggersFiredCriteria.ToEntity(),
 			DaggersHitCriteria = addCustomLeaderboard.DaggersHitCriteria.ToEntity(),
+			HomingStoredCriteria = addCustomLeaderboard.HomingStoredCriteria.ToEntity(),
+			HomingEatenCriteria = addCustomLeaderboard.HomingEatenCriteria.ToEntity(),
 			Skull1KillsCriteria = addCustomLeaderboard.Skull1KillsCriteria.ToEntity(),
+			Skull2KillsCriteria = addCustomLeaderboard.Skull2KillsCriteria.ToEntity(),
+			Skull3KillsCriteria = addCustomLeaderboard.Skull3KillsCriteria.ToEntity(),
+			Skull4KillsCriteria = addCustomLeaderboard.Skull4KillsCriteria.ToEntity(),
+			SpiderlingKillsCriteria = addCustomLeaderboard.SpiderlingKillsCriteria.ToEntity(),
+			SpiderEggKillsCriteria = addCustomLeaderboard.SpiderEggKillsCriteria.ToEntity(),
+			Squid1KillsCriteria = addCustomLeaderboard.Squid1KillsCriteria.ToEntity(),
+			Squid2KillsCriteria = addCustomLeaderboard.Squid2KillsCriteria.ToEntity(),
+			Squid3KillsCriteria = addCustomLeaderboard.Squid3KillsCriteria.ToEntity(),
+			CentipedeKillsCriteria = addCustomLeaderboard.CentipedeKillsCriteria.ToEntity(),
+			GigapedeKillsCriteria = addCustomLeaderboard.GigapedeKillsCriteria.ToEntity(),
+			GhostpedeKillsCriteria = addCustomLeaderboard.GhostpedeKillsCriteria.ToEntity(),
+			Spider1KillsCriteria = addCustomLeaderboard.Spider1KillsCriteria.ToEntity(),
+			Spider2KillsCriteria = addCustomLeaderboard.Spider2KillsCriteria.ToEntity(),
+			LeviathanKillsCriteria = addCustomLeaderboard.LeviathanKillsCriteria.ToEntity(),
+			OrbKillsCriteria = addCustomLeaderboard.OrbKillsCriteria.ToEntity(),
+			ThornKillsCriteria = addCustomLeaderboard.ThornKillsCriteria.ToEntity(),
 		};
 		_dbContext.CustomLeaderboards.Add(customLeaderboard);
 		await _dbContext.SaveChangesAsync();
@@ -69,17 +89,57 @@ public class CustomLeaderboardService
 
 			bool anyCriteriaOperatorChanged =
 				customLeaderboard.GemsCollectedCriteria.Operator != editCustomLeaderboard.GemsCollectedCriteria.Operator ||
+				customLeaderboard.GemsDespawnedCriteria.Operator != editCustomLeaderboard.GemsDespawnedCriteria.Operator ||
+				customLeaderboard.GemsEatenCriteria.Operator != editCustomLeaderboard.GemsEatenCriteria.Operator ||
 				customLeaderboard.EnemiesKilledCriteria.Operator != editCustomLeaderboard.EnemiesKilledCriteria.Operator ||
 				customLeaderboard.DaggersFiredCriteria.Operator != editCustomLeaderboard.DaggersFiredCriteria.Operator ||
 				customLeaderboard.DaggersHitCriteria.Operator != editCustomLeaderboard.DaggersHitCriteria.Operator ||
-				customLeaderboard.Skull1KillsCriteria.Operator != editCustomLeaderboard.Skull1KillsCriteria.Operator;
+				customLeaderboard.HomingStoredCriteria.Operator != editCustomLeaderboard.HomingStoredCriteria.Operator ||
+				customLeaderboard.HomingEatenCriteria.Operator != editCustomLeaderboard.HomingEatenCriteria.Operator ||
+				customLeaderboard.Skull1KillsCriteria.Operator != editCustomLeaderboard.Skull1KillsCriteria.Operator ||
+				customLeaderboard.Skull2KillsCriteria.Operator != editCustomLeaderboard.Skull2KillsCriteria.Operator ||
+				customLeaderboard.Skull3KillsCriteria.Operator != editCustomLeaderboard.Skull3KillsCriteria.Operator ||
+				customLeaderboard.Skull4KillsCriteria.Operator != editCustomLeaderboard.Skull4KillsCriteria.Operator ||
+				customLeaderboard.SpiderlingKillsCriteria.Operator != editCustomLeaderboard.SpiderlingKillsCriteria.Operator ||
+				customLeaderboard.SpiderEggKillsCriteria.Operator != editCustomLeaderboard.SpiderEggKillsCriteria.Operator ||
+				customLeaderboard.Squid1KillsCriteria.Operator != editCustomLeaderboard.Squid1KillsCriteria.Operator ||
+				customLeaderboard.Squid2KillsCriteria.Operator != editCustomLeaderboard.Squid2KillsCriteria.Operator ||
+				customLeaderboard.Squid3KillsCriteria.Operator != editCustomLeaderboard.Squid3KillsCriteria.Operator ||
+				customLeaderboard.CentipedeKillsCriteria.Operator != editCustomLeaderboard.CentipedeKillsCriteria.Operator ||
+				customLeaderboard.GigapedeKillsCriteria.Operator != editCustomLeaderboard.GigapedeKillsCriteria.Operator ||
+				customLeaderboard.GhostpedeKillsCriteria.Operator != editCustomLeaderboard.GhostpedeKillsCriteria.Operator ||
+				customLeaderboard.Spider1KillsCriteria.Operator != editCustomLeaderboard.Spider1KillsCriteria.Operator ||
+				customLeaderboard.Spider2KillsCriteria.Operator != editCustomLeaderboard.Spider2KillsCriteria.Operator ||
+				customLeaderboard.LeviathanKillsCriteria.Operator != editCustomLeaderboard.LeviathanKillsCriteria.Operator ||
+				customLeaderboard.OrbKillsCriteria.Operator != editCustomLeaderboard.OrbKillsCriteria.Operator ||
+				customLeaderboard.ThornKillsCriteria.Operator != editCustomLeaderboard.ThornKillsCriteria.Operator;
 
 			bool anyCriteriaValueChanged =
 				customLeaderboard.GemsCollectedCriteria.Value != editCustomLeaderboard.GemsCollectedCriteria.Value ||
+				customLeaderboard.GemsDespawnedCriteria.Value != editCustomLeaderboard.GemsDespawnedCriteria.Value ||
+				customLeaderboard.GemsEatenCriteria.Value != editCustomLeaderboard.GemsEatenCriteria.Value ||
 				customLeaderboard.EnemiesKilledCriteria.Value != editCustomLeaderboard.EnemiesKilledCriteria.Value ||
 				customLeaderboard.DaggersFiredCriteria.Value != editCustomLeaderboard.DaggersFiredCriteria.Value ||
 				customLeaderboard.DaggersHitCriteria.Value != editCustomLeaderboard.DaggersHitCriteria.Value ||
-				customLeaderboard.Skull1KillsCriteria.Value != editCustomLeaderboard.Skull1KillsCriteria.Value;
+				customLeaderboard.HomingStoredCriteria.Value != editCustomLeaderboard.HomingStoredCriteria.Value ||
+				customLeaderboard.HomingEatenCriteria.Value != editCustomLeaderboard.HomingEatenCriteria.Value ||
+				customLeaderboard.Skull1KillsCriteria.Value != editCustomLeaderboard.Skull1KillsCriteria.Value ||
+				customLeaderboard.Skull2KillsCriteria.Value != editCustomLeaderboard.Skull2KillsCriteria.Value ||
+				customLeaderboard.Skull3KillsCriteria.Value != editCustomLeaderboard.Skull3KillsCriteria.Value ||
+				customLeaderboard.Skull4KillsCriteria.Value != editCustomLeaderboard.Skull4KillsCriteria.Value ||
+				customLeaderboard.SpiderlingKillsCriteria.Value != editCustomLeaderboard.SpiderlingKillsCriteria.Value ||
+				customLeaderboard.SpiderEggKillsCriteria.Value != editCustomLeaderboard.SpiderEggKillsCriteria.Value ||
+				customLeaderboard.Squid1KillsCriteria.Value != editCustomLeaderboard.Squid1KillsCriteria.Value ||
+				customLeaderboard.Squid2KillsCriteria.Value != editCustomLeaderboard.Squid2KillsCriteria.Value ||
+				customLeaderboard.Squid3KillsCriteria.Value != editCustomLeaderboard.Squid3KillsCriteria.Value ||
+				customLeaderboard.CentipedeKillsCriteria.Value != editCustomLeaderboard.CentipedeKillsCriteria.Value ||
+				customLeaderboard.GigapedeKillsCriteria.Value != editCustomLeaderboard.GigapedeKillsCriteria.Value ||
+				customLeaderboard.GhostpedeKillsCriteria.Value != editCustomLeaderboard.GhostpedeKillsCriteria.Value ||
+				customLeaderboard.Spider1KillsCriteria.Value != editCustomLeaderboard.Spider1KillsCriteria.Value ||
+				customLeaderboard.Spider2KillsCriteria.Value != editCustomLeaderboard.Spider2KillsCriteria.Value ||
+				customLeaderboard.LeviathanKillsCriteria.Value != editCustomLeaderboard.LeviathanKillsCriteria.Value ||
+				customLeaderboard.OrbKillsCriteria.Value != editCustomLeaderboard.OrbKillsCriteria.Value ||
+				customLeaderboard.ThornKillsCriteria.Value != editCustomLeaderboard.ThornKillsCriteria.Value;
 
 			if (anyCriteriaOperatorChanged || anyCriteriaValueChanged)
 				throw new AdminDomainException("Cannot change criteria for custom leaderboard with scores.");
@@ -95,10 +155,30 @@ public class CustomLeaderboardService
 		customLeaderboard.TimeLeviathan = editCustomLeaderboard.Daggers.Leviathan.To10thMilliTime();
 		customLeaderboard.IsFeatured = editCustomLeaderboard.IsFeatured;
 		customLeaderboard.GemsCollectedCriteria = editCustomLeaderboard.GemsCollectedCriteria.ToEntity();
+		customLeaderboard.GemsDespawnedCriteria = editCustomLeaderboard.GemsDespawnedCriteria.ToEntity();
+		customLeaderboard.GemsEatenCriteria = editCustomLeaderboard.GemsEatenCriteria.ToEntity();
 		customLeaderboard.EnemiesKilledCriteria = editCustomLeaderboard.EnemiesKilledCriteria.ToEntity();
 		customLeaderboard.DaggersFiredCriteria = editCustomLeaderboard.DaggersFiredCriteria.ToEntity();
 		customLeaderboard.DaggersHitCriteria = editCustomLeaderboard.DaggersHitCriteria.ToEntity();
+		customLeaderboard.HomingStoredCriteria = editCustomLeaderboard.HomingStoredCriteria.ToEntity();
+		customLeaderboard.HomingEatenCriteria = editCustomLeaderboard.HomingEatenCriteria.ToEntity();
 		customLeaderboard.Skull1KillsCriteria = editCustomLeaderboard.Skull1KillsCriteria.ToEntity();
+		customLeaderboard.Skull2KillsCriteria = editCustomLeaderboard.Skull2KillsCriteria.ToEntity();
+		customLeaderboard.Skull3KillsCriteria = editCustomLeaderboard.Skull3KillsCriteria.ToEntity();
+		customLeaderboard.Skull4KillsCriteria = editCustomLeaderboard.Skull4KillsCriteria.ToEntity();
+		customLeaderboard.SpiderlingKillsCriteria = editCustomLeaderboard.SpiderlingKillsCriteria.ToEntity();
+		customLeaderboard.SpiderEggKillsCriteria = editCustomLeaderboard.SpiderEggKillsCriteria.ToEntity();
+		customLeaderboard.Squid1KillsCriteria = editCustomLeaderboard.Squid1KillsCriteria.ToEntity();
+		customLeaderboard.Squid2KillsCriteria = editCustomLeaderboard.Squid2KillsCriteria.ToEntity();
+		customLeaderboard.Squid3KillsCriteria = editCustomLeaderboard.Squid3KillsCriteria.ToEntity();
+		customLeaderboard.CentipedeKillsCriteria = editCustomLeaderboard.CentipedeKillsCriteria.ToEntity();
+		customLeaderboard.GigapedeKillsCriteria = editCustomLeaderboard.GigapedeKillsCriteria.ToEntity();
+		customLeaderboard.GhostpedeKillsCriteria = editCustomLeaderboard.GhostpedeKillsCriteria.ToEntity();
+		customLeaderboard.Spider1KillsCriteria = editCustomLeaderboard.Spider1KillsCriteria.ToEntity();
+		customLeaderboard.Spider2KillsCriteria = editCustomLeaderboard.Spider2KillsCriteria.ToEntity();
+		customLeaderboard.LeviathanKillsCriteria = editCustomLeaderboard.LeviathanKillsCriteria.ToEntity();
+		customLeaderboard.OrbKillsCriteria = editCustomLeaderboard.OrbKillsCriteria.ToEntity();
+		customLeaderboard.ThornKillsCriteria = editCustomLeaderboard.ThornKillsCriteria.ToEntity();
 
 		await _dbContext.SaveChangesAsync();
 	}
