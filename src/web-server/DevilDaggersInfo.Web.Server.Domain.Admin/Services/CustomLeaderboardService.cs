@@ -253,9 +253,6 @@ public class CustomLeaderboardService
 		if (spawnsetBinary.GameMode != requiredGameMode)
 			throw new CustomLeaderboardValidationException($"Game mode must be '{requiredGameMode}' when the custom leaderboard category is '{category}'. The spawnset has game mode '{spawnsetBinary.GameMode}'.");
 
-		if (category == CustomLeaderboardCategory.Survival && !spawnsetBinary.HasEndLoop())
-			throw new CustomLeaderboardValidationException($"Custom leaderboard with category '{category}' must have an end loop.");
-
 		if (category is CustomLeaderboardCategory.Pacifist or CustomLeaderboardCategory.TimeAttack && !spawnsetBinary.HasSpawns())
 			throw new CustomLeaderboardValidationException($"Custom leaderboard with category '{category}' must have spawns.");
 	}
