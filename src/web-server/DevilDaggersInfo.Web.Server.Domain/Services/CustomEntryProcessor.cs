@@ -8,6 +8,7 @@ using DevilDaggersInfo.Types.Core.Spawnsets;
 using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Server.Domain.Commands.CustomEntries;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
+using DevilDaggersInfo.Web.Server.Domain.Entities.Values;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Extensions;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
@@ -20,6 +21,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using System.Web;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Services;
@@ -127,12 +129,7 @@ public class CustomEntryProcessor
 		if (customLeaderboard.Category.IsTimeAttackOrRace() && !uploadRequest.TimeAttackOrRaceFinished)
 			LogAndThrowValidationException(uploadRequest, $"Didn't complete the {customLeaderboard.Category} spawnset.", spawnsetName);
 
-		if (customLeaderboard.Category == CustomLeaderboardCategory.RaceNoShooting && uploadRequest.DaggersFired > 0)
-			LogAndThrowValidationException(uploadRequest, $"Counted {uploadRequest.DaggersFired} {(uploadRequest.DaggersFired == 1 ? "dagger" : "daggers")} fired. Can't submit score to {CustomLeaderboardCategory.RaceNoShooting} leaderboard.", spawnsetName);
-
-		// Validate Pacifist.
-		if (customLeaderboard.Category == CustomLeaderboardCategory.Pacifist && uploadRequest.EnemiesKilled > 0)
-			LogAndThrowValidationException(uploadRequest, $"Counted {uploadRequest.EnemiesKilled} {(uploadRequest.EnemiesKilled == 1 ? "kill" : "kills")}. Can't submit score to {CustomLeaderboardCategory.Pacifist} leaderboard.", spawnsetName);
+		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard);
 
 		// Make sure HomingDaggers is not negative (happens rarely as a bug, and also for spawnsets with homing disabled which we don't want to display values for anyway).
 		uploadRequest.GameData.HomingStored = Array.ConvertAll(uploadRequest.GameData.HomingStored, i => Math.Max(0, i));
@@ -155,6 +152,42 @@ public class CustomEntryProcessor
 			return await ProcessNoHighscoreAsync(uploadRequest, customLeaderboard, spawnsetName);
 
 		return await ProcessHighscoreAsync(uploadRequest, customLeaderboard, spawnsetName, customEntry);
+	}
+
+	private void HandleCriteria(UploadRequest uploadRequest, string? spawnsetName, CustomLeaderboardEntity customLeaderboard)
+	{
+		if (customLeaderboard.Category == CustomLeaderboardCategory.RaceNoShooting && uploadRequest.DaggersFired > 0)
+			LogAndThrowValidationException(uploadRequest, $"Counted {uploadRequest.DaggersFired} {(uploadRequest.DaggersFired == 1 ? "dagger" : "daggers")} fired. Can't submit score to {CustomLeaderboardCategory.RaceNoShooting} leaderboard.", spawnsetName);
+
+		// Validate Pacifist.
+		if (customLeaderboard.Category == CustomLeaderboardCategory.Pacifist && uploadRequest.EnemiesKilled > 0)
+			LogAndThrowValidationException(uploadRequest, $"Counted {uploadRequest.EnemiesKilled} {(uploadRequest.EnemiesKilled == 1 ? "kill" : "kills")}. Can't submit score to {CustomLeaderboardCategory.Pacifist} leaderboard.", spawnsetName);
+
+		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.GemsCollectedCriteria, uploadRequest.GemsCollected);
+		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.EnemiesKilledCriteria, uploadRequest.EnemiesKilled);
+		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.DaggersFiredCriteria, uploadRequest.DaggersFired);
+		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.DaggersHitCriteria, uploadRequest.DaggersHit);
+		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.Skull1KillsCriteria, uploadRequest.GameData.Skull1sKilled.Length == 0 ? 0 : uploadRequest.GameData.Skull1sKilled[^1]);
+
+		void HandleCriteria(UploadRequest uploadRequest, string? spawnsetName, CustomLeaderboardCriteria criteria, int value, [CallerArgumentExpression("criteria")] string criteriaExpression = "")
+		{
+			if (!IsValidForCriteria(criteria.Operator, criteria.Value, value))
+				LogAndThrowValidationException(uploadRequest, $"Did not meet the {criteriaExpression}.", spawnsetName);
+		}
+
+		void HandleEnemyCriteria(UploadRequest uploadRequest, string? spawnsetName, CustomLeaderboardEnemyCriteria criteria, int value, [CallerArgumentExpression("criteria")] string criteriaExpression = "")
+		{
+			if (!IsValidForCriteria(criteria.Operator, criteria.Value, value))
+				LogAndThrowValidationException(uploadRequest, $"Did not meet the {criteriaExpression}.", spawnsetName);
+		}
+
+		static bool IsValidForCriteria(CustomLeaderboardCriteriaOperator op, int expectedValue, int value) => op switch
+		{
+			CustomLeaderboardCriteriaOperator.Equal => value == expectedValue,
+			CustomLeaderboardCriteriaOperator.LessThan => value < expectedValue,
+			CustomLeaderboardCriteriaOperator.GreaterThan => value > expectedValue,
+			_ => true,
+		};
 	}
 
 	private async Task<UploadResponse> ProcessNewScoreAsync(UploadRequest uploadRequest, CustomLeaderboardEntity customLeaderboard, string spawnsetName)

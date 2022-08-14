@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Types.Web;
+using DevilDaggersInfo.Web.Server.Domain.Entities.Values;
 using DevilDaggersInfo.Web.Server.Domain.Utils;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Entities;
@@ -34,6 +35,16 @@ public class CustomLeaderboardEntity : IAuditable
 	public int TotalRunsSubmitted { get; set; }
 
 	public bool IsFeatured { get; set; }
+
+	public CustomLeaderboardCriteria GemsCollectedCriteria { get; set; } = new();
+
+	public CustomLeaderboardCriteria EnemiesKilledCriteria { get; set; } = new();
+
+	public CustomLeaderboardCriteria DaggersFiredCriteria { get; set; } = new();
+
+	public CustomLeaderboardCriteria DaggersHitCriteria { get; set; } = new();
+
+	public CustomLeaderboardEnemyCriteria Skull1KillsCriteria { get; set; } = new();
 
 	public List<CustomEntryEntity>? CustomEntries { get; set; }
 
