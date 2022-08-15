@@ -28,5 +28,5 @@ public class SortedCustomLeaderboard
 
 	public List<CustomEntry> CustomEntries { get; init; } = new(); // TODO: C# 11 required.
 
-	public List<string> Criteria { get; init; } = new();
+	public List<CustomLeaderboardCriteria> Criteria { get; init; } = new();
 }

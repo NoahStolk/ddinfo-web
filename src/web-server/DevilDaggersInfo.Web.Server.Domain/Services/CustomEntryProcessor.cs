@@ -189,7 +189,7 @@ public class CustomEntryProcessor
 			return arr.Length == 0 ? 0 : arr[^1];
 		}
 
-		void HandleCriteria(UploadRequest uploadRequest, string? spawnsetName, CustomLeaderboardCriteria criteria, int value, [CallerArgumentExpression("criteria")] string criteriaExpression = "")
+		void HandleCriteria(UploadRequest uploadRequest, string? spawnsetName, Entities.Values.CustomLeaderboardCriteria criteria, int value, [CallerArgumentExpression("criteria")] string criteriaExpression = "")
 			=> Handle(uploadRequest, spawnsetName, criteria.Operator, criteria.Value, value, criteriaExpression);
 
 		void HandleEnemyCriteria(UploadRequest uploadRequest, string? spawnsetName, CustomLeaderboardEnemyCriteria criteria, int value, [CallerArgumentExpression("criteria")] string criteriaExpression = "")

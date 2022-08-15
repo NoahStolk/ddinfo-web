@@ -38,7 +38,7 @@ public static class CustomLeaderboardConverters
 		IsFeatured = customLeaderboard.Daggers != null,
 		DateLastPlayed = customLeaderboard.DateLastPlayed,
 		CustomEntries = customLeaderboard.CustomEntries.ConvertAll(ce => ce.ToGetCustomEntry(customLeaderboard.Category)),
-		Criteria = customLeaderboard.Criteria,
+		Criteria = customLeaderboard.Criteria.ConvertAll(clc => clc.ToGetCustomLeaderboardCriteria()),
 	};
 
 	private static MainApi.GetCustomEntry ToGetCustomEntry(this CustomEntry customEntry, CustomLeaderboardCategory category) => new()
@@ -76,6 +76,13 @@ public static class CustomLeaderboardConverters
 		Golden = customLeaderboard.Golden.ToSecondsTime(),
 		Devil = customLeaderboard.Devil.ToSecondsTime(),
 		Leviathan = customLeaderboard.Leviathan.ToSecondsTime(),
+	};
+
+	private static MainApi.GetCustomLeaderboardCriteria ToGetCustomLeaderboardCriteria(this CustomLeaderboardCriteria criteria) => new()
+	{
+		Type = criteria.Type,
+		Operator = criteria.Operator,
+		Value = criteria.Value,
 	};
 
 	// TODO: Use domain models?

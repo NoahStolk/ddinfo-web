@@ -135,55 +135,53 @@ public class CustomLeaderboardRepository
 
 		List<int> existingReplayIds = _customEntryRepository.GetExistingCustomEntryReplayIds(customLeaderboard.CustomEntries!.ConvertAll(ce => ce.Id));
 
-		List<string> criteria = new();
-		AddCriteria(criteria, customLeaderboard.GemsCollectedCriteria, "Gems collected");
-		AddCriteria(criteria, customLeaderboard.GemsDespawnedCriteria, "Gems despawned");
-		AddCriteria(criteria, customLeaderboard.GemsEatenCriteria, "Gems eaten");
-		AddCriteria(criteria, customLeaderboard.EnemiesKilledCriteria, "Total kills");
-		AddCriteria(criteria, customLeaderboard.DaggersFiredCriteria, "Daggers fired");
-		AddCriteria(criteria, customLeaderboard.DaggersHitCriteria, "Daggers hit");
-		AddCriteria(criteria, customLeaderboard.HomingStoredCriteria, "Homing stored");
-		AddCriteria(criteria, customLeaderboard.HomingEatenCriteria, "Homing eaten");
-
-		AddEnemyCriteria(criteria, customLeaderboard.Skull1KillsCriteria, "Skull I kills");
-		AddEnemyCriteria(criteria, customLeaderboard.Skull2KillsCriteria, "Skull II kills");
-		AddEnemyCriteria(criteria, customLeaderboard.Skull3KillsCriteria, "Skull III kills");
-		AddEnemyCriteria(criteria, customLeaderboard.Skull4KillsCriteria, "Skull IV kills");
-
-		AddEnemyCriteria(criteria, customLeaderboard.SpiderlingKillsCriteria, "Spiderling kills");
-		AddEnemyCriteria(criteria, customLeaderboard.SpiderEggKillsCriteria, "Spider Egg kills");
-
-		AddEnemyCriteria(criteria, customLeaderboard.Squid1KillsCriteria, "Squid I kills");
-		AddEnemyCriteria(criteria, customLeaderboard.Squid2KillsCriteria, "Squid II kills");
-		AddEnemyCriteria(criteria, customLeaderboard.Squid3KillsCriteria, "Squid III kills");
-
-		AddEnemyCriteria(criteria, customLeaderboard.CentipedeKillsCriteria, "Centipede kills");
-		AddEnemyCriteria(criteria, customLeaderboard.GigapedeKillsCriteria, "Gigapede kills");
-		AddEnemyCriteria(criteria, customLeaderboard.GhostpedeKillsCriteria, "Ghostpede kills");
-
-		AddEnemyCriteria(criteria, customLeaderboard.Spider1KillsCriteria, "Spider I kills");
-		AddEnemyCriteria(criteria, customLeaderboard.Spider2KillsCriteria, "Spider II kills");
-
-		AddEnemyCriteria(criteria, customLeaderboard.LeviathanKillsCriteria, "Leviathan kills");
-		AddEnemyCriteria(criteria, customLeaderboard.OrbKillsCriteria, "Orb kills");
-		AddEnemyCriteria(criteria, customLeaderboard.ThornKillsCriteria, "Thorn kills");
-
-		static void AddCriteria(List<string> criteriaList, CustomLeaderboardCriteria criteria, string name)
+		List<Models.CustomLeaderboards.CustomLeaderboardCriteria> criteria = new()
 		{
-			if (!criteria.IsDefault())
-				criteriaList.Add($"{name} must be {criteria.Operator.Display()} {criteria.Value}.");
-		}
+			AddCriteria(CustomLeaderboardCriteriaType.GemsCollected, customLeaderboard.GemsCollectedCriteria),
+			AddCriteria(CustomLeaderboardCriteriaType.GemsDespawned, customLeaderboard.GemsDespawnedCriteria),
+			AddCriteria(CustomLeaderboardCriteriaType.GemsEaten, customLeaderboard.GemsEatenCriteria),
+			AddCriteria(CustomLeaderboardCriteriaType.EnemiesKilled, customLeaderboard.EnemiesKilledCriteria),
+			AddCriteria(CustomLeaderboardCriteriaType.DaggersFired, customLeaderboard.DaggersFiredCriteria),
+			AddCriteria(CustomLeaderboardCriteriaType.DaggersHit, customLeaderboard.DaggersHitCriteria),
+			AddCriteria(CustomLeaderboardCriteriaType.HomingStored, customLeaderboard.HomingStoredCriteria),
+			AddCriteria(CustomLeaderboardCriteriaType.HomingEaten, customLeaderboard.HomingEatenCriteria),
+			AddEnemyCriteria(CustomLeaderboardCriteriaType.Skull1Kills, customLeaderboard.Skull1KillsCriteria),
+			AddEnemyCriteria(CustomLeaderboardCriteriaType.Skull2Kills, customLeaderboard.Skull2KillsCriteria),
+			AddEnemyCriteria(CustomLeaderboardCriteriaType.Skull3Kills, customLeaderboard.Skull3KillsCriteria),
+			AddEnemyCriteria(CustomLeaderboardCriteriaType.Skull4Kills, customLeaderboard.Skull4KillsCriteria),
+			AddEnemyCriteria(CustomLeaderboardCriteriaType.SpiderlingKills, customLeaderboard.SpiderlingKillsCriteria),
+			AddEnemyCriteria(CustomLeaderboardCriteriaType.SpiderEggKills, customLeaderboard.SpiderEggKillsCriteria),
+			AddEnemyCriteria(CustomLeaderboardCriteriaType.Squid1Kills, customLeaderboard.Squid1KillsCriteria),
+			AddEnemyCriteria(CustomLeaderboardCriteriaType.Squid2Kills, customLeaderboard.Squid2KillsCriteria),
+			AddEnemyCriteria(CustomLeaderboardCriteriaType.Squid3Kills, customLeaderboard.Squid3KillsCriteria),
+			AddEnemyCriteria(CustomLeaderboardCriteriaType.CentipedeKills, customLeaderboard.CentipedeKillsCriteria),
+			AddEnemyCriteria(CustomLeaderboardCriteriaType.GigapedeKills, customLeaderboard.GigapedeKillsCriteria),
+			AddEnemyCriteria(CustomLeaderboardCriteriaType.GhostpedeKills, customLeaderboard.GhostpedeKillsCriteria),
+			AddEnemyCriteria(CustomLeaderboardCriteriaType.Spider1Kills, customLeaderboard.Spider1KillsCriteria),
+			AddEnemyCriteria(CustomLeaderboardCriteriaType.Spider2Kills, customLeaderboard.Spider2KillsCriteria),
+			AddEnemyCriteria(CustomLeaderboardCriteriaType.LeviathanKills, customLeaderboard.LeviathanKillsCriteria),
+			AddEnemyCriteria(CustomLeaderboardCriteriaType.OrbKills, customLeaderboard.OrbKillsCriteria),
+			AddEnemyCriteria(CustomLeaderboardCriteriaType.ThornKills, customLeaderboard.ThornKillsCriteria),
+		};
 
-		static void AddEnemyCriteria(List<string> criteriaList, CustomLeaderboardEnemyCriteria criteria, string name)
+		static Models.CustomLeaderboards.CustomLeaderboardCriteria AddCriteria(CustomLeaderboardCriteriaType criteriaType, Entities.Values.CustomLeaderboardCriteria criteria) => new()
 		{
-			if (!criteria.IsDefault())
-				criteriaList.Add($"{name} must be {criteria.Operator.Display()} {criteria.Value}.");
-		}
+			Type = criteriaType,
+			Operator = criteria.Operator,
+			Value = criteria.Value,
+		};
+
+		static Models.CustomLeaderboards.CustomLeaderboardCriteria AddEnemyCriteria(CustomLeaderboardCriteriaType criteriaType, CustomLeaderboardEnemyCriteria criteria) => new()
+		{
+			Type = criteriaType,
+			Operator = criteria.Operator,
+			Value = criteria.Value,
+		};
 
 		return new()
 		{
 			Category = customLeaderboard.Category,
-			Criteria = criteria,
+			Criteria = criteria.Where(c => !c.IsDefault()).ToList(),
 			CustomEntries = customLeaderboard.CustomEntries
 				.Sort(customLeaderboard.Category)
 				.Select((ce, i) =>

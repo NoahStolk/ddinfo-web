@@ -56,9 +56,9 @@ else
 				In order to submit to this leaderboard, some criteria must be met:
 			</p>
 			<ul class="pl-4">
-				@foreach (string criteria in GetCustomLeaderboard.Criteria)
+				@foreach (GetCustomLeaderboardCriteria criteria in GetCustomLeaderboard.Criteria)
 				{
-					<li class="list-disc">@criteria</li>
+					<li class="list-disc"><span style="color: @criteria.Type.GetColor()">@criteria.Type.Display()</span> must be <span style="color: @criteria.Operator.GetColor()">@criteria.Operator.Display()</span> <span style="color: #0f8">@criteria.Value</span>.</li>
 				}
 			</ul>
 		</div>

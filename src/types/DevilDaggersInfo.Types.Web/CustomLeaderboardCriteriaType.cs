@@ -1,0 +1,30 @@
+namespace DevilDaggersInfo.Types.Web;
+
+public enum CustomLeaderboardCriteriaType
+{
+	GemsCollected = 0,
+	GemsDespawned = 1,
+	GemsEaten = 2,
+	EnemiesKilled = 3,
+	DaggersFired = 4,
+	DaggersHit = 5,
+	HomingStored = 6,
+	HomingEaten = 7,
+	Skull1Kills = 8,
+	Skull2Kills = 9,
+	Skull3Kills = 10,
+	Skull4Kills = 11,
+	SpiderlingKills = 12,
+	SpiderEggKills = 13,
+	Squid1Kills = 14,
+	Squid2Kills = 15,
+	Squid3Kills = 16,
+	CentipedeKills = 17,
+	GigapedeKills = 18,
+	GhostpedeKills = 19,
+	Spider1Kills = 20,
+	Spider2Kills = 21,
+	LeviathanKills = 22,
+	OrbKills = 23,
+	ThornKills = 24,
+}
