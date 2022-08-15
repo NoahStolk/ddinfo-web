@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Types.Core.Spawnsets;
+using System.Numerics;
 
 namespace DevilDaggersInfo.Core.Spawnset.Tests;
 
@@ -8,7 +9,7 @@ public class SpawnsetParseTests
 	[TestMethod]
 	public void Parse_V0()
 	{
-		SpawnsetBinary spawnset = Parse("V0", 4, 8, 50, 20, 0.025f, 60, GameMode.Survival, 82, HandLevel.Level1, 0, 0);
+		SpawnsetBinary spawnset = Parse("V0", 4, 8, 50, 20, 0.025f, 60, GameMode.Survival, default, 400, 250, 120, 60, 82, HandLevel.Level1, 0, 0);
 		Assert.AreEqual(new(EnemyType.Squid1, 3), spawnset.Spawns[0]);
 		Assert.AreEqual(new(EnemyType.Empty, 6), spawnset.Spawns[1]);
 	}
@@ -16,7 +17,7 @@ public class SpawnsetParseTests
 	[TestMethod]
 	public void Parse_V1()
 	{
-		SpawnsetBinary spawnset = Parse("V1", 4, 8, 50, 20, 0.025f, 60, GameMode.Survival, 130, HandLevel.Level1, 0, 0);
+		SpawnsetBinary spawnset = Parse("V1", 4, 8, 50, 20, 0.025f, 60, GameMode.Survival, default, 400, 250, 120, 60, 130, HandLevel.Level1, 0, 0);
 		Assert.AreEqual(new(EnemyType.Squid1, 3), spawnset.Spawns[0]);
 		Assert.AreEqual(new(EnemyType.Empty, 6), spawnset.Spawns[1]);
 	}
@@ -24,7 +25,7 @@ public class SpawnsetParseTests
 	[TestMethod]
 	public void Parse_V2()
 	{
-		SpawnsetBinary spawnset = Parse("V2", 4, 9, 50, 20, 0.025f, 60, GameMode.Survival, 87, HandLevel.Level1, 0, 0);
+		SpawnsetBinary spawnset = Parse("V2", 4, 9, 50, 20, 0.025f, 60, GameMode.Survival, default, 500, 250, 120, 60, 87, HandLevel.Level1, 0, 0);
 		Assert.AreEqual(new(EnemyType.Squid1, 3), spawnset.Spawns[0]);
 		Assert.AreEqual(new(EnemyType.Empty, 6), spawnset.Spawns[1]);
 	}
@@ -32,7 +33,7 @@ public class SpawnsetParseTests
 	[TestMethod]
 	public void Parse_V3()
 	{
-		SpawnsetBinary spawnset = Parse("V3", 4, 9, 50, 20, 0.025f, 60, GameMode.Survival, 118, HandLevel.Level1, 0, 0);
+		SpawnsetBinary spawnset = Parse("V3", 4, 9, 50, 20, 0.025f, 60, GameMode.Survival, default, 500, 250, 120, 60, 118, HandLevel.Level1, 0, 0);
 		Assert.AreEqual(new(EnemyType.Squid1, 3), spawnset.Spawns[0]);
 		Assert.AreEqual(new(EnemyType.Empty, 6), spawnset.Spawns[1]);
 	}
@@ -40,7 +41,7 @@ public class SpawnsetParseTests
 	[TestMethod]
 	public void Parse_V3_229()
 	{
-		SpawnsetBinary spawnset = Parse("V3_229", 6, 9, 44.275f, 20, 0.025f, 60, GameMode.Survival, 75, HandLevel.Level3, 57, 229);
+		SpawnsetBinary spawnset = Parse("V3_229", 6, 9, 44.275f, 20, 0.025f, 60, GameMode.Survival, default, 500, 250, 120, 60, 75, HandLevel.Level3, 57, 229);
 		Assert.AreEqual(new(EnemyType.Squid1, 0), spawnset.Spawns[0]);
 		Assert.AreEqual(new(EnemyType.Squid2, 10), spawnset.Spawns[6]);
 	}
@@ -48,20 +49,20 @@ public class SpawnsetParseTests
 	[TestMethod]
 	public void Parse_V3_451()
 	{
-		SpawnsetBinary spawnset = Parse("V3_451", 6, 9, 38.725f, 20, 0.025f, 60, GameMode.Survival, 18, HandLevel.Level4, 0, 451);
+		SpawnsetBinary spawnset = Parse("V3_451", 6, 9, 38.725f, 20, 0.025f, 60, GameMode.Survival, default, 500, 250, 120, 60, 18, HandLevel.Level4, 0, 451);
 		Assert.AreEqual(new(EnemyType.Empty, 5), spawnset.Spawns[0]);
 	}
 
 	[TestMethod]
 	public void Parse_Empty()
 	{
-		Parse("Empty", 6, 9, 50, 20, 0.025f, 60, GameMode.Survival, 0, HandLevel.Level1, 0, 0);
+		Parse("Empty", 6, 9, 50, 20, 0.025f, 60, GameMode.Survival, default, 500, 250, 120, 60, 0, HandLevel.Level1, 0, 0);
 	}
 
 	[TestMethod]
 	public void Parse_Scanner()
 	{
-		SpawnsetBinary spawnset = Parse("Scanner", 6, 9, 26, 15, 0.025f, 60, GameMode.Survival, 125, HandLevel.Level4, 30, 0);
+		SpawnsetBinary spawnset = Parse("Scanner", 6, 9, 26, 15, 0.025f, 60, GameMode.Survival, default, 500, 250, 120, 60, 125, HandLevel.Level4, 30, 0);
 		Assert.AreEqual(new(EnemyType.Squid2, 0), spawnset.Spawns[0]);
 		Assert.AreEqual(new(EnemyType.Spider1, 5), spawnset.Spawns[30]);
 	}
@@ -76,6 +77,11 @@ public class SpawnsetParseTests
 		float expectedShrinkRate,
 		float expectedBrightness,
 		GameMode expectedGameMode,
+		Vector2 expectedRaceDaggerPosition,
+		int expectedUnusedDevilTime,
+		int expectedUnusedGoldenTime,
+		int expectedUnusedSilverTime,
+		int expectedUnusedBronzeTime,
 		int expectedSpawnCount,
 		HandLevel expectedHandLevel,
 		int expectedAdditionalGems,
@@ -91,6 +97,11 @@ public class SpawnsetParseTests
 		Assert.AreEqual(expectedBrightness, spawnset.Brightness, 0.001f);
 		Assert.AreEqual(expectedGameMode, spawnset.GameMode);
 
+		Assert.AreEqual(expectedRaceDaggerPosition, spawnset.RaceDaggerPosition);
+		Assert.AreEqual(expectedUnusedDevilTime, spawnset.UnusedDevilTime);
+		Assert.AreEqual(expectedUnusedGoldenTime, spawnset.UnusedGoldenTime);
+		Assert.AreEqual(expectedUnusedSilverTime, spawnset.UnusedSilverTime);
+		Assert.AreEqual(expectedUnusedBronzeTime, spawnset.UnusedBronzeTime);
 		Assert.AreEqual(expectedSpawnCount, spawnset.Spawns.Length);
 
 		Assert.AreEqual(expectedHandLevel, spawnset.HandLevel);

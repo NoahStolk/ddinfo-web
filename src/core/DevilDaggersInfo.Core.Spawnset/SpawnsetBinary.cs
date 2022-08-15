@@ -19,6 +19,10 @@ public class SpawnsetBinary
 		int arenaDimension,
 		float[,] arenaTiles,
 		Vector2 raceDaggerPosition,
+		int unusedDevilTime,
+		int unusedGoldenTime,
+		int unusedSilverTime,
+		int unusedBronzeTime,
 		Spawn[] spawns,
 		HandLevel handLevel,
 		int additionalGems,
@@ -38,6 +42,10 @@ public class SpawnsetBinary
 		ArenaTiles = arenaTiles;
 
 		RaceDaggerPosition = raceDaggerPosition;
+		UnusedDevilTime = unusedDevilTime;
+		UnusedGoldenTime = unusedGoldenTime;
+		UnusedSilverTime = unusedSilverTime;
+		UnusedBronzeTime = unusedBronzeTime;
 		Spawns = spawns;
 
 		HandLevel = handLevel;
@@ -56,6 +64,11 @@ public class SpawnsetBinary
 	public float[,] ArenaTiles { get; }
 
 	public Vector2 RaceDaggerPosition { get; }
+	public int UnusedDevilTime { get; }
+	public int UnusedGoldenTime { get; }
+	public int UnusedSilverTime { get; }
+	public int UnusedBronzeTime { get; }
+
 	public Spawn[] Spawns { get; }
 
 	public HandLevel HandLevel { get; }
@@ -109,7 +122,13 @@ public class SpawnsetBinary
 		// Spawns header
 		float raceDaggerX = br.ReadSingle();
 		float raceDaggerZ = br.ReadSingle();
-		br.Seek(worldVersion >= 9 ? 28 : 24);
+		br.Seek(8);
+		int unusedDevilTime = br.ReadInt32();
+		int unusedGoldenTime = br.ReadInt32();
+		int unusedSilverTime = br.ReadInt32();
+		int unusedBronzeTime = br.ReadInt32();
+		if (worldVersion >= 9)
+			br.Seek(4);
 		int spawnCount = br.ReadInt32();
 
 		// Spawns
@@ -136,7 +155,25 @@ public class SpawnsetBinary
 				timerStart = br.ReadSingle();
 		}
 
-		return new(spawnVersion, worldVersion, shrinkStart, shrinkEnd, shrinkRate, brightness, gameMode, arenaDimension, arenaTiles, new(raceDaggerX, raceDaggerZ), spawns, handLevel, additionalGems, timerStart);
+		return new(
+			spawnVersion,
+			worldVersion,
+			shrinkStart,
+			shrinkEnd,
+			shrinkRate,
+			brightness,
+			gameMode,
+			arenaDimension,
+			arenaTiles,
+			new(raceDaggerX, raceDaggerZ),
+			unusedDevilTime,
+			unusedGoldenTime,
+			unusedSilverTime,
+			unusedBronzeTime,
+			spawns,
+			handLevel,
+			additionalGems,
+			timerStart);
 	}
 
 	#endregion Parsing
@@ -173,12 +210,10 @@ public class SpawnsetBinary
 		bw.Write(RaceDaggerPosition.Y);
 		bw.Seek(4, SeekOrigin.Current);
 		bw.Write(0x01);
-		bw.Write(WorldVersion == 8 ? (byte)0x90 : (byte)0xF4);
-		bw.Write((byte)0x01);
-		bw.Seek(2, SeekOrigin.Current);
-		bw.Write(0xFA);
-		bw.Write(0x78);
-		bw.Write(0x3C);
+		bw.Write(UnusedDevilTime);
+		bw.Write(UnusedGoldenTime);
+		bw.Write(UnusedSilverTime);
+		bw.Write(UnusedBronzeTime);
 		if (WorldVersion >= 9)
 			bw.Seek(4, SeekOrigin.Current);
 		bw.Write(Spawns.Length);
@@ -235,7 +270,7 @@ public class SpawnsetBinary
 			}
 		}
 
-		return new(6, 9, shrinkStart, 20, 0.025f, 60, GameMode.Survival, arenaSize, arena, default, Array.Empty<Spawn>(), HandLevel.Level1, 0, 0);
+		return new(6, 9, shrinkStart, 20, 0.025f, 60, GameMode.Survival, arenaSize, arena, default, 500, 250, 120, 60, Array.Empty<Spawn>(), HandLevel.Level1, 0, 0);
 	}
 
 	public static bool IsEmptySpawn(int enemyType)
