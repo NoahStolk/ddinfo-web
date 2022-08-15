@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 namespace DevilDaggersInfo.Web.Server.Domain.Entities.Values;
 
 [Owned]
-public class CustomLeaderboardEnemyCriteria
+public class CustomLeaderboardEnemyCriteriaEntityValue
 {
 	public CustomLeaderboardCriteriaOperator Operator { get; set; }
 

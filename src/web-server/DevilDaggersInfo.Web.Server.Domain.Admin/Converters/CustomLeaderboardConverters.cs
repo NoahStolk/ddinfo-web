@@ -65,25 +65,25 @@ public static class CustomLeaderboardConverters
 		ThornKillsCriteria = customLeaderboard.ThornKillsCriteria.ToGetCustomLeaderboardEnemyCriteria(),
 	};
 
-	private static GetCustomLeaderboardCriteria ToGetCustomLeaderboardCriteria(this CustomLeaderboardCriteria criteria) => new()
+	private static GetCustomLeaderboardCriteria ToGetCustomLeaderboardCriteria(this CustomLeaderboardCriteriaEntityValue criteria) => new()
 	{
 		Operator = criteria.Operator,
 		Value = criteria.Value,
 	};
 
-	private static GetCustomLeaderboardEnemyCriteria ToGetCustomLeaderboardEnemyCriteria(this CustomLeaderboardEnemyCriteria criteria) => new()
+	private static GetCustomLeaderboardEnemyCriteria ToGetCustomLeaderboardEnemyCriteria(this CustomLeaderboardEnemyCriteriaEntityValue criteria) => new()
 	{
 		Operator = criteria.Operator,
 		Value = criteria.Value,
 	};
 
-	public static CustomLeaderboardCriteria ToEntity(this AddCustomLeaderboardCriteria criteria) => new()
+	public static CustomLeaderboardCriteriaEntityValue ToEntity(this AddCustomLeaderboardCriteria criteria) => new()
 	{
 		Operator = criteria.Operator,
 		Value = criteria.Value,
 	};
 
-	public static CustomLeaderboardEnemyCriteria ToEntity(this AddCustomLeaderboardEnemyCriteria criteria) => new()
+	public static CustomLeaderboardEnemyCriteriaEntityValue ToEntity(this AddCustomLeaderboardEnemyCriteria criteria) => new()
 	{
 		Operator = criteria.Operator,
 		Value = criteria.Value,

@@ -135,7 +135,7 @@ public class CustomLeaderboardRepository
 
 		List<int> existingReplayIds = _customEntryRepository.GetExistingCustomEntryReplayIds(customLeaderboard.CustomEntries!.ConvertAll(ce => ce.Id));
 
-		List<Models.CustomLeaderboards.CustomLeaderboardCriteria> criteria = new()
+		List<CustomLeaderboardCriteria> criteria = new()
 		{
 			AddCriteria(CustomLeaderboardCriteriaType.GemsCollected, customLeaderboard.GemsCollectedCriteria),
 			AddCriteria(CustomLeaderboardCriteriaType.GemsDespawned, customLeaderboard.GemsDespawnedCriteria),
@@ -164,14 +164,14 @@ public class CustomLeaderboardRepository
 			AddEnemyCriteria(CustomLeaderboardCriteriaType.ThornKills, customLeaderboard.ThornKillsCriteria),
 		};
 
-		static Models.CustomLeaderboards.CustomLeaderboardCriteria AddCriteria(CustomLeaderboardCriteriaType criteriaType, Entities.Values.CustomLeaderboardCriteria criteria) => new()
+		static CustomLeaderboardCriteria AddCriteria(CustomLeaderboardCriteriaType criteriaType, CustomLeaderboardCriteriaEntityValue criteria) => new()
 		{
 			Type = criteriaType,
 			Operator = criteria.Operator,
 			Value = criteria.Value,
 		};
 
-		static Models.CustomLeaderboards.CustomLeaderboardCriteria AddEnemyCriteria(CustomLeaderboardCriteriaType criteriaType, CustomLeaderboardEnemyCriteria criteria) => new()
+		static CustomLeaderboardCriteria AddEnemyCriteria(CustomLeaderboardCriteriaType criteriaType, CustomLeaderboardEnemyCriteriaEntityValue criteria) => new()
 		{
 			Type = criteriaType,
 			Operator = criteria.Operator,

@@ -41,39 +41,39 @@ public class CustomLeaderboardEntity : IAuditable
 
 	public bool IsFeatured { get; set; }
 
-	public CustomLeaderboardCriteria GemsCollectedCriteria { get; set; } = new();
+	public CustomLeaderboardCriteriaEntityValue GemsCollectedCriteria { get; set; } = new();
 
-	public CustomLeaderboardCriteria GemsDespawnedCriteria { get; set; } = new();
+	public CustomLeaderboardCriteriaEntityValue GemsDespawnedCriteria { get; set; } = new();
 
-	public CustomLeaderboardCriteria GemsEatenCriteria { get; set; } = new();
+	public CustomLeaderboardCriteriaEntityValue GemsEatenCriteria { get; set; } = new();
 
-	public CustomLeaderboardCriteria EnemiesKilledCriteria { get; set; } = new();
+	public CustomLeaderboardCriteriaEntityValue EnemiesKilledCriteria { get; set; } = new();
 
-	public CustomLeaderboardCriteria DaggersFiredCriteria { get; set; } = new();
+	public CustomLeaderboardCriteriaEntityValue DaggersFiredCriteria { get; set; } = new();
 
-	public CustomLeaderboardCriteria DaggersHitCriteria { get; set; } = new();
+	public CustomLeaderboardCriteriaEntityValue DaggersHitCriteria { get; set; } = new();
 
-	public CustomLeaderboardCriteria HomingStoredCriteria { get; set; } = new();
+	public CustomLeaderboardCriteriaEntityValue HomingStoredCriteria { get; set; } = new();
 
-	public CustomLeaderboardCriteria HomingEatenCriteria { get; set; } = new();
+	public CustomLeaderboardCriteriaEntityValue HomingEatenCriteria { get; set; } = new();
 
-	public CustomLeaderboardEnemyCriteria Skull1KillsCriteria { get; set; } = new();
-	public CustomLeaderboardEnemyCriteria Skull2KillsCriteria { get; set; } = new();
-	public CustomLeaderboardEnemyCriteria Skull3KillsCriteria { get; set; } = new();
-	public CustomLeaderboardEnemyCriteria Skull4KillsCriteria { get; set; } = new();
-	public CustomLeaderboardEnemyCriteria SpiderlingKillsCriteria { get; set; } = new();
-	public CustomLeaderboardEnemyCriteria SpiderEggKillsCriteria { get; set; } = new();
-	public CustomLeaderboardEnemyCriteria Squid1KillsCriteria { get; set; } = new();
-	public CustomLeaderboardEnemyCriteria Squid2KillsCriteria { get; set; } = new();
-	public CustomLeaderboardEnemyCriteria Squid3KillsCriteria { get; set; } = new();
-	public CustomLeaderboardEnemyCriteria CentipedeKillsCriteria { get; set; } = new();
-	public CustomLeaderboardEnemyCriteria GigapedeKillsCriteria { get; set; } = new();
-	public CustomLeaderboardEnemyCriteria GhostpedeKillsCriteria { get; set; } = new();
-	public CustomLeaderboardEnemyCriteria Spider1KillsCriteria { get; set; } = new();
-	public CustomLeaderboardEnemyCriteria Spider2KillsCriteria { get; set; } = new();
-	public CustomLeaderboardEnemyCriteria LeviathanKillsCriteria { get; set; } = new();
-	public CustomLeaderboardEnemyCriteria OrbKillsCriteria { get; set; } = new();
-	public CustomLeaderboardEnemyCriteria ThornKillsCriteria { get; set; } = new();
+	public CustomLeaderboardEnemyCriteriaEntityValue Skull1KillsCriteria { get; set; } = new();
+	public CustomLeaderboardEnemyCriteriaEntityValue Skull2KillsCriteria { get; set; } = new();
+	public CustomLeaderboardEnemyCriteriaEntityValue Skull3KillsCriteria { get; set; } = new();
+	public CustomLeaderboardEnemyCriteriaEntityValue Skull4KillsCriteria { get; set; } = new();
+	public CustomLeaderboardEnemyCriteriaEntityValue SpiderlingKillsCriteria { get; set; } = new();
+	public CustomLeaderboardEnemyCriteriaEntityValue SpiderEggKillsCriteria { get; set; } = new();
+	public CustomLeaderboardEnemyCriteriaEntityValue Squid1KillsCriteria { get; set; } = new();
+	public CustomLeaderboardEnemyCriteriaEntityValue Squid2KillsCriteria { get; set; } = new();
+	public CustomLeaderboardEnemyCriteriaEntityValue Squid3KillsCriteria { get; set; } = new();
+	public CustomLeaderboardEnemyCriteriaEntityValue CentipedeKillsCriteria { get; set; } = new();
+	public CustomLeaderboardEnemyCriteriaEntityValue GigapedeKillsCriteria { get; set; } = new();
+	public CustomLeaderboardEnemyCriteriaEntityValue GhostpedeKillsCriteria { get; set; } = new();
+	public CustomLeaderboardEnemyCriteriaEntityValue Spider1KillsCriteria { get; set; } = new();
+	public CustomLeaderboardEnemyCriteriaEntityValue Spider2KillsCriteria { get; set; } = new();
+	public CustomLeaderboardEnemyCriteriaEntityValue LeviathanKillsCriteria { get; set; } = new();
+	public CustomLeaderboardEnemyCriteriaEntityValue OrbKillsCriteria { get; set; } = new();
+	public CustomLeaderboardEnemyCriteriaEntityValue ThornKillsCriteria { get; set; } = new();
 
 	public List<CustomEntryEntity>? CustomEntries { get; set; }
 
