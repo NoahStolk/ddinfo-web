@@ -10,11 +10,8 @@ public class CustomLeaderboardCategoryTests
 	public void TestIsAscending()
 	{
 		Assert.IsFalse(CustomLeaderboardCategory.Survival.IsAscending());
-		Assert.IsFalse(CustomLeaderboardCategory.Pacifist.IsAscending());
-
 		Assert.IsTrue(CustomLeaderboardCategory.TimeAttack.IsAscending());
 		Assert.IsTrue(CustomLeaderboardCategory.Speedrun.IsAscending());
 		Assert.IsTrue(CustomLeaderboardCategory.Race.IsAscending());
-		Assert.IsTrue(CustomLeaderboardCategory.RaceNoShooting.IsAscending());
 	}
 }

@@ -158,14 +158,6 @@ public class CustomEntryProcessor
 
 	private void HandleCriteria(UploadRequest uploadRequest, string? spawnsetName, CustomLeaderboardEntity customLeaderboard)
 	{
-		// TODO: Remove after category is replaced by criteria.
-		if (customLeaderboard.Category == CustomLeaderboardCategory.RaceNoShooting && uploadRequest.DaggersFired > 0)
-			LogAndThrowValidationException(uploadRequest, $"Counted {uploadRequest.DaggersFired} {(uploadRequest.DaggersFired == 1 ? "dagger" : "daggers")} fired. Can't submit score to {CustomLeaderboardCategory.RaceNoShooting} leaderboard.", spawnsetName);
-
-		// TODO: Remove after category is replaced by criteria.
-		if (customLeaderboard.Category == CustomLeaderboardCategory.Pacifist && uploadRequest.EnemiesKilled > 0)
-			LogAndThrowValidationException(uploadRequest, $"Counted {uploadRequest.EnemiesKilled} {(uploadRequest.EnemiesKilled == 1 ? "kill" : "kills")}. Can't submit score to {CustomLeaderboardCategory.Pacifist} leaderboard.", spawnsetName);
-
 		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.GemsCollectedCriteria, uploadRequest.GemsCollected);
 		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.GemsDespawnedCriteria, uploadRequest.GemsDespawned);
 		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.GemsEatenCriteria, uploadRequest.GemsEaten);

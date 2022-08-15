@@ -7,16 +7,16 @@ namespace DevilDaggersInfo.Web.Server.Domain.Extensions;
 public static class CustomLeaderboardCategoryExtensions
 {
 	public static bool IsAscending(this CustomLeaderboardCategory category)
-		=> category is CustomLeaderboardCategory.TimeAttack or CustomLeaderboardCategory.Speedrun or CustomLeaderboardCategory.Race or CustomLeaderboardCategory.RaceNoShooting;
+		=> category is CustomLeaderboardCategory.TimeAttack or CustomLeaderboardCategory.Speedrun or CustomLeaderboardCategory.Race;
 
 	public static GameMode GetRequiredGameModeForCategory(this CustomLeaderboardCategory category) => category switch
 	{
-		CustomLeaderboardCategory.Survival or CustomLeaderboardCategory.Speedrun or CustomLeaderboardCategory.Pacifist => GameMode.Survival,
+		CustomLeaderboardCategory.Survival or CustomLeaderboardCategory.Speedrun => GameMode.Survival,
 		CustomLeaderboardCategory.TimeAttack => GameMode.TimeAttack,
-		CustomLeaderboardCategory.Race or CustomLeaderboardCategory.RaceNoShooting => GameMode.Race,
+		CustomLeaderboardCategory.Race => GameMode.Race,
 		_ => throw new InvalidEnumConversionException(category),
 	};
 
 	public static bool IsTimeAttackOrRace(this CustomLeaderboardCategory category)
-		=> category is CustomLeaderboardCategory.TimeAttack or CustomLeaderboardCategory.Race or CustomLeaderboardCategory.RaceNoShooting;
+		=> category is CustomLeaderboardCategory.TimeAttack or CustomLeaderboardCategory.Race;
 }

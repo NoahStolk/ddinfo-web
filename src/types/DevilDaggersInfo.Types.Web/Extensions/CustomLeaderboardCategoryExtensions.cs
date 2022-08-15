@@ -10,8 +10,6 @@ public static class CustomLeaderboardCategoryExtensions
 		CustomLeaderboardCategory.TimeAttack => "Time Attack",
 		CustomLeaderboardCategory.Speedrun => nameof(CustomLeaderboardCategory.Speedrun),
 		CustomLeaderboardCategory.Race => nameof(CustomLeaderboardCategory.Race),
-		CustomLeaderboardCategory.Pacifist => nameof(CustomLeaderboardCategory.Pacifist),
-		CustomLeaderboardCategory.RaceNoShooting => "Race (no shooting)",
 		_ => throw new InvalidEnumConversionException(category),
 	};
 }
