@@ -13,11 +13,11 @@ public static class CustomLeaderboardConverters
 		SpawnsetName = customLeaderboard.Spawnset.Name,
 		Daggers = new()
 		{
-			Bronze = customLeaderboard.TimeBronze.ToSecondsTime(),
-			Silver = customLeaderboard.TimeSilver.ToSecondsTime(),
-			Golden = customLeaderboard.TimeGolden.ToSecondsTime(),
-			Devil = customLeaderboard.TimeDevil.ToSecondsTime(),
-			Leviathan = customLeaderboard.TimeLeviathan.ToSecondsTime(),
+			Bronze = customLeaderboard.Bronze.ToSecondsTime(),
+			Silver = customLeaderboard.Silver.ToSecondsTime(),
+			Golden = customLeaderboard.Golden.ToSecondsTime(),
+			Devil = customLeaderboard.Devil.ToSecondsTime(),
+			Leviathan = customLeaderboard.Leviathan.ToSecondsTime(),
 		},
 		IsFeatured = customLeaderboard.IsFeatured,
 		DateCreated = customLeaderboard.DateCreated,
@@ -30,11 +30,11 @@ public static class CustomLeaderboardConverters
 		SpawnsetId = customLeaderboard.SpawnsetId,
 		Daggers = new()
 		{
-			Bronze = customLeaderboard.TimeBronze.ToSecondsTime(),
-			Silver = customLeaderboard.TimeSilver.ToSecondsTime(),
-			Golden = customLeaderboard.TimeGolden.ToSecondsTime(),
-			Devil = customLeaderboard.TimeDevil.ToSecondsTime(),
-			Leviathan = customLeaderboard.TimeLeviathan.ToSecondsTime(),
+			Bronze = customLeaderboard.Bronze.ToSecondsTime(),
+			Silver = customLeaderboard.Silver.ToSecondsTime(),
+			Golden = customLeaderboard.Golden.ToSecondsTime(),
+			Devil = customLeaderboard.Devil.ToSecondsTime(),
+			Leviathan = customLeaderboard.Leviathan.ToSecondsTime(),
 		},
 		IsFeatured = customLeaderboard.IsFeatured,
 		Category = customLeaderboard.Category,

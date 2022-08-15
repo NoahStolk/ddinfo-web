@@ -40,11 +40,11 @@ public class CustomLeaderboardService
 			DateCreated = DateTime.UtcNow,
 			SpawnsetId = addCustomLeaderboard.SpawnsetId,
 			Category = addCustomLeaderboard.Category,
-			TimeBronze = addCustomLeaderboard.Daggers.Bronze.To10thMilliTime(),
-			TimeSilver = addCustomLeaderboard.Daggers.Silver.To10thMilliTime(),
-			TimeGolden = addCustomLeaderboard.Daggers.Golden.To10thMilliTime(),
-			TimeDevil = addCustomLeaderboard.Daggers.Devil.To10thMilliTime(),
-			TimeLeviathan = addCustomLeaderboard.Daggers.Leviathan.To10thMilliTime(),
+			Bronze = addCustomLeaderboard.Daggers.Bronze.To10thMilliTime(),
+			Silver = addCustomLeaderboard.Daggers.Silver.To10thMilliTime(),
+			Golden = addCustomLeaderboard.Daggers.Golden.To10thMilliTime(),
+			Devil = addCustomLeaderboard.Daggers.Devil.To10thMilliTime(),
+			Leviathan = addCustomLeaderboard.Daggers.Leviathan.To10thMilliTime(),
 			IsFeatured = addCustomLeaderboard.IsFeatured,
 			GemsCollectedCriteria = addCustomLeaderboard.GemsCollectedCriteria.ToEntity(),
 			GemsDespawnedCriteria = addCustomLeaderboard.GemsDespawnedCriteria.ToEntity(),
@@ -148,11 +148,11 @@ public class CustomLeaderboardService
 		ValidateCustomLeaderboard(customLeaderboard.SpawnsetId, editCustomLeaderboard.Category, editCustomLeaderboard.Daggers, editCustomLeaderboard.IsFeatured);
 
 		customLeaderboard.Category = editCustomLeaderboard.Category;
-		customLeaderboard.TimeBronze = editCustomLeaderboard.Daggers.Bronze.To10thMilliTime();
-		customLeaderboard.TimeSilver = editCustomLeaderboard.Daggers.Silver.To10thMilliTime();
-		customLeaderboard.TimeGolden = editCustomLeaderboard.Daggers.Golden.To10thMilliTime();
-		customLeaderboard.TimeDevil = editCustomLeaderboard.Daggers.Devil.To10thMilliTime();
-		customLeaderboard.TimeLeviathan = editCustomLeaderboard.Daggers.Leviathan.To10thMilliTime();
+		customLeaderboard.Bronze = editCustomLeaderboard.Daggers.Bronze.To10thMilliTime();
+		customLeaderboard.Silver = editCustomLeaderboard.Daggers.Silver.To10thMilliTime();
+		customLeaderboard.Golden = editCustomLeaderboard.Daggers.Golden.To10thMilliTime();
+		customLeaderboard.Devil = editCustomLeaderboard.Daggers.Devil.To10thMilliTime();
+		customLeaderboard.Leviathan = editCustomLeaderboard.Daggers.Leviathan.To10thMilliTime();
 		customLeaderboard.IsFeatured = editCustomLeaderboard.IsFeatured;
 		customLeaderboard.GemsCollectedCriteria = editCustomLeaderboard.GemsCollectedCriteria.ToEntity();
 		customLeaderboard.GemsDespawnedCriteria = editCustomLeaderboard.GemsDespawnedCriteria.ToEntity();

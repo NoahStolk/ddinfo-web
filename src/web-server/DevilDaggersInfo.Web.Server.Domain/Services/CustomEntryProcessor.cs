@@ -20,7 +20,6 @@ using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json.Linq;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
@@ -565,11 +564,11 @@ public class CustomEntryProcessor
 		Category = customLeaderboard.Category,
 		Daggers = !customLeaderboard.IsFeatured ? null : new()
 		{
-			Bronze = customLeaderboard.TimeBronze,
-			Silver = customLeaderboard.TimeSilver,
-			Golden = customLeaderboard.TimeGolden,
-			Devil = customLeaderboard.TimeDevil,
-			Leviathan = customLeaderboard.TimeLeviathan,
+			Bronze = customLeaderboard.Bronze,
+			Silver = customLeaderboard.Silver,
+			Golden = customLeaderboard.Golden,
+			Devil = customLeaderboard.Devil,
+			Leviathan = customLeaderboard.Leviathan,
 		},
 		Id = customLeaderboard.Id,
 		SpawnsetId = customLeaderboard.SpawnsetId,

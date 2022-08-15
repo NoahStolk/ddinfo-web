@@ -107,11 +107,11 @@ public class MockEntities
 	public CustomLeaderboardEntity CustomLeaderboard { get; } = new()
 	{
 		Id = 1,
-		TimeBronze = 600000,
-		TimeSilver = 1200000,
-		TimeGolden = 2500000,
-		TimeDevil = 5000000,
-		TimeLeviathan = 10000000,
+		Bronze = 600000,
+		Silver = 1200000,
+		Golden = 2500000,
+		Devil = 5000000,
+		Leviathan = 10000000,
 		Category = CustomLeaderboardCategory.Survival,
 		DateCreated = DateTime.UtcNow,
 		DateLastPlayed = DateTime.UtcNow,

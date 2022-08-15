@@ -177,11 +177,11 @@ public class PlayersController : ControllerBase
 				ce.Time,
 				ce.CustomLeaderboardId,
 				ce.CustomLeaderboard.Category,
-				ce.CustomLeaderboard.TimeLeviathan,
-				ce.CustomLeaderboard.TimeDevil,
-				ce.CustomLeaderboard.TimeGolden,
-				ce.CustomLeaderboard.TimeSilver,
-				ce.CustomLeaderboard.TimeBronze,
+				ce.CustomLeaderboard.Leviathan,
+				ce.CustomLeaderboard.Devil,
+				ce.CustomLeaderboard.Golden,
+				ce.CustomLeaderboard.Silver,
+				ce.CustomLeaderboard.Bronze,
 				ce.CustomLeaderboard.IsFeatured,
 			})
 			.Where(ce => ce.IsFeatured)
@@ -212,7 +212,7 @@ public class PlayersController : ControllerBase
 			foreach (var customEntry in customEntriesByCategory)
 			{
 				played++;
-				switch (CustomLeaderboardUtils.GetDaggerFromTime(category, customEntry.Time, customEntry.TimeLeviathan, customEntry.TimeDevil, customEntry.TimeGolden, customEntry.TimeSilver, customEntry.TimeBronze))
+				switch (CustomLeaderboardUtils.GetDaggerFromTime(category, customEntry.Time, customEntry.Leviathan, customEntry.Devil, customEntry.Golden, customEntry.Silver, customEntry.Bronze))
 				{
 					case CustomLeaderboardDagger.Leviathan: leviathanDaggers++; break;
 					case CustomLeaderboardDagger.Devil: devilDaggers++; break;

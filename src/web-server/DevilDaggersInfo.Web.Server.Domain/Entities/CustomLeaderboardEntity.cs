@@ -18,15 +18,20 @@ public class CustomLeaderboardEntity : IAuditable
 
 	public CustomLeaderboardCategory Category { get; set; }
 
-	public int TimeBronze { get; set; }
+	[Column("TimeBronze")]
+	public int Bronze { get; set; }
 
-	public int TimeSilver { get; set; }
+	[Column("TimeSilver")]
+	public int Silver { get; set; }
 
-	public int TimeGolden { get; set; }
+	[Column("TimeGolden")]
+	public int Golden { get; set; }
 
-	public int TimeDevil { get; set; }
+	[Column("TimeDevil")]
+	public int Devil { get; set; }
 
-	public int TimeLeviathan { get; set; }
+	[Column("TimeLeviathan")]
+	public int Leviathan { get; set; }
 
 	public DateTime? DateLastPlayed { get; set; }
 
@@ -73,5 +78,5 @@ public class CustomLeaderboardEntity : IAuditable
 	public List<CustomEntryEntity>? CustomEntries { get; set; }
 
 	public CustomLeaderboardDagger? GetDaggerFromTime(int time)
-		=> IsFeatured ? CustomLeaderboardUtils.GetDaggerFromTime(Category, time, TimeLeviathan, TimeDevil, TimeGolden, TimeSilver, TimeBronze) : null;
+		=> IsFeatured ? CustomLeaderboardUtils.GetDaggerFromTime(Category, time, Leviathan, Devil, Golden, Silver, Bronze) : null;
 }
