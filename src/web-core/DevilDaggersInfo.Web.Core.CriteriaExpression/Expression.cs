@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Core.CriteriaExpression.Exceptions;
 
@@ -62,6 +63,65 @@ public class Expression
 				throw new CriteriaExpressionParseException("Invalid expression.");
 			else if (i % 2 == 0 && part is ExpressionOperator)
 				throw new CriteriaExpressionParseException("Invalid expression.");
+		}
+	}
+
+	public int Evaluate(TargetCollection targetCollection)
+	{
+		int result = EvaluatePart(Parts[0]);
+
+		for (int i = 0; i < Parts.Count - 2; i += 2)
+		{
+			ExpressionOperator op = (Parts[i + 1] as ExpressionOperator) ?? throw new InvalidOperationException("Invalid expression.");
+			int right = EvaluatePart(Parts[i + 2]);
+
+			result = op.Operator switch
+			{
+				ExpressionOperatorType.Add => result + right,
+				ExpressionOperatorType.Subtract => result - right,
+				_ => throw new InvalidEnumConversionException(op.Operator),
+			};
+		}
+
+		return result;
+
+		int EvaluatePart(IExpressionPart part)
+		{
+			if (part is ExpressionValue value)
+				return value.Value;
+
+			if (part is not ExpressionTarget target)
+				throw new InvalidOperationException("Invalid expression.");
+
+			return target.Target switch
+			{
+				CustomLeaderboardCriteriaType.GemsCollected => targetCollection.GemsCollected,
+				CustomLeaderboardCriteriaType.GemsDespawned => targetCollection.GemsDespawned,
+				CustomLeaderboardCriteriaType.GemsEaten => targetCollection.GemsEaten,
+				CustomLeaderboardCriteriaType.EnemiesKilled => targetCollection.EnemiesKilled,
+				CustomLeaderboardCriteriaType.DaggersFired => targetCollection.DaggersFired,
+				CustomLeaderboardCriteriaType.DaggersHit => targetCollection.DaggersHit,
+				CustomLeaderboardCriteriaType.HomingStored => targetCollection.HomingStored,
+				CustomLeaderboardCriteriaType.HomingEaten => targetCollection.HomingEaten,
+				CustomLeaderboardCriteriaType.Skull1Kills => targetCollection.Skull1Kills,
+				CustomLeaderboardCriteriaType.Skull2Kills => targetCollection.Skull2Kills,
+				CustomLeaderboardCriteriaType.Skull3Kills => targetCollection.Skull3Kills,
+				CustomLeaderboardCriteriaType.Skull4Kills => targetCollection.Skull4Kills,
+				CustomLeaderboardCriteriaType.SpiderlingKills => targetCollection.SpiderlingKills,
+				CustomLeaderboardCriteriaType.SpiderEggKills => targetCollection.SpiderEggKills,
+				CustomLeaderboardCriteriaType.Squid1Kills => targetCollection.Squid1Kills,
+				CustomLeaderboardCriteriaType.Squid2Kills => targetCollection.Squid2Kills,
+				CustomLeaderboardCriteriaType.Squid3Kills => targetCollection.Squid3Kills,
+				CustomLeaderboardCriteriaType.CentipedeKills => targetCollection.CentipedeKills,
+				CustomLeaderboardCriteriaType.GigapedeKills => targetCollection.GigapedeKills,
+				CustomLeaderboardCriteriaType.GhostpedeKills => targetCollection.GhostpedeKills,
+				CustomLeaderboardCriteriaType.Spider1Kills => targetCollection.Spider1Kills,
+				CustomLeaderboardCriteriaType.Spider2Kills => targetCollection.Spider2Kills,
+				CustomLeaderboardCriteriaType.LeviathanKills => targetCollection.LeviathanKills,
+				CustomLeaderboardCriteriaType.OrbKills => targetCollection.OrbKills,
+				CustomLeaderboardCriteriaType.ThornKills => targetCollection.ThornKills,
+				_ => throw new InvalidEnumConversionException(target.Target),
+			};
 		}
 	}
 }
