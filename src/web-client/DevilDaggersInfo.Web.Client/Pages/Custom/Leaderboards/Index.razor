@@ -28,7 +28,7 @@ else
 			<span>Author name</span>
 			<input class="bg-black border-gray-3 border-2 w-48" value="@AuthorFilter" @onchange="ChangeInputAuthorName" />
 			<span>Category</span>
-			<SelectList CssWidthClass="w-48" CssOpenerClass="pl-2" TValue="CustomLeaderboardCategory" Values="@(Enum.GetValues<CustomLeaderboardCategory>().ToList())" DisplayFunction="@(clc => clc.ToDisplayString())" Default="EnumConvert.GetCustomLeaderboardCategory(Category)" Selected="@(clc => SetCategory(clc))" />
+			<SelectList CssWidthClass="w-48" CssOpenerClass="pl-2" TValue="CustomLeaderboardCategory" Values="@(_categories.ToList())" DisplayFunction="@(clc => clc.ToDisplayString())" Default="EnumConvert.GetCustomLeaderboardCategory(Category)" Selected="@(clc => SetCategory(clc))" />
 		</div>
 
 		<CascadingValue Value="this">
@@ -86,7 +86,7 @@ else
 
 	<Heading Level="2" Title="Categories" />
 
-	@foreach (CustomLeaderboardCategory category in Enum.GetValues<CustomLeaderboardCategory>())
+	@foreach (CustomLeaderboardCategory category in _categories)
 	{
 		<div class="flex">
 			<div class="flex-none w-36 sm:w-64"><b>@category.ToDisplayString()</b></div>
@@ -106,7 +106,7 @@ else
 		<div class="text-right font-bold hidden md:block">Scores</div>
 		<div class="text-right font-bold hidden md:block">Submissions*</div>
 
-		@foreach (CustomLeaderboardCategory category in Enum.GetValues<CustomLeaderboardCategory>())
+		@foreach (CustomLeaderboardCategory category in _categories)
 		{
 			<div>@category.ToDisplayString()</div>
 			<div class="text-right">@GetTotalCustomLeaderboardData.LeaderboardsPerCategory[category].ToString("N0")</div>

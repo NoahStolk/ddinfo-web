@@ -9,6 +9,10 @@ namespace DevilDaggersInfo.Web.Client.Pages.Custom.Leaderboards;
 
 public partial class Index : IHasNavigation
 {
+	private readonly CustomLeaderboardCategory[] _categories = Enum.GetValues<CustomLeaderboardCategory>();
+
+	private Dictionary<CustomLeaderboardSorting, bool> _sortings = new();
+
 	[Parameter]
 	[SupplyParameterFromQuery]
 	public string Category { get; set; } = "Survival";
@@ -36,8 +40,6 @@ public partial class Index : IHasNavigation
 	[Parameter]
 	[SupplyParameterFromQuery]
 	public bool Ascending { get; set; }
-
-	private Dictionary<CustomLeaderboardSorting, bool> _sortings = new();
 
 	public Page<GetCustomLeaderboardOverview>? GetCustomLeaderboards { get; set; }
 
