@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Types.Web;
 
-public enum CustomLeaderboardCriteriaType
+public enum CustomLeaderboardCriteriaType : byte
 {
 	GemsCollected = 0,
 	GemsDespawned = 1,
