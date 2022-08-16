@@ -9,6 +9,4 @@ public class CustomLeaderboardEnemyCriteriaEntityValue
 	public CustomLeaderboardCriteriaOperator Operator { get; set; }
 
 	public short Value { get; set; }
-
-	public bool IsDefault() => Operator == CustomLeaderboardCriteriaOperator.Any && Value == 0;
 }

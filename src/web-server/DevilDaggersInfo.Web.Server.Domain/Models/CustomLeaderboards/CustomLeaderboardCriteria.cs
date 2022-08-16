@@ -9,6 +9,4 @@ public record CustomLeaderboardCriteria
 	public CustomLeaderboardCriteriaOperator Operator { get; init; }
 
 	public int Value { get; init; }
-
-	public bool IsDefault() => Operator == CustomLeaderboardCriteriaOperator.Any && Value == 0;
 }

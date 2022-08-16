@@ -181,7 +181,7 @@ public class CustomLeaderboardRepository
 		return new()
 		{
 			Category = customLeaderboard.Category,
-			Criteria = criteria.Where(c => !c.IsDefault()).ToList(),
+			Criteria = criteria.Where(c => c.Operator != CustomLeaderboardCriteriaOperator.Any).ToList(),
 			CustomEntries = customLeaderboard.CustomEntries
 				.Sort(customLeaderboard.Category)
 				.Select((ce, i) =>
