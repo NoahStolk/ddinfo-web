@@ -9,7 +9,9 @@ public class Expression
 {
 	public Expression(List<IExpressionPart> parts)
 	{
+		// TODO: We probably want to remove any redundant operations, such as 10 + 5 which could be converted to 15.
 		Parts = parts;
+		Validate();
 	}
 
 	public List<IExpressionPart> Parts { get; }
