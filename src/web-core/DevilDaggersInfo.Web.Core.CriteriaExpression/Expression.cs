@@ -1,6 +1,7 @@
 using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Core.CriteriaExpression.Exceptions;
+using DevilDaggersInfo.Web.Core.CriteriaExpression.Parts;
 
 namespace DevilDaggersInfo.Web.Core.CriteriaExpression;
 
