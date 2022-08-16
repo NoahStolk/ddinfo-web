@@ -16,6 +16,11 @@ public class Expression
 
 	public List<IExpressionPart> Parts { get; }
 
+	public override string ToString()
+	{
+		return string.Join(" ", Parts);
+	}
+
 	public static Expression TryParse(byte[] bytes)
 	{
 		try
