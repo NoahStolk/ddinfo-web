@@ -93,6 +93,29 @@ else
 			<div class="flex-1">@category.GetDescription()</div>
 		</div>
 	}
+
+	<Heading Level="2" Title="Criteria" />
+
+	<p class="para">
+		Criteria can be set for custom leaderboards, meaning that in order to submit a score, it has to meet all the criteria.
+	</p>
+
+	<div class="grid grid-cols-2 max-w-md">
+		<div>
+			<div class="font-bold">Types</div>
+			@foreach (CustomLeaderboardCriteriaType criteriaType in Enum.GetValues<CustomLeaderboardCriteriaType>())
+			{
+				<div style="color: @(criteriaType.GetColor());">@criteriaType.Display()</div>
+			}
+		</div>
+		<div>
+			<div class="font-bold">Operators</div>
+			@foreach (CustomLeaderboardCriteriaOperator criteriaOperator in Enum.GetValues<CustomLeaderboardCriteriaOperator>())
+			{
+				<div style="color: @(criteriaOperator.GetColor());">@criteriaOperator.Display()</div>
+			}
+		</div>
+	</div>
 }
 
 @if (GetTotalCustomLeaderboardData != null)
