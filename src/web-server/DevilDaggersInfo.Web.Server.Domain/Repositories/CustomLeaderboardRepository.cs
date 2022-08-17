@@ -1,7 +1,6 @@
 using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Core.Versioning;
 using DevilDaggersInfo.Types.Web;
-using DevilDaggersInfo.Types.Web.Extensions;
 using DevilDaggersInfo.Web.Server.Domain.Constants;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Values;

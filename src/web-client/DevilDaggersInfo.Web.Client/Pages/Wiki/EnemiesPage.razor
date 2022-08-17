@@ -197,7 +197,7 @@
 		Enemy? orb = Enemies.GetEnemyByName(GameVersion, "The Orb");
 		MarkupString? leviString = levi.HasValue ? MarkupUtils.EnemyString(levi.Value) : null;
 		MarkupString? orbString = orb.HasValue ? MarkupUtils.EnemyString(orb.Value) : null;
-		MarkupString transmuters = GameVersion is GameVersion.V1_0 or GameVersion.V2_0 ? new(leviString + " beckons, it") : new(leviString + " or " + orbString + " beckon, they");
+		MarkupString leviAndOrb = GameVersion is GameVersion.V1_0 or GameVersion.V2_0 ? new(leviString + " beckons, it") : new(leviString + " or " + orbString + " beckon, they");
 
 		Dictionary<Enemy, Enemy> transmutations = GameVersion == GameVersion.V1_0 ? new()
 			{
@@ -213,7 +213,7 @@
 				[Enemies.GetEnemyByName(GameVersion, "Skull IV")!.Value] = Enemies.GetEnemyByName(GameVersion, "Transmuted Skull IV")!.Value,
 			};
 
-		<li class="list-disc">When @transmuters will attract and transmute all skulls in the arena that touch the beckon ring.</li>
+		<li class="list-disc">When @leviAndOrb will attract and transmute all skulls in the arena that touch the beckon ring.</li>
 		<li class="list-disc">When the skulls are sucked up and thrown back into the arena, they are 'transmuted', which means they have a different appearance and more HP. @MarkupUtils.EnemyString(EnemiesV3_2.TransmutedSkull3) also seems to turn faster.</li>
 		<li class="list-disc">Damaging a skull that is about to be transmuted is useless if it is not killed; the HP will reset to the transmuted skull's full HP.</li>
 		<li class="list-disc">
