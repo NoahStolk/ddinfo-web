@@ -10,7 +10,7 @@ public static class RecorderReducer
 	[ReducerMethod]
 	public static RecorderState ReduceUploadRunAction(RecorderState state, UploadRunAction action)
 	{
-		return new(RecorderStateType.Uploading, state.Marker, state.UploadError, state.UploadSuccess, state.LastSuccessfulUpload);
+		return state with { State = RecorderStateType.Uploading };
 	}
 
 	[ReducerMethod]

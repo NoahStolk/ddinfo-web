@@ -15,7 +15,7 @@ public static class LeaderboardBrowserReducer
 	[ReducerMethod]
 	public static LeaderboardBrowserState ReduceDownloadLeaderboardReplaySuccessAction(LeaderboardBrowserState state, DownloadLeaderboardReplaySuccessAction action)
 	{
-		return new(false, state.PlayerId);
+		return state with { IsDownloading = false };
 	}
 
 	[ReducerMethod]

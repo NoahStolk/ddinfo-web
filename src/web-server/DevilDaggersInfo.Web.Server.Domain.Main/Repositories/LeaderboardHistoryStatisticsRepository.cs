@@ -20,7 +20,7 @@ public class LeaderboardHistoryStatisticsRepository
 
 	public List<GetLeaderboardHistoryStatistics> GetLeaderboardHistoryStatistics()
 	{
-		string? firstPath = _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory).Where(p => p.EndsWith(".bin")).OrderBy(p => p).FirstOrDefault();
+		string? firstPath = _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory).Where(p => p.EndsWith(".bin")).MinBy(p => p);
 		if (firstPath == null)
 			return new List<GetLeaderboardHistoryStatistics>();
 

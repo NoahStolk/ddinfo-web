@@ -108,7 +108,7 @@ public class ToolRepository
 	public async Task<ToolDistribution?> GetLatestToolDistributionAsync(string name, ToolPublishMethod publishMethod, ToolBuildType buildType)
 	{
 		List<string> versions = await _dbContext.ToolDistributions.Where(td => td.ToolName == name && td.PublishMethod == publishMethod && td.BuildType == buildType).Select(td => td.VersionNumber).ToListAsync();
-		string? highestVersion = versions.OrderByDescending(AppVersion.Parse).FirstOrDefault();
+		string? highestVersion = versions.MaxBy(AppVersion.Parse);
 		if (highestVersion == null)
 			return null;
 

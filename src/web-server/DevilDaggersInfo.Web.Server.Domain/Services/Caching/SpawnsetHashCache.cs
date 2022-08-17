@@ -41,7 +41,7 @@ public class SpawnsetHashCache
 			string spawnsetName = Path.GetFileName(spawnsetPath);
 			spawnsetCacheData = new(spawnsetName, spawnsetHash);
 
-			if (!_cache.Any(scd => scd.Name == spawnsetName))
+			if (_cache.All(scd => scd.Name != spawnsetName))
 				_cache.Add(spawnsetCacheData);
 
 			if (ArrayUtils.AreEqual(spawnsetHash, hash))

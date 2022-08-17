@@ -12,7 +12,7 @@ public static class AppListReducer
 	public static AppListState ReduceLoadLocalAppsAction(AppListState state, LoadLocalAppsAction action)
 	{
 		if (!Directory.Exists(action.InstallationDirectory))
-			return new(new(), state.OnlineApps);
+			return state with { LocalApps = new() };
 
 		List<AppEntry> localApps = new();
 		foreach (string path in Directory.GetFiles(action.InstallationDirectory))
@@ -22,7 +22,7 @@ public static class AppListReducer
 				localApps.Add(appEntry);
 		}
 
-		return new(localApps, state.OnlineApps);
+		return state with { LocalApps = localApps };
 	}
 
 	[ReducerMethod]
@@ -35,5 +35,5 @@ public static class AppListReducer
 
 	[ReducerMethod]
 	public static AppListState ReduceLoadOnlineAppsSuccessAction(AppListState state, LoadOnlineAppsSuccessAction action)
-		=> new(state.LocalApps, action.Apps.ConvertAll(a => new AppEntry(a.Name, AppVersion.Parse(a.Version), a.BuildType)));
+		=> state with { OnlineApps = action.Apps.ConvertAll(a => new AppEntry(a.Name, AppVersion.Parse(a.Version), a.BuildType)) };
 }

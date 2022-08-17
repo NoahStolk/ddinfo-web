@@ -48,7 +48,7 @@ public class DiscordUserIdFetchBackgroundService : AbstractBackgroundService
 		List<(int PlayerId, ulong? OldId, ulong NewId)> logs = new();
 		foreach (PlayerEntity player in players)
 		{
-			DdUser? user = users.Where(u => u.LeaderboardId == player.Id).OrderBy(u => u.DiscordId).FirstOrDefault();
+			DdUser? user = users.Where(u => u.LeaderboardId == player.Id).MinBy(u => u.DiscordId);
 			if (user == null || player.DiscordUserId == user.DiscordId)
 				continue;
 

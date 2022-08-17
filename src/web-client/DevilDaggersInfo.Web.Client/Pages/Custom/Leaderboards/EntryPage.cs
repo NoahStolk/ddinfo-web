@@ -134,7 +134,7 @@ public partial class EntryPage
 				Accuracy? stat = stats.Length <= d.Index ? null : stats[d.Index];
 				return stat == null ? new() : new List<MarkupString>
 				{
-					new($"<span style='text-align: right;'>{d.X.ToString("0.0000")}</span>"),
+					new($"<span style='text-align: right;'>{d.X:0.0000}</span>"),
 					new($"<span style='color: {ds.Color}; text-align: right;'>{stat.Acc.ToString("0.00%")}</span>"),
 					new($"<span style='text-align: right;'>{stat.Hit}</span>"),
 					new($"<span style='text-align: right;'>{stat.Fired}</span>"),
