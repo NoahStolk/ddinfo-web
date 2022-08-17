@@ -59,8 +59,8 @@ internal class ApiHttpClientContext
 
 			List<Parameter> allParameters = mds.ParameterList.Parameters
 				.Select(ps => new { Type = ps.Type?.ToString(), Name = ps.Identifier.ToString() })
-				.Where(ps => ps.Type != null && ps.Name != null)
-				.Select(ps => new Parameter(ps.Type!, ps.Name!))
+				.Where(ps => ps.Type != null)
+				.Select(ps => new Parameter(ps.Type!, ps.Name))
 				.ToList();
 
 			HttpMethodResult? result = GetHttpMethod(mds);

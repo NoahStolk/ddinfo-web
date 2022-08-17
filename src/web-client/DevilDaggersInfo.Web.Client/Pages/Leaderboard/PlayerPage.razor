@@ -38,7 +38,7 @@ else
 
 		@if (GetEntry.DeathsTotal > 0)
 		{
-			float deathsAsFloat = (float)GetEntry.DeathsTotal;
+			float deathsAsFloat = GetEntry.DeathsTotal;
 
 			<PlayerCard Title="Average Statistics">
 				<DataField CssClass="odd:bg-gray-2 px-1" Name="Average time">@((GetEntry.TimeTotal / deathsAsFloat).ToString(StringFormats.TimeFormat))</DataField>

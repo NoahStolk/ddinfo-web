@@ -6,7 +6,7 @@ namespace DevilDaggersInfo.Web.Client.Pages;
 
 public partial class Index
 {
-	private Section[] _sections = new Section[]
+	private readonly Section[] _sections =
 	{
 		new("View the official leaderboard", "home/leaderboard.png", "/leaderboard"),
 		new("Check out mods made by the community", "home/mod.png", "/custom/mods"),

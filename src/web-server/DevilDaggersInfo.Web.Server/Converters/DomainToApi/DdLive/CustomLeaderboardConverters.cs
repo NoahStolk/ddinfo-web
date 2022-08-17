@@ -38,7 +38,7 @@ public static class CustomLeaderboardConverters
 		CustomEntries = customLeaderboard.CustomEntries.ConvertAll(ce => ce.ToGetCustomEntryDdLive(customEntryReplayIds.Contains(ce.Id))),
 	};
 
-	private static DdLiveApi.GetCustomLeaderboardDaggersDdLive? ToGetCustomLeaderboardDaggers(this CustomLeaderboardDaggers customLeaderboard) => new()
+	private static DdLiveApi.GetCustomLeaderboardDaggersDdLive ToGetCustomLeaderboardDaggers(this CustomLeaderboardDaggers customLeaderboard) => new()
 	{
 		Bronze = customLeaderboard.Bronze.ToSecondsTime(),
 		Silver = customLeaderboard.Silver.ToSecondsTime(),

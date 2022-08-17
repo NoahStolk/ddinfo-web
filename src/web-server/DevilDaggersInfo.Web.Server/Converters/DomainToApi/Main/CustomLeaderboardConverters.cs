@@ -69,7 +69,7 @@ public static class CustomLeaderboardConverters
 		HasGraphs = customEntry.HasGraphs,
 	};
 
-	private static MainApi.GetCustomLeaderboardDaggers? ToGetCustomLeaderboardDaggers(this CustomLeaderboardDaggers customLeaderboard) => new()
+	private static MainApi.GetCustomLeaderboardDaggers ToGetCustomLeaderboardDaggers(this CustomLeaderboardDaggers customLeaderboard) => new()
 	{
 		Bronze = customLeaderboard.Bronze.ToSecondsTime(),
 		Silver = customLeaderboard.Silver.ToSecondsTime(),

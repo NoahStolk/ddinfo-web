@@ -51,8 +51,8 @@ public static class MarkupUtils
 	public static MarkupString ProhibitedString(bool isProhibited)
 	{
 		if (isProhibited)
-			return new($"<span class='text-orange'>Prohibited</span>");
+			return new("<span class='text-orange'>Prohibited</span>");
 
-		return new($"<span class='text-green'>OK</span>");
+		return new("<span class='text-green'>OK</span>");
 	}
 }

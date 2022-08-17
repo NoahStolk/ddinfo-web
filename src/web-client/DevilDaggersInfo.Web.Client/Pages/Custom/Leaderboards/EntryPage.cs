@@ -23,10 +23,10 @@ public partial class EntryPage
 
 	private bool _notFound;
 
-	private List<(string Name, LineChartDataOptions DataOptions, LineChartOptions ChartOptions, List<LineDataSet> Sets)> _lineCharts = new();
+	private readonly List<(string Name, LineChartDataOptions DataOptions, LineChartOptions ChartOptions, List<LineDataSet> Sets)> _lineCharts = new();
 	private int _time;
 
-	private List<LineChartBackground> _backgrounds = new();
+	private readonly List<LineChartBackground> _backgrounds = new();
 
 	[Parameter, EditorRequired] public int Id { get; set; }
 
@@ -120,7 +120,7 @@ public partial class EntryPage
 
 		if (GetCustomEntryData.DaggersHitData != null && GetCustomEntryData.DaggersFiredData != null)
 		{
-			int min = new int[] { GetCustomEntryData.DaggersHitData.Length, GetCustomEntryData.DaggersFiredData.Length, _time }.Min();
+			int min = new[] { GetCustomEntryData.DaggersHitData.Length, GetCustomEntryData.DaggersFiredData.Length, _time }.Min();
 			Accuracy[] stats = new Accuracy[min];
 			for (int i = 0; i < min; i++)
 			{

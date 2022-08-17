@@ -11,13 +11,13 @@ public partial class StatisticsPage
 {
 	private const string _percentageFormat = "0.000%";
 
-	private static BarChartOptions _scoreBarChartOptions = new() { ChartMarginXInPx = 60, HighlighterKeys = new() { "Score Range", "Players", "% Of All" }, HighlighterWidth = 360 };
-	private static BarChartOptions _killsBarChartOptions = new() { ChartMarginXInPx = 60, HighlighterKeys = new() { "Kills Range", "Players", "% Of All" }, HighlighterWidth = 320 };
-	private static BarChartOptions _gemsBarChartOptions = new() { ChartMarginXInPx = 60, HighlighterKeys = new() { "Gems Range", "Players", "% Of All" }, HighlighterWidth = 320 };
-	private static BarChartOptions _upgradesBarChartOptions = new() { ChartMarginXInPx = 60, ChartMarginYInPx = 80, HighlighterKeys = new() { "Upgrade", "Players", "% Of All" }, HighlighterWidth = 320 };
-	private static BarChartOptions _daggersBarChartOptions = new() { ChartMarginXInPx = 60, ChartMarginYInPx = 80, HighlighterKeys = new() { "Dagger", "Players", "% Of All" }, HighlighterWidth = 320 };
-	private static BarChartOptions _deathsBarChartOptions = new() { ChartMarginXInPx = 60, ChartMarginYInPx = 80, HighlighterKeys = new() { "Death Type", "Players", "% Of All" }, HighlighterWidth = 320 };
-	private static BarChartOptions _enemiesBarChartOptions = new() { ChartMarginXInPx = 60, ChartMarginYInPx = 80, HighlighterKeys = new() { "Enemy", "Players", "% Of All" }, HighlighterWidth = 320 };
+	private static readonly BarChartOptions _scoreBarChartOptions = new() { ChartMarginXInPx = 60, HighlighterKeys = new() { "Score Range", "Players", "% Of All" }, HighlighterWidth = 360 };
+	private static readonly BarChartOptions _killsBarChartOptions = new() { ChartMarginXInPx = 60, HighlighterKeys = new() { "Kills Range", "Players", "% Of All" }, HighlighterWidth = 320 };
+	private static readonly BarChartOptions _gemsBarChartOptions = new() { ChartMarginXInPx = 60, HighlighterKeys = new() { "Gems Range", "Players", "% Of All" }, HighlighterWidth = 320 };
+	private static readonly BarChartOptions _upgradesBarChartOptions = new() { ChartMarginXInPx = 60, ChartMarginYInPx = 80, HighlighterKeys = new() { "Upgrade", "Players", "% Of All" }, HighlighterWidth = 320 };
+	private static readonly BarChartOptions _daggersBarChartOptions = new() { ChartMarginXInPx = 60, ChartMarginYInPx = 80, HighlighterKeys = new() { "Dagger", "Players", "% Of All" }, HighlighterWidth = 320 };
+	private static readonly BarChartOptions _deathsBarChartOptions = new() { ChartMarginXInPx = 60, ChartMarginYInPx = 80, HighlighterKeys = new() { "Death Type", "Players", "% Of All" }, HighlighterWidth = 320 };
+	private static readonly BarChartOptions _enemiesBarChartOptions = new() { ChartMarginXInPx = 60, ChartMarginYInPx = 80, HighlighterKeys = new() { "Enemy", "Players", "% Of All" }, HighlighterWidth = 320 };
 
 	private static readonly List<string> _daggers = Daggers.GetDaggers(GameConstants.CurrentVersion).ConvertAll(d => d.Name);
 	private static readonly List<string> _deathTypes = Deaths.GetDeaths(GameConstants.CurrentVersion).ConvertAll(d => d.Name);
@@ -120,7 +120,7 @@ public partial class StatisticsPage
 			new(UpgradesV3_2.Level3.Color.HexCode, _statistics.PlayersWithLevel3Or4, _statistics.PlayersWithLevel3Or4),
 		};
 		const double upgradesScale = 50000.0;
-		_upgradesDataOptions = new(0, upgradesScale, Math.Ceiling(new int[] { _statistics.PlayersWithLevel1, _statistics.PlayersWithLevel2, _statistics.PlayersWithLevel3Or4 }.Max() / upgradesScale) * upgradesScale);
+		_upgradesDataOptions = new(0, upgradesScale, Math.Ceiling(new[] { _statistics.PlayersWithLevel1, _statistics.PlayersWithLevel2, _statistics.PlayersWithLevel3Or4 }.Max() / upgradesScale) * upgradesScale);
 		_upgradesData = new(upgradesSet, (ds, i) =>
 		{
 			BarData barData = ds.Data[i];

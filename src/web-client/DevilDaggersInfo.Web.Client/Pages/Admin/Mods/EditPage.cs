@@ -14,8 +14,8 @@ public partial class EditPage
 {
 	private Dictionary<int, string>? _playerNames;
 	private readonly EditMod _editMod = new();
-	private List<string> _binaryFileSizeErrors = new();
-	private List<string> _screenshotFileSizeErrors = new();
+	private readonly List<string> _binaryFileSizeErrors = new();
+	private readonly List<string> _screenshotFileSizeErrors = new();
 
 	[Parameter, EditorRequired] public int Id { get; set; }
 

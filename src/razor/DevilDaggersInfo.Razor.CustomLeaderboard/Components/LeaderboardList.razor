@@ -63,7 +63,7 @@
 				<span class="text-right">@leaderboard.SelectedPlayerStats.Rank / @leaderboard.PlayerCount</span>
 				<span class="text-right" style="color: @daggerColor;">@leaderboard.SelectedPlayerStats.Time.ToString("N4")</span>
 
-				@if (@leaderboard.SelectedPlayerStats.NextDagger == null)
+				@if (leaderboard.SelectedPlayerStats.NextDagger == null)
 				{
 					<span class="text-right">-</span>
 				}
