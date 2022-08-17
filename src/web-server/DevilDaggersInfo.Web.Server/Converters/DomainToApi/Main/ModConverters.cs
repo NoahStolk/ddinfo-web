@@ -52,7 +52,7 @@ public static class ModConverters
 		},
 		ModTypes = modFileSystemData.ModArchive?.GetModTypes() ?? mod.ModTypes,
 		Name = mod.Name,
-		ScreenshotFileNames = modFileSystemData?.ScreenshotFileNames,
+		ScreenshotFileNames = modFileSystemData.ScreenshotFileNames,
 		TrailerUrl = mod.TrailerUrl,
 		Url = mod.Url,
 	};

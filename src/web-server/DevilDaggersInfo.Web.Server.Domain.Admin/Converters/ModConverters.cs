@@ -15,7 +15,7 @@ public static class ModConverters
 		LastUpdated = mod.LastUpdated,
 		Name = mod.Name,
 		TrailerUrl = mod.TrailerUrl?.TrimAfter(40, true),
-		Url = mod.Url?.TrimAfter(40, true),
+		Url = mod.Url.TrimAfter(40, true),
 	};
 
 	public static GetMod ToGetMod(this ModEntity mod, List<string>? binaryNames, List<string>? screenshotNames) => new()

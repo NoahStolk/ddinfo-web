@@ -32,10 +32,10 @@ public partial class EditProfilePage
 	protected override async Task OnInitializedAsync()
 	{
 		_state = await Auth.GetAuthenticationStateAsync();
-		if (_state.User?.Identity?.IsAuthenticated != true)
+		if (_state.User.Identity?.IsAuthenticated != true)
 			NavigationManager.NavigateTo("/authentication/login");
 
-		_linked = int.TryParse(_state.User?.Claims?.FirstOrDefault(c => c.Type == "playerId")?.Value, out _playerId);
+		_linked = int.TryParse(_state.User.Claims.FirstOrDefault(c => c.Type == "playerId")?.Value, out _playerId);
 
 		try
 		{

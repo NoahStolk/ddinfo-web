@@ -57,12 +57,12 @@ public partial class AdminOverview<TGetDto, TSorting> : IHasNavigation
 	public bool Ascending { get; set; }
 
 	public int TotalPages => _page == null ? 0 : (_page.TotalResults - 1) / PageSize + 1;
-	public int TotalResults => _page == null ? 0 : _page.TotalResults;
+	public int TotalResults => _page?.TotalResults ?? 0;
 
 	protected override async Task OnInitializedAsync()
 	{
 		AuthenticationState auth = await Auth.GetAuthenticationStateAsync();
-		_username = auth.User?.GetName();
+		_username = auth.User.GetName();
 
 		_sortings = Enum.GetValues<TSorting>().ToDictionary(e => e, _ => true);
 	}

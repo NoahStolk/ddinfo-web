@@ -14,7 +14,7 @@ public static class Program
 
 	public static async Task Main(string[] args)
 	{
-		Version = Assembly.GetExecutingAssembly()?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
+		Version = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
 
 		WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault(args);
 

@@ -121,7 +121,7 @@
 	protected override async Task OnInitializedAsync()
 	{
 		AuthenticationState auth = await Auth.GetAuthenticationStateAsync();
-		_roles = auth.User?.GetRoles() ?? new();
+		_roles = auth.User.GetRoles();
 		_playerId = auth.User?.GetPlayerId();
 	}
 
