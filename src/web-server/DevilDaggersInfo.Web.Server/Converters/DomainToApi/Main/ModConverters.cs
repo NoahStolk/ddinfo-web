@@ -13,7 +13,7 @@ public static class ModConverters
 		Id = mod.Id,
 		IsHosted = modFileSystemData.ModArchive != null,
 		LastUpdated = mod.LastUpdated,
-		ModTypes = modFileSystemData.ModArchive?.GetModTypes() ?? mod.ModTypes,
+		ModTypes = modFileSystemData.ModArchive?.ModTypes() ?? mod.ModTypes,
 		Name = mod.Name,
 	};
 
@@ -50,7 +50,7 @@ public static class ModConverters
 			FileSize = modFileSystemData.ModArchive.FileSize,
 			FileSizeExtracted = modFileSystemData.ModArchive.FileSizeExtracted,
 		},
-		ModTypes = modFileSystemData.ModArchive?.GetModTypes() ?? mod.ModTypes,
+		ModTypes = modFileSystemData.ModArchive?.ModTypes() ?? mod.ModTypes,
 		Name = mod.Name,
 		ScreenshotFileNames = modFileSystemData.ScreenshotFileNames,
 		TrailerUrl = mod.TrailerUrl,

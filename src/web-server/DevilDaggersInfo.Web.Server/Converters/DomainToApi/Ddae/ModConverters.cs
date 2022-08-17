@@ -24,7 +24,7 @@ public static class ModConverters
 			FileSize = modFileSystemData.ModArchive.FileSize,
 			FileSizeExtracted = modFileSystemData.ModArchive.FileSizeExtracted,
 		},
-		AssetModTypes = modFileSystemData.ModArchive?.GetModTypes() ?? mod.ModTypes,
+		AssetModTypes = modFileSystemData.ModArchive?.ModTypes() ?? mod.ModTypes,
 		Name = mod.Name,
 		ScreenshotFileNames = modFileSystemData.ScreenshotFileNames ?? new(),
 		TrailerUrl = mod.TrailerUrl,

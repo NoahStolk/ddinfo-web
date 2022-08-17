@@ -122,7 +122,7 @@ public class CustomEntryProcessor
 			LogAndThrowValidationException(uploadRequest, "This spawnset exists on DevilDaggers.info, but doesn't have a leaderboard.", spawnsetName);
 
 		// Validate game mode.
-		GameMode requiredGameMode = customLeaderboard.Category.GetRequiredGameModeForCategory();
+		GameMode requiredGameMode = customLeaderboard.Category.RequiredGameModeForCategory();
 		if (uploadRequest.GameMode != (byte)requiredGameMode)
 			LogAndThrowValidationException(uploadRequest, $"Incorrect game mode '{(GameMode)uploadRequest.GameMode}' for category '{customLeaderboard.Category}'. Must be '{requiredGameMode}'.", spawnsetName);
 
@@ -236,7 +236,7 @@ public class CustomEntryProcessor
 			LevelUpTime4 = uploadRequest.LevelUpTime4InSeconds.To10thMilliTime(),
 			SubmitDate = DateTime.UtcNow,
 			ClientVersion = uploadRequest.ClientVersion,
-			Client = uploadRequest.Client.GetClientFromString(),
+			Client = uploadRequest.Client.ClientFromString(),
 			CustomLeaderboard = customLeaderboard,
 		};
 		await _dbContext.CustomEntries.AddAsync(newCustomEntry);
@@ -257,7 +257,7 @@ public class CustomEntryProcessor
 		int totalPlayers = entries.Count;
 
 		_submissionLogger.LogHighscore(
-			customLeaderboard.GetDaggerFromTime(newCustomEntry.Time) ?? CustomLeaderboardDagger.Silver,
+			customLeaderboard.DaggerFromTime(newCustomEntry.Time) ?? CustomLeaderboardDagger.Silver,
 			customLeaderboard.Id,
 			$"`{uploadRequest.PlayerName}` just entered the `{spawnsetName}` leaderboard!",
 			rank,
@@ -270,7 +270,7 @@ public class CustomEntryProcessor
 		{
 			Message = $"Welcome to the {spawnsetName} leaderboard!",
 			Leaderboard = ToLeaderboardSummary(customLeaderboard),
-			SortedEntries = entries.Select((e, i) => ToEntry(e, i + 1, customLeaderboard.GetDaggerFromTime(e.Time), replayIds)).ToList(),
+			SortedEntries = entries.Select((e, i) => ToEntry(e, i + 1, customLeaderboard.DaggerFromTime(e.Time), replayIds)).ToList(),
 			SubmissionType = SubmissionType.FirstScore,
 			RankState = new(rank),
 			TimeState = new(newCustomEntry.Time.ToSecondsTime()),
@@ -307,7 +307,7 @@ public class CustomEntryProcessor
 		{
 			Message = $"No new highscore for {customLeaderboard.Spawnset.Name}.",
 			Leaderboard = ToLeaderboardSummary(customLeaderboard),
-			SortedEntries = entries.Select((e, i) => ToEntry(e, i + 1, customLeaderboard.GetDaggerFromTime(e.Time), replayIds)).ToList(),
+			SortedEntries = entries.Select((e, i) => ToEntry(e, i + 1, customLeaderboard.DaggerFromTime(e.Time), replayIds)).ToList(),
 			SubmissionType = SubmissionType.NoHighscore,
 		};
 	}
@@ -350,7 +350,7 @@ public class CustomEntryProcessor
 		customEntry.LevelUpTime4 = uploadRequest.LevelUpTime4InSeconds.To10thMilliTime();
 		customEntry.SubmitDate = DateTime.UtcNow;
 		customEntry.ClientVersion = uploadRequest.ClientVersion;
-		customEntry.Client = uploadRequest.Client.GetClientFromString();
+		customEntry.Client = uploadRequest.Client.ClientFromString();
 
 		CustomEntryDataEntity? customEntryData = await _dbContext.CustomEntryData.FirstOrDefaultAsync(ced => ced.CustomEntryId == customEntry.Id);
 		if (customEntryData == null)
@@ -391,7 +391,7 @@ public class CustomEntryProcessor
 		int levelUpTime4Diff = customEntry.LevelUpTime4 - oldLevelUpTime4;
 
 		_submissionLogger.LogHighscore(
-			customLeaderboard.GetDaggerFromTime(customEntry.Time) ?? CustomLeaderboardDagger.Silver,
+			customLeaderboard.DaggerFromTime(customEntry.Time) ?? CustomLeaderboardDagger.Silver,
 			customLeaderboard.Id,
 			$"`{uploadRequest.PlayerName}` just got {FormatTimeString(customEntry.Time.ToSecondsTime())} seconds on the `{spawnsetName}` leaderboard, beating their previous highscore of {FormatTimeString((customEntry.Time - timeDiff).ToSecondsTime())} by {FormatTimeString(Math.Abs(timeDiff.ToSecondsTime()))} seconds!",
 			rank,
@@ -404,7 +404,7 @@ public class CustomEntryProcessor
 		{
 			Message = $"NEW HIGHSCORE for {customLeaderboard.Spawnset.Name}!",
 			Leaderboard = ToLeaderboardSummary(customLeaderboard),
-			SortedEntries = entries.Select((e, i) => ToEntry(e, i + 1, customLeaderboard.GetDaggerFromTime(e.Time), replayIds)).ToList(),
+			SortedEntries = entries.Select((e, i) => ToEntry(e, i + 1, customLeaderboard.DaggerFromTime(e.Time), replayIds)).ToList(),
 			SubmissionType = SubmissionType.NewHighscore,
 			RankState = new(rank, rankDiff),
 			TimeState = new(customEntry.Time.ToSecondsTime(), timeDiff.ToSecondsTime()),

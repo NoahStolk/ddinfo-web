@@ -249,7 +249,7 @@ public class CustomLeaderboardService
 		if (!SpawnsetBinary.TryParse(File.ReadAllBytes(spawnsetFilePath), out SpawnsetBinary? spawnsetBinary))
 			throw new InvalidOperationException($"Could not parse survival file '{spawnset.Name}'. Please review the file. Also review how this file ended up in the 'spawnsets' directory, as it should not be possible to upload non-survival files from the Admin API.");
 
-		GameMode requiredGameMode = category.GetRequiredGameModeForCategory();
+		GameMode requiredGameMode = category.RequiredGameModeForCategory();
 		if (spawnsetBinary.GameMode != requiredGameMode)
 			throw new CustomLeaderboardValidationException($"Game mode must be '{requiredGameMode}' when the custom leaderboard category is '{category}'. The spawnset has game mode '{spawnsetBinary.GameMode}'.");
 
