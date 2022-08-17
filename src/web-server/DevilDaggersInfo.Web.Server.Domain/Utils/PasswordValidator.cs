@@ -24,14 +24,12 @@ public static class PasswordValidator
 		if (storedSalt.Length != 128)
 			throw new ArgumentException("Invalid length of password salt (128 bytes expected).", nameof(storedSalt));
 
-		using (HMACSHA512 hmac = new(storedSalt))
+		using HMACSHA512 hmac = new(storedSalt);
+		byte[] computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+		for (int i = 0; i < computedHash.Length; i++)
 		{
-			byte[] computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-			for (int i = 0; i < computedHash.Length; i++)
-			{
-				if (computedHash[i] != storedHash[i])
-					return false;
-			}
+			if (computedHash[i] != storedHash[i])
+				return false;
 		}
 
 		return true;

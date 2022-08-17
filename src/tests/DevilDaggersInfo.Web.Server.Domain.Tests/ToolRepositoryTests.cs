@@ -13,7 +13,6 @@ namespace DevilDaggersInfo.Web.Server.Domain.Tests;
 [TestClass]
 public class ToolRepositoryTests
 {
-	private readonly Mock<ApplicationDbContext> _dbContext;
 	private readonly ToolRepository _toolRepository;
 
 	public ToolRepositoryTests()
@@ -26,8 +25,8 @@ public class ToolRepositoryTests
 		fileSystemService.Setup(m => m.GetPath(DataSubDirectory.Tools)).Returns(toolsPath);
 
 		DbContextOptionsBuilder<ApplicationDbContext> optionsBuilder = new();
-		_dbContext = new Mock<ApplicationDbContext>(optionsBuilder.Options, new Mock<IHttpContextAccessor>().Object, new Mock<ILogContainerService>().Object).SetUpDbSet(db => db.ToolDistributions, mockEntities.MockDbSetToolDistributions);
-		_toolRepository = new(_dbContext.Object, fileSystemService.Object, new Mock<ILogger<ToolRepository>>().Object);
+		Mock<ApplicationDbContext> dbContext = new Mock<ApplicationDbContext>(optionsBuilder.Options, new Mock<IHttpContextAccessor>().Object, new Mock<ILogContainerService>().Object).SetUpDbSet(db => db.ToolDistributions, mockEntities.MockDbSetToolDistributions);
+		_toolRepository = new(dbContext.Object, fileSystemService.Object, new Mock<ILogger<ToolRepository>>().Object);
 	}
 
 	[TestMethod]

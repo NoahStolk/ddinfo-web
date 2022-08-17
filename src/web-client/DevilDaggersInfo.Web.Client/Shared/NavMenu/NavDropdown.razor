@@ -21,11 +21,11 @@
 		</div>
 		@if (ShowList)
 		{
-			<ul class="bg-black pl-5">
-				<CascadingValue Value="this" Name="NavDropdown">
+			<CascadingValue Value="this" Name="NavDropdown">
+				<ul class="bg-black pl-5">
 					@ChildContent
-				</CascadingValue>
-			</ul>
+				</ul>
+			</CascadingValue>
 		}
 	</div>
 </li>
@@ -83,7 +83,7 @@
 		ShowList = false;
 	}
 
-	private string? GetOpacityClass()
+	private string GetOpacityClass()
 	{
 		if (!ShowList)
 			return "opacity-0";

@@ -32,8 +32,8 @@ public class AdminAuthenticationStateProvider : AuthenticationStateProvider
 		if (httpResponseMessage.StatusCode != HttpStatusCode.OK)
 			return await ClearTokenAndGetDefaultState();
 
-		AuthenticationResponse? authenticationResponse = await httpResponseMessage.Content.ReadFromJsonAsync<AuthenticationResponse>() ?? throw new($"Could not deserialize {nameof(AuthenticationResponse)}.");
-		if (authenticationResponse == null || string.IsNullOrEmpty(authenticationResponse.Name))
+		AuthenticationResponse authenticationResponse = await httpResponseMessage.Content.ReadFromJsonAsync<AuthenticationResponse>() ?? throw new($"Could not deserialize {nameof(AuthenticationResponse)}.");
+		if (string.IsNullOrEmpty(authenticationResponse.Name))
 			return await ClearTokenAndGetDefaultState();
 
 		ClaimsIdentity claimsIdentity = ClaimsIdentityUtils.CreateClaimsIdentity(

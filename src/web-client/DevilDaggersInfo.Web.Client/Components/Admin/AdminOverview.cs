@@ -108,11 +108,7 @@ public partial class AdminOverview<TGetDto, TSorting> : IHasNavigation
 		}
 		catch (HttpRequestException ex)
 		{
-			if (ex.StatusCode.HasValue)
-				_errorMessage = $"HTTP {(int)ex.StatusCode}: {ex.StatusCode}";
-			else
-				_errorMessage = $"An error occurred while sending the request. {ex.Message}";
-
+			_errorMessage = ex.StatusCode.HasValue ? $"HTTP {(int)ex.StatusCode}: {ex.StatusCode}" : $"An error occurred while sending the request. {ex.Message}";
 			_errorThrown = true;
 		}
 	}

@@ -58,10 +58,7 @@ public partial class EditProfilePage
 		}
 		catch (HttpRequestException ex)
 		{
-			if (ex.StatusCode.HasValue)
-				Message = $"Error {(int)ex.StatusCode}: {ex.StatusCode}";
-			else
-				Message = "An error occurred while sending the request.";
+			Message = ex.StatusCode.HasValue ? $"Error {(int)ex.StatusCode}: {ex.StatusCode}" : "An error occurred while sending the request.";
 
 			State = ErrorState.FatalError;
 		}
