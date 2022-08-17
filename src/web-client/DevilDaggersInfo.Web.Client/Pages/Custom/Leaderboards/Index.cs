@@ -11,7 +11,7 @@ public partial class Index : IHasNavigation
 {
 	private readonly CustomLeaderboardCategory[] _categories = Enum.GetValues<CustomLeaderboardCategory>();
 
-	private Dictionary<CustomLeaderboardSorting, bool> _sortings = new();
+	private readonly Dictionary<CustomLeaderboardSorting, bool> _sortings = new();
 
 	[Parameter]
 	[SupplyParameterFromQuery]
@@ -46,7 +46,7 @@ public partial class Index : IHasNavigation
 	public GetTotalCustomLeaderboardData? GetTotalCustomLeaderboardData { get; set; }
 
 	public int TotalPages => GetCustomLeaderboards == null ? 0 : (GetCustomLeaderboards.TotalResults - 1) / PagingUtils.GetValidPageSize(PageSize) + 1;
-	public int TotalResults => GetCustomLeaderboards == null ? 0 : GetCustomLeaderboards.TotalResults;
+	public int TotalResults => GetCustomLeaderboards?.TotalResults ?? 0;
 
 	protected override async Task OnInitializedAsync()
 	{
