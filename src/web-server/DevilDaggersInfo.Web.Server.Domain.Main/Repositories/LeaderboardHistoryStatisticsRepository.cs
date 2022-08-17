@@ -57,11 +57,6 @@ public class LeaderboardHistoryStatisticsRepository
 			bool killsUpdated = false;
 			bool totalPlayersUpdated = false;
 			bool timeUpdated = false;
-			bool rank100Updated = false;
-			bool rank10Updated = false;
-			bool rank3Updated = false;
-			bool rank2Updated = false;
-			bool rank1Updated = false;
 
 			if (daggersFiredGlobal != current.DaggersFiredGlobal)
 			{
@@ -108,25 +103,20 @@ public class LeaderboardHistoryStatisticsRepository
 
 			double currentRank100 = GetTimeOr0(current, 100);
 			rank100 = currentRank100;
-			rank100Updated = currentRank100 != 0;
 
 			double currentRank10 = GetTimeOr0(current, 10);
 			rank10 = currentRank10;
-			rank10Updated = currentRank10 != 0;
 
 			double currentRank3 = GetTimeOr0(current, 3);
 			rank3 = currentRank3;
-			rank3Updated = currentRank3 != 0;
 
 			double currentRank2 = GetTimeOr0(current, 2);
 			rank2 = currentRank2;
-			rank2Updated = currentRank2 != 0;
 
 			double currentRank1 = GetTimeOr0(current, 1);
 			rank1 = currentRank1;
-			rank1Updated = currentRank1 != 0;
 
-			Add(daggersFiredUpdated, daggersHitUpdated, deathsUpdated, gemsUpdated, killsUpdated, totalPlayersUpdated, timeUpdated, rank100Updated, rank10Updated, rank3Updated, rank2Updated, rank1Updated);
+			Add(daggersFiredUpdated, daggersHitUpdated, deathsUpdated, gemsUpdated, killsUpdated, totalPlayersUpdated, timeUpdated, currentRank100 != 0, currentRank10 != 0, currentRank3 != 0, currentRank2 != 0, currentRank1 != 0);
 		}
 
 		return leaderboardHistoryStatistics;
