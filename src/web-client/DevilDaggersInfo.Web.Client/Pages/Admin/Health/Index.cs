@@ -142,7 +142,7 @@ public partial class Index
 
 			dataOptions = new(0, 60, 24 * 60, minY, scale, maxY);
 
-			dataSet.Add(new("#0f0", false, true, false, requests.Select((kvp, i) => new LineData(kvp.Key, kvp.Value.MinResponseTimeTicks, i)).ToList(), (ds, d) =>
+			dataSet.Add(new("#0f0", false, true, false, requests.Select((kvp, i) => new LineData(kvp.Key, kvp.Value.MinResponseTimeTicks, i)).ToList(), (_, d) =>
 			{
 				KeyValuePair<int, GetRequestPathEntry>? stats = requests.Count <= d.Index ? null : requests.ElementAt(d.Index);
 				return stats == null ? new() : new()

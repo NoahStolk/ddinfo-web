@@ -3,14 +3,14 @@
 
 <OutsideClickHandler OnClickOutside="OnClickOutside" CssClass="inline-block w-64 bg-gray-1 text-color-text">
 	<div class="grid grid-cols-8">
-		<span class="input-list-opener pl-2 col-span-7" @onclick="e => _show = !_show">@SelectedDisplayValue</span>
-		<span class="input-list-button" @onclick="e => HandleSelect(null)">✕</span>
+		<span class="input-list-opener pl-2 col-span-7" @onclick="_ => _show = !_show">@SelectedDisplayValue</span>
+		<span class="input-list-button" @onclick="_ => HandleSelect(null)">✕</span>
 	</div>
 	<div class="@(_show ? "absolute" : "hidden") z-10">
 		<ul class="max-h-screen-half w-64 border-[#fff8] border-2">
-			<li class="input-list-entry" @onclick="e => HandleSelect(null)">Unknown</li>
-			<li class="input-list-entry" @onclick="e => HandleSelect(false)">@False</li>
-			<li class="input-list-entry" @onclick="e => HandleSelect(true)">@True</li>
+			<li class="input-list-entry" @onclick="_ => HandleSelect(null)">Unknown</li>
+			<li class="input-list-entry" @onclick="_ => HandleSelect(false)">@False</li>
+			<li class="input-list-entry" @onclick="_ => HandleSelect(true)">@True</li>
 		</ul>
 	</div>
 </OutsideClickHandler>

@@ -54,7 +54,7 @@ public class SpawnsetSummaryParseTests
 		=> ParseSummary("Metathrone", 5, 9, GameMode.Survival, new(134, 691.6f), new(9, 42.4f), HandLevel.Level1, 0, 0);
 
 	[AssertionMethod]
-	private static SpawnsetSummary ParseSummary(
+	private static void ParseSummary(
 		string fileName,
 		int expectedSpawnVersion,
 		int expectedWorldVersion,
@@ -77,7 +77,5 @@ public class SpawnsetSummaryParseTests
 		Assert.AreEqual(expectedHandLevel, spawnsetSummary.HandLevel);
 		Assert.AreEqual(expectedAdditionalGems, spawnsetSummary.AdditionalGems);
 		Assert.AreEqual(expectedTimerStart, spawnsetSummary.TimerStart);
-
-		return spawnsetSummary;
 	}
 }
