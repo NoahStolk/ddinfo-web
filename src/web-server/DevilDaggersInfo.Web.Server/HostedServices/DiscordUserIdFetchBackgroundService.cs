@@ -19,7 +19,7 @@ public class DiscordUserIdFetchBackgroundService : AbstractBackgroundService
 	protected override async Task ExecuteTaskAsync(CancellationToken stoppingToken)
 	{
 		using IServiceScope scope = _serviceScopeFactory.CreateScope();
-		using ApplicationDbContext dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+		await using ApplicationDbContext dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
 		int attempts = 0;
 		List<DdUser>? users = null;

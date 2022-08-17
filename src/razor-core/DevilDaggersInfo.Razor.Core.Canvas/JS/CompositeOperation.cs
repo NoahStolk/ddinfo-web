@@ -1,3 +1,4 @@
+// ReSharper disable InconsistentNaming
 namespace DevilDaggersInfo.Razor.Core.Canvas.JS;
 
 public enum CompositeOperation

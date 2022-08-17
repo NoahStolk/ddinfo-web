@@ -10,23 +10,23 @@ public class ModArchiveCacheData
 	public long FileSizeExtracted { get; set; }
 	public List<ModBinaryCacheData> Binaries { get; set; } = new();
 
-	public ModTypes GetModTypes()
+	public ModTypes ModTypes()
 	{
-		ModBinaryCacheData? ddBinary = Binaries.Find(mbcd => mbcd.ModBinaryType == ModBinaryType.Dd);
+		ModBinaryCacheData? ddBinary = Binaries.Find(b => b.ModBinaryType == ModBinaryType.Dd);
 
-		ModTypes modTypes = ModTypes.None;
-		if (Binaries.Any(mbcd => mbcd.ModBinaryType == ModBinaryType.Audio))
-			modTypes |= ModTypes.Audio;
-		if (ddBinary?.Chunks.Any(mccd => mccd.AssetType == AssetType.Shader) == true)
-			modTypes |= ModTypes.Shader;
-		if (ddBinary?.Chunks.Any(mccd => mccd.AssetType == AssetType.ObjectBinding || mccd.AssetType == AssetType.Mesh) == true)
-			modTypes |= ModTypes.Mesh;
-		if (ddBinary?.Chunks.Any(mccd => mccd.AssetType == AssetType.Texture) == true)
-			modTypes |= ModTypes.Texture;
+		ModTypes modTypes = Types.Web.ModTypes.None;
+		if (Binaries.Any(b => b.ModBinaryType == ModBinaryType.Audio))
+			modTypes |= Types.Web.ModTypes.Audio;
+		if (ddBinary?.Chunks.Any(c => c.AssetType == AssetType.Shader) == true)
+			modTypes |= Types.Web.ModTypes.Shader;
+		if (ddBinary?.Chunks.Any(c => c.AssetType == AssetType.ObjectBinding || c.AssetType == AssetType.Mesh) == true)
+			modTypes |= Types.Web.ModTypes.Mesh;
+		if (ddBinary?.Chunks.Any(c => c.AssetType == AssetType.Texture) == true)
+			modTypes |= Types.Web.ModTypes.Texture;
 
 		return modTypes;
 	}
 
 	public bool ContainsProhibitedAssets()
-		=> Binaries.Any(mbcd => mbcd.ContainsProhibitedAssets());
+		=> Binaries.Any(b => b.ContainsProhibitedAssets());
 }

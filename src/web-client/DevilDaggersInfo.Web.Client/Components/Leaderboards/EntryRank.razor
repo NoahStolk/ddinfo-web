@@ -1,4 +1,4 @@
-@inject IJSRuntime JSRuntime
+@inject IJSRuntime JsRuntime
 
 <div class="text-right">
 	@if (PlayerId != 0)
@@ -18,6 +18,6 @@
 
 	private async Task CopyToClipboard()
 	{
-		await JSRuntime.InvokeVoidAsync("navigator.clipboard.writeText", PlayerId);
+		await JsRuntime.InvokeVoidAsync("navigator.clipboard.writeText", PlayerId);
 	}
 }
