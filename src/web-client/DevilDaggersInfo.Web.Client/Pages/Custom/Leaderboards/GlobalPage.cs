@@ -20,7 +20,7 @@ public partial class GlobalPage
 
 	public GetGlobalCustomLeaderboard? GetGlobalCustomLeaderboard { get; set; }
 
-	protected async override Task OnParametersSetAsync()
+	protected override async Task OnParametersSetAsync()
 	{
 		await Fetch(Category);
 	}

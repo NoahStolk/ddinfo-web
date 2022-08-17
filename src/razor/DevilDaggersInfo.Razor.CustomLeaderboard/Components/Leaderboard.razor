@@ -64,7 +64,7 @@
 
 @code
 {
-	private static MarkupString Optional<T>(Nullable<T> value)
+	private static MarkupString Optional<T>(T? value)
 		where T : struct
 	{
 		return value == null ? MarkupStrings.NoDataMarkup : new MarkupString(value.ToString() ?? string.Empty);

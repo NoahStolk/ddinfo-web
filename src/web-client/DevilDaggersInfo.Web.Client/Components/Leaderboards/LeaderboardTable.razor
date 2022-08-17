@@ -53,7 +53,7 @@
 						{
 							// When not banned or alt, we need to find the alts and determine if this account has the highest score.
 							List<int>? mainAndAlts = groupsOfAlts.FirstOrDefault(l => l.Contains(player.Id) || player.BanResponsibleId.HasValue && l.Contains(player.BanResponsibleId.Value));
-							TGetEntryDto? mainOrAltWithHighestScore = mainAndAlts == null ? null : mainAndAlts.ConvertAll(i => Entries.FirstOrDefault(e => e.Id == i)).Where(e => e != null).MaxBy(e => e!.Time);
+							TGetEntryDto? mainOrAltWithHighestScore = mainAndAlts?.ConvertAll(i => Entries.FirstOrDefault(e => e.Id == i)).Where(e => e != null).MaxBy(e => e!.Time);
 
 							// If there are no alts, or for some reason the highest score cannot be determined, fallback to default banning behavior.
 							// Otherwise, ban the main or alt with a lower score.

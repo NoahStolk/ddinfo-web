@@ -2,7 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace DevilDaggersInfo.Core.Replay;
 
-public interface IReplayBinaryHeader<TSelf>
+public interface IReplayBinaryHeader<out TSelf>
 	where TSelf : IReplayBinaryHeader<TSelf>
 {
 	/// <summary>
