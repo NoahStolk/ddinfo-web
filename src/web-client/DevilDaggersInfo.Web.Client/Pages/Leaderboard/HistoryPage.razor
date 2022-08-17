@@ -20,7 +20,7 @@ else
 		<i>History for @(_dateTime.ToString(StringFormats.DateTimeFormat)) does not exist; falling back to @GetLeaderboardHistory.DateTime.ToString(StringFormats.DateTimeFormat).</i>
 	}
 
-	<DatePicker DateSelected="@(d => UpdateDateTime(d))" />
+	<DatePicker DateSelected="@UpdateDateTime" />
 
 	<LeaderboardGlobal Leaderboard="GetLeaderboardHistory" IsHistory="true" />
 	<LeaderboardTableInfo />

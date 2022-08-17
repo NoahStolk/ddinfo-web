@@ -200,7 +200,7 @@ public partial class HistoryStatisticsPage
 		void Register(Func<GetLeaderboardHistoryStatistics, ulong> valueSelector, Func<GetLeaderboardHistoryStatistics, bool> valueUpdatedSelector, ref LineChartDataOptions lineChartDataOptions, List<LineDataSet> dataSets, double scale)
 		{
 			IEnumerable<GetLeaderboardHistoryStatistics> relevantData = _statistics.Where(hs => valueSelector(hs) > 0 && valueUpdatedSelector(hs));
-			IEnumerable<ulong> stats = relevantData.Select(hs => valueSelector(hs));
+			IEnumerable<ulong> stats = relevantData.Select(valueSelector);
 			double minY = Math.Floor(stats.Min() / scale) * scale;
 			double maxY = Math.Ceiling(stats.Max() / scale) * scale;
 			lineChartDataOptions = new(relevantData.Min(hs => hs.DateTime.Ticks), null, maxX.Ticks, minY, scale, maxY);

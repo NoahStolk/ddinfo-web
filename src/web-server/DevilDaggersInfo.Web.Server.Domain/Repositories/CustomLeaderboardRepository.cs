@@ -112,12 +112,12 @@ public class CustomLeaderboardRepository
 		int lastPageIndex = totalCustomLeaderboards / pageSize;
 
 		return new(
-			results: customLeaderboardData
+			Results: customLeaderboardData
 				.Skip(Math.Min(pageIndex, lastPageIndex) * pageSize)
 				.Take(pageSize)
-				.Select(cl => ToOverview(cl))
+				.Select(ToOverview)
 				.ToList(),
-			totalResults: totalCustomLeaderboards);
+			TotalResults: totalCustomLeaderboards);
 	}
 
 	public async Task<SortedCustomLeaderboard> GetSortedCustomLeaderboardByIdAsync(int id)

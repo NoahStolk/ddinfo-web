@@ -22,7 +22,7 @@ else
 			<span>Author name</span>
 			<input class="bg-black border-gray-3 border-2 w-48" value="@AuthorFilter" @onchange="ChangeInputAuthorName" />
 			<span>Hosted only</span>
-			<Checkbox CurrentValue="@HostedOnly" Selected="@(b => ChangeInputHostedOnly(b))" />
+			<Checkbox CurrentValue="@HostedOnly" Selected="@ChangeInputHostedOnly" />
 		</div>
 
 		<CascadingValue Value="this">

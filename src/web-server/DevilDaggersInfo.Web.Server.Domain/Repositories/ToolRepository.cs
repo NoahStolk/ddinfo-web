@@ -44,7 +44,7 @@ public class ToolRepository
 		{
 			Changelog = changelog?.ConvertAll(ce => new ToolVersion
 			{
-				Changes = ce.Changes.Select(c => ToModel(c)).ToList(),
+				Changes = ce.Changes.Select(ToModel).ToList(),
 				Date = ce.Date,
 				DownloadCount = downloads.ContainsKey(ce.VersionNumber) ? downloads[ce.VersionNumber] : 0,
 				VersionNumber = ce.VersionNumber,
@@ -58,7 +58,7 @@ public class ToolRepository
 		static ToolVersionChange ToModel(Change change) => new()
 		{
 			Description = change.Description,
-			SubChanges = change.SubChanges?.Select(c => ToModel(c)).ToList(),
+			SubChanges = change.SubChanges?.Select(ToModel).ToList(),
 		};
 	}
 

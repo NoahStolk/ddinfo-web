@@ -5,7 +5,7 @@
 
 <Heading Title="Enemies" />
 
-<SelectList CssWidthClass="w-48" CssOpenerClass="pl-2" TValue="GameVersion" Values="@_allowedGameVersions" DisplayFunction="@(gv => gv.ToDisplayString())" Default="GameVersion.V3_2" Selected="@(gv => UpdateGameVersion(gv))" />
+<SelectList CssWidthClass="w-48" CssOpenerClass="pl-2" TValue="GameVersion" Values="@_allowedGameVersions" DisplayFunction="@(gv => gv.ToDisplayString())" Default="GameVersion.V3_2" Selected="@UpdateGameVersion" />
 
 <Heading Title="Summary" Level="2" />
 

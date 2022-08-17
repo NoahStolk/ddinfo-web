@@ -1,17 +1,6 @@
 namespace DevilDaggersInfo.Razor.AssetEditor.Data;
 
-public record VisualAsset
+public record VisualAsset(int Size, bool IsProhibited)
 {
-	public VisualAsset(int size, bool isProhibited)
-	{
-		Size = size;
-		IsProhibited = isProhibited;
-		IsSelected = false;
-	}
-
-	public int Size { get; }
-
-	public bool IsProhibited { get; }
-
 	public bool IsSelected { get; set; }
 }

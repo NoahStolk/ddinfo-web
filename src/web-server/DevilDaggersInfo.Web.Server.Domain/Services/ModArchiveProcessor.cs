@@ -120,7 +120,7 @@ public class ModArchiveProcessor
 			}
 		}
 
-		List<BinaryName> collisions = keptBinaries.Keys.Where(binaryName => newBinaries.ContainsKey(binaryName)).ToList();
+		List<BinaryName> collisions = keptBinaries.Keys.Where(newBinaries.ContainsKey).ToList();
 		if (collisions.Count > 0)
 			throw new InvalidModArchiveException($"Cannot append binaries {string.Join(", ", collisions.Select(s => $"'{s}'"))} to mod archive because it already contains binaries with the exact same names. Either request the old binaries to be deleted or rename the new binaries.");
 

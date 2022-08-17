@@ -95,7 +95,7 @@ public class LeaderboardHistoryStatisticsRepository
 			}
 
 			double currentTimeGlobal = current.TimeGlobal.ToSecondsTime();
-			if (timeGlobal != currentTimeGlobal)
+			if (Math.Abs(timeGlobal - currentTimeGlobal) > 0.002)
 			{
 				timeGlobal = currentTimeGlobal;
 				timeUpdated = true;

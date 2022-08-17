@@ -6,7 +6,7 @@
 
 <Heading Title="Spawns" />
 
-<SelectList CssWidthClass="w-48" CssOpenerClass="pl-2" TValue="GameVersion" Values="@_allowedGameVersions" DisplayFunction="@(gv => gv.ToDisplayString())" Default="GameVersion.V3_0" Selected="@(gv => Fetch(gv))" />
+<SelectList CssWidthClass="w-48" CssOpenerClass="pl-2" TValue="GameVersion" Values="@_allowedGameVersions" DisplayFunction="@(gv => gv.ToDisplayString())" Default="GameVersion.V3_0" Selected="@Fetch" />
 
 <p class="para">
 	These are all the spawn times for Devil Daggers.
