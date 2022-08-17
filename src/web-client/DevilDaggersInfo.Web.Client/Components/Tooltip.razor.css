@@ -3,7 +3,7 @@
 	position: relative;
 }
 
-	.tooltip:hover:after {
+	.tooltip:hover::after {
 		background: rgba(64, 64, 64, .8);
 		border-radius: 5px;
 		bottom: 26px;
@@ -16,7 +16,7 @@
 		pointer-events: none;
 	}
 
-	.tooltip:hover:before {
+	.tooltip:hover::before {
 		bottom: 20px;
 		content: "";
 		left: 50%;
@@ -24,26 +24,26 @@
 		pointer-events: none;
 	}
 
-	.tooltip.center:hover:after {
+	.tooltip.center:hover::after {
 		transform: translateX(-50%);
 	}
 
-	.tooltip.center:hover:before {
+	.tooltip.center:hover::before {
 		transform: translateX(-50%);
 	}
 
-	.tooltip.left:hover:after {
+	.tooltip.left:hover::after {
 		transform: translateX(calc(-100% + 16px));
 	}
 
-	.tooltip.left:hover:before {
+	.tooltip.left:hover::before {
 		transform: translateX(calc(-100% + 16px));
 	}
 
-	.tooltip.right:hover:after {
+	.tooltip.right:hover::after {
 		transform: translateX(-16px);
 	}
 
-	.tooltip.right:hover:before {
+	.tooltip.right:hover::before {
 		transform: translateX(-16px);
 	}

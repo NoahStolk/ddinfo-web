@@ -8,7 +8,6 @@ public static class StringFormats
 	public const string DateFormat = "yyyy-MM-dd";
 	public const string DateTimeFormat = "yyyy-MM-dd HH:mm";
 	public const string DateTimeUtcFormat = "yyyy-MM-dd HH:mm UTC";
-	public const string DateTimeFullFormat = "yyyy-MM-dd HH:mm:ss.fff zzz";
 	public const string TimeFormat = "0.0000";
 	public const string InGameSensFormat = "0.000";
 	public const string GammaFormat = "0.00";

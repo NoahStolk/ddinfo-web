@@ -3,7 +3,6 @@ namespace DevilDaggersInfo.Razor.CustomLeaderboard.Enums;
 public enum RecorderStateType
 {
 	WaitingForGame,
-	WaitingForMarker,
 	Recording,
 	WaitingForRestart,
 	WaitingForLocalReplay,
