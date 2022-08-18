@@ -9,6 +9,8 @@ namespace DevilDaggersInfo.Web.Core.CriteriaExpression;
 
 public class Expression
 {
+	public const int MaxByteLength = 64;
+
 	public Expression(List<IExpressionPart> parts)
 	{
 		// TODO: We probably want to remove any redundant operations, such as 10 + 5 which could be converted to 15.
