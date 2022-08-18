@@ -21,8 +21,7 @@ public class ExpressionBinaryTests
 			expression.Validate();
 
 			byte[] bytes = expression.ToBytes();
-			Expression expressionParsed = Expression.TryParse(bytes);
-
+			Assert.IsTrue(Expression.TryParse(bytes, out Expression? expressionParsed));
 			CollectionAssert.AreEqual(bytes, expressionParsed.ToBytes());
 		}
 	}

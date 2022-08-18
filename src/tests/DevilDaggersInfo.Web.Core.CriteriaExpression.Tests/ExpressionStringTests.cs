@@ -21,7 +21,7 @@ public class ExpressionStringTests
 			expression.Validate();
 
 			Assert.AreEqual(expectedString, expression.ToString());
-			Assert.IsTrue(ContainsSameParts(expression, Expression.TryParse(expectedString)));
+			Assert.IsTrue(ContainsSameParts(expression, Expression.Parse(expectedString)));
 		}
 
 		static bool ContainsSameParts(Expression a, Expression b)
