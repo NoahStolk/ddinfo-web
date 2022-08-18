@@ -1,0 +1,17 @@
+﻿@using Microsoft.AspNetCore.Components
+@using DevilDaggersInfo.Api.Admin.CustomLeaderboards
+<InputWrapper Label="@($"{Name} operator")"><SearchDropdown TKey="CustomLeaderboardCriteriaOperator" Values="_operators" Converter="_operatorConverter" ShowDisplayValue="false" @bind-Value="@Criteria.Operator" /></InputWrapper>
+<InputWrapper Label="@($"{Name} value")"><InputNumber class="admin-input" @bind-Value="Criteria.Value" /></InputWrapper>
+
+@code {
+	private readonly Dictionary<CustomLeaderboardCriteriaOperator, string> _operators = Enum.GetValues<CustomLeaderboardCriteriaOperator>().ToDictionary(e => e, e => e.ToString());
+	private readonly Func<string, CustomLeaderboardCriteriaOperator> _operatorConverter = Enum.Parse<CustomLeaderboardCriteriaOperator>;
+
+	[Parameter]
+	[EditorRequired]
+	public string Name { get; set; } = null!;
+	
+	[Parameter]
+	[EditorRequired]
+	public AddCustomLeaderboardCriteria Criteria { get; set; } = null!;
+}
