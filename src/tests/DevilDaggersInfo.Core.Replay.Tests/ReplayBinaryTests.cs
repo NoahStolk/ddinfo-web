@@ -18,8 +18,8 @@ public class ReplayBinaryTests
 		byte[] replayBuffer = File.ReadAllBytes(replayFilePath);
 		ReplayBinary<LocalReplayBinaryHeader> replayBinary = new(replayBuffer);
 
-		TestUtils.AssertArrayContentsEqual(replayBinary.Header.SpawnsetMd5, MD5.HashData(replayBinary.Header.SpawnsetBuffer));
-		TestUtils.AssertArrayContentsEqual(File.ReadAllBytes(spawnsetFilePath), replayBinary.Header.SpawnsetBuffer);
+		CollectionAssert.AreEqual(replayBinary.Header.SpawnsetMd5, MD5.HashData(replayBinary.Header.SpawnsetBuffer));
+		CollectionAssert.AreEqual(File.ReadAllBytes(spawnsetFilePath), replayBinary.Header.SpawnsetBuffer);
 	}
 
 	[TestMethod]

@@ -21,6 +21,6 @@ public class SpawnsetBinaryTests
 		SpawnsetBinary spawnset = SpawnsetBinary.Parse(originalBytes);
 		byte[] bytes = spawnset.ToBytes();
 
-		TestUtils.AssertArrayContentsEqual(originalBytes, bytes);
+		CollectionAssert.AreEqual(originalBytes, bytes);
 	}
 }

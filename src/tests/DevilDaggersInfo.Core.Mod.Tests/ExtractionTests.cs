@@ -20,6 +20,6 @@ public class ExtractionTests
 		byte[] extractedPngContents = AssetConverter.Extract(asset.Key.AssetType, asset.Value);
 		byte[] sourcePngContents = File.ReadAllBytes(Path.Combine(TestUtils.ResourcePath, "Texture", sourcePngFileName));
 
-		TestUtils.AssertArrayContentsEqual(extractedPngContents, sourcePngContents);
+		CollectionAssert.AreEqual(extractedPngContents, sourcePngContents);
 	}
 }

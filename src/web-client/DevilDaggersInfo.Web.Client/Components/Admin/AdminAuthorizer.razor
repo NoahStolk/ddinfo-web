@@ -1,25 +1,25 @@
 @using DevilDaggersInfo.Web.Client.Pages.Admin
 
-@if (AccessGranted == null)
+@switch (AccessGranted)
 {
-	<span>Authorizing roles...</span>
-}
-else if (AccessGranted == true)
-{
-	@ChildContent
-}
-else
-{
-	<div class="mt-2 p-2 rounded bg-darker-red">
-		<h4 class="text-xl">Forbidden</h4>
+	case null:
+		<span>Authorizing roles...</span>
+		break;
+	case true:
+		@ChildContent
+		break;
+	case false:
+		<div class="mt-2 p-2 rounded bg-darker-red">
+			<h4 class="text-xl">Forbidden</h4>
 
-		You do not have permissions.
-	</div>
+			You do not have permissions.
+		</div>
+		break;
 }
 
 @code
 {
-	public bool? AccessGranted => Base.UserRoles == null ? null : RequiredRole == null || Base.UserRoles.Contains(RequiredRole);
+	private bool? AccessGranted => Base.UserRoles == null ? null : RequiredRole == null || Base.UserRoles.Contains(RequiredRole);
 
 	[Parameter]
 	public string? RequiredRole { get; set; }

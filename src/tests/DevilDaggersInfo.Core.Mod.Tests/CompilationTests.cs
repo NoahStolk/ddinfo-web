@@ -18,6 +18,6 @@ public class CompilationTests
 		byte[] compiledModBinary = modBinary.Compile();
 
 		byte[] sourceModBinary = File.ReadAllBytes(Path.Combine(TestUtils.ResourcePath, modFileName));
-		TestUtils.AssertArrayContentsEqual(compiledModBinary, sourceModBinary);
+		CollectionAssert.AreEqual(compiledModBinary, sourceModBinary);
 	}
 }

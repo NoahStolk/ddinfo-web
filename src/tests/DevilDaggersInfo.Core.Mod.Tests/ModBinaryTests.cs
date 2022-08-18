@@ -19,7 +19,7 @@ public class ModBinaryTests
 		ModBinary modBinary = new(originalBytes, ModBinaryReadComprehensiveness.All);
 		byte[] bytes = modBinary.Compile();
 
-		TestUtils.AssertArrayContentsEqual(originalBytes, bytes);
+		CollectionAssert.AreEqual(originalBytes, bytes);
 	}
 
 	[TestMethod]
