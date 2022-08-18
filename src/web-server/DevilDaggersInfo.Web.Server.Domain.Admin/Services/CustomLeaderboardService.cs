@@ -54,23 +54,23 @@ public class CustomLeaderboardService
 			DaggersHitCriteria = addCustomLeaderboard.DaggersHitCriteria.ToEntity(),
 			HomingStoredCriteria = addCustomLeaderboard.HomingStoredCriteria.ToEntity(),
 			HomingEatenCriteria = addCustomLeaderboard.HomingEatenCriteria.ToEntity(),
-			Skull1KillsCriteria = addCustomLeaderboard.Skull1KillsCriteria.ToEntity(),
-			Skull2KillsCriteria = addCustomLeaderboard.Skull2KillsCriteria.ToEntity(),
-			Skull3KillsCriteria = addCustomLeaderboard.Skull3KillsCriteria.ToEntity(),
-			Skull4KillsCriteria = addCustomLeaderboard.Skull4KillsCriteria.ToEntity(),
-			SpiderlingKillsCriteria = addCustomLeaderboard.SpiderlingKillsCriteria.ToEntity(),
-			SpiderEggKillsCriteria = addCustomLeaderboard.SpiderEggKillsCriteria.ToEntity(),
-			Squid1KillsCriteria = addCustomLeaderboard.Squid1KillsCriteria.ToEntity(),
-			Squid2KillsCriteria = addCustomLeaderboard.Squid2KillsCriteria.ToEntity(),
-			Squid3KillsCriteria = addCustomLeaderboard.Squid3KillsCriteria.ToEntity(),
-			CentipedeKillsCriteria = addCustomLeaderboard.CentipedeKillsCriteria.ToEntity(),
-			GigapedeKillsCriteria = addCustomLeaderboard.GigapedeKillsCriteria.ToEntity(),
-			GhostpedeKillsCriteria = addCustomLeaderboard.GhostpedeKillsCriteria.ToEntity(),
-			Spider1KillsCriteria = addCustomLeaderboard.Spider1KillsCriteria.ToEntity(),
-			Spider2KillsCriteria = addCustomLeaderboard.Spider2KillsCriteria.ToEntity(),
-			LeviathanKillsCriteria = addCustomLeaderboard.LeviathanKillsCriteria.ToEntity(),
-			OrbKillsCriteria = addCustomLeaderboard.OrbKillsCriteria.ToEntity(),
-			ThornKillsCriteria = addCustomLeaderboard.ThornKillsCriteria.ToEntity(),
+			Skull1KillsCriteria = addCustomLeaderboard.Skull1KillsCriteria.ToEnemyEntity(),
+			Skull2KillsCriteria = addCustomLeaderboard.Skull2KillsCriteria.ToEnemyEntity(),
+			Skull3KillsCriteria = addCustomLeaderboard.Skull3KillsCriteria.ToEnemyEntity(),
+			Skull4KillsCriteria = addCustomLeaderboard.Skull4KillsCriteria.ToEnemyEntity(),
+			SpiderlingKillsCriteria = addCustomLeaderboard.SpiderlingKillsCriteria.ToEnemyEntity(),
+			SpiderEggKillsCriteria = addCustomLeaderboard.SpiderEggKillsCriteria.ToEnemyEntity(),
+			Squid1KillsCriteria = addCustomLeaderboard.Squid1KillsCriteria.ToEnemyEntity(),
+			Squid2KillsCriteria = addCustomLeaderboard.Squid2KillsCriteria.ToEnemyEntity(),
+			Squid3KillsCriteria = addCustomLeaderboard.Squid3KillsCriteria.ToEnemyEntity(),
+			CentipedeKillsCriteria = addCustomLeaderboard.CentipedeKillsCriteria.ToEnemyEntity(),
+			GigapedeKillsCriteria = addCustomLeaderboard.GigapedeKillsCriteria.ToEnemyEntity(),
+			GhostpedeKillsCriteria = addCustomLeaderboard.GhostpedeKillsCriteria.ToEnemyEntity(),
+			Spider1KillsCriteria = addCustomLeaderboard.Spider1KillsCriteria.ToEnemyEntity(),
+			Spider2KillsCriteria = addCustomLeaderboard.Spider2KillsCriteria.ToEnemyEntity(),
+			LeviathanKillsCriteria = addCustomLeaderboard.LeviathanKillsCriteria.ToEnemyEntity(),
+			OrbKillsCriteria = addCustomLeaderboard.OrbKillsCriteria.ToEnemyEntity(),
+			ThornKillsCriteria = addCustomLeaderboard.ThornKillsCriteria.ToEnemyEntity(),
 		};
 		_dbContext.CustomLeaderboards.Add(customLeaderboard);
 		await _dbContext.SaveChangesAsync();
@@ -162,23 +162,23 @@ public class CustomLeaderboardService
 		customLeaderboard.DaggersHitCriteria = editCustomLeaderboard.DaggersHitCriteria.ToEntity();
 		customLeaderboard.HomingStoredCriteria = editCustomLeaderboard.HomingStoredCriteria.ToEntity();
 		customLeaderboard.HomingEatenCriteria = editCustomLeaderboard.HomingEatenCriteria.ToEntity();
-		customLeaderboard.Skull1KillsCriteria = editCustomLeaderboard.Skull1KillsCriteria.ToEntity();
-		customLeaderboard.Skull2KillsCriteria = editCustomLeaderboard.Skull2KillsCriteria.ToEntity();
-		customLeaderboard.Skull3KillsCriteria = editCustomLeaderboard.Skull3KillsCriteria.ToEntity();
-		customLeaderboard.Skull4KillsCriteria = editCustomLeaderboard.Skull4KillsCriteria.ToEntity();
-		customLeaderboard.SpiderlingKillsCriteria = editCustomLeaderboard.SpiderlingKillsCriteria.ToEntity();
-		customLeaderboard.SpiderEggKillsCriteria = editCustomLeaderboard.SpiderEggKillsCriteria.ToEntity();
-		customLeaderboard.Squid1KillsCriteria = editCustomLeaderboard.Squid1KillsCriteria.ToEntity();
-		customLeaderboard.Squid2KillsCriteria = editCustomLeaderboard.Squid2KillsCriteria.ToEntity();
-		customLeaderboard.Squid3KillsCriteria = editCustomLeaderboard.Squid3KillsCriteria.ToEntity();
-		customLeaderboard.CentipedeKillsCriteria = editCustomLeaderboard.CentipedeKillsCriteria.ToEntity();
-		customLeaderboard.GigapedeKillsCriteria = editCustomLeaderboard.GigapedeKillsCriteria.ToEntity();
-		customLeaderboard.GhostpedeKillsCriteria = editCustomLeaderboard.GhostpedeKillsCriteria.ToEntity();
-		customLeaderboard.Spider1KillsCriteria = editCustomLeaderboard.Spider1KillsCriteria.ToEntity();
-		customLeaderboard.Spider2KillsCriteria = editCustomLeaderboard.Spider2KillsCriteria.ToEntity();
-		customLeaderboard.LeviathanKillsCriteria = editCustomLeaderboard.LeviathanKillsCriteria.ToEntity();
-		customLeaderboard.OrbKillsCriteria = editCustomLeaderboard.OrbKillsCriteria.ToEntity();
-		customLeaderboard.ThornKillsCriteria = editCustomLeaderboard.ThornKillsCriteria.ToEntity();
+		customLeaderboard.Skull1KillsCriteria = editCustomLeaderboard.Skull1KillsCriteria.ToEnemyEntity();
+		customLeaderboard.Skull2KillsCriteria = editCustomLeaderboard.Skull2KillsCriteria.ToEnemyEntity();
+		customLeaderboard.Skull3KillsCriteria = editCustomLeaderboard.Skull3KillsCriteria.ToEnemyEntity();
+		customLeaderboard.Skull4KillsCriteria = editCustomLeaderboard.Skull4KillsCriteria.ToEnemyEntity();
+		customLeaderboard.SpiderlingKillsCriteria = editCustomLeaderboard.SpiderlingKillsCriteria.ToEnemyEntity();
+		customLeaderboard.SpiderEggKillsCriteria = editCustomLeaderboard.SpiderEggKillsCriteria.ToEnemyEntity();
+		customLeaderboard.Squid1KillsCriteria = editCustomLeaderboard.Squid1KillsCriteria.ToEnemyEntity();
+		customLeaderboard.Squid2KillsCriteria = editCustomLeaderboard.Squid2KillsCriteria.ToEnemyEntity();
+		customLeaderboard.Squid3KillsCriteria = editCustomLeaderboard.Squid3KillsCriteria.ToEnemyEntity();
+		customLeaderboard.CentipedeKillsCriteria = editCustomLeaderboard.CentipedeKillsCriteria.ToEnemyEntity();
+		customLeaderboard.GigapedeKillsCriteria = editCustomLeaderboard.GigapedeKillsCriteria.ToEnemyEntity();
+		customLeaderboard.GhostpedeKillsCriteria = editCustomLeaderboard.GhostpedeKillsCriteria.ToEnemyEntity();
+		customLeaderboard.Spider1KillsCriteria = editCustomLeaderboard.Spider1KillsCriteria.ToEnemyEntity();
+		customLeaderboard.Spider2KillsCriteria = editCustomLeaderboard.Spider2KillsCriteria.ToEnemyEntity();
+		customLeaderboard.LeviathanKillsCriteria = editCustomLeaderboard.LeviathanKillsCriteria.ToEnemyEntity();
+		customLeaderboard.OrbKillsCriteria = editCustomLeaderboard.OrbKillsCriteria.ToEnemyEntity();
+		customLeaderboard.ThornKillsCriteria = editCustomLeaderboard.ThornKillsCriteria.ToEnemyEntity();
 
 		await _dbContext.SaveChangesAsync();
 	}

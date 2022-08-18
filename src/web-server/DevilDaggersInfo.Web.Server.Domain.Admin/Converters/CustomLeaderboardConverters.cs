@@ -46,23 +46,23 @@ public static class CustomLeaderboardConverters
 		DaggersHitCriteria = customLeaderboard.DaggersHitCriteria.ToGetCustomLeaderboardCriteria(),
 		HomingStoredCriteria = customLeaderboard.HomingStoredCriteria.ToGetCustomLeaderboardCriteria(),
 		HomingEatenCriteria = customLeaderboard.HomingEatenCriteria.ToGetCustomLeaderboardCriteria(),
-		Skull1KillsCriteria = customLeaderboard.Skull1KillsCriteria.ToGetCustomLeaderboardEnemyCriteria(),
-		Skull2KillsCriteria = customLeaderboard.Skull2KillsCriteria.ToGetCustomLeaderboardEnemyCriteria(),
-		Skull3KillsCriteria = customLeaderboard.Skull3KillsCriteria.ToGetCustomLeaderboardEnemyCriteria(),
-		Skull4KillsCriteria = customLeaderboard.Skull4KillsCriteria.ToGetCustomLeaderboardEnemyCriteria(),
-		SpiderlingKillsCriteria = customLeaderboard.SpiderlingKillsCriteria.ToGetCustomLeaderboardEnemyCriteria(),
-		SpiderEggKillsCriteria = customLeaderboard.SpiderEggKillsCriteria.ToGetCustomLeaderboardEnemyCriteria(),
-		Squid1KillsCriteria = customLeaderboard.Squid1KillsCriteria.ToGetCustomLeaderboardEnemyCriteria(),
-		Squid2KillsCriteria = customLeaderboard.Squid2KillsCriteria.ToGetCustomLeaderboardEnemyCriteria(),
-		Squid3KillsCriteria = customLeaderboard.Squid3KillsCriteria.ToGetCustomLeaderboardEnemyCriteria(),
-		CentipedeKillsCriteria = customLeaderboard.CentipedeKillsCriteria.ToGetCustomLeaderboardEnemyCriteria(),
-		GigapedeKillsCriteria = customLeaderboard.GigapedeKillsCriteria.ToGetCustomLeaderboardEnemyCriteria(),
-		GhostpedeKillsCriteria = customLeaderboard.GhostpedeKillsCriteria.ToGetCustomLeaderboardEnemyCriteria(),
-		Spider1KillsCriteria = customLeaderboard.Spider1KillsCriteria.ToGetCustomLeaderboardEnemyCriteria(),
-		Spider2KillsCriteria = customLeaderboard.Spider2KillsCriteria.ToGetCustomLeaderboardEnemyCriteria(),
-		LeviathanKillsCriteria = customLeaderboard.LeviathanKillsCriteria.ToGetCustomLeaderboardEnemyCriteria(),
-		OrbKillsCriteria = customLeaderboard.OrbKillsCriteria.ToGetCustomLeaderboardEnemyCriteria(),
-		ThornKillsCriteria = customLeaderboard.ThornKillsCriteria.ToGetCustomLeaderboardEnemyCriteria(),
+		Skull1KillsCriteria = customLeaderboard.Skull1KillsCriteria.ToGetCustomLeaderboardCriteria(),
+		Skull2KillsCriteria = customLeaderboard.Skull2KillsCriteria.ToGetCustomLeaderboardCriteria(),
+		Skull3KillsCriteria = customLeaderboard.Skull3KillsCriteria.ToGetCustomLeaderboardCriteria(),
+		Skull4KillsCriteria = customLeaderboard.Skull4KillsCriteria.ToGetCustomLeaderboardCriteria(),
+		SpiderlingKillsCriteria = customLeaderboard.SpiderlingKillsCriteria.ToGetCustomLeaderboardCriteria(),
+		SpiderEggKillsCriteria = customLeaderboard.SpiderEggKillsCriteria.ToGetCustomLeaderboardCriteria(),
+		Squid1KillsCriteria = customLeaderboard.Squid1KillsCriteria.ToGetCustomLeaderboardCriteria(),
+		Squid2KillsCriteria = customLeaderboard.Squid2KillsCriteria.ToGetCustomLeaderboardCriteria(),
+		Squid3KillsCriteria = customLeaderboard.Squid3KillsCriteria.ToGetCustomLeaderboardCriteria(),
+		CentipedeKillsCriteria = customLeaderboard.CentipedeKillsCriteria.ToGetCustomLeaderboardCriteria(),
+		GigapedeKillsCriteria = customLeaderboard.GigapedeKillsCriteria.ToGetCustomLeaderboardCriteria(),
+		GhostpedeKillsCriteria = customLeaderboard.GhostpedeKillsCriteria.ToGetCustomLeaderboardCriteria(),
+		Spider1KillsCriteria = customLeaderboard.Spider1KillsCriteria.ToGetCustomLeaderboardCriteria(),
+		Spider2KillsCriteria = customLeaderboard.Spider2KillsCriteria.ToGetCustomLeaderboardCriteria(),
+		LeviathanKillsCriteria = customLeaderboard.LeviathanKillsCriteria.ToGetCustomLeaderboardCriteria(),
+		OrbKillsCriteria = customLeaderboard.OrbKillsCriteria.ToGetCustomLeaderboardCriteria(),
+		ThornKillsCriteria = customLeaderboard.ThornKillsCriteria.ToGetCustomLeaderboardCriteria(),
 	};
 
 	private static GetCustomLeaderboardCriteria ToGetCustomLeaderboardCriteria(this CustomLeaderboardCriteriaEntityValue criteria) => new()
@@ -71,7 +71,7 @@ public static class CustomLeaderboardConverters
 		Value = criteria.Value,
 	};
 
-	private static GetCustomLeaderboardEnemyCriteria ToGetCustomLeaderboardEnemyCriteria(this CustomLeaderboardEnemyCriteriaEntityValue criteria) => new()
+	private static GetCustomLeaderboardCriteria ToGetCustomLeaderboardCriteria(this CustomLeaderboardEnemyCriteriaEntityValue criteria) => new()
 	{
 		Operator = criteria.Operator,
 		Value = criteria.Value,
@@ -83,9 +83,9 @@ public static class CustomLeaderboardConverters
 		Value = criteria.Value,
 	};
 
-	public static CustomLeaderboardEnemyCriteriaEntityValue ToEntity(this AddCustomLeaderboardEnemyCriteria criteria) => new()
+	public static CustomLeaderboardEnemyCriteriaEntityValue ToEnemyEntity(this AddCustomLeaderboardCriteria criteria) => new()
 	{
 		Operator = criteria.Operator,
-		Value = criteria.Value,
+		Value = (short)criteria.Value,
 	};
 }

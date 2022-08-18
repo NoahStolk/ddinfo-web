@@ -30,26 +30,26 @@ public record GetCustomLeaderboard
 
 	public GetCustomLeaderboardCriteria HomingEatenCriteria { get; set; } = new();
 
-	public GetCustomLeaderboardEnemyCriteria Skull1KillsCriteria { get; set; } = new();
-	public GetCustomLeaderboardEnemyCriteria Skull2KillsCriteria { get; set; } = new();
-	public GetCustomLeaderboardEnemyCriteria Skull3KillsCriteria { get; set; } = new();
-	public GetCustomLeaderboardEnemyCriteria Skull4KillsCriteria { get; set; } = new();
+	public GetCustomLeaderboardCriteria Skull1KillsCriteria { get; set; } = new();
+	public GetCustomLeaderboardCriteria Skull2KillsCriteria { get; set; } = new();
+	public GetCustomLeaderboardCriteria Skull3KillsCriteria { get; set; } = new();
+	public GetCustomLeaderboardCriteria Skull4KillsCriteria { get; set; } = new();
 
-	public GetCustomLeaderboardEnemyCriteria SpiderlingKillsCriteria { get; set; } = new();
-	public GetCustomLeaderboardEnemyCriteria SpiderEggKillsCriteria { get; set; } = new();
+	public GetCustomLeaderboardCriteria SpiderlingKillsCriteria { get; set; } = new();
+	public GetCustomLeaderboardCriteria SpiderEggKillsCriteria { get; set; } = new();
 
-	public GetCustomLeaderboardEnemyCriteria Squid1KillsCriteria { get; set; } = new();
-	public GetCustomLeaderboardEnemyCriteria Squid2KillsCriteria { get; set; } = new();
-	public GetCustomLeaderboardEnemyCriteria Squid3KillsCriteria { get; set; } = new();
+	public GetCustomLeaderboardCriteria Squid1KillsCriteria { get; set; } = new();
+	public GetCustomLeaderboardCriteria Squid2KillsCriteria { get; set; } = new();
+	public GetCustomLeaderboardCriteria Squid3KillsCriteria { get; set; } = new();
 
-	public GetCustomLeaderboardEnemyCriteria CentipedeKillsCriteria { get; set; } = new();
-	public GetCustomLeaderboardEnemyCriteria GigapedeKillsCriteria { get; set; } = new();
-	public GetCustomLeaderboardEnemyCriteria GhostpedeKillsCriteria { get; set; } = new();
+	public GetCustomLeaderboardCriteria CentipedeKillsCriteria { get; set; } = new();
+	public GetCustomLeaderboardCriteria GigapedeKillsCriteria { get; set; } = new();
+	public GetCustomLeaderboardCriteria GhostpedeKillsCriteria { get; set; } = new();
 
-	public GetCustomLeaderboardEnemyCriteria Spider1KillsCriteria { get; set; } = new();
-	public GetCustomLeaderboardEnemyCriteria Spider2KillsCriteria { get; set; } = new();
+	public GetCustomLeaderboardCriteria Spider1KillsCriteria { get; set; } = new();
+	public GetCustomLeaderboardCriteria Spider2KillsCriteria { get; set; } = new();
 
-	public GetCustomLeaderboardEnemyCriteria LeviathanKillsCriteria { get; set; } = new();
-	public GetCustomLeaderboardEnemyCriteria OrbKillsCriteria { get; set; } = new();
-	public GetCustomLeaderboardEnemyCriteria ThornKillsCriteria { get; set; } = new();
+	public GetCustomLeaderboardCriteria LeviathanKillsCriteria { get; set; } = new();
+	public GetCustomLeaderboardCriteria OrbKillsCriteria { get; set; } = new();
+	public GetCustomLeaderboardCriteria ThornKillsCriteria { get; set; } = new();
 }
