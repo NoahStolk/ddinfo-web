@@ -69,14 +69,12 @@ public static class CustomLeaderboardConverters
 	private static GetCustomLeaderboardCriteria ToGetCustomLeaderboardCriteria(this CustomLeaderboardCriteriaEntityValue criteria) => new()
 	{
 		Operator = criteria.Operator,
-		Value = criteria.Value,
 		Expression = criteria.Expression == null ? null : Expression.TryParse(criteria.Expression, out Expression? expression) ? expression.ToString() : null,
 	};
 
 	private static GetCustomLeaderboardCriteria ToGetCustomLeaderboardCriteria(this CustomLeaderboardEnemyCriteriaEntityValue criteria) => new()
 	{
 		Operator = criteria.Operator,
-		Value = criteria.Value,
 		Expression = criteria.Expression == null ? null : Expression.TryParse(criteria.Expression, out Expression? expression) ? expression.ToString() : null,
 	};
 }
