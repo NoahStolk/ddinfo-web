@@ -12,7 +12,7 @@ public partial class MultiSearchDropdown
 	[Parameter]
 	public IReadOnlyDictionary<int, string>? Values { get; set; }
 
-	public IReadOnlyDictionary<int, string> FilteredItems => Values == null ? new Dictionary<int, string>() : _searchValue == null ? Values : Values
+	private IReadOnlyDictionary<int, string> FilteredItems => Values == null ? new Dictionary<int, string>() : _searchValue == null ? Values : Values
 		.Where(kvp =>
 			kvp.Key.ToString().Contains(_searchValue, StringComparison.InvariantCultureIgnoreCase) ||
 			kvp.Value.Contains(_searchValue, StringComparison.InvariantCultureIgnoreCase))

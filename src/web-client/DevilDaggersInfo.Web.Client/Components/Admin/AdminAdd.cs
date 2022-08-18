@@ -26,7 +26,6 @@ public partial class AdminAdd<TModel>
 	public TModel Model { get; set; } = default!;
 
 	[Parameter]
-	[EditorRequired]
 	public RenderFragment ChildContent { get; set; } = null!;
 
 	[Parameter]

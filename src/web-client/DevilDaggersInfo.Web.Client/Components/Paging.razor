@@ -1,38 +1,38 @@
 @using DevilDaggersInfo.Razor.Core.Components.Components
 @using DevilDaggersInfo.Web.Client.Pages
 @{
-	bool f = Component.PageIndex <= 0;
-	bool l = Component.PageIndex >= Component.TotalPages - 1;
+	bool f = Parent.PageIndex <= 0;
+	bool l = Parent.PageIndex >= Parent.TotalPages - 1;
 	const string disabledStyle = "disabled:opacity-50 cursor-default btn-disabled";
 	const string enabledStyle = "btn-gray-light";
-	int pageSize = PagingUtils.GetValidPageSize(Component.PageSize);
+	int pageSize = PagingUtils.GetValidPageSize(Parent.PageSize);
 }
 <div class="flex">
 	<div class="w-10 h-10 mx-1">
-		<button disabled="@f" class="@(f ? disabledStyle : enabledStyle) btn" @onclick="() => Component.ChangePageIndex(0)">@MarkupStrings.NavStart</button>
+		<button disabled="@f" class="@(f ? disabledStyle : enabledStyle) btn" @onclick="() => Parent.ChangePageIndex(0)">@MarkupStrings.NavStart</button>
 	</div>
 	<div class="w-10 h-10 mx-1">
-		<button disabled="@f" class="@(f ? disabledStyle : enabledStyle) btn" @onclick="() => Component.ChangePageIndex(Component.PageIndex - 1)">@MarkupStrings.NavPrev</button>
+		<button disabled="@f" class="@(f ? disabledStyle : enabledStyle) btn" @onclick="() => Parent.ChangePageIndex(Parent.PageIndex - 1)">@MarkupStrings.NavPrev</button>
 	</div>
 	<div class="w-10 h-10 mx-1">
-		<button disabled="@l" class="@(l ? disabledStyle : enabledStyle) btn" @onclick="() => Component.ChangePageIndex(Component.PageIndex + 1)">@MarkupStrings.NavNext</button>
+		<button disabled="@l" class="@(l ? disabledStyle : enabledStyle) btn" @onclick="() => Parent.ChangePageIndex(Parent.PageIndex + 1)">@MarkupStrings.NavNext</button>
 	</div>
 	<div class="w-10 h-10 mx-1">
-		<button disabled="@l" class="@(l ? disabledStyle : enabledStyle) btn" @onclick="() => Component.ChangePageIndex(Component.TotalPages - 1)">@MarkupStrings.NavEnd</button>
+		<button disabled="@l" class="@(l ? disabledStyle : enabledStyle) btn" @onclick="() => Parent.ChangePageIndex(Parent.TotalPages - 1)">@MarkupStrings.NavEnd</button>
 	</div>
-	<SelectList CssClass="relative h-10 mx-1" CssWidthClass="w-10" CssOpenerClass="text-center pt-[6px]" TValue="int" Values="@(Constants.PageSizeOptions.ToList())" DisplayFunction="@(i => i.ToString())" Default="pageSize" Selected="@(i => Component.ChangePageSize(i))" />
+	<SelectList CssClass="relative h-10 mx-1" CssWidthClass="w-10" CssOpenerClass="text-center pt-[6px]" TValue="int" Values="@(Constants.PageSizeOptions.ToList())" DisplayFunction="@(i => i.ToString())" Default="pageSize" Selected="@(i => Parent.ChangePageSize(i))" />
 </div>
-@if (Component.TotalResults == 0)
+@if (Parent.TotalResults == 0)
 {
 	<p class="pt-2">Search returned no results.</p>
 }
 else
 {
-	<p class="p-1">Page @(Component.PageIndex + 1) of @Component.TotalPages (@(Component.PageIndex * pageSize + 1) - @Math.Min(Component.TotalResults, (Component.PageIndex + 1) * pageSize) of @Component.TotalResults)</p>
+	<p class="p-1">Page @(Parent.PageIndex + 1) of @Parent.TotalPages (@(Parent.PageIndex * pageSize + 1) - @Math.Min(Parent.TotalResults, (Parent.PageIndex + 1) * pageSize) of @Parent.TotalResults)</p>
 }
 
 @code
 {
 	[CascadingParameter]
-	public IHasNavigation Component { get; set; } = null!;
+	public IHasNavigation Parent { get; set; } = null!;
 }

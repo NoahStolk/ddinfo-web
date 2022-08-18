@@ -20,7 +20,7 @@
 	private Dictionary<int, string>? _playerNames;
 	private readonly AddSpawnset _addSpawnset = new();
 
-	public async Task PopulateAsync(AdminAdd<AddSpawnset> addComponent)
+	private async Task PopulateAsync(AdminAdd<AddSpawnset> addComponent)
 	{
 		try
 		{

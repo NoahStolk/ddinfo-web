@@ -15,7 +15,7 @@ public partial class AddPage
 	private readonly List<string> _binaryFileSizeErrors = new();
 	private readonly List<string> _screenshotFileSizeErrors = new();
 
-	public async Task PopulateAsync(AdminAdd<AddMod> addComponent)
+	private async Task PopulateAsync(AdminAdd<AddMod> addComponent)
 	{
 		try
 		{

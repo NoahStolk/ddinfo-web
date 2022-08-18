@@ -15,13 +15,13 @@ public partial class SearchDropdown<TKey>
 
 	private bool _show = false;
 
-	public Dictionary<TKey, string> FilteredItems => Values == null ? new() : _searchValue == null ? Values : Values
+	private Dictionary<TKey, string> FilteredItems => Values == null ? new() : _searchValue == null ? Values : Values
 		.Where(kvp =>
 			kvp.Key.ToString()?.Contains(_searchValue, StringComparison.InvariantCultureIgnoreCase) == true ||
 			kvp.Value.Contains(_searchValue, StringComparison.InvariantCultureIgnoreCase))
 		.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
-	public void HandleSelect(TKey? item)
+	private void HandleSelect(TKey? item)
 	{
 		CurrentValue = item;
 		_show = false;

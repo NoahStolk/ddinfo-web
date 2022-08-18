@@ -36,7 +36,7 @@
 	private Dictionary<int, string>? _modNames;
 	private readonly AddPlayer _addPlayer = new();
 
-	public async Task PopulateAsync(AdminAdd<AddPlayer> addComponent)
+	private async Task PopulateAsync(AdminAdd<AddPlayer> addComponent)
 	{
 		try
 		{

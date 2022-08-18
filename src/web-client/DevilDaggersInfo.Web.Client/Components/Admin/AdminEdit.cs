@@ -30,7 +30,6 @@ public partial class AdminEdit<TModel>
 	public int Id { get; set; }
 
 	[Parameter]
-	[EditorRequired]
 	public RenderFragment ChildContent { get; set; } = null!;
 
 	[Parameter]
