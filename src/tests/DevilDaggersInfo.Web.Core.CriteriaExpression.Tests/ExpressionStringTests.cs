@@ -35,14 +35,13 @@ public class ExpressionStringTests
 				IExpressionPart aPart = a.Parts[i];
 				IExpressionPart bPart = b.Parts[i];
 
-				if (aPart is ExpressionValue aValue && (bPart is not ExpressionValue bValue || aValue != bValue))
-					return false;
-
-				if (aPart is ExpressionOperator aOperator && (bPart is not ExpressionOperator bOperator || aOperator != bOperator))
-					return false;
-
-				if (aPart is ExpressionTarget aTarget && (bPart is not ExpressionTarget bTarget || aTarget != bTarget))
-					return false;
+				switch (aPart)
+				{
+					case ExpressionValue aValue when bPart is not ExpressionValue bValue || aValue != bValue:
+					case ExpressionOperator aOperator when bPart is not ExpressionOperator bOperator || aOperator != bOperator:
+					case ExpressionTarget aTarget when bPart is not ExpressionTarget bTarget || aTarget != bTarget:
+						return false;
+				}
 			}
 
 			return true;

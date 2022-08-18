@@ -17,11 +17,6 @@ public class Expression
 
 	public List<IExpressionPart> Parts { get; }
 
-	public override string ToString()
-	{
-		return string.Join(" ", Parts);
-	}
-
 	public static Expression TryParse(string str)
 	{
 		try
@@ -118,6 +113,50 @@ public class Expression
 		}
 
 		return new(parts);
+	}
+
+	public override string ToString()
+	{
+		return string.Join(" ", Parts);
+	}
+
+	public byte[] ToBytes()
+	{
+		using MemoryStream ms = new();
+		using BinaryWriter bw = new(ms);
+
+		bw.Write((byte)0x00); // Version
+
+		foreach (IExpressionPart part in Parts)
+		{
+			switch (part)
+			{
+				case ExpressionOperator op: WriteOperator(bw, op); break;
+				case ExpressionTarget target: WriteTarget(bw, target); break;
+				case ExpressionValue value: WriteValue(bw, value); break;
+				default: throw new CriteriaExpressionParseException($"Criteria expression part type '{part.GetType().Name}' is not supported.");
+			}
+		}
+
+		static void WriteOperator(BinaryWriter bw, ExpressionOperator op)
+		{
+			bw.Write((byte)0x00);
+			bw.Write((byte)op.Operator);
+		}
+
+		static void WriteTarget(BinaryWriter bw, ExpressionTarget target)
+		{
+			bw.Write((byte)0x01);
+			bw.Write((byte)target.Target);
+		}
+
+		static void WriteValue(BinaryWriter bw, ExpressionValue value)
+		{
+			bw.Write((byte)0x02);
+			bw.Write(value.Value);
+		}
+
+		return ms.ToArray();
 	}
 
 	public void Validate()

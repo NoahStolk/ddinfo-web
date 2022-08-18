@@ -4,13 +4,10 @@ namespace DevilDaggersInfo.Web.Core.CriteriaExpression.Parts;
 
 public record ExpressionOperator(ExpressionOperatorType Operator) : IExpressionPart
 {
-	public override string ToString()
+	public override string ToString() => Operator switch
 	{
-		return Operator switch
-		{
-			ExpressionOperatorType.Add => "+",
-			ExpressionOperatorType.Subtract => "-",
-			_ => throw new InvalidEnumConversionException(Operator),
-		};
-	}
+		ExpressionOperatorType.Add => "+",
+		ExpressionOperatorType.Subtract => "-",
+		_ => throw new InvalidEnumConversionException(Operator),
+	};
 }
