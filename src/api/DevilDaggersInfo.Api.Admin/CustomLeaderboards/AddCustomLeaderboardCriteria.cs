@@ -7,6 +7,8 @@ public record AddCustomLeaderboardCriteria
 {
 	public CustomLeaderboardCriteriaOperator Operator { get; set; }
 
-	[Range(0, int.MaxValue)]
+	public string? Expression { get; set; }
+
+	// TODO: Remove.
 	public int Value { get; set; }
 }

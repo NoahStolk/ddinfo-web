@@ -1,7 +1,55 @@
 ﻿@using Microsoft.AspNetCore.Components
 @using DevilDaggersInfo.Api.Admin.CustomLeaderboards
-<InputWrapper Label="@($"{Name} operator")"><SearchDropdown TKey="CustomLeaderboardCriteriaOperator" Values="_operators" Converter="_operatorConverter" ShowDisplayValue="false" @bind-Value="@Criteria.Operator" /></InputWrapper>
-<InputWrapper Label="@($"{Name} value")"><InputNumber class="admin-input" @bind-Value="Criteria.Value" /></InputWrapper>
+@using DevilDaggersInfo.Types.Web.Extensions
+@using DevilDaggersInfo.Web.Core.CriteriaExpression
+@using DevilDaggersInfo.Web.Core.CriteriaExpression.Exceptions
+@using DevilDaggersInfo.Web.Core.CriteriaExpression.Parts
+
+<div class="py-1">
+	<SearchDropdown TKey="CustomLeaderboardCriteriaOperator" Values="_operators" Converter="_operatorConverter" ShowDisplayValue="false" @bind-Value="@Criteria.Operator"/>
+	<InputTextImmediate class="admin-input mr-2" @bind-Value="Criteria.Expression"/>
+
+	@if (Criteria.Expression == null || Criteria.Operator == CustomLeaderboardCriteriaOperator.Any)
+	{
+		<span style="color: @CriteriaType.GetColor()">@CriteriaType.Display()</span>
+		<span>can be anything.</span>
+	}
+	else
+	{
+		try
+		{
+			Expression expression = Expression.TryParse(Criteria.Expression);
+
+			<span style="color: @CriteriaType.GetColor()">@CriteriaType.Display()</span>
+			<span>must be</span>
+			<span style="color: @Criteria.Operator.GetColor()">@Criteria.Operator.Display()</span>
+
+			@MarkupStrings.Space
+
+			foreach (IExpressionPart expressionPart in expression.Parts)
+			{
+				switch (expressionPart)
+				{
+					case ExpressionOperator op:
+						<span style="color: #088">@op.ToString()</span>
+						break;
+					case ExpressionTarget target:
+						<span style="color: @target.Target.GetColor()">@target.ToString()</span>
+						break;
+					case ExpressionValue value:
+						<span style="color: #0f8">@value.ToString()</span>
+						break;
+				}
+
+				@MarkupStrings.Space
+			}
+		}
+		catch (CriteriaExpressionParseException ex)
+		{
+			<span class="text-red">@ex.Message</span>
+		}
+	}
+</div>
 
 @code {
 	private readonly Dictionary<CustomLeaderboardCriteriaOperator, string> _operators = Enum.GetValues<CustomLeaderboardCriteriaOperator>().ToDictionary(e => e, e => e.ToString());
@@ -9,8 +57,8 @@
 
 	[Parameter]
 	[EditorRequired]
-	public string Name { get; set; } = null!;
-	
+	public CustomLeaderboardCriteriaType CriteriaType { get; set; }
+
 	[Parameter]
 	[EditorRequired]
 	public AddCustomLeaderboardCriteria Criteria { get; set; } = null!;
