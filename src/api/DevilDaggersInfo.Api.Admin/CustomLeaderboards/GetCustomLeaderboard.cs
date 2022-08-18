@@ -15,19 +15,12 @@ public record GetCustomLeaderboard
 	public CustomLeaderboardCategory Category { get; init; }
 
 	public GetCustomLeaderboardCriteria GemsCollectedCriteria { get; set; } = new();
-
 	public GetCustomLeaderboardCriteria GemsDespawnedCriteria { get; set; } = new();
-
 	public GetCustomLeaderboardCriteria GemsEatenCriteria { get; set; } = new();
-
 	public GetCustomLeaderboardCriteria EnemiesKilledCriteria { get; set; } = new();
-
 	public GetCustomLeaderboardCriteria DaggersFiredCriteria { get; set; } = new();
-
 	public GetCustomLeaderboardCriteria DaggersHitCriteria { get; set; } = new();
-
 	public GetCustomLeaderboardCriteria HomingStoredCriteria { get; set; } = new();
-
 	public GetCustomLeaderboardCriteria HomingEatenCriteria { get; set; } = new();
 
 	public GetCustomLeaderboardCriteria Skull1KillsCriteria { get; set; } = new();
