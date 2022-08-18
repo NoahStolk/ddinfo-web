@@ -1,5 +1,6 @@
 using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Types.Web;
+using DevilDaggersInfo.Types.Web.Extensions;
 using DevilDaggersInfo.Web.Core.CriteriaExpression.Exceptions;
 using DevilDaggersInfo.Web.Core.CriteriaExpression.Parts;
 using System.Text.RegularExpressions;
@@ -52,38 +53,22 @@ public class Expression
 
 		static IExpressionPart Parse(string str)
 		{
+			if (str.Length == 0)
+				throw new CriteriaExpressionParseException("Empty expression part.");
+
 			if (int.TryParse(str, out int value))
 				return new ExpressionValue(value);
+
+			foreach (CustomLeaderboardCriteriaType criteriaType in Enum.GetValues<CustomLeaderboardCriteriaType>())
+			{
+				if (string.Equals(str, criteriaType.GetIdentifier(), StringComparison.OrdinalIgnoreCase) || string.Equals(str, criteriaType.ToStringFast(), StringComparison.OrdinalIgnoreCase))
+					return new ExpressionTarget(criteriaType);
+			}
 
 			return str switch
 			{
 				"+" => new ExpressionOperator(ExpressionOperatorType.Add),
 				"-" => new ExpressionOperator(ExpressionOperatorType.Subtract),
-				nameof(CustomLeaderboardCriteriaType.GemsCollected) => new ExpressionTarget(CustomLeaderboardCriteriaType.GemsCollected),
-				nameof(CustomLeaderboardCriteriaType.GemsDespawned) => new ExpressionTarget(CustomLeaderboardCriteriaType.GemsDespawned),
-				nameof(CustomLeaderboardCriteriaType.GemsEaten) => new ExpressionTarget(CustomLeaderboardCriteriaType.GemsEaten),
-				nameof(CustomLeaderboardCriteriaType.EnemiesKilled) => new ExpressionTarget(CustomLeaderboardCriteriaType.EnemiesKilled),
-				nameof(CustomLeaderboardCriteriaType.DaggersFired) => new ExpressionTarget(CustomLeaderboardCriteriaType.DaggersFired),
-				nameof(CustomLeaderboardCriteriaType.DaggersHit) => new ExpressionTarget(CustomLeaderboardCriteriaType.DaggersHit),
-				nameof(CustomLeaderboardCriteriaType.HomingStored) => new ExpressionTarget(CustomLeaderboardCriteriaType.HomingStored),
-				nameof(CustomLeaderboardCriteriaType.HomingEaten) => new ExpressionTarget(CustomLeaderboardCriteriaType.HomingEaten),
-				nameof(CustomLeaderboardCriteriaType.Skull1Kills) => new ExpressionTarget(CustomLeaderboardCriteriaType.Skull1Kills),
-				nameof(CustomLeaderboardCriteriaType.Skull2Kills) => new ExpressionTarget(CustomLeaderboardCriteriaType.Skull2Kills),
-				nameof(CustomLeaderboardCriteriaType.Skull3Kills) => new ExpressionTarget(CustomLeaderboardCriteriaType.Skull3Kills),
-				nameof(CustomLeaderboardCriteriaType.Skull4Kills) => new ExpressionTarget(CustomLeaderboardCriteriaType.Skull4Kills),
-				nameof(CustomLeaderboardCriteriaType.SpiderlingKills) => new ExpressionTarget(CustomLeaderboardCriteriaType.SpiderlingKills),
-				nameof(CustomLeaderboardCriteriaType.SpiderEggKills) => new ExpressionTarget(CustomLeaderboardCriteriaType.SpiderEggKills),
-				nameof(CustomLeaderboardCriteriaType.Squid1Kills) => new ExpressionTarget(CustomLeaderboardCriteriaType.Squid1Kills),
-				nameof(CustomLeaderboardCriteriaType.Squid2Kills) => new ExpressionTarget(CustomLeaderboardCriteriaType.Squid2Kills),
-				nameof(CustomLeaderboardCriteriaType.Squid3Kills) => new ExpressionTarget(CustomLeaderboardCriteriaType.Squid3Kills),
-				nameof(CustomLeaderboardCriteriaType.CentipedeKills) => new ExpressionTarget(CustomLeaderboardCriteriaType.CentipedeKills),
-				nameof(CustomLeaderboardCriteriaType.GigapedeKills) => new ExpressionTarget(CustomLeaderboardCriteriaType.GigapedeKills),
-				nameof(CustomLeaderboardCriteriaType.GhostpedeKills) => new ExpressionTarget(CustomLeaderboardCriteriaType.GhostpedeKills),
-				nameof(CustomLeaderboardCriteriaType.Spider1Kills) => new ExpressionTarget(CustomLeaderboardCriteriaType.Spider1Kills),
-				nameof(CustomLeaderboardCriteriaType.Spider2Kills) => new ExpressionTarget(CustomLeaderboardCriteriaType.Spider2Kills),
-				nameof(CustomLeaderboardCriteriaType.LeviathanKills) => new ExpressionTarget(CustomLeaderboardCriteriaType.LeviathanKills),
-				nameof(CustomLeaderboardCriteriaType.OrbKills) => new ExpressionTarget(CustomLeaderboardCriteriaType.OrbKills),
-				nameof(CustomLeaderboardCriteriaType.ThornKills) => new ExpressionTarget(CustomLeaderboardCriteriaType.ThornKills),
 				_ => throw new CriteriaExpressionParseException($"Invalid expression part '{str}'."),
 			};
 		}
