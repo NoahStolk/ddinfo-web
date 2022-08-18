@@ -3,6 +3,7 @@ using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Types.Web.Extensions;
 using DevilDaggersInfo.Web.Core.CriteriaExpression.Exceptions;
 using DevilDaggersInfo.Web.Core.CriteriaExpression.Parts;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 
 namespace DevilDaggersInfo.Web.Core.CriteriaExpression;
@@ -20,31 +21,35 @@ public class Expression
 
 	public List<IExpressionPart> Parts { get; }
 
-	public static Expression TryParse(string str)
+	public static bool TryParse(string str, [NotNullWhen(true)] out Expression? expression)
 	{
 		try
 		{
-			return Parse(str);
+			expression = Parse(str);
+			return true;
 		}
-		catch (Exception ex) when (ex is not CriteriaExpressionParseException)
+		catch
 		{
-			throw new CriteriaExpressionParseException("An unhandled exception occurred while trying to parse the criteria expression.", ex);
+			expression = null;
+			return false;
 		}
 	}
 
-	public static Expression TryParse(byte[] bytes)
+	public static bool TryParse(byte[] bytes, [NotNullWhen(true)] out Expression? expression)
 	{
 		try
 		{
-			return Parse(bytes);
+			expression = Parse(bytes);
+			return true;
 		}
-		catch (Exception ex) when (ex is not CriteriaExpressionParseException)
+		catch
 		{
-			throw new CriteriaExpressionParseException("An unhandled exception occurred while trying to parse the criteria expression.", ex);
+			expression = null;
+			return false;
 		}
 	}
 
-	private static Expression Parse(string str)
+	public static Expression Parse(string str)
 	{
 		str = str.Replace(" ", string.Empty);
 
@@ -76,7 +81,7 @@ public class Expression
 		}
 	}
 
-	private static Expression Parse(byte[] bytes)
+	public static Expression Parse(byte[] bytes)
 	{
 		List<IExpressionPart> parts = new();
 
