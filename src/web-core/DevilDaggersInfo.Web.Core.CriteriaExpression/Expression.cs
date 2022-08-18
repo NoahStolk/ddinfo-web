@@ -161,7 +161,7 @@ public class Expression
 			IExpressionPart part = Parts[i];
 			if (i % 2 != 0 && part is not ExpressionOperator)
 				throw new CriteriaExpressionParseException("Invalid expression.");
-			else if (i % 2 == 0 && part is ExpressionOperator)
+			if (i % 2 == 0 && part is ExpressionOperator)
 				throw new CriteriaExpressionParseException("Invalid expression.");
 		}
 	}
