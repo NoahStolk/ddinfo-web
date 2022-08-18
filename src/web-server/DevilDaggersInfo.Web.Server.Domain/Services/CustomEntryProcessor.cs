@@ -7,6 +7,7 @@ using DevilDaggersInfo.Core.Versioning;
 using DevilDaggersInfo.Types.Core.Spawnsets;
 using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Types.Web.Extensions;
+using DevilDaggersInfo.Web.Core.CriteriaExpression;
 using DevilDaggersInfo.Web.Server.Domain.Commands.CustomEntries;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Values;
@@ -157,31 +158,60 @@ public class CustomEntryProcessor
 
 	private void HandleCriteria(UploadRequest uploadRequest, string? spawnsetName, CustomLeaderboardEntity customLeaderboard)
 	{
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.GemsCollectedCriteria, uploadRequest.GemsCollected);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.GemsDespawnedCriteria, uploadRequest.GemsDespawned);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.GemsEatenCriteria, uploadRequest.GemsEaten);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.EnemiesKilledCriteria, uploadRequest.EnemiesKilled);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.DaggersFiredCriteria, uploadRequest.DaggersFired);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.DaggersHitCriteria, uploadRequest.DaggersHit);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.HomingStoredCriteria, GetFinalHomingValue(uploadRequest));
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.HomingEatenCriteria, uploadRequest.HomingEaten);
-		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.Skull1KillsCriteria, GetFinalEnemyStat(uploadRequest, urd => urd.Skull1sKilled));
-		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.Skull2KillsCriteria, GetFinalEnemyStat(uploadRequest, urd => urd.Skull2sKilled));
-		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.Skull3KillsCriteria, GetFinalEnemyStat(uploadRequest, urd => urd.Skull3sKilled));
-		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.Skull4KillsCriteria, GetFinalEnemyStat(uploadRequest, urd => urd.Skull4sKilled));
-		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.SpiderlingKillsCriteria, GetFinalEnemyStat(uploadRequest, urd => urd.SpiderlingsKilled));
-		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.SpiderEggKillsCriteria, GetFinalEnemyStat(uploadRequest, urd => urd.SpiderEggsKilled));
-		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.Squid1KillsCriteria, GetFinalEnemyStat(uploadRequest, urd => urd.Squid1sKilled));
-		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.Squid2KillsCriteria, GetFinalEnemyStat(uploadRequest, urd => urd.Squid2sKilled));
-		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.Squid3KillsCriteria, GetFinalEnemyStat(uploadRequest, urd => urd.Squid3sKilled));
-		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.CentipedeKillsCriteria, GetFinalEnemyStat(uploadRequest, urd => urd.CentipedesKilled));
-		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.GigapedeKillsCriteria, GetFinalEnemyStat(uploadRequest, urd => urd.GigapedesKilled));
-		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.GhostpedeKillsCriteria, GetFinalEnemyStat(uploadRequest, urd => urd.GhostpedesKilled));
-		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.Spider1KillsCriteria, GetFinalEnemyStat(uploadRequest, urd => urd.Spider1sKilled));
-		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.Spider2KillsCriteria, GetFinalEnemyStat(uploadRequest, urd => urd.Spider2sKilled));
-		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.LeviathanKillsCriteria, GetFinalEnemyStat(uploadRequest, urd => urd.LeviathansKilled));
-		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.OrbKillsCriteria, GetFinalEnemyStat(uploadRequest, urd => urd.OrbsKilled));
-		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.ThornKillsCriteria, GetFinalEnemyStat(uploadRequest, urd => urd.ThornsKilled));
+		TargetCollection targetCollection = new()
+		{
+			GemsCollected = uploadRequest.GemsCollected,
+			GemsDespawned = uploadRequest.GemsDespawned,
+			GemsEaten = uploadRequest.GemsEaten,
+			EnemiesKilled = uploadRequest.EnemiesKilled,
+			DaggersFired = uploadRequest.DaggersFired,
+			DaggersHit = uploadRequest.DaggersHit,
+			HomingStored = GetFinalHomingValue(uploadRequest),
+			HomingEaten = uploadRequest.HomingEaten,
+			Skull1Kills = GetFinalEnemyStat(uploadRequest, urd => urd.Skull1sKilled),
+			Skull2Kills = GetFinalEnemyStat(uploadRequest, urd => urd.Skull2sKilled),
+			Skull3Kills = GetFinalEnemyStat(uploadRequest, urd => urd.Skull3sKilled),
+			Skull4Kills = GetFinalEnemyStat(uploadRequest, urd => urd.Skull4sKilled),
+			SpiderlingKills = GetFinalEnemyStat(uploadRequest, urd => urd.SpiderlingsKilled),
+			SpiderEggKills = GetFinalEnemyStat(uploadRequest, urd => urd.SpiderEggsKilled),
+			Squid1Kills = GetFinalEnemyStat(uploadRequest, urd => urd.Squid1sKilled),
+			Squid2Kills = GetFinalEnemyStat(uploadRequest, urd => urd.Squid2sKilled),
+			Squid3Kills = GetFinalEnemyStat(uploadRequest, urd => urd.Squid3sKilled),
+			CentipedeKills = GetFinalEnemyStat(uploadRequest, urd => urd.CentipedesKilled),
+			GigapedeKills = GetFinalEnemyStat(uploadRequest, urd => urd.GigapedesKilled),
+			GhostpedeKills = GetFinalEnemyStat(uploadRequest, urd => urd.GhostpedesKilled),
+			Spider1Kills = GetFinalEnemyStat(uploadRequest, urd => urd.Spider1sKilled),
+			Spider2Kills = GetFinalEnemyStat(uploadRequest, urd => urd.Spider2sKilled),
+			LeviathanKills = GetFinalEnemyStat(uploadRequest, urd => urd.LeviathansKilled),
+			OrbKills = GetFinalEnemyStat(uploadRequest, urd => urd.OrbsKilled),
+			ThornKills = GetFinalEnemyStat(uploadRequest, urd => urd.ThornsKilled),
+		};
+
+		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.GemsCollectedCriteria, targetCollection.GemsCollected);
+		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.GemsDespawnedCriteria, targetCollection.GemsDespawned);
+		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.GemsEatenCriteria, targetCollection.GemsEaten);
+		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.EnemiesKilledCriteria, targetCollection.EnemiesKilled);
+		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.DaggersFiredCriteria, targetCollection.DaggersFired);
+		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.DaggersHitCriteria, targetCollection.DaggersHit);
+		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.HomingStoredCriteria, targetCollection.HomingStored);
+		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.HomingEatenCriteria, targetCollection.HomingEaten);
+		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.Skull1KillsCriteria, targetCollection.Skull1Kills);
+		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.Skull2KillsCriteria, targetCollection.Skull2Kills);
+		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.Skull3KillsCriteria, targetCollection.Skull3Kills);
+		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.Skull4KillsCriteria, targetCollection.Skull4Kills);
+		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.SpiderlingKillsCriteria, targetCollection.SpiderlingKills);
+		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.SpiderEggKillsCriteria, targetCollection.SpiderEggKills);
+		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.Squid1KillsCriteria, targetCollection.Squid1Kills);
+		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.Squid2KillsCriteria, targetCollection.Squid2Kills);
+		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.Squid3KillsCriteria, targetCollection.Squid3Kills);
+		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.CentipedeKillsCriteria, targetCollection.CentipedeKills);
+		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.GigapedeKillsCriteria, targetCollection.GigapedeKills);
+		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.GhostpedeKillsCriteria, targetCollection.GhostpedeKills);
+		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.Spider1KillsCriteria, targetCollection.Spider1Kills);
+		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.Spider2KillsCriteria, targetCollection.Spider2Kills);
+		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.LeviathanKillsCriteria, targetCollection.LeviathanKills);
+		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.OrbKillsCriteria, targetCollection.OrbKills);
+		HandleEnemyCriteria(uploadRequest, spawnsetName, customLeaderboard.ThornKillsCriteria, targetCollection.ThornKills);
 
 		static int GetFinalEnemyStat(UploadRequest uploadRequest, Func<UploadRequestData, ushort[]> selector)
 		{
@@ -190,15 +220,23 @@ public class CustomEntryProcessor
 		}
 
 		void HandleCriteria(UploadRequest uploadRequest, string? spawnsetName, CustomLeaderboardCriteriaEntityValue criteria, int value, [CallerArgumentExpression("criteria")] string criteriaExpression = "")
-			=> Handle(uploadRequest, spawnsetName, criteria.Operator, criteria.Value, value, criteriaExpression);
+			=> Handle(uploadRequest, spawnsetName, criteria.Operator, criteria.Expression, value, criteriaExpression);
 
 		void HandleEnemyCriteria(UploadRequest uploadRequest, string? spawnsetName, CustomLeaderboardEnemyCriteriaEntityValue criteria, int value, [CallerArgumentExpression("criteria")] string criteriaExpression = "")
-			=> Handle(uploadRequest, spawnsetName, criteria.Operator, criteria.Value, value, criteriaExpression);
+			=> Handle(uploadRequest, spawnsetName, criteria.Operator, criteria.Expression, value, criteriaExpression);
 
-		void Handle(UploadRequest uploadRequest, string? spawnsetName, CustomLeaderboardCriteriaOperator op, int expectedValue, int value, string criteriaExpression)
+		void Handle(UploadRequest uploadRequest, string? spawnsetName, CustomLeaderboardCriteriaOperator op, byte[]? expression, int value, string criteriaExpression)
 		{
-			if (!IsValidForCriteria(op, expectedValue, value))
-				LogAndThrowValidationException(uploadRequest, $"Did not meet the {criteriaExpression}. Criteria: {op.Display()} {expectedValue} Value: {value}", spawnsetName);
+			if (expression == null)
+				return;
+
+			if (!Expression.TryParse(expression, out Expression? expressionParsed))
+				throw new InvalidOperationException($"Could not parse criteria expression '{criteriaExpression}'.");
+
+			int evaluatedValue = expressionParsed.Evaluate(targetCollection);
+
+			if (!IsValidForCriteria(op, evaluatedValue, value))
+				LogAndThrowValidationException(uploadRequest, $"Did not meet the {criteriaExpression}. Criteria: {op.Display()} {evaluatedValue}. Value: {value}.", spawnsetName);
 		}
 
 		static bool IsValidForCriteria(CustomLeaderboardCriteriaOperator op, int expectedValue, int value) => op switch
