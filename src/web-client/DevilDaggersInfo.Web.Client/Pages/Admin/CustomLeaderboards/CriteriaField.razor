@@ -20,29 +20,7 @@
 		{
 			Expression expression = Expression.Parse(Criteria.Expression);
 
-			<span style="color: @CriteriaType.GetColor()">@CriteriaType.Display()</span>
-			<span>must be</span>
-			<span style="color: @Criteria.Operator.GetColor()">@Criteria.Operator.Display()</span>
-
-			@MarkupStrings.Space
-
-			foreach (IExpressionPart expressionPart in expression.Parts)
-			{
-				switch (expressionPart)
-				{
-					case ExpressionOperator op:
-						<span style="color: #088">@op.ToString()</span>
-						break;
-					case ExpressionTarget target:
-						<span style="color: @target.Target.GetColor()">@target.ToString()</span>
-						break;
-					case ExpressionValue value:
-						<span style="color: #0f8">@value.ToString()</span>
-						break;
-				}
-
-				@MarkupStrings.Space
-			}
+			<CriteriaExpressionComponent Expression="expression" CriteriaOperator="Criteria.Operator" CriteriaType="CriteriaType" />
 		}
 		catch (CriteriaExpressionParseException ex)
 		{

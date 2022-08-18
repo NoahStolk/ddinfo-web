@@ -134,47 +134,70 @@ public class CustomLeaderboardRepository
 
 		List<int> existingReplayIds = _customEntryRepository.GetExistingCustomEntryReplayIds(customLeaderboard.CustomEntries!.ConvertAll(ce => ce.Id));
 
-		List<CustomLeaderboardCriteria> criteria = new()
-		{
-			AddCriteria(CustomLeaderboardCriteriaType.GemsCollected, customLeaderboard.GemsCollectedCriteria),
-			AddCriteria(CustomLeaderboardCriteriaType.GemsDespawned, customLeaderboard.GemsDespawnedCriteria),
-			AddCriteria(CustomLeaderboardCriteriaType.GemsEaten, customLeaderboard.GemsEatenCriteria),
-			AddCriteria(CustomLeaderboardCriteriaType.EnemiesKilled, customLeaderboard.EnemiesKilledCriteria),
-			AddCriteria(CustomLeaderboardCriteriaType.DaggersFired, customLeaderboard.DaggersFiredCriteria),
-			AddCriteria(CustomLeaderboardCriteriaType.DaggersHit, customLeaderboard.DaggersHitCriteria),
-			AddCriteria(CustomLeaderboardCriteriaType.HomingStored, customLeaderboard.HomingStoredCriteria),
-			AddCriteria(CustomLeaderboardCriteriaType.HomingEaten, customLeaderboard.HomingEatenCriteria),
-			AddEnemyCriteria(CustomLeaderboardCriteriaType.Skull1Kills, customLeaderboard.Skull1KillsCriteria),
-			AddEnemyCriteria(CustomLeaderboardCriteriaType.Skull2Kills, customLeaderboard.Skull2KillsCriteria),
-			AddEnemyCriteria(CustomLeaderboardCriteriaType.Skull3Kills, customLeaderboard.Skull3KillsCriteria),
-			AddEnemyCriteria(CustomLeaderboardCriteriaType.Skull4Kills, customLeaderboard.Skull4KillsCriteria),
-			AddEnemyCriteria(CustomLeaderboardCriteriaType.SpiderlingKills, customLeaderboard.SpiderlingKillsCriteria),
-			AddEnemyCriteria(CustomLeaderboardCriteriaType.SpiderEggKills, customLeaderboard.SpiderEggKillsCriteria),
-			AddEnemyCriteria(CustomLeaderboardCriteriaType.Squid1Kills, customLeaderboard.Squid1KillsCriteria),
-			AddEnemyCriteria(CustomLeaderboardCriteriaType.Squid2Kills, customLeaderboard.Squid2KillsCriteria),
-			AddEnemyCriteria(CustomLeaderboardCriteriaType.Squid3Kills, customLeaderboard.Squid3KillsCriteria),
-			AddEnemyCriteria(CustomLeaderboardCriteriaType.CentipedeKills, customLeaderboard.CentipedeKillsCriteria),
-			AddEnemyCriteria(CustomLeaderboardCriteriaType.GigapedeKills, customLeaderboard.GigapedeKillsCriteria),
-			AddEnemyCriteria(CustomLeaderboardCriteriaType.GhostpedeKills, customLeaderboard.GhostpedeKillsCriteria),
-			AddEnemyCriteria(CustomLeaderboardCriteriaType.Spider1Kills, customLeaderboard.Spider1KillsCriteria),
-			AddEnemyCriteria(CustomLeaderboardCriteriaType.Spider2Kills, customLeaderboard.Spider2KillsCriteria),
-			AddEnemyCriteria(CustomLeaderboardCriteriaType.LeviathanKills, customLeaderboard.LeviathanKillsCriteria),
-			AddEnemyCriteria(CustomLeaderboardCriteriaType.OrbKills, customLeaderboard.OrbKillsCriteria),
-			AddEnemyCriteria(CustomLeaderboardCriteriaType.ThornKills, customLeaderboard.ThornKillsCriteria),
-		};
+		List<CustomLeaderboardCriteria> criteria = new();
+		if (customLeaderboard.GemsCollectedCriteria.Expression != null)
+			criteria.Add(AddCriteria(CustomLeaderboardCriteriaType.GemsCollected, customLeaderboard.GemsCollectedCriteria.Operator, customLeaderboard.GemsCollectedCriteria.Expression));
+		if (customLeaderboard.GemsDespawnedCriteria.Expression != null)
+			criteria.Add(AddCriteria(CustomLeaderboardCriteriaType.GemsDespawned, customLeaderboard.GemsDespawnedCriteria.Operator, customLeaderboard.GemsDespawnedCriteria.Expression));
+		if (customLeaderboard.GemsEatenCriteria.Expression != null)
+			criteria.Add(AddCriteria(CustomLeaderboardCriteriaType.GemsEaten, customLeaderboard.GemsEatenCriteria.Operator, customLeaderboard.GemsEatenCriteria.Expression));
+		if (customLeaderboard.EnemiesKilledCriteria.Expression != null)
+			criteria.Add(AddCriteria(CustomLeaderboardCriteriaType.EnemiesKilled, customLeaderboard.EnemiesKilledCriteria.Operator, customLeaderboard.EnemiesKilledCriteria.Expression));
+		if (customLeaderboard.DaggersFiredCriteria.Expression != null)
+			criteria.Add(AddCriteria(CustomLeaderboardCriteriaType.DaggersFired, customLeaderboard.DaggersFiredCriteria.Operator, customLeaderboard.DaggersFiredCriteria.Expression));
+		if (customLeaderboard.DaggersHitCriteria.Expression != null)
+			criteria.Add(AddCriteria(CustomLeaderboardCriteriaType.DaggersHit, customLeaderboard.DaggersHitCriteria.Operator, customLeaderboard.DaggersHitCriteria.Expression));
+		if (customLeaderboard.HomingStoredCriteria.Expression != null)
+			criteria.Add(AddCriteria(CustomLeaderboardCriteriaType.HomingStored, customLeaderboard.HomingStoredCriteria.Operator, customLeaderboard.HomingStoredCriteria.Expression));
+		if (customLeaderboard.HomingEatenCriteria.Expression != null)
+			criteria.Add(AddCriteria(CustomLeaderboardCriteriaType.HomingEaten, customLeaderboard.HomingEatenCriteria.Operator, customLeaderboard.HomingEatenCriteria.Expression));
+		if (customLeaderboard.Skull1KillsCriteria.Expression != null)
+			criteria.Add(AddEnemyCriteria(CustomLeaderboardCriteriaType.Skull1Kills, customLeaderboard.Skull1KillsCriteria.Operator, customLeaderboard.Skull1KillsCriteria.Expression));
+		if (customLeaderboard.Skull2KillsCriteria.Expression != null)
+			criteria.Add(AddEnemyCriteria(CustomLeaderboardCriteriaType.Skull2Kills, customLeaderboard.Skull2KillsCriteria.Operator, customLeaderboard.Skull2KillsCriteria.Expression));
+		if (customLeaderboard.Skull3KillsCriteria.Expression != null)
+			criteria.Add(AddEnemyCriteria(CustomLeaderboardCriteriaType.Skull3Kills, customLeaderboard.Skull3KillsCriteria.Operator, customLeaderboard.Skull3KillsCriteria.Expression));
+		if (customLeaderboard.Skull4KillsCriteria.Expression != null)
+			criteria.Add(AddEnemyCriteria(CustomLeaderboardCriteriaType.Skull4Kills, customLeaderboard.Skull4KillsCriteria.Operator, customLeaderboard.Skull4KillsCriteria.Expression));
+		if (customLeaderboard.SpiderlingKillsCriteria.Expression != null)
+			criteria.Add(AddEnemyCriteria(CustomLeaderboardCriteriaType.SpiderlingKills, customLeaderboard.SpiderlingKillsCriteria.Operator, customLeaderboard.SpiderlingKillsCriteria.Expression));
+		if (customLeaderboard.SpiderEggKillsCriteria.Expression != null)
+			criteria.Add(AddEnemyCriteria(CustomLeaderboardCriteriaType.SpiderEggKills, customLeaderboard.SpiderEggKillsCriteria.Operator, customLeaderboard.SpiderEggKillsCriteria.Expression));
+		if (customLeaderboard.Squid1KillsCriteria.Expression != null)
+			criteria.Add(AddEnemyCriteria(CustomLeaderboardCriteriaType.Squid1Kills, customLeaderboard.Squid1KillsCriteria.Operator, customLeaderboard.Squid1KillsCriteria.Expression));
+		if (customLeaderboard.Squid2KillsCriteria.Expression != null)
+			criteria.Add(AddEnemyCriteria(CustomLeaderboardCriteriaType.Squid2Kills, customLeaderboard.Squid2KillsCriteria.Operator, customLeaderboard.Squid2KillsCriteria.Expression));
+		if (customLeaderboard.Squid3KillsCriteria.Expression != null)
+			criteria.Add(AddEnemyCriteria(CustomLeaderboardCriteriaType.Squid3Kills, customLeaderboard.Squid3KillsCriteria.Operator, customLeaderboard.Squid3KillsCriteria.Expression));
+		if (customLeaderboard.CentipedeKillsCriteria.Expression != null)
+			criteria.Add(AddEnemyCriteria(CustomLeaderboardCriteriaType.CentipedeKills, customLeaderboard.CentipedeKillsCriteria.Operator, customLeaderboard.CentipedeKillsCriteria.Expression));
+		if (customLeaderboard.GigapedeKillsCriteria.Expression != null)
+			criteria.Add(AddEnemyCriteria(CustomLeaderboardCriteriaType.GigapedeKills, customLeaderboard.GigapedeKillsCriteria.Operator, customLeaderboard.GigapedeKillsCriteria.Expression));
+		if (customLeaderboard.GhostpedeKillsCriteria.Expression != null)
+			criteria.Add(AddEnemyCriteria(CustomLeaderboardCriteriaType.GhostpedeKills, customLeaderboard.GhostpedeKillsCriteria.Operator, customLeaderboard.GhostpedeKillsCriteria.Expression));
+		if (customLeaderboard.Spider1KillsCriteria.Expression != null)
+			criteria.Add(AddEnemyCriteria(CustomLeaderboardCriteriaType.Spider1Kills, customLeaderboard.Spider1KillsCriteria.Operator, customLeaderboard.Spider1KillsCriteria.Expression));
+		if (customLeaderboard.Spider2KillsCriteria.Expression != null)
+			criteria.Add(AddEnemyCriteria(CustomLeaderboardCriteriaType.Spider2Kills, customLeaderboard.Spider2KillsCriteria.Operator, customLeaderboard.Spider2KillsCriteria.Expression));
+		if (customLeaderboard.LeviathanKillsCriteria.Expression != null)
+			criteria.Add(AddEnemyCriteria(CustomLeaderboardCriteriaType.LeviathanKills, customLeaderboard.LeviathanKillsCriteria.Operator, customLeaderboard.LeviathanKillsCriteria.Expression));
+		if (customLeaderboard.OrbKillsCriteria.Expression != null)
+			criteria.Add(AddEnemyCriteria(CustomLeaderboardCriteriaType.OrbKills, customLeaderboard.OrbKillsCriteria.Operator, customLeaderboard.OrbKillsCriteria.Expression));
+		if (customLeaderboard.ThornKillsCriteria.Expression != null)
+			AddEnemyCriteria(CustomLeaderboardCriteriaType.ThornKills, customLeaderboard.ThornKillsCriteria.Operator, customLeaderboard.ThornKillsCriteria.Expression);
 
-		static CustomLeaderboardCriteria AddCriteria(CustomLeaderboardCriteriaType criteriaType, CustomLeaderboardCriteriaEntityValue criteria) => new()
+		static CustomLeaderboardCriteria AddCriteria(CustomLeaderboardCriteriaType criteriaType, CustomLeaderboardCriteriaOperator op, byte[] expression) => new()
 		{
 			Type = criteriaType,
-			Operator = criteria.Operator,
-			Value = criteria.Value,
+			Operator = op,
+			Expression = expression,
 		};
 
-		static CustomLeaderboardCriteria AddEnemyCriteria(CustomLeaderboardCriteriaType criteriaType, CustomLeaderboardEnemyCriteriaEntityValue criteria) => new()
+		static CustomLeaderboardCriteria AddEnemyCriteria(CustomLeaderboardCriteriaType criteriaType, CustomLeaderboardCriteriaOperator op, byte[] expression) => new()
 		{
 			Type = criteriaType,
-			Operator = criteria.Operator,
-			Value = criteria.Value,
+			Operator = op,
+			Expression = expression,
 		};
 
 		return new()

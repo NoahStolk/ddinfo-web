@@ -51,9 +51,6 @@
 
 @code
 {
-	private readonly Dictionary<CustomLeaderboardCriteriaOperator, string> _operators = Enum.GetValues<CustomLeaderboardCriteriaOperator>().ToDictionary(e => e, e => e.ToString());
-	private readonly Func<string, CustomLeaderboardCriteriaOperator> _operatorConverter = Enum.Parse<CustomLeaderboardCriteriaOperator>;
-
 	private readonly EditCustomLeaderboard _editCustomLeaderboard = new();
 
 	[Parameter, EditorRequired] public int Id { get; set; }
