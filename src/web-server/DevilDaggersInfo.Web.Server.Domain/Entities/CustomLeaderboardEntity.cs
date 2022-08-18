@@ -77,6 +77,6 @@ public class CustomLeaderboardEntity : IAuditable
 
 	public List<CustomEntryEntity>? CustomEntries { get; set; }
 
-	public CustomLeaderboardDagger? GetDaggerFromTime(int time)
+	public CustomLeaderboardDagger? DaggerFromTime(int time)
 		=> IsFeatured ? CustomLeaderboardUtils.GetDaggerFromTime(Category, time, Leviathan, Devil, Golden, Silver, Bronze) : null;
 }

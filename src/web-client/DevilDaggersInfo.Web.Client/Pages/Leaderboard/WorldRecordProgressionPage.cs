@@ -36,8 +36,8 @@ public partial class WorldRecordProgressionPage
 	private List<GetWorldRecordHolder>? _worldRecordHolders;
 	private List<GetWorldRecord>? _worldRecords;
 
-	private Dictionary<string, bool> _worldRecordHoldersSortings = new();
-	private Dictionary<string, bool> _worldRecordsSortings = new();
+	private readonly Dictionary<string, bool> _worldRecordHoldersSortings = new();
+	private readonly Dictionary<string, bool> _worldRecordsSortings = new();
 
 	[Inject]
 	public MainApiHttpClient Http { get; set; } = null!;
@@ -63,7 +63,7 @@ public partial class WorldRecordProgressionPage
 
 		List<LineData> set = data.WorldRecords.Select((wr, i) => new LineData(wr.DateTime.Ticks, wr.Entry.Time, i)).ToList();
 		_dataOptions = new(minX.Ticks, null, maxX.Ticks, minY, 100, maxY);
-		_lineDataSets.Add(new("#f00", true, true, true, set, (ds, d) =>
+		_lineDataSets.Add(new("#f00", true, true, true, set, (_, d) =>
 		{
 			GetWorldRecord? wr = data.WorldRecords.Count <= d.Index ? null : data.WorldRecords[d.Index];
 			if (wr == null)

@@ -1,3 +1,4 @@
+// ReSharper disable StringLiteralTypo
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Net.Http.Headers;
 

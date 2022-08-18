@@ -5,7 +5,7 @@ namespace DevilDaggersInfo.Web.Server.Domain.Extensions;
 
 public static class CustomLeaderboardsClientExtensions
 {
-	public static CustomLeaderboardsClient GetClientFromString(this string clientString) => clientString switch
+	public static CustomLeaderboardsClient ClientFromString(this string clientString) => clientString switch
 	{
 		"DevilDaggersCustomLeaderboards" => CustomLeaderboardsClient.DevilDaggersCustomLeaderboards,
 		"ddstats-rust" => CustomLeaderboardsClient.DdstatsRust,

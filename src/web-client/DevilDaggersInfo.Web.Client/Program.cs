@@ -14,7 +14,7 @@ public static class Program
 
 	public static async Task Main(string[] args)
 	{
-		Version = Assembly.GetExecutingAssembly()?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
+		Version = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
 
 		WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault(args);
 
@@ -30,7 +30,7 @@ public static class Program
 		builder.Services.AddHttpClient<MainApiHttpClient>(client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
 		builder.Services.AddHttpClient<AdminApiHttpClient>(client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
 
-		builder.Services.AddSingleton<IJSUnmarshalledRuntime>(serviceProvider => (IJSUnmarshalledRuntime)serviceProvider.GetRequiredService<IJSRuntime>());
+		builder.Services.AddSingleton(serviceProvider => (IJSUnmarshalledRuntime)serviceProvider.GetRequiredService<IJSRuntime>());
 
 		builder.Services.AddBlazoredLocalStorage();
 

@@ -1,3 +1,4 @@
+// ReSharper disable StringLiteralTypo
 using DevilDaggersInfo.Web.Server.Domain.Utils;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Tests;
@@ -35,6 +36,6 @@ public class PasswordValidationTests
 	[DataRow("qQ2qQ2qQ2")]
 	public void TestInvalidPasswords(string password)
 	{
-		Assert.ThrowsException<ArgumentException>(() => PasswordValidator.CreatePasswordHash(password, out byte[] hash, out byte[] salt));
+		Assert.ThrowsException<ArgumentException>(() => PasswordValidator.CreatePasswordHash(password, out _, out _));
 	}
 }

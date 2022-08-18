@@ -55,31 +55,31 @@ public class ModsController : ControllerBase
 		if (onlyHosted)
 			data = data.Where(kvp => kvp.Value.ModArchive != null).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
-		List<GetModOverview> modDtos = data
+		List<GetModOverview> modApiModels = data
 			.Select(kvp => kvp.Key.ToGetModOverview(kvp.Value))
 			.ToList();
 
-		modDtos = (sortBy switch
+		modApiModels = (sortBy switch
 		{
-			ModSorting.Name => modDtos.OrderBy(m => m.Name.ToLower(), ascending),
-			ModSorting.Authors => modDtos.OrderBy(m => m.Authors.FirstOrDefault()?.ToLower(), ascending),
-			ModSorting.LastUpdated => modDtos.OrderBy(m => m.LastUpdated, ascending),
-			ModSorting.ModTypes => modDtos.OrderBy(m => m.ModTypes, ascending),
-			ModSorting.Hosted => modDtos.OrderBy(m => m.IsHosted, ascending),
-			ModSorting.ProhibitedAssets => modDtos.OrderBy(m => m.ContainsProhibitedAssets, ascending),
-			_ => modDtos.OrderBy(m => m.Id, ascending),
+			ModSorting.Name => modApiModels.OrderBy(m => m.Name.ToLower(), ascending),
+			ModSorting.Authors => modApiModels.OrderBy(m => m.Authors.FirstOrDefault()?.ToLower(), ascending),
+			ModSorting.LastUpdated => modApiModels.OrderBy(m => m.LastUpdated, ascending),
+			ModSorting.ModTypes => modApiModels.OrderBy(m => m.ModTypes, ascending),
+			ModSorting.Hosted => modApiModels.OrderBy(m => m.IsHosted, ascending),
+			ModSorting.ProhibitedAssets => modApiModels.OrderBy(m => m.ContainsProhibitedAssets, ascending),
+			_ => modApiModels.OrderBy(m => m.Id, ascending),
 		}).ToList();
 
 		int totalMods = data.Count;
 		int lastPageIndex = totalMods / pageSize;
-		modDtos = modDtos
+		modApiModels = modApiModels
 			.Skip(Math.Min(pageIndex, lastPageIndex) * pageSize)
 			.Take(pageSize)
 			.ToList();
 
 		return new Page<GetModOverview>
 		{
-			Results = modDtos,
+			Results = modApiModels,
 			TotalResults = totalMods,
 		};
 	}

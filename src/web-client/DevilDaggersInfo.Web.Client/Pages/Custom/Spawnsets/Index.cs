@@ -40,12 +40,12 @@ public partial class Index : IHasNavigation
 	[SupplyParameterFromQuery]
 	public bool Ascending { get; set; }
 
-	private Dictionary<SpawnsetSorting, bool> _sortings = new();
+	private readonly Dictionary<SpawnsetSorting, bool> _sortings = new();
 
 	public Page<GetSpawnsetOverview>? GetSpawnsets { get; set; }
 
 	public int TotalPages => GetSpawnsets == null ? 0 : (GetSpawnsets.TotalResults - 1) / PagingUtils.GetValidPageSize(PageSize) + 1;
-	public int TotalResults => GetSpawnsets == null ? 0 : GetSpawnsets.TotalResults;
+	public int TotalResults => GetSpawnsets?.TotalResults ?? 0;
 
 	protected override void OnInitialized()
 	{

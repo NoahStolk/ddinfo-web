@@ -132,7 +132,7 @@ public partial class PlayerPage
 
 			List<LineData> set = GetPlayerHistory.ScoreHistory.Select((sh, i) => new LineData(sh.DateTime.Ticks, sh.Time, i)).ToList();
 			_progressionScoreOptions = new(minX.Ticks, null, maxX.Ticks, minY, scale, maxY);
-			_progressionScoreData.Add(new("#f00", true, true, true, set, (ds, d) =>
+			_progressionScoreData.Add(new("#f00", true, true, true, set, (_, d) =>
 			{
 				GetPlayerHistoryScoreEntry? scoreEntry = GetPlayerHistory.ScoreHistory.Count <= d.Index ? null : GetPlayerHistory.ScoreHistory[d.Index];
 				if (scoreEntry == null)
@@ -166,7 +166,7 @@ public partial class PlayerPage
 
 			List<LineData> set = GetPlayerHistory.RankHistory.Select((rh, i) => new LineData(rh.DateTime.Ticks, rh.Rank, i)).ToList();
 			_progressionRankOptions = new(minX.Ticks, null, maxX.Ticks, 0, scale, maxY, false, true);
-			_progressionRankData.Add(new("#ff0", false, true, true, set, (ds, d) =>
+			_progressionRankData.Add(new("#ff0", false, true, true, set, (_, d) =>
 			{
 				GetPlayerHistoryRankEntry? rankEntry = GetPlayerHistory.RankHistory.Count <= d.Index ? null : GetPlayerHistory.RankHistory[d.Index];
 				return rankEntry == null ? new() : new()

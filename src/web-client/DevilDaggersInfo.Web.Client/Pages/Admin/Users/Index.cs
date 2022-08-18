@@ -13,7 +13,7 @@ public partial class Index
 
 	private Deletion? _deletion;
 
-	private bool? IsAdmin => UserRoles == null ? null : UserRoles.Contains(Roles.Admin);
+	private bool? IsAdmin => UserRoles?.Contains(Roles.Admin);
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -36,10 +36,7 @@ public partial class Index
 		}
 		catch (HttpRequestException ex)
 		{
-			if (ex.StatusCode.HasValue)
-				_errorMessage = $"HTTP {(int)ex.StatusCode}: {ex.StatusCode}";
-			else
-				_errorMessage = $"An error occurred while sending the request. {ex.Message}";
+			_errorMessage = ex.StatusCode.HasValue ? $"HTTP {(int)ex.StatusCode}: {ex.StatusCode}" : $"An error occurred while sending the request. {ex.Message}";
 
 			_errorThrown = true;
 		}

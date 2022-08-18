@@ -106,11 +106,11 @@ public readonly record struct MainBlock
 	{
 		using MemoryStream ms = new(buffer);
 		using BinaryReader br = new(ms);
-		Marker = GetUtf8StringFromBytes(br.ReadBytes(12));
+		Marker = Utf8StringFromBytes(br.ReadBytes(12));
 		FormatVersion = br.ReadInt32();
 
 		PlayerId = br.ReadInt32();
-		PlayerName = GetUtf8StringFromBytes(br.ReadBytes(32));
+		PlayerName = Utf8StringFromBytes(br.ReadBytes(32));
 		Time = br.ReadSingle();
 		GemsCollected = br.ReadInt32();
 		EnemiesKilled = br.ReadInt32();
@@ -166,7 +166,7 @@ public readonly record struct MainBlock
 		IsInGame = br.ReadBoolean();
 
 		ReplayPlayerId = br.ReadInt32();
-		ReplayPlayerName = GetUtf8StringFromBytes(br.ReadBytes(32));
+		ReplayPlayerName = Utf8StringFromBytes(br.ReadBytes(32));
 
 		SurvivalHashMd5 = br.ReadBytes(16);
 
@@ -209,6 +209,6 @@ public readonly record struct MainBlock
 		TimeAttackOrRaceFinished = br.ReadBoolean();
 	}
 
-	private static string GetUtf8StringFromBytes(byte[] bytes)
-		=> Encoding.UTF8.GetString(bytes[0..Array.IndexOf(bytes, (byte)0)]);
+	private static string Utf8StringFromBytes(byte[] bytes)
+		=> Encoding.UTF8.GetString(bytes[..Array.IndexOf(bytes, (byte)0)]);
 }

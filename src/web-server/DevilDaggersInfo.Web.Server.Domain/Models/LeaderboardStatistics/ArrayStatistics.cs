@@ -21,6 +21,6 @@ public class ArrayStatistics
 		Gems.Populate(entries.Select(e => (double)e.Gems), d => d);
 		DaggersFired.Populate(entries.Select(e => (double)e.DaggersFired), d => Math.Round(d / 100) * 100);
 		DaggersHit.Populate(entries.Select(e => (double)e.DaggersHit), d => Math.Round(d / 100) * 100);
-		Accuracy.Populate(entries.Select(e => e.DaggersFired == 0 ? 0 : e.DaggersHit / (double)e.DaggersFired * 100), d => Math.Floor(d));
+		Accuracy.Populate(entries.Select(e => e.DaggersFired == 0 ? 0 : e.DaggersHit / (double)e.DaggersFired * 100), Math.Floor);
 	}
 }

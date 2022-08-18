@@ -18,23 +18,6 @@ public class SpawnsetSummary
 		EffectivePlayerSettings = SpawnsetBinary.GetEffectivePlayerSettings(handLevel, additionalGems);
 	}
 
-	public SpawnsetSummary(SpawnsetBinary spawnsetBinary)
-	{
-		SpawnVersion = spawnsetBinary.SpawnVersion;
-		WorldVersion = spawnsetBinary.WorldVersion;
-		GameMode = spawnsetBinary.GameMode;
-
-		(SpawnSectionInfo preLoopSection, SpawnSectionInfo loopSection) = CalculateSections(spawnsetBinary.Spawns, spawnsetBinary.GameMode);
-		PreLoopSection = preLoopSection;
-		LoopSection = loopSection;
-
-		HandLevel = spawnsetBinary.HandLevel;
-		AdditionalGems = spawnsetBinary.AdditionalGems;
-		TimerStart = spawnsetBinary.TimerStart;
-
-		EffectivePlayerSettings = spawnsetBinary.GetEffectivePlayerSettings();
-	}
-
 	public int SpawnVersion { get; }
 	public int WorldVersion { get; }
 	public GameMode GameMode { get; }

@@ -83,7 +83,7 @@ public class ObjParsingContext
 			throw new NotSupportedException($"Invalid face on line {lineNumber}. Must be a complete triangle.");
 
 		if (coords.Length > 3)
-			throw new NotSupportedException($"Invalid face on line {lineNumber}. Quads and NGons are not supported. Export your meshes as triangles.");
+			throw new NotSupportedException($"Invalid face on line {lineNumber}. Quads and Ngons are not supported. Export your meshes as triangles.");
 
 		for (int j = 0; j < 3; j++)
 		{

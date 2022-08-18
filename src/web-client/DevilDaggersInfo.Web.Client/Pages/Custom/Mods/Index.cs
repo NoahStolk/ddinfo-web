@@ -36,12 +36,12 @@ public partial class Index : IHasNavigation
 	[SupplyParameterFromQuery]
 	public bool Ascending { get; set; }
 
-	private Dictionary<ModSorting, bool> _sortings = new();
+	private readonly Dictionary<ModSorting, bool> _sortings = new();
 
 	public Page<GetModOverview>? GetMods { get; set; }
 
 	public int TotalPages => GetMods == null ? 0 : (GetMods.TotalResults - 1) / PagingUtils.GetValidPageSize(PageSize) + 1;
-	public int TotalResults => GetMods == null ? 0 : GetMods.TotalResults;
+	public int TotalResults => GetMods?.TotalResults ?? 0;
 
 	protected override void OnInitialized()
 	{

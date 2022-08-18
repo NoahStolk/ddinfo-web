@@ -2,7 +2,6 @@
 @inherits BaseAdminPage
 @using DevilDaggersInfo.Api.Admin.Donations
 @using DevilDaggersInfo.Api.Admin.Players
-@using DevilDaggersInfo.Web.Client.Components.Admin
 @using DevilDaggersInfo.Web.Client.Enums
 
 <AdminAuthorizer Base="this" RequiredRole="@Roles.Admin">
@@ -32,10 +31,7 @@
 		}
 		catch (HttpRequestException ex)
 		{
-			if (ex.StatusCode.HasValue)
-				addComponent.ErrorMessage = $"Error {(int)ex.StatusCode}: {ex.StatusCode}";
-			else
-				addComponent.ErrorMessage = "An error occurred while sending the request.";
+			addComponent.ErrorMessage = ex.StatusCode.HasValue ? $"Error {(int)ex.StatusCode}: {ex.StatusCode}" : "An error occurred while sending the request.";
 
 			addComponent.State = ErrorState.FatalError;
 		}

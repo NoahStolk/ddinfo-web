@@ -1,7 +1,6 @@
 @page "/admin/custom-leaderboards"
 @inherits BaseAdminPage
 @using DevilDaggersInfo.Api.Admin.CustomLeaderboards
-@using DevilDaggersInfo.Web.Client.Components.Admin
 
 <AdminAuthorizer Base="this" RequiredRole="@Roles.CustomLeaderboards">
 	<AdminOverview @ref="_overview" TGetDto="GetCustomLeaderboardForOverview" TSorting="CustomLeaderboardSorting" Title="Admin - Custom Leaderboards" ApiCall="(int pageIndex, int pageSize, CustomLeaderboardSorting? sortBy, bool isAscending) => Http.GetCustomLeaderboards(pageIndex, pageSize, sortBy, isAscending)" DeletionApiCall="(int id) => Http.DeleteCustomLeaderboardById(id)" GridConfiguration="grid-cols-admin-custom-leaderboards-sm md:grid-cols-admin-custom-leaderboards-md lg:grid-cols-admin-custom-leaderboards-lg xl:grid-cols-admin-custom-leaderboards-xl">

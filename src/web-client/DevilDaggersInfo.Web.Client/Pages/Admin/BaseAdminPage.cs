@@ -22,9 +22,9 @@ public abstract class BaseAdminPage : ComponentBase
 	protected override async Task OnInitializedAsync()
 	{
 		AuthenticationState state = await Auth.GetAuthenticationStateAsync();
-		if (state.User?.Identity?.IsAuthenticated != true)
+		if (state.User.Identity?.IsAuthenticated != true)
 			NavigationManager.NavigateTo("/authentication/login");
 
-		UserRoles = state.User?.GetRoles() ?? new();
+		UserRoles = state.User.GetRoles();
 	}
 }

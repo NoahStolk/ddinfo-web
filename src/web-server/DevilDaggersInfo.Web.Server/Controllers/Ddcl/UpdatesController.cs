@@ -25,7 +25,7 @@ public class UpdatesController : ControllerBase
 	{
 		const string toolName = "DevilDaggersCustomLeaderboards";
 		Tool tool = await _toolRepository.GetToolAsync(toolName) ?? throw new("DDCL not found in tool service.");
-		ToolDistribution? toolDistribution = await _toolRepository.GetLatestToolDistributionAsync(toolName, publishMethod, buildType) ?? throw new("No versions of DDCL found in tool service.");
+		ToolDistribution toolDistribution = await _toolRepository.GetLatestToolDistributionAsync(toolName, publishMethod, buildType) ?? throw new("No versions of DDCL found in tool service.");
 		return new GetUpdate
 		{
 			VersionNumber = toolDistribution.VersionNumber,

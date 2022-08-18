@@ -62,7 +62,7 @@ public partial class WebViewSpawnsetArena
 		const int tileUnit = 4; // Tiles are 4 units in width/length in the game.
 		float shrinkEndTime = SpawnsetBinary.GetShrinkEndTime();
 		float shrinkRadius = shrinkEndTime == 0 ? SpawnsetBinary.ShrinkStart : Math.Max(SpawnsetBinary.ShrinkStart - CurrentTime / shrinkEndTime * (SpawnsetBinary.ShrinkStart - SpawnsetBinary.ShrinkEnd), SpawnsetBinary.ShrinkEnd);
-		if (shrinkRadius > 0 && shrinkRadius <= 100)
+		if (shrinkRadius is > 0 and <= 100)
 		{
 			await _context.SetStrokeStyleAsync("#f08");
 			await _context.SetLineWidthAsync(1);
@@ -85,8 +85,8 @@ public partial class WebViewSpawnsetArena
 			if (!y.HasValue)
 				return;
 
-			float daggerCenterX = CanvasSize / 2 + SpawnsetBinary.RaceDaggerPosition.X / tileUnit * TileSize;
-			float daggerCenterY = CanvasSize / 2 + SpawnsetBinary.RaceDaggerPosition.Y / tileUnit * TileSize;
+			float daggerCenterX = CanvasSize / 2f + SpawnsetBinary.RaceDaggerPosition.X / tileUnit * TileSize;
+			float daggerCenterY = CanvasSize / 2f + SpawnsetBinary.RaceDaggerPosition.Y / tileUnit * TileSize;
 
 			await _context.BeginPathAsync();
 			await _context.MoveToAsync(daggerCenterX, daggerCenterY + 6);

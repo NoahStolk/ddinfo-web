@@ -1,3 +1,4 @@
+// ReSharper disable StringLiteralTypo
 namespace DevilDaggersInfo.Web.Client.Utils;
 
 public static class UserUtils

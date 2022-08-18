@@ -5,9 +5,6 @@ namespace DevilDaggersInfo.Core.Spawnset;
 
 public class SpawnsetBinary
 {
-	public const int HeaderBufferSize = 36;
-	public const int SpawnBufferSize = 28;
-
 	public SpawnsetBinary(
 		int spawnVersion,
 		int worldVersion,

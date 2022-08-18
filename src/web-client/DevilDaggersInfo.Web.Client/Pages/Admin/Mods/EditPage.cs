@@ -14,8 +14,8 @@ public partial class EditPage
 {
 	private Dictionary<int, string>? _playerNames;
 	private readonly EditMod _editMod = new();
-	private List<string> _binaryFileSizeErrors = new();
-	private List<string> _screenshotFileSizeErrors = new();
+	private readonly List<string> _binaryFileSizeErrors = new();
+	private readonly List<string> _screenshotFileSizeErrors = new();
 
 	[Parameter, EditorRequired] public int Id { get; set; }
 
@@ -45,10 +45,7 @@ public partial class EditPage
 		}
 		catch (HttpRequestException ex)
 		{
-			if (ex.StatusCode.HasValue)
-				editComponent.ErrorMessage = $"Error {(int)ex.StatusCode}: {ex.StatusCode}";
-			else
-				editComponent.ErrorMessage = "An error occurred while sending the request.";
+			editComponent.ErrorMessage = ex.StatusCode.HasValue ? $"Error {(int)ex.StatusCode}: {ex.StatusCode}" : "An error occurred while sending the request.";
 
 			editComponent.State = ErrorState.FatalError;
 		}

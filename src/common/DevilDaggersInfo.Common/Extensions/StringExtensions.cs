@@ -16,7 +16,7 @@ public static class StringExtensions
 		if (values.Length == 0)
 			return str;
 
-		string? sub = Array.Find(values, v => str.StartsWith(v));
+		string? sub = Array.Find(values, str.StartsWith);
 		return sub == null ? str : str[sub.Length..];
 	}
 }

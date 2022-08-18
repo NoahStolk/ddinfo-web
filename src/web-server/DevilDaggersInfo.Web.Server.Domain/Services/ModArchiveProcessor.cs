@@ -40,7 +40,7 @@ public class ModArchiveProcessor
 			using ZipArchive archive = ZipFile.Open(zipFilePath, ZipArchiveMode.Create);
 			foreach (KeyValuePair<BinaryName, byte[]> binary in binaries)
 			{
-				using Stream entry = archive.CreateEntry(binary.Key.ToFullName(modName), CompressionLevel.SmallestSize).Open();
+				await using Stream entry = archive.CreateEntry(binary.Key.ToFullName(modName), CompressionLevel.SmallestSize).Open();
 				using MemoryStream ms = new(binary.Value);
 				await ms.CopyToAsync(entry);
 			}
@@ -111,7 +111,7 @@ public class ModArchiveProcessor
 
 				byte[] extractedContents = new byte[entry.Length];
 
-				using Stream entryStream = entry.Open();
+				await using Stream entryStream = entry.Open();
 				int readBytes = StreamUtils.ForceReadAllBytes(entryStream, extractedContents, 0, extractedContents.Length);
 				if (readBytes != extractedContents.Length)
 					throw new InvalidOperationException($"Reading all bytes from archived mod binary did not complete. {readBytes} out of {extractedContents.Length} bytes were read.");
@@ -120,7 +120,7 @@ public class ModArchiveProcessor
 			}
 		}
 
-		List<BinaryName> collisions = keptBinaries.Keys.Where(binaryName => newBinaries.ContainsKey(binaryName)).ToList();
+		List<BinaryName> collisions = keptBinaries.Keys.Where(newBinaries.ContainsKey).ToList();
 		if (collisions.Count > 0)
 			throw new InvalidModArchiveException($"Cannot append binaries {string.Join(", ", collisions.Select(s => $"'{s}'"))} to mod archive because it already contains binaries with the exact same names. Either request the old binaries to be deleted or rename the new binaries.");
 

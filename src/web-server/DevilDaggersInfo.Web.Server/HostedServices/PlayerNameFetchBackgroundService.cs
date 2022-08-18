@@ -19,7 +19,7 @@ public class PlayerNameFetchBackgroundService : AbstractBackgroundService
 	protected override async Task ExecuteTaskAsync(CancellationToken stoppingToken)
 	{
 		using IServiceScope scope = _serviceScopeFactory.CreateScope();
-		using ApplicationDbContext dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+		await using ApplicationDbContext dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
 		IEnumerable<PlayerEntity> players = dbContext.Players.AsEnumerable();
 

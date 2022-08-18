@@ -44,7 +44,7 @@ public class ToolRepository
 		{
 			Changelog = changelog?.ConvertAll(ce => new ToolVersion
 			{
-				Changes = ce.Changes.Select(c => ToModel(c)).ToList(),
+				Changes = ce.Changes.Select(ToModel).ToList(),
 				Date = ce.Date,
 				DownloadCount = downloads.ContainsKey(ce.VersionNumber) ? downloads[ce.VersionNumber] : 0,
 				VersionNumber = ce.VersionNumber,
@@ -58,7 +58,7 @@ public class ToolRepository
 		static ToolVersionChange ToModel(Change change) => new()
 		{
 			Description = change.Description,
-			SubChanges = change.SubChanges?.Select(c => ToModel(c)).ToList(),
+			SubChanges = change.SubChanges?.Select(ToModel).ToList(),
 		};
 	}
 
@@ -108,7 +108,7 @@ public class ToolRepository
 	public async Task<ToolDistribution?> GetLatestToolDistributionAsync(string name, ToolPublishMethod publishMethod, ToolBuildType buildType)
 	{
 		List<string> versions = await _dbContext.ToolDistributions.Where(td => td.ToolName == name && td.PublishMethod == publishMethod && td.BuildType == buildType).Select(td => td.VersionNumber).ToListAsync();
-		string? highestVersion = versions.OrderByDescending(AppVersion.Parse).FirstOrDefault();
+		string? highestVersion = versions.MaxBy(AppVersion.Parse);
 		if (highestVersion == null)
 			return null;
 

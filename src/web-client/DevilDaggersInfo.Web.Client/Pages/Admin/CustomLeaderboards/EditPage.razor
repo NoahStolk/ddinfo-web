@@ -1,8 +1,6 @@
 @page "/admin/custom-leaderboards/edit/{Id:int}"
 @inherits BaseAdminPage
 @using DevilDaggersInfo.Api.Admin.CustomLeaderboards
-@using DevilDaggersInfo.Api.Admin.Spawnsets
-@using DevilDaggersInfo.Web.Client.Components.Admin
 @using DevilDaggersInfo.Web.Client.Enums
 
 <AdminAuthorizer Base="this" RequiredRole="@Roles.CustomLeaderboards">
@@ -102,7 +100,7 @@
 @code
 {
 	private readonly Dictionary<CustomLeaderboardCriteriaOperator, string> _operators = Enum.GetValues<CustomLeaderboardCriteriaOperator>().ToDictionary(e => e, e => e.ToString());
-	private readonly Func<string, CustomLeaderboardCriteriaOperator> _operatorConverter = s => Enum.Parse<CustomLeaderboardCriteriaOperator>(s);
+	private readonly Func<string, CustomLeaderboardCriteriaOperator> _operatorConverter = Enum.Parse<CustomLeaderboardCriteriaOperator>;
 
 	private readonly EditCustomLeaderboard _editCustomLeaderboard = new();
 
@@ -177,10 +175,7 @@
 		}
 		catch (HttpRequestException ex)
 		{
-			if (ex.StatusCode.HasValue)
-				editComponent.ErrorMessage = $"Error {(int)ex.StatusCode}: {ex.StatusCode}";
-			else
-				editComponent.ErrorMessage = "An error occurred while sending the request.";
+			editComponent.ErrorMessage = ex.StatusCode.HasValue ? $"Error {(int)ex.StatusCode}: {ex.StatusCode}" : "An error occurred while sending the request.";
 
 			editComponent.State = ErrorState.FatalError;
 		}

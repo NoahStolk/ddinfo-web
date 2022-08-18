@@ -209,7 +209,7 @@ public class ModBinary
 		const int tocEntrySizeWithoutName = 15;
 		int tocBufferSize = tocEntrySizeWithoutName * AssetMap.Count + Chunks.Sum(c => Encoding.UTF8.GetBytes(c.Name).Length) + sizeof(short);
 		int offset = _fileHeaderSize + tocBufferSize;
-		byte[]? tocBuffer = null;
+		byte[]? tocBuffer;
 		using (MemoryStream tocStream = new())
 		{
 			using BinaryWriter tocWriter = new(tocStream);
@@ -241,7 +241,7 @@ public class ModBinary
 			throw new InvalidOperationException($"Invalid TOC buffer size: {tocBuffer.Length}. Expected length was {tocBufferSize}.");
 
 		List<AssetData> uniqueAssets = AssetMap.Select(ad => ad.Value).Distinct().ToList();
-		byte[]? assetBuffer = null;
+		byte[]? assetBuffer;
 		using (MemoryStream assetStream = new())
 		{
 			using BinaryWriter assetWriter = new(assetStream);

@@ -189,13 +189,13 @@ public class CustomEntryProcessorTests
 	}
 
 	[DataTestMethod]
-	[DataRow(4, new int[] { 1, 2, 3, 4 })]
-	[DataRow(0, new int[] { 1, 2, 3, 0 })]
-	[DataRow(9, new int[] { 1, 2, 3, 9 })]
-	[DataRow(0, new int[] { 1, 2, 3, -1 })]
-	[DataRow(0, new int[] { 0 })]
-	[DataRow(8, new int[] { 8 })]
-	[DataRow(2, new int[] { 3, 2 })]
+	[DataRow(4, new[] { 1, 2, 3, 4 })]
+	[DataRow(0, new[] { 1, 2, 3, 0 })]
+	[DataRow(9, new[] { 1, 2, 3, 9 })]
+	[DataRow(0, new[] { 1, 2, 3, -1 })]
+	[DataRow(0, new[] { 0 })]
+	[DataRow(8, new[] { 8 })]
+	[DataRow(2, new[] { 3, 2 })]
 	[DataRow(0, new int[] { })]
 	public async Task TestHomingCount(int expected, int[] homingStored)
 	{

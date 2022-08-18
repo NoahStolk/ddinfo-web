@@ -12,8 +12,8 @@ public partial class AddPage
 {
 	private Dictionary<int, string>? _playerNames;
 	private readonly AddMod _addMod = new();
-	private List<string> _binaryFileSizeErrors = new();
-	private List<string> _screenshotFileSizeErrors = new();
+	private readonly List<string> _binaryFileSizeErrors = new();
+	private readonly List<string> _screenshotFileSizeErrors = new();
 
 	public async Task PopulateAsync(AdminAdd<AddMod> addComponent)
 	{
@@ -26,10 +26,7 @@ public partial class AddPage
 		}
 		catch (HttpRequestException ex)
 		{
-			if (ex.StatusCode.HasValue)
-				addComponent.ErrorMessage = $"Error {(int)ex.StatusCode}: {ex.StatusCode}";
-			else
-				addComponent.ErrorMessage = "An error occurred while sending the request.";
+			addComponent.ErrorMessage = ex.StatusCode.HasValue ? $"Error {(int)ex.StatusCode}: {ex.StatusCode}" : "An error occurred while sending the request.";
 
 			addComponent.State = ErrorState.FatalError;
 		}

@@ -1,7 +1,6 @@
 using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Core.Versioning;
 using DevilDaggersInfo.Types.Web;
-using DevilDaggersInfo.Types.Web.Extensions;
 using DevilDaggersInfo.Web.Server.Domain.Constants;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Values;
@@ -83,7 +82,7 @@ public class CustomLeaderboardRepository
 				Time = worldRecord.Time,
 				PlayerId = worldRecord.PlayerId,
 				PlayerName = worldRecord.PlayerName,
-				Dagger = cl.GetDaggerFromTime(worldRecord.Time),
+				Dagger = cl.DaggerFromTime(worldRecord.Time),
 			};
 
 			CustomEntrySummary? selectedEntry = sortedCustomEntries.Find(ce => ce.PlayerId == selectedPlayerId);
@@ -113,12 +112,12 @@ public class CustomLeaderboardRepository
 		int lastPageIndex = totalCustomLeaderboards / pageSize;
 
 		return new(
-			results: customLeaderboardData
+			Results: customLeaderboardData
 				.Skip(Math.Min(pageIndex, lastPageIndex) * pageSize)
 				.Take(pageSize)
-				.Select(cl => ToOverview(cl))
+				.Select(ToOverview)
 				.ToList(),
-			totalResults: totalCustomLeaderboards);
+			TotalResults: totalCustomLeaderboards);
 	}
 
 	public async Task<SortedCustomLeaderboard> GetSortedCustomLeaderboardByIdAsync(int id)
@@ -196,7 +195,7 @@ public class CustomLeaderboardRepository
 						Client = ce.Client,
 						ClientVersion = ce.ClientVersion,
 						CountryCode = ce.Player.CountryCode,
-						CustomLeaderboardDagger = customLeaderboard.GetDaggerFromTime(ce.Time),
+						CustomLeaderboardDagger = customLeaderboard.DaggerFromTime(ce.Time),
 						DaggersFired = ce.DaggersFired,
 						DaggersHit = ce.DaggersHit,
 						DeathType = ce.DeathType,
@@ -299,7 +298,7 @@ public class CustomLeaderboardRepository
 
 				data.Rankings.Add(new(i + 1, customEntries.Count));
 
-				switch (customLeaderboard.GetDaggerFromTime(customEntry.Time) ?? throw new InvalidOperationException("Custom leaderboard without daggers may not be used for processing global custom leaderboard data."))
+				switch (customLeaderboard.DaggerFromTime(customEntry.Time) ?? throw new InvalidOperationException("Custom leaderboard without daggers may not be used for processing global custom leaderboard data."))
 				{
 					case CustomLeaderboardDagger.Leviathan: data.LeviathanCount++; break;
 					case CustomLeaderboardDagger.Devil: data.DevilCount++; break;
@@ -382,7 +381,7 @@ public class CustomLeaderboardRepository
 			PlayerId = cl.WorldRecord.PlayerId,
 			PlayerName = cl.WorldRecord.PlayerName,
 			Time = cl.WorldRecord.Time,
-			Dagger = cl.CustomLeaderboard.GetDaggerFromTime(cl.WorldRecord.Time),
+			Dagger = cl.CustomLeaderboard.DaggerFromTime(cl.WorldRecord.Time),
 		},
 	};
 
@@ -392,7 +391,7 @@ public class CustomLeaderboardRepository
 		if (selectedEntry == null)
 			return null;
 
-		CustomLeaderboardDagger? dagger = cl.GetDaggerFromTime(selectedEntry.Time);
+		CustomLeaderboardDagger? dagger = cl.DaggerFromTime(selectedEntry.Time);
 		return new()
 		{
 			Dagger = dagger,

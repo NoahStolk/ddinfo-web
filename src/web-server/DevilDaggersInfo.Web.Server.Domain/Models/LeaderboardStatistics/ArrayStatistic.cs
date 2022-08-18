@@ -13,7 +13,7 @@ public class ArrayStatistic
 		Average = data.Average();
 		Median = data.ElementAt(data.Count() / 2);
 		Mode = data
-			.GroupBy(n => modeTransformer(n))
+			.GroupBy(modeTransformer)
 			.OrderByDescending(g => g.Count())
 			.Select(g => g.Key)
 			.FirstOrDefault();

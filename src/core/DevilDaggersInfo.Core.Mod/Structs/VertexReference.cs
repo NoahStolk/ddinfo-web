@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Core.Mod.Structs;
 
-public struct VertexReference
+public readonly struct VertexReference
 {
 	public VertexReference(int positionReference, int texCoordReference, int normalReference)
 	{

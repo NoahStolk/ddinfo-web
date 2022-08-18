@@ -33,6 +33,7 @@ public class DiscordBotService : IHostedService
 
 			if (e.Channel.Id == DiscordServerConstants.TestChannelId && msg.StartsWith("."))
 			{
+				// TODO: Refactor; default KeyValuePair is not null.
 				Action<MessageCreateEventArgs>? action = Commands.Actions.FirstOrDefault(a => msg.StartsWith(a.Key)).Value;
 				if (action == null)
 					await e.Channel.SendMessageAsyncSafe($"Command '{msg}' does not exist.");

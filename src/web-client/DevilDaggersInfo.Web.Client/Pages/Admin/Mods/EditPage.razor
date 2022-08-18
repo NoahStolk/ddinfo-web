@@ -3,7 +3,6 @@
 @using DevilDaggersInfo.Api.Admin.Mods
 @using DevilDaggersInfo.Core.Mod
 @using DevilDaggersInfo.Core.Mod.Enums
-@using DevilDaggersInfo.Core.Mod.Utils
 
 <AdminAuthorizer Base="this" RequiredRole="@Roles.Mods">
 	<AdminEdit Name="Mod" OverviewUrl="/admin/mods" ApiCall="Http.EditModById" Model="_editMod" Id="Id" OnPopulate="async (ec) => await PopulateAsync(ec)">

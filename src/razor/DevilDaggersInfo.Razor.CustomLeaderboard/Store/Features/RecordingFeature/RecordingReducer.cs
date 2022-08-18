@@ -9,7 +9,7 @@ public static class RecordingReducer
 	[ReducerMethod]
 	public static RecordingState ReduceToggleShowEnemyStatsAction(RecordingState state, ToggleShowEnemyStatsAction action)
 	{
-		return new(!state.ShowEnemyStats, state.Block, state.BlockPrevious);
+		return state with { ShowEnemyStats = !state.ShowEnemyStats };
 	}
 
 	[ReducerMethod]

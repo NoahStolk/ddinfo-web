@@ -58,10 +58,10 @@ public class ModBinaryCacheData
 				continue;
 
 			AudioAssetInfo? audioAssetData = AudioAudio.All.Find(a => a.AssetName == assetName);
-			if (audioAssetData == null || audioAssetData.DefaultLoudness == loudness)
+			if (audioAssetData == null || Math.Abs(audioAssetData.DefaultLoudness - loudness) < 0.01f)
 				continue;
 
-			loudnessAssets.Add(new(assetName, audioAssetData.IsProhibited, audioAssetData.DefaultLoudness, loudness));
+			loudnessAssets.Add(new ModifiedLoudnessAssetCacheData(assetName, audioAssetData.IsProhibited, audioAssetData.DefaultLoudness, loudness));
 		}
 
 		return loudnessAssets;
@@ -90,5 +90,5 @@ public class ModBinaryCacheData
 	}
 
 	public bool ContainsProhibitedAssets()
-		=> Chunks.Any(mccd => mccd.IsProhibited);
+		=> Chunks.Any(c => c.IsProhibited);
 }

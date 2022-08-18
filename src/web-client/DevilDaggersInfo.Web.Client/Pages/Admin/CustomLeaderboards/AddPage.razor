@@ -2,7 +2,6 @@
 @inherits BaseAdminPage
 @using DevilDaggersInfo.Api.Admin.CustomLeaderboards
 @using DevilDaggersInfo.Api.Admin.Spawnsets
-@using DevilDaggersInfo.Web.Client.Components.Admin
 @using DevilDaggersInfo.Web.Client.Enums
 
 <AdminAuthorizer Base="this" RequiredRole="@Roles.CustomLeaderboards">
@@ -103,7 +102,7 @@
 @code
 {
 	private readonly Dictionary<CustomLeaderboardCriteriaOperator, string> _operators = Enum.GetValues<CustomLeaderboardCriteriaOperator>().ToDictionary(e => e, e => e.ToString());
-	private readonly Func<string, CustomLeaderboardCriteriaOperator> _operatorConverter = s => Enum.Parse<CustomLeaderboardCriteriaOperator>(s);
+	private readonly Func<string, CustomLeaderboardCriteriaOperator> _operatorConverter = Enum.Parse<CustomLeaderboardCriteriaOperator>;
 
 	private Dictionary<int, string>? _spawnsetNames;
 	private readonly AddCustomLeaderboard _addCustomLeaderboard = new();
@@ -119,10 +118,7 @@
 		}
 		catch (HttpRequestException ex)
 		{
-			if (ex.StatusCode.HasValue)
-				addComponent.ErrorMessage = $"Error {(int)ex.StatusCode}: {ex.StatusCode}";
-			else
-				addComponent.ErrorMessage = "An error occurred while sending the request.";
+			addComponent.ErrorMessage = ex.StatusCode.HasValue ? $"Error {(int)ex.StatusCode}: {ex.StatusCode}" : "An error occurred while sending the request.";
 
 			addComponent.State = ErrorState.FatalError;
 		}

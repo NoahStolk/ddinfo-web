@@ -10,7 +10,7 @@ public static class StringExtensions
 		// </auto-generated>
 		""";
 
-	private static readonly string[] _suppressions = new string[]
+	private static readonly string[] _suppressionCodes =
 	{
 		"CS0105",
 		"CS1591",
@@ -42,7 +42,7 @@ public static class StringExtensions
 		"SA1649",
 	};
 
-	private static readonly string _warningSuppressionCodes = string.Join(", ", _suppressions);
+	private static readonly string _warningSuppressionCodes = string.Join(", ", _suppressionCodes);
 
 	public static string BuildSource(this string code)
 	{
@@ -62,7 +62,7 @@ public static class StringExtensions
 	private static string TrimCode(this string code)
 	{
 		StringBuilder sb = new();
-		foreach (string line in code.Split(new string[] { Environment.NewLine }, StringSplitOptions.None))
+		foreach (string line in code.Split(new[] { Environment.NewLine }, StringSplitOptions.None))
 			sb.AppendLine(line.TrimEnd());
 
 		return sb.ToString();
@@ -79,7 +79,7 @@ public static class StringExtensions
 		if (values.Length == 0)
 			return str;
 
-		string? sub = Array.Find(values, v => str.StartsWith(v));
+		string? sub = Array.Find(values, str.StartsWith);
 		return sub == null ? str : str.Substring(sub.Length);
 	}
 

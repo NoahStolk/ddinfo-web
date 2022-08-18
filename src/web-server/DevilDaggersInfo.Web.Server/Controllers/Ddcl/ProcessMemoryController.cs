@@ -28,7 +28,7 @@ public class ProcessMemoryController : ControllerBase
 	public async Task<ActionResult<GetMarker>> GetMarker([Required] SupportedOperatingSystem operatingSystem)
 		=> await GetMarkerRepo(operatingSystem);
 
-	private async Task<GetMarker> GetMarkerRepo(SupportedOperatingSystem operatingSystem) => new GetMarker
+	private async Task<GetMarker> GetMarkerRepo(SupportedOperatingSystem operatingSystem) => new()
 	{
 		Value = await _markerRepository.GetMarkerAsync(operatingSystem switch
 		{

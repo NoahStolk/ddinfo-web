@@ -22,7 +22,7 @@ public class DownloadLeaderboardReplayEffect : Effect<DownloadLeaderboardReplayA
 
 	public override async Task HandleAsync(DownloadLeaderboardReplayAction action, IDispatcher dispatcher)
 	{
-		using FormUrlEncodedContent content = new(new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("replay", action.PlayerId.ToString()) });
+		using FormUrlEncodedContent content = new(new List<KeyValuePair<string, string>> { new("replay", action.PlayerId.ToString()) });
 		using HttpClient httpClient = new();
 		using HttpResponseMessage response = await httpClient.PostAsync("http://dd.hasmodai.com/backend16/get_replay.php", content);
 

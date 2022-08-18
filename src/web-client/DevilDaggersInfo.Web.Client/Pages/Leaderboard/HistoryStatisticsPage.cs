@@ -137,9 +137,6 @@ public partial class HistoryStatisticsPage
 		{
 			IEnumerable<GetLeaderboardHistoryStatistics> relevantData = _statistics.Where(hs => hs.Top1Entrance > 0 || hs.Top2Entrance > 0 || hs.Top3Entrance > 0 || hs.Top10Entrance > 0 || hs.Top100Entrance > 0);
 			IEnumerable<double> top1Entrances = relevantData.Select(hs => hs.Top1Entrance);
-			IEnumerable<double> top2Entrances = relevantData.Select(hs => hs.Top2Entrance);
-			IEnumerable<double> top3Entrances = relevantData.Select(hs => hs.Top3Entrance);
-			IEnumerable<double> top10Entrances = relevantData.Select(hs => hs.Top10Entrance);
 			IEnumerable<double> top100Entrances = relevantData.Select(hs => hs.Top100Entrance);
 			const double scale = 200;
 			double minY = Math.Floor(top100Entrances.Min() / scale) * scale;
@@ -151,7 +148,7 @@ public partial class HistoryStatisticsPage
 			const string top3 = "#a42";
 			const string top10 = "#0aa";
 			const string top100 = "#07a";
-			_entrancesData.Add(new(top1, false, false, false, relevantData.Where(hs => hs.Top1EntranceUpdated).Select((hs, i) => new LineData(hs.DateTime.Ticks, hs.Top1Entrance, i)).ToList(), (ds, d) =>
+			_entrancesData.Add(new(top1, false, false, false, relevantData.Where(hs => hs.Top1EntranceUpdated).Select((hs, i) => new LineData(hs.DateTime.Ticks, hs.Top1Entrance, i)).ToList(), (_, d) =>
 			{
 				GetLeaderboardHistoryStatistics? stats = relevantData.Count() <= d.Index ? null : relevantData.ElementAt(d.Index);
 				return stats == null ? new() : new()
@@ -200,7 +197,7 @@ public partial class HistoryStatisticsPage
 		void Register(Func<GetLeaderboardHistoryStatistics, ulong> valueSelector, Func<GetLeaderboardHistoryStatistics, bool> valueUpdatedSelector, ref LineChartDataOptions lineChartDataOptions, List<LineDataSet> dataSets, double scale)
 		{
 			IEnumerable<GetLeaderboardHistoryStatistics> relevantData = _statistics.Where(hs => valueSelector(hs) > 0 && valueUpdatedSelector(hs));
-			IEnumerable<ulong> stats = relevantData.Select(hs => valueSelector(hs));
+			IEnumerable<ulong> stats = relevantData.Select(valueSelector);
 			double minY = Math.Floor(stats.Min() / scale) * scale;
 			double maxY = Math.Ceiling(stats.Max() / scale) * scale;
 			lineChartDataOptions = new(relevantData.Min(hs => hs.DateTime.Ticks), null, maxX.Ticks, minY, scale, maxY);

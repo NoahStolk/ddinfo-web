@@ -32,10 +32,10 @@ public partial class EditProfilePage
 	protected override async Task OnInitializedAsync()
 	{
 		_state = await Auth.GetAuthenticationStateAsync();
-		if (_state.User?.Identity?.IsAuthenticated != true)
+		if (_state.User.Identity?.IsAuthenticated != true)
 			NavigationManager.NavigateTo("/authentication/login");
 
-		_linked = int.TryParse(_state.User?.Claims?.FirstOrDefault(c => c.Type == "playerId")?.Value, out _playerId);
+		_linked = int.TryParse(_state.User.Claims.FirstOrDefault(c => c.Type == "playerId")?.Value, out _playerId);
 
 		try
 		{
@@ -58,10 +58,7 @@ public partial class EditProfilePage
 		}
 		catch (HttpRequestException ex)
 		{
-			if (ex.StatusCode.HasValue)
-				Message = $"Error {(int)ex.StatusCode}: {ex.StatusCode}";
-			else
-				Message = "An error occurred while sending the request.";
+			Message = ex.StatusCode.HasValue ? $"Error {(int)ex.StatusCode}: {ex.StatusCode}" : "An error occurred while sending the request.";
 
 			State = ErrorState.FatalError;
 		}

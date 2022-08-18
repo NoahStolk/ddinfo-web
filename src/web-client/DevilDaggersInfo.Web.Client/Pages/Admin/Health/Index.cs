@@ -118,9 +118,9 @@ public partial class Index
 
 		RegisterTimesForSpecificRoute(_customEntrySubmitData, ref _customEntrySubmitOptions, "POST /api/custom-entries/submit");
 		RegisterTimesForSpecificRoute(_customLeaderboardExistsData, ref _customLeaderboardExistsOptions, "HEAD /api/custom-leaderboards");
-		void RegisterTimesForSpecificRoute(List<LineDataSet> dataset, ref LineChartDataOptions dataOptions, string route)
+		void RegisterTimesForSpecificRoute(List<LineDataSet> dataSet, ref LineChartDataOptions dataOptions, string route)
 		{
-			dataset.Clear();
+			dataSet.Clear();
 
 			Dictionary<int, GetRequestPathEntry>? requests = _response.ResponseTimesByTimeByRequestPath.ContainsKey(route) ? _response.ResponseTimesByTimeByRequestPath[route] : null;
 			if (requests == null || requests.Count == 0)
@@ -142,7 +142,7 @@ public partial class Index
 
 			dataOptions = new(0, 60, 24 * 60, minY, scale, maxY);
 
-			dataset.Add(new("#0f0", false, true, false, requests.Select((kvp, i) => new LineData(kvp.Key, kvp.Value.MinResponseTimeTicks, i)).ToList(), (ds, d) =>
+			dataSet.Add(new("#0f0", false, true, false, requests.Select((kvp, i) => new LineData(kvp.Key, kvp.Value.MinResponseTimeTicks, i)).ToList(), (_, d) =>
 			{
 				KeyValuePair<int, GetRequestPathEntry>? stats = requests.Count <= d.Index ? null : requests.ElementAt(d.Index);
 				return stats == null ? new() : new()
@@ -153,8 +153,8 @@ public partial class Index
 					new($"<span style='color: #0f0; text-align: right;'>{TimeUtils.TicksToTimeString(stats.Value.Value.MinResponseTimeTicks)}</span>"),
 				};
 			}));
-			dataset.Add(new("#ff0", false, true, false, requests.Select((kvp, i) => new LineData(kvp.Key, kvp.Value.AverageResponseTimeTicks, i)).ToList(), null));
-			dataset.Add(new("#f00", false, true, false, requests.Select((kvp, i) => new LineData(kvp.Key, kvp.Value.MaxResponseTimeTicks, i)).ToList(), null));
+			dataSet.Add(new("#ff0", false, true, false, requests.Select((kvp, i) => new LineData(kvp.Key, kvp.Value.AverageResponseTimeTicks, i)).ToList(), null));
+			dataSet.Add(new("#f00", false, true, false, requests.Select((kvp, i) => new LineData(kvp.Key, kvp.Value.MaxResponseTimeTicks, i)).ToList(), null));
 		}
 	}
 

@@ -8,6 +8,6 @@ public static class AttributeSyntaxExtensions
 		if (!arguments.HasValue || arguments.Value.Count == 0)
 			return string.Empty;
 
-		return arguments.Value[0].Expression?.ToString().Trim('"') ?? string.Empty;
+		return arguments.Value[0].Expression.ToString().Trim('"');
 	}
 }
