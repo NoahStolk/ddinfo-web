@@ -8,7 +8,7 @@
 {
 	[Parameter, EditorRequired] public Action OnClickOutside { get; set; } = null!;
 
-	[Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = null!;
+	[Parameter] public RenderFragment ChildContent { get; set; } = null!;
 
 	[Parameter] public string? CssClass { get; set; }
 

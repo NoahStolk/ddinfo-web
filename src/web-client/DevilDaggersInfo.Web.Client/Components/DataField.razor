@@ -5,7 +5,7 @@
 
 @code {
 	[Parameter, EditorRequired] public string Name { get; set; } = null!;
-	[Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = null!;
+	[Parameter] public RenderFragment ChildContent { get; set; } = null!;
 	
 	[Parameter] public int Left { get; set; } = 1;
 	[Parameter] public int Right { get; set; } = 1;
