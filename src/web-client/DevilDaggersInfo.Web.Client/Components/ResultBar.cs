@@ -6,7 +6,6 @@ namespace DevilDaggersInfo.Web.Client.Components;
 public partial class ResultBar
 {
 	[Parameter]
-	[EditorRequired]
 	public RenderFragment ChildContent { get; set; } = null!;
 
 	[Parameter]

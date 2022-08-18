@@ -8,7 +8,7 @@
 		<DataAnnotationsValidator />
 		<ValidationSummary />
 
-		<InputWrapper Label="Name"><SearchDropdown TKey=string Values="_values" Converter="s => s" ShowDisplayValue="false" @bind-Value="@_markerModel.Name" /></InputWrapper>
+		<InputWrapper Label="Name"><SearchDropdown TKey="string" Values="_values" Converter="s => s" ShowDisplayValue="false" @bind-Value="@_markerModel.Name" /></InputWrapper>
 		<InputWrapper Label="Value (decimal)"><InputNumber class="admin-input" @bind-Value="_markerModel.Value" /></InputWrapper>
 
 		<p class="font-bold">

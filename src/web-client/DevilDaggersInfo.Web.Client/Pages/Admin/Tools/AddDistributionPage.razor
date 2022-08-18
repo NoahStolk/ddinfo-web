@@ -9,10 +9,10 @@
 		<DataAnnotationsValidator />
 		<ValidationSummary />
 
-		<InputWrapper Label="Name"><SearchDropdown TKey=string Values="@_toolNames.ToDictionary(s => s, s => s)" Converter="s => s" ShowDisplayValue=false @bind-Value="@Model.Name" /></InputWrapper>
+		<InputWrapper Label="Name"><SearchDropdown TKey="string" Values="@_toolNames.ToDictionary(s => s, s => s)" Converter="s => s" ShowDisplayValue="false" @bind-Value="@Model.Name" /></InputWrapper>
 		<InputWrapper Label="Version"><InputText class="admin-input" @bind-Value="@Model.Version" /></InputWrapper>
-		<InputWrapper Label="Publish method"><SearchDropdown TKey=ToolPublishMethod Values="@(Enum.GetValues<ToolPublishMethod>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<ToolPublishMethod>(s)" ShowDisplayValue=false @bind-Value="@Model.PublishMethod" /></InputWrapper>
-		<InputWrapper Label="Build type"><SearchDropdown TKey=ToolBuildType Values="@(Enum.GetValues<ToolBuildType>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<ToolBuildType>(s)" ShowDisplayValue=false @bind-Value="@Model.BuildType" /></InputWrapper>
+		<InputWrapper Label="Publish method"><SearchDropdown TKey="ToolPublishMethod" Values="@(Enum.GetValues<ToolPublishMethod>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<ToolPublishMethod>(s)" ShowDisplayValue="false" @bind-Value="@Model.PublishMethod" /></InputWrapper>
+		<InputWrapper Label="Build type"><SearchDropdown TKey="ToolBuildType" Values="@(Enum.GetValues<ToolBuildType>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<ToolBuildType>(s)" ShowDisplayValue="false" @bind-Value="@Model.BuildType" /></InputWrapper>
 		<InputWrapper Label="Zip file"><InputFile OnChange="LoadFile" /></InputWrapper>
 
 		<button class="btn btn-gray p-1" type="submit">Add distribution</button>

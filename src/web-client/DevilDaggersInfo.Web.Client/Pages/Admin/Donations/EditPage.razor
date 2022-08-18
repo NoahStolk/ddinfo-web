@@ -6,9 +6,9 @@
 
 <AdminAuthorizer Base="this" RequiredRole="@Roles.Admin">
 	<AdminEdit Name="Donation" OverviewUrl="/admin/donations" ApiCall="Http.EditDonationById" Model="_editDonation" Id="Id" OnPopulate="async (ec) => await PopulateAsync(ec)">
-		<InputWrapper Label="Player"><SearchDropdown TKey=int Values="@_playerNames" Converter="s => int.Parse(s)" @bind-Value="@_editDonation.PlayerId" /></InputWrapper>
+		<InputWrapper Label="Player"><SearchDropdown TKey="int" Values="@_playerNames" Converter="s => int.Parse(s)" @bind-Value="@_editDonation.PlayerId" /></InputWrapper>
 		<InputWrapper Label="Amount"><InputNumber class="admin-input" @bind-Value="_editDonation.Amount" /></InputWrapper>
-		<InputWrapper Label="Currency"><SearchDropdown TKey=Currency Values="@(Enum.GetValues<Currency>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<Currency>(s)" @bind-Value="@_editDonation.Currency" /></InputWrapper>
+		<InputWrapper Label="Currency"><SearchDropdown TKey="Currency" Values="@(Enum.GetValues<Currency>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<Currency>(s)" @bind-Value="@_editDonation.Currency" /></InputWrapper>
 		<InputWrapper Label="ConvertedEuroCentsReceived"><InputNumber class="admin-input" @bind-Value="_editDonation.ConvertedEuroCentsReceived" /></InputWrapper>
 		<InputWrapper Label="Note"><InputTextArea class="admin-input" @bind-Value="@_editDonation.Note" /></InputWrapper>
 		<InputWrapper Label="Refunded"><InputCheckbox @bind-Value="@_editDonation.IsRefunded" /></InputWrapper>

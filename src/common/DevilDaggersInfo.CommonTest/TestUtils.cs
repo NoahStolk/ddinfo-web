@@ -4,6 +4,7 @@ public static class TestUtils
 {
 	public const string ResourcePath = "Resources";
 
+	// TODO: Use CollectionAssert.
 	[AssertionMethod]
 	public static void AssertArrayContentsEqual<T>(T[] expected, T[] actual)
 	{

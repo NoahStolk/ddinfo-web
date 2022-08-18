@@ -6,8 +6,8 @@
 
 <AdminAuthorizer Base="this" RequiredRole="@Roles.CustomLeaderboards">
 	<AdminAdd Name="Custom Leaderboard" OverviewUrl="/admin/custom-leaderboards" ApiCall="Http.AddCustomLeaderboard" Model="_addCustomLeaderboard" OnPopulate="async (ac) => await PopulateAsync(ac)">
-		<InputWrapper Label="Spawnset"><SearchDropdown TKey=int Values="@_spawnsetNames" Converter="s => int.Parse(s)" @bind-Value="@_addCustomLeaderboard.SpawnsetId" /></InputWrapper>
-		<InputWrapper Label="Category"><SearchDropdown TKey=CustomLeaderboardCategory Values="@(Enum.GetValues<CustomLeaderboardCategory>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<CustomLeaderboardCategory>(s)" ShowDisplayValue=false @bind-Value="@_addCustomLeaderboard.Category" /></InputWrapper>
+		<InputWrapper Label="Spawnset"><SearchDropdown TKey="int" Values="@_spawnsetNames" Converter="s => int.Parse(s)" @bind-Value="@_addCustomLeaderboard.SpawnsetId" /></InputWrapper>
+		<InputWrapper Label="Category"><SearchDropdown TKey="CustomLeaderboardCategory" Values="@(Enum.GetValues<CustomLeaderboardCategory>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<CustomLeaderboardCategory>(s)" ShowDisplayValue="false" @bind-Value="@_addCustomLeaderboard.Category" /></InputWrapper>
 		<InputWrapper Label="Featured"><InputCheckbox @bind-Value="@_addCustomLeaderboard.IsFeatured" /></InputWrapper>
 		@if (_addCustomLeaderboard.IsFeatured)
 		{
@@ -20,81 +20,81 @@
 
 		<Heading Level="2" Title="Criteria" />
 
-		<InputWrapper Label="Gems collected operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_addCustomLeaderboard.GemsCollectedCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Gems collected operator"><SearchDropdown TKey="CustomLeaderboardCriteriaOperator" Values="_operators" Converter="_operatorConverter" ShowDisplayValue="false" @bind-Value="@_addCustomLeaderboard.GemsCollectedCriteria.Operator" /></InputWrapper>
 		<InputWrapper Label="Gems collected value"><InputNumber class="admin-input" @bind-Value="_addCustomLeaderboard.GemsCollectedCriteria.Value" /></InputWrapper>
 		
-		<InputWrapper Label="Gems despawned operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_addCustomLeaderboard.GemsDespawnedCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Gems despawned operator"><SearchDropdown TKey="CustomLeaderboardCriteriaOperator" Values="_operators" Converter="_operatorConverter" ShowDisplayValue="false" @bind-Value="@_addCustomLeaderboard.GemsDespawnedCriteria.Operator" /></InputWrapper>
 		<InputWrapper Label="Gems despawned value"><InputNumber class="admin-input" @bind-Value="_addCustomLeaderboard.GemsDespawnedCriteria.Value" /></InputWrapper>
 		
-		<InputWrapper Label="Gems eaten operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_addCustomLeaderboard.GemsEatenCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Gems eaten operator"><SearchDropdown TKey="CustomLeaderboardCriteriaOperator" Values="_operators" Converter="_operatorConverter" ShowDisplayValue="false" @bind-Value="@_addCustomLeaderboard.GemsEatenCriteria.Operator" /></InputWrapper>
 		<InputWrapper Label="Gems eaten value"><InputNumber class="admin-input" @bind-Value="_addCustomLeaderboard.GemsEatenCriteria.Value" /></InputWrapper>
 		
-		<InputWrapper Label="Enemies killed operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_addCustomLeaderboard.EnemiesKilledCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Enemies killed operator"><SearchDropdown TKey="CustomLeaderboardCriteriaOperator" Values="_operators" Converter="_operatorConverter" ShowDisplayValue="false" @bind-Value="@_addCustomLeaderboard.EnemiesKilledCriteria.Operator" /></InputWrapper>
 		<InputWrapper Label="Enemies killed value"><InputNumber class="admin-input" @bind-Value="_addCustomLeaderboard.EnemiesKilledCriteria.Value" /></InputWrapper>
 
-		<InputWrapper Label="Daggers fired operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_addCustomLeaderboard.DaggersFiredCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Daggers fired operator"><SearchDropdown TKey="CustomLeaderboardCriteriaOperator" Values="_operators" Converter="_operatorConverter" ShowDisplayValue="false" @bind-Value="@_addCustomLeaderboard.DaggersFiredCriteria.Operator" /></InputWrapper>
 		<InputWrapper Label="Daggers fired value"><InputNumber class="admin-input" @bind-Value="_addCustomLeaderboard.DaggersFiredCriteria.Value" /></InputWrapper>
 
-		<InputWrapper Label="Daggers hit operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_addCustomLeaderboard.DaggersHitCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Daggers hit operator"><SearchDropdown TKey="CustomLeaderboardCriteriaOperator" Values="_operators" Converter="_operatorConverter" ShowDisplayValue="false" @bind-Value="@_addCustomLeaderboard.DaggersHitCriteria.Operator" /></InputWrapper>
 		<InputWrapper Label="Daggers hit value"><InputNumber class="admin-input" @bind-Value="_addCustomLeaderboard.DaggersHitCriteria.Value" /></InputWrapper>
 		
-		<InputWrapper Label="Homing stored operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_addCustomLeaderboard.HomingStoredCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Homing stored operator"><SearchDropdown TKey="CustomLeaderboardCriteriaOperator" Values="_operators" Converter="_operatorConverter" ShowDisplayValue="false" @bind-Value="@_addCustomLeaderboard.HomingStoredCriteria.Operator" /></InputWrapper>
 		<InputWrapper Label="Homing stored value"><InputNumber class="admin-input" @bind-Value="_addCustomLeaderboard.HomingStoredCriteria.Value" /></InputWrapper>
 		
-		<InputWrapper Label="Homing eaten operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_addCustomLeaderboard.HomingEatenCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Homing eaten operator"><SearchDropdown TKey="CustomLeaderboardCriteriaOperator" Values="_operators" Converter="_operatorConverter" ShowDisplayValue="false" @bind-Value="@_addCustomLeaderboard.HomingEatenCriteria.Operator" /></InputWrapper>
 		<InputWrapper Label="Homing eaten value"><InputNumber class="admin-input" @bind-Value="_addCustomLeaderboard.HomingEatenCriteria.Value" /></InputWrapper>
 		
 		<Heading Level="2" Title="Enemy criteria" />
 		
-		<InputWrapper Label="Skull 1 kills operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_addCustomLeaderboard.Skull1KillsCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Skull 1 kills operator"><SearchDropdown TKey="CustomLeaderboardCriteriaOperator" Values="_operators" Converter="_operatorConverter" ShowDisplayValue="false" @bind-Value="@_addCustomLeaderboard.Skull1KillsCriteria.Operator" /></InputWrapper>
 		<InputWrapper Label="Skull 1 kills value"><InputNumber class="admin-input" @bind-Value="_addCustomLeaderboard.Skull1KillsCriteria.Value" /></InputWrapper>
 		
-		<InputWrapper Label="Skull 2 kills operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_addCustomLeaderboard.Skull2KillsCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Skull 2 kills operator"><SearchDropdown TKey="CustomLeaderboardCriteriaOperator" Values="_operators" Converter="_operatorConverter" ShowDisplayValue="false" @bind-Value="@_addCustomLeaderboard.Skull2KillsCriteria.Operator" /></InputWrapper>
 		<InputWrapper Label="Skull 2 kills value"><InputNumber class="admin-input" @bind-Value="_addCustomLeaderboard.Skull2KillsCriteria.Value" /></InputWrapper>
 		
-		<InputWrapper Label="Skull 3 kills operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_addCustomLeaderboard.Skull3KillsCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Skull 3 kills operator"><SearchDropdown TKey="CustomLeaderboardCriteriaOperator" Values="_operators" Converter="_operatorConverter" ShowDisplayValue="false" @bind-Value="@_addCustomLeaderboard.Skull3KillsCriteria.Operator" /></InputWrapper>
 		<InputWrapper Label="Skull 3 kills value"><InputNumber class="admin-input" @bind-Value="_addCustomLeaderboard.Skull3KillsCriteria.Value" /></InputWrapper>
 		
-		<InputWrapper Label="Skull 4 kills operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_addCustomLeaderboard.Skull4KillsCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Skull 4 kills operator"><SearchDropdown TKey="CustomLeaderboardCriteriaOperator" Values="_operators" Converter="_operatorConverter" ShowDisplayValue="false" @bind-Value="@_addCustomLeaderboard.Skull4KillsCriteria.Operator" /></InputWrapper>
 		<InputWrapper Label="Skull 4 kills value"><InputNumber class="admin-input" @bind-Value="_addCustomLeaderboard.Skull4KillsCriteria.Value" /></InputWrapper>
 		
-		<InputWrapper Label="Spiderling kills operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_addCustomLeaderboard.SpiderlingKillsCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Spiderling kills operator"><SearchDropdown TKey="CustomLeaderboardCriteriaOperator" Values="_operators" Converter="_operatorConverter" ShowDisplayValue="false" @bind-Value="@_addCustomLeaderboard.SpiderlingKillsCriteria.Operator" /></InputWrapper>
 		<InputWrapper Label="Spiderling kills value"><InputNumber class="admin-input" @bind-Value="_addCustomLeaderboard.SpiderlingKillsCriteria.Value" /></InputWrapper>
 		
-		<InputWrapper Label="Spider Egg kills operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_addCustomLeaderboard.SpiderEggKillsCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Spider Egg kills operator"><SearchDropdown TKey="CustomLeaderboardCriteriaOperator" Values="_operators" Converter="_operatorConverter" ShowDisplayValue="false" @bind-Value="@_addCustomLeaderboard.SpiderEggKillsCriteria.Operator" /></InputWrapper>
 		<InputWrapper Label="Spider Egg kills value"><InputNumber class="admin-input" @bind-Value="_addCustomLeaderboard.SpiderEggKillsCriteria.Value" /></InputWrapper>
 		
-		<InputWrapper Label="Squid 1 kills operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_addCustomLeaderboard.Squid1KillsCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Squid 1 kills operator"><SearchDropdown TKey="CustomLeaderboardCriteriaOperator" Values="_operators" Converter="_operatorConverter" ShowDisplayValue="false" @bind-Value="@_addCustomLeaderboard.Squid1KillsCriteria.Operator" /></InputWrapper>
 		<InputWrapper Label="Squid 1 kills value"><InputNumber class="admin-input" @bind-Value="_addCustomLeaderboard.Squid1KillsCriteria.Value" /></InputWrapper>
 		
-		<InputWrapper Label="Squid 2 kills operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_addCustomLeaderboard.Squid2KillsCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Squid 2 kills operator"><SearchDropdown TKey="CustomLeaderboardCriteriaOperator" Values="_operators" Converter="_operatorConverter" ShowDisplayValue="false" @bind-Value="@_addCustomLeaderboard.Squid2KillsCriteria.Operator" /></InputWrapper>
 		<InputWrapper Label="Squid 2 kills value"><InputNumber class="admin-input" @bind-Value="_addCustomLeaderboard.Squid2KillsCriteria.Value" /></InputWrapper>
 		
-		<InputWrapper Label="Squid 3 kills operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_addCustomLeaderboard.Squid3KillsCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Squid 3 kills operator"><SearchDropdown TKey="CustomLeaderboardCriteriaOperator" Values="_operators" Converter="_operatorConverter" ShowDisplayValue="false" @bind-Value="@_addCustomLeaderboard.Squid3KillsCriteria.Operator" /></InputWrapper>
 		<InputWrapper Label="Squid 3 kills value"><InputNumber class="admin-input" @bind-Value="_addCustomLeaderboard.Squid3KillsCriteria.Value" /></InputWrapper>
 		
-		<InputWrapper Label="Centipede kills operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_addCustomLeaderboard.CentipedeKillsCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Centipede kills operator"><SearchDropdown TKey="CustomLeaderboardCriteriaOperator" Values="_operators" Converter="_operatorConverter" ShowDisplayValue="false" @bind-Value="@_addCustomLeaderboard.CentipedeKillsCriteria.Operator" /></InputWrapper>
 		<InputWrapper Label="Centipede kills value"><InputNumber class="admin-input" @bind-Value="_addCustomLeaderboard.CentipedeKillsCriteria.Value" /></InputWrapper>
 		
-		<InputWrapper Label="Gigapede kills operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_addCustomLeaderboard.GigapedeKillsCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Gigapede kills operator"><SearchDropdown TKey="CustomLeaderboardCriteriaOperator" Values="_operators" Converter="_operatorConverter" ShowDisplayValue="false" @bind-Value="@_addCustomLeaderboard.GigapedeKillsCriteria.Operator" /></InputWrapper>
 		<InputWrapper Label="Gigapede kills value"><InputNumber class="admin-input" @bind-Value="_addCustomLeaderboard.GigapedeKillsCriteria.Value" /></InputWrapper>
 		
-		<InputWrapper Label="Ghostpede kills operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_addCustomLeaderboard.GhostpedeKillsCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Ghostpede kills operator"><SearchDropdown TKey="CustomLeaderboardCriteriaOperator" Values="_operators" Converter="_operatorConverter" ShowDisplayValue="false" @bind-Value="@_addCustomLeaderboard.GhostpedeKillsCriteria.Operator" /></InputWrapper>
 		<InputWrapper Label="Ghostpede kills value"><InputNumber class="admin-input" @bind-Value="_addCustomLeaderboard.GhostpedeKillsCriteria.Value" /></InputWrapper>
 		
-		<InputWrapper Label="Spider 1 kills operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_addCustomLeaderboard.Spider1KillsCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Spider 1 kills operator"><SearchDropdown TKey="CustomLeaderboardCriteriaOperator" Values="_operators" Converter="_operatorConverter" ShowDisplayValue="false" @bind-Value="@_addCustomLeaderboard.Spider1KillsCriteria.Operator" /></InputWrapper>
 		<InputWrapper Label="Spider 1 kills value"><InputNumber class="admin-input" @bind-Value="_addCustomLeaderboard.Spider1KillsCriteria.Value" /></InputWrapper>
 		
-		<InputWrapper Label="Spider 2 kills operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_addCustomLeaderboard.Spider2KillsCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Spider 2 kills operator"><SearchDropdown TKey="CustomLeaderboardCriteriaOperator" Values="_operators" Converter="_operatorConverter" ShowDisplayValue="false" @bind-Value="@_addCustomLeaderboard.Spider2KillsCriteria.Operator" /></InputWrapper>
 		<InputWrapper Label="Spider 2 kills value"><InputNumber class="admin-input" @bind-Value="_addCustomLeaderboard.Spider2KillsCriteria.Value" /></InputWrapper>
 		
-		<InputWrapper Label="Leviathan kills operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_addCustomLeaderboard.LeviathanKillsCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Leviathan kills operator"><SearchDropdown TKey="CustomLeaderboardCriteriaOperator" Values="_operators" Converter="_operatorConverter" ShowDisplayValue="false" @bind-Value="@_addCustomLeaderboard.LeviathanKillsCriteria.Operator" /></InputWrapper>
 		<InputWrapper Label="Leviathan kills value"><InputNumber class="admin-input" @bind-Value="_addCustomLeaderboard.LeviathanKillsCriteria.Value" /></InputWrapper>
 		
-		<InputWrapper Label="Orb kills operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_addCustomLeaderboard.OrbKillsCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Orb kills operator"><SearchDropdown TKey="CustomLeaderboardCriteriaOperator" Values="_operators" Converter="_operatorConverter" ShowDisplayValue="false" @bind-Value="@_addCustomLeaderboard.OrbKillsCriteria.Operator" /></InputWrapper>
 		<InputWrapper Label="Orb kills value"><InputNumber class="admin-input" @bind-Value="_addCustomLeaderboard.OrbKillsCriteria.Value" /></InputWrapper>
 		
-		<InputWrapper Label="Thorn kills operator"><SearchDropdown TKey=CustomLeaderboardCriteriaOperator Values="_operators" Converter="_operatorConverter" ShowDisplayValue=false @bind-Value="@_addCustomLeaderboard.ThornKillsCriteria.Operator" /></InputWrapper>
+		<InputWrapper Label="Thorn kills operator"><SearchDropdown TKey="CustomLeaderboardCriteriaOperator" Values="_operators" Converter="_operatorConverter" ShowDisplayValue="false" @bind-Value="@_addCustomLeaderboard.ThornKillsCriteria.Operator" /></InputWrapper>
 		<InputWrapper Label="Thorn kills value"><InputNumber class="admin-input" @bind-Value="_addCustomLeaderboard.ThornKillsCriteria.Value" /></InputWrapper>
 	</AdminAdd>
 </AdminAuthorizer>
@@ -107,7 +107,7 @@
 	private Dictionary<int, string>? _spawnsetNames;
 	private readonly AddCustomLeaderboard _addCustomLeaderboard = new();
 
-	public async Task PopulateAsync(AdminAdd<AddCustomLeaderboard> addComponent)
+	private async Task PopulateAsync(AdminAdd<AddCustomLeaderboard> addComponent)
 	{
 		try
 		{

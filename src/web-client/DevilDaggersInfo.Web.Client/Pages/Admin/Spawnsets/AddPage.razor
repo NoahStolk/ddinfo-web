@@ -6,7 +6,7 @@
 
 <AdminAuthorizer Base="this" RequiredRole="@Roles.Spawnsets">
 	<AdminAdd Name="Spawnset" OverviewUrl="/admin/spawnsets" ApiCall="Http.AddSpawnset" Model="_addSpawnset" OnPopulate="async (ac) => await PopulateAsync(ac)">
-		<InputWrapper Label="Author"><SearchDropdown TKey=int Values="@_playerNames" Converter="s => int.Parse(s)" @bind-Value="@_addSpawnset.PlayerId" /></InputWrapper>
+		<InputWrapper Label="Author"><SearchDropdown TKey="int" Values="@_playerNames" Converter="s => int.Parse(s)" @bind-Value="@_addSpawnset.PlayerId" /></InputWrapper>
 		<InputWrapper Label="Name"><InputText class="admin-input" @bind-Value="@_addSpawnset.Name" /></InputWrapper>
 		<InputWrapper Label="Max display waves"><InputNumber class="admin-input" @bind-Value="_addSpawnset.MaxDisplayWaves" /></InputWrapper>
 		<InputWrapper Label="HTML description"><InputTextArea class="admin-input w-full h-64" @bind-Value="@_addSpawnset.HtmlDescription" /></InputWrapper>

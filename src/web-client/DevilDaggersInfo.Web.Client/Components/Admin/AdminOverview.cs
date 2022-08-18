@@ -37,11 +37,9 @@ public partial class AdminOverview<TGetDto, TSorting> : IHasNavigation
 	public string GridConfiguration { get; set; } = null!;
 
 	[Parameter]
-	[EditorRequired]
 	public RenderFragment TableHeader { get; set; } = null!;
 
 	[Parameter]
-	[EditorRequired]
 	public RenderFragment<TGetDto> RowTemplate { get; set; } = null!;
 
 	[Parameter]
