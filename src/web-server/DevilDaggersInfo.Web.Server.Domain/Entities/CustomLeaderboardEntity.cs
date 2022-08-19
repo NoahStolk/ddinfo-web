@@ -35,7 +35,7 @@ public class CustomLeaderboardEntity : IAuditable
 
 	public DateTime? DateLastPlayed { get; set; }
 
-	public DateTime DateCreated { get; set; }
+	public DateTime DateCreated { get; init; }
 
 	public int TotalRunsSubmitted { get; set; }
 
