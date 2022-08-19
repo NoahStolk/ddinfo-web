@@ -71,10 +71,4 @@ public static class CustomLeaderboardConverters
 		Operator = criteria.Operator,
 		Expression = criteria.Expression == null ? null : Expression.TryParse(criteria.Expression, out Expression? expression) ? expression.ToString() : null,
 	};
-
-	private static GetCustomLeaderboardCriteria ToGetCustomLeaderboardCriteria(this CustomLeaderboardEnemyCriteriaEntityValue criteria) => new()
-	{
-		Operator = criteria.Operator,
-		Expression = criteria.Expression == null ? null : Expression.TryParse(criteria.Expression, out Expression? expression) ? expression.ToString() : null,
-	};
 }
