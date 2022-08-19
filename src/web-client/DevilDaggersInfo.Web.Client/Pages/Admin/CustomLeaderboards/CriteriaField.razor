@@ -12,7 +12,7 @@
 	@if (Criteria.Expression == null || Criteria.Operator == CustomLeaderboardCriteriaOperator.Any)
 	{
 		<span style="color: @CriteriaType.GetColor()">@CriteriaType.Display()</span>
-		<span>can be anything.</span>
+		<span>can be anything</span>
 	}
 	else
 	{
@@ -20,7 +20,9 @@
 		{
 			Expression expression = Expression.Parse(Criteria.Expression);
 
-			<CriteriaExpressionComponent Expression="expression" CriteriaOperator="Criteria.Operator" CriteriaType="CriteriaType" />
+			<CriteriaExpressionComponent Expression="expression" CriteriaOperator="Criteria.Operator" CriteriaType="CriteriaType"/>
+
+			<span class="text-green text-sm">(@BitConverter.ToString(expression.ToBytes()).Replace("-", " "))</span>
 		}
 		catch (CriteriaExpressionParseException ex)
 		{

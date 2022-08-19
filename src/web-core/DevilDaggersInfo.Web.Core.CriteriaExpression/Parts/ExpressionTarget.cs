@@ -7,6 +7,6 @@ public record ExpressionTarget(CustomLeaderboardCriteriaType Target) : IExpressi
 {
 	public override string ToString()
 	{
-		return Target.ToStringFast();
+		return Target.Display();
 	}
 }
