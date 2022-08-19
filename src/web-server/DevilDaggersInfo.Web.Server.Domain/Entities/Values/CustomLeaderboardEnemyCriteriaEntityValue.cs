@@ -7,11 +7,11 @@ namespace DevilDaggersInfo.Web.Server.Domain.Entities.Values;
 [Owned]
 public class CustomLeaderboardEnemyCriteriaEntityValue
 {
-	public CustomLeaderboardCriteriaOperator Operator { get; set; }
+	public CustomLeaderboardCriteriaOperator Operator { get; init; }
 
 	// TODO: Remove.
 	public short Value { get; set; }
 
 	[MaxLength(Core.CriteriaExpression.Expression.MaxByteLength)]
-	public byte[]? Expression { get; set; }
+	public byte[]? Expression { get; init; }
 }

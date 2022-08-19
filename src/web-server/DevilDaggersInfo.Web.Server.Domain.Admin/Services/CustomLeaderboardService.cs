@@ -311,7 +311,7 @@ public class CustomLeaderboardService
 
 	private static byte[]? ValidateCriteriaExpression(string? criteriaExpression)
 	{
-		if (criteriaExpression == null)
+		if (string.IsNullOrWhiteSpace(criteriaExpression))
 			return null;
 
 		if (!Expression.TryParse(criteriaExpression, out Expression? expression))
