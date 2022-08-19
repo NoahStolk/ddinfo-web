@@ -12,5 +12,5 @@ public class CustomLeaderboardCriteriaEntityValue
 	public int Value { get; set; }
 
 	[MaxLength(Core.CriteriaExpression.Expression.MaxByteLength)]
-	public byte[]? Expression { get; set; }
+	public byte[]? Expression { get; init; }
 }

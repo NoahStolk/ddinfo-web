@@ -13,5 +13,5 @@ public class CustomLeaderboardEnemyCriteriaEntityValue
 	public short Value { get; set; }
 
 	[MaxLength(Core.CriteriaExpression.Expression.MaxByteLength)]
-	public byte[]? Expression { get; set; }
+	public byte[]? Expression { get; init; }
 }
