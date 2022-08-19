@@ -184,7 +184,7 @@ public class CustomLeaderboardRepository
 		if (customLeaderboard.OrbKillsCriteria.Expression != null)
 			criteria.Add(AddEnemyCriteria(CustomLeaderboardCriteriaType.OrbKills, customLeaderboard.OrbKillsCriteria.Operator, customLeaderboard.OrbKillsCriteria.Expression));
 		if (customLeaderboard.ThornKillsCriteria.Expression != null)
-			AddEnemyCriteria(CustomLeaderboardCriteriaType.ThornKills, customLeaderboard.ThornKillsCriteria.Operator, customLeaderboard.ThornKillsCriteria.Expression);
+			criteria.Add(AddEnemyCriteria(CustomLeaderboardCriteriaType.ThornKills, customLeaderboard.ThornKillsCriteria.Operator, customLeaderboard.ThornKillsCriteria.Expression));
 
 		static CustomLeaderboardCriteria AddCriteria(CustomLeaderboardCriteriaType criteriaType, CustomLeaderboardCriteriaOperator op, byte[] expression) => new()
 		{
