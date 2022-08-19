@@ -1,5 +1,6 @@
 using DevilDaggersInfo.Api.Admin.CustomLeaderboards;
 using DevilDaggersInfo.Common.Extensions;
+using DevilDaggersInfo.Web.Core.CriteriaExpression;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Values;
 
@@ -68,24 +69,12 @@ public static class CustomLeaderboardConverters
 	private static GetCustomLeaderboardCriteria ToGetCustomLeaderboardCriteria(this CustomLeaderboardCriteriaEntityValue criteria) => new()
 	{
 		Operator = criteria.Operator,
-		Value = criteria.Value,
+		Expression = criteria.Expression == null ? null : Expression.TryParse(criteria.Expression, out Expression? expression) ? expression.ToString() : null,
 	};
 
 	private static GetCustomLeaderboardCriteria ToGetCustomLeaderboardCriteria(this CustomLeaderboardEnemyCriteriaEntityValue criteria) => new()
 	{
 		Operator = criteria.Operator,
-		Value = criteria.Value,
-	};
-
-	public static CustomLeaderboardCriteriaEntityValue ToEntity(this AddCustomLeaderboardCriteria criteria) => new()
-	{
-		Operator = criteria.Operator,
-		Value = criteria.Value,
-	};
-
-	public static CustomLeaderboardEnemyCriteriaEntityValue ToEnemyEntity(this AddCustomLeaderboardCriteria criteria) => new()
-	{
-		Operator = criteria.Operator,
-		Value = (short)criteria.Value,
+		Expression = criteria.Expression == null ? null : Expression.TryParse(criteria.Expression, out Expression? expression) ? expression.ToString() : null,
 	};
 }

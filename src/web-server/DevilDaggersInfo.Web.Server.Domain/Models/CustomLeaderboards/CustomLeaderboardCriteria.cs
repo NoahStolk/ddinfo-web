@@ -8,5 +8,5 @@ public record CustomLeaderboardCriteria
 
 	public CustomLeaderboardCriteriaOperator Operator { get; init; }
 
-	public int Value { get; init; }
+	public byte[] Expression { get; init; } = null!;
 }

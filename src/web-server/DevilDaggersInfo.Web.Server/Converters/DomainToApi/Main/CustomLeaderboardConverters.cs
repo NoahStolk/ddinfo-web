@@ -82,7 +82,7 @@ public static class CustomLeaderboardConverters
 	{
 		Type = criteria.Type,
 		Operator = criteria.Operator,
-		Value = criteria.Value,
+		Expression = criteria.Expression,
 	};
 
 	// TODO: Use domain models?

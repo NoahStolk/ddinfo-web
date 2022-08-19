@@ -42,19 +42,12 @@ public class CustomLeaderboardEntity : IAuditable
 	public bool IsFeatured { get; set; }
 
 	public CustomLeaderboardCriteriaEntityValue GemsCollectedCriteria { get; set; } = new();
-
 	public CustomLeaderboardCriteriaEntityValue GemsDespawnedCriteria { get; set; } = new();
-
 	public CustomLeaderboardCriteriaEntityValue GemsEatenCriteria { get; set; } = new();
-
 	public CustomLeaderboardCriteriaEntityValue EnemiesKilledCriteria { get; set; } = new();
-
 	public CustomLeaderboardCriteriaEntityValue DaggersFiredCriteria { get; set; } = new();
-
 	public CustomLeaderboardCriteriaEntityValue DaggersHitCriteria { get; set; } = new();
-
 	public CustomLeaderboardCriteriaEntityValue HomingStoredCriteria { get; set; } = new();
-
 	public CustomLeaderboardCriteriaEntityValue HomingEatenCriteria { get; set; } = new();
 
 	public CustomLeaderboardEnemyCriteriaEntityValue Skull1KillsCriteria { get; set; } = new();

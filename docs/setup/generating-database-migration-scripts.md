@@ -1,9 +1,8 @@
 # Generating database migration scripts
 
-1. Set the default project to `DevilDaggersInfo.Web.Server.Domain`.
-2. Set the startup project to `DevilDaggersInfo.Web.Server`.
-3. Packages references to `Microsoft.EntityFrameworkCore.Relational` and `Pomelo.EntityFrameworkCore.MySql` must temporarily be added to `DevilDaggersInfo.Web.Server.Domain`.
-4. Create initial migration: `add-migration V1`
-5. Make changes to entities.
-6. Create new migration: `add-migration V2`
-7. Generate script: `script-migration V1 V2`
+1. Package references to `Microsoft.EntityFrameworkCore.Relational` and `Pomelo.EntityFrameworkCore.MySql` must temporarily be added to `DevilDaggersInfo.Web.Server.Domain`.
+2. `cd src/web-server/DevilDaggersInfo.Web.Server.Domain`
+3. `dotnet ef migrations add V1 --startup-project ../DevilDaggersInfo.Web.Server/DevilDaggersInfo.Web.Server.csproj`
+4. Make changes to entities.
+5. `dotnet ef migrations add V2 --startup-project ../DevilDaggersInfo.Web.Server/DevilDaggersInfo.Web.Server.csproj`
+6. `dotnet ef migrations script V1 V2 --startup-project ../DevilDaggersInfo.Web.Server/DevilDaggersInfo.Web.Server.csproj`

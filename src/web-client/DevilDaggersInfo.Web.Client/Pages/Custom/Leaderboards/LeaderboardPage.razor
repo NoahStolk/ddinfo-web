@@ -1,6 +1,7 @@
 @page "/custom/leaderboard/{Id:int}"
 @using DevilDaggersInfo.Api.Main.CustomLeaderboards
 @using DevilDaggersInfo.Types.Web.Extensions
+@using DevilDaggersInfo.Web.Core.CriteriaExpression
 @inject MainApiHttpClient Http
 
 @if (GetCustomLeaderboard == null)
@@ -58,7 +59,12 @@ else
 			<ul class="pl-4">
 				@foreach (GetCustomLeaderboardCriteria criteria in GetCustomLeaderboard.Criteria)
 				{
-					<li class="list-disc"><span style="color: @criteria.Type.GetColor()">@criteria.Type.Display()</span> must be <span style="color: @criteria.Operator.GetColor()">@criteria.Operator.Display()</span> <span style="color: #0f8">@criteria.Value</span>.</li>
+					if (Expression.TryParse(criteria.Expression, out Expression? criteriaExpression))
+					{
+						<li class="list-disc">
+							<CriteriaExpressionComponent Expression="criteriaExpression" CriteriaOperator="criteria.Operator" CriteriaType="criteria.Type" />
+						</li>	
+					}
 				}
 			</ul>
 		</div>
