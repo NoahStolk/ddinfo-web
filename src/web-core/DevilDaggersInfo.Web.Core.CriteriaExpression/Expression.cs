@@ -4,6 +4,7 @@ using DevilDaggersInfo.Types.Web.Extensions;
 using DevilDaggersInfo.Web.Core.CriteriaExpression.Exceptions;
 using DevilDaggersInfo.Web.Core.CriteriaExpression.Parts;
 using System.Diagnostics.CodeAnalysis;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace DevilDaggersInfo.Web.Core.CriteriaExpression;
@@ -110,6 +111,23 @@ public class Expression
 	public override string ToString()
 	{
 		return string.Join(" ", Parts);
+	}
+
+	public string ToShortString()
+	{
+		StringBuilder sb = new();
+		foreach (IExpressionPart part in Parts)
+		{
+			switch (part)
+			{
+				case ExpressionOperator op: sb.Append(op); break;
+				case ExpressionTarget target: sb.Append(target.Target.GetIdentifier()); break;
+				case ExpressionValue value: sb.Append(value); break;
+				default: throw new CriteriaExpressionParseException($"Criteria expression part type '{part.GetType().Name}' is not supported.");
+			}
+		}
+
+		return sb.ToString();
 	}
 
 	public byte[] ToBytes()
