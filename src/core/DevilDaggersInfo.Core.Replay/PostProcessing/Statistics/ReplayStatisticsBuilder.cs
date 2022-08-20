@@ -66,83 +66,80 @@ public class ReplayStatisticsBuilder
 		List<ReplayStatisticsEntry> entries = new() { FlushCurrentState() };
 		foreach (IEvent e in events)
 		{
-			if (e is BoidSpawnEvent boid)
+			switch (e)
 			{
-				_enemiesAlive++;
-				switch (boid.BoidType)
+				case BoidSpawnEvent boid:
+					_enemiesAlive++;
+					switch (boid.BoidType)
+					{
+						case BoidType.Skull1: _skull1sAlive++; break;
+						case BoidType.Skull2: _skull2sAlive++; break;
+						case BoidType.Skull3: _skull3sAlive++; break;
+						case BoidType.Spiderling: _spiderlingsAlive++; break;
+						case BoidType.Skull4: _skull4sAlive++; break;
+					}
+
+					break;
+				case DaggerSpawnEvent:
+					_daggersFired++;
+					break;
+				case GemEvent:
+					_gemsCollected++;
+					break;
+				case HitEvent:
+					// TODO: Look up entity ID.
+					break;
+				case LeviathanSpawnEvent:
+					_enemiesAlive++;
+					_leviathansAlive++;
+					break;
+				case PedeSpawnEvent pede:
+					_enemiesAlive++;
+					switch (pede.PedeType)
+					{
+						case PedeType.Centipede: _centipedesAlive++; break;
+						case PedeType.Gigapede: _gigapedesAlive++; break;
+						case PedeType.Ghostpede: _ghostpedesAlive++; break;
+					}
+
+					break;
+				case SpiderEggSpawnEvent:
+					_enemiesAlive++;
+					_spiderEggsAlive++;
+					break;
+				case SpiderSpawnEvent spider:
+					_enemiesAlive++;
+					switch (spider.SpiderType)
+					{
+						case SpiderType.Spider1: _spider1sAlive++; break;
+						case SpiderType.Spider2: _spider2sAlive++; break;
+					}
+
+					break;
+				case SquidSpawnEvent squid:
+					_enemiesAlive++;
+					switch (squid.SquidType)
+					{
+						case SquidType.Squid1: _squid1sAlive++; break;
+						case SquidType.Squid2: _squid2sAlive++; break;
+						case SquidType.Squid3: _squid3sAlive++; break;
+					}
+
+					break;
+				case ThornSpawnEvent:
+					_enemiesAlive++;
+					_thornsAlive++;
+					break;
+				case IInputsEvent:
 				{
-					case BoidType.Skull1: _skull1sAlive++; break;
-					case BoidType.Skull2: _skull2sAlive++; break;
-					case BoidType.Skull3: _skull3sAlive++; break;
-					case BoidType.Spiderling: _spiderlingsAlive++; break;
-					case BoidType.Skull4: _skull4sAlive++; break;
+					currentTick++;
+					if (currentTick % 60 == 0)
+						entries.Add(FlushCurrentState());
+					break;
 				}
-			}
-			else if (e is DaggerSpawnEvent)
-			{
-				_daggersFired++;
-			}
-			else if (e is GemEvent)
-			{
-				_gemsCollected++;
-			}
-			else if (e is HitEvent)
-			{
-				// TODO: Look up entity ID.
-			}
-			else if (e is LeviathanSpawnEvent)
-			{
-				_enemiesAlive++;
-				_leviathansAlive++;
-			}
-			else if (e is PedeSpawnEvent pede)
-			{
-				_enemiesAlive++;
-				switch (pede.PedeType)
-				{
-					case PedeType.Centipede: _centipedesAlive++; break;
-					case PedeType.Gigapede: _gigapedesAlive++; break;
-					case PedeType.Ghostpede: _ghostpedesAlive++; break;
-				}
-			}
-			else if (e is SpiderEggSpawnEvent)
-			{
-				_enemiesAlive++;
-				_spiderEggsAlive++;
-			}
-			else if (e is SpiderSpawnEvent spider)
-			{
-				_enemiesAlive++;
-				switch (spider.SpiderType)
-				{
-					case SpiderType.Spider1: _spider1sAlive++; break;
-					case SpiderType.Spider2: _spider2sAlive++; break;
-				}
-			}
-			else if (e is SquidSpawnEvent squid)
-			{
-				_enemiesAlive++;
-				switch (squid.SquidType)
-				{
-					case SquidType.Squid1: _squid1sAlive++; break;
-					case SquidType.Squid2: _squid2sAlive++; break;
-					case SquidType.Squid3: _squid3sAlive++; break;
-				}
-			}
-			else if (e is ThornSpawnEvent)
-			{
-				_enemiesAlive++;
-				_thornsAlive++;
-			}
-			else if (e is IInputsEvent)
-			{
-				currentTick++;
-				if (currentTick % 60 == 0)
+				case EndEvent:
 					entries.Add(FlushCurrentState());
-			}
-			else if (e is EndEvent)
-			{
-				entries.Add(FlushCurrentState());
+					break;
 			}
 		}
 
