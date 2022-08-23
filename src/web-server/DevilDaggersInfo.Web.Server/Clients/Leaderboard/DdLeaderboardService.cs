@@ -53,7 +53,7 @@ public class DdLeaderboardService : IDdLeaderboardService
 
 	public async Task<List<IDdLeaderboardService.EntryResponse>> GetEntriesByName(string name)
 	{
-		if (name.Length < 3 || name.Length > 16)
+		if (name.Length is < 3 or > 16)
 			throw new ArgumentOutOfRangeException(nameof(name));
 
 		return await ExecuteAndParse(
