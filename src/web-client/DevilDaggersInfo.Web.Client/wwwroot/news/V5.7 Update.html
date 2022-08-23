@@ -1,7 +1,15 @@
 <h3 class="text-red text-xl pt-4 pb-2 font-goethe">Custom Leaderboard Criteria</h3>
 
 <p class="para">
-	The new custom leaderboard criteria system allows you to create, for example, a leaderboard where you must not kill any squids, but must kill more than 20 Skull IIIs. If a run fails to meet the criteria, it will be rejected by the server.
+	The new custom leaderboard criteria system allows you to create, for example, a leaderboard where you must not kill any squids, but must kill more than 20 Skull IIIs.
+</p>
+
+<p class="para">
+	You can also use more complex expressions such as 'homing stored must be less than or equal to gems collected + daggers fired + 10'.
+</p>
+
+<p class="para">
+	If a run fails to meet the criteria, it will be rejected by the server.
 </p>
 
 <p class="para">
@@ -48,6 +56,29 @@
 	<li class="list-disc">Less than or equal</li>
 	<li class="list-disc">Greater than or equal</li>
 	<li class="list-disc">Modulo</li>
+</ul>
+
+<p class="para">
+	Criteria expressions can currently consist of any of the values listed above, any integer, and the + and - operators. Examples:
+</p>
+
+<ul class="pl-4">
+	<li class="list-disc">
+		<ul class="pl-4">
+			<li>Daggers fired must be less than or equal to Gems collected + 2</li>
+		</ul>
+		<ul class="pl-4">
+			<li>Skull II kills must be greater than or equal to 3</li>
+			<li>Skull III kills must be greater than or equal to Skull II kills + Skull II kills</li>
+			<li>Squid I kills must be equal to 0</li>
+			<li>Squid II kills must be equal to 0</li>
+		</ul>
+		<ul class="pl-4">
+			<li>Gems eaten must be equal to 49</li>
+			<li>Daggers fired must be less than or equal to 50</li>
+			<li>Centipede kills must be equal to 1</li>
+		</ul>
+	</li>
 </ul>
 
 <h3 class="text-red text-xl pt-4 pb-2 font-goethe">Enhancements</h3>
