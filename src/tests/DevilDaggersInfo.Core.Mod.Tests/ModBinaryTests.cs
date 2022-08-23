@@ -25,7 +25,7 @@ public class ModBinaryTests
 	[TestMethod]
 	public void ValidateTocSingleAsset()
 	{
-		const string fileName = "dd-maken";
+		const string fileName = "dd-single-asset";
 		string filePath = Path.Combine(TestUtils.ResourcePath, fileName);
 		byte[] originalBytes = File.ReadAllBytes(filePath);
 		ModBinary modBinary = new(originalBytes, ModBinaryReadComprehensiveness.TocOnly);
