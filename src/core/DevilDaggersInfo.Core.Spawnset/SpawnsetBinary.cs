@@ -271,7 +271,7 @@ public class SpawnsetBinary
 	}
 
 	public static bool IsEmptySpawn(int enemyType)
-		=> enemyType < 0 || enemyType > 9;
+		=> enemyType is < 0 or > 9;
 
 	public bool HasSpawns()
 		=> HasSpawns(Spawns);
@@ -333,35 +333,18 @@ public class SpawnsetBinary
 
 	public static EffectivePlayerSettings GetEffectivePlayerSettings(HandLevel handLevel, int additionalGems)
 	{
-		if (handLevel == HandLevel.Level1)
+		return handLevel switch
 		{
-			if (additionalGems < 10)
-				return new(HandLevel.Level1, additionalGems, HandLevel.Level1);
-
-			if (additionalGems < 70)
-				return new(HandLevel.Level2, additionalGems, HandLevel.Level2);
-
-			if (additionalGems == 70)
-				return new(HandLevel.Level3, 0, HandLevel.Level3);
-
-			if (additionalGems == 71)
-				return new(HandLevel.Level4, 0, HandLevel.Level4);
-
-			return new(HandLevel.Level4, 0, HandLevel.Level3);
-		}
-
-		if (handLevel == HandLevel.Level2)
-		{
-			if (additionalGems < 0)
-				return new(HandLevel.Level1, additionalGems + 10, HandLevel.Level1);
-
-			return new(HandLevel.Level2, Math.Min(59, additionalGems) + 10, HandLevel.Level2);
-		}
-
-		if (handLevel == HandLevel.Level3)
-			return new(HandLevel.Level3, Math.Min(149, additionalGems), HandLevel.Level3);
-
-		return new(HandLevel.Level4, additionalGems, HandLevel.Level4);
+			HandLevel.Level1 when additionalGems < 10 => new(HandLevel.Level1, additionalGems, HandLevel.Level1),
+			HandLevel.Level1 when additionalGems < 70 => new(HandLevel.Level2, additionalGems, HandLevel.Level2),
+			HandLevel.Level1 when additionalGems == 70 => new(HandLevel.Level3, 0, HandLevel.Level3),
+			HandLevel.Level1 when additionalGems == 71 => new(HandLevel.Level4, 0, HandLevel.Level4),
+			HandLevel.Level1 => new(HandLevel.Level4, 0, HandLevel.Level3),
+			HandLevel.Level2 when additionalGems < 0 => new(HandLevel.Level1, additionalGems + 10, HandLevel.Level1),
+			HandLevel.Level2 => new(HandLevel.Level2, Math.Min(59, additionalGems) + 10, HandLevel.Level2),
+			HandLevel.Level3 => new(HandLevel.Level3, Math.Min(149, additionalGems), HandLevel.Level3),
+			_ => new(HandLevel.Level4, additionalGems, HandLevel.Level4)
+		};
 	}
 
 	public string GetGameVersionString()

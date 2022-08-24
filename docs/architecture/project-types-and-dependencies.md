@@ -25,7 +25,7 @@ DevilDaggersInfo is separated into layers, then into project types, then into in
 |---------------|-----------------------------------------------------------|----------------------------------------------------------------------------|
 | `app`         | UI app heads that run natively                            | `common`, `core`, `razor-core`, `razor`, `types`                           |
 | `app-core`    | Core set of features for apps                             | `common`, `core`                                                           |
-| `razor`       | Razor UI libraries for apps                               | `app-core`, `common`, `core`, `razor-core`, `types`                        |
+| `razor`       | Razor UI libraries for apps or web clients                | `app-core`, `common`, `core`, `razor-core`, `types`                        |
 
 ### Web layer
 
