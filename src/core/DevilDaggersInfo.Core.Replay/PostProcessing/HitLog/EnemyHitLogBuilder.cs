@@ -33,7 +33,7 @@ public static class EnemyHitLogBuilder
 				if (daggerEntityType == null)
 					continue;
 
-				int damage = buildContext.EntityType.GetDamage(daggerEntityType.Value);
+				int damage = buildContext.EntityType.GetDamage(daggerEntityType.Value, hit.UserData);
 				buildContext.CurrentHp -= damage;
 				buildContext.Events.Add(new(currentTick, buildContext.CurrentHp, damage, daggerEntityType.Value.GetDaggerType(), hit.UserData));
 			}

@@ -34,7 +34,7 @@ public class EnemyTimelineBuilder
 				if (daggerType == null)
 					continue;
 
-				int damage = enemy.EntityType.GetDamage(daggerType.Value);
+				int damage = enemy.EntityType.GetDamage(daggerType.Value, hit.UserData);
 				if (damage == 0)
 					continue;
 

@@ -43,6 +43,16 @@ public static class EntityTypeExtensions
 		_ => throw new InvalidOperationException($"{nameof(EntityType)} '{entityType}' is not an enemy."),
 	};
 
+	private static bool IsWeakPoint(this EntityType entityType, int userData) => entityType switch
+	{
+		EntityType.Squid1 => userData is >= 0 and < 1,
+		EntityType.Squid2 => userData is >= 0 and < 2,
+		EntityType.Squid3 => userData is >= 0 and < 3,
+		EntityType.Leviathan => userData is >= 0 and < 6,
+		EntityType.Squid1 or EntityType.Spider1 or EntityType.Spider2 => userData == 0,
+		_ => true, // Everything else is a hit by default, including pedes (when damaging a dead pede segment, the ID is negated, which we ignore anyway.
+	};
+
 	public static int GetInitialTransmuteHp(this EntityType entityType) => entityType switch
 	{
 		EntityType.Skull1 => 10,
@@ -53,14 +63,16 @@ public static class EntityTypeExtensions
 		_ => throw new InvalidOperationException($"{nameof(EntityType)} '{entityType}' cannot be transmuted."),
 	};
 
-	// TODO: Take enemy parts (UserData) into account? Some parts being damaged does 0 damage, like spider/squid body, or empty pede segment.
-	public static int GetDamage(this EntityType enemyType, EntityType daggerType)
+	public static int GetDamage(this EntityType enemyType, EntityType daggerType, int userData)
 	{
 		if (!enemyType.IsEnemy())
 			throw new InvalidOperationException($"Type '{enemyType}' must be an enemy.");
 
 		if (!daggerType.IsDagger())
 			throw new InvalidOperationException($"Type '{daggerType}' must be a dagger.");
+
+		if (!enemyType.IsWeakPoint(userData))
+			return 0;
 
 		return daggerType switch
 		{
