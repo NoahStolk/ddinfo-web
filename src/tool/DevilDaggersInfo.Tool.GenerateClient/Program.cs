@@ -6,3 +6,4 @@ new HttpClientSourceGenerator("Admin", "DevilDaggersInfo.Web.Client.HttpClients"
 new HttpClientSourceGenerator("Ddiam", "DevilDaggersInfo.Razor.AppManager.HttpClients", "DdiamApiHttpClient", Path.Combine(Constants.RazorIamProjectPath, "HttpClients", "DdiamApiHttpClientGenerated.cs")).Execute();
 new HttpClientSourceGenerator("Ddcl", "DevilDaggersInfo.Razor.CustomLeaderboard.HttpClients", "DdclApiHttpClient", Path.Combine(Constants.RazorClProjectPath, "HttpClients", "DdclApiHttpClientGenerated.cs")).Execute();
 new HttpClientSourceGenerator("Ddre", "DevilDaggersInfo.Razor.ReplayEditor.HttpClients", "DdreApiHttpClient", Path.Combine(Constants.RazorReProjectPath, "HttpClients", "DdreApiHttpClientGenerated.cs")).Execute();
+new HttpClientSourceGenerator("Ddse", "DevilDaggersInfo.Razor.SurvivalEditor.HttpClients", "DdseApiHttpClient", Path.Combine(Constants.RazorSeProjectPath, "HttpClients", "DdseApiHttpClientGenerated.cs")).Execute();
