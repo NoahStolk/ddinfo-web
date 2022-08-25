@@ -67,16 +67,22 @@ public static class EntityTypeExtensions
 			EntityType.Level1Dagger or EntityType.Level2Dagger or EntityType.Level3Dagger or EntityType.Level4Dagger => 1,
 			EntityType.Level3HomingDagger => enemyType switch
 			{
-				EntityType.Squid3 => 30,
-				EntityType.Ghostpede => 0,
-				EntityType.Leviathan => 1,
+				EntityType.Squid3 => 30, // Probably unintentional
+				EntityType.Ghostpede => 0, // Homing phase through Ghostpede
+				EntityType.Leviathan => 1, // Homing deals normal damage to Leviathan (and Orb, which is the same enemy in this context)
 				_ => 10,
 			},
-			EntityType.Level4HomingDagger => 0,
+			EntityType.Level4HomingDagger => enemyType switch
+			{
+				EntityType.Leviathan => 1, // Homing deals normal damage to Leviathan (and Orb, which is the same enemy in this context)
+				EntityType.Centipede or EntityType.Gigapede or EntityType.Ghostpede => 0, // Only splash damages pedes (including Ghostpede)
+				_ => 10,
+			},
 			EntityType.Level4HomingSplash => enemyType switch
 			{
-				EntityType.Leviathan => 1,
-				_ => 10, // Pretty sure Ghostpede actually takes damage from splash.
+				EntityType.Thorn => 1, // Thorns are an exception
+				EntityType.Centipede or EntityType.Gigapede or EntityType.Ghostpede => 10, // Only splash damages pedes (including Ghostpede)
+				_ => 0,
 			},
 			_ => 0,
 		};
