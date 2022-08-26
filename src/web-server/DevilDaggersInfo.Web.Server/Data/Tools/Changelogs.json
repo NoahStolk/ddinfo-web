@@ -1,6 +1,21 @@
 {
 	"DevilDaggersSurvivalEditor": [
 		{
+			"VersionNumber": "2.46.1.0",
+			"Date": "2022-08-26T00:00:00",
+			"Changes": [
+				{
+					"Description": "The arena shrink preview is now accurate. This also applies to the 'Set tiles outside of arena shrink start to void` button."
+				},
+				{
+					"Description": "The arena is now rendered using the same colors as on the website."
+				},
+				{
+					"Description": "Fixed default arena being flipped incorrectly. This fix applies to the 'Default' arena preset, the default state when opening the app, and creating a new file from the menu."
+				}
+			]
+		},
+		{
 			"VersionNumber": "2.45.0.0",
 			"Date": "2022-05-01T00:00:00",
 			"Changes": [
