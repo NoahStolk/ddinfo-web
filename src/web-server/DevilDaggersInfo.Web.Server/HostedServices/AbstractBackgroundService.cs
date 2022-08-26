@@ -2,18 +2,18 @@ namespace DevilDaggersInfo.Web.Server.HostedServices;
 
 public abstract class AbstractBackgroundService : BackgroundService
 {
+	private readonly BackgroundServiceMonitor _backgroundServiceMonitor;
+	private readonly string _name;
+
 	protected AbstractBackgroundService(BackgroundServiceMonitor backgroundServiceMonitor, ILogger<AbstractBackgroundService> logger)
 	{
-		BackgroundServiceMonitor = backgroundServiceMonitor;
+		_backgroundServiceMonitor = backgroundServiceMonitor;
 		Logger = logger;
 
-		Name = GetType().Name;
+		_name = GetType().Name;
 	}
 
-	protected BackgroundServiceMonitor BackgroundServiceMonitor { get; }
 	protected ILogger<AbstractBackgroundService> Logger { get; }
-
-	protected string Name { get; }
 
 	protected abstract TimeSpan Interval { get; }
 
@@ -21,11 +21,11 @@ public abstract class AbstractBackgroundService : BackgroundService
 
 	protected sealed override async Task ExecuteAsync(CancellationToken stoppingToken)
 	{
-		BackgroundServiceMonitor.Register(Name, Interval);
+		_backgroundServiceMonitor.Register(_name, Interval);
 
 		while (!stoppingToken.IsCancellationRequested)
 		{
-			BackgroundServiceMonitor.Update(Name, DateTime.UtcNow);
+			_backgroundServiceMonitor.Update(_name, DateTime.UtcNow);
 
 			try
 			{
@@ -33,31 +33,15 @@ public abstract class AbstractBackgroundService : BackgroundService
 			}
 			catch (OperationCanceledException ex)
 			{
-				Logger.LogError(ex, "OperationCanceledException was thrown for background service '{name}' during execution. This probably means the application is shutting down, but this is not a graceful exit. The task might not have completed successfully.", Name);
+				Logger.LogError(ex, "OperationCanceledException was thrown for background service '{name}' during execution. This probably means the application is shutting down, but this is not a graceful exit. The task might not have completed successfully.", _name);
 			}
 			catch (Exception ex)
 			{
-				Logger.LogError(ex, "Task execution for `{name}` failed.", Name);
+				Logger.LogError(ex, "Task execution for `{name}` failed.", _name);
 			}
 
 			if (Interval.TotalMilliseconds > 0)
-			{
-				try
-				{
-					await Task.Delay(Interval, stoppingToken);
-				}
-				catch (OperationCanceledException ex)
-				{
-					Logger.LogWarning(ex, "OperationCanceledException was thrown for background service '{name}' during delay. This probably means the application is shutting down, but this is not a graceful exit.", Name);
-				}
-			}
+				await Task.Delay(Interval, stoppingToken);
 		}
-	}
-
-	public override async Task StopAsync(CancellationToken cancellationToken)
-	{
-		Logger.LogInformation("Background service '{name}' is stopping. This probably means the application is shutting down gracefully.", Name);
-
-		await base.StopAsync(cancellationToken);
 	}
 }
