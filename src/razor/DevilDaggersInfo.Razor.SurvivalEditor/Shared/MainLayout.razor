@@ -3,7 +3,7 @@
 @inherits FluxorLayout
 @inject StateFacade StateFacade
 
-<div class="font-calibri bg-gray-2 text-color-text h-full">
+<div class="font-calibri text-color-text h-full">
 	<div class="flex bg-gray-1">
 		<MenuDropdown Header="File">
 			<MenuDropdownItem Name="New" Action="StateFacade.NewSpawnset"/>
@@ -34,5 +34,7 @@
 		<span class="font-bold px-2 bg-[#600] truncate">ALPHA NOTICE: DDSE 3 is currently in a very early build and everything is still subject to change. Feature requests, suggestions, and bug reports are welcome.</span>
 	</div>
 
-	@Body
+	<div class="p-2">
+		@Body
+	</div>
 </div>

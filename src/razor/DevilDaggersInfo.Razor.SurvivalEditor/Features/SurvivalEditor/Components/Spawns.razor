@@ -1,0 +1,19 @@
+<h2>Spawns</h2>
+
+<div class="grid grid-cols-6">
+	<div>#</div>
+	<div>Time</div>
+	<div>Delay</div>
+	<div>Enemy</div>
+	<div>No farm gems</div>
+	<div>Total gems/homing</div>
+	@for (int i = 0; i < 10; i++)
+	{
+		<div>@i</div>
+		<div>@((i * 2).ToString("0.0000"))</div>
+		<div>2.0000</div>
+		<div>SQUID I</div>
+		<div>2</div>
+		<div>@(i * 2)</div>
+	}
+</div>

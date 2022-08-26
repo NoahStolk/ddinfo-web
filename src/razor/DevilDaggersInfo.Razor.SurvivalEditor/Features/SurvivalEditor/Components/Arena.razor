@@ -1,0 +1,8 @@
+@using DevilDaggersInfo.Razor.Core.CanvasArena.Components
+@using DevilDaggersInfo.Razor.SurvivalEditor.Store.State
+@using Fluxor
+@inject IState<SpawnsetBinaryState> SpawnsetBinaryState
+
+<h2>Arena</h2>
+
+<WebViewSpawnsetArena SpawnsetBinary="SpawnsetBinaryState.Value.SpawnsetBinary" CurrentTime="0" />
