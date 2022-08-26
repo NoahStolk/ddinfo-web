@@ -3,8 +3,8 @@
 @inherits FluxorLayout
 @inject StateFacade StateFacade
 
-<div class="font-calibri bg-black text-color-text h-full pl-2">
-	<div class="flex">
+<div class="font-calibri text-color-text h-full">
+	<div class="flex bg-gray-1">
 		<MenuDropdown Header="File">
 			<MenuDropdownItem Name="New" Action="StateFacade.NewSpawnset"/>
 			<MenuDropdownItem Name="Open" Action="StateFacade.OpenSpawnsetFile"/>
@@ -30,11 +30,11 @@
 			<MenuDropdownItem Name="Source code" Action="StateFacade.NewSpawnset"/>
 			<MenuDropdownItem Name="Check for updates" Action="StateFacade.NewSpawnset"/>
 		</MenuDropdown>
+		
+		<span class="font-bold px-2 bg-[#600] truncate">ALPHA NOTICE: DDSE 3 is currently in a very early build and everything is still subject to change. Feature requests, suggestions, and bug reports are welcome.</span>
 	</div>
 
-	<div class="py-1">
-		<span class="font-bold bg-[#600] p-1 text-lg">ALPHA NOTICE: DDSE 3 is currently in a very early build and everything is still subject to change. Feature requests, suggestions, and bug reports are welcome.</span>
+	<div class="p-2">
+		@Body
 	</div>
-
-	@Body
 </div>

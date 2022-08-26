@@ -1,9 +1,9 @@
 @using DevilDaggersInfo.Razor.Core.Components.Components
 
 <OutsideClickHandler OnClickOutside="Hide">
-	<div class="w-16 select-none pl-1">
-		<div class="btn btn-gray cursor-pointer" @onclick="() => _show = !_show">@Header</div>
-		<div class="py-1 w-auto absolute @(_show ? null : "hidden")">
+	<div class="w-auto select-none">
+		<div class="cursor-pointer px-2 bg-gray-2 hover:bg-gray-5" @onclick="() => _show = !_show">@Header</div>
+		<div class="w-auto absolute @(_show ? null : "hidden")">
 			@ChildContent
 		</div>
 	</div>
