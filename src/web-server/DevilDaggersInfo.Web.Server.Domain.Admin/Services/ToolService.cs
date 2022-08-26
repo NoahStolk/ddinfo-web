@@ -21,12 +21,12 @@ public class ToolService
 		_logger = logger;
 	}
 
-	public async Task AddDistribution(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version, byte[] zipFileContents)
+	public async Task AddDistribution(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version, byte[] zipFileContents, bool updateVersion, bool updateRequiredVersion)
 	{
 		if (!AppVersion.TryParse(version, out _))
 			throw new AdminDomainException($"'{version}' is not a correct version number.");
 
-		ToolEntity? tool = await _dbContext.Tools.AsNoTracking().FirstOrDefaultAsync(t => t.Name == name);
+		ToolEntity? tool = await _dbContext.Tools.FirstOrDefaultAsync(t => t.Name == name);
 		if (tool == null)
 			throw new AdminDomainException($"Tool with name '{name}' does not exist.");
 
@@ -37,7 +37,13 @@ public class ToolService
 		if (File.Exists(path))
 			throw new AdminDomainException("File for distribution already exists, but does not exist in the database. Please review the database and the file system.");
 
-		File.WriteAllBytes(path, zipFileContents);
+		await File.WriteAllBytesAsync(path, zipFileContents);
+
+		if (updateVersion)
+			tool.CurrentVersionNumber = version;
+
+		if (updateRequiredVersion)
+			tool.RequiredVersionNumber = version;
 
 		ToolDistributionEntity distribution = new()
 		{

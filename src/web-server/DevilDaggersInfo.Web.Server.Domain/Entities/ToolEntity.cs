@@ -11,8 +11,8 @@ public class ToolEntity
 	public string DisplayName { get; init; } = string.Empty;
 
 	[StringLength(16)]
-	public string CurrentVersionNumber { get; init; } = string.Empty;
+	public string CurrentVersionNumber { get; set; } = string.Empty;
 
 	[StringLength(16)]
-	public string RequiredVersionNumber { get; init; } = string.Empty;
+	public string RequiredVersionNumber { get; set; } = string.Empty;
 }

@@ -13,4 +13,8 @@ public record AddDistribution
 	public string Version { get; set; } = null!;
 
 	public byte[] ZipFileContents { get; set; } = null!;
+
+	public bool UpdateVersion { get; set; }
+
+	public bool UpdateRequiredVersion { get; set; }
 }
