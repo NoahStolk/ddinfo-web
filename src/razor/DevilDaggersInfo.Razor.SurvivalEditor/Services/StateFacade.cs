@@ -17,4 +17,14 @@ public class StateFacade
 		_networkService = networkService;
 		_errorReporter = errorReporter;
 	}
+
+	public void NewSpawnset()
+	{
+
+	}
+
+	public void OpenSpawnsetFile()
+	{
+
+	}
 }

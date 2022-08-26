@@ -42,7 +42,15 @@ let main argv =
     let loginResponse = loginAsync |> Async.RunSynchronously
 
     // Upload
-    let jsonContent = JsonContent.Create(AddDistribution(Name = proj.Name, Version = proj.Version, BuildType = ToolBuildType.WindowsPhotino, PublishMethod = ToolPublishMethod.SelfContained, ZipFileContents = File.ReadAllBytes(outputZipFilePath), UpdateVersion = true, UpdateRequiredVersion = false))
+    let distribution = AddDistribution(
+        Name = proj.Name,
+        Version = proj.Version,
+        BuildType = ToolBuildType.WindowsPhotino,
+        PublishMethod = ToolPublishMethod.SelfContained,
+        ZipFileContents = File.ReadAllBytes(outputZipFilePath),
+        UpdateVersion = true,
+        UpdateRequiredVersion = false)
+    let jsonContent = JsonContent.Create(distribution)
     let mutable uploadRequest = new HttpRequestMessage(
         HttpMethod.Post,
         "https://devildaggers.info/api/admin/tools",

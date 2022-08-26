@@ -1,11 +1,39 @@
+@using DevilDaggersInfo.Razor.SurvivalEditor.Components
+@using DevilDaggersInfo.Razor.SurvivalEditor.Services
 @inherits FluxorLayout
+@inject StateFacade StateFacade
 
 <div class="font-calibri bg-black text-color-text h-full pl-2">
-	<a href="/" class="btn btn-gray">Editor</a>
-	<a href="/about" class="btn btn-gray">About</a>
+	<div class="flex">
+		<MenuDropdown Header="File">
+			<MenuDropdownItem Name="New" Action="StateFacade.NewSpawnset"/>
+			<MenuDropdownItem Name="Open" Action="StateFacade.OpenSpawnsetFile"/>
+			<MenuDropdownItem Name="Open from DevilDaggers.info" Action="StateFacade.OpenSpawnsetFile"/>
+			<MenuDropdownItem Name="Open default (V3)" Action="StateFacade.OpenSpawnsetFile"/>
+			<hr/>
+			<MenuDropdownItem Name="Save" Action="StateFacade.OpenSpawnsetFile"/>
+			<MenuDropdownItem Name="Save as" Action="StateFacade.OpenSpawnsetFile"/>
+			<hr/>
+			<MenuDropdownItem Name="Open 'survival' file" Action="StateFacade.OpenSpawnsetFile"/>
+			<MenuDropdownItem Name="Replace 'survival' file" Action="StateFacade.OpenSpawnsetFile"/>
+			<MenuDropdownItem Name="Delete 'survival' file" Action="StateFacade.OpenSpawnsetFile"/>
+		</MenuDropdown>
+
+		<MenuDropdown Header="Options">
+			<MenuDropdownItem Name="Settings" Action="StateFacade.NewSpawnset"/>
+		</MenuDropdown>
+
+		<MenuDropdown Header="Help">
+			<MenuDropdownItem Name="Help" Action="StateFacade.NewSpawnset"/>
+			<MenuDropdownItem Name="About" Action="StateFacade.NewSpawnset"/>
+			<MenuDropdownItem Name="Changelog" Action="StateFacade.NewSpawnset"/>
+			<MenuDropdownItem Name="Source code" Action="StateFacade.NewSpawnset"/>
+			<MenuDropdownItem Name="Check for updates" Action="StateFacade.NewSpawnset"/>
+		</MenuDropdown>
+	</div>
 
 	<div class="py-1">
-		<span class="font-bold bg-[#600] p-1 text-lg">ALPHA NOTICE: DDSE is currently in a very early build and everything is still subject to change.</span>
+		<span class="font-bold bg-[#600] p-1 text-lg">ALPHA NOTICE: DDSE 3 is currently in a very early build and everything is still subject to change. Feature requests, suggestions, and bug reports are welcome.</span>
 	</div>
 
 	@Body
