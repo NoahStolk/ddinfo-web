@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="AppBuilder.fs" />
     <Compile Include="ZipWriter.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
