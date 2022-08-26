@@ -7,13 +7,12 @@
 
 <h2>Spawns</h2>
 
-<div class="grid grid-cols-6">
-	<div>#</div>
-	<div>Time</div>
-	<div>Delay</div>
-	<div>Enemy</div>
-	<div>No farm gems</div>
-	<div>Total gems/homing</div>
+<div class="grid grid-cols-5">
+	<div class="font-bold">#</div>
+	<div class="font-bold">Time</div>
+	<div class="font-bold">Enemy</div>
+	<div class="font-bold">No farm gems</div>
+	<div class="font-bold">Total gems/homing</div>
 	
 	@{
 		int i = 0;
@@ -23,7 +22,6 @@
 	{
 		<div>@(i++)</div>
 		<div>@(v.Seconds.ToString("0.0000"))</div>
-		<div>@v</div>
 		<div>@v.EnemyType</div>
 		<div>@v.NoFarmGems</div>
 		<div>@v.GemState.Value</div>
