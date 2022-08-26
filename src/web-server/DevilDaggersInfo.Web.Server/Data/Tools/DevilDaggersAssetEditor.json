@@ -1,0 +1,739 @@
+[
+	{
+		"VersionNumber": "1.4.0.0",
+		"Date": "2022-05-01T00:00:00",
+		"Changes": [
+			{
+				"Description": "API updates to support multiple builds. Windows 7 now has a separate build. More builds for other operating systems will follow in the future (not soon)."
+			},
+			{
+				"Description": "Removed compiling data for models that was necessary for V3.0 but is no longer relevant."
+			},
+			{
+				"Description": "Prevented crash when downloading mod screenshot fails."
+			},
+			{
+				"Description": "Prevented crash when the app cannot access certain files in the mods directory."
+			},
+			{
+				"Description": "Fixed URL encoding for mod screenshots."
+			}
+		]
+	},
+	{
+		"VersionNumber": "1.3.6.0",
+		"Date": "2022-04-25T00:00:00",
+		"Changes": [
+			{
+				"Description": "Added caching for checkbox states in the 'Import assets' window."
+			},
+			{
+				"Description": "Fixed settings not saving after exiting the app if the settings window wasn't opened during that session."
+			}
+		]
+	},
+	{
+		"VersionNumber": "1.3.4.0",
+		"Date": "2022-03-05T00:00:00",
+		"Changes": [
+			{
+				"Description": "Removed quad support for models."
+			},
+			{
+				"Description": "Fixed incorrectly interpreting model faces exported from certain software."
+			},
+			{
+				"Description": "Fixed not trimming duplicate spaces in .obj files."
+			},
+			{
+				"Description": "Added clearer error messages when parsing .obj files."
+			},
+			{
+				"Description": "Added additional validation when parsing .obj files."
+			},
+			{
+				"Description": "Improved parsing .wav files for previewing."
+			}
+		]
+	},
+	{
+		"VersionNumber": "1.3.0.0",
+		"Date": "2022-01-09T00:00:00",
+		"Changes": [
+			{
+				"Description": "The application now runs on .NET 6 which is a lot faster and will be officially supported until late 2024."
+			},
+			{
+				"Description": "You do not need to install the .NET runtime anymore. You do not need to install anything for the program to work as of this update (unless you're running Windows 7)."
+			},
+			{
+				"Description": "Fixed mod screenshots not showing up since the release of the new website."
+			},
+			{
+				"Description": "Rewrote the audio previewer to use OpenAL."
+			}
+		]
+	},
+	{
+		"VersionNumber": "1.2.0.0",
+		"Date": "2021-11-11T00:00:00",
+		"Changes": [
+			{
+				"Description": "Added new V3.2 textures."
+			},
+			{
+				"Description": "Added tool to convert image to GLSL code."
+			},
+			{
+				"Description": "Fixed crash when toggling file in mod manager when new file name already exists."
+			}
+		]
+	},
+	{
+		"VersionNumber": "1.0.0.0",
+		"Date": "2021-05-13T00:00:00",
+		"Changes": [
+			{
+				"Description": "You can now download and install mods hosted on the website from within the application using the new 'Mod manager' window which can be opened by pressing CTRL I or selecting it from the menu."
+			},
+			{
+				"Description": "You can manage local binaries in the mods folder now. This includes easily enabling or disabling installed mods with a single button."
+			},
+			{
+				"Description": "You can enable or disable prohibited assets per binary. This means it is no longer necessary to create separate binaries for prohibited assets, as you can now just enable or disable prohibited assets with a single button."
+			},
+			{
+				"Description": "You can see which custom assets will be loaded into the game based on the currently installed mods. This also takes alphabetic partial mod loading into account."
+			},
+			{
+				"Description": "Improved model trimming. Vertex and index data is now parsed and additional processing is implemented to prevent the occurrence of vertex rounding errors that result in marking the underlying binary chunk as non-identical to the original one. This was caused by the fact that compiled model chunks differ very slightly between different people's computers."
+			},
+			{
+				"Description": "Changed UI for shader assets so you cannot set only 1 out of 2 required shader paths."
+			},
+			{
+				"Description": "Incomplete shader assets are ignored when creating a binary."
+			},
+			{
+				"Description": "Performance for reading large binaries has been improved significantly."
+			},
+			{
+				"Description": "Added new section to 'Extract binaries' window for creating a mod file based on the extracted assets."
+			},
+			{
+				"Description": "Removed the 'Automatically create mod file when extracting binaries' setting as this is no longer useful."
+			},
+			{
+				"Description": "Fixed not always re-initializing asset previewer when changing paths for the currently selected asset."
+			},
+			{
+				"Description": "Fixed setting window title to cached mod path even when the file was not found on launch."
+			},
+			{
+				"Description": "Fixed not resetting cached mod path after creating new mod."
+			},
+			{
+				"Description": "Various other small bug fixes and layout improvements."
+			},
+			{
+				"Description": "Some UI performance improvements."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.65.4.0",
+		"Date": "2021-05-06T00:00:00",
+		"Changes": [
+			{
+				"Description": "Improved shader trimming."
+			},
+			{
+				"Description": "Added progress bar and log to 'Trim binary' window."
+			},
+			{
+				"Description": "Descriptions and tags for assets are now retrieved from the DevilDaggers.info API, so changes to descriptions or tags do not require an update for DDAE anymore. The asset list itself is still stored in the application so everything still works when you are not connected to the internet."
+			},
+			{
+				"Description": "Improved validating binaries."
+			},
+			{
+				"Description": "Small layout improvements and fixes."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.60.2.1",
+		"Date": "2021-04-22T00:00:00",
+		"Changes": [
+			{
+				"Description": "Rebuilt application to fix missing dependency."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.60.2.0",
+		"Date": "2021-04-20T00:00:00",
+		"Changes": [
+			{
+				"Description": "Added missing 'core' shader asset, which fixes creating 'core' mods."
+			},
+			{
+				"Description": "When making a binary, the 'core' path is set to the original file, since it does not support partial mods."
+			},
+			{
+				"Description": "Added 'Loading UI...' to initial MainWindow start up instead of blocking GUI thread which results in the entire window being white."
+			},
+			{
+				"Description": "Added descriptions and tags to most model bindings."
+			},
+			{
+				"Description": "Fixed feather assets not being listed as prohibited."
+			},
+			{
+				"Description": "Minor UI improvements."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.56.5.0",
+		"Date": "2021-04-12T00:00:00",
+		"Changes": [
+			{
+				"Description": "The application now keeps track of whether or not you have any unsaved changes and will ask you if you want to save the mod before proceeding to overwrite it by opening an existing mod, creating a new one, or closing the application."
+			},
+			{
+				"Description": "The application window title now displays the name of the currently opened mod."
+			},
+			{
+				"Description": "Added 'File > Save as' menu item."
+			},
+			{
+				"Description": "Added cancellation to confirmation windows. Clicking [X] on a confirmation window now cancels the operation properly."
+			},
+			{
+				"Description": "Implemented functionality to trim binaries. This is particularly useful for binaries that were compiled before Devil Daggers V3.1 came out. Back then, partial mods were not supported. With this tool you can make your old binary file a lot smaller by leaving out all the unchanged assets, which can be done by comparing it against the original binary. The tool can be found under Tools > Trim binary file."
+			},
+			{
+				"Description": "User settings are now saved as settings.json in the local application data Windows folder (access by pressing Windows R and typing %localappdata%)."
+			},
+			{
+				"Description": "Added keyboard shortcuts for most menu items under 'File'."
+			},
+			{
+				"Description": "Implemented caching for the 'Make binaries' window. The application will remember the input values after closing the window or the application entirely."
+			},
+			{
+				"Description": "Added [X] button to Settings window."
+			},
+			{
+				"Description": "Fixed empty settings or cache files crashing the application."
+			},
+			{
+				"Description": "Removed functionality to mod the particle file."
+			},
+			{
+				"Description": "Removed Help window. The Help menu item now navigates to the Asset Editor Guide on the website."
+			},
+			{
+				"Description": "Improved logo."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.46.0.0",
+		"Date": "2021-02-26T00:00:00",
+		"Changes": [
+			{
+				"Description": "The application is now compatible with the latest version of Devil Daggers. The new shader assets have been added, and the program will display which assets are prohibited (meaning you cannot submit 1000+ scores if these assets are modified)."
+			},
+			{
+				"Description": "The application now runs on .NET 5.0. You will need to install .NET Desktop Runtime 5.0.x to run this version."
+			},
+			{
+				"Description": "The application now allows creation of partial mods. These are mods that only specify assets that have been modified. It is no longer required to create a binary file containing all assets. It also allows you to load multiple partial mods simultaneously. You can, for instance, load a partial mod that only changes the texture for Skull I, and then load another mod that changes the texture for the arena tiles."
+			},
+			{
+				"Description": "Added CheckBox to include sub-directories when importing assets."
+			},
+			{
+				"Description": "Added 'File > New' menu item to easily clear the list of specified paths and start a new mod."
+			},
+			{
+				"Description": "Made the previewer and asset lists adjust better to the window size so the application works much better on smaller screen resolutions."
+			},
+			{
+				"Description": "Fixed incorrect description for the post_lut_leveldown texture."
+			},
+			{
+				"Description": "Fixed underscores not being displayed correctly in previewer labels."
+			},
+			{
+				"Description": "Fixed hardcoded \"Model Binding name\" header row that should just say \"Asset name\" instead."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.39.11.0",
+		"Date": "2020-11-17T00:00:00",
+		"Changes": [
+			{
+				"Description": "Rewrote the application and GUI entirely."
+			},
+			{
+				"Description": "Made the menu more intuitive by adding 'Extract binaries', 'Make binaries', and 'Import folders' windows."
+			},
+			{
+				"Description": "The mod format has changed. DDAE will no longer accept mod files with the extension .audio, .core, .dd, and .particle. Mod files are now saved under a unified extension named .ddae, which holds all asset data even if your mod does not specify, for example, particle assets. The easiest way to migrate is just to re-import your assets and save it as a .ddae file."
+			},
+			{
+				"Description": "Added more missing asset descriptions and tags."
+			},
+			{
+				"Description": "Fixed 'chatterminisquid' audio asset being listed as unused while 'chattersquidsmall' is the one that's unused."
+			},
+			{
+				"Description": "Improved error messages when parsing .obj files."
+			},
+			{
+				"Description": "Fixed audio previewer not reloading selected asset when setting new path."
+			},
+			{
+				"Description": "Many other bug fixes, performance improvements, and styling improvements."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.18.4.0",
+		"Date": "2020-10-21T00:00:00",
+		"Changes": [
+			{
+				"Description": "The application now uses a custom dark theme. General layout for many components has been improved as well."
+			},
+			{
+				"Description": "Added GLSL syntax highlighting."
+			},
+			{
+				"Description": "Fixed shader assets not being saved to mod file on extraction."
+			},
+			{
+				"Description": "Fixed Windows Explorer folder dialogs opening the directory above the specified folder."
+			},
+			{
+				"Description": "Fixed audio previewer crashing when attempting to play an empty audio file."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.16.16.0",
+		"Date": "2020-10-07T00:00:00",
+		"Changes": [
+			{
+				"Description": "Fixed loudness values not being set when creating a mod file after extracting an audio binary."
+			},
+			{
+				"Description": "Fixed \"Access is denied\" error when attempting to open mod folder in Windows Explorer."
+			},
+			{
+				"Description": "Fixed \"Download\" button in UpdateRecommended window navigating to an outdated URL."
+			},
+			{
+				"Description": "Fixed CheckingForUpdates window not waiting for the API result properly."
+			},
+			{
+				"Description": "Improved confirmation windows."
+			},
+			{
+				"Description": "Improved progress logging."
+			},
+			{
+				"Description": "Improved error messages regarding extracting and making binaries."
+			},
+			{
+				"Description": "Added more model descriptions and tags."
+			},
+			{
+				"Description": "Added missing audio tags."
+			},
+			{
+				"Description": "Removed functionality to open log file from the menu as this doesn't work well with the current logging mechanism."
+			},
+			{
+				"Description": "Parsing model vertices now supports scientific notation."
+			},
+			{
+				"Description": "Better error messages are shown when model face data could not be parsed."
+			},
+			{
+				"Description": "Note: Dark theme is used for windows that are shared between DevilDaggersSurvivalEditor and DevilDaggersAssetEditor. I plan to fully integrate dark theme into DDAE in a future update."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.16.3.0",
+		"Date": "2020-08-23T00:00:00",
+		"Changes": [
+			{
+				"Description": "Fixed importing folders not working."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.16.2.0",
+		"Date": "2020-08-20T00:00:00",
+		"Changes": [
+			{
+				"Description": "Rewrote much of the application."
+			},
+			{
+				"Description": "Removed dependencies."
+			},
+			{
+				"Description": "Ported to .NET Core. The application is no longer dependent on .NET Framework and does not require .NET Framework 4.6.1."
+			},
+			{
+				"Description": "Added loading screen."
+			},
+			{
+				"Description": "Fixed crash when attempting to view log file while it was being used by another process."
+			},
+			{
+				"Description": "Improved performance."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.13.22.0",
+		"Date": "2020-06-10T00:00:00",
+		"Changes": [
+			{
+				"Description": "Fixed bug when extracting particles."
+			},
+			{
+				"Description": "Added Help window."
+			},
+			{
+				"Description": "Improved particle previewer."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.13.19.0",
+		"Date": "2020-06-05T00:00:00",
+		"Changes": [
+			{
+				"Description": "Fixed bug when saving a .dd mod file after extracting."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.13.18.0",
+		"Date": "2020-06-03T00:00:00",
+		"Changes": [
+			{
+				"Description": "Fixed crash that occurred when attempting to open a non-existing initial directory in an explorer dialog."
+			},
+			{
+				"Description": "Fixed auto-detect button in settings windows setting the path to an incorrect value."
+			},
+			{
+				"Description": "Fixed opening mods root folder instead of assets root folder when importing or exporting loudness files."
+			},
+			{
+				"Description": "Fixed texture dimension limit setting affecting non-model textures. Post lut filters, icons, fonts, and title screens will no longer be downscaled."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.13.14.0",
+		"Date": "2020-06-01T00:00:00",
+		"Changes": [
+			{
+				"Description": "Removed the term 'compression' from the UI since it is misleading. What used to be called compressing is now called making a binary."
+			},
+			{
+				"Description": "Added missing audio assets to the editor."
+			},
+			{
+				"Description": "Fixed bugs related to the audio loudness file."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.13.11.0",
+		"Date": "2020-05-29T00:00:00",
+		"Changes": [
+			{
+				"Description": "The application is now fully compatible with 3D modeling software (e.g. Blender) -- the implementation of turning models into binary data is hereby complete.",
+				"SubChanges": [
+					{
+						"Description": "Making a 'dd' binary now supports UV mapping which means textures are properly rendered onto models."
+					},
+					{
+						"Description": "Making a 'dd' binary now supports models consisting of quads."
+					}
+				]
+			},
+			{
+				"Description": "You can now sort assets."
+			},
+			{
+				"Description": "Implemented tags for assets."
+			},
+			{
+				"Description": "You can now filter assets by tags using the new buttons in the column headers."
+			},
+			{
+				"Description": "Added more settings.",
+				"SubChanges": [
+					{
+						"Description": "You can now choose whether or not to make use of the 3 standard folders."
+					},
+					{
+						"Description": "You can now choose to automatically create a mod file when extracting assets from a binary file."
+					},
+					{
+						"Description": "You can now choose to automatically open the folder after extracting assets."
+					},
+					{
+						"Description": "There is a new setting that enables automatic downscaling for large textures. This setting is set to 512 by default, since the largest original textures in Devil Daggers are 512x512 pixels. This currently applies to all textures, including post lut filters, icons, fonts, and title screens. This means the entire game will look different when you set this setting to 64 for example. All textures will shrink until they fit in a 64x64 pixel space (so a 256x16 texture will be downscaled to 64x4)."
+					}
+				]
+			},
+			{
+				"Description": "Added binary file analyzer tool that can be used to visualize the contents of a Devil Daggers binary file. This can be helpful in case your file happens to be unnecessarily large and you want to know what causes it."
+			},
+			{
+				"Description": "Implemented user caching. This means the application will remember certain values when it shuts down.",
+				"SubChanges": [
+					{
+						"Description": "It will remember which mod files were last opened in the previous session."
+					},
+					{
+						"Description": "It will remember which tab was active in the previous session."
+					},
+					{
+						"Description": "It will remember the window size from the previous session including whether the application was run in full screen or not."
+					},
+					{
+						"Description": "It will remember whether or not 'Auto-play' was enabled in the audio previewer."
+					}
+				]
+			},
+			{
+				"Description": "Added vertex and index counts to model previewer."
+			},
+			{
+				"Description": "Added more descriptions and asset information."
+			},
+			{
+				"Description": "Fixes",
+				"SubChanges": [
+					{
+						"Description": "Fixed inner window not sizing correctly in full screen."
+					},
+					{
+						"Description": "Fixed text overflowing (still WIP, hoping to improve this in a future update)."
+					},
+					{
+						"Description": "Fixed misleading editor paths for shaders by displaying editor paths for both files."
+					},
+					{
+						"Description": "Fixed marking negative loudness values as valid."
+					},
+					{
+						"Description": "Fixed showing paths for non-existing files."
+					},
+					{
+						"Description": "Fixed texture previewer locking image files even when they're no longer being displayed."
+					},
+					{
+						"Description": "Fixed texture previewer locking the currently displayed image file."
+					},
+					{
+						"Description": "Fixed not clearing previewers when selecting an empty asset."
+					},
+					{
+						"Description": "Fixed crash that occurred when attempting to preview a non-existing file."
+					}
+				]
+			},
+			{
+				"Description": "Many layout improvements"
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.7.14.0",
+		"Date": "2020-03-13T00:00:00",
+		"Changes": [
+			{
+				"Description": "Fixed crash that occurred when turning textures into binary data."
+			},
+			{
+				"Description": "Fixed textures not being correctly imported from mod files."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.7.13.0",
+		"Date": "2020-02-15T00:00:00",
+		"Changes": [
+			{
+				"Description": "Added almost all texture descriptions."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.7.12.0",
+		"Date": "2019-11-30T00:00:00",
+		"Changes": [
+			{
+				"Description": "Improved model extraction to be more compatible with 3D modeling software."
+			},
+			{
+				"Description": "Fixed crash that occurred when attempting to turn a model with more texture coordinates or more vertex normals than geometric vertices into binary data."
+			},
+			{
+				"Description": "Saving mod files now produces indented JSON."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.7.8.0",
+		"Date": "2019-11-26T00:00:00",
+		"Changes": [
+			{
+				"Description": "Improved model parsing so turning .obj files exported from 3D modeling software into binary data is supported."
+			},
+			{
+				"Description": "Fixed audio description for daggerseek."
+			},
+			{
+				"Description": "Added tooltips for audio preview buttons."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.7.5.1",
+		"Date": "2019-11-18T00:00:00",
+		"Changes": [
+			{
+				"Description": "Updated source code URL."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.7.5.0",
+		"Date": "2019-11-03T00:00:00",
+		"Changes": [
+			{
+				"Description": "Implemented making shader, model (limited), and texture binaries. Features such as making binaries and using mod files for \"dd\" and \"core\" are now available and functional. Note that the editor path for shaders can be misleading. For instance when it says the path is \"..boid.glsl\", it actually points to the files \"..boid_fragment.glsl\" and \"..boid_vertex.glsl\". Also note that .obj parsing (model format) is still limited and might not work depending on what kind of .obj file you're trying to turn into binary data. It does work for the original models, or files in an identical .obj format, so you can successfully swap the original models."
+			},
+			{
+				"Description": "Implemented audio player with the ability to pitch shift audio real-time."
+			},
+			{
+				"Description": "Implemented texture, shader, model binding, and particle previewers. A model previewer has not yet been implemented."
+			},
+			{
+				"Description": "Added Changelog window."
+			},
+			{
+				"Description": "Fixed the Update Recommended window not closing after clicking the download button."
+			},
+			{
+				"Description": "Small changes related to maintenance of the website, as well as code refactoring and improvements."
+			},
+			{
+				"Description": "Removed functionality for compatibility with version 0.2.0.0."
+			},
+			{
+				"Description": "Many bug fixes, layout improvements, and stability improvements."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.3.3.0",
+		"Date": "2019-09-23T00:00:00",
+		"Changes": [
+			{
+				"Description": "Created progress bar for lengthy tasks such as making and extracting binaries."
+			},
+			{
+				"Description": "Many bug fixes."
+			},
+			{
+				"Description": "Improved audio descriptions."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.3.0.0",
+		"Date": "2019-09-21T00:00:00",
+		"Changes": [
+			{
+				"Description": "Implemented extracting and making particle binaries, as well as mod files for particle mods. The extracted particle files are in binary (.bin), so there is not much to mod until I figure out what the bytes mean, but you can switch particles and replace them with others."
+			},
+			{
+				"Description": "Implemented functionality to specify whether or not to use relative paths in mod files."
+			},
+			{
+				"Description": "Added user settings to specify Devil Daggers root folder, mods root folder, and assets root folder."
+			},
+			{
+				"Description": "Improve initial directories for file and folder dialogs."
+			},
+			{
+				"Description": "Small bug and crash fixes."
+			},
+			{
+				"Description": "The mod file format has been changed, and mod files created using version 0.2.0.0 will no longer open. You'll need to convert these by navigating to Compatibility > Convert 0.2.0.0 mod file format and select your mod file."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.2.0.0",
+		"Date": "2019-09-19T00:00:00",
+		"Changes": [
+			{
+				"Description": "Loudness is now exported as a .ini file rather than a .wav file."
+			},
+			{
+				"Description": "Added functionality to export the current loudness values."
+			},
+			{
+				"Description": "Added ability to save and open \"mod\" files (\".audio\" extension for audio mods) which are files containing the asset paths and loudness values. This removes the need to import/export loudness values when closing the application and is way more convenient than having to extract and make huge binary files every time as well. Note that the \"mod\" files only contain local paths, so sharing them will not work."
+			},
+			{
+				"Description": "Fixed not being able to type decimal values in the loudness fields."
+			},
+			{
+				"Description": "Added support to automatically check for new versions of the program."
+			},
+			{
+				"Description": "Added icon."
+			},
+			{
+				"Description": "Added About window and other menu items."
+			},
+			{
+				"Description": "Added logging."
+			},
+			{
+				"Description": "Added description for audio assets (WIP)."
+			},
+			{
+				"Description": "Many GUI and code improvements."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.1.0.0",
+		"Date": "2019-09-11T00:00:00",
+		"Changes": [
+			{
+				"Description": "Initial release."
+			}
+		]
+	}
+]

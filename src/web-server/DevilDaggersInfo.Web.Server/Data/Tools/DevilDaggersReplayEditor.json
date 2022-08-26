@@ -1,0 +1,32 @@
+[
+	{
+		"VersionNumber": "0.1.0-alpha.0",
+		"Date": "2022-08-25T00:00:00",
+		"Changes": [
+			{
+				"Description": "Added enemy timeline viewer."
+			},
+			{
+				"Description": "Added enemy hit log viewer."
+			},
+			{
+				"Description": "The spawnset arena from the replay is now rendered."
+			},
+			{
+				"Description": "Fixed crash when Leviathan is 'transmuted'."
+			},
+			{
+				"Description": "HitEvent.C is now named 'UserData'."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.0.0-alpha.0",
+		"Date": "2022-07-22T00:00:00",
+		"Changes": [
+			{
+				"Description": "Initial alpha release."
+			}
+		]
+	}
+]

@@ -1,0 +1,476 @@
+[
+	{
+		"VersionNumber": "1.8.3.0",
+		"Date": "2022-03-25T00:00:00",
+		"Changes": [
+			{
+				"Description": "API updates and fixes."
+			}
+		]
+	},
+	{
+		"VersionNumber": "1.8.2.0",
+		"Date": "2022-03-25T00:00:00",
+		"Changes": [
+			{
+				"Description": "API updates."
+			}
+		]
+	},
+	{
+		"VersionNumber": "1.8.1.0",
+		"Date": "2022-03-25T00:00:00",
+		"Changes": [
+			{
+				"Description": "API updates."
+			},
+			{
+				"Description": "Leaderboards without dagger times use the Silver color."
+			}
+		]
+	},
+	{
+		"VersionNumber": "1.8.0.0",
+		"Date": "2022-03-19T00:00:00",
+		"Changes": [
+			{
+				"Description": "Replays can now be downloaded from within the app. Use the arrow keys to navigate and press enter to select the replay you want to view. It will automatically be injected into the game."
+			},
+			{
+				"Description": "Added paging to leaderboards."
+			},
+			{
+				"Description": "UI improvements for leaderboards."
+			},
+			{
+				"Description": "Reduced CPU and memory usage."
+			},
+			{
+				"Description": "Local replays are no longer uploaded."
+			}
+		]
+	},
+	{
+		"VersionNumber": "1.6.0.1",
+		"Date": "2022-03-08T00:00:00",
+		"Changes": [
+			{
+				"Description": "Added support for Time Attack and Race game modes."
+			}
+		]
+	},
+	{
+		"VersionNumber": "1.5.3.0",
+		"Date": "2022-03-05T00:00:00",
+		"Changes": [
+			{
+				"Description": "Applied API changes that allow for smaller requests to the server and therefore faster uploads."
+			},
+			{
+				"Description": "The application now checks if the custom leaderboard exists before uploading the run."
+			}
+		]
+	},
+	{
+		"VersionNumber": "1.5.0.0",
+		"Date": "2022-01-09T00:00:00",
+		"Changes": [
+			{
+				"Description": "The application now runs on .NET 6 which is a lot faster and will be officially supported until late 2024."
+			},
+			{
+				"Description": "You do not need to install the .NET runtime anymore. You do not need to install anything for the program to work as of this update (unless you're running Windows 7)."
+			}
+		]
+	},
+	{
+		"VersionNumber": "1.4.2.0",
+		"Date": "2021-10-29T00:00:00",
+		"Changes": [
+			{
+				"Description": "API updates for V3.2."
+			}
+		]
+	},
+	{
+		"VersionNumber": "1.4.1.0",
+		"Date": "2021-10-27T00:00:00",
+		"Changes": [
+			{
+				"Description": "API updates for V3.2."
+			}
+		]
+	},
+	{
+		"VersionNumber": "1.4.0.0",
+		"Date": "2021-10-27T00:00:00",
+		"Changes": [
+			{
+				"Description": "Replays are now uploaded to the server."
+			}
+		]
+	},
+	{
+		"VersionNumber": "1.3.0.0",
+		"Date": "2021-09-12T00:00:00",
+		"Changes": [
+			{
+				"Description": "Reduced CPU and memory usage."
+			},
+			{
+				"Description": "Fixed not always scanning homing and level up times."
+			},
+			{
+				"Description": "Removed 32-bit support completely because Devil Daggers does not run on 32-bit machines anymore."
+			}
+		]
+	},
+	{
+		"VersionNumber": "1.2.0.0",
+		"Date": "2021-06-28T00:00:00",
+		"Changes": [
+			{
+				"Description": "The application now detects V3.1 graph data and sends it to the server. Graphs will be supported on the website later."
+			},
+			{
+				"Description": "The application now detects if prohibited mods are used. Submitting runs with prohibited mods is still allowed, but this opens the possibility to disallow it for certain leaderboards in the future."
+			}
+		]
+	},
+	{
+		"VersionNumber": "1.0.0.0",
+		"Date": "2021-03-16T00:00:00",
+		"Changes": [
+			{
+				"Description": "The application now retrieves the memory offset from the DevilDaggers.info API, so no updates for the program are required each time Devil Daggers itself gets updated."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.14.7.0",
+		"Date": "2021-03-12T00:00:00",
+		"Changes": [
+			{
+				"Description": "Fixed not detecting Devil Daggers process after restart."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.14.6.0",
+		"Date": "2021-03-11T00:00:00",
+		"Changes": [
+			{
+				"Description": "Applied new API updates to fix replays overwriting real scores by 1/60 second due to bug in game."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.14.5.0",
+		"Date": "2021-03-10T00:00:00",
+		"Changes": [
+			{
+				"Description": "You can now submit replays."
+			},
+			{
+				"Description": "New stat 'Homing daggers eaten' is now sent to the server."
+			},
+			{
+				"Description": "Improved logo."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.14.2.0",
+		"Date": "2021-02-25T00:00:00",
+		"Changes": [
+			{
+				"Description": "Works with the latest Devil Daggers build."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.14.1.0",
+		"Date": "2021-02-21T00:00:00",
+		"Changes": [
+			{
+				"Description": "The application now works with Devil Daggers V3.1 and has the new features built-in, such as the Leviathan dagger and the new death types."
+			},
+			{
+				"Description": "Added new stats: Gems despawned, Gems eaten, Gems total, Enemies alive per enemy type, Enemies killed per enemy type"
+			},
+			{
+				"Description": "The Homing dagger has been replaced by the new Leviathan dagger."
+			},
+			{
+				"Description": "The application now runs on .NET 5.0."
+			},
+			{
+				"Description": "Graphical improvements (for as far as console graphics go) and other small improvements."
+			},
+			{
+				"Description": "Fixed detection for usernames longer than 16 characters."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.10.4.0",
+		"Date": "2020-10-01T00:00:00",
+		"Changes": [
+			{
+				"Description": "The application does not display misleading stats in the menu or lobby anymore."
+			},
+			{
+				"Description": "Improved update messages."
+			},
+			{
+				"Description": "Fixed tiny bug where getting the very same score as a dagger time would display the score in the wrong color."
+			},
+			{
+				"Description": "Implemented API updates as preparation for a new leaderboard category."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.10.0.0",
+		"Date": "2020-08-24T00:00:00",
+		"Changes": [
+			{
+				"Description": "Implemented custom improved colors."
+			},
+			{
+				"Description": "Fixed not resetting homing after death."
+			},
+			{
+				"Description": "Fixed user highlight being unreadable for 'Default' dagger scores."
+			},
+			{
+				"Description": "Improved anti-cheat."
+			},
+			{
+				"Description": "Implemented collecting graph data for custom leaderboards. This is only stored in the database for now and not yet displayed on the website."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.9.6.1",
+		"Date": "2020-08-21T00:00:00",
+		"Changes": [
+			{
+				"Description": "Rebuilt application for API updates."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.9.6.0",
+		"Date": "2020-08-20T00:00:00",
+		"Changes": [
+			{
+				"Description": "Rewrote much of the application."
+			},
+			{
+				"Description": "Removed dependencies."
+			},
+			{
+				"Description": "Ported to .NET Core. The application is no longer dependent on .NET Framework and does not require .NET Framework 4.6.1."
+			},
+			{
+				"Description": "Fixed crash that occurred when setting a very large custom font size."
+			},
+			{
+				"Description": "Added icon."
+			},
+			{
+				"Description": "Renamed 'Shots' to 'Daggers'."
+			},
+			{
+				"Description": "Fixed resetting homing to 0 just before detecting player death."
+			},
+			{
+				"Description": "Fixed writing level up difference when previous highscore did not achieve that level."
+			},
+			{
+				"Description": "Fixed not being able to read current upgrade and homing count in some Devil Daggers instances due to malformed pointer chains."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.6.1.0",
+		"Date": "2020-05-08T00:00:00",
+		"Changes": [
+			{
+				"Description": "Fixed ascending leaderboards displaying incorrect dagger colors and statistic differences."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.6.0.0",
+		"Date": "2020-05-07T00:00:00",
+		"Changes": [
+			{
+				"Description": "Leaderboards and run info are now displayed in the console when the player died."
+			},
+			{
+				"Description": "Added colors for daggers, deaths, and statistic differences."
+			},
+			{
+				"Description": "Fixed floating point imprecision issues with the leaderboard database."
+			},
+			{
+				"Description": "The program now shows a warning when homing and level up times are not being detected. This warning will be triggered after collecting the first gem. The problem can be resolved by restarting Devil Daggers. It happens about 1 out of 10 times for me and seems to appear randomly. I'm still investigating what causes it."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.4.4.0",
+		"Date": "2019-11-03T00:00:00",
+		"Changes": [
+			{
+				"Description": "Compatibility and maintenance updates related to the website."
+			},
+			{
+				"Description": "The application is renamed to Devil Daggers Custom Leaderboards again for consistency with the other tool names."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.4.3.0",
+		"Date": "2019-08-08T00:00:00",
+		"Changes": [
+			{
+				"Description": "Improved way of detecting survival file cheats; there is no need to record the entire run anymore."
+			},
+			{
+				"Description": "Fixed log file not being written to."
+			},
+			{
+				"Description": "Implemented \"Speedrun\" category leaderboards."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.4.0.1",
+		"Date": "2019-06-05T00:00:00",
+		"Changes": [
+			{
+				"Description": "Compatibility update due to some internal bug fixes which aren't related to the application directly."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.4.0.0",
+		"Date": "2019-05-27T00:00:00",
+		"Changes": [
+			{
+				"Description": "Leaderboards are now secured with the Advanced Encryption Standard (AES)."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.3.3.0",
+		"Date": "2019-05-24T00:00:00",
+		"Changes": [
+			{
+				"Description": "Fixed inconsistent spawnset hashing. The hashing system is no longer dependent on files. This fixes the problem where some spawnsets wouldn't work if they were downloaded directly from the website rather than imported via Devil Daggers Survival Editor."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.3.0.0",
+		"Date": "2019-05-20T00:00:00",
+		"Changes": [
+			{
+				"Description": "The program now tells you when there is an update available and warns you when the current version is no longer accepted by the server."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.2.5.0",
+		"Date": "2019-05-19T00:00:00",
+		"Changes": [
+			{
+				"Description": "Added logging."
+			},
+			{
+				"Description": "Some improvements in the layout and better feedback for when runs don't upload."
+			},
+			{
+				"Description": "Crash fixes and internal clean up. The \"out of bounds\" error shouldn't occur anymore when starting the application before starting Devil Daggers."
+			},
+			{
+				"Description": "Console is no longer resizable so it doesn't mess with the layout."
+			},
+			{
+				"Description": "Added a retry count for when the upload fails. Usually it retries 3 times and stops after that, waiting for you to restart a run."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.2.1.0",
+		"Date": "2019-05-18T00:00:00",
+		"Changes": [
+			{
+				"Description": "Lots of internal clean up, improvements, and fixes."
+			},
+			{
+				"Description": "Program now outputs what values it submits to the server."
+			},
+			{
+				"Description": "Program only retrieves the spawnset hash during the first second of the run so people cannot cheat by changing the survival file during the run. If you start the program later than 1 second after the run starts, the hash will not be calculated and your submission will be marked as invalid and not upload."
+			},
+			{
+				"Description": "The server now has a minimal version it will accept submissions from."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.1.10.0",
+		"Date": "2019-05-18T00:00:00",
+		"Changes": [
+			{
+				"Description": "Small fixes."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.1.9.0",
+		"Date": "2019-05-18T00:00:00",
+		"Changes": [
+			{
+				"Description": "The application now uses .NET Framework 4.6.1 rather than 4.7.2."
+			},
+			{
+				"Description": "Fixed bug where level up values don't reset when you restart a run."
+			},
+			{
+				"Description": "Prevented replays from uploading so people won't submit runs to the wrong leaderboard by intentionally replacing the survival file during the replay."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.1.5.0",
+		"Date": "2019-05-17T00:00:00",
+		"Changes": [
+			{
+				"Description": "Made application Windows-only because scanning memory for other operating systems will work differently anyway."
+			},
+			{
+				"Description": "Enforced en-US culture to fix broken submissions on PCs that use commas as decimal separators."
+			},
+			{
+				"Description": "Fixed usernames being limited to 4 characters."
+			},
+			{
+				"Description": "Prevented submissions with 0.0000 time from uploading by setting a time constraint of a minimum of 2.5 seconds."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.1.0.0",
+		"Date": "2019-05-15T00:00:00",
+		"Changes": [
+			{
+				"Description": "Initial release."
+			}
+		]
+	}
+]
