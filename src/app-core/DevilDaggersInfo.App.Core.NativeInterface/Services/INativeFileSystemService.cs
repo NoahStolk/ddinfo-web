@@ -8,16 +8,5 @@ public interface INativeFileSystemService
 
 	string? SelectDirectory();
 
-	public class FileResult
-	{
-		public FileResult(string path, byte[] contents)
-		{
-			Path = path;
-			Contents = contents;
-		}
-
-		public string Path { get; }
-
-		public byte[] Contents { get; }
-	}
+	public record FileResult(string Path, byte[] Contents);
 }

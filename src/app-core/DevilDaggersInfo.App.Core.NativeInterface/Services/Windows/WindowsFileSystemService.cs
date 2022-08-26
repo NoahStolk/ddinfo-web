@@ -22,10 +22,7 @@ public class WindowsFileSystemService : INativeFileSystemService
 		};
 		ofn.structSize = Marshal.SizeOf(ofn);
 
-		if (!NativeMethods.GetOpenFileName(ofn))
-			return null;
-
-		if (ofn.file == null)
+		if (!NativeMethods.GetOpenFileName(ofn) || ofn.file == null)
 			return null;
 
 		return new(ofn.file, File.ReadAllBytes(ofn.file));
