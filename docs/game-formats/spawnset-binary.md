@@ -58,8 +58,10 @@ The header buffer for the default spawnset looks like this:
 | `CDCCCC3C`   | 32-bit float   | Shrink rate                     | 0.025 |
 | `00007042`   | 32-bit float   | Brightness                      |    60 |
 | `00000000`   | 32-bit integer | Game mode                       |     0 |
-| `33000000`   | 32-bit integer | Arena dimension (needs testing) |    51 |
+| `33000000`   | 32-bit integer | Arena dimension*                |    51 |
 | `01000000`   | ?              | ?                               |     ? |
+
+* Only 51 as arena dimension works correctly. Other values cause the tiles to render incorrectly and replays will glitch out and sometimes crash. The game will also instantly crash when loading a spawnset with a dimension of 52 or higher.
 
 World version is 8 for V1, and 9 for all later versions.
 
