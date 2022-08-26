@@ -1,17 +1,22 @@
+open System
+open System.Diagnostics
 open System.IO
-open System.IO.Compression
+open DevilDaggersInfo.Tool.DistributeApp
 
 [<EntryPoint>]
 let main argv =
-    let dirPath = argv[0]
+    let sourcePath = argv[0]
     let zipPath = argv[1]
 
-    File.Delete(zipPath)
-    printfn $"Deleted {zipPath}"
-
-    ZipFile.CreateFromDirectory(dirPath, zipPath)
-    printfn $"Created {zipPath} from directory {dirPath}"
-
-    Directory.Delete(dirPath, true)
-    printfn $"Deleted {dirPath}"
+    let tempReleaseDir = "_temp-release"
+    let dotnetPublish = ProcessStartInfo(FileName = "dotnet", Arguments = $"publish {sourcePath} -p:PublishSingleFile=True -p:PublishTrimmed=True -p:EnableCompressionInSingleFile=True -p:PublishReadyToRun=False -p:PublishProtocol=FileSystem -p:SelfContained=true -p:TargetFramework=net6.0 -p:RuntimeIdentifier=win-x64 -p:Platform=x64 -p:Configuration=Release -p:PublishMethod=SELF_CONTAINED -p:PublishDir={tempReleaseDir}")
+    let dotnetPublishProc = Process.Start(dotnetPublish)
+    dotnetPublishProc.WaitForExit()
+    
+    match dotnetPublishProc.ExitCode with
+    | 0 -> ()
+    | _ -> Environment.Exit(dotnetPublishProc.ExitCode)
+    
+    let dirPath = Path.Combine(Path.GetDirectoryName(sourcePath), tempReleaseDir)
+    ZipWriter.zip zipPath dirPath
     0
