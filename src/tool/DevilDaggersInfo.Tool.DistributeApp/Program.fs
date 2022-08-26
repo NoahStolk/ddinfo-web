@@ -1,5 +1,3 @@
-open System
-open System.Diagnostics
 open System.IO
 open DevilDaggersInfo.Tool.DistributeApp
 
@@ -11,7 +9,11 @@ let main argv =
     let publishDirectoryName = "_temp-release"
     AppBuilder.build projectFilePath publishDirectoryName
 
+    let proj = ProjectReader.readProjectFile projectFilePath
+    
     let publishDirectoryPath = Path.Combine(Path.GetDirectoryName(projectFilePath), publishDirectoryName)
-    let outputZipFilePath = Path.Combine(zipOutputDirectory, "DevilDaggersReplayEditor.zip")
+    let outputZipFilePath = Path.Combine(zipOutputDirectory, $"{proj.Name}-{proj.Version}-WindowsPhotino-SelfContained.zip")
+
     ZipWriter.zip outputZipFilePath publishDirectoryPath
+
     0

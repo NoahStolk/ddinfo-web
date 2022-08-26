@@ -21,18 +21,15 @@ let getPublishCommandProperties publishDirectoryName : Map<string, string> =
 
 let getPublishCommand projectFilePath publishDirectoryName : string =
     let sb = StringBuilder()
-    getPublishCommandProperties publishDirectoryName |> Map.iter (fun key value -> sb.Append($" -p:{key}={value}") |> ignore)
-
-    let propsStr = sb.ToString()
-    $"publish {projectFilePath}{propsStr}"
+    getPublishCommandProperties publishDirectoryName |> Map.iter (fun key value -> sb.Append($" -p:{key}={value}") |> ignore) 
+    $"publish {projectFilePath}{sb.ToString()}"
 
 let build projectFilePath publishDirectoryName =
-    let dotnetPublish = ProcessStartInfo(FileName = "dotnet", Arguments = getPublishCommand projectFilePath publishDirectoryName)
-    let dotnetPublishProc = Process.Start(dotnetPublish)
+    let dotnetPublishProc = Process.Start(ProcessStartInfo(FileName = "dotnet", Arguments = getPublishCommand projectFilePath publishDirectoryName))
     dotnetPublishProc.WaitForExit()
 
     match dotnetPublishProc.ExitCode with
     | 0 -> ()
-    | _ -> Environment.Exit(dotnetPublishProc.ExitCode)
+    | _ -> failwith "Could not build the app"
 
 // dotnet build -c Release -o bin\publish-win7\ --self-contained false
