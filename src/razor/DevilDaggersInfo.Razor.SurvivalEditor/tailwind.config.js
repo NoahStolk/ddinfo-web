@@ -31,10 +31,7 @@ module.exports = {
 		extend: {
 			fontFamily: {
 				'calibri': ['calibri', 'sans-serif'],
-			},
-			maxWidth: {
-				'arena': '512px', // 10 * 51 + 2
-			},
+			}
 		},
 	},
 };
