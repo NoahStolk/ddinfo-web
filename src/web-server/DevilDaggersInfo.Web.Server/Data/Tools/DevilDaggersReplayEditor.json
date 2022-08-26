@@ -1,7 +1,7 @@
 [
 	{
 		"VersionNumber": "0.1.0-alpha.0",
-		"Date": "2022-08-25T00:00:00",
+		"Date": "2022-08-26T00:00:00",
 		"Changes": [
 			{
 				"Description": "Added enemy timeline viewer."
