@@ -25,14 +25,14 @@ public class EnemyTests
 
 			Enemy? originalTransmutedSkull1 = Enemies.GetEnemyByName(gameVersion, "Transmuted Skull I");
 			Assert.IsNotNull(originalTransmutedSkull1);
-			Assert.IsNotNull(originalTransmutedSkull1.Value.HomingDamage.Level3HomingDaggers);
-			Assert.AreEqual(0.25f, originalTransmutedSkull1.Value.HomingDamage.Level3HomingDaggers.Value, 0.00001f);
-			Assert.AreEqual(10, originalTransmutedSkull1.Value.HomingDamage.Level4HomingDaggers);
+			Assert.IsNotNull(originalTransmutedSkull1.HomingDamage.Level3HomingDaggers);
+			Assert.AreEqual(0.25f, originalTransmutedSkull1.HomingDamage.Level3HomingDaggers.Value, 0.00001f);
+			Assert.AreEqual(10, originalTransmutedSkull1.HomingDamage.Level4HomingDaggers);
 		}
 
 		Enemy? fixedTransmutedSkull1 = Enemies.GetEnemyByName(GameVersion.V3_2, "Transmuted Skull I");
 		Assert.IsNotNull(fixedTransmutedSkull1);
-		Assert.AreEqual(1, fixedTransmutedSkull1.Value.HomingDamage.Level3HomingDaggers);
-		Assert.AreEqual(1, fixedTransmutedSkull1.Value.HomingDamage.Level4HomingDaggers);
+		Assert.AreEqual(1, fixedTransmutedSkull1.HomingDamage.Level3HomingDaggers);
+		Assert.AreEqual(1, fixedTransmutedSkull1.HomingDamage.Level4HomingDaggers);
 	}
 }
