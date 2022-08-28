@@ -15,7 +15,7 @@ public static class DaggersV3_2
 		Bronze,
 		Silver,
 		Golden,
-		Default,
+		Devil,
 		Leviathan,
 	};
 }
