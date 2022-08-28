@@ -1,3 +1,3 @@
 namespace DevilDaggersInfo.Core.Wiki.Structs;
 
-public readonly record struct HomingDamage(float? Level3HomingDaggers, float? Level4HomingDaggers);
+public readonly record struct HomingDamage(int Level3Homing, int Level4Homing, int Level4Splash);
