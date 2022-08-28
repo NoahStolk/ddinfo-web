@@ -15,7 +15,7 @@ public static class Enemies
 
 	public static IReadOnlyList<Enemy> All => _all;
 
-	public static List<Enemy> GetEnemies(GameVersion gameVersion) => gameVersion switch
+	public static IReadOnlyList<Enemy> GetEnemies(GameVersion gameVersion) => gameVersion switch
 	{
 		GameVersion.V1_0 => EnemiesV1_0.All,
 		GameVersion.V2_0 => EnemiesV2_0.All,
@@ -26,13 +26,10 @@ public static class Enemies
 	};
 
 	public static Enemy? GetEnemyByName(GameVersion gameVersion, string name)
-	{
-		Enemy enemy = GetEnemies(gameVersion).Find(e => e.Name == name);
-		return enemy == default ? null : enemy;
-	}
+		=> GetEnemies(gameVersion).FirstOrDefault(e => e.Name == name);
 
 	public static GameVersion? GetFirstAppearance(string enemyName)
-		=> All.Where(e => e.Name == enemyName).OrderBy(e => e.GameVersion).FirstOrDefault().GameVersion;
+		=> All.Where(e => e.Name == enemyName).MinBy(e => e.GameVersion)?.GameVersion;
 
 	public static IEnumerable<GameVersion> GetAppearances(string enemyName)
 	{
