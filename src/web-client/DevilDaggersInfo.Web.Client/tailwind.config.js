@@ -137,10 +137,10 @@ module.exports = {
 				// Wiki (enemies)
 				'enemies-summary-xs': createMinmaxGrid([5, 1, 1, 4]),
 				'enemies-summary-md': createMinmaxGrid([5, 1, 1, 4, 2, 2]),
-				'enemies-summary-lg': createMinmaxGrid([5, 1, 1, 3, 2, 2, 1.25, 1.25, 5]),
+				'enemies-summary-lg': createMinmaxGrid([5, 1, 1, 3, 2, 2, 5]),
 
-				'enemies-damage-stats-lg': createMinmaxGrid([5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]),
-				'enemies-damage-stats-lg-v1': createMinmaxGrid([5, 1, 1, 1, 1, 1, 1, 1, 1]),
+				'enemies-damage-stats-lg': createMinmaxGrid([5, 1, 1, 1, 1, 1, 1, 1, 1, 1]),
+				'enemies-damage-stats-lg-v1': createMinmaxGrid([5, 1, 1, 1, 1, 1, 1, 1]),
 			},
 			maxHeight: {
 				'screen-half': '50vh',

@@ -85,9 +85,9 @@
 				<div>Damage from level 4 splash</div>
 				<div>@(enemy.HomingDamage.FromLevel4Splash != 0 ? new(enemy.HomingDamage.FromLevel4Splash.ToString()) : MarkupStrings.NoDataMarkup)</div>
 				<div>Level 3 durability</div>
-				<div>@(enemy.HomingDamage.ToLevel3 != 0 ? new(enemy.HomingDamage.ToLevel3.ToString("%")) : MarkupStrings.NoDataMarkup)</div>
+				<div>@(enemy.HomingDamage.ToLevel3 != 0 ? new(enemy.HomingDamage.ToLevel3.ToString("0%")) : MarkupStrings.NoDataMarkup)</div>
 				<div>Level 4 durability</div>
-				<div>@(enemy.HomingDamage.ToLevel4 != 0 ? new(enemy.HomingDamage.ToLevel4.ToString("%")) : MarkupStrings.NoDataMarkup)</div>
+				<div>@(enemy.HomingDamage.ToLevel4 != 0 ? new(enemy.HomingDamage.ToLevel4.ToString("0%")) : MarkupStrings.NoDataMarkup)</div>
 				<div>Spawned by</div>
 				<div>
 					@if (enemy.SpawnedBy.Length == 0)
