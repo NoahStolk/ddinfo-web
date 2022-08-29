@@ -118,28 +118,24 @@
 <Heading Title="Homing Daggers" Level="2"/>
 
 <ul class="pl-4">
-	<li class="list-disc">All homing daggers cause 10 damage to most enemies.</li>
-	<li class="list-disc">@MarkupUtils.EnemyString(EnemiesV3_2.Leviathan) and @MarkupUtils.EnemyString(EnemiesV3_2.TheOrb) only take 1 damage from homing daggers. This used to happen to @MarkupUtils.EnemyString(EnemiesV3_2.SpiderEgg1) and @MarkupUtils.EnemyString(EnemiesV3_2.SpiderEgg2) as well, but this was fixed in V3.2.</li>
+	<li class="list-disc">All homing daggers cause 10 damage to most enemies; @MarkupUtils.EnemyString(EnemiesV3_2.Leviathan) and @MarkupUtils.EnemyString(EnemiesV3_2.TheOrb) only take 1 damage from homing daggers. This used to happen to @MarkupUtils.EnemyString(EnemiesV3_2.SpiderEgg1) and @MarkupUtils.EnemyString(EnemiesV3_2.SpiderEgg2) as well, but this was fixed in V3.2.</li>
 	<li class="list-disc">@MarkupUtils.EnemyString(EnemiesV3_2.TheOrb), @MarkupUtils.EnemyString(EnemiesV3_2.SpiderEgg1), and @MarkupUtils.EnemyString(EnemiesV3_2.SpiderEgg2) are the only enemies that are not targeted by any homing daggers.</li>
 	<li class="list-disc">@MarkupUtils.UpgradeString(UpgradesV3_2.Level4) homing daggers cause splash damage. This means that when they're destroyed, they create a little explosion that can cause damage to near enemies. For example, you only need one @MarkupUtils.UpgradeString(UpgradesV3_2.Level4) homing dagger to kill a @MarkupUtils.EnemyString(EnemiesV3_2.Squid2), as the explosion will destroy the other gem.</li>
 	<li class="list-disc">Even though @MarkupUtils.EnemyString(EnemiesV3_2.Ghostpede) cannot be damaged by homing daggers (they phase through it), it can still take damage from @MarkupUtils.UpgradeString(UpgradesV3_2.Level4) homing dagger splash damage.</li>
 	<li class="list-disc">You need 3 @MarkupUtils.UpgradeString(UpgradesV3_2.Level4) homing daggers to kill a @MarkupUtils.EnemyString(EnemiesV3_2.Squid3) gem, but only 1 @MarkupUtils.UpgradeString(UpgradesV3_2.Level3) homing dagger.</li>
+	<li class="list-disc">All homing daggers explode upon touch with any enemy, except @(MarkupUtils.EnemyString(EnemiesV3_2.Skull1)). You can kill 4 @(MarkupUtils.EnemyString(EnemiesV3_2.Skull1, true)) with a single homing dagger.</li>
 	<li class="list-disc">You used to need 10 @MarkupUtils.UpgradeString(UpgradesV3_2.Level4) homing daggers to kill a single @MarkupUtils.EnemyString(EnemiesV3_2.TransmutedSkull1), while one single @MarkupUtils.UpgradeString(UpgradesV3_2.Level3) homing dagger could kill 4 of them. This was fixed in V3.2, and now both @MarkupUtils.UpgradeString(UpgradesV3_2.Level3) and @MarkupUtils.UpgradeString(UpgradesV3_2.Level4) homing daggers can kill exactly one @MarkupUtils.EnemyString(EnemiesV3_2.TransmutedSkull1).</li>
 </ul>
 
 <div class="hidden lg:block">
-	<Heading Title="Homing Damage Statistics" Level="2"/>
-
-	<div class="grid gap-x-4 grid-cols-7">
+	<div class="grid gap-x-4 grid-cols-5">
 		<div>Enemy</div>
 		<div class="text-right">HP</div>
-		<div class="text-right">Level 3</div>
-		<div class="text-right">Level 4</div>
-		<div class="text-right">Level 4 splash</div>
-		<div class="text-right">Level 3 durability</div>
-		<div class="text-right">Level 4 durability</div>
+		<div class="text-right">Level 3 damage</div>
+		<div class="text-right">Level 4 damage</div>
+		<div class="text-right">Level 4 splash damage</div>
 	</div>
-	<div class="grid gap-x-4 grid-cols-7">
+	<div class="grid gap-x-4 grid-cols-5">
 		@foreach (Enemy enemy in enemiesDamageStats)
 		{
 			<div>@MarkupUtils.EnemyString(enemy)</div>
@@ -147,8 +143,6 @@
 			<div class="text-right">@GetHomingDamage(enemy.HomingDamage.FromLevel3, enemy.Hp)</div>
 			<div class="text-right">@GetHomingDamage(enemy.HomingDamage.FromLevel4, enemy.Hp)</div>
 			<div class="text-right">@GetHomingDamage(enemy.HomingDamage.FromLevel4Splash, enemy.Hp)</div>
-			<div class="text-right">@GetHomingDurability(enemy.HomingDamage.ToLevel3)</div>
-			<div class="text-right">@GetHomingDurability(enemy.HomingDamage.ToLevel4)</div>
 		}
 	</div>
 </div>
@@ -179,11 +173,4 @@
 		
 		return new(damage.ToString());
 	}
-	
-	private static MarkupString GetHomingDurability(float durability) => durability switch
-	{
-		0 => MarkupStrings.NoDataMarkup,
-		1 => new("<span style='color: #f88;'>Instant</span>"),
-		_ => new(durability.ToString("0%")),
-	};
 }
