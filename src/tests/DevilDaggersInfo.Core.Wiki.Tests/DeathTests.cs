@@ -399,6 +399,6 @@ public class DeathTests
 	{
 		Assert.AreEqual(DeathsV2_0.None, Deaths.GetDeathByLeaderboardType(GameVersion.V2_0, 200));
 
-		Assert.AreEqual(DeathsV2_0.None.Color, EnemyColors.Andras);
+		Assert.AreEqual(DeathsV2_0.None.Color, EnemyColors.Unknown);
 	}
 }
