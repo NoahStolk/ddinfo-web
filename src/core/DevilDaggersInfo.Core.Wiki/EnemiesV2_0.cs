@@ -14,7 +14,7 @@ public static class EnemiesV2_0
 	public static readonly Enemy Skull2 = new(GameVersion.V2_0, "Skull II", EnemyColors.Skull2, 5, 1, 1, DeathsV2_0.Impaled, new(10, 10, 0, 4, 4), null, Squid1);
 	public static readonly Enemy Skull3 = new(GameVersion.V2_0, "Skull III", EnemyColors.Skull3, 10, 1, 1, DeathsV2_0.Gored, new(10, 10, 0, 4, 4), null, Squid2);
 	public static readonly Enemy Skull4 = new(GameVersion.V2_0, "Skull IV", EnemyColors.Skull4, 100, 0, 0, DeathsV2_0.Opened, new(10, 10, 0, 4, 4), null, Squid3);
-	public static readonly Enemy TransmutedSkull1 = new(GameVersion.V2_0, "Transmuted Skull I", EnemyColors.TransmutedSkull1, 10, 0, 0, DeathsV2_0.Swarmed, new(10, 10, 0, 4, 4), null, Leviathan);
+	public static readonly Enemy TransmutedSkull1 = new(GameVersion.V2_0, "Transmuted Skull I", EnemyColors.TransmutedSkull1, 10, 0, 0, DeathsV2_0.Swarmed, new(1, 1, 0, 4, 4), null, Leviathan);
 	public static readonly Enemy TransmutedSkull2 = new(GameVersion.V2_0, "Transmuted Skull II", EnemyColors.TransmutedSkull2, 20, 1, 1, DeathsV2_0.Impaled, new(10, 10, 0, 4, 4), null, Leviathan);
 	public static readonly Enemy TransmutedSkull3 = new(GameVersion.V2_0, "Transmuted Skull III", EnemyColors.TransmutedSkull3, 100, 1, 1, DeathsV2_0.Gored, new(10, 10, 0, 4, 4), null, Leviathan);
 	public static readonly Enemy TransmutedSkull4 = new(GameVersion.V2_0, "Transmuted Skull IV", EnemyColors.TransmutedSkull4, 300, 0, 0, DeathsV2_0.Opened, new(10, 10, 0, 4, 4), null, Leviathan);
