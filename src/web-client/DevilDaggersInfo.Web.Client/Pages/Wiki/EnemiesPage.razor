@@ -1,9 +1,10 @@
 @page "/wiki/enemies"
 @using DevilDaggersInfo.Core.Wiki.Extensions
 @using DevilDaggersInfo.Types.Core.Wiki
+@using WikiEnemies = DevilDaggersInfo.Core.Wiki.Enemies
 
 @{
-	IReadOnlyList<Enemy> enemies = Enemies.GetEnemies(GameConstants.CurrentVersion).Append(EnemiesV2_0.Andras).ToList();
+	IReadOnlyList<Enemy> enemies = WikiEnemies.GetEnemies(GameConstants.CurrentVersion).Append(EnemiesV2_0.Andras).ToList();
 	IReadOnlyList<Upgrade> upgrades = Upgrades.GetUpgrades(GameConstants.CurrentVersion);
 
 	List<Enemy> enemiesDamageStats = new();
@@ -44,7 +45,7 @@
 		<div class="text-right">@enemy.Gems</div>
 		<div>@MarkupUtils.DeathString(enemy.Death)</div>
 		<div class="hidden md:block">
-			@foreach (GameVersion gv in Enemies.GetAppearances(enemy.Name))
+			@foreach (GameVersion gv in WikiEnemies.GetAppearances(enemy.Name))
 			{
 				@gv.ToDisplayString()
 				@MarkupStrings.Space

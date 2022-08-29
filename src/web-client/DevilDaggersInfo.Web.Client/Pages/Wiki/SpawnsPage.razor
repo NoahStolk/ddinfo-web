@@ -2,6 +2,7 @@
 @using DevilDaggersInfo.Core.Wiki.Extensions
 @using DevilDaggersInfo.Razor.Core.Components.Components
 @using DevilDaggersInfo.Types.Core.Wiki
+@using WikiEnemies = DevilDaggersInfo.Core.Wiki.Enemies
 @inject MainApiHttpClient Http
 
 <Heading Title="Spawns" />
@@ -13,7 +14,7 @@
 </p>
 <p class="para">
 	@{
-		List<Enemy> enemies = new[] { "Centipede", "Gigapede", "Ghostpede", "Thorn" }.Select(s => Enemies.GetEnemyByName(GameVersion, s)).Where(e => e != null).ToList()!;
+		List<Enemy> enemies = new[] { "Centipede", "Gigapede", "Ghostpede", "Thorn" }.Select(s => WikiEnemies.GetEnemyByName(GameVersion, s)).Where(e => e != null).ToList()!;
 		string enemyString = string.Join(", ", enemies.Select(e => MarkupUtils.EnemyString(e, true))).ReplaceLastOccurrenceOf(", ", " and ");
 		MarkupString note = new($"Note that {enemyString} emerge around 3 seconds later than their actual spawn time.");
 	}
