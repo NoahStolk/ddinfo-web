@@ -5,7 +5,7 @@
 <p class="py-1">
 	Welcome to DevilDaggers.info, a website specifically made for the game <a class="link" href="//store.steampowered.com/app/422970/Devil_Daggers/" target="_blank">Devil Daggers</a>.
 </p>
-<img class="w-64 h-64 m-4" src="/images/home/logo.gif" />
+<img class="w-64 h-64 m-4" src="/images/home/logo.gif" alt="Logo" />
 <p class="py-1">
 	This is a fan-made website; the creator of this website is not related to the developers of Devil Daggers. Devil Daggers is a game created by Sorath, and <a class="link" href="//devildaggers.com/" target="_blank">devildaggers.com</a> is the official website for the game.
 </p>
@@ -24,13 +24,7 @@
 <div class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4">
 	@foreach ((string text, string imageUrl, string url) in _sections)
 	{
-		<a href="@url">
-			<div class="home-section-container">
-				<div class="overlay-block"></div>
-				<div class="home-section-text text-color-text">@text</div>
-				<img class="img-fluid home-section-image" src="/images/@imageUrl" />
-			</div>
-		</a>
+		<OverlayImage Text="@text" ImageUrl="@imageUrl" Url="@url" />
 	}
 </div>
 

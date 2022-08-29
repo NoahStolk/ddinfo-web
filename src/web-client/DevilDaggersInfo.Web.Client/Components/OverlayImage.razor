@@ -1,0 +1,25 @@
+<a href="@Url">
+	<div class="home-section-container">
+		<div class="overlay-block"></div>
+		<div class="home-section-text text-color-text">@Text</div>
+		<img class="img-fluid home-section-image" src="/images/@ImageUrl" alt="@Alt"/>
+	</div>
+</a>
+
+@code
+{
+	[Parameter]
+	[EditorRequired]
+	public string Url { get; set; } = null!;
+	
+	[Parameter]
+	[EditorRequired]
+	public string Text { get; set; } = null!;
+	
+	[Parameter]
+	[EditorRequired]
+	public string ImageUrl { get; set; } = null!;
+	
+	[Parameter]
+	public string? Alt { get; set; }
+}
