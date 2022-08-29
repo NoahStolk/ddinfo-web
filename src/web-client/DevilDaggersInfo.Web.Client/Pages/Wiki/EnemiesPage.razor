@@ -3,11 +3,11 @@
 @using DevilDaggersInfo.Razor.Core.Components.Components
 @using DevilDaggersInfo.Types.Core.Wiki
 
-<Heading Title="Enemies" />
+<Heading Title="Enemies"/>
 
-<SelectList CssWidthClass="w-48" CssOpenerClass="pl-2" TValue="GameVersion" Values="@_allowedGameVersions" DisplayFunction="@(gv => gv.ToDisplayString())" Default="GameVersion.V3_2" Selected="@UpdateGameVersion" />
+<SelectList CssWidthClass="w-48" CssOpenerClass="pl-2" TValue="GameVersion" Values="@_allowedGameVersions" DisplayFunction="@(gv => gv.ToDisplayString())" Default="GameVersion.V3_2" Selected="@UpdateGameVersion"/>
 
-<Heading Title="Summary" Level="2" />
+<Heading Title="Summary" Level="2"/>
 
 <div class="grid gap-x-2 xl:gap-x-4 grid-cols-enemies-summary-xs md:grid-cols-enemies-summary-md lg:grid-cols-enemies-summary-lg">
 	<div class="font-bold">Enemy</div>
@@ -16,8 +16,6 @@
 	<div class="font-bold">Death type</div>
 	<div class="font-bold hidden md:block">Appearances</div>
 	<div class="font-bold hidden md:block text-right">First spawn</div>
-	<div class="font-bold hidden lg:block text-right">Level 3 homing</div>
-	<div class="font-bold hidden lg:block text-right">Level 4 homing</div>
 	<div class="font-bold hidden lg:block">Spawned by</div>
 </div>
 
@@ -35,10 +33,7 @@
 				@MarkupStrings.Space
 			}
 		</div>
-		<div class="hidden md:block text-right">@(enemy.FirstSpawnSecond.HasValue ? new MarkupString(enemy.FirstSpawnSecond.Value.ToString(StringFormats.TimeFormat)) : MarkupStrings.NoDataMarkup)</div>
-		<div class="hidden lg:block text-right">@(enemy.HomingDamage.FromLevel3 == 0 ? new MarkupString(enemy.HomingDamage.FromLevel3.ToString()) : MarkupStrings.NoDataMarkup)</div>
-		<div class="hidden lg:block text-right">@(enemy.HomingDamage.FromLevel4 == 0 ? new MarkupString(enemy.HomingDamage.FromLevel4.ToString()) : MarkupStrings.NoDataMarkup)</div>
-		<div class="hidden lg:block text-right">@(enemy.HomingDamage.FromLevel4Splash == 0 ? new MarkupString(enemy.HomingDamage.FromLevel4Splash.ToString()) : MarkupStrings.NoDataMarkup)</div>
+		<div class="hidden md:block text-right">@(enemy.FirstSpawnSecond.HasValue ? new(enemy.FirstSpawnSecond.Value.ToString(StringFormats.TimeFormat)) : MarkupStrings.NoDataMarkup)</div>
 		<div class="hidden lg:block">
 			@if (enemy.SpawnedBy.Length == 0)
 			{
@@ -56,7 +51,7 @@
 	</div>
 }
 
-<Heading Title="Details" Level="2" />
+<Heading Title="Details" Level="2"/>
 
 <div class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
 	@foreach (Enemy enemy in Enemies.GetEnemies(GameVersion))
@@ -71,7 +66,7 @@
 		string hpString = enemy.Gems > 1 ? $"{enemy.Hp} {enemy.GetGemHpString()}" : enemy.Hp.ToString();
 		<div class="p-2 border-2" style="@($"border-color: {hexColor};")">
 			<div>@MarkupUtils.EnemyString(enemy)</div>
-			<img src='images/wiki/enemies/@(image).png' />
+			<img src='images/wiki/enemies/@(image).png'/>
 			<div class="grid grid-cols-2">
 				<div>HP</div>
 				<div>@hpString</div>
@@ -82,13 +77,17 @@
 				<div>First appearance</div>
 				<div>@Enemies.GetFirstAppearance(enemy.Name)?.ToDisplayString()</div>
 				<div>First spawn</div>
-				<div>@(enemy.FirstSpawnSecond.HasValue ? new MarkupString(enemy.FirstSpawnSecond.Value.ToString(StringFormats.TimeFormat)) : MarkupStrings.NoDataMarkup)</div>
-				<div>Level 3 homing</div>
-				<div>@(enemy.HomingDamage.FromLevel3 == 0 ? new MarkupString(enemy.HomingDamage.FromLevel3.ToString()) : MarkupStrings.NoDataMarkup)</div>
-				<div>Level 4 homing</div>
-				<div>@(enemy.HomingDamage.FromLevel4 == 0 ? new MarkupString(enemy.HomingDamage.FromLevel4.ToString()) : MarkupStrings.NoDataMarkup)</div>
-				<div>Level 4 splash</div>
-				<div>@(enemy.HomingDamage.FromLevel4Splash == 0 ? new MarkupString(enemy.HomingDamage.FromLevel4Splash.ToString()) : MarkupStrings.NoDataMarkup)</div>
+				<div>@(enemy.FirstSpawnSecond.HasValue ? new(enemy.FirstSpawnSecond.Value.ToString(StringFormats.TimeFormat)) : MarkupStrings.NoDataMarkup)</div>
+				<div>Damage from level 3 homing</div>
+				<div>@(enemy.HomingDamage.FromLevel3 != 0 ? new(enemy.HomingDamage.FromLevel3.ToString()) : MarkupStrings.NoDataMarkup)</div>
+				<div>Damage from level 4 homing</div>
+				<div>@(enemy.HomingDamage.FromLevel4 != 0 ? new(enemy.HomingDamage.FromLevel4.ToString()) : MarkupStrings.NoDataMarkup)</div>
+				<div>Damage from level 4 splash</div>
+				<div>@(enemy.HomingDamage.FromLevel4Splash != 0 ? new(enemy.HomingDamage.FromLevel4Splash.ToString()) : MarkupStrings.NoDataMarkup)</div>
+				<div>Level 3 durability</div>
+				<div>@(enemy.HomingDamage.ToLevel3 != 0 ? new(enemy.HomingDamage.ToLevel3.ToString("%")) : MarkupStrings.NoDataMarkup)</div>
+				<div>Level 4 durability</div>
+				<div>@(enemy.HomingDamage.ToLevel4 != 0 ? new(enemy.HomingDamage.ToLevel4.ToString("%")) : MarkupStrings.NoDataMarkup)</div>
 				<div>Spawned by</div>
 				<div>
 					@if (enemy.SpawnedBy.Length == 0)
@@ -119,7 +118,7 @@
 </div>
 
 <div class="hidden lg:block">
-	<Heading Title="Damage Statistics" Level="2" />
+	<Heading Title="Damage Statistics" Level="2"/>
 
 	<p class="para">All of this information assumes 100% shot accuracy, and may not be relevant in some cases.</p>
 
@@ -133,7 +132,6 @@
 		<div class="text-right">HP</div>
 		<div class="text-right @colSpan">Spray (seconds)</div>
 		<div class="text-right @colSpan">Shots</div>
-		<div class="text-right @(GameVersion == GameVersion.V1_0 ? string.Empty : "col-span-2")">Homing daggers</div>
 	</div>
 	<div class="grid gap-x-4 grid-cols-2 @gridCols">
 		<div class="col-span-2"></div>
@@ -142,10 +140,6 @@
 			<div class="text-right">@MarkupUtils.UpgradeString(upgrade)</div>
 		}
 		@foreach (Upgrade upgrade in upgrades)
-		{
-			<div class="text-right">@MarkupUtils.UpgradeString(upgrade)</div>
-		}
-		@foreach (Upgrade upgrade in upgrades.Where(u => u.HomingDamage.HasValue))
 		{
 			<div class="text-right">@MarkupUtils.UpgradeString(upgrade)</div>
 		}
@@ -177,68 +171,32 @@
 				{
 					<div class="text-right">@(Math.Ceiling(enemy.Hp / (double)upgrade.DefaultDamage.DaggersPerShot))</div>
 				}
-				<div class="text-right">@(enemy.HomingDamage.FromLevel3 == 0 ? new MarkupString(enemy.HomingDamage.FromLevel3.ToString()) : MarkupStrings.NoDataMarkup)</div>
-				@if (GameVersion != GameVersion.V1_0)
-				{
-					<div class="text-right">@(enemy.HomingDamage.FromLevel4 == 0 ? new MarkupString(enemy.HomingDamage.FromLevel4.ToString()) : MarkupStrings.NoDataMarkup)</div>
-					<div class="text-right">@(enemy.HomingDamage.FromLevel4Splash == 0 ? new MarkupString(enemy.HomingDamage.FromLevel4Splash.ToString()) : MarkupStrings.NoDataMarkup)</div>
-				}
 			}
 		}
 	</div>
 </div>
 
-<Heading Title="Transmuted Skulls" Level="2" />
+<Heading Title="Transmuted Skulls" Level="2"/>
 
 <ul class="pl-4">
-	@{
-		Enemy? levi = Enemies.GetEnemyByName(GameVersion, "Leviathan");
-		Enemy? orb = Enemies.GetEnemyByName(GameVersion, "The Orb");
-		MarkupString? leviString = levi != null ? MarkupUtils.EnemyString(levi) : null;
-		MarkupString? orbString = orb != null ? MarkupUtils.EnemyString(orb) : null;
-		MarkupString leviAndOrb = GameVersion is GameVersion.V1_0 or GameVersion.V2_0 ? new(leviString + " beckons, it") : new(leviString + " or " + orbString + " beckon, they");
-
-		Dictionary<Enemy, Enemy> transmutations = GameVersion == GameVersion.V1_0 ? new()
-		{
-			[EnemiesV1_0.Skull1] = EnemiesV1_0.TransmutedSkull2,
-			[EnemiesV1_0.Skull2] = EnemiesV1_0.TransmutedSkull3,
-			[EnemiesV1_0.Skull3] = EnemiesV1_0.TransmutedSkull4,
-		}
-		: new()
-		{
-			[Enemies.GetEnemyByName(GameVersion, "Skull I")!] = Enemies.GetEnemyByName(GameVersion, "Transmuted Skull I")!,
-			[Enemies.GetEnemyByName(GameVersion, "Skull II")!] = Enemies.GetEnemyByName(GameVersion, "Transmuted Skull II")!,
-			[Enemies.GetEnemyByName(GameVersion, "Skull III")!] = Enemies.GetEnemyByName(GameVersion, "Transmuted Skull III")!,
-			[Enemies.GetEnemyByName(GameVersion, "Skull IV")!] = Enemies.GetEnemyByName(GameVersion, "Transmuted Skull IV")!,
-		};
-
-		<li class="list-disc">When @leviAndOrb will attract and transmute all skulls in the arena that touch the beckon ring.</li>
-		<li class="list-disc">When the skulls are sucked up and thrown back into the arena, they are 'transmuted', which means they have a different appearance and more HP. @MarkupUtils.EnemyString(EnemiesV3_2.TransmutedSkull3) also seems to turn faster.</li>
-		<li class="list-disc">Damaging a skull that is about to be transmuted is useless if it is not killed; the HP will reset to the transmuted skull's full HP.</li>
-		<li class="list-disc">
-			Here is the list of which skull turns into which transmuted skull (this differs between game versions):
-			<ul class="pl-4">
-				@foreach (KeyValuePair<Enemy, Enemy> transmutation in transmutations)
-				{
-					<li class="list-disc">@MarkupUtils.EnemyString(transmutation.Key) is turned into @MarkupUtils.EnemyString(transmutation.Value)</li>
-				}
-			</ul>
-		</li>
-	}
+	<li class="list-disc">When @MarkupUtils.EnemyString(EnemiesV3_2.Leviathan) and @MarkupUtils.EnemyString(EnemiesV3_2.TheOrb) beckon, they will attract and transmute all skulls in the arena that touch the beckon ring.</li>
+	<li class="list-disc">When the skulls are sucked up and thrown back into the arena, they are 'transmuted', which means they have a different appearance and more HP. Their speed is also changed slightly (except @MarkupUtils.EnemyString(EnemiesV3_2.TransmutedSkull4)).</li>
+	<li class="list-disc">Damaging a skull that is about to be transmuted is useless if it is not killed; the HP will reset to the transmuted skull's full HP.</li>
+	<li class="list-disc">
+		In V1, @MarkupUtils.EnemyString(EnemiesV3_2.TransmutedSkull1) and @MarkupUtils.EnemyString(EnemiesV3_2.Skull4) did not exist, so
+		@MarkupUtils.EnemyString(EnemiesV3_2.Skull1) was turned into @MarkupUtils.EnemyString(EnemiesV3_2.TransmutedSkull2),
+		@MarkupUtils.EnemyString(EnemiesV3_2.Skull2) was turned into @MarkupUtils.EnemyString(EnemiesV3_2.TransmutedSkull3), and
+		@MarkupUtils.EnemyString(EnemiesV3_2.Skull3) was turned into @MarkupUtils.EnemyString(EnemiesV3_2.TransmutedSkull4).
+	</li>
 </ul>
 
-@{
-	if (GameVersion >= GameVersion.V3_0)
-	{
-		<Heading Title="Homing Daggers" Level="2" />
-		<ul class="pl-4">
-			<li class="list-disc">All homing daggers cause 10 damage to most enemies.</li>
-			<li class="list-disc">@MarkupUtils.EnemyString(EnemiesV3_2.Leviathan) and @MarkupUtils.EnemyString(EnemiesV3_2.TheOrb) only take 1 damage from homing daggers. This used to happen to @MarkupUtils.EnemyString(EnemiesV3_2.SpiderEgg1) and @MarkupUtils.EnemyString(EnemiesV3_2.SpiderEgg2) as well, but this was fixed in V3.2.</li>
-			<li class="list-disc">@MarkupUtils.EnemyString(EnemiesV3_2.TheOrb), @MarkupUtils.EnemyString(EnemiesV3_2.SpiderEgg1), and @MarkupUtils.EnemyString(EnemiesV3_2.SpiderEgg2) are the only enemies that are not targeted by any homing daggers.</li>
-			<li class="list-disc">@MarkupUtils.UpgradeString(UpgradesV3_2.Level4) homing daggers cause splash damage. This means that when they're destroyed, they create a little explosion that can cause damage (most likely 10) to near enemies. For example, you only need one @MarkupUtils.UpgradeString(UpgradesV3_2.Level4) homing dagger to kill a @MarkupUtils.EnemyString(EnemiesV3_2.Squid2), as the explosion will destroy the other gem.</li>
-			<li class="list-disc">Even though @MarkupUtils.EnemyString(EnemiesV3_2.Ghostpede) cannot be damaged by homing daggers (they phase through it), it can still take damage from @MarkupUtils.UpgradeString(UpgradesV3_2.Level4) homing dagger splash damage.</li>
-			<li class="list-disc">Not sure why you need 3 @MarkupUtils.UpgradeString(UpgradesV3_2.Level4) homing daggers to kill a @MarkupUtils.EnemyString(EnemiesV3_2.Squid3) gem, but only 1 @MarkupUtils.UpgradeString(UpgradesV3_2.Level3) homing dagger... Seems like a bug.</li>
-			<li class="list-disc">Another bug was that you needed 10 @MarkupUtils.UpgradeString(UpgradesV3_2.Level4) homing daggers to kill a single @MarkupUtils.EnemyString(EnemiesV3_2.TransmutedSkull1), while one single @MarkupUtils.UpgradeString(UpgradesV3_2.Level3) homing dagger could kill 4 of them. This was fixed in V3.2 however, and now both @MarkupUtils.UpgradeString(UpgradesV3_2.Level3) and @MarkupUtils.UpgradeString(UpgradesV3_2.Level4) homing daggers can kill exactly one @MarkupUtils.EnemyString(EnemiesV3_2.TransmutedSkull1).</li>
-		</ul>
-	}
-}
+<Heading Title="Homing Daggers" Level="2"/>
+<ul class="pl-4">
+	<li class="list-disc">All homing daggers cause 10 damage to most enemies.</li>
+	<li class="list-disc">@MarkupUtils.EnemyString(EnemiesV3_2.Leviathan) and @MarkupUtils.EnemyString(EnemiesV3_2.TheOrb) only take 1 damage from homing daggers. This used to happen to @MarkupUtils.EnemyString(EnemiesV3_2.SpiderEgg1) and @MarkupUtils.EnemyString(EnemiesV3_2.SpiderEgg2) as well, but this was fixed in V3.2.</li>
+	<li class="list-disc">@MarkupUtils.EnemyString(EnemiesV3_2.TheOrb), @MarkupUtils.EnemyString(EnemiesV3_2.SpiderEgg1), and @MarkupUtils.EnemyString(EnemiesV3_2.SpiderEgg2) are the only enemies that are not targeted by any homing daggers.</li>
+	<li class="list-disc">@MarkupUtils.UpgradeString(UpgradesV3_2.Level4) homing daggers cause splash damage. This means that when they're destroyed, they create a little explosion that can cause damage (most likely 10) to near enemies. For example, you only need one @MarkupUtils.UpgradeString(UpgradesV3_2.Level4) homing dagger to kill a @MarkupUtils.EnemyString(EnemiesV3_2.Squid2), as the explosion will destroy the other gem.</li>
+	<li class="list-disc">Even though @MarkupUtils.EnemyString(EnemiesV3_2.Ghostpede) cannot be damaged by homing daggers (they phase through it), it can still take damage from @MarkupUtils.UpgradeString(UpgradesV3_2.Level4) homing dagger splash damage.</li>
+	<li class="list-disc">Not sure why you need 3 @MarkupUtils.UpgradeString(UpgradesV3_2.Level4) homing daggers to kill a @MarkupUtils.EnemyString(EnemiesV3_2.Squid3) gem, but only 1 @MarkupUtils.UpgradeString(UpgradesV3_2.Level3) homing dagger... Seems like a bug.</li>
+	<li class="list-disc">Another bug was that you needed 10 @MarkupUtils.UpgradeString(UpgradesV3_2.Level4) homing daggers to kill a single @MarkupUtils.EnemyString(EnemiesV3_2.TransmutedSkull1), while one single @MarkupUtils.UpgradeString(UpgradesV3_2.Level3) homing dagger could kill 4 of them. This was fixed in V3.2 however, and now both @MarkupUtils.UpgradeString(UpgradesV3_2.Level3) and @MarkupUtils.UpgradeString(UpgradesV3_2.Level4) homing daggers can kill exactly one @MarkupUtils.EnemyString(EnemiesV3_2.TransmutedSkull1).</li>
+</ul>
