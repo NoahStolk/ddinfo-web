@@ -16,7 +16,7 @@ public static class DeathsV2_0
 	public static readonly Death Envenomated = new(GameVersion.V2_0, "ENVENOMATED", EnemyColors.SpiderEgg2, 12);
 	public static readonly Death Stricken = new(GameVersion.V2_0, "STRICKEN", EnemyColors.Spiderling, 16);
 	public static readonly Death Devastated = new(GameVersion.V2_0, "DEVASTATED", EnemyColors.Leviathan, 17);
-	public static readonly Death None = new(GameVersion.V2_0, "NONE", EnemyColors.Andras, 200);
+	public static readonly Death None = new(GameVersion.V2_0, "NONE", EnemyColors.Unknown, 200);
 	public static readonly Death Unknown = new(GameVersion.V2_0, "UNKNOWN", EnemyColors.Unknown, 255);
 
 	internal static readonly IReadOnlyList<Death> All = new List<Death>
