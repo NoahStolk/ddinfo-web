@@ -4,9 +4,11 @@ public record Enemy(GameVersion GameVersion, string Name, Color Color, int Hp, i
 {
 	public int GemHp => Hp / Gems;
 
+	// TODO: Move to client.
 	public string GetGemHpString()
 		=> $"({GemHp} x {Gems})";
 
+	// TODO: Move to client.
 	public string GetImageName()
 	{
 		return Name

@@ -136,11 +136,11 @@
 		{
 			<div>@MarkupUtils.EnemyString(enemy)</div>
 			<div class="text-right">@enemy.Hp</div>
-			<div class="text-right">@(enemy.HomingDamage.FromLevel3 == 0 ? MarkupStrings.NoDataMarkup : new(enemy.HomingDamage.FromLevel3.ToString()))</div>
-			<div class="text-right">@(enemy.HomingDamage.FromLevel4 == 0 ? MarkupStrings.NoDataMarkup : new(enemy.HomingDamage.FromLevel4.ToString()))</div>
-			<div class="text-right">@(enemy.HomingDamage.FromLevel4Splash == 0 ? MarkupStrings.NoDataMarkup : new(enemy.HomingDamage.FromLevel4Splash.ToString()))</div>
-			<div class="text-right">@(enemy.HomingDamage.ToLevel3 == 0 ? MarkupStrings.NoDataMarkup : new(enemy.HomingDamage.ToLevel3.ToString("0%")))</div>
-			<div class="text-right">@(enemy.HomingDamage.ToLevel4 == 0 ? MarkupStrings.NoDataMarkup : new(enemy.HomingDamage.ToLevel4.ToString("0%")))</div>
+			<div class="text-right">@GetHomingDamage(enemy.HomingDamage.FromLevel3, enemy.Hp)</div>
+			<div class="text-right">@GetHomingDamage(enemy.HomingDamage.FromLevel4, enemy.Hp)</div>
+			<div class="text-right">@GetHomingDamage(enemy.HomingDamage.FromLevel4Splash, enemy.Hp)</div>
+			<div class="text-right">@GetHomingDurability(enemy.HomingDamage.ToLevel3)</div>
+			<div class="text-right">@GetHomingDurability(enemy.HomingDamage.ToLevel4)</div>
 		}
 	</div>
 </div>
@@ -158,3 +158,24 @@
 		@MarkupUtils.EnemyString(EnemiesV3_2.Skull3) was turned into @MarkupUtils.EnemyString(EnemiesV3_2.TransmutedSkull4).
 	</li>
 </ul>
+
+@code
+{
+	private static MarkupString GetHomingDamage(int damage, int hp)
+	{
+		if (damage == 0) 
+			return MarkupStrings.NoDataMarkup;
+			
+		if (damage >= hp)
+			return new("<span style='color: #f88;'>Instant</span>");
+		
+		return new(damage.ToString());
+	}
+	
+	private static MarkupString GetHomingDurability(float durability) => durability switch
+	{
+		0 => MarkupStrings.NoDataMarkup,
+		1 => new("<span style='color: #f88;'>Instant</span>"),
+		_ => new(durability.ToString("0%")),
+	};
+}
