@@ -27,6 +27,13 @@
 
 <Heading Title="Enemies"/>
 
+<div class="grid gap-x-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+	@foreach (Enemy enemy in enemies)
+	{
+		<OverlayImage Text="@enemy.Name" ImageUrl="@($"wiki/enemies/{enemy.GetImageName()}.png")" Url="/wiki/enemies/skull" Alt="@enemy.Name" />
+	}
+</div>
+
 <div class="grid gap-x-2 xl:gap-x-4 grid-cols-enemies-summary-xs md:grid-cols-enemies-summary-md lg:grid-cols-enemies-summary-lg">
 	<div class="font-bold">Enemy</div>
 	<div class="font-bold text-right">HP</div>
