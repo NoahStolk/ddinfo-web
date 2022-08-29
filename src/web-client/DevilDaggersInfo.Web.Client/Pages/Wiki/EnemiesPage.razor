@@ -36,9 +36,9 @@
 			}
 		</div>
 		<div class="hidden md:block text-right">@(enemy.FirstSpawnSecond.HasValue ? new MarkupString(enemy.FirstSpawnSecond.Value.ToString(StringFormats.TimeFormat)) : MarkupStrings.NoDataMarkup)</div>
-		<div class="hidden lg:block text-right">@(enemy.HomingDamage.Level3Homing == 0 ? new MarkupString(enemy.HomingDamage.Level3Homing.ToString()) : MarkupStrings.NoDataMarkup)</div>
-		<div class="hidden lg:block text-right">@(enemy.HomingDamage.Level4Homing == 0 ? new MarkupString(enemy.HomingDamage.Level4Homing.ToString()) : MarkupStrings.NoDataMarkup)</div>
-		<div class="hidden lg:block text-right">@(enemy.HomingDamage.Level4Splash == 0 ? new MarkupString(enemy.HomingDamage.Level4Splash.ToString()) : MarkupStrings.NoDataMarkup)</div>
+		<div class="hidden lg:block text-right">@(enemy.HomingDamage.FromLevel3 == 0 ? new MarkupString(enemy.HomingDamage.FromLevel3.ToString()) : MarkupStrings.NoDataMarkup)</div>
+		<div class="hidden lg:block text-right">@(enemy.HomingDamage.FromLevel4 == 0 ? new MarkupString(enemy.HomingDamage.FromLevel4.ToString()) : MarkupStrings.NoDataMarkup)</div>
+		<div class="hidden lg:block text-right">@(enemy.HomingDamage.FromLevel4Splash == 0 ? new MarkupString(enemy.HomingDamage.FromLevel4Splash.ToString()) : MarkupStrings.NoDataMarkup)</div>
 		<div class="hidden lg:block">
 			@if (enemy.SpawnedBy.Length == 0)
 			{
@@ -84,11 +84,11 @@
 				<div>First spawn</div>
 				<div>@(enemy.FirstSpawnSecond.HasValue ? new MarkupString(enemy.FirstSpawnSecond.Value.ToString(StringFormats.TimeFormat)) : MarkupStrings.NoDataMarkup)</div>
 				<div>Level 3 homing</div>
-				<div>@(enemy.HomingDamage.Level3Homing == 0 ? new MarkupString(enemy.HomingDamage.Level3Homing.ToString()) : MarkupStrings.NoDataMarkup)</div>
+				<div>@(enemy.HomingDamage.FromLevel3 == 0 ? new MarkupString(enemy.HomingDamage.FromLevel3.ToString()) : MarkupStrings.NoDataMarkup)</div>
 				<div>Level 4 homing</div>
-				<div>@(enemy.HomingDamage.Level4Homing == 0 ? new MarkupString(enemy.HomingDamage.Level4Homing.ToString()) : MarkupStrings.NoDataMarkup)</div>
+				<div>@(enemy.HomingDamage.FromLevel4 == 0 ? new MarkupString(enemy.HomingDamage.FromLevel4.ToString()) : MarkupStrings.NoDataMarkup)</div>
 				<div>Level 4 splash</div>
-				<div>@(enemy.HomingDamage.Level4Splash == 0 ? new MarkupString(enemy.HomingDamage.Level4Splash.ToString()) : MarkupStrings.NoDataMarkup)</div>
+				<div>@(enemy.HomingDamage.FromLevel4Splash == 0 ? new MarkupString(enemy.HomingDamage.FromLevel4Splash.ToString()) : MarkupStrings.NoDataMarkup)</div>
 				<div>Spawned by</div>
 				<div>
 					@if (enemy.SpawnedBy.Length == 0)
@@ -177,11 +177,11 @@
 				{
 					<div class="text-right">@(Math.Ceiling(enemy.Hp / (double)upgrade.DefaultDamage.DaggersPerShot))</div>
 				}
-				<div class="text-right">@(enemy.HomingDamage.Level3Homing == 0 ? new MarkupString(enemy.HomingDamage.Level3Homing.ToString()) : MarkupStrings.NoDataMarkup)</div>
+				<div class="text-right">@(enemy.HomingDamage.FromLevel3 == 0 ? new MarkupString(enemy.HomingDamage.FromLevel3.ToString()) : MarkupStrings.NoDataMarkup)</div>
 				@if (GameVersion != GameVersion.V1_0)
 				{
-					<div class="text-right">@(enemy.HomingDamage.Level4Homing == 0 ? new MarkupString(enemy.HomingDamage.Level4Homing.ToString()) : MarkupStrings.NoDataMarkup)</div>
-					<div class="text-right">@(enemy.HomingDamage.Level4Splash == 0 ? new MarkupString(enemy.HomingDamage.Level4Splash.ToString()) : MarkupStrings.NoDataMarkup)</div>
+					<div class="text-right">@(enemy.HomingDamage.FromLevel4 == 0 ? new MarkupString(enemy.HomingDamage.FromLevel4.ToString()) : MarkupStrings.NoDataMarkup)</div>
+					<div class="text-right">@(enemy.HomingDamage.FromLevel4Splash == 0 ? new MarkupString(enemy.HomingDamage.FromLevel4Splash.ToString()) : MarkupStrings.NoDataMarkup)</div>
 				}
 			}
 		}
