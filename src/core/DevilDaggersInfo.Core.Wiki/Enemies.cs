@@ -28,9 +28,6 @@ public static class Enemies
 	public static Enemy? GetEnemyByName(GameVersion gameVersion, string name)
 		=> GetEnemies(gameVersion).FirstOrDefault(e => e.Name == name);
 
-	public static GameVersion? GetFirstAppearance(string enemyName)
-		=> All.Where(e => e.Name == enemyName).MinBy(e => e.GameVersion)?.GameVersion;
-
 	public static IEnumerable<GameVersion> GetAppearances(string enemyName)
 	{
 		if (EnemiesV1_0.All.Any(e => e.Name == enemyName))
