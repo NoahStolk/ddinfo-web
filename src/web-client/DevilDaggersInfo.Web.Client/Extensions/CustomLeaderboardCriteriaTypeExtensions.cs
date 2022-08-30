@@ -13,7 +13,7 @@ public static class CustomLeaderboardCriteriaTypeExtensions
 		CustomLeaderboardCriteriaType.EnemiesKilled => "#f80", // TODO: Use same color as graph
 		CustomLeaderboardCriteriaType.DaggersFired => "#f80", // TODO: Use same color as graph
 		CustomLeaderboardCriteriaType.DaggersHit => "#f80", // TODO: Use same color as graph
-		CustomLeaderboardCriteriaType.HomingStored => UpgradesV3_2.Level4.Color.HexCode,
+		CustomLeaderboardCriteriaType.HomingStored => Upgrades.Level4.Color.HexCode,
 		CustomLeaderboardCriteriaType.HomingEaten => EnemiesV3_2.Ghostpede.Color.HexCode,
 		CustomLeaderboardCriteriaType.Skull1Kills => EnemiesV3_2.Skull1.Color.HexCode,
 		CustomLeaderboardCriteriaType.Skull2Kills => EnemiesV3_2.Skull2.Color.HexCode,
