@@ -45,7 +45,7 @@ public class SpawnsetService
 
 		// Add file.
 		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), addSpawnset.Name);
-		File.WriteAllBytes(path, addSpawnset.FileContents);
+		await File.WriteAllBytesAsync(path, addSpawnset.FileContents);
 
 		// Add entity.
 		SpawnsetEntity spawnset = new()
@@ -81,6 +81,8 @@ public class SpawnsetService
 			string oldPath = Path.Combine(directory, spawnset.Name);
 			string newPath = Path.Combine(directory, editSpawnset.Name);
 			File.Move(oldPath, newPath);
+
+			_spawnsetHashCache.Clear();
 		}
 
 		// Do not update LastUpdated here. This value is based only on the file which cannot be edited.
