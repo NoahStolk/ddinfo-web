@@ -7,11 +7,11 @@ public static class CustomLeaderboardDaggerExtensions
 {
 	public static string GetColorCode(this CustomLeaderboardDagger dagger) => dagger switch
 	{
-		CustomLeaderboardDagger.Leviathan => DaggersV3_2.Leviathan.Color.HexCode,
-		CustomLeaderboardDagger.Devil => DaggersV3_2.Devil.Color.HexCode,
-		CustomLeaderboardDagger.Golden => DaggersV3_2.Golden.Color.HexCode,
-		CustomLeaderboardDagger.Silver => DaggersV3_2.Silver.Color.HexCode,
-		CustomLeaderboardDagger.Bronze => DaggersV3_2.Bronze.Color.HexCode,
-		_ => DaggersV3_2.Default.Color.HexCode,
+		CustomLeaderboardDagger.Leviathan => Daggers.Leviathan.Color.HexCode,
+		CustomLeaderboardDagger.Devil => Daggers.Devil.Color.HexCode,
+		CustomLeaderboardDagger.Golden => Daggers.Golden.Color.HexCode,
+		CustomLeaderboardDagger.Silver => Daggers.Silver.Color.HexCode,
+		CustomLeaderboardDagger.Bronze => Daggers.Bronze.Color.HexCode,
+		_ => Daggers.Default.Color.HexCode,
 	};
 }
