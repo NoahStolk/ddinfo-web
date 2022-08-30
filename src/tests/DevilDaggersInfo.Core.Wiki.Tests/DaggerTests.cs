@@ -10,8 +10,8 @@ public class DaggerTests
 	{
 		const int seconds = 1000;
 
-		Assert.AreEqual(DaggersV3_2.Leviathan, Daggers.GetDaggerFromSeconds(GameVersion.V3_2, seconds));
-		Assert.AreEqual(DaggersV3_1.Leviathan, Daggers.GetDaggerFromSeconds(GameVersion.V3_1, seconds));
+		Assert.AreEqual(Daggers.Leviathan, Daggers.GetDaggerFromSeconds(GameVersion.V3_2, seconds));
+		Assert.AreEqual(Daggers.Leviathan, Daggers.GetDaggerFromSeconds(GameVersion.V3_1, seconds));
 	}
 
 	[TestMethod]
@@ -21,16 +21,16 @@ public class DaggerTests
 		const int secondsLastV3 = 1000;
 		const int secondsFirst = 500;
 
-		Assert.AreEqual(DaggersV3_2.Devil, Daggers.GetDaggerFromSeconds(GameVersion.V3_2, secondsLastV3Next));
-		Assert.AreEqual(DaggersV3_2.Devil, Daggers.GetDaggerFromSeconds(GameVersion.V3_2, secondsFirst));
-		Assert.AreEqual(DaggersV3_1.Devil, Daggers.GetDaggerFromSeconds(GameVersion.V3_1, secondsLastV3Next));
-		Assert.AreEqual(DaggersV3_1.Devil, Daggers.GetDaggerFromSeconds(GameVersion.V3_1, secondsFirst));
-		Assert.AreEqual(DaggersV3_0.Devil, Daggers.GetDaggerFromSeconds(GameVersion.V3_0, secondsLastV3));
-		Assert.AreEqual(DaggersV3_0.Devil, Daggers.GetDaggerFromSeconds(GameVersion.V3_0, secondsFirst));
-		Assert.AreEqual(DaggersV2_0.Devil, Daggers.GetDaggerFromSeconds(GameVersion.V2_0, secondsLastV3));
-		Assert.AreEqual(DaggersV2_0.Devil, Daggers.GetDaggerFromSeconds(GameVersion.V2_0, secondsFirst));
-		Assert.AreEqual(DaggersV1_0.Devil, Daggers.GetDaggerFromSeconds(GameVersion.V1_0, secondsLastV3));
-		Assert.AreEqual(DaggersV1_0.Devil, Daggers.GetDaggerFromSeconds(GameVersion.V1_0, secondsFirst));
+		Assert.AreEqual(Daggers.Devil, Daggers.GetDaggerFromSeconds(GameVersion.V3_2, secondsLastV3Next));
+		Assert.AreEqual(Daggers.Devil, Daggers.GetDaggerFromSeconds(GameVersion.V3_2, secondsFirst));
+		Assert.AreEqual(Daggers.Devil, Daggers.GetDaggerFromSeconds(GameVersion.V3_1, secondsLastV3Next));
+		Assert.AreEqual(Daggers.Devil, Daggers.GetDaggerFromSeconds(GameVersion.V3_1, secondsFirst));
+		Assert.AreEqual(Daggers.Devil, Daggers.GetDaggerFromSeconds(GameVersion.V3_0, secondsLastV3));
+		Assert.AreEqual(Daggers.Devil, Daggers.GetDaggerFromSeconds(GameVersion.V3_0, secondsFirst));
+		Assert.AreEqual(Daggers.Devil, Daggers.GetDaggerFromSeconds(GameVersion.V2_0, secondsLastV3));
+		Assert.AreEqual(Daggers.Devil, Daggers.GetDaggerFromSeconds(GameVersion.V2_0, secondsFirst));
+		Assert.AreEqual(Daggers.Devil, Daggers.GetDaggerFromSeconds(GameVersion.V1_0, secondsLastV3));
+		Assert.AreEqual(Daggers.Devil, Daggers.GetDaggerFromSeconds(GameVersion.V1_0, secondsFirst));
 	}
 
 	[TestMethod]
@@ -39,16 +39,16 @@ public class DaggerTests
 		const double secondsLast = 499.9999;
 		const int secondsFirst = 250;
 
-		Assert.AreEqual(DaggersV3_2.Golden, Daggers.GetDaggerFromSeconds(GameVersion.V3_2, secondsLast));
-		Assert.AreEqual(DaggersV3_2.Golden, Daggers.GetDaggerFromSeconds(GameVersion.V3_2, secondsFirst));
-		Assert.AreEqual(DaggersV3_1.Golden, Daggers.GetDaggerFromSeconds(GameVersion.V3_1, secondsLast));
-		Assert.AreEqual(DaggersV3_1.Golden, Daggers.GetDaggerFromSeconds(GameVersion.V3_1, secondsFirst));
-		Assert.AreEqual(DaggersV3_0.Golden, Daggers.GetDaggerFromSeconds(GameVersion.V3_0, secondsLast));
-		Assert.AreEqual(DaggersV3_0.Golden, Daggers.GetDaggerFromSeconds(GameVersion.V3_0, secondsFirst));
-		Assert.AreEqual(DaggersV2_0.Golden, Daggers.GetDaggerFromSeconds(GameVersion.V2_0, secondsLast));
-		Assert.AreEqual(DaggersV2_0.Golden, Daggers.GetDaggerFromSeconds(GameVersion.V2_0, secondsFirst));
-		Assert.AreEqual(DaggersV1_0.Golden, Daggers.GetDaggerFromSeconds(GameVersion.V1_0, secondsLast));
-		Assert.AreEqual(DaggersV1_0.Golden, Daggers.GetDaggerFromSeconds(GameVersion.V1_0, secondsFirst));
+		Assert.AreEqual(Daggers.Golden, Daggers.GetDaggerFromSeconds(GameVersion.V3_2, secondsLast));
+		Assert.AreEqual(Daggers.Golden, Daggers.GetDaggerFromSeconds(GameVersion.V3_2, secondsFirst));
+		Assert.AreEqual(Daggers.Golden, Daggers.GetDaggerFromSeconds(GameVersion.V3_1, secondsLast));
+		Assert.AreEqual(Daggers.Golden, Daggers.GetDaggerFromSeconds(GameVersion.V3_1, secondsFirst));
+		Assert.AreEqual(Daggers.Golden, Daggers.GetDaggerFromSeconds(GameVersion.V3_0, secondsLast));
+		Assert.AreEqual(Daggers.Golden, Daggers.GetDaggerFromSeconds(GameVersion.V3_0, secondsFirst));
+		Assert.AreEqual(Daggers.Golden, Daggers.GetDaggerFromSeconds(GameVersion.V2_0, secondsLast));
+		Assert.AreEqual(Daggers.Golden, Daggers.GetDaggerFromSeconds(GameVersion.V2_0, secondsFirst));
+		Assert.AreEqual(Daggers.Golden, Daggers.GetDaggerFromSeconds(GameVersion.V1_0, secondsLast));
+		Assert.AreEqual(Daggers.Golden, Daggers.GetDaggerFromSeconds(GameVersion.V1_0, secondsFirst));
 	}
 
 	[TestMethod]
@@ -57,16 +57,16 @@ public class DaggerTests
 		const double secondsLast = 249.9999;
 		const int secondsFirst = 120;
 
-		Assert.AreEqual(DaggersV3_2.Silver, Daggers.GetDaggerFromSeconds(GameVersion.V3_2, secondsLast));
-		Assert.AreEqual(DaggersV3_2.Silver, Daggers.GetDaggerFromSeconds(GameVersion.V3_2, secondsFirst));
-		Assert.AreEqual(DaggersV3_1.Silver, Daggers.GetDaggerFromSeconds(GameVersion.V3_1, secondsLast));
-		Assert.AreEqual(DaggersV3_1.Silver, Daggers.GetDaggerFromSeconds(GameVersion.V3_1, secondsFirst));
-		Assert.AreEqual(DaggersV3_0.Silver, Daggers.GetDaggerFromSeconds(GameVersion.V3_0, secondsLast));
-		Assert.AreEqual(DaggersV3_0.Silver, Daggers.GetDaggerFromSeconds(GameVersion.V3_0, secondsFirst));
-		Assert.AreEqual(DaggersV2_0.Silver, Daggers.GetDaggerFromSeconds(GameVersion.V2_0, secondsLast));
-		Assert.AreEqual(DaggersV2_0.Silver, Daggers.GetDaggerFromSeconds(GameVersion.V2_0, secondsFirst));
-		Assert.AreEqual(DaggersV1_0.Silver, Daggers.GetDaggerFromSeconds(GameVersion.V1_0, secondsLast));
-		Assert.AreEqual(DaggersV1_0.Silver, Daggers.GetDaggerFromSeconds(GameVersion.V1_0, secondsFirst));
+		Assert.AreEqual(Daggers.Silver, Daggers.GetDaggerFromSeconds(GameVersion.V3_2, secondsLast));
+		Assert.AreEqual(Daggers.Silver, Daggers.GetDaggerFromSeconds(GameVersion.V3_2, secondsFirst));
+		Assert.AreEqual(Daggers.Silver, Daggers.GetDaggerFromSeconds(GameVersion.V3_1, secondsLast));
+		Assert.AreEqual(Daggers.Silver, Daggers.GetDaggerFromSeconds(GameVersion.V3_1, secondsFirst));
+		Assert.AreEqual(Daggers.Silver, Daggers.GetDaggerFromSeconds(GameVersion.V3_0, secondsLast));
+		Assert.AreEqual(Daggers.Silver, Daggers.GetDaggerFromSeconds(GameVersion.V3_0, secondsFirst));
+		Assert.AreEqual(Daggers.Silver, Daggers.GetDaggerFromSeconds(GameVersion.V2_0, secondsLast));
+		Assert.AreEqual(Daggers.Silver, Daggers.GetDaggerFromSeconds(GameVersion.V2_0, secondsFirst));
+		Assert.AreEqual(Daggers.Silver, Daggers.GetDaggerFromSeconds(GameVersion.V1_0, secondsLast));
+		Assert.AreEqual(Daggers.Silver, Daggers.GetDaggerFromSeconds(GameVersion.V1_0, secondsFirst));
 	}
 
 	[TestMethod]
@@ -75,16 +75,16 @@ public class DaggerTests
 		const double secondsLast = 119.9999;
 		const int secondsFirst = 60;
 
-		Assert.AreEqual(DaggersV3_2.Bronze, Daggers.GetDaggerFromSeconds(GameVersion.V3_2, secondsLast));
-		Assert.AreEqual(DaggersV3_2.Bronze, Daggers.GetDaggerFromSeconds(GameVersion.V3_2, secondsFirst));
-		Assert.AreEqual(DaggersV3_1.Bronze, Daggers.GetDaggerFromSeconds(GameVersion.V3_1, secondsLast));
-		Assert.AreEqual(DaggersV3_1.Bronze, Daggers.GetDaggerFromSeconds(GameVersion.V3_1, secondsFirst));
-		Assert.AreEqual(DaggersV3_0.Bronze, Daggers.GetDaggerFromSeconds(GameVersion.V3_0, secondsLast));
-		Assert.AreEqual(DaggersV3_0.Bronze, Daggers.GetDaggerFromSeconds(GameVersion.V3_0, secondsFirst));
-		Assert.AreEqual(DaggersV2_0.Bronze, Daggers.GetDaggerFromSeconds(GameVersion.V2_0, secondsLast));
-		Assert.AreEqual(DaggersV2_0.Bronze, Daggers.GetDaggerFromSeconds(GameVersion.V2_0, secondsFirst));
-		Assert.AreEqual(DaggersV1_0.Bronze, Daggers.GetDaggerFromSeconds(GameVersion.V1_0, secondsLast));
-		Assert.AreEqual(DaggersV1_0.Bronze, Daggers.GetDaggerFromSeconds(GameVersion.V1_0, secondsFirst));
+		Assert.AreEqual(Daggers.Bronze, Daggers.GetDaggerFromSeconds(GameVersion.V3_2, secondsLast));
+		Assert.AreEqual(Daggers.Bronze, Daggers.GetDaggerFromSeconds(GameVersion.V3_2, secondsFirst));
+		Assert.AreEqual(Daggers.Bronze, Daggers.GetDaggerFromSeconds(GameVersion.V3_1, secondsLast));
+		Assert.AreEqual(Daggers.Bronze, Daggers.GetDaggerFromSeconds(GameVersion.V3_1, secondsFirst));
+		Assert.AreEqual(Daggers.Bronze, Daggers.GetDaggerFromSeconds(GameVersion.V3_0, secondsLast));
+		Assert.AreEqual(Daggers.Bronze, Daggers.GetDaggerFromSeconds(GameVersion.V3_0, secondsFirst));
+		Assert.AreEqual(Daggers.Bronze, Daggers.GetDaggerFromSeconds(GameVersion.V2_0, secondsLast));
+		Assert.AreEqual(Daggers.Bronze, Daggers.GetDaggerFromSeconds(GameVersion.V2_0, secondsFirst));
+		Assert.AreEqual(Daggers.Bronze, Daggers.GetDaggerFromSeconds(GameVersion.V1_0, secondsLast));
+		Assert.AreEqual(Daggers.Bronze, Daggers.GetDaggerFromSeconds(GameVersion.V1_0, secondsFirst));
 	}
 
 	[TestMethod]
@@ -93,16 +93,16 @@ public class DaggerTests
 		const double secondsLast = 59.9999;
 		const int secondsFirst = 0;
 
-		Assert.AreEqual(DaggersV3_2.Default, Daggers.GetDaggerFromSeconds(GameVersion.V3_2, secondsLast));
-		Assert.AreEqual(DaggersV3_2.Default, Daggers.GetDaggerFromSeconds(GameVersion.V3_2, secondsFirst));
-		Assert.AreEqual(DaggersV3_1.Default, Daggers.GetDaggerFromSeconds(GameVersion.V3_1, secondsLast));
-		Assert.AreEqual(DaggersV3_1.Default, Daggers.GetDaggerFromSeconds(GameVersion.V3_1, secondsFirst));
-		Assert.AreEqual(DaggersV3_0.Default, Daggers.GetDaggerFromSeconds(GameVersion.V3_0, secondsLast));
-		Assert.AreEqual(DaggersV3_0.Default, Daggers.GetDaggerFromSeconds(GameVersion.V3_0, secondsFirst));
-		Assert.AreEqual(DaggersV2_0.Default, Daggers.GetDaggerFromSeconds(GameVersion.V2_0, secondsLast));
-		Assert.AreEqual(DaggersV2_0.Default, Daggers.GetDaggerFromSeconds(GameVersion.V2_0, secondsFirst));
-		Assert.AreEqual(DaggersV1_0.Default, Daggers.GetDaggerFromSeconds(GameVersion.V1_0, secondsLast));
-		Assert.AreEqual(DaggersV1_0.Default, Daggers.GetDaggerFromSeconds(GameVersion.V1_0, secondsFirst));
+		Assert.AreEqual(Daggers.Default, Daggers.GetDaggerFromSeconds(GameVersion.V3_2, secondsLast));
+		Assert.AreEqual(Daggers.Default, Daggers.GetDaggerFromSeconds(GameVersion.V3_2, secondsFirst));
+		Assert.AreEqual(Daggers.Default, Daggers.GetDaggerFromSeconds(GameVersion.V3_1, secondsLast));
+		Assert.AreEqual(Daggers.Default, Daggers.GetDaggerFromSeconds(GameVersion.V3_1, secondsFirst));
+		Assert.AreEqual(Daggers.Default, Daggers.GetDaggerFromSeconds(GameVersion.V3_0, secondsLast));
+		Assert.AreEqual(Daggers.Default, Daggers.GetDaggerFromSeconds(GameVersion.V3_0, secondsFirst));
+		Assert.AreEqual(Daggers.Default, Daggers.GetDaggerFromSeconds(GameVersion.V2_0, secondsLast));
+		Assert.AreEqual(Daggers.Default, Daggers.GetDaggerFromSeconds(GameVersion.V2_0, secondsFirst));
+		Assert.AreEqual(Daggers.Default, Daggers.GetDaggerFromSeconds(GameVersion.V1_0, secondsLast));
+		Assert.AreEqual(Daggers.Default, Daggers.GetDaggerFromSeconds(GameVersion.V1_0, secondsFirst));
 	}
 
 	[TestMethod]

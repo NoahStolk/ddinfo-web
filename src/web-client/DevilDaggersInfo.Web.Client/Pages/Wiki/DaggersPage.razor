@@ -1,16 +1,16 @@
 @page "/wiki/daggers"
 
-<Heading Title="Daggers" />
+<Heading Title="Daggers"/>
 
 <p class="para">
 	There are 6 different types of daggers in Devil Daggers. These daggers do not change anything in-game, they're more like extras that you unlock as you progress. You pick them up in the dagger lobby, and then the game starts. Each dagger makes a different sound.
 </p>
 <p class="para">
-	The @MarkupUtils.DaggerString(DaggersV3_2.Devil) grants the only Steam achievement in the game. The @MarkupUtils.DaggerString(DaggersV3_2.Leviathan) was added 5 years after the game's original release, and does not grant an achievement.
+	The @MarkupUtils.DaggerString(Daggers.Devil) grants the only Steam achievement in the game. The @MarkupUtils.DaggerString(Daggers.Leviathan) was added 5 years after the game's original release, and does not grant an achievement.
 </p>
 
 <div class="pt-4 grid gap-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
-	@foreach (Dagger dagger in Daggers.GetDaggers(GameConstants.CurrentVersion))
+	@foreach (Dagger dagger in Daggers.All)
 	{
 		<div class="p-2 border-2" style="@($"border-color: {dagger.Color.HexCode};")">
 			<div class="font-goethe text-xl @dagger.Name.ToLower()">@dagger.Name Dagger</div>
@@ -18,7 +18,7 @@
 				MarkupString text = new(dagger.UnlockSecond == 0 ? "Also known as 'Pleb Dagger' in the game files" : $@"Unlocks at <span class=""{dagger.Name.ToLower()} font-goethe text-lg"">{dagger.UnlockSecond}</span> seconds");
 				@text
 			}
-			<img src='images/wiki/daggers/@(dagger.Name.ToLower()).png' />
+			<img src='images/wiki/daggers/@(dagger.Name.ToLower()).png' alt="@dagger.Name"/>
 		</div>
 	}
 </div>

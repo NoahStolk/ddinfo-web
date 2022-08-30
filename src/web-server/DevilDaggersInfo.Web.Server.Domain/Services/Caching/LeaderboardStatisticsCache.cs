@@ -43,7 +43,7 @@ public class LeaderboardStatisticsCache
 
 	public IReadOnlyList<CompressedEntry> Entries => _entries;
 
-	public static IReadOnlyList<Dagger> StatDaggers { get; } = Daggers.GetDaggers(GameConstants.CurrentVersion).OrderByDescending(d => d.UnlockSecond).ToList();
+	public static IReadOnlyList<Dagger> StatDaggers { get; } = Daggers.All.OrderByDescending(d => d.UnlockSecond).ToList();
 
 	public static IReadOnlyList<Enemy> StatEnemies { get; } = Enemies.GetEnemies(GameConstants.CurrentVersion).Where(e => e.FirstSpawnSecond.HasValue).OrderByDescending(e => e.FirstSpawnSecond).ToList();
 
