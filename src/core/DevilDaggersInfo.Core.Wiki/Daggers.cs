@@ -12,14 +12,11 @@ public static class Daggers
 		_ => throw new ArgumentOutOfRangeException(nameof(gameVersion)),
 	};
 
-	public static Dagger? GetDaggerByName(GameVersion gameVersion, string name)
+	public static Dagger? GetDaggerByName(string name)
 	{
-		Dagger dagger = GetDaggers(gameVersion).FirstOrDefault(d => d.Name == name);
+		Dagger dagger = GetDaggers(GameConstants.CurrentVersion).FirstOrDefault(d => d.Name == name);
 		return dagger == default ? null : dagger;
 	}
-
-	public static Dagger GetDaggerFromTenthsOfMilliseconds(GameVersion gameVersion, int timeInTenthsOfMilliseconds)
-		=> GetDaggerFromSeconds(gameVersion, timeInTenthsOfMilliseconds.ToSecondsTime());
 
 	public static Dagger GetDaggerFromSeconds(GameVersion gameVersion, double timeInSeconds)
 	{
