@@ -2,14 +2,16 @@ namespace DevilDaggersInfo.Core.Wiki;
 
 public static class Upgrades
 {
-	// TODO: Figure out Level 3 homing spray for V1.
-	public static IReadOnlyList<Upgrade> GetUpgrades(GameVersion gameVersion) => gameVersion switch
+	public static readonly Upgrade Level1 = new(GameVersion.V3_2, "Level 1", UpgradeColors.Level1, 1, new(10, 20f), null, new(UpgradeUnlockType.Gems, 0));
+	public static readonly Upgrade Level2 = new(GameVersion.V3_2, "Level 2", UpgradeColors.Level2, 2, new(20, 40f), null, new(UpgradeUnlockType.Gems, 10));
+	public static readonly Upgrade Level3 = new(GameVersion.V3_2, "Level 3", UpgradeColors.Level3, 3, new(40, 80f), new(20, 40), new(UpgradeUnlockType.Gems, 70));
+	public static readonly Upgrade Level4 = new(GameVersion.V3_2, "Level 4", UpgradeColors.Level4, 4, new(60, 106.666f), new(30, 40), new(UpgradeUnlockType.Homing, 150));
+
+	public static readonly IReadOnlyList<Upgrade> All = new List<Upgrade>
 	{
-		GameVersion.V1_0 => UpgradesV1_0.All,
-		GameVersion.V2_0 => UpgradesV2_0.All,
-		GameVersion.V3_0 => UpgradesV3_0.All,
-		GameVersion.V3_1 => UpgradesV3_1.All,
-		GameVersion.V3_2 => UpgradesV3_2.All,
-		_ => throw new ArgumentOutOfRangeException(nameof(gameVersion)),
+		Level1,
+		Level2,
+		Level3,
+		Level4,
 	};
 }

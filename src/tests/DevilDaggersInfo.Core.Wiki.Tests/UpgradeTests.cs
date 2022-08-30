@@ -6,121 +6,38 @@ namespace DevilDaggersInfo.Core.Wiki.Tests;
 public class UpgradeTests
 {
 	[TestMethod]
-	public void TestGetUpgrades()
-	{
-		Assert.AreEqual(3, Upgrades.GetUpgrades(GameVersion.V1_0).Count);
-		Assert.AreEqual(4, Upgrades.GetUpgrades(GameVersion.V2_0).Count);
-		Assert.AreEqual(4, Upgrades.GetUpgrades(GameVersion.V3_0).Count);
-		Assert.AreEqual(4, Upgrades.GetUpgrades(GameVersion.V3_1).Count);
-		Assert.AreEqual(4, Upgrades.GetUpgrades(GameVersion.V3_2).Count);
-	}
-
-	[TestMethod]
 	public void TestLevels()
 	{
-		Assert.AreEqual(1, UpgradesV1_0.Level1.Level);
-		Assert.AreEqual(2, UpgradesV1_0.Level2.Level);
-		Assert.AreEqual(3, UpgradesV1_0.Level3.Level);
-
-		Assert.AreEqual(1, UpgradesV2_0.Level1.Level);
-		Assert.AreEqual(2, UpgradesV2_0.Level2.Level);
-		Assert.AreEqual(3, UpgradesV2_0.Level3.Level);
-		Assert.AreEqual(4, UpgradesV2_0.Level4.Level);
-
-		Assert.AreEqual(1, UpgradesV3_0.Level1.Level);
-		Assert.AreEqual(2, UpgradesV3_0.Level2.Level);
-		Assert.AreEqual(3, UpgradesV3_0.Level3.Level);
-		Assert.AreEqual(4, UpgradesV3_0.Level4.Level);
-
-		Assert.AreEqual(1, UpgradesV3_1.Level1.Level);
-		Assert.AreEqual(2, UpgradesV3_1.Level2.Level);
-		Assert.AreEqual(3, UpgradesV3_1.Level3.Level);
-		Assert.AreEqual(4, UpgradesV3_1.Level4.Level);
-
-		Assert.AreEqual(1, UpgradesV3_2.Level1.Level);
-		Assert.AreEqual(2, UpgradesV3_2.Level2.Level);
-		Assert.AreEqual(3, UpgradesV3_2.Level3.Level);
-		Assert.AreEqual(4, UpgradesV3_2.Level4.Level);
+		Assert.AreEqual(1, Upgrades.Level1.Level);
+		Assert.AreEqual(2, Upgrades.Level2.Level);
+		Assert.AreEqual(3, Upgrades.Level3.Level);
+		Assert.AreEqual(4, Upgrades.Level4.Level);
 	}
 
 	[TestMethod]
 	public void TestDefaultDamage()
 	{
-		Assert.AreEqual(new(10, 20f), UpgradesV1_0.Level1.DefaultDamage);
-		Assert.AreEqual(new(10, 20f), UpgradesV2_0.Level1.DefaultDamage);
-		Assert.AreEqual(new(10, 20f), UpgradesV3_0.Level1.DefaultDamage);
-		Assert.AreEqual(new(10, 20f), UpgradesV3_1.Level1.DefaultDamage);
-		Assert.AreEqual(new(10, 20f), UpgradesV3_2.Level1.DefaultDamage);
-
-		Assert.AreEqual(new(20, 40f), UpgradesV1_0.Level2.DefaultDamage);
-		Assert.AreEqual(new(20, 40f), UpgradesV2_0.Level2.DefaultDamage);
-		Assert.AreEqual(new(20, 40f), UpgradesV3_0.Level2.DefaultDamage);
-		Assert.AreEqual(new(20, 40f), UpgradesV3_1.Level2.DefaultDamage);
-		Assert.AreEqual(new(20, 40f), UpgradesV3_2.Level2.DefaultDamage);
-
-		Assert.AreEqual(new(40, 80f), UpgradesV1_0.Level3.DefaultDamage);
-		Assert.AreEqual(new(40, 80f), UpgradesV2_0.Level3.DefaultDamage);
-		Assert.AreEqual(new(40, 80f), UpgradesV3_0.Level3.DefaultDamage);
-		Assert.AreEqual(new(40, 80f), UpgradesV3_1.Level3.DefaultDamage);
-		Assert.AreEqual(new(40, 80f), UpgradesV3_2.Level3.DefaultDamage);
-
-		Assert.AreEqual(new(60, 106.666f), UpgradesV2_0.Level4.DefaultDamage);
-		Assert.AreEqual(new(60, 106.666f), UpgradesV3_0.Level4.DefaultDamage);
-		Assert.AreEqual(new(60, 106.666f), UpgradesV3_1.Level4.DefaultDamage);
-		Assert.AreEqual(new(60, 106.666f), UpgradesV3_2.Level4.DefaultDamage);
+		Assert.AreEqual(new(10, 20f), Upgrades.Level1.DefaultDamage);
+		Assert.AreEqual(new(20, 40f), Upgrades.Level2.DefaultDamage);
+		Assert.AreEqual(new(40, 80f), Upgrades.Level3.DefaultDamage);
+		Assert.AreEqual(new(60, 106.666f), Upgrades.Level4.DefaultDamage);
 	}
 
 	[TestMethod]
 	public void TestHomingDamage()
 	{
-		Assert.AreEqual(null, UpgradesV1_0.Level1.HomingDamage);
-		Assert.AreEqual(null, UpgradesV2_0.Level1.HomingDamage);
-		Assert.AreEqual(null, UpgradesV3_0.Level1.HomingDamage);
-		Assert.AreEqual(null, UpgradesV3_1.Level1.HomingDamage);
-		Assert.AreEqual(null, UpgradesV3_2.Level1.HomingDamage);
-
-		Assert.AreEqual(null, UpgradesV1_0.Level2.HomingDamage);
-		Assert.AreEqual(null, UpgradesV2_0.Level2.HomingDamage);
-		Assert.AreEqual(null, UpgradesV3_0.Level2.HomingDamage);
-		Assert.AreEqual(null, UpgradesV3_1.Level2.HomingDamage);
-		Assert.AreEqual(null, UpgradesV3_2.Level2.HomingDamage);
-
-		Assert.AreEqual(new(40, 40f), UpgradesV1_0.Level3.HomingDamage);
-		Assert.AreEqual(new(20, 40f), UpgradesV2_0.Level3.HomingDamage);
-		Assert.AreEqual(new(20, 40f), UpgradesV3_0.Level3.HomingDamage);
-		Assert.AreEqual(new(20, 40f), UpgradesV3_1.Level3.HomingDamage);
-		Assert.AreEqual(new(20, 40f), UpgradesV3_2.Level3.HomingDamage);
-
-		Assert.AreEqual(new(30, 40f), UpgradesV2_0.Level4.HomingDamage);
-		Assert.AreEqual(new(30, 40f), UpgradesV3_0.Level4.HomingDamage);
-		Assert.AreEqual(new(30, 40f), UpgradesV3_1.Level4.HomingDamage);
-		Assert.AreEqual(new(30, 40f), UpgradesV3_2.Level4.HomingDamage);
+		Assert.AreEqual(null, Upgrades.Level1.HomingDamage);
+		Assert.AreEqual(null, Upgrades.Level2.HomingDamage);
+		Assert.AreEqual(new(20, 40f), Upgrades.Level3.HomingDamage);
+		Assert.AreEqual(new(30, 40f), Upgrades.Level4.HomingDamage);
 	}
 
 	[TestMethod]
 	public void TestUpgradeUnlock()
 	{
-		Assert.AreEqual(new(UpgradeUnlockType.Gems, 0), UpgradesV1_0.Level1.UpgradeUnlock);
-		Assert.AreEqual(new(UpgradeUnlockType.Gems, 0), UpgradesV2_0.Level1.UpgradeUnlock);
-		Assert.AreEqual(new(UpgradeUnlockType.Gems, 0), UpgradesV3_0.Level1.UpgradeUnlock);
-		Assert.AreEqual(new(UpgradeUnlockType.Gems, 0), UpgradesV3_1.Level1.UpgradeUnlock);
-		Assert.AreEqual(new(UpgradeUnlockType.Gems, 0), UpgradesV3_2.Level1.UpgradeUnlock);
-
-		Assert.AreEqual(new(UpgradeUnlockType.Gems, 10), UpgradesV1_0.Level2.UpgradeUnlock);
-		Assert.AreEqual(new(UpgradeUnlockType.Gems, 10), UpgradesV2_0.Level2.UpgradeUnlock);
-		Assert.AreEqual(new(UpgradeUnlockType.Gems, 10), UpgradesV3_0.Level2.UpgradeUnlock);
-		Assert.AreEqual(new(UpgradeUnlockType.Gems, 10), UpgradesV3_1.Level2.UpgradeUnlock);
-		Assert.AreEqual(new(UpgradeUnlockType.Gems, 10), UpgradesV3_2.Level2.UpgradeUnlock);
-
-		Assert.AreEqual(new(UpgradeUnlockType.Gems, 70), UpgradesV1_0.Level3.UpgradeUnlock);
-		Assert.AreEqual(new(UpgradeUnlockType.Gems, 70), UpgradesV2_0.Level3.UpgradeUnlock);
-		Assert.AreEqual(new(UpgradeUnlockType.Gems, 70), UpgradesV3_0.Level3.UpgradeUnlock);
-		Assert.AreEqual(new(UpgradeUnlockType.Gems, 70), UpgradesV3_1.Level3.UpgradeUnlock);
-		Assert.AreEqual(new(UpgradeUnlockType.Gems, 70), UpgradesV3_2.Level3.UpgradeUnlock);
-
-		Assert.AreEqual(new(UpgradeUnlockType.Homing, 150), UpgradesV2_0.Level4.UpgradeUnlock);
-		Assert.AreEqual(new(UpgradeUnlockType.Homing, 150), UpgradesV3_0.Level4.UpgradeUnlock);
-		Assert.AreEqual(new(UpgradeUnlockType.Homing, 150), UpgradesV3_1.Level4.UpgradeUnlock);
-		Assert.AreEqual(new(UpgradeUnlockType.Homing, 150), UpgradesV3_2.Level4.UpgradeUnlock);
+		Assert.AreEqual(new(UpgradeUnlockType.Gems, 0), Upgrades.Level1.UpgradeUnlock);
+		Assert.AreEqual(new(UpgradeUnlockType.Gems, 10), Upgrades.Level2.UpgradeUnlock);
+		Assert.AreEqual(new(UpgradeUnlockType.Gems, 70), Upgrades.Level3.UpgradeUnlock);
+		Assert.AreEqual(new(UpgradeUnlockType.Homing, 150), Upgrades.Level4.UpgradeUnlock);
 	}
 }

@@ -5,7 +5,6 @@
 
 @{
 	IReadOnlyList<Enemy> enemies = WikiEnemies.GetEnemies(GameConstants.CurrentVersion).Append(EnemiesV2_0.Andras).ToList();
-	IReadOnlyList<Upgrade> upgrades = Upgrades.GetUpgrades(GameConstants.CurrentVersion);
 
 	List<Enemy> enemiesDamageStats = new();
 	foreach (Enemy enemy in enemies)
@@ -89,11 +88,11 @@
 	</div>
 	<div class="grid gap-x-4 grid-cols-enemies-damage-stats-lg">
 		<div class="col-span-2"></div>
-		@foreach (Upgrade upgrade in upgrades)
+		@foreach (Upgrade upgrade in Upgrades.All)
 		{
 			<div class="text-right">@MarkupUtils.UpgradeString(upgrade)</div>
 		}
-		@foreach (Upgrade upgrade in upgrades)
+		@foreach (Upgrade upgrade in Upgrades.All)
 		{
 			<div class="text-right">@MarkupUtils.UpgradeString(upgrade)</div>
 		}
@@ -103,11 +102,11 @@
 		{
 			<div>@MarkupUtils.EnemyString(enemy)</div>
 			<div class="text-right">@enemy.Hp</div>
-			@foreach (Upgrade upgrade in upgrades)
+			@foreach (Upgrade upgrade in Upgrades.All)
 			{
 				<div class="text-right">@((enemy.Hp / upgrade.DefaultDamage.DaggersPerSpraySecond).ToString("0.00"))</div>
 			}
-			@foreach (Upgrade upgrade in upgrades)
+			@foreach (Upgrade upgrade in Upgrades.All)
 			{
 				<div class="text-right">@(Math.Ceiling(enemy.Hp / (double)upgrade.DefaultDamage.DaggersPerShot))</div>
 			}
@@ -120,11 +119,11 @@
 <ul class="pl-4">
 	<li class="list-disc">All homing daggers cause 10 damage to most enemies; @MarkupUtils.EnemyString(EnemiesV3_2.Leviathan) and @MarkupUtils.EnemyString(EnemiesV3_2.TheOrb) only take 1 damage from homing daggers. This used to happen to @MarkupUtils.EnemyString(EnemiesV3_2.SpiderEgg1) and @MarkupUtils.EnemyString(EnemiesV3_2.SpiderEgg2) as well, but this was fixed in V3.2.</li>
 	<li class="list-disc">@MarkupUtils.EnemyString(EnemiesV3_2.TheOrb), @MarkupUtils.EnemyString(EnemiesV3_2.SpiderEgg1), and @MarkupUtils.EnemyString(EnemiesV3_2.SpiderEgg2) are the only enemies that are not targeted by any homing daggers.</li>
-	<li class="list-disc">@MarkupUtils.UpgradeString(UpgradesV3_2.Level4) homing daggers cause splash damage. This means that when they're destroyed, they create a little explosion that can cause damage to near enemies. For example, you only need one @MarkupUtils.UpgradeString(UpgradesV3_2.Level4) homing dagger to kill a @MarkupUtils.EnemyString(EnemiesV3_2.Squid2), as the explosion will destroy the other gem.</li>
-	<li class="list-disc">Even though @MarkupUtils.EnemyString(EnemiesV3_2.Ghostpede) cannot be damaged by homing daggers (they phase through it), it can still take damage from @MarkupUtils.UpgradeString(UpgradesV3_2.Level4) homing dagger splash damage.</li>
-	<li class="list-disc">You need 3 @MarkupUtils.UpgradeString(UpgradesV3_2.Level4) homing daggers to kill a @MarkupUtils.EnemyString(EnemiesV3_2.Squid3) gem, but only 1 @MarkupUtils.UpgradeString(UpgradesV3_2.Level3) homing dagger.</li>
+	<li class="list-disc">@MarkupUtils.UpgradeString(Upgrades.Level4) homing daggers cause splash damage. This means that when they're destroyed, they create a little explosion that can cause damage to near enemies. For example, you only need one @MarkupUtils.UpgradeString(Upgrades.Level4) homing dagger to kill a @MarkupUtils.EnemyString(EnemiesV3_2.Squid2), as the explosion will destroy the other gem.</li>
+	<li class="list-disc">Even though @MarkupUtils.EnemyString(EnemiesV3_2.Ghostpede) cannot be damaged by homing daggers (they phase through it), it can still take damage from @MarkupUtils.UpgradeString(Upgrades.Level4) homing dagger splash damage.</li>
+	<li class="list-disc">You need 3 @MarkupUtils.UpgradeString(Upgrades.Level4) homing daggers to kill a @MarkupUtils.EnemyString(EnemiesV3_2.Squid3) gem, but only 1 @MarkupUtils.UpgradeString(Upgrades.Level3) homing dagger.</li>
 	<li class="list-disc">All homing daggers explode upon touch with any enemy, except @(MarkupUtils.EnemyString(EnemiesV3_2.Skull1)). You can kill 4 @(MarkupUtils.EnemyString(EnemiesV3_2.Skull1, true)) with a single homing dagger.</li>
-	<li class="list-disc">You used to need 10 @MarkupUtils.UpgradeString(UpgradesV3_2.Level4) homing daggers to kill a single @MarkupUtils.EnemyString(EnemiesV3_2.TransmutedSkull1), while one single @MarkupUtils.UpgradeString(UpgradesV3_2.Level3) homing dagger could kill 4 of them. This was fixed in V3.2, and now both @MarkupUtils.UpgradeString(UpgradesV3_2.Level3) and @MarkupUtils.UpgradeString(UpgradesV3_2.Level4) homing daggers can kill exactly one @MarkupUtils.EnemyString(EnemiesV3_2.TransmutedSkull1).</li>
+	<li class="list-disc">You used to need 10 @MarkupUtils.UpgradeString(Upgrades.Level4) homing daggers to kill a single @MarkupUtils.EnemyString(EnemiesV3_2.TransmutedSkull1), while one single @MarkupUtils.UpgradeString(Upgrades.Level3) homing dagger could kill 4 of them. This was fixed in V3.2, and now both @MarkupUtils.UpgradeString(Upgrades.Level3) and @MarkupUtils.UpgradeString(Upgrades.Level4) homing daggers can kill exactly one @MarkupUtils.EnemyString(EnemiesV3_2.TransmutedSkull1).</li>
 </ul>
 
 <div class="hidden lg:block">
