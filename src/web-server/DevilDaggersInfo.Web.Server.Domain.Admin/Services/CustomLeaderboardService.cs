@@ -27,9 +27,6 @@ public class CustomLeaderboardService
 
 	public async Task AddCustomLeaderboardAsync(AddCustomLeaderboard addCustomLeaderboard)
 	{
-		if (addCustomLeaderboard.Category == CustomLeaderboardCategory.Speedrun)
-			throw new AdminDomainException("The Speedrun category is obsolete and should not be used anymore. Consider using the Race category.");
-
 		if (_dbContext.CustomLeaderboards.Any(cl => cl.SpawnsetId == addCustomLeaderboard.SpawnsetId))
 			throw new AdminDomainException("A leaderboard for this spawnset already exists.");
 
