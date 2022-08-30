@@ -15,4 +15,19 @@ public static class EnemyExtensions
 			.Replace(' ', '-')
 			.ToLower();
 	}
+
+	public static string GetUrl(this Enemy enemy)
+	{
+		string enemyName = enemy.Name.ToLower();
+		if (enemyName.Contains("skull"))
+			return "skull";
+
+		if (enemyName.StartsWith("squid"))
+			return "squid";
+
+		if (enemyName.EndsWith("orb"))
+			return "leviathan";
+
+		return enemyName.StartsWith("spider") ? "spider" : enemyName;
+	}
 }

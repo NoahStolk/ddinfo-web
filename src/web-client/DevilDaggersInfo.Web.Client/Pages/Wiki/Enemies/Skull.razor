@@ -1,3 +1,66 @@
 @page "/wiki/enemies/skull"
 
 <Heading Title="Enemy - Skull"/>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+	@foreach (Enemy enemy in _skulls)
+	{
+		<img class="img-fluid" src="@($"images/wiki/enemies/{enemy.GetImageName()}.png")" alt="@enemy.Name"/>
+	}
+</div>
+
+<p class="para">
+	Skulls are the most common enemy in the game. They are spawned by <a class="link" href="/wiki/enemies/squid">Squids</a>.
+</p>
+
+<Heading Title="Transmuted Skulls" Level="2"/>
+
+<p class="para">
+	Skulls can be transmuted by <a class="link" href="/wiki/enemies/leviathan">Leviathan and The Orb</a>. This means they are sucked up and thrown back into the arena with their HP reset to a much larger value, making them much more dangerous.
+</p>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+	@foreach (Enemy enemy in _transmutedSkulls)
+	{
+		<img class="img-fluid" src="@($"images/wiki/enemies/{enemy.GetImageName()}.png")" alt="@enemy.Name"/>
+	}
+</div>
+
+<Heading Title="Data" Level="2"/>
+
+<div class="grid grid-cols-6">
+	<span class="font-bold">Skull</span>
+	<span class="font-bold">HP</span>
+	<span class="font-bold">Gems</span>
+	<span class="font-bold">Death type</span>
+	<span class="font-bold">Base velocity</span>
+	<span class="font-bold">Max velocity</span>
+	@foreach (Enemy enemy in _skulls.Concat(_transmutedSkulls))
+	{
+		<span>@MarkupUtils.EnemyString(enemy)</span>
+		<span>@enemy.Hp</span>
+		<span>@enemy.Gems</span>
+		<span>@MarkupUtils.DeathString(enemy.Death)</span>
+		<span>TODO</span>
+		<span>TODO</span>
+	}
+</div>
+
+@code
+{
+	private readonly Enemy[] _skulls = 
+	{
+		EnemiesV3_2.Skull1,
+		EnemiesV3_2.Skull2,
+		EnemiesV3_2.Skull3,
+		EnemiesV3_2.Skull4,
+	};
+
+	private readonly Enemy[] _transmutedSkulls = 
+	{
+		EnemiesV3_2.TransmutedSkull1,
+		EnemiesV3_2.TransmutedSkull2,
+		EnemiesV3_2.TransmutedSkull3,
+		EnemiesV3_2.TransmutedSkull4,
+	};
+}

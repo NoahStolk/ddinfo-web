@@ -30,7 +30,7 @@
 <div class="grid gap-x-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
 	@foreach (Enemy enemy in enemies)
 	{
-		<OverlayImage Text="@enemy.Name" ImageUrl="@($"wiki/enemies/{enemy.GetImageName()}.png")" Url="/wiki/enemies/skull" Alt="@enemy.Name" />
+		<OverlayImage Text="@enemy.Name" ImageUrl="@($"wiki/enemies/{enemy.GetImageName()}.png")" Url="@($"/wiki/enemies/{enemy.GetUrl()}")" Alt="@enemy.Name"/>
 	}
 </div>
 
@@ -165,12 +165,12 @@
 {
 	private static MarkupString GetHomingDamage(int damage, int hp)
 	{
-		if (damage == 0) 
+		if (damage == 0)
 			return MarkupStrings.NoDataMarkup;
-			
+
 		if (damage >= hp)
 			return new("<span style='color: #f88;'>Instant</span>");
-		
+
 		return new(damage.ToString());
 	}
 }
