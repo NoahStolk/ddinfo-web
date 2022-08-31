@@ -18,7 +18,7 @@
 }
 else
 {
-	<div class="bg-gray-1 p-2 text-lg">
+	<div class="bg-gray-1 p-2 text-lg max-w-sm">
 		<span>Rank</span>
 		<input class="bg-black border-gray-3 border-2" value="@Rank" @onchange="ChangeInputRank" />
 		<div>
@@ -34,7 +34,7 @@ else
 		<div>
 			@{
 				bool f = Rank <= 1;
-				bool l = Rank >= _maxRank;
+				bool l = Rank >= MaxRank;
 				const string disabledStyle = "disabled:opacity-50 cursor-default btn-disabled";
 				const string enabledStyle = "btn-gray-light";
 			}

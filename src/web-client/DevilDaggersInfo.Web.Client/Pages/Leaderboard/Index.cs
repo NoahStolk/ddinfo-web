@@ -11,7 +11,7 @@ public partial class Index
 	private string? _apiError;
 	private bool _reloading;
 
-	private int _maxRank => (GetLeaderboard?.TotalPlayers ?? int.MaxValue) - 99;
+	private int MaxRank => (GetLeaderboard?.TotalPlayers ?? int.MaxValue) - 99;
 
 	[Parameter]
 	[SupplyParameterFromQuery]
@@ -29,7 +29,7 @@ public partial class Index
 
 	private async Task SetRank(int value)
 	{
-		Rank = Math.Clamp(value, 1, _maxRank);
+		Rank = Math.Clamp(value, 1, MaxRank);
 		NavigationManager.AddOrModifyQueryParameter(QueryParameters.Rank, Rank);
 
 		await FetchLeaderboard();
@@ -59,6 +59,6 @@ public partial class Index
 
 	private static class QueryParameters
 	{
-		public static string Rank { get; } = nameof(Rank);
+		public static string Rank => nameof(Rank);
 	}
 }

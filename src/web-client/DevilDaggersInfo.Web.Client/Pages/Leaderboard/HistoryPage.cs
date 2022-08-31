@@ -10,11 +10,20 @@ public partial class HistoryPage
 {
 	private const string _queryFormat = "yyyy-MM-dd-HH-mm";
 
+	private int _rank = 1;
 	private bool _reloading;
 	private DateTime _dateTime;
 	private GameVersion _gameVersion;
 
-	[Parameter, SupplyParameterFromQuery] public string? From { get; set; }
+	private int MaxRank => (GetLeaderboardHistory?.Entries.Count ?? int.MaxValue) - 99;
+
+	[Parameter]
+	[SupplyParameterFromQuery]
+	public string? From { get; set; }
+
+	[Parameter]
+	[SupplyParameterFromQuery]
+	public int Rank { get => _rank; set => _rank = Math.Max(1, value); }
 
 	public GetLeaderboardHistory? GetLeaderboardHistory { get; set; }
 
@@ -27,6 +36,11 @@ public partial class HistoryPage
 		_dateTime = ParseQuery(From);
 
 		await FetchLeaderboard();
+	}
+
+	private void SetRank(int value)
+	{
+		Rank = Math.Clamp(value, 1, MaxRank);
 	}
 
 	private async Task UpdateDateTime(DateTime dateTime)
@@ -79,6 +93,6 @@ public partial class HistoryPage
 
 	private static class QueryParameters
 	{
-		public static string From { get; } = nameof(From);
+		public static string From => nameof(From);
 	}
 }

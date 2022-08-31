@@ -11,6 +11,33 @@ else
 {
 	<Heading Title="@($"Leaderboard History - {GetLeaderboardHistory.DateTime.ToString(StringFormats.DateTimeFormat)}")" />
 
+	<DatePicker DateSelected="@UpdateDateTime" />
+
+	<div class="mt-1 bg-gray-1 p-2 text-lg max-w-sm">
+		<div>
+			@if (_reloading)
+			{
+				<Loading />
+			}
+			else
+			{
+				<span>Showing rank @Rank - @(Rank + 99)</span>
+			}
+		</div>
+		<div>
+			@{
+				bool f = Rank <= 1;
+				bool l = Rank >= MaxRank;
+				const string disabledStyle = "disabled:opacity-50 cursor-default btn-disabled";
+				const string enabledStyle = "btn-gray-light";
+			}
+			<button disabled="@f" class="@(f ? disabledStyle : enabledStyle) btn w-10 h-10 mx-1" @onclick="() => SetRank(1)">@MarkupStrings.NavStart</button>
+			<button disabled="@f" class="@(f ? disabledStyle : enabledStyle) btn w-10 h-10 mx-1" @onclick="() => SetRank(Rank - 100)">@MarkupStrings.NavPrev</button>
+			<button disabled="@l" class="@(l ? disabledStyle : enabledStyle) btn w-10 h-10 mx-1" @onclick="() => SetRank(Rank + 100)">@MarkupStrings.NavNext</button>
+			<button disabled="@l" class="@(l ? disabledStyle : enabledStyle) btn w-10 h-10 mx-1" @onclick="() => SetRank(GetLeaderboardHistory.Entries.Count - 99)">@MarkupStrings.NavEnd</button>
+		</div>
+	</div>
+
 	@if (_reloading)
 	{
 		<Loading />
@@ -20,9 +47,7 @@ else
 		<i>History for @(_dateTime.ToString(StringFormats.DateTimeFormat)) does not exist; falling back to @GetLeaderboardHistory.DateTime.ToString(StringFormats.DateTimeFormat).</i>
 	}
 
-	<DatePicker DateSelected="@UpdateDateTime" />
-
 	<LeaderboardGlobal Leaderboard="GetLeaderboardHistory" IsHistory="true" />
 	<LeaderboardTableInfo />
-	<LeaderboardTable TGetEntryDto="GetEntryHistory" Entries="GetLeaderboardHistory.Entries" Players="Players" IsHistory="true" GameVersion="_gameVersion" />
+	<LeaderboardTable TGetEntryDto="GetEntryHistory" Entries="GetLeaderboardHistory.Entries.Skip(Rank - 1).Take(100).ToList()" Players="Players" IsHistory="true" GameVersion="_gameVersion" />
 }
