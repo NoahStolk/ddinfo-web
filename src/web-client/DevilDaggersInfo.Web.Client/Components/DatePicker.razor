@@ -1,14 +1,17 @@
 @using System.Globalization
 
 <div class="bg-gray-1 max-w-sm text-center py-2">
-	<button class="btn btn-gray-light w-10 h-10" @onclick="PreviousYear">@MarkupStrings.NavPrevDouble</button>
-	<button class="btn btn-gray-light w-10 h-10" @onclick="PreviousMonth">@MarkupStrings.NavPrev</button>
-	<div class="inline-block">
-		<div class="text-center">@_year</div>
-		<div class="text-center text-sm">@_monthNames[_month - 1]</div>
+	<div class="flex mb-1">
+		<button class="flex-1 btn btn-gray-light m-2" @onclick="PreviousYear">@(_year - 1)</button>
+		<span class="flex-1 text-2xl">@_year</span>
+		<button class="flex-1 btn btn-gray-light m-2" @onclick="NextYear">@(_year + 1)</button>
 	</div>
-	<button class="btn btn-gray-light w-10 h-10" @onclick="NextMonth">@MarkupStrings.NavNext</button>
-	<button class="btn btn-gray-light w-10 h-10" @onclick="NextYear">@MarkupStrings.NavNextDouble</button>
+
+	<div class="flex">
+		<button class="flex-1 btn btn-gray-light m-2" @onclick="PreviousMonth">@GetMonthName(_month - 2)</button>
+		<span class="flex-1 text-2xl">@GetMonthName(_month - 1)</span>
+		<button class="flex-1 btn btn-gray-light m-2" @onclick="NextMonth">@GetMonthName(_month)</button>
+	</div>
 
 	@{
 		int daysInMonth = DateTime.DaysInMonth(_year, _month);
@@ -17,35 +20,35 @@
 		bool started = false;
 		<table class="table-fixed mx-auto">
 			<thead>
-				<tr>
-					@for (int i = 0; i < 7; i++)
-					{
-						<td class="text-center">@(((DayOfWeek)((i + 1) % 7)).ToString()[..2])</td>
-					}
-				</tr>
+			<tr>
+				@for (int i = 0; i < 7; i++)
+				{
+					<td class="text-center">@(((DayOfWeek)((i + 1) % 7)).ToString()[..2])</td>
+				}
+			</tr>
 			</thead>
 			<tbody>
-				@for (int i = 0; i < 6; i++)
-				{
-					<tr>
-						@for (int j = 0; j < 7; j++)
-						{
-							if (dayOfWeek == (DayOfWeek)((j + 1) % 7))
-								started = true;
+			@for (int i = 0; i < 6; i++)
+			{
+				<tr>
+					@for (int j = 0; j < 7; j++)
+					{
+						if (dayOfWeek == (DayOfWeek)((j + 1) % 7))
+							started = true;
 
-							if (started && currentDay <= daysInMonth)
-							{
-								int day = currentDay;
-								<td class="@(day == _day ? "bg-gray-3" : string.Empty) hover:bg-gray-5 cursor-pointer text-center p-2" @onclick="() => _day = day">@day</td>
-								currentDay++;
-							}
-							else
-							{
-								<td class="text-gray-4 p-2">x</td>
-							}
+						if (started && currentDay <= daysInMonth)
+						{
+							int day = currentDay;
+							<td class="@(day == _day ? "text-green" : string.Empty) hover:bg-gray-5 cursor-pointer text-center p-2" @onclick="() => _day = day">@day</td>
+							currentDay++;
 						}
-					</tr>
-				}
+						else
+						{
+							<td class="text-gray-4 p-2">x</td>
+						}
+					}
+				</tr>
+			}
 			</tbody>
 		</table>
 	}
@@ -56,7 +59,9 @@
 @code {
 	private static readonly string[] _monthNames = CultureInfo.InvariantCulture.DateTimeFormat.MonthNames.Take(12).Select(s => s[..3]).ToArray();
 
-	[Parameter, EditorRequired] public EventCallback<DateTime> DateSelected { get; set; }
+	[Parameter]
+	[EditorRequired]
+	public EventCallback<DateTime> DateSelected { get; set; }
 
 	private int _year = DateTime.UtcNow.Year;
 	private int _month = DateTime.UtcNow.Month;
@@ -67,15 +72,24 @@
 		await DateSelected.InvokeAsync(new(_year, _month, _day));
 	}
 
-	private void NextYear() => _year = Math.Min(DateTime.MaxValue.Year, _year + 1);
+	private void NextYear()
+	{
+		_year = Math.Min(DateTime.MaxValue.Year, _year + 1);
+		ClampDay();
+	}
 
-	private void PreviousYear() => _year = Math.Max(DateTime.MinValue.Year, _year - 1);
+	private void PreviousYear()
+	{
+		_year = Math.Max(DateTime.MinValue.Year, _year - 1);
+		ClampDay();
+	}
 
 	private void NextMonth()
 	{
 		if (_month < 12)
 		{
 			_month++;
+			ClampDay();
 		}
 		else
 		{
@@ -89,11 +103,25 @@
 		if (_month > 1)
 		{
 			_month--;
+			ClampDay();
 		}
 		else
 		{
 			_month = 12;
 			PreviousYear();
 		}
+	}
+
+	private void ClampDay()
+	{
+		_day = Math.Clamp(_day, 1, DateTime.DaysInMonth(_year, _month));
+	}
+
+	private string GetMonthName(int index)
+	{
+		while (index < 0)
+			index += _monthNames.Length;
+		
+		return _monthNames[index % _monthNames.Length];
 	}
 }
