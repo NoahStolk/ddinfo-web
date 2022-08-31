@@ -63,7 +63,7 @@
 		<span class="text-right"><RecordingValue T="int" Selector="@((b) => b.DaggersHit)" ColorCode="#f40" /></span>
 
 		<span>Accuracy</span>
-		<span class="text-right"><RecordingValue T="float" Selector="@((b) => (b.DaggersFired == 0 ? 0 : b.DaggersHit / (float)b.DaggersFired))" ColorCode="#fa0" Format="@(f => f.ToString("0.00%"))" /></span>
+		<span class="text-right"><RecordingValue T="float" Selector="@((b) => b.DaggersFired == 0 ? 0 : b.DaggersHit / (float)b.DaggersFired)" ColorCode="#fa0" Format="@(f => f.ToString("0.00%"))" /></span>
 	</div>
 
 	<button class="btn bg-dark-red hover:bg-red" @onclick="() => StateFacade.ToggleShowEnemyStats()">Show/hide enemies</button>

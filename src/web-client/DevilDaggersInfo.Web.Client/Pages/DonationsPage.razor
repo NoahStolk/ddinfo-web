@@ -67,7 +67,7 @@ else
 		List<GetDonator> donators = await Http.GetDonators();
 		_donators = donators.ToDictionary(d => d, donator => string.Join(" + ", donator.Donations
 			.GroupBy(d => d.Currency)
-			.Select(g => $"{g.Key.GetChar()} {CentsToString(g.Sum(d => d.Amount))} {(g.Key.ToString().ToUpper())}")));
+			.Select(g => $"{g.Key.GetChar()} {CentsToString(g.Sum(d => d.Amount))} {g.Key.ToString().ToUpper()}")));
 	}
 
 	private string CentsToString(int cents) => (cents / 100.0).ToString("0.00");

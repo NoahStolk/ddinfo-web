@@ -1,13 +1,19 @@
 <div class="bg-gray-1 px-2 pb-2">
 	<Heading Title="@Title" Level="2" />
-	<div class="@((Scroll ? "max-h-52 overflow-y-auto" : string.Empty))">
+	<div class="@(Scroll ? "max-h-52 overflow-y-auto" : string.Empty)">
 		@ChildContent
 	</div>
 </div>
 
 @code
 {
-	[Parameter, EditorRequired] public string Title { get; set; } = null!;
-	[Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = null!;
-	[Parameter] public bool Scroll { get; set; }
+	[Parameter]
+	[EditorRequired]
+	public string Title { get; set; } = null!;
+	
+	[Parameter]
+	public RenderFragment ChildContent { get; set; } = null!;
+	
+	[Parameter]
+	public bool Scroll { get; set; }
 }

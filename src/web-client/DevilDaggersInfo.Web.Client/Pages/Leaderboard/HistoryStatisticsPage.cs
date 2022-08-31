@@ -221,7 +221,7 @@ public partial class HistoryStatisticsPage
 
 			IEnumerable<GetLeaderboardHistoryStatistics> relevantData = _statistics.Where(hs => hs.DaggersFiredGlobal > 0 && hs.DaggersFiredGlobalUpdated);
 			IEnumerable<double> accuracy = relevantData.Select(hs => converter(hs.DaggersHitGlobal, hs.DaggersFiredGlobal));
-			double max = ((int)Math.Ceiling((int)(accuracy.Max() * 100) / 5.0) * 5) / 100.0 + 0.0001;
+			double max = (int)Math.Ceiling((int)(accuracy.Max() * 100) / 5.0) * 5 / 100.0 + 0.0001;
 			_accuracyOptions = new(relevantData.Min(hs => hs.DateTime.Ticks), null, maxX.Ticks, 0.2, 0.01, max, true);
 
 			List<LineData> set = relevantData.Select((hs, i) => new LineData(hs.DateTime.Ticks, converter(hs.DaggersHitGlobal, hs.DaggersFiredGlobal), i)).ToList();

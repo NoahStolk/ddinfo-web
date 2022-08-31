@@ -5,7 +5,14 @@
 
 @code
 {
-	[Parameter, EditorRequired] public string TooltipText { get; set; } = null!;
-	[Parameter, EditorRequired] public string IconImageSrc { get; set; } = null!;
-	[Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = null!;
+	[Parameter]
+	[EditorRequired]
+	public string TooltipText { get; set; } = null!;
+	
+	[Parameter]
+	[EditorRequired]
+	public string IconImageSrc { get; set; } = null!;
+	
+	[Parameter]
+	public RenderFragment ChildContent { get; set; } = null!;
 }

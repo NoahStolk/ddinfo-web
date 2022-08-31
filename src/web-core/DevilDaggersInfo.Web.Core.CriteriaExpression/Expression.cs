@@ -190,7 +190,7 @@ public class Expression
 
 		for (int i = 0; i < Parts.Count - 2; i += 2)
 		{
-			ExpressionOperator op = (Parts[i + 1] as ExpressionOperator) ?? throw new InvalidOperationException("Invalid expression.");
+			ExpressionOperator op = Parts[i + 1] as ExpressionOperator ?? throw new InvalidOperationException("Invalid expression.");
 			int right = EvaluatePart(Parts[i + 2]);
 
 			result = op.Operator switch

@@ -62,7 +62,7 @@
 					<div class="text-left hidden xl:block">@invertY</div>
 					<div class="text-left hidden xl:block">@vSync</div>
 				</div>
-				<div class="grid grid-cols-2 @(entry.Id == _expandedId ? (grayBackground ? "bg-gray-1" : string.Empty) : "hidden") pl-[128px] pr-1">
+				<div class="grid grid-cols-2 @(entry.Id == _expandedId ? grayBackground ? "bg-gray-1" : string.Empty : "hidden") pl-[128px] pr-1">
 					<div class="md:hidden">eDPI</div>
 					<div class="md:hidden text-right">@edpi</div>
 					<div class="md:hidden">DPI</div>

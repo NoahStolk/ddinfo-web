@@ -9,7 +9,7 @@ public abstract class WebAssemblyCanvas : Canvas
 	protected WebAssemblyCanvas(string id, WebAssemblyRuntimeWrapper runtimeWrapper)
 		: base(id)
 	{
-		this._runtimeWrapper = runtimeWrapper;
+		_runtimeWrapper = runtimeWrapper;
 	}
 
 	public void Invoke(string identifier) => _runtimeWrapper.Invoke(identifier, Id);

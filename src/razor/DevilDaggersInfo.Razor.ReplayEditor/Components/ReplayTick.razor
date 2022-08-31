@@ -32,7 +32,7 @@
 			@if (input is InitialInputsEvent initial)
 			{
 				<br />
-				<span>LookSpeed: @((initial.LookSpeed).ToString("0.00000")) (@((initial.LookSpeed * 500 / 3).ToString("0.00")))</span>
+				<span>LookSpeed: @initial.LookSpeed.ToString("0.00000") (@((initial.LookSpeed * 500 / 3).ToString("0.00")))</span>
 			}
 		}
 		else if (Events.Any(e => e is EndEvent))

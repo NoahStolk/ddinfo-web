@@ -182,7 +182,7 @@ else
 								<Tooltip Text="@clientVersionString"><span class="font-goethe text-xl cursor-pointer">@submitDate</span></Tooltip>
 							</div>
 						</div>
-						<div class="grid grid-cols-2 @(ce.Id == _expandedId ? (grayBackground ? "bg-gray-1" : string.Empty) : "hidden") pl-[92px] pr-1">
+						<div class="grid grid-cols-2 @(ce.Id == _expandedId ? grayBackground ? "bg-gray-1" : string.Empty : "hidden") pl-[92px] pr-1">
 							<div class="md:hidden">Enemies Killed</div>
 							<div class="md:hidden text-right">@enemiesKilled</div>
 							<div class="md:hidden">Enemies Alive</div>
