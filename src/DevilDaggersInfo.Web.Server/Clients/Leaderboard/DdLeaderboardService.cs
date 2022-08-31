@@ -80,14 +80,14 @@ public class DdLeaderboardService : IDdLeaderboardService
 			new KeyValuePair<string?, string?>("uid", id.ToString()));
 	}
 
-	public async Task<List<IDdLeaderboardService.RunResponse>> GetRunsByTimestamp(DateTimeOffset start, int limit)
+	public async Task<List<IDdLeaderboardService.RunResponse>> GetRunsByTimestamp(DateTimeOffset before, int limit)
 	{
-		long timestamp = start.ToUnixTimeSeconds();
-		List<IDdLeaderboardService.RunResponse>? runs = await _httpClient.GetFromJsonAsync<List<IDdLeaderboardService.RunResponse>>($"{_getRunsUrl}?start={timestamp}?limit={limit}");
+		long timestamp = before.ToUnixTimeSeconds();
+		List<IDdLeaderboardService.RunResponse>? runs = await _httpClient.GetFromJsonAsync<List<IDdLeaderboardService.RunResponse>>($"{_getRunsUrl}?{nameof(before)}={timestamp}?{nameof(limit)}={limit}");
 		if (runs != null)
 			return runs;
 
-		LogError(null, _getRunsUrl, new("start", timestamp.ToString()), new("limit", limit.ToString()));
+		LogError(null, _getRunsUrl, new(nameof(before), timestamp.ToString()), new(nameof(limit), limit.ToString()));
 		throw new DdLeaderboardException("The response from the leaderboard servers could not be parsed.");
 	}
 
