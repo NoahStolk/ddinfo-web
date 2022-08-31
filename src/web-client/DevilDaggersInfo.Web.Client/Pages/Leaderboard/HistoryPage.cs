@@ -10,7 +10,6 @@ public partial class HistoryPage
 {
 	private const string _queryFormat = "yyyy-MM-dd-HH-mm";
 
-	private int _rank = 1;
 	private bool _reloading;
 	private DateTime _dateTime;
 	private GameVersion _gameVersion;
@@ -22,8 +21,7 @@ public partial class HistoryPage
 	public string? From { get; set; }
 
 	[Parameter]
-	[SupplyParameterFromQuery]
-	public int Rank { get => _rank; set => _rank = Math.Max(1, value); }
+	public int Rank { get; set; } = 1;
 
 	public GetLeaderboardHistory? GetLeaderboardHistory { get; set; }
 
