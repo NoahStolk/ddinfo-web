@@ -1,5 +1,6 @@
 @using DevilDaggersInfo.Core.Asset
 @using DevilDaggersInfo.Core.Mod
+@using DevilDaggersInfo.Razor.AssetEditor.Data
 @using DevilDaggersInfo.Razor.AssetEditor.Extensions
 @inherits FluxorComponent
 
@@ -54,7 +55,7 @@ else
 		<div class="font-bold"><a class="link" @onclick="() => BinaryState.Value.Sort(c => c.Value.IsProhibited)">Prohibited</a></div>
 		<div class="font-bold text-right"><a class="link" @onclick="() => BinaryState.Value.Sort(c => c.Value.Size)">Size</a></div>
 	</div>
-	@foreach (var kvp in BinaryState.Value.VisualChunks)
+	@foreach (KeyValuePair<AssetKey, VisualAsset> kvp in BinaryState.Value.VisualChunks)
 	{
 		<div class="grid gap-x-2 grid-cols-4 px-1 cursor-pointer @kvp.Key.AssetType.GetBgColor() @(kvp.Value.IsSelected ? "font-bold bg-opacity-30" : "bg-opacity-10") hover:bg-opacity-50" @onclick="() => kvp.Value.IsSelected = !kvp.Value.IsSelected">
 			<div>@kvp.Key.AssetType.ToDisplayString()</div>

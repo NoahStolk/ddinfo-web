@@ -12,7 +12,4 @@ public static class HistoryUtils
 
 		return new(year, month, day, hour, minute, 0);
 	}
-
-	public static string DateTimeToHistoryFileName(DateTime dateTime)
-		=> $"{dateTime.Year:0000}{dateTime.Month:00}{dateTime.Day:00}{dateTime.Hour:00}{dateTime.Minute:00}";
 }

@@ -4,8 +4,8 @@
 
 <OutsideClickHandler OnClickOutside="OnClickOutside" CssClass="inline-block w-64 bg-gray-1 text-color-text">
 	<div class="grid grid-cols-8">
-		<span class="input-list-opener pl-2 col-span-7" @onclick="e => _show = !_show">@SelectedDisplayValue</span>
-		<span class="input-list-button" @onclick="e => HandleSelect(default)">✕</span>
+		<span class="input-list-opener pl-2 col-span-7" @onclick="_ => _show = !_show">@SelectedDisplayValue</span>
+		<span class="input-list-button" @onclick="_ => HandleSelect(default)">✕</span>
 	</div>
 	<div class="@(_show ? "absolute" : "hidden") z-10 bg-gray-1">
 		<div class="p-2 w-64 border-[#fff8] border-t-2 border-r-2 border-l-2">
@@ -16,7 +16,7 @@
 			@{
 				foreach (KeyValuePair<TKey, string> kvp in FilteredItems)
 				{
-					<li class="input-list-entry" @onclick="e => HandleSelect(kvp.Key)">@DisplayValue(kvp.Key)</li>
+					<li class="input-list-entry" @onclick="_ => HandleSelect(kvp.Key)">@DisplayValue(kvp.Key)</li>
 				}
 			}
 		</ul>

@@ -48,17 +48,4 @@ public static class DSharpExtensions
 
 		return builder.AddField(name, string.IsNullOrWhiteSpace(valueString) ? "null" : valueString, inline);
 	}
-
-	public static async Task TryEdit(this DiscordMessage message, DiscordEmbed embed)
-	{
-		try
-		{
-			await message.ModifyAsync(":eye_in_speech_bubble:");
-			await message.ModifyAsync(embed);
-		}
-		catch
-		{
-			// Ignore exceptions that occurred while attempting to edit message.
-		}
-	}
 }

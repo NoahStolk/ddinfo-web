@@ -11,14 +11,10 @@ public static class TimeUtils
 		return $"{hours:00}:{minutes:00}";
 	}
 
-	public static string TicksToTimeString(double ticks)
+	public static string TicksToTimeString(double ticks) => ticks switch
 	{
-		if (ticks >= TimeSpan.TicksPerSecond)
-			return $"{ticks / TimeSpan.TicksPerSecond:0.00} s";
-
-		if (ticks >= TimeSpan.TicksPerMillisecond)
-			return $"{ticks / TimeSpan.TicksPerMillisecond:0.0} ms";
-
-		return $"{ticks / 10f:0} μs";
-	}
+		>= TimeSpan.TicksPerSecond => $"{ticks / TimeSpan.TicksPerSecond:0.00} s",
+		>= TimeSpan.TicksPerMillisecond => $"{ticks / TimeSpan.TicksPerMillisecond:0.0} ms",
+		_ => $"{ticks / 10f:0} μs",
+	};
 }

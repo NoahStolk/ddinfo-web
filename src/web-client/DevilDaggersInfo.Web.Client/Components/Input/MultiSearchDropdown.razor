@@ -3,12 +3,12 @@
 
 <OutsideClickHandler OnClickOutside="OnClickOutside" CssClass="inline-block w-64 bg-gray-1 text-color-text">
 	<div>
-		<div class="w-full input-list-opener pl-2" @onclick="e => _show = !_show">@SelectedDisplayValue</div>
+		<div class="w-full input-list-opener pl-2" @onclick="_ => _show = !_show">@SelectedDisplayValue</div>
 		@foreach (int id in CurrentValue ?? new())
 		{
 			<div class="grid grid-cols-8">
 				<span class="pl-2 text-lg col-span-7 cursor-default">@DisplayValue(id)</span>
-				<span class="input-list-button" @onclick="e => Remove(id)">✕</span>
+				<span class="input-list-button" @onclick="_ => Remove(id)">✕</span>
 			</div>
 		}
 	</div>
@@ -20,7 +20,7 @@
 		<ul class="max-h-screen-half w-64 overflow-y-scroll border-[#fff8] border-b-2 border-r-2 border-l-2">
 			@foreach (KeyValuePair<int, string> kvp in FilteredItems)
 			{
-				<li class="input-list-entry" @onclick="e => Add(kvp.Key)">@DisplayValue(kvp.Key)</li>
+				<li class="input-list-entry" @onclick="_ => Add(kvp.Key)">@DisplayValue(kvp.Key)</li>
 			}
 		</ul>
 	</div>

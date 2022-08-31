@@ -18,8 +18,6 @@ public class ModArchiveAccessor
 
 	public string GetModArchivePath(string modName) => Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Mods), $"{modName}.zip");
 
-	public bool ModArchiveExists(string modName) => File.Exists(GetModArchivePath(modName));
-
 	public ModFileSystemData GetModFileSystemData(string modName)
 	{
 		string modArchivePath = GetModArchivePath(modName);

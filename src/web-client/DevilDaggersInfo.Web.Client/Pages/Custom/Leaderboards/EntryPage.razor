@@ -1,4 +1,6 @@
 @page "/custom/entry/{Id:int}"
+@using DevilDaggersInfo.Razor.Core.CanvasChart.Options.LineChart
+@using DevilDaggersInfo.Razor.Core.CanvasChart.Data
 
 @if (GetCustomEntryData == null)
 {
@@ -30,7 +32,7 @@ else
 	else
 	{
 		<div class="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3">
-			@foreach (var lc in _lineCharts)
+			@foreach ((string Name, LineChartDataOptions DataOptions, LineChartOptions ChartOptions, List<LineDataSet> Sets) lc in _lineCharts)
 			{
 				<div>
 					<Heading Title="@lc.Name" Level="2" />

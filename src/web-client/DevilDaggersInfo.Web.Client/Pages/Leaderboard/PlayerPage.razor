@@ -1,5 +1,6 @@
 @page "/leaderboard/player/{Id:int}"
 @using DevilDaggersInfo.Api.Main.Mods
+@using DevilDaggersInfo.Api.Main.Players
 @using DevilDaggersInfo.Api.Main.Spawnsets
 @using DevilDaggersInfo.Types.Web.Extensions
 
@@ -159,7 +160,7 @@ else
 		{
 			foreach (CustomLeaderboardCategory category in Enum.GetValues<CustomLeaderboardCategory>())
 			{
-				var stats = GetCustomLeaderboardStatistics.FirstOrDefault(cls => cls.CustomLeaderboardCategory == category);
+				GetPlayerCustomLeaderboardStatistics? stats = GetCustomLeaderboardStatistics.FirstOrDefault(cls => cls.CustomLeaderboardCategory == category);
 				if (stats == null)
 					continue;
 

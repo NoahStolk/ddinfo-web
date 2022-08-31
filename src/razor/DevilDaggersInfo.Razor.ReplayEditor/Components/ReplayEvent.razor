@@ -5,69 +5,56 @@
 @using Fluxor
 @inject IState<ReplayBinaryState> ReplayBinaryState
 
-@if (Event is BoidSpawnEvent boidSpawnEvent)
+@switch (Event)
 {
-	<BoidSpawnEventViewer Event="boidSpawnEvent" />
-}
-else if (Event is DaggerSpawnEvent daggerSpawnEvent)
-{
-	<DaggerSpawnEventViewer Event="daggerSpawnEvent" />
-}
-else if (Event is DeathEvent deathEvent)
-{
-	<DeathEventViewer Event="deathEvent" />
-}
-else if (Event is EntityOrientationEvent entityOrientationEvent)
-{
-	<EntityOrientationEventViewer Event="entityOrientationEvent" />
-}
-else if (Event is EntityPositionEvent entityPositionEvent)
-{
-	<EntityPositionEventViewer Event="entityPositionEvent" />
-}
-else if (Event is EntityTargetEvent entityTargetEvent)
-{
-	<EntityTargetEventViewer Event="entityTargetEvent" />
-}
-else if (Event is GemEvent)
-{
-	<GemEventViewer />
-}
-else if (Event is HitEvent hitEvent)
-{
-	<HitEventViewer Event="hitEvent" />
-}
-else if (Event is LeviathanSpawnEvent leviathanSpawnEvent)
-{
-	<LeviathanSpawnEventViewer Event="leviathanSpawnEvent" />
-}
-else if (Event is PedeSpawnEvent pedeSpawnEvent)
-{
-	<PedeSpawnEventViewer Event="pedeSpawnEvent" />
-}
-else if (Event is SpiderEggSpawnEvent spiderEggSpawnEvent)
-{
-	<SpiderEggSpawnEventViewer Event="spiderEggSpawnEvent" />
-}
-else if (Event is SpiderSpawnEvent spiderSpawnEvent)
-{
-	<SpiderSpawnEventViewer Event="spiderSpawnEvent" />
-}
-else if (Event is SquidSpawnEvent squidSpawnEvent)
-{
-	<SquidSpawnEventViewer Event="squidSpawnEvent" />
-}
-else if (Event is ThornSpawnEvent thornSpawnEvent)
-{
-	<ThornSpawnEventViewer Event="thornSpawnEvent" />
-}
-else if (Event is TransmuteEvent transmuteEvent)
-{
-	<TransmuteEventViewer Event="transmuteEvent" />
-}
-else
-{
-	<span>@Event.ToString()</span>
+	case BoidSpawnEvent boidSpawnEvent:
+		<BoidSpawnEventViewer Event="@boidSpawnEvent" />
+		break;
+	case DaggerSpawnEvent daggerSpawnEvent:
+		<DaggerSpawnEventViewer Event="@daggerSpawnEvent" />
+		break;
+	case DeathEvent deathEvent:
+		<DeathEventViewer Event="@deathEvent" />
+		break;
+	case EntityOrientationEvent entityOrientationEvent:
+		<EntityOrientationEventViewer Event="@entityOrientationEvent" />
+		break;
+	case EntityPositionEvent entityPositionEvent:
+		<EntityPositionEventViewer Event="@entityPositionEvent" />
+		break;
+	case EntityTargetEvent entityTargetEvent:
+		<EntityTargetEventViewer Event="@entityTargetEvent" />
+		break;
+	case GemEvent:
+		<GemEventViewer />
+		break;
+	case HitEvent hitEvent:
+		<HitEventViewer Event="@hitEvent" />
+		break;
+	case LeviathanSpawnEvent leviathanSpawnEvent:
+		<LeviathanSpawnEventViewer Event="@leviathanSpawnEvent" />
+		break;
+	case PedeSpawnEvent pedeSpawnEvent:
+		<PedeSpawnEventViewer Event="@pedeSpawnEvent" />
+		break;
+	case SpiderEggSpawnEvent spiderEggSpawnEvent:
+		<SpiderEggSpawnEventViewer Event="@spiderEggSpawnEvent" />
+		break;
+	case SpiderSpawnEvent spiderSpawnEvent:
+		<SpiderSpawnEventViewer Event="@spiderSpawnEvent" />
+		break;
+	case SquidSpawnEvent squidSpawnEvent:
+		<SquidSpawnEventViewer Event="@squidSpawnEvent" />
+		break;
+	case ThornSpawnEvent thornSpawnEvent:
+		<ThornSpawnEventViewer Event="@thornSpawnEvent" />
+		break;
+	case TransmuteEvent transmuteEvent:
+		<TransmuteEventViewer Event="@transmuteEvent" />
+		break;
+	default:
+		<span>@Event.ToString()</span>
+		break;
 }
 
 @code

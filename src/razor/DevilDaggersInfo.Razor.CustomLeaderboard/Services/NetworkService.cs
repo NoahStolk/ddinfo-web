@@ -135,7 +135,7 @@ public class NetworkService
 			}
 		}
 
-		throw new Exception("Couldn't retrieve leaderboard overview after 5 attempts.");
+		throw new("Couldn't retrieve leaderboard overview after 5 attempts.");
 	}
 
 	public async Task<byte[]?> GetReplay(int customEntryId)
