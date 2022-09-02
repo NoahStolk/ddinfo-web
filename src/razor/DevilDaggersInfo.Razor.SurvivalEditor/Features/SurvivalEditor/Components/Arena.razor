@@ -1,10 +1,23 @@
 @inherits FluxorComponent
 
 @using DevilDaggersInfo.Razor.Core.CanvasArena.Components
+@using DevilDaggersInfo.Razor.Core.CanvasArena.Utils
 @using DevilDaggersInfo.Razor.SurvivalEditor.Store.State
 @using Fluxor
 @inject IState<SpawnsetBinaryState> SpawnsetBinaryState
 
 <h2>Arena</h2>
 
-<WebViewSpawnsetArena SpawnsetBinary="SpawnsetBinaryState.Value.SpawnsetBinary" CurrentTime="0" />
+<WebViewSpawnsetArena SpawnsetBinary="SpawnsetBinaryState.Value.SpawnsetBinary" CurrentTime="@_currentTime" />
+
+<input class="w-full slider" type="range" min="0" max="@_sliderMax" step="0.1" @bind="@_currentTime" @bind:event="oninput" />
+
+@code {
+	private float _sliderMax;
+	private float _currentTime;
+
+	protected override void OnInitialized()
+	{
+		_sliderMax = SliderUtils.GetSliderMaxSeconds(SpawnsetBinaryState.Value.SpawnsetBinary);
+	}
+}
