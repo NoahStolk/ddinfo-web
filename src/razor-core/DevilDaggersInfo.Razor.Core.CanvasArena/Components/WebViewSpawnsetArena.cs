@@ -39,6 +39,7 @@ public partial class WebViewSpawnsetArena
 		if (cancellationToken.IsCancellationRequested)
 			return;
 
+		int[] colors = new int[SpawnsetBinary.ArenaDimension * SpawnsetBinary.ArenaDimension];
 		for (int i = 0; i < SpawnsetBinary.ArenaDimension; i++)
 		{
 			for (int j = 0; j < SpawnsetBinary.ArenaDimension; j++)
@@ -51,13 +52,11 @@ public partial class WebViewSpawnsetArena
 					continue;
 
 				float actualTileHeight = SpawnsetBinary.GetActualTileHeight(i, j, CurrentTime);
-				Color color = Color.GetColorFromHeight(actualTileHeight);
-				if (color.R == 0 && color.G == 0 && color.B == 0)
-					continue;
-
-				await _context.DrawTileAsync(i, j, color.R, color.G, color.B, TileSize);
+				colors[i * SpawnsetBinary.ArenaDimension + j] = Color.GetColorFromHeight(actualTileHeight).ToInt();
 			}
 		}
+
+		await _context.DrawTilesAsync(colors, TileSize);
 
 		const int tileUnit = 4; // Tiles are 4 units in width/length in the game.
 		float shrinkEndTime = SpawnsetBinary.GetShrinkEndTime();

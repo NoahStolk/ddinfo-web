@@ -2,6 +2,11 @@ namespace DevilDaggersInfo.Razor.Core.CanvasArena;
 
 public readonly record struct Color(byte R, byte G, byte B)
 {
+	public int ToInt()
+	{
+		return (R << 24) + (G << 16) + (B << 8);
+	}
+
 	public static Color GetColorFromHeight(float tileHeight)
 	{
 		float h = tileHeight * 3 + 12;

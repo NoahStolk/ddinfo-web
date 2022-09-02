@@ -10,6 +10,10 @@ public class WebViewCanvasArena : WebViewCanvas2d
 	{
 	}
 
-	public async Task DrawTileAsync(int x, int y, int r, int g, int b, float tileSize)
-		=> await InvokeAsync("window.drawTile", x, y, r, g, b, tileSize);
+	/// <summary>
+	/// Invokes the window.drawTiles JS function.
+	/// Note that color integers are used for performance and that multi-dimensional arrays are not supported when invoking JavaScript.
+	/// </summary>
+	public async Task DrawTilesAsync(int[] colors, float tileSize)
+		=> await InvokeAsync("window.drawTiles", colors, tileSize);
 }
