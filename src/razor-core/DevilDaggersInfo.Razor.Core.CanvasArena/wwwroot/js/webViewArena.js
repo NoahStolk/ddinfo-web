@@ -51,7 +51,7 @@ function renderPlayer(dc, canvasCenter) {
 	dc.stroke();
 }
 
-window.drawArena = (id, colors, canvasSize, shrinkRadius, race, daggerX, daggerY) => {
+window.drawArena = (id, colors, canvasSize, shrinkRadius, shouldRenderRaceDagger, daggerX, daggerY) => {
 	const dc = c2d.getContext(id);
 	const canvasCenter = canvasSize / 2;
 	const tileUnit = 4; // Tiles are 4 units in width/length in the game.
@@ -76,6 +76,6 @@ window.drawArena = (id, colors, canvasSize, shrinkRadius, race, daggerX, daggerY
 	
 	renderPlayer(dc, canvasCenter);
 	
-	if (race)
+	if (shouldRenderRaceDagger)
 		renderRaceDagger(dc, canvasCenter, daggerX, daggerY, tileUnit, tileSize);
 };

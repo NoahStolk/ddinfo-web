@@ -11,6 +11,9 @@
 
 	public void Update(int x, int y, float height, float actualHeight)
 	{
+		if (_x == x && _y == y)
+			return;
+		
 		_x = x;
 		_y = y;
 		_height = height;

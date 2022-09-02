@@ -14,6 +14,6 @@ public class WebViewCanvasArena : WebViewCanvas
 	/// Invokes the JS function to draw the arena in its entirety at once. This is done for performance reasons.
 	/// Note that color integers are also used for performance and that multi-dimensional arrays are not supported when invoking JavaScript.
 	/// </summary>
-	public async Task DrawArenaAsync(int[] colors, float canvasSize, float shrinkRadius, bool race, float daggerX, float daggerY)
-		=> await InvokeAsync("window.drawArena", colors, canvasSize, shrinkRadius, race, daggerX, daggerY);
+	public async Task DrawArenaAsync(int[] colors, float canvasSize, float shrinkRadius, bool renderRaceDagger, float daggerX, float daggerY)
+		=> await InvokeAsync("window.drawArena", colors, canvasSize, shrinkRadius, renderRaceDagger, daggerX, daggerY);
 }
