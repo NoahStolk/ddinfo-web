@@ -6,7 +6,7 @@ public static class EnumConversionExtensions
 {
 	public static HandLevel ToHandLevel(this byte value) => value switch
 	{
-		< 2 => HandLevel.Level1,
+		<= 1 => HandLevel.Level1,
 		2 => HandLevel.Level2,
 		3 => HandLevel.Level3,
 		_ => HandLevel.Level4,

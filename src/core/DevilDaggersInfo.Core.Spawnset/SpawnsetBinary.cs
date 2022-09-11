@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Core.Spawnset.Exceptions;
 using DevilDaggersInfo.Types.Core.Spawnsets;
 using System.Numerics;
 
@@ -5,6 +6,12 @@ namespace DevilDaggersInfo.Core.Spawnset;
 
 public class SpawnsetBinary
 {
+	/// <summary>
+	/// The game supports different arena dimensions, however anything other than the default causes the spawnset to glitch out.
+	/// The default dimension is also the max possible; any higher value will crash the game.
+	/// </summary>
+	private const int _arenaDimensionMax = 51;
+
 	public SpawnsetBinary(
 		int spawnVersion,
 		int worldVersion,
@@ -98,13 +105,22 @@ public class SpawnsetBinary
 
 		// Header
 		int spawnVersion = br.ReadInt32();
+		if (spawnVersion > 6)
+			throw new InvalidSpawnsetBinaryException($"Spawn version {spawnVersion} is not supported.");
+
 		int worldVersion = br.ReadInt32();
+		if (worldVersion > 9)
+			throw new InvalidSpawnsetBinaryException($"World version {worldVersion} is not supported.");
+
 		float shrinkEnd = br.ReadSingle();
 		float shrinkStart = br.ReadSingle();
 		float shrinkRate = br.ReadSingle();
 		float brightness = br.ReadSingle();
 		GameMode gameMode = br.ReadInt32().ToGameMode();
 		int arenaDimension = br.ReadInt32();
+		if (arenaDimension is < 0 or > _arenaDimensionMax)
+			throw new InvalidSpawnsetBinaryException($"Arena dimension cannot be {arenaDimension}.");
+
 		br.Seek(4);
 
 		// Arena
@@ -246,17 +262,16 @@ public class SpawnsetBinary
 
 	public static SpawnsetBinary CreateDefault()
 	{
-		const int arenaSize = 51;
-		const int center = arenaSize / 2;
+		const int center = _arenaDimensionMax / 2;
 		const float shrinkStart = 50;
 
 		Vector2 centerPoint = new(center);
 
-		float[,] arena = new float[arenaSize, arenaSize];
+		float[,] arena = new float[_arenaDimensionMax, _arenaDimensionMax];
 
-		for (int i = 0; i < arenaSize; i++)
+		for (int i = 0; i < _arenaDimensionMax; i++)
 		{
-			for (int j = 0; j < arenaSize; j++)
+			for (int j = 0; j < _arenaDimensionMax; j++)
 			{
 				const int tileSize = 4;
 				const int halfTile = tileSize / 2;
@@ -267,7 +282,7 @@ public class SpawnsetBinary
 			}
 		}
 
-		return new(6, 9, shrinkStart, 20, 0.025f, 60, GameMode.Survival, arenaSize, arena, default, 500, 250, 120, 60, Array.Empty<Spawn>(), HandLevel.Level1, 0, 0);
+		return new(6, 9, shrinkStart, 20, 0.025f, 60, GameMode.Survival, _arenaDimensionMax, arena, default, 500, 250, 120, 60, Array.Empty<Spawn>(), HandLevel.Level1, 0, 0);
 	}
 
 	public static bool IsEmptySpawn(int enemyType)
@@ -343,7 +358,7 @@ public class SpawnsetBinary
 			HandLevel.Level2 when additionalGems < 0 => new(HandLevel.Level1, additionalGems + 10, HandLevel.Level1),
 			HandLevel.Level2 => new(HandLevel.Level2, Math.Min(59, additionalGems) + 10, HandLevel.Level2),
 			HandLevel.Level3 => new(HandLevel.Level3, Math.Min(149, additionalGems), HandLevel.Level3),
-			_ => new(HandLevel.Level4, additionalGems, HandLevel.Level4)
+			_ => new(HandLevel.Level4, additionalGems, HandLevel.Level4),
 		};
 	}
 
@@ -356,7 +371,7 @@ public class SpawnsetBinary
 	public (int X, float? Y, int Z) GetRaceDaggerTilePosition()
 		=> GetRaceDaggerTilePosition(ArenaDimension, ArenaTiles, RaceDaggerPosition);
 
-	public static (int X, float? Y, int Z) GetRaceDaggerTilePosition(float arenaDimension, float[,] arenaTiles, Vector2 raceDaggerPosition)
+	public static (int X, float? Y, int Z) GetRaceDaggerTilePosition(int arenaDimension, float[,] arenaTiles, Vector2 raceDaggerPosition)
 	{
 		int x = Convert(raceDaggerPosition.X);
 		int z = Convert(raceDaggerPosition.Y);
@@ -366,7 +381,11 @@ public class SpawnsetBinary
 
 		return (x, y, z);
 
-		static int Convert(float worldPosition) => (int)MathF.Round(worldPosition / 4) + 25;
+		int Convert(float worldPosition)
+		{
+			int arenaMiddle = arenaDimension / 25;
+			return (int)MathF.Round(worldPosition / 4) + arenaMiddle;
+		}
 	}
 
 	public float GetShrinkEndTime()
@@ -392,7 +411,8 @@ public class SpawnsetBinary
 		float shrinkStartInTiles = shrinkStart / tileUnit;
 		float shrinkEndInTiles = shrinkEnd / tileUnit;
 
-		Vector2 middle = new(arenaDimension / 2, arenaDimension / 2);
+		int arenaMiddle = arenaDimension / 2;
+		Vector2 middle = new(arenaMiddle, arenaMiddle);
 		float distance = Vector2.Distance(new(x, y), middle);
 		if (distance > Math.Max(shrinkStartInTiles, shrinkEndInTiles))
 			return 0;
