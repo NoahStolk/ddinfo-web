@@ -121,7 +121,7 @@ public class SpawnsetUtilityTests
 	public void TestRaceDaggerGridPosition(float raceDaggerX, float raceDaggerZ, int expectedTileX, int expectedTileZ)
 	{
 		SpawnsetBinary defaultSpawnset = SpawnsetBinary.CreateDefault();
-		(int x, float? y, int z) = SpawnsetBinary.GetRaceDaggerTilePosition(defaultSpawnset.ArenaDimension, defaultSpawnset.ArenaTiles, new(raceDaggerX, raceDaggerZ));
+		(int x, _, int z) = SpawnsetBinary.GetRaceDaggerTilePosition(defaultSpawnset.ArenaDimension, defaultSpawnset.ArenaTiles, new(raceDaggerX, raceDaggerZ));
 		Assert.AreEqual(expectedTileX, x);
 		Assert.AreEqual(expectedTileZ, z);
 	}

@@ -10,7 +10,7 @@ public class SpawnsetBinary
 	/// The game supports different arena dimensions, however anything other than the default causes the spawnset to glitch out.
 	/// The default dimension is also the max possible; any higher value will crash the game.
 	/// </summary>
-	private const int _arenaDimensionMax = 51;
+	public const int ArenaDimensionMax = 51;
 
 	public SpawnsetBinary(
 		int spawnVersion,
@@ -118,7 +118,7 @@ public class SpawnsetBinary
 		float brightness = br.ReadSingle();
 		GameMode gameMode = br.ReadInt32().ToGameMode();
 		int arenaDimension = br.ReadInt32();
-		if (arenaDimension is < 0 or > _arenaDimensionMax)
+		if (arenaDimension is < 0 or > ArenaDimensionMax)
 			throw new InvalidSpawnsetBinaryException($"Arena dimension cannot be {arenaDimension}.");
 
 		br.Seek(4);
@@ -262,16 +262,16 @@ public class SpawnsetBinary
 
 	public static SpawnsetBinary CreateDefault()
 	{
-		const int center = _arenaDimensionMax / 2;
+		const int center = ArenaDimensionMax / 2;
 		const float shrinkStart = 50;
 
 		Vector2 centerPoint = new(center);
 
-		float[,] arena = new float[_arenaDimensionMax, _arenaDimensionMax];
+		float[,] arena = new float[ArenaDimensionMax, ArenaDimensionMax];
 
-		for (int i = 0; i < _arenaDimensionMax; i++)
+		for (int i = 0; i < ArenaDimensionMax; i++)
 		{
-			for (int j = 0; j < _arenaDimensionMax; j++)
+			for (int j = 0; j < ArenaDimensionMax; j++)
 			{
 				const int tileSize = 4;
 				const int halfTile = tileSize / 2;
@@ -282,7 +282,7 @@ public class SpawnsetBinary
 			}
 		}
 
-		return new(6, 9, shrinkStart, 20, 0.025f, 60, GameMode.Survival, _arenaDimensionMax, arena, default, 500, 250, 120, 60, Array.Empty<Spawn>(), HandLevel.Level1, 0, 0);
+		return new(6, 9, shrinkStart, 20, 0.025f, 60, GameMode.Survival, ArenaDimensionMax, arena, default, 500, 250, 120, 60, Array.Empty<Spawn>(), HandLevel.Level1, 0, 0);
 	}
 
 	public SpawnsetBinary DeepCopy()
