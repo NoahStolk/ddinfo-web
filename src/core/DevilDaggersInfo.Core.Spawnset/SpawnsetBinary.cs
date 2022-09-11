@@ -285,6 +285,22 @@ public class SpawnsetBinary
 		return new(6, 9, shrinkStart, 20, 0.025f, 60, GameMode.Survival, _arenaDimensionMax, arena, default, 500, 250, 120, 60, Array.Empty<Spawn>(), HandLevel.Level1, 0, 0);
 	}
 
+	public SpawnsetBinary DeepCopy()
+	{
+		float[,] arenaTiles = new float[ArenaDimension, ArenaDimension];
+		for (int i = 0; i < ArenaDimension; i++)
+		{
+			for (int j = 0; j < ArenaDimension; j++)
+				arenaTiles[i, j] = ArenaTiles[i, j];
+		}
+
+		Spawn[] spawns = new Spawn[Spawns.Length];
+		for (int i = 0; i < Spawns.Length; i++)
+			spawns[i] = Spawns[i];
+
+		return new(SpawnVersion, WorldVersion, ShrinkStart, ShrinkEnd, ShrinkRate, Brightness, GameMode, ArenaDimension, arenaTiles, RaceDaggerPosition, UnusedDevilTime, UnusedGoldenTime, UnusedSilverTime, UnusedBronzeTime, spawns, HandLevel, AdditionalGems, TimerStart);
+	}
+
 	public static bool IsEmptySpawn(int enemyType)
 		=> enemyType is < 0 or > 9;
 
