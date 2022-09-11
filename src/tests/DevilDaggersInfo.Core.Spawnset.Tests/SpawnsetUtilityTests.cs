@@ -1,3 +1,5 @@
+using System.Numerics;
+
 namespace DevilDaggersInfo.Core.Spawnset.Tests;
 
 [TestClass]
@@ -105,5 +107,22 @@ public class SpawnsetUtilityTests
 	public void TestShrinkTimeForTile(float start, float end, float rate, int x, int y, float expectedTime)
 	{
 		Assert.AreEqual(expectedTime, SpawnsetBinary.GetShrinkTimeForTile(51, start, end, rate, x, y), 0.0001);
+	}
+
+	[DataTestMethod]
+	[DataRow(48, 0, 37, 25)]
+	[DataRow(-48, 0, 13, 25)]
+	[DataRow(0, 48, 25, 37)]
+	[DataRow(0, -48, 25, 13)]
+
+	[DataRow(47, 0, 37, 25)]
+	[DataRow(46, 0, 37, 25)]
+	[DataRow(45, 0, 36, 25)]
+	public void TestRaceDaggerGridPosition(float raceDaggerX, float raceDaggerZ, int expectedTileX, int expectedTileZ)
+	{
+		SpawnsetBinary defaultSpawnset = SpawnsetBinary.CreateDefault();
+		(int x, float? y, int z) = SpawnsetBinary.GetRaceDaggerTilePosition(defaultSpawnset.ArenaDimension, defaultSpawnset.ArenaTiles, new(raceDaggerX, raceDaggerZ));
+		Assert.AreEqual(expectedTileX, x);
+		Assert.AreEqual(expectedTileZ, z);
 	}
 }

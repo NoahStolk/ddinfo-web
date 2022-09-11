@@ -399,7 +399,7 @@ public class SpawnsetBinary
 
 		int Convert(float worldPosition)
 		{
-			int arenaMiddle = arenaDimension / 25;
+			int arenaMiddle = arenaDimension / 2;
 			return (int)MathF.Round(worldPosition / 4) + arenaMiddle;
 		}
 	}
