@@ -78,7 +78,16 @@ public class CustomLeaderboardService
 		byte[]? orbsAliveCriteriaExpression = ValidateCriteriaExpression(addCustomLeaderboard.OrbsAliveCriteria.Expression);
 		byte[]? thornsAliveCriteriaExpression = ValidateCriteriaExpression(addCustomLeaderboard.ThornsAliveCriteria.Expression);
 
-		ValidateCustomLeaderboard(addCustomLeaderboard.SpawnsetId, addCustomLeaderboard.Category, addCustomLeaderboard.Daggers, addCustomLeaderboard.IsFeatured);
+		ValidateCustomLeaderboard(
+			addCustomLeaderboard.SpawnsetId,
+			addCustomLeaderboard.Category,
+			addCustomLeaderboard.Daggers,
+			addCustomLeaderboard.IsFeatured,
+			addCustomLeaderboard.DeathTypeCriteria,
+			addCustomLeaderboard.TimeCriteria,
+			addCustomLeaderboard.LevelUpTime2Criteria,
+			addCustomLeaderboard.LevelUpTime3Criteria,
+			addCustomLeaderboard.LevelUpTime4Criteria);
 
 		CustomLeaderboardEntity customLeaderboard = new()
 		{
@@ -304,7 +313,16 @@ public class CustomLeaderboardService
 				throw new AdminDomainException("Cannot change criteria for custom leaderboard with scores.");
 		}
 
-		ValidateCustomLeaderboard(customLeaderboard.SpawnsetId, editCustomLeaderboard.Category, editCustomLeaderboard.Daggers, editCustomLeaderboard.IsFeatured);
+		ValidateCustomLeaderboard(
+			customLeaderboard.SpawnsetId,
+			editCustomLeaderboard.Category,
+			editCustomLeaderboard.Daggers,
+			editCustomLeaderboard.IsFeatured,
+			editCustomLeaderboard.DeathTypeCriteria,
+			editCustomLeaderboard.TimeCriteria,
+			editCustomLeaderboard.LevelUpTime2Criteria,
+			editCustomLeaderboard.LevelUpTime3Criteria,
+			editCustomLeaderboard.LevelUpTime4Criteria);
 
 		customLeaderboard.Category = editCustomLeaderboard.Category;
 		customLeaderboard.Bronze = editCustomLeaderboard.Daggers.Bronze.To10thMilliTime();
@@ -377,7 +395,16 @@ public class CustomLeaderboardService
 		await _dbContext.SaveChangesAsync();
 	}
 
-	private void ValidateCustomLeaderboard(int spawnsetId, CustomLeaderboardCategory category, AddCustomLeaderboardDaggers customLeaderboardDaggers, bool isFeatured)
+	private void ValidateCustomLeaderboard(
+		int spawnsetId,
+		CustomLeaderboardCategory category,
+		AddCustomLeaderboardDaggers customLeaderboardDaggers,
+		bool isFeatured,
+		AddCustomLeaderboardCriteria deathTypeCriteria,
+		AddCustomLeaderboardCriteria timeCriteria,
+		AddCustomLeaderboardCriteria levelUpTime2Criteria,
+		AddCustomLeaderboardCriteria levelUpTime3Criteria,
+		AddCustomLeaderboardCriteria levelUpTime4Criteria)
 	{
 		if (!Enum.IsDefined(category))
 			throw new CustomLeaderboardValidationException($"Category '{category}' is not defined.");
@@ -436,6 +463,20 @@ public class CustomLeaderboardService
 
 		if (category == CustomLeaderboardCategory.TimeAttack && !spawnsetBinary.HasSpawns())
 			throw new CustomLeaderboardValidationException($"Custom leaderboard with category '{category}' must have spawns.");
+
+		if (deathTypeCriteria.Operator is not (CustomLeaderboardCriteriaOperator.Any or CustomLeaderboardCriteriaOperator.Equal))
+			throw new CustomLeaderboardValidationException($"Custom leaderboard cannot contain death type criteria that uses the '{deathTypeCriteria.Operator}' operator.");
+
+		if (timeCriteria.Operator is CustomLeaderboardCriteriaOperator.Equal or CustomLeaderboardCriteriaOperator.Modulo ||
+		    levelUpTime2Criteria.Operator is CustomLeaderboardCriteriaOperator.Equal or CustomLeaderboardCriteriaOperator.Modulo ||
+		    levelUpTime3Criteria.Operator is CustomLeaderboardCriteriaOperator.Equal or CustomLeaderboardCriteriaOperator.Modulo ||
+		    levelUpTime4Criteria.Operator is CustomLeaderboardCriteriaOperator.Equal or CustomLeaderboardCriteriaOperator.Modulo)
+		{
+			throw new CustomLeaderboardValidationException($"Custom leaderboard cannot contain time criteria that uses the '{timeCriteria.Operator}' operator.");
+		}
+
+		// TODO: Only allow a single VALUE for death and time criteria.
+		// TODO: Only allow values 0 to 16 for death criteria.
 	}
 
 	private static byte[]? ValidateCriteriaExpression(string? criteriaExpression)
