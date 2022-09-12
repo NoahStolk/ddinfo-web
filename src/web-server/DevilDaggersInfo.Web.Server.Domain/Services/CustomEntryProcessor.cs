@@ -168,6 +168,11 @@ public class CustomEntryProcessor
 			DaggersHit = uploadRequest.DaggersHit,
 			HomingStored = GetFinalHomingValue(uploadRequest),
 			HomingEaten = uploadRequest.HomingEaten,
+			DeathType = uploadRequest.DeathType,
+			Time = uploadRequest.TimeInSeconds.To10thMilliTime(),
+			LevelUpTime2 = uploadRequest.LevelUpTime2InSeconds.To10thMilliTime(),
+			LevelUpTime3 = uploadRequest.LevelUpTime3InSeconds.To10thMilliTime(),
+			LevelUpTime4 = uploadRequest.LevelUpTime4InSeconds.To10thMilliTime(),
 			Skull1Kills = GetFinalEnemyStat(uploadRequest, urd => urd.Skull1sKilled),
 			Skull2Kills = GetFinalEnemyStat(uploadRequest, urd => urd.Skull2sKilled),
 			Skull3Kills = GetFinalEnemyStat(uploadRequest, urd => urd.Skull3sKilled),
@@ -185,6 +190,23 @@ public class CustomEntryProcessor
 			LeviathanKills = GetFinalEnemyStat(uploadRequest, urd => urd.LeviathansKilled),
 			OrbKills = GetFinalEnemyStat(uploadRequest, urd => urd.OrbsKilled),
 			ThornKills = GetFinalEnemyStat(uploadRequest, urd => urd.ThornsKilled),
+			Skull1sAlive = GetFinalEnemyStat(uploadRequest, urd => urd.Skull1sAlive),
+			Skull2sAlive = GetFinalEnemyStat(uploadRequest, urd => urd.Skull2sAlive),
+			Skull3sAlive = GetFinalEnemyStat(uploadRequest, urd => urd.Skull3sAlive),
+			Skull4sAlive = GetFinalEnemyStat(uploadRequest, urd => urd.Skull4sAlive),
+			SpiderlingsAlive = GetFinalEnemyStat(uploadRequest, urd => urd.SpiderlingsAlive),
+			SpiderEggsAlive = GetFinalEnemyStat(uploadRequest, urd => urd.SpiderEggsAlive),
+			Squid1sAlive = GetFinalEnemyStat(uploadRequest, urd => urd.Squid1sAlive),
+			Squid2sAlive = GetFinalEnemyStat(uploadRequest, urd => urd.Squid2sAlive),
+			Squid3sAlive = GetFinalEnemyStat(uploadRequest, urd => urd.Squid3sAlive),
+			CentipedesAlive = GetFinalEnemyStat(uploadRequest, urd => urd.CentipedesAlive),
+			GigapedesAlive = GetFinalEnemyStat(uploadRequest, urd => urd.GigapedesAlive),
+			GhostpedesAlive = GetFinalEnemyStat(uploadRequest, urd => urd.GhostpedesAlive),
+			Spider1sAlive = GetFinalEnemyStat(uploadRequest, urd => urd.Spider1sAlive),
+			Spider2sAlive = GetFinalEnemyStat(uploadRequest, urd => urd.Spider2sAlive),
+			LeviathansAlive = GetFinalEnemyStat(uploadRequest, urd => urd.LeviathansAlive),
+			OrbsAlive = GetFinalEnemyStat(uploadRequest, urd => urd.OrbsAlive),
+			ThornsAlive = GetFinalEnemyStat(uploadRequest, urd => urd.ThornsAlive),
 		};
 
 		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.GemsCollectedCriteria, targetCollection.GemsCollected);
@@ -195,6 +217,11 @@ public class CustomEntryProcessor
 		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.DaggersHitCriteria, targetCollection.DaggersHit);
 		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.HomingStoredCriteria, targetCollection.HomingStored);
 		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.HomingEatenCriteria, targetCollection.HomingEaten);
+		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.DeathTypeCriteria, targetCollection.DeathType);
+		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.TimeCriteria, targetCollection.Time);
+		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.LevelUpTime2Criteria, targetCollection.LevelUpTime2);
+		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.LevelUpTime3Criteria, targetCollection.LevelUpTime3);
+		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.LevelUpTime4Criteria, targetCollection.LevelUpTime4);
 		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.Skull1KillsCriteria, targetCollection.Skull1Kills);
 		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.Skull2KillsCriteria, targetCollection.Skull2Kills);
 		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.Skull3KillsCriteria, targetCollection.Skull3Kills);
@@ -212,6 +239,23 @@ public class CustomEntryProcessor
 		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.LeviathanKillsCriteria, targetCollection.LeviathanKills);
 		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.OrbKillsCriteria, targetCollection.OrbKills);
 		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.ThornKillsCriteria, targetCollection.ThornKills);
+		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.Skull1sAliveCriteria, targetCollection.Skull1sAlive);
+		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.Skull2sAliveCriteria, targetCollection.Skull2sAlive);
+		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.Skull3sAliveCriteria, targetCollection.Skull3sAlive);
+		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.Skull4sAliveCriteria, targetCollection.Skull4sAlive);
+		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.SpiderlingsAliveCriteria, targetCollection.SpiderlingsAlive);
+		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.SpiderEggsAliveCriteria, targetCollection.SpiderEggsAlive);
+		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.Squid1sAliveCriteria, targetCollection.Squid1sAlive);
+		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.Squid2sAliveCriteria, targetCollection.Squid2sAlive);
+		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.Squid3sAliveCriteria, targetCollection.Squid3sAlive);
+		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.CentipedesAliveCriteria, targetCollection.CentipedesAlive);
+		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.GigapedesAliveCriteria, targetCollection.GigapedesAlive);
+		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.GhostpedesAliveCriteria, targetCollection.GhostpedesAlive);
+		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.Spider1sAliveCriteria, targetCollection.Spider1sAlive);
+		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.Spider2sAliveCriteria, targetCollection.Spider2sAlive);
+		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.LeviathansAliveCriteria, targetCollection.LeviathansAlive);
+		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.OrbsAliveCriteria, targetCollection.OrbsAlive);
+		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.ThornsAliveCriteria, targetCollection.ThornsAlive);
 
 		static int GetFinalEnemyStat(UploadRequest uploadRequest, Func<UploadRequestData, ushort[]> selector)
 		{

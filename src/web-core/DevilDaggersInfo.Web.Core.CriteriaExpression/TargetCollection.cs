@@ -18,6 +18,16 @@ public record TargetCollection
 
 	public int HomingEaten { get; init; }
 
+	public int DeathType { get; init; }
+
+	public int Time { get; init; }
+
+	public int LevelUpTime2 { get; init; }
+
+	public int LevelUpTime3 { get; init; }
+
+	public int LevelUpTime4 { get; init; }
+
 	public int Skull1Kills { get; init; }
 
 	public int Skull2Kills { get; init; }
@@ -51,4 +61,38 @@ public record TargetCollection
 	public int OrbKills { get; init; }
 
 	public int ThornKills { get; init; }
+
+	public int Skull1sAlive { get; init; }
+
+	public int Skull2sAlive { get; init; }
+
+	public int Skull3sAlive { get; init; }
+
+	public int Skull4sAlive { get; init; }
+
+	public int SpiderlingsAlive { get; init; }
+
+	public int SpiderEggsAlive { get; init; }
+
+	public int Squid1sAlive { get; init; }
+
+	public int Squid2sAlive { get; init; }
+
+	public int Squid3sAlive { get; init; }
+
+	public int CentipedesAlive { get; init; }
+
+	public int GigapedesAlive { get; init; }
+
+	public int GhostpedesAlive { get; init; }
+
+	public int Spider1sAlive { get; init; }
+
+	public int Spider2sAlive { get; init; }
+
+	public int LeviathansAlive { get; init; }
+
+	public int OrbsAlive { get; init; }
+
+	public int ThornsAlive { get; init; }
 }

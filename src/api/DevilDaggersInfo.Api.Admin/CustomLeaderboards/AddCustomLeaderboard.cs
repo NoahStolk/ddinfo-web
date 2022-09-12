@@ -32,6 +32,14 @@ public record AddCustomLeaderboard
 
 	public AddCustomLeaderboardCriteria HomingEatenCriteria { get; set; } = new();
 
+	public AddCustomLeaderboardCriteria DeathTypeCriteria { get; set; } = new();
+
+	public AddCustomLeaderboardCriteria TimeCriteria { get; set; } = new();
+
+	public AddCustomLeaderboardCriteria LevelUpTime2Criteria { get; set; } = new();
+	public AddCustomLeaderboardCriteria LevelUpTime3Criteria { get; set; } = new();
+	public AddCustomLeaderboardCriteria LevelUpTime4Criteria { get; set; } = new();
+
 	public AddCustomLeaderboardCriteria Skull1KillsCriteria { get; set; } = new();
 	public AddCustomLeaderboardCriteria Skull2KillsCriteria { get; set; } = new();
 	public AddCustomLeaderboardCriteria Skull3KillsCriteria { get; set; } = new();
@@ -54,4 +62,27 @@ public record AddCustomLeaderboard
 	public AddCustomLeaderboardCriteria LeviathanKillsCriteria { get; set; } = new();
 	public AddCustomLeaderboardCriteria OrbKillsCriteria { get; set; } = new();
 	public AddCustomLeaderboardCriteria ThornKillsCriteria { get; set; } = new();
+
+	public AddCustomLeaderboardCriteria Skull1sAliveCriteria { get; set; } = new();
+	public AddCustomLeaderboardCriteria Skull2sAliveCriteria { get; set; } = new();
+	public AddCustomLeaderboardCriteria Skull3sAliveCriteria { get; set; } = new();
+	public AddCustomLeaderboardCriteria Skull4sAliveCriteria { get; set; } = new();
+
+	public AddCustomLeaderboardCriteria SpiderlingsAliveCriteria { get; set; } = new();
+	public AddCustomLeaderboardCriteria SpiderEggsAliveCriteria { get; set; } = new();
+
+	public AddCustomLeaderboardCriteria Squid1sAliveCriteria { get; set; } = new();
+	public AddCustomLeaderboardCriteria Squid2sAliveCriteria { get; set; } = new();
+	public AddCustomLeaderboardCriteria Squid3sAliveCriteria { get; set; } = new();
+
+	public AddCustomLeaderboardCriteria CentipedesAliveCriteria { get; set; } = new();
+	public AddCustomLeaderboardCriteria GigapedesAliveCriteria { get; set; } = new();
+	public AddCustomLeaderboardCriteria GhostpedesAliveCriteria { get; set; } = new();
+
+	public AddCustomLeaderboardCriteria Spider1sAliveCriteria { get; set; } = new();
+	public AddCustomLeaderboardCriteria Spider2sAliveCriteria { get; set; } = new();
+
+	public AddCustomLeaderboardCriteria LeviathansAliveCriteria { get; set; } = new();
+	public AddCustomLeaderboardCriteria OrbsAliveCriteria { get; set; } = new();
+	public AddCustomLeaderboardCriteria ThornsAliveCriteria { get; set; } = new();
 }

@@ -49,6 +49,11 @@ public class CustomLeaderboardEntity : IAuditable
 	public CustomLeaderboardCriteriaEntityValue DaggersHitCriteria { get; set; } = new();
 	public CustomLeaderboardCriteriaEntityValue HomingStoredCriteria { get; set; } = new();
 	public CustomLeaderboardCriteriaEntityValue HomingEatenCriteria { get; set; } = new();
+	public CustomLeaderboardCriteriaEntityValue DeathTypeCriteria { get; set; } = new();
+	public CustomLeaderboardCriteriaEntityValue TimeCriteria { get; set; } = new();
+	public CustomLeaderboardCriteriaEntityValue LevelUpTime2Criteria { get; set; } = new();
+	public CustomLeaderboardCriteriaEntityValue LevelUpTime3Criteria { get; set; } = new();
+	public CustomLeaderboardCriteriaEntityValue LevelUpTime4Criteria { get; set; } = new();
 
 	public CustomLeaderboardCriteriaEntityValue Skull1KillsCriteria { get; set; } = new();
 	public CustomLeaderboardCriteriaEntityValue Skull2KillsCriteria { get; set; } = new();
@@ -67,6 +72,24 @@ public class CustomLeaderboardEntity : IAuditable
 	public CustomLeaderboardCriteriaEntityValue LeviathanKillsCriteria { get; set; } = new();
 	public CustomLeaderboardCriteriaEntityValue OrbKillsCriteria { get; set; } = new();
 	public CustomLeaderboardCriteriaEntityValue ThornKillsCriteria { get; set; } = new();
+
+	public CustomLeaderboardCriteriaEntityValue Skull1sAliveCriteria { get; set; } = new();
+	public CustomLeaderboardCriteriaEntityValue Skull2sAliveCriteria { get; set; } = new();
+	public CustomLeaderboardCriteriaEntityValue Skull3sAliveCriteria { get; set; } = new();
+	public CustomLeaderboardCriteriaEntityValue Skull4sAliveCriteria { get; set; } = new();
+	public CustomLeaderboardCriteriaEntityValue SpiderlingsAliveCriteria { get; set; } = new();
+	public CustomLeaderboardCriteriaEntityValue SpiderEggsAliveCriteria { get; set; } = new();
+	public CustomLeaderboardCriteriaEntityValue Squid1sAliveCriteria { get; set; } = new();
+	public CustomLeaderboardCriteriaEntityValue Squid2sAliveCriteria { get; set; } = new();
+	public CustomLeaderboardCriteriaEntityValue Squid3sAliveCriteria { get; set; } = new();
+	public CustomLeaderboardCriteriaEntityValue CentipedesAliveCriteria { get; set; } = new();
+	public CustomLeaderboardCriteriaEntityValue GigapedesAliveCriteria { get; set; } = new();
+	public CustomLeaderboardCriteriaEntityValue GhostpedesAliveCriteria { get; set; } = new();
+	public CustomLeaderboardCriteriaEntityValue Spider1sAliveCriteria { get; set; } = new();
+	public CustomLeaderboardCriteriaEntityValue Spider2sAliveCriteria { get; set; } = new();
+	public CustomLeaderboardCriteriaEntityValue LeviathansAliveCriteria { get; set; } = new();
+	public CustomLeaderboardCriteriaEntityValue OrbsAliveCriteria { get; set; } = new();
+	public CustomLeaderboardCriteriaEntityValue ThornsAliveCriteria { get; set; } = new();
 
 	public List<CustomEntryEntity>? CustomEntries { get; set; }
 
