@@ -476,7 +476,7 @@ public class CustomLeaderboardService
 		}
 
 		// TODO: Only allow a single VALUE for death and time criteria.
-		// TODO: Only allow values 0 to 16 for death criteria.
+		// TODO: Only allow values 0 to 16 for death criteria (check if Enum with that value is defined instead of hardcoding 16).
 	}
 
 	private static byte[]? ValidateCriteriaExpression(string? criteriaExpression)
