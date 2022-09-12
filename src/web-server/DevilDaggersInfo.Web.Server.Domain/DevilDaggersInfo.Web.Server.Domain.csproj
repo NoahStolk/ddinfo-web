@@ -8,6 +8,11 @@
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" />
   </ItemGroup>
 
+<!--  <ItemGroup Label="Temporary dependencies required for efcore migrations to work">-->
+<!--    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" />-->
+<!--    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" />-->
+<!--  </ItemGroup>-->
+
   <ItemGroup>
     <ProjectReference Include="..\..\common\DevilDaggersInfo.Common\DevilDaggersInfo.Common.csproj" />
     <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Encryption\DevilDaggersInfo.Core.Encryption.csproj" />
