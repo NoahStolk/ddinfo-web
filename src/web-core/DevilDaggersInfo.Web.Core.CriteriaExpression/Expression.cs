@@ -57,9 +57,9 @@ public class Expression
 		List<string> delimiters = new() { "+", "-" };
 		string pattern = "(" + string.Join("|", delimiters.Select(Regex.Escape).ToArray()) + ")";
 		string[] result = Regex.Split(str, pattern);
-		return new(Array.ConvertAll(result, Parse).ToList());
+		return new(Array.ConvertAll(result, ParsePart).ToList());
 
-		static IExpressionPart Parse(string str)
+		static IExpressionPart ParsePart(string str)
 		{
 			if (str.Length == 0)
 				throw new CriteriaExpressionParseException("Empty expression part.");
@@ -171,6 +171,9 @@ public class Expression
 
 	public void Validate()
 	{
+		if (Parts.Any(p => p is ExpressionTarget t && !t.Target.IsAllowedAsTarget()))
+			throw new CriteriaExpressionParseException("Expression cannot contain death type or times as targets.");
+
 		if (Parts.Count % 2 == 0)
 			throw new CriteriaExpressionParseException("Expression must consist of an uneven amount of parts.");
 

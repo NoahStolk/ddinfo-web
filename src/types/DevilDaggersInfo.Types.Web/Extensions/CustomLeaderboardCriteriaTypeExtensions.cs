@@ -160,4 +160,9 @@ public static class CustomLeaderboardCriteriaTypeExtensions
 		CustomLeaderboardCriteriaType.LevelUpTime4 => nameof(CustomLeaderboardCriteriaType.LevelUpTime4),
 		_ => throw new InvalidEnumConversionException(criteriaType),
 	};
+
+	public static bool IsAllowedAsTarget(this CustomLeaderboardCriteriaType criteriaType)
+	{
+		return criteriaType is not (CustomLeaderboardCriteriaType.DeathType or CustomLeaderboardCriteriaType.Time or CustomLeaderboardCriteriaType.LevelUpTime2 or CustomLeaderboardCriteriaType.LevelUpTime3 or CustomLeaderboardCriteriaType.LevelUpTime4);
+	}
 }
