@@ -1,9 +1,11 @@
+using DevilDaggersInfo.Api.Admin.CustomEntries;
 using DevilDaggersInfo.Api.Admin.CustomLeaderboards;
 using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Types.Core.Spawnsets;
 using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Core.CriteriaExpression;
+using DevilDaggersInfo.Web.Core.CriteriaExpression.Parts;
 using DevilDaggersInfo.Web.Server.Domain.Admin.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
@@ -11,6 +13,7 @@ using DevilDaggersInfo.Web.Server.Domain.Extensions;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 using Microsoft.EntityFrameworkCore;
+using System.Runtime.CompilerServices;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Admin.Services;
 
@@ -38,11 +41,11 @@ public class CustomLeaderboardService
 		byte[]? daggersHitCriteriaExpression = ValidateCriteriaExpression(addCustomLeaderboard.DaggersHitCriteria.Expression);
 		byte[]? homingStoredCriteriaExpression = ValidateCriteriaExpression(addCustomLeaderboard.HomingStoredCriteria.Expression);
 		byte[]? homingEatenCriteriaExpression = ValidateCriteriaExpression(addCustomLeaderboard.HomingEatenCriteria.Expression);
-		byte[]? deathTypeCriteriaExpression = ValidateCriteriaExpression(addCustomLeaderboard.DeathTypeCriteria.Expression);
-		byte[]? timeCriteriaExpression = ValidateCriteriaExpression(addCustomLeaderboard.TimeCriteria.Expression);
-		byte[]? levelUpTime2CriteriaExpression = ValidateCriteriaExpression(addCustomLeaderboard.LevelUpTime2Criteria.Expression);
-		byte[]? levelUpTime3CriteriaExpression = ValidateCriteriaExpression(addCustomLeaderboard.LevelUpTime3Criteria.Expression);
-		byte[]? levelUpTime4CriteriaExpression = ValidateCriteriaExpression(addCustomLeaderboard.LevelUpTime4Criteria.Expression);
+		byte[]? deathTypeCriteriaExpression = ValidateCriteriaExpression(addCustomLeaderboard.DeathTypeCriteria.Expression, true, i => Enum.IsDefined((CustomEntryDeathType)i));
+		byte[]? timeCriteriaExpression = ValidateCriteriaExpression(addCustomLeaderboard.TimeCriteria.Expression, true);
+		byte[]? levelUpTime2CriteriaExpression = ValidateCriteriaExpression(addCustomLeaderboard.LevelUpTime2Criteria.Expression, true);
+		byte[]? levelUpTime3CriteriaExpression = ValidateCriteriaExpression(addCustomLeaderboard.LevelUpTime3Criteria.Expression, true);
+		byte[]? levelUpTime4CriteriaExpression = ValidateCriteriaExpression(addCustomLeaderboard.LevelUpTime4Criteria.Expression, true);
 		byte[]? skull1KillsCriteriaExpression = ValidateCriteriaExpression(addCustomLeaderboard.Skull1KillsCriteria.Expression);
 		byte[]? skull2KillsCriteriaExpression = ValidateCriteriaExpression(addCustomLeaderboard.Skull2KillsCriteria.Expression);
 		byte[]? skull3KillsCriteriaExpression = ValidateCriteriaExpression(addCustomLeaderboard.Skull3KillsCriteria.Expression);
@@ -166,11 +169,11 @@ public class CustomLeaderboardService
 		byte[]? daggersHitCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.DaggersHitCriteria.Expression);
 		byte[]? homingStoredCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.HomingStoredCriteria.Expression);
 		byte[]? homingEatenCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.HomingEatenCriteria.Expression);
-		byte[]? deathTypeCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.DeathTypeCriteria.Expression);
-		byte[]? timeCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.TimeCriteria.Expression);
-		byte[]? levelUpTime2CriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.LevelUpTime2Criteria.Expression);
-		byte[]? levelUpTime3CriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.LevelUpTime3Criteria.Expression);
-		byte[]? levelUpTime4CriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.LevelUpTime4Criteria.Expression);
+		byte[]? deathTypeCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.DeathTypeCriteria.Expression, true, i => Enum.IsDefined((CustomEntryDeathType)i));
+		byte[]? timeCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.TimeCriteria.Expression, true);
+		byte[]? levelUpTime2CriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.LevelUpTime2Criteria.Expression, true);
+		byte[]? levelUpTime3CriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.LevelUpTime3Criteria.Expression, true);
+		byte[]? levelUpTime4CriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.LevelUpTime4Criteria.Expression, true);
 		byte[]? skull1KillsCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.Skull1KillsCriteria.Expression);
 		byte[]? skull2KillsCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.Skull2KillsCriteria.Expression);
 		byte[]? skull3KillsCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.Skull3KillsCriteria.Expression);
@@ -474,18 +477,28 @@ public class CustomLeaderboardService
 		{
 			throw new CustomLeaderboardValidationException($"Custom leaderboard cannot contain time criteria that uses the '{timeCriteria.Operator}' operator.");
 		}
-
-		// TODO: Only allow a single VALUE for death and time criteria.
-		// TODO: Only allow values 0 to 16 for death criteria (check if Enum with that value is defined instead of hardcoding 16).
 	}
 
-	private static byte[]? ValidateCriteriaExpression(string? criteriaExpression)
+	private static byte[]? ValidateCriteriaExpression(string? criteriaExpression, bool mustBeSingleValue = false, Func<int, bool>? singleValueCondition = null, [CallerArgumentExpression("singleValueCondition")] string? singleValueConditionExpression = null)
 	{
 		if (string.IsNullOrWhiteSpace(criteriaExpression))
 			return null;
 
 		if (!Expression.TryParse(criteriaExpression, out Expression? expression))
 			throw new CustomLeaderboardValidationException($"Criteria expression '{criteriaExpression}' cannot be parsed.");
+
+		if (mustBeSingleValue)
+		{
+			if (expression.Parts.Count > 1)
+				throw new CustomLeaderboardValidationException($"Criteria expression '{criteriaExpression}' must not contain multiple parts.");
+
+			IExpressionPart firstPart = expression.Parts[0];
+			if (firstPart is not ExpressionValue value)
+				throw new CustomLeaderboardValidationException($"Criteria expression '{criteriaExpression}' must consist of exactly one expression value (number).");
+
+			if (singleValueCondition != null && !singleValueCondition(value.Value))
+				throw new CustomLeaderboardValidationException($"Criteria expression '{criteriaExpression}' with value '{value.Value}' does not meet value condition '{singleValueConditionExpression}'.");
+		}
 
 		byte[] expressionBytes = expression.ToBytes();
 		if (expressionBytes.Length > Expression.MaxByteLength)
