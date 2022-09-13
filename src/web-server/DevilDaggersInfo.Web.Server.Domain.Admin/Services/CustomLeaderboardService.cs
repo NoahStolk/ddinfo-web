@@ -46,6 +46,7 @@ public class CustomLeaderboardService
 		byte[]? levelUpTime2CriteriaExpression = ValidateCriteriaExpression(addCustomLeaderboard.LevelUpTime2Criteria.Expression, true);
 		byte[]? levelUpTime3CriteriaExpression = ValidateCriteriaExpression(addCustomLeaderboard.LevelUpTime3Criteria.Expression, true);
 		byte[]? levelUpTime4CriteriaExpression = ValidateCriteriaExpression(addCustomLeaderboard.LevelUpTime4Criteria.Expression, true);
+		byte[]? enemiesAliveCriteriaExpression = ValidateCriteriaExpression(addCustomLeaderboard.EnemiesAliveCriteria.Expression);
 		byte[]? skull1KillsCriteriaExpression = ValidateCriteriaExpression(addCustomLeaderboard.Skull1KillsCriteria.Expression);
 		byte[]? skull2KillsCriteriaExpression = ValidateCriteriaExpression(addCustomLeaderboard.Skull2KillsCriteria.Expression);
 		byte[]? skull3KillsCriteriaExpression = ValidateCriteriaExpression(addCustomLeaderboard.Skull3KillsCriteria.Expression);
@@ -116,6 +117,7 @@ public class CustomLeaderboardService
 			LevelUpTime2Criteria = new() { Operator = addCustomLeaderboard.LevelUpTime2Criteria.Operator, Expression = levelUpTime2CriteriaExpression },
 			LevelUpTime3Criteria = new() { Operator = addCustomLeaderboard.LevelUpTime3Criteria.Operator, Expression = levelUpTime3CriteriaExpression },
 			LevelUpTime4Criteria = new() { Operator = addCustomLeaderboard.LevelUpTime4Criteria.Operator, Expression = levelUpTime4CriteriaExpression },
+			EnemiesAliveCriteria = new() { Operator = addCustomLeaderboard.EnemiesAliveCriteria.Operator, Expression = enemiesAliveCriteriaExpression },
 			Skull1KillsCriteria = new() { Operator = addCustomLeaderboard.Skull1KillsCriteria.Operator, Expression = skull1KillsCriteriaExpression },
 			Skull2KillsCriteria = new() { Operator = addCustomLeaderboard.Skull2KillsCriteria.Operator, Expression = skull2KillsCriteriaExpression },
 			Skull3KillsCriteria = new() { Operator = addCustomLeaderboard.Skull3KillsCriteria.Operator, Expression = skull3KillsCriteriaExpression },
@@ -174,6 +176,7 @@ public class CustomLeaderboardService
 		byte[]? levelUpTime2CriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.LevelUpTime2Criteria.Expression, true);
 		byte[]? levelUpTime3CriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.LevelUpTime3Criteria.Expression, true);
 		byte[]? levelUpTime4CriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.LevelUpTime4Criteria.Expression, true);
+		byte[]? enemiesAliveCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.EnemiesAliveCriteria.Expression);
 		byte[]? skull1KillsCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.Skull1KillsCriteria.Expression);
 		byte[]? skull2KillsCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.Skull2KillsCriteria.Expression);
 		byte[]? skull3KillsCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.Skull3KillsCriteria.Expression);
@@ -228,6 +231,7 @@ public class CustomLeaderboardService
 				customLeaderboard.LevelUpTime2Criteria.Operator != editCustomLeaderboard.LevelUpTime2Criteria.Operator ||
 				customLeaderboard.LevelUpTime3Criteria.Operator != editCustomLeaderboard.LevelUpTime3Criteria.Operator ||
 				customLeaderboard.LevelUpTime4Criteria.Operator != editCustomLeaderboard.LevelUpTime4Criteria.Operator ||
+				customLeaderboard.EnemiesAliveCriteria.Operator != editCustomLeaderboard.EnemiesAliveCriteria.Operator ||
 				customLeaderboard.Skull1KillsCriteria.Operator != editCustomLeaderboard.Skull1KillsCriteria.Operator ||
 				customLeaderboard.Skull2KillsCriteria.Operator != editCustomLeaderboard.Skull2KillsCriteria.Operator ||
 				customLeaderboard.Skull3KillsCriteria.Operator != editCustomLeaderboard.Skull3KillsCriteria.Operator ||
@@ -277,6 +281,7 @@ public class CustomLeaderboardService
 				!ExpressionEqual(levelUpTime2CriteriaExpression, customLeaderboard.LevelUpTime2Criteria.Expression) ||
 				!ExpressionEqual(levelUpTime3CriteriaExpression, customLeaderboard.LevelUpTime3Criteria.Expression) ||
 				!ExpressionEqual(levelUpTime4CriteriaExpression, customLeaderboard.LevelUpTime4Criteria.Expression) ||
+				!ExpressionEqual(enemiesAliveCriteriaExpression, customLeaderboard.EnemiesAliveCriteria.Expression) ||
 				!ExpressionEqual(skull1KillsCriteriaExpression, customLeaderboard.Skull1KillsCriteria.Expression) ||
 				!ExpressionEqual(skull2KillsCriteriaExpression, customLeaderboard.Skull2KillsCriteria.Expression) ||
 				!ExpressionEqual(skull3KillsCriteriaExpression, customLeaderboard.Skull3KillsCriteria.Expression) ||
@@ -347,6 +352,7 @@ public class CustomLeaderboardService
 		customLeaderboard.LevelUpTime2Criteria = new() { Operator = editCustomLeaderboard.LevelUpTime2Criteria.Operator, Expression = levelUpTime2CriteriaExpression };
 		customLeaderboard.LevelUpTime3Criteria = new() { Operator = editCustomLeaderboard.LevelUpTime3Criteria.Operator, Expression = levelUpTime3CriteriaExpression };
 		customLeaderboard.LevelUpTime4Criteria = new() { Operator = editCustomLeaderboard.LevelUpTime4Criteria.Operator, Expression = levelUpTime4CriteriaExpression };
+		customLeaderboard.EnemiesAliveCriteria = new() { Operator = editCustomLeaderboard.EnemiesAliveCriteria.Operator, Expression = enemiesAliveCriteriaExpression };
 		customLeaderboard.Skull1KillsCriteria = new() { Operator = editCustomLeaderboard.Skull1KillsCriteria.Operator, Expression = skull1KillsCriteriaExpression };
 		customLeaderboard.Skull2KillsCriteria = new() { Operator = editCustomLeaderboard.Skull2KillsCriteria.Operator, Expression = skull2KillsCriteriaExpression };
 		customLeaderboard.Skull3KillsCriteria = new() { Operator = editCustomLeaderboard.Skull3KillsCriteria.Operator, Expression = skull3KillsCriteriaExpression };

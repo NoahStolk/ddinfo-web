@@ -173,6 +173,7 @@ public class CustomEntryProcessor
 			LevelUpTime2 = uploadRequest.LevelUpTime2InSeconds.To10thMilliTime(),
 			LevelUpTime3 = uploadRequest.LevelUpTime3InSeconds.To10thMilliTime(),
 			LevelUpTime4 = uploadRequest.LevelUpTime4InSeconds.To10thMilliTime(),
+			EnemiesAlive = uploadRequest.EnemiesAlive,
 			Skull1Kills = GetFinalEnemyStat(uploadRequest, urd => urd.Skull1sKilled),
 			Skull2Kills = GetFinalEnemyStat(uploadRequest, urd => urd.Skull2sKilled),
 			Skull3Kills = GetFinalEnemyStat(uploadRequest, urd => urd.Skull3sKilled),
@@ -222,6 +223,7 @@ public class CustomEntryProcessor
 		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.LevelUpTime2Criteria, targetCollection.LevelUpTime2);
 		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.LevelUpTime3Criteria, targetCollection.LevelUpTime3);
 		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.LevelUpTime4Criteria, targetCollection.LevelUpTime4);
+		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.EnemiesAliveCriteria, targetCollection.EnemiesAlive);
 		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.Skull1KillsCriteria, targetCollection.Skull1Kills);
 		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.Skull2KillsCriteria, targetCollection.Skull2Kills);
 		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.Skull3KillsCriteria, targetCollection.Skull3Kills);
