@@ -54,6 +54,7 @@ public class CustomLeaderboardEntity : IAuditable
 	public CustomLeaderboardCriteriaEntityValue LevelUpTime2Criteria { get; set; } = new();
 	public CustomLeaderboardCriteriaEntityValue LevelUpTime3Criteria { get; set; } = new();
 	public CustomLeaderboardCriteriaEntityValue LevelUpTime4Criteria { get; set; } = new();
+	public CustomLeaderboardCriteriaEntityValue EnemiesAliveCriteria { get; set; } = new();
 
 	public CustomLeaderboardCriteriaEntityValue Skull1KillsCriteria { get; set; } = new();
 	public CustomLeaderboardCriteriaEntityValue Skull2KillsCriteria { get; set; } = new();

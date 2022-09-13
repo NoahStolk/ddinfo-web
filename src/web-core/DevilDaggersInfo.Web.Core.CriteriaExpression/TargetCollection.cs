@@ -28,6 +28,8 @@ public record TargetCollection
 
 	public int LevelUpTime4 { get; init; }
 
+	public int EnemiesAlive { get; init; }
+
 	public int Skull1Kills { get; init; }
 
 	public int Skull2Kills { get; init; }

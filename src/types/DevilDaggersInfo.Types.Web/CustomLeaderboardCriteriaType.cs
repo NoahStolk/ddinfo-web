@@ -49,4 +49,5 @@ public enum CustomLeaderboardCriteriaType : byte
 	LevelUpTime2 = 44,
 	LevelUpTime3 = 45,
 	LevelUpTime4 = 46,
+	EnemiesAlive = 47,
 }

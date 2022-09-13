@@ -37,6 +37,8 @@ public record EditCustomLeaderboard
 	public AddCustomLeaderboardCriteria LevelUpTime3Criteria { get; set; } = new();
 	public AddCustomLeaderboardCriteria LevelUpTime4Criteria { get; set; } = new();
 
+	public AddCustomLeaderboardCriteria EnemiesAliveCriteria { get; set; } = new();
+
 	public AddCustomLeaderboardCriteria Skull1KillsCriteria { get; set; } = new();
 	public AddCustomLeaderboardCriteria Skull2KillsCriteria { get; set; } = new();
 	public AddCustomLeaderboardCriteria Skull3KillsCriteria { get; set; } = new();

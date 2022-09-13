@@ -54,6 +54,7 @@ public static class CustomLeaderboardCriteriaTypeExtensions
 		CustomLeaderboardCriteriaType.LevelUpTime2 => "Level 2 hand",
 		CustomLeaderboardCriteriaType.LevelUpTime3 => "Level 3 hand",
 		CustomLeaderboardCriteriaType.LevelUpTime4 => "Level 4 hand",
+		CustomLeaderboardCriteriaType.EnemiesAlive => "Enemies alive",
 		_ => throw new InvalidEnumConversionException(criteriaType),
 	};
 
@@ -106,6 +107,7 @@ public static class CustomLeaderboardCriteriaTypeExtensions
 		CustomLeaderboardCriteriaType.LevelUpTime2 => "level2",
 		CustomLeaderboardCriteriaType.LevelUpTime3 => "level3",
 		CustomLeaderboardCriteriaType.LevelUpTime4 => "level4",
+		CustomLeaderboardCriteriaType.EnemiesAlive => "enemiesalive",
 		_ => throw new InvalidEnumConversionException(criteriaType),
 	};
 
@@ -158,6 +160,7 @@ public static class CustomLeaderboardCriteriaTypeExtensions
 		CustomLeaderboardCriteriaType.LevelUpTime2 => nameof(CustomLeaderboardCriteriaType.LevelUpTime2),
 		CustomLeaderboardCriteriaType.LevelUpTime3 => nameof(CustomLeaderboardCriteriaType.LevelUpTime3),
 		CustomLeaderboardCriteriaType.LevelUpTime4 => nameof(CustomLeaderboardCriteriaType.LevelUpTime4),
+		CustomLeaderboardCriteriaType.EnemiesAlive => nameof(CustomLeaderboardCriteriaType.EnemiesAlive),
 		_ => throw new InvalidEnumConversionException(criteriaType),
 	};
 

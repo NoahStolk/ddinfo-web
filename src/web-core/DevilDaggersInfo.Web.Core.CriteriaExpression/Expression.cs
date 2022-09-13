@@ -263,6 +263,7 @@ public class Expression
 				CustomLeaderboardCriteriaType.LevelUpTime2 => targetCollection.LevelUpTime2,
 				CustomLeaderboardCriteriaType.LevelUpTime3 => targetCollection.LevelUpTime3,
 				CustomLeaderboardCriteriaType.LevelUpTime4 => targetCollection.LevelUpTime4,
+				CustomLeaderboardCriteriaType.EnemiesAlive => targetCollection.EnemiesAlive,
 				_ => throw new InvalidEnumConversionException(target.Target),
 			};
 		}

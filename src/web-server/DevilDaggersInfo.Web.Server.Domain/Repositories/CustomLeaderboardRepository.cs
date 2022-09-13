@@ -143,11 +143,12 @@ public class CustomLeaderboardRepository
 		AddCriteria(CustomLeaderboardCriteriaType.DaggersHit, customLeaderboard.DaggersHitCriteria.Operator, customLeaderboard.DaggersHitCriteria.Expression);
 		AddCriteria(CustomLeaderboardCriteriaType.HomingStored, customLeaderboard.HomingStoredCriteria.Operator, customLeaderboard.HomingStoredCriteria.Expression);
 		AddCriteria(CustomLeaderboardCriteriaType.HomingEaten, customLeaderboard.HomingEatenCriteria.Operator, customLeaderboard.HomingEatenCriteria.Expression);
-		AddCriteria(CustomLeaderboardCriteriaType.DeathType, customLeaderboard.HomingEatenCriteria.Operator, customLeaderboard.DeathTypeCriteria.Expression);
-		AddCriteria(CustomLeaderboardCriteriaType.Time, customLeaderboard.HomingEatenCriteria.Operator, customLeaderboard.TimeCriteria.Expression);
-		AddCriteria(CustomLeaderboardCriteriaType.LevelUpTime2, customLeaderboard.HomingEatenCriteria.Operator, customLeaderboard.LevelUpTime2Criteria.Expression);
-		AddCriteria(CustomLeaderboardCriteriaType.LevelUpTime3, customLeaderboard.HomingEatenCriteria.Operator, customLeaderboard.LevelUpTime3Criteria.Expression);
-		AddCriteria(CustomLeaderboardCriteriaType.LevelUpTime4, customLeaderboard.HomingEatenCriteria.Operator, customLeaderboard.LevelUpTime4Criteria.Expression);
+		AddCriteria(CustomLeaderboardCriteriaType.DeathType, customLeaderboard.DeathTypeCriteria.Operator, customLeaderboard.DeathTypeCriteria.Expression);
+		AddCriteria(CustomLeaderboardCriteriaType.Time, customLeaderboard.TimeCriteria.Operator, customLeaderboard.TimeCriteria.Expression);
+		AddCriteria(CustomLeaderboardCriteriaType.LevelUpTime2, customLeaderboard.LevelUpTime2Criteria.Operator, customLeaderboard.LevelUpTime2Criteria.Expression);
+		AddCriteria(CustomLeaderboardCriteriaType.LevelUpTime3, customLeaderboard.LevelUpTime3Criteria.Operator, customLeaderboard.LevelUpTime3Criteria.Expression);
+		AddCriteria(CustomLeaderboardCriteriaType.LevelUpTime4, customLeaderboard.LevelUpTime4Criteria.Operator, customLeaderboard.LevelUpTime4Criteria.Expression);
+		AddCriteria(CustomLeaderboardCriteriaType.EnemiesAlive, customLeaderboard.EnemiesAliveCriteria.Operator, customLeaderboard.EnemiesAliveCriteria.Expression);
 		AddCriteria(CustomLeaderboardCriteriaType.Skull1Kills, customLeaderboard.Skull1KillsCriteria.Operator, customLeaderboard.Skull1KillsCriteria.Expression);
 		AddCriteria(CustomLeaderboardCriteriaType.Skull2Kills, customLeaderboard.Skull2KillsCriteria.Operator, customLeaderboard.Skull2KillsCriteria.Expression);
 		AddCriteria(CustomLeaderboardCriteriaType.Skull3Kills, customLeaderboard.Skull3KillsCriteria.Operator, customLeaderboard.Skull3KillsCriteria.Expression);
