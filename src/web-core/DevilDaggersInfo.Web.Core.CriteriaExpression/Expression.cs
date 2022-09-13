@@ -171,8 +171,11 @@ public class Expression
 
 	public void Validate()
 	{
-		if (Parts.Any(p => p is ExpressionTarget t && !t.Target.IsAllowedAsTarget()))
-			throw new CriteriaExpressionParseException("Expression cannot contain death type or times as targets.");
+		foreach (IExpressionPart part in Parts)
+		{
+			if (part is ExpressionTarget t && !t.Target.IsAllowedAsTarget())
+				throw new CriteriaExpressionParseException($"Target type '{t.Target}' is not allowed inside an expression.");
+		}
 
 		if (Parts.Count % 2 == 0)
 			throw new CriteriaExpressionParseException("Expression must consist of an uneven amount of parts.");
