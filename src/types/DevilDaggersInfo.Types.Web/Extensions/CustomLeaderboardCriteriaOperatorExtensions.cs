@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Common.Exceptions;
+
 namespace DevilDaggersInfo.Types.Web.Extensions;
 
 public static class CustomLeaderboardCriteriaOperatorExtensions
@@ -10,6 +12,13 @@ public static class CustomLeaderboardCriteriaOperatorExtensions
 		CustomLeaderboardCriteriaOperator.LessThanOrEqual => "less than or equal to",
 		CustomLeaderboardCriteriaOperator.GreaterThanOrEqual => "greater than or equal to",
 		CustomLeaderboardCriteriaOperator.Modulo => "divisible by",
-		_ => string.Empty,
+		CustomLeaderboardCriteriaOperator.NotEqual => "not equal to",
+		_ => throw new InvalidEnumConversionException(criteriaOperator),
+	};
+
+	public static string Description(this CustomLeaderboardCriteriaOperator criteriaOperator) => criteriaOperator switch
+	{
+		CustomLeaderboardCriteriaOperator.NotEqual => "must not be equal to",
+		_ => $"must be {criteriaOperator.Display()}",
 	};
 }

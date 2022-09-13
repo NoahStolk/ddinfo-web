@@ -464,13 +464,13 @@ public class CustomLeaderboardService
 		if (category == CustomLeaderboardCategory.TimeAttack && !spawnsetBinary.HasSpawns())
 			throw new CustomLeaderboardValidationException($"Custom leaderboard with category '{category}' must have spawns.");
 
-		if (deathTypeCriteria.Operator is not (CustomLeaderboardCriteriaOperator.Any or CustomLeaderboardCriteriaOperator.Equal))
+		if (deathTypeCriteria.Operator is not (CustomLeaderboardCriteriaOperator.Any or CustomLeaderboardCriteriaOperator.Equal or CustomLeaderboardCriteriaOperator.NotEqual))
 			throw new CustomLeaderboardValidationException($"Custom leaderboard cannot contain death type criteria that uses the '{deathTypeCriteria.Operator}' operator.");
 
-		if (timeCriteria.Operator is CustomLeaderboardCriteriaOperator.Equal or CustomLeaderboardCriteriaOperator.Modulo ||
-		    levelUpTime2Criteria.Operator is CustomLeaderboardCriteriaOperator.Equal or CustomLeaderboardCriteriaOperator.Modulo ||
-		    levelUpTime3Criteria.Operator is CustomLeaderboardCriteriaOperator.Equal or CustomLeaderboardCriteriaOperator.Modulo ||
-		    levelUpTime4Criteria.Operator is CustomLeaderboardCriteriaOperator.Equal or CustomLeaderboardCriteriaOperator.Modulo)
+		if (timeCriteria.Operator is CustomLeaderboardCriteriaOperator.Equal or CustomLeaderboardCriteriaOperator.NotEqual or CustomLeaderboardCriteriaOperator.Modulo ||
+		    levelUpTime2Criteria.Operator is CustomLeaderboardCriteriaOperator.Equal or CustomLeaderboardCriteriaOperator.NotEqual or CustomLeaderboardCriteriaOperator.Modulo ||
+		    levelUpTime3Criteria.Operator is CustomLeaderboardCriteriaOperator.Equal or CustomLeaderboardCriteriaOperator.NotEqual or CustomLeaderboardCriteriaOperator.Modulo ||
+		    levelUpTime4Criteria.Operator is CustomLeaderboardCriteriaOperator.Equal or CustomLeaderboardCriteriaOperator.NotEqual or CustomLeaderboardCriteriaOperator.Modulo)
 		{
 			throw new CustomLeaderboardValidationException($"Custom leaderboard cannot contain time criteria that uses the '{timeCriteria.Operator}' operator.");
 		}

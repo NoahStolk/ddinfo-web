@@ -12,6 +12,7 @@ public static class CustomLeaderboardCriteriaOperatorExtensions
 		CustomLeaderboardCriteriaOperator.GreaterThan or CustomLeaderboardCriteriaOperator.GreaterThanOrEqual => "#0ff",
 		CustomLeaderboardCriteriaOperator.Equal => "#f44",
 		CustomLeaderboardCriteriaOperator.Modulo => "#80f",
+		CustomLeaderboardCriteriaOperator.NotEqual => "#f00",
 		_ => throw new InvalidEnumConversionException(criteriaOperator),
 	};
 }
