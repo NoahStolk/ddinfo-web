@@ -51,9 +51,9 @@ public static class CustomLeaderboardCriteriaTypeExtensions
 		CustomLeaderboardCriteriaType.ThornsAlive => EnemiesV3_2.Thorn.Color.HexCode,
 		CustomLeaderboardCriteriaType.DeathType => "#f00",
 		CustomLeaderboardCriteriaType.Time => "#f00",
-		CustomLeaderboardCriteriaType.LevelUpTime2 => UpgradesV3_2.Level2.Color.HexCode,
-		CustomLeaderboardCriteriaType.LevelUpTime3 => UpgradesV3_2.Level3.Color.HexCode,
-		CustomLeaderboardCriteriaType.LevelUpTime4 => UpgradesV3_2.Level4.Color.HexCode,
+		CustomLeaderboardCriteriaType.LevelUpTime2 => Upgrades.Level2.Color.HexCode,
+		CustomLeaderboardCriteriaType.LevelUpTime3 => Upgrades.Level3.Color.HexCode,
+		CustomLeaderboardCriteriaType.LevelUpTime4 => Upgrades.Level4.Color.HexCode,
 		CustomLeaderboardCriteriaType.EnemiesAlive => EnemiesV3_2.Skull4.Color.HexCode,
 		_ => throw new InvalidEnumConversionException(criteriaType),
 	};
