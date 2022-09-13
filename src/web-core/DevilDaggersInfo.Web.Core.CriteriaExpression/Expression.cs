@@ -57,9 +57,9 @@ public class Expression
 		List<string> delimiters = new() { "+", "-" };
 		string pattern = "(" + string.Join("|", delimiters.Select(Regex.Escape).ToArray()) + ")";
 		string[] result = Regex.Split(str, pattern);
-		return new(Array.ConvertAll(result, Parse).ToList());
+		return new(Array.ConvertAll(result, ParsePart).ToList());
 
-		static IExpressionPart Parse(string str)
+		static IExpressionPart ParsePart(string str)
 		{
 			if (str.Length == 0)
 				throw new CriteriaExpressionParseException("Empty expression part.");
@@ -171,6 +171,12 @@ public class Expression
 
 	public void Validate()
 	{
+		foreach (IExpressionPart part in Parts)
+		{
+			if (part is ExpressionTarget t && !t.Target.IsAllowedAsTarget())
+				throw new CriteriaExpressionParseException($"Target type '{t.Target}' is not allowed inside an expression.");
+		}
+
 		if (Parts.Count % 2 == 0)
 			throw new CriteriaExpressionParseException("Expression must consist of an uneven amount of parts.");
 
@@ -238,6 +244,29 @@ public class Expression
 				CustomLeaderboardCriteriaType.LeviathanKills => targetCollection.LeviathanKills,
 				CustomLeaderboardCriteriaType.OrbKills => targetCollection.OrbKills,
 				CustomLeaderboardCriteriaType.ThornKills => targetCollection.ThornKills,
+				CustomLeaderboardCriteriaType.Skull1sAlive => targetCollection.Skull1sAlive,
+				CustomLeaderboardCriteriaType.Skull2sAlive => targetCollection.Skull2sAlive,
+				CustomLeaderboardCriteriaType.Skull3sAlive => targetCollection.Skull3sAlive,
+				CustomLeaderboardCriteriaType.Skull4sAlive => targetCollection.Skull4sAlive,
+				CustomLeaderboardCriteriaType.SpiderlingsAlive => targetCollection.SpiderlingsAlive,
+				CustomLeaderboardCriteriaType.SpiderEggsAlive => targetCollection.SpiderEggsAlive,
+				CustomLeaderboardCriteriaType.Squid1sAlive => targetCollection.Squid1sAlive,
+				CustomLeaderboardCriteriaType.Squid2sAlive => targetCollection.Squid2sAlive,
+				CustomLeaderboardCriteriaType.Squid3sAlive => targetCollection.Squid3sAlive,
+				CustomLeaderboardCriteriaType.CentipedesAlive => targetCollection.CentipedesAlive,
+				CustomLeaderboardCriteriaType.GigapedesAlive => targetCollection.GigapedesAlive,
+				CustomLeaderboardCriteriaType.GhostpedesAlive => targetCollection.GhostpedesAlive,
+				CustomLeaderboardCriteriaType.Spider1sAlive => targetCollection.Spider1sAlive,
+				CustomLeaderboardCriteriaType.Spider2sAlive => targetCollection.Spider2sAlive,
+				CustomLeaderboardCriteriaType.LeviathansAlive => targetCollection.LeviathansAlive,
+				CustomLeaderboardCriteriaType.OrbsAlive => targetCollection.OrbsAlive,
+				CustomLeaderboardCriteriaType.ThornsAlive => targetCollection.ThornsAlive,
+				CustomLeaderboardCriteriaType.DeathType => targetCollection.DeathType,
+				CustomLeaderboardCriteriaType.Time => targetCollection.Time,
+				CustomLeaderboardCriteriaType.LevelUpTime2 => targetCollection.LevelUpTime2,
+				CustomLeaderboardCriteriaType.LevelUpTime3 => targetCollection.LevelUpTime3,
+				CustomLeaderboardCriteriaType.LevelUpTime4 => targetCollection.LevelUpTime4,
+				CustomLeaderboardCriteriaType.EnemiesAlive => targetCollection.EnemiesAlive,
 				_ => throw new InvalidEnumConversionException(target.Target),
 			};
 		}

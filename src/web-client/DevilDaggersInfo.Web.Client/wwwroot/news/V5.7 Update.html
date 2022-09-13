@@ -25,6 +25,12 @@
 	<li class="list-disc">Daggers hit</li>
 	<li class="list-disc">Homing stored</li>
 	<li class="list-disc">Homing eaten</li>
+	<li class="list-disc">Death type</li>
+	<li class="list-disc">Time</li>
+	<li class="list-disc">Level 2 upgrade time</li>
+	<li class="list-disc">Level 3 upgrade time</li>
+	<li class="list-disc">Level 4 upgrade time</li>
+	<li class="list-disc">Total enemies alive</li>
 	<li class="list-disc">Skull I kills</li>
 	<li class="list-disc">Skull II kills</li>
 	<li class="list-disc">Skull III kills</li>
@@ -42,6 +48,23 @@
 	<li class="list-disc">Leviathan kills</li>
 	<li class="list-disc">Orb kills</li>
 	<li class="list-disc">Thorn kills</li>
+	<li class="list-disc">Skull Is alive</li>
+	<li class="list-disc">Skull IIs alive</li>
+	<li class="list-disc">Skull IIIs alive</li>
+	<li class="list-disc">Skull IVs alive</li>
+	<li class="list-disc">Spiderlings alive</li>
+	<li class="list-disc">Spider Eggs alive</li>
+	<li class="list-disc">Squid Is alive</li>
+	<li class="list-disc">Squid IIs alive</li>
+	<li class="list-disc">Squid IIIs alive</li>
+	<li class="list-disc">Centipedes alive</li>
+	<li class="list-disc">Gigapedes alive</li>
+	<li class="list-disc">Ghostpedes alive</li>
+	<li class="list-disc">Spider Is alive</li>
+	<li class="list-disc">Spider IIs alive</li>
+	<li class="list-disc">Leviathans alive</li>
+	<li class="list-disc">Orbs alive</li>
+	<li class="list-disc">Thorns alive</li>
 </ul>
 
 <p class="para">
@@ -51,6 +74,7 @@
 <ul class="pl-4">
 	<li class="list-disc">Any (default)</li>
 	<li class="list-disc">Equal</li>
+	<li class="list-disc">Not equal</li>
 	<li class="list-disc">Less than</li>
 	<li class="list-disc">Greater than</li>
 	<li class="list-disc">Less than or equal</li>
@@ -65,7 +89,7 @@
 <ul class="pl-4">
 	<li class="list-disc">
 		<ul class="pl-4">
-			<li>Daggers fired must be less than or equal to Gems collected + 2</li>
+			<li>Daggers fired must be less than or equal to gems collected + 2</li>
 		</ul>
 		<ul class="pl-4">
 			<li>Skull II kills must be greater than or equal to 3</li>
@@ -79,6 +103,19 @@
 			<li>Centipede kills must be equal to 1</li>
 		</ul>
 	</li>
+</ul>
+
+<p class="para">
+	There are some exceptions for the criteria system:
+</p>
+
+<ul class="pl-4">
+	<li>Death type can only use the = and != operator.</li>
+	<li>Time can only use the &lt;, &gt;, &lt;=, and &gt;= operators.</li>
+	<li>You cannot target death types in another expression such as "gems must be equal to death type".</li>
+	<li>You cannot target times in another expression such as "gems must be greater than level 4 time".</li>
+	<li>You cannot use targets inside the death type expression such as "death type must be equal to gems".</li>
+	<li>You cannot use targets inside the time expressions such as "time must be greater than gems".</li>
 </ul>
 
 <h3 class="text-red text-xl pt-4 pb-2 font-goethe">Enhancements</h3>

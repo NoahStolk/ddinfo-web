@@ -9,4 +9,5 @@ public enum CustomLeaderboardCriteriaOperator : byte
 	LessThanOrEqual = 4,
 	GreaterThanOrEqual = 5,
 	Modulo = 6,
+	NotEqual = 7,
 }

@@ -100,8 +100,8 @@ else
 		Criteria can be set for custom leaderboards, meaning that in order to submit a score, it has to meet all the criteria.
 	</p>
 
-	<div class="grid grid-cols-2 max-w-md">
-		<div>
+	<div class="grid gap-2 grid-cols-2 max-w-md">
+		<div class="overflow-y-scroll h-64">
 			<div class="font-bold">Types</div>
 			@foreach (CustomLeaderboardCriteriaType criteriaType in Enum.GetValues<CustomLeaderboardCriteriaType>())
 			{

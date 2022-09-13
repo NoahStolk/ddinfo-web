@@ -10,8 +10,9 @@ public static class CustomLeaderboardCriteriaOperatorExtensions
 		CustomLeaderboardCriteriaOperator.Any => "#fff",
 		CustomLeaderboardCriteriaOperator.LessThan or CustomLeaderboardCriteriaOperator.LessThanOrEqual => "#ff0",
 		CustomLeaderboardCriteriaOperator.GreaterThan or CustomLeaderboardCriteriaOperator.GreaterThanOrEqual => "#0ff",
-		CustomLeaderboardCriteriaOperator.Equal => "#f44",
+		CustomLeaderboardCriteriaOperator.Equal => "#4f4",
 		CustomLeaderboardCriteriaOperator.Modulo => "#80f",
+		CustomLeaderboardCriteriaOperator.NotEqual => "#f44",
 		_ => throw new InvalidEnumConversionException(criteriaOperator),
 	};
 }
