@@ -13,6 +13,7 @@ public static class CustomLeaderboardCriteriaOperatorExtensions
 		CustomLeaderboardCriteriaOperator.GreaterThanOrEqual => "greater than or equal to",
 		CustomLeaderboardCriteriaOperator.Modulo => "divisible by",
 		CustomLeaderboardCriteriaOperator.NotEqual => "not equal to",
+		CustomLeaderboardCriteriaOperator.Any => string.Empty,
 		_ => throw new InvalidEnumConversionException(criteriaOperator),
 	};
 
