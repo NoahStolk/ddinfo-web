@@ -175,7 +175,7 @@ Here's the list of enemy types that the survival file defines:
 
 ### Settings buffer
 
-Fixed-length buffer of 9 bytes. It was added to the game's V3.1 update which released on February 2021, specifically for spawnset and modding purposes, and is not used in the default spawnset. It only works when the header's spawn version is 5 or 6. The last value, timer start, only works on spawn version 6.
+Fixed-length buffer of 9 bytes. It was added to the game's V3.1 update which released on February 2021, specifically for practice and modding purposes, and is not used in the default spawnset. It only works when the header's spawn version is 5 or 6. The last value, timer start, only works on spawn version 6.
 
 | Binary (hex) | Data type              | Meaning              | Value |
 |--------------|------------------------|----------------------|-------|
