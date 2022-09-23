@@ -17,12 +17,12 @@ public class SpawnsWrapper : AbstractComponent
 		Rectangle spawnsMetric = Rectangle.At(0, 0, 512, 768);
 
 		_spawns = new(spawnsMetric, this);
-		_scrollbar = new(spawnsMetric with { X1 = spawnsMetric.X2, X2 = spawnsMetric.X2 + 32 }, SetScroll);
+		_scrollbar = new(spawnsMetric with { X1 = spawnsMetric.X2, X2 = spawnsMetric.X2 + 32 }, ScrollbarOnChange);
 
 		NestingContext.Add(_spawns);
 		NestingContext.Add(_scrollbar);
 
-		void SetScroll(float percentage)
+		void ScrollbarOnChange(float percentage)
 		{
 			_spawns.SetScrollOffset(new(0, (int)MathF.Round(percentage * -(StateManager.SpawnsetState.Spawnset.Spawns.Length * Spawns.SpawnEntryHeight))));
 		}

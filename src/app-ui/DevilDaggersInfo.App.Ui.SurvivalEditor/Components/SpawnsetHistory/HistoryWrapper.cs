@@ -17,12 +17,12 @@ public class HistoryWrapper : AbstractComponent
 		Rectangle historyMetric = Rectangle.At(0, 0, 480, 256);
 
 		_history = new(historyMetric, this);
-		_scrollbar = new(historyMetric with { X1 = historyMetric.X2, X2 = historyMetric.X2 + 32 }, SetScroll);
+		_scrollbar = new(historyMetric with { X1 = historyMetric.X2, X2 = historyMetric.X2 + 32 }, ScrollbarOnChange);
 
 		NestingContext.Add(_history);
 		NestingContext.Add(_scrollbar);
 
-		void SetScroll(float percentage)
+		void ScrollbarOnChange(float percentage)
 		{
 			_history.SetScrollOffset(new(0, (int)MathF.Round(percentage * -(SpawnsetHistoryManager.History.Count * History.HistoryEntryHeight))));
 		}
