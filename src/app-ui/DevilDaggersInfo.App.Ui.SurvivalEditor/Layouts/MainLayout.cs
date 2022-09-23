@@ -28,11 +28,11 @@ public class MainLayout : Layout, ISurvivalEditorMainLayout
 
 	public void SetSpawnset()
 	{
-		SpawnsWrapper.SetSpawnset();
+		SpawnsWrapper.InitializeContent();
 	}
 
 	public void SetHistory()
 	{
-		HistoryWrapper.SetHistory();
+		HistoryWrapper.InitializeContent();
 	}
 }

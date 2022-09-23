@@ -10,7 +10,7 @@ using Warp.Ui.Components;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetHistory;
 
-public class History : AbstractComponent
+public class History : ScrollContent
 {
 	private const int _scrollMultiplier = 64;
 	public const int HistoryEntryHeight = 24;
@@ -23,6 +23,8 @@ public class History : AbstractComponent
 	{
 		_historyWrapper = historyWrapper;
 	}
+
+	public override int ContentHeightInPixels => SpawnsetHistoryManager.History.Count * HistoryEntryHeight;
 
 	public override void Update(Vector2i<int> parentPosition)
 	{
@@ -65,7 +67,7 @@ public class History : AbstractComponent
 		Gl.Scissor(Metric.X1 + (int)viewportOffset.X + parentPosition.X, Root.Game.InitialWindowHeight - (Metric.Size.Y + parentPosition.Y) + (int)viewportOffset.Y, (uint)Metric.Size.X, (uint)Metric.Size.Y);
 	}
 
-	public void SetScrollOffset(Vector2i<int> scrollOffset)
+	public override void SetScrollOffset(Vector2i<int> scrollOffset)
 	{
 		NestingContext.ScrollOffset = Vector2i<int>.Clamp(scrollOffset, new(0, -_historyComponents.Count * HistoryEntryHeight + Metric.Size.Y), default);
 	}

@@ -1,3 +1,4 @@
+using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Spawns;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
@@ -9,7 +10,7 @@ using Warp.Ui.Components;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetSpawns;
 
-public class Spawns : AbstractComponent
+public class Spawns : ScrollContent
 {
 	private const int _scrollMultiplier = 64;
 	public const int SpawnEntryHeight = 24;
@@ -22,6 +23,8 @@ public class Spawns : AbstractComponent
 	{
 		_spawnsWrapper = spawnsWrapper;
 	}
+
+	public override int ContentHeightInPixels => StateManager.SpawnsetState.Spawnset.Spawns.Length * SpawnEntryHeight;
 
 	public override void Update(Vector2i<int> parentPosition)
 	{
@@ -36,7 +39,7 @@ public class Spawns : AbstractComponent
 			_spawnsWrapper.SetScroll(scroll * _scrollMultiplier);
 	}
 
-	public void SetScrollOffset(Vector2i<int> scrollOffset)
+	public override void SetScrollOffset(Vector2i<int> scrollOffset)
 	{
 		NestingContext.ScrollOffset = Vector2i<int>.Clamp(scrollOffset, new(0, -_spawnComponents.Count * SpawnEntryHeight + Metric.Size.Y), default);
 	}
