@@ -1,9 +1,10 @@
 using DevilDaggersInfo.App.Ui.Base;
 using Warp.Ui;
+using Warp.Ui.Components;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetSpawns;
 
-public sealed class SpawnsWrapper : ScrollViewer<SpawnsWrapper, Spawns>
+public sealed class SpawnsWrapper : AbstractScrollViewer<SpawnsWrapper, Spawns>
 {
 	public SpawnsWrapper(Rectangle metric)
 		: base(metric)

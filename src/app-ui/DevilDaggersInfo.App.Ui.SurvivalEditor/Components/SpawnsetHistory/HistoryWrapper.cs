@@ -1,9 +1,10 @@
 using DevilDaggersInfo.App.Ui.Base;
 using Warp.Ui;
+using Warp.Ui.Components;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetHistory;
 
-public sealed class HistoryWrapper : ScrollViewer<HistoryWrapper, History>
+public sealed class HistoryWrapper : AbstractScrollViewer<HistoryWrapper, History>
 {
 	public HistoryWrapper(Rectangle metric)
 		: base(metric)

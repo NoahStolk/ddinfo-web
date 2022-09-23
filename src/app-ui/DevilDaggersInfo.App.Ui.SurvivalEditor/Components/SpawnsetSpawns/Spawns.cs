@@ -1,4 +1,3 @@
-using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Spawns;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
@@ -8,7 +7,7 @@ using Warp.Ui.Components;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetSpawns;
 
-public class Spawns : ScrollContent<Spawns, SpawnsWrapper>
+public class Spawns : AbstractScrollContent<Spawns, SpawnsWrapper>
 {
 	public const int SpawnEntryHeight = 24;
 

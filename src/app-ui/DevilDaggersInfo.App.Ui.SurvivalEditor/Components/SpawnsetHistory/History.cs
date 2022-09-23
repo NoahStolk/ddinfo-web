@@ -8,7 +8,7 @@ using Warp.Ui.Components;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetHistory;
 
-public class History : ScrollContent<History, HistoryWrapper>
+public class History : AbstractScrollContent<History, HistoryWrapper>
 {
 	public const int HistoryEntryHeight = 24;
 
