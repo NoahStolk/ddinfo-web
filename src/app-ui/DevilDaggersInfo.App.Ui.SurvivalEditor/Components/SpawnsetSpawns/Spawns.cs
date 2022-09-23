@@ -3,66 +3,23 @@ using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Spawns;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using Silk.NET.OpenGL;
-using Warp;
-using Warp.Extensions;
 using Warp.Ui;
 using Warp.Ui.Components;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetSpawns;
 
-public class Spawns : ScrollContent
+public class Spawns : ScrollContent<Spawns, SpawnsWrapper>
 {
-	private const int _scrollMultiplier = 64;
 	public const int SpawnEntryHeight = 24;
 
-	private readonly SpawnsWrapper _spawnsWrapper;
 	private readonly List<AbstractComponent> _spawnComponents = new();
 
 	public Spawns(Rectangle metric, SpawnsWrapper spawnsWrapper)
-		: base(metric)
+		: base(metric, spawnsWrapper)
 	{
-		_spawnsWrapper = spawnsWrapper;
 	}
 
-	public override int ContentHeightInPixels => StateManager.SpawnsetState.Spawnset.Spawns.Length * SpawnEntryHeight;
-
-	public override void Update(Vector2i<int> parentPosition)
-	{
-		base.Update(parentPosition);
-
-		bool hoverWithoutBlock = Metric.Contains(MouseUiContext.MousePosition.RoundToVector2Int32() - parentPosition);
-		if (!hoverWithoutBlock)
-			return;
-
-		int scroll = Input.GetScroll();
-		if (scroll != 0)
-			_spawnsWrapper.SetScroll(scroll * _scrollMultiplier);
-	}
-
-	public override void SetScrollOffset(Vector2i<int> scrollOffset)
-	{
-		NestingContext.ScrollOffset = Vector2i<int>.Clamp(scrollOffset, new(0, -_spawnComponents.Count * SpawnEntryHeight + Metric.Size.Y), default);
-	}
-
-	public void SetSpawnset()
-	{
-		foreach (AbstractComponent component in _spawnComponents)
-			NestingContext.Remove(component);
-
-		_spawnComponents.Clear();
-
-		NestingContext.ScrollOffset = default;
-
-		int i = 0;
-		foreach (EditableSpawn spawn in EditSpawnContext.GetFrom(StateManager.SpawnsetState.Spawnset))
-		{
-			SpawnEntry spawnEntry = new(Rectangle.At(0, i++ * SpawnEntryHeight, 512, SpawnEntryHeight), spawn);
-			_spawnComponents.Add(spawnEntry);
-		}
-
-		foreach (AbstractComponent component in _spawnComponents)
-			NestingContext.Add(component);
-	}
+	public override int ContentHeightInPixels => _spawnComponents.Count * SpawnEntryHeight;
 
 	public override void Render(Vector2i<int> parentPosition)
 	{
@@ -90,5 +47,25 @@ public class Spawns : ScrollContent
 	{
 		Vector2 viewportOffset = Root.Game.ViewportOffset;
 		Gl.Scissor(Metric.X1 + (int)viewportOffset.X + parentPosition.X, Root.Game.InitialWindowHeight - (Metric.Size.Y + parentPosition.Y) + (int)viewportOffset.Y, (uint)Metric.Size.X, (uint)Metric.Size.Y);
+	}
+
+	public void SetSpawnset()
+	{
+		foreach (AbstractComponent component in _spawnComponents)
+			NestingContext.Remove(component);
+
+		_spawnComponents.Clear();
+
+		NestingContext.ScrollOffset = default;
+
+		int i = 0;
+		foreach (EditableSpawn spawn in EditSpawnContext.GetFrom(StateManager.SpawnsetState.Spawnset))
+		{
+			SpawnEntry spawnEntry = new(Rectangle.At(0, i++ * SpawnEntryHeight, 512, SpawnEntryHeight), spawn);
+			_spawnComponents.Add(spawnEntry);
+		}
+
+		foreach (AbstractComponent component in _spawnComponents)
+			NestingContext.Add(component);
 	}
 }

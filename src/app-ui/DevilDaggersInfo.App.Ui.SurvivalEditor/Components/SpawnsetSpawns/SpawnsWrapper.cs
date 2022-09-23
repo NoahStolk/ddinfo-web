@@ -3,7 +3,7 @@ using Warp.Ui;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetSpawns;
 
-public sealed class SpawnsWrapper : ScrollViewer<Spawns>
+public sealed class SpawnsWrapper : ScrollViewer<SpawnsWrapper, Spawns>
 {
 	public SpawnsWrapper(Rectangle metric)
 		: base(metric)
@@ -15,11 +15,6 @@ public sealed class SpawnsWrapper : ScrollViewer<Spawns>
 
 		NestingContext.Add(Content);
 		NestingContext.Add(Scrollbar);
-
-		void ScrollbarOnChange(float percentage)
-		{
-			Content.SetScrollOffset(new(0, (int)MathF.Round(percentage * -Content.ContentHeightInPixels)));
-		}
 	}
 
 	protected override Scrollbar Scrollbar { get; }
@@ -27,8 +22,8 @@ public sealed class SpawnsWrapper : ScrollViewer<Spawns>
 
 	public override void InitializeContent()
 	{
-		base.InitializeContent();
-
 		Content.SetSpawnset();
+
+		base.InitializeContent();
 	}
 }

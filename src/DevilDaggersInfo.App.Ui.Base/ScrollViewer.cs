@@ -5,8 +5,9 @@ using Warp.Ui.Components;
 namespace DevilDaggersInfo.App.Ui.Base;
 
 // TODO: Move to Warp.Ui.
-public abstract class ScrollViewer<T> : AbstractComponent
-	where T : ScrollContent
+public abstract class ScrollViewer<TSelf, TContent> : AbstractComponent
+	where TSelf : ScrollViewer<TSelf, TContent>
+	where TContent : ScrollContent<TContent, TSelf>
 {
 	protected ScrollViewer(Rectangle metric)
 		: base(metric)
@@ -14,7 +15,12 @@ public abstract class ScrollViewer<T> : AbstractComponent
 	}
 
 	protected abstract Scrollbar Scrollbar { get; }
-	protected abstract T Content { get; }
+	protected abstract TContent Content { get; }
+
+	protected void ScrollbarOnChange(float percentage)
+	{
+		Content.SetScrollOffset(new(0, (int)MathF.Round(percentage * -Content.ContentHeightInPixels)));
+	}
 
 	public virtual void InitializeContent()
 	{

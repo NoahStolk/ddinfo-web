@@ -3,7 +3,7 @@ using Warp.Ui;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetHistory;
 
-public sealed class HistoryWrapper : ScrollViewer<History>
+public sealed class HistoryWrapper : ScrollViewer<HistoryWrapper, History>
 {
 	public HistoryWrapper(Rectangle metric)
 		: base(metric)
@@ -15,11 +15,6 @@ public sealed class HistoryWrapper : ScrollViewer<History>
 
 		NestingContext.Add(Content);
 		NestingContext.Add(Scrollbar);
-
-		void ScrollbarOnChange(float percentage)
-		{
-			Content.SetScrollOffset(new(0, (int)MathF.Round(percentage * -Content.ContentHeightInPixels)));
-		}
 	}
 
 	protected override Scrollbar Scrollbar { get; }
@@ -27,8 +22,8 @@ public sealed class HistoryWrapper : ScrollViewer<History>
 
 	public override void InitializeContent()
 	{
-		base.InitializeContent();
-
 		Content.SetHistory();
+
+		base.InitializeContent();
 	}
 }

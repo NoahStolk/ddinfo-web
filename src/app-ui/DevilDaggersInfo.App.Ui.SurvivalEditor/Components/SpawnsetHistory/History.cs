@@ -3,41 +3,23 @@ using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.Enums;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using Silk.NET.OpenGL;
-using Warp;
-using Warp.Extensions;
 using Warp.Ui;
 using Warp.Ui.Components;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetHistory;
 
-public class History : ScrollContent
+public class History : ScrollContent<History, HistoryWrapper>
 {
-	private const int _scrollMultiplier = 64;
 	public const int HistoryEntryHeight = 24;
 
-	private readonly HistoryWrapper _historyWrapper;
 	private readonly List<AbstractComponent> _historyComponents = new();
 
 	public History(Rectangle metric, HistoryWrapper historyWrapper)
-		: base(metric)
+		: base(metric, historyWrapper)
 	{
-		_historyWrapper = historyWrapper;
 	}
 
-	public override int ContentHeightInPixels => SpawnsetHistoryManager.History.Count * HistoryEntryHeight;
-
-	public override void Update(Vector2i<int> parentPosition)
-	{
-		base.Update(parentPosition);
-
-		bool hoverWithoutBlock = Metric.Contains(MouseUiContext.MousePosition.RoundToVector2Int32() - parentPosition);
-		if (!hoverWithoutBlock)
-			return;
-
-		int scroll = Input.GetScroll();
-		if (scroll != 0)
-			_historyWrapper.SetScroll(scroll * _scrollMultiplier);
-	}
+	public override int ContentHeightInPixels => _historyComponents.Count * HistoryEntryHeight;
 
 	public override void Render(Vector2i<int> parentPosition)
 	{
@@ -65,11 +47,6 @@ public class History : ScrollContent
 	{
 		Vector2 viewportOffset = Root.Game.ViewportOffset;
 		Gl.Scissor(Metric.X1 + (int)viewportOffset.X + parentPosition.X, Root.Game.InitialWindowHeight - (Metric.Size.Y + parentPosition.Y) + (int)viewportOffset.Y, (uint)Metric.Size.X, (uint)Metric.Size.Y);
-	}
-
-	public override void SetScrollOffset(Vector2i<int> scrollOffset)
-	{
-		NestingContext.ScrollOffset = Vector2i<int>.Clamp(scrollOffset, new(0, -_historyComponents.Count * HistoryEntryHeight + Metric.Size.Y), default);
 	}
 
 	public void SetHistory()
