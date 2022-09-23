@@ -4,7 +4,7 @@ using Warp.Numerics;
 using Warp.Ui;
 using Warp.Ui.Components;
 
-namespace DevilDaggersInfo.App.Ui.Base;
+namespace DevilDaggersInfo.App.Ui.Base.Components;
 
 public class Scrollbar : AbstractScrollbar
 {
