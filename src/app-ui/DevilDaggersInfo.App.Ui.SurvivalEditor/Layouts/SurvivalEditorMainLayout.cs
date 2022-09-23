@@ -7,9 +7,9 @@ using Warp.Ui;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Layouts;
 
-public class MainLayout : Layout, ISurvivalEditorMainLayout
+public class SurvivalEditorMainLayout : Layout, ISurvivalEditorMainLayout
 {
-	public MainLayout()
+	public SurvivalEditorMainLayout()
 		: base(new(0, 0, 1920, 1080))
 	{
 		Menu menu = new(new(0, 0, 1920, 24));

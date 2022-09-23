@@ -16,8 +16,8 @@ public class Menu : AbstractComponent
 		List<AbstractComponent> fileMenuButtons = new()
 		{
 			new Button.MenuButton(Rectangle.At(0, 24, 96, 24), () => StateManager.SetSpawnset("(untitled)", SpawnsetBinary.CreateDefault()), "New"),
-			new Button.MenuButton(Rectangle.At(0, 48, 96, 24), () => Root.Game.ActiveLayout = Root.Game.OpenLayout, "Open"),
-			new Button.MenuButton(Rectangle.At(0, 72, 96, 24), () => Root.Game.ActiveLayout = Root.Game.SaveLayout, "Save"),
+			new Button.MenuButton(Rectangle.At(0, 48, 96, 24), () => Root.Game.ActiveLayout = Root.Game.SurvivalEditorOpenLayout, "Open"),
+			new Button.MenuButton(Rectangle.At(0, 72, 96, 24), () => Root.Game.ActiveLayout = Root.Game.SurvivalEditorSaveLayout, "Save"),
 			new Button.MenuButton(Rectangle.At(0, 96, 96, 24), () => Root.Game.ActiveLayout = Root.Game.MainLayout, "Exit"),
 		};
 
