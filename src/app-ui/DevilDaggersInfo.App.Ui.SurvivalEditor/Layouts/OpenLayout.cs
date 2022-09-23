@@ -19,7 +19,7 @@ public class OpenLayout : Layout
 	public OpenLayout()
 		: base(new(0, 0, 1920, 1080))
 	{
-		_backButton = new(Rectangle.At(0, 0, 32, 32), () => Root.Game.ActiveLayout = Root.Game.MainLayout, Color.Black, Color.White, Color.White, Color.Red, "X", TextAlign.Left, 2, false);
+		_backButton = new(Rectangle.At(0, 0, 32, 32), () => Root.Game.ActiveLayout = Root.Game.SurvivalEditorMainLayout, Color.Black, Color.White, Color.White, Color.Red, "X", TextAlign.Left, 2, false);
 		_pathTextInput = new(Rectangle.At(0, 32, 1024, 32), false, Color.Black, Color.Gray(0.75f), Color.Gray(0.25f), Color.White, Color.White, Color.Green, Color.Gray(0.5f), 8, 2);
 
 		NestingContext.Add(_backButton);
@@ -54,7 +54,7 @@ public class OpenLayout : Layout
 		if (SpawnsetBinary.TryParse(bytes, out SpawnsetBinary? spawnsetBinary))
 		{
 			StateManager.SetSpawnset(Path.GetFileName(filePath), spawnsetBinary);
-			Root.Game.ActiveLayout = Root.Game.MainLayout;
+			Root.Game.ActiveLayout = Root.Game.SurvivalEditorMainLayout;
 		}
 		else
 		{

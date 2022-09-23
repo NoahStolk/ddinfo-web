@@ -20,7 +20,7 @@ public class SaveLayout : Layout
 	public SaveLayout()
 		: base(new(0, 0, 1920, 1080))
 	{
-		_backButton = new(Rectangle.At(0, 0, 32, 32), () => Root.Game.ActiveLayout = Root.Game.MainLayout, Color.Black, Color.White, Color.White, Color.Red, "X", TextAlign.Left, 2, false);
+		_backButton = new(Rectangle.At(0, 0, 32, 32), () => Root.Game.ActiveLayout = Root.Game.SurvivalEditorMainLayout, Color.Black, Color.White, Color.White, Color.Red, "X", TextAlign.Left, 2, false);
 		_pathTextInput = new(Rectangle.At(0, 32, 1024, 32), false, Color.Black, Color.Gray(0.75f), Color.Gray(0.25f), Color.White, Color.White, Color.Green, Color.Gray(0.5f), 8, 2);
 		_fileTextInput = new(Rectangle.At(0, 64, 512, 32), false, Color.Black, Color.Gray(0.75f), Color.Gray(0.25f), Color.White, Color.White, Color.Green, Color.Gray(0.5f), 8, 2);
 		_saveButton = new(Rectangle.At(512, 64, 128, 32), () => SaveSpawnset(Path.Combine(_path, _fileTextInput.Value.ToString())), Color.Black, Color.White, Color.White, Color.Red, "Save", TextAlign.Left, 2, false);

@@ -24,9 +24,15 @@ public interface IDependencyContainer
 
 	#endregion Main dependencies
 
+	#region Main screen
+
+	Layout MainLayout { get; }
+
+	#endregion Main screen
+
 	#region DDSE
 
-	ISurvivalEditorMainLayout MainLayout { get; }
+	ISurvivalEditorMainLayout SurvivalEditorMainLayout { get; }
 	Layout OpenLayout { get; }
 	Layout SaveLayout { get; }
 

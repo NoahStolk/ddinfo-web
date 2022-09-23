@@ -14,7 +14,7 @@ public static class StateManager
 	{
 		SpawnsetState = new(spawnsetName, spawnsetBinary);
 
-		Root.Game.MainLayout.SetSpawnset();
+		Root.Game.SurvivalEditorMainLayout.SetSpawnset();
 		SpawnsetHistoryManager.Reset();
 	}
 
@@ -22,7 +22,7 @@ public static class StateManager
 	{
 		SpawnsetState = SpawnsetState with { Spawnset = spawnsetBinary };
 
-		Root.Game.MainLayout.SetSpawnset();
+		Root.Game.SurvivalEditorMainLayout.SetSpawnset();
 	}
 
 	public static void SetArenaTool(ArenaTool arenaTool)

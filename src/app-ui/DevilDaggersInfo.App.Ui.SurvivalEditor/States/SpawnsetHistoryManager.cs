@@ -39,7 +39,7 @@ public static class SpawnsetHistoryManager
 
 		Index = _history.Count - 1;
 
-		Root.Game.MainLayout.SetHistory();
+		Root.Game.SurvivalEditorMainLayout.SetHistory();
 
 		// TODO: Set scrollbar to end.
 	}
@@ -52,7 +52,7 @@ public static class SpawnsetHistoryManager
 		Index--;
 		StateManager.SetSpawnset(_history[Index].Spawnset.DeepCopy());
 
-		Root.Game.MainLayout.SetHistory();
+		Root.Game.SurvivalEditorMainLayout.SetHistory();
 	}
 
 	public static void Redo()
@@ -63,6 +63,6 @@ public static class SpawnsetHistoryManager
 		Index++;
 		StateManager.SetSpawnset(_history[Index].Spawnset.DeepCopy());
 
-		Root.Game.MainLayout.SetHistory();
+		Root.Game.SurvivalEditorMainLayout.SetHistory();
 	}
 }
