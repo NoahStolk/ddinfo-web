@@ -1,7 +1,6 @@
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.SurvivalEditor;
 using System.Numerics;
-using Warp.Ui;
 
 namespace DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 
@@ -14,7 +13,7 @@ public interface IDependencyContainer
 
 	string? CursorText { get; set; }
 
-	ILayout? ActiveLayout { get; set; }
+	IExtendedLayout? ActiveLayout { get; set; }
 
 	#region Main dependencies
 
@@ -26,15 +25,15 @@ public interface IDependencyContainer
 
 	#region Main screen
 
-	Layout MainLayout { get; }
+	IExtendedLayout MainLayout { get; }
 
 	#endregion Main screen
 
 	#region DDSE
 
 	ISurvivalEditorMainLayout SurvivalEditorMainLayout { get; }
-	Layout SurvivalEditorOpenLayout { get; }
-	Layout SurvivalEditorSaveLayout { get; }
+	IExtendedLayout SurvivalEditorOpenLayout { get; }
+	IExtendedLayout SurvivalEditorSaveLayout { get; }
 
 	#endregion DDSE
 }

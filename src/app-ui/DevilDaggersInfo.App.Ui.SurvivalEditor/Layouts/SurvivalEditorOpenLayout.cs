@@ -1,3 +1,4 @@
+using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.Enums;
@@ -7,7 +8,7 @@ using Warp.Ui;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Layouts;
 
-public class SurvivalEditorOpenLayout : Layout
+public class SurvivalEditorOpenLayout : Layout, IExtendedLayout
 {
 	private readonly Button _backButton;
 	private readonly TextInput _pathTextInput;
@@ -25,6 +26,14 @@ public class SurvivalEditorOpenLayout : Layout
 		NestingContext.Add(_backButton);
 		NestingContext.Add(_pathTextInput);
 		SetComponentsFromPath(_path);
+	}
+
+	public void Update()
+	{
+	}
+
+	public void Render()
+	{
 	}
 
 	private void SetComponentsFromPath(string path)

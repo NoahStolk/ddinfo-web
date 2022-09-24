@@ -1,8 +1,6 @@
-using Warp.Ui;
-
 namespace DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.SurvivalEditor;
 
-public interface ISurvivalEditorMainLayout : ILayout
+public interface ISurvivalEditorMainLayout : IExtendedLayout
 {
 	void SetSpawnset();
 
