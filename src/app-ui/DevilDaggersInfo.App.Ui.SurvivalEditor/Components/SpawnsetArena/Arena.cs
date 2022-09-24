@@ -46,7 +46,7 @@ public class Arena : AbstractComponent
 			return;
 		}
 
-		Root.Game.CursorText = $"{StateManager.SpawnsetState.Spawnset.ArenaTiles[x, y]}\n{{{x}, {y}}}";
+		Root.Game.TooltipText = $"{StateManager.SpawnsetState.Spawnset.ArenaTiles[x, y]}\n{{{x}, {y}}}";
 		int scroll = Input.GetScroll();
 		if (scroll != 0)
 		{

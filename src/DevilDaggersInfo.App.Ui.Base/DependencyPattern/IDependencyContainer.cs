@@ -11,7 +11,7 @@ public interface IDependencyContainer
 	int InitialWindowWidth { get; }
 	int InitialWindowHeight { get; }
 
-	string? CursorText { get; set; }
+	string? TooltipText { get; set; }
 
 	IExtendedLayout? ActiveLayout { get; set; }
 
