@@ -4,6 +4,7 @@ namespace DevilDaggersInfo.App.Core.AssetInterop;
 
 public static class TextureConverter
 {
+	// TODO: Move duplicate code to Core.Mod.
 	public static Texture ToWarpTexture(byte[] ddTextureBuffer)
 	{
 		const ushort expectedHeader = 16401;

@@ -1,5 +1,5 @@
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
-using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.SurvivalEditor;
+using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts.SurvivalEditor;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetArena;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetHistory;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetMenu;

@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.SurvivalEditor;
+namespace DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts.SurvivalEditor;
 
 public interface ISurvivalEditorMainLayout : IExtendedLayout
 {

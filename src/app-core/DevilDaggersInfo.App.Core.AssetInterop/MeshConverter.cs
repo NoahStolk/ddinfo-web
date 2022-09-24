@@ -6,6 +6,7 @@ namespace DevilDaggersInfo.App.Core.AssetInterop;
 
 public static class MeshConverter
 {
+	// TODO: Move duplicate code to Core.Mod.
 	public static Mesh ToWarpMesh(byte[] ddMeshBuffer)
 	{
 		using MemoryStream ms = new(ddMeshBuffer);

@@ -1,5 +1,6 @@
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion;
-using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.SurvivalEditor;
+using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts;
+using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts.SurvivalEditor;
 using System.Numerics;
 
 namespace DevilDaggersInfo.App.Ui.Base.DependencyPattern;
@@ -25,7 +26,7 @@ public interface IDependencyContainer
 
 	#region Main screen
 
-	IExtendedLayout MainLayout { get; }
+	IMainLayout MainLayout { get; }
 
 	#endregion Main screen
 
