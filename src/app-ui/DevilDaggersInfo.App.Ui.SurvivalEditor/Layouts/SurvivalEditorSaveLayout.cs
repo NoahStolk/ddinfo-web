@@ -37,7 +37,15 @@ public class SurvivalEditorSaveLayout : Layout, IExtendedLayout
 	{
 	}
 
+	public void Render3d()
+	{
+	}
+
 	public void Render()
+	{
+	}
+
+	public void RenderText()
 	{
 	}
 
