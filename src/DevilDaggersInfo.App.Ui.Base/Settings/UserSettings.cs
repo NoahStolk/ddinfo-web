@@ -1,6 +1,6 @@
-namespace DevilDaggersInfo.App.Tools.States;
+namespace DevilDaggersInfo.App.Ui.Base.Settings;
 
-public static class ConfigStateManager
+public static class UserSettings
 {
 	public static string DevilDaggersInstallationDirectory { get; set; } = string.Empty;
 }
