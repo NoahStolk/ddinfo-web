@@ -2,7 +2,6 @@ using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.States;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
-using DevilDaggersInfo.Core.Spawnset;
 using Warp.Ui;
 using Warp.Ui.Components;
 

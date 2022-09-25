@@ -9,6 +9,7 @@ public interface IDependencyContainer
 {
 	Vector2 ViewportOffset { get; }
 	Vector2 UiScale { get; }
+	Vector2 MousePositionWithOffset { get; }
 
 	int InitialWindowWidth { get; }
 	int InitialWindowHeight { get; }
