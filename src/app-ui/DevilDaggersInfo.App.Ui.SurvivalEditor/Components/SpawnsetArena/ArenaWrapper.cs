@@ -10,7 +10,7 @@ namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetArena;
 
 public class ArenaWrapper : AbstractComponent
 {
-	private const int _arenaButtonSize = 24;
+	private const int _arenaButtonSize = 20;
 
 	public ArenaWrapper(Rectangle metric)
 		: base(metric)
@@ -20,22 +20,29 @@ public class ArenaWrapper : AbstractComponent
 
 		int buttonsOffsetX = arena.Metric.Size.X + 8;
 
-		int offset = 0;
-		foreach (float height in new[] { -1000, -1.1f, -1.01f, -1, -0.8f, -0.6f, -0.4f, -0.2f })
-			AddHeightButton(height, offset++ * _arenaButtonSize, 0);
-
-		for (int i = 0; i < 64; i++)
+		float[] heights = { -1000, -1.1f, -1.01f, -1, -0.8f, -0.6f, -0.4f, -0.2f };
+		for (int i = 0; i < heights.Length; i++)
 		{
-			int offsetX = i % 8 * _arenaButtonSize;
-			int offsetY = i / 8 * _arenaButtonSize;
-			AddHeightButton(i, offsetX, offsetY + 36);
+			float height = heights[i];
+			int offsetX = i % 4 * _arenaButtonSize;
+			int offsetY = i / 4 * _arenaButtonSize;
+			AddHeightButton(height, offsetX, offsetY);
+		}
+
+		for (int i = 0; i < 32; i++)
+		{
+			int offsetX = i % 4 * _arenaButtonSize;
+			int offsetY = i / 4 * _arenaButtonSize;
+
+			float height = i < 16 ? i : 16 + (i - 16) * 2;
+			AddHeightButton(height, offsetX, offsetY + _arenaButtonSize * 2);
 		}
 
 		const int toolButtonOffsetY = 240;
 		AddToolButton(0, toolButtonOffsetY, ArenaTool.Pencil, "P");
-		AddToolButton(24, toolButtonOffsetY, ArenaTool.Line, "L");
-		AddToolButton(48, toolButtonOffsetY, ArenaTool.Rectangle, "R");
-		AddToolButton(72, toolButtonOffsetY, ArenaTool.Bucket, "B");
+		AddToolButton(_arenaButtonSize, toolButtonOffsetY, ArenaTool.Line, "L");
+		AddToolButton(_arenaButtonSize * 2, toolButtonOffsetY, ArenaTool.Rectangle, "R");
+		AddToolButton(_arenaButtonSize * 3, toolButtonOffsetY, ArenaTool.Bucket, "B");
 
 		void AddSetting(string labelText, int y1)
 		{
