@@ -5,6 +5,11 @@ namespace DevilDaggersInfo.App.Ui.Base.States;
 
 public static class LayoutManager
 {
+	public static void ToConfigLayout()
+	{
+		Root.Game.ActiveLayout = Root.Game.ConfigLayout;
+	}
+
 	public static void ToMainLayout()
 	{
 		Root.Game.ActiveLayout = Root.Game.MainLayout;
