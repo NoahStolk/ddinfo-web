@@ -1,6 +1,7 @@
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion;
 using DevilDaggersInfo.App.Ui.Base.Enums;
+using DevilDaggersInfo.Common.Exceptions;
 using Warp.Numerics;
 using Warp.Ui;
 using Warp.Ui.Components;
@@ -16,9 +17,9 @@ public class Button : AbstractButton
 	public string Text { get; set; }
 	public TextAlign TextAlign { get; set; }
 	public int BorderSize { get; set; }
-	public bool UseSmallFont { get; set; }
+	public FontSize FontSize { get; set; }
 
-	public Button(Rectangle metric, Action onClick, Color backgroundColor, Color borderColor, Color hoverBackgroundColor, Color textColor, string text, TextAlign textAlign, int borderSize, bool useSmallFont)
+	public Button(Rectangle metric, Action onClick, Color backgroundColor, Color borderColor, Color hoverBackgroundColor, Color textColor, string text, TextAlign textAlign, int borderSize, FontSize fontSize)
 		: base(metric, onClick)
 	{
 		BackgroundColor = backgroundColor;
@@ -28,7 +29,7 @@ public class Button : AbstractButton
 		Text = text;
 		TextAlign = textAlign;
 		BorderSize = borderSize;
-		UseSmallFont = useSmallFont;
+		FontSize = fontSize;
 	}
 
 	public override void Render(Vector2i<int> parentPosition)
@@ -57,14 +58,21 @@ public class Button : AbstractButton
 			_ => throw new InvalidOperationException("Invalid text align."),
 		};
 
-		IMonoSpaceFontRenderer fontRenderer = UseSmallFont ? Root.Game.MonoSpaceSmallFontRenderer : Root.Game.MonoSpaceFontRenderer;
+		// TODO: Move to FontSize setter.
+		IMonoSpaceFontRenderer fontRenderer = FontSize switch
+		{
+			FontSize.F4X6 => Root.Game.FontRenderer4X6,
+			FontSize.F8X8 => Root.Game.FontRenderer8X8,
+			FontSize.F12X12 => Root.Game.FontRenderer12X12,
+			_ => throw new InvalidEnumConversionException(FontSize),
+		};
 		fontRenderer.Render(Vector2i<int>.One, parentPosition + textPosition, Depth + 2, TextColor, Text, TextAlign);
 	}
 
 	public class MenuButton : Button
 	{
 		public MenuButton(Rectangle metric, Action onClick, string text)
-			: base(metric, onClick, Color.Black, Color.White, Color.Gray(0.75f), Color.White, text, TextAlign.Middle, 2, false)
+			: base(metric, onClick, Color.Black, Color.White, Color.Gray(0.75f), Color.White, text, TextAlign.Middle, 2, FontSize.F12X12)
 		{
 			Depth = 102;
 			IsActive = false;
@@ -74,7 +82,7 @@ public class Button : AbstractButton
 	public class PathButton : Button
 	{
 		public PathButton(Rectangle metric, Action onClick, string text, Color textColor)
-			: base(metric, onClick, Color.Black, Color.Gray(0.7f), Color.Gray(0.4f), textColor, text, TextAlign.Left, 2, false)
+			: base(metric, onClick, Color.Black, Color.Gray(0.7f), Color.Gray(0.4f), textColor, text, TextAlign.Left, 2, FontSize.F8X8)
 		{
 		}
 	}

@@ -9,10 +9,10 @@ public sealed class SpawnsWrapper : AbstractScrollViewer<SpawnsWrapper, Spawns>
 	public SpawnsWrapper(Rectangle metric)
 		: base(metric)
 	{
-		Rectangle spawnsMetric = Rectangle.At(0, 0, 512, 768);
+		Rectangle spawnsMetric = Rectangle.At(0, 0, 384, 640);
 
 		Content = new(spawnsMetric, this);
-		Scrollbar = new(spawnsMetric with { X1 = spawnsMetric.X2, X2 = spawnsMetric.X2 + 32 }, ScrollbarOnChange);
+		Scrollbar = new(spawnsMetric with { X1 = spawnsMetric.X2, X2 = spawnsMetric.X2 + 16 }, ScrollbarOnChange);
 
 		NestingContext.Add(Content);
 		NestingContext.Add(Scrollbar);

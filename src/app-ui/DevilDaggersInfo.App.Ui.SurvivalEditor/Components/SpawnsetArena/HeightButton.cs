@@ -12,7 +12,7 @@ public class HeightButton : Button
 	private readonly Color _heightColor;
 
 	public HeightButton(Rectangle metric, Action onClick, float height)
-		: base(metric, onClick, Color.White, Color.Black, Color.Black, Color.Black, string.Empty, TextAlign.Middle, 2, false)
+		: base(metric, onClick, Color.White, Color.Black, Color.Black, Color.Black, string.Empty, TextAlign.Middle, 2, FontSize.F4X6)
 	{
 		_height = height;
 		_heightColor = TileUtils.GetColorFromHeight(height);
@@ -21,7 +21,7 @@ public class HeightButton : Button
 		HoverBackgroundColor = _heightColor.Intensify(128); // TODO: Find a better way to do this.
 		TextColor = BackgroundColor.ReadableColorForBrightness();
 		Text = height.ToString();
-		UseSmallFont = Text.Length > 2;
+		FontSize = Text.Length > 2 ? FontSize.F4X6 : FontSize.F8X8;
 	}
 
 	public override void Update(Vector2i<int> parentPosition)

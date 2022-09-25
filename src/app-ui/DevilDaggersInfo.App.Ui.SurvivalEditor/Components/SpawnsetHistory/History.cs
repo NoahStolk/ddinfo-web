@@ -8,7 +8,7 @@ namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetHistory;
 
 public class History : ScrollContent<History, HistoryWrapper>
 {
-	public const int HistoryEntryHeight = 24;
+	public const int HistoryEntryHeight = 16;
 
 	private readonly List<AbstractComponent> _historyComponents = new();
 
@@ -32,7 +32,7 @@ public class History : ScrollContent<History, HistoryWrapper>
 		{
 			States.SpawnsetHistory history = SpawnsetHistoryManager.History[i];
 			bool isActive = i == SpawnsetHistoryManager.Index;
-			Button button = new(Rectangle.At(0, i * HistoryEntryHeight, Metric.Size.X, HistoryEntryHeight), () => {}, isActive ? new(0, 127, 63, 255) : new(0, 63, 0, 255), Color.Black, isActive ? new(0, 191, 127, 255) : new(0, 127, 0, 255), Color.White, $"{Convert(history.Hash.Take(4))} {history.Change}", TextAlign.Left, 2, false);
+			Button button = new(Rectangle.At(0, i * HistoryEntryHeight, Metric.Size.X, HistoryEntryHeight), () => {}, isActive ? new(0, 127, 63, 255) : new(0, 63, 0, 255), Color.Black, isActive ? new(0, 191, 127, 255) : new(0, 127, 0, 255), Color.White, $"{Convert(history.Hash.Take(4))} {history.Change}", TextAlign.Left, 2, FontSize.F8X8);
 			_historyComponents.Add(button);
 		}
 

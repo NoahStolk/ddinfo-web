@@ -33,11 +33,11 @@ public class SpawnEntry : AbstractComponent
 
 		const byte hoverComponent = 128;
 		Color hoverAddition = new(hoverComponent, hoverComponent, hoverComponent, 255);
-		NestingContext.Add(new Button(Rectangle.At(0, 0, 128, Spawns.SpawnEntryHeight), () => {}, backgroundColor, Color.Black, backgroundColor.Intensify(hoverComponent), textColor, enemy?.Name ?? "Empty", TextAlign.Left, 2, false));
-		NestingContext.Add(new Button(Rectangle.At(128, 0, 128, Spawns.SpawnEntryHeight), () => {}, Color.Transparent, Color.Black, hoverAddition, Color.White, spawn.Delay.ToString("0.0000"), TextAlign.Right, 2, false));
-		NestingContext.Add(new Button(Rectangle.At(256, 0, 128, Spawns.SpawnEntryHeight), () => {}, Color.Transparent, Color.Black, hoverAddition, Color.White, spawn.Seconds.ToString("0.0000"), TextAlign.Right, 2, false));
-		NestingContext.Add(new Label(Rectangle.At(384, 0, 64, Spawns.SpawnEntryHeight), Color.White, spawn.NoFarmGems.ToString(), TextAlign.Right));
-		NestingContext.Add(new Label(Rectangle.At(448, 0, 64, Spawns.SpawnEntryHeight), GetColorFromHand(spawn.GemState.HandLevel), spawn.GemState.Value.ToString(), TextAlign.Right));
+		NestingContext.Add(new Button(Rectangle.At(0, 0, 96, Spawns.SpawnEntryHeight), () => {}, backgroundColor, Color.Black, backgroundColor.Intensify(hoverComponent), textColor, enemy?.Name ?? "Empty", TextAlign.Left, 2, FontSize.F8X8));
+		NestingContext.Add(new Button(Rectangle.At(96, 0, 96, Spawns.SpawnEntryHeight), () => {}, Color.Transparent, Color.Black, hoverAddition, Color.White, spawn.Delay.ToString("0.0000"), TextAlign.Right, 2, FontSize.F8X8));
+		NestingContext.Add(new Button(Rectangle.At(192, 0, 96, Spawns.SpawnEntryHeight), () => {}, Color.Transparent, Color.Black, hoverAddition, Color.White, spawn.Seconds.ToString("0.0000"), TextAlign.Right, 2, FontSize.F8X8));
+		NestingContext.Add(new Label(Rectangle.At(288, 0, 48, Spawns.SpawnEntryHeight), Color.White, spawn.NoFarmGems.ToString(), TextAlign.Right, FontSize.F8X8));
+		NestingContext.Add(new Label(Rectangle.At(336, 0, 48, Spawns.SpawnEntryHeight), GetColorFromHand(spawn.GemState.HandLevel), spawn.GemState.Value.ToString(), TextAlign.Right, FontSize.F8X8));
 
 		Color GetColorFromHand(HandLevel handLevel) => handLevel switch
 		{

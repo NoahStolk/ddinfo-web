@@ -20,10 +20,10 @@ public class SurvivalEditorMainLayout : Layout, ISurvivalEditorMainLayout
 	public SurvivalEditorMainLayout()
 		: base(Constants.Full)
 	{
-		Menu menu = new(new(0, 0, 1920, 24));
-		ArenaWrapper arenaWrapper = new(Rectangle.At(1024, 64, 864, 512));
-		_spawnsWrapper = new(Rectangle.At(0, 64, 544, 512));
-		_historyWrapper = new(Rectangle.At(1408, 824, 512, 256));
+		Menu menu = new(new(0, 0, 1024, 24));
+		ArenaWrapper arenaWrapper = new(Rectangle.At(512, 64, 512, 512));
+		_spawnsWrapper = new(Rectangle.At(0, 64, 384, 512));
+		_historyWrapper = new(Rectangle.At(768, 512, 256, 256));
 
 		NestingContext.Add(menu);
 		NestingContext.Add(arenaWrapper);

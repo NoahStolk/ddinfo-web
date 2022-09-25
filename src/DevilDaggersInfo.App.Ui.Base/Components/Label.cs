@@ -1,5 +1,7 @@
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
+using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion;
 using DevilDaggersInfo.App.Ui.Base.Enums;
+using DevilDaggersInfo.Common.Exceptions;
 using Warp.Numerics;
 using Warp.Ui;
 using Warp.Ui.Components;
@@ -10,12 +12,20 @@ public class Label : AbstractLabel
 {
 	private readonly Color _textColor;
 	private readonly TextAlign _textAlign;
+	private readonly IMonoSpaceFontRenderer _fontRenderer;
 
-	public Label(Rectangle metric, Color textColor, string text, TextAlign textAlign)
+	public Label(Rectangle metric, Color textColor, string text, TextAlign textAlign, FontSize fontSize)
 		: base(metric, text)
 	{
 		_textColor = textColor;
 		_textAlign = textAlign;
+		_fontRenderer = fontSize switch
+		{
+			FontSize.F4X6 => Root.Game.FontRenderer4X6,
+			FontSize.F8X8 => Root.Game.FontRenderer8X8,
+			FontSize.F12X12 => Root.Game.FontRenderer12X12,
+			_ => throw new InvalidEnumConversionException(fontSize),
+		};
 	}
 
 	public override void RenderText(Vector2i<int> parentPosition)
@@ -31,6 +41,6 @@ public class Label : AbstractLabel
 			_ => throw new InvalidOperationException("Invalid text align."),
 		};
 
-		Root.Game.MonoSpaceFontRenderer.Render(Vector2i<int>.One, parentPosition + textPosition, Depth + 2, _textColor, Text, _textAlign);
+		_fontRenderer.Render(Vector2i<int>.One, parentPosition + textPosition, Depth + 2, _textColor, Text, _textAlign);
 	}
 }

@@ -1,3 +1,4 @@
+using DevilDaggersInfo.App.Ui.Base.Enums;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Enums;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using Warp.Ui;
@@ -7,19 +8,19 @@ namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetArena;
 
 public class ArenaWrapper : AbstractComponent
 {
-	private const int _arenaButtonSize = 32;
+	private const int _arenaButtonSize = 24;
 
 	public ArenaWrapper(Rectangle metric)
 		: base(metric)
 	{
-		Arena arena = new(default, 12);
+		Arena arena = new(default, 6);
 		NestingContext.Add(arena);
 
-		int buttonsOffsetX = arena.Metric.Size.X + 16;
+		int buttonsOffsetX = arena.Metric.Size.X + 8;
 
 		int offset = 0;
-		foreach (float height in new [] { -1000, -1.1f, -1.01f, -1, -0.8f, -0.6f, -0.4f, -0.2f })
-			AddHeightButton(height, offset++ * 32, 0);
+		foreach (float height in new[] { -1000, -1.1f, -1.01f, -1, -0.8f, -0.6f, -0.4f, -0.2f })
+			AddHeightButton(height, offset++ * _arenaButtonSize, 0);
 
 		for (int i = 0; i < 64; i++)
 		{
@@ -28,10 +29,11 @@ public class ArenaWrapper : AbstractComponent
 			AddHeightButton(i, offsetX, offsetY + 64);
 		}
 
-		AddToolButton(0, 480, ArenaTool.Pencil, "P");
-		AddToolButton(32, 480, ArenaTool.Line, "L");
-		AddToolButton(64, 480, ArenaTool.Rectangle, "R");
-		AddToolButton(96, 480, ArenaTool.Bucket, "B");
+		const int toolButtonOffsetY = 288;
+		AddToolButton(0, toolButtonOffsetY, ArenaTool.Pencil, "P");
+		AddToolButton(24, toolButtonOffsetY, ArenaTool.Line, "L");
+		AddToolButton(48, toolButtonOffsetY, ArenaTool.Rectangle, "R");
+		AddToolButton(72, toolButtonOffsetY, ArenaTool.Bucket, "B");
 
 		void AddHeightButton(float height, int offsetX, int offsetY)
 		{
@@ -41,7 +43,7 @@ public class ArenaWrapper : AbstractComponent
 
 		void AddToolButton(int offsetX, int offsetY, ArenaTool arenaTool, string text)
 		{
-			ArenaButton button = new(Rectangle.At(buttonsOffsetX + offsetX, offsetY, _arenaButtonSize, _arenaButtonSize), () => StateManager.SetArenaTool(arenaTool), Color.Yellow, Color.Black, text, false);
+			ArenaButton button = new(Rectangle.At(buttonsOffsetX + offsetX, offsetY, _arenaButtonSize, _arenaButtonSize), () => StateManager.SetArenaTool(arenaTool), Color.Yellow, Color.Black, text, FontSize.F8X8);
 			NestingContext.Add(button);
 		}
 	}

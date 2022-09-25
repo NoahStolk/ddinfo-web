@@ -49,7 +49,7 @@ public class TextInput : AbstractTextInput
 		Root.Game.UiRenderer.RenderCenter(scale + borderVec, parentPosition + center, Depth, IsSelected ? ActiveBorderColor : BorderColor);
 		Root.Game.UiRenderer.RenderCenter(scale, parentPosition + center, Depth + 1, Hover ? HoverBackgroundColor : BackgroundColor);
 
-		int charWidth = Root.Game.MonoSpaceFontRenderer.GetCharWidthInPixels();
+		int charWidth = Root.Game.FontRenderer12X12.GetCharWidthInPixels();
 		if (CursorPositionStart == CursorPositionEnd && CursorTimer <= _cursorTimerSwitch && IsSelected)
 		{
 			int cursorPositionX = Metric.X1 + CursorPositionStart * charWidth + padding;
@@ -69,6 +69,6 @@ public class TextInput : AbstractTextInput
 
 		int padding = (int)MathF.Round((Metric.Y2 - Metric.Y1) / 4f);
 		Vector2i<int> position = new(Metric.X1 + padding, Metric.Y1 + padding);
-		Root.Game.MonoSpaceFontRenderer.Render(Vector2i<int>.One, parentPosition + position, Depth + 3, TextColor, Value, TextAlign.Left);
+		Root.Game.FontRenderer12X12.Render(Vector2i<int>.One, parentPosition + position, Depth + 3, TextColor, Value, TextAlign.Left);
 	}
 }

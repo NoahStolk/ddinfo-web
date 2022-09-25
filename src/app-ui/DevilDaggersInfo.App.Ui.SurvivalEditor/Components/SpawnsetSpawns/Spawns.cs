@@ -8,7 +8,7 @@ namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetSpawns;
 
 public class Spawns : ScrollContent<Spawns, SpawnsWrapper>
 {
-	public const int SpawnEntryHeight = 24;
+	public const int SpawnEntryHeight = 16;
 
 	private readonly List<AbstractComponent> _spawnComponents = new();
 
@@ -31,7 +31,7 @@ public class Spawns : ScrollContent<Spawns, SpawnsWrapper>
 		int i = 0;
 		foreach (EditableSpawn spawn in EditSpawnContext.GetFrom(StateManager.SpawnsetState.Spawnset))
 		{
-			SpawnEntry spawnEntry = new(Rectangle.At(0, i++ * SpawnEntryHeight, 512, SpawnEntryHeight), spawn);
+			SpawnEntry spawnEntry = new(Rectangle.At(0, i++ * SpawnEntryHeight, 384, SpawnEntryHeight), spawn);
 			_spawnComponents.Add(spawnEntry);
 		}
 

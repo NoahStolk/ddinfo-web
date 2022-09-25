@@ -19,8 +19,9 @@ public interface IDependencyContainer
 	#region Main dependencies
 
 	IUiRenderer UiRenderer { get; }
-	IMonoSpaceFontRenderer MonoSpaceFontRenderer { get; }
-	IMonoSpaceFontRenderer MonoSpaceSmallFontRenderer { get; }
+	IMonoSpaceFontRenderer FontRenderer12X12 { get; }
+	IMonoSpaceFontRenderer FontRenderer8X8 { get; }
+	IMonoSpaceFontRenderer FontRenderer4X6 { get; }
 
 	#endregion Main dependencies
 

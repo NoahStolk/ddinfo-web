@@ -6,8 +6,8 @@ namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetArena;
 
 public class ArenaButton : Button
 {
-	public ArenaButton(Rectangle metric, Action onClick, Color backgroundColor, Color textColor, string text, bool useSmallFont)
-		: base(metric, onClick, backgroundColor, Color.Black, Color.Blue, textColor, text, TextAlign.Middle, 2, useSmallFont)
+	public ArenaButton(Rectangle metric, Action onClick, Color backgroundColor, Color textColor, string text, FontSize fontSize)
+		: base(metric, onClick, backgroundColor, Color.Black, Color.Blue, textColor, text, TextAlign.Middle, 2, fontSize)
 	{
 	}
 }
