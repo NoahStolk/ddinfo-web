@@ -1,6 +1,7 @@
 using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts.SurvivalEditor;
+using DevilDaggersInfo.App.Ui.Base.States;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetArena;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetHistory;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetMenu;
@@ -50,6 +51,12 @@ public class SurvivalEditorMainLayout : Layout, ISurvivalEditorMainLayout
 			SpawnsetHistoryManager.Undo();
 		else if (Input.IsKeyPressed(Keys.Y))
 			SpawnsetHistoryManager.Redo();
+		else if (Input.IsKeyPressed(Keys.N))
+			StateManager.NewSpawnset();
+		else if (Input.IsKeyPressed(Keys.O))
+			LayoutManager.ToSurvivalEditorOpenLayout();
+		else if (Input.IsKeyPressed(Keys.S))
+			LayoutManager.ToSurvivalEditorSaveLayout();
 	}
 
 	public void Render3d()

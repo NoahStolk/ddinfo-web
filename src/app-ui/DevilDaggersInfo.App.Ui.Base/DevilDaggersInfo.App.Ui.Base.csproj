@@ -17,7 +17,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\app-core\DevilDaggersInfo.App.Core.AssetInterop\DevilDaggersInfo.App.Core.AssetInterop.csproj" />
     <ProjectReference Include="..\..\common\DevilDaggersInfo.Common\DevilDaggersInfo.Common.csproj" />
+    <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Mod\DevilDaggersInfo.Core.Mod.csproj" />
+    <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Spawnset\DevilDaggersInfo.Core.Spawnset.csproj" />
+    <ProjectReference Include="..\..\types\DevilDaggersInfo.Types.Core\DevilDaggersInfo.Types.Core.csproj" />
   </ItemGroup>
 
 </Project>

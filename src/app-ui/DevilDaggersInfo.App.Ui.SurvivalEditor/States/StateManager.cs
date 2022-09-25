@@ -1,3 +1,4 @@
+using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Enums;
 using DevilDaggersInfo.Core.Spawnset;
@@ -9,6 +10,16 @@ public static class StateManager
 	public static SpawnsetState SpawnsetState { get; private set; } = SpawnsetState.GetDefault();
 
 	public static ArenaEditorState ArenaEditorState { get; private set; } = ArenaEditorState.GetDefault();
+
+	public static void NewSpawnset()
+	{
+		SetSpawnset("(untitled)", SpawnsetBinary.CreateDefault());
+	}
+
+	public static void OpenDefaultV3Spawnset()
+	{
+		SetSpawnset("(untitled)", ContentManager.Content.DefaultSpawnset);
+	}
 
 	public static void SetSpawnset(string spawnsetName, SpawnsetBinary spawnsetBinary)
 	{
