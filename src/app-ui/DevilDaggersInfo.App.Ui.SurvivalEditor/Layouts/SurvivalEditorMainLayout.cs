@@ -1,6 +1,8 @@
 using DevilDaggersInfo.App.Ui.Base;
+using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts.SurvivalEditor;
+using DevilDaggersInfo.App.Ui.Base.Enums;
 using DevilDaggersInfo.App.Ui.Base.States;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetArena;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetHistory;
@@ -22,7 +24,7 @@ public class SurvivalEditorMainLayout : Layout, ISurvivalEditorMainLayout
 		: base(Constants.Full)
 	{
 		Menu menu = new(new(0, 0, 1024, 16));
-		ArenaWrapper arenaWrapper = new(Rectangle.At(512, 64, 512, 512));
+		ArenaWrapper arenaWrapper = new(Rectangle.At(400, 64, 400, 512));
 		_spawnsWrapper = new(Rectangle.At(0, 64, 384, 512));
 		_historyWrapper = new(Rectangle.At(768, 512, 256, 256));
 
@@ -30,6 +32,20 @@ public class SurvivalEditorMainLayout : Layout, ISurvivalEditorMainLayout
 		NestingContext.Add(arenaWrapper);
 		NestingContext.Add(_spawnsWrapper);
 		NestingContext.Add(_historyWrapper);
+
+		// TODO: Move to own wrapper.
+		AddSetting("Addit. gems", 800, 64);
+		AddSetting("Timer start", 800, 80);
+
+		void AddSetting(string labelText, int x, int y)
+		{
+			const int width = 112;
+			const int height = 16;
+			Label label = new(Rectangle.At(x, y, width, height), Color.White, labelText, TextAlign.Left, FontSize.F8X8);
+			TextInput textInput = ComponentBuilder.CreateTextInput(Rectangle.At(x + width, y, width, height), true);
+			NestingContext.Add(label);
+			NestingContext.Add(textInput);
+		}
 	}
 
 	public void SetSpawnset()
