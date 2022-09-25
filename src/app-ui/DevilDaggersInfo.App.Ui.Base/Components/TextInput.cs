@@ -19,11 +19,10 @@ public class TextInput : AbstractTextInput
 	public Color ActiveBorderColor { get; set; }
 	public Color CursorColor { get; set; }
 	public Color SelectionColor { get; set; }
-	public int Margin { get; set; }
 	public int BorderSize { get; set; }
 	public FontSize FontSize { get; set; }
 
-	public TextInput(Rectangle metric, bool isNumeric, Color backgroundColor, Color borderColor, Color hoverBackgroundColor, Color textColor, Color activeBorderColor, Color cursorColor, Color selectionColor, int margin, int borderSize, FontSize fontSize)
+	public TextInput(Rectangle metric, bool isNumeric, Color backgroundColor, Color borderColor, Color hoverBackgroundColor, Color textColor, Color activeBorderColor, Color cursorColor, Color selectionColor, int borderSize, FontSize fontSize)
 		: base(metric, isNumeric)
 	{
 		BackgroundColor = backgroundColor;
@@ -33,7 +32,6 @@ public class TextInput : AbstractTextInput
 		ActiveBorderColor = activeBorderColor;
 		CursorColor = cursorColor;
 		SelectionColor = selectionColor;
-		Margin = margin;
 		BorderSize = borderSize;
 		FontSize = fontSize;
 	}
@@ -43,15 +41,12 @@ public class TextInput : AbstractTextInput
 		base.Render(parentPosition);
 
 		int padding = (int)MathF.Round((Metric.Y2 - Metric.Y1) / 4f);
-		Vector2i<int> marginVec = new(Margin);
 		Vector2i<int> borderVec = new(BorderSize);
-		Vector2i<int> fullScale = new(Metric.X2 - Metric.X1, Metric.Y2 - Metric.Y1);
+		Vector2i<int> scale = new(Metric.X2 - Metric.X1, Metric.Y2 - Metric.Y1);
 		Vector2i<int> topLeft = new(Metric.X1, Metric.Y1);
-		Vector2i<int> center = topLeft + fullScale / 2;
-		Vector2i<int> scale = fullScale - marginVec;
 
-		Root.Game.UiRenderer.RenderCenter(scale + borderVec, parentPosition + center, Depth, IsSelected ? ActiveBorderColor : BorderColor);
-		Root.Game.UiRenderer.RenderCenter(scale, parentPosition + center, Depth + 1, Hover ? HoverBackgroundColor : BackgroundColor);
+		Root.Game.UiRenderer.RenderTopLeft(scale, topLeft + parentPosition, Depth, IsSelected ? ActiveBorderColor : BorderColor);
+		Root.Game.UiRenderer.RenderTopLeft(scale - borderVec, topLeft + parentPosition + borderVec / 2, Depth + 1, Hover ? HoverBackgroundColor : BackgroundColor);
 
 		// TODO: Move to FontSize setter.
 		IMonoSpaceFontRenderer fontRenderer = FontSize switch
@@ -62,16 +57,18 @@ public class TextInput : AbstractTextInput
 			_ => throw new InvalidEnumConversionException(FontSize),
 		};
 		int charWidth = fontRenderer.GetCharWidthInPixels();
-		if (CursorPositionStart == CursorPositionEnd && CursorTimer <= _cursorTimerSwitch && IsSelected)
-		{
-			int cursorPositionX = Metric.X1 + CursorPositionStart * charWidth + padding;
-			Root.Game.UiRenderer.RenderTopLeft(new(2, Metric.Size.Y - Margin * 2), parentPosition + new Vector2i<int>(cursorPositionX, Metric.Y1 + Margin), Depth + 2, CursorColor);
-		}
-		else if (GetSelectionLength() > 0)
+
+		bool hasSelection = GetSelectionLength() > 0;
+		if (CursorPositionStart == CursorPositionEnd && CursorTimer <= _cursorTimerSwitch && IsSelected || hasSelection)
 		{
 			int selectionStart = Math.Min(CursorPositionStart, CursorPositionEnd);
 			int cursorSelectionStartX = Metric.X1 + selectionStart * charWidth + padding;
-			Root.Game.UiRenderer.RenderTopLeft(new(GetSelectionLength() * charWidth + 1, Metric.Size.Y - Margin * 2), parentPosition + new Vector2i<int>(cursorSelectionStartX, Metric.Y1 + Margin), Depth + 2, SelectionColor);
+			Root.Game.UiRenderer.RenderTopLeft(new(GetSelectionLength() * charWidth + 1, Metric.Size.Y - borderVec.Y), GetCursorPosition(cursorSelectionStartX), Depth + 2, hasSelection ? SelectionColor : CursorColor);
+		}
+
+		Vector2i<int> GetCursorPosition(int cursorStartX)
+		{
+			return parentPosition + new Vector2i<int>(cursorStartX, Metric.Y1 + borderVec.Y / 2);
 		}
 	}
 

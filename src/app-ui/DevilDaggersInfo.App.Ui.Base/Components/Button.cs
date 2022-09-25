@@ -72,7 +72,7 @@ public class Button : AbstractButton
 	public class MenuButton : Button
 	{
 		public MenuButton(Rectangle metric, Action onClick, string text)
-			: base(metric, onClick, Color.Black, Color.White, Color.Gray(0.75f), Color.White, text, TextAlign.Middle, 2, FontSize.F12X12)
+			: base(metric, onClick, Color.Black, Color.White, Color.Gray(0.75f), Color.White, text, TextAlign.Middle, 2, FontSize.F8X8)
 		{
 			Depth = 102;
 			IsActive = false;

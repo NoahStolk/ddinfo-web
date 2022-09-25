@@ -11,7 +11,7 @@ namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Layouts;
 
 public class SurvivalEditorOpenLayout : Layout, IFileDialogLayout
 {
-	private const int _entryHeight = 24;
+	private const int _entryHeight = 16;
 
 	private readonly TextInput _pathTextInput;
 
@@ -20,8 +20,8 @@ public class SurvivalEditorOpenLayout : Layout, IFileDialogLayout
 	public SurvivalEditorOpenLayout()
 		: base(Constants.Full)
 	{
-		Button backButton = new(Rectangle.At(0, 0, _entryHeight, _entryHeight), LayoutManager.ToSurvivalEditorMainLayout, Color.Black, Color.White, Color.White, Color.Red, "X", TextAlign.Left, 2, FontSize.F12X12);
-		_pathTextInput = new(Rectangle.At(0, _entryHeight, 1024, _entryHeight), false, Color.Black, Color.Gray(0.75f), Color.Gray(0.25f), Color.White, Color.White, Color.Green, Color.Gray(0.5f), 8, 2, FontSize.F8X8);
+		Button backButton = new(Rectangle.At(0, 0, 24, 24), LayoutManager.ToSurvivalEditorMainLayout, Color.Black, Color.White, Color.White, Color.Red, "X", TextAlign.Left, 2, FontSize.F12X12);
+		_pathTextInput = new(Rectangle.At(0, 24, 1024, 16), false, Color.Black, Color.Gray(0.75f), Color.Gray(0.25f), Color.White, Color.White, Color.Green, Color.Gray(0.5f), 2, FontSize.F8X8);
 
 		NestingContext.Add(backButton);
 		NestingContext.Add(_pathTextInput);
@@ -48,7 +48,7 @@ public class SurvivalEditorOpenLayout : Layout, IFileDialogLayout
 		Clear();
 		_pathTextInput.SetText(path);
 
-		int i = 1;
+		int i = 2;
 		DirectoryInfo? parent = Directory.GetParent(path);
 		if (parent != null)
 			_subDirectoryButtons.Add(new Button.PathButton(new(0, ++i * _entryHeight, 1024, i * _entryHeight + _entryHeight), () => SetComponentsFromPath(parent.FullName), "..", Color.Green));
