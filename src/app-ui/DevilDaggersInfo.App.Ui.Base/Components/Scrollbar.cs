@@ -28,8 +28,8 @@ public class Scrollbar : AbstractScrollbar
 		Root.Game.UiRenderer.RenderTopLeft(scale - borderVec, parentPosition + topLeft + new Vector2i<int>(border / 2), Depth + 1, Hold ? new(0.5f) : Hover ? new(0.25f) : Vector3.Zero);
 
 		const int thumbPadding = 4;
-		Vector2i<int> thumbScale = new(scale.X - thumbPadding, (int)MathF.Round(scale.Y * ThumbPercentageSize));
+		Vector2i<int> thumbScale = new(scale.X - thumbPadding, (int)MathF.Ceiling(scale.Y * ThumbPercentageSize) - thumbPadding + 1); // + 1 needed for scaled UI for some reason.
 		float percentageForRendering = Math.Clamp(TopPercentage, 0, 1 - ThumbPercentageSize);
-		Root.Game.UiRenderer.RenderTopLeft(thumbScale, parentPosition + topLeft + new Vector2i<int>(thumbPadding / 2, (int)MathF.Round(percentageForRendering * scale.Y)), Depth + 2, thumbColor);
+		Root.Game.UiRenderer.RenderTopLeft(thumbScale, parentPosition + topLeft + new Vector2i<int>(thumbPadding / 2, (int)MathF.Round(percentageForRendering * scale.Y) + thumbPadding / 2), Depth + 2, thumbColor);
 	}
 }
