@@ -18,7 +18,7 @@ public static class StateManager
 
 	public static void OpenDefaultV3Spawnset()
 	{
-		SetSpawnset("(untitled)", ContentManager.Content.DefaultSpawnset);
+		SetSpawnset("(untitled)", ContentManager.Content.DefaultSpawnset.DeepCopy());
 	}
 
 	public static void SetSpawnset(string spawnsetName, SpawnsetBinary spawnsetBinary)

@@ -58,7 +58,11 @@ public class Arena : AbstractComponent
 		switch (StateManager.ArenaEditorState.ArenaTool)
 		{
 			case ArenaTool.Pencil:
-				if (Input.IsButtonHeld(MouseButton.Left))
+				if (Input.IsButtonPressed(MouseButton.Left))
+				{
+					_pencilStart = new(relMouseX, relMouseY);
+				}
+				else if (Input.IsButtonHeld(MouseButton.Left))
 				{
 					if (_pencilStart.HasValue)
 					{
@@ -75,15 +79,15 @@ public class Arena : AbstractComponent
 						}
 
 						StateManager.SpawnsetState.Spawnset.ArenaTiles[x, y] = StateManager.ArenaEditorState.SelectedHeight;
+						_pencilStart = new(relMouseX, relMouseY);
 					}
-
-					_pencilStart = new(relMouseX, relMouseY);
 				}
 				else if (Input.IsButtonReleased(MouseButton.Left))
 				{
 					_pencilStart = null;
 					SpawnsetHistoryManager.Save("Arena pencil edit");
 				}
+
 				break;
 			case ArenaTool.Line:
 				if (Input.IsButtonPressed(MouseButton.Left))
@@ -112,6 +116,7 @@ public class Arena : AbstractComponent
 					_lineStart = null;
 					SpawnsetHistoryManager.Save("Arena line edit");
 				}
+
 				break;
 			case ArenaTool.Rectangle:
 				if (Input.IsButtonPressed(MouseButton.Left))
@@ -134,6 +139,7 @@ public class Arena : AbstractComponent
 					SpawnsetHistoryManager.Save("Arena rectangle edit");
 					_rectangleStart = null;
 				}
+
 				break;
 			case ArenaTool.Bucket:
 				if (Input.IsButtonPressed(MouseButton.Left))
@@ -173,6 +179,7 @@ public class Arena : AbstractComponent
 						}
 					}
 				}
+
 				break;
 		}
 	}
