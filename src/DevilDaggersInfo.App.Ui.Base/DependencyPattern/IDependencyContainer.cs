@@ -33,8 +33,8 @@ public interface IDependencyContainer
 	#region DDSE
 
 	ISurvivalEditorMainLayout SurvivalEditorMainLayout { get; }
-	IExtendedLayout SurvivalEditorOpenLayout { get; }
-	IExtendedLayout SurvivalEditorSaveLayout { get; }
+	IFileDialogLayout SurvivalEditorOpenLayout { get; }
+	IFileDialogLayout SurvivalEditorSaveLayout { get; }
 
 	#endregion DDSE
 }

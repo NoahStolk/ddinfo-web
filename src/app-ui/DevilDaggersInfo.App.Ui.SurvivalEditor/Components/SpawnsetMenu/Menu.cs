@@ -1,5 +1,6 @@
 using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
+using DevilDaggersInfo.App.Ui.Base.States;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using DevilDaggersInfo.Core.Spawnset;
 using Warp.Ui;
@@ -16,9 +17,9 @@ public class Menu : AbstractComponent
 		List<AbstractComponent> fileMenuButtons = new()
 		{
 			new Button.MenuButton(Rectangle.At(0, 24, 96, 24), () => StateManager.SetSpawnset("(untitled)", SpawnsetBinary.CreateDefault()), "New"),
-			new Button.MenuButton(Rectangle.At(0, 48, 96, 24), () => Root.Game.ActiveLayout = Root.Game.SurvivalEditorOpenLayout, "Open"),
-			new Button.MenuButton(Rectangle.At(0, 72, 96, 24), () => Root.Game.ActiveLayout = Root.Game.SurvivalEditorSaveLayout, "Save"),
-			new Button.MenuButton(Rectangle.At(0, 96, 96, 24), () => Root.Game.ActiveLayout = Root.Game.MainLayout, "Exit"),
+			new Button.MenuButton(Rectangle.At(0, 48, 96, 24), LayoutManager.ToSurvivalEditorOpenLayout, "Open"),
+			new Button.MenuButton(Rectangle.At(0, 72, 96, 24), LayoutManager.ToSurvivalEditorSaveLayout, "Save"),
+			new Button.MenuButton(Rectangle.At(0, 96, 96, 24), LayoutManager.ToMainLayout, "Exit"),
 		};
 
 		Dropdown fileMenu = new(new(0, 0, 96, 96), fileMenuButtons, Color.White, "File")

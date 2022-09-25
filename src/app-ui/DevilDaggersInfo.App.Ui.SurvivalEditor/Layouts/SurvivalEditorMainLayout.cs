@@ -1,3 +1,4 @@
+using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts.SurvivalEditor;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetArena;
@@ -17,7 +18,7 @@ public class SurvivalEditorMainLayout : Layout, ISurvivalEditorMainLayout
 	private readonly HistoryWrapper _historyWrapper;
 
 	public SurvivalEditorMainLayout()
-		: base(new(0, 0, 1920, 1080))
+		: base(Constants.Full)
 	{
 		Menu menu = new(new(0, 0, 1920, 24));
 		ArenaWrapper arenaWrapper = new(Rectangle.At(1024, 64, 864, 512));
