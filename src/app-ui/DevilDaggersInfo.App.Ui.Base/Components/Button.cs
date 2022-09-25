@@ -69,16 +69,18 @@ public class Button : AbstractButton
 		fontRenderer.Render(Vector2i<int>.One, parentPosition + textPosition, Depth + 2, TextColor, Text, TextAlign);
 	}
 
+	// TODO: Move to ComponentBuilder.
 	public class MenuButton : Button
 	{
 		public MenuButton(Rectangle metric, Action onClick, string text)
-			: base(metric, onClick, Color.Black, Color.White, Color.Gray(0.75f), Color.White, text, TextAlign.Middle, 2, FontSize.F8X8)
+			: base(metric, onClick, Color.Black, Color.White, Color.Gray(0.75f), Color.White, text, TextAlign.Left, 2, FontSize.F8X8)
 		{
 			Depth = 102;
 			IsActive = false;
 		}
 	}
 
+	// TODO: Move to ComponentBuilder.
 	public class PathButton : Button
 	{
 		public PathButton(Rectangle metric, Action onClick, string text, Color textColor)

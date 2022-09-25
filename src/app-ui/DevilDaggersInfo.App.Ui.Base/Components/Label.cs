@@ -12,20 +12,14 @@ public class Label : AbstractLabel
 {
 	private readonly Color _textColor;
 	private readonly TextAlign _textAlign;
-	private readonly IMonoSpaceFontRenderer _fontRenderer;
+	private readonly FontSize _fontSize;
 
 	public Label(Rectangle metric, Color textColor, string text, TextAlign textAlign, FontSize fontSize)
 		: base(metric, text)
 	{
 		_textColor = textColor;
 		_textAlign = textAlign;
-		_fontRenderer = fontSize switch
-		{
-			FontSize.F4X6 => Root.Game.FontRenderer4X6,
-			FontSize.F8X8 => Root.Game.FontRenderer8X8,
-			FontSize.F12X12 => Root.Game.FontRenderer12X12,
-			_ => throw new InvalidEnumConversionException(fontSize),
-		};
+		_fontSize = fontSize;
 	}
 
 	public override void RenderText(Vector2i<int> parentPosition)
@@ -41,6 +35,13 @@ public class Label : AbstractLabel
 			_ => throw new InvalidOperationException("Invalid text align."),
 		};
 
-		_fontRenderer.Render(Vector2i<int>.One, parentPosition + textPosition, Depth + 2, _textColor, Text, _textAlign);
+		IMonoSpaceFontRenderer fontRenderer = _fontSize switch
+		{
+			FontSize.F4X6 => Root.Game.FontRenderer4X6,
+			FontSize.F8X8 => Root.Game.FontRenderer8X8,
+			FontSize.F12X12 => Root.Game.FontRenderer12X12,
+			_ => throw new InvalidEnumConversionException(_fontSize),
+		};
+		fontRenderer.Render(Vector2i<int>.One, parentPosition + textPosition, Depth + 2, _textColor, Text, _textAlign);
 	}
 }

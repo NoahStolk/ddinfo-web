@@ -16,11 +16,11 @@ public class Menu : AbstractComponent
 		Depth = 100;
 		List<AbstractComponent> fileMenuButtons = new()
 		{
-			new Button.MenuButton(Rectangle.At(0, 16, 64, 16), StateManager.NewSpawnset, "New"),
-			new Button.MenuButton(Rectangle.At(0, 32, 64, 16), LayoutManager.ToSurvivalEditorOpenLayout, "Open"),
-			new Button.MenuButton(Rectangle.At(0, 48, 64, 16), StateManager.OpenDefaultV3Spawnset, "Open default (V3)"),
-			new Button.MenuButton(Rectangle.At(0, 64, 64, 16), LayoutManager.ToSurvivalEditorSaveLayout, "Save"),
-			new Button.MenuButton(Rectangle.At(0, 80, 64, 16), LayoutManager.ToMainLayout, "Exit"),
+			new Button.MenuButton(Rectangle.At(0, 16, 160, 16), StateManager.NewSpawnset, "New"),
+			new Button.MenuButton(Rectangle.At(0, 32, 160, 16), LayoutManager.ToSurvivalEditorOpenLayout, "Open"),
+			new Button.MenuButton(Rectangle.At(0, 48, 160, 16), StateManager.OpenDefaultV3Spawnset, "Open default (V3)"),
+			new Button.MenuButton(Rectangle.At(0, 64, 160, 16), LayoutManager.ToSurvivalEditorSaveLayout, "Save"),
+			new Button.MenuButton(Rectangle.At(0, 80, 160, 16), LayoutManager.ToMainLayout, "Exit"),
 		};
 
 		Dropdown fileMenu = new(new(0, 0, 64, 80), fileMenuButtons, Color.White, "File")

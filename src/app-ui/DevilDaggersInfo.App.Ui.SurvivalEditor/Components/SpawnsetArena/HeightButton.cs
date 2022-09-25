@@ -6,6 +6,7 @@ using Warp.Ui;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetArena;
 
+// TODO: Move to ComponentBuilder.
 public class HeightButton : Button
 {
 	private readonly float _height;

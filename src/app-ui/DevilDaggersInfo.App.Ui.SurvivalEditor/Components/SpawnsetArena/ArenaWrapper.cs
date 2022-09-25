@@ -1,3 +1,5 @@
+using DevilDaggersInfo.App.Ui.Base;
+using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.Enums;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Enums;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
@@ -34,6 +36,20 @@ public class ArenaWrapper : AbstractComponent
 		AddToolButton(24, toolButtonOffsetY, ArenaTool.Line, "L");
 		AddToolButton(48, toolButtonOffsetY, ArenaTool.Rectangle, "R");
 		AddToolButton(72, toolButtonOffsetY, ArenaTool.Bucket, "B");
+
+		void AddSetting(string labelText, int y1)
+		{
+			const int labelWidth = 112;
+			Label label = new(Rectangle.At(0, y1, labelWidth, 16), Color.White, labelText, TextAlign.Left, FontSize.F8X8);
+			TextInput textInput = ComponentBuilder.CreateTextInput(Rectangle.At(labelWidth, y1, 64, 16), true);
+			NestingContext.Add(label);
+			NestingContext.Add(textInput);
+		}
+
+		AddSetting("Shrink start", arena.Metric.Size.Y + 8);
+		AddSetting("Shrink end", arena.Metric.Size.Y + 24);
+		AddSetting("Shrink rate", arena.Metric.Size.Y + 40);
+		AddSetting("Brightness", arena.Metric.Size.Y + 56);
 
 		void AddHeightButton(float height, int offsetX, int offsetY)
 		{

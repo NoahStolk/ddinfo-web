@@ -4,6 +4,7 @@ using Warp.Ui;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetArena;
 
+// TODO: Move to ComponentBuilder.
 public class ArenaButton : Button
 {
 	public ArenaButton(Rectangle metric, Action onClick, Color backgroundColor, Color textColor, string text, FontSize fontSize)
