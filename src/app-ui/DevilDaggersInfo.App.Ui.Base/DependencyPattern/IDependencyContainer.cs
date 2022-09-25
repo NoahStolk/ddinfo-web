@@ -8,6 +8,7 @@ namespace DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 public interface IDependencyContainer
 {
 	Vector2 ViewportOffset { get; }
+	Vector2 UiScale { get; }
 
 	int InitialWindowWidth { get; }
 	int InitialWindowHeight { get; }
