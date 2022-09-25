@@ -9,7 +9,7 @@ public sealed class HistoryWrapper : AbstractScrollViewer<HistoryWrapper, Histor
 	public HistoryWrapper(Rectangle metric)
 		: base(metric)
 	{
-		Rectangle historyMetric = Rectangle.At(0, 0, 480, 256);
+		Rectangle historyMetric = Rectangle.At(0, 0, 240, 256);
 
 		Content = new(historyMetric, this);
 		Scrollbar = new(historyMetric with { X1 = historyMetric.X2, X2 = historyMetric.X2 + 16 }, ScrollbarOnChange);

@@ -48,7 +48,7 @@ public abstract class ScrollContent<TSelf, TParent> : AbstractScrollContent<TSel
 		Vector2i<int> scaledParentPosition = (parentPosition.ToVector2() * Root.Game.UiScale).RoundToVector2Int32();
 		Gl.Scissor(
 			scaledTopLeft.X + (int)viewportOffset.X + scaledParentPosition.X,
-			scaledTopLeft.Y + (int)viewportOffset.Y + scaledParentPosition.Y,
+			WindowHeight - (scaledSize.Y + scaledParentPosition.Y) - (int)viewportOffset.Y,
 			(uint)scaledSize.X,
 			(uint)scaledSize.Y);
 	}

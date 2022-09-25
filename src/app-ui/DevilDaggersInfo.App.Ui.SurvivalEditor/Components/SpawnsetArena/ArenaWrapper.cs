@@ -26,10 +26,10 @@ public class ArenaWrapper : AbstractComponent
 		{
 			int offsetX = i % 8 * _arenaButtonSize;
 			int offsetY = i / 8 * _arenaButtonSize;
-			AddHeightButton(i, offsetX, offsetY + 64);
+			AddHeightButton(i, offsetX, offsetY + 36);
 		}
 
-		const int toolButtonOffsetY = 288;
+		const int toolButtonOffsetY = 240;
 		AddToolButton(0, toolButtonOffsetY, ArenaTool.Pencil, "P");
 		AddToolButton(24, toolButtonOffsetY, ArenaTool.Line, "L");
 		AddToolButton(48, toolButtonOffsetY, ArenaTool.Rectangle, "R");
