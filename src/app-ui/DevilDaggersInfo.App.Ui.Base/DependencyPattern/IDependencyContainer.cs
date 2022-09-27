@@ -34,11 +34,11 @@ public interface IDependencyContainer
 
 	#endregion Main screen
 
-	#region DDSE
+	#region DDSE screen
 
 	ISurvivalEditorMainLayout SurvivalEditorMainLayout { get; }
 	IFileDialogLayout SurvivalEditorOpenLayout { get; }
 	IFileDialogLayout SurvivalEditorSaveLayout { get; }
 
-	#endregion DDSE
+	#endregion DDSE screen
 }
