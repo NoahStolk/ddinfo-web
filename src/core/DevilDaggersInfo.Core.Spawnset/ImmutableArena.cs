@@ -30,4 +30,16 @@ public class ImmutableArena
 			return _heights[x, y];
 		}
 	}
+
+	public float[,] GetMutableClone()
+	{
+		float[,] arenaTiles = new float[_dimension, _dimension];
+		for (int i = 0; i < _dimension; i++)
+		{
+			for (int j = 0; j < _dimension; j++)
+				arenaTiles[i, j] = this[i, j];
+		}
+
+		return arenaTiles;
+	}
 }

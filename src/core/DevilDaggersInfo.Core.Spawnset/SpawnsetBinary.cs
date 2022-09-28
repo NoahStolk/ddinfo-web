@@ -55,27 +55,27 @@ public record SpawnsetBinary
 		TimerStart = timerStart;
 	}
 
-	public int SpawnVersion { get; }
-	public int WorldVersion { get; }
-	public float ShrinkStart { get; }
-	public float ShrinkEnd { get; }
-	public float ShrinkRate { get; }
-	public float Brightness { get; }
-	public GameMode GameMode { get; }
-	public int ArenaDimension { get; }
-	public ImmutableArena ArenaTiles { get; }
+	public int SpawnVersion { get; init; }
+	public int WorldVersion { get; init; }
+	public float ShrinkStart { get; init; }
+	public float ShrinkEnd { get; init; }
+	public float ShrinkRate { get; init; }
+	public float Brightness { get; init; }
+	public GameMode GameMode { get; init; }
+	public int ArenaDimension { get; init; }
+	public ImmutableArena ArenaTiles { get; init; }
 
-	public Vector2 RaceDaggerPosition { get; }
-	public int UnusedDevilTime { get; }
-	public int UnusedGoldenTime { get; }
-	public int UnusedSilverTime { get; }
-	public int UnusedBronzeTime { get; }
+	public Vector2 RaceDaggerPosition { get; init; }
+	public int UnusedDevilTime { get; init; }
+	public int UnusedGoldenTime { get; init; }
+	public int UnusedSilverTime { get; init; }
+	public int UnusedBronzeTime { get; init; }
 
-	public ImmutableArray<Spawn> Spawns { get; }
+	public ImmutableArray<Spawn> Spawns { get; init; }
 
-	public HandLevel HandLevel { get; }
-	public int AdditionalGems { get; }
-	public float TimerStart { get; }
+	public HandLevel HandLevel { get; init; }
+	public int AdditionalGems { get; init; }
+	public float TimerStart { get; init; }
 
 	#region Parsing
 
@@ -285,13 +285,6 @@ public record SpawnsetBinary
 
 	public SpawnsetBinary DeepCopy()
 	{
-		float[,] arenaTiles = new float[ArenaDimension, ArenaDimension];
-		for (int i = 0; i < ArenaDimension; i++)
-		{
-			for (int j = 0; j < ArenaDimension; j++)
-				arenaTiles[i, j] = ArenaTiles[i, j];
-		}
-
 		Spawn[] spawns = new Spawn[Spawns.Length];
 		for (int i = 0; i < Spawns.Length; i++)
 			spawns[i] = Spawns[i];
@@ -305,7 +298,7 @@ public record SpawnsetBinary
 			Brightness,
 			GameMode,
 			ArenaDimension,
-			arenaTiles,
+			ArenaTiles.GetMutableClone(),
 			RaceDaggerPosition,
 			UnusedDevilTime,
 			UnusedGoldenTime,
