@@ -3,6 +3,7 @@ using DevilDaggersInfo.Razor.SurvivalEditor.Store.State;
 using DevilDaggersInfo.Types.Core.Spawnsets;
 using DevilDaggersInfo.Types.Core.Wiki;
 using Fluxor;
+using System.Collections.Immutable;
 
 namespace DevilDaggersInfo.Razor.SurvivalEditor.Store.Features.SpawnsListFeature;
 
@@ -12,6 +13,6 @@ public class SpawnsListFeature : Feature<SpawnsListState>
 
 	protected override SpawnsListState GetInitialState()
 	{
-		return new(new(GameMode.Survival, GameVersion.V3_2, Array.Empty<Spawn>()));
+		return new(new(GameMode.Survival, GameVersion.V3_2, ImmutableArray<Spawn>.Empty));
 	}
 }
