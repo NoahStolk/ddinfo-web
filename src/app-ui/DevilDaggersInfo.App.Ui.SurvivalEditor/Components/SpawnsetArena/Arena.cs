@@ -260,18 +260,17 @@ public class Arena : AbstractComponent
 
 		Root.Game.UiRenderer.RenderTopLeft(Metric.Size, parentPosition + new Vector2i<int>(Metric.X1, Metric.Y1), Depth, Color.Black);
 
-		for (int j = 0; j < StateManager.SpawnsetState.Spawnset.ArenaDimension; j++)
+		for (int i = 0; i < StateManager.SpawnsetState.Spawnset.ArenaDimension; i++)
 		{
-			for (int k = 0; k < StateManager.SpawnsetState.Spawnset.ArenaDimension; k++)
+			for (int j = 0; j < StateManager.SpawnsetState.Spawnset.ArenaDimension; j++)
 			{
-				int x = j * _tileSize;
-				int y = k * _tileSize;
+				int x = i * _tileSize;
+				int y = j * _tileSize;
 
-				Color color = TileUtils.GetColorFromHeight(StateManager.SpawnsetState.Spawnset.ArenaTiles[j, k]);
+				Color color = TileUtils.GetColorFromHeight(StateManager.SpawnsetState.Spawnset.ArenaTiles[i, j]);
 				if (color.R == 0 && color.G == 0 && color.B == 0)
 					continue;
 
-				// TODO: Optimize.
 				Root.Game.UiRenderer.RenderTopLeft(new(_tileSize), parentPosition + new Vector2i<int>(Metric.X1 + x, Metric.Y1 + y), Depth + 1, color);
 			}
 		}

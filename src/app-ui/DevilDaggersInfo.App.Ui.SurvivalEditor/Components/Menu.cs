@@ -5,7 +5,7 @@ using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using Warp.Ui;
 using Warp.Ui.Components;
 
-namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetMenu;
+namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components;
 
 public class Menu : AbstractComponent
 {
