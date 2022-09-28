@@ -10,16 +10,16 @@ public static class EditSpawnContext
 {
 	public static List<EditableSpawn> GetFrom(SpawnsetBinary spawnsetBinary)
 	{
-		return GetFrom(spawnsetBinary.Spawns, spawnsetBinary.HandLevel, spawnsetBinary.AdditionalGems, spawnsetBinary.TimerStart);
+		return GetFrom(spawnsetBinary.Spawns, spawnsetBinary.SpawnVersion, spawnsetBinary.HandLevel, spawnsetBinary.AdditionalGems, spawnsetBinary.TimerStart);
 	}
 
-	public static List<EditableSpawn> GetFrom(ImmutableArray<Spawn> spawns, HandLevel handLevel = HandLevel.Level1, int additionalGems = 0, float timerStart = 0)
+	private static List<EditableSpawn> GetFrom(ImmutableArray<Spawn> spawns, int spawnVersion, HandLevel handLevel = HandLevel.Level1, int additionalGems = 0, float timerStart = 0)
 	{
 		if (spawns.Length == 0)
 			return new();
 
 		double totalSeconds = timerStart;
-		EffectivePlayerSettings effectivePlayerSettings = SpawnsetBinary.GetEffectivePlayerSettings(handLevel, additionalGems);
+		EffectivePlayerSettings effectivePlayerSettings = SpawnsetBinary.GetEffectivePlayerSettings(spawnVersion, handLevel, additionalGems);
 		GemState gemState = new(effectivePlayerSettings.HandLevel, effectivePlayerSettings.GemsOrHoming, 0);
 
 		return BuildPreLoop(ref totalSeconds, ref gemState, spawns);
