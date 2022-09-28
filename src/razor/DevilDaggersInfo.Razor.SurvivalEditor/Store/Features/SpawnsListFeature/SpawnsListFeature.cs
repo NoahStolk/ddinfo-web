@@ -13,6 +13,6 @@ public class SpawnsListFeature : Feature<SpawnsListState>
 
 	protected override SpawnsListState GetInitialState()
 	{
-		return new(new(GameMode.Survival, GameVersion.V3_2, ImmutableArray<Spawn>.Empty));
+		return new(new(GameVersion.V3_2, 6, GameMode.Survival, ImmutableArray<Spawn>.Empty, HandLevel.Level1, 0, 0, 40));
 	}
 }

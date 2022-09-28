@@ -3,9 +3,9 @@ using System.Collections.Immutable;
 
 namespace DevilDaggersInfo.Core.Spawnset.Summary;
 
-public class SpawnsetSummary
+public sealed class SpawnsetSummary
 {
-	public SpawnsetSummary(int spawnVersion, int worldVersion, GameMode gameMode, SpawnSectionInfo preLoopSection, SpawnSectionInfo loopSection, HandLevel handLevel, int additionalGems, float timerStart)
+	private SpawnsetSummary(int spawnVersion, int worldVersion, GameMode gameMode, SpawnSectionInfo preLoopSection, SpawnSectionInfo loopSection, HandLevel handLevel, int additionalGems, float timerStart)
 	{
 		SpawnVersion = spawnVersion;
 		WorldVersion = worldVersion;
@@ -16,7 +16,7 @@ public class SpawnsetSummary
 		AdditionalGems = additionalGems;
 		TimerStart = timerStart;
 
-		EffectivePlayerSettings = SpawnsetBinary.GetEffectivePlayerSettings(handLevel, additionalGems);
+		EffectivePlayerSettings = SpawnsetBinary.GetEffectivePlayerSettings(spawnVersion, handLevel, additionalGems);
 	}
 
 	public int SpawnVersion { get; }

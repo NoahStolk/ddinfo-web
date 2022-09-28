@@ -369,10 +369,13 @@ public record SpawnsetBinary
 	}
 
 	public EffectivePlayerSettings GetEffectivePlayerSettings()
-		=> GetEffectivePlayerSettings(HandLevel, AdditionalGems);
+		=> GetEffectivePlayerSettings(SpawnVersion, HandLevel, AdditionalGems);
 
-	public static EffectivePlayerSettings GetEffectivePlayerSettings(HandLevel handLevel, int additionalGems)
+	public static EffectivePlayerSettings GetEffectivePlayerSettings(int spawnVersion, HandLevel handLevel, int additionalGems)
 	{
+		if (spawnVersion < 5)
+			return new(HandLevel.Level1, 0, HandLevel.Level1);
+
 		return handLevel switch
 		{
 			HandLevel.Level1 when additionalGems < 10 => new(HandLevel.Level1, additionalGems, HandLevel.Level1),

@@ -7,11 +7,11 @@ namespace DevilDaggersInfo.Core.Spawnset.View;
 public class SpawnsView
 {
 	public SpawnsView(SpawnsetBinary spawnsetBinary, GameVersion gameVersion, int waveCount = 40)
-		: this(spawnsetBinary.GameMode, gameVersion, spawnsetBinary.Spawns, waveCount, spawnsetBinary.HandLevel, spawnsetBinary.AdditionalGems, spawnsetBinary.TimerStart)
+		: this(gameVersion, spawnsetBinary.SpawnVersion, spawnsetBinary.GameMode, spawnsetBinary.Spawns, spawnsetBinary.HandLevel, spawnsetBinary.AdditionalGems, spawnsetBinary.TimerStart, waveCount)
 	{
 	}
 
-	public SpawnsView(GameMode gameMode, GameVersion gameVersion, ImmutableArray<Spawn> spawns, int waveCount = 40, HandLevel handLevel = HandLevel.Level1, int additionalGems = 0, float timerStart = 0)
+	public SpawnsView(GameVersion gameVersion, int spawnVersion, GameMode gameMode, ImmutableArray<Spawn> spawns, HandLevel handLevel, int additionalGems, float timerStart, int waveCount)
 	{
 		PreLoop = new();
 		Waves = new List<SpawnView>[waveCount];
@@ -22,7 +22,7 @@ public class SpawnsView
 			return;
 
 		double totalSeconds = timerStart;
-		EffectivePlayerSettings effectivePlayerSettings = SpawnsetBinary.GetEffectivePlayerSettings(handLevel, additionalGems);
+		EffectivePlayerSettings effectivePlayerSettings = SpawnsetBinary.GetEffectivePlayerSettings(spawnVersion, handLevel, additionalGems);
 		GemState gemState = new(effectivePlayerSettings.HandLevel, effectivePlayerSettings.GemsOrHoming, 0);
 
 		if (gameMode is GameMode.TimeAttack or GameMode.Race)

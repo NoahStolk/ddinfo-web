@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Types.Core.Spawnsets;
+
 namespace DevilDaggersInfo.Core.Spawnset.Tests;
 
 [TestClass]
@@ -22,5 +24,31 @@ public class SpawnsetBinaryTests
 		byte[] bytes = spawnset.ToBytes();
 
 		CollectionAssert.AreEqual(originalBytes, bytes);
+	}
+
+	[TestMethod]
+	public void TestEffectivePlayerSettings()
+	{
+		byte[] originalBytes = File.ReadAllBytes(Path.Combine(TestUtils.ResourcePath, "V3"));
+		SpawnsetBinary spawnset = SpawnsetBinary.Parse(originalBytes) with
+		{
+			HandLevel = HandLevel.Level2,
+			AdditionalGems = 40,
+		};
+
+		// The effective player setting should be default when using the default spawnset (or any spawnset with spawn version 4).
+		EffectivePlayerSettings settings = spawnset.GetEffectivePlayerSettings();
+		Assert.AreEqual(HandLevel.Level1, settings.HandLevel);
+		Assert.AreEqual(0, settings.GemsOrHoming);
+		Assert.AreEqual(HandLevel.Level1, settings.HandMesh);
+
+		spawnset = spawnset with
+		{
+			SpawnVersion = 5, // Specified player settings should be effective from version 5.
+		};
+		settings = spawnset.GetEffectivePlayerSettings();
+		Assert.AreEqual(HandLevel.Level2, settings.HandLevel);
+		Assert.AreEqual(50, settings.GemsOrHoming);
+		Assert.AreEqual(HandLevel.Level2, settings.HandMesh);
 	}
 }
