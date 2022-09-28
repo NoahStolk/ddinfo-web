@@ -7,7 +7,7 @@ namespace DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 
 public static class SpawnsetHistoryManager
 {
-	public const int MaxHistoryEntries = 100;
+	private const int _maxHistoryEntries = 100;
 	private static readonly List<SpawnsetHistory> _history = new();
 
 	public static IReadOnlyList<SpawnsetHistory> History => _history;
@@ -34,7 +34,7 @@ public static class SpawnsetHistoryManager
 
 		_history.Add(new(copy, hash, change));
 
-		if (_history.Count > MaxHistoryEntries)
+		if (_history.Count > _maxHistoryEntries)
 			_history.RemoveAt(0);
 
 		Index = _history.Count - 1;

@@ -167,6 +167,7 @@ public class Arena : AbstractComponent
 					float targetHeight = StateManager.SpawnsetState.Spawnset.ArenaTiles[x, y];
 					FillNeighbors(x, y);
 
+					UpdateArena(tiles);
 					SpawnsetHistoryManager.Save("Arena bucket edit");
 
 					void FillNeighbors(int x, int y)
@@ -194,8 +195,6 @@ public class Arena : AbstractComponent
 							if (!done.Contains(new(newX, newY)) && MathF.Abs(tiles[newX, newY] - targetHeight) < tolerance)
 								FillNeighbors(newX, newY);
 						}
-
-						UpdateArena(tiles);
 					}
 				}
 
