@@ -29,11 +29,12 @@ public static class StateManager
 		SpawnsetHistoryManager.Reset();
 	}
 
-	public static void SetSpawnset(SpawnsetBinary spawnsetBinary)
+	public static void SetSpawnset(SpawnsetBinary spawnsetBinary, bool reloadComponents = true)
 	{
 		SpawnsetState = SpawnsetState with { Spawnset = spawnsetBinary };
 
-		Root.Game.SurvivalEditorMainLayout.SetSpawnset();
+		if (reloadComponents)
+			Root.Game.SurvivalEditorMainLayout.SetSpawnset();
 	}
 
 	public static void SetArenaTool(ArenaTool arenaTool)

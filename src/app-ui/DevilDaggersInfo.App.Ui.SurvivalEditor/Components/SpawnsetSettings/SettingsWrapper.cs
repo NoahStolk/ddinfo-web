@@ -26,7 +26,7 @@ public class SettingsWrapper : AbstractComponent
 		IEnumerable<Button> GetHandButtons()
 		{
 			return Enum.GetValues<HandLevel>()
-				.Select((hl, i) => new Button(Rectangle.At(i * 56, 0, 56, settingHeight), () => StateManager.SpawnsetState.Spawnset.HandLevel = hl, Color.Black, GetColor(hl), Color.Gray(0.25f), Color.White, ToShortString(hl), TextAlign.Middle, 2, FontSize.F8X8))
+				.Select((hl, i) => new Button(Rectangle.At(i * 56, 0, 56, settingHeight), () => StateManager.SetSpawnset(StateManager.SpawnsetState.Spawnset with { HandLevel = hl }), Color.Black, GetColor(hl), Color.Gray(0.25f), Color.White, ToShortString(hl), TextAlign.Middle, 2, FontSize.F8X8))
 				.ToList();
 
 			Color GetColor(HandLevel handLevel) => handLevel switch

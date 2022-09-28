@@ -2,8 +2,9 @@ using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Core.Spawnset.Extensions;
 using DevilDaggersInfo.Core.Spawnset.View;
 using DevilDaggersInfo.Types.Core.Spawnsets;
+using System.Collections.Immutable;
 
-namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Spawns;
+namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Editing;
 
 public static class EditSpawnContext
 {
@@ -12,7 +13,7 @@ public static class EditSpawnContext
 		return GetFrom(spawnsetBinary.Spawns, spawnsetBinary.HandLevel, spawnsetBinary.AdditionalGems, spawnsetBinary.TimerStart);
 	}
 
-	public static List<EditableSpawn> GetFrom(Spawn[] spawns, HandLevel handLevel = HandLevel.Level1, int additionalGems = 0, float timerStart = 0)
+	public static List<EditableSpawn> GetFrom(ImmutableArray<Spawn> spawns, HandLevel handLevel = HandLevel.Level1, int additionalGems = 0, float timerStart = 0)
 	{
 		if (spawns.Length == 0)
 			return new();
@@ -24,7 +25,7 @@ public static class EditSpawnContext
 		return BuildPreLoop(ref totalSeconds, ref gemState, spawns);
 	}
 
-	private static List<EditableSpawn> BuildPreLoop(ref double totalSeconds, ref GemState gemState, Spawn[] preLoopSpawns)
+	private static List<EditableSpawn> BuildPreLoop(ref double totalSeconds, ref GemState gemState, ImmutableArray<Spawn> preLoopSpawns)
 	{
 		List<EditableSpawn> spawns = new();
 		foreach (Spawn spawn in preLoopSpawns)

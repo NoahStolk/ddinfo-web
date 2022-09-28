@@ -25,6 +25,23 @@ public class Arena : AbstractComponent
 		_tileSize = tileSize;
 	}
 
+	private static void UpdateArena(int x, int y, float height)
+	{
+		float[,] newArena = StateManager.SpawnsetState.Spawnset.ArenaTiles.GetMutableClone();
+		newArena[x, y] = height;
+		UpdateArena(newArena);
+	}
+
+	private static void UpdateArena(float[,] newArena)
+	{
+		StateManager.SetSpawnset(
+			StateManager.SpawnsetState.Spawnset with
+			{
+				ArenaTiles = new(StateManager.SpawnsetState.Spawnset.ArenaDimension, newArena),
+			},
+			reloadComponents: false);
+	}
+
 	public override void Update(Vector2i<int> parentPosition)
 	{
 		base.Update(parentPosition);
@@ -51,7 +68,7 @@ public class Arena : AbstractComponent
 		if (scroll != 0)
 		{
 			// TODO: Selection.
-			StateManager.SpawnsetState.Spawnset.ArenaTiles[x, y] += scroll;
+			UpdateArena(x, y, StateManager.SpawnsetState.Spawnset.ArenaTiles[x, y] + scroll);
 			return;
 		}
 
@@ -74,11 +91,11 @@ public class Arena : AbstractComponent
 							{
 								Vector2 visualTileCenter = new Vector2(i, j) * _tileSize + new Vector2(_tileSize / 2f);
 								if (LineIntersectsSquare(_pencilStart.Value.ToVector2(), pencilEnd.ToVector2(), visualTileCenter, _tileSize))
-									StateManager.SpawnsetState.Spawnset.ArenaTiles[i, j] = StateManager.ArenaEditorState.SelectedHeight;
+									UpdateArena(i, j, StateManager.ArenaEditorState.SelectedHeight);
 							}
 						}
 
-						StateManager.SpawnsetState.Spawnset.ArenaTiles[x, y] = StateManager.ArenaEditorState.SelectedHeight;
+						UpdateArena(x, y, StateManager.ArenaEditorState.SelectedHeight);
 						_pencilStart = new(relMouseX, relMouseY);
 					}
 				}
@@ -106,11 +123,11 @@ public class Arena : AbstractComponent
 							{
 								Vector2 visualTileCenter = new Vector2(i, j) * _tileSize + new Vector2(_tileSize / 2f);
 								if (LineIntersectsSquare(_lineStart.Value.ToVector2(), lineEnd.ToVector2(), visualTileCenter, _tileSize))
-									StateManager.SpawnsetState.Spawnset.ArenaTiles[i, j] = StateManager.ArenaEditorState.SelectedHeight;
+									UpdateArena(i, j, StateManager.ArenaEditorState.SelectedHeight);
 							}
 						}
 
-						StateManager.SpawnsetState.Spawnset.ArenaTiles[x, y] = StateManager.ArenaEditorState.SelectedHeight;
+						UpdateArena(x, y, StateManager.ArenaEditorState.SelectedHeight);
 					}
 
 					_lineStart = null;
@@ -132,7 +149,7 @@ public class Arena : AbstractComponent
 						for (int i = rectangle.X1; i <= rectangle.X2; i++)
 						{
 							for (int j = rectangle.Y1; j <= rectangle.Y2; j++)
-								StateManager.SpawnsetState.Spawnset.ArenaTiles[i, j] = StateManager.ArenaEditorState.SelectedHeight;
+								UpdateArena(i, j, StateManager.ArenaEditorState.SelectedHeight);
 						}
 					}
 
@@ -145,7 +162,7 @@ public class Arena : AbstractComponent
 				if (Input.IsButtonPressed(MouseButton.Left))
 				{
 					List<Vector2i<int>> done = new();
-					float[,] tiles = StateManager.SpawnsetState.Spawnset.ArenaTiles;
+					float[,] tiles = StateManager.SpawnsetState.Spawnset.ArenaTiles.GetMutableClone();
 					int dimension = StateManager.SpawnsetState.Spawnset.ArenaDimension;
 					float targetHeight = StateManager.SpawnsetState.Spawnset.ArenaTiles[x, y];
 					FillNeighbors(x, y);
@@ -155,7 +172,7 @@ public class Arena : AbstractComponent
 					void FillNeighbors(int x, int y)
 					{
 						const float tolerance = 0.1f;
-						StateManager.SpawnsetState.Spawnset.ArenaTiles[x, y] = StateManager.ArenaEditorState.SelectedHeight;
+						tiles[x, y] = StateManager.ArenaEditorState.SelectedHeight;
 						done.Add(new(x, y));
 
 						int leftX = x - 1;
@@ -177,6 +194,8 @@ public class Arena : AbstractComponent
 							if (!done.Contains(new(newX, newY)) && MathF.Abs(tiles[newX, newY] - targetHeight) < tolerance)
 								FillNeighbors(newX, newY);
 						}
+
+						UpdateArena(tiles);
 					}
 				}
 
