@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Types.Core.Spawnsets;
+using System.Collections.Immutable;
 
 namespace DevilDaggersInfo.Core.Spawnset.Summary;
 
@@ -73,7 +74,7 @@ public class SpawnsetSummary
 			br.Seek(20);
 		}
 
-		(SpawnSectionInfo preLoopSection, SpawnSectionInfo loopSection) = CalculateSections(spawns, gameMode);
+		(SpawnSectionInfo preLoopSection, SpawnSectionInfo loopSection) = CalculateSections(spawns.ToImmutableArray(), gameMode);
 
 		// Settings
 		HandLevel handLevel = HandLevel.Level1;
@@ -91,10 +92,10 @@ public class SpawnsetSummary
 		return new(spawnVersion, worldVersion, gameMode, preLoopSection, loopSection, handLevel, additionalGems, timerStart);
 	}
 
-	private static (SpawnSectionInfo PreLoopSection, SpawnSectionInfo LoopSection) CalculateSections(Spawn[] spawns, GameMode gameMode)
+	private static (SpawnSectionInfo PreLoopSection, SpawnSectionInfo LoopSection) CalculateSections(ImmutableArray<Spawn> spawns, GameMode gameMode)
 		=> gameMode != GameMode.Survival ? CalculateSectionsForNonDefaultGameMode(spawns) : CalculateSectionsForDefaultGameMode(spawns);
 
-	private static (SpawnSectionInfo PreLoopSection, SpawnSectionInfo LoopSection) CalculateSectionsForNonDefaultGameMode(Spawn[] spawns)
+	private static (SpawnSectionInfo PreLoopSection, SpawnSectionInfo LoopSection) CalculateSectionsForNonDefaultGameMode(ImmutableArray<Spawn> spawns)
 	{
 		int spawnCount = 0;
 		float seconds = 0;
@@ -114,7 +115,7 @@ public class SpawnsetSummary
 		return (new(spawnCount, spawnCount == 0 ? null : seconds), default);
 	}
 
-	private static (SpawnSectionInfo PreLoopSection, SpawnSectionInfo LoopSection) CalculateSectionsForDefaultGameMode(Spawn[] spawns)
+	private static (SpawnSectionInfo PreLoopSection, SpawnSectionInfo LoopSection) CalculateSectionsForDefaultGameMode(ImmutableArray<Spawn> spawns)
 	{
 		int loopStartIndex = SpawnsetBinary.GetLoopStartIndex(spawns);
 

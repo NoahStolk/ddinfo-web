@@ -1,10 +1,11 @@
 using DevilDaggersInfo.Core.Spawnset.Exceptions;
 using DevilDaggersInfo.Types.Core.Spawnsets;
+using System.Collections.Immutable;
 using System.Numerics;
 
 namespace DevilDaggersInfo.Core.Spawnset;
 
-public class SpawnsetBinary
+public record SpawnsetBinary
 {
 	/// <summary>
 	/// The game supports different arena dimensions, however anything other than the default causes the spawnset to glitch out.
@@ -27,14 +28,11 @@ public class SpawnsetBinary
 		int unusedGoldenTime,
 		int unusedSilverTime,
 		int unusedBronzeTime,
-		Spawn[] spawns,
+		ImmutableArray<Spawn> spawns,
 		HandLevel handLevel,
 		int additionalGems,
 		float timerStart)
 	{
-		if (arenaTiles.GetLength(0) != arenaDimension || arenaTiles.GetLength(1) != arenaDimension)
-			throw new ArgumentOutOfRangeException(nameof(arenaTiles), $"Arena array must be {arenaDimension} by {arenaDimension}.");
-
 		SpawnVersion = spawnVersion;
 		WorldVersion = worldVersion;
 		ShrinkStart = shrinkStart;
@@ -43,7 +41,7 @@ public class SpawnsetBinary
 		Brightness = brightness;
 		GameMode = gameMode;
 		ArenaDimension = arenaDimension;
-		ArenaTiles = arenaTiles;
+		ArenaTiles = new(arenaDimension, arenaTiles);
 
 		RaceDaggerPosition = raceDaggerPosition;
 		UnusedDevilTime = unusedDevilTime;
@@ -65,7 +63,7 @@ public class SpawnsetBinary
 	public float Brightness { get; }
 	public GameMode GameMode { get; }
 	public int ArenaDimension { get; }
-	public float[,] ArenaTiles { get; }
+	public ImmutableArena ArenaTiles { get; }
 
 	public Vector2 RaceDaggerPosition { get; }
 	public int UnusedDevilTime { get; }
@@ -73,7 +71,7 @@ public class SpawnsetBinary
 	public int UnusedSilverTime { get; }
 	public int UnusedBronzeTime { get; }
 
-	public Spawn[] Spawns { get; }
+	public ImmutableArray<Spawn> Spawns { get; }
 
 	public HandLevel HandLevel { get; }
 	public int AdditionalGems { get; }
@@ -183,7 +181,7 @@ public class SpawnsetBinary
 			unusedGoldenTime,
 			unusedSilverTime,
 			unusedBronzeTime,
-			spawns,
+			spawns.ToImmutableArray(),
 			handLevel,
 			additionalGems,
 			timerStart);
@@ -277,12 +275,12 @@ public class SpawnsetBinary
 				const int halfTile = tileSize / 2;
 				const float radius = (shrinkStart - halfTile) / tileSize;
 				const float radiusSquared = radius * radius;
-				bool inside = Vector2.DistanceSquared(centerPoint, new Vector2(i, j)) < radiusSquared;
+				bool inside = Vector2.DistanceSquared(centerPoint, new(i, j)) < radiusSquared;
 				arena[i, j] = inside ? 0 : -1000;
 			}
 		}
 
-		return new(6, 9, shrinkStart, 20, 0.025f, 60, GameMode.Survival, ArenaDimensionMax, arena, default, 500, 250, 120, 60, Array.Empty<Spawn>(), HandLevel.Level1, 0, 0);
+		return new(6, 9, shrinkStart, 20, 0.025f, 60, GameMode.Survival, ArenaDimensionMax, arena, default, 500, 250, 120, 60, ImmutableArray<Spawn>.Empty, HandLevel.Level1, 0, 0);
 	}
 
 	public SpawnsetBinary DeepCopy()
@@ -298,7 +296,25 @@ public class SpawnsetBinary
 		for (int i = 0; i < Spawns.Length; i++)
 			spawns[i] = Spawns[i];
 
-		return new(SpawnVersion, WorldVersion, ShrinkStart, ShrinkEnd, ShrinkRate, Brightness, GameMode, ArenaDimension, arenaTiles, RaceDaggerPosition, UnusedDevilTime, UnusedGoldenTime, UnusedSilverTime, UnusedBronzeTime, spawns, HandLevel, AdditionalGems, TimerStart);
+		return new(
+			SpawnVersion,
+			WorldVersion,
+			ShrinkStart,
+			ShrinkEnd,
+			ShrinkRate,
+			Brightness,
+			GameMode,
+			ArenaDimension,
+			arenaTiles,
+			RaceDaggerPosition,
+			UnusedDevilTime,
+			UnusedGoldenTime,
+			UnusedSilverTime,
+			UnusedBronzeTime,
+			spawns.ToImmutableArray(),
+			HandLevel,
+			AdditionalGems,
+			TimerStart);
 	}
 
 	public static bool IsEmptySpawn(int enemyType)
@@ -307,13 +323,13 @@ public class SpawnsetBinary
 	public bool HasSpawns()
 		=> HasSpawns(Spawns);
 
-	public static bool HasSpawns(Spawn[] spawns)
+	public static bool HasSpawns(ImmutableArray<Spawn> spawns)
 		=> spawns.Any(s => s.EnemyType != EnemyType.Empty);
 
 	public bool HasEndLoop()
 		=> HasEndLoop(Spawns, GameMode);
 
-	public static bool HasEndLoop(Spawn[] spawns, GameMode gameMode)
+	public static bool HasEndLoop(ImmutableArray<Spawn> spawns, GameMode gameMode)
 	{
 		if (gameMode != GameMode.Survival || !HasSpawns(spawns))
 			return false;
@@ -327,7 +343,7 @@ public class SpawnsetBinary
 	public int GetLoopStartIndex()
 		=> GetLoopStartIndex(Spawns);
 
-	public static int GetLoopStartIndex(Spawn[] spawns)
+	public static int GetLoopStartIndex(ImmutableArray<Spawn> spawns)
 	{
 		for (int i = spawns.Length - 1; i >= 0; i--)
 		{
@@ -341,7 +357,7 @@ public class SpawnsetBinary
 	public IEnumerable<double> GenerateEndWaveTimes(double endGameSecond, int waveIndex)
 		=> GenerateEndWaveTimes(Spawns, endGameSecond, waveIndex);
 
-	public static IEnumerable<double> GenerateEndWaveTimes(Spawn[] spawns, double endGameSecond, int waveIndex)
+	public static IEnumerable<double> GenerateEndWaveTimes(ImmutableArray<Spawn> spawns, double endGameSecond, int waveIndex)
 	{
 		double enemyTimer = 0;
 		double delay = 0;
@@ -387,7 +403,7 @@ public class SpawnsetBinary
 	public (int X, float? Y, int Z) GetRaceDaggerTilePosition()
 		=> GetRaceDaggerTilePosition(ArenaDimension, ArenaTiles, RaceDaggerPosition);
 
-	public static (int X, float? Y, int Z) GetRaceDaggerTilePosition(int arenaDimension, float[,] arenaTiles, Vector2 raceDaggerPosition)
+	public static (int X, float? Y, int Z) GetRaceDaggerTilePosition(int arenaDimension, ImmutableArena arenaTiles, Vector2 raceDaggerPosition)
 	{
 		int x = Convert(raceDaggerPosition.X);
 		int z = Convert(raceDaggerPosition.Y);
@@ -442,7 +458,7 @@ public class SpawnsetBinary
 	public float GetActualTileHeight(int x, int y, float currentTime)
 		=> GetActualTileHeight(ArenaDimension, ArenaTiles, ShrinkStart, ShrinkEnd, ShrinkRate, x, y, currentTime);
 
-	public static float GetActualTileHeight(int arenaDimension, float[,] arenaTiles, float shrinkStart, float shrinkEnd, float shrinkRate, int x, int y, float currentTime)
+	public static float GetActualTileHeight(int arenaDimension, ImmutableArena arenaTiles, float shrinkStart, float shrinkEnd, float shrinkRate, int x, int y, float currentTime)
 	{
 		if (x < 0 || x >= arenaDimension)
 			throw new ArgumentOutOfRangeException(nameof(x));

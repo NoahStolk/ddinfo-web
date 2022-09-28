@@ -1,5 +1,6 @@
 using DevilDaggersInfo.Types.Core.Spawnsets;
 using DevilDaggersInfo.Types.Core.Wiki;
+using System.Collections.Immutable;
 
 namespace DevilDaggersInfo.Core.Spawnset.View;
 
@@ -10,7 +11,7 @@ public class SpawnsView
 	{
 	}
 
-	public SpawnsView(GameMode gameMode, GameVersion gameVersion, Spawn[] spawns, int waveCount = 40, HandLevel handLevel = HandLevel.Level1, int additionalGems = 0, float timerStart = 0)
+	public SpawnsView(GameMode gameMode, GameVersion gameVersion, ImmutableArray<Spawn> spawns, int waveCount = 40, HandLevel handLevel = HandLevel.Level1, int additionalGems = 0, float timerStart = 0)
 	{
 		PreLoop = new();
 		Waves = new List<SpawnView>[waveCount];
@@ -31,8 +32,8 @@ public class SpawnsView
 		else
 		{
 			int loopStartIndex = SpawnsetBinary.GetLoopStartIndex(spawns);
-			Spawn[] preLoopSpawns = spawns.Take(loopStartIndex).ToArray();
-			Spawn[] loopSpawns = spawns.Skip(loopStartIndex).ToArray();
+			ImmutableArray<Spawn> preLoopSpawns = spawns.Take(loopStartIndex).ToImmutableArray();
+			ImmutableArray<Spawn> loopSpawns = spawns.Skip(loopStartIndex).ToImmutableArray();
 
 			BuildPreLoop(ref totalSeconds, ref gemState, preLoopSpawns);
 
@@ -47,7 +48,7 @@ public class SpawnsView
 	public bool HasPreLoopSpawns { get; private set; }
 	public bool HasLoopSpawns { get; private set; }
 
-	private void BuildPreLoop(ref double totalSeconds, ref GemState gemState, Spawn[] preLoopSpawns)
+	private void BuildPreLoop(ref double totalSeconds, ref GemState gemState, ImmutableArray<Spawn> preLoopSpawns)
 	{
 		HasPreLoopSpawns = preLoopSpawns.Any(s => s.EnemyType != EnemyType.Empty);
 		if (!HasPreLoopSpawns)
@@ -63,7 +64,7 @@ public class SpawnsView
 		}
 	}
 
-	private void BuildLoop(GameVersion gameVersion, int waveCount, ref double totalSeconds, ref GemState gemState, Spawn[] loopSpawns)
+	private void BuildLoop(GameVersion gameVersion, int waveCount, ref double totalSeconds, ref GemState gemState, ImmutableArray<Spawn> loopSpawns)
 	{
 		HasLoopSpawns = loopSpawns.Any(s => s.EnemyType != EnemyType.Empty);
 		if (!HasLoopSpawns)
