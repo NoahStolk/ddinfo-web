@@ -12,18 +12,8 @@ public class TextInput : AbstractTextInput
 {
 	private const float _cursorTimerSwitch = 0.45f;
 
-	public Color BackgroundColor { get; set; }
-	public Color BorderColor { get; set; }
-	public Color HoverBackgroundColor { get; set; }
-	public Color TextColor { get; set; }
-	public Color ActiveBorderColor { get; set; }
-	public Color CursorColor { get; set; }
-	public Color SelectionColor { get; set; }
-	public int BorderSize { get; set; }
-	public FontSize FontSize { get; set; }
-
-	public TextInput(Rectangle metric, bool isNumeric, Color backgroundColor, Color borderColor, Color hoverBackgroundColor, Color textColor, Color activeBorderColor, Color cursorColor, Color selectionColor, int borderSize, FontSize fontSize)
-		: base(metric, isNumeric)
+	public TextInput(Rectangle metric, bool isNumeric, Action<string> onChange, Color backgroundColor, Color borderColor, Color hoverBackgroundColor, Color textColor, Color activeBorderColor, Color cursorColor, Color selectionColor, int borderSize, FontSize fontSize)
+		: base(metric, isNumeric, onChange)
 	{
 		BackgroundColor = backgroundColor;
 		BorderColor = borderColor;
@@ -35,6 +25,16 @@ public class TextInput : AbstractTextInput
 		BorderSize = borderSize;
 		FontSize = fontSize;
 	}
+
+	public Color BackgroundColor { get; set; }
+	public Color BorderColor { get; set; }
+	public Color HoverBackgroundColor { get; set; }
+	public Color TextColor { get; set; }
+	public Color ActiveBorderColor { get; set; }
+	public Color CursorColor { get; set; }
+	public Color SelectionColor { get; set; }
+	public int BorderSize { get; set; }
+	public FontSize FontSize { get; set; }
 
 	public override void Render(Vector2i<int> parentPosition)
 	{

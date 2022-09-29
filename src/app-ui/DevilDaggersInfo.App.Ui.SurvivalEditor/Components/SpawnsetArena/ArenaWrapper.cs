@@ -3,6 +3,8 @@ using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.Enums;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Enums;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
+using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
+using DevilDaggersInfo.Core.Spawnset;
 using Warp.Ui;
 using Warp.Ui.Components;
 
@@ -44,19 +46,24 @@ public class ArenaWrapper : AbstractComponent
 		AddToolButton(_arenaButtonSize * 2, toolButtonOffsetY, ArenaTool.Rectangle, "R");
 		AddToolButton(_arenaButtonSize * 3, toolButtonOffsetY, ArenaTool.Bucket, "B");
 
-		void AddSetting(string labelText, int y1)
+		void AddSetting(string labelText, int y1, Action<string> onChange)
 		{
 			const int labelWidth = 112;
 			Label label = new(Rectangle.At(0, y1, labelWidth, 16), Color.White, labelText, TextAlign.Left, FontSize.F8X8);
-			TextInput textInput = ComponentBuilder.CreateTextInput(Rectangle.At(labelWidth, y1, 64, 16), true);
+			TextInput textInput = ComponentBuilder.CreateTextInput(Rectangle.At(labelWidth, y1, 64, 16), true, onChange);
 			NestingContext.Add(label);
 			NestingContext.Add(textInput);
 		}
 
-		AddSetting("Shrink start", arena.Metric.Size.Y + 8);
-		AddSetting("Shrink end", arena.Metric.Size.Y + 24);
-		AddSetting("Shrink rate", arena.Metric.Size.Y + 40);
-		AddSetting("Brightness", arena.Metric.Size.Y + 56);
+		AddSetting("Shrink start", arena.Metric.Size.Y + 8, ChangeShrinkStart);
+		AddSetting("Shrink end", arena.Metric.Size.Y + 24, ChangeShrinkEnd);
+		AddSetting("Shrink rate", arena.Metric.Size.Y + 40, ChangeShrinkRate);
+		AddSetting("Brightness", arena.Metric.Size.Y + 56, ChangeBrightness);
+
+		void ChangeShrinkStart(string input) => SpawnsetSettingEditUtils.ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { ShrinkStart = v }, input, "Changed shrink start");
+		void ChangeShrinkEnd(string input) => SpawnsetSettingEditUtils.ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { ShrinkEnd = v }, input, "Changed shrink end");
+		void ChangeShrinkRate(string input) => SpawnsetSettingEditUtils.ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { ShrinkRate = v }, input, "Changed shrink rate");
+		void ChangeBrightness(string input) => SpawnsetSettingEditUtils.ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { Brightness = v }, input, "Changed brightness");
 
 		void AddHeightButton(float height, int offsetX, int offsetY)
 		{

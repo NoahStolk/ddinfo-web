@@ -8,7 +8,7 @@ namespace DevilDaggersInfo.App.Ui.Base.Components;
 
 public class Checkbox : AbstractCheckbox
 {
-	public Checkbox(Rectangle metric, Action onClick)
+	public Checkbox(Rectangle metric, Action<bool> onClick)
 		: base(metric, onClick)
 	{
 	}

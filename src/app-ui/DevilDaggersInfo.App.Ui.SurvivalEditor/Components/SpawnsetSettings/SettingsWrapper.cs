@@ -2,7 +2,9 @@ using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.Enums;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
+using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using DevilDaggersInfo.Common.Exceptions;
+using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Types.Core.Spawnsets;
 using Warp.Ui;
@@ -20,8 +22,11 @@ public class SettingsWrapper : AbstractComponent
 
 		foreach (Button button in GetHandButtons())
 			NestingContext.Add(button);
-		AddTextInputSetting("Addit. gems", 0, settingHeight);
-		AddTextInputSetting("Timer start", 0, settingHeight * 2);
+		AddTextInputSetting("Addit. gems", 0, settingHeight, ChangeAdditionalGems);
+		AddTextInputSetting("Timer start", 0, settingHeight * 2, ChangeTimerStart);
+
+		void ChangeAdditionalGems(string input) => SpawnsetSettingEditUtils.ChangeSetting<int>(v => StateManager.SpawnsetState.Spawnset with { AdditionalGems = v }, input, "Changed additional gems");
+		void ChangeTimerStart(string input) => SpawnsetSettingEditUtils.ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { TimerStart = v }, input, "Changed timer start");
 
 		IEnumerable<Button> GetHandButtons()
 		{
@@ -59,10 +64,10 @@ public class SettingsWrapper : AbstractComponent
 			Color ToWarpColor(DevilDaggersInfo.Core.Wiki.Structs.Color c) => new(c.R, c.G, c.B, 255);
 		}
 
-		void AddTextInputSetting(string labelText, int x, int y)
+		void AddTextInputSetting(string labelText, int x, int y, Action<string> onChange)
 		{
 			NestingContext.Add(AddLabel(labelText, x, y));
-			NestingContext.Add(ComponentBuilder.CreateTextInput(Rectangle.At(x + settingWidth, y, settingWidth, settingHeight), true));
+			NestingContext.Add(ComponentBuilder.CreateTextInput(Rectangle.At(x + settingWidth, y, settingWidth, settingHeight), true, onChange));
 		}
 
 		Label AddLabel(string labelText, int x, int y)
