@@ -18,6 +18,7 @@ public class SurvivalEditorMainLayout : Layout, ISurvivalEditorMainLayout
 {
 	private readonly SpawnsWrapper _spawnsWrapper;
 	private readonly HistoryWrapper _historyWrapper;
+	private readonly SettingsWrapper _settingsWrapper;
 
 	public SurvivalEditorMainLayout()
 		: base(Constants.Full)
@@ -26,18 +27,19 @@ public class SurvivalEditorMainLayout : Layout, ISurvivalEditorMainLayout
 		ArenaWrapper arenaWrapper = new(Rectangle.At(400, 64, 400, 512));
 		_spawnsWrapper = new(Rectangle.At(0, 64, 384, 512));
 		_historyWrapper = new(Rectangle.At(768, 512, 256, 256));
-		SettingsWrapper settingsWrapper = new(Rectangle.At(800, 64, 224, 256));
+		_settingsWrapper = new(Rectangle.At(800, 64, 224, 256));
 
 		NestingContext.Add(menu);
 		NestingContext.Add(arenaWrapper);
 		NestingContext.Add(_spawnsWrapper);
 		NestingContext.Add(_historyWrapper);
-		NestingContext.Add(settingsWrapper);
+		NestingContext.Add(_settingsWrapper);
 	}
 
 	public void SetSpawnset()
 	{
 		_spawnsWrapper.InitializeContent();
+		_settingsWrapper.SetSpawnset();
 	}
 
 	public void SetHistory()
