@@ -51,4 +51,25 @@ public class SpawnsetBinaryTests
 		Assert.AreEqual(50, settings.GemsOrHoming);
 		Assert.AreEqual(HandLevel.Level2, settings.HandMesh);
 	}
+
+	[TestMethod]
+	public void TestEffectiveTimerStart()
+	{
+		byte[] originalBytes = File.ReadAllBytes(Path.Combine(TestUtils.ResourcePath, "V3"));
+		SpawnsetBinary spawnset = SpawnsetBinary.Parse(originalBytes) with
+		{
+			TimerStart = 10,
+		};
+
+		// The effective timer start should be default when using the default spawnset (or any spawnset with spawn version 5 or lower).
+		float timerStart = spawnset.GetEffectiveTimerStart();
+		Assert.AreEqual(0, timerStart);
+
+		spawnset = spawnset with
+		{
+			SpawnVersion = 6, // Specified timer start should be effective from version 6.
+		};
+		timerStart = spawnset.GetEffectiveTimerStart();
+		Assert.AreEqual(10, timerStart);
+	}
 }

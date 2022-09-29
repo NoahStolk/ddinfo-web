@@ -390,6 +390,12 @@ public record SpawnsetBinary
 		};
 	}
 
+	public float GetEffectiveTimerStart()
+		=> GetEffectiveTimerStart(SpawnVersion, TimerStart);
+
+	public static float GetEffectiveTimerStart(int spawnVersion, float timerStart)
+		=> spawnVersion < 6 ? 0 : timerStart;
+
 	public string GetGameVersionString()
 		=> GetGameVersionString(WorldVersion, SpawnVersion);
 

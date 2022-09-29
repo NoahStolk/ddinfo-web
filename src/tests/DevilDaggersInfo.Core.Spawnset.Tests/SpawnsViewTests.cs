@@ -48,6 +48,44 @@ public class SpawnsViewTests
 		AreEqual(new(EnemyType.Ghostpede, 516.5667, 10, new(HandLevel.Level4, 317, 537)), spawnsView.Waves[2][3]);
 	}
 
+	[TestMethod]
+	public void TestSpawns_PracticeSettings()
+	{
+		const string fileName = "V3";
+		const GameVersion gameVersion = GameVersion.V3_0;
+		const int waveCount = 1;
+		SpawnsetBinary spawnset = SpawnsetBinary.Parse(File.ReadAllBytes(Path.Combine(TestUtils.ResourcePath, fileName)));
+		SpawnsView spawnsView = new(spawnset, gameVersion, waveCount);
+		Assert.AreEqual(3, spawnsView.PreLoop[0].Seconds);
+		Assert.AreEqual(new(HandLevel.Level1, 2, 2), spawnsView.PreLoop[0].GemState);
+
+		spawnset = spawnset with
+		{
+			TimerStart = 10,
+			HandLevel = HandLevel.Level2,
+			AdditionalGems = 5,
+		};
+		spawnsView = new(spawnset, gameVersion, waveCount);
+
+		// Settings should not be effective for spawn version 4.
+		Assert.AreEqual(3, spawnsView.PreLoop[0].Seconds);
+		Assert.AreEqual(new(HandLevel.Level1, 2, 2), spawnsView.PreLoop[0].GemState);
+
+		spawnset = spawnset with { SpawnVersion = 5 };
+		spawnsView = new(spawnset, gameVersion, waveCount);
+
+		// Only hand and gem settings should be effective for spawn version 5.
+		Assert.AreEqual(3, spawnsView.PreLoop[0].Seconds);
+		Assert.AreEqual(new(HandLevel.Level2, 17, 2), spawnsView.PreLoop[0].GemState);
+
+		spawnset = spawnset with { SpawnVersion = 6 };
+		spawnsView = new(spawnset, gameVersion, waveCount);
+
+		// All settings should be effective for spawn version 6.
+		Assert.AreEqual(13, spawnsView.PreLoop[0].Seconds);
+		Assert.AreEqual(new(HandLevel.Level2, 17, 2), spawnsView.PreLoop[0].GemState);
+	}
+
 	[AssertionMethod]
 	private static SpawnsView Parse(string fileName, GameVersion gameVersion, int waveCount, int expectedPreLoopSpawnCount, int expectedWaveSpawnCount)
 	{
