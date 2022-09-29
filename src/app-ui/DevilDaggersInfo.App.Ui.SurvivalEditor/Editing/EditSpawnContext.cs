@@ -18,7 +18,7 @@ public static class EditSpawnContext
 		if (spawns.Length == 0)
 			return new();
 
-		double totalSeconds = timerStart;
+		double totalSeconds = SpawnsetBinary.GetEffectiveTimerStart(spawnVersion, timerStart);
 		EffectivePlayerSettings effectivePlayerSettings = SpawnsetBinary.GetEffectivePlayerSettings(spawnVersion, handLevel, additionalGems);
 		GemState gemState = new(effectivePlayerSettings.HandLevel, effectivePlayerSettings.GemsOrHoming, 0);
 

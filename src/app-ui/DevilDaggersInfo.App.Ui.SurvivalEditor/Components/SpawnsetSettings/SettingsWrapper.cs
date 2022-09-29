@@ -5,6 +5,7 @@ using DevilDaggersInfo.App.Ui.Base.Extensions;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using DevilDaggersInfo.Common.Exceptions;
+using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Types.Core.Spawnsets;
 using Warp.Ui;
@@ -14,6 +15,10 @@ namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetSettings;
 
 public class SettingsWrapper : AbstractComponent
 {
+	private readonly Button _buttonV0V1;
+	private readonly Button _buttonV2V3;
+	private readonly Button _buttonV3Next;
+
 	private readonly Button _buttonLevel1;
 	private readonly Button _buttonLevel2;
 	private readonly Button _buttonLevel3;
@@ -28,19 +33,30 @@ public class SettingsWrapper : AbstractComponent
 	public SettingsWrapper(Rectangle metric)
 		: base(metric)
 	{
-		const int settingWidth = 112;
-		const int settingHeight = 16;
+		const int width = 224;
+		const int halfWidth = width / 2;
+		int thirdWidth = (int)MathF.Ceiling(width / 3f);
+		const int quarterWidth = halfWidth / 2;
+		const int height = 20;
+
+		_buttonV0V1 = CreateFormatButton(0, 8, 4);
+		_buttonV2V3 = CreateFormatButton(1, 9, 4);
+		_buttonV3Next = CreateFormatButton(2, 9, 6);
 
 		_buttonLevel1 = CreateHandButton(HandLevel.Level1);
 		_buttonLevel2 = CreateHandButton(HandLevel.Level2);
 		_buttonLevel3 = CreateHandButton(HandLevel.Level3);
 		_buttonLevel4 = CreateHandButton(HandLevel.Level4);
 
-		_labelAdditionalGems = CreateLabel("Addit. gems", 0, settingHeight);
-		_labelTimerStart = CreateLabel("Timer start", 0, settingHeight * 2);
+		_labelAdditionalGems = CreateLabel("Addit. gems", 0, height * 2);
+		_labelTimerStart = CreateLabel("Timer start", 0, height * 3);
 
-		_textInputAdditionalGems = CreateTextInput(0, settingHeight, s => SpawnsetSettingEditUtils.ChangeSetting<int>(v => StateManager.SpawnsetState.Spawnset with { AdditionalGems = v }, s, "Changed additional gems"));
-		_textInputTimerStart = CreateTextInput(0, settingHeight * 2, s => SpawnsetSettingEditUtils.ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { TimerStart = v }, s, "Changed timer start"));
+		_textInputAdditionalGems = CreateTextInput(0, height * 2, s => SpawnsetSettingEditUtils.ChangeSetting<int>(v => StateManager.SpawnsetState.Spawnset with { AdditionalGems = v }, s, "Changed additional gems"));
+		_textInputTimerStart = CreateTextInput(0, height * 3, s => SpawnsetSettingEditUtils.ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { TimerStart = v }, s, "Changed timer start"));
+
+		NestingContext.Add(_buttonV0V1);
+		NestingContext.Add(_buttonV2V3);
+		NestingContext.Add(_buttonV3Next);
 
 		NestingContext.Add(_buttonLevel1);
 		NestingContext.Add(_buttonLevel2);
@@ -53,11 +69,22 @@ public class SettingsWrapper : AbstractComponent
 		NestingContext.Add(_textInputAdditionalGems);
 		NestingContext.Add(_textInputTimerStart);
 
+		Button CreateFormatButton(int index, int worldVersion, int spawnVersion)
+		{
+			string str = SpawnsetBinary.GetGameVersionString(worldVersion, spawnVersion);
+			return new(Rectangle.At(index * thirdWidth, 0, thirdWidth, height), UpdateFormat, Color.Black, Color.White, Color.Gray(0.25f), Color.White, str, TextAlign.Middle, 2, FontSize.F8X8);
+
+			void UpdateFormat()
+			{
+				StateManager.SetSpawnset(StateManager.SpawnsetState.Spawnset with { WorldVersion = worldVersion, SpawnVersion = spawnVersion });
+				SpawnsetHistoryManager.Save($"Set format to {str}");
+			}
+		}
+
 		Button CreateHandButton(HandLevel handLevel)
 		{
-			const int width = settingWidth / 2;
 			int i = (int)handLevel - 1;
-			return new(Rectangle.At(i * width, 0, width, settingHeight), UpdateHand, Color.Black, GetColor(handLevel), Color.Gray(0.25f), Color.White, ToShortString(), TextAlign.Middle, 2, FontSize.F8X8);
+			return new(Rectangle.At(i * quarterWidth, height, quarterWidth, height), UpdateHand, Color.Black, GetColor(handLevel), Color.Gray(0.25f), Color.White, ToShortString(), TextAlign.Middle, 2, FontSize.F8X8);
 
 			void UpdateHand()
 			{
@@ -75,20 +102,20 @@ public class SettingsWrapper : AbstractComponent
 			};
 		}
 
-		TextInput CreateTextInput(int x, int y, Action<string> onChange)
-		{
-			return ComponentBuilder.CreateTextInput(Rectangle.At(x + settingWidth, y, settingWidth, settingHeight), true, onChange);
-		}
+		TextInput CreateTextInput(int x, int y, Action<string> onChange) => ComponentBuilder.CreateTextInput(Rectangle.At(x + halfWidth, y, halfWidth, height), true, onChange);
 
-		Label CreateLabel(string labelText, int x, int y)
-		{
-			return new(Rectangle.At(x, y, settingWidth, settingHeight), Color.White, labelText, TextAlign.Left, FontSize.F8X8);
-		}
+		Label CreateLabel(string labelText, int x, int y) => new(Rectangle.At(x, y, halfWidth, height), Color.White, labelText, TextAlign.Left, FontSize.F8X8);
 	}
 
 	public void SetSpawnset()
 	{
-		bool practice = StateManager.SpawnsetState.Spawnset.SpawnVersion > 4;
+		SpawnsetBinary spawnset = StateManager.SpawnsetState.Spawnset;
+
+		_buttonV0V1.BackgroundColor = GetFormatBackground(8, 4);
+		_buttonV2V3.BackgroundColor = GetFormatBackground(9, 4);
+		_buttonV3Next.BackgroundColor = GetFormatBackground(9, 6);
+
+		bool practice = spawnset.SpawnVersion > 4;
 		_buttonLevel1.IsActive = practice;
 		_buttonLevel2.IsActive = practice;
 		_buttonLevel3.IsActive = practice;
@@ -97,16 +124,29 @@ public class SettingsWrapper : AbstractComponent
 		_labelAdditionalGems.IsActive = practice;
 		_textInputAdditionalGems.IsActive = practice;
 
-		bool timerStart = StateManager.SpawnsetState.Spawnset.SpawnVersion > 5;
+		// TODO: Fix hack
+		_textInputAdditionalGems.Value.Clear();
+		_textInputAdditionalGems.Value.Append(spawnset.AdditionalGems);
+
+		bool timerStart = spawnset.SpawnVersion > 5;
 		_labelTimerStart.IsActive = timerStart;
 		_textInputTimerStart.IsActive = timerStart;
+
+		// TODO: Fix hack
+		_textInputTimerStart.Value.Clear();
+		_textInputTimerStart.Value.Append(spawnset.TimerStart.ToString("0.0000"));
 
 		_buttonLevel1.BackgroundColor = GetBackground(HandLevel.Level1);
 		_buttonLevel2.BackgroundColor = GetBackground(HandLevel.Level2);
 		_buttonLevel3.BackgroundColor = GetBackground(HandLevel.Level3);
 		_buttonLevel4.BackgroundColor = GetBackground(HandLevel.Level4);
 
-		Color GetBackground(HandLevel handLevel) => handLevel == StateManager.SpawnsetState.Spawnset.HandLevel ? GetColor(handLevel) : Color.Black;
+		Color GetBackground(HandLevel handLevel) => handLevel == spawnset.HandLevel ? GetColor(handLevel) : Color.Black;
+
+		Color GetFormatBackground(int worldVersion, int spawnVersion)
+		{
+			return worldVersion == spawnset.WorldVersion && spawnVersion == spawnset.SpawnVersion ? Color.Gray(0.25f) : Color.Black;
+		}
 	}
 
 	private static Color GetColor(HandLevel handLevel) => handLevel switch
