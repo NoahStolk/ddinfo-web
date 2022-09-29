@@ -1,5 +1,6 @@
 using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.Enums;
+using DevilDaggersInfo.App.Ui.Base.Extensions;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing;
 using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Core.Wiki.Objects;
@@ -36,14 +37,16 @@ public class SpawnEntry : AbstractComponent
 		NestingContext.Add(new Button(Rectangle.At(0, 0, 96, Spawns.SpawnEntryHeight), () => {}, backgroundColor, Color.Black, backgroundColor.Intensify(hoverComponent), textColor, enemy?.Name ?? "Empty", TextAlign.Left, 2, FontSize.F8X8));
 		NestingContext.Add(new Button(Rectangle.At(96, 0, 96, Spawns.SpawnEntryHeight), () => {}, Color.Transparent, Color.Black, hoverAddition, Color.White, spawn.Delay.ToString("0.0000"), TextAlign.Right, 2, FontSize.F8X8));
 		NestingContext.Add(new Button(Rectangle.At(192, 0, 96, Spawns.SpawnEntryHeight), () => {}, Color.Transparent, Color.Black, hoverAddition, Color.White, spawn.Seconds.ToString("0.0000"), TextAlign.Right, 2, FontSize.F8X8));
-		NestingContext.Add(new Label(Rectangle.At(288, 0, 48, Spawns.SpawnEntryHeight), Color.White, spawn.NoFarmGems.ToString(), TextAlign.Right, FontSize.F8X8));
+		NestingContext.Add(new Label(Rectangle.At(288, 0, 48, Spawns.SpawnEntryHeight), Color.White, NoFarmGemsString(spawn.NoFarmGems), TextAlign.Right, FontSize.F8X8));
 		NestingContext.Add(new Label(Rectangle.At(336, 0, 48, Spawns.SpawnEntryHeight), GetColorFromHand(spawn.GemState.HandLevel), spawn.GemState.Value.ToString(), TextAlign.Right, FontSize.F8X8));
 
 		Color GetColorFromHand(HandLevel handLevel) => handLevel switch
 		{
-			HandLevel.Level3 => Color.Aqua,
-			HandLevel.Level4 => Color.Purple,
+			HandLevel.Level3 => UpgradeColors.Level3.ToWarpColor(),
+			HandLevel.Level4 => UpgradeColors.Level4.ToWarpColor(),
 			_ => Color.Red,
 		};
+
+		static string NoFarmGemsString(int gems) => gems == 0 ? "-" : $"+{gems}";
 	}
 }

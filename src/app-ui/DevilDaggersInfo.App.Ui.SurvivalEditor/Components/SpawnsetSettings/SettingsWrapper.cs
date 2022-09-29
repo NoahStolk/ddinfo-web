@@ -1,10 +1,10 @@
 using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.Enums;
+using DevilDaggersInfo.App.Ui.Base.Extensions;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using DevilDaggersInfo.Common.Exceptions;
-using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Types.Core.Spawnsets;
 using Warp.Ui;
@@ -45,10 +45,10 @@ public class SettingsWrapper : AbstractComponent
 
 			Color GetColor(HandLevel handLevel) => handLevel switch
 			{
-				HandLevel.Level1 => ToWarpColor(UpgradeColors.Level1),
-				HandLevel.Level2 => ToWarpColor(UpgradeColors.Level2),
-				HandLevel.Level3 => ToWarpColor(UpgradeColors.Level3),
-				HandLevel.Level4 => ToWarpColor(UpgradeColors.Level4),
+				HandLevel.Level1 => UpgradeColors.Level1.ToWarpColor(),
+				HandLevel.Level2 => UpgradeColors.Level2.ToWarpColor(),
+				HandLevel.Level3 => UpgradeColors.Level3.ToWarpColor(),
+				HandLevel.Level4 => UpgradeColors.Level4.ToWarpColor(),
 				_ => throw new InvalidEnumConversionException(handLevel),
 			};
 
@@ -60,8 +60,6 @@ public class SettingsWrapper : AbstractComponent
 				HandLevel.Level4 => "Lvl 4",
 				_ => throw new InvalidEnumConversionException(handLevel),
 			};
-
-			Color ToWarpColor(DevilDaggersInfo.Core.Wiki.Structs.Color c) => new(c.R, c.G, c.B, 255);
 		}
 
 		void AddTextInputSetting(string labelText, int x, int y, Action<string> onChange)
