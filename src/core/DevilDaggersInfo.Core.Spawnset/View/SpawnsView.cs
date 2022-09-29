@@ -83,17 +83,17 @@ public class SpawnsView
 					enemyTimer += 1f / 60f + 1f / 60f / 8f * i;
 				}
 
-				if (spawn.EnemyType != EnemyType.Empty)
-				{
-					EnemyType finalEnemy = spawn.EnemyType;
-					if (i % 3 == 2 && gameVersion is not (GameVersion.V1_0 or GameVersion.V2_0) && finalEnemy == EnemyType.Gigapede)
-						finalEnemy = EnemyType.Ghostpede;
+				if (spawn.EnemyType == EnemyType.Empty)
+					continue;
 
-					int noFarmGems = finalEnemy.GetNoFarmGems();
-					gemState = gemState.Add(noFarmGems);
+				EnemyType finalEnemy = spawn.EnemyType;
+				if (i % 3 == 2 && gameVersion is not (GameVersion.V1_0 or GameVersion.V2_0) && finalEnemy == EnemyType.Gigapede)
+					finalEnemy = EnemyType.Ghostpede;
 
-					Waves[i].Add(new(finalEnemy, totalSeconds, noFarmGems, gemState));
-				}
+				int noFarmGems = finalEnemy.GetNoFarmGems();
+				gemState = gemState.Add(noFarmGems);
+
+				Waves[i].Add(new(finalEnemy, totalSeconds, noFarmGems, gemState));
 			}
 		}
 	}
