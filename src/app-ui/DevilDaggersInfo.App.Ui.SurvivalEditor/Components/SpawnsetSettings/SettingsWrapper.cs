@@ -19,6 +19,12 @@ public class SettingsWrapper : AbstractComponent
 	private readonly Button _buttonLevel3;
 	private readonly Button _buttonLevel4;
 
+	private readonly Label _labelAdditionalGems;
+	private readonly Label _labelTimerStart;
+
+	private readonly TextInput _textInputAdditionalGems;
+	private readonly TextInput _textInputTimerStart;
+
 	public SettingsWrapper(Rectangle metric)
 		: base(metric)
 	{
@@ -30,28 +36,32 @@ public class SettingsWrapper : AbstractComponent
 		_buttonLevel3 = CreateHandButton(HandLevel.Level3);
 		_buttonLevel4 = CreateHandButton(HandLevel.Level4);
 
+		_labelAdditionalGems = CreateLabel("Addit. gems", 0, settingHeight);
+		_labelTimerStart = CreateLabel("Timer start", 0, settingHeight * 2);
+
+		_textInputAdditionalGems = CreateTextInput(0, settingHeight, s => SpawnsetSettingEditUtils.ChangeSetting<int>(v => StateManager.SpawnsetState.Spawnset with { AdditionalGems = v }, s, "Changed additional gems"));
+		_textInputTimerStart = CreateTextInput(0, settingHeight * 2, s => SpawnsetSettingEditUtils.ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { TimerStart = v }, s, "Changed timer start"));
+
 		NestingContext.Add(_buttonLevel1);
 		NestingContext.Add(_buttonLevel2);
 		NestingContext.Add(_buttonLevel3);
 		NestingContext.Add(_buttonLevel4);
 
-		AddTextInputSetting("Addit. gems", 0, settingHeight, ChangeAdditionalGems);
-		AddTextInputSetting("Timer start", 0, settingHeight * 2, ChangeTimerStart);
+		NestingContext.Add(_labelAdditionalGems);
+		NestingContext.Add(_labelTimerStart);
 
-		void ChangeAdditionalGems(string input) => SpawnsetSettingEditUtils.ChangeSetting<int>(v => StateManager.SpawnsetState.Spawnset with { AdditionalGems = v }, input, "Changed additional gems");
-		void ChangeTimerStart(string input) => SpawnsetSettingEditUtils.ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { TimerStart = v }, input, "Changed timer start");
+		NestingContext.Add(_textInputAdditionalGems);
+		NestingContext.Add(_textInputTimerStart);
 
 		Button CreateHandButton(HandLevel handLevel)
 		{
+			const int width = settingWidth / 2;
 			int i = (int)handLevel - 1;
-			return new(Rectangle.At(i * 56, 0, 56, settingHeight), UpdateHand, Color.Black, GetColor(handLevel), Color.Gray(0.25f), Color.White, ToShortString(), TextAlign.Middle, 2, FontSize.F8X8);
+			return new(Rectangle.At(i * width, 0, width, settingHeight), UpdateHand, Color.Black, GetColor(handLevel), Color.Gray(0.25f), Color.White, ToShortString(), TextAlign.Middle, 2, FontSize.F8X8);
 
 			void UpdateHand()
 			{
-				StateManager.SetSpawnset(StateManager.SpawnsetState.Spawnset with
-				{
-					HandLevel = handLevel,
-				});
+				StateManager.SetSpawnset(StateManager.SpawnsetState.Spawnset with { HandLevel = handLevel });
 				SpawnsetHistoryManager.Save($"Set hand level to {handLevel}");
 			}
 
@@ -65,13 +75,12 @@ public class SettingsWrapper : AbstractComponent
 			};
 		}
 
-		void AddTextInputSetting(string labelText, int x, int y, Action<string> onChange)
+		TextInput CreateTextInput(int x, int y, Action<string> onChange)
 		{
-			NestingContext.Add(AddLabel(labelText, x, y));
-			NestingContext.Add(ComponentBuilder.CreateTextInput(Rectangle.At(x + settingWidth, y, settingWidth, settingHeight), true, onChange));
+			return ComponentBuilder.CreateTextInput(Rectangle.At(x + settingWidth, y, settingWidth, settingHeight), true, onChange);
 		}
 
-		Label AddLabel(string labelText, int x, int y)
+		Label CreateLabel(string labelText, int x, int y)
 		{
 			return new(Rectangle.At(x, y, settingWidth, settingHeight), Color.White, labelText, TextAlign.Left, FontSize.F8X8);
 		}
@@ -79,18 +88,25 @@ public class SettingsWrapper : AbstractComponent
 
 	public void SetSpawnset()
 	{
+		bool practice = StateManager.SpawnsetState.Spawnset.SpawnVersion > 4;
+		_buttonLevel1.IsActive = practice;
+		_buttonLevel2.IsActive = practice;
+		_buttonLevel3.IsActive = practice;
+		_buttonLevel4.IsActive = practice;
+
+		_labelAdditionalGems.IsActive = practice;
+		_textInputAdditionalGems.IsActive = practice;
+
+		bool timerStart = StateManager.SpawnsetState.Spawnset.SpawnVersion > 5;
+		_labelTimerStart.IsActive = timerStart;
+		_textInputTimerStart.IsActive = timerStart;
+
 		_buttonLevel1.BackgroundColor = GetBackground(HandLevel.Level1);
 		_buttonLevel2.BackgroundColor = GetBackground(HandLevel.Level2);
 		_buttonLevel3.BackgroundColor = GetBackground(HandLevel.Level3);
 		_buttonLevel4.BackgroundColor = GetBackground(HandLevel.Level4);
 
-		Color GetBackground(HandLevel handLevel)
-		{
-			if (StateManager.SpawnsetState.Spawnset.SpawnVersion < 5)
-				return Color.Gray(0.5f);
-
-			return handLevel == StateManager.SpawnsetState.Spawnset.HandLevel ? GetColor(handLevel) : Color.Black;
-		}
+		Color GetBackground(HandLevel handLevel) => handLevel == StateManager.SpawnsetState.Spawnset.HandLevel ? GetColor(handLevel) : Color.Black;
 	}
 
 	private static Color GetColor(HandLevel handLevel) => handLevel switch
