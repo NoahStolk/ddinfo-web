@@ -1,4 +1,3 @@
-using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.Enums;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Enums;
@@ -14,10 +13,10 @@ public class ArenaWrapper : AbstractComponent
 {
 	private const int _arenaButtonSize = 20;
 
-	private readonly TextInput _textInputShrinkStart;
-	private readonly TextInput _textInputShrinkEnd;
-	private readonly TextInput _textInputShrinkRate;
-	private readonly TextInput _textInputBrightness;
+	private readonly SpawnsetTextInput _textInputShrinkStart;
+	private readonly SpawnsetTextInput _textInputShrinkEnd;
+	private readonly SpawnsetTextInput _textInputShrinkRate;
+	private readonly SpawnsetTextInput _textInputBrightness;
 
 	public ArenaWrapper(Rectangle metric)
 		: base(metric)
@@ -51,20 +50,14 @@ public class ArenaWrapper : AbstractComponent
 		AddToolButton(_arenaButtonSize * 2, toolButtonOffsetY, ArenaTool.Rectangle, "R");
 		AddToolButton(_arenaButtonSize * 3, toolButtonOffsetY, ArenaTool.Bucket, "B");
 
-		TextInput AddSetting(string labelText, SpawnsetEditType spawnsetEditType, int y1, Action<string> onInput)
+		SpawnsetTextInput AddSetting(string labelText, SpawnsetEditType spawnsetEditType, int y1, Action<string> onInput)
 		{
 			const int labelWidth = 112;
 			Label label = new(Rectangle.At(0, y1, labelWidth, 16), Color.White, labelText, TextAlign.Left, FontSize.F8X8);
-			TextInput textInput = ComponentBuilder.CreateTextInput(Rectangle.At(labelWidth, y1, 64, 16), true, OnInputAndSave, OnInputAndSave, onInput);
+			SpawnsetTextInput textInput = SpawnsetComponentBuilder.CreateSpawnsetTextInput(Rectangle.At(labelWidth, y1, 64, 16), onInput, spawnsetEditType);
 			NestingContext.Add(label);
 			NestingContext.Add(textInput);
 			return textInput;
-
-			void OnInputAndSave(string input)
-			{
-				onInput(input);
-				SpawnsetHistoryManager.Save(spawnsetEditType);
-			}
 		}
 
 		_textInputShrinkStart = AddSetting("Shrink start", SpawnsetEditType.ShrinkStart, arena.Metric.Size.Y + 8, ChangeShrinkStart);
@@ -94,13 +87,9 @@ public class ArenaWrapper : AbstractComponent
 	{
 		SpawnsetBinary spawnset = StateManager.SpawnsetState.Spawnset;
 
-		if (!_textInputShrinkStart.IsSelected)
-			_textInputShrinkStart.SetText(spawnset.ShrinkStart.ToString("0.0"));
-		if (!_textInputShrinkEnd.IsSelected)
-			_textInputShrinkEnd.SetText(spawnset.ShrinkEnd.ToString("0.0"));
-		if (!_textInputShrinkRate.IsSelected)
-			_textInputShrinkRate.SetText(spawnset.ShrinkRate.ToString("0.000"));
-		if (!_textInputBrightness.IsSelected)
-			_textInputBrightness.SetText(spawnset.Brightness.ToString("0.0"));
+		_textInputShrinkStart.SetTextIfDeselected(spawnset.ShrinkStart.ToString("0.0"));
+		_textInputShrinkEnd.SetTextIfDeselected(spawnset.ShrinkEnd.ToString("0.0"));
+		_textInputShrinkRate.SetTextIfDeselected(spawnset.ShrinkRate.ToString("0.000"));
+		_textInputBrightness.SetTextIfDeselected(spawnset.Brightness.ToString("0.0"));
 	}
 }

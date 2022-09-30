@@ -1,4 +1,3 @@
-using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.Enums;
 using DevilDaggersInfo.App.Ui.Base.Extensions;
@@ -28,8 +27,8 @@ public class SettingsWrapper : AbstractComponent
 	private readonly Label _labelAdditionalGems;
 	private readonly Label _labelTimerStart;
 
-	private readonly TextInput _textInputAdditionalGems;
-	private readonly TextInput _textInputTimerStart;
+	private readonly SpawnsetTextInput _textInputAdditionalGems;
+	private readonly SpawnsetTextInput _textInputTimerStart;
 
 	public SettingsWrapper(Rectangle metric)
 		: base(metric)
@@ -103,15 +102,9 @@ public class SettingsWrapper : AbstractComponent
 			};
 		}
 
-		TextInput CreateTextInput(int x, int y, SpawnsetEditType spawnsetEditType, Action<string> onInput)
+		SpawnsetTextInput CreateTextInput(int x, int y, SpawnsetEditType spawnsetEditType, Action<string> onInput)
 		{
-			void OnInputAndSave(string input)
-			{
-				onInput(input);
-				SpawnsetHistoryManager.Save(spawnsetEditType);
-			}
-
-			return ComponentBuilder.CreateTextInput(Rectangle.At(x + halfWidth, y, halfWidth, height), true, OnInputAndSave, OnInputAndSave, onInput);
+			return SpawnsetComponentBuilder.CreateSpawnsetTextInput(Rectangle.At(x + halfWidth, y, halfWidth, height), onInput, spawnsetEditType);
 		}
 
 		Label CreateLabel(string labelText, int x, int y) => new(Rectangle.At(x, y, halfWidth, height), Color.White, labelText, TextAlign.Left, FontSize.F8X8);
@@ -133,14 +126,12 @@ public class SettingsWrapper : AbstractComponent
 
 		_labelAdditionalGems.IsActive = practice;
 		_textInputAdditionalGems.IsActive = practice;
-		if (!_textInputAdditionalGems.IsSelected)
-			_textInputAdditionalGems.SetText(spawnset.AdditionalGems.ToString());
+		_textInputAdditionalGems.SetTextIfDeselected(spawnset.AdditionalGems.ToString());
 
 		bool timerStart = spawnset.SpawnVersion > 5;
 		_labelTimerStart.IsActive = timerStart;
 		_textInputTimerStart.IsActive = timerStart;
-		if (!_textInputTimerStart.IsSelected)
-			_textInputTimerStart.SetText(spawnset.TimerStart.ToString("0.0000"));
+		_textInputTimerStart.SetTextIfDeselected(spawnset.TimerStart.ToString("0.0000"));
 
 		_buttonLevel1.BackgroundColor = GetBackground(HandLevel.Level1);
 		_buttonLevel2.BackgroundColor = GetBackground(HandLevel.Level2);
