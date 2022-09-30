@@ -12,7 +12,21 @@ public class TextInput : AbstractTextInput
 {
 	private const float _cursorTimerSwitch = 0.45f;
 
-	public TextInput(Rectangle metric, bool isNumeric, Action<string> onChange, Color backgroundColor, Color borderColor, Color hoverBackgroundColor, Color textColor, Color activeBorderColor, Color cursorColor, Color selectionColor, int borderSize, FontSize fontSize)
+	public TextInput(
+		Rectangle metric,
+		bool isNumeric,
+		Action<string> onChange,
+		Color backgroundColor,
+		Color borderColor,
+		Color hoverBackgroundColor,
+		Color textColor,
+		Color activeBorderColor,
+		Color cursorColor,
+		Color selectionColor,
+		int borderSize,
+		FontSize fontSize,
+		int charWidth,
+		int textRenderingHorizontalOffset)
 		: base(metric, isNumeric, onChange)
 	{
 		BackgroundColor = backgroundColor;
@@ -24,6 +38,8 @@ public class TextInput : AbstractTextInput
 		SelectionColor = selectionColor;
 		BorderSize = borderSize;
 		FontSize = fontSize;
+		CharWidth = charWidth;
+		TextRenderingHorizontalOffset = textRenderingHorizontalOffset;
 	}
 
 	public Color BackgroundColor { get; set; }
