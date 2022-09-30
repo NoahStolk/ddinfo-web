@@ -73,7 +73,7 @@ public class SurvivalEditorMainLayout : Layout, ISurvivalEditorMainLayout
 
 	public void Render()
 	{
-		Root.Game.UiRenderer.RenderTopLeft(new(WindowWidth, WindowHeight), default, -100, new(0.1f));
+		Root.Game.UiRenderer.RenderRectangleTopLeft(new(WindowWidth, WindowHeight), default, -100, new(0.1f));
 	}
 
 	public void RenderText()

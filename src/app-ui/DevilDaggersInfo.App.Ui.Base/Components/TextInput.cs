@@ -63,8 +63,8 @@ public class TextInput : AbstractTextInput
 		Vector2i<int> scale = new(Metric.X2 - Metric.X1, Metric.Y2 - Metric.Y1);
 		Vector2i<int> topLeft = new(Metric.X1, Metric.Y1);
 
-		Root.Game.UiRenderer.RenderTopLeft(scale, topLeft + parentPosition, Depth, IsSelected ? ActiveBorderColor : BorderColor);
-		Root.Game.UiRenderer.RenderTopLeft(scale - borderVec, topLeft + parentPosition + borderVec / 2, Depth + 1, Hover ? HoverBackgroundColor : BackgroundColor);
+		Root.Game.UiRenderer.RenderRectangleTopLeft(scale, topLeft + parentPosition, Depth, IsSelected ? ActiveBorderColor : BorderColor);
+		Root.Game.UiRenderer.RenderRectangleTopLeft(scale - borderVec, topLeft + parentPosition + borderVec / 2, Depth + 1, Hover ? HoverBackgroundColor : BackgroundColor);
 
 		// TODO: Move to FontSize setter.
 		IMonoSpaceFontRenderer fontRenderer = FontSize switch
@@ -81,7 +81,7 @@ public class TextInput : AbstractTextInput
 		{
 			int selectionStart = Math.Min(CursorPositionStart, CursorPositionEnd);
 			int cursorSelectionStartX = Metric.X1 + selectionStart * charWidth + padding;
-			Root.Game.UiRenderer.RenderTopLeft(new(GetSelectionLength() * charWidth + 1, Metric.Size.Y - borderVec.Y), GetCursorPosition(cursorSelectionStartX), Depth + 2, hasSelection ? SelectionColor : CursorColor);
+			Root.Game.UiRenderer.RenderRectangleTopLeft(new(GetSelectionLength() * charWidth + 1, Metric.Size.Y - borderVec.Y), GetCursorPosition(cursorSelectionStartX), Depth + 2, hasSelection ? SelectionColor : CursorColor);
 		}
 
 		Vector2i<int> GetCursorPosition(int cursorStartX)

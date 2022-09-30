@@ -290,7 +290,7 @@ public class Arena : AbstractComponent
 
 		Vector2i<int> origin = parentPosition + new Vector2i<int>(Metric.X1, Metric.Y1);
 		Vector2i<int> center = origin + new Vector2i<int>((int)(SpawnsetBinary.ArenaDimensionMax / 2f * _tileSize));
-		Root.Game.UiRenderer.RenderTopLeft(Metric.Size, origin, Depth, Color.Black);
+		Root.Game.UiRenderer.RenderRectangleTopLeft(Metric.Size, origin, Depth, Color.Black);
 
 		for (int i = 0; i < StateManager.SpawnsetState.Spawnset.ArenaDimension; i++)
 		{
@@ -299,18 +299,35 @@ public class Arena : AbstractComponent
 				int x = i * _tileSize;
 				int y = j * _tileSize;
 
-				Color color = TileUtils.GetColorFromHeight(StateManager.SpawnsetState.Spawnset.GetActualTileHeight(i, j, _currentSecond));
-				if (color.R == 0 && color.G == 0 && color.B == 0)
-					continue;
+				float actualHeight = StateManager.SpawnsetState.Spawnset.GetActualTileHeight(i, j, _currentSecond);
+				float height = StateManager.SpawnsetState.Spawnset.ArenaTiles[i, j];
+				Color colorCurrent = TileUtils.GetColorFromHeight(actualHeight);
+				Color colorValue = TileUtils.GetColorFromHeight(height);
+				if (actualHeight == height)
+				{
+					if (!ColorsEqual(Color.Black, colorValue))
+						Root.Game.UiRenderer.RenderRectangleTopLeft(new(_tileSize), origin + new Vector2i<int>(x, y), Depth + 1, colorValue);
+				}
+				else
+				{
+					if (!ColorsEqual(Color.Black, colorCurrent))
+						Root.Game.UiRenderer.RenderRectangleTopLeft(new(_tileSize), origin + new Vector2i<int>(x, y), Depth + 1, colorCurrent);
 
-				Root.Game.UiRenderer.RenderTopLeft(new(_tileSize), origin + new Vector2i<int>(x, y), Depth + 1, color);
+					if (!ColorsEqual(Color.Black, colorValue))
+						Root.Game.UiRenderer.RenderHollowRectangleTopLeft(new(_tileSize - 0.5f), origin.ToVector2() + new Vector2(x + 0.5f, y + 0.5f), Depth + 2, colorValue);
+				}
 			}
 		}
 
 		// TODO: Scissor.
 		const int tileUnit = 4;
-		Root.Game.UiRenderer.RenderCircle(center, StateManager.SpawnsetState.Spawnset.ShrinkStart / tileUnit * _tileSize, Depth + 2, new(1, 0, 1));
-		Root.Game.UiRenderer.RenderCircle(center, _shrinkRadius / tileUnit * _tileSize, Depth + 2, new(1, 1, 0));
-		Root.Game.UiRenderer.RenderCircle(center, StateManager.SpawnsetState.Spawnset.ShrinkEnd / tileUnit * _tileSize, Depth + 2, new(0, 1, 1));
+		Root.Game.UiRenderer.RenderCircleCenter(center, StateManager.SpawnsetState.Spawnset.ShrinkStart / tileUnit * _tileSize, Depth + 4, new(1, 0, 1));
+		Root.Game.UiRenderer.RenderCircleCenter(center, _shrinkRadius / tileUnit * _tileSize, Depth + 3, new(1, 1, 0));
+		Root.Game.UiRenderer.RenderCircleCenter(center, StateManager.SpawnsetState.Spawnset.ShrinkEnd / tileUnit * _tileSize, Depth + 4, new(0, 1, 1));
+
+		static bool ColorsEqual(Color a, Color b)
+		{
+			return a.R == b.R && a.G == b.G && a.B == b.B;
+		}
 	}
 }

@@ -41,8 +41,8 @@ public class Button : AbstractButton
 		Vector2i<int> topLeft = new(Metric.X1, Metric.Y1);
 		Vector2i<int> center = topLeft + scale / 2;
 
-		Root.Game.UiRenderer.RenderCenter(scale, parentPosition + center, Depth, BorderColor);
-		Root.Game.UiRenderer.RenderCenter(scale - borderVec, parentPosition + center, Depth + 1, Hover ? HoverBackgroundColor : BackgroundColor);
+		Root.Game.UiRenderer.RenderRectangleCenter(scale, parentPosition + center, Depth, BorderColor);
+		Root.Game.UiRenderer.RenderRectangleCenter(scale - borderVec, parentPosition + center, Depth + 1, Hover ? HoverBackgroundColor : BackgroundColor);
 	}
 
 	public override void RenderText(Vector2i<int> parentPosition)
