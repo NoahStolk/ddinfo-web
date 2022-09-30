@@ -5,7 +5,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.JSInterop.WebAssembly" />
+    <PackageReference Include="Microsoft.JSInterop.WebAssembly" Version="6.0.9" />
   </ItemGroup>
 
 </Project>
