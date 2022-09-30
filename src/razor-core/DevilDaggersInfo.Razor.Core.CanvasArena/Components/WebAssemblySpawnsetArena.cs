@@ -16,7 +16,7 @@ public partial class WebAssemblySpawnsetArena
 	{
 		await base.OnAfterRenderAsync(firstRender);
 
-		_context = new WebAssemblyCanvasArena(_canvasId, new(JSUnmarshalledRuntime));
+		_context = new(_canvasId, new(JSUnmarshalledRuntime));
 
 		Render();
 	}
