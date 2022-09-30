@@ -309,8 +309,8 @@ public class Arena : AbstractComponent
 
 		// TODO: Scissor.
 		const int tileUnit = 4;
-		Root.Game.UiRenderer.RenderCircle(center, (int)(StateManager.SpawnsetState.Spawnset.ShrinkStart / tileUnit * _tileSize), Depth + 2, new(1, 0, 1));
-		Root.Game.UiRenderer.RenderCircle(center, (int)(_shrinkRadius / tileUnit * _tileSize), Depth + 2, new(1, 1, 0));
-		Root.Game.UiRenderer.RenderCircle(center, (int)(StateManager.SpawnsetState.Spawnset.ShrinkEnd / tileUnit * _tileSize), Depth + 2, new(0, 1, 1));
+		Root.Game.UiRenderer.RenderCircle(center, StateManager.SpawnsetState.Spawnset.ShrinkStart / tileUnit * _tileSize, Depth + 2, new(1, 0, 1));
+		Root.Game.UiRenderer.RenderCircle(center, _shrinkRadius / tileUnit * _tileSize, Depth + 2, new(1, 1, 0));
+		Root.Game.UiRenderer.RenderCircle(center, StateManager.SpawnsetState.Spawnset.ShrinkEnd / tileUnit * _tileSize, Depth + 2, new(0, 1, 1));
 	}
 }

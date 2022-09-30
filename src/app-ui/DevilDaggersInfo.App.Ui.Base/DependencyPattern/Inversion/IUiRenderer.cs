@@ -9,5 +9,5 @@ public interface IUiRenderer
 
 	void RenderCenter(Vector2i<int> scale, Vector2i<int> center, float depth, Vector3 color);
 
-	void RenderCircle(Vector2i<int> center, int radius, float depth, Vector3 color);
+	void RenderCircle(Vector2i<int> center, float radius, float depth, Vector3 color);
 }
