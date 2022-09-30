@@ -19,6 +19,9 @@ public class Arena : AbstractComponent
 	private Vector2i<int>? _lineStart;
 	private Vector2i<int>? _rectangleStart;
 
+	private float _currentSecond;
+	private float _shrinkRadius;
+
 	public Arena(Vector2i<int> topLeft, int tileSize)
 		: base(new(topLeft.X, topLeft.Y, topLeft.X + tileSize * SpawnsetBinary.ArenaDimensionMax, topLeft.Y + tileSize * SpawnsetBinary.ArenaDimensionMax))
 	{
@@ -272,6 +275,15 @@ public class Arena : AbstractComponent
 		return Vector2.Dot(lineNormal, Vector2.Normalize(point - linePoint)) < 0;
 	}
 
+	public void SetShrinkCurrent(float currentSecond)
+	{
+		_currentSecond = currentSecond;
+
+		SpawnsetBinary spawnset = StateManager.SpawnsetState.Spawnset;
+		float shrinkEndTime = spawnset.GetShrinkEndTime();
+		_shrinkRadius = shrinkEndTime == 0 ? spawnset.ShrinkStart : Math.Max(spawnset.ShrinkStart - _currentSecond / shrinkEndTime * (spawnset.ShrinkStart - spawnset.ShrinkEnd), spawnset.ShrinkEnd);
+	}
+
 	public override void Render(Vector2i<int> parentPosition)
 	{
 		base.Render(parentPosition);
@@ -287,7 +299,7 @@ public class Arena : AbstractComponent
 				int x = i * _tileSize;
 				int y = j * _tileSize;
 
-				Color color = TileUtils.GetColorFromHeight(StateManager.SpawnsetState.Spawnset.ArenaTiles[i, j]);
+				Color color = TileUtils.GetColorFromHeight(StateManager.SpawnsetState.Spawnset.GetActualTileHeight(i, j, _currentSecond));
 				if (color.R == 0 && color.G == 0 && color.B == 0)
 					continue;
 
@@ -298,6 +310,7 @@ public class Arena : AbstractComponent
 		// TODO: Scissor.
 		const int tileUnit = 4;
 		Root.Game.UiRenderer.RenderCircle(center, (int)(StateManager.SpawnsetState.Spawnset.ShrinkStart / tileUnit * _tileSize), Depth + 2, new(1, 0, 1));
+		Root.Game.UiRenderer.RenderCircle(center, (int)(_shrinkRadius / tileUnit * _tileSize), Depth + 2, new(1, 1, 0));
 		Root.Game.UiRenderer.RenderCircle(center, (int)(StateManager.SpawnsetState.Spawnset.ShrinkEnd / tileUnit * _tileSize), Depth + 2, new(0, 1, 1));
 	}
 }

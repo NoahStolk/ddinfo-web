@@ -17,6 +17,7 @@ public class ArenaWrapper : AbstractComponent
 	private readonly SpawnsetTextInput _textInputShrinkEnd;
 	private readonly SpawnsetTextInput _textInputShrinkRate;
 	private readonly SpawnsetTextInput _textInputBrightness;
+	private readonly Slider _shrinkSlider;
 
 	public ArenaWrapper(Rectangle metric)
 		: base(metric)
@@ -54,6 +55,9 @@ public class ArenaWrapper : AbstractComponent
 		_textInputShrinkEnd = AddSetting("Shrink end", SpawnsetEditType.ShrinkEnd, arena.Metric.Size.Y + 24, ChangeShrinkEnd);
 		_textInputShrinkRate = AddSetting("Shrink rate", SpawnsetEditType.ShrinkRate, arena.Metric.Size.Y + 40, ChangeShrinkRate);
 		_textInputBrightness = AddSetting("Brightness", SpawnsetEditType.Brightness, arena.Metric.Size.Y + 56, ChangeBrightness);
+
+		_shrinkSlider = new(Rectangle.At(0, arena.Metric.Size.Y, 128, 16), arena.SetShrinkCurrent, true, 0, StateManager.SpawnsetState.Spawnset.GetShrinkEndTime(), 1, 0, Color.White);
+		NestingContext.Add(_shrinkSlider);
 
 		SpawnsetTextInput AddSetting(string labelText, SpawnsetEditType spawnsetEditType, int y1, Action<string> onInput)
 		{
