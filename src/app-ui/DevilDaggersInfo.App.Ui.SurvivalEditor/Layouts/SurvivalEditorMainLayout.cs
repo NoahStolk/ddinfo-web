@@ -47,6 +47,7 @@ public class SurvivalEditorMainLayout : Layout, ISurvivalEditorMainLayout
 	public void SetHistory()
 	{
 		_historyWrapper.InitializeContent();
+		_historyWrapper.SetScroll(-SpawnsetHistoryManager.Index * History.HistoryEntryHeight);
 	}
 
 	public void Update()

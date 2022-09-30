@@ -41,8 +41,6 @@ public static class SpawnsetHistoryManager
 		Index = _history.Count - 1;
 
 		Root.Game.SurvivalEditorMainLayout.SetHistory();
-
-		// TODO: Set scrollbar to end.
 	}
 
 	public static void Undo()

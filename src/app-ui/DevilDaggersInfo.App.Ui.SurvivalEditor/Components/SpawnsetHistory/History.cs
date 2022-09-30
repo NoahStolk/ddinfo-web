@@ -9,7 +9,7 @@ namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetHistory;
 
 public class History : ScrollContent<History, HistoryWrapper>
 {
-	private const int _historyEntryHeight = 16;
+	public const int HistoryEntryHeight = 16;
 
 	private readonly List<AbstractComponent> _historyComponents = new();
 
@@ -18,7 +18,7 @@ public class History : ScrollContent<History, HistoryWrapper>
 	{
 	}
 
-	public override int ContentHeightInPixels => _historyComponents.Count * _historyEntryHeight;
+	public override int ContentHeightInPixels => _historyComponents.Count * HistoryEntryHeight;
 
 	public void SetHistory()
 	{
@@ -36,7 +36,7 @@ public class History : ScrollContent<History, HistoryWrapper>
 			Color colorBackground = history.EditType.GetColor();
 			Color colorBackgroundActive = colorBackground.Intensify(32);
 			Color hoverBackgroundColor = colorBackground.Intensify(64);
-			Button button = new(Rectangle.At(0, i * _historyEntryHeight, Metric.Size.X, _historyEntryHeight), () => {}, isActive ? colorBackgroundActive : colorBackground, isActive ? Color.White : Color.Black, hoverBackgroundColor, Color.White, history.EditType.GetChange(), TextAlign.Left, 2, FontSize.F8X8)
+			Button button = new(Rectangle.At(0, i * HistoryEntryHeight, Metric.Size.X, HistoryEntryHeight), () => {}, isActive ? colorBackgroundActive : colorBackground, isActive ? Color.White : Color.Black, hoverBackgroundColor, Color.White, history.EditType.GetChange(), TextAlign.Left, 2, FontSize.F8X8)
 			{
 				Depth = Depth + 1,
 			};
