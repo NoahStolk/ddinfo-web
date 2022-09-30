@@ -26,7 +26,7 @@ public class ArenaWrapper : AbstractComponent
 
 		int buttonsOffsetX = arena.Metric.Size.X + 8;
 
-		float[] heights = { -1000, -1.1f, -1.01f, -1, -0.8f, -0.6f, -0.4f, -0.2f };
+		Span<float> heights = stackalloc float[] { -1000, -1.1f, -1.01f, -1, -0.8f, -0.6f, -0.4f, -0.2f };
 		for (int i = 0; i < heights.Length; i++)
 		{
 			float height = heights[i];
@@ -50,6 +50,11 @@ public class ArenaWrapper : AbstractComponent
 		AddToolButton(_arenaButtonSize * 2, toolButtonOffsetY, ArenaTool.Rectangle, "R");
 		AddToolButton(_arenaButtonSize * 3, toolButtonOffsetY, ArenaTool.Bucket, "B");
 
+		_textInputShrinkStart = AddSetting("Shrink start", SpawnsetEditType.ShrinkStart, arena.Metric.Size.Y + 8, ChangeShrinkStart);
+		_textInputShrinkEnd = AddSetting("Shrink end", SpawnsetEditType.ShrinkEnd, arena.Metric.Size.Y + 24, ChangeShrinkEnd);
+		_textInputShrinkRate = AddSetting("Shrink rate", SpawnsetEditType.ShrinkRate, arena.Metric.Size.Y + 40, ChangeShrinkRate);
+		_textInputBrightness = AddSetting("Brightness", SpawnsetEditType.Brightness, arena.Metric.Size.Y + 56, ChangeBrightness);
+
 		SpawnsetTextInput AddSetting(string labelText, SpawnsetEditType spawnsetEditType, int y1, Action<string> onInput)
 		{
 			const int labelWidth = 112;
@@ -59,11 +64,6 @@ public class ArenaWrapper : AbstractComponent
 			NestingContext.Add(textInput);
 			return textInput;
 		}
-
-		_textInputShrinkStart = AddSetting("Shrink start", SpawnsetEditType.ShrinkStart, arena.Metric.Size.Y + 8, ChangeShrinkStart);
-		_textInputShrinkEnd = AddSetting("Shrink end", SpawnsetEditType.ShrinkEnd, arena.Metric.Size.Y + 24, ChangeShrinkEnd);
-		_textInputShrinkRate = AddSetting("Shrink rate", SpawnsetEditType.ShrinkRate, arena.Metric.Size.Y + 40, ChangeShrinkRate);
-		_textInputBrightness = AddSetting("Brightness", SpawnsetEditType.Brightness, arena.Metric.Size.Y + 56, ChangeBrightness);
 
 		void ChangeShrinkStart(string input) => SpawnsetSettingEditUtils.ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { ShrinkStart = v }, input);
 		void ChangeShrinkEnd(string input) => SpawnsetSettingEditUtils.ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { ShrinkEnd = v }, input);

@@ -6,7 +6,7 @@ using Warp.Ui;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetArena;
 
-// TODO: Move to ComponentBuilder.
+// TODO: Move to SpawnsetComponentBuilder.
 public class HeightButton : Button
 {
 	private readonly float _height;
@@ -21,7 +21,7 @@ public class HeightButton : Button
 		BackgroundColor = _heightColor;
 		HoverBackgroundColor = _heightColor.Intensify(128); // TODO: Find a better way to do this.
 		TextColor = BackgroundColor.ReadableColorForBrightness();
-		Text = height.ToString();
+		Text = height.ToString(); // TODO: -1000 should probably be written as -1K.
 		FontSize = Text.Length > 2 ? FontSize.F4X6 : FontSize.F8X8;
 	}
 
