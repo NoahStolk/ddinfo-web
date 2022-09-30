@@ -18,14 +18,15 @@ public class ArenaWrapper : AbstractComponent
 	private readonly SpawnsetTextInput _textInputShrinkRate;
 	private readonly SpawnsetTextInput _textInputBrightness;
 	private readonly Slider _shrinkSlider;
+	private readonly Arena _arena;
 
 	public ArenaWrapper(Rectangle metric)
 		: base(metric)
 	{
-		Arena arena = new(default, 6);
-		NestingContext.Add(arena);
+		_arena = new(default, 6);
+		NestingContext.Add(_arena);
 
-		int buttonsOffsetX = arena.Metric.Size.X + 8;
+		int buttonsOffsetX = _arena.Metric.Size.X + 8;
 
 		Span<float> heights = stackalloc float[] { -1000, -1.1f, -1.01f, -1, -0.8f, -0.6f, -0.4f, -0.2f };
 		for (int i = 0; i < heights.Length; i++)
@@ -51,13 +52,13 @@ public class ArenaWrapper : AbstractComponent
 		AddToolButton(_arenaButtonSize * 2, toolButtonOffsetY, ArenaTool.Rectangle, "R");
 		AddToolButton(_arenaButtonSize * 3, toolButtonOffsetY, ArenaTool.Bucket, "B");
 
-		_shrinkSlider = new(Rectangle.At(0, arena.Metric.Size.Y + 8, arena.Metric.Size.X, 16), arena.SetShrinkCurrent, true, 0, GetSliderMax(), 0.001f, 0, Color.White);
+		_shrinkSlider = new(Rectangle.At(0, _arena.Metric.Size.Y + 8, _arena.Metric.Size.X, 16), _arena.SetShrinkCurrent, true, 0, GetSliderMax(), 0.001f, 0, Color.White);
 		NestingContext.Add(_shrinkSlider);
 
-		_textInputShrinkStart = AddSetting("Shrink start", SpawnsetEditType.ShrinkStart, arena.Metric.Size.Y + 24, ChangeShrinkStart);
-		_textInputShrinkEnd = AddSetting("Shrink end", SpawnsetEditType.ShrinkEnd, arena.Metric.Size.Y + 40, ChangeShrinkEnd);
-		_textInputShrinkRate = AddSetting("Shrink rate", SpawnsetEditType.ShrinkRate, arena.Metric.Size.Y + 56, ChangeShrinkRate);
-		_textInputBrightness = AddSetting("Brightness", SpawnsetEditType.Brightness, arena.Metric.Size.Y + 72, ChangeBrightness);
+		_textInputShrinkStart = AddSetting("Shrink start", SpawnsetEditType.ShrinkStart, _arena.Metric.Size.Y + 24, ChangeShrinkStart);
+		_textInputShrinkEnd = AddSetting("Shrink end", SpawnsetEditType.ShrinkEnd, _arena.Metric.Size.Y + 40, ChangeShrinkEnd);
+		_textInputShrinkRate = AddSetting("Shrink rate", SpawnsetEditType.ShrinkRate, _arena.Metric.Size.Y + 56, ChangeShrinkRate);
+		_textInputBrightness = AddSetting("Brightness", SpawnsetEditType.Brightness, _arena.Metric.Size.Y + 72, ChangeBrightness);
 
 		SpawnsetTextInput AddSetting(string labelText, SpawnsetEditType spawnsetEditType, int y1, Action<string> onInput)
 		{
@@ -96,6 +97,8 @@ public class ArenaWrapper : AbstractComponent
 		_textInputShrinkRate.SetTextIfDeselected(spawnset.ShrinkRate.ToString("0.000"));
 		_textInputBrightness.SetTextIfDeselected(spawnset.Brightness.ToString("0.0"));
 		_shrinkSlider.Max = GetSliderMax();
+		_shrinkSlider.CurrentValue = 0;
+		_arena.SetShrinkCurrent(0);
 	}
 
 	private static float GetSliderMax()
