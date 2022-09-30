@@ -2,6 +2,7 @@ using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.Enums;
 using DevilDaggersInfo.App.Ui.Base.Extensions;
+using DevilDaggersInfo.App.Ui.SurvivalEditor.Enums;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using DevilDaggersInfo.Common.Exceptions;
@@ -51,8 +52,8 @@ public class SettingsWrapper : AbstractComponent
 		_labelAdditionalGems = CreateLabel("Addit. gems", 0, height * 2);
 		_labelTimerStart = CreateLabel("Timer start", 0, height * 3);
 
-		_textInputAdditionalGems = CreateTextInput(0, height * 2, "Changed additional gems", s => SpawnsetSettingEditUtils.ChangeSetting<int>(v => StateManager.SpawnsetState.Spawnset with { AdditionalGems = v }, s));
-		_textInputTimerStart = CreateTextInput(0, height * 3, "Changed timer start", s => SpawnsetSettingEditUtils.ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { TimerStart = v }, s));
+		_textInputAdditionalGems = CreateTextInput(0, height * 2, SpawnsetEditType.AdditionalGems, s => SpawnsetSettingEditUtils.ChangeSetting<int>(v => StateManager.SpawnsetState.Spawnset with { AdditionalGems = v }, s));
+		_textInputTimerStart = CreateTextInput(0, height * 3, SpawnsetEditType.TimerStart, s => SpawnsetSettingEditUtils.ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { TimerStart = v }, s));
 
 		NestingContext.Add(_buttonV0V1);
 		NestingContext.Add(_buttonV2V3);
@@ -77,7 +78,7 @@ public class SettingsWrapper : AbstractComponent
 			void UpdateFormat()
 			{
 				StateManager.SetSpawnset(StateManager.SpawnsetState.Spawnset with { WorldVersion = worldVersion, SpawnVersion = spawnVersion });
-				SpawnsetHistoryManager.Save($"Set format to {str}");
+				SpawnsetHistoryManager.Save(SpawnsetEditType.Format);
 			}
 		}
 
@@ -89,7 +90,7 @@ public class SettingsWrapper : AbstractComponent
 			void UpdateHand()
 			{
 				StateManager.SetSpawnset(StateManager.SpawnsetState.Spawnset with { HandLevel = handLevel });
-				SpawnsetHistoryManager.Save($"Set hand level to {handLevel}");
+				SpawnsetHistoryManager.Save(SpawnsetEditType.HandLevel);
 			}
 
 			string ToShortString() => handLevel switch
@@ -102,12 +103,12 @@ public class SettingsWrapper : AbstractComponent
 			};
 		}
 
-		TextInput CreateTextInput(int x, int y, string change, Action<string> onInput)
+		TextInput CreateTextInput(int x, int y, SpawnsetEditType spawnsetEditType, Action<string> onInput)
 		{
 			void OnInputAndSave(string input)
 			{
 				onInput(input);
-				SpawnsetHistoryManager.Save(change);
+				SpawnsetHistoryManager.Save(spawnsetEditType);
 			}
 
 			return ComponentBuilder.CreateTextInput(Rectangle.At(x + halfWidth, y, halfWidth, height), true, OnInputAndSave, OnInputAndSave, onInput);

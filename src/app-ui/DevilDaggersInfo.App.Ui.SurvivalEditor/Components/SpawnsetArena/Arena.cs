@@ -102,7 +102,7 @@ public class Arena : AbstractComponent
 				else if (Input.IsButtonReleased(MouseButton.Left))
 				{
 					_pencilStart = null;
-					SpawnsetHistoryManager.Save("Arena pencil edit");
+					SpawnsetHistoryManager.Save(SpawnsetEditType.ArenaPencil);
 				}
 
 				break;
@@ -131,7 +131,7 @@ public class Arena : AbstractComponent
 					}
 
 					_lineStart = null;
-					SpawnsetHistoryManager.Save("Arena line edit");
+					SpawnsetHistoryManager.Save(SpawnsetEditType.ArenaLine);
 				}
 
 				break;
@@ -153,7 +153,7 @@ public class Arena : AbstractComponent
 						}
 					}
 
-					SpawnsetHistoryManager.Save("Arena rectangle edit");
+					SpawnsetHistoryManager.Save(SpawnsetEditType.ArenaRectangle);
 					_rectangleStart = null;
 				}
 
@@ -168,7 +168,7 @@ public class Arena : AbstractComponent
 					FillNeighbors(x, y);
 
 					UpdateArena(tiles);
-					SpawnsetHistoryManager.Save("Arena bucket edit");
+					SpawnsetHistoryManager.Save(SpawnsetEditType.ArenaBucket);
 
 					void FillNeighbors(int x, int y)
 					{

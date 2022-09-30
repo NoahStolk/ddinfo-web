@@ -51,7 +51,7 @@ public class ArenaWrapper : AbstractComponent
 		AddToolButton(_arenaButtonSize * 2, toolButtonOffsetY, ArenaTool.Rectangle, "R");
 		AddToolButton(_arenaButtonSize * 3, toolButtonOffsetY, ArenaTool.Bucket, "B");
 
-		TextInput AddSetting(string labelText, int y1, Action<string> onInput)
+		TextInput AddSetting(string labelText, SpawnsetEditType spawnsetEditType, int y1, Action<string> onInput)
 		{
 			const int labelWidth = 112;
 			Label label = new(Rectangle.At(0, y1, labelWidth, 16), Color.White, labelText, TextAlign.Left, FontSize.F8X8);
@@ -63,14 +63,14 @@ public class ArenaWrapper : AbstractComponent
 			void OnInputAndSave(string input)
 			{
 				onInput(input);
-				SpawnsetHistoryManager.Save(labelText);
+				SpawnsetHistoryManager.Save(spawnsetEditType);
 			}
 		}
 
-		_textInputShrinkStart = AddSetting("Shrink start", arena.Metric.Size.Y + 8, ChangeShrinkStart);
-		_textInputShrinkEnd = AddSetting("Shrink end", arena.Metric.Size.Y + 24, ChangeShrinkEnd);
-		_textInputShrinkRate = AddSetting("Shrink rate", arena.Metric.Size.Y + 40, ChangeShrinkRate);
-		_textInputBrightness = AddSetting("Brightness", arena.Metric.Size.Y + 56, ChangeBrightness);
+		_textInputShrinkStart = AddSetting("Shrink start", SpawnsetEditType.ShrinkStart, arena.Metric.Size.Y + 8, ChangeShrinkStart);
+		_textInputShrinkEnd = AddSetting("Shrink end", SpawnsetEditType.ShrinkEnd, arena.Metric.Size.Y + 24, ChangeShrinkEnd);
+		_textInputShrinkRate = AddSetting("Shrink rate", SpawnsetEditType.ShrinkRate, arena.Metric.Size.Y + 40, ChangeShrinkRate);
+		_textInputBrightness = AddSetting("Brightness", SpawnsetEditType.Brightness, arena.Metric.Size.Y + 56, ChangeBrightness);
 
 		void ChangeShrinkStart(string input) => SpawnsetSettingEditUtils.ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { ShrinkStart = v }, input);
 		void ChangeShrinkEnd(string input) => SpawnsetSettingEditUtils.ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { ShrinkEnd = v }, input);

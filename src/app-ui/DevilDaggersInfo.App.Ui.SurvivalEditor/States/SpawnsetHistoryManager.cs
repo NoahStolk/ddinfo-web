@@ -1,4 +1,6 @@
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
+using DevilDaggersInfo.App.Ui.SurvivalEditor.Enums;
+using DevilDaggersInfo.App.Ui.SurvivalEditor.Extensions;
 using DevilDaggersInfo.Common.Utils;
 using DevilDaggersInfo.Core.Spawnset;
 using System.Security.Cryptography;
@@ -16,10 +18,10 @@ public static class SpawnsetHistoryManager
 	public static void Reset()
 	{
 		_history.Clear();
-		Save("Reset spawnset");
+		Save(SpawnsetEditType.Reset);
 	}
 
-	public static void Save(string change)
+	public static void Save(SpawnsetEditType spawnsetEditType)
 	{
 		// Clear any newer history.
 		for (int i = _history.Count - 1; i > Index; i--)
@@ -32,7 +34,7 @@ public static class SpawnsetHistoryManager
 		if (ArrayUtils.AreEqual(originalHash, hash))
 			return;
 
-		_history.Add(new(copy, hash, change));
+		_history.Add(new(copy, hash, spawnsetEditType.GetChange()));
 
 		if (_history.Count > _maxHistoryEntries)
 			_history.RemoveAt(0);
