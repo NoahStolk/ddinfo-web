@@ -5,7 +5,7 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="Warp" />
+    <PackageReference Include="Warp" Version="14.1.0" />
   </ItemGroup>
   
   <ItemGroup>
