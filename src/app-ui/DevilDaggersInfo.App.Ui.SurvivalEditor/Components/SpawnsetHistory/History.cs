@@ -1,5 +1,6 @@
 using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.Enums;
+using DevilDaggersInfo.App.Ui.SurvivalEditor.Extensions;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using Warp.Ui;
 using Warp.Ui.Components;
@@ -32,7 +33,13 @@ public class History : ScrollContent<History, HistoryWrapper>
 		{
 			States.SpawnsetHistory history = SpawnsetHistoryManager.History[i];
 			bool isActive = i == SpawnsetHistoryManager.Index;
-			Button button = new(Rectangle.At(0, i * _historyEntryHeight, Metric.Size.X, _historyEntryHeight), () => {}, isActive ? new(0, 127, 63, 255) : new(0, 63, 0, 255), Color.Black, isActive ? new(0, 191, 127, 255) : new(0, 127, 0, 255), Color.White, history.Change, TextAlign.Left, 2, FontSize.F8X8);
+			Color colorBackground = history.EditType.GetColor();
+			Color colorBackgroundActive = colorBackground.Intensify(32);
+			Color hoverBackgroundColor = colorBackground.Intensify(64);
+			Button button = new(Rectangle.At(0, i * _historyEntryHeight, Metric.Size.X, _historyEntryHeight), () => {}, isActive ? colorBackgroundActive : colorBackground, isActive ? Color.White : Color.Black, hoverBackgroundColor, Color.White, history.EditType.GetChange(), TextAlign.Left, 2, FontSize.F8X8)
+			{
+				Depth = Depth + 1,
+			};
 			_historyComponents.Add(button);
 		}
 

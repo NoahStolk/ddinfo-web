@@ -1,6 +1,5 @@
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Enums;
-using DevilDaggersInfo.App.Ui.SurvivalEditor.Extensions;
 using DevilDaggersInfo.Common.Utils;
 using DevilDaggersInfo.Core.Spawnset;
 using System.Security.Cryptography;
@@ -34,7 +33,7 @@ public static class SpawnsetHistoryManager
 		if (ArrayUtils.AreEqual(originalHash, hash))
 			return;
 
-		_history.Add(new(copy, hash, spawnsetEditType.GetChange()));
+		_history.Add(new(copy, hash, spawnsetEditType));
 
 		if (_history.Count > _maxHistoryEntries)
 			_history.RemoveAt(0);
