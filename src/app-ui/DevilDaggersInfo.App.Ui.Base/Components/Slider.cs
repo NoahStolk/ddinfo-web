@@ -40,6 +40,6 @@ public class Slider : AbstractSlider
 		base.RenderText(parentPosition);
 
 		Vector2i<int> centerPosition = new Vector2i<int>(Metric.X1 + Metric.X2, Metric.Y1 + Metric.Y2) / 2;
-		Root.Game.FontRenderer12X12.Render(Vector2i<int>.One, parentPosition + centerPosition, Depth + 2, _textColor, CurrentValue.ToString("0.00"), TextAlign.Middle);
+		Root.Game.FontRenderer8X8.Render(Vector2i<int>.One, parentPosition + centerPosition, Depth + 2, _textColor, CurrentValue.ToString("0.00"), TextAlign.Middle);
 	}
 }
