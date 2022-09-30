@@ -51,13 +51,13 @@ public class ArenaWrapper : AbstractComponent
 		AddToolButton(_arenaButtonSize * 2, toolButtonOffsetY, ArenaTool.Rectangle, "R");
 		AddToolButton(_arenaButtonSize * 3, toolButtonOffsetY, ArenaTool.Bucket, "B");
 
-		_textInputShrinkStart = AddSetting("Shrink start", SpawnsetEditType.ShrinkStart, arena.Metric.Size.Y + 8, ChangeShrinkStart);
-		_textInputShrinkEnd = AddSetting("Shrink end", SpawnsetEditType.ShrinkEnd, arena.Metric.Size.Y + 24, ChangeShrinkEnd);
-		_textInputShrinkRate = AddSetting("Shrink rate", SpawnsetEditType.ShrinkRate, arena.Metric.Size.Y + 40, ChangeShrinkRate);
-		_textInputBrightness = AddSetting("Brightness", SpawnsetEditType.Brightness, arena.Metric.Size.Y + 56, ChangeBrightness);
-
-		_shrinkSlider = new(Rectangle.At(0, arena.Metric.Size.Y, 128, 16), arena.SetShrinkCurrent, true, 0, StateManager.SpawnsetState.Spawnset.GetShrinkEndTime(), 1, 0, Color.White);
+		_shrinkSlider = new(Rectangle.At(0, arena.Metric.Size.Y + 8, arena.Metric.Size.X, 16), arena.SetShrinkCurrent, true, 0, GetSliderMax(), 0.001f, 0, Color.White);
 		NestingContext.Add(_shrinkSlider);
+
+		_textInputShrinkStart = AddSetting("Shrink start", SpawnsetEditType.ShrinkStart, arena.Metric.Size.Y + 24, ChangeShrinkStart);
+		_textInputShrinkEnd = AddSetting("Shrink end", SpawnsetEditType.ShrinkEnd, arena.Metric.Size.Y + 40, ChangeShrinkEnd);
+		_textInputShrinkRate = AddSetting("Shrink rate", SpawnsetEditType.ShrinkRate, arena.Metric.Size.Y + 56, ChangeShrinkRate);
+		_textInputBrightness = AddSetting("Brightness", SpawnsetEditType.Brightness, arena.Metric.Size.Y + 72, ChangeBrightness);
 
 		SpawnsetTextInput AddSetting(string labelText, SpawnsetEditType spawnsetEditType, int y1, Action<string> onInput)
 		{
@@ -95,5 +95,11 @@ public class ArenaWrapper : AbstractComponent
 		_textInputShrinkEnd.SetTextIfDeselected(spawnset.ShrinkEnd.ToString("0.0"));
 		_textInputShrinkRate.SetTextIfDeselected(spawnset.ShrinkRate.ToString("0.000"));
 		_textInputBrightness.SetTextIfDeselected(spawnset.Brightness.ToString("0.0"));
+		_shrinkSlider.Max = GetSliderMax();
+	}
+
+	private static float GetSliderMax()
+	{
+		return StateManager.SpawnsetState.Spawnset.GetSliderMaxSeconds();
 	}
 }
