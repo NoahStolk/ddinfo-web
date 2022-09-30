@@ -7,7 +7,7 @@ public static class SpawnsetEditTypeExtensions
 {
 	public static string GetChange(this SpawnsetEditType spawnsetEditType) => spawnsetEditType switch
 	{
-		SpawnsetEditType.Reset => "Spawnset edit",
+		SpawnsetEditType.Reset => "Spawnset reset",
 		SpawnsetEditType.ArenaPencil => "Arena pencil edit",
 		SpawnsetEditType.ArenaLine => "Arena line edit",
 		SpawnsetEditType.ArenaRectangle => "Arena rectangle edit",

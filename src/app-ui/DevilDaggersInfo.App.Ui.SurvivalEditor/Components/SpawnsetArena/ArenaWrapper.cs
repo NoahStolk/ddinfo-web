@@ -94,9 +94,13 @@ public class ArenaWrapper : AbstractComponent
 	{
 		SpawnsetBinary spawnset = StateManager.SpawnsetState.Spawnset;
 
-		_textInputShrinkStart.SetText(spawnset.ShrinkStart.ToString());
-		_textInputShrinkEnd.SetText(spawnset.ShrinkEnd.ToString());
-		_textInputShrinkRate.SetText(spawnset.ShrinkRate.ToString());
-		_textInputBrightness.SetText(spawnset.Brightness.ToString());
+		if (!_textInputShrinkStart.IsSelected)
+			_textInputShrinkStart.SetText(spawnset.ShrinkStart.ToString("0.0"));
+		if (!_textInputShrinkEnd.IsSelected)
+			_textInputShrinkEnd.SetText(spawnset.ShrinkEnd.ToString("0.0"));
+		if (!_textInputShrinkRate.IsSelected)
+			_textInputShrinkRate.SetText(spawnset.ShrinkRate.ToString("0.000"));
+		if (!_textInputBrightness.IsSelected)
+			_textInputBrightness.SetText(spawnset.Brightness.ToString("0.0"));
 	}
 }

@@ -133,12 +133,14 @@ public class SettingsWrapper : AbstractComponent
 
 		_labelAdditionalGems.IsActive = practice;
 		_textInputAdditionalGems.IsActive = practice;
-		_textInputAdditionalGems.SetText(spawnset.AdditionalGems.ToString());
+		if (!_textInputAdditionalGems.IsSelected)
+			_textInputAdditionalGems.SetText(spawnset.AdditionalGems.ToString());
 
 		bool timerStart = spawnset.SpawnVersion > 5;
 		_labelTimerStart.IsActive = timerStart;
 		_textInputTimerStart.IsActive = timerStart;
-		_textInputTimerStart.SetText(spawnset.TimerStart.ToString("0.0000"));
+		if (!_textInputTimerStart.IsSelected)
+			_textInputTimerStart.SetText(spawnset.TimerStart.ToString("0.0000"));
 
 		_buttonLevel1.BackgroundColor = GetBackground(HandLevel.Level1);
 		_buttonLevel2.BackgroundColor = GetBackground(HandLevel.Level2);
