@@ -15,7 +15,9 @@ public class TextInput : AbstractTextInput
 	public TextInput(
 		Rectangle metric,
 		bool isNumeric,
-		Action<string> onChange,
+		Action<string>? onEnter,
+		Action<string>? onDeselect,
+		Action<string>? onInput,
 		Color backgroundColor,
 		Color borderColor,
 		Color hoverBackgroundColor,
@@ -27,7 +29,7 @@ public class TextInput : AbstractTextInput
 		FontSize fontSize,
 		int charWidth,
 		int textRenderingHorizontalOffset)
-		: base(metric, isNumeric, onChange)
+		: base(metric, isNumeric, onEnter, onDeselect, onInput)
 	{
 		BackgroundColor = backgroundColor;
 		BorderColor = borderColor;

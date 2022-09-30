@@ -102,7 +102,7 @@ public class SettingsWrapper : AbstractComponent
 			};
 		}
 
-		TextInput CreateTextInput(int x, int y, Action<string> onChange) => ComponentBuilder.CreateTextInput(Rectangle.At(x + halfWidth, y, halfWidth, height), true, onChange);
+		TextInput CreateTextInput(int x, int y, Action<string> onChange) => ComponentBuilder.CreateTextInput(Rectangle.At(x + halfWidth, y, halfWidth, height), true, onChange, onChange, onChange);
 
 		Label CreateLabel(string labelText, int x, int y) => new(Rectangle.At(x, y, halfWidth, height), Color.White, labelText, TextAlign.Left, FontSize.F8X8);
 	}

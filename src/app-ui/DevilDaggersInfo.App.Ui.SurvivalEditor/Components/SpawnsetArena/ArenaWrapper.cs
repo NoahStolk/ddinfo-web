@@ -49,7 +49,7 @@ public class ArenaWrapper : AbstractComponent
 		{
 			const int labelWidth = 112;
 			Label label = new(Rectangle.At(0, y1, labelWidth, 16), Color.White, labelText, TextAlign.Left, FontSize.F8X8);
-			TextInput textInput = ComponentBuilder.CreateTextInput(Rectangle.At(labelWidth, y1, 64, 16), true, onChange);
+			TextInput textInput = ComponentBuilder.CreateTextInput(Rectangle.At(labelWidth, y1, 64, 16), true, onChange, onChange, onChange);
 			NestingContext.Add(label);
 			NestingContext.Add(textInput);
 		}
