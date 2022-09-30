@@ -45,11 +45,18 @@ public class ArenaWrapper : AbstractComponent
 		AddToolButton(_arenaButtonSize * 2, toolButtonOffsetY, ArenaTool.Rectangle, "R");
 		AddToolButton(_arenaButtonSize * 3, toolButtonOffsetY, ArenaTool.Bucket, "B");
 
-		void AddSetting(string labelText, int y1, Action<string> onChange)
+		void AddSetting(string labelText, int y1, Action<string> onInput)
 		{
 			const int labelWidth = 112;
 			Label label = new(Rectangle.At(0, y1, labelWidth, 16), Color.White, labelText, TextAlign.Left, FontSize.F8X8);
-			TextInput textInput = ComponentBuilder.CreateTextInput(Rectangle.At(labelWidth, y1, 64, 16), true, onChange, onChange, onChange);
+
+			void OnInputAndSave(string input)
+			{
+				onInput(input);
+				SpawnsetHistoryManager.Save(labelText);
+			}
+
+			TextInput textInput = ComponentBuilder.CreateTextInput(Rectangle.At(labelWidth, y1, 64, 16), true, OnInputAndSave, OnInputAndSave, onInput);
 			NestingContext.Add(label);
 			NestingContext.Add(textInput);
 		}
@@ -59,10 +66,10 @@ public class ArenaWrapper : AbstractComponent
 		AddSetting("Shrink rate", arena.Metric.Size.Y + 40, ChangeShrinkRate);
 		AddSetting("Brightness", arena.Metric.Size.Y + 56, ChangeBrightness);
 
-		void ChangeShrinkStart(string input) => SpawnsetSettingEditUtils.ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { ShrinkStart = v }, input, "Changed shrink start");
-		void ChangeShrinkEnd(string input) => SpawnsetSettingEditUtils.ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { ShrinkEnd = v }, input, "Changed shrink end");
-		void ChangeShrinkRate(string input) => SpawnsetSettingEditUtils.ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { ShrinkRate = v }, input, "Changed shrink rate");
-		void ChangeBrightness(string input) => SpawnsetSettingEditUtils.ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { Brightness = v }, input, "Changed brightness");
+		void ChangeShrinkStart(string input) => SpawnsetSettingEditUtils.ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { ShrinkStart = v }, input);
+		void ChangeShrinkEnd(string input) => SpawnsetSettingEditUtils.ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { ShrinkEnd = v }, input);
+		void ChangeShrinkRate(string input) => SpawnsetSettingEditUtils.ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { ShrinkRate = v }, input);
+		void ChangeBrightness(string input) => SpawnsetSettingEditUtils.ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { Brightness = v }, input);
 
 		void AddHeightButton(float height, int offsetX, int offsetY)
 		{

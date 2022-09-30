@@ -2,7 +2,7 @@ using DevilDaggersInfo.Types.Core.Spawnsets;
 
 namespace DevilDaggersInfo.Core.Spawnset;
 
-public struct Spawn
+public readonly struct Spawn
 {
 	public Spawn(EnemyType enemyType, float delay)
 	{

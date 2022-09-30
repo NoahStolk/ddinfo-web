@@ -51,8 +51,8 @@ public class SettingsWrapper : AbstractComponent
 		_labelAdditionalGems = CreateLabel("Addit. gems", 0, height * 2);
 		_labelTimerStart = CreateLabel("Timer start", 0, height * 3);
 
-		_textInputAdditionalGems = CreateTextInput(0, height * 2, s => SpawnsetSettingEditUtils.ChangeSetting<int>(v => StateManager.SpawnsetState.Spawnset with { AdditionalGems = v }, s, "Changed additional gems"));
-		_textInputTimerStart = CreateTextInput(0, height * 3, s => SpawnsetSettingEditUtils.ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { TimerStart = v }, s, "Changed timer start"));
+		_textInputAdditionalGems = CreateTextInput(0, height * 2, "Changed additional gems", s => SpawnsetSettingEditUtils.ChangeSetting<int>(v => StateManager.SpawnsetState.Spawnset with { AdditionalGems = v }, s));
+		_textInputTimerStart = CreateTextInput(0, height * 3, "Changed timer start", s => SpawnsetSettingEditUtils.ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { TimerStart = v }, s));
 
 		NestingContext.Add(_buttonV0V1);
 		NestingContext.Add(_buttonV2V3);
@@ -102,7 +102,16 @@ public class SettingsWrapper : AbstractComponent
 			};
 		}
 
-		TextInput CreateTextInput(int x, int y, Action<string> onChange) => ComponentBuilder.CreateTextInput(Rectangle.At(x + halfWidth, y, halfWidth, height), true, onChange, onChange, onChange);
+		TextInput CreateTextInput(int x, int y, string change, Action<string> onInput)
+		{
+			void OnInputAndSave(string input)
+			{
+				onInput(input);
+				SpawnsetHistoryManager.Save(change);
+			}
+
+			return ComponentBuilder.CreateTextInput(Rectangle.At(x + halfWidth, y, halfWidth, height), true, OnInputAndSave, OnInputAndSave, onInput);
+		}
 
 		Label CreateLabel(string labelText, int x, int y) => new(Rectangle.At(x, y, halfWidth, height), Color.White, labelText, TextAlign.Left, FontSize.F8X8);
 	}
