@@ -276,7 +276,9 @@ public class Arena : AbstractComponent
 	{
 		base.Render(parentPosition);
 
-		Root.Game.UiRenderer.RenderTopLeft(Metric.Size, parentPosition + new Vector2i<int>(Metric.X1, Metric.Y1), Depth, Color.Black);
+		Vector2i<int> origin = parentPosition + new Vector2i<int>(Metric.X1, Metric.Y1);
+		Vector2i<int> center = origin + new Vector2i<int>((int)(SpawnsetBinary.ArenaDimensionMax / 2f * _tileSize));
+		Root.Game.UiRenderer.RenderTopLeft(Metric.Size, origin, Depth, Color.Black);
 
 		for (int i = 0; i < StateManager.SpawnsetState.Spawnset.ArenaDimension; i++)
 		{
@@ -289,8 +291,13 @@ public class Arena : AbstractComponent
 				if (color.R == 0 && color.G == 0 && color.B == 0)
 					continue;
 
-				Root.Game.UiRenderer.RenderTopLeft(new(_tileSize), parentPosition + new Vector2i<int>(Metric.X1 + x, Metric.Y1 + y), Depth + 1, color);
+				Root.Game.UiRenderer.RenderTopLeft(new(_tileSize), origin + new Vector2i<int>(x, y), Depth + 1, color);
 			}
 		}
+
+		// TODO: Scissor.
+		const int tileUnit = 4;
+		Root.Game.UiRenderer.RenderCircle(center, (int)(StateManager.SpawnsetState.Spawnset.ShrinkStart / tileUnit * _tileSize), Depth + 2, new(1, 0, 1));
+		Root.Game.UiRenderer.RenderCircle(center, (int)(StateManager.SpawnsetState.Spawnset.ShrinkEnd / tileUnit * _tileSize), Depth + 2, new(0, 1, 1));
 	}
 }

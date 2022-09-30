@@ -8,4 +8,6 @@ public interface IUiRenderer
 	void RenderTopLeft(Vector2i<int> scale, Vector2i<int> topLeft, float depth, Vector3 color);
 
 	void RenderCenter(Vector2i<int> scale, Vector2i<int> center, float depth, Vector3 color);
+
+	void RenderCircle(Vector2i<int> center, int radius, float depth, Vector3 color);
 }
