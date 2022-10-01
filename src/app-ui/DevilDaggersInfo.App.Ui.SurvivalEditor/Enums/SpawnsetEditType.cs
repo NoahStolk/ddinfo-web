@@ -12,6 +12,7 @@ public enum SpawnsetEditType
 	ShrinkRate,
 	Brightness,
 	Format,
+	GameMode,
 	HandLevel,
 	AdditionalGems,
 	TimerStart,
