@@ -6,4 +6,5 @@ public enum ArenaTool
 	Rectangle,
 	Line,
 	Bucket,
+	Dagger,
 }

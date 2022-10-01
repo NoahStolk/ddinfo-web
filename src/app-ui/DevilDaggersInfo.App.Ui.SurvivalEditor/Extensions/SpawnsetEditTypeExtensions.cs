@@ -9,6 +9,7 @@ public static class SpawnsetEditTypeExtensions
 
 	private static readonly Color _colorShrink = new(0, _colorValue, 0, 255);
 	private static readonly Color _colorBrightness = new(_colorValue, _colorValue, 0, 255);
+	private static readonly Color _colorRaceDagger = new(_colorValue * 2, _colorValue, 0, 255);
 	private static readonly Color _colorArena = new(_colorValue, 0, 0, 255);
 	private static readonly Color _colorMisc = new(0, 0, _colorValue, 255);
 	private static readonly Color _colorPractice = new(0, _colorValue, _colorValue, 255);
@@ -20,6 +21,7 @@ public static class SpawnsetEditTypeExtensions
 		SpawnsetEditType.ArenaLine => "Arena line edit",
 		SpawnsetEditType.ArenaRectangle => "Arena rectangle edit",
 		SpawnsetEditType.ArenaBucket => "Arena bucket edit",
+		SpawnsetEditType.RaceDagger => "Race dagger position change",
 		SpawnsetEditType.ShrinkStart => "Shrink start change",
 		SpawnsetEditType.ShrinkEnd => "Shrink end change",
 		SpawnsetEditType.ShrinkRate => "Shrink rate change",
@@ -39,6 +41,7 @@ public static class SpawnsetEditTypeExtensions
 		SpawnsetEditType.ArenaLine => _colorArena,
 		SpawnsetEditType.ArenaRectangle => _colorArena,
 		SpawnsetEditType.ArenaBucket => _colorArena,
+		SpawnsetEditType.RaceDagger => _colorRaceDagger,
 		SpawnsetEditType.ShrinkStart => _colorShrink,
 		SpawnsetEditType.ShrinkEnd => _colorShrink,
 		SpawnsetEditType.ShrinkRate => _colorShrink,

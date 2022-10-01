@@ -173,7 +173,6 @@ public class Arena : AbstractComponent
 
 					void FillNeighbors(int x, int y)
 					{
-						const float tolerance = 0.1f;
 						tiles[x, y] = StateManager.ArenaEditorState.SelectedHeight;
 						done.Add(new(x, y));
 
@@ -193,10 +192,25 @@ public class Arena : AbstractComponent
 
 						void FillIfApplicable(int newX, int newY)
 						{
+							const float tolerance = 0.1f; // TODO: Configurable.
 							if (!done.Contains(new(newX, newY)) && MathF.Abs(tiles[newX, newY] - targetHeight) < tolerance)
 								FillNeighbors(newX, newY);
 						}
 					}
+				}
+
+				break;
+			case ArenaTool.Dagger:
+				if (Input.IsButtonHeld(MouseButton.Left))
+				{
+					StateManager.SetSpawnset(StateManager.SpawnsetState.Spawnset with
+					{
+						RaceDaggerPosition = new(StateManager.SpawnsetState.Spawnset.TileToWorldCoordinate(x), StateManager.SpawnsetState.Spawnset.TileToWorldCoordinate(y)),
+					});
+				}
+				else if (Input.IsButtonReleased(MouseButton.Left))
+				{
+					SpawnsetHistoryManager.Save(SpawnsetEditType.RaceDagger);
 				}
 
 				break;
@@ -321,11 +335,14 @@ public class Arena : AbstractComponent
 			}
 		}
 
+		(int raceX, _, int raceZ) = StateManager.SpawnsetState.Spawnset.GetRaceDaggerTilePosition();
+		Root.Game.UiRenderer.RenderRectangleTopLeft(new(6), origin + new Vector2i<int>(raceX * _tileSize, raceZ * _tileSize), Depth + 3, new(1, 1, 0));
+
 		// TODO: Scissor.
 		const int tileUnit = 4;
-		Root.Game.UiRenderer.RenderCircleCenter(center, StateManager.SpawnsetState.Spawnset.ShrinkStart / tileUnit * _tileSize, Depth + 4, new(1, 0, 1));
-		Root.Game.UiRenderer.RenderCircleCenter(center, _shrinkRadius / tileUnit * _tileSize, Depth + 3, new(1, 1, 0));
-		Root.Game.UiRenderer.RenderCircleCenter(center, StateManager.SpawnsetState.Spawnset.ShrinkEnd / tileUnit * _tileSize, Depth + 4, new(0, 1, 1));
+		Root.Game.UiRenderer.RenderCircleCenter(center, StateManager.SpawnsetState.Spawnset.ShrinkStart / tileUnit * _tileSize, Depth + 5, new(1, 0, 1));
+		Root.Game.UiRenderer.RenderCircleCenter(center, _shrinkRadius / tileUnit * _tileSize, Depth + 4, new(1, 1, 0));
+		Root.Game.UiRenderer.RenderCircleCenter(center, StateManager.SpawnsetState.Spawnset.ShrinkEnd / tileUnit * _tileSize, Depth + 5, new(0, 1, 1));
 
 		static bool ColorsEqual(Color a, Color b)
 		{

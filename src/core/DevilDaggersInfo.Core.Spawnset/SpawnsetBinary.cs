@@ -407,19 +407,31 @@ public record SpawnsetBinary
 
 	public static (int X, float? Y, int Z) GetRaceDaggerTilePosition(int arenaDimension, ImmutableArena arenaTiles, Vector2 raceDaggerPosition)
 	{
-		int x = Convert(raceDaggerPosition.X);
-		int z = Convert(raceDaggerPosition.Y);
+		int x = WorldToTileCoordinate(arenaDimension, raceDaggerPosition.X);
+		int z = WorldToTileCoordinate(arenaDimension, raceDaggerPosition.Y);
 		float? y = null;
 		if (x >= 0 && x < arenaDimension && z >= 0 && z < arenaDimension)
 			y = arenaTiles[x, z];
 
 		return (x, y, z);
+	}
 
-		int Convert(float worldPosition)
-		{
-			int arenaMiddle = arenaDimension / 2;
-			return (int)MathF.Round(worldPosition / 4) + arenaMiddle;
-		}
+	public int WorldToTileCoordinate(float worldCoordinate)
+		=> WorldToTileCoordinate(ArenaDimension, worldCoordinate);
+
+	public static int WorldToTileCoordinate(int arenaDimension, float worldCoordinate)
+	{
+		int arenaMiddle = arenaDimension / 2;
+		return (int)MathF.Round(worldCoordinate / 4) + arenaMiddle;
+	}
+
+	public int TileToWorldCoordinate(float tileCoordinate)
+		=> TileToWorldCoordinate(ArenaDimension, tileCoordinate);
+
+	public static int TileToWorldCoordinate(int arenaDimension, float tileCoordinate)
+	{
+		int arenaMiddle = arenaDimension / 2;
+		return (int)MathF.Round((tileCoordinate - arenaMiddle) * 4);
 	}
 
 	public float GetShrinkEndTime()

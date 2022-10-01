@@ -51,6 +51,7 @@ public class ArenaWrapper : AbstractComponent
 		AddToolButton(_arenaButtonSize, toolButtonOffsetY, ArenaTool.Line, "L");
 		AddToolButton(_arenaButtonSize * 2, toolButtonOffsetY, ArenaTool.Rectangle, "R");
 		AddToolButton(_arenaButtonSize * 3, toolButtonOffsetY, ArenaTool.Bucket, "B");
+		AddToolButton(0, toolButtonOffsetY + _arenaButtonSize, ArenaTool.Dagger, "D");
 
 		_shrinkSlider = new(Rectangle.At(0, _arena.Metric.Size.Y + 8, _arena.Metric.Size.X, 16), _arena.SetShrinkCurrent, true, 0, StateManager.SpawnsetState.Spawnset.GetSliderMaxSeconds(), 0.001f, 0, 2, Color.White);
 		NestingContext.Add(_shrinkSlider);
