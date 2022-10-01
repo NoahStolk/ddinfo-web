@@ -37,12 +37,10 @@ public class Arena : AbstractComponent
 
 	private static void UpdateArena(float[,] newArena)
 	{
-		StateManager.SetSpawnset(
-			StateManager.SpawnsetState.Spawnset with
-			{
-				ArenaTiles = new(StateManager.SpawnsetState.Spawnset.ArenaDimension, newArena),
-			},
-			reloadComponents: false);
+		StateManager.SetSpawnset(StateManager.SpawnsetState.Spawnset with
+		{
+			ArenaTiles = new(StateManager.SpawnsetState.Spawnset.ArenaDimension, newArena),
+		});
 	}
 
 	public override void Update(Vector2i<int> parentPosition)
@@ -303,7 +301,7 @@ public class Arena : AbstractComponent
 				float height = StateManager.SpawnsetState.Spawnset.ArenaTiles[i, j];
 				Color colorCurrent = TileUtils.GetColorFromHeight(actualHeight);
 				Color colorValue = TileUtils.GetColorFromHeight(height);
-				if (actualHeight == height)
+				if (Math.Abs(actualHeight - height) < 0.001f)
 				{
 					if (!ColorsEqual(Color.Black, colorValue))
 						Root.Game.UiRenderer.RenderRectangleTopLeft(new(_tileSize), origin + new Vector2i<int>(x, y), Depth + 1, colorValue);

@@ -2,7 +2,7 @@ namespace DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts.Survi
 
 public interface ISurvivalEditorMainLayout : IExtendedLayout
 {
-	void SetSpawnset();
+	void SetSpawnset(bool hasArenaChanges, bool hasSpawnsChanges, bool hasSettingsChanges);
 
 	void SetHistory();
 }

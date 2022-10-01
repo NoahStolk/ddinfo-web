@@ -52,7 +52,7 @@ public class ArenaWrapper : AbstractComponent
 		AddToolButton(_arenaButtonSize * 2, toolButtonOffsetY, ArenaTool.Rectangle, "R");
 		AddToolButton(_arenaButtonSize * 3, toolButtonOffsetY, ArenaTool.Bucket, "B");
 
-		_shrinkSlider = new(Rectangle.At(0, _arena.Metric.Size.Y + 8, _arena.Metric.Size.X, 16), _arena.SetShrinkCurrent, true, 0, GetSliderMax(), 0.001f, 0, Color.White);
+		_shrinkSlider = new(Rectangle.At(0, _arena.Metric.Size.Y + 8, _arena.Metric.Size.X, 16), _arena.SetShrinkCurrent, true, 0, StateManager.SpawnsetState.Spawnset.GetSliderMaxSeconds(), 0.001f, 0, Color.White);
 		NestingContext.Add(_shrinkSlider);
 
 		_textInputShrinkStart = AddSetting("Shrink start", SpawnsetEditType.ShrinkStart, _arena.Metric.Size.Y + 24, ChangeShrinkStart);
@@ -96,13 +96,8 @@ public class ArenaWrapper : AbstractComponent
 		_textInputShrinkEnd.SetTextIfDeselected(spawnset.ShrinkEnd.ToString("0.0"));
 		_textInputShrinkRate.SetTextIfDeselected(spawnset.ShrinkRate.ToString("0.000"));
 		_textInputBrightness.SetTextIfDeselected(spawnset.Brightness.ToString("0.0"));
-		_shrinkSlider.Max = GetSliderMax();
-		_shrinkSlider.CurrentValue = 0;
-		_arena.SetShrinkCurrent(0);
-	}
-
-	private static float GetSliderMax()
-	{
-		return StateManager.SpawnsetState.Spawnset.GetSliderMaxSeconds();
+		_shrinkSlider.Max = StateManager.SpawnsetState.Spawnset.GetSliderMaxSeconds();
+		_shrinkSlider.CurrentValue = Math.Clamp(_shrinkSlider.CurrentValue, 0, _shrinkSlider.Max);
+		_arena.SetShrinkCurrent(_shrinkSlider.CurrentValue);
 	}
 }

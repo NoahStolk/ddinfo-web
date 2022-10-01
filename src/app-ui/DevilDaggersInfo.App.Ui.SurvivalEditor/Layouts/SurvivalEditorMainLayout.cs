@@ -37,11 +37,16 @@ public class SurvivalEditorMainLayout : Layout, ISurvivalEditorMainLayout
 		NestingContext.Add(_settingsWrapper);
 	}
 
-	public void SetSpawnset()
+	public void SetSpawnset(bool hasArenaChanges, bool hasSpawnsChanges, bool hasSettingsChanges)
 	{
-		_arenaWrapper.SetSpawnset();
-		_spawnsWrapper.InitializeContent();
-		_settingsWrapper.SetSpawnset();
+		if (hasArenaChanges)
+			_arenaWrapper.SetSpawnset();
+
+		if (hasSpawnsChanges || hasSettingsChanges)
+			_spawnsWrapper.InitializeContent();
+
+		if (hasSettingsChanges)
+			_settingsWrapper.SetSpawnset();
 	}
 
 	public void SetHistory()
