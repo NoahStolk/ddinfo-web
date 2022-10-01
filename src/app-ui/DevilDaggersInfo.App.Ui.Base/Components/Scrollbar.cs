@@ -25,7 +25,7 @@ public class Scrollbar : AbstractScrollbar
 
 		Color thumbColor = Color.Gray(0.75f);
 		Root.Game.UiRenderer.RenderRectangleTopLeft(scale, parentPosition + topLeft, Depth, thumbColor);
-		Root.Game.UiRenderer.RenderRectangleTopLeft(scale - borderVec, parentPosition + topLeft + new Vector2i<int>(border / 2), Depth + 1, Hold ? new(0.5f) : Hover ? new(0.25f) : Vector3.Zero);
+		Root.Game.UiRenderer.RenderRectangleTopLeft(scale - borderVec, parentPosition + topLeft + new Vector2i<int>(border / 2), Depth + 1, Hold ? Color.Gray(0.5f) : Hover ? Color.Gray(0.25f) : Color.Black);
 
 		const int thumbPadding = 4;
 		Vector2i<int> thumbScale = new(scale.X - thumbPadding, (int)MathF.Ceiling(scale.Y * ThumbPercentageSize) - thumbPadding + 1); // + 1 needed for scaled UI for some reason.

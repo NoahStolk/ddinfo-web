@@ -1,6 +1,5 @@
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.Enums;
-using System.Numerics;
 using Warp.Numerics;
 using Warp.Ui;
 using Warp.Ui.Components;
@@ -29,8 +28,8 @@ public class Slider : AbstractSlider
 		Vector2i<int> topLeft = new(Metric.X1, Metric.Y1);
 		Vector2i<int> center = topLeft + scale / 2;
 
-		Root.Game.UiRenderer.RenderRectangleCenter(scale, parentPosition + center, Depth, Vector3.One);
-		Root.Game.UiRenderer.RenderRectangleCenter(scale - borderVec, parentPosition + center, Depth + 1, Hold ? new(0.5f) : Hover ? new(0.25f) : Vector3.Zero);
+		Root.Game.UiRenderer.RenderRectangleCenter(scale, parentPosition + center, Depth, Color.White);
+		Root.Game.UiRenderer.RenderRectangleCenter(scale - borderVec, parentPosition + center, Depth + 1, Hold ? Color.Gray(0.5f) : Hover ? Color.Gray(0.25f) : Color.Black);
 	}
 
 	public override void RenderText(Vector2i<int> parentPosition)

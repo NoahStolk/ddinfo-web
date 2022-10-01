@@ -28,16 +28,4 @@ public static class VertexBuilder
 
 		return vertices;
 	}
-
-	public static float[] RectangleLines()
-	{
-		return new[]
-		{
-			-0.5f, -0.5f,
-			+0.5f, -0.5f,
-			+0.5f, +0.5f,
-			-0.5f, +0.5f,
-			-0.5f, -0.5f,
-		};
-	}
 }

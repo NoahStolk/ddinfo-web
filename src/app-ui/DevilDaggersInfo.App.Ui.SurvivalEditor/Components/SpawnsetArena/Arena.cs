@@ -339,14 +339,14 @@ public class Arena : AbstractComponent
 		if (StateManager.SpawnsetState.Spawnset.GameMode == GameMode.Race)
 		{
 			(int raceX, _, int raceZ) = StateManager.SpawnsetState.Spawnset.GetRaceDaggerTilePosition();
-			Root.Game.UiRenderer.RenderRectangleTopLeft(new(6), origin + new Vector2i<int>(raceX * _tileSize, raceZ * _tileSize), Depth + 3, new(1, 1, 0));
+			Root.Game.UiRenderer.RenderRectangleTopLeft(new(6), origin + new Vector2i<int>(raceX * _tileSize, raceZ * _tileSize), Depth + 3, Color.Yellow);
 		}
 
 		// TODO: Scissor.
 		const int tileUnit = 4;
-		Root.Game.UiRenderer.RenderCircleCenter(center, StateManager.SpawnsetState.Spawnset.ShrinkStart / tileUnit * _tileSize, Depth + 5, new(1, 0, 1));
-		Root.Game.UiRenderer.RenderCircleCenter(center, _shrinkRadius / tileUnit * _tileSize, Depth + 4, new(1, 1, 0));
-		Root.Game.UiRenderer.RenderCircleCenter(center, StateManager.SpawnsetState.Spawnset.ShrinkEnd / tileUnit * _tileSize, Depth + 5, new(0, 1, 1));
+		Root.Game.UiRenderer.RenderCircleCenter(center, StateManager.SpawnsetState.Spawnset.ShrinkStart / tileUnit * _tileSize, Depth + 5, Color.Purple);
+		Root.Game.UiRenderer.RenderCircleCenter(center, _shrinkRadius / tileUnit * _tileSize, Depth + 4, Color.Yellow);
+		Root.Game.UiRenderer.RenderCircleCenter(center, StateManager.SpawnsetState.Spawnset.ShrinkEnd / tileUnit * _tileSize, Depth + 5, Color.Aqua);
 
 		static bool ColorsEqual(Color a, Color b)
 		{

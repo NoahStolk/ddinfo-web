@@ -17,10 +17,10 @@ public class ShrinkSlider : Slider
 		base.Render(parentPosition);
 
 		Vector2i<int> topLeft = new(Metric.X1, Metric.Y1);
-		NewHighlighter(CurrentValue / Max + Min, new(1, 1, 0));
-		NewHighlighter(StateManager.SpawnsetState.Spawnset.GetShrinkEndTime() / Max + Min, new(0, 1, 1));
+		NewHighlighter(CurrentValue / Max + Min, Color.Yellow);
+		NewHighlighter(StateManager.SpawnsetState.Spawnset.GetShrinkEndTime() / Max + Min, Color.Aqua);
 
-		void NewHighlighter(float percentage, Vector3 color)
+		void NewHighlighter(float percentage, Color color)
 		{
 			const int width = 4;
 			int height = Metric.Size.Y - Border;

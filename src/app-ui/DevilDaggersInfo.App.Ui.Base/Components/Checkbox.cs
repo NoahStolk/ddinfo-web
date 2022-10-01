@@ -29,10 +29,10 @@ public class Checkbox : AbstractCheckbox
 		Vector2i<int> center = topLeft + fullScale / 2;
 		Vector2i<int> scale = fullScale - marginVec;
 
-		Root.Game.UiRenderer.RenderRectangleCenter(scale + borderVec, parentPosition + center, Depth, Vector3.One);
-		Root.Game.UiRenderer.RenderRectangleCenter(scale, parentPosition + center, Depth + 1, Hover ? new(0.25f) : Vector3.Zero);
+		Root.Game.UiRenderer.RenderRectangleCenter(scale + borderVec, parentPosition + center, Depth, Color.White);
+		Root.Game.UiRenderer.RenderRectangleCenter(scale, parentPosition + center, Depth + 1, Hover ? Color.Gray(0.25f) : Color.Black);
 
 		if (CurrentValue)
-			Root.Game.UiRenderer.RenderRectangleCenter(scale - borderTickVec, parentPosition + center, Depth + 2, new(0.75f));
+			Root.Game.UiRenderer.RenderRectangleCenter(scale - borderTickVec, parentPosition + center, Depth + 2, Color.Gray(0.75f));
 	}
 }
