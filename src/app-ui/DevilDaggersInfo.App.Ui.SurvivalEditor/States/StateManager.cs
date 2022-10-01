@@ -41,7 +41,7 @@ public static class StateManager
 
 		static bool ArenaChanges(SpawnsetBinary a, SpawnsetBinary b)
 		{
-			if (a.ShrinkStart != b.ShrinkStart || a.ShrinkEnd != b.ShrinkEnd || a.ShrinkRate != b.ShrinkRate || a.ArenaDimension != b.ArenaDimension)
+			if (a.ShrinkStart != b.ShrinkStart || a.ShrinkEnd != b.ShrinkEnd || a.ShrinkRate != b.ShrinkRate || a.Brightness != b.Brightness || a.ArenaDimension != b.ArenaDimension)
 				return true;
 
 			for (int i = 0; i < a.ArenaDimension; i++)
