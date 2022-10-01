@@ -17,7 +17,7 @@ public class ArenaWrapper : AbstractComponent
 	private readonly SpawnsetTextInput _textInputShrinkEnd;
 	private readonly SpawnsetTextInput _textInputShrinkRate;
 	private readonly SpawnsetTextInput _textInputBrightness;
-	private readonly Slider _shrinkSlider;
+	private readonly ShrinkSlider _shrinkSlider;
 	private readonly Arena _arena;
 
 	public ArenaWrapper(Rectangle metric)
@@ -52,7 +52,7 @@ public class ArenaWrapper : AbstractComponent
 		AddToolButton(_arenaButtonSize * 2, toolButtonOffsetY, ArenaTool.Rectangle, "R");
 		AddToolButton(_arenaButtonSize * 3, toolButtonOffsetY, ArenaTool.Bucket, "B");
 
-		_shrinkSlider = new(Rectangle.At(0, _arena.Metric.Size.Y + 8, _arena.Metric.Size.X, 16), _arena.SetShrinkCurrent, true, 0, StateManager.SpawnsetState.Spawnset.GetSliderMaxSeconds(), 0.001f, 0, Color.White);
+		_shrinkSlider = new(Rectangle.At(0, _arena.Metric.Size.Y + 8, _arena.Metric.Size.X, 16), _arena.SetShrinkCurrent, true, 0, StateManager.SpawnsetState.Spawnset.GetSliderMaxSeconds(), 0.001f, 0, 2, Color.White);
 		NestingContext.Add(_shrinkSlider);
 
 		_textInputShrinkStart = AddSetting("Shrink start", SpawnsetEditType.ShrinkStart, _arena.Metric.Size.Y + 24, ChangeShrinkStart);
