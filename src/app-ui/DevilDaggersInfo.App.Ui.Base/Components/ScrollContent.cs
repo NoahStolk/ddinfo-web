@@ -1,4 +1,5 @@
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
+using DevilDaggersInfo.App.Ui.Base.Rendering;
 using Silk.NET.OpenGL;
 using System.Numerics;
 using Warp.Extensions;
@@ -23,7 +24,7 @@ public abstract class ScrollContent<TSelf, TParent> : AbstractScrollContent<TSel
 		Gl.Enable(EnableCap.ScissorTest);
 		SetScissor(parentPosition);
 
-		Root.Game.UiRenderer.RenderRectangleTopLeft(Metric.Size, parentPosition + new Vector2i<int>(Metric.X1, Metric.Y1), Depth, Color.Black);
+		RenderBatchCollector.RenderRectangleTopLeft(Metric.Size, parentPosition + new Vector2i<int>(Metric.X1, Metric.Y1), Depth, Color.Black);
 
 		base.Render(parentPosition);
 

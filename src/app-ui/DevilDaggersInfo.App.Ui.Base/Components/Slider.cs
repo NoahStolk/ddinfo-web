@@ -1,5 +1,5 @@
-using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.Enums;
+using DevilDaggersInfo.App.Ui.Base.Rendering;
 using Warp.Numerics;
 using Warp.Ui;
 using Warp.Ui.Components;
@@ -28,8 +28,8 @@ public class Slider : AbstractSlider
 		Vector2i<int> topLeft = new(Metric.X1, Metric.Y1);
 		Vector2i<int> center = topLeft + scale / 2;
 
-		Root.Game.UiRenderer.RenderRectangleCenter(scale, parentPosition + center, Depth, Color.White);
-		Root.Game.UiRenderer.RenderRectangleCenter(scale - borderVec, parentPosition + center, Depth + 1, Hold ? Color.Gray(0.5f) : Hover ? Color.Gray(0.25f) : Color.Black);
+		RenderBatchCollector.RenderRectangleCenter(scale, parentPosition + center, Depth, Color.White);
+		RenderBatchCollector.RenderRectangleCenter(scale - borderVec, parentPosition + center, Depth + 1, Hold ? Color.Gray(0.5f) : Hover ? Color.Gray(0.25f) : Color.Black);
 	}
 
 	public override void RenderText(Vector2i<int> parentPosition)
@@ -37,6 +37,6 @@ public class Slider : AbstractSlider
 		base.RenderText(parentPosition);
 
 		Vector2i<int> centerPosition = new Vector2i<int>(Metric.X1 + Metric.X2, Metric.Y1 + Metric.Y2) / 2;
-		Root.Game.FontRenderer8X8.Render(Vector2i<int>.One, parentPosition + centerPosition, Depth + 3, _textColor, CurrentValue.ToString("0.00"), TextAlign.Middle);
+		RenderBatchCollector.RenderMonoSpaceText(FontSize.F8X8, Vector2i<int>.One, parentPosition + centerPosition, Depth + 3, _textColor, CurrentValue.ToString("0.00"), TextAlign.Middle);
 	}
 }

@@ -1,4 +1,5 @@
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
+using DevilDaggersInfo.App.Ui.Base.Rendering;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Enums;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
@@ -303,7 +304,7 @@ public class Arena : AbstractComponent
 
 		Vector2i<int> origin = parentPosition + new Vector2i<int>(Metric.X1, Metric.Y1);
 		Vector2i<int> center = origin + new Vector2i<int>((int)(SpawnsetBinary.ArenaDimensionMax / 2f * _tileSize));
-		Root.Game.UiRenderer.RenderRectangleTopLeft(Metric.Size, origin, Depth, Color.Black);
+		RenderBatchCollector.RenderRectangleTopLeft(Metric.Size, origin, Depth, Color.Black);
 
 		for (int i = 0; i < StateManager.SpawnsetState.Spawnset.ArenaDimension; i++)
 		{
@@ -319,18 +320,18 @@ public class Arena : AbstractComponent
 				if (Math.Abs(actualHeight - height) < 0.001f)
 				{
 					if (!ColorsEqual(Color.Black, colorValue))
-						Root.Game.UiRenderer.RenderRectangleTopLeft(new(_tileSize), origin + new Vector2i<int>(x, y), Depth + 1, colorValue);
+						RenderBatchCollector.RenderRectangleTopLeft(new(_tileSize), origin + new Vector2i<int>(x, y), Depth + 1, colorValue);
 				}
 				else
 				{
 					if (!ColorsEqual(Color.Black, colorCurrent))
-						Root.Game.UiRenderer.RenderRectangleTopLeft(new(_tileSize), origin + new Vector2i<int>(x, y), Depth + 1, colorCurrent);
+						RenderBatchCollector.RenderRectangleTopLeft(new(_tileSize), origin + new Vector2i<int>(x, y), Depth + 1, colorCurrent);
 
 					if (!ColorsEqual(Color.Black, colorValue))
 					{
 						const int size = 2;
 						const int padding = 2;
-						Root.Game.UiRenderer.RenderRectangleTopLeft(new(size), origin + new Vector2i<int>(x + padding, y + padding), Depth + 2, colorValue);
+						RenderBatchCollector.RenderRectangleTopLeft(new(size), origin + new Vector2i<int>(x + padding, y + padding), Depth + 2, colorValue);
 					}
 				}
 			}
@@ -339,14 +340,14 @@ public class Arena : AbstractComponent
 		if (StateManager.SpawnsetState.Spawnset.GameMode == GameMode.Race)
 		{
 			(int raceX, _, int raceZ) = StateManager.SpawnsetState.Spawnset.GetRaceDaggerTilePosition();
-			Root.Game.UiRenderer.RenderRectangleTopLeft(new(6), origin + new Vector2i<int>(raceX * _tileSize, raceZ * _tileSize), Depth + 3, Color.Yellow);
+			RenderBatchCollector.RenderRectangleTopLeft(new(6), origin + new Vector2i<int>(raceX * _tileSize, raceZ * _tileSize), Depth + 3, Color.Yellow);
 		}
 
 		// TODO: Scissor.
 		const int tileUnit = 4;
-		Root.Game.UiRenderer.RenderCircleCenter(center, StateManager.SpawnsetState.Spawnset.ShrinkStart / tileUnit * _tileSize, Depth + 5, Color.Purple);
-		Root.Game.UiRenderer.RenderCircleCenter(center, _shrinkRadius / tileUnit * _tileSize, Depth + 4, Color.Yellow);
-		Root.Game.UiRenderer.RenderCircleCenter(center, StateManager.SpawnsetState.Spawnset.ShrinkEnd / tileUnit * _tileSize, Depth + 5, Color.Aqua);
+		RenderBatchCollector.RenderCircleCenter(center, StateManager.SpawnsetState.Spawnset.ShrinkStart / tileUnit * _tileSize, Depth + 5, Color.Purple);
+		RenderBatchCollector.RenderCircleCenter(center, _shrinkRadius / tileUnit * _tileSize, Depth + 4, Color.Yellow);
+		RenderBatchCollector.RenderCircleCenter(center, StateManager.SpawnsetState.Spawnset.ShrinkEnd / tileUnit * _tileSize, Depth + 5, Color.Aqua);
 
 		static bool ColorsEqual(Color a, Color b)
 		{

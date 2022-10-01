@@ -1,4 +1,3 @@
-using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts.SurvivalEditor;
 using System.Numerics;
@@ -17,15 +16,6 @@ public interface IDependencyContainer
 	string? TooltipText { get; set; }
 
 	IExtendedLayout? ActiveLayout { get; set; }
-
-	#region Main dependencies
-
-	IUiRenderer UiRenderer { get; }
-	IMonoSpaceFontRenderer FontRenderer12X12 { get; }
-	IMonoSpaceFontRenderer FontRenderer8X8 { get; }
-	IMonoSpaceFontRenderer FontRenderer4X6 { get; }
-
-	#endregion Main dependencies
 
 	#region Main screen
 

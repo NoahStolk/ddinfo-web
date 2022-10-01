@@ -1,6 +1,5 @@
-using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
-using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion;
 using DevilDaggersInfo.App.Ui.Base.Enums;
+using DevilDaggersInfo.App.Ui.Base.Rendering;
 using DevilDaggersInfo.Common.Exceptions;
 using Warp.Numerics;
 using Warp.Ui;
@@ -63,25 +62,24 @@ public class TextInput : AbstractTextInput
 		Vector2i<int> scale = new(Metric.X2 - Metric.X1, Metric.Y2 - Metric.Y1);
 		Vector2i<int> topLeft = new(Metric.X1, Metric.Y1);
 
-		Root.Game.UiRenderer.RenderRectangleTopLeft(scale, topLeft + parentPosition, Depth, IsSelected ? ActiveBorderColor : BorderColor);
-		Root.Game.UiRenderer.RenderRectangleTopLeft(scale - borderVec, topLeft + parentPosition + borderVec / 2, Depth + 1, Hover ? HoverBackgroundColor : BackgroundColor);
+		RenderBatchCollector.RenderRectangleTopLeft(scale, topLeft + parentPosition, Depth, IsSelected ? ActiveBorderColor : BorderColor);
+		RenderBatchCollector.RenderRectangleTopLeft(scale - borderVec, topLeft + parentPosition + borderVec / 2, Depth + 1, Hover ? HoverBackgroundColor : BackgroundColor);
 
-		// TODO: Move to FontSize setter.
-		IMonoSpaceFontRenderer fontRenderer = FontSize switch
+		// TODO: FontSize extension method.
+		int charWidth = FontSize switch
 		{
-			FontSize.F4X6 => Root.Game.FontRenderer4X6,
-			FontSize.F8X8 => Root.Game.FontRenderer8X8,
-			FontSize.F12X12 => Root.Game.FontRenderer12X12,
+			FontSize.F4X6 => 4,
+			FontSize.F8X8 => 8,
+			FontSize.F12X12 => 12,
 			_ => throw new InvalidEnumConversionException(FontSize),
 		};
-		int charWidth = fontRenderer.GetCharWidthInPixels();
 
 		bool hasSelection = GetSelectionLength() > 0;
 		if (CursorPositionStart == CursorPositionEnd && CursorTimer <= _cursorTimerSwitch && IsSelected || hasSelection)
 		{
 			int selectionStart = Math.Min(CursorPositionStart, CursorPositionEnd);
 			int cursorSelectionStartX = Metric.X1 + selectionStart * charWidth + padding;
-			Root.Game.UiRenderer.RenderRectangleTopLeft(new(GetSelectionLength() * charWidth + 1, Metric.Size.Y - borderVec.Y), GetCursorPosition(cursorSelectionStartX), Depth + 2, hasSelection ? SelectionColor : CursorColor);
+			RenderBatchCollector.RenderRectangleTopLeft(new(GetSelectionLength() * charWidth + 1, Metric.Size.Y - borderVec.Y), GetCursorPosition(cursorSelectionStartX), Depth + 2, hasSelection ? SelectionColor : CursorColor);
 		}
 
 		Vector2i<int> GetCursorPosition(int cursorStartX)
@@ -97,14 +95,6 @@ public class TextInput : AbstractTextInput
 		int padding = (int)MathF.Round((Metric.Y2 - Metric.Y1) / 4f);
 		Vector2i<int> position = new(Metric.X1 + padding, Metric.Y1 + padding);
 
-		// TODO: Move to FontSize setter.
-		IMonoSpaceFontRenderer fontRenderer = FontSize switch
-		{
-			FontSize.F4X6 => Root.Game.FontRenderer4X6,
-			FontSize.F8X8 => Root.Game.FontRenderer8X8,
-			FontSize.F12X12 => Root.Game.FontRenderer12X12,
-			_ => throw new InvalidEnumConversionException(FontSize),
-		};
-		fontRenderer.Render(Vector2i<int>.One, parentPosition + position, Depth + 3, TextColor, Value, TextAlign.Left);
+		RenderBatchCollector.RenderMonoSpaceText(FontSize, Vector2i<int>.One, parentPosition + position, Depth + 3, TextColor, Value, TextAlign.Left);
 	}
 }

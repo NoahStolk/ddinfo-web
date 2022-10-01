@@ -1,5 +1,4 @@
-using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
-using System.Numerics;
+using DevilDaggersInfo.App.Ui.Base.Rendering;
 using Warp.Numerics;
 using Warp.Ui;
 using Warp.Ui.Components;
@@ -29,10 +28,10 @@ public class Checkbox : AbstractCheckbox
 		Vector2i<int> center = topLeft + fullScale / 2;
 		Vector2i<int> scale = fullScale - marginVec;
 
-		Root.Game.UiRenderer.RenderRectangleCenter(scale + borderVec, parentPosition + center, Depth, Color.White);
-		Root.Game.UiRenderer.RenderRectangleCenter(scale, parentPosition + center, Depth + 1, Hover ? Color.Gray(0.25f) : Color.Black);
+		RenderBatchCollector.RenderRectangleCenter(scale + borderVec, parentPosition + center, Depth, Color.White);
+		RenderBatchCollector.RenderRectangleCenter(scale, parentPosition + center, Depth + 1, Hover ? Color.Gray(0.25f) : Color.Black);
 
 		if (CurrentValue)
-			Root.Game.UiRenderer.RenderRectangleCenter(scale - borderTickVec, parentPosition + center, Depth + 2, Color.Gray(0.75f));
+			RenderBatchCollector.RenderRectangleCenter(scale - borderTickVec, parentPosition + center, Depth + 2, Color.Gray(0.75f));
 	}
 }

@@ -1,5 +1,5 @@
 using DevilDaggersInfo.App.Ui.Base.Components;
-using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
+using DevilDaggersInfo.App.Ui.Base.Rendering;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using Warp.Ui;
 
@@ -26,7 +26,7 @@ public class ShrinkSlider : Slider
 			int height = Metric.Size.Y - Border;
 			int position = (int)(percentage * (Metric.Size.X - Border * 2 - width / 2));
 			Vector2i<int> origin = parentPosition + topLeft;
-			Root.Game.UiRenderer.RenderRectangleTopLeft(new(width, height), origin + new Vector2i<int>(position + Border / 2, Border / 2), Depth + 2, color);
+			RenderBatchCollector.RenderRectangleTopLeft(new(width, height), origin + new Vector2i<int>(position + Border / 2, Border / 2), Depth + 2, color);
 		}
 	}
 }

@@ -1,7 +1,5 @@
-using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
-using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion;
 using DevilDaggersInfo.App.Ui.Base.Enums;
-using DevilDaggersInfo.Common.Exceptions;
+using DevilDaggersInfo.App.Ui.Base.Rendering;
 using Warp.Numerics;
 using Warp.Ui;
 using Warp.Ui.Components;
@@ -41,8 +39,8 @@ public class Button : AbstractButton
 		Vector2i<int> topLeft = new(Metric.X1, Metric.Y1);
 		Vector2i<int> center = topLeft + scale / 2;
 
-		Root.Game.UiRenderer.RenderRectangleCenter(scale, parentPosition + center, Depth, BorderColor);
-		Root.Game.UiRenderer.RenderRectangleCenter(scale - borderVec, parentPosition + center, Depth + 1, Hover ? HoverBackgroundColor : BackgroundColor);
+		RenderBatchCollector.RenderRectangleCenter(scale, parentPosition + center, Depth, BorderColor);
+		RenderBatchCollector.RenderRectangleCenter(scale - borderVec, parentPosition + center, Depth + 1, Hover ? HoverBackgroundColor : BackgroundColor);
 	}
 
 	public override void RenderText(Vector2i<int> parentPosition)
@@ -58,15 +56,7 @@ public class Button : AbstractButton
 			_ => throw new InvalidOperationException("Invalid text align."),
 		};
 
-		// TODO: Move to FontSize setter.
-		IMonoSpaceFontRenderer fontRenderer = FontSize switch
-		{
-			FontSize.F4X6 => Root.Game.FontRenderer4X6,
-			FontSize.F8X8 => Root.Game.FontRenderer8X8,
-			FontSize.F12X12 => Root.Game.FontRenderer12X12,
-			_ => throw new InvalidEnumConversionException(FontSize),
-		};
-		fontRenderer.Render(Vector2i<int>.One, parentPosition + textPosition, Depth + 2, TextColor, Text, TextAlign);
+		RenderBatchCollector.RenderMonoSpaceText(FontSize, Vector2i<int>.One, parentPosition + textPosition, Depth + 2, TextColor, Text, TextAlign);
 	}
 
 	// TODO: Move to ComponentBuilder.
