@@ -1,5 +1,6 @@
 using DevilDaggersInfo.App.Ui.Base.Enums;
 using DevilDaggersInfo.App.Ui.Base.Rendering.Data;
+using System.Numerics;
 using Warp.Content;
 using Warp.Numerics;
 
@@ -55,7 +56,7 @@ public static class RenderBatchCollector
 		texts.Add(new(scale, position, depth, color, text, textAlign));
 	}
 
-	public static void RenderSprite(Vector2i<int> scale, Vector2i<int> centerPosition, float depth, Texture texture, Color color)
+	public static void RenderSprite(Vector2 scale, Vector2 centerPosition, float depth, Texture texture, Color color)
 	{
 		Sprites.Add(new(scale, centerPosition, depth, texture, color));
 	}

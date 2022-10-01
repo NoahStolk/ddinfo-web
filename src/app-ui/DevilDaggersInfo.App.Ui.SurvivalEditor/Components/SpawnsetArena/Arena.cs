@@ -342,6 +342,10 @@ public class Arena : AbstractComponent
 		if (StateManager.SpawnsetState.Spawnset.GameMode == GameMode.Race)
 		{
 			(int raceX, _, int raceZ) = StateManager.SpawnsetState.Spawnset.GetRaceDaggerTilePosition();
+			int arenaMiddle = StateManager.SpawnsetState.Spawnset.ArenaDimension / 2;
+			float realRaceX = StateManager.SpawnsetState.Spawnset.RaceDaggerPosition.X / 4f + arenaMiddle;
+			float realRaceZ = StateManager.SpawnsetState.Spawnset.RaceDaggerPosition.Y / 4f + arenaMiddle;
+
 			int halfSize = _tileSize / 2;
 
 			float actualHeight = StateManager.SpawnsetState.Spawnset.GetActualTileHeight(raceX, raceZ, _currentSecond);
@@ -349,7 +353,7 @@ public class Arena : AbstractComponent
 			Color tileColor = TileUtils.GetColorFromHeight(actualHeight);
 			Color inverted = Color.Invert(tileColor);
 			Vector3 color = Lerp(inverted, inverted.Intensify(96), lerp);
-			RenderBatchCollector.RenderSprite(new(8), origin + new Vector2i<int>(raceX * _tileSize + halfSize, raceZ * _tileSize + halfSize), Depth + 3, ContentManager.Content.IconDaggerTexture, ToColor(color));
+			RenderBatchCollector.RenderSprite(new(8), origin.ToVector2() + new Vector2(realRaceX * _tileSize + halfSize, realRaceZ * _tileSize + halfSize), Depth + 3, ContentManager.Content.IconDaggerTexture, ToColor(color));
 		}
 
 		// TODO: Scissor.
