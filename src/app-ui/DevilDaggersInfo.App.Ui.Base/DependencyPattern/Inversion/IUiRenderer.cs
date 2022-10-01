@@ -11,5 +11,5 @@ public interface IUiRenderer
 
 	void RenderCircleCenter(Vector2i<int> center, float radius, float depth, Vector3 color);
 
-	void RenderHollowRectangleTopLeft(Vector2 scale, Vector2 topLeft, float depth, Vector3 color);
+	void RenderHollowRectangleCenter(Vector2 scale, Vector2 center, float depth, Vector3 color);
 }

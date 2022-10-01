@@ -314,7 +314,11 @@ public class Arena : AbstractComponent
 						Root.Game.UiRenderer.RenderRectangleTopLeft(new(_tileSize), origin + new Vector2i<int>(x, y), Depth + 1, colorCurrent);
 
 					if (!ColorsEqual(Color.Black, colorValue))
-						Root.Game.UiRenderer.RenderHollowRectangleTopLeft(new(_tileSize - 0.5f), origin.ToVector2() + new Vector2(x + 0.5f, y + 0.5f), Depth + 2, colorValue);
+					{
+						const int size = 2;
+						const int padding = 2;
+						Root.Game.UiRenderer.RenderRectangleTopLeft(new(size), origin + new Vector2i<int>(x + padding, y + padding), Depth + 2, colorValue);
+					}
 				}
 			}
 		}

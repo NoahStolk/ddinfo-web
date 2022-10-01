@@ -33,10 +33,11 @@ public static class VertexBuilder
 	{
 		return new[]
 		{
-			0f, 0f,
-			1f, 0f,
-			1f, 1f,
-			0f, 1f,
+			-0.5f, -0.5f,
+			+0.5f, -0.5f,
+			+0.5f, +0.5f,
+			-0.5f, +0.5f,
+			-0.5f, -0.5f,
 		};
 	}
 }
