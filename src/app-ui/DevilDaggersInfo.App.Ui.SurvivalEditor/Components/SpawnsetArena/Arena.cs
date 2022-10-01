@@ -3,6 +3,7 @@ using DevilDaggersInfo.App.Ui.SurvivalEditor.Enums;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using DevilDaggersInfo.Core.Spawnset;
+using DevilDaggersInfo.Types.Core.Spawnsets;
 using Silk.NET.GLFW;
 using Warp;
 using Warp.Extensions;
@@ -335,8 +336,11 @@ public class Arena : AbstractComponent
 			}
 		}
 
-		(int raceX, _, int raceZ) = StateManager.SpawnsetState.Spawnset.GetRaceDaggerTilePosition();
-		Root.Game.UiRenderer.RenderRectangleTopLeft(new(6), origin + new Vector2i<int>(raceX * _tileSize, raceZ * _tileSize), Depth + 3, new(1, 1, 0));
+		if (StateManager.SpawnsetState.Spawnset.GameMode == GameMode.Race)
+		{
+			(int raceX, _, int raceZ) = StateManager.SpawnsetState.Spawnset.GetRaceDaggerTilePosition();
+			Root.Game.UiRenderer.RenderRectangleTopLeft(new(6), origin + new Vector2i<int>(raceX * _tileSize, raceZ * _tileSize), Depth + 3, new(1, 1, 0));
+		}
 
 		// TODO: Scissor.
 		const int tileUnit = 4;
