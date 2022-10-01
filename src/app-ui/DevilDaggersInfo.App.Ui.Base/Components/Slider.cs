@@ -30,11 +30,6 @@ public class Slider : AbstractSlider
 
 		RenderBatchCollector.RenderRectangleCenter(scale, parentPosition + center, Depth, Color.White);
 		RenderBatchCollector.RenderRectangleCenter(scale - borderVec, parentPosition + center, Depth + 1, Hold ? Color.Gray(0.5f) : Hover ? Color.Gray(0.25f) : Color.Black);
-	}
-
-	public override void RenderText(Vector2i<int> parentPosition)
-	{
-		base.RenderText(parentPosition);
 
 		Vector2i<int> centerPosition = new Vector2i<int>(Metric.X1 + Metric.X2, Metric.Y1 + Metric.Y2) / 2;
 		RenderBatchCollector.RenderMonoSpaceText(FontSize.F8X8, Vector2i<int>.One, parentPosition + centerPosition, Depth + 3, _textColor, CurrentValue.ToString("0.00"), TextAlign.Middle);

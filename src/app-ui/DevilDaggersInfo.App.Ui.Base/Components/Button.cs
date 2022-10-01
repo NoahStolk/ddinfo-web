@@ -41,11 +41,6 @@ public class Button : AbstractButton
 
 		RenderBatchCollector.RenderRectangleCenter(scale, parentPosition + center, Depth, BorderColor);
 		RenderBatchCollector.RenderRectangleCenter(scale - borderVec, parentPosition + center, Depth + 1, Hover ? HoverBackgroundColor : BackgroundColor);
-	}
-
-	public override void RenderText(Vector2i<int> parentPosition)
-	{
-		base.RenderText(parentPosition);
 
 		int padding = (int)MathF.Round((Metric.Y2 - Metric.Y1) / 4f);
 		Vector2i<int> textPosition = TextAlign switch

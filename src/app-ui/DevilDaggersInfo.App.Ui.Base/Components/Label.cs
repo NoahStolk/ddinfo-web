@@ -20,9 +20,9 @@ public class Label : AbstractLabel
 		_fontSize = fontSize;
 	}
 
-	public override void RenderText(Vector2i<int> parentPosition)
+	public override void Render(Vector2i<int> parentPosition)
 	{
-		base.RenderText(parentPosition);
+		base.Render(parentPosition);
 
 		int padding = (int)MathF.Round((Metric.Y2 - Metric.Y1) / 4f);
 		Vector2i<int> textPosition = _textAlign switch

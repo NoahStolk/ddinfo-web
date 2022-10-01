@@ -9,6 +9,4 @@ public interface IExtendedLayout : ILayout
 	void Render3d();
 
 	void Render();
-
-	void RenderText();
 }

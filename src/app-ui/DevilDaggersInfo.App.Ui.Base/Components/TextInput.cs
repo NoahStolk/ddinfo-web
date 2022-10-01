@@ -86,13 +86,7 @@ public class TextInput : AbstractTextInput
 		{
 			return parentPosition + new Vector2i<int>(cursorStartX, Metric.Y1 + borderVec.Y / 2);
 		}
-	}
 
-	public override void RenderText(Vector2i<int> parentPosition)
-	{
-		base.RenderText(parentPosition);
-
-		int padding = (int)MathF.Round((Metric.Y2 - Metric.Y1) / 4f);
 		Vector2i<int> position = new(Metric.X1 + padding, Metric.Y1 + padding);
 
 		RenderBatchCollector.RenderMonoSpaceText(FontSize, Vector2i<int>.One, parentPosition + position, Depth + 3, TextColor, Value, TextAlign.Left);

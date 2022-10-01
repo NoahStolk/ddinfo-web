@@ -42,10 +42,6 @@ public class SurvivalEditorSaveLayout : Layout, IFileDialogLayout
 	{
 	}
 
-	public void RenderText()
-	{
-	}
-
 	public void SetComponentsFromPath(string path)
 	{
 		Clear();

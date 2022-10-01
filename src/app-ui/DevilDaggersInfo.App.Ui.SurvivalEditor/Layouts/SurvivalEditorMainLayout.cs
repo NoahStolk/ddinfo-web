@@ -80,8 +80,4 @@ public class SurvivalEditorMainLayout : Layout, ISurvivalEditorMainLayout
 	{
 		RenderBatchCollector.RenderRectangleTopLeft(new(WindowWidth, WindowHeight), default, -100, Color.Gray(0.1f));
 	}
-
-	public void RenderText()
-	{
-	}
 }

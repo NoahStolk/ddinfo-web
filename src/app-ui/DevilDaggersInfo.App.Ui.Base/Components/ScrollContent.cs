@@ -24,19 +24,11 @@ public abstract class ScrollContent<TSelf, TParent> : AbstractScrollContent<TSel
 		Gl.Enable(EnableCap.ScissorTest);
 		SetScissor(parentPosition);
 
-		RenderBatchCollector.RenderRectangleTopLeft(Metric.Size, parentPosition + new Vector2i<int>(Metric.X1, Metric.Y1), Depth, Color.Black);
-
 		base.Render(parentPosition);
 
-		Gl.Disable(EnableCap.ScissorTest);
-	}
+		RenderBatchCollector.RenderRectangleTopLeft(Metric.Size, parentPosition + new Vector2i<int>(Metric.X1, Metric.Y1), Depth, Color.Black);
 
-	public override void RenderText(Vector2i<int> parentPosition)
-	{
-		Gl.Enable(EnableCap.ScissorTest);
 		SetScissor(parentPosition);
-
-		base.RenderText(parentPosition);
 
 		Gl.Disable(EnableCap.ScissorTest);
 	}
