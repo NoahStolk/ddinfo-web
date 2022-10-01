@@ -46,15 +46,16 @@ public static class ContentManager
 			return "File 'dd/survival' could not be parsed.";
 
 		ModBinary modBinary = new(File.ReadAllBytes(Path.Combine(UserSettings.DevilDaggersInstallationDirectory, "res", "dd")), ModBinaryReadComprehensiveness.All);
+		Texture? iconDaggerTexture = GetTexture(modBinary, "iconmaskdagger");
 		Mesh? skull4Mesh = GetMesh(modBinary, "boid4");
 		Texture? skull4Texture = GetTexture(modBinary, "boid4");
 		Mesh? tileMesh = GetMesh(modBinary, "tile");
 		Texture? tileTexture = GetTexture(modBinary, "tile");
 
-		if (skull4Mesh == null || skull4Texture == null || tileMesh == null || tileTexture == null)
+		if (iconDaggerTexture == null || skull4Mesh == null || skull4Texture == null || tileMesh == null || tileTexture == null)
 			return "Not all assets from 'res/dd' were found.";
 
-		Content = new(defaultSpawnset, skull4Mesh, skull4Texture, tileMesh, tileTexture);
+		Content = new(defaultSpawnset, iconDaggerTexture, skull4Mesh, skull4Texture, tileMesh, tileTexture);
 		return null;
 	}
 

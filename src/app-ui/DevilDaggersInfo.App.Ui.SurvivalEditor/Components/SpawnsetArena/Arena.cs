@@ -1,3 +1,4 @@
+using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.Rendering;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Enums;
@@ -10,6 +11,7 @@ using Warp;
 using Warp.Extensions;
 using Warp.Ui;
 using Warp.Ui.Components;
+using Warp.Utils;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetArena;
 
@@ -340,7 +342,14 @@ public class Arena : AbstractComponent
 		if (StateManager.SpawnsetState.Spawnset.GameMode == GameMode.Race)
 		{
 			(int raceX, _, int raceZ) = StateManager.SpawnsetState.Spawnset.GetRaceDaggerTilePosition();
-			RenderBatchCollector.RenderRectangleTopLeft(new(6), origin + new Vector2i<int>(raceX * _tileSize, raceZ * _tileSize), Depth + 3, Color.Yellow);
+			int halfSize = _tileSize / 2;
+
+			float actualHeight = StateManager.SpawnsetState.Spawnset.GetActualTileHeight(raceX, raceZ, _currentSecond);
+			float lerp = MathF.Sin(CoreBase.Game.Tt) / 2 + 0.5f;
+			Color tileColor = TileUtils.GetColorFromHeight(actualHeight);
+			Color inverted = Color.Invert(tileColor);
+			Vector3 color = Lerp(inverted, inverted.Intensify(96), lerp);
+			RenderBatchCollector.RenderSprite(new(8), origin + new Vector2i<int>(raceX * _tileSize + halfSize, raceZ * _tileSize + halfSize), Depth + 3, ContentManager.Content.IconDaggerTexture, ToColor(color));
 		}
 
 		// TODO: Scissor.
@@ -349,9 +358,22 @@ public class Arena : AbstractComponent
 		RenderBatchCollector.RenderCircleCenter(center, _shrinkRadius / tileUnit * _tileSize, Depth + 4, Color.Yellow);
 		RenderBatchCollector.RenderCircleCenter(center, StateManager.SpawnsetState.Spawnset.ShrinkEnd / tileUnit * _tileSize, Depth + 5, Color.Aqua);
 
+		// TODO: Move to Warp.
+		static Color ToColor(Vector3 vector)
+		{
+			return new((byte)(vector.X * byte.MaxValue), (byte)(vector.Y * byte.MaxValue), (byte)(vector.Z * byte.MaxValue), byte.MaxValue);
+		}
+
+		// TODO: Move to Warp.
 		static bool ColorsEqual(Color a, Color b)
 		{
 			return a.R == b.R && a.G == b.G && a.B == b.B;
+		}
+
+		// TODO: Move to Warp.
+		static Vector3 Lerp(Vector3 value1, Vector3 value2, float amount)
+		{
+			return new(MathUtils.Lerp(value1.X, value2.X, amount), MathUtils.Lerp(value1.Y, value2.Y, amount), MathUtils.Lerp(value1.Z, value2.Z, amount));
 		}
 	}
 }

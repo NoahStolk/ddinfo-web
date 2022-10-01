@@ -1,5 +1,6 @@
 using DevilDaggersInfo.App.Ui.Base.Enums;
 using DevilDaggersInfo.App.Ui.Base.Rendering.Data;
+using Warp.Content;
 using Warp.Numerics;
 
 namespace DevilDaggersInfo.App.Ui.Base.Rendering;
@@ -11,6 +12,7 @@ public static class RenderBatchCollector
 	public static List<MonoSpaceText> MonoSpaceTexts4X6 { get; } = new();
 	public static List<MonoSpaceText> MonoSpaceTexts8X8 { get; } = new();
 	public static List<MonoSpaceText> MonoSpaceTexts12X12 { get; } = new();
+	public static List<Sprite> Sprites { get; } = new();
 
 	public static void Clear()
 	{
@@ -19,6 +21,7 @@ public static class RenderBatchCollector
 		MonoSpaceTexts4X6.Clear();
 		MonoSpaceTexts8X8.Clear();
 		MonoSpaceTexts12X12.Clear();
+		Sprites.Clear();
 	}
 
 	public static void RenderRectangleTopLeft(Vector2i<int> scale, Vector2i<int> topLeft, float depth, Color color)
@@ -50,5 +53,10 @@ public static class RenderBatchCollector
 			_ => throw new(),
 		};
 		texts.Add(new(scale, position, depth, color, text, textAlign));
+	}
+
+	public static void RenderSprite(Vector2i<int> scale, Vector2i<int> centerPosition, float depth, Texture texture, Color color)
+	{
+		Sprites.Add(new(scale, centerPosition, depth, texture, color));
 	}
 }
