@@ -356,11 +356,14 @@ public class Arena : AbstractComponent
 			RenderBatchCollector.RenderSprite(new(8), origin.ToVector2() + new Vector2(realRaceX * _tileSize + halfSize, realRaceZ * _tileSize + halfSize), Depth + 3, ContentManager.Content.IconDaggerTexture, ToColor(color));
 		}
 
-		// TODO: Scissor.
+		RenderBatchCollector.SetScissor(Scissor.FromComponent(Metric, parentPosition));
+
 		const int tileUnit = 4;
 		RenderBatchCollector.RenderCircleCenter(center, StateManager.SpawnsetState.Spawnset.ShrinkStart / tileUnit * _tileSize, Depth + 5, Color.Purple);
 		RenderBatchCollector.RenderCircleCenter(center, _shrinkRadius / tileUnit * _tileSize, Depth + 4, Color.Yellow);
 		RenderBatchCollector.RenderCircleCenter(center, StateManager.SpawnsetState.Spawnset.ShrinkEnd / tileUnit * _tileSize, Depth + 5, Color.Aqua);
+
+		RenderBatchCollector.UnsetScissor();
 
 		// TODO: Move to Warp.
 		static Color ToColor(Vector3 vector)
