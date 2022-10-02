@@ -11,7 +11,6 @@ using Warp;
 using Warp.Extensions;
 using Warp.Ui;
 using Warp.Ui.Components;
-using Warp.Utils;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetArena;
 
@@ -368,9 +367,16 @@ public class Arena : AbstractComponent
 		RenderBatchCollector.SetScissor(Scissor.FromComponent(Metric, parentPosition));
 
 		const int tileUnit = 4;
-		RenderBatchCollector.RenderCircleCenter(center, StateManager.SpawnsetState.Spawnset.ShrinkStart / tileUnit * _tileSize, Depth + 5, Color.Purple);
-		RenderBatchCollector.RenderCircleCenter(center, _shrinkRadius / tileUnit * _tileSize, Depth + 4, Color.Yellow);
-		RenderBatchCollector.RenderCircleCenter(center, StateManager.SpawnsetState.Spawnset.ShrinkEnd / tileUnit * _tileSize, Depth + 5, Color.Aqua);
+		float shrinkStartRadius = StateManager.SpawnsetState.Spawnset.ShrinkStart / tileUnit * _tileSize;
+		float shrinkCurrentRadius = _shrinkRadius / tileUnit * _tileSize;
+		float shrinkEndRadius = StateManager.SpawnsetState.Spawnset.ShrinkEnd / tileUnit * _tileSize;
+
+		if (shrinkStartRadius > 0)
+			RenderBatchCollector.RenderCircleCenter(center, shrinkStartRadius, Depth + 5, Color.Purple);
+		if (shrinkCurrentRadius > 0)
+			RenderBatchCollector.RenderCircleCenter(center, shrinkCurrentRadius, Depth + 4, Color.Yellow);
+		if (shrinkEndRadius > 0)
+			RenderBatchCollector.RenderCircleCenter(center, shrinkEndRadius, Depth + 5, Color.Aqua);
 
 		RenderBatchCollector.UnsetScissor();
 	}
