@@ -330,15 +330,15 @@ public class Arena : AbstractComponent
 				Color colorValue = TileUtils.GetColorFromHeight(height);
 				if (Math.Abs(actualHeight - height) < 0.001f)
 				{
-					if (!ColorsEqual(Color.Black, colorValue))
+					if (Color.Black != colorValue)
 						RenderBatchCollector.RenderRectangleTopLeft(new(_tileSize), origin + new Vector2i<int>(x, y), Depth + 1, colorValue);
 				}
 				else
 				{
-					if (!ColorsEqual(Color.Black, colorCurrent))
+					if (Color.Black != colorCurrent)
 						RenderBatchCollector.RenderRectangleTopLeft(new(_tileSize), origin + new Vector2i<int>(x, y), Depth + 1, colorCurrent);
 
-					if (!ColorsEqual(Color.Black, colorValue))
+					if (Color.Black != colorValue)
 					{
 						const int size = 2;
 						const int padding = 2;
@@ -361,8 +361,8 @@ public class Arena : AbstractComponent
 			float lerp = MathF.Sin(CoreBase.Game.Tt) / 2 + 0.5f;
 			Color tileColor = TileUtils.GetColorFromHeight(actualHeight);
 			Color inverted = Color.Invert(tileColor);
-			Vector3 color = Lerp(inverted, inverted.Intensify(96), lerp);
-			RenderBatchCollector.RenderSprite(new(8), origin.ToVector2() + new Vector2(realRaceX * _tileSize + halfSize, realRaceZ * _tileSize + halfSize), Depth + 3, ContentManager.Content.IconDaggerTexture, ToColor(color));
+			Vector3 color = Vector3.Lerp(inverted, inverted.Intensify(96), lerp);
+			RenderBatchCollector.RenderSprite(new(8), origin.ToVector2() + new Vector2(realRaceX * _tileSize + halfSize, realRaceZ * _tileSize + halfSize), Depth + 3, ContentManager.Content.IconDaggerTexture, Color.FromVector3(color));
 		}
 
 		RenderBatchCollector.SetScissor(Scissor.FromComponent(Metric, parentPosition));
@@ -373,23 +373,5 @@ public class Arena : AbstractComponent
 		RenderBatchCollector.RenderCircleCenter(center, StateManager.SpawnsetState.Spawnset.ShrinkEnd / tileUnit * _tileSize, Depth + 5, Color.Aqua);
 
 		RenderBatchCollector.UnsetScissor();
-
-		// TODO: Move to Warp.
-		static Color ToColor(Vector3 vector)
-		{
-			return new((byte)(vector.X * byte.MaxValue), (byte)(vector.Y * byte.MaxValue), (byte)(vector.Z * byte.MaxValue), byte.MaxValue);
-		}
-
-		// TODO: Move to Warp.
-		static bool ColorsEqual(Color a, Color b)
-		{
-			return a.R == b.R && a.G == b.G && a.B == b.B;
-		}
-
-		// TODO: Move to Warp.
-		static Vector3 Lerp(Vector3 value1, Vector3 value2, float amount)
-		{
-			return new(MathUtils.Lerp(value1.X, value2.X, amount), MathUtils.Lerp(value1.Y, value2.Y, amount), MathUtils.Lerp(value1.Z, value2.Z, amount));
-		}
 	}
 }
