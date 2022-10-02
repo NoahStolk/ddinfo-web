@@ -22,6 +22,7 @@ public class Arena : AbstractComponent
 	private Vector2i<int>? _pencilStart;
 	private Vector2i<int>? _lineStart;
 	private Vector2i<int>? _rectangleStart;
+	private bool _settingRaceDagger;
 
 	private float _currentSecond;
 	private float _shrinkRadius;
@@ -205,16 +206,24 @@ public class Arena : AbstractComponent
 
 				break;
 			case ArenaTool.Dagger:
-				if (Input.IsButtonHeld(MouseButton.Left))
+				if (Input.IsButtonPressed(MouseButton.Left))
 				{
-					StateManager.SetSpawnset(StateManager.SpawnsetState.Spawnset with
+					_settingRaceDagger = true;
+				}
+				else if (Input.IsButtonHeld(MouseButton.Left))
+				{
+					if (_settingRaceDagger)
 					{
-						RaceDaggerPosition = new(StateManager.SpawnsetState.Spawnset.TileToWorldCoordinate(x), StateManager.SpawnsetState.Spawnset.TileToWorldCoordinate(y)),
-					});
+						StateManager.SetSpawnset(StateManager.SpawnsetState.Spawnset with
+						{
+							RaceDaggerPosition = new(StateManager.SpawnsetState.Spawnset.TileToWorldCoordinate(x), StateManager.SpawnsetState.Spawnset.TileToWorldCoordinate(y)),
+						});
+					}
 				}
 				else if (Input.IsButtonReleased(MouseButton.Left))
 				{
 					SpawnsetHistoryManager.Save(SpawnsetEditType.RaceDagger);
+					_settingRaceDagger = false;
 				}
 
 				break;
