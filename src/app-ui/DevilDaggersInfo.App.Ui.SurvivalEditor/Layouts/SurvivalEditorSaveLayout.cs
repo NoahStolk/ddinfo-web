@@ -10,11 +10,8 @@ namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Layouts;
 
 public class SurvivalEditorSaveLayout : Layout, IFileDialogLayout
 {
-	private const int _entryHeight = 16;
-
 	private readonly TextInput _pathTextInput;
-
-	private readonly List<Button> _subDirectoryButtons = new(); // TODO: Implement scroll viewer instead.
+	private readonly PathsWrapper _pathsWrapper;
 
 	public SurvivalEditorSaveLayout()
 		: base(Constants.Full)
@@ -23,11 +20,13 @@ public class SurvivalEditorSaveLayout : Layout, IFileDialogLayout
 		_pathTextInput = ComponentBuilder.CreateTextInput(Rectangle.At(0, 24, 1024, 16), false, null, null, null);
 		TextInput fileTextInput = ComponentBuilder.CreateTextInput(Rectangle.At(0, 48, 512, 16), false, null, null, null);
 		Button saveButton = new(Rectangle.At(512, 48, 128, 16), () => SaveSpawnset(Path.Combine(_pathTextInput.Value.ToString(), fileTextInput.Value.ToString())), Color.Black, Color.White, Color.White, Color.Green, "Save", TextAlign.Middle, 2, FontSize.F8X8);
+		_pathsWrapper = new(Rectangle.At(0, 96, 1024, 640), SetComponentsFromPath, SaveSpawnset);
 
 		NestingContext.Add(backButton);
 		NestingContext.Add(_pathTextInput);
 		NestingContext.Add(fileTextInput);
 		NestingContext.Add(saveButton);
+		NestingContext.Add(_pathsWrapper);
 	}
 
 	public void Update()
@@ -44,22 +43,9 @@ public class SurvivalEditorSaveLayout : Layout, IFileDialogLayout
 
 	public void SetComponentsFromPath(string path)
 	{
-		Clear();
 		_pathTextInput.SetText(path);
-
-		int i = 4;
-		DirectoryInfo? parent = Directory.GetParent(path);
-		if (parent != null)
-			_subDirectoryButtons.Add(new Button.PathButton(Rectangle.At(0, ++i * _entryHeight, 1024, _entryHeight), () => SetComponentsFromPath(parent.FullName), "..", Color.Green));
-
-		foreach (string directory in Directory.GetDirectories(path))
-			_subDirectoryButtons.Add(new Button.PathButton(Rectangle.At(0, ++i * _entryHeight, 1024, _entryHeight), () => SetComponentsFromPath(directory), Path.GetFileName(directory), Color.Yellow));
-
-		foreach (string file in Directory.GetFiles(path))
-			_subDirectoryButtons.Add(new Button.PathButton(Rectangle.At(0, ++i * _entryHeight, 1024, _entryHeight), () => {}, Path.GetFileName(file), Color.White));
-
-		foreach (Button button in _subDirectoryButtons)
-			NestingContext.Add(button);
+		_pathsWrapper.Path = path;
+		_pathsWrapper.InitializeContent();
 	}
 
 	private static void SaveSpawnset(string filePath)
@@ -71,13 +57,5 @@ public class SurvivalEditorSaveLayout : Layout, IFileDialogLayout
 			return; // TODO: Ask to overwrite or cancel.
 
 		File.WriteAllBytes(filePath, StateManager.SpawnsetState.Spawnset.ToBytes());
-	}
-
-	private void Clear()
-	{
-		foreach (Button button in _subDirectoryButtons)
-			NestingContext.Remove(button);
-
-		_subDirectoryButtons.Clear();
 	}
 }
