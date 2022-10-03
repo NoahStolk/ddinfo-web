@@ -103,7 +103,7 @@ public class SettingsWrapper : AbstractComponent
 
 			void UpdateFormat()
 			{
-				StateManager.SetSpawnset(StateManager.SpawnsetState.Spawnset with { GameMode = gameMode});
+				StateManager.SetSpawnset(StateManager.SpawnsetState.Spawnset with { GameMode = gameMode });
 				SpawnsetHistoryManager.Save(SpawnsetEditType.GameMode);
 			}
 
