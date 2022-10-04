@@ -196,8 +196,20 @@ public class Arena : AbstractComponent
 
 						void FillIfApplicable(int newX, int newY)
 						{
+							if (done.Contains(new(newX, newY)))
+								return;
+
 							const float tolerance = 0.1f; // TODO: Configurable.
-							if (!done.Contains(new(newX, newY)) && MathF.Abs(tiles[newX, newY] - targetHeight) < tolerance)
+							const float voidHeight = -2; // TODO: Configurable.
+							float tileHeight = tiles[newX, newY];
+
+							float clampedTargetHeight = targetHeight;
+							if (targetHeight < voidHeight)
+								clampedTargetHeight = voidHeight;
+							if (tileHeight < voidHeight)
+								tileHeight = voidHeight;
+
+							if (MathF.Abs(tileHeight - clampedTargetHeight) < tolerance)
 								FillNeighbors(newX, newY);
 						}
 					}
