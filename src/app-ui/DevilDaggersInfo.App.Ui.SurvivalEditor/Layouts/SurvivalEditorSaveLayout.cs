@@ -48,13 +48,20 @@ public class SurvivalEditorSaveLayout : Layout, IFileDialogLayout
 		_pathsWrapper.InitializeContent();
 	}
 
-	private static void SaveSpawnset(string filePath)
+	private void SaveSpawnset(string filePath)
 	{
 		if (Directory.Exists(filePath))
-			return; // TODO: Show error.
+		{
+			Popup popup = new(this, "Specified file path is an existing directory.");
+			NestingContext.Add(popup);
+		}
 
 		if (File.Exists(filePath))
-			return; // TODO: Ask to overwrite or cancel.
+		{
+			// TODO: Ask to overwrite or cancel.
+			Popup popup = new(this, "File already exists.");
+			NestingContext.Add(popup);
+		}
 
 		File.WriteAllBytes(filePath, StateManager.SpawnsetState.Spawnset.ToBytes());
 	}

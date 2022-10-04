@@ -45,7 +45,7 @@ public class SurvivalEditorOpenLayout : Layout, IFileDialogLayout
 		_pathsWrapper.InitializeContent();
 	}
 
-	private static void OpenSpawnset(string filePath)
+	private void OpenSpawnset(string filePath)
 	{
 		byte[] bytes = File.ReadAllBytes(filePath);
 		if (SpawnsetBinary.TryParse(bytes, out SpawnsetBinary? spawnsetBinary))
@@ -55,7 +55,8 @@ public class SurvivalEditorOpenLayout : Layout, IFileDialogLayout
 		}
 		else
 		{
-			// TODO: Show popup.
+			Popup popup = new(this, "File could not be parsed as a spawnset.");
+			NestingContext.Add(popup);
 		}
 	}
 }
