@@ -217,6 +217,9 @@ public class Arena : AbstractComponent
 
 				break;
 			case ArenaTool.Dagger:
+				if (StateManager.SpawnsetState.Spawnset.GameMode != GameMode.Race)
+					break;
+
 				if (Input.IsButtonPressed(MouseButton.Left))
 				{
 					_settingRaceDagger = true;
