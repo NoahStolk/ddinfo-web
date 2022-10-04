@@ -199,17 +199,15 @@ public class Arena : AbstractComponent
 							if (done.Contains(new(newX, newY)))
 								return;
 
-							const float tolerance = 0.1f; // TODO: Configurable.
-							const float voidHeight = -2; // TODO: Configurable.
 							float tileHeight = tiles[newX, newY];
 
 							float clampedTargetHeight = targetHeight;
-							if (targetHeight < voidHeight)
-								clampedTargetHeight = voidHeight;
-							if (tileHeight < voidHeight)
-								tileHeight = voidHeight;
+							if (targetHeight < StateManager.ArenaEditorState.BucketVoidHeight)
+								clampedTargetHeight = StateManager.ArenaEditorState.BucketVoidHeight;
+							if (tileHeight < StateManager.ArenaEditorState.BucketVoidHeight)
+								tileHeight = StateManager.ArenaEditorState.BucketVoidHeight;
 
-							if (MathF.Abs(tileHeight - clampedTargetHeight) < tolerance)
+							if (MathF.Abs(tileHeight - clampedTargetHeight) < StateManager.ArenaEditorState.BucketTolerance)
 								FillNeighbors(newX, newY);
 						}
 					}

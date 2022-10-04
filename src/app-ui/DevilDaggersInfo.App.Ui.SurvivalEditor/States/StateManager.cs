@@ -64,6 +64,16 @@ public static class StateManager
 		ArenaEditorState = ArenaEditorState with { SelectedHeight = selectedHeight };
 	}
 
+	public static void SetArenaBucketTolerance(float bucketTolerance)
+	{
+		ArenaEditorState = ArenaEditorState with { BucketTolerance = bucketTolerance };
+	}
+
+	public static void SetArenaBucketVoidHeight(float bucketVoidHeight)
+	{
+		ArenaEditorState = ArenaEditorState with { BucketVoidHeight = bucketVoidHeight };
+	}
+
 	private static bool HasArenaChanges(SpawnsetBinary a, SpawnsetBinary b)
 	{
 		if (a.ShrinkStart != b.ShrinkStart || a.ShrinkEnd != b.ShrinkEnd || a.ShrinkRate != b.ShrinkRate || a.Brightness != b.Brightness || a.ArenaDimension != b.ArenaDimension)

@@ -1,3 +1,4 @@
+using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.Enums;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Enums;
@@ -53,6 +54,8 @@ public class ArenaWrapper : AbstractComponent
 		AddToolButton(_arenaButtonSize * 3, toolButtonOffsetY, ArenaTool.Bucket, "B");
 		AddToolButton(0, toolButtonOffsetY + _arenaButtonSize, ArenaTool.Dagger, "D");
 
+		AddBucketButtons();
+
 		_shrinkSlider = new(Rectangle.At(0, _arena.Metric.Size.Y + 8, _arena.Metric.Size.X, 16), _arena.SetShrinkCurrent, true, 0, StateManager.SpawnsetState.Spawnset.GetSliderMaxSeconds(), 0.001f, 0, 2, Color.White);
 		NestingContext.Add(_shrinkSlider);
 
@@ -86,6 +89,21 @@ public class ArenaWrapper : AbstractComponent
 		{
 			ArenaButton button = new(Rectangle.At(buttonsOffsetX + offsetX, offsetY, _arenaButtonSize, _arenaButtonSize), () => StateManager.SetArenaTool(arenaTool), Color.Yellow, Color.Black, text, FontSize.F8X8);
 			NestingContext.Add(button);
+		}
+
+		void AddBucketButtons()
+		{
+			void ChangeBucketTolerance(string s) => ParseUtils.TryParseAndExecute<float>(s, 0, StateManager.SetArenaBucketTolerance);
+			void ChangeBucketVoidHeight(string s) => ParseUtils.TryParseAndExecute<float>(s, StateManager.SetArenaBucketVoidHeight);
+
+			TextInput bucketTolerance = new(Rectangle.At(buttonsOffsetX, toolButtonOffsetY + _arenaButtonSize * 2, 80, 16), true, ChangeBucketTolerance, ChangeBucketTolerance, ChangeBucketTolerance, Color.Black, Color.White, Color.Gray(63), Color.White, Color.White, Color.White, Color.Gray(63), 2, FontSize.F8X8, 8, 4);
+			TextInput bucketVoidHeight = new(Rectangle.At(buttonsOffsetX, toolButtonOffsetY + _arenaButtonSize * 3, 80, 16), true, ChangeBucketVoidHeight, ChangeBucketVoidHeight, ChangeBucketVoidHeight, Color.Black, Color.White, Color.Gray(63), Color.White, Color.White, Color.White, Color.Gray(63), 2, FontSize.F8X8, 8, 4);
+
+			bucketTolerance.SetText(StateManager.ArenaEditorState.BucketTolerance.ToString("0.0"));
+			bucketVoidHeight.SetText(StateManager.ArenaEditorState.BucketVoidHeight.ToString("0.0"));
+
+			NestingContext.Add(bucketTolerance);
+			NestingContext.Add(bucketVoidHeight);
 		}
 	}
 
