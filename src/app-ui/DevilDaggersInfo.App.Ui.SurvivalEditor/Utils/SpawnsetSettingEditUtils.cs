@@ -1,3 +1,4 @@
+using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using DevilDaggersInfo.Core.Spawnset;
 
@@ -8,9 +9,6 @@ public static class SpawnsetSettingEditUtils
 	public static void ChangeSetting<T>(Func<T, SpawnsetBinary> spawnsetBuilder, string input)
 		where T : IParsable<T>
 	{
-		if (!T.TryParse(input, null, out T v))
-			return;
-
-		StateManager.SetSpawnset(spawnsetBuilder(v));
+		ParseUtils.TryParseAndExecute<T>(input, f => StateManager.SetSpawnset(spawnsetBuilder(f)));
 	}
 }
