@@ -76,7 +76,10 @@ public static class StateManager
 
 	private static bool HasArenaChanges(SpawnsetBinary a, SpawnsetBinary b)
 	{
-		if (a.ShrinkStart != b.ShrinkStart || a.ShrinkEnd != b.ShrinkEnd || a.ShrinkRate != b.ShrinkRate || a.Brightness != b.Brightness || a.ArenaDimension != b.ArenaDimension)
+		if (HasArenaSettingsChanges(a, b))
+			return true;
+
+		if (a.ArenaDimension != b.ArenaDimension)
 			return true;
 
 		for (int i = 0; i < a.ArenaDimension; i++)
@@ -110,12 +113,21 @@ public static class StateManager
 
 	private static bool HasSettingsChanges(SpawnsetBinary a, SpawnsetBinary b)
 	{
-		return a.SpawnVersion != b.SpawnVersion
+		return HasArenaSettingsChanges(a, b)
+			|| a.SpawnVersion != b.SpawnVersion
 			|| a.WorldVersion != b.WorldVersion
+			|| a.Brightness != b.Brightness
 			|| a.GameMode != b.GameMode
 			|| a.HandLevel != b.HandLevel
 			|| a.AdditionalGems != b.AdditionalGems
 			|| a.TimerStart != b.TimerStart;
+	}
+
+	private static bool HasArenaSettingsChanges(SpawnsetBinary a, SpawnsetBinary b)
+	{
+		return a.ShrinkStart != b.ShrinkStart
+			|| a.ShrinkEnd != b.ShrinkEnd
+			|| a.ShrinkRate != b.ShrinkRate;
 	}
 
 	/// <summary>
