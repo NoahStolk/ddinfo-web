@@ -24,8 +24,11 @@ public class ArenaWrapper : AbstractComponent
 	public ArenaWrapper(Rectangle metric)
 		: base(metric)
 	{
-		_arena = new(default, 6);
+		_arena = new(new(0, 48), 6);
 		NestingContext.Add(_arena);
+
+		Label title = new(Rectangle.At(0, 0, _arena.Metric.Size.X, 48), Color.White, "Arena", TextAlign.Middle, FontSize.F12X12);
+		NestingContext.Add(title);
 
 		int buttonsOffsetX = _arena.Metric.Size.X + 8;
 
@@ -35,7 +38,7 @@ public class ArenaWrapper : AbstractComponent
 			float height = heights[i];
 			int offsetX = i % 4 * _arenaButtonSize;
 			int offsetY = i / 4 * _arenaButtonSize;
-			AddHeightButton(height, offsetX, offsetY);
+			AddHeightButton(height, buttonsOffsetX + offsetX, offsetY);
 		}
 
 		for (int i = 0; i < 32; i++)
@@ -44,67 +47,70 @@ public class ArenaWrapper : AbstractComponent
 			int offsetY = i / 4 * _arenaButtonSize;
 
 			float height = i < 16 ? i : 16 + (i - 16) * 2;
-			AddHeightButton(height, offsetX, offsetY + _arenaButtonSize * 2);
+			AddHeightButton(height, buttonsOffsetX + offsetX, offsetY + _arenaButtonSize * 2);
 		}
 
-		const int toolButtonOffsetY = 240;
-		AddToolButton(0, toolButtonOffsetY, ArenaTool.Pencil, "P");
-		AddToolButton(_arenaButtonSize, toolButtonOffsetY, ArenaTool.Line, "L");
-		AddToolButton(_arenaButtonSize * 2, toolButtonOffsetY, ArenaTool.Rectangle, "R");
-		AddToolButton(_arenaButtonSize * 3, toolButtonOffsetY, ArenaTool.Bucket, "B");
-		AddToolButton(0, toolButtonOffsetY + _arenaButtonSize, ArenaTool.Dagger, "D");
+		const int toolButtonOffsetY = 288;
+		AddToolButton(buttonsOffsetX, toolButtonOffsetY, ArenaTool.Pencil, "P");
+		AddToolButton(buttonsOffsetX + _arenaButtonSize, toolButtonOffsetY, ArenaTool.Line, "L");
+		AddToolButton(buttonsOffsetX + _arenaButtonSize * 2, toolButtonOffsetY, ArenaTool.Rectangle, "R");
+		AddToolButton(buttonsOffsetX + _arenaButtonSize * 3, toolButtonOffsetY, ArenaTool.Bucket, "B");
+		AddToolButton(buttonsOffsetX, toolButtonOffsetY + _arenaButtonSize, ArenaTool.Dagger, "D");
 
-		AddBucketButtons();
+		AddBucketButtons(buttonsOffsetX, toolButtonOffsetY);
 
-		_shrinkSlider = new(Rectangle.At(0, _arena.Metric.Size.Y + 8, _arena.Metric.Size.X, 16), _arena.SetShrinkCurrent, true, 0, StateManager.SpawnsetState.Spawnset.GetSliderMaxSeconds(), 0.001f, 0, 2, Color.White);
+		_shrinkSlider = new(Rectangle.At(0, _arena.Metric.TopLeft.Y + _arena.Metric.Size.Y + 8, _arena.Metric.Size.X, 16), _arena.SetShrinkCurrent, true, 0, StateManager.SpawnsetState.Spawnset.GetSliderMaxSeconds(), 0.001f, 0, 2, Color.White);
 		NestingContext.Add(_shrinkSlider);
 
-		_textInputShrinkStart = AddSetting("Shrink start", SpawnsetEditType.ShrinkStart, _arena.Metric.Size.Y + 24, ChangeShrinkStart);
-		_textInputShrinkEnd = AddSetting("Shrink end", SpawnsetEditType.ShrinkEnd, _arena.Metric.Size.Y + 40, ChangeShrinkEnd);
-		_textInputShrinkRate = AddSetting("Shrink rate", SpawnsetEditType.ShrinkRate, _arena.Metric.Size.Y + 56, ChangeShrinkRate);
-		_textInputBrightness = AddSetting("Brightness", SpawnsetEditType.Brightness, _arena.Metric.Size.Y + 72, ChangeBrightness);
+		_textInputShrinkStart = AddSetting("Shrink start", SpawnsetEditType.ShrinkStart, _arena.Metric.TopLeft.Y + _arena.Metric.Size.Y + 24, ChangeShrinkStart);
+		_textInputShrinkEnd = AddSetting("Shrink end", SpawnsetEditType.ShrinkEnd, _arena.Metric.TopLeft.Y + _arena.Metric.Size.Y + 40, ChangeShrinkEnd);
+		_textInputShrinkRate = AddSetting("Shrink rate", SpawnsetEditType.ShrinkRate, _arena.Metric.TopLeft.Y + _arena.Metric.Size.Y + 56, ChangeShrinkRate);
+		_textInputBrightness = AddSetting("Brightness", SpawnsetEditType.Brightness, _arena.Metric.TopLeft.Y + _arena.Metric.Size.Y + 72, ChangeBrightness);
+	}
 
-		SpawnsetTextInput AddSetting(string labelText, SpawnsetEditType spawnsetEditType, int y1, Action<string> onInput)
-		{
-			const int labelWidth = 112;
-			Label label = new(Rectangle.At(0, y1, labelWidth, 16), Color.White, labelText, TextAlign.Left, FontSize.F8X8);
-			SpawnsetTextInput textInput = SpawnsetComponentBuilder.CreateSpawnsetTextInput(Rectangle.At(labelWidth, y1, 64, 16), onInput, spawnsetEditType);
-			NestingContext.Add(label);
-			NestingContext.Add(textInput);
-			return textInput;
-		}
+	private SpawnsetTextInput AddSetting(string labelText, SpawnsetEditType spawnsetEditType, int y1, Action<string> onInput)
+	{
+		const int labelWidth = 112;
+		Label label = new(Rectangle.At(0, y1, labelWidth, 16), Color.White, labelText, TextAlign.Left, FontSize.F8X8);
+		SpawnsetTextInput textInput = SpawnsetComponentBuilder.CreateSpawnsetTextInput(Rectangle.At(labelWidth, y1, 64, 16), onInput, spawnsetEditType);
+		NestingContext.Add(label);
+		NestingContext.Add(textInput);
+		return textInput;
+	}
 
-		void ChangeShrinkStart(string input) => SpawnsetSettingEditUtils.ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { ShrinkStart = v }, input);
-		void ChangeShrinkEnd(string input) => SpawnsetSettingEditUtils.ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { ShrinkEnd = v }, input);
-		void ChangeShrinkRate(string input) => SpawnsetSettingEditUtils.ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { ShrinkRate = v }, input);
-		void ChangeBrightness(string input) => SpawnsetSettingEditUtils.ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { Brightness = v }, input);
+	private static void ChangeShrinkStart(string input) => SpawnsetSettingEditUtils.ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { ShrinkStart = v }, input);
 
-		void AddHeightButton(float height, int offsetX, int offsetY)
-		{
-			HeightButton button = new(Rectangle.At(buttonsOffsetX + offsetX, offsetY, _arenaButtonSize, _arenaButtonSize), () => StateManager.SetArenaSelectedHeight(height), height);
-			NestingContext.Add(button);
-		}
+	private static void ChangeShrinkEnd(string input) => SpawnsetSettingEditUtils.ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { ShrinkEnd = v }, input);
 
-		void AddToolButton(int offsetX, int offsetY, ArenaTool arenaTool, string text)
-		{
-			ArenaButton button = new(Rectangle.At(buttonsOffsetX + offsetX, offsetY, _arenaButtonSize, _arenaButtonSize), () => StateManager.SetArenaTool(arenaTool), Color.Yellow, Color.Black, text, FontSize.F8X8);
-			NestingContext.Add(button);
-		}
+	private static void ChangeShrinkRate(string input) => SpawnsetSettingEditUtils.ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { ShrinkRate = v }, input);
 
-		void AddBucketButtons()
-		{
-			void ChangeBucketTolerance(string s) => ParseUtils.TryParseAndExecute<float>(s, 0, StateManager.SetArenaBucketTolerance);
-			void ChangeBucketVoidHeight(string s) => ParseUtils.TryParseAndExecute<float>(s, StateManager.SetArenaBucketVoidHeight);
+	private static void ChangeBrightness(string input) => SpawnsetSettingEditUtils.ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { Brightness = v }, input);
 
-			TextInput bucketTolerance = new(Rectangle.At(buttonsOffsetX, toolButtonOffsetY + _arenaButtonSize * 2, 80, 16), true, ChangeBucketTolerance, ChangeBucketTolerance, ChangeBucketTolerance, Color.Black, Color.White, Color.Gray(63), Color.White, Color.White, Color.White, Color.Gray(63), 2, FontSize.F8X8, 8, 4);
-			TextInput bucketVoidHeight = new(Rectangle.At(buttonsOffsetX, toolButtonOffsetY + _arenaButtonSize * 3, 80, 16), true, ChangeBucketVoidHeight, ChangeBucketVoidHeight, ChangeBucketVoidHeight, Color.Black, Color.White, Color.Gray(63), Color.White, Color.White, Color.White, Color.Gray(63), 2, FontSize.F8X8, 8, 4);
+	private void AddHeightButton(float height, int offsetX, int offsetY)
+	{
+		HeightButton button = new(Rectangle.At(offsetX, 48 + offsetY, _arenaButtonSize, _arenaButtonSize), () => StateManager.SetArenaSelectedHeight(height), height);
+		NestingContext.Add(button);
+	}
 
-			bucketTolerance.SetText(StateManager.ArenaEditorState.BucketTolerance.ToString("0.0"));
-			bucketVoidHeight.SetText(StateManager.ArenaEditorState.BucketVoidHeight.ToString("0.0"));
+	private void AddToolButton(int offsetX, int offsetY, ArenaTool arenaTool, string text)
+	{
+		ArenaButton button = new(Rectangle.At(offsetX, offsetY, _arenaButtonSize, _arenaButtonSize), () => StateManager.SetArenaTool(arenaTool), Color.Yellow, Color.Black, text, FontSize.F8X8);
+		NestingContext.Add(button);
+	}
 
-			NestingContext.Add(bucketTolerance);
-			NestingContext.Add(bucketVoidHeight);
-		}
+	private void AddBucketButtons(int offsetX, int offsetY)
+	{
+		void ChangeBucketTolerance(string s) => ParseUtils.TryParseAndExecute<float>(s, 0, StateManager.SetArenaBucketTolerance);
+		void ChangeBucketVoidHeight(string s) => ParseUtils.TryParseAndExecute<float>(s, StateManager.SetArenaBucketVoidHeight);
+
+		TextInput bucketTolerance = new(Rectangle.At(offsetX, offsetY + _arenaButtonSize * 2, 80, 16), true, ChangeBucketTolerance, ChangeBucketTolerance, ChangeBucketTolerance, Color.Black, Color.White, Color.Gray(63), Color.White, Color.White, Color.White, Color.Gray(63), 2, FontSize.F8X8, 8, 4);
+		TextInput bucketVoidHeight = new(Rectangle.At(offsetX, offsetY + _arenaButtonSize * 3, 80, 16), true, ChangeBucketVoidHeight, ChangeBucketVoidHeight, ChangeBucketVoidHeight, Color.Black, Color.White, Color.Gray(63), Color.White, Color.White, Color.White, Color.Gray(63), 2, FontSize.F8X8, 8, 4);
+
+		bucketTolerance.SetText(StateManager.ArenaEditorState.BucketTolerance.ToString("0.0"));
+		bucketVoidHeight.SetText(StateManager.ArenaEditorState.BucketVoidHeight.ToString("0.0"));
+
+		NestingContext.Add(bucketTolerance);
+		NestingContext.Add(bucketVoidHeight);
 	}
 
 	public void SetSpawnset()

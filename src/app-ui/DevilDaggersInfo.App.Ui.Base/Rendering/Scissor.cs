@@ -17,7 +17,7 @@ public record Scissor(int X, int Y, uint Width, uint Height)
 		Vector2i<int> scaledParentPosition = (parentPosition.ToVector2() * Root.Game.UiScale).RoundToVector2Int32();
 		return new(
 			scaledTopLeft.X + (int)viewportOffset.X + scaledParentPosition.X,
-			Graphics.WindowHeight - (scaledSize.Y + scaledParentPosition.Y) - (int)viewportOffset.Y,
+			Graphics.WindowHeight - (scaledSize.Y + scaledParentPosition.Y) - (int)viewportOffset.Y - scaledTopLeft.Y,
 			(uint)scaledSize.X,
 			(uint)scaledSize.Y);
 	}

@@ -46,6 +46,9 @@ public class SettingsWrapper : AbstractComponent
 		const int quarterWidth = halfWidth / 2;
 		const int height = 20;
 
+		Label title = new(Rectangle.At(0, 0, width, 48), Color.White, "Settings", TextAlign.Middle, FontSize.F12X12);
+		NestingContext.Add(title);
+
 		_buttonV0V1 = CreateFormatButton(0, 8, 4);
 		_buttonV2V3 = CreateFormatButton(1, 9, 4);
 		_buttonV3Next = CreateFormatButton(2, 9, 6);
@@ -59,11 +62,11 @@ public class SettingsWrapper : AbstractComponent
 		_buttonLevel3 = CreateHandButton(HandLevel.Level3);
 		_buttonLevel4 = CreateHandButton(HandLevel.Level4);
 
-		_labelAdditionalGems = CreateLabel("Addit. gems", 0, height * 3);
-		_labelTimerStart = CreateLabel("Timer start", 0, height * 4);
+		_labelAdditionalGems = CreateLabel("Addit. gems", 0, 48 + height * 3);
+		_labelTimerStart = CreateLabel("Timer start", 0, 48 + height * 4);
 
-		_textInputAdditionalGems = CreateTextInput(0, height * 3, SpawnsetEditType.AdditionalGems, s => SpawnsetSettingEditUtils.ChangeSetting<int>(v => StateManager.SpawnsetState.Spawnset with { AdditionalGems = v }, s));
-		_textInputTimerStart = CreateTextInput(0, height * 4, SpawnsetEditType.TimerStart, s => SpawnsetSettingEditUtils.ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { TimerStart = v }, s));
+		_textInputAdditionalGems = CreateTextInput(0, 48 + height * 3, SpawnsetEditType.AdditionalGems, s => SpawnsetSettingEditUtils.ChangeSetting<int>(v => StateManager.SpawnsetState.Spawnset with { AdditionalGems = v }, s));
+		_textInputTimerStart = CreateTextInput(0, 48 + height * 4, SpawnsetEditType.TimerStart, s => SpawnsetSettingEditUtils.ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { TimerStart = v }, s));
 
 		NestingContext.Add(_buttonV0V1);
 		NestingContext.Add(_buttonV2V3);
@@ -87,7 +90,7 @@ public class SettingsWrapper : AbstractComponent
 		Button CreateFormatButton(int index, int worldVersion, int spawnVersion)
 		{
 			string str = SpawnsetBinary.GetGameVersionString(worldVersion, spawnVersion);
-			return new(Rectangle.At(index * thirdWidth, 0, thirdWidth, height), UpdateFormat, Color.Black, Color.White, _hover, Color.White, str, TextAlign.Middle, 2, FontSize.F8X8);
+			return new(Rectangle.At(index * thirdWidth, 48, thirdWidth, height), UpdateFormat, Color.Black, Color.White, _hover, Color.White, str, TextAlign.Middle, 2, FontSize.F8X8);
 
 			void UpdateFormat()
 			{
@@ -99,7 +102,7 @@ public class SettingsWrapper : AbstractComponent
 		Button CreateGameModeButton(GameMode gameMode)
 		{
 			int index = (int)gameMode;
-			return new(Rectangle.At(index * thirdWidth, height, thirdWidth, height), UpdateFormat, Color.Black, Color.White, _hover, Color.White, ToShortString(), TextAlign.Middle, 2, FontSize.F8X8);
+			return new(Rectangle.At(index * thirdWidth, 68, thirdWidth, height), UpdateFormat, Color.Black, Color.White, _hover, Color.White, ToShortString(), TextAlign.Middle, 2, FontSize.F8X8);
 
 			void UpdateFormat()
 			{
@@ -119,7 +122,7 @@ public class SettingsWrapper : AbstractComponent
 		Button CreateHandButton(HandLevel handLevel)
 		{
 			int index = (int)handLevel - 1;
-			return new(Rectangle.At(index * quarterWidth, height * 2, quarterWidth, height), UpdateHand, Color.Black, GetColor(handLevel), _hover, Color.White, ToShortString(), TextAlign.Middle, 2, FontSize.F8X8);
+			return new(Rectangle.At(index * quarterWidth, 88, quarterWidth, height), UpdateHand, Color.Black, GetColor(handLevel), _hover, Color.White, ToShortString(), TextAlign.Middle, 2, FontSize.F8X8);
 
 			void UpdateHand()
 			{

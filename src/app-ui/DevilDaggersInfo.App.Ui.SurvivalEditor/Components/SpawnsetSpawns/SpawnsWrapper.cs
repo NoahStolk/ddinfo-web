@@ -1,4 +1,5 @@
 using DevilDaggersInfo.App.Ui.Base.Components;
+using DevilDaggersInfo.App.Ui.Base.Enums;
 using Warp.Ui;
 using Warp.Ui.Components;
 
@@ -9,7 +10,10 @@ public sealed class SpawnsWrapper : AbstractScrollViewer<SpawnsWrapper, Spawns>
 	public SpawnsWrapper(Rectangle metric)
 		: base(metric)
 	{
-		Rectangle spawnsMetric = Rectangle.At(0, 0, 384, 640);
+		Label title = new(Rectangle.At(0, 0, 384, 48), Color.White, "Spawns", TextAlign.Middle, FontSize.F12X12);
+		NestingContext.Add(title);
+
+		Rectangle spawnsMetric = Rectangle.At(0, 48, 384, 640);
 
 		Content = new(spawnsMetric, this);
 		Scrollbar = new(spawnsMetric with { X1 = spawnsMetric.X2, X2 = spawnsMetric.X2 + 16 }, ScrollbarOnChange);
