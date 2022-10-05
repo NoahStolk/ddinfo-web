@@ -40,33 +40,38 @@ public class SettingsWrapper : AbstractComponent
 	public SettingsWrapper(Rectangle metric)
 		: base(metric)
 	{
-		const int width = 224;
-		const int halfWidth = width / 2;
+		int width = metric.Size.X;
+		int halfWidth = width / 2;
 		int thirdWidth = (int)MathF.Ceiling(width / 3f);
-		const int quarterWidth = halfWidth / 2;
+		int quarterWidth = halfWidth / 2;
 		const int height = 20;
 
 		Label title = new(Rectangle.At(0, 0, width, 48), Color.White, "Settings", TextAlign.Middle, FontSize.F12X12);
 		NestingContext.Add(title);
 
+		int y = title.Metric.Size.Y;
 		_buttonV0V1 = CreateFormatButton(0, 8, 4);
 		_buttonV2V3 = CreateFormatButton(1, 9, 4);
 		_buttonV3Next = CreateFormatButton(2, 9, 6);
 
+		y += height;
 		_buttonSurvival = CreateGameModeButton(GameMode.Survival);
 		_buttonTimeAttack = CreateGameModeButton(GameMode.TimeAttack);
 		_buttonRace = CreateGameModeButton(GameMode.Race);
 
+		y += height;
 		_buttonLevel1 = CreateHandButton(HandLevel.Level1);
 		_buttonLevel2 = CreateHandButton(HandLevel.Level2);
 		_buttonLevel3 = CreateHandButton(HandLevel.Level3);
 		_buttonLevel4 = CreateHandButton(HandLevel.Level4);
 
-		_labelAdditionalGems = CreateLabel("Addit. gems", 0, 48 + height * 3);
-		_labelTimerStart = CreateLabel("Timer start", 0, 48 + height * 4);
+		y += height;
+		_labelAdditionalGems = CreateLabel("Addit. gems", 0, y);
+		_textInputAdditionalGems = CreateTextInput(0, y, SpawnsetEditType.AdditionalGems, s => SpawnsetSettingEditUtils.ChangeSetting<int>(v => StateManager.SpawnsetState.Spawnset with { AdditionalGems = v }, s));
 
-		_textInputAdditionalGems = CreateTextInput(0, 48 + height * 3, SpawnsetEditType.AdditionalGems, s => SpawnsetSettingEditUtils.ChangeSetting<int>(v => StateManager.SpawnsetState.Spawnset with { AdditionalGems = v }, s));
-		_textInputTimerStart = CreateTextInput(0, 48 + height * 4, SpawnsetEditType.TimerStart, s => SpawnsetSettingEditUtils.ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { TimerStart = v }, s));
+		y += height;
+		_labelTimerStart = CreateLabel("Timer start", 0, y);
+		_textInputTimerStart = CreateTextInput(0, y, SpawnsetEditType.TimerStart, s => SpawnsetSettingEditUtils.ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { TimerStart = v }, s));
 
 		NestingContext.Add(_buttonV0V1);
 		NestingContext.Add(_buttonV2V3);
@@ -90,7 +95,7 @@ public class SettingsWrapper : AbstractComponent
 		Button CreateFormatButton(int index, int worldVersion, int spawnVersion)
 		{
 			string str = SpawnsetBinary.GetGameVersionString(worldVersion, spawnVersion);
-			return new(Rectangle.At(index * thirdWidth, 48, thirdWidth, height), UpdateFormat, Color.Black, Color.White, _hover, Color.White, str, TextAlign.Middle, 2, FontSize.F8X8);
+			return new(Rectangle.At(index * thirdWidth, y, thirdWidth, height), UpdateFormat, Color.Black, Color.White, _hover, Color.White, str, TextAlign.Middle, 2, FontSize.F8X8);
 
 			void UpdateFormat()
 			{
@@ -102,7 +107,7 @@ public class SettingsWrapper : AbstractComponent
 		Button CreateGameModeButton(GameMode gameMode)
 		{
 			int index = (int)gameMode;
-			return new(Rectangle.At(index * thirdWidth, 68, thirdWidth, height), UpdateFormat, Color.Black, Color.White, _hover, Color.White, ToShortString(), TextAlign.Middle, 2, FontSize.F8X8);
+			return new(Rectangle.At(index * thirdWidth, y, thirdWidth, height), UpdateFormat, Color.Black, Color.White, _hover, Color.White, ToShortString(), TextAlign.Middle, 2, FontSize.F8X8);
 
 			void UpdateFormat()
 			{
@@ -122,7 +127,7 @@ public class SettingsWrapper : AbstractComponent
 		Button CreateHandButton(HandLevel handLevel)
 		{
 			int index = (int)handLevel - 1;
-			return new(Rectangle.At(index * quarterWidth, 88, quarterWidth, height), UpdateHand, Color.Black, GetColor(handLevel), _hover, Color.White, ToShortString(), TextAlign.Middle, 2, FontSize.F8X8);
+			return new(Rectangle.At(index * quarterWidth, y, quarterWidth, height), UpdateHand, Color.Black, GetColor(handLevel), _hover, Color.White, ToShortString(), TextAlign.Middle, 2, FontSize.F8X8);
 
 			void UpdateHand()
 			{

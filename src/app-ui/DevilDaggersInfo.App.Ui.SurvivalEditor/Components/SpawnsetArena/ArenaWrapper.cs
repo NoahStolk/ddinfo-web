@@ -24,10 +24,12 @@ public class ArenaWrapper : AbstractComponent
 	public ArenaWrapper(Rectangle metric)
 		: base(metric)
 	{
-		_arena = new(new(0, 48), 6);
+		const int titleHeight = 48;
+
+		_arena = new(new(0, titleHeight), 6);
 		NestingContext.Add(_arena);
 
-		Label title = new(Rectangle.At(0, 0, _arena.Metric.Size.X, 48), Color.White, "Arena", TextAlign.Middle, FontSize.F12X12);
+		Label title = new(Rectangle.At(0, 0, _arena.Metric.Size.X, titleHeight), Color.White, "Arena", TextAlign.Middle, FontSize.F12X12);
 		NestingContext.Add(title);
 
 		int buttonsOffsetX = _arena.Metric.Size.X + 8;
@@ -38,7 +40,7 @@ public class ArenaWrapper : AbstractComponent
 			float height = heights[i];
 			int offsetX = i % 4 * _arenaButtonSize;
 			int offsetY = i / 4 * _arenaButtonSize;
-			AddHeightButton(height, buttonsOffsetX + offsetX, offsetY);
+			AddHeightButton(height, buttonsOffsetX + offsetX, titleHeight + offsetY);
 		}
 
 		for (int i = 0; i < 32; i++)
@@ -47,7 +49,7 @@ public class ArenaWrapper : AbstractComponent
 			int offsetY = i / 4 * _arenaButtonSize;
 
 			float height = i < 16 ? i : 16 + (i - 16) * 2;
-			AddHeightButton(height, buttonsOffsetX + offsetX, offsetY + _arenaButtonSize * 2);
+			AddHeightButton(height, buttonsOffsetX + offsetX, titleHeight + offsetY + _arenaButtonSize * 2);
 		}
 
 		const int toolButtonOffsetY = 288;
@@ -88,7 +90,7 @@ public class ArenaWrapper : AbstractComponent
 
 	private void AddHeightButton(float height, int offsetX, int offsetY)
 	{
-		HeightButton button = new(Rectangle.At(offsetX, 48 + offsetY, _arenaButtonSize, _arenaButtonSize), () => StateManager.SetArenaSelectedHeight(height), height);
+		HeightButton button = new(Rectangle.At(offsetX, offsetY, _arenaButtonSize, _arenaButtonSize), () => StateManager.SetArenaSelectedHeight(height), height);
 		NestingContext.Add(button);
 	}
 

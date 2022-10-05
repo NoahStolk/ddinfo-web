@@ -28,7 +28,7 @@ public class SurvivalEditorMainLayout : Layout, ISurvivalEditorMainLayout
 		_arenaWrapper = new(Rectangle.At(400, 16, 400, 512));
 		_spawnsWrapper = new(Rectangle.At(0, 16, 384, 512));
 		_historyWrapper = new(Rectangle.At(768, 512, 256, 256));
-		_settingsWrapper = new(Rectangle.At(800, 16, 224, 256));
+		_settingsWrapper = new(Rectangle.At(804, 16, 216, 256));
 
 		NestingContext.Add(menu);
 		NestingContext.Add(_arenaWrapper);
