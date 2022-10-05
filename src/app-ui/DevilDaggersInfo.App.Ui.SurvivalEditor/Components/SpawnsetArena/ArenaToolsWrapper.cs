@@ -15,11 +15,11 @@ public class ArenaToolsWrapper : AbstractComponent
 	public ArenaToolsWrapper(Rectangle metric)
 		: base(metric)
 	{
-		AddToolButton(0, 0, ArenaTool.Pencil, "P");
-		AddToolButton(0 + _arenaButtonSize, 0, ArenaTool.Line, "L");
+		AddToolButton(0 + _arenaButtonSize * 0, 0, ArenaTool.Pencil, "P");
+		AddToolButton(0 + _arenaButtonSize * 1, 0, ArenaTool.Line, "L");
 		AddToolButton(0 + _arenaButtonSize * 2, 0, ArenaTool.Rectangle, "R");
 		AddToolButton(0 + _arenaButtonSize * 3, 0, ArenaTool.Bucket, "B");
-		AddToolButton(0, _arenaButtonSize, ArenaTool.Dagger, "D");
+		AddToolButton(0 + _arenaButtonSize * 4, 0, ArenaTool.Dagger, "D");
 
 		AddBucketButtons(0, 0);
 	}
