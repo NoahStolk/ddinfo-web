@@ -65,7 +65,13 @@ public class SpawnEntry : AbstractComponent
 	{
 		base.Render(parentPosition);
 
-		Color background = IsSelected ? Color.Gray(0.5f) : Hover ? Color.Gray(0.25f) : Color.Transparent;
+		Color background = (IsSelected, Hover) switch
+		{
+			(true, true) => new(0, 127, 255, 127),
+			(true, false) => new(0, 127, 255, 63),
+			(false, true) => Color.Gray(0.2f),
+			_ => Color.Transparent,
+		};
 		if (background != Color.Transparent)
 			RenderBatchCollector.RenderRectangleTopLeft(Metric.Size, parentPosition + Metric.TopLeft, Depth, background);
 	}
