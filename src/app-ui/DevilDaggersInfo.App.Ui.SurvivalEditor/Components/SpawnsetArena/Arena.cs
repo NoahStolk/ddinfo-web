@@ -1,12 +1,13 @@
 using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.Rendering;
+using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Enums;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
+using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Types.Core.Spawnsets;
-using Silk.NET.GLFW;
 using Warp;
 using Warp.Extensions;
 using Warp.Ui;
@@ -18,10 +19,13 @@ public class Arena : AbstractComponent
 {
 	private readonly int _tileSize;
 
-	private Vector2i<int>? _pencilStart;
-	private Vector2i<int>? _lineStart;
-	private Vector2i<int>? _rectangleStart;
-	private bool _settingRaceDagger;
+	private readonly ArenaPencilState _pencilState;
+	private readonly ArenaLineState _lineState;
+	private readonly ArenaRectangleState _rectangleState;
+	private readonly ArenaBucketState _bucketState;
+	private readonly ArenaDaggerState _daggerState;
+
+	private readonly List<IArenaState> _states;
 
 	private float _currentSecond;
 	private float _shrinkRadius;
@@ -30,16 +34,31 @@ public class Arena : AbstractComponent
 		: base(new(topLeft.X, topLeft.Y, topLeft.X + tileSize * SpawnsetBinary.ArenaDimensionMax, topLeft.Y + tileSize * SpawnsetBinary.ArenaDimensionMax))
 	{
 		_tileSize = tileSize;
+
+		_pencilState = new(_tileSize);
+		_lineState = new(_tileSize);
+		_rectangleState = new();
+		_bucketState = new();
+		_daggerState = new();
+
+		_states = new()
+		{
+			_pencilState,
+			_lineState,
+			_rectangleState,
+			_bucketState,
+			_daggerState,
+		};
 	}
 
-	private static void UpdateArena(int x, int y, float height)
+	public static void UpdateArena(int x, int y, float height)
 	{
 		float[,] newArena = StateManager.SpawnsetState.Spawnset.ArenaTiles.GetMutableClone();
 		newArena[x, y] = height;
 		UpdateArena(newArena);
 	}
 
-	private static void UpdateArena(float[,] newArena)
+	public static void UpdateArena(float[,] newArena)
 	{
 		StateManager.SetSpawnset(StateManager.SpawnsetState.Spawnset with
 		{
@@ -78,239 +97,23 @@ public class Arena : AbstractComponent
 			return;
 		}
 
-		switch (StateManager.ArenaEditorState.ArenaTool)
+		IArenaState activeState = StateManager.ArenaEditorState.ArenaTool switch
 		{
-			case ArenaTool.Pencil:
-				if (Input.IsButtonPressed(MouseButton.Left))
-				{
-					_pencilStart = new(relMouseX, relMouseY);
-				}
-				else if (Input.IsButtonHeld(MouseButton.Left))
-				{
-					if (_pencilStart.HasValue)
-					{
-						Vector2i<int> pencilEnd = new(relMouseX, relMouseY);
-						Rectangle rectangle = GetRectangle(_pencilStart.Value / _tileSize, pencilEnd / _tileSize);
-						for (int i = rectangle.X1; i <= rectangle.X2; i++)
-						{
-							for (int j = rectangle.Y1; j <= rectangle.Y2; j++)
-							{
-								Vector2 visualTileCenter = new Vector2(i, j) * _tileSize + new Vector2(_tileSize / 2f);
-								if (LineIntersectsSquare(_pencilStart.Value.ToVector2(), pencilEnd.ToVector2(), visualTileCenter, _tileSize))
-									UpdateArena(i, j, StateManager.ArenaEditorState.SelectedHeight);
-							}
-						}
+			ArenaTool.Pencil => _pencilState,
+			ArenaTool.Line => _lineState,
+			ArenaTool.Rectangle => _rectangleState,
+			ArenaTool.Bucket => _bucketState,
+			ArenaTool.Dagger => _daggerState,
+			_ => throw new InvalidEnumConversionException(StateManager.ArenaEditorState.ArenaTool),
+		};
 
-						UpdateArena(x, y, StateManager.ArenaEditorState.SelectedHeight);
-						_pencilStart = new(relMouseX, relMouseY);
-					}
-				}
-				else if (Input.IsButtonReleased(MouseButton.Left))
-				{
-					_pencilStart = null;
-					SpawnsetHistoryManager.Save(SpawnsetEditType.ArenaPencil);
-				}
-
-				break;
-			case ArenaTool.Line:
-				if (Input.IsButtonPressed(MouseButton.Left))
-				{
-					_lineStart = new(relMouseX, relMouseY);
-				}
-				else if (Input.IsButtonReleased(MouseButton.Left))
-				{
-					if (_lineStart.HasValue)
-					{
-						Vector2i<int> lineEnd = new(relMouseX, relMouseY);
-						Rectangle rectangle = GetRectangle(_lineStart.Value / _tileSize, lineEnd / _tileSize);
-						for (int i = rectangle.X1; i <= rectangle.X2; i++)
-						{
-							for (int j = rectangle.Y1; j <= rectangle.Y2; j++)
-							{
-								Vector2 visualTileCenter = new Vector2(i, j) * _tileSize + new Vector2(_tileSize / 2f);
-								if (LineIntersectsSquare(_lineStart.Value.ToVector2(), lineEnd.ToVector2(), visualTileCenter, _tileSize))
-									UpdateArena(i, j, StateManager.ArenaEditorState.SelectedHeight);
-							}
-						}
-
-						UpdateArena(x, y, StateManager.ArenaEditorState.SelectedHeight);
-					}
-
-					_lineStart = null;
-					SpawnsetHistoryManager.Save(SpawnsetEditType.ArenaLine);
-				}
-
-				break;
-			case ArenaTool.Rectangle:
-				if (Input.IsButtonPressed(MouseButton.Left))
-				{
-					_rectangleStart = new(x, y);
-				}
-				else if (Input.IsButtonReleased(MouseButton.Left))
-				{
-					if (_rectangleStart.HasValue)
-					{
-						Vector2i<int> rectangleEnd = new(x, y);
-						Rectangle rectangle = GetRectangle(_rectangleStart.Value, rectangleEnd);
-						for (int i = rectangle.X1; i <= rectangle.X2; i++)
-						{
-							for (int j = rectangle.Y1; j <= rectangle.Y2; j++)
-								UpdateArena(i, j, StateManager.ArenaEditorState.SelectedHeight);
-						}
-					}
-
-					SpawnsetHistoryManager.Save(SpawnsetEditType.ArenaRectangle);
-					_rectangleStart = null;
-				}
-
-				break;
-			case ArenaTool.Bucket:
-				if (Input.IsButtonPressed(MouseButton.Left))
-				{
-					List<Vector2i<int>> done = new();
-					float[,] tiles = StateManager.SpawnsetState.Spawnset.ArenaTiles.GetMutableClone();
-					int dimension = StateManager.SpawnsetState.Spawnset.ArenaDimension;
-					float targetHeight = StateManager.SpawnsetState.Spawnset.ArenaTiles[x, y];
-					FillNeighbors(x, y);
-
-					UpdateArena(tiles);
-					SpawnsetHistoryManager.Save(SpawnsetEditType.ArenaBucket);
-
-					void FillNeighbors(int x, int y)
-					{
-						tiles[x, y] = StateManager.ArenaEditorState.SelectedHeight;
-						done.Add(new(x, y));
-
-						int leftX = x - 1;
-						int rightX = x + 1;
-						int topY = y - 1;
-						int bottomY = y + 1;
-
-						if (leftX >= 0)
-							FillIfApplicable(leftX, y);
-						if (rightX < dimension)
-							FillIfApplicable(rightX, y);
-						if (topY >= 0)
-							FillIfApplicable(x, topY);
-						if (bottomY < dimension)
-							FillIfApplicable(x, bottomY);
-
-						void FillIfApplicable(int newX, int newY)
-						{
-							if (done.Contains(new(newX, newY)))
-								return;
-
-							float tileHeight = tiles[newX, newY];
-
-							float clampedTargetHeight = targetHeight;
-							if (targetHeight < StateManager.ArenaEditorState.BucketVoidHeight)
-								clampedTargetHeight = StateManager.ArenaEditorState.BucketVoidHeight;
-							if (tileHeight < StateManager.ArenaEditorState.BucketVoidHeight)
-								tileHeight = StateManager.ArenaEditorState.BucketVoidHeight;
-
-							if (MathF.Abs(tileHeight - clampedTargetHeight) < StateManager.ArenaEditorState.BucketTolerance)
-								FillNeighbors(newX, newY);
-						}
-					}
-				}
-
-				break;
-			case ArenaTool.Dagger:
-				if (StateManager.SpawnsetState.Spawnset.GameMode != GameMode.Race)
-					break;
-
-				if (Input.IsButtonPressed(MouseButton.Left))
-				{
-					_settingRaceDagger = true;
-				}
-				else if (Input.IsButtonHeld(MouseButton.Left))
-				{
-					if (_settingRaceDagger)
-					{
-						StateManager.SetSpawnset(StateManager.SpawnsetState.Spawnset with
-						{
-							RaceDaggerPosition = new(StateManager.SpawnsetState.Spawnset.TileToWorldCoordinate(x), StateManager.SpawnsetState.Spawnset.TileToWorldCoordinate(y)),
-						});
-					}
-				}
-				else if (Input.IsButtonReleased(MouseButton.Left))
-				{
-					SpawnsetHistoryManager.Save(SpawnsetEditType.RaceDagger);
-					_settingRaceDagger = false;
-				}
-
-				break;
-		}
+		activeState.Handle(relMouseX, relMouseY, x, y);
 	}
 
 	private void Reset()
 	{
-		_pencilStart = null;
-		_lineStart = null;
-		_rectangleStart = null;
-	}
-
-	private static Rectangle GetRectangle(Vector2i<int> start, Vector2i<int> end)
-	{
-		bool startXMin = start.X < end.X;
-		int minX, maxX;
-		if (startXMin)
-		{
-			minX = start.X;
-			maxX = end.X;
-		}
-		else
-		{
-			minX = end.X;
-			maxX = start.X;
-		}
-
-		bool startYMin = start.Y < end.Y;
-		int minY, maxY;
-		if (startYMin)
-		{
-			minY = start.Y;
-			maxY = end.Y;
-		}
-		else
-		{
-			minY = end.Y;
-			maxY = start.Y;
-		}
-
-		return new(minX, minY, maxX, maxY);
-	}
-
-	private static bool LineIntersectsSquare(Vector2 lineA, Vector2 lineB, Vector2 squarePosition, float squareSize)
-	{
-		float squareHalfSize = squareSize / 2f;
-		Vector2 squareTl = squarePosition + new Vector2(-squareHalfSize, -squareHalfSize);
-		Vector2 squareTr = squarePosition + new Vector2(+squareHalfSize, -squareHalfSize);
-		Vector2 squareBl = squarePosition + new Vector2(-squareHalfSize, +squareHalfSize);
-		Vector2 squareBr = squarePosition + new Vector2(+squareHalfSize, +squareHalfSize);
-		Vector2 lineNormal = GetLineNormal(lineA, lineB);
-
-		// Calculate booleans for all 4 points; return true immediately when any of the booleans do not hold the same value.
-		bool tlBehind = PointIsBehindPlane(lineA, lineNormal, squareTl);
-		if (PointIsBehindPlane(lineA, lineNormal, squareTr) != tlBehind)
-			return true;
-
-		if (PointIsBehindPlane(lineA, lineNormal, squareBl) != tlBehind)
-			return true;
-
-		return PointIsBehindPlane(lineA, lineNormal, squareBr) != tlBehind;
-	}
-
-	private static Vector2 GetLineNormal(Vector2 lineA, Vector2 lineB)
-	{
-		float deltaX = lineB.X - lineA.X;
-		float deltaY = lineB.Y - lineA.Y;
-		return new(-deltaY, deltaX);
-	}
-
-	private static bool PointIsBehindPlane(Vector2 linePoint, Vector2 lineNormal, Vector2 point)
-	{
-		return Vector2.Dot(lineNormal, Vector2.Normalize(point - linePoint)) < 0;
+		foreach (IArenaState state in _states)
+			state.Reset();
 	}
 
 	public void SetShrinkCurrent(float currentSecond)
