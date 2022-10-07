@@ -36,7 +36,8 @@ public class History : ScrollContent<History, HistoryWrapper>
 			Color colorBackground = history.EditType.GetColor();
 			Color colorBackgroundActive = colorBackground.Intensify(32);
 			Color hoverBackgroundColor = colorBackground.Intensify(64);
-			Button button = new(Rectangle.At(0, i * HistoryEntryHeight, Metric.Size.X, HistoryEntryHeight), () => {}, isActive ? colorBackgroundActive : colorBackground, isActive ? Color.White : Color.Black, hoverBackgroundColor, Color.White, history.EditType.GetChange(), TextAlign.Left, 2, FontSize.F8X8)
+			int index = i;
+			Button button = new(Rectangle.At(0, i * HistoryEntryHeight, Metric.Size.X, HistoryEntryHeight), () => SpawnsetHistoryManager.Set(index), isActive ? colorBackgroundActive : colorBackground, isActive ? Color.White : Color.Black, hoverBackgroundColor, Color.White, history.EditType.GetChange(), TextAlign.Left, 2, FontSize.F8X8)
 			{
 				Depth = Depth + 1,
 			};

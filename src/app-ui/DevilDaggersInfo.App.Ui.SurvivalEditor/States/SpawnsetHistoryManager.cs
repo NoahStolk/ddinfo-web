@@ -54,25 +54,17 @@ public static class SpawnsetHistoryManager
 		_uiQueue = false;
 	}
 
-	public static void Undo()
+	public static void Undo() => Set(Index - 1);
+
+	public static void Redo() => Set(Index + 1);
+
+	public static void Set(int index)
 	{
-		if (Index <= 0)
+		if (index < 0 || index > _history.Count - 1)
 			return;
 
-		Index--;
+		Index = index;
 		StateManager.SetSpawnset(_history[Index].Spawnset.DeepCopy());
-
-		Root.Game.SurvivalEditorMainLayout.SetHistory();
-	}
-
-	public static void Redo()
-	{
-		if (Index >= _history.Count - 1)
-			return;
-
-		Index++;
-		StateManager.SetSpawnset(_history[Index].Spawnset.DeepCopy());
-
 		Root.Game.SurvivalEditorMainLayout.SetHistory();
 	}
 }
