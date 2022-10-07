@@ -31,6 +31,8 @@ public class ArenaToolsWrapper : AbstractComponent
 		AddToolButton(0 + _arenaButtonSize * 4, 0, ArenaTool.Dagger, "D");
 
 		AddBucketButtons(0, _arenaButtonSize);
+
+		SetTool();
 	}
 
 	private void AddToolButton(int offsetX, int offsetY, ArenaTool arenaTool, string text)
@@ -53,23 +55,20 @@ public class ArenaToolsWrapper : AbstractComponent
 
 		_textInputBucketTolerance.SetText(StateManager.ArenaEditorState.BucketTolerance.ToString("0.0"));
 		_textInputBucketVoidHeight.SetText(StateManager.ArenaEditorState.BucketVoidHeight.ToString("0.0"));
-
-		NestingContext.Add(_textInputBucketTolerance);
-		NestingContext.Add(_textInputBucketVoidHeight);
 	}
 
-	private (SpawnsetTextInput TextInput, Label Label) AddSetting(string labelText, int x, ref int y, Action<string> onInput)
+	private (TextInput TextInput, Label Label) AddSetting(string labelText, int x, ref int y, Action<string> onInput)
 	{
 		int halfWidth = _width / 2;
 		Label label = new(Rectangle.At(x, y, halfWidth, 16), Color.White, labelText, TextAlign.Left, FontSize.F8X8);
-		SpawnsetTextInput textInput = CreateTextInput(Rectangle.At(x + halfWidth, y, halfWidth, 16), onInput);
+		TextInput textInput = CreateTextInput(Rectangle.At(x + halfWidth, y, halfWidth, 16), onInput);
 		NestingContext.Add(label);
 		NestingContext.Add(textInput);
 		y += 16;
 
 		return (textInput, label);
 
-		SpawnsetTextInput CreateTextInput(Rectangle rectangle, Action<string> onChange)
+		TextInput CreateTextInput(Rectangle rectangle, Action<string> onChange)
 		{
 			return new(rectangle, true, onChange, onChange, onChange, Color.Black, Color.Gray(0.75f), Color.Gray(0.25f), Color.White, Color.White, Color.Green, Color.Gray(0.5f), 2, FontSize.F8X8, 8, 8);
 		}
