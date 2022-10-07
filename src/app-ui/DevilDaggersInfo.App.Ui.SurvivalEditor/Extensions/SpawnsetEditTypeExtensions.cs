@@ -13,6 +13,7 @@ public static class SpawnsetEditTypeExtensions
 	private static readonly Color _colorArena = new(_colorValue, 0, 0, 255);
 	private static readonly Color _colorMisc = new(0, 0, _colorValue, 255);
 	private static readonly Color _colorPractice = new(0, _colorValue, _colorValue, 255);
+	private static readonly Color _colorSpawn = new(_colorValue, 0, _colorValue, 255);
 
 	public static string GetChange(this SpawnsetEditType spawnsetEditType) => spawnsetEditType switch
 	{
@@ -32,6 +33,7 @@ public static class SpawnsetEditTypeExtensions
 		SpawnsetEditType.HandLevel => "Hand level change",
 		SpawnsetEditType.AdditionalGems => "Additional gems change",
 		SpawnsetEditType.TimerStart => "Timer start change",
+		SpawnsetEditType.SpawnDelete => "Spawn deletion",
 		_ => throw new InvalidEnumConversionException(spawnsetEditType),
 	};
 
@@ -53,6 +55,7 @@ public static class SpawnsetEditTypeExtensions
 		SpawnsetEditType.HandLevel => _colorPractice,
 		SpawnsetEditType.AdditionalGems => _colorPractice,
 		SpawnsetEditType.TimerStart => _colorPractice,
+		SpawnsetEditType.SpawnDelete => _colorSpawn,
 		_ => throw new InvalidEnumConversionException(spawnsetEditType),
 	};
 }

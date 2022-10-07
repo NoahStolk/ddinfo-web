@@ -1,7 +1,10 @@
 using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Spawns;
+using DevilDaggersInfo.App.Ui.SurvivalEditor.Enums;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
+using DevilDaggersInfo.Core.Spawnset;
 using Silk.NET.GLFW;
+using System.Collections.Immutable;
 using Warp;
 using Warp.Ui;
 
@@ -26,11 +29,20 @@ public class Spawns : ScrollContent<Spawns, SpawnsWrapper>
 	{
 		base.Update(parentPosition);
 
-		if (!Input.IsButtonPressed(MouseButton.Left))
-			return;
-
 		bool ctrl = Input.IsKeyHeld(Keys.ControlLeft) || Input.IsKeyHeld(Keys.ControlRight);
 		bool shift = Input.IsKeyHeld(Keys.ShiftLeft) || Input.IsKeyHeld(Keys.ShiftRight);
+
+		if (Input.IsKeyPressed(Keys.Delete))
+		{
+			StateManager.SetSpawnset(StateManager.SpawnsetState.Spawnset with
+			{
+				Spawns = StateManager.SpawnsetState.Spawnset.Spawns.Where((_, i) => !_spawnComponents[i].IsSelected).ToImmutableArray(),
+			});
+			SpawnsetHistoryManager.Save(SpawnsetEditType.SpawnDelete);
+		}
+
+		if (!Input.IsButtonPressed(MouseButton.Left))
+			return;
 
 		if (shift)
 		{

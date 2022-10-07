@@ -18,4 +18,5 @@ public enum SpawnsetEditType
 	HandLevel,
 	AdditionalGems,
 	TimerStart,
+	SpawnDelete,
 }
