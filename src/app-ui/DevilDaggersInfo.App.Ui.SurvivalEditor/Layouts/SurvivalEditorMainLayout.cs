@@ -21,6 +21,8 @@ public class SurvivalEditorMainLayout : Layout, ISurvivalEditorMainLayout
 	private readonly SettingsWrapper _settingsWrapper;
 	private readonly ArenaWrapper _arenaWrapper;
 
+	private readonly KeySubmitter _keySubmitter = new();
+
 	public SurvivalEditorMainLayout()
 		: base(Constants.Full)
 	{
@@ -61,11 +63,16 @@ public class SurvivalEditorMainLayout : Layout, ISurvivalEditorMainLayout
 		if (!Input.IsKeyHeld(Keys.ControlLeft) && !Input.IsKeyHeld(Keys.ControlRight))
 			return;
 
-		if (Input.IsKeyPressed(Keys.Z))
-			SpawnsetHistoryManager.Undo();
-		else if (Input.IsKeyPressed(Keys.Y))
-			SpawnsetHistoryManager.Redo();
-		else if (Input.IsKeyPressed(Keys.N))
+		Keys? key = _keySubmitter.GetKey();
+		if (key.HasValue)
+		{
+			if (key == Keys.Z)
+				SpawnsetHistoryManager.Undo();
+			else if (key == Keys.Y)
+				SpawnsetHistoryManager.Redo();
+		}
+
+		if (Input.IsKeyPressed(Keys.N))
 			StateManager.NewSpawnset();
 		else if (Input.IsKeyPressed(Keys.O))
 			LayoutManager.ToSurvivalEditorOpenLayout();
