@@ -74,6 +74,7 @@ public class Arena : AbstractComponent
 		{
 			// TODO: Selection.
 			UpdateArena(x, y, StateManager.SpawnsetState.Spawnset.ArenaTiles[x, y] + scroll);
+			SpawnsetHistoryManager.Save(SpawnsetEditType.ArenaTileHeight);
 			return;
 		}
 

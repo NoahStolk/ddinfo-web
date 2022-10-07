@@ -17,6 +17,7 @@ public static class SpawnsetEditTypeExtensions
 	public static string GetChange(this SpawnsetEditType spawnsetEditType) => spawnsetEditType switch
 	{
 		SpawnsetEditType.Reset => "Spawnset reset",
+		SpawnsetEditType.ArenaTileHeight => "Arena tile height edit",
 		SpawnsetEditType.ArenaPencil => "Arena pencil edit",
 		SpawnsetEditType.ArenaLine => "Arena line edit",
 		SpawnsetEditType.ArenaRectangle => "Arena rectangle edit",
@@ -37,6 +38,7 @@ public static class SpawnsetEditTypeExtensions
 	public static Color GetColor(this SpawnsetEditType spawnsetEditType) => spawnsetEditType switch
 	{
 		SpawnsetEditType.Reset => _colorMisc,
+		SpawnsetEditType.ArenaTileHeight => _colorArena,
 		SpawnsetEditType.ArenaPencil => _colorArena,
 		SpawnsetEditType.ArenaLine => _colorArena,
 		SpawnsetEditType.ArenaRectangle => _colorArena,

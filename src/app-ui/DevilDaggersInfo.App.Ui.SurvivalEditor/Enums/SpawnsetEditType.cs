@@ -3,6 +3,7 @@ namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Enums;
 public enum SpawnsetEditType
 {
 	Reset,
+	ArenaTileHeight,
 	ArenaPencil,
 	ArenaLine,
 	ArenaRectangle,
