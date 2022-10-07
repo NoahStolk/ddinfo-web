@@ -49,7 +49,9 @@ public class Spawns : ScrollContent<Spawns, SpawnsWrapper>
 		if (shift)
 		{
 			int endIndex = _spawnComponents.Find(sc => sc.Hover)?.Index ?? 0;
-			for (int i = Math.Min(_currentIndex, endIndex); i <= Math.Max(_currentIndex, endIndex); i++)
+			int start = Math.Clamp(Math.Min(_currentIndex, endIndex), 0, _spawnComponents.Count - 1);
+			int end = Math.Clamp(Math.Max(_currentIndex, endIndex), 0, _spawnComponents.Count - 1);
+			for (int i = start; i <= end; i++)
 				_spawnComponents[i].IsSelected = true;
 		}
 		else
