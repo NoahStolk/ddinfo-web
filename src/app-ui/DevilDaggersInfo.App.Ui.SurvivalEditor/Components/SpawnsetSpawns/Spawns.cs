@@ -32,6 +32,9 @@ public class Spawns : ScrollContent<Spawns, SpawnsWrapper>
 		bool ctrl = Input.IsKeyHeld(Keys.ControlLeft) || Input.IsKeyHeld(Keys.ControlRight);
 		bool shift = Input.IsKeyHeld(Keys.ShiftLeft) || Input.IsKeyHeld(Keys.ShiftRight);
 
+		if (ctrl && Input.IsKeyPressed(Keys.A))
+			_spawnComponents.ForEach(sp => sp.IsSelected = true);
+
 		if (Input.IsKeyPressed(Keys.Delete))
 		{
 			StateManager.SetSpawnset(StateManager.SpawnsetState.Spawnset with
