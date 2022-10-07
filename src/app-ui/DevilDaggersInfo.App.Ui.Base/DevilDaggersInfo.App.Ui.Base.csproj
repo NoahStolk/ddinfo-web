@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Warp.Ui" Version="4.0.6" />
+    <PackageReference Include="Warp.Ui" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>

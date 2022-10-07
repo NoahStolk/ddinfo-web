@@ -17,8 +17,8 @@ public class Spawns : ScrollContent<Spawns, SpawnsWrapper>
 
 	private int _currentIndex;
 
-	public Spawns(Rectangle metric, SpawnsWrapper spawnsWrapper)
-		: base(metric, spawnsWrapper)
+	public Spawns(Rectangle metric, SpawnsWrapper parent)
+		: base(metric, parent)
 	{
 	}
 
