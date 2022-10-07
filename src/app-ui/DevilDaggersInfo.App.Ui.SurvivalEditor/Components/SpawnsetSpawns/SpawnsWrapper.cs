@@ -18,7 +18,7 @@ public sealed class SpawnsWrapper : AbstractScrollViewer<SpawnsWrapper, Spawns>
 		Rectangle spawnsMetric = Rectangle.At(0, 48, 384, 640);
 
 		Content = new(spawnsMetric, this);
-		Scrollbar = new(spawnsMetric with { X1 = spawnsMetric.X2, X2 = spawnsMetric.X2 + 16 }, ScrollbarOnChange);
+		Scrollbar = new(spawnsMetric with { X1 = spawnsMetric.X2, X2 = spawnsMetric.X2 + 16 }, SetScrollPercentage);
 
 		NestingContext.Add(Content);
 		NestingContext.Add(Scrollbar);
