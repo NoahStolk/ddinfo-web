@@ -1,4 +1,5 @@
 using DevilDaggersInfo.App.Ui.Base.Components;
+using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using Warp.Ui;
 using Warp.Ui.Components;
 
@@ -26,5 +27,7 @@ public sealed class HistoryWrapper : AbstractScrollViewer<HistoryWrapper, Histor
 		Content.SetHistory();
 
 		base.InitializeContent();
+
+		SetScroll(-SpawnsetHistoryManager.Index * History.HistoryEntryHeight);
 	}
 }
