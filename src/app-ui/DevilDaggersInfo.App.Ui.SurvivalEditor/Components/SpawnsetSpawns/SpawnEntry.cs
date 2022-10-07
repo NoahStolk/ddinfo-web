@@ -1,6 +1,7 @@
 using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.Enums;
 using DevilDaggersInfo.App.Ui.Base.Extensions;
+using DevilDaggersInfo.App.Ui.Base.Rendering;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing;
 using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Core.Wiki.Objects;
@@ -12,6 +13,8 @@ namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetSpawns;
 
 public class SpawnEntry : AbstractComponent
 {
+	private bool _hover;
+
 	public SpawnEntry(Rectangle metric, EditableSpawn spawn)
 		: base(metric)
 	{
@@ -29,14 +32,11 @@ public class SpawnEntry : AbstractComponent
 			EnemyType.Ghostpede => EnemiesV3_2.Ghostpede,
 			_ => null,
 		};
-		Color backgroundColor = enemy == null ? Color.Black : new(enemy.Color.R, enemy.Color.G, enemy.Color.B, byte.MaxValue);
-		Color textColor = backgroundColor.ReadableColorForBrightness();
+		Color backgroundColor = enemy == null ? Color.Gray(0.75f) : new(enemy.Color.R, enemy.Color.G, enemy.Color.B, byte.MaxValue);
 
-		const byte hoverComponent = 128;
-		Color hoverAddition = new(hoverComponent, hoverComponent, hoverComponent, 255);
-		NestingContext.Add(new Button(Rectangle.At(0, 0, 96, Spawns.SpawnEntryHeight), () => {}, backgroundColor, Color.Black, backgroundColor.Intensify(hoverComponent), textColor, enemy?.Name ?? "Empty", TextAlign.Left, 2, FontSize.F8X8));
-		NestingContext.Add(new Button(Rectangle.At(96, 0, 96, Spawns.SpawnEntryHeight), () => {}, Color.Transparent, Color.Black, hoverAddition, Color.White, spawn.Delay.ToString("0.0000"), TextAlign.Right, 2, FontSize.F8X8));
-		NestingContext.Add(new Button(Rectangle.At(192, 0, 96, Spawns.SpawnEntryHeight), () => {}, Color.Transparent, Color.Black, hoverAddition, Color.White, spawn.Seconds.ToString("0.0000"), TextAlign.Right, 2, FontSize.F8X8));
+		NestingContext.Add(new Label(Rectangle.At(0, 0, 96, Spawns.SpawnEntryHeight), backgroundColor, enemy?.Name ?? "Empty", TextAlign.Left, FontSize.F8X8));
+		NestingContext.Add(new Label(Rectangle.At(96, 0, 96, Spawns.SpawnEntryHeight), Color.White, spawn.Delay.ToString("0.0000"), TextAlign.Right, FontSize.F8X8));
+		NestingContext.Add(new Label(Rectangle.At(192, 0, 96, Spawns.SpawnEntryHeight), Color.White, spawn.Seconds.ToString("0.0000"), TextAlign.Right, FontSize.F8X8));
 		NestingContext.Add(new Label(Rectangle.At(288, 0, 48, Spawns.SpawnEntryHeight), Color.White, NoFarmGemsString(spawn.NoFarmGems), TextAlign.Right, FontSize.F8X8));
 		NestingContext.Add(new Label(Rectangle.At(336, 0, 48, Spawns.SpawnEntryHeight), GetColorFromHand(spawn.GemState.HandLevel), spawn.GemState.Value.ToString(), TextAlign.Right, FontSize.F8X8));
 
@@ -48,5 +48,20 @@ public class SpawnEntry : AbstractComponent
 		};
 
 		static string NoFarmGemsString(int gems) => gems == 0 ? "-" : $"+{gems}";
+	}
+
+	public override void Update(Vector2i<int> parentPosition)
+	{
+		base.Update(parentPosition);
+
+		_hover = MouseUiContext.Contains(parentPosition, Metric);
+	}
+
+	public override void Render(Vector2i<int> parentPosition)
+	{
+		base.Render(parentPosition);
+
+		if (_hover)
+			RenderBatchCollector.RenderRectangleTopLeft(Metric.Size, parentPosition + Metric.TopLeft, Depth, Color.Gray(0.25f));
 	}
 }
