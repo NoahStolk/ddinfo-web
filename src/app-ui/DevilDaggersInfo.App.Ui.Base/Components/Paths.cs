@@ -32,8 +32,6 @@ public class Paths : ScrollContent<Paths, PathsWrapper>
 
 		_subDirectoryButtons.Clear();
 
-		NestingContext.ScrollOffset = default;
-
 		DirectoryInfo? parent = Directory.GetParent(path);
 		if (parent != null)
 			_subDirectoryButtons.Add(new Button.PathButton(new(0, 0, _componentWidth, _entryHeight), () => _onDirectorySelect(parent.FullName), "..", Color.Green));

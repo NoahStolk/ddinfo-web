@@ -18,8 +18,8 @@ public class PathsWrapper : AbstractScrollViewer<PathsWrapper, Paths>
 		NestingContext.Add(Scrollbar);
 	}
 
-	protected override Scrollbar Scrollbar { get; }
-	protected override Paths Content { get; }
+	public override Scrollbar Scrollbar { get; }
+	public override Paths Content { get; }
 
 	public string Path { get; set; } = string.Empty;
 
@@ -27,6 +27,7 @@ public class PathsWrapper : AbstractScrollViewer<PathsWrapper, Paths>
 	{
 		Content.SetComponentsFromPath(Path);
 
-		base.InitializeContent();
+		SetThumbPercentageSize();
+		SetScrollPercentage(0);
 	}
 }

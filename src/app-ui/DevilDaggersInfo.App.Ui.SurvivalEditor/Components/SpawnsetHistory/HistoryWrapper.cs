@@ -19,15 +19,14 @@ public sealed class HistoryWrapper : AbstractScrollViewer<HistoryWrapper, Histor
 		NestingContext.Add(Scrollbar);
 	}
 
-	protected override Scrollbar Scrollbar { get; }
-	protected override History Content { get; }
+	public override Scrollbar Scrollbar { get; }
+	public override History Content { get; }
 
 	public override void InitializeContent()
 	{
 		Content.SetHistory();
 
-		base.InitializeContent();
-
-		SetScroll(-SpawnsetHistoryManager.Index * History.HistoryEntryHeight);
+		SetThumbPercentageSize();
+		SetScrollPercentage(SpawnsetHistoryManager.Index / (float)SpawnsetHistoryManager.History.Count);
 	}
 }

@@ -22,13 +22,16 @@ public sealed class SpawnsWrapper : AbstractScrollViewer<SpawnsWrapper, Spawns>
 		NestingContext.Add(Scrollbar);
 	}
 
-	protected override Scrollbar Scrollbar { get; }
-	protected override Spawns Content { get; }
+	public override Scrollbar Scrollbar { get; }
+	public override Spawns Content { get; }
 
 	public override void InitializeContent()
 	{
 		Content.SetSpawnset();
 
-		base.InitializeContent();
+		SetThumbPercentageSize();
+
+		// TODO: Calculate new percentage.
+		SetScrollPercentage(Scrollbar.TopPercentage);
 	}
 }

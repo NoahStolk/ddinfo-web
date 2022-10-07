@@ -78,8 +78,6 @@ public class Spawns : ScrollContent<Spawns, SpawnsWrapper>
 
 		_spawnComponents.Clear();
 
-		NestingContext.ScrollOffset = default;
-
 		int i = 0;
 		foreach (SpawnUiEntry spawn in EditSpawnContext.GetFrom(StateManager.SpawnsetState.Spawnset))
 		{

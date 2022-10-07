@@ -27,8 +27,6 @@ public class History : ScrollContent<History, HistoryWrapper>
 
 		_historyComponents.Clear();
 
-		NestingContext.ScrollOffset = default;
-
 		for (int i = 0; i < SpawnsetHistoryManager.History.Count; i++)
 		{
 			States.SpawnsetHistory history = SpawnsetHistoryManager.History[i];
