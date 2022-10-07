@@ -1,7 +1,9 @@
 using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.Enums;
+using Warp.Debugging;
 using Warp.Ui;
 using Warp.Ui.Components;
+using Warp.Utils;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetSpawns;
 
@@ -27,11 +29,21 @@ public sealed class SpawnsWrapper : AbstractScrollViewer<SpawnsWrapper, Spawns>
 
 	public override void InitializeContent()
 	{
+		int oldHeight = Content.ContentHeightInPixels;
 		Content.SetSpawnset();
+		int newHeight = Content.ContentHeightInPixels;
 
 		SetThumbPercentageSize();
 
-		// TODO: Calculate new percentage.
-		SetScrollPercentage(Scrollbar.TopPercentage);
+		if (oldHeight == 0)
+		{
+			SetScrollPercentage(0);
+		}
+		else
+		{
+			float multiplier = oldHeight / (float)newHeight;
+			float newPercentage = Scrollbar.TopPercentage * multiplier;
+			SetScrollPercentage(newPercentage);
+		}
 	}
 }
