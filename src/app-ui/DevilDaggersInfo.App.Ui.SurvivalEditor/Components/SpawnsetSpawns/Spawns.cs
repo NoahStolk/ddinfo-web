@@ -2,7 +2,6 @@ using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Spawns;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Enums;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
-using DevilDaggersInfo.Core.Spawnset;
 using Silk.NET.GLFW;
 using System.Collections.Immutable;
 using Warp;
