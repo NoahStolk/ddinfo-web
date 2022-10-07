@@ -5,6 +5,7 @@ using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using Silk.NET.GLFW;
 using System.Collections.Immutable;
 using Warp;
+using Warp.Extensions;
 using Warp.Ui;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetSpawns;
@@ -28,8 +29,8 @@ public class Spawns : ScrollContent<Spawns, SpawnsWrapper>
 	{
 		base.Update(parentPosition);
 
-		bool ctrl = Input.IsKeyHeld(Keys.ControlLeft) || Input.IsKeyHeld(Keys.ControlRight);
-		bool shift = Input.IsKeyHeld(Keys.ShiftLeft) || Input.IsKeyHeld(Keys.ShiftRight);
+		bool ctrl = Input.IsCtrlHeld();
+		bool shift = Input.IsShiftHeld();
 
 		if (ctrl && Input.IsKeyPressed(Keys.A))
 			_spawnComponents.ForEach(sp => sp.IsSelected = true);
@@ -43,12 +44,13 @@ public class Spawns : ScrollContent<Spawns, SpawnsWrapper>
 			SpawnsetHistoryManager.Save(SpawnsetEditType.SpawnDelete);
 		}
 
-		if (!Input.IsButtonPressed(MouseButton.Left))
+		bool hoverWithoutBlock = Metric.Contains(MouseUiContext.MousePosition.RoundToVector2Int32() - parentPosition);
+		if (!Input.IsButtonPressed(MouseButton.Left) || !hoverWithoutBlock)
 			return;
 
 		if (shift)
 		{
-			int endIndex = _spawnComponents.Find(sc => sc.Hover)?.Index ?? 0;
+			int endIndex = _spawnComponents.Find(sc => sc.Hover)?.Index ?? _spawnComponents.Count - 1;
 			int start = Math.Clamp(Math.Min(_currentIndex, endIndex), 0, _spawnComponents.Count - 1);
 			int end = Math.Clamp(Math.Max(_currentIndex, endIndex), 0, _spawnComponents.Count - 1);
 			for (int i = start; i <= end; i++)
