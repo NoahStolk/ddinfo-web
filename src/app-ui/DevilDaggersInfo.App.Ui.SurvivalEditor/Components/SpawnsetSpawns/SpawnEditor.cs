@@ -81,11 +81,10 @@ public class SpawnEditor : AbstractComponent
 
 	private void AddSpawn()
 	{
-		// TODO: Add after selection.
 		List<Spawn> newSpawns = StateManager.SpawnsetState.Spawnset.Spawns.ToList();
 		newSpawns.Add(new(_selectedEnemyType, _selectedDelay));
 
-		// TODO: Scroll down.
+		// TODO: Scroll down: SpawnsWrapper.SetScrollPercentage(1);
 		StateManager.SetSpawnset(StateManager.SpawnsetState.Spawnset with { Spawns = newSpawns.ToImmutableArray() });
 		SpawnsetHistoryManager.Save(SpawnsetEditType.SpawnAdd);
 	}
@@ -100,11 +99,15 @@ public class SpawnEditor : AbstractComponent
 
 	private void InsertSpawn()
 	{
-		// TODO: Insert before selection.
-		List<Spawn> spawns = StateManager.SpawnsetState.Spawnset.Spawns.ToList();
-		spawns.Add(new(_selectedEnemyType, _selectedDelay));
+		int firstSelection = StateManager.SpawnEditorState.SelectedIndices.Count == 0 ? 0 : StateManager.SpawnEditorState.SelectedIndices.Min();
+		ImmutableArray<Spawn> spawns = StateManager.SpawnsetState.Spawnset.Spawns.Insert(firstSelection, new(_selectedEnemyType, _selectedDelay));
 
-		StateManager.SetSpawnset(StateManager.SpawnsetState.Spawnset with { Spawns = spawns.ToImmutableArray() });
+		int[] indices = StateManager.SpawnEditorState.SelectedIndices.ToArray();
+		StateManager.ClearSpawnSelections();
+		foreach (int index in indices)
+			StateManager.SelectSpawn(index + 1);
+
+		StateManager.SetSpawnset(StateManager.SpawnsetState.Spawnset with { Spawns = spawns });
 		SpawnsetHistoryManager.Save(SpawnsetEditType.SpawnAdd);
 	}
 }
