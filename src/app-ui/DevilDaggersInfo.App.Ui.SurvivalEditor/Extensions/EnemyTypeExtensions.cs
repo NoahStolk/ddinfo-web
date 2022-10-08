@@ -20,4 +20,19 @@ public static class EnemyTypeExtensions
 		EnemyType.Ghostpede => EnemiesV3_2.Ghostpede,
 		_ => null,
 	};
+
+	public static string GetShortName(this EnemyType enemyType) => enemyType switch
+	{
+		EnemyType.Squid1 => "SQ1",
+		EnemyType.Squid2 => "SQ2",
+		EnemyType.Centipede => "CENTI",
+		EnemyType.Spider1 => "SP1",
+		EnemyType.Leviathan => "LEVI",
+		EnemyType.Gigapede => "GIGA",
+		EnemyType.Squid3 => "SQ3",
+		EnemyType.Thorn => "THORN",
+		EnemyType.Spider2 => "SP2",
+		EnemyType.Ghostpede => "GHOST",
+		_ => "EMPTY",
+	};
 }

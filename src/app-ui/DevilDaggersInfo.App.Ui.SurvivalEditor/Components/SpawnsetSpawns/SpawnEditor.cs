@@ -25,41 +25,48 @@ public class SpawnEditor : AbstractComponent
 	public SpawnEditor(Rectangle metric)
 		: base(metric)
 	{
-		const int width = 80;
-		const int height = 16;
+		const int width = 96;
 
-		AddEnemyButton(0, 0, EnemyType.Empty, Color.Gray(0.75f), "Empty");
+		AddEnemyButton(96, 0, EnemyType.Empty);
+		AddEnemyButton(144, 0, EnemyType.Squid1);
+		AddEnemyButton(192, 0, EnemyType.Squid2);
+		AddEnemyButton(240, 0, EnemyType.Squid3);
+		AddEnemyButton(288, 0, EnemyType.Leviathan);
+		AddEnemyButton(336, 0, EnemyType.Thorn);
+		AddEnemyButton(144, 16, EnemyType.Spider1);
+		AddEnemyButton(192, 16, EnemyType.Spider2);
+		AddEnemyButton(240, 16, EnemyType.Centipede);
+		AddEnemyButton(288, 16, EnemyType.Gigapede);
+		AddEnemyButton(336, 16, EnemyType.Ghostpede);
 
-		for (int i = 0; i < 10; i++)
-		{
-			EnemyType enemyType = (EnemyType)i;
-			Enemy? enemy = enemyType.GetEnemy();
-			if (enemy != null)
-				AddEnemyButton(i % 2 * width, height + i / 2 * height, enemyType, enemy.Color.ToWarpColor(), enemy.Name);
-		}
+		Label enemyTypeLabel = new(Rectangle.At(0, 0, width, 16), Color.White, "Enemy", TextAlign.Left, FontSize.F8X8);
+		Label delayLabel = new(Rectangle.At(0, 32, width, 16), Color.White, "Delay", TextAlign.Left, FontSize.F8X8);
+		TextInput delayTextInput = ComponentBuilder.CreateTextInput(Rectangle.At(288, 32, width, 16), true, OnDelayChange, OnDelayChange, OnDelayChange);
+		delayTextInput.SetText("0.0000");
 
-		void OnDelayChange(string s)
-		{
-			ParseUtils.TryParseAndExecute<float>(s, 0, f => _selectedDelay = f);
-		}
-
-		TextInput delayTextInput = ComponentBuilder.CreateTextInput(Rectangle.At(width * 2, 0, width, 16), true, OnDelayChange, OnDelayChange, OnDelayChange);
+		NestingContext.Add(enemyTypeLabel);
+		NestingContext.Add(delayLabel);
 		NestingContext.Add(delayTextInput);
 
-		Button addButton = new(Rectangle.At(width * 2, 16, width, 16), AddSpawn, Color.Green, Color.White, Color.White, Color.Black, "Add spawn", TextAlign.Middle, 2, FontSize.F8X8);
-		NestingContext.Add(addButton);
+		Button addButton = new(Rectangle.At(0, 80, width, 32), AddSpawn, Color.Green, Color.Black, Color.White, Color.Black, "Add spawn", TextAlign.Middle, 2, FontSize.F8X8);
+		Button editButton = new(Rectangle.At(96, 80, width, 32), EditSpawn, Color.Yellow, Color.Black, Color.White, Color.Black, "Edit spawn", TextAlign.Middle, 2, FontSize.F8X8);
 
-		Button editButton = new(Rectangle.At(width * 3, 16, width, 16), EditSpawn, Color.Yellow, Color.White, Color.White, Color.Black, "Edit spawn", TextAlign.Middle, 2, FontSize.F8X8);
+		NestingContext.Add(addButton);
 		NestingContext.Add(editButton);
 
-		void AddEnemyButton(int x, int y, EnemyType enemyType, Color enemyColor, string enemyName)
+		void AddEnemyButton(int x, int y, EnemyType enemyType)
 		{
+			Enemy? enemy = enemyType.GetEnemy();
+			Color enemyColor = enemy?.Color.ToWarpColor() ?? Color.Gray(0.75f);
+			string enemyName = enemyType.GetShortName();
 			Color borderColor = _selectedEnemyType == enemyType ? Color.White : Color.Black;
-			Button button = new(Rectangle.At(x, y, width, height), () => SetSelectedEnemyType(enemyType), enemyColor, borderColor, Color.Invert(enemyColor), enemyColor.ReadableColorForBrightness(), enemyName, TextAlign.Left, 2, FontSize.F8X8);
+			Button button = new(Rectangle.At(x, y, 48, 16), () => SetSelectedEnemyType(enemyType), enemyColor, borderColor, Color.Invert(enemyColor), enemyColor.ReadableColorForBrightness(), enemyName, TextAlign.Left, 2, FontSize.F8X8);
 			_enemyTypeButtons.Add(enemyType, button);
 			NestingContext.Add(button);
 		}
 	}
+
+	private void OnDelayChange(string s) => ParseUtils.TryParseAndExecute<float>(s, 0, f => _selectedDelay = f);
 
 	private void SetSelectedEnemyType(EnemyType enemyType)
 	{
