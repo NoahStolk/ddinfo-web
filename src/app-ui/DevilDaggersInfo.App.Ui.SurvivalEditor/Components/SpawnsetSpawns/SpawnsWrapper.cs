@@ -12,10 +12,10 @@ public sealed class SpawnsWrapper : AbstractScrollViewer<SpawnsWrapper, Spawns>
 	public SpawnsWrapper(Rectangle metric)
 		: base(metric)
 	{
-		Label title = new(Rectangle.At(0, 0, 384, 48), Color.White, "Spawns", TextAlign.Middle, FontSize.F12X12);
+		Label title = new(Rectangle.At(0, 0, metric.Size.X, 48), Color.White, "Spawns", TextAlign.Middle, FontSize.F12X12);
 		NestingContext.Add(title);
 
-		Rectangle spawnsMetric = Rectangle.At(0, 48, 384, 640);
+		Rectangle spawnsMetric = Rectangle.At(0, 48, metric.Size.X, metric.Size.Y - 48);
 
 		Content = new(spawnsMetric, this);
 		Scrollbar = new(spawnsMetric with { X1 = spawnsMetric.X2, X2 = spawnsMetric.X2 + 16 }, SetScrollPercentage);
