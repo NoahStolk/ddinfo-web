@@ -1,6 +1,7 @@
 using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Enums;
+using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using DevilDaggersInfo.Core.Spawnset;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.States;
@@ -12,6 +13,17 @@ public static class StateManager
 	public static SpawnsetState SpawnsetState { get; private set; } = SpawnsetState.GetDefault();
 
 	public static ArenaEditorState ArenaEditorState { get; private set; } = ArenaEditorState.GetDefault();
+
+	public static SpawnEditorState SpawnEditorState { get; private set; } = SpawnEditorState.GetDefault();
+
+	public static void EmptyUiQueue()
+	{
+		if (_uiQueue == null)
+			return;
+
+		Root.Game.SurvivalEditorMainLayout.SetSpawnset(_uiQueue.ArenaChanges, _uiQueue.SpawnsChanges, _uiQueue.SettingsChanges);
+		_uiQueue = null;
+	}
 
 	public static void NewSpawnset()
 	{
@@ -33,9 +45,9 @@ public static class StateManager
 
 	public static void SetSpawnset(SpawnsetBinary spawnsetBinary)
 	{
-		bool arenaChanges = HasArenaChanges(SpawnsetState.Spawnset, spawnsetBinary);
-		bool spawnsChanges = HasSpawnsChanges(SpawnsetState.Spawnset, spawnsetBinary);
-		bool settingsChanges = HasSettingsChanges(SpawnsetState.Spawnset, spawnsetBinary);
+		bool arenaChanges = SpawnsetComparisonUtils.HasArenaChanges(SpawnsetState.Spawnset, spawnsetBinary);
+		bool spawnsChanges = SpawnsetComparisonUtils.HasSpawnsChanges(SpawnsetState.Spawnset, spawnsetBinary);
+		bool settingsChanges = SpawnsetComparisonUtils.HasSettingsChanges(SpawnsetState.Spawnset, spawnsetBinary);
 
 		SpawnsetState = SpawnsetState with { Spawnset = spawnsetBinary };
 
@@ -43,15 +55,6 @@ public static class StateManager
 			_uiQueue = new(arenaChanges, spawnsChanges, settingsChanges);
 		else
 			_uiQueue = new(_uiQueue.ArenaChanges || arenaChanges, _uiQueue.SpawnsChanges || spawnsChanges, _uiQueue.SettingsChanges || settingsChanges);
-	}
-
-	public static void EmptyUiQueue()
-	{
-		if (_uiQueue == null)
-			return;
-
-		Root.Game.SurvivalEditorMainLayout.SetSpawnset(_uiQueue.ArenaChanges, _uiQueue.SpawnsChanges, _uiQueue.SettingsChanges);
-		_uiQueue = null;
 	}
 
 	public static void SetArenaTool(ArenaTool arenaTool)
@@ -74,60 +77,30 @@ public static class StateManager
 		ArenaEditorState = ArenaEditorState with { BucketVoidHeight = bucketVoidHeight };
 	}
 
-	private static bool HasArenaChanges(SpawnsetBinary a, SpawnsetBinary b)
+	// TODO: Mutable list OK?
+	public static void SelectSpawn(int index)
 	{
-		if (HasArenaSettingsChanges(a, b))
-			return true;
-
-		if (a.ArenaDimension != b.ArenaDimension)
-			return true;
-
-		for (int i = 0; i < a.ArenaDimension; i++)
-		{
-			for (int j = 0; j < a.ArenaDimension; j++)
-			{
-				if (a.ArenaTiles[i, j] != b.ArenaTiles[i, j])
-					return true;
-			}
-		}
-
-		return false;
+		if (!SpawnEditorState.SelectedIndices.Contains(index))
+			SpawnEditorState.SelectedIndices.Add(index);
 	}
 
-	private static bool HasSpawnsChanges(SpawnsetBinary a, SpawnsetBinary b)
+	public static void DeselectSpawn(int index)
 	{
-		if (a.Spawns.Length != b.Spawns.Length)
-			return true;
-
-		for (int i = 0; i < a.Spawns.Length; i++)
-		{
-			if (a.Spawns[i].EnemyType != b.Spawns[i].EnemyType)
-				return true;
-
-			if (a.Spawns[i].Delay != b.Spawns[i].Delay)
-				return true;
-		}
-
-		return false;
+		if (SpawnEditorState.SelectedIndices.Contains(index))
+			SpawnEditorState.SelectedIndices.Remove(index);
 	}
 
-	private static bool HasSettingsChanges(SpawnsetBinary a, SpawnsetBinary b)
+	public static void ClearSpawnSelections()
 	{
-		return HasArenaSettingsChanges(a, b)
-			|| a.SpawnVersion != b.SpawnVersion
-			|| a.WorldVersion != b.WorldVersion
-			|| a.Brightness != b.Brightness
-			|| a.GameMode != b.GameMode
-			|| a.HandLevel != b.HandLevel
-			|| a.AdditionalGems != b.AdditionalGems
-			|| a.TimerStart != b.TimerStart;
+		SpawnEditorState.SelectedIndices.Clear();
 	}
 
-	private static bool HasArenaSettingsChanges(SpawnsetBinary a, SpawnsetBinary b)
+	public static void ToggleSpawnSelection(int index)
 	{
-		return a.ShrinkStart != b.ShrinkStart
-			|| a.ShrinkEnd != b.ShrinkEnd
-			|| a.ShrinkRate != b.ShrinkRate;
+		if (SpawnEditorState.SelectedIndices.Contains(index))
+			SpawnEditorState.SelectedIndices.Remove(index);
+		else
+			SpawnEditorState.SelectedIndices.Add(index);
 	}
 
 	/// <summary>

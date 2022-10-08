@@ -33,18 +33,19 @@ public class Spawns : ScrollContent<Spawns, SpawnsWrapper>
 		bool shift = Input.IsShiftHeld();
 
 		if (ctrl && Input.IsKeyPressed(Keys.A))
-			_spawnComponents.ForEach(sp => sp.IsSelected = true);
+			_spawnComponents.ForEach(sp => StateManager.SelectSpawn(sp.Index));
 
 		if (ctrl && Input.IsKeyPressed(Keys.D))
-			_spawnComponents.ForEach(sp => sp.IsSelected = false);
+			StateManager.ClearSpawnSelections();
 
 		if (Input.IsKeyPressed(Keys.Delete))
 		{
 			StateManager.SetSpawnset(StateManager.SpawnsetState.Spawnset with
 			{
-				Spawns = StateManager.SpawnsetState.Spawnset.Spawns.Where((_, i) => !_spawnComponents[i].IsSelected).ToImmutableArray(),
+				Spawns = StateManager.SpawnsetState.Spawnset.Spawns.Where((_, i) => !StateManager.SpawnEditorState.SelectedIndices.Contains(i)).ToImmutableArray(),
 			});
 			SpawnsetHistoryManager.Save(SpawnsetEditType.SpawnDelete);
+			StateManager.ClearSpawnSelections();
 		}
 
 		bool hoverWithoutBlock = Metric.Contains(MouseUiContext.MousePosition.RoundToVector2Int32() - parentPosition);
@@ -57,7 +58,7 @@ public class Spawns : ScrollContent<Spawns, SpawnsWrapper>
 			int start = Math.Clamp(Math.Min(_currentIndex, endIndex), 0, _spawnComponents.Count - 1);
 			int end = Math.Clamp(Math.Max(_currentIndex, endIndex), 0, _spawnComponents.Count - 1);
 			for (int i = start; i <= end; i++)
-				_spawnComponents[i].IsSelected = true;
+				StateManager.SelectSpawn(i);
 		}
 		else
 		{
@@ -65,12 +66,12 @@ public class Spawns : ScrollContent<Spawns, SpawnsWrapper>
 			{
 				if (spawnEntry.Hover)
 				{
-					spawnEntry.IsSelected = !spawnEntry.IsSelected;
+					StateManager.ToggleSpawnSelection(spawnEntry.Index);
 					_currentIndex = spawnEntry.Index;
 				}
 				else if (!ctrl)
 				{
-					spawnEntry.IsSelected = false;
+					StateManager.DeselectSpawn(spawnEntry.Index);
 				}
 			}
 		}

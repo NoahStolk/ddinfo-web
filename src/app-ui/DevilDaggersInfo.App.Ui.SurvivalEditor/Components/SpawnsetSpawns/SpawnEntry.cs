@@ -3,6 +3,7 @@ using DevilDaggersInfo.App.Ui.Base.Extensions;
 using DevilDaggersInfo.App.Ui.Base.Rendering;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Spawns;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Extensions;
+using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Core.Wiki.Objects;
 using DevilDaggersInfo.Types.Core.Spawnsets;
@@ -27,7 +28,6 @@ public class SpawnEntry : AbstractComponent
 		Index = spawnUiEntry.Index;
 	}
 
-	public bool IsSelected { get; set; }
 	public bool Hover { get; private set; }
 	public int Index { get; }
 
@@ -42,7 +42,8 @@ public class SpawnEntry : AbstractComponent
 	{
 		base.Render(parentPosition);
 
-		Color background = (IsSelected, Hover) switch
+		bool isSelected = StateManager.SpawnEditorState.SelectedIndices.Contains(Index);
+		Color background = (isSelected, Hover) switch
 		{
 			(true, true) => new(0, 127, 255, 127),
 			(true, false) => new(0, 127, 255, 63),
