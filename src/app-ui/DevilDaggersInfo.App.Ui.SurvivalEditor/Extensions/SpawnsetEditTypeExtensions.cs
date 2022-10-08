@@ -35,6 +35,7 @@ public static class SpawnsetEditTypeExtensions
 		SpawnsetEditType.TimerStart => "Timer start change",
 		SpawnsetEditType.SpawnDelete => "Spawn deletion",
 		SpawnsetEditType.SpawnAdd => "Spawn addition",
+		SpawnsetEditType.SpawnEdit => "Spawn edit",
 		_ => throw new InvalidEnumConversionException(spawnsetEditType),
 	};
 
@@ -58,6 +59,7 @@ public static class SpawnsetEditTypeExtensions
 		SpawnsetEditType.TimerStart => _colorPractice,
 		SpawnsetEditType.SpawnDelete => _colorSpawn,
 		SpawnsetEditType.SpawnAdd => _colorSpawn,
+		SpawnsetEditType.SpawnEdit => _colorSpawn,
 		_ => throw new InvalidEnumConversionException(spawnsetEditType),
 	};
 }

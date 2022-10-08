@@ -18,6 +18,7 @@ public class SpawnEditor : AbstractComponent
 {
 	private readonly Dictionary<EnemyType, Button> _enemyTypeButtons = new();
 
+	// TODO: On spawn select, set these values.
 	private EnemyType _selectedEnemyType;
 	private float _selectedDelay;
 
@@ -48,6 +49,9 @@ public class SpawnEditor : AbstractComponent
 		Button addButton = new(Rectangle.At(width * 2, 16, width, 16), AddSpawn, Color.Green, Color.White, Color.White, Color.Black, "Add spawn", TextAlign.Middle, 2, FontSize.F8X8);
 		NestingContext.Add(addButton);
 
+		Button editButton = new(Rectangle.At(width * 3, 16, width, 16), EditSpawn, Color.Yellow, Color.White, Color.White, Color.Black, "Edit spawn", TextAlign.Middle, 2, FontSize.F8X8);
+		NestingContext.Add(editButton);
+
 		void AddEnemyButton(int x, int y, EnemyType enemyType, Color enemyColor, string enemyName)
 		{
 			Color borderColor = _selectedEnemyType == enemyType ? Color.White : Color.Black;
@@ -70,7 +74,15 @@ public class SpawnEditor : AbstractComponent
 		List<Spawn> spawns = StateManager.SpawnsetState.Spawnset.Spawns.ToList();
 		spawns.Add(new(_selectedEnemyType, _selectedDelay));
 
+		// TODO: Scroll down.
 		StateManager.SetSpawnset(StateManager.SpawnsetState.Spawnset with { Spawns = spawns.ToImmutableArray() });
 		SpawnsetHistoryManager.Save(SpawnsetEditType.SpawnAdd);
+	}
+
+	private void EditSpawn()
+	{
+		// TODO: Get selected spawns, update all, save.
+		// StateManager.SetSpawnset(StateManager.SpawnsetState.Spawnset with { Spawns = spawns.ToImmutableArray() });
+		SpawnsetHistoryManager.Save(SpawnsetEditType.SpawnEdit);
 	}
 }
