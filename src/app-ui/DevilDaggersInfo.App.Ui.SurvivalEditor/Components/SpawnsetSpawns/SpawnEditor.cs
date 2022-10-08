@@ -48,10 +48,12 @@ public class SpawnEditor : AbstractComponent
 		NestingContext.Add(delayLabel);
 		NestingContext.Add(delayTextInput);
 
-		Button addButton = new(Rectangle.At(0, 80, width, 32), AddSpawn, Color.Green, Color.Black, Color.White, Color.Black, "Add spawn", TextAlign.Middle, 2, FontSize.F8X8);
-		Button editButton = new(Rectangle.At(96, 80, width, 32), EditSpawn, Color.Yellow, Color.Black, Color.White, Color.Black, "Edit spawn", TextAlign.Middle, 2, FontSize.F8X8);
+		Button addButton = new(Rectangle.At(96, 80, width, 32), AddSpawn, new(0, 127, 0, 255), Color.White, new(0, 191, 0, 255), Color.White, "ADD", TextAlign.Middle, 2, FontSize.F12X12);
+		Button insertButton = new(Rectangle.At(192, 80, width, 32), InsertSpawn, new(0, 63, 127, 255), Color.White, new(0, 95, 191, 255), Color.White, "INSERT", TextAlign.Middle, 2, FontSize.F12X12);
+		Button editButton = new(Rectangle.At(288, 80, width, 32), EditSpawn, new(127, 63, 0, 255), Color.White, new(191, 95, 0, 255), Color.White, "EDIT", TextAlign.Middle, 2, FontSize.F12X12);
 
 		NestingContext.Add(addButton);
+		NestingContext.Add(insertButton);
 		NestingContext.Add(editButton);
 
 		void AddEnemyButton(int x, int y, EnemyType enemyType)
@@ -78,6 +80,7 @@ public class SpawnEditor : AbstractComponent
 
 	private void AddSpawn()
 	{
+		// TODO: Add after selection.
 		List<Spawn> spawns = StateManager.SpawnsetState.Spawnset.Spawns.ToList();
 		spawns.Add(new(_selectedEnemyType, _selectedDelay));
 
@@ -88,8 +91,18 @@ public class SpawnEditor : AbstractComponent
 
 	private void EditSpawn()
 	{
-		// TODO: Get selected spawns, update all, save.
+		// TODO: Get selected spawns and update all.
 		// StateManager.SetSpawnset(StateManager.SpawnsetState.Spawnset with { Spawns = spawns.ToImmutableArray() });
 		SpawnsetHistoryManager.Save(SpawnsetEditType.SpawnEdit);
+	}
+
+	private void InsertSpawn()
+	{
+		// TODO: Insert before selection.
+		List<Spawn> spawns = StateManager.SpawnsetState.Spawnset.Spawns.ToList();
+		spawns.Add(new(_selectedEnemyType, _selectedDelay));
+
+		StateManager.SetSpawnset(StateManager.SpawnsetState.Spawnset with { Spawns = spawns.ToImmutableArray() });
+		SpawnsetHistoryManager.Save(SpawnsetEditType.SpawnAdd);
 	}
 }
