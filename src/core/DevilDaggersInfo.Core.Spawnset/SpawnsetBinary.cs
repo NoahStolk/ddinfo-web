@@ -400,26 +400,38 @@ public record SpawnsetBinary
 		=> GetGameVersionString(WorldVersion, SpawnVersion);
 
 	public static string GetGameVersionString(int worldVersion, int spawnVersion)
-		=> worldVersion == 8 ? "V0/V1" : spawnVersion == 4 ? "V2/V3" : "V3.1/V3.2";
+		=> worldVersion == 8 ? "V0/V1" : spawnVersion == 4 ? "V2/V3" : "V3.1+";
 
 	public (int X, float? Y, int Z) GetRaceDaggerTilePosition()
 		=> GetRaceDaggerTilePosition(ArenaDimension, ArenaTiles, RaceDaggerPosition);
 
 	public static (int X, float? Y, int Z) GetRaceDaggerTilePosition(int arenaDimension, ImmutableArena arenaTiles, Vector2 raceDaggerPosition)
 	{
-		int x = Convert(raceDaggerPosition.X);
-		int z = Convert(raceDaggerPosition.Y);
+		int x = WorldToTileCoordinate(arenaDimension, raceDaggerPosition.X);
+		int z = WorldToTileCoordinate(arenaDimension, raceDaggerPosition.Y);
 		float? y = null;
 		if (x >= 0 && x < arenaDimension && z >= 0 && z < arenaDimension)
 			y = arenaTiles[x, z];
 
 		return (x, y, z);
+	}
 
-		int Convert(float worldPosition)
-		{
-			int arenaMiddle = arenaDimension / 2;
-			return (int)MathF.Round(worldPosition / 4) + arenaMiddle;
-		}
+	public int WorldToTileCoordinate(float worldCoordinate)
+		=> WorldToTileCoordinate(ArenaDimension, worldCoordinate);
+
+	public static int WorldToTileCoordinate(int arenaDimension, float worldCoordinate)
+	{
+		int arenaMiddle = arenaDimension / 2;
+		return (int)MathF.Round(worldCoordinate / 4) + arenaMiddle;
+	}
+
+	public int TileToWorldCoordinate(float tileCoordinate)
+		=> TileToWorldCoordinate(ArenaDimension, tileCoordinate);
+
+	public static int TileToWorldCoordinate(int arenaDimension, float tileCoordinate)
+	{
+		int arenaMiddle = arenaDimension / 2;
+		return (int)MathF.Round((tileCoordinate - arenaMiddle) * 4);
 	}
 
 	public float GetShrinkEndTime()
@@ -471,6 +483,29 @@ public record SpawnsetBinary
 		float shrinkTime = GetShrinkTimeForTile(arenaDimension, shrinkStart, shrinkEnd, shrinkRate, x, y);
 		float shrinkHeight = Math.Max(0, currentTime - shrinkTime) / 4;
 		return tileHeight - shrinkHeight;
+	}
+
+	public float GetSliderMaxSeconds()
+		=> GetSliderMaxSeconds(ArenaDimension, ArenaTiles, ShrinkStart, ShrinkEnd, ShrinkRate);
+
+	public static float GetSliderMaxSeconds(int arenaDimension, ImmutableArena arenaTiles, float shrinkStart, float shrinkEnd, float shrinkRate)
+	{
+		// Determine the max tile height to add additional time to the slider.
+		// For example, when the shrink ends at 200, but there is a tile at height 20, we want to add another 88 seconds ((20 + 2) * 4) to the slider so the shrink transition is always fully visible for all tiles.
+		// Add 2 heights to make sure it is still visible until the height is -2 (the palette should still show something until a height of at least -1 or lower).
+		// Multiply by 4 because a tile falls by 1 unit every 4 seconds.
+		float maxTileHeight = 0;
+		for (int i = 0; i < arenaDimension; i++)
+		{
+			for (int j = 0; j < arenaDimension; j++)
+			{
+				float tileHeight = arenaTiles[i, j];
+				if (maxTileHeight < tileHeight)
+					maxTileHeight = tileHeight;
+			}
+		}
+
+		return GetShrinkEndTime(shrinkStart, shrinkEnd, shrinkRate) + (maxTileHeight + 2) * 4;
 	}
 
 	#endregion Utilities

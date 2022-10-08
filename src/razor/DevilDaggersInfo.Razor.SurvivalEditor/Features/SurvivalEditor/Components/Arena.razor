@@ -1,7 +1,7 @@
 @inherits FluxorComponent
 
+@using DevilDaggersInfo.Core.Spawnset
 @using DevilDaggersInfo.Razor.Core.CanvasArena.Components
-@using DevilDaggersInfo.Razor.Core.CanvasArena.Utils
 @using DevilDaggersInfo.Razor.SurvivalEditor.Store.State
 @using Fluxor
 @inject IState<SpawnsetBinaryState> SpawnsetBinaryState
@@ -18,6 +18,6 @@
 
 	protected override void OnInitialized()
 	{
-		_sliderMax = SliderUtils.GetSliderMaxSeconds(SpawnsetBinaryState.Value.SpawnsetBinary);
+		_sliderMax = SpawnsetBinaryState.Value.SpawnsetBinary.GetSliderMaxSeconds();
 	}
 }

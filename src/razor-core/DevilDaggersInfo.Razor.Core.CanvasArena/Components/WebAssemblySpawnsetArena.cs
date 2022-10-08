@@ -16,7 +16,7 @@ public partial class WebAssemblySpawnsetArena
 	{
 		await base.OnAfterRenderAsync(firstRender);
 
-		_context = new WebAssemblyCanvasArena(_canvasId, new(JSUnmarshalledRuntime));
+		_context = new(_canvasId, new(JSUnmarshalledRuntime));
 
 		Render();
 	}
@@ -51,7 +51,7 @@ public partial class WebAssemblySpawnsetArena
 			}
 		}
 
-		const int tileUnit = 4; // Tiles are 4 units in width/length in the game.
+		const int tileUnit = 4; // Tiles are 4 units in width/length in the game. TODO: This should be a constant in SpawnsetBinary.
 		float shrinkEndTime = SpawnsetBinary.GetShrinkEndTime();
 		float shrinkRadius = shrinkEndTime == 0 ? SpawnsetBinary.ShrinkStart : Math.Max(SpawnsetBinary.ShrinkStart - CurrentTime / shrinkEndTime * (SpawnsetBinary.ShrinkStart - SpawnsetBinary.ShrinkEnd), SpawnsetBinary.ShrinkEnd);
 		if (shrinkRadius is > 0 and <= 100)
