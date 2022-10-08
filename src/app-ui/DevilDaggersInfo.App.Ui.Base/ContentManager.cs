@@ -42,8 +42,12 @@ public static class ContentManager
 		if (!File.Exists(resDd))
 			return "File 'res/dd' does not exist.";
 
+		// TODO: Also verify survival hash.
 		if (!SpawnsetBinary.TryParse(File.ReadAllBytes(Path.Combine(UserSettings.DevilDaggersInstallationDirectory, "dd", "survival")), out SpawnsetBinary? defaultSpawnset))
 			return "File 'dd/survival' could not be parsed.";
+
+		if (Directory.Exists(Path.Combine(UserSettings.DevilDaggersInstallationDirectory, "mods", "survival")))
+			return "There must not be a directory named 'survival' in the 'mods' directory. You must delete the directory, or mods will not work.";
 
 		ModBinary modBinary = new(File.ReadAllBytes(Path.Combine(UserSettings.DevilDaggersInstallationDirectory, "res", "dd")), ModBinaryReadComprehensiveness.All);
 		Texture? iconDaggerTexture = GetTexture(modBinary, "iconmaskdagger");
@@ -53,7 +57,7 @@ public static class ContentManager
 		Texture? tileTexture = GetTexture(modBinary, "tile");
 
 		if (iconDaggerTexture == null || skull4Mesh == null || skull4Texture == null || tileMesh == null || tileTexture == null)
-			return "Not all assets from 'res/dd' were found.";
+			return "Not all required assets from 'res/dd' were found.";
 
 		Content = new(defaultSpawnset, iconDaggerTexture, skull4Mesh, skull4Texture, tileMesh, tileTexture);
 		return null;
