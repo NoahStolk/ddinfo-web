@@ -82,18 +82,19 @@ public class SpawnEditor : AbstractComponent
 	private void AddSpawn()
 	{
 		// TODO: Add after selection.
-		List<Spawn> spawns = StateManager.SpawnsetState.Spawnset.Spawns.ToList();
-		spawns.Add(new(_selectedEnemyType, _selectedDelay));
+		List<Spawn> newSpawns = StateManager.SpawnsetState.Spawnset.Spawns.ToList();
+		newSpawns.Add(new(_selectedEnemyType, _selectedDelay));
 
 		// TODO: Scroll down.
-		StateManager.SetSpawnset(StateManager.SpawnsetState.Spawnset with { Spawns = spawns.ToImmutableArray() });
+		StateManager.SetSpawnset(StateManager.SpawnsetState.Spawnset with { Spawns = newSpawns.ToImmutableArray() });
 		SpawnsetHistoryManager.Save(SpawnsetEditType.SpawnAdd);
 	}
 
 	private void EditSpawn()
 	{
-		// TODO: Get selected spawns and update all.
-		// StateManager.SetSpawnset(StateManager.SpawnsetState.Spawnset with { Spawns = spawns.ToImmutableArray() });
+		ImmutableArray<Spawn> newSpawns = StateManager.SpawnsetState.Spawnset.Spawns.Select((t, i) => StateManager.SpawnEditorState.SelectedIndices.Contains(i) ? new(_selectedEnemyType, _selectedDelay) : t).ToImmutableArray();
+
+		StateManager.SetSpawnset(StateManager.SpawnsetState.Spawnset with { Spawns = newSpawns });
 		SpawnsetHistoryManager.Save(SpawnsetEditType.SpawnEdit);
 	}
 

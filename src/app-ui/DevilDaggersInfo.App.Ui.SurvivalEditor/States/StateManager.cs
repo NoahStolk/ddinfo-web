@@ -90,17 +90,17 @@ public static class StateManager
 			SpawnEditorState.SelectedIndices.Remove(index);
 	}
 
-	public static void ClearSpawnSelections()
-	{
-		SpawnEditorState.SelectedIndices.Clear();
-	}
-
 	public static void ToggleSpawnSelection(int index)
 	{
 		if (SpawnEditorState.SelectedIndices.Contains(index))
 			SpawnEditorState.SelectedIndices.Remove(index);
 		else
 			SpawnEditorState.SelectedIndices.Add(index);
+	}
+
+	public static void ClearSpawnSelections()
+	{
+		SpawnEditorState.SelectedIndices.Clear();
 	}
 
 	/// <summary>
