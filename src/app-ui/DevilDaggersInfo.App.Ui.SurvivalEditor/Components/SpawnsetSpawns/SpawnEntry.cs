@@ -2,6 +2,7 @@ using DevilDaggersInfo.App.Ui.Base.Enums;
 using DevilDaggersInfo.App.Ui.Base.Extensions;
 using DevilDaggersInfo.App.Ui.Base.Rendering;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Spawns;
+using DevilDaggersInfo.App.Ui.SurvivalEditor.Extensions;
 using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Core.Wiki.Objects;
 using DevilDaggersInfo.Types.Core.Spawnsets;
@@ -20,21 +21,8 @@ public class SpawnEntry : AbstractComponent
 		: base(metric)
 	{
 		_spawnUiEntry = spawnUiEntry;
-		_enemy = spawnUiEntry.EnemyType switch
-		{
-			EnemyType.Squid1 => EnemiesV3_2.Squid1,
-			EnemyType.Squid2 => EnemiesV3_2.Squid2,
-			EnemyType.Centipede => EnemiesV3_2.Centipede,
-			EnemyType.Spider1 => EnemiesV3_2.Spider1,
-			EnemyType.Leviathan => EnemiesV3_2.Leviathan,
-			EnemyType.Gigapede => EnemiesV3_2.Gigapede,
-			EnemyType.Squid3 => EnemiesV3_2.Squid3,
-			EnemyType.Thorn => EnemiesV3_2.Thorn,
-			EnemyType.Spider2 => EnemiesV3_2.Spider2,
-			EnemyType.Ghostpede => EnemiesV3_2.Ghostpede,
-			_ => null,
-		};
-		_enemyColor = _enemy == null ? Color.Gray(0.75f) : new(_enemy.Color.R, _enemy.Color.G, _enemy.Color.B, byte.MaxValue);
+		_enemy = spawnUiEntry.EnemyType.GetEnemy();
+		_enemyColor = _enemy == null ? Color.Gray(0.75f) : _enemy.Color.ToWarpColor();
 
 		Index = spawnUiEntry.Index;
 	}
