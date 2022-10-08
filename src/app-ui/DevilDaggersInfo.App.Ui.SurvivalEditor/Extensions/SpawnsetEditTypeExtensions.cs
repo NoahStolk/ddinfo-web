@@ -34,6 +34,7 @@ public static class SpawnsetEditTypeExtensions
 		SpawnsetEditType.AdditionalGems => "Additional gems change",
 		SpawnsetEditType.TimerStart => "Timer start change",
 		SpawnsetEditType.SpawnDelete => "Spawn deletion",
+		SpawnsetEditType.SpawnAdd => "Spawn addition",
 		_ => throw new InvalidEnumConversionException(spawnsetEditType),
 	};
 
@@ -56,6 +57,7 @@ public static class SpawnsetEditTypeExtensions
 		SpawnsetEditType.AdditionalGems => _colorPractice,
 		SpawnsetEditType.TimerStart => _colorPractice,
 		SpawnsetEditType.SpawnDelete => _colorSpawn,
+		SpawnsetEditType.SpawnAdd => _colorSpawn,
 		_ => throw new InvalidEnumConversionException(spawnsetEditType),
 	};
 }

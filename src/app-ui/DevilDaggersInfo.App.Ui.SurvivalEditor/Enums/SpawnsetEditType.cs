@@ -19,4 +19,5 @@ public enum SpawnsetEditType
 	AdditionalGems,
 	TimerStart,
 	SpawnDelete,
+	SpawnAdd,
 }

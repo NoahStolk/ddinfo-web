@@ -2,9 +2,13 @@ using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.Enums;
 using DevilDaggersInfo.App.Ui.Base.Extensions;
+using DevilDaggersInfo.App.Ui.SurvivalEditor.Enums;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Extensions;
+using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
+using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Core.Wiki.Objects;
 using DevilDaggersInfo.Types.Core.Spawnsets;
+using System.Collections.Immutable;
 using Warp.Ui;
 using Warp.Ui.Components;
 
@@ -38,8 +42,11 @@ public class SpawnEditor : AbstractComponent
 			ParseUtils.TryParseAndExecute<float>(s, 0, f => _selectedDelay = f);
 		}
 
-		TextInput delayTextInput = ComponentBuilder.CreateTextInput(Rectangle.At(width * 2, 0, 64, 16), true, OnDelayChange, OnDelayChange, OnDelayChange);
+		TextInput delayTextInput = ComponentBuilder.CreateTextInput(Rectangle.At(width * 2, 0, width, 16), true, OnDelayChange, OnDelayChange, OnDelayChange);
 		NestingContext.Add(delayTextInput);
+
+		Button addButton = new(Rectangle.At(width * 2, 16, width, 16), AddSpawn, Color.Green, Color.White, Color.White, Color.Black, "Add spawn", TextAlign.Middle, 2, FontSize.F8X8);
+		NestingContext.Add(addButton);
 
 		void AddEnemyButton(int x, int y, EnemyType enemyType, Color enemyColor, string enemyName)
 		{
@@ -56,5 +63,14 @@ public class SpawnEditor : AbstractComponent
 
 		foreach (KeyValuePair<EnemyType, Button> kvp in _enemyTypeButtons)
 			kvp.Value.BorderColor = _selectedEnemyType == kvp.Key ? Color.White : Color.Black;
+	}
+
+	private void AddSpawn()
+	{
+		List<Spawn> spawns = StateManager.SpawnsetState.Spawnset.Spawns.ToList();
+		spawns.Add(new(_selectedEnemyType, _selectedDelay));
+
+		StateManager.SetSpawnset(StateManager.SpawnsetState.Spawnset with { Spawns = spawns.ToImmutableArray() });
+		SpawnsetHistoryManager.Save(SpawnsetEditType.SpawnAdd);
 	}
 }
