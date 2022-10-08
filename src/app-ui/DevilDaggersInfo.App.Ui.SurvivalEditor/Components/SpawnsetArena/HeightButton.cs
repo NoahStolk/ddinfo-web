@@ -19,7 +19,7 @@ public class HeightButton : Button
 		_heightColor = TileUtils.GetColorFromHeight(height);
 
 		BackgroundColor = _heightColor;
-		HoverBackgroundColor = _heightColor.Intensify(128); // TODO: Find a better way to do this.
+		HoverBackgroundColor = Color.Lerp(_heightColor, Color.White, 0.75f);
 		TextColor = BackgroundColor.ReadableColorForBrightness();
 		Text = height.ToString(); // TODO: -1000 should probably be written as -1K.
 		FontSize = Text.Length > 2 ? FontSize.F4X6 : FontSize.F8X8;

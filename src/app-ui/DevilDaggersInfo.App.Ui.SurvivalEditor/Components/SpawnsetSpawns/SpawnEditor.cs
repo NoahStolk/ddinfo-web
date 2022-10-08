@@ -62,7 +62,8 @@ public class SpawnEditor : AbstractComponent
 			Color enemyColor = enemy?.Color.ToWarpColor() ?? Color.Gray(0.75f);
 			string enemyName = enemyType.GetShortName();
 			Color borderColor = _selectedEnemyType == enemyType ? Color.White : Color.Black;
-			Button button = new(Rectangle.At(x, y, 48, 16), () => SetSelectedEnemyType(enemyType), enemyColor, borderColor, Color.Invert(enemyColor), enemyColor.ReadableColorForBrightness(), enemyName, TextAlign.Left, 2, FontSize.F8X8);
+			Color hoverBackgroundColor = Color.Lerp(enemyColor, Color.White, 0.5f);
+			Button button = new(Rectangle.At(x, y, 48, 16), () => SetSelectedEnemyType(enemyType), enemyColor, borderColor, hoverBackgroundColor, enemyColor.ReadableColorForBrightness(), enemyName, TextAlign.Left, 2, FontSize.F8X8);
 			_enemyTypeButtons.Add(enemyType, button);
 			NestingContext.Add(button);
 		}
