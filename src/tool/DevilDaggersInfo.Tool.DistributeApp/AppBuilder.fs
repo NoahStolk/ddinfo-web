@@ -9,7 +9,6 @@ let getPublishCommandProperties (publishDirectoryName, runtimeIdentifier, publis
     Map.empty
         .Add("PublishSingleFile", singleFileStr)
         .Add("SelfContained", singleFileStr)
-        .Add("IncludeNativeLibrariesForSelfExtract", singleFileStr)
         .Add("PublishTrimmed", "True")
         .Add("EnableCompressionInSingleFile", "True")
         .Add("PublishReadyToRun", "False")
