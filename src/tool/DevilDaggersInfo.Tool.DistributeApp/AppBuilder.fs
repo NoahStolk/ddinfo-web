@@ -11,7 +11,7 @@ let getPublishCommandProperties (publishDirectoryName, runtimeIdentifier, publis
         .Add("EnableCompressionInSingleFile", "True")
         .Add("PublishReadyToRun", "False")
         .Add("PublishProtocol", "FileSystem")
-        .Add("SelfContained", selfContained)
+        .Add("SelfContained", selfContained.ToString())
         .Add("TargetFramework", "net7.0")
         .Add("RuntimeIdentifier", runtimeIdentifier)
         .Add("Platform", "x64")
@@ -20,7 +20,6 @@ let getPublishCommandProperties (publishDirectoryName, runtimeIdentifier, publis
         .Add("PublishDir", publishDirectoryName)
 
 let getPublishCommand projectFilePath publishDirectoryName toolBuildType toolPublishMethod : string =
-    let sb = StringBuilder()
     let runtimeIdentifier = match toolBuildType with
                             | ToolBuildType.LinuxWarp -> "linux-x64"
                             | ToolBuildType.WindowsWarp -> "win-x64"
@@ -28,11 +27,9 @@ let getPublishCommand projectFilePath publishDirectoryName toolBuildType toolPub
     let publishMethod = match toolPublishMethod with
                         | ToolPublishMethod.SelfContained -> "SELF_CONTAINED"
                         | _ -> "" // TODO: OK?
-    let selfContained = match toolPublishMethod with
-                        | ToolPublishMethod.SelfContained -> "true"
-                        | _ -> "false"
-                        
-    getPublishCommandProperties(publishDirectoryName, runtimeIdentifier, publishMethod, selfContained) |> Map.iter (fun key value -> sb.Append($" -p:{key}={value}") |> ignore) 
+
+    let sb = StringBuilder()
+    getPublishCommandProperties(publishDirectoryName, runtimeIdentifier, publishMethod, toolPublishMethod = ToolPublishMethod.SelfContained) |> Map.iter (fun key value -> sb.Append($" -p:{key}={value}") |> ignore) 
     $"publish {projectFilePath}{sb.ToString()}"
 
 let build projectFilePath publishDirectoryName toolBuildType toolPublishMethod =

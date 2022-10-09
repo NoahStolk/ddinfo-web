@@ -5,16 +5,19 @@ open DevilDaggersInfo.Types.Web
 [<Literal>]
 let publishDirectoryName = "_temp-release"
 
+[<Literal>]
+let toolName = "ddinfo-tools"
+
 let buildAndUpload projectFilePath zipOutputDirectory toolBuildType toolPublishMethod =
     AppBuilder.build projectFilePath publishDirectoryName toolBuildType toolPublishMethod
 
     let publishDirectoryPath = Path.Combine(Path.GetDirectoryName(projectFilePath:string), publishDirectoryName)
-    let proj = ProjectReader.readProjectFile projectFilePath
-    let outputZipFilePath = Path.Combine(zipOutputDirectory, $"{proj.Name}-{proj.Version}-{toolBuildType}-{toolPublishMethod}.zip")
+    let version = ProjectReader.readVersionFromProjectFile projectFilePath
+    let outputZipFilePath = Path.Combine(zipOutputDirectory, $"{toolName}-{version}-{toolBuildType}-{toolPublishMethod}.zip")
 
     ZipWriter.zip outputZipFilePath publishDirectoryPath
 
-    ApiHttpClient.upload "ddinfo-tools" proj.Version toolBuildType toolPublishMethod outputZipFilePath ApiHttpClient.login.Token
+    ApiHttpClient.upload toolName version toolBuildType toolPublishMethod outputZipFilePath ApiHttpClient.login.Token
 
     printfn $"Deleting zip file '{outputZipFilePath}'"
     File.Delete(outputZipFilePath)
