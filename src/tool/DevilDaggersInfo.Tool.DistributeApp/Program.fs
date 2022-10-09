@@ -14,7 +14,7 @@ let buildAndUpload projectFilePath zipOutputDirectory toolBuildType toolPublishM
 
     ZipWriter.zip outputZipFilePath publishDirectoryPath
 
-    ApiHttpClient.upload proj.Name proj.Version toolBuildType toolPublishMethod outputZipFilePath ApiHttpClient.login.Token
+    ApiHttpClient.upload "ddinfo-tools" proj.Version toolBuildType toolPublishMethod outputZipFilePath ApiHttpClient.login.Token
 
     printfn $"Deleting zip file '{outputZipFilePath}'"
     File.Delete(outputZipFilePath)

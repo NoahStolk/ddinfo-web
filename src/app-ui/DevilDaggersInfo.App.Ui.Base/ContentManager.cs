@@ -24,20 +24,20 @@ public static class ContentManager
 		if (!Directory.Exists(dir))
 			return "Installation directory does not exist.";
 
-		// TODO: Linux paths.
-		string ddExe = Path.Combine(dir, "dd.exe");
+		// TODO: Use correct Linux file name for executable.
+		// string ddExe = Path.Combine(dir, "dd.exe");
 		string survival = Path.Combine(dir, "dd", "survival");
-		string resAudio = Path.Combine(dir, "res", "audio");
+		// string resAudio = Path.Combine(dir, "res", "audio");
 		string resDd = Path.Combine(dir, "res", "dd");
 
-		if (!File.Exists(ddExe))
-			return "Executable does not exist.";
+		// if (!File.Exists(ddExe))
+		// 	return "Executable does not exist.";
 
 		if (!File.Exists(survival))
 			return "File 'dd/survival' does not exist.";
 
-		if (!File.Exists(resAudio))
-			return "File 'res/audio' does not exist.";
+		// if (!File.Exists(resAudio))
+		// 	return "File 'res/audio' does not exist.";
 
 		if (!File.Exists(resDd))
 			return "File 'res/dd' does not exist.";
