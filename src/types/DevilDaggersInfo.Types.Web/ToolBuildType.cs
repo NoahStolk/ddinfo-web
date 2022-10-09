@@ -6,4 +6,6 @@ public enum ToolBuildType : byte
 	WindowsConsole = 1,
 	WindowsPhotino = 2,
 	LinuxPhotino = 3,
+	WindowsWarp = 4,
+	LinuxWarp = 5,
 }
