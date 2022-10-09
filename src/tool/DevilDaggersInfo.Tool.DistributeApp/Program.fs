@@ -12,9 +12,14 @@ let buildAndUpload projectFilePath zipOutputDirectory toolBuildType toolPublishM
     AppBuilder.build projectFilePath publishDirectoryName toolBuildType toolPublishMethod
 
     let publishDirectoryPath = Path.Combine(Path.GetDirectoryName(projectFilePath:string), publishDirectoryName)
+
+    // Copy content file.
+    let contentFilePath = Path.Combine(projectFilePath, "..", "bin", "Debug", "net7.0", "c")
+    File.Copy(contentFilePath, Path.Combine(publishDirectoryPath, "c"))
+    
+    // Zip build and content file.
     let version = ProjectReader.readVersionFromProjectFile projectFilePath
     let outputZipFilePath = Path.Combine(zipOutputDirectory, $"{toolName}-{version}-{toolBuildType}-{toolPublishMethod}.zip")
-
     ZipWriter.zip outputZipFilePath publishDirectoryPath
 
     ApiHttpClient.upload toolName version toolBuildType toolPublishMethod outputZipFilePath ApiHttpClient.login.Token
