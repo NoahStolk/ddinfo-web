@@ -1,35 +1,44 @@
 module DevilDaggersInfo.Tool.DistributeApp.AppBuilder
 
-open System
 open System.Diagnostics
 open System.Text
+open DevilDaggersInfo.Types.Web
 
-let getPublishCommandProperties publishDirectoryName : Map<string, string> =
+let getPublishCommandProperties (publishDirectoryName, runtimeIdentifier, publishMethod, selfContained) : Map<string, string> =
     Map.empty
         .Add("PublishSingleFile", "True")
         .Add("PublishTrimmed", "True")
         .Add("EnableCompressionInSingleFile", "True")
         .Add("PublishReadyToRun", "False")
         .Add("PublishProtocol", "FileSystem")
-        .Add("SelfContained", "true")
-        .Add("TargetFramework", "net6.0")
-        .Add("RuntimeIdentifier", "win-x64")
+        .Add("SelfContained", selfContained)
+        .Add("TargetFramework", "net7.0")
+        .Add("RuntimeIdentifier", runtimeIdentifier)
         .Add("Platform", "x64")
         .Add("Configuration", "Release")
-        .Add("PublishMethod", "SELF_CONTAINED")
+        .Add("PublishMethod", publishMethod)
         .Add("PublishDir", publishDirectoryName)
 
-let getPublishCommand projectFilePath publishDirectoryName : string =
+let getPublishCommand projectFilePath publishDirectoryName toolBuildType toolPublishMethod : string =
     let sb = StringBuilder()
-    getPublishCommandProperties publishDirectoryName |> Map.iter (fun key value -> sb.Append($" -p:{key}={value}") |> ignore) 
+    let runtimeIdentifier = match toolBuildType with
+                            | ToolBuildType.LinuxWarp -> "linux-x64"
+                            | ToolBuildType.WindowsWarp -> "win-x64"
+                            | _ -> failwith "Build type not supported"
+    let publishMethod = match toolPublishMethod with
+                        | ToolPublishMethod.SelfContained -> "SELF_CONTAINED"
+                        | _ -> "" // TODO: OK?
+    let selfContained = match toolPublishMethod with
+                        | ToolPublishMethod.SelfContained -> "true"
+                        | _ -> "false"
+                        
+    getPublishCommandProperties(publishDirectoryName, runtimeIdentifier, publishMethod, selfContained) |> Map.iter (fun key value -> sb.Append($" -p:{key}={value}") |> ignore) 
     $"publish {projectFilePath}{sb.ToString()}"
 
-let build projectFilePath publishDirectoryName =
-    let dotnetPublishProc = Process.Start(ProcessStartInfo(FileName = "dotnet", Arguments = getPublishCommand projectFilePath publishDirectoryName))
+let build projectFilePath publishDirectoryName toolBuildType toolPublishMethod =
+    let dotnetPublishProc = Process.Start(ProcessStartInfo(FileName = "dotnet", Arguments = getPublishCommand projectFilePath publishDirectoryName toolBuildType toolPublishMethod))
     dotnetPublishProc.WaitForExit()
 
     match dotnetPublishProc.ExitCode with
     | 0 -> ()
     | _ -> failwith "Could not build the app"
-
-// dotnet build -c Release -o bin\publish-win7\ --self-contained false

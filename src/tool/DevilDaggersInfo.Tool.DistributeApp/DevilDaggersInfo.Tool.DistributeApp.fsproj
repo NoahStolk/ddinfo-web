@@ -10,6 +10,7 @@
     <Compile Include="AppBuilder.fs" />
     <Compile Include="ProjectReader.fs" />
     <Compile Include="ZipWriter.fs" />
+    <Compile Include="ApiHttpClient.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
