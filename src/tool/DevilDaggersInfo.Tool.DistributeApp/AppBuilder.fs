@@ -4,14 +4,16 @@ open System.Diagnostics
 open System.Text
 open DevilDaggersInfo.Types.Web
 
-let getPublishCommandProperties (publishDirectoryName, runtimeIdentifier, publishMethod, selfContained) : Map<string, string> =
+let getPublishCommandProperties (publishDirectoryName, runtimeIdentifier, publishMethod, singleFile) : Map<string, string> =
+    let singleFileStr = singleFile.ToString()
     Map.empty
-        .Add("PublishSingleFile", "True")
+        .Add("PublishSingleFile", singleFileStr)
+        .Add("SelfContained", singleFileStr)
+        .Add("IncludeNativeLibrariesForSelfExtract", singleFileStr)
         .Add("PublishTrimmed", "True")
         .Add("EnableCompressionInSingleFile", "True")
         .Add("PublishReadyToRun", "False")
         .Add("PublishProtocol", "FileSystem")
-        .Add("SelfContained", selfContained.ToString())
         .Add("TargetFramework", "net7.0")
         .Add("RuntimeIdentifier", runtimeIdentifier)
         .Add("Platform", "x64")
