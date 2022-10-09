@@ -150,7 +150,6 @@ flowchart TD;
 
 ```mermaid
 flowchart TD;
-	ddiam[DDIAM 1]
 	ddae[DDAE 2]
 	ddcl[DDCL 2]
 	ddre[DDRE 1]
@@ -190,16 +189,15 @@ flowchart TD;
 	api_ddrust[Api.DdstatsRust]
 	api_main[Api.Main]
 	api_admin[Api.Admin]
-	api_ddiam[Api.Ddiam]
 	api_ddae[Api.Ddae]
 	api_ddcl[Api.Ddcl]
 	api_ddre[Api.Ddre]
 	api_ddse[Api.Ddse]
 
-	class api_dd,api_clubber,api_ddlive,api_ddrust,api_ddiam,api_ddae,api_ddcl,api_ddre,api_ddse,api_main,api_admin api;
+	class api_dd,api_clubber,api_ddlive,api_ddrust,api_ddae,api_ddcl,api_ddre,api_ddse,api_main,api_admin api;
 	classDef api fill:#660,stroke:#333,stroke-width:4px;
 
-	class ddiam,ddae,ddcl,ddre,ddse app;
+	class ddae,ddcl,ddre,ddse app;
 	classDef app fill:#a00,stroke:#333,stroke-width:4px;
 
 	class app_core_apiclient,app_core_gamememory,app_core_nativeinterface app_core;
@@ -243,14 +241,12 @@ flowchart TD;
 	end
 
 	subgraph Api App
-		api_ddiam
 		api_ddae
 		api_ddcl
 		api_ddre
 		api_ddse
 	end
 
-	razor_appmanager --> api_ddiam
 	razor_asseteditor --> api_ddae
 	razor_customleaderboard --> api_ddcl
 	razor_replayeditor --> api_ddre
@@ -274,7 +270,6 @@ flowchart TD;
 	web_server --> api_ddrust
 	web_client --> api_main
 	web_client --> api_admin
-	web_server --> api_ddiam
 	web_server --> api_ddae
 	web_server --> api_ddcl
 	web_server --> api_ddre
@@ -321,7 +316,6 @@ flowchart TD;
 	end
 
 	subgraph App
-		ddiam --> razor_appmanager
 		ddae --> razor_asseteditor
 		ddcl --> razor_customleaderboard
 		ddre --> razor_replayeditor
