@@ -84,10 +84,7 @@ public record AppVersion : IComparable<AppVersion>
 
 	public override string ToString()
 	{
-		if (IsAlpha)
-			return $"{Major}.{Minor}.{Patch}-alpha.{Build}";
-
-		return $"{Major}.{Minor}.{Patch}.{Build}";
+		return IsAlpha ? $"{Major}.{Minor}.{Patch}-alpha.{Build}" : $"{Major}.{Minor}.{Patch}.{Build}";
 	}
 
 	public static bool TryParse(string versionString, [NotNullWhen(true)] out AppVersion? appVersion)

@@ -78,37 +78,51 @@ public class AppVersionTests
 		AppVersion c = new(2, 0, 0, 1, true);
 		AppVersion d = new(2, 0, 0, 0, false);
 		AppVersion e = new(2, 0, 0, 0, true);
+		AppVersion f = new(2, 0, 1, 0, true);
 
 		// A
 		Assert.IsTrue(a < b);
 		Assert.IsTrue(a < c);
 		Assert.IsTrue(a < d);
 		Assert.IsTrue(a < e);
+		Assert.IsTrue(a < f);
 
 		Assert.IsTrue(b > a);
 		Assert.IsTrue(c > a);
 		Assert.IsTrue(d > a);
 		Assert.IsTrue(e > a);
+		Assert.IsTrue(f > a);
 
 		// B
 		Assert.IsTrue(b < c);
 		Assert.IsTrue(b < d);
 		Assert.IsTrue(b == e);
+		Assert.IsTrue(b < f);
 
 		Assert.IsTrue(c > b);
 		Assert.IsTrue(d > b);
 		Assert.IsTrue(e == b);
+		Assert.IsTrue(f > b);
 
 		// C
 		Assert.IsTrue(c < d);
 		Assert.IsTrue(c > e);
+		Assert.IsTrue(c < f);
 
 		Assert.IsTrue(d > c);
 		Assert.IsTrue(e < c);
+		Assert.IsTrue(f > c);
 
 		// D
 		Assert.IsTrue(d > e);
+		Assert.IsTrue(d < f);
 
 		Assert.IsTrue(e < d);
+		Assert.IsTrue(f > d);
+
+		// E
+		Assert.IsTrue(e < f);
+
+		Assert.IsTrue(f > e);
 	}
 }
