@@ -3,11 +3,11 @@ using System.Net.Http.Json;
 
 namespace DevilDaggersInfo.App.Core.ApiClient;
 
-public abstract class ApiHttpClient
+public partial class ApiHttpClient
 {
 	private readonly HttpClient _client;
 
-	protected ApiHttpClient(HttpClient client)
+	public ApiHttpClient(HttpClient client)
 	{
 		_client = client;
 	}
