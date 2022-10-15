@@ -8,15 +8,6 @@ namespace DevilDaggersInfo.App.Ui.Base.Components;
 
 public class Button : AbstractButton
 {
-	public Color BackgroundColor { get; set; }
-	public Color BorderColor { get; set; }
-	public Color HoverBackgroundColor { get; set; }
-	public Color TextColor { get; set; }
-	public string Text { get; set; }
-	public TextAlign TextAlign { get; set; }
-	public int BorderSize { get; set; }
-	public FontSize FontSize { get; set; }
-
 	public Button(Rectangle metric, Action onClick, Color backgroundColor, Color borderColor, Color hoverBackgroundColor, Color textColor, string text, TextAlign textAlign, int borderSize, FontSize fontSize)
 		: base(metric, onClick)
 	{
@@ -29,6 +20,15 @@ public class Button : AbstractButton
 		BorderSize = borderSize;
 		FontSize = fontSize;
 	}
+
+	public Color BackgroundColor { get; set; }
+	public Color BorderColor { get; set; }
+	public Color HoverBackgroundColor { get; set; }
+	public Color TextColor { get; set; }
+	public string Text { get; set; }
+	public TextAlign TextAlign { get; set; }
+	public int BorderSize { get; set; }
+	public FontSize FontSize { get; set; }
 
 	public override void Render(Vector2i<int> parentPosition)
 	{

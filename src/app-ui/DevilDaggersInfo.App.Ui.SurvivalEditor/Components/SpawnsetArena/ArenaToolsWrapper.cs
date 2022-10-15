@@ -24,26 +24,26 @@ public class ArenaToolsWrapper : AbstractComponent
 	{
 		_width = metric.Size.X;
 
-		AddToolButton(0 + _arenaButtonSize * 0, 0, ArenaTool.Pencil, "P");
-		AddToolButton(0 + _arenaButtonSize * 1, 0, ArenaTool.Line, "L");
-		AddToolButton(0 + _arenaButtonSize * 2, 0, ArenaTool.Rectangle, "R");
-		AddToolButton(0 + _arenaButtonSize * 3, 0, ArenaTool.Bucket, "B");
-		AddToolButton(0 + _arenaButtonSize * 4, 0, ArenaTool.Dagger, "D");
+		AddToolButton(0 + _arenaButtonSize * 0, 0, ArenaTool.Pencil, "P", "Pencil");
+		AddToolButton(0 + _arenaButtonSize * 1, 0, ArenaTool.Line, "L", "Line");
+		AddToolButton(0 + _arenaButtonSize * 2, 0, ArenaTool.Rectangle, "R", "Rectangle");
+		AddToolButton(0 + _arenaButtonSize * 3, 0, ArenaTool.Bucket, "B", "Bucket");
+		AddToolButton(0 + _arenaButtonSize * 4, 0, ArenaTool.Dagger, "D", "Race dagger");
 
 		AddBucketButtons(0, _arenaButtonSize);
 
 		SetTool();
 	}
 
-	private void AddToolButton(int offsetX, int offsetY, ArenaTool arenaTool, string text)
+	private void AddToolButton(int offsetX, int offsetY, ArenaTool arenaTool, string text, string tooltipText)
 	{
-		void SetArenaTool(ArenaTool arenaTool)
+		void SetArenaTool()
 		{
 			StateManager.SetArenaTool(arenaTool);
 			SetTool();
 		}
 
-		ArenaButton button = new(Rectangle.At(offsetX, offsetY, _arenaButtonSize, _arenaButtonSize), () => SetArenaTool(arenaTool), Color.Yellow, Color.Black, text, FontSize.F8X8);
+		ArenaButton button = new(Rectangle.At(offsetX, offsetY, _arenaButtonSize, _arenaButtonSize), SetArenaTool, Color.Yellow, Color.Black, text, FontSize.F8X8, tooltipText);
 		NestingContext.Add(button);
 	}
 
