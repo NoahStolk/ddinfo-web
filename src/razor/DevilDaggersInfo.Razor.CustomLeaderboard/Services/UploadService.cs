@@ -8,14 +8,14 @@ namespace DevilDaggersInfo.Razor.CustomLeaderboard.Services;
 public class UploadService
 {
 	private readonly NetworkService _networkService;
-	private readonly GameMemoryReaderService _readerService;
+	private readonly GameMemoryService _gameMemoryService;
 	private readonly IEncryptionService _encryptionService;
 	private readonly IClientConfiguration _clientConfiguration;
 
-	public UploadService(NetworkService networkService, GameMemoryReaderService readerService, IEncryptionService encryptionService, IClientConfiguration clientConfiguration)
+	public UploadService(NetworkService networkService, GameMemoryService gameMemoryService, IEncryptionService encryptionService, IClientConfiguration clientConfiguration)
 	{
 		_networkService = networkService;
-		_readerService = readerService;
+		_gameMemoryService = gameMemoryService;
 		_encryptionService = encryptionService;
 		_clientConfiguration = clientConfiguration;
 	}
@@ -57,7 +57,7 @@ public class UploadService
 			block.ProhibitedMods);
 		string validation = _encryptionService.EncryptAndEncode(toEncrypt);
 
-		byte[] statsBuffer = _readerService.GetStatsBuffer();
+		byte[] statsBuffer = _gameMemoryService.GetStatsBuffer();
 
 		AddUploadRequest uploadRequest = new()
 		{
@@ -92,7 +92,7 @@ public class UploadService
 			OperatingSystem = _clientConfiguration.GetOperatingSystem().ToString(),
 			ProhibitedMods = block.ProhibitedMods,
 			Client = _clientConfiguration.GetApplicationName(),
-			ReplayData = _readerService.ReadReplayFromMemory(),
+			ReplayData = _gameMemoryService.ReadReplayFromMemory(),
 			Status = block.Status,
 			ReplayPlayerId = block.ReplayPlayerId,
 			GameMode = block.GameMode,
@@ -108,7 +108,7 @@ public class UploadService
 
 		using MemoryStream ms = new(statsBuffer);
 		using BinaryReader br = new(ms);
-		for (int i = 0; i < _readerService.MainBlock.StatsCount; i++)
+		for (int i = 0; i < _gameMemoryService.MainBlock.StatsCount; i++)
 		{
 			gameData.GemsCollected.Add(br.ReadInt32());
 			gameData.EnemiesKilled.Add(br.ReadInt32());

@@ -9,9 +9,9 @@ namespace DevilDaggersInfo.Razor.CustomLeaderboard.Store.Features.RecorderFeatur
 public class UploadRunEffect : Effect<UploadRunAction>
 {
 	private readonly UploadService _uploadService;
-	private readonly GameMemoryReaderService _gameMemoryService;
+	private readonly GameMemoryService _gameMemoryService;
 
-	public UploadRunEffect(UploadService uploadService, GameMemoryReaderService gameMemoryService)
+	public UploadRunEffect(UploadService uploadService, GameMemoryService gameMemoryService)
 	{
 		_uploadService = uploadService;
 		_gameMemoryService = gameMemoryService;

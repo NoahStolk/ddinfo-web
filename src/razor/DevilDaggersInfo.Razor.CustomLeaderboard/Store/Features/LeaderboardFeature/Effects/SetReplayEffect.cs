@@ -8,9 +8,9 @@ namespace DevilDaggersInfo.Razor.CustomLeaderboard.Store.Features.LeaderboardFea
 public class SetReplayEffect : Effect<SetReplayAction>
 {
 	private readonly NetworkService _networkService;
-	private readonly GameMemoryReaderService _gameMemoryService;
+	private readonly GameMemoryService _gameMemoryService;
 
-	public SetReplayEffect(NetworkService networkService, GameMemoryReaderService gameMemoryService)
+	public SetReplayEffect(NetworkService networkService, GameMemoryService gameMemoryService)
 	{
 		_networkService = networkService;
 		_gameMemoryService = gameMemoryService;

@@ -15,15 +15,15 @@ public class StateFacade
 {
 	private readonly IDispatcher _dispatcher;
 	private readonly INativeFileSystemService _fileSystemService;
-	private readonly GameMemoryReaderService _readerService;
+	private readonly GameMemoryService _gameMemoryService;
 	private readonly NetworkService _networkService;
 	private readonly INativeErrorReporter _errorReporter;
 
-	public StateFacade(IDispatcher dispatcher, INativeFileSystemService fileSystemService, GameMemoryReaderService readerService, NetworkService networkService, INativeErrorReporter errorReporter)
+	public StateFacade(IDispatcher dispatcher, INativeFileSystemService fileSystemService, GameMemoryService gameMemoryService, NetworkService networkService, INativeErrorReporter errorReporter)
 	{
 		_dispatcher = dispatcher;
 		_fileSystemService = fileSystemService;
-		_readerService = readerService;
+		_gameMemoryService = gameMemoryService;
 		_networkService = networkService;
 		_errorReporter = errorReporter;
 	}
@@ -72,15 +72,15 @@ public class StateFacade
 			return;
 		}
 
-		if (!_readerService.Initialize(ddstatsMarkerOffset))
+		if (!_gameMemoryService.Initialize(ddstatsMarkerOffset))
 		{
 			_errorReporter.ReportError("Could not initialize game memory", "Make sure the game is open.");
 			return;
 		}
 
-		_readerService.Scan();
+		_gameMemoryService.Scan();
 
-		byte[] replayData = _readerService.ReadReplayFromMemory();
+		byte[] replayData = _gameMemoryService.ReadReplayFromMemory();
 
 		try
 		{

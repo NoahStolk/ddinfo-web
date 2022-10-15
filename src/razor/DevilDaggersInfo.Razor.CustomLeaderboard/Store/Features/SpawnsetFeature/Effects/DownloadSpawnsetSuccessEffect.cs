@@ -9,10 +9,10 @@ namespace DevilDaggersInfo.Razor.CustomLeaderboard.Store.Features.SpawnsetFeatur
 
 public class DownloadSpawnsetSuccessEffect : Effect<DownloadSpawnsetSuccessAction>
 {
-	private readonly GameMemoryReaderService _gameMemoryService;
+	private readonly GameMemoryService _gameMemoryService;
 	private readonly INativeErrorReporter _nativeErrorReporter;
 
-	public DownloadSpawnsetSuccessEffect(GameMemoryReaderService gameMemoryService, INativeErrorReporter nativeErrorReporter)
+	public DownloadSpawnsetSuccessEffect(GameMemoryService gameMemoryService, INativeErrorReporter nativeErrorReporter)
 	{
 		_gameMemoryService = gameMemoryService;
 		_nativeErrorReporter = nativeErrorReporter;

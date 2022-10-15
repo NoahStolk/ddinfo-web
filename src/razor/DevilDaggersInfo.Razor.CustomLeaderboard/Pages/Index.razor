@@ -4,12 +4,11 @@
 @using DevilDaggersInfo.Razor.CustomLeaderboard.Services
 @using DevilDaggersInfo.Razor.CustomLeaderboard.Store.State
 @using Fluxor
-@inject GameMemoryReaderService ReaderService
+@inject GameMemoryService GameMemoryService
 @inject IState<RecorderState> RecorderState
 @inject IState<SpawnsetState> SpawnsetState
 @inject NetworkService NetworkService
 @inject IClientConfiguration ClientConfiguration
-@inject StateFacade StateFacade
 
 @inherits FluxorComponent
 
@@ -18,10 +17,10 @@
 		@*TODO: Use Fluxor state and use separate component.*@
 		<div class="grid grid-cols-2 m-2 p-2 border-solid border-2 border-[#114]">
 			<span>Devil Daggers process</span>
-			<span>@(ReaderService.HasProcess ? "Attached" : "Waiting...")</span>
+			<span>@(GameMemoryService.HasProcess ? "Attached" : "Waiting...")</span>
 
 			<span>Memory initialized</span>
-			<span>@(ReaderService.IsInitialized ? "Done" : "Waiting...")</span>
+			<span>@(GameMemoryService.IsInitialized ? "Done" : "Waiting...")</span>
 
 			<span>State</span>
 			<span>@RecorderState.Value.State</span>
@@ -62,6 +61,6 @@
 		await base.OnInitializedAsync();
 
 		long marker = await NetworkService.GetMarker(ClientConfiguration.GetOperatingSystem());
-		ReaderService.Initialize(marker);
+		GameMemoryService.Initialize(marker);
 	}
 }

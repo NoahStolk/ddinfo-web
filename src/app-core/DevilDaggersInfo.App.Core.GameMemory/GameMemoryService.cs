@@ -4,19 +4,17 @@ using System.Diagnostics;
 
 namespace DevilDaggersInfo.App.Core.GameMemory;
 
-// TODO: Rename to GameMemoryService.
-public class GameMemoryReaderService
+public class GameMemoryService
 {
 	private const int _bufferSize = 319;
 	private const int _statesBufferSize = 112;
 
 	private long _memoryBlockAddress;
 	private Process? _process;
-	private bool _isInitialized;
 
 	private readonly INativeMemoryService _nativeMemoryService;
 
-	public GameMemoryReaderService(INativeMemoryService nativeMemoryService)
+	public GameMemoryService(INativeMemoryService nativeMemoryService)
 	{
 		_nativeMemoryService = nativeMemoryService;
 	}
@@ -27,22 +25,22 @@ public class GameMemoryReaderService
 	public MainBlock MainBlock { get; private set; }
 
 	public bool HasProcess => _process != null;
-	public bool IsInitialized => _isInitialized;
+	public bool IsInitialized { get; private set; }
 
 	public bool Initialize(long ddstatsMarkerOffset)
 	{
 		_process = _nativeMemoryService.GetDevilDaggersProcess();
-		if (_process == null || _process.MainModule == null)
+		if (_process?.MainModule == null)
 		{
-			_isInitialized = false;
-			return _isInitialized;
+			IsInitialized = false;
+			return IsInitialized;
 		}
 
 		byte[] pointerBytes = new byte[sizeof(long)];
 		_nativeMemoryService.ReadMemory(_process, _process.MainModule.BaseAddress.ToInt64() + ddstatsMarkerOffset, pointerBytes, 0, sizeof(long));
 		_memoryBlockAddress = BitConverter.ToInt64(pointerBytes);
-		_isInitialized = true;
-		return _isInitialized;
+		IsInitialized = true;
+		return IsInitialized;
 	}
 
 	public void Scan()

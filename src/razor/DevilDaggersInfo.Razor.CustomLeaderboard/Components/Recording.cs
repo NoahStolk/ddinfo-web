@@ -15,7 +15,7 @@ public partial class Recording
 	public ILogger<Recording> Logger { get; set; } = null!;
 
 	[Inject]
-	public GameMemoryReaderService ReaderService { get; set; } = null!;
+	public GameMemoryService GameMemoryService { get; set; } = null!;
 
 	protected override void OnInitialized()
 	{
@@ -37,12 +37,12 @@ public partial class Recording
 	private async Task Record()
 	{
 		RecorderState state = RecorderState.Value;
-		ReaderService.Scan();
-		StateFacade.SetRecording(ReaderService.MainBlock, ReaderService.MainBlockPrevious);
+		GameMemoryService.Scan();
+		StateFacade.SetRecording(GameMemoryService.MainBlock, GameMemoryService.MainBlockPrevious);
 
-		if (LeaderboardListState.Value.SelectedPlayerId != ReaderService.MainBlock.PlayerId)
+		if (LeaderboardListState.Value.SelectedPlayerId != GameMemoryService.MainBlock.PlayerId)
 		{
-			StateFacade.SetSelectedPlayerId(ReaderService.MainBlock.PlayerId);
+			StateFacade.SetSelectedPlayerId(GameMemoryService.MainBlock.PlayerId);
 		}
 
 		// TODO: Load spawnset and leaderboard if empty (on startup).
@@ -53,7 +53,7 @@ public partial class Recording
 
 		if (state.State != RecorderStateType.Recording)
 		{
-			if (ReaderService.MainBlock.Time == ReaderService.MainBlockPrevious.Time)
+			if (GameMemoryService.MainBlock.Time == GameMemoryService.MainBlockPrevious.Time)
 			{
 				StateFacade.SetState(RecorderStateType.WaitingForRestart);
 				return;
@@ -62,7 +62,7 @@ public partial class Recording
 			StateFacade.SetState(RecorderStateType.Recording);
 		}
 
-		GameStatus status = (GameStatus)ReaderService.MainBlock.Status;
+		GameStatus status = (GameStatus)GameMemoryService.MainBlock.Status;
 		if (status == GameStatus.LocalReplay)
 		{
 			StateFacade.SetState(RecorderStateType.WaitingForLocalReplay);
@@ -75,17 +75,17 @@ public partial class Recording
 			return;
 		}
 
-		bool justDied = !ReaderService.MainBlock.IsPlayerAlive && ReaderService.MainBlockPrevious.IsPlayerAlive;
-		bool uploadRun = justDied && (ReaderService.MainBlock.GameMode == 0 || ReaderService.MainBlock.TimeAttackOrRaceFinished);
+		bool justDied = !GameMemoryService.MainBlock.IsPlayerAlive && GameMemoryService.MainBlockPrevious.IsPlayerAlive;
+		bool uploadRun = justDied && (GameMemoryService.MainBlock.GameMode == 0 || GameMemoryService.MainBlock.TimeAttackOrRaceFinished);
 		if (!uploadRun)
 			return;
 
 		StateFacade.SetState(RecorderStateType.WaitingForStats);
-		while (!ReaderService.MainBlock.StatsLoaded)
+		while (!GameMemoryService.MainBlock.StatsLoaded)
 			await Task.Delay(TimeSpan.FromSeconds(0.5));
 
 		StateFacade.SetState(RecorderStateType.WaitingForReplay);
-		while (!ReaderService.IsReplayValid())
+		while (!GameMemoryService.IsReplayValid())
 			await Task.Delay(TimeSpan.FromSeconds(0.5));
 
 		StateFacade.UploadRun();
