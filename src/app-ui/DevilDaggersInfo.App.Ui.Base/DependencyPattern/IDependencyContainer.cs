@@ -13,6 +13,9 @@ public interface IDependencyContainer
 	int InitialWindowWidth { get; }
 	int InitialWindowHeight { get; }
 
+	float Dt { get; }
+	float Tt { get; }
+
 	string? TooltipText { get; set; }
 
 	IExtendedLayout? ActiveLayout { get; set; }
@@ -27,6 +30,7 @@ public interface IDependencyContainer
 	#region DDSE screen
 
 	ISurvivalEditorMainLayout SurvivalEditorMainLayout { get; }
+	ISurvivalEditor3dLayout SurvivalEditor3dLayout { get; }
 	IFileDialogLayout SurvivalEditorOpenLayout { get; }
 	IFileDialogLayout SurvivalEditorSaveLayout { get; }
 

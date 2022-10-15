@@ -20,6 +20,11 @@ public static class LayoutManager
 		Root.Game.ActiveLayout = Root.Game.SurvivalEditorMainLayout;
 	}
 
+	public static void ToSurvivalEditor3dLayout()
+	{
+		Root.Game.ActiveLayout = Root.Game.SurvivalEditor3dLayout;
+	}
+
 	public static void ToCustomLeaderboardsRecorderMainLayout()
 	{
 		Root.Game.ActiveLayout = Root.Game.CustomLeaderboardsRecorderMainLayout;

@@ -1,5 +1,6 @@
 using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.Enums;
+using DevilDaggersInfo.App.Ui.Base.States;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using Warp.Ui;
 using Warp.Ui.Components;
@@ -26,6 +27,9 @@ public class ArenaWrapper : AbstractComponent
 		NestingContext.Add(_arena);
 		NestingContext.Add(arenaHeightButtons);
 		NestingContext.Add(_shrinkSlider);
+
+		Button button3d = new(Rectangle.At(0, 0, 64, 16), LayoutManager.ToSurvivalEditor3dLayout, Color.Black, Color.White, Color.Aqua, Color.White, "3D", TextAlign.Middle, 2, FontSize.F12X12);
+		NestingContext.Add(button3d);
 	}
 
 	public void SetSpawnset()
