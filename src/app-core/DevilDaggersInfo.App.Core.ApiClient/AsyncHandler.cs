@@ -40,12 +40,10 @@ public class AsyncHandler
 			_callback = callback;
 		}
 
-		public AppVersion? AppVersion { get; private set; }
-
 		public void SetOnlineAppVersion()
 		{
-			AppVersion = GetDistributionLatestReturn();
-			_callback(AppVersion);
+			AppVersion? appVersion = GetDistributionLatestReturn();
+			_callback(appVersion);
 
 			AppVersion? GetDistributionLatestReturn()
 			{
