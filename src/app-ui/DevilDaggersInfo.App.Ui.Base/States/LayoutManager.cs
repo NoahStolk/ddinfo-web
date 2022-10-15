@@ -20,6 +20,11 @@ public static class LayoutManager
 		Root.Game.ActiveLayout = Root.Game.SurvivalEditorMainLayout;
 	}
 
+	public static void ToCustomLeaderboardsRecorderMainLayout()
+	{
+		Root.Game.ActiveLayout = Root.Game.CustomLeaderboardsRecorderMainLayout;
+	}
+
 	public static void ToSurvivalEditorOpenLayout()
 	{
 		Root.Game.SurvivalEditorOpenLayout.SetComponentsFromPath(UserSettings.DevilDaggersInstallationDirectory);

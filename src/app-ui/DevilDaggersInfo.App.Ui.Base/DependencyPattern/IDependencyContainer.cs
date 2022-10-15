@@ -31,4 +31,10 @@ public interface IDependencyContainer
 	IFileDialogLayout SurvivalEditorSaveLayout { get; }
 
 	#endregion DDSE screen
+
+	#region DDCL screen
+
+	IExtendedLayout CustomLeaderboardsRecorderMainLayout { get; }
+
+	#endregion DDCL screen
 }
