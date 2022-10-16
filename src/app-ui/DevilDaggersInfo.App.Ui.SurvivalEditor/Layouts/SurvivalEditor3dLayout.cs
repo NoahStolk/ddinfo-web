@@ -6,8 +6,10 @@ using Silk.NET.GLFW;
 using Silk.NET.OpenGL;
 using Warp;
 using Warp.Content;
+using Warp.Extensions;
 using Warp.InterpolationStates;
 using Warp.Ui;
+using Warp.Utils;
 using Shader=Warp.Content.Shader;
 using Texture=Warp.Content.Texture;
 
@@ -125,6 +127,9 @@ public class SurvivalEditor3dLayout : Layout, ISurvivalEditor3dLayout
 		private readonly QuaternionState _rotationState = new(Quaternion.Identity);
 
 		private Vector3 _axisAlignedSpeed;
+		private float _yaw;
+		private float _pitch;
+		private Vector2i<int> _lockedMousePosition;
 
 		public Matrix4x4 Projection { get; private set; }
 		public Matrix4x4 ViewMatrix { get; private set; }
@@ -134,7 +139,25 @@ public class SurvivalEditor3dLayout : Layout, ISurvivalEditor3dLayout
 			_positionState.PrepareUpdate();
 			_rotationState.PrepareUpdate();
 
+			HandleKeys();
+			HandleMouse();
+
 			const float moveSpeed = 20;
+
+			Matrix4x4 rotMat = Matrix4x4.CreateFromQuaternion(_rotationState.Physics);
+			Vector3 transformed = RotateVector(_axisAlignedSpeed, rotMat) + new Vector3(0, _axisAlignedSpeed.Y, 0);
+			_positionState.Physics += transformed * moveSpeed * Root.Game.Dt;
+
+			static Vector3 RotateVector(Vector3 vector, Matrix4x4 rotationMatrix)
+			{
+				Vector3 right = new(rotationMatrix.M11, rotationMatrix.M12, rotationMatrix.M13);
+				Vector3 forward = -Vector3.Cross(Vector3.UnitY, right);
+				return right * vector.X + forward * vector.Z;
+			}
+		}
+
+		private void HandleKeys()
+		{
 			const float acceleration = 20;
 			const float friction = 20;
 			const Keys forwardInput = Keys.W;
@@ -180,16 +203,32 @@ public class SurvivalEditor3dLayout : Layout, ISurvivalEditor3dLayout
 			_axisAlignedSpeed.X = Math.Clamp(_axisAlignedSpeed.X, -1, 1);
 			_axisAlignedSpeed.Y = Math.Clamp(_axisAlignedSpeed.Y, -1, 1);
 			_axisAlignedSpeed.Z = Math.Clamp(_axisAlignedSpeed.Z, -1, 1);
+		}
 
-			Matrix4x4 rotMat = Matrix4x4.CreateFromQuaternion(_rotationState.Physics);
-			Vector3 transformed = RotateVector(_axisAlignedSpeed, rotMat) + new Vector3(0, _axisAlignedSpeed.Y, 0);
-			_positionState.Physics += transformed * moveSpeed * Root.Game.Dt;
-
-			static Vector3 RotateVector(Vector3 vector, Matrix4x4 rotationMatrix)
+		private unsafe void HandleMouse()
+		{
+			Vector2i<int> mousePosition = Input.GetMousePosition().FloorToVector2Int32();
+			if (Input.IsButtonPressed(MouseButton.Left))
 			{
-				Vector3 right = new(rotationMatrix.M11, rotationMatrix.M12, rotationMatrix.M13);
-				Vector3 forward = -Vector3.Cross(Vector3.UnitY, right);
-				return right * vector.X + forward * vector.Z;
+				_lockedMousePosition = mousePosition;
+				Graphics.Glfw.SetInputMode(Window, CursorStateAttribute.Cursor, CursorModeValue.CursorHidden);
+			}
+			else if (Input.IsButtonReleased(MouseButton.Left))
+			{
+				Graphics.Glfw.SetInputMode(Window, CursorStateAttribute.Cursor, CursorModeValue.CursorNormal);
+			}
+			else if (Input.IsButtonHeld(MouseButton.Left) && mousePosition != _lockedMousePosition)
+			{
+				const float lookSpeed = 20;
+
+				Vector2i<int> delta = mousePosition - _lockedMousePosition;
+				_yaw -= lookSpeed * delta.X * 0.0001f;
+				_pitch -= lookSpeed * delta.Y * 0.0001f;
+
+				_pitch = Math.Clamp(_pitch, MathUtils.ToRadians(-89.9f), MathUtils.ToRadians(89.9f));
+				_rotationState.Physics = Quaternion.CreateFromYawPitchRoll(_yaw, -_pitch, 0);
+
+				Graphics.Glfw.SetCursorPos(Window, _lockedMousePosition.X, _lockedMousePosition.Y);
 			}
 		}
 
