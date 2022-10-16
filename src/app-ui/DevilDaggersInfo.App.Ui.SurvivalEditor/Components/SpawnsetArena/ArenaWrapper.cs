@@ -28,7 +28,7 @@ public class ArenaWrapper : AbstractComponent
 		NestingContext.Add(arenaHeightButtons);
 		NestingContext.Add(_shrinkSlider);
 
-		Button button3d = new(Rectangle.At(0, 0, 64, 16), LayoutManager.ToSurvivalEditor3dLayout, Color.Black, Color.White, Color.Aqua, Color.White, "3D", TextAlign.Middle, 2, FontSize.F12X12);
+		Button button3d = new(Rectangle.At(0, 0, 64, 16), LayoutManager.ToSurvivalEditor3dLayout, Color.Black, Color.White, Color.Aqua, Color.White, "3D", TextAlign.Middle, 2, FontSize.F8X8);
 		NestingContext.Add(button3d);
 	}
 

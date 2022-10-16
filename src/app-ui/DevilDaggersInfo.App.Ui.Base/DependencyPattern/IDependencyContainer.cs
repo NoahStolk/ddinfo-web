@@ -1,3 +1,4 @@
+using DevilDaggersInfo.App.Core.ApiClient;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts.SurvivalEditor;
 using System.Numerics;
@@ -17,6 +18,8 @@ public interface IDependencyContainer
 	float Tt { get; }
 
 	string? TooltipText { get; set; }
+
+	AsyncHandler AsyncHandler { get; }
 
 	IExtendedLayout? ActiveLayout { get; set; }
 

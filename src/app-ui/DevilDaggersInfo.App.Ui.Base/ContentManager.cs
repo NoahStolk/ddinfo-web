@@ -74,11 +74,6 @@ public static class ContentManager
 
 	private static Texture? GetTexture(ModBinary modBinary, string textureName)
 	{
-		if (!modBinary.AssetMap.TryGetValue(new(AssetType.Texture, textureName), out AssetData? textureData))
-			return null;
-
-		Texture texture = TextureConverter.ToWarpTexture(textureData.Buffer);
-		texture.Load();
-		return texture;
+		return modBinary.AssetMap.TryGetValue(new(AssetType.Texture, textureName), out AssetData? textureData) ? TextureConverter.ToWarpTexture(textureData.Buffer) : null;
 	}
 }
