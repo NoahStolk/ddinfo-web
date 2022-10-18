@@ -2,6 +2,7 @@ using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts.SurvivalEditor;
 using DevilDaggersInfo.App.Ui.Base.States;
+using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using Silk.NET.GLFW;
 using Silk.NET.OpenGL;
 using Warp;
@@ -27,16 +28,22 @@ public class SurvivalEditor3dLayout : Layout, ISurvivalEditor3dLayout
 		_meshShader = meshShader;
 	}
 
-	public void InitializeScene()
+	public void BuildScene()
 	{
-		const int tileDimension = 3;
-		const int start = -tileDimension / 2;
-		const int end = tileDimension / 2;
-		for (int i = start; i <= end; i++)
+		_tiles.Clear();
+
+		int halfSize = StateManager.SpawnsetState.Spawnset.ArenaDimension / 2;
+		for (int i = 0; i < StateManager.SpawnsetState.Spawnset.ArenaDimension; i++)
 		{
-			for (int j = start; j <= end; j++)
+			for (int j = 0; j < StateManager.SpawnsetState.Spawnset.ArenaDimension; j++)
 			{
-				_tiles.Add(new(ContentManager.Content.TileMesh, ContentManager.Content.TileTexture, _meshShader, Vector3.One, Quaternion.Identity, new(i * 4, 0, j * 4)));
+				float y = StateManager.SpawnsetState.Spawnset.ArenaTiles[i, j];
+				if (y < -2)
+					continue;
+
+				float x = (i - halfSize) * 4;
+				float z = (j - halfSize) * 4;
+				_tiles.Add(new(ContentManager.Content.TileMesh, ContentManager.Content.TileTexture, _meshShader, Vector3.One, Quaternion.Identity, new(x, y, z)));
 			}
 		}
 	}
@@ -123,7 +130,7 @@ public class SurvivalEditor3dLayout : Layout, ISurvivalEditor3dLayout
 
 	private sealed class Camera
 	{
-		private readonly Vector3State _positionState = new(default);
+		private readonly Vector3State _positionState = new(new(0, 4, 0));
 		private readonly QuaternionState _rotationState = new(Quaternion.Identity);
 
 		private Vector3 _axisAlignedSpeed;

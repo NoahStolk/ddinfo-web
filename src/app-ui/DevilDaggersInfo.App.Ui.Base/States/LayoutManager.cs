@@ -23,6 +23,7 @@ public static class LayoutManager
 	public static void ToSurvivalEditor3dLayout()
 	{
 		Root.Game.ActiveLayout = Root.Game.SurvivalEditor3dLayout;
+		Root.Game.SurvivalEditor3dLayout.BuildScene();
 	}
 
 	public static void ToCustomLeaderboardsRecorderMainLayout()
