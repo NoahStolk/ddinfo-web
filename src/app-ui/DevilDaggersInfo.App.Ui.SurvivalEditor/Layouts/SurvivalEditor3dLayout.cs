@@ -11,8 +11,7 @@ using Warp.Extensions;
 using Warp.InterpolationStates;
 using Warp.Ui;
 using Warp.Utils;
-using Shader=Warp.Content.Shader;
-using Texture=Warp.Content.Texture;
+using Shader = Warp.Content.Shader;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Layouts;
 
@@ -22,10 +21,38 @@ public class SurvivalEditor3dLayout : Layout, ISurvivalEditor3dLayout
 	private readonly Shader _meshShader;
 	private readonly List<MeshObject> _tiles = new();
 
+	private uint _tileVao;
+
 	public SurvivalEditor3dLayout(Shader meshShader)
 		: base(Constants.Full)
 	{
 		_meshShader = meshShader;
+	}
+
+	public unsafe void Initialize()
+	{
+		_tileVao = Gl.GenVertexArray();
+		Gl.BindVertexArray(_tileVao);
+
+		uint vbo = Gl.GenBuffer();
+		Gl.BindBuffer(BufferTargetARB.ArrayBuffer, vbo);
+
+		fixed (Vertex* v = &ContentManager.Content.TileMesh.Vertices[0])
+			Gl.BufferData(BufferTargetARB.ArrayBuffer, (nuint)(ContentManager.Content.TileMesh.Vertices.Length * sizeof(Vertex)), v, BufferUsageARB.StaticDraw);
+
+		Gl.EnableVertexAttribArray(0);
+		Gl.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, (uint)sizeof(Vertex), (void*)0);
+
+		Gl.EnableVertexAttribArray(1);
+		Gl.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, (uint)sizeof(Vertex), (void*)(3 * sizeof(float)));
+
+		// TODO: We don't do anything with normals here.
+		Gl.EnableVertexAttribArray(2);
+		Gl.VertexAttribPointer(2, 3, VertexAttribPointerType.Float, false, (uint)sizeof(Vertex), (void*)(5 * sizeof(float)));
+
+		Gl.BindVertexArray(0);
+
+		Gl.BindBuffer(BufferTargetARB.ArrayBuffer, 0);
 	}
 
 	public void BuildScene()
@@ -43,7 +70,7 @@ public class SurvivalEditor3dLayout : Layout, ISurvivalEditor3dLayout
 
 				float x = (i - halfSize) * 4;
 				float z = (j - halfSize) * 4;
-				_tiles.Add(new(ContentManager.Content.TileMesh, ContentManager.Content.TileTexture, _meshShader, Vector3.One, Quaternion.Identity, new(x, y, z)));
+				_tiles.Add(new(_tileVao, _meshShader, Vector3.One, Quaternion.Identity, new(x, y, z)));
 			}
 		}
 	}
@@ -63,7 +90,9 @@ public class SurvivalEditor3dLayout : Layout, ISurvivalEditor3dLayout
 		_meshShader.Use();
 		_meshShader.SetMatrix4x4("view", _camera.ViewMatrix);
 		_meshShader.SetMatrix4x4("projection", _camera.Projection);
+		_meshShader.SetInt("textureDiffuse", 0);
 
+		ContentManager.Content.TileTexture.Use();
 		foreach (MeshObject tile in _tiles)
 			tile.Render();
 	}
@@ -74,56 +103,28 @@ public class SurvivalEditor3dLayout : Layout, ISurvivalEditor3dLayout
 
 	private sealed class MeshObject
 	{
-		private readonly Mesh _mesh;
-		private readonly Texture _texture;
+		private readonly uint _vao;
 		private readonly Shader _shader;
 		private readonly Matrix4x4 _modelMatrix;
-		private readonly uint _vao;
 
-		public unsafe MeshObject(Mesh mesh, Texture texture, Shader shader, Vector3 scale, Quaternion rotation, Vector3 position)
+		public MeshObject(uint vao, Shader shader, Vector3 scale, Quaternion rotation, Vector3 position)
 		{
-			_mesh = mesh;
-			_texture = texture;
+			_vao = vao;
 			_shader = shader;
 
 			Matrix4x4 scaleMatrix = Matrix4x4.CreateScale(scale);
 			Matrix4x4 rotationMatrix = Matrix4x4.CreateFromQuaternion(rotation);
 			Matrix4x4 translationMatrix = Matrix4x4.CreateTranslation(position);
 			_modelMatrix = scaleMatrix * rotationMatrix * translationMatrix;
-
-			_vao = Gl.GenVertexArray();
-			Gl.BindVertexArray(_vao);
-
-			uint vbo = Gl.GenBuffer();
-			Gl.BindBuffer(BufferTargetARB.ArrayBuffer, vbo);
-
-			fixed (Vertex* v = &mesh.Vertices[0])
-				Gl.BufferData(BufferTargetARB.ArrayBuffer, (nuint)(mesh.Vertices.Length * sizeof(Vertex)), v, BufferUsageARB.StaticDraw);
-
-			Gl.EnableVertexAttribArray(0);
-			Gl.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, (uint)sizeof(Vertex), (void*)0);
-
-			Gl.EnableVertexAttribArray(1);
-			Gl.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, (uint)sizeof(Vertex), (void*)(3 * sizeof(float)));
-
-			// TODO: We don't do anything with normals here.
-			Gl.EnableVertexAttribArray(2);
-			Gl.VertexAttribPointer(2, 3, VertexAttribPointerType.Float, false, (uint)sizeof(Vertex), (void*)(5 * sizeof(float)));
-
-			Gl.BindVertexArray(0);
-
-			Gl.BindBuffer(BufferTargetARB.ArrayBuffer, 0);
 		}
 
 		public unsafe void Render()
 		{
 			_shader.SetMatrix4x4("model", _modelMatrix);
-			_shader.SetInt("textureDiffuse", 0);
-			_texture.Use();
 
 			Gl.BindVertexArray(_vao);
-			fixed (uint* i = &_mesh.Indices[0])
-				Gl.DrawElements(PrimitiveType.Triangles, (uint)_mesh.Indices.Length, DrawElementsType.UnsignedInt, i);
+			fixed (uint* i = &ContentManager.Content.TileMesh.Indices[0])
+				Gl.DrawElements(PrimitiveType.Triangles, (uint)ContentManager.Content.TileMesh.Indices.Length, DrawElementsType.UnsignedInt, i);
 			Gl.BindVertexArray(0);
 		}
 	}

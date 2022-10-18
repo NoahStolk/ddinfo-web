@@ -3,4 +3,6 @@ namespace DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts.Survi
 public interface ISurvivalEditor3dLayout : IExtendedLayout
 {
 	void BuildScene();
+
+	void Initialize();
 }
