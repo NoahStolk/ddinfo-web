@@ -22,43 +22,24 @@ public class AsyncHandler
 
 	public void CheckForUpdates(Action<AppVersion?> callback)
 	{
-		DistributionLatest dl = new(_currentAppVersion, _buildType, callback);
-		Thread thread = new(dl.SetOnlineAppVersion);
-		thread.Start();
+		Task.Run(async () => callback(await new FetchLatestDistribution(_currentAppVersion, _buildType).HandleAsync()));
 	}
 
-	private sealed class DistributionLatest
+	private sealed record FetchLatestDistribution(AppVersion CurrentAppVersion, ToolBuildType BuildType)
 	{
-		private readonly AppVersion _currentAppVersion;
-		private readonly ToolBuildType _buildType;
-		private readonly Action<AppVersion?> _callback;
-
-		public DistributionLatest(AppVersion currentAppVersion, ToolBuildType buildType, Action<AppVersion?> callback)
+		public async Task<AppVersion?> HandleAsync()
 		{
-			_currentAppVersion = currentAppVersion;
-			_buildType = buildType;
-			_callback = callback;
-		}
-
-		public void SetOnlineAppVersion()
-		{
-			AppVersion? appVersion = GetDistributionLatestReturn();
-			_callback(appVersion);
-
-			AppVersion? GetDistributionLatestReturn()
+			try
 			{
-				try
-				{
-					GetToolDistribution distribution = _client.GetLatestToolDistribution("ddinfo-tools", ToolPublishMethod.SelfContained, _buildType).Result; // TODO: Ok???
-					if (!AppVersion.TryParse(distribution.VersionNumber, out AppVersion? onlineVersion))
-						return null;
-
-					return onlineVersion > _currentAppVersion ? onlineVersion : null;
-				}
-				catch // TODO: Return error.
-				{
+				GetToolDistribution distribution = await _client.GetLatestToolDistribution("ddinfo-tools", ToolPublishMethod.SelfContained, BuildType);
+				if (!AppVersion.TryParse(distribution.VersionNumber, out AppVersion? onlineVersion))
 					return null;
-				}
+
+				return onlineVersion > CurrentAppVersion ? onlineVersion : null;
+			}
+			catch
+			{
+				return null;
 			}
 		}
 	}
