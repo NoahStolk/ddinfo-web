@@ -8,14 +8,17 @@ let publishDirectoryName = "_temp-release"
 [<Literal>]
 let toolName = "ddinfo-tools"
 
+[<Literal>]
+let contentFileName = "ddinfo-tools"
+
 let buildAndUpload projectFilePath zipOutputDirectory toolBuildType toolPublishMethod =
     AppBuilder.build projectFilePath publishDirectoryName toolBuildType toolPublishMethod
 
     let publishDirectoryPath = Path.Combine(Path.GetDirectoryName(projectFilePath:string), publishDirectoryName)
 
     // Copy content file.
-    let contentFilePath = Path.Combine(projectFilePath, "..", "bin", "Debug", "net7.0", "c")
-    File.Copy(contentFilePath, Path.Combine(publishDirectoryPath, "c"))
+    let contentFilePath = Path.Combine(projectFilePath, "..", "bin", "Debug", "net7.0", contentFileName)
+    File.Copy(contentFilePath, Path.Combine(publishDirectoryPath, contentFileName))
     
     // Zip build and content file.
     let version = ProjectReader.readVersionFromProjectFile projectFilePath

@@ -18,15 +18,13 @@ namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Layouts;
 public class SurvivalEditor3dLayout : Layout, ISurvivalEditor3dLayout
 {
 	private readonly Camera _camera = new();
-	private readonly Shader _meshShader;
 	private readonly List<MeshObject> _tiles = new();
 
 	private uint _tileVao;
 
-	public SurvivalEditor3dLayout(Shader meshShader)
+	public SurvivalEditor3dLayout()
 		: base(Constants.Full)
 	{
-		_meshShader = meshShader;
 	}
 
 	public unsafe void Initialize()
@@ -70,7 +68,7 @@ public class SurvivalEditor3dLayout : Layout, ISurvivalEditor3dLayout
 
 				float x = (i - halfSize) * 4;
 				float z = (j - halfSize) * 4;
-				_tiles.Add(new(_tileVao, _meshShader, Vector3.One, Quaternion.Identity, new(x, y, z)));
+				_tiles.Add(new(_tileVao, Vector3.One, Quaternion.Identity, new(x, y, z)));
 			}
 		}
 	}
@@ -87,10 +85,10 @@ public class SurvivalEditor3dLayout : Layout, ISurvivalEditor3dLayout
 	{
 		_camera.PreRender();
 
-		_meshShader.Use();
-		_meshShader.SetMatrix4x4("view", _camera.ViewMatrix);
-		_meshShader.SetMatrix4x4("projection", _camera.Projection);
-		_meshShader.SetInt("textureDiffuse", 0);
+		Shaders.Mesh.Use();
+		Shader.SetMatrix4x4(MeshUniforms.View, _camera.ViewMatrix);
+		Shader.SetMatrix4x4(MeshUniforms.Projection, _camera.Projection);
+		Shader.SetInt(MeshUniforms.TextureDiffuse, 0);
 
 		ContentManager.Content.TileTexture.Use();
 		foreach (MeshObject tile in _tiles)
@@ -104,13 +102,11 @@ public class SurvivalEditor3dLayout : Layout, ISurvivalEditor3dLayout
 	private sealed class MeshObject
 	{
 		private readonly uint _vao;
-		private readonly Shader _shader;
 		private readonly Matrix4x4 _modelMatrix;
 
-		public MeshObject(uint vao, Shader shader, Vector3 scale, Quaternion rotation, Vector3 position)
+		public MeshObject(uint vao, Vector3 scale, Quaternion rotation, Vector3 position)
 		{
 			_vao = vao;
-			_shader = shader;
 
 			Matrix4x4 scaleMatrix = Matrix4x4.CreateScale(scale);
 			Matrix4x4 rotationMatrix = Matrix4x4.CreateFromQuaternion(rotation);
@@ -120,7 +116,7 @@ public class SurvivalEditor3dLayout : Layout, ISurvivalEditor3dLayout
 
 		public unsafe void Render()
 		{
-			_shader.SetMatrix4x4("model", _modelMatrix);
+			Shader.SetMatrix4x4(MeshUniforms.Model, _modelMatrix);
 
 			Gl.BindVertexArray(_vao);
 			fixed (uint* i = &ContentManager.Content.TileMesh.Indices[0])
