@@ -54,7 +54,7 @@ public class ModArchiveProcessor
 		}
 
 		// Read and extract the new zip file to validate it and to fill the cache if everything is OK.
-		byte[] zipBytes = File.ReadAllBytes(zipFilePath);
+		byte[] zipBytes = await File.ReadAllBytesAsync(zipFilePath);
 
 		try
 		{
