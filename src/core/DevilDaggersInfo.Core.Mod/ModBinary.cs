@@ -33,22 +33,19 @@ public class ModBinary
 		{
 			ushort type = br.ReadUInt16();
 			AssetType? assetType = type.GetAssetType();
-
-			// Skip unknown or obsolete types (such as 0x11, which is an outdated type for (fragment?) shaders).
-			// This also breaks the while loop when the end of the TOC is reached (which is 0x0000).
-			if (!assetType.HasValue)
-				continue;
-
 			string name = br.ReadNullTerminatedString();
-
 			int offset = br.ReadInt32();
 			int size = br.ReadInt32();
+			_ = br.ReadInt32();
 
 			// Skip invalid chunks (present in default dd binary).
 			if (size <= 0 || offset < _fileHeaderSize + tocSize)
 				continue;
 
-			_ = br.ReadInt32();
+			// Skip unknown or obsolete types (such as 0x11, which is an outdated type for (fragment?) shaders).
+			// This also breaks the while loop when the end of the TOC is reached (which is 0x0000).
+			if (!assetType.HasValue)
+				continue;
 
 			chunks.Add(new(name, offset, size, assetType.Value));
 
