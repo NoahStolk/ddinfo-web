@@ -32,6 +32,12 @@ public class ModBinary
 		while (br.BaseStream.Position < _fileHeaderSize + tocSize)
 		{
 			ushort type = br.ReadUInt16();
+			if (type == 0)
+			{
+				// Break the loop when the end of the TOC is reached (which is 0x0000).
+				break;
+			}
+
 			AssetType? assetType = type.GetAssetType();
 			string name = br.ReadNullTerminatedString();
 			int offset = br.ReadInt32();
@@ -43,7 +49,6 @@ public class ModBinary
 				continue;
 
 			// Skip unknown or obsolete types (such as 0x11, which is an outdated type for (fragment?) shaders).
-			// This also breaks the while loop when the end of the TOC is reached (which is 0x0000).
 			if (!assetType.HasValue)
 				continue;
 
