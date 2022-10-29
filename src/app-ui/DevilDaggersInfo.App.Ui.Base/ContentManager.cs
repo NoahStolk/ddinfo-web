@@ -1,4 +1,5 @@
 using DevilDaggersInfo.App.Core.AssetInterop;
+using DevilDaggersInfo.App.Ui.Base.Exceptions;
 using DevilDaggersInfo.App.Ui.Base.Settings;
 using DevilDaggersInfo.App.Ui.Base.Utils;
 using DevilDaggersInfo.Core.Mod;
@@ -19,66 +20,63 @@ public static class ContentManager
 		private set => _content = value;
 	}
 
-	public static string? Initialize()
+	public static void Initialize()
 	{
 		string dir = UserSettings.DevilDaggersInstallationDirectory;
 		if (!Directory.Exists(dir))
-			return "Installation directory does not exist.";
+			throw new MissingContentException("Installation directory does not exist.");
 
 		// TODO: Use correct Linux file name for executable.
 		// string ddExe = Path.Combine(dir, "dd.exe");
 		string survival = Path.Combine(dir, "dd", "survival");
-		// string resAudio = Path.Combine(dir, "res", "audio");
 		string resDd = Path.Combine(dir, "res", "dd");
 
 		// if (!File.Exists(ddExe))
-		// 	return "Executable does not exist.";
+		// 	throw new MissingContentException("Executable does not exist.");
 
 		if (!File.Exists(survival))
-			return "File 'dd/survival' does not exist.";
-
-		// if (!File.Exists(resAudio))
-		// 	return "File 'res/audio' does not exist.";
+			throw new MissingContentException("File 'dd/survival' does not exist.");
 
 		if (!File.Exists(resDd))
-			return "File 'res/dd' does not exist.";
+			throw new MissingContentException("File 'res/dd' does not exist.");
 
 		// TODO: Also verify survival hash.
 		if (!SpawnsetBinary.TryParse(File.ReadAllBytes(Path.Combine(UserSettings.DevilDaggersInstallationDirectory, "dd", "survival")), out SpawnsetBinary? defaultSpawnset))
-			return "File 'dd/survival' could not be parsed.";
+			throw new MissingContentException("File 'dd/survival' could not be parsed.");
 
 		if (Directory.Exists(Path.Combine(UserSettings.DevilDaggersInstallationDirectory, "mods", "survival")))
-			return "There must not be a directory named 'survival' in the 'mods' directory. You must delete the directory, or mods will not work.";
+			throw new MissingContentException("There must not be a directory named 'survival' in the 'mods' directory. You must delete the directory, or mods will not work.");
 
 		ModBinary modBinary = new(File.ReadAllBytes(Path.Combine(UserSettings.DevilDaggersInstallationDirectory, "res", "dd")), ModBinaryReadComprehensiveness.All);
-		Texture? iconDaggerTexture = GetTexture(modBinary, "iconmaskdagger");
-		Mesh? skull4Mesh = GetMesh(modBinary, "boid4");
-		Texture? skull4Texture = GetTexture(modBinary, "boid4");
-		Mesh? tileMesh = GetMesh(modBinary, "tile");
-		Texture? tileTexture = GetTexture(modBinary, "tile");
-		Mesh? pillarMesh = GetMesh(modBinary, "pillar");
-		Texture? pillarTexture = GetTexture(modBinary, "pillar");
 
-		if (iconDaggerTexture == null || skull4Mesh == null || skull4Texture == null || tileMesh == null || tileTexture == null || pillarMesh == null || pillarTexture == null)
-			return "Not all required assets from 'res/dd' were found.";
-
-		pillarMesh = TallTilesBuilder.CreateTallTiles(pillarMesh, 16);
-
-		Content = new(defaultSpawnset, iconDaggerTexture, skull4Mesh, skull4Texture, tileMesh, tileTexture, pillarMesh, pillarTexture);
-		return null;
+		Content = new(
+			DefaultSpawnset: defaultSpawnset,
+			IconDaggerTexture: GetTexture(modBinary, "iconmaskdagger"),
+			DaggerMesh: GetMesh(modBinary, "dagger"),
+			DaggerSilverTexture: GetTexture(modBinary, "daggersilver"),
+			Skull4Mesh: GetMesh(modBinary, "boid4"),
+			Skull4Texture: GetTexture(modBinary, "boid4"),
+			Skull4JawMesh: GetMesh(modBinary, "boid4jaw"),
+			Skull4JawTexture: GetTexture(modBinary, "boid4jaw"),
+			TileMesh: GetMesh(modBinary, "tile"),
+			TileTexture: GetTexture(modBinary, "tile"),
+			PillarMesh: TallTilesBuilder.CreateTallTiles(GetMesh(modBinary, "pillar"), 16),
+			PillarTexture: GetTexture(modBinary, "pillar"));
 	}
 
-	private static Mesh? GetMesh(ModBinary modBinary, string meshName)
+	private static Mesh GetMesh(ModBinary modBinary, string meshName)
 	{
 		if (!modBinary.AssetMap.TryGetValue(new(AssetType.Mesh, meshName), out AssetData? meshData))
-			return null;
+			throw new MissingContentException($"Required mesh '{meshName}' from 'res/dd' was not found.");
 
-		Mesh mesh = MeshConverter.ToWarpMesh(meshData.Buffer);
-		return mesh;
+		return MeshConverter.ToWarpMesh(meshData.Buffer);
 	}
 
-	private static Texture? GetTexture(ModBinary modBinary, string textureName)
+	private static Texture GetTexture(ModBinary modBinary, string textureName)
 	{
-		return modBinary.AssetMap.TryGetValue(new(AssetType.Texture, textureName), out AssetData? textureData) ? TextureConverter.ToWarpTexture(textureData.Buffer) : null;
+		if (!modBinary.AssetMap.TryGetValue(new(AssetType.Texture, textureName), out AssetData? textureData))
+			throw new MissingContentException($"Required texture '{textureName}' from 'res/dd' was not found.");
+
+		return TextureConverter.ToWarpTexture(textureData.Buffer);
 	}
 }
