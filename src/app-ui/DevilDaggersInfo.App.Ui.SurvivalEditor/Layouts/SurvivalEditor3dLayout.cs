@@ -3,6 +3,8 @@ using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts.SurvivalEditor;
 using DevilDaggersInfo.App.Ui.Base.States;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
+using DevilDaggersInfo.Core.Spawnset;
+using DevilDaggersInfo.Types.Core.Spawnsets;
 using Silk.NET.GLFW;
 using Silk.NET.OpenGL;
 using Warp;
@@ -11,7 +13,6 @@ using Warp.Extensions;
 using Warp.InterpolationStates;
 using Warp.Ui;
 using Warp.Utils;
-using Shader = Warp.Content.Shader;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Layouts;
 
@@ -20,9 +21,11 @@ public class SurvivalEditor3dLayout : Layout, ISurvivalEditor3dLayout
 	private readonly Camera _camera = new();
 	private readonly List<MeshObject> _tiles = new();
 	private readonly List<MeshObject> _pillars = new();
+	private MeshObject? _raceDagger;
 
 	private uint _tileVao;
 	private uint _pillarVao;
+	private uint _daggerVao;
 
 	public SurvivalEditor3dLayout()
 		: base(Constants.Full)
@@ -33,6 +36,7 @@ public class SurvivalEditor3dLayout : Layout, ISurvivalEditor3dLayout
 	{
 		_tileVao = CreateVao(ContentManager.Content.TileMesh);
 		_pillarVao = CreateVao(ContentManager.Content.PillarMesh);
+		_daggerVao = CreateVao(ContentManager.Content.DaggerMesh);
 
 		static uint CreateVao(Mesh mesh)
 		{
@@ -68,12 +72,13 @@ public class SurvivalEditor3dLayout : Layout, ISurvivalEditor3dLayout
 		_tiles.Clear();
 		_pillars.Clear();
 
-		int halfSize = StateManager.SpawnsetState.Spawnset.ArenaDimension / 2;
-		for (int i = 0; i < StateManager.SpawnsetState.Spawnset.ArenaDimension; i++)
+		SpawnsetBinary spawnset = StateManager.SpawnsetState.Spawnset;
+		int halfSize = spawnset.ArenaDimension / 2;
+		for (int i = 0; i < spawnset.ArenaDimension; i++)
 		{
-			for (int j = 0; j < StateManager.SpawnsetState.Spawnset.ArenaDimension; j++)
+			for (int j = 0; j < spawnset.ArenaDimension; j++)
 			{
-				float y = StateManager.SpawnsetState.Spawnset.ArenaTiles[i, j];
+				float y = spawnset.ArenaTiles[i, j];
 				if (y < -2)
 					continue;
 
@@ -82,6 +87,21 @@ public class SurvivalEditor3dLayout : Layout, ISurvivalEditor3dLayout
 				_tiles.Add(new(_tileVao, ContentManager.Content.TileMesh, Vector3.One, Quaternion.Identity, new(x, y, z)));
 				_pillars.Add(new(_pillarVao, ContentManager.Content.PillarMesh, Vector3.One, Quaternion.Identity, new(x, y, z)));
 			}
+		}
+
+		_raceDagger = GetRaceDagger();
+
+		MeshObject? GetRaceDagger()
+		{
+			if (spawnset.GameMode != GameMode.Race)
+				return null;
+
+			(int x, float? y, int z) = spawnset.GetRaceDaggerTilePosition();
+			if (!y.HasValue)
+				return null;
+
+			Vector3 position = new(spawnset.TileToWorldCoordinate(x), y.Value + 4, spawnset.TileToWorldCoordinate(z));
+			return new(_daggerVao, ContentManager.Content.DaggerMesh, new(6), Quaternion.CreateFromAxisAngle(Vector3.UnitX, MathF.PI * 0.5f), position);
 		}
 	}
 
@@ -109,6 +129,12 @@ public class SurvivalEditor3dLayout : Layout, ISurvivalEditor3dLayout
 		ContentManager.Content.PillarTexture.Use();
 		foreach (MeshObject pillar in _pillars)
 			pillar.Render();
+
+		if (_raceDagger != null)
+		{
+			ContentManager.Content.DaggerSilverTexture.Use();
+			_raceDagger.Render();
+		}
 	}
 
 	public void Render()
