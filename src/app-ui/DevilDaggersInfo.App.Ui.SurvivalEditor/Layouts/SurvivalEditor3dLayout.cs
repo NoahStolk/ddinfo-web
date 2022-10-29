@@ -19,8 +19,10 @@ public class SurvivalEditor3dLayout : Layout, ISurvivalEditor3dLayout
 {
 	private readonly Camera _camera = new();
 	private readonly List<MeshObject> _tiles = new();
+	private readonly List<MeshObject> _pillars = new();
 
 	private uint _tileVao;
+	private uint _pillarVao;
 
 	public SurvivalEditor3dLayout()
 		: base(Constants.Full)
@@ -29,33 +31,42 @@ public class SurvivalEditor3dLayout : Layout, ISurvivalEditor3dLayout
 
 	public unsafe void Initialize()
 	{
-		_tileVao = Gl.GenVertexArray();
-		Gl.BindVertexArray(_tileVao);
+		_tileVao = CreateVao(ContentManager.Content.TileMesh);
+		_pillarVao = CreateVao(ContentManager.Content.PillarMesh);
 
-		uint vbo = Gl.GenBuffer();
-		Gl.BindBuffer(BufferTargetARB.ArrayBuffer, vbo);
+		static uint CreateVao(Mesh mesh)
+		{
+			uint vao = Gl.GenVertexArray();
+			Gl.BindVertexArray(vao);
 
-		fixed (Vertex* v = &ContentManager.Content.TileMesh.Vertices[0])
-			Gl.BufferData(BufferTargetARB.ArrayBuffer, (nuint)(ContentManager.Content.TileMesh.Vertices.Length * sizeof(Vertex)), v, BufferUsageARB.StaticDraw);
+			uint vbo = Gl.GenBuffer();
+			Gl.BindBuffer(BufferTargetARB.ArrayBuffer, vbo);
 
-		Gl.EnableVertexAttribArray(0);
-		Gl.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, (uint)sizeof(Vertex), (void*)0);
+			fixed (Vertex* v = &mesh.Vertices[0])
+				Gl.BufferData(BufferTargetARB.ArrayBuffer, (nuint)(mesh.Vertices.Length * sizeof(Vertex)), v, BufferUsageARB.StaticDraw);
 
-		Gl.EnableVertexAttribArray(1);
-		Gl.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, (uint)sizeof(Vertex), (void*)(3 * sizeof(float)));
+			Gl.EnableVertexAttribArray(0);
+			Gl.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, (uint)sizeof(Vertex), (void*)0);
 
-		// TODO: We don't do anything with normals here.
-		Gl.EnableVertexAttribArray(2);
-		Gl.VertexAttribPointer(2, 3, VertexAttribPointerType.Float, false, (uint)sizeof(Vertex), (void*)(5 * sizeof(float)));
+			Gl.EnableVertexAttribArray(1);
+			Gl.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, (uint)sizeof(Vertex), (void*)(3 * sizeof(float)));
 
-		Gl.BindVertexArray(0);
+			// TODO: We don't do anything with normals here.
+			Gl.EnableVertexAttribArray(2);
+			Gl.VertexAttribPointer(2, 3, VertexAttribPointerType.Float, false, (uint)sizeof(Vertex), (void*)(5 * sizeof(float)));
 
-		Gl.BindBuffer(BufferTargetARB.ArrayBuffer, 0);
+			Gl.BindVertexArray(0);
+
+			Gl.BindBuffer(BufferTargetARB.ArrayBuffer, 0);
+
+			return vao;
+		}
 	}
 
 	public void BuildScene()
 	{
 		_tiles.Clear();
+		_pillars.Clear();
 
 		int halfSize = StateManager.SpawnsetState.Spawnset.ArenaDimension / 2;
 		for (int i = 0; i < StateManager.SpawnsetState.Spawnset.ArenaDimension; i++)
@@ -68,7 +79,8 @@ public class SurvivalEditor3dLayout : Layout, ISurvivalEditor3dLayout
 
 				float x = (i - halfSize) * 4;
 				float z = (j - halfSize) * 4;
-				_tiles.Add(new(_tileVao, Vector3.One, Quaternion.Identity, new(x, y, z)));
+				_tiles.Add(new(_tileVao, ContentManager.Content.TileMesh, Vector3.One, Quaternion.Identity, new(x, y, z)));
+				_pillars.Add(new(_pillarVao, ContentManager.Content.PillarMesh, Vector3.One, Quaternion.Identity, new(x, y, z)));
 			}
 		}
 	}
@@ -93,6 +105,10 @@ public class SurvivalEditor3dLayout : Layout, ISurvivalEditor3dLayout
 		ContentManager.Content.TileTexture.Use();
 		foreach (MeshObject tile in _tiles)
 			tile.Render();
+
+		ContentManager.Content.PillarTexture.Use();
+		foreach (MeshObject pillar in _pillars)
+			pillar.Render();
 	}
 
 	public void Render()
@@ -102,11 +118,13 @@ public class SurvivalEditor3dLayout : Layout, ISurvivalEditor3dLayout
 	private sealed class MeshObject
 	{
 		private readonly uint _vao;
+		private readonly Mesh _mesh;
 		private readonly Matrix4x4 _modelMatrix;
 
-		public MeshObject(uint vao, Vector3 scale, Quaternion rotation, Vector3 position)
+		public MeshObject(uint vao, Mesh mesh, Vector3 scale, Quaternion rotation, Vector3 position)
 		{
 			_vao = vao;
+			_mesh = mesh;
 
 			Matrix4x4 scaleMatrix = Matrix4x4.CreateScale(scale);
 			Matrix4x4 rotationMatrix = Matrix4x4.CreateFromQuaternion(rotation);
@@ -119,8 +137,8 @@ public class SurvivalEditor3dLayout : Layout, ISurvivalEditor3dLayout
 			Shader.SetMatrix4x4(MeshUniforms.Model, _modelMatrix);
 
 			Gl.BindVertexArray(_vao);
-			fixed (uint* i = &ContentManager.Content.TileMesh.Indices[0])
-				Gl.DrawElements(PrimitiveType.Triangles, (uint)ContentManager.Content.TileMesh.Indices.Length, DrawElementsType.UnsignedInt, i);
+			fixed (uint* i = &_mesh.Indices[0])
+				Gl.DrawElements(PrimitiveType.Triangles, (uint)_mesh.Indices.Length, DrawElementsType.UnsignedInt, i);
 			Gl.BindVertexArray(0);
 		}
 	}
@@ -146,7 +164,7 @@ public class SurvivalEditor3dLayout : Layout, ISurvivalEditor3dLayout
 			HandleKeys();
 			HandleMouse();
 
-			const float moveSpeed = 20;
+			const float moveSpeed = 25;
 
 			Matrix4x4 rotMat = Matrix4x4.CreateFromQuaternion(_rotationState.Physics);
 			Vector3 transformed = RotateVector(_axisAlignedSpeed, rotMat) + new Vector3(0, _axisAlignedSpeed.Y, 0);

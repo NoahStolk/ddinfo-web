@@ -1,5 +1,6 @@
 using DevilDaggersInfo.App.Core.AssetInterop;
 using DevilDaggersInfo.App.Ui.Base.Settings;
+using DevilDaggersInfo.App.Ui.Base.Utils;
 using DevilDaggersInfo.Core.Mod;
 using DevilDaggersInfo.Core.Mod.Enums;
 using DevilDaggersInfo.Core.Spawnset;
@@ -55,11 +56,15 @@ public static class ContentManager
 		Texture? skull4Texture = GetTexture(modBinary, "boid4");
 		Mesh? tileMesh = GetMesh(modBinary, "tile");
 		Texture? tileTexture = GetTexture(modBinary, "tile");
+		Mesh? pillarMesh = GetMesh(modBinary, "pillar");
+		Texture? pillarTexture = GetTexture(modBinary, "pillar");
 
-		if (iconDaggerTexture == null || skull4Mesh == null || skull4Texture == null || tileMesh == null || tileTexture == null)
+		if (iconDaggerTexture == null || skull4Mesh == null || skull4Texture == null || tileMesh == null || tileTexture == null || pillarMesh == null || pillarTexture == null)
 			return "Not all required assets from 'res/dd' were found.";
 
-		Content = new(defaultSpawnset, iconDaggerTexture, skull4Mesh, skull4Texture, tileMesh, tileTexture);
+		pillarMesh = TallTilesBuilder.CreateTallTiles(pillarMesh, 16);
+
+		Content = new(defaultSpawnset, iconDaggerTexture, skull4Mesh, skull4Texture, tileMesh, tileTexture, pillarMesh, pillarTexture);
 		return null;
 	}
 

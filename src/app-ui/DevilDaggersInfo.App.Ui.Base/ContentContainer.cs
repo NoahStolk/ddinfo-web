@@ -9,4 +9,6 @@ public record ContentContainer(
 	Mesh Skull4Mesh,
 	Texture Skull4Texture,
 	Mesh TileMesh,
-	Texture TileTexture);
+	Texture TileTexture,
+	Mesh PillarMesh,
+	Texture PillarTexture);
