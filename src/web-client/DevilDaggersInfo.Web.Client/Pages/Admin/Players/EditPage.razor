@@ -5,7 +5,7 @@
 @using DevilDaggersInfo.Web.Client.Enums
 
 <AdminAuthorizer Base="this" RequiredRole="@Roles.Players">
-	<AdminEdit Name="Player" OverviewUrl="/admin/players" ApiCall="Http.EditPlayerById" Model="_editPlayer" Id="Id" OnPopulate="async (ec) => await PopulateAsync(ec)">
+	<AdminEdit Name="Player" OverviewUrl="/admin/players" ApiCall="Http.EditPlayerById" Model="_editPlayer" Id="Id" OnPopulate="async ec => await PopulateAsync(ec)">
 		<InputWrapper Label="Common name"><InputText class="admin-input" @bind-Value="@_editPlayer.CommonName" /></InputWrapper>
 		<InputWrapper Label="Discord user ID"><InputNumber class="admin-input" @bind-Value="_editPlayer.DiscordUserId" /></InputWrapper>
 		<InputWrapper Label="Country (flag)"><SearchDropdown TKey="string" Values="@(UserUtils.CountryNames)" Converter="s => s" @bind-Value="@_editPlayer.CountryCode" /></InputWrapper>

@@ -5,7 +5,7 @@
 @using DevilDaggersInfo.Web.Client.Enums
 
 <AdminAuthorizer Base="this" RequiredRole="@Roles.CustomLeaderboards">
-	<AdminAdd Name="Custom Leaderboard" OverviewUrl="/admin/custom-leaderboards" ApiCall="Http.AddCustomLeaderboard" Model="_addCustomLeaderboard" OnPopulate="async (ac) => await PopulateAsync(ac)">
+	<AdminAdd Name="Custom Leaderboard" OverviewUrl="/admin/custom-leaderboards" ApiCall="Http.AddCustomLeaderboard" Model="_addCustomLeaderboard" OnPopulate="async ac => await PopulateAsync(ac)">
 		<InputWrapper Label="Spawnset"><SearchDropdown TKey="int" Values="@_spawnsetNames" Converter="s => int.Parse(s)" @bind-Value="@_addCustomLeaderboard.SpawnsetId" /></InputWrapper>
 		<InputWrapper Label="Category"><SearchDropdown TKey="CustomLeaderboardCategory" Values="@(Enum.GetValues<CustomLeaderboardCategory>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<CustomLeaderboardCategory>(s)" ShowDisplayValue="false" @bind-Value="@_addCustomLeaderboard.Category" /></InputWrapper>
 		<InputWrapper Label="Featured"><InputCheckbox @bind-Value="@_addCustomLeaderboard.IsFeatured" /></InputWrapper>

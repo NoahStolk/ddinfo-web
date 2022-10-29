@@ -155,16 +155,16 @@ public class ModBinary
 	}
 
 	public void EnableAsset(AssetKey assetKey)
-		=> ToggleAsset(assetKey.AssetName, assetKey.AssetType, (c) => c.Enable());
+		=> ToggleAsset(assetKey.AssetName, assetKey.AssetType, c => c.Enable());
 
 	public void EnableAsset(string assetName, AssetType assetType)
-		=> ToggleAsset(assetName, assetType, (c) => c.Enable());
+		=> ToggleAsset(assetName, assetType, c => c.Enable());
 
 	public void DisableAsset(AssetKey assetKey)
-		=> ToggleAsset(assetKey.AssetName, assetKey.AssetType, (c) => c.Disable());
+		=> ToggleAsset(assetKey.AssetName, assetKey.AssetType, c => c.Disable());
 
 	public void DisableAsset(string assetName, AssetType assetType)
-		=> ToggleAsset(assetName, assetType, (c) => c.Disable());
+		=> ToggleAsset(assetName, assetType, c => c.Disable());
 
 	private void ToggleAsset(string assetName, AssetType assetType, Action<ModBinaryChunk> action)
 	{

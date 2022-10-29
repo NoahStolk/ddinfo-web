@@ -100,9 +100,9 @@ public partial class AddAsset
 		_selectedAssetData = fileResult.Contents;
 	}
 
-	private void OpenVert() => OpenShader((s) => _selectedVertFileName = s, (d) => _selectedVertData = d, FileFilterService.GetVertexShaderFilter());
+	private void OpenVert() => OpenShader(s => _selectedVertFileName = s, d => _selectedVertData = d, FileFilterService.GetVertexShaderFilter());
 
-	private void OpenFrag() => OpenShader((s) => _selectedFragFileName = s, (d) => _selectedFragData = d, FileFilterService.GetFragmentShaderFilter());
+	private void OpenFrag() => OpenShader(s => _selectedFragFileName = s, d => _selectedFragData = d, FileFilterService.GetFragmentShaderFilter());
 
 	private void OpenShader(Action<string> setFileName, Action<byte[]> setData, string fileExtension)
 	{
