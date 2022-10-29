@@ -16,7 +16,7 @@ public static class ContentManager
 
 	public static ContentContainer Content
 	{
-		get => _content ?? throw new InvalidOperationException("Content does not exist.");
+		get => _content ?? throw new InvalidOperationException("Content is not initialized.");
 		private set => _content = value;
 	}
 
