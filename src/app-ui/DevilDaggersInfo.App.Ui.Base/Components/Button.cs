@@ -36,11 +36,14 @@ public class Button : AbstractButton
 
 		Vector2i<int> borderVec = new(BorderSize);
 		Vector2i<int> scale = Metric.Size;
-		Vector2i<int> topLeft = new(Metric.X1, Metric.Y1);
+		Vector2i<int> topLeft = Metric.TopLeft;
 		Vector2i<int> center = topLeft + scale / 2;
 
 		RenderBatchCollector.RenderRectangleCenter(scale, parentPosition + center, Depth, BorderColor);
 		RenderBatchCollector.RenderRectangleCenter(scale - borderVec, parentPosition + center, Depth + 1, Hover ? HoverBackgroundColor : BackgroundColor);
+
+		if (Text.Length == 0)
+			return;
 
 		int padding = (int)MathF.Round((Metric.Y2 - Metric.Y1) / 4f);
 		Vector2i<int> textPosition = TextAlign switch
