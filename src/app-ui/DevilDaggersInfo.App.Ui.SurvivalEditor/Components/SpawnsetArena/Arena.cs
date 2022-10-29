@@ -178,7 +178,7 @@ public class Arena : AbstractComponent
 			Color tileColor = TileUtils.GetColorFromHeight(actualHeight);
 			Color inverted = Color.Invert(tileColor);
 			Vector3 color = Vector3.Lerp(inverted, inverted.Intensify(96), lerp);
-			RenderBatchCollector.RenderSprite(new(8), origin.ToVector2() + new Vector2(realRaceX * _tileSize + halfSize, realRaceZ * _tileSize + halfSize), Depth + 3, ContentManager.Content.IconDaggerTexture, Color.FromVector3(color));
+			RenderBatchCollector.RenderSprite(new(-8, -8), origin.ToVector2() + new Vector2(realRaceX * _tileSize + halfSize, realRaceZ * _tileSize + halfSize), Depth + 3, ContentManager.Content.IconDaggerTexture, Color.FromVector3(color));
 		}
 
 		RenderBatchCollector.SetScissor(Scissor.FromComponent(Metric, parentPosition));
