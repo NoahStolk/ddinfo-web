@@ -9,16 +9,25 @@ namespace DevilDaggersInfo.App.Ui.SurvivalEditor.GameObjects;
 
 public class Camera
 {
-	private readonly Vector3State _positionState = new(new(0, 4, 0));
+	private readonly Vector3State _positionState = new(default);
 	private readonly QuaternionState _rotationState = new(Quaternion.Identity);
 
 	private Vector3 _axisAlignedSpeed;
 	private float _yaw;
 	private float _pitch;
-	private Vector2i<int> _lockedMousePosition;
+	private Vector2i<int>? _lockedMousePosition;
 
 	public Matrix4x4 Projection { get; private set; }
 	public Matrix4x4 ViewMatrix { get; private set; }
+
+	public void Reset(Vector3 position)
+	{
+		_positionState.Physics = position;
+		_rotationState.Physics = Quaternion.Identity;
+		_yaw = 0;
+		_pitch = 0;
+		_lockedMousePosition = null;
+	}
 
 	public void Update()
 	{
@@ -101,20 +110,21 @@ public class Camera
 		}
 		else if (Input.IsButtonReleased(MouseButton.Left))
 		{
+			_lockedMousePosition = null;
 			Graphics.Glfw.SetInputMode(Window, CursorStateAttribute.Cursor, CursorModeValue.CursorNormal);
 		}
-		else if (Input.IsButtonHeld(MouseButton.Left) && mousePosition != _lockedMousePosition)
+		else if (Input.IsButtonHeld(MouseButton.Left) && _lockedMousePosition.HasValue && mousePosition != _lockedMousePosition)
 		{
 			const float lookSpeed = 20;
 
-			Vector2i<int> delta = mousePosition - _lockedMousePosition;
+			Vector2i<int> delta = mousePosition - _lockedMousePosition.Value;
 			_yaw -= lookSpeed * delta.X * 0.0001f;
 			_pitch -= lookSpeed * delta.Y * 0.0001f;
 
 			_pitch = Math.Clamp(_pitch, MathUtils.ToRadians(-89.9f), MathUtils.ToRadians(89.9f));
 			_rotationState.Physics = Quaternion.CreateFromYawPitchRoll(_yaw, -_pitch, 0);
 
-			Graphics.Glfw.SetCursorPos(Window, _lockedMousePosition.X, _lockedMousePosition.Y);
+			Graphics.Glfw.SetCursorPos(Window, _lockedMousePosition.Value.X, _lockedMousePosition.Value.Y);
 		}
 	}
 

@@ -64,11 +64,14 @@ public class SurvivalEditor3dLayout : Layout, ISurvivalEditor3dLayout
 
 	public void BuildScene()
 	{
+		SpawnsetBinary spawnset = StateManager.SpawnsetState.Spawnset;
+
 		_tiles.Clear();
 		_pillars.Clear();
 
-		SpawnsetBinary spawnset = StateManager.SpawnsetState.Spawnset;
 		int halfSize = spawnset.ArenaDimension / 2;
+		_camera.Reset(new(0, spawnset.ArenaTiles[halfSize, halfSize] + 4, 0));
+
 		for (int i = 0; i < spawnset.ArenaDimension; i++)
 		{
 			for (int j = 0; j < spawnset.ArenaDimension; j++)
