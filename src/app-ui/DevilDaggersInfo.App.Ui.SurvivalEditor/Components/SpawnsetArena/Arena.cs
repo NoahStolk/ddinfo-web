@@ -174,7 +174,7 @@ public class Arena : AbstractComponent
 			int halfSize = _tileSize / 2;
 
 			float actualHeight = StateManager.SpawnsetState.Spawnset.GetActualTileHeight(raceX, raceZ, _currentSecond);
-			float lerp = MathF.Sin(CoreBase.Game.Tt) / 2 + 0.5f;
+			float lerp = MathF.Sin(Root.Game.Tt) / 2 + 0.5f;
 			Color tileColor = TileUtils.GetColorFromHeight(actualHeight);
 			Color inverted = Color.Invert(tileColor);
 			Vector3 color = Vector3.Lerp(inverted, inverted.Intensify(96), lerp);
