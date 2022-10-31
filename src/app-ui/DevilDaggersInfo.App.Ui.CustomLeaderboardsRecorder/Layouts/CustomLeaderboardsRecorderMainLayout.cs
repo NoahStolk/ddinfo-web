@@ -14,7 +14,7 @@ public class CustomLeaderboardsRecorderMainLayout : Layout, IExtendedLayout
 		: base(Constants.Full)
 	{
 		const int headerHeight = 24;
-		IconButton backButton = new(Rectangle.At(0, 0, 24, headerHeight), LayoutManager.ToMainLayout, Color.Black, Color.Gray(0.5f), Color.Gray(0.25f), 4, "Back", Textures.BackButton);
+		MainLayoutBackButton backButton = new(Rectangle.At(0, 0, 24, headerHeight), LayoutManager.ToMainLayout, "Back", Textures.BackButton);
 		ProcessAttachmentWrapper processAttachmentWrapper = new(Rectangle.At(0, headerHeight, 256, 256 - headerHeight));
 		RecordingWrapper recordingWrapper = new(Rectangle.At(0, 256, 256, 256));
 		SubmissionWrapper submissionWrapper = new(Rectangle.At(0, 512, 256, 256));

@@ -13,20 +13,25 @@ public class Menu : AbstractComponent
 	public Menu(Rectangle metric)
 		: base(metric)
 	{
-		Depth = 100;
-		List<AbstractComponent> fileMenuButtons = new()
-		{
-			new Button.MenuButton(Rectangle.At(0, 16, 160, 16), StateManager.NewSpawnset, "New"),
-			new Button.MenuButton(Rectangle.At(0, 32, 160, 16), LayoutManager.ToSurvivalEditorOpenLayout, "Open"),
-			new Button.MenuButton(Rectangle.At(0, 48, 160, 16), StateManager.OpenDefaultV3Spawnset, "Open default (V3)"),
-			new Button.MenuButton(Rectangle.At(0, 64, 160, 16), LayoutManager.ToSurvivalEditorSaveLayout, "Save"),
-		};
+		const int backButtonWidth = 24;
+		int rowHeight = metric.Size.Y;
 
-		IconButton backButton = new(Rectangle.At(0, 0, 16, 16), LayoutManager.ToMainLayout, Color.Black, Color.Gray(0.5f), Color.Blue, 2, "Back", Textures.BackButton)
+		Depth = 100;
+
+		MainLayoutBackButton backButton = new(Rectangle.At(0, 0, backButtonWidth, rowHeight), LayoutManager.ToMainLayout, "Back", Textures.BackButton)
 		{
 			Depth = 101,
 		};
-		Dropdown fileMenu = new(Rectangle.At(16, 0, 64, 80), fileMenuButtons, Color.White, "File")
+
+		const int menuItemHeight = 16;
+		List<AbstractComponent> fileMenuButtons = new()
+		{
+			new Button.MenuButton(Rectangle.At(0, rowHeight + menuItemHeight * 0, 160, menuItemHeight), StateManager.NewSpawnset, "New"),
+			new Button.MenuButton(Rectangle.At(0, rowHeight + menuItemHeight * 1, 160, menuItemHeight), LayoutManager.ToSurvivalEditorOpenLayout, "Open"),
+			new Button.MenuButton(Rectangle.At(0, rowHeight + menuItemHeight * 2, 160, menuItemHeight), StateManager.OpenDefaultV3Spawnset, "Open default (V3)"),
+			new Button.MenuButton(Rectangle.At(0, rowHeight + menuItemHeight * 3, 160, menuItemHeight), LayoutManager.ToSurvivalEditorSaveLayout, "Save"),
+		};
+		Dropdown fileMenu = new(Rectangle.At(backButtonWidth, 0, 64, rowHeight + fileMenuButtons.Count * menuItemHeight), 24, fileMenuButtons, Color.White, "File")
 		{
 			Depth = 101,
 		};

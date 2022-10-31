@@ -26,13 +26,13 @@ public class SurvivalEditorMainLayout : Layout, ISurvivalEditorMainLayout
 	public SurvivalEditorMainLayout()
 		: base(Constants.Full)
 	{
-		Menu menu = new(new(0, 0, 1024, 16));
-		_arenaWrapper = new(Rectangle.At(400, 16, 400, 400));
+		Menu menu = new(new(0, 0, 1024, 24));
+		_arenaWrapper = new(Rectangle.At(400, 24, 400, 400));
 		ArenaToolsWrapper arenaToolsWrapper = new(Rectangle.At(400, 400, 304, 480));
-		_spawnsWrapper = new(Rectangle.At(0, 16, 384, 640));
+		_spawnsWrapper = new(Rectangle.At(0, 24, 384, 640));
 		SpawnEditor spawnEditor = new(Rectangle.At(0, 656, 384, 128));
 		_historyWrapper = new(Rectangle.At(768, 512, 256, 256));
-		_settingsWrapper = new(Rectangle.At(804, 16, 216, 256));
+		_settingsWrapper = new(Rectangle.At(804, 24, 216, 256));
 
 		NestingContext.Add(menu);
 		NestingContext.Add(_arenaWrapper);
