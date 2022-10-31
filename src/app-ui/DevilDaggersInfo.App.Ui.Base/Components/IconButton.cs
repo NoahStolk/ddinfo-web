@@ -1,5 +1,4 @@
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
-using DevilDaggersInfo.App.Ui.Base.Enums;
 using DevilDaggersInfo.App.Ui.Base.Rendering;
 using System.Numerics;
 using Warp.Extensions;
@@ -15,7 +14,7 @@ public class IconButton : Button
 	private readonly Vector2 _textureSize;
 
 	public IconButton(Rectangle metric, Action onClick, Color backgroundColor, Color borderColor, Color hoverColor, int borderSize, string tooltipText, Texture texture)
-		: base(metric, onClick, backgroundColor, borderColor, hoverColor, Color.Black, string.Empty, TextAlign.Middle, borderSize, FontSize.F8X8) // TODO: Remove text related stuff from Button base.
+		: base(metric, onClick, backgroundColor, borderColor, hoverColor, borderSize)
 	{
 		_tooltipText = tooltipText;
 		_texture = texture;

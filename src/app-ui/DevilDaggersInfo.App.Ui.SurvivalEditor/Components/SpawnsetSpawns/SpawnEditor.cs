@@ -48,9 +48,9 @@ public class SpawnEditor : AbstractComponent
 		NestingContext.Add(delayLabel);
 		NestingContext.Add(delayTextInput);
 
-		Button addButton = new(Rectangle.At(96, 80, width, 32), AddSpawn, new(0, 127, 0, 255), Color.White, new(0, 191, 0, 255), Color.White, "ADD", TextAlign.Middle, 2, FontSize.F12X12);
-		Button insertButton = new(Rectangle.At(192, 80, width, 32), InsertSpawn, new(0, 63, 127, 255), Color.White, new(0, 95, 191, 255), Color.White, "INSERT", TextAlign.Middle, 2, FontSize.F12X12);
-		Button editButton = new(Rectangle.At(288, 80, width, 32), EditSpawn, new(127, 63, 0, 255), Color.White, new(191, 95, 0, 255), Color.White, "EDIT", TextAlign.Middle, 2, FontSize.F12X12);
+		TextButton addButton = new(Rectangle.At(96, 80, width, 32), AddSpawn, new(0, 127, 0, 255), Color.White, new(0, 191, 0, 255), Color.White, "ADD", TextAlign.Middle, 2, FontSize.F12X12);
+		TextButton insertButton = new(Rectangle.At(192, 80, width, 32), InsertSpawn, new(0, 63, 127, 255), Color.White, new(0, 95, 191, 255), Color.White, "INSERT", TextAlign.Middle, 2, FontSize.F12X12);
+		TextButton editButton = new(Rectangle.At(288, 80, width, 32), EditSpawn, new(127, 63, 0, 255), Color.White, new(191, 95, 0, 255), Color.White, "EDIT", TextAlign.Middle, 2, FontSize.F12X12);
 
 		NestingContext.Add(addButton);
 		NestingContext.Add(insertButton);
@@ -63,7 +63,7 @@ public class SpawnEditor : AbstractComponent
 			string enemyName = enemyType.GetShortName();
 			Color borderColor = _selectedEnemyType == enemyType ? Color.White : Color.Black;
 			Color hoverBackgroundColor = Color.Lerp(enemyColor, Color.White, 0.5f);
-			Button button = new(Rectangle.At(x, y, 48, 16), () => SetSelectedEnemyType(enemyType), enemyColor, borderColor, hoverBackgroundColor, enemyColor.ReadableColorForBrightness(), enemyName, TextAlign.Left, 2, FontSize.F8X8);
+			TextButton button = new(Rectangle.At(x, y, 48, 16), () => SetSelectedEnemyType(enemyType), enemyColor, borderColor, hoverBackgroundColor, enemyColor.ReadableColorForBrightness(), enemyName, TextAlign.Left, 2, FontSize.F8X8);
 			_enemyTypeButtons.Add(enemyType, button);
 			NestingContext.Add(button);
 		}

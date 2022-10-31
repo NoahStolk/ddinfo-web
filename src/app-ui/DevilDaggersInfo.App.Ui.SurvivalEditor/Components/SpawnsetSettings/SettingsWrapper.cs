@@ -96,7 +96,7 @@ public class SettingsWrapper : AbstractComponent
 		NestingContext.Add(_buttonLevel4);
 	}
 
-	private Button CreateFormatButton(int y, int index, int worldVersion, int spawnVersion)
+	private TextButton CreateFormatButton(int y, int index, int worldVersion, int spawnVersion)
 	{
 		string str = SpawnsetBinary.GetGameVersionString(worldVersion, spawnVersion);
 		return new(Rectangle.At(index * _thirdWidth, y, _thirdWidth, _offset), UpdateFormat, Color.Black, Color.White, _hover, Color.White, str, TextAlign.Middle, 2, FontSize.F8X8);
@@ -108,7 +108,7 @@ public class SettingsWrapper : AbstractComponent
 		}
 	}
 
-	private Button CreateGameModeButton(int y, GameMode gameMode)
+	private TextButton CreateGameModeButton(int y, GameMode gameMode)
 	{
 		int index = (int)gameMode;
 		return new(Rectangle.At(index * _thirdWidth, y, _thirdWidth, _offset), UpdateFormat, Color.Black, Color.White, _hover, Color.White, ToShortString(), TextAlign.Middle, 2, FontSize.F8X8);
@@ -128,7 +128,7 @@ public class SettingsWrapper : AbstractComponent
 		};
 	}
 
-	private Button CreateHandButton(int y, HandLevel handLevel)
+	private TextButton CreateHandButton(int y, HandLevel handLevel)
 	{
 		int index = (int)handLevel - 1;
 		return new(Rectangle.At(index * _quarterWidth, y, _quarterWidth, _offset), UpdateHand, Color.Black, GetColor(handLevel), _hover, Color.White, ToShortString(), TextAlign.Middle, 2, FontSize.F8X8);

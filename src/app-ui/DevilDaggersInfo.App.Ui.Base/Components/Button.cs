@@ -8,27 +8,19 @@ namespace DevilDaggersInfo.App.Ui.Base.Components;
 
 public class Button : AbstractButton
 {
-	public Button(Rectangle metric, Action onClick, Color backgroundColor, Color borderColor, Color hoverBackgroundColor, Color textColor, string text, TextAlign textAlign, int borderSize, FontSize fontSize)
+	public Button(Rectangle metric, Action onClick, Color backgroundColor, Color borderColor, Color hoverBackgroundColor, int borderSize)
 		: base(metric, onClick)
 	{
 		BackgroundColor = backgroundColor;
 		BorderColor = borderColor;
 		HoverBackgroundColor = hoverBackgroundColor;
-		TextColor = textColor;
-		Text = text;
-		TextAlign = textAlign;
 		BorderSize = borderSize;
-		FontSize = fontSize;
 	}
 
 	public Color BackgroundColor { get; set; }
 	public Color BorderColor { get; set; }
 	public Color HoverBackgroundColor { get; set; }
-	public Color TextColor { get; set; }
-	public string Text { get; set; }
-	public TextAlign TextAlign { get; set; }
 	public int BorderSize { get; set; }
-	public FontSize FontSize { get; set; }
 
 	public override void Render(Vector2i<int> parentPosition)
 	{
@@ -41,24 +33,10 @@ public class Button : AbstractButton
 
 		RenderBatchCollector.RenderRectangleCenter(scale, parentPosition + center, Depth, BorderColor);
 		RenderBatchCollector.RenderRectangleCenter(scale - borderVec, parentPosition + center, Depth + 1, Hover ? HoverBackgroundColor : BackgroundColor);
-
-		if (Text.Length == 0)
-			return;
-
-		int padding = (int)MathF.Round((Metric.Y2 - Metric.Y1) / 4f);
-		Vector2i<int> textPosition = TextAlign switch
-		{
-			TextAlign.Middle => new Vector2i<int>(Metric.X1 + Metric.X2, Metric.Y1 + Metric.Y2) / 2,
-			TextAlign.Left => new(Metric.X1 + padding, Metric.Y1 + padding),
-			TextAlign.Right => new(Metric.X2 - padding, Metric.Y1 + padding),
-			_ => throw new InvalidOperationException("Invalid text align."),
-		};
-
-		RenderBatchCollector.RenderMonoSpaceText(FontSize, Vector2i<int>.One, parentPosition + textPosition, Depth + 2, TextColor, Text, TextAlign);
 	}
 
 	// TODO: Move to ComponentBuilder.
-	public class MenuButton : Button
+	public class MenuButton : TextButton
 	{
 		public MenuButton(Rectangle metric, Action onClick, string text)
 			: base(metric, onClick, Color.Black, Color.White, Color.Gray(0.75f), Color.White, text, TextAlign.Left, 2, FontSize.F8X8)
@@ -69,7 +47,7 @@ public class Button : AbstractButton
 	}
 
 	// TODO: Move to ComponentBuilder.
-	public class PathButton : Button
+	public class PathButton : TextButton
 	{
 		public PathButton(Rectangle metric, Action onClick, string text, Color textColor)
 			: base(metric, onClick, Color.Black, Color.Gray(0.7f), Color.Gray(0.4f), textColor, text, TextAlign.Left, 2, FontSize.F8X8)

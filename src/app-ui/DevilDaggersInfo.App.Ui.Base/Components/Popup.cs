@@ -20,7 +20,7 @@ public class Popup : AbstractComponent
 		{
 			Depth = Constants.DepthMax,
 		};
-		Button button = new(Rectangle.At(Constants.NativeWidth / 2 - buttonWidth / 2, Constants.NativeHeight / 2 - buttonHeight / 2, buttonWidth, buttonHeight), () => parent.NestingContext.Remove(this), Color.Black, Color.White, Color.Gray(0.25f), Color.White, "OK", TextAlign.Middle, 2, FontSize.F12X12)
+		TextButton button = new(Rectangle.At(Constants.NativeWidth / 2 - buttonWidth / 2, Constants.NativeHeight / 2 - buttonHeight / 2, buttonWidth, buttonHeight), () => parent.NestingContext.Remove(this), Color.Black, Color.White, Color.Gray(0.25f), Color.White, "OK", TextAlign.Middle, 2, FontSize.F12X12)
 		{
 			Depth = Constants.DepthMax,
 		};
