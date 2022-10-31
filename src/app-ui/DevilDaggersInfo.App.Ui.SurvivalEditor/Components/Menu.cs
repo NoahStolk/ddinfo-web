@@ -1,3 +1,4 @@
+using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.Rendering;
 using DevilDaggersInfo.App.Ui.Base.States;
@@ -19,14 +20,18 @@ public class Menu : AbstractComponent
 			new Button.MenuButton(Rectangle.At(0, 32, 160, 16), LayoutManager.ToSurvivalEditorOpenLayout, "Open"),
 			new Button.MenuButton(Rectangle.At(0, 48, 160, 16), StateManager.OpenDefaultV3Spawnset, "Open default (V3)"),
 			new Button.MenuButton(Rectangle.At(0, 64, 160, 16), LayoutManager.ToSurvivalEditorSaveLayout, "Save"),
-			new Button.MenuButton(Rectangle.At(0, 80, 160, 16), LayoutManager.ToMainLayout, "Exit"),
 		};
 
-		Dropdown fileMenu = new(new(0, 0, 64, 80), fileMenuButtons, Color.White, "File")
+		IconButton backButton = new(Rectangle.At(0, 0, 16, 16), LayoutManager.ToMainLayout, Color.Black, Color.Gray(0.5f), Color.Blue, 2, "Back", Textures.BackButton)
+		{
+			Depth = 101,
+		};
+		Dropdown fileMenu = new(Rectangle.At(16, 0, 64, 80), fileMenuButtons, Color.White, "File")
 		{
 			Depth = 101,
 		};
 
+		NestingContext.Add(backButton);
 		NestingContext.Add(fileMenu);
 	}
 
