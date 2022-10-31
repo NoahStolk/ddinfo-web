@@ -5,9 +5,9 @@ using Warp.Ui.Components;
 
 namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components;
 
-public class RecordingWrapper : AbstractComponent
+public class LeaderboardWrapper : AbstractComponent
 {
-	public RecordingWrapper(Rectangle metric)
+	public LeaderboardWrapper(Rectangle metric)
 		: base(metric)
 	{
 	}
@@ -17,7 +17,7 @@ public class RecordingWrapper : AbstractComponent
 		base.Render(parentPosition);
 
 		const int border = 2;
-		RenderBatchCollector.RenderRectangleTopLeft(Metric.Size, Metric.TopLeft + parentPosition, 0, Color.Purple);
+		RenderBatchCollector.RenderRectangleTopLeft(Metric.Size, Metric.TopLeft + parentPosition, 0, new(255, 127, 0, 255));
 		RenderBatchCollector.RenderRectangleTopLeft(Metric.Size - new Vector2i<int>(border * 2), Metric.TopLeft + parentPosition + new Vector2i<int>(border), 1, Color.Black);
 	}
 }
