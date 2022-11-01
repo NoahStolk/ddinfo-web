@@ -137,7 +137,7 @@ public class Startup
 				jwtBearerOptions.TokenValidationParameters = new TokenValidationParameters
 				{
 					ValidateIssuerSigningKey = true,
-					IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["JwtKey"])),
+					IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["JwtKey"] ?? throw new InvalidOperationException("Missing JWT key"))), // TODO: Use IOptions binding and require JwtKey.
 					ValidateIssuer = false,
 					ValidateAudience = false,
 					ClockSkew = TimeSpan.Zero,
