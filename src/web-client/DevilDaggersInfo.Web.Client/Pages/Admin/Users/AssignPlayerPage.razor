@@ -22,7 +22,7 @@
 
 	[Parameter, EditorRequired] public int Id { get; set; }
 
-	[Parameter] public AssignPlayer Model { get; set; } = new();
+	[Parameter] public AssignPlayer Model { get; set; } = new(); // TODO: Use state object.
 
 	protected override async Task OnInitializedAsync()
 	{
