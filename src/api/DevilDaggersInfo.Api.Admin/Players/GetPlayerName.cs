@@ -4,5 +4,5 @@ public record GetPlayerName
 {
 	public int Id { get; init; }
 
-	public string PlayerName { get; init; } = null!;
+	public required string PlayerName { get; init; }
 }

@@ -41,5 +41,5 @@ public record EditCustomEntry
 	public DateTime SubmitDate { get; init; }
 
 	[StringLength(16)]
-	public string ClientVersion { get; init; } = null!;
+	public required string ClientVersion { get; init; }
 }

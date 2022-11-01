@@ -4,7 +4,7 @@ namespace DevilDaggersInfo.Api.Ddae.Mods;
 
 public record GetModBinaryDdae
 {
-	public string Name { get; init; } = null!;
+	public required string Name { get; init; }
 
 	public long Size { get; init; }
 

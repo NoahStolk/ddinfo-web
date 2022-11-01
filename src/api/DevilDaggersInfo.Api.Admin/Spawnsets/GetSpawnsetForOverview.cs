@@ -4,9 +4,9 @@ public record GetSpawnsetForOverview : IAdminOverviewGetDto
 {
 	public int Id { get; init; }
 
-	public string Author { get; init; } = null!;
+	public required string Author { get; init; }
 
-	public string Name { get; init; } = null!;
+	public required string Name { get; init; }
 
 	public int? MaxDisplayWaves { get; init; }
 

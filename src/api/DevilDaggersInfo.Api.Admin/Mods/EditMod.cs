@@ -5,7 +5,7 @@ namespace DevilDaggersInfo.Api.Admin.Mods;
 public record EditMod
 {
 	[StringLength(64)]
-	public string Name { get; init; } = null!;
+	public required string Name { get; init; }
 
 	public bool IsHidden { get; init; }
 
@@ -22,13 +22,13 @@ public record EditMod
 
 	public List<int>? PlayerIds { get; init; }
 
-	public List<string> BinariesToDelete { get; init; } = new();
+	public required List<string> BinariesToDelete { get; init; }
 
 	[MaxLength(ModConstants.BinaryMaxFiles, ErrorMessage = ModConstants.BinaryMaxFilesErrorMessage)]
-	public List<BinaryData> Binaries { get; init; } = new();
+	public required List<BinaryData> Binaries { get; init; }
 
-	public List<string> ScreenshotsToDelete { get; init; } = new();
+	public required List<string> ScreenshotsToDelete { get; init; }
 
 	[MaxLength(ModConstants.ScreenshotMaxFiles, ErrorMessage = ModConstants.ScreenshotMaxFilesErrorMessage)]
-	public Dictionary<string, byte[]> Screenshots { get; init; } = new();
+	public required Dictionary<string, byte[]> Screenshots { get; init; }
 }

@@ -6,7 +6,7 @@ public record GetMod
 {
 	public int Id { get; init; }
 
-	public string Name { get; init; } = null!;
+	public required string Name { get; init; }
 
 	public bool IsHidden { get; init; }
 

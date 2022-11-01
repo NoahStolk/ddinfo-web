@@ -4,9 +4,9 @@ public record GetCustomEntryForOverview : IAdminOverviewGetDto
 {
 	public int Id { get; init; }
 
-	public string SpawnsetName { get; init; } = null!;
+	public required string SpawnsetName { get; init; }
 
-	public string PlayerName { get; init; } = null!;
+	public required string PlayerName { get; init; }
 
 	public double Time { get; init; }
 
@@ -40,5 +40,5 @@ public record GetCustomEntryForOverview : IAdminOverviewGetDto
 
 	public DateTime SubmitDate { get; init; }
 
-	public string ClientVersion { get; init; } = null!;
+	public required string ClientVersion { get; init; }
 }
