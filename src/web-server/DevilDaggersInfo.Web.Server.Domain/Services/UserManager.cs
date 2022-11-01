@@ -109,7 +109,7 @@ public class UserManager
 
 	public string GenerateJwt(UserEntity userEntity)
 	{
-		string keyString = _configuration["JwtKey"];
+		string keyString = _configuration["JwtKey"] ?? throw new InvalidOperationException("Missing JWT key"); // TODO: Use IOptions binding and require JwtKey.
 		byte[] keyBytes = Encoding.ASCII.GetBytes(keyString);
 
 		SecurityTokenDescriptor tokenDescriptor = new()
@@ -133,7 +133,7 @@ public class UserManager
 	{
 		try
 		{
-			string keyString = _configuration["JwtKey"];
+			string keyString = _configuration["JwtKey"] ?? throw new InvalidOperationException("Missing JWT key"); // TODO: Use IOptions binding and require JwtKey.
 			byte[] keyBytes = Encoding.ASCII.GetBytes(keyString);
 
 			TokenValidationParameters tokenValidationParameters = new()
