@@ -3,26 +3,27 @@
 @using DevilDaggersInfo.Api.Admin.Donations
 @using DevilDaggersInfo.Api.Admin.Players
 @using DevilDaggersInfo.Web.Client.Enums
+@using DevilDaggersInfo.Web.Client.StateObjects.Admin.Donations
 
 <AdminAuthorizer Base="this" RequiredRole="@Roles.Admin">
-	<AdminEdit Name="Donation" OverviewUrl="/admin/donations" ApiCall="Http.EditDonationById" Model="_editDonation" Id="Id" OnPopulate="async ec => await PopulateAsync(ec)">
-		<InputWrapper Label="Player"><SearchDropdown TKey="int" Values="@_playerNames" Converter="s => int.Parse(s)" @bind-Value="@_editDonation.PlayerId" /></InputWrapper>
-		<InputWrapper Label="Amount"><InputNumber class="admin-input" @bind-Value="_editDonation.Amount" /></InputWrapper>
-		<InputWrapper Label="Currency"><SearchDropdown TKey="Currency" Values="@(Enum.GetValues<Currency>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<Currency>(s)" @bind-Value="@_editDonation.Currency" /></InputWrapper>
-		<InputWrapper Label="ConvertedEuroCentsReceived"><InputNumber class="admin-input" @bind-Value="_editDonation.ConvertedEuroCentsReceived" /></InputWrapper>
-		<InputWrapper Label="Note"><InputTextArea class="admin-input" @bind-Value="@_editDonation.Note" /></InputWrapper>
-		<InputWrapper Label="Refunded"><InputCheckbox @bind-Value="@_editDonation.IsRefunded" /></InputWrapper>
+	<AdminEdit TStateObject="EditDonationState" TModel="EditDonation" Name="Donation" OverviewUrl="/admin/donations" ApiCall="Http.EditDonationById" StateObject="_editDonationState" Id="Id" OnPopulate="async ec => await PopulateAsync(ec)">
+		<InputWrapper Label="Player"><SearchDropdown TKey="int" Values="@_playerNames" Converter="s => int.Parse(s)" @bind-Value="@_editDonationState.PlayerId" /></InputWrapper>
+		<InputWrapper Label="Amount"><InputNumber class="admin-input" @bind-Value="_editDonationState.Amount" /></InputWrapper>
+		<InputWrapper Label="Currency"><SearchDropdown TKey="Currency" Values="@(Enum.GetValues<Currency>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<Currency>(s)" @bind-Value="@_editDonationState.Currency" /></InputWrapper>
+		<InputWrapper Label="ConvertedEuroCentsReceived"><InputNumber class="admin-input" @bind-Value="_editDonationState.ConvertedEuroCentsReceived" /></InputWrapper>
+		<InputWrapper Label="Note"><InputTextArea class="admin-input" @bind-Value="@_editDonationState.Note" /></InputWrapper>
+		<InputWrapper Label="Refunded"><InputCheckbox @bind-Value="@_editDonationState.IsRefunded" /></InputWrapper>
 	</AdminEdit>
 </AdminAuthorizer>
 
 @code
 {
 	private Dictionary<int, string>? _playerNames;
-	private readonly EditDonation _editDonation = new();
+	private readonly EditDonationState _editDonationState = new();
 
 	[Parameter, EditorRequired] public int Id { get; set; }
 
-	private async Task PopulateAsync(AdminEdit<EditDonation> editComponent)
+	private async Task PopulateAsync(AdminEdit<EditDonationState, EditDonation> editComponent)
 	{
 		try
 		{
@@ -30,12 +31,12 @@
 			_playerNames = getPlayerNames.ToDictionary(m => m.Id, m => m.PlayerName);
 
 			GetDonation getDonation = await Http.GetDonationById(Id);
-			_editDonation.Amount = getDonation.Amount;
-			_editDonation.ConvertedEuroCentsReceived = getDonation.ConvertedEuroCentsReceived;
-			_editDonation.Currency = getDonation.Currency;
-			_editDonation.IsRefunded = getDonation.IsRefunded;
-			_editDonation.Note = getDonation.Note;
-			_editDonation.PlayerId = getDonation.PlayerId;
+			_editDonationState.Amount = getDonation.Amount;
+			_editDonationState.ConvertedEuroCentsReceived = getDonation.ConvertedEuroCentsReceived;
+			_editDonationState.Currency = getDonation.Currency;
+			_editDonationState.IsRefunded = getDonation.IsRefunded;
+			_editDonationState.Note = getDonation.Note;
+			_editDonationState.PlayerId = getDonation.PlayerId;
 
 			editComponent.State = ErrorState.None;
 		}

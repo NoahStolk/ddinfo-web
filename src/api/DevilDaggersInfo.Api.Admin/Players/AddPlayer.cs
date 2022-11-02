@@ -6,56 +6,56 @@ namespace DevilDaggersInfo.Api.Admin.Players;
 public record AddPlayer
 {
 	[Range(1, int.MaxValue)]
-	public int Id { get; set; }
+	public int Id { get; init; }
 
 	[StringLength(32)]
-	public string? CommonName { get; set; }
+	public string? CommonName { get; init; }
 
 	// UInt64 not supported by Blazor InputNumber
-	public long? DiscordUserId { get; set; }
+	public long? DiscordUserId { get; init; }
 
 	[StringLength(2)]
-	public string? CountryCode { get; set; }
+	public string? CountryCode { get; init; }
 
 	[Range(1, 20000)]
-	public int? Dpi { get; set; }
+	public int? Dpi { get; init; }
 
 	[Range(0.01f, 2)]
-	public float? InGameSens { get; set; }
+	public float? InGameSens { get; init; }
 
 	[Range(0, 179)]
-	public int? Fov { get; set; }
+	public int? Fov { get; init; }
 
-	public bool? IsRightHanded { get; set; }
+	public bool? IsRightHanded { get; init; }
 
-	public bool? HasFlashHandEnabled { get; set; }
+	public bool? HasFlashHandEnabled { get; init; }
 
 	[Range(0.5f, 5)]
-	public float? Gamma { get; set; }
+	public float? Gamma { get; init; }
 
-	public bool? UsesLegacyAudio { get; set; }
+	public bool? UsesLegacyAudio { get; init; }
 
-	public bool? UsesHrtf { get; set; }
+	public bool? UsesHrtf { get; init; }
 
-	public bool? UsesInvertY { get; set; }
+	public bool? UsesInvertY { get; init; }
 
-	public VerticalSync VerticalSync { get; set; }
+	public VerticalSync VerticalSync { get; init; }
 
-	public BanType BanType { get; set; }
+	public BanType BanType { get; init; }
 
 	[StringLength(64)]
-	public string? BanDescription { get; set; }
+	public string? BanDescription { get; init; }
 
 	[Range(1, int.MaxValue)]
-	public int? BanResponsibleId { get; set; }
+	public int? BanResponsibleId { get; init; }
 
-	public bool IsBannedFromDdcl { get; set; }
+	public bool IsBannedFromDdcl { get; init; }
 
-	public bool HideSettings { get; set; }
+	public bool HideSettings { get; init; }
 
-	public bool HideDonations { get; set; }
+	public bool HideDonations { get; init; }
 
-	public bool HidePastUsernames { get; set; }
+	public bool HidePastUsernames { get; init; }
 
-	public List<int>? ModIds { get; set; }
+	public List<int>? ModIds { get; init; }
 }

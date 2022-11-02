@@ -1,11 +1,13 @@
 using DevilDaggersInfo.Web.Client.Enums;
 using DevilDaggersInfo.Web.Client.Extensions;
+using DevilDaggersInfo.Web.Client.StateObjects;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 
 namespace DevilDaggersInfo.Web.Client.Components.Admin;
 
-public partial class AdminEdit<TModel>
+public partial class AdminEdit<TStateObject, TModel>
+	where TStateObject : IStateObject<TModel>
 {
 	private bool _submitting;
 
@@ -23,7 +25,7 @@ public partial class AdminEdit<TModel>
 
 	[Parameter]
 	[EditorRequired]
-	public TModel Model { get; set; } = default!;
+	public TStateObject StateObject { get; set; } = default!;
 
 	[Parameter]
 	[EditorRequired]
@@ -34,7 +36,7 @@ public partial class AdminEdit<TModel>
 
 	[Parameter]
 	[EditorRequired]
-	public Func<AdminEdit<TModel>, Task> OnPopulate { get; set; } = null!;
+	public Func<AdminEdit<TStateObject, TModel>, Task> OnPopulate { get; set; } = null!;
 
 	public ErrorState State { get; set; }
 	public string? ErrorMessage { get; set; }
@@ -52,7 +54,7 @@ public partial class AdminEdit<TModel>
 
 		try
 		{
-			HttpResponseMessage hrm = await ApiCall.Invoke(Id, Model);
+			HttpResponseMessage hrm = await ApiCall.Invoke(Id, StateObject.ToModel());
 
 			if (hrm.StatusCode == HttpStatusCode.OK)
 			{

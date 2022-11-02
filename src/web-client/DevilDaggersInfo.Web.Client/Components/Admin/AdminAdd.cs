@@ -1,11 +1,13 @@
 using DevilDaggersInfo.Web.Client.Enums;
 using DevilDaggersInfo.Web.Client.Extensions;
+using DevilDaggersInfo.Web.Client.StateObjects;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 
 namespace DevilDaggersInfo.Web.Client.Components.Admin;
 
-public partial class AdminAdd<TModel>
+public partial class AdminAdd<TStateObject, TModel>
+	where TStateObject : IStateObject<TModel>
 {
 	private bool _submitting;
 
@@ -23,14 +25,14 @@ public partial class AdminAdd<TModel>
 
 	[Parameter]
 	[EditorRequired]
-	public TModel Model { get; set; } = default!;
+	public TStateObject StateObject { get; set; } = default!;
 
 	[Parameter]
 	public RenderFragment ChildContent { get; set; } = null!;
 
 	[Parameter]
 	[EditorRequired]
-	public Func<AdminAdd<TModel>, Task> OnPopulate { get; set; } = null!;
+	public Func<AdminAdd<TStateObject, TModel>, Task> OnPopulate { get; set; } = null!;
 
 	public ErrorState State { get; set; }
 	public string? ErrorMessage { get; set; }
@@ -46,7 +48,7 @@ public partial class AdminAdd<TModel>
 
 		try
 		{
-			HttpResponseMessage hrm = await ApiCall.Invoke(Model);
+			HttpResponseMessage hrm = await ApiCall.Invoke(StateObject.ToModel());
 
 			if (hrm.StatusCode == HttpStatusCode.OK)
 				NavigationManager.NavigateTo(OverviewUrl);

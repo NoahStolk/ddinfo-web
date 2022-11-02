@@ -3,25 +3,26 @@
 @using DevilDaggersInfo.Api.Admin.Spawnsets
 @using DevilDaggersInfo.Api.Admin.Players
 @using DevilDaggersInfo.Web.Client.Enums
+@using DevilDaggersInfo.Web.Client.StateObjects.Admin.Spawnsets
 
 <AdminAuthorizer Base="this" RequiredRole="@Roles.Spawnsets">
-	<AdminEdit Name="Spawnset" OverviewUrl="/admin/spawnsets" ApiCall="Http.EditSpawnsetById" Model="_editSpawnset" Id="Id" OnPopulate="async ec => await PopulateAsync(ec)">
-		<InputWrapper Label="Author"><SearchDropdown TKey="int" Values="@_playerNames" Converter="s => int.Parse(s)" @bind-Value="@_editSpawnset.PlayerId" /></InputWrapper>
-		<InputWrapper Label="Name"><InputText class="admin-input" @bind-Value="@_editSpawnset.Name" /></InputWrapper>
-		<InputWrapper Label="Max display waves"><InputNumber class="admin-input" @bind-Value="_editSpawnset.MaxDisplayWaves" /></InputWrapper>
-		<InputWrapper Label="HTML description"><InputTextArea class="admin-input w-full h-64" @bind-Value="@_editSpawnset.HtmlDescription" /></InputWrapper>
-		<InputWrapper Label="Practice"><InputCheckbox @bind-Value="@_editSpawnset.IsPractice" /></InputWrapper>
+	<AdminEdit TStateObject="EditSpawnsetState" TModel="EditSpawnset" Name="Spawnset" OverviewUrl="/admin/spawnsets" ApiCall="Http.EditSpawnsetById" StateObject="_editSpawnsetState" Id="Id" OnPopulate="async ec => await PopulateAsync(ec)">
+		<InputWrapper Label="Author"><SearchDropdown TKey="int" Values="@_playerNames" Converter="s => int.Parse(s)" @bind-Value="@_editSpawnsetState.PlayerId" /></InputWrapper>
+		<InputWrapper Label="Name"><InputText class="admin-input" @bind-Value="@_editSpawnsetState.Name" /></InputWrapper>
+		<InputWrapper Label="Max display waves"><InputNumber class="admin-input" @bind-Value="_editSpawnsetState.MaxDisplayWaves" /></InputWrapper>
+		<InputWrapper Label="HTML description"><InputTextArea class="admin-input w-full h-64" @bind-Value="@_editSpawnsetState.HtmlDescription" /></InputWrapper>
+		<InputWrapper Label="Practice"><InputCheckbox @bind-Value="@_editSpawnsetState.IsPractice" /></InputWrapper>
 	</AdminEdit>
 </AdminAuthorizer>
 
 @code
 {
 	private Dictionary<int, string>? _playerNames;
-	private readonly EditSpawnset _editSpawnset = new();
+	private readonly EditSpawnsetState _editSpawnsetState = new();
 
 	[Parameter, EditorRequired] public int Id { get; set; }
 
-	private async Task PopulateAsync(AdminEdit<EditSpawnset> editComponent)
+	private async Task PopulateAsync(AdminEdit<EditSpawnsetState, EditSpawnset> editComponent)
 	{
 		try
 		{
@@ -29,11 +30,11 @@
 			_playerNames = getPlayerNames.ToDictionary(m => m.Id, m => m.PlayerName);
 
 			GetSpawnset getSpawnset = await Http.GetSpawnsetById(Id);
-			_editSpawnset.HtmlDescription = getSpawnset.HtmlDescription;
-			_editSpawnset.IsPractice = getSpawnset.IsPractice;
-			_editSpawnset.MaxDisplayWaves = getSpawnset.MaxDisplayWaves;
-			_editSpawnset.Name = getSpawnset.Name;
-			_editSpawnset.PlayerId = getSpawnset.PlayerId;
+			_editSpawnsetState.HtmlDescription = getSpawnset.HtmlDescription;
+			_editSpawnsetState.IsPractice = getSpawnset.IsPractice;
+			_editSpawnsetState.MaxDisplayWaves = getSpawnset.MaxDisplayWaves;
+			_editSpawnsetState.Name = getSpawnset.Name;
+			_editSpawnsetState.PlayerId = getSpawnset.PlayerId;
 
 			editComponent.State = ErrorState.None;
 		}

@@ -2,192 +2,193 @@
 @inherits BaseAdminPage
 @using DevilDaggersInfo.Api.Admin.CustomLeaderboards
 @using DevilDaggersInfo.Web.Client.Enums
+@using DevilDaggersInfo.Web.Client.StateObjects.Admin.CustomLeaderboards
 
 <AdminAuthorizer Base="this" RequiredRole="@Roles.CustomLeaderboards">
-	<AdminEdit Name="Custom Leaderboard" OverviewUrl="/admin/custom-leaderboards" ApiCall="Http.EditCustomLeaderboardById" Model="_editCustomLeaderboard" Id="Id" OnPopulate="async ec => await PopulateAsync(ec)">
-		<InputWrapper Label="Category"><SearchDropdown TKey="CustomLeaderboardCategory" Values="@(Enum.GetValues<CustomLeaderboardCategory>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<CustomLeaderboardCategory>(s)" ShowDisplayValue="false" @bind-Value="@_editCustomLeaderboard.Category" /></InputWrapper>
-		<InputWrapper Label="Featured"><InputCheckbox @bind-Value="@_editCustomLeaderboard.IsFeatured" /></InputWrapper>
-		@if (_editCustomLeaderboard.IsFeatured)
+	<AdminEdit TStateObject="EditCustomLeaderboardState" TModel="EditCustomLeaderboard" Name="Custom Leaderboard" OverviewUrl="/admin/custom-leaderboards" ApiCall="Http.EditCustomLeaderboardById" StateObject="_editCustomLeaderboardState" Id="Id" OnPopulate="async ec => await PopulateAsync(ec)">
+		<InputWrapper Label="Category"><SearchDropdown TKey="CustomLeaderboardCategory" Values="@(Enum.GetValues<CustomLeaderboardCategory>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<CustomLeaderboardCategory>(s)" ShowDisplayValue="false" @bind-Value="@_editCustomLeaderboardState.Category" /></InputWrapper>
+		<InputWrapper Label="Featured"><InputCheckbox @bind-Value="@_editCustomLeaderboardState.IsFeatured" /></InputWrapper>
+		@if (_editCustomLeaderboardState.IsFeatured)
 		{
-			<InputWrapper Label="Bronze"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.Daggers.Bronze" /></InputWrapper>
-			<InputWrapper Label="Silver"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.Daggers.Silver" /></InputWrapper>
-			<InputWrapper Label="Golden"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.Daggers.Golden" /></InputWrapper>
-			<InputWrapper Label="Devil"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.Daggers.Devil" /></InputWrapper>
-			<InputWrapper Label="Leviathan"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboard.Daggers.Leviathan" /></InputWrapper>
+			<InputWrapper Label="Bronze"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboardState.Daggers.Bronze" /></InputWrapper>
+			<InputWrapper Label="Silver"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboardState.Daggers.Silver" /></InputWrapper>
+			<InputWrapper Label="Golden"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboardState.Daggers.Golden" /></InputWrapper>
+			<InputWrapper Label="Devil"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboardState.Daggers.Devil" /></InputWrapper>
+			<InputWrapper Label="Leviathan"><InputNumber class="admin-input" @bind-Value="_editCustomLeaderboardState.Daggers.Leviathan" /></InputWrapper>
 		}
 
 		<Heading Level="2" Title="Criteria" />
 
-		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.GemsCollected" Criteria="_editCustomLeaderboard.GemsCollectedCriteria" />
-		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.GemsDespawned" Criteria="_editCustomLeaderboard.GemsDespawnedCriteria" />
-		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.GemsEaten" Criteria="_editCustomLeaderboard.GemsEatenCriteria" />
-		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.EnemiesKilled" Criteria="_editCustomLeaderboard.EnemiesKilledCriteria" />
-		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.DaggersFired" Criteria="_editCustomLeaderboard.DaggersFiredCriteria" />
-		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.DaggersHit" Criteria="_editCustomLeaderboard.DaggersHitCriteria" />
-		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.HomingStored" Criteria="_editCustomLeaderboard.HomingStoredCriteria" />
-		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.HomingEaten" Criteria="_editCustomLeaderboard.HomingEatenCriteria" />
-		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.DeathType" Criteria="_editCustomLeaderboard.DeathTypeCriteria" />
-		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.Time" Criteria="_editCustomLeaderboard.TimeCriteria" />
-		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.LevelUpTime2" Criteria="_editCustomLeaderboard.LevelUpTime2Criteria" />
-		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.LevelUpTime3" Criteria="_editCustomLeaderboard.LevelUpTime3Criteria" />
-		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.LevelUpTime4" Criteria="_editCustomLeaderboard.LevelUpTime4Criteria" />
-		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.EnemiesAlive" Criteria="_editCustomLeaderboard.EnemiesAliveCriteria" />
+		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.GemsCollected" Criteria="_editCustomLeaderboardState.GemsCollectedCriteria" />
+		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.GemsDespawned" Criteria="_editCustomLeaderboardState.GemsDespawnedCriteria" />
+		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.GemsEaten" Criteria="_editCustomLeaderboardState.GemsEatenCriteria" />
+		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.EnemiesKilled" Criteria="_editCustomLeaderboardState.EnemiesKilledCriteria" />
+		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.DaggersFired" Criteria="_editCustomLeaderboardState.DaggersFiredCriteria" />
+		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.DaggersHit" Criteria="_editCustomLeaderboardState.DaggersHitCriteria" />
+		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.HomingStored" Criteria="_editCustomLeaderboardState.HomingStoredCriteria" />
+		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.HomingEaten" Criteria="_editCustomLeaderboardState.HomingEatenCriteria" />
+		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.DeathType" Criteria="_editCustomLeaderboardState.DeathTypeCriteria" />
+		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.Time" Criteria="_editCustomLeaderboardState.TimeCriteria" />
+		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.LevelUpTime2" Criteria="_editCustomLeaderboardState.LevelUpTime2Criteria" />
+		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.LevelUpTime3" Criteria="_editCustomLeaderboardState.LevelUpTime3Criteria" />
+		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.LevelUpTime4" Criteria="_editCustomLeaderboardState.LevelUpTime4Criteria" />
+		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.EnemiesAlive" Criteria="_editCustomLeaderboardState.EnemiesAliveCriteria" />
 		
 		<Heading Level="2" Title="Enemy criteria" />
 		
-		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.Skull1Kills" Criteria="_editCustomLeaderboard.Skull1KillsCriteria" />
-		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.Skull2Kills" Criteria="_editCustomLeaderboard.Skull2KillsCriteria" />
-		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.Skull3Kills" Criteria="_editCustomLeaderboard.Skull3KillsCriteria" />
-		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.Skull4Kills" Criteria="_editCustomLeaderboard.Skull4KillsCriteria" />
-		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.SpiderlingKills" Criteria="_editCustomLeaderboard.SpiderlingKillsCriteria" />
-		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.SpiderEggKills" Criteria="_editCustomLeaderboard.SpiderEggKillsCriteria" />
-		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.Squid1Kills" Criteria="_editCustomLeaderboard.Squid1KillsCriteria" />
-		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.Squid2Kills" Criteria="_editCustomLeaderboard.Squid2KillsCriteria" />
-		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.Squid3Kills" Criteria="_editCustomLeaderboard.Squid3KillsCriteria" />
-		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.CentipedeKills" Criteria="_editCustomLeaderboard.CentipedeKillsCriteria" />
-		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.GigapedeKills" Criteria="_editCustomLeaderboard.GigapedeKillsCriteria" />
-		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.GhostpedeKills" Criteria="_editCustomLeaderboard.GhostpedeKillsCriteria" />
-		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.Spider1Kills" Criteria="_editCustomLeaderboard.Spider1KillsCriteria" />
-		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.Spider2Kills" Criteria="_editCustomLeaderboard.Spider2KillsCriteria" />
-		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.LeviathanKills" Criteria="_editCustomLeaderboard.LeviathanKillsCriteria" />
-		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.OrbKills" Criteria="_editCustomLeaderboard.OrbKillsCriteria" />
-		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.ThornKills" Criteria="_editCustomLeaderboard.ThornKillsCriteria" />
-		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.Skull1sAlive" Criteria="_editCustomLeaderboard.Skull1sAliveCriteria" />
-		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.Skull2sAlive" Criteria="_editCustomLeaderboard.Skull2sAliveCriteria" />
-		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.Skull3sAlive" Criteria="_editCustomLeaderboard.Skull3sAliveCriteria" />
-		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.Skull4sAlive" Criteria="_editCustomLeaderboard.Skull4sAliveCriteria" />
-		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.SpiderlingsAlive" Criteria="_editCustomLeaderboard.SpiderlingsAliveCriteria" />
-		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.SpiderEggsAlive" Criteria="_editCustomLeaderboard.SpiderEggsAliveCriteria" />
-		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.Squid1sAlive" Criteria="_editCustomLeaderboard.Squid1sAliveCriteria" />
-		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.Squid2sAlive" Criteria="_editCustomLeaderboard.Squid2sAliveCriteria" />
-		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.Squid3sAlive" Criteria="_editCustomLeaderboard.Squid3sAliveCriteria" />
-		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.CentipedesAlive" Criteria="_editCustomLeaderboard.CentipedesAliveCriteria" />
-		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.GigapedesAlive" Criteria="_editCustomLeaderboard.GigapedesAliveCriteria" />
-		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.GhostpedesAlive" Criteria="_editCustomLeaderboard.GhostpedesAliveCriteria" />
-		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.Spider1sAlive" Criteria="_editCustomLeaderboard.Spider1sAliveCriteria" />
-		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.Spider2sAlive" Criteria="_editCustomLeaderboard.Spider2sAliveCriteria" />
-		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.LeviathansAlive" Criteria="_editCustomLeaderboard.LeviathansAliveCriteria" />
-		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.OrbsAlive" Criteria="_editCustomLeaderboard.OrbsAliveCriteria" />
-		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.ThornsAlive" Criteria="_editCustomLeaderboard.ThornsAliveCriteria" />
+		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.Skull1Kills" Criteria="_editCustomLeaderboardState.Skull1KillsCriteria" />
+		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.Skull2Kills" Criteria="_editCustomLeaderboardState.Skull2KillsCriteria" />
+		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.Skull3Kills" Criteria="_editCustomLeaderboardState.Skull3KillsCriteria" />
+		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.Skull4Kills" Criteria="_editCustomLeaderboardState.Skull4KillsCriteria" />
+		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.SpiderlingKills" Criteria="_editCustomLeaderboardState.SpiderlingKillsCriteria" />
+		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.SpiderEggKills" Criteria="_editCustomLeaderboardState.SpiderEggKillsCriteria" />
+		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.Squid1Kills" Criteria="_editCustomLeaderboardState.Squid1KillsCriteria" />
+		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.Squid2Kills" Criteria="_editCustomLeaderboardState.Squid2KillsCriteria" />
+		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.Squid3Kills" Criteria="_editCustomLeaderboardState.Squid3KillsCriteria" />
+		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.CentipedeKills" Criteria="_editCustomLeaderboardState.CentipedeKillsCriteria" />
+		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.GigapedeKills" Criteria="_editCustomLeaderboardState.GigapedeKillsCriteria" />
+		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.GhostpedeKills" Criteria="_editCustomLeaderboardState.GhostpedeKillsCriteria" />
+		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.Spider1Kills" Criteria="_editCustomLeaderboardState.Spider1KillsCriteria" />
+		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.Spider2Kills" Criteria="_editCustomLeaderboardState.Spider2KillsCriteria" />
+		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.LeviathanKills" Criteria="_editCustomLeaderboardState.LeviathanKillsCriteria" />
+		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.OrbKills" Criteria="_editCustomLeaderboardState.OrbKillsCriteria" />
+		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.ThornKills" Criteria="_editCustomLeaderboardState.ThornKillsCriteria" />
+		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.Skull1sAlive" Criteria="_editCustomLeaderboardState.Skull1sAliveCriteria" />
+		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.Skull2sAlive" Criteria="_editCustomLeaderboardState.Skull2sAliveCriteria" />
+		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.Skull3sAlive" Criteria="_editCustomLeaderboardState.Skull3sAliveCriteria" />
+		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.Skull4sAlive" Criteria="_editCustomLeaderboardState.Skull4sAliveCriteria" />
+		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.SpiderlingsAlive" Criteria="_editCustomLeaderboardState.SpiderlingsAliveCriteria" />
+		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.SpiderEggsAlive" Criteria="_editCustomLeaderboardState.SpiderEggsAliveCriteria" />
+		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.Squid1sAlive" Criteria="_editCustomLeaderboardState.Squid1sAliveCriteria" />
+		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.Squid2sAlive" Criteria="_editCustomLeaderboardState.Squid2sAliveCriteria" />
+		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.Squid3sAlive" Criteria="_editCustomLeaderboardState.Squid3sAliveCriteria" />
+		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.CentipedesAlive" Criteria="_editCustomLeaderboardState.CentipedesAliveCriteria" />
+		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.GigapedesAlive" Criteria="_editCustomLeaderboardState.GigapedesAliveCriteria" />
+		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.GhostpedesAlive" Criteria="_editCustomLeaderboardState.GhostpedesAliveCriteria" />
+		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.Spider1sAlive" Criteria="_editCustomLeaderboardState.Spider1sAliveCriteria" />
+		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.Spider2sAlive" Criteria="_editCustomLeaderboardState.Spider2sAliveCriteria" />
+		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.LeviathansAlive" Criteria="_editCustomLeaderboardState.LeviathansAliveCriteria" />
+		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.OrbsAlive" Criteria="_editCustomLeaderboardState.OrbsAliveCriteria" />
+		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.ThornsAlive" Criteria="_editCustomLeaderboardState.ThornsAliveCriteria" />
 	</AdminEdit>
 </AdminAuthorizer>
 
 @code
 {
-	private readonly EditCustomLeaderboard _editCustomLeaderboard = new();
+	private readonly EditCustomLeaderboardState _editCustomLeaderboardState = new();
 
 	[Parameter, EditorRequired] public int Id { get; set; }
 
-	private async Task PopulateAsync(AdminEdit<EditCustomLeaderboard> editComponent)
+	private async Task PopulateAsync(AdminEdit<EditCustomLeaderboardState, EditCustomLeaderboard> editComponent)
 	{
 		try
 		{
 			GetCustomLeaderboard getCustomLeaderboard = await Http.GetCustomLeaderboardById(Id);
-			_editCustomLeaderboard.Category = getCustomLeaderboard.Category;
-			_editCustomLeaderboard.IsFeatured = getCustomLeaderboard.IsFeatured;
-			_editCustomLeaderboard.Daggers.Bronze = getCustomLeaderboard.Daggers.Bronze;
-			_editCustomLeaderboard.Daggers.Silver = getCustomLeaderboard.Daggers.Silver;
-			_editCustomLeaderboard.Daggers.Golden = getCustomLeaderboard.Daggers.Golden;
-			_editCustomLeaderboard.Daggers.Devil = getCustomLeaderboard.Daggers.Devil;
-			_editCustomLeaderboard.Daggers.Leviathan = getCustomLeaderboard.Daggers.Leviathan;
+			_editCustomLeaderboardState.Category = getCustomLeaderboard.Category;
+			_editCustomLeaderboardState.IsFeatured = getCustomLeaderboard.IsFeatured;
+			_editCustomLeaderboardState.Daggers.Bronze = getCustomLeaderboard.Daggers.Bronze;
+			_editCustomLeaderboardState.Daggers.Silver = getCustomLeaderboard.Daggers.Silver;
+			_editCustomLeaderboardState.Daggers.Golden = getCustomLeaderboard.Daggers.Golden;
+			_editCustomLeaderboardState.Daggers.Devil = getCustomLeaderboard.Daggers.Devil;
+			_editCustomLeaderboardState.Daggers.Leviathan = getCustomLeaderboard.Daggers.Leviathan;
 
-			_editCustomLeaderboard.GemsCollectedCriteria.Operator = getCustomLeaderboard.GemsCollectedCriteria.Operator;
-			_editCustomLeaderboard.GemsDespawnedCriteria.Operator = getCustomLeaderboard.GemsDespawnedCriteria.Operator;
-			_editCustomLeaderboard.GemsEatenCriteria.Operator = getCustomLeaderboard.GemsEatenCriteria.Operator;
-			_editCustomLeaderboard.EnemiesKilledCriteria.Operator = getCustomLeaderboard.EnemiesKilledCriteria.Operator;
-			_editCustomLeaderboard.DaggersFiredCriteria.Operator = getCustomLeaderboard.DaggersFiredCriteria.Operator;
-			_editCustomLeaderboard.DaggersHitCriteria.Operator = getCustomLeaderboard.DaggersHitCriteria.Operator;
-			_editCustomLeaderboard.HomingStoredCriteria.Operator = getCustomLeaderboard.HomingStoredCriteria.Operator;
-			_editCustomLeaderboard.HomingEatenCriteria.Operator = getCustomLeaderboard.HomingEatenCriteria.Operator;
-			_editCustomLeaderboard.DeathTypeCriteria.Operator = getCustomLeaderboard.DeathTypeCriteria.Operator;
-			_editCustomLeaderboard.TimeCriteria.Operator = getCustomLeaderboard.TimeCriteria.Operator;
-			_editCustomLeaderboard.LevelUpTime2Criteria.Operator = getCustomLeaderboard.LevelUpTime2Criteria.Operator;
-			_editCustomLeaderboard.LevelUpTime3Criteria.Operator = getCustomLeaderboard.LevelUpTime3Criteria.Operator;
-			_editCustomLeaderboard.LevelUpTime4Criteria.Operator = getCustomLeaderboard.LevelUpTime4Criteria.Operator;
-			_editCustomLeaderboard.EnemiesAliveCriteria.Operator = getCustomLeaderboard.EnemiesAliveCriteria.Operator;
-			_editCustomLeaderboard.Skull1KillsCriteria.Operator = getCustomLeaderboard.Skull1KillsCriteria.Operator;
-			_editCustomLeaderboard.Skull2KillsCriteria.Operator = getCustomLeaderboard.Skull2KillsCriteria.Operator;
-			_editCustomLeaderboard.Skull3KillsCriteria.Operator = getCustomLeaderboard.Skull3KillsCriteria.Operator;
-			_editCustomLeaderboard.Skull4KillsCriteria.Operator = getCustomLeaderboard.Skull4KillsCriteria.Operator;
-			_editCustomLeaderboard.SpiderlingKillsCriteria.Operator = getCustomLeaderboard.SpiderlingKillsCriteria.Operator;
-			_editCustomLeaderboard.SpiderEggKillsCriteria.Operator = getCustomLeaderboard.SpiderEggKillsCriteria.Operator;
-			_editCustomLeaderboard.Squid1KillsCriteria.Operator = getCustomLeaderboard.Squid1KillsCriteria.Operator;
-			_editCustomLeaderboard.Squid2KillsCriteria.Operator = getCustomLeaderboard.Squid2KillsCriteria.Operator;
-			_editCustomLeaderboard.Squid3KillsCriteria.Operator = getCustomLeaderboard.Squid3KillsCriteria.Operator;
-			_editCustomLeaderboard.CentipedeKillsCriteria.Operator = getCustomLeaderboard.CentipedeKillsCriteria.Operator;
-			_editCustomLeaderboard.GigapedeKillsCriteria.Operator = getCustomLeaderboard.GigapedeKillsCriteria.Operator;
-			_editCustomLeaderboard.GhostpedeKillsCriteria.Operator = getCustomLeaderboard.GhostpedeKillsCriteria.Operator;
-			_editCustomLeaderboard.Spider1KillsCriteria.Operator = getCustomLeaderboard.Spider1KillsCriteria.Operator;
-			_editCustomLeaderboard.Spider2KillsCriteria.Operator = getCustomLeaderboard.Spider2KillsCriteria.Operator;
-			_editCustomLeaderboard.LeviathanKillsCriteria.Operator = getCustomLeaderboard.LeviathanKillsCriteria.Operator;
-			_editCustomLeaderboard.OrbKillsCriteria.Operator = getCustomLeaderboard.OrbKillsCriteria.Operator;
-			_editCustomLeaderboard.ThornKillsCriteria.Operator = getCustomLeaderboard.ThornKillsCriteria.Operator;
-			_editCustomLeaderboard.Skull1sAliveCriteria.Operator = getCustomLeaderboard.Skull1sAliveCriteria.Operator;
-			_editCustomLeaderboard.Skull2sAliveCriteria.Operator = getCustomLeaderboard.Skull2sAliveCriteria.Operator;
-			_editCustomLeaderboard.Skull3sAliveCriteria.Operator = getCustomLeaderboard.Skull3sAliveCriteria.Operator;
-			_editCustomLeaderboard.Skull4sAliveCriteria.Operator = getCustomLeaderboard.Skull4sAliveCriteria.Operator;
-			_editCustomLeaderboard.SpiderlingsAliveCriteria.Operator = getCustomLeaderboard.SpiderlingsAliveCriteria.Operator;
-			_editCustomLeaderboard.SpiderEggsAliveCriteria.Operator = getCustomLeaderboard.SpiderEggsAliveCriteria.Operator;
-			_editCustomLeaderboard.Squid1sAliveCriteria.Operator = getCustomLeaderboard.Squid1sAliveCriteria.Operator;
-			_editCustomLeaderboard.Squid2sAliveCriteria.Operator = getCustomLeaderboard.Squid2sAliveCriteria.Operator;
-			_editCustomLeaderboard.Squid3sAliveCriteria.Operator = getCustomLeaderboard.Squid3sAliveCriteria.Operator;
-			_editCustomLeaderboard.CentipedesAliveCriteria.Operator = getCustomLeaderboard.CentipedesAliveCriteria.Operator;
-			_editCustomLeaderboard.GigapedesAliveCriteria.Operator = getCustomLeaderboard.GigapedesAliveCriteria.Operator;
-			_editCustomLeaderboard.GhostpedesAliveCriteria.Operator = getCustomLeaderboard.GhostpedesAliveCriteria.Operator;
-			_editCustomLeaderboard.Spider1sAliveCriteria.Operator = getCustomLeaderboard.Spider1sAliveCriteria.Operator;
-			_editCustomLeaderboard.Spider2sAliveCriteria.Operator = getCustomLeaderboard.Spider2sAliveCriteria.Operator;
-			_editCustomLeaderboard.LeviathansAliveCriteria.Operator = getCustomLeaderboard.LeviathansAliveCriteria.Operator;
-			_editCustomLeaderboard.OrbsAliveCriteria.Operator = getCustomLeaderboard.OrbsAliveCriteria.Operator;
-			_editCustomLeaderboard.ThornsAliveCriteria.Operator = getCustomLeaderboard.ThornsAliveCriteria.Operator;
+			_editCustomLeaderboardState.GemsCollectedCriteria.Operator = getCustomLeaderboard.GemsCollectedCriteria.Operator;
+			_editCustomLeaderboardState.GemsDespawnedCriteria.Operator = getCustomLeaderboard.GemsDespawnedCriteria.Operator;
+			_editCustomLeaderboardState.GemsEatenCriteria.Operator = getCustomLeaderboard.GemsEatenCriteria.Operator;
+			_editCustomLeaderboardState.EnemiesKilledCriteria.Operator = getCustomLeaderboard.EnemiesKilledCriteria.Operator;
+			_editCustomLeaderboardState.DaggersFiredCriteria.Operator = getCustomLeaderboard.DaggersFiredCriteria.Operator;
+			_editCustomLeaderboardState.DaggersHitCriteria.Operator = getCustomLeaderboard.DaggersHitCriteria.Operator;
+			_editCustomLeaderboardState.HomingStoredCriteria.Operator = getCustomLeaderboard.HomingStoredCriteria.Operator;
+			_editCustomLeaderboardState.HomingEatenCriteria.Operator = getCustomLeaderboard.HomingEatenCriteria.Operator;
+			_editCustomLeaderboardState.DeathTypeCriteria.Operator = getCustomLeaderboard.DeathTypeCriteria.Operator;
+			_editCustomLeaderboardState.TimeCriteria.Operator = getCustomLeaderboard.TimeCriteria.Operator;
+			_editCustomLeaderboardState.LevelUpTime2Criteria.Operator = getCustomLeaderboard.LevelUpTime2Criteria.Operator;
+			_editCustomLeaderboardState.LevelUpTime3Criteria.Operator = getCustomLeaderboard.LevelUpTime3Criteria.Operator;
+			_editCustomLeaderboardState.LevelUpTime4Criteria.Operator = getCustomLeaderboard.LevelUpTime4Criteria.Operator;
+			_editCustomLeaderboardState.EnemiesAliveCriteria.Operator = getCustomLeaderboard.EnemiesAliveCriteria.Operator;
+			_editCustomLeaderboardState.Skull1KillsCriteria.Operator = getCustomLeaderboard.Skull1KillsCriteria.Operator;
+			_editCustomLeaderboardState.Skull2KillsCriteria.Operator = getCustomLeaderboard.Skull2KillsCriteria.Operator;
+			_editCustomLeaderboardState.Skull3KillsCriteria.Operator = getCustomLeaderboard.Skull3KillsCriteria.Operator;
+			_editCustomLeaderboardState.Skull4KillsCriteria.Operator = getCustomLeaderboard.Skull4KillsCriteria.Operator;
+			_editCustomLeaderboardState.SpiderlingKillsCriteria.Operator = getCustomLeaderboard.SpiderlingKillsCriteria.Operator;
+			_editCustomLeaderboardState.SpiderEggKillsCriteria.Operator = getCustomLeaderboard.SpiderEggKillsCriteria.Operator;
+			_editCustomLeaderboardState.Squid1KillsCriteria.Operator = getCustomLeaderboard.Squid1KillsCriteria.Operator;
+			_editCustomLeaderboardState.Squid2KillsCriteria.Operator = getCustomLeaderboard.Squid2KillsCriteria.Operator;
+			_editCustomLeaderboardState.Squid3KillsCriteria.Operator = getCustomLeaderboard.Squid3KillsCriteria.Operator;
+			_editCustomLeaderboardState.CentipedeKillsCriteria.Operator = getCustomLeaderboard.CentipedeKillsCriteria.Operator;
+			_editCustomLeaderboardState.GigapedeKillsCriteria.Operator = getCustomLeaderboard.GigapedeKillsCriteria.Operator;
+			_editCustomLeaderboardState.GhostpedeKillsCriteria.Operator = getCustomLeaderboard.GhostpedeKillsCriteria.Operator;
+			_editCustomLeaderboardState.Spider1KillsCriteria.Operator = getCustomLeaderboard.Spider1KillsCriteria.Operator;
+			_editCustomLeaderboardState.Spider2KillsCriteria.Operator = getCustomLeaderboard.Spider2KillsCriteria.Operator;
+			_editCustomLeaderboardState.LeviathanKillsCriteria.Operator = getCustomLeaderboard.LeviathanKillsCriteria.Operator;
+			_editCustomLeaderboardState.OrbKillsCriteria.Operator = getCustomLeaderboard.OrbKillsCriteria.Operator;
+			_editCustomLeaderboardState.ThornKillsCriteria.Operator = getCustomLeaderboard.ThornKillsCriteria.Operator;
+			_editCustomLeaderboardState.Skull1sAliveCriteria.Operator = getCustomLeaderboard.Skull1sAliveCriteria.Operator;
+			_editCustomLeaderboardState.Skull2sAliveCriteria.Operator = getCustomLeaderboard.Skull2sAliveCriteria.Operator;
+			_editCustomLeaderboardState.Skull3sAliveCriteria.Operator = getCustomLeaderboard.Skull3sAliveCriteria.Operator;
+			_editCustomLeaderboardState.Skull4sAliveCriteria.Operator = getCustomLeaderboard.Skull4sAliveCriteria.Operator;
+			_editCustomLeaderboardState.SpiderlingsAliveCriteria.Operator = getCustomLeaderboard.SpiderlingsAliveCriteria.Operator;
+			_editCustomLeaderboardState.SpiderEggsAliveCriteria.Operator = getCustomLeaderboard.SpiderEggsAliveCriteria.Operator;
+			_editCustomLeaderboardState.Squid1sAliveCriteria.Operator = getCustomLeaderboard.Squid1sAliveCriteria.Operator;
+			_editCustomLeaderboardState.Squid2sAliveCriteria.Operator = getCustomLeaderboard.Squid2sAliveCriteria.Operator;
+			_editCustomLeaderboardState.Squid3sAliveCriteria.Operator = getCustomLeaderboard.Squid3sAliveCriteria.Operator;
+			_editCustomLeaderboardState.CentipedesAliveCriteria.Operator = getCustomLeaderboard.CentipedesAliveCriteria.Operator;
+			_editCustomLeaderboardState.GigapedesAliveCriteria.Operator = getCustomLeaderboard.GigapedesAliveCriteria.Operator;
+			_editCustomLeaderboardState.GhostpedesAliveCriteria.Operator = getCustomLeaderboard.GhostpedesAliveCriteria.Operator;
+			_editCustomLeaderboardState.Spider1sAliveCriteria.Operator = getCustomLeaderboard.Spider1sAliveCriteria.Operator;
+			_editCustomLeaderboardState.Spider2sAliveCriteria.Operator = getCustomLeaderboard.Spider2sAliveCriteria.Operator;
+			_editCustomLeaderboardState.LeviathansAliveCriteria.Operator = getCustomLeaderboard.LeviathansAliveCriteria.Operator;
+			_editCustomLeaderboardState.OrbsAliveCriteria.Operator = getCustomLeaderboard.OrbsAliveCriteria.Operator;
+			_editCustomLeaderboardState.ThornsAliveCriteria.Operator = getCustomLeaderboard.ThornsAliveCriteria.Operator;
 			
-			_editCustomLeaderboard.GemsCollectedCriteria.Expression = getCustomLeaderboard.GemsCollectedCriteria.Expression;
-			_editCustomLeaderboard.GemsDespawnedCriteria.Expression = getCustomLeaderboard.GemsDespawnedCriteria.Expression;
-			_editCustomLeaderboard.GemsEatenCriteria.Expression = getCustomLeaderboard.GemsEatenCriteria.Expression;
-			_editCustomLeaderboard.EnemiesKilledCriteria.Expression = getCustomLeaderboard.EnemiesKilledCriteria.Expression;
-			_editCustomLeaderboard.DaggersFiredCriteria.Expression = getCustomLeaderboard.DaggersFiredCriteria.Expression;
-			_editCustomLeaderboard.DaggersHitCriteria.Expression = getCustomLeaderboard.DaggersHitCriteria.Expression;
-			_editCustomLeaderboard.HomingStoredCriteria.Expression = getCustomLeaderboard.HomingStoredCriteria.Expression;
-			_editCustomLeaderboard.HomingEatenCriteria.Expression = getCustomLeaderboard.HomingEatenCriteria.Expression;
-			_editCustomLeaderboard.DeathTypeCriteria.Expression = getCustomLeaderboard.DeathTypeCriteria.Expression;
-			_editCustomLeaderboard.TimeCriteria.Expression = getCustomLeaderboard.TimeCriteria.Expression;
-			_editCustomLeaderboard.LevelUpTime2Criteria.Expression = getCustomLeaderboard.LevelUpTime2Criteria.Expression;
-			_editCustomLeaderboard.LevelUpTime3Criteria.Expression = getCustomLeaderboard.LevelUpTime3Criteria.Expression;
-			_editCustomLeaderboard.LevelUpTime4Criteria.Expression = getCustomLeaderboard.LevelUpTime4Criteria.Expression;
-			_editCustomLeaderboard.EnemiesAliveCriteria.Expression = getCustomLeaderboard.EnemiesAliveCriteria.Expression;
-			_editCustomLeaderboard.Skull1KillsCriteria.Expression = getCustomLeaderboard.Skull1KillsCriteria.Expression;
-			_editCustomLeaderboard.Skull2KillsCriteria.Expression = getCustomLeaderboard.Skull2KillsCriteria.Expression;
-			_editCustomLeaderboard.Skull3KillsCriteria.Expression = getCustomLeaderboard.Skull3KillsCriteria.Expression;
-			_editCustomLeaderboard.Skull4KillsCriteria.Expression = getCustomLeaderboard.Skull4KillsCriteria.Expression;
-			_editCustomLeaderboard.SpiderlingKillsCriteria.Expression = getCustomLeaderboard.SpiderlingKillsCriteria.Expression;
-			_editCustomLeaderboard.SpiderEggKillsCriteria.Expression = getCustomLeaderboard.SpiderEggKillsCriteria.Expression;
-			_editCustomLeaderboard.Squid1KillsCriteria.Expression = getCustomLeaderboard.Squid1KillsCriteria.Expression;
-			_editCustomLeaderboard.Squid2KillsCriteria.Expression = getCustomLeaderboard.Squid2KillsCriteria.Expression;
-			_editCustomLeaderboard.Squid3KillsCriteria.Expression = getCustomLeaderboard.Squid3KillsCriteria.Expression;
-			_editCustomLeaderboard.CentipedeKillsCriteria.Expression = getCustomLeaderboard.CentipedeKillsCriteria.Expression;
-			_editCustomLeaderboard.GigapedeKillsCriteria.Expression = getCustomLeaderboard.GigapedeKillsCriteria.Expression;
-			_editCustomLeaderboard.GhostpedeKillsCriteria.Expression = getCustomLeaderboard.GhostpedeKillsCriteria.Expression;
-			_editCustomLeaderboard.Spider1KillsCriteria.Expression = getCustomLeaderboard.Spider1KillsCriteria.Expression;
-			_editCustomLeaderboard.Spider2KillsCriteria.Expression = getCustomLeaderboard.Spider2KillsCriteria.Expression;
-			_editCustomLeaderboard.LeviathanKillsCriteria.Expression = getCustomLeaderboard.LeviathanKillsCriteria.Expression;
-			_editCustomLeaderboard.OrbKillsCriteria.Expression = getCustomLeaderboard.OrbKillsCriteria.Expression;
-			_editCustomLeaderboard.ThornKillsCriteria.Expression = getCustomLeaderboard.ThornKillsCriteria.Expression;
-			_editCustomLeaderboard.Skull1sAliveCriteria.Expression = getCustomLeaderboard.Skull1sAliveCriteria.Expression;
-			_editCustomLeaderboard.Skull2sAliveCriteria.Expression = getCustomLeaderboard.Skull2sAliveCriteria.Expression;
-			_editCustomLeaderboard.Skull3sAliveCriteria.Expression = getCustomLeaderboard.Skull3sAliveCriteria.Expression;
-			_editCustomLeaderboard.Skull4sAliveCriteria.Expression = getCustomLeaderboard.Skull4sAliveCriteria.Expression;
-			_editCustomLeaderboard.SpiderlingsAliveCriteria.Expression = getCustomLeaderboard.SpiderlingsAliveCriteria.Expression;
-			_editCustomLeaderboard.SpiderEggsAliveCriteria.Expression = getCustomLeaderboard.SpiderEggsAliveCriteria.Expression;
-			_editCustomLeaderboard.Squid1sAliveCriteria.Expression = getCustomLeaderboard.Squid1sAliveCriteria.Expression;
-			_editCustomLeaderboard.Squid2sAliveCriteria.Expression = getCustomLeaderboard.Squid2sAliveCriteria.Expression;
-			_editCustomLeaderboard.Squid3sAliveCriteria.Expression = getCustomLeaderboard.Squid3sAliveCriteria.Expression;
-			_editCustomLeaderboard.CentipedesAliveCriteria.Expression = getCustomLeaderboard.CentipedesAliveCriteria.Expression;
-			_editCustomLeaderboard.GigapedesAliveCriteria.Expression = getCustomLeaderboard.GigapedesAliveCriteria.Expression;
-			_editCustomLeaderboard.GhostpedesAliveCriteria.Expression = getCustomLeaderboard.GhostpedesAliveCriteria.Expression;
-			_editCustomLeaderboard.Spider1sAliveCriteria.Expression = getCustomLeaderboard.Spider1sAliveCriteria.Expression;
-			_editCustomLeaderboard.Spider2sAliveCriteria.Expression = getCustomLeaderboard.Spider2sAliveCriteria.Expression;
-			_editCustomLeaderboard.LeviathansAliveCriteria.Expression = getCustomLeaderboard.LeviathansAliveCriteria.Expression;
-			_editCustomLeaderboard.OrbsAliveCriteria.Expression = getCustomLeaderboard.OrbsAliveCriteria.Expression;
-			_editCustomLeaderboard.ThornsAliveCriteria.Expression = getCustomLeaderboard.ThornsAliveCriteria.Expression;
+			_editCustomLeaderboardState.GemsCollectedCriteria.Expression = getCustomLeaderboard.GemsCollectedCriteria.Expression;
+			_editCustomLeaderboardState.GemsDespawnedCriteria.Expression = getCustomLeaderboard.GemsDespawnedCriteria.Expression;
+			_editCustomLeaderboardState.GemsEatenCriteria.Expression = getCustomLeaderboard.GemsEatenCriteria.Expression;
+			_editCustomLeaderboardState.EnemiesKilledCriteria.Expression = getCustomLeaderboard.EnemiesKilledCriteria.Expression;
+			_editCustomLeaderboardState.DaggersFiredCriteria.Expression = getCustomLeaderboard.DaggersFiredCriteria.Expression;
+			_editCustomLeaderboardState.DaggersHitCriteria.Expression = getCustomLeaderboard.DaggersHitCriteria.Expression;
+			_editCustomLeaderboardState.HomingStoredCriteria.Expression = getCustomLeaderboard.HomingStoredCriteria.Expression;
+			_editCustomLeaderboardState.HomingEatenCriteria.Expression = getCustomLeaderboard.HomingEatenCriteria.Expression;
+			_editCustomLeaderboardState.DeathTypeCriteria.Expression = getCustomLeaderboard.DeathTypeCriteria.Expression;
+			_editCustomLeaderboardState.TimeCriteria.Expression = getCustomLeaderboard.TimeCriteria.Expression;
+			_editCustomLeaderboardState.LevelUpTime2Criteria.Expression = getCustomLeaderboard.LevelUpTime2Criteria.Expression;
+			_editCustomLeaderboardState.LevelUpTime3Criteria.Expression = getCustomLeaderboard.LevelUpTime3Criteria.Expression;
+			_editCustomLeaderboardState.LevelUpTime4Criteria.Expression = getCustomLeaderboard.LevelUpTime4Criteria.Expression;
+			_editCustomLeaderboardState.EnemiesAliveCriteria.Expression = getCustomLeaderboard.EnemiesAliveCriteria.Expression;
+			_editCustomLeaderboardState.Skull1KillsCriteria.Expression = getCustomLeaderboard.Skull1KillsCriteria.Expression;
+			_editCustomLeaderboardState.Skull2KillsCriteria.Expression = getCustomLeaderboard.Skull2KillsCriteria.Expression;
+			_editCustomLeaderboardState.Skull3KillsCriteria.Expression = getCustomLeaderboard.Skull3KillsCriteria.Expression;
+			_editCustomLeaderboardState.Skull4KillsCriteria.Expression = getCustomLeaderboard.Skull4KillsCriteria.Expression;
+			_editCustomLeaderboardState.SpiderlingKillsCriteria.Expression = getCustomLeaderboard.SpiderlingKillsCriteria.Expression;
+			_editCustomLeaderboardState.SpiderEggKillsCriteria.Expression = getCustomLeaderboard.SpiderEggKillsCriteria.Expression;
+			_editCustomLeaderboardState.Squid1KillsCriteria.Expression = getCustomLeaderboard.Squid1KillsCriteria.Expression;
+			_editCustomLeaderboardState.Squid2KillsCriteria.Expression = getCustomLeaderboard.Squid2KillsCriteria.Expression;
+			_editCustomLeaderboardState.Squid3KillsCriteria.Expression = getCustomLeaderboard.Squid3KillsCriteria.Expression;
+			_editCustomLeaderboardState.CentipedeKillsCriteria.Expression = getCustomLeaderboard.CentipedeKillsCriteria.Expression;
+			_editCustomLeaderboardState.GigapedeKillsCriteria.Expression = getCustomLeaderboard.GigapedeKillsCriteria.Expression;
+			_editCustomLeaderboardState.GhostpedeKillsCriteria.Expression = getCustomLeaderboard.GhostpedeKillsCriteria.Expression;
+			_editCustomLeaderboardState.Spider1KillsCriteria.Expression = getCustomLeaderboard.Spider1KillsCriteria.Expression;
+			_editCustomLeaderboardState.Spider2KillsCriteria.Expression = getCustomLeaderboard.Spider2KillsCriteria.Expression;
+			_editCustomLeaderboardState.LeviathanKillsCriteria.Expression = getCustomLeaderboard.LeviathanKillsCriteria.Expression;
+			_editCustomLeaderboardState.OrbKillsCriteria.Expression = getCustomLeaderboard.OrbKillsCriteria.Expression;
+			_editCustomLeaderboardState.ThornKillsCriteria.Expression = getCustomLeaderboard.ThornKillsCriteria.Expression;
+			_editCustomLeaderboardState.Skull1sAliveCriteria.Expression = getCustomLeaderboard.Skull1sAliveCriteria.Expression;
+			_editCustomLeaderboardState.Skull2sAliveCriteria.Expression = getCustomLeaderboard.Skull2sAliveCriteria.Expression;
+			_editCustomLeaderboardState.Skull3sAliveCriteria.Expression = getCustomLeaderboard.Skull3sAliveCriteria.Expression;
+			_editCustomLeaderboardState.Skull4sAliveCriteria.Expression = getCustomLeaderboard.Skull4sAliveCriteria.Expression;
+			_editCustomLeaderboardState.SpiderlingsAliveCriteria.Expression = getCustomLeaderboard.SpiderlingsAliveCriteria.Expression;
+			_editCustomLeaderboardState.SpiderEggsAliveCriteria.Expression = getCustomLeaderboard.SpiderEggsAliveCriteria.Expression;
+			_editCustomLeaderboardState.Squid1sAliveCriteria.Expression = getCustomLeaderboard.Squid1sAliveCriteria.Expression;
+			_editCustomLeaderboardState.Squid2sAliveCriteria.Expression = getCustomLeaderboard.Squid2sAliveCriteria.Expression;
+			_editCustomLeaderboardState.Squid3sAliveCriteria.Expression = getCustomLeaderboard.Squid3sAliveCriteria.Expression;
+			_editCustomLeaderboardState.CentipedesAliveCriteria.Expression = getCustomLeaderboard.CentipedesAliveCriteria.Expression;
+			_editCustomLeaderboardState.GigapedesAliveCriteria.Expression = getCustomLeaderboard.GigapedesAliveCriteria.Expression;
+			_editCustomLeaderboardState.GhostpedesAliveCriteria.Expression = getCustomLeaderboard.GhostpedesAliveCriteria.Expression;
+			_editCustomLeaderboardState.Spider1sAliveCriteria.Expression = getCustomLeaderboard.Spider1sAliveCriteria.Expression;
+			_editCustomLeaderboardState.Spider2sAliveCriteria.Expression = getCustomLeaderboard.Spider2sAliveCriteria.Expression;
+			_editCustomLeaderboardState.LeviathansAliveCriteria.Expression = getCustomLeaderboard.LeviathansAliveCriteria.Expression;
+			_editCustomLeaderboardState.OrbsAliveCriteria.Expression = getCustomLeaderboard.OrbsAliveCriteria.Expression;
+			_editCustomLeaderboardState.ThornsAliveCriteria.Expression = getCustomLeaderboard.ThornsAliveCriteria.Expression;
 
 			editComponent.State = ErrorState.None;
 		}

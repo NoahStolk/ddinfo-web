@@ -3,41 +3,42 @@
 @using DevilDaggersInfo.Api.Admin.Mods
 @using DevilDaggersInfo.Api.Admin.Players
 @using DevilDaggersInfo.Web.Client.Enums
+@using DevilDaggersInfo.Web.Client.StateObjects.Admin.Players
 
 <AdminAuthorizer Base="this" RequiredRole="@Roles.Players">
-	<AdminEdit Name="Player" OverviewUrl="/admin/players" ApiCall="Http.EditPlayerById" Model="_editPlayer" Id="Id" OnPopulate="async ec => await PopulateAsync(ec)">
-		<InputWrapper Label="Common name"><InputText class="admin-input" @bind-Value="@_editPlayer.CommonName" /></InputWrapper>
-		<InputWrapper Label="Discord user ID"><InputNumber class="admin-input" @bind-Value="_editPlayer.DiscordUserId" /></InputWrapper>
-		<InputWrapper Label="Country (flag)"><SearchDropdown TKey="string" Values="@(UserUtils.CountryNames)" Converter="s => s" @bind-Value="@_editPlayer.CountryCode" /></InputWrapper>
-		<InputWrapper Label="DPI"><InputNumber class="admin-input" @bind-Value="_editPlayer.Dpi" /></InputWrapper>
-		<InputWrapper Label="In-game sens"><InputNumber class="admin-input" @bind-Value="@_editPlayer.InGameSens" /></InputWrapper>
-		<InputWrapper Label="FOV"><InputNumber class="admin-input" @bind-Value="_editPlayer.Fov" /></InputWrapper>
-		<InputWrapper Label="Gamma"><InputNumber class="admin-input" @bind-Value="_editPlayer.Gamma" /></InputWrapper>
-		<InputWrapper Label="Hand"><InputNullableBoolean False="Left" True="Right" @bind-Value="@_editPlayer.IsRightHanded" /></InputWrapper>
-		<InputWrapper Label="Flash hand"><InputNullableBoolean False="Off" True="On" @bind-Value="@_editPlayer.HasFlashHandEnabled" /></InputWrapper>
-		<InputWrapper Label="Legacy audio"><InputNullableBoolean False="Off" True="On" @bind-Value="@_editPlayer.UsesLegacyAudio" /></InputWrapper>
-		<InputWrapper Label="HRTF"><InputNullableBoolean False="Off" True="On" @bind-Value="@_editPlayer.UsesHrtf" /></InputWrapper>
-		<InputWrapper Label="Invert Y"><InputNullableBoolean False="Off" True="On" @bind-Value="@_editPlayer.UsesInvertY" /></InputWrapper>
-		<InputWrapper Label="V-sync"><SearchDropdown TKey="VerticalSync" Values="@(Enum.GetValues<VerticalSync>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<VerticalSync>(s)" ShowDisplayValue="false" @bind-Value="@_editPlayer.VerticalSync" /></InputWrapper>
-		<InputWrapper Label="Hide donations"><InputCheckbox @bind-Value="@_editPlayer.HideDonations" /></InputWrapper>
-		<InputWrapper Label="Hide past usernames"><InputCheckbox @bind-Value="@_editPlayer.HidePastUsernames" /></InputWrapper>
-		<InputWrapper Label="Hide settings"><InputCheckbox @bind-Value="@_editPlayer.HideSettings" /></InputWrapper>
-		<InputWrapper Label="Mods"><MultiSearchDropdown Values="@_modNames" @bind-Value="@_editPlayer.ModIds" /></InputWrapper>
-		<InputWrapper Label="Ban type"><SearchDropdown TKey="BanType" Values="@(Enum.GetValues<BanType>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<BanType>(s)" ShowDisplayValue="false" @bind-Value="@_editPlayer.BanType" /></InputWrapper>
-		<InputWrapper Label="Ban description"><InputText class="admin-input" @bind-Value="@_editPlayer.BanDescription" /></InputWrapper>
-		<InputWrapper Label="Ban responsible ID (alt owner)"><InputNumber class="admin-input" @bind-Value="@_editPlayer.BanResponsibleId" /></InputWrapper>
-		<InputWrapper Label="Banned from DDCL"><InputCheckbox @bind-Value="@_editPlayer.IsBannedFromDdcl" /></InputWrapper>
+	<AdminEdit TStateObject="EditPlayerState" TModel="EditPlayer" Name="Player" OverviewUrl="/admin/players" ApiCall="Http.EditPlayerById" StateObject="_editPlayerState" Id="Id" OnPopulate="async ec => await PopulateAsync(ec)">
+		<InputWrapper Label="Common name"><InputText class="admin-input" @bind-Value="@_editPlayerState.CommonName" /></InputWrapper>
+		<InputWrapper Label="Discord user ID"><InputNumber class="admin-input" @bind-Value="_editPlayerState.DiscordUserId" /></InputWrapper>
+		<InputWrapper Label="Country (flag)"><SearchDropdown TKey="string" Values="@(UserUtils.CountryNames)" Converter="s => s" @bind-Value="@_editPlayerState.CountryCode" /></InputWrapper>
+		<InputWrapper Label="DPI"><InputNumber class="admin-input" @bind-Value="_editPlayerState.Dpi" /></InputWrapper>
+		<InputWrapper Label="In-game sens"><InputNumber class="admin-input" @bind-Value="@_editPlayerState.InGameSens" /></InputWrapper>
+		<InputWrapper Label="FOV"><InputNumber class="admin-input" @bind-Value="_editPlayerState.Fov" /></InputWrapper>
+		<InputWrapper Label="Gamma"><InputNumber class="admin-input" @bind-Value="_editPlayerState.Gamma" /></InputWrapper>
+		<InputWrapper Label="Hand"><InputNullableBoolean False="Left" True="Right" @bind-Value="@_editPlayerState.IsRightHanded" /></InputWrapper>
+		<InputWrapper Label="Flash hand"><InputNullableBoolean False="Off" True="On" @bind-Value="@_editPlayerState.HasFlashHandEnabled" /></InputWrapper>
+		<InputWrapper Label="Legacy audio"><InputNullableBoolean False="Off" True="On" @bind-Value="@_editPlayerState.UsesLegacyAudio" /></InputWrapper>
+		<InputWrapper Label="HRTF"><InputNullableBoolean False="Off" True="On" @bind-Value="@_editPlayerState.UsesHrtf" /></InputWrapper>
+		<InputWrapper Label="Invert Y"><InputNullableBoolean False="Off" True="On" @bind-Value="@_editPlayerState.UsesInvertY" /></InputWrapper>
+		<InputWrapper Label="V-sync"><SearchDropdown TKey="VerticalSync" Values="@(Enum.GetValues<VerticalSync>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<VerticalSync>(s)" ShowDisplayValue="false" @bind-Value="@_editPlayerState.VerticalSync" /></InputWrapper>
+		<InputWrapper Label="Hide donations"><InputCheckbox @bind-Value="@_editPlayerState.HideDonations" /></InputWrapper>
+		<InputWrapper Label="Hide past usernames"><InputCheckbox @bind-Value="@_editPlayerState.HidePastUsernames" /></InputWrapper>
+		<InputWrapper Label="Hide settings"><InputCheckbox @bind-Value="@_editPlayerState.HideSettings" /></InputWrapper>
+		<InputWrapper Label="Mods"><MultiSearchDropdown Values="@_modNames" @bind-Value="@_editPlayerState.ModIds" /></InputWrapper>
+		<InputWrapper Label="Ban type"><SearchDropdown TKey="BanType" Values="@(Enum.GetValues<BanType>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<BanType>(s)" ShowDisplayValue="false" @bind-Value="@_editPlayerState.BanType" /></InputWrapper>
+		<InputWrapper Label="Ban description"><InputText class="admin-input" @bind-Value="@_editPlayerState.BanDescription" /></InputWrapper>
+		<InputWrapper Label="Ban responsible ID (alt owner)"><InputNumber class="admin-input" @bind-Value="@_editPlayerState.BanResponsibleId" /></InputWrapper>
+		<InputWrapper Label="Banned from DDCL"><InputCheckbox @bind-Value="@_editPlayerState.IsBannedFromDdcl" /></InputWrapper>
 	</AdminEdit>
 </AdminAuthorizer>
 
 @code
 {
 	private Dictionary<int, string>? _modNames;
-	private readonly EditPlayer _editPlayer = new();
+	private readonly EditPlayerState _editPlayerState = new();
 
 	[Parameter, EditorRequired] public int Id { get; set; }
 
-	private async Task PopulateAsync(AdminEdit<EditPlayer> editComponent)
+	private async Task PopulateAsync(AdminEdit<EditPlayerState, EditPlayer> editComponent)
 	{
 		try
 		{
@@ -45,27 +46,27 @@
 			_modNames = getModNames.ToDictionary(m => m.Id, m => m.Name);
 
 			GetPlayer getPlayer = await Http.GetPlayerById(Id);
-			_editPlayer.CommonName = getPlayer.CommonName;
-			_editPlayer.DiscordUserId = (long?)getPlayer.DiscordUserId;
-			_editPlayer.CountryCode = getPlayer.CountryCode;
-			_editPlayer.Dpi = getPlayer.Dpi;
-			_editPlayer.Fov = getPlayer.Fov;
-			_editPlayer.Gamma = getPlayer.Gamma;
-			_editPlayer.HasFlashHandEnabled = getPlayer.HasFlashHandEnabled;
-			_editPlayer.HideDonations = getPlayer.HideDonations;
-			_editPlayer.HidePastUsernames = getPlayer.HidePastUsernames;
-			_editPlayer.HideSettings = getPlayer.HideSettings;
-			_editPlayer.InGameSens = getPlayer.InGameSens;
-			_editPlayer.IsRightHanded = getPlayer.IsRightHanded;
-			_editPlayer.UsesLegacyAudio = getPlayer.UsesLegacyAudio;
-			_editPlayer.UsesHrtf = getPlayer.UsesHrtf;
-			_editPlayer.UsesInvertY = getPlayer.UsesInvertY;
-			_editPlayer.VerticalSync = getPlayer.VerticalSync;
-			_editPlayer.BanDescription = getPlayer.BanDescription;
-			_editPlayer.BanResponsibleId = getPlayer.BanResponsibleId;
-			_editPlayer.BanType = getPlayer.BanType;
-			_editPlayer.IsBannedFromDdcl = getPlayer.IsBannedFromDdcl;
-			_editPlayer.ModIds = getPlayer.ModIds;
+			_editPlayerState.CommonName = getPlayer.CommonName;
+			_editPlayerState.DiscordUserId = (long?)getPlayer.DiscordUserId;
+			_editPlayerState.CountryCode = getPlayer.CountryCode;
+			_editPlayerState.Dpi = getPlayer.Dpi;
+			_editPlayerState.Fov = getPlayer.Fov;
+			_editPlayerState.Gamma = getPlayer.Gamma;
+			_editPlayerState.HasFlashHandEnabled = getPlayer.HasFlashHandEnabled;
+			_editPlayerState.HideDonations = getPlayer.HideDonations;
+			_editPlayerState.HidePastUsernames = getPlayer.HidePastUsernames;
+			_editPlayerState.HideSettings = getPlayer.HideSettings;
+			_editPlayerState.InGameSens = getPlayer.InGameSens;
+			_editPlayerState.IsRightHanded = getPlayer.IsRightHanded;
+			_editPlayerState.UsesLegacyAudio = getPlayer.UsesLegacyAudio;
+			_editPlayerState.UsesHrtf = getPlayer.UsesHrtf;
+			_editPlayerState.UsesInvertY = getPlayer.UsesInvertY;
+			_editPlayerState.VerticalSync = getPlayer.VerticalSync;
+			_editPlayerState.BanDescription = getPlayer.BanDescription;
+			_editPlayerState.BanResponsibleId = getPlayer.BanResponsibleId;
+			_editPlayerState.BanType = getPlayer.BanType;
+			_editPlayerState.IsBannedFromDdcl = getPlayer.IsBannedFromDdcl;
+			_editPlayerState.ModIds = getPlayer.ModIds;
 
 			editComponent.State = ErrorState.None;
 		}

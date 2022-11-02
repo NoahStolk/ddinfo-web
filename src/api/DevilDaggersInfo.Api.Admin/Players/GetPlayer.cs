@@ -28,9 +28,9 @@ public record GetPlayer
 
 	public bool? UsesHrtf { get; init; }
 
-	public bool? UsesInvertY { get; set; }
+	public bool? UsesInvertY { get; init; }
 
-	public VerticalSync VerticalSync { get; set; }
+	public VerticalSync VerticalSync { get; init; }
 
 	public BanType BanType { get; init; }
 

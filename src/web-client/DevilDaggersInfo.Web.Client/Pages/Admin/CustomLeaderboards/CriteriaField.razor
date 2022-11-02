@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Components
 @using DevilDaggersInfo.Api.Admin.CustomLeaderboards
 @using DevilDaggersInfo.Types.Web.Extensions
+@using DevilDaggersInfo.Web.Client.StateObjects.Admin.CustomLeaderboards
 @using DevilDaggersInfo.Web.Core.CriteriaExpression
 @using DevilDaggersInfo.Web.Core.CriteriaExpression.Exceptions
 @using DevilDaggersInfo.Web.Core.CriteriaExpression.Parts
@@ -41,5 +42,5 @@
 
 	[Parameter]
 	[EditorRequired]
-	public AddCustomLeaderboardCriteria Criteria { get; set; } = null!;
+	public AddCustomLeaderboardCriteriaState Criteria { get; set; } = null!;
 }

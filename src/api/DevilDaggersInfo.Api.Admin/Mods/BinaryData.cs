@@ -10,5 +10,5 @@ public record BinaryData
 	[StringLength(64, MinimumLength = 1)]
 	public string Name { get; set; } = string.Empty;
 
-	public byte[] Data { get; set; } = Array.Empty<byte>();
+	public byte[] Data { get; init; } = Array.Empty<byte>();
 }
