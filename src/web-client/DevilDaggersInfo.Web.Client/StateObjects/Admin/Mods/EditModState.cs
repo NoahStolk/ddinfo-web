@@ -27,7 +27,7 @@ public class EditModState : IStateObject<EditMod>
 	public List<string> BinariesToDelete { get; set; } = new();
 
 	[MaxLength(ModConstants.BinaryMaxFiles, ErrorMessage = ModConstants.BinaryMaxFilesErrorMessage)]
-	public List<BinaryData> Binaries { get; set; } = new();
+	public List<BinaryDataState> Binaries { get; set; } = new();
 
 	public List<string> ScreenshotsToDelete { get; set; } = new();
 
@@ -44,7 +44,7 @@ public class EditModState : IStateObject<EditMod>
 		Url = Url,
 		PlayerIds = PlayerIds,
 		BinariesToDelete = BinariesToDelete,
-		Binaries = Binaries,
+		Binaries = Binaries.ConvertAll(b => b.ToModel()),
 		ScreenshotsToDelete = ScreenshotsToDelete,
 		Screenshots = Screenshots,
 	};
