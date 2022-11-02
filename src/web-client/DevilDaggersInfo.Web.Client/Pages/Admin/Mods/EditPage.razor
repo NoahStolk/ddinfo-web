@@ -3,40 +3,41 @@
 @using DevilDaggersInfo.Api.Admin.Mods
 @using DevilDaggersInfo.Core.Mod
 @using DevilDaggersInfo.Core.Mod.Enums
+@using DevilDaggersInfo.Web.Client.StateObjects.Admin.Mods
 
 <AdminAuthorizer Base="this" RequiredRole="@Roles.Mods">
-	<AdminEdit Name="Mod" OverviewUrl="/admin/mods" ApiCall="Http.EditModById" Model="_editMod" Id="Id" OnPopulate="async ec => await PopulateAsync(ec)">
-		<InputWrapper Label="Name"><InputText class="admin-input" @bind-Value="@_editMod.Name" /></InputWrapper>
-		<InputWrapper Label="Author(s)"><MultiSearchDropdown Values="@_playerNames" @bind-Value="@_editMod.PlayerIds" /></InputWrapper>
-		<InputWrapper Label="Trailer URL"><InputText class="admin-input" @bind-Value="_editMod.TrailerUrl" /></InputWrapper>
-		<InputWrapper Label="HTML description"><InputTextArea class="admin-input w-full h-64" @bind-Value="@_editMod.HtmlDescription" /></InputWrapper>
-		<InputWrapper Label="Mod types (only for non-hosted)"><MultiSearchDropdown Values="@ModTypes" @bind-Value="@_editMod.ModTypes" /></InputWrapper>
-		<InputWrapper Label="URL (only for non-hosted)"><InputText class="admin-input" @bind-Value="@_editMod.Url" /></InputWrapper>
-		<InputWrapper Label="Hidden"><InputCheckbox @bind-Value="@_editMod.IsHidden" /></InputWrapper>
+	<AdminEdit TStateObject="EditModState" TModel="EditMod" Name="Mod" OverviewUrl="/admin/mods" ApiCall="Http.EditModById" StateObject="_editModState" Id="Id" OnPopulate="async ec => await PopulateAsync(ec)">
+		<InputWrapper Label="Name"><InputText class="admin-input" @bind-Value="@_editModState.Name" /></InputWrapper>
+		<InputWrapper Label="Author(s)"><MultiSearchDropdown Values="@_playerNames" @bind-Value="@_editModState.PlayerIds" /></InputWrapper>
+		<InputWrapper Label="Trailer URL"><InputText class="admin-input" @bind-Value="_editModState.TrailerUrl" /></InputWrapper>
+		<InputWrapper Label="HTML description"><InputTextArea class="admin-input w-full h-64" @bind-Value="@_editModState.HtmlDescription" /></InputWrapper>
+		<InputWrapper Label="Mod types (only for non-hosted)"><MultiSearchDropdown Values="@ModTypes" @bind-Value="@_editModState.ModTypes" /></InputWrapper>
+		<InputWrapper Label="URL (only for non-hosted)"><InputText class="admin-input" @bind-Value="@_editModState.Url" /></InputWrapper>
+		<InputWrapper Label="Hidden"><InputCheckbox @bind-Value="@_editModState.IsHidden" /></InputWrapper>
 
 		<Heading Title="Binaries" Level="3" />
 
-		<InputWrapper Label="Binaries to delete"><MultiSelectList Values="@_binaryNames" OnToggleAction="StateHasChanged" @bind-Value="@_editMod.BinariesToDelete" /></InputWrapper>
-		<InfoList Title="Binaries to delete" Info="_editMod.BinariesToDelete" />
+		<InputWrapper Label="Binaries to delete"><MultiSelectList Values="@_binaryNames" OnToggleAction="StateHasChanged" @bind-Value="@_editModState.BinariesToDelete" /></InputWrapper>
+		<InfoList Title="Binaries to delete" Info="_editModState.BinariesToDelete" />
 
-		<InputWrapper Label="Select new binaries"><InputFile @onclick="() => _editMod.Binaries.Clear()" OnChange="LoadBinaries" multiple /></InputWrapper>
-		@foreach (BinaryData bd in _editMod.Binaries)
+		<InputWrapper Label="Select new binaries"><InputFile @onclick="() => _editModState.Binaries.Clear()" OnChange="LoadBinaries" multiple /></InputWrapper>
+		@foreach (BinaryData bd in _editModState.Binaries)
 		{
 			ModBinary b = new(bd.Data, ModBinaryReadComprehensiveness.TypeOnly);
 			<div class="pl-4">
 				<InputWrapper Label="New binary"><InputTextImmediate class="admin-input" @bind-Value="bd.Name" /></InputWrapper>
-				<span>Will be renamed to @(new BinaryName(b.ModBinaryType, bd.Name).ToFullName(_editMod.Name ?? string.Empty))</span>
+				<span>Will be renamed to @(new BinaryName(b.ModBinaryType, bd.Name).ToFullName(_editModState.Name ?? string.Empty))</span>
 			</div>
 		}
 		<InfoList Title="Binary errors" Info="_binaryFileSizeErrors" />
 
 		<Heading Title="Screenshots" Level="3" />
 
-		<InputWrapper Label="Screenshots to delete"><MultiSelectList Values="@_screenshotNames" OnToggleAction="StateHasChanged" @bind-Value="@_editMod.ScreenshotsToDelete" /></InputWrapper>
-		<InfoList Title="Screenshots to delete" Info="_editMod.ScreenshotsToDelete" />
+		<InputWrapper Label="Screenshots to delete"><MultiSelectList Values="@_screenshotNames" OnToggleAction="StateHasChanged" @bind-Value="@_editModState.ScreenshotsToDelete" /></InputWrapper>
+		<InfoList Title="Screenshots to delete" Info="_editModState.ScreenshotsToDelete" />
 
-		<InputWrapper Label="Select new screenshots"><InputFile @onclick="() => _editMod.Screenshots.Clear()" OnChange="LoadScreenshots" multiple /></InputWrapper>
-		<InfoList Title="Screenshots to upload" Info="_editMod.Screenshots.OrderBy(kvp => kvp.Key).Select(kvp => kvp.Key).ToList()" />
+		<InputWrapper Label="Select new screenshots"><InputFile @onclick="() => _editModState.Screenshots.Clear()" OnChange="LoadScreenshots" multiple /></InputWrapper>
+		<InfoList Title="Screenshots to upload" Info="_editModState.Screenshots.OrderBy(kvp => kvp.Key).Select(kvp => kvp.Key).ToList()" />
 		<InfoList Title="Screenshots errors" Info="_screenshotFileSizeErrors" />
 
 	</AdminEdit>
