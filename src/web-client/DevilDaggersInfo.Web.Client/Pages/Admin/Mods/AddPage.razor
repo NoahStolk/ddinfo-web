@@ -18,7 +18,7 @@
 		<Heading Title="Binaries" Level="3" />
 
 		<InputWrapper Label="Select binaries"><InputFile @onclick="() => _addModState.Binaries.Clear()" OnChange="LoadBinaries" multiple /></InputWrapper>
-		@foreach (BinaryData bd in _addModState.Binaries)
+		@foreach (BinaryDataState bd in _addModState.Binaries)
 		{
 			ModBinary b = new(bd.Data, ModBinaryReadComprehensiveness.TypeOnly);
 			<div class="pl-4">

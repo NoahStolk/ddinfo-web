@@ -21,7 +21,7 @@
 		<InfoList Title="Binaries to delete" Info="_editModState.BinariesToDelete" />
 
 		<InputWrapper Label="Select new binaries"><InputFile @onclick="() => _editModState.Binaries.Clear()" OnChange="LoadBinaries" multiple /></InputWrapper>
-		@foreach (BinaryData bd in _editModState.Binaries)
+		@foreach (BinaryDataState bd in _editModState.Binaries)
 		{
 			ModBinary b = new(bd.Data, ModBinaryReadComprehensiveness.TypeOnly);
 			<div class="pl-4">
