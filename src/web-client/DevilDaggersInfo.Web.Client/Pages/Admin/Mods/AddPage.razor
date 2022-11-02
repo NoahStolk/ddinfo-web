@@ -3,34 +3,35 @@
 @using DevilDaggersInfo.Api.Admin.Mods
 @using DevilDaggersInfo.Core.Mod
 @using DevilDaggersInfo.Core.Mod.Enums
+@using DevilDaggersInfo.Web.Client.StateObjects.Admin.Mods
 
 <AdminAuthorizer Base="this" RequiredRole="@Roles.Mods">
-	<AdminAdd Name="Mod" OverviewUrl="/admin/mods" ApiCall="Http.AddMod" Model="_addMod" OnPopulate="async ac => await PopulateAsync(ac)">
-		<InputWrapper Label="Name"><InputText class="admin-input" @bind-Value="@_addMod.Name" /></InputWrapper>
-		<InputWrapper Label="Author(s)"><MultiSearchDropdown Values="@_playerNames" @bind-Value="@_addMod.PlayerIds" /></InputWrapper>
-		<InputWrapper Label="Trailer URL"><InputText class="admin-input" @bind-Value="_addMod.TrailerUrl" /></InputWrapper>
-		<InputWrapper Label="HTML description"><InputTextArea class="admin-input w-full h-64" @bind-Value="@_addMod.HtmlDescription" /></InputWrapper>
-		<InputWrapper Label="Mod types (only for non-hosted)"><MultiSearchDropdown Values="@ModTypes" @bind-Value="@_addMod.ModTypes" /></InputWrapper>
-		<InputWrapper Label="URL (only for non-hosted)"><InputText class="admin-input" @bind-Value="@_addMod.Url" /></InputWrapper>
-		<InputWrapper Label="Hidden"><InputCheckbox @bind-Value="@_addMod.IsHidden" /></InputWrapper>
+	<AdminAdd TStateObject="AddModState" TModel="AddMod" Name="Mod" OverviewUrl="/admin/mods" ApiCall="Http.AddMod" StateObject="_addModState" OnPopulate="async ac => await PopulateAsync(ac)">
+		<InputWrapper Label="Name"><InputText class="admin-input" @bind-Value="@_addModState.Name" /></InputWrapper>
+		<InputWrapper Label="Author(s)"><MultiSearchDropdown Values="@_playerNames" @bind-Value="@_addModState.PlayerIds" /></InputWrapper>
+		<InputWrapper Label="Trailer URL"><InputText class="admin-input" @bind-Value="_addModState.TrailerUrl" /></InputWrapper>
+		<InputWrapper Label="HTML description"><InputTextArea class="admin-input w-full h-64" @bind-Value="@_addModState.HtmlDescription" /></InputWrapper>
+		<InputWrapper Label="Mod types (only for non-hosted)"><MultiSearchDropdown Values="@ModTypes" @bind-Value="@_addModState.ModTypes" /></InputWrapper>
+		<InputWrapper Label="URL (only for non-hosted)"><InputText class="admin-input" @bind-Value="@_addModState.Url" /></InputWrapper>
+		<InputWrapper Label="Hidden"><InputCheckbox @bind-Value="@_addModState.IsHidden" /></InputWrapper>
 
 		<Heading Title="Binaries" Level="3" />
 
-		<InputWrapper Label="Select binaries"><InputFile @onclick="() => _addMod.Binaries.Clear()" OnChange="LoadBinaries" multiple /></InputWrapper>
-		@foreach (BinaryData bd in _addMod.Binaries)
+		<InputWrapper Label="Select binaries"><InputFile @onclick="() => _addModState.Binaries.Clear()" OnChange="LoadBinaries" multiple /></InputWrapper>
+		@foreach (BinaryData bd in _addModState.Binaries)
 		{
 			ModBinary b = new(bd.Data, ModBinaryReadComprehensiveness.TypeOnly);
 			<div class="pl-4">
 				<InputWrapper Label="New binary"><InputTextImmediate class="admin-input" @bind-Value="bd.Name" /></InputWrapper>
-				<span>Will be renamed to @(new BinaryName(b.ModBinaryType, bd.Name).ToFullName(_addMod.Name ?? string.Empty))</span>
+				<span>Will be renamed to @(new BinaryName(b.ModBinaryType, bd.Name).ToFullName(_addModState.Name ?? string.Empty))</span>
 			</div>
 		}
 		<InfoList Title="Binary errors" Info="_binaryFileSizeErrors" />
 
 		<Heading Title="Screenshots" Level="3" />
 
-		<InputWrapper Label="Select screenshots"><InputFile @onclick="() => _addMod.Screenshots.Clear()" OnChange="LoadScreenshots" multiple /></InputWrapper>
-		<InfoList Title="Screenshots to upload" Info="_addMod.Screenshots.OrderBy(kvp => kvp.Key).Select(kvp => kvp.Key).ToList()" />
+		<InputWrapper Label="Select screenshots"><InputFile @onclick="() => _addModState.Screenshots.Clear()" OnChange="LoadScreenshots" multiple /></InputWrapper>
+		<InfoList Title="Screenshots to upload" Info="_addModState.Screenshots.OrderBy(kvp => kvp.Key).Select(kvp => kvp.Key).ToList()" />
 		<InfoList Title="Screenshots errors" Info="_screenshotFileSizeErrors" />
 
 	</AdminAdd>
