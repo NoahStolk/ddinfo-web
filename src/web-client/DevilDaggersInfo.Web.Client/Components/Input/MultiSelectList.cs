@@ -24,10 +24,10 @@ public partial class MultiSelectList
 			OnToggleAction.Invoke();
 	}
 
-	protected override bool TryParseValueFromString(string? value, out List<string>? result, out string validationMessage)
+	protected override bool TryParseValueFromString(string? value, out List<string> result, out string validationMessage)
 	{
 		validationMessage = string.Empty;
-		result = value?.Split(',').ToList();
+		result = value?.Split(',').ToList() ?? new();
 		return true;
 	}
 }

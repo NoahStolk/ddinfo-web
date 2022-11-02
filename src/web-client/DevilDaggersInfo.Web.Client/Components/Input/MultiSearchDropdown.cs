@@ -31,10 +31,10 @@ public partial class MultiSearchDropdown
 			CurrentValue.Remove(i);
 	}
 
-	protected override bool TryParseValueFromString(string? value, out List<int>? result, out string validationMessage)
+	protected override bool TryParseValueFromString(string? value, out List<int> result, out string validationMessage)
 	{
 		validationMessage = string.Empty;
-		result = value?.Split(',').Select(int.Parse).ToList();
+		result = value?.Split(',').Select(int.Parse).ToList() ?? new();
 		return true;
 	}
 
