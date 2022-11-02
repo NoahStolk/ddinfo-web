@@ -6,9 +6,9 @@ public record GetCustomLeaderboardDdLive
 {
 	public int SpawnsetId { get; init; }
 
-	public string SpawnsetName { get; init; } = null!;
+	public required string SpawnsetName { get; init; }
 
-	public string SpawnsetAuthorName { get; init; } = null!;
+	public required string SpawnsetAuthorName { get; init; }
 
 	public string? SpawnsetHtmlDescription { get; init; }
 
@@ -24,5 +24,5 @@ public record GetCustomLeaderboardDdLive
 
 	public CustomLeaderboardCategory Category { get; init; }
 
-	public List<GetCustomEntryDdLive> CustomEntries { get; init; } = new();
+	public required List<GetCustomEntryDdLive> CustomEntries { get; init; }
 }

@@ -8,21 +8,21 @@ public record GetLeaderboardStatistics
 
 	public int TotalEntries { get; init; }
 
-	public Dictionary<string, int> DaggersStatistics { get; init; } = null!;
+	public required Dictionary<string, int> DaggersStatistics { get; init; }
 
-	public Dictionary<string, int> DeathsStatistics { get; init; } = null!;
+	public required Dictionary<string, int> DeathsStatistics { get; init; }
 
-	public Dictionary<string, int> EnemiesStatistics { get; init; } = null!;
+	public required Dictionary<string, int> EnemiesStatistics { get; init; }
 
-	public Dictionary<int, int> TimesStatistics { get; init; } = null!;
+	public required Dictionary<int, int> TimesStatistics { get; init; }
 
-	public Dictionary<int, int> KillsStatistics { get; init; } = null!;
+	public required Dictionary<int, int> KillsStatistics { get; init; }
 
-	public Dictionary<int, int> GemsStatistics { get; init; } = null!;
+	public required Dictionary<int, int> GemsStatistics { get; init; }
 
-	public Dictionary<int, int> DaggersFiredStatistics { get; init; } = null!;
+	public required Dictionary<int, int> DaggersFiredStatistics { get; init; }
 
-	public Dictionary<int, int> DaggersHitStatistics { get; init; } = null!;
+	public required Dictionary<int, int> DaggersHitStatistics { get; init; }
 
 	public int PlayersWithLevel1 { get; init; }
 
@@ -30,5 +30,5 @@ public record GetLeaderboardStatistics
 
 	public int PlayersWithLevel3Or4 { get; init; }
 
-	public GetArrayStatistics GlobalStatistics { get; init; } = null!;
+	public required GetArrayStatistics GlobalStatistics { get; init; }
 }

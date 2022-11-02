@@ -5,8 +5,8 @@ namespace DevilDaggersInfo.Api.Main.Authentication;
 public record LoginRequest
 {
 	[Required]
-	public string Name { get; set; } = null!;
+	public required string Name { get; set; }
 
 	[Required]
-	public string Password { get; set; } = null!;
+	public required string Password { get; set; }
 }

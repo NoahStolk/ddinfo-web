@@ -6,7 +6,7 @@ public record GetPlayerHistoryScoreEntry
 
 	public int Rank { get; init; }
 
-	public string Username { get; init; } = null!;
+	public required string Username { get; init; }
 
 	public double Time { get; init; }
 

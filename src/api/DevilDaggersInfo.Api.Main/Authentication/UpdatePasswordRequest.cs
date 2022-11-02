@@ -5,16 +5,16 @@ namespace DevilDaggersInfo.Api.Main.Authentication;
 public record UpdatePasswordRequest
 {
 	[Required]
-	public string CurrentName { get; init; } = null!;
+	public required string CurrentName { get; init; }
 
 	[Required]
-	public string CurrentPassword { get; init; } = null!;
+	public required string CurrentPassword { get; init; }
 
 	[Required]
 	[RegularExpression(AuthenticationConstants.PasswordRegex, ErrorMessage = AuthenticationConstants.PasswordValidation)]
-	public string NewPassword { get; init; } = null!;
+	public required string NewPassword { get; init; }
 
 	[Required]
 	[Compare(nameof(NewPassword), ErrorMessage = "Repeated password does not match.")]
-	public string PasswordRepeated { get; init; } = null!;
+	public required string PasswordRepeated { get; init; }
 }

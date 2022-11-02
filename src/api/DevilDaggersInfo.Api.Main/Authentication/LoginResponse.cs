@@ -4,7 +4,7 @@ public record LoginResponse
 {
 	public int Id { get; init; }
 
-	public string Name { get; init; } = null!;
+	public required string Name { get; init; }
 
-	public string Token { get; init; } = null!;
+	public required string Token { get; init; }
 }

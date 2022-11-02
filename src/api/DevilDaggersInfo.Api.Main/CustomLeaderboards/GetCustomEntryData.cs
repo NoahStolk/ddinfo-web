@@ -9,9 +9,9 @@ public record GetCustomEntryData
 
 	public int PlayerId { get; init; }
 
-	public string PlayerName { get; init; } = null!;
+	public required string PlayerName { get; init; }
 
-	public string SpawnsetName { get; init; } = null!;
+	public required string SpawnsetName { get; init; }
 
 	public double Time { get; init; }
 

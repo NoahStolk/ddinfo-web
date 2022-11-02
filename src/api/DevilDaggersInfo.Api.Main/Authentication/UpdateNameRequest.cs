@@ -4,11 +4,11 @@ namespace DevilDaggersInfo.Api.Main.Authentication;
 
 public record UpdateNameRequest
 {
-	public string CurrentName { get; init; } = null!;
+	public required string CurrentName { get; init; }
 
-	public string CurrentPassword { get; init; } = null!;
+	public required string CurrentPassword { get; init; }
 
 	[Required]
 	[StringLength(32, MinimumLength = 2)]
-	public string NewName { get; init; } = null!;
+	public required string NewName { get; init; }
 }

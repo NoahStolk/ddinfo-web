@@ -6,13 +6,13 @@ public record RegistrationRequest
 {
 	[Required]
 	[StringLength(32, MinimumLength = 2)]
-	public string Name { get; init; } = null!;
+	public required string Name { get; init; }
 
 	[Required]
 	[RegularExpression(AuthenticationConstants.PasswordRegex, ErrorMessage = AuthenticationConstants.PasswordValidation)]
-	public string Password { get; init; } = null!;
+	public required string Password { get; init; }
 
 	[Required]
 	[Compare(nameof(Password), ErrorMessage = "Repeated password does not match.")]
-	public string PasswordRepeated { get; init; } = null!;
+	public required string PasswordRepeated { get; init; }
 }

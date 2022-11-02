@@ -6,9 +6,9 @@ public record GetModOverview
 {
 	public int Id { get; init; }
 
-	public string Name { get; init; } = null!;
+	public required string Name { get; init; }
 
-	public List<string> Authors { get; init; } = null!;
+	public required List<string> Authors { get; init; }
 
 	public DateTime LastUpdated { get; init; }
 

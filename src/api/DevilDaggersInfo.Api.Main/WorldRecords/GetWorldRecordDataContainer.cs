@@ -2,7 +2,7 @@ namespace DevilDaggersInfo.Api.Main.WorldRecords;
 
 public record GetWorldRecordDataContainer
 {
-	public List<GetWorldRecordHolder> WorldRecordHolders { get; init; } = null!;
+	public required List<GetWorldRecordHolder> WorldRecordHolders { get; init; }
 
-	public List<GetWorldRecord> WorldRecords { get; init; } = null!;
+	public required List<GetWorldRecord> WorldRecords { get; init; }
 }

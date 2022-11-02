@@ -4,7 +4,7 @@ namespace DevilDaggersInfo.Api.Main.Mods;
 
 public record GetMod
 {
-	public string Name { get; init; } = null!;
+	public required string Name { get; init; }
 
 	public string? HtmlDescription { get; init; }
 
@@ -12,7 +12,7 @@ public record GetMod
 
 	public string? TrailerUrl { get; init; }
 
-	public List<string> Authors { get; init; } = null!;
+	public required List<string> Authors { get; init; }
 
 	public DateTime LastUpdated { get; init; }
 

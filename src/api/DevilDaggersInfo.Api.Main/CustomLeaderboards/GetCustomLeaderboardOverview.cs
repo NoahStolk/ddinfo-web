@@ -6,9 +6,9 @@ public record GetCustomLeaderboardOverview
 {
 	public int Id { get; init; }
 
-	public string SpawnsetName { get; init; } = null!;
+	public required string SpawnsetName { get; init; }
 
-	public string SpawnsetAuthorName { get; init; } = null!;
+	public required string SpawnsetAuthorName { get; init; }
 
 	public GetCustomLeaderboardDaggers? Daggers { get; init; }
 

@@ -4,7 +4,7 @@ public record GetWorldRecordHolder
 {
 	public int Id { get; init; }
 
-	public List<string> Usernames { get; init; } = null!;
+	public required List<string> Usernames { get; init; }
 
 	public TimeSpan TotalTimeHeld { get; init; }
 
@@ -16,5 +16,5 @@ public record GetWorldRecordHolder
 
 	public DateTime LastHeld { get; init; }
 
-	public string MostRecentUsername { get; init; } = null!;
+	public required string MostRecentUsername { get; init; }
 }

@@ -18,10 +18,10 @@ public record GetUploadSuccess
 	public int TotalPlayers { get; init; }
 
 	[Obsolete("Will be removed.")] // Used by DDCL 1.8.3
-	public GetCustomLeaderboardDdcl Leaderboard { get; init; } = null!;
+	public required GetCustomLeaderboardDdcl Leaderboard { get; init; }
 
 	[Obsolete("Will be removed.")] // Used by DDCL 1.8.3
-	public List<GetCustomEntryDdcl> Entries { get; init; } = new();
+	public required List<GetCustomEntryDdcl> Entries { get; init; }
 
 	[Obsolete("Will be removed.")] // Used by DDCL 1.8.3
 	public bool IsNewPlayerOnThisLeaderboard { get; init; }

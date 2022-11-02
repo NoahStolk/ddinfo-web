@@ -2,9 +2,9 @@ namespace DevilDaggersInfo.Api.Ddae.Assets;
 
 public record GetAssetInfo
 {
-	public string Name { get; init; } = null!;
+	public required string Name { get; init; }
 
-	public string Description { get; init; } = null!;
+	public required string Description { get; init; }
 
-	public List<string> Tags { get; init; } = null!;
+	public required List<string> Tags { get; init; }
 }

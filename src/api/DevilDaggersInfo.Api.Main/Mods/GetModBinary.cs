@@ -4,7 +4,7 @@ namespace DevilDaggersInfo.Api.Main.Mods;
 
 public record GetModBinary
 {
-	public string Name { get; init; } = null!;
+	public required string Name { get; init; }
 
 	public long Size { get; init; }
 
@@ -12,7 +12,7 @@ public record GetModBinary
 
 	public bool ContainsProhibitedAssets { get; init; }
 
-	public List<GetModAsset> Assets { get; init; } = new();
+	public required List<GetModAsset> Assets { get; init; }
 
 	public List<GetModifiedLoudness>? ModifiedLoudness { get; init; }
 }

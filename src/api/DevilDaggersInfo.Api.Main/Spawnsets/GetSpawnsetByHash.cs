@@ -4,9 +4,9 @@ public record GetSpawnsetByHash
 {
 	public int SpawnsetId { get; init; }
 
-	public string Name { get; init; } = null!;
+	public required string Name { get; init; }
 
-	public string AuthorName { get; init; } = null!;
+	public required string AuthorName { get; init; }
 
 	public GetSpawnsetByHashCustomLeaderboard? CustomLeaderboard { get; init; }
 }

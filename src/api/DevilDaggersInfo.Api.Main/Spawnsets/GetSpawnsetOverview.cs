@@ -6,9 +6,9 @@ public record GetSpawnsetOverview
 {
 	public int Id { get; init; }
 
-	public string Name { get; init; } = null!;
+	public required string Name { get; init; }
 
-	public string AuthorName { get; init; } = null!;
+	public required string AuthorName { get; init; }
 
 	public DateTime LastUpdated { get; init; }
 

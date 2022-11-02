@@ -6,12 +6,12 @@ public record AddUploadRequest
 {
 	[MaxLength(16)]
 	[MinLength(16)]
-	public byte[] SurvivalHashMd5 { get; init; } = null!;
+	public required byte[] SurvivalHashMd5 { get; init; }
 
 	public int PlayerId { get; init; }
 
 	[StringLength(32)]
-	public string PlayerName { get; init; } = null!;
+	public required string PlayerName { get; init; }
 
 	public int ReplayPlayerId { get; init; }
 
@@ -19,7 +19,7 @@ public record AddUploadRequest
 
 	[MaxLength(4)]
 	[MinLength(4)]
-	public byte[] TimeAsBytes { get; init; } = null!;
+	public required byte[] TimeAsBytes { get; init; }
 
 	public int GemsCollected { get; init; }
 
@@ -54,26 +54,26 @@ public record AddUploadRequest
 
 	[MaxLength(4)]
 	[MinLength(4)]
-	public byte[] LevelUpTime2AsBytes { get; init; } = null!;
+	public required byte[] LevelUpTime2AsBytes { get; init; }
 
 	[MaxLength(4)]
 	[MinLength(4)]
-	public byte[] LevelUpTime3AsBytes { get; init; } = null!;
+	public required byte[] LevelUpTime3AsBytes { get; init; }
 
 	[MaxLength(4)]
 	[MinLength(4)]
-	public byte[] LevelUpTime4AsBytes { get; init; } = null!;
+	public required byte[] LevelUpTime4AsBytes { get; init; }
 
 	[StringLength(16)]
-	public string ClientVersion { get; init; } = null!;
+	public required string ClientVersion { get; init; }
 
-	public string Client { get; init; } = null!;
+	public required string Client { get; init; }
 
-	public string OperatingSystem { get; init; } = null!;
+	public required string OperatingSystem { get; init; }
 
-	public string BuildMode { get; init; } = null!;
+	public required string BuildMode { get; init; }
 
-	public string Validation { get; init; } = null!;
+	public required string Validation { get; init; }
 
 	public int ValidationVersion { get; init; }
 
@@ -85,11 +85,11 @@ public record AddUploadRequest
 
 	public bool TimeAttackOrRaceFinished { get; init; }
 
-	public AddGameData GameData { get; init; } = null!;
+	public required AddGameData GameData { get; init; }
 
 	[Required]
 	[MaxLength(ReplayConstants.MaxFileSize, ErrorMessage = ReplayConstants.MaxFileSizeErrorMessage)]
-	public byte[] ReplayData { get; init; } = null!;
+	public required byte[] ReplayData { get; init; }
 
 	public int Status { get; set; }
 }

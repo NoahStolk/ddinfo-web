@@ -10,7 +10,7 @@ public record GetCustomEntryDdLive
 
 	public int PlayerId { get; init; }
 
-	public string PlayerName { get; init; } = null!;
+	public required string PlayerName { get; init; }
 
 	public string? CountryCode { get; init; }
 
