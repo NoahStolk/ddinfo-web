@@ -40,24 +40,24 @@ else
 		</ResultBar>
 	}
 
-	<EditForm Model="@_editPlayer" OnValidSubmit="@OnValidSubmit">
+	<EditForm Model="@_editPlayerState" OnValidSubmit="@OnValidSubmit">
 		<DataAnnotationsValidator />
 		<ValidationSummary />
 
-		<InputWrapper Label="Country (flag)"><SearchDropdown TKey=string Values="@(UserUtils.CountryNames)" Converter="s => s" @bind-Value="@_editPlayer.CountryCode" /></InputWrapper>
-		<InputWrapper Label="DPI"><InputNumber class="text-lg w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editPlayer.Dpi" /></InputWrapper>
-		<InputWrapper Label="In-game sens"><InputNumber class="text-lg w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_editPlayer.InGameSens" /></InputWrapper>
-		<InputWrapper Label="FOV"><InputNumber class="text-lg w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editPlayer.Fov" /></InputWrapper>
-		<InputWrapper Label="Gamma"><InputNumber class="text-lg w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editPlayer.Gamma" /></InputWrapper>
-		<InputWrapper Label="Hand"><InputNullableBoolean False="Left" True="Right" @bind-Value="@_editPlayer.IsRightHanded" /></InputWrapper>
-		<InputWrapper Label="Flash hand"><InputNullableBoolean False="Off" True="On" @bind-Value="@_editPlayer.HasFlashHandEnabled" /></InputWrapper>
-		<InputWrapper Label="Legacy audio"><InputNullableBoolean False="Off" True="On" @bind-Value="@_editPlayer.UsesLegacyAudio" /></InputWrapper>
-		<InputWrapper Label="HRTF"><InputNullableBoolean False="Off" True="On" @bind-Value="@_editPlayer.UsesHrtf" /></InputWrapper>
-		<InputWrapper Label="Invert Y"><InputNullableBoolean False="Off" True="On" @bind-Value="@_editPlayer.UsesInvertY" /></InputWrapper>
-		<InputWrapper Label="V-sync"><Dropdown TKey=VerticalSync Values="@(Enum.GetValues<VerticalSync>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<VerticalSync>(s)" ShowDisplayValue=false @bind-Value="@_editPlayer.VerticalSync" /></InputWrapper>
-		<InputWrapper Label="Hide my donations"><InputCheckbox @bind-Value="@_editPlayer.HideDonations" /></InputWrapper>
-		<InputWrapper Label="Hide my past usernames"><InputCheckbox @bind-Value="@_editPlayer.HidePastUsernames" /></InputWrapper>
-		<InputWrapper Label="Hide my game settings"><InputCheckbox @bind-Value="@_editPlayer.HideSettings" /></InputWrapper>
+		<InputWrapper Label="Country (flag)"><SearchDropdown TKey=string Values="@(UserUtils.CountryNames)" Converter="s => s" @bind-Value="@_editPlayerState.CountryCode" /></InputWrapper>
+		<InputWrapper Label="DPI"><InputNumber class="text-lg w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editPlayerState.Dpi" /></InputWrapper>
+		<InputWrapper Label="In-game sens"><InputNumber class="text-lg w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_editPlayerState.InGameSens" /></InputWrapper>
+		<InputWrapper Label="FOV"><InputNumber class="text-lg w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editPlayerState.Fov" /></InputWrapper>
+		<InputWrapper Label="Gamma"><InputNumber class="text-lg w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editPlayerState.Gamma" /></InputWrapper>
+		<InputWrapper Label="Hand"><InputNullableBoolean False="Left" True="Right" @bind-Value="@_editPlayerState.IsRightHanded" /></InputWrapper>
+		<InputWrapper Label="Flash hand"><InputNullableBoolean False="Off" True="On" @bind-Value="@_editPlayerState.HasFlashHandEnabled" /></InputWrapper>
+		<InputWrapper Label="Legacy audio"><InputNullableBoolean False="Off" True="On" @bind-Value="@_editPlayerState.UsesLegacyAudio" /></InputWrapper>
+		<InputWrapper Label="HRTF"><InputNullableBoolean False="Off" True="On" @bind-Value="@_editPlayerState.UsesHrtf" /></InputWrapper>
+		<InputWrapper Label="Invert Y"><InputNullableBoolean False="Off" True="On" @bind-Value="@_editPlayerState.UsesInvertY" /></InputWrapper>
+		<InputWrapper Label="V-sync"><Dropdown TKey=VerticalSync Values="@(Enum.GetValues<VerticalSync>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<VerticalSync>(s)" ShowDisplayValue=false @bind-Value="@_editPlayerState.VerticalSync" /></InputWrapper>
+		<InputWrapper Label="Hide my donations"><InputCheckbox @bind-Value="@_editPlayerState.HideDonations" /></InputWrapper>
+		<InputWrapper Label="Hide my past usernames"><InputCheckbox @bind-Value="@_editPlayerState.HidePastUsernames" /></InputWrapper>
+		<InputWrapper Label="Hide my game settings"><InputCheckbox @bind-Value="@_editPlayerState.HideSettings" /></InputWrapper>
 
 		@{
 			bool isValid = context.Validate();
