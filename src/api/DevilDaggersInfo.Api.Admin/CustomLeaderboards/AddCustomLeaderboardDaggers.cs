@@ -2,13 +2,13 @@ namespace DevilDaggersInfo.Api.Admin.CustomLeaderboards;
 
 public record AddCustomLeaderboardDaggers
 {
-	public double Bronze { get; set; }
+	public double Bronze { get; init; }
 
-	public double Silver { get; set; }
+	public double Silver { get; init; }
 
-	public double Golden { get; set; }
+	public double Golden { get; init; }
 
-	public double Devil { get; set; }
+	public double Devil { get; init; }
 
-	public double Leviathan { get; set; }
+	public double Leviathan { get; init; }
 }
