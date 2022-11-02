@@ -1,6 +1,7 @@
 @inject AdminApiHttpClient Http
 @inject NavigationManager NavigationManager
 @using DevilDaggersInfo.Web.Client.Enums
+@typeparam TStateObject
 @typeparam TModel
 
 <Heading Title="@($"Edit {Name}")" />
@@ -23,7 +24,7 @@
 		break;
 }
 
-<EditForm Model="@Model" OnValidSubmit="@OnValidSubmit">
+<EditForm Model="@StateObject" OnValidSubmit="@OnValidSubmit">
 	<DataAnnotationsValidator />
 	<ValidationSummary />
 
