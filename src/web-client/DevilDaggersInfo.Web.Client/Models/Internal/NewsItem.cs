@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Client.InternalModels;
+namespace DevilDaggersInfo.Web.Client.Models.Internal;
 
 public class NewsItem
 {
