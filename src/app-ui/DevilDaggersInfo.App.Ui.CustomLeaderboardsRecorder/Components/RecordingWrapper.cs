@@ -16,7 +16,7 @@ public class RecordingWrapper : AbstractComponent
 	{
 		base.Render(parentPosition);
 
-		const int border = 2;
+		const int border = 1;
 		RenderBatchCollector.RenderRectangleTopLeft(Metric.Size, Metric.TopLeft + parentPosition, 0, Color.Purple);
 		RenderBatchCollector.RenderRectangleTopLeft(Metric.Size - new Vector2i<int>(border * 2), Metric.TopLeft + parentPosition + new Vector2i<int>(border), 1, Color.Black);
 	}

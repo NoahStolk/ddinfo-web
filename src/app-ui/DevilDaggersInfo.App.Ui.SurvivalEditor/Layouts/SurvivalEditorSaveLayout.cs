@@ -16,10 +16,10 @@ public class SurvivalEditorSaveLayout : Layout, IFileDialogLayout
 	public SurvivalEditorSaveLayout()
 		: base(Constants.Full)
 	{
-		TextButton backButton = new(Rectangle.At(0, 0, 24, 24), LayoutManager.ToSurvivalEditorMainLayout, Color.Black, Color.White, Color.White, Color.Red, "X", TextAlign.Left, 2, FontSize.F12X12);
+		TextButton backButton = new(Rectangle.At(0, 0, 24, 24), LayoutManager.ToSurvivalEditorMainLayout, Color.Black, Color.White, Color.White, Color.Red, "X", TextAlign.Left, 1, FontSize.F12X12);
 		_pathTextInput = ComponentBuilder.CreateTextInput(Rectangle.At(0, 24, 1024, 16), false, null, null, null);
 		TextInput fileTextInput = ComponentBuilder.CreateTextInput(Rectangle.At(0, 48, 512, 16), false, null, null, null);
-		TextButton saveButton = new(Rectangle.At(512, 48, 128, 16), () => SaveSpawnset(Path.Combine(_pathTextInput.Value.ToString(), fileTextInput.Value.ToString())), Color.Black, Color.White, Color.White, Color.Green, "Save", TextAlign.Middle, 2, FontSize.F8X8);
+		TextButton saveButton = new(Rectangle.At(512, 48, 128, 16), () => SaveSpawnset(Path.Combine(_pathTextInput.Value.ToString(), fileTextInput.Value.ToString())), Color.Black, Color.White, Color.White, Color.Green, "Save", TextAlign.Middle, 1, FontSize.F8X8);
 		_pathsWrapper = new(Rectangle.At(0, 96, 1024, 640), SetComponentsFromPath, SaveSpawnset);
 
 		NestingContext.Add(backButton);

@@ -32,14 +32,14 @@ public class Button : AbstractButton
 		Vector2i<int> center = topLeft + scale / 2;
 
 		RenderBatchCollector.RenderRectangleCenter(scale, parentPosition + center, Depth, BorderColor);
-		RenderBatchCollector.RenderRectangleCenter(scale - borderVec, parentPosition + center, Depth + 1, Hover ? HoverBackgroundColor : BackgroundColor);
+		RenderBatchCollector.RenderRectangleCenter(scale - borderVec * 2, parentPosition + center, Depth + 1, Hover ? HoverBackgroundColor : BackgroundColor);
 	}
 
 	// TODO: Move to ComponentBuilder.
 	public class MenuButton : TextButton
 	{
 		public MenuButton(Rectangle metric, Action onClick, string text)
-			: base(metric, onClick, Color.Black, Color.White, Color.Gray(0.5f), Color.White, text, TextAlign.Left, 2, FontSize.F8X8)
+			: base(metric, onClick, Color.Black, Color.White, Color.Gray(0.5f), Color.White, text, TextAlign.Left, 1, FontSize.F8X8)
 		{
 			Depth = 102;
 			IsActive = false;
@@ -50,7 +50,7 @@ public class Button : AbstractButton
 	public class PathButton : TextButton
 	{
 		public PathButton(Rectangle metric, Action onClick, string text, Color textColor)
-			: base(metric, onClick, Color.Black, Color.Gray(0.7f), Color.Gray(0.4f), textColor, text, TextAlign.Left, 2, FontSize.F8X8)
+			: base(metric, onClick, Color.Black, Color.Gray(0.7f), Color.Gray(0.4f), textColor, text, TextAlign.Left, 1, FontSize.F8X8)
 		{
 		}
 	}

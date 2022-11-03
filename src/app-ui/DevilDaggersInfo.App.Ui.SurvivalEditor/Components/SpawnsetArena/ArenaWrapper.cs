@@ -21,8 +21,8 @@ public class ArenaWrapper : AbstractComponent
 
 		Label title = new(Rectangle.At(0, 0, _arena.Metric.Size.X, titleHeight), Color.White, "Arena", TextAlign.Middle, FontSize.F12X12);
 		ArenaHeightButtons arenaHeightButtons = new(Rectangle.At(_arena.Metric.Size.X + 8, titleHeight, 80, 320));
-		_shrinkSlider = new(Rectangle.At(0, titleHeight + arenaHeightButtons.Metric.Size.Y, _arena.Metric.Size.X, 16), _arena.SetShrinkCurrent, true, 0, StateManager.SpawnsetState.Spawnset.GetSliderMaxSeconds(), 0.001f, 0, 2, Color.White);
-		ArenaToolsWrapper arenaToolsWrapper = new(Rectangle.At(0, titleHeight + arenaHeightButtons.Metric.Size.Y + _shrinkSlider.Metric.Size.Y, 304, 480));
+		_shrinkSlider = new(Rectangle.At(0, titleHeight + _arena.Metric.Size.Y, _arena.Metric.Size.X, 16), _arena.SetShrinkCurrent, true, 0, StateManager.SpawnsetState.Spawnset.GetSliderMaxSeconds(), 0.001f, 0, 2, Color.White);
+		ArenaToolsWrapper arenaToolsWrapper = new(Rectangle.At(0, titleHeight + _arena.Metric.Size.Y + _shrinkSlider.Metric.Size.Y, 304, 480));
 
 		NestingContext.Add(title);
 		NestingContext.Add(_arena);
@@ -30,7 +30,7 @@ public class ArenaWrapper : AbstractComponent
 		NestingContext.Add(_shrinkSlider);
 		NestingContext.Add(arenaToolsWrapper);
 
-		TextButton button3d = new(Rectangle.At(0, 0, 64, 16), LayoutManager.ToSurvivalEditor3dLayout, Color.Black, Color.White, Color.Blue, Color.White, "3D", TextAlign.Middle, 2, FontSize.F8X8);
+		TextButton button3d = new(Rectangle.At(0, 0, 64, 16), LayoutManager.ToSurvivalEditor3dLayout, Color.Black, Color.White, Color.Blue, Color.White, "3D", TextAlign.Middle, 1, FontSize.F8X8);
 		NestingContext.Add(button3d);
 	}
 

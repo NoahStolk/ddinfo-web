@@ -14,7 +14,7 @@ public class Dropdown : AbstractDropdown
 	public Dropdown(Rectangle metric, int headerHeight, List<AbstractComponent> children, Color textColor, string text)
 		: base(metric, children)
 	{
-		TextButton button = new(Rectangle.At(0, 0, metric.Size.X, headerHeight), () => Toggle(!IsOpen), Color.Black, Color.White, Color.Gray(0.5f), textColor, text, TextAlign.Middle, 2, FontSize.F8X8)
+		TextButton button = new(Rectangle.At(0, 0, metric.Size.X, headerHeight), () => Toggle(!IsOpen), Color.Black, Color.White, Color.Gray(0.5f), textColor, text, TextAlign.Middle, 1, FontSize.F8X8)
 		{
 			Depth = 102,
 		};

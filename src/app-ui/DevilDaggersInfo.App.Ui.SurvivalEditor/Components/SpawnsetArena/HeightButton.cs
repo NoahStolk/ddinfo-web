@@ -13,7 +13,7 @@ public class HeightButton : TextButton
 	private readonly Color _heightColor;
 
 	public HeightButton(Rectangle metric, Action onClick, float height)
-		: base(metric, onClick, Color.White, Color.Black, Color.Black, Color.Black, string.Empty, TextAlign.Middle, 2, FontSize.F4X6)
+		: base(metric, onClick, Color.White, Color.Black, Color.Black, Color.Black, string.Empty, TextAlign.Middle, 1, FontSize.F4X6)
 	{
 		_height = height;
 		_heightColor = TileUtils.GetColorFromHeight(height);

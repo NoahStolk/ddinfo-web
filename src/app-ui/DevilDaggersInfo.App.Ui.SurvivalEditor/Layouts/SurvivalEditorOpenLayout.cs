@@ -17,7 +17,7 @@ public class SurvivalEditorOpenLayout : Layout, IFileDialogLayout
 	public SurvivalEditorOpenLayout()
 		: base(Constants.Full)
 	{
-		TextButton backButton = new(Rectangle.At(0, 0, 24, 24), LayoutManager.ToSurvivalEditorMainLayout, Color.Black, Color.White, Color.White, Color.Red, "X", TextAlign.Left, 2, FontSize.F12X12);
+		TextButton backButton = new(Rectangle.At(0, 0, 24, 24), LayoutManager.ToSurvivalEditorMainLayout, Color.Black, Color.White, Color.White, Color.Red, "X", TextAlign.Left, 1, FontSize.F12X12);
 		_pathTextInput = ComponentBuilder.CreateTextInput(Rectangle.At(0, 24, 1024, 16), false, null, null, null);
 		_pathsWrapper = new(Rectangle.At(0, 96, 1024, 640), SetComponentsFromPath, OpenSpawnset);
 

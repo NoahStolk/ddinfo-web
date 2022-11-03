@@ -43,7 +43,7 @@ public class ArenaToolsWrapper : AbstractComponent
 			SetTool();
 		}
 
-		IconButton button = new(Rectangle.At(offsetX, offsetY, _arenaButtonSize, _arenaButtonSize), SetArenaTool, Color.Black, Color.Gray(0.5f), Color.Blue, 2, tooltipText, texture);
+		IconButton button = new(Rectangle.At(offsetX, offsetY, _arenaButtonSize, _arenaButtonSize), SetArenaTool, Color.Black, Color.Gray(0.5f), Color.Blue, 1, tooltipText, texture);
 		NestingContext.Add(button);
 	}
 
