@@ -1,22 +1,23 @@
 @page "/authentication/login"
 @using DevilDaggersInfo.Api.Main.Authentication
 @using DevilDaggersInfo.Web.Client.Authentication
+@using DevilDaggersInfo.Web.Client.StateObjects.Authentication
 @inject MainApiHttpClient Http
 @inject AdminAuthenticationStateProvider Auth
 @inject NavigationManager Navigation
 
 <Heading Title="Login" />
 
-<EditForm Model="@Model" OnValidSubmit="@OnValidSubmit">
+<EditForm Model="@StateObject" OnValidSubmit="@OnValidSubmit">
 	<DataAnnotationsValidator />
 	<ValidationSummary />
 	<div class="text-red">@_serverError</div>
 	
 	<div class="grid gap-2 grid-cols-2 max-w-md">
 		<span>Name</span>
-		<input class="bg-black border-gray-3 border-2" @bind="@Model.Name" />
+		<input class="bg-black border-gray-3 border-2" @bind="@StateObject.Name" />
 		<span>Password</span>
-		<input class="bg-black border-gray-3 border-2" type="password" @bind="@Model.Password" />
+		<input class="bg-black border-gray-3 border-2" type="password" @bind="@StateObject.Password" />
 	</div>
 
 	<button class="btn btn-gray-light px-2 py-1" type="submit">Login</button>
@@ -28,13 +29,13 @@
 
 @code
 {
-	[Parameter] public LoginRequest Model { get; set; } = new();
+	[Parameter] public LoginRequestState StateObject { get; set; } = new();
 
 	private string? _serverError;
 
 	private async Task OnValidSubmit()
 	{
-		HttpResponseMessage httpResponseMessage = await Http.Login(Model);
+		HttpResponseMessage httpResponseMessage = await Http.Login(StateObject.ToModel());
 
 		if (httpResponseMessage.StatusCode == HttpStatusCode.OK)
 		{
