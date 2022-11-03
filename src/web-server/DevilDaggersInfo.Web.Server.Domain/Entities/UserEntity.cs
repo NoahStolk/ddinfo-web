@@ -7,11 +7,11 @@ public class UserEntity : IAuditable
 	public int Id { get; set; }
 
 	[StringLength(32)]
-	public string Name { get; set; } = null!;
+	public required string Name { get; set; }
 
-	public byte[] PasswordHash { get; set; } = null!;
+	public required byte[] PasswordHash { get; set; }
 
-	public byte[] PasswordSalt { get; set; } = null!;
+	public required byte[] PasswordSalt { get; set; }
 
 	public DateTime? DateRegistered { get; init; }
 

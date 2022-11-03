@@ -52,7 +52,7 @@ public class CustomEntryEntity : ISortableCustomEntry
 	public DateTime SubmitDate { get; set; }
 
 	[StringLength(16)]
-	public string ClientVersion { get; set; } = null!;
+	public required string ClientVersion { get; set; }
 
 	public CustomLeaderboardsClient Client { get; set; }
 }

@@ -9,7 +9,7 @@ public class ModEntity : IAuditable
 	public int Id { get; init; }
 
 	[StringLength(64)]
-	public string Name { get; set; } = null!;
+	public required string Name { get; set; }
 
 	public bool IsHidden { get; set; }
 

@@ -5,7 +5,7 @@ public class RoleEntity
 {
 	[Key]
 	[StringLength(32)]
-	public string Name { get; set; } = null!;
+	public required string Name { get; set; }
 
 	public List<UserRoleEntity>? UserRoles { get; set; }
 }

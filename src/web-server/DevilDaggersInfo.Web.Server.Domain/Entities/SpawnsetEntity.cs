@@ -12,7 +12,7 @@ public class SpawnsetEntity : IAuditable
 	public PlayerEntity Player { get; set; } = null!;
 
 	[StringLength(64)]
-	public string Name { get; set; } = null!;
+	public required string Name { get; set; }
 
 	public int? MaxDisplayWaves { get; set; }
 
