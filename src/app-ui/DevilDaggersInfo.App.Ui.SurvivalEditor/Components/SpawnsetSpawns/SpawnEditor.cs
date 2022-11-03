@@ -48,9 +48,9 @@ public class SpawnEditor : AbstractComponent
 		NestingContext.Add(delayLabel);
 		NestingContext.Add(delayTextInput);
 
-		TextButton addButton = new(Rectangle.At(96, 80, width, 32), AddSpawn, new(0, 127, 0, 255), Color.White, new(0, 191, 0, 255), Color.White, "ADD", TextAlign.Middle, 2, FontSize.F12X12);
-		TextButton insertButton = new(Rectangle.At(192, 80, width, 32), InsertSpawn, new(0, 63, 127, 255), Color.White, new(0, 95, 191, 255), Color.White, "INSERT", TextAlign.Middle, 2, FontSize.F12X12);
-		TextButton editButton = new(Rectangle.At(288, 80, width, 32), EditSpawn, new(127, 63, 0, 255), Color.White, new(191, 95, 0, 255), Color.White, "EDIT", TextAlign.Middle, 2, FontSize.F12X12);
+		TextButton addButton = new(Rectangle.At(96, 72, width, 32), AddSpawn, new(0, 127, 0, 255), Color.White, new(0, 191, 0, 255), Color.White, "ADD", TextAlign.Middle, 2, FontSize.F12X12);
+		TextButton insertButton = new(Rectangle.At(192, 72, width, 32), InsertSpawn, new(0, 63, 127, 255), Color.White, new(0, 95, 191, 255), Color.White, "INSERT", TextAlign.Middle, 2, FontSize.F12X12);
+		TextButton editButton = new(Rectangle.At(288, 72, width, 32), EditSpawn, new(127, 63, 0, 255), Color.White, new(191, 95, 0, 255), Color.White, "EDIT", TextAlign.Middle, 2, FontSize.F12X12);
 
 		NestingContext.Add(addButton);
 		NestingContext.Add(insertButton);
