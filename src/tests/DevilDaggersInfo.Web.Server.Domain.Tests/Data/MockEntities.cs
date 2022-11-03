@@ -40,6 +40,8 @@ public class MockEntities
 	{
 		Name = "DevilDaggersCustomLeaderboards",
 		RequiredVersionNumber = "1.2.0.0",
+		DisplayName = "Devil Daggers Custom Leaderboards",
+		CurrentVersionNumber = "1.2.0.0",
 	};
 
 	public ToolDistributionEntity Ddse2_WindowsWpf_Old { get; } = new()
