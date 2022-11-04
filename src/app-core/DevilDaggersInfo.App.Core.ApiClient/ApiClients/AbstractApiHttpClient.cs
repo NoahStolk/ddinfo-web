@@ -1,13 +1,13 @@
 using System.Net;
 using System.Net.Http.Json;
 
-namespace DevilDaggersInfo.App.Core.ApiClient;
+namespace DevilDaggersInfo.App.Core.ApiClient.ApiClients;
 
-public partial class ApiHttpClient
+public abstract class AbstractApiHttpClient
 {
 	private readonly HttpClient _client;
 
-	public ApiHttpClient(HttpClient client)
+	protected AbstractApiHttpClient(HttpClient client)
 	{
 		_client = client;
 	}

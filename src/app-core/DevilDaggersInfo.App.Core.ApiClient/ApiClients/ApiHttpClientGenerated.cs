@@ -23,7 +23,7 @@ using DevilDaggersInfo.Types.Core.Wiki;
 using DevilDaggersInfo.Types.Web;
 using System.Net.Http.Json;
 
-namespace DevilDaggersInfo.App.Core.ApiClient;
+namespace DevilDaggersInfo.App.Core.ApiClient.ApiClients;
 
 public partial class ApiHttpClient
 {
