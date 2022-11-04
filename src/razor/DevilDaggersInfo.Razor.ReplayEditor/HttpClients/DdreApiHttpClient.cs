@@ -1,4 +1,4 @@
-using DevilDaggersInfo.App.Core.ApiClient;
+using DevilDaggersInfo.App.Core.ApiClient.ApiClients;
 
 namespace DevilDaggersInfo.Razor.ReplayEditor.HttpClients;
 
