@@ -1,8 +1,11 @@
 using DevilDaggersInfo.App.Ui.Base;
+using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
+using DevilDaggersInfo.App.Ui.Base.Settings;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Enums;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using DevilDaggersInfo.Core.Spawnset;
+using Warp.Ui;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 
@@ -55,6 +58,14 @@ public static class StateManager
 			_uiQueue = new(arenaChanges, spawnsChanges, settingsChanges);
 		else
 			_uiQueue = new(_uiQueue.ArenaChanges || arenaChanges, _uiQueue.SpawnsChanges || spawnsChanges, _uiQueue.SettingsChanges || settingsChanges);
+	}
+
+	public static void ReplaceSpawnset()
+	{
+		File.WriteAllBytes(Path.Combine(UserSettings.DevilDaggersInstallationDirectory, "mods", "survival"), SpawnsetState.Spawnset.ToBytes());
+		ILayout popupParent = Root.Game.SurvivalEditorMainLayout;
+		Popup p = new(popupParent, "Successfully replaced current survival file");
+		popupParent.NestingContext.Add(p);
 	}
 
 	public static void SetArenaTool(ArenaTool arenaTool)
