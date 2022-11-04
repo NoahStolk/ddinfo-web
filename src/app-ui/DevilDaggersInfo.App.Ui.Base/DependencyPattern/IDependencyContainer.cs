@@ -19,8 +19,6 @@ public interface IDependencyContainer
 
 	string? TooltipText { get; set; }
 
-	AsyncHandler AsyncHandler { get; }
-
 	IExtendedLayout? ActiveLayout { get; set; }
 
 	#region Main screen

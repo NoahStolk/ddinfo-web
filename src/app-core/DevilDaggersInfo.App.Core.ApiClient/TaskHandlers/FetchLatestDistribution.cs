@@ -4,17 +4,17 @@ using DevilDaggersInfo.Types.Web;
 
 namespace DevilDaggersInfo.App.Core.ApiClient.TaskHandlers;
 
-public sealed class FetchLatestDistribution : ITaskHandler<AppVersion>
+public static class FetchLatestDistribution
 {
-	public static async Task<AppVersion?> HandleAsync(AsyncHandler asyncHandler)
+	public static async Task<AppVersion?> HandleAsync(AppVersion appVersion, ToolBuildType toolBuildType)
 	{
 		try
 		{
-			GetToolDistribution distribution = await asyncHandler.Client.GetLatestToolDistribution("ddinfo-tools", ToolPublishMethod.SelfContained, asyncHandler.ToolBuildType);
+			GetToolDistribution distribution = await AsyncHandler.Client.GetLatestToolDistribution("ddinfo-tools", ToolPublishMethod.SelfContained, toolBuildType);
 			if (!AppVersion.TryParse(distribution.VersionNumber, out AppVersion? onlineVersion))
 				return null;
 
-			return onlineVersion > asyncHandler.CurrentAppVersion ? onlineVersion : null;
+			return onlineVersion > appVersion ? onlineVersion : null;
 		}
 		catch
 		{
