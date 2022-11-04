@@ -2,7 +2,7 @@ using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Core.Wiki.Objects;
 using DevilDaggersInfo.Types.Core.Spawnsets;
 
-namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Extensions;
+namespace DevilDaggersInfo.App.Ui.Base.Extensions;
 
 public static class EnemyTypeExtensions
 {

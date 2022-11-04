@@ -1,4 +1,4 @@
-using DevilDaggersInfo.App.Ui.Base.Enums;
+using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Components;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Enums;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
@@ -16,6 +16,6 @@ public static class SpawnsetComponentBuilder
 			SpawnsetHistoryManager.Save(spawnsetEditType);
 		}
 
-		return new(rectangle, true, OnInputAndSave, OnInputAndSave, onChange, Color.Black, Color.Gray(0.75f), Color.Gray(0.25f), Color.White, Color.White, Color.Green, Color.Gray(0.5f), 2, FontSize.F8X8, 8, 8);
+		return new(rectangle, true, OnInputAndSave, OnInputAndSave, onChange, GlobalStyles.SpawnsetTextInput);
 	}
 }

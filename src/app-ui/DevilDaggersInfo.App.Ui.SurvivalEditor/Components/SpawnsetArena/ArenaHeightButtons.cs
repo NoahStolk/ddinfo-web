@@ -1,4 +1,7 @@
+using DevilDaggersInfo.App.Ui.Base.Components.Styles;
+using DevilDaggersInfo.App.Ui.Base.Enums;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
+using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using Warp.Ui;
 using Warp.Ui.Components;
 
@@ -32,7 +35,14 @@ public class ArenaHeightButtons : AbstractComponent
 
 	private void AddHeightButton(float height, int offsetX, int offsetY)
 	{
-		HeightButton button = new(Rectangle.At(offsetX, offsetY, _arenaButtonSize, _arenaButtonSize), () => StateManager.SetArenaSelectedHeight(height), height);
+		Color heightColor = TileUtils.GetColorFromHeight(height);
+
+		string text = height.ToString(); // TODO: -1000 should probably be written as -1K.
+		FontSize fontSize = text.Length > 2 ? FontSize.F4X6 : FontSize.F8X8;
+		ButtonStyle buttonStyle = new(heightColor, Color.Black, Color.Lerp(heightColor, Color.White, 0.75f), 1);
+		TextButtonStyle textStyle = new(heightColor.ReadableColorForBrightness(), TextAlign.Middle, fontSize);
+
+		HeightButton button = new(Rectangle.At(offsetX, offsetY, _arenaButtonSize, _arenaButtonSize), () => StateManager.SetArenaSelectedHeight(height), buttonStyle, textStyle, text, height);
 		NestingContext.Add(button);
 	}
 }

@@ -1,12 +1,12 @@
+using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.Components;
+using DevilDaggersInfo.App.Ui.Base.Components.Styles;
 using DevilDaggersInfo.App.Ui.Base.Enums;
-using DevilDaggersInfo.App.Ui.Base.Extensions;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Enums;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Core.Spawnset;
-using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Types.Core.Spawnsets;
 using Warp.Ui;
 using Warp.Ui.Components;
@@ -22,21 +22,18 @@ public class SettingsWrapper : AbstractComponent
 	private readonly int _thirdWidth;
 	private readonly int _quarterWidth;
 
-	private static readonly Color _selected = Color.Gray(0.4f);
-	private static readonly Color _hover = Color.Gray(0.6f);
+	private readonly TextButton _buttonV0V1;
+	private readonly TextButton _buttonV2V3;
+	private readonly TextButton _buttonV3Next;
 
-	private readonly Button _buttonV0V1;
-	private readonly Button _buttonV2V3;
-	private readonly Button _buttonV3Next;
+	private readonly TextButton _buttonSurvival;
+	private readonly TextButton _buttonTimeAttack;
+	private readonly TextButton _buttonRace;
 
-	private readonly Button _buttonSurvival;
-	private readonly Button _buttonTimeAttack;
-	private readonly Button _buttonRace;
-
-	private readonly Button _buttonLevel1;
-	private readonly Button _buttonLevel2;
-	private readonly Button _buttonLevel3;
-	private readonly Button _buttonLevel4;
+	private readonly TextButton _buttonLevel1;
+	private readonly TextButton _buttonLevel2;
+	private readonly TextButton _buttonLevel3;
+	private readonly TextButton _buttonLevel4;
 
 	private readonly Label _labelAdditionalGems;
 	private readonly Label _labelTimerStart;
@@ -99,7 +96,7 @@ public class SettingsWrapper : AbstractComponent
 	private TextButton CreateFormatButton(int y, int index, int worldVersion, int spawnVersion)
 	{
 		string str = SpawnsetBinary.GetGameVersionString(worldVersion, spawnVersion);
-		return new(Rectangle.At(index * _thirdWidth, y, _thirdWidth, _offset), UpdateFormat, Color.Black, Color.White, _hover, Color.White, str, TextAlign.Middle, 1, FontSize.F8X8);
+		return new(Rectangle.At(index * _thirdWidth, y, _thirdWidth, _offset), UpdateFormat, GlobalStyles.SpawnsetSetting, GlobalStyles.DefaultMiddle, str);
 
 		void UpdateFormat()
 		{
@@ -111,7 +108,7 @@ public class SettingsWrapper : AbstractComponent
 	private TextButton CreateGameModeButton(int y, GameMode gameMode)
 	{
 		int index = (int)gameMode;
-		return new(Rectangle.At(index * _thirdWidth, y, _thirdWidth, _offset), UpdateFormat, Color.Black, Color.White, _hover, Color.White, ToShortString(), TextAlign.Middle, 1, FontSize.F8X8);
+		return new(Rectangle.At(index * _thirdWidth, y, _thirdWidth, _offset), UpdateFormat, GlobalStyles.SpawnsetSetting, GlobalStyles.DefaultMiddle, ToShortString());
 
 		void UpdateFormat()
 		{
@@ -131,7 +128,7 @@ public class SettingsWrapper : AbstractComponent
 	private TextButton CreateHandButton(int y, HandLevel handLevel)
 	{
 		int index = (int)handLevel - 1;
-		return new(Rectangle.At(index * _quarterWidth, y, _quarterWidth, _offset), UpdateHand, Color.Black, GetColor(handLevel), _hover, Color.White, ToShortString(), TextAlign.Middle, 1, FontSize.F8X8);
+		return new(Rectangle.At(index * _quarterWidth, y, _quarterWidth, _offset), UpdateHand, GlobalStyles.HandLevelButtonStyles[handLevel], GlobalStyles.HandLevelText, ToShortString());
 
 		void UpdateHand()
 		{
@@ -176,13 +173,13 @@ public class SettingsWrapper : AbstractComponent
 	{
 		SpawnsetBinary spawnset = StateManager.SpawnsetState.Spawnset;
 
-		_buttonV0V1.BackgroundColor = GetFormatBackground(8, 4);
-		_buttonV2V3.BackgroundColor = GetFormatBackground(9, 4);
-		_buttonV3Next.BackgroundColor = GetFormatBackground(9, 6);
+		_buttonV0V1.ButtonStyle = GetFormatBackground(8, 4);
+		_buttonV2V3.ButtonStyle = GetFormatBackground(9, 4);
+		_buttonV3Next.ButtonStyle = GetFormatBackground(9, 6);
 
-		_buttonSurvival.BackgroundColor = spawnset.GameMode == GameMode.Survival ? _selected : Color.Black;
-		_buttonTimeAttack.BackgroundColor = spawnset.GameMode == GameMode.TimeAttack ? _selected : Color.Black;
-		_buttonRace.BackgroundColor = spawnset.GameMode == GameMode.Race ? _selected : Color.Black;
+		_buttonSurvival.ButtonStyle = spawnset.GameMode == GameMode.Survival ? GlobalStyles.SelectedSpawnsetSetting : GlobalStyles.SpawnsetSetting;
+		_buttonTimeAttack.ButtonStyle = spawnset.GameMode == GameMode.TimeAttack ? GlobalStyles.SelectedSpawnsetSetting : GlobalStyles.SpawnsetSetting;
+		_buttonRace.ButtonStyle = spawnset.GameMode == GameMode.Race ? GlobalStyles.SelectedSpawnsetSetting : GlobalStyles.SpawnsetSetting;
 
 		bool practice = spawnset.SpawnVersion > 4;
 		_buttonLevel1.IsActive = practice;
@@ -204,25 +201,13 @@ public class SettingsWrapper : AbstractComponent
 		_textInputShrinkRate.SetTextIfDeselected(spawnset.ShrinkRate.ToString("0.000"));
 		_textInputBrightness.SetTextIfDeselected(spawnset.Brightness.ToString("0.0"));
 
-		_buttonLevel1.BackgroundColor = GetBackground(HandLevel.Level1);
-		_buttonLevel2.BackgroundColor = GetBackground(HandLevel.Level2);
-		_buttonLevel3.BackgroundColor = GetBackground(HandLevel.Level3);
-		_buttonLevel4.BackgroundColor = GetBackground(HandLevel.Level4);
+		_buttonLevel1.ButtonStyle = GetStyle(HandLevel.Level1);
+		_buttonLevel2.ButtonStyle = GetStyle(HandLevel.Level2);
+		_buttonLevel3.ButtonStyle = GetStyle(HandLevel.Level3);
+		_buttonLevel4.ButtonStyle = GetStyle(HandLevel.Level4);
 
-		Color GetBackground(HandLevel handLevel) => handLevel == spawnset.HandLevel ? GetColor(handLevel) : Color.Black;
+		ButtonStyle GetStyle(HandLevel handLevel) => handLevel == spawnset.HandLevel ? GlobalStyles.SelectedHandLevelButtonStyles[handLevel] : GlobalStyles.HandLevelButtonStyles[handLevel];
 
-		Color GetFormatBackground(int worldVersion, int spawnVersion)
-		{
-			return worldVersion == spawnset.WorldVersion && spawnVersion == spawnset.SpawnVersion ? _selected : Color.Black;
-		}
+		ButtonStyle GetFormatBackground(int worldVersion, int spawnVersion) => worldVersion == spawnset.WorldVersion && spawnVersion == spawnset.SpawnVersion ? GlobalStyles.SelectedSpawnsetSetting : GlobalStyles.SpawnsetSetting;
 	}
-
-	private static Color GetColor(HandLevel handLevel) => handLevel switch
-	{
-		HandLevel.Level1 => UpgradeColors.Level1.ToWarpColor(),
-		HandLevel.Level2 => UpgradeColors.Level2.ToWarpColor(),
-		HandLevel.Level3 => UpgradeColors.Level3.ToWarpColor(),
-		HandLevel.Level4 => UpgradeColors.Level4.ToWarpColor(),
-		_ => throw new InvalidEnumConversionException(handLevel),
-	};
 }

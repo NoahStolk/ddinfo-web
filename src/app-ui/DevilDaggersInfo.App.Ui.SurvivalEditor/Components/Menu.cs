@@ -1,4 +1,3 @@
-using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.Rendering;
 using DevilDaggersInfo.App.Ui.Base.States;
@@ -18,7 +17,7 @@ public class Menu : AbstractComponent
 
 		Depth = 100;
 
-		MainLayoutBackButton backButton = new(Rectangle.At(0, 0, backButtonWidth, rowHeight), LayoutManager.ToMainLayout, "Back", Textures.BackButton)
+		MainLayoutBackButton backButton = new(Rectangle.At(0, 0, backButtonWidth, rowHeight), LayoutManager.ToMainLayout)
 		{
 			Depth = 101,
 		};
@@ -26,12 +25,12 @@ public class Menu : AbstractComponent
 		const int menuItemHeight = 16;
 		List<AbstractComponent> fileMenuButtons = new()
 		{
-			new Button.MenuButton(Rectangle.At(0, rowHeight + menuItemHeight * 0, 160, menuItemHeight), StateManager.NewSpawnset, "New"),
-			new Button.MenuButton(Rectangle.At(0, rowHeight + menuItemHeight * 1, 160, menuItemHeight), LayoutManager.ToSurvivalEditorOpenLayout, "Open"),
-			new Button.MenuButton(Rectangle.At(0, rowHeight + menuItemHeight * 2, 160, menuItemHeight), StateManager.OpenDefaultV3Spawnset, "Open default (V3)"),
-			new Button.MenuButton(Rectangle.At(0, rowHeight + menuItemHeight * 3, 160, menuItemHeight), LayoutManager.ToSurvivalEditorSaveLayout, "Save"),
+			new MenuButton(Rectangle.At(0, rowHeight + menuItemHeight * 0, 160, menuItemHeight), StateManager.NewSpawnset, "New"),
+			new MenuButton(Rectangle.At(0, rowHeight + menuItemHeight * 1, 160, menuItemHeight), LayoutManager.ToSurvivalEditorOpenLayout, "Open"),
+			new MenuButton(Rectangle.At(0, rowHeight + menuItemHeight * 2, 160, menuItemHeight), StateManager.OpenDefaultV3Spawnset, "Open default (V3)"),
+			new MenuButton(Rectangle.At(0, rowHeight + menuItemHeight * 3, 160, menuItemHeight), LayoutManager.ToSurvivalEditorSaveLayout, "Save"),
 		};
-		Dropdown fileMenu = new(Rectangle.At(backButtonWidth, 0, 64, rowHeight + fileMenuButtons.Count * menuItemHeight), 24, fileMenuButtons, Color.White, "File")
+		Dropdown fileMenu = new(Rectangle.At(backButtonWidth, 0, 64, rowHeight + fileMenuButtons.Count * menuItemHeight), 24, fileMenuButtons, "File")
 		{
 			Depth = 101,
 		};

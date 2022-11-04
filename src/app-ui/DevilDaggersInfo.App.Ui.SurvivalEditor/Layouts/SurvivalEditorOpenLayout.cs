@@ -1,7 +1,6 @@
 using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts;
-using DevilDaggersInfo.App.Ui.Base.Enums;
 using DevilDaggersInfo.App.Ui.Base.States;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using DevilDaggersInfo.Core.Spawnset;
@@ -17,11 +16,11 @@ public class SurvivalEditorOpenLayout : Layout, IFileDialogLayout
 	public SurvivalEditorOpenLayout()
 		: base(Constants.Full)
 	{
-		TextButton backButton = new(Rectangle.At(0, 0, 24, 24), LayoutManager.ToSurvivalEditorMainLayout, Color.Black, Color.White, Color.White, Color.Red, "X", TextAlign.Left, 1, FontSize.F12X12);
-		_pathTextInput = ComponentBuilder.CreateTextInput(Rectangle.At(0, 24, 1024, 16), false, null, null, null);
+		PathsCloseButton closeButton = new(Rectangle.At(0, 0, 24, 24), LayoutManager.ToSurvivalEditorMainLayout);
+		_pathTextInput = new(Rectangle.At(0, 24, 1024, 16), false, null, null, null, GlobalStyles.TextInput);
 		_pathsWrapper = new(Rectangle.At(0, 96, 1024, 640), SetComponentsFromPath, OpenSpawnset);
 
-		NestingContext.Add(backButton);
+		NestingContext.Add(closeButton);
 		NestingContext.Add(_pathTextInput);
 		NestingContext.Add(_pathsWrapper);
 	}

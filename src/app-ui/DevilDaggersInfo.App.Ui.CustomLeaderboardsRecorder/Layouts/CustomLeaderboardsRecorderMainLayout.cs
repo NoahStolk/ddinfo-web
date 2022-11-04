@@ -13,7 +13,7 @@ public class CustomLeaderboardsRecorderMainLayout : Layout, IExtendedLayout
 		: base(Constants.Full)
 	{
 		const int headerHeight = 24;
-		MainLayoutBackButton backButton = new(Rectangle.At(0, 0, 24, headerHeight), LayoutManager.ToMainLayout, "Back", Textures.BackButton);
+		MainLayoutBackButton backButton = new(Rectangle.At(0, 0, 24, headerHeight), LayoutManager.ToMainLayout);
 		StateWrapper stateWrapper = new(Rectangle.At(0, headerHeight, 256, 128 - headerHeight));
 		RecordingWrapper recordingWrapper = new(Rectangle.At(0, 128, 256, 384));
 		LeaderboardList leaderboardList = new(Rectangle.At(256, headerHeight, 768, 512 - headerHeight));

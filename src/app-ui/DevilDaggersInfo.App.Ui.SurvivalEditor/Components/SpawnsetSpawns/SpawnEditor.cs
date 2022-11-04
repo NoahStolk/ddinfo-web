@@ -1,12 +1,11 @@
 using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.Components;
+using DevilDaggersInfo.App.Ui.Base.Components.Styles;
 using DevilDaggersInfo.App.Ui.Base.Enums;
 using DevilDaggersInfo.App.Ui.Base.Extensions;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Enums;
-using DevilDaggersInfo.App.Ui.SurvivalEditor.Extensions;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using DevilDaggersInfo.Core.Spawnset;
-using DevilDaggersInfo.Core.Wiki.Objects;
 using DevilDaggersInfo.Types.Core.Spawnsets;
 using System.Collections.Immutable;
 using Warp.Ui;
@@ -16,7 +15,7 @@ namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetSpawns;
 
 public class SpawnEditor : AbstractComponent
 {
-	private readonly Dictionary<EnemyType, Button> _enemyTypeButtons = new();
+	private readonly Dictionary<EnemyType, TextButton> _enemyTypeButtons = new();
 
 	// TODO: On spawn select, set these values.
 	private EnemyType _selectedEnemyType;
@@ -41,16 +40,16 @@ public class SpawnEditor : AbstractComponent
 
 		Label enemyTypeLabel = new(Rectangle.At(0, 0, width, 16), Color.White, "Enemy", TextAlign.Left, FontSize.F8X8);
 		Label delayLabel = new(Rectangle.At(0, 32, width, 16), Color.White, "Delay", TextAlign.Left, FontSize.F8X8);
-		TextInput delayTextInput = ComponentBuilder.CreateTextInput(Rectangle.At(288, 32, width, 16), true, OnDelayChange, OnDelayChange, OnDelayChange);
+		TextInput delayTextInput = new(Rectangle.At(288, 32, width, 16), true, OnDelayChange, OnDelayChange, OnDelayChange, GlobalStyles.TextInput);
 		delayTextInput.SetText("0.0000");
 
 		NestingContext.Add(enemyTypeLabel);
 		NestingContext.Add(delayLabel);
 		NestingContext.Add(delayTextInput);
 
-		TextButton addButton = new(Rectangle.At(96, 72, width, 32), AddSpawn, new(0, 127, 0, 255), Color.White, new(0, 191, 0, 255), Color.White, "ADD", TextAlign.Middle, 1, FontSize.F12X12);
-		TextButton insertButton = new(Rectangle.At(192, 72, width, 32), InsertSpawn, new(0, 63, 127, 255), Color.White, new(0, 95, 191, 255), Color.White, "INSERT", TextAlign.Middle, 1, FontSize.F12X12);
-		TextButton editButton = new(Rectangle.At(288, 72, width, 32), EditSpawn, new(127, 63, 0, 255), Color.White, new(191, 95, 0, 255), Color.White, "EDIT", TextAlign.Middle, 1, FontSize.F12X12);
+		TextButton addButton = new(Rectangle.At(96, 72, width, 32), AddSpawn, GlobalStyles.AddSpawn, GlobalStyles.SpawnText, "ADD");
+		TextButton insertButton = new(Rectangle.At(192, 72, width, 32), InsertSpawn, GlobalStyles.InsertSpawn, GlobalStyles.SpawnText, "INSERT");
+		TextButton editButton = new(Rectangle.At(288, 72, width, 32), EditSpawn, GlobalStyles.EditSpawn, GlobalStyles.SpawnText, "EDIT");
 
 		NestingContext.Add(addButton);
 		NestingContext.Add(insertButton);
@@ -58,12 +57,9 @@ public class SpawnEditor : AbstractComponent
 
 		void AddEnemyButton(int x, int y, EnemyType enemyType)
 		{
-			Enemy? enemy = enemyType.GetEnemy();
-			Color enemyColor = enemy?.Color.ToWarpColor() ?? Color.Gray(0.75f);
-			string enemyName = enemyType.GetShortName();
-			Color borderColor = _selectedEnemyType == enemyType ? Color.White : Color.Black;
-			Color hoverBackgroundColor = Color.Lerp(enemyColor, Color.White, 0.5f);
-			TextButton button = new(Rectangle.At(x, y, 48, 16), () => SetSelectedEnemyType(enemyType), enemyColor, borderColor, hoverBackgroundColor, enemyColor.ReadableColorForBrightness(), enemyName, TextAlign.Left, 1, FontSize.F8X8);
+			ButtonStyle buttonStyle = _selectedEnemyType == enemyType ? GlobalStyles.SelectedEnemyButtonStyles[enemyType] : GlobalStyles.EnemyButtonStyles[enemyType];
+			TextButtonStyle textButtonStyle = new(buttonStyle.BackgroundColor.ReadableColorForBrightness(), TextAlign.Left, FontSize.F8X8);
+			TextButton button = new(Rectangle.At(x, y, 48, 16), () => SetSelectedEnemyType(enemyType), buttonStyle, textButtonStyle, enemyType.GetShortName());
 			_enemyTypeButtons.Add(enemyType, button);
 			NestingContext.Add(button);
 		}
@@ -75,8 +71,8 @@ public class SpawnEditor : AbstractComponent
 	{
 		_selectedEnemyType = enemyType;
 
-		foreach (KeyValuePair<EnemyType, Button> kvp in _enemyTypeButtons)
-			kvp.Value.BorderColor = _selectedEnemyType == kvp.Key ? Color.White : Color.Black;
+		foreach (KeyValuePair<EnemyType, TextButton> kvp in _enemyTypeButtons)
+			kvp.Value.ButtonStyle = _selectedEnemyType == kvp.Key ? GlobalStyles.SelectedEnemyButtonStyles[kvp.Key] : GlobalStyles.EnemyButtonStyles[kvp.Key];
 	}
 
 	private void AddSpawn()

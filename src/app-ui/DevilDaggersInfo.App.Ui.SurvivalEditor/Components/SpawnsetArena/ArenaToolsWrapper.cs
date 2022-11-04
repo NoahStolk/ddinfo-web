@@ -43,7 +43,7 @@ public class ArenaToolsWrapper : AbstractComponent
 			SetTool();
 		}
 
-		IconButton button = new(Rectangle.At(offsetX, offsetY, _arenaButtonSize, _arenaButtonSize), SetArenaTool, Color.Black, Color.Gray(0.5f), Color.Blue, 1, tooltipText, texture);
+		IconButton button = new(Rectangle.At(offsetX, offsetY, _arenaButtonSize, _arenaButtonSize), SetArenaTool, GlobalStyles.DefaultButtonStyle, tooltipText, texture);
 		NestingContext.Add(button);
 	}
 
@@ -70,7 +70,7 @@ public class ArenaToolsWrapper : AbstractComponent
 
 		TextInput CreateTextInput(Rectangle rectangle, Action<string> onChange)
 		{
-			return new(rectangle, true, onChange, onChange, onChange, Color.Black, Color.Gray(0.75f), Color.Gray(0.25f), Color.White, Color.White, Color.Green, Color.Gray(0.5f), 2, FontSize.F8X8, 8, 8);
+			return new(rectangle, true, onChange, onChange, onChange, GlobalStyles.TextInput);
 		}
 	}
 

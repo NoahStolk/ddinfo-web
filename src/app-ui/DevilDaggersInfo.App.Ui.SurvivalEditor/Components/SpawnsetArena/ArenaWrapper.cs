@@ -1,3 +1,4 @@
+using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.Enums;
 using DevilDaggersInfo.App.Ui.Base.States;
@@ -30,7 +31,7 @@ public class ArenaWrapper : AbstractComponent
 		NestingContext.Add(_shrinkSlider);
 		NestingContext.Add(arenaToolsWrapper);
 
-		TextButton button3d = new(Rectangle.At(0, 0, 64, 16), LayoutManager.ToSurvivalEditor3dLayout, Color.Black, Color.White, Color.Blue, Color.White, "3D", TextAlign.Middle, 1, FontSize.F8X8);
+		TextButton button3d = new(Rectangle.At(0, 0, 64, 16), LayoutManager.ToSurvivalEditor3dLayout, GlobalStyles.DefaultButtonStyle, GlobalStyles.View3dButton, "3D");
 		NestingContext.Add(button3d);
 	}
 

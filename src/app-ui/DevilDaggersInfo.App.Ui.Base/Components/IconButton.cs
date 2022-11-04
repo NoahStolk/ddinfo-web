@@ -1,3 +1,4 @@
+using DevilDaggersInfo.App.Ui.Base.Components.Styles;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.Rendering;
 using System.Numerics;
@@ -13,8 +14,8 @@ public class IconButton : Button
 	private readonly Texture _texture;
 	private readonly Vector2 _textureSize;
 
-	public IconButton(Rectangle metric, Action onClick, Color backgroundColor, Color borderColor, Color hoverColor, int borderSize, string tooltipText, Texture texture)
-		: base(metric, onClick, backgroundColor, borderColor, hoverColor, borderSize)
+	public IconButton(Rectangle metric, Action onClick, ButtonStyle buttonStyle, string tooltipText, Texture texture)
+		: base(metric, onClick, buttonStyle)
 	{
 		_tooltipText = tooltipText;
 		_texture = texture;

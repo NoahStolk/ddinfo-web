@@ -1,4 +1,5 @@
 using DevilDaggersInfo.App.Ui.Base.Components;
+using DevilDaggersInfo.App.Ui.Base.Components.Styles;
 using DevilDaggersInfo.App.Ui.Base.Enums;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Extensions;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
@@ -9,7 +10,7 @@ namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetHistory;
 
 public class History : ScrollContent<History, HistoryWrapper>
 {
-	public const int HistoryEntryHeight = 16;
+	private const int _historyEntryHeight = 16;
 
 	private readonly List<AbstractComponent> _historyComponents = new();
 
@@ -18,7 +19,7 @@ public class History : ScrollContent<History, HistoryWrapper>
 	{
 	}
 
-	public override int ContentHeightInPixels => _historyComponents.Count * HistoryEntryHeight;
+	public override int ContentHeightInPixels => _historyComponents.Count * _historyEntryHeight;
 
 	public void SetHistory()
 	{
@@ -35,7 +36,9 @@ public class History : ScrollContent<History, HistoryWrapper>
 			Color colorBackgroundActive = colorBackground.Intensify(32);
 			Color hoverBackgroundColor = colorBackground.Intensify(64);
 			int index = i;
-			TextButton button = new(Rectangle.At(0, i * HistoryEntryHeight, Metric.Size.X, HistoryEntryHeight), () => SpawnsetHistoryManager.Set(index), isActive ? colorBackgroundActive : colorBackground, isActive ? Color.White : Color.Black, hoverBackgroundColor, Color.White, history.EditType.GetChange(), TextAlign.Left, 1, FontSize.F8X8)
+			ButtonStyle buttonStyle = new(isActive ? colorBackgroundActive : colorBackground, isActive ? Color.White : Color.Black, hoverBackgroundColor, 1);
+			TextButtonStyle textButtonStyle = new(Color.White, TextAlign.Left, FontSize.F8X8);
+			TextButton button = new(Rectangle.At(0, i * _historyEntryHeight, Metric.Size.X, _historyEntryHeight), () => SpawnsetHistoryManager.Set(index), buttonStyle, textButtonStyle, history.EditType.GetChange())
 			{
 				Depth = Depth + 1,
 			};
