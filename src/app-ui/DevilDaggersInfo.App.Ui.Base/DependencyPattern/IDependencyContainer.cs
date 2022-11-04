@@ -1,12 +1,15 @@
 using DevilDaggersInfo.App.Core.ApiClient;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts.SurvivalEditor;
+using DevilDaggersInfo.Core.Versioning;
 using System.Numerics;
 
 namespace DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 
 public interface IDependencyContainer
 {
+	AppVersion AppVersion { get; }
+
 	Vector2 ViewportOffset { get; }
 	Vector2 UiScale { get; }
 	Vector2 MousePositionWithOffset { get; }
