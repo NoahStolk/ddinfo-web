@@ -1,3 +1,4 @@
+using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.Rendering;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena.Data;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Enums;
@@ -42,7 +43,7 @@ public class ArenaLineState : IArenaState
 
 	public void Render(ArenaMousePosition mousePosition, Vector2i<int> origin, float depth)
 	{
-		Loop(mousePosition, (i, j) => RenderBatchCollector.RenderRectangleTopLeft(new(_tileSize), origin + new Vector2i<int>(i, j) * _tileSize, depth, TileUtils.GetColorFromHeight(StateManager.ArenaEditorState.SelectedHeight)));
+		Loop(mousePosition, (i, j) => RenderBatchCollector.RenderRectangleTopLeft(new(_tileSize), origin + new Vector2i<int>(i, j) * _tileSize, depth, GlobalColors.HalfTransparentWhite));
 	}
 
 	private void Loop(ArenaMousePosition mousePosition, Action<int, int> action)

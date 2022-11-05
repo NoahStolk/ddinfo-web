@@ -38,7 +38,7 @@ public class Arena : AbstractComponent
 
 		_pencilState = new(_tileSize);
 		_lineState = new(_tileSize);
-		_rectangleState = new();
+		_rectangleState = new(_tileSize);
 		_bucketState = new();
 		_daggerState = new();
 

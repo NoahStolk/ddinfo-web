@@ -1,3 +1,5 @@
+using DevilDaggersInfo.App.Ui.Base;
+using DevilDaggersInfo.App.Ui.Base.Rendering;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena.Data;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Enums;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
@@ -10,7 +12,14 @@ namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena;
 
 public class ArenaRectangleState : IArenaState
 {
+	private readonly int _tileSize;
+
 	private Vector2i<int>? _rectangleStart;
+
+	public ArenaRectangleState(int tileSize)
+	{
+		_tileSize = tileSize;
+	}
 
 	public void Handle(ArenaMousePosition mousePosition)
 	{
@@ -20,16 +29,7 @@ public class ArenaRectangleState : IArenaState
 		}
 		else if (Input.IsButtonReleased(MouseButton.Left))
 		{
-			if (_rectangleStart.HasValue)
-			{
-				Vector2i<int> rectangleEnd = mousePosition.Tile;
-				Rectangle rectangle = ArenaEditingUtils.GetRectangle(_rectangleStart.Value, rectangleEnd);
-				for (int i = rectangle.X1; i <= rectangle.X2; i++)
-				{
-					for (int j = rectangle.Y1; j <= rectangle.Y2; j++)
-						Components.SpawnsetArena.Arena.UpdateArena(i, j, StateManager.ArenaEditorState.SelectedHeight);
-				}
-			}
+			Loop(mousePosition, (i, j) => Components.SpawnsetArena.Arena.UpdateArena(i, j, StateManager.ArenaEditorState.SelectedHeight));
 
 			SpawnsetHistoryManager.Save(SpawnsetEditType.ArenaRectangle);
 			_rectangleStart = null;
@@ -43,5 +43,20 @@ public class ArenaRectangleState : IArenaState
 
 	public void Render(ArenaMousePosition mousePosition, Vector2i<int> origin, float depth)
 	{
+		Loop(mousePosition, (i, j) => RenderBatchCollector.RenderRectangleTopLeft(new(_tileSize), origin + new Vector2i<int>(i, j) * _tileSize, depth, GlobalColors.HalfTransparentWhite));
+	}
+
+	private void Loop(ArenaMousePosition mousePosition, Action<int, int> action)
+	{
+		if (!_rectangleStart.HasValue)
+			return;
+
+		Vector2i<int> rectangleEnd = mousePosition.Tile;
+		Rectangle rectangle = ArenaEditingUtils.GetRectangle(_rectangleStart.Value, rectangleEnd);
+		for (int i = rectangle.X1; i <= rectangle.X2; i++)
+		{
+			for (int j = rectangle.Y1; j <= rectangle.Y2; j++)
+				action(i, j);
+		}
 	}
 }
