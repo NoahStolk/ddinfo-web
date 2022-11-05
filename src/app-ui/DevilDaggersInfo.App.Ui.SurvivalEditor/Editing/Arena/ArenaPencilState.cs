@@ -43,6 +43,7 @@ public class ArenaPencilState : IArenaState
 				}
 			}
 
+			Components.SpawnsetArena.Arena.UpdateArena(mousePosition.Tile.X, mousePosition.Tile.Y, StateManager.ArenaEditorState.SelectedHeight);
 			_pencilStart = mousePosition.Real;
 		}
 		else if (Input.IsButtonReleased(MouseButton.Left))
