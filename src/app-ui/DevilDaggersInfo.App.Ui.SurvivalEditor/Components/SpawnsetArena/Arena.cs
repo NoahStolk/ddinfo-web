@@ -2,6 +2,7 @@ using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.Rendering;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena;
+using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena.Data;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Enums;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
@@ -51,6 +52,27 @@ public class Arena : AbstractComponent
 		};
 	}
 
+	private IArenaState GetActiveState() => StateManager.ArenaEditorState.ArenaTool switch
+	{
+		ArenaTool.Pencil => _pencilState,
+		ArenaTool.Line => _lineState,
+		ArenaTool.Rectangle => _rectangleState,
+		ArenaTool.Bucket => _bucketState,
+		ArenaTool.Dagger => _daggerState,
+		_ => throw new InvalidEnumConversionException(StateManager.ArenaEditorState.ArenaTool),
+	};
+
+	private ArenaMousePosition GetArenaMousePosition(Vector2i<int> parentPosition)
+	{
+		int realX = (int)MouseUiContext.MousePosition.X - Metric.X1 - parentPosition.X;
+		int realY = (int)MouseUiContext.MousePosition.Y - Metric.Y1 - parentPosition.Y;
+		return new()
+		{
+			Real = new(realX, realY),
+			Tile = new(realX / _tileSize, realY / _tileSize),
+		};
+	}
+
 	public static void UpdateArena(int x, int y, float height)
 	{
 		float[,] newArena = StateManager.SpawnsetState.Spawnset.ArenaTiles.GetMutableClone();
@@ -77,37 +99,25 @@ public class Arena : AbstractComponent
 			return;
 		}
 
-		int relMouseX = (int)MouseUiContext.MousePosition.X - Metric.X1 - parentPosition.X;
-		int relMouseY = (int)MouseUiContext.MousePosition.Y - Metric.Y1 - parentPosition.Y;
-		int x = relMouseX / _tileSize;
-		int y = relMouseY / _tileSize;
-		if (x < 0 || y < 0 || x >= StateManager.SpawnsetState.Spawnset.ArenaDimension || y >= StateManager.SpawnsetState.Spawnset.ArenaDimension)
+		ArenaMousePosition mousePosition = GetArenaMousePosition(parentPosition);
+		if (mousePosition.Tile.X < 0 || mousePosition.Tile.Y < 0 || mousePosition.Tile.X >= StateManager.SpawnsetState.Spawnset.ArenaDimension || mousePosition.Tile.Y >= StateManager.SpawnsetState.Spawnset.ArenaDimension)
 		{
 			Reset();
 			return;
 		}
 
-		Root.Game.TooltipText = $"{StateManager.SpawnsetState.Spawnset.ArenaTiles[x, y]}\n{{{x}, {y}}}";
+		Root.Game.TooltipText = $"{StateManager.SpawnsetState.Spawnset.ArenaTiles[mousePosition.Tile.X, mousePosition.Tile.Y]}\n{{{mousePosition.Tile.X}, {mousePosition.Tile.Y}}}";
 		int scroll = Input.GetScroll();
 		if (scroll != 0)
 		{
 			// TODO: Selection.
-			UpdateArena(x, y, StateManager.SpawnsetState.Spawnset.ArenaTiles[x, y] + scroll);
+			UpdateArena(mousePosition.Tile.X, mousePosition.Tile.Y, StateManager.SpawnsetState.Spawnset.ArenaTiles[mousePosition.Tile.X, mousePosition.Tile.Y] + scroll);
 			SpawnsetHistoryManager.Save(SpawnsetEditType.ArenaTileHeight);
 			return;
 		}
 
-		IArenaState activeState = StateManager.ArenaEditorState.ArenaTool switch
-		{
-			ArenaTool.Pencil => _pencilState,
-			ArenaTool.Line => _lineState,
-			ArenaTool.Rectangle => _rectangleState,
-			ArenaTool.Bucket => _bucketState,
-			ArenaTool.Dagger => _daggerState,
-			_ => throw new InvalidEnumConversionException(StateManager.ArenaEditorState.ArenaTool),
-		};
-
-		activeState.Handle(relMouseX, relMouseY, x, y);
+		IArenaState activeState = GetActiveState();
+		activeState.Handle(mousePosition);
 	}
 
 	private void Reset()
@@ -196,5 +206,8 @@ public class Arena : AbstractComponent
 			RenderBatchCollector.RenderCircleCenter(center, shrinkEndRadius, Depth + 5, Color.Aqua);
 
 		RenderBatchCollector.UnsetScissor();
+
+		IArenaState activeState = GetActiveState();
+		activeState.Render(GetArenaMousePosition(parentPosition), origin, Depth + 3);
 	}
 }

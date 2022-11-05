@@ -1,3 +1,4 @@
+using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena.Data;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Enums;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using Silk.NET.GLFW;
@@ -7,7 +8,7 @@ namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena;
 
 public class ArenaBucketState : IArenaState
 {
-	public void Handle(int relMouseX, int relMouseY, int x, int y)
+	public void Handle(ArenaMousePosition mousePosition)
 	{
 		if (!Input.IsButtonPressed(MouseButton.Left))
 			return;
@@ -15,8 +16,8 @@ public class ArenaBucketState : IArenaState
 		List<Vector2i<int>> done = new();
 		float[,] tiles = StateManager.SpawnsetState.Spawnset.ArenaTiles.GetMutableClone();
 		int dimension = StateManager.SpawnsetState.Spawnset.ArenaDimension;
-		float targetHeight = StateManager.SpawnsetState.Spawnset.ArenaTiles[x, y];
-		FillNeighbors(x, y);
+		float targetHeight = StateManager.SpawnsetState.Spawnset.ArenaTiles[mousePosition.Tile.X, mousePosition.Tile.Y];
+		FillNeighbors(mousePosition.Tile.X, mousePosition.Tile.Y);
 
 		Components.SpawnsetArena.Arena.UpdateArena(tiles);
 		SpawnsetHistoryManager.Save(SpawnsetEditType.ArenaBucket);
@@ -60,6 +61,10 @@ public class ArenaBucketState : IArenaState
 	}
 
 	public void Reset()
+	{
+	}
+
+	public void Render(ArenaMousePosition mousePosition, Vector2i<int> origin, float depth)
 	{
 	}
 }

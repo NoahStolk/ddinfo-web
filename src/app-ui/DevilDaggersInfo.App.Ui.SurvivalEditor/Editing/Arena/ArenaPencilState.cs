@@ -1,3 +1,4 @@
+using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena.Data;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Enums;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
@@ -19,18 +20,18 @@ public class ArenaPencilState : IArenaState
 		_tileSize = tileSize;
 	}
 
-	public void Handle(int relMouseX, int relMouseY, int x, int y)
+	public void Handle(ArenaMousePosition mousePosition)
 	{
 		if (Input.IsButtonPressed(MouseButton.Left))
 		{
-			_pencilStart = new(relMouseX, relMouseY);
+			_pencilStart = mousePosition.Real;
 		}
 		else if (Input.IsButtonHeld(MouseButton.Left))
 		{
 			if (!_pencilStart.HasValue)
 				return;
 
-			Vector2i<int> pencilEnd = new(relMouseX, relMouseY);
+			Vector2i<int> pencilEnd = mousePosition.Real;
 			Rectangle rectangle = ArenaEditingUtils.GetRectangle(_pencilStart.Value / _tileSize, pencilEnd / _tileSize);
 			for (int i = rectangle.X1; i <= rectangle.X2; i++)
 			{
@@ -42,8 +43,8 @@ public class ArenaPencilState : IArenaState
 				}
 			}
 
-			Components.SpawnsetArena.Arena.UpdateArena(x, y, StateManager.ArenaEditorState.SelectedHeight);
-			_pencilStart = new(relMouseX, relMouseY);
+			Components.SpawnsetArena.Arena.UpdateArena(mousePosition.Tile.X, mousePosition.Tile.Y, StateManager.ArenaEditorState.SelectedHeight);
+			_pencilStart = mousePosition.Real;
 		}
 		else if (Input.IsButtonReleased(MouseButton.Left))
 		{
@@ -55,5 +56,9 @@ public class ArenaPencilState : IArenaState
 	public void Reset()
 	{
 		_pencilStart = null;
+	}
+
+	public void Render(ArenaMousePosition mousePosition, Vector2i<int> origin, float depth)
+	{
 	}
 }

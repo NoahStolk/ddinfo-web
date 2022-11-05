@@ -1,3 +1,4 @@
+using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena.Data;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Enums;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using DevilDaggersInfo.Types.Core.Spawnsets;
@@ -10,7 +11,7 @@ public class ArenaDaggerState : IArenaState
 {
 	private bool _settingRaceDagger;
 
-	public void Handle(int relMouseX, int relMouseY, int x, int y)
+	public void Handle(ArenaMousePosition mousePosition)
 	{
 		if (StateManager.SpawnsetState.Spawnset.GameMode != GameMode.Race)
 			return;
@@ -25,7 +26,7 @@ public class ArenaDaggerState : IArenaState
 			{
 				StateManager.SetSpawnset(StateManager.SpawnsetState.Spawnset with
 				{
-					RaceDaggerPosition = new(StateManager.SpawnsetState.Spawnset.TileToWorldCoordinate(x), StateManager.SpawnsetState.Spawnset.TileToWorldCoordinate(y)),
+					RaceDaggerPosition = new(StateManager.SpawnsetState.Spawnset.TileToWorldCoordinate(mousePosition.Tile.X), StateManager.SpawnsetState.Spawnset.TileToWorldCoordinate(mousePosition.Tile.Y)),
 				});
 			}
 		}
@@ -39,5 +40,9 @@ public class ArenaDaggerState : IArenaState
 	public void Reset()
 	{
 		_settingRaceDagger = false;
+	}
+
+	public void Render(ArenaMousePosition mousePosition, Vector2i<int> origin, float depth)
+	{
 	}
 }
