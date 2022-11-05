@@ -9,8 +9,10 @@ namespace DevilDaggersInfo.App.Ui.SurvivalEditor.GameObjects;
 
 public class Camera
 {
+	private const float _defaultYaw = MathF.PI;
+
 	private readonly Vector3State _positionState = new(default);
-	private readonly QuaternionState _rotationState = new(Quaternion.Identity);
+	private readonly QuaternionState _rotationState = new(Quaternion.CreateFromYawPitchRoll(_defaultYaw, 0, 0));
 
 	private Vector3 _axisAlignedSpeed;
 	private float _yaw;
@@ -23,8 +25,8 @@ public class Camera
 	public void Reset(Vector3 position)
 	{
 		_positionState.Physics = position;
-		_rotationState.Physics = Quaternion.Identity;
-		_yaw = 0;
+		_rotationState.Physics = Quaternion.CreateFromYawPitchRoll(_defaultYaw, 0, 0);
+		_yaw = _defaultYaw;
 		_pitch = 0;
 		_lockedMousePosition = null;
 	}
