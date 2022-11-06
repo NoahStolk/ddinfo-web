@@ -1,3 +1,4 @@
+using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.Rendering;
 using DevilDaggersInfo.App.Ui.Base.States;
@@ -31,7 +32,7 @@ public class Menu : AbstractComponent
 			new MenuButton(Rectangle.At(0, rowHeight + menuItemHeight * 3, 160, menuItemHeight), LayoutManager.ToSurvivalEditorSaveLayout, "Save"),
 			new MenuButton(Rectangle.At(0, rowHeight + menuItemHeight * 4, 160, menuItemHeight), StateManager.ReplaceSpawnset, "Replace"),
 		};
-		Dropdown fileMenu = new(Rectangle.At(backButtonWidth, 0, 64, rowHeight + fileMenuButtons.Count * menuItemHeight), 24, fileMenuButtons, "File")
+		Dropdown fileMenu = new(Rectangle.At(backButtonWidth, 0, 64, rowHeight + fileMenuButtons.Count * menuItemHeight), 24, GlobalStyles.DefaultMiddle, fileMenuButtons, "File")
 		{
 			Depth = 101,
 		};

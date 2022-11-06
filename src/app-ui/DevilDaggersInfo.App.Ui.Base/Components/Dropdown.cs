@@ -1,5 +1,5 @@
+using DevilDaggersInfo.App.Ui.Base.Components.Styles;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
-using DevilDaggersInfo.App.Ui.Base.Enums;
 using Silk.NET.GLFW;
 using Warp;
 using Warp.Extensions;
@@ -13,11 +13,11 @@ public class Dropdown : AbstractDropdown
 {
 	private readonly int _headerHeight;
 
-	public Dropdown(Rectangle metric, int headerHeight, List<AbstractComponent> children, string text)
+	public Dropdown(Rectangle metric, int headerHeight, TextButtonStyle headerStyle, List<AbstractComponent> children, string text)
 		: base(metric, children)
 	{
 		_headerHeight = headerHeight;
-		TextButton button = new(Rectangle.At(0, 0, metric.Size.X, headerHeight), () => Toggle(!IsOpen), GlobalStyles.DefaultButtonStyle, GlobalStyles.DefaultMiddle, text)
+		TextButton button = new(Rectangle.At(0, 0, metric.Size.X, headerHeight), () => Toggle(!IsOpen), GlobalStyles.DefaultButtonStyle, headerStyle, text)
 		{
 			Depth = 102,
 		};
