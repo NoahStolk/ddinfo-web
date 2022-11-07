@@ -6,6 +6,7 @@ using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.Enums;
 using DevilDaggersInfo.App.Ui.Base.Rendering;
+using DevilDaggersInfo.Common;
 using DevilDaggersInfo.Types.Web;
 using Warp.Numerics;
 using Warp.Ui;
@@ -19,26 +20,33 @@ public class LeaderboardList : AbstractComponent
 	private const int _pageSize = 20;
 
 	private readonly List<LeaderboardListEntry> _leaderboardComponents = new();
+	private readonly IconButton _prevButton;
+	private readonly IconButton _nextButton;
 
 	private int _maxPageIndex = int.MaxValue;
+	private int _totalResults = int.MaxValue;
 	private CustomLeaderboardCategory _category = CustomLeaderboardCategory.Survival;
 	private int _pageIndex;
+	private bool _isLoading;
 
 	public LeaderboardList(Rectangle metric)
 		: base(metric)
 	{
-		IconButton prevButton = new(Rectangle.At(4, 4, 16, _headerHeight), () => ChangeAndLoad(() => --_pageIndex), GlobalStyles.DefaultButtonStyle, "Previous", Textures.ArrowLeft);
-		IconButton nextButton = new(Rectangle.At(24, 4, 16, _headerHeight), () => ChangeAndLoad(() => ++_pageIndex), GlobalStyles.DefaultButtonStyle, "Next", Textures.ArrowRight);
-
 		List<TextButton> categoryButtons = Enum.GetValues<CustomLeaderboardCategory>()
-			.Select((c, i) => new TextButton(Rectangle.At(0, (i + 1) * 16, 96, 16), () => ChangeAndLoad(() => _category = c), GlobalStyles.DefaultButtonStyle, GlobalStyles.DefaultLeft, c.ToString()) { IsActive = false })
+			.Select((c, i) => new TextButton(Rectangle.At(0, (i + 1) * 16, 96, 16), () => ChangeAndLoad(() => _category = c), GlobalStyles.DefaultButtonStyle, GlobalStyles.DefaultLeft, c.ToString())
+			{
+				IsActive = false,
+				Depth = Depth + 100,
+			})
 			.ToList();
+		Dropdown categoryDropdown = new(Rectangle.At(4, 4, 96, _headerHeight * (categoryButtons.Count + 1)), _headerHeight, GlobalStyles.DefaultLeft, categoryButtons.Cast<AbstractComponent>().ToList(), "Category");
 
-		Dropdown dropdown = new(Rectangle.At(52, 4, 96, _headerHeight * (categoryButtons.Count + 1)), _headerHeight, GlobalStyles.DefaultLeft, categoryButtons.Cast<AbstractComponent>().ToList(), "Category");
+		_prevButton = new(Rectangle.At(4, 64, 20, 20), () => ChangeAndLoad(() => --_pageIndex), GlobalStyles.DefaultButtonStyle, "Previous", Textures.ArrowLeft);
+		_nextButton = new(Rectangle.At(24, 64, 20, 20), () => ChangeAndLoad(() => ++_pageIndex), GlobalStyles.DefaultButtonStyle, "Next", Textures.ArrowRight);
 
-		NestingContext.Add(prevButton);
-		NestingContext.Add(nextButton);
-		NestingContext.Add(dropdown);
+		NestingContext.Add(_prevButton);
+		NestingContext.Add(_nextButton);
+		NestingContext.Add(categoryDropdown);
 
 		Load(); // TODO: Load when clicking purple CL button.
 
@@ -53,32 +61,55 @@ public class LeaderboardList : AbstractComponent
 
 	public void Load()
 	{
+		foreach (LeaderboardListEntry leaderboardComponent in _leaderboardComponents)
+			NestingContext.Remove(leaderboardComponent);
+
+		_leaderboardComponents.Clear();
+
+		SetLoading();
+
 		AsyncHandler.Run(Populate, () => FetchCustomLeaderboards.HandleAsync(_category, _pageIndex, _pageSize, 21854, false));
 
 		void Populate(Page<GetCustomLeaderboardForOverview>? cls)
 		{
-			foreach (LeaderboardListEntry leaderboardComponent in _leaderboardComponents)
-				NestingContext.Remove(leaderboardComponent);
+			Set();
+			UnsetLoading();
 
-			_leaderboardComponents.Clear();
-
-			if (cls == null)
-				return;
-
-			_maxPageIndex = (int)Math.Ceiling((cls.TotalResults + 1) / (float)_pageSize) - 1;
-			_pageIndex = Math.Clamp(_pageIndex, 0, _maxPageIndex);
-
-			int y = 96;
-			foreach (GetCustomLeaderboardForOverview cl in cls.Results)
+			void Set()
 			{
-				const int height = 16;
-				_leaderboardComponents.Add(new(Rectangle.At(0, y, 256, height), cl));
-				y += height;
-			}
+				if (cls == null)
+					return;
 
-			foreach (LeaderboardListEntry leaderboardComponent in _leaderboardComponents)
-				NestingContext.Add(leaderboardComponent);
+				_maxPageIndex = (int)Math.Ceiling((cls.TotalResults + 1) / (float)_pageSize) - 1;
+				_totalResults = cls.TotalResults;
+				_pageIndex = Math.Clamp(_pageIndex, 0, _maxPageIndex);
+
+				int y = 128;
+				foreach (GetCustomLeaderboardForOverview cl in cls.Results)
+				{
+					const int height = 16;
+					_leaderboardComponents.Add(new(Rectangle.At(0, y, Metric.Size.X, height), cl) { Depth = Depth + 1 });
+					y += height;
+				}
+
+				foreach (LeaderboardListEntry leaderboardComponent in _leaderboardComponents)
+					NestingContext.Add(leaderboardComponent);
+			}
 		}
+	}
+
+	private void UnsetLoading()
+	{
+		_isLoading = false;
+		_prevButton.IsDisabled = false;
+		_nextButton.IsDisabled = false;
+	}
+
+	private void SetLoading()
+	{
+		_isLoading = true;
+		_prevButton.IsDisabled = true;
+		_nextButton.IsDisabled = true;
 	}
 
 	public override void Render(Vector2i<int> parentPosition)
@@ -86,9 +117,24 @@ public class LeaderboardList : AbstractComponent
 		base.Render(parentPosition);
 
 		const int border = 1;
-		RenderBatchCollector.RenderRectangleTopLeft(Metric.Size, Metric.TopLeft + parentPosition, 0, Color.Green);
-		RenderBatchCollector.RenderRectangleTopLeft(Metric.Size - new Vector2i<int>(border * 2), Metric.TopLeft + parentPosition + new Vector2i<int>(border), 1, Color.Black);
+		RenderBatchCollector.RenderRectangleTopLeft(Metric.Size, Metric.TopLeft + parentPosition, Depth, Color.Green);
+		RenderBatchCollector.RenderRectangleTopLeft(Metric.Size - new Vector2i<int>(border * 2), Metric.TopLeft + parentPosition + new Vector2i<int>(border), Depth + 1, Color.Black);
 
-		RenderBatchCollector.RenderMonoSpaceText(FontSize.F8X8, new(1), parentPosition + Metric.TopLeft + new Vector2i<int>(4, 80), Depth + 2, Color.Blue, $"{_pageIndex + 1} / {_maxPageIndex + 1}", TextAlign.Left);
+		RenderBatchCollector.RenderMonoSpaceText(FontSize.F8X8, new(2), parentPosition + Metric.TopLeft + new Vector2i<int>(4, 36), Depth + 2, Color.Yellow, $"{_category} leaderboards", TextAlign.Left);
+
+		string text;
+		Color color;
+		if (_isLoading)
+		{
+			text = "Loading...";
+			color = Color.Red;
+		}
+		else
+		{
+			text = $"Page {_pageIndex + 1} of {_maxPageIndex + 1} ({_pageIndex * _pageSize + 1} - {Math.Min(_totalResults, (_pageIndex + 1) * _pageSize)} of {_totalResults})";
+			color = Color.Yellow;
+		}
+
+		RenderBatchCollector.RenderMonoSpaceText(FontSize.F8X8, new(1), parentPosition + Metric.TopLeft + new Vector2i<int>(4, 96), Depth + 2, color, text, TextAlign.Left);
 	}
 }
