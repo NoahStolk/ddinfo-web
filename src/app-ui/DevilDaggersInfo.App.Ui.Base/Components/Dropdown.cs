@@ -13,7 +13,7 @@ public class Dropdown : AbstractDropdown
 {
 	private readonly int _headerHeight;
 
-	public Dropdown(Rectangle metric, int headerHeight, TextButtonStyle headerStyle, List<AbstractComponent> children, string text)
+	public Dropdown(Rectangle metric, int headerHeight, TextButtonStyle headerStyle, List<DropdownEntry> children, string text)
 		: base(metric, children)
 	{
 		_headerHeight = headerHeight;

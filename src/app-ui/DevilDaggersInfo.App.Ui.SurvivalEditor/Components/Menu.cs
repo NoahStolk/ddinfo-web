@@ -24,13 +24,13 @@ public class Menu : AbstractComponent
 		};
 
 		const int menuItemHeight = 16;
-		List<AbstractComponent> fileMenuButtons = new()
+		List<DropdownEntry> fileMenuButtons = new()
 		{
-			new MenuButton(Rectangle.At(0, rowHeight + menuItemHeight * 0, 160, menuItemHeight), StateManager.NewSpawnset, "New"),
-			new MenuButton(Rectangle.At(0, rowHeight + menuItemHeight * 1, 160, menuItemHeight), LayoutManager.ToSurvivalEditorOpenLayout, "Open"),
-			new MenuButton(Rectangle.At(0, rowHeight + menuItemHeight * 2, 160, menuItemHeight), StateManager.OpenDefaultV3Spawnset, "Open default (V3)"),
-			new MenuButton(Rectangle.At(0, rowHeight + menuItemHeight * 3, 160, menuItemHeight), LayoutManager.ToSurvivalEditorSaveLayout, "Save"),
-			new MenuButton(Rectangle.At(0, rowHeight + menuItemHeight * 4, 160, menuItemHeight), StateManager.ReplaceSpawnset, "Replace"),
+			new DropdownEntry(Rectangle.At(0, rowHeight + menuItemHeight * 0, 160, menuItemHeight), StateManager.NewSpawnset, "New"),
+			new DropdownEntry(Rectangle.At(0, rowHeight + menuItemHeight * 1, 160, menuItemHeight), LayoutManager.ToSurvivalEditorOpenLayout, "Open"),
+			new DropdownEntry(Rectangle.At(0, rowHeight + menuItemHeight * 2, 160, menuItemHeight), StateManager.OpenDefaultV3Spawnset, "Open default (V3)"),
+			new DropdownEntry(Rectangle.At(0, rowHeight + menuItemHeight * 3, 160, menuItemHeight), LayoutManager.ToSurvivalEditorSaveLayout, "Save"),
+			new DropdownEntry(Rectangle.At(0, rowHeight + menuItemHeight * 4, 160, menuItemHeight), StateManager.ReplaceSpawnset, "Replace"),
 		};
 		Dropdown fileMenu = new(Rectangle.At(backButtonWidth, 0, 64, rowHeight + fileMenuButtons.Count * menuItemHeight), 24, GlobalStyles.DefaultMiddle, fileMenuButtons, "File")
 		{

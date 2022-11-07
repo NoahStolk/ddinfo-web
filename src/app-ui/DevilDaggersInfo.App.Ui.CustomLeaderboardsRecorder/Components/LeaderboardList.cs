@@ -23,6 +23,7 @@ public class LeaderboardList : AbstractComponent
 	private readonly IconButton _prevButton;
 	private readonly IconButton _nextButton;
 
+	// TODO: Move to state class.
 	private int _maxPageIndex = int.MaxValue;
 	private int _totalResults = int.MaxValue;
 	private CustomLeaderboardCategory _category = CustomLeaderboardCategory.Survival;
@@ -32,14 +33,14 @@ public class LeaderboardList : AbstractComponent
 	public LeaderboardList(Rectangle metric)
 		: base(metric)
 	{
-		List<TextButton> categoryButtons = Enum.GetValues<CustomLeaderboardCategory>()
-			.Select((c, i) => new TextButton(Rectangle.At(0, (i + 1) * 16, 96, 16), () => ChangeAndLoad(() => _category = c), GlobalStyles.DefaultButtonStyle, GlobalStyles.DefaultLeft, c.ToString())
+		List<DropdownEntry> categoryButtons = Enum.GetValues<CustomLeaderboardCategory>()
+			.Select((c, i) => new DropdownEntry(Rectangle.At(0, (i + 1) * 16, 96, 16), () => ChangeAndLoad(() => _category = c), c.ToString())
 			{
 				IsActive = false,
 				Depth = Depth + 100,
 			})
 			.ToList();
-		Dropdown categoryDropdown = new(Rectangle.At(4, 4, 96, _headerHeight * (categoryButtons.Count + 1)), _headerHeight, GlobalStyles.DefaultLeft, categoryButtons.Cast<AbstractComponent>().ToList(), "Category");
+		Dropdown categoryDropdown = new(Rectangle.At(4, 4, 96, _headerHeight * (categoryButtons.Count + 1)), _headerHeight, GlobalStyles.DefaultLeft, categoryButtons, "Category");
 
 		_prevButton = new(Rectangle.At(4, 64, 20, 20), () => ChangeAndLoad(() => --_pageIndex), GlobalStyles.DefaultButtonStyle, "Previous", Textures.ArrowLeft);
 		_nextButton = new(Rectangle.At(24, 64, 20, 20), () => ChangeAndLoad(() => ++_pageIndex), GlobalStyles.DefaultButtonStyle, "Next", Textures.ArrowRight);
