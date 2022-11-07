@@ -26,7 +26,7 @@ public class IconButton : Button
 	{
 		base.Update(parentPosition);
 
-		if (Hover)
+		if (Hover && !IsDisabled)
 			Root.Game.TooltipText = _tooltipText;
 	}
 
@@ -37,6 +37,6 @@ public class IconButton : Button
 		Vector2i<int> scale = Metric.Size;
 		Vector2i<int> topLeft = Metric.TopLeft;
 		Vector2i<int> center = topLeft + scale / 2;
-		RenderBatchCollector.RenderSprite(_textureSize, (parentPosition + center).ToVector2(), Depth + 2, _texture, Color.White);
+		RenderBatchCollector.RenderSprite(_textureSize, (parentPosition + center).ToVector2(), Depth + 2, _texture, IsDisabled ? GlobalColors.HalfTransparentWhite : Color.White);
 	}
 }

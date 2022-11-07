@@ -26,6 +26,6 @@ public class Button : AbstractButton
 		Vector2i<int> center = topLeft + scale / 2;
 
 		RenderBatchCollector.RenderRectangleCenter(scale, parentPosition + center, Depth, ButtonStyle.BorderColor);
-		RenderBatchCollector.RenderRectangleCenter(scale - borderVec * 2, parentPosition + center, Depth + 1, Hover ? ButtonStyle.HoverBackgroundColor : ButtonStyle.BackgroundColor);
+		RenderBatchCollector.RenderRectangleCenter(scale - borderVec * 2, parentPosition + center, Depth + 1, Hover && !IsDisabled ? ButtonStyle.HoverBackgroundColor : ButtonStyle.BackgroundColor);
 	}
 }
