@@ -1,5 +1,6 @@
 using DevilDaggersInfo.App.Ui.Base.Enums;
 using DevilDaggersInfo.App.Ui.Base.Rendering.Data;
+using DevilDaggersInfo.Common.Exceptions;
 using System.Numerics;
 using Warp.Numerics;
 
@@ -62,7 +63,7 @@ public static class RenderBatchCollector
 			FontSize.F4X6 => MonoSpaceTexts4X6,
 			FontSize.F8X8 => MonoSpaceTexts8X8,
 			FontSize.F12X12 => MonoSpaceTexts12X12,
-			_ => throw new(),
+			_ => throw new InvalidEnumConversionException(fontSize),
 		};
 		texts.Add(new(scale, position, depth, color, text, textAlign, _contextScissor));
 	}

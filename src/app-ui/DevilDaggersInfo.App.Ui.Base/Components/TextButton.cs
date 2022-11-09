@@ -26,12 +26,12 @@ public class TextButton : Button
 		if (Text.Length == 0)
 			return;
 
-		int padding = (int)MathF.Round((Metric.Y2 - Metric.Y1) / 4f);
+		int padding = (int)MathF.Round((Bounds.Y2 - Bounds.Y1) / 4f);
 		Vector2i<int> textPosition = TextButtonStyle.TextAlign switch
 		{
-			TextAlign.Middle => new Vector2i<int>(Metric.X1 + Metric.X2, Metric.Y1 + Metric.Y2) / 2,
-			TextAlign.Left => new(Metric.X1 + padding, Metric.Y1 + padding),
-			TextAlign.Right => new(Metric.X2 - padding, Metric.Y1 + padding),
+			TextAlign.Middle => new Vector2i<int>(Bounds.X1 + Bounds.X2, Bounds.Y1 + Bounds.Y2) / 2,
+			TextAlign.Left => new(Bounds.X1 + padding, Bounds.Y1 + padding),
+			TextAlign.Right => new(Bounds.X2 - padding, Bounds.Y1 + padding),
 			_ => throw new InvalidEnumConversionException(TextButtonStyle.TextAlign),
 		};
 

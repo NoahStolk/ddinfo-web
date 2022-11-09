@@ -13,8 +13,8 @@ jobs:
     - name: Set up dotnet
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '7.0.100-rc.2.22477.23'
-        include-prerelease: true
+        dotnet-version: '7.0.100'
+        include-prerelease: false
     - name: Checkout
       uses: actions/checkout@v2
     - name: Set up private NuGet source

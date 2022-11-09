@@ -21,8 +21,8 @@ public class Button : AbstractButton
 		base.Render(parentPosition);
 
 		Vector2i<int> borderVec = new(ButtonStyle.BorderSize);
-		Vector2i<int> scale = Metric.Size;
-		Vector2i<int> topLeft = Metric.TopLeft;
+		Vector2i<int> scale = Bounds.Size;
+		Vector2i<int> topLeft = Bounds.TopLeft;
 		Vector2i<int> center = topLeft + scale / 2;
 
 		RenderBatchCollector.RenderRectangleCenter(scale, parentPosition + center, Depth, ButtonStyle.BorderColor);

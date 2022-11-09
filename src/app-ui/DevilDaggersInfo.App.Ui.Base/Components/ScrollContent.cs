@@ -16,11 +16,11 @@ public abstract class ScrollContent<TSelf, TParent> : AbstractScrollContent<TSel
 
 	public override void Render(Vector2i<int> parentPosition)
 	{
-		RenderBatchCollector.SetScissor(Scissor.FromComponent(Metric, parentPosition));
+		RenderBatchCollector.SetScissor(Scissor.FromComponent(Bounds, parentPosition));
 
 		base.Render(parentPosition);
 
-		RenderBatchCollector.RenderRectangleTopLeft(Metric.Size, parentPosition + new Vector2i<int>(Metric.X1, Metric.Y1), Depth, Color.Black);
+		RenderBatchCollector.RenderRectangleTopLeft(Bounds.Size, parentPosition + new Vector2i<int>(Bounds.X1, Bounds.Y1), Depth, Color.Black);
 
 		RenderBatchCollector.UnsetScissor();
 	}

@@ -23,8 +23,8 @@ public class Checkbox : AbstractCheckbox
 		Vector2i<int> marginVec = new(margin);
 		Vector2i<int> borderVec = new(border);
 		Vector2i<int> borderTickVec = new(borderTick);
-		Vector2i<int> fullScale = new(Metric.X2 - Metric.X1, Metric.Y2 - Metric.Y1);
-		Vector2i<int> topLeft = new(Metric.X1, Metric.Y1);
+		Vector2i<int> fullScale = new(Bounds.X2 - Bounds.X1, Bounds.Y2 - Bounds.Y1);
+		Vector2i<int> topLeft = new(Bounds.X1, Bounds.Y1);
 		Vector2i<int> center = topLeft + fullScale / 2;
 		Vector2i<int> scale = fullScale - marginVec;
 

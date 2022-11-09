@@ -1,5 +1,5 @@
-using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.Components;
+using DevilDaggersInfo.App.Ui.Base.Enums;
 using DevilDaggersInfo.App.Ui.Base.Rendering;
 using DevilDaggersInfo.App.Ui.Base.States;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
@@ -10,32 +10,45 @@ namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components;
 
 public class Menu : AbstractComponent
 {
-	public Menu(Rectangle metric)
+	private const int _headerHeight = 24;
+
+	public Menu(IBounds metric)
 		: base(metric)
 	{
 		const int backButtonWidth = 24;
-		int rowHeight = metric.Size.Y;
 
 		Depth = 100;
 
-		MainLayoutBackButton backButton = new(Rectangle.At(0, 0, backButtonWidth, rowHeight), LayoutManager.ToMainLayout)
+		MainLayoutBackButton backButton = new(Rectangle.At(0, 0, backButtonWidth, _headerHeight), LayoutManager.ToMainLayout)
 		{
 			Depth = 101,
 		};
 
+		const int menuItemWidth = 160;
 		const int menuItemHeight = 16;
-		List<AbstractComponent> fileMenuButtons = new()
-		{
-			new MenuButton(Rectangle.At(0, rowHeight + menuItemHeight * 0, 160, menuItemHeight), StateManager.NewSpawnset, "New"),
-			new MenuButton(Rectangle.At(0, rowHeight + menuItemHeight * 1, 160, menuItemHeight), LayoutManager.ToSurvivalEditorOpenLayout, "Open"),
-			new MenuButton(Rectangle.At(0, rowHeight + menuItemHeight * 2, 160, menuItemHeight), StateManager.OpenDefaultV3Spawnset, "Open default (V3)"),
-			new MenuButton(Rectangle.At(0, rowHeight + menuItemHeight * 3, 160, menuItemHeight), LayoutManager.ToSurvivalEditorSaveLayout, "Save"),
-			new MenuButton(Rectangle.At(0, rowHeight + menuItemHeight * 4, 160, menuItemHeight), StateManager.ReplaceSpawnset, "Replace"),
-		};
-		Dropdown fileMenu = new(Rectangle.At(backButtonWidth, 0, 64, rowHeight + fileMenuButtons.Count * menuItemHeight), 24, GlobalStyles.DefaultMiddle, fileMenuButtons, "File")
+
+		Dropdown fileMenu = new(Rectangle.At(backButtonWidth, 0, 64, _headerHeight), "File")
 		{
 			Depth = 101,
 		};
+
+		DropdownEntry entryNew = new(Rectangle.At(fileMenu.Bounds.X1, _headerHeight + menuItemHeight * 0, menuItemWidth, menuItemHeight), fileMenu, StateManager.NewSpawnset, "New");
+		DropdownEntry entryOpen = new(Rectangle.At(fileMenu.Bounds.X1, _headerHeight + menuItemHeight * 1, menuItemWidth, menuItemHeight), fileMenu, LayoutManager.ToSurvivalEditorOpenLayout, "Open");
+		DropdownEntry entryOpenDefault = new(Rectangle.At(fileMenu.Bounds.X1, _headerHeight + menuItemHeight * 2, menuItemWidth, menuItemHeight), fileMenu, StateManager.OpenDefaultV3Spawnset, "Open default (V3)");
+		DropdownEntry entrySave = new(Rectangle.At(fileMenu.Bounds.X1, _headerHeight + menuItemHeight * 3, menuItemWidth, menuItemHeight), fileMenu, LayoutManager.ToSurvivalEditorSaveLayout, "Save");
+		DropdownEntry entryReplace = new(Rectangle.At(fileMenu.Bounds.X1, _headerHeight + menuItemHeight * 4, menuItemWidth, menuItemHeight), fileMenu, StateManager.ReplaceSpawnset, "Replace");
+
+		fileMenu.AddChild(entryNew);
+		fileMenu.AddChild(entryOpen);
+		fileMenu.AddChild(entryOpenDefault);
+		fileMenu.AddChild(entrySave);
+		fileMenu.AddChild(entryReplace);
+
+		NestingContext.Add(entryNew);
+		NestingContext.Add(entryOpen);
+		NestingContext.Add(entryOpenDefault);
+		NestingContext.Add(entrySave);
+		NestingContext.Add(entryReplace);
 
 		NestingContext.Add(backButton);
 		NestingContext.Add(fileMenu);
@@ -45,6 +58,6 @@ public class Menu : AbstractComponent
 	{
 		base.Render(parentPosition);
 
-		RenderBatchCollector.RenderRectangleTopLeft(Metric.Size, parentPosition + new Vector2i<int>(Metric.X1, Metric.Y1), Depth, Color.Gray(0.05f));
+		RenderBatchCollector.RenderRectangleTopLeft(new(Bounds.Size.X, _headerHeight), parentPosition + new Vector2i<int>(Bounds.X1, Bounds.Y1), Depth, Color.Gray(0.05f));
 	}
 }

@@ -53,7 +53,7 @@ public class LeaderboardListEntry : AbstractComponent
 	{
 		base.Update(parentPosition);
 
-		_isHovering = MouseUiContext.Contains(parentPosition, Metric);
+		_isHovering = MouseUiContext.Contains(parentPosition, Bounds);
 		if (!_isHovering || !Input.IsButtonPressed(MouseButton.Left))
 			return;
 
@@ -76,6 +76,6 @@ public class LeaderboardListEntry : AbstractComponent
 		base.Render(parentPosition);
 
 		if (_isHovering)
-			RenderBatchCollector.RenderRectangleTopLeft(Metric.Size, parentPosition + Metric.TopLeft, Depth - 1, new(127, 0, 0, 255));
+			RenderBatchCollector.RenderRectangleTopLeft(Bounds.Size, parentPosition + Bounds.TopLeft, Depth - 1, new(127, 0, 0, 255));
 	}
 }

@@ -55,7 +55,7 @@ public class SettingsWrapper : AbstractComponent
 		Label title = new(Rectangle.At(0, 0, _width, 48), Color.White, "Settings", TextAlign.Middle, FontSize.F12X12);
 		NestingContext.Add(title);
 
-		int y = title.Metric.Size.Y;
+		int y = title.Bounds.Size.Y;
 		_buttonV0V1 = CreateFormatButton(y, 0, 8, 4);
 		_buttonV2V3 = CreateFormatButton(y, 1, 9, 4);
 		_buttonV3Next = CreateFormatButton(y, 2, 9, 6);

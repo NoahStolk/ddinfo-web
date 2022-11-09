@@ -27,8 +27,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Warp.Ui" Version="5.2.0" />
-    <PackageReference Include="Warp.SourceGenerators" Version="8.0.2" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <PackageReference Include="Warp.Ui" Version="6.0.1" />
+    <PackageReference Include="Warp.SourceGenerators" Version="8.0.3" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
   </ItemGroup>
 
   <ItemGroup>
