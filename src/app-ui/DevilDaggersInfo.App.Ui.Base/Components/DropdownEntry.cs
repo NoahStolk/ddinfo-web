@@ -25,6 +25,13 @@ public class DropdownEntry : AbstractDropdownEntry
 	{
 		base.Render(parentPosition);
 
+		Vector2i<int> borderVec = new(1);
+		Vector2i<int> scale = Bounds.Size;
+		Vector2i<int> topLeft = Bounds.TopLeft;
+		Vector2i<int> center = topLeft + scale / 2;
+		RenderBatchCollector.RenderRectangleCenter(Bounds.Size, parentPosition + center, Depth, Color.White);
+		RenderBatchCollector.RenderRectangleCenter(Bounds.Size - borderVec * 2, parentPosition + center, Depth + 1, Hover && !IsDisabled ? Color.Gray(0.5f) : Color.Black);
+
 		int padding = (int)MathF.Round(Bounds.Size.Y / 4f);
 		Vector2i<int> textPosition = _textAlign switch
 		{
@@ -33,8 +40,6 @@ public class DropdownEntry : AbstractDropdownEntry
 			TextAlign.Right => new(Bounds.X2 - padding, Bounds.Y1 + padding),
 			_ => throw new InvalidEnumConversionException(_textAlign),
 		};
-
-		RenderBatchCollector.RenderRectangleTopLeft(Bounds.Size, parentPosition + Bounds.TopLeft, Depth, Hover ? Color.Purple : Color.Red);
-		RenderBatchCollector.RenderMonoSpaceText(FontSize.F8X8, new(1), parentPosition + textPosition, Depth + 1, Color.White, _text, _textAlign);
+		RenderBatchCollector.RenderMonoSpaceText(FontSize.F8X8, new(1), parentPosition + textPosition, Depth + 2, Color.White, _text, _textAlign);
 	}
 }
