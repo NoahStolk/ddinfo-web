@@ -20,10 +20,10 @@ public class ArenaWrapper : AbstractComponent
 
 		_arena = new(new(0, titleHeight), 6);
 
-		Label title = new(Rectangle.At(0, 0, _arena.Metric.Size.X, titleHeight), Color.White, "Arena", TextAlign.Middle, FontSize.F12X12);
-		ArenaHeightButtons arenaHeightButtons = new(Rectangle.At(_arena.Metric.Size.X + 8, titleHeight, 80, 320));
-		_shrinkSlider = new(Rectangle.At(0, titleHeight + _arena.Metric.Size.Y, _arena.Metric.Size.X, 16), _arena.SetShrinkCurrent, true, 0, StateManager.SpawnsetState.Spawnset.GetSliderMaxSeconds(), 0.001f, 0, 2, Color.White);
-		ArenaToolsWrapper arenaToolsWrapper = new(Rectangle.At(0, titleHeight + _arena.Metric.Size.Y + _shrinkSlider.Metric.Size.Y, 304, 480));
+		Label title = new(Rectangle.At(0, 0, _arena.Bounds.Size.X, titleHeight), Color.White, "Arena", TextAlign.Middle, FontSize.F12X12);
+		ArenaHeightButtons arenaHeightButtons = new(Rectangle.At(_arena.Bounds.Size.X + 8, titleHeight, 80, 320));
+		_shrinkSlider = new(Rectangle.At(0, titleHeight + _arena.Bounds.Size.Y, _arena.Bounds.Size.X, 16), _arena.SetShrinkCurrent, true, 0, StateManager.SpawnsetState.Spawnset.GetSliderMaxSeconds(), 0.001f, 0, 2, Color.White);
+		ArenaToolsWrapper arenaToolsWrapper = new(Rectangle.At(0, titleHeight + _arena.Bounds.Size.Y + _shrinkSlider.Bounds.Size.Y, 304, 480));
 
 		NestingContext.Add(title);
 		NestingContext.Add(_arena);

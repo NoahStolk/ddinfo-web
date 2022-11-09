@@ -34,7 +34,7 @@ public class SpawnEntry : AbstractComponent
 	{
 		base.Update(parentPosition);
 
-		Hover = MouseUiContext.Contains(parentPosition, Metric);
+		Hover = MouseUiContext.Contains(parentPosition, Bounds);
 	}
 
 	public override void Render(Vector2i<int> parentPosition)
@@ -50,13 +50,13 @@ public class SpawnEntry : AbstractComponent
 			_ => Color.Transparent,
 		};
 		if (background != Color.Transparent)
-			RenderBatchCollector.RenderRectangleTopLeft(Metric.Size, parentPosition + Metric.TopLeft, Depth, background);
+			RenderBatchCollector.RenderRectangleTopLeft(Bounds.Size, parentPosition + Bounds.TopLeft, Depth, background);
 
-		RenderText(Rectangle.At(Metric.X1, Metric.Y1, 96, Spawns.SpawnEntryHeight), _enemyColor, _enemy?.Name ?? "Empty", TextAlign.Left, FontSize.F8X8);
-		RenderText(Rectangle.At(Metric.X1 + 96, Metric.Y1, 96, Spawns.SpawnEntryHeight), Color.White, _spawnUiEntry.Delay.ToString("0.0000"), TextAlign.Right, FontSize.F8X8);
-		RenderText(Rectangle.At(Metric.X1 + 192, Metric.Y1, 96, Spawns.SpawnEntryHeight), Color.White, _spawnUiEntry.Seconds.ToString("0.0000"), TextAlign.Right, FontSize.F8X8);
-		RenderText(Rectangle.At(Metric.X1 + 288, Metric.Y1, 48, Spawns.SpawnEntryHeight), Color.White, NoFarmGemsString(_spawnUiEntry.NoFarmGems), TextAlign.Right, FontSize.F8X8);
-		RenderText(Rectangle.At(Metric.X1 + 336, Metric.Y1, 48, Spawns.SpawnEntryHeight), GetColorFromHand(_spawnUiEntry.GemState.HandLevel), _spawnUiEntry.GemState.Value.ToString(), TextAlign.Right, FontSize.F8X8);
+		RenderText(Rectangle.At(Bounds.X1, Bounds.Y1, 96, Spawns.SpawnEntryHeight), _enemyColor, _enemy?.Name ?? "Empty", TextAlign.Left, FontSize.F8X8);
+		RenderText(Rectangle.At(Bounds.X1 + 96, Bounds.Y1, 96, Spawns.SpawnEntryHeight), Color.White, _spawnUiEntry.Delay.ToString("0.0000"), TextAlign.Right, FontSize.F8X8);
+		RenderText(Rectangle.At(Bounds.X1 + 192, Bounds.Y1, 96, Spawns.SpawnEntryHeight), Color.White, _spawnUiEntry.Seconds.ToString("0.0000"), TextAlign.Right, FontSize.F8X8);
+		RenderText(Rectangle.At(Bounds.X1 + 288, Bounds.Y1, 48, Spawns.SpawnEntryHeight), Color.White, NoFarmGemsString(_spawnUiEntry.NoFarmGems), TextAlign.Right, FontSize.F8X8);
+		RenderText(Rectangle.At(Bounds.X1 + 336, Bounds.Y1, 48, Spawns.SpawnEntryHeight), GetColorFromHand(_spawnUiEntry.GemState.HandLevel), _spawnUiEntry.GemState.Value.ToString(), TextAlign.Right, FontSize.F8X8);
 
 		void RenderText(Rectangle metric, Color textColor, string text, TextAlign textAlign, FontSize fontSize)
 		{

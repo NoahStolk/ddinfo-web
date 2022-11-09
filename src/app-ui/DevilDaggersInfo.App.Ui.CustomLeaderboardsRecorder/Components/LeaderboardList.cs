@@ -6,7 +6,6 @@ using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.Enums;
 using DevilDaggersInfo.App.Ui.Base.Rendering;
-using DevilDaggersInfo.Common;
 using DevilDaggersInfo.Types.Web;
 using Warp.Numerics;
 using Warp.Ui;
@@ -30,24 +29,31 @@ public class LeaderboardList : AbstractComponent
 	private int _pageIndex;
 	private bool _isLoading;
 
-	public LeaderboardList(Rectangle metric)
+	public LeaderboardList(IBounds metric)
 		: base(metric)
 	{
-		List<DropdownEntry> categoryButtons = Enum.GetValues<CustomLeaderboardCategory>()
-			.Select((c, i) => new DropdownEntry(Rectangle.At(0, (i + 1) * 16, 96, 16), () => ChangeAndLoad(() => _category = c), c.ToString())
+		Dropdown categoryDropdown = new(Rectangle.At(4, 4, 96, _headerHeight), "Category") { Depth = Depth + 1 };
+		NestingContext.Add(categoryDropdown);
+
+		CustomLeaderboardCategory[] categories = Enum.GetValues<CustomLeaderboardCategory>();
+		for (int i = 0; i < categories.Length; i++)
+		{
+			CustomLeaderboardCategory category = categories[i];
+			DropdownEntry dropdownEntry = new(Rectangle.At(4, 4 + (i + 1) * 16, 96, 16), categoryDropdown, () => ChangeAndLoad(() => _category = category), category.ToString())
 			{
 				IsActive = false,
 				Depth = Depth + 100,
-			})
-			.ToList();
-		Dropdown categoryDropdown = new(Rectangle.At(4, 4, 96, _headerHeight * (categoryButtons.Count + 1)), _headerHeight, GlobalStyles.DefaultLeft, categoryButtons, "Category");
+			};
+
+			categoryDropdown.AddChild(dropdownEntry);
+			NestingContext.Add(dropdownEntry);
+		}
 
 		_prevButton = new(Rectangle.At(4, 64, 20, 20), () => ChangeAndLoad(() => --_pageIndex), GlobalStyles.DefaultButtonStyle, "Previous", Textures.ArrowLeft);
 		_nextButton = new(Rectangle.At(24, 64, 20, 20), () => ChangeAndLoad(() => ++_pageIndex), GlobalStyles.DefaultButtonStyle, "Next", Textures.ArrowRight);
 
 		NestingContext.Add(_prevButton);
 		NestingContext.Add(_nextButton);
-		NestingContext.Add(categoryDropdown);
 
 		Load(); // TODO: Load when clicking purple CL button.
 
@@ -89,7 +95,7 @@ public class LeaderboardList : AbstractComponent
 				foreach (GetCustomLeaderboardForOverview cl in cls.Results)
 				{
 					const int height = 16;
-					_leaderboardComponents.Add(new(Rectangle.At(0, y, Metric.Size.X, height), cl) { Depth = Depth + 1 });
+					_leaderboardComponents.Add(new(Rectangle.At(0, y, Bounds.Size.X, height), cl) { Depth = Depth + 1 });
 					y += height;
 				}
 
@@ -118,10 +124,10 @@ public class LeaderboardList : AbstractComponent
 		base.Render(parentPosition);
 
 		const int border = 1;
-		RenderBatchCollector.RenderRectangleTopLeft(Metric.Size, Metric.TopLeft + parentPosition, Depth, Color.Green);
-		RenderBatchCollector.RenderRectangleTopLeft(Metric.Size - new Vector2i<int>(border * 2), Metric.TopLeft + parentPosition + new Vector2i<int>(border), Depth + 1, Color.Black);
+		RenderBatchCollector.RenderRectangleTopLeft(Bounds.Size, Bounds.TopLeft + parentPosition, Depth, Color.Green);
+		RenderBatchCollector.RenderRectangleTopLeft(Bounds.Size - new Vector2i<int>(border * 2), Bounds.TopLeft + parentPosition + new Vector2i<int>(border), Depth + 1, Color.Black);
 
-		RenderBatchCollector.RenderMonoSpaceText(FontSize.F8X8, new(2), parentPosition + Metric.TopLeft + new Vector2i<int>(4, 36), Depth + 2, Color.Yellow, $"{_category} leaderboards", TextAlign.Left);
+		RenderBatchCollector.RenderMonoSpaceText(FontSize.F8X8, new(2), parentPosition + Bounds.TopLeft + new Vector2i<int>(4, 36), Depth + 2, Color.Yellow, $"{_category} leaderboards", TextAlign.Left);
 
 		string text;
 		Color color;
@@ -136,6 +142,6 @@ public class LeaderboardList : AbstractComponent
 			color = Color.Yellow;
 		}
 
-		RenderBatchCollector.RenderMonoSpaceText(FontSize.F8X8, new(1), parentPosition + Metric.TopLeft + new Vector2i<int>(4, 96), Depth + 2, color, text, TextAlign.Left);
+		RenderBatchCollector.RenderMonoSpaceText(FontSize.F8X8, new(1), parentPosition + Bounds.TopLeft + new Vector2i<int>(4, 96), Depth + 2, color, text, TextAlign.Left);
 	}
 }

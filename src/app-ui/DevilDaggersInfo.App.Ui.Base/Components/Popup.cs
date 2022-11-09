@@ -33,13 +33,13 @@ public class Popup : AbstractComponent
 		base.Update(parentPosition);
 
 		// Cancel other mouse hovers.
-		_ = MouseUiContext.Contains(parentPosition, Metric);
+		_ = MouseUiContext.Contains(parentPosition, Bounds);
 	}
 
 	public override void Render(Vector2i<int> parentPosition)
 	{
 		base.Render(parentPosition);
 
-		RenderBatchCollector.RenderRectangleTopLeft(Metric.Size, parentPosition + Metric.TopLeft, Depth, new(0, 0, 0, 95));
+		RenderBatchCollector.RenderRectangleTopLeft(Bounds.Size, parentPosition + Bounds.TopLeft, Depth, new(0, 0, 0, 95));
 	}
 }

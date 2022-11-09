@@ -16,15 +16,15 @@ public class ShrinkSlider : Slider
 	{
 		base.Render(parentPosition);
 
-		Vector2i<int> topLeft = new(Metric.X1, Metric.Y1);
+		Vector2i<int> topLeft = new(Bounds.X1, Bounds.Y1);
 		NewHighlighter(CurrentValue / Max + Min, Color.Yellow);
 		NewHighlighter(StateManager.SpawnsetState.Spawnset.GetShrinkEndTime() / Max + Min, Color.Aqua);
 
 		void NewHighlighter(float percentage, Color color)
 		{
 			const int width = 4;
-			int height = Metric.Size.Y - Border;
-			int position = (int)(percentage * (Metric.Size.X - Border * 2 - width / 2));
+			int height = Bounds.Size.Y - Border;
+			int position = (int)(percentage * (Bounds.Size.X - Border * 2 - width / 2));
 			Vector2i<int> origin = parentPosition + topLeft;
 			RenderBatchCollector.RenderRectangleTopLeft(new(width, height), origin + new Vector2i<int>(position + Border / 2, Border / 2), Depth + 2, color);
 		}

@@ -1,8 +1,5 @@
-using DevilDaggersInfo.App.Ui.Base.Components.Styles;
-using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
-using Silk.NET.GLFW;
-using Warp;
-using Warp.Extensions;
+using DevilDaggersInfo.App.Ui.Base.Enums;
+using DevilDaggersInfo.App.Ui.Base.Rendering;
 using Warp.Numerics;
 using Warp.Ui;
 using Warp.Ui.Components;
@@ -11,25 +8,20 @@ namespace DevilDaggersInfo.App.Ui.Base.Components;
 
 public class Dropdown : AbstractDropdown
 {
-	private readonly int _headerHeight;
+	private readonly string _text;
 
-	public Dropdown(Rectangle metric, int headerHeight, TextButtonStyle headerStyle, List<DropdownEntry> children, string text)
-		: base(metric, children)
+	public Dropdown(IBounds bounds, string text)
+		: base(bounds)
 	{
-		_headerHeight = headerHeight;
-		TextButton button = new(Rectangle.At(0, 0, metric.Size.X, headerHeight), () => Toggle(!IsOpen), GlobalStyles.DefaultButtonStyle, headerStyle, text)
-		{
-			Depth = 102,
-		};
-		NestingContext.Add(button);
+		_text = text;
 	}
 
-	public override void Update(Vector2i<int> parentPosition)
+	public override void Render(Vector2i<int> parentPosition)
 	{
-		base.Update(parentPosition);
+		base.Render(parentPosition);
 
-		// Close dropdown when children are clicked.
-		if (Input.IsButtonPressed(MouseButton.Left) && IsOpen && (Metric with { Y1 = Metric.Y1 + _headerHeight }).Contains(Root.Game.MousePositionWithOffset.RoundToVector2Int32()))
-			Toggle(false);
+		Vector2i<int> textPosition = new Vector2i<int>(Bounds.X1 + Bounds.X2, Bounds.Y1 + Bounds.Y2) / 2;
+		RenderBatchCollector.RenderRectangleTopLeft(Bounds.Size, parentPosition + Bounds.TopLeft, Depth, Hover ? Color.Purple : Color.Red);
+		RenderBatchCollector.RenderMonoSpaceText(FontSize.F8X8, new(1), parentPosition + textPosition, Depth + 1, Color.White, _text, TextAlign.Middle);
 	}
 }

@@ -38,7 +38,7 @@ public class History : ScrollContent<History, HistoryWrapper>
 			int index = i;
 			ButtonStyle buttonStyle = new(isActive ? colorBackgroundActive : colorBackground, isActive ? Color.White : Color.Black, hoverBackgroundColor, 1);
 			TextButtonStyle textButtonStyle = new(Color.White, TextAlign.Left, FontSize.F8X8);
-			TextButton button = new(Rectangle.At(0, i * _historyEntryHeight, Metric.Size.X, _historyEntryHeight), () => SpawnsetHistoryManager.Set(index), buttonStyle, textButtonStyle, history.EditType.GetChange())
+			TextButton button = new(Rectangle.At(0, i * _historyEntryHeight, Bounds.Size.X, _historyEntryHeight), () => SpawnsetHistoryManager.Set(index), buttonStyle, textButtonStyle, history.EditType.GetChange())
 			{
 				Depth = Depth + 1,
 			};

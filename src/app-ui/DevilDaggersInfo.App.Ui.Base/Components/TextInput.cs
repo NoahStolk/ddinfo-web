@@ -32,10 +32,10 @@ public class TextInput : AbstractTextInput
 	{
 		base.Render(parentPosition);
 
-		int padding = (int)MathF.Round((Metric.Y2 - Metric.Y1) / 4f);
+		int padding = (int)MathF.Round((Bounds.Y2 - Bounds.Y1) / 4f);
 		Vector2i<int> borderVec = new(_textInputStyle.BorderSize);
-		Vector2i<int> scale = new(Metric.X2 - Metric.X1, Metric.Y2 - Metric.Y1);
-		Vector2i<int> topLeft = new(Metric.X1, Metric.Y1);
+		Vector2i<int> scale = new(Bounds.X2 - Bounds.X1, Bounds.Y2 - Bounds.Y1);
+		Vector2i<int> topLeft = new(Bounds.X1, Bounds.Y1);
 
 		RenderBatchCollector.RenderRectangleTopLeft(scale, topLeft + parentPosition, Depth, IsSelected ? _textInputStyle.ActiveBorderColor : _textInputStyle.BorderColor);
 		RenderBatchCollector.RenderRectangleTopLeft(scale - borderVec, topLeft + parentPosition + borderVec / 2, Depth + 1, Hover ? _textInputStyle.HoverBackgroundColor : _textInputStyle.BackgroundColor);
@@ -44,13 +44,13 @@ public class TextInput : AbstractTextInput
 		if (CursorPositionStart == CursorPositionEnd && CursorTimer <= _cursorTimerSwitch && IsSelected || hasSelection)
 		{
 			int selectionStart = Math.Min(CursorPositionStart, CursorPositionEnd);
-			int cursorSelectionStartX = Metric.X1 + selectionStart * _textInputStyle.CharWidth + padding;
+			int cursorSelectionStartX = Bounds.X1 + selectionStart * _textInputStyle.CharWidth + padding;
 
-			Vector2i<int> cursorPosition = parentPosition + new Vector2i<int>(cursorSelectionStartX, Metric.Y1 + borderVec.Y / 2);
-			RenderBatchCollector.RenderRectangleTopLeft(new(GetSelectionLength() * _textInputStyle.CharWidth + 1, Metric.Size.Y - borderVec.Y), cursorPosition, Depth + 2, hasSelection ? _textInputStyle.SelectionColor : _textInputStyle.CursorColor);
+			Vector2i<int> cursorPosition = parentPosition + new Vector2i<int>(cursorSelectionStartX, Bounds.Y1 + borderVec.Y / 2);
+			RenderBatchCollector.RenderRectangleTopLeft(new(GetSelectionLength() * _textInputStyle.CharWidth + 1, Bounds.Size.Y - borderVec.Y), cursorPosition, Depth + 2, hasSelection ? _textInputStyle.SelectionColor : _textInputStyle.CursorColor);
 		}
 
-		Vector2i<int> position = new(Metric.X1 + padding, Metric.Y1 + padding);
+		Vector2i<int> position = new(Bounds.X1 + padding, Bounds.Y1 + padding);
 
 		RenderBatchCollector.RenderMonoSpaceText(_textInputStyle.FontSize, Vector2i<int>.One, parentPosition + position, Depth + 3, _textInputStyle.TextColor, Value, TextAlign.Left);
 	}

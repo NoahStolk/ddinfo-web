@@ -48,7 +48,7 @@ public class Spawns : ScrollContent<Spawns, SpawnsWrapper>
 			StateManager.ClearSpawnSelections();
 		}
 
-		bool hoverWithoutBlock = Metric.Contains(MouseUiContext.MousePosition.RoundToVector2Int32() - parentPosition);
+		bool hoverWithoutBlock = Bounds.Contains(MouseUiContext.MousePosition.RoundToVector2Int32() - parentPosition);
 		if (!Input.IsButtonPressed(MouseButton.Left) || !hoverWithoutBlock)
 			return;
 

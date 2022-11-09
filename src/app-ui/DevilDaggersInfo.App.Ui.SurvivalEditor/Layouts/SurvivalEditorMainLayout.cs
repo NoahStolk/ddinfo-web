@@ -29,7 +29,7 @@ public class SurvivalEditorMainLayout : Layout, ISurvivalEditorMainLayout
 	public SurvivalEditorMainLayout()
 		: base(Constants.Full)
 	{
-		Menu menu = new(new(0, 0, 1024, 24));
+		Menu menu = new(new Rectangle(0, 0, 1024, 1024));
 		_arenaWrapper = new(Rectangle.At(400, 24, 400, 400));
 		_spawnsWrapper = new(Rectangle.At(0, 24, 384, 640));
 		SpawnEditor spawnEditor = new(Rectangle.At(0, 664, 384, 128));

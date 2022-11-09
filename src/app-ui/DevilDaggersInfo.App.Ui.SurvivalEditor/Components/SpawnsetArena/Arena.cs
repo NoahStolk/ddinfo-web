@@ -32,7 +32,7 @@ public class Arena : AbstractComponent
 	private float _shrinkRadius;
 
 	public Arena(Vector2i<int> topLeft, int tileSize)
-		: base(new(topLeft.X, topLeft.Y, topLeft.X + tileSize * SpawnsetBinary.ArenaDimensionMax, topLeft.Y + tileSize * SpawnsetBinary.ArenaDimensionMax))
+		: base(new Rectangle(topLeft.X, topLeft.Y, topLeft.X + tileSize * SpawnsetBinary.ArenaDimensionMax, topLeft.Y + tileSize * SpawnsetBinary.ArenaDimensionMax))
 	{
 		_tileSize = tileSize;
 
@@ -64,8 +64,8 @@ public class Arena : AbstractComponent
 
 	private ArenaMousePosition GetArenaMousePosition(Vector2i<int> parentPosition)
 	{
-		int realX = (int)MouseUiContext.MousePosition.X - Metric.X1 - parentPosition.X;
-		int realY = (int)MouseUiContext.MousePosition.Y - Metric.Y1 - parentPosition.Y;
+		int realX = (int)MouseUiContext.MousePosition.X - Bounds.X1 - parentPosition.X;
+		int realY = (int)MouseUiContext.MousePosition.Y - Bounds.Y1 - parentPosition.Y;
 		return new()
 		{
 			Real = new(realX, realY),
@@ -92,7 +92,7 @@ public class Arena : AbstractComponent
 	{
 		base.Update(parentPosition);
 
-		bool hover = MouseUiContext.Contains(parentPosition, Metric);
+		bool hover = MouseUiContext.Contains(parentPosition, Bounds);
 		if (!hover)
 		{
 			Reset();
@@ -139,9 +139,9 @@ public class Arena : AbstractComponent
 	{
 		base.Render(parentPosition);
 
-		Vector2i<int> origin = parentPosition + new Vector2i<int>(Metric.X1, Metric.Y1);
+		Vector2i<int> origin = parentPosition + new Vector2i<int>(Bounds.X1, Bounds.Y1);
 		Vector2i<int> center = origin + new Vector2i<int>((int)(SpawnsetBinary.ArenaDimensionMax / 2f * _tileSize));
-		RenderBatchCollector.RenderRectangleTopLeft(Metric.Size, origin, Depth, Color.Black);
+		RenderBatchCollector.RenderRectangleTopLeft(Bounds.Size, origin, Depth, Color.Black);
 
 		for (int i = 0; i < StateManager.SpawnsetState.Spawnset.ArenaDimension; i++)
 		{
@@ -191,7 +191,7 @@ public class Arena : AbstractComponent
 			RenderBatchCollector.RenderSprite(new(-8, -8), origin.ToVector2() + new Vector2(realRaceX * _tileSize + halfSize, realRaceZ * _tileSize + halfSize), Depth + 3, ContentManager.Content.IconDaggerTexture, Color.FromVector3(color));
 		}
 
-		RenderBatchCollector.SetScissor(Scissor.FromComponent(Metric, parentPosition));
+		RenderBatchCollector.SetScissor(Scissor.FromComponent(Bounds, parentPosition));
 
 		const int tileUnit = 4;
 		float shrinkStartRadius = StateManager.SpawnsetState.Spawnset.ShrinkStart / tileUnit * _tileSize;
