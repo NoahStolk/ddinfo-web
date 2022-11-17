@@ -1,9 +1,9 @@
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using System.Numerics;
-using Warp;
-using Warp.Extensions;
-using Warp.Numerics;
-using Warp.Ui;
+using Warp.NET;
+using Warp.NET.Extensions;
+using Warp.NET.Numerics;
+using Warp.NET.Ui;
 
 namespace DevilDaggersInfo.App.Ui.Base.Rendering;
 

@@ -1,10 +1,11 @@
+using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.Components.Styles;
 using DevilDaggersInfo.App.Ui.Base.Enums;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Extensions;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
-using Warp.Ui;
-using Warp.Ui.Components;
+using Warp.NET.Ui;
+using Warp.NET.Ui.Components;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetHistory;
 
@@ -14,8 +15,8 @@ public class History : ScrollContent<History, HistoryWrapper>
 
 	private readonly List<AbstractComponent> _historyComponents = new();
 
-	public History(Rectangle metric, HistoryWrapper historyWrapper)
-		: base(metric, historyWrapper)
+	public History(IBounds bounds, HistoryWrapper historyWrapper)
+		: base(bounds, historyWrapper)
 	{
 	}
 

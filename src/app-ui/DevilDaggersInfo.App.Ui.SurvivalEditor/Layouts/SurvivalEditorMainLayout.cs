@@ -12,8 +12,8 @@ using DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetSettings;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetSpawns;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using Silk.NET.GLFW;
-using Warp;
-using Warp.Ui;
+using Warp.NET;
+using Warp.NET.Ui;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Layouts;
 

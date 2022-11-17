@@ -1,8 +1,8 @@
 using DevilDaggersInfo.App.Ui.Base.Enums;
 using DevilDaggersInfo.App.Ui.Base.Rendering;
-using Warp.Numerics;
-using Warp.Ui;
-using Warp.Ui.Components;
+using Warp.NET.Numerics;
+using Warp.NET.Ui;
+using Warp.NET.Ui.Components;
 
 namespace DevilDaggersInfo.App.Ui.Base.Components;
 
@@ -10,8 +10,8 @@ public class Slider : AbstractSlider
 {
 	private readonly Color _textColor;
 
-	public Slider(Rectangle metric, Action<float> onChange, bool applyInstantly, float min, float max, float step, float defaultValue, int border, Color textColor)
-		: base(metric, onChange, applyInstantly, min, max, step, defaultValue)
+	public Slider(IBounds bounds, Action<float> onChange, bool applyInstantly, float min, float max, float step, float defaultValue, int border, Color textColor)
+		: base(bounds, onChange, applyInstantly, min, max, step, defaultValue)
 	{
 		Border = border;
 		_textColor = textColor;

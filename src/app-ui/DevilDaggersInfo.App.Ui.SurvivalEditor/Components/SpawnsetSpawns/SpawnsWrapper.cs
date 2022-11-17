@@ -1,19 +1,20 @@
+using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.Enums;
-using Warp.Ui;
-using Warp.Ui.Components;
+using Warp.NET.Ui;
+using Warp.NET.Ui.Components;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetSpawns;
 
 public sealed class SpawnsWrapper : AbstractScrollViewer<SpawnsWrapper, Spawns>
 {
-	public SpawnsWrapper(Rectangle metric)
-		: base(metric)
+	public SpawnsWrapper(IBounds bounds)
+		: base(bounds)
 	{
-		Label title = new(Rectangle.At(0, 0, metric.Size.X, 48), Color.White, "Spawns", TextAlign.Middle, FontSize.F12X12);
+		Label title = new(Rectangle.At(0, 0, bounds.Size.X, 48), Color.White, "Spawns", TextAlign.Middle, FontSize.F12X12);
 		NestingContext.Add(title);
 
-		Rectangle spawnsMetric = Rectangle.At(0, 48, metric.Size.X, metric.Size.Y - 48);
+		Rectangle spawnsMetric = Rectangle.At(0, 48, bounds.Size.X, bounds.Size.Y - 48);
 
 		Content = new(spawnsMetric, this);
 		Scrollbar = new(spawnsMetric with { X1 = spawnsMetric.X2, X2 = spawnsMetric.X2 + 16 }, SetScrollPercentage);

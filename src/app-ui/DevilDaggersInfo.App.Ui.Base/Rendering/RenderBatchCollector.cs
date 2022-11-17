@@ -2,7 +2,7 @@ using DevilDaggersInfo.App.Ui.Base.Enums;
 using DevilDaggersInfo.App.Ui.Base.Rendering.Data;
 using DevilDaggersInfo.Common.Exceptions;
 using System.Numerics;
-using Warp.Numerics;
+using Warp.NET.Numerics;
 
 namespace DevilDaggersInfo.App.Ui.Base.Rendering;
 

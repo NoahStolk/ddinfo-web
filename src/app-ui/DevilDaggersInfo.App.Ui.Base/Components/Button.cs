@@ -1,15 +1,15 @@
 using DevilDaggersInfo.App.Ui.Base.Components.Styles;
 using DevilDaggersInfo.App.Ui.Base.Rendering;
-using Warp.Numerics;
-using Warp.Ui;
-using Warp.Ui.Components;
+using Warp.NET.Numerics;
+using Warp.NET.Ui;
+using Warp.NET.Ui.Components;
 
 namespace DevilDaggersInfo.App.Ui.Base.Components;
 
 public class Button : AbstractButton
 {
-	public Button(Rectangle metric, Action onClick, ButtonStyle buttonStyle)
-		: base(metric, onClick)
+	public Button(IBounds bounds, Action onClick, ButtonStyle buttonStyle)
+		: base(bounds, onClick)
 	{
 		ButtonStyle = buttonStyle;
 	}

@@ -2,15 +2,15 @@ using DevilDaggersInfo.App.Ui.Base.Components.Styles;
 using DevilDaggersInfo.App.Ui.Base.Enums;
 using DevilDaggersInfo.App.Ui.Base.Rendering;
 using DevilDaggersInfo.Common.Exceptions;
-using Warp.Numerics;
-using Warp.Ui;
+using Warp.NET.Numerics;
+using Warp.NET.Ui;
 
 namespace DevilDaggersInfo.App.Ui.Base.Components;
 
 public class TextButton : Button
 {
-	public TextButton(Rectangle metric, Action onClick, ButtonStyle buttonStyle, TextButtonStyle textButtonStyle, string text)
-		: base(metric, onClick, buttonStyle)
+	public TextButton(IBounds bounds, Action onClick, ButtonStyle buttonStyle, TextButtonStyle textButtonStyle, string text)
+		: base(bounds, onClick, buttonStyle)
 	{
 		TextButtonStyle = textButtonStyle;
 		Text = text;

@@ -4,7 +4,7 @@ using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts;
 using DevilDaggersInfo.App.Ui.Base.States;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using DevilDaggersInfo.Core.Spawnset;
-using Warp.Ui;
+using Warp.NET.Ui;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Layouts;
 
@@ -39,7 +39,7 @@ public class SurvivalEditorOpenLayout : Layout, IFileDialogLayout
 
 	public void SetComponentsFromPath(string path)
 	{
-		_pathTextInput.SetText(path);
+		_pathTextInput.KeyboardInput.SetText(path);
 		_pathsWrapper.Path = path;
 		_pathsWrapper.InitializeContent();
 	}

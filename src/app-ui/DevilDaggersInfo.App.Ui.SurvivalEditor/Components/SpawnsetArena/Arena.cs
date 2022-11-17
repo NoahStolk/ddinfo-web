@@ -9,10 +9,10 @@ using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Types.Core.Spawnsets;
-using Warp;
-using Warp.Extensions;
-using Warp.Ui;
-using Warp.Ui.Components;
+using Warp.NET;
+using Warp.NET.Extensions;
+using Warp.NET.Ui;
+using Warp.NET.Ui.Components;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetArena;
 

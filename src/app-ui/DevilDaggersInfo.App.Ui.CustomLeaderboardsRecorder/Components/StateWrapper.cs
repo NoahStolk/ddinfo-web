@@ -1,16 +1,17 @@
+using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.Enums;
 using DevilDaggersInfo.App.Ui.Base.Rendering;
-using Warp.Numerics;
-using Warp.Ui;
-using Warp.Ui.Components;
+using Warp.NET.Numerics;
+using Warp.NET.Ui;
+using Warp.NET.Ui.Components;
 
 namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components;
 
 public class StateWrapper : AbstractComponent
 {
-	public StateWrapper(Rectangle metric)
-		: base(metric)
+	public StateWrapper(IBounds bounds)
+		: base(bounds)
 	{
 		Label processLabel = new(Rectangle.At(0, 0, 64, 16), Color.White, "Process", TextAlign.Left, FontSize.F8X8);
 		Label memoryLabel = new(Rectangle.At(0, 16, 64, 16), Color.White, "Memory", TextAlign.Left, FontSize.F8X8);

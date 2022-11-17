@@ -1,7 +1,7 @@
 using DevilDaggersInfo.App.Ui.Base.Rendering;
-using Warp.Numerics;
-using Warp.Ui;
-using Warp.Ui.Components;
+using Warp.NET.Numerics;
+using Warp.NET.Ui;
+using Warp.NET.Ui.Components;
 
 namespace DevilDaggersInfo.App.Ui.Base.Components;
 
@@ -9,8 +9,8 @@ public abstract class ScrollContent<TSelf, TParent> : AbstractScrollContent<TSel
 	where TSelf : AbstractScrollContent<TSelf, TParent>
 	where TParent : AbstractScrollViewer<TParent, TSelf>
 {
-	protected ScrollContent(Rectangle metric, AbstractScrollViewer<TParent, TSelf> parent)
-		: base(metric, parent)
+	protected ScrollContent(IBounds bounds, AbstractScrollViewer<TParent, TSelf> parent)
+		: base(bounds, parent)
 	{
 	}
 

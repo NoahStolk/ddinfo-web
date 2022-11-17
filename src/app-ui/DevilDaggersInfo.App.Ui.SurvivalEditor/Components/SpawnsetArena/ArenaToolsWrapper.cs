@@ -2,8 +2,8 @@ using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Enums;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
-using Warp.Ui;
-using Warp.Ui.Components;
+using Warp.NET.Ui;
+using Warp.NET.Ui.Components;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetArena;
 
@@ -14,8 +14,8 @@ public class ArenaToolsWrapper : AbstractComponent
 	private readonly Dictionary<ArenaTool, IconButton> _toolButtons = new();
 	private readonly Dictionary<ArenaTool, AbstractComponent> _toolSettingsWrappers = new();
 
-	public ArenaToolsWrapper(Rectangle metric)
-		: base(metric)
+	public ArenaToolsWrapper(IBounds bounds)
+		: base(bounds)
 	{
 		AddToolButton(0 + _arenaButtonSize * 0, 0, ArenaTool.Pencil, Textures.Pencil, "Pencil");
 		AddToolButton(0 + _arenaButtonSize * 1, 0, ArenaTool.Line, Textures.Line, "Line");
@@ -23,7 +23,7 @@ public class ArenaToolsWrapper : AbstractComponent
 		AddToolButton(0 + _arenaButtonSize * 3, 0, ArenaTool.Bucket, Textures.Bucket, "Bucket");
 		AddToolButton(0 + _arenaButtonSize * 4, 0, ArenaTool.Dagger, Textures.Dagger, "Race dagger");
 
-		_toolSettingsWrappers.Add(ArenaTool.Bucket, new BucketToolSettingsWrapper(Rectangle.At(0, _arenaButtonSize, metric.Size.X, 64)));
+		_toolSettingsWrappers.Add(ArenaTool.Bucket, new BucketToolSettingsWrapper(Rectangle.At(0, _arenaButtonSize, bounds.Size.X, 64)));
 
 		foreach (KeyValuePair<ArenaTool, IconButton> kvp in _toolButtons)
 			NestingContext.Add(kvp.Value);

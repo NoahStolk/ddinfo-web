@@ -3,8 +3,8 @@ using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.Enums;
 using DevilDaggersInfo.App.Ui.Base.States;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
-using Warp.Ui;
-using Warp.Ui.Components;
+using Warp.NET.Ui;
+using Warp.NET.Ui.Components;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetArena;
 
@@ -13,8 +13,8 @@ public class ArenaWrapper : AbstractComponent
 	private readonly ShrinkSlider _shrinkSlider;
 	private readonly Arena _arena;
 
-	public ArenaWrapper(Rectangle metric)
-		: base(metric)
+	public ArenaWrapper(IBounds bounds)
+		: base(bounds)
 	{
 		const int titleHeight = 48;
 

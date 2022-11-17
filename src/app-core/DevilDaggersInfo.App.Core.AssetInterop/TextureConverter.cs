@@ -1,4 +1,4 @@
-﻿using Warp.Content;
+using Warp.NET.Content;
 
 namespace DevilDaggersInfo.App.Core.AssetInterop;
 

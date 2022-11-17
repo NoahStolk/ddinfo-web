@@ -1,14 +1,14 @@
 using DevilDaggersInfo.App.Ui.Base.Rendering;
-using Warp.Numerics;
-using Warp.Ui;
-using Warp.Ui.Components;
+using Warp.NET.Numerics;
+using Warp.NET.Ui;
+using Warp.NET.Ui.Components;
 
 namespace DevilDaggersInfo.App.Ui.Base.Components;
 
 public class Scrollbar : AbstractScrollbar
 {
-	public Scrollbar(Rectangle metric, Action<float> onChange)
-		: base(metric, onChange)
+	public Scrollbar(IBounds bounds, Action<float> onChange)
+		: base(bounds, onChange)
 	{
 	}
 
