@@ -17,13 +17,6 @@ jobs:
         include-prerelease: false
     - name: Checkout
       uses: actions/checkout@v2
-    - name: Set up private NuGet source
-      run: |
-        dotnet nuget add source ${{ secrets.PRIVATE_NUGET_REGISTRY_URL }} \
-          -n github \
-          -u ${{ secrets.PRIVATE_NUGET_REGISTRY_USER }} \
-          -p ${{ secrets.PRIVATE_NUGET_REGISTRY_TOKEN }} \
-          --store-password-in-clear-text
     - name: Build
       run: dotnet build src/DevilDaggersInfo.sln -c Release
     - name: Test

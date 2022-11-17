@@ -1,16 +1,16 @@
-using Warp.Ui;
-using Warp.Ui.Components;
+using Warp.NET.Ui;
+using Warp.NET.Ui.Components;
 
 namespace DevilDaggersInfo.App.Ui.Base.Components;
 
 public class PathsWrapper : AbstractScrollViewer<PathsWrapper, Paths>
 {
-	public PathsWrapper(Rectangle metric, Action<string> onDirectorySelect, Action<string> onFileSelect)
-		: base(metric)
+	public PathsWrapper(IBounds bounds, Action<string> onDirectorySelect, Action<string> onFileSelect)
+		: base(bounds)
 	{
 		const int scrollbarWidth = 16;
 
-		Rectangle pathsMetric = Rectangle.At(0, 0, metric.Size.X - scrollbarWidth, metric.Size.Y);
+		Rectangle pathsMetric = Rectangle.At(0, 0, bounds.Size.X - scrollbarWidth, bounds.Size.Y);
 		Content = new(pathsMetric, this, scrollbarWidth, onDirectorySelect, onFileSelect);
 		Scrollbar = new(pathsMetric with { X1 = pathsMetric.X2, X2 = pathsMetric.X2 + scrollbarWidth }, SetScrollPercentage);
 

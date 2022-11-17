@@ -8,8 +8,8 @@ using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Types.Core.Spawnsets;
 using System.Collections.Immutable;
-using Warp.Ui;
-using Warp.Ui.Components;
+using Warp.NET.Ui;
+using Warp.NET.Ui.Components;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetSpawns;
 
@@ -21,8 +21,8 @@ public class SpawnEditor : AbstractComponent
 	private EnemyType _selectedEnemyType;
 	private float _selectedDelay;
 
-	public SpawnEditor(Rectangle metric)
-		: base(metric)
+	public SpawnEditor(IBounds bounds)
+		: base(bounds)
 	{
 		const int width = 96;
 
@@ -41,7 +41,7 @@ public class SpawnEditor : AbstractComponent
 		Label enemyTypeLabel = new(Rectangle.At(0, 0, width, 16), Color.White, "Enemy", TextAlign.Left, FontSize.F8X8);
 		Label delayLabel = new(Rectangle.At(0, 32, width, 16), Color.White, "Delay", TextAlign.Left, FontSize.F8X8);
 		TextInput delayTextInput = new(Rectangle.At(288, 32, width, 16), true, OnDelayChange, OnDelayChange, OnDelayChange, GlobalStyles.TextInput);
-		delayTextInput.SetText("0.0000");
+		delayTextInput.KeyboardInput.SetText("0.0000");
 
 		NestingContext.Add(enemyTypeLabel);
 		NestingContext.Add(delayLabel);

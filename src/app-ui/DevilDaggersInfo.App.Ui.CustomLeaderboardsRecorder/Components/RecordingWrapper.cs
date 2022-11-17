@@ -1,14 +1,14 @@
 using DevilDaggersInfo.App.Ui.Base.Rendering;
-using Warp.Numerics;
-using Warp.Ui;
-using Warp.Ui.Components;
+using Warp.NET.Numerics;
+using Warp.NET.Ui;
+using Warp.NET.Ui.Components;
 
 namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components;
 
 public class RecordingWrapper : AbstractComponent
 {
-	public RecordingWrapper(Rectangle metric)
-		: base(metric)
+	public RecordingWrapper(IBounds bounds)
+		: base(bounds)
 	{
 	}
 

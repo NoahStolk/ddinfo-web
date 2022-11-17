@@ -5,8 +5,7 @@ using DevilDaggersInfo.App.Ui.SurvivalEditor.Enums;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using Silk.NET.GLFW;
-using Warp;
-using Warp.Ui;
+using Warp.NET;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena;
 

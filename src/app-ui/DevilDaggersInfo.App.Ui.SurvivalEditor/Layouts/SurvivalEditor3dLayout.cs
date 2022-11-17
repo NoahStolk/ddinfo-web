@@ -7,9 +7,9 @@ using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Types.Core.Spawnsets;
 using Silk.NET.GLFW;
 using Silk.NET.OpenGL;
-using Warp;
-using Warp.Content;
-using Warp.Ui;
+using Warp.NET;
+using Warp.NET.Content;
+using Warp.NET.Ui;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Layouts;
 

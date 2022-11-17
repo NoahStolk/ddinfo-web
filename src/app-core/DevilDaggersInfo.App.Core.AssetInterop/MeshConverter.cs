@@ -1,5 +1,5 @@
 using DevilDaggersInfo.Core.Mod.Extensions;
-using Warp.Content;
+using Warp.NET.Content;
 using DdVertex = DevilDaggersInfo.Core.Mod.Structs.Vertex;
 
 namespace DevilDaggersInfo.App.Core.AssetInterop;

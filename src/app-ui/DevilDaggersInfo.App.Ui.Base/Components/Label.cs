@@ -1,8 +1,8 @@
 using DevilDaggersInfo.App.Ui.Base.Enums;
 using DevilDaggersInfo.App.Ui.Base.Rendering;
-using Warp.Numerics;
-using Warp.Ui;
-using Warp.Ui.Components;
+using Warp.NET.Numerics;
+using Warp.NET.Ui;
+using Warp.NET.Ui.Components;
 
 namespace DevilDaggersInfo.App.Ui.Base.Components;
 

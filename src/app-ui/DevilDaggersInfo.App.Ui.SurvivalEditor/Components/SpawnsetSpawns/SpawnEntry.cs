@@ -1,3 +1,4 @@
+using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.Enums;
 using DevilDaggersInfo.App.Ui.Base.Extensions;
 using DevilDaggersInfo.App.Ui.Base.Rendering;
@@ -6,8 +7,8 @@ using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Core.Wiki.Objects;
 using DevilDaggersInfo.Types.Core.Spawnsets;
-using Warp.Ui;
-using Warp.Ui.Components;
+using Warp.NET.Ui;
+using Warp.NET.Ui.Components;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetSpawns;
 
@@ -17,8 +18,8 @@ public class SpawnEntry : AbstractComponent
 	private readonly Enemy? _enemy;
 	private readonly Color _enemyColor;
 
-	public SpawnEntry(Rectangle metric, SpawnUiEntry spawnUiEntry)
-		: base(metric)
+	public SpawnEntry(IBounds bounds, SpawnUiEntry spawnUiEntry)
+		: base(bounds)
 	{
 		_spawnUiEntry = spawnUiEntry;
 		_enemy = spawnUiEntry.EnemyType.GetEnemy();
@@ -58,14 +59,14 @@ public class SpawnEntry : AbstractComponent
 		RenderText(Rectangle.At(Bounds.X1 + 288, Bounds.Y1, 48, Spawns.SpawnEntryHeight), Color.White, NoFarmGemsString(_spawnUiEntry.NoFarmGems), TextAlign.Right, FontSize.F8X8);
 		RenderText(Rectangle.At(Bounds.X1 + 336, Bounds.Y1, 48, Spawns.SpawnEntryHeight), GetColorFromHand(_spawnUiEntry.GemState.HandLevel), _spawnUiEntry.GemState.Value.ToString(), TextAlign.Right, FontSize.F8X8);
 
-		void RenderText(Rectangle metric, Color textColor, string text, TextAlign textAlign, FontSize fontSize)
+		void RenderText(IBounds bounds, Color textColor, string text, TextAlign textAlign, FontSize fontSize)
 		{
-			int padding = (int)MathF.Round((metric.Y2 - metric.Y1) / 4f);
+			int padding = (int)MathF.Round((bounds.Y2 - bounds.Y1) / 4f);
 			Vector2i<int> textPosition = textAlign switch
 			{
-				TextAlign.Middle => new Vector2i<int>(metric.X1 + metric.X2, metric.Y1 + metric.Y2) / 2,
-				TextAlign.Left => new(metric.X1 + padding, metric.Y1 + padding),
-				TextAlign.Right => new(metric.X2 - padding, metric.Y1 + padding),
+				TextAlign.Middle => new Vector2i<int>(bounds.X1 + bounds.X2, bounds.Y1 + bounds.Y2) / 2,
+				TextAlign.Left => new(bounds.X1 + padding, bounds.Y1 + padding),
+				TextAlign.Right => new(bounds.X2 - padding, bounds.Y1 + padding),
 				_ => throw new InvalidOperationException("Invalid text align."),
 			};
 

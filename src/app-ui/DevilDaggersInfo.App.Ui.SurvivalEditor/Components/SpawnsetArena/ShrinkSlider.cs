@@ -1,14 +1,14 @@
 using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.Rendering;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
-using Warp.Ui;
+using Warp.NET.Ui;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetArena;
 
 public class ShrinkSlider : Slider
 {
-	public ShrinkSlider(Rectangle metric, Action<float> onChange, bool applyInstantly, float min, float max, float step, float defaultValue, int border, Color textColor)
-		: base(metric, onChange, applyInstantly, min, max, step, defaultValue, border, textColor)
+	public ShrinkSlider(IBounds bounds, Action<float> onChange, bool applyInstantly, float min, float max, float step, float defaultValue, int border, Color textColor)
+		: base(bounds, onChange, applyInstantly, min, max, step, defaultValue, border, textColor)
 	{
 	}
 

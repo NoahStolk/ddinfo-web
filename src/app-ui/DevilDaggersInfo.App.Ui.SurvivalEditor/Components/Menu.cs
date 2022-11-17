@@ -1,10 +1,10 @@
+using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.Components;
-using DevilDaggersInfo.App.Ui.Base.Enums;
 using DevilDaggersInfo.App.Ui.Base.Rendering;
 using DevilDaggersInfo.App.Ui.Base.States;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
-using Warp.Ui;
-using Warp.Ui.Components;
+using Warp.NET.Ui;
+using Warp.NET.Ui.Components;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components;
 
@@ -12,8 +12,8 @@ public class Menu : AbstractComponent
 {
 	private const int _headerHeight = 24;
 
-	public Menu(IBounds metric)
-		: base(metric)
+	public Menu(IBounds bounds)
+		: base(bounds)
 	{
 		const int backButtonWidth = 24;
 

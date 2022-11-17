@@ -1,14 +1,14 @@
 using DevilDaggersInfo.App.Ui.Base.Rendering;
-using Warp.Numerics;
-using Warp.Ui;
-using Warp.Ui.Components;
+using Warp.NET.Numerics;
+using Warp.NET.Ui;
+using Warp.NET.Ui.Components;
 
 namespace DevilDaggersInfo.App.Ui.Base.Components;
 
 public class Checkbox : AbstractCheckbox
 {
-	public Checkbox(Rectangle metric, Action<bool> onClick)
-		: base(metric, onClick)
+	public Checkbox(IBounds bounds, Action<bool> onClick)
+		: base(bounds, onClick)
 	{
 	}
 

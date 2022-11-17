@@ -3,7 +3,7 @@ using DevilDaggersInfo.App.Ui.Base.Enums;
 using DevilDaggersInfo.App.Ui.Base.Extensions;
 using DevilDaggersInfo.Core.Wiki.Objects;
 using DevilDaggersInfo.Types.Core.Spawnsets;
-using Warp.Numerics;
+using Warp.NET.Numerics;
 
 namespace DevilDaggersInfo.App.Ui.Base;
 

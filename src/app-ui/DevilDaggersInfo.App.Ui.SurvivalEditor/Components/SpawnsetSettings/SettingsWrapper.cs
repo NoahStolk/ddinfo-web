@@ -8,8 +8,8 @@ using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Types.Core.Spawnsets;
-using Warp.Ui;
-using Warp.Ui.Components;
+using Warp.NET.Ui;
+using Warp.NET.Ui.Components;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetSettings;
 
@@ -44,10 +44,10 @@ public class SettingsWrapper : AbstractComponent
 	private readonly SpawnsetTextInput _textInputAdditionalGems;
 	private readonly SpawnsetTextInput _textInputTimerStart;
 
-	public SettingsWrapper(Rectangle metric)
-		: base(metric)
+	public SettingsWrapper(IBounds bounds)
+		: base(bounds)
 	{
-		_width = metric.Size.X;
+		_width = bounds.Size.X;
 		_halfWidth = _width / 2;
 		_thirdWidth = (int)MathF.Ceiling(_width / 3f);
 		_quarterWidth = _halfWidth / 2;

@@ -1,6 +1,6 @@
 using DevilDaggersInfo.App.Ui.Base.Enums;
 using DevilDaggersInfo.Common.Exceptions;
-using Warp.Numerics;
+using Warp.NET.Numerics;
 
 namespace DevilDaggersInfo.App.Ui.Base.Components.Styles;
 

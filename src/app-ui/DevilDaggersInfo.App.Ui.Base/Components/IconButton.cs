@@ -2,9 +2,9 @@ using DevilDaggersInfo.App.Ui.Base.Components.Styles;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.Rendering;
 using System.Numerics;
-using Warp.Extensions;
-using Warp.Numerics;
-using Warp.Ui;
+using Warp.NET.Extensions;
+using Warp.NET.Numerics;
+using Warp.NET.Ui;
 
 namespace DevilDaggersInfo.App.Ui.Base.Components;
 
@@ -14,8 +14,8 @@ public class IconButton : Button
 	private readonly Texture _texture;
 	private readonly Vector2 _textureSize;
 
-	public IconButton(Rectangle metric, Action onClick, ButtonStyle buttonStyle, string tooltipText, Texture texture)
-		: base(metric, onClick, buttonStyle)
+	public IconButton(IBounds bounds, Action onClick, ButtonStyle buttonStyle, string tooltipText, Texture texture)
+		: base(bounds, onClick, buttonStyle)
 	{
 		_tooltipText = tooltipText;
 		_texture = texture;

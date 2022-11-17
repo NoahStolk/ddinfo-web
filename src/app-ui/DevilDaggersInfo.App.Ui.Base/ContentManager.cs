@@ -6,7 +6,7 @@ using DevilDaggersInfo.Core.Mod;
 using DevilDaggersInfo.Core.Mod.Enums;
 using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Types.Core.Assets;
-using Warp.Content;
+using Warp.NET.Content;
 
 namespace DevilDaggersInfo.App.Ui.Base;
 

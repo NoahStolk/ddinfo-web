@@ -1,12 +1,13 @@
+using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Spawns;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Enums;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using Silk.NET.GLFW;
 using System.Collections.Immutable;
-using Warp;
-using Warp.Extensions;
-using Warp.Ui;
+using Warp.NET;
+using Warp.NET.Extensions;
+using Warp.NET.Ui;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetSpawns;
 
@@ -18,8 +19,8 @@ public class Spawns : ScrollContent<Spawns, SpawnsWrapper>
 
 	private int _currentIndex;
 
-	public Spawns(Rectangle metric, SpawnsWrapper parent)
-		: base(metric, parent)
+	public Spawns(IBounds bounds, SpawnsWrapper parent)
+		: base(bounds, parent)
 	{
 	}
 

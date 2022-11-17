@@ -1,8 +1,8 @@
 using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using Silk.NET.OpenGL;
-using Warp.Content;
-using Warp.InterpolationStates;
+using Warp.NET.Content;
+using Warp.NET.InterpolationStates;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.GameObjects;
 

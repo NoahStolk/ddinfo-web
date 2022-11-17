@@ -1,5 +1,5 @@
 using DevilDaggersInfo.App.Ui.Base.Enums;
-using Warp.Numerics;
+using Warp.NET.Numerics;
 
 namespace DevilDaggersInfo.App.Ui.Base.Components.Styles;
 

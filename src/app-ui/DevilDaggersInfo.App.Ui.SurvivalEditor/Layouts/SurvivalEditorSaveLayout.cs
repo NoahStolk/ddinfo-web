@@ -3,7 +3,7 @@ using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts;
 using DevilDaggersInfo.App.Ui.Base.States;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
-using Warp.Ui;
+using Warp.NET.Ui;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Layouts;
 
@@ -18,7 +18,7 @@ public class SurvivalEditorSaveLayout : Layout, IFileDialogLayout
 		PathsCloseButton closeButton = new(Rectangle.At(0, 0, 24, 24), LayoutManager.ToSurvivalEditorMainLayout);
 		_pathTextInput = new(Rectangle.At(0, 24, 1024, 16), false, null, null, null, GlobalStyles.TextInput);
 		TextInput fileTextInput = new(Rectangle.At(0, 48, 512, 16), false, null, null, null, GlobalStyles.TextInput);
-		TextButton saveButton = new(Rectangle.At(512, 48, 128, 16), () => SaveSpawnset(Path.Combine(_pathTextInput.Value.ToString(), fileTextInput.Value.ToString())), GlobalStyles.DefaultButtonStyle, GlobalStyles.FileSaveButton, "Save");
+		TextButton saveButton = new(Rectangle.At(512, 48, 128, 16), () => SaveSpawnset(Path.Combine(_pathTextInput.KeyboardInput.Value.ToString(), fileTextInput.KeyboardInput.Value.ToString())), GlobalStyles.DefaultButtonStyle, GlobalStyles.FileSaveButton, "Save");
 		_pathsWrapper = new(Rectangle.At(0, 96, 1024, 640), SetComponentsFromPath, SaveSpawnset);
 
 		NestingContext.Add(closeButton);
@@ -42,7 +42,7 @@ public class SurvivalEditorSaveLayout : Layout, IFileDialogLayout
 
 	public void SetComponentsFromPath(string path)
 	{
-		_pathTextInput.SetText(path);
+		_pathTextInput.KeyboardInput.SetText(path);
 		_pathsWrapper.Path = path;
 		_pathsWrapper.InitializeContent();
 	}
