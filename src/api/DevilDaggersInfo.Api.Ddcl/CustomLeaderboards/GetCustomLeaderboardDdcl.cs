@@ -4,7 +4,7 @@ namespace DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
 
 public record GetCustomLeaderboardDdcl
 {
-	public string SpawnsetName { get; init; } = null!;
+	public required string SpawnsetName { get; init; }
 
 	public GetCustomLeaderboardDaggersDdcl? Daggers { get; init; }
 

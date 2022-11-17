@@ -5,7 +5,7 @@ public class MarkerEntity
 {
 	[Key]
 	[StringLength(64)]
-	public string Name { get; set; } = null!;
+	public required string Name { get; set; }
 
 	public long Value { get; set; }
 }

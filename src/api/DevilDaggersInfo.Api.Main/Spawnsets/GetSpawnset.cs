@@ -4,9 +4,9 @@ public record GetSpawnset
 {
 	public int Id { get; init; }
 
-	public string Name { get; init; } = null!;
+	public required string Name { get; init; }
 
-	public string AuthorName { get; init; } = null!;
+	public required string AuthorName { get; init; }
 
 	public bool IsPractice { get; init; }
 
@@ -18,5 +18,5 @@ public record GetSpawnset
 
 	public DateTime LastUpdated { get; init; }
 
-	public byte[] FileBytes { get; init; } = null!;
+	public required byte[] FileBytes { get; init; }
 }

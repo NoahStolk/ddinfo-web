@@ -6,7 +6,7 @@ public record GetSpawnset
 
 	public int PlayerId { get; init; }
 
-	public string Name { get; init; } = null!;
+	public required string Name { get; init; }
 
 	public int? MaxDisplayWaves { get; init; }
 

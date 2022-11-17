@@ -6,5 +6,5 @@ public record GetPlayerForSettings
 
 	public string? CountryCode { get; init; }
 
-	public GetPlayerSettings Settings { get; init; } = null!;
+	public required GetPlayerSettings Settings { get; init; }
 }

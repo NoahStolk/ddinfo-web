@@ -8,11 +8,11 @@ public record GetSpawnsetDdse
 
 	public DateTime LastUpdated { get; init; }
 
-	public GetSpawnsetDataDdse SpawnsetData { get; init; } = null!;
+	public required GetSpawnsetDataDdse SpawnsetData { get; init; }
 
-	public string Name { get; init; } = null!;
+	public required string Name { get; init; }
 
-	public string AuthorName { get; init; } = null!;
+	public required string AuthorName { get; init; }
 
 	public bool HasCustomLeaderboard { get; init; }
 

@@ -11,80 +11,80 @@ public record AddCustomLeaderboard
 	[Required]
 	public CustomLeaderboardCategory Category { get; init; }
 
-	public AddCustomLeaderboardDaggers Daggers { get; init; } = new();
+	public required AddCustomLeaderboardDaggers Daggers { get; init; }
 
 	[Required]
 	public bool IsFeatured { get; init; }
 
-	public AddCustomLeaderboardCriteria GemsCollectedCriteria { get; init; } = new();
+	public required AddCustomLeaderboardCriteria GemsCollectedCriteria { get; init; }
 
-	public AddCustomLeaderboardCriteria GemsDespawnedCriteria { get; init; } = new();
+	public required AddCustomLeaderboardCriteria GemsDespawnedCriteria { get; init; }
 
-	public AddCustomLeaderboardCriteria GemsEatenCriteria { get; init; } = new();
+	public required AddCustomLeaderboardCriteria GemsEatenCriteria { get; init; }
 
-	public AddCustomLeaderboardCriteria EnemiesKilledCriteria { get; init; } = new();
+	public required AddCustomLeaderboardCriteria EnemiesKilledCriteria { get; init; }
 
-	public AddCustomLeaderboardCriteria DaggersFiredCriteria { get; init; } = new();
+	public required AddCustomLeaderboardCriteria DaggersFiredCriteria { get; init; }
 
-	public AddCustomLeaderboardCriteria DaggersHitCriteria { get; init; } = new();
+	public required AddCustomLeaderboardCriteria DaggersHitCriteria { get; init; }
 
-	public AddCustomLeaderboardCriteria HomingStoredCriteria { get; init; } = new();
+	public required AddCustomLeaderboardCriteria HomingStoredCriteria { get; init; }
 
-	public AddCustomLeaderboardCriteria HomingEatenCriteria { get; init; } = new();
+	public required AddCustomLeaderboardCriteria HomingEatenCriteria { get; init; }
 
-	public AddCustomLeaderboardCriteria DeathTypeCriteria { get; init; } = new();
+	public required AddCustomLeaderboardCriteria DeathTypeCriteria { get; init; }
 
-	public AddCustomLeaderboardCriteria TimeCriteria { get; init; } = new();
+	public required AddCustomLeaderboardCriteria TimeCriteria { get; init; }
 
-	public AddCustomLeaderboardCriteria LevelUpTime2Criteria { get; init; } = new();
-	public AddCustomLeaderboardCriteria LevelUpTime3Criteria { get; init; } = new();
-	public AddCustomLeaderboardCriteria LevelUpTime4Criteria { get; init; } = new();
+	public required AddCustomLeaderboardCriteria LevelUpTime2Criteria { get; init; }
+	public required AddCustomLeaderboardCriteria LevelUpTime3Criteria { get; init; }
+	public required AddCustomLeaderboardCriteria LevelUpTime4Criteria { get; init; }
 
-	public AddCustomLeaderboardCriteria EnemiesAliveCriteria { get; init; } = new();
+	public required AddCustomLeaderboardCriteria EnemiesAliveCriteria { get; init; }
 
-	public AddCustomLeaderboardCriteria Skull1KillsCriteria { get; init; } = new();
-	public AddCustomLeaderboardCriteria Skull2KillsCriteria { get; init; } = new();
-	public AddCustomLeaderboardCriteria Skull3KillsCriteria { get; init; } = new();
-	public AddCustomLeaderboardCriteria Skull4KillsCriteria { get; init; } = new();
+	public required AddCustomLeaderboardCriteria Skull1KillsCriteria { get; init; }
+	public required AddCustomLeaderboardCriteria Skull2KillsCriteria { get; init; }
+	public required AddCustomLeaderboardCriteria Skull3KillsCriteria { get; init; }
+	public required AddCustomLeaderboardCriteria Skull4KillsCriteria { get; init; }
 
-	public AddCustomLeaderboardCriteria SpiderlingKillsCriteria { get; init; } = new();
-	public AddCustomLeaderboardCriteria SpiderEggKillsCriteria { get; init; } = new();
+	public required AddCustomLeaderboardCriteria SpiderlingKillsCriteria { get; init; }
+	public required AddCustomLeaderboardCriteria SpiderEggKillsCriteria { get; init; }
 
-	public AddCustomLeaderboardCriteria Squid1KillsCriteria { get; init; } = new();
-	public AddCustomLeaderboardCriteria Squid2KillsCriteria { get; init; } = new();
-	public AddCustomLeaderboardCriteria Squid3KillsCriteria { get; init; } = new();
+	public required AddCustomLeaderboardCriteria Squid1KillsCriteria { get; init; }
+	public required AddCustomLeaderboardCriteria Squid2KillsCriteria { get; init; }
+	public required AddCustomLeaderboardCriteria Squid3KillsCriteria { get; init; }
 
-	public AddCustomLeaderboardCriteria CentipedeKillsCriteria { get; init; } = new();
-	public AddCustomLeaderboardCriteria GigapedeKillsCriteria { get; init; } = new();
-	public AddCustomLeaderboardCriteria GhostpedeKillsCriteria { get; init; } = new();
+	public required AddCustomLeaderboardCriteria CentipedeKillsCriteria { get; init; }
+	public required AddCustomLeaderboardCriteria GigapedeKillsCriteria { get; init; }
+	public required AddCustomLeaderboardCriteria GhostpedeKillsCriteria { get; init; }
 
-	public AddCustomLeaderboardCriteria Spider1KillsCriteria { get; init; } = new();
-	public AddCustomLeaderboardCriteria Spider2KillsCriteria { get; init; } = new();
+	public required AddCustomLeaderboardCriteria Spider1KillsCriteria { get; init; }
+	public required AddCustomLeaderboardCriteria Spider2KillsCriteria { get; init; }
 
-	public AddCustomLeaderboardCriteria LeviathanKillsCriteria { get; init; } = new();
-	public AddCustomLeaderboardCriteria OrbKillsCriteria { get; init; } = new();
-	public AddCustomLeaderboardCriteria ThornKillsCriteria { get; init; } = new();
+	public required AddCustomLeaderboardCriteria LeviathanKillsCriteria { get; init; }
+	public required AddCustomLeaderboardCriteria OrbKillsCriteria { get; init; }
+	public required AddCustomLeaderboardCriteria ThornKillsCriteria { get; init; }
 
-	public AddCustomLeaderboardCriteria Skull1sAliveCriteria { get; init; } = new();
-	public AddCustomLeaderboardCriteria Skull2sAliveCriteria { get; init; } = new();
-	public AddCustomLeaderboardCriteria Skull3sAliveCriteria { get; init; } = new();
-	public AddCustomLeaderboardCriteria Skull4sAliveCriteria { get; init; } = new();
+	public required AddCustomLeaderboardCriteria Skull1sAliveCriteria { get; init; }
+	public required AddCustomLeaderboardCriteria Skull2sAliveCriteria { get; init; }
+	public required AddCustomLeaderboardCriteria Skull3sAliveCriteria { get; init; }
+	public required AddCustomLeaderboardCriteria Skull4sAliveCriteria { get; init; }
 
-	public AddCustomLeaderboardCriteria SpiderlingsAliveCriteria { get; init; } = new();
-	public AddCustomLeaderboardCriteria SpiderEggsAliveCriteria { get; init; } = new();
+	public required AddCustomLeaderboardCriteria SpiderlingsAliveCriteria { get; init; }
+	public required AddCustomLeaderboardCriteria SpiderEggsAliveCriteria { get; init; }
 
-	public AddCustomLeaderboardCriteria Squid1sAliveCriteria { get; init; } = new();
-	public AddCustomLeaderboardCriteria Squid2sAliveCriteria { get; init; } = new();
-	public AddCustomLeaderboardCriteria Squid3sAliveCriteria { get; init; } = new();
+	public required AddCustomLeaderboardCriteria Squid1sAliveCriteria { get; init; }
+	public required AddCustomLeaderboardCriteria Squid2sAliveCriteria { get; init; }
+	public required AddCustomLeaderboardCriteria Squid3sAliveCriteria { get; init; }
 
-	public AddCustomLeaderboardCriteria CentipedesAliveCriteria { get; init; } = new();
-	public AddCustomLeaderboardCriteria GigapedesAliveCriteria { get; init; } = new();
-	public AddCustomLeaderboardCriteria GhostpedesAliveCriteria { get; init; } = new();
+	public required AddCustomLeaderboardCriteria CentipedesAliveCriteria { get; init; }
+	public required AddCustomLeaderboardCriteria GigapedesAliveCriteria { get; init; }
+	public required AddCustomLeaderboardCriteria GhostpedesAliveCriteria { get; init; }
 
-	public AddCustomLeaderboardCriteria Spider1sAliveCriteria { get; init; } = new();
-	public AddCustomLeaderboardCriteria Spider2sAliveCriteria { get; init; } = new();
+	public required AddCustomLeaderboardCriteria Spider1sAliveCriteria { get; init; }
+	public required AddCustomLeaderboardCriteria Spider2sAliveCriteria { get; init; }
 
-	public AddCustomLeaderboardCriteria LeviathansAliveCriteria { get; init; } = new();
-	public AddCustomLeaderboardCriteria OrbsAliveCriteria { get; init; } = new();
-	public AddCustomLeaderboardCriteria ThornsAliveCriteria { get; init; } = new();
+	public required AddCustomLeaderboardCriteria LeviathansAliveCriteria { get; init; }
+	public required AddCustomLeaderboardCriteria OrbsAliveCriteria { get; init; }
+	public required AddCustomLeaderboardCriteria ThornsAliveCriteria { get; init; }
 }

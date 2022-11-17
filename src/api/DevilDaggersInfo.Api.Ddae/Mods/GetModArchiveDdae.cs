@@ -6,5 +6,5 @@ public record GetModArchiveDdae
 
 	public long FileSizeExtracted { get; init; }
 
-	public List<GetModBinaryDdae> Binaries { get; init; } = null!;
+	public required List<GetModBinaryDdae> Binaries { get; init; }
 }

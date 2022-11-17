@@ -4,9 +4,9 @@ public record AuthenticationResponse
 {
 	public int Id { get; init; }
 
-	public string Name { get; init; } = null!;
+	public required string Name { get; init; }
 
-	public List<string> RoleNames { get; init; } = new();
+	public required List<string> RoleNames { get; init; }
 
 	public int? PlayerId { get; init; }
 }

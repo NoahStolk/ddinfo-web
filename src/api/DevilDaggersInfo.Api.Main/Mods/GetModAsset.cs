@@ -6,7 +6,7 @@ public record GetModAsset
 {
 	public AssetType Type { get; init; }
 
-	public string Name { get; init; } = null!;
+	public required string Name { get; init; }
 
 	public long Size { get; init; }
 

@@ -6,7 +6,7 @@ public record GetPlayerForOverview : IAdminOverviewGetDto
 {
 	public int Id { get; init; }
 
-	public string PlayerName { get; init; } = null!;
+	public required string PlayerName { get; init; }
 
 	public string? CommonName { get; init; }
 

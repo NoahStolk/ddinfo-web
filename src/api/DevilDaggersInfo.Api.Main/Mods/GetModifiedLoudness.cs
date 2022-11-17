@@ -2,7 +2,7 @@ namespace DevilDaggersInfo.Api.Main.Mods;
 
 public record GetModifiedLoudness
 {
-	public string AssetName { get; init; } = null!;
+	public required string AssetName { get; init; }
 
 	public bool IsProhibited { get; init; }
 

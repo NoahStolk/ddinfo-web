@@ -40,5 +40,5 @@ public record GetCustomEntry
 
 	public DateTime SubmitDate { get; init; }
 
-	public string ClientVersion { get; init; } = null!;
+	public required string ClientVersion { get; init; }
 }

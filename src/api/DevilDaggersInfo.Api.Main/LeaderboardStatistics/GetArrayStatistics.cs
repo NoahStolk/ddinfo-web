@@ -2,15 +2,15 @@ namespace DevilDaggersInfo.Api.Main.LeaderboardStatistics;
 
 public record GetArrayStatistics
 {
-	public GetArrayStatistic Times { get; init; } = null!;
+	public required GetArrayStatistic Times { get; init; }
 
-	public GetArrayStatistic Kills { get; init; } = null!;
+	public required GetArrayStatistic Kills { get; init; }
 
-	public GetArrayStatistic Gems { get; init; } = null!;
+	public required GetArrayStatistic Gems { get; init; }
 
-	public GetArrayStatistic DaggersFired { get; init; } = null!;
+	public required GetArrayStatistic DaggersFired { get; init; }
 
-	public GetArrayStatistic DaggersHit { get; init; } = null!;
+	public required GetArrayStatistic DaggersHit { get; init; }
 
-	public GetArrayStatistic Accuracy { get; init; } = null!;
+	public required GetArrayStatistic Accuracy { get; init; }
 }

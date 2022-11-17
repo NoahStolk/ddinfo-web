@@ -2,5 +2,5 @@ namespace DevilDaggersInfo.Api.Dd;
 
 public record GetSpawnsetNameByHash
 {
-	public string Name { get; init; } = null!;
+	public required string Name { get; init; }
 }

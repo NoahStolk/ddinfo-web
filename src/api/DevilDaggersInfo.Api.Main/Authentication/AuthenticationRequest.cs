@@ -5,5 +5,5 @@ namespace DevilDaggersInfo.Api.Main.Authentication;
 public record AuthenticationRequest
 {
 	[Required]
-	public string Jwt { get; init; } = null!;
+	public required string Jwt { get; init; }
 }

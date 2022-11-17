@@ -8,5 +8,5 @@ public record GetLeaderboardStatisticsDdLive
 
 	public int TotalEntries { get; init; }
 
-	public GetArrayStatisticsDdLive Statistics { get; init; } = null!;
+	public required GetArrayStatisticsDdLive Statistics { get; init; }
 }

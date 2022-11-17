@@ -6,7 +6,7 @@ public record GetWorldRecord
 {
 	public DateTime DateTime { get; init; }
 
-	public GetWorldRecordEntry Entry { get; init; } = null!;
+	public required GetWorldRecordEntry Entry { get; init; }
 
 	public GameVersion? GameVersion { get; init; }
 

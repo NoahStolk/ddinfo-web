@@ -6,9 +6,9 @@ public record GetCustomLeaderboardForOverview : IAdminOverviewGetDto
 {
 	public int Id { get; init; }
 
-	public string SpawnsetName { get; init; } = null!;
+	public required string SpawnsetName { get; init; }
 
-	public GetCustomLeaderboardDaggers Daggers { get; init; } = new();
+	public required GetCustomLeaderboardDaggers Daggers { get; init; }
 
 	public bool IsFeatured { get; init; }
 

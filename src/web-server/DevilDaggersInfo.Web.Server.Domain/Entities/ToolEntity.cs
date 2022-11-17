@@ -5,14 +5,14 @@ public class ToolEntity
 {
 	[Key]
 	[StringLength(64)]
-	public string Name { get; init; } = string.Empty;
+	public required string Name { get; init; }
 
 	[StringLength(64)]
-	public string DisplayName { get; init; } = string.Empty;
+	public required string DisplayName { get; init; }
 
 	[StringLength(16)]
-	public string CurrentVersionNumber { get; set; } = string.Empty;
+	public required string CurrentVersionNumber { get; set; }
 
 	[StringLength(16)]
-	public string RequiredVersionNumber { get; set; } = string.Empty;
+	public required string RequiredVersionNumber { get; set; }
 }

@@ -4,7 +4,7 @@ namespace DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
 
 public record GetCustomLeaderboard
 {
-	public string SpawnsetName { get; init; } = null!;
+	public required string SpawnsetName { get; init; }
 
 	public GetCustomLeaderboardDaggersDdcl? Daggers { get; init; }
 
@@ -12,5 +12,5 @@ public record GetCustomLeaderboard
 
 	public bool IsAscending { get; init; }
 
-	public List<GetCustomEntry> SortedEntries { get; init; } = new();
+	public required List<GetCustomEntry> SortedEntries { get; init; }
 }

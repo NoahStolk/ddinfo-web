@@ -8,7 +8,7 @@ public record BinaryData
 	/// This name should not contain the type prefix or the mod name.
 	/// </summary>
 	[StringLength(64, MinimumLength = 1)]
-	public string Name { get; set; } = string.Empty;
+	public required string Name { get; init; }
 
-	public byte[] Data { get; init; } = Array.Empty<byte>();
+	public required byte[] Data { get; init; }
 }

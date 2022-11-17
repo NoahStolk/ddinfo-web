@@ -2,7 +2,7 @@ namespace DevilDaggersInfo.Api.Main.Tools;
 
 public record GetToolVersionChange
 {
-	public string Description { get; init; } = null!;
+	public required string Description { get; init; }
 
 	public IReadOnlyList<GetToolVersionChange>? SubChanges { get; init; }
 }

@@ -6,11 +6,11 @@ public record GetCustomLeaderboardOverviewDdLive
 {
 	public int Id { get; init; }
 
-	public string SpawnsetName { get; init; } = null!;
+	public required string SpawnsetName { get; init; }
 
 	public int SpawnsetAuthorId { get; init; }
 
-	public string SpawnsetAuthorName { get; init; } = null!;
+	public required string SpawnsetAuthorName { get; init; }
 
 	public GetCustomLeaderboardDaggersDdLive? Daggers { get; init; }
 

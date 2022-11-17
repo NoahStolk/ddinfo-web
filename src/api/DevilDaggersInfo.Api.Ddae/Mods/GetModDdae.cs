@@ -4,13 +4,13 @@ namespace DevilDaggersInfo.Api.Ddae.Mods;
 
 public record GetModDdae
 {
-	public string Name { get; init; } = null!;
+	public required string Name { get; init; }
 
 	public string? HtmlDescription { get; init; }
 
 	public string? TrailerUrl { get; init; }
 
-	public List<string> Authors { get; init; } = null!;
+	public required List<string> Authors { get; init; }
 
 	public DateTime LastUpdated { get; init; }
 
@@ -22,5 +22,5 @@ public record GetModDdae
 
 	public GetModArchiveDdae? ModArchive { get; init; }
 
-	public List<string> ScreenshotFileNames { get; init; } = null!;
+	public required List<string> ScreenshotFileNames { get; init; }
 }

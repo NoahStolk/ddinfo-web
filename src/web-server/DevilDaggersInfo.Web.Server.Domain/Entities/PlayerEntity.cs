@@ -9,7 +9,7 @@ public class PlayerEntity : IAuditable
 	public int Id { get; set; }
 
 	[StringLength(32)]
-	public string PlayerName { get; set; } = null!;
+	public required string PlayerName { get; set; }
 
 	[StringLength(32)]
 	public string? CommonName { get; set; }
