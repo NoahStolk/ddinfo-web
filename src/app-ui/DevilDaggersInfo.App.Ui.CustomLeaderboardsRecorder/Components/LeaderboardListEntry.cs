@@ -11,7 +11,7 @@ using DevilDaggersInfo.App.Ui.Base.Settings;
 using DevilDaggersInfo.Common;
 using Silk.NET.GLFW;
 using Warp.NET;
-using Warp.NET.Numerics;
+using Warp.NET.Text;
 using Warp.NET.Ui;
 using Warp.NET.Ui.Components;
 

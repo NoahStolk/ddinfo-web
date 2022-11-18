@@ -7,7 +7,7 @@ using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.Enums;
 using DevilDaggersInfo.App.Ui.Base.Rendering;
 using DevilDaggersInfo.Types.Web;
-using Warp.NET.Numerics;
+using Warp.NET.Text;
 using Warp.NET.Ui;
 using Warp.NET.Ui.Components;
 
@@ -49,8 +49,8 @@ public class LeaderboardList : AbstractComponent
 			NestingContext.Add(dropdownEntry);
 		}
 
-		_prevButton = new(Rectangle.At(4, 64, 20, 20), () => ChangeAndLoad(() => --_pageIndex), GlobalStyles.DefaultButtonStyle, "Previous", Textures.ArrowLeft);
-		_nextButton = new(Rectangle.At(24, 64, 20, 20), () => ChangeAndLoad(() => ++_pageIndex), GlobalStyles.DefaultButtonStyle, "Next", Textures.ArrowRight);
+		_prevButton = new(Rectangle.At(4, 64, 20, 20), () => ChangeAndLoad(() => --_pageIndex), GlobalStyles.DefaultButtonStyle, "Previous", WarpTextures.ArrowLeft);
+		_nextButton = new(Rectangle.At(24, 64, 20, 20), () => ChangeAndLoad(() => ++_pageIndex), GlobalStyles.DefaultButtonStyle, "Next", WarpTextures.ArrowRight);
 
 		NestingContext.Add(_prevButton);
 		NestingContext.Add(_nextButton);

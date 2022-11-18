@@ -1,5 +1,5 @@
-using DevilDaggersInfo.App.Ui.Base.Enums;
 using Warp.NET.Numerics;
+using Warp.NET.Text;
 
 namespace DevilDaggersInfo.App.Ui.Base.Rendering.Data;
 

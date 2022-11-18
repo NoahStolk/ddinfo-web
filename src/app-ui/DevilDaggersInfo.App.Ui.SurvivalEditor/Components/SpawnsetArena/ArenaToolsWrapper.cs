@@ -17,11 +17,11 @@ public class ArenaToolsWrapper : AbstractComponent
 	public ArenaToolsWrapper(IBounds bounds)
 		: base(bounds)
 	{
-		AddToolButton(0 + _arenaButtonSize * 0, 0, ArenaTool.Pencil, Textures.Pencil, "Pencil");
-		AddToolButton(0 + _arenaButtonSize * 1, 0, ArenaTool.Line, Textures.Line, "Line");
-		AddToolButton(0 + _arenaButtonSize * 2, 0, ArenaTool.Rectangle, Textures.Rectangle, "Rectangle");
-		AddToolButton(0 + _arenaButtonSize * 3, 0, ArenaTool.Bucket, Textures.Bucket, "Bucket");
-		AddToolButton(0 + _arenaButtonSize * 4, 0, ArenaTool.Dagger, Textures.Dagger, "Race dagger");
+		AddToolButton(0 + _arenaButtonSize * 0, 0, ArenaTool.Pencil, WarpTextures.Pencil, "Pencil");
+		AddToolButton(0 + _arenaButtonSize * 1, 0, ArenaTool.Line, WarpTextures.Line, "Line");
+		AddToolButton(0 + _arenaButtonSize * 2, 0, ArenaTool.Rectangle, WarpTextures.Rectangle, "Rectangle");
+		AddToolButton(0 + _arenaButtonSize * 3, 0, ArenaTool.Bucket, WarpTextures.Bucket, "Bucket");
+		AddToolButton(0 + _arenaButtonSize * 4, 0, ArenaTool.Dagger, WarpTextures.Dagger, "Race dagger");
 
 		_toolSettingsWrappers.Add(ArenaTool.Bucket, new BucketToolSettingsWrapper(Rectangle.At(0, _arenaButtonSize, bounds.Size.X, 64)));
 

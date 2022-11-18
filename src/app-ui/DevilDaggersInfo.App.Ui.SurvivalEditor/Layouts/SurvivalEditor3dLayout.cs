@@ -115,7 +115,7 @@ public class SurvivalEditor3dLayout : Layout, ISurvivalEditor3dLayout
 	{
 		_camera.PreRender();
 
-		Shaders.Mesh.Use();
+		WarpShaders.Mesh.Use();
 		Shader.SetMatrix4x4(MeshUniforms.View, _camera.ViewMatrix);
 		Shader.SetMatrix4x4(MeshUniforms.Projection, _camera.Projection);
 		Shader.SetInt(MeshUniforms.TextureDiffuse, 0);

@@ -3,6 +3,7 @@ using DevilDaggersInfo.App.Ui.Base.Rendering.Data;
 using DevilDaggersInfo.Common.Exceptions;
 using System.Numerics;
 using Warp.NET.Numerics;
+using Warp.NET.Text;
 
 namespace DevilDaggersInfo.App.Ui.Base.Rendering;
 

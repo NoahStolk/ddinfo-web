@@ -7,6 +7,7 @@ using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Core.Wiki.Objects;
 using DevilDaggersInfo.Types.Core.Spawnsets;
+using Warp.NET.Text;
 using Warp.NET.Ui;
 using Warp.NET.Ui.Components;
 
@@ -48,9 +49,9 @@ public class SpawnEntry : AbstractComponent
 			(true, true) => new(0, 127, 255, 127),
 			(true, false) => new(0, 127, 255, 63),
 			(false, true) => Color.Gray(0.2f),
-			_ => Color.Transparent,
+			_ => Color.Invisible,
 		};
-		if (background != Color.Transparent)
+		if (background != Color.Invisible)
 			RenderBatchCollector.RenderRectangleTopLeft(Bounds.Size, parentPosition + Bounds.TopLeft, Depth, background);
 
 		RenderText(Rectangle.At(Bounds.X1, Bounds.Y1, 96, Spawns.SpawnEntryHeight), _enemyColor, _enemy?.Name ?? "Empty", TextAlign.Left, FontSize.F8X8);

@@ -1,6 +1,7 @@
 using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.Enums;
+using Warp.NET.Text;
 using Warp.NET.Ui;
 using Warp.NET.Ui.Components;
 

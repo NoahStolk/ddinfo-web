@@ -2,6 +2,7 @@ using DevilDaggersInfo.App.Ui.Base.Enums;
 using DevilDaggersInfo.App.Ui.Base.Rendering;
 using DevilDaggersInfo.Common.Exceptions;
 using Warp.NET.Numerics;
+using Warp.NET.Text;
 using Warp.NET.Ui;
 using Warp.NET.Ui.Components;
 
