@@ -5,7 +5,7 @@ namespace DevilDaggersInfo.Razor.Core.Canvas;
 
 public partial class WebAssemblyCanvas2d : Canvas
 {
-	public const string ModuleName = nameof(WebAssemblyCanvas2d);
+	private const string _moduleName = nameof(WebAssemblyCanvas2d);
 
 	public WebAssemblyCanvas2d(string id)
 		: base(id)
@@ -42,9 +42,6 @@ public partial class WebAssemblyCanvas2d : Canvas
 
 	public double LineWidth
 	{
-		// string str = GetLineWidth(Id);
-		// _ = double.TryParse(str, out double width);
-		// _lineWidth = width;
 		get => GetLineWidth(Id);
 		set => SetLineWidth(Id, value);
 	}
@@ -96,103 +93,103 @@ public partial class WebAssemblyCanvas2d : Canvas
 
 	#region JSImport
 
-	[JSImport("getFillStyle", ModuleName)]
+	[JSImport("getFillStyle", _moduleName)]
 	private static partial string GetFillStyle(string id);
 
-	[JSImport("setFillStyle", ModuleName)]
+	[JSImport("setFillStyle", _moduleName)]
 	private static partial void SetFillStyle(string id, string fillStyle);
 
-	[JSImport("getStrokeStyle", ModuleName)]
+	[JSImport("getStrokeStyle", _moduleName)]
 	private static partial string GetStrokeStyle(string id);
 
-	[JSImport("setStrokeStyle", ModuleName)]
+	[JSImport("setStrokeStyle", _moduleName)]
 	private static partial void SetStrokeStyle(string id, string strokeStyle);
 
-	[JSImport("getFont", ModuleName)]
+	[JSImport("getFont", _moduleName)]
 	private static partial string GetFont(string id);
 
-	[JSImport("setFont", ModuleName)]
+	[JSImport("setFont", _moduleName)]
 	private static partial void SetFont(string id, string font);
 
-	[JSImport("getTextAlign", ModuleName)]
+	[JSImport("getTextAlign", _moduleName)]
 	private static partial string GetTextAlign(string id);
 
-	[JSImport("setTextAlign", ModuleName)]
+	[JSImport("setTextAlign", _moduleName)]
 	private static partial void SetTextAlign(string id, string textAlign);
 
-	[JSImport("getLineWidth", ModuleName)]
+	[JSImport("getLineWidth", _moduleName)]
 	private static partial double GetLineWidth(string id);
 
-	[JSImport("setLineWidth", ModuleName)]
+	[JSImport("setLineWidth", _moduleName)]
 	private static partial void SetLineWidth(string id, double lineWidth);
 
-	[JSImport("clearRect", ModuleName)]
+	[JSImport("clearRect", _moduleName)]
 	private static partial void ClearRect(string id, double x, double y, double width, double height);
 
-	[JSImport("fillRect", ModuleName)]
+	[JSImport("fillRect", _moduleName)]
 	private static partial void FillRect(string id, double x, double y, double width, double height);
 
-	[JSImport("strokeRect", ModuleName)]
+	[JSImport("strokeRect", _moduleName)]
 	private static partial void StrokeRect(string id, double x, double y, double width, double height);
 
-	[JSImport("beginPath", ModuleName)]
+	[JSImport("beginPath", _moduleName)]
 	private static partial void BeginPath(string id);
 
-	[JSImport("closePath", ModuleName)]
+	[JSImport("closePath", _moduleName)]
 	private static partial void ClosePath(string id);
 
-	[JSImport("moveTo", ModuleName)]
+	[JSImport("moveTo", _moduleName)]
 	private static partial void MoveTo(string id, double x, double y);
 
-	[JSImport("lineTo", ModuleName)]
+	[JSImport("lineTo", _moduleName)]
 	private static partial void LineTo(string id, double x, double y);
 
-	[JSImport("bezierCurveTo", ModuleName)]
+	[JSImport("bezierCurveTo", _moduleName)]
 	private static partial void BezierCurveTo(string id, double cp1X, double cp1Y, double cp2X, double cp2Y, double x, double y);
 
-	[JSImport("arc", ModuleName)]
+	[JSImport("arc", _moduleName)]
 	private static partial void Arc(string id, double x, double y, double radius, double startAngle, double endAngle, bool anticlockwise = false);
 
-	[JSImport("arcTo", ModuleName)]
+	[JSImport("arcTo", _moduleName)]
 	private static partial void ArcTo(string id, double x1, double y1, double x2, double y2, double radius);
 
-	[JSImport("rect", ModuleName)]
+	[JSImport("rect", _moduleName)]
 	private static partial void Rect(string id, double x, double y, double width, double height);
 
-	[JSImport("ellipse", ModuleName)]
+	[JSImport("ellipse", _moduleName)]
 	private static partial void Ellipse(string id, double x, double y, double radiusX, double radiusY, double rotation = 0f, double startAngle = 0f, double endAngle = MathF.PI * 2, bool anticlockwise = false);
 
-	[JSImport("fill", ModuleName)]
+	[JSImport("fill", _moduleName)]
 	private static partial void Fill(string id);
 
-	[JSImport("stroke", ModuleName)]
+	[JSImport("stroke", _moduleName)]
 	private static partial void Stroke(string id);
 
-	[JSImport("rotate", ModuleName)]
+	[JSImport("rotate", _moduleName)]
 	private static partial void Rotate(string id, double angle);
 
-	[JSImport("rotateAt", ModuleName)]
+	[JSImport("rotateAt", _moduleName)]
 	private static partial void RotateAt(string id, double x, double y, double angle);
 
-	[JSImport("scale", ModuleName)]
+	[JSImport("scale", _moduleName)]
 	private static partial void Scale(string id, double x, double y);
 
-	[JSImport("translate", ModuleName)]
+	[JSImport("translate", _moduleName)]
 	private static partial void Translate(string id, double x, double y);
 
-	[JSImport("transform", ModuleName)]
+	[JSImport("transform", _moduleName)]
 	private static partial void Transform(string id, double m11, double m12, double m21, double m22, double dx, double dy);
 
-	[JSImport("setTransform", ModuleName)]
+	[JSImport("setTransform", _moduleName)]
 	private static partial void SetTransform(string id, double m11, double m12, double m21, double m22, double dx, double dy);
 
-	[JSImport("save", ModuleName)]
+	[JSImport("save", _moduleName)]
 	private static partial void Save(string id);
 
-	[JSImport("restore", ModuleName)]
+	[JSImport("restore", _moduleName)]
 	private static partial void Restore(string id);
 
-	[JSImport("strokeText", ModuleName)]
+	[JSImport("strokeText", _moduleName)]
 	private static partial void StrokeText(string id, string text, double x, double y);
 
 	#endregion JSImport

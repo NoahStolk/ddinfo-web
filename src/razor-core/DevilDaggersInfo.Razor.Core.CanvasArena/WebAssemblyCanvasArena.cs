@@ -5,14 +5,16 @@ namespace DevilDaggersInfo.Razor.Core.CanvasArena;
 
 public partial class WebAssemblyCanvasArena : WebAssemblyCanvas2d
 {
+	private const string _moduleName = nameof(WebAssemblyCanvasArena);
+
 	public WebAssemblyCanvasArena(string id)
 		: base(id)
 	{
 	}
 
-	public void DrawTile(int x, int y, int r, int g, int b, float tileSize)
-		=> DrawTile(Id, x, y, r, g, b, tileSize);
+	public void DrawArena(int[] colors, int canvasSize, float shrinkRadius, bool shouldRenderRaceDagger, float daggerX, float daggerY)
+		=> DrawArena(Id, colors, canvasSize, shrinkRadius, shouldRenderRaceDagger, daggerX, daggerY);
 
-	[JSImport("drawTile", ModuleName)]
-	private static partial void DrawTile(string id, int x, int y, int r, int g, int b, float tileSize);
+	[JSImport("drawArena", _moduleName)]
+	private static partial void DrawArena(string id, int[] colors, int canvasSize, float shrinkRadius, bool shouldRenderRaceDagger, float daggerX, float daggerY);
 }
