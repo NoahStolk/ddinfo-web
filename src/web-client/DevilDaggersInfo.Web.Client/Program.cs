@@ -6,7 +6,6 @@ using DevilDaggersInfo.Web.Client.HttpClients;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.JSInterop;
 using System.Runtime.InteropServices.JavaScript;
 
 namespace DevilDaggersInfo.Web.Client;
@@ -32,8 +31,6 @@ public static class Program
 
 		builder.Services.AddHttpClient<MainApiHttpClient>(client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
 		builder.Services.AddHttpClient<AdminApiHttpClient>(client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
-
-		builder.Services.AddSingleton(serviceProvider => (IJSUnmarshalledRuntime)serviceProvider.GetRequiredService<IJSRuntime>());
 
 		builder.Services.AddBlazoredLocalStorage();
 
