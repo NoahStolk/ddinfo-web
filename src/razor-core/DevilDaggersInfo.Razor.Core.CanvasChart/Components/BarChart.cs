@@ -28,10 +28,10 @@ public partial class BarChart
 	private double ChartHeight => _canvasHeight - Options.ChartMarginYInPx * 2;
 
 	[Inject]
-	public IJSRuntime JSRuntime { get; set; } = null!;
+	public required IJSRuntime JSRuntime { get; set; }
 
 	[Inject]
-	public IJSUnmarshalledRuntime JSUnmarshalledRuntime { get; set; } = null!;
+	public required IJSUnmarshalledRuntime JSUnmarshalledRuntime { get; set; }
 
 	[Parameter]
 	[EditorRequired]
@@ -64,7 +64,7 @@ public partial class BarChart
 			await JSRuntime.InvokeAsync<object>("chartInitialResize", DotNetObjectReference.Create(this));
 		}
 
-		_context = new WebAssemblyCanvas2d($"{UniqueName}-canvas", new(JSUnmarshalledRuntime));
+		_context = new WebAssemblyCanvas2d($"{UniqueName}-canvas", JSUnmarshalledRuntime);
 
 		Render();
 	}

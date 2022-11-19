@@ -10,13 +10,13 @@ public partial class WebAssemblySpawnsetArena
 	private WebAssemblyCanvasArena? _context;
 
 	[Inject]
-	public IJSUnmarshalledRuntime JSUnmarshalledRuntime { get; set; } = null!;
+	public required IJSUnmarshalledRuntime JSUnmarshalledRuntime { get; set; }
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
 		await base.OnAfterRenderAsync(firstRender);
 
-		_context = new(_canvasId, new(JSUnmarshalledRuntime));
+		_context = new(_canvasId, JSUnmarshalledRuntime);
 
 		Render();
 	}

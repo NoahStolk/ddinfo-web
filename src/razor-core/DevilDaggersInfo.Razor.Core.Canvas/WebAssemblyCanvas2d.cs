@@ -1,5 +1,6 @@
 using DevilDaggersInfo.Razor.Core.Canvas.JS;
 using DevilDaggersInfo.Razor.Core.Canvas.JSRuntime;
+using Microsoft.JSInterop;
 
 namespace DevilDaggersInfo.Razor.Core.Canvas;
 
@@ -21,8 +22,8 @@ public class WebAssemblyCanvas2d : WebAssemblyCanvas
 	private float? _shadowOffsetX;
 	private float? _shadowOffsetY;
 
-	public WebAssemblyCanvas2d(string id, WebAssemblyRuntimeWrapper runtimeWrapper)
-		: base(id, runtimeWrapper)
+	public WebAssemblyCanvas2d(string id, IJSUnmarshalledRuntime runtime)
+		: base(id, runtime)
 	{
 	}
 
