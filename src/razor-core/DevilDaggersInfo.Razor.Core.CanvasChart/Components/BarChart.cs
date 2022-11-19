@@ -30,9 +30,6 @@ public partial class BarChart
 	[Inject]
 	public required IJSRuntime JSRuntime { get; set; }
 
-	[Inject]
-	public required IJSUnmarshalledRuntime JSUnmarshalledRuntime { get; set; }
-
 	[Parameter]
 	[EditorRequired]
 	public string UniqueName { get; set; } = null!;
@@ -64,7 +61,7 @@ public partial class BarChart
 			await JSRuntime.InvokeAsync<object>("chartInitialResize", DotNetObjectReference.Create(this));
 		}
 
-		_context = new WebAssemblyCanvas2d($"{UniqueName}-canvas", JSUnmarshalledRuntime);
+		_context = new WebAssemblyCanvas2d($"{UniqueName}-canvas");
 
 		Render();
 	}
