@@ -18,11 +18,11 @@ public abstract class SpawnsetArena : ComponentBase
 	protected SpawnsetArenaHoverInfo SpawnsetArenaHoverInfo { get; set; } = null!;
 
 	[Inject]
-	public IJSRuntime JSRuntime { get; set; } = null!;
+	public required IJSRuntime JSRuntime { get; set; }
 
 	[Parameter]
 	[EditorRequired]
-	public SpawnsetBinary SpawnsetBinary { get; set; } = null!;
+	public required SpawnsetBinary SpawnsetBinary { get; set; }
 
 	[Parameter]
 	[EditorRequired]
