@@ -42,7 +42,7 @@ public class ArenaLineState : IArenaState
 
 	public void Render(ArenaMousePosition mousePosition, Vector2i<int> origin, float depth)
 	{
-		Loop(mousePosition, (i, j) => Root.Game.RectangleRenderer.Schedule(new(_tileSize), origin + new Vector2i<int>(i, j) * _tileSize, depth, GlobalColors.HalfTransparentWhite));
+		Loop(mousePosition, (i, j) => Root.Game.RectangleRenderer.Schedule(new(_tileSize), origin + new Vector2i<int>(i, j) * _tileSize, depth, Color.HalfTransparentWhite));
 	}
 
 	private void Loop(ArenaMousePosition mousePosition, Action<int, int> action)

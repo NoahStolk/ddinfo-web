@@ -15,6 +15,7 @@ namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components;
 
 public class LeaderboardList : AbstractComponent
 {
+	private const int _borderSize = 1;
 	private const int _headerHeight = 16;
 	private const int _pageSize = 20;
 
@@ -95,7 +96,7 @@ public class LeaderboardList : AbstractComponent
 				foreach (GetCustomLeaderboardForOverview cl in cls.Results)
 				{
 					const int height = 16;
-					_leaderboardComponents.Add(new(Rectangle.At(0, y, Bounds.Size.X, height), cl) { Depth = Depth + 2 });
+					_leaderboardComponents.Add(new(Rectangle.At(_borderSize, y, Bounds.Size.X - _borderSize * 2, height), cl) { Depth = Depth + 2 });
 					y += height;
 				}
 
@@ -123,10 +124,9 @@ public class LeaderboardList : AbstractComponent
 	{
 		base.Render(parentPosition);
 
-		const int border = 1;
 		Vector2i<int> center = Bounds.TopLeft + Bounds.Size / 2;
 		Root.Game.RectangleRenderer.Schedule(Bounds.Size, center + parentPosition, Depth, Color.Green);
-		Root.Game.RectangleRenderer.Schedule(Bounds.Size - new Vector2i<int>(border * 2), center, Depth + 1, Color.Black);
+		Root.Game.RectangleRenderer.Schedule(Bounds.Size - new Vector2i<int>(_borderSize * 2), center, Depth + 1, Color.Black);
 
 		Root.Game.MonoSpaceFontRenderer12.Schedule(new(2), parentPosition + Bounds.TopLeft + new Vector2i<int>(4, 36), Depth + 2, Color.Yellow, $"{_category} leaderboards", TextAlign.Left);
 

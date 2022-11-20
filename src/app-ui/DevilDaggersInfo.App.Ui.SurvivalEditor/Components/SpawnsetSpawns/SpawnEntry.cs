@@ -45,8 +45,8 @@ public class SpawnEntry : AbstractComponent
 		bool isSelected = StateManager.SpawnEditorState.SelectedIndices.Contains(Index);
 		Color background = (isSelected, Hover) switch
 		{
-			(true, true) => new(0, 127, 255, 127),
-			(true, false) => new(0, 127, 255, 63),
+			(true, true) => GlobalColors.EntrySelectHover,
+			(true, false) => GlobalColors.EntrySelect,
 			(false, true) => Color.Gray(0.2f),
 			_ => Color.Invisible,
 		};

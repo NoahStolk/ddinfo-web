@@ -82,6 +82,6 @@ public class LeaderboardListEntry : AbstractComponent
 		base.Render(parentPosition);
 
 		if (_isHovering)
-			Root.Game.RectangleRenderer.Schedule(Bounds.Size, parentPosition + Bounds.TopLeft + Bounds.Size / 2, Depth - 1, new(127, 0, 0, 255));
+			Root.Game.RectangleRenderer.Schedule(Bounds.Size, parentPosition + Bounds.TopLeft + Bounds.Size / 2, Depth - 1, GlobalColors.EntrySelect);
 	}
 }
