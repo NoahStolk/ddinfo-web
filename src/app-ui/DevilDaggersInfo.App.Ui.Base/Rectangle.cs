@@ -3,6 +3,7 @@ using Warp.NET.Ui;
 
 namespace DevilDaggersInfo.App.Ui.Base;
 
+// TODO: Use Fractions and RenderImpl.Ui Rectangle.
 public record Rectangle(int X1, int Y1, int X2, int Y2) : IBounds
 {
 	public Vector2i<int> TopLeft => new(X1, Y1);

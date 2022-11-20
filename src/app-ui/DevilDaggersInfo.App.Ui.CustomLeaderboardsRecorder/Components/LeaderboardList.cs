@@ -95,7 +95,7 @@ public class LeaderboardList : AbstractComponent
 				foreach (GetCustomLeaderboardForOverview cl in cls.Results)
 				{
 					const int height = 16;
-					_leaderboardComponents.Add(new(Rectangle.At(0, y, Bounds.Size.X, height), cl) { Depth = Depth + 1 });
+					_leaderboardComponents.Add(new(Rectangle.At(0, y, Bounds.Size.X, height), cl) { Depth = Depth + 2 });
 					y += height;
 				}
 
@@ -124,8 +124,9 @@ public class LeaderboardList : AbstractComponent
 		base.Render(parentPosition);
 
 		const int border = 1;
-		Root.Game.RectangleRenderer.Schedule(Bounds.Size, Bounds.TopLeft + parentPosition, Depth, Color.Green);
-		Root.Game.RectangleRenderer.Schedule(Bounds.Size - new Vector2i<int>(border * 2), Bounds.TopLeft + parentPosition + new Vector2i<int>(border), Depth + 1, Color.Black);
+		Vector2i<int> center = Bounds.TopLeft + Bounds.Size / 2;
+		Root.Game.RectangleRenderer.Schedule(Bounds.Size, center + parentPosition, Depth, Color.Green);
+		Root.Game.RectangleRenderer.Schedule(Bounds.Size - new Vector2i<int>(border * 2), center, Depth + 1, Color.Black);
 
 		Root.Game.MonoSpaceFontRenderer12.Schedule(new(2), parentPosition + Bounds.TopLeft + new Vector2i<int>(4, 36), Depth + 2, Color.Yellow, $"{_category} leaderboards", TextAlign.Left);
 
