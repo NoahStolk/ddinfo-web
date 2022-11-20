@@ -27,7 +27,7 @@ public class ShrinkSlider : Slider
 			int height = Bounds.Size.Y - SliderStyle.BorderSize;
 			int position = (int)(percentage * (Bounds.Size.X - SliderStyle.BorderSize * 2 - width / 2));
 			Vector2i<int> origin = parentPosition + topLeft;
-			Root.Game.RectangleRenderer.Schedule(new(width, height), origin + new Vector2i<int>(position + SliderStyle.BorderSize / 2, SliderStyle.BorderSize / 2), Depth + 2, color);
+			Root.Game.RectangleRenderer.Schedule(new(width, height), origin + new Vector2i<int>(position + SliderStyle.BorderSize / 2, SliderStyle.BorderSize / 2) + new Vector2i<int>(width, height) / 2, Depth + 2, color);
 		}
 	}
 }

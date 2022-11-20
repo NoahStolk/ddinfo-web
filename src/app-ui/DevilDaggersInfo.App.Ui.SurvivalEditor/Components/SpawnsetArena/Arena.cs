@@ -141,7 +141,8 @@ public class Arena : AbstractComponent
 
 		Vector2i<int> origin = parentPosition + new Vector2i<int>(Bounds.X1, Bounds.Y1);
 		Vector2i<int> center = origin + new Vector2i<int>((int)(SpawnsetBinary.ArenaDimensionMax / 2f * _tileSize));
-		Root.Game.RectangleRenderer.Schedule(Bounds.Size, origin, Depth, Color.Black);
+		Vector2i<int> halfTileSize = new Vector2i<int>(_tileSize, _tileSize) / 2;
+		Root.Game.RectangleRenderer.Schedule(Bounds.Size, center, Depth, Color.Black);
 
 		for (int i = 0; i < StateManager.SpawnsetState.Spawnset.ArenaDimension; i++)
 		{
@@ -157,18 +158,18 @@ public class Arena : AbstractComponent
 				if (Math.Abs(actualHeight - height) < 0.001f)
 				{
 					if (Color.Black != colorValue)
-						Root.Game.RectangleRenderer.Schedule(new(_tileSize), origin + new Vector2i<int>(x, y), Depth + 1, colorValue);
+						Root.Game.RectangleRenderer.Schedule(new(_tileSize), origin + new Vector2i<int>(x, y) + halfTileSize, Depth + 1, colorValue);
 				}
 				else
 				{
 					if (Color.Black != colorCurrent)
-						Root.Game.RectangleRenderer.Schedule(new(_tileSize), origin + new Vector2i<int>(x, y), Depth + 1, colorCurrent);
+						Root.Game.RectangleRenderer.Schedule(new(_tileSize), origin + new Vector2i<int>(x, y) + halfTileSize, Depth + 1, colorCurrent);
 
 					if (Color.Black != colorValue)
 					{
 						const int size = 2;
 						const int padding = 2;
-						Root.Game.RectangleRenderer.Schedule(new(size), origin + new Vector2i<int>(x + padding, y + padding), Depth + 2, colorValue);
+						Root.Game.RectangleRenderer.Schedule(new(size), origin + new Vector2i<int>(x + padding, y + padding) + halfTileSize, Depth + 2, colorValue);
 					}
 				}
 			}

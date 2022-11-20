@@ -33,11 +33,12 @@ public class Menu : AbstractComponent
 			Depth = 101,
 		};
 
-		DropdownEntry entryNew = new(Rectangle.At(fileMenu.Bounds.X1, _headerHeight + menuItemHeight * 0, menuItemWidth, menuItemHeight), fileMenu, StateManager.NewSpawnset, "New", GlobalStyles.DefaultDropdownEntryStyle);
-		DropdownEntry entryOpen = new(Rectangle.At(fileMenu.Bounds.X1, _headerHeight + menuItemHeight * 1, menuItemWidth, menuItemHeight), fileMenu, LayoutManager.ToSurvivalEditorOpenLayout, "Open", GlobalStyles.DefaultDropdownEntryStyle);
-		DropdownEntry entryOpenDefault = new(Rectangle.At(fileMenu.Bounds.X1, _headerHeight + menuItemHeight * 2, menuItemWidth, menuItemHeight), fileMenu, StateManager.OpenDefaultV3Spawnset, "Open default (V3)", GlobalStyles.DefaultDropdownEntryStyle);
-		DropdownEntry entrySave = new(Rectangle.At(fileMenu.Bounds.X1, _headerHeight + menuItemHeight * 3, menuItemWidth, menuItemHeight), fileMenu, LayoutManager.ToSurvivalEditorSaveLayout, "Save", GlobalStyles.DefaultDropdownEntryStyle);
-		DropdownEntry entryReplace = new(Rectangle.At(fileMenu.Bounds.X1, _headerHeight + menuItemHeight * 4, menuItemWidth, menuItemHeight), fileMenu, StateManager.ReplaceSpawnset, "Replace", GlobalStyles.DefaultDropdownEntryStyle);
+		const int dropdownEntryDepth = 102;
+		DropdownEntry entryNew = new(Rectangle.At(fileMenu.Bounds.X1, _headerHeight + menuItemHeight * 0, menuItemWidth, menuItemHeight), fileMenu, StateManager.NewSpawnset, "New", GlobalStyles.DefaultDropdownEntryStyle) { Depth = dropdownEntryDepth };
+		DropdownEntry entryOpen = new(Rectangle.At(fileMenu.Bounds.X1, _headerHeight + menuItemHeight * 1, menuItemWidth, menuItemHeight), fileMenu, LayoutManager.ToSurvivalEditorOpenLayout, "Open", GlobalStyles.DefaultDropdownEntryStyle) { Depth = dropdownEntryDepth };
+		DropdownEntry entryOpenDefault = new(Rectangle.At(fileMenu.Bounds.X1, _headerHeight + menuItemHeight * 2, menuItemWidth, menuItemHeight), fileMenu, StateManager.OpenDefaultV3Spawnset, "Open default (V3)", GlobalStyles.DefaultDropdownEntryStyle) { Depth = dropdownEntryDepth };
+		DropdownEntry entrySave = new(Rectangle.At(fileMenu.Bounds.X1, _headerHeight + menuItemHeight * 3, menuItemWidth, menuItemHeight), fileMenu, LayoutManager.ToSurvivalEditorSaveLayout, "Save", GlobalStyles.DefaultDropdownEntryStyle) { Depth = dropdownEntryDepth };
+		DropdownEntry entryReplace = new(Rectangle.At(fileMenu.Bounds.X1, _headerHeight + menuItemHeight * 4, menuItemWidth, menuItemHeight), fileMenu, StateManager.ReplaceSpawnset, "Replace", GlobalStyles.DefaultDropdownEntryStyle) { Depth = dropdownEntryDepth };
 
 		fileMenu.AddChild(entryNew);
 		fileMenu.AddChild(entryOpen);
@@ -59,6 +60,6 @@ public class Menu : AbstractComponent
 	{
 		base.Render(parentPosition);
 
-		Root.Game.RectangleRenderer.Schedule(new(Bounds.Size.X, _headerHeight), parentPosition + new Vector2i<int>(Bounds.X1, Bounds.Y1), Depth, Color.Gray(0.05f));
+		Root.Game.RectangleRenderer.Schedule(new(Bounds.Size.X, _headerHeight), parentPosition + Bounds.TopLeft + new Vector2i<int>(Bounds.Size.X, _headerHeight) / 2, Depth, Color.Gray(0.05f));
 	}
 }

@@ -88,6 +88,7 @@ public class SurvivalEditorMainLayout : Layout, ISurvivalEditorMainLayout
 
 	public void Render()
 	{
-		Root.Game.RectangleRenderer.Schedule(new(WindowWidth, WindowHeight), default, -100, Color.Gray(0.1f));
+		Vector2i<int> windowSize = new(WindowWidth, WindowHeight);
+		Root.Game.RectangleRenderer.Schedule(windowSize, windowSize / 2, -100, Color.Gray(0.1f));
 	}
 }
