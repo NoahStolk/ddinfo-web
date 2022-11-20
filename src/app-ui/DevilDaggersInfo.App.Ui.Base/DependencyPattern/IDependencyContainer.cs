@@ -1,7 +1,6 @@
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts.SurvivalEditor;
 using DevilDaggersInfo.Core.Versioning;
-using System.Numerics;
 using Warp.NET.RenderImpl.Ui.Rendering.Renderers;
 
 namespace DevilDaggersInfo.App.Ui.Base.DependencyPattern;
@@ -9,10 +8,6 @@ namespace DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 public interface IDependencyContainer
 {
 	AppVersion AppVersion { get; }
-
-	Vector2 ViewportOffset { get; }
-	Vector2 UiScale { get; }
-	Vector2 MousePositionWithOffset { get; }
 
 	int InitialWindowWidth { get; }
 	int InitialWindowHeight { get; }

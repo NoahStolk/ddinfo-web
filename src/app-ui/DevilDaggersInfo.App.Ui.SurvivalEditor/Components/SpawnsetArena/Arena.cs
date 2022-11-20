@@ -10,6 +10,7 @@ using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Types.Core.Spawnsets;
 using Warp.NET;
 using Warp.NET.Extensions;
+using Warp.NET.RenderImpl.Ui.Rendering;
 using Warp.NET.RenderImpl.Ui.Rendering.Scissors;
 using Warp.NET.Ui;
 using Warp.NET.Ui.Components;
@@ -192,7 +193,7 @@ public class Arena : AbstractComponent
 			Root.Game.SpriteRenderer.Schedule(new(-8, -8), origin.ToVector2() + new Vector2(realRaceX * _tileSize + halfSize, realRaceZ * _tileSize + halfSize), Depth + 3, ContentManager.Content.IconDaggerTexture, Color.FromVector3(color));
 		}
 
-		ScissorScheduler.SetScissor(Scissor.Create(Bounds, parentPosition, Root.Game.ViewportOffset, Root.Game.UiScale));
+		ScissorScheduler.SetScissor(Scissor.Create(Bounds, parentPosition, ViewportState.Offset, ViewportState.Scale));
 
 		const int tileUnit = 4;
 		float shrinkStartRadius = StateManager.SpawnsetState.Spawnset.ShrinkStart / tileUnit * _tileSize;
