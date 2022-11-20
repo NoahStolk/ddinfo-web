@@ -1,14 +1,15 @@
-using DevilDaggersInfo.App.Ui.Base.Components;
-using DevilDaggersInfo.App.Ui.Base.Rendering;
+using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
+using Warp.NET.RenderImpl.Ui.Components;
+using Warp.NET.RenderImpl.Ui.Components.Styles;
 using Warp.NET.Ui;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetArena;
 
 public class ShrinkSlider : Slider
 {
-	public ShrinkSlider(IBounds bounds, Action<float> onChange, bool applyInstantly, float min, float max, float step, float defaultValue, int border, Color textColor)
-		: base(bounds, onChange, applyInstantly, min, max, step, defaultValue, border, textColor)
+	public ShrinkSlider(IBounds bounds, Action<float> onChange, bool applyInstantly, float min, float max, float step, float defaultValue, SliderStyle sliderStyle)
+		: base(bounds, onChange, applyInstantly, min, max, step, defaultValue, sliderStyle)
 	{
 	}
 
@@ -23,10 +24,10 @@ public class ShrinkSlider : Slider
 		void NewHighlighter(float percentage, Color color)
 		{
 			const int width = 4;
-			int height = Bounds.Size.Y - Border;
-			int position = (int)(percentage * (Bounds.Size.X - Border * 2 - width / 2));
+			int height = Bounds.Size.Y - SliderStyle.BorderSize;
+			int position = (int)(percentage * (Bounds.Size.X - SliderStyle.BorderSize * 2 - width / 2));
 			Vector2i<int> origin = parentPosition + topLeft;
-			RenderBatchCollector.RenderRectangleTopLeft(new(width, height), origin + new Vector2i<int>(position + Border / 2, Border / 2), Depth + 2, color);
+			Root.Game.RectangleRenderer.Schedule(new(width, height), origin + new Vector2i<int>(position + SliderStyle.BorderSize / 2, SliderStyle.BorderSize / 2), Depth + 2, color);
 		}
 	}
 }

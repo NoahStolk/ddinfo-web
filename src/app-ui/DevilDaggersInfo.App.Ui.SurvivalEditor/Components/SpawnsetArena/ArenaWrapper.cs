@@ -1,8 +1,7 @@
 using DevilDaggersInfo.App.Ui.Base;
-using DevilDaggersInfo.App.Ui.Base.Components;
-using DevilDaggersInfo.App.Ui.Base.Enums;
 using DevilDaggersInfo.App.Ui.Base.States;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
+using Warp.NET.RenderImpl.Ui.Components;
 using Warp.NET.Text;
 using Warp.NET.Ui;
 using Warp.NET.Ui.Components;
@@ -21,9 +20,9 @@ public class ArenaWrapper : AbstractComponent
 
 		_arena = new(new(0, titleHeight), 6);
 
-		Label title = new(Rectangle.At(0, 0, _arena.Bounds.Size.X, titleHeight), Color.White, "Arena", TextAlign.Middle, FontSize.F12X12);
+		Label title = new(Rectangle.At(0, 0, _arena.Bounds.Size.X, titleHeight), "Arena", GlobalStyles.LabelDefaultMiddle);
 		ArenaHeightButtons arenaHeightButtons = new(Rectangle.At(_arena.Bounds.Size.X + 8, titleHeight, 80, 320));
-		_shrinkSlider = new(Rectangle.At(0, titleHeight + _arena.Bounds.Size.Y, _arena.Bounds.Size.X, 16), _arena.SetShrinkCurrent, true, 0, StateManager.SpawnsetState.Spawnset.GetSliderMaxSeconds(), 0.001f, 0, 2, Color.White);
+		_shrinkSlider = new(Rectangle.At(0, titleHeight + _arena.Bounds.Size.Y, _arena.Bounds.Size.X, 16), _arena.SetShrinkCurrent, true, 0, StateManager.SpawnsetState.Spawnset.GetSliderMaxSeconds(), 0.001f, 0, GlobalStyles.DefaultSliderStyle);
 		ArenaToolsWrapper arenaToolsWrapper = new(Rectangle.At(0, titleHeight + _arena.Bounds.Size.Y + _shrinkSlider.Bounds.Size.Y, 304, 480));
 
 		NestingContext.Add(title);

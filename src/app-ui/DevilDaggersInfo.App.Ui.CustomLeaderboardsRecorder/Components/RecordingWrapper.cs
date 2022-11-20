@@ -1,4 +1,4 @@
-using DevilDaggersInfo.App.Ui.Base.Rendering;
+using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using Warp.NET.Ui;
 using Warp.NET.Ui.Components;
 
@@ -16,7 +16,7 @@ public class RecordingWrapper : AbstractComponent
 		base.Render(parentPosition);
 
 		const int border = 1;
-		RenderBatchCollector.RenderRectangleTopLeft(Bounds.Size, Bounds.TopLeft + parentPosition, 0, Color.Purple);
-		RenderBatchCollector.RenderRectangleTopLeft(Bounds.Size - new Vector2i<int>(border * 2), Bounds.TopLeft + parentPosition + new Vector2i<int>(border), 1, Color.Black);
+		Root.Game.RectangleRenderer.Schedule(Bounds.Size, Bounds.TopLeft + parentPosition, 0, Color.Purple);
+		Root.Game.RectangleRenderer.Schedule(Bounds.Size - new Vector2i<int>(border * 2), Bounds.TopLeft + parentPosition + new Vector2i<int>(border), 1, Color.Black);
 	}
 }

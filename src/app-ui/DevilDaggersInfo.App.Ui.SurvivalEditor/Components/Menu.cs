@@ -1,8 +1,9 @@
 using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.Components;
-using DevilDaggersInfo.App.Ui.Base.Rendering;
+using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.States;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
+using Warp.NET.RenderImpl.Ui.Components;
 using Warp.NET.Ui;
 using Warp.NET.Ui.Components;
 
@@ -27,16 +28,16 @@ public class Menu : AbstractComponent
 		const int menuItemWidth = 160;
 		const int menuItemHeight = 16;
 
-		Dropdown fileMenu = new(Rectangle.At(backButtonWidth, 0, 64, _headerHeight), "File")
+		Dropdown fileMenu = new(Rectangle.At(backButtonWidth, 0, 64, _headerHeight), "File", GlobalStyles.DefaultDropdownStyle)
 		{
 			Depth = 101,
 		};
 
-		DropdownEntry entryNew = new(Rectangle.At(fileMenu.Bounds.X1, _headerHeight + menuItemHeight * 0, menuItemWidth, menuItemHeight), fileMenu, StateManager.NewSpawnset, "New");
-		DropdownEntry entryOpen = new(Rectangle.At(fileMenu.Bounds.X1, _headerHeight + menuItemHeight * 1, menuItemWidth, menuItemHeight), fileMenu, LayoutManager.ToSurvivalEditorOpenLayout, "Open");
-		DropdownEntry entryOpenDefault = new(Rectangle.At(fileMenu.Bounds.X1, _headerHeight + menuItemHeight * 2, menuItemWidth, menuItemHeight), fileMenu, StateManager.OpenDefaultV3Spawnset, "Open default (V3)");
-		DropdownEntry entrySave = new(Rectangle.At(fileMenu.Bounds.X1, _headerHeight + menuItemHeight * 3, menuItemWidth, menuItemHeight), fileMenu, LayoutManager.ToSurvivalEditorSaveLayout, "Save");
-		DropdownEntry entryReplace = new(Rectangle.At(fileMenu.Bounds.X1, _headerHeight + menuItemHeight * 4, menuItemWidth, menuItemHeight), fileMenu, StateManager.ReplaceSpawnset, "Replace");
+		DropdownEntry entryNew = new(Rectangle.At(fileMenu.Bounds.X1, _headerHeight + menuItemHeight * 0, menuItemWidth, menuItemHeight), fileMenu, StateManager.NewSpawnset, "New", GlobalStyles.DefaultDropdownEntryStyle);
+		DropdownEntry entryOpen = new(Rectangle.At(fileMenu.Bounds.X1, _headerHeight + menuItemHeight * 1, menuItemWidth, menuItemHeight), fileMenu, LayoutManager.ToSurvivalEditorOpenLayout, "Open", GlobalStyles.DefaultDropdownEntryStyle);
+		DropdownEntry entryOpenDefault = new(Rectangle.At(fileMenu.Bounds.X1, _headerHeight + menuItemHeight * 2, menuItemWidth, menuItemHeight), fileMenu, StateManager.OpenDefaultV3Spawnset, "Open default (V3)", GlobalStyles.DefaultDropdownEntryStyle);
+		DropdownEntry entrySave = new(Rectangle.At(fileMenu.Bounds.X1, _headerHeight + menuItemHeight * 3, menuItemWidth, menuItemHeight), fileMenu, LayoutManager.ToSurvivalEditorSaveLayout, "Save", GlobalStyles.DefaultDropdownEntryStyle);
+		DropdownEntry entryReplace = new(Rectangle.At(fileMenu.Bounds.X1, _headerHeight + menuItemHeight * 4, menuItemWidth, menuItemHeight), fileMenu, StateManager.ReplaceSpawnset, "Replace", GlobalStyles.DefaultDropdownEntryStyle);
 
 		fileMenu.AddChild(entryNew);
 		fileMenu.AddChild(entryOpen);
@@ -58,6 +59,6 @@ public class Menu : AbstractComponent
 	{
 		base.Render(parentPosition);
 
-		RenderBatchCollector.RenderRectangleTopLeft(new(Bounds.Size.X, _headerHeight), parentPosition + new Vector2i<int>(Bounds.X1, Bounds.Y1), Depth, Color.Gray(0.05f));
+		Root.Game.RectangleRenderer.Schedule(new(Bounds.Size.X, _headerHeight), parentPosition + new Vector2i<int>(Bounds.X1, Bounds.Y1), Depth, Color.Gray(0.05f));
 	}
 }

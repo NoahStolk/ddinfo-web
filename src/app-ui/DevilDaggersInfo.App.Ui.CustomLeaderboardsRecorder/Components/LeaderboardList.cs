@@ -4,9 +4,9 @@ using DevilDaggersInfo.App.Core.ApiClient;
 using DevilDaggersInfo.App.Core.ApiClient.TaskHandlers;
 using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.Components;
-using DevilDaggersInfo.App.Ui.Base.Enums;
-using DevilDaggersInfo.App.Ui.Base.Rendering;
+using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.Types.Web;
+using Warp.NET.RenderImpl.Ui.Components;
 using Warp.NET.Text;
 using Warp.NET.Ui;
 using Warp.NET.Ui.Components;
@@ -19,8 +19,8 @@ public class LeaderboardList : AbstractComponent
 	private const int _pageSize = 20;
 
 	private readonly List<LeaderboardListEntry> _leaderboardComponents = new();
-	private readonly IconButton _prevButton;
-	private readonly IconButton _nextButton;
+	private readonly TooltipIconButton _prevButton;
+	private readonly TooltipIconButton _nextButton;
 
 	// TODO: Move to state class.
 	private int _maxPageIndex = int.MaxValue;
@@ -32,14 +32,14 @@ public class LeaderboardList : AbstractComponent
 	public LeaderboardList(IBounds metric)
 		: base(metric)
 	{
-		Dropdown categoryDropdown = new(Rectangle.At(4, 4, 96, _headerHeight), "Category") { Depth = Depth + 1 };
+		Dropdown categoryDropdown = new(Rectangle.At(4, 4, 96, _headerHeight), "Category", GlobalStyles.DefaultDropdownStyle) { Depth = Depth + 1 };
 		NestingContext.Add(categoryDropdown);
 
 		CustomLeaderboardCategory[] categories = Enum.GetValues<CustomLeaderboardCategory>();
 		for (int i = 0; i < categories.Length; i++)
 		{
 			CustomLeaderboardCategory category = categories[i];
-			DropdownEntry dropdownEntry = new(Rectangle.At(4, 4 + (i + 1) * 16, 96, 16), categoryDropdown, () => ChangeAndLoad(() => _category = category), category.ToString())
+			DropdownEntry dropdownEntry = new(Rectangle.At(4, 4 + (i + 1) * 16, 96, 16), categoryDropdown, () => ChangeAndLoad(() => _category = category), category.ToString(), GlobalStyles.DefaultDropdownEntryStyle)
 			{
 				IsActive = false,
 				Depth = Depth + 100,
@@ -49,8 +49,8 @@ public class LeaderboardList : AbstractComponent
 			NestingContext.Add(dropdownEntry);
 		}
 
-		_prevButton = new(Rectangle.At(4, 64, 20, 20), () => ChangeAndLoad(() => --_pageIndex), GlobalStyles.DefaultButtonStyle, "Previous", WarpTextures.ArrowLeft);
-		_nextButton = new(Rectangle.At(24, 64, 20, 20), () => ChangeAndLoad(() => ++_pageIndex), GlobalStyles.DefaultButtonStyle, "Next", WarpTextures.ArrowRight);
+		_prevButton = new(Rectangle.At(4, 64, 20, 20), () => ChangeAndLoad(() => --_pageIndex), GlobalStyles.DefaultButtonStyle, WarpTextures.ArrowLeft, "Previous");
+		_nextButton = new(Rectangle.At(24, 64, 20, 20), () => ChangeAndLoad(() => ++_pageIndex), GlobalStyles.DefaultButtonStyle, WarpTextures.ArrowRight, "Next");
 
 		NestingContext.Add(_prevButton);
 		NestingContext.Add(_nextButton);
@@ -124,10 +124,10 @@ public class LeaderboardList : AbstractComponent
 		base.Render(parentPosition);
 
 		const int border = 1;
-		RenderBatchCollector.RenderRectangleTopLeft(Bounds.Size, Bounds.TopLeft + parentPosition, Depth, Color.Green);
-		RenderBatchCollector.RenderRectangleTopLeft(Bounds.Size - new Vector2i<int>(border * 2), Bounds.TopLeft + parentPosition + new Vector2i<int>(border), Depth + 1, Color.Black);
+		Root.Game.RectangleRenderer.Schedule(Bounds.Size, Bounds.TopLeft + parentPosition, Depth, Color.Green);
+		Root.Game.RectangleRenderer.Schedule(Bounds.Size - new Vector2i<int>(border * 2), Bounds.TopLeft + parentPosition + new Vector2i<int>(border), Depth + 1, Color.Black);
 
-		RenderBatchCollector.RenderMonoSpaceText(FontSize.F8X8, new(2), parentPosition + Bounds.TopLeft + new Vector2i<int>(4, 36), Depth + 2, Color.Yellow, $"{_category} leaderboards", TextAlign.Left);
+		Root.Game.MonoSpaceFontRenderer12.Schedule(new(2), parentPosition + Bounds.TopLeft + new Vector2i<int>(4, 36), Depth + 2, Color.Yellow, $"{_category} leaderboards", TextAlign.Left);
 
 		string text;
 		Color color;
@@ -142,6 +142,6 @@ public class LeaderboardList : AbstractComponent
 			color = Color.Yellow;
 		}
 
-		RenderBatchCollector.RenderMonoSpaceText(FontSize.F8X8, new(1), parentPosition + Bounds.TopLeft + new Vector2i<int>(4, 96), Depth + 2, color, text, TextAlign.Left);
+		Root.Game.MonoSpaceFontRenderer12.Schedule(new(1), parentPosition + Bounds.TopLeft + new Vector2i<int>(4, 96), Depth + 2, color, text, TextAlign.Left);
 	}
 }

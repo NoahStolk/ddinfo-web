@@ -1,9 +1,9 @@
 using DevilDaggersInfo.App.Ui.Base;
-using DevilDaggersInfo.App.Ui.Base.Components;
-using DevilDaggersInfo.App.Ui.Base.Components.Styles;
-using DevilDaggersInfo.App.Ui.Base.Enums;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Extensions;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
+using Warp.NET.RenderImpl.Ui.Components;
+using Warp.NET.RenderImpl.Ui.Components.Styles;
+using Warp.NET.RenderImpl.Ui.Rendering.Text;
 using Warp.NET.Text;
 using Warp.NET.Ui;
 using Warp.NET.Ui.Components;
@@ -39,7 +39,7 @@ public class History : ScrollContent<History, HistoryWrapper>
 			Color hoverBackgroundColor = colorBackground.Intensify(64);
 			int index = i;
 			ButtonStyle buttonStyle = new(isActive ? colorBackgroundActive : colorBackground, isActive ? Color.White : Color.Black, hoverBackgroundColor, 1);
-			TextButtonStyle textButtonStyle = new(Color.White, TextAlign.Left, FontSize.F8X8);
+			TextButtonStyle textButtonStyle = new(Color.White, TextAlign.Left, FontSize.H12);
 			TextButton button = new(Rectangle.At(0, i * _historyEntryHeight, Bounds.Size.X, _historyEntryHeight), () => SpawnsetHistoryManager.Set(index), buttonStyle, textButtonStyle, history.EditType.GetChange())
 			{
 				Depth = Depth + 1,

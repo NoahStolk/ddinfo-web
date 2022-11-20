@@ -3,14 +3,15 @@ using DevilDaggersInfo.Api.Main.Spawnsets;
 using DevilDaggersInfo.App.Core.ApiClient;
 using DevilDaggersInfo.App.Core.ApiClient.TaskHandlers;
 using DevilDaggersInfo.App.Ui.Base;
-using DevilDaggersInfo.App.Ui.Base.Components;
-using DevilDaggersInfo.App.Ui.Base.Enums;
+using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.Extensions;
-using DevilDaggersInfo.App.Ui.Base.Rendering;
 using DevilDaggersInfo.App.Ui.Base.Settings;
 using DevilDaggersInfo.Common;
 using Silk.NET.GLFW;
 using Warp.NET;
+using Warp.NET.RenderImpl.Ui.Components;
+using Warp.NET.RenderImpl.Ui.Components.Styles;
+using Warp.NET.RenderImpl.Ui.Rendering.Text;
 using Warp.NET.Text;
 using Warp.NET.Ui;
 using Warp.NET.Ui.Components;
@@ -37,11 +38,15 @@ public class LeaderboardListEntry : AbstractComponent
 		int gridIndex3 = columnWidth * 4;
 		int gridIndex4 = columnWidth * 5;
 
-		Label name = new(Rectangle.At(gridIndex0, 0, columnWidth * 2, bounds.Size.Y), Color.White, customLeaderboard.SpawnsetName, TextAlign.Left, FontSize.F8X8);
-		Label rank = new(Rectangle.At(gridIndex1, 0, columnWidth, bounds.Size.Y), Color.White, $"{(customLeaderboard.SelectedPlayerStats?.Rank).ToString() ?? "-"} / {customLeaderboard.PlayerCount}", TextAlign.Right, FontSize.F8X8);
-		Label score = new(Rectangle.At(gridIndex2, 0, columnWidth, bounds.Size.Y), Color.White, customLeaderboard.SelectedPlayerStats?.Time.ToString(StringFormats.TimeFormat) ?? "-", TextAlign.Right, FontSize.F8X8);
-		Label nextDagger = new(Rectangle.At(gridIndex3, 0, columnWidth, bounds.Size.Y), customLeaderboard.SelectedPlayerStats?.NextDagger?.Dagger.GetColor() ?? Color.White, customLeaderboard.SelectedPlayerStats?.NextDagger?.Time.ToString(StringFormats.TimeFormat) ?? "-", TextAlign.Right, FontSize.F8X8);
-		Label worldRecord = new(Rectangle.At(gridIndex4, 0, columnWidth, bounds.Size.Y), customLeaderboard.WorldRecord?.Dagger?.GetColor() ?? Color.White, customLeaderboard.WorldRecord?.Time.ToString(StringFormats.TimeFormat) ?? "-", TextAlign.Right, FontSize.F8X8);
+		Label name = new(Rectangle.At(gridIndex0, 0, columnWidth * 2, bounds.Size.Y), customLeaderboard.SpawnsetName, GlobalStyles.LabelDefaultLeft);
+		Label rank = new(Rectangle.At(gridIndex1, 0, columnWidth, bounds.Size.Y), $"{(customLeaderboard.SelectedPlayerStats?.Rank).ToString() ?? "-"} / {customLeaderboard.PlayerCount}", GlobalStyles.LabelDefaultRight);
+		Label score = new(Rectangle.At(gridIndex2, 0, columnWidth, bounds.Size.Y), customLeaderboard.SelectedPlayerStats?.Time.ToString(StringFormats.TimeFormat) ?? "-", GlobalStyles.LabelDefaultRight);
+
+		LabelStyle nextDaggerStyle = new(customLeaderboard.SelectedPlayerStats?.NextDagger?.Dagger.GetColor() ?? Color.White, TextAlign.Right, FontSize.H8);
+		Label nextDagger = new(Rectangle.At(gridIndex3, 0, columnWidth, bounds.Size.Y), customLeaderboard.SelectedPlayerStats?.NextDagger?.Time.ToString(StringFormats.TimeFormat) ?? "-", nextDaggerStyle);
+
+		LabelStyle worldRecordStyle = new(customLeaderboard.WorldRecord?.Dagger?.GetColor() ?? Color.White, TextAlign.Right, FontSize.H8);
+		Label worldRecord = new(Rectangle.At(gridIndex4, 0, columnWidth, bounds.Size.Y), customLeaderboard.WorldRecord?.Time.ToString(StringFormats.TimeFormat) ?? "-", worldRecordStyle);
 
 		NestingContext.Add(name);
 		NestingContext.Add(rank);
@@ -77,6 +82,6 @@ public class LeaderboardListEntry : AbstractComponent
 		base.Render(parentPosition);
 
 		if (_isHovering)
-			RenderBatchCollector.RenderRectangleTopLeft(Bounds.Size, parentPosition + Bounds.TopLeft, Depth - 1, new(127, 0, 0, 255));
+			Root.Game.RectangleRenderer.Schedule(Bounds.Size, parentPosition + Bounds.TopLeft, Depth - 1, new(127, 0, 0, 255));
 	}
 }

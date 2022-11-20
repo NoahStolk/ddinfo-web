@@ -1,7 +1,6 @@
 using DevilDaggersInfo.App.Ui.Base;
-using DevilDaggersInfo.App.Ui.Base.Enums;
+using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.Extensions;
-using DevilDaggersInfo.App.Ui.Base.Rendering;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Spawns;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using DevilDaggersInfo.Core.Wiki;
@@ -52,15 +51,15 @@ public class SpawnEntry : AbstractComponent
 			_ => Color.Invisible,
 		};
 		if (background != Color.Invisible)
-			RenderBatchCollector.RenderRectangleTopLeft(Bounds.Size, parentPosition + Bounds.TopLeft, Depth, background);
+			Root.Game.RectangleRenderer.Schedule(Bounds.Size, parentPosition + Bounds.TopLeft, Depth, background);
 
-		RenderText(Rectangle.At(Bounds.X1, Bounds.Y1, 96, Spawns.SpawnEntryHeight), _enemyColor, _enemy?.Name ?? "Empty", TextAlign.Left, FontSize.F8X8);
-		RenderText(Rectangle.At(Bounds.X1 + 96, Bounds.Y1, 96, Spawns.SpawnEntryHeight), Color.White, _spawnUiEntry.Delay.ToString("0.0000"), TextAlign.Right, FontSize.F8X8);
-		RenderText(Rectangle.At(Bounds.X1 + 192, Bounds.Y1, 96, Spawns.SpawnEntryHeight), Color.White, _spawnUiEntry.Seconds.ToString("0.0000"), TextAlign.Right, FontSize.F8X8);
-		RenderText(Rectangle.At(Bounds.X1 + 288, Bounds.Y1, 48, Spawns.SpawnEntryHeight), Color.White, NoFarmGemsString(_spawnUiEntry.NoFarmGems), TextAlign.Right, FontSize.F8X8);
-		RenderText(Rectangle.At(Bounds.X1 + 336, Bounds.Y1, 48, Spawns.SpawnEntryHeight), GetColorFromHand(_spawnUiEntry.GemState.HandLevel), _spawnUiEntry.GemState.Value.ToString(), TextAlign.Right, FontSize.F8X8);
+		RenderText(Rectangle.At(Bounds.X1, Bounds.Y1, 96, Spawns.SpawnEntryHeight), _enemyColor, _enemy?.Name ?? "Empty", TextAlign.Left);
+		RenderText(Rectangle.At(Bounds.X1 + 96, Bounds.Y1, 96, Spawns.SpawnEntryHeight), Color.White, _spawnUiEntry.Delay.ToString("0.0000"), TextAlign.Right);
+		RenderText(Rectangle.At(Bounds.X1 + 192, Bounds.Y1, 96, Spawns.SpawnEntryHeight), Color.White, _spawnUiEntry.Seconds.ToString("0.0000"), TextAlign.Right);
+		RenderText(Rectangle.At(Bounds.X1 + 288, Bounds.Y1, 48, Spawns.SpawnEntryHeight), Color.White, NoFarmGemsString(_spawnUiEntry.NoFarmGems), TextAlign.Right);
+		RenderText(Rectangle.At(Bounds.X1 + 336, Bounds.Y1, 48, Spawns.SpawnEntryHeight), GetColorFromHand(_spawnUiEntry.GemState.HandLevel), _spawnUiEntry.GemState.Value.ToString(), TextAlign.Right);
 
-		void RenderText(IBounds bounds, Color textColor, string text, TextAlign textAlign, FontSize fontSize)
+		void RenderText(IBounds bounds, Color textColor, string text, TextAlign textAlign)
 		{
 			int padding = (int)MathF.Round((bounds.Y2 - bounds.Y1) / 4f);
 			Vector2i<int> textPosition = textAlign switch
@@ -71,7 +70,7 @@ public class SpawnEntry : AbstractComponent
 				_ => throw new InvalidOperationException("Invalid text align."),
 			};
 
-			RenderBatchCollector.RenderMonoSpaceText(fontSize, Vector2i<int>.One, parentPosition + textPosition, Depth + 2, textColor, text, textAlign);
+			Root.Game.MonoSpaceFontRenderer12.Schedule(Vector2i<int>.One, parentPosition + textPosition, Depth + 2, textColor, text, textAlign);
 		}
 
 		Color GetColorFromHand(HandLevel handLevel) => handLevel switch
