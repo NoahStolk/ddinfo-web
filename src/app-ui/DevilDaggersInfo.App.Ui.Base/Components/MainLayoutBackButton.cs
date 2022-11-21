@@ -1,13 +1,11 @@
-using Warp.NET.RenderImpl.Ui.Components;
 using Warp.NET.Ui;
 
 namespace DevilDaggersInfo.App.Ui.Base.Components;
 
-public class MainLayoutBackButton : IconButton
+public class MainLayoutBackButton : TooltipIconButton
 {
 	public MainLayoutBackButton(IBounds bounds, Action onClick)
-		: base(bounds, onClick, GlobalStyles.DefaultButtonStyle, Textures.BackButton)
+		: base(bounds, onClick, GlobalStyles.DefaultButtonStyle, Textures.BackButton, "Back")
 	{
-		// TODO: Tooltip "Back"
 	}
 }
