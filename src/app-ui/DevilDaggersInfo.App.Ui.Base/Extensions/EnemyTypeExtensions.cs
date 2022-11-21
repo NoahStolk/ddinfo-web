@@ -23,15 +23,15 @@ public static class EnemyTypeExtensions
 
 	public static string GetShortName(this EnemyType enemyType) => enemyType switch
 	{
-		EnemyType.Squid1 => "SQ1",
-		EnemyType.Squid2 => "SQ2",
+		EnemyType.Squid1 => "SQUID1",
+		EnemyType.Squid2 => "SQUID2",
 		EnemyType.Centipede => "CENTI",
-		EnemyType.Spider1 => "SP1",
+		EnemyType.Spider1 => "SPIDER1",
 		EnemyType.Leviathan => "LEVI",
 		EnemyType.Gigapede => "GIGA",
-		EnemyType.Squid3 => "SQ3",
+		EnemyType.Squid3 => "SQUID3",
 		EnemyType.Thorn => "THORN",
-		EnemyType.Spider2 => "SP2",
+		EnemyType.Spider2 => "SPIDER2",
 		EnemyType.Ghostpede => "GHOST",
 		_ => "EMPTY",
 	};
