@@ -1,14 +1,12 @@
 using DevilDaggersInfo.App.Ui.Base;
-using DevilDaggersInfo.App.Ui.Base.Components;
-using DevilDaggersInfo.App.Ui.Base.Components.Styles;
-using DevilDaggersInfo.App.Ui.Base.Enums;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Enums;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Types.Core.Spawnsets;
-using Warp.NET.Text;
+using Warp.NET.RenderImpl.Ui.Components;
+using Warp.NET.RenderImpl.Ui.Components.Styles;
 using Warp.NET.Ui;
 using Warp.NET.Ui.Components;
 
@@ -53,7 +51,7 @@ public class SettingsWrapper : AbstractComponent
 		_thirdWidth = (int)MathF.Ceiling(_width / 3f);
 		_quarterWidth = _halfWidth / 2;
 
-		Label title = new(Rectangle.At(0, 0, _width, 48), Color.White, "Settings", TextAlign.Middle, FontSize.F12X12);
+		Label title = new(Rectangle.At(0, 0, _width, 48), "Settings", GlobalStyles.LabelDefaultMiddle);
 		NestingContext.Add(title);
 
 		int y = title.Bounds.Size.Y;
@@ -149,7 +147,7 @@ public class SettingsWrapper : AbstractComponent
 
 	private (SpawnsetTextInput TextInput, Label Label) AddSetting(string labelText, SpawnsetEditType spawnsetEditType, ref int y, Action<string> onInput)
 	{
-		Label label = new(Rectangle.At(0, y, _halfWidth, _offset), Color.White, labelText, TextAlign.Left, FontSize.F8X8);
+		Label label = new(Rectangle.At(0, y, _halfWidth, _offset), labelText, GlobalStyles.LabelDefaultLeft);
 		SpawnsetTextInput textInput = SpawnsetComponentBuilder.CreateSpawnsetTextInput(Rectangle.At(_halfWidth, y, _halfWidth, _offset), onInput, spawnsetEditType);
 		NestingContext.Add(label);
 		NestingContext.Add(textInput);

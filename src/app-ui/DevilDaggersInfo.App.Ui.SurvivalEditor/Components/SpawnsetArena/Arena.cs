@@ -1,6 +1,5 @@
 using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
-using DevilDaggersInfo.App.Ui.Base.Rendering;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena.Data;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Enums;
@@ -11,6 +10,8 @@ using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Types.Core.Spawnsets;
 using Warp.NET;
 using Warp.NET.Extensions;
+using Warp.NET.RenderImpl.Ui.Rendering;
+using Warp.NET.RenderImpl.Ui.Rendering.Scissors;
 using Warp.NET.Ui;
 using Warp.NET.Ui.Components;
 
@@ -141,7 +142,8 @@ public class Arena : AbstractComponent
 
 		Vector2i<int> origin = parentPosition + new Vector2i<int>(Bounds.X1, Bounds.Y1);
 		Vector2i<int> center = origin + new Vector2i<int>((int)(SpawnsetBinary.ArenaDimensionMax / 2f * _tileSize));
-		RenderBatchCollector.RenderRectangleTopLeft(Bounds.Size, origin, Depth, Color.Black);
+		Vector2i<int> halfTileSize = new Vector2i<int>(_tileSize, _tileSize) / 2;
+		Root.Game.RectangleRenderer.Schedule(Bounds.Size, center, Depth, Color.Black);
 
 		for (int i = 0; i < StateManager.SpawnsetState.Spawnset.ArenaDimension; i++)
 		{
@@ -157,18 +159,18 @@ public class Arena : AbstractComponent
 				if (Math.Abs(actualHeight - height) < 0.001f)
 				{
 					if (Color.Black != colorValue)
-						RenderBatchCollector.RenderRectangleTopLeft(new(_tileSize), origin + new Vector2i<int>(x, y), Depth + 1, colorValue);
+						Root.Game.RectangleRenderer.Schedule(new(_tileSize), origin + new Vector2i<int>(x, y) + halfTileSize, Depth + 1, colorValue);
 				}
 				else
 				{
 					if (Color.Black != colorCurrent)
-						RenderBatchCollector.RenderRectangleTopLeft(new(_tileSize), origin + new Vector2i<int>(x, y), Depth + 1, colorCurrent);
+						Root.Game.RectangleRenderer.Schedule(new(_tileSize), origin + new Vector2i<int>(x, y) + halfTileSize, Depth + 1, colorCurrent);
 
 					if (Color.Black != colorValue)
 					{
 						const int size = 2;
 						const int padding = 2;
-						RenderBatchCollector.RenderRectangleTopLeft(new(size), origin + new Vector2i<int>(x + padding, y + padding), Depth + 2, colorValue);
+						Root.Game.RectangleRenderer.Schedule(new(size), origin + new Vector2i<int>(x + padding, y + padding) + halfTileSize, Depth + 2, colorValue);
 					}
 				}
 			}
@@ -188,10 +190,10 @@ public class Arena : AbstractComponent
 			Color tileColor = TileUtils.GetColorFromHeight(actualHeight);
 			Color inverted = Color.Invert(tileColor);
 			Vector3 color = Vector3.Lerp(inverted, inverted.Intensify(96), lerp);
-			RenderBatchCollector.RenderSprite(new(-8, -8), origin.ToVector2() + new Vector2(realRaceX * _tileSize + halfSize, realRaceZ * _tileSize + halfSize), Depth + 3, ContentManager.Content.IconDaggerTexture, Color.FromVector3(color));
+			Root.Game.SpriteRenderer.Schedule(new(-8, -8), origin.ToVector2() + new Vector2(realRaceX * _tileSize + halfSize, realRaceZ * _tileSize + halfSize), Depth + 3, ContentManager.Content.IconDaggerTexture, Color.FromVector3(color));
 		}
 
-		RenderBatchCollector.SetScissor(Scissor.FromComponent(Bounds, parentPosition));
+		ScissorScheduler.SetScissor(Scissor.Create(Bounds, parentPosition, ViewportState.Offset, ViewportState.Scale));
 
 		const int tileUnit = 4;
 		float shrinkStartRadius = StateManager.SpawnsetState.Spawnset.ShrinkStart / tileUnit * _tileSize;
@@ -199,13 +201,13 @@ public class Arena : AbstractComponent
 		float shrinkEndRadius = StateManager.SpawnsetState.Spawnset.ShrinkEnd / tileUnit * _tileSize;
 
 		if (shrinkStartRadius > 0)
-			RenderBatchCollector.RenderCircleCenter(center, shrinkStartRadius, Depth + 5, Color.Purple);
+			Root.Game.CircleRenderer.Schedule(center, shrinkStartRadius, Depth + 5, Color.Purple);
 		if (shrinkCurrentRadius > 0)
-			RenderBatchCollector.RenderCircleCenter(center, shrinkCurrentRadius, Depth + 4, Color.Yellow);
+			Root.Game.CircleRenderer.Schedule(center, shrinkCurrentRadius, Depth + 4, Color.Yellow);
 		if (shrinkEndRadius > 0)
-			RenderBatchCollector.RenderCircleCenter(center, shrinkEndRadius, Depth + 5, Color.Aqua);
+			Root.Game.CircleRenderer.Schedule(center, shrinkEndRadius, Depth + 5, Color.Aqua);
 
-		RenderBatchCollector.UnsetScissor();
+		ScissorScheduler.UnsetScissor();
 
 		IArenaState activeState = GetActiveState();
 		activeState.Render(GetArenaMousePosition(parentPosition), origin, Depth + 3);

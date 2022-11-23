@@ -1,6 +1,6 @@
 using DevilDaggersInfo.App.Ui.Base;
+using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts.SurvivalEditor;
-using DevilDaggersInfo.App.Ui.Base.Rendering;
 using DevilDaggersInfo.App.Ui.Base.States;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Components;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetArena;
@@ -88,6 +88,7 @@ public class SurvivalEditorMainLayout : Layout, ISurvivalEditorMainLayout
 
 	public void Render()
 	{
-		RenderBatchCollector.RenderRectangleTopLeft(new(WindowWidth, WindowHeight), default, -100, Color.Gray(0.1f));
+		Vector2i<int> windowSize = new(WindowWidth, WindowHeight);
+		Root.Game.RectangleRenderer.Schedule(windowSize, windowSize / 2, -100, Color.Gray(0.1f));
 	}
 }

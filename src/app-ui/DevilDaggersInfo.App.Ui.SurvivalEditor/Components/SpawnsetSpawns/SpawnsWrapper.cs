@@ -1,7 +1,5 @@
 using DevilDaggersInfo.App.Ui.Base;
-using DevilDaggersInfo.App.Ui.Base.Components;
-using DevilDaggersInfo.App.Ui.Base.Enums;
-using Warp.NET.Text;
+using Warp.NET.RenderImpl.Ui.Components;
 using Warp.NET.Ui;
 using Warp.NET.Ui.Components;
 
@@ -12,7 +10,7 @@ public sealed class SpawnsWrapper : AbstractScrollViewer<SpawnsWrapper, Spawns>
 	public SpawnsWrapper(IBounds bounds)
 		: base(bounds)
 	{
-		Label title = new(Rectangle.At(0, 0, bounds.Size.X, 48), Color.White, "Spawns", TextAlign.Middle, FontSize.F12X12);
+		Label title = new(Rectangle.At(0, 0, bounds.Size.X, 48), "Spawns", GlobalStyles.LabelDefaultMiddle);
 		NestingContext.Add(title);
 
 		Rectangle spawnsMetric = Rectangle.At(0, 48, bounds.Size.X, bounds.Size.Y - 48);

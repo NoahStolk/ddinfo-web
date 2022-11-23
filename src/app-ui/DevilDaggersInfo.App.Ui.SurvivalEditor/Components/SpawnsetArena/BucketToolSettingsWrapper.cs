@@ -1,8 +1,6 @@
 using DevilDaggersInfo.App.Ui.Base;
-using DevilDaggersInfo.App.Ui.Base.Components;
-using DevilDaggersInfo.App.Ui.Base.Enums;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
-using Warp.NET.Text;
+using Warp.NET.RenderImpl.Ui.Components;
 using Warp.NET.Ui;
 using Warp.NET.Ui.Components;
 
@@ -20,7 +18,7 @@ public class BucketToolSettingsWrapper : AbstractComponent
 		void AddSetting(string labelText, int x, ref int y, Action<string> onInput, string initialInput)
 		{
 			int halfWidth = Bounds.Size.X / 2;
-			Label label = new(Rectangle.At(x, y, halfWidth, 16), Color.White, labelText, TextAlign.Left, FontSize.F8X8);
+			Label label = new(Rectangle.At(x, y, halfWidth, 16), labelText, GlobalStyles.LabelDefaultLeft);
 			TextInput textInput = new(Rectangle.At(x + halfWidth, y, halfWidth, 16), true, onInput, onInput, onInput, GlobalStyles.TextInput);
 			textInput.KeyboardInput.SetText(initialInput);
 			NestingContext.Add(label);

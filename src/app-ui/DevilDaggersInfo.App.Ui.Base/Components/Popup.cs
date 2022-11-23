@@ -1,7 +1,6 @@
-using DevilDaggersInfo.App.Ui.Base.Enums;
-using DevilDaggersInfo.App.Ui.Base.Rendering;
+using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using Warp.NET.Numerics;
-using Warp.NET.Text;
+using Warp.NET.RenderImpl.Ui.Components;
 using Warp.NET.Ui;
 using Warp.NET.Ui.Components;
 
@@ -17,7 +16,7 @@ public class Popup : AbstractComponent
 		const int buttonWidth = 128;
 		const int buttonHeight = 32;
 
-		Label label = new(Rectangle.At(0, Constants.NativeHeight / 3, Constants.NativeWidth, 32), Color.White, text, TextAlign.Middle, FontSize.F12X12)
+		Label label = new(Rectangle.At(0, Constants.NativeHeight / 3, Constants.NativeWidth, 32), text, GlobalStyles.PopupLabel)
 		{
 			Depth = Constants.DepthMax,
 		};
@@ -41,6 +40,6 @@ public class Popup : AbstractComponent
 	{
 		base.Render(parentPosition);
 
-		RenderBatchCollector.RenderRectangleTopLeft(Bounds.Size, parentPosition + Bounds.TopLeft, Depth, new(0, 0, 0, 95));
+		Root.Game.RectangleRenderer.Schedule(Bounds.Size, parentPosition + Bounds.TopLeft, Depth, new(0, 0, 0, 95));
 	}
 }

@@ -1,5 +1,5 @@
 using DevilDaggersInfo.App.Ui.Base;
-using DevilDaggersInfo.App.Ui.Base.Rendering;
+using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena.Data;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Enums;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
@@ -42,7 +42,7 @@ public class ArenaRectangleState : IArenaState
 
 	public void Render(ArenaMousePosition mousePosition, Vector2i<int> origin, float depth)
 	{
-		Loop(mousePosition, (i, j) => RenderBatchCollector.RenderRectangleTopLeft(new(_tileSize), origin + new Vector2i<int>(i, j) * _tileSize, depth, GlobalColors.HalfTransparentWhite));
+		Loop(mousePosition, (i, j) => Root.Game.RectangleRenderer.Schedule(new(_tileSize), origin + new Vector2i<int>(i, j) * _tileSize, depth, Color.HalfTransparentWhite));
 	}
 
 	private void Loop(ArenaMousePosition mousePosition, Action<int, int> action)

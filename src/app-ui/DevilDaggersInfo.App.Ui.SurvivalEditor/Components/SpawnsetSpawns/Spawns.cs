@@ -1,5 +1,4 @@
 using DevilDaggersInfo.App.Ui.Base;
-using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Spawns;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Enums;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
@@ -7,6 +6,7 @@ using Silk.NET.GLFW;
 using System.Collections.Immutable;
 using Warp.NET;
 using Warp.NET.Extensions;
+using Warp.NET.RenderImpl.Ui.Components;
 using Warp.NET.Ui;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetSpawns;

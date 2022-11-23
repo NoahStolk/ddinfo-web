@@ -1,13 +1,13 @@
 using DevilDaggersInfo.App.Ui.Base;
-using DevilDaggersInfo.App.Ui.Base.Components;
-using DevilDaggersInfo.App.Ui.Base.Components.Styles;
-using DevilDaggersInfo.App.Ui.Base.Enums;
 using DevilDaggersInfo.App.Ui.Base.Extensions;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Enums;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Types.Core.Spawnsets;
 using System.Collections.Immutable;
+using Warp.NET.RenderImpl.Ui.Components;
+using Warp.NET.RenderImpl.Ui.Components.Styles;
+using Warp.NET.RenderImpl.Ui.Rendering.Text;
 using Warp.NET.Text;
 using Warp.NET.Ui;
 using Warp.NET.Ui.Components;
@@ -39,8 +39,8 @@ public class SpawnEditor : AbstractComponent
 		AddEnemyButton(288, 16, EnemyType.Gigapede);
 		AddEnemyButton(336, 16, EnemyType.Ghostpede);
 
-		Label enemyTypeLabel = new(Rectangle.At(0, 0, width, 16), Color.White, "Enemy", TextAlign.Left, FontSize.F8X8);
-		Label delayLabel = new(Rectangle.At(0, 32, width, 16), Color.White, "Delay", TextAlign.Left, FontSize.F8X8);
+		Label enemyTypeLabel = new(Rectangle.At(0, 0, width, 16), "Enemy", GlobalStyles.LabelDefaultLeft);
+		Label delayLabel = new(Rectangle.At(0, 32, width, 16), "Delay", GlobalStyles.LabelDefaultLeft);
 		TextInput delayTextInput = new(Rectangle.At(288, 32, width, 16), true, OnDelayChange, OnDelayChange, OnDelayChange, GlobalStyles.TextInput);
 		delayTextInput.KeyboardInput.SetText("0.0000");
 
@@ -59,7 +59,7 @@ public class SpawnEditor : AbstractComponent
 		void AddEnemyButton(int x, int y, EnemyType enemyType)
 		{
 			ButtonStyle buttonStyle = _selectedEnemyType == enemyType ? GlobalStyles.SelectedEnemyButtonStyles[enemyType] : GlobalStyles.EnemyButtonStyles[enemyType];
-			TextButtonStyle textButtonStyle = new(buttonStyle.BackgroundColor.ReadableColorForBrightness(), TextAlign.Left, FontSize.F8X8);
+			TextButtonStyle textButtonStyle = new(buttonStyle.BackgroundColor.ReadableColorForBrightness(), TextAlign.Left, FontSize.H12);
 			TextButton button = new(Rectangle.At(x, y, 48, 16), () => SetSelectedEnemyType(enemyType), buttonStyle, textButtonStyle, enemyType.GetShortName());
 			_enemyTypeButtons.Add(enemyType, button);
 			NestingContext.Add(button);

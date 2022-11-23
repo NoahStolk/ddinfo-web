@@ -1,5 +1,5 @@
-using DevilDaggersInfo.App.Ui.Base.Components;
-using DevilDaggersInfo.App.Ui.Base.Components.Styles;
+using Warp.NET.RenderImpl.Ui.Components;
+using Warp.NET.RenderImpl.Ui.Components.Styles;
 using Warp.NET.Ui;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components;

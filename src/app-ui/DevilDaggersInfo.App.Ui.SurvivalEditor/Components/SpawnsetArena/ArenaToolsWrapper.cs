@@ -11,7 +11,7 @@ public class ArenaToolsWrapper : AbstractComponent
 {
 	private const int _arenaButtonSize = 20;
 
-	private readonly Dictionary<ArenaTool, IconButton> _toolButtons = new();
+	private readonly Dictionary<ArenaTool, TooltipIconButton> _toolButtons = new();
 	private readonly Dictionary<ArenaTool, AbstractComponent> _toolSettingsWrappers = new();
 
 	public ArenaToolsWrapper(IBounds bounds)
@@ -25,7 +25,7 @@ public class ArenaToolsWrapper : AbstractComponent
 
 		_toolSettingsWrappers.Add(ArenaTool.Bucket, new BucketToolSettingsWrapper(Rectangle.At(0, _arenaButtonSize, bounds.Size.X, 64)));
 
-		foreach (KeyValuePair<ArenaTool, IconButton> kvp in _toolButtons)
+		foreach (KeyValuePair<ArenaTool, TooltipIconButton> kvp in _toolButtons)
 			NestingContext.Add(kvp.Value);
 
 		foreach (KeyValuePair<ArenaTool, AbstractComponent> kvp in _toolSettingsWrappers)
@@ -41,14 +41,14 @@ public class ArenaToolsWrapper : AbstractComponent
 				UpdateActiveButtonAndSettings();
 			}
 
-			IconButton button = new(Rectangle.At(offsetX, offsetY, _arenaButtonSize, _arenaButtonSize), SetArenaTool, GlobalStyles.DefaultButtonStyle, tooltipText, texture);
+			TooltipIconButton button = new(Rectangle.At(offsetX, offsetY, _arenaButtonSize, _arenaButtonSize), SetArenaTool, GlobalStyles.DefaultButtonStyle, texture, tooltipText);
 			_toolButtons.Add(arenaTool, button);
 		}
 	}
 
 	private void UpdateActiveButtonAndSettings()
 	{
-		foreach (KeyValuePair<ArenaTool, IconButton> kvp in _toolButtons)
+		foreach (KeyValuePair<ArenaTool, TooltipIconButton> kvp in _toolButtons)
 			kvp.Value.ButtonStyle = StateManager.ArenaEditorState.ArenaTool == kvp.Key ? GlobalStyles.ActiveToolButtonStyle : GlobalStyles.DefaultButtonStyle;
 
 		foreach (KeyValuePair<ArenaTool, AbstractComponent> kvp in _toolSettingsWrappers)
