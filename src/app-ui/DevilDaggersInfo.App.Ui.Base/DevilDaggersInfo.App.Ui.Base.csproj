@@ -26,9 +26,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="NoahStolk.Warp.NET" Version="0.1.5" />
-    <PackageReference Include="NoahStolk.Warp.NET.RenderImpl.Ui" Version="0.1.5" />
-    <PackageReference Include="NoahStolk.Warp.NET.SourceGen" Version="0.1.5" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="..\..\..\..\Warp.NET\src\lib\Warp.NET\Warp.NET.csproj" />
+    <ProjectReference Include="..\..\..\..\Warp.NET\src\lib\Warp.NET.RenderImpl.Ui\Warp.NET.RenderImpl.Ui.csproj" />
+    <ProjectReference Include="..\..\..\..\Warp.NET\src\lib\Warp.NET.SourceGen\Warp.NET.SourceGen.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
   </ItemGroup>
 
   <ItemGroup>

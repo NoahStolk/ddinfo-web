@@ -9,18 +9,18 @@ namespace DevilDaggersInfo.App.Ui.Base.Components;
 public class Popup : AbstractComponent
 {
 	public Popup(ILayout parent, string text)
-		: base(Constants.Full)
+		: base(new Bounds(0, 0, 1, 1))
 	{
 		Depth = Constants.DepthMax - 1;
 
 		const int buttonWidth = 128;
 		const int buttonHeight = 32;
 
-		Label label = new(Rectangle.At(0, Constants.NativeHeight / 3, Constants.NativeWidth, 32), text, GlobalStyles.PopupLabel)
+		Label label = new(new PixelBounds(0, Constants.NativeHeight / 3, Constants.NativeWidth, 32), text, GlobalStyles.PopupLabel)
 		{
 			Depth = Constants.DepthMax,
 		};
-		TextButton button = new(Rectangle.At(Constants.NativeWidth / 2 - buttonWidth / 2, Constants.NativeHeight / 2 - buttonHeight / 2, buttonWidth, buttonHeight), () => parent.NestingContext.Remove(this), GlobalStyles.DefaultButtonStyle, GlobalStyles.Popup, "OK")
+		TextButton button = new(new PixelBounds(Constants.NativeWidth / 2 - buttonWidth / 2, Constants.NativeHeight / 2 - buttonHeight / 2, buttonWidth, buttonHeight), () => parent.NestingContext.Remove(this), GlobalStyles.DefaultButtonStyle, GlobalStyles.Popup, "OK")
 		{
 			Depth = Constants.DepthMax,
 		};

@@ -11,9 +11,8 @@ public class PathsWrapper : AbstractScrollViewer<PathsWrapper, Paths>
 	{
 		const int scrollbarWidth = 16;
 
-		Rectangle pathsMetric = Rectangle.At(0, 0, bounds.Size.X - scrollbarWidth, bounds.Size.Y);
-		Content = new(pathsMetric, this, scrollbarWidth, onDirectorySelect, onFileSelect);
-		Scrollbar = new(pathsMetric with { X1 = pathsMetric.X2, X2 = pathsMetric.X2 + scrollbarWidth }, SetScrollPercentage);
+		Content = new(new PixelBounds(0, 0, bounds.Size.X - scrollbarWidth, bounds.Size.Y), this, scrollbarWidth, onDirectorySelect, onFileSelect);
+		Scrollbar = new(new PixelBounds(bounds.Size.X - scrollbarWidth, 0, scrollbarWidth, bounds.Size.Y), SetScrollPercentage);
 
 		NestingContext.Add(Content);
 		NestingContext.Add(Scrollbar);

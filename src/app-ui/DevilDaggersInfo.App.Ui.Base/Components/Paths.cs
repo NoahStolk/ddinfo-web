@@ -34,14 +34,14 @@ public class Paths : ScrollContent<Paths, PathsWrapper>
 
 		DirectoryInfo? parent = Directory.GetParent(path);
 		if (parent != null)
-			_subDirectoryButtons.Add(new PathButton(new Rectangle(0, 0, _componentWidth, _entryHeight), () => _onDirectorySelect(parent.FullName), true, ".."));
+			_subDirectoryButtons.Add(new PathButton(new PixelBounds(0, 0, _componentWidth, _entryHeight), () => _onDirectorySelect(parent.FullName), true, ".."));
 
 		int i = 0;
 		foreach (string directory in Directory.GetDirectories(path))
-			_subDirectoryButtons.Add(new PathButton(new Rectangle(0, ++i * _entryHeight, _componentWidth, i * _entryHeight + _entryHeight), () => _onDirectorySelect(directory), true, Path.GetFileName(directory)));
+			_subDirectoryButtons.Add(new PathButton(new PixelBounds(0, ++i * _entryHeight, _componentWidth, _entryHeight), () => _onDirectorySelect(directory), true, Path.GetFileName(directory)));
 
 		foreach (string file in Directory.GetFiles(path))
-			_subDirectoryButtons.Add(new PathButton(new Rectangle(0, ++i * _entryHeight, _componentWidth, i * _entryHeight + _entryHeight), () => _onFileSelect(file), false, Path.GetFileName(file)));
+			_subDirectoryButtons.Add(new PathButton(new PixelBounds(0, ++i * _entryHeight, _componentWidth, _entryHeight), () => _onFileSelect(file), false, Path.GetFileName(file)));
 
 		foreach (Button button in _subDirectoryButtons)
 			NestingContext.Add(button);
