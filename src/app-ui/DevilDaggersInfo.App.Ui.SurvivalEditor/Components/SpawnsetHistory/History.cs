@@ -25,7 +25,7 @@ public class History : ScrollContent<History, ScrollViewer<History>>, IScrollCon
 
 	public override void SetContent()
 	{
-		throw new NotImplementedException();
+		SetHistory();
 	}
 
 	public void SetHistory()

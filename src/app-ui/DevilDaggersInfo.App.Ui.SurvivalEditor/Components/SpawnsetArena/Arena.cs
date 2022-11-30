@@ -19,7 +19,7 @@ namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetArena;
 
 public class Arena : AbstractComponent
 {
-	private readonly int _tileSize;
+	public const int TileSize = 6;
 
 	private readonly ArenaPencilState _pencilState;
 	private readonly ArenaLineState _lineState;
@@ -32,14 +32,12 @@ public class Arena : AbstractComponent
 	private float _currentSecond;
 	private float _shrinkRadius;
 
-	public Arena(Vector2i<int> topLeft, int tileSize)
-		: base(new PixelBounds(topLeft.X, topLeft.Y, tileSize * SpawnsetBinary.ArenaDimensionMax, tileSize * SpawnsetBinary.ArenaDimensionMax))
+	public Arena(IBounds bounds)
+		: base(bounds)
 	{
-		_tileSize = tileSize;
-
-		_pencilState = new(_tileSize);
-		_lineState = new(_tileSize);
-		_rectangleState = new(_tileSize);
+		_pencilState = new(TileSize);
+		_lineState = new(TileSize);
+		_rectangleState = new(TileSize);
 		_bucketState = new();
 		_daggerState = new();
 
@@ -70,7 +68,7 @@ public class Arena : AbstractComponent
 		return new()
 		{
 			Real = new(realX, realY),
-			Tile = new(realX / _tileSize, realY / _tileSize),
+			Tile = new(realX / TileSize, realY / TileSize),
 		};
 	}
 
@@ -141,16 +139,16 @@ public class Arena : AbstractComponent
 		base.Render(parentPosition);
 
 		Vector2i<int> origin = parentPosition + new Vector2i<int>(Bounds.X1, Bounds.Y1);
-		Vector2i<int> center = origin + new Vector2i<int>((int)(SpawnsetBinary.ArenaDimensionMax / 2f * _tileSize));
-		Vector2i<int> halfTileSize = new Vector2i<int>(_tileSize, _tileSize) / 2;
+		Vector2i<int> center = origin + new Vector2i<int>((int)(SpawnsetBinary.ArenaDimensionMax / 2f * TileSize));
+		Vector2i<int> halfTileSize = new Vector2i<int>(TileSize, TileSize) / 2;
 		Root.Game.RectangleRenderer.Schedule(Bounds.Size, center, Depth, Color.Black);
 
 		for (int i = 0; i < StateManager.SpawnsetState.Spawnset.ArenaDimension; i++)
 		{
 			for (int j = 0; j < StateManager.SpawnsetState.Spawnset.ArenaDimension; j++)
 			{
-				int x = i * _tileSize;
-				int y = j * _tileSize;
+				int x = i * TileSize;
+				int y = j * TileSize;
 
 				float actualHeight = StateManager.SpawnsetState.Spawnset.GetActualTileHeight(i, j, _currentSecond);
 				float height = StateManager.SpawnsetState.Spawnset.ArenaTiles[i, j];
@@ -159,12 +157,12 @@ public class Arena : AbstractComponent
 				if (Math.Abs(actualHeight - height) < 0.001f)
 				{
 					if (Color.Black != colorValue)
-						Root.Game.RectangleRenderer.Schedule(new(_tileSize), origin + new Vector2i<int>(x, y) + halfTileSize, Depth + 1, colorValue);
+						Root.Game.RectangleRenderer.Schedule(new(TileSize), origin + new Vector2i<int>(x, y) + halfTileSize, Depth + 1, colorValue);
 				}
 				else
 				{
 					if (Color.Black != colorCurrent)
-						Root.Game.RectangleRenderer.Schedule(new(_tileSize), origin + new Vector2i<int>(x, y) + halfTileSize, Depth + 1, colorCurrent);
+						Root.Game.RectangleRenderer.Schedule(new(TileSize), origin + new Vector2i<int>(x, y) + halfTileSize, Depth + 1, colorCurrent);
 
 					if (Color.Black != colorValue)
 					{
@@ -183,22 +181,22 @@ public class Arena : AbstractComponent
 			float realRaceX = StateManager.SpawnsetState.Spawnset.RaceDaggerPosition.X / 4f + arenaMiddle;
 			float realRaceZ = StateManager.SpawnsetState.Spawnset.RaceDaggerPosition.Y / 4f + arenaMiddle;
 
-			int halfSize = _tileSize / 2;
+			int halfSize = TileSize / 2;
 
 			float actualHeight = StateManager.SpawnsetState.Spawnset.GetActualTileHeight(raceX, raceZ, _currentSecond);
 			float lerp = MathF.Sin(Root.Game.Tt) / 2 + 0.5f;
 			Color tileColor = TileUtils.GetColorFromHeight(actualHeight);
 			Color inverted = Color.Invert(tileColor);
 			Vector3 color = Vector3.Lerp(inverted, inverted.Intensify(96), lerp);
-			Root.Game.SpriteRenderer.Schedule(new(-8, -8), origin.ToVector2() + new Vector2(realRaceX * _tileSize + halfSize, realRaceZ * _tileSize + halfSize), Depth + 3, ContentManager.Content.IconDaggerTexture, Color.FromVector3(color));
+			Root.Game.SpriteRenderer.Schedule(new(-8, -8), origin.ToVector2() + new Vector2(realRaceX * TileSize + halfSize, realRaceZ * TileSize + halfSize), Depth + 3, ContentManager.Content.IconDaggerTexture, Color.FromVector3(color));
 		}
 
 		ScissorScheduler.SetScissor(Scissor.Create(Bounds, parentPosition));
 
 		const int tileUnit = 4;
-		float shrinkStartRadius = StateManager.SpawnsetState.Spawnset.ShrinkStart / tileUnit * _tileSize;
-		float shrinkCurrentRadius = _shrinkRadius / tileUnit * _tileSize;
-		float shrinkEndRadius = StateManager.SpawnsetState.Spawnset.ShrinkEnd / tileUnit * _tileSize;
+		float shrinkStartRadius = StateManager.SpawnsetState.Spawnset.ShrinkStart / tileUnit * TileSize;
+		float shrinkCurrentRadius = _shrinkRadius / tileUnit * TileSize;
+		float shrinkEndRadius = StateManager.SpawnsetState.Spawnset.ShrinkEnd / tileUnit * TileSize;
 
 		if (shrinkStartRadius > 0)
 			Root.Game.CircleRenderer.Schedule(center, shrinkStartRadius, Depth + 5, Color.Purple);

@@ -1,6 +1,7 @@
 using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.States;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
+using DevilDaggersInfo.Core.Spawnset;
 using Warp.NET.RenderImpl.Ui.Components;
 using Warp.NET.Ui;
 using Warp.NET.Ui.Components;
@@ -17,12 +18,12 @@ public class ArenaWrapper : AbstractComponent
 	{
 		const int titleHeight = 48;
 
-		_arena = new(new(0, titleHeight), 6);
+		_arena = new(bounds.CreateNested(0, titleHeight, Arena.TileSize * SpawnsetBinary.ArenaDimensionMax, Arena.TileSize * SpawnsetBinary.ArenaDimensionMax));
 
-		Label title = new(new PixelBounds(0, 0, _arena.Bounds.Size.X, titleHeight), "Arena", GlobalStyles.LabelDefaultMiddle);
-		ArenaHeightButtons arenaHeightButtons = new(new PixelBounds(_arena.Bounds.Size.X + 8, titleHeight, 80, 320));
-		_shrinkSlider = new(new PixelBounds(0, titleHeight + _arena.Bounds.Size.Y, _arena.Bounds.Size.X, 16), _arena.SetShrinkCurrent, true, 0, StateManager.SpawnsetState.Spawnset.GetSliderMaxSeconds(), 0.001f, 0, GlobalStyles.DefaultSliderStyle);
-		ArenaToolsWrapper arenaToolsWrapper = new(new PixelBounds(0, titleHeight + _arena.Bounds.Size.Y + _shrinkSlider.Bounds.Size.Y, 304, 480));
+		Label title = new(bounds.CreateNested(0, 0, _arena.Bounds.Size.X, titleHeight), "Arena", GlobalStyles.LabelDefaultMiddle);
+		ArenaHeightButtons arenaHeightButtons = new(bounds.CreateNested(_arena.Bounds.Size.X + 8, titleHeight, 80, 320));
+		_shrinkSlider = new(bounds.CreateNested(0, titleHeight + _arena.Bounds.Size.Y, _arena.Bounds.Size.X, 16), _arena.SetShrinkCurrent, true, 0, StateManager.SpawnsetState.Spawnset.GetSliderMaxSeconds(), 0.001f, 0, GlobalStyles.DefaultSliderStyle);
+		ArenaToolsWrapper arenaToolsWrapper = new(bounds.CreateNested(0, titleHeight + _arena.Bounds.Size.Y + _shrinkSlider.Bounds.Size.Y, 304, 480));
 
 		NestingContext.Add(title);
 		NestingContext.Add(_arena);
