@@ -10,28 +10,30 @@ using DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetSpawns;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using Silk.NET.GLFW;
 using Warp.NET;
+using Warp.NET.RenderImpl.Ui.Components;
 using Warp.NET.Ui;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Layouts;
 
 public class SurvivalEditorMainLayout : Layout, ISurvivalEditorMainLayout
 {
-	private readonly SpawnsWrapper _spawnsWrapper;
-	private readonly HistoryWrapper _historyWrapper;
+	private readonly ScrollViewer<Spawns> _spawnsWrapper;
+	private readonly ScrollViewer<History> _historyWrapper;
 	private readonly SettingsWrapper _settingsWrapper;
 	private readonly ArenaWrapper _arenaWrapper;
 
 	private readonly KeySubmitter _keySubmitter = new();
 
 	public SurvivalEditorMainLayout()
-		: base(Constants.Full)
 	{
-		Menu menu = new(new Rectangle(0, 0, 1024, 768));
-		_arenaWrapper = new(Rectangle.At(400, 24, 400, 400));
-		_spawnsWrapper = new(Rectangle.At(0, 24, 384, 640));
-		SpawnEditor spawnEditor = new(Rectangle.At(0, 664, 384, 128));
-		_historyWrapper = new(Rectangle.At(768, 512, 256, 256));
-		_settingsWrapper = new(Rectangle.At(804, 24, 216, 256));
+		Menu menu = new(new PixelBounds(0, 0, 1024, 768));
+		_arenaWrapper = new(new PixelBounds(400, 24, 400, 400));
+		PixelBounds spawnsWrapperBounds = new(0, 24, 384, 640);
+		_spawnsWrapper = new(spawnsWrapperBounds, spawnsWrapperBounds.CreateNested(0, 0, 368, 640), spawnsWrapperBounds.CreateNested(368, 0, 16, 640));
+		SpawnEditor spawnEditor = new(new PixelBounds(0, 664, 384, 128));
+		PixelBounds historyWrapperBounds = new(768, 512, 256, 256);
+		_historyWrapper = new(historyWrapperBounds, historyWrapperBounds.CreateNested(0, 0, 240, 256), historyWrapperBounds.CreateNested(240, 0, 16, 256));
+		_settingsWrapper = new(new PixelBounds(804, 24, 216, 256));
 
 		NestingContext.Add(menu);
 		NestingContext.Add(_arenaWrapper);
@@ -88,7 +90,7 @@ public class SurvivalEditorMainLayout : Layout, ISurvivalEditorMainLayout
 
 	public void Render()
 	{
-		Vector2i<int> windowSize = new(WindowWidth, WindowHeight);
+		Vector2i<int> windowSize = new(CurrentWindowState.Width, CurrentWindowState.Height);
 		Root.Game.RectangleRenderer.Schedule(windowSize, windowSize / 2, -100, Color.Gray(0.1f));
 	}
 }

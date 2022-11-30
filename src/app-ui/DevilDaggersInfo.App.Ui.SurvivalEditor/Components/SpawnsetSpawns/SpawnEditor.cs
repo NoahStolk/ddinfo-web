@@ -39,18 +39,18 @@ public class SpawnEditor : AbstractComponent
 		AddEnemyButton(288, 16, EnemyType.Gigapede);
 		AddEnemyButton(336, 16, EnemyType.Ghostpede);
 
-		Label enemyTypeLabel = new(Rectangle.At(0, 0, width, 16), "Enemy", GlobalStyles.LabelDefaultLeft);
-		Label delayLabel = new(Rectangle.At(0, 32, width, 16), "Delay", GlobalStyles.LabelDefaultLeft);
-		TextInput delayTextInput = new(Rectangle.At(288, 32, width, 16), true, OnDelayChange, OnDelayChange, OnDelayChange, GlobalStyles.TextInput);
+		Label enemyTypeLabel = new(new PixelBounds(0, 0, width, 16), "Enemy", GlobalStyles.LabelDefaultLeft);
+		Label delayLabel = new(new PixelBounds(0, 32, width, 16), "Delay", GlobalStyles.LabelDefaultLeft);
+		TextInput delayTextInput = new(new PixelBounds(288, 32, width, 16), true, OnDelayChange, OnDelayChange, OnDelayChange, GlobalStyles.TextInput);
 		delayTextInput.KeyboardInput.SetText("0.0000");
 
 		NestingContext.Add(enemyTypeLabel);
 		NestingContext.Add(delayLabel);
 		NestingContext.Add(delayTextInput);
 
-		TextButton addButton = new(Rectangle.At(96, 72, width, 32), AddSpawn, GlobalStyles.AddSpawn, GlobalStyles.SpawnText, "ADD");
-		TextButton insertButton = new(Rectangle.At(192, 72, width, 32), InsertSpawn, GlobalStyles.InsertSpawn, GlobalStyles.SpawnText, "INSERT");
-		TextButton editButton = new(Rectangle.At(288, 72, width, 32), EditSpawn, GlobalStyles.EditSpawn, GlobalStyles.SpawnText, "EDIT");
+		TextButton addButton = new(new PixelBounds(96, 72, width, 32), AddSpawn, GlobalStyles.AddSpawn, GlobalStyles.SpawnText, "ADD");
+		TextButton insertButton = new(new PixelBounds(192, 72, width, 32), InsertSpawn, GlobalStyles.InsertSpawn, GlobalStyles.SpawnText, "INSERT");
+		TextButton editButton = new(new PixelBounds(288, 72, width, 32), EditSpawn, GlobalStyles.EditSpawn, GlobalStyles.SpawnText, "EDIT");
 
 		NestingContext.Add(addButton);
 		NestingContext.Add(insertButton);
@@ -60,7 +60,7 @@ public class SpawnEditor : AbstractComponent
 		{
 			ButtonStyle buttonStyle = _selectedEnemyType == enemyType ? GlobalStyles.SelectedEnemyButtonStyles[enemyType] : GlobalStyles.EnemyButtonStyles[enemyType];
 			TextButtonStyle textButtonStyle = new(buttonStyle.BackgroundColor.ReadableColorForBrightness(), TextAlign.Left, FontSize.H12);
-			TextButton button = new(Rectangle.At(x, y, 48, 16), () => SetSelectedEnemyType(enemyType), buttonStyle, textButtonStyle, enemyType.GetShortName());
+			TextButton button = new(new PixelBounds(x, y, 48, 16), () => SetSelectedEnemyType(enemyType), buttonStyle, textButtonStyle, enemyType.GetShortName());
 			_enemyTypeButtons.Add(enemyType, button);
 			NestingContext.Add(button);
 		}

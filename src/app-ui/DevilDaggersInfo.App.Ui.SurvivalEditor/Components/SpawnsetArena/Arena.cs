@@ -33,7 +33,7 @@ public class Arena : AbstractComponent
 	private float _shrinkRadius;
 
 	public Arena(Vector2i<int> topLeft, int tileSize)
-		: base(new Rectangle(topLeft.X, topLeft.Y, topLeft.X + tileSize * SpawnsetBinary.ArenaDimensionMax, topLeft.Y + tileSize * SpawnsetBinary.ArenaDimensionMax))
+		: base(new PixelBounds(topLeft.X, topLeft.Y, tileSize * SpawnsetBinary.ArenaDimensionMax, tileSize * SpawnsetBinary.ArenaDimensionMax))
 	{
 		_tileSize = tileSize;
 
@@ -193,7 +193,7 @@ public class Arena : AbstractComponent
 			Root.Game.SpriteRenderer.Schedule(new(-8, -8), origin.ToVector2() + new Vector2(realRaceX * _tileSize + halfSize, realRaceZ * _tileSize + halfSize), Depth + 3, ContentManager.Content.IconDaggerTexture, Color.FromVector3(color));
 		}
 
-		ScissorScheduler.SetScissor(Scissor.Create(Bounds, parentPosition, ViewportState.Offset, ViewportState.Scale));
+		ScissorScheduler.SetScissor(Scissor.Create(Bounds, parentPosition));
 
 		const int tileUnit = 4;
 		float shrinkStartRadius = StateManager.SpawnsetState.Spawnset.ShrinkStart / tileUnit * _tileSize;

@@ -6,6 +6,7 @@ using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using Silk.NET.GLFW;
 using Warp.NET;
 using Warp.NET.Extensions;
+using Warp.NET.Ui;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena;
 
@@ -32,7 +33,7 @@ public class ArenaPencilState : IArenaState
 				return;
 
 			Vector2i<int> pencilEnd = mousePosition.Real;
-			Rectangle rectangle = ArenaEditingUtils.GetRectangle(_pencilStart.Value / _tileSize, pencilEnd / _tileSize);
+			PixelBounds rectangle = ArenaEditingUtils.GetRectangle(_pencilStart.Value / _tileSize, pencilEnd / _tileSize);
 			for (int i = rectangle.X1; i <= rectangle.X2; i++)
 			{
 				for (int j = rectangle.Y1; j <= rectangle.Y2; j++)

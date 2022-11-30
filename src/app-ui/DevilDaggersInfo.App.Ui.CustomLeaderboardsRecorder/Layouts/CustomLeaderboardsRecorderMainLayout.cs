@@ -10,14 +10,13 @@ namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Layouts;
 public class CustomLeaderboardsRecorderMainLayout : Layout, IExtendedLayout
 {
 	public CustomLeaderboardsRecorderMainLayout()
-		: base(Constants.Full)
 	{
 		const int headerHeight = 24;
-		MainLayoutBackButton backButton = new(Rectangle.At(0, 0, 24, headerHeight), LayoutManager.ToMainLayout);
-		StateWrapper stateWrapper = new(Rectangle.At(0, headerHeight, 256, 128 - headerHeight));
-		RecordingWrapper recordingWrapper = new(Rectangle.At(0, 128, 256, 384));
-		LeaderboardList leaderboardList = new(Rectangle.At(256, headerHeight, 768, 512 - headerHeight));
-		LeaderboardWrapper leaderboardWrapper = new(Rectangle.At(0, 512, 1024, 256));
+		MainLayoutBackButton backButton = new(new PixelBounds(0, 0, 24, headerHeight), LayoutManager.ToMainLayout);
+		StateWrapper stateWrapper = new(new PixelBounds(0, headerHeight, 256, 128 - headerHeight));
+		RecordingWrapper recordingWrapper = new(new PixelBounds(0, 128, 256, 384));
+		LeaderboardList leaderboardList = new(new PixelBounds(256, headerHeight, 768, 512 - headerHeight));
+		LeaderboardWrapper leaderboardWrapper = new(new PixelBounds(0, 512, 1024, 256));
 
 		NestingContext.Add(backButton);
 		NestingContext.Add(stateWrapper);

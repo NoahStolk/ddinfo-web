@@ -51,7 +51,7 @@ public class SettingsWrapper : AbstractComponent
 		_thirdWidth = (int)MathF.Ceiling(_width / 3f);
 		_quarterWidth = _halfWidth / 2;
 
-		Label title = new(Rectangle.At(0, 0, _width, 48), "Settings", GlobalStyles.LabelDefaultMiddle);
+		Label title = new(new PixelBounds(0, 0, _width, 48), "Settings", GlobalStyles.LabelDefaultMiddle);
 		NestingContext.Add(title);
 
 		int y = title.Bounds.Size.Y;
@@ -95,7 +95,7 @@ public class SettingsWrapper : AbstractComponent
 	private TextButton CreateFormatButton(int y, int index, int worldVersion, int spawnVersion)
 	{
 		string str = SpawnsetBinary.GetGameVersionString(worldVersion, spawnVersion);
-		return new(Rectangle.At(index * _thirdWidth, y, _thirdWidth, _offset), UpdateFormat, GlobalStyles.SpawnsetSetting, GlobalStyles.DefaultMiddle, str);
+		return new(new PixelBounds(index * _thirdWidth, y, _thirdWidth, _offset), UpdateFormat, GlobalStyles.SpawnsetSetting, GlobalStyles.DefaultMiddle, str);
 
 		void UpdateFormat()
 		{
@@ -107,7 +107,7 @@ public class SettingsWrapper : AbstractComponent
 	private TextButton CreateGameModeButton(int y, GameMode gameMode)
 	{
 		int index = (int)gameMode;
-		return new(Rectangle.At(index * _thirdWidth, y, _thirdWidth, _offset), UpdateFormat, GlobalStyles.SpawnsetSetting, GlobalStyles.DefaultMiddle, ToShortString());
+		return new(new PixelBounds(index * _thirdWidth, y, _thirdWidth, _offset), UpdateFormat, GlobalStyles.SpawnsetSetting, GlobalStyles.DefaultMiddle, ToShortString());
 
 		void UpdateFormat()
 		{
@@ -127,7 +127,7 @@ public class SettingsWrapper : AbstractComponent
 	private TextButton CreateHandButton(int y, HandLevel handLevel)
 	{
 		int index = (int)handLevel - 1;
-		return new(Rectangle.At(index * _quarterWidth, y, _quarterWidth, _offset), UpdateHand, GlobalStyles.HandLevelButtonStyles[handLevel], GlobalStyles.HandLevelText, ToShortString());
+		return new(new PixelBounds(index * _quarterWidth, y, _quarterWidth, _offset), UpdateHand, GlobalStyles.HandLevelButtonStyles[handLevel], GlobalStyles.HandLevelText, ToShortString());
 
 		void UpdateHand()
 		{
@@ -147,8 +147,8 @@ public class SettingsWrapper : AbstractComponent
 
 	private (SpawnsetTextInput TextInput, Label Label) AddSetting(string labelText, SpawnsetEditType spawnsetEditType, ref int y, Action<string> onInput)
 	{
-		Label label = new(Rectangle.At(0, y, _halfWidth, _offset), labelText, GlobalStyles.LabelDefaultLeft);
-		SpawnsetTextInput textInput = SpawnsetComponentBuilder.CreateSpawnsetTextInput(Rectangle.At(_halfWidth, y, _halfWidth, _offset), onInput, spawnsetEditType);
+		Label label = new(new PixelBounds(0, y, _halfWidth, _offset), labelText, GlobalStyles.LabelDefaultLeft);
+		SpawnsetTextInput textInput = SpawnsetComponentBuilder.CreateSpawnsetTextInput(new PixelBounds(_halfWidth, y, _halfWidth, _offset), onInput, spawnsetEditType);
 		NestingContext.Add(label);
 		NestingContext.Add(textInput);
 		y += _offset;

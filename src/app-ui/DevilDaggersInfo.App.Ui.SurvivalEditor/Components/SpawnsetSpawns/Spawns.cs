@@ -11,7 +11,7 @@ using Warp.NET.Ui;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetSpawns;
 
-public class Spawns : ScrollContent<Spawns, SpawnsWrapper>
+public class Spawns : ScrollContent<Spawns, ScrollViewer<Spawns>>, IScrollContent<Spawns, ScrollViewer<Spawns>>
 {
 	public const int SpawnEntryHeight = 16;
 
@@ -19,12 +19,17 @@ public class Spawns : ScrollContent<Spawns, SpawnsWrapper>
 
 	private int _currentIndex;
 
-	public Spawns(IBounds bounds, SpawnsWrapper parent)
+	public Spawns(IBounds bounds, ScrollViewer<Spawns> parent)
 		: base(bounds, parent)
 	{
 	}
 
 	public override int ContentHeightInPixels => _spawnComponents.Count * SpawnEntryHeight;
+
+	public override void SetContent()
+	{
+
+	}
 
 	public override void Update(Vector2i<int> parentPosition)
 	{
@@ -88,11 +93,16 @@ public class Spawns : ScrollContent<Spawns, SpawnsWrapper>
 		int i = 0;
 		foreach (SpawnUiEntry spawn in EditSpawnContext.GetFrom(StateManager.SpawnsetState.Spawnset))
 		{
-			SpawnEntry spawnEntry = new(Rectangle.At(0, i++ * SpawnEntryHeight, 384, SpawnEntryHeight), spawn);
+			SpawnEntry spawnEntry = new(new PixelBounds(0, i++ * SpawnEntryHeight, 384, SpawnEntryHeight), spawn);
 			_spawnComponents.Add(spawnEntry);
 		}
 
 		foreach (SpawnEntry component in _spawnComponents)
 			NestingContext.Add(component);
+	}
+
+	public static Spawns Construct(IBounds bounds, ScrollViewer<Spawns> parent)
+	{
+		return new(bounds, parent);
 	}
 }

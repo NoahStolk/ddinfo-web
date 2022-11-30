@@ -11,10 +11,10 @@ public class StateWrapper : AbstractComponent
 	public StateWrapper(IBounds bounds)
 		: base(bounds)
 	{
-		Label processLabel = new(Rectangle.At(0, 0, 64, 16), "Process", GlobalStyles.LabelDefaultLeft);
-		Label memoryLabel = new(Rectangle.At(0, 16, 64, 16), "Memory", GlobalStyles.LabelDefaultLeft);
-		Label stateLabel = new(Rectangle.At(0, 32, 64, 16), "State", GlobalStyles.LabelDefaultLeft);
-		Label submissionLabel = new(Rectangle.At(0, 48, 64, 16), "Submission", GlobalStyles.LabelDefaultLeft);
+		Label processLabel = new(new PixelBounds(0, 0, 64, 16), "Process", GlobalStyles.LabelDefaultLeft);
+		Label memoryLabel = new(new PixelBounds(0, 16, 64, 16), "Memory", GlobalStyles.LabelDefaultLeft);
+		Label stateLabel = new(new PixelBounds(0, 32, 64, 16), "State", GlobalStyles.LabelDefaultLeft);
+		Label submissionLabel = new(new PixelBounds(0, 48, 64, 16), "Submission", GlobalStyles.LabelDefaultLeft);
 
 		NestingContext.Add(processLabel);
 		NestingContext.Add(memoryLabel);

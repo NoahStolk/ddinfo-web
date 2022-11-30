@@ -12,14 +12,21 @@ namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Layouts;
 public class SurvivalEditorOpenLayout : Layout, IFileDialogLayout
 {
 	private readonly TextInput _pathTextInput;
-	private readonly PathsWrapper _pathsWrapper;
+	private readonly ScrollViewer<Paths> _pathsWrapper;
 
 	public SurvivalEditorOpenLayout()
-		: base(Constants.Full)
 	{
-		PathsCloseButton closeButton = new(Rectangle.At(0, 0, 24, 24), LayoutManager.ToSurvivalEditorMainLayout);
-		_pathTextInput = new(Rectangle.At(0, 24, 1024, 16), false, null, null, null, GlobalStyles.TextInput);
-		_pathsWrapper = new(Rectangle.At(0, 96, 1024, 640), SetComponentsFromPath, OpenSpawnset);
+		PathsCloseButton closeButton = new(new PixelBounds(0, 0, 24, 24), LayoutManager.ToSurvivalEditorMainLayout);
+		_pathTextInput = new(new PixelBounds(0, 24, 1024, 16), false, null, null, null, GlobalStyles.TextInput);
+		PixelBounds pathsWrapperBounds = new(0, 96, 1024, 640);
+		_pathsWrapper = new(pathsWrapperBounds, pathsWrapperBounds.CreateNested(0, 0, 1008, 640), pathsWrapperBounds.CreateNested(1008, 0, 16, 640))
+		{
+			Content =
+			{
+				OnDirectorySelect = SetComponentsFromPath,
+				OnFileSelect = OpenSpawnset,
+			},
+		};
 
 		NestingContext.Add(closeButton);
 		NestingContext.Add(_pathTextInput);
@@ -41,7 +48,7 @@ public class SurvivalEditorOpenLayout : Layout, IFileDialogLayout
 	public void SetComponentsFromPath(string path)
 	{
 		_pathTextInput.KeyboardInput.SetText(path);
-		_pathsWrapper.Path = path;
+		_pathsWrapper.Content.Path = path;
 		_pathsWrapper.InitializeContent();
 	}
 

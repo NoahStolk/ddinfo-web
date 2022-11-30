@@ -10,18 +10,23 @@ using Warp.NET.Ui.Components;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetHistory;
 
-public class History : ScrollContent<History, HistoryWrapper>
+public class History : ScrollContent<History, ScrollViewer<History>>, IScrollContent<History, ScrollViewer<History>>
 {
 	private const int _historyEntryHeight = 16;
 
 	private readonly List<AbstractComponent> _historyComponents = new();
 
-	public History(IBounds bounds, HistoryWrapper historyWrapper)
+	public History(IBounds bounds, ScrollViewer<History> historyWrapper)
 		: base(bounds, historyWrapper)
 	{
 	}
 
 	public override int ContentHeightInPixels => _historyComponents.Count * _historyEntryHeight;
+
+	public override void SetContent()
+	{
+		throw new NotImplementedException();
+	}
 
 	public void SetHistory()
 	{
@@ -40,7 +45,7 @@ public class History : ScrollContent<History, HistoryWrapper>
 			int index = i;
 			ButtonStyle buttonStyle = new(isActive ? colorBackgroundActive : colorBackground, isActive ? Color.White : Color.Black, hoverBackgroundColor, 1);
 			TextButtonStyle textButtonStyle = new(Color.White, TextAlign.Left, FontSize.H12);
-			TextButton button = new(Rectangle.At(0, i * _historyEntryHeight, Bounds.Size.X, _historyEntryHeight), () => SpawnsetHistoryManager.Set(index), buttonStyle, textButtonStyle, history.EditType.GetChange())
+			TextButton button = new(new PixelBounds(0, i * _historyEntryHeight, Bounds.Size.X, _historyEntryHeight), () => SpawnsetHistoryManager.Set(index), buttonStyle, textButtonStyle, history.EditType.GetChange())
 			{
 				Depth = Depth + 1,
 			};
@@ -49,5 +54,10 @@ public class History : ScrollContent<History, HistoryWrapper>
 
 		foreach (AbstractComponent component in _historyComponents)
 			NestingContext.Add(component);
+	}
+
+	public static History Construct(IBounds bounds, ScrollViewer<History> parent)
+	{
+		return new(bounds, parent);
 	}
 }

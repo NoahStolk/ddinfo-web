@@ -11,16 +11,24 @@ namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Layouts;
 public class SurvivalEditorSaveLayout : Layout, IFileDialogLayout
 {
 	private readonly TextInput _pathTextInput;
-	private readonly PathsWrapper _pathsWrapper;
+	private readonly ScrollViewer<Paths> _pathsWrapper;
 
 	public SurvivalEditorSaveLayout()
-		: base(Constants.Full)
 	{
-		PathsCloseButton closeButton = new(Rectangle.At(0, 0, 24, 24), LayoutManager.ToSurvivalEditorMainLayout);
-		_pathTextInput = new(Rectangle.At(0, 24, 1024, 16), false, null, null, null, GlobalStyles.TextInput);
-		TextInput fileTextInput = new(Rectangle.At(0, 48, 512, 16), false, null, null, null, GlobalStyles.TextInput);
-		TextButton saveButton = new(Rectangle.At(512, 48, 128, 16), () => SaveSpawnset(Path.Combine(_pathTextInput.KeyboardInput.Value.ToString(), fileTextInput.KeyboardInput.Value.ToString())), GlobalStyles.DefaultButtonStyle, GlobalStyles.FileSaveButton, "Save");
-		_pathsWrapper = new(Rectangle.At(0, 96, 1024, 640), SetComponentsFromPath, SaveSpawnset);
+		PathsCloseButton closeButton = new(new PixelBounds(0, 0, 24, 24), LayoutManager.ToSurvivalEditorMainLayout);
+		_pathTextInput = new(new PixelBounds(0, 24, 1024, 16), false, null, null, null, GlobalStyles.TextInput);
+		TextInput fileTextInput = new(new PixelBounds(0, 48, 512, 16), false, null, null, null, GlobalStyles.TextInput);
+		TextButton saveButton = new(new PixelBounds(512, 48, 128, 16), () => SaveSpawnset(Path.Combine(_pathTextInput.KeyboardInput.Value.ToString(), fileTextInput.KeyboardInput.Value.ToString())), GlobalStyles.DefaultButtonStyle, GlobalStyles.FileSaveButton, "Save");
+
+		PixelBounds pathsWrapperBounds = new(0, 96, 1024, 640);
+		_pathsWrapper = new(pathsWrapperBounds, pathsWrapperBounds.CreateNested(0, 0, 1008, 640), pathsWrapperBounds.CreateNested(1008, 0, 16, 640))
+		{
+			Content =
+			{
+				OnDirectorySelect = SetComponentsFromPath,
+				OnFileSelect = SaveSpawnset,
+			},
+		};
 
 		NestingContext.Add(closeButton);
 		NestingContext.Add(_pathTextInput);
@@ -44,7 +52,7 @@ public class SurvivalEditorSaveLayout : Layout, IFileDialogLayout
 	public void SetComponentsFromPath(string path)
 	{
 		_pathTextInput.KeyboardInput.SetText(path);
-		_pathsWrapper.Path = path;
+		_pathsWrapper.Content.Path = path;
 		_pathsWrapper.InitializeContent();
 	}
 
