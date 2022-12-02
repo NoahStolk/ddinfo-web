@@ -9,7 +9,7 @@ namespace DevilDaggersInfo.App.Ui.Base.Components;
 public class Popup : AbstractComponent
 {
 	public Popup(ILayout parent, string text)
-		: base(new Bounds(0, 0, 1, 1))
+		: base(new NormalizedBounds(0, 0, 1, 1))
 	{
 		Depth = Constants.DepthMax - 1;
 
