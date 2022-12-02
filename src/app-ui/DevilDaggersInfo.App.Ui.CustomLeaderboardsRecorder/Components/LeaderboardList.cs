@@ -5,6 +5,7 @@ using DevilDaggersInfo.App.Core.ApiClient.TaskHandlers;
 using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
+using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States;
 using DevilDaggersInfo.Types.Web;
 using Warp.NET.RenderImpl.Ui.Components;
 using Warp.NET.Text;
@@ -16,18 +17,10 @@ namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components;
 public class LeaderboardList : AbstractComponent
 {
 	private const int _borderSize = 1;
-	private const int _pageSize = 20;
 
 	private readonly List<LeaderboardListEntry> _leaderboardComponents = new();
 	private readonly TooltipIconButton _prevButton;
 	private readonly TooltipIconButton _nextButton;
-
-	// TODO: Move to state class.
-	private int _maxPageIndex = int.MaxValue;
-	private int _totalResults = int.MaxValue;
-	private CustomLeaderboardCategory _category = CustomLeaderboardCategory.Survival;
-	private int _pageIndex;
-	private bool _isLoading;
 
 	public LeaderboardList(IBounds bounds)
 		: base(bounds)
@@ -39,7 +32,7 @@ public class LeaderboardList : AbstractComponent
 		for (int i = 0; i < categories.Length; i++)
 		{
 			CustomLeaderboardCategory category = categories[i];
-			DropdownEntry dropdownEntry = new(categoryDropdown.Bounds.CreateNested(0, (i + 1) * 20, 96, 20), categoryDropdown, () => ChangeAndLoad(() => _category = category), category.ToString(), GlobalStyles.DefaultDropdownEntryStyle)
+			DropdownEntry dropdownEntry = new(categoryDropdown.Bounds.CreateNested(0, (i + 1) * 20, 96, 20), categoryDropdown, () => ChangeAndLoad(() => StateManager.SetCategory(category)), category.ToString(), GlobalStyles.DefaultDropdownEntryStyle)
 			{
 				IsActive = false,
 				Depth = Depth + 100,
@@ -49,8 +42,8 @@ public class LeaderboardList : AbstractComponent
 			NestingContext.Add(dropdownEntry);
 		}
 
-		_prevButton = new(bounds.CreateNested(4, 32, 20, 20), () => ChangeAndLoad(() => --_pageIndex), GlobalStyles.NavigationButtonStyle, WarpTextures.ArrowLeft, "Previous") { Depth = Depth + 100 };
-		_nextButton = new(bounds.CreateNested(24, 32, 20, 20), () => ChangeAndLoad(() => ++_pageIndex), GlobalStyles.NavigationButtonStyle, WarpTextures.ArrowRight, "Next") { Depth = Depth + 100 };
+		_prevButton = new(bounds.CreateNested(4, 32, 20, 20), () => ChangeAndLoad(() => StateManager.SetPageIndex(StateManager.LeaderboardListState.PageIndex - 1)), GlobalStyles.NavigationButtonStyle, WarpTextures.ArrowLeft, "Previous") { Depth = Depth + 100 };
+		_nextButton = new(bounds.CreateNested(24, 32, 20, 20), () => ChangeAndLoad(() => StateManager.SetPageIndex(StateManager.LeaderboardListState.PageIndex + 1)), GlobalStyles.NavigationButtonStyle, WarpTextures.ArrowRight, "Next") { Depth = Depth + 100 };
 
 		NestingContext.Add(_prevButton);
 		NestingContext.Add(_nextButton);
@@ -60,7 +53,9 @@ public class LeaderboardList : AbstractComponent
 		void ChangeAndLoad(Action action)
 		{
 			action();
-			_pageIndex = Math.Clamp(_pageIndex, 0, _maxPageIndex);
+
+			// Correct page index should it ever go out of bounds.
+			StateManager.SetPageIndex(Math.Clamp(StateManager.LeaderboardListState.PageIndex, 0, StateManager.LeaderboardListState.MaxPageIndex));
 
 			Load();
 		}
@@ -73,23 +68,26 @@ public class LeaderboardList : AbstractComponent
 
 		_leaderboardComponents.Clear();
 
-		SetLoading();
+		StateManager.SetLoading(true);
+		_prevButton.IsDisabled = true;
+		_nextButton.IsDisabled = true;
 
-		AsyncHandler.Run(Populate, () => FetchCustomLeaderboards.HandleAsync(_category, _pageIndex, _pageSize, 21854, false));
+		AsyncHandler.Run(Populate, () => FetchCustomLeaderboards.HandleAsync(StateManager.LeaderboardListState.Category, StateManager.LeaderboardListState.PageIndex, StateManager.LeaderboardListState.PageSize, 21854, false));
 
 		void Populate(Page<GetCustomLeaderboardForOverview>? cls)
 		{
 			Set();
-			UnsetLoading();
+
+			StateManager.SetLoading(false);
+			_prevButton.IsDisabled = StateManager.LeaderboardListState.PageIndex == 0;
+			_nextButton.IsDisabled = StateManager.LeaderboardListState.PageIndex == StateManager.LeaderboardListState.MaxPageIndex;
 
 			void Set()
 			{
 				if (cls == null)
 					return;
 
-				_maxPageIndex = (int)Math.Ceiling((cls.TotalResults + 1) / (float)_pageSize) - 1;
-				_totalResults = cls.TotalResults;
-				_pageIndex = Math.Clamp(_pageIndex, 0, _maxPageIndex);
+				StateManager.SetTotalResults(cls.TotalResults);
 
 				int y = 96;
 				foreach (GetCustomLeaderboardForOverview cl in cls.Results)
@@ -105,20 +103,6 @@ public class LeaderboardList : AbstractComponent
 		}
 	}
 
-	private void UnsetLoading()
-	{
-		_isLoading = false;
-		_prevButton.IsDisabled = _pageIndex == 0;
-		_nextButton.IsDisabled = _pageIndex == _maxPageIndex;
-	}
-
-	private void SetLoading()
-	{
-		_isLoading = true;
-		_prevButton.IsDisabled = true;
-		_nextButton.IsDisabled = true;
-	}
-
 	public override void Render(Vector2i<int> scrollOffset)
 	{
 		base.Render(scrollOffset);
@@ -126,18 +110,23 @@ public class LeaderboardList : AbstractComponent
 		Root.Game.RectangleRenderer.Schedule(Bounds.Size, Bounds.Center + scrollOffset, Depth, Color.Green);
 		Root.Game.RectangleRenderer.Schedule(Bounds.Size - new Vector2i<int>(_borderSize * 2), Bounds.Center, Depth + 1, Color.Black);
 
-		Root.Game.MonoSpaceFontRenderer12.Schedule(new(2), scrollOffset + Bounds.TopLeft + new Vector2i<int>(4, 4), Depth + 2, Color.Yellow, $"{_category} leaderboards", TextAlign.Left);
+		Root.Game.MonoSpaceFontRenderer12.Schedule(new(2), scrollOffset + Bounds.TopLeft + new Vector2i<int>(4, 4), Depth + 2, Color.Yellow, $"{StateManager.LeaderboardListState.Category} leaderboards", TextAlign.Left);
 
 		string text;
 		Color color;
-		if (_isLoading)
+		if (StateManager.LeaderboardListState.IsLoading)
 		{
 			text = "Loading...";
 			color = Color.Red;
 		}
 		else
 		{
-			text = $"Page {_pageIndex + 1} of {_maxPageIndex + 1} ({_pageIndex * _pageSize + 1} - {Math.Min(_totalResults, (_pageIndex + 1) * _pageSize)} of {_totalResults})";
+			int page = StateManager.LeaderboardListState.PageIndex + 1;
+			int totalPages = StateManager.LeaderboardListState.MaxPageIndex + 1;
+			int start = StateManager.LeaderboardListState.PageIndex * StateManager.LeaderboardListState.PageSize + 1;
+			int end = Math.Min(StateManager.LeaderboardListState.TotalResults, (StateManager.LeaderboardListState.PageIndex + 1) * StateManager.LeaderboardListState.PageSize);
+			int total = StateManager.LeaderboardListState.TotalResults;
+			text = $"Page {page} of {totalPages} ({start} - {end} of {total})";
 			color = Color.Yellow;
 		}
 
