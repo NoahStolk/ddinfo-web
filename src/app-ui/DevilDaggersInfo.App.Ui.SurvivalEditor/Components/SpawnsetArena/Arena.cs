@@ -168,8 +168,7 @@ public class Arena : AbstractComponent
 					if (Color.Black != colorValue)
 					{
 						const int size = 2;
-						const int padding = 2;
-						Root.Game.RectangleRenderer.Schedule(new(size), origin + new Vector2i<int>(x + padding, y + padding) + halfTileSize, Depth + 2, colorValue);
+						Root.Game.RectangleRenderer.Schedule(new(size), origin + new Vector2i<int>(x, y) + halfTileSize, Depth + 2, colorValue);
 					}
 				}
 			}
