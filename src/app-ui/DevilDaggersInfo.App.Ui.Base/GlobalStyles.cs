@@ -36,6 +36,8 @@ public static class GlobalStyles
 	public static LabelStyle LabelDefaultMiddle { get; } = new(Color.White, TextAlign.Middle, FontSize.H12);
 	public static LabelStyle LabelDefaultRight { get; } = new(Color.White, TextAlign.Right, FontSize.H12);
 
+	public static LabelStyle LabelTitle { get; } = new(Color.White, TextAlign.Middle, FontSize.H24);
+
 	public static SliderStyle DefaultSliderStyle { get; } = new(Color.White, 2, TextAlign.Middle, FontSize.H12);
 
 	public static DropdownStyle DefaultDropdownStyle { get; } = new(FontSize.H12);

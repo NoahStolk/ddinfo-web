@@ -23,7 +23,7 @@ public class ArenaToolsWrapper : AbstractComponent
 		AddToolButton(0 + _arenaButtonSize * 3, 0, ArenaTool.Bucket, WarpTextures.Bucket, "Bucket");
 		AddToolButton(0 + _arenaButtonSize * 4, 0, ArenaTool.Dagger, WarpTextures.Dagger, "Race dagger");
 
-		_toolSettingsWrappers.Add(ArenaTool.Bucket, new BucketToolSettingsWrapper(new PixelBounds(0, _arenaButtonSize, bounds.Size.X, 64)));
+		_toolSettingsWrappers.Add(ArenaTool.Bucket, new BucketToolSettingsWrapper(bounds.CreateNested(0, _arenaButtonSize, bounds.Size.X, 64)));
 
 		foreach (KeyValuePair<ArenaTool, TooltipIconButton> kvp in _toolButtons)
 			NestingContext.Add(kvp.Value);

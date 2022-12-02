@@ -16,10 +16,11 @@ namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Layouts;
 
 public class SurvivalEditorMainLayout : Layout, ISurvivalEditorMainLayout
 {
-	private readonly ScrollViewer<Spawns> _spawnsWrapper;
-	private readonly ScrollViewer<History> _historyWrapper;
-	private readonly SettingsWrapper _settingsWrapper;
+	private readonly SpawnsWrapper _spawnsWrapper;
 	private readonly ArenaWrapper _arenaWrapper;
+	private readonly SettingsWrapper _settingsWrapper;
+
+	private readonly ScrollViewer<History> _historyViewer;
 
 	private readonly KeySubmitter _keySubmitter = new();
 
@@ -27,23 +28,22 @@ public class SurvivalEditorMainLayout : Layout, ISurvivalEditorMainLayout
 	{
 		Menu menu = new(new PixelBounds(0, 0, 1024, 768));
 
-		_arenaWrapper = new(new PixelBounds(400, 24, 400, 400));
+		_spawnsWrapper = new(new PixelBounds(0, 24, 400, 640));
 
-		PixelBounds spawnsWrapperBounds = new(0, 24, 384, 640);
-		_spawnsWrapper = new(spawnsWrapperBounds, spawnsWrapperBounds.CreateNested(0, 0, 368, 640), spawnsWrapperBounds.CreateNested(368, 0, 16, 640));
+		_arenaWrapper = new(new PixelBounds(400, 24, 400, 400));
 
 		SpawnEditor spawnEditor = new(new PixelBounds(0, 664, 384, 128));
 
 		PixelBounds historyWrapperBounds = new(768, 512, 256, 256);
-		_historyWrapper = new(historyWrapperBounds, historyWrapperBounds.CreateNested(0, 0, 240, 256), historyWrapperBounds.CreateNested(240, 0, 16, 256));
+		_historyViewer = new(historyWrapperBounds, historyWrapperBounds.CreateNested(0, 0, 240, 256), historyWrapperBounds.CreateNested(240, 0, 16, 256));
 
 		_settingsWrapper = new(new PixelBounds(804, 24, 216, 256));
 
 		NestingContext.Add(menu);
-		NestingContext.Add(_arenaWrapper);
 		NestingContext.Add(_spawnsWrapper);
+		NestingContext.Add(_arenaWrapper);
 		NestingContext.Add(spawnEditor);
-		NestingContext.Add(_historyWrapper);
+		NestingContext.Add(_historyViewer);
 		NestingContext.Add(_settingsWrapper);
 	}
 
@@ -53,7 +53,7 @@ public class SurvivalEditorMainLayout : Layout, ISurvivalEditorMainLayout
 			_arenaWrapper.SetSpawnset();
 
 		if (hasSpawnsChanges || hasSettingsChanges)
-			_spawnsWrapper.InitializeContent();
+			_spawnsWrapper.SetSpawnset();
 
 		if (hasSettingsChanges)
 			_settingsWrapper.SetSpawnset();
@@ -61,7 +61,7 @@ public class SurvivalEditorMainLayout : Layout, ISurvivalEditorMainLayout
 
 	public void SetHistory()
 	{
-		_historyWrapper.InitializeContent();
+		_historyViewer.InitializeContent();
 	}
 
 	public void Update()

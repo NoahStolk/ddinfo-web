@@ -22,7 +22,7 @@ public class ArenaWrapper : AbstractComponent
 
 		_arena = new(bounds.CreateNested(0, titleHeight, arenaSize, arenaSize));
 
-		Label title = new(bounds.CreateNested(0, 0, arenaSize, titleHeight), "Arena", GlobalStyles.LabelDefaultMiddle);
+		Label title = new(bounds.CreateNested(0, 0, arenaSize, titleHeight), "Arena", GlobalStyles.LabelTitle);
 		ArenaHeightButtons arenaHeightButtons = new(bounds.CreateNested(arenaSize + 8, titleHeight, 80, 320));
 		_shrinkSlider = new(bounds.CreateNested(0, titleHeight + arenaSize, arenaSize, sliderHeight), _arena.SetShrinkCurrent, true, 0, StateManager.SpawnsetState.Spawnset.GetSliderMaxSeconds(), 0.001f, 0, GlobalStyles.DefaultSliderStyle);
 		ArenaToolsWrapper arenaToolsWrapper = new(bounds.CreateNested(0, titleHeight + arenaSize + sliderHeight, 304, 480));
