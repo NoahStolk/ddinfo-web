@@ -36,14 +36,14 @@ public sealed class Paths : ScrollContent<Paths, ScrollViewer<Paths>>, IScrollCo
 
 		DirectoryInfo? parent = Directory.GetParent(path);
 		if (parent != null)
-			_subDirectoryButtons.Add(new PathButton(new PixelBounds(0, 0, _entryWidth, _entryHeight), () => OnDirectorySelect?.Invoke(parent.FullName), true, ".."));
+			_subDirectoryButtons.Add(new PathButton(Bounds.CreateNested(0, 0, _entryWidth, _entryHeight), () => OnDirectorySelect?.Invoke(parent.FullName), true, ".."));
 
 		int i = 0;
 		foreach (string directory in Directory.GetDirectories(path))
-			_subDirectoryButtons.Add(new PathButton(new PixelBounds(0, ++i * _entryHeight, _entryWidth, _entryHeight), () => OnDirectorySelect?.Invoke(directory), true, System.IO.Path.GetFileName(directory)));
+			_subDirectoryButtons.Add(new PathButton(Bounds.CreateNested(0, ++i * _entryHeight, _entryWidth, _entryHeight), () => OnDirectorySelect?.Invoke(directory), true, System.IO.Path.GetFileName(directory)));
 
 		foreach (string file in Directory.GetFiles(path))
-			_subDirectoryButtons.Add(new PathButton(new PixelBounds(0, ++i * _entryHeight, _entryWidth, _entryHeight), () => OnFileSelect?.Invoke(file), false, System.IO.Path.GetFileName(file)));
+			_subDirectoryButtons.Add(new PathButton(Bounds.CreateNested(0, ++i * _entryHeight, _entryWidth, _entryHeight), () => OnFileSelect?.Invoke(file), false, System.IO.Path.GetFileName(file)));
 
 		foreach (Button button in _subDirectoryButtons)
 			NestingContext.Add(button);
