@@ -18,8 +18,8 @@ public class BucketToolSettingsWrapper : AbstractComponent
 		void AddSetting(string labelText, int x, ref int y, Action<string> onInput, string initialInput)
 		{
 			int halfWidth = Bounds.Size.X / 2;
-			Label label = new(Rectangle.At(x, y, halfWidth, 16), labelText, GlobalStyles.LabelDefaultLeft);
-			TextInput textInput = new(Rectangle.At(x + halfWidth, y, halfWidth, 16), true, onInput, onInput, onInput, GlobalStyles.TextInput);
+			Label label = new(bounds.CreateNested(x, y, halfWidth, 16), labelText, GlobalStyles.LabelDefaultLeft);
+			TextInput textInput = new(bounds.CreateNested(x + halfWidth, y, halfWidth, 16), true, onInput, onInput, onInput, GlobalStyles.TextInput);
 			textInput.KeyboardInput.SetText(initialInput);
 			NestingContext.Add(label);
 			NestingContext.Add(textInput);

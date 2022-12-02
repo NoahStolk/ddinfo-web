@@ -1,4 +1,3 @@
-using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena.Data;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Enums;
@@ -6,19 +5,13 @@ using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using Silk.NET.GLFW;
 using Warp.NET;
+using Warp.NET.Ui;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena;
 
 public class ArenaRectangleState : IArenaState
 {
-	private readonly int _tileSize;
-
 	private Vector2i<int>? _rectangleStart;
-
-	public ArenaRectangleState(int tileSize)
-	{
-		_tileSize = tileSize;
-	}
 
 	public void Handle(ArenaMousePosition mousePosition)
 	{
@@ -42,7 +35,7 @@ public class ArenaRectangleState : IArenaState
 
 	public void Render(ArenaMousePosition mousePosition, Vector2i<int> origin, float depth)
 	{
-		Loop(mousePosition, (i, j) => Root.Game.RectangleRenderer.Schedule(new(_tileSize), origin + new Vector2i<int>(i, j) * _tileSize, depth, Color.HalfTransparentWhite));
+		Loop(mousePosition, (i, j) => Root.Game.RectangleRenderer.Schedule(new(Components.SpawnsetArena.Arena.TileSize), origin + new Vector2i<int>(i, j) * Components.SpawnsetArena.Arena.TileSize + Components.SpawnsetArena.Arena.HalfTile, depth, Color.HalfTransparentWhite));
 	}
 
 	private void Loop(ArenaMousePosition mousePosition, Action<int, int> action)
@@ -51,7 +44,7 @@ public class ArenaRectangleState : IArenaState
 			return;
 
 		Vector2i<int> rectangleEnd = mousePosition.Tile;
-		Rectangle rectangle = ArenaEditingUtils.GetRectangle(_rectangleStart.Value, rectangleEnd);
+		PixelBounds rectangle = ArenaEditingUtils.GetRectangle(_rectangleStart.Value, rectangleEnd);
 		for (int i = rectangle.X1; i <= rectangle.X2; i++)
 		{
 			for (int j = rectangle.Y1; j <= rectangle.Y2; j++)

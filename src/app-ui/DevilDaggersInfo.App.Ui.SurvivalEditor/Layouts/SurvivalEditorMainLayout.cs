@@ -1,4 +1,3 @@
-using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts.SurvivalEditor;
 using DevilDaggersInfo.App.Ui.Base.States;
@@ -10,6 +9,7 @@ using DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetSpawns;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using Silk.NET.GLFW;
 using Warp.NET;
+using Warp.NET.RenderImpl.Ui.Components;
 using Warp.NET.Ui;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Layouts;
@@ -17,27 +17,27 @@ namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Layouts;
 public class SurvivalEditorMainLayout : Layout, ISurvivalEditorMainLayout
 {
 	private readonly SpawnsWrapper _spawnsWrapper;
-	private readonly HistoryWrapper _historyWrapper;
-	private readonly SettingsWrapper _settingsWrapper;
 	private readonly ArenaWrapper _arenaWrapper;
+	private readonly SettingsWrapper _settingsWrapper;
+
+	private readonly ScrollViewer<History> _historyViewer;
 
 	private readonly KeySubmitter _keySubmitter = new();
 
 	public SurvivalEditorMainLayout()
-		: base(Constants.Full)
 	{
-		Menu menu = new(new Rectangle(0, 0, 1024, 768));
-		_arenaWrapper = new(Rectangle.At(400, 24, 400, 400));
-		_spawnsWrapper = new(Rectangle.At(0, 24, 384, 640));
-		SpawnEditor spawnEditor = new(Rectangle.At(0, 664, 384, 128));
-		_historyWrapper = new(Rectangle.At(768, 512, 256, 256));
-		_settingsWrapper = new(Rectangle.At(804, 24, 216, 256));
+		Menu menu = new(new PixelBounds(0, 0, 1024, 768));
+		_spawnsWrapper = new(new PixelBounds(0, 24, 400, 640));
+		_arenaWrapper = new(new PixelBounds(400, 24, 400, 400));
+		SpawnEditor spawnEditor = new(new PixelBounds(0, 664, 384, 128));
+		_historyViewer = new(new PixelBounds(768, 512, 256, 256), 16);
+		_settingsWrapper = new(new PixelBounds(804, 24, 216, 256));
 
 		NestingContext.Add(menu);
-		NestingContext.Add(_arenaWrapper);
 		NestingContext.Add(_spawnsWrapper);
+		NestingContext.Add(_arenaWrapper);
 		NestingContext.Add(spawnEditor);
-		NestingContext.Add(_historyWrapper);
+		NestingContext.Add(_historyViewer);
 		NestingContext.Add(_settingsWrapper);
 	}
 
@@ -47,7 +47,7 @@ public class SurvivalEditorMainLayout : Layout, ISurvivalEditorMainLayout
 			_arenaWrapper.SetSpawnset();
 
 		if (hasSpawnsChanges || hasSettingsChanges)
-			_spawnsWrapper.InitializeContent();
+			_spawnsWrapper.SetSpawnset();
 
 		if (hasSettingsChanges)
 			_settingsWrapper.SetSpawnset();
@@ -55,7 +55,7 @@ public class SurvivalEditorMainLayout : Layout, ISurvivalEditorMainLayout
 
 	public void SetHistory()
 	{
-		_historyWrapper.InitializeContent();
+		_historyViewer.InitializeContent();
 	}
 
 	public void Update()
@@ -88,7 +88,7 @@ public class SurvivalEditorMainLayout : Layout, ISurvivalEditorMainLayout
 
 	public void Render()
 	{
-		Vector2i<int> windowSize = new(WindowWidth, WindowHeight);
+		Vector2i<int> windowSize = new(CurrentWindowState.Width, CurrentWindowState.Height);
 		Root.Game.RectangleRenderer.Schedule(windowSize, windowSize / 2, -100, Color.Gray(0.1f));
 	}
 }

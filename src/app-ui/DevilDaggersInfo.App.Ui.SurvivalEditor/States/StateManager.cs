@@ -62,7 +62,7 @@ public static class StateManager
 
 	public static void ReplaceSpawnset()
 	{
-		File.WriteAllBytes(Path.Combine(UserSettings.DevilDaggersInstallationDirectory, "mods", "survival"), SpawnsetState.Spawnset.ToBytes());
+		File.WriteAllBytes(UserSettings.ModsSurvivalPath, SpawnsetState.Spawnset.ToBytes());
 		ILayout popupParent = Root.Game.SurvivalEditorMainLayout;
 		Popup p = new(popupParent, "Successfully replaced current survival file");
 		popupParent.NestingContext.Add(p);

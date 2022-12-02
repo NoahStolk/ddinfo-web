@@ -9,9 +9,6 @@ public interface IDependencyContainer
 {
 	AppVersion AppVersion { get; }
 
-	int InitialWindowWidth { get; }
-	int InitialWindowHeight { get; }
-
 	float Dt { get; }
 	float Tt { get; }
 

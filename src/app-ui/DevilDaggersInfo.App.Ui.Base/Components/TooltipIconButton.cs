@@ -16,9 +16,9 @@ public class TooltipIconButton : IconButton
 		_tooltipText = tooltipText;
 	}
 
-	public override void Update(Vector2i<int> parentPosition)
+	public override void Update(Vector2i<int> scrollOffset)
 	{
-		base.Update(parentPosition);
+		base.Update(scrollOffset);
 
 		if (Hover && !IsDisabled)
 			Root.Game.TooltipText = _tooltipText;

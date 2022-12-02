@@ -1,4 +1,4 @@
-using DevilDaggersInfo.App.Ui.Base;
+using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Spawns;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Enums;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
@@ -11,7 +11,7 @@ using Warp.NET.Ui;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetSpawns;
 
-public class Spawns : ScrollContent<Spawns, SpawnsWrapper>
+public sealed class Spawns : ScrollContent<Spawns, ScrollViewer<Spawns>>, IScrollContent<Spawns, ScrollViewer<Spawns>>
 {
 	public const int SpawnEntryHeight = 16;
 
@@ -19,16 +19,21 @@ public class Spawns : ScrollContent<Spawns, SpawnsWrapper>
 
 	private int _currentIndex;
 
-	public Spawns(IBounds bounds, SpawnsWrapper parent)
+	private Spawns(IBounds bounds, ScrollViewer<Spawns> parent)
 		: base(bounds, parent)
 	{
 	}
 
 	public override int ContentHeightInPixels => _spawnComponents.Count * SpawnEntryHeight;
 
-	public override void Update(Vector2i<int> parentPosition)
+	public override void SetContent()
 	{
-		base.Update(parentPosition);
+		SetSpawnset();
+	}
+
+	public override void Update(Vector2i<int> scrollOffset)
+	{
+		base.Update(scrollOffset);
 
 		bool ctrl = Input.IsCtrlHeld();
 		bool shift = Input.IsShiftHeld();
@@ -49,7 +54,7 @@ public class Spawns : ScrollContent<Spawns, SpawnsWrapper>
 			StateManager.ClearSpawnSelections();
 		}
 
-		bool hoverWithoutBlock = Bounds.Contains(MouseUiContext.MousePosition.RoundToVector2Int32() - parentPosition);
+		bool hoverWithoutBlock = Bounds.Contains(MouseUiContext.MousePosition.RoundToVector2Int32() - scrollOffset);
 		if (!Input.IsButtonPressed(MouseButton.Left) || !hoverWithoutBlock)
 			return;
 
@@ -78,7 +83,7 @@ public class Spawns : ScrollContent<Spawns, SpawnsWrapper>
 		}
 	}
 
-	public void SetSpawnset()
+	private void SetSpawnset()
 	{
 		foreach (SpawnEntry component in _spawnComponents)
 			NestingContext.Remove(component);
@@ -88,11 +93,23 @@ public class Spawns : ScrollContent<Spawns, SpawnsWrapper>
 		int i = 0;
 		foreach (SpawnUiEntry spawn in EditSpawnContext.GetFrom(StateManager.SpawnsetState.Spawnset))
 		{
-			SpawnEntry spawnEntry = new(Rectangle.At(0, i++ * SpawnEntryHeight, 384, SpawnEntryHeight), spawn);
+			SpawnEntry spawnEntry = new(Bounds.CreateNested(0, i++ * SpawnEntryHeight, 384, SpawnEntryHeight), spawn);
 			_spawnComponents.Add(spawnEntry);
 		}
 
 		foreach (SpawnEntry component in _spawnComponents)
 			NestingContext.Add(component);
+	}
+
+	public override void Render(Vector2i<int> scrollOffset)
+	{
+		base.Render(scrollOffset);
+
+		Root.Game.RectangleRenderer.Schedule(Bounds.Size, Bounds.Center, Depth, Color.Black);
+	}
+
+	public static Spawns Construct(IBounds bounds, ScrollViewer<Spawns> parent)
+	{
+		return new(bounds, parent);
 	}
 }

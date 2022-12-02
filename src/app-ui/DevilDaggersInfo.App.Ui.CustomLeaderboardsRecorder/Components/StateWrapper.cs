@@ -11,10 +11,11 @@ public class StateWrapper : AbstractComponent
 	public StateWrapper(IBounds bounds)
 		: base(bounds)
 	{
-		Label processLabel = new(Rectangle.At(0, 0, 64, 16), "Process", GlobalStyles.LabelDefaultLeft);
-		Label memoryLabel = new(Rectangle.At(0, 16, 64, 16), "Memory", GlobalStyles.LabelDefaultLeft);
-		Label stateLabel = new(Rectangle.At(0, 32, 64, 16), "State", GlobalStyles.LabelDefaultLeft);
-		Label submissionLabel = new(Rectangle.At(0, 48, 64, 16), "Submission", GlobalStyles.LabelDefaultLeft);
+		int labelDepth = Depth + 2;
+		Label processLabel = new(bounds.CreateNested(0, 0, 64, 16), "Process", GlobalStyles.LabelDefaultLeft) { Depth = labelDepth };
+		Label memoryLabel = new(bounds.CreateNested(0, 16, 64, 16), "Memory", GlobalStyles.LabelDefaultLeft) { Depth = labelDepth };
+		Label stateLabel = new(bounds.CreateNested(0, 32, 64, 16), "State", GlobalStyles.LabelDefaultLeft) { Depth = labelDepth };
+		Label submissionLabel = new(bounds.CreateNested(0, 48, 64, 16), "Submission", GlobalStyles.LabelDefaultLeft) { Depth = labelDepth };
 
 		NestingContext.Add(processLabel);
 		NestingContext.Add(memoryLabel);
@@ -22,13 +23,12 @@ public class StateWrapper : AbstractComponent
 		NestingContext.Add(submissionLabel);
 	}
 
-	public override void Render(Vector2i<int> parentPosition)
+	public override void Render(Vector2i<int> scrollOffset)
 	{
-		base.Render(parentPosition);
+		base.Render(scrollOffset);
 
 		const int border = 1;
-		Vector2i<int> center = Bounds.TopLeft + Bounds.Size / 2;
-		Root.Game.RectangleRenderer.Schedule(Bounds.Size, center + parentPosition, 0, Color.Red);
-		Root.Game.RectangleRenderer.Schedule(Bounds.Size - new Vector2i<int>(border * 2), center + parentPosition, 1, Color.Black);
+		Root.Game.RectangleRenderer.Schedule(Bounds.Size, Bounds.Center + scrollOffset, Depth, Color.Red);
+		Root.Game.RectangleRenderer.Schedule(Bounds.Size - new Vector2i<int>(border * 2), Bounds.Center + scrollOffset, Depth + 1, Color.Black);
 	}
 }

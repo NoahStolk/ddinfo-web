@@ -1,4 +1,3 @@
-using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena.Data;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Enums;
@@ -7,19 +6,13 @@ using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using Silk.NET.GLFW;
 using Warp.NET;
 using Warp.NET.Extensions;
+using Warp.NET.Ui;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena;
 
 public class ArenaLineState : IArenaState
 {
-	private readonly int _tileSize;
-
 	private Vector2i<int>? _lineStart;
-
-	public ArenaLineState(int tileSize)
-	{
-		_tileSize = tileSize;
-	}
 
 	public void Handle(ArenaMousePosition mousePosition)
 	{
@@ -42,7 +35,7 @@ public class ArenaLineState : IArenaState
 
 	public void Render(ArenaMousePosition mousePosition, Vector2i<int> origin, float depth)
 	{
-		Loop(mousePosition, (i, j) => Root.Game.RectangleRenderer.Schedule(new(_tileSize), origin + new Vector2i<int>(i, j) * _tileSize, depth, Color.HalfTransparentWhite));
+		Loop(mousePosition, (i, j) => Root.Game.RectangleRenderer.Schedule(new(Components.SpawnsetArena.Arena.TileSize), origin + new Vector2i<int>(i, j) * Components.SpawnsetArena.Arena.TileSize + Components.SpawnsetArena.Arena.HalfTile, depth, Color.HalfTransparentWhite));
 	}
 
 	private void Loop(ArenaMousePosition mousePosition, Action<int, int> action)
@@ -51,13 +44,13 @@ public class ArenaLineState : IArenaState
 			return;
 
 		Vector2i<int> lineEnd = mousePosition.Real;
-		Rectangle rectangle = ArenaEditingUtils.GetRectangle(_lineStart.Value / _tileSize, lineEnd / _tileSize);
+		PixelBounds rectangle = ArenaEditingUtils.GetRectangle(_lineStart.Value / Components.SpawnsetArena.Arena.TileSize, lineEnd / Components.SpawnsetArena.Arena.TileSize);
 		for (int i = rectangle.X1; i <= rectangle.X2; i++)
 		{
 			for (int j = rectangle.Y1; j <= rectangle.Y2; j++)
 			{
-				Vector2 visualTileCenter = new Vector2(i, j) * _tileSize + new Vector2(_tileSize / 2f);
-				if (ArenaEditingUtils.LineIntersectsSquare(_lineStart.Value.ToVector2(), lineEnd.ToVector2(), visualTileCenter, _tileSize))
+				Vector2 visualTileCenter = new Vector2(i, j) * Components.SpawnsetArena.Arena.TileSize + Components.SpawnsetArena.Arena.HalfTile.ToVector2();
+				if (ArenaEditingUtils.LineIntersectsSquare(_lineStart.Value.ToVector2(), lineEnd.ToVector2(), visualTileCenter, Components.SpawnsetArena.Arena.TileSize))
 					action(i, j);
 			}
 		}

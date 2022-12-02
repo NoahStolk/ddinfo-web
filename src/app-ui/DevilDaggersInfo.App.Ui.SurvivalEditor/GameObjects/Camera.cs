@@ -139,7 +139,7 @@ public class Camera
 		Vector3 lookDirection = Vector3.Transform(Vector3.UnitZ, _rotationState.Render);
 		ViewMatrix = Matrix4x4.CreateLookAt(_positionState.Render, _positionState.Render + lookDirection, upDirection);
 
-		float aspectRatio = WindowWidth / (float)WindowHeight;
+		float aspectRatio = CurrentWindowState.Width / (float)CurrentWindowState.Height;
 
 		const int fieldOfView = 2;
 		const float nearPlaneDistance = 0.05f;

@@ -1,10 +1,10 @@
-using DevilDaggersInfo.App.Ui.Base;
+using Warp.NET.Ui;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 
 public static class ArenaEditingUtils
 {
-	public static Rectangle GetRectangle(Vector2i<int> start, Vector2i<int> end)
+	public static PixelBounds GetRectangle(Vector2i<int> start, Vector2i<int> end)
 	{
 		bool startXMin = start.X < end.X;
 		int minX, maxX;
@@ -32,7 +32,7 @@ public static class ArenaEditingUtils
 			maxY = start.Y;
 		}
 
-		return new(minX, minY, maxX, maxY);
+		return new(minX, minY, maxX - minX, maxY - minY);
 	}
 
 	public static bool LineIntersectsSquare(Vector2 lineA, Vector2 lineB, Vector2 squarePosition, float squareSize)

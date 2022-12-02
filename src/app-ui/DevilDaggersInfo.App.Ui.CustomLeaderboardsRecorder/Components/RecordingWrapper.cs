@@ -11,13 +11,12 @@ public class RecordingWrapper : AbstractComponent
 	{
 	}
 
-	public override void Render(Vector2i<int> parentPosition)
+	public override void Render(Vector2i<int> scrollOffset)
 	{
-		base.Render(parentPosition);
+		base.Render(scrollOffset);
 
 		const int border = 1;
-		Vector2i<int> center = Bounds.TopLeft + Bounds.Size / 2;
-		Root.Game.RectangleRenderer.Schedule(Bounds.Size, center + parentPosition, 0, Color.Purple);
-		Root.Game.RectangleRenderer.Schedule(Bounds.Size - new Vector2i<int>(border * 2), center + parentPosition, 1, Color.Black);
+		Root.Game.RectangleRenderer.Schedule(Bounds.Size, Bounds.Center + scrollOffset, Depth, Color.Purple);
+		Root.Game.RectangleRenderer.Schedule(Bounds.Size - new Vector2i<int>(border * 2), Bounds.Center + scrollOffset, 1, Color.Black);
 	}
 }

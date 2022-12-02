@@ -3,29 +3,31 @@ using Warp.NET.Ui;
 
 namespace DevilDaggersInfo.App.Ui.Base.Components;
 
-public class Paths : ScrollContent<Paths, PathsWrapper>
+public sealed class Paths : ScrollContent<Paths, ScrollViewer<Paths>>, IScrollContent<Paths, ScrollViewer<Paths>>
 {
+	private const int _entryWidth = 1008;
 	private const int _entryHeight = 16;
-
-	private readonly int _componentWidth;
-
-	private readonly Action<string> _onDirectorySelect;
-	private readonly Action<string> _onFileSelect;
 
 	private readonly List<Button> _subDirectoryButtons = new();
 
-	public Paths(IBounds bounds, PathsWrapper parent, int scrollbarWidth, Action<string> onDirectorySelect, Action<string> onFileSelect)
+	private Paths(IBounds bounds, ScrollViewer<Paths> parent)
 		: base(bounds, parent)
 	{
-		_componentWidth = Constants.NativeWidth - scrollbarWidth;
-
-		_onDirectorySelect = onDirectorySelect;
-		_onFileSelect = onFileSelect;
 	}
+
+	public string Path { get; set; } = string.Empty;
+
+	public Action<string>? OnDirectorySelect { get; set; }
+	public Action<string>? OnFileSelect { get; set; }
 
 	public override int ContentHeightInPixels => _subDirectoryButtons.Count * _entryHeight;
 
-	public void SetComponentsFromPath(string path)
+	public override void SetContent()
+	{
+		SetComponentsFromPath(Path);
+	}
+
+	private void SetComponentsFromPath(string path)
 	{
 		foreach (Button button in _subDirectoryButtons)
 			NestingContext.Remove(button);
@@ -34,16 +36,21 @@ public class Paths : ScrollContent<Paths, PathsWrapper>
 
 		DirectoryInfo? parent = Directory.GetParent(path);
 		if (parent != null)
-			_subDirectoryButtons.Add(new PathButton(new Rectangle(0, 0, _componentWidth, _entryHeight), () => _onDirectorySelect(parent.FullName), true, ".."));
+			_subDirectoryButtons.Add(new PathButton(Bounds.CreateNested(0, 0, _entryWidth, _entryHeight), () => OnDirectorySelect?.Invoke(parent.FullName), true, ".."));
 
 		int i = 0;
 		foreach (string directory in Directory.GetDirectories(path))
-			_subDirectoryButtons.Add(new PathButton(new Rectangle(0, ++i * _entryHeight, _componentWidth, i * _entryHeight + _entryHeight), () => _onDirectorySelect(directory), true, Path.GetFileName(directory)));
+			_subDirectoryButtons.Add(new PathButton(Bounds.CreateNested(0, ++i * _entryHeight, _entryWidth, _entryHeight), () => OnDirectorySelect?.Invoke(directory), true, System.IO.Path.GetFileName(directory)));
 
 		foreach (string file in Directory.GetFiles(path))
-			_subDirectoryButtons.Add(new PathButton(new Rectangle(0, ++i * _entryHeight, _componentWidth, i * _entryHeight + _entryHeight), () => _onFileSelect(file), false, Path.GetFileName(file)));
+			_subDirectoryButtons.Add(new PathButton(Bounds.CreateNested(0, ++i * _entryHeight, _entryWidth, _entryHeight), () => OnFileSelect?.Invoke(file), false, System.IO.Path.GetFileName(file)));
 
 		foreach (Button button in _subDirectoryButtons)
 			NestingContext.Add(button);
+	}
+
+	public static Paths Construct(IBounds bounds, ScrollViewer<Paths> parent)
+	{
+		return new(bounds, parent);
 	}
 }

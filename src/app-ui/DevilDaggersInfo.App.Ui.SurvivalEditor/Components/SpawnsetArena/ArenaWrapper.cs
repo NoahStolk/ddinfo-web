@@ -1,6 +1,7 @@
 using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.States;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
+using DevilDaggersInfo.Core.Spawnset;
 using Warp.NET.RenderImpl.Ui.Components;
 using Warp.NET.Ui;
 using Warp.NET.Ui.Components;
@@ -16,13 +17,15 @@ public class ArenaWrapper : AbstractComponent
 		: base(bounds)
 	{
 		const int titleHeight = 48;
+		const int arenaSize = Arena.TileSize * SpawnsetBinary.ArenaDimensionMax;
+		const int sliderHeight = 16;
 
-		_arena = new(new(0, titleHeight), 6);
+		_arena = new(bounds.CreateNested(0, titleHeight, arenaSize, arenaSize));
 
-		Label title = new(Rectangle.At(0, 0, _arena.Bounds.Size.X, titleHeight), "Arena", GlobalStyles.LabelDefaultMiddle);
-		ArenaHeightButtons arenaHeightButtons = new(Rectangle.At(_arena.Bounds.Size.X + 8, titleHeight, 80, 320));
-		_shrinkSlider = new(Rectangle.At(0, titleHeight + _arena.Bounds.Size.Y, _arena.Bounds.Size.X, 16), _arena.SetShrinkCurrent, true, 0, StateManager.SpawnsetState.Spawnset.GetSliderMaxSeconds(), 0.001f, 0, GlobalStyles.DefaultSliderStyle);
-		ArenaToolsWrapper arenaToolsWrapper = new(Rectangle.At(0, titleHeight + _arena.Bounds.Size.Y + _shrinkSlider.Bounds.Size.Y, 304, 480));
+		Label title = new(bounds.CreateNested(0, 0, arenaSize, titleHeight), "Arena", GlobalStyles.LabelTitle);
+		ArenaHeightButtons arenaHeightButtons = new(bounds.CreateNested(arenaSize + 8, titleHeight, 80, 320));
+		_shrinkSlider = new(bounds.CreateNested(0, titleHeight + arenaSize, arenaSize, sliderHeight), _arena.SetShrinkCurrent, true, 0, StateManager.SpawnsetState.Spawnset.GetSliderMaxSeconds(), 0.001f, 0, GlobalStyles.DefaultSliderStyle);
+		ArenaToolsWrapper arenaToolsWrapper = new(bounds.CreateNested(0, titleHeight + arenaSize + sliderHeight, 304, 480));
 
 		NestingContext.Add(title);
 		NestingContext.Add(_arena);
@@ -30,7 +33,7 @@ public class ArenaWrapper : AbstractComponent
 		NestingContext.Add(_shrinkSlider);
 		NestingContext.Add(arenaToolsWrapper);
 
-		TextButton button3d = new(Rectangle.At(0, 0, 64, 16), LayoutManager.ToSurvivalEditor3dLayout, GlobalStyles.DefaultButtonStyle, GlobalStyles.View3dButton, "3D");
+		TextButton button3d = new(bounds.CreateNested(0, 0, 64, 16), LayoutManager.ToSurvivalEditor3dLayout, GlobalStyles.DefaultButtonStyle, GlobalStyles.View3dButton, "3D");
 		NestingContext.Add(button3d);
 	}
 

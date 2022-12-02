@@ -18,9 +18,9 @@ public class HeightButton : TextButton
 		_height = height;
 	}
 
-	public override void Update(Vector2i<int> parentPosition)
+	public override void Update(Vector2i<int> scrollOffset)
 	{
-		base.Update(parentPosition);
+		base.Update(scrollOffset);
 
 		TextButtonStyle = Math.Abs(StateManager.ArenaEditorState.SelectedHeight - _height) < 0.001f ? GlobalStyles.SelectedHeightButton : _textButtonStyle;
 	}

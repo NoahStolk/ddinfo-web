@@ -5,43 +5,24 @@ using Warp.NET.Ui.Components;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetSpawns;
 
-public sealed class SpawnsWrapper : AbstractScrollViewer<SpawnsWrapper, Spawns>
+public class SpawnsWrapper : AbstractComponent
 {
+	private readonly ScrollViewer<Spawns> _spawnsViewer;
+
 	public SpawnsWrapper(IBounds bounds)
 		: base(bounds)
 	{
-		Label title = new(Rectangle.At(0, 0, bounds.Size.X, 48), "Spawns", GlobalStyles.LabelDefaultMiddle);
+		const int titleHeight = 48;
+
+		Label title = new(bounds.CreateNested(0, 0, bounds.Size.X, titleHeight), "Spawns", GlobalStyles.LabelTitle);
+		_spawnsViewer = new(bounds.CreateNested(0, titleHeight, bounds.Size.X, bounds.Size.Y - titleHeight), 16);
+
 		NestingContext.Add(title);
-
-		Rectangle spawnsMetric = Rectangle.At(0, 48, bounds.Size.X, bounds.Size.Y - 48);
-
-		Content = new(spawnsMetric, this);
-		Scrollbar = new(spawnsMetric with { X1 = spawnsMetric.X2, X2 = spawnsMetric.X2 + 16 }, SetScrollPercentage);
-
-		NestingContext.Add(Content);
-		NestingContext.Add(Scrollbar);
+		NestingContext.Add(_spawnsViewer);
 	}
 
-	public override Scrollbar Scrollbar { get; }
-	public override Spawns Content { get; }
-
-	public override void InitializeContent()
+	public void SetSpawnset()
 	{
-		int oldHeight = Content.ContentHeightInPixels;
-		Content.SetSpawnset();
-		int newHeight = Content.ContentHeightInPixels;
-
-		SetThumbPercentageSize();
-
-		if (oldHeight == 0)
-		{
-			SetScrollPercentage(0);
-		}
-		else
-		{
-			float multiplier = oldHeight / (float)newHeight;
-			float newPercentage = Scrollbar.TopPercentage * multiplier;
-			SetScrollPercentage(newPercentage);
-		}
+		_spawnsViewer.InitializeContent();
 	}
 }

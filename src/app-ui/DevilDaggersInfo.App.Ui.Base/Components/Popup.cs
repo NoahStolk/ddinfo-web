@@ -9,18 +9,18 @@ namespace DevilDaggersInfo.App.Ui.Base.Components;
 public class Popup : AbstractComponent
 {
 	public Popup(ILayout parent, string text)
-		: base(Constants.Full)
+		: base(new NormalizedBounds(0, 0, 1, 1))
 	{
 		Depth = Constants.DepthMax - 1;
 
 		const int buttonWidth = 128;
 		const int buttonHeight = 32;
 
-		Label label = new(Rectangle.At(0, Constants.NativeHeight / 3, Constants.NativeWidth, 32), text, GlobalStyles.PopupLabel)
+		Label label = new(new PixelBounds(0, Constants.NativeHeight / 3, Constants.NativeWidth, 32), text, GlobalStyles.PopupLabel)
 		{
 			Depth = Constants.DepthMax,
 		};
-		TextButton button = new(Rectangle.At(Constants.NativeWidth / 2 - buttonWidth / 2, Constants.NativeHeight / 2 - buttonHeight / 2, buttonWidth, buttonHeight), () => parent.NestingContext.Remove(this), GlobalStyles.DefaultButtonStyle, GlobalStyles.Popup, "OK")
+		TextButton button = new(new PixelBounds(Constants.NativeWidth / 2 - buttonWidth / 2, Constants.NativeHeight / 2 - buttonHeight / 2, buttonWidth, buttonHeight), () => parent.NestingContext.Remove(this), GlobalStyles.DefaultButtonStyle, GlobalStyles.Popup, "OK")
 		{
 			Depth = Constants.DepthMax,
 		};
@@ -28,18 +28,18 @@ public class Popup : AbstractComponent
 		NestingContext.Add(button);
 	}
 
-	public override void Update(Vector2i<int> parentPosition)
+	public override void Update(Vector2i<int> scrollOffset)
 	{
-		base.Update(parentPosition);
+		base.Update(scrollOffset);
 
 		// Cancel other mouse hovers.
-		_ = MouseUiContext.Contains(parentPosition, Bounds);
+		_ = MouseUiContext.Contains(scrollOffset, Bounds);
 	}
 
-	public override void Render(Vector2i<int> parentPosition)
+	public override void Render(Vector2i<int> scrollOffset)
 	{
-		base.Render(parentPosition);
+		base.Render(scrollOffset);
 
-		Root.Game.RectangleRenderer.Schedule(Bounds.Size, parentPosition + Bounds.TopLeft, Depth, new(0, 0, 0, 95));
+		Root.Game.RectangleRenderer.Schedule(Bounds.Size, scrollOffset + Bounds.TopLeft, Depth, new(0, 0, 0, 95));
 	}
 }

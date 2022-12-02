@@ -23,11 +23,6 @@ public class SurvivalEditor3dLayout : Layout, ISurvivalEditor3dLayout
 	private uint _tileVao;
 	private uint _pillarVao;
 
-	public SurvivalEditor3dLayout()
-		: base(Constants.Full)
-	{
-	}
-
 	public unsafe void Initialize()
 	{
 		_tileVao = CreateVao(ContentManager.Content.TileMesh);

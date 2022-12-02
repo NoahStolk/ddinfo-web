@@ -38,15 +38,16 @@ public class LeaderboardListEntry : AbstractComponent
 		int gridIndex3 = columnWidth * 4;
 		int gridIndex4 = columnWidth * 5;
 
-		Label name = new(Rectangle.At(gridIndex0, 0, columnWidth * 2, bounds.Size.Y), customLeaderboard.SpawnsetName, GlobalStyles.LabelDefaultLeft);
-		Label rank = new(Rectangle.At(gridIndex1, 0, columnWidth, bounds.Size.Y), $"{(customLeaderboard.SelectedPlayerStats?.Rank).ToString() ?? "-"} / {customLeaderboard.PlayerCount}", GlobalStyles.LabelDefaultRight);
-		Label score = new(Rectangle.At(gridIndex2, 0, columnWidth, bounds.Size.Y), customLeaderboard.SelectedPlayerStats?.Time.ToString(StringFormats.TimeFormat) ?? "-", GlobalStyles.LabelDefaultRight);
+		int labelDepth = Depth + 100;
+		Label name = new(bounds.CreateNested(gridIndex0, 0, columnWidth * 2, bounds.Size.Y), customLeaderboard.SpawnsetName, GlobalStyles.LabelDefaultLeft) { Depth = labelDepth };
+		Label rank = new(bounds.CreateNested(gridIndex1, 0, columnWidth, bounds.Size.Y), $"{(customLeaderboard.SelectedPlayerStats?.Rank).ToString() ?? "-"} / {customLeaderboard.PlayerCount}", GlobalStyles.LabelDefaultRight) { Depth = labelDepth };
+		Label score = new(bounds.CreateNested(gridIndex2, 0, columnWidth, bounds.Size.Y), customLeaderboard.SelectedPlayerStats?.Time.ToString(StringFormats.TimeFormat) ?? "-", GlobalStyles.LabelDefaultRight) { Depth = labelDepth };
 
 		LabelStyle nextDaggerStyle = new(customLeaderboard.SelectedPlayerStats?.NextDagger?.Dagger.GetColor() ?? Color.White, TextAlign.Right, FontSize.H12);
-		Label nextDagger = new(Rectangle.At(gridIndex3, 0, columnWidth, bounds.Size.Y), customLeaderboard.SelectedPlayerStats?.NextDagger?.Time.ToString(StringFormats.TimeFormat) ?? "-", nextDaggerStyle);
+		Label nextDagger = new(bounds.CreateNested(gridIndex3, 0, columnWidth, bounds.Size.Y), customLeaderboard.SelectedPlayerStats?.NextDagger?.Time.ToString(StringFormats.TimeFormat) ?? "-", nextDaggerStyle) { Depth = labelDepth };
 
 		LabelStyle worldRecordStyle = new(customLeaderboard.WorldRecord?.Dagger?.GetColor() ?? Color.White, TextAlign.Right, FontSize.H12);
-		Label worldRecord = new(Rectangle.At(gridIndex4, 0, columnWidth, bounds.Size.Y), customLeaderboard.WorldRecord?.Time.ToString(StringFormats.TimeFormat) ?? "-", worldRecordStyle);
+		Label worldRecord = new(bounds.CreateNested(gridIndex4, 0, columnWidth, bounds.Size.Y), customLeaderboard.WorldRecord?.Time.ToString(StringFormats.TimeFormat) ?? "-", worldRecordStyle) { Depth = labelDepth };
 
 		NestingContext.Add(name);
 		NestingContext.Add(rank);
@@ -55,11 +56,11 @@ public class LeaderboardListEntry : AbstractComponent
 		NestingContext.Add(worldRecord);
 	}
 
-	public override void Update(Vector2i<int> parentPosition)
+	public override void Update(Vector2i<int> scrollOffset)
 	{
-		base.Update(parentPosition);
+		base.Update(scrollOffset);
 
-		_isHovering = MouseUiContext.Contains(parentPosition, Bounds);
+		_isHovering = MouseUiContext.Contains(scrollOffset, Bounds);
 		if (!_isHovering || !Input.IsButtonPressed(MouseButton.Left))
 			return;
 
@@ -73,15 +74,15 @@ public class LeaderboardListEntry : AbstractComponent
 				return;
 			}
 
-			File.WriteAllBytes(Path.Combine(UserSettings.DevilDaggersInstallationDirectory, "mods", "survival"), spawnset.FileBytes);
+			File.WriteAllBytes(UserSettings.ModsSurvivalPath, spawnset.FileBytes);
 		}
 	}
 
-	public override void Render(Vector2i<int> parentPosition)
+	public override void Render(Vector2i<int> scrollOffset)
 	{
-		base.Render(parentPosition);
+		base.Render(scrollOffset);
 
 		if (_isHovering)
-			Root.Game.RectangleRenderer.Schedule(Bounds.Size, parentPosition + Bounds.TopLeft + Bounds.Size / 2, Depth - 1, GlobalColors.EntrySelect);
+			Root.Game.RectangleRenderer.Schedule(Bounds.Size, scrollOffset + Bounds.Center, Depth - 1, GlobalColors.EntrySelect);
 	}
 }

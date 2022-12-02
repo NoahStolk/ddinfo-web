@@ -1,4 +1,4 @@
-using DevilDaggersInfo.App.Ui.Base;
+using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Extensions;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using Warp.NET.RenderImpl.Ui.Components;
@@ -10,20 +10,20 @@ using Warp.NET.Ui.Components;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetHistory;
 
-public class History : ScrollContent<History, HistoryWrapper>
+public sealed class History : ScrollContent<History, ScrollViewer<History>>, IScrollContent<History, ScrollViewer<History>>
 {
 	private const int _historyEntryHeight = 16;
 
 	private readonly List<AbstractComponent> _historyComponents = new();
 
-	public History(IBounds bounds, HistoryWrapper historyWrapper)
+	private History(IBounds bounds, ScrollViewer<History> historyWrapper)
 		: base(bounds, historyWrapper)
 	{
 	}
 
 	public override int ContentHeightInPixels => _historyComponents.Count * _historyEntryHeight;
 
-	public void SetHistory()
+	public override void SetContent()
 	{
 		foreach (AbstractComponent component in _historyComponents)
 			NestingContext.Remove(component);
@@ -37,10 +37,10 @@ public class History : ScrollContent<History, HistoryWrapper>
 			Color colorBackground = history.EditType.GetColor();
 			Color colorBackgroundActive = colorBackground.Intensify(32);
 			Color hoverBackgroundColor = colorBackground.Intensify(64);
-			int index = i;
 			ButtonStyle buttonStyle = new(isActive ? colorBackgroundActive : colorBackground, isActive ? Color.White : Color.Black, hoverBackgroundColor, 1);
 			TextButtonStyle textButtonStyle = new(Color.White, TextAlign.Left, FontSize.H12);
-			TextButton button = new(Rectangle.At(0, i * _historyEntryHeight, Bounds.Size.X, _historyEntryHeight), () => SpawnsetHistoryManager.Set(index), buttonStyle, textButtonStyle, history.EditType.GetChange())
+			int index = i;
+			TextButton button = new(Bounds.CreateNested(0, i * _historyEntryHeight, Bounds.Size.X, _historyEntryHeight), () => SpawnsetHistoryManager.Set(index), buttonStyle, textButtonStyle, history.EditType.GetChange())
 			{
 				Depth = Depth + 1,
 			};
@@ -49,5 +49,17 @@ public class History : ScrollContent<History, HistoryWrapper>
 
 		foreach (AbstractComponent component in _historyComponents)
 			NestingContext.Add(component);
+	}
+
+	public override void Render(Vector2i<int> scrollOffset)
+	{
+		base.Render(scrollOffset);
+
+		Root.Game.RectangleRenderer.Schedule(Bounds.Size, Bounds.Center, Depth, Color.Black);
+	}
+
+	public static History Construct(IBounds bounds, ScrollViewer<History> parent)
+	{
+		return new(bounds, parent);
 	}
 }
