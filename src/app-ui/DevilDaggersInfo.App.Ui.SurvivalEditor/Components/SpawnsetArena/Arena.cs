@@ -61,10 +61,10 @@ public class Arena : AbstractComponent
 		_ => throw new InvalidEnumConversionException(StateManager.ArenaEditorState.ArenaTool),
 	};
 
-	private ArenaMousePosition GetArenaMousePosition(Vector2i<int> parentPosition)
+	private ArenaMousePosition GetArenaMousePosition(Vector2i<int> scrollOffset)
 	{
-		int realX = (int)MouseUiContext.MousePosition.X - Bounds.X1 - parentPosition.X;
-		int realY = (int)MouseUiContext.MousePosition.Y - Bounds.Y1 - parentPosition.Y;
+		int realX = (int)MouseUiContext.MousePosition.X - Bounds.X1 - scrollOffset.X;
+		int realY = (int)MouseUiContext.MousePosition.Y - Bounds.Y1 - scrollOffset.Y;
 		return new()
 		{
 			Real = new(realX, realY),
@@ -87,18 +87,18 @@ public class Arena : AbstractComponent
 		});
 	}
 
-	public override void Update(Vector2i<int> parentPosition)
+	public override void Update(Vector2i<int> scrollOffset)
 	{
-		base.Update(parentPosition);
+		base.Update(scrollOffset);
 
-		bool hover = MouseUiContext.Contains(parentPosition, Bounds);
+		bool hover = MouseUiContext.Contains(scrollOffset, Bounds);
 		if (!hover)
 		{
 			Reset();
 			return;
 		}
 
-		ArenaMousePosition mousePosition = GetArenaMousePosition(parentPosition);
+		ArenaMousePosition mousePosition = GetArenaMousePosition(scrollOffset);
 		if (mousePosition.Tile.X < 0 || mousePosition.Tile.Y < 0 || mousePosition.Tile.X >= StateManager.SpawnsetState.Spawnset.ArenaDimension || mousePosition.Tile.Y >= StateManager.SpawnsetState.Spawnset.ArenaDimension)
 		{
 			Reset();
@@ -134,11 +134,11 @@ public class Arena : AbstractComponent
 		_shrinkRadius = shrinkEndTime == 0 ? spawnset.ShrinkStart : Math.Max(spawnset.ShrinkStart - _currentSecond / shrinkEndTime * (spawnset.ShrinkStart - spawnset.ShrinkEnd), spawnset.ShrinkEnd);
 	}
 
-	public override void Render(Vector2i<int> parentPosition)
+	public override void Render(Vector2i<int> scrollOffset)
 	{
-		base.Render(parentPosition);
+		base.Render(scrollOffset);
 
-		Vector2i<int> origin = parentPosition + new Vector2i<int>(Bounds.X1, Bounds.Y1);
+		Vector2i<int> origin = scrollOffset + new Vector2i<int>(Bounds.X1, Bounds.Y1);
 		Vector2i<int> center = origin + new Vector2i<int>((int)(SpawnsetBinary.ArenaDimensionMax / 2f * TileSize));
 		Vector2i<int> halfTileSize = new Vector2i<int>(TileSize, TileSize) / 2;
 		Root.Game.RectangleRenderer.Schedule(Bounds.Size, center, Depth, Color.Black);
@@ -191,7 +191,7 @@ public class Arena : AbstractComponent
 			Root.Game.SpriteRenderer.Schedule(new(-8, -8), origin.ToVector2() + new Vector2(realRaceX * TileSize + halfSize, realRaceZ * TileSize + halfSize), Depth + 3, ContentManager.Content.IconDaggerTexture, Color.FromVector3(color));
 		}
 
-		ScissorScheduler.SetScissor(Scissor.Create(Bounds, parentPosition));
+		ScissorScheduler.SetScissor(Scissor.Create(Bounds, scrollOffset));
 
 		const int tileUnit = 4;
 		float shrinkStartRadius = StateManager.SpawnsetState.Spawnset.ShrinkStart / tileUnit * TileSize;
@@ -208,6 +208,6 @@ public class Arena : AbstractComponent
 		ScissorScheduler.UnsetScissor();
 
 		IArenaState activeState = GetActiveState();
-		activeState.Render(GetArenaMousePosition(parentPosition), origin, Depth + 3);
+		activeState.Render(GetArenaMousePosition(scrollOffset), origin, Depth + 3);
 	}
 }

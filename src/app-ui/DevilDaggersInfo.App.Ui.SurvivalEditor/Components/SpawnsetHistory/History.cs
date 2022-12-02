@@ -51,9 +51,9 @@ public sealed class History : ScrollContent<History, ScrollViewer<History>>, ISc
 			NestingContext.Add(component);
 	}
 
-	public override void Render(Vector2i<int> parentPosition)
+	public override void Render(Vector2i<int> scrollOffset)
 	{
-		base.Render(parentPosition);
+		base.Render(scrollOffset);
 
 		Root.Game.RectangleRenderer.Schedule(Bounds.Size, Bounds.Center, Depth, Color.Black);
 	}

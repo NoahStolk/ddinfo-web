@@ -56,10 +56,10 @@ public class Menu : AbstractComponent
 		NestingContext.Add(fileMenu);
 	}
 
-	public override void Render(Vector2i<int> parentPosition)
+	public override void Render(Vector2i<int> scrollOffset)
 	{
-		base.Render(parentPosition);
+		base.Render(scrollOffset);
 
-		Root.Game.RectangleRenderer.Schedule(new(Bounds.Size.X, _headerHeight), parentPosition + Bounds.TopLeft + new Vector2i<int>(Bounds.Size.X, _headerHeight) / 2, Depth, Color.Gray(0.05f));
+		Root.Game.RectangleRenderer.Schedule(new(Bounds.Size.X, _headerHeight), scrollOffset + Bounds.TopLeft + new Vector2i<int>(Bounds.Size.X, _headerHeight) / 2, Depth, Color.Gray(0.05f));
 	}
 }

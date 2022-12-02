@@ -11,12 +11,12 @@ public class LeaderboardWrapper : AbstractComponent
 	{
 	}
 
-	public override void Render(Vector2i<int> parentPosition)
+	public override void Render(Vector2i<int> scrollOffset)
 	{
-		base.Render(parentPosition);
+		base.Render(scrollOffset);
 
 		const int border = 1;
-		Root.Game.RectangleRenderer.Schedule(Bounds.Size, Bounds.Center + parentPosition, Depth, new(255, 127, 0, 255));
-		Root.Game.RectangleRenderer.Schedule(Bounds.Size - new Vector2i<int>(border * 2), Bounds.Center + parentPosition, Depth + 1, Color.Black);
+		Root.Game.RectangleRenderer.Schedule(Bounds.Size, Bounds.Center + scrollOffset, Depth, new(255, 127, 0, 255));
+		Root.Game.RectangleRenderer.Schedule(Bounds.Size - new Vector2i<int>(border * 2), Bounds.Center + scrollOffset, Depth + 1, Color.Black);
 	}
 }

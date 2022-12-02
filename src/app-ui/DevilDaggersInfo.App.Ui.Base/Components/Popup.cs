@@ -28,18 +28,18 @@ public class Popup : AbstractComponent
 		NestingContext.Add(button);
 	}
 
-	public override void Update(Vector2i<int> parentPosition)
+	public override void Update(Vector2i<int> scrollOffset)
 	{
-		base.Update(parentPosition);
+		base.Update(scrollOffset);
 
 		// Cancel other mouse hovers.
-		_ = MouseUiContext.Contains(parentPosition, Bounds);
+		_ = MouseUiContext.Contains(scrollOffset, Bounds);
 	}
 
-	public override void Render(Vector2i<int> parentPosition)
+	public override void Render(Vector2i<int> scrollOffset)
 	{
-		base.Render(parentPosition);
+		base.Render(scrollOffset);
 
-		Root.Game.RectangleRenderer.Schedule(Bounds.Size, parentPosition + Bounds.TopLeft, Depth, new(0, 0, 0, 95));
+		Root.Game.RectangleRenderer.Schedule(Bounds.Size, scrollOffset + Bounds.TopLeft, Depth, new(0, 0, 0, 95));
 	}
 }

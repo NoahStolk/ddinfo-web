@@ -13,9 +13,9 @@ public class ShrinkSlider : Slider
 	{
 	}
 
-	public override void Render(Vector2i<int> parentPosition)
+	public override void Render(Vector2i<int> scrollOffset)
 	{
-		base.Render(parentPosition);
+		base.Render(scrollOffset);
 
 		Vector2i<int> topLeft = new(Bounds.X1, Bounds.Y1);
 		NewHighlighter(CurrentValue / Max + Min, Color.Yellow);
@@ -26,7 +26,7 @@ public class ShrinkSlider : Slider
 			const int width = 4;
 			int height = Bounds.Size.Y - SliderStyle.BorderSize;
 			int position = (int)(percentage * (Bounds.Size.X - SliderStyle.BorderSize * 2 - width / 2));
-			Vector2i<int> origin = parentPosition + topLeft;
+			Vector2i<int> origin = scrollOffset + topLeft;
 			Root.Game.RectangleRenderer.Schedule(new(width, height), origin + new Vector2i<int>(position + SliderStyle.BorderSize / 2, SliderStyle.BorderSize / 2) + new Vector2i<int>(width, height) / 2, Depth + 2, color);
 		}
 	}

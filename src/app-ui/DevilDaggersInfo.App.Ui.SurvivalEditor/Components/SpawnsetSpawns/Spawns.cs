@@ -31,9 +31,9 @@ public sealed class Spawns : ScrollContent<Spawns, ScrollViewer<Spawns>>, IScrol
 		SetSpawnset();
 	}
 
-	public override void Update(Vector2i<int> parentPosition)
+	public override void Update(Vector2i<int> scrollOffset)
 	{
-		base.Update(parentPosition);
+		base.Update(scrollOffset);
 
 		bool ctrl = Input.IsCtrlHeld();
 		bool shift = Input.IsShiftHeld();
@@ -54,7 +54,7 @@ public sealed class Spawns : ScrollContent<Spawns, ScrollViewer<Spawns>>, IScrol
 			StateManager.ClearSpawnSelections();
 		}
 
-		bool hoverWithoutBlock = Bounds.Contains(MouseUiContext.MousePosition.RoundToVector2Int32() - parentPosition);
+		bool hoverWithoutBlock = Bounds.Contains(MouseUiContext.MousePosition.RoundToVector2Int32() - scrollOffset);
 		if (!Input.IsButtonPressed(MouseButton.Left) || !hoverWithoutBlock)
 			return;
 
@@ -101,9 +101,9 @@ public sealed class Spawns : ScrollContent<Spawns, ScrollViewer<Spawns>>, IScrol
 			NestingContext.Add(component);
 	}
 
-	public override void Render(Vector2i<int> parentPosition)
+	public override void Render(Vector2i<int> scrollOffset)
 	{
-		base.Render(parentPosition);
+		base.Render(scrollOffset);
 
 		Root.Game.RectangleRenderer.Schedule(Bounds.Size, Bounds.Center, Depth, Color.Black);
 	}

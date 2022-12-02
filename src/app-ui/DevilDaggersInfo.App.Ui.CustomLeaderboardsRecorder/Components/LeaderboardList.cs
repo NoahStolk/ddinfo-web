@@ -120,14 +120,14 @@ public class LeaderboardList : AbstractComponent
 		_nextButton.IsDisabled = true;
 	}
 
-	public override void Render(Vector2i<int> parentPosition)
+	public override void Render(Vector2i<int> scrollOffset)
 	{
-		base.Render(parentPosition);
+		base.Render(scrollOffset);
 
-		Root.Game.RectangleRenderer.Schedule(Bounds.Size, Bounds.Center + parentPosition, Depth, Color.Green);
+		Root.Game.RectangleRenderer.Schedule(Bounds.Size, Bounds.Center + scrollOffset, Depth, Color.Green);
 		Root.Game.RectangleRenderer.Schedule(Bounds.Size - new Vector2i<int>(_borderSize * 2), Bounds.Center, Depth + 1, Color.Black);
 
-		Root.Game.MonoSpaceFontRenderer12.Schedule(new(2), parentPosition + Bounds.TopLeft + new Vector2i<int>(4, 36), Depth + 2, Color.Yellow, $"{_category} leaderboards", TextAlign.Left);
+		Root.Game.MonoSpaceFontRenderer12.Schedule(new(2), scrollOffset + Bounds.TopLeft + new Vector2i<int>(4, 36), Depth + 2, Color.Yellow, $"{_category} leaderboards", TextAlign.Left);
 
 		string text;
 		Color color;
@@ -142,6 +142,6 @@ public class LeaderboardList : AbstractComponent
 			color = Color.Yellow;
 		}
 
-		Root.Game.MonoSpaceFontRenderer12.Schedule(new(1), parentPosition + Bounds.TopLeft + new Vector2i<int>(4, 96), Depth + 2, color, text, TextAlign.Left);
+		Root.Game.MonoSpaceFontRenderer12.Schedule(new(1), scrollOffset + Bounds.TopLeft + new Vector2i<int>(4, 96), Depth + 2, color, text, TextAlign.Left);
 	}
 }

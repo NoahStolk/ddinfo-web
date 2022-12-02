@@ -56,11 +56,11 @@ public class LeaderboardListEntry : AbstractComponent
 		NestingContext.Add(worldRecord);
 	}
 
-	public override void Update(Vector2i<int> parentPosition)
+	public override void Update(Vector2i<int> scrollOffset)
 	{
-		base.Update(parentPosition);
+		base.Update(scrollOffset);
 
-		_isHovering = MouseUiContext.Contains(parentPosition, Bounds);
+		_isHovering = MouseUiContext.Contains(scrollOffset, Bounds);
 		if (!_isHovering || !Input.IsButtonPressed(MouseButton.Left))
 			return;
 
@@ -78,11 +78,11 @@ public class LeaderboardListEntry : AbstractComponent
 		}
 	}
 
-	public override void Render(Vector2i<int> parentPosition)
+	public override void Render(Vector2i<int> scrollOffset)
 	{
-		base.Render(parentPosition);
+		base.Render(scrollOffset);
 
 		if (_isHovering)
-			Root.Game.RectangleRenderer.Schedule(Bounds.Size, parentPosition + Bounds.Center, Depth - 1, GlobalColors.EntrySelect);
+			Root.Game.RectangleRenderer.Schedule(Bounds.Size, scrollOffset + Bounds.Center, Depth - 1, GlobalColors.EntrySelect);
 	}
 }

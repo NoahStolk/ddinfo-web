@@ -31,16 +31,16 @@ public class SpawnEntry : AbstractComponent
 	public bool Hover { get; private set; }
 	public int Index { get; }
 
-	public override void Update(Vector2i<int> parentPosition)
+	public override void Update(Vector2i<int> scrollOffset)
 	{
-		base.Update(parentPosition);
+		base.Update(scrollOffset);
 
-		Hover = MouseUiContext.Contains(parentPosition, Bounds);
+		Hover = MouseUiContext.Contains(scrollOffset, Bounds);
 	}
 
-	public override void Render(Vector2i<int> parentPosition)
+	public override void Render(Vector2i<int> scrollOffset)
 	{
-		base.Render(parentPosition);
+		base.Render(scrollOffset);
 
 		bool isSelected = StateManager.SpawnEditorState.SelectedIndices.Contains(Index);
 		Color background = (isSelected, Hover) switch
@@ -51,7 +51,7 @@ public class SpawnEntry : AbstractComponent
 			_ => Color.Invisible,
 		};
 		if (background != Color.Invisible)
-			Root.Game.RectangleRenderer.Schedule(Bounds.Size, parentPosition + Bounds.Center, Depth, background);
+			Root.Game.RectangleRenderer.Schedule(Bounds.Size, scrollOffset + Bounds.Center, Depth, background);
 
 		RenderText(new PixelBounds(Bounds.X1, Bounds.Y1, 96, Spawns.SpawnEntryHeight), _enemyColor, _enemy?.Name ?? "Empty", TextAlign.Left);
 		RenderText(new PixelBounds(Bounds.X1 + 96, Bounds.Y1, 96, Spawns.SpawnEntryHeight), Color.White, _spawnUiEntry.Delay.ToString("0.0000"), TextAlign.Right);
@@ -70,7 +70,7 @@ public class SpawnEntry : AbstractComponent
 				_ => throw new InvalidOperationException("Invalid text align."),
 			};
 
-			Root.Game.MonoSpaceFontRenderer12.Schedule(Vector2i<int>.One, parentPosition + textPosition, Depth + 2, textColor, text, textAlign);
+			Root.Game.MonoSpaceFontRenderer12.Schedule(Vector2i<int>.One, scrollOffset + textPosition, Depth + 2, textColor, text, textAlign);
 		}
 
 		Color GetColorFromHand(HandLevel handLevel) => handLevel switch
