@@ -50,8 +50,8 @@ public class LeaderboardList : AbstractComponent
 			NestingContext.Add(dropdownEntry);
 		}
 
-		_prevButton = new(bounds.CreateNested(4, 64, 20, 20), () => ChangeAndLoad(() => --_pageIndex), GlobalStyles.DefaultButtonStyle, WarpTextures.ArrowLeft, "Previous");
-		_nextButton = new(bounds.CreateNested(24, 64, 20, 20), () => ChangeAndLoad(() => ++_pageIndex), GlobalStyles.DefaultButtonStyle, WarpTextures.ArrowRight, "Next");
+		_prevButton = new(bounds.CreateNested(4, 64, 20, 20), () => ChangeAndLoad(() => --_pageIndex), GlobalStyles.DefaultButtonStyle, WarpTextures.ArrowLeft, "Previous") { Depth = Depth + 100 };
+		_nextButton = new(bounds.CreateNested(24, 64, 20, 20), () => ChangeAndLoad(() => ++_pageIndex), GlobalStyles.DefaultButtonStyle, WarpTextures.ArrowRight, "Next") { Depth = Depth + 100 };
 
 		NestingContext.Add(_prevButton);
 		NestingContext.Add(_nextButton);

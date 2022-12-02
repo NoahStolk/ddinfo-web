@@ -38,7 +38,7 @@ public class LeaderboardListEntry : AbstractComponent
 		int gridIndex3 = columnWidth * 4;
 		int gridIndex4 = columnWidth * 5;
 
-		int labelDepth = Depth + 1;
+		int labelDepth = Depth + 100;
 		Label name = new(bounds.CreateNested(gridIndex0, 0, columnWidth * 2, bounds.Size.Y), customLeaderboard.SpawnsetName, GlobalStyles.LabelDefaultLeft) { Depth = labelDepth };
 		Label rank = new(bounds.CreateNested(gridIndex1, 0, columnWidth, bounds.Size.Y), $"{(customLeaderboard.SelectedPlayerStats?.Rank).ToString() ?? "-"} / {customLeaderboard.PlayerCount}", GlobalStyles.LabelDefaultRight) { Depth = labelDepth };
 		Label score = new(bounds.CreateNested(gridIndex2, 0, columnWidth, bounds.Size.Y), customLeaderboard.SelectedPlayerStats?.Time.ToString(StringFormats.TimeFormat) ?? "-", GlobalStyles.LabelDefaultRight) { Depth = labelDepth };
