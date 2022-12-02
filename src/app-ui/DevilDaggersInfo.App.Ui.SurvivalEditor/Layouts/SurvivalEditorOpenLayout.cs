@@ -18,8 +18,7 @@ public class SurvivalEditorOpenLayout : Layout, IFileDialogLayout
 	{
 		PathsCloseButton closeButton = new(new PixelBounds(0, 0, 24, 24), LayoutManager.ToSurvivalEditorMainLayout);
 		_pathTextInput = new(new PixelBounds(0, 24, 1024, 16), false, null, null, null, GlobalStyles.TextInput);
-		PixelBounds pathsWrapperBounds = new(0, 96, 1024, 640);
-		_pathsWrapper = new(pathsWrapperBounds, pathsWrapperBounds.CreateNested(0, 0, 1008, 640), pathsWrapperBounds.CreateNested(1008, 0, 16, 640))
+		_pathsWrapper = new(new PixelBounds(0, 96, 1024, 640), 16)
 		{
 			Content =
 			{

@@ -15,11 +15,9 @@ public class SpawnsWrapper : AbstractComponent
 		const int titleHeight = 48;
 
 		Label title = new(bounds.CreateNested(0, 0, bounds.Size.X, titleHeight), "Spawns", GlobalStyles.LabelTitle);
+		_spawnsViewer = new(bounds.CreateNested(0, titleHeight, bounds.Size.X, bounds.Size.Y - titleHeight), 16);
+
 		NestingContext.Add(title);
-
-		IBounds spawnsWrapperBounds = bounds.CreateNested(0, titleHeight, 384, bounds.Size.Y - titleHeight);
-		_spawnsViewer = new(spawnsWrapperBounds, spawnsWrapperBounds.CreateNested(0, 0, 384, 592), spawnsWrapperBounds.CreateNested(384, 0, 16, 592));
-
 		NestingContext.Add(_spawnsViewer);
 	}
 

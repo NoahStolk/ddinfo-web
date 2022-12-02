@@ -3,14 +3,14 @@ using Warp.NET.Ui;
 
 namespace DevilDaggersInfo.App.Ui.Base.Components;
 
-public class Paths : ScrollContent<Paths, ScrollViewer<Paths>>, IScrollContent<Paths, ScrollViewer<Paths>>
+public sealed class Paths : ScrollContent<Paths, ScrollViewer<Paths>>, IScrollContent<Paths, ScrollViewer<Paths>>
 {
 	private const int _entryWidth = 1008;
 	private const int _entryHeight = 16;
 
 	private readonly List<Button> _subDirectoryButtons = new();
 
-	public Paths(IBounds bounds, ScrollViewer<Paths> parent)
+	private Paths(IBounds bounds, ScrollViewer<Paths> parent)
 		: base(bounds, parent)
 	{
 	}
@@ -24,9 +24,10 @@ public class Paths : ScrollContent<Paths, ScrollViewer<Paths>>, IScrollContent<P
 
 	public override void SetContent()
 	{
+		SetComponentsFromPath(Path);
 	}
 
-	public void SetComponentsFromPath(string path)
+	private void SetComponentsFromPath(string path)
 	{
 		foreach (Button button in _subDirectoryButtons)
 			NestingContext.Remove(button);

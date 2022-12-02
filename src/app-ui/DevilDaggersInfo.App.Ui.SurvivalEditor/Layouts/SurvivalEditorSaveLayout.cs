@@ -20,8 +20,7 @@ public class SurvivalEditorSaveLayout : Layout, IFileDialogLayout
 		TextInput fileTextInput = new(new PixelBounds(0, 48, 512, 16), false, null, null, null, GlobalStyles.TextInput);
 		TextButton saveButton = new(new PixelBounds(512, 48, 128, 16), () => SaveSpawnset(Path.Combine(_pathTextInput.KeyboardInput.Value.ToString(), fileTextInput.KeyboardInput.Value.ToString())), GlobalStyles.DefaultButtonStyle, GlobalStyles.FileSaveButton, "Save");
 
-		PixelBounds pathsWrapperBounds = new(0, 96, 1024, 640);
-		_pathsWrapper = new(pathsWrapperBounds, pathsWrapperBounds.CreateNested(0, 0, 1008, 640), pathsWrapperBounds.CreateNested(1008, 0, 16, 640))
+		_pathsWrapper = new(new PixelBounds(0, 96, 1024, 640), 16)
 		{
 			Content =
 			{

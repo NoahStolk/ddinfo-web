@@ -37,9 +37,9 @@ public sealed class History : ScrollContent<History, ScrollViewer<History>>, ISc
 			Color colorBackground = history.EditType.GetColor();
 			Color colorBackgroundActive = colorBackground.Intensify(32);
 			Color hoverBackgroundColor = colorBackground.Intensify(64);
-			int index = i;
 			ButtonStyle buttonStyle = new(isActive ? colorBackgroundActive : colorBackground, isActive ? Color.White : Color.Black, hoverBackgroundColor, 1);
 			TextButtonStyle textButtonStyle = new(Color.White, TextAlign.Left, FontSize.H12);
+			int index = i;
 			TextButton button = new(Bounds.CreateNested(0, i * _historyEntryHeight, Bounds.Size.X, _historyEntryHeight), () => SpawnsetHistoryManager.Set(index), buttonStyle, textButtonStyle, history.EditType.GetChange())
 			{
 				Depth = Depth + 1,
