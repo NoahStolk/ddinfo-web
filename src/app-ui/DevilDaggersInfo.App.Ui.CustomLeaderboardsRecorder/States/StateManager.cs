@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
 using DevilDaggersInfo.Types.Web;
 
 namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States;
@@ -38,6 +39,14 @@ public static class StateManager
 			MaxPageIndex = newMaxPageIndex,
 			TotalResults = totalResults,
 			PageIndex = Math.Clamp(LeaderboardListState.PageIndex, 0, newMaxPageIndex),
+		};
+	}
+
+	public static void SetSelectedCustomLeaderboard(GetCustomLeaderboardForOverview cl)
+	{
+		LeaderboardListState = LeaderboardListState with
+		{
+			SelectedCustomLeaderboard = cl,
 		};
 	}
 }

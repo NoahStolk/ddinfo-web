@@ -6,6 +6,7 @@ using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.Extensions;
 using DevilDaggersInfo.App.Ui.Base.Settings;
+using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States;
 using DevilDaggersInfo.Common;
 using Silk.NET.GLFW;
 using Warp.NET;
@@ -64,18 +65,7 @@ public class LeaderboardListEntry : AbstractComponent
 		if (!_isHovering || !Input.IsButtonPressed(MouseButton.Left))
 			return;
 
-		AsyncHandler.Run(SetSpawnset, () => FetchSpawnset.HandleAsync(_customLeaderboard.SpawnsetId));
-
-		void SetSpawnset(GetSpawnset? spawnset)
-		{
-			if (spawnset == null)
-			{
-				// TODO: Show error.
-				return;
-			}
-
-			File.WriteAllBytes(UserSettings.ModsSurvivalPath, spawnset.FileBytes);
-		}
+		StateManager.SetSelectedCustomLeaderboard(_customLeaderboard);
 	}
 
 	public override void Render(Vector2i<int> scrollOffset)
