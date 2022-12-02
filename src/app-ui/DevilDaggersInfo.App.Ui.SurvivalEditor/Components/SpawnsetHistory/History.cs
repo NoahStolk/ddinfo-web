@@ -1,4 +1,3 @@
-using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Extensions;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using Warp.NET.RenderImpl.Ui.Components;
@@ -10,13 +9,13 @@ using Warp.NET.Ui.Components;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetHistory;
 
-public class History : ScrollContent<History, ScrollViewer<History>>, IScrollContent<History, ScrollViewer<History>>
+public sealed class History : ScrollContent<History, ScrollViewer<History>>, IScrollContent<History, ScrollViewer<History>>
 {
 	private const int _historyEntryHeight = 16;
 
 	private readonly List<AbstractComponent> _historyComponents = new();
 
-	public History(IBounds bounds, ScrollViewer<History> historyWrapper)
+	private History(IBounds bounds, ScrollViewer<History> historyWrapper)
 		: base(bounds, historyWrapper)
 	{
 	}
@@ -24,11 +23,6 @@ public class History : ScrollContent<History, ScrollViewer<History>>, IScrollCon
 	public override int ContentHeightInPixels => _historyComponents.Count * _historyEntryHeight;
 
 	public override void SetContent()
-	{
-		SetHistory();
-	}
-
-	public void SetHistory()
 	{
 		foreach (AbstractComponent component in _historyComponents)
 			NestingContext.Remove(component);

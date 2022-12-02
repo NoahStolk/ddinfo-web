@@ -10,7 +10,6 @@ using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Types.Core.Spawnsets;
 using Warp.NET;
 using Warp.NET.Extensions;
-using Warp.NET.RenderImpl.Ui.Rendering;
 using Warp.NET.RenderImpl.Ui.Rendering.Scissors;
 using Warp.NET.Ui;
 using Warp.NET.Ui.Components;
