@@ -48,6 +48,7 @@ public static class GlobalStyles
 	public static TextInputStyle SpawnsetTextInput { get; } = new(Color.Black, Color.Gray(0.75f), Color.Gray(0.25f), Color.White, Color.White, Color.Green, Color.Gray(0.5f), 2, 8, FontSize.H12);
 
 	public static ButtonStyle DefaultButtonStyle { get; } = new(Color.Black, Color.White, Color.Gray(0.5f), 1);
+	public static ButtonStyle NavigationButtonStyle { get; } = new(Color.Black, Color.Gray(0.75f), Color.Gray(0.5f), 1);
 	public static ButtonStyle ActiveToolButtonStyle { get; } = new(Color.Blue, Color.White, Color.Blue, 1);
 
 	public static TextButtonStyle DefaultLeft { get; } = new(Color.White, TextAlign.Left, FontSize.H12);
