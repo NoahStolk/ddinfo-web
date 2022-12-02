@@ -124,9 +124,8 @@ public class LeaderboardList : AbstractComponent
 	{
 		base.Render(parentPosition);
 
-		Vector2i<int> center = Bounds.TopLeft + Bounds.Size / 2;
-		Root.Game.RectangleRenderer.Schedule(Bounds.Size, center + parentPosition, Depth, Color.Green);
-		Root.Game.RectangleRenderer.Schedule(Bounds.Size - new Vector2i<int>(_borderSize * 2), center, Depth + 1, Color.Black);
+		Root.Game.RectangleRenderer.Schedule(Bounds.Size, Bounds.Center + parentPosition, Depth, Color.Green);
+		Root.Game.RectangleRenderer.Schedule(Bounds.Size - new Vector2i<int>(_borderSize * 2), Bounds.Center, Depth + 1, Color.Black);
 
 		Root.Game.MonoSpaceFontRenderer12.Schedule(new(2), parentPosition + Bounds.TopLeft + new Vector2i<int>(4, 36), Depth + 2, Color.Yellow, $"{_category} leaderboards", TextAlign.Left);
 

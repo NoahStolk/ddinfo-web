@@ -51,7 +51,7 @@ public class SpawnEntry : AbstractComponent
 			_ => Color.Invisible,
 		};
 		if (background != Color.Invisible)
-			Root.Game.RectangleRenderer.Schedule(Bounds.Size, parentPosition + Bounds.TopLeft + Bounds.Size / 2, Depth, background);
+			Root.Game.RectangleRenderer.Schedule(Bounds.Size, parentPosition + Bounds.Center, Depth, background);
 
 		RenderText(new PixelBounds(Bounds.X1, Bounds.Y1, 96, Spawns.SpawnEntryHeight), _enemyColor, _enemy?.Name ?? "Empty", TextAlign.Left);
 		RenderText(new PixelBounds(Bounds.X1 + 96, Bounds.Y1, 96, Spawns.SpawnEntryHeight), Color.White, _spawnUiEntry.Delay.ToString("0.0000"), TextAlign.Right);

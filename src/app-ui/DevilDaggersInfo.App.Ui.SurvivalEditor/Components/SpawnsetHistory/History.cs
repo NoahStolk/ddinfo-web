@@ -1,3 +1,4 @@
+using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Extensions;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using Warp.NET.RenderImpl.Ui.Components;
@@ -48,6 +49,13 @@ public sealed class History : ScrollContent<History, ScrollViewer<History>>, ISc
 
 		foreach (AbstractComponent component in _historyComponents)
 			NestingContext.Add(component);
+	}
+
+	public override void Render(Vector2i<int> parentPosition)
+	{
+		base.Render(parentPosition);
+
+		Root.Game.RectangleRenderer.Schedule(Bounds.Size, Bounds.Center, Depth, Color.Black);
 	}
 
 	public static History Construct(IBounds bounds, ScrollViewer<History> parent)
