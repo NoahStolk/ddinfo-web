@@ -12,14 +12,7 @@ namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena;
 
 public class ArenaPencilState : IArenaState
 {
-	private readonly int _tileSize;
-
 	private Vector2i<int>? _pencilStart;
-
-	public ArenaPencilState(int tileSize)
-	{
-		_tileSize = tileSize;
-	}
 
 	public void Handle(ArenaMousePosition mousePosition)
 	{
@@ -33,13 +26,13 @@ public class ArenaPencilState : IArenaState
 				return;
 
 			Vector2i<int> pencilEnd = mousePosition.Real;
-			PixelBounds rectangle = ArenaEditingUtils.GetRectangle(_pencilStart.Value / _tileSize, pencilEnd / _tileSize);
+			PixelBounds rectangle = ArenaEditingUtils.GetRectangle(_pencilStart.Value / Components.SpawnsetArena.Arena.TileSize, pencilEnd / Components.SpawnsetArena.Arena.TileSize);
 			for (int i = rectangle.X1; i <= rectangle.X2; i++)
 			{
 				for (int j = rectangle.Y1; j <= rectangle.Y2; j++)
 				{
-					Vector2 visualTileCenter = new Vector2(i, j) * _tileSize + new Vector2(_tileSize / 2f);
-					if (ArenaEditingUtils.LineIntersectsSquare(_pencilStart.Value.ToVector2(), pencilEnd.ToVector2(), visualTileCenter, _tileSize))
+					Vector2 visualTileCenter = new Vector2(i, j) * Components.SpawnsetArena.Arena.TileSize + Components.SpawnsetArena.Arena.HalfTile.ToVector2();
+					if (ArenaEditingUtils.LineIntersectsSquare(_pencilStart.Value.ToVector2(), pencilEnd.ToVector2(), visualTileCenter, Components.SpawnsetArena.Arena.TileSize))
 						Components.SpawnsetArena.Arena.UpdateArena(i, j, StateManager.ArenaEditorState.SelectedHeight);
 				}
 			}

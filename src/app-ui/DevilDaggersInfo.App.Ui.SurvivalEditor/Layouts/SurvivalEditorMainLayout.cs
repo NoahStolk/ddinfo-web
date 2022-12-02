@@ -27,12 +27,17 @@ public class SurvivalEditorMainLayout : Layout, ISurvivalEditorMainLayout
 	public SurvivalEditorMainLayout()
 	{
 		Menu menu = new(new PixelBounds(0, 0, 1024, 768));
+
 		_arenaWrapper = new(new PixelBounds(400, 24, 400, 400));
+
 		PixelBounds spawnsWrapperBounds = new(0, 24, 384, 640);
 		_spawnsWrapper = new(spawnsWrapperBounds, spawnsWrapperBounds.CreateNested(0, 0, 368, 640), spawnsWrapperBounds.CreateNested(368, 0, 16, 640));
+
 		SpawnEditor spawnEditor = new(new PixelBounds(0, 664, 384, 128));
+
 		PixelBounds historyWrapperBounds = new(768, 512, 256, 256);
 		_historyWrapper = new(historyWrapperBounds, historyWrapperBounds.CreateNested(0, 0, 240, 256), historyWrapperBounds.CreateNested(240, 0, 16, 256));
+
 		_settingsWrapper = new(new PixelBounds(804, 24, 216, 256));
 
 		NestingContext.Add(menu);

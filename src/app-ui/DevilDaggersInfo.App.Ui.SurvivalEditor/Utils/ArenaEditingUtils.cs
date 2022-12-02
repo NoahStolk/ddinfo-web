@@ -33,7 +33,7 @@ public static class ArenaEditingUtils
 			maxY = start.Y;
 		}
 
-		return new(minX, minY, minX - maxX, minY - maxY);
+		return new(minX, minY, maxX - minX, maxY - minY);
 	}
 
 	public static bool LineIntersectsSquare(Vector2 lineA, Vector2 lineB, Vector2 squarePosition, float squareSize)

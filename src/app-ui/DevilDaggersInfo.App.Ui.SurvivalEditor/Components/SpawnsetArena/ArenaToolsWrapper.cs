@@ -41,7 +41,7 @@ public class ArenaToolsWrapper : AbstractComponent
 				UpdateActiveButtonAndSettings();
 			}
 
-			TooltipIconButton button = new(new PixelBounds(offsetX, offsetY, _arenaButtonSize, _arenaButtonSize), SetArenaTool, GlobalStyles.DefaultButtonStyle, texture, tooltipText);
+			TooltipIconButton button = new(Bounds.CreateNested(offsetX, offsetY, _arenaButtonSize, _arenaButtonSize), SetArenaTool, GlobalStyles.DefaultButtonStyle, texture, tooltipText);
 			_toolButtons.Add(arenaTool, button);
 		}
 	}

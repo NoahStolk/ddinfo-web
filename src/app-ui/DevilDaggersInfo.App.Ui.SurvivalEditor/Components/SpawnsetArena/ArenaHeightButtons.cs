@@ -44,7 +44,7 @@ public class ArenaHeightButtons : AbstractComponent
 		ButtonStyle buttonStyle = new(heightColor, Color.Black, Color.Lerp(heightColor, Color.White, 0.75f), 1);
 		TextButtonStyle textStyle = new(heightColor.ReadableColorForBrightness(), TextAlign.Middle, fontSize);
 
-		HeightButton button = new(new PixelBounds(offsetX, offsetY, _arenaButtonSize, _arenaButtonSize), () => StateManager.SetArenaSelectedHeight(height), buttonStyle, textStyle, text, height);
+		HeightButton button = new(Bounds.CreateNested(offsetX, offsetY, _arenaButtonSize, _arenaButtonSize), () => StateManager.SetArenaSelectedHeight(height), buttonStyle, textStyle, text, height);
 		NestingContext.Add(button);
 	}
 }

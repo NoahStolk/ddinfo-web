@@ -28,7 +28,7 @@ public class Spawns : ScrollContent<Spawns, ScrollViewer<Spawns>>, IScrollConten
 
 	public override void SetContent()
 	{
-
+		SetSpawnset();
 	}
 
 	public override void Update(Vector2i<int> parentPosition)

@@ -20,6 +20,7 @@ namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetArena;
 public class Arena : AbstractComponent
 {
 	public const int TileSize = 6;
+	public static Vector2i<int> HalfTile { get; } = new(TileSize / 2);
 
 	private readonly ArenaPencilState _pencilState;
 	private readonly ArenaLineState _lineState;
@@ -35,9 +36,9 @@ public class Arena : AbstractComponent
 	public Arena(IBounds bounds)
 		: base(bounds)
 	{
-		_pencilState = new(TileSize);
-		_lineState = new(TileSize);
-		_rectangleState = new(TileSize);
+		_pencilState = new();
+		_lineState = new();
+		_rectangleState = new();
 		_bucketState = new();
 		_daggerState = new();
 
