@@ -30,17 +30,17 @@ public class LeaderboardList : AbstractComponent
 	private int _pageIndex;
 	private bool _isLoading;
 
-	public LeaderboardList(IBounds metric)
-		: base(metric)
+	public LeaderboardList(IBounds bounds)
+		: base(bounds)
 	{
-		Dropdown categoryDropdown = new(new PixelBounds(4, 4, 96, _headerHeight), "Category", GlobalStyles.DefaultDropdownStyle) { Depth = Depth + 1 };
+		Dropdown categoryDropdown = new(bounds.CreateNested(4, 4, 96, _headerHeight), "Category", GlobalStyles.DefaultDropdownStyle) { Depth = Depth + 1 };
 		NestingContext.Add(categoryDropdown);
 
 		CustomLeaderboardCategory[] categories = Enum.GetValues<CustomLeaderboardCategory>();
 		for (int i = 0; i < categories.Length; i++)
 		{
 			CustomLeaderboardCategory category = categories[i];
-			DropdownEntry dropdownEntry = new(new PixelBounds(4, 4 + (i + 1) * 16, 96, 16), categoryDropdown, () => ChangeAndLoad(() => _category = category), category.ToString(), GlobalStyles.DefaultDropdownEntryStyle)
+			DropdownEntry dropdownEntry = new(bounds.CreateNested(4, 4 + (i + 1) * 16, 96, 16), categoryDropdown, () => ChangeAndLoad(() => _category = category), category.ToString(), GlobalStyles.DefaultDropdownEntryStyle)
 			{
 				IsActive = false,
 				Depth = Depth + 100,
@@ -50,8 +50,8 @@ public class LeaderboardList : AbstractComponent
 			NestingContext.Add(dropdownEntry);
 		}
 
-		_prevButton = new(new PixelBounds(4, 64, 20, 20), () => ChangeAndLoad(() => --_pageIndex), GlobalStyles.DefaultButtonStyle, WarpTextures.ArrowLeft, "Previous");
-		_nextButton = new(new PixelBounds(24, 64, 20, 20), () => ChangeAndLoad(() => ++_pageIndex), GlobalStyles.DefaultButtonStyle, WarpTextures.ArrowRight, "Next");
+		_prevButton = new(bounds.CreateNested(4, 64, 20, 20), () => ChangeAndLoad(() => --_pageIndex), GlobalStyles.DefaultButtonStyle, WarpTextures.ArrowLeft, "Previous");
+		_nextButton = new(bounds.CreateNested(24, 64, 20, 20), () => ChangeAndLoad(() => ++_pageIndex), GlobalStyles.DefaultButtonStyle, WarpTextures.ArrowRight, "Next");
 
 		NestingContext.Add(_prevButton);
 		NestingContext.Add(_nextButton);
@@ -96,7 +96,7 @@ public class LeaderboardList : AbstractComponent
 				foreach (GetCustomLeaderboardForOverview cl in cls.Results)
 				{
 					const int height = 16;
-					_leaderboardComponents.Add(new(new PixelBounds(_borderSize, y, Bounds.Size.X - _borderSize * 2, height), cl) { Depth = Depth + 2 });
+					_leaderboardComponents.Add(new(Bounds.CreateNested(_borderSize, y, Bounds.Size.X - _borderSize * 2, height), cl) { Depth = Depth + 3 });
 					y += height;
 				}
 

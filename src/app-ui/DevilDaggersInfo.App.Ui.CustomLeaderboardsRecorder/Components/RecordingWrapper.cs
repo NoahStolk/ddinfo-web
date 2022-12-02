@@ -16,7 +16,7 @@ public class RecordingWrapper : AbstractComponent
 		base.Render(parentPosition);
 
 		const int border = 1;
-		Root.Game.RectangleRenderer.Schedule(Bounds.Size, Bounds.Center + parentPosition, 0, Color.Purple);
+		Root.Game.RectangleRenderer.Schedule(Bounds.Size, Bounds.Center + parentPosition, Depth, Color.Purple);
 		Root.Game.RectangleRenderer.Schedule(Bounds.Size - new Vector2i<int>(border * 2), Bounds.Center + parentPosition, 1, Color.Black);
 	}
 }
