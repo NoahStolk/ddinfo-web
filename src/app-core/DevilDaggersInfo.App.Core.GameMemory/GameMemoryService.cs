@@ -27,20 +27,20 @@ public class GameMemoryService
 	public bool HasProcess => _process != null;
 	public bool IsInitialized { get; private set; }
 
-	public bool Initialize(long ddstatsMarkerOffset)
+	public void Initialize(long ddstatsMarkerOffset)
 	{
 		_process = _nativeMemoryService.GetDevilDaggersProcess();
 		if (_process?.MainModule == null)
 		{
 			IsInitialized = false;
-			return IsInitialized;
 		}
-
-		byte[] pointerBytes = new byte[sizeof(long)];
-		_nativeMemoryService.ReadMemory(_process, _process.MainModule.BaseAddress.ToInt64() + ddstatsMarkerOffset, pointerBytes, 0, sizeof(long));
-		_memoryBlockAddress = BitConverter.ToInt64(pointerBytes);
-		IsInitialized = true;
-		return IsInitialized;
+		else
+		{
+			byte[] pointerBytes = new byte[sizeof(long)];
+			_nativeMemoryService.ReadMemory(_process, _process.MainModule.BaseAddress.ToInt64() + ddstatsMarkerOffset, pointerBytes, 0, sizeof(long));
+			_memoryBlockAddress = BitConverter.ToInt64(pointerBytes);
+			IsInitialized = true;
+		}
 	}
 
 	public void Scan()
@@ -66,7 +66,7 @@ public class GameMemoryService
 
 	public bool IsReplayValid()
 	{
-		if (_process == null || MainBlock.ReplayLength <= 0 || MainBlock.ReplayLength > 30 * 1024 * 1024)
+		if (_process == null || MainBlock.ReplayLength is <= 0 or > 30 * 1024 * 1024)
 			return false;
 
 		byte[] headerBytes = new byte[LocalReplayBinaryHeader.IdentifierLength];

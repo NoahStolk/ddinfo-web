@@ -19,6 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\app-core\DevilDaggersInfo.App.Core.ApiClient\DevilDaggersInfo.App.Core.ApiClient.csproj" />
     <ProjectReference Include="..\..\app-core\DevilDaggersInfo.App.Core.AssetInterop\DevilDaggersInfo.App.Core.AssetInterop.csproj" />
+    <ProjectReference Include="..\..\app-core\DevilDaggersInfo.App.Core.GameMemory\DevilDaggersInfo.App.Core.GameMemory.csproj" />
     <ProjectReference Include="..\..\common\DevilDaggersInfo.Common\DevilDaggersInfo.Common.csproj" />
     <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Mod\DevilDaggersInfo.Core.Mod.csproj" />
     <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Spawnset\DevilDaggersInfo.Core.Spawnset.csproj" />

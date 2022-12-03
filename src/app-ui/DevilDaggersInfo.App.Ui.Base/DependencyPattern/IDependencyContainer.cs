@@ -1,12 +1,17 @@
+using DevilDaggersInfo.Api.Ddcl.ProcessMemory;
+using DevilDaggersInfo.App.Core.GameMemory;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts.SurvivalEditor;
 using DevilDaggersInfo.Core.Versioning;
+using DevilDaggersInfo.Types.Web;
 using Warp.NET.RenderImpl.Ui.Rendering.Renderers;
 
 namespace DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 
 public interface IDependencyContainer
 {
+	ToolBuildType BuildType { get; }
+	SupportedOperatingSystem SupportedOperatingSystem { get; }
 	AppVersion AppVersion { get; }
 
 	float Dt { get; }
@@ -52,4 +57,10 @@ public interface IDependencyContainer
 	IExtendedLayout CustomLeaderboardsRecorderMainLayout { get; }
 
 	#endregion DDCL screen
+
+	#region DDCL dependencies
+
+	GameMemoryService GameMemoryService { get; }
+
+	#endregion DDCL dependencies
 }

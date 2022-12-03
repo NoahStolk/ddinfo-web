@@ -1,11 +1,7 @@
 using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
-using DevilDaggersInfo.Api.Main.Spawnsets;
-using DevilDaggersInfo.App.Core.ApiClient;
-using DevilDaggersInfo.App.Core.ApiClient.TaskHandlers;
 using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.Extensions;
-using DevilDaggersInfo.App.Ui.Base.Settings;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States;
 using DevilDaggersInfo.Common;
 using Silk.NET.GLFW;

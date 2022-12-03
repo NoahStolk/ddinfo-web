@@ -1,5 +1,6 @@
 using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
+using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States;
 using Warp.NET.RenderImpl.Ui.Components;
 using Warp.NET.Ui;
 using Warp.NET.Ui.Components;
@@ -8,19 +9,47 @@ namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components;
 
 public class StateWrapper : AbstractComponent
 {
+	private readonly Label _labelProcessValue;
+	private readonly Label _labelMemoryValue;
+	private readonly Label _labelStateValue;
+	private readonly Label _labelSubmissionValue;
+
 	public StateWrapper(IBounds bounds)
 		: base(bounds)
 	{
+		const int labelHalfWidth = 128;
+		const int labelHeight = 16;
 		int labelDepth = Depth + 2;
-		Label processLabel = new(bounds.CreateNested(0, 0, 64, 16), "Process", GlobalStyles.LabelDefaultLeft) { Depth = labelDepth };
-		Label memoryLabel = new(bounds.CreateNested(0, 16, 64, 16), "Memory", GlobalStyles.LabelDefaultLeft) { Depth = labelDepth };
-		Label stateLabel = new(bounds.CreateNested(0, 32, 64, 16), "State", GlobalStyles.LabelDefaultLeft) { Depth = labelDepth };
-		Label submissionLabel = new(bounds.CreateNested(0, 48, 64, 16), "Submission", GlobalStyles.LabelDefaultLeft) { Depth = labelDepth };
 
-		NestingContext.Add(processLabel);
-		NestingContext.Add(memoryLabel);
-		NestingContext.Add(stateLabel);
-		NestingContext.Add(submissionLabel);
+		string[] labelTexts =
+		{
+			"Process", "Memory", "State", "Submission",
+		};
+
+		for (int i = 0; i < labelTexts.Length; i++)
+		{
+			string labelText = labelTexts[i];
+			Label label = new(bounds.CreateNested(0, i * labelHeight, labelHalfWidth, labelHeight), labelText, GlobalStyles.LabelDefaultLeft) { Depth = labelDepth };
+			NestingContext.Add(label);
+		}
+
+		_labelProcessValue = new(bounds.CreateNested(labelHalfWidth, labelHeight * 0, labelHalfWidth, labelHeight), string.Empty, GlobalStyles.LabelDefaultRight) { Depth = labelDepth };
+		_labelMemoryValue = new(bounds.CreateNested(labelHalfWidth, labelHeight * 1, labelHalfWidth, labelHeight), string.Empty, GlobalStyles.LabelDefaultRight) { Depth = labelDepth };
+		_labelStateValue = new(bounds.CreateNested(labelHalfWidth, labelHeight * 2, labelHalfWidth, labelHeight), string.Empty, GlobalStyles.LabelDefaultRight) { Depth = labelDepth };
+		_labelSubmissionValue = new(bounds.CreateNested(labelHalfWidth, labelHeight * 3, labelHalfWidth, labelHeight), string.Empty, GlobalStyles.LabelDefaultRight) { Depth = labelDepth };
+
+		NestingContext.Add(_labelProcessValue);
+		NestingContext.Add(_labelMemoryValue);
+		NestingContext.Add(_labelStateValue);
+		NestingContext.Add(_labelSubmissionValue);
+	}
+
+	public void SetState()
+	{
+		_labelProcessValue.Text = Root.Game.GameMemoryService.HasProcess ? "Attached" : "Waiting...";
+		_labelMemoryValue.Text = StateManager.MarkerState.Marker?.ToString() ?? "Waiting...";
+		_labelStateValue.Text = "...";
+		_labelSubmissionValue.Text = "...";
 	}
 
 	public override void Render(Vector2i<int> scrollOffset)

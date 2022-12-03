@@ -6,6 +6,7 @@ namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States;
 public static class StateManager
 {
 	public static LeaderboardListState LeaderboardListState { get; private set; } = LeaderboardListState.GetDefault();
+	public static MarkerState MarkerState { get; private set; } = MarkerState.GetDefault();
 
 	public static void SetPageIndex(int pageIndex)
 	{
@@ -48,5 +49,10 @@ public static class StateManager
 		{
 			SelectedCustomLeaderboard = cl,
 		};
+	}
+
+	public static void SetMarker(long marker)
+	{
+		MarkerState = new(marker);
 	}
 }
