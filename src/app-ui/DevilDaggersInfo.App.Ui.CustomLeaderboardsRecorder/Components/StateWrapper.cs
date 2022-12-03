@@ -12,6 +12,7 @@ public class StateWrapper : AbstractComponent
 	private readonly Label _labelProcessValue;
 	private readonly Label _labelMemoryValue;
 	private readonly Label _labelStateValue;
+	private readonly Label _labelSpawnsetValue;
 	private readonly Label _labelSubmissionValue;
 
 	public StateWrapper(IBounds bounds)
@@ -23,24 +24,25 @@ public class StateWrapper : AbstractComponent
 
 		string[] labelTexts =
 		{
-			"Process", "Memory", "State", "Submission",
+			"Process", "Memory", "State", "Spawnset", "Submission",
 		};
 
 		for (int i = 0; i < labelTexts.Length; i++)
 		{
-			string labelText = labelTexts[i];
-			Label label = new(bounds.CreateNested(0, i * labelHeight, labelHalfWidth, labelHeight), labelText, GlobalStyles.LabelDefaultLeft) { Depth = labelDepth };
+			Label label = new(bounds.CreateNested(0, i * labelHeight, labelHalfWidth, labelHeight), labelTexts[i], GlobalStyles.LabelDefaultLeft) { Depth = labelDepth };
 			NestingContext.Add(label);
 		}
 
 		_labelProcessValue = new(bounds.CreateNested(labelHalfWidth, labelHeight * 0, labelHalfWidth, labelHeight), string.Empty, GlobalStyles.LabelDefaultRight) { Depth = labelDepth };
 		_labelMemoryValue = new(bounds.CreateNested(labelHalfWidth, labelHeight * 1, labelHalfWidth, labelHeight), string.Empty, GlobalStyles.LabelDefaultRight) { Depth = labelDepth };
 		_labelStateValue = new(bounds.CreateNested(labelHalfWidth, labelHeight * 2, labelHalfWidth, labelHeight), string.Empty, GlobalStyles.LabelDefaultRight) { Depth = labelDepth };
-		_labelSubmissionValue = new(bounds.CreateNested(labelHalfWidth, labelHeight * 3, labelHalfWidth, labelHeight), string.Empty, GlobalStyles.LabelDefaultRight) { Depth = labelDepth };
+		_labelSpawnsetValue = new(bounds.CreateNested(labelHalfWidth, labelHeight * 3, labelHalfWidth, labelHeight), string.Empty, GlobalStyles.LabelDefaultRight) { Depth = labelDepth };
+		_labelSubmissionValue = new(bounds.CreateNested(labelHalfWidth, labelHeight * 4, labelHalfWidth, labelHeight), string.Empty, GlobalStyles.LabelDefaultRight) { Depth = labelDepth };
 
 		NestingContext.Add(_labelProcessValue);
 		NestingContext.Add(_labelMemoryValue);
 		NestingContext.Add(_labelStateValue);
+		NestingContext.Add(_labelSpawnsetValue);
 		NestingContext.Add(_labelSubmissionValue);
 	}
 
@@ -49,6 +51,7 @@ public class StateWrapper : AbstractComponent
 		_labelProcessValue.Text = Root.Game.GameMemoryService.HasProcess ? "Attached" : "Waiting...";
 		_labelMemoryValue.Text = StateManager.MarkerState.Marker?.ToString() ?? "Waiting...";
 		_labelStateValue.Text = "...";
+		_labelSpawnsetValue.Text = StateManager.ActiveSpawnsetState.Name ?? "(unknown)";
 		_labelSubmissionValue.Text = "...";
 	}
 

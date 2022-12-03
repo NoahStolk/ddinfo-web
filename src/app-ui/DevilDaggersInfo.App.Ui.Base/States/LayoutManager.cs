@@ -29,6 +29,7 @@ public static class LayoutManager
 	public static void ToCustomLeaderboardsRecorderMainLayout()
 	{
 		Root.Game.ActiveLayout = Root.Game.CustomLeaderboardsRecorderMainLayout;
+		Root.Game.CustomLeaderboardsRecorderMainLayout.Initialize();
 	}
 
 	public static void ToSurvivalEditorOpenLayout()

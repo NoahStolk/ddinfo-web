@@ -48,8 +48,6 @@ public class LeaderboardList : AbstractComponent
 		NestingContext.Add(_prevButton);
 		NestingContext.Add(_nextButton);
 
-		Load(); // TODO: Load when clicking purple CL button.
-
 		void ChangeAndLoad(Action action)
 		{
 			action();

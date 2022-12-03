@@ -2,7 +2,7 @@ using DevilDaggersInfo.Api.Main.Spawnsets;
 
 namespace DevilDaggersInfo.App.Core.ApiClient.TaskHandlers;
 
-public static class FetchSpawnset
+public static class FetchSpawnsetById
 {
 	public static async Task<GetSpawnset?> HandleAsync(int spawnsetId)
 	{

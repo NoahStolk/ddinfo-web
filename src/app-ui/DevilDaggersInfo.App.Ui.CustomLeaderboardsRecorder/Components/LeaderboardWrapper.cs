@@ -6,6 +6,7 @@ using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.Settings;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States;
 using Warp.NET.RenderImpl.Ui.Components;
+using Warp.NET.Text;
 using Warp.NET.Ui;
 using Warp.NET.Ui.Components;
 
@@ -30,7 +31,7 @@ public class LeaderboardWrapper : AbstractComponent
 			return;
 		}
 
-		AsyncHandler.Run(SetSpawnset, () => FetchSpawnset.HandleAsync(StateManager.LeaderboardListState.SelectedCustomLeaderboard.SpawnsetId));
+		AsyncHandler.Run(SetSpawnset, () => FetchSpawnsetById.HandleAsync(StateManager.LeaderboardListState.SelectedCustomLeaderboard.SpawnsetId));
 		void SetSpawnset(GetSpawnset? spawnset)
 		{
 			if (spawnset == null)
@@ -58,5 +59,7 @@ public class LeaderboardWrapper : AbstractComponent
 		const int border = 1;
 		Root.Game.RectangleRenderer.Schedule(Bounds.Size, Bounds.Center + scrollOffset, Depth, new(255, 127, 0, 255));
 		Root.Game.RectangleRenderer.Schedule(Bounds.Size - new Vector2i<int>(border * 2), Bounds.Center + scrollOffset, Depth + 1, Color.Black);
+
+		Root.Game.MonoSpaceFontRenderer24.Schedule(new(1), Bounds.Center + scrollOffset, Depth, Color.White, StateManager.LeaderboardListState.SelectedCustomLeaderboard?.SpawnsetName ?? string.Empty, TextAlign.Middle);
 	}
 }

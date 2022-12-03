@@ -4,7 +4,7 @@ using DevilDaggersInfo.App.Core.ApiClient.TaskHandlers;
 using DevilDaggersInfo.App.Core.GameMemory;
 using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
-using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts;
+using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts.CustomLeaderboardsRecorder;
 using DevilDaggersInfo.App.Ui.Base.States;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States;
@@ -12,10 +12,12 @@ using Warp.NET.Ui;
 
 namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Layouts;
 
-public class CustomLeaderboardsRecorderMainLayout : Layout, IExtendedLayout
+public class CustomLeaderboardsRecorderMainLayout : Layout, ICustomLeaderboardsRecorderMainLayout
 {
 	private readonly StateWrapper _stateWrapper;
 	private readonly RecordingWrapper _recordingWrapper;
+	private readonly LeaderboardList _leaderboardList;
+	private readonly LeaderboardWrapper _leaderboardWrapper;
 
 	private int _recordingInterval;
 
@@ -25,14 +27,26 @@ public class CustomLeaderboardsRecorderMainLayout : Layout, IExtendedLayout
 		MainLayoutBackButton backButton = new(new PixelBounds(0, 0, 24, headerHeight), LayoutManager.ToMainLayout);
 		_stateWrapper = new(new PixelBounds(0, headerHeight, 256, 128 - headerHeight));
 		_recordingWrapper = new(new PixelBounds(0, 128, 256, 384));
-		LeaderboardList leaderboardList = new(new PixelBounds(256, headerHeight, 768, 512 - headerHeight));
-		LeaderboardWrapper leaderboardWrapper = new(new PixelBounds(0, 512, 1024, 256));
+		_leaderboardList = new(new PixelBounds(256, headerHeight, 768, 512 - headerHeight));
+		_leaderboardWrapper = new(new PixelBounds(0, 512, 1024, 256));
 
 		NestingContext.Add(backButton);
 		NestingContext.Add(_stateWrapper);
 		NestingContext.Add(_recordingWrapper);
-		NestingContext.Add(leaderboardList);
-		NestingContext.Add(leaderboardWrapper);
+		NestingContext.Add(_leaderboardList);
+		NestingContext.Add(_leaderboardWrapper);
+	}
+
+	public void Initialize()
+	{
+		StateManager.RefreshActiveSpawnset();
+
+		_leaderboardList.Load();
+	}
+
+	public void SetCustomLeaderboard()
+	{
+		_leaderboardWrapper.SetCustomLeaderboard();
 	}
 
 	public void Update()

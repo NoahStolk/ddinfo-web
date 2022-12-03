@@ -1,6 +1,7 @@
 using DevilDaggersInfo.Api.Ddcl.ProcessMemory;
 using DevilDaggersInfo.App.Core.GameMemory;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts;
+using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts.CustomLeaderboardsRecorder;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts.SurvivalEditor;
 using DevilDaggersInfo.Core.Versioning;
 using DevilDaggersInfo.Types.Web;
@@ -54,7 +55,7 @@ public interface IDependencyContainer
 
 	#region DDCL screen
 
-	IExtendedLayout CustomLeaderboardsRecorderMainLayout { get; }
+	ICustomLeaderboardsRecorderMainLayout CustomLeaderboardsRecorderMainLayout { get; }
 
 	#endregion DDCL screen
 
