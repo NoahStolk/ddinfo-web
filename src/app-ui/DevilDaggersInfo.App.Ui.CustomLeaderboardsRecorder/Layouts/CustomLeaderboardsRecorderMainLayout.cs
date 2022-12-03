@@ -56,27 +56,27 @@ public class CustomLeaderboardsRecorderMainLayout : Layout, ICustomLeaderboardsR
 			return;
 
 		GameMemoryService service = Root.Game.GameMemoryService;
-		if (!service.IsInitialized)
-		{
-			if (!StateManager.MarkerState.Marker.HasValue)
-			{
-				AsyncHandler.Run(SetMarker, () => FetchMarker.HandleAsync(Root.Game.SupportedOperatingSystem));
 
-				void SetMarker(GetMarker? getMarker)
+		if (!StateManager.MarkerState.Marker.HasValue)
+		{
+			AsyncHandler.Run(SetMarker, () => FetchMarker.HandleAsync(Root.Game.SupportedOperatingSystem));
+
+			void SetMarker(GetMarker? getMarker)
+			{
+				if (getMarker == null)
 				{
-					if (getMarker == null)
-					{
-						// TODO: Show error.
-					}
-					else
-					{
-						StateManager.SetMarker(getMarker.Value);
-					}
+					// TODO: Show error.
+				}
+				else
+				{
+					StateManager.SetMarker(getMarker.Value);
 				}
 			}
-
-			if (StateManager.MarkerState.Marker.HasValue)
-				service.Initialize(StateManager.MarkerState.Marker.Value);
+		}
+		else
+		{
+			// Always initialize the process so we detach properly when the game exits.
+			service.Initialize(StateManager.MarkerState.Marker.Value);
 		}
 
 		service.Scan();
