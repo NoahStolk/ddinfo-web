@@ -16,56 +16,58 @@
 	You can currently create criteria for the following values:
 </p>
 
-<ul class="pl-4">
-	<li class="list-disc">Gems collected</li>
-	<li class="list-disc">Gems despawned</li>
-	<li class="list-disc">Gems eaten</li>
-	<li class="list-disc">Total kills</li>
-	<li class="list-disc">Daggers fired</li>
-	<li class="list-disc">Daggers hit</li>
-	<li class="list-disc">Homing stored</li>
-	<li class="list-disc">Homing eaten</li>
-	<li class="list-disc">Death type</li>
-	<li class="list-disc">Time</li>
-	<li class="list-disc">Level 2 upgrade time</li>
-	<li class="list-disc">Level 3 upgrade time</li>
-	<li class="list-disc">Level 4 upgrade time</li>
-	<li class="list-disc">Total enemies alive</li>
-	<li class="list-disc">Skull I kills</li>
-	<li class="list-disc">Skull II kills</li>
-	<li class="list-disc">Skull III kills</li>
-	<li class="list-disc">Skull IV kills</li>
-	<li class="list-disc">Spiderling kills</li>
-	<li class="list-disc">Spider Egg kills</li>
-	<li class="list-disc">Squid I kills</li>
-	<li class="list-disc">Squid II kills</li>
-	<li class="list-disc">Squid III kills</li>
-	<li class="list-disc">Centipede kills</li>
-	<li class="list-disc">Gigapede kills</li>
-	<li class="list-disc">Ghostpede kills</li>
-	<li class="list-disc">Spider I kills</li>
-	<li class="list-disc">Spider II kills</li>
-	<li class="list-disc">Leviathan kills</li>
-	<li class="list-disc">Orb kills</li>
-	<li class="list-disc">Thorn kills</li>
-	<li class="list-disc">Skull Is alive</li>
-	<li class="list-disc">Skull IIs alive</li>
-	<li class="list-disc">Skull IIIs alive</li>
-	<li class="list-disc">Skull IVs alive</li>
-	<li class="list-disc">Spiderlings alive</li>
-	<li class="list-disc">Spider Eggs alive</li>
-	<li class="list-disc">Squid Is alive</li>
-	<li class="list-disc">Squid IIs alive</li>
-	<li class="list-disc">Squid IIIs alive</li>
-	<li class="list-disc">Centipedes alive</li>
-	<li class="list-disc">Gigapedes alive</li>
-	<li class="list-disc">Ghostpedes alive</li>
-	<li class="list-disc">Spider Is alive</li>
-	<li class="list-disc">Spider IIs alive</li>
-	<li class="list-disc">Leviathans alive</li>
-	<li class="list-disc">Orbs alive</li>
-	<li class="list-disc">Thorns alive</li>
-</ul>
+<div class="max-w-md">
+	<ul class="pl-4 overflow-y-scroll h-64">
+		<li class="list-disc">Gems collected</li>
+		<li class="list-disc">Gems despawned</li>
+		<li class="list-disc">Gems eaten</li>
+		<li class="list-disc">Total kills</li>
+		<li class="list-disc">Daggers fired</li>
+		<li class="list-disc">Daggers hit</li>
+		<li class="list-disc">Homing stored</li>
+		<li class="list-disc">Homing eaten</li>
+		<li class="list-disc">Death type</li>
+		<li class="list-disc">Time</li>
+		<li class="list-disc">Level 2 upgrade time</li>
+		<li class="list-disc">Level 3 upgrade time</li>
+		<li class="list-disc">Level 4 upgrade time</li>
+		<li class="list-disc">Total enemies alive</li>
+		<li class="list-disc">Skull I kills</li>
+		<li class="list-disc">Skull II kills</li>
+		<li class="list-disc">Skull III kills</li>
+		<li class="list-disc">Skull IV kills</li>
+		<li class="list-disc">Spiderling kills</li>
+		<li class="list-disc">Spider Egg kills</li>
+		<li class="list-disc">Squid I kills</li>
+		<li class="list-disc">Squid II kills</li>
+		<li class="list-disc">Squid III kills</li>
+		<li class="list-disc">Centipede kills</li>
+		<li class="list-disc">Gigapede kills</li>
+		<li class="list-disc">Ghostpede kills</li>
+		<li class="list-disc">Spider I kills</li>
+		<li class="list-disc">Spider II kills</li>
+		<li class="list-disc">Leviathan kills</li>
+		<li class="list-disc">Orb kills</li>
+		<li class="list-disc">Thorn kills</li>
+		<li class="list-disc">Skull Is alive</li>
+		<li class="list-disc">Skull IIs alive</li>
+		<li class="list-disc">Skull IIIs alive</li>
+		<li class="list-disc">Skull IVs alive</li>
+		<li class="list-disc">Spiderlings alive</li>
+		<li class="list-disc">Spider Eggs alive</li>
+		<li class="list-disc">Squid Is alive</li>
+		<li class="list-disc">Squid IIs alive</li>
+		<li class="list-disc">Squid IIIs alive</li>
+		<li class="list-disc">Centipedes alive</li>
+		<li class="list-disc">Gigapedes alive</li>
+		<li class="list-disc">Ghostpedes alive</li>
+		<li class="list-disc">Spider Is alive</li>
+		<li class="list-disc">Spider IIs alive</li>
+		<li class="list-disc">Leviathans alive</li>
+		<li class="list-disc">Orbs alive</li>
+		<li class="list-disc">Thorns alive</li>
+	</ul>
+</div>
 
 <p class="para">
 	Criteria can be set to the following operators:
@@ -87,22 +89,14 @@
 </p>
 
 <ul class="pl-4">
-	<li class="list-disc">
-		<ul class="pl-4">
-			<li>Daggers fired must be less than or equal to gems collected + 2</li>
-		</ul>
-		<ul class="pl-4">
-			<li>Skull II kills must be greater than or equal to 3</li>
-			<li>Skull III kills must be greater than or equal to Skull II kills + Skull II kills</li>
-			<li>Squid I kills must be equal to 0</li>
-			<li>Squid II kills must be equal to 0</li>
-		</ul>
-		<ul class="pl-4">
-			<li>Gems eaten must be equal to 49</li>
-			<li>Daggers fired must be less than or equal to 50</li>
-			<li>Centipede kills must be equal to 1</li>
-		</ul>
-	</li>
+	<li class="list-disc">Daggers fired must be less than or equal to gems collected + 2</li>
+	<li class="list-disc">Skull II kills must be greater than or equal to 3</li>
+	<li class="list-disc">Skull III kills must be greater than or equal to Skull II kills + Skull II kills</li>
+	<li class="list-disc">Squid I kills must be equal to 0</li>
+	<li class="list-disc">Squid II kills must be equal to 0</li>
+	<li class="list-disc">Gems eaten must be equal to 49</li>
+	<li class="list-disc">Daggers fired must be less than or equal to 50</li>
+	<li class="list-disc">Centipede kills must be equal to 1</li>
 </ul>
 
 <p class="para">
@@ -110,12 +104,12 @@
 </p>
 
 <ul class="pl-4">
-	<li>Death type can only use the = and != operator.</li>
-	<li>Time can only use the &lt;, &gt;, &lt;=, and &gt;= operators.</li>
-	<li>You cannot target death types in another expression such as "gems must be equal to death type".</li>
-	<li>You cannot target times in another expression such as "gems must be greater than level 4 time".</li>
-	<li>You cannot use targets inside the death type expression such as "death type must be equal to gems".</li>
-	<li>You cannot use targets inside the time expressions such as "time must be greater than gems".</li>
+	<li class="list-disc">Death type can only use the = and != operator.</li>
+	<li class="list-disc">Time can only use the &lt;, &gt;, &lt;=, and &gt;= operators.</li>
+	<li class="list-disc">You cannot target death types in another expression such as "gems must be equal to death type".</li>
+	<li class="list-disc">You cannot target times in another expression such as "gems must be greater than level 4 time".</li>
+	<li class="list-disc">You cannot use targets inside the death type expression such as "death type must be equal to gems".</li>
+	<li class="list-disc">You cannot use targets inside the time expressions such as "time must be greater than gems".</li>
 </ul>
 
 <h3 class="text-red text-xl pt-4 pb-2 font-goethe">Enhancements</h3>
