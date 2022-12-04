@@ -15,8 +15,8 @@ public class WindowsMemoryService : INativeMemoryService
 		=> WriteProcessMemory(process.Handle, new(address), bytes, (uint)size, out _);
 
 	[DllImport("kernel32.dll")]
-	internal static extern bool ReadProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, [In, Out] byte[] buffer, uint size, out uint lpNumberOfBytesRead);
+	private static extern bool ReadProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, [In, Out] byte[] buffer, uint size, out uint lpNumberOfBytesRead);
 
 	[DllImport("kernel32.dll", SetLastError = true)]
-	internal static extern bool WriteProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, [In, Out] byte[] buffer, uint size, out uint lpNumberOfBytesWritten);
+	private static extern bool WriteProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, [In, Out] byte[] buffer, uint size, out uint lpNumberOfBytesWritten);
 }
