@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Encryption\DevilDaggersInfo.Core.Encryption.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.App.Ui.Base\DevilDaggersInfo.App.Ui.Base.csproj" />
   </ItemGroup>
 

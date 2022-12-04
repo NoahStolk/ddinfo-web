@@ -46,6 +46,12 @@ public class RecordingWrapper : AbstractComponent
 
 	public void SetState()
 	{
+		if (!Root.Game.GameMemoryService.IsInitialized)
+		{
+			// TODO: Show message and disable RecordingValues.
+			return;
+		}
+
 		MainBlock block = Root.Game.GameMemoryService.MainBlock;
 		GameStatus gameStatus = (GameStatus)block.Status;
 		Death? death = Deaths.GetDeathByLeaderboardType(GameConstants.CurrentVersion, block.DeathType);

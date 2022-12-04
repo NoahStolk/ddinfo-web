@@ -13,6 +13,7 @@ public static class StateManager
 	public static ActiveSpawnsetState ActiveSpawnsetState { get; private set; } = ActiveSpawnsetState.GetDefault();
 	public static LeaderboardListState LeaderboardListState { get; private set; } = LeaderboardListState.GetDefault();
 	public static MarkerState MarkerState { get; private set; } = MarkerState.GetDefault();
+	public static RecordingState RecordingState { get; private set; } = RecordingState.GetDefault();
 
 	public static void SetPageIndex(int pageIndex)
 	{
@@ -60,6 +61,11 @@ public static class StateManager
 	public static void SetMarker(long marker)
 	{
 		MarkerState = new(marker);
+	}
+
+	public static void SetRecordingState(RecordingStateType recordingStateType)
+	{
+		RecordingState = new(recordingStateType);
 	}
 
 	// TODO: Call this when file system watcher is notified.

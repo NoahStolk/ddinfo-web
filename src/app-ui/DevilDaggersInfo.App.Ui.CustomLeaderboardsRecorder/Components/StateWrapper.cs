@@ -50,7 +50,7 @@ public class StateWrapper : AbstractComponent
 	{
 		_labelProcessValue.Text = Root.Game.GameMemoryService.HasProcess ? "Attached" : "Waiting...";
 		_labelMemoryValue.Text = StateManager.MarkerState.Marker?.ToString() ?? "Waiting...";
-		_labelStateValue.Text = "...";
+		_labelStateValue.Text = StateManager.RecordingState.RecordingStateType.ToString();
 		_labelSpawnsetValue.Text = StateManager.ActiveSpawnsetState.Name ?? "(unknown)";
 		_labelSubmissionValue.Text = "...";
 	}

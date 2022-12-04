@@ -1,9 +1,4 @@
-using DevilDaggersInfo.Api.Ddcl.ProcessMemory;
-using DevilDaggersInfo.App.Core.ApiClient;
-using DevilDaggersInfo.App.Core.ApiClient.TaskHandlers;
-using DevilDaggersInfo.App.Core.GameMemory;
 using DevilDaggersInfo.App.Ui.Base.Components;
-using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts.CustomLeaderboardsRecorder;
 using DevilDaggersInfo.App.Ui.Base.States;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components;
@@ -55,36 +50,14 @@ public class CustomLeaderboardsRecorderMainLayout : Layout, ICustomLeaderboardsR
 		if (_recordingInterval < 5)
 			return;
 
-		GameMemoryService service = Root.Game.GameMemoryService;
-
-		if (!StateManager.MarkerState.Marker.HasValue)
-		{
-			AsyncHandler.Run(SetMarker, () => FetchMarker.HandleAsync(Root.Game.SupportedOperatingSystem));
-
-			void SetMarker(GetMarker? getMarker)
-			{
-				if (getMarker == null)
-				{
-					// TODO: Show error.
-				}
-				else
-				{
-					StateManager.SetMarker(getMarker.Value);
-				}
-			}
-		}
-		else
-		{
-			// Always initialize the process so we detach properly when the game exits.
-			service.Initialize(StateManager.MarkerState.Marker.Value);
-		}
-
-		service.Scan();
+		_recordingInterval = 0;
+		if (!RecordingLogic.Scan())
+			return;
 
 		_stateWrapper.SetState();
 		_recordingWrapper.SetState();
 
-		_recordingInterval = 0;
+		RecordingLogic.Handle();
 	}
 
 	public void Render3d()
