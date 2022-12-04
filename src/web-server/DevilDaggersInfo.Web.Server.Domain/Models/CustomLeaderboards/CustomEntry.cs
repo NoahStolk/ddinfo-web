@@ -56,7 +56,7 @@ public class CustomEntry
 
 	public bool HasReplay { get; init; }
 
-	public bool HasGraphs => Client != CustomLeaderboardsClient.DevilDaggersCustomLeaderboards || ClientVersionParsed >= FeatureConstants.DdclGraphs;
+	public bool HasGraphs => Client != CustomLeaderboardsClient.DevilDaggersCustomLeaderboards || ClientVersionParsed >= FeatureConstants.OldDdclGraphs;
 
 	private AppVersion ClientVersionParsed => AppVersion.TryParse(ClientVersion, out AppVersion? version) ? version : new(0, 0, 0);
 }

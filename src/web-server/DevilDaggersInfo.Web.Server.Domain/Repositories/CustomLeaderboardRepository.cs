@@ -204,10 +204,10 @@ public class CustomLeaderboardRepository
 				.Sort(customLeaderboard.Category)
 				.Select((ce, i) =>
 				{
-					bool isDdcl = ce.Client == CustomLeaderboardsClient.DevilDaggersCustomLeaderboards;
+					bool isOldDdcl = ce.Client == CustomLeaderboardsClient.DevilDaggersCustomLeaderboards;
 					AppVersion clientVersionParsed = AppVersion.TryParse(ce.ClientVersion, out AppVersion? version) ? version : new(0, 0, 0);
-					bool hasV3_1Values = !isDdcl || clientVersionParsed >= FeatureConstants.DdclV3_1;
-					bool hasHomingEatenValue = !isDdcl || clientVersionParsed >= FeatureConstants.DdclHomingEaten;
+					bool hasV3_1Values = !isOldDdcl || clientVersionParsed >= FeatureConstants.OldDdclV3_1;
+					bool hasHomingEatenValue = !isOldDdcl || clientVersionParsed >= FeatureConstants.OldDdclHomingEaten;
 
 					return new CustomEntry
 					{

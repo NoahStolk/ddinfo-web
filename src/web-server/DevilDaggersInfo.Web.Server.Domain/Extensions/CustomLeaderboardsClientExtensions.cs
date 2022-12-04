@@ -9,6 +9,7 @@ public static class CustomLeaderboardsClientExtensions
 	{
 		"DevilDaggersCustomLeaderboards" => CustomLeaderboardsClient.DevilDaggersCustomLeaderboards,
 		"ddstats-rust" => CustomLeaderboardsClient.DdstatsRust,
+		"ddinfo-tools" => CustomLeaderboardsClient.DdinfoTools,
 		_ => throw new CustomEntryValidationException($"Unknown CustomLeaderboardsClient '{clientString}'."),
 	};
 }

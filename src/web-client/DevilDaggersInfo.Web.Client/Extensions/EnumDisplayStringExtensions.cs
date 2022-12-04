@@ -10,6 +10,7 @@ public static class EnumDisplayStringExtensions
 	{
 		CustomLeaderboardsClient.DevilDaggersCustomLeaderboards => "DDCL",
 		CustomLeaderboardsClient.DdstatsRust => "ddstats-rust",
+		CustomLeaderboardsClient.DdinfoTools => "DDINFO",
 		_ => throw new InvalidEnumConversionException(client),
 	};
 
