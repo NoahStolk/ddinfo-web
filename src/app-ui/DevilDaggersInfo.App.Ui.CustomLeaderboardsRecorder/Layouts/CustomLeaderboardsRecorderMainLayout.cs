@@ -2,6 +2,10 @@ using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts.CustomLeaderboardsRecorder;
 using DevilDaggersInfo.App.Ui.Base.States;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components;
+using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.Leaderboard;
+using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.LeaderboardList;
+using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.Recording;
+using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.State;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States;
 using Warp.NET.Ui;
 
@@ -11,7 +15,7 @@ public class CustomLeaderboardsRecorderMainLayout : Layout, ICustomLeaderboardsR
 {
 	private readonly StateWrapper _stateWrapper;
 	private readonly RecordingWrapper _recordingWrapper;
-	private readonly LeaderboardList _leaderboardList;
+	private readonly LeaderboardListWrapper _leaderboardListWrapper;
 	private readonly LeaderboardWrapper _leaderboardWrapper;
 
 	private int _recordingInterval;
@@ -22,13 +26,13 @@ public class CustomLeaderboardsRecorderMainLayout : Layout, ICustomLeaderboardsR
 		MainLayoutBackButton backButton = new(new PixelBounds(0, 0, 24, headerHeight), LayoutManager.ToMainLayout);
 		_stateWrapper = new(new PixelBounds(0, headerHeight, 256, 128 - headerHeight));
 		_recordingWrapper = new(new PixelBounds(0, 128, 256, 384));
-		_leaderboardList = new(new PixelBounds(256, headerHeight, 768, 512 - headerHeight));
+		_leaderboardListWrapper = new(new PixelBounds(256, headerHeight, 768, 512 - headerHeight));
 		_leaderboardWrapper = new(new PixelBounds(0, 512, 1024, 256));
 
 		NestingContext.Add(backButton);
 		NestingContext.Add(_stateWrapper);
 		NestingContext.Add(_recordingWrapper);
-		NestingContext.Add(_leaderboardList);
+		NestingContext.Add(_leaderboardListWrapper);
 		NestingContext.Add(_leaderboardWrapper);
 	}
 
@@ -36,7 +40,7 @@ public class CustomLeaderboardsRecorderMainLayout : Layout, ICustomLeaderboardsR
 	{
 		StateManager.RefreshActiveSpawnset();
 
-		_leaderboardList.Load();
+		_leaderboardListWrapper.Load();
 	}
 
 	public void SetCustomLeaderboard()

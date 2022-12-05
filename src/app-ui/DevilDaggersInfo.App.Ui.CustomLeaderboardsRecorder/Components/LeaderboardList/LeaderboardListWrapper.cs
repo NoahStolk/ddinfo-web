@@ -12,9 +12,9 @@ using Warp.NET.Text;
 using Warp.NET.Ui;
 using Warp.NET.Ui.Components;
 
-namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components;
+namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.LeaderboardList;
 
-public class LeaderboardList : AbstractComponent
+public class LeaderboardListWrapper : AbstractComponent
 {
 	private const int _borderSize = 1;
 
@@ -22,7 +22,7 @@ public class LeaderboardList : AbstractComponent
 	private readonly TooltipIconButton _prevButton;
 	private readonly TooltipIconButton _nextButton;
 
-	public LeaderboardList(IBounds bounds)
+	public LeaderboardListWrapper(IBounds bounds)
 		: base(bounds)
 	{
 		Dropdown categoryDropdown = new(bounds.CreateNested(48, 32, 96, 20), "Category", GlobalStyles.DefaultDropdownStyle) { Depth = Depth + 1 };

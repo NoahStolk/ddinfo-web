@@ -7,7 +7,7 @@ using DevilDaggersInfo.Core.Wiki.Objects;
 using Warp.NET.Ui;
 using Warp.NET.Ui.Components;
 
-namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components;
+namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.Recording;
 
 public class RecordingWrapper : AbstractComponent
 {

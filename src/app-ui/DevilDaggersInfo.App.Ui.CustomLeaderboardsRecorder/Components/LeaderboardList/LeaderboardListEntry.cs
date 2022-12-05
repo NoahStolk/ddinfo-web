@@ -13,7 +13,7 @@ using Warp.NET.Text;
 using Warp.NET.Ui;
 using Warp.NET.Ui.Components;
 
-namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components;
+namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.LeaderboardList;
 
 public class LeaderboardListEntry : AbstractComponent
 {

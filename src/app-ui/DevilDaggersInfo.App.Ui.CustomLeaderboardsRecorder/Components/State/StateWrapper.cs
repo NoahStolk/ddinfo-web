@@ -5,7 +5,7 @@ using Warp.NET.RenderImpl.Ui.Components;
 using Warp.NET.Ui;
 using Warp.NET.Ui.Components;
 
-namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components;
+namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.State;
 
 public class StateWrapper : AbstractComponent
 {
