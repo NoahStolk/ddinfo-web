@@ -2,6 +2,7 @@ using DevilDaggersInfo.Api.App.CustomLeaderboards;
 using DevilDaggersInfo.Api.App.Spawnsets;
 using DevilDaggersInfo.App.Core.ApiClient;
 using DevilDaggersInfo.App.Core.ApiClient.TaskHandlers;
+using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.Settings;
 using DevilDaggersInfo.Types.Web;
 using System.Security.Cryptography;
@@ -12,6 +13,7 @@ public static class StateManager
 {
 	public static ActiveSpawnsetState ActiveSpawnsetState { get; private set; } = ActiveSpawnsetState.GetDefault();
 	public static LeaderboardListState LeaderboardListState { get; private set; } = LeaderboardListState.GetDefault();
+	public static LeaderboardState LeaderboardState { get; private set; } = LeaderboardState.GetDefault();
 	public static MarkerState MarkerState { get; private set; } = MarkerState.GetDefault();
 	public static RecordingState RecordingState { get; private set; } = RecordingState.GetDefault();
 
@@ -56,6 +58,15 @@ public static class StateManager
 		{
 			SelectedCustomLeaderboard = cl,
 		};
+
+		AsyncHandler.Run(SetCl, () => FetchCustomLeaderboardById.HandleAsync(cl.SpawnsetId)); // TODO: CL ID
+
+		void SetCl(GetCustomLeaderboard? getCustomLeaderboard)
+		{
+			LeaderboardState = new(getCustomLeaderboard);
+
+			Root.Game.CustomLeaderboardsRecorderMainLayout.SetCustomLeaderboard();
+		}
 	}
 
 	public static void SetMarker(long marker)
