@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\api\DevilDaggersInfo.Api.App\DevilDaggersInfo.Api.App.csproj" />
     <ProjectReference Include="..\..\api\DevilDaggersInfo.Api.Clubber\DevilDaggersInfo.Api.Clubber.csproj" />
     <ProjectReference Include="..\..\api\DevilDaggersInfo.Api.Ddae\DevilDaggersInfo.Api.Ddae.csproj" />
     <ProjectReference Include="..\..\api\DevilDaggersInfo.Api.Ddcl\DevilDaggersInfo.Api.Ddcl.csproj" />
