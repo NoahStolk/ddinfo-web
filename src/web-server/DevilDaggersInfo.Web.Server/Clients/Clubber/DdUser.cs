@@ -1,8 +1,8 @@
 namespace DevilDaggersInfo.Web.Server.Clients.Clubber;
 
-public class DdUser
+public record DdUser
 {
-	public ulong DiscordId { get; set; }
+	public required ulong DiscordId { get; init; }
 
-	public int LeaderboardId { get; set; }
+	public required int LeaderboardId { get; init; }
 }

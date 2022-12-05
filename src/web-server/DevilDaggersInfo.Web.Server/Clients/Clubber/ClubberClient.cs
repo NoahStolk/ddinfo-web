@@ -15,7 +15,7 @@ public class ClubberClient
 	{
 		try
 		{
-			return await _httpClient.GetFromJsonAsync<List<DdUser>>("https://clubberbot.herokuapp.com/users") ?? throw new InvalidOperationException("Response was null which was not expected.");
+			return await _httpClient.GetFromJsonAsync<List<DdUser>>("https://clubberbot.azurewebsites.net/users") ?? throw new InvalidOperationException("Response was null which was not expected.");
 		}
 		catch (Exception ex)
 		{
