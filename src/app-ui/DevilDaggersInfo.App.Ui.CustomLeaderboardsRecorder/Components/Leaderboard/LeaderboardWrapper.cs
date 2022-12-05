@@ -7,6 +7,7 @@ using DevilDaggersInfo.App.Ui.Base.Settings;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States;
 using Warp.NET.RenderImpl.Ui.Components;
 using Warp.NET.RenderImpl.Ui.Components.Styles;
+using Warp.NET.RenderImpl.Ui.Rendering.Text;
 using Warp.NET.Text;
 using Warp.NET.Ui;
 using Warp.NET.Ui.Components;
@@ -15,18 +16,18 @@ namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.Leaderbo
 
 public class LeaderboardWrapper : AbstractComponent
 {
-	private readonly TextButton _installButton;
 	private readonly Label _label;
+	private readonly TextButton _playButton;
 	private readonly ScrollViewer<LeaderboardScrollContent> _leaderboardScrollViewer;
 
 	public LeaderboardWrapper(IBounds bounds)
 		: base(bounds)
 	{
-		_installButton = new(bounds.CreateNested(4, 136, 128, 16), DownloadSpawnset, GlobalStyles.DefaultButtonStyle, GlobalStyles.DefaultMiddle, "Install");
 		_label = new(bounds.CreateNested(4, 4, 128, 16), string.Empty, LabelStyle.Default);
-		_leaderboardScrollViewer = new(bounds.CreateNested(4, 36, 1024, 256), 16);
+		_playButton = new(bounds.CreateNested(4, 32, 64, 24), DownloadSpawnset, GlobalStyles.DefaultButtonStyle, GlobalStyles.DefaultMiddle with { FontSize = FontSize.H16 }, "PLAY") { IsActive = false };
+		_leaderboardScrollViewer = new(bounds.CreateNested(4, 64, 1016, 180), 16);
 
-		NestingContext.Add(_installButton);
+		NestingContext.Add(_playButton);
 		NestingContext.Add(_leaderboardScrollViewer);
 	}
 
@@ -53,10 +54,10 @@ public class LeaderboardWrapper : AbstractComponent
 
 	public void SetCustomLeaderboard()
 	{
-		_installButton.IsActive = StateManager.LeaderboardListState.SelectedCustomLeaderboard == null;
+		_playButton.IsActive = StateManager.LeaderboardListState.SelectedCustomLeaderboard != null;
 		_label.Text = StateManager.LeaderboardListState.SelectedCustomLeaderboard?.SpawnsetName ?? string.Empty;
 
-		_leaderboardScrollViewer.Content.SetContent();
+		_leaderboardScrollViewer.InitializeContent();
 	}
 
 	public override void Render(Vector2i<int> scrollOffset)
@@ -64,9 +65,9 @@ public class LeaderboardWrapper : AbstractComponent
 		base.Render(scrollOffset);
 
 		const int border = 1;
-		Root.Game.RectangleRenderer.Schedule(Bounds.Size, Bounds.Center + scrollOffset, Depth, new(255, 127, 0, 255));
-		Root.Game.RectangleRenderer.Schedule(Bounds.Size - new Vector2i<int>(border * 2), Bounds.Center + scrollOffset, Depth + 1, Color.Black);
+		Root.Game.RectangleRenderer.Schedule(Bounds.Size, Bounds.Center + scrollOffset, Depth - 5, new(255, 127, 0, 255));
+		Root.Game.RectangleRenderer.Schedule(Bounds.Size - new Vector2i<int>(border * 2), Bounds.Center + scrollOffset, Depth - 4, Color.Black);
 
-		Root.Game.MonoSpaceFontRenderer24.Schedule(new(1), Bounds.TopLeft + scrollOffset, Depth + 2, Color.White, StateManager.LeaderboardListState.SelectedCustomLeaderboard?.SpawnsetName ?? string.Empty, TextAlign.Left);
+		Root.Game.MonoSpaceFontRenderer24.Schedule(new(1), Bounds.TopLeft + new Vector2i<int>(4) + scrollOffset, Depth - 3, Color.White, StateManager.LeaderboardListState.SelectedCustomLeaderboard?.SpawnsetName ?? string.Empty, TextAlign.Left);
 	}
 }
