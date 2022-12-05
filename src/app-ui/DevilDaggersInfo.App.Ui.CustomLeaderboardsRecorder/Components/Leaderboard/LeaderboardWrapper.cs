@@ -24,7 +24,7 @@ public class LeaderboardWrapper : AbstractComponent
 	{
 		_installButton = new(bounds.CreateNested(4, 136, 128, 16), DownloadSpawnset, GlobalStyles.DefaultButtonStyle, GlobalStyles.DefaultMiddle, "Install");
 		_label = new(bounds.CreateNested(4, 4, 128, 16), string.Empty, LabelStyle.Default);
-		_leaderboardScrollViewer = new(bounds.CreateNested(4, 36, 128, 256), 16);
+		_leaderboardScrollViewer = new(bounds.CreateNested(4, 36, 1024, 256), 16);
 
 		NestingContext.Add(_installButton);
 		NestingContext.Add(_leaderboardScrollViewer);
@@ -67,6 +67,6 @@ public class LeaderboardWrapper : AbstractComponent
 		Root.Game.RectangleRenderer.Schedule(Bounds.Size, Bounds.Center + scrollOffset, Depth, new(255, 127, 0, 255));
 		Root.Game.RectangleRenderer.Schedule(Bounds.Size - new Vector2i<int>(border * 2), Bounds.Center + scrollOffset, Depth + 1, Color.Black);
 
-		Root.Game.MonoSpaceFontRenderer24.Schedule(new(1), Bounds.Center + scrollOffset, Depth, Color.White, StateManager.LeaderboardListState.SelectedCustomLeaderboard?.SpawnsetName ?? string.Empty, TextAlign.Middle);
+		Root.Game.MonoSpaceFontRenderer24.Schedule(new(1), Bounds.TopLeft + scrollOffset, Depth + 2, Color.White, StateManager.LeaderboardListState.SelectedCustomLeaderboard?.SpawnsetName ?? string.Empty, TextAlign.Left);
 	}
 }

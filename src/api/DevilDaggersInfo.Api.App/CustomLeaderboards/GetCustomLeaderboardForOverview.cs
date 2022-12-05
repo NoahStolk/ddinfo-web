@@ -4,6 +4,8 @@ namespace DevilDaggersInfo.Api.App.CustomLeaderboards;
 
 public record GetCustomLeaderboardForOverview
 {
+	public int Id { get; init; }
+
 	public int SpawnsetId { get; init; }
 
 	public string SpawnsetName { get; init; } = string.Empty;

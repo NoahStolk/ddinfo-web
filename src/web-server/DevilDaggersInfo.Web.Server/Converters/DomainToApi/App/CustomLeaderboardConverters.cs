@@ -41,6 +41,7 @@ public static class CustomLeaderboardConverters
 	{
 		Category = customLeaderboard.Category,
 		Daggers = customLeaderboard.Daggers?.ToAppApi(),
+		Id = customLeaderboard.Id,
 		PlayerCount = customLeaderboard.PlayerCount,
 		SelectedPlayerStats = customLeaderboard.SelectedPlayerStats?.ToAppApi(),
 		SpawnsetId = customLeaderboard.SpawnsetId,

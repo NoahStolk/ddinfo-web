@@ -59,7 +59,7 @@ public static class StateManager
 			SelectedCustomLeaderboard = cl,
 		};
 
-		AsyncHandler.Run(SetCl, () => FetchCustomLeaderboardById.HandleAsync(cl.SpawnsetId)); // TODO: CL ID
+		AsyncHandler.Run(SetCl, () => FetchCustomLeaderboardById.HandleAsync(cl.Id));
 
 		void SetCl(GetCustomLeaderboard? getCustomLeaderboard)
 		{
