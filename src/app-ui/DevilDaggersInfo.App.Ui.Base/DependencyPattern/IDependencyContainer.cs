@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Api.Ddcl.ProcessMemory;
+using DevilDaggersInfo.Api.App.ProcessMemory;
 using DevilDaggersInfo.App.Core.GameMemory;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts.CustomLeaderboardsRecorder;

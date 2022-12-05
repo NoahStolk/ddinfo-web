@@ -1,5 +1,5 @@
-using DevilDaggersInfo.Api.Ddcl;
-using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
+using DevilDaggersInfo.Api.App;
+using DevilDaggersInfo.Api.App.CustomLeaderboards;
 using DevilDaggersInfo.Types.Web;
 
 namespace DevilDaggersInfo.App.Core.ApiClient.TaskHandlers;
@@ -10,7 +10,7 @@ public static class FetchCustomLeaderboards
 	{
 		try
 		{
-			return await AsyncHandler.DdclClient.GetCustomLeaderboardOverview(category, pageIndex, pageSize, selectedPlayerId, onlyFeatured);
+			return await AsyncHandler.Client.GetCustomLeaderboardOverview(category, pageIndex, pageSize, selectedPlayerId, onlyFeatured);
 		}
 		catch
 		{

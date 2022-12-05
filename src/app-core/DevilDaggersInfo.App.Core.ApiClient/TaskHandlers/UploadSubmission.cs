@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
+using DevilDaggersInfo.Api.App.CustomLeaderboards;
 
 namespace DevilDaggersInfo.App.Core.ApiClient.TaskHandlers;
 
@@ -8,7 +8,7 @@ public static class UploadSubmission
 	{
 		try
 		{
-			HttpResponseMessage hrm = await AsyncHandler.DdclClient.SubmitScoreForDdcl(addUploadRequest);
+			HttpResponseMessage hrm = await AsyncHandler.Client.SubmitScoreForDdcl(addUploadRequest);
 			return hrm.IsSuccessStatusCode; // TODO: Generate API call with actual response.
 		}
 		catch

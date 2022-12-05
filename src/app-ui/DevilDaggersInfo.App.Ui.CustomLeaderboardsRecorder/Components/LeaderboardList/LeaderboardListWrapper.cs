@@ -1,5 +1,5 @@
-using DevilDaggersInfo.Api.Ddcl;
-using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
+using DevilDaggersInfo.Api.App;
+using DevilDaggersInfo.Api.App.CustomLeaderboards;
 using DevilDaggersInfo.App.Core.ApiClient;
 using DevilDaggersInfo.App.Core.ApiClient.TaskHandlers;
 using DevilDaggersInfo.App.Ui.Base;

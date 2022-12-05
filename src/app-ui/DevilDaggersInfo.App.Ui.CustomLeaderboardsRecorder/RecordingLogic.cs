@@ -1,5 +1,5 @@
-using DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
-using DevilDaggersInfo.Api.Ddcl.ProcessMemory;
+using DevilDaggersInfo.Api.App.CustomLeaderboards;
+using DevilDaggersInfo.Api.App.ProcessMemory;
 using DevilDaggersInfo.App.Core.ApiClient;
 using DevilDaggersInfo.App.Core.ApiClient.TaskHandlers;
 using DevilDaggersInfo.App.Core.GameMemory;

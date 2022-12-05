@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Api.Ddcl.ProcessMemory;
+using DevilDaggersInfo.Api.App.ProcessMemory;
 
 namespace DevilDaggersInfo.App.Core.ApiClient.TaskHandlers;
 
@@ -8,7 +8,7 @@ public static class FetchMarker
 	{
 		try
 		{
-			return await AsyncHandler.DdclClient.GetMarker(supportedOperatingSystem);
+			return await AsyncHandler.Client.GetMarker(supportedOperatingSystem);
 		}
 		catch
 		{

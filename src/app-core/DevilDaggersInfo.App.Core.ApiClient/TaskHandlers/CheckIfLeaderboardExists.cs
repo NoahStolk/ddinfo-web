@@ -6,7 +6,7 @@ public static class CheckIfLeaderboardExists
 	{
 		try
 		{
-			HttpResponseMessage hrm = await AsyncHandler.DdclClient.CustomLeaderboardExistsBySpawnsetHash(survivalHash);
+			HttpResponseMessage hrm = await AsyncHandler.Client.CustomLeaderboardExistsBySpawnsetHash(survivalHash);
 			return hrm.IsSuccessStatusCode;
 		}
 		catch

@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Api.Main.Tools;
+using DevilDaggersInfo.Api.App.Tools;
 using DevilDaggersInfo.Core.Versioning;
 using DevilDaggersInfo.Types.Web;
 
