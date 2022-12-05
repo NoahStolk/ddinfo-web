@@ -1,5 +1,6 @@
-using DevilDaggersInfo.Api.Main.CustomLeaderboards;
+using DevilDaggersInfo.Api.App.CustomLeaderboards;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
+using DevilDaggersInfo.Common;
 using Warp.NET.Text;
 using Warp.NET.Ui;
 using Warp.NET.Ui.Components;
@@ -22,6 +23,6 @@ public class LeaderboardEntry : AbstractComponent
 	{
 		base.Render(scrollOffset);
 
-		Root.Game.MonoSpaceFontRenderer12.Schedule(new(1), Bounds.TopLeft, Depth, Color.White, $"{_getCustomEntry.PlayerName} {_getCustomEntry.Time}", TextAlign.Left);
+		Root.Game.MonoSpaceFontRenderer12.Schedule(new(1), Bounds.TopLeft, Depth, Color.White, $"{_getCustomEntry.PlayerName} {_getCustomEntry.TimeInSeconds.ToString(StringFormats.TimeFormat)}", TextAlign.Left);
 	}
 }

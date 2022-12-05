@@ -18,6 +18,15 @@ public class CustomLeaderboardsController : ControllerBase
 		_customLeaderboardRepository = customLeaderboardRepository;
 	}
 
+	[HttpGet("{id}")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	public async Task<ActionResult<GetCustomLeaderboard>> GetCustomLeaderboardById(int id)
+	{
+		SortedCustomLeaderboard cl = await _customLeaderboardRepository.GetSortedCustomLeaderboardByIdAsync(id);
+		return cl.ToAppApi();
+	}
+
 	[HttpGet("by-hash")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]

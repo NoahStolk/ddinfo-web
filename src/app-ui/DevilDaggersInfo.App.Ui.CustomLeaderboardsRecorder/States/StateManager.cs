@@ -61,7 +61,7 @@ public static class StateManager
 
 		AsyncHandler.Run(SetCl, () => FetchCustomLeaderboardById.HandleAsync(cl.SpawnsetId)); // TODO: CL ID
 
-		void SetCl(DevilDaggersInfo.Api.Main.CustomLeaderboards.GetCustomLeaderboard? getCustomLeaderboard)
+		void SetCl(GetCustomLeaderboard? getCustomLeaderboard)
 		{
 			LeaderboardState = new(getCustomLeaderboard);
 
