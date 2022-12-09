@@ -62,7 +62,7 @@ public static class RecordingLogic
 		{
 			StateManager.SetCurrentPlayerId(mainBlock.PlayerId);
 
-			// TODO: Reload CL list.
+			Root.Game.CustomLeaderboardsRecorderMainLayout.RefreshLeaderboardList();
 		}
 
 		MainBlock mainBlockPrevious = Root.Game.GameMemoryService.MainBlockPrevious;

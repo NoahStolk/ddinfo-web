@@ -1,7 +1,6 @@
 using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts.CustomLeaderboardsRecorder;
 using DevilDaggersInfo.App.Ui.Base.States;
-using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.Leaderboard;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.LeaderboardList;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.Recording;
@@ -41,6 +40,18 @@ public class CustomLeaderboardsRecorderMainLayout : Layout, ICustomLeaderboardsR
 		StateManager.RefreshActiveSpawnset();
 
 		_leaderboardListWrapper.Load();
+	}
+
+	public void RefreshLeaderboardList()
+	{
+		try
+		{
+			_leaderboardListWrapper.Load();
+		}
+		catch (InvalidOperationException ex)
+		{
+			// TODO: Use UI queue to prevent calling _leaderboardListWrapper.Load twice during the same update.
+		}
 	}
 
 	public void SetCustomLeaderboard()
