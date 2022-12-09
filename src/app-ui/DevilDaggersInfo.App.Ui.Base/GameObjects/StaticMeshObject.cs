@@ -3,13 +3,13 @@ using Warp.NET.Content;
 
 namespace DevilDaggersInfo.App.Ui.Base.GameObjects;
 
-public class MeshObject
+public class StaticMeshObject
 {
 	private readonly uint _vao;
 	private readonly Mesh _mesh;
 	private readonly Matrix4x4 _modelMatrix;
 
-	public MeshObject(uint vao, Mesh mesh, Vector3 scale, Quaternion rotation, Vector3 position)
+	public StaticMeshObject(uint vao, Mesh mesh, Vector3 scale, Quaternion rotation, Vector3 position)
 	{
 		_vao = vao;
 		_mesh = mesh;

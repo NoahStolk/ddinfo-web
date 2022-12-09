@@ -16,8 +16,8 @@ namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Layouts;
 public class SurvivalEditor3dLayout : Layout, ISurvivalEditor3dLayout
 {
 	private readonly Camera _camera = new();
-	private readonly List<MeshObject> _tiles = new();
-	private readonly List<MeshObject> _pillars = new();
+	private readonly List<StaticMeshObject> _tiles = new();
+	private readonly List<StaticMeshObject> _pillars = new();
 	private RaceDagger? _raceDagger;
 
 	private uint _tileVao;
@@ -116,11 +116,11 @@ public class SurvivalEditor3dLayout : Layout, ISurvivalEditor3dLayout
 		Shader.SetInt(MeshUniforms.TextureDiffuse, 0);
 
 		ContentManager.Content.TileTexture.Use();
-		foreach (MeshObject tile in _tiles)
+		foreach (StaticMeshObject tile in _tiles)
 			tile.Render();
 
 		ContentManager.Content.PillarTexture.Use();
-		foreach (MeshObject pillar in _pillars)
+		foreach (StaticMeshObject pillar in _pillars)
 			pillar.Render();
 
 		_raceDagger?.Render();

@@ -4,7 +4,7 @@ namespace DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts.Custo
 
 public interface IReplayViewer3dLayout : IExtendedLayout
 {
-	void BuildScene(ReplayBinary<LocalReplayBinaryHeader>[] replayBinaries);
+	float CurrentTime { get; }
 
-	void Initialize();
+	void BuildScene(ReplayBinary<LocalReplayBinaryHeader>[] replayBinaries);
 }

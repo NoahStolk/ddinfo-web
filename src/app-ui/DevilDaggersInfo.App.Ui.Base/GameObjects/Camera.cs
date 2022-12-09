@@ -10,6 +10,7 @@ namespace DevilDaggersInfo.App.Ui.Base.GameObjects;
 public class Camera
 {
 	private const float _defaultYaw = MathF.PI;
+	private const MouseButton _lookButton = MouseButton.Right;
 
 	private readonly Vector3State _positionState = new(default);
 	private readonly QuaternionState _rotationState = new(Quaternion.CreateFromYawPitchRoll(_defaultYaw, 0, 0));
@@ -105,17 +106,17 @@ public class Camera
 	private unsafe void HandleMouse()
 	{
 		Vector2i<int> mousePosition = Input.GetMousePosition().FloorToVector2Int32();
-		if (Input.IsButtonPressed(MouseButton.Left))
+		if (Input.IsButtonPressed(_lookButton))
 		{
 			_lockedMousePosition = mousePosition;
 			Graphics.Glfw.SetInputMode(Window, CursorStateAttribute.Cursor, CursorModeValue.CursorHidden);
 		}
-		else if (Input.IsButtonReleased(MouseButton.Left))
+		else if (Input.IsButtonReleased(_lookButton))
 		{
 			_lockedMousePosition = null;
 			Graphics.Glfw.SetInputMode(Window, CursorStateAttribute.Cursor, CursorModeValue.CursorNormal);
 		}
-		else if (Input.IsButtonHeld(MouseButton.Left) && _lockedMousePosition.HasValue && mousePosition != _lockedMousePosition)
+		else if (Input.IsButtonHeld(_lookButton) && _lockedMousePosition.HasValue && mousePosition != _lockedMousePosition)
 		{
 			const float lookSpeed = 20;
 

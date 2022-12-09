@@ -1,61 +1,34 @@
 using DevilDaggersInfo.App.Ui.Base;
+using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts.CustomLeaderboardsRecorder;
 using DevilDaggersInfo.App.Ui.Base.GameObjects;
 using DevilDaggersInfo.App.Ui.Base.States;
+using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.ReplayViewer;
 using DevilDaggersInfo.Core.Replay;
 using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Types.Core.Spawnsets;
 using Silk.NET.GLFW;
-using Silk.NET.OpenGL;
 using Warp.NET;
-using Warp.NET.Content;
 using Warp.NET.Ui;
 
 namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Layouts;
 
 public class ReplayViewer3dLayout : Layout, IReplayViewer3dLayout
 {
+	private readonly ShrinkSlider _shrinkSlider;
+
 	private readonly Camera _camera = new();
-	private readonly List<MeshObject> _tiles = new();
-	private readonly List<MeshObject> _pillars = new();
+	private readonly List<Tile> _tiles = new();
+
 	private RaceDagger? _raceDagger;
 
-	private uint _tileVao;
-	private uint _pillarVao;
-
-	public unsafe void Initialize()
+	public ReplayViewer3dLayout()
 	{
-		_tileVao = CreateVao(ContentManager.Content.TileMesh);
-		_pillarVao = CreateVao(ContentManager.Content.PillarMesh);
-
-		static uint CreateVao(Mesh mesh)
-		{
-			uint vao = Gl.GenVertexArray();
-			Gl.BindVertexArray(vao);
-
-			uint vbo = Gl.GenBuffer();
-			Gl.BindBuffer(BufferTargetARB.ArrayBuffer, vbo);
-
-			fixed (Vertex* v = &mesh.Vertices[0])
-				Gl.BufferData(BufferTargetARB.ArrayBuffer, (nuint)(mesh.Vertices.Length * sizeof(Vertex)), v, BufferUsageARB.StaticDraw);
-
-			Gl.EnableVertexAttribArray(0);
-			Gl.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, (uint)sizeof(Vertex), (void*)0);
-
-			Gl.EnableVertexAttribArray(1);
-			Gl.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, (uint)sizeof(Vertex), (void*)(3 * sizeof(float)));
-
-			// TODO: We don't do anything with normals here.
-			Gl.EnableVertexAttribArray(2);
-			Gl.VertexAttribPointer(2, 3, VertexAttribPointerType.Float, false, (uint)sizeof(Vertex), (void*)(5 * sizeof(float)));
-
-			Gl.BindVertexArray(0);
-
-			Gl.BindBuffer(BufferTargetARB.ArrayBuffer, 0);
-
-			return vao;
-		}
+		_shrinkSlider = new(new PixelBounds(0, 752, 1024, 16), f => CurrentTime = f, true, 0, 0, 0.1f, 0, GlobalStyles.DefaultSliderStyle, 0);
+		NestingContext.Add(_shrinkSlider);
 	}
+
+	public float CurrentTime { get; private set; }
 
 	public void BuildScene(ReplayBinary<LocalReplayBinaryHeader>[] replayBinaries)
 	{
@@ -65,8 +38,12 @@ public class ReplayViewer3dLayout : Layout, IReplayViewer3dLayout
 		if (!SpawnsetBinary.TryParse(replayBinaries[0].Header.SpawnsetBuffer, out SpawnsetBinary? spawnset))
 			throw new InvalidOperationException("Spawnset inside replay is invalid.");
 
+		CurrentTime = 0;
+
+		_shrinkSlider.Max = spawnset.GetSliderMaxSeconds();
+		_shrinkSlider.CurrentValue = Math.Clamp(_shrinkSlider.CurrentValue, 0, _shrinkSlider.Max);
+
 		_tiles.Clear();
-		_pillars.Clear();
 
 		int halfSize = spawnset.ArenaDimension / 2;
 		_camera.Reset(new(0, spawnset.ArenaTiles[halfSize, halfSize] + 4, 0));
@@ -81,8 +58,7 @@ public class ReplayViewer3dLayout : Layout, IReplayViewer3dLayout
 
 				float x = (i - halfSize) * 4;
 				float z = (j - halfSize) * 4;
-				_tiles.Add(new(_tileVao, ContentManager.Content.TileMesh, Vector3.One, Quaternion.Identity, new(x, y, z)));
-				_pillars.Add(new(_pillarVao, ContentManager.Content.PillarMesh, Vector3.One, Quaternion.Identity, new(x, y, z)));
+				_tiles.Add(new(x, z, i, j, spawnset));
 			}
 		}
 
@@ -103,8 +79,14 @@ public class ReplayViewer3dLayout : Layout, IReplayViewer3dLayout
 
 	public void Update()
 	{
+		CurrentTime += Root.Game.Dt;
+		_shrinkSlider.CurrentValue = CurrentTime;
+
 		_camera.Update();
 		_raceDagger?.Update();
+
+		foreach (Tile tile in _tiles)
+			tile.Update();
 
 		if (Input.IsKeyPressed(Keys.Escape))
 			LayoutManager.ToCustomLeaderboardsRecorderMainLayout();
@@ -120,12 +102,12 @@ public class ReplayViewer3dLayout : Layout, IReplayViewer3dLayout
 		Shader.SetInt(MeshUniforms.TextureDiffuse, 0);
 
 		ContentManager.Content.TileTexture.Use();
-		foreach (MeshObject tile in _tiles)
-			tile.Render();
+		foreach (Tile tile in _tiles)
+			tile.RenderTop();
 
 		ContentManager.Content.PillarTexture.Use();
-		foreach (MeshObject pillar in _pillars)
-			pillar.Render();
+		foreach (Tile tile in _tiles)
+			tile.RenderPillar();
 
 		_raceDagger?.Render();
 	}
