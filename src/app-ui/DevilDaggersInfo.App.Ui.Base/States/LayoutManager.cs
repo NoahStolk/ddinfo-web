@@ -1,5 +1,6 @@
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.Settings;
+using DevilDaggersInfo.Core.Replay;
 
 namespace DevilDaggersInfo.App.Ui.Base.States;
 
@@ -26,12 +27,6 @@ public static class LayoutManager
 		Root.Game.SurvivalEditor3dLayout.BuildScene();
 	}
 
-	public static void ToCustomLeaderboardsRecorderMainLayout()
-	{
-		Root.Game.ActiveLayout = Root.Game.CustomLeaderboardsRecorderMainLayout;
-		Root.Game.CustomLeaderboardsRecorderMainLayout.Initialize();
-	}
-
 	public static void ToSurvivalEditorOpenLayout()
 	{
 		Root.Game.SurvivalEditorOpenLayout.SetComponentsFromPath(UserSettings.DevilDaggersInstallationDirectory);
@@ -42,5 +37,17 @@ public static class LayoutManager
 	{
 		Root.Game.SurvivalEditorSaveLayout.SetComponentsFromPath(UserSettings.DevilDaggersInstallationDirectory);
 		Root.Game.ActiveLayout = Root.Game.SurvivalEditorSaveLayout;
+	}
+
+	public static void ToCustomLeaderboardsRecorderMainLayout()
+	{
+		Root.Game.ActiveLayout = Root.Game.CustomLeaderboardsRecorderMainLayout;
+		Root.Game.CustomLeaderboardsRecorderMainLayout.Initialize();
+	}
+
+	public static void ToCustomLeaderboardsRecorderReplayViewer3dLayout(ReplayBinary<LocalReplayBinaryHeader>[] replayBinaries)
+	{
+		Root.Game.ActiveLayout = Root.Game.CustomLeaderboardsRecorderReplayViewer3dLayout;
+		Root.Game.CustomLeaderboardsRecorderReplayViewer3dLayout.BuildScene(replayBinaries);
 	}
 }

@@ -56,6 +56,7 @@ public interface IDependencyContainer
 	#region DDCL screen
 
 	ICustomLeaderboardsRecorderMainLayout CustomLeaderboardsRecorderMainLayout { get; }
+	IReplayViewer3dLayout CustomLeaderboardsRecorderReplayViewer3dLayout { get; }
 
 	#endregion DDCL screen
 
