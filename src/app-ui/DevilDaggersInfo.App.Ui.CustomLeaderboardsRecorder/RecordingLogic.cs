@@ -209,7 +209,7 @@ public static class RecordingLogic
 		AsyncHandler.Run(OnSubmit, () => UploadSubmission.HandleAsync(uploadRequest));
 	}
 
-	private static void OnSubmit(bool? successStatusCode)
+	private static void OnSubmit(bool? successStatusCode) // TODO: Use response from API.
 	{
 		if (successStatusCode == true)
 			StateManager.SetLastSubmission(DateTime.Now);
