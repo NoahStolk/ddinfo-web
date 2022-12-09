@@ -2,43 +2,42 @@ namespace DevilDaggersInfo.Tool.GenerateClient.Generators.Endpoints;
 
 internal class PatchEndpoint : Endpoint
 {
-	private const string _methodName = $"%{nameof(_methodName)}%";
-	private const string _routeParameter = $"%{nameof(_routeParameter)}%";
-	private const string _bodyParameterType = $"%{nameof(_bodyParameterType)}%";
-	private const string _bodyParameter = $"%{nameof(_bodyParameter)}%";
-	private const string _apiRoute = $"%{nameof(_apiRoute)}%";
-	private const string _httpMethod = $"%{nameof(_httpMethod)}%";
+	private const string _methodNameTemplate = $"%{nameof(_methodNameTemplate)}%";
+	private const string _routeParameterTemplate = $"%{nameof(_routeParameterTemplate)}%";
+	private const string _bodyParameterTypeTemplate = $"%{nameof(_bodyParameterTypeTemplate)}%";
+	private const string _bodyParameterTemplate = $"%{nameof(_bodyParameterTemplate)}%";
+	private const string _apiRouteTemplate = $"%{nameof(_apiRouteTemplate)}%";
+	private const string _httpMethodTemplate = $"%{nameof(_httpMethodTemplate)}%";
 	private const string _endpointTemplate = $$"""
-		public async Task<HttpResponseMessage> {{_methodName}}({{_routeParameter}}, {{_bodyParameterType}} {{_bodyParameter}})
+		public async Task<HttpResponseMessage> {{_methodNameTemplate}}({{_routeParameterTemplate}}, {{_bodyParameterTypeTemplate}} {{_bodyParameterTemplate}})
 		{
-			return await SendRequest(new HttpMethod("{{_httpMethod}}"), $"{{_apiRoute}}", JsonContent.Create({{_bodyParameter}}));
+			return await SendRequest(new HttpMethod("{{_httpMethodTemplate}}"), $"{{_apiRouteTemplate}}", JsonContent.Create({{_bodyParameterTemplate}}));
 		}
 
 		""";
 
+	private readonly Parameter _routeParameter;
+	private readonly Parameter _bodyParameter;
+
 	public PatchEndpoint(string methodName, string apiRoute, Parameter routeParameter, Parameter bodyParameter)
 		: base(new HttpMethod("PATCH"), methodName, apiRoute)
 	{
-		RouteParameter = routeParameter;
-		BodyParameter = bodyParameter;
+		_routeParameter = routeParameter;
+		_bodyParameter = bodyParameter;
 	}
-
-	public Parameter RouteParameter { get; }
-
-	public Parameter BodyParameter { get; }
 
 	public override string Build()
 	{
-		string bodyParameterStr = BodyParameter.ToString();
+		string bodyParameterStr = _bodyParameter.ToString();
 		string bodyParameterType = bodyParameterStr[..bodyParameterStr.IndexOf(' ')];
 		string bodyParameter = bodyParameterStr[(bodyParameterStr.IndexOf(' ') + 1)..];
 
 		return _endpointTemplate
-			.Replace(_methodName, MethodName)
-			.Replace(_routeParameter, RouteParameter.ToString())
-			.Replace(_bodyParameterType, bodyParameterType)
-			.Replace(_bodyParameter, bodyParameter)
-			.Replace(_httpMethod, HttpMethod.ToString())
-			.Replace(_apiRoute, ApiRoute);
+			.Replace(_methodNameTemplate, MethodName)
+			.Replace(_routeParameterTemplate, _routeParameter.ToString())
+			.Replace(_bodyParameterTypeTemplate, bodyParameterType)
+			.Replace(_bodyParameterTemplate, bodyParameter)
+			.Replace(_httpMethodTemplate, HttpMethod.ToString())
+			.Replace(_apiRouteTemplate, ApiRoute);
 	}
 }

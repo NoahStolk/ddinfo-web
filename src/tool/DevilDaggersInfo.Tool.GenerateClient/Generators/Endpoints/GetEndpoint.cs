@@ -4,69 +4,69 @@ namespace DevilDaggersInfo.Tool.GenerateClient.Generators.Endpoints;
 
 internal class GetEndpoint : Endpoint
 {
-	private const string _returnType = $"%{nameof(_returnType)}%";
-	private const string _methodName = $"%{nameof(_methodName)}%";
-	private const string _methodParameters = $"%{nameof(_methodParameters)}%";
-	private const string _queryParameters = $"%{nameof(_queryParameters)}%";
-	private const string _apiRoute = $"%{nameof(_apiRoute)}%";
+	private const string _returnTypeTemplate = $"%{nameof(_returnTypeTemplate)}%";
+	private const string _methodNameTemplate = $"%{nameof(_methodNameTemplate)}%";
+	private const string _methodParametersTemplate = $"%{nameof(_methodParametersTemplate)}%";
+	private const string _queryParametersTemplate = $"%{nameof(_queryParametersTemplate)}%";
+	private const string _apiRouteTemplate = $"%{nameof(_apiRouteTemplate)}%";
 	private const string _endpointTemplate = $$"""
-		public async Task<{{_returnType}}> {{_methodName}}({{_methodParameters}})
+		public async Task<{{_returnTypeTemplate}}> {{_methodNameTemplate}}({{_methodParametersTemplate}})
 		{
-			return await SendGetRequest<{{_returnType}}>($"{{_apiRoute}}");
+			return await SendGetRequest<{{_returnTypeTemplate}}>($"{{_apiRouteTemplate}}");
 		}
 
 		""";
 	private const string _endpointWithQueryTemplate = $$"""
-		public async Task<{{_returnType}}> {{_methodName}}({{_methodParameters}})
+		public async Task<{{_returnTypeTemplate}}> {{_methodNameTemplate}}({{_methodParametersTemplate}})
 		{
 			Dictionary<string, object?> queryParameters = new()
 			{
-		{{_queryParameters}}
+		{{_queryParametersTemplate}}
 			};
-			return await SendGetRequest<{{_returnType}}>(BuildUrlWithQuery($"{{_apiRoute}}", queryParameters));
+			return await SendGetRequest<{{_returnTypeTemplate}}>(BuildUrlWithQuery($"{{_apiRouteTemplate}}", queryParameters));
 		}
 
 		""";
 
+	private readonly Parameter? _routeParameter;
+	private readonly List<Parameter> _queryParameters;
+	private readonly string _returnType;
+
 	public GetEndpoint(string methodName, string apiRoute, Parameter? routeParameter, List<Parameter> queryParameters, string returnType)
 		: base(HttpMethod.Get, methodName, apiRoute)
 	{
-		QueryParameters = queryParameters;
-		RouteParameter = routeParameter;
-		ReturnType = returnType;
+		_queryParameters = queryParameters;
+		_routeParameter = routeParameter;
+		_returnType = returnType;
 	}
-
-	public Parameter? RouteParameter { get; }
-	public List<Parameter> QueryParameters { get; }
-	public string ReturnType { get; }
 
 	public override string Build()
 	{
 		List<Parameter> allParameters = new();
-		if (RouteParameter != null)
-			allParameters.Add(RouteParameter);
+		if (_routeParameter != null)
+			allParameters.Add(_routeParameter);
 
-		allParameters.AddRange(QueryParameters);
+		allParameters.AddRange(_queryParameters);
 		string methodParameters = string.Join(", ", allParameters.ConvertAll(p => p.ToString()));
 
-		if (QueryParameters.Count == 0)
+		if (_queryParameters.Count == 0)
 		{
 			return _endpointTemplate
-				.Replace(_returnType, ReturnType)
-				.Replace(_methodName, MethodName)
-				.Replace(_methodParameters, methodParameters)
-				.Replace(_apiRoute, ApiRoute);
+				.Replace(_returnTypeTemplate, _returnType)
+				.Replace(_methodNameTemplate, MethodName)
+				.Replace(_methodParametersTemplate, methodParameters)
+				.Replace(_apiRouteTemplate, ApiRoute);
 		}
 
-		string queryParameters = string.Join($",{Environment.NewLine}", QueryParameters.ConvertAll(p => p.BuildAsQueryParameter()));
+		string queryParameters = string.Join($",{Environment.NewLine}", _queryParameters.ConvertAll(p => p.BuildAsQueryParameter()));
 		return _endpointWithQueryTemplate
-			.Replace(_returnType, ReturnType)
-			.Replace(_methodName, MethodName)
-			.Replace(_methodParameters, methodParameters)
-			.Replace(_queryParameters, queryParameters.IndentCode(2))
-			.Replace(_apiRoute, ApiRoute);
+			.Replace(_returnTypeTemplate, _returnType)
+			.Replace(_methodNameTemplate, MethodName)
+			.Replace(_methodParametersTemplate, methodParameters)
+			.Replace(_queryParametersTemplate, queryParameters.IndentCode(2))
+			.Replace(_apiRouteTemplate, ApiRoute);
 	}
 
 	public override string ToString()
-		=> $"{HttpMethod} {ApiRoute} {ReturnType} {MethodName}({string.Join(", ", RouteParameter)} | {string.Join(", ", QueryParameters)})";
+		=> $"{HttpMethod} {ApiRoute} {_returnType} {MethodName}({string.Join(", ", _routeParameter)} | {string.Join(", ", _queryParameters)})";
 }

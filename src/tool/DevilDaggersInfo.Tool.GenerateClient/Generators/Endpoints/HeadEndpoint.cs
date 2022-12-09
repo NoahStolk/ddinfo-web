@@ -4,67 +4,67 @@ namespace DevilDaggersInfo.Tool.GenerateClient.Generators.Endpoints;
 
 internal class HeadEndpoint : Endpoint
 {
-	private const string _methodName = $"%{nameof(_methodName)}%";
-	private const string _methodParameters = $"%{nameof(_methodParameters)}%";
-	private const string _queryParameters = $"%{nameof(_queryParameters)}%";
-	private const string _apiRoute = $"%{nameof(_apiRoute)}%";
-	private const string _httpMethod = $"%{nameof(_httpMethod)}%";
+	private const string _methodNameTemplate = $"%{nameof(_methodNameTemplate)}%";
+	private const string _methodParametersTemplate = $"%{nameof(_methodParametersTemplate)}%";
+	private const string _queryParametersTemplate = $"%{nameof(_queryParametersTemplate)}%";
+	private const string _apiRouteTemplate = $"%{nameof(_apiRouteTemplate)}%";
+	private const string _httpMethodTemplate = $"%{nameof(_httpMethodTemplate)}%";
 	private const string _endpointTemplate = $$"""
-		public async Task<HttpResponseMessage> {{_methodName}}({{_methodParameters}})
+		public async Task<HttpResponseMessage> {{_methodNameTemplate}}({{_methodParametersTemplate}})
 		{
-			return await SendRequest(new HttpMethod("{{_httpMethod}}"), $"{{_apiRoute}}");
+			return await SendRequest(new HttpMethod("{{_httpMethodTemplate}}"), $"{{_apiRouteTemplate}}");
 		}
 
 		""";
 	private const string _endpointWithQueryTemplate = $$"""
-		public async Task<HttpResponseMessage> {{_methodName}}({{_methodParameters}})
+		public async Task<HttpResponseMessage> {{_methodNameTemplate}}({{_methodParametersTemplate}})
 		{
 			Dictionary<string, object?> queryParameters = new()
 			{
-		{{_queryParameters}}
+		{{_queryParametersTemplate}}
 			};
-			return await SendRequest(new HttpMethod("{{_httpMethod}}"), BuildUrlWithQuery($"{{_apiRoute}}", queryParameters));
+			return await SendRequest(new HttpMethod("{{_httpMethodTemplate}}"), BuildUrlWithQuery($"{{_apiRouteTemplate}}", queryParameters));
 		}
 
 		""";
 
+	private readonly Parameter? _routeParameter;
+	private readonly List<Parameter> _queryParameters;
+
 	public HeadEndpoint(string methodName, string apiRoute, Parameter? routeParameter, List<Parameter> queryParameters)
 		: base(HttpMethod.Head, methodName, apiRoute)
 	{
-		QueryParameters = queryParameters;
-		RouteParameter = routeParameter;
+		_queryParameters = queryParameters;
+		_routeParameter = routeParameter;
 	}
-
-	public Parameter? RouteParameter { get; }
-	public List<Parameter> QueryParameters { get; }
 
 	public override string Build()
 	{
 		List<Parameter> allParameters = new();
-		if (RouteParameter != null)
-			allParameters.Add(RouteParameter);
+		if (_routeParameter != null)
+			allParameters.Add(_routeParameter);
 
-		allParameters.AddRange(QueryParameters);
+		allParameters.AddRange(_queryParameters);
 		string methodParameters = string.Join(", ", allParameters.ConvertAll(p => p.ToString()));
 
-		if (QueryParameters.Count == 0)
+		if (_queryParameters.Count == 0)
 		{
 			return _endpointTemplate
-				.Replace(_methodName, MethodName)
-				.Replace(_methodParameters, methodParameters)
-				.Replace(_httpMethod, HttpMethod.ToString())
-				.Replace(_apiRoute, ApiRoute);
+				.Replace(_methodNameTemplate, MethodName)
+				.Replace(_methodParametersTemplate, methodParameters)
+				.Replace(_httpMethodTemplate, HttpMethod.ToString())
+				.Replace(_apiRouteTemplate, ApiRoute);
 		}
 
-		string queryParameters = string.Join($",{Environment.NewLine}", QueryParameters.ConvertAll(p => p.BuildAsQueryParameter()));
+		string queryParameters = string.Join($",{Environment.NewLine}", _queryParameters.ConvertAll(p => p.BuildAsQueryParameter()));
 		return _endpointWithQueryTemplate
-			.Replace(_methodName, MethodName)
-			.Replace(_methodParameters, methodParameters)
-			.Replace(_queryParameters, queryParameters.IndentCode(2))
-			.Replace(_httpMethod, HttpMethod.ToString())
-			.Replace(_apiRoute, ApiRoute);
+			.Replace(_methodNameTemplate, MethodName)
+			.Replace(_methodParametersTemplate, methodParameters)
+			.Replace(_queryParametersTemplate, queryParameters.IndentCode(2))
+			.Replace(_httpMethodTemplate, HttpMethod.ToString())
+			.Replace(_apiRouteTemplate, ApiRoute);
 	}
 
 	public override string ToString()
-		=> $"{HttpMethod} {ApiRoute} {MethodName}({string.Join(", ", RouteParameter)} | {string.Join(", ", QueryParameters)})";
+		=> $"{HttpMethod} {ApiRoute} {MethodName}({string.Join(", ", _routeParameter)} | {string.Join(", ", _queryParameters)})";
 }
