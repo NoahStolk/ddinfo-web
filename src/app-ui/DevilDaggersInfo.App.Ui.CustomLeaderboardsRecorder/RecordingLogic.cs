@@ -16,6 +16,7 @@ namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder;
 public static class RecordingLogic
 {
 	private static readonly AesBase32Wrapper _aesBase32Wrapper;
+	private static bool _uploadRun;
 
 	static RecordingLogic()
 	{
@@ -50,6 +51,7 @@ public static class RecordingLogic
 
 	public static void Handle()
 	{
+		// Do not execute if the game is not running.
 		if (!Root.Game.GameMemoryService.IsInitialized)
 		{
 			StateManager.SetRecordingState(RecordingStateType.WaitingForGame);
@@ -57,15 +59,31 @@ public static class RecordingLogic
 		}
 
 		MainBlock mainBlock = Root.Game.GameMemoryService.MainBlock;
+		MainBlock mainBlockPrevious = Root.Game.GameMemoryService.MainBlockPrevious;
 
+		// When a run is scheduled to upload, keep trying until stats have loaded and the replay is valid.
+		if (_uploadRun)
+		{
+			StateManager.SetRecordingState(RecordingStateType.WaitingForStats);
+			if (!mainBlock.StatsLoaded)
+				return;
+
+			StateManager.SetRecordingState(RecordingStateType.WaitingForReplay);
+			if (!Root.Game.GameMemoryService.IsReplayValid())
+				return;
+
+			_uploadRun = false;
+			UploadRunIfExists(mainBlock.SurvivalHashMd5);
+			return;
+		}
+
+		// Set current player ID when it has not been set yet.
 		if (StateManager.RecordingState.CurrentPlayerId == 0 && mainBlock.PlayerId != 0)
 		{
 			StateManager.SetCurrentPlayerId(mainBlock.PlayerId);
 
 			Root.Game.CustomLeaderboardsRecorderMainLayout.RefreshLeaderboardList();
 		}
-
-		MainBlock mainBlockPrevious = Root.Game.GameMemoryService.MainBlockPrevious;
 
 		// Indicate recording status.
 		GameStatus status = (GameStatus)mainBlock.Status;
@@ -92,20 +110,9 @@ public static class RecordingLogic
 			return;
 		}
 
+		// Determine whether to upload the run or not.
 		bool justDied = !mainBlock.IsPlayerAlive && mainBlockPrevious.IsPlayerAlive;
-		bool uploadRun = justDied && (mainBlock.GameMode == 0 || mainBlock.TimeAttackOrRaceFinished);
-		if (!uploadRun)
-			return;
-
-		StateManager.SetRecordingState(RecordingStateType.WaitingForStats);
-		if (!mainBlock.StatsLoaded)
-			return;
-
-		StateManager.SetRecordingState(RecordingStateType.WaitingForReplay);
-		if (!Root.Game.GameMemoryService.IsReplayValid())
-			return;
-
-		UploadRunIfExists(mainBlock.SurvivalHashMd5);
+		_uploadRun = justDied && (mainBlock.GameMode == 0 || mainBlock.TimeAttackOrRaceFinished);
 	}
 
 	private static void InitializeMarker()
