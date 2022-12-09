@@ -5,7 +5,6 @@ using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.Extensions;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States;
-using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Utils;
 using DevilDaggersInfo.Common;
 using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Core.Wiki.Objects;
@@ -20,8 +19,6 @@ namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.Leaderbo
 public class LeaderboardEntry : AbstractComponent
 {
 	public const int Height = 16;
-
-	private static readonly int[] _offsets = { 16, 24, 260, 308, 352, 400, 448, 496, 552, 560, 656, 712, 760, 832, 888, 992 };
 
 	private readonly GetCustomEntry _getCustomEntry;
 
@@ -94,21 +91,21 @@ public class LeaderboardEntry : AbstractComponent
 		}
 
 		Vector2i<int> position = Bounds.TopLeft + new Vector2i<int>(0, 4) + scrollOffset;
-		Root.Game.MonoSpaceFontRenderer12.Schedule(new(1), position + new Vector2i<int>(_offsets[00], 0), Depth, Color.White, _getCustomEntry.Rank.ToString("00"), TextAlign.Right);
-		Root.Game.MonoSpaceFontRenderer12.Schedule(new(1), position + new Vector2i<int>(_offsets[01], 0), Depth, Color.White, _getCustomEntry.PlayerName, TextAlign.Left);
-		Root.Game.MonoSpaceFontRenderer12.Schedule(new(1), position + new Vector2i<int>(_offsets[02], 0), Depth, _getCustomEntry.CustomLeaderboardDagger?.GetColor() ?? Color.White, _getCustomEntry.TimeInSeconds.ToString(StringFormats.TimeFormat), TextAlign.Right);
-		Root.Game.MonoSpaceFontRenderer12.Schedule(new(1), position + new Vector2i<int>(_offsets[03], 0), Depth, Color.White, _getCustomEntry.EnemiesAlive.ToString(), TextAlign.Right);
-		Root.Game.MonoSpaceFontRenderer12.Schedule(new(1), position + new Vector2i<int>(_offsets[04], 0), Depth, Color.White, _getCustomEntry.EnemiesKilled.ToString(), TextAlign.Right);
-		Root.Game.MonoSpaceFontRenderer12.Schedule(new(1), position + new Vector2i<int>(_offsets[05], 0), Depth, Color.White, _getCustomEntry.GemsCollected.ToString(), TextAlign.Right);
-		Root.Game.MonoSpaceFontRenderer12.Schedule(new(1), position + new Vector2i<int>(_offsets[06], 0), Depth, Color.White, _getCustomEntry.GemsDespawned?.ToString() ?? "-", TextAlign.Right);
-		Root.Game.MonoSpaceFontRenderer12.Schedule(new(1), position + new Vector2i<int>(_offsets[07], 0), Depth, Color.White, _getCustomEntry.GemsEaten?.ToString() ?? "-", TextAlign.Right);
-		Root.Game.MonoSpaceFontRenderer12.Schedule(new(1), position + new Vector2i<int>(_offsets[08], 0), Depth, Color.White, _accuracy.ToString(StringFormats.AccuracyFormat), TextAlign.Right);
-		Root.Game.MonoSpaceFontRenderer12.Schedule(new(1), position + new Vector2i<int>(_offsets[09], 0), Depth, _death?.Color.ToWarpColor() ?? Color.White, _death?.Name ?? "-", TextAlign.Left);
-		Root.Game.MonoSpaceFontRenderer12.Schedule(new(1), position + new Vector2i<int>(_offsets[10], 0), Depth, Color.White, _getCustomEntry.HomingStored.ToString(), TextAlign.Right);
-		Root.Game.MonoSpaceFontRenderer12.Schedule(new(1), position + new Vector2i<int>(_offsets[11], 0), Depth, Color.White, _getCustomEntry.HomingEaten?.ToString() ?? "-", TextAlign.Right);
-		Root.Game.MonoSpaceFontRenderer12.Schedule(new(1), position + new Vector2i<int>(_offsets[12], 0), Depth, Color.White, _level2?.ToString(StringFormats.TimeFormat) ?? "-", TextAlign.Right);
-		Root.Game.MonoSpaceFontRenderer12.Schedule(new(1), position + new Vector2i<int>(_offsets[13], 0), Depth, Color.White, _level3?.ToString(StringFormats.TimeFormat) ?? "-", TextAlign.Right);
-		Root.Game.MonoSpaceFontRenderer12.Schedule(new(1), position + new Vector2i<int>(_offsets[14], 0), Depth, Color.White, _level4?.ToString(StringFormats.TimeFormat) ?? "-", TextAlign.Right);
-		Root.Game.MonoSpaceFontRenderer12.Schedule(new(1), position + new Vector2i<int>(_offsets[15], 0), Depth, Color.White, _getCustomEntry.SubmitDate.ToString(StringFormats.DateTimeFormat), TextAlign.Right);
+		Root.Game.MonoSpaceFontRenderer12.Schedule(new(1), position + new Vector2i<int>(LeaderboardWrapper.TableOffsets[00], 0), Depth, Color.White, _getCustomEntry.Rank.ToString("00"), TextAlign.Right);
+		Root.Game.MonoSpaceFontRenderer12.Schedule(new(1), position + new Vector2i<int>(LeaderboardWrapper.TableOffsets[01], 0), Depth, Color.White, _getCustomEntry.PlayerName, TextAlign.Left);
+		Root.Game.MonoSpaceFontRenderer12.Schedule(new(1), position + new Vector2i<int>(LeaderboardWrapper.TableOffsets[02], 0), Depth, _getCustomEntry.CustomLeaderboardDagger?.GetColor() ?? Color.White, _getCustomEntry.TimeInSeconds.ToString(StringFormats.TimeFormat), TextAlign.Right);
+		Root.Game.MonoSpaceFontRenderer12.Schedule(new(1), position + new Vector2i<int>(LeaderboardWrapper.TableOffsets[03], 0), Depth, Color.White, _getCustomEntry.EnemiesAlive.ToString(), TextAlign.Right);
+		Root.Game.MonoSpaceFontRenderer12.Schedule(new(1), position + new Vector2i<int>(LeaderboardWrapper.TableOffsets[04], 0), Depth, Color.White, _getCustomEntry.EnemiesKilled.ToString(), TextAlign.Right);
+		Root.Game.MonoSpaceFontRenderer12.Schedule(new(1), position + new Vector2i<int>(LeaderboardWrapper.TableOffsets[05], 0), Depth, Color.White, _getCustomEntry.GemsCollected.ToString(), TextAlign.Right);
+		Root.Game.MonoSpaceFontRenderer12.Schedule(new(1), position + new Vector2i<int>(LeaderboardWrapper.TableOffsets[06], 0), Depth, Color.White, _getCustomEntry.GemsDespawned?.ToString() ?? "-", TextAlign.Right);
+		Root.Game.MonoSpaceFontRenderer12.Schedule(new(1), position + new Vector2i<int>(LeaderboardWrapper.TableOffsets[07], 0), Depth, Color.White, _getCustomEntry.GemsEaten?.ToString() ?? "-", TextAlign.Right);
+		Root.Game.MonoSpaceFontRenderer12.Schedule(new(1), position + new Vector2i<int>(LeaderboardWrapper.TableOffsets[08], 0), Depth, Color.White, _accuracy.ToString(StringFormats.AccuracyFormat), TextAlign.Right);
+		Root.Game.MonoSpaceFontRenderer12.Schedule(new(1), position + new Vector2i<int>(LeaderboardWrapper.TableOffsets[09], 0), Depth, _death?.Color.ToWarpColor() ?? Color.White, _death?.Name ?? "-", TextAlign.Left);
+		Root.Game.MonoSpaceFontRenderer12.Schedule(new(1), position + new Vector2i<int>(LeaderboardWrapper.TableOffsets[10], 0), Depth, Color.White, _getCustomEntry.HomingStored.ToString(), TextAlign.Right);
+		Root.Game.MonoSpaceFontRenderer12.Schedule(new(1), position + new Vector2i<int>(LeaderboardWrapper.TableOffsets[11], 0), Depth, Color.White, _getCustomEntry.HomingEaten?.ToString() ?? "-", TextAlign.Right);
+		Root.Game.MonoSpaceFontRenderer12.Schedule(new(1), position + new Vector2i<int>(LeaderboardWrapper.TableOffsets[12], 0), Depth, Color.White, _level2?.ToString(StringFormats.TimeFormat) ?? "-", TextAlign.Right);
+		Root.Game.MonoSpaceFontRenderer12.Schedule(new(1), position + new Vector2i<int>(LeaderboardWrapper.TableOffsets[13], 0), Depth, Color.White, _level3?.ToString(StringFormats.TimeFormat) ?? "-", TextAlign.Right);
+		Root.Game.MonoSpaceFontRenderer12.Schedule(new(1), position + new Vector2i<int>(LeaderboardWrapper.TableOffsets[14], 0), Depth, Color.White, _level4?.ToString(StringFormats.TimeFormat) ?? "-", TextAlign.Right);
+		Root.Game.MonoSpaceFontRenderer12.Schedule(new(1), position + new Vector2i<int>(LeaderboardWrapper.TableOffsets[15], 0), Depth, Color.White, _getCustomEntry.SubmitDate.ToString(StringFormats.DateTimeFormat), TextAlign.Right);
 	}
 }
