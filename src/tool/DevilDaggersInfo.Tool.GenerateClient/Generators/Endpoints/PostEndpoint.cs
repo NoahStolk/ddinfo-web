@@ -26,8 +26,8 @@ internal class PostEndpoint : Endpoint
 	public override string Build()
 	{
 		string bodyParameterStr = BodyParameter.ToString();
-		string bodyParameterType = bodyParameterStr.Substring(0, bodyParameterStr.IndexOf(' '));
-		string bodyParameter = bodyParameterStr.Substring(bodyParameterStr.IndexOf(' ') + 1);
+		string bodyParameterType = bodyParameterStr[..bodyParameterStr.IndexOf(' ')];
+		string bodyParameter = bodyParameterStr[(bodyParameterStr.IndexOf(' ') + 1)..];
 
 		return _endpointTemplate
 			.Replace(_methodName, MethodName)
