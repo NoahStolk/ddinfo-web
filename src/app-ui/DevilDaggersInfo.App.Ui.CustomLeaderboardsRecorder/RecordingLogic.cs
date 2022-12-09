@@ -50,6 +50,9 @@ public static class RecordingLogic
 
 	public static void Handle()
 	{
+		if (!Root.Game.GameMemoryService.IsInitialized)
+			return;
+
 		// TODO: Show current leaderboard
 		MainBlock mainBlock = Root.Game.GameMemoryService.MainBlock;
 		MainBlock mainBlockPrevious = Root.Game.GameMemoryService.MainBlockPrevious;
