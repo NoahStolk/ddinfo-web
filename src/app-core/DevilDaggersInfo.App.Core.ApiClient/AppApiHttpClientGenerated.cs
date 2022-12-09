@@ -14,7 +14,7 @@ using DevilDaggersInfo.Api.App.Tools;
 using DevilDaggersInfo.Types.Web;
 using System.Net.Http.Json;
 
-namespace DevilDaggersInfo.App.Core.ApiClient.ApiClients;
+namespace DevilDaggersInfo.App.Core.ApiClient;
 
 public partial class AppApiHttpClient
 {
@@ -23,7 +23,7 @@ public partial class AppApiHttpClient
 		return await SendGetRequest<GetCustomEntryReplayBuffer>($"api/app/custom-entries/{id}/replay-buffer");
 	}
 
-	public async Task<HttpResponseMessage> SubmitScoreForDdcl(AddUploadRequest uploadRequest)
+	public async Task<HttpResponseMessage> SubmitScore(AddUploadRequest uploadRequest)
 	{
 		return await SendRequest(new HttpMethod("POST"), $"api/app/custom-entries/submit", JsonContent.Create(uploadRequest));
 	}

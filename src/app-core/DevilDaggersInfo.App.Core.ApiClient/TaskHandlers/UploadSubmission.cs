@@ -8,7 +8,7 @@ public static class UploadSubmission
 	{
 		try
 		{
-			HttpResponseMessage hrm = await AsyncHandler.Client.SubmitScoreForDdcl(addUploadRequest);
+			HttpResponseMessage hrm = await AsyncHandler.Client.SubmitScore(addUploadRequest);
 			return hrm.IsSuccessStatusCode; // TODO: Generate API call with actual response.
 		}
 		catch

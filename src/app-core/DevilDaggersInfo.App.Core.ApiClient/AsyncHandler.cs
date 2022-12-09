@@ -1,5 +1,3 @@
-using DevilDaggersInfo.App.Core.ApiClient.ApiClients;
-
 namespace DevilDaggersInfo.App.Core.ApiClient;
 
 public static class AsyncHandler

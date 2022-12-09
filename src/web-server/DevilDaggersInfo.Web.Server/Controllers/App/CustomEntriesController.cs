@@ -37,7 +37,7 @@ public class CustomEntriesController : ControllerBase
 	[HttpPost("submit")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	public async Task<ActionResult<GetUploadSuccess>> SubmitScoreForDdcl([FromBody] AddUploadRequest uploadRequest)
+	public async Task<ActionResult<GetUploadSuccess>> SubmitScore([FromBody] AddUploadRequest uploadRequest)
 	{
 		try
 		{

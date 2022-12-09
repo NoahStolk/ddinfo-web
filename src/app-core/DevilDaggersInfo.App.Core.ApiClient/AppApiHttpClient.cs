@@ -1,7 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
 
-namespace DevilDaggersInfo.App.Core.ApiClient.ApiClients;
+namespace DevilDaggersInfo.App.Core.ApiClient;
 
 public partial class AppApiHttpClient
 {

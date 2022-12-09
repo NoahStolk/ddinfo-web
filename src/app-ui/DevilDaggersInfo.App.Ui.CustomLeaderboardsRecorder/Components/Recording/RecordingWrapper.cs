@@ -77,7 +77,7 @@ public class RecordingWrapper : AbstractComponent
 		}
 	}
 
-	private bool ShouldRenderRecording => Root.Game.GameMemoryService.IsInitialized && (GameStatus)Root.Game.GameMemoryService.MainBlock.Status is not (GameStatus.Title or GameStatus.Menu or GameStatus.Lobby);
+	private static bool ShouldRenderRecording => Root.Game.GameMemoryService.IsInitialized && (GameStatus)Root.Game.GameMemoryService.MainBlock.Status is not (GameStatus.Title or GameStatus.Menu or GameStatus.Lobby);
 
 	public void SetState()
 	{
