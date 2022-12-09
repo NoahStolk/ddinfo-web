@@ -28,6 +28,8 @@ public class LeaderboardEntry : AbstractComponent
 	private readonly double? _level3;
 	private readonly double? _level4;
 
+	private readonly string _hoverText;
+
 	private bool _isHovering;
 
 	public LeaderboardEntry(IBounds bounds, GetCustomEntry getCustomEntry)
@@ -40,6 +42,8 @@ public class LeaderboardEntry : AbstractComponent
 		_level2 = _getCustomEntry.LevelUpTime2InSeconds == 0 ? null : _getCustomEntry.LevelUpTime2InSeconds;
 		_level3 = _getCustomEntry.LevelUpTime3InSeconds == 0 ? null : _getCustomEntry.LevelUpTime3InSeconds;
 		_level4 = _getCustomEntry.LevelUpTime4InSeconds == 0 ? null : _getCustomEntry.LevelUpTime4InSeconds;
+
+		_hoverText = _getCustomEntry.HasReplay ? "Watch replay" : "No replay available";
 	}
 
 	public override void Update(Vector2i<int> scrollOffset)
@@ -47,7 +51,12 @@ public class LeaderboardEntry : AbstractComponent
 		base.Update(scrollOffset);
 
 		_isHovering = MouseUiContext.Contains(scrollOffset, Bounds);
-		if (!_isHovering || !Input.IsButtonPressed(MouseButton.Left))
+		if (!_isHovering)
+			return;
+
+		Root.Game.TooltipText = _hoverText;
+
+		if (!Input.IsButtonPressed(MouseButton.Left))
 			return;
 
 		AsyncHandler.Run(Inject, () => FetchCustomEntryReplayById.HandleAsync(_getCustomEntry.Id));
@@ -71,7 +80,7 @@ public class LeaderboardEntry : AbstractComponent
 		bool isCurrentPlayer = _getCustomEntry.PlayerId == StateManager.RecordingState.CurrentPlayerId;
 		if (isCurrentPlayer || _isHovering)
 		{
-			Color color = (isCurrentPlayer, _isHovering) switch
+			Color color = !_getCustomEntry.HasReplay ? new(63, 0, 0, 127) : (isCurrentPlayer, _isHovering) switch
 			{
 				(true, true) => GlobalColors.EntrySelectHover,
 				(true, false) => GlobalColors.EntryHover,
