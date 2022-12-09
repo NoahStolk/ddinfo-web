@@ -47,7 +47,7 @@ public class SpawnEntry : AbstractComponent
 		{
 			(true, true) => GlobalColors.EntrySelectHover,
 			(true, false) => GlobalColors.EntrySelect,
-			(false, true) => Color.Gray(0.2f),
+			(false, true) => GlobalColors.EntryHover,
 			_ => Color.Invisible,
 		};
 		if (background != Color.Invisible)

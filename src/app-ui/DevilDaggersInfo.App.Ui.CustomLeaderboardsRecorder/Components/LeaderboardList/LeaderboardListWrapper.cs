@@ -70,7 +70,7 @@ public class LeaderboardListWrapper : AbstractComponent
 		_prevButton.IsDisabled = true;
 		_nextButton.IsDisabled = true;
 
-		AsyncHandler.Run(Populate, () => FetchCustomLeaderboards.HandleAsync(StateManager.LeaderboardListState.Category, StateManager.LeaderboardListState.PageIndex, StateManager.LeaderboardListState.PageSize, 21854, false));
+		AsyncHandler.Run(Populate, () => FetchCustomLeaderboards.HandleAsync(StateManager.LeaderboardListState.Category, StateManager.LeaderboardListState.PageIndex, StateManager.LeaderboardListState.PageSize, StateManager.RecordingState.CurrentPlayerId, false));
 
 		void Populate(Page<GetCustomLeaderboardForOverview>? cls)
 		{

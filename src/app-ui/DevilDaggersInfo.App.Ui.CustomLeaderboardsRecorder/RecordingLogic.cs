@@ -56,9 +56,17 @@ public static class RecordingLogic
 			return;
 		}
 
-		// TODO: Show current leaderboard
 		MainBlock mainBlock = Root.Game.GameMemoryService.MainBlock;
+
+		if (StateManager.RecordingState.CurrentPlayerId == 0 && mainBlock.PlayerId != 0)
+		{
+			StateManager.SetCurrentPlayerId(mainBlock.PlayerId);
+
+			// TODO: Reload CL list.
+		}
+
 		MainBlock mainBlockPrevious = Root.Game.GameMemoryService.MainBlockPrevious;
+
 		if (StateManager.RecordingState.RecordingStateType != RecordingStateType.Recording)
 		{
 			if (Math.Abs(mainBlock.Time - mainBlockPrevious.Time) < 0.0001f)
@@ -209,12 +217,13 @@ public static class RecordingLogic
 		AsyncHandler.Run(OnSubmit, () => UploadSubmission.HandleAsync(uploadRequest));
 	}
 
-	private static void OnSubmit(bool? successStatusCode) // TODO: Use response from API.
+	private static void OnSubmit(GetUploadSuccess? uploadSuccess)
 	{
-		if (successStatusCode == true)
-			StateManager.SetLastSubmission(DateTime.Now);
+		if (uploadSuccess == null)
+			return;
 
-		// TODO: Show score and leaderboard.
+		StateManager.SetLastSubmission(DateTime.Now);
+		// Root.Game.CustomLeaderboardsRecorderMainLayout.SetUploadSuccess();
 	}
 
 	private static AddGameData GetGameDataForUpload(MainBlock block, byte[] statsBuffer)

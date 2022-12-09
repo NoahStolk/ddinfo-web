@@ -90,6 +90,14 @@ public static class StateManager
 		};
 	}
 
+	public static void SetCurrentPlayerId(int playerId)
+	{
+		RecordingState = RecordingState with
+		{
+			CurrentPlayerId = playerId,
+		};
+	}
+
 	// TODO: Call this when file system watcher is notified.
 	public static void RefreshActiveSpawnset()
 	{
