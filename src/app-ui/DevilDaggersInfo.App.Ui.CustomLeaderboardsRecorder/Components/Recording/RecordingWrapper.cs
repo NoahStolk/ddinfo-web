@@ -1,4 +1,5 @@
 using DevilDaggersInfo.App.Core.GameMemory;
+using DevilDaggersInfo.App.Core.GameMemory.Extensions;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.Extensions;
 using DevilDaggersInfo.Common;
@@ -76,9 +77,11 @@ public class RecordingWrapper : AbstractComponent
 		}
 	}
 
+	public bool ShouldRenderRecording => Root.Game.GameMemoryService.IsInitialized && (GameStatus)Root.Game.GameMemoryService.MainBlock.Status is not (GameStatus.Title or GameStatus.Menu or GameStatus.Lobby);
+
 	public void SetState()
 	{
-		if (!Root.Game.GameMemoryService.IsInitialized)
+		if (!ShouldRenderRecording)
 			return;
 
 		MainBlock block = Root.Game.GameMemoryService.MainBlock;
@@ -86,7 +89,7 @@ public class RecordingWrapper : AbstractComponent
 		Death? death = Deaths.GetDeathByLeaderboardType(GameConstants.CurrentVersion, block.DeathType);
 		float accuracy = block.DaggersFired == 0 ? 0 : block.DaggersHit / (float)block.DaggersFired;
 
-		_status.UpdateValue(gameStatus.ToString());
+		_status.UpdateValue(gameStatus.ToDisplayString());
 
 		_player.UpdateValue($"{block.PlayerName} ({block.PlayerId})");
 		_time.UpdateValue(block.Time.ToString(StringFormats.TimeFormat));
@@ -107,7 +110,7 @@ public class RecordingWrapper : AbstractComponent
 
 	public override void Render(Vector2i<int> scrollOffset)
 	{
-		if (Root.Game.GameMemoryService.IsInitialized)
+		if (ShouldRenderRecording)
 			base.Render(scrollOffset);
 
 		const int border = 1;

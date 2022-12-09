@@ -209,9 +209,12 @@ public static class RecordingLogic
 		AsyncHandler.Run(OnSubmit, () => UploadSubmission.HandleAsync(uploadRequest));
 	}
 
-	private static void OnSubmit(bool? successStatusCode) // TODO
+	private static void OnSubmit(bool? successStatusCode)
 	{
+		if (successStatusCode == true)
+			StateManager.SetLastSubmission(DateTime.Now);
 
+		// TODO: Show score and leaderboard.
 	}
 
 	private static AddGameData GetGameDataForUpload(MainBlock block, byte[] statsBuffer)

@@ -2,6 +2,7 @@ using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Extensions;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States;
+using DevilDaggersInfo.Common;
 using Warp.NET.RenderImpl.Ui.Components;
 using Warp.NET.Ui;
 using Warp.NET.Ui.Components;
@@ -49,7 +50,7 @@ public class StateWrapper : AbstractComponent
 		_labelMemoryValue.Text = StateManager.MarkerState.Marker.HasValue ? $"0x{StateManager.MarkerState.Marker.Value:X}" : "Waiting...";
 		_labelStateValue.Text = StateManager.RecordingState.RecordingStateType.ToDisplayString();
 		_labelSpawnsetValue.Text = StateManager.ActiveSpawnsetState.Name ?? "(unknown)";
-		_labelSubmissionValue.Text = "...";
+		_labelSubmissionValue.Text = DateTimeUtils.FormatTimeAgo(StateManager.RecordingState.LastSubmission);
 	}
 
 	public override void Render(Vector2i<int> scrollOffset)
