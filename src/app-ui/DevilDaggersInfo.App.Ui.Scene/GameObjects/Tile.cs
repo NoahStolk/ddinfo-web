@@ -1,5 +1,4 @@
 using DevilDaggersInfo.App.Ui.Base;
-using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.Core.Spawnset;
 using Silk.NET.OpenGL;
 using Warp.NET.Content;
