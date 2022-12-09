@@ -9,20 +9,24 @@ internal class GetEndpoint : Endpoint
 	private const string _methodParameters = $"%{nameof(_methodParameters)}%";
 	private const string _queryParameters = $"%{nameof(_queryParameters)}%";
 	private const string _apiRoute = $"%{nameof(_apiRoute)}%";
-	private const string _endpointTemplate = $@"public async Task<{_returnType}> {_methodName}({_methodParameters})
-{{
-	return await SendGetRequest<{_returnType}>($""{_apiRoute}"");
-}}
-";
-	private const string _endpointWithQueryTemplate = $@"public async Task<{_returnType}> {_methodName}({_methodParameters})
-{{
-	Dictionary<string, object?> queryParameters = new()
-	{{
-{_queryParameters}
-	}};
-	return await SendGetRequest<{_returnType}>(BuildUrlWithQuery($""{_apiRoute}"", queryParameters));
-}}
-";
+	private const string _endpointTemplate = $$"""
+		public async Task<{{_returnType}}> {{_methodName}}({{_methodParameters}})
+		{
+			return await SendGetRequest<{{_returnType}}>($"{{_apiRoute}}");
+		}
+
+		""";
+	private const string _endpointWithQueryTemplate = $$"""
+		public async Task<{{_returnType}}> {{_methodName}}({{_methodParameters}})
+		{
+			Dictionary<string, object?> queryParameters = new()
+			{
+		{{_queryParameters}}
+			};
+			return await SendGetRequest<{{_returnType}}>(BuildUrlWithQuery($"{{_apiRoute}}", queryParameters));
+		}
+
+		""";
 
 	public GetEndpoint(string methodName, string apiRoute, Parameter? routeParameter, List<Parameter> queryParameters, string returnType)
 		: base(HttpMethod.Get, methodName, apiRoute)

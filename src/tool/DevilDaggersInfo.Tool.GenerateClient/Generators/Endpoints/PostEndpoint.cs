@@ -7,11 +7,13 @@ internal class PostEndpoint : Endpoint
 	private const string _bodyParameter = $"%{nameof(_bodyParameter)}%";
 	private const string _apiRoute = $"%{nameof(_apiRoute)}%";
 	private const string _httpMethod = $"%{nameof(_httpMethod)}%";
-	private const string _endpointTemplate = $@"public async Task<HttpResponseMessage> {_methodName}({_bodyParameterType} {_bodyParameter})
-{{
-	return await SendRequest(new HttpMethod(""{_httpMethod}""), $""{_apiRoute}"", JsonContent.Create({_bodyParameter}));
-}}
-";
+	private const string _endpointTemplate = $$"""
+		public async Task<HttpResponseMessage> {{_methodName}}({{_bodyParameterType}} {{_bodyParameter}})
+		{
+			return await SendRequest(new HttpMethod("{{_httpMethod}}"), $"{{_apiRoute}}", JsonContent.Create({{_bodyParameter}}));
+		}
+
+		""";
 
 	public PostEndpoint(string methodName, string apiRoute, Parameter bodyParameter)
 		: base(HttpMethod.Post, methodName, apiRoute)

@@ -5,28 +5,29 @@ namespace DevilDaggersInfo.Tool.GenerateClient.Generators;
 
 public class HttpClientSourceGenerator
 {
-	// TODO: Use """ strings.
 	private const string _usings = $"%{nameof(_usings)}%";
 	private const string _namespace = $"%{nameof(_namespace)}%";
 	private const string _className = $"%{nameof(_className)}%";
 	private const string _endpointMethods = $"%{nameof(_endpointMethods)}%";
-	private const string _template = $@"{_usings}
+	private const string _template = $$"""
+		{{_usings}}
 
-namespace {_namespace};
+		namespace {{_namespace}};
 
-public partial class {_className}
-{{
-{_endpointMethods}
-	private static string BuildUrlWithQuery(string baseUrl, Dictionary<string, object?> queryParameters)
-	{{
-		if (queryParameters.Count == 0)
-			return baseUrl;
+		public partial class {{_className}}
+		{
+		{{_endpointMethods}}
+			private static string BuildUrlWithQuery(string baseUrl, Dictionary<string, object?> queryParameters)
+			{
+				if (queryParameters.Count == 0)
+					return baseUrl;
 
-		string queryParameterString = string.Join('&', queryParameters.Select(kvp => $""{{kvp.Key}}={{kvp.Value}}""));
-		return $""{{baseUrl.TrimEnd('/')}}?{{queryParameterString}}"";
-	}}
-}}
-";
+				string queryParameterString = string.Join('&', queryParameters.Select(kvp => $"{kvp.Key}={kvp.Value}"));
+				return $"{baseUrl.TrimEnd('/')}?{queryParameterString}";
+			}
+		}
+
+		""";
 
 	private readonly string _controllersSubDirectory;
 	private readonly string _namespaceForGeneratedClass;
@@ -47,9 +48,7 @@ public partial class {_className}
 		apiHttpClientContext.AddUsings("System.Net.Http.Json");
 		apiHttpClientContext.AddEndpoints(_controllersSubDirectory);
 
-		List<string> endpointMethods = new();
-		foreach (Endpoint endpoint in apiHttpClientContext.Endpoints)
-			endpointMethods.Add(endpoint.Build());
+		List<string> endpointMethods = apiHttpClientContext.Endpoints.Select(endpoint => endpoint.Build()).ToList();
 
 		string code = _template
 			.Replace(_usings, string.Join(Environment.NewLine, apiHttpClientContext.GetOrderedUsingDirectives()))

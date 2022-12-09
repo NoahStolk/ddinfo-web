@@ -9,20 +9,24 @@ internal class HeadEndpoint : Endpoint
 	private const string _queryParameters = $"%{nameof(_queryParameters)}%";
 	private const string _apiRoute = $"%{nameof(_apiRoute)}%";
 	private const string _httpMethod = $"%{nameof(_httpMethod)}%";
-	private const string _endpointTemplate = $@"public async Task<HttpResponseMessage> {_methodName}({_methodParameters})
-{{
-	return await SendRequest(new HttpMethod(""{_httpMethod}""), $""{_apiRoute}"");
-}}
-";
-	private const string _endpointWithQueryTemplate = $@"public async Task<HttpResponseMessage> {_methodName}({_methodParameters})
-{{
-	Dictionary<string, object?> queryParameters = new()
-	{{
-{_queryParameters}
-	}};
-	return await SendRequest(new HttpMethod(""{_httpMethod}""), BuildUrlWithQuery($""{_apiRoute}"", queryParameters));
-}}
-";
+	private const string _endpointTemplate = $$"""
+		public async Task<HttpResponseMessage> {{_methodName}}({{_methodParameters}})
+		{
+			return await SendRequest(new HttpMethod("{{_httpMethod}}"), $"{{_apiRoute}}");
+		}
+
+		""";
+	private const string _endpointWithQueryTemplate = $$"""
+		public async Task<HttpResponseMessage> {{_methodName}}({{_methodParameters}})
+		{
+			Dictionary<string, object?> queryParameters = new()
+			{
+		{{_queryParameters}}
+			};
+			return await SendRequest(new HttpMethod("{{_httpMethod}}"), BuildUrlWithQuery($"{{_apiRoute}}", queryParameters));
+		}
+
+		""";
 
 	public HeadEndpoint(string methodName, string apiRoute, Parameter? routeParameter, List<Parameter> queryParameters)
 		: base(HttpMethod.Head, methodName, apiRoute)
