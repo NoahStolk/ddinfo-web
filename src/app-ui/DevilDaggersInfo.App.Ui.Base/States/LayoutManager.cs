@@ -1,6 +1,7 @@
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.Settings;
 using DevilDaggersInfo.Core.Replay;
+using DevilDaggersInfo.Core.Spawnset;
 
 namespace DevilDaggersInfo.App.Ui.Base.States;
 
@@ -21,10 +22,10 @@ public static class LayoutManager
 		Root.Game.ActiveLayout = Root.Game.SurvivalEditorMainLayout;
 	}
 
-	public static void ToSurvivalEditor3dLayout()
+	public static void ToSurvivalEditor3dLayout(SpawnsetBinary spawnset)
 	{
 		Root.Game.ActiveLayout = Root.Game.SurvivalEditor3dLayout;
-		Root.Game.SurvivalEditor3dLayout.BuildScene();
+		Root.Game.SurvivalEditor3dLayout.BuildScene(spawnset);
 	}
 
 	public static void ToSurvivalEditorOpenLayout()

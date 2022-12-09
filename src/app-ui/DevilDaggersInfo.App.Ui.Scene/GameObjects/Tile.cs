@@ -63,11 +63,9 @@ public class Tile : GameObject
 		}
 	}
 
-	public override void Update()
+	public void Update(float currentTime)
 	{
-		base.Update();
-
-		float y = _spawnsetBinary.GetActualTileHeight(_arenaX, _arenaY, Root.Game.CustomLeaderboardsRecorderReplayViewer3dLayout.CurrentTime);
+		float y = _spawnsetBinary.GetActualTileHeight(_arenaX, _arenaY, currentTime);
 		_top.PositionY = y;
 		_pillar.PositionY = y;
 	}

@@ -1,8 +1,8 @@
+using DevilDaggersInfo.Core.Spawnset;
+
 namespace DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts.SurvivalEditor;
 
 public interface ISurvivalEditor3dLayout : IExtendedLayout
 {
-	void BuildScene();
-
-	void Initialize();
+	void BuildScene(SpawnsetBinary spawnset);
 }

@@ -19,16 +19,15 @@ public class ReplayViewer3dLayout : Layout, IReplayViewer3dLayout
 
 	private readonly Camera _camera = new();
 	private readonly List<Tile> _tiles = new();
-
 	private RaceDagger? _raceDagger;
+
+	private float _currentTime;
 
 	public ReplayViewer3dLayout()
 	{
-		_shrinkSlider = new(new PixelBounds(0, 752, 1024, 16), f => CurrentTime = f, true, 0, 0, 0.1f, 0, GlobalStyles.DefaultSliderStyle, 0);
+		_shrinkSlider = new(new PixelBounds(0, 752, 1024, 16), f => _currentTime = f, true, 0, 0, 0.1f, 0, GlobalStyles.DefaultSliderStyle, 0);
 		NestingContext.Add(_shrinkSlider);
 	}
-
-	public float CurrentTime { get; private set; }
 
 	public void BuildScene(ReplayBinary<LocalReplayBinaryHeader>[] replayBinaries)
 	{
@@ -38,7 +37,7 @@ public class ReplayViewer3dLayout : Layout, IReplayViewer3dLayout
 		if (!SpawnsetBinary.TryParse(replayBinaries[0].Header.SpawnsetBuffer, out SpawnsetBinary? spawnset))
 			throw new InvalidOperationException("Spawnset inside replay is invalid.");
 
-		CurrentTime = 0;
+		_currentTime = 0;
 
 		_shrinkSlider.Max = spawnset.GetSliderMaxSeconds();
 		_shrinkSlider.CurrentValue = Math.Clamp(_shrinkSlider.CurrentValue, 0, _shrinkSlider.Max);
@@ -79,14 +78,14 @@ public class ReplayViewer3dLayout : Layout, IReplayViewer3dLayout
 
 	public void Update()
 	{
-		CurrentTime += Root.Game.Dt;
-		_shrinkSlider.CurrentValue = CurrentTime;
+		_currentTime += Root.Game.Dt;
+		_shrinkSlider.CurrentValue = _currentTime;
 
 		_camera.Update();
 		_raceDagger?.Update();
 
 		foreach (Tile tile in _tiles)
-			tile.Update();
+			tile.Update(_currentTime);
 
 		if (Input.IsKeyPressed(Keys.Escape))
 			LayoutManager.ToCustomLeaderboardsRecorderMainLayout();
