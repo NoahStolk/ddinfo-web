@@ -2,14 +2,15 @@ using DevilDaggersInfo.Api.App.CustomLeaderboards;
 using DevilDaggersInfo.App.Core.ApiClient;
 using DevilDaggersInfo.App.Core.ApiClient.TaskHandlers;
 using DevilDaggersInfo.App.Ui.Base;
+using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.Extensions;
+using DevilDaggersInfo.App.Ui.Base.States;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States;
 using DevilDaggersInfo.Common;
+using DevilDaggersInfo.Core.Replay;
 using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Core.Wiki.Objects;
-using Silk.NET.GLFW;
-using Warp.NET;
 using Warp.NET.Text;
 using Warp.NET.Ui;
 using Warp.NET.Ui.Components;
@@ -28,8 +29,6 @@ public class LeaderboardEntry : AbstractComponent
 	private readonly double? _level3;
 	private readonly double? _level4;
 
-	private readonly string _hoverText;
-
 	private bool _isHovering;
 
 	public LeaderboardEntry(IBounds bounds, GetCustomEntry getCustomEntry)
@@ -43,22 +42,15 @@ public class LeaderboardEntry : AbstractComponent
 		_level3 = _getCustomEntry.LevelUpTime3InSeconds == 0 ? null : _getCustomEntry.LevelUpTime3InSeconds;
 		_level4 = _getCustomEntry.LevelUpTime4InSeconds == 0 ? null : _getCustomEntry.LevelUpTime4InSeconds;
 
-		_hoverText = _getCustomEntry.HasReplay ? "Watch replay" : "No replay available";
+		TooltipIconButton watchInGame = new(Bounds.CreateNested(160, 0, 16, 16), WatchInGame, GlobalStyles.DefaultButtonStyle, WarpTextures.IconEye, "Watch in-game") { IsDisabled = !_getCustomEntry.HasReplay };
+		NestingContext.Add(watchInGame);
+
+		TooltipIconButton watchInReplayViewer = new(Bounds.CreateNested(176, 0, 16, 16), WatchInReplayViewer, GlobalStyles.DefaultButtonStyle, WarpTextures.IconEye, "Watch in replay viewer") { IsDisabled = !_getCustomEntry.HasReplay };
+		NestingContext.Add(watchInReplayViewer);
 	}
 
-	public override void Update(Vector2i<int> scrollOffset)
+	private void WatchInGame()
 	{
-		base.Update(scrollOffset);
-
-		_isHovering = MouseUiContext.Contains(scrollOffset, Bounds);
-		if (!_isHovering)
-			return;
-
-		Root.Game.TooltipText = _hoverText;
-
-		if (!Input.IsButtonPressed(MouseButton.Left))
-			return;
-
 		AsyncHandler.Run(Inject, () => FetchCustomEntryReplayById.HandleAsync(_getCustomEntry.Id));
 
 		void Inject(GetCustomEntryReplayBuffer? getCustomEntryReplayBuffer)
@@ -71,6 +63,40 @@ public class LeaderboardEntry : AbstractComponent
 
 			Root.Game.GameMemoryService.WriteReplayToMemory(getCustomEntryReplayBuffer.Data);
 		}
+	}
+
+	private void WatchInReplayViewer()
+	{
+		AsyncHandler.Run(BuildReplayScene, () => FetchCustomEntryReplayById.HandleAsync(_getCustomEntry.Id));
+
+		void BuildReplayScene(GetCustomEntryReplayBuffer? getCustomEntryReplayBuffer)
+		{
+			if (getCustomEntryReplayBuffer == null)
+			{
+				// TODO: Show error.
+				return;
+			}
+
+			ReplayBinary<LocalReplayBinaryHeader> replayBinary;
+			try
+			{
+				replayBinary = new(getCustomEntryReplayBuffer.Data);
+			}
+			catch (Exception ex)
+			{
+				// TODO: Show error.
+				return;
+			}
+
+			LayoutManager.ToCustomLeaderboardsRecorderReplayViewer3dLayout(new[] { replayBinary });
+		}
+	}
+
+	public override void Update(Vector2i<int> scrollOffset)
+	{
+		base.Update(scrollOffset);
+
+		_isHovering = MouseUiContext.Contains(scrollOffset, Bounds);
 	}
 
 	public override void Render(Vector2i<int> scrollOffset)
