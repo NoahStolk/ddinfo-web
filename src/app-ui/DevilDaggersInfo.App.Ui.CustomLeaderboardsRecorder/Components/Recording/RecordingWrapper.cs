@@ -16,11 +16,16 @@ public class RecordingWrapper : AbstractComponent
 
 	private readonly RecordingValue _player;
 	private readonly RecordingValue _time;
+	private readonly RecordingValue _hand;
+	private readonly RecordingValue _levelUpTime2;
+	private readonly RecordingValue _levelUpTime3;
+	private readonly RecordingValue _levelUpTime4;
 	private readonly RecordingValue _deathType;
 
 	private readonly RecordingValue _gemsCollected;
 	private readonly RecordingValue _gemsDespawned;
 	private readonly RecordingValue _gemsEaten;
+	private readonly RecordingValue _gemsTotal;
 
 	private readonly RecordingValue _homingStored;
 	private readonly RecordingValue _homingEaten;
@@ -43,12 +48,17 @@ public class RecordingWrapper : AbstractComponent
 		AddSpacing(ref height);
 		_player = AddValue(ref height, "Player");
 		_time = AddValue(ref height, "Time");
+		_hand = AddValue(ref height, "Hand");
+		_levelUpTime2 = AddValue(ref height, "Level 2");
+		_levelUpTime3 = AddValue(ref height, "Level 3");
+		_levelUpTime4 = AddValue(ref height, "Level 4");
 		_deathType = AddValue(ref height, "Death");
 
 		AddSpacing(ref height);
 		_gemsCollected = AddValue(ref height, "Gems collected", Color.Red);
 		_gemsDespawned = AddValue(ref height, "Gems despawned", Color.Gray(0.6f));
 		_gemsEaten = AddValue(ref height, "Gems eaten", Color.Green);
+		_gemsTotal = AddValue(ref height, "Gems total", Color.Red);
 
 		AddSpacing(ref height);
 		_homingStored = AddValue(ref height, "Homing stored", Color.Purple);
@@ -88,16 +98,28 @@ public class RecordingWrapper : AbstractComponent
 		GameStatus gameStatus = (GameStatus)block.Status;
 		Death? death = Deaths.GetDeathByLeaderboardType(GameConstants.CurrentVersion, block.DeathType);
 		float accuracy = block.DaggersFired == 0 ? 0 : block.DaggersHit / (float)block.DaggersFired;
+		Upgrade upgrade = block.LevelGems switch
+		{
+			< 10 => UpgradesV3_2.Level1,
+			< 70 => UpgradesV3_2.Level2,
+			70 => UpgradesV3_2.Level3,
+			_ => UpgradesV3_2.Level4,
+		};
 
 		_status.UpdateValue(gameStatus.ToDisplayString());
 
 		_player.UpdateValue($"{block.PlayerName} ({block.PlayerId})");
 		_time.UpdateValue(block.Time.ToString(StringFormats.TimeFormat));
+		_hand.UpdateValue(upgrade.Name, upgrade.Color.ToWarpColor());
+		_levelUpTime2.UpdateValue(block.LevelUpTime2 == 0 ? "-" : block.LevelUpTime2.ToString(StringFormats.TimeFormat), UpgradesV3_2.Level2.Color.ToWarpColor());
+		_levelUpTime3.UpdateValue(block.LevelUpTime3 == 0 ? "-" : block.LevelUpTime3.ToString(StringFormats.TimeFormat), UpgradesV3_2.Level3.Color.ToWarpColor());
+		_levelUpTime4.UpdateValue(block.LevelUpTime4 == 0 ? "-" : block.LevelUpTime4.ToString(StringFormats.TimeFormat), UpgradesV3_2.Level4.Color.ToWarpColor());
 		_deathType.UpdateValue(block.IsPlayerAlive ? "Alive" : death?.Name ?? "?", death?.Color.ToWarpColor());
 
 		_gemsCollected.UpdateValue(block.GemsCollected.ToString());
 		_gemsDespawned.UpdateValue(block.GemsDespawned.ToString());
 		_gemsEaten.UpdateValue(block.GemsEaten.ToString());
+		_gemsTotal.UpdateValue(block.GemsTotal.ToString());
 
 		_homingStored.UpdateValue(block.HomingStored.ToString());
 		_homingEaten.UpdateValue(block.HomingEaten.ToString());
