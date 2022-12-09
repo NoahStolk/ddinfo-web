@@ -1,5 +1,6 @@
 using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Scene.GameObjects;
+using DevilDaggersInfo.Core.Replay;
 using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Types.Core.Spawnsets;
 
@@ -11,7 +12,7 @@ public class ArenaScene
 	private readonly List<Tile> _tiles = new();
 	private RaceDagger? _raceDagger;
 
-	public void Build(SpawnsetBinary spawnset)
+	public void BuildArena(SpawnsetBinary spawnset)
 	{
 		_tiles.Clear();
 
@@ -45,6 +46,11 @@ public class ArenaScene
 
 			return new(new(spawnset.TileToWorldCoordinate(x), y.Value + 4, spawnset.TileToWorldCoordinate(z)));
 		}
+	}
+
+	public void BuildPlayerMovement(ReplayBinary<LocalReplayBinaryHeader> replay)
+	{
+		// TODO
 	}
 
 	public void Update(float currentTime)

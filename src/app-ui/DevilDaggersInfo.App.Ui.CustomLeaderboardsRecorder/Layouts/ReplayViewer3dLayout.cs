@@ -38,7 +38,8 @@ public class ReplayViewer3dLayout : Layout, IReplayViewer3dLayout
 		_shrinkSlider.Max = spawnset.GetSliderMaxSeconds();
 		_shrinkSlider.CurrentValue = Math.Clamp(_shrinkSlider.CurrentValue, 0, _shrinkSlider.Max);
 
-		_arenaScene.Build(spawnset);
+		_arenaScene.BuildArena(spawnset);
+		_arenaScene.BuildPlayerMovement(replayBinaries[0]);
 	}
 
 	public void Update()

@@ -466,6 +466,7 @@ public record SpawnsetBinary
 		if (distance <= shrinkEndInTiles)
 			return float.MaxValue;
 
+		// TODO: Prevent this from overflowing.
 		return (shrinkStartInTiles - distance) / shrinkRate * tileUnit;
 	}
 
