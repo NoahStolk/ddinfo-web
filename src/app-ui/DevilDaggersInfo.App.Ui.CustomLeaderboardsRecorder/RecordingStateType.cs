@@ -4,7 +4,7 @@ public enum RecordingStateType
 {
 	WaitingForGame,
 	Recording,
-	WaitingForRestart,
+	WaitingForNextRun,
 	WaitingForLocalReplay,
 	WaitingForLeaderboardReplay,
 	WaitingForStats,

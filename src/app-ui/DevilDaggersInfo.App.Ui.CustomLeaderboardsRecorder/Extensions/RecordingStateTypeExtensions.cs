@@ -8,7 +8,7 @@ public static class RecordingStateTypeExtensions
 	{
 		RecordingStateType.WaitingForGame => "Waiting for game",
 		RecordingStateType.Recording => "Recording",
-		RecordingStateType.WaitingForRestart => "Waiting for restart",
+		RecordingStateType.WaitingForNextRun => "Waiting for next run",
 		RecordingStateType.WaitingForLocalReplay => "Waiting for local replay",
 		RecordingStateType.WaitingForLeaderboardReplay => "Waiting for lb replay",
 		RecordingStateType.WaitingForStats => "Waiting for stats",

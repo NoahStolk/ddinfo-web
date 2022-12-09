@@ -67,18 +67,19 @@ public static class RecordingLogic
 
 		MainBlock mainBlockPrevious = Root.Game.GameMemoryService.MainBlockPrevious;
 
+		// Indicate recording status.
+		GameStatus status = (GameStatus)mainBlock.Status;
 		if (StateManager.RecordingState.RecordingStateType != RecordingStateType.Recording)
 		{
-			if (Math.Abs(mainBlock.Time - mainBlockPrevious.Time) < 0.0001f)
+			if (status is GameStatus.Title or GameStatus.Menu or GameStatus.Lobby || Math.Abs(mainBlock.Time - mainBlockPrevious.Time) < 0.0001f)
 			{
-				StateManager.SetRecordingState(RecordingStateType.WaitingForRestart);
+				StateManager.SetRecordingState(RecordingStateType.WaitingForNextRun);
 				return;
 			}
 
 			StateManager.SetRecordingState(RecordingStateType.Recording);
 		}
 
-		GameStatus status = (GameStatus)mainBlock.Status;
 		if (status == GameStatus.LocalReplay)
 		{
 			StateManager.SetRecordingState(RecordingStateType.WaitingForLocalReplay);
