@@ -6,15 +6,13 @@ namespace DevilDaggersInfo.Core.Replay;
 
 public class LeaderboardReplayBinaryHeader : IReplayBinaryHeader<LeaderboardReplayBinaryHeader>
 {
-	// TODO: Use byte[] when C# 11 officially comes out and remove the byte[] field.
-	private const string _identifier = "DF_RPL2";
-	private static readonly byte[] _identifierBytes = Encoding.UTF8.GetBytes(_identifier);
-
 	public LeaderboardReplayBinaryHeader(string username, byte[] unknownBuffer)
 	{
 		Username = username;
 		UnknownBuffer = unknownBuffer;
 	}
+
+	private static ReadOnlySpan<byte> Identifier => "DF_RPL2"u8;
 
 	public string Username { get; }
 	public byte[] UnknownBuffer { get; }
@@ -60,11 +58,11 @@ public class LeaderboardReplayBinaryHeader : IReplayBinaryHeader<LeaderboardRepl
 	public static bool IdentifierIsValid(BinaryReader br, [MaybeNullWhen(false)] out byte[]? identifier)
 	{
 		identifier = null;
-		if (br.BaseStream.Position > br.BaseStream.Length - _identifier.Length)
+		if (br.BaseStream.Position > br.BaseStream.Length - Identifier.Length)
 			return false;
 
-		identifier = br.ReadBytes(_identifier.Length);
-		return ArrayUtils.AreEqual(_identifierBytes, identifier);
+		identifier = br.ReadBytes(Identifier.Length);
+		return ArrayUtils.AreEqual(Identifier, identifier);
 	}
 
 	public static LeaderboardReplayBinaryHeader CreateDefault()
@@ -77,7 +75,7 @@ public class LeaderboardReplayBinaryHeader : IReplayBinaryHeader<LeaderboardRepl
 		using MemoryStream ms = new();
 		using BinaryWriter bw = new(ms);
 
-		bw.Write(Encoding.UTF8.GetBytes(_identifier));
+		bw.Write(Identifier);
 		bw.Write((short)Username.Length);
 		bw.Write(Encoding.UTF8.GetBytes(Username));
 		bw.Write((short)UnknownBuffer.Length);

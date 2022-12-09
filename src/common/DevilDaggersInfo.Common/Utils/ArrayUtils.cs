@@ -2,7 +2,7 @@ namespace DevilDaggersInfo.Common.Utils;
 
 public static class ArrayUtils
 {
-	public static bool AreEqual(byte[] a, byte[] b)
+	public static bool AreEqual(ReadOnlySpan<byte> a, ReadOnlySpan<byte> b)
 	{
 		if (a.Length != b.Length)
 			return false;

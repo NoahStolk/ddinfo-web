@@ -8,10 +8,6 @@ namespace DevilDaggersInfo.Core.Replay;
 
 public class LocalReplayBinaryHeader : IReplayBinaryHeader<LocalReplayBinaryHeader>
 {
-	// TODO: Use byte[] when C# 11 officially comes out and remove the byte[] field.
-	private const string _identifier = "ddrpl.";
-	private static readonly byte[] _identifierBytes = Encoding.UTF8.GetBytes(_identifier);
-
 	public LocalReplayBinaryHeader(
 		int version,
 		long timestampSinceGameRelease,
@@ -41,6 +37,8 @@ public class LocalReplayBinaryHeader : IReplayBinaryHeader<LocalReplayBinaryHead
 		SpawnsetBuffer = spawnsetBuffer;
 	}
 
+	private static ReadOnlySpan<byte> Identifier => "ddrpl."u8;
+
 	public int Version { get; }
 	public long TimestampSinceGameRelease { get; }
 	public float Time { get; }
@@ -57,7 +55,7 @@ public class LocalReplayBinaryHeader : IReplayBinaryHeader<LocalReplayBinaryHead
 
 	public static bool UsesLengthPrefixedEvents => true;
 
-	public static int IdentifierLength => _identifier.Length;
+	public static int IdentifierLength => Identifier.Length;
 
 	public static LocalReplayBinaryHeader CreateFromByteArray(byte[] contents)
 	{
@@ -122,11 +120,11 @@ public class LocalReplayBinaryHeader : IReplayBinaryHeader<LocalReplayBinaryHead
 	public static bool IdentifierIsValid(BinaryReader br, [MaybeNullWhen(false)] out byte[]? identifier)
 	{
 		identifier = null;
-		if (br.BaseStream.Position > br.BaseStream.Length - _identifier.Length)
+		if (br.BaseStream.Position > br.BaseStream.Length - Identifier.Length)
 			return false;
 
-		identifier = br.ReadBytes(_identifier.Length);
-		return ArrayUtils.AreEqual(_identifierBytes, identifier);
+		identifier = br.ReadBytes(Identifier.Length);
+		return ArrayUtils.AreEqual(Identifier, identifier);
 	}
 
 	public static LocalReplayBinaryHeader CreateDefault()
@@ -153,7 +151,7 @@ public class LocalReplayBinaryHeader : IReplayBinaryHeader<LocalReplayBinaryHead
 		using MemoryStream ms = new();
 		using BinaryWriter bw = new(ms);
 
-		bw.Write(Encoding.UTF8.GetBytes(_identifier));
+		bw.Write(Identifier);
 		bw.Write(Version);
 		bw.Write(TimestampSinceGameRelease);
 		bw.Write(Time);
