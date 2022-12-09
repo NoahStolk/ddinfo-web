@@ -14,7 +14,7 @@ public static class GameStatusExtensions
 		GameStatus.OwnReplayFromLastRun => "Own replay from last run",
 		GameStatus.OwnReplayFromLeaderboard => "Own replay from leaderboard",
 		GameStatus.OtherPlayersReplayFromLeaderboard => "Other player's replay from leaderboard",
-		GameStatus.LocalReplay => "LocalReplay",
+		GameStatus.LocalReplay => "Local replay",
 		_ => throw new InvalidEnumConversionException(gameStatus),
 	};
 }

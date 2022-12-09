@@ -10,7 +10,7 @@ public static class RecordingStateTypeExtensions
 		RecordingStateType.Recording => "Recording",
 		RecordingStateType.WaitingForRestart => "Waiting for restart",
 		RecordingStateType.WaitingForLocalReplay => "Waiting for local replay",
-		RecordingStateType.WaitingForLeaderboardReplay => "Waiting for leaderboard replay",
+		RecordingStateType.WaitingForLeaderboardReplay => "Waiting for lb replay",
 		RecordingStateType.WaitingForStats => "Waiting for stats",
 		RecordingStateType.WaitingForReplay => "Waiting for replay",
 		RecordingStateType.Uploading => "Uploading",

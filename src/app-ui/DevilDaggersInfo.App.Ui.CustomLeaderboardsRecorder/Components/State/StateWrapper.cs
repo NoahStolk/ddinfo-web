@@ -19,25 +19,25 @@ public class StateWrapper : AbstractComponent
 	public StateWrapper(IBounds bounds)
 		: base(bounds)
 	{
-		const int labelHalfWidth = 128;
+		const int labelSeparatorPosition = 80;
 		const int labelHeight = 16;
 		int labelDepth = Depth + 2;
 
 		string[] labelTexts =
 		{
-			"Memory", "State", "Current spawnset", "Last submission",
+			"Memory", "State", "Spawnset", "Last upload",
 		};
 
 		for (int i = 0; i < labelTexts.Length; i++)
 		{
-			Label label = new(bounds.CreateNested(0, i * labelHeight, labelHalfWidth, labelHeight), labelTexts[i], GlobalStyles.LabelDefaultLeft) { Depth = labelDepth };
+			Label label = new(bounds.CreateNested(0, i * labelHeight, labelSeparatorPosition, labelHeight), labelTexts[i], GlobalStyles.LabelDefaultLeft) { Depth = labelDepth };
 			NestingContext.Add(label);
 		}
 
-		_labelMemoryValue = new(bounds.CreateNested(labelHalfWidth, labelHeight * 0, labelHalfWidth, labelHeight), string.Empty, GlobalStyles.LabelDefaultLeft) { Depth = labelDepth };
-		_labelStateValue = new(bounds.CreateNested(labelHalfWidth, labelHeight * 1, labelHalfWidth, labelHeight), string.Empty, GlobalStyles.LabelDefaultLeft) { Depth = labelDepth };
-		_labelSpawnsetValue = new(bounds.CreateNested(labelHalfWidth, labelHeight * 2, labelHalfWidth, labelHeight), string.Empty, GlobalStyles.LabelDefaultLeft) { Depth = labelDepth };
-		_labelSubmissionValue = new(bounds.CreateNested(labelHalfWidth, labelHeight * 3, labelHalfWidth, labelHeight), string.Empty, GlobalStyles.LabelDefaultLeft) { Depth = labelDepth };
+		_labelMemoryValue = new(bounds.CreateNested(labelSeparatorPosition, labelHeight * 0, labelSeparatorPosition, labelHeight), string.Empty, GlobalStyles.LabelDefaultLeft) { Depth = labelDepth };
+		_labelStateValue = new(bounds.CreateNested(labelSeparatorPosition, labelHeight * 1, labelSeparatorPosition, labelHeight), string.Empty, GlobalStyles.LabelDefaultLeft) { Depth = labelDepth };
+		_labelSpawnsetValue = new(bounds.CreateNested(labelSeparatorPosition, labelHeight * 2, labelSeparatorPosition, labelHeight), string.Empty, GlobalStyles.LabelDefaultLeft) { Depth = labelDepth };
+		_labelSubmissionValue = new(bounds.CreateNested(labelSeparatorPosition, labelHeight * 3, labelSeparatorPosition, labelHeight), string.Empty, GlobalStyles.LabelDefaultLeft) { Depth = labelDepth };
 
 		NestingContext.Add(_labelMemoryValue);
 		NestingContext.Add(_labelStateValue);
