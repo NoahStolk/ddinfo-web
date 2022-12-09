@@ -9,6 +9,8 @@ public class GameMemoryService
 	private const int _bufferSize = 319;
 	private const int _statesBufferSize = 112;
 
+	private readonly byte[] _buffer = new byte[_bufferSize];
+
 	private long _memoryBlockAddress;
 	private Process? _process;
 
@@ -19,12 +21,9 @@ public class GameMemoryService
 		_nativeMemoryService = nativeMemoryService;
 	}
 
-	public byte[] Buffer { get; } = new byte[_bufferSize];
-
 	public MainBlock MainBlockPrevious { get; private set; }
 	public MainBlock MainBlock { get; private set; }
 
-	public bool HasProcess => _process != null;
 	public bool IsInitialized { get; private set; }
 
 	public void Initialize(long ddstatsMarkerOffset)
@@ -48,10 +47,10 @@ public class GameMemoryService
 		if (_process == null)
 			return;
 
-		_nativeMemoryService.ReadMemory(_process, _memoryBlockAddress, Buffer, 0, _bufferSize);
+		_nativeMemoryService.ReadMemory(_process, _memoryBlockAddress, _buffer, 0, _bufferSize);
 
 		MainBlockPrevious = MainBlock;
-		MainBlock = new(Buffer);
+		MainBlock = new(_buffer);
 	}
 
 	public byte[] GetStatsBuffer()
@@ -100,10 +99,7 @@ public class GameMemoryService
 		if (_process?.MainModule?.FileName == null)
 			return null;
 
-		string? dir = Path.GetDirectoryName(_process.MainModule.FileName);
-		if (dir == null)
-			return null;
-
-		return Path.Combine(dir, "mods", "survival");
+		string? executablePath = Path.GetDirectoryName(_process.MainModule.FileName);
+		return executablePath == null ? null : Path.Combine(executablePath, "mods", "survival");
 	}
 }
