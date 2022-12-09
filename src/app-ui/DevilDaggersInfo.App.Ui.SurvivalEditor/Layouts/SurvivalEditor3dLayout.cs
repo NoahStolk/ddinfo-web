@@ -1,7 +1,7 @@
 using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts.SurvivalEditor;
+using DevilDaggersInfo.App.Ui.Base.GameObjects;
 using DevilDaggersInfo.App.Ui.Base.States;
-using DevilDaggersInfo.App.Ui.SurvivalEditor.GameObjects;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Types.Core.Spawnsets;

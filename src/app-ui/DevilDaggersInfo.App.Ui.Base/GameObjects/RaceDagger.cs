@@ -1,10 +1,9 @@
-using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using Silk.NET.OpenGL;
 using Warp.NET.Content;
 using Warp.NET.InterpolationStates;
 
-namespace DevilDaggersInfo.App.Ui.SurvivalEditor.GameObjects;
+namespace DevilDaggersInfo.App.Ui.Base.GameObjects;
 
 public class RaceDagger
 {

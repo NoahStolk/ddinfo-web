@@ -1,8 +1,7 @@
-using DevilDaggersInfo.App.Ui.Base;
 using Silk.NET.OpenGL;
 using Warp.NET.Content;
 
-namespace DevilDaggersInfo.App.Ui.SurvivalEditor.GameObjects;
+namespace DevilDaggersInfo.App.Ui.Base.GameObjects;
 
 public class MeshObject
 {
