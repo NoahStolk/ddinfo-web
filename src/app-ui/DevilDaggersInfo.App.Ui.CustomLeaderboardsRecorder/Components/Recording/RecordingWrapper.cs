@@ -11,13 +11,23 @@ namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.Recordin
 
 public class RecordingWrapper : AbstractComponent
 {
-	private readonly RecordingValue _player;
 	private readonly RecordingValue _status;
+
+	private readonly RecordingValue _player;
 	private readonly RecordingValue _time;
 	private readonly RecordingValue _deathType;
-	private readonly RecordingValue _gems;
-	private readonly RecordingValue _homing;
-	private readonly RecordingValue _kills;
+
+	private readonly RecordingValue _gemsCollected;
+	private readonly RecordingValue _gemsDespawned;
+	private readonly RecordingValue _gemsEaten;
+
+	private readonly RecordingValue _homingStored;
+	private readonly RecordingValue _homingEaten;
+
+	private readonly RecordingValue _enemiesKilled;
+	private readonly RecordingValue _enemiesAlive;
+
+	private readonly RecordingValue _accuracy;
 
 	public RecordingWrapper(IBounds bounds)
 		: base(bounds)
@@ -25,51 +35,80 @@ public class RecordingWrapper : AbstractComponent
 		const int labelWidth = 256;
 		const int labelHeight = 16;
 
-		_player = new(bounds.CreateNested(0, labelHeight * 0, labelWidth, labelHeight), "Player", Color.White) { Depth = Depth };
-		_status = new(bounds.CreateNested(0, labelHeight * 1, labelWidth, labelHeight), "Status", Color.White) { Depth = Depth };
-		_time = new(bounds.CreateNested(0, labelHeight * 2, labelWidth, labelHeight), "Time", Color.White) { Depth = Depth };
-		_deathType = new(bounds.CreateNested(0, labelHeight * 3, labelWidth, labelHeight), "Death", Color.White) { Depth = Depth };
+		int height = 0;
 
-		_gems = new(bounds.CreateNested(0, labelHeight * 5, labelWidth, labelHeight), "Gems", Color.Red) { Depth = Depth };
-		_homing = new(bounds.CreateNested(0, labelHeight * 6, labelWidth, labelHeight), "Homing", Color.Purple) { Depth = Depth };
+		_status = AddValue(ref height, "Status");
 
-		_kills = new(bounds.CreateNested(0, labelHeight * 8, labelWidth, labelHeight), "Kills", Color.Orange) { Depth = Depth };
+		AddSpacing(ref height);
+		_player = AddValue(ref height, "Player");
+		_time = AddValue(ref height, "Time");
+		_deathType = AddValue(ref height, "Death");
 
-		NestingContext.Add(_player);
-		NestingContext.Add(_status);
-		NestingContext.Add(_time);
-		NestingContext.Add(_deathType);
-		NestingContext.Add(_gems);
-		NestingContext.Add(_homing);
-		NestingContext.Add(_kills);
+		AddSpacing(ref height);
+		_gemsCollected = AddValue(ref height, "Gems collected", Color.Red);
+		_gemsDespawned = AddValue(ref height, "Gems despawned", Color.Gray(0.6f));
+		_gemsEaten = AddValue(ref height, "Gems eaten", Color.Green);
+
+		AddSpacing(ref height);
+		_homingStored = AddValue(ref height, "Homing stored", Color.Purple);
+		_homingEaten = AddValue(ref height, "Homing eaten", Color.Red);
+
+		AddSpacing(ref height);
+		_enemiesKilled = AddValue(ref height, "Enemies killed", Color.Red);
+		_enemiesAlive = AddValue(ref height, "Enemies alive", Color.Yellow);
+
+		AddSpacing(ref height);
+		_accuracy = AddValue(ref height, "Accuracy", Color.Orange);
+
+		RecordingValue AddValue(ref int h, string text, Color? color = null)
+		{
+			RecordingValue recordingValue = new(bounds.CreateNested(0, h, labelWidth, labelHeight), text, color ?? Color.White) { Depth = Depth };
+			NestingContext.Add(recordingValue);
+
+			h += labelHeight;
+
+			return recordingValue;
+		}
+
+		void AddSpacing(ref int h)
+		{
+			h += labelHeight / 2;
+		}
 	}
 
 	public void SetState()
 	{
 		if (!Root.Game.GameMemoryService.IsInitialized)
-		{
-			// TODO: Show message and disable RecordingValues.
 			return;
-		}
 
 		MainBlock block = Root.Game.GameMemoryService.MainBlock;
 		GameStatus gameStatus = (GameStatus)block.Status;
 		Death? death = Deaths.GetDeathByLeaderboardType(GameConstants.CurrentVersion, block.DeathType);
+		float accuracy = block.DaggersFired == 0 ? 0 : block.DaggersHit / (float)block.DaggersFired;
+
+		_status.UpdateValue(gameStatus.ToString());
 
 		_player.UpdateValue($"{block.PlayerName} ({block.PlayerId})");
-		_status.UpdateValue(gameStatus.ToString());
 		_time.UpdateValue(block.Time.ToString(StringFormats.TimeFormat));
 		_deathType.UpdateValue(block.IsPlayerAlive ? "Alive" : death?.Name ?? "?", death?.Color.ToWarpColor());
 
-		_gems.UpdateValue(block.GemsCollected.ToString());
-		_homing.UpdateValue(block.HomingStored.ToString());
+		_gemsCollected.UpdateValue(block.GemsCollected.ToString());
+		_gemsDespawned.UpdateValue(block.GemsDespawned.ToString());
+		_gemsEaten.UpdateValue(block.GemsEaten.ToString());
 
-		_kills.UpdateValue(block.EnemiesKilled.ToString());
+		_homingStored.UpdateValue(block.HomingStored.ToString());
+		_homingEaten.UpdateValue(block.HomingEaten.ToString());
+
+		_enemiesKilled.UpdateValue(block.EnemiesKilled.ToString());
+		_enemiesAlive.UpdateValue(block.EnemiesAlive.ToString());
+
+		_accuracy.UpdateValue($"{block.DaggersHit} / {block.DaggersFired} ({accuracy:0.00%})");
 	}
 
 	public override void Render(Vector2i<int> scrollOffset)
 	{
-		base.Render(scrollOffset);
+		if (Root.Game.GameMemoryService.IsInitialized)
+			base.Render(scrollOffset);
 
 		const int border = 1;
 		Root.Game.RectangleRenderer.Schedule(Bounds.Size, Bounds.Center + scrollOffset, Depth, Color.Purple);

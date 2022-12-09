@@ -24,8 +24,8 @@ public class CustomLeaderboardsRecorderMainLayout : Layout, ICustomLeaderboardsR
 	{
 		const int headerHeight = 24;
 		MainLayoutBackButton backButton = new(new PixelBounds(0, 0, 24, headerHeight), LayoutManager.ToMainLayout);
-		_stateWrapper = new(new PixelBounds(0, headerHeight, 256, 128 - headerHeight));
-		_recordingWrapper = new(new PixelBounds(0, 128, 256, 384));
+		_stateWrapper = new(new PixelBounds(0, headerHeight, 256, 96 - headerHeight));
+		_recordingWrapper = new(new PixelBounds(0, 96, 256, 416));
 		_leaderboardListWrapper = new(new PixelBounds(256, headerHeight, 768, 512 - headerHeight));
 		_leaderboardWrapper = new(new PixelBounds(0, 512, 1024, 256));
 

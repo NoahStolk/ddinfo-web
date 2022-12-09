@@ -24,7 +24,7 @@ public class StateWrapper : AbstractComponent
 
 		string[] labelTexts =
 		{
-			"Memory", "State", "Spawnset", "Submission",
+			"Memory", "State", "Current spawnset", "Last submission",
 		};
 
 		for (int i = 0; i < labelTexts.Length; i++)

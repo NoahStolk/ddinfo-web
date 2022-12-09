@@ -76,7 +76,18 @@ public static class StateManager
 
 	public static void SetRecordingState(RecordingStateType recordingStateType)
 	{
-		RecordingState = new(recordingStateType);
+		RecordingState = RecordingState with
+		{
+			RecordingStateType = recordingStateType,
+		};
+	}
+
+	public static void SetLastSubmission(DateTime lastSubmission)
+	{
+		RecordingState = RecordingState with
+		{
+			LastSubmission = lastSubmission,
+		};
 	}
 
 	// TODO: Call this when file system watcher is notified.

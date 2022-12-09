@@ -50,7 +50,7 @@ public class RecordingValue : AbstractComponent
 
 		const int padding = 4;
 
-		Root.Game.MonoSpaceFontRenderer16.Schedule(Vector2i<int>.One, scrollOffset + Bounds.TopLeft + new Vector2i<int>(padding), Depth + 2, Color.White, _labelText, TextAlign.Left);
-		Root.Game.MonoSpaceFontRenderer16.Schedule(Vector2i<int>.One, scrollOffset + Bounds.TopLeft + new Vector2i<int>(256 - padding, padding), Depth + 2, Color.Lerp(Color.White, _color, _intensity.Render), _value, TextAlign.Right);
+		Root.Game.MonoSpaceFontRenderer12.Schedule(Vector2i<int>.One, scrollOffset + Bounds.TopLeft + new Vector2i<int>(padding), Depth + 2, Color.White, _labelText, TextAlign.Left);
+		Root.Game.MonoSpaceFontRenderer12.Schedule(Vector2i<int>.One, scrollOffset + Bounds.TopLeft + new Vector2i<int>(256 - padding, padding), Depth + 2, Color.Lerp(Color.White, _color, _intensity.Render), _value, TextAlign.Right);
 	}
 }

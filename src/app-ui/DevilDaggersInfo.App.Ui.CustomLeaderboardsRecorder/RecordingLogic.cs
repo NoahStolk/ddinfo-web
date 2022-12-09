@@ -15,7 +15,7 @@ namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder;
 
 public static class RecordingLogic
 {
-	private static readonly AesBase32Wrapper _encryptionWrapper;
+	private static readonly AesBase32Wrapper _aesBase32Wrapper;
 
 	static RecordingLogic()
 	{
@@ -26,7 +26,7 @@ public static class RecordingLogic
 		using BinaryReader br = new(msOut);
 		br.BaseStream.Position = 0;
 		string[] values = Enumerable.Range(0, br.ReadByte()).Select(_ => Encoding.UTF8.GetString(br.ReadBytes(br.ReadByte()).Select((b, j) => j % 4 == 0 ? b : (byte)~b).ToArray())).ToArray();
-		_encryptionWrapper = new(values[0], values[1], values[2]);
+		_aesBase32Wrapper = new(values[0], values[1], values[2]);
 	}
 
 	/// <summary>
@@ -51,7 +51,10 @@ public static class RecordingLogic
 	public static void Handle()
 	{
 		if (!Root.Game.GameMemoryService.IsInitialized)
+		{
+			StateManager.SetRecordingState(RecordingStateType.WaitingForGame);
 			return;
+		}
 
 		// TODO: Show current leaderboard
 		MainBlock mainBlock = Root.Game.GameMemoryService.MainBlock;
@@ -155,7 +158,7 @@ public static class RecordingLogic
 			block.GameMode,
 			block.TimeAttackOrRaceFinished,
 			block.ProhibitedMods);
-		string validation = _encryptionWrapper.EncryptAndEncode(toEncrypt);
+		string validation = _aesBase32Wrapper.EncryptAndEncode(toEncrypt);
 
 		byte[] statsBuffer = memoryService.GetStatsBuffer();
 
