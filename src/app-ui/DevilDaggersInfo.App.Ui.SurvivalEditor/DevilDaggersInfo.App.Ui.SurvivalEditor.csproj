@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Spawnset\DevilDaggersInfo.Core.Spawnset.csproj" />
-    <ProjectReference Include="..\DevilDaggersInfo.App.Ui.Base\DevilDaggersInfo.App.Ui.Base.csproj" />
+    <ProjectReference Include="..\DevilDaggersInfo.App.Ui.Scene\DevilDaggersInfo.App.Ui.Scene.csproj" />
   </ItemGroup>
 
 </Project>

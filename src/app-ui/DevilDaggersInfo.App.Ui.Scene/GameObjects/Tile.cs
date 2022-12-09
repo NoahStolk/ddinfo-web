@@ -1,10 +1,11 @@
+using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.Core.Spawnset;
 using Silk.NET.OpenGL;
 using Warp.NET.Content;
 using Warp.NET.GameObjects;
 
-namespace DevilDaggersInfo.App.Ui.Base.GameObjects;
+namespace DevilDaggersInfo.App.Ui.Scene.GameObjects;
 
 public class Tile : GameObject
 {

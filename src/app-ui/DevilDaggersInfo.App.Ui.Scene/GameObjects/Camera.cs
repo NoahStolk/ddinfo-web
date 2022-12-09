@@ -5,7 +5,7 @@ using Warp.NET.Extensions;
 using Warp.NET.InterpolationStates;
 using Warp.NET.Utils;
 
-namespace DevilDaggersInfo.App.Ui.Base.GameObjects;
+namespace DevilDaggersInfo.App.Ui.Scene.GameObjects;
 
 public class Camera
 {
