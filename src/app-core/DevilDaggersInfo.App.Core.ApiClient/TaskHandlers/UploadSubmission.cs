@@ -10,6 +10,8 @@ public static class UploadSubmission
 		try
 		{
 			HttpResponseMessage hrm = await AsyncHandler.Client.SubmitScore(addUploadRequest);
+
+			// TODO: Also return error if the response is not successful.
 			return hrm.IsSuccessStatusCode ? await hrm.Content.ReadFromJsonAsync<GetUploadSuccess>() : null;
 		}
 		catch
