@@ -50,7 +50,7 @@ public class ArenaScene
 			if (!y.HasValue)
 				return null;
 
-			return new(new(spawnset.TileToWorldCoordinate(x), y.Value + 4, spawnset.TileToWorldCoordinate(z)));
+			return new(spawnset, x, y.Value, z);
 		}
 	}
 

@@ -1,4 +1,5 @@
 using DevilDaggersInfo.App.Ui.Base;
+using DevilDaggersInfo.Core.Spawnset;
 using Silk.NET.OpenGL;
 using Warp.NET.Content;
 using Warp.NET.InterpolationStates;
@@ -7,14 +8,26 @@ namespace DevilDaggersInfo.App.Ui.Scene.GameObjects;
 
 public class RaceDagger
 {
+	private const float _yOffset = 4;
+
 	private static uint _vao;
 
+	private readonly SpawnsetBinary _spawnset;
+	private readonly int _arenaCoordX;
+	private readonly int _arenaCoordZ;
+	private readonly float _worldX;
+	private readonly float _worldZ;
 	private readonly Vector3State _position;
 	private readonly QuaternionState _rotation;
 
-	public RaceDagger(Vector3 position)
+	public RaceDagger(SpawnsetBinary spawnset, int arenaCoordX, float y, int arenaCoordZ)
 	{
-		_position = new(position);
+		_spawnset = spawnset;
+		_arenaCoordX = arenaCoordX;
+		_arenaCoordZ = arenaCoordZ;
+		_worldX = spawnset.TileToWorldCoordinate(arenaCoordX);
+		_worldZ = spawnset.TileToWorldCoordinate(arenaCoordZ);
+		_position = new(new(_worldX, y + _yOffset, _worldZ));
 		_rotation = new(Quaternion.CreateFromAxisAngle(Vector3.UnitX, MathF.PI * 0.5f));
 	}
 
@@ -57,7 +70,8 @@ public class RaceDagger
 		_rotation.PrepareUpdate();
 
 		float currentTime = currentTick / 60f;
-		_position.Physics = _position.Start + new Vector3(0, 0.15f + MathF.Sin(currentTime) * 0.15f, 0);
+		Vector3 basePosition = new(_worldX, _spawnset.GetActualTileHeight(_arenaCoordX, _arenaCoordZ, currentTime) + _yOffset, _worldZ);
+		_position.Physics = basePosition + new Vector3(0, 0.15f + MathF.Sin(currentTime) * 0.15f, 0);
 		_rotation.Physics = _rotation.Start * Quaternion.CreateFromAxisAngle(Vector3.UnitZ, currentTime);
 	}
 
