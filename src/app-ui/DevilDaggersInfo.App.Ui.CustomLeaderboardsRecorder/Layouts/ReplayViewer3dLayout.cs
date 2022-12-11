@@ -41,7 +41,8 @@ public class ReplayViewer3dLayout : Layout, IReplayViewer3dLayout
 
 		_arenaScene.BuildArena(spawnset);
 
-		PlayerMovementTimeline playerMovementTimeline = PlayerMovementTimelineBuilder.Build(replayBinaries[0].EventsData);
+		float defaultSpawnHeight = spawnset.ArenaTiles[SpawnsetBinary.ArenaDimensionMax / 2, SpawnsetBinary.ArenaDimensionMax / 2];
+		PlayerMovementTimeline playerMovementTimeline = PlayerMovementTimelineBuilder.Build(defaultSpawnHeight, replayBinaries[0].EventsData);
 
 		_arenaScene.BuildPlayerMovement(playerMovementTimeline);
 	}
