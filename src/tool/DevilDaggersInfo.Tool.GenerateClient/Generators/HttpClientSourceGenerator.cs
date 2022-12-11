@@ -1,5 +1,4 @@
 using DevilDaggersInfo.CommonSourceGen;
-using DevilDaggersInfo.Tool.GenerateClient.Generators.Endpoints;
 
 namespace DevilDaggersInfo.Tool.GenerateClient.Generators;
 

@@ -1,5 +1,4 @@
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
-using Warp.NET.Numerics;
 using Warp.NET.RenderImpl.Ui.Components;
 using Warp.NET.Ui;
 using Warp.NET.Ui.Components;

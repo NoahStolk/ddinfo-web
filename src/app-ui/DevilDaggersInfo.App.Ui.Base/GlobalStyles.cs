@@ -1,7 +1,6 @@
 using DevilDaggersInfo.App.Ui.Base.Extensions;
 using DevilDaggersInfo.Core.Wiki.Objects;
 using DevilDaggersInfo.Types.Core.Spawnsets;
-using Warp.NET.Numerics;
 using Warp.NET.RenderImpl.Ui.Components.Styles;
 using Warp.NET.RenderImpl.Ui.Rendering.Text;
 using Warp.NET.Text;

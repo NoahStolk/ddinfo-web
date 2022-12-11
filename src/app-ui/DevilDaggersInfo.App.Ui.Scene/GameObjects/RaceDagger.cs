@@ -1,5 +1,4 @@
 using DevilDaggersInfo.App.Ui.Base;
-using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using Silk.NET.OpenGL;
 using Warp.NET.Content;
 using Warp.NET.InterpolationStates;

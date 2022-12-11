@@ -1,7 +1,6 @@
 using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Types.Core.Spawnsets;
-using Warp.NET.Numerics;
 
 namespace DevilDaggersInfo.App.Ui.Base.Extensions;
 

@@ -1,5 +1,3 @@
-using Warp.NET.Numerics;
-
 namespace DevilDaggersInfo.App.Ui.Base.Extensions;
 
 public static class WikiColorExtensions
