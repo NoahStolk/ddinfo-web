@@ -89,16 +89,25 @@ public class Tile : GameObject
 
 	public void RenderTop()
 	{
+		if (Position.Y < -1)
+			return;
+
 		_top.Render();
 	}
 
 	public void RenderPillar()
 	{
+		if (Position.Y < -1)
+			return;
+
 		_pillar.Render();
 	}
 
 	public void RenderHitbox()
 	{
+		if (Position.Y < 1)
+			return;
+
 		_tileHitbox.Render();
 	}
 }

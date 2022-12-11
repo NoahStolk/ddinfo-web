@@ -89,7 +89,7 @@ public class ArenaScene
 
 		WarpTextures.TileHitbox.Use();
 
-		Span<Tile> tiles = _tiles.Where(t => t.Position.Y > 3).OrderBy(t => Vector3.DistanceSquared(t.Position with { Y = _camera.PositionState.Render.Y }, _camera.PositionState.Render)).ToArray();
+		Span<Tile> tiles = _tiles.OrderBy(t => Vector3.DistanceSquared(t.Position with { Y = _camera.PositionState.Render.Y }, _camera.PositionState.Render)).ToArray();
 		for (int i = 0; i < tiles.Length; i++)
 			tiles[i].RenderHitbox();
 	}
