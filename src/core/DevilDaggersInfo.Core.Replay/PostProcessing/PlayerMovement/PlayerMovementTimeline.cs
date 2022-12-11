@@ -26,8 +26,8 @@ public record PlayerMovementTimeline
 		if (time > Last.Time)
 			return Last.Position;
 
-		PlayerMovementSnapshot a = Snapshots.Last(s => s.Time < time);
-		PlayerMovementSnapshot b = Snapshots.First(s => s.Time > time);
+		PlayerMovementSnapshot a = Snapshots.LastOrDefault(s => s.Time < time) ?? First;
+		PlayerMovementSnapshot b = Snapshots.FirstOrDefault(s => s.Time > time) ?? Last;
 
 		return Vector3.Lerp(a.Position, b.Position, (time - a.Time) / (b.Time - a.Time));
 	}

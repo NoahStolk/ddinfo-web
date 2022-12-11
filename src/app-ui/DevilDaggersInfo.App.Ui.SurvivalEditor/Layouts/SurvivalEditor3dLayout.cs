@@ -34,7 +34,7 @@ public class SurvivalEditor3dLayout : Layout, ISurvivalEditor3dLayout
 		_arenaScene.BuildArena(spawnset);
 	}
 
-	public void Update()
+	public unsafe void Update()
 	{
 		_currentTime += Root.Game.Dt;
 		_shrinkSlider.CurrentValue = _currentTime;
@@ -42,7 +42,10 @@ public class SurvivalEditor3dLayout : Layout, ISurvivalEditor3dLayout
 		_arenaScene.Update(_currentTime);
 
 		if (Input.IsKeyPressed(Keys.Escape))
+		{
+			Graphics.Glfw.SetInputMode(Window, CursorStateAttribute.Cursor, CursorModeValue.CursorNormal);
 			LayoutManager.ToSurvivalEditorMainLayout();
+		}
 	}
 
 	public void Render3d()

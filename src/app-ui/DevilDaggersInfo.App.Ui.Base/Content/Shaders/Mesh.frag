@@ -8,6 +8,6 @@ uniform sampler2D textureDiffuse;
 
 void main()
 {
-	float darkness = clamp(fragPosition.y, -2, -1) + 2;
+	float darkness = clamp(fragPosition.y, -1, 0) + 1;
 	FragColor = mix(vec4(0, 0, 0, 1), texture(textureDiffuse, texCoord), darkness);
 }

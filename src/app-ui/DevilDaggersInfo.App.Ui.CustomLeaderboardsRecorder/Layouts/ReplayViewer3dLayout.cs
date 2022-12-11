@@ -46,7 +46,7 @@ public class ReplayViewer3dLayout : Layout, IReplayViewer3dLayout
 		_arenaScene.BuildPlayerMovement(playerMovementTimeline);
 	}
 
-	public void Update()
+	public unsafe void Update()
 	{
 		_currentTime += Root.Game.Dt;
 		_shrinkSlider.CurrentValue = _currentTime;
@@ -54,7 +54,10 @@ public class ReplayViewer3dLayout : Layout, IReplayViewer3dLayout
 		_arenaScene.Update(_currentTime);
 
 		if (Input.IsKeyPressed(Keys.Escape))
+		{
+			Graphics.Glfw.SetInputMode(Window, CursorStateAttribute.Cursor, CursorModeValue.CursorNormal);
 			LayoutManager.ToCustomLeaderboardsRecorderMainLayout();
+		}
 	}
 
 	public void Render3d()
