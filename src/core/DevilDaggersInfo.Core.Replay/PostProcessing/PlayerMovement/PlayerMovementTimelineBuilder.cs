@@ -15,8 +15,6 @@ public static class PlayerMovementTimelineBuilder
 		int ticks = 0;
 		foreach (IEvent e in replayEventsData.Events)
 		{
-			ticks++;
-
 			if (e is EntityPositionEvent { EntityId: 0 } entityPositionEvent)
 			{
 				const float divisor = 16f;
@@ -27,6 +25,10 @@ public static class PlayerMovementTimelineBuilder
 					Z = entityPositionEvent.Position.Z / divisor,
 				};
 				snapshots.Add(new(ticks / 60f, position));
+			}
+			else if (e is InputsEvent)
+			{
+				ticks++;
 			}
 		}
 
