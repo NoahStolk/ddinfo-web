@@ -20,7 +20,7 @@ public class Tile : GameObject
 
 	private readonly TileMeshObject _top;
 	private readonly TileMeshObject _pillar;
-	private readonly TileHitBoxMeshObject _tileHitBox;
+	private readonly TileHitboxMeshObject _tileHitbox;
 
 	public Tile(float positionX, float positionZ, int arenaX, int arenaY, SpawnsetBinary spawnsetBinary)
 	{
@@ -32,7 +32,7 @@ public class Tile : GameObject
 
 		_top = new(_tileVao, ContentManager.Content.TileMesh, positionX, positionZ);
 		_pillar = new(_pillarVao, ContentManager.Content.PillarMesh, positionX, positionZ);
-		_tileHitBox = new(_cubeVao, WarpModels.TileHitBox.MainMesh, positionX, positionZ);
+		_tileHitbox = new(_cubeVao, WarpModels.TileHitbox.MainMesh, positionX, positionZ);
 	}
 
 	public Vector3 Position => new(_positionX, _top.PositionY, _positionZ);
@@ -42,7 +42,7 @@ public class Tile : GameObject
 		// TODO: Prevent this from being called multiple times.
 		_tileVao = CreateVao(ContentManager.Content.TileMesh);
 		_pillarVao = CreateVao(ContentManager.Content.PillarMesh);
-		_cubeVao = CreateVao(WarpModels.TileHitBox.MainMesh);
+		_cubeVao = CreateVao(WarpModels.TileHitbox.MainMesh);
 
 		static uint CreateVao(Mesh mesh)
 		{
@@ -81,10 +81,10 @@ public class Tile : GameObject
 		_pillar.PositionY = y;
 
 		const float tileMeshHeight = 4;
-		_tileHitBox.PositionY = y - tileMeshHeight / 2;
+		_tileHitbox.PositionY = y - tileMeshHeight / 2;
 
-		const float tileHitBoxOffset = 1;
-		_tileHitBox.Height = y - tileMeshHeight / 2 + tileHitBoxOffset;
+		const float tileHitboxOffset = 1;
+		_tileHitbox.Height = y - tileMeshHeight / 2 + tileHitboxOffset;
 	}
 
 	public void RenderTop()
@@ -97,8 +97,8 @@ public class Tile : GameObject
 		_pillar.Render();
 	}
 
-	public void RenderHitBox()
+	public void RenderHitbox()
 	{
-		_tileHitBox.Render();
+		_tileHitbox.Render();
 	}
 }

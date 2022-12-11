@@ -4,7 +4,7 @@ using Warp.NET.Content;
 
 namespace DevilDaggersInfo.App.Ui.Scene.GameObjects;
 
-public class TileHitBoxMeshObject
+public class TileHitboxMeshObject
 {
 	private readonly uint _vao;
 	private readonly Mesh _mesh;
@@ -15,7 +15,7 @@ public class TileHitBoxMeshObject
 	private float _positionY;
 	private float _height;
 
-	public TileHitBoxMeshObject(uint vao, Mesh mesh, float positionX, float positionZ)
+	public TileHitboxMeshObject(uint vao, Mesh mesh, float positionX, float positionZ)
 	{
 		_vao = vao;
 		_mesh = mesh;
