@@ -17,6 +17,7 @@ public class ArenaScene
 	public void BuildArena(SpawnsetBinary spawnset)
 	{
 		_tiles.Clear();
+		_player = null;
 
 		int halfSize = spawnset.ArenaDimension / 2;
 		_camera.Reset(new(0, spawnset.ArenaTiles[halfSize, halfSize] + 4, 0));
@@ -58,7 +59,7 @@ public class ArenaScene
 	public void Update(float currentTime)
 	{
 		_camera.Update();
-		_raceDagger?.Update();
+		_raceDagger?.Update(currentTime);
 		_player?.Update(currentTime);
 
 		for (int i = 0; i < _tiles.Count; i++)

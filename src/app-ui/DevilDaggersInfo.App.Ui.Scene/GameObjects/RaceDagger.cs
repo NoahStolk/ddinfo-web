@@ -8,18 +8,22 @@ namespace DevilDaggersInfo.App.Ui.Scene.GameObjects;
 
 public class RaceDagger
 {
-	private readonly uint _daggerVao;
+	private static uint _vao;
+
 	private readonly Vector3State _position;
 	private readonly QuaternionState _rotation;
 
 	public RaceDagger(Vector3 position)
 	{
-		_daggerVao = CreateVao(ContentManager.Content.DaggerMesh);
 		_position = new(position);
 		_rotation = new(Quaternion.CreateFromAxisAngle(Vector3.UnitX, MathF.PI * 0.5f));
+	}
 
-		// TODO: Only initialize this once.
-		static unsafe uint CreateVao(Mesh mesh)
+	public static unsafe void Initialize()
+	{
+		_vao = CreateVao(ContentManager.Content.DaggerMesh);
+
+		static uint CreateVao(Mesh mesh)
 		{
 			uint vao = Gl.GenVertexArray();
 			Gl.BindVertexArray(vao);
@@ -48,13 +52,13 @@ public class RaceDagger
 		}
 	}
 
-	public void Update()
+	public void Update(float currentTime)
 	{
 		_position.PrepareUpdate();
 		_rotation.PrepareUpdate();
 
-		_position.Physics = _position.Start + new Vector3(0, 0.15f + MathF.Sin(Root.Game.Tt) * 0.15f, 0);
-		_rotation.Physics = _rotation.Start * Quaternion.CreateFromAxisAngle(Vector3.UnitZ, Root.Game.Tt);
+		_position.Physics = _position.Start + new Vector3(0, 0.15f + MathF.Sin(currentTime) * 0.15f, 0);
+		_rotation.Physics = _rotation.Start * Quaternion.CreateFromAxisAngle(Vector3.UnitZ, currentTime);
 	}
 
 	public unsafe void Render()
@@ -67,7 +71,7 @@ public class RaceDagger
 		Matrix4x4 model = Matrix4x4.CreateScale(8) * Matrix4x4.CreateFromQuaternion(_rotation.Render) * Matrix4x4.CreateTranslation(_position.Render);
 		Shader.SetMatrix4x4(MeshUniforms.Model, model);
 
-		Gl.BindVertexArray(_daggerVao);
+		Gl.BindVertexArray(_vao);
 		fixed (uint* i = &ContentManager.Content.DaggerMesh.Indices[0])
 			Gl.DrawElements(PrimitiveType.Triangles, (uint)ContentManager.Content.DaggerMesh.Indices.Length, DrawElementsType.UnsignedInt, i);
 		Gl.BindVertexArray(0);
