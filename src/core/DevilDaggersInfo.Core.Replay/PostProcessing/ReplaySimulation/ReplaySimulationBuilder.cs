@@ -20,6 +20,7 @@ public static class ReplaySimulationBuilder
 		float velocityZ = 0;
 		float gravity = 0;
 		float speedBoost = 1;
+		int jumpCooldown = 0;
 
 		InitialInputsEvent initialInputsEvent = (InitialInputsEvent?)replay.EventsData.Events.FirstOrDefault(e => e is InitialInputsEvent) ?? throw new InvalidOperationException("Replay does not contain an initial inputs event.");
 		float lookSpeed = initialInputsEvent.LookSpeed;
@@ -80,8 +81,9 @@ public static class ReplaySimulationBuilder
 						gravity = 0;
 						velocityY = 0;
 
-						if (inputs.Jump is JumpType.StartedPress or JumpType.Hold)
+						if (jumpCooldown <= 0 && inputs.Jump is JumpType.StartedPress or JumpType.Hold)
 						{
+							jumpCooldown = 10;
 							velocityY = 1;
 							speedBoost = 1.5f;
 							ReplaySound replaySound = ReplaySound.Jump3;
@@ -95,6 +97,7 @@ public static class ReplaySimulationBuilder
 					}
 
 					speedBoost += (1 - speedBoost) / 10f;
+					jumpCooldown--;
 
 					// WASD movement
 					const float moveSpeed = 12 / 60f;
