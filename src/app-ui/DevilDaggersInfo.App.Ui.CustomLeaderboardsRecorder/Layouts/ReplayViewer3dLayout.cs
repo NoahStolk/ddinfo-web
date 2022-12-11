@@ -1,11 +1,10 @@
 using DevilDaggersInfo.App.Ui.Base;
-using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts.CustomLeaderboardsRecorder;
 using DevilDaggersInfo.App.Ui.Base.States;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.ReplayViewer;
 using DevilDaggersInfo.App.Ui.Scene;
 using DevilDaggersInfo.Core.Replay;
-using DevilDaggersInfo.Core.Replay.PostProcessing.PlayerMovement;
+using DevilDaggersInfo.Core.Replay.PostProcessing.ReplaySimulation;
 using DevilDaggersInfo.Core.Spawnset;
 using Silk.NET.GLFW;
 using Warp.NET;
@@ -18,11 +17,11 @@ public class ReplayViewer3dLayout : Layout, IReplayViewer3dLayout
 	private readonly ShrinkSlider _shrinkSlider;
 	private readonly ArenaScene _arenaScene = new();
 
-	private float _currentTime;
+	private int _currentTick;
 
 	public ReplayViewer3dLayout()
 	{
-		_shrinkSlider = new(new PixelBounds(0, 752, 1024, 16), f => _currentTime = f, true, 0, 0, 0.001f, 0, GlobalStyles.DefaultSliderStyle, 0);
+		_shrinkSlider = new(new PixelBounds(0, 752, 1024, 16), f => _currentTick = (int)(f * 60), true, 0, 0, 0.001f, 0, GlobalStyles.DefaultSliderStyle, 0);
 		NestingContext.Add(_shrinkSlider);
 	}
 
@@ -34,25 +33,24 @@ public class ReplayViewer3dLayout : Layout, IReplayViewer3dLayout
 		if (!SpawnsetBinary.TryParse(replayBinaries[0].Header.SpawnsetBuffer, out SpawnsetBinary? spawnset))
 			throw new InvalidOperationException("Spawnset inside replay is invalid.");
 
-		_currentTime = 0;
+		_currentTick = 0;
 
 		_shrinkSlider.Max = replayBinaries.Max(rb => rb.EventsData.TickCount / 60f);
 		_shrinkSlider.CurrentValue = Math.Clamp(_shrinkSlider.CurrentValue, 0, _shrinkSlider.Max);
 
 		_arenaScene.BuildArena(spawnset);
 
-		float defaultSpawnHeight = spawnset.ArenaTiles[SpawnsetBinary.ArenaDimensionMax / 2, SpawnsetBinary.ArenaDimensionMax / 2];
-		PlayerMovementTimeline playerMovementTimeline = PlayerMovementTimelineBuilder.Build(defaultSpawnHeight, replayBinaries[0].EventsData);
+		ReplaySimulation replaySimulation = ReplaySimulationBuilder.Build(spawnset, replayBinaries[0]);
 
-		_arenaScene.BuildPlayerMovement(playerMovementTimeline);
+		_arenaScene.BuildPlayerMovement(replaySimulation);
 	}
 
 	public unsafe void Update()
 	{
-		_currentTime += Root.Game.Dt;
-		_shrinkSlider.CurrentValue = _currentTime;
+		_currentTick++;
+		_shrinkSlider.CurrentValue = _currentTick / 60f;
 
-		_arenaScene.Update(_currentTime);
+		_arenaScene.Update(_currentTick);
 
 		if (Input.IsKeyPressed(Keys.Escape))
 		{

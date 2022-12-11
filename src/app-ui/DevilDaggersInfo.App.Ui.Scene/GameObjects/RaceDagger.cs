@@ -52,11 +52,12 @@ public class RaceDagger
 		}
 	}
 
-	public void Update(float currentTime)
+	public void Update(int currentTick)
 	{
 		_position.PrepareUpdate();
 		_rotation.PrepareUpdate();
 
+		float currentTime = currentTick / 60f;
 		_position.Physics = _position.Start + new Vector3(0, 0.15f + MathF.Sin(currentTime) * 0.15f, 0);
 		_rotation.Physics = _rotation.Start * Quaternion.CreateFromAxisAngle(Vector3.UnitZ, currentTime);
 	}

@@ -73,9 +73,9 @@ public class Tile : GameObject
 		}
 	}
 
-	public void Update(float currentTime)
+	public void Update(int currentTick)
 	{
-		float y = _spawnsetBinary.GetActualTileHeight(_arenaX, _arenaY, currentTime);
+		float y = _spawnsetBinary.GetActualTileHeight(_arenaX, _arenaY, currentTick / 60f);
 
 		_top.PositionY = y;
 		_pillar.PositionY = y;

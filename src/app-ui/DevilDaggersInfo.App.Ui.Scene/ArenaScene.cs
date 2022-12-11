@@ -1,9 +1,11 @@
 // ReSharper disable ForCanBeConvertedToForeach
 using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Scene.GameObjects;
-using DevilDaggersInfo.Core.Replay.PostProcessing.PlayerMovement;
+using DevilDaggersInfo.Common.Exceptions;
+using DevilDaggersInfo.Core.Replay.PostProcessing.ReplaySimulation;
 using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Types.Core.Spawnsets;
+using Warp.NET.GameObjects.Common;
 
 namespace DevilDaggersInfo.App.Ui.Scene;
 
@@ -12,6 +14,7 @@ public class ArenaScene
 	private readonly Camera _camera = new();
 	private readonly List<Tile> _tiles = new();
 	private RaceDagger? _raceDagger;
+	private ReplaySimulation? _replaySimulation;
 	private Player? _player;
 
 	public void BuildArena(SpawnsetBinary spawnset)
@@ -51,19 +54,20 @@ public class ArenaScene
 		}
 	}
 
-	public void BuildPlayerMovement(PlayerMovementTimeline playerMovementTimeline)
+	public void BuildPlayerMovement(ReplaySimulation replaySimulation)
 	{
-		_player = new(playerMovementTimeline);
+		_replaySimulation = replaySimulation;
+		_player = new(replaySimulation);
 	}
 
-	public void Update(float currentTime)
+	public void Update(int currentTick)
 	{
 		_camera.Update();
-		_raceDagger?.Update(currentTime);
-		_player?.Update(currentTime);
+		_raceDagger?.Update(currentTick);
+		_player?.Update(currentTick);
 
 		for (int i = 0; i < _tiles.Count; i++)
-			_tiles[i].Update(currentTime);
+			_tiles[i].Update(currentTick);
 	}
 
 	public void Render()

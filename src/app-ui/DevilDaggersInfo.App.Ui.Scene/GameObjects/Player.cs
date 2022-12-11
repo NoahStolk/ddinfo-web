@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Core.Replay.PostProcessing.PlayerMovement;
+using DevilDaggersInfo.Core.Replay.PostProcessing.ReplaySimulation;
 using Silk.NET.OpenGL;
 using Warp.NET.Content;
 
@@ -8,10 +8,10 @@ public class Player
 {
 	private static uint _vao;
 
-	private readonly PlayerMovementTimeline _movementTimeline;
+	private readonly ReplaySimulation _movementTimeline;
 	private readonly MeshObject _mesh;
 
-	public Player(PlayerMovementTimeline movementTimeline)
+	public Player(ReplaySimulation movementTimeline)
 	{
 		_movementTimeline = movementTimeline;
 		_mesh = new(_vao, WarpModels.PlayerMovement.MainMesh, Quaternion.Identity, default);
@@ -50,10 +50,11 @@ public class Player
 		}
 	}
 
-	public void Update(float currentTime)
+	public void Update(int currentTick)
 	{
 		_mesh.PrepareUpdate();
-		PlayerMovementSnapshot snapshot = _movementTimeline.GetSnapshot(currentTime);
+
+		PlayerMovementSnapshot snapshot = _movementTimeline.GetPlayerMovementSnapshot(currentTick);
 		_mesh.RotationState.Physics = snapshot.Rotation;
 		_mesh.PositionState.Physics = snapshot.Position;
 	}
