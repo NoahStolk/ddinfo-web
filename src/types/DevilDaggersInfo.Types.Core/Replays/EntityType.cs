@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Types.Core.Replays;
 
-public enum EntityType
+public enum EntityType : byte
 {
 	Level1Dagger,
 	Level2Dagger,
@@ -25,5 +25,9 @@ public enum EntityType
 	SpiderEgg,
 	Leviathan,
 	Thorn,
+
+	/// <summary>
+	/// Player, void, or other miscellaneous entities.
+	/// </summary>
 	Zero,
 }
