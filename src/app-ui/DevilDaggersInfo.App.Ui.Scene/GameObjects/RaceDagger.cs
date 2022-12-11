@@ -18,6 +18,7 @@ public class RaceDagger
 		_position = new(position);
 		_rotation = new(Quaternion.CreateFromAxisAngle(Vector3.UnitX, MathF.PI * 0.5f));
 
+		// TODO: Only initialize this once.
 		static unsafe uint CreateVao(Mesh mesh)
 		{
 			uint vao = Gl.GenVertexArray();

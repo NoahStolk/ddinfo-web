@@ -5,6 +5,7 @@ using DevilDaggersInfo.App.Ui.Base.States;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.ReplayViewer;
 using DevilDaggersInfo.App.Ui.Scene;
 using DevilDaggersInfo.Core.Replay;
+using DevilDaggersInfo.Core.Replay.PostProcessing.PlayerMovement;
 using DevilDaggersInfo.Core.Spawnset;
 using Silk.NET.GLFW;
 using Warp.NET;
@@ -21,7 +22,7 @@ public class ReplayViewer3dLayout : Layout, IReplayViewer3dLayout
 
 	public ReplayViewer3dLayout()
 	{
-		_shrinkSlider = new(new PixelBounds(0, 752, 1024, 16), f => _currentTime = f, true, 0, 0, 0.1f, 0, GlobalStyles.DefaultSliderStyle, 0);
+		_shrinkSlider = new(new PixelBounds(0, 752, 1024, 16), f => _currentTime = f, true, 0, 0, 0.001f, 0, GlobalStyles.DefaultSliderStyle, 0);
 		NestingContext.Add(_shrinkSlider);
 	}
 
@@ -35,11 +36,14 @@ public class ReplayViewer3dLayout : Layout, IReplayViewer3dLayout
 
 		_currentTime = 0;
 
-		_shrinkSlider.Max = spawnset.GetSliderMaxSeconds();
+		_shrinkSlider.Max = replayBinaries.Max(rb => rb.EventsData.TickCount / 60f);
 		_shrinkSlider.CurrentValue = Math.Clamp(_shrinkSlider.CurrentValue, 0, _shrinkSlider.Max);
 
 		_arenaScene.BuildArena(spawnset);
-		_arenaScene.BuildPlayerMovement(replayBinaries[0]);
+
+		PlayerMovementTimeline playerMovementTimeline = PlayerMovementTimelineBuilder.Build(replayBinaries[0].EventsData);
+
+		_arenaScene.BuildPlayerMovement(playerMovementTimeline);
 	}
 
 	public void Update()

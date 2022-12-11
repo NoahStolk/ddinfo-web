@@ -1,38 +1,26 @@
 using DevilDaggersInfo.App.Ui.Base;
-using DevilDaggersInfo.Core.Spawnset;
+using DevilDaggersInfo.Core.Replay.PostProcessing.PlayerMovement;
 using Silk.NET.OpenGL;
 using Warp.NET.Content;
-using Warp.NET.GameObjects;
 
 namespace DevilDaggersInfo.App.Ui.Scene.GameObjects;
 
-public class Tile : GameObject
+public class Player
 {
-	private static uint _tileVao;
-	private static uint _pillarVao;
+	private static uint _vao;
 
-	private readonly int _arenaX;
-	private readonly int _arenaY;
-	private readonly SpawnsetBinary _spawnsetBinary;
+	private readonly PlayerMovementTimeline _movementTimeline;
+	private readonly MeshObject _mesh;
 
-	private readonly TileMeshObject _top;
-	private readonly TileMeshObject _pillar;
-
-	public Tile(float positionX, float positionZ, int arenaX, int arenaY, SpawnsetBinary spawnsetBinary)
+	public Player(PlayerMovementTimeline movementTimeline)
 	{
-		_arenaX = arenaX;
-		_arenaY = arenaY;
-		_spawnsetBinary = spawnsetBinary;
-
-		_top = new(_tileVao, ContentManager.Content.TileMesh, Vector3.One, Quaternion.Identity, positionX, positionZ);
-		_pillar = new(_pillarVao, ContentManager.Content.PillarMesh, Vector3.One, Quaternion.Identity, positionX, positionZ);
+		_movementTimeline = movementTimeline;
+		_mesh = new(_vao, ContentManager.Content.Skull4Mesh, Quaternion.Identity, default);
 	}
 
 	public static unsafe void Initialize()
 	{
-		// TODO: Prevent this from being called multiple times.
-		_tileVao = CreateVao(ContentManager.Content.TileMesh);
-		_pillarVao = CreateVao(ContentManager.Content.PillarMesh);
+		_vao = CreateVao(ContentManager.Content.Skull4Mesh);
 
 		static uint CreateVao(Mesh mesh)
 		{
@@ -65,18 +53,14 @@ public class Tile : GameObject
 
 	public void Update(float currentTime)
 	{
-		float y = _spawnsetBinary.GetActualTileHeight(_arenaX, _arenaY, currentTime);
-		_top.PositionY = y;
-		_pillar.PositionY = y;
+		_mesh.PrepareUpdate();
+		_mesh.PositionState.Physics = _movementTimeline.GetPositionAtTime(currentTime);
 	}
 
-	public void RenderTop()
+	public void Render()
 	{
-		_top.Render();
-	}
+		ContentManager.Content.Skull4Texture.Use();
 
-	public void RenderPillar()
-	{
-		_pillar.Render();
+		_mesh.Render();
 	}
 }

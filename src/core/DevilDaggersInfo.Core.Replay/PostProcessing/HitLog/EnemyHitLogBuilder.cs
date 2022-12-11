@@ -29,7 +29,7 @@ public static class EnemyHitLogBuilder
 				if (buildContext == null)
 					continue;
 
-				EntityType? daggerEntityType = daggers.ContainsKey(hit.EntityIdB) ? daggers[hit.EntityIdB] : null;
+				EntityType? daggerEntityType = daggers.TryGetValue(hit.EntityIdB, out EntityType value) ? value : null;
 				if (daggerEntityType == null)
 					continue;
 
