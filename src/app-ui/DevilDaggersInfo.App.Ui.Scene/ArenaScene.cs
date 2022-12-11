@@ -68,6 +68,22 @@ public class ArenaScene
 
 		for (int i = 0; i < _tiles.Count; i++)
 			_tiles[i].Update(currentTick);
+
+		SoundSnapshot[] soundSnapshots = _replaySimulation?.GetSoundSnapshots(currentTick) ?? Array.Empty<SoundSnapshot>();
+		foreach (SoundSnapshot soundSnapshot in soundSnapshots)
+		{
+			Sound3dObject sound = new(soundSnapshot.Sound switch
+			{
+				ReplaySound.Jump1 => ContentManager.Content.SoundJump1,
+				ReplaySound.Jump2 => ContentManager.Content.SoundJump2,
+				ReplaySound.Jump3 => ContentManager.Content.SoundJump3,
+				_ => throw new InvalidEnumConversionException(soundSnapshot.Sound),
+			})
+			{
+				Position = soundSnapshot.Position,
+			};
+			sound.Add();
+		}
 	}
 
 	public void Render()
