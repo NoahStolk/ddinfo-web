@@ -4,14 +4,18 @@ using Warp.NET.Content;
 
 namespace DevilDaggersInfo.App.Ui.Scene.GameObjects;
 
-public class TileMeshObject
+public class TileHitBoxMeshObject
 {
 	private readonly uint _vao;
 	private readonly Mesh _mesh;
 	private readonly float _positionX;
 	private readonly float _positionZ;
 
-	public TileMeshObject(uint vao, Mesh mesh, float positionX, float positionZ)
+	private Matrix4x4 _model;
+	private float _positionY;
+	private float _height;
+
+	public TileHitBoxMeshObject(uint vao, Mesh mesh, float positionX, float positionZ)
 	{
 		_vao = vao;
 		_mesh = mesh;
@@ -19,12 +23,36 @@ public class TileMeshObject
 		_positionZ = positionZ;
 	}
 
-	public float PositionY { get; set; }
+	public float PositionY
+	{
+		get => _positionY;
+		set
+		{
+			_positionY = value;
+			SetModel();
+		}
+	}
+
+	public float Height
+	{
+		get => _height;
+		set
+		{
+			_height = value;
+			SetModel();
+		}
+	}
+
+	private void SetModel()
+	{
+		Matrix4x4 scaleMatrix = Matrix4x4.CreateScale(new Vector3(1, Height, 1));
+		Matrix4x4 translationMatrix = Matrix4x4.CreateTranslation(new(_positionX, PositionY, _positionZ));
+		_model = scaleMatrix * translationMatrix;
+	}
 
 	public unsafe void Render()
 	{
-		Matrix4x4 translationMatrix = Matrix4x4.CreateTranslation(new(_positionX, PositionY, _positionZ));
-		Shader.SetMatrix4x4(MeshUniforms.Model, translationMatrix);
+		Shader.SetMatrix4x4(MeshUniforms.Model, _model);
 
 		Gl.BindVertexArray(_vao);
 		fixed (uint* i = &_mesh.Indices[0])

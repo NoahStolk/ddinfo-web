@@ -10,29 +10,39 @@ public class Tile : GameObject
 {
 	private static uint _tileVao;
 	private static uint _pillarVao;
+	private static uint _cubeVao;
 
+	private readonly float _positionX;
+	private readonly float _positionZ;
 	private readonly int _arenaX;
 	private readonly int _arenaY;
 	private readonly SpawnsetBinary _spawnsetBinary;
 
 	private readonly TileMeshObject _top;
 	private readonly TileMeshObject _pillar;
+	private readonly TileHitBoxMeshObject _tileHitBox;
 
 	public Tile(float positionX, float positionZ, int arenaX, int arenaY, SpawnsetBinary spawnsetBinary)
 	{
+		_positionX = positionX;
+		_positionZ = positionZ;
 		_arenaX = arenaX;
 		_arenaY = arenaY;
 		_spawnsetBinary = spawnsetBinary;
 
-		_top = new(_tileVao, ContentManager.Content.TileMesh, Vector3.One, Quaternion.Identity, positionX, positionZ);
-		_pillar = new(_pillarVao, ContentManager.Content.PillarMesh, Vector3.One, Quaternion.Identity, positionX, positionZ);
+		_top = new(_tileVao, ContentManager.Content.TileMesh, positionX, positionZ);
+		_pillar = new(_pillarVao, ContentManager.Content.PillarMesh, positionX, positionZ);
+		_tileHitBox = new(_cubeVao, WarpModels.TileHitBox.MainMesh, positionX, positionZ);
 	}
+
+	public Vector3 Position => new(_positionX, _top.PositionY, _positionZ);
 
 	public static unsafe void Initialize()
 	{
 		// TODO: Prevent this from being called multiple times.
 		_tileVao = CreateVao(ContentManager.Content.TileMesh);
 		_pillarVao = CreateVao(ContentManager.Content.PillarMesh);
+		_cubeVao = CreateVao(WarpModels.TileHitBox.MainMesh);
 
 		static uint CreateVao(Mesh mesh)
 		{
@@ -66,8 +76,15 @@ public class Tile : GameObject
 	public void Update(float currentTime)
 	{
 		float y = _spawnsetBinary.GetActualTileHeight(_arenaX, _arenaY, currentTime);
+
 		_top.PositionY = y;
 		_pillar.PositionY = y;
+
+		const float tileMeshHeight = 4;
+		_tileHitBox.PositionY = y - tileMeshHeight / 2;
+
+		const float tileHitBoxOffset = 1;
+		_tileHitBox.Height = y - tileMeshHeight / 2 + tileHitBoxOffset;
 	}
 
 	public void RenderTop()
@@ -78,5 +95,10 @@ public class Tile : GameObject
 	public void RenderPillar()
 	{
 		_pillar.Render();
+	}
+
+	public void RenderHitBox()
+	{
+		_tileHitBox.Render();
 	}
 }

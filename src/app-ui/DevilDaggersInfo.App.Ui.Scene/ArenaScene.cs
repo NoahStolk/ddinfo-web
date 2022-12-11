@@ -85,5 +85,11 @@ public class ArenaScene
 		_raceDagger?.Render();
 
 		_player?.Render();
+
+		WarpTextures.TileHitBox.Use();
+
+		Span<Tile> tiles = _tiles.Where(t => t.Position.Y > 3).OrderBy(t => Vector3.DistanceSquared(t.Position, _camera.PositionState.Render)).ToArray();
+		for (int i = 0; i < tiles.Length; i++)
+			tiles[i].RenderHitBox();
 	}
 }

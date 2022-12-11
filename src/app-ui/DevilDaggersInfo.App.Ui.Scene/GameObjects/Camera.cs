@@ -12,7 +12,6 @@ public class Camera
 	private const float _defaultYaw = MathF.PI;
 	private const MouseButton _lookButton = MouseButton.Right;
 
-	private readonly Vector3State _positionState = new(default);
 	private readonly QuaternionState _rotationState = new(Quaternion.CreateFromYawPitchRoll(_defaultYaw, 0, 0));
 
 	private Vector3 _axisAlignedSpeed;
@@ -23,9 +22,11 @@ public class Camera
 	public Matrix4x4 Projection { get; private set; }
 	public Matrix4x4 ViewMatrix { get; private set; }
 
+	public Vector3State PositionState { get; } = new(default);
+
 	public void Reset(Vector3 position)
 	{
-		_positionState.Physics = position;
+		PositionState.Physics = position;
 		_rotationState.Physics = Quaternion.CreateFromYawPitchRoll(_defaultYaw, 0, 0);
 		_yaw = _defaultYaw;
 		_pitch = 0;
@@ -34,7 +35,7 @@ public class Camera
 
 	public void Update()
 	{
-		_positionState.PrepareUpdate();
+		PositionState.PrepareUpdate();
 		_rotationState.PrepareUpdate();
 
 		HandleKeys();
@@ -44,7 +45,7 @@ public class Camera
 
 		Matrix4x4 rotMat = Matrix4x4.CreateFromQuaternion(_rotationState.Physics);
 		Vector3 transformed = RotateVector(_axisAlignedSpeed, rotMat) + new Vector3(0, _axisAlignedSpeed.Y, 0);
-		_positionState.Physics += transformed * moveSpeed * Root.Game.Dt;
+		PositionState.Physics += transformed * moveSpeed * Root.Game.Dt;
 
 		static Vector3 RotateVector(Vector3 vector, Matrix4x4 rotationMatrix)
 		{
@@ -133,12 +134,12 @@ public class Camera
 
 	public void PreRender()
 	{
-		_positionState.PrepareRender();
+		PositionState.PrepareRender();
 		_rotationState.PrepareRender();
 
 		Vector3 upDirection = Vector3.Transform(Vector3.UnitY, _rotationState.Render);
 		Vector3 lookDirection = Vector3.Transform(Vector3.UnitZ, _rotationState.Render);
-		ViewMatrix = Matrix4x4.CreateLookAt(_positionState.Render, _positionState.Render + lookDirection, upDirection);
+		ViewMatrix = Matrix4x4.CreateLookAt(PositionState.Render, PositionState.Render + lookDirection, upDirection);
 
 		float aspectRatio = CurrentWindowState.Width / (float)CurrentWindowState.Height;
 

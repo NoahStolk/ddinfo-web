@@ -1,7 +1,6 @@
 using DevilDaggersInfo.App.Core.AssetInterop;
 using DevilDaggersInfo.App.Ui.Base.Exceptions;
 using DevilDaggersInfo.App.Ui.Base.Settings;
-using DevilDaggersInfo.App.Ui.Base.Utils;
 using DevilDaggersInfo.Core.Mod;
 using DevilDaggersInfo.Core.Mod.Enums;
 using DevilDaggersInfo.Core.Spawnset;
@@ -56,7 +55,7 @@ public static class ContentManager
 			Skull4JawTexture: GetTexture(modBinary, "boid4jaw"),
 			TileMesh: GetMesh(modBinary, "tile"),
 			TileTexture: GetTexture(modBinary, "tile"),
-			PillarMesh: TallTilesBuilder.CreateTallTiles(GetMesh(modBinary, "pillar"), 16),
+			PillarMesh: GetMesh(modBinary, "pillar"),
 			PillarTexture: GetTexture(modBinary, "pillar"));
 	}
 
