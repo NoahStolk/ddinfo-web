@@ -83,8 +83,9 @@ public static class ReplaySimulationBuilder
 
 						if (jumpCooldown <= 0 && inputs.Jump is JumpType.StartedPress or JumpType.Hold)
 						{
+							// TODO: Use Jump2 when jump was not precise.
 							jumpCooldown = 10;
-							velocityY = 1;
+							velocityY = 0.3f;
 							speedBoost = 1.5f;
 							ReplaySound replaySound = ReplaySound.Jump3;
 							soundSnapshots.Add(new(ticks, replaySound, position));
@@ -92,7 +93,7 @@ public static class ReplaySimulationBuilder
 					}
 					else
 					{
-						gravity -= 0.0025f;
+						gravity -= 0.002f;
 						velocityY += gravity;
 					}
 

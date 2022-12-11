@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <PackageReference Include="NoahStolk.Warp.NET" Version="0.1.7" />
+    <PackageReference Include="NoahStolk.Warp.NET" Version="0.1.8" />
     <!--<ProjectReference Include="..\..\..\..\Warp.NET\src\lib\Warp.NET\Warp.NET.csproj" />-->
   </ItemGroup>
   
