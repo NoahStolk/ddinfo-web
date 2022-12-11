@@ -55,9 +55,24 @@ public static class ReplaySimulationBuilder
 					// Position
 
 					// Jumping
-					int arenaX = spawnset.WorldToTileCoordinate(position.X);
-					int arenaZ = spawnset.WorldToTileCoordinate(position.Z);
-					float currentTileHeight = arenaX is < 0 or > SpawnsetBinary.ArenaDimensionMax - 1 || arenaZ is < 0 or > SpawnsetBinary.ArenaDimensionMax - 1 ? -1000 : spawnset.GetActualTileHeight(arenaX, arenaZ, ticks / 60f);
+
+					// TODO: Dagger-jumping.
+
+					// Find the highest of all 4 tiles.
+					const float playerSize = 1f; // Guess
+					float topLeft = GetTileHeightAtWorldPosition(position.X - playerSize, position.Z - playerSize);
+					float topRight = GetTileHeightAtWorldPosition(position.X + playerSize, position.Z - playerSize);
+					float bottomLeft = GetTileHeightAtWorldPosition(position.X - playerSize, position.Z + playerSize);
+					float bottomRight = GetTileHeightAtWorldPosition(position.X + playerSize, position.Z + playerSize);
+
+					float GetTileHeightAtWorldPosition(float positionX, float positionZ)
+					{
+						int arenaX = spawnset.WorldToTileCoordinate(positionX);
+						int arenaZ = spawnset.WorldToTileCoordinate(positionZ);
+						return arenaX is < 0 or > SpawnsetBinary.ArenaDimensionMax - 1 || arenaZ is < 0 or > SpawnsetBinary.ArenaDimensionMax - 1 ? -1000 : spawnset.GetActualTileHeight(arenaX, arenaZ, ticks / 60f);
+					}
+
+					float currentTileHeight = Math.Max(Math.Max(topLeft, topRight), Math.Max(bottomLeft, bottomRight));
 					bool isOnGround = currentTileHeight + 4 > position.Y;
 
 					if (isOnGround)
