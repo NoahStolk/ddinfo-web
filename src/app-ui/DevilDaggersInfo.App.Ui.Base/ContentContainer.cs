@@ -15,4 +15,7 @@ public record ContentContainer(
 	Mesh TileMesh,
 	Texture TileTexture,
 	Mesh PillarMesh,
-	Texture PillarTexture);
+	Texture PillarTexture,
+	Sound SoundJump1,
+	Sound SoundJump2,
+	Sound SoundJump3);

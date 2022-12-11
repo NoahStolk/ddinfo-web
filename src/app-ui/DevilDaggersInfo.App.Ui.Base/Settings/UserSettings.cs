@@ -8,5 +8,7 @@ public static class UserSettings
 
 	public static string DdSurvivalPath => Path.Combine(DevilDaggersInstallationDirectory, "dd", "survival");
 
+	public static string ResAudioPath => Path.Combine(DevilDaggersInstallationDirectory, "res", "audio");
+
 	public static string ResDdPath => Path.Combine(DevilDaggersInstallationDirectory, "res", "dd");
 }

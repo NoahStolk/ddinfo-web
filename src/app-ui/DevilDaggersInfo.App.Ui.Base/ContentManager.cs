@@ -6,6 +6,8 @@ using DevilDaggersInfo.Core.Mod.Enums;
 using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Types.Core.Assets;
 using Warp.NET.Content;
+using Warp.NET.Content.Conversion.Data;
+using Warp.NET.Content.Conversion.Parsers;
 
 namespace DevilDaggersInfo.App.Ui.Base;
 
@@ -32,6 +34,9 @@ public static class ContentManager
 		if (!File.Exists(UserSettings.DdSurvivalPath))
 			throw new MissingContentException("File 'dd/survival' does not exist.");
 
+		if (!File.Exists(UserSettings.ResAudioPath))
+			throw new MissingContentException("File 'res/audio' does not exist.");
+
 		if (!File.Exists(UserSettings.ResDdPath))
 			throw new MissingContentException("File 'res/dd' does not exist.");
 
@@ -42,36 +47,49 @@ public static class ContentManager
 		if (Directory.Exists(UserSettings.ModsSurvivalPath))
 			throw new MissingContentException("There must not be a directory named 'survival' in the 'mods' directory. You must delete the directory, or mods will not work.");
 
-		ModBinary modBinary = new(File.ReadAllBytes(UserSettings.ResDdPath), ModBinaryReadComprehensiveness.All);
+		ModBinary ddBinary = new(File.ReadAllBytes(UserSettings.ResDdPath), ModBinaryReadComprehensiveness.All);
+		ModBinary audioBinary = new(File.ReadAllBytes(UserSettings.ResAudioPath), ModBinaryReadComprehensiveness.All);
 
 		Content = new(
 			DefaultSpawnset: defaultSpawnset,
-			IconDaggerTexture: GetTexture(modBinary, "iconmaskdagger"),
-			DaggerMesh: GetMesh(modBinary, "dagger"),
-			DaggerSilverTexture: GetTexture(modBinary, "daggersilver"),
-			Skull4Mesh: GetMesh(modBinary, "boid4"),
-			Skull4Texture: GetTexture(modBinary, "boid4"),
-			Skull4JawMesh: GetMesh(modBinary, "boid4jaw"),
-			Skull4JawTexture: GetTexture(modBinary, "boid4jaw"),
-			TileMesh: GetMesh(modBinary, "tile"),
-			TileTexture: GetTexture(modBinary, "tile"),
-			PillarMesh: GetMesh(modBinary, "pillar"),
-			PillarTexture: GetTexture(modBinary, "pillar"));
+			IconDaggerTexture: GetTexture(ddBinary, "iconmaskdagger"),
+			DaggerMesh: GetMesh(ddBinary, "dagger"),
+			DaggerSilverTexture: GetTexture(ddBinary, "daggersilver"),
+			Skull4Mesh: GetMesh(ddBinary, "boid4"),
+			Skull4Texture: GetTexture(ddBinary, "boid4"),
+			Skull4JawMesh: GetMesh(ddBinary, "boid4jaw"),
+			Skull4JawTexture: GetTexture(ddBinary, "boid4jaw"),
+			TileMesh: GetMesh(ddBinary, "tile"),
+			TileTexture: GetTexture(ddBinary, "tile"),
+			PillarMesh: GetMesh(ddBinary, "pillar"),
+			PillarTexture: GetTexture(ddBinary, "pillar"),
+			SoundJump1: GetSound(audioBinary, "jump1"),
+			SoundJump2: GetSound(audioBinary, "jump2"),
+			SoundJump3: GetSound(audioBinary, "jump3"));
 	}
 
-	private static Mesh GetMesh(ModBinary modBinary, string meshName)
+	private static Mesh GetMesh(ModBinary ddBinary, string meshName)
 	{
-		if (!modBinary.AssetMap.TryGetValue(new(AssetType.Mesh, meshName), out AssetData? meshData))
+		if (!ddBinary.AssetMap.TryGetValue(new(AssetType.Mesh, meshName), out AssetData? meshData))
 			throw new MissingContentException($"Required mesh '{meshName}' from 'res/dd' was not found.");
 
 		return MeshConverter.ToWarpMesh(meshData.Buffer);
 	}
 
-	private static Texture GetTexture(ModBinary modBinary, string textureName)
+	private static Texture GetTexture(ModBinary ddBinary, string textureName)
 	{
-		if (!modBinary.AssetMap.TryGetValue(new(AssetType.Texture, textureName), out AssetData? textureData))
+		if (!ddBinary.AssetMap.TryGetValue(new(AssetType.Texture, textureName), out AssetData? textureData))
 			throw new MissingContentException($"Required texture '{textureName}' from 'res/dd' was not found.");
 
 		return TextureConverter.ToWarpTexture(textureData.Buffer);
+	}
+
+	private static Sound GetSound(ModBinary audioBinary, string soundName)
+	{
+		if (!audioBinary.AssetMap.TryGetValue(new(AssetType.Audio, soundName), out AssetData? audioData))
+			throw new MissingContentException($"Required audio '{soundName}' from 'res/audio' was not found.");
+
+		SoundData waveData = WaveParser.Parse(audioData.Buffer);
+		return new(waveData.Channels, waveData.SampleRate, waveData.BitsPerSample, waveData.Data.Length, waveData.Data);
 	}
 }
