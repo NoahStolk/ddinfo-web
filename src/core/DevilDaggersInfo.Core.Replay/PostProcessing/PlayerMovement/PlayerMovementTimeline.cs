@@ -18,17 +18,14 @@ public record PlayerMovementTimeline
 
 	public PlayerMovementSnapshot Last { get; }
 
-	public Vector3 GetPositionAtTime(float time)
+	public PlayerMovementSnapshot GetSnapshot(float time)
 	{
 		if (time < First.Time)
-			return First.Position;
+			return First;
 
 		if (time > Last.Time)
-			return Last.Position;
+			return Last;
 
-		PlayerMovementSnapshot a = Snapshots.LastOrDefault(s => s.Time < time) ?? First;
-		PlayerMovementSnapshot b = Snapshots.FirstOrDefault(s => s.Time > time) ?? Last;
-
-		return Vector3.Lerp(a.Position, b.Position, (time - a.Time) / (b.Time - a.Time));
+		return Snapshots.FirstOrDefault(s => s.Time >= time) ?? Last;
 	}
 }

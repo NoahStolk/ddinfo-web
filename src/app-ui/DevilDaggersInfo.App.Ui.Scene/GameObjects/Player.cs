@@ -1,4 +1,3 @@
-using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.Core.Replay.PostProcessing.PlayerMovement;
 using Silk.NET.OpenGL;
 using Warp.NET.Content;
@@ -54,7 +53,9 @@ public class Player
 	public void Update(float currentTime)
 	{
 		_mesh.PrepareUpdate();
-		_mesh.PositionState.Physics = _movementTimeline.GetPositionAtTime(currentTime);
+		PlayerMovementSnapshot snapshot = _movementTimeline.GetSnapshot(currentTime);
+		_mesh.RotationState.Physics = snapshot.Rotation;
+		_mesh.PositionState.Physics = snapshot.Position;
 	}
 
 	public void Render()
