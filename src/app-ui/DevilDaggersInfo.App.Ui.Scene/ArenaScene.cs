@@ -1,3 +1,4 @@
+// ReSharper disable ForCanBeConvertedToForeach
 using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Scene.GameObjects;
 using DevilDaggersInfo.Core.Replay.PostProcessing.PlayerMovement;
@@ -60,8 +61,8 @@ public class ArenaScene
 		_raceDagger?.Update();
 		_player?.Update(currentTime);
 
-		foreach (Tile tile in _tiles)
-			tile.Update(currentTime);
+		for (int i = 0; i < _tiles.Count; i++)
+			_tiles[i].Update(currentTime);
 	}
 
 	public void Render()
@@ -74,12 +75,12 @@ public class ArenaScene
 		Shader.SetInt(MeshUniforms.TextureDiffuse, 0);
 
 		ContentManager.Content.TileTexture.Use();
-		foreach (Tile tile in _tiles)
-			tile.RenderTop();
+		for (int i = 0; i < _tiles.Count; i++)
+			_tiles[i].RenderTop();
 
 		ContentManager.Content.PillarTexture.Use();
-		foreach (Tile tile in _tiles)
-			tile.RenderPillar();
+		for (int i = 0; i < _tiles.Count; i++)
+			_tiles[i].RenderPillar();
 
 		_raceDagger?.Render();
 
