@@ -15,12 +15,12 @@ public class Player
 	public Player(PlayerMovementTimeline movementTimeline)
 	{
 		_movementTimeline = movementTimeline;
-		_mesh = new(_vao, ContentManager.Content.Skull4Mesh, Quaternion.Identity, default);
+		_mesh = new(_vao, WarpModels.PlayerMovement.MainMesh, Quaternion.Identity, default);
 	}
 
 	public static unsafe void Initialize()
 	{
-		_vao = CreateVao(ContentManager.Content.Skull4Mesh);
+		_vao = CreateVao(WarpModels.PlayerMovement.MainMesh);
 
 		static uint CreateVao(Mesh mesh)
 		{
@@ -59,7 +59,7 @@ public class Player
 
 	public void Render()
 	{
-		ContentManager.Content.Skull4Texture.Use();
+		WarpTextures.Blank.Use();
 
 		_mesh.Render();
 	}
