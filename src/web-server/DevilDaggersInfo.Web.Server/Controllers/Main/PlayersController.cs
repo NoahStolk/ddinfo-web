@@ -100,7 +100,9 @@ public class PlayersController : ControllerBase
 
 			if (!hideUsernames && !string.IsNullOrWhiteSpace(entry.Username))
 			{
+ #pragma warning disable CA1854
 				if (usernamesHistory.ContainsKey(entry.Username))
+ #pragma warning restore CA1854
 					usernamesHistory[entry.Username]++;
 				else
 					usernamesHistory.Add(entry.Username, 1);
@@ -153,7 +155,7 @@ public class PlayersController : ControllerBase
 			}
 		}
 
-		return new GetPlayerHistory
+		return new()
 		{
 			ActivityHistory = activityHistory,
 			BestRank = bestRank,

@@ -99,16 +99,16 @@ public class WorldRecordRepository
 		{
 			WorldRecordHolders = worldRecordHolders
 				.OrderByDescending(wrh => wrh.TotalTimeHeld)
-				.Select(bwrh => new GetWorldRecordHolder
+				.Select(wrh => new GetWorldRecordHolder
 				{
-					FirstHeld = bwrh.FirstHeld,
-					Id = bwrh.Id,
-					LastHeld = bwrh.LastHeld,
-					LongestTimeHeldConsecutively = bwrh.LongestTimeHeldConsecutively,
-					MostRecentUsername = bwrh.MostRecentUsername,
-					TotalTimeHeld = bwrh.TotalTimeHeld,
-					Usernames = bwrh.Usernames,
-					WorldRecordCount = bwrh.WorldRecordCount,
+					FirstHeld = wrh.FirstHeld,
+					Id = wrh.Id,
+					LastHeld = wrh.LastHeld,
+					LongestTimeHeldConsecutively = wrh.LongestTimeHeldConsecutively,
+					MostRecentUsername = wrh.MostRecentUsername,
+					TotalTimeHeld = wrh.TotalTimeHeld,
+					Usernames = wrh.Usernames,
+					WorldRecordCount = wrh.WorldRecordCount,
 				})
 				.ToList(),
 			WorldRecords = worldRecords,

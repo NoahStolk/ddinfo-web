@@ -22,7 +22,7 @@ public class LeaderboardHistoryStatisticsRepository
 	{
 		string? firstPath = _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory).Where(p => p.EndsWith(".bin")).MinBy(p => p);
 		if (firstPath == null)
-			return new List<GetLeaderboardHistoryStatistics>();
+			return new();
 
 		LeaderboardHistory current = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(firstPath);
 
