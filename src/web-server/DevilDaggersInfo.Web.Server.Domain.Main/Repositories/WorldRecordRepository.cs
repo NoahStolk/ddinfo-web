@@ -18,9 +18,9 @@ public class WorldRecordRepository
 
 	private readonly ApplicationDbContext _dbContext;
 	private readonly IFileSystemService _fileSystemService;
-	private readonly LeaderboardHistoryCache _leaderboardHistoryCache;
+	private readonly ILeaderboardHistoryCache _leaderboardHistoryCache;
 
-	public WorldRecordRepository(ApplicationDbContext dbContext, IFileSystemService fileSystemService, LeaderboardHistoryCache leaderboardHistoryCache)
+	public WorldRecordRepository(ApplicationDbContext dbContext, IFileSystemService fileSystemService, ILeaderboardHistoryCache leaderboardHistoryCache)
 	{
 		_dbContext = dbContext;
 		_fileSystemService = fileSystemService;

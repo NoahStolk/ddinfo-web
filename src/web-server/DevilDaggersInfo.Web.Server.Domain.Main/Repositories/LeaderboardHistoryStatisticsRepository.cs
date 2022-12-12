@@ -10,9 +10,9 @@ namespace DevilDaggersInfo.Web.Server.Domain.Main.Repositories;
 public class LeaderboardHistoryStatisticsRepository
 {
 	private readonly IFileSystemService _fileSystemService;
-	private readonly LeaderboardHistoryCache _leaderboardHistoryCache;
+	private readonly ILeaderboardHistoryCache _leaderboardHistoryCache;
 
-	public LeaderboardHistoryStatisticsRepository(IFileSystemService fileSystemService, LeaderboardHistoryCache leaderboardHistoryCache)
+	public LeaderboardHistoryStatisticsRepository(IFileSystemService fileSystemService, ILeaderboardHistoryCache leaderboardHistoryCache)
 	{
 		_fileSystemService = fileSystemService;
 		_leaderboardHistoryCache = leaderboardHistoryCache;

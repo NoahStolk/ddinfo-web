@@ -11,7 +11,7 @@ public class StartupCacheHostedService : IHostedService
 	private readonly IFileSystemService _fileSystemService;
 	private readonly ILogContainerService _logContainerService;
 	private readonly LeaderboardStatisticsCache _leaderboardStatisticsCache;
-	private readonly LeaderboardHistoryCache _leaderboardHistoryCache;
+	private readonly ILeaderboardHistoryCache _leaderboardHistoryCache;
 	private readonly ModArchiveCache _modArchiveCache;
 
 	public StartupCacheHostedService(
@@ -19,7 +19,7 @@ public class StartupCacheHostedService : IHostedService
 		IFileSystemService fileSystemService,
 		ILogContainerService logContainerService,
 		LeaderboardStatisticsCache leaderboardStatisticsCache,
-		LeaderboardHistoryCache leaderboardHistoryCache,
+		ILeaderboardHistoryCache leaderboardHistoryCache,
 		ModArchiveCache modArchiveCache)
 	{
 		_env = env;
