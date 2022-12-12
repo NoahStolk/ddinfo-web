@@ -17,7 +17,7 @@ public class WorldRecordRepositoryTests
 	public WorldRecordRepositoryTests()
 	{
 		DbContextOptions<TestDbContext> options = new DbContextOptionsBuilder<TestDbContext>()
-			.UseInMemoryDatabase(databaseName: "DevilDaggersInfo")
+			.UseInMemoryDatabase(databaseName: nameof(WorldRecordRepositoryTests))
 			.Options;
 		TestDbContext dbContext = new(options, new Mock<IHttpContextAccessor>().Object, new Mock<ILogContainerService>().Object);
 		TestData data = new();

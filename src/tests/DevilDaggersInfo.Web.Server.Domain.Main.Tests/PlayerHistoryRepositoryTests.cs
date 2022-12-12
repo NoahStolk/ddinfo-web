@@ -17,7 +17,7 @@ public class PlayerHistoryRepositoryTests
 	public PlayerHistoryRepositoryTests()
 	{
 		DbContextOptions<TestDbContext> options = new DbContextOptionsBuilder<TestDbContext>()
-			.UseInMemoryDatabase(databaseName: "DevilDaggersInfo")
+			.UseInMemoryDatabase(databaseName: nameof(PlayerHistoryRepositoryTests))
 			.Options;
 		TestDbContext dbContext = new(options, new Mock<IHttpContextAccessor>().Object, new Mock<ILogContainerService>().Object);
 		TestData data = new();
