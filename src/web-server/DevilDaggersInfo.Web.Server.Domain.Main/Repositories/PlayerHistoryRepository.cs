@@ -26,6 +26,8 @@ public class PlayerHistoryRepository
 	// TODO: Also move to Domain project since this is used by DDLIVE. We'll also need a separate return type for DDLIVE.
 	public GetPlayerHistory GetPlayerHistoryById(int id)
 	{
+		// TODO: Add caching.
+		// TODO: Alts may be valid. We would need to check if the main account is below the current player and the alt is above it, then it should not be included in illegitimateScoresAbove. This is kind of annoying to do, so we'll just ignore it for now.
 		List<int> bannedPlayerIds = _dbContext.Players.Select(p => new { p.Id, p.BanType }).Where(p => p.BanType != BanType.NotBanned).Select(p => p.Id).ToList();
 
 		var player = _dbContext.Players
