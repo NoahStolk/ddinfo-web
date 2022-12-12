@@ -8,7 +8,6 @@ using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardHistory;
 using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
-using Microsoft.EntityFrameworkCore;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Main.Repositories;
 
@@ -127,6 +126,7 @@ public class WorldRecordRepository
 
 	private List<BaseWorldRecord> GetBaseWorldRecords()
 	{
+		// WRs made on an alt can be legit, we'll just swap it with the main account.
 		List<int> bannedPlayerIds = _dbContext.Players.Select(p => new { p.Id, p.BanType }).Where(p => p.BanType != BanType.Alt && p.BanType != BanType.NotBanned).Select(p => p.Id).ToList();
 
 		DateTime? previousDate = null;

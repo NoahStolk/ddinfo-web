@@ -1,5 +1,6 @@
 using DevilDaggersInfo.Api.Main.Players;
 using DevilDaggersInfo.Common.Extensions;
+using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardHistory;
@@ -25,6 +26,8 @@ public class PlayerHistoryRepository
 	// TODO: Also move to Domain project since this is used by DDLIVE. We'll also need a separate return type for DDLIVE.
 	public GetPlayerHistory GetPlayerHistoryById(int id)
 	{
+		List<int> bannedPlayerIds = _dbContext.Players.Select(p => new { p.Id, p.BanType }).Where(p => p.BanType != BanType.NotBanned).Select(p => p.Id).ToList();
+
 		var player = _dbContext.Players
 			.AsNoTracking()
 			.Select(p => new { p.Id, p.HidePastUsernames })
@@ -53,8 +56,10 @@ public class PlayerHistoryRepository
 			if (entry == null)
 				continue;
 
-			if (!bestRank.HasValue || entry.Rank < bestRank)
-				bestRank = entry.Rank;
+			int illegitimateScoresAbove = leaderboard.Entries.Count(e => e.Rank < entry.Rank && bannedPlayerIds.Contains(e.Id));
+			int correctedRank = entry.Rank - illegitimateScoresAbove;
+			if (!bestRank.HasValue || correctedRank < bestRank)
+				bestRank = correctedRank;
 
 			if (!hideUsernames && !string.IsNullOrWhiteSpace(entry.Username))
 			{
@@ -77,7 +82,7 @@ public class PlayerHistoryRepository
 					DeathType = entry.DeathType,
 					Gems = entry.Gems,
 					Kills = entry.Kills,
-					Rank = entry.Rank,
+					Rank = correctedRank,
 					Time = entry.Time.ToSecondsTime(),
 					Username = entry.Username,
 				});
@@ -85,15 +90,15 @@ public class PlayerHistoryRepository
 				scorePreviousForScoreHistory = entry.Time;
 			}
 
-			if (!rankPreviousForRankHistory.HasValue || rankPreviousForRankHistory != entry.Rank)
+			if (!rankPreviousForRankHistory.HasValue || rankPreviousForRankHistory != correctedRank)
 			{
 				rankHistory.Add(new()
 				{
 					DateTime = leaderboard.DateTime,
-					Rank = entry.Rank,
+					Rank = correctedRank,
 				});
 
-				rankPreviousForRankHistory = entry.Rank;
+				rankPreviousForRankHistory = correctedRank;
 			}
 
 			if (entry.DeathsTotal > 0)
