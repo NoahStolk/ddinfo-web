@@ -11,9 +11,9 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 public class LeaderboardHistoryController : ControllerBase
 {
 	private readonly IFileSystemService _fileSystemService;
-	private readonly LeaderboardHistoryCache _leaderboardHistoryCache;
+	private readonly ILeaderboardHistoryCache _leaderboardHistoryCache;
 
-	public LeaderboardHistoryController(IFileSystemService fileSystemService, LeaderboardHistoryCache leaderboardHistoryCache)
+	public LeaderboardHistoryController(IFileSystemService fileSystemService, ILeaderboardHistoryCache leaderboardHistoryCache)
 	{
 		_fileSystemService = fileSystemService;
 		_leaderboardHistoryCache = leaderboardHistoryCache;

@@ -11,7 +11,7 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 public class CachesController : ControllerBase
 {
 	private readonly LeaderboardStatisticsCache _leaderboardStatisticsCache;
-	private readonly LeaderboardHistoryCache _leaderboardHistoryCache;
+	private readonly ILeaderboardHistoryCache _leaderboardHistoryCache;
 	private readonly ModArchiveCache _modArchiveCache;
 	private readonly SpawnsetSummaryCache _spawnsetSummaryCache;
 	private readonly SpawnsetHashCache _spawnsetHashCache;
@@ -19,7 +19,7 @@ public class CachesController : ControllerBase
 
 	public CachesController(
 		LeaderboardStatisticsCache leaderboardStatisticsCache,
-		LeaderboardHistoryCache leaderboardHistoryCache,
+		ILeaderboardHistoryCache leaderboardHistoryCache,
 		ModArchiveCache modArchiveCache,
 		SpawnsetSummaryCache spawnsetSummaryCache,
 		SpawnsetHashCache spawnsetHashCache,

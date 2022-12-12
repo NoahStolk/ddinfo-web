@@ -2,12 +2,12 @@ using DevilDaggersInfo.Api.Main.WorldRecords;
 using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Types.Core.Wiki;
+using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardHistory;
 using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
-using Microsoft.EntityFrameworkCore;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Main.Repositories;
 
@@ -17,9 +17,9 @@ public class WorldRecordRepository
 
 	private readonly ApplicationDbContext _dbContext;
 	private readonly IFileSystemService _fileSystemService;
-	private readonly LeaderboardHistoryCache _leaderboardHistoryCache;
+	private readonly ILeaderboardHistoryCache _leaderboardHistoryCache;
 
-	public WorldRecordRepository(ApplicationDbContext dbContext, IFileSystemService fileSystemService, LeaderboardHistoryCache leaderboardHistoryCache)
+	public WorldRecordRepository(ApplicationDbContext dbContext, IFileSystemService fileSystemService, ILeaderboardHistoryCache leaderboardHistoryCache)
 	{
 		_dbContext = dbContext;
 		_fileSystemService = fileSystemService;
@@ -126,21 +126,40 @@ public class WorldRecordRepository
 
 	private List<BaseWorldRecord> GetBaseWorldRecords()
 	{
+		// WRs made on an alt can be legit, we'll just swap it with the main account.
+		List<int> bannedPlayerIds = _dbContext.Players.Select(p => new { p.Id, p.BanType }).Where(p => p.BanType != BanType.Alt && p.BanType != BanType.NotBanned).Select(p => p.Id).ToList();
+
 		DateTime? previousDate = null;
 		List<BaseWorldRecord> worldRecords = new();
 		int worldRecord = 0;
 
 		List<LeaderboardHistory> history = _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory).Where(p => p.EndsWith(".bin")).Select(f => _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(f)).OrderBy(lbh => lbh.DateTime).ToList();
-		for (int i = 0; i < history.Count; i++)
+		foreach (LeaderboardHistory leaderboard in history)
 		{
-			LeaderboardHistory leaderboard = history[i];
-			EntryHistory? firstPlace = leaderboard.Entries.Find(e => e.Rank == 1);
-			if (firstPlace == null)
+			// Find the WR, if the actual first place is not legit, get second place, etc.
+			EntryHistory? firstLegitPlace = null;
+
+			// ReSharper disable once LoopCanBeConvertedToQuery
+			for (int i = 0; i < leaderboard.Entries.Count; i++)
+			{
+				int rank = i + 1;
+				EntryHistory? entry = leaderboard.Entries.Find(e => e.Rank == rank);
+				if (entry == null)
+					break; // Entry with current rank is not present on this leaderboard, meaning we cannot determine what the WR was.
+
+				if (bannedPlayerIds.Contains(entry.Id))
+					continue; // The actual WR is not legit, find the next entry.
+
+				firstLegitPlace = entry;
+				break;
+			}
+
+			if (firstLegitPlace == null)
 				continue;
 
-			if (firstPlace.Time != worldRecord)
+			if (firstLegitPlace.Time != worldRecord)
 			{
-				worldRecord = firstPlace.Time;
+				worldRecord = firstLegitPlace.Time;
 
 				DateTime date;
 
@@ -153,19 +172,19 @@ public class WorldRecordRepository
 					date = leaderboard.DateTime;
 
 				// If the WR was submitted by an alt, we need to manually fix the ID by looking up the main ID in the database.
-				int? mainPlayerId = _dbContext.Players.AsNoTracking().Select(p => new { p.Id, p.BanResponsibleId }).FirstOrDefault(p => p.Id == firstPlace.Id)?.BanResponsibleId;
+				int? mainPlayerId = _dbContext.Players.Select(p => new { p.Id, p.BanResponsibleId }).FirstOrDefault(p => p.Id == firstLegitPlace.Id)?.BanResponsibleId;
 
 				GetWorldRecordEntry getWorldRecordEntry = new()
 				{
 					DateTime = leaderboard.DateTime,
-					Id = mainPlayerId ?? firstPlace.Id,
-					Username = firstPlace.Username,
-					Time = firstPlace.Time.ToSecondsTime(),
-					Kills = firstPlace.Kills,
-					Gems = firstPlace.Gems,
-					DeathType = firstPlace.DeathType,
-					DaggersHit = firstPlace.DaggersHit,
-					DaggersFired = firstPlace.DaggersFired,
+					Id = mainPlayerId ?? firstLegitPlace.Id,
+					Username = firstLegitPlace.Username,
+					Time = firstLegitPlace.Time.ToSecondsTime(),
+					Kills = firstLegitPlace.Kills,
+					Gems = firstLegitPlace.Gems,
+					DeathType = firstLegitPlace.DeathType,
+					DaggersHit = firstLegitPlace.DaggersHit,
+					DaggersFired = firstLegitPlace.DaggersFired,
 				};
 				worldRecords.Add(new(date, getWorldRecordEntry, GameVersions.GetGameVersionFromDate(date)));
 			}

@@ -99,7 +99,7 @@ public class Startup
 		services.AddSingleton<ResponseTimeMonitor>();
 
 		// Caching services
-		services.AddSingleton<LeaderboardHistoryCache>();
+		services.AddSingleton<ILeaderboardHistoryCache, LeaderboardHistoryCache>();
 		services.AddSingleton<LeaderboardStatisticsCache>();
 		services.AddSingleton<ModArchiveCache>();
 		services.AddSingleton<SpawnsetSummaryCache>();

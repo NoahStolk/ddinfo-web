@@ -3,15 +3,15 @@ using System.Collections.Concurrent;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 
-public class LeaderboardHistoryCache
+public class LeaderboardHistoryCache : ILeaderboardHistoryCache
 {
 	private readonly ConcurrentDictionary<string, LeaderboardHistory> _cache = new();
 
 	public LeaderboardHistory GetLeaderboardHistoryByFilePath(string filePath)
 	{
 		string name = Path.GetFileNameWithoutExtension(filePath);
-		if (_cache.ContainsKey(name))
-			return _cache[name];
+		if (_cache.TryGetValue(name, out LeaderboardHistory? value))
+			return value;
 
 		LeaderboardHistory lb = LeaderboardHistory.CreateFromFile(File.ReadAllBytes(filePath));
 		_cache.TryAdd(name, lb);
