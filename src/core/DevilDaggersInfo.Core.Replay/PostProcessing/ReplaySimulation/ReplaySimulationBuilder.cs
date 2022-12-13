@@ -101,7 +101,7 @@ public static class ReplaySimulationBuilder
 					jumpCooldown--;
 
 					// WASD movement
-					const float moveSpeed = 12 / 60f;
+					const float moveSpeed = 11.676f / 60f;
 					const float acceleration = 0.1f;
 					const float friction = 10f;
 					const float airAcceleration = 0.01f;
