@@ -12,12 +12,12 @@ public class CustomEntryEntity : ISortableCustomEntry
 	public int CustomLeaderboardId { get; set; }
 
 	[ForeignKey(nameof(CustomLeaderboardId))]
-	public CustomLeaderboardEntity CustomLeaderboard { get; set; } = null!;
+	public CustomLeaderboardEntity CustomLeaderboard { get; set; } = null!; // TODO: Nullable.
 
 	public int PlayerId { get; set; }
 
 	[ForeignKey(nameof(PlayerId))]
-	public PlayerEntity Player { get; set; } = null!;
+	public PlayerEntity Player { get; set; } = null!; // TODO: Nullable.
 
 	public int Time { get; set; }
 

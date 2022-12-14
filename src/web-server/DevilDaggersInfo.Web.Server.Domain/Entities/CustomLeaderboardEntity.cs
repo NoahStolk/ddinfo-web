@@ -14,7 +14,7 @@ public class CustomLeaderboardEntity : IAuditable
 	public int SpawnsetId { get; set; }
 
 	[ForeignKey(nameof(SpawnsetId))]
-	public SpawnsetEntity Spawnset { get; set; } = null!;
+	public SpawnsetEntity Spawnset { get; set; } = null!; // TODO: Nullable.
 
 	public CustomLeaderboardCategory Category { get; set; }
 

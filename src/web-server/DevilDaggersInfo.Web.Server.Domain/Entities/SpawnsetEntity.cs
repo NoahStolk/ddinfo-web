@@ -9,7 +9,7 @@ public class SpawnsetEntity : IAuditable
 	public int PlayerId { get; set; }
 
 	[ForeignKey(nameof(PlayerId))]
-	public PlayerEntity Player { get; set; } = null!;
+	public PlayerEntity Player { get; set; } = null!; // TODO: Nullable.
 
 	[StringLength(64)]
 	public required string Name { get; set; }
