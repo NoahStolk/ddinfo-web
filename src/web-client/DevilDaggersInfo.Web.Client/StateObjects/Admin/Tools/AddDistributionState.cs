@@ -5,15 +5,15 @@ namespace DevilDaggersInfo.Web.Client.StateObjects.Admin.Tools;
 
 public class AddDistributionState : IStateObject<AddDistribution>
 {
-	public string Name { get; set; } = null!;
+	public required string Name { get; set; }
 
 	public ToolPublishMethod PublishMethod { get; set; }
 
 	public ToolBuildType BuildType { get; set; }
 
-	public string Version { get; set; } = null!;
+	public required string Version { get; set; }
 
-	public byte[] ZipFileContents { get; set; } = null!;
+	public required byte[] ZipFileContents { get; set; }
 
 	public bool UpdateVersion { get; set; }
 

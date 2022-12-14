@@ -12,7 +12,7 @@ public partial class ChartHighlighter
 	public double Left { get; set; }
 
 	[Parameter]
-	public RenderFragment ChildContent { get; set; } = null!;
+	public required RenderFragment ChildContent { get; set; }
 
 	public void ChangeState() => StateHasChanged();
 }

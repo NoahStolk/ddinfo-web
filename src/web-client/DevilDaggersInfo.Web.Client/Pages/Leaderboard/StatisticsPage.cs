@@ -47,7 +47,7 @@ public partial class StatisticsPage
 	private BarChartDataOptions _enemiesDataOptions = BarChartDataOptions.Default;
 
 	[Inject]
-	public IJSRuntime JsRuntime { get; set; } = null!;
+	public required IJSRuntime JsRuntime { get; set; }
 
 	protected override async Task OnInitializedAsync()
 	{

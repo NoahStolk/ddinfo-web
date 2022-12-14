@@ -32,19 +32,19 @@ public partial class BarChart
 
 	[Parameter]
 	[EditorRequired]
-	public string UniqueName { get; set; } = null!;
+	public required string UniqueName { get; set; }
 
 	[Parameter]
 	[EditorRequired]
-	public BarDataSet DataSet { get; set; } = null!;
+	public required BarDataSet DataSet { get; set; }
 
 	[Parameter]
 	[EditorRequired]
-	public BarChartDataOptions DataOptions { get; set; } = null!;
+	public required BarChartDataOptions DataOptions { get; set; }
 
 	[Parameter]
 	[EditorRequired]
-	public IEnumerable<string> XScaleTexts { get; set; } = null!;
+	public required IEnumerable<string> XScaleTexts { get; set; }
 
 	[Parameter]
 	public BarChartOptions Options { get; set; } = new();

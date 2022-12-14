@@ -9,7 +9,7 @@ public class EditSpawnsetState : IStateObject<EditSpawnset>
 	public int PlayerId { get; set; }
 
 	[StringLength(64)]
-	public string Name { get; set; } = null!;
+	public required string Name { get; set; }
 
 	[Range(0, 400)]
 	public int? MaxDisplayWaves { get; set; }

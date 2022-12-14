@@ -74,16 +74,18 @@ public partial class PlayerPage
 	private int _pageRankStart;
 	private int _pageRankEnd;
 
-	[Parameter, EditorRequired] public int Id { get; set; }
+	[Parameter]
+	[EditorRequired]
+	public int Id { get; set; }
 
 	[Inject]
-	public MainApiHttpClient Http { get; set; } = null!;
+	public required MainApiHttpClient Http { get; set; }
 
 	[Inject]
-	public NavigationManager NavigationManager { get; set; } = null!;
+	public required NavigationManager NavigationManager { get; set; }
 
 	[Inject]
-	public IJSRuntime JsRuntime { get; set; } = null!;
+	public required IJSRuntime JsRuntime { get; set; }
 
 	public GetEntry? GetEntry { get; set; }
 	public GetPlayer? GetPlayer { get; set; }

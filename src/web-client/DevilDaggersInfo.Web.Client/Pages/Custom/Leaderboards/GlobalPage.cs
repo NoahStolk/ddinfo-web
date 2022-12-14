@@ -13,10 +13,10 @@ public partial class GlobalPage
 	public string Category { get; set; } = "Survival";
 
 	[Inject]
-	public MainApiHttpClient Http { get; set; } = null!;
+	public required MainApiHttpClient Http { get; set; }
 
 	[Inject]
-	public NavigationManager NavigationManager { get; set; } = null!;
+	public required NavigationManager NavigationManager { get; set; }
 
 	public GetGlobalCustomLeaderboard? GetGlobalCustomLeaderboard { get; set; }
 

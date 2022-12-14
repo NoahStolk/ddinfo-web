@@ -15,10 +15,20 @@ public partial class LeaderboardTable<TGetEntryDto>
 
 	private Dictionary<LeaderboardSorting, bool> _sortings = new();
 
-	[Parameter] public bool IsHistory { get; set; }
-	[Parameter, EditorRequired] public List<TGetEntryDto> Entries { get; set; } = default!;
-	[Parameter, EditorRequired] public List<GetPlayerForLeaderboard> Players { get; set; } = null!;
-	[Parameter, EditorRequired] public GameVersion GameVersion { get; set; }
+	[Parameter]
+	public bool IsHistory { get; set; }
+
+	[Parameter]
+	[EditorRequired]
+	public required List<TGetEntryDto> Entries { get; set; }
+
+	[Parameter]
+	[EditorRequired]
+	public required List<GetPlayerForLeaderboard> Players { get; set; }
+
+	[Parameter]
+	[EditorRequired]
+	public GameVersion GameVersion { get; set; }
 
 	protected override void OnInitialized()
 	{
