@@ -8,7 +8,7 @@ public record PlayerForSettings
 
 	public string? CountryCode { get; init; }
 
-	public PlayerSettings Settings { get; init; } = null!;
+	public required PlayerSettings Settings { get; init; }
 
 	public static PlayerForSettings FromEntity(PlayerEntity player) => new()
 	{

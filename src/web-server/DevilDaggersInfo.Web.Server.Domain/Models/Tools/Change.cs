@@ -5,7 +5,7 @@ namespace DevilDaggersInfo.Web.Server.Domain.Models.Tools;
 /// </summary>
 public class Change
 {
-	public string Description { get; init; } = null!;
+	public required string Description { get; init; }
 
 	public IReadOnlyList<Change>? SubChanges { get; init; }
 }

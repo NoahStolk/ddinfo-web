@@ -2,13 +2,13 @@ namespace DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 
 public class UploadResponse
 {
-	public string Message { get; init; } = string.Empty;
+	public required string Message { get; init; }
 
 	public SubmissionType SubmissionType { get; init; }
 
-	public CustomLeaderboardSummary Leaderboard { get; init; } = null!;
+	public required CustomLeaderboardSummary Leaderboard { get; init; }
 
-	public List<CustomEntry> SortedEntries { get; init; } = new();
+	public required List<CustomEntry> SortedEntries { get; init; }
 
 	public UploadResponseScoreState<int> RankState { get; init; }
 

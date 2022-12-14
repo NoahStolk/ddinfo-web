@@ -6,7 +6,7 @@ public class EntryHistory
 
 	public int Id { get; set; }
 
-	public string Username { get; set; } = null!;
+	public required string Username { get; set; }
 
 	public int Time { get; set; }
 

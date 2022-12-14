@@ -10,9 +10,9 @@ public class CustomLeaderboardOverview
 
 	public int SpawnsetAuthorId { get; init; }
 
-	public string SpawnsetName { get; init; } = null!;
+	public required string SpawnsetName { get; init; }
 
-	public string SpawnsetAuthorName { get; init; } = null!;
+	public required string SpawnsetAuthorName { get; init; }
 
 	public CustomLeaderboardCategory Category { get; init; }
 

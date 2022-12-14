@@ -12,7 +12,7 @@ public class CustomEntry
 
 	public int PlayerId { get; set; }
 
-	public string PlayerName { get; set; } = null!;
+	public required string PlayerName { get; set; }
 
 	public string? CountryCode { get; set; }
 
@@ -50,7 +50,7 @@ public class CustomEntry
 
 	public DateTime SubmitDate { get; set; }
 
-	public string ClientVersion { get; set; } = null!;
+	public required string ClientVersion { get; set; }
 
 	public CustomLeaderboardsClient Client { get; set; }
 

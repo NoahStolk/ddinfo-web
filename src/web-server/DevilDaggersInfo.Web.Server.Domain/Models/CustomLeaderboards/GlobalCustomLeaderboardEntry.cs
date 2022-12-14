@@ -4,7 +4,7 @@ public class GlobalCustomLeaderboardEntry
 {
 	public int PlayerId { get; init; }
 
-	public string PlayerName { get; init; } = null!;
+	public required string PlayerName { get; init; }
 
 	public int Points { get; set; }
 
