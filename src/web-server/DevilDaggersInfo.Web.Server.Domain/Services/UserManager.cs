@@ -31,6 +31,7 @@ public class UserManager
 		if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(password))
 			return null;
 
+		// ! Navigation property.
 		UserEntity? user = _dbContext.Users
 			.Include(u => u.UserRoles)!
 			.ThenInclude(ur => ur.Role)
@@ -112,6 +113,7 @@ public class UserManager
 		string keyString = _configuration["JwtKey"] ?? throw new InvalidOperationException("Missing JWT key"); // TODO: Use IOptions binding and require JwtKey.
 		byte[] keyBytes = Encoding.ASCII.GetBytes(keyString);
 
+		// ! LINQ filters out null values.
 		SecurityTokenDescriptor tokenDescriptor = new()
 		{
 			Subject = ClaimsIdentityUtils.CreateClaimsIdentity(
@@ -156,6 +158,8 @@ public class UserManager
 				return null;
 
 			string? name = principal.GetName();
+
+			// ! Navigation property.
 			return _dbContext.Users
 				.Include(u => u.UserRoles)!
 					.ThenInclude(ur => ur.Role)

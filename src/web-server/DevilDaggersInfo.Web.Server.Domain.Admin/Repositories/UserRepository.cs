@@ -17,6 +17,7 @@ public class UserRepository
 
 	public async Task<List<GetUser>> GetUsersAsync()
 	{
+		// ! Navigation property.
 		List<UserEntity> users = await _dbContext.Users
 			.AsNoTracking()
 			.Include(u => u.UserRoles!)
@@ -30,6 +31,7 @@ public class UserRepository
 
 	public async Task<GetUser> GetUserAsync(int id)
 	{
+		// ! Navigation property.
 		UserEntity? user = await _dbContext.Users
 			.AsNoTracking()
 			.Include(u => u.UserRoles!)

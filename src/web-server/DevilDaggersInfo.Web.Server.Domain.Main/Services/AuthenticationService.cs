@@ -23,6 +23,7 @@ public class AuthenticationService
 		if (user == null)
 			throw new BadRequestException("Failed to authenticate. The token is invalid.");
 
+		// ! LINQ filters out null values.
 		return new AuthenticationResponse
 		{
 			Id = user.Id,

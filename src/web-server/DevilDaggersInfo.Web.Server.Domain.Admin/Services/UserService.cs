@@ -28,6 +28,7 @@ public class UserService
 		if (!_dbContext.Roles.Any(r => r.Name == roleName))
 			throw new NotFoundException();
 
+		// ! Navigation property.
 		UserEntity? user = _dbContext.Users
 			.Include(u => u.UserRoles!)
 				.ThenInclude(ur => ur.Role)
@@ -35,6 +36,7 @@ public class UserService
 		if (user == null)
 			throw new NotFoundException();
 
+		// ! Navigation property.
 		UserRoleEntity? userRole = user.UserRoles!.Find(ur => ur.RoleName == roleName);
 		if (userRole != null)
 		{
