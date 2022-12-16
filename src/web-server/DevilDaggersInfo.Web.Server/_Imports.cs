@@ -1,6 +1,4 @@
-global using DevilDaggersInfo.Web.Server.Extensions;
 global using DevilDaggersInfo.Web.Server.Services;
-global using DevilDaggersInfo.Web.Server.Utils;
 global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.EntityFrameworkCore;
 global using Newtonsoft.Json;

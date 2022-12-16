@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Types.Web;
+using DevilDaggersInfo.Web.Server.Extensions;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
 
