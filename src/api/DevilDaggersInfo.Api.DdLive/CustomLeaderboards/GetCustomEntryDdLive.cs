@@ -4,53 +4,53 @@ namespace DevilDaggersInfo.Api.DdLive.CustomLeaderboards;
 
 public record GetCustomEntryDdLive
 {
-	public int Id { get; init; }
+	public required int Id { get; init; }
 
-	public int Rank { get; init; }
+	public required int Rank { get; init; }
 
-	public int PlayerId { get; init; }
+	public required int PlayerId { get; init; }
 
 	public required string PlayerName { get; init; }
 
-	public string? CountryCode { get; init; }
+	public required string? CountryCode { get; init; }
 
-	public double Time { get; init; }
+	public required double Time { get; init; }
 
-	public CustomLeaderboardDagger? CustomLeaderboardDagger { get; init; }
+	public required CustomLeaderboardDagger? CustomLeaderboardDagger { get; init; }
 
-	public int GemsCollected { get; init; }
+	public required int GemsCollected { get; init; }
 
-	public int EnemiesKilled { get; init; }
+	public required int EnemiesKilled { get; init; }
 
-	public int DaggersFired { get; init; }
+	public required int DaggersFired { get; init; }
 
-	public int DaggersHit { get; init; }
+	public required int DaggersHit { get; init; }
 
-	public int EnemiesAlive { get; init; }
+	public required int EnemiesAlive { get; init; }
 
-	public int HomingStored { get; init; }
+	public required int HomingStored { get; init; }
 
-	public int? HomingEaten { get; init; }
+	public required int? HomingEaten { get; init; }
 
-	public int? GemsDespawned { get; init; }
+	public required int? GemsDespawned { get; init; }
 
-	public int? GemsEaten { get; init; }
+	public required int? GemsEaten { get; init; }
 
-	public byte DeathType { get; init; }
+	public required byte DeathType { get; init; }
 
-	public double LevelUpTime2 { get; init; }
+	public required double LevelUpTime2 { get; init; }
 
-	public double LevelUpTime3 { get; init; }
+	public required double LevelUpTime3 { get; init; }
 
-	public double LevelUpTime4 { get; init; }
+	public required double LevelUpTime4 { get; init; }
 
-	public DateTime SubmitDate { get; init; }
+	public required DateTime SubmitDate { get; init; }
 
-	public string? ClientVersion { get; init; }
+	public required string? ClientVersion { get; init; }
 
-	public CustomLeaderboardsClient Client { get; init; }
+	public required CustomLeaderboardsClient Client { get; init; }
 
-	public bool HasGraphs { get; init; }
+	public required bool HasGraphs { get; init; }
 
-	public bool HasReplay { get; init; }
+	public required bool HasReplay { get; init; }
 }
