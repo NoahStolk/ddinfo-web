@@ -2,15 +2,17 @@
 @inherits BaseAdminPage
 @using DevilDaggersInfo.Api.Admin.Users
 @using DevilDaggersInfo.Api.Admin.Players
+@using DevilDaggersInfo.Web.Client.StateObjects.Admin.Users
+@using Microsoft.AspNetCore.Components
 
 <AdminAuthorizer Base="this" RequiredRole="@Roles.Players">
 	<Heading Title="Admin - Assign Player" />
 
-	<EditForm Model="@Model" OnValidSubmit="@OnValidSubmit">
+	<EditForm Model="@StateObject" OnValidSubmit="@OnValidSubmit">
 		<DataAnnotationsValidator />
 		<ValidationSummary />
 
-		<InputWrapper Label="Player"><SearchDropdown TKey="int" Values="@_playerNames" Converter="s => int.Parse(s)" @bind-Value="@Model.PlayerId" /></InputWrapper>
+		<InputWrapper Label="Player"><SearchDropdown TKey="int" Values="@_playerNames" Converter="s => int.Parse(s)" @bind-Value="@StateObject.PlayerId" /></InputWrapper>
 
 		<button class="btn btn-gray p-1" type="submit">Assign player</button>
 	</EditForm>
@@ -22,7 +24,7 @@
 
 	[Parameter, EditorRequired] public int Id { get; set; }
 
-	[Parameter] public AssignPlayer Model { get; set; } = new(); // TODO: Use state object.
+	[Parameter] public AssignPlayerState StateObject { get; set; } = new();
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -34,7 +36,7 @@
 			_playerNames = getPlayerNames.ToDictionary(m => m.Id, m => m.PlayerName);
 
 			GetUser getUser = await Http.GetUserById(Id);
-			Model.PlayerId = getUser.PlayerId ?? 0;
+			StateObject.PlayerId = getUser.PlayerId ?? 0;
 		}
 		catch (AccessTokenNotAvailableException exception)
 		{
@@ -46,7 +48,7 @@
 	{
 		try
 		{
-			HttpResponseMessage hrm = await Http.AssignPlayer(Id, Model);
+			HttpResponseMessage hrm = await Http.AssignPlayer(Id, StateObject.ToModel());
 
 			if (hrm.StatusCode == HttpStatusCode.OK)
 				NavigationManager.NavigateTo("/admin/users");

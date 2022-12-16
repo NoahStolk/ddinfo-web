@@ -58,17 +58,27 @@ public class UserService
 		if (user == null)
 			throw new NotFoundException($"User with ID '{id}' was not found.");
 
-		var player = _dbContext.Players.Select(p => new { p.Id, p.PlayerName }).FirstOrDefault(p => p.Id == assignPlayer.PlayerId);
-		if (player == null)
-			throw new NotFoundException($"Player with ID '{assignPlayer.PlayerId}' was not found.");
+		if (assignPlayer.PlayerId == 0)
+		{
+			user.PlayerId = null;
+			await _dbContext.SaveChangesAsync();
 
-		if (_dbContext.Users.Any(u => u.PlayerId == player.Id))
-			throw new AdminDomainException($"Player with ID '{player.Id}' is already linked.");
+			_logger.LogWarning("User '{userName}' ({userId}) has been unlinked.", user.Name, user.Id);
+		}
+		else
+		{
+			var player = _dbContext.Players.Select(p => new { p.Id, p.PlayerName }).FirstOrDefault(p => p.Id == assignPlayer.PlayerId);
+			if (player == null)
+				throw new NotFoundException($"Player with ID '{assignPlayer.PlayerId}' was not found.");
 
-		user.PlayerId = player.Id;
-		await _dbContext.SaveChangesAsync();
+			if (_dbContext.Users.Any(u => u.PlayerId == player.Id))
+				throw new AdminDomainException($"Player with ID '{player.Id}' is already linked.");
 
-		_logger.LogWarning("Player '{playerName}' ({playerId}) was linked to user '{userName}' ({userId}).", player.PlayerName, player.Id, user.Name, user.Id);
+			user.PlayerId = player.Id;
+			await _dbContext.SaveChangesAsync();
+
+			_logger.LogWarning("Player '{playerName}' ({playerId}) has been linked to user '{userName}' ({userId}).", player.PlayerName, player.Id, user.Name, user.Id);
+		}
 	}
 
 	public async Task ResetPasswordForUser(int id, ResetPassword resetPassword)
