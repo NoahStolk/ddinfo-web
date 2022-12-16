@@ -1,5 +1,6 @@
 using DevilDaggersInfo.Core.Encryption;
 using DevilDaggersInfo.Web.Server.Domain.Commands.CustomEntries;
+using DevilDaggersInfo.Web.Server.Domain.Configuration;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
@@ -11,6 +12,7 @@ using DevilDaggersInfo.Web.Server.Domain.Tests.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System.Text;
 
@@ -52,21 +54,16 @@ public class CustomEntryProcessorTests
 		Mock<ILogger<CustomEntryProcessor>> customEntryProcessorLogger = new();
 
 		const string secret = "secretsecretsecr";
-		Dictionary<string, object> appSettings = new()
-		{
-			["CustomLeaderboardSecrets"] = new Dictionary<string, string>
-			{
-				["InitializationVector"] = secret,
-				["Password"] = secret,
-				["Salt"] = secret,
-			},
-		};
-		ConfigurationBuilder builder = new();
-		builder.AddJsonStream(new MemoryStream(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(appSettings))));
-		IConfigurationRoot configuration = builder.Build();
-
 		_encryptionWrapper = new(secret, secret, secret);
-		_customEntryProcessor = new(_dbContext.Object, customEntryProcessorLogger.Object, spawnsetHashCache.Object, fileSystemService.Object, configuration, new Mock<ICustomLeaderboardSubmissionLogger>().Object);
+
+		CustomLeaderboardsOptions options = new()
+		{
+			InitializationVector = secret,
+			Password = secret,
+			Salt = secret,
+		};
+
+		_customEntryProcessor = new(_dbContext.Object, customEntryProcessorLogger.Object, spawnsetHashCache.Object, fileSystemService.Object, new OptionsWrapper<CustomLeaderboardsOptions>(options), new Mock<ICustomLeaderboardSubmissionLogger>().Object);
 
 		byte[] spawnsetFileContents = File.ReadAllBytes(Path.Combine(spawnsetsPath, "V3"));
 		if (SpawnsetBinary.TryParse(spawnsetFileContents, out SpawnsetBinary? spawnsetBinary))
