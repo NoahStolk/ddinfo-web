@@ -1,5 +1,4 @@
 global using DevilDaggersInfo.Common.Extensions;
-global using DevilDaggersInfo.Core.Spawnset;
 global using DevilDaggersInfo.Core.Spawnset.Summary;
 global using DevilDaggersInfo.Core.Wiki;
 global using DevilDaggersInfo.Core.Wiki.Structs;
