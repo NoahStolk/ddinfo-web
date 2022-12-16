@@ -48,7 +48,7 @@ public partial class WorldRecordProgressionPage
 	protected override async Task OnInitializedAsync()
 	{
 		GetWorldRecordDataContainer data = await Http.GetWorldRecordData();
-		GetWorldRecord currentWr = data.WorldRecords.MaxBy(wr => wr.Entry.Time)!;
+		GetWorldRecord currentWr = data.WorldRecords.MaxBy(wr => wr.DateTime) ?? throw new InvalidOperationException("There are no world records.");
 		_currentWorldRecord = currentWr.Entry.Time;
 		_currentWorldRecordHolderId = currentWr.Entry.Id;
 
