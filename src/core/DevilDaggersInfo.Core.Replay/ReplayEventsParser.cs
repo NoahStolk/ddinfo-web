@@ -92,17 +92,13 @@ public static class ReplayEventsParser
 
 	private static IEvent ParseHitEvent(BinaryReader br)
 	{
-		// Examples:
-		// 1. When a dagger is deleted from the scene; A is the entity ID of the dagger and B is 0.
-		// 2. When a dagger is eaten by Ghostpede; A is the entity ID of the Ghostpede and B is the entity ID of the dagger.
-		// 3. When a Level 4 homing splash 'dagger' hits a Squid I; A is the entity ID of the Squid I and B is the entity ID of the homing splash 'dagger'.
 		int entityIdA = br.ReadInt32();
 		if (entityIdA == 0)
 			return ParseDeathEvent(br);
 
 		int entityIdB = br.ReadInt32();
-		int c = br.ReadInt32();
-		return new HitEvent(entityIdA, entityIdB, c);
+		int userData = br.ReadInt32();
+		return new HitEvent(entityIdA, entityIdB, userData);
 	}
 
 	private static DeathEvent ParseDeathEvent(BinaryReader br)

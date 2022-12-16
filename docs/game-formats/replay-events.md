@@ -164,26 +164,38 @@ Every event starts with an event type, which is a single byte. After that, addit
 
 ### <a id="hit-event"></a>Hit event ###
 
-The hit event can be interpreted in multiple ways. This is why we name the values A, B, and C.
-
-| Data type | Size | Meaning |
-|-----------|------|---------|
-| int32     |    4 | A       |
-| int32     |    4 | B       |
-| int32     |    4 | C       |
-
-A is probably always an entity ID, 0 being the player entity ID (hence why we need to start counting from 1 when counting spawn events). See [entity IDs](#entity-ids) for details.
-B seems to be an optional entity ID.
-
-The meaning behind the C value is currently not known.
+| Data type | Size | Meaning                |
+|-----------|------|------------------------|
+| int32     |    4 | Entity ID A            |
+| int32     |    4 | Entity ID B (optional) |
+| int32     |    4 | User data              |
 
 Examples:
-- If A is 0, it means the player died. B will contain the [death type](#death-types). C will be 0.
-- When a dagger is deleted from the scene; A is the entity ID of the dagger and B is 0.
-- When a dagger is eaten by Ghostpede; A is the entity ID of the Ghostpede and B is the entity ID of the dagger.
-- When a Level 4 homing splash 'dagger' hits a Squid I; A is the entity ID of the Squid I and B is the entity ID of the homing splash 'dagger'.
+- If entity ID A is 0, it means the player died. Entity ID B will contain the [death type](#death-types). User data will be 0.
+- When a dagger is deleted from the scene; Entity ID A is the entity ID of the dagger and entity ID B is 0.
+- When a dagger is eaten by Ghostpede; entity ID A is the entity ID of the Ghostpede and entity ID B is the entity ID of the dagger.
+- When a Level 4 homing splash 'dagger' hits a Squid I; entity ID A is the entity ID of the Squid I and entity ID B is the entity ID of the homing splash 'dagger'.
 
-More scenarios will be discovered and documented in the future.
+#### User data
+
+These values represent a part of an enemy. This is used to determine whether an enemy was actually damaged or not.
+
+Weak points:
+
+| Enemy type | Weak point values            |
+|------------|------------------------------|
+| Squid I    | `0`                          |
+| Squid II   | `0`, `1`                     |
+| Squid III  | `0`, `1`, `2`                |
+| Leviathan  | `0`, `1`, `2`, `3`, `4`, `5` |
+| Spider I   | `0`                          |
+| Spider II  | `0`                          |
+
+Any other value means the enemy was hit but not damaged.
+
+In case of pedes, each segment has its own ID which is always a hit. When damaging a dead pede segment, the value is negated.
+
+All other enemies are always hit, regardless of this value.
 
 #### <a id="death-types"></a>Death types ####
 

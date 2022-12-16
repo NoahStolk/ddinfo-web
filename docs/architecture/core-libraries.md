@@ -7,6 +7,7 @@ There are currently four types of core libraries.
 | **Project**              | **Reasoning**                                                        |
 |--------------------------|----------------------------------------------------------------------|
 | App.Core.ApiClient       | Provides API client base functionality for apps                      |
+| App.Core.AssetInterop    | Provides interoperability between Core.Mod and Warp.NET              |
 | App.Core.GameMemory      | Only apps are able to access game memory                             |
 | App.Core.NativeInterface | Only apps are able to access native functionality through interfaces |
 
@@ -33,6 +34,7 @@ There are currently four types of core libraries.
 
 ## `web-core`
 
-| **Project**     | **Reasoning**                                                      |
-|-----------------|--------------------------------------------------------------------|
-| Web.Core.Claims | Both the web server domain and the web client require this library |
+| **Project**                 | **Reasoning**                                                      |
+|-----------------------------|--------------------------------------------------------------------|
+| Web.Core.Claims             | Both the web server domain and the web client require this library |
+| Web.Core.CriteriaExpression | Both the web server domain and the web client require this library |

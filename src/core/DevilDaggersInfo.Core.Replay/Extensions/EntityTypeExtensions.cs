@@ -45,7 +45,6 @@ public static class EntityTypeExtensions
 
 	private static bool IsWeakPoint(this EntityType entityType, int userData) => entityType switch
 	{
-		EntityType.Squid1 => userData is >= 0 and < 1,
 		EntityType.Squid2 => userData is >= 0 and < 2,
 		EntityType.Squid3 => userData is >= 0 and < 3,
 		EntityType.Leviathan => userData is >= 0 and < 6,

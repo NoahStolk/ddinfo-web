@@ -21,19 +21,19 @@ DevilDaggersInfo is separated into layers, then into project types, then into in
 
 ### App layer
 
-| **Subfolder** | **Project type**                                          | **Can depend on**                                                          |
-|---------------|-----------------------------------------------------------|----------------------------------------------------------------------------|
-| `app`         | UI app heads that run natively                            | `common`, `core`, `razor-core`, `razor`, `types`                           |
-| `app-core`    | Core set of features for apps                             | `common`, `core`                                                           |
-| `razor`       | Razor UI libraries for apps or web clients                | `app-core`, `common`, `core`, `razor-core`, `types`                        |
+| **Subfolder** | **Project type**               | **Can depend on**                       |
+|---------------|--------------------------------|-----------------------------------------|
+| `app`         | UI app heads that run natively | `common`, `core`, `razor-core`, `types` |
+| `app-core`    | Core set of features for apps  | `common`, `core`                        |
+| `app-ui`      | UI libraries for app           | `app-core`, `common`, `core`, `types`   |
 
 ### Web layer
 
-| **Subfolder** | **Project type**                                          | **Can depend on**                                                          |
-|---------------|-----------------------------------------------------------|----------------------------------------------------------------------------|
-| `web-client`  | Client apps that run in the browser (Blazor WebAssembly)  | `api`, `common`, `core`, `razor-core`, `razor`, `types`, `web-core`,       |
-| `web-core`    | Reusable web logic                                        | `common`, `core`, `web-core`                                               |
-| `web-server`  | Server code base (ASP.NET Core)                           | `api`, `common`, `core`, `types`, `web-client`, `web-core`, `web-server`   |
+| **Subfolder** | **Project type**                                          | **Can depend on**                                                        |
+|---------------|-----------------------------------------------------------|--------------------------------------------------------------------------|
+| `web-client`  | Client apps that run in the browser (Blazor WebAssembly)  | `api`, `common`, `core`, `razor-core`, `types`, `web-core`,              |
+| `web-core`    | Reusable web logic                                        | `common`, `core`, `web-core`                                             |
+| `web-server`  | Server code base (ASP.NET Core)                           | `api`, `common`, `core`, `types`, `web-client`, `web-core`, `web-server` |
 
 ### Miscellaneous
 
@@ -42,14 +42,6 @@ DevilDaggersInfo is separated into layers, then into project types, then into in
 | `cmd`         | Console apps                                              | `common`, `core`                                                           |
 | `tests`       | Unit tests                                                | Anything                                                                   |
 | `tool`        | Tools for internal usage                                  | Anything                                                                   |
-
-## Forbidden dependencies
-
-In order to keep the architecture clean, certain dependencies are forbidden. The [core libraries](core-libraries.md) are reusable libraries that one or more other project types can depend on, including libraries of the project type itself. For example, a `razor-core` project can depend on another `razor-core` project, but a `razor` project (which is not a core library) cannot depend on another `razor` project.
-
-## Separated app heads
-
-The UI logic for each app lives in its own UI library. These are not tied to app heads. This allows the apps to switch between framework very easily. For instance, a .NET MAUI version for DDAE could easily be created without affecting the current Photino version of the app.
 
 ## End state chart (summary)
 
