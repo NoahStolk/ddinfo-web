@@ -3,11 +3,7 @@ using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 using DevilDaggersInfo.Web.Server.Domain.Main.Repositories;
 using DevilDaggersInfo.Web.Server.Domain.Main.Services;
-using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
-using DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardHistory;
 using DevilDaggersInfo.Web.Server.Domain.Repositories;
-using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
-using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 using DevilDaggersInfo.Web.Server.Domain.Utils;
 using Microsoft.AspNetCore.Authorization;
 

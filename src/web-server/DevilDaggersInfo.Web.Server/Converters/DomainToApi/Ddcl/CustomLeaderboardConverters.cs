@@ -35,27 +35,6 @@ public static class CustomLeaderboardConverters
 		TotalPlayers = uploadResponse.SortedEntries.Count,
 	};
 
-	public static DdclApi.GetCustomLeaderboard ToDdclApi(this SortedCustomLeaderboard sortedCustomLeaderboard) => new()
-	{
-		Category = sortedCustomLeaderboard.Category,
-		Daggers = sortedCustomLeaderboard.Daggers?.ToDdclApi(),
-		IsAscending = sortedCustomLeaderboard.Category.IsAscending(),
-		SortedEntries = sortedCustomLeaderboard.CustomEntries.ConvertAll(ce => ce.ToDdclApi()),
-		SpawnsetName = sortedCustomLeaderboard.SpawnsetName,
-	};
-
-	public static DdclApi.GetCustomLeaderboardForOverview ToDdclApi(this CustomLeaderboardOverview customLeaderboard) => new()
-	{
-		Category = customLeaderboard.Category,
-		Daggers = customLeaderboard.Daggers?.ToDdclApi(),
-		PlayerCount = customLeaderboard.PlayerCount,
-		SelectedPlayerStats = customLeaderboard.SelectedPlayerStats?.ToDdclApi(),
-		SpawnsetId = customLeaderboard.SpawnsetId,
-		SpawnsetName = customLeaderboard.SpawnsetName,
-		SubmitCount = customLeaderboard.TotalRunsSubmitted,
-		WorldRecord = customLeaderboard.WorldRecord?.ToDdclApi(),
-	};
-
 	private static DdclApi.GetCustomLeaderboardDdcl ToDdclApi(this CustomLeaderboardSummary customLeaderboard) => new()
 	{
 		Category = customLeaderboard.Category,
@@ -73,24 +52,6 @@ public static class CustomLeaderboardConverters
 		Leviathan = customLeaderboardDaggers.Leviathan.ToSecondsTime(),
 	};
 
-	public static DdclApi.GetCustomLeaderboardSelectedPlayerStats ToDdclApi(this CustomLeaderboardOverviewSelectedPlayerStats customLeaderboardOverviewSelectedPlayerStats) => new()
-	{
-		Dagger = customLeaderboardOverviewSelectedPlayerStats.Dagger,
-		Rank = customLeaderboardOverviewSelectedPlayerStats.Rank,
-		Time = customLeaderboardOverviewSelectedPlayerStats.Time.ToSecondsTime(),
-		NextDagger = customLeaderboardOverviewSelectedPlayerStats.NextDagger == null ? null : new()
-		{
-			Dagger = customLeaderboardOverviewSelectedPlayerStats.NextDagger.Dagger,
-			Time = customLeaderboardOverviewSelectedPlayerStats.NextDagger.Time.ToSecondsTime(),
-		},
-	};
-
-	public static DdclApi.GetCustomLeaderboardWorldRecord ToDdclApi(this CustomLeaderboardOverviewWorldRecord customLeaderboardOverviewWorldRecord) => new()
-	{
-		Dagger = customLeaderboardOverviewWorldRecord.Dagger,
-		Time = customLeaderboardOverviewWorldRecord.Time.ToSecondsTime(),
-	};
-
 	private static DdclApi.SubmissionType ToDdclApi(this SubmissionType submissionType) => submissionType switch
 	{
 		SubmissionType.NoHighscore => DdclApi.SubmissionType.NoHighscore,
@@ -102,32 +63,6 @@ public static class CustomLeaderboardConverters
 	private static DdclApi.GetScoreState<T> ToDdclApi<T>(this UploadResponseScoreState<T> scoreState)
 		where T : struct
 		=> new(scoreState.Value, scoreState.ValueDifference);
-
-	private static DdclApi.GetCustomEntry ToDdclApi(this CustomEntry customEntry) => new()
-	{
-		DaggersFired = customEntry.DaggersFired,
-		DaggersHit = customEntry.DaggersHit,
-		DeathType = customEntry.DeathType,
-		EnemiesAlive = customEntry.EnemiesAlive,
-		EnemiesKilled = customEntry.EnemiesKilled,
-		GemsCollected = customEntry.GemsCollected,
-		GemsDespawned = customEntry.GemsDespawned,
-		GemsEaten = customEntry.GemsEaten,
-		GemsTotal = customEntry.GemsTotal,
-		HasReplay = customEntry.HasReplay,
-		HomingEaten = customEntry.HomingEaten,
-		HomingStored = customEntry.HomingStored,
-		Id = customEntry.Id,
-		LevelUpTime2InSeconds = customEntry.LevelUpTime2.ToSecondsTime(),
-		LevelUpTime3InSeconds = customEntry.LevelUpTime3.ToSecondsTime(),
-		LevelUpTime4InSeconds = customEntry.LevelUpTime4.ToSecondsTime(),
-		PlayerId = customEntry.PlayerId,
-		PlayerName = customEntry.PlayerName,
-		Rank = customEntry.Rank,
-		SubmitDate = customEntry.SubmitDate,
-		TimeInSeconds = customEntry.Time.ToSecondsTime(),
-		CustomLeaderboardDagger = customEntry.CustomLeaderboardDagger,
-	};
 
 	private static DdclApi.GetCustomEntryDdcl ToDdclApiObsolete(this CustomEntry customEntry) => new()
 	{
