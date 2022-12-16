@@ -10,9 +10,9 @@ public class SortedCustomLeaderboard
 
 	public int SpawnsetAuthorId { get; init; }
 
-	public string SpawnsetName { get; init; } = null!;
+	public required string SpawnsetName { get; init; }
 
-	public string SpawnsetAuthorName { get; init; } = null!;
+	public required string SpawnsetAuthorName { get; init; }
 
 	public string? SpawnsetHtmlDescription { get; init; }
 
@@ -26,7 +26,7 @@ public class SortedCustomLeaderboard
 
 	public int TotalRunsSubmitted { get; init; }
 
-	public List<CustomEntry> CustomEntries { get; init; } = new(); // TODO: C# 11 required.
+	public required List<CustomEntry> CustomEntries { get; init; }
 
-	public List<CustomLeaderboardCriteria> Criteria { get; init; } = new();
+	public required List<CustomLeaderboardCriteria> Criteria { get; init; }
 }

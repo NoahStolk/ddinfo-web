@@ -4,5 +4,5 @@ public record PlayerCommonName
 {
 	public int Id { get; init; }
 
-	public string CommonName { get; init; } = null!;
+	public required string CommonName { get; init; }
 }

@@ -8,7 +8,7 @@ public class CustomLeaderboardOverviewWorldRecord
 
 	public int PlayerId { get; init; }
 
-	public string PlayerName { get; init; } = null!;
+	public required string PlayerName { get; init; }
 
 	public CustomLeaderboardDagger? Dagger { get; init; }
 }
