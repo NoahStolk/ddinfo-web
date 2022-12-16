@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Web.Server.Services;
+
 namespace DevilDaggersInfo.Web.Server.Middleware;
 
 public class ResponseTimeMiddleware

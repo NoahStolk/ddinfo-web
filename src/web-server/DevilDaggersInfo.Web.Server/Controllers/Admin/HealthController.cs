@@ -1,5 +1,6 @@
 using DevilDaggersInfo.Api.Admin.Health;
 using DevilDaggersInfo.Web.Core.Claims;
+using DevilDaggersInfo.Web.Server.Services;
 using Microsoft.AspNetCore.Authorization;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Admin;

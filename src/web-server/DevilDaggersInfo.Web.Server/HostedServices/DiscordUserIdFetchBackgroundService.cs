@@ -1,5 +1,6 @@
 using DevilDaggersInfo.Web.Server.Clients.Clubber;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
+using DevilDaggersInfo.Web.Server.Services;
 
 namespace DevilDaggersInfo.Web.Server.HostedServices;
 
