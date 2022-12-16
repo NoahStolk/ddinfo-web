@@ -1,4 +1,3 @@
-using DevilDaggersInfo.Razor.Core.Components;
 using DevilDaggersInfo.Types.Core.Wiki;
 using Microsoft.AspNetCore.Components;
 

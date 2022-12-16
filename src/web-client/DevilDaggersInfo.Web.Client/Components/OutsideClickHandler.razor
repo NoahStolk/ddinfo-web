@@ -6,11 +6,15 @@
 
 @code
 {
-	[Parameter, EditorRequired] public Action OnClickOutside { get; set; } = null!;
+	[Parameter]
+	[EditorRequired]
+	public required Action OnClickOutside { get; set; }
 
-	[Parameter] public RenderFragment ChildContent { get; set; } = null!;
+	[Parameter]
+	public required RenderFragment ChildContent { get; set; }
 
-	[Parameter] public string? CssClass { get; set; }
+	[Parameter]
+	public string? CssClass { get; set; }
 
 	private string Id { get; set; } = Guid.NewGuid().ToString();
 
