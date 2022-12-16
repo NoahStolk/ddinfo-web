@@ -15,10 +15,12 @@ using DevilDaggersInfo.Web.Server.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Rewrite;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using NJsonSchema;
 using System.Diagnostics;
 using System.Globalization;
+using System.Text;
 
 namespace DevilDaggersInfo.Web.Server;
 

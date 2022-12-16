@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DevilDaggersInfo.Web.Server.Middleware;
 

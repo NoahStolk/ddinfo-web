@@ -1,12 +1,13 @@
 using DevilDaggersInfo.Api.Main.Authentication;
 using DevilDaggersInfo.Web.Server.Domain.Main.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 
+[Route("api/authentication")]
 [ApiController]
 [ApiExplorerSettings(IgnoreApi = true)]
-[Route("api/authentication")]
 public class AuthenticationController : ControllerBase
 {
 	private readonly AuthenticationService _authenticationService;

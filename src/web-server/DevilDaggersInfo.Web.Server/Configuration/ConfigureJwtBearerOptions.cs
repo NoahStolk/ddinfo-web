@@ -2,6 +2,7 @@ using DevilDaggersInfo.Web.Server.Domain.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace DevilDaggersInfo.Web.Server.Configuration;
 

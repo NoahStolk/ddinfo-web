@@ -2,10 +2,12 @@ using DevilDaggersInfo.Api.DdLive.LeaderboardStatistics;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.DdLive;
 using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 using DevilDaggersInfo.Web.Server.Utils;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.DdLive;
 
 [Route("api/ddlive/leaderboard-statistics")]
+[ApiController]
 public class LeaderboardStatisticsController : ControllerBase
 {
 	private readonly LeaderboardStatisticsCache _leaderboardStatisticsCache;

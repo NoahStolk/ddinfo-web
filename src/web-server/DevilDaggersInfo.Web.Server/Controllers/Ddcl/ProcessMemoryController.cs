@@ -1,12 +1,14 @@
 using DevilDaggersInfo.Api.Ddcl.ProcessMemory;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Repositories;
+using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Ddcl;
 
+[Obsolete("DDCL 1.8.3 will be removed.")]
 [Route("api/ddcl/process-memory")]
 [ApiController]
-[Obsolete("DDCL 1.8.3 will be removed.")]
 public class ProcessMemoryController : ControllerBase
 {
 	private readonly MarkerRepository _markerRepository;

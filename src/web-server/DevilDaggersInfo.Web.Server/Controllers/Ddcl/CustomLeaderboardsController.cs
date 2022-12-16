@@ -1,10 +1,11 @@
 using DevilDaggersInfo.Web.Server.Domain.Repositories;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Ddcl;
 
+[Obsolete("DDCL 1.8.3 will be removed.")]
 [Route("api/ddcl/custom-leaderboards")]
 [ApiController]
-[Obsolete("DDCL 1.8.3 will be removed.")]
 public class CustomLeaderboardsController : ControllerBase
 {
 	private readonly CustomLeaderboardRepository _customLeaderboardRepository;

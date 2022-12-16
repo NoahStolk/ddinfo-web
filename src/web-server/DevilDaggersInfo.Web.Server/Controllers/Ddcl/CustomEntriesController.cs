@@ -5,12 +5,13 @@ using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Ddcl;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.Domain.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Ddcl;
 
+[Obsolete("DDCL 1.8.3 will be removed.")]
 [Route("api/ddcl/custom-entries")]
 [ApiController]
-[Obsolete("DDCL 1.8.3 will be removed.")]
 public class CustomEntriesController : ControllerBase
 {
 	private readonly ILogger<CustomEntriesController> _logger;
