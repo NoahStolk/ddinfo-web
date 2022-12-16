@@ -1,5 +1,6 @@
 @page "/leaderboard/search"
 @using DevilDaggersInfo.Api.Main.Leaderboards
+@using DevilDaggersInfo.Web.Client.Components.Leaderboards
 @inject MainApiHttpClient Http
 @inject NavigationManager NavigationManager
 
@@ -9,7 +10,7 @@
 	<span>Username</span>
 	<input class="bg-black border-gray-3 border-2" value="@Username" @onchange="ChangeInputUsername" />
 
-	@if (Username == null || Username.Length < 3 || Username.Length > 16)
+	@if (Username == null || Username.Length is < 3 or > 16)
 	{
 		<div>Please enter a value that is between 3 and 16 characters in length.</div>
 	}

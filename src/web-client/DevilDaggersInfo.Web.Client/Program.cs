@@ -6,6 +6,7 @@ using DevilDaggersInfo.Web.Client.HttpClients;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using System.Reflection;
 using System.Runtime.InteropServices.JavaScript;
 
 namespace DevilDaggersInfo.Web.Client;
