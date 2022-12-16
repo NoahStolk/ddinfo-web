@@ -34,8 +34,8 @@ public class IntegerArrayCompressorTests
 	public void Test1BitNumbers()
 	{
 		const byte bitCount = 1;
-		bool[] binary0 = new[] { false };
-		bool[] binary1 = new[] { true };
+		bool[] binary0 = { false };
+		bool[] binary1 = { true };
 
 		CollectionAssert.AreEqual(binary0, IntegerArrayCompressor.GetBitsFromValue(0, bitCount));
 		CollectionAssert.AreEqual(binary1, IntegerArrayCompressor.GetBitsFromValue(1, bitCount));
@@ -48,10 +48,10 @@ public class IntegerArrayCompressorTests
 	public void Test2BitNumbers()
 	{
 		const byte bitCount = 2;
-		bool[] binary0 = new[] { false, false };
-		bool[] binary1 = new[] { false, true };
-		bool[] binary2 = new[] { true, false };
-		bool[] binary3 = new[] { true, true };
+		bool[] binary0 = { false, false };
+		bool[] binary1 = { false, true };
+		bool[] binary2 = { true, false };
+		bool[] binary3 = { true, true };
 
 		CollectionAssert.AreEqual(binary0, IntegerArrayCompressor.GetBitsFromValue(0, bitCount));
 		CollectionAssert.AreEqual(binary1, IntegerArrayCompressor.GetBitsFromValue(1, bitCount));
@@ -68,14 +68,14 @@ public class IntegerArrayCompressorTests
 	public void Test3BitNumbers()
 	{
 		const byte bitCount = 3;
-		bool[] binary0 = new[] { false, false, false };
-		bool[] binary1 = new[] { false, false, true };
-		bool[] binary2 = new[] { false, true, false };
-		bool[] binary3 = new[] { false, true, true };
-		bool[] binary4 = new[] { true, false, false };
-		bool[] binary5 = new[] { true, false, true };
-		bool[] binary6 = new[] { true, true, false };
-		bool[] binary7 = new[] { true, true, true };
+		bool[] binary0 = { false, false, false };
+		bool[] binary1 = { false, false, true };
+		bool[] binary2 = { false, true, false };
+		bool[] binary3 = { false, true, true };
+		bool[] binary4 = { true, false, false };
+		bool[] binary5 = { true, false, true };
+		bool[] binary6 = { true, true, false };
+		bool[] binary7 = { true, true, true };
 
 		CollectionAssert.AreEqual(binary0, IntegerArrayCompressor.GetBitsFromValue(0, bitCount));
 		CollectionAssert.AreEqual(binary1, IntegerArrayCompressor.GetBitsFromValue(1, bitCount));
@@ -100,11 +100,11 @@ public class IntegerArrayCompressorTests
 	public void Test8BitNumbers()
 	{
 		const byte bitCount = 8;
-		bool[] binary0 = new[] { false, false, false, false, false, false, false, false };
-		bool[] binary16 = new[] { false, false, false, true, false, false, false, false };
-		bool[] binary72 = new[] { false, true, false, false, true, false, false, false };
-		bool[] binary75 = new[] { false, true, false, false, true, false, true, true };
-		bool[] binary255 = new[] { true, true, true, true, true, true, true, true };
+		bool[] binary0 = { false, false, false, false, false, false, false, false };
+		bool[] binary16 = { false, false, false, true, false, false, false, false };
+		bool[] binary72 = { false, true, false, false, true, false, false, false };
+		bool[] binary75 = { false, true, false, false, true, false, true, true };
+		bool[] binary255 = { true, true, true, true, true, true, true, true };
 
 		CollectionAssert.AreEqual(binary0, IntegerArrayCompressor.GetBitsFromValue(0, bitCount));
 		CollectionAssert.AreEqual(binary16, IntegerArrayCompressor.GetBitsFromValue(16, bitCount));
@@ -123,12 +123,12 @@ public class IntegerArrayCompressorTests
 	public void Test9BitNumbers()
 	{
 		const byte bitCount = 9;
-		bool[] binary0 = new[] { false, false, false, false, false, false, false, false, false };
-		bool[] binary16 = new[] { false, false, false, false, true, false, false, false, false };
-		bool[] binary72 = new[] { false, false, true, false, false, true, false, false, false };
-		bool[] binary75 = new[] { false, false, true, false, false, true, false, true, true };
-		bool[] binary255 = new[] { false, true, true, true, true, true, true, true, true };
-		bool[] binary511 = new[] { true, true, true, true, true, true, true, true, true };
+		bool[] binary0 = { false, false, false, false, false, false, false, false, false };
+		bool[] binary16 = { false, false, false, false, true, false, false, false, false };
+		bool[] binary72 = { false, false, true, false, false, true, false, false, false };
+		bool[] binary75 = { false, false, true, false, false, true, false, true, true };
+		bool[] binary255 = { false, true, true, true, true, true, true, true, true };
+		bool[] binary511 = { true, true, true, true, true, true, true, true, true };
 
 		CollectionAssert.AreEqual(binary0, IntegerArrayCompressor.GetBitsFromValue(0, bitCount));
 		CollectionAssert.AreEqual(binary16, IntegerArrayCompressor.GetBitsFromValue(16, bitCount));
@@ -149,14 +149,14 @@ public class IntegerArrayCompressorTests
 	public void Test16BitNumbers()
 	{
 		const byte bitCount = 16;
-		bool[] binary0 = new[] { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false };
-		bool[] binary16 = new[] { false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false };
-		bool[] binary72 = new[] { false, false, false, false, false, false, false, false, false, true, false, false, true, false, false, false };
-		bool[] binary75 = new[] { false, false, false, false, false, false, false, false, false, true, false, false, true, false, true, true };
-		bool[] binary255 = new[] { false, false, false, false, false, false, false, false, true, true, true, true, true, true, true, true };
-		bool[] binary511 = new[] { false, false, false, false, false, false, false, true, true, true, true, true, true, true, true, true };
-		bool[] binary32767 = new[] { false, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true };
-		bool[] binary65535 = new[] { true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true };
+		bool[] binary0 = { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false };
+		bool[] binary16 = { false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false };
+		bool[] binary72 = { false, false, false, false, false, false, false, false, false, true, false, false, true, false, false, false };
+		bool[] binary75 = { false, false, false, false, false, false, false, false, false, true, false, false, true, false, true, true };
+		bool[] binary255 = { false, false, false, false, false, false, false, false, true, true, true, true, true, true, true, true };
+		bool[] binary511 = { false, false, false, false, false, false, false, true, true, true, true, true, true, true, true, true };
+		bool[] binary32767 = { false, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true };
+		bool[] binary65535 = { true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true };
 
 		CollectionAssert.AreEqual(binary0, IntegerArrayCompressor.GetBitsFromValue(0, bitCount));
 		CollectionAssert.AreEqual(binary16, IntegerArrayCompressor.GetBitsFromValue(16, bitCount));

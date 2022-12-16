@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Common.Extensions;
+
 namespace DevilDaggersInfo.Common.Tests;
 
 [TestClass]

@@ -47,8 +47,8 @@ public class ModBinaryTests
 
 		Assert.AreEqual(8, modBinary.Chunks.Count);
 
-		string[] names = new[] { "hand", "hand2", "hand2left", "hand3", "hand3left", "hand4", "hand4left", "handleft" };
-		int[] sizes = new[] { 166, 166, 198, 166, 198, 262, 390, 198 };
+		string[] names = { "hand", "hand2", "hand2left", "hand3", "hand3left", "hand4", "hand4left", "handleft" };
+		int[] sizes = { 166, 166, 198, 166, 198, 262, 390, 198 };
 		for (int i = 0; i < 8; i++)
 		{
 			ModBinaryChunk chunk = modBinary.Chunks[i];
