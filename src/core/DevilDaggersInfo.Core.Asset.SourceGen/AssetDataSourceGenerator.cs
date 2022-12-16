@@ -1,3 +1,8 @@
+using DevilDaggersInfo.CommonSourceGen;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Text;
+using System.Text;
+
 namespace DevilDaggersInfo.Core.Asset.SourceGen;
 
 [Generator]

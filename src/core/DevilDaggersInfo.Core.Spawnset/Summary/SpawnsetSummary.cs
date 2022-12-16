@@ -1,5 +1,6 @@
 using DevilDaggersInfo.Types.Core.Spawnsets;
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DevilDaggersInfo.Core.Spawnset.Summary;
 
