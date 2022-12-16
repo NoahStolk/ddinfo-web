@@ -3,6 +3,7 @@ using DevilDaggersInfo.Web.Server.Domain.Repositories;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Ddre;
 
+[Obsolete("DDRE alpha will be removed.")]
 [Route("api/ddre/process-memory")]
 [ApiController]
 public class ProcessMemoryController : ControllerBase
@@ -14,6 +15,7 @@ public class ProcessMemoryController : ControllerBase
 		_markerRepository = markerRepository;
 	}
 
+	[Obsolete("DDRE alpha will be removed.")]
 	[HttpGet("marker")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
