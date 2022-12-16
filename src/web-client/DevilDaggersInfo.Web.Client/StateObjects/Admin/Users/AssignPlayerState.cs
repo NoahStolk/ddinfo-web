@@ -1,4 +1,4 @@
-﻿using DevilDaggersInfo.Api.Admin.Users;
+using DevilDaggersInfo.Api.Admin.Users;
 
 namespace DevilDaggersInfo.Web.Client.StateObjects.Admin.Users;
 

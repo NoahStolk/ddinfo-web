@@ -1,4 +1,4 @@
-﻿using DevilDaggersInfo.Types.Web;
+using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Core.CriteriaExpression.Parts;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

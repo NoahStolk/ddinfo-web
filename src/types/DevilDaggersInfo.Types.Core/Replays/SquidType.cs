@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.Types.Core.Replays;
+namespace DevilDaggersInfo.Types.Core.Replays;
 
 public enum SquidType : byte
 {
