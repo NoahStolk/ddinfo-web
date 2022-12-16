@@ -1,8 +1,6 @@
 global using DevilDaggersInfo.Common.Extensions;
-global using DevilDaggersInfo.Core.Spawnset.Summary;
 global using DevilDaggersInfo.Core.Wiki;
 global using DevilDaggersInfo.Core.Wiki.Structs;
-global using DevilDaggersInfo.Web.Server.Clients.Leaderboard;
 global using DevilDaggersInfo.Web.Server.Domain.Entities;
 global using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 global using DevilDaggersInfo.Web.Server.Extensions;
