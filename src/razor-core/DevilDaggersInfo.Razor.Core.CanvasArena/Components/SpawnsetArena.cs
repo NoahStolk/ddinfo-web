@@ -1,21 +1,25 @@
 using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Razor.Core.Canvas.JS;
+using DevilDaggersInfo.Types.Core.Spawnsets;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
 namespace DevilDaggersInfo.Razor.Core.CanvasArena.Components;
 
-public abstract class SpawnsetArena : ComponentBase
+public partial class SpawnsetArena
 {
 	// Currently only allow one arena.
-	protected const string _canvasId = "arena-canvas";
+	private const string CanvasId = "arena-canvas";
 
-	protected int CanvasSize { get; private set; }
-	protected float TileSize { get; private set; }
+	private WebAssemblyCanvasArena? _context;
 
-	protected object? CanvasReference { get; set; }
+	private int _canvasSize;
+	private float _tileSize;
 
-	protected SpawnsetArenaHoverInfo SpawnsetArenaHoverInfo { get; set; } = null!;
+	private object? _canvasReference;
+
+	// ! Blazor ref
+	private SpawnsetArenaHoverInfo _spawnsetArenaHoverInfo = null!;
 
 	[Inject]
 	public required IJSRuntime JSRuntime { get; set; }
@@ -28,12 +32,6 @@ public abstract class SpawnsetArena : ComponentBase
 	[EditorRequired]
 	public float CurrentTime { get; set; }
 
-	protected void Resize(double wrapperSize)
-	{
-		CanvasSize = (int)wrapperSize;
-		TileSize = CanvasSize / (float)SpawnsetBinary.ArenaDimension;
-	}
-
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
 		if (firstRender)
@@ -42,21 +40,59 @@ public abstract class SpawnsetArena : ComponentBase
 			await JSRuntime.InvokeAsync<object>("registerArena", DotNetObjectReference.Create(this));
 			await JSRuntime.InvokeAsync<object>("arenaInitialResize");
 		}
+
+		_context = new(CanvasId);
+
+		Render();
+	}
+
+	[JSInvokable]
+	public void OnResize(double wrapperSize)
+	{
+		_canvasSize = (int)wrapperSize;
+		_tileSize = _canvasSize / (float)SpawnsetBinary.ArenaDimension;
+		Render();
 	}
 
 	[JSInvokable]
 	public async ValueTask OnMouseMove(int mouseX, int mouseY)
 	{
-		BoundingClientRect canvasBoundingClientRect = await JSRuntime.InvokeAsync<BoundingClientRect>("getBoundingClientRect", CanvasReference);
+		BoundingClientRect canvasBoundingClientRect = await JSRuntime.InvokeAsync<BoundingClientRect>("getBoundingClientRect", _canvasReference);
 
 		double canvasMouseX = mouseX - canvasBoundingClientRect.Left;
 		double canvasMouseY = mouseY - canvasBoundingClientRect.Top;
 
-		int x = Math.Clamp((int)(canvasMouseX / TileSize), 0, SpawnsetBinary.ArenaDimension - 1);
-		int y = Math.Clamp((int)(canvasMouseY / TileSize), 0, SpawnsetBinary.ArenaDimension - 1);
+		int x = Math.Clamp((int)(canvasMouseX / _tileSize), 0, SpawnsetBinary.ArenaDimension - 1);
+		int y = Math.Clamp((int)(canvasMouseY / _tileSize), 0, SpawnsetBinary.ArenaDimension - 1);
 		float height = SpawnsetBinary.ArenaTiles[x, y];
 		float actualHeight = SpawnsetBinary.GetActualTileHeight(x, y, CurrentTime);
 
-		SpawnsetArenaHoverInfo.Update(x, y, height, actualHeight);
+		_spawnsetArenaHoverInfo.Update(x, y, height, actualHeight);
+	}
+
+	private void Render()
+	{
+		if (_context == null)
+			return;
+
+		int[] colors = new int[SpawnsetBinary.ArenaDimension * SpawnsetBinary.ArenaDimension];
+		for (int i = 0; i < SpawnsetBinary.ArenaDimension; i++)
+		{
+			for (int j = 0; j < SpawnsetBinary.ArenaDimension; j++)
+			{
+				float tileHeight = SpawnsetBinary.ArenaTiles[i, j];
+				if (tileHeight < -1)
+					continue;
+
+				float actualTileHeight = SpawnsetBinary.GetActualTileHeight(i, j, CurrentTime);
+				colors[i * SpawnsetBinary.ArenaDimension + j] = Color.GetColorFromHeight(actualTileHeight).ToInt();
+			}
+		}
+
+		float shrinkEndTime = SpawnsetBinary.GetShrinkEndTime();
+		float shrinkRadius = shrinkEndTime == 0 ? SpawnsetBinary.ShrinkStart : Math.Max(SpawnsetBinary.ShrinkStart - CurrentTime / shrinkEndTime * (SpawnsetBinary.ShrinkStart - SpawnsetBinary.ShrinkEnd), SpawnsetBinary.ShrinkEnd);
+
+		(_, float? y, _) = SpawnsetBinary.GetRaceDaggerTilePosition();
+		_context.DrawArena(colors, _canvasSize, shrinkRadius, SpawnsetBinary.GameMode == GameMode.Race && y.HasValue, SpawnsetBinary.RaceDaggerPosition.X, SpawnsetBinary.RaceDaggerPosition.Y);
 	}
 }
