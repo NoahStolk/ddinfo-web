@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Web.Server.Clients.Clubber;
+using DevilDaggersInfo.Web.Server.Configuration;
 using DevilDaggersInfo.Web.Server.Domain.Configuration;
 using DevilDaggersInfo.Web.Server.Domain.Repositories;
 using DevilDaggersInfo.Web.Server.Domain.Services;
@@ -12,7 +13,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 using NJsonSchema;
 using System.Globalization;
 
@@ -150,19 +150,9 @@ public class Startup
 				options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
 				options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 			})
-			.AddJwtBearer(jwtBearerOptions =>
-			{
-				jwtBearerOptions.RequireHttpsMetadata = true;
-				jwtBearerOptions.SaveToken = true;
-				jwtBearerOptions.TokenValidationParameters = new TokenValidationParameters
-				{
-					ValidateIssuerSigningKey = true,
-					IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["JwtKey"] ?? throw new InvalidOperationException("Missing JWT key"))), // TODO: Use IOptions binding and require JwtKey.
-					ValidateIssuer = false,
-					ValidateAudience = false,
-					ClockSkew = TimeSpan.Zero,
-				};
-			});
+			.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, _ => { });
+
+		services.AddSingleton<IConfigureOptions<JwtBearerOptions>, ConfigureJwtBearerOptions>();
 
 		AddSwaggerDocument("Main", "This is the main API for DevilDaggers.info. **WARNING:** It is not recommended to use these endpoints as they may change at any time based on the website client requirements. Use at your own risk.");
 		AddSwaggerDocument("Admin", "This is the admin API for DevilDaggers.info. Requires an authenticated and authorized user.");
