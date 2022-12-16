@@ -4,25 +4,25 @@ namespace DevilDaggersInfo.Api.Main.Spawnsets;
 
 public record GetSpawnsetOverview
 {
-	public int Id { get; init; }
+	public required int Id { get; init; }
 
 	public required string Name { get; init; }
 
 	public required string AuthorName { get; init; }
 
-	public DateTime LastUpdated { get; init; }
+	public required DateTime LastUpdated { get; init; }
 
-	public GameMode GameMode { get; init; }
+	public required GameMode GameMode { get; init; }
 
-	public float? LoopLength { get; init; }
+	public required float? LoopLength { get; init; }
 
-	public int LoopSpawnCount { get; init; }
+	public required int LoopSpawnCount { get; init; }
 
-	public float? PreLoopLength { get; init; }
+	public required float? PreLoopLength { get; init; }
 
-	public int PreLoopSpawnCount { get; init; }
+	public required int PreLoopSpawnCount { get; init; }
 
-	public HandLevel Hand { get; init; }
+	public required HandLevel Hand { get; init; }
 
-	public int AdditionalGems { get; init; }
+	public required int AdditionalGems { get; init; }
 }

@@ -2,11 +2,11 @@ namespace DevilDaggersInfo.Api.Main.Tools;
 
 public record GetToolVersion
 {
-	public string VersionNumber { get; init; } = string.Empty;
+	public required string VersionNumber { get; init; }
 
-	public DateTime Date { get; init; }
+	public required DateTime Date { get; init; }
 
-	public int DownloadCount { get; init; }
+	public required int DownloadCount { get; init; }
 
-	public IReadOnlyList<GetToolVersionChange> Changes { get; init; } = new List<GetToolVersionChange>();
+	public required IReadOnlyList<GetToolVersionChange> Changes { get; init; } = new List<GetToolVersionChange>();
 }

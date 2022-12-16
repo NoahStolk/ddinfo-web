@@ -1,12 +1,8 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace DevilDaggersInfo.Api.Main.Authentication;
 
 public record LoginRequest
 {
-	[Required]
-	public required string Name { get; set; }
+	public required string Name { get; init; }
 
-	[Required]
-	public required string Password { get; set; }
+	public required string Password { get; init; }
 }

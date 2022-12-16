@@ -2,11 +2,11 @@ namespace DevilDaggersInfo.Api.Main.LeaderboardStatistics;
 
 public record GetLeaderboardStatistics
 {
-	public DateTime DateTime { get; init; }
+	public required DateTime DateTime { get; init; }
 
-	public bool IsFetched { get; init; }
+	public required bool IsFetched { get; init; }
 
-	public int TotalEntries { get; init; }
+	public required int TotalEntries { get; init; }
 
 	public required Dictionary<string, int> DaggersStatistics { get; init; }
 
@@ -24,11 +24,11 @@ public record GetLeaderboardStatistics
 
 	public required Dictionary<int, int> DaggersHitStatistics { get; init; }
 
-	public int PlayersWithLevel1 { get; init; }
+	public required int PlayersWithLevel1 { get; init; }
 
-	public int PlayersWithLevel2 { get; init; }
+	public required int PlayersWithLevel2 { get; init; }
 
-	public int PlayersWithLevel3Or4 { get; init; }
+	public required int PlayersWithLevel3Or4 { get; init; }
 
 	public required GetArrayStatistics GlobalStatistics { get; init; }
 }

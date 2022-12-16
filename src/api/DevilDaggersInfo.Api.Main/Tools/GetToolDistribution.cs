@@ -4,11 +4,11 @@ namespace DevilDaggersInfo.Api.Main.Tools;
 
 public record GetToolDistribution
 {
-	public string VersionNumber { get; set; } = string.Empty;
+	public required string VersionNumber { get; init; }
 
-	public int FileSize { get; set; }
+	public required int FileSize { get; init; }
 
-	public ToolPublishMethod PublishMethod { get; set; }
+	public required ToolPublishMethod PublishMethod { get; set; }
 
-	public ToolBuildType BuildType { get; set; }
+	public required ToolBuildType BuildType { get; set; }
 }

@@ -2,5 +2,5 @@ namespace DevilDaggersInfo.Api.Main.Mods;
 
 public record GetTotalModData
 {
-	public int Count { get; init; }
+	public required int Count { get; init; }
 }

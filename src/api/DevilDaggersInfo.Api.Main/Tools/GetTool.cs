@@ -2,13 +2,13 @@ namespace DevilDaggersInfo.Api.Main.Tools;
 
 public record GetTool
 {
-	public string Name { get; init; } = string.Empty;
+	public required string Name { get; init; }
 
-	public string DisplayName { get; init; } = string.Empty;
+	public required string DisplayName { get; init; }
 
-	public string VersionNumber { get; init; } = string.Empty;
+	public required string VersionNumber { get; init; }
 
-	public string VersionNumberRequired { get; init; } = string.Empty;
+	public required string VersionNumberRequired { get; init; }
 
-	public IReadOnlyList<GetToolVersion>? Changelog { get; init; }
+	public required IReadOnlyList<GetToolVersion>? Changelog { get; init; }
 }

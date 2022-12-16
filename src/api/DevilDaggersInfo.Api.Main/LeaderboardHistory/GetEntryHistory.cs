@@ -2,35 +2,35 @@ namespace DevilDaggersInfo.Api.Main.LeaderboardHistory;
 
 public record GetEntryHistory : IGetEntryDto
 {
-	public DateTime DateTime { get; init; }
+	public required DateTime DateTime { get; init; }
 
-	public int Rank { get; init; }
+	public required int Rank { get; init; }
 
-	public int Id { get; init; }
+	public required int Id { get; init; }
 
 	public required string Username { get; init; }
 
-	public double Time { get; init; }
+	public required double Time { get; init; }
 
-	public int Kills { get; init; }
+	public required int Kills { get; init; }
 
-	public int Gems { get; init; }
+	public required int Gems { get; init; }
 
-	public byte DeathType { get; init; }
+	public required byte DeathType { get; init; }
 
-	public int DaggersHit { get; init; }
+	public required int DaggersHit { get; init; }
 
-	public int DaggersFired { get; init; }
+	public required int DaggersFired { get; init; }
 
-	public double TimeTotal { get; init; }
+	public required double TimeTotal { get; init; }
 
-	public ulong KillsTotal { get; init; }
+	public required ulong KillsTotal { get; init; }
 
-	public ulong GemsTotal { get; init; }
+	public required ulong GemsTotal { get; init; }
 
-	public ulong DeathsTotal { get; init; }
+	public required ulong DeathsTotal { get; init; }
 
-	public ulong DaggersHitTotal { get; init; }
+	public required ulong DaggersHitTotal { get; init; }
 
-	public ulong DaggersFiredTotal { get; init; }
+	public required ulong DaggersFiredTotal { get; init; }
 }

@@ -4,11 +4,11 @@ namespace DevilDaggersInfo.Api.Main.Donations;
 
 public record GetDonation
 {
-	public int Amount { get; init; }
+	public required int Amount { get; init; }
 
-	public int ConvertedEuroCentsReceived { get; init; }
+	public required int ConvertedEuroCentsReceived { get; init; }
 
-	public Currency Currency { get; init; }
+	public required Currency Currency { get; init; }
 
-	public bool IsRefunded { get; init; }
+	public required bool IsRefunded { get; init; }
 }

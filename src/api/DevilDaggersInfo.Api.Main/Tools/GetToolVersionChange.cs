@@ -4,5 +4,5 @@ public record GetToolVersionChange
 {
 	public required string Description { get; init; }
 
-	public IReadOnlyList<GetToolVersionChange>? SubChanges { get; init; }
+	public required IReadOnlyList<GetToolVersionChange>? SubChanges { get; init; }
 }

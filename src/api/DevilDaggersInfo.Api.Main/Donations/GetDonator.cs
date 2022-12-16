@@ -2,7 +2,7 @@ namespace DevilDaggersInfo.Api.Main.Donations;
 
 public record GetDonator
 {
-	public int? PlayerId { get; init; }
+	public required int? PlayerId { get; init; }
 
 	public required string PlayerName { get; init; }
 

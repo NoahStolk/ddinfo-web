@@ -4,9 +4,9 @@ public record GetModifiedLoudness
 {
 	public required string AssetName { get; init; }
 
-	public bool IsProhibited { get; init; }
+	public required bool IsProhibited { get; init; }
 
-	public float DefaultLoudness { get; init; }
+	public required float DefaultLoudness { get; init; }
 
-	public float ModifiedLoudness { get; init; }
+	public required float ModifiedLoudness { get; init; }
 }

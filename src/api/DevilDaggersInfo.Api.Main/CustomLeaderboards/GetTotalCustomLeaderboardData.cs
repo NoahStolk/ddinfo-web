@@ -4,13 +4,13 @@ namespace DevilDaggersInfo.Api.Main.CustomLeaderboards;
 
 public record GetTotalCustomLeaderboardData
 {
-	public Dictionary<CustomLeaderboardCategory, int> LeaderboardsPerCategory { get; init; } = new();
+	public required Dictionary<CustomLeaderboardCategory, int> LeaderboardsPerCategory { get; init; }
 
-	public Dictionary<CustomLeaderboardCategory, int> ScoresPerCategory { get; init; } = new();
+	public required Dictionary<CustomLeaderboardCategory, int> ScoresPerCategory { get; init; }
 
-	public Dictionary<CustomLeaderboardCategory, int> SubmitsPerCategory { get; init; } = new();
+	public required Dictionary<CustomLeaderboardCategory, int> SubmitsPerCategory { get; init; }
 
-	public Dictionary<CustomLeaderboardCategory, int> PlayersPerCategory { get; init; } = new();
+	public required Dictionary<CustomLeaderboardCategory, int> PlayersPerCategory { get; init; }
 
-	public int TotalPlayers { get; init; }
+	public required int TotalPlayers { get; init; }
 }
