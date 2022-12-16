@@ -1,6 +1,8 @@
 @using DevilDaggersInfo.Web.Core.CriteriaExpression
 @using DevilDaggersInfo.Web.Core.CriteriaExpression.Parts
 @using DevilDaggersInfo.Types.Web.Extensions
+@using DevilDaggersInfo.Web.Client.Extensions
+@using DevilDaggersInfo.Web.Client.Utils
 
 <span style="color: @CriteriaType.GetColor()">@CriteriaType.Display()</span>
 <span style="color: @CriteriaOperator.GetColor()">@CriteriaOperator.Description()</span>

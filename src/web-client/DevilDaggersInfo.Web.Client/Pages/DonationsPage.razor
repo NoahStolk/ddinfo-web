@@ -1,6 +1,7 @@
 @page "/donations"
 @using DevilDaggersInfo.Api.Main.Donations
 @using DevilDaggersInfo.Web.Client.Components
+@using DevilDaggersInfo.Web.Client.Extensions
 @using DevilDaggersInfo.Web.Client.HttpClients
 @inject MainApiHttpClient Http
 
@@ -52,7 +53,7 @@ else
 				</div>
 				<div class="justify-self-end">
 					<Tooltip Position=TooltipPosition.Left Text="@kvp.Value">
-						<span class="cursor-pointer text-lg">€ @(CentsToString(kvp.Key.Donations.Sum(d => d.ConvertedEuroCentsReceived)))</span>
+						<span class="cursor-pointer text-lg">€ @CentsToString(kvp.Key.Donations.Sum(d => d.ConvertedEuroCentsReceived))</span>
 					</Tooltip>
 				</div>
 			</div>
@@ -72,5 +73,5 @@ else
 			.Select(g => $"{g.Key.GetChar()} {CentsToString(g.Sum(d => d.Amount))} {g.Key.ToString().ToUpper()}")));
 	}
 
-	private string CentsToString(int cents) => (cents / 100.0).ToString("0.00");
+	private static string CentsToString(int cents) => (cents / 100.0).ToString("0.00");
 }
