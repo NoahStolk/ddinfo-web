@@ -9,6 +9,7 @@ using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Types.Web.Extensions;
 using DevilDaggersInfo.Web.Core.CriteriaExpression;
 using DevilDaggersInfo.Web.Server.Domain.Commands.CustomEntries;
+using DevilDaggersInfo.Web.Server.Domain.Configuration;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Values;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
@@ -19,8 +20,8 @@ using DevilDaggersInfo.Web.Server.Domain.Models.Spawnsets;
 using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
@@ -39,7 +40,7 @@ public class CustomEntryProcessor
 	private readonly AesBase32Wrapper _encryptionWrapper;
 	private readonly Stopwatch _stopwatch;
 
-	public CustomEntryProcessor(ApplicationDbContext dbContext, ILogger<CustomEntryProcessor> logger, SpawnsetHashCache spawnsetHashCache, IFileSystemService fileSystemService, IConfiguration configuration, ICustomLeaderboardSubmissionLogger submissionLogger)
+	public CustomEntryProcessor(ApplicationDbContext dbContext, ILogger<CustomEntryProcessor> logger, SpawnsetHashCache spawnsetHashCache, IFileSystemService fileSystemService, IOptions<CustomLeaderboardsOptions> customLeaderboardsOptions, ICustomLeaderboardSubmissionLogger submissionLogger)
 	{
 		_dbContext = dbContext;
 		_logger = logger;
@@ -47,10 +48,7 @@ public class CustomEntryProcessor
 		_fileSystemService = fileSystemService;
 		_submissionLogger = submissionLogger;
 
-		IConfigurationSection section = configuration.GetRequiredSection("CustomLeaderboardSecrets");
-
-		// ! TODO: Use IOptions binding and require properties.
-		_encryptionWrapper = new(section["InitializationVector"]!, section["Password"]!, section["Salt"]!);
+		_encryptionWrapper = new(customLeaderboardsOptions.Value.InitializationVector, customLeaderboardsOptions.Value.Password, customLeaderboardsOptions.Value.Salt);
 
 		_stopwatch = Stopwatch.StartNew();
 	}

@@ -1,9 +1,11 @@
 using DevilDaggersInfo.Web.Core.Claims;
+using DevilDaggersInfo.Web.Server.Domain.Configuration;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Utils;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -14,13 +16,13 @@ namespace DevilDaggersInfo.Web.Server.Domain.Services;
 public class UserManager
 {
 	private readonly ApplicationDbContext _dbContext;
-	private readonly IConfiguration _configuration;
+	private readonly IOptions<AuthenticationOptions> _authenticationOptions;
 	private readonly ILogger<UserManager> _logger;
 
-	public UserManager(ApplicationDbContext context, IConfiguration configuration, ILogger<UserManager> logger)
+	public UserManager(ApplicationDbContext context, IOptions<AuthenticationOptions> authenticationOptions, ILogger<UserManager> logger)
 	{
 		_dbContext = context;
-		_configuration = configuration;
+		_authenticationOptions = authenticationOptions;
 		_logger = logger;
 	}
 
@@ -110,8 +112,7 @@ public class UserManager
 
 	public string GenerateJwt(UserEntity userEntity)
 	{
-		string keyString = _configuration["JwtKey"] ?? throw new InvalidOperationException("Missing JWT key"); // TODO: Use IOptions binding and require JwtKey.
-		byte[] keyBytes = Encoding.ASCII.GetBytes(keyString);
+		byte[] keyBytes = Encoding.ASCII.GetBytes(_authenticationOptions.Value.JwtKey);
 
 		// ! LINQ filters out null values.
 		SecurityTokenDescriptor tokenDescriptor = new()
@@ -135,8 +136,7 @@ public class UserManager
 	{
 		try
 		{
-			string keyString = _configuration["JwtKey"] ?? throw new InvalidOperationException("Missing JWT key"); // TODO: Use IOptions binding and require JwtKey.
-			byte[] keyBytes = Encoding.ASCII.GetBytes(keyString);
+			byte[] keyBytes = Encoding.ASCII.GetBytes(_authenticationOptions.Value.JwtKey);
 
 			TokenValidationParameters tokenValidationParameters = new()
 			{

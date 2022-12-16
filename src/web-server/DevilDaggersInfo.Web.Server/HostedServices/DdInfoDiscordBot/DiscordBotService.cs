@@ -1,17 +1,19 @@
+using DevilDaggersInfo.Web.Server.Domain.Configuration;
 using DSharpPlus;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
+using Microsoft.Extensions.Options;
 
 namespace DevilDaggersInfo.Web.Server.HostedServices.DdInfoDiscordBot;
 
 public class DiscordBotService : IHostedService
 {
-	private readonly IConfiguration _configuration;
+	private readonly IOptions<DiscordOptions> _discordBotOptions;
 	private readonly IWebHostEnvironment _environment;
 
-	public DiscordBotService(IConfiguration configuration, IWebHostEnvironment environment)
+	public DiscordBotService(IOptions<DiscordOptions> discordBotOptions, IWebHostEnvironment environment)
 	{
-		_configuration = configuration;
+		_discordBotOptions = discordBotOptions;
 		_environment = environment;
 	}
 
@@ -19,7 +21,7 @@ public class DiscordBotService : IHostedService
 	{
 		using DiscordClient client = new(new()
 		{
-			Token = _configuration["BotToken"],
+			Token = _discordBotOptions.Value.BotToken,
 			TokenType = TokenType.Bot,
 		});
 

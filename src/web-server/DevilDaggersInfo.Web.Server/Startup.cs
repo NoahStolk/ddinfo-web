@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Web.Server.Clients.Clubber;
+using DevilDaggersInfo.Web.Server.Domain.Configuration;
 using DevilDaggersInfo.Web.Server.Domain.Repositories;
 using DevilDaggersInfo.Web.Server.Domain.Services;
 using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
@@ -10,6 +11,7 @@ using DevilDaggersInfo.Web.Server.RewriteRules;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Rewrite;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using NJsonSchema;
 using System.Globalization;
@@ -31,10 +33,27 @@ public class Startup
 
 	public void ConfigureServices(IServiceCollection services)
 	{
+		void AddOptions<TOptions>(string configSection)
+			where TOptions : class
+		{
+			services.AddOptions<TOptions>()
+				.Bind(Configuration.GetRequiredSection(configSection), o => o.ErrorOnUnknownConfiguration = true)
+				.ValidateOnStart()
+				.ValidateDataAnnotations();
+		}
+
+		AddOptions<AuthenticationOptions>("Authentication");
+		AddOptions<CustomLeaderboardsOptions>("CustomLeaderboards");
+		AddOptions<DiscordOptions>("Discord");
+		AddOptions<MySqlOptions>("MySql");
+
 		services.AddCors(options => options.AddPolicy(_defaultCorsPolicy, builder => builder.AllowAnyOrigin().AllowAnyMethod()));
 
-		services.AddDbContext<ApplicationDbContext>(options =>
-			options.UseMySql(Configuration.GetConnectionString("DefaultConnection"), MySqlServerVersion.LatestSupportedServerVersion, providerOptions => providerOptions.EnableRetryOnFailure(5)));
+		services.AddDbContext<ApplicationDbContext>((sp, options) =>
+		{
+			MySqlOptions mySqlOptions = sp.GetRequiredService<IOptions<MySqlOptions>>().Value;
+			options.UseMySql(mySqlOptions.ConnectionString, MySqlServerVersion.LatestSupportedServerVersion, providerOptions => providerOptions.EnableRetryOnFailure(5));
+		});
 
 		services.AddControllersWithViews();
 
