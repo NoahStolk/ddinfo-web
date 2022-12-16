@@ -24,7 +24,9 @@
 	private Dictionary<int, string>? _playerNames;
 	private readonly EditDonationState _editDonationState = new();
 
-	[Parameter, EditorRequired] public int Id { get; set; }
+	[Parameter]
+	[EditorRequired]
+	public int Id { get; set; }
 
 	private async Task PopulateAsync(AdminEdit<EditDonationState, EditDonation> editComponent)
 	{
