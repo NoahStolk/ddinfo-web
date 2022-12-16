@@ -9,7 +9,7 @@ namespace DevilDaggersInfo.Razor.Core.CanvasArena.Components;
 public partial class SpawnsetArena
 {
 	// Currently only allow one arena.
-	private const string CanvasId = "arena-canvas";
+	private const string _canvasId = "arena-canvas";
 
 	private WebAssemblyCanvasArena? _context;
 
@@ -41,7 +41,7 @@ public partial class SpawnsetArena
 			await JSRuntime.InvokeAsync<object>("arenaInitialResize");
 		}
 
-		_context = new(CanvasId);
+		_context = new(_canvasId);
 
 		Render();
 	}
