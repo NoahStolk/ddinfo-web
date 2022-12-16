@@ -14,7 +14,7 @@ public record EditDonation
 	public required int ConvertedEuroCentsReceived { get; init; }
 
 	[StringLength(64)]
-	public string? Note { get; init; }
+	public required string? Note { get; init; }
 
 	public required bool IsRefunded { get; init; }
 }
