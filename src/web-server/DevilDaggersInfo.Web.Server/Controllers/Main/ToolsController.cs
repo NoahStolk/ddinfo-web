@@ -3,6 +3,7 @@ using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 using DevilDaggersInfo.Web.Server.Domain.Models.Tools;
 using DevilDaggersInfo.Web.Server.Domain.Repositories;
+using System.Net.Mime;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 

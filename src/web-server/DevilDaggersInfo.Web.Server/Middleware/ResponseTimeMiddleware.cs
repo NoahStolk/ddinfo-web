@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Web.Server.Services;
+using System.Diagnostics;
 
 namespace DevilDaggersInfo.Web.Server.Middleware;
 

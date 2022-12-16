@@ -1,10 +1,5 @@
 global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.EntityFrameworkCore;
-global using Newtonsoft.Json;
-global using System.Collections.Concurrent;
 global using System.ComponentModel.DataAnnotations;
-global using System.Diagnostics;
-global using System.Net.Mime;
-global using System.Security.Cryptography;
 global using System.Text;
 global using IoFile = System.IO.File;

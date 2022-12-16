@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Options;
 using NJsonSchema;
+using System.Diagnostics;
 using System.Globalization;
 
 namespace DevilDaggersInfo.Web.Server;

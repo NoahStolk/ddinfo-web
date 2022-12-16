@@ -6,6 +6,7 @@ using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Repositories;
 using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
+using System.Net.Mime;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 
