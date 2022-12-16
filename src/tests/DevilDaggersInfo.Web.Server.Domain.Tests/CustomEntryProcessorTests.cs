@@ -80,11 +80,11 @@ public class CustomEntryProcessorTests
 
 		using MemoryStream ms = new();
 		using BinaryWriter bw = new(ms);
-		bw.Write(Encoding.UTF8.GetBytes("ddrpl."));
+		bw.Write("ddrpl."u8);
 		bw.Seek(44, SeekOrigin.Current);
 		bw.Write(name.Length);
-		for (int i = 0; i < name.Length; i++)
-			bw.Write((byte)name[i]);
+		foreach (char c in name)
+			bw.Write((byte)c);
 
 		bw.Seek(10, SeekOrigin.Current);
 		bw.Write(MD5.HashData(spawnsetFileContents));
