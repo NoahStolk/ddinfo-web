@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;
 using MainApi = DevilDaggersInfo.Api.Main.Mods;
 

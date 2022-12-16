@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Core.Spawnset.Summary;
+using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DdseApi = DevilDaggersInfo.Api.Ddse.Spawnsets;
 
 namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Ddse;

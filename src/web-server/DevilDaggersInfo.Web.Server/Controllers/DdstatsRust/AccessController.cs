@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Api.DdstatsRust;
+using DevilDaggersInfo.Web.Server.Domain.Entities;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.DdstatsRust;
 

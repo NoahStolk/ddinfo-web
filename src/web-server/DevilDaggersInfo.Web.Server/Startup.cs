@@ -2,6 +2,7 @@ using DevilDaggersInfo.Web.Server.Clients.Clubber;
 using DevilDaggersInfo.Web.Server.Clients.Leaderboard;
 using DevilDaggersInfo.Web.Server.Configuration;
 using DevilDaggersInfo.Web.Server.Domain.Configuration;
+using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Repositories;
 using DevilDaggersInfo.Web.Server.Domain.Services;
 using DevilDaggersInfo.Web.Server.Domain.Services.Caching;

@@ -1,5 +1,6 @@
 using DevilDaggersInfo.Api.Admin.Database;
 using DevilDaggersInfo.Web.Core.Claims;
+using DevilDaggersInfo.Web.Server.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Admin;

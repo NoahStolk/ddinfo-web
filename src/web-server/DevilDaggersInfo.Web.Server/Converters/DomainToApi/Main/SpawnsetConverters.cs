@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Core.Spawnset.Summary;
+using DevilDaggersInfo.Web.Server.Domain.Entities;
 using MainApi = DevilDaggersInfo.Api.Main.Spawnsets;
 
 namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
