@@ -6,6 +6,7 @@ using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Ddse;
 
+[Obsolete("DDSE 2.46.1 will be removed.")]
 [Route("api/ddse/spawnsets")]
 [ApiController]
 public class SpawnsetsController : ControllerBase
@@ -21,24 +22,10 @@ public class SpawnsetsController : ControllerBase
 		_spawnsetSummaryCache = spawnsetSummaryCache;
 	}
 
-	[HttpGet]
-	[ProducesResponseType(StatusCodes.Status200OK)]
-	public List<GetSpawnsetDdse> GetSpawnsets(string? authorFilter = null, string? nameFilter = null)
-	{
-		return GetSpawnsetsRepo(authorFilter, nameFilter);
-	}
-
-	// Used by DDSE 2.45.0.0.
-	[Obsolete("Use the new route instead.")]
+	[Obsolete("DDSE 2.46.1 will be removed.")]
 	[HttpGet("/api/spawnsets/ddse")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public List<GetSpawnsetDdse> GetSpawnsetsObsolete(string? authorFilter = null, string? nameFilter = null)
-	{
-		return GetSpawnsetsRepo(authorFilter, nameFilter);
-	}
-
-	// TODO: Move to repository.
-	private List<GetSpawnsetDdse> GetSpawnsetsRepo(string? authorFilter, string? nameFilter)
 	{
 		IEnumerable<SpawnsetEntity> query = _dbContext.Spawnsets.AsNoTracking().Include(sf => sf.Player);
 
@@ -60,19 +47,5 @@ public class SpawnsetsController : ControllerBase
 				return s.ToDdseApi(spawnsetSummary, spawnsetsWithCustomLeaderboardIds.Contains(s.Id));
 			})
 			.ToList();
-	}
-
-	// Not used yet.
-	[HttpGet("{fileName}/file")]
-	[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
-	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public ActionResult GetSpawnsetFile([Required] string fileName)
-	{
-		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), fileName);
-		if (!IoFile.Exists(path))
-			return NotFound();
-
-		return File(IoFile.ReadAllBytes(path), MediaTypeNames.Application.Octet, fileName);
 	}
 }
