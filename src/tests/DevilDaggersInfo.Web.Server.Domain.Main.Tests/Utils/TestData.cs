@@ -10,47 +10,69 @@ public class TestData : ILeaderboardHistoryCache, IFileSystemService
 {
 	private readonly IReadOnlyDictionary<string, LeaderboardHistory> _data = new Dictionary<string, LeaderboardHistory>
 	{
-		["2022-01-01.bin"] = new()
+		["2022-01-01.bin"] = CreateLeaderboardHistory(new(2022, 1, 1), new()
 		{
-			DateTime = new(2022, 1, 1),
-			Entries = new()
-			{
-				new() { Rank = 1, Id = 1, Time = 90, Username = "Player 1" },
-				new() { Rank = 2, Id = 2, Time = 80, Username = "Player 2" },
-			},
-		},
-		["2022-01-02.bin"] = new()
+			CreateEntryHistory(1, 1, 90, "Player 1"),
+			CreateEntryHistory(2, 2, 80, "Player 2"),
+		}),
+		["2022-01-02.bin"] = CreateLeaderboardHistory(new(2022, 1, 2), new()
 		{
-			DateTime = new(2022, 1, 2),
-			Entries = new()
-			{
-				new() { Rank = 1, Id = 4, Time = 100000, Username = "Cheater" }, // Cheater makes it to first place.
-				new() { Rank = 2, Id = 1, Time = 90, Username = "Player 1" },
-				new() { Rank = 3, Id = 2, Time = 80, Username = "Player 2" },
-			},
-		},
-		["2022-01-03.bin"] = new()
+			CreateEntryHistory(1, 4, 100000, "Cheater"), // Cheater makes it to first place.
+			CreateEntryHistory(2, 1, 90, "Player 1"),
+			CreateEntryHistory(3, 2, 80, "Player 2"),
+		}),
+		["2022-01-03.bin"] = CreateLeaderboardHistory(new(2022, 1, 3), new()
 		{
-			DateTime = new(2022, 1, 3),
-			Entries = new()
-			{
-				new() { Rank = 1, Id = 1, Time = 95, Username = "Player 1" },
-				new() {	Rank = 2, Id = 2, Time = 85, Username = "Player 2" },
-				new() { Rank = 3, Id = 4, Time = 0, Username = "Cheater" }, // Cheater is removed from the leaderboard.
-			},
-		},
-		["2022-01-04.bin"] = new()
+			CreateEntryHistory(1, 1, 95, "Player 1"),
+			CreateEntryHistory(2, 2, 85, "Player 2"),
+			CreateEntryHistory(3, 4, 0, "Cheater"), // Cheater is removed from the leaderboard.
+		}),
+		["2022-01-04.bin"] = CreateLeaderboardHistory(new(2022, 1, 4), new()
 		{
-			DateTime = new(2022, 1, 4),
-			Entries = new()
-			{
-				new() { Rank = 1, Id = 4, Time = 1000000, Username = "Cheater" }, // Cheater makes it to first place again.
-				new() { Rank = 2, Id = 1, Time = 98, Username = "Player 1" },
-				new() { Rank = 3, Id = 2, Time = 85, Username = "Player 2" },
-				new() { Rank = 4, Id = 3, Time = 82, Username = "Player 3" }, // Player 3 joins the leaderboard.
-			},
-		},
+			CreateEntryHistory(1, 4, 1000000, "Cheater"), // Cheater makes it to first place again.
+			CreateEntryHistory(2, 1, 98, "Player 1"),
+			CreateEntryHistory(3, 2, 85, "Player 2"),
+			CreateEntryHistory(4, 3, 82, "Player 3"), // Player 3 joins the leaderboard.
+		}),
 	};
+
+	private static LeaderboardHistory CreateLeaderboardHistory(DateTime dateTime, List<EntryHistory> entries)
+	{
+		return new()
+		{
+			DateTime = dateTime,
+			Entries = entries,
+			Players = entries.Count,
+			DeathsGlobal = 0,
+			GemsGlobal = 0,
+			KillsGlobal = 0,
+			TimeGlobal = 0,
+			DaggersFiredGlobal = 0,
+			DaggersHitGlobal = 0,
+		};
+	}
+
+	private static EntryHistory CreateEntryHistory(int rank, int id, int time, string username)
+	{
+		return new()
+		{
+			Id = id,
+			Rank = rank,
+			Time = time,
+			Username = username,
+			Gems = 0,
+			Kills = 0,
+			DaggersFired = 0,
+			DaggersHit = 0,
+			DeathsTotal = 0,
+			DeathType = 0,
+			GemsTotal = 0,
+			KillsTotal = 0,
+			TimeTotal = 0,
+			DaggersFiredTotal = 0,
+			DaggersHitTotal = 0,
+		};
+	}
 
 	public string[] TryGetFiles(DataSubDirectory subDirectory)
 	{

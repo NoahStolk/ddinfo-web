@@ -1,11 +1,16 @@
 namespace DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardStatistics;
 
-public class CompressedEntry
+public record CompressedEntry
 {
-	public uint Time { get; init; }
-	public ushort Kills { get; init; }
-	public ushort Gems { get; init; }
-	public ushort DaggersHit { get; init; }
-	public uint DaggersFired { get; init; }
-	public byte DeathType { get; init; }
+	public required uint Time { get; init; }
+
+	public required ushort Kills { get; init; }
+
+	public required ushort Gems { get; init; }
+
+	public required ushort DaggersHit { get; init; }
+
+	public required uint DaggersFired { get; init; }
+
+	public required byte DeathType { get; init; }
 }

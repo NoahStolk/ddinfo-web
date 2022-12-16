@@ -17,7 +17,7 @@ public static class HighscoreSpreadUtils
 		_log.Clear();
 		foreach (KeyValuePair<string, LeaderboardHistory> kvp in leaderboards)
 		{
-			SpreadHighscoreStats(leaderboards.Select(kvp => kvp.Value).ToList(), kvp.Value);
+			SpreadHighscoreStats(leaderboards.Select(lb => lb.Value).ToList(), kvp.Value);
 			File.WriteAllBytes(kvp.Key, kvp.Value.ToBytes());
 		}
 
@@ -30,7 +30,7 @@ public static class HighscoreSpreadUtils
 	public static Dictionary<string, LeaderboardHistory> GetAllLeaderboards()
 	{
 		Dictionary<string, LeaderboardHistory> leaderboards = new();
-		foreach (string path in Directory.GetFiles(@"C:\Users\NOAH\source\repos\DevilDaggersInfo\src\web\DevilDaggersInfo.Web.Server\Data\LeaderboardHistory", "*.bin"))
+		foreach (string path in Directory.GetFiles(@"C:\Users\NOAH\source\repos\DevilDaggersInfo\src\web-server\DevilDaggersInfo.Web.Server\Data\LeaderboardHistory", "*.bin"))
 		{
 			byte[] bytes = File.ReadAllBytes(path);
 			leaderboards.Add(path, LeaderboardHistory.CreateFromFile(bytes));
@@ -46,12 +46,11 @@ public static class HighscoreSpreadUtils
 		{
 			if (entry.Id != 0 && entry.HasMissingStats())
 			{
-				IEnumerable<LeaderboardHistory> leaderboardsWithStats = leaderboards.Where(l => l.Entries.Any(e => e.Id == entry.Id && e.Time >= entry.Time - 1 && e.Time <= entry.Time + 1));
+				IEnumerable<LeaderboardHistory> leaderboardsWithStats = leaderboards.Where(l => l.Entries.Any(e => e.Id == entry.Id && e.Time >= entry.Time - 1 && e.Time <= entry.Time + 1)).ToList();
 				if (!leaderboardsWithStats.Any())
 					continue;
 
-				Combine(entry, leaderboardsWithStats.SelectMany(lb => lb.Entries).Where(e => e.Id == entry.Id));
-				changes.Add(entry);
+				changes.Add(Combine(entry, leaderboardsWithStats.SelectMany(lb => lb.Entries).Where(e => e.Id == entry.Id).ToList()));
 			}
 		}
 
@@ -72,36 +71,44 @@ public static class HighscoreSpreadUtils
 	}
 
 	public static bool HasMissingStats(this EntryHistory entry)
-		=> entry.Gems == 0 || entry.Kills == 0 || entry.DeathType == 255 || entry.DaggersHit == 0 || entry.DaggersFired == 0 || entry.DaggersFired == 10000;
+		=> entry.Gems == 0 || entry.Kills == 0 || entry.DeathType == 255 || entry.DaggersHit == 0 || entry.DaggersFired is 0 or 10000;
 
-	private static void Combine(EntryHistory original, IEnumerable<EntryHistory> entries)
+	private static EntryHistory Combine(EntryHistory entry, List<EntryHistory> entries)
 	{
-		EntryHistory? withGems = entries.FirstOrDefault(e => e.Gems != 0);
+		EntryHistory? withGems = entries.Find(e => e.Gems != 0);
 		if (withGems != null)
-			original.Gems = withGems.Gems;
+			entry = entry with { Gems = withGems.Gems };
 
-		EntryHistory? withKills = entries.FirstOrDefault(e => e.Kills != 0);
+		EntryHistory? withKills = entries.Find(e => e.Kills != 0);
 		if (withKills != null)
-			original.Kills = withKills.Kills;
+			entry = entry with { Kills = withKills.Kills };
 
-		EntryHistory? withDeathType = entries.FirstOrDefault(e => e.DeathType != 255);
+		EntryHistory? withDeathType = entries.Find(e => e.DeathType != 255);
 		if (withDeathType != null)
-			original.DeathType = withDeathType.DeathType;
+			entry = entry with { DeathType = withDeathType.DeathType };
 
-		EntryHistory? withFullDaggerStats = entries.FirstOrDefault(e => e.DaggersFired != 0 && e.DaggersFired != 10000);
+		EntryHistory? withFullDaggerStats = entries.Find(e => e.DaggersFired != 0 && e.DaggersFired != 10000);
 		if (withFullDaggerStats != null)
 		{
-			original.DaggersHit = withFullDaggerStats.DaggersHit;
-			original.DaggersFired = withFullDaggerStats.DaggersFired;
+			entry = entry with
+			{
+				DaggersHit = withFullDaggerStats.DaggersHit,
+				DaggersFired = withFullDaggerStats.DaggersFired,
+			};
 		}
 		else
 		{
-			EntryHistory? withPartialDaggerStats = entries.FirstOrDefault(e => e.DaggersFired != 0);
+			EntryHistory? withPartialDaggerStats = entries.Find(e => e.DaggersFired != 0);
 			if (withPartialDaggerStats != null)
 			{
-				original.DaggersHit = withPartialDaggerStats.DaggersHit;
-				original.DaggersFired = withPartialDaggerStats.DaggersFired;
+				entry = entry with
+				{
+					DaggersHit = withPartialDaggerStats.DaggersHit,
+					DaggersFired = withPartialDaggerStats.DaggersFired,
+				};
 			}
 		}
+
+		return entry;
 	}
 }

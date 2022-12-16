@@ -1,24 +1,24 @@
 namespace DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardHistory;
 
-public class LeaderboardHistory
+public record LeaderboardHistory
 {
-	public DateTime DateTime { get; init; }
+	public required DateTime DateTime { get; init; }
 
-	public int Players { get; set; }
+	public required int Players { get; init; }
 
-	public ulong TimeGlobal { get; set; }
+	public required ulong TimeGlobal { get; init; }
 
-	public ulong KillsGlobal { get; set; }
+	public required ulong KillsGlobal { get; init; }
 
-	public ulong GemsGlobal { get; set; }
+	public required ulong GemsGlobal { get; init; }
 
-	public ulong DeathsGlobal { get; set; }
+	public required ulong DeathsGlobal { get; init; }
 
-	public ulong DaggersHitGlobal { get; set; }
+	public required ulong DaggersHitGlobal { get; init; }
 
-	public ulong DaggersFiredGlobal { get; set; }
+	public required ulong DaggersFiredGlobal { get; init; }
 
-	public List<EntryHistory> Entries { get; set; } = new();
+	public required List<EntryHistory> Entries { get; init; } = new();
 
 	public static LeaderboardHistory CreateFromFile(byte[] bytes)
 	{
@@ -84,9 +84,8 @@ public class LeaderboardHistory
 		bw.Write(DaggersFiredGlobal);
 
 		bw.Write(Entries.Count);
-		for (int i = 0; i < Entries.Count; i++)
+		foreach (EntryHistory entryHistory in Entries)
 		{
-			EntryHistory entryHistory = Entries[i];
 			bw.Write(entryHistory.Rank);
 			bw.Write(entryHistory.Id);
 			bw.Write(entryHistory.Username);

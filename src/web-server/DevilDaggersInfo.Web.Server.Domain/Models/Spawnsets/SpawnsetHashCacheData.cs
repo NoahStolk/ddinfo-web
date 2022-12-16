@@ -2,12 +2,7 @@ namespace DevilDaggersInfo.Web.Server.Domain.Models.Spawnsets;
 
 public class SpawnsetHashCacheData
 {
-	public SpawnsetHashCacheData(string name, byte[] hash)
-	{
-		Name = name;
-		Hash = hash;
-	}
+	public required string Name { get; init; }
 
-	public string Name { get; init; }
-	public byte[] Hash { get; init; }
+	public required byte[] Hash { get; init; }
 }

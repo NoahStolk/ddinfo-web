@@ -4,9 +4,9 @@ namespace DevilDaggersInfo.Web.Server.Domain.Models.Players;
 
 public record PlayerForSettings
 {
-	public int Id { get; init; }
+	public required int Id { get; init; }
 
-	public string? CountryCode { get; init; }
+	public required string? CountryCode { get; init; }
 
 	public required PlayerSettings Settings { get; init; }
 

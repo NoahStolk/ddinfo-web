@@ -5,25 +5,25 @@ namespace DevilDaggersInfo.Web.Server.Domain.Models.Players;
 
 public record PlayerSettings
 {
-	public int? Dpi { get; init; }
+	public required int? Dpi { get; init; }
 
-	public float? InGameSens { get; init; }
+	public required float? InGameSens { get; init; }
 
-	public int? Fov { get; init; }
+	public required int? Fov { get; init; }
 
-	public bool? IsRightHanded { get; init; }
+	public required bool? IsRightHanded { get; init; }
 
-	public bool? UsesFlashHand { get; init; }
+	public required bool? UsesFlashHand { get; init; }
 
-	public float? Gamma { get; init; }
+	public required float? Gamma { get; init; }
 
-	public bool? UsesLegacyAudio { get; init; }
+	public required bool? UsesLegacyAudio { get; init; }
 
-	public bool? UsesHrtf { get; init; }
+	public required bool? UsesHrtf { get; init; }
 
-	public bool? UsesInvertY { get; init; }
+	public required bool? UsesInvertY { get; init; }
 
-	public VerticalSync VerticalSync { get; init; }
+	public required VerticalSync VerticalSync { get; init; }
 
 	public static PlayerSettings FromEntity(PlayerEntity player) => new()
 	{

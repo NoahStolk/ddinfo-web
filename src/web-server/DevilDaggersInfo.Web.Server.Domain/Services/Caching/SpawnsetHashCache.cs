@@ -39,7 +39,11 @@ public class SpawnsetHashCache
 
 			byte[] spawnsetHash = MD5.HashData(spawnsetBytes);
 			string spawnsetName = Path.GetFileName(spawnsetPath);
-			spawnsetCacheData = new(spawnsetName, spawnsetHash);
+			spawnsetCacheData = new()
+			{
+				Hash = spawnsetHash,
+				Name = spawnsetName,
+			};
 
 			if (_cache.All(scd => scd.Name != spawnsetName))
 				_cache.Add(spawnsetCacheData);

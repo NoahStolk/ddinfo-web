@@ -1,34 +1,34 @@
 namespace DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardHistory;
 
-public class EntryHistory
+public record EntryHistory
 {
-	public int Rank { get; set; }
+	public required int Rank { get; init; }
 
-	public int Id { get; set; }
+	public required int Id { get; init; }
 
-	public required string Username { get; set; }
+	public required string Username { get; init; }
 
-	public int Time { get; set; }
+	public required int Time { get; init; }
 
-	public int Kills { get; set; }
+	public required int Kills { get; init; }
 
-	public int Gems { get; set; }
+	public required int Gems { get; init; }
 
-	public byte DeathType { get; set; }
+	public required byte DeathType { get; init; }
 
-	public int DaggersHit { get; set; }
+	public required int DaggersHit { get; init; }
 
-	public int DaggersFired { get; set; }
+	public required int DaggersFired { get; init; }
 
-	public ulong TimeTotal { get; set; }
+	public required ulong TimeTotal { get; init; }
 
-	public ulong KillsTotal { get; set; }
+	public required ulong KillsTotal { get; init; }
 
-	public ulong GemsTotal { get; set; }
+	public required ulong GemsTotal { get; init; }
 
-	public ulong DeathsTotal { get; set; }
+	public required ulong DeathsTotal { get; init; }
 
-	public ulong DaggersHitTotal { get; set; }
+	public required ulong DaggersHitTotal { get; init; }
 
-	public ulong DaggersFiredTotal { get; set; }
+	public required ulong DaggersFiredTotal { get; init; }
 }
