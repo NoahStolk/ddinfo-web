@@ -2,6 +2,7 @@
 @inherits BaseAdminPage
 @using DevilDaggersInfo.Api.Admin.Spawnsets
 @using DevilDaggersInfo.Web.Client.Components.Admin
+@using DevilDaggersInfo.Web.Core.Claims
 
 <AdminAuthorizer Base="this" RequiredRole="@Roles.Spawnsets">
 	<AdminOverview @ref="_overview" TGetDto="GetSpawnsetForOverview" TSorting="SpawnsetSorting" Title="Admin - Spawnsets" ApiCall="(int pageIndex, int pageSize, SpawnsetSorting? sortBy, bool isAscending) => Http.GetSpawnsets(pageIndex, pageSize, sortBy, isAscending)" DeletionApiCall="(int id) => Http.DeleteSpawnsetById(id)" GridConfiguration="grid-cols-admin-spawnsets-sm md:grid-cols-admin-spawnsets-md lg:grid-cols-admin-spawnsets-lg xl:grid-cols-admin-spawnsets-xl">

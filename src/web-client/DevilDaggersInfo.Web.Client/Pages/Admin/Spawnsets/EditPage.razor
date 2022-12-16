@@ -6,6 +6,7 @@
 @using DevilDaggersInfo.Web.Client.Components.Input
 @using DevilDaggersInfo.Web.Client.Enums
 @using DevilDaggersInfo.Web.Client.StateObjects.Admin.Spawnsets
+@using DevilDaggersInfo.Web.Core.Claims
 
 <AdminAuthorizer Base="this" RequiredRole="@Roles.Spawnsets">
 	<AdminEdit TStateObject="EditSpawnsetState" TModel="EditSpawnset" Name="Spawnset" OverviewUrl="/admin/spawnsets" ApiCall="Http.EditSpawnsetById" StateObject="_editSpawnsetState" Id="Id" OnPopulate="async ec => await PopulateAsync(ec)">

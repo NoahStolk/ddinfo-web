@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Api.Ddre.ProcessMemory;
+using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Repositories;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Ddre;

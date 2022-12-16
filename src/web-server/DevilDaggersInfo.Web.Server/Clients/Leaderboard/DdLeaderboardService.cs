@@ -1,6 +1,7 @@
 #pragma warning disable S1075 // URIs should not be hardcoded
 #pragma warning disable S4457 // Parameter validation in "async"/"await" methods should be wrapped
 
+using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 
 namespace DevilDaggersInfo.Web.Server.Clients.Leaderboard;

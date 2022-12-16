@@ -7,6 +7,7 @@
 @using DevilDaggersInfo.Web.Client.Components.Admin
 @using DevilDaggersInfo.Web.Client.Components.Input
 @using DevilDaggersInfo.Web.Client.StateObjects.Admin.Mods
+@using DevilDaggersInfo.Web.Core.Claims
 
 <AdminAuthorizer Base="this" RequiredRole="@Roles.Mods">
 	<AdminEdit TStateObject="EditModState" TModel="EditMod" Name="Mod" OverviewUrl="/admin/mods" ApiCall="Http.EditModById" StateObject="_editModState" Id="Id" OnPopulate="async ec => await PopulateAsync(ec)">
