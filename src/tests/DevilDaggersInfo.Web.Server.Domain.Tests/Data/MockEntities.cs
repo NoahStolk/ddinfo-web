@@ -22,6 +22,7 @@ public class MockEntities
 		MockDbSetCustomEntries = GetEntities<CustomEntryEntity>().AsQueryable().BuildMockDbSet();
 		MockDbSetCustomEntryData = GetEntities<CustomEntryDataEntity>().AsQueryable().BuildMockDbSet();
 
+		// ! Reflection.
 		T[] GetEntities<T>() => properties
 			.Where(pi => pi.PropertyType == typeof(T))
 			.Select(pi => (T)pi.GetValue(this)!)

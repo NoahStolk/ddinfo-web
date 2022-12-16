@@ -1,3 +1,4 @@
+// ! Hack.
 DirectoryInfo root = new FileInfo(Directory.GetCurrentDirectory()).Directory!.Parent!.Parent!.Parent!.Parent!.Parent!;
 
 Console.ForegroundColor = ConsoleColor.Gray;

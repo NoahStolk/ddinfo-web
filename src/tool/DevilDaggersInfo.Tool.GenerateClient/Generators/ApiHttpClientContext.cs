@@ -57,6 +57,7 @@ internal class ApiHttpClientContext
 
 			string methodName = mds.Identifier.ToString();
 
+			// ! LINQ filters out null values.
 			List<Parameter> allParameters = mds.ParameterList.Parameters
 				.Select(ps => new { Type = ps.Type?.ToString(), Name = ps.Identifier.ToString() })
 				.Where(ps => ps.Type != null)
