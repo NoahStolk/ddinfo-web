@@ -2,6 +2,7 @@ using DevilDaggersInfo.Api.Admin.Health;
 using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Common.Utils;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Data;
+using DevilDaggersInfo.Razor.Core.CanvasChart.Enums;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Options.LineChart;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -12,7 +13,7 @@ namespace DevilDaggersInfo.Web.Client.Pages.Admin.Health;
 public partial class Index
 {
 	private GetResponseTimes? _response;
-	private Dictionary<string, bool> _sortings = new();
+	private readonly Dictionary<string, bool> _sortings = new();
 	private DateTime _dateTime = DateTime.UtcNow;
 
 	private readonly LineChartOptions _totalTrafficLineChartOptions = new()
@@ -111,7 +112,7 @@ public partial class Index
 				return stats == null ? new() : new()
 				{
 					new($"<span style='text-align: right;'>{TimeUtils.MinutesToTimeString(stats.Value.Key)} - {TimeUtils.MinutesToTimeString(stats.Value.Key + _response.MinuteInterval)}</span>"),
-					new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString("0")}</span>"),
+					new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y:0}</span>"),
 				};
 			}));
 		}

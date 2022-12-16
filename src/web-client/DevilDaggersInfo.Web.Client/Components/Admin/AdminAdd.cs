@@ -3,6 +3,7 @@ using DevilDaggersInfo.Web.Client.Extensions;
 using DevilDaggersInfo.Web.Client.StateObjects;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+using System.Net;
 
 namespace DevilDaggersInfo.Web.Client.Components.Admin;
 

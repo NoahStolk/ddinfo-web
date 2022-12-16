@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Types.Core.Wiki;
 
 namespace DevilDaggersInfo.Web.Client.Pages.Wiki;

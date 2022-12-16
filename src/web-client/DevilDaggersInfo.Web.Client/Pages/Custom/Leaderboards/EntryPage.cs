@@ -1,11 +1,15 @@
 using DevilDaggersInfo.Api.Main.CustomLeaderboards;
+using DevilDaggersInfo.Common;
 using DevilDaggersInfo.Core.Spawnset.Extensions;
+using DevilDaggersInfo.Core.Wiki;
+using DevilDaggersInfo.Core.Wiki.Objects;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Data;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Options.LineChart;
 using DevilDaggersInfo.Types.Core.Spawnsets;
 using DevilDaggersInfo.Web.Client.HttpClients;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using System.Net;
 
 namespace DevilDaggersInfo.Web.Client.Pages.Custom.Leaderboards;
 
@@ -14,11 +18,11 @@ public partial class EntryPage
 	private static readonly Func<LineDataSet, LineData, List<MarkupString>> _initialHighlightTransformation = static (ds, d) => new List<MarkupString>
 	{
 		new($"<span style='text-align: right;'>{d.X.ToString(StringFormats.TimeFormat)}</span>"),
-		new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString("0")}</span>"),
+		new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y:0}</span>"),
 	};
 	private static readonly Func<LineDataSet, LineData, List<MarkupString>> _highlightTransformation = static (ds, d) => new List<MarkupString>
 	{
-		new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString("0")}</span>"),
+		new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y:0}</span>"),
 	};
 
 	private bool _notFound;
@@ -99,17 +103,17 @@ public partial class EntryPage
 				stats[i] = new(hit, fired, fired == 0 ? 0 : hit / (double)fired);
 			}
 
-			Func<LineDataSet, LineData, List<MarkupString>> accuracyHighlighter = (ds, d) =>
+			List<MarkupString> AccuracyHighlighter(LineDataSet ds, LineData d)
 			{
 				Accuracy? stat = stats.Length <= d.Index ? null : stats[d.Index];
 				return stat == null ? new() : new List<MarkupString>
 				{
 					new($"<span style='text-align: right;'>{d.X:0.0000}</span>"),
-					new($"<span style='color: {ds.Color}; text-align: right;'>{stat.Acc.ToString("0.00%")}</span>"),
+					new($"<span style='color: {ds.Color}; text-align: right;'>{stat.Acc:0.00%}</span>"),
 					new($"<span style='text-align: right;'>{stat.Hit}</span>"),
 					new($"<span style='text-align: right;'>{stat.Fired}</span>"),
 				};
-			};
+			}
 
 			double minAcc = stats.Select(t => t.Acc).Min();
 			double maxAcc = stats.Select(t => t.Acc).Max();
@@ -121,7 +125,7 @@ public partial class EntryPage
 				ScaleYOptions = new() { NumberFormat = "0%" },
 				Backgrounds = _backgrounds,
 			};
-			_lineCharts.Add(("Accuracy", dataOptions, chartOptions, new() { new("#f80", false, true, false, stats.Select((t, i) => new LineData(i, t.Acc, i)).ToList(), accuracyHighlighter) }));
+			_lineCharts.Add(("Accuracy", dataOptions, chartOptions, new() { new("#f80", false, true, false, stats.Select((t, i) => new LineData(i, t.Acc, i)).ToList(), AccuracyHighlighter) }));
 		}
 
 		AddLineChart(

@@ -1,5 +1,6 @@
 using DevilDaggersInfo.Api.Main.LeaderboardHistory;
 using DevilDaggersInfo.Api.Main.Players;
+using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Types.Core.Wiki;
 using DevilDaggersInfo.Web.Client.Extensions;
 using Microsoft.AspNetCore.Components;

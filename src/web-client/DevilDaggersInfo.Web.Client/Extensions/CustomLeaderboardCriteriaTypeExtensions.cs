@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Common.Exceptions;
+using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Types.Web;
 
 namespace DevilDaggersInfo.Web.Client.Extensions;

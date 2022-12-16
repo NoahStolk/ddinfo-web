@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Options.LineChart;
 using DevilDaggersInfo.Types.Core.Wiki;
 

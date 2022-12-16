@@ -1,12 +1,15 @@
 using DevilDaggersInfo.Api.Main.CustomLeaderboards;
 using DevilDaggersInfo.Common.Extensions;
 using Microsoft.AspNetCore.Components;
+using System.Net;
 
 namespace DevilDaggersInfo.Web.Client.Pages.Custom.Leaderboards;
 
 public partial class LeaderboardPage
 {
-	[Parameter, EditorRequired] public int Id { get; set; }
+	[Parameter]
+	[EditorRequired]
+	public int Id { get; set; }
 
 	public GetCustomLeaderboard? GetCustomLeaderboard { get; set; }
 
@@ -15,7 +18,7 @@ public partial class LeaderboardPage
 	private CustomEntrySorting _sortBy;
 	private bool _ascending;
 
-	private Dictionary<CustomEntrySorting, bool> _sortings = new();
+	private readonly Dictionary<CustomEntrySorting, bool> _sortings = new();
 
 	protected override async Task OnInitializedAsync()
 	{
