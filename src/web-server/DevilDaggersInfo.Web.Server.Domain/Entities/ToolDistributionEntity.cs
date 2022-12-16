@@ -10,10 +10,10 @@ public class ToolDistributionEntity
 
 	// TODO: FK.
 	[StringLength(64)]
-	public string ToolName { get; set; } = string.Empty;
+	public required string ToolName { get; set; }
 
 	[StringLength(16)]
-	public string VersionNumber { get; set; } = string.Empty;
+	public required string VersionNumber { get; set; }
 
 	public int DownloadCount { get; set; }
 
