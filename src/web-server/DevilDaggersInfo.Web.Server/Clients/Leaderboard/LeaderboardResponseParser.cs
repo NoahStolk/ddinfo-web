@@ -9,25 +9,22 @@ public class LeaderboardResponseParser
 		using MemoryStream ms = new(response);
 		using BinaryReader br = new(ms);
 
-		IDdLeaderboardService.LeaderboardResponse leaderboard = new()
-		{
-			DateTime = DateTime.UtcNow,
-		};
-
 		br.BaseStream.Seek(11, SeekOrigin.Begin);
-		leaderboard.DeathsGlobal = br.ReadUInt64();
-		leaderboard.KillsGlobal = br.ReadUInt64();
-		leaderboard.DaggersFiredGlobal = br.ReadUInt64();
-		leaderboard.TimeGlobal = br.ReadUInt64();
-		leaderboard.GemsGlobal = br.ReadUInt64();
-		leaderboard.DaggersHitGlobal = br.ReadUInt64();
-		leaderboard.TotalEntries = br.ReadUInt16();
+		ulong deathsGlobal = br.ReadUInt64();
+		ulong killsGlobal = br.ReadUInt64();
+		ulong daggersFiredGlobal = br.ReadUInt64();
+		ulong timeGlobal = br.ReadUInt64();
+		ulong gemsGlobal = br.ReadUInt64();
+		ulong daggersHitGlobal = br.ReadUInt64();
+		ushort totalEntries = br.ReadUInt16();
 
 		br.BaseStream.Seek(14, SeekOrigin.Current);
-		leaderboard.TotalPlayers = br.ReadInt32();
+		int totalPlayers = br.ReadInt32();
 
 		br.BaseStream.Seek(4, SeekOrigin.Current);
-		for (int i = 0; i < leaderboard.TotalEntries; i++)
+
+		List<IDdLeaderboardService.EntryResponse> entries = new();
+		for (int i = 0; i < totalEntries; i++)
 		{
 			short usernameLength = br.ReadInt16();
 			string username = Encoding.UTF8.GetString(br.ReadBytes(usernameLength));
@@ -67,10 +64,22 @@ public class LeaderboardResponseParser
 				DaggersHitTotal = daggersHitTotal,
 			};
 
-			leaderboard.Entries.Add(entry);
+			entries.Add(entry);
 		}
 
-		return leaderboard;
+		return new()
+		{
+			DateTime = DateTime.UtcNow,
+			DeathsGlobal = deathsGlobal,
+			KillsGlobal = killsGlobal,
+			DaggersFiredGlobal = daggersFiredGlobal,
+			TimeGlobal = timeGlobal,
+			GemsGlobal = gemsGlobal,
+			DaggersHitGlobal = daggersHitGlobal,
+			TotalEntries = totalEntries,
+			TotalPlayers = totalPlayers,
+			Entries = entries,
+		};
 	}
 
 	public List<IDdLeaderboardService.EntryResponse> ParseGetEntriesByName(byte[] response)
@@ -78,12 +87,12 @@ public class LeaderboardResponseParser
 		using MemoryStream ms = new(response);
 		using BinaryReader br = new(ms);
 
-		List<IDdLeaderboardService.EntryResponse> entries = new();
-
 		br.BaseStream.Seek(11, SeekOrigin.Begin);
 		short totalResults = br.ReadInt16();
 
 		br.BaseStream.Seek(6, SeekOrigin.Current);
+
+		List<IDdLeaderboardService.EntryResponse> entries = new();
 		for (int i = 0; i < Math.Min((short)100, totalResults); i++)
 		{
 			short usernameLength = br.ReadInt16();
@@ -137,9 +146,9 @@ public class LeaderboardResponseParser
 		using MemoryStream ms = new(response);
 		using BinaryReader br = new(ms);
 
-		List<IDdLeaderboardService.EntryResponse> entries = new();
-
 		br.BaseStream.Seek(19, SeekOrigin.Begin);
+
+		List<IDdLeaderboardService.EntryResponse> entries = new();
 		while (br.BaseStream.Position < br.BaseStream.Length)
 		{
 			entries.Add(ReadEntry(br));
@@ -180,7 +189,7 @@ public class LeaderboardResponseParser
 		ulong gemsTotal = br.ReadUInt64();
 		ulong daggersHitTotal = br.ReadUInt64();
 
-		IDdLeaderboardService.EntryResponse entry = new()
+		return new()
 		{
 			Username = username,
 			Rank = rank,
@@ -198,7 +207,5 @@ public class LeaderboardResponseParser
 			GemsTotal = gemsTotal,
 			DaggersHitTotal = daggersHitTotal,
 		};
-
-		return entry;
 	}
 }

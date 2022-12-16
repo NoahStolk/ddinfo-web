@@ -10,59 +10,59 @@ public interface IDdLeaderboardService
 
 	Task<EntryResponse> GetEntryById(int id);
 
-	public class LeaderboardResponse
+	public record LeaderboardResponse
 	{
-		public DateTime DateTime { get; init; }
+		public required DateTime DateTime { get; init; }
 
-		public int TotalPlayers { get; set; }
+		public required int TotalPlayers { get; init; }
 
-		public ulong TimeGlobal { get; set; }
+		public required ulong TimeGlobal { get; init; }
 
-		public ulong KillsGlobal { get; set; }
+		public required ulong KillsGlobal { get; init; }
 
-		public ulong GemsGlobal { get; set; }
+		public required ulong GemsGlobal { get; init; }
 
-		public ulong DeathsGlobal { get; set; }
+		public required ulong DeathsGlobal { get; init; }
 
-		public ulong DaggersHitGlobal { get; set; }
+		public required ulong DaggersHitGlobal { get; init; }
 
-		public ulong DaggersFiredGlobal { get; set; }
+		public required ulong DaggersFiredGlobal { get; init; }
 
-		public ushort TotalEntries { get; set; }
+		public required ushort TotalEntries { get; init; }
 
-		public List<EntryResponse> Entries { get; } = new();
+		public required List<EntryResponse> Entries { get; init; }
 	}
 
-	public class EntryResponse
+	public record EntryResponse
 	{
-		public int Rank { get; set; }
+		public required int Rank { get; init; }
 
-		public int Id { get; set; }
+		public required int Id { get; init; }
 
-		public required string Username { get; set; }
+		public required string Username { get; init; }
 
-		public int Time { get; set; }
+		public required int Time { get; init; }
 
-		public int Kills { get; set; }
+		public required int Kills { get; init; }
 
-		public int Gems { get; set; }
+		public required int Gems { get; init; }
 
-		public int DeathType { get; set; }
+		public required int DeathType { get; init; }
 
-		public int DaggersHit { get; set; }
+		public required int DaggersHit { get; init; }
 
-		public int DaggersFired { get; set; }
+		public required int DaggersFired { get; init; }
 
-		public ulong TimeTotal { get; set; }
+		public required ulong TimeTotal { get; init; }
 
-		public ulong KillsTotal { get; set; }
+		public required ulong KillsTotal { get; init; }
 
-		public ulong GemsTotal { get; set; }
+		public required ulong GemsTotal { get; init; }
 
-		public ulong DeathsTotal { get; set; }
+		public required ulong DeathsTotal { get; init; }
 
-		public ulong DaggersHitTotal { get; set; }
+		public required ulong DaggersHitTotal { get; init; }
 
-		public ulong DaggersFiredTotal { get; set; }
+		public required ulong DaggersFiredTotal { get; init; }
 	}
 }
