@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Common.Extensions;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Net.Http.Headers;
 

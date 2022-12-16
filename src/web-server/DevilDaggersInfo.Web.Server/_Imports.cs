@@ -1,4 +1,3 @@
-global using DevilDaggersInfo.Common.Extensions;
 global using DevilDaggersInfo.Web.Server.Extensions;
 global using DevilDaggersInfo.Web.Server.Services;
 global using DevilDaggersInfo.Web.Server.Utils;
