@@ -33,7 +33,13 @@ public class ModBinaryCacheData
 		if (modBinary.ModBinaryType != binaryTypeFromFileName)
 			throw new InvalidModBinaryException($"Binary '{fileName}' has type mismatch; file name claims '{binaryTypeFromFileName}' but file contents claim '{modBinary.ModBinaryType}'.");
 
-		List<ModChunkCacheData> chunks = modBinary.Chunks.ConvertAll(c => new ModChunkCacheData(c.Name, c.Size, c.AssetType, AssetContainer.GetIsProhibited(c.AssetType, c.Name)));
+		List<ModChunkCacheData> chunks = modBinary.Chunks.ConvertAll(c => new ModChunkCacheData
+		{
+			Name = c.Name,
+			Size = c.Size,
+			AssetType = c.AssetType,
+			IsProhibited = AssetContainer.GetIsProhibited(c.AssetType, c.Name),
+		});
 
 		ModBinaryChunk? loudnessChunk = modBinary.Chunks.Find(c => c.IsLoudness());
 		List<ModifiedLoudnessAssetCacheData>? modifiedLoudnessAssets = null;
@@ -61,7 +67,13 @@ public class ModBinaryCacheData
 			if (audioAssetData == null || Math.Abs(audioAssetData.DefaultLoudness - loudness) < 0.01f)
 				continue;
 
-			loudnessAssets.Add(new ModifiedLoudnessAssetCacheData(assetName, audioAssetData.IsProhibited, audioAssetData.DefaultLoudness, loudness));
+			loudnessAssets.Add(new ModifiedLoudnessAssetCacheData
+			{
+				Name = assetName,
+				DefaultLoudness = audioAssetData.DefaultLoudness,
+				IsProhibited = audioAssetData.IsProhibited,
+				ModifiedLoudness = loudness,
+			});
 		}
 
 		return loudnessAssets;

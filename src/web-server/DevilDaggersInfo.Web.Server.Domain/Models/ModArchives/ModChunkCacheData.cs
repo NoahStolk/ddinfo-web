@@ -2,18 +2,13 @@ using DevilDaggersInfo.Types.Core.Assets;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;
 
-public class ModChunkCacheData
+public record ModChunkCacheData
 {
-	public ModChunkCacheData(string name, int size, AssetType assetType, bool isProhibited)
-	{
-		Name = name;
-		Size = size;
-		AssetType = assetType;
-		IsProhibited = isProhibited;
-	}
+	public required string Name { get; init; }
 
-	public string Name { get; }
-	public int Size { get; }
-	public AssetType AssetType { get; }
-	public bool IsProhibited { get; }
+	public required int Size { get; init; }
+
+	public required AssetType AssetType { get; init; }
+
+	public required bool IsProhibited { get; init; }
 }
