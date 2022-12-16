@@ -10,8 +10,12 @@ public partial class Deletion
 	public int? IdToDelete { get; set; }
 	public string? ApiResponse { get; set; }
 
-	[Parameter] public Func<Task>? AfterDelete { get; set; }
-	[Parameter, EditorRequired] public Func<int, Task<HttpResponseMessage>> ApiCall { get; set; } = null!;
+	[Parameter]
+	public Func<Task>? AfterDelete { get; set; }
+
+	[Parameter]
+	[EditorRequired]
+	public required Func<int, Task<HttpResponseMessage>> ApiCall { get; set; }
 
 	public void Set(int id)
 	{

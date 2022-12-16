@@ -14,7 +14,7 @@ public partial class AdminOverview<TGetDto, TSorting> : IHasNavigation
 	private Page<TGetDto>? _page;
 	private string? _errorMessage;
 	private bool _errorThrown;
-	private Dictionary<TSorting, bool> _sortings = null!;
+	private Dictionary<TSorting, bool> _sortings = new();
 
 	private Deletion? _deletion;
 
@@ -22,25 +22,25 @@ public partial class AdminOverview<TGetDto, TSorting> : IHasNavigation
 
 	[Parameter]
 	[EditorRequired]
-	public string Title { get; set; } = null!;
+	public required string Title { get; set; }
 
 	[Parameter]
 	[EditorRequired]
-	public Func<int, int, TSorting?, bool, Task<Page<TGetDto>>> ApiCall { get; set; } = null!;
+	public required Func<int, int, TSorting?, bool, Task<Page<TGetDto>>> ApiCall { get; set; }
 
 	[Parameter]
 	[EditorRequired]
-	public Func<int, Task<HttpResponseMessage>> DeletionApiCall { get; set; } = null!;
+	public required Func<int, Task<HttpResponseMessage>> DeletionApiCall { get; set; }
 
 	[Parameter]
 	[EditorRequired]
-	public string GridConfiguration { get; set; } = null!;
+	public required string GridConfiguration { get; set; }
 
 	[Parameter]
-	public RenderFragment TableHeader { get; set; } = null!;
+	public required RenderFragment TableHeader { get; set; }
 
 	[Parameter]
-	public RenderFragment<TGetDto> RowTemplate { get; set; } = null!;
+	public required RenderFragment<TGetDto> RowTemplate { get; set; }
 
 	[Parameter]
 	public int PageIndex { get; set; }

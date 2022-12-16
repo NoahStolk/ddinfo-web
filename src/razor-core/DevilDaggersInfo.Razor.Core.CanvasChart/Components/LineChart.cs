@@ -34,15 +34,15 @@ public partial class LineChart
 
 	[Parameter]
 	[EditorRequired]
-	public string UniqueName { get; set; } = null!;
+	public required string UniqueName { get; set; }
 
 	[Parameter]
 	[EditorRequired]
-	public List<LineDataSet> DataSets { get; set; } = null!;
+	public required List<LineDataSet> DataSets { get; set; }
 
 	[Parameter]
 	[EditorRequired]
-	public LineChartDataOptions DataOptions { get; set; } = null!;
+	public required LineChartDataOptions DataOptions { get; set; }
 
 	[Parameter]
 	public LineChartOptions Options { get; set; } = new();

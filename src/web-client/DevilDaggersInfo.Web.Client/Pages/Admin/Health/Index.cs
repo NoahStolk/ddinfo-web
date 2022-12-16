@@ -60,7 +60,7 @@ public partial class Index
 	private LineChartDataOptions _customLeaderboardExistsOptions = LineChartDataOptions.Default;
 
 	[Inject]
-	public IJSRuntime JsRuntime { get; set; } = null!;
+	public required IJSRuntime JsRuntime { get; set; }
 
 	protected override async Task OnInitializedAsync()
 	{

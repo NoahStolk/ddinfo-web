@@ -98,7 +98,7 @@ public partial class HistoryStatisticsPage
 	private List<GetLeaderboardHistoryStatistics>? _statistics;
 
 	[Inject]
-	public IJSRuntime JsRuntime { get; set; } = null!;
+	public required IJSRuntime JsRuntime { get; set; }
 
 	protected override async Task OnInitializedAsync()
 	{

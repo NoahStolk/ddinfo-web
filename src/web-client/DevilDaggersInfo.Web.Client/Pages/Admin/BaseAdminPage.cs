@@ -11,13 +11,13 @@ public abstract class BaseAdminPage : ComponentBase
 	public List<string>? UserRoles { get; private set; }
 
 	[Inject]
-	public AdminAuthenticationStateProvider Auth { get; set; } = null!;
+	public required AdminAuthenticationStateProvider Auth { get; set; }
 
 	[Inject]
-	public NavigationManager NavigationManager { get; set; } = null!;
+	public required NavigationManager NavigationManager { get; set; }
 
 	[Inject]
-	public AdminApiHttpClient Http { get; set; } = null!;
+	public required AdminApiHttpClient Http { get; set; }
 
 	protected override async Task OnInitializedAsync()
 	{

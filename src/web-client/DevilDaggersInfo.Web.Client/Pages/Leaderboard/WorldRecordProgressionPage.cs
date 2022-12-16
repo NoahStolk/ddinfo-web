@@ -40,10 +40,10 @@ public partial class WorldRecordProgressionPage
 	private readonly Dictionary<string, bool> _worldRecordsSortings = new();
 
 	[Inject]
-	public MainApiHttpClient Http { get; set; } = null!;
+	public required MainApiHttpClient Http { get; set; }
 
 	[Inject]
-	public IJSRuntime JsRuntime { get; set; } = null!;
+	public required IJSRuntime JsRuntime { get; set; }
 
 	protected override async Task OnInitializedAsync()
 	{

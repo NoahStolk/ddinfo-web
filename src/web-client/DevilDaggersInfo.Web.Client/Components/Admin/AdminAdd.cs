@@ -13,26 +13,26 @@ public partial class AdminAdd<TStateObject, TModel>
 
 	[Parameter]
 	[EditorRequired]
-	public string Name { get; set; } = null!;
+	public required string Name { get; set; }
 
 	[Parameter]
 	[EditorRequired]
-	public string OverviewUrl { get; set; } = null!;
+	public required string OverviewUrl { get; set; }
 
 	[Parameter]
 	[EditorRequired]
-	public Func<TModel, Task<HttpResponseMessage>> ApiCall { get; set; } = null!;
+	public required Func<TModel, Task<HttpResponseMessage>> ApiCall { get; set; }
 
 	[Parameter]
 	[EditorRequired]
-	public TStateObject StateObject { get; set; } = default!;
+	public required TStateObject StateObject { get; set; }
 
 	[Parameter]
-	public RenderFragment ChildContent { get; set; } = null!;
+	public required RenderFragment ChildContent { get; set; }
 
 	[Parameter]
 	[EditorRequired]
-	public Func<AdminAdd<TStateObject, TModel>, Task> OnPopulate { get; set; } = null!;
+	public required Func<AdminAdd<TStateObject, TModel>, Task> OnPopulate { get; set; }
 
 	public ErrorState State { get; set; }
 	public string? ErrorMessage { get; set; }

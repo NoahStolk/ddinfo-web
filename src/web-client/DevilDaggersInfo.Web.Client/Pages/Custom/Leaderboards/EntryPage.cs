@@ -28,14 +28,15 @@ public partial class EntryPage
 
 	private readonly List<LineChartBackground> _backgrounds = new();
 
-	[Parameter, EditorRequired]
+	[Parameter]
+	[EditorRequired]
 	public int Id { get; set; }
 
 	[Inject]
-	public MainApiHttpClient Http { get; set; } = null!;
+	public required MainApiHttpClient Http { get; set; }
 
 	[Inject]
-	public IJSRuntime JsRuntime { get; set; } = null!;
+	public required IJSRuntime JsRuntime { get; set; }
 
 	public GetCustomEntryData? GetCustomEntryData { get; set; }
 

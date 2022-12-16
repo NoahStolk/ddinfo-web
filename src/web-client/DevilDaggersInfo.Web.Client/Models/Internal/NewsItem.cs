@@ -2,7 +2,7 @@ namespace DevilDaggersInfo.Web.Client.Models.Internal;
 
 public class NewsItem
 {
-	public string Title { get; set; } = null!;
+	public required string Title { get; set; }
 
 	public DateTime DateTime { get; set; }
 

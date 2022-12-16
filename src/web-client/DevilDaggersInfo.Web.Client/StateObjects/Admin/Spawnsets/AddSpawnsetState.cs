@@ -10,7 +10,7 @@ public class AddSpawnsetState : IStateObject<AddSpawnset>
 	public int PlayerId { get; set; }
 
 	[StringLength(64)]
-	public string Name { get; set; } = null!;
+	public string Name { get; set; } = string.Empty;
 
 	[Range(0, 400)]
 	public int? MaxDisplayWaves { get; set; }
@@ -21,7 +21,7 @@ public class AddSpawnsetState : IStateObject<AddSpawnset>
 	public bool IsPractice { get; set; }
 
 	[MaxLength(SpawnsetConstants.MaxFileSize, ErrorMessage = SpawnsetConstants.MaxFileSizeErrorMessage)]
-	public byte[] FileContents { get; set; } = null!;
+	public byte[] FileContents { get; set; } = Array.Empty<byte>();
 
 	public AddSpawnset ToModel() => new()
 	{
