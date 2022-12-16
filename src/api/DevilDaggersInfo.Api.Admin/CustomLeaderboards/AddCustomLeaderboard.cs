@@ -5,16 +5,13 @@ namespace DevilDaggersInfo.Api.Admin.CustomLeaderboards;
 
 public record AddCustomLeaderboard
 {
-	[Required]
-	public int SpawnsetId { get; init; }
+	public required int SpawnsetId { get; init; }
 
-	[Required]
-	public CustomLeaderboardCategory Category { get; init; }
+	public required CustomLeaderboardCategory Category { get; init; }
 
 	public required AddCustomLeaderboardDaggers Daggers { get; init; }
 
-	[Required]
-	public bool IsFeatured { get; init; }
+	public required bool IsFeatured { get; init; }
 
 	public required AddCustomLeaderboardCriteria GemsCollectedCriteria { get; init; }
 

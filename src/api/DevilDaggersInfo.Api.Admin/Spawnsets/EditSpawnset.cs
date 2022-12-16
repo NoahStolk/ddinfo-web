@@ -4,17 +4,16 @@ namespace DevilDaggersInfo.Api.Admin.Spawnsets;
 
 public record EditSpawnset
 {
-	[Required]
-	public int PlayerId { get; init; }
+	public required int PlayerId { get; init; }
 
 	[StringLength(64)]
 	public required string Name { get; init; }
 
 	[Range(0, 400)]
-	public int? MaxDisplayWaves { get; init; }
+	public required int? MaxDisplayWaves { get; init; }
 
 	[StringLength(2048)]
-	public string? HtmlDescription { get; init; }
+	public required string? HtmlDescription { get; init; }
 
-	public bool IsPractice { get; init; }
+	public required bool IsPractice { get; init; }
 }

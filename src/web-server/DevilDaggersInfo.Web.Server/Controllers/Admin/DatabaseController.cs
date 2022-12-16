@@ -21,20 +21,28 @@ public class DatabaseController : ControllerBase
 	public async Task<ActionResult<List<GetDatabaseTableEntry>>> GetDatabaseInfo()
 	{
 		List<InformationSchemaTable> tables = await _dbContext.InformationSchemaTables
-			.FromSqlRaw($@"SELECT
-	table_name AS `{nameof(InformationSchemaTable.Table)}`,
-	data_length `{nameof(InformationSchemaTable.DataSize)}`,
-	index_length `{nameof(InformationSchemaTable.IndexSize)}`,
-	avg_row_length `{nameof(InformationSchemaTable.AverageRowLength)}`,
-	table_rows `{nameof(InformationSchemaTable.TableRows)}`
-FROM information_schema.TABLES
-WHERE table_schema = 'devildaggers'
-ORDER BY table_name ASC;")
+			.FromSqlRaw($"""
+				SELECT
+					table_name AS `{nameof(InformationSchemaTable.Table)}`,
+					data_length `{nameof(InformationSchemaTable.DataSize)}`,
+					index_length `{nameof(InformationSchemaTable.IndexSize)}`,
+					avg_row_length `{nameof(InformationSchemaTable.AverageRowLength)}`,
+					table_rows `{nameof(InformationSchemaTable.TableRows)}`
+				FROM information_schema.TABLES
+				WHERE table_schema = 'devildaggers'
+				ORDER BY table_name ASC;
+				""")
 			.ToListAsync();
 
 		return tables
 			.OrderBy(t => t.Table)
-			.Select(t => new GetDatabaseTableEntry(t.Table ?? string.Empty, t.TableRows, t.DataSize, t.IndexSize))
+			.Select(t => new GetDatabaseTableEntry
+			{
+				DataSize = t.DataSize,
+				IndexSize = t.IndexSize,
+				Count = t.TableRows,
+				Name = t.Table ?? string.Empty,
+			})
 			.ToList();
 	}
 }

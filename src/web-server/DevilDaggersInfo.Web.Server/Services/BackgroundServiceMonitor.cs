@@ -20,7 +20,12 @@ public class BackgroundServiceMonitor
 	{
 		return _backgroundServiceLogs
 			.OrderBy(bsl => bsl.Name)
-			.Select(bsl => new GetBackgroundServiceEntry(bsl.Name.Replace("BackgroundService", string.Empty), bsl.LastExecuted, bsl.Interval))
+			.Select(bsl => new GetBackgroundServiceEntry
+			{
+				Name =bsl.Name.Replace("BackgroundService", string.Empty),
+				Interval = bsl.Interval,
+				LastExecuted = bsl.LastExecuted,
+			})
 			.ToList();
 	}
 

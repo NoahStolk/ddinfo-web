@@ -39,11 +39,11 @@ public class CachesController : ControllerBase
 	{
 		return new List<GetCacheEntry>
 		{
-			new("LeaderboardHistory", _leaderboardHistoryCache.GetCount()),
-			new("LeaderboardStatistics", _leaderboardStatisticsCache.GetCount()),
-			new("ModArchive", _modArchiveCache.GetCount()),
-			new("SpawnsetHash", _spawnsetHashCache.GetCount()),
-			new("SpawnsetSummary", _spawnsetSummaryCache.GetCount()),
+			new() { Name = "LeaderboardHistory", Count = _leaderboardHistoryCache.GetCount() },
+			new() { Name = "LeaderboardStatistics", Count = _leaderboardStatisticsCache.GetCount() },
+			new() { Name = "ModArchive", Count = _modArchiveCache.GetCount() },
+			new() { Name = "SpawnsetHash", Count = _spawnsetHashCache.GetCount() },
+			new() { Name = "SpawnsetSummary", Count = _spawnsetSummaryCache.GetCount() },
 		};
 	}
 
