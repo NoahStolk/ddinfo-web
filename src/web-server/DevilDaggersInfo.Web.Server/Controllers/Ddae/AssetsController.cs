@@ -4,6 +4,7 @@ using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Ddae;
 
+[Obsolete("DDAE 1.4.0 will be removed.")]
 [Route("api/ddae/assets")]
 [ApiController]
 public class AssetsController : ControllerBase
@@ -15,6 +16,7 @@ public class AssetsController : ControllerBase
 		_fileSystemService = fileSystemService;
 	}
 
+	[Obsolete("DDAE 1.4.0 will be removed.")]
 	[HttpGet("/api/assets/ddae/info")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public ActionResult<Dictionary<string, List<GetAssetInfo>>> GetAssetInfoForDdae()
