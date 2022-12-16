@@ -1,4 +1,5 @@
 @page "/authentication/register"
+@using DevilDaggersInfo.Web.Client.Components
 @using DevilDaggersInfo.Web.Client.StateObjects.Authentication
 @inject MainApiHttpClient Http
 @inject NavigationManager Navigation
@@ -24,7 +25,8 @@
 
 @code
 {
-	[Parameter] public RegistrationRequestState StateObject { get; set; } = new();
+	[Parameter]
+	public RegistrationRequestState StateObject { get; set; } = new();
 
 	private string? _serverError;
 

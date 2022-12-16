@@ -1,6 +1,9 @@
 @page "/admin/health"
 @inherits BaseAdminPage
 @using DevilDaggersInfo.Api.Admin.Health
+@using DevilDaggersInfo.Razor.Core.CanvasChart.Components
+@using DevilDaggersInfo.Web.Client.Components
+@using DevilDaggersInfo.Web.Client.Components.Admin
 
 <AdminAuthorizer Base="this" RequiredRole="@Roles.Admin">
 	<Heading Title="Admin - Health" />
@@ -11,7 +14,7 @@
 
 	<a class="btn btn-green cursor-pointer block w-40 mb-2 mx-1" @onclick="async () => await ForceDump()">Force dump now</a>
 
-	<DatePicker DateSelected="@(d => UpdateDateTime(d))" />
+	<DatePicker DateSelected="@(UpdateDateTime)" />
 
 	@if (_response == null)
 	{

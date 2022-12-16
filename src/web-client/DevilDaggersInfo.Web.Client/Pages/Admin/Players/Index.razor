@@ -1,6 +1,7 @@
 @page "/admin/players"
 @inherits BaseAdminPage
 @using DevilDaggersInfo.Api.Admin.Players
+@using DevilDaggersInfo.Web.Client.Components.Admin
 
 <AdminAuthorizer Base="this" RequiredRole="@Roles.Players">
 	<AdminOverview @ref="_overview" TGetDto="GetPlayerForOverview" TSorting="PlayerSorting" Title="Admin - Players" ApiCall="(int pageIndex, int pageSize, PlayerSorting? sortBy, bool isAscending) => Http.GetPlayers(pageIndex, pageSize, sortBy, isAscending)" DeletionApiCall="(int id) => Http.DeletePlayerById(id)" GridConfiguration="grid-cols-admin-players-sm md:grid-cols-admin-players-md lg:grid-cols-admin-players-lg xl:grid-cols-admin-players-xl">

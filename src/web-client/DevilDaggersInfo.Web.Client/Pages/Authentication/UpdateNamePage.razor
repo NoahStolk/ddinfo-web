@@ -1,5 +1,6 @@
 @page "/authentication/update-name"
 @using DevilDaggersInfo.Web.Client.Authentication
+@using DevilDaggersInfo.Web.Client.Components
 @using DevilDaggersInfo.Web.Client.StateObjects.Authentication
 @using Microsoft.AspNetCore.Components
 @inject MainApiHttpClient Http
@@ -25,7 +26,8 @@
 
 @code
 {
-	[Parameter] public UpdateNameRequestState StateObject { get; set; } = new();
+	[Parameter]
+	public UpdateNameRequestState StateObject { get; set; } = new();
 
 	private string? _serverError;
 

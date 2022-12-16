@@ -2,6 +2,8 @@
 @inherits BaseAdminPage
 @using DevilDaggersInfo.Api.Admin.Spawnsets
 @using DevilDaggersInfo.Api.Admin.Players
+@using DevilDaggersInfo.Web.Client.Components.Admin
+@using DevilDaggersInfo.Web.Client.Components.Input
 @using DevilDaggersInfo.Web.Client.Enums
 @using DevilDaggersInfo.Web.Client.StateObjects.Admin.Spawnsets
 
@@ -20,7 +22,9 @@
 	private Dictionary<int, string>? _playerNames;
 	private readonly EditSpawnsetState _editSpawnsetState = new();
 
-	[Parameter, EditorRequired] public int Id { get; set; }
+	[Parameter]
+	[EditorRequired]
+	public int Id { get; set; }
 
 	private async Task PopulateAsync(AdminEdit<EditSpawnsetState, EditSpawnset> editComponent)
 	{
