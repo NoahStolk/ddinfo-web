@@ -4,41 +4,41 @@ namespace DevilDaggersInfo.Api.Admin.CustomEntries;
 
 public record AddCustomEntry
 {
-	public int CustomLeaderboardId { get; init; }
+	public required int CustomLeaderboardId { get; init; }
 
-	public int PlayerId { get; init; }
+	public required int PlayerId { get; init; }
 
-	public double Time { get; init; }
+	public required double Time { get; init; }
 
-	public int GemsCollected { get; init; }
+	public required int GemsCollected { get; init; }
 
-	public int GemsDespawned { get; init; }
+	public required int GemsDespawned { get; init; }
 
-	public int GemsEaten { get; init; }
+	public required int GemsEaten { get; init; }
 
-	public int GemsTotal { get; init; }
+	public required int GemsTotal { get; init; }
 
-	public int EnemiesKilled { get; init; }
+	public required int EnemiesKilled { get; init; }
 
-	public int EnemiesAlive { get; init; }
+	public required int EnemiesAlive { get; init; }
 
-	public int DaggersFired { get; init; }
+	public required int DaggersFired { get; init; }
 
-	public int DaggersHit { get; init; }
+	public required int DaggersHit { get; init; }
 
-	public int HomingStored { get; init; }
+	public required int HomingStored { get; init; }
 
-	public int HomingEaten { get; init; }
+	public required int HomingEaten { get; init; }
 
-	public CustomEntryDeathType DeathType { get; init; }
+	public required CustomEntryDeathType DeathType { get; init; }
 
-	public double LevelUpTime2 { get; init; }
+	public required double LevelUpTime2 { get; init; }
 
-	public double LevelUpTime3 { get; init; }
+	public required double LevelUpTime3 { get; init; }
 
-	public double LevelUpTime4 { get; init; }
+	public required double LevelUpTime4 { get; init; }
 
-	public DateTime SubmitDate { get; init; }
+	public required DateTime SubmitDate { get; init; }
 
 	[StringLength(16)]
 	public required string ClientVersion { get; init; }

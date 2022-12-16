@@ -27,7 +27,12 @@ public class FileSystemController : ControllerBase
 			.Select(dsd =>
 			{
 				DirectoryStatistics statistics = GetDirectorySize(_fileSystemService.GetPath(dsd));
-				return new GetFileSystemEntry(dsd.ToString(), statistics.FileCount, statistics.Size);
+				return new GetFileSystemEntry
+				{
+					Count = statistics.FileCount,
+					Size = statistics.Size,
+					Name = dsd.ToString(),
+				};
 			})
 			.ToList();
 	}
@@ -35,8 +40,8 @@ public class FileSystemController : ControllerBase
 	private static DirectoryStatistics GetDirectorySize(string folderPath)
 	{
 		DirectoryInfo di = new(folderPath);
-		IEnumerable<FileInfo> allFiles = di.EnumerateFiles("*.*", SearchOption.AllDirectories);
-		return new(allFiles.Sum(fi => fi.Length), allFiles.Count());
+		List<FileInfo> allFiles = di.EnumerateFiles("*.*", SearchOption.AllDirectories).ToList();
+		return new(allFiles.Sum(fi => fi.Length), allFiles.Count);
 	}
 
 	private readonly record struct DirectoryStatistics(long Size, int FileCount);

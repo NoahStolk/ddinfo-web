@@ -2,11 +2,11 @@ namespace DevilDaggersInfo.Api.Admin.Health;
 
 public record GetRequestPathEntry
 {
-	public int RequestCount { get; set; }
+	public required int RequestCount { get; set; }
 
-	public double AverageResponseTimeTicks { get; set; }
+	public required double AverageResponseTimeTicks { get; set; }
 
-	public double MinResponseTimeTicks { get; set; }
+	public required double MinResponseTimeTicks { get; set; }
 
-	public double MaxResponseTimeTicks { get; set; }
+	public required double MaxResponseTimeTicks { get; set; }
 }

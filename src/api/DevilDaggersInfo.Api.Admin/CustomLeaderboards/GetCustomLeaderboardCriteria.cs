@@ -4,7 +4,7 @@ namespace DevilDaggersInfo.Api.Admin.CustomLeaderboards;
 
 public record GetCustomLeaderboardCriteria
 {
-	public CustomLeaderboardCriteriaOperator Operator { get; init; }
+	public required CustomLeaderboardCriteriaOperator Operator { get; init; }
 
-	public string? Expression { get; init; }
+	public required string? Expression { get; init; }
 }
