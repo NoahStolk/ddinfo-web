@@ -1,5 +1,6 @@
 namespace DevilDaggersInfo.Api.Ddcl;
 
+[Obsolete("DDCL 1.8.3 will be removed.")]
 public static class ReplayConstants
 {
 	public const int MaxFileSize = 30 * 1024 * 1024;

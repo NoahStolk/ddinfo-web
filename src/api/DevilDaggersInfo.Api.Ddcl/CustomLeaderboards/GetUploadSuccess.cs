@@ -2,31 +2,25 @@ using DevilDaggersInfo.Types.Web;
 
 namespace DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
 
+[Obsolete("DDCL 1.8.3 will be removed.")]
 public record GetUploadSuccess
 {
 	public string Message { get; init; } = string.Empty;
 
 	public SubmissionType SubmissionType { get; init; }
 
-	[Obsolete("Will be removed.")] // Used by DDCL 1.8.3
 	public string SpawnsetName { get; init; } = string.Empty;
 
-	[Obsolete("Will be removed.")] // Used by DDCL 1.8.3
 	public CustomLeaderboardCategory Category { get; init; }
 
-	[Obsolete("Will be removed.")] // Used by DDCL 1.8.3
 	public int TotalPlayers { get; init; }
 
-	[Obsolete("Will be removed.")] // Used by DDCL 1.8.3
 	public required GetCustomLeaderboardDdcl Leaderboard { get; init; }
 
-	[Obsolete("Will be removed.")] // Used by DDCL 1.8.3
 	public required List<GetCustomEntryDdcl> Entries { get; init; }
 
-	[Obsolete("Will be removed.")] // Used by DDCL 1.8.3
 	public bool IsNewPlayerOnThisLeaderboard { get; init; }
 
-	[Obsolete("Will be removed.")] // Used by DDCL 1.8.3
 	public bool IsHighscore { get; init; }
 
 	public GetScoreState<int> RankState { get; init; }

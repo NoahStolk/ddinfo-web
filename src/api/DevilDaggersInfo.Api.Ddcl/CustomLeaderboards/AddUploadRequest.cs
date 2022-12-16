@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
 
+[Obsolete("DDCL 1.8.3 will be removed.")]
 public record AddUploadRequest
 {
 	[MaxLength(16)]
