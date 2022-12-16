@@ -94,7 +94,7 @@
 @code
 {
 	[Parameter, EditorRequired] public List<GetEntry> Entries { get; set; } = default!;
-	[Parameter, EditorRequired] public List<GetPlayerForSettings>? Players { get; set; } = null!;
+	[Parameter, EditorRequired] public List<GetPlayerForSettings>? Players { get; set; }
 
 	private int? _expandedId;
 	private LeaderboardSorting _sortBy;

@@ -80,35 +80,6 @@ public class ToolRepository
 		return File.ReadAllBytes(path);
 	}
 
-	public async Task<List<ToolDistribution>> GetLatestToolDistributionsAsync(OperatingSystemType operatingSystem)
-	{
-		List<ToolDistributionEntity> distributionEntities = await (operatingSystem switch
-		{
-			OperatingSystemType.Windows => _dbContext.ToolDistributions.Where(td => td.PublishMethod == ToolPublishMethod.SelfContained && (td.BuildType == ToolBuildType.WindowsWpf || td.BuildType == ToolBuildType.WindowsConsole || td.BuildType == ToolBuildType.WindowsPhotino)),
-			OperatingSystemType.Windows7 => _dbContext.ToolDistributions.Where(td => td.PublishMethod == ToolPublishMethod.Default && (td.BuildType == ToolBuildType.WindowsWpf || td.BuildType == ToolBuildType.WindowsConsole || td.BuildType == ToolBuildType.WindowsPhotino)),
-			OperatingSystemType.Linux => _dbContext.ToolDistributions.Where(td => td.PublishMethod == ToolPublishMethod.SelfContained && td.BuildType == ToolBuildType.LinuxPhotino),
-			_ => throw new InvalidEnumConversionException(operatingSystem),
-		}).ToListAsync();
-
-		List<ToolDistribution> distributions = new();
-		foreach (ToolDistributionEntity distribution in distributionEntities.OrderByDescending(td => AppVersion.Parse(td.VersionNumber)))
-		{
-			if (distributions.Any(td => td.Name == distribution.ToolName && td.BuildType == distribution.BuildType && td.PublishMethod == distribution.PublishMethod))
-				continue;
-
-			distributions.Add(new ToolDistribution
-			{
-				Name = distribution.ToolName,
-				BuildType = distribution.BuildType,
-				FileSize = GetToolDistributionFileSize(distribution.ToolName, distribution.PublishMethod, distribution.BuildType, distribution.VersionNumber),
-				PublishMethod = distribution.PublishMethod,
-				VersionNumber = distribution.VersionNumber,
-			});
-		}
-
-		return distributions;
-	}
-
 	public async Task<ToolDistribution?> GetLatestToolDistributionAsync(string name, ToolPublishMethod publishMethod, ToolBuildType buildType)
 	{
 		List<string> versions = await _dbContext.ToolDistributions.Where(td => td.ToolName == name && td.PublishMethod == publishMethod && td.BuildType == buildType).Select(td => td.VersionNumber).ToListAsync();

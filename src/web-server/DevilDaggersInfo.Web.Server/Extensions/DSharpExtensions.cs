@@ -5,20 +5,6 @@ namespace DevilDaggersInfo.Web.Server.Extensions;
 
 public static class DSharpExtensions
 {
-	public static void AddError(this DiscordEmbedBuilder builder, Exception exception, int level = 0)
-	{
-		if (level > 5)
-			return;
-
-		builder.AddField(level == 0 ? "Exception message" : $"Inner exception message {level}", exception.Message.TrimAfter(1024));
-
-		if (exception.StackTrace != null)
-			builder.AddField("Stack trace", exception.StackTrace.TrimAfter(1024));
-
-		if (exception.InnerException != null)
-			builder.AddError(exception.InnerException, ++level);
-	}
-
 	public static async Task<bool> SendMessageAsyncSafe(this DiscordChannel channel, string? message, DiscordEmbed? embed = null)
 	{
 		if (message == null && embed == null)

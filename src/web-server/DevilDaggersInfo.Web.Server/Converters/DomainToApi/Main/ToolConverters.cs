@@ -35,10 +35,4 @@ public static class ToolConverters
 		VersionNumber = distribution.VersionNumber,
 		FileSize = distribution.FileSize,
 	};
-
-	public static MainApi.GetToolVersionChange ToMainApi(this Change change) => new()
-	{
-		Description = change.Description,
-		SubChanges = change.SubChanges?.Select(c => c.ToMainApi()).ToList(),
-	};
 }
