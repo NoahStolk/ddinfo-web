@@ -6,10 +6,10 @@
 @code {
 	[Parameter]
 	[EditorRequired]
-	public string Name { get; set; } = null!;
+	public required string Name { get; set; }
 	
 	[Parameter]
-	public RenderFragment ChildContent { get; set; } = null!;
+	public required RenderFragment ChildContent { get; set; }
 	
 	[Parameter]
 	public int Left { get; set; } = 1;

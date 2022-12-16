@@ -25,9 +25,9 @@
 	public string? RequiredRole { get; set; }
 
 	[Parameter]
-	public RenderFragment ChildContent { get; set; } = null!;
+	public required RenderFragment ChildContent { get; set; }
 
 	[Parameter]
 	[EditorRequired]
-	public BaseAdminPage Base { get; set; } = null!;
+	public required BaseAdminPage Base { get; set; }
 }

@@ -3,5 +3,7 @@
 
 @code
 {
-	[Parameter, EditorRequired] public string Url { get; set; } = null!;
+	[Parameter]
+	[EditorRequired]
+	public required string Url { get; set; }
 }

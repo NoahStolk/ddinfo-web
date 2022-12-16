@@ -54,18 +54,19 @@
 		}
 	}
 
-	[CascadingParameter(Name = nameof(NavMenu))] public NavMenu NavMenu { get; set; } = null!;
+	[CascadingParameter(Name = nameof(NavMenu))]
+	public required NavMenu NavMenu { get; set; }
 
 	[Parameter]
-	public RenderFragment ChildContent { get; set; } = null!;
+	public required RenderFragment ChildContent { get; set; }
 	
 	[Parameter]
 	[EditorRequired]
-	public string Text { get; set; } = null!;
+	public required string Text { get; set; }
 	
 	[Parameter]
 	[EditorRequired]
-	public string IconType { get; set; } = null!;
+	public required string IconType { get; set; }
 
 	protected override void OnInitialized()
 	{

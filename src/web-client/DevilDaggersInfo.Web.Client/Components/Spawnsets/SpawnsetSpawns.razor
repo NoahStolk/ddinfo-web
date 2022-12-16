@@ -41,7 +41,10 @@ else
 
 @code
 {
-	[Parameter, EditorRequired] public SpawnsView SpawnsView { get; set; } = null!;
+	[Parameter]
+	[EditorRequired]
+	public required SpawnsView SpawnsView { get; set; }
 
-	[Parameter] public GameVersion GameVersion { get; set; } = GameConstants.CurrentVersion;
+	[Parameter]
+	public GameVersion GameVersion { get; set; } = GameConstants.CurrentVersion;
 }

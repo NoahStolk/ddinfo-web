@@ -44,23 +44,23 @@
 
 	[Parameter]
 	[EditorRequired]
-	public string ToolName { get; set; } = null!;
+	public required string ToolName { get; set; }
 
 	[Parameter]
 	[EditorRequired]
-	public string Note { get; set; } = null!;
+	public required string Note { get; set; }
 
 	[Parameter]
 	[EditorRequired]
-	public ToolPublishMethod PublishMethod { get; set; }
+	public required ToolPublishMethod PublishMethod { get; set; }
 
 	[Parameter]
 	[EditorRequired]
-	public ToolBuildType BuildType { get; set; }
+	public required ToolBuildType BuildType { get; set; }
 
 	[Parameter]
 	[EditorRequired]
-	public string OperatingSystems { get; set; } = null!;
+	public required string OperatingSystems { get; set; }
 
 	[Parameter]
 	public ToolDistributionPrerequisites Prerequisites { get; set; }
@@ -69,7 +69,7 @@
 	public bool Recommended { get; set; }
 
 	[Inject]
-	public MainApiHttpClient Http { get; set; } = null!;
+	public required MainApiHttpClient Http { get; set; }
 
 	protected override async Task OnInitializedAsync()
 	{

@@ -2,8 +2,14 @@
 <span class="transition-opacity duration-150 ease-in-out @NavMenu.GetOpacityClass()">@Text</span>
 
 @code {
-	[CascadingParameter(Name = nameof(NavMenu))] public NavMenu NavMenu { get; set; } = null!;
+	[CascadingParameter(Name = nameof(NavMenu))]
+	public required NavMenu NavMenu { get; set; }
 
-	[Parameter, EditorRequired] public string Type { get; set; } = null!;
-	[Parameter, EditorRequired] public string Text { get; set; } = null!;
+	[Parameter]
+	[EditorRequired]
+	public required string Type { get; set; }
+	
+	[Parameter]
+	[EditorRequired]
+	public required string Text { get; set; }
 }

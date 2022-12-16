@@ -4,11 +4,11 @@
 
 @code {
 	[Parameter]
-	public RenderFragment ChildContent { get; set; } = null!;
+	public required RenderFragment ChildContent { get; set; }
 	
 	[Parameter]
 	[EditorRequired]
-	public string Text { get; set; } = null!;
+	public required string Text { get; set; }
 	
 	[Parameter]
 	public TooltipPosition Position { get; set; }

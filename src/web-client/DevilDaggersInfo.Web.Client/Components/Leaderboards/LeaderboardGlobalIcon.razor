@@ -7,12 +7,12 @@
 {
 	[Parameter]
 	[EditorRequired]
-	public string TooltipText { get; set; } = null!;
+	public required string TooltipText { get; set; }
 	
 	[Parameter]
 	[EditorRequired]
-	public string IconImageSrc { get; set; } = null!;
+	public required string IconImageSrc { get; set; }
 	
 	[Parameter]
-	public RenderFragment ChildContent { get; set; } = null!;
+	public required RenderFragment ChildContent { get; set; }
 }

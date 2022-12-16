@@ -12,10 +12,15 @@
 }
 
 @code {
-	[Parameter, EditorRequired] public string Title { get; set; } = null!;
+	[Parameter]
+	[EditorRequired]
+	public required string Title { get; set; }
 
-	[Parameter] public int Level { get; set; } = 1;
-	[Parameter] public bool BreakAll { get; set; }
+	[Parameter]
+	public int Level { get; set; } = 1;
+	
+	[Parameter]
+	public bool BreakAll { get; set; }
 
 	private string GetBreakClass()
 	{

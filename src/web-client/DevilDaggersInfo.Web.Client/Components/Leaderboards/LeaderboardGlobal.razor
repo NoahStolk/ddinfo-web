@@ -33,6 +33,10 @@
 
 @code
 {
-	[Parameter, EditorRequired] public IGetLeaderboardGlobalDto Leaderboard { get; set; } = null!;
-	[Parameter] public bool IsHistory { get; set; }
+	[Parameter]
+	[EditorRequired]
+	public required IGetLeaderboardGlobalDto Leaderboard { get; set; }
+	
+	[Parameter]
+	public bool IsHistory { get; set; }
 }

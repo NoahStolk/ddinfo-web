@@ -1,5 +1,7 @@
 <PageTitle>@PageTitle - DevilDaggers.info</PageTitle>
 
 @code {
-	[Parameter, EditorRequired] public string PageTitle { get; set; } = null!;
+	[Parameter]
+	[EditorRequired]
+	public required string PageTitle { get; set; }
 }

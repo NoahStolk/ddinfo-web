@@ -7,5 +7,7 @@
 
 @code
 {
-	[Parameter, EditorRequired] public GetTool GetTool { get; set; } = null!;
+	[Parameter]
+	[EditorRequired]
+	public required GetTool GetTool { get; set; }
 }

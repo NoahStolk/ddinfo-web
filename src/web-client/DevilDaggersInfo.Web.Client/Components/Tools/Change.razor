@@ -11,5 +11,7 @@
 </ul>
 
 @code {
-	[Parameter, EditorRequired] public GetToolVersionChange GetChange { get; set; } = null!;
+	[Parameter]
+	[EditorRequired]
+	public required GetToolVersionChange GetChange { get; set; }
 }
