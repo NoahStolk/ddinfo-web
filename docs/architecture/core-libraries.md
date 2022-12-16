@@ -30,7 +30,6 @@ There are currently four types of core libraries.
 | Razor.Core.Canvas      | Base functionality for CanvasArena and CanvasChart |
 | Razor.Core.CanvasArena | Any UI project may want to render canvas arenas    |
 | Razor.Core.CanvasChart | Any UI project may want to render canvas charts    |
-| Razor.Core.Components  | Any UI project has access to these components      |
 
 ## `web-core`
 

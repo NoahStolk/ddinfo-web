@@ -1,4 +1,3 @@
-@using DevilDaggersInfo.Razor.Core.Components.Components
 @typeparam TValue
 
 <OutsideClickHandler OnClickOutside="OnClickOutside" CssClass="@($"inline-block text-color-text {CssClass} {CssWidthClass}")">
@@ -23,15 +22,15 @@
 
 	[Parameter]
 	[EditorRequired]
-	public IReadOnlyList<TValue> Values { get; set; } = null!;
+	public required IReadOnlyList<TValue> Values { get; set; }
 
 	[Parameter]
 	[EditorRequired]
-	public TValue Default { get; set; } = default!;
+	public required TValue Default { get; set; }
 
 	[Parameter]
 	[EditorRequired]
-	public Func<TValue, string> DisplayFunction { get; set; } = null!;
+	public required Func<TValue, string> DisplayFunction { get; set; }
 
 	[Parameter]
 	[EditorRequired]
@@ -46,7 +45,7 @@
 	[Parameter]
 	public string? CssOpenerClass { get; set; }
 
-	public TValue CurrentValue { get; set; } = default!;
+	public required TValue CurrentValue { get; set; }
 
 	protected override void OnInitialized()
 	{
