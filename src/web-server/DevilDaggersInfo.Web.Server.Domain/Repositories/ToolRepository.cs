@@ -2,6 +2,7 @@ using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Core.Versioning;
 using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
+using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Models.Tools;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
@@ -50,7 +51,7 @@ public class ToolRepository
 			{
 				Changes = ce.Changes.Select(ToModel).ToList(),
 				Date = ce.Date,
-				DownloadCount = downloads.ContainsKey(ce.VersionNumber) ? downloads[ce.VersionNumber] : 0,
+				DownloadCount = downloads.TryGetValue(ce.VersionNumber, out int value) ? value : 0,
 				VersionNumber = ce.VersionNumber,
 			}),
 			Name = tool.Name,
@@ -66,15 +67,13 @@ public class ToolRepository
 		};
 	}
 
-	public byte[]? GetToolDistributionFile(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version)
+	public byte[] GetToolDistributionFile(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version)
 	{
 		string path = _fileSystemService.GetToolDistributionPath(name, publishMethod, buildType, version);
 		if (!File.Exists(path))
 		{
 			_logger.LogError("Tool distribution file at '{path}' does not exist!", path);
-#pragma warning disable S1168 // Empty arrays and collections should be returned instead of null
-			return null;
-#pragma warning restore S1168 // Empty arrays and collections should be returned instead of null
+			throw new NotFoundException("Tool distribution file does not exist.");
 		}
 
 		return File.ReadAllBytes(path);
