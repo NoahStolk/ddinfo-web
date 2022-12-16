@@ -2,9 +2,9 @@ namespace DevilDaggersInfo.Api.App.Spawnsets;
 
 public record GetSpawnsetByHashCustomEntry
 {
-	public int CustomEntryId { get; init; }
+	public required int CustomEntryId { get; init; }
 
-	public int Time { get; init; }
+	public required int Time { get; init; }
 
-	public bool HasReplay { get; init; }
+	public required bool HasReplay { get; init; }
 }

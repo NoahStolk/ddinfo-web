@@ -4,7 +4,7 @@ namespace DevilDaggersInfo.Api.App.CustomLeaderboards;
 
 public record GetCustomLeaderboardWorldRecord
 {
-	public double Time { get; init; }
+	public required double Time { get; init; }
 
-	public CustomLeaderboardDagger? Dagger { get; init; }
+	public required CustomLeaderboardDagger? Dagger { get; init; }
 }

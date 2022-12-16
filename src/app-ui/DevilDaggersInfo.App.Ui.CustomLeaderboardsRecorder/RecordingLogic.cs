@@ -236,61 +236,150 @@ public static class RecordingLogic
 
 	private static AddGameData GetGameDataForUpload(MainBlock block, byte[] statsBuffer)
 	{
-		AddGameData gameData = new();
+		List<int> gemsCollected = new();
+		List<int> enemiesKilled = new();
+		List<int> daggersFired = new();
+		List<int> daggersHit = new();
+		List<int> enemiesAlive = new();
+		List<int> homingStored = new();
+		List<int> gemsDespawned = new();
+		List<int> gemsEaten = new();
+		List<int> gemsTotal = new();
+		List<int> homingEaten = new();
+		List<ushort> skull1SAlive = new();
+		List<ushort> skull2SAlive = new();
+		List<ushort> skull3SAlive = new();
+		List<ushort> spiderlingsAlive = new();
+		List<ushort> skull4SAlive = new();
+		List<ushort> squid1SAlive = new();
+		List<ushort> squid2SAlive = new();
+		List<ushort> squid3SAlive = new();
+		List<ushort> centipedesAlive = new();
+		List<ushort> gigapedesAlive = new();
+		List<ushort> spider1SAlive = new();
+		List<ushort> spider2SAlive = new();
+		List<ushort> leviathansAlive = new();
+		List<ushort> orbsAlive = new();
+		List<ushort> thornsAlive = new();
+		List<ushort> ghostpedesAlive = new();
+		List<ushort> spiderEggsAlive = new();
+		List<ushort> skull1SKilled = new();
+		List<ushort> skull2SKilled = new();
+		List<ushort> skull3SKilled = new();
+		List<ushort> spiderlingsKilled = new();
+		List<ushort> skull4SKilled = new();
+		List<ushort> squid1SKilled = new();
+		List<ushort> squid2SKilled = new();
+		List<ushort> squid3SKilled = new();
+		List<ushort> centipedesKilled = new();
+		List<ushort> gigapedesKilled = new();
+		List<ushort> spider1SKilled = new();
+		List<ushort> spider2SKilled = new();
+		List<ushort> leviathansKilled = new();
+		List<ushort> orbsKilled = new();
+		List<ushort> thornsKilled = new();
+		List<ushort> ghostpedesKilled = new();
+		List<ushort> spiderEggsKilled = new();
 
 		using MemoryStream ms = new(statsBuffer);
 		using BinaryReader br = new(ms);
 		for (int i = 0; i < block.StatsCount; i++)
 		{
-			gameData.GemsCollected.Add(br.ReadInt32());
-			gameData.EnemiesKilled.Add(br.ReadInt32());
-			gameData.DaggersFired.Add(br.ReadInt32());
-			gameData.DaggersHit.Add(br.ReadInt32());
-			gameData.EnemiesAlive.Add(br.ReadInt32());
-			_ = br.ReadInt32(); // Skip level gems.
-			gameData.HomingStored.Add(br.ReadInt32());
-			gameData.GemsDespawned.Add(br.ReadInt32());
-			gameData.GemsEaten.Add(br.ReadInt32());
-			gameData.GemsTotal.Add(br.ReadInt32());
-			gameData.HomingEaten.Add(br.ReadInt32());
+			gemsCollected.Add(br.ReadInt32());
+			enemiesKilled.Add(br.ReadInt32());
+			daggersFired.Add(br.ReadInt32());
+			daggersHit.Add(br.ReadInt32());
+			enemiesAlive.Add(br.ReadInt32());
+			_ = br.ReadInt32();// Skip level gems.
+			homingStored.Add(br.ReadInt32());
+			gemsDespawned.Add(br.ReadInt32());
+			gemsEaten.Add(br.ReadInt32());
+			gemsTotal.Add(br.ReadInt32());
+			homingEaten.Add(br.ReadInt32());
 
-			gameData.Skull1sAlive.Add(br.ReadUInt16());
-			gameData.Skull2sAlive.Add(br.ReadUInt16());
-			gameData.Skull3sAlive.Add(br.ReadUInt16());
-			gameData.SpiderlingsAlive.Add(br.ReadUInt16());
-			gameData.Skull4sAlive.Add(br.ReadUInt16());
-			gameData.Squid1sAlive.Add(br.ReadUInt16());
-			gameData.Squid2sAlive.Add(br.ReadUInt16());
-			gameData.Squid3sAlive.Add(br.ReadUInt16());
-			gameData.CentipedesAlive.Add(br.ReadUInt16());
-			gameData.GigapedesAlive.Add(br.ReadUInt16());
-			gameData.Spider1sAlive.Add(br.ReadUInt16());
-			gameData.Spider2sAlive.Add(br.ReadUInt16());
-			gameData.LeviathansAlive.Add(br.ReadUInt16());
-			gameData.OrbsAlive.Add(br.ReadUInt16());
-			gameData.ThornsAlive.Add(br.ReadUInt16());
-			gameData.GhostpedesAlive.Add(br.ReadUInt16());
-			gameData.SpiderEggsAlive.Add(br.ReadUInt16());
+			skull1SAlive.Add(br.ReadUInt16());
+			skull2SAlive.Add(br.ReadUInt16());
+			skull3SAlive.Add(br.ReadUInt16());
+			spiderlingsAlive.Add(br.ReadUInt16());
+			skull4SAlive.Add(br.ReadUInt16());
+			squid1SAlive.Add(br.ReadUInt16());
+			squid2SAlive.Add(br.ReadUInt16());
+			squid3SAlive.Add(br.ReadUInt16());
+			centipedesAlive.Add(br.ReadUInt16());
+			gigapedesAlive.Add(br.ReadUInt16());
+			spider1SAlive.Add(br.ReadUInt16());
+			spider2SAlive.Add(br.ReadUInt16());
+			leviathansAlive.Add(br.ReadUInt16());
+			orbsAlive.Add(br.ReadUInt16());
+			thornsAlive.Add(br.ReadUInt16());
+			ghostpedesAlive.Add(br.ReadUInt16());
+			spiderEggsAlive.Add(br.ReadUInt16());
 
-			gameData.Skull1sKilled.Add(br.ReadUInt16());
-			gameData.Skull2sKilled.Add(br.ReadUInt16());
-			gameData.Skull3sKilled.Add(br.ReadUInt16());
-			gameData.SpiderlingsKilled.Add(br.ReadUInt16());
-			gameData.Skull4sKilled.Add(br.ReadUInt16());
-			gameData.Squid1sKilled.Add(br.ReadUInt16());
-			gameData.Squid2sKilled.Add(br.ReadUInt16());
-			gameData.Squid3sKilled.Add(br.ReadUInt16());
-			gameData.CentipedesKilled.Add(br.ReadUInt16());
-			gameData.GigapedesKilled.Add(br.ReadUInt16());
-			gameData.Spider1sKilled.Add(br.ReadUInt16());
-			gameData.Spider2sKilled.Add(br.ReadUInt16());
-			gameData.LeviathansKilled.Add(br.ReadUInt16());
-			gameData.OrbsKilled.Add(br.ReadUInt16());
-			gameData.ThornsKilled.Add(br.ReadUInt16());
-			gameData.GhostpedesKilled.Add(br.ReadUInt16());
-			gameData.SpiderEggsKilled.Add(br.ReadUInt16());
+			skull1SKilled.Add(br.ReadUInt16());
+			skull2SKilled.Add(br.ReadUInt16());
+			skull3SKilled.Add(br.ReadUInt16());
+			spiderlingsKilled.Add(br.ReadUInt16());
+			skull4SKilled.Add(br.ReadUInt16());
+			squid1SKilled.Add(br.ReadUInt16());
+			squid2SKilled.Add(br.ReadUInt16());
+			squid3SKilled.Add(br.ReadUInt16());
+			centipedesKilled.Add(br.ReadUInt16());
+			gigapedesKilled.Add(br.ReadUInt16());
+			spider1SKilled.Add(br.ReadUInt16());
+			spider2SKilled.Add(br.ReadUInt16());
+			leviathansKilled.Add(br.ReadUInt16());
+			orbsKilled.Add(br.ReadUInt16());
+			thornsKilled.Add(br.ReadUInt16());
+			ghostpedesKilled.Add(br.ReadUInt16());
+			spiderEggsKilled.Add(br.ReadUInt16());
 		}
 
-		return gameData;
+		return new()
+		{
+			GemsCollected = gemsCollected,
+			EnemiesKilled = enemiesKilled,
+			DaggersFired = daggersFired,
+			DaggersHit = daggersHit,
+			EnemiesAlive = enemiesAlive,
+			HomingStored = homingStored,
+			GemsDespawned = gemsDespawned,
+			GemsEaten = gemsEaten,
+			GemsTotal = gemsTotal,
+			HomingEaten = homingEaten,
+			Skull1sAlive = skull1SAlive,
+			Skull2sAlive = skull2SAlive,
+			Skull3sAlive = skull3SAlive,
+			SpiderlingsAlive = spiderlingsAlive,
+			Skull4sAlive = skull4SAlive,
+			Squid1sAlive = squid1SAlive,
+			Squid2sAlive = squid2SAlive,
+			Squid3sAlive = squid3SAlive,
+			CentipedesAlive = centipedesAlive,
+			GigapedesAlive = gigapedesAlive,
+			Spider1sAlive = spider1SAlive,
+			Spider2sAlive = spider2SAlive,
+			LeviathansAlive = leviathansAlive,
+			OrbsAlive = orbsAlive,
+			ThornsAlive = thornsAlive,
+			GhostpedesAlive = ghostpedesAlive,
+			SpiderEggsAlive = spiderEggsAlive,
+			Skull1sKilled = skull1SKilled,
+			Skull2sKilled = skull2SKilled,
+			Skull3sKilled = skull3SKilled,
+			SpiderlingsKilled = spiderlingsKilled,
+			Skull4sKilled = skull4SKilled,
+			Squid1sKilled = squid1SKilled,
+			Squid2sKilled = squid2SKilled,
+			Squid3sKilled = squid3SKilled,
+			CentipedesKilled = centipedesKilled,
+			GigapedesKilled = gigapedesKilled,
+			Spider1sKilled = spider1SKilled,
+			Spider2sKilled = spider2SKilled,
+			LeviathansKilled = leviathansKilled,
+			OrbsKilled = orbsKilled,
+			ThornsKilled = thornsKilled,
+			GhostpedesKilled = ghostpedesKilled,
+			SpiderEggsKilled = spiderEggsKilled,
+		};
 	}
 }

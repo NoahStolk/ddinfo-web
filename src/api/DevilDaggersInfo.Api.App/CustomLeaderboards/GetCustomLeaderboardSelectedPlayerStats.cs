@@ -4,11 +4,11 @@ namespace DevilDaggersInfo.Api.App.CustomLeaderboards;
 
 public record GetCustomLeaderboardSelectedPlayerStats
 {
-	public int Rank { get; init; }
+	public required int Rank { get; init; }
 
-	public double Time { get; init; }
+	public required double Time { get; init; }
 
-	public CustomLeaderboardDagger? Dagger { get; init; }
+	public required CustomLeaderboardDagger? Dagger { get; init; }
 
-	public GetCustomLeaderboardSelectedPlayerNextDagger? NextDagger { get; init; }
+	public required GetCustomLeaderboardSelectedPlayerNextDagger? NextDagger { get; init; }
 }

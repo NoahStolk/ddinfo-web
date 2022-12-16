@@ -4,21 +4,21 @@ namespace DevilDaggersInfo.Api.App.CustomLeaderboards;
 
 public record GetCustomLeaderboardForOverview
 {
-	public int Id { get; init; }
+	public required int Id { get; init; }
 
-	public int SpawnsetId { get; init; }
+	public required int SpawnsetId { get; init; }
 
-	public string SpawnsetName { get; init; } = string.Empty;
+	public required string SpawnsetName { get; init; }
 
-	public int PlayerCount { get; init; }
+	public required int PlayerCount { get; init; }
 
-	public int SubmitCount { get; init; }
+	public required int SubmitCount { get; init; }
 
-	public CustomLeaderboardCategory Category { get; init; }
+	public required CustomLeaderboardCategory Category { get; init; }
 
-	public GetCustomLeaderboardDaggers? Daggers { get; init; }
+	public required GetCustomLeaderboardDaggers? Daggers { get; init; }
 
-	public GetCustomLeaderboardWorldRecord? WorldRecord { get; init; }
+	public required GetCustomLeaderboardWorldRecord? WorldRecord { get; init; }
 
-	public GetCustomLeaderboardSelectedPlayerStats? SelectedPlayerStats { get; init; }
+	public required GetCustomLeaderboardSelectedPlayerStats? SelectedPlayerStats { get; init; }
 }
