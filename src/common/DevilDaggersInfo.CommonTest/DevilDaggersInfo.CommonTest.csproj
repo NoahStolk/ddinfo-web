@@ -2,7 +2,6 @@
 
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" />
-    <PackageReference Include="MSTest.TestFramework" />
   </ItemGroup>
 
 </Project>
