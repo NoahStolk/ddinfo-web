@@ -94,6 +94,8 @@ public class LeaderboardStatisticsCache
 			DeathsStatistics.Add(death, 0);
 
 		int enemyIndex = 0;
+
+		// ! LINQ filters out null values.
 		int currentFirstSpawnSecond = StatEnemies[enemyIndex].FirstSpawnSecond!.Value;
 
 		int daggerIndex = 0;
@@ -164,6 +166,7 @@ public class LeaderboardStatisticsCache
 					return;
 				}
 
+				// ! LINQ filters out null values.
 				currentFirstSpawnSecond = StatEnemies[enemyIndex].FirstSpawnSecond!.Value;
 			}
 

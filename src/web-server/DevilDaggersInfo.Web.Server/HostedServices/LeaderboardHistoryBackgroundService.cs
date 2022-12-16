@@ -53,6 +53,7 @@ public class LeaderboardHistoryBackgroundService : AbstractBackgroundService
 
 		entries = entries.OrderBy(e => e.Rank).ToList();
 
+		// ! Loop is endless.
 		LeaderboardHistory historyModel = ConvertToHistoryModel(leaderboard!, entries);
 
 		string fileName = $"{DateTime.UtcNow:yyyyMMddHHmm}.bin";

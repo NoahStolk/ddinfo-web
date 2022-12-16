@@ -141,6 +141,7 @@ public class CustomLeaderboardRepository
 		if (customLeaderboard == null)
 			throw new NotFoundException($"Custom leaderboard '{id}' could not be found.");
 
+		// ! Navigation property.
 		List<int> existingReplayIds = _customEntryRepository.GetExistingCustomEntryReplayIds(customLeaderboard.CustomEntries!.ConvertAll(ce => ce.Id));
 
 		List<CustomLeaderboardCriteria> criteria = new();
@@ -302,6 +303,7 @@ public class CustomLeaderboardRepository
 
 	public async Task<GlobalCustomLeaderboard> GetGlobalCustomLeaderboardAsync(CustomLeaderboardCategory category)
 	{
+		// ! Navigation property.
 		List<CustomLeaderboardEntity> customLeaderboards = await _dbContext.CustomLeaderboards
 			.AsNoTracking()
 			.Include(cl => cl.CustomEntries!)

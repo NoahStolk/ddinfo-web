@@ -55,6 +55,7 @@ public class PlayerRepository
 
 	public async Task<List<PlayerCommonName>> GetCommonNamesAsync()
 	{
+		// ! LINQ filters out null values.
 		return await _dbContext.Players
 			.AsNoTracking()
 			.Select(p => new { p.Id, p.CommonName })

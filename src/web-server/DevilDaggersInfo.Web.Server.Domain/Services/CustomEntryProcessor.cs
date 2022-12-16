@@ -48,7 +48,9 @@ public class CustomEntryProcessor
 		_submissionLogger = submissionLogger;
 
 		IConfigurationSection section = configuration.GetRequiredSection("CustomLeaderboardSecrets");
-		_encryptionWrapper = new(section["InitializationVector"]!, section["Password"]!, section["Salt"]!); // TODO: Use IOptions binding and require properties.
+
+		// ! TODO: Use IOptions binding and require properties.
+		_encryptionWrapper = new(section["InitializationVector"]!, section["Password"]!, section["Salt"]!);
 
 		_stopwatch = Stopwatch.StartNew();
 	}
