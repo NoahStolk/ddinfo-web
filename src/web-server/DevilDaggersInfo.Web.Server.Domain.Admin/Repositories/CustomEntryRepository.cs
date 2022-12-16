@@ -19,12 +19,14 @@ public class CustomEntryRepository
 
 	public async Task<Page<GetCustomEntryForOverview>> GetCustomEntriesAsync(int pageIndex, int pageSize, CustomEntrySorting? sortBy, bool ascending)
 	{
+		// ! Navigation property.
 		IQueryable<CustomEntryEntity> customEntriesQuery = _dbContext.CustomEntries
 			.AsNoTracking()
 		.Include(ce => ce.Player)
 			.Include(ce => ce.CustomLeaderboard)
-				.ThenInclude(cl => cl.Spawnset);
+				.ThenInclude(cl => cl!.Spawnset);
 
+		// ! Navigation property.
 		customEntriesQuery = sortBy switch
 		{
 			CustomEntrySorting.ClientVersion => customEntriesQuery.OrderBy(ce => ce.ClientVersion, ascending).ThenBy(ce => ce.Id),
@@ -42,8 +44,8 @@ public class CustomEntryRepository
 			CustomEntrySorting.LevelUpTime2 => customEntriesQuery.OrderBy(ce => ce.LevelUpTime2, ascending).ThenBy(ce => ce.Id),
 			CustomEntrySorting.LevelUpTime3 => customEntriesQuery.OrderBy(ce => ce.LevelUpTime3, ascending).ThenBy(ce => ce.Id),
 			CustomEntrySorting.LevelUpTime4 => customEntriesQuery.OrderBy(ce => ce.LevelUpTime4, ascending).ThenBy(ce => ce.Id),
-			CustomEntrySorting.PlayerName => customEntriesQuery.OrderBy(ce => ce.Player.PlayerName, ascending).ThenBy(ce => ce.Id),
-			CustomEntrySorting.SpawnsetName => customEntriesQuery.OrderBy(ce => ce.CustomLeaderboard.Spawnset.Name, ascending).ThenBy(ce => ce.Id),
+			CustomEntrySorting.PlayerName => customEntriesQuery.OrderBy(ce => ce.Player!.PlayerName, ascending).ThenBy(ce => ce.Id),
+			CustomEntrySorting.SpawnsetName => customEntriesQuery.OrderBy(ce => ce.CustomLeaderboard!.Spawnset!.Name, ascending).ThenBy(ce => ce.Id),
 			CustomEntrySorting.SubmitDate => customEntriesQuery.OrderBy(ce => ce.SubmitDate, ascending).ThenBy(ce => ce.Id),
 			CustomEntrySorting.Time => customEntriesQuery.OrderBy(ce => ce.Time, ascending).ThenBy(ce => ce.Id),
 			_ => customEntriesQuery.OrderBy(ce => ce.Id, ascending),

@@ -18,6 +18,7 @@ public static class ModConverters
 		Url = mod.Url.TrimAfter(40, true),
 	};
 
+	// ! Navigation property.
 	public static GetMod ToGetMod(this ModEntity mod, List<string>? binaryNames, List<string>? screenshotNames) => new()
 	{
 		Id = mod.Id,
@@ -26,7 +27,7 @@ public static class ModConverters
 		IsHidden = mod.IsHidden,
 		LastUpdated = mod.LastUpdated,
 		Name = mod.Name,
-		PlayerIds = mod.PlayerMods.ConvertAll(pam => pam.PlayerId),
+		PlayerIds = mod.PlayerMods!.ConvertAll(pam => pam.PlayerId),
 		TrailerUrl = mod.TrailerUrl,
 		Url = mod.Url,
 		BinaryNames = binaryNames,

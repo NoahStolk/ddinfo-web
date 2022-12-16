@@ -36,9 +36,10 @@ public class ModsController : ControllerBase
 		ModSorting? sortBy = null,
 		bool ascending = false)
 	{
+		// ! Navigation property.
 		IEnumerable<ModEntity> modsQuery = _dbContext.Mods
 			.AsNoTracking()
-			.Include(am => am.PlayerMods)
+			.Include(am => am.PlayerMods!)
 				.ThenInclude(pam => pam.Player)
 			.Where(am => !am.IsHidden);
 
@@ -47,7 +48,10 @@ public class ModsController : ControllerBase
 			modsQuery = modsQuery.Where(m => m.Name.Contains(modFilter, StringComparison.OrdinalIgnoreCase));
 
 		if (!string.IsNullOrWhiteSpace(authorFilter))
-			modsQuery = modsQuery.Where(m => m.PlayerMods.Any(pm => pm.Player.PlayerName.Contains(authorFilter, StringComparison.OrdinalIgnoreCase)));
+		{
+			// ! Navigation property.
+			modsQuery = modsQuery.Where(m => m.PlayerMods!.Any(pm => pm.Player!.PlayerName.Contains(authorFilter, StringComparison.OrdinalIgnoreCase)));
+		}
 
 		List<ModEntity> mods = modsQuery.ToList();
 
@@ -90,17 +94,18 @@ public class ModsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public ActionResult<GetMod> GetModById([Required] int id)
 	{
+		// ! Navigation property.
 		ModEntity? modEntity = _dbContext.Mods
 			.AsNoTracking()
-			.Include(m => m.PlayerMods)
+			.Include(m => m.PlayerMods!)
 				.ThenInclude(pm => pm.Player)
 			.FirstOrDefault(m => m.Id == id);
 		if (modEntity == null)
 			return NotFound();
 
-		ModFileSystemData mfsd = _modArchiveAccessor.GetModFileSystemData(modEntity.Name);
+		ModFileSystemData data = _modArchiveAccessor.GetModFileSystemData(modEntity.Name);
 
-		return modEntity.ToGetMod(mfsd);
+		return modEntity.ToGetMod(data);
 	}
 
 	[HttpGet("total-data")]
@@ -135,11 +140,12 @@ public class ModsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public ActionResult<List<GetModName>> GetModsByAuthorId([Required] int playerId)
 	{
+		// ! Navigation property.
 		var mods = _dbContext.Mods
 			.AsNoTracking()
 			.Include(m => m.PlayerMods)
 			.Select(m => new { m.Id, m.Name, m.PlayerMods, m.LastUpdated })
-			.Where(m => m.PlayerMods.Any(pm => pm.PlayerId == playerId))
+			.Where(m => m.PlayerMods!.Any(pm => pm.PlayerId == playerId))
 			.OrderByDescending(m => m.LastUpdated)
 			.ToList();
 

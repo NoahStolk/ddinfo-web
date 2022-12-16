@@ -9,7 +9,7 @@ public class CustomEntryDataEntity
 	public int CustomEntryId { get; set; }
 
 	[ForeignKey(nameof(CustomEntryId))]
-	public CustomEntryEntity CustomEntry { get; set; } = null!;
+	public CustomEntryEntity? CustomEntry { get; set; }
 
 	public byte[] GemsCollectedData { get; set; } = null!;
 	public byte[] EnemiesKilledData { get; set; } = null!;

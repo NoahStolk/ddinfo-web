@@ -23,12 +23,13 @@ public class CustomLeaderboardRepository
 			.AsNoTracking()
 			.Include(cl => cl.Spawnset);
 
+		// ! Navigation property.
 		customLeaderboardsQuery = sortBy switch
 		{
 			CustomLeaderboardSorting.Category => customLeaderboardsQuery.OrderBy(cl => cl.Category, ascending).ThenBy(cl => cl.Id),
 			CustomLeaderboardSorting.DateCreated => customLeaderboardsQuery.OrderBy(cl => cl.DateCreated, ascending).ThenBy(cl => cl.Id),
 			CustomLeaderboardSorting.IsFeatured => customLeaderboardsQuery.OrderBy(cl => cl.IsFeatured, ascending).ThenBy(cl => cl.Id),
-			CustomLeaderboardSorting.SpawnsetName => customLeaderboardsQuery.OrderBy(cl => cl.Spawnset.Name, ascending).ThenBy(cl => cl.Id),
+			CustomLeaderboardSorting.SpawnsetName => customLeaderboardsQuery.OrderBy(cl => cl.Spawnset!.Name, ascending).ThenBy(cl => cl.Id),
 			CustomLeaderboardSorting.TimeBronze => customLeaderboardsQuery.OrderBy(cl => cl.Bronze, ascending).ThenBy(cl => cl.Id),
 			CustomLeaderboardSorting.TimeSilver => customLeaderboardsQuery.OrderBy(cl => cl.Silver, ascending).ThenBy(cl => cl.Id),
 			CustomLeaderboardSorting.TimeGolden => customLeaderboardsQuery.OrderBy(cl => cl.Golden, ascending).ThenBy(cl => cl.Id),
@@ -51,10 +52,11 @@ public class CustomLeaderboardRepository
 
 	public async Task<GetCustomLeaderboard> GetCustomLeaderboardAsync(int id)
 	{
+		// ! Navigation property.
 		CustomLeaderboardEntity? customLeaderboard = await _dbContext.CustomLeaderboards
 			.AsNoTracking()
 			.Include(cl => cl.Spawnset)
-				.ThenInclude(sf => sf.Player)
+				.ThenInclude(sf => sf!.Player)
 			.FirstOrDefaultAsync(cl => cl.Id == id);
 
 		if (customLeaderboard == null)

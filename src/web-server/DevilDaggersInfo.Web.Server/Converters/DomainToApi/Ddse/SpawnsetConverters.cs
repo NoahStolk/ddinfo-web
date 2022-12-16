@@ -5,6 +5,7 @@ namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Ddse;
 // TODO: Use domain models.
 public static class SpawnsetConverters
 {
+	// ! Navigation property.
 	public static DdseApi.GetSpawnsetDdse ToDdseApi(this SpawnsetEntity spawnset, SpawnsetSummary spawnsetSummary, bool hasCustomLeaderboard) => new()
 	{
 		MaxDisplayWaves = spawnset.MaxDisplayWaves,
@@ -12,7 +13,7 @@ public static class SpawnsetConverters
 		LastUpdated = spawnset.LastUpdated,
 		SpawnsetData = spawnsetSummary.ToDdseApi(),
 		Name = spawnset.Name,
-		AuthorName = spawnset.Player.PlayerName,
+		AuthorName = spawnset.Player!.PlayerName,
 		HasCustomLeaderboard = hasCustomLeaderboard,
 		IsPractice = spawnset.IsPractice,
 	};

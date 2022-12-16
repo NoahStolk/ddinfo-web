@@ -6,10 +6,11 @@ namespace DevilDaggersInfo.Web.Server.Domain.Admin.Converters;
 
 public static class SpawnsetConverters
 {
+	// ! Navigation property.
 	public static GetSpawnsetForOverview ToGetSpawnsetForOverview(this SpawnsetEntity spawnset) => new()
 	{
 		Id = spawnset.Id,
-		Author = spawnset.Player.PlayerName,
+		Author = spawnset.Player!.PlayerName,
 		Name = spawnset.Name,
 		MaxDisplayWaves = spawnset.MaxDisplayWaves,
 		HtmlDescription = spawnset.HtmlDescription?.TrimAfter(40, true),

@@ -39,11 +39,11 @@ public class CustomLeaderboardRepository
 		int? selectedPlayerId,
 		bool onlyFeatured)
 	{
-		// Build query.
+		// ! Navigation property.
 		IQueryable<CustomLeaderboardEntity> customLeaderboardsQuery = _dbContext.CustomLeaderboards
 			.AsNoTracking()
 			.Include(cl => cl.Spawnset)
-				.ThenInclude(sf => sf.Player);
+				.ThenInclude(sf => sf!.Player);
 
 		if (category.HasValue)
 			customLeaderboardsQuery = customLeaderboardsQuery.Where(cl => category == cl.Category);
@@ -53,20 +53,28 @@ public class CustomLeaderboardRepository
 
 		// Casing is ignored by default because of IQueryable.
 		if (!string.IsNullOrWhiteSpace(spawnsetFilter))
-			customLeaderboardsQuery = customLeaderboardsQuery.Where(cl => cl.Spawnset.Name.Contains(spawnsetFilter));
+		{
+			// ! Navigation property.
+			customLeaderboardsQuery = customLeaderboardsQuery.Where(cl => cl.Spawnset!.Name.Contains(spawnsetFilter));
+		}
 
 		if (!string.IsNullOrWhiteSpace(authorFilter))
-			customLeaderboardsQuery = customLeaderboardsQuery.Where(cl => cl.Spawnset.Player.PlayerName.Contains(authorFilter));
+		{
+			// ! Navigation property.
+			customLeaderboardsQuery = customLeaderboardsQuery.Where(cl => cl.Spawnset!.Player!.PlayerName.Contains(authorFilter));
+		}
 
 		// Execute query.
 		List<CustomLeaderboardEntity> customLeaderboards = await customLeaderboardsQuery.ToListAsync();
 
 		// Query custom entries for additional data.
 		List<int> customLeaderboardIds = customLeaderboards.ConvertAll(cl => cl.Id);
+
+		// ! Navigation property.
 		List<CustomEntrySummary> customEntries = await _dbContext.CustomEntries
 			.AsNoTracking()
 			.Include(ce => ce.Player)
-			.Select(ce => new CustomEntrySummary { CustomLeaderboardId = ce.CustomLeaderboardId, PlayerId = ce.PlayerId, PlayerName = ce.Player.PlayerName, Time = ce.Time, SubmitDate = ce.SubmitDate })
+			.Select(ce => new CustomEntrySummary { CustomLeaderboardId = ce.CustomLeaderboardId, PlayerId = ce.PlayerId, PlayerName = ce.Player!.PlayerName, Time = ce.Time, SubmitDate = ce.SubmitDate })
 			.Where(ce => customLeaderboardIds.Contains(ce.CustomLeaderboardId))
 			.ToListAsync();
 
@@ -89,11 +97,12 @@ public class CustomLeaderboardRepository
 			customLeaderboardData.Add(new(cl, worldRecordModel, selectedPlayerStatsModel, sortedCustomEntries.Count));
 		}
 
+		// ! Navigation property.
 		customLeaderboardData = (sortBy switch
 		{
-			CustomLeaderboardSorting.AuthorName => customLeaderboardData.OrderBy(cl => cl.CustomLeaderboard.Spawnset.Player.PlayerName.ToLower(), ascending),
+			CustomLeaderboardSorting.AuthorName => customLeaderboardData.OrderBy(cl => cl.CustomLeaderboard.Spawnset!.Player!.PlayerName.ToLower(), ascending),
 			CustomLeaderboardSorting.DateLastPlayed => customLeaderboardData.OrderBy(cl => cl.CustomLeaderboard.DateLastPlayed ?? cl.CustomLeaderboard.DateCreated, ascending),
-			CustomLeaderboardSorting.SpawnsetName => customLeaderboardData.OrderBy(cl => cl.CustomLeaderboard.Spawnset.Name.ToLower(), ascending),
+			CustomLeaderboardSorting.SpawnsetName => customLeaderboardData.OrderBy(cl => cl.CustomLeaderboard.Spawnset!.Name.ToLower(), ascending),
 			CustomLeaderboardSorting.TimeBronze => customLeaderboardData.OrderBy(cl => cl.CustomLeaderboard.IsFeatured ? cl.CustomLeaderboard.Bronze : 0, ascending),
 			CustomLeaderboardSorting.TimeSilver => customLeaderboardData.OrderBy(cl => cl.CustomLeaderboard.IsFeatured ? cl.CustomLeaderboard.Silver : 0, ascending),
 			CustomLeaderboardSorting.TimeGolden => customLeaderboardData.OrderBy(cl => cl.CustomLeaderboard.IsFeatured ? cl.CustomLeaderboard.Golden : 0, ascending),
@@ -121,12 +130,13 @@ public class CustomLeaderboardRepository
 
 	public async Task<SortedCustomLeaderboard> GetSortedCustomLeaderboardByIdAsync(int id)
 	{
+		// ! Navigation property.
 		CustomLeaderboardEntity? customLeaderboard = await _dbContext.CustomLeaderboards
 			.AsNoTracking()
 			.Include(cl => cl.CustomEntries!)
 				.ThenInclude(ce => ce.Player)
 			.Include(cl => cl.Spawnset)
-				.ThenInclude(sf => sf.Player)
+				.ThenInclude(sf => sf!.Player)
 			.FirstOrDefaultAsync(cl => cl.Id == id);
 		if (customLeaderboard == null)
 			throw new NotFoundException($"Custom leaderboard '{id}' could not be found.");
@@ -196,6 +206,7 @@ public class CustomLeaderboardRepository
 			});
 		}
 
+		// ! Navigation property.
 		return new()
 		{
 			Category = customLeaderboard.Category,
@@ -209,11 +220,12 @@ public class CustomLeaderboardRepository
 					bool hasV3_1Values = !isOldDdcl || clientVersionParsed >= FeatureConstants.OldDdclV3_1;
 					bool hasHomingEatenValue = !isOldDdcl || clientVersionParsed >= FeatureConstants.OldDdclHomingEaten;
 
+					// ! Navigation property.
 					return new CustomEntry
 					{
 						Client = ce.Client,
 						ClientVersion = ce.ClientVersion,
-						CountryCode = ce.Player.CountryCode,
+						CountryCode = ce.Player!.CountryCode,
 						CustomLeaderboardDagger = customLeaderboard.DaggerFromTime(ce.Time),
 						DaggersFired = ce.DaggersFired,
 						DaggersHit = ce.DaggersHit,
@@ -250,10 +262,10 @@ public class CustomLeaderboardRepository
 			DateCreated = customLeaderboard.DateCreated,
 			DateLastPlayed = customLeaderboard.DateLastPlayed,
 			Id = customLeaderboard.Id,
-			SpawnsetHtmlDescription = customLeaderboard.Spawnset.HtmlDescription,
+			SpawnsetHtmlDescription = customLeaderboard.Spawnset!.HtmlDescription,
 			SpawnsetName = customLeaderboard.Spawnset.Name,
 			SpawnsetAuthorId = customLeaderboard.Spawnset.PlayerId,
-			SpawnsetAuthorName = customLeaderboard.Spawnset.Player.PlayerName,
+			SpawnsetAuthorName = customLeaderboard.Spawnset.Player!.PlayerName,
 			SpawnsetId = customLeaderboard.SpawnsetId,
 			TotalRunsSubmitted = customLeaderboard.TotalRunsSubmitted,
 		};
@@ -262,7 +274,9 @@ public class CustomLeaderboardRepository
 	public async Task<CustomLeaderboardsTotalData> GetCustomLeaderboardsTotalDataAsync()
 	{
 		var customLeaderboards = await _dbContext.CustomLeaderboards.AsNoTracking().Select(cl => new { cl.Id, cl.Category, cl.TotalRunsSubmitted }).ToListAsync();
-		var customEntries = await _dbContext.CustomEntries.AsNoTracking().Select(ce => new { ce.PlayerId, ce.CustomLeaderboard.Category }).ToListAsync();
+
+		// ! Navigation property.
+		var customEntries = await _dbContext.CustomEntries.AsNoTracking().Select(ce => new { ce.PlayerId, ce.CustomLeaderboard!.Category }).ToListAsync();
 
 		Dictionary<CustomLeaderboardCategory, int> leaderboardsPerCategory = new();
 		Dictionary<CustomLeaderboardCategory, int> scoresPerCategory = new();
@@ -309,7 +323,9 @@ public class CustomLeaderboardRepository
 				if (!globalData.ContainsKey(customEntry.PlayerId))
 				{
 					data = new();
-					globalData.Add(customEntry.PlayerId, (customEntry.Player.PlayerName, data));
+
+					// ! Navigation property.
+					globalData.Add(customEntry.PlayerId, (customEntry.Player!.PlayerName, data));
 				}
 				else
 				{
@@ -376,6 +392,7 @@ public class CustomLeaderboardRepository
 		return customLeaderboard.Id;
 	}
 
+	// ! Navigation property.
 	private static CustomLeaderboardOverview ToOverview(CustomLeaderboardData cl) => new()
 	{
 		Category = cl.CustomLeaderboard.Category,
@@ -392,8 +409,8 @@ public class CustomLeaderboardRepository
 		Id = cl.CustomLeaderboard.Id,
 		PlayerCount = cl.PlayerCount,
 		SelectedPlayerStats = cl.SelectedPlayerStats,
-		SpawnsetAuthorId = cl.CustomLeaderboard.Spawnset.PlayerId,
-		SpawnsetAuthorName = cl.CustomLeaderboard.Spawnset.Player.PlayerName,
+		SpawnsetAuthorId = cl.CustomLeaderboard.Spawnset!.PlayerId,
+		SpawnsetAuthorName = cl.CustomLeaderboard.Spawnset.Player!.PlayerName,
 		SpawnsetId = cl.CustomLeaderboard.SpawnsetId,
 		SpawnsetName = cl.CustomLeaderboard.Spawnset.Name,
 		TotalRunsSubmitted = cl.CustomLeaderboard.TotalRunsSubmitted,

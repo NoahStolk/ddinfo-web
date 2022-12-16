@@ -68,6 +68,7 @@ public class PlayersController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public async Task<ActionResult<List<GetPlayerCustomLeaderboardStatistics>>> GetCustomLeaderboardStatisticsByPlayerId([Required] int id)
 	{
+		// ! Navigation property.
 		var customEntries = await _dbContext.CustomEntries
 			.AsNoTracking()
 			.Include(ce => ce.CustomLeaderboard)
@@ -76,7 +77,7 @@ public class PlayersController : ControllerBase
 			{
 				ce.Time,
 				ce.CustomLeaderboardId,
-				ce.CustomLeaderboard.Category,
+				ce.CustomLeaderboard!.Category,
 				ce.CustomLeaderboard.Leviathan,
 				ce.CustomLeaderboard.Devil,
 				ce.CustomLeaderboard.Golden,

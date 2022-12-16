@@ -101,9 +101,10 @@ public class SpawnsetsController : ControllerBase
 			.Where(ce => ce.CustomLeaderboardId == customLeaderboard.Id)
 			.ToList();
 
+		// ! Navigation property.
 		return new GetSpawnsetByHash
 		{
-			AuthorName = spawnset.Player.PlayerName,
+			AuthorName = spawnset.Player!.PlayerName,
 			CustomLeaderboard = customLeaderboard == null ? null : new GetSpawnsetByHashCustomLeaderboard
 			{
 				CustomLeaderboardId = customLeaderboard.Id,

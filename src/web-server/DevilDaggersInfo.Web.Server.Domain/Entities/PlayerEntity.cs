@@ -54,7 +54,7 @@ public class PlayerEntity : IAuditable
 
 	public bool HidePastUsernames { get; set; }
 
-	public List<PlayerModEntity> PlayerMods { get; set; } = new();
+	public List<PlayerModEntity>? PlayerMods { get; set; }
 
 	public bool HasVisibleSettings()
 		=> !HideSettings && HasSettings();

@@ -6,9 +6,10 @@ namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 // TODO: Use domain models.
 public static class ModConverters
 {
+	// ! Navigation property.
 	public static MainApi.GetModOverview ToGetModOverview(this ModEntity mod, ModFileSystemData modFileSystemData) => new()
 	{
-		Authors = mod.PlayerMods.ConvertAll(pm => pm.Player.PlayerName),
+		Authors = mod.PlayerMods!.ConvertAll(pm => pm.Player!.PlayerName),
 		ContainsProhibitedAssets = modFileSystemData.ModArchive?.ContainsProhibitedAssets(),
 		Id = mod.Id,
 		IsHosted = modFileSystemData.ModArchive != null,
@@ -17,9 +18,10 @@ public static class ModConverters
 		Name = mod.Name,
 	};
 
+	// ! Navigation property.
 	public static MainApi.GetMod ToGetMod(this ModEntity mod, ModFileSystemData modFileSystemData) => new()
 	{
-		Authors = mod.PlayerMods.ConvertAll(pm => pm.Player.PlayerName),
+		Authors = mod.PlayerMods!.ConvertAll(pm => pm.Player!.PlayerName),
 		ContainsProhibitedAssets = modFileSystemData.ModArchive?.ContainsProhibitedAssets(),
 		HtmlDescription = mod.HtmlDescription,
 		IsHosted = modFileSystemData.ModArchive != null,

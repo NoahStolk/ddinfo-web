@@ -11,7 +11,7 @@ public class DonationEntity
 	public int PlayerId { get; set; }
 
 	[ForeignKey(nameof(PlayerId))]
-	public PlayerEntity Player { get; set; } = null!; // TODO: Nullable.
+	public PlayerEntity? Player { get; set; }
 
 	public int Amount { get; set; }
 

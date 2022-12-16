@@ -30,7 +30,11 @@ public class SpawnsetsController : ControllerBase
 		IEnumerable<SpawnsetEntity> query = _dbContext.Spawnsets.AsNoTracking().Include(sf => sf.Player);
 
 		if (!string.IsNullOrWhiteSpace(authorFilter))
-			query = query.Where(sf => sf.Player.PlayerName.Contains(authorFilter, StringComparison.InvariantCultureIgnoreCase));
+		{
+			// ! Navigation property.
+			query = query.Where(sf => sf.Player!.PlayerName.Contains(authorFilter, StringComparison.InvariantCultureIgnoreCase));
+		}
+
 		if (!string.IsNullOrWhiteSpace(nameFilter))
 			query = query.Where(sf => sf.Name.Contains(nameFilter, StringComparison.InvariantCultureIgnoreCase));
 

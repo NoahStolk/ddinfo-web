@@ -23,6 +23,7 @@ public class DonationRepository
 			.AsNoTracking()
 			.Include(d => d.Player);
 
+		// ! Navigation property.
 		donationsQuery = sortBy switch
 		{
 			DonationSorting.Amount => donationsQuery.OrderBy(d => d.Amount, ascending).ThenBy(d => d.Id),
@@ -31,7 +32,7 @@ public class DonationRepository
 			DonationSorting.DateReceived => donationsQuery.OrderBy(d => d.DateReceived, ascending).ThenBy(d => d.Id),
 			DonationSorting.IsRefunded => donationsQuery.OrderBy(d => d.IsRefunded, ascending).ThenBy(d => d.Id),
 			DonationSorting.Note => donationsQuery.OrderBy(d => d.Note, ascending).ThenBy(d => d.Id),
-			DonationSorting.PlayerName => donationsQuery.OrderBy(d => d.Player.PlayerName, ascending).ThenBy(d => d.Id),
+			DonationSorting.PlayerName => donationsQuery.OrderBy(d => d.Player!.PlayerName, ascending).ThenBy(d => d.Id),
 			_ => donationsQuery.OrderBy(d => d.Id, ascending),
 		};
 

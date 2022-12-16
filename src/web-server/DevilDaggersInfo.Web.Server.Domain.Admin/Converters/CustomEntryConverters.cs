@@ -6,6 +6,7 @@ namespace DevilDaggersInfo.Web.Server.Domain.Admin.Converters;
 
 public static class CustomEntryConverters
 {
+	// ! Navigation property.
 	public static GetCustomEntryForOverview ToGetCustomEntryForOverview(this CustomEntryEntity customEntry) => new()
 	{
 		Id = customEntry.Id,
@@ -24,12 +25,13 @@ public static class CustomEntryConverters
 		LevelUpTime2 = customEntry.LevelUpTime2.ToSecondsTime(),
 		LevelUpTime3 = customEntry.LevelUpTime3.ToSecondsTime(),
 		LevelUpTime4 = customEntry.LevelUpTime4.ToSecondsTime(),
-		PlayerName = customEntry.Player.PlayerName,
-		SpawnsetName = customEntry.CustomLeaderboard.Spawnset.Name,
+		PlayerName = customEntry.Player!.PlayerName,
+		SpawnsetName = customEntry.CustomLeaderboard!.Spawnset!.Name,
 		SubmitDate = customEntry.SubmitDate,
 		Time = customEntry.Time.ToSecondsTime(),
 	};
 
+	// ! Navigation property.
 	public static GetCustomEntry ToGetCustomEntry(this CustomEntryEntity customEntry) => new()
 	{
 		Id = customEntry.Id,
@@ -49,7 +51,7 @@ public static class CustomEntryConverters
 		LevelUpTime3 = customEntry.LevelUpTime3.ToSecondsTime(),
 		LevelUpTime4 = customEntry.LevelUpTime4.ToSecondsTime(),
 		PlayerId = customEntry.PlayerId,
-		SpawnsetId = customEntry.CustomLeaderboard.SpawnsetId,
+		SpawnsetId = customEntry.CustomLeaderboard!.SpawnsetId,
 		SubmitDate = customEntry.SubmitDate,
 		Time = customEntry.Time.ToSecondsTime(),
 	};

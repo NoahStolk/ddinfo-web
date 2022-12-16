@@ -118,7 +118,8 @@ public class CustomEntryProcessor
 		}
 
 		// Check for existing leaderboard.
-		CustomLeaderboardEntity? customLeaderboard = await _dbContext.CustomLeaderboards.Include(cl => cl.Spawnset).FirstOrDefaultAsync(cl => cl.Spawnset.Name == spawnsetName);
+		// ! Navigation property.
+		CustomLeaderboardEntity? customLeaderboard = await _dbContext.CustomLeaderboards.Include(cl => cl.Spawnset).FirstOrDefaultAsync(cl => cl.Spawnset!.Name == spawnsetName);
 		if (customLeaderboard == null)
 			LogAndThrowValidationException(uploadRequest, "This spawnset exists on DevilDaggers.info, but doesn't have a leaderboard.", spawnsetName);
 
@@ -382,9 +383,10 @@ public class CustomEntryProcessor
 		List<CustomEntryEntity> entries = await GetOrderedEntries(customLeaderboard.Id, customLeaderboard.Category);
 		List<int> replayIds = GetExistingReplayIds(entries.ConvertAll(ce => ce.Id));
 
+		// ! Navigation property.
 		return new()
 		{
-			Message = $"No new highscore for {customLeaderboard.Spawnset.Name}.",
+			Message = $"No new highscore for {customLeaderboard.Spawnset!.Name}.",
 			Leaderboard = ToLeaderboardSummary(customLeaderboard),
 			SortedEntries = entries.Select((e, i) => ToEntry(e, i + 1, customLeaderboard.DaggerFromTime(e.Time), replayIds)).ToList(),
 			SubmissionType = SubmissionType.NoHighscore,
@@ -479,9 +481,11 @@ public class CustomEntryProcessor
 		Log(uploadRequest, spawnsetName);
 
 		List<int> replayIds = GetExistingReplayIds(entries.ConvertAll(ce => ce.Id));
+
+		// ! Navigation property.
 		return new()
 		{
-			Message = $"NEW HIGHSCORE for {customLeaderboard.Spawnset.Name}!",
+			Message = $"NEW HIGHSCORE for {customLeaderboard.Spawnset!.Name}!",
 			Leaderboard = ToLeaderboardSummary(customLeaderboard),
 			SortedEntries = entries.Select((e, i) => ToEntry(e, i + 1, customLeaderboard.DaggerFromTime(e.Time), replayIds)).ToList(),
 			SubmissionType = SubmissionType.NewHighscore,
@@ -611,6 +615,7 @@ public class CustomEntryProcessor
 		return customEntryIds.Where(id => File.Exists(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{id}.ddreplay"))).ToList();
 	}
 
+	// ! Navigation property.
 	private static CustomEntry ToEntry(CustomEntryEntity customEntry, int rank, CustomLeaderboardDagger? dagger, List<int> replayIds) => new()
 	{
 		ClientVersion = customEntry.ClientVersion,
@@ -631,7 +636,7 @@ public class CustomEntryProcessor
 		LevelUpTime3 = customEntry.LevelUpTime3,
 		LevelUpTime4 = customEntry.LevelUpTime4,
 		PlayerId = customEntry.PlayerId,
-		PlayerName = customEntry.Player.PlayerName,
+		PlayerName = customEntry.Player!.PlayerName,
 		Rank = rank,
 		SubmitDate = customEntry.SubmitDate,
 		Time = customEntry.Time,
@@ -640,6 +645,7 @@ public class CustomEntryProcessor
 		CountryCode = null, // TODO
 	};
 
+	// ! Navigation property.
 	private static CustomLeaderboardSummary ToLeaderboardSummary(CustomLeaderboardEntity customLeaderboard) => new()
 	{
 		Category = customLeaderboard.Category,
@@ -653,6 +659,6 @@ public class CustomEntryProcessor
 		},
 		Id = customLeaderboard.Id,
 		SpawnsetId = customLeaderboard.SpawnsetId,
-		SpawnsetName = customLeaderboard.Spawnset.Name,
+		SpawnsetName = customLeaderboard.Spawnset!.Name,
 	};
 }

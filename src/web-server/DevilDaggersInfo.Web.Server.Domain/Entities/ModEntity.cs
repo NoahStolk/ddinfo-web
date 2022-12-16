@@ -27,5 +27,5 @@ public class ModEntity : IAuditable
 	[StringLength(128)]
 	public required string Url { get; set; }
 
-	public List<PlayerModEntity> PlayerMods { get; set; } = new();
+	public List<PlayerModEntity>? PlayerMods { get; set; }
 }

@@ -32,15 +32,16 @@ public class CustomEntryRepository
 		if (!File.Exists(path))
 			throw new NotFoundException($"Replay file with ID '{id}' could not be found.");
 
+		// ! Navigation property.
 		var customEntry = _dbContext.CustomEntries
 			.AsNoTracking()
 			.Select(ce => new
 			{
 				ce.Id,
-				ce.CustomLeaderboard.SpawnsetId,
-				SpawnsetName = ce.CustomLeaderboard.Spawnset.Name,
+				ce.CustomLeaderboard!.SpawnsetId,
+				SpawnsetName = ce.CustomLeaderboard.Spawnset!.Name,
 				ce.PlayerId,
-				ce.Player.PlayerName,
+				ce.Player!.PlayerName,
 			})
 			.FirstOrDefault(ce => ce.Id == id);
 		if (customEntry == null)

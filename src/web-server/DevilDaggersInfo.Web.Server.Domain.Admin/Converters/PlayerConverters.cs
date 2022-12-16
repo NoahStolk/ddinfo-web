@@ -31,6 +31,7 @@ public static class PlayerConverters
 		VerticalSync = player.VerticalSync,
 	};
 
+	// ! Navigation property.
 	public static GetPlayer ToGetPlayer(this PlayerEntity player) => new()
 	{
 		Id = player.Id,
@@ -54,6 +55,6 @@ public static class PlayerConverters
 		HideSettings = player.HideSettings,
 		HideDonations = player.HideDonations,
 		HidePastUsernames = player.HidePastUsernames,
-		ModIds = player.PlayerMods.ConvertAll(pam => pam.ModId),
+		ModIds = player.PlayerMods!.ConvertAll(pam => pam.ModId),
 	};
 }

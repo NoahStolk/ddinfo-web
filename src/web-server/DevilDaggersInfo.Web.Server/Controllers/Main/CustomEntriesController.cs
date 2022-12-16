@@ -50,11 +50,12 @@ public class CustomEntriesController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public ActionResult<GetCustomEntryData> GetCustomEntryDataById([Required] int id)
 	{
+		// ! Navigation property.
 		CustomEntryEntity? customEntry = _dbContext.CustomEntries
 			.AsNoTracking()
 			.Include(ce => ce.Player)
 			.Include(ce => ce.CustomLeaderboard)
-				.ThenInclude(cl => cl.Spawnset)
+				.ThenInclude(cl => cl!.Spawnset)
 			.FirstOrDefault(cl => cl.Id == id);
 		if (customEntry == null)
 			return NotFound();
@@ -63,7 +64,8 @@ public class CustomEntriesController : ControllerBase
 			.AsNoTracking()
 			.FirstOrDefault(ced => ced.CustomEntryId == id);
 
-		SpawnsetSummary ss = _spawnsetSummaryCache.GetSpawnsetSummaryByFilePath(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), customEntry.CustomLeaderboard.Spawnset.Name));
+		// ! Navigation property.
+		SpawnsetSummary ss = _spawnsetSummaryCache.GetSpawnsetSummaryByFilePath(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), customEntry.CustomLeaderboard!.Spawnset!.Name));
 		return customEntry.ToGetCustomEntryData(customEntryData, ss.EffectivePlayerSettings.HandLevel, IoFile.Exists(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{id}.ddreplay")));
 	}
 }

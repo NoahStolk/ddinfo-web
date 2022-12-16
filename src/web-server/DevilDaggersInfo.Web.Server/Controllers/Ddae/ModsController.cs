@@ -26,14 +26,19 @@ public class ModsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public List<GetModDdae> GetModsObsolete(string? authorFilter = null, string? nameFilter = null, bool? isHostedFilter = null)
 	{
+		// ! Navigation property.
 		IEnumerable<ModEntity> modsQuery = _dbContext.Mods
 			.AsNoTracking()
-			.Include(m => m.PlayerMods)
+			.Include(m => m.PlayerMods!)
 				.ThenInclude(pm => pm.Player)
 			.Where(m => !m.IsHidden);
 
 		if (!string.IsNullOrWhiteSpace(authorFilter))
-			modsQuery = modsQuery.Where(m => m.PlayerMods.Any(pm => pm.Player.PlayerName.Contains(authorFilter, StringComparison.InvariantCultureIgnoreCase)));
+		{
+			// ! Navigation property.
+			modsQuery = modsQuery.Where(m => m.PlayerMods!.Any(pm => pm.Player!.PlayerName.Contains(authorFilter, StringComparison.InvariantCultureIgnoreCase)));
+		}
+
 		if (!string.IsNullOrWhiteSpace(nameFilter))
 			modsQuery = modsQuery.Where(m => m.Name.Contains(nameFilter, StringComparison.InvariantCultureIgnoreCase));
 

@@ -6,9 +6,10 @@ namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Ddae;
 // TODO: Use domain models.
 public static class ModConverters
 {
+	// ! Navigation property.
 	public static DdaeApi.GetModDdae ToDdaeApi(this ModEntity mod, ModFileSystemData modFileSystemData) => new()
 	{
-		Authors = mod.PlayerMods.ConvertAll(pm => pm.Player.PlayerName),
+		Authors = mod.PlayerMods!.ConvertAll(pm => pm.Player!.PlayerName),
 		ContainsProhibitedAssets = modFileSystemData.ModArchive?.ContainsProhibitedAssets(),
 		HtmlDescription = mod.HtmlDescription,
 		IsHostedOnDdInfo = modFileSystemData.ModArchive != null,

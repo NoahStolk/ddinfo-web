@@ -8,10 +8,11 @@ namespace DevilDaggersInfo.Web.Server.Domain.Admin.Converters;
 
 public static class CustomLeaderboardConverters
 {
+	// ! Navigation property.
 	public static GetCustomLeaderboardForOverview ToGetCustomLeaderboardForOverview(this CustomLeaderboardEntity customLeaderboard) => new()
 	{
 		Id = customLeaderboard.Id,
-		SpawnsetName = customLeaderboard.Spawnset.Name,
+		SpawnsetName = customLeaderboard.Spawnset!.Name,
 		Daggers = new()
 		{
 			Bronze = customLeaderboard.Bronze.ToSecondsTime(),

@@ -5,9 +5,10 @@ namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.App;
 // TODO: Use domain models.
 public static class SpawnsetConverters
 {
+	// ! Navigation property.
 	public static AppApi.GetSpawnset ToGetSpawnset(this SpawnsetEntity spawnset, int? customLeaderboardId, byte[] fileBytes) => new()
 	{
-		AuthorName = spawnset.Player.PlayerName,
+		AuthorName = spawnset.Player!.PlayerName,
 		FileBytes = fileBytes,
 		Id = spawnset.Id,
 		IsPractice = spawnset.IsPractice,

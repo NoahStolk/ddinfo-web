@@ -62,7 +62,10 @@ public class SpawnsetsController : ControllerBase
 			spawnsetsQuery = spawnsetsQuery.Where(s => s.Name.Contains(spawnsetFilter));
 
 		if (!string.IsNullOrWhiteSpace(authorFilter))
-			spawnsetsQuery = spawnsetsQuery.Where(s => s.Player.PlayerName.Contains(authorFilter));
+		{
+			// ! Navigation property.
+			spawnsetsQuery = spawnsetsQuery.Where(s => s.Player!.PlayerName.Contains(authorFilter));
+		}
 
 		List<SpawnsetEntity> spawnsets = spawnsetsQuery.ToList();
 
@@ -80,10 +83,11 @@ public class SpawnsetsController : ControllerBase
 		// In case a spawnset doesn't have a summary; remove it.
 		spawnsets = spawnsets.Where(s => summaries.ContainsKey(s.Id)).ToList();
 
+		// ! Navigation property.
 		spawnsets = (sortBy switch
 		{
 			SpawnsetSorting.Name => spawnsets.OrderBy(s => s.Name.ToLower(), ascending),
-			SpawnsetSorting.AuthorName => spawnsets.OrderBy(s => s.Player.PlayerName.ToLower(), ascending),
+			SpawnsetSorting.AuthorName => spawnsets.OrderBy(s => s.Player!.PlayerName.ToLower(), ascending),
 			SpawnsetSorting.LastUpdated => spawnsets.OrderBy(s => s.LastUpdated, ascending),
 			SpawnsetSorting.GameMode => spawnsets.OrderBy(s => summaries[s.Id].GameMode, ascending),
 			SpawnsetSorting.LoopLength => spawnsets.OrderBy(s => summaries[s.Id].LoopSection.Length, ascending),
@@ -138,9 +142,10 @@ public class SpawnsetsController : ControllerBase
 			.Where(ce => ce.CustomLeaderboardId == customLeaderboard.Id)
 			.ToList();
 
+		// ! Navigation property.
 		return new GetSpawnsetByHash
 		{
-			AuthorName = spawnset.Player.PlayerName,
+			AuthorName = spawnset.Player!.PlayerName,
 			CustomLeaderboard = customLeaderboard == null ? null : new GetSpawnsetByHashCustomLeaderboard
 			{
 				CustomLeaderboardId = customLeaderboard.Id,

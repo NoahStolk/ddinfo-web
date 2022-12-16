@@ -88,12 +88,13 @@ public static class CustomLeaderboardConverters
 	// TODO: Use domain models?
 	public static MainApi.GetCustomEntryData ToGetCustomEntryData(this CustomEntryEntity customEntry, CustomEntryDataEntity? customEntryData, HandLevel startingLevel, bool hasReplay)
 	{
+		// ! Navigation property.
 		return new()
 		{
 			CustomEntryId = customEntry.Id,
 			PlayerId = customEntry.PlayerId,
-			PlayerName = customEntry.Player.PlayerName,
-			SpawnsetName = customEntry.CustomLeaderboard.Spawnset.Name,
+			PlayerName = customEntry.Player!.PlayerName,
+			SpawnsetName = customEntry.CustomLeaderboard!.Spawnset!.Name,
 			ClientVersion = customEntry.ClientVersion,
 			DeathType = customEntry.DeathType,
 			EnemiesAlive = customEntry.EnemiesAlive,
