@@ -3,6 +3,7 @@ using DevilDaggersInfo.Common.Utils;
 using DevilDaggersInfo.Razor.Core.Canvas;
 using DevilDaggersInfo.Razor.Core.Canvas.JS;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Data;
+using DevilDaggersInfo.Razor.Core.CanvasChart.Enums;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Options.LineChart;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Utils;
 using Microsoft.AspNetCore.Components;

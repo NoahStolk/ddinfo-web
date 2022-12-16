@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Razor.Core.CanvasChart.Enums;
+
 namespace DevilDaggersInfo.Razor.Core.CanvasChart.Options.LineChart;
 
 public class LineChartOptions
