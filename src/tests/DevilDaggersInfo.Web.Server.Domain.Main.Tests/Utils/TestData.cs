@@ -15,8 +15,8 @@ public class TestData : ILeaderboardHistoryCache, IFileSystemService
 			DateTime = new(2022, 1, 1),
 			Entries = new()
 			{
-				new() { Rank = 1, Id = 1, Time = 90 },
-				new() { Rank = 2, Id = 2, Time = 80 },
+				new() { Rank = 1, Id = 1, Time = 90, Username = "Player 1" },
+				new() { Rank = 2, Id = 2, Time = 80, Username = "Player 2" },
 			},
 		},
 		["2022-01-02.bin"] = new()
@@ -24,9 +24,9 @@ public class TestData : ILeaderboardHistoryCache, IFileSystemService
 			DateTime = new(2022, 1, 2),
 			Entries = new()
 			{
-				new() { Rank = 1, Id = 4, Time = 100000 }, // Cheater makes it to first place.
-				new() { Rank = 2, Id = 1, Time = 90 },
-				new() { Rank = 3, Id = 2, Time = 80 },
+				new() { Rank = 1, Id = 4, Time = 100000, Username = "Cheater" }, // Cheater makes it to first place.
+				new() { Rank = 2, Id = 1, Time = 90, Username = "Player 1" },
+				new() { Rank = 3, Id = 2, Time = 80, Username = "Player 2" },
 			},
 		},
 		["2022-01-03.bin"] = new()
@@ -34,9 +34,9 @@ public class TestData : ILeaderboardHistoryCache, IFileSystemService
 			DateTime = new(2022, 1, 3),
 			Entries = new()
 			{
-				new() { Rank = 1, Id = 1, Time = 95 },
-				new() {	Rank = 2, Id = 2, Time = 85 },
-				new() { Rank = 3, Id = 4, Time = 0 }, // Cheater is removed from the leaderboard.
+				new() { Rank = 1, Id = 1, Time = 95, Username = "Player 1" },
+				new() {	Rank = 2, Id = 2, Time = 85, Username = "Player 2" },
+				new() { Rank = 3, Id = 4, Time = 0, Username = "Cheater" }, // Cheater is removed from the leaderboard.
 			},
 		},
 		["2022-01-04.bin"] = new()
@@ -44,10 +44,10 @@ public class TestData : ILeaderboardHistoryCache, IFileSystemService
 			DateTime = new(2022, 1, 4),
 			Entries = new()
 			{
-				new() { Rank = 1, Id = 4, Time = 1000000 }, // Cheater makes it to first place again.
-				new() { Rank = 2, Id = 1, Time = 98 },
-				new() { Rank = 3, Id = 2, Time = 85 },
-				new() { Rank = 4, Id = 3, Time = 82 }, // Player 3 joins the leaderboard.
+				new() { Rank = 1, Id = 4, Time = 1000000, Username = "Cheater" }, // Cheater makes it to first place again.
+				new() { Rank = 2, Id = 1, Time = 98, Username = "Player 1" },
+				new() { Rank = 3, Id = 2, Time = 85, Username = "Player 2" },
+				new() { Rank = 4, Id = 3, Time = 82, Username = "Player 3" }, // Player 3 joins the leaderboard.
 			},
 		},
 	};

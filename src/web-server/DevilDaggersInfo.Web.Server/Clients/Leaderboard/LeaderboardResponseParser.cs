@@ -29,26 +29,43 @@ public class LeaderboardResponseParser
 		br.BaseStream.Seek(4, SeekOrigin.Current);
 		for (int i = 0; i < leaderboard.TotalEntries; i++)
 		{
-			IDdLeaderboardService.EntryResponse entry = new();
-
 			short usernameLength = br.ReadInt16();
-			entry.Username = Encoding.UTF8.GetString(br.ReadBytes(usernameLength));
-			entry.Rank = br.ReadInt32();
-			entry.Id = br.ReadInt32();
-			entry.Time = br.ReadInt32();
-			entry.Kills = br.ReadInt32();
-			entry.DaggersFired = br.ReadInt32();
-			entry.DaggersHit = br.ReadInt32();
-			entry.Gems = br.ReadInt32();
-			entry.DeathType = br.ReadInt32();
-			entry.DeathsTotal = br.ReadUInt64();
-			entry.KillsTotal = br.ReadUInt64();
-			entry.DaggersFiredTotal = br.ReadUInt64();
-			entry.TimeTotal = br.ReadUInt64();
-			entry.GemsTotal = br.ReadUInt64();
-			entry.DaggersHitTotal = br.ReadUInt64();
+			string username = Encoding.UTF8.GetString(br.ReadBytes(usernameLength));
+			int rank = br.ReadInt32();
+			int id = br.ReadInt32();
+			int time = br.ReadInt32();
+			int kills = br.ReadInt32();
+			int daggersFired = br.ReadInt32();
+			int daggersHit = br.ReadInt32();
+			int gems = br.ReadInt32();
+			int deathType = br.ReadInt32();
+			ulong deathsTotal = br.ReadUInt64();
+			ulong killsTotal = br.ReadUInt64();
+			ulong daggersFiredTotal = br.ReadUInt64();
+			ulong timeTotal = br.ReadUInt64();
+			ulong gemsTotal = br.ReadUInt64();
+			ulong daggersHitTotal = br.ReadUInt64();
 
 			br.BaseStream.Seek(4, SeekOrigin.Current);
+
+			IDdLeaderboardService.EntryResponse entry = new()
+			{
+				Username = username,
+				Rank = rank,
+				Id = id,
+				Time = time,
+				Kills = kills,
+				DaggersFired = daggersFired,
+				DaggersHit = daggersHit,
+				Gems = gems,
+				DeathType = deathType,
+				DeathsTotal = deathsTotal,
+				KillsTotal = killsTotal,
+				DaggersFiredTotal = daggersFiredTotal,
+				TimeTotal = timeTotal,
+				GemsTotal = gemsTotal,
+				DaggersHitTotal = daggersHitTotal,
+			};
 
 			leaderboard.Entries.Add(entry);
 		}
@@ -69,28 +86,45 @@ public class LeaderboardResponseParser
 		br.BaseStream.Seek(6, SeekOrigin.Current);
 		for (int i = 0; i < Math.Min((short)100, totalResults); i++)
 		{
-			IDdLeaderboardService.EntryResponse entry = new();
-
 			short usernameLength = br.ReadInt16();
-			entry.Username = Encoding.UTF8.GetString(br.ReadBytes(usernameLength));
-			entry.Rank = br.ReadInt32();
-			entry.Id = br.ReadInt32();
+			string username = Encoding.UTF8.GetString(br.ReadBytes(usernameLength));
+			int rank = br.ReadInt32();
+			int id = br.ReadInt32();
 
 			br.BaseStream.Seek(4, SeekOrigin.Current);
-			entry.Time = br.ReadInt32();
-			entry.Kills = br.ReadInt32();
-			entry.DaggersFired = br.ReadInt32();
-			entry.DaggersHit = br.ReadInt32();
-			entry.Gems = br.ReadInt32();
-			entry.DeathType = br.ReadInt32();
-			entry.DeathsTotal = br.ReadUInt64();
-			entry.KillsTotal = br.ReadUInt64();
-			entry.DaggersFiredTotal = br.ReadUInt64();
-			entry.TimeTotal = br.ReadUInt64();
-			entry.GemsTotal = br.ReadUInt64();
-			entry.DaggersHitTotal = br.ReadUInt64();
+			int time = br.ReadInt32();
+			int kills = br.ReadInt32();
+			int daggersFired = br.ReadInt32();
+			int daggersHit = br.ReadInt32();
+			int gems = br.ReadInt32();
+			int deathType = br.ReadInt32();
+			ulong deathsTotal = br.ReadUInt64();
+			ulong killsTotal = br.ReadUInt64();
+			ulong daggersFiredTotal = br.ReadUInt64();
+			ulong timeTotal = br.ReadUInt64();
+			ulong gemsTotal = br.ReadUInt64();
+			ulong daggersHitTotal = br.ReadUInt64();
 
 			br.BaseStream.Seek(4, SeekOrigin.Current);
+
+			IDdLeaderboardService.EntryResponse entry = new()
+			{
+				Username = username,
+				Rank = rank,
+				Id = id,
+				Time = time,
+				Kills = kills,
+				DaggersFired = daggersFired,
+				DaggersHit = daggersHit,
+				Gems = gems,
+				DeathType = deathType,
+				DeathsTotal = deathsTotal,
+				KillsTotal = killsTotal,
+				DaggersFiredTotal = daggersFiredTotal,
+				TimeTotal = timeTotal,
+				GemsTotal = gemsTotal,
+				DaggersHitTotal = daggersHitTotal,
+			};
 
 			entries.Add(entry);
 		}
@@ -127,26 +161,43 @@ public class LeaderboardResponseParser
 
 	private static IDdLeaderboardService.EntryResponse ReadEntry(BinaryReader br)
 	{
-		IDdLeaderboardService.EntryResponse entry = new();
-
 		short usernameLength = br.ReadInt16();
-		entry.Username = Encoding.UTF8.GetString(br.ReadBytes(usernameLength));
-		entry.Rank = br.ReadInt32();
-		entry.Id = br.ReadInt32();
+		string username = Encoding.UTF8.GetString(br.ReadBytes(usernameLength));
+		int rank = br.ReadInt32();
+		int id = br.ReadInt32();
 
 		br.BaseStream.Seek(4, SeekOrigin.Current);
-		entry.Time = br.ReadInt32();
-		entry.Kills = br.ReadInt32();
-		entry.DaggersFired = br.ReadInt32();
-		entry.DaggersHit = br.ReadInt32();
-		entry.Gems = br.ReadInt32();
-		entry.DeathType = br.ReadInt32();
-		entry.DeathsTotal = br.ReadUInt64();
-		entry.KillsTotal = br.ReadUInt64();
-		entry.DaggersFiredTotal = br.ReadUInt64();
-		entry.TimeTotal = br.ReadUInt64();
-		entry.GemsTotal = br.ReadUInt64();
-		entry.DaggersHitTotal = br.ReadUInt64();
+		int time = br.ReadInt32();
+		int kills = br.ReadInt32();
+		int daggersFired = br.ReadInt32();
+		int daggersHit = br.ReadInt32();
+		int gems = br.ReadInt32();
+		int deathType = br.ReadInt32();
+		ulong deathsTotal = br.ReadUInt64();
+		ulong killsTotal = br.ReadUInt64();
+		ulong daggersFiredTotal = br.ReadUInt64();
+		ulong timeTotal = br.ReadUInt64();
+		ulong gemsTotal = br.ReadUInt64();
+		ulong daggersHitTotal = br.ReadUInt64();
+
+		IDdLeaderboardService.EntryResponse entry = new()
+		{
+			Username = username,
+			Rank = rank,
+			Id = id,
+			Time = time,
+			Kills = kills,
+			DaggersFired = daggersFired,
+			DaggersHit = daggersHit,
+			Gems = gems,
+			DeathType = deathType,
+			DeathsTotal = deathsTotal,
+			KillsTotal = killsTotal,
+			DaggersFiredTotal = daggersFiredTotal,
+			TimeTotal = timeTotal,
+			GemsTotal = gemsTotal,
+			DaggersHitTotal = daggersHitTotal,
+		};
 
 		return entry;
 	}
