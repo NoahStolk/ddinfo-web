@@ -1,10 +1,10 @@
 namespace DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 
-public class GlobalCustomLeaderboard
+public record GlobalCustomLeaderboard
 {
-	public List<GlobalCustomLeaderboardEntry> Entries { get; init; } = new();
+	public required List<GlobalCustomLeaderboardEntry> Entries { get; init; }
 
-	public int TotalLeaderboards { get; init; }
+	public required int TotalLeaderboards { get; init; }
 
-	public int TotalPoints { get; init; }
+	public required int TotalPoints { get; init; }
 }

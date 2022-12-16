@@ -2,9 +2,9 @@ using DevilDaggersInfo.Types.Web;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 
-public class CustomLeaderboardOverviewSelectedPlayerNextDagger
+public record CustomLeaderboardOverviewSelectedPlayerNextDagger
 {
-	public int Time { get; init; }
+	public required int Time { get; init; }
 
-	public CustomLeaderboardDagger Dagger { get; init; }
+	public required CustomLeaderboardDagger Dagger { get; init; }
 }

@@ -1,10 +1,11 @@
 namespace DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 
+// TODO: Immutable.
 public record GlobalCustomLeaderboardEntryData
 {
 	public List<CustomLeaderboardRanking> Rankings { get; } = new();
 
-	public int LeviathanCount { get; set; }
+	public int LeviathanCount { get; set; } // TODO: init
 
 	public int DevilCount { get; set; }
 

@@ -298,6 +298,7 @@ public class CustomLeaderboardRepository
 		Dictionary<int, (string Name, GlobalCustomLeaderboardEntryData Data)> globalData = new();
 		foreach (CustomLeaderboardEntity customLeaderboard in customLeaderboards)
 		{
+			// ! Navigation property.
 			List<CustomEntryEntity> customEntries = customLeaderboard.CustomEntries!.Sort(category).ToList();
 
 			for (int i = 0; i < customEntries.Count; i++)
@@ -315,7 +316,7 @@ public class CustomLeaderboardRepository
 					data = globalData[customEntry.PlayerId].Data;
 				}
 
-				data.Rankings.Add(new(i + 1, customEntries.Count));
+				data.Rankings.Add(new() { Rank = i + 1, TotalPlayers = customEntries.Count });
 
 				switch (customLeaderboard.DaggerFromTime(customEntry.Time) ?? throw new InvalidOperationException("Custom leaderboard without daggers may not be used for processing global custom leaderboard data."))
 				{
@@ -329,6 +330,7 @@ public class CustomLeaderboardRepository
 			}
 		}
 
+		// ! Navigation property.
 		return new GlobalCustomLeaderboard
 		{
 			Entries = globalData

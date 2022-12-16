@@ -1,14 +1,14 @@
 namespace DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 
-public class CustomEntrySummary : ISortableCustomEntry
+public record CustomEntrySummary : ISortableCustomEntry
 {
-	public int CustomLeaderboardId { get; init; }
+	public required int CustomLeaderboardId { get; init; }
 
-	public int PlayerId { get; init; }
+	public required int PlayerId { get; init; }
 
-	public string PlayerName { get; init; } = string.Empty;
+	public required string PlayerName { get; init; }
 
-	public int Time { get; init; }
+	public required int Time { get; init; }
 
-	public DateTime SubmitDate { get; init; }
+	public required DateTime SubmitDate { get; init; }
 }

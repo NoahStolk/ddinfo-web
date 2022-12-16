@@ -1,24 +1,24 @@
 namespace DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 
-public class GlobalCustomLeaderboardEntry
+public record GlobalCustomLeaderboardEntry
 {
-	public int PlayerId { get; init; }
+	public required int PlayerId { get; init; }
 
 	public required string PlayerName { get; init; }
 
-	public int Points { get; set; }
+	public required int Points { get; init; }
 
-	public int LeviathanDaggerCount { get; set; }
+	public required int LeviathanDaggerCount { get; init; }
 
-	public int DevilDaggerCount { get; set; }
+	public required int DevilDaggerCount { get; init; }
 
-	public int GoldenDaggerCount { get; set; }
+	public required int GoldenDaggerCount { get; init; }
 
-	public int SilverDaggerCount { get; set; }
+	public required int SilverDaggerCount { get; init; }
 
-	public int BronzeDaggerCount { get; set; }
+	public required int BronzeDaggerCount { get; init; }
 
-	public int DefaultDaggerCount { get; set; }
+	public required int DefaultDaggerCount { get; init; }
 
-	public int LeaderboardsPlayedCount { get; set; }
+	public required int LeaderboardsPlayedCount { get; init; }
 }

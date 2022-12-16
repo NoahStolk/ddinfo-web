@@ -4,7 +4,7 @@ public class UploadResponse
 {
 	public required string Message { get; init; }
 
-	public SubmissionType SubmissionType { get; init; }
+	public required SubmissionType SubmissionType { get; init; }
 
 	public required CustomLeaderboardSummary Leaderboard { get; init; }
 

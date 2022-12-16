@@ -32,7 +32,15 @@ public class CustomLeaderboardSubmissionLogger : ICustomLeaderboardSubmissionLog
 
 	public void LogHighscore(CustomLeaderboardDagger dagger, int customLeaderboardId, string message, int rank, int totalPlayers, int time)
 	{
-		_highscoreLogs.Add(new(dagger, customLeaderboardId, message, rank, totalPlayers, time));
+		_highscoreLogs.Add(new()
+		{
+			Rank = rank,
+			Dagger = dagger,
+			Message = message,
+			Time = time,
+			TotalPlayers = totalPlayers,
+			CustomLeaderboardId = customLeaderboardId,
+		});
 	}
 
 	public List<CustomLeaderboardHighscoreLog> GetHighscoreLogs()

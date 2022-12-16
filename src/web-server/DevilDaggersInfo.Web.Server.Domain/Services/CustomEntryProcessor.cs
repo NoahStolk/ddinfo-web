@@ -636,6 +636,8 @@ public class CustomEntryProcessor
 		SubmitDate = customEntry.SubmitDate,
 		Time = customEntry.Time,
 		CustomLeaderboardDagger = dagger,
+		Client = default, // TODO
+		CountryCode = null, // TODO
 	};
 
 	private static CustomLeaderboardSummary ToLeaderboardSummary(CustomLeaderboardEntity customLeaderboard) => new()

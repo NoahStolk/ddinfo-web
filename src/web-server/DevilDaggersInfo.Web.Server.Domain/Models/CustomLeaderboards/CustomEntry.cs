@@ -4,57 +4,57 @@ using DevilDaggersInfo.Web.Server.Domain.Constants;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 
-public class CustomEntry
+public record CustomEntry
 {
-	public int Id { get; init; }
+	public required int Id { get; init; }
 
-	public int Rank { get; init; }
+	public required int Rank { get; init; }
 
-	public int PlayerId { get; set; }
+	public required int PlayerId { get; init; }
 
-	public required string PlayerName { get; set; }
+	public required string PlayerName { get; init; }
 
-	public string? CountryCode { get; set; }
+	public required string? CountryCode { get; init; }
 
-	public int Time { get; set; }
+	public required int Time { get; init; }
 
-	public CustomLeaderboardDagger? CustomLeaderboardDagger { get; init; }
+	public required CustomLeaderboardDagger? CustomLeaderboardDagger { get; init; }
 
-	public int GemsCollected { get; set; }
+	public required int GemsCollected { get; init; }
 
-	public int EnemiesKilled { get; set; }
+	public required int EnemiesKilled { get; init; }
 
-	public int DaggersFired { get; set; }
+	public required int DaggersFired { get; init; }
 
-	public int DaggersHit { get; set; }
+	public required int DaggersHit { get; init; }
 
-	public int EnemiesAlive { get; set; }
+	public required int EnemiesAlive { get; init; }
 
-	public int HomingStored { get; set; }
+	public required int HomingStored { get; init; }
 
-	public int? HomingEaten { get; set; }
+	public required int? HomingEaten { get; init; }
 
-	public int? GemsDespawned { get; set; }
+	public required int? GemsDespawned { get; init; }
 
-	public int? GemsEaten { get; set; }
+	public required int? GemsEaten { get; init; }
 
-	public int? GemsTotal { get; set; }
+	public required int? GemsTotal { get; init; }
 
-	public byte DeathType { get; set; }
+	public required byte DeathType { get; init; }
 
-	public int LevelUpTime2 { get; set; }
+	public required int LevelUpTime2 { get; init; }
 
-	public int LevelUpTime3 { get; set; }
+	public required int LevelUpTime3 { get; init; }
 
-	public int LevelUpTime4 { get; set; }
+	public required int LevelUpTime4 { get; init; }
 
-	public DateTime SubmitDate { get; set; }
+	public required DateTime SubmitDate { get; init; }
 
-	public required string ClientVersion { get; set; }
+	public required string ClientVersion { get; init; }
 
-	public CustomLeaderboardsClient Client { get; set; }
+	public required CustomLeaderboardsClient Client { get; init; }
 
-	public bool HasReplay { get; init; }
+	public required bool HasReplay { get; init; }
 
 	public bool HasGraphs => Client != CustomLeaderboardsClient.DevilDaggersCustomLeaderboards || ClientVersionParsed >= FeatureConstants.OldDdclGraphs;
 

@@ -2,15 +2,15 @@ using DevilDaggersInfo.Types.Web;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 
-public class CustomLeaderboardSummary
+public record CustomLeaderboardSummary
 {
-	public int Id { get; init; }
+	public required int Id { get; init; }
 
-	public int SpawnsetId { get; init; }
+	public required int SpawnsetId { get; init; }
 
 	public required string SpawnsetName { get; init; }
 
-	public CustomLeaderboardCategory Category { get; init; }
+	public required CustomLeaderboardCategory Category { get; init; }
 
-	public CustomLeaderboardDaggers? Daggers { get; init; }
+	public required CustomLeaderboardDaggers? Daggers { get; init; }
 }
