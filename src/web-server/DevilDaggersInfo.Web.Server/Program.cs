@@ -11,7 +11,6 @@ using DevilDaggersInfo.Web.Server.Extensions;
 using DevilDaggersInfo.Web.Server.HostedServices;
 using DevilDaggersInfo.Web.Server.HostedServices.DdInfoDiscordBot;
 using DevilDaggersInfo.Web.Server.Middleware;
-using DevilDaggersInfo.Web.Server.NSwag;
 using DevilDaggersInfo.Web.Server.RewriteRules;
 using DevilDaggersInfo.Web.Server.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -19,7 +18,6 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using NJsonSchema;
 using System.Diagnostics;
 using System.Globalization;
 using System.Text;
@@ -43,6 +41,8 @@ builder.AddValidatedOptions<CustomLeaderboardsOptions>("CustomLeaderboards");
 builder.AddValidatedOptions<DiscordOptions>("Discord");
 builder.AddValidatedOptions<MySqlOptions>("MySql");
 
+builder.Services.AddSingleton<IConfigureOptions<JwtBearerOptions>, ConfigureJwtBearerOptions>();
+
 builder.Services.AddCors(options => options.AddPolicy(defaultCorsPolicy, corsBuilder => corsBuilder.AllowAnyOrigin().AllowAnyMethod()));
 
 builder.Services.AddDbContext<ApplicationDbContext>((sp, options) =>
@@ -57,7 +57,7 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddHttpContextAccessor();
 
-// Domain builder.Services
+// Domain services
 builder.Services.AddScoped<CustomEntryProcessor>();
 builder.Services.AddSingleton<IFileSystemService, FileSystemService>();
 builder.Services.AddTransient<ModArchiveAccessor>();
@@ -72,7 +72,7 @@ builder.Services.AddTransient<MarkerRepository>();
 builder.Services.AddTransient<PlayerRepository>();
 builder.Services.AddTransient<ToolRepository>();
 
-// Main domain builder.Services
+// Main domain services
 builder.Services.AddScoped<DevilDaggersInfo.Web.Server.Domain.Main.Services.AuthenticationService>();
 builder.Services.AddScoped<DevilDaggersInfo.Web.Server.Domain.Main.Services.PlayerProfileService>();
 
@@ -83,7 +83,7 @@ builder.Services.AddTransient<DevilDaggersInfo.Web.Server.Domain.Main.Repositori
 builder.Services.AddScoped<DevilDaggersInfo.Web.Server.Domain.Main.Repositories.PlayerProfileRepository>();
 builder.Services.AddTransient<DevilDaggersInfo.Web.Server.Domain.Main.Repositories.WorldRecordRepository>();
 
-// Admin domain builder.Services
+// Admin domain services
 builder.Services.AddTransient<DevilDaggersInfo.Web.Server.Domain.Admin.Services.CustomEntryService>();
 builder.Services.AddTransient<DevilDaggersInfo.Web.Server.Domain.Admin.Services.CustomLeaderboardService>();
 builder.Services.AddTransient<DevilDaggersInfo.Web.Server.Domain.Admin.Services.DonationService>();
@@ -113,18 +113,19 @@ builder.Services.AddSingleton<ICustomLeaderboardSubmissionLogger, CustomLeaderbo
 builder.Services.AddSingleton<ILogContainerService, LogContainerService>();
 builder.Services.AddSingleton<ResponseTimeMonitor>();
 
-// Caching builder.Services
+// Caching services
 builder.Services.AddSingleton<ILeaderboardHistoryCache, LeaderboardHistoryCache>();
 builder.Services.AddSingleton<LeaderboardStatisticsCache>();
 builder.Services.AddSingleton<ModArchiveCache>();
 builder.Services.AddSingleton<SpawnsetSummaryCache>();
 builder.Services.AddSingleton<SpawnsetHashCache>();
 
-// HTTP builder.Services
+// HTTP services
 builder.Services.AddHttpClient<ClubberClient>();
 builder.Services.AddHttpClient<IDdLeaderboardService, DdLeaderboardService>();
 
 // Register this background service first, so it exists last. We want to log when the application exits.
+builder.Services.AddHostedService<DiscordBotService>();
 builder.Services.AddHostedService<DiscordLogFlushBackgroundService>();
 
 if (!builder.Environment.IsDevelopment())
@@ -148,8 +149,6 @@ builder.Services.AddAuthentication(options =>
 	})
 	.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, _ => { });
 
-builder.Services.AddSingleton<IConfigureOptions<JwtBearerOptions>, ConfigureJwtBearerOptions>();
-
 builder.AddSwaggerDocument("Main", "This is the main API for DevilDaggers.info. **WARNING:** It is not recommended to use these endpoints as they may change at any time based on the website client requirements. Use at your own risk.");
 builder.AddSwaggerDocument("Admin", "This is the admin API for DevilDaggers.info. Requires an authenticated and authorized user.");
 
@@ -164,8 +163,6 @@ builder.AddSwaggerDocument("Ddse", "**WARNING:** This API is intended to be used
 builder.AddSwaggerDocument("DdLive", "**WARNING:** This API is intended to be used by DDLIVE only.");
 builder.AddSwaggerDocument("DdstatsRust", "**WARNING:** This API is intended to be used by ddstats-rust only.");
 builder.AddSwaggerDocument("Clubber", "**WARNING:** This API is intended to be used by Clubber only.");
-
-builder.Services.AddHostedService<DiscordBotService>();
 
 WebApplication app = builder.Build();
 
