@@ -11,6 +11,7 @@ public static class ReplaySimulationBuilder
 		float spawnTileHeight = spawnset.ArenaTiles[SpawnsetBinary.ArenaDimensionMax / 2, SpawnsetBinary.ArenaDimensionMax / 2];
 
 		const float playerHeightForVisualization = 4;
+		const float playerHeight = 1.3f;
 		Quaternion rotation = Quaternion.CreateFromAxisAngle(Vector3.UnitY, MathF.PI);
 		Vector3 position = new(0, spawnTileHeight + playerHeightForVisualization, 0);
 
@@ -25,11 +26,12 @@ public static class ReplaySimulationBuilder
 		InitialInputsEvent initialInputsEvent = (InitialInputsEvent?)replay.EventsData.Events.FirstOrDefault(e => e is InitialInputsEvent) ?? throw new InvalidOperationException("Replay does not contain an initial inputs event.");
 		float lookSpeed = initialInputsEvent.LookSpeed;
 
-		List<PlayerMovementSnapshot> playerMovementSnapshots = new() { new(rotation, position) };
+		List<PlayerMovementSnapshot> playerMovementSnapshots = new() { new(rotation, position, true) };
 		List<SoundSnapshot> soundSnapshots = new();
 
 		foreach (IEvent e in replay.EventsData.Events)
 		{
+			bool isOnGround = false;
 			switch (e)
 			{
 				case EntityPositionEvent { EntityId: 0 } entityPositionEvent:
@@ -74,10 +76,12 @@ public static class ReplaySimulationBuilder
 					}
 
 					float currentTileHeight = Math.Max(Math.Max(topLeft, topRight), Math.Max(bottomLeft, bottomRight));
-					bool isOnGround = currentTileHeight + 4 > position.Y;
+					isOnGround = position.Y - playerHeight <= currentTileHeight;
 
 					if (isOnGround)
 					{
+						position.Y = currentTileHeight + playerHeight;
+
 						gravity = 0;
 						velocityY = 0;
 
@@ -143,7 +147,7 @@ public static class ReplaySimulationBuilder
 				default: continue;
 			}
 
-			playerMovementSnapshots.Add(new(rotation, position));
+			playerMovementSnapshots.Add(new(rotation, position, isOnGround));
 		}
 
 		return new(playerMovementSnapshots, soundSnapshots);

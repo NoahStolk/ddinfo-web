@@ -1,6 +1,7 @@
 using DevilDaggersInfo.Core.Replay.PostProcessing.ReplaySimulation;
 using Silk.NET.OpenGL;
 using Warp.NET.Content;
+using Warp.NET.Debugging;
 
 namespace DevilDaggersInfo.App.Ui.Scene.GameObjects;
 
@@ -57,6 +58,8 @@ public class Player
 		PlayerMovementSnapshot snapshot = _movementTimeline.GetPlayerMovementSnapshot(currentTick);
 		_mesh.RotationState.Physics = snapshot.Rotation;
 		_mesh.PositionState.Physics = snapshot.Position;
+
+		DebugStack.Add($"Player position: {snapshot.IsOnGround} {snapshot.Position}");
 	}
 
 	public void Render()

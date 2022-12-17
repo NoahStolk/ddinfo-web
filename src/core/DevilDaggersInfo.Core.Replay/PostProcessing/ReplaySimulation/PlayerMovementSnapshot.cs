@@ -1,3 +1,3 @@
 namespace DevilDaggersInfo.Core.Replay.PostProcessing.ReplaySimulation;
 
-public record struct PlayerMovementSnapshot(Quaternion Rotation, Vector3 Position);
+public record struct PlayerMovementSnapshot(Quaternion Rotation, Vector3 Position, bool IsOnGround);
