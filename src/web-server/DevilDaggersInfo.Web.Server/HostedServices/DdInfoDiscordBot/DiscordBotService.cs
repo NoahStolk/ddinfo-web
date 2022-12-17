@@ -27,19 +27,10 @@ public class DiscordBotService : IHostedService
 
 		await DiscordServerConstants.LoadServerChannelsAndMessages(client);
 
-		client.MessageCreated += async (_, e) =>
+		client.MessageCreated += async (c, e) =>
 		{
-			string msg = e.Message.Content.ToLower();
-			if (msg.Length <= 1)
-				return;
-
-			if (e.Channel.Id == DiscordServerConstants.TestChannelId && msg.StartsWith("."))
-			{
-				if (!Commands.Actions.Any(a => msg.StartsWith(a.Key)))
-					await e.Channel.SendMessageAsyncSafe($"Command '{msg}' does not exist.");
-				else
-					await Commands.Actions.First(a => msg.StartsWith(a.Key)).Value.Invoke(e);
-			}
+			if (e.Channel.Id == DiscordServerConstants.TestChannelId && e.Author.Id != c.CurrentUser.Id)
+				await e.Channel.SendMessageAsyncSafe("Test reply.");
 		};
 
 		await client.ConnectAsync();
