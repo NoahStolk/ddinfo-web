@@ -39,6 +39,6 @@ public class Popup : AbstractComponent
 	{
 		base.Render(scrollOffset);
 
-		Root.Game.RectangleRenderer.Schedule(Bounds.Size, scrollOffset + Bounds.TopLeft, Depth, new(0, 0, 0, 95));
+		Root.Game.RectangleRenderer.Schedule(Bounds.Size, scrollOffset + Bounds.Center, Depth, new(0, 0, 0, 95));
 	}
 }
