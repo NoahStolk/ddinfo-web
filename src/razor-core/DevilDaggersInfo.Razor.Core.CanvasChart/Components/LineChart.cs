@@ -31,7 +31,7 @@ public partial class LineChart
 	private double ChartHeight => _canvasHeight - Options.ChartMarginYInPx * 2;
 
 	[Inject]
-	public required IJSRuntime JSRuntime { get; set; }
+	public required IJSRuntime JsRuntime { get; set; }
 
 	[Parameter]
 	[EditorRequired]
@@ -55,9 +55,9 @@ public partial class LineChart
 	{
 		if (firstRender)
 		{
-			await JSRuntime.InvokeAsync<object>("initChart");
-			await JSRuntime.InvokeAsync<object>("registerChart", DotNetObjectReference.Create(this), UniqueName);
-			await JSRuntime.InvokeAsync<object>("chartInitialResize", DotNetObjectReference.Create(this));
+			await JsRuntime.InvokeAsync<object>("initChart");
+			await JsRuntime.InvokeAsync<object>("registerChart", DotNetObjectReference.Create(this), UniqueName);
+			await JsRuntime.InvokeAsync<object>("chartInitialResize", DotNetObjectReference.Create(this));
 		}
 
 		_context = new WebAssemblyCanvas2d($"{UniqueName}-canvas");
@@ -264,7 +264,7 @@ public partial class LineChart
 	[JSInvokable]
 	public async ValueTask OnMouseMove(int mouseX, int mouseY)
 	{
-		BoundingClientRect canvasBoundingClientRect = await JSRuntime.InvokeAsync<BoundingClientRect>("getBoundingClientRect", _canvasReference);
+		BoundingClientRect canvasBoundingClientRect = await JsRuntime.InvokeAsync<BoundingClientRect>("getBoundingClientRect", _canvasReference);
 
 		_canvasMouseX = mouseX - canvasBoundingClientRect.Left;
 		_canvasMouseY = mouseY - canvasBoundingClientRect.Top;

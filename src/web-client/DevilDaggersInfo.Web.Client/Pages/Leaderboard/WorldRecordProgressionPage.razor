@@ -16,7 +16,7 @@ else
 {
 	<LineChart DataOptions="_dataOptions" UniqueName="#world-record-progression-chart" DataSets="@_lineDataSets" Options="_lineChartOptions" />
 
-	<Heading Level=2 Title="World Record Holders" />
+	<Heading Level="2" Title="World Record Holders" />
 	<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
 		<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _worldRecordHolders, _worldRecordHoldersSortings, wrh => (wrh.Usernames.FirstOrDefault() ?? string.Empty).ToLower())">Username(s)</a></div>
 		<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _worldRecordHolders, _worldRecordHoldersSortings, wrh => wrh.TotalTimeHeld)">Total time held</a></div>
@@ -31,7 +31,7 @@ else
 		int totalTimeHeld = (int)Math.Round(wrh.TotalTimeHeld.TotalDays);
 		int longestTimeHeldConsecutively = (int)Math.Round(wrh.LongestTimeHeldConsecutively.TotalDays);
 
-		string totalTimeHeldString = $"{totalTimeHeld} day{S(totalTimeHeld)} ({(wrh.TotalTimeHeld / _totalTimeSinceFirstRecord).ToString("0.00%")})";
+		string totalTimeHeldString = $"{totalTimeHeld} day{S(totalTimeHeld)} ({(wrh.TotalTimeHeld / _totalTimeSinceFirstRecord):0.00%})";
 		string longestTimeHeldConsecutivelyString = $"{longestTimeHeldConsecutively} day{S(longestTimeHeldConsecutively)}";
 
 		<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 @(isCurrentWrHolder ? "bg-dark-red" : string.Empty)">
@@ -44,7 +44,7 @@ else
 		</div>
 	}
 
-	<Heading Level=2 Title="World Records" />
+	<Heading Level="2" Title="World Records" />
 	<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
 		<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _worldRecords, _worldRecordsSortings, wr => wr.Entry.Username)">Player</a></div>
 		<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _worldRecords, _worldRecordsSortings, wr => wr.Entry.Time)">Time</a></div>
@@ -57,7 +57,12 @@ else
 	{
 		bool isCurrentWr = wr.Entry.Time == _currentWorldRecord;
 		int days = (int)Math.Round(wr.WorldRecordDuration.TotalDays);
-		string duration = days == 0 ? "Less than 1 day" : days == 1 ? "1 day" : $"{days} days";
+		string duration = days switch
+		{
+			0 => "Less than 1 day",
+			1 => "1 day",
+			_ => $"{days} days",
+		};
 
 		<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 @(isCurrentWr ? "bg-dark-red" : string.Empty)">
 			<div>@wr.Entry.Username</div>

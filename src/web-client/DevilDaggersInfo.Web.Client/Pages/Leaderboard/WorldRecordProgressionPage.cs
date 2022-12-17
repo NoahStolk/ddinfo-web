@@ -101,7 +101,7 @@ public partial class WorldRecordProgressionPage
 	private static string S(int value)
 		=> value == 1 ? string.Empty : "s";
 
-	private void Sort<TSource, TKey>(ref List<TSource> source, Dictionary<string, bool> sortings, Func<TSource, TKey> sorting, [CallerArgumentExpression("sorting")] string sortingExpression = "")
+	private static void Sort<TSource, TKey>(ref List<TSource> source, Dictionary<string, bool> sortings, Func<TSource, TKey> sorting, [CallerArgumentExpression("sorting")] string sortingExpression = "")
 	{
 		bool sortDirection = false;
 		if (sortings.ContainsKey(sortingExpression))
