@@ -7,7 +7,7 @@ namespace DevilDaggersInfo.Web.Server.HostedServices.DdInfoDiscordBot;
 
 public static class Commands
 {
-	public static Dictionary<string, Action<MessageCreateEventArgs>> Actions { get; } = new()
+	public static Dictionary<string, Func<MessageCreateEventArgs, Task<bool>>> Actions { get; } = new()
 	{
 		{ ".bot", async e => await e.Channel.SendMessageAsyncSafe("Hi.") },
 		{ ".default", async e => await e.Channel.SendMessageAsyncSafe(null, CreateDaggerEmbed(CustomLeaderboardDagger.Default)) },
