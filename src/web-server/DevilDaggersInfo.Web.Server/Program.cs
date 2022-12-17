@@ -7,6 +7,7 @@ using DevilDaggersInfo.Web.Server.Domain.Repositories;
 using DevilDaggersInfo.Web.Server.Domain.Services;
 using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
+using DevilDaggersInfo.Web.Server.Extensions;
 using DevilDaggersInfo.Web.Server.HostedServices;
 using DevilDaggersInfo.Web.Server.HostedServices.DdInfoDiscordBot;
 using DevilDaggersInfo.Web.Server.Middleware;
@@ -37,20 +38,10 @@ builder.WebHost.UseSentry(o =>
 });
 builder.WebHost.UseStaticWebAssets();
 
-// TODO: Refactor to extension method.
-void AddOptions<TOptions>(string configSection)
-	where TOptions : class
-{
-	builder.Services.AddOptions<TOptions>()
-		.Bind(builder.Configuration.GetRequiredSection(configSection), o => o.ErrorOnUnknownConfiguration = true)
-		.ValidateOnStart()
-		.ValidateDataAnnotations();
-}
-
-AddOptions<AuthenticationOptions>("Authentication");
-AddOptions<CustomLeaderboardsOptions>("CustomLeaderboards");
-AddOptions<DiscordOptions>("Discord");
-AddOptions<MySqlOptions>("MySql");
+builder.AddValidatedOptions<AuthenticationOptions>("Authentication");
+builder.AddValidatedOptions<CustomLeaderboardsOptions>("CustomLeaderboards");
+builder.AddValidatedOptions<DiscordOptions>("Discord");
+builder.AddValidatedOptions<MySqlOptions>("MySql");
 
 builder.Services.AddCors(options => options.AddPolicy(defaultCorsPolicy, corsBuilder => corsBuilder.AllowAnyOrigin().AllowAnyMethod()));
 
@@ -159,43 +150,21 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddSingleton<IConfigureOptions<JwtBearerOptions>, ConfigureJwtBearerOptions>();
 
-AddSwaggerDocument("Main", "This is the main API for DevilDaggers.info. **WARNING:** It is not recommended to use these endpoints as they may change at any time based on the website client requirements. Use at your own risk.");
-AddSwaggerDocument("Admin", "This is the admin API for DevilDaggers.info. Requires an authenticated and authorized user.");
+builder.AddSwaggerDocument("Main", "This is the main API for DevilDaggers.info. **WARNING:** It is not recommended to use these endpoints as they may change at any time based on the website client requirements. Use at your own risk.");
+builder.AddSwaggerDocument("Admin", "This is the admin API for DevilDaggers.info. Requires an authenticated and authorized user.");
 
-AddSwaggerDocument("Dd", "**WARNING:** This API is intended to be used by Devil Daggers only.");
+builder.AddSwaggerDocument("Dd", "**WARNING:** This API is intended to be used by Devil Daggers only.");
 
-AddSwaggerDocument("App", "**WARNING:** This API is intended to be used by DDINFO TOOLS only.");
-AddSwaggerDocument("Ddae", "**WARNING:** This API is intended to be used by Devil Daggers Asset Editor only.");
-AddSwaggerDocument("Ddcl", "**WARNING:** This API is intended to be used by Devil Daggers Custom Leaderboards only.");
-AddSwaggerDocument("Ddre", "**WARNING:** This API is intended to be used by Devil Daggers Replay Editor only.");
-AddSwaggerDocument("Ddse", "**WARNING:** This API is intended to be used by Devil Daggers Survival Editor only.");
+builder.AddSwaggerDocument("App", "**WARNING:** This API is intended to be used by DDINFO TOOLS only.");
+builder.AddSwaggerDocument("Ddae", "**WARNING:** This API is intended to be used by Devil Daggers Asset Editor only.");
+builder.AddSwaggerDocument("Ddcl", "**WARNING:** This API is intended to be used by Devil Daggers Custom Leaderboards only.");
+builder.AddSwaggerDocument("Ddre", "**WARNING:** This API is intended to be used by Devil Daggers Replay Editor only.");
+builder.AddSwaggerDocument("Ddse", "**WARNING:** This API is intended to be used by Devil Daggers Survival Editor only.");
 
-AddSwaggerDocument("DdLive", "**WARNING:** This API is intended to be used by DDLIVE only.");
-AddSwaggerDocument("DdstatsRust", "**WARNING:** This API is intended to be used by ddstats-rust only.");
-AddSwaggerDocument("Clubber", "**WARNING:** This API is intended to be used by Clubber only.");
+builder.AddSwaggerDocument("DdLive", "**WARNING:** This API is intended to be used by DDLIVE only.");
+builder.AddSwaggerDocument("DdstatsRust", "**WARNING:** This API is intended to be used by ddstats-rust only.");
+builder.AddSwaggerDocument("Clubber", "**WARNING:** This API is intended to be used by Clubber only.");
 
-// TODO: Refactor to extension method.
-void AddSwaggerDocument(string apiNamespace, string description)
-{
-	builder.Services.AddSwaggerDocument(config =>
-	{
-		config.PostProcess = document =>
-		{
-			document.Info.Title = $"DevilDaggers.info API ({apiNamespace.ToUpper()})";
-			document.Info.Description = description;
-			document.Info.Contact = new()
-			{
-				Name = "Noah Stolk", Url = "//noahstolk.com/",
-			};
-		};
-		config.DocumentName = apiNamespace.ToUpper();
-		config.OperationProcessors.Insert(0, new ApiOperationProcessor(apiNamespace));
-		config.SchemaType = SchemaType.OpenApi3;
-		config.GenerateEnumMappingDescription = true;
-	});
-}
-
-// TODO: Fix; this blocks the whole application from starting due to infinite delay which is necessary for the bot to stay alive.
 builder.Services.AddHostedService<DiscordBotService>();
 
 WebApplication app = builder.Build();
