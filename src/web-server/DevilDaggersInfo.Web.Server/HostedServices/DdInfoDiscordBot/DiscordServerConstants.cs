@@ -28,7 +28,7 @@ public static class DiscordServerConstants
 		return _channels[channel].DiscordChannel;
 	}
 
-	public static async Task LoadServerChannelsAndMessages(DiscordClient client)
+	public static async Task LoadServerChannels(DiscordClient client)
 	{
 		foreach (ChannelWrapper wrapper in _channels.Values)
 		{
