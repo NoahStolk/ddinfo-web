@@ -78,7 +78,8 @@ public static class RecordingLogic
 		}
 
 		// Set current player ID when it has not been set yet.
-		if (StateManager.RecordingState.CurrentPlayerId == 0 && mainBlock.PlayerId != 0)
+		// When the game starts up it will be set to -1, and then to the player ID.
+		if (StateManager.RecordingState.CurrentPlayerId == 0 && mainBlock.PlayerId > 0)
 		{
 			StateManager.SetCurrentPlayerId(mainBlock.PlayerId);
 
