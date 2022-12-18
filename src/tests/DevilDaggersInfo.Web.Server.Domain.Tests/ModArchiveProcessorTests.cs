@@ -8,7 +8,6 @@ using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 using DevilDaggersInfo.Web.Server.Domain.Utils;
 using System.IO.Compression;
-using System.Text;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Tests;
 

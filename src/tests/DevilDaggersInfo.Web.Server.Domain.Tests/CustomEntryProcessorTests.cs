@@ -10,11 +10,8 @@ using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 using DevilDaggersInfo.Web.Server.Domain.Tests.Data;
 using DevilDaggersInfo.Web.Server.Domain.Tests.Extensions;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
-using System.Text;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Tests;
 
