@@ -20,4 +20,4 @@ public sealed class ModBinaryReadFilter
 	{
 		return _all || _keys.Contains(key);
 	}
-};
+}
