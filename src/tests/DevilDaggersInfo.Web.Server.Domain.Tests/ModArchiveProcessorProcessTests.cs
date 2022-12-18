@@ -17,7 +17,7 @@ public class ModArchiveProcessorProcessTests : ModArchiveProcessorTests
 		BinaryName binaryName = new(ModBinaryType.Dd, "main");
 		const string assetName = "binding";
 
-		ModBinary binary = CreateWithBinding(assetName);
+		ModBinaryBuilder binary = CreateWithBinding(assetName);
 		await Processor.ProcessModBinaryUploadAsync(modName, new() { [binaryName] = binary.Compile() });
 
 		string zipFilePath = Accessor.GetModArchivePath(modName);
@@ -40,7 +40,7 @@ public class ModArchiveProcessorProcessTests : ModArchiveProcessorTests
 		const string assetName1 = "binding";
 		const string assetName2 = "texture";
 
-		ModBinary binary = CreateWithBindingAndTexture(assetName1, assetName2);
+		ModBinaryBuilder binary = CreateWithBindingAndTexture(assetName1, assetName2);
 		await Processor.ProcessModBinaryUploadAsync(modName, new() { [binaryName] = binary.Compile() });
 
 		string zipFilePath = Accessor.GetModArchivePath(modName);
@@ -66,8 +66,8 @@ public class ModArchiveProcessorProcessTests : ModArchiveProcessorTests
 		const string assetName1 = "binding";
 		const string assetName2 = "texture";
 
-		ModBinary binary1 = CreateWithBindingAndTexture(assetName1, assetName2);
-		ModBinary binary2 = CreateWithBindingAndTexture(assetName1, assetName2);
+		ModBinaryBuilder binary1 = CreateWithBindingAndTexture(assetName1, assetName2);
+		ModBinaryBuilder binary2 = CreateWithBindingAndTexture(assetName1, assetName2);
 		Dictionary<BinaryName, byte[]> binaries = new()
 		{
 			[binaryName1] = binary1.Compile(),

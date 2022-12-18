@@ -1,7 +1,6 @@
 using DevilDaggersInfo.Api.Admin.Mods;
 using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Core.Mod;
-using DevilDaggersInfo.Core.Mod.Enums;
 using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Server.Domain.Admin.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
@@ -152,8 +151,7 @@ public class ModService
 
 		foreach ((string name, byte[] data) in binaries)
 		{
-			ModBinary modBinary = new(data, ModBinaryReadComprehensiveness.TypeOnly);
-			BinaryName binaryName = new(modBinary.ModBinaryType, name);
+			BinaryName binaryName = new(ModBinaryToc.DetermineType(data), name);
 			if (dict.ContainsKey(binaryName))
 				throw new InvalidModArchiveException("Binary names must all be unique.");
 

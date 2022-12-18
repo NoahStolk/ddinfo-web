@@ -62,16 +62,16 @@ public abstract class ModArchiveProcessorTests
 		return ModBinaryCacheData.CreateFromFile(entry.Name, extractedContents);
 	}
 
-	protected static ModBinary CreateWithBinding(string assetName)
+	protected static ModBinaryBuilder CreateWithBinding(string assetName)
 	{
-		ModBinary binary = new(ModBinaryType.Dd);
+		ModBinaryBuilder binary = new(ModBinaryType.Dd);
 		binary.AddAsset(assetName, AssetType.ObjectBinding, "shader = \"boid\""u8.ToArray());
 		return binary;
 	}
 
-	protected static ModBinary CreateWithBindingAndTexture(string shaderName, string textureName)
+	protected static ModBinaryBuilder CreateWithBindingAndTexture(string shaderName, string textureName)
 	{
-		ModBinary binary = new(ModBinaryType.Dd);
+		ModBinaryBuilder binary = new(ModBinaryType.Dd);
 		binary.AddAsset(shaderName, AssetType.ObjectBinding, "shader = \"boid\""u8.ToArray());
 		binary.AddAsset(textureName, AssetType.Texture, File.ReadAllBytes(Path.Combine(TestUtils.ResourcePath, "Textures", "green.png")));
 		return binary;

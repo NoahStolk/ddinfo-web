@@ -11,8 +11,8 @@ public class ExtractionTests
 	public void ExtractTextureAndCompareToSourcePng(ModBinaryType expectedBinaryType, string modFileName, string assetName, string sourcePngFileName)
 	{
 		string filePath = Path.Combine(TestUtils.ResourcePath, modFileName);
-		ModBinary modBinary = new(File.ReadAllBytes(filePath), ModBinaryReadComprehensiveness.All);
-		Assert.AreEqual(expectedBinaryType, modBinary.ModBinaryType);
+		ModBinary modBinary = new(File.ReadAllBytes(filePath), ModBinaryReadFilter.AllAssets);
+		Assert.AreEqual(expectedBinaryType, modBinary.Toc.Type);
 		Assert.AreEqual(expectedBinaryType, BinaryFileNameUtils.GetBinaryTypeBasedOnFileName(modFileName));
 
 		KeyValuePair<AssetKey, AssetData> asset = modBinary.AssetMap.First(kvp => kvp.Key.AssetName == assetName);

@@ -22,8 +22,8 @@ public class ModArchiveProcessorTransformTests : ModArchiveProcessorTests
 		BinaryName binaryName2 = new(ModBinaryType.Dd, "main2");
 		const string assetName = "binding";
 
-		ModBinary binary1 = CreateWithBinding(assetName);
-		ModBinary binary2 = CreateWithBinding(assetName);
+		ModBinaryBuilder binary1 = CreateWithBinding(assetName);
+		ModBinaryBuilder binary2 = CreateWithBinding(assetName);
 		Dictionary<BinaryName, byte[]> binaries = new()
 		{
 			[binaryName1] = binary1.Compile(),
@@ -49,8 +49,8 @@ public class ModArchiveProcessorTransformTests : ModArchiveProcessorTests
 		BinaryName binaryName2 = new(ModBinaryType.Dd, "binaryToDelete");
 		const string assetName = "binding";
 
-		ModBinary binary1 = CreateWithBinding(assetName);
-		ModBinary binary2 = CreateWithBinding(assetName);
+		ModBinaryBuilder binary1 = CreateWithBinding(assetName);
+		ModBinaryBuilder binary2 = CreateWithBinding(assetName);
 		Dictionary<BinaryName, byte[]> binaries = new()
 		{
 			[binaryName1] = binary1.Compile(),
@@ -76,8 +76,8 @@ public class ModArchiveProcessorTransformTests : ModArchiveProcessorTests
 		BinaryName binaryName3 = new(ModBinaryType.Dd, "new");
 		const string assetName = "binding";
 
-		ModBinary binary1 = CreateWithBinding(assetName);
-		ModBinary binary2 = CreateWithBinding(assetName);
+		ModBinaryBuilder binary1 = CreateWithBinding(assetName);
+		ModBinaryBuilder binary2 = CreateWithBinding(assetName);
 		Dictionary<BinaryName, byte[]> binaries = new()
 		{
 			[binaryName1] = binary1.Compile(),
@@ -85,7 +85,7 @@ public class ModArchiveProcessorTransformTests : ModArchiveProcessorTests
 		};
 		await Processor.ProcessModBinaryUploadAsync(modName, binaries);
 
-		ModBinary binary3 = CreateWithBinding(assetName);
+		ModBinaryBuilder binary3 = CreateWithBinding(assetName);
 		await Processor.TransformBinariesInModArchiveAsync(modName, newModName, new(), new() { { binaryName3, binary3.Compile() } });
 
 		string zipFilePath = Accessor.GetModArchivePath(newModName);
@@ -106,8 +106,8 @@ public class ModArchiveProcessorTransformTests : ModArchiveProcessorTests
 		BinaryName binaryName3 = new(ModBinaryType.Dd, "new");
 		const string assetName = "binding";
 
-		ModBinary binary1 = CreateWithBinding(assetName);
-		ModBinary binary2 = CreateWithBinding(assetName);
+		ModBinaryBuilder binary1 = CreateWithBinding(assetName);
+		ModBinaryBuilder binary2 = CreateWithBinding(assetName);
 		Dictionary<BinaryName, byte[]> binaries = new()
 		{
 			[binaryName1] = binary1.Compile(),
@@ -115,7 +115,7 @@ public class ModArchiveProcessorTransformTests : ModArchiveProcessorTests
 		};
 		await Processor.ProcessModBinaryUploadAsync(modName, binaries);
 
-		ModBinary binary3 = CreateWithBinding(assetName);
+		ModBinaryBuilder binary3 = CreateWithBinding(assetName);
 		await Processor.TransformBinariesInModArchiveAsync(modName, newModName, new() { binaryName2 }, new() { { binaryName3, binary3.Compile() } });
 
 		string zipFilePath = Accessor.GetModArchivePath(newModName);
@@ -134,11 +134,11 @@ public class ModArchiveProcessorTransformTests : ModArchiveProcessorTests
 		BinaryName binaryName2 = new(ModBinaryType.Dd, "main1"); // Same name, should fail
 		const string assetName = "binding";
 
-		ModBinary binary1 = CreateWithBinding(assetName);
+		ModBinaryBuilder binary1 = CreateWithBinding(assetName);
 		Dictionary<BinaryName, byte[]> binaries = new() { [binaryName1] = binary1.Compile() };
 		await Processor.ProcessModBinaryUploadAsync(modName, binaries);
 
-		ModBinary binary2 = CreateWithBinding(assetName);
+		ModBinaryBuilder binary2 = CreateWithBinding(assetName);
 		await Assert.ThrowsExceptionAsync<InvalidModArchiveException>(async () => await Processor.TransformBinariesInModArchiveAsync(modName, newModName, new(), new() { { binaryName2, binary2.Compile() } }));
 
 		string zipFilePath = Accessor.GetModArchivePath(modName);
@@ -157,11 +157,11 @@ public class ModArchiveProcessorTransformTests : ModArchiveProcessorTests
 		const string assetName1 = "binding";
 		const string assetName2 = "new-binding";
 
-		ModBinary binary1 = CreateWithBinding(assetName1);
+		ModBinaryBuilder binary1 = CreateWithBinding(assetName1);
 		Dictionary<BinaryName, byte[]> binaries = new() { [binaryName1] = binary1.Compile() };
 		await Processor.ProcessModBinaryUploadAsync(modName, binaries);
 
-		ModBinary binary2 = CreateWithBinding(assetName2);
+		ModBinaryBuilder binary2 = CreateWithBinding(assetName2);
 		await Processor.TransformBinariesInModArchiveAsync(modName, newModName, new() { binaryName1 }, new() { { binaryName2, binary2.Compile() } });
 
 		string zipFilePath = Accessor.GetModArchivePath(newModName);

@@ -1,8 +1,8 @@
 using DevilDaggersInfo.Core.Asset;
 using DevilDaggersInfo.Core.Mod;
-using DevilDaggersInfo.Core.Mod.Enums;
 using DevilDaggersInfo.Core.Mod.Exceptions;
 using DevilDaggersInfo.Core.Mod.Utils;
+using DevilDaggersInfo.Types.Core.Assets;
 using DevilDaggersInfo.Types.Core.Mods;
 using System.Text;
 
@@ -29,19 +29,19 @@ public class ModBinaryCacheData
 	{
 		ModBinaryType binaryTypeFromFileName = BinaryFileNameUtils.GetBinaryTypeBasedOnFileName(fileName);
 
-		ModBinary modBinary = new(fileContents, ModBinaryReadComprehensiveness.TocAndLoudness);
-		if (modBinary.ModBinaryType != binaryTypeFromFileName)
-			throw new InvalidModBinaryException($"Binary '{fileName}' has type mismatch; file name claims '{binaryTypeFromFileName}' but file contents claim '{modBinary.ModBinaryType}'.");
+		ModBinary modBinary = new(fileContents, ModBinaryReadFilter.Assets(new AssetKey(AssetType.Audio, "loudness")));
+		if (modBinary.Toc.Type != binaryTypeFromFileName)
+			throw new InvalidModBinaryException($"Binary '{fileName}' has type mismatch; file name claims '{binaryTypeFromFileName}' but file contents claim '{modBinary.Toc.Type}'.");
 
-		List<ModChunkCacheData> chunks = modBinary.Chunks.ConvertAll(c => new ModChunkCacheData
+		List<ModChunkCacheData> chunks = modBinary.Toc.Chunks.Select(c => new ModChunkCacheData
 		{
 			Name = c.Name,
 			Size = c.Size,
 			AssetType = c.AssetType,
 			IsProhibited = AssetContainer.GetIsProhibited(c.AssetType, c.Name),
-		});
+		}).ToList();
 
-		ModBinaryChunk? loudnessChunk = modBinary.Chunks.Find(c => c.IsLoudness());
+		ModBinaryChunk? loudnessChunk = modBinary.Toc.Chunks.FirstOrDefault(c => c.IsLoudness());
 		List<ModifiedLoudnessAssetCacheData>? modifiedLoudnessAssets = null;
 		if (loudnessChunk != null)
 		{
@@ -51,7 +51,7 @@ public class ModBinaryCacheData
 			modifiedLoudnessAssets = ReadModifiedLoudnessValues(loudnessString);
 		}
 
-		return new(fileName, fileContents.Length, modBinary.ModBinaryType, chunks, modifiedLoudnessAssets);
+		return new(fileName, fileContents.Length, modBinary.Toc.Type, chunks, modifiedLoudnessAssets);
 	}
 
 	private static List<ModifiedLoudnessAssetCacheData> ReadModifiedLoudnessValues(string loudnessString)

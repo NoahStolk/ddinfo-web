@@ -2,7 +2,6 @@
 @inherits BaseAdminModPage
 @using DevilDaggersInfo.Api.Admin.Mods
 @using DevilDaggersInfo.Core.Mod
-@using DevilDaggersInfo.Core.Mod.Enums
 @using DevilDaggersInfo.Web.Client.Components
 @using DevilDaggersInfo.Web.Client.Components.Admin
 @using DevilDaggersInfo.Web.Client.Components.Input
@@ -27,10 +26,9 @@
 		<InputWrapper Label="Select new binaries"><InputFile @onclick="() => _editModState.Binaries.Clear()" OnChange="LoadBinaries" multiple /></InputWrapper>
 		@foreach (BinaryDataState bd in _editModState.Binaries)
 		{
-			ModBinary b = new(bd.Data, ModBinaryReadComprehensiveness.TypeOnly);
 			<div class="pl-4">
 				<InputWrapper Label="New binary"><InputTextImmediate class="admin-input" @bind-Value="bd.Name" /></InputWrapper>
-				<span>Will be renamed to @(new BinaryName(b.ModBinaryType, bd.Name).ToFullName(_editModState.Name ?? string.Empty))</span>
+				<span>Will be renamed to @(new BinaryName(ModBinaryToc.DetermineType(bd.Data), bd.Name).ToFullName(_editModState.Name ?? string.Empty))</span>
 			</div>
 		}
 		<InfoList Title="Binary errors" Info="_binaryFileSizeErrors" />

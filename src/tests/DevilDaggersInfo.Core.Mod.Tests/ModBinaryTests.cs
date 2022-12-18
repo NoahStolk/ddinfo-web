@@ -11,16 +11,31 @@ public class ModBinaryTests
 	[DataRow("dd-mesh")]
 	[DataRow("dd-mesh-shader-texture")]
 	[DataRow("dd-shader")]
-	[DataRow("dd-skull-1-2-same-texture-copied")]
-	[DataRow("dd-texture")]
-	public void CompareBinaryOutput(string fileName)
+	[DataRow("dd-skull-1-2-same-texture-copied", true)] // Cannot compare exact texture bytes, because the resizing algorithm is different. TODO: Compile using the same code instead of legacy DDAE.
+	[DataRow("dd-texture")] // This works because the textures are 1x1.
+	public void CompareBinaryOutput(string fileName, bool ignoreExactAssetData = false)
 	{
 		string filePath = Path.Combine(TestUtils.ResourcePath, fileName);
 		byte[] originalBytes = File.ReadAllBytes(filePath);
-		ModBinary modBinary = new(originalBytes, ModBinaryReadComprehensiveness.All);
-		byte[] bytes = modBinary.Compile();
 
-		CollectionAssert.AreEqual(originalBytes, bytes);
+		ModBinary modBinary = new(originalBytes, ModBinaryReadFilter.AllAssets);
+		ModBinaryBuilder builder = new(ModBinaryType.Dd);
+
+		foreach (ModBinaryChunk chunk in modBinary.Toc.Chunks)
+		{
+			byte[] extractedAsset = modBinary.ExtractAsset(chunk.Name, chunk.AssetType);
+			builder.AddAsset(chunk.Name, chunk.AssetType, extractedAsset);
+		}
+
+		CollectionAssert.AreEqual(modBinary.Toc.Chunks.ToList(), builder.Chunks.ToList());
+
+		Assert.AreEqual(modBinary.AssetMap.Count, builder.AssetMap.Count);
+
+		if (ignoreExactAssetData)
+			return;
+
+		foreach (KeyValuePair<AssetKey, AssetData> asset in modBinary.AssetMap)
+			CollectionAssert.AreEqual(asset.Value.Buffer, builder.AssetMap[asset.Key].Buffer);
 	}
 
 	[TestMethod]
@@ -29,10 +44,10 @@ public class ModBinaryTests
 		const string fileName = "dd-single-asset";
 		string filePath = Path.Combine(TestUtils.ResourcePath, fileName);
 		byte[] originalBytes = File.ReadAllBytes(filePath);
-		ModBinary modBinary = new(originalBytes, ModBinaryReadComprehensiveness.TocOnly);
+		ModBinary modBinary = new(originalBytes, ModBinaryReadFilter.NoAssets);
 
-		Assert.AreEqual(1, modBinary.Chunks.Count);
-		ModBinaryChunk chunk = modBinary.Chunks[0];
+		Assert.AreEqual(1, modBinary.Toc.Chunks.Count);
+		ModBinaryChunk chunk = modBinary.Toc.Chunks[0];
 		Assert.AreEqual("dagger6", chunk.Name);
 		Assert.AreEqual(AssetType.Texture, chunk.AssetType);
 		Assert.AreEqual(21855, chunk.Size);
@@ -44,15 +59,15 @@ public class ModBinaryTests
 		const string fileName = "dd-nohand";
 		string filePath = Path.Combine(TestUtils.ResourcePath, fileName);
 		byte[] originalBytes = File.ReadAllBytes(filePath);
-		ModBinary modBinary = new(originalBytes, ModBinaryReadComprehensiveness.TocOnly);
+		ModBinary modBinary = new(originalBytes, ModBinaryReadFilter.NoAssets);
 
-		Assert.AreEqual(8, modBinary.Chunks.Count);
+		Assert.AreEqual(8, modBinary.Toc.Chunks.Count);
 
 		string[] names = { "hand", "hand2", "hand2left", "hand3", "hand3left", "hand4", "hand4left", "handleft" };
 		int[] sizes = { 166, 166, 198, 166, 198, 262, 390, 198 };
 		for (int i = 0; i < 8; i++)
 		{
-			ModBinaryChunk chunk = modBinary.Chunks[i];
+			ModBinaryChunk chunk = modBinary.Toc.Chunks[i];
 			Assert.AreEqual(names[i], chunk.Name);
 			Assert.AreEqual(AssetType.Mesh, chunk.AssetType);
 			Assert.AreEqual(sizes[i], chunk.Size);

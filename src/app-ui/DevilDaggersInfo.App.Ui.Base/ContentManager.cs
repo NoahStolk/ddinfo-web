@@ -2,7 +2,6 @@ using DevilDaggersInfo.App.Core.AssetInterop;
 using DevilDaggersInfo.App.Ui.Base.Exceptions;
 using DevilDaggersInfo.App.Ui.Base.Settings;
 using DevilDaggersInfo.Core.Mod;
-using DevilDaggersInfo.Core.Mod.Enums;
 using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Types.Core.Assets;
 using Warp.NET.Content;
@@ -47,8 +46,26 @@ public static class ContentManager
 		if (Directory.Exists(UserSettings.ModsSurvivalPath))
 			throw new MissingContentException("There must not be a directory named 'survival' in the 'mods' directory. You must delete the directory, or mods will not work.");
 
-		ModBinary ddBinary = new(File.ReadAllBytes(UserSettings.ResDdPath), ModBinaryReadComprehensiveness.All);
-		ModBinary audioBinary = new(File.ReadAllBytes(UserSettings.ResAudioPath), ModBinaryReadComprehensiveness.All);
+		ModBinaryReadFilter ddReadFilter = ModBinaryReadFilter.Assets(
+			new(AssetType.Texture, "iconmaskdagger"),
+			new(AssetType.Mesh, "dagger"),
+			new(AssetType.Texture, "daggersilver"),
+			new(AssetType.Mesh, "boid4"),
+			new(AssetType.Texture, "boid4"),
+			new(AssetType.Mesh, "boid4jaw"),
+			new(AssetType.Texture, "boid4jaw"),
+			new(AssetType.Mesh, "tile"),
+			new(AssetType.Texture, "tile"),
+			new(AssetType.Mesh, "pillar"),
+			new(AssetType.Texture, "pillar"));
+
+		ModBinaryReadFilter audioReadFilter = ModBinaryReadFilter.Assets(
+			new(AssetType.Audio, "jump1"),
+			new(AssetType.Audio, "jump2"),
+			new(AssetType.Audio, "jump3"));
+
+		ModBinary ddBinary = new(File.ReadAllBytes(UserSettings.ResDdPath), ddReadFilter);
+		ModBinary audioBinary = new(File.ReadAllBytes(UserSettings.ResAudioPath), audioReadFilter);
 
 		Content = new(
 			DefaultSpawnset: defaultSpawnset,

@@ -12,7 +12,7 @@ public class CompilationTests
 	{
 		byte[] sourcePngContents = File.ReadAllBytes(Path.Combine(TestUtils.ResourcePath, "Texture", sourcePngFileName));
 
-		ModBinary modBinary = new(ModBinaryType.Dd);
+		ModBinaryBuilder modBinary = new(ModBinaryType.Dd);
 		modBinary.AddAsset(assetName, AssetType.Texture, sourcePngContents);
 
 		byte[] compiledModBinary = modBinary.Compile();
