@@ -1,4 +1,4 @@
-﻿using DevilDaggersInfo.Web.Server.NSwag;
+using DevilDaggersInfo.Web.Server.NSwag;
 using NJsonSchema;
 
 namespace DevilDaggersInfo.Web.Server.Extensions;

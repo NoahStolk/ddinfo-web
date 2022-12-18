@@ -17,7 +17,7 @@ public class ExtractionTests
 
 		KeyValuePair<AssetKey, AssetData> asset = modBinary.AssetMap.First(kvp => kvp.Key.AssetName == assetName);
 
-		byte[] extractedPngContents = AssetConverter.Extract(asset.Key.AssetType, asset.Value);
+		byte[] extractedPngContents = modBinary.ExtractAsset(asset.Key);
 		byte[] sourcePngContents = File.ReadAllBytes(Path.Combine(TestUtils.ResourcePath, "Texture", sourcePngFileName));
 
 		CollectionAssert.AreEqual(extractedPngContents, sourcePngContents);

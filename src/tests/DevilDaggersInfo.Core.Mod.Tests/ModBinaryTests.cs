@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Core.Mod.Extensions;
 using DevilDaggersInfo.Types.Core.Assets;
 using DevilDaggersInfo.Types.Core.Mods;
 
@@ -61,16 +62,16 @@ public class ModBinaryTests
 	[TestMethod]
 	public void ValidateAssetTypes()
 	{
-		Assert.IsTrue(ModBinary.IsAssetTypeValid(ModBinaryType.Audio, AssetType.Audio));
-		Assert.IsFalse(ModBinary.IsAssetTypeValid(ModBinaryType.Audio, AssetType.Mesh));
-		Assert.IsFalse(ModBinary.IsAssetTypeValid(ModBinaryType.Audio, AssetType.ObjectBinding));
-		Assert.IsFalse(ModBinary.IsAssetTypeValid(ModBinaryType.Audio, AssetType.Shader));
-		Assert.IsFalse(ModBinary.IsAssetTypeValid(ModBinaryType.Audio, AssetType.Texture));
+		Assert.IsTrue(ModBinaryType.Audio.IsAssetTypeValid(AssetType.Audio));
+		Assert.IsFalse(ModBinaryType.Audio.IsAssetTypeValid(AssetType.Mesh));
+		Assert.IsFalse(ModBinaryType.Audio.IsAssetTypeValid(AssetType.ObjectBinding));
+		Assert.IsFalse(ModBinaryType.Audio.IsAssetTypeValid(AssetType.Shader));
+		Assert.IsFalse(ModBinaryType.Audio.IsAssetTypeValid(AssetType.Texture));
 
-		Assert.IsFalse(ModBinary.IsAssetTypeValid(ModBinaryType.Dd, AssetType.Audio));
-		Assert.IsTrue(ModBinary.IsAssetTypeValid(ModBinaryType.Dd, AssetType.Mesh));
-		Assert.IsTrue(ModBinary.IsAssetTypeValid(ModBinaryType.Dd, AssetType.ObjectBinding));
-		Assert.IsTrue(ModBinary.IsAssetTypeValid(ModBinaryType.Dd, AssetType.Shader));
-		Assert.IsTrue(ModBinary.IsAssetTypeValid(ModBinaryType.Dd, AssetType.Texture));
+		Assert.IsFalse(ModBinaryType.Dd.IsAssetTypeValid(AssetType.Audio));
+		Assert.IsTrue(ModBinaryType.Dd.IsAssetTypeValid(AssetType.Mesh));
+		Assert.IsTrue(ModBinaryType.Dd.IsAssetTypeValid(AssetType.ObjectBinding));
+		Assert.IsTrue(ModBinaryType.Dd.IsAssetTypeValid(AssetType.Shader));
+		Assert.IsTrue(ModBinaryType.Dd.IsAssetTypeValid(AssetType.Texture));
 	}
 }

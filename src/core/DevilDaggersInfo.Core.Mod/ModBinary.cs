@@ -60,7 +60,7 @@ public class ModBinary
 				if (readComprehensiveness == ModBinaryReadComprehensiveness.TypeOnly)
 					break;
 			}
-			else if (!IsAssetTypeValid(modBinaryType.Value, assetType.Value))
+			else if (!modBinaryType.Value.IsAssetTypeValid(assetType.Value))
 			{
 				throw new InvalidModBinaryException($"Asset type '{assetType}' is not compatible with binary type '{modBinaryType}'.");
 			}
@@ -118,7 +118,7 @@ public class ModBinary
 		if (_readComprehensiveness != ModBinaryReadComprehensiveness.All)
 			throw new InvalidOperationException("This mod binary has not been opened for full reading comprehensiveness. Cannot add assets.");
 
-		if (!IsAssetTypeValid(ModBinaryType, assetType))
+		if (!ModBinaryType.IsAssetTypeValid(assetType))
 			throw new InvalidModBinaryException($"Asset type '{assetType}' is not compatible with binary type '{ModBinaryType}'.");
 
 		AssetMap.Add(new(assetType, assetName), AssetConverter.Compile(assetType, fileContents));
@@ -136,56 +136,6 @@ public class ModBinary
 		}
 
 		// TODO: Loudness.
-	}
-
-	public void RemoveAsset(AssetKey assetKey)
-		=> RemoveAsset(assetKey.AssetName, assetKey.AssetType);
-
-	public void RemoveAsset(string assetName, AssetType assetType)
-	{
-		if (_readComprehensiveness != ModBinaryReadComprehensiveness.All)
-			throw new InvalidOperationException("This mod binary has not been opened for full reading comprehensiveness. Cannot remove assets.");
-
-		ModBinaryChunk? chunk = Chunks.Find(c => c.Name == assetName && c.AssetType == assetType);
-		if (chunk == null)
-			return;
-
-		Chunks.Remove(chunk);
-		AssetMap.Remove(new(assetType, assetName));
-	}
-
-	public void EnableAsset(AssetKey assetKey)
-		=> ToggleAsset(assetKey.AssetName, assetKey.AssetType, c => c.Enable());
-
-	public void EnableAsset(string assetName, AssetType assetType)
-		=> ToggleAsset(assetName, assetType, c => c.Enable());
-
-	public void DisableAsset(AssetKey assetKey)
-		=> ToggleAsset(assetKey.AssetName, assetKey.AssetType, c => c.Disable());
-
-	public void DisableAsset(string assetName, AssetType assetType)
-		=> ToggleAsset(assetName, assetType, c => c.Disable());
-
-	private void ToggleAsset(string assetName, AssetType assetType, Action<ModBinaryChunk> action)
-	{
-		if (_readComprehensiveness != ModBinaryReadComprehensiveness.All)
-			throw new InvalidOperationException("This mod binary has not been opened for full reading comprehensiveness. Cannot rename assets.");
-
-		ModBinaryChunk? chunk = Chunks.Find(c => c.Name == assetName && c.AssetType == assetType);
-		if (chunk == null)
-			return;
-
-		action(chunk);
-
-		AssetKey key = new(assetType, assetName);
-		AssetData data = AssetMap[key];
-		AssetMap.Remove(key);
-		AssetMap[new(assetType, chunk.Name)] = data;
-	}
-
-	public static bool IsAssetTypeValid(ModBinaryType modBinaryType, AssetType assetType)
-	{
-		return assetType == AssetType.Audio && modBinaryType == ModBinaryType.Audio || assetType != AssetType.Audio && modBinaryType != ModBinaryType.Audio;
 	}
 
 	public byte[] ExtractAsset(AssetKey assetKey)
@@ -215,17 +165,14 @@ public class ModBinary
 		using (MemoryStream tocStream = new())
 		{
 			using BinaryWriter tocWriter = new(tocStream);
-			foreach (KeyValuePair<AssetKey, AssetData> kvp in AssetMap)
+			foreach ((AssetKey key, AssetData data) in AssetMap)
 			{
-				AssetKey key = kvp.Key;
-				AssetData assetData = kvp.Value;
-
 				tocWriter.Write((ushort)key.AssetType);
 
 				tocWriter.Write(Encoding.UTF8.GetBytes(key.AssetName));
 				tocWriter.Write((byte)0);
 
-				int size = assetData.Buffer.Length;
+				int size = data.Buffer.Length;
 
 				tocWriter.Write(offset);
 				tocWriter.Write(size);
