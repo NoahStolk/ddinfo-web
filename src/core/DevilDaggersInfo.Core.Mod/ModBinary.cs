@@ -11,12 +11,29 @@ public class ModBinary
 		_readFilter = readFilter;
 
 		Toc = ModBinaryToc.FromBytes(fileContents);
+		AssetMap = new();
 
 		using MemoryStream ms = new(fileContents);
 		using BinaryReader br = new(ms);
+		BuildAssetMap(br);
+	}
 
+	public ModBinary(Stream stream, ModBinaryReadFilter readFilter)
+	{
+		_readFilter = readFilter;
+
+		using BinaryReader br = new(stream);
+		Toc = ModBinaryToc.FromReader(br);
 		AssetMap = new();
 
+		BuildAssetMap(br);
+	}
+
+	public ModBinaryToc Toc { get; }
+	public Dictionary<AssetKey, AssetData> AssetMap { get; }
+
+	private void BuildAssetMap(BinaryReader br)
+	{
 		// If chunks point to the same asset position; the asset is re-used (TODO: test if this even works in DD -- if not, remove DistinctBy).
 		foreach (ModBinaryChunk chunk in Toc.Chunks.DistinctBy(c => c.Offset))
 		{
@@ -29,9 +46,6 @@ public class ModBinary
 			AssetMap[new(chunk.AssetType, chunk.Name)] = new(buffer);
 		}
 	}
-
-	public ModBinaryToc Toc { get; }
-	public Dictionary<AssetKey, AssetData> AssetMap { get; }
 
 	public byte[] ExtractAsset(AssetKey assetKey)
 		=> ExtractAsset(assetKey.AssetName, assetKey.AssetType);

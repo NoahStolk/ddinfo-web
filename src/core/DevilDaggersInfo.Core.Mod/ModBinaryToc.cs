@@ -21,18 +21,16 @@ public sealed class ModBinaryToc
 	public static ModBinaryToc FromBytes(byte[] contents)
 	{
 		using MemoryStream ms = new(contents);
-		return FromStream(ms);
+		using BinaryReader br = new(ms);
+		return FromReader(br);
 	}
 
 	/// <summary>
 	/// Reads the mod binary header and TOC from the stream.
 	/// </summary>
-	public static ModBinaryToc FromStream(Stream stream)
+	public static ModBinaryToc FromReader(BinaryReader br)
 	{
-		stream.Position = 0;
-
-		using BinaryReader br = new(stream);
-		uint tocSize = GetSize(stream.Length, br);
+		uint tocSize = GetSize(br.BaseStream.Length, br);
 
 		ModBinaryType? modBinaryType = null;
 		List<ModBinaryChunk> chunks = new();
