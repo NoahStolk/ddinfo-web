@@ -8,12 +8,14 @@ public static class ReplaySimulationBuilder
 {
 	public static ReplaySimulation Build(SpawnsetBinary spawnset, ReplayBinary<LocalReplayBinaryHeader> replay)
 	{
+		// Player movement constants
+		const float moveSpeed = 11.676f / 60f;
+		const float gravityForce = 0.16f / 60f;
+
 		float spawnTileHeight = spawnset.ArenaTiles[SpawnsetBinary.ArenaDimensionMax / 2, SpawnsetBinary.ArenaDimensionMax / 2];
 
-		const float playerHeightForVisualization = 4;
-		const float playerHeight = 1.3f;
 		Quaternion rotation = Quaternion.CreateFromAxisAngle(Vector3.UnitY, MathF.PI);
-		Vector3 position = new(0, spawnTileHeight + playerHeightForVisualization, 0);
+		Vector3 position = new(0, spawnTileHeight, 0);
 
 		int ticks = 0;
 		float velocityY = 0;
@@ -40,7 +42,7 @@ public static class ReplaySimulationBuilder
 					position = new()
 					{
 						X = entityPositionEvent.Position.X / divisor,
-						Y = entityPositionEvent.Position.Y / divisor + playerHeightForVisualization,
+						Y = entityPositionEvent.Position.Y / divisor,
 						Z = entityPositionEvent.Position.Z / divisor,
 					};
 					break;
@@ -76,11 +78,11 @@ public static class ReplaySimulationBuilder
 					}
 
 					float currentTileHeight = Math.Max(Math.Max(topLeft, topRight), Math.Max(bottomLeft, bottomRight));
-					isOnGround = position.Y - playerHeight <= currentTileHeight;
+					isOnGround = position.Y <= currentTileHeight;
 
 					if (isOnGround)
 					{
-						position.Y = currentTileHeight + playerHeight;
+						position.Y = currentTileHeight;
 
 						gravity = 0;
 						velocityY = 0;
@@ -88,28 +90,27 @@ public static class ReplaySimulationBuilder
 						if (jumpCooldown <= 0 && inputs.Jump is JumpType.StartedPress or JumpType.Hold)
 						{
 							// TODO: Use Jump2 when jump was not precise.
-							jumpCooldown = 10;
-							velocityY = 0.3f;
-							speedBoost = 1.5f;
-							ReplaySound replaySound = ReplaySound.Jump3;
-							soundSnapshots.Add(new(ticks, replaySound, position));
+							jumpCooldown = 10; // Guess
+							velocityY = 0.35f; // Guess
+							speedBoost = 1.5f; // Guess
+							// ReplaySound replaySound = ReplaySound.Jump3;
+							// soundSnapshots.Add(new(ticks, replaySound, position));
 						}
 					}
 					else
 					{
-						gravity -= 0.002f;
+						gravity -= gravityForce;
 						velocityY += gravity;
 					}
 
-					speedBoost += (1 - speedBoost) / 10f;
+					speedBoost += (1 - speedBoost) / 10f; // Guess
 					jumpCooldown--;
 
 					// WASD movement
-					const float moveSpeed = 11.676f / 60f;
-					const float acceleration = 0.1f;
-					const float friction = 10f;
-					const float airAcceleration = 0.01f;
-					const float airFriction = 100f;
+					const float acceleration = 0.1f; // Guess
+					const float friction = 10f; // Guess
+					const float airAcceleration = 0.01f; // Guess
+					const float airFriction = 100f; // Guess
 					if (inputs.Right)
 						velocityX -= isOnGround ? acceleration : airAcceleration;
 					else if (inputs.Left)

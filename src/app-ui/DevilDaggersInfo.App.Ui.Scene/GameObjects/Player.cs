@@ -53,11 +53,13 @@ public class Player
 
 	public void Update(int currentTick)
 	{
+		const float offsetY = 3.3f;
+
 		_mesh.PrepareUpdate();
 
 		PlayerMovementSnapshot snapshot = _movementTimeline.GetPlayerMovementSnapshot(currentTick);
 		_mesh.RotationState.Physics = snapshot.Rotation;
-		_mesh.PositionState.Physics = snapshot.Position;
+		_mesh.PositionState.Physics = snapshot.Position + new Vector3(0, offsetY, 0);
 
 		DebugStack.Add($"Player position: {snapshot.IsOnGround} {snapshot.Position}");
 	}
