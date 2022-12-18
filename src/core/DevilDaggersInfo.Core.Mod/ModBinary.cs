@@ -52,7 +52,7 @@ public class ModBinary
 
 	public byte[] ExtractAsset(string assetName, AssetType assetType)
 	{
-		if (_readFilter.ShouldRead(new(assetType, assetName)))
+		if (!_readFilter.ShouldRead(new(assetType, assetName)))
 			throw new InvalidOperationException("This asset has not been read. It was not included in the filter, so it cannot be extracted.");
 
 		AssetKey key = new(assetType, assetName);
