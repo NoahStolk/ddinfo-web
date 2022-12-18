@@ -11,11 +11,29 @@ namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States;
 
 public static class StateManager
 {
+	private static UiQueue? _uiQueue;
+
 	public static ActiveSpawnsetState ActiveSpawnsetState { get; private set; } = ActiveSpawnsetState.GetDefault();
 	public static LeaderboardListState LeaderboardListState { get; private set; } = LeaderboardListState.GetDefault();
 	public static LeaderboardState LeaderboardState { get; private set; } = LeaderboardState.GetDefault();
 	public static MarkerState MarkerState { get; private set; } = MarkerState.GetDefault();
 	public static RecordingState RecordingState { get; private set; } = RecordingState.GetDefault();
+
+	public static void EmptyUiQueue()
+	{
+		if (_uiQueue == null)
+			return;
+
+		if (_uiQueue.ReloadLeaderboardList)
+			Root.Game.CustomLeaderboardsRecorderMainLayout.RefreshLeaderboardList();
+
+		_uiQueue = null;
+	}
+
+	public static void LoadLeaderboardList()
+	{
+		_uiQueue = new UiQueue(true);
+	}
 
 	public static void SetPageIndex(int pageIndex)
 	{
@@ -116,4 +134,9 @@ public static class StateManager
 			ActiveSpawnsetState = new(getSpawnsetByHash?.Name, fileContents, fileHash);
 		}
 	}
+
+	/// <summary>
+	/// The component system can only handle one consecutive update of spawnset components every update iteration, so in case of multiple updates, schedule an update and update the components on the next update.
+	/// </summary>
+	private sealed record UiQueue(bool ReloadLeaderboardList);
 }

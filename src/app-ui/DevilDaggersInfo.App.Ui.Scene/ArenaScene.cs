@@ -109,6 +109,7 @@ public class ArenaScene
 
 		WarpTextures.TileHitbox.Use();
 
+		// TODO: Use quick sort.
 		foreach (Tile tile in _tiles.OrderBy(t => Vector3.DistanceSquared(t.Position with { Y = _camera.PositionState.Render.Y }, _camera.PositionState.Render)))
 			tile.RenderHitbox();
 	}

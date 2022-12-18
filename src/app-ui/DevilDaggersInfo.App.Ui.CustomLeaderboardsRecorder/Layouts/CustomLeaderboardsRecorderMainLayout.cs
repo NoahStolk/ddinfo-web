@@ -39,19 +39,12 @@ public class CustomLeaderboardsRecorderMainLayout : Layout, ICustomLeaderboardsR
 	{
 		StateManager.RefreshActiveSpawnset();
 
-		_leaderboardListWrapper.Load();
+		StateManager.LoadLeaderboardList();
 	}
 
 	public void RefreshLeaderboardList()
 	{
-		try
-		{
-			_leaderboardListWrapper.Load();
-		}
-		catch (InvalidOperationException ex)
-		{
-			// TODO: Use UI queue to prevent calling _leaderboardListWrapper.Load twice during the same update.
-		}
+		_leaderboardListWrapper.Load();
 	}
 
 	public void SetCustomLeaderboard()

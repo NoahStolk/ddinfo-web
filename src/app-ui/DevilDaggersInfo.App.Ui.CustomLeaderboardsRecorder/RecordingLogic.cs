@@ -82,7 +82,7 @@ public static class RecordingLogic
 		{
 			StateManager.SetCurrentPlayerId(mainBlock.PlayerId);
 
-			Root.Game.CustomLeaderboardsRecorderMainLayout.RefreshLeaderboardList();
+			StateManager.LoadLeaderboardList();
 		}
 
 		// Indicate recording status.
