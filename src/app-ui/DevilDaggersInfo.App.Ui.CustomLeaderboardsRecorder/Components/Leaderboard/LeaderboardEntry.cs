@@ -36,7 +36,7 @@ public class LeaderboardEntry : AbstractComponent
 	{
 		_getCustomEntry = getCustomEntry;
 
-		_accuracy = _getCustomEntry.DaggersHit / (float)_getCustomEntry.DaggersFired;
+		_accuracy = _getCustomEntry.DaggersFired == 0 ? 0 : _getCustomEntry.DaggersHit / (float)_getCustomEntry.DaggersFired;
 		_death = Deaths.GetDeathByLeaderboardType(GameConstants.CurrentVersion, _getCustomEntry.DeathType);
 		_level2 = _getCustomEntry.LevelUpTime2InSeconds == 0 ? null : _getCustomEntry.LevelUpTime2InSeconds;
 		_level3 = _getCustomEntry.LevelUpTime3InSeconds == 0 ? null : _getCustomEntry.LevelUpTime3InSeconds;
