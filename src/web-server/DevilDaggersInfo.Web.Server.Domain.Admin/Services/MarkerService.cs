@@ -26,6 +26,6 @@ public class MarkerService
 		marker.Value = value;
 		await _dbContext.SaveChangesAsync();
 
-		_logger.LogWarning("Marker '{markerName}' was updated from '{old}' to '{new}'.", marker.Name, $"0x{oldValue:X16}", $"0x{marker.Value:X16}");
+		_logger.LogInformation("Marker '{markerName}' was updated from '{old}' to '{new}'.", marker.Name, $"0x{oldValue:X16}", $"0x{marker.Value:X16}");
 	}
 }

@@ -65,7 +65,7 @@ public class UserService
 			user.PlayerId = null;
 			await _dbContext.SaveChangesAsync();
 
-			_logger.LogWarning("User '{userName}' ({userId}) has been unlinked.", user.Name, user.Id);
+			_logger.LogInformation("User '{userName}' ({userId}) has been unlinked.", user.Name, user.Id);
 		}
 		else
 		{
@@ -79,7 +79,7 @@ public class UserService
 			user.PlayerId = player.Id;
 			await _dbContext.SaveChangesAsync();
 
-			_logger.LogWarning("Player '{playerName}' ({playerId}) has been linked to user '{userName}' ({userId}).", player.PlayerName, player.Id, user.Name, user.Id);
+			_logger.LogInformation("Player '{playerName}' ({playerId}) has been linked to user '{userName}' ({userId}).", player.PlayerName, player.Id, user.Name, user.Id);
 		}
 	}
 
@@ -92,7 +92,7 @@ public class UserService
 		_userManager.UpdatePassword(id, resetPassword.NewPassword);
 		await _dbContext.SaveChangesAsync();
 
-		_logger.LogWarning("Password was reset for user '{user}'.", user.Name);
+		_logger.LogInformation("Password was reset for user '{user}'.", user.Name);
 	}
 
 	public async Task DeleteUser(int id)
