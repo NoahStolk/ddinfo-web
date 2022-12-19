@@ -234,6 +234,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseSentryTracing();
+
 app.UseCors(defaultCorsPolicy);
 
 app.UseAuthentication();
