@@ -11,5 +11,4 @@ public enum DataSubDirectory
 	Tools,
 	AssetInfo,
 	CustomEntryReplays,
-	ResponseTimes,
 }
