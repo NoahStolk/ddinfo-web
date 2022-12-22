@@ -20,7 +20,7 @@ public static class RecordingLogic
 
 	static RecordingLogic()
 	{
-		using MemoryStream msIn = new(File.ReadAllBytes("ddinfo-value").Select((b, i) => i < 4 ? (byte)(b << 4 | b >> 4) : (byte)~b).ToArray());
+		using MemoryStream msIn = new(WarpBlobs.Value.Data.Select((b, i) => i < 4 ? (byte)(b << 4 | b >> 4) : (byte)~b).ToArray());
 		using MemoryStream msOut = new();
 		using DeflateStream ds = new(msIn, CompressionMode.Decompress);
 		ds.CopyTo(msOut);
