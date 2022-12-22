@@ -112,7 +112,6 @@ builder.Services.AddSingleton<LeaderboardResponseParser>();
 builder.Services.AddSingleton<BackgroundServiceMonitor>();
 builder.Services.AddSingleton<ICustomLeaderboardSubmissionLogger, CustomLeaderboardSubmissionLogger>();
 builder.Services.AddSingleton<ILogContainerService, LogContainerService>();
-builder.Services.AddSingleton<ResponseTimeMonitor>();
 
 // Caching services
 builder.Services.AddSingleton<ILeaderboardHistoryCache, LeaderboardHistoryCache>();
@@ -134,7 +133,6 @@ if (!builder.Environment.IsDevelopment())
 	builder.Services.AddHostedService<DiscordUserIdFetchBackgroundService>();
 	builder.Services.AddHostedService<LeaderboardHistoryBackgroundService>();
 	builder.Services.AddHostedService<PlayerNameFetchBackgroundService>();
-	builder.Services.AddHostedService<ResponseTimesBackgroundService>();
 }
 
 // Hosted service that runs once after startup.
@@ -166,8 +164,6 @@ builder.AddSwaggerDocument("DdstatsRust", "**WARNING:** This API is intended to 
 builder.AddSwaggerDocument("Clubber", "**WARNING:** This API is intended to be used by Clubber only.");
 
 WebApplication app = builder.Build();
-
-app.UseMiddleware<ResponseTimeMiddleware>();
 
 // Do not change order of redirects.
 RewriteOptions options = new RewriteOptions()
