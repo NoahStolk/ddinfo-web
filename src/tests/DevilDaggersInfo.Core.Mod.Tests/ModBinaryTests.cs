@@ -8,18 +8,19 @@ namespace DevilDaggersInfo.Core.Mod.Tests;
 public class ModBinaryTests
 {
 	[DataTestMethod]
-	[DataRow("dd-mesh")]
-	[DataRow("dd-mesh-shader-texture")]
-	[DataRow("dd-shader")]
-	[DataRow("dd-skull-1-2-same-texture-copied", true)] // Cannot compare exact texture bytes, because the resizing algorithm is different. TODO: Compile using the same code instead of legacy DDAE.
-	[DataRow("dd-texture")] // This works because the textures are 1x1.
-	public void CompareBinaryOutput(string fileName, bool ignoreExactAssetData = false)
+	[DataRow(ModBinaryType.Audio, "audio-empty")]
+	[DataRow(ModBinaryType.Dd, "dd-mesh")]
+	[DataRow(ModBinaryType.Dd, "dd-mesh-shader-texture")]
+	[DataRow(ModBinaryType.Dd, "dd-shader")]
+	[DataRow(ModBinaryType.Dd, "dd-skull-1-2-same-texture-copied", true)] // Cannot compare exact texture bytes, because the resizing algorithm is different. TODO: Compile using the same code instead of legacy DDAE.
+	[DataRow(ModBinaryType.Dd, "dd-texture")] // This works because the textures are 1x1.
+	public void CompareBinaryOutput(ModBinaryType type, string fileName, bool ignoreExactAssetData = false)
 	{
 		string filePath = Path.Combine(TestUtils.ResourcePath, fileName);
 		byte[] originalBytes = File.ReadAllBytes(filePath);
 
 		ModBinary modBinary = new(originalBytes, ModBinaryReadFilter.AllAssets);
-		ModBinaryBuilder builder = new(ModBinaryType.Dd);
+		ModBinaryBuilder builder = new(type);
 
 		foreach (ModBinaryChunk chunk in modBinary.Toc.Chunks)
 		{
