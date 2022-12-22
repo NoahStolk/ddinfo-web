@@ -19,12 +19,12 @@ public class Popup : AbstractComponent
 		{
 			Depth = Constants.DepthMax,
 		};
-		TextButton button = new(new PixelBounds(Constants.NativeWidth / 2 - buttonWidth / 2, Constants.NativeHeight / 2 - buttonHeight / 2, buttonWidth, buttonHeight), () => parent.NestingContext.Remove(this), GlobalStyles.DefaultButtonStyle, GlobalStyles.Popup, "OK")
+		TextButton okButton = new(new PixelBounds(Constants.NativeWidth / 2 - buttonWidth / 2, Constants.NativeHeight / 2 - buttonHeight / 2, buttonWidth, buttonHeight), () => parent.NestingContext.Remove(this), GlobalStyles.DefaultButtonStyle, GlobalStyles.Popup, "OK")
 		{
 			Depth = Constants.DepthMax,
 		};
 		NestingContext.Add(label);
-		NestingContext.Add(button);
+		NestingContext.Add(okButton);
 	}
 
 	public override void Update(Vector2i<int> scrollOffset)
