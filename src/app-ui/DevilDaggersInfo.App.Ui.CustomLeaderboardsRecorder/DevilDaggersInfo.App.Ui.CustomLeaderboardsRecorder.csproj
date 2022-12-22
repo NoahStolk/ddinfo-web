@@ -6,6 +6,10 @@
     <OutputType>Library</OutputType>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(CI)' == 'true'">
+    <DefineConstants>SKIP_VALUE</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Encryption\DevilDaggersInfo.Core.Encryption.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.App.Ui.Scene\DevilDaggersInfo.App.Ui.Scene.csproj" />

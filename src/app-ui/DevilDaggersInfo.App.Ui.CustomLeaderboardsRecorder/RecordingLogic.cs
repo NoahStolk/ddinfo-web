@@ -7,8 +7,10 @@ using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States;
 using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Core.Encryption;
+#if !SKIP_VALUE
 using System.IO.Compression;
 using System.Text;
+#endif
 using System.Web;
 
 namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder;
@@ -18,8 +20,13 @@ public static class RecordingLogic
 	private static readonly AesBase32Wrapper _aesBase32Wrapper;
 	private static bool _uploadRun;
 
+#pragma warning disable S3963
 	static RecordingLogic()
+#pragma warning restore S3963
 	{
+#if SKIP_VALUE
+		_aesBase32Wrapper = new(string.Empty, string.Empty, string.Empty);
+#else
 		using MemoryStream msIn = new(WarpBlobs.Value.Data.Select((b, i) => i < 4 ? (byte)(b << 4 | b >> 4) : (byte)~b).ToArray());
 		using MemoryStream msOut = new();
 		using DeflateStream ds = new(msIn, CompressionMode.Decompress);
@@ -28,6 +35,7 @@ public static class RecordingLogic
 		br.BaseStream.Position = 0;
 		string[] values = Enumerable.Range(0, br.ReadByte()).Select(_ => Encoding.UTF8.GetString(br.ReadBytes(br.ReadByte()).Select((b, j) => j % 4 == 0 ? b : (byte)~b).ToArray())).ToArray();
 		_aesBase32Wrapper = new(values[0], values[1], values[2]);
+#endif
 	}
 
 	/// <summary>
