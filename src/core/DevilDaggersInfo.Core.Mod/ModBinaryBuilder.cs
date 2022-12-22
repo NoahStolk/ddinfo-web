@@ -8,6 +8,8 @@ namespace DevilDaggersInfo.Core.Mod;
 /// </summary>
 public class ModBinaryBuilder
 {
+	private const int _tocEntrySizeWithoutName = 15;
+
 	private readonly List<ModBinaryChunk> _chunks;
 	private readonly Dictionary<AssetKey, AssetData> _assetMap;
 
@@ -36,8 +38,7 @@ public class ModBinaryBuilder
 
 		_chunks.Clear();
 
-		const int tocEntrySizeWithoutName = 15;
-		int offset = ModBinaryConstants.HeaderSize + tocEntrySizeWithoutName * _assetMap.Count + _assetMap.Sum(kvp => Encoding.UTF8.GetBytes(kvp.Key.AssetName).Length) + 2;
+		int offset = ModBinaryConstants.HeaderSize + _tocEntrySizeWithoutName * _assetMap.Count + _assetMap.Sum(kvp => Encoding.UTF8.GetBytes(kvp.Key.AssetName).Length) + sizeof(short);
 		foreach (KeyValuePair<AssetKey, AssetData> kvp in _assetMap)
 		{
 			int size = kvp.Value.Buffer.Length;
@@ -51,8 +52,7 @@ public class ModBinaryBuilder
 
 	public byte[] Compile()
 	{
-		const int tocEntrySizeWithoutName = 15;
-		int tocBufferSize = tocEntrySizeWithoutName * _assetMap.Count + _chunks.Sum(c => Encoding.UTF8.GetBytes(c.Name).Length) + sizeof(short);
+		int tocBufferSize = _tocEntrySizeWithoutName * _assetMap.Count + _chunks.Sum(c => Encoding.UTF8.GetBytes(c.Name).Length) + sizeof(short);
 		int offset = ModBinaryConstants.HeaderSize + tocBufferSize;
 		byte[]? tocBuffer;
 		using (MemoryStream tocStream = new())
