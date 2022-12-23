@@ -4,7 +4,7 @@ using DevilDaggersInfo.Types.Web;
 
 namespace DevilDaggersInfo.App.Core.ApiClient.TaskHandlers;
 
-public static class FetchLatestDistribution
+public static class FetchLatestVersion
 {
 	public static async Task<AppVersion?> HandleAsync(AppVersion appVersion, ToolBuildType toolBuildType)
 	{
