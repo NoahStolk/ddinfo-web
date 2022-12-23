@@ -31,29 +31,30 @@ public class LeaderboardListEntry : AbstractComponent
 		_customLeaderboard = customLeaderboard;
 
 		int fullWidth = bounds.Size.X;
-		int columnWidth = fullWidth / 6;
+		int columnWidth = fullWidth / 10;
 
-		const int gridIndex0 = 0;
-		int gridIndex1 = columnWidth * 2;
-		int gridIndex2 = columnWidth * 3;
-		int gridIndex3 = columnWidth * 4;
-		int gridIndex4 = columnWidth * 5;
-
-		int labelDepth = Depth + 100;
-		Label name = new(bounds.CreateNested(gridIndex0, 0, columnWidth * 2, bounds.Size.Y), customLeaderboard.SpawnsetName, GlobalStyles.LabelDefaultLeft) { Depth = labelDepth };
-		Label rank = new(bounds.CreateNested(gridIndex1, 0, columnWidth, bounds.Size.Y), $"{(customLeaderboard.SelectedPlayerStats?.Rank).ToString() ?? "-"} / {customLeaderboard.PlayerCount}", GlobalStyles.LabelDefaultRight) { Depth = labelDepth };
+		const int gridIndexName = 0;
+		int gridIndexRank = columnWidth * 5;
+		int gridIndexScore = columnWidth * 6;
+		int gridIndexNextDagger = columnWidth * 7;
+		int gridIndexPlayers = columnWidth * 8;
+		int gridIndexWorldRecord = columnWidth * 9;
 
 		LabelStyle scoreStyle = new(customLeaderboard.SelectedPlayerStats?.Dagger?.GetColor() ?? Color.White, TextAlign.Right, FontSize.H12);
-		Label score = new(bounds.CreateNested(gridIndex2, 0, columnWidth, bounds.Size.Y), customLeaderboard.SelectedPlayerStats?.Time.ToString(StringFormats.TimeFormat) ?? "-", scoreStyle) { Depth = labelDepth };
-
 		LabelStyle nextDaggerStyle = new(customLeaderboard.SelectedPlayerStats?.NextDagger?.Dagger.GetColor() ?? Color.White, TextAlign.Right, FontSize.H12);
-		Label nextDagger = new(bounds.CreateNested(gridIndex3, 0, columnWidth, bounds.Size.Y), customLeaderboard.SelectedPlayerStats?.NextDagger?.Time.ToString(StringFormats.TimeFormat) ?? "-", nextDaggerStyle) { Depth = labelDepth };
-
 		LabelStyle worldRecordStyle = new(customLeaderboard.WorldRecord?.Dagger?.GetColor() ?? Color.White, TextAlign.Right, FontSize.H12);
-		Label worldRecord = new(bounds.CreateNested(gridIndex4, 0, columnWidth, bounds.Size.Y), customLeaderboard.WorldRecord?.Time.ToString(StringFormats.TimeFormat) ?? "-", worldRecordStyle) { Depth = labelDepth };
+
+		int labelDepth = Depth + 100;
+		Label name = new(bounds.CreateNested(gridIndexName, 0, columnWidth * 2, bounds.Size.Y), customLeaderboard.SpawnsetName, GlobalStyles.LabelDefaultLeft) { Depth = labelDepth };
+		Label rank = new(bounds.CreateNested(gridIndexRank, 0, columnWidth, bounds.Size.Y), customLeaderboard.SelectedPlayerStats == null ? "-" : $"{customLeaderboard.SelectedPlayerStats.Rank,2} / {customLeaderboard.PlayerCount,2}", GlobalStyles.LabelDefaultRight) { Depth = labelDepth };
+		Label score = new(bounds.CreateNested(gridIndexScore, 0, columnWidth, bounds.Size.Y), customLeaderboard.SelectedPlayerStats?.Time.ToString(StringFormats.TimeFormat) ?? "-", scoreStyle) { Depth = labelDepth };
+		Label nextDagger = new(bounds.CreateNested(gridIndexNextDagger, 0, columnWidth, bounds.Size.Y), customLeaderboard.SelectedPlayerStats?.NextDagger?.Time.ToString(StringFormats.TimeFormat) ?? "-", nextDaggerStyle) { Depth = labelDepth };
+		Label players = new(bounds.CreateNested(gridIndexPlayers, 0, columnWidth, bounds.Size.Y), customLeaderboard.PlayerCount.ToString(), GlobalStyles.LabelDefaultRight) { Depth = labelDepth };
+		Label worldRecord = new(bounds.CreateNested(gridIndexWorldRecord, 0, columnWidth, bounds.Size.Y), customLeaderboard.WorldRecord?.Time.ToString(StringFormats.TimeFormat) ?? "-", worldRecordStyle) { Depth = labelDepth };
 
 		NestingContext.Add(name);
 		NestingContext.Add(rank);
+		NestingContext.Add(players);
 		NestingContext.Add(score);
 		NestingContext.Add(nextDagger);
 		NestingContext.Add(worldRecord);
