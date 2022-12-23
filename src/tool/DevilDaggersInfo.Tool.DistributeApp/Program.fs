@@ -34,7 +34,7 @@ let buildAndUpload projectFilePath zipOutputDirectory toolBuildType toolPublishM
     File.Delete(outputZipFilePath)
 
 [<EntryPoint>]
-let main =
+let main _ =
     let projectFilePath = """C:\Users\NOAH\source\repos\DevilDaggersInfo\src\app\DevilDaggersInfo.App\DevilDaggersInfo.App.csproj"""
     let zipOutputDirectory = """C:\Users\NOAH\source\repos\DevilDaggersInfo\src\app\DevilDaggersInfo.App\bin"""
 
