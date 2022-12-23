@@ -13,4 +13,6 @@ public record GetCustomLeaderboard
 	public required bool IsAscending { get; init; }
 
 	public required List<GetCustomEntry> SortedEntries { get; init; }
+
+	public required List<GetCustomLeaderboardCriteria> Criteria { get; init; }
 }

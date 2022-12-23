@@ -21,4 +21,6 @@ public record GetCustomLeaderboardForOverview
 	public required GetCustomLeaderboardWorldRecord? WorldRecord { get; init; }
 
 	public required GetCustomLeaderboardSelectedPlayerStats? SelectedPlayerStats { get; init; }
+
+	public required List<GetCustomLeaderboardCriteria> Criteria { get; init; }
 }

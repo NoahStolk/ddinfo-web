@@ -32,6 +32,7 @@ public static class CustomLeaderboardConverters
 	public static AppApi.GetCustomLeaderboard ToAppApi(this SortedCustomLeaderboard sortedCustomLeaderboard) => new()
 	{
 		Category = sortedCustomLeaderboard.Category,
+		Criteria = sortedCustomLeaderboard.Criteria.ConvertAll(c => c.ToAppApi()),
 		Daggers = sortedCustomLeaderboard.Daggers?.ToAppApi(),
 		IsAscending = sortedCustomLeaderboard.Category.IsAscending(),
 		SortedEntries = sortedCustomLeaderboard.CustomEntries.ConvertAll(ce => ce.ToAppApi()),
@@ -49,6 +50,14 @@ public static class CustomLeaderboardConverters
 		SpawnsetName = customLeaderboard.SpawnsetName,
 		SubmitCount = customLeaderboard.TotalRunsSubmitted,
 		WorldRecord = customLeaderboard.WorldRecord?.ToAppApi(),
+		Criteria = customLeaderboard.Criteria.ConvertAll(c => c.ToAppApi()),
+	};
+
+	private static AppApi.GetCustomLeaderboardCriteria ToAppApi(this CustomLeaderboardCriteria customLeaderboardCriteria) => new()
+	{
+		Type = customLeaderboardCriteria.Type,
+		Expression = customLeaderboardCriteria.Expression,
+		Operator = customLeaderboardCriteria.Operator,
 	};
 
 	private static AppApi.GetCustomLeaderboardDaggers ToAppApi(this CustomLeaderboardDaggers customLeaderboardDaggers) => new()
