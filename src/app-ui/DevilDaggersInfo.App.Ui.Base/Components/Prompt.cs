@@ -15,21 +15,18 @@ public class Prompt : AbstractComponent
 		const int buttonWidth = 128;
 		const int buttonHeight = 32;
 
-		Label label = new(new PixelBounds(0, Constants.NativeHeight / 3, Constants.NativeWidth, 32), text, GlobalStyles.PopupLabel)
-		{
-			Depth = Constants.DepthMax,
-		};
-		TextButton okButton = new(new PixelBounds(Constants.NativeWidth / 2 - buttonWidth, Constants.NativeHeight / 2 - buttonHeight / 2, buttonWidth, buttonHeight), okAction, GlobalStyles.DefaultButtonStyle, GlobalStyles.Popup, "OK")
-		{
-			Depth = Constants.DepthMax,
-		};
-		TextButton cancelButton = new(new PixelBounds(Constants.NativeWidth / 2, Constants.NativeHeight / 2 - buttonHeight / 2, buttonWidth, buttonHeight), () => parent.NestingContext.Remove(this), GlobalStyles.DefaultButtonStyle, GlobalStyles.Popup, "Cancel")
-		{
-			Depth = Constants.DepthMax,
-		};
+		Label label = new(new PixelBounds(0, Constants.NativeHeight / 3, Constants.NativeWidth, 32), text, GlobalStyles.PopupLabel) { Depth = Constants.DepthMax };
+		TextButton okButton = new(new PixelBounds(Constants.NativeWidth / 2 - buttonWidth, Constants.NativeHeight / 2 - buttonHeight / 2, buttonWidth, buttonHeight), OkAction, GlobalStyles.DefaultButtonStyle, GlobalStyles.Popup, "OK") { Depth = Constants.DepthMax };
+		TextButton cancelButton = new(new PixelBounds(Constants.NativeWidth / 2, Constants.NativeHeight / 2 - buttonHeight / 2, buttonWidth, buttonHeight), () => parent.NestingContext.Remove(this), GlobalStyles.DefaultButtonStyle, GlobalStyles.Popup, "Cancel") { Depth = Constants.DepthMax };
 		NestingContext.Add(label);
 		NestingContext.Add(okButton);
 		NestingContext.Add(cancelButton);
+
+		void OkAction()
+		{
+			parent.NestingContext.Remove(this);
+			okAction();
+		}
 	}
 
 	public override void Update(Vector2i<int> scrollOffset)
