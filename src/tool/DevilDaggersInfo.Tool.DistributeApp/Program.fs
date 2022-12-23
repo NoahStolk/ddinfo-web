@@ -9,16 +9,19 @@ let publishDirectoryName = "_temp-release"
 let toolName = "ddinfo-tools"
 
 [<Literal>]
-let contentFileName = "ddinfo-tools"
+let contentFileName = "ddinfo"
+let contentFileNameUi = "ddinfo-ui"
 
 let buildAndUpload projectFilePath zipOutputDirectory toolBuildType toolPublishMethod =
     AppBuilder.build projectFilePath publishDirectoryName toolBuildType toolPublishMethod
 
     let publishDirectoryPath = Path.Combine(Path.GetDirectoryName(projectFilePath:string), publishDirectoryName)
 
-    // Copy content file.
+    // Copy content files.
     let contentFilePath = Path.Combine(projectFilePath, "..", "bin", "Debug", "net7.0", contentFileName)
+    let contentFilePathUi = Path.Combine(projectFilePath, "..", "bin", "Debug", "net7.0", contentFileNameUi)
     File.Copy(contentFilePath, Path.Combine(publishDirectoryPath, contentFileName))
+    File.Copy(contentFilePathUi, Path.Combine(publishDirectoryPath, contentFileNameUi))
     
     // Zip build and content file.
     let version = ProjectReader.readVersionFromProjectFile projectFilePath
@@ -31,9 +34,9 @@ let buildAndUpload projectFilePath zipOutputDirectory toolBuildType toolPublishM
     File.Delete(outputZipFilePath)
 
 [<EntryPoint>]
-let main argv =
-    let projectFilePath = argv[0]
-    let zipOutputDirectory = argv[1]
+let main =
+    let projectFilePath = """C:\Users\NOAH\source\repos\DevilDaggersInfo\src\app\DevilDaggersInfo.App\DevilDaggersInfo.App.csproj"""
+    let zipOutputDirectory = """C:\Users\NOAH\source\repos\DevilDaggersInfo\src\app\DevilDaggersInfo.App\bin"""
 
     buildAndUpload projectFilePath zipOutputDirectory ToolBuildType.WindowsWarp ToolPublishMethod.SelfContained
     buildAndUpload projectFilePath zipOutputDirectory ToolBuildType.LinuxWarp ToolPublishMethod.SelfContained
