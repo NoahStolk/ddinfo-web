@@ -1,4 +1,5 @@
-namespace DevilDaggersInfo.Types.Web;
+// ReSharper disable InconsistentNaming
+namespace DevilDaggersInfo.Types.Core.CustomLeaderboards;
 
 public enum CustomLeaderboardCriteriaType : byte
 {

@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Core.CriteriaExpression;
+namespace DevilDaggersInfo.Core.CriteriaExpression;
 
 public enum ExpressionOperatorType : byte
 {

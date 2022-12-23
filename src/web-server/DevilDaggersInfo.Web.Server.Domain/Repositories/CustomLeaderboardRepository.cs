@@ -1,5 +1,6 @@
 using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Core.Versioning;
+using DevilDaggersInfo.Types.Core.CustomLeaderboards;
 using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Server.Domain.Constants;
 using DevilDaggersInfo.Web.Server.Domain.Entities;

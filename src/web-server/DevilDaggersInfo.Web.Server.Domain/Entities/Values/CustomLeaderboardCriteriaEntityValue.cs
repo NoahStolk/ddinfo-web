@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Types.Web;
+using DevilDaggersInfo.Types.Core.CustomLeaderboards;
 using Microsoft.EntityFrameworkCore;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Entities.Values;
@@ -8,6 +8,6 @@ public class CustomLeaderboardCriteriaEntityValue
 {
 	public CustomLeaderboardCriteriaOperator Operator { get; init; }
 
-	[MaxLength(Core.CriteriaExpression.Expression.MaxByteLength)]
+	[MaxLength(DevilDaggersInfo.Core.CriteriaExpression.Expression.MaxByteLength)]
 	public byte[]? Expression { get; init; }
 }

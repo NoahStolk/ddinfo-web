@@ -2,9 +2,9 @@ using DevilDaggersInfo.Common;
 using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Core.Wiki.Objects;
-using DevilDaggersInfo.Types.Web;
+using DevilDaggersInfo.Types.Core.CustomLeaderboards;
 
-namespace DevilDaggersInfo.Web.Core.CriteriaExpression.Parts;
+namespace DevilDaggersInfo.Core.CriteriaExpression.Parts;
 
 public record ExpressionValue(int Value) : IExpressionPart
 {

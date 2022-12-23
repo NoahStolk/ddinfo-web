@@ -1,5 +1,5 @@
 using DevilDaggersInfo.Api.Admin.CustomLeaderboards;
-using DevilDaggersInfo.Types.Web;
+using DevilDaggersInfo.Types.Core.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Client.StateObjects.Admin.CustomLeaderboards;
 
