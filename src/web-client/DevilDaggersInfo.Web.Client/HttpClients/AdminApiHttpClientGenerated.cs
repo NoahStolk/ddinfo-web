@@ -14,7 +14,6 @@ using DevilDaggersInfo.Api.Admin.CustomLeaderboards;
 using DevilDaggersInfo.Api.Admin.Database;
 using DevilDaggersInfo.Api.Admin.Donations;
 using DevilDaggersInfo.Api.Admin.FileSystem;
-using DevilDaggersInfo.Api.Admin.Health;
 using DevilDaggersInfo.Api.Admin.Mods;
 using DevilDaggersInfo.Api.Admin.Players;
 using DevilDaggersInfo.Api.Admin.Spawnsets;
@@ -145,20 +144,6 @@ public partial class AdminApiHttpClient
 	public async Task<List<GetFileSystemEntry>> GetFileSystemInfo()
 	{
 		return await SendGetRequest<List<GetFileSystemEntry>>($"api/admin/file-system/");
-	}
-
-	public async Task<GetResponseTimes> GetResponseTimes(DateTime date)
-	{
-		Dictionary<string, object?> queryParameters = new()
-		{
-			{ nameof(date), date }
-		};
-		return await SendGetRequest<GetResponseTimes>(BuildUrlWithQuery($"api/admin/health/", queryParameters));
-	}
-
-	public async Task<HttpResponseMessage> ForceDump(string? unused)
-	{
-		return await SendRequest(new HttpMethod("POST"), $"api/admin/health/force-dump", JsonContent.Create(unused));
 	}
 
 	public async Task<HttpResponseMessage> TestException(string? message)
