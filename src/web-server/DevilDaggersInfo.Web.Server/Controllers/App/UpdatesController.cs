@@ -34,4 +34,21 @@ public class UpdatesController : ControllerBase
 
 		return distribution.ToAppApi();
 	}
+
+	[HttpGet("file")]
+	[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	public async Task<ActionResult> GetFile([Required] ToolPublishMethod publishMethod, [Required] ToolBuildType buildType)
+	{
+		ToolDistribution? distribution = await _toolRepository.GetLatestToolDistributionAsync(_toolName, publishMethod, buildType);
+		if (distribution == null)
+			return NotFound();
+
+		byte[] bytes = _toolRepository.GetToolDistributionFile(_toolName, publishMethod, buildType, distribution.VersionNumber);
+
+		await _toolRepository.UpdateToolDistributionStatisticsAsync(_toolName, publishMethod, buildType, distribution.VersionNumber);
+
+		return File(bytes, MediaTypeNames.Application.Zip, $"{_toolName}{distribution.VersionNumber}.zip");
+	}
 }

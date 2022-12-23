@@ -102,6 +102,16 @@ public partial class AppApiHttpClient
 		return await SendGetRequest<GetToolDistribution>(BuildUrlWithQuery($"api/app/updates/version", queryParameters));
 	}
 
+	public async Task<Task> GetFile(ToolPublishMethod publishMethod, ToolBuildType buildType)
+	{
+		Dictionary<string, object?> queryParameters = new()
+		{
+			{ nameof(publishMethod), publishMethod },
+			{ nameof(buildType), buildType }
+		};
+		return await SendGetRequest<Task>(BuildUrlWithQuery($"api/app/updates/file", queryParameters));
+	}
+
 	private static string BuildUrlWithQuery(string baseUrl, Dictionary<string, object?> queryParameters)
 	{
 		if (queryParameters.Count == 0)
