@@ -53,7 +53,7 @@ public class ToolsController : ControllerBase
 		if (distribution == null)
 			return NotFound();
 
-		byte[]? bytes = _toolRepository.GetToolDistributionFile(toolName, publishMethod, buildType, distribution.VersionNumber);
+		byte[] bytes = _toolRepository.GetToolDistributionFile(toolName, publishMethod, buildType, distribution.VersionNumber);
 
 		await _toolRepository.UpdateToolDistributionStatisticsAsync(toolName, publishMethod, buildType, distribution.VersionNumber);
 
