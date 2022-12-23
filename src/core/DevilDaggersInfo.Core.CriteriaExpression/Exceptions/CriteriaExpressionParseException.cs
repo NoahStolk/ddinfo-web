@@ -1,6 +1,6 @@
 using System.Runtime.Serialization;
 
-namespace DevilDaggersInfo.Web.Core.CriteriaExpression.Exceptions;
+namespace DevilDaggersInfo.Core.CriteriaExpression.Exceptions;
 
 [Serializable]
 public class CriteriaExpressionParseException : Exception

@@ -1,4 +1,5 @@
-namespace DevilDaggersInfo.Web.Core.CriteriaExpression;
+// ReSharper disable InconsistentNaming
+namespace DevilDaggersInfo.Core.CriteriaExpression;
 
 public record TargetCollection
 {

@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Common.Exceptions;
 
-namespace DevilDaggersInfo.Web.Core.CriteriaExpression.Parts;
+namespace DevilDaggersInfo.Core.CriteriaExpression.Parts;
 
 public record ExpressionOperator(ExpressionOperatorType Operator) : IExpressionPart
 {

@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Api.Admin.CustomLeaderboards;
 using DevilDaggersInfo.Common.Extensions;
-using DevilDaggersInfo.Web.Core.CriteriaExpression;
+using DevilDaggersInfo.Core.CriteriaExpression;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Values;
 

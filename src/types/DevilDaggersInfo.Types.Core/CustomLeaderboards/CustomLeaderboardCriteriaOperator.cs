@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Types.Web;
+namespace DevilDaggersInfo.Types.Core.CustomLeaderboards;
 
 public enum CustomLeaderboardCriteriaOperator : byte
 {
