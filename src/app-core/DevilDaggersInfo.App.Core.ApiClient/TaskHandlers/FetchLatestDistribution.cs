@@ -10,7 +10,7 @@ public static class FetchLatestDistribution
 	{
 		try
 		{
-			GetToolDistribution distribution = await AsyncHandler.Client.GetLatestToolDistribution("ddinfo-tools", ToolPublishMethod.SelfContained, toolBuildType);
+			GetToolDistribution distribution = await AsyncHandler.Client.GetVersion(ToolPublishMethod.SelfContained, toolBuildType);
 			if (!AppVersion.TryParse(distribution.VersionNumber, out AppVersion? onlineVersion))
 				return null;
 

@@ -92,14 +92,14 @@ public partial class AppApiHttpClient
 		return await SendGetRequest<GetSpawnsetByHash>(BuildUrlWithQuery($"api/app/spawnsets/by-hash", queryParameters));
 	}
 
-	public async Task<GetToolDistribution> GetLatestToolDistribution(string toolName, ToolPublishMethod publishMethod, ToolBuildType buildType)
+	public async Task<GetToolDistribution> GetVersion(ToolPublishMethod publishMethod, ToolBuildType buildType)
 	{
 		Dictionary<string, object?> queryParameters = new()
 		{
 			{ nameof(publishMethod), publishMethod },
 			{ nameof(buildType), buildType }
 		};
-		return await SendGetRequest<GetToolDistribution>(BuildUrlWithQuery($"api/app/tools/{toolName}/distribution-latest", queryParameters));
+		return await SendGetRequest<GetToolDistribution>(BuildUrlWithQuery($"api/app/updates/version", queryParameters));
 	}
 
 	private static string BuildUrlWithQuery(string baseUrl, Dictionary<string, object?> queryParameters)

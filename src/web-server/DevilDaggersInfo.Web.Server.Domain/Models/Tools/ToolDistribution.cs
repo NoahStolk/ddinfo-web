@@ -2,15 +2,15 @@ using DevilDaggersInfo.Types.Web;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Models.Tools;
 
-public class ToolDistribution
+public record ToolDistribution
 {
-	public string Name { get; init; } = string.Empty;
+	public required string Name { get; init; }
 
-	public string VersionNumber { get; init; } = string.Empty;
+	public required string VersionNumber { get; init; }
 
-	public int FileSize { get; init; }
+	public required int FileSize { get; init; }
 
-	public ToolPublishMethod PublishMethod { get; init; }
+	public required ToolPublishMethod PublishMethod { get; init; }
 
-	public ToolBuildType BuildType { get; init; }
+	public required ToolBuildType BuildType { get; init; }
 }
