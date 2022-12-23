@@ -12,7 +12,6 @@ using DevilDaggersInfo.Common;
 using Silk.NET.GLFW;
 using Warp.NET;
 using Warp.NET.Content;
-using Warp.NET.Extensions;
 using Warp.NET.RenderImpl.Ui.Components;
 using Warp.NET.RenderImpl.Ui.Components.Styles;
 using Warp.NET.RenderImpl.Ui.Rendering.Text;
@@ -25,7 +24,6 @@ namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.Leaderbo
 public class LeaderboardListEntry : AbstractComponent
 {
 	private readonly GetCustomLeaderboardForOverview _customLeaderboard;
-	private readonly List<(Texture Texture, Color Color)> _criteriaTextures = new();
 
 	private bool _isHovering;
 
@@ -44,8 +42,16 @@ public class LeaderboardListEntry : AbstractComponent
 		int gridIndexPlayers = columnWidth * 8;
 		int gridIndexWorldRecord = columnWidth * 9;
 
+		int iconOffset = 0;
 		foreach (GetCustomLeaderboardCriteria criteria in customLeaderboard.Criteria)
-			_criteriaTextures.Add(criteria.Type.GetIcon());
+		{
+			(Texture texture, Color color) = criteria.Type.GetIcon();
+
+			CriteriaIcon icon = new(bounds.CreateNested(columnWidth * 3 + iconOffset, 0, 16, 16), () => { }, texture, "TODO", color) { Depth = Depth + 102 };
+			NestingContext.Add(icon);
+
+			iconOffset += 16;
+		}
 
 		LabelStyle scoreStyle = new(customLeaderboard.SelectedPlayerStats?.Dagger?.GetColor() ?? Color.White, TextAlign.Right, FontSize.H12);
 		LabelStyle nextDaggerStyle = new(customLeaderboard.SelectedPlayerStats?.NextDagger?.Dagger.GetColor() ?? Color.White, TextAlign.Right, FontSize.H12);
@@ -106,12 +112,5 @@ public class LeaderboardListEntry : AbstractComponent
 
 		if (_isHovering)
 			Root.Game.RectangleRenderer.Schedule(Bounds.Size, scrollOffset + Bounds.Center, Depth - 1, GlobalColors.EntrySelect);
-
-		int offset = 0;
-		foreach ((Texture texture, Color color) in _criteriaTextures)
-		{
-			offset += 16;
-			Root.Game.SpriteRenderer.Schedule(new(16), scrollOffset.ToVector2() + Bounds.TopLeft.ToVector2() + new Vector2(256 + offset, 8), Depth + 102, texture, color);
-		}
 	}
 }

@@ -9,8 +9,8 @@ public class TooltipIconButton : IconButton
 {
 	private readonly string _tooltipText;
 
-	public TooltipIconButton(IBounds bounds, Action onClick, ButtonStyle buttonStyle, Texture texture, string tooltipText)
-		: base(bounds, onClick, buttonStyle, texture)
+	public TooltipIconButton(IBounds bounds, Action onClick, ButtonStyle buttonStyle, Texture texture, string tooltipText, Color disabledColor, Color enabledColor)
+		: base(bounds, onClick, buttonStyle, texture, disabledColor, enabledColor)
 	{
 		_tooltipText = tooltipText;
 	}

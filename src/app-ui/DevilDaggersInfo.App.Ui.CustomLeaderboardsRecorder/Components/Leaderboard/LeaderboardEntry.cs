@@ -42,10 +42,10 @@ public class LeaderboardEntry : AbstractComponent
 		_level3 = _getCustomEntry.LevelUpTime3InSeconds == 0 ? null : _getCustomEntry.LevelUpTime3InSeconds;
 		_level4 = _getCustomEntry.LevelUpTime4InSeconds == 0 ? null : _getCustomEntry.LevelUpTime4InSeconds;
 
-		TooltipIconButton watchInGame = new(Bounds.CreateNested(160, 0, 16, 16), WatchInGame, GlobalStyles.DefaultButtonStyle, WarpTextures.IconEye, "Watch in-game") { IsDisabled = !_getCustomEntry.HasReplay };
+		TooltipIconButton watchInGame = new(Bounds.CreateNested(160, 0, 16, 16), WatchInGame, GlobalStyles.DefaultButtonStyle, WarpTextures.IconEye, "Watch in-game", Color.HalfTransparentWhite, Color.White) { IsDisabled = !_getCustomEntry.HasReplay };
 		NestingContext.Add(watchInGame);
 
-		TooltipIconButton watchInReplayViewer = new(Bounds.CreateNested(176, 0, 16, 16), WatchInReplayViewer, GlobalStyles.DefaultButtonStyle, WarpTextures.IconEye, "Watch in replay viewer") { IsDisabled = !_getCustomEntry.HasReplay };
+		TooltipIconButton watchInReplayViewer = new(Bounds.CreateNested(176, 0, 16, 16), WatchInReplayViewer, GlobalStyles.DefaultButtonStyle, WarpTextures.IconEye, "Watch in replay viewer", Color.HalfTransparentWhite, Color.White) { IsDisabled = !_getCustomEntry.HasReplay };
 		NestingContext.Add(watchInReplayViewer);
 	}
 
