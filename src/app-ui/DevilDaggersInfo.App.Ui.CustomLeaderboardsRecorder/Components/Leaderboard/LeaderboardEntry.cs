@@ -68,9 +68,9 @@ public class LeaderboardEntry : AbstractComponent
 	private void WatchInReplayViewer()
 	{
 		// TEMP:
-		ReplayBinary<LocalReplayBinaryHeader> replayBinary = new(File.ReadAllBytes("""C:\Users\NOAH\AppData\Roaming\DevilDaggers\replays\position-logger-2_190.63-xvlv-0cd3d6da[1c7707b9].ddreplay"""));
-		LayoutManager.ToCustomLeaderboardsRecorderReplayViewer3dLayout(new[]{replayBinary});
-		return;
+		// ReplayBinary<LocalReplayBinaryHeader> replayBinary = new(File.ReadAllBytes("""C:\Users\NOAH\AppData\Roaming\DevilDaggers\replays\position-logger-2_190.63-xvlv-0cd3d6da[1c7707b9].ddreplay"""));
+		// LayoutManager.ToCustomLeaderboardsRecorderReplayViewer3dLayout(new[]{replayBinary});
+		// return;
 
 		AsyncHandler.Run(BuildReplayScene, () => FetchCustomEntryReplayById.HandleAsync(_getCustomEntry.Id));
 
