@@ -22,7 +22,7 @@
     <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Versioning\DevilDaggersInfo.Core.Versioning.csproj" />
     <ProjectReference Include="..\..\types\DevilDaggersInfo.Types.Web\DevilDaggersInfo.Types.Web.csproj" />
     <ProjectReference Include="..\..\web-core\DevilDaggersInfo.Web.Core.Claims\DevilDaggersInfo.Web.Core.Claims.csproj" />
-    <ProjectReference Include="..\..\web-core\DevilDaggersInfo.Web.Core.CriteriaExpression\DevilDaggersInfo.Web.Core.CriteriaExpression.csproj" />
+    <ProjectReference Include="..\..\web-core\DevilDaggersInfo.Core.CriteriaExpression\DevilDaggersInfo.Core.CriteriaExpression.csproj" />
   </ItemGroup>
 
 </Project>

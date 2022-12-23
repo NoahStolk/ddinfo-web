@@ -2,7 +2,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Wiki\DevilDaggersInfo.Core.Wiki.csproj" />
-    <ProjectReference Include="..\..\types\DevilDaggersInfo.Types.Web\DevilDaggersInfo.Types.Web.csproj" />
   </ItemGroup>
 
 </Project>

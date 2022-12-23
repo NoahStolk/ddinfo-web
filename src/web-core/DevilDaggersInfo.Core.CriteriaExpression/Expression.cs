@@ -1,13 +1,13 @@
 using DevilDaggersInfo.Common.Exceptions;
-using DevilDaggersInfo.Types.Web;
-using DevilDaggersInfo.Types.Web.Extensions;
-using DevilDaggersInfo.Web.Core.CriteriaExpression.Exceptions;
-using DevilDaggersInfo.Web.Core.CriteriaExpression.Parts;
+using DevilDaggersInfo.Core.CriteriaExpression.Exceptions;
+using DevilDaggersInfo.Core.CriteriaExpression.Parts;
+using DevilDaggersInfo.Types.Core.CustomLeaderboards;
+using DevilDaggersInfo.Types.Core.CustomLeaderboards.Extensions;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace DevilDaggersInfo.Web.Core.CriteriaExpression;
+namespace DevilDaggersInfo.Core.CriteriaExpression;
 
 public class Expression
 {

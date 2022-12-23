@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Common.Exceptions;
 
-namespace DevilDaggersInfo.Types.Web.Extensions;
+namespace DevilDaggersInfo.Types.Core.CustomLeaderboards.Extensions;
 
 public static class CustomLeaderboardCriteriaOperatorExtensions
 {

@@ -1,9 +1,9 @@
-using DevilDaggersInfo.Types.Web;
-using DevilDaggersInfo.Web.Core.CriteriaExpression.Exceptions;
-using DevilDaggersInfo.Web.Core.CriteriaExpression.Parts;
+using DevilDaggersInfo.Core.CriteriaExpression.Exceptions;
+using DevilDaggersInfo.Core.CriteriaExpression.Parts;
+using DevilDaggersInfo.Types.Core.CustomLeaderboards;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace DevilDaggersInfo.Web.Core.CriteriaExpression.Tests;
+namespace DevilDaggersInfo.Core.CriteriaExpression.Tests;
 
 [TestClass]
 public class ExpressionValidationTests

@@ -1,5 +1,7 @@
 @using Microsoft.AspNetCore.Components
 @using DevilDaggersInfo.Api.Admin.CustomLeaderboards
+@using DevilDaggersInfo.Types.Core.CustomLeaderboards
+@using DevilDaggersInfo.Types.Core.CustomLeaderboards.Extensions
 @using DevilDaggersInfo.Types.Web
 @using DevilDaggersInfo.Types.Web.Extensions
 @using DevilDaggersInfo.Web.Client.Components
@@ -7,9 +9,9 @@
 @using DevilDaggersInfo.Web.Client.Components.Input
 @using DevilDaggersInfo.Web.Client.Extensions
 @using DevilDaggersInfo.Web.Client.StateObjects.Admin.CustomLeaderboards
-@using DevilDaggersInfo.Web.Core.CriteriaExpression
-@using DevilDaggersInfo.Web.Core.CriteriaExpression.Exceptions
-@using DevilDaggersInfo.Web.Core.CriteriaExpression.Parts
+@using DevilDaggersInfo.Core.CriteriaExpression
+@using DevilDaggersInfo.Core.CriteriaExpression.Exceptions
+@using DevilDaggersInfo.Core.CriteriaExpression.Parts
 
 <div class="py-1">
 	<SearchDropdown TKey="CustomLeaderboardCriteriaOperator" Values="_operators" Converter="_operatorConverter" ShowDisplayValue="false" @bind-Value="@Criteria.Operator"/>

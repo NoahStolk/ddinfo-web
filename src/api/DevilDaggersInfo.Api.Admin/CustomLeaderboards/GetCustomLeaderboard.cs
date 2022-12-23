@@ -1,3 +1,4 @@
+// ReSharper disable InconsistentNaming
 using DevilDaggersInfo.Types.Web;
 
 namespace DevilDaggersInfo.Api.Admin.CustomLeaderboards;

@@ -27,7 +27,7 @@
     <ProjectReference Include="..\..\razor-core\DevilDaggersInfo.Razor.Core.CanvasArena\DevilDaggersInfo.Razor.Core.CanvasArena.csproj" />
     <ProjectReference Include="..\..\razor-core\DevilDaggersInfo.Razor.Core.CanvasChart\DevilDaggersInfo.Razor.Core.CanvasChart.csproj" />
     <ProjectReference Include="..\..\web-core\DevilDaggersInfo.Web.Core.Claims\DevilDaggersInfo.Web.Core.Claims.csproj" />
-    <ProjectReference Include="..\..\web-core\DevilDaggersInfo.Web.Core.CriteriaExpression\DevilDaggersInfo.Web.Core.CriteriaExpression.csproj" />
+    <ProjectReference Include="..\..\web-core\DevilDaggersInfo.Core.CriteriaExpression\DevilDaggersInfo.Core.CriteriaExpression.csproj" />
   </ItemGroup>
 
   <Target Name="tailwind build" BeforeTargets="Compile" Condition="'$(TailwindBuild)' == 'true'">

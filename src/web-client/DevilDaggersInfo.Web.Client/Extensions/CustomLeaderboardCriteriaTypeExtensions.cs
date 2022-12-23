@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Core.Wiki;
-using DevilDaggersInfo.Types.Web;
+using DevilDaggersInfo.Types.Core.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Client.Extensions;
 
