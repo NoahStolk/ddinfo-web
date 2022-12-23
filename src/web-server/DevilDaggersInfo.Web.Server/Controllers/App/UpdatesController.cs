@@ -1,11 +1,10 @@
-using DevilDaggersInfo.Api.App.Tools;
+using DevilDaggersInfo.Api.App.Updates;
 using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.App;
 using DevilDaggersInfo.Web.Server.Domain.Models.Tools;
 using DevilDaggersInfo.Web.Server.Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
-using System.Net.Mime;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.App;
 
@@ -22,11 +21,11 @@ public class UpdatesController : ControllerBase
 		_toolRepository = toolRepository;
 	}
 
-	[HttpGet("version")]
+	[HttpGet("latest-version")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public async Task<ActionResult<GetToolDistribution>> GetVersion([Required] ToolPublishMethod publishMethod, [Required] ToolBuildType buildType)
+	public async Task<ActionResult<GetLatestVersion>> GetLatestVersion([Required] ToolPublishMethod publishMethod, [Required] ToolBuildType buildType)
 	{
 		ToolDistribution? distribution = await _toolRepository.GetLatestToolDistributionAsync(_toolName, publishMethod, buildType);
 		if (distribution == null)
@@ -35,11 +34,11 @@ public class UpdatesController : ControllerBase
 		return distribution.ToAppApi();
 	}
 
-	[HttpGet("file")]
-	[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+	[HttpGet("latest-version-file")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public async Task<ActionResult> GetFile([Required] ToolPublishMethod publishMethod, [Required] ToolBuildType buildType)
+	public async Task<ActionResult<GetLatestVersionFile>> GetLatestVersionFile([Required] ToolPublishMethod publishMethod, [Required] ToolBuildType buildType)
 	{
 		ToolDistribution? distribution = await _toolRepository.GetLatestToolDistributionAsync(_toolName, publishMethod, buildType);
 		if (distribution == null)
@@ -49,6 +48,9 @@ public class UpdatesController : ControllerBase
 
 		await _toolRepository.UpdateToolDistributionStatisticsAsync(_toolName, publishMethod, buildType, distribution.VersionNumber);
 
-		return File(bytes, MediaTypeNames.Application.Zip, $"{_toolName}{distribution.VersionNumber}.zip");
+		return new GetLatestVersionFile
+		{
+			ZipFileContents = bytes,
+		};
 	}
 }

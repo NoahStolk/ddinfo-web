@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Api.App.Tools;
+using DevilDaggersInfo.Api.App.Updates;
 using DevilDaggersInfo.Core.Versioning;
 using DevilDaggersInfo.Types.Web;
 
@@ -10,8 +10,8 @@ public static class FetchLatestDistribution
 	{
 		try
 		{
-			GetToolDistribution distribution = await AsyncHandler.Client.GetVersion(ToolPublishMethod.SelfContained, toolBuildType);
-			if (!AppVersion.TryParse(distribution.VersionNumber, out AppVersion? onlineVersion))
+			GetLatestVersion latestVersion = await AsyncHandler.Client.GetLatestVersion(ToolPublishMethod.SelfContained, toolBuildType);
+			if (!AppVersion.TryParse(latestVersion.VersionNumber, out AppVersion? onlineVersion))
 				return null;
 
 			return onlineVersion > appVersion ? onlineVersion : null;

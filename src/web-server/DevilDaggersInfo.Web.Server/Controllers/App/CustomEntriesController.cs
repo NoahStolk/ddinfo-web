@@ -15,11 +15,11 @@ namespace DevilDaggersInfo.Web.Server.Controllers.App;
 [ApiController]
 public class CustomEntriesController : ControllerBase
 {
-	private readonly ILogger<Ddcl.CustomEntriesController> _logger;
+	private readonly ILogger<CustomEntriesController> _logger;
 	private readonly CustomEntryProcessor _customEntryProcessor;
 	private readonly CustomEntryRepository _customEntryRepository;
 
-	public CustomEntriesController(ILogger<Ddcl.CustomEntriesController> logger, CustomEntryProcessor customEntryProcessor, CustomEntryRepository customEntryRepository)
+	public CustomEntriesController(ILogger<CustomEntriesController> logger, CustomEntryProcessor customEntryProcessor, CustomEntryRepository customEntryRepository)
 	{
 		_logger = logger;
 		_customEntryProcessor = customEntryProcessor;

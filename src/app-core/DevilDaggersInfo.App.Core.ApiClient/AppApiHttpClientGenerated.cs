@@ -10,7 +10,7 @@ using DevilDaggersInfo.Api.App;
 using DevilDaggersInfo.Api.App.CustomLeaderboards;
 using DevilDaggersInfo.Api.App.ProcessMemory;
 using DevilDaggersInfo.Api.App.Spawnsets;
-using DevilDaggersInfo.Api.App.Tools;
+using DevilDaggersInfo.Api.App.Updates;
 using DevilDaggersInfo.Types.Web;
 using System.Net.Http.Json;
 
@@ -92,24 +92,24 @@ public partial class AppApiHttpClient
 		return await SendGetRequest<GetSpawnsetByHash>(BuildUrlWithQuery($"api/app/spawnsets/by-hash", queryParameters));
 	}
 
-	public async Task<GetToolDistribution> GetVersion(ToolPublishMethod publishMethod, ToolBuildType buildType)
+	public async Task<GetLatestVersion> GetLatestVersion(ToolPublishMethod publishMethod, ToolBuildType buildType)
 	{
 		Dictionary<string, object?> queryParameters = new()
 		{
 			{ nameof(publishMethod), publishMethod },
 			{ nameof(buildType), buildType }
 		};
-		return await SendGetRequest<GetToolDistribution>(BuildUrlWithQuery($"api/app/updates/version", queryParameters));
+		return await SendGetRequest<GetLatestVersion>(BuildUrlWithQuery($"api/app/updates/latest-version", queryParameters));
 	}
 
-	public async Task<Task> GetFile(ToolPublishMethod publishMethod, ToolBuildType buildType)
+	public async Task<GetLatestVersionFile> GetLatestVersionFile(ToolPublishMethod publishMethod, ToolBuildType buildType)
 	{
 		Dictionary<string, object?> queryParameters = new()
 		{
 			{ nameof(publishMethod), publishMethod },
 			{ nameof(buildType), buildType }
 		};
-		return await SendGetRequest<Task>(BuildUrlWithQuery($"api/app/updates/file", queryParameters));
+		return await SendGetRequest<GetLatestVersionFile>(BuildUrlWithQuery($"api/app/updates/latest-version-file", queryParameters));
 	}
 
 	private static string BuildUrlWithQuery(string baseUrl, Dictionary<string, object?> queryParameters)
