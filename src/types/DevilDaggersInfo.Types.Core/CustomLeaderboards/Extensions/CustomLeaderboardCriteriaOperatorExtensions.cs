@@ -22,4 +22,17 @@ public static class CustomLeaderboardCriteriaOperatorExtensions
 		CustomLeaderboardCriteriaOperator.NotEqual => "must not be equal to",
 		_ => $"must be {criteriaOperator.Display()}",
 	};
+
+	public static string ShortString(this CustomLeaderboardCriteriaOperator criteriaOperator) => criteriaOperator switch
+	{
+		CustomLeaderboardCriteriaOperator.Equal => "==",
+		CustomLeaderboardCriteriaOperator.LessThan => "<",
+		CustomLeaderboardCriteriaOperator.GreaterThan => ">",
+		CustomLeaderboardCriteriaOperator.LessThanOrEqual => "<=",
+		CustomLeaderboardCriteriaOperator.GreaterThanOrEqual => ">=",
+		CustomLeaderboardCriteriaOperator.Modulo => "%",
+		CustomLeaderboardCriteriaOperator.NotEqual => "!=",
+		CustomLeaderboardCriteriaOperator.Any => string.Empty,
+		_ => throw new InvalidEnumConversionException(criteriaOperator),
+	};
 }

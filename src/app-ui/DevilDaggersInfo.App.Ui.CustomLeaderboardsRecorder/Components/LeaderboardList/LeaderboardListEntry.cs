@@ -9,7 +9,11 @@ using DevilDaggersInfo.App.Ui.Base.Settings;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Extensions;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States;
 using DevilDaggersInfo.Common;
+using DevilDaggersInfo.Core.CriteriaExpression;
+using DevilDaggersInfo.Core.CriteriaExpression.Parts;
+using DevilDaggersInfo.Types.Core.CustomLeaderboards.Extensions;
 using Silk.NET.GLFW;
+using System.Text;
 using Warp.NET;
 using Warp.NET.Content;
 using Warp.NET.RenderImpl.Ui.Components;
@@ -45,9 +49,7 @@ public class LeaderboardListEntry : AbstractComponent
 		int iconOffset = 0;
 		foreach (GetCustomLeaderboardCriteria criteria in customLeaderboard.Criteria)
 		{
-			(Texture texture, Color color) = criteria.Type.GetIcon();
-
-			CriteriaIcon icon = new(bounds.CreateNested(columnWidth * 3 + iconOffset, 0, 16, 16), () => { }, texture, "TODO", color) { Depth = Depth + 102 };
+			CriteriaIcon icon = new(bounds.CreateNested(columnWidth * 4 + iconOffset, 0, 16, 16), criteria) { Depth = Depth + 102 };
 			NestingContext.Add(icon);
 
 			iconOffset += 16;
