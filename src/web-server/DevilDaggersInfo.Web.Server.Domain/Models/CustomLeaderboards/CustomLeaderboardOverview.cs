@@ -29,4 +29,6 @@ public record CustomLeaderboardOverview
 	public required CustomLeaderboardOverviewWorldRecord? WorldRecord { get; init; }
 
 	public required CustomLeaderboardOverviewSelectedPlayerStats? SelectedPlayerStats { get; init; }
+
+	public required List<CustomLeaderboardCriteria> Criteria { get; init; }
 }

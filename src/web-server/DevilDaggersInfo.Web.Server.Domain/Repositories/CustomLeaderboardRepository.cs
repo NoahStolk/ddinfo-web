@@ -335,6 +335,7 @@ public class CustomLeaderboardRepository
 	private static CustomLeaderboardOverview ToOverview(CustomLeaderboardData cl) => new()
 	{
 		Category = cl.CustomLeaderboard.Category,
+		Criteria = GetCriteria(cl.CustomLeaderboard),
 		Daggers = !cl.CustomLeaderboard.IsFeatured ? null : new()
 		{
 			Bronze = cl.CustomLeaderboard.Bronze,
