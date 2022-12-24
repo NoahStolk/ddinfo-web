@@ -230,7 +230,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseSentryTracing();
+if (!app.Environment.IsDevelopment())
+	app.UseSentryTracing();
 
 app.UseCors(defaultCorsPolicy);
 
