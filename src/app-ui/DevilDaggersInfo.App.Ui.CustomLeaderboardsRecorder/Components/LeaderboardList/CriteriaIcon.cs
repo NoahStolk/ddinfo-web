@@ -1,21 +1,19 @@
 using DevilDaggersInfo.Api.App.CustomLeaderboards;
+using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Extensions;
 using DevilDaggersInfo.Core.CriteriaExpression;
 using DevilDaggersInfo.Core.CriteriaExpression.Parts;
 using DevilDaggersInfo.Types.Core.CustomLeaderboards.Extensions;
 using System.Text;
-using Warp.NET.RenderImpl.Ui.Components.Styles;
 using Warp.NET.Ui;
 
 namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.LeaderboardList;
 
 public class CriteriaIcon : TooltipIconButton
 {
-	private static readonly ButtonStyle _buttonStyle = new(Color.Invisible, Color.Invisible, Color.Invisible, 0);
-
 	public CriteriaIcon(IBounds bounds, GetCustomLeaderboardCriteria criteria)
-		: base(bounds, () => { }, _buttonStyle, criteria.Type.GetTexture(), GetText(criteria), Color.Black, criteria.Type.GetColor())
+		: base(bounds, () => { }, GlobalStyles.Borderless, criteria.Type.GetTexture(), GetText(criteria), Color.Black, criteria.Type.GetColor())
 	{
 	}
 
