@@ -31,7 +31,7 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.WebHost.UseSentry(o =>
 {
-	o.TracesSampleRate = 1.0;
+	o.TracesSampleRate = 0.05;
 	o.MinimumEventLevel = LogLevel.Information;
 });
 builder.WebHost.UseStaticWebAssets();
