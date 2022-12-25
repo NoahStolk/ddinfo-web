@@ -81,9 +81,11 @@ public class SpawnEditor : AbstractComponent
 		List<Spawn> newSpawns = StateManager.SpawnsetState.Spawnset.Spawns.ToList();
 		newSpawns.Add(new(_selectedEnemyType, _selectedDelay));
 
-		// TODO: Scroll down: SpawnsWrapper.SetScrollPercentage(1);
 		StateManager.SetSpawnset(StateManager.SpawnsetState.Spawnset with { Spawns = newSpawns.ToImmutableArray() });
 		SpawnsetHistoryManager.Save(SpawnsetEditType.SpawnAdd);
+
+		// TODO: Scroll down.
+		// UpdateScrollOffsetAndScrollbarPosition
 	}
 
 	private void EditSpawn()
@@ -106,5 +108,8 @@ public class SpawnEditor : AbstractComponent
 
 		StateManager.SetSpawnset(StateManager.SpawnsetState.Spawnset with { Spawns = spawns });
 		SpawnsetHistoryManager.Save(SpawnsetEditType.SpawnAdd);
+
+		// TODO: Scroll to insert position.
+		// UpdateScrollOffsetAndScrollbarPosition
 	}
 }

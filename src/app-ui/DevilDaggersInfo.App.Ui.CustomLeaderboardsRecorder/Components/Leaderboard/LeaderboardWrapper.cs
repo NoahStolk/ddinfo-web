@@ -16,15 +16,15 @@ public class LeaderboardWrapper : AbstractComponent
 	private static readonly Vector2 _iconSize = new(16);
 
 	private readonly Label _label;
-	private readonly ScrollViewer<LeaderboardScrollContent> _leaderboardScrollViewer;
+	private readonly LeaderboardScrollArea _leaderboardScrollArea;
 
 	public LeaderboardWrapper(IBounds bounds)
 		: base(bounds)
 	{
 		_label = new(bounds.CreateNested(4, 4, 128, 16), string.Empty, LabelStyle.Default);
-		_leaderboardScrollViewer = new(bounds.CreateNested(4, 48, 1016, 200), 16);
+		_leaderboardScrollArea = new(bounds.CreateNested(4, 48, 1016, 200));
 
-		NestingContext.Add(_leaderboardScrollViewer);
+		NestingContext.Add(_leaderboardScrollArea);
 	}
 
 	public static IReadOnlyList<int> TableOffsets { get; } = new List<int> { 16, 24, 260, 308, 352, 400, 448, 496, 552, 560, 664, 720, 776, 832, 888, 992 };
@@ -33,7 +33,7 @@ public class LeaderboardWrapper : AbstractComponent
 	{
 		_label.Text = StateManager.LeaderboardListState.SelectedCustomLeaderboard?.SpawnsetName ?? string.Empty;
 
-		_leaderboardScrollViewer.InitializeContent();
+		_leaderboardScrollArea.SetContent();
 	}
 
 	public override void Render(Vector2i<int> scrollOffset)

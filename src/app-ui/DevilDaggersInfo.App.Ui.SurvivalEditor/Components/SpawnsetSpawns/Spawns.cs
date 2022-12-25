@@ -1,3 +1,4 @@
+using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Spawns;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Enums;
@@ -11,7 +12,7 @@ using Warp.NET.Ui;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetSpawns;
 
-public sealed class Spawns : ScrollContent<Spawns, ScrollViewer<Spawns>>, IScrollContent<Spawns, ScrollViewer<Spawns>>
+public class Spawns : ScrollArea
 {
 	public const int SpawnEntryHeight = 16;
 
@@ -19,16 +20,9 @@ public sealed class Spawns : ScrollContent<Spawns, ScrollViewer<Spawns>>, IScrol
 
 	private int _currentIndex;
 
-	private Spawns(IBounds bounds, ScrollViewer<Spawns> parent)
-		: base(bounds, parent)
+	public Spawns(IBounds bounds)
+		: base(bounds, 96, 16, GlobalStyles.DefaultScrollAreaStyle)
 	{
-	}
-
-	public override int ContentHeightInPixels => _spawnComponents.Count * SpawnEntryHeight;
-
-	public override void SetContent()
-	{
-		SetSpawnset();
 	}
 
 	public override void Update(Vector2i<int> scrollOffset)
@@ -52,6 +46,8 @@ public sealed class Spawns : ScrollContent<Spawns, ScrollViewer<Spawns>>, IScrol
 			});
 			SpawnsetHistoryManager.Save(SpawnsetEditType.SpawnDelete);
 			StateManager.ClearSpawnSelections();
+
+			RecalculateHeight();
 		}
 
 		bool hoverWithoutBlock = Bounds.Contains(MouseUiContext.MousePosition.RoundToVector2Int32() - scrollOffset);
@@ -83,7 +79,7 @@ public sealed class Spawns : ScrollContent<Spawns, ScrollViewer<Spawns>>, IScrol
 		}
 	}
 
-	private void SetSpawnset()
+	public void SetSpawnset()
 	{
 		foreach (SpawnEntry component in _spawnComponents)
 			NestingContext.Remove(component);
@@ -106,10 +102,5 @@ public sealed class Spawns : ScrollContent<Spawns, ScrollViewer<Spawns>>, IScrol
 		base.Render(scrollOffset);
 
 		Root.Game.RectangleRenderer.Schedule(Bounds.Size, Bounds.Center, Depth, Color.Black);
-	}
-
-	public static Spawns Construct(IBounds bounds, ScrollViewer<Spawns> parent)
-	{
-		return new(bounds, parent);
 	}
 }

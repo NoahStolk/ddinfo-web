@@ -12,24 +12,21 @@ namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Layouts;
 public class SurvivalEditorOpenLayout : Layout, IFileDialogLayout
 {
 	private readonly TextInput _pathTextInput;
-	private readonly ScrollViewer<Paths> _pathsWrapper;
+	private readonly Paths _paths;
 
 	public SurvivalEditorOpenLayout()
 	{
 		PathsCloseButton closeButton = new(new PixelBounds(0, 0, 24, 24), LayoutManager.ToSurvivalEditorMainLayout);
 		_pathTextInput = new(new PixelBounds(0, 24, 1024, 16), false, null, null, null, GlobalStyles.TextInput);
-		_pathsWrapper = new(new PixelBounds(0, 96, 1024, 640), 16)
+		_paths = new(new PixelBounds(0, 96, 1024, 640))
 		{
-			Content =
-			{
-				OnDirectorySelect = SetComponentsFromPath,
-				OnFileSelect = OpenSpawnset,
-			},
+			OnDirectorySelect = SetComponentsFromPath,
+			OnFileSelect = OpenSpawnset,
 		};
 
 		NestingContext.Add(closeButton);
 		NestingContext.Add(_pathTextInput);
-		NestingContext.Add(_pathsWrapper);
+		NestingContext.Add(_paths);
 	}
 
 	public void Update()
@@ -47,8 +44,8 @@ public class SurvivalEditorOpenLayout : Layout, IFileDialogLayout
 	public void SetComponentsFromPath(string path)
 	{
 		_pathTextInput.KeyboardInput.SetText(path);
-		_pathsWrapper.Content.Path = path;
-		_pathsWrapper.InitializeContent();
+		_paths.Path = path;
+		_paths.SetContent();
 	}
 
 	private void OpenSpawnset(string filePath)

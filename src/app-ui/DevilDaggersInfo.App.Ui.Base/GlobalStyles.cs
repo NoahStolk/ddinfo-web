@@ -29,6 +29,8 @@ public static class GlobalStyles
 		}
 	}
 
+	public static ScrollAreaStyle DefaultScrollAreaStyle { get; } = new(2, 2, Color.White, Color.Gray(0.75f), Color.Black, Color.Gray(0.5f), Color.Gray(0.25f));
+
 	public static LabelStyle PopupLabel { get; } = new(Color.White, TextAlign.Middle, FontSize.H16);
 
 	public static LabelStyle LabelDefaultLeft { get; } = new(Color.White, TextAlign.Left, FontSize.H12);

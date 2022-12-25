@@ -11,7 +11,7 @@ namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Layouts;
 public class SurvivalEditorSaveLayout : Layout, IFileDialogLayout
 {
 	private readonly TextInput _pathTextInput;
-	private readonly ScrollViewer<Paths> _pathsWrapper;
+	private readonly Paths _paths;
 
 	public SurvivalEditorSaveLayout()
 	{
@@ -20,20 +20,17 @@ public class SurvivalEditorSaveLayout : Layout, IFileDialogLayout
 		TextInput fileTextInput = new(new PixelBounds(0, 48, 512, 16), false, null, null, null, GlobalStyles.TextInput);
 		TextButton saveButton = new(new PixelBounds(512, 48, 128, 16), () => SaveSpawnset(Path.Combine(_pathTextInput.KeyboardInput.Value.ToString(), fileTextInput.KeyboardInput.Value.ToString())), GlobalStyles.DefaultButtonStyle, GlobalStyles.FileSaveButton, "Save");
 
-		_pathsWrapper = new(new PixelBounds(0, 96, 1024, 640), 16)
+		_paths = new(new PixelBounds(0, 96, 1024, 640))
 		{
-			Content =
-			{
-				OnDirectorySelect = SetComponentsFromPath,
-				OnFileSelect = SaveSpawnset,
-			},
+			OnDirectorySelect = SetComponentsFromPath,
+			OnFileSelect = SaveSpawnset,
 		};
 
 		NestingContext.Add(closeButton);
 		NestingContext.Add(_pathTextInput);
 		NestingContext.Add(fileTextInput);
 		NestingContext.Add(saveButton);
-		NestingContext.Add(_pathsWrapper);
+		NestingContext.Add(_paths);
 	}
 
 	public void Update()
@@ -51,8 +48,8 @@ public class SurvivalEditorSaveLayout : Layout, IFileDialogLayout
 	public void SetComponentsFromPath(string path)
 	{
 		_pathTextInput.KeyboardInput.SetText(path);
-		_pathsWrapper.Content.Path = path;
-		_pathsWrapper.InitializeContent();
+		_paths.Path = path;
+		_paths.SetContent();
 	}
 
 	private void SaveSpawnset(string filePath)
