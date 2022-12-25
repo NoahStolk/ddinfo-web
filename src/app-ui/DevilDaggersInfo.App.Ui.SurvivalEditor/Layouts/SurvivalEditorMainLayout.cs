@@ -20,7 +20,7 @@ public class SurvivalEditorMainLayout : Layout, ISurvivalEditorMainLayout
 	private readonly ArenaWrapper _arenaWrapper;
 	private readonly SettingsWrapper _settingsWrapper;
 
-	private readonly History _history;
+	private readonly HistoryScrollArea _historyScrollArea;
 
 	private readonly KeySubmitter _keySubmitter = new();
 
@@ -30,14 +30,14 @@ public class SurvivalEditorMainLayout : Layout, ISurvivalEditorMainLayout
 		_spawnsWrapper = new(new PixelBounds(0, 24, 400, 640));
 		_arenaWrapper = new(new PixelBounds(400, 24, 400, 400));
 		SpawnEditor spawnEditor = new(new PixelBounds(0, 664, 384, 128));
-		_history = new(new PixelBounds(768, 512, 256, 256));
+		_historyScrollArea = new(new PixelBounds(768, 512, 256, 256));
 		_settingsWrapper = new(new PixelBounds(804, 24, 216, 256));
 
 		NestingContext.Add(menu);
 		NestingContext.Add(_spawnsWrapper);
 		NestingContext.Add(_arenaWrapper);
 		NestingContext.Add(spawnEditor);
-		NestingContext.Add(_history);
+		NestingContext.Add(_historyScrollArea);
 		NestingContext.Add(_settingsWrapper);
 	}
 
@@ -55,7 +55,7 @@ public class SurvivalEditorMainLayout : Layout, ISurvivalEditorMainLayout
 
 	public void SetHistory()
 	{
-		_history.SetContent();
+		_historyScrollArea.SetContent();
 	}
 
 	public void Update()

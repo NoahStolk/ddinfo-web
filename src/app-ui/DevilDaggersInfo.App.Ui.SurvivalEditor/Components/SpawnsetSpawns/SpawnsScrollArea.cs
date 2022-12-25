@@ -12,7 +12,7 @@ using Warp.NET.Ui;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetSpawns;
 
-public class Spawns : ScrollArea
+public class SpawnsScrollArea : ScrollArea
 {
 	public const int SpawnEntryHeight = 16;
 
@@ -20,7 +20,7 @@ public class Spawns : ScrollArea
 
 	private int _currentIndex;
 
-	public Spawns(IBounds bounds)
+	public SpawnsScrollArea(IBounds bounds)
 		: base(bounds, 96, 16, GlobalStyles.DefaultScrollAreaStyle)
 	{
 	}

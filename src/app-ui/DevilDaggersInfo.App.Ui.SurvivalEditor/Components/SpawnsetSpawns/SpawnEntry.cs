@@ -53,11 +53,11 @@ public class SpawnEntry : AbstractComponent
 		if (background != Color.Invisible)
 			Root.Game.RectangleRenderer.Schedule(Bounds.Size, scrollOffset + Bounds.Center, Depth, background);
 
-		RenderText(new PixelBounds(Bounds.X1, Bounds.Y1, 96, Spawns.SpawnEntryHeight), _enemyColor, _enemy?.Name ?? "Empty", TextAlign.Left);
-		RenderText(new PixelBounds(Bounds.X1 + 96, Bounds.Y1, 96, Spawns.SpawnEntryHeight), Color.White, _spawnUiEntry.Delay.ToString("0.0000"), TextAlign.Right);
-		RenderText(new PixelBounds(Bounds.X1 + 192, Bounds.Y1, 96, Spawns.SpawnEntryHeight), Color.White, _spawnUiEntry.Seconds.ToString("0.0000"), TextAlign.Right);
-		RenderText(new PixelBounds(Bounds.X1 + 288, Bounds.Y1, 48, Spawns.SpawnEntryHeight), Color.White, NoFarmGemsString(_spawnUiEntry.NoFarmGems), TextAlign.Right);
-		RenderText(new PixelBounds(Bounds.X1 + 336, Bounds.Y1, 48, Spawns.SpawnEntryHeight), GetColorFromHand(_spawnUiEntry.GemState.HandLevel), _spawnUiEntry.GemState.Value.ToString(), TextAlign.Right);
+		RenderText(new PixelBounds(Bounds.X1, Bounds.Y1, 96, SpawnsScrollArea.SpawnEntryHeight), _enemyColor, _enemy?.Name ?? "Empty", TextAlign.Left);
+		RenderText(new PixelBounds(Bounds.X1 + 96, Bounds.Y1, 96, SpawnsScrollArea.SpawnEntryHeight), Color.White, _spawnUiEntry.Delay.ToString("0.0000"), TextAlign.Right);
+		RenderText(new PixelBounds(Bounds.X1 + 192, Bounds.Y1, 96, SpawnsScrollArea.SpawnEntryHeight), Color.White, _spawnUiEntry.Seconds.ToString("0.0000"), TextAlign.Right);
+		RenderText(new PixelBounds(Bounds.X1 + 288, Bounds.Y1, 48, SpawnsScrollArea.SpawnEntryHeight), Color.White, NoFarmGemsString(_spawnUiEntry.NoFarmGems), TextAlign.Right);
+		RenderText(new PixelBounds(Bounds.X1 + 336, Bounds.Y1, 48, SpawnsScrollArea.SpawnEntryHeight), GetColorFromHand(_spawnUiEntry.GemState.HandLevel), _spawnUiEntry.GemState.Value.ToString(), TextAlign.Right);
 
 		void RenderText(IBounds bounds, Color textColor, string text, TextAlign textAlign)
 		{

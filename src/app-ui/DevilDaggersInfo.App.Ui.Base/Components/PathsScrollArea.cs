@@ -3,14 +3,14 @@ using Warp.NET.Ui;
 
 namespace DevilDaggersInfo.App.Ui.Base.Components;
 
-public class Paths : ScrollArea
+public class PathsScrollArea : ScrollArea
 {
 	private const int _entryWidth = 1008;
 	private const int _entryHeight = 16;
 
 	private readonly List<Button> _subDirectoryButtons = new();
 
-	public Paths(IBounds bounds)
+	public PathsScrollArea(IBounds bounds)
 		: base(bounds, 96, 16, GlobalStyles.DefaultScrollAreaStyle)
 	{
 	}

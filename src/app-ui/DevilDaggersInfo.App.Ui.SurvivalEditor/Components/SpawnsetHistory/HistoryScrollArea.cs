@@ -11,13 +11,11 @@ using Warp.NET.Ui.Components;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetHistory;
 
-public class History : ScrollArea
+public class HistoryScrollArea : ScrollArea
 {
-	private const int _historyEntryHeight = 16;
-
 	private readonly List<AbstractComponent> _historyComponents = new();
 
-	public History(IBounds bounds)
+	public HistoryScrollArea(IBounds bounds)
 		: base(bounds, 96, 16, GlobalStyles.DefaultScrollAreaStyle)
 	{
 	}
@@ -39,7 +37,8 @@ public class History : ScrollArea
 			ButtonStyle buttonStyle = new(isActive ? colorBackgroundActive : colorBackground, isActive ? Color.White : Color.Black, hoverBackgroundColor, 1);
 			TextButtonStyle textButtonStyle = new(Color.White, TextAlign.Left, FontSize.H12);
 			int index = i;
-			TextButton button = new(Bounds.CreateNested(0, i * _historyEntryHeight, Bounds.Size.X, _historyEntryHeight), () => SpawnsetHistoryManager.Set(index), buttonStyle, textButtonStyle, history.EditType.GetChange())
+			const int historyEntryHeight = 16;
+			TextButton button = new(Bounds.CreateNested(0, i * historyEntryHeight, Bounds.Size.X, historyEntryHeight), () => SpawnsetHistoryManager.Set(index), buttonStyle, textButtonStyle, history.EditType.GetChange())
 			{
 				Depth = Depth + 1,
 			};
