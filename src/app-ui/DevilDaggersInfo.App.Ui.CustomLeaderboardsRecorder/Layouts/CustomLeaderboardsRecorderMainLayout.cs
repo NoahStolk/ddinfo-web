@@ -6,6 +6,7 @@ using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.LeaderboardL
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.Recording;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.State;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States;
+using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States.Actions;
 using Warp.NET.Ui;
 
 namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Layouts;
@@ -39,7 +40,7 @@ public class CustomLeaderboardsRecorderMainLayout : Layout, ICustomLeaderboardsR
 	{
 		StateManager.RefreshActiveSpawnset();
 
-		StateManager.LoadLeaderboardList();
+		StateManager.Dispatch(new LoadLeaderboardList());
 	}
 
 	public void RefreshLeaderboardList()

@@ -4,70 +4,32 @@ using DevilDaggersInfo.App.Core.ApiClient;
 using DevilDaggersInfo.App.Core.ApiClient.TaskHandlers;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.Settings;
-using DevilDaggersInfo.Types.Web;
+using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States.Actions;
 using System.Security.Cryptography;
 
 namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States;
 
 public static class StateManager
 {
-	private static UiQueue? _uiQueue;
+	private static readonly Dictionary<Type, IAction> _actions = new();
 
 	public static ActiveSpawnsetState ActiveSpawnsetState { get; private set; } = ActiveSpawnsetState.GetDefault();
-	public static LeaderboardListState LeaderboardListState { get; private set; } = LeaderboardListState.GetDefault();
+	public static LeaderboardListState LeaderboardListState { get; set; } = LeaderboardListState.GetDefault();
 	public static LeaderboardState LeaderboardState { get; private set; } = LeaderboardState.GetDefault();
 	public static MarkerState MarkerState { get; private set; } = MarkerState.GetDefault();
 	public static RecordingState RecordingState { get; private set; } = RecordingState.GetDefault();
 
-	public static void EmptyUiQueue()
+	public static void Dispatch(IAction action)
 	{
-		if (_uiQueue == null)
-			return;
-
-		if (_uiQueue.ReloadLeaderboardList)
-			Root.Game.CustomLeaderboardsRecorderMainLayout.RefreshLeaderboardList();
-
-		_uiQueue = null;
+		_actions[action.GetType()] = action;
 	}
 
-	public static void LoadLeaderboardList()
+	public static void Reduce()
 	{
-		_uiQueue = new UiQueue(true);
-	}
+		foreach (IAction action in _actions.Values)
+			action.Reduce(); // TODO: In case a reducer dispatches more actions, this fails. We may need a separate queue for that.
 
-	public static void SetPageIndex(int pageIndex)
-	{
-		LeaderboardListState = LeaderboardListState with
-		{
-			PageIndex = pageIndex,
-		};
-	}
-
-	public static void SetCategory(CustomLeaderboardCategory category)
-	{
-		LeaderboardListState = LeaderboardListState with
-		{
-			Category = category,
-		};
-	}
-
-	public static void SetLoading(bool isLoading)
-	{
-		LeaderboardListState = LeaderboardListState with
-		{
-			IsLoading = isLoading,
-		};
-	}
-
-	public static void SetTotalResults(int totalResults)
-	{
-		int newMaxPageIndex = (int)Math.Ceiling((totalResults + 1) / (float)LeaderboardListState.PageSize) - 1;
-		LeaderboardListState = LeaderboardListState with
-		{
-			MaxPageIndex = newMaxPageIndex,
-			TotalResults = totalResults,
-			PageIndex = Math.Clamp(LeaderboardListState.PageIndex, 0, newMaxPageIndex),
-		};
+		_actions.Clear();
 	}
 
 	public static void SetSelectedCustomLeaderboard(GetCustomLeaderboardForOverview cl)
@@ -134,9 +96,4 @@ public static class StateManager
 			ActiveSpawnsetState = new(getSpawnsetByHash?.Name, fileContents, fileHash);
 		}
 	}
-
-	/// <summary>
-	/// The component system can only handle one consecutive update of spawnset components every update iteration, so in case of multiple updates, schedule an update and update the components on the next update.
-	/// </summary>
-	private sealed record UiQueue(bool ReloadLeaderboardList);
 }

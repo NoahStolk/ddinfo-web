@@ -5,6 +5,7 @@ using DevilDaggersInfo.App.Core.ApiClient.TaskHandlers;
 using DevilDaggersInfo.App.Core.GameMemory;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States;
+using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States.Actions;
 using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Core.Encryption;
 #if !SKIP_VALUE
@@ -91,7 +92,7 @@ public static class RecordingLogic
 		{
 			StateManager.SetCurrentPlayerId(mainBlock.PlayerId);
 
-			StateManager.LoadLeaderboardList();
+			StateManager.Dispatch(new LoadLeaderboardList());
 		}
 
 		// Indicate recording status.
