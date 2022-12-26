@@ -52,6 +52,14 @@ public class LeaderboardListWrapper : AbstractComponent
 		StateManager.Subscribe<LoadLeaderboardList>(_ => Load());
 		StateManager.Subscribe<SetCategory>(_ => Load());
 		StateManager.Subscribe<SetPageIndex>(_ => Load());
+
+		StateManager.Subscribe<SetTotalResults>(_ => UpdateNavigationButtons());
+	}
+
+	private void UpdateNavigationButtons()
+	{
+		_prevButton.IsDisabled = StateManager.LeaderboardListState.PageIndex == 0;
+		_nextButton.IsDisabled = StateManager.LeaderboardListState.PageIndex == StateManager.LeaderboardListState.MaxPageIndex;
 	}
 
 	private void Load()
@@ -66,23 +74,19 @@ public class LeaderboardListWrapper : AbstractComponent
 
 		AsyncHandler.Run(Populate, () => FetchCustomLeaderboards.HandleAsync(StateManager.LeaderboardListState.Category, StateManager.LeaderboardListState.PageIndex, StateManager.LeaderboardListState.PageSize, StateManager.RecordingState.CurrentPlayerId, false));
 
-		void Populate(Page<GetCustomLeaderboardForOverview>? cls)
+		void Populate(Page<GetCustomLeaderboardForOverview>? customLeaderboards)
 		{
 			Set();
 
-			StateManager.Dispatch(new SetLoading(false));
-			_prevButton.IsDisabled = StateManager.LeaderboardListState.PageIndex == 0;
-			_nextButton.IsDisabled = StateManager.LeaderboardListState.PageIndex == StateManager.LeaderboardListState.MaxPageIndex;
-
 			void Set()
 			{
-				if (cls == null)
+				if (customLeaderboards == null)
 					return;
 
-				StateManager.Dispatch(new SetTotalResults(cls.TotalResults));
+				StateManager.Dispatch(new SetTotalResults(customLeaderboards.TotalResults));
 
 				int y = 96;
-				foreach (GetCustomLeaderboardForOverview cl in cls.Results)
+				foreach (GetCustomLeaderboardForOverview cl in customLeaderboards.Results)
 				{
 					const int height = 16;
 					_leaderboardComponents.Add(new(Bounds.CreateNested(_borderSize, y, Bounds.Size.X - _borderSize * 2, height), cl) { Depth = Depth + 3 });
@@ -92,6 +96,8 @@ public class LeaderboardListWrapper : AbstractComponent
 				foreach (LeaderboardListEntry leaderboardComponent in _leaderboardComponents)
 					NestingContext.Add(leaderboardComponent);
 			}
+
+			StateManager.Dispatch(new SetLoading(false));
 		}
 	}
 
