@@ -1,8 +1,4 @@
-using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
-using DevilDaggersInfo.App.Ui.Base.Settings;
 using DevilDaggersInfo.App.Ui.Base.States.Actions;
-using DevilDaggersInfo.Core.Replay;
-using DevilDaggersInfo.Core.Spawnset;
 
 namespace DevilDaggersInfo.App.Ui.Base.States;
 
@@ -38,44 +34,5 @@ public static class BaseStateManager
 
 			T.ActionToReduce = null;
 		}
-	}
-
-	public static void ToConfigLayout()
-	{
-		Root.Game.ActiveLayout = Root.Game.ConfigLayout;
-	}
-
-	public static void ToMainLayout()
-	{
-		Root.Game.ActiveLayout = Root.Game.MainLayout;
-	}
-
-	public static void ToSurvivalEditorMainLayout()
-	{
-		Root.Game.ActiveLayout = Root.Game.SurvivalEditorMainLayout;
-	}
-
-	public static void ToSurvivalEditor3dLayout(SpawnsetBinary spawnset)
-	{
-		Root.Game.ActiveLayout = Root.Game.SurvivalEditor3dLayout;
-		Root.Game.SurvivalEditor3dLayout.BuildScene(spawnset);
-	}
-
-	public static void ToSurvivalEditorOpenLayout()
-	{
-		Root.Game.SurvivalEditorOpenLayout.SetComponentsFromPath(UserSettings.DevilDaggersInstallationDirectory);
-		Root.Game.ActiveLayout = Root.Game.SurvivalEditorOpenLayout;
-	}
-
-	public static void ToSurvivalEditorSaveLayout()
-	{
-		Root.Game.SurvivalEditorSaveLayout.SetComponentsFromPath(UserSettings.DevilDaggersInstallationDirectory);
-		Root.Game.ActiveLayout = Root.Game.SurvivalEditorSaveLayout;
-	}
-
-	public static void ToCustomLeaderboardsRecorderReplayViewer3dLayout(ReplayBinary<LocalReplayBinaryHeader>[] replayBinaries)
-	{
-		Root.Game.ActiveLayout = Root.Game.CustomLeaderboardsRecorderReplayViewer3dLayout;
-		Root.Game.CustomLeaderboardsRecorderReplayViewer3dLayout.BuildScene(replayBinaries);
 	}
 }

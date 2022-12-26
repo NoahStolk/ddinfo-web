@@ -28,6 +28,7 @@ public static class StateManager
 	public static void ReduceAll()
 	{
 		// TODO: Don't do this manually.
+		Reduce<BuildReplayScene>();
 		Reduce<LoadLeaderboardList>();
 		Reduce<SetActiveSpawnset>();
 		Reduce<SetCategory>();

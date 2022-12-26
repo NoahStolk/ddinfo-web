@@ -1,7 +1,6 @@
 using DevilDaggersInfo.Api.App.ProcessMemory;
 using DevilDaggersInfo.App.Core.GameMemory;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts;
-using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts.CustomLeaderboardsRecorder;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts.SurvivalEditor;
 using DevilDaggersInfo.Core.Versioning;
 using DevilDaggersInfo.Types.Web;
@@ -47,16 +46,16 @@ public interface IDependencyContainer
 	#region DDSE screen
 
 	ISurvivalEditorMainLayout SurvivalEditorMainLayout { get; }
-	ISurvivalEditor3dLayout SurvivalEditor3dLayout { get; }
-	IFileDialogLayout SurvivalEditorOpenLayout { get; }
-	IFileDialogLayout SurvivalEditorSaveLayout { get; }
+	IExtendedLayout SurvivalEditor3dLayout { get; }
+	IExtendedLayout SurvivalEditorOpenLayout { get; }
+	IExtendedLayout SurvivalEditorSaveLayout { get; }
 
 	#endregion DDSE screen
 
 	#region DDCL screen
 
 	IExtendedLayout CustomLeaderboardsRecorderMainLayout { get; }
-	IReplayViewer3dLayout CustomLeaderboardsRecorderReplayViewer3dLayout { get; }
+	IExtendedLayout CustomLeaderboardsRecorderReplayViewer3dLayout { get; }
 
 	#endregion DDCL screen
 

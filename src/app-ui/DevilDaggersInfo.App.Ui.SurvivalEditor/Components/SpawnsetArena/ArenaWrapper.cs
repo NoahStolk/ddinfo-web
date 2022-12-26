@@ -1,5 +1,7 @@
 using DevilDaggersInfo.App.Ui.Base;
+using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.States;
+using DevilDaggersInfo.App.Ui.Base.States.Actions;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using DevilDaggersInfo.Core.Spawnset;
 using Warp.NET.RenderImpl.Ui.Components;
@@ -33,7 +35,7 @@ public class ArenaWrapper : AbstractComponent
 		NestingContext.Add(_shrinkSlider);
 		NestingContext.Add(arenaToolsWrapper);
 
-		TextButton button3d = new(bounds.CreateNested(0, 0, 64, 16), () => BaseStateManager.ToSurvivalEditor3dLayout(StateManager.SpawnsetState.Spawnset), GlobalStyles.DefaultButtonStyle, GlobalStyles.View3dButton, "3D");
+		TextButton button3d = new(bounds.CreateNested(0, 0, 64, 16), () => BaseStateManager.Dispatch(new SetLayout(Root.Game.SurvivalEditor3dLayout)), GlobalStyles.DefaultButtonStyle, GlobalStyles.View3dButton, "3D");
 		NestingContext.Add(button3d);
 	}
 

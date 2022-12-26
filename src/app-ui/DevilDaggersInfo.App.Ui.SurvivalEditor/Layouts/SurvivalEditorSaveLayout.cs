@@ -1,21 +1,24 @@
 using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.Components;
+using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts;
+using DevilDaggersInfo.App.Ui.Base.Settings;
 using DevilDaggersInfo.App.Ui.Base.States;
+using DevilDaggersInfo.App.Ui.Base.States.Actions;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using Warp.NET.RenderImpl.Ui.Components;
 using Warp.NET.Ui;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Layouts;
 
-public class SurvivalEditorSaveLayout : Layout, IFileDialogLayout
+public class SurvivalEditorSaveLayout : Layout, IExtendedLayout
 {
 	private readonly TextInput _pathTextInput;
 	private readonly PathsScrollArea _pathsScrollArea;
 
 	public SurvivalEditorSaveLayout()
 	{
-		PathsCloseButton closeButton = new(new PixelBounds(0, 0, 24, 24), BaseStateManager.ToSurvivalEditorMainLayout);
+		PathsCloseButton closeButton = new(new PixelBounds(0, 0, 24, 24), () => BaseStateManager.Dispatch(new SetLayout(Root.Game.SurvivalEditorMainLayout)));
 		_pathTextInput = new(new PixelBounds(0, 24, 1024, 16), false, null, null, null, GlobalStyles.TextInput);
 		TextInput fileTextInput = new(new PixelBounds(0, 48, 512, 16), false, null, null, null, GlobalStyles.TextInput);
 		TextButton saveButton = new(new PixelBounds(512, 48, 128, 16), () => SaveSpawnset(Path.Combine(_pathTextInput.KeyboardInput.Value.ToString(), fileTextInput.KeyboardInput.Value.ToString())), GlobalStyles.DefaultButtonStyle, GlobalStyles.FileSaveButton, "Save");
@@ -31,6 +34,8 @@ public class SurvivalEditorSaveLayout : Layout, IFileDialogLayout
 		NestingContext.Add(fileTextInput);
 		NestingContext.Add(saveButton);
 		NestingContext.Add(_pathsScrollArea);
+
+		BaseStateManager.Subscribe<SetLayout>(Initialize);
 	}
 
 	public void Update()
@@ -45,7 +50,15 @@ public class SurvivalEditorSaveLayout : Layout, IFileDialogLayout
 	{
 	}
 
-	public void SetComponentsFromPath(string path)
+	private void Initialize(SetLayout setLayout)
+	{
+		if (setLayout.Layout != Root.Game.SurvivalEditorSaveLayout)
+			return;
+
+		SetComponentsFromPath(UserSettings.DevilDaggersInstallationDirectory);
+	}
+
+	private void SetComponentsFromPath(string path)
 	{
 		_pathTextInput.KeyboardInput.SetText(path);
 		_pathsScrollArea.Path = path;

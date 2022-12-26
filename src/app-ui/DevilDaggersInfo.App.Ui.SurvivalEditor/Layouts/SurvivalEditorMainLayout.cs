@@ -1,6 +1,7 @@
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts.SurvivalEditor;
 using DevilDaggersInfo.App.Ui.Base.States;
+using DevilDaggersInfo.App.Ui.Base.States.Actions;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Components;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetArena;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetHistory;
@@ -9,7 +10,6 @@ using DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetSpawns;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using Silk.NET.GLFW;
 using Warp.NET;
-using Warp.NET.RenderImpl.Ui.Components;
 using Warp.NET.Ui;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Layouts;
@@ -75,9 +75,9 @@ public class SurvivalEditorMainLayout : Layout, ISurvivalEditorMainLayout
 		if (Input.IsKeyPressed(Keys.N))
 			StateManager.NewSpawnset();
 		else if (Input.IsKeyPressed(Keys.O))
-			BaseStateManager.ToSurvivalEditorOpenLayout();
+			BaseStateManager.Dispatch(new SetLayout(Root.Game.SurvivalEditorOpenLayout));
 		else if (Input.IsKeyPressed(Keys.S))
-			BaseStateManager.ToSurvivalEditorSaveLayout();
+			BaseStateManager.Dispatch(new SetLayout(Root.Game.SurvivalEditorSaveLayout));
 		else if (Input.IsKeyPressed(Keys.R))
 			StateManager.ReplaceSpawnset();
 	}
