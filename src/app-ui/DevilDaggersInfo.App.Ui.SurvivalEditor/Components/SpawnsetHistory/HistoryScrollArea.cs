@@ -29,16 +29,16 @@ public class HistoryScrollArea : ScrollArea
 
 		for (int i = 0; i < SpawnsetHistoryManager.History.Count; i++)
 		{
-			States.SpawnsetHistory history = SpawnsetHistoryManager.History[i];
+			States.SpawnsetHistoryState historyState = SpawnsetHistoryManager.History[i];
 			bool isActive = i == SpawnsetHistoryManager.Index;
-			Color colorBackground = history.EditType.GetColor();
+			Color colorBackground = historyState.EditType.GetColor();
 			Color colorBackgroundActive = colorBackground.Intensify(32);
 			Color hoverBackgroundColor = colorBackground.Intensify(64);
 			ButtonStyle buttonStyle = new(isActive ? colorBackgroundActive : colorBackground, isActive ? Color.White : Color.Black, hoverBackgroundColor, 1);
 			TextButtonStyle textButtonStyle = new(Color.White, TextAlign.Left, FontSize.H12);
 			int index = i;
 			const int historyEntryHeight = 16;
-			TextButton button = new(Bounds.CreateNested(0, i * historyEntryHeight, Bounds.Size.X, historyEntryHeight), () => SpawnsetHistoryManager.Set(index), buttonStyle, textButtonStyle, history.EditType.GetChange())
+			TextButton button = new(Bounds.CreateNested(0, i * historyEntryHeight, Bounds.Size.X, historyEntryHeight), () => SpawnsetHistoryManager.Set(index), buttonStyle, textButtonStyle, historyState.EditType.GetChange())
 			{
 				Depth = Depth + 1,
 			};

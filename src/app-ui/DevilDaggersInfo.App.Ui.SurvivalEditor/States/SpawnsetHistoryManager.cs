@@ -9,11 +9,11 @@ namespace DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 public static class SpawnsetHistoryManager
 {
 	private const int _maxHistoryEntries = 100;
-	private static readonly List<SpawnsetHistory> _history = new();
+	private static readonly List<SpawnsetHistoryState> _history = new();
 
 	private static bool _uiQueue;
 
-	public static IReadOnlyList<SpawnsetHistory> History => _history;
+	public static IReadOnlyList<SpawnsetHistoryState> History => _history;
 	public static int Index { get; private set; }
 
 	public static void Reset()

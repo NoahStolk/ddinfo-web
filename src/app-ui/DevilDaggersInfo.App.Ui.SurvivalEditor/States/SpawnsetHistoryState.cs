@@ -3,4 +3,4 @@ using DevilDaggersInfo.Core.Spawnset;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 
-public record SpawnsetHistory(SpawnsetBinary Spawnset, byte[] Hash, SpawnsetEditType EditType);
+public record SpawnsetHistoryState(SpawnsetBinary Spawnset, byte[] Hash, SpawnsetEditType EditType);
