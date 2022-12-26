@@ -1,6 +1,5 @@
 using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
-using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.Base.Actions;
 using DevilDaggersInfo.App.Ui.Scene;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetArena;
@@ -33,10 +32,10 @@ public class SurvivalEditor3dLayout : Layout, IExtendedLayout
 
 		_currentTick = 0;
 
-		_shrinkSlider.Max = States.StateManager.SpawnsetState.Spawnset.GetSliderMaxSeconds();
+		_shrinkSlider.Max = StateManager.SpawnsetState.Spawnset.GetSliderMaxSeconds();
 		_shrinkSlider.CurrentValue = Math.Clamp(_shrinkSlider.CurrentValue, 0, _shrinkSlider.Max);
 
-		_arenaScene.BuildArena(States.StateManager.SpawnsetState.Spawnset);
+		_arenaScene.BuildArena(StateManager.SpawnsetState.Spawnset);
 	}
 
 	public unsafe void Update()

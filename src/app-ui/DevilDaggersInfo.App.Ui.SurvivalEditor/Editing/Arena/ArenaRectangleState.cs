@@ -1,7 +1,8 @@
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
+using DevilDaggersInfo.App.Ui.Base.StateManagement;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Data;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena.Data;
-using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using Silk.NET.GLFW;
 using Warp.NET;
@@ -23,7 +24,7 @@ public class ArenaRectangleState : IArenaState
 		{
 			Loop(mousePosition, (i, j) => Components.SpawnsetArena.Arena.UpdateArena(i, j, StateManager.ArenaEditorState.SelectedHeight));
 
-			SpawnsetHistoryManager.Save(SpawnsetEditType.ArenaRectangle);
+			StateManager.Dispatch(new SaveHistory(SpawnsetEditType.ArenaRectangle));
 			_rectangleStart = null;
 		}
 	}

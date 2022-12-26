@@ -1,6 +1,8 @@
 using DevilDaggersInfo.App.Ui.Base.StateManagement.Base.Actions;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Actions;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.States;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.States;
 
 namespace DevilDaggersInfo.App.Ui.Base.StateManagement;
 
@@ -13,6 +15,12 @@ public static class StateManager
 	public static LeaderboardState LeaderboardState { get; set; } = LeaderboardState.GetDefault();
 	public static MarkerState MarkerState { get; set; } = MarkerState.GetDefault();
 	public static RecordingState RecordingState { get; set; } = RecordingState.GetDefault();
+
+	// Survival editor states.
+	public static SpawnsetState SpawnsetState { get; set; } = SpawnsetState.GetDefault();
+	public static ArenaEditorState ArenaEditorState { get; set; } = ArenaEditorState.GetDefault();
+	public static SpawnEditorState SpawnEditorState { get; set; } = SpawnEditorState.GetDefault();
+	public static SpawnsetHistoryState SpawnsetHistoryState { get; set; } = SpawnsetHistoryState.GetDefault();
 
 	public static void Subscribe<TAction>(Action<TAction> eventHandler)
 		where TAction : class, IAction<TAction>
@@ -50,6 +58,25 @@ public static class StateManager
 		Reduce<SetSelectedCustomLeaderboard>();
 		Reduce<SetTotalResults>();
 		Reduce<UpdateDisplayedCustomLeaderboard>();
+
+		// Survival editor actions.
+		Reduce<ClearSpawnSelections>();
+		Reduce<DeselectSpawn>();
+		Reduce<LoadSpawnset>();
+		Reduce<LoadSpawnsetFromHistory>();
+		Reduce<ReplaceSpawnset>();
+		Reduce<SaveHistory>();
+		Reduce<SelectSpawn>();
+		Reduce<SetArenaBucketTolerance>();
+		Reduce<SetArenaBucketVoidHeight>();
+		Reduce<SetArenaSelectedHeight>();
+		Reduce<SetArenaTool>();
+		Reduce<SetSpawnsetHistoryIndex>();
+		Reduce<ToggleSpawnSelection>();
+		Reduce<UpdateArena>();
+		Reduce<UpdateRaceDaggerPosition>();
+		Reduce<UpdateSpawns>();
+		Reduce<UpdateSpawnsetSetting>();
 
 		static void Reduce<T>()
 			where T : class, IAction<T>

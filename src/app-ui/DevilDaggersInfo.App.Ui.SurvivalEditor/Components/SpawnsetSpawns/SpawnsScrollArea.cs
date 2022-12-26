@@ -1,8 +1,9 @@
 using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
+using DevilDaggersInfo.App.Ui.Base.StateManagement;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Data;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Spawns;
-using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using Silk.NET.GLFW;
 using System.Collections.Immutable;
 using Warp.NET;
@@ -23,6 +24,7 @@ public class SpawnsScrollArea : ScrollArea
 	public SpawnsScrollArea(IBounds bounds)
 		: base(bounds, 96, 16, GlobalStyles.DefaultScrollAreaStyle)
 	{
+		StateManager.Subscribe<LoadSpawnset>(SetSpawnset);
 	}
 
 	public override void Update(Vector2i<int> scrollOffset)
@@ -33,19 +35,16 @@ public class SpawnsScrollArea : ScrollArea
 		bool shift = Input.IsShiftHeld();
 
 		if (ctrl && Input.IsKeyPressed(Keys.A))
-			_spawnComponents.ForEach(sp => StateManager.SelectSpawn(sp.Index));
+			_spawnComponents.ForEach(sp => StateManager.Dispatch(new SelectSpawn(sp.Index))); // TODO: Fix this. This will only select the last spawn.
 
 		if (ctrl && Input.IsKeyPressed(Keys.D))
-			StateManager.ClearSpawnSelections();
+			StateManager.Dispatch(new ClearSpawnSelections());
 
 		if (Input.IsKeyPressed(Keys.Delete))
 		{
-			StateManager.SetSpawnset(StateManager.SpawnsetState.Spawnset with
-			{
-				Spawns = StateManager.SpawnsetState.Spawnset.Spawns.Where((_, i) => !StateManager.SpawnEditorState.SelectedIndices.Contains(i)).ToImmutableArray(),
-			});
-			SpawnsetHistoryManager.Save(SpawnsetEditType.SpawnDelete);
-			StateManager.ClearSpawnSelections();
+			StateManager.Dispatch(new UpdateSpawns(StateManager.SpawnsetState.Spawnset.Spawns.Where((_, i) => !StateManager.SpawnEditorState.SelectedIndices.Contains(i)).ToImmutableArray()));
+			StateManager.Dispatch(new SaveHistory(SpawnsetEditType.SpawnDelete));
+			StateManager.Dispatch(new ClearSpawnSelections());
 
 			RecalculateHeight();
 		}
@@ -60,7 +59,7 @@ public class SpawnsScrollArea : ScrollArea
 			int start = Math.Clamp(Math.Min(_currentIndex, endIndex), 0, _spawnComponents.Count - 1);
 			int end = Math.Clamp(Math.Max(_currentIndex, endIndex), 0, _spawnComponents.Count - 1);
 			for (int i = start; i <= end; i++)
-				StateManager.SelectSpawn(i);
+				StateManager.Dispatch(new SelectSpawn(i));
 		}
 		else
 		{
@@ -68,18 +67,18 @@ public class SpawnsScrollArea : ScrollArea
 			{
 				if (spawnEntry.Hover)
 				{
-					StateManager.ToggleSpawnSelection(spawnEntry.Index);
+					StateManager.Dispatch(new ToggleSpawnSelection(spawnEntry.Index));
 					_currentIndex = spawnEntry.Index;
 				}
 				else if (!ctrl)
 				{
-					StateManager.DeselectSpawn(spawnEntry.Index);
+					StateManager.Dispatch(new DeselectSpawn(spawnEntry.Index));
 				}
 			}
 		}
 	}
 
-	public void SetSpawnset()
+	private void SetSpawnset(LoadSpawnset loadSpawnset)
 	{
 		foreach (SpawnEntry component in _spawnComponents)
 			NestingContext.Remove(component);
@@ -87,7 +86,7 @@ public class SpawnsScrollArea : ScrollArea
 		_spawnComponents.Clear();
 
 		int i = 0;
-		foreach (SpawnUiEntry spawn in EditSpawnContext.GetFrom(StateManager.SpawnsetState.Spawnset))
+		foreach (SpawnUiEntry spawn in EditSpawnContext.GetFrom(loadSpawnset.SpawnsetBinary))
 		{
 			SpawnEntry spawnEntry = new(Bounds.CreateNested(0, i++ * SpawnEntryHeight, 384, SpawnEntryHeight), spawn);
 			_spawnComponents.Add(spawnEntry);

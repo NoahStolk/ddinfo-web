@@ -1,7 +1,8 @@
 using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.Components;
+using DevilDaggersInfo.App.Ui.Base.StateManagement;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Data;
-using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using Warp.NET.Ui;
 using Warp.NET.Ui.Components;
 
@@ -37,7 +38,7 @@ public class ArenaToolsWrapper : AbstractComponent
 		{
 			void SetArenaTool()
 			{
-				StateManager.SetArenaTool(arenaTool);
+				StateManager.Dispatch(new SetArenaTool(arenaTool));
 				UpdateActiveButtonAndSettings();
 			}
 

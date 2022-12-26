@@ -1,6 +1,7 @@
+using DevilDaggersInfo.App.Ui.Base.StateManagement;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Data;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena.Data;
-using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using Silk.NET.GLFW;
 using Warp.NET;
@@ -42,7 +43,7 @@ public class ArenaPencilState : IArenaState
 		else if (Input.IsButtonReleased(MouseButton.Left))
 		{
 			_pencilStart = null;
-			SpawnsetHistoryManager.Save(SpawnsetEditType.ArenaPencil);
+			StateManager.Dispatch(new SaveHistory(SpawnsetEditType.ArenaPencil));
 		}
 	}
 

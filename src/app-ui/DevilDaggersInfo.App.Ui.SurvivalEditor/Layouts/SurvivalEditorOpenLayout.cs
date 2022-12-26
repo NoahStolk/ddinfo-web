@@ -1,9 +1,9 @@
 using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
-using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts;
 using DevilDaggersInfo.App.Ui.Base.Settings;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.Base.Actions;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 using DevilDaggersInfo.Core.Spawnset;
 using Warp.NET.RenderImpl.Ui.Components;
 using Warp.NET.Ui;
@@ -65,7 +65,7 @@ public class SurvivalEditorOpenLayout : Layout, IExtendedLayout
 		byte[] bytes = File.ReadAllBytes(filePath);
 		if (SpawnsetBinary.TryParse(bytes, out SpawnsetBinary? spawnsetBinary))
 		{
-			States.StateManager.SetSpawnset(Path.GetFileName(filePath), spawnsetBinary);
+			StateManager.Dispatch(new LoadSpawnset(Path.GetFileName(filePath), spawnsetBinary));
 			StateManager.Dispatch(new SetLayout(Root.Game.SurvivalEditorMainLayout));
 		}
 		else

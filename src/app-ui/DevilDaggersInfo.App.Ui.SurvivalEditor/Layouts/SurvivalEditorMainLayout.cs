@@ -1,12 +1,14 @@
+using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
-using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts.SurvivalEditor;
+using DevilDaggersInfo.App.Ui.Base.Settings;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.Base.Actions;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Components;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetArena;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetHistory;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetSettings;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetSpawns;
-using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
+using DevilDaggersInfo.Core.Spawnset;
 using Silk.NET.GLFW;
 using Warp.NET;
 using Warp.NET.Ui;
@@ -14,48 +16,34 @@ using StateManager = DevilDaggersInfo.App.Ui.Base.StateManagement.StateManager;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Layouts;
 
-public class SurvivalEditorMainLayout : Layout, ISurvivalEditorMainLayout
+public class SurvivalEditorMainLayout : Layout, IExtendedLayout
 {
-	private readonly SpawnsWrapper _spawnsWrapper;
-	private readonly ArenaWrapper _arenaWrapper;
-	private readonly SettingsWrapper _settingsWrapper;
-
-	private readonly HistoryScrollArea _historyScrollArea;
-
 	private readonly KeySubmitter _keySubmitter = new();
 
 	public SurvivalEditorMainLayout()
 	{
 		Menu menu = new(new PixelBounds(0, 0, 1024, 768));
-		_spawnsWrapper = new(new PixelBounds(0, 24, 400, 640));
-		_arenaWrapper = new(new PixelBounds(400, 24, 400, 400));
+		SpawnsWrapper spawnsWrapper = new(new PixelBounds(0, 24, 400, 640));
+		ArenaWrapper arenaWrapper = new(new PixelBounds(400, 24, 400, 400));
 		SpawnEditor spawnEditor = new(new PixelBounds(0, 664, 384, 128));
-		_historyScrollArea = new(new PixelBounds(768, 512, 256, 256));
-		_settingsWrapper = new(new PixelBounds(804, 24, 216, 256));
+		HistoryScrollArea historyScrollArea = new(new PixelBounds(768, 512, 256, 256));
+		SettingsWrapper settingsWrapper = new(new PixelBounds(804, 24, 216, 256));
 
 		NestingContext.Add(menu);
-		NestingContext.Add(_spawnsWrapper);
-		NestingContext.Add(_arenaWrapper);
+		NestingContext.Add(spawnsWrapper);
+		NestingContext.Add(arenaWrapper);
 		NestingContext.Add(spawnEditor);
-		NestingContext.Add(_historyScrollArea);
-		NestingContext.Add(_settingsWrapper);
+		NestingContext.Add(historyScrollArea);
+		NestingContext.Add(settingsWrapper);
+
+		StateManager.Subscribe<ReplaceSpawnset>(_ => ReplaceSpawnset());
 	}
 
-	public void SetSpawnset(bool hasArenaChanges, bool hasSpawnsChanges, bool hasSettingsChanges)
+	private void ReplaceSpawnset()
 	{
-		if (hasArenaChanges)
-			_arenaWrapper.SetSpawnset();
-
-		if (hasSpawnsChanges || hasSettingsChanges)
-			_spawnsWrapper.SetSpawnset();
-
-		if (hasSettingsChanges)
-			_settingsWrapper.SetSpawnset();
-	}
-
-	public void SetHistory()
-	{
-		_historyScrollArea.SetContent();
+		File.WriteAllBytes(UserSettings.ModsSurvivalPath, StateManager.SpawnsetState.Spawnset.ToBytes());
+		Popup popup = new(this, "Successfully replaced current survival file");
+		NestingContext.Add(popup);
 	}
 
 	public void Update()
@@ -67,19 +55,19 @@ public class SurvivalEditorMainLayout : Layout, ISurvivalEditorMainLayout
 		if (key.HasValue)
 		{
 			if (key == Keys.Z)
-				SpawnsetHistoryManager.Undo();
+				StateManager.Dispatch(new SetSpawnsetHistoryIndex(StateManager.SpawnsetHistoryState.CurrentIndex - 1, StateManager.SpawnsetHistoryState.Count));
 			else if (key == Keys.Y)
-				SpawnsetHistoryManager.Redo();
+				StateManager.Dispatch(new SetSpawnsetHistoryIndex(StateManager.SpawnsetHistoryState.CurrentIndex + 1, StateManager.SpawnsetHistoryState.Count));
 		}
 
 		if (Input.IsKeyPressed(Keys.N))
-			States.StateManager.NewSpawnset();
+			StateManager.Dispatch(new LoadSpawnset("(untitled)", SpawnsetBinary.CreateDefault()));
 		else if (Input.IsKeyPressed(Keys.O))
 			StateManager.Dispatch(new SetLayout(Root.Game.SurvivalEditorOpenLayout));
 		else if (Input.IsKeyPressed(Keys.S))
 			StateManager.Dispatch(new SetLayout(Root.Game.SurvivalEditorSaveLayout));
 		else if (Input.IsKeyPressed(Keys.R))
-			States.StateManager.ReplaceSpawnset();
+			StateManager.Dispatch(new ReplaceSpawnset());
 	}
 
 	public void Render3d()

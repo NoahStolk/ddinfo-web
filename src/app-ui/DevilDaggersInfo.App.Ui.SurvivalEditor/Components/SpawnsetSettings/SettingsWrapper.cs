@@ -1,6 +1,6 @@
 using DevilDaggersInfo.App.Ui.Base;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Data;
-using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Core.Spawnset;
@@ -9,6 +9,7 @@ using Warp.NET.RenderImpl.Ui.Components;
 using Warp.NET.RenderImpl.Ui.Components.Styles;
 using Warp.NET.Ui;
 using Warp.NET.Ui.Components;
+using StateManager = DevilDaggersInfo.App.Ui.Base.StateManagement.StateManager;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetSettings;
 
@@ -90,6 +91,8 @@ public class SettingsWrapper : AbstractComponent
 		NestingContext.Add(_buttonLevel2);
 		NestingContext.Add(_buttonLevel3);
 		NestingContext.Add(_buttonLevel4);
+
+		StateManager.Subscribe<LoadSpawnset>(SetSpawnset);
 	}
 
 	private TextButton CreateFormatButton(int y, int index, int worldVersion, int spawnVersion)
@@ -99,8 +102,8 @@ public class SettingsWrapper : AbstractComponent
 
 		void UpdateFormat()
 		{
-			StateManager.SetSpawnset(StateManager.SpawnsetState.Spawnset with { WorldVersion = worldVersion, SpawnVersion = spawnVersion });
-			SpawnsetHistoryManager.Save(SpawnsetEditType.Format);
+			StateManager.Dispatch(new UpdateSpawnsetSetting(StateManager.SpawnsetState.Spawnset with { WorldVersion = worldVersion, SpawnVersion = spawnVersion }));
+			StateManager.Dispatch(new SaveHistory(SpawnsetEditType.Format));
 		}
 	}
 
@@ -111,8 +114,8 @@ public class SettingsWrapper : AbstractComponent
 
 		void UpdateFormat()
 		{
-			StateManager.SetSpawnset(StateManager.SpawnsetState.Spawnset with { GameMode = gameMode });
-			SpawnsetHistoryManager.Save(SpawnsetEditType.GameMode);
+			StateManager.Dispatch(new UpdateSpawnsetSetting(StateManager.SpawnsetState.Spawnset with { GameMode = gameMode }));
+			StateManager.Dispatch(new SaveHistory(SpawnsetEditType.GameMode));
 		}
 
 		string ToShortString() => gameMode switch
@@ -131,8 +134,8 @@ public class SettingsWrapper : AbstractComponent
 
 		void UpdateHand()
 		{
-			StateManager.SetSpawnset(StateManager.SpawnsetState.Spawnset with { HandLevel = handLevel });
-			SpawnsetHistoryManager.Save(SpawnsetEditType.HandLevel);
+			StateManager.Dispatch(new UpdateSpawnsetSetting(StateManager.SpawnsetState.Spawnset with { HandLevel = handLevel }));
+			StateManager.Dispatch(new SaveHistory(SpawnsetEditType.HandLevel));
 		}
 
 		string ToShortString() => handLevel switch
@@ -168,9 +171,9 @@ public class SettingsWrapper : AbstractComponent
 
 	private static void ChangeBrightness(string input) => SpawnsetSettingEditUtils.ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { Brightness = v }, input);
 
-	public void SetSpawnset()
+	private void SetSpawnset(LoadSpawnset loadSpawnset)
 	{
-		SpawnsetBinary spawnset = StateManager.SpawnsetState.Spawnset;
+		SpawnsetBinary spawnset = loadSpawnset.SpawnsetBinary;
 
 		_buttonV0V1.ButtonStyle = GetFormatBackground(8, 4);
 		_buttonV2V3.ButtonStyle = GetFormatBackground(9, 4);

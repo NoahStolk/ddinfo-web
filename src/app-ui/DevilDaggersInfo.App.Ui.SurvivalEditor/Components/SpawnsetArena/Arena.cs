@@ -1,9 +1,10 @@
 using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
+using DevilDaggersInfo.App.Ui.Base.StateManagement;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Data;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena.Data;
-using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Core.Spawnset;
@@ -20,7 +21,6 @@ namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetArena;
 public class Arena : AbstractComponent
 {
 	public const int TileSize = 6;
-	public static Vector2i<int> HalfTile { get; } = new(TileSize / 2);
 
 	private readonly ArenaPencilState _pencilState;
 	private readonly ArenaLineState _lineState;
@@ -52,6 +52,8 @@ public class Arena : AbstractComponent
 		};
 	}
 
+	public static Vector2i<int> HalfTile { get; } = new(TileSize / 2);
+
 	private IArenaState GetActiveState() => StateManager.ArenaEditorState.ArenaTool switch
 	{
 		ArenaTool.Pencil => _pencilState,
@@ -82,10 +84,7 @@ public class Arena : AbstractComponent
 
 	public static void UpdateArena(float[,] newArena)
 	{
-		StateManager.SetSpawnset(StateManager.SpawnsetState.Spawnset with
-		{
-			ArenaTiles = new(StateManager.SpawnsetState.Spawnset.ArenaDimension, newArena),
-		});
+		StateManager.Dispatch(new UpdateArena(newArena));
 	}
 
 	public override void Update(Vector2i<int> scrollOffset)
@@ -112,7 +111,7 @@ public class Arena : AbstractComponent
 		{
 			// TODO: Selection.
 			UpdateArena(mousePosition.Tile.X, mousePosition.Tile.Y, StateManager.SpawnsetState.Spawnset.ArenaTiles[mousePosition.Tile.X, mousePosition.Tile.Y] + scroll);
-			SpawnsetHistoryManager.Save(SpawnsetEditType.ArenaTileHeight);
+			StateManager.Dispatch(new SaveHistory(SpawnsetEditType.ArenaTileHeight));
 			return;
 		}
 

@@ -1,7 +1,6 @@
 using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
-using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts;
 using DevilDaggersInfo.App.Ui.Base.Settings;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.Base.Actions;
 using Warp.NET.RenderImpl.Ui.Components;
@@ -79,6 +78,6 @@ public class SurvivalEditorSaveLayout : Layout, IExtendedLayout
 			NestingContext.Add(popup);
 		}
 
-		File.WriteAllBytes(filePath, States.StateManager.SpawnsetState.Spawnset.ToBytes());
+		File.WriteAllBytes(filePath, StateManager.SpawnsetState.Spawnset.ToBytes());
 	}
 }

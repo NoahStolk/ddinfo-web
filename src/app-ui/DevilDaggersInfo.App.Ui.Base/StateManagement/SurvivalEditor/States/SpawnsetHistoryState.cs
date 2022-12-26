@@ -1,6 +1,9 @@
-using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Data;
-using DevilDaggersInfo.Core.Spawnset;
-
 namespace DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.States;
 
-public record SpawnsetHistoryState(SpawnsetBinary Spawnset, byte[] Hash, SpawnsetEditType EditType);
+public record SpawnsetHistoryState(int CurrentIndex, int Count)
+{
+	public static SpawnsetHistoryState GetDefault()
+	{
+		return new(0, 0);
+	}
+}

@@ -1,6 +1,6 @@
 using Warp.NET.Ui;
 
-namespace DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts;
+namespace DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 
 public interface IExtendedLayout : ILayout
 {

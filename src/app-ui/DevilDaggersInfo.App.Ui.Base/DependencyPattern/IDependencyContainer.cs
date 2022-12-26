@@ -1,7 +1,5 @@
 using DevilDaggersInfo.Api.App.ProcessMemory;
 using DevilDaggersInfo.App.Core.GameMemory;
-using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts;
-using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts.SurvivalEditor;
 using DevilDaggersInfo.Core.Versioning;
 using DevilDaggersInfo.Types.Web;
 using Warp.NET.RenderImpl.Ui.Rendering.Renderers;
@@ -45,7 +43,7 @@ public interface IDependencyContainer
 
 	#region DDSE screen
 
-	ISurvivalEditorMainLayout SurvivalEditorMainLayout { get; }
+	IExtendedLayout SurvivalEditorMainLayout { get; }
 	IExtendedLayout SurvivalEditor3dLayout { get; }
 	IExtendedLayout SurvivalEditorOpenLayout { get; }
 	IExtendedLayout SurvivalEditorSaveLayout { get; }

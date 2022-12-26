@@ -1,7 +1,8 @@
 using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.Extensions;
+using DevilDaggersInfo.App.Ui.Base.StateManagement;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Data;
-using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Types.Core.Spawnsets;
 using System.Collections.Immutable;
@@ -81,8 +82,8 @@ public class SpawnEditor : AbstractComponent
 		List<Spawn> newSpawns = StateManager.SpawnsetState.Spawnset.Spawns.ToList();
 		newSpawns.Add(new(_selectedEnemyType, _selectedDelay));
 
-		StateManager.SetSpawnset(StateManager.SpawnsetState.Spawnset with { Spawns = newSpawns.ToImmutableArray() });
-		SpawnsetHistoryManager.Save(SpawnsetEditType.SpawnAdd);
+		StateManager.Dispatch(new UpdateSpawns(newSpawns.ToImmutableArray()));
+		StateManager.Dispatch(new SaveHistory(SpawnsetEditType.SpawnAdd));
 
 		// TODO: Scroll down.
 		// UpdateScrollOffsetAndScrollbarPosition
@@ -92,22 +93,22 @@ public class SpawnEditor : AbstractComponent
 	{
 		ImmutableArray<Spawn> newSpawns = StateManager.SpawnsetState.Spawnset.Spawns.Select((t, i) => StateManager.SpawnEditorState.SelectedIndices.Contains(i) ? new(_selectedEnemyType, _selectedDelay) : t).ToImmutableArray();
 
-		StateManager.SetSpawnset(StateManager.SpawnsetState.Spawnset with { Spawns = newSpawns });
-		SpawnsetHistoryManager.Save(SpawnsetEditType.SpawnEdit);
+		StateManager.Dispatch(new UpdateSpawns(newSpawns));
+		StateManager.Dispatch(new SaveHistory(SpawnsetEditType.SpawnEdit));
 	}
 
 	private void InsertSpawn()
 	{
 		int firstSelection = StateManager.SpawnEditorState.SelectedIndices.Count == 0 ? 0 : StateManager.SpawnEditorState.SelectedIndices.Min();
-		ImmutableArray<Spawn> spawns = StateManager.SpawnsetState.Spawnset.Spawns.Insert(firstSelection, new(_selectedEnemyType, _selectedDelay));
+		ImmutableArray<Spawn> newSpawns = StateManager.SpawnsetState.Spawnset.Spawns.Insert(firstSelection, new(_selectedEnemyType, _selectedDelay));
 
 		int[] indices = StateManager.SpawnEditorState.SelectedIndices.ToArray();
-		StateManager.ClearSpawnSelections();
+		StateManager.Dispatch(new ClearSpawnSelections());
 		foreach (int index in indices)
-			StateManager.SelectSpawn(index + 1);
+			StateManager.Dispatch(new SelectSpawn(index + 1));
 
-		StateManager.SetSpawnset(StateManager.SpawnsetState.Spawnset with { Spawns = spawns });
-		SpawnsetHistoryManager.Save(SpawnsetEditType.SpawnAdd);
+		StateManager.Dispatch(new UpdateSpawns(newSpawns));
+		StateManager.Dispatch(new SaveHistory(SpawnsetEditType.SpawnAdd));
 
 		// TODO: Scroll to insert position.
 		// UpdateScrollOffsetAndScrollbarPosition
