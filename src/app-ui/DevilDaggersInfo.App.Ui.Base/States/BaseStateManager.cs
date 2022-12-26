@@ -20,6 +20,7 @@ public static class BaseStateManager
 	public static void ReduceAll()
 	{
 		// TODO: Don't do this manually.
+		Reduce<InitializeContent>();
 		Reduce<SetLayout>();
 		Reduce<ValidateInstallation>();
 
