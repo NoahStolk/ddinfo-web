@@ -1,7 +1,6 @@
 using DevilDaggersInfo.Api.App.CustomLeaderboards;
-using DevilDaggersInfo.App.Ui.Base.States.Actions;
 
-namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States.Actions;
+namespace DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Actions;
 
 public record UpdateDisplayedCustomLeaderboard(GetCustomLeaderboard GetCustomLeaderboard) : IAction<UpdateDisplayedCustomLeaderboard>
 {

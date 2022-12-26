@@ -1,6 +1,4 @@
-using DevilDaggersInfo.App.Ui.Base.States.Actions;
-
-namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States.Actions;
+namespace DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Actions;
 
 public record SetTotalResults(int TotalResults) : IAction<SetTotalResults>
 {

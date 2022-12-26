@@ -1,4 +1,6 @@
-namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Data;
+
+namespace DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.States;
 
 public record RecordingState(RecordingStateType RecordingStateType, DateTime? LastSubmission, int CurrentPlayerId)
 {

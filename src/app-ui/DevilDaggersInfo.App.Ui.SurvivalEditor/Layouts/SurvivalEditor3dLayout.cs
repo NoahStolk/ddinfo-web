@@ -1,14 +1,13 @@
 using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts;
-using DevilDaggersInfo.App.Ui.Base.States;
-using DevilDaggersInfo.App.Ui.Base.States.Actions;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.Base.Actions;
 using DevilDaggersInfo.App.Ui.Scene;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetArena;
-using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using Silk.NET.GLFW;
 using Warp.NET;
 using Warp.NET.Ui;
+using StateManager = DevilDaggersInfo.App.Ui.Base.StateManagement.StateManager;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Layouts;
 
@@ -24,7 +23,7 @@ public class SurvivalEditor3dLayout : Layout, IExtendedLayout
 		_shrinkSlider = new(new PixelBounds(0, 752, 1024, 16), f => _currentTick = (int)(f * 60), true, 0, 0, 0.1f, 0, GlobalStyles.DefaultSliderStyle);
 		NestingContext.Add(_shrinkSlider);
 
-		BaseStateManager.Subscribe<SetLayout>(BuildScene);
+		StateManager.Subscribe<SetLayout>(BuildScene);
 	}
 
 	private void BuildScene(SetLayout setLayout)
@@ -34,10 +33,10 @@ public class SurvivalEditor3dLayout : Layout, IExtendedLayout
 
 		_currentTick = 0;
 
-		_shrinkSlider.Max = StateManager.SpawnsetState.Spawnset.GetSliderMaxSeconds();
+		_shrinkSlider.Max = States.StateManager.SpawnsetState.Spawnset.GetSliderMaxSeconds();
 		_shrinkSlider.CurrentValue = Math.Clamp(_shrinkSlider.CurrentValue, 0, _shrinkSlider.Max);
 
-		_arenaScene.BuildArena(StateManager.SpawnsetState.Spawnset);
+		_arenaScene.BuildArena(States.StateManager.SpawnsetState.Spawnset);
 	}
 
 	public unsafe void Update()
@@ -50,7 +49,7 @@ public class SurvivalEditor3dLayout : Layout, IExtendedLayout
 		if (Input.IsKeyPressed(Keys.Escape))
 		{
 			Graphics.Glfw.SetInputMode(Window, CursorStateAttribute.Cursor, CursorModeValue.CursorNormal);
-			BaseStateManager.Dispatch(new SetLayout(Root.Game.SurvivalEditorMainLayout));
+			StateManager.Dispatch(new SetLayout(Root.Game.SurvivalEditorMainLayout));
 		}
 	}
 

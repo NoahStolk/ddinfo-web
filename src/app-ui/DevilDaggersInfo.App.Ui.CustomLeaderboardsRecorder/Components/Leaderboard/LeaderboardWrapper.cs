@@ -1,7 +1,7 @@
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.Extensions;
-using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States;
-using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States.Actions;
+using DevilDaggersInfo.App.Ui.Base.StateManagement;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Actions;
 using DevilDaggersInfo.Core.Wiki;
 using Warp.NET.Extensions;
 using Warp.NET.RenderImpl.Ui.Components;

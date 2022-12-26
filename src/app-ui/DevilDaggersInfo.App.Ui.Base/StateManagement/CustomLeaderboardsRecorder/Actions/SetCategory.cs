@@ -1,7 +1,6 @@
-using DevilDaggersInfo.App.Ui.Base.States.Actions;
 using DevilDaggersInfo.Types.Web;
 
-namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States.Actions;
+namespace DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Actions;
 
 public record SetCategory(CustomLeaderboardCategory Category) : IAction<SetCategory>
 {

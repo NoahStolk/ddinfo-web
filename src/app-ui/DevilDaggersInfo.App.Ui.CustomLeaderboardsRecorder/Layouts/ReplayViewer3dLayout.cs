@@ -1,11 +1,10 @@
 using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts;
-using DevilDaggersInfo.App.Ui.Base.States;
-using DevilDaggersInfo.App.Ui.Base.States.Actions;
+using DevilDaggersInfo.App.Ui.Base.StateManagement;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.Base.Actions;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Actions;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.ReplayViewer;
-using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States;
-using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States.Actions;
 using DevilDaggersInfo.App.Ui.Scene;
 using DevilDaggersInfo.Core.Replay.PostProcessing.ReplaySimulation;
 using DevilDaggersInfo.Core.Spawnset;
@@ -60,7 +59,7 @@ public class ReplayViewer3dLayout : Layout, IExtendedLayout
 		if (Input.IsKeyPressed(Keys.Escape))
 		{
 			Graphics.Glfw.SetInputMode(Window, CursorStateAttribute.Cursor, CursorModeValue.CursorNormal);
-			BaseStateManager.Dispatch(new SetLayout(Root.Game.CustomLeaderboardsRecorderMainLayout));
+			StateManager.Dispatch(new SetLayout(Root.Game.CustomLeaderboardsRecorderMainLayout));
 		}
 	}
 

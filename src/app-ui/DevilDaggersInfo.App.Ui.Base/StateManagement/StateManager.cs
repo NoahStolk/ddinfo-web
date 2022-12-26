@@ -1,11 +1,13 @@
-using DevilDaggersInfo.App.Ui.Base.States.Actions;
-using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States.Actions;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.Base.Actions;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Actions;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.States;
 
-namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States;
+namespace DevilDaggersInfo.App.Ui.Base.StateManagement;
 
 public static class StateManager
 {
 	// TODO: These should only be able to be set by actions.
+	// Custom leaderboards recorder states.
 	public static ActiveSpawnsetState ActiveSpawnsetState { get; set; } = ActiveSpawnsetState.GetDefault();
 	public static LeaderboardListState LeaderboardListState { get; set; } = LeaderboardListState.GetDefault();
 	public static LeaderboardState LeaderboardState { get; set; } = LeaderboardState.GetDefault();
@@ -28,6 +30,13 @@ public static class StateManager
 	public static void ReduceAll()
 	{
 		// TODO: Don't do this manually.
+
+		// Base actions.
+		Reduce<InitializeContent>();
+		Reduce<SetLayout>();
+		Reduce<ValidateInstallation>();
+
+		// Custom leaderboards recorder actions.
 		Reduce<BuildReplayScene>();
 		Reduce<LoadLeaderboardList>();
 		Reduce<SetActiveSpawnset>();
@@ -49,8 +58,8 @@ public static class StateManager
 				return;
 
 			T.ActionToReduce.Reduce();
-			foreach (Action<T> a in T.EventHandlers)
-				a.Invoke(T.ActionToReduce);
+			foreach (Action<T> eventHandler in T.EventHandlers)
+				eventHandler.Invoke(T.ActionToReduce);
 
 			T.ActionToReduce = null;
 		}

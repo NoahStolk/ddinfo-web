@@ -1,6 +1,6 @@
-using DevilDaggersInfo.App.Ui.Base.States.Actions;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Data;
 
-namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States.Actions;
+namespace DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Actions;
 
 public record SetRecordingState(RecordingStateType RecordingStateType) : IAction<SetRecordingState>
 {

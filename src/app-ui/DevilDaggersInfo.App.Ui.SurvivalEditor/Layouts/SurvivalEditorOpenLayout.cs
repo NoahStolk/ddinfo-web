@@ -3,12 +3,11 @@ using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts;
 using DevilDaggersInfo.App.Ui.Base.Settings;
-using DevilDaggersInfo.App.Ui.Base.States;
-using DevilDaggersInfo.App.Ui.Base.States.Actions;
-using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.Base.Actions;
 using DevilDaggersInfo.Core.Spawnset;
 using Warp.NET.RenderImpl.Ui.Components;
 using Warp.NET.Ui;
+using StateManager = DevilDaggersInfo.App.Ui.Base.StateManagement.StateManager;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Layouts;
 
@@ -19,7 +18,7 @@ public class SurvivalEditorOpenLayout : Layout, IExtendedLayout
 
 	public SurvivalEditorOpenLayout()
 	{
-		PathsCloseButton closeButton = new(new PixelBounds(0, 0, 24, 24), () => BaseStateManager.Dispatch(new SetLayout(Root.Game.SurvivalEditorMainLayout)));
+		PathsCloseButton closeButton = new(new PixelBounds(0, 0, 24, 24), () => StateManager.Dispatch(new SetLayout(Root.Game.SurvivalEditorMainLayout)));
 		_pathTextInput = new(new PixelBounds(0, 24, 1024, 16), false, null, null, null, GlobalStyles.TextInput);
 		_pathsScrollArea = new(new PixelBounds(0, 96, 1024, 640))
 		{
@@ -31,7 +30,7 @@ public class SurvivalEditorOpenLayout : Layout, IExtendedLayout
 		NestingContext.Add(_pathTextInput);
 		NestingContext.Add(_pathsScrollArea);
 
-		BaseStateManager.Subscribe<SetLayout>(Initialize);
+		StateManager.Subscribe<SetLayout>(Initialize);
 	}
 
 	public void Update()
@@ -66,8 +65,8 @@ public class SurvivalEditorOpenLayout : Layout, IExtendedLayout
 		byte[] bytes = File.ReadAllBytes(filePath);
 		if (SpawnsetBinary.TryParse(bytes, out SpawnsetBinary? spawnsetBinary))
 		{
-			StateManager.SetSpawnset(Path.GetFileName(filePath), spawnsetBinary);
-			BaseStateManager.Dispatch(new SetLayout(Root.Game.SurvivalEditorMainLayout));
+			States.StateManager.SetSpawnset(Path.GetFileName(filePath), spawnsetBinary);
+			StateManager.Dispatch(new SetLayout(Root.Game.SurvivalEditorMainLayout));
 		}
 		else
 		{

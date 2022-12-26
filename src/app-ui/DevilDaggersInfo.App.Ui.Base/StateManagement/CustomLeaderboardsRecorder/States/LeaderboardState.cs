@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Api.App.CustomLeaderboards;
 
-namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States;
+namespace DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.States;
 
 public record LeaderboardState(GetCustomLeaderboard? CustomLeaderboard)
 {

@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.App.Ui.Base.States.Actions;
+namespace DevilDaggersInfo.App.Ui.Base.StateManagement.Base.Actions;
 
 /// <summary>
 /// Fires when the installation has been verified and DD content has been found.

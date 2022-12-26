@@ -4,14 +4,13 @@ using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts;
 using DevilDaggersInfo.App.Ui.Base.Settings;
-using DevilDaggersInfo.App.Ui.Base.States;
-using DevilDaggersInfo.App.Ui.Base.States.Actions;
+using DevilDaggersInfo.App.Ui.Base.StateManagement;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.Base.Actions;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Actions;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.Leaderboard;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.LeaderboardList;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.Recording;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.State;
-using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States;
-using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States.Actions;
 using System.Security.Cryptography;
 using Warp.NET.Ui;
 
@@ -27,7 +26,7 @@ public class CustomLeaderboardsRecorderMainLayout : Layout, IExtendedLayout
 	public CustomLeaderboardsRecorderMainLayout()
 	{
 		const int headerHeight = 24;
-		MainLayoutBackButton backButton = new(new PixelBounds(0, 0, 24, headerHeight), () => BaseStateManager.Dispatch(new SetLayout(Root.Game.MainLayout)));
+		MainLayoutBackButton backButton = new(new PixelBounds(0, 0, 24, headerHeight), () => StateManager.Dispatch(new SetLayout(Root.Game.MainLayout)));
 		_stateWrapper = new(new PixelBounds(0, headerHeight, 256, 96 - headerHeight));
 		_recordingWrapper = new(new PixelBounds(0, 96, 256, 416));
 		LeaderboardListWrapper leaderboardListWrapper = new(new PixelBounds(256, headerHeight, 768, 512 - headerHeight));
@@ -39,7 +38,7 @@ public class CustomLeaderboardsRecorderMainLayout : Layout, IExtendedLayout
 		NestingContext.Add(leaderboardListWrapper);
 		NestingContext.Add(leaderboardWrapper);
 
-		BaseStateManager.Subscribe<SetLayout>(Initialize);
+		StateManager.Subscribe<SetLayout>(Initialize);
 	}
 
 	private static void Initialize(SetLayout setLayout)
