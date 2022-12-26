@@ -43,12 +43,13 @@ public class CustomLeaderboardsRecorderMainLayout : Layout, ICustomLeaderboardsR
 		if (!File.Exists(UserSettings.ModsSurvivalPath))
 		{
 			StateManager.Dispatch(new SetActiveSpawnset(null));
-			return;
 		}
-
-		byte[] fileContents = File.ReadAllBytes(UserSettings.ModsSurvivalPath);
-		byte[] fileHash = MD5.HashData(fileContents);
-		AsyncHandler.Run(s => StateManager.Dispatch(new SetActiveSpawnset(s?.Name)), () => FetchSpawnsetByHash.HandleAsync(fileHash));
+		else
+		{
+			byte[] fileContents = File.ReadAllBytes(UserSettings.ModsSurvivalPath);
+			byte[] fileHash = MD5.HashData(fileContents);
+			AsyncHandler.Run(s => StateManager.Dispatch(new SetActiveSpawnset(s?.Name)), () => FetchSpawnsetByHash.HandleAsync(fileHash));
+		}
 
 		StateManager.Dispatch(new LoadLeaderboardList());
 	}
