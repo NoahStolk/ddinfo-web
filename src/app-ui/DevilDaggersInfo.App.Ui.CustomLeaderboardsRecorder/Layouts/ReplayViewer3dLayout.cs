@@ -1,6 +1,8 @@
 using DevilDaggersInfo.App.Ui.Base;
+using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts.CustomLeaderboardsRecorder;
 using DevilDaggersInfo.App.Ui.Base.States;
+using DevilDaggersInfo.App.Ui.Base.States.Actions;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.ReplayViewer;
 using DevilDaggersInfo.App.Ui.Scene;
 using DevilDaggersInfo.Core.Replay;
@@ -55,7 +57,7 @@ public class ReplayViewer3dLayout : Layout, IReplayViewer3dLayout
 		if (Input.IsKeyPressed(Keys.Escape))
 		{
 			Graphics.Glfw.SetInputMode(Window, CursorStateAttribute.Cursor, CursorModeValue.CursorNormal);
-			LayoutManager.ToCustomLeaderboardsRecorderMainLayout();
+			BaseStateManager.Dispatch(new SetLayout(Root.Game.CustomLeaderboardsRecorderMainLayout));
 		}
 	}
 

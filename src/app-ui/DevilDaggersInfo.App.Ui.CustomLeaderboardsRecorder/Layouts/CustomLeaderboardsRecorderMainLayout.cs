@@ -1,9 +1,12 @@
 using DevilDaggersInfo.App.Core.ApiClient;
 using DevilDaggersInfo.App.Core.ApiClient.TaskHandlers;
 using DevilDaggersInfo.App.Ui.Base.Components;
+using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
+using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts.CustomLeaderboardsRecorder;
 using DevilDaggersInfo.App.Ui.Base.Settings;
 using DevilDaggersInfo.App.Ui.Base.States;
+using DevilDaggersInfo.App.Ui.Base.States.Actions;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.Leaderboard;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.LeaderboardList;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.Recording;
@@ -15,7 +18,7 @@ using Warp.NET.Ui;
 
 namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Layouts;
 
-public class CustomLeaderboardsRecorderMainLayout : Layout, ICustomLeaderboardsRecorderMainLayout
+public class CustomLeaderboardsRecorderMainLayout : Layout, IExtendedLayout
 {
 	private readonly StateWrapper _stateWrapper;
 	private readonly RecordingWrapper _recordingWrapper;
@@ -25,7 +28,7 @@ public class CustomLeaderboardsRecorderMainLayout : Layout, ICustomLeaderboardsR
 	public CustomLeaderboardsRecorderMainLayout()
 	{
 		const int headerHeight = 24;
-		MainLayoutBackButton backButton = new(new PixelBounds(0, 0, 24, headerHeight), LayoutManager.ToMainLayout);
+		MainLayoutBackButton backButton = new(new PixelBounds(0, 0, 24, headerHeight), BaseStateManager.ToMainLayout);
 		_stateWrapper = new(new PixelBounds(0, headerHeight, 256, 96 - headerHeight));
 		_recordingWrapper = new(new PixelBounds(0, 96, 256, 416));
 		LeaderboardListWrapper leaderboardListWrapper = new(new PixelBounds(256, headerHeight, 768, 512 - headerHeight));
@@ -36,10 +39,15 @@ public class CustomLeaderboardsRecorderMainLayout : Layout, ICustomLeaderboardsR
 		NestingContext.Add(_recordingWrapper);
 		NestingContext.Add(leaderboardListWrapper);
 		NestingContext.Add(leaderboardWrapper);
+
+		BaseStateManager.Subscribe<SetLayout>(Initialize);
 	}
 
-	public void Initialize()
+	private static void Initialize(SetLayout setLayout)
 	{
+		if (setLayout.Layout != Root.Game.CustomLeaderboardsRecorderMainLayout)
+			return;
+
 		if (!File.Exists(UserSettings.ModsSurvivalPath))
 		{
 			StateManager.Dispatch(new SetActiveSpawnset(null));

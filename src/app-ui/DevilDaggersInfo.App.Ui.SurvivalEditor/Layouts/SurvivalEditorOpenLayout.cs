@@ -16,7 +16,7 @@ public class SurvivalEditorOpenLayout : Layout, IFileDialogLayout
 
 	public SurvivalEditorOpenLayout()
 	{
-		PathsCloseButton closeButton = new(new PixelBounds(0, 0, 24, 24), LayoutManager.ToSurvivalEditorMainLayout);
+		PathsCloseButton closeButton = new(new PixelBounds(0, 0, 24, 24), BaseStateManager.ToSurvivalEditorMainLayout);
 		_pathTextInput = new(new PixelBounds(0, 24, 1024, 16), false, null, null, null, GlobalStyles.TextInput);
 		_pathsScrollArea = new(new PixelBounds(0, 96, 1024, 640))
 		{
@@ -54,7 +54,7 @@ public class SurvivalEditorOpenLayout : Layout, IFileDialogLayout
 		if (SpawnsetBinary.TryParse(bytes, out SpawnsetBinary? spawnsetBinary))
 		{
 			StateManager.SetSpawnset(Path.GetFileName(filePath), spawnsetBinary);
-			LayoutManager.ToSurvivalEditorMainLayout();
+			BaseStateManager.ToSurvivalEditorMainLayout();
 		}
 		else
 		{

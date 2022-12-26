@@ -33,7 +33,7 @@ public class ArenaWrapper : AbstractComponent
 		NestingContext.Add(_shrinkSlider);
 		NestingContext.Add(arenaToolsWrapper);
 
-		TextButton button3d = new(bounds.CreateNested(0, 0, 64, 16), () => LayoutManager.ToSurvivalEditor3dLayout(StateManager.SpawnsetState.Spawnset), GlobalStyles.DefaultButtonStyle, GlobalStyles.View3dButton, "3D");
+		TextButton button3d = new(bounds.CreateNested(0, 0, 64, 16), () => BaseStateManager.ToSurvivalEditor3dLayout(StateManager.SpawnsetState.Spawnset), GlobalStyles.DefaultButtonStyle, GlobalStyles.View3dButton, "3D");
 		NestingContext.Add(button3d);
 	}
 

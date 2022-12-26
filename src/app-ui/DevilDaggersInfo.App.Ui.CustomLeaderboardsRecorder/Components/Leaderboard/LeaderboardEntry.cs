@@ -93,7 +93,7 @@ public class LeaderboardEntry : AbstractComponent
 				return;
 			}
 
-			LayoutManager.ToCustomLeaderboardsRecorderReplayViewer3dLayout(new[] { replayBinary });
+			BaseStateManager.ToCustomLeaderboardsRecorderReplayViewer3dLayout(new[] { replayBinary });
 		}
 	}
 

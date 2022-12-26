@@ -20,7 +20,7 @@ public class Menu : AbstractComponent
 
 		Depth = 100;
 
-		MainLayoutBackButton backButton = new(new PixelBounds(0, 0, backButtonWidth, _headerHeight), LayoutManager.ToMainLayout)
+		MainLayoutBackButton backButton = new(new PixelBounds(0, 0, backButtonWidth, _headerHeight), BaseStateManager.ToMainLayout)
 		{
 			Depth = 101,
 		};
@@ -35,9 +35,9 @@ public class Menu : AbstractComponent
 
 		const int dropdownEntryDepth = 102;
 		DropdownEntry entryNew = new(new PixelBounds(fileMenu.Bounds.X1, _headerHeight + menuItemHeight * 0, menuItemWidth, menuItemHeight), fileMenu, StateManager.NewSpawnset, "New", GlobalStyles.DefaultDropdownEntryStyle) { Depth = dropdownEntryDepth };
-		DropdownEntry entryOpen = new(new PixelBounds(fileMenu.Bounds.X1, _headerHeight + menuItemHeight * 1, menuItemWidth, menuItemHeight), fileMenu, LayoutManager.ToSurvivalEditorOpenLayout, "Open", GlobalStyles.DefaultDropdownEntryStyle) { Depth = dropdownEntryDepth };
+		DropdownEntry entryOpen = new(new PixelBounds(fileMenu.Bounds.X1, _headerHeight + menuItemHeight * 1, menuItemWidth, menuItemHeight), fileMenu, BaseStateManager.ToSurvivalEditorOpenLayout, "Open", GlobalStyles.DefaultDropdownEntryStyle) { Depth = dropdownEntryDepth };
 		DropdownEntry entryOpenDefault = new(new PixelBounds(fileMenu.Bounds.X1, _headerHeight + menuItemHeight * 2, menuItemWidth, menuItemHeight), fileMenu, StateManager.OpenDefaultV3Spawnset, "Open default (V3)", GlobalStyles.DefaultDropdownEntryStyle) { Depth = dropdownEntryDepth };
-		DropdownEntry entrySave = new(new PixelBounds(fileMenu.Bounds.X1, _headerHeight + menuItemHeight * 3, menuItemWidth, menuItemHeight), fileMenu, LayoutManager.ToSurvivalEditorSaveLayout, "Save", GlobalStyles.DefaultDropdownEntryStyle) { Depth = dropdownEntryDepth };
+		DropdownEntry entrySave = new(new PixelBounds(fileMenu.Bounds.X1, _headerHeight + menuItemHeight * 3, menuItemWidth, menuItemHeight), fileMenu, BaseStateManager.ToSurvivalEditorSaveLayout, "Save", GlobalStyles.DefaultDropdownEntryStyle) { Depth = dropdownEntryDepth };
 		DropdownEntry entryReplace = new(new PixelBounds(fileMenu.Bounds.X1, _headerHeight + menuItemHeight * 4, menuItemWidth, menuItemHeight), fileMenu, StateManager.ReplaceSpawnset, "Replace", GlobalStyles.DefaultDropdownEntryStyle) { Depth = dropdownEntryDepth };
 
 		fileMenu.AddChild(entryNew);

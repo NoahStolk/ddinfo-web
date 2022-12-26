@@ -15,7 +15,7 @@ public class SurvivalEditorSaveLayout : Layout, IFileDialogLayout
 
 	public SurvivalEditorSaveLayout()
 	{
-		PathsCloseButton closeButton = new(new PixelBounds(0, 0, 24, 24), LayoutManager.ToSurvivalEditorMainLayout);
+		PathsCloseButton closeButton = new(new PixelBounds(0, 0, 24, 24), BaseStateManager.ToSurvivalEditorMainLayout);
 		_pathTextInput = new(new PixelBounds(0, 24, 1024, 16), false, null, null, null, GlobalStyles.TextInput);
 		TextInput fileTextInput = new(new PixelBounds(0, 48, 512, 16), false, null, null, null, GlobalStyles.TextInput);
 		TextButton saveButton = new(new PixelBounds(512, 48, 128, 16), () => SaveSpawnset(Path.Combine(_pathTextInput.KeyboardInput.Value.ToString(), fileTextInput.KeyboardInput.Value.ToString())), GlobalStyles.DefaultButtonStyle, GlobalStyles.FileSaveButton, "Save");

@@ -75,9 +75,9 @@ public class SurvivalEditorMainLayout : Layout, ISurvivalEditorMainLayout
 		if (Input.IsKeyPressed(Keys.N))
 			StateManager.NewSpawnset();
 		else if (Input.IsKeyPressed(Keys.O))
-			LayoutManager.ToSurvivalEditorOpenLayout();
+			BaseStateManager.ToSurvivalEditorOpenLayout();
 		else if (Input.IsKeyPressed(Keys.S))
-			LayoutManager.ToSurvivalEditorSaveLayout();
+			BaseStateManager.ToSurvivalEditorSaveLayout();
 		else if (Input.IsKeyPressed(Keys.R))
 			StateManager.ReplaceSpawnset();
 	}
