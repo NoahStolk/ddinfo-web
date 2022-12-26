@@ -38,7 +38,7 @@ public interface IDependencyContainer
 
 	#region Main screen
 
-	IConfigLayout ConfigLayout { get; }
+	IExtendedLayout ConfigLayout { get; }
 	IMainLayout MainLayout { get; }
 
 	#endregion Main screen

@@ -21,6 +21,7 @@ public static class BaseStateManager
 	{
 		// TODO: Don't do this manually.
 		Reduce<SetLayout>();
+		Reduce<ValidateInstallation>();
 
 		static void Reduce<T>()
 			where T : class, IAction<T>
