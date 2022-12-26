@@ -2,7 +2,7 @@ using DevilDaggersInfo.Types.Web;
 
 namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States.Actions;
 
-public record SetCategory(CustomLeaderboardCategory Category) : IAction
+public record SetCategory(CustomLeaderboardCategory Category) : IAction<SetCategory>
 {
 	public void Reduce()
 	{

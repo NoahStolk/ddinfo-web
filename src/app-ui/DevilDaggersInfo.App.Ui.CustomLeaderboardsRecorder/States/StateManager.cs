@@ -1,8 +1,6 @@
-using DevilDaggersInfo.Api.App.CustomLeaderboards;
 using DevilDaggersInfo.Api.App.Spawnsets;
 using DevilDaggersInfo.App.Core.ApiClient;
 using DevilDaggersInfo.App.Core.ApiClient.TaskHandlers;
-using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.Settings;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States.Actions;
 using System.Security.Cryptography;
@@ -11,59 +9,47 @@ namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States;
 
 public static class StateManager
 {
-	private static readonly Dictionary<string, IAction> _actions = new();
-	private static readonly Dictionary<string, List<Action>> _subscribedEvents = new();
-
+	// TODO: These should only be able to be set by actions.
 	public static ActiveSpawnsetState ActiveSpawnsetState { get; private set; } = ActiveSpawnsetState.GetDefault();
 	public static LeaderboardListState LeaderboardListState { get; set; } = LeaderboardListState.GetDefault();
-	public static LeaderboardState LeaderboardState { get; private set; } = LeaderboardState.GetDefault();
+	public static LeaderboardState LeaderboardState { get; set; } = LeaderboardState.GetDefault();
 	public static MarkerState MarkerState { get; private set; } = MarkerState.GetDefault();
 	public static RecordingState RecordingState { get; private set; } = RecordingState.GetDefault();
 
-	public static void Dispatch(IAction action)
+	public static void Subscribe<TAction>(Action<TAction> eventHandler)
+		where TAction : class, IAction<TAction>
 	{
-		// Dispatch an action, if it already exists for this action type, overwrite it.
-		// TODO: No reflection.
-		_actions[action.GetType().Name] = action;
+		TAction.Subscribe(eventHandler);
 	}
 
-	public static void Subscribe(string actionKey, Action action)
+	public static void Dispatch<TAction>(TAction action)
+		where TAction : class, IAction<TAction>
 	{
-		if (_subscribedEvents.TryGetValue(actionKey, out List<Action>? actions))
-			actions.Add(action);
-		else
-			_subscribedEvents[actionKey] = new() { action };
+		// Dispatch an action, if it already exists for this action type, overwrite it.
+		TAction.ActionToReduce = action;
 	}
 
 	public static void ReduceAll()
 	{
-		foreach (KeyValuePair<string, IAction> action in _actions)
+		// TODO: All.
+		Reduce<LoadLeaderboardList>();
+		Reduce<SetCategory>();
+		Reduce<SetLoading>();
+		Reduce<SetPageIndex>();
+		Reduce<SetSelectedCustomLeaderboard>();
+		Reduce<SetTotalResults>();
+
+		static void Reduce<T>()
+			where T : class, IAction<T>
 		{
-			action.Value.Reduce();
-			if (!_subscribedEvents.TryGetValue(action.Key, out List<Action>? actions))
-				continue;
+			if (T.ActionToReduce == null)
+				return;
 
-			foreach (Action a in actions)
-				a.Invoke();
-		}
+			T.ActionToReduce.Reduce();
+			foreach (Action<T> a in T.EventHandlers)
+				a.Invoke(T.ActionToReduce);
 
-		_actions.Clear();
-	}
-
-	public static void SetSelectedCustomLeaderboard(GetCustomLeaderboardForOverview cl)
-	{
-		LeaderboardListState = LeaderboardListState with
-		{
-			SelectedCustomLeaderboard = cl,
-		};
-
-		AsyncHandler.Run(SetCl, () => FetchCustomLeaderboardById.HandleAsync(cl.Id));
-
-		void SetCl(GetCustomLeaderboard? getCustomLeaderboard)
-		{
-			LeaderboardState = new(getCustomLeaderboard);
-
-			Root.Game.CustomLeaderboardsRecorderMainLayout.SetCustomLeaderboard();
+			T.ActionToReduce = null;
 		}
 	}
 

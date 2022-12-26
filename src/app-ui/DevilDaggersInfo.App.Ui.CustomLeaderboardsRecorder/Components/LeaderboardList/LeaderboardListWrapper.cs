@@ -49,12 +49,12 @@ public class LeaderboardListWrapper : AbstractComponent
 		NestingContext.Add(_prevButton);
 		NestingContext.Add(_nextButton);
 
-		StateManager.Subscribe(nameof(LoadLeaderboardList), Load);
-		StateManager.Subscribe(nameof(SetCategory), Load);
-		StateManager.Subscribe(nameof(SetPageIndex), Load);
+		StateManager.Subscribe<LoadLeaderboardList>(_ => Load());
+		StateManager.Subscribe<SetCategory>(_ => Load());
+		StateManager.Subscribe<SetPageIndex>(_ => Load());
 	}
 
-	public void Load()
+	private void Load()
 	{
 		foreach (LeaderboardListEntry leaderboardComponent in _leaderboardComponents)
 			NestingContext.Remove(leaderboardComponent);

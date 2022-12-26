@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States.Actions;
 
-public record SetLoading(bool IsLoading) : IAction
+public record SetLoading(bool IsLoading) : IAction<SetLoading>
 {
 	public void Reduce()
 	{

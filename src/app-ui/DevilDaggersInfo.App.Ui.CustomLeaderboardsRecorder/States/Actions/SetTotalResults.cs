@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States.Actions;
 
-public record SetTotalResults(int TotalResults) : IAction
+public record SetTotalResults(int TotalResults) : IAction<SetTotalResults>
 {
 	public void Reduce()
 	{
