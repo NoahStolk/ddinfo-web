@@ -1,5 +1,6 @@
 using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.States;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Extensions;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using Warp.NET.RenderImpl.Ui.Components;
@@ -29,7 +30,7 @@ public class HistoryScrollArea : ScrollArea
 
 		for (int i = 0; i < SpawnsetHistoryManager.History.Count; i++)
 		{
-			States.SpawnsetHistoryState historyState = SpawnsetHistoryManager.History[i];
+			SpawnsetHistoryState historyState = SpawnsetHistoryManager.History[i];
 			bool isActive = i == SpawnsetHistoryManager.Index;
 			Color colorBackground = historyState.EditType.GetColor();
 			Color colorBackgroundActive = colorBackground.Intensify(32);

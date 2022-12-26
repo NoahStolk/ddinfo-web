@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.App.Ui.SurvivalEditor.States;
+namespace DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.States;
 
 public record SpawnEditorState(List<int> SelectedIndices)
 {

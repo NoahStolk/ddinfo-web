@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Core.Spawnset;
 
-namespace DevilDaggersInfo.App.Ui.SurvivalEditor.States;
+namespace DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.States;
 
 public record SpawnsetState(string SpawnsetName, SpawnsetBinary Spawnset)
 {

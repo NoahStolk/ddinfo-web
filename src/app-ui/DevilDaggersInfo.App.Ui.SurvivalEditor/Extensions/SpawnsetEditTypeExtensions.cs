@@ -1,4 +1,4 @@
-using DevilDaggersInfo.App.Ui.SurvivalEditor.Enums;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Data;
 using DevilDaggersInfo.Common.Exceptions;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Extensions;

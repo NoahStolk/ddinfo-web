@@ -1,5 +1,6 @@
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
-using DevilDaggersInfo.App.Ui.SurvivalEditor.Enums;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Data;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.States;
 using DevilDaggersInfo.Common.Utils;
 using DevilDaggersInfo.Core.Spawnset;
 using System.Security.Cryptography;

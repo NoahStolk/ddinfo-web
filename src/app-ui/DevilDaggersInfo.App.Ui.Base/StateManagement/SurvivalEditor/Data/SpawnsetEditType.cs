@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Enums;
+namespace DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Data;
 
 public enum SpawnsetEditType
 {
