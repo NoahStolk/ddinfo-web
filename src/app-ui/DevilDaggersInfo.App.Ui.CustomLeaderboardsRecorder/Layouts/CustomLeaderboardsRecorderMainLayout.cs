@@ -15,7 +15,6 @@ public class CustomLeaderboardsRecorderMainLayout : Layout, ICustomLeaderboardsR
 {
 	private readonly StateWrapper _stateWrapper;
 	private readonly RecordingWrapper _recordingWrapper;
-	private readonly LeaderboardListWrapper _leaderboardListWrapper;
 	private readonly LeaderboardWrapper _leaderboardWrapper;
 
 	private int _recordingInterval;
@@ -26,13 +25,13 @@ public class CustomLeaderboardsRecorderMainLayout : Layout, ICustomLeaderboardsR
 		MainLayoutBackButton backButton = new(new PixelBounds(0, 0, 24, headerHeight), LayoutManager.ToMainLayout);
 		_stateWrapper = new(new PixelBounds(0, headerHeight, 256, 96 - headerHeight));
 		_recordingWrapper = new(new PixelBounds(0, 96, 256, 416));
-		_leaderboardListWrapper = new(new PixelBounds(256, headerHeight, 768, 512 - headerHeight));
+		LeaderboardListWrapper leaderboardListWrapper = new(new PixelBounds(256, headerHeight, 768, 512 - headerHeight));
 		_leaderboardWrapper = new(new PixelBounds(0, 512, 1024, 256));
 
 		NestingContext.Add(backButton);
 		NestingContext.Add(_stateWrapper);
 		NestingContext.Add(_recordingWrapper);
-		NestingContext.Add(_leaderboardListWrapper);
+		NestingContext.Add(leaderboardListWrapper);
 		NestingContext.Add(_leaderboardWrapper);
 	}
 
@@ -41,11 +40,6 @@ public class CustomLeaderboardsRecorderMainLayout : Layout, ICustomLeaderboardsR
 		StateManager.RefreshActiveSpawnset();
 
 		StateManager.Dispatch(new LoadLeaderboardList());
-	}
-
-	public void RefreshLeaderboardList()
-	{
-		_leaderboardListWrapper.Load();
 	}
 
 	public void SetCustomLeaderboard()

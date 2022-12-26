@@ -11,7 +11,8 @@ namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States;
 
 public static class StateManager
 {
-	private static readonly Dictionary<Type, IAction> _actions = new();
+	private static readonly Dictionary<string, IAction> _actions = new();
+	private static readonly Dictionary<string, List<Action>> _subscribedEvents = new();
 
 	public static ActiveSpawnsetState ActiveSpawnsetState { get; private set; } = ActiveSpawnsetState.GetDefault();
 	public static LeaderboardListState LeaderboardListState { get; set; } = LeaderboardListState.GetDefault();
@@ -21,13 +22,30 @@ public static class StateManager
 
 	public static void Dispatch(IAction action)
 	{
-		_actions[action.GetType()] = action;
+		// Dispatch an action, if it already exists for this action type, overwrite it.
+		// TODO: No reflection.
+		_actions[action.GetType().Name] = action;
 	}
 
-	public static void Reduce()
+	public static void Subscribe(string actionKey, Action action)
 	{
-		foreach (IAction action in _actions.Values)
-			action.Reduce(); // TODO: In case a reducer dispatches more actions, this fails. We may need a separate queue for that.
+		if (_subscribedEvents.TryGetValue(actionKey, out List<Action>? actions))
+			actions.Add(action);
+		else
+			_subscribedEvents[actionKey] = new() { action };
+	}
+
+	public static void ReduceAll()
+	{
+		foreach (KeyValuePair<string, IAction> action in _actions)
+		{
+			action.Value.Reduce();
+			if (!_subscribedEvents.TryGetValue(action.Key, out List<Action>? actions))
+				continue;
+
+			foreach (Action a in actions)
+				a.Invoke();
+		}
 
 		_actions.Clear();
 	}

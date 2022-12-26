@@ -4,7 +4,5 @@ public interface ICustomLeaderboardsRecorderMainLayout : IExtendedLayout
 {
 	void Initialize();
 
-	void RefreshLeaderboardList();
-
 	void SetCustomLeaderboard();
 }

@@ -48,9 +48,12 @@ public class LeaderboardListWrapper : AbstractComponent
 
 		NestingContext.Add(_prevButton);
 		NestingContext.Add(_nextButton);
+
+		StateManager.Subscribe(nameof(LoadLeaderboardList), Load);
+		StateManager.Subscribe(nameof(SetCategory), Load);
+		StateManager.Subscribe(nameof(SetPageIndex), Load);
 	}
 
-	// TODO: Subscribe to SetCategory and SetPageIndex actions.
 	public void Load()
 	{
 		foreach (LeaderboardListEntry leaderboardComponent in _leaderboardComponents)
@@ -58,7 +61,6 @@ public class LeaderboardListWrapper : AbstractComponent
 
 		_leaderboardComponents.Clear();
 
-		StateManager.Dispatch(new SetLoading(true));
 		_prevButton.IsDisabled = true;
 		_nextButton.IsDisabled = true;
 
