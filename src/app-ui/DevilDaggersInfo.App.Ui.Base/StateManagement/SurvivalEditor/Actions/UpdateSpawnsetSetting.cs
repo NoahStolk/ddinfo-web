@@ -6,5 +6,9 @@ public record UpdateSpawnsetSetting(SpawnsetBinary SpawnsetBinary) : IAction<Upd
 {
 	public void Reduce()
 	{
+		StateManager.SpawnsetState = StateManager.SpawnsetState with
+		{
+			Spawnset = SpawnsetBinary,
+		};
 	}
 }

@@ -29,8 +29,7 @@ public class HistoryScrollArea : ScrollArea
 	{
 		StateManager.Subscribe<LoadSpawnset>(_ => Reset());
 		StateManager.Subscribe<SaveHistory>(Save);
-		StateManager.Subscribe<SetSpawnsetHistoryIndex>(SetSpawnsetHistoryIndex);
-		StateManager.Subscribe<SetSpawnsetHistoryIndex>(_ => SetContent()); // TODO: Subscribe to more actions.
+		StateManager.Subscribe<SetSpawnsetHistoryIndex>(SetSpawnsetHistoryIndex); // TODO: Subscribe to more actions.
 	}
 
 	private void Reset()
@@ -63,6 +62,8 @@ public class HistoryScrollArea : ScrollArea
 	private void SetSpawnsetHistoryIndex(SetSpawnsetHistoryIndex setSpawnsetHistoryIndex)
 	{
 		StateManager.Dispatch(new LoadSpawnsetFromHistory(_history[setSpawnsetHistoryIndex.Index].Spawnset.DeepCopy()));
+
+		SetContent();
 	}
 
 	private void SetContent()

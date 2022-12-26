@@ -64,7 +64,7 @@ public static class StateManager
 		Reduce<DeselectSpawn>();
 		Reduce<LoadSpawnset>();
 		Reduce<LoadSpawnsetFromHistory>();
-		Reduce<ReplaceSpawnset>();
+		Reduce<ReplaceCurrentlyActiveSpawnset>();
 		Reduce<SaveHistory>();
 		Reduce<SelectSpawn>();
 		Reduce<SetArenaBucketTolerance>();

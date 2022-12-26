@@ -92,7 +92,8 @@ public class SettingsWrapper : AbstractComponent
 		NestingContext.Add(_buttonLevel3);
 		NestingContext.Add(_buttonLevel4);
 
-		StateManager.Subscribe<LoadSpawnset>(SetSpawnset);
+		StateManager.Subscribe<LoadSpawnset>(_ => SetSpawnset());
+		StateManager.Subscribe<UpdateSpawnsetSetting>(_ => SetSpawnset());
 	}
 
 	private TextButton CreateFormatButton(int y, int index, int worldVersion, int spawnVersion)
@@ -159,21 +160,27 @@ public class SettingsWrapper : AbstractComponent
 		return (textInput, label);
 	}
 
-	private static void ChangeAdditionalGems(string input) => SpawnsetSettingEditUtils.ChangeSetting<int>(v => StateManager.SpawnsetState.Spawnset with { AdditionalGems = v }, input);
+	private static void ChangeAdditionalGems(string input) => ChangeSetting<int>(v => StateManager.SpawnsetState.Spawnset with { AdditionalGems = v }, input);
 
-	private static void ChangeTimerStart(string input) => SpawnsetSettingEditUtils.ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { TimerStart = v }, input);
+	private static void ChangeTimerStart(string input) => ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { TimerStart = v }, input);
 
-	private static void ChangeShrinkStart(string input) => SpawnsetSettingEditUtils.ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { ShrinkStart = v }, input);
+	private static void ChangeShrinkStart(string input) => ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { ShrinkStart = v }, input);
 
-	private static void ChangeShrinkEnd(string input) => SpawnsetSettingEditUtils.ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { ShrinkEnd = v }, input);
+	private static void ChangeShrinkEnd(string input) => ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { ShrinkEnd = v }, input);
 
-	private static void ChangeShrinkRate(string input) => SpawnsetSettingEditUtils.ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { ShrinkRate = v }, input);
+	private static void ChangeShrinkRate(string input) => ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { ShrinkRate = v }, input);
 
-	private static void ChangeBrightness(string input) => SpawnsetSettingEditUtils.ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { Brightness = v }, input);
+	private static void ChangeBrightness(string input) => ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { Brightness = v }, input);
 
-	private void SetSpawnset(LoadSpawnset loadSpawnset)
+	private static void ChangeSetting<T>(Func<T, SpawnsetBinary> spawnsetBuilder, string input)
+		where T : IParsable<T>
 	{
-		SpawnsetBinary spawnset = loadSpawnset.SpawnsetBinary;
+		ParseUtils.TryParseAndExecute<T>(input, f => StateManager.Dispatch(new UpdateSpawnsetSetting(spawnsetBuilder(f))));
+	}
+
+	private void SetSpawnset()
+	{
+		SpawnsetBinary spawnset = StateManager.SpawnsetState.Spawnset;
 
 		_buttonV0V1.ButtonStyle = GetFormatBackground(8, 4);
 		_buttonV2V3.ButtonStyle = GetFormatBackground(9, 4);
