@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States.Actions;
+namespace DevilDaggersInfo.App.Ui.Base.States.Actions;
 
 /// <summary>
 /// Represents an action dispatched by the state manager. There can only be one action of a specific type at a time. If multiple actions are dispatched during the same update, the last one will be the one that is executed.

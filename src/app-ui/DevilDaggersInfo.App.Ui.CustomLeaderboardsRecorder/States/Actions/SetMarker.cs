@@ -1,3 +1,5 @@
+using DevilDaggersInfo.App.Ui.Base.States.Actions;
+
 namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States.Actions;
 
 public record SetMarker(long Value) : IAction<SetMarker>
