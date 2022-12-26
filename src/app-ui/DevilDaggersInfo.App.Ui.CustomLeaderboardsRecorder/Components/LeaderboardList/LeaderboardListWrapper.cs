@@ -52,6 +52,7 @@ public class LeaderboardListWrapper : AbstractComponent
 		StateManager.Subscribe<LoadLeaderboardList>(_ => Load());
 		StateManager.Subscribe<SetCategory>(_ => Load());
 		StateManager.Subscribe<SetPageIndex>(_ => Load());
+		StateManager.Subscribe<SetCurrentPlayerId>(_ => Load());
 
 		StateManager.Subscribe<SetTotalResults>(_ => UpdateNavigationButtons());
 	}

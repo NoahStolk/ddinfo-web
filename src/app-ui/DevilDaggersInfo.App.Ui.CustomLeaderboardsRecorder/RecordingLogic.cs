@@ -91,8 +91,6 @@ public static class RecordingLogic
 		if (StateManager.RecordingState.CurrentPlayerId == 0 && mainBlock.PlayerId > 0)
 		{
 			StateManager.Dispatch(new SetCurrentPlayerId(mainBlock.PlayerId));
-
-			StateManager.Dispatch(new LoadLeaderboardList());
 		}
 
 		// Indicate recording status.
