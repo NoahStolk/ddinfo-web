@@ -84,15 +84,19 @@ public class LeaderboardListEntry : AbstractComponent
 		DownloadAndInstallSpawnset();
 	}
 
-	private void LoadCustomLeaderboard(SetSelectedCustomLeaderboard action)
+	private static void LoadCustomLeaderboard(SetSelectedCustomLeaderboard action)
 	{
 		AsyncHandler.Run(SetCl, () => FetchCustomLeaderboardById.HandleAsync(action.SelectedCustomLeaderboard.Id));
 
 		void SetCl(GetCustomLeaderboard? getCustomLeaderboard)
 		{
-			StateManager.LeaderboardState = new(getCustomLeaderboard);
+			if (getCustomLeaderboard == null)
+			{
+				// Show error and maybe clear displayed leaderboard.
+				return;
+			}
 
-			Root.Game.CustomLeaderboardsRecorderMainLayout.SetCustomLeaderboard();
+			StateManager.Dispatch(new UpdateDisplayedCustomLeaderboard(getCustomLeaderboard));
 		}
 	}
 

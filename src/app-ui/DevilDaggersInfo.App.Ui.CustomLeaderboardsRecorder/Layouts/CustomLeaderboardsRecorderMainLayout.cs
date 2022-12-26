@@ -1,5 +1,8 @@
+using DevilDaggersInfo.App.Core.ApiClient;
+using DevilDaggersInfo.App.Core.ApiClient.TaskHandlers;
 using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts.CustomLeaderboardsRecorder;
+using DevilDaggersInfo.App.Ui.Base.Settings;
 using DevilDaggersInfo.App.Ui.Base.States;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.Leaderboard;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.LeaderboardList;
@@ -7,6 +10,7 @@ using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.Recording;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.State;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States.Actions;
+using System.Security.Cryptography;
 using Warp.NET.Ui;
 
 namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Layouts;
@@ -15,7 +19,6 @@ public class CustomLeaderboardsRecorderMainLayout : Layout, ICustomLeaderboardsR
 {
 	private readonly StateWrapper _stateWrapper;
 	private readonly RecordingWrapper _recordingWrapper;
-	private readonly LeaderboardWrapper _leaderboardWrapper;
 
 	private int _recordingInterval;
 
@@ -26,25 +29,28 @@ public class CustomLeaderboardsRecorderMainLayout : Layout, ICustomLeaderboardsR
 		_stateWrapper = new(new PixelBounds(0, headerHeight, 256, 96 - headerHeight));
 		_recordingWrapper = new(new PixelBounds(0, 96, 256, 416));
 		LeaderboardListWrapper leaderboardListWrapper = new(new PixelBounds(256, headerHeight, 768, 512 - headerHeight));
-		_leaderboardWrapper = new(new PixelBounds(0, 512, 1024, 256));
+		LeaderboardWrapper leaderboardWrapper = new(new PixelBounds(0, 512, 1024, 256));
 
 		NestingContext.Add(backButton);
 		NestingContext.Add(_stateWrapper);
 		NestingContext.Add(_recordingWrapper);
 		NestingContext.Add(leaderboardListWrapper);
-		NestingContext.Add(_leaderboardWrapper);
+		NestingContext.Add(leaderboardWrapper);
 	}
 
 	public void Initialize()
 	{
-		StateManager.RefreshActiveSpawnset();
+		if (!File.Exists(UserSettings.ModsSurvivalPath))
+		{
+			StateManager.Dispatch(new SetActiveSpawnset(null));
+			return;
+		}
+
+		byte[] fileContents = File.ReadAllBytes(UserSettings.ModsSurvivalPath);
+		byte[] fileHash = MD5.HashData(fileContents);
+		AsyncHandler.Run(s => StateManager.Dispatch(new SetActiveSpawnset(s?.Name)), () => FetchSpawnsetByHash.HandleAsync(fileHash));
 
 		StateManager.Dispatch(new LoadLeaderboardList());
-	}
-
-	public void SetCustomLeaderboard()
-	{
-		_leaderboardWrapper.SetCustomLeaderboard();
 	}
 
 	public void Update()

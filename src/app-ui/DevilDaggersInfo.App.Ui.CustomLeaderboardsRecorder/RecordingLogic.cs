@@ -63,7 +63,7 @@ public static class RecordingLogic
 		// Do not execute if the game is not running.
 		if (!Root.Game.GameMemoryService.IsInitialized)
 		{
-			StateManager.SetRecordingState(RecordingStateType.WaitingForGame);
+			StateManager.Dispatch(new SetRecordingState(RecordingStateType.WaitingForGame));
 			return;
 		}
 
@@ -73,11 +73,11 @@ public static class RecordingLogic
 		// When a run is scheduled to upload, keep trying until stats have loaded and the replay is valid.
 		if (_uploadRun)
 		{
-			StateManager.SetRecordingState(RecordingStateType.WaitingForStats);
+			StateManager.Dispatch(new SetRecordingState(RecordingStateType.WaitingForStats));
 			if (!mainBlock.StatsLoaded)
 				return;
 
-			StateManager.SetRecordingState(RecordingStateType.WaitingForReplay);
+			StateManager.Dispatch(new SetRecordingState(RecordingStateType.WaitingForReplay));
 			if (!Root.Game.GameMemoryService.IsReplayValid())
 				return;
 
@@ -90,7 +90,7 @@ public static class RecordingLogic
 		// When the game starts up it will be set to -1, and then to the player ID.
 		if (StateManager.RecordingState.CurrentPlayerId == 0 && mainBlock.PlayerId > 0)
 		{
-			StateManager.SetCurrentPlayerId(mainBlock.PlayerId);
+			StateManager.Dispatch(new SetCurrentPlayerId(mainBlock.PlayerId));
 
 			StateManager.Dispatch(new LoadLeaderboardList());
 		}
@@ -101,22 +101,22 @@ public static class RecordingLogic
 		{
 			if (status is GameStatus.Title or GameStatus.Menu or GameStatus.Lobby || Math.Abs(mainBlock.Time - mainBlockPrevious.Time) < 0.0001f)
 			{
-				StateManager.SetRecordingState(RecordingStateType.WaitingForNextRun);
+				StateManager.Dispatch(new SetRecordingState(RecordingStateType.WaitingForNextRun));
 				return;
 			}
 
-			StateManager.SetRecordingState(RecordingStateType.Recording);
+			StateManager.Dispatch(new SetRecordingState(RecordingStateType.Recording));
 		}
 
 		if (status == GameStatus.LocalReplay)
 		{
-			StateManager.SetRecordingState(RecordingStateType.WaitingForLocalReplay);
+			StateManager.Dispatch(new SetRecordingState(RecordingStateType.WaitingForLocalReplay));
 			return;
 		}
 
 		if (status == GameStatus.OwnReplayFromLeaderboard)
 		{
-			StateManager.SetRecordingState(RecordingStateType.WaitingForLeaderboardReplay);
+			StateManager.Dispatch(new SetRecordingState(RecordingStateType.WaitingForLeaderboardReplay));
 			return;
 		}
 
@@ -137,7 +137,7 @@ public static class RecordingLogic
 			}
 			else
 			{
-				StateManager.SetMarker(getMarker.Value);
+				StateManager.Dispatch(new SetMarker(getMarker.Value));
 			}
 		}
 	}
@@ -240,7 +240,7 @@ public static class RecordingLogic
 		if (uploadSuccess == null)
 			return;
 
-		StateManager.SetLastSubmission(DateTime.Now);
+		StateManager.Dispatch(new SetLastSubmission(DateTime.Now));
 		// Root.Game.CustomLeaderboardsRecorderMainLayout.SetUploadSuccess();
 	}
 
@@ -300,7 +300,7 @@ public static class RecordingLogic
 			daggersFired.Add(br.ReadInt32());
 			daggersHit.Add(br.ReadInt32());
 			enemiesAlive.Add(br.ReadInt32());
-			_ = br.ReadInt32();// Skip level gems.
+			_ = br.ReadInt32(); // Skip level gems.
 			homingStored.Add(br.ReadInt32());
 			gemsDespawned.Add(br.ReadInt32());
 			gemsEaten.Add(br.ReadInt32());

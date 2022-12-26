@@ -3,6 +3,4 @@ namespace DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts.Custo
 public interface ICustomLeaderboardsRecorderMainLayout : IExtendedLayout
 {
 	void Initialize();
-
-	void SetCustomLeaderboard();
 }
