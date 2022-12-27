@@ -2,9 +2,9 @@ namespace DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 
 public record SetArenaBucketVoidHeight(float BucketVoidHeight) : IAction
 {
-	public void Reduce()
+	public void Reduce(StateReducer stateReducer)
 	{
-		StateManager.ArenaEditorState = StateManager.ArenaEditorState with
+		stateReducer.ArenaEditorState = StateManager.ArenaEditorState with
 		{
 			BucketVoidHeight = BucketVoidHeight,
 		};

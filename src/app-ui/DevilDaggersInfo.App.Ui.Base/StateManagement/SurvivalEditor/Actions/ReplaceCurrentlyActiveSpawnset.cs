@@ -5,7 +5,7 @@ namespace DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 /// </summary>
 public record ReplaceCurrentlyActiveSpawnset : IAction
 {
-	public void Reduce()
+	public void Reduce(StateReducer stateReducer)
 	{
 	}
 }

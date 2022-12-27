@@ -2,9 +2,9 @@ namespace DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorde
 
 public record SetCurrentPlayerId(int CurrentPlayerId) : IAction
 {
-	public void Reduce()
+	public void Reduce(StateReducer stateReducer)
 	{
-		StateManager.RecordingState = StateManager.RecordingState with
+		stateReducer.RecordingState = StateManager.RecordingState with
 		{
 			CurrentPlayerId = CurrentPlayerId,
 		};

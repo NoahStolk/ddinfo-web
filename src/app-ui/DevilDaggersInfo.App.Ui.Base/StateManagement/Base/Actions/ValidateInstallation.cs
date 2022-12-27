@@ -5,7 +5,7 @@ namespace DevilDaggersInfo.App.Ui.Base.StateManagement.Base.Actions;
 /// </summary>
 public record ValidateInstallation : IAction
 {
-	public void Reduce()
+	public void Reduce(StateReducer stateReducer)
 	{
 	}
 }

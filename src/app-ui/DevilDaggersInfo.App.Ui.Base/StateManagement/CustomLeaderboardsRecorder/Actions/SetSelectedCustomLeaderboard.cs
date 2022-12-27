@@ -4,9 +4,9 @@ namespace DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorde
 
 public record SetSelectedCustomLeaderboard(GetCustomLeaderboardForOverview SelectedCustomLeaderboard) : IAction
 {
-	public void Reduce()
+	public void Reduce(StateReducer stateReducer)
 	{
-		StateManager.LeaderboardListState = StateManager.LeaderboardListState with
+		stateReducer.LeaderboardListState = StateManager.LeaderboardListState with
 		{
 			SelectedCustomLeaderboard = SelectedCustomLeaderboard,
 		};

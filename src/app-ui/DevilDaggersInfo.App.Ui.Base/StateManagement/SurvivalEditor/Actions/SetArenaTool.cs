@@ -4,9 +4,9 @@ namespace DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 
 public record SetArenaTool(ArenaTool ArenaTool) : IAction
 {
-	public void Reduce()
+	public void Reduce(StateReducer stateReducer)
 	{
-		StateManager.ArenaEditorState = StateManager.ArenaEditorState with
+		stateReducer.ArenaEditorState = StateManager.ArenaEditorState with
 		{
 			ArenaTool = ArenaTool,
 		};

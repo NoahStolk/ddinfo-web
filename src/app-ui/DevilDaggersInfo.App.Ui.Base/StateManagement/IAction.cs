@@ -8,5 +8,5 @@ public interface IAction
 	/// <summary>
 	/// Modifies state.
 	/// </summary>
-	void Reduce();
+	void Reduce(StateReducer stateReducer);
 }

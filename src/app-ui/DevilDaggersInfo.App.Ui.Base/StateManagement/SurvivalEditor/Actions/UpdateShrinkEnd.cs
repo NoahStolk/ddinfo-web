@@ -4,9 +4,9 @@ namespace DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 
 public record UpdateShrinkEnd(float ShrinkEnd) : IAction
 {
-	public void Reduce()
+	public void Reduce(StateReducer stateReducer)
 	{
-		StateManager.SpawnsetState = StateManager.SpawnsetState with
+		stateReducer.SpawnsetState = StateManager.SpawnsetState with
 		{
 			Spawnset = StateManager.SpawnsetState.Spawnset with
 			{

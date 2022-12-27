@@ -10,9 +10,9 @@ namespace DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 /// </summary>
 public record LoadSpawnset(string SpawnsetName, SpawnsetBinary SpawnsetBinary) : IAction
 {
-	public void Reduce()
+	public void Reduce(StateReducer stateReducer)
 	{
-		StateManager.SpawnsetState = new(SpawnsetName, SpawnsetBinary);
+		stateReducer.SpawnsetState = new(SpawnsetName, SpawnsetBinary);
 
 		SpawnsetHistoryUtils.Save(SpawnsetEditType.Reset);
 

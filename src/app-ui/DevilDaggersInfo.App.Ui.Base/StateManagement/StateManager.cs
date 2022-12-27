@@ -6,26 +6,25 @@ namespace DevilDaggersInfo.App.Ui.Base.StateManagement;
 
 public static class StateManager
 {
-	private static readonly Dictionary<Type, List<IAction>> _actionsToDispatch = new();
+	private static readonly Dictionary<Type, List<IAction>> _actionsToReduce = new();
 	private static readonly Dictionary<Type, List<Action>> _eventHandlers = new();
 
-	// TODO: These should only be able to be set by actions.
 	// Base states.
-	public static LayoutState LayoutState { get; set; } = LayoutState.GetDefault();
+	public static LayoutState LayoutState { get; private set; } = LayoutState.GetDefault();
 
 	// Custom leaderboards recorder states.
-	public static ActiveSpawnsetState ActiveSpawnsetState { get; set; } = ActiveSpawnsetState.GetDefault();
-	public static LeaderboardListState LeaderboardListState { get; set; } = LeaderboardListState.GetDefault();
-	public static LeaderboardState LeaderboardState { get; set; } = LeaderboardState.GetDefault();
-	public static MarkerState MarkerState { get; set; } = MarkerState.GetDefault();
-	public static RecordingState RecordingState { get; set; } = RecordingState.GetDefault();
-	public static ReplaySceneState ReplaySceneState { get; set; } = ReplaySceneState.GetDefault();
+	public static ActiveSpawnsetState ActiveSpawnsetState { get; private set; } = ActiveSpawnsetState.GetDefault();
+	public static LeaderboardListState LeaderboardListState { get; private set; } = LeaderboardListState.GetDefault();
+	public static LeaderboardState LeaderboardState { get; private set; } = LeaderboardState.GetDefault();
+	public static MarkerState MarkerState { get; private set; } = MarkerState.GetDefault();
+	public static RecordingState RecordingState { get; private set; } = RecordingState.GetDefault();
+	public static ReplaySceneState ReplaySceneState { get; private set; } = ReplaySceneState.GetDefault();
 
 	// Survival editor states.
-	public static ArenaEditorState ArenaEditorState { get; set; } = ArenaEditorState.GetDefault();
-	public static SpawnEditorState SpawnEditorState { get; set; } = SpawnEditorState.GetDefault();
-	public static SpawnsetHistoryState SpawnsetHistoryState { get; set; } = SpawnsetHistoryState.GetDefault();
-	public static SpawnsetState SpawnsetState { get; set; } = SpawnsetState.GetDefault();
+	public static ArenaEditorState ArenaEditorState { get; private set; } = ArenaEditorState.GetDefault();
+	public static SpawnEditorState SpawnEditorState { get; private set; } = SpawnEditorState.GetDefault();
+	public static SpawnsetHistoryState SpawnsetHistoryState { get; private set; } = SpawnsetHistoryState.GetDefault();
+	public static SpawnsetState SpawnsetState { get; private set; } = SpawnsetState.GetDefault();
 
 	/// <summary>
 	/// <para>
@@ -60,17 +59,17 @@ public static class StateManager
 	public static void Dispatch<TAction>(TAction action)
 		where TAction : class, IAction
 	{
-		if (!_actionsToDispatch.ContainsKey(typeof(TAction)))
-			_actionsToDispatch.Add(typeof(TAction), new());
+		if (!_actionsToReduce.ContainsKey(typeof(TAction)))
+			_actionsToReduce.Add(typeof(TAction), new());
 
-		_actionsToDispatch[typeof(TAction)].Add(action);
+		_actionsToReduce[typeof(TAction)].Add(action);
 	}
 
 	public static void ReduceAll()
 	{
 		// Copy the actions, because new actions can be dispatched while reducing.
-		List<KeyValuePair<Type, List<IAction>>> copy = _actionsToDispatch.ToList();
-		_actionsToDispatch.Clear();
+		List<KeyValuePair<Type, List<IAction>>> copy = _actionsToReduce.ToList();
+		_actionsToReduce.Clear();
 
 		// Collect all the event handlers.
 		List<Action> allEventHandlers = new();
@@ -78,7 +77,22 @@ public static class StateManager
 		{
 			// Reduce the actions first.
 			foreach (IAction action in kvp.Value)
-				action.Reduce();
+			{
+				StateReducer stateReducer = new();
+				action.Reduce(stateReducer);
+
+				LayoutState = stateReducer.LayoutState;
+				ActiveSpawnsetState = stateReducer.ActiveSpawnsetState;
+				LeaderboardListState = stateReducer.LeaderboardListState;
+				LeaderboardState = stateReducer.LeaderboardState;
+				MarkerState = stateReducer.MarkerState;
+				RecordingState = stateReducer.RecordingState;
+				ReplaySceneState = stateReducer.ReplaySceneState;
+				ArenaEditorState = stateReducer.ArenaEditorState;
+				SpawnEditorState = stateReducer.SpawnEditorState;
+				SpawnsetHistoryState = stateReducer.SpawnsetHistoryState;
+				SpawnsetState = stateReducer.SpawnsetState;
+			}
 
 			if (_eventHandlers.TryGetValue(kvp.Key, out List<Action>? eventHandlers))
 			{

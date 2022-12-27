@@ -4,8 +4,8 @@ namespace DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorde
 
 public record BuildReplayScene(ReplayBinary<LocalReplayBinaryHeader>[] ReplayBinaries) : IAction
 {
-	public void Reduce()
+	public void Reduce(StateReducer stateReducer)
 	{
-		StateManager.ReplaySceneState = new(ReplayBinaries);
+		stateReducer.ReplaySceneState = new(ReplayBinaries);
 	}
 }

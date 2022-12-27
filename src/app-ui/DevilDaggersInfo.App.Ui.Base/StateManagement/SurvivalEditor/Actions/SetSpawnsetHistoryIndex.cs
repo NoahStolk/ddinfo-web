@@ -6,14 +6,14 @@ namespace DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 /// </summary>
 public record SetSpawnsetHistoryIndex(int Index) : IAction
 {
-	public void Reduce()
+	public void Reduce(StateReducer stateReducer)
 	{
-		StateManager.SpawnsetHistoryState = StateManager.SpawnsetHistoryState with
+		stateReducer.SpawnsetHistoryState = StateManager.SpawnsetHistoryState with
 		{
 			CurrentIndex = Math.Clamp(Index, 0, StateManager.SpawnsetHistoryState.History.Count - 1),
 		};
 
-		StateManager.SpawnsetState = StateManager.SpawnsetState with
+		stateReducer.SpawnsetState = StateManager.SpawnsetState with
 		{
 			Spawnset = StateManager.SpawnsetHistoryState.History[StateManager.SpawnsetHistoryState.CurrentIndex].Spawnset.DeepCopy(),
 		};

@@ -7,8 +7,8 @@ namespace DevilDaggersInfo.App.Ui.Base.StateManagement.Base.Actions;
 /// </summary>
 public record SetLayout(IExtendedLayout Layout) : IAction
 {
-	public void Reduce()
+	public void Reduce(StateReducer stateReducer)
 	{
-		StateManager.LayoutState = new(Layout);
+		stateReducer.LayoutState = new(Layout);
 	}
 }

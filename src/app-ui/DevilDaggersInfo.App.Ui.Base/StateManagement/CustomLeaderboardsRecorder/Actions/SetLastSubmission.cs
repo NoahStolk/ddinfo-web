@@ -2,9 +2,9 @@ namespace DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorde
 
 public record SetLastSubmission(DateTime LastSubmission) : IAction
 {
-	public void Reduce()
+	public void Reduce(StateReducer stateReducer)
 	{
-		StateManager.RecordingState = StateManager.RecordingState with
+		stateReducer.RecordingState = StateManager.RecordingState with
 		{
 			LastSubmission = LastSubmission,
 		};

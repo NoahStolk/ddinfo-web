@@ -10,7 +10,7 @@ public record AddHistory(SpawnsetHistoryEntry HistoryEntry) : IAction
 {
 	private const int _maxHistoryEntries = 100;
 
-	public void Reduce()
+	public void Reduce(StateReducer stateReducer)
 	{
 		// Clear any newer history.
 		List<SpawnsetHistoryEntry> newHistory = StateManager.SpawnsetHistoryState.History.ToList();
@@ -23,6 +23,6 @@ public record AddHistory(SpawnsetHistoryEntry HistoryEntry) : IAction
 			newCurrentIndex--;
 		}
 
-		StateManager.SpawnsetHistoryState = new(newHistory, newCurrentIndex);
+		stateReducer.SpawnsetHistoryState = new(newHistory, newCurrentIndex);
 	}
 }

@@ -2,9 +2,9 @@ namespace DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorde
 
 public record SetLoading(bool IsLoading) : IAction
 {
-	public void Reduce()
+	public void Reduce(StateReducer stateReducer)
 	{
-		StateManager.LeaderboardListState = StateManager.LeaderboardListState with
+		stateReducer.LeaderboardListState = StateManager.LeaderboardListState with
 		{
 			IsLoading = IsLoading,
 		};

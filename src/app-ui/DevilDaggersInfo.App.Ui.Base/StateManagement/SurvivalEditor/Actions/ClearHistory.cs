@@ -4,8 +4,8 @@ namespace DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 
 public record ClearHistory(SpawnsetHistoryEntry InitialHistoryEntry) : IAction
 {
-	public void Reduce()
+	public void Reduce(StateReducer stateReducer)
 	{
-		StateManager.SpawnsetHistoryState = new(new List<SpawnsetHistoryEntry> { InitialHistoryEntry }, 0);
+		stateReducer.SpawnsetHistoryState = new(new List<SpawnsetHistoryEntry> { InitialHistoryEntry }, 0);
 	}
 }

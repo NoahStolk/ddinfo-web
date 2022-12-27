@@ -2,8 +2,8 @@ namespace DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 
 public record SetSpawnSelections(List<int> SelectedIndices) : IAction
 {
-	public void Reduce()
+	public void Reduce(StateReducer stateReducer)
 	{
-		StateManager.SpawnEditorState = new(SelectedIndices);
+		stateReducer.SpawnEditorState = new(SelectedIndices);
 	}
 }

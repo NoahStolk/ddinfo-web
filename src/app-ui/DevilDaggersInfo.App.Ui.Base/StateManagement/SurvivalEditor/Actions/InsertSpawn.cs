@@ -6,9 +6,9 @@ namespace DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 
 public record InsertSpawn(ImmutableArray<Spawn> NewSpawns) : IAction
 {
-	public void Reduce()
+	public void Reduce(StateReducer stateReducer)
 	{
-		StateManager.SpawnsetState = StateManager.SpawnsetState with
+		stateReducer.SpawnsetState = StateManager.SpawnsetState with
 		{
 			Spawnset = StateManager.SpawnsetState.Spawnset with
 			{

@@ -4,9 +4,9 @@ namespace DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorde
 
 public record SetRecordingState(RecordingStateType RecordingStateType) : IAction
 {
-	public void Reduce()
+	public void Reduce(StateReducer stateReducer)
 	{
-		StateManager.RecordingState = StateManager.RecordingState with
+		stateReducer.RecordingState = StateManager.RecordingState with
 		{
 			RecordingStateType = RecordingStateType,
 		};

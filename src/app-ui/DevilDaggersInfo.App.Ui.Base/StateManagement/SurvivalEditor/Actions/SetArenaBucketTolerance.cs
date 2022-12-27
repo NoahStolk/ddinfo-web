@@ -2,9 +2,9 @@ namespace DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 
 public record SetArenaBucketTolerance(float BucketTolerance) : IAction
 {
-	public void Reduce()
+	public void Reduce(StateReducer stateReducer)
 	{
-		StateManager.ArenaEditorState = StateManager.ArenaEditorState with
+		stateReducer.ArenaEditorState = StateManager.ArenaEditorState with
 		{
 			BucketTolerance = BucketTolerance,
 		};
