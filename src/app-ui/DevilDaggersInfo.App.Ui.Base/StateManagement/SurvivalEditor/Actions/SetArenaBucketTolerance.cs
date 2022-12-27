@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 
-public record SetArenaBucketTolerance(float BucketTolerance) : IAction<SetArenaBucketTolerance>
+public record SetArenaBucketTolerance(float BucketTolerance) : IAction
 {
 	public void Reduce()
 	{

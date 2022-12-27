@@ -2,7 +2,7 @@ using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Data;
 
 namespace DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 
-public record UpdateAdditionalGems(int AdditionalGems) : IAction<UpdateAdditionalGems>
+public record UpdateAdditionalGems(int AdditionalGems) : IAction
 {
 	public void Reduce()
 	{

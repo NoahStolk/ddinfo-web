@@ -2,7 +2,7 @@ using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Data;
 
 namespace DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 
-public record UpdateTimerStart(float TimerStart) : IAction<UpdateTimerStart>
+public record UpdateTimerStart(float TimerStart) : IAction
 {
 	public void Reduce()
 	{

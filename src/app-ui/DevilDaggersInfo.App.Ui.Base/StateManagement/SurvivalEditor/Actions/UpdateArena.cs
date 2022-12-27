@@ -2,7 +2,7 @@ using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Data;
 
 namespace DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 
-public record UpdateArena(float[,] NewArena, SpawnsetEditType SpawnsetEditType) : IAction<UpdateArena>
+public record UpdateArena(float[,] NewArena, SpawnsetEditType SpawnsetEditType) : IAction
 {
 	public void Reduce()
 	{

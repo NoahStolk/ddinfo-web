@@ -2,7 +2,7 @@ using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Data;
 
 namespace DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 
-public record UpdateBrightness(float Brightness) : IAction<UpdateBrightness>
+public record UpdateBrightness(float Brightness) : IAction
 {
 	public void Reduce()
 	{

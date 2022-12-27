@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Actions;
 
-public record SetMarker(long Value) : IAction<SetMarker>
+public record SetMarker(long Value) : IAction
 {
 	public void Reduce()
 	{

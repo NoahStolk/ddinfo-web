@@ -3,7 +3,7 @@ using DevilDaggersInfo.Types.Core.Spawnsets;
 
 namespace DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 
-public record UpdateGameMode(GameMode GameMode) : IAction<UpdateGameMode>
+public record UpdateGameMode(GameMode GameMode) : IAction
 {
 	public void Reduce()
 	{

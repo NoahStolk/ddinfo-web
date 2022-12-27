@@ -6,7 +6,7 @@ namespace DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 /// Fires when the list of history entries is modified.
 /// This does NOT reload a history entry.
 /// </summary>
-public record SetHistory(List<SpawnsetHistoryEntry> History, int CurrentIndex) : IAction<SetHistory>
+public record SetHistory(List<SpawnsetHistoryEntry> History, int CurrentIndex) : IAction
 {
 	public void Reduce()
 	{

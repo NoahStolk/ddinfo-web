@@ -4,7 +4,7 @@ namespace DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 /// Fires when changing history index (undo, redo, clicking an entry).
 /// This also reloads the spawnset.
 /// </summary>
-public record SetSpawnsetHistoryIndex(int Index) : IAction<SetSpawnsetHistoryIndex>
+public record SetSpawnsetHistoryIndex(int Index) : IAction
 {
 	public void Reduce()
 	{

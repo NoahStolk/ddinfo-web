@@ -8,7 +8,7 @@ namespace DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 /// Do not use this when editing an existing spawnset in the UI.
 /// This sets the spawnset name and clears the history.
 /// </summary>
-public record LoadSpawnset(string SpawnsetName, SpawnsetBinary SpawnsetBinary) : IAction<LoadSpawnset>
+public record LoadSpawnset(string SpawnsetName, SpawnsetBinary SpawnsetBinary) : IAction
 {
 	public void Reduce()
 	{

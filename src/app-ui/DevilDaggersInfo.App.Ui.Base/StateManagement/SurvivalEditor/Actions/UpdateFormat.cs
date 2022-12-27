@@ -2,7 +2,7 @@ using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Data;
 
 namespace DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 
-public record UpdateFormat(int WorldVersion, int SpawnVersion) : IAction<UpdateFormat>
+public record UpdateFormat(int WorldVersion, int SpawnVersion) : IAction
 {
 	public void Reduce()
 	{

@@ -3,7 +3,7 @@ using DevilDaggersInfo.Types.Core.Spawnsets;
 
 namespace DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 
-public record UpdateHandLevel(HandLevel HandLevel) : IAction<UpdateHandLevel>
+public record UpdateHandLevel(HandLevel HandLevel) : IAction
 {
 	public void Reduce()
 	{

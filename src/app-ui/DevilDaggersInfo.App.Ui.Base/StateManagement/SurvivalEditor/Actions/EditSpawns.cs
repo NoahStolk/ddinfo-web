@@ -4,7 +4,7 @@ using System.Collections.Immutable;
 
 namespace DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 
-public record EditSpawns(ImmutableArray<Spawn> NewSpawns) : IAction<EditSpawns>
+public record EditSpawns(ImmutableArray<Spawn> NewSpawns) : IAction
 {
 	public void Reduce()
 	{

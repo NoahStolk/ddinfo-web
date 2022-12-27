@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Actions;
 
-public record SetActiveSpawnset(string? Name) : IAction<SetActiveSpawnset>
+public record SetActiveSpawnset(string? Name) : IAction
 {
 	public void Reduce()
 	{

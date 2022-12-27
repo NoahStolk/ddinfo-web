@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Actions;
 
-public record SetPageIndex(int PageIndex) : IAction<SetPageIndex>
+public record SetPageIndex(int PageIndex) : IAction
 {
 	public void Reduce()
 	{

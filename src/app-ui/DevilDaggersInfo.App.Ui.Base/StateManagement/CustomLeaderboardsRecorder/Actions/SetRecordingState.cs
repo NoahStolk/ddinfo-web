@@ -2,7 +2,7 @@ using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Da
 
 namespace DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Actions;
 
-public record SetRecordingState(RecordingStateType RecordingStateType) : IAction<SetRecordingState>
+public record SetRecordingState(RecordingStateType RecordingStateType) : IAction
 {
 	public void Reduce()
 	{

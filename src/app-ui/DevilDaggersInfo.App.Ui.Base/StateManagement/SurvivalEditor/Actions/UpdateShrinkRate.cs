@@ -2,7 +2,7 @@ using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Data;
 
 namespace DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 
-public record UpdateShrinkRate(float ShrinkRate) : IAction<UpdateShrinkRate>
+public record UpdateShrinkRate(float ShrinkRate) : IAction
 {
 	public void Reduce()
 	{
