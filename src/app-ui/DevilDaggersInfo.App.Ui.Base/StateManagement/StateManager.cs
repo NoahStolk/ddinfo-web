@@ -47,7 +47,7 @@ public static class StateManager
 	{
 		if (_actionsToDispatch.ContainsKey(typeof(TAction)))
 		{
-			DebugStack.Add($"Overwriting action {_actionsToDispatch[typeof(TAction)]} with {action}.");
+			DebugStack.Add($"Overwriting action {typeof(TAction)} {_actionsToDispatch[typeof(TAction)]} with {action}.", 5, "WARN");
 			_actionsToDispatch[typeof(TAction)] = action;
 		}
 		else

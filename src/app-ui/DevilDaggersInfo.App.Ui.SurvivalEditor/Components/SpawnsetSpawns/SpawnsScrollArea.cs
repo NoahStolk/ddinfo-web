@@ -30,10 +30,14 @@ public class SpawnsScrollArea : ScrollArea
 		StateManager.Subscribe<UpdateAdditionalGems>(SetSpawns);
 		StateManager.Subscribe<UpdateTimerStart>(SetSpawns);
 
-		StateManager.Subscribe<AddSpawn>(OnAddSpawn);
-		StateManager.Subscribe<EditSpawns>(OnEditSpawns);
-		StateManager.Subscribe<InsertSpawn>(OnInsertSpawn);
+		StateManager.Subscribe<AddSpawn>(SetSpawns);
+		StateManager.Subscribe<EditSpawns>(SetSpawns);
+		StateManager.Subscribe<InsertSpawn>(SetSpawns);
 		StateManager.Subscribe<DeleteSpawns>(SetSpawns);
+
+		StateManager.Subscribe<AddSpawn>(ScrollToEnd);
+		StateManager.Subscribe<EditSpawns>(ScrollToSelectionBegin);
+		StateManager.Subscribe<InsertSpawn>(ScrollToInsertedSpawn);
 	}
 
 	public override void Update(Vector2i<int> scrollOffset)
@@ -117,18 +121,14 @@ public class SpawnsScrollArea : ScrollArea
 		}
 	}
 
-	private void OnAddSpawn()
+	private void ScrollToEnd()
 	{
-		SetSpawns();
-
 		// TODO: We need to call this AFTER the NestingContext has been updated. Even if we call RecalculateHeight here, it still won't be updated until the NestingContext has performed its Update method.
 		UpdateScrollOffsetAndScrollbarPosition(new(0, -_spawnComponents.Count * SpawnEntryHeight));
 	}
 
-	private void OnEditSpawns()
+	private void ScrollToSelectionBegin()
 	{
-		SetSpawns();
-
 		if (StateManager.SpawnEditorState.SelectedIndices.Count == 0)
 			throw new InvalidOperationException("No spawn selected.");
 
@@ -136,10 +136,9 @@ public class SpawnsScrollArea : ScrollArea
 		UpdateScrollOffsetAndScrollbarPosition(new(0, -StateManager.SpawnEditorState.SelectedIndices.Min() * SpawnEntryHeight));
 	}
 
-	private void OnInsertSpawn()
+	private void ScrollToInsertedSpawn()
 	{
 		// TODO: Scroll to inserted spawn index.
-		SetSpawns();
 	}
 
 	private void SetSpawns()
