@@ -20,6 +20,8 @@ public class HistoryScrollArea : ScrollArea
 	public HistoryScrollArea(IBounds bounds)
 		: base(bounds, 96, 16, GlobalStyles.DefaultScrollAreaStyle)
 	{
+		SetContent();
+
 		StateManager.Subscribe<SetHistory>(SetContent);
 		StateManager.Subscribe<SetSpawnsetHistoryIndex>(SetContent);
 	}

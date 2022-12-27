@@ -92,6 +92,8 @@ public class SettingsWrapper : AbstractComponent
 		NestingContext.Add(_buttonLevel3);
 		NestingContext.Add(_buttonLevel4);
 
+		SetSpawnset();
+
 		StateManager.Subscribe<LoadSpawnset>(SetSpawnset);
 		StateManager.Subscribe<SetSpawnsetHistoryIndex>(SetSpawnset);
 		StateManager.Subscribe<UpdateSpawnsetSetting>(SetSpawnset);
