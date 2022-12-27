@@ -34,15 +34,11 @@ public class ArenaToolsWrapper : AbstractComponent
 
 		UpdateActiveButtonAndSettings();
 
+		StateManager.Subscribe<SetArenaTool>(UpdateActiveButtonAndSettings);
+
 		void AddToolButton(int offsetX, int offsetY, ArenaTool arenaTool, Texture texture, string tooltipText)
 		{
-			void SetArenaTool()
-			{
-				StateManager.Dispatch(new SetArenaTool(arenaTool));
-				UpdateActiveButtonAndSettings();
-			}
-
-			TooltipIconButton button = new(Bounds.CreateNested(offsetX, offsetY, _arenaButtonSize, _arenaButtonSize), SetArenaTool, GlobalStyles.DefaultButtonStyle, texture, tooltipText, Color.HalfTransparentWhite, Color.White);
+			TooltipIconButton button = new(Bounds.CreateNested(offsetX, offsetY, _arenaButtonSize, _arenaButtonSize), () => StateManager.Dispatch(new SetArenaTool(arenaTool)), GlobalStyles.DefaultButtonStyle, texture, tooltipText, Color.HalfTransparentWhite, Color.White);
 			_toolButtons.Add(arenaTool, button);
 		}
 	}
