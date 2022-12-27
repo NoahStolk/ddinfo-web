@@ -100,10 +100,8 @@ public class SpawnEditor : AbstractComponent
 		int firstSelection = StateManager.SpawnEditorState.SelectedIndices.Count == 0 ? 0 : StateManager.SpawnEditorState.SelectedIndices.Min();
 		ImmutableArray<Spawn> newSpawns = StateManager.SpawnsetState.Spawnset.Spawns.Insert(firstSelection, new(_selectedEnemyType, _selectedDelay));
 
-		int[] indices = StateManager.SpawnEditorState.SelectedIndices.ToArray();
-		StateManager.Dispatch(new ClearSpawnSelections());
-		foreach (int index in indices)
-			StateManager.Dispatch(new SelectSpawn(index + 1));
+		List<int> indices = StateManager.SpawnEditorState.SelectedIndices.Select(i => i + 1).ToList();
+		StateManager.Dispatch(new SetSpawnSelections(indices));
 
 		StateManager.Dispatch(new UpdateSpawns(newSpawns, SpawnsetEditType.SpawnAdd));
 

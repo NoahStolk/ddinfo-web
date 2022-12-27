@@ -69,19 +69,16 @@ public static class StateManager
 		Reduce<UpdateDisplayedCustomLeaderboard>();
 
 		// Survival editor actions.
-		Reduce<ClearSpawnSelections>();
-		Reduce<DeselectSpawn>();
 		Reduce<LoadSpawnset>();
 		Reduce<LoadSpawnsetFromHistory>();
 		Reduce<ReplaceCurrentlyActiveSpawnset>();
-		Reduce<SelectSpawn>();
 		Reduce<SetArenaBucketTolerance>();
 		Reduce<SetArenaBucketVoidHeight>();
 		Reduce<SetArenaSelectedHeight>();
 		Reduce<SetArenaTool>();
 		Reduce<SetHistory>();
+		Reduce<SetSpawnSelections>();
 		Reduce<SetSpawnsetHistoryIndex>();
-		Reduce<ToggleSpawnSelection>();
 		Reduce<UpdateArena>();
 		Reduce<UpdateRaceDaggerPosition>();
 		Reduce<UpdateSpawns>();

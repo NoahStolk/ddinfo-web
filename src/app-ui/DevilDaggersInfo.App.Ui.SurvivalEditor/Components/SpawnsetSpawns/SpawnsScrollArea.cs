@@ -37,15 +37,18 @@ public class SpawnsScrollArea : ScrollArea
 		bool shift = Input.IsShiftHeld();
 
 		if (ctrl && Input.IsKeyPressed(Keys.A))
-			_spawnComponents.ForEach(sp => StateManager.Dispatch(new SelectSpawn(sp.Index))); // TODO: Fix this. This will only select the last spawn.
+		{
+			List<int> newSelectedIndices = _spawnComponents.ConvertAll(sp => sp.Index);
+			StateManager.Dispatch(new SetSpawnSelections(newSelectedIndices));
+		}
 
 		if (ctrl && Input.IsKeyPressed(Keys.D))
-			StateManager.Dispatch(new ClearSpawnSelections());
+			StateManager.Dispatch(new SetSpawnSelections(new()));
 
 		if (Input.IsKeyPressed(Keys.Delete))
 		{
 			StateManager.Dispatch(new UpdateSpawns(StateManager.SpawnsetState.Spawnset.Spawns.Where((_, i) => !StateManager.SpawnEditorState.SelectedIndices.Contains(i)).ToImmutableArray(), SpawnsetEditType.SpawnDelete));
-			StateManager.Dispatch(new ClearSpawnSelections());
+			StateManager.Dispatch(new SetSpawnSelections(new()));
 
 			RecalculateHeight();
 		}
@@ -56,26 +59,38 @@ public class SpawnsScrollArea : ScrollArea
 
 		if (shift)
 		{
+			List<int> newSelectedIndices = StateManager.SpawnEditorState.SelectedIndices.ToList();
+
 			int endIndex = _spawnComponents.Find(sc => sc.Hover)?.Index ?? _spawnComponents.Count - 1;
 			int start = Math.Clamp(Math.Min(_currentIndex, endIndex), 0, _spawnComponents.Count - 1);
 			int end = Math.Clamp(Math.Max(_currentIndex, endIndex), 0, _spawnComponents.Count - 1);
 			for (int i = start; i <= end; i++)
-				StateManager.Dispatch(new SelectSpawn(i));
+				newSelectedIndices.Add(i);
+
+			StateManager.Dispatch(new SetSpawnSelections(newSelectedIndices));
 		}
 		else
 		{
+			List<int> newSelectedIndices = StateManager.SpawnEditorState.SelectedIndices.ToList();
+
 			foreach (SpawnEntry spawnEntry in _spawnComponents)
 			{
 				if (spawnEntry.Hover)
 				{
-					StateManager.Dispatch(new ToggleSpawnSelection(spawnEntry.Index));
+					if (newSelectedIndices.Contains(spawnEntry.Index))
+						newSelectedIndices.Remove(spawnEntry.Index);
+					else
+						newSelectedIndices.Add(spawnEntry.Index);
+
 					_currentIndex = spawnEntry.Index;
 				}
-				else if (!ctrl)
+				else if (!ctrl && newSelectedIndices.Contains(spawnEntry.Index))
 				{
-					StateManager.Dispatch(new DeselectSpawn(spawnEntry.Index));
+					newSelectedIndices.Remove(spawnEntry.Index);
 				}
 			}
+
+			StateManager.Dispatch(new SetSpawnSelections(newSelectedIndices));
 		}
 	}
 
