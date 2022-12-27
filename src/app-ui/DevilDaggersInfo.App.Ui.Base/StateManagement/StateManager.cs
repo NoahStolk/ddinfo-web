@@ -83,7 +83,16 @@ public static class StateManager
 		Reduce<UpdateArena>();
 		Reduce<UpdateRaceDaggerPosition>();
 		Reduce<UpdateSpawns>();
-		Reduce<UpdateSpawnsetSetting>();
+
+		Reduce<UpdateAdditionalGems>();
+		Reduce<UpdateBrightness>();
+		Reduce<UpdateFormat>();
+		Reduce<UpdateGameMode>();
+		Reduce<UpdateHandLevel>();
+		Reduce<UpdateShrinkStart>();
+		Reduce<UpdateShrinkEnd>();
+		Reduce<UpdateShrinkRate>();
+		Reduce<UpdateTimerStart>();
 
 		foreach (Action eventHandler in eventHandlers)
 			eventHandler.Invoke();

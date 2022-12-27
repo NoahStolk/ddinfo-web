@@ -27,7 +27,9 @@ public class SpawnsScrollArea : ScrollArea
 		StateManager.Subscribe<LoadSpawnset>(SetSpawns);
 		StateManager.Subscribe<SetSpawnsetHistoryIndex>(SetSpawns);
 		StateManager.Subscribe<UpdateSpawns>(SetSpawns);
-		StateManager.Subscribe<UpdateSpawnsetSetting>(SetSpawns); // Update the spawns when TimerStart or AdditionalGems is changed.
+		StateManager.Subscribe<UpdateHandLevel>(SetSpawns);
+		StateManager.Subscribe<UpdateAdditionalGems>(SetSpawns);
+		StateManager.Subscribe<UpdateTimerStart>(SetSpawns);
 	}
 
 	public override void Update(Vector2i<int> scrollOffset)

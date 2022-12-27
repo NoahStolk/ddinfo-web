@@ -41,7 +41,9 @@ public class ArenaWrapper : AbstractComponent
 		StateManager.Subscribe<LoadSpawnset>(SetSliderAndShrinkValues);
 		StateManager.Subscribe<SetSpawnsetHistoryIndex>(SetSliderAndShrinkValues);
 		StateManager.Subscribe<UpdateArena>(SetSliderAndShrinkValues);
-		StateManager.Subscribe<UpdateSpawnsetSetting>(SetSliderAndShrinkValues);
+		StateManager.Subscribe<UpdateShrinkStart>(SetSliderAndShrinkValues);
+		StateManager.Subscribe<UpdateShrinkEnd>(SetSliderAndShrinkValues);
+		StateManager.Subscribe<UpdateShrinkRate>(SetSliderAndShrinkValues);
 	}
 
 	private void SetSliderAndShrinkValues()

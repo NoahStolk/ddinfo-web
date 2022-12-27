@@ -1,17 +1,19 @@
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Data;
-using DevilDaggersInfo.Core.Spawnset;
 
 namespace DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 
-public record UpdateSpawnsetSetting(SpawnsetBinary SpawnsetBinary, SpawnsetEditType SpawnsetEditType) : IAction<UpdateSpawnsetSetting>
+public record UpdateBrightness(float Brightness) : IAction<UpdateBrightness>
 {
 	public void Reduce()
 	{
 		StateManager.SpawnsetState = StateManager.SpawnsetState with
 		{
-			Spawnset = SpawnsetBinary,
+			Spawnset = StateManager.SpawnsetState.Spawnset with
+			{
+				Brightness = Brightness,
+			},
 		};
 
-		SpawnsetHistoryUtils.Save(SpawnsetEditType);
+		SpawnsetHistoryUtils.Save(SpawnsetEditType.Brightness);
 	}
 }
