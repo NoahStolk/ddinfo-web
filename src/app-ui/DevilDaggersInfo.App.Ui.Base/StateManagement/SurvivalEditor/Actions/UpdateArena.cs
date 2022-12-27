@@ -6,14 +6,14 @@ public record UpdateArena(float[,] NewArena, SpawnsetEditType SpawnsetEditType) 
 {
 	public void Reduce(StateReducer stateReducer)
 	{
-		stateReducer.SpawnsetState = StateManager.SpawnsetState with
+		stateReducer.SpawnsetState = stateReducer.SpawnsetState with
 		{
-			Spawnset = StateManager.SpawnsetState.Spawnset with
+			Spawnset = stateReducer.SpawnsetState.Spawnset with
 			{
-				ArenaTiles = new(StateManager.SpawnsetState.Spawnset.ArenaDimension, NewArena),
+				ArenaTiles = new(stateReducer.SpawnsetState.Spawnset.ArenaDimension, NewArena),
 			},
 		};
 
-		SpawnsetHistoryUtils.Save(SpawnsetEditType);
+		SpawnsetHistoryUtils.Save(stateReducer, SpawnsetEditType);
 	}
 }

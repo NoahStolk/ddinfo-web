@@ -4,7 +4,7 @@ public record SetLoading(bool IsLoading) : IAction
 {
 	public void Reduce(StateReducer stateReducer)
 	{
-		stateReducer.LeaderboardListState = StateManager.LeaderboardListState with
+		stateReducer.LeaderboardListState = stateReducer.LeaderboardListState with
 		{
 			IsLoading = IsLoading,
 		};

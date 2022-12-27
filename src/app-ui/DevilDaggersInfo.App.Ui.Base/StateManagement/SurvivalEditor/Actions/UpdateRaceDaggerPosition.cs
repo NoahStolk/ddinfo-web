@@ -6,14 +6,14 @@ public record UpdateRaceDaggerPosition(Vector2 NewRaceDaggerPosition) : IAction
 {
 	public void Reduce(StateReducer stateReducer)
 	{
-		stateReducer.SpawnsetState = StateManager.SpawnsetState with
+		stateReducer.SpawnsetState = stateReducer.SpawnsetState with
 		{
-			Spawnset = StateManager.SpawnsetState.Spawnset with
+			Spawnset = stateReducer.SpawnsetState.Spawnset with
 			{
 				RaceDaggerPosition = NewRaceDaggerPosition,
 			},
 		};
 
-		SpawnsetHistoryUtils.Save(SpawnsetEditType.RaceDagger);
+		SpawnsetHistoryUtils.Save(stateReducer, SpawnsetEditType.RaceDagger);
 	}
 }

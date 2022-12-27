@@ -6,14 +6,14 @@ public record UpdateShrinkStart(float ShrinkStart) : IAction
 {
 	public void Reduce(StateReducer stateReducer)
 	{
-		stateReducer.SpawnsetState = StateManager.SpawnsetState with
+		stateReducer.SpawnsetState = stateReducer.SpawnsetState with
 		{
-			Spawnset = StateManager.SpawnsetState.Spawnset with
+			Spawnset = stateReducer.SpawnsetState.Spawnset with
 			{
 				ShrinkStart = ShrinkStart,
 			},
 		};
 
-		SpawnsetHistoryUtils.Save(SpawnsetEditType.ShrinkStart);
+		SpawnsetHistoryUtils.Save(stateReducer, SpawnsetEditType.ShrinkStart);
 	}
 }

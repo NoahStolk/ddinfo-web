@@ -8,14 +8,14 @@ public record SetSpawnsetHistoryIndex(int Index) : IAction
 {
 	public void Reduce(StateReducer stateReducer)
 	{
-		stateReducer.SpawnsetHistoryState = StateManager.SpawnsetHistoryState with
+		stateReducer.SpawnsetHistoryState = stateReducer.SpawnsetHistoryState with
 		{
-			CurrentIndex = Math.Clamp(Index, 0, StateManager.SpawnsetHistoryState.History.Count - 1),
+			CurrentIndex = Math.Clamp(Index, 0, stateReducer.SpawnsetHistoryState.History.Count - 1),
 		};
 
-		stateReducer.SpawnsetState = StateManager.SpawnsetState with
+		stateReducer.SpawnsetState = stateReducer.SpawnsetState with
 		{
-			Spawnset = StateManager.SpawnsetHistoryState.History[StateManager.SpawnsetHistoryState.CurrentIndex].Spawnset.DeepCopy(),
+			Spawnset = stateReducer.SpawnsetHistoryState.History[stateReducer.SpawnsetHistoryState.CurrentIndex].Spawnset.DeepCopy(),
 		};
 
 		StateManager.Dispatch(new SetSpawnSelections(new()));

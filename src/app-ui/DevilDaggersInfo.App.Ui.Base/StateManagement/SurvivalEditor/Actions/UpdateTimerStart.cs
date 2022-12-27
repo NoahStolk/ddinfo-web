@@ -6,14 +6,14 @@ public record UpdateTimerStart(float TimerStart) : IAction
 {
 	public void Reduce(StateReducer stateReducer)
 	{
-		stateReducer.SpawnsetState = StateManager.SpawnsetState with
+		stateReducer.SpawnsetState = stateReducer.SpawnsetState with
 		{
-			Spawnset = StateManager.SpawnsetState.Spawnset with
+			Spawnset = stateReducer.SpawnsetState.Spawnset with
 			{
 				TimerStart = TimerStart,
 			},
 		};
 
-		SpawnsetHistoryUtils.Save(SpawnsetEditType.TimerStart);
+		SpawnsetHistoryUtils.Save(stateReducer, SpawnsetEditType.TimerStart);
 	}
 }

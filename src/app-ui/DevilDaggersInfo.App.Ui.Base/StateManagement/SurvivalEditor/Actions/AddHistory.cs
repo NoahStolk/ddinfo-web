@@ -13,10 +13,11 @@ public record AddHistory(SpawnsetHistoryEntry HistoryEntry) : IAction
 	public void Reduce(StateReducer stateReducer)
 	{
 		// Clear any newer history.
-		List<SpawnsetHistoryEntry> newHistory = StateManager.SpawnsetHistoryState.History.ToList();
-		newHistory = newHistory.Take(StateManager.SpawnsetHistoryState.CurrentIndex + 1).Append(HistoryEntry).ToList();
+		List<SpawnsetHistoryEntry> newHistory = stateReducer.SpawnsetHistoryState.History.ToList();
+		newHistory = newHistory.Take(stateReducer.SpawnsetHistoryState.CurrentIndex + 1).Append(HistoryEntry).ToList();
 
-		int newCurrentIndex = StateManager.SpawnsetHistoryState.CurrentIndex + 1;
+		// Remove history if there are too many entries.
+		int newCurrentIndex = stateReducer.SpawnsetHistoryState.CurrentIndex + 1;
 		if (newHistory.Count > _maxHistoryEntries)
 		{
 			newHistory.RemoveAt(0);

@@ -4,7 +4,7 @@ public record SetArenaBucketTolerance(float BucketTolerance) : IAction
 {
 	public void Reduce(StateReducer stateReducer)
 	{
-		stateReducer.ArenaEditorState = StateManager.ArenaEditorState with
+		stateReducer.ArenaEditorState = stateReducer.ArenaEditorState with
 		{
 			BucketTolerance = BucketTolerance,
 		};

@@ -4,7 +4,7 @@ public record SetCurrentPlayerId(int CurrentPlayerId) : IAction
 {
 	public void Reduce(StateReducer stateReducer)
 	{
-		stateReducer.RecordingState = StateManager.RecordingState with
+		stateReducer.RecordingState = stateReducer.RecordingState with
 		{
 			CurrentPlayerId = CurrentPlayerId,
 		};

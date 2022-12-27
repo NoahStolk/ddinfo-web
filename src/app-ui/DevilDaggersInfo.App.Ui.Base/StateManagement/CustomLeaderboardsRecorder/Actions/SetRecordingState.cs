@@ -6,7 +6,7 @@ public record SetRecordingState(RecordingStateType RecordingStateType) : IAction
 {
 	public void Reduce(StateReducer stateReducer)
 	{
-		stateReducer.RecordingState = StateManager.RecordingState with
+		stateReducer.RecordingState = stateReducer.RecordingState with
 		{
 			RecordingStateType = RecordingStateType,
 		};

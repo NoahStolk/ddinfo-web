@@ -6,7 +6,7 @@ public record SetArenaTool(ArenaTool ArenaTool) : IAction
 {
 	public void Reduce(StateReducer stateReducer)
 	{
-		stateReducer.ArenaEditorState = StateManager.ArenaEditorState with
+		stateReducer.ArenaEditorState = stateReducer.ArenaEditorState with
 		{
 			ArenaTool = ArenaTool,
 		};

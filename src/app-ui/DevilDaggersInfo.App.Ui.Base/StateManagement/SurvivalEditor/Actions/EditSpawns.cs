@@ -8,14 +8,14 @@ public record EditSpawns(ImmutableArray<Spawn> NewSpawns) : IAction
 {
 	public void Reduce(StateReducer stateReducer)
 	{
-		stateReducer.SpawnsetState = StateManager.SpawnsetState with
+		stateReducer.SpawnsetState = stateReducer.SpawnsetState with
 		{
-			Spawnset = StateManager.SpawnsetState.Spawnset with
+			Spawnset = stateReducer.SpawnsetState.Spawnset with
 			{
 				Spawns = NewSpawns,
 			},
 		};
 
-		SpawnsetHistoryUtils.Save(SpawnsetEditType.SpawnEdit);
+		SpawnsetHistoryUtils.Save(stateReducer, SpawnsetEditType.SpawnEdit);
 	}
 }

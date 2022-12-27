@@ -7,14 +7,14 @@ public record UpdateGameMode(GameMode GameMode) : IAction
 {
 	public void Reduce(StateReducer stateReducer)
 	{
-		stateReducer.SpawnsetState = StateManager.SpawnsetState with
+		stateReducer.SpawnsetState = stateReducer.SpawnsetState with
 		{
-			Spawnset = StateManager.SpawnsetState.Spawnset with
+			Spawnset = stateReducer.SpawnsetState.Spawnset with
 			{
 				GameMode = GameMode,
 			},
 		};
 
-		SpawnsetHistoryUtils.Save(SpawnsetEditType.GameMode);
+		SpawnsetHistoryUtils.Save(stateReducer, SpawnsetEditType.GameMode);
 	}
 }

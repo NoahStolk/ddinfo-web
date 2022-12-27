@@ -6,14 +6,14 @@ public record UpdateBrightness(float Brightness) : IAction
 {
 	public void Reduce(StateReducer stateReducer)
 	{
-		stateReducer.SpawnsetState = StateManager.SpawnsetState with
+		stateReducer.SpawnsetState = stateReducer.SpawnsetState with
 		{
-			Spawnset = StateManager.SpawnsetState.Spawnset with
+			Spawnset = stateReducer.SpawnsetState.Spawnset with
 			{
 				Brightness = Brightness,
 			},
 		};
 
-		SpawnsetHistoryUtils.Save(SpawnsetEditType.Brightness);
+		SpawnsetHistoryUtils.Save(stateReducer, SpawnsetEditType.Brightness);
 	}
 }

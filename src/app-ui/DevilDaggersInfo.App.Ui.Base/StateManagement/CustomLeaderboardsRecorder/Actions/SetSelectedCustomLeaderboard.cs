@@ -6,7 +6,7 @@ public record SetSelectedCustomLeaderboard(GetCustomLeaderboardForOverview Selec
 {
 	public void Reduce(StateReducer stateReducer)
 	{
-		stateReducer.LeaderboardListState = StateManager.LeaderboardListState with
+		stateReducer.LeaderboardListState = stateReducer.LeaderboardListState with
 		{
 			SelectedCustomLeaderboard = SelectedCustomLeaderboard,
 		};

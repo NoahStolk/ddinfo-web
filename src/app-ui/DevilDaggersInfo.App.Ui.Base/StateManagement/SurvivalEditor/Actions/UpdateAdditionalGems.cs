@@ -6,14 +6,14 @@ public record UpdateAdditionalGems(int AdditionalGems) : IAction
 {
 	public void Reduce(StateReducer stateReducer)
 	{
-		stateReducer.SpawnsetState = StateManager.SpawnsetState with
+		stateReducer.SpawnsetState = stateReducer.SpawnsetState with
 		{
-			Spawnset = StateManager.SpawnsetState.Spawnset with
+			Spawnset = stateReducer.SpawnsetState.Spawnset with
 			{
 				AdditionalGems = AdditionalGems,
 			},
 		};
 
-		SpawnsetHistoryUtils.Save(SpawnsetEditType.AdditionalGems);
+		SpawnsetHistoryUtils.Save(stateReducer, SpawnsetEditType.AdditionalGems);
 	}
 }

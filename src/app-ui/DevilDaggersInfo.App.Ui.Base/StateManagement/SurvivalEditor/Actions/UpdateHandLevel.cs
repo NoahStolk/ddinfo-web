@@ -7,14 +7,14 @@ public record UpdateHandLevel(HandLevel HandLevel) : IAction
 {
 	public void Reduce(StateReducer stateReducer)
 	{
-		stateReducer.SpawnsetState = StateManager.SpawnsetState with
+		stateReducer.SpawnsetState = stateReducer.SpawnsetState with
 		{
-			Spawnset = StateManager.SpawnsetState.Spawnset with
+			Spawnset = stateReducer.SpawnsetState.Spawnset with
 			{
 				HandLevel = HandLevel,
 			},
 		};
 
-		SpawnsetHistoryUtils.Save(SpawnsetEditType.HandLevel);
+		SpawnsetHistoryUtils.Save(stateReducer, SpawnsetEditType.HandLevel);
 	}
 }
