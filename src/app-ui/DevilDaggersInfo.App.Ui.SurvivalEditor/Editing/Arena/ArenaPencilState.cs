@@ -14,7 +14,7 @@ namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena;
 public class ArenaPencilState : IArenaState
 {
 	private Vector2i<int>? _pencilStart;
-	private List<Vector2i<int>>? _modifiedCoords;
+	private HashSet<Vector2i<int>>? _modifiedCoords;
 
 	public void Handle(ArenaMousePosition mousePosition)
 	{
@@ -35,7 +35,7 @@ public class ArenaPencilState : IArenaState
 				for (int j = rectangle.Y1; j <= rectangle.Y2; j++)
 				{
 					Vector2i<int> target = new(i, j);
-					if (_modifiedCoords.Contains(target))
+					if (_modifiedCoords.Contains(target)) // Early rejection, even through we're using a HashSet.
 						continue;
 
 					Vector2 visualTileCenter = new Vector2(i, j) * Components.SpawnsetArena.Arena.TileSize + Components.SpawnsetArena.Arena.HalfTile.ToVector2();
@@ -44,9 +44,7 @@ public class ArenaPencilState : IArenaState
 				}
 			}
 
-			Vector2i<int> finalTarget = new(mousePosition.Tile.X, mousePosition.Tile.Y);
-			if (!_modifiedCoords.Contains(finalTarget))
-				_modifiedCoords.Add(finalTarget);
+			_modifiedCoords.Add(new(mousePosition.Tile.X, mousePosition.Tile.Y));
 			_pencilStart = mousePosition.Real;
 		}
 		else if (Input.IsButtonReleased(MouseButton.Left))
