@@ -2,7 +2,6 @@ using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.Extensions;
 using DevilDaggersInfo.App.Ui.Base.StateManagement;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
-using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Data;
 using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Types.Core.Spawnsets;
 using System.Collections.Immutable;
@@ -82,17 +81,14 @@ public class SpawnEditor : AbstractComponent
 		List<Spawn> newSpawns = StateManager.SpawnsetState.Spawnset.Spawns.ToList();
 		newSpawns.Add(new(_selectedEnemyType, _selectedDelay));
 
-		StateManager.Dispatch(new UpdateSpawns(newSpawns.ToImmutableArray(), SpawnsetEditType.SpawnAdd));
-
-		// TODO: Scroll down.
-		// UpdateScrollOffsetAndScrollbarPosition
+		StateManager.Dispatch(new AddSpawn(newSpawns.ToImmutableArray()));
 	}
 
 	private void EditSpawn()
 	{
 		ImmutableArray<Spawn> newSpawns = StateManager.SpawnsetState.Spawnset.Spawns.Select((t, i) => StateManager.SpawnEditorState.SelectedIndices.Contains(i) ? new(_selectedEnemyType, _selectedDelay) : t).ToImmutableArray();
 
-		StateManager.Dispatch(new UpdateSpawns(newSpawns, SpawnsetEditType.SpawnEdit));
+		StateManager.Dispatch(new EditSpawns(newSpawns));
 	}
 
 	private void InsertSpawn()
@@ -103,9 +99,6 @@ public class SpawnEditor : AbstractComponent
 		List<int> indices = StateManager.SpawnEditorState.SelectedIndices.Select(i => i + 1).ToList();
 		StateManager.Dispatch(new SetSpawnSelections(indices));
 
-		StateManager.Dispatch(new UpdateSpawns(newSpawns, SpawnsetEditType.SpawnAdd));
-
-		// TODO: Scroll to insert position.
-		// UpdateScrollOffsetAndScrollbarPosition
+		StateManager.Dispatch(new InsertSpawn(newSpawns));
 	}
 }

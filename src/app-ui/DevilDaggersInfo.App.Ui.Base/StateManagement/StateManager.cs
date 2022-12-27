@@ -23,10 +23,10 @@ public static class StateManager
 	public static ReplaySceneState ReplaySceneState { get; set; } = ReplaySceneState.GetDefault();
 
 	// Survival editor states.
-	public static SpawnsetState SpawnsetState { get; set; } = SpawnsetState.GetDefault();
 	public static ArenaEditorState ArenaEditorState { get; set; } = ArenaEditorState.GetDefault();
 	public static SpawnEditorState SpawnEditorState { get; set; } = SpawnEditorState.GetDefault();
 	public static SpawnsetHistoryState SpawnsetHistoryState { get; set; } = SpawnsetHistoryState.GetDefault();
+	public static SpawnsetState SpawnsetState { get; set; } = SpawnsetState.GetDefault();
 
 	public static void Subscribe<TAction>(Action eventHandler)
 		where TAction : class, IAction<TAction>
@@ -71,6 +71,11 @@ public static class StateManager
 		Reduce<UpdateDisplayedCustomLeaderboard>();
 
 		// Survival editor actions.
+		Reduce<AddSpawn>();
+		Reduce<DeleteSpawns>();
+		Reduce<EditSpawns>();
+		Reduce<InsertSpawn>();
+
 		Reduce<LoadSpawnset>();
 		Reduce<ReplaceCurrentlyActiveSpawnset>();
 		Reduce<SetArenaBucketTolerance>();
@@ -82,7 +87,6 @@ public static class StateManager
 		Reduce<SetSpawnsetHistoryIndex>();
 		Reduce<UpdateArena>();
 		Reduce<UpdateRaceDaggerPosition>();
-		Reduce<UpdateSpawns>();
 
 		Reduce<UpdateAdditionalGems>();
 		Reduce<UpdateBrightness>();

@@ -4,7 +4,7 @@ using System.Collections.Immutable;
 
 namespace DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 
-public record UpdateSpawns(ImmutableArray<Spawn> NewSpawns, SpawnsetEditType SpawnsetEditType) : IAction<UpdateSpawns>
+public record InsertSpawn(ImmutableArray<Spawn> NewSpawns) : IAction<InsertSpawn>
 {
 	public void Reduce()
 	{
@@ -16,6 +16,6 @@ public record UpdateSpawns(ImmutableArray<Spawn> NewSpawns, SpawnsetEditType Spa
 			},
 		};
 
-		SpawnsetHistoryUtils.Save(SpawnsetEditType);
+		SpawnsetHistoryUtils.Save(SpawnsetEditType.SpawnInsert);
 	}
 }

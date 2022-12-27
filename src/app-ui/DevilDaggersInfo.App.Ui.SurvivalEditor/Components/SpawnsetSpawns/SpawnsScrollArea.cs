@@ -2,7 +2,6 @@ using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.StateManagement;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
-using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Data;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Spawns;
 using Silk.NET.GLFW;
 using System.Collections.Immutable;
@@ -26,10 +25,15 @@ public class SpawnsScrollArea : ScrollArea
 	{
 		StateManager.Subscribe<LoadSpawnset>(SetSpawns);
 		StateManager.Subscribe<SetSpawnsetHistoryIndex>(SetSpawns);
-		StateManager.Subscribe<UpdateSpawns>(SetSpawns);
+
 		StateManager.Subscribe<UpdateHandLevel>(SetSpawns);
 		StateManager.Subscribe<UpdateAdditionalGems>(SetSpawns);
 		StateManager.Subscribe<UpdateTimerStart>(SetSpawns);
+
+		StateManager.Subscribe<AddSpawn>(OnAddSpawn);
+		StateManager.Subscribe<EditSpawns>(OnEditSpawns);
+		StateManager.Subscribe<InsertSpawn>(OnInsertSpawn);
+		StateManager.Subscribe<DeleteSpawns>(SetSpawns);
 	}
 
 	public override void Update(Vector2i<int> scrollOffset)
@@ -39,6 +43,7 @@ public class SpawnsScrollArea : ScrollArea
 		bool ctrl = Input.IsCtrlHeld();
 		bool shift = Input.IsShiftHeld();
 
+		// TODO: Only do this when the component is focused.
 		if (ctrl && Input.IsKeyPressed(Keys.A))
 		{
 			List<int> newSelectedIndices = _spawnComponents.ConvertAll(sp => sp.Index);
@@ -49,9 +54,10 @@ public class SpawnsScrollArea : ScrollArea
 		if (ctrl && Input.IsKeyPressed(Keys.D))
 			StateManager.Dispatch(new SetSpawnSelections(new()));
 
+		// TODO: Only do this when the component is focused.
 		if (Input.IsKeyPressed(Keys.Delete))
 		{
-			StateManager.Dispatch(new UpdateSpawns(StateManager.SpawnsetState.Spawnset.Spawns.Where((_, i) => !StateManager.SpawnEditorState.SelectedIndices.Contains(i)).ToImmutableArray(), SpawnsetEditType.SpawnDelete));
+			StateManager.Dispatch(new DeleteSpawns(StateManager.SpawnsetState.Spawnset.Spawns.Where((_, i) => !StateManager.SpawnEditorState.SelectedIndices.Contains(i)).ToImmutableArray()));
 			StateManager.Dispatch(new SetSpawnSelections(new()));
 
 			RecalculateHeight();
@@ -97,6 +103,31 @@ public class SpawnsScrollArea : ScrollArea
 
 			StateManager.Dispatch(new SetSpawnSelections(newSelectedIndices));
 		}
+	}
+
+	private void OnAddSpawn()
+	{
+		SetSpawns();
+
+		// TODO: We need to call this AFTER the NestingContext has been updated. Even if we call RecalculateHeight here, it still won't be updated until the NestingContext has performed its Update method.
+		UpdateScrollOffsetAndScrollbarPosition(new(0, -_spawnComponents.Count * SpawnEntryHeight));
+	}
+
+	private void OnEditSpawns()
+	{
+		SetSpawns();
+
+		if (StateManager.SpawnEditorState.SelectedIndices.Count == 0)
+			throw new InvalidOperationException("No spawn selected.");
+
+		// TODO: Only scroll when the spawn is not visible.
+		UpdateScrollOffsetAndScrollbarPosition(new(0, -StateManager.SpawnEditorState.SelectedIndices.Min() * SpawnEntryHeight));
+	}
+
+	private void OnInsertSpawn()
+	{
+		// TODO: Scroll to inserted spawn index.
+		SetSpawns();
 	}
 
 	private void SetSpawns()
