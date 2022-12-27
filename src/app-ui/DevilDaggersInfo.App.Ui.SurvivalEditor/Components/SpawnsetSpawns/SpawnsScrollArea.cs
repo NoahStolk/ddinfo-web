@@ -58,7 +58,7 @@ public class SpawnsScrollArea : ScrollArea
 		}
 
 		// TODO: Fix this. Right now you can click on File > Save and it will deselect the selected spawns.
-		bool hoverWithoutBlock = Bounds.Contains(MouseUiContext.MousePosition.RoundToVector2Int32() - scrollOffset);
+		bool hoverWithoutBlock = ContentBounds.Contains(MouseUiContext.MousePosition.RoundToVector2Int32() - scrollOffset);
 		if (!Input.IsButtonPressed(MouseButton.Left) || !hoverWithoutBlock)
 			return;
 
@@ -109,7 +109,7 @@ public class SpawnsScrollArea : ScrollArea
 		int i = 0;
 		foreach (SpawnUiEntry spawn in EditSpawnContext.GetFrom(StateManager.SpawnsetState.Spawnset))
 		{
-			SpawnEntry spawnEntry = new(Bounds.CreateNested(0, i++ * SpawnEntryHeight, 384, SpawnEntryHeight), spawn);
+			SpawnEntry spawnEntry = new(Bounds.CreateNested(0, i++ * SpawnEntryHeight, ContentBounds.Size.X, SpawnEntryHeight), spawn);
 			_spawnComponents.Add(spawnEntry);
 		}
 
