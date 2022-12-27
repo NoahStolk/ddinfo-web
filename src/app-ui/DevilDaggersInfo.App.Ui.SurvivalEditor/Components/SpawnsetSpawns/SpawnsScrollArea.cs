@@ -70,7 +70,7 @@ public class SpawnsScrollArea : ScrollArea
 
 		if (shift)
 		{
-			List<int> newSelectedIndices = StateManager.SpawnEditorState.SelectedIndices.ToList();
+			HashSet<int> newSelectedIndices = StateManager.SpawnEditorState.SelectedIndices.ToHashSet();
 
 			int endIndex = _spawnComponents.Find(sc => sc.Hover)?.Index ?? _spawnComponents.Count - 1;
 			int start = Math.Clamp(Math.Min(_currentIndex, endIndex), 0, _spawnComponents.Count - 1);
@@ -78,30 +78,42 @@ public class SpawnsScrollArea : ScrollArea
 			for (int i = start; i <= end; i++)
 				newSelectedIndices.Add(i);
 
-			StateManager.Dispatch(new SetSpawnSelections(newSelectedIndices));
+			StateManager.Dispatch(new SetSpawnSelections(newSelectedIndices.ToList()));
+		}
+		else if (ctrl)
+		{
+			HashSet<int> newSelectedIndices = StateManager.SpawnEditorState.SelectedIndices.ToHashSet();
+
+			SpawnEntry? selectedSpawn = _spawnComponents.Find(sc => sc.Hover);
+
+			if (selectedSpawn != null)
+			{
+				if (newSelectedIndices.Contains(selectedSpawn.Index))
+					newSelectedIndices.Remove(selectedSpawn.Index);
+				else
+					newSelectedIndices.Add(selectedSpawn.Index);
+
+				_currentIndex = selectedSpawn.Index;
+			}
+
+			StateManager.Dispatch(new SetSpawnSelections(newSelectedIndices.ToList()));
 		}
 		else
 		{
-			List<int> newSelectedIndices = StateManager.SpawnEditorState.SelectedIndices.ToList();
+			HashSet<int> oldSelectedIndices = StateManager.SpawnEditorState.SelectedIndices.ToHashSet();
+			HashSet<int> newSelectedIndices = new();
 
-			foreach (SpawnEntry spawnEntry in _spawnComponents)
+			SpawnEntry? selectedSpawn = _spawnComponents.Find(sc => sc.Hover);
+
+			if (selectedSpawn != null)
 			{
-				if (spawnEntry.Hover)
-				{
-					if (newSelectedIndices.Contains(spawnEntry.Index))
-						newSelectedIndices.Remove(spawnEntry.Index);
-					else
-						newSelectedIndices.Add(spawnEntry.Index);
+				if (!oldSelectedIndices.Contains(selectedSpawn.Index))
+					newSelectedIndices.Add(selectedSpawn.Index);
 
-					_currentIndex = spawnEntry.Index;
-				}
-				else if (!ctrl && newSelectedIndices.Contains(spawnEntry.Index))
-				{
-					newSelectedIndices.Remove(spawnEntry.Index);
-				}
+				_currentIndex = selectedSpawn.Index;
 			}
 
-			StateManager.Dispatch(new SetSpawnSelections(newSelectedIndices));
+			StateManager.Dispatch(new SetSpawnSelections(newSelectedIndices.ToList()));
 		}
 	}
 
