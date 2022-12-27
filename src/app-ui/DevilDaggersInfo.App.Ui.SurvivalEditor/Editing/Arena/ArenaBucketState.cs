@@ -13,7 +13,7 @@ public class ArenaBucketState : IArenaState
 		if (!Input.IsButtonPressed(MouseButton.Left))
 			return;
 
-		List<Vector2i<int>> done = new();
+		HashSet<Vector2i<int>> done = new();
 		float[,] tiles = StateManager.SpawnsetState.Spawnset.ArenaTiles.GetMutableClone();
 		int dimension = StateManager.SpawnsetState.Spawnset.ArenaDimension;
 		float targetHeight = StateManager.SpawnsetState.Spawnset.ArenaTiles[mousePosition.Tile.X, mousePosition.Tile.Y];
@@ -21,7 +21,6 @@ public class ArenaBucketState : IArenaState
 
 		Components.SpawnsetArena.Arena.UpdateArena(tiles, SpawnsetEditType.ArenaBucket);
 
-		// TODO: Optimize this.
 		void FillNeighbors(int x, int y)
 		{
 			tiles[x, y] = StateManager.ArenaEditorState.SelectedHeight;
