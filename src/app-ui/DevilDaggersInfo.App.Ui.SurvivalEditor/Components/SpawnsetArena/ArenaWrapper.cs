@@ -38,13 +38,13 @@ public class ArenaWrapper : AbstractComponent
 		TextButton button3d = new(bounds.CreateNested(0, 0, 64, 16), () => StateManager.Dispatch(new SetLayout(Root.Game.SurvivalEditor3dLayout)), GlobalStyles.DefaultButtonStyle, GlobalStyles.View3dButton, "3D");
 		NestingContext.Add(button3d);
 
-		StateManager.Subscribe<LoadSpawnset>(SetSpawnset);
-		StateManager.Subscribe<SetSpawnsetHistoryIndex>(SetSpawnset);
-		StateManager.Subscribe<UpdateArena>(SetSpawnset);
-		StateManager.Subscribe<UpdateSpawnsetSetting>(SetSpawnset);
+		StateManager.Subscribe<LoadSpawnset>(SetSliderAndShrinkValues);
+		StateManager.Subscribe<SetSpawnsetHistoryIndex>(SetSliderAndShrinkValues);
+		StateManager.Subscribe<UpdateArena>(SetSliderAndShrinkValues);
+		StateManager.Subscribe<UpdateSpawnsetSetting>(SetSliderAndShrinkValues);
 	}
 
-	private void SetSpawnset()
+	private void SetSliderAndShrinkValues()
 	{
 		_shrinkSlider.Max = StateManager.SpawnsetState.Spawnset.GetSliderMaxSeconds();
 		_shrinkSlider.CurrentValue = Math.Clamp(_shrinkSlider.CurrentValue, 0, _shrinkSlider.Max);

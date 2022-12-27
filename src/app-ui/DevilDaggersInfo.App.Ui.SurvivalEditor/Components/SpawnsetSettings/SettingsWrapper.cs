@@ -17,7 +17,6 @@ public class SettingsWrapper : AbstractComponent
 {
 	private const int _offset = 16;
 
-	private readonly int _width;
 	private readonly int _halfWidth;
 	private readonly int _thirdWidth;
 	private readonly int _quarterWidth;
@@ -47,12 +46,12 @@ public class SettingsWrapper : AbstractComponent
 	public SettingsWrapper(IBounds bounds)
 		: base(bounds)
 	{
-		_width = bounds.Size.X;
-		_halfWidth = _width / 2;
-		_thirdWidth = (int)MathF.Ceiling(_width / 3f);
+		int width = bounds.Size.X;
+		_halfWidth = width / 2;
+		_thirdWidth = (int)MathF.Ceiling(width / 3f);
 		_quarterWidth = _halfWidth / 2;
 
-		Label title = new(bounds.CreateNested(0, 0, _width, 48), "Settings", GlobalStyles.LabelTitle);
+		Label title = new(bounds.CreateNested(0, 0, width, 48), "Settings", GlobalStyles.LabelTitle);
 		NestingContext.Add(title);
 
 		int y = title.Bounds.Size.Y;

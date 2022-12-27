@@ -24,9 +24,10 @@ public class SpawnsScrollArea : ScrollArea
 	public SpawnsScrollArea(IBounds bounds)
 		: base(bounds, 96, 16, GlobalStyles.DefaultScrollAreaStyle)
 	{
-		StateManager.Subscribe<LoadSpawnset>(SetSpawnset);
-		StateManager.Subscribe<SetSpawnsetHistoryIndex>(SetSpawnset);
-		StateManager.Subscribe<UpdateSpawns>(SetSpawnset);
+		StateManager.Subscribe<LoadSpawnset>(SetSpawns);
+		StateManager.Subscribe<SetSpawnsetHistoryIndex>(SetSpawns);
+		StateManager.Subscribe<UpdateSpawns>(SetSpawns);
+		StateManager.Subscribe<UpdateSpawnsetSetting>(SetSpawns); // Update the spawns when TimerStart or AdditionalGems is changed.
 	}
 
 	public override void Update(Vector2i<int> scrollOffset)
@@ -94,7 +95,7 @@ public class SpawnsScrollArea : ScrollArea
 		}
 	}
 
-	private void SetSpawnset()
+	private void SetSpawns()
 	{
 		foreach (SpawnEntry component in _spawnComponents)
 			NestingContext.Remove(component);
