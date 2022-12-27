@@ -89,9 +89,9 @@ public class LeaderboardListEntry : AbstractComponent
 		if (StateManager.LeaderboardListState.SelectedCustomLeaderboard == null)
 			return;
 
-		AsyncHandler.Run(SetCl, () => FetchCustomLeaderboardById.HandleAsync(StateManager.LeaderboardListState.SelectedCustomLeaderboard.Id));
+		AsyncHandler.Run(UpdateDisplayedCustomLeaderboard, () => FetchCustomLeaderboardById.HandleAsync(StateManager.LeaderboardListState.SelectedCustomLeaderboard.Id));
 
-		void SetCl(GetCustomLeaderboard? getCustomLeaderboard)
+		void UpdateDisplayedCustomLeaderboard(GetCustomLeaderboard? getCustomLeaderboard)
 		{
 			if (getCustomLeaderboard == null)
 			{

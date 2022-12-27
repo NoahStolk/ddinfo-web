@@ -49,10 +49,7 @@ public class SpawnsScrollArea : ScrollArea
 
 		// TODO: Only do this when the component is focused.
 		if (ctrl && Input.IsKeyPressed(Keys.A))
-		{
-			List<int> newSelectedIndices = _spawnComponents.ConvertAll(sp => sp.Index);
-			StateManager.Dispatch(new SetSpawnSelections(newSelectedIndices));
-		}
+			StateManager.Dispatch(new SetSpawnSelections(_spawnComponents.ConvertAll(sp => sp.Index)));
 
 		// TODO: Only do this when the component is focused.
 		if (ctrl && Input.IsKeyPressed(Keys.D))

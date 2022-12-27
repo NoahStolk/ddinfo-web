@@ -45,7 +45,7 @@ public class HistoryScrollArea : ScrollArea
 			TextButtonStyle textButtonStyle = new(Color.White, TextAlign.Left, FontSize.H12);
 			int index = i;
 			const int historyEntryHeight = 16;
-			TextButton button = new(Bounds.CreateNested(0, i * historyEntryHeight, Bounds.Size.X - ScrollbarBounds.Size.X, historyEntryHeight), () => StateManager.Dispatch(new SetSpawnsetHistoryIndex(index)), buttonStyle, textButtonStyle, historyEntry.EditType.GetChange())
+			TextButton button = new(Bounds.CreateNested(0, i * historyEntryHeight, ContentBounds.Size.X, historyEntryHeight), () => StateManager.Dispatch(new SetSpawnsetHistoryIndex(index)), buttonStyle, textButtonStyle, historyEntry.EditType.GetChange())
 			{
 				Depth = Depth + 1,
 			};

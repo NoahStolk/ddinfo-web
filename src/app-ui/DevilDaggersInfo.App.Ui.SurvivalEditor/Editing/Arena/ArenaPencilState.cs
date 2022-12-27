@@ -35,7 +35,7 @@ public class ArenaPencilState : IArenaState
 				for (int j = rectangle.Y1; j <= rectangle.Y2; j++)
 				{
 					Vector2i<int> target = new(i, j);
-					if (_modifiedCoords.Contains(target)) // Early rejection, even through we're using a HashSet.
+					if (_modifiedCoords.Contains(target)) // Early rejection, even though we're using a HashSet.
 						continue;
 
 					Vector2 visualTileCenter = new Vector2(i, j) * Components.SpawnsetArena.Arena.TileSize + Components.SpawnsetArena.Arena.HalfTile.ToVector2();
@@ -78,8 +78,7 @@ public class ArenaPencilState : IArenaState
 		{
 			for (int j = 0; j < SpawnsetBinary.ArenaDimensionMax; j++)
 			{
-				Vector2i<int> target = new(i, j);
-				if (_modifiedCoords.Contains(target))
+				if (_modifiedCoords.Contains(new(i, j)))
 					Root.Game.RectangleRenderer.Schedule(new(Components.SpawnsetArena.Arena.TileSize), origin + new Vector2i<int>(i, j) * Components.SpawnsetArena.Arena.TileSize + Components.SpawnsetArena.Arena.HalfTile, depth, Color.HalfTransparentWhite);
 			}
 		}
