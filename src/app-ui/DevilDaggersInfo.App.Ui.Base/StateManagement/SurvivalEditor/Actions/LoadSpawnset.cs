@@ -15,5 +15,7 @@ public record LoadSpawnset(string SpawnsetName, SpawnsetBinary SpawnsetBinary) :
 		StateManager.SpawnsetState = new(SpawnsetName, SpawnsetBinary);
 
 		SpawnsetHistoryUtils.Save(SpawnsetEditType.Reset);
+
+		StateManager.Dispatch(new SetSpawnSelections(new()));
 	}
 }

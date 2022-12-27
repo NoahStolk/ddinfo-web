@@ -45,6 +45,7 @@ public class SpawnsScrollArea : ScrollArea
 			StateManager.Dispatch(new SetSpawnSelections(newSelectedIndices));
 		}
 
+		// TODO: Only do this when the component is focused.
 		if (ctrl && Input.IsKeyPressed(Keys.D))
 			StateManager.Dispatch(new SetSpawnSelections(new()));
 
@@ -56,6 +57,7 @@ public class SpawnsScrollArea : ScrollArea
 			RecalculateHeight();
 		}
 
+		// TODO: Fix this. Right now you can click on File > Save and it will deselect the selected spawns.
 		bool hoverWithoutBlock = Bounds.Contains(MouseUiContext.MousePosition.RoundToVector2Int32() - scrollOffset);
 		if (!Input.IsButtonPressed(MouseButton.Left) || !hoverWithoutBlock)
 			return;

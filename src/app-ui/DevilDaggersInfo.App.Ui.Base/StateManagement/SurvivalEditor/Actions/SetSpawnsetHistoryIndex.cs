@@ -17,5 +17,7 @@ public record SetSpawnsetHistoryIndex(int Index) : IAction<SetSpawnsetHistoryInd
 		{
 			Spawnset = StateManager.SpawnsetHistoryState.History[StateManager.SpawnsetHistoryState.CurrentIndex].Spawnset.DeepCopy(),
 		};
+
+		StateManager.Dispatch(new SetSpawnSelections(new()));
 	}
 }
