@@ -25,9 +25,9 @@ public class SurvivalEditor3dLayout : Layout, IExtendedLayout
 		StateManager.Subscribe<SetLayout>(BuildScene);
 	}
 
-	private void BuildScene(SetLayout setLayout)
+	private void BuildScene()
 	{
-		if (setLayout.Layout != Root.Game.SurvivalEditor3dLayout)
+		if (StateManager.LayoutState.CurrentLayout != Root.Game.SurvivalEditor3dLayout)
 			return;
 
 		_currentTick = 0;

@@ -9,6 +9,6 @@ public record SetLayout(IExtendedLayout Layout) : IAction<SetLayout>
 {
 	public void Reduce()
 	{
-		Root.Game.ActiveLayout = Layout;
+		StateManager.LayoutState = new(Layout);
 	}
 }

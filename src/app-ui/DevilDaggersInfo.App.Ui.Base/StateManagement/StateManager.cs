@@ -1,4 +1,5 @@
 using DevilDaggersInfo.App.Ui.Base.StateManagement.Base.Actions;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.Base.States;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Actions;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.States;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
@@ -9,12 +10,16 @@ namespace DevilDaggersInfo.App.Ui.Base.StateManagement;
 public static class StateManager
 {
 	// TODO: These should only be able to be set by actions.
+	// Base states.
+	public static LayoutState LayoutState { get; set; } = LayoutState.GetDefault();
+
 	// Custom leaderboards recorder states.
 	public static ActiveSpawnsetState ActiveSpawnsetState { get; set; } = ActiveSpawnsetState.GetDefault();
 	public static LeaderboardListState LeaderboardListState { get; set; } = LeaderboardListState.GetDefault();
 	public static LeaderboardState LeaderboardState { get; set; } = LeaderboardState.GetDefault();
 	public static MarkerState MarkerState { get; set; } = MarkerState.GetDefault();
 	public static RecordingState RecordingState { get; set; } = RecordingState.GetDefault();
+	public static ReplaySceneState ReplaySceneState { get; set; } = ReplaySceneState.GetDefault();
 
 	// Survival editor states.
 	public static SpawnsetState SpawnsetState { get; set; } = SpawnsetState.GetDefault();
@@ -22,7 +27,7 @@ public static class StateManager
 	public static SpawnEditorState SpawnEditorState { get; set; } = SpawnEditorState.GetDefault();
 	public static SpawnsetHistoryState SpawnsetHistoryState { get; set; } = SpawnsetHistoryState.GetDefault();
 
-	public static void Subscribe<TAction>(Action<TAction> eventHandler)
+	public static void Subscribe<TAction>(Action eventHandler)
 		where TAction : class, IAction<TAction>
 	{
 		TAction.Subscribe(eventHandler);
@@ -65,12 +70,12 @@ public static class StateManager
 		Reduce<LoadSpawnset>();
 		Reduce<LoadSpawnsetFromHistory>();
 		Reduce<ReplaceCurrentlyActiveSpawnset>();
-		Reduce<SaveHistory>();
 		Reduce<SelectSpawn>();
 		Reduce<SetArenaBucketTolerance>();
 		Reduce<SetArenaBucketVoidHeight>();
 		Reduce<SetArenaSelectedHeight>();
 		Reduce<SetArenaTool>();
+		Reduce<SetHistory>();
 		Reduce<SetSpawnsetHistoryIndex>();
 		Reduce<ToggleSpawnSelection>();
 		Reduce<UpdateArena>();
@@ -85,8 +90,8 @@ public static class StateManager
 				return;
 
 			T.ActionToReduce.Reduce();
-			foreach (Action<T> eventHandler in T.EventHandlers)
-				eventHandler.Invoke(T.ActionToReduce);
+			foreach (Action eventHandler in T.EventHandlers)
+				eventHandler.Invoke();
 
 			T.ActionToReduce = null;
 		}

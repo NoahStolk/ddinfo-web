@@ -92,8 +92,8 @@ public class SettingsWrapper : AbstractComponent
 		NestingContext.Add(_buttonLevel3);
 		NestingContext.Add(_buttonLevel4);
 
-		StateManager.Subscribe<LoadSpawnset>(_ => SetSpawnset());
-		StateManager.Subscribe<UpdateSpawnsetSetting>(_ => SetSpawnset());
+		StateManager.Subscribe<LoadSpawnset>(SetSpawnset);
+		StateManager.Subscribe<UpdateSpawnsetSetting>(SetSpawnset);
 	}
 
 	private TextButton CreateFormatButton(int y, int index, int worldVersion, int spawnVersion)
@@ -104,7 +104,7 @@ public class SettingsWrapper : AbstractComponent
 		void UpdateFormat()
 		{
 			StateManager.Dispatch(new UpdateSpawnsetSetting(StateManager.SpawnsetState.Spawnset with { WorldVersion = worldVersion, SpawnVersion = spawnVersion }));
-			StateManager.Dispatch(new SaveHistory(SpawnsetEditType.Format));
+			SpawnsetHistoryUtils.Save(SpawnsetEditType.Format);
 		}
 	}
 
@@ -116,7 +116,7 @@ public class SettingsWrapper : AbstractComponent
 		void UpdateFormat()
 		{
 			StateManager.Dispatch(new UpdateSpawnsetSetting(StateManager.SpawnsetState.Spawnset with { GameMode = gameMode }));
-			StateManager.Dispatch(new SaveHistory(SpawnsetEditType.GameMode));
+			SpawnsetHistoryUtils.Save(SpawnsetEditType.GameMode);
 		}
 
 		string ToShortString() => gameMode switch
@@ -136,7 +136,7 @@ public class SettingsWrapper : AbstractComponent
 		void UpdateHand()
 		{
 			StateManager.Dispatch(new UpdateSpawnsetSetting(StateManager.SpawnsetState.Spawnset with { HandLevel = handLevel }));
-			StateManager.Dispatch(new SaveHistory(SpawnsetEditType.HandLevel));
+			SpawnsetHistoryUtils.Save(SpawnsetEditType.HandLevel);
 		}
 
 		string ToShortString() => handLevel switch

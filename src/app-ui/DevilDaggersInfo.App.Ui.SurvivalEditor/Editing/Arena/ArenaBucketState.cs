@@ -2,6 +2,7 @@ using DevilDaggersInfo.App.Ui.Base.StateManagement;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Data;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena.Data;
+using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using Silk.NET.GLFW;
 using Warp.NET;
 
@@ -21,7 +22,7 @@ public class ArenaBucketState : IArenaState
 		FillNeighbors(mousePosition.Tile.X, mousePosition.Tile.Y);
 
 		Components.SpawnsetArena.Arena.UpdateArena(tiles);
-		StateManager.Dispatch(new SaveHistory(SpawnsetEditType.ArenaBucket));
+		SpawnsetHistoryUtils.Save(SpawnsetEditType.ArenaBucket);
 
 		void FillNeighbors(int x, int y)
 		{

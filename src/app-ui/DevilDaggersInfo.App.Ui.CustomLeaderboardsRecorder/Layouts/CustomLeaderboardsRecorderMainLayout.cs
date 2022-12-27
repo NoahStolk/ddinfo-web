@@ -40,9 +40,9 @@ public class CustomLeaderboardsRecorderMainLayout : Layout, IExtendedLayout
 		StateManager.Subscribe<SetLayout>(Initialize);
 	}
 
-	private static void Initialize(SetLayout setLayout)
+	private static void Initialize()
 	{
-		if (setLayout.Layout != Root.Game.CustomLeaderboardsRecorderMainLayout)
+		if (StateManager.LayoutState.CurrentLayout != Root.Game.CustomLeaderboardsRecorderMainLayout)
 			return;
 
 		if (!File.Exists(UserSettings.ModsSurvivalPath))

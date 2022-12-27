@@ -43,7 +43,7 @@ public class ArenaPencilState : IArenaState
 		else if (Input.IsButtonReleased(MouseButton.Left))
 		{
 			_pencilStart = null;
-			StateManager.Dispatch(new SaveHistory(SpawnsetEditType.ArenaPencil));
+			SpawnsetHistoryUtils.Save(SpawnsetEditType.ArenaPencil);
 		}
 	}
 

@@ -25,7 +25,7 @@ public class ArenaLineState : IArenaState
 		{
 			Loop(mousePosition, (i, j) => Components.SpawnsetArena.Arena.UpdateArena(i, j, StateManager.ArenaEditorState.SelectedHeight));
 			_lineStart = null;
-			StateManager.Dispatch(new SaveHistory(SpawnsetEditType.ArenaLine));
+			SpawnsetHistoryUtils.Save(SpawnsetEditType.ArenaLine);
 		}
 	}
 

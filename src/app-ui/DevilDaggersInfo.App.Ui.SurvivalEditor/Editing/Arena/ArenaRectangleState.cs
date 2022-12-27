@@ -24,7 +24,7 @@ public class ArenaRectangleState : IArenaState
 		{
 			Loop(mousePosition, (i, j) => Components.SpawnsetArena.Arena.UpdateArena(i, j, StateManager.ArenaEditorState.SelectedHeight));
 
-			StateManager.Dispatch(new SaveHistory(SpawnsetEditType.ArenaRectangle));
+			SpawnsetHistoryUtils.Save(SpawnsetEditType.ArenaRectangle);
 			_rectangleStart = null;
 		}
 	}

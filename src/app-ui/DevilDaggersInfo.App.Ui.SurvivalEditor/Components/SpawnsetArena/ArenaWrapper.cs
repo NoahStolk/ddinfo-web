@@ -41,9 +41,9 @@ public class ArenaWrapper : AbstractComponent
 		StateManager.Subscribe<LoadSpawnset>(SetSpawnset);
 	}
 
-	private void SetSpawnset(LoadSpawnset loadSpawnset)
+	private void SetSpawnset()
 	{
-		_shrinkSlider.Max = loadSpawnset.SpawnsetBinary.GetSliderMaxSeconds();
+		_shrinkSlider.Max = StateManager.SpawnsetState.Spawnset.GetSliderMaxSeconds();
 		_shrinkSlider.CurrentValue = Math.Clamp(_shrinkSlider.CurrentValue, 0, _shrinkSlider.Max);
 		_arena.SetShrinkCurrent(_shrinkSlider.CurrentValue);
 	}

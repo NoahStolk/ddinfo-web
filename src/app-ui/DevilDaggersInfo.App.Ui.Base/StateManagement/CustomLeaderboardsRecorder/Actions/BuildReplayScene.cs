@@ -6,5 +6,6 @@ public record BuildReplayScene(ReplayBinary<LocalReplayBinaryHeader>[] ReplayBin
 {
 	public void Reduce()
 	{
+		StateManager.ReplaySceneState = new(ReplayBinaries);
 	}
 }

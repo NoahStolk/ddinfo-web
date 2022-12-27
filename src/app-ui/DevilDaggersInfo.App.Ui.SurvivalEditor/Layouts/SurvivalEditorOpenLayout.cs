@@ -45,9 +45,9 @@ public class SurvivalEditorOpenLayout : Layout, IExtendedLayout
 	{
 	}
 
-	private void Initialize(SetLayout setLayout)
+	private void Initialize()
 	{
-		if (setLayout.Layout != Root.Game.SurvivalEditorOpenLayout)
+		if (StateManager.LayoutState.CurrentLayout != Root.Game.SurvivalEditorOpenLayout)
 			return;
 
 		SetComponentsFromPath(UserSettings.DevilDaggersInstallationDirectory);

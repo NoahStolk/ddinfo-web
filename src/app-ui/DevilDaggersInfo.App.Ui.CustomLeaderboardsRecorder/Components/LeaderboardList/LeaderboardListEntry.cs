@@ -84,9 +84,12 @@ public class LeaderboardListEntry : AbstractComponent
 		DownloadAndInstallSpawnset();
 	}
 
-	private static void LoadCustomLeaderboard(SetSelectedCustomLeaderboard action)
+	private static void LoadCustomLeaderboard()
 	{
-		AsyncHandler.Run(SetCl, () => FetchCustomLeaderboardById.HandleAsync(action.SelectedCustomLeaderboard.Id));
+		if (StateManager.LeaderboardListState.SelectedCustomLeaderboard == null)
+			return;
+
+		AsyncHandler.Run(SetCl, () => FetchCustomLeaderboardById.HandleAsync(StateManager.LeaderboardListState.SelectedCustomLeaderboard.Id));
 
 		void SetCl(GetCustomLeaderboard? getCustomLeaderboard)
 		{

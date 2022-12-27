@@ -10,9 +10,9 @@ public interface IAction<TSelf>
 {
 	static virtual TSelf? ActionToReduce { get; set; }
 
-	static virtual List<Action<TSelf>> EventHandlers { get; } = new();
+	static virtual List<Action> EventHandlers { get; } = new();
 
-	static virtual void Subscribe(Action<TSelf> action)
+	static virtual void Subscribe(Action action)
 	{
 		TSelf.EventHandlers.Add(action);
 	}

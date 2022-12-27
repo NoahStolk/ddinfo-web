@@ -17,8 +17,6 @@ public interface IDependencyContainer
 
 	string? TooltipText { get; set; }
 
-	IExtendedLayout? ActiveLayout { get; set; }
-
 	#region Renderers
 
 	MonoSpaceFontRenderer MonoSpaceFontRenderer8 { get; }

@@ -32,9 +32,9 @@ public class LeaderboardWrapper : AbstractComponent
 
 	public static IReadOnlyList<int> TableOffsets { get; } = new List<int> { 16, 24, 260, 308, 352, 400, 448, 496, 552, 560, 664, 720, 776, 832, 888, 992 };
 
-	private void SetCustomLeaderboard(UpdateDisplayedCustomLeaderboard action)
+	private void SetCustomLeaderboard()
 	{
-		_label.Text = action.GetCustomLeaderboard.SpawnsetName;
+		_label.Text = StateManager.LeaderboardState.CustomLeaderboard?.SpawnsetName ?? string.Empty;
 
 		_leaderboardScrollArea.SetContent();
 	}

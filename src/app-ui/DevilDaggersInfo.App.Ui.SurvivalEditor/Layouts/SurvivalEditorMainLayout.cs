@@ -36,7 +36,7 @@ public class SurvivalEditorMainLayout : Layout, IExtendedLayout
 		NestingContext.Add(historyScrollArea);
 		NestingContext.Add(settingsWrapper);
 
-		StateManager.Subscribe<ReplaceCurrentlyActiveSpawnset>(_ => ReplaceSpawnset());
+		StateManager.Subscribe<ReplaceCurrentlyActiveSpawnset>(ReplaceSpawnset);
 	}
 
 	private void ReplaceSpawnset()
@@ -55,9 +55,9 @@ public class SurvivalEditorMainLayout : Layout, IExtendedLayout
 		if (key.HasValue)
 		{
 			if (key == Keys.Z)
-				StateManager.Dispatch(new SetSpawnsetHistoryIndex(StateManager.SpawnsetHistoryState.CurrentIndex - 1, StateManager.SpawnsetHistoryState.Count));
+				StateManager.Dispatch(new SetSpawnsetHistoryIndex(StateManager.SpawnsetHistoryState.CurrentIndex - 1));
 			else if (key == Keys.Y)
-				StateManager.Dispatch(new SetSpawnsetHistoryIndex(StateManager.SpawnsetHistoryState.CurrentIndex + 1, StateManager.SpawnsetHistoryState.Count));
+				StateManager.Dispatch(new SetSpawnsetHistoryIndex(StateManager.SpawnsetHistoryState.CurrentIndex + 1));
 		}
 
 		if (Input.IsKeyPressed(Keys.N))

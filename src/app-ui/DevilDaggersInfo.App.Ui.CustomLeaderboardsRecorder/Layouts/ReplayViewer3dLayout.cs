@@ -28,22 +28,22 @@ public class ReplayViewer3dLayout : Layout, IExtendedLayout
 		StateManager.Subscribe<BuildReplayScene>(BuildScene);
 	}
 
-	private void BuildScene(BuildReplayScene buildReplayScene)
+	private void BuildScene()
 	{
-		if (buildReplayScene.ReplayBinaries.Length == 0)
+		if (StateManager.ReplaySceneState.ReplayBinaries.Length == 0)
 			throw new InvalidOperationException("Cannot build replay scene without replay binaries.");
 
-		if (!SpawnsetBinary.TryParse(buildReplayScene.ReplayBinaries[0].Header.SpawnsetBuffer, out SpawnsetBinary? spawnset))
+		if (!SpawnsetBinary.TryParse(StateManager.ReplaySceneState.ReplayBinaries[0].Header.SpawnsetBuffer, out SpawnsetBinary? spawnset))
 			throw new InvalidOperationException("Spawnset inside replay is invalid.");
 
 		_currentTick = 0;
 
-		_shrinkSlider.Max = buildReplayScene.ReplayBinaries.Max(rb => rb.EventsData.TickCount / 60f);
+		_shrinkSlider.Max = StateManager.ReplaySceneState.ReplayBinaries.Max(rb => rb.EventsData.TickCount / 60f);
 		_shrinkSlider.CurrentValue = Math.Clamp(_shrinkSlider.CurrentValue, 0, _shrinkSlider.Max);
 
 		_arenaScene.BuildArena(spawnset);
 
-		ReplaySimulation replaySimulation = ReplaySimulationBuilder.Build(spawnset, buildReplayScene.ReplayBinaries[0]);
+		ReplaySimulation replaySimulation = ReplaySimulationBuilder.Build(spawnset, StateManager.ReplaySceneState.ReplayBinaries[0]);
 
 		_arenaScene.BuildPlayerMovement(replaySimulation);
 	}

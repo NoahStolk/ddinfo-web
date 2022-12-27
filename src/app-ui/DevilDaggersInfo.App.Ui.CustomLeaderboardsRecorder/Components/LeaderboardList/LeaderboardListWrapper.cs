@@ -49,12 +49,12 @@ public class LeaderboardListWrapper : AbstractComponent
 		NestingContext.Add(_prevButton);
 		NestingContext.Add(_nextButton);
 
-		StateManager.Subscribe<LoadLeaderboardList>(_ => Load());
-		StateManager.Subscribe<SetCategory>(_ => Load());
-		StateManager.Subscribe<SetPageIndex>(_ => Load());
-		StateManager.Subscribe<SetCurrentPlayerId>(_ => Load());
+		StateManager.Subscribe<LoadLeaderboardList>(Load);
+		StateManager.Subscribe<SetCategory>(Load);
+		StateManager.Subscribe<SetPageIndex>(Load);
+		StateManager.Subscribe<SetCurrentPlayerId>(Load);
 
-		StateManager.Subscribe<SetTotalResults>(_ => UpdateNavigationButtons());
+		StateManager.Subscribe<SetTotalResults>(UpdateNavigationButtons);
 	}
 
 	private void UpdateNavigationButtons()

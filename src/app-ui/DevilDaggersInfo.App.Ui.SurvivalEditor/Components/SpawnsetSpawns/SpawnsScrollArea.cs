@@ -4,6 +4,7 @@ using DevilDaggersInfo.App.Ui.Base.StateManagement;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Data;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Spawns;
+using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using Silk.NET.GLFW;
 using System.Collections.Immutable;
 using Warp.NET;
@@ -43,7 +44,7 @@ public class SpawnsScrollArea : ScrollArea
 		if (Input.IsKeyPressed(Keys.Delete))
 		{
 			StateManager.Dispatch(new UpdateSpawns(StateManager.SpawnsetState.Spawnset.Spawns.Where((_, i) => !StateManager.SpawnEditorState.SelectedIndices.Contains(i)).ToImmutableArray()));
-			StateManager.Dispatch(new SaveHistory(SpawnsetEditType.SpawnDelete));
+			SpawnsetHistoryUtils.Save(SpawnsetEditType.SpawnDelete);
 			StateManager.Dispatch(new ClearSpawnSelections());
 
 			RecalculateHeight();
@@ -78,7 +79,7 @@ public class SpawnsScrollArea : ScrollArea
 		}
 	}
 
-	private void SetSpawnset(LoadSpawnset loadSpawnset)
+	private void SetSpawnset()
 	{
 		foreach (SpawnEntry component in _spawnComponents)
 			NestingContext.Remove(component);
@@ -86,7 +87,7 @@ public class SpawnsScrollArea : ScrollArea
 		_spawnComponents.Clear();
 
 		int i = 0;
-		foreach (SpawnUiEntry spawn in EditSpawnContext.GetFrom(loadSpawnset.SpawnsetBinary))
+		foreach (SpawnUiEntry spawn in EditSpawnContext.GetFrom(StateManager.SpawnsetState.Spawnset))
 		{
 			SpawnEntry spawnEntry = new(Bounds.CreateNested(0, i++ * SpawnEntryHeight, 384, SpawnEntryHeight), spawn);
 			_spawnComponents.Add(spawnEntry);

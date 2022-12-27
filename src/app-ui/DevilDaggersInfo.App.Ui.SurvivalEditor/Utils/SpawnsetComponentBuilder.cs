@@ -14,7 +14,7 @@ public static class SpawnsetComponentBuilder
 		void OnInputAndSave(string input)
 		{
 			onChange(input);
-			StateManager.Dispatch(new SaveHistory(spawnsetEditType));
+			SpawnsetHistoryUtils.Save(spawnsetEditType);
 		}
 
 		return new(bounds, true, OnInputAndSave, OnInputAndSave, onChange, GlobalStyles.SpawnsetTextInput);
