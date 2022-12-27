@@ -75,7 +75,7 @@ public class Arena : AbstractComponent
 		};
 	}
 
-	public static void UpdateArena(int x, int y, float height, SpawnsetEditType spawnsetEditType)
+	private static void UpdateArena(int x, int y, float height, SpawnsetEditType spawnsetEditType)
 	{
 		float[,] newArena = StateManager.SpawnsetState.Spawnset.ArenaTiles.GetMutableClone();
 		newArena[x, y] = height;
@@ -174,13 +174,13 @@ public class Arena : AbstractComponent
 
 		if (StateManager.SpawnsetState.Spawnset.GameMode == GameMode.Race)
 		{
-			(int raceX, _, int raceZ) = StateManager.SpawnsetState.Spawnset.GetRaceDaggerTilePosition();
 			int arenaMiddle = StateManager.SpawnsetState.Spawnset.ArenaDimension / 2;
 			float realRaceX = StateManager.SpawnsetState.Spawnset.RaceDaggerPosition.X / 4f + arenaMiddle;
 			float realRaceZ = StateManager.SpawnsetState.Spawnset.RaceDaggerPosition.Y / 4f + arenaMiddle;
 
 			const int halfSize = TileSize / 2;
 
+			(int raceX, _, int raceZ) = StateManager.SpawnsetState.Spawnset.GetRaceDaggerTilePosition();
 			float actualHeight = StateManager.SpawnsetState.Spawnset.GetActualTileHeight(raceX, raceZ, _currentSecond);
 			float lerp = MathF.Sin(Root.Game.Tt) / 2 + 0.5f;
 			Color tileColor = TileUtils.GetColorFromHeight(actualHeight);

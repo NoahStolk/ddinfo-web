@@ -14,7 +14,7 @@ namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena;
 public class ArenaPencilState : IArenaState
 {
 	private Vector2i<int>? _pencilStart;
-	private List<Vector2i<byte>>? _modifiedCoords;
+	private List<Vector2i<int>>? _modifiedCoords;
 
 	public void Handle(ArenaMousePosition mousePosition)
 	{
@@ -34,7 +34,7 @@ public class ArenaPencilState : IArenaState
 			{
 				for (int j = rectangle.Y1; j <= rectangle.Y2; j++)
 				{
-					Vector2i<byte> target = new((byte)i, (byte)j);
+					Vector2i<int> target = new(i, j);
 					if (_modifiedCoords.Contains(target))
 						continue;
 
@@ -44,7 +44,7 @@ public class ArenaPencilState : IArenaState
 				}
 			}
 
-			Vector2i<byte> finalTarget = new((byte)mousePosition.Tile.X, (byte)mousePosition.Tile.Y);
+			Vector2i<int> finalTarget = new(mousePosition.Tile.X, mousePosition.Tile.Y);
 			if (!_modifiedCoords.Contains(finalTarget))
 				_modifiedCoords.Add(finalTarget);
 			_pencilStart = mousePosition.Real;
@@ -56,7 +56,7 @@ public class ArenaPencilState : IArenaState
 
 			float[,] newArena = StateManager.SpawnsetState.Spawnset.ArenaTiles.GetMutableClone();
 
-			foreach (Vector2i<byte> position in _modifiedCoords)
+			foreach (Vector2i<int> position in _modifiedCoords)
 				newArena[position.X, position.Y] = StateManager.ArenaEditorState.SelectedHeight;
 
 			Components.SpawnsetArena.Arena.UpdateArena(newArena, SpawnsetEditType.ArenaPencil);
@@ -80,7 +80,7 @@ public class ArenaPencilState : IArenaState
 		{
 			for (int j = 0; j < SpawnsetBinary.ArenaDimensionMax; j++)
 			{
-				Vector2i<byte> target = new((byte)i, (byte)j);
+				Vector2i<int> target = new(i, j);
 				if (_modifiedCoords.Contains(target))
 					Root.Game.RectangleRenderer.Schedule(new(Components.SpawnsetArena.Arena.TileSize), origin + new Vector2i<int>(i, j) * Components.SpawnsetArena.Arena.TileSize + Components.SpawnsetArena.Arena.HalfTile, depth, Color.HalfTransparentWhite);
 			}

@@ -21,6 +21,7 @@ public class ArenaBucketState : IArenaState
 
 		Components.SpawnsetArena.Arena.UpdateArena(tiles, SpawnsetEditType.ArenaBucket);
 
+		// TODO: Optimize this.
 		void FillNeighbors(int x, int y)
 		{
 			tiles[x, y] = StateManager.ArenaEditorState.SelectedHeight;
