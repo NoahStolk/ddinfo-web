@@ -55,9 +55,17 @@ public class SurvivalEditorMainLayout : Layout, IExtendedLayout
 		if (key.HasValue)
 		{
 			if (key == Keys.Z)
+			{
 				StateManager.Dispatch(new SetSpawnsetHistoryIndex(StateManager.SpawnsetHistoryState.CurrentIndex - 1));
+				StateManager.Dispatch(new LoadSpawnsetFromHistory());
+				StateManager.Dispatch(new SetSpawnSelections(new()));
+			}
 			else if (key == Keys.Y)
+			{
 				StateManager.Dispatch(new SetSpawnsetHistoryIndex(StateManager.SpawnsetHistoryState.CurrentIndex + 1));
+				StateManager.Dispatch(new LoadSpawnsetFromHistory());
+				StateManager.Dispatch(new SetSpawnSelections(new()));
+			}
 		}
 
 		if (Input.IsKeyPressed(Keys.N))

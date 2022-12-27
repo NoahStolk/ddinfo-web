@@ -3,7 +3,6 @@ using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.StateManagement;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Data;
-using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.States;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Extensions;
 using Warp.NET.RenderImpl.Ui.Components;
 using Warp.NET.RenderImpl.Ui.Components.Styles;
@@ -21,20 +20,8 @@ public class HistoryScrollArea : ScrollArea
 	public HistoryScrollArea(IBounds bounds)
 		: base(bounds, 96, 16, GlobalStyles.DefaultScrollAreaStyle)
 	{
-		StateManager.Subscribe<LoadSpawnset>(Reset);
-		StateManager.Subscribe<SetSpawnsetHistoryIndex>(SetSpawnsetHistoryIndex); // TODO: Subscribe to more actions.
-	}
-
-	private void Reset()
-	{
-		StateManager.Dispatch(new SetHistory(SpawnsetHistoryState.GetDefault().History.ToList()));
-	}
-
-	private void SetSpawnsetHistoryIndex()
-	{
-		StateManager.Dispatch(new LoadSpawnsetFromHistory(StateManager.SpawnsetHistoryState.History[StateManager.SpawnsetHistoryState.CurrentIndex].Spawnset.DeepCopy()));
-
-		SetContent();
+		StateManager.Subscribe<SetHistory>(SetContent);
+		StateManager.Subscribe<SetSpawnsetHistoryIndex>(SetContent);
 	}
 
 	private void SetContent()
@@ -55,11 +42,17 @@ public class HistoryScrollArea : ScrollArea
 			TextButtonStyle textButtonStyle = new(Color.White, TextAlign.Left, FontSize.H12);
 			int index = i;
 			const int historyEntryHeight = 16;
-			TextButton button = new(Bounds.CreateNested(0, i * historyEntryHeight, Bounds.Size.X - ScrollbarBounds.Size.X, historyEntryHeight), () => StateManager.Dispatch(new SetSpawnsetHistoryIndex(index)), buttonStyle, textButtonStyle, historyEntry.EditType.GetChange())
+			TextButton button = new(Bounds.CreateNested(0, i * historyEntryHeight, Bounds.Size.X - ScrollbarBounds.Size.X, historyEntryHeight), LoadSpawnsetFromHistory, buttonStyle, textButtonStyle, historyEntry.EditType.GetChange())
 			{
 				Depth = Depth + 1,
 			};
 			_historyComponents.Add(button);
+
+			void LoadSpawnsetFromHistory()
+			{
+				StateManager.Dispatch(new SetSpawnsetHistoryIndex(index));
+				StateManager.Dispatch(new LoadSpawnsetFromHistory());
+			}
 		}
 
 		foreach (AbstractComponent component in _historyComponents)

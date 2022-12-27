@@ -46,6 +46,8 @@ public static class StateManager
 
 	public static void ReduceAll()
 	{
+		List<Action> eventHandlers = new();
+
 		// TODO: Don't do this manually.
 
 		// Base actions.
@@ -84,7 +86,10 @@ public static class StateManager
 		Reduce<UpdateSpawns>();
 		Reduce<UpdateSpawnsetSetting>();
 
-		static void Reduce<T>()
+		foreach (Action eventHandler in eventHandlers)
+			eventHandler.Invoke();
+
+		void Reduce<T>()
 			where T : class, IAction<T>
 		{
 			if (T.ActionToReduce == null)
@@ -92,8 +97,7 @@ public static class StateManager
 
 			T.ActionToReduce.Reduce();
 			DebugStack.Add($"Reduced {T.ActionToReduce}.", 1);
-			foreach (Action eventHandler in T.EventHandlers)
-				eventHandler.Invoke();
+			eventHandlers.AddRange(T.EventHandlers.Where(e => !eventHandlers.Contains(e)));
 
 			T.ActionToReduce = null;
 		}

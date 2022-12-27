@@ -7,7 +7,6 @@ using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Spawns;
 using Silk.NET.GLFW;
 using System.Collections.Immutable;
 using Warp.NET;
-using Warp.NET.Debugging;
 using Warp.NET.Extensions;
 using Warp.NET.RenderImpl.Ui.Components;
 using Warp.NET.Ui;
@@ -26,6 +25,7 @@ public class SpawnsScrollArea : ScrollArea
 		: base(bounds, 96, 16, GlobalStyles.DefaultScrollAreaStyle)
 	{
 		StateManager.Subscribe<LoadSpawnset>(SetSpawnset);
+		StateManager.Subscribe<LoadSpawnsetFromHistory>(SetSpawnset);
 		StateManager.Subscribe<UpdateSpawns>(SetSpawnset);
 	}
 

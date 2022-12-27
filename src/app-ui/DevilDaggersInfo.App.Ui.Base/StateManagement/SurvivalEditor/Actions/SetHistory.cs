@@ -2,13 +2,14 @@ using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Data;
 
 namespace DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 
-public record SetHistory(List<SpawnsetHistoryEntry> History) : IAction<SetHistory>
+/// <summary>
+/// Fires when the list of history entries is modified.
+/// This does NOT reload a history entry.
+/// </summary>
+public record SetHistory(List<SpawnsetHistoryEntry> History, int CurrentIndex) : IAction<SetHistory>
 {
 	public void Reduce()
 	{
-		StateManager.SpawnsetHistoryState = StateManager.SpawnsetHistoryState with
-		{
-			History = History,
-		};
+		StateManager.SpawnsetHistoryState = new(History, CurrentIndex);
 	}
 }
