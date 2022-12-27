@@ -1,6 +1,5 @@
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.StateManagement;
-using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Data;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena.Data;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
@@ -13,25 +12,32 @@ namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena;
 public class ArenaRectangleState : IArenaState
 {
 	private Vector2i<int>? _rectangleStart;
+	private float[,]? _newArena;
 
 	public void Handle(ArenaMousePosition mousePosition)
 	{
 		if (Input.IsButtonPressed(MouseButton.Left))
 		{
 			_rectangleStart = mousePosition.Tile;
+			_newArena = StateManager.SpawnsetState.Spawnset.ArenaTiles.GetMutableClone();
 		}
 		else if (Input.IsButtonReleased(MouseButton.Left))
 		{
-			Loop(mousePosition, (i, j) => Components.SpawnsetArena.Arena.UpdateArena(i, j, StateManager.ArenaEditorState.SelectedHeight));
+			if (!_rectangleStart.HasValue || _newArena == null)
+				return;
 
-			SpawnsetHistoryUtils.Save(SpawnsetEditType.ArenaRectangle);
-			_rectangleStart = null;
+			Loop(mousePosition, (i, j) => _newArena[i, j] = StateManager.ArenaEditorState.SelectedHeight);
+
+			Components.SpawnsetArena.Arena.UpdateArena(_newArena, SpawnsetEditType.ArenaRectangle);
+
+			Reset();
 		}
 	}
 
 	public void Reset()
 	{
 		_rectangleStart = null;
+		_newArena = null;
 	}
 
 	public void Render(ArenaMousePosition mousePosition, Vector2i<int> origin, float depth)

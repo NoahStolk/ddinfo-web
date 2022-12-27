@@ -75,16 +75,16 @@ public class Arena : AbstractComponent
 		};
 	}
 
-	public static void UpdateArena(int x, int y, float height)
+	public static void UpdateArena(int x, int y, float height, SpawnsetEditType spawnsetEditType)
 	{
 		float[,] newArena = StateManager.SpawnsetState.Spawnset.ArenaTiles.GetMutableClone();
 		newArena[x, y] = height;
-		UpdateArena(newArena);
+		UpdateArena(newArena, spawnsetEditType);
 	}
 
-	public static void UpdateArena(float[,] newArena)
+	public static void UpdateArena(float[,] newArena, SpawnsetEditType spawnsetEditType)
 	{
-		StateManager.Dispatch(new UpdateArena(newArena));
+		StateManager.Dispatch(new UpdateArena(newArena, spawnsetEditType));
 	}
 
 	public override void Update(Vector2i<int> scrollOffset)
@@ -110,8 +110,7 @@ public class Arena : AbstractComponent
 		if (scroll != 0)
 		{
 			// TODO: Selection.
-			UpdateArena(mousePosition.Tile.X, mousePosition.Tile.Y, StateManager.SpawnsetState.Spawnset.ArenaTiles[mousePosition.Tile.X, mousePosition.Tile.Y] + scroll);
-			SpawnsetHistoryUtils.Save(SpawnsetEditType.ArenaTileHeight);
+			UpdateArena(mousePosition.Tile.X, mousePosition.Tile.Y, StateManager.SpawnsetState.Spawnset.ArenaTiles[mousePosition.Tile.X, mousePosition.Tile.Y] + scroll, SpawnsetEditType.ArenaTileHeight);
 			return;
 		}
 

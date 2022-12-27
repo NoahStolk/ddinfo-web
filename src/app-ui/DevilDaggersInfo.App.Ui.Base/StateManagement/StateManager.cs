@@ -4,6 +4,7 @@ using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Ac
 using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.States;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.States;
+using Warp.NET.Debugging;
 
 namespace DevilDaggersInfo.App.Ui.Base.StateManagement;
 
@@ -36,6 +37,9 @@ public static class StateManager
 	public static void Dispatch<TAction>(TAction action)
 		where TAction : class, IAction<TAction>
 	{
+		if (TAction.ActionToReduce != null)
+			DebugStack.Add($"Overwriting action {TAction.ActionToReduce} with {action}.");
+
 		// Dispatch an action, if it already exists for this action type, overwrite it.
 		TAction.ActionToReduce = action;
 	}
@@ -90,6 +94,7 @@ public static class StateManager
 				return;
 
 			T.ActionToReduce.Reduce();
+			DebugStack.Add($"Reduced {T.ActionToReduce}.", 1);
 			foreach (Action eventHandler in T.EventHandlers)
 				eventHandler.Invoke();
 

@@ -1,3 +1,5 @@
+using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Data;
+
 namespace DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 
 public record UpdateRaceDaggerPosition(Vector2 NewRaceDaggerPosition) : IAction<UpdateRaceDaggerPosition>
@@ -11,5 +13,7 @@ public record UpdateRaceDaggerPosition(Vector2 NewRaceDaggerPosition) : IAction<
 				RaceDaggerPosition = NewRaceDaggerPosition,
 			},
 		};
+
+		SpawnsetHistoryUtils.Save(SpawnsetEditType.RaceDagger);
 	}
 }

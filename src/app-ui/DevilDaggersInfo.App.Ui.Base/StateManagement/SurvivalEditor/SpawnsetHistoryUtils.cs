@@ -1,11 +1,10 @@
-using DevilDaggersInfo.App.Ui.Base.StateManagement;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Data;
 using DevilDaggersInfo.Common.Utils;
 using DevilDaggersInfo.Core.Spawnset;
 using System.Security.Cryptography;
 
-namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
+namespace DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor;
 
 public static class SpawnsetHistoryUtils
 {
@@ -18,7 +17,7 @@ public static class SpawnsetHistoryUtils
 		newHistory = newHistory.Take(StateManager.SpawnsetHistoryState.CurrentIndex + 1).ToList();
 
 		SpawnsetBinary copy = StateManager.SpawnsetState.Spawnset.DeepCopy();
-		byte[] originalHash = StateManager.SpawnsetHistoryState.History.Count == 0 ? Array.Empty<byte>() : StateManager.SpawnsetHistoryState.History[^1].Hash;
+		byte[] originalHash = newHistory.Count == 0 ? Array.Empty<byte>() : newHistory[^1].Hash;
 		byte[] hash = MD5.HashData(copy.ToBytes());
 
 		if (ArrayUtils.AreEqual(originalHash, hash))
@@ -30,6 +29,6 @@ public static class SpawnsetHistoryUtils
 			newHistory.RemoveAt(0);
 
 		StateManager.Dispatch(new SetHistory(newHistory));
-		StateManager.Dispatch(new SetSpawnsetHistoryIndex(StateManager.SpawnsetHistoryState.History.Count - 1));
+		StateManager.Dispatch(new SetSpawnsetHistoryIndex(newHistory.Count - 1));
 	}
 }

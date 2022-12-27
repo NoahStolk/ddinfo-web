@@ -3,8 +3,8 @@ using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.StateManagement;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Data;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.States;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Extensions;
-using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using Warp.NET.RenderImpl.Ui.Components;
 using Warp.NET.RenderImpl.Ui.Components.Styles;
 using Warp.NET.RenderImpl.Ui.Rendering.Text;
@@ -27,8 +27,7 @@ public class HistoryScrollArea : ScrollArea
 
 	private void Reset()
 	{
-		StateManager.Dispatch(new SetHistory(new()));
-		SpawnsetHistoryUtils.Save(SpawnsetEditType.Reset);
+		StateManager.Dispatch(new SetHistory(SpawnsetHistoryState.GetDefault().History.ToList()));
 	}
 
 	private void SetSpawnsetHistoryIndex()

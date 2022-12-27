@@ -4,10 +4,10 @@ using DevilDaggersInfo.App.Ui.Base.StateManagement;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Data;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Spawns;
-using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using Silk.NET.GLFW;
 using System.Collections.Immutable;
 using Warp.NET;
+using Warp.NET.Debugging;
 using Warp.NET.Extensions;
 using Warp.NET.RenderImpl.Ui.Components;
 using Warp.NET.Ui;
@@ -26,6 +26,7 @@ public class SpawnsScrollArea : ScrollArea
 		: base(bounds, 96, 16, GlobalStyles.DefaultScrollAreaStyle)
 	{
 		StateManager.Subscribe<LoadSpawnset>(SetSpawnset);
+		StateManager.Subscribe<UpdateSpawns>(SetSpawnset);
 	}
 
 	public override void Update(Vector2i<int> scrollOffset)
@@ -43,8 +44,7 @@ public class SpawnsScrollArea : ScrollArea
 
 		if (Input.IsKeyPressed(Keys.Delete))
 		{
-			StateManager.Dispatch(new UpdateSpawns(StateManager.SpawnsetState.Spawnset.Spawns.Where((_, i) => !StateManager.SpawnEditorState.SelectedIndices.Contains(i)).ToImmutableArray()));
-			SpawnsetHistoryUtils.Save(SpawnsetEditType.SpawnDelete);
+			StateManager.Dispatch(new UpdateSpawns(StateManager.SpawnsetState.Spawnset.Spawns.Where((_, i) => !StateManager.SpawnEditorState.SelectedIndices.Contains(i)).ToImmutableArray(), SpawnsetEditType.SpawnDelete));
 			StateManager.Dispatch(new ClearSpawnSelections());
 
 			RecalculateHeight();

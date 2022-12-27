@@ -1,8 +1,6 @@
 using DevilDaggersInfo.App.Ui.Base.StateManagement;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
-using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Data;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena.Data;
-using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using DevilDaggersInfo.Types.Core.Spawnsets;
 using Silk.NET.GLFW;
 using Warp.NET;
@@ -31,7 +29,6 @@ public class ArenaDaggerState : IArenaState
 		}
 		else if (Input.IsButtonReleased(MouseButton.Left))
 		{
-			SpawnsetHistoryUtils.Save(SpawnsetEditType.RaceDagger);
 			_settingRaceDagger = false;
 		}
 	}
