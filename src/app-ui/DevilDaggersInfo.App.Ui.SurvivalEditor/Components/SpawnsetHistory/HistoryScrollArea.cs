@@ -51,7 +51,6 @@ public class HistoryScrollArea : ScrollArea
 			void LoadSpawnsetFromHistory()
 			{
 				StateManager.Dispatch(new SetSpawnsetHistoryIndex(index));
-				StateManager.Dispatch(new LoadSpawnsetFromHistory());
 			}
 		}
 

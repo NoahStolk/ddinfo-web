@@ -72,7 +72,6 @@ public static class StateManager
 
 		// Survival editor actions.
 		Reduce<LoadSpawnset>();
-		Reduce<LoadSpawnsetFromHistory>();
 		Reduce<ReplaceCurrentlyActiveSpawnset>();
 		Reduce<SetArenaBucketTolerance>();
 		Reduce<SetArenaBucketVoidHeight>();

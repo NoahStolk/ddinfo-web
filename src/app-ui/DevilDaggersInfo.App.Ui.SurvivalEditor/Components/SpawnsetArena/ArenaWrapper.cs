@@ -39,7 +39,7 @@ public class ArenaWrapper : AbstractComponent
 		NestingContext.Add(button3d);
 
 		StateManager.Subscribe<LoadSpawnset>(SetSpawnset);
-		StateManager.Subscribe<LoadSpawnsetFromHistory>(SetSpawnset);
+		StateManager.Subscribe<SetSpawnsetHistoryIndex>(SetSpawnset);
 	}
 
 	private void SetSpawnset()

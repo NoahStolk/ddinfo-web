@@ -25,7 +25,7 @@ public class SpawnsScrollArea : ScrollArea
 		: base(bounds, 96, 16, GlobalStyles.DefaultScrollAreaStyle)
 	{
 		StateManager.Subscribe<LoadSpawnset>(SetSpawnset);
-		StateManager.Subscribe<LoadSpawnsetFromHistory>(SetSpawnset);
+		StateManager.Subscribe<SetSpawnsetHistoryIndex>(SetSpawnset);
 		StateManager.Subscribe<UpdateSpawns>(SetSpawnset);
 	}
 
