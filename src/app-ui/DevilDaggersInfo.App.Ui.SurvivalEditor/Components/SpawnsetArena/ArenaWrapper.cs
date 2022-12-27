@@ -40,6 +40,8 @@ public class ArenaWrapper : AbstractComponent
 
 		StateManager.Subscribe<LoadSpawnset>(SetSpawnset);
 		StateManager.Subscribe<SetSpawnsetHistoryIndex>(SetSpawnset);
+		StateManager.Subscribe<UpdateArena>(SetSpawnset);
+		StateManager.Subscribe<UpdateSpawnsetSetting>(SetSpawnset);
 	}
 
 	private void SetSpawnset()
