@@ -8,6 +8,6 @@ public static class SpawnsetComponentBuilder
 {
 	public static SpawnsetTextInput CreateSpawnsetTextInput(IBounds bounds, Action<string> onChange)
 	{
-		return new(bounds, true, null, null, onChange, GlobalStyles.SpawnsetTextInput);
+		return new(bounds, true, onChange, onChange, null, GlobalStyles.SpawnsetTextInput);
 	}
 }
