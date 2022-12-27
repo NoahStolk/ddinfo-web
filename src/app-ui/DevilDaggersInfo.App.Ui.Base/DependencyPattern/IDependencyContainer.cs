@@ -1,8 +1,5 @@
 using DevilDaggersInfo.Api.App.ProcessMemory;
 using DevilDaggersInfo.App.Core.GameMemory;
-using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts;
-using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts.CustomLeaderboardsRecorder;
-using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts.SurvivalEditor;
 using DevilDaggersInfo.Core.Versioning;
 using DevilDaggersInfo.Types.Web;
 using Warp.NET.RenderImpl.Ui.Rendering.Renderers;
@@ -19,8 +16,6 @@ public interface IDependencyContainer
 	float Tt { get; }
 
 	string? TooltipText { get; set; }
-
-	IExtendedLayout? ActiveLayout { get; set; }
 
 	#region Renderers
 
@@ -39,24 +34,24 @@ public interface IDependencyContainer
 
 	#region Main screen
 
-	IConfigLayout ConfigLayout { get; }
-	IMainLayout MainLayout { get; }
+	IExtendedLayout ConfigLayout { get; }
+	IExtendedLayout MainLayout { get; }
 
 	#endregion Main screen
 
 	#region DDSE screen
 
-	ISurvivalEditorMainLayout SurvivalEditorMainLayout { get; }
-	ISurvivalEditor3dLayout SurvivalEditor3dLayout { get; }
-	IFileDialogLayout SurvivalEditorOpenLayout { get; }
-	IFileDialogLayout SurvivalEditorSaveLayout { get; }
+	IExtendedLayout SurvivalEditorMainLayout { get; }
+	IExtendedLayout SurvivalEditor3dLayout { get; }
+	IExtendedLayout SurvivalEditorOpenLayout { get; }
+	IExtendedLayout SurvivalEditorSaveLayout { get; }
 
 	#endregion DDSE screen
 
 	#region DDCL screen
 
-	ICustomLeaderboardsRecorderMainLayout CustomLeaderboardsRecorderMainLayout { get; }
-	IReplayViewer3dLayout CustomLeaderboardsRecorderReplayViewer3dLayout { get; }
+	IExtendedLayout CustomLeaderboardsRecorderMainLayout { get; }
+	IExtendedLayout CustomLeaderboardsRecorderReplayViewer3dLayout { get; }
 
 	#endregion DDCL screen
 

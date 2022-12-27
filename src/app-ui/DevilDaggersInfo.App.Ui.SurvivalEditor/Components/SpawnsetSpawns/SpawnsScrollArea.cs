@@ -1,8 +1,8 @@
 using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
+using DevilDaggersInfo.App.Ui.Base.StateManagement;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Spawns;
-using DevilDaggersInfo.App.Ui.SurvivalEditor.Enums;
-using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using Silk.NET.GLFW;
 using System.Collections.Immutable;
 using Warp.NET;
@@ -23,6 +23,21 @@ public class SpawnsScrollArea : ScrollArea
 	public SpawnsScrollArea(IBounds bounds)
 		: base(bounds, 96, 16, GlobalStyles.DefaultScrollAreaStyle)
 	{
+		StateManager.Subscribe<LoadSpawnset>(SetSpawns);
+		StateManager.Subscribe<SetSpawnsetHistoryIndex>(SetSpawns);
+
+		StateManager.Subscribe<UpdateHandLevel>(SetSpawns);
+		StateManager.Subscribe<UpdateAdditionalGems>(SetSpawns);
+		StateManager.Subscribe<UpdateTimerStart>(SetSpawns);
+
+		StateManager.Subscribe<AddSpawn>(SetSpawns);
+		StateManager.Subscribe<EditSpawns>(SetSpawns);
+		StateManager.Subscribe<InsertSpawn>(SetSpawns);
+		StateManager.Subscribe<DeleteSpawns>(SetSpawns);
+
+		StateManager.Subscribe<AddSpawn>(ScrollToEnd);
+		StateManager.Subscribe<EditSpawns>(ScrollToSelectionBegin);
+		StateManager.Subscribe<InsertSpawn>(ScrollToInsertedSpawn);
 	}
 
 	public override void Update(Vector2i<int> scrollOffset)
@@ -32,54 +47,98 @@ public class SpawnsScrollArea : ScrollArea
 		bool ctrl = Input.IsCtrlHeld();
 		bool shift = Input.IsShiftHeld();
 
+		// TODO: Only do this when the component is focused.
 		if (ctrl && Input.IsKeyPressed(Keys.A))
-			_spawnComponents.ForEach(sp => StateManager.SelectSpawn(sp.Index));
+			StateManager.Dispatch(new SetSpawnSelections(_spawnComponents.ConvertAll(sp => sp.Index)));
 
+		// TODO: Only do this when the component is focused.
 		if (ctrl && Input.IsKeyPressed(Keys.D))
-			StateManager.ClearSpawnSelections();
+			StateManager.Dispatch(new SetSpawnSelections(new()));
 
+		// TODO: Only do this when the component is focused.
 		if (Input.IsKeyPressed(Keys.Delete))
 		{
-			StateManager.SetSpawnset(StateManager.SpawnsetState.Spawnset with
-			{
-				Spawns = StateManager.SpawnsetState.Spawnset.Spawns.Where((_, i) => !StateManager.SpawnEditorState.SelectedIndices.Contains(i)).ToImmutableArray(),
-			});
-			SpawnsetHistoryManager.Save(SpawnsetEditType.SpawnDelete);
-			StateManager.ClearSpawnSelections();
+			StateManager.Dispatch(new DeleteSpawns(StateManager.SpawnsetState.Spawnset.Spawns.Where((_, i) => !StateManager.SpawnEditorState.SelectedIndices.Contains(i)).ToImmutableArray()));
+			StateManager.Dispatch(new SetSpawnSelections(new()));
 
 			RecalculateHeight();
 		}
 
-		bool hoverWithoutBlock = Bounds.Contains(MouseUiContext.MousePosition.RoundToVector2Int32() - scrollOffset);
+		// TODO: Fix this. Right now you can click on File > Save and it will deselect the selected spawns.
+		bool hoverWithoutBlock = ContentBounds.Contains(MouseUiContext.MousePosition.RoundToVector2Int32() - scrollOffset);
 		if (!Input.IsButtonPressed(MouseButton.Left) || !hoverWithoutBlock)
 			return;
 
 		if (shift)
 		{
+			HashSet<int> newSelectedIndices = StateManager.SpawnEditorState.SelectedIndices.ToHashSet();
+
 			int endIndex = _spawnComponents.Find(sc => sc.Hover)?.Index ?? _spawnComponents.Count - 1;
 			int start = Math.Clamp(Math.Min(_currentIndex, endIndex), 0, _spawnComponents.Count - 1);
 			int end = Math.Clamp(Math.Max(_currentIndex, endIndex), 0, _spawnComponents.Count - 1);
 			for (int i = start; i <= end; i++)
-				StateManager.SelectSpawn(i);
+				newSelectedIndices.Add(i);
+
+			StateManager.Dispatch(new SetSpawnSelections(newSelectedIndices.ToList()));
+		}
+		else if (ctrl)
+		{
+			HashSet<int> newSelectedIndices = StateManager.SpawnEditorState.SelectedIndices.ToHashSet();
+
+			SpawnEntry? selectedSpawn = _spawnComponents.Find(sc => sc.Hover);
+
+			if (selectedSpawn != null)
+			{
+				if (newSelectedIndices.Contains(selectedSpawn.Index))
+					newSelectedIndices.Remove(selectedSpawn.Index);
+				else
+					newSelectedIndices.Add(selectedSpawn.Index);
+
+				_currentIndex = selectedSpawn.Index;
+			}
+
+			StateManager.Dispatch(new SetSpawnSelections(newSelectedIndices.ToList()));
 		}
 		else
 		{
-			foreach (SpawnEntry spawnEntry in _spawnComponents)
+			HashSet<int> oldSelectedIndices = StateManager.SpawnEditorState.SelectedIndices.ToHashSet();
+			HashSet<int> newSelectedIndices = new();
+
+			SpawnEntry? selectedSpawn = _spawnComponents.Find(sc => sc.Hover);
+
+			if (selectedSpawn != null)
 			{
-				if (spawnEntry.Hover)
-				{
-					StateManager.ToggleSpawnSelection(spawnEntry.Index);
-					_currentIndex = spawnEntry.Index;
-				}
-				else if (!ctrl)
-				{
-					StateManager.DeselectSpawn(spawnEntry.Index);
-				}
+				if (!oldSelectedIndices.Contains(selectedSpawn.Index))
+					newSelectedIndices.Add(selectedSpawn.Index);
+
+				_currentIndex = selectedSpawn.Index;
 			}
+
+			StateManager.Dispatch(new SetSpawnSelections(newSelectedIndices.ToList()));
 		}
 	}
 
-	public void SetSpawnset()
+	private void ScrollToEnd()
+	{
+		// TODO: We need to call this AFTER the NestingContext has been updated. Even if we call RecalculateHeight here, it still won't be updated until the NestingContext has performed its Update method.
+		UpdateScrollOffsetAndScrollbarPosition(new(0, -_spawnComponents.Count * SpawnEntryHeight));
+	}
+
+	private void ScrollToSelectionBegin()
+	{
+		if (StateManager.SpawnEditorState.SelectedIndices.Count == 0)
+			throw new InvalidOperationException("No spawn selected.");
+
+		// TODO: Only scroll when the spawn is not visible.
+		UpdateScrollOffsetAndScrollbarPosition(new(0, -StateManager.SpawnEditorState.SelectedIndices.Min() * SpawnEntryHeight));
+	}
+
+	private void ScrollToInsertedSpawn()
+	{
+		// TODO: Scroll to inserted spawn index.
+	}
+
+	private void SetSpawns()
 	{
 		foreach (SpawnEntry component in _spawnComponents)
 			NestingContext.Remove(component);
@@ -89,7 +148,7 @@ public class SpawnsScrollArea : ScrollArea
 		int i = 0;
 		foreach (SpawnUiEntry spawn in EditSpawnContext.GetFrom(StateManager.SpawnsetState.Spawnset))
 		{
-			SpawnEntry spawnEntry = new(Bounds.CreateNested(0, i++ * SpawnEntryHeight, 384, SpawnEntryHeight), spawn);
+			SpawnEntry spawnEntry = new(Bounds.CreateNested(0, i++ * SpawnEntryHeight, ContentBounds.Size.X, SpawnEntryHeight), spawn);
 			_spawnComponents.Add(spawnEntry);
 		}
 

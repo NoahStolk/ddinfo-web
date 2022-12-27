@@ -6,7 +6,8 @@ using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.Extensions;
 using DevilDaggersInfo.App.Ui.Base.Settings;
-using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States;
+using DevilDaggersInfo.App.Ui.Base.StateManagement;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Actions;
 using DevilDaggersInfo.Common;
 using Silk.NET.GLFW;
 using Warp.NET;
@@ -67,6 +68,8 @@ public class LeaderboardListEntry : AbstractComponent
 		NestingContext.Add(score);
 		NestingContext.Add(nextDagger);
 		NestingContext.Add(worldRecord);
+
+		StateManager.Subscribe<SetSelectedCustomLeaderboard>(LoadCustomLeaderboard);
 	}
 
 	public override void Update(Vector2i<int> scrollOffset)
@@ -77,8 +80,27 @@ public class LeaderboardListEntry : AbstractComponent
 		if (!_isHovering || !Input.IsButtonPressed(MouseButton.Left))
 			return;
 
-		StateManager.SetSelectedCustomLeaderboard(_customLeaderboard);
+		StateManager.Dispatch(new SetSelectedCustomLeaderboard(_customLeaderboard));
 		DownloadAndInstallSpawnset();
+	}
+
+	private static void LoadCustomLeaderboard()
+	{
+		if (StateManager.LeaderboardListState.SelectedCustomLeaderboard == null)
+			return;
+
+		AsyncHandler.Run(UpdateDisplayedCustomLeaderboard, () => FetchCustomLeaderboardById.HandleAsync(StateManager.LeaderboardListState.SelectedCustomLeaderboard.Id));
+
+		void UpdateDisplayedCustomLeaderboard(GetCustomLeaderboard? getCustomLeaderboard)
+		{
+			if (getCustomLeaderboard == null)
+			{
+				// Show error and maybe clear displayed leaderboard.
+				return;
+			}
+
+			StateManager.Dispatch(new UpdateDisplayedCustomLeaderboard(getCustomLeaderboard));
+		}
 	}
 
 	private static void DownloadAndInstallSpawnset()

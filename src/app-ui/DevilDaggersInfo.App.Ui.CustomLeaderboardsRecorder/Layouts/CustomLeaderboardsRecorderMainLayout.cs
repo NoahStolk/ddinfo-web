@@ -1,55 +1,62 @@
+using DevilDaggersInfo.App.Core.ApiClient;
+using DevilDaggersInfo.App.Core.ApiClient.TaskHandlers;
 using DevilDaggersInfo.App.Ui.Base.Components;
-using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts.CustomLeaderboardsRecorder;
-using DevilDaggersInfo.App.Ui.Base.States;
+using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
+using DevilDaggersInfo.App.Ui.Base.Settings;
+using DevilDaggersInfo.App.Ui.Base.StateManagement;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.Base.Actions;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Actions;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.Leaderboard;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.LeaderboardList;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.Recording;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.State;
-using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States;
+using System.Security.Cryptography;
 using Warp.NET.Ui;
 
 namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Layouts;
 
-public class CustomLeaderboardsRecorderMainLayout : Layout, ICustomLeaderboardsRecorderMainLayout
+public class CustomLeaderboardsRecorderMainLayout : Layout, IExtendedLayout
 {
 	private readonly StateWrapper _stateWrapper;
 	private readonly RecordingWrapper _recordingWrapper;
-	private readonly LeaderboardListWrapper _leaderboardListWrapper;
-	private readonly LeaderboardWrapper _leaderboardWrapper;
 
 	private int _recordingInterval;
 
 	public CustomLeaderboardsRecorderMainLayout()
 	{
 		const int headerHeight = 24;
-		MainLayoutBackButton backButton = new(new PixelBounds(0, 0, 24, headerHeight), LayoutManager.ToMainLayout);
+		MainLayoutBackButton backButton = new(new PixelBounds(0, 0, 24, headerHeight), () => StateManager.Dispatch(new SetLayout(Root.Game.MainLayout)));
 		_stateWrapper = new(new PixelBounds(0, headerHeight, 256, 96 - headerHeight));
 		_recordingWrapper = new(new PixelBounds(0, 96, 256, 416));
-		_leaderboardListWrapper = new(new PixelBounds(256, headerHeight, 768, 512 - headerHeight));
-		_leaderboardWrapper = new(new PixelBounds(0, 512, 1024, 256));
+		LeaderboardListWrapper leaderboardListWrapper = new(new PixelBounds(256, headerHeight, 768, 512 - headerHeight));
+		LeaderboardWrapper leaderboardWrapper = new(new PixelBounds(0, 512, 1024, 256));
 
 		NestingContext.Add(backButton);
 		NestingContext.Add(_stateWrapper);
 		NestingContext.Add(_recordingWrapper);
-		NestingContext.Add(_leaderboardListWrapper);
-		NestingContext.Add(_leaderboardWrapper);
+		NestingContext.Add(leaderboardListWrapper);
+		NestingContext.Add(leaderboardWrapper);
+
+		StateManager.Subscribe<SetLayout>(Initialize);
 	}
 
-	public void Initialize()
+	private static void Initialize()
 	{
-		StateManager.RefreshActiveSpawnset();
+		if (StateManager.LayoutState.CurrentLayout != Root.Game.CustomLeaderboardsRecorderMainLayout)
+			return;
 
-		StateManager.LoadLeaderboardList();
-	}
+		if (!File.Exists(UserSettings.ModsSurvivalPath))
+		{
+			StateManager.Dispatch(new SetActiveSpawnset(null));
+		}
+		else
+		{
+			byte[] fileContents = File.ReadAllBytes(UserSettings.ModsSurvivalPath);
+			byte[] fileHash = MD5.HashData(fileContents);
+			AsyncHandler.Run(s => StateManager.Dispatch(new SetActiveSpawnset(s?.Name)), () => FetchSpawnsetByHash.HandleAsync(fileHash));
+		}
 
-	public void RefreshLeaderboardList()
-	{
-		_leaderboardListWrapper.Load();
-	}
-
-	public void SetCustomLeaderboard()
-	{
-		_leaderboardWrapper.SetCustomLeaderboard();
+		StateManager.Dispatch(new LoadLeaderboardList());
 	}
 
 	public void Update()

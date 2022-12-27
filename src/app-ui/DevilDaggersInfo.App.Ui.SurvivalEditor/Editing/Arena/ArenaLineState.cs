@@ -1,7 +1,7 @@
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
+using DevilDaggersInfo.App.Ui.Base.StateManagement;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Data;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena.Data;
-using DevilDaggersInfo.App.Ui.SurvivalEditor.Enums;
-using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using Silk.NET.GLFW;
 using Warp.NET;
@@ -13,24 +13,32 @@ namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena;
 public class ArenaLineState : IArenaState
 {
 	private Vector2i<int>? _lineStart;
+	private float[,]? _newArena;
 
 	public void Handle(ArenaMousePosition mousePosition)
 	{
 		if (Input.IsButtonPressed(MouseButton.Left))
 		{
 			_lineStart = mousePosition.Real;
+			_newArena = StateManager.SpawnsetState.Spawnset.ArenaTiles.GetMutableClone();
 		}
 		else if (Input.IsButtonReleased(MouseButton.Left))
 		{
-			Loop(mousePosition, (i, j) => Components.SpawnsetArena.Arena.UpdateArena(i, j, StateManager.ArenaEditorState.SelectedHeight));
-			_lineStart = null;
-			SpawnsetHistoryManager.Save(SpawnsetEditType.ArenaLine);
+			if (!_lineStart.HasValue || _newArena == null)
+				return;
+
+			Loop(mousePosition, (i, j) => _newArena[i, j] = StateManager.ArenaEditorState.SelectedHeight);
+
+			Components.SpawnsetArena.Arena.UpdateArena(_newArena, SpawnsetEditType.ArenaLine);
+
+			Reset();
 		}
 	}
 
 	public void Reset()
 	{
 		_lineStart = null;
+		_newArena = null;
 	}
 
 	public void Render(ArenaMousePosition mousePosition, Vector2i<int> origin, float depth)

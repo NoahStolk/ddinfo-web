@@ -1,9 +1,10 @@
 using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
+using DevilDaggersInfo.App.Ui.Base.StateManagement;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Data;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena.Data;
-using DevilDaggersInfo.App.Ui.SurvivalEditor.Enums;
-using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Core.Spawnset;
@@ -20,7 +21,6 @@ namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetArena;
 public class Arena : AbstractComponent
 {
 	public const int TileSize = 6;
-	public static Vector2i<int> HalfTile { get; } = new(TileSize / 2);
 
 	private readonly ArenaPencilState _pencilState;
 	private readonly ArenaLineState _lineState;
@@ -52,6 +52,8 @@ public class Arena : AbstractComponent
 		};
 	}
 
+	public static Vector2i<int> HalfTile { get; } = new(TileSize / 2);
+
 	private IArenaState GetActiveState() => StateManager.ArenaEditorState.ArenaTool switch
 	{
 		ArenaTool.Pencil => _pencilState,
@@ -73,19 +75,16 @@ public class Arena : AbstractComponent
 		};
 	}
 
-	public static void UpdateArena(int x, int y, float height)
+	private static void UpdateArena(int x, int y, float height, SpawnsetEditType spawnsetEditType)
 	{
 		float[,] newArena = StateManager.SpawnsetState.Spawnset.ArenaTiles.GetMutableClone();
 		newArena[x, y] = height;
-		UpdateArena(newArena);
+		UpdateArena(newArena, spawnsetEditType);
 	}
 
-	public static void UpdateArena(float[,] newArena)
+	public static void UpdateArena(float[,] newArena, SpawnsetEditType spawnsetEditType)
 	{
-		StateManager.SetSpawnset(StateManager.SpawnsetState.Spawnset with
-		{
-			ArenaTiles = new(StateManager.SpawnsetState.Spawnset.ArenaDimension, newArena),
-		});
+		StateManager.Dispatch(new UpdateArena(newArena, spawnsetEditType));
 	}
 
 	public override void Update(Vector2i<int> scrollOffset)
@@ -111,8 +110,7 @@ public class Arena : AbstractComponent
 		if (scroll != 0)
 		{
 			// TODO: Selection.
-			UpdateArena(mousePosition.Tile.X, mousePosition.Tile.Y, StateManager.SpawnsetState.Spawnset.ArenaTiles[mousePosition.Tile.X, mousePosition.Tile.Y] + scroll);
-			SpawnsetHistoryManager.Save(SpawnsetEditType.ArenaTileHeight);
+			UpdateArena(mousePosition.Tile.X, mousePosition.Tile.Y, StateManager.SpawnsetState.Spawnset.ArenaTiles[mousePosition.Tile.X, mousePosition.Tile.Y] + scroll, SpawnsetEditType.ArenaTileHeight);
 			return;
 		}
 
@@ -176,13 +174,13 @@ public class Arena : AbstractComponent
 
 		if (StateManager.SpawnsetState.Spawnset.GameMode == GameMode.Race)
 		{
-			(int raceX, _, int raceZ) = StateManager.SpawnsetState.Spawnset.GetRaceDaggerTilePosition();
 			int arenaMiddle = StateManager.SpawnsetState.Spawnset.ArenaDimension / 2;
 			float realRaceX = StateManager.SpawnsetState.Spawnset.RaceDaggerPosition.X / 4f + arenaMiddle;
 			float realRaceZ = StateManager.SpawnsetState.Spawnset.RaceDaggerPosition.Y / 4f + arenaMiddle;
 
 			const int halfSize = TileSize / 2;
 
+			(int raceX, _, int raceZ) = StateManager.SpawnsetState.Spawnset.GetRaceDaggerTilePosition();
 			float actualHeight = StateManager.SpawnsetState.Spawnset.GetActualTileHeight(raceX, raceZ, _currentSecond);
 			float lerp = MathF.Sin(Root.Game.Tt) / 2 + 0.5f;
 			Color tileColor = TileUtils.GetColorFromHeight(actualHeight);

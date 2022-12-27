@@ -1,3 +1,4 @@
+using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Data;
 using DevilDaggersInfo.Common.Exceptions;
 
 namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Extensions;

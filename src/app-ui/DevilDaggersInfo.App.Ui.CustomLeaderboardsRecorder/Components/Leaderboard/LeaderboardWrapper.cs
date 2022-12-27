@@ -1,6 +1,7 @@
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.Extensions;
-using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States;
+using DevilDaggersInfo.App.Ui.Base.StateManagement;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Actions;
 using DevilDaggersInfo.Core.Wiki;
 using Warp.NET.Extensions;
 using Warp.NET.RenderImpl.Ui.Components;
@@ -25,13 +26,15 @@ public class LeaderboardWrapper : AbstractComponent
 		_leaderboardScrollArea = new(bounds.CreateNested(4, 48, 1016, 200));
 
 		NestingContext.Add(_leaderboardScrollArea);
+
+		StateManager.Subscribe<UpdateDisplayedCustomLeaderboard>(SetCustomLeaderboard);
 	}
 
 	public static IReadOnlyList<int> TableOffsets { get; } = new List<int> { 16, 24, 260, 308, 352, 400, 448, 496, 552, 560, 664, 720, 776, 832, 888, 992 };
 
-	public void SetCustomLeaderboard()
+	private void SetCustomLeaderboard()
 	{
-		_label.Text = StateManager.LeaderboardListState.SelectedCustomLeaderboard?.SpawnsetName ?? string.Empty;
+		_label.Text = StateManager.LeaderboardState.CustomLeaderboard?.SpawnsetName ?? string.Empty;
 
 		_leaderboardScrollArea.SetContent();
 	}

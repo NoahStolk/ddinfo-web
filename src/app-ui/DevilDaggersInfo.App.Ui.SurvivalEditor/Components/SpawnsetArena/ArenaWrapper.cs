@@ -1,10 +1,12 @@
 using DevilDaggersInfo.App.Ui.Base;
-using DevilDaggersInfo.App.Ui.Base.States;
-using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
+using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.Base.Actions;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 using DevilDaggersInfo.Core.Spawnset;
 using Warp.NET.RenderImpl.Ui.Components;
 using Warp.NET.Ui;
 using Warp.NET.Ui.Components;
+using StateManager = DevilDaggersInfo.App.Ui.Base.StateManagement.StateManager;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetArena;
 
@@ -33,11 +35,18 @@ public class ArenaWrapper : AbstractComponent
 		NestingContext.Add(_shrinkSlider);
 		NestingContext.Add(arenaToolsWrapper);
 
-		TextButton button3d = new(bounds.CreateNested(0, 0, 64, 16), () => LayoutManager.ToSurvivalEditor3dLayout(StateManager.SpawnsetState.Spawnset), GlobalStyles.DefaultButtonStyle, GlobalStyles.View3dButton, "3D");
+		TextButton button3d = new(bounds.CreateNested(0, 0, 64, 16), () => StateManager.Dispatch(new SetLayout(Root.Game.SurvivalEditor3dLayout)), GlobalStyles.DefaultButtonStyle, GlobalStyles.View3dButton, "3D");
 		NestingContext.Add(button3d);
+
+		StateManager.Subscribe<LoadSpawnset>(SetSliderAndShrinkValues);
+		StateManager.Subscribe<SetSpawnsetHistoryIndex>(SetSliderAndShrinkValues);
+		StateManager.Subscribe<UpdateArena>(SetSliderAndShrinkValues);
+		StateManager.Subscribe<UpdateShrinkStart>(SetSliderAndShrinkValues);
+		StateManager.Subscribe<UpdateShrinkEnd>(SetSliderAndShrinkValues);
+		StateManager.Subscribe<UpdateShrinkRate>(SetSliderAndShrinkValues);
 	}
 
-	public void SetSpawnset()
+	private void SetSliderAndShrinkValues()
 	{
 		_shrinkSlider.Max = StateManager.SpawnsetState.Spawnset.GetSliderMaxSeconds();
 		_shrinkSlider.CurrentValue = Math.Clamp(_shrinkSlider.CurrentValue, 0, _shrinkSlider.Max);

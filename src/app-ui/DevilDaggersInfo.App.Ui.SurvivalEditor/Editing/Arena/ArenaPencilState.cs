@@ -1,7 +1,9 @@
+using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
+using DevilDaggersInfo.App.Ui.Base.StateManagement;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Data;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena.Data;
-using DevilDaggersInfo.App.Ui.SurvivalEditor.Enums;
-using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
+using DevilDaggersInfo.Core.Spawnset;
 using Silk.NET.GLFW;
 using Warp.NET;
 using Warp.NET.Extensions;
@@ -12,16 +14,18 @@ namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena;
 public class ArenaPencilState : IArenaState
 {
 	private Vector2i<int>? _pencilStart;
+	private HashSet<Vector2i<int>>? _modifiedCoords;
 
 	public void Handle(ArenaMousePosition mousePosition)
 	{
 		if (Input.IsButtonPressed(MouseButton.Left))
 		{
 			_pencilStart = mousePosition.Real;
+			_modifiedCoords = new();
 		}
 		else if (Input.IsButtonHeld(MouseButton.Left))
 		{
-			if (!_pencilStart.HasValue)
+			if (!_pencilStart.HasValue || _modifiedCoords == null)
 				return;
 
 			Vector2i<int> pencilEnd = mousePosition.Real;
@@ -30,28 +34,53 @@ public class ArenaPencilState : IArenaState
 			{
 				for (int j = rectangle.Y1; j <= rectangle.Y2; j++)
 				{
+					Vector2i<int> target = new(i, j);
+					if (_modifiedCoords.Contains(target)) // Early rejection, even though we're using a HashSet.
+						continue;
+
 					Vector2 visualTileCenter = new Vector2(i, j) * Components.SpawnsetArena.Arena.TileSize + Components.SpawnsetArena.Arena.HalfTile.ToVector2();
 					if (ArenaEditingUtils.LineIntersectsSquare(_pencilStart.Value.ToVector2(), pencilEnd.ToVector2(), visualTileCenter, Components.SpawnsetArena.Arena.TileSize))
-						Components.SpawnsetArena.Arena.UpdateArena(i, j, StateManager.ArenaEditorState.SelectedHeight);
+						_modifiedCoords.Add(target);
 				}
 			}
 
-			Components.SpawnsetArena.Arena.UpdateArena(mousePosition.Tile.X, mousePosition.Tile.Y, StateManager.ArenaEditorState.SelectedHeight);
+			_modifiedCoords.Add(new(mousePosition.Tile.X, mousePosition.Tile.Y));
 			_pencilStart = mousePosition.Real;
 		}
 		else if (Input.IsButtonReleased(MouseButton.Left))
 		{
-			_pencilStart = null;
-			SpawnsetHistoryManager.Save(SpawnsetEditType.ArenaPencil);
+			if (!_pencilStart.HasValue || _modifiedCoords == null)
+				return;
+
+			float[,] newArena = StateManager.SpawnsetState.Spawnset.ArenaTiles.GetMutableClone();
+
+			foreach (Vector2i<int> position in _modifiedCoords)
+				newArena[position.X, position.Y] = StateManager.ArenaEditorState.SelectedHeight;
+
+			Components.SpawnsetArena.Arena.UpdateArena(newArena, SpawnsetEditType.ArenaPencil);
+
+			Reset();
 		}
 	}
 
 	public void Reset()
 	{
 		_pencilStart = null;
+		_modifiedCoords = null;
 	}
 
 	public void Render(ArenaMousePosition mousePosition, Vector2i<int> origin, float depth)
 	{
+		if (_modifiedCoords == null)
+			return;
+
+		for (int i = 0; i < SpawnsetBinary.ArenaDimensionMax; i++)
+		{
+			for (int j = 0; j < SpawnsetBinary.ArenaDimensionMax; j++)
+			{
+				if (_modifiedCoords.Contains(new(i, j)))
+					Root.Game.RectangleRenderer.Schedule(new(Components.SpawnsetArena.Arena.TileSize), origin + new Vector2i<int>(i, j) * Components.SpawnsetArena.Arena.TileSize + Components.SpawnsetArena.Arena.HalfTile, depth, Color.HalfTransparentWhite);
+			}
+		}
 	}
 }

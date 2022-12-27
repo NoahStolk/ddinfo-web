@@ -1,6 +1,6 @@
 using DevilDaggersInfo.App.Ui.Base;
-using DevilDaggersInfo.App.Ui.SurvivalEditor.Enums;
-using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
+using DevilDaggersInfo.App.Ui.Base.StateManagement;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Core.Spawnset;
@@ -16,7 +16,6 @@ public class SettingsWrapper : AbstractComponent
 {
 	private const int _offset = 16;
 
-	private readonly int _width;
 	private readonly int _halfWidth;
 	private readonly int _thirdWidth;
 	private readonly int _quarterWidth;
@@ -46,12 +45,12 @@ public class SettingsWrapper : AbstractComponent
 	public SettingsWrapper(IBounds bounds)
 		: base(bounds)
 	{
-		_width = bounds.Size.X;
-		_halfWidth = _width / 2;
-		_thirdWidth = (int)MathF.Ceiling(_width / 3f);
+		int width = bounds.Size.X;
+		_halfWidth = width / 2;
+		_thirdWidth = (int)MathF.Ceiling(width / 3f);
 		_quarterWidth = _halfWidth / 2;
 
-		Label title = new(bounds.CreateNested(0, 0, _width, 48), "Settings", GlobalStyles.LabelTitle);
+		Label title = new(bounds.CreateNested(0, 0, width, 48), "Settings", GlobalStyles.LabelTitle);
 		NestingContext.Add(title);
 
 		int y = title.Bounds.Size.Y;
@@ -71,12 +70,12 @@ public class SettingsWrapper : AbstractComponent
 		_buttonLevel4 = CreateHandButton(y, HandLevel.Level4);
 
 		y += _offset;
-		(_textInputShrinkStart, _) = AddSetting("Shrink start", SpawnsetEditType.ShrinkStart, ref y, ChangeShrinkStart);
-		(_textInputShrinkEnd, _) = AddSetting("Shrink end", SpawnsetEditType.ShrinkEnd, ref y, ChangeShrinkEnd);
-		(_textInputShrinkRate, _) = AddSetting("Shrink rate", SpawnsetEditType.ShrinkRate, ref y, ChangeShrinkRate);
-		(_textInputBrightness, _) = AddSetting("Brightness", SpawnsetEditType.Brightness, ref y, ChangeBrightness);
-		(_textInputAdditionalGems, _labelAdditionalGems) = AddSetting("Addit. gems", SpawnsetEditType.AdditionalGems, ref y, ChangeAdditionalGems);
-		(_textInputTimerStart, _labelTimerStart) = AddSetting("Timer start", SpawnsetEditType.TimerStart, ref y, ChangeTimerStart);
+		(_textInputShrinkStart, _) = AddSetting("Shrink start", ref y, ChangeShrinkStart);
+		(_textInputShrinkEnd, _) = AddSetting("Shrink end", ref y, ChangeShrinkEnd);
+		(_textInputShrinkRate, _) = AddSetting("Shrink rate", ref y, ChangeShrinkRate);
+		(_textInputBrightness, _) = AddSetting("Brightness", ref y, ChangeBrightness);
+		(_textInputAdditionalGems, _labelAdditionalGems) = AddSetting("Addit. gems", ref y, ChangeAdditionalGems);
+		(_textInputTimerStart, _labelTimerStart) = AddSetting("Timer start", ref y, ChangeTimerStart);
 
 		NestingContext.Add(_buttonV0V1);
 		NestingContext.Add(_buttonV2V3);
@@ -90,30 +89,32 @@ public class SettingsWrapper : AbstractComponent
 		NestingContext.Add(_buttonLevel2);
 		NestingContext.Add(_buttonLevel3);
 		NestingContext.Add(_buttonLevel4);
+
+		SetSpawnset();
+
+		StateManager.Subscribe<LoadSpawnset>(SetSpawnset);
+		StateManager.Subscribe<SetSpawnsetHistoryIndex>(SetSpawnset);
+		StateManager.Subscribe<UpdateAdditionalGems>(SetSpawnset);
+		StateManager.Subscribe<UpdateBrightness>(SetSpawnset);
+		StateManager.Subscribe<UpdateFormat>(SetSpawnset);
+		StateManager.Subscribe<UpdateGameMode>(SetSpawnset);
+		StateManager.Subscribe<UpdateHandLevel>(SetSpawnset);
+		StateManager.Subscribe<UpdateShrinkStart>(SetSpawnset);
+		StateManager.Subscribe<UpdateShrinkEnd>(SetSpawnset);
+		StateManager.Subscribe<UpdateShrinkRate>(SetSpawnset);
+		StateManager.Subscribe<UpdateTimerStart>(SetSpawnset);
 	}
 
 	private TextButton CreateFormatButton(int y, int index, int worldVersion, int spawnVersion)
 	{
 		string str = SpawnsetBinary.GetGameVersionString(worldVersion, spawnVersion);
-		return new(Bounds.CreateNested(index * _thirdWidth, y, _thirdWidth, _offset), UpdateFormat, GlobalStyles.SpawnsetSetting, GlobalStyles.DefaultMiddle, str);
-
-		void UpdateFormat()
-		{
-			StateManager.SetSpawnset(StateManager.SpawnsetState.Spawnset with { WorldVersion = worldVersion, SpawnVersion = spawnVersion });
-			SpawnsetHistoryManager.Save(SpawnsetEditType.Format);
-		}
+		return new(Bounds.CreateNested(index * _thirdWidth, y, _thirdWidth, _offset), () => StateManager.Dispatch(new UpdateFormat(worldVersion, spawnVersion)), GlobalStyles.SpawnsetSetting, GlobalStyles.DefaultMiddle, str);
 	}
 
 	private TextButton CreateGameModeButton(int y, GameMode gameMode)
 	{
 		int index = (int)gameMode;
-		return new(Bounds.CreateNested(index * _thirdWidth, y, _thirdWidth, _offset), UpdateFormat, GlobalStyles.SpawnsetSetting, GlobalStyles.DefaultMiddle, ToShortString());
-
-		void UpdateFormat()
-		{
-			StateManager.SetSpawnset(StateManager.SpawnsetState.Spawnset with { GameMode = gameMode });
-			SpawnsetHistoryManager.Save(SpawnsetEditType.GameMode);
-		}
+		return new(Bounds.CreateNested(index * _thirdWidth, y, _thirdWidth, _offset), () => StateManager.Dispatch(new UpdateGameMode(gameMode)), GlobalStyles.SpawnsetSetting, GlobalStyles.DefaultMiddle, ToShortString());
 
 		string ToShortString() => gameMode switch
 		{
@@ -127,13 +128,7 @@ public class SettingsWrapper : AbstractComponent
 	private TextButton CreateHandButton(int y, HandLevel handLevel)
 	{
 		int index = (int)handLevel - 1;
-		return new(Bounds.CreateNested(index * _quarterWidth, y, _quarterWidth, _offset), UpdateHand, GlobalStyles.HandLevelButtonStyles[handLevel], GlobalStyles.HandLevelText, ToShortString());
-
-		void UpdateHand()
-		{
-			StateManager.SetSpawnset(StateManager.SpawnsetState.Spawnset with { HandLevel = handLevel });
-			SpawnsetHistoryManager.Save(SpawnsetEditType.HandLevel);
-		}
+		return new(Bounds.CreateNested(index * _quarterWidth, y, _quarterWidth, _offset), () => StateManager.Dispatch(new UpdateHandLevel(handLevel)), GlobalStyles.HandLevelButtonStyles[handLevel], GlobalStyles.HandLevelText, ToShortString());
 
 		string ToShortString() => handLevel switch
 		{
@@ -145,10 +140,10 @@ public class SettingsWrapper : AbstractComponent
 		};
 	}
 
-	private (SpawnsetTextInput TextInput, Label Label) AddSetting(string labelText, SpawnsetEditType spawnsetEditType, ref int y, Action<string> onInput)
+	private (SpawnsetTextInput TextInput, Label Label) AddSetting(string labelText, ref int y, Action<string> onInput)
 	{
 		Label label = new(Bounds.CreateNested(0, y, _halfWidth, _offset), labelText, GlobalStyles.LabelDefaultLeft);
-		SpawnsetTextInput textInput = SpawnsetComponentBuilder.CreateSpawnsetTextInput(Bounds.CreateNested(_halfWidth, y, _halfWidth, _offset), onInput, spawnsetEditType);
+		SpawnsetTextInput textInput = SpawnsetComponentBuilder.CreateSpawnsetTextInput(Bounds.CreateNested(_halfWidth, y, _halfWidth, _offset), onInput);
 		NestingContext.Add(label);
 		NestingContext.Add(textInput);
 		y += _offset;
@@ -156,19 +151,25 @@ public class SettingsWrapper : AbstractComponent
 		return (textInput, label);
 	}
 
-	private static void ChangeAdditionalGems(string input) => SpawnsetSettingEditUtils.ChangeSetting<int>(v => StateManager.SpawnsetState.Spawnset with { AdditionalGems = v }, input);
+	private static void ChangeAdditionalGems(string input) => ChangeSetting<int>(v => StateManager.Dispatch(new UpdateAdditionalGems(v)), input);
 
-	private static void ChangeTimerStart(string input) => SpawnsetSettingEditUtils.ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { TimerStart = v }, input);
+	private static void ChangeTimerStart(string input) => ChangeSetting<float>(v => StateManager.Dispatch(new UpdateTimerStart(v)), input);
 
-	private static void ChangeShrinkStart(string input) => SpawnsetSettingEditUtils.ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { ShrinkStart = v }, input);
+	private static void ChangeShrinkStart(string input) => ChangeSetting<float>(v => StateManager.Dispatch(new UpdateShrinkStart(v)), input);
 
-	private static void ChangeShrinkEnd(string input) => SpawnsetSettingEditUtils.ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { ShrinkEnd = v }, input);
+	private static void ChangeShrinkEnd(string input) => ChangeSetting<float>(v => StateManager.Dispatch(new UpdateShrinkEnd(v)), input);
 
-	private static void ChangeShrinkRate(string input) => SpawnsetSettingEditUtils.ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { ShrinkRate = v }, input);
+	private static void ChangeShrinkRate(string input) => ChangeSetting<float>(v => StateManager.Dispatch(new UpdateShrinkRate(v)), input);
 
-	private static void ChangeBrightness(string input) => SpawnsetSettingEditUtils.ChangeSetting<float>(v => StateManager.SpawnsetState.Spawnset with { Brightness = v }, input);
+	private static void ChangeBrightness(string input) => ChangeSetting<float>(v => StateManager.Dispatch(new UpdateBrightness(v)), input);
 
-	public void SetSpawnset()
+	private static void ChangeSetting<T>(Action<T> action, string input)
+		where T : IParsable<T>
+	{
+		ParseUtils.TryParseAndExecute(input, action);
+	}
+
+	private void SetSpawnset()
 	{
 		SpawnsetBinary spawnset = StateManager.SpawnsetState.Spawnset;
 

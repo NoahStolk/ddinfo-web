@@ -5,7 +5,8 @@ using DevilDaggersInfo.App.Core.ApiClient.TaskHandlers;
 using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
-using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States;
+using DevilDaggersInfo.App.Ui.Base.StateManagement;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Actions;
 using DevilDaggersInfo.Types.Web;
 using Warp.NET.RenderImpl.Ui.Components;
 using Warp.NET.Text;
@@ -32,7 +33,7 @@ public class LeaderboardListWrapper : AbstractComponent
 		for (int i = 0; i < categories.Length; i++)
 		{
 			CustomLeaderboardCategory category = categories[i];
-			DropdownEntry dropdownEntry = new(categoryDropdown.Bounds.CreateNested(0, (i + 1) * 20, 96, 20), categoryDropdown, () => ChangeAndLoad(() => StateManager.SetCategory(category)), category.ToString(), GlobalStyles.DefaultDropdownEntryStyle)
+			DropdownEntry dropdownEntry = new(categoryDropdown.Bounds.CreateNested(0, (i + 1) * 20, 96, 20), categoryDropdown, () => StateManager.Dispatch(new SetCategory(category)), category.ToString(), GlobalStyles.DefaultDropdownEntryStyle)
 			{
 				IsActive = false,
 				Depth = Depth + 100,
@@ -42,53 +43,51 @@ public class LeaderboardListWrapper : AbstractComponent
 			NestingContext.Add(dropdownEntry);
 		}
 
-		_prevButton = new(bounds.CreateNested(4, 32, 20, 20), () => ChangeAndLoad(() => StateManager.SetPageIndex(StateManager.LeaderboardListState.PageIndex - 1)), GlobalStyles.NavigationButtonStyle, WarpTextures.ArrowLeft, "Previous", Color.HalfTransparentWhite, Color.White) { Depth = Depth + 100 };
-		_nextButton = new(bounds.CreateNested(24, 32, 20, 20), () => ChangeAndLoad(() => StateManager.SetPageIndex(StateManager.LeaderboardListState.PageIndex + 1)), GlobalStyles.NavigationButtonStyle, WarpTextures.ArrowRight, "Next", Color.HalfTransparentWhite, Color.White) { Depth = Depth + 100 };
+		_prevButton = new(bounds.CreateNested(4, 32, 20, 20), () => StateManager.Dispatch(new SetPageIndex(StateManager.LeaderboardListState.PageIndex - 1)), GlobalStyles.NavigationButtonStyle, WarpTextures.ArrowLeft, "Previous", Color.HalfTransparentWhite, Color.White) { Depth = Depth + 100 };
+		_nextButton = new(bounds.CreateNested(24, 32, 20, 20), () => StateManager.Dispatch(new SetPageIndex(StateManager.LeaderboardListState.PageIndex + 1)), GlobalStyles.NavigationButtonStyle, WarpTextures.ArrowRight, "Next", Color.HalfTransparentWhite, Color.White) { Depth = Depth + 100 };
 
 		NestingContext.Add(_prevButton);
 		NestingContext.Add(_nextButton);
 
-		void ChangeAndLoad(Action action)
-		{
-			action();
+		StateManager.Subscribe<LoadLeaderboardList>(Load);
+		StateManager.Subscribe<SetCategory>(Load);
+		StateManager.Subscribe<SetPageIndex>(Load);
+		StateManager.Subscribe<SetCurrentPlayerId>(Load);
 
-			// Correct page index should it ever go out of bounds.
-			StateManager.SetPageIndex(Math.Clamp(StateManager.LeaderboardListState.PageIndex, 0, StateManager.LeaderboardListState.MaxPageIndex));
-
-			Load();
-		}
+		StateManager.Subscribe<SetTotalResults>(UpdateNavigationButtons);
 	}
 
-	public void Load()
+	private void UpdateNavigationButtons()
+	{
+		_prevButton.IsDisabled = StateManager.LeaderboardListState.PageIndex == 0;
+		_nextButton.IsDisabled = StateManager.LeaderboardListState.PageIndex == StateManager.LeaderboardListState.MaxPageIndex;
+	}
+
+	private void Load()
 	{
 		foreach (LeaderboardListEntry leaderboardComponent in _leaderboardComponents)
 			NestingContext.Remove(leaderboardComponent);
 
 		_leaderboardComponents.Clear();
 
-		StateManager.SetLoading(true);
 		_prevButton.IsDisabled = true;
 		_nextButton.IsDisabled = true;
 
 		AsyncHandler.Run(Populate, () => FetchCustomLeaderboards.HandleAsync(StateManager.LeaderboardListState.Category, StateManager.LeaderboardListState.PageIndex, StateManager.LeaderboardListState.PageSize, StateManager.RecordingState.CurrentPlayerId, false));
 
-		void Populate(Page<GetCustomLeaderboardForOverview>? cls)
+		void Populate(Page<GetCustomLeaderboardForOverview>? customLeaderboards)
 		{
 			Set();
 
-			StateManager.SetLoading(false);
-			_prevButton.IsDisabled = StateManager.LeaderboardListState.PageIndex == 0;
-			_nextButton.IsDisabled = StateManager.LeaderboardListState.PageIndex == StateManager.LeaderboardListState.MaxPageIndex;
-
 			void Set()
 			{
-				if (cls == null)
+				if (customLeaderboards == null)
 					return;
 
-				StateManager.SetTotalResults(cls.TotalResults);
+				StateManager.Dispatch(new SetTotalResults(customLeaderboards.TotalResults));
 
 				int y = 96;
-				foreach (GetCustomLeaderboardForOverview cl in cls.Results)
+				foreach (GetCustomLeaderboardForOverview cl in customLeaderboards.Results)
 				{
 					const int height = 16;
 					_leaderboardComponents.Add(new(Bounds.CreateNested(_borderSize, y, Bounds.Size.X - _borderSize * 2, height), cl) { Depth = Depth + 3 });
@@ -98,6 +97,8 @@ public class LeaderboardListWrapper : AbstractComponent
 				foreach (LeaderboardListEntry leaderboardComponent in _leaderboardComponents)
 					NestingContext.Add(leaderboardComponent);
 			}
+
+			StateManager.Dispatch(new SetLoading(false));
 		}
 	}
 

@@ -1,5 +1,5 @@
 using DevilDaggersInfo.App.Ui.Base;
-using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
+using DevilDaggersInfo.App.Ui.Base.StateManagement;
 using Warp.NET.RenderImpl.Ui.Components;
 using Warp.NET.RenderImpl.Ui.Components.Styles;
 using Warp.NET.Ui;

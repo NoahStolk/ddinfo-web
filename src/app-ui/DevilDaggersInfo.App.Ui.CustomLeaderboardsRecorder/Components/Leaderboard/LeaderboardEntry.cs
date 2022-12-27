@@ -5,8 +5,9 @@ using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.Extensions;
-using DevilDaggersInfo.App.Ui.Base.States;
-using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.States;
+using DevilDaggersInfo.App.Ui.Base.StateManagement;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.Base.Actions;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Actions;
 using DevilDaggersInfo.Common;
 using DevilDaggersInfo.Core.Replay;
 using DevilDaggersInfo.Core.Wiki;
@@ -93,7 +94,8 @@ public class LeaderboardEntry : AbstractComponent
 				return;
 			}
 
-			LayoutManager.ToCustomLeaderboardsRecorderReplayViewer3dLayout(new[] { replayBinary });
+			StateManager.Dispatch(new SetLayout(Root.Game.CustomLeaderboardsRecorderReplayViewer3dLayout));
+			StateManager.Dispatch(new BuildReplayScene(new[] { replayBinary }));
 		}
 	}
 

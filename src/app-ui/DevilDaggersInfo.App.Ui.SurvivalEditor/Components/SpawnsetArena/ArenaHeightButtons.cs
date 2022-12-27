@@ -1,4 +1,5 @@
-using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
+using DevilDaggersInfo.App.Ui.Base.StateManagement;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using Warp.NET.RenderImpl.Ui.Components.Styles;
 using Warp.NET.RenderImpl.Ui.Rendering.Text;
@@ -43,7 +44,7 @@ public class ArenaHeightButtons : AbstractComponent
 		ButtonStyle buttonStyle = new(heightColor, Color.Black, Color.Lerp(heightColor, Color.White, 0.75f), 1);
 		TextButtonStyle textStyle = new(heightColor.ReadableColorForBrightness(), TextAlign.Middle, fontSize);
 
-		HeightButton button = new(Bounds.CreateNested(offsetX, offsetY, _arenaButtonSize, _arenaButtonSize), () => StateManager.SetArenaSelectedHeight(height), buttonStyle, textStyle, text, height);
+		HeightButton button = new(Bounds.CreateNested(offsetX, offsetY, _arenaButtonSize, _arenaButtonSize), () => StateManager.Dispatch(new SetArenaSelectedHeight(height)), buttonStyle, textStyle, text, height);
 		NestingContext.Add(button);
 	}
 }

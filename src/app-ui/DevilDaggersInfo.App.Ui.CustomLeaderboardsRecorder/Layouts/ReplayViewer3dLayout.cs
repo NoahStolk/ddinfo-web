@@ -1,9 +1,10 @@
 using DevilDaggersInfo.App.Ui.Base;
-using DevilDaggersInfo.App.Ui.Base.DependencyPattern.Inversion.Layouts.CustomLeaderboardsRecorder;
-using DevilDaggersInfo.App.Ui.Base.States;
+using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
+using DevilDaggersInfo.App.Ui.Base.StateManagement;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.Base.Actions;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Actions;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.ReplayViewer;
 using DevilDaggersInfo.App.Ui.Scene;
-using DevilDaggersInfo.Core.Replay;
 using DevilDaggersInfo.Core.Replay.PostProcessing.ReplaySimulation;
 using DevilDaggersInfo.Core.Spawnset;
 using Silk.NET.GLFW;
@@ -12,7 +13,7 @@ using Warp.NET.Ui;
 
 namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Layouts;
 
-public class ReplayViewer3dLayout : Layout, IReplayViewer3dLayout
+public class ReplayViewer3dLayout : Layout, IExtendedLayout
 {
 	private readonly ShrinkSlider _shrinkSlider;
 	private readonly ArenaScene _arenaScene = new();
@@ -23,24 +24,26 @@ public class ReplayViewer3dLayout : Layout, IReplayViewer3dLayout
 	{
 		_shrinkSlider = new(new PixelBounds(0, 752, 1024, 16), f => _currentTick = (int)(f * 60), true, 0, 0, 0.001f, 0, GlobalStyles.DefaultSliderStyle, 0);
 		NestingContext.Add(_shrinkSlider);
+
+		StateManager.Subscribe<BuildReplayScene>(BuildScene);
 	}
 
-	public void BuildScene(ReplayBinary<LocalReplayBinaryHeader>[] replayBinaries)
+	private void BuildScene()
 	{
-		if (replayBinaries.Length == 0)
+		if (StateManager.ReplaySceneState.ReplayBinaries.Length == 0)
 			throw new InvalidOperationException("Cannot build replay scene without replay binaries.");
 
-		if (!SpawnsetBinary.TryParse(replayBinaries[0].Header.SpawnsetBuffer, out SpawnsetBinary? spawnset))
+		if (!SpawnsetBinary.TryParse(StateManager.ReplaySceneState.ReplayBinaries[0].Header.SpawnsetBuffer, out SpawnsetBinary? spawnset))
 			throw new InvalidOperationException("Spawnset inside replay is invalid.");
 
 		_currentTick = 0;
 
-		_shrinkSlider.Max = replayBinaries.Max(rb => rb.EventsData.TickCount / 60f);
+		_shrinkSlider.Max = StateManager.ReplaySceneState.ReplayBinaries.Max(rb => rb.EventsData.TickCount / 60f);
 		_shrinkSlider.CurrentValue = Math.Clamp(_shrinkSlider.CurrentValue, 0, _shrinkSlider.Max);
 
 		_arenaScene.BuildArena(spawnset);
 
-		ReplaySimulation replaySimulation = ReplaySimulationBuilder.Build(spawnset, replayBinaries[0]);
+		ReplaySimulation replaySimulation = ReplaySimulationBuilder.Build(spawnset, StateManager.ReplaySceneState.ReplayBinaries[0]);
 
 		_arenaScene.BuildPlayerMovement(replaySimulation);
 	}
@@ -55,7 +58,7 @@ public class ReplayViewer3dLayout : Layout, IReplayViewer3dLayout
 		if (Input.IsKeyPressed(Keys.Escape))
 		{
 			Graphics.Glfw.SetInputMode(Window, CursorStateAttribute.Cursor, CursorModeValue.CursorNormal);
-			LayoutManager.ToCustomLeaderboardsRecorderMainLayout();
+			StateManager.Dispatch(new SetLayout(Root.Game.CustomLeaderboardsRecorderMainLayout));
 		}
 	}
 

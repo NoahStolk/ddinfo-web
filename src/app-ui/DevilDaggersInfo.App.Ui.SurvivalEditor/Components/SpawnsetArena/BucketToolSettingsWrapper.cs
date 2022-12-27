@@ -1,5 +1,6 @@
 using DevilDaggersInfo.App.Ui.Base;
-using DevilDaggersInfo.App.Ui.SurvivalEditor.States;
+using DevilDaggersInfo.App.Ui.Base.StateManagement;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 using Warp.NET.RenderImpl.Ui.Components;
 using Warp.NET.Ui;
 using Warp.NET.Ui.Components;
@@ -26,8 +27,8 @@ public class BucketToolSettingsWrapper : AbstractComponent
 			y += 16;
 		}
 
-		static void ChangeBucketTolerance(string s) => ParseUtils.TryParseAndExecute<float>(s, 0, StateManager.SetArenaBucketTolerance);
+		static void ChangeBucketTolerance(string s) => ParseUtils.TryParseAndExecute<float>(s, 0, f => StateManager.Dispatch(new SetArenaBucketTolerance(f)));
 
-		static void ChangeBucketVoidHeight(string s) => ParseUtils.TryParseAndExecute<float>(s, StateManager.SetArenaBucketVoidHeight);
+		static void ChangeBucketVoidHeight(string s) => ParseUtils.TryParseAndExecute<float>(s, f => StateManager.Dispatch(new SetArenaBucketVoidHeight(f)));
 	}
 }
