@@ -108,7 +108,6 @@ public static class StateManager
 				return;
 
 			T.ActionToReduce.Reduce();
-			DebugStack.Add($"Reduced {T.ActionToReduce}.", 1);
 			eventHandlers.AddRange(T.EventHandlers.Where(e => !eventHandlers.Contains(e)));
 
 			T.ActionToReduce = null;
