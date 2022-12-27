@@ -22,7 +22,8 @@ public class HistoryScrollArea : ScrollArea
 	{
 		SetContent();
 
-		StateManager.Subscribe<SetHistory>(SetContent);
+		StateManager.Subscribe<AddHistory>(SetContent);
+		StateManager.Subscribe<ClearHistory>(SetContent);
 		StateManager.Subscribe<SetSpawnsetHistoryIndex>(SetContent);
 	}
 

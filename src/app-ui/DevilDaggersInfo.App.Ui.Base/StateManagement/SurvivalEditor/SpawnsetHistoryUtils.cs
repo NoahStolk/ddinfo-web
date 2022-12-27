@@ -8,35 +8,24 @@ namespace DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor;
 
 public static class SpawnsetHistoryUtils
 {
-	private const int _maxHistoryEntries = 100;
-
 	public static void Save(SpawnsetEditType spawnsetEditType)
 	{
 		if (spawnsetEditType == SpawnsetEditType.Reset)
 		{
 			SpawnsetBinary copy = StateManager.SpawnsetState.Spawnset.DeepCopy();
 			byte[] hash = MD5.HashData(copy.ToBytes());
-			StateManager.Dispatch(new SetHistory(new() { new(copy, hash, spawnsetEditType) }, 0));
+			StateManager.Dispatch(new ClearHistory(new(copy, hash, spawnsetEditType)));
 		}
 		else
 		{
-			// Clear any newer history.
-			List<SpawnsetHistoryEntry> newHistory = StateManager.SpawnsetHistoryState.History.ToList();
-			newHistory = newHistory.Take(StateManager.SpawnsetHistoryState.CurrentIndex + 1).ToList();
-
 			SpawnsetBinary copy = StateManager.SpawnsetState.Spawnset.DeepCopy();
-			byte[] originalHash = newHistory.Count == 0 ? Array.Empty<byte>() : newHistory[^1].Hash;
+			byte[] originalHash = StateManager.SpawnsetHistoryState.History[StateManager.SpawnsetHistoryState.CurrentIndex].Hash;
 			byte[] hash = MD5.HashData(copy.ToBytes());
 
 			if (ArrayUtils.AreEqual(originalHash, hash))
 				return;
 
-			newHistory.Add(new(copy, hash, spawnsetEditType));
-
-			if (newHistory.Count > _maxHistoryEntries)
-				newHistory.RemoveAt(0);
-
-			StateManager.Dispatch(new SetHistory(newHistory, newHistory.Count - 1));
+			StateManager.Dispatch(new AddHistory(new(copy, hash, spawnsetEditType)));
 		}
 	}
 }
