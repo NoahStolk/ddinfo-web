@@ -36,7 +36,7 @@ public class SpawnsScrollArea : ScrollArea
 		StateManager.Subscribe<DeleteSpawns>(SetSpawns);
 
 		StateManager.Subscribe<AddSpawn>(ScrollToEnd);
-		StateManager.Subscribe<EditSpawns>(ScrollToSelectionBegin);
+		StateManager.Subscribe<EditSpawns>(ScrollToFirstSelectedIndex);
 		StateManager.Subscribe<InsertSpawn>(ScrollToInsertedSpawn);
 	}
 
@@ -60,8 +60,6 @@ public class SpawnsScrollArea : ScrollArea
 		{
 			StateManager.Dispatch(new DeleteSpawns(StateManager.SpawnsetState.Spawnset.Spawns.Where((_, i) => !StateManager.SpawnEditorState.SelectedIndices.Contains(i)).ToImmutableArray()));
 			StateManager.Dispatch(new SetSpawnSelections(new()));
-
-			RecalculateHeight();
 		}
 
 		// TODO: Fix this. Right now you can click on File > Save and it will deselect the selected spawns.
@@ -124,7 +122,7 @@ public class SpawnsScrollArea : ScrollArea
 		UpdateScrollOffsetAndScrollbarPosition(new(0, -_spawnComponents.Count * SpawnEntryHeight));
 	}
 
-	private void ScrollToSelectionBegin()
+	private void ScrollToFirstSelectedIndex()
 	{
 		if (StateManager.SpawnEditorState.SelectedIndices.Count == 0)
 			throw new InvalidOperationException("No spawn selected.");
