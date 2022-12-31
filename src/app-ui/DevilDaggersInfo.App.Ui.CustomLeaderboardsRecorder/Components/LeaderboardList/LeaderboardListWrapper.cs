@@ -1,4 +1,3 @@
-using DevilDaggersInfo.Api.App;
 using DevilDaggersInfo.Api.App.CustomLeaderboards;
 using DevilDaggersInfo.App.Core.ApiClient;
 using DevilDaggersInfo.App.Core.ApiClient.TaskHandlers;
@@ -54,13 +53,30 @@ public class LeaderboardListWrapper : AbstractComponent
 		StateManager.Subscribe<SetPageIndex>(Load);
 		StateManager.Subscribe<SetCurrentPlayerId>(Load);
 
-		StateManager.Subscribe<SetTotalResults>(UpdateNavigationButtons);
+		StateManager.Subscribe<PageLoaded>(SetPage);
 	}
 
-	private void UpdateNavigationButtons()
+	private void SetPage()
 	{
 		_prevButton.IsDisabled = StateManager.LeaderboardListState.PageIndex == 0;
 		_nextButton.IsDisabled = StateManager.LeaderboardListState.PageIndex == StateManager.LeaderboardListState.MaxPageIndex;
+
+		if (StateManager.LeaderboardListState.Page == null)
+		{
+			// TODO: Show error.
+			return;
+		}
+
+		int y = 96;
+		foreach (GetCustomLeaderboardForOverview cl in StateManager.LeaderboardListState.Page.Results)
+		{
+			const int height = 16;
+			_leaderboardComponents.Add(new(Bounds.CreateNested(_borderSize, y, Bounds.Size.X - _borderSize * 2, height), cl) { Depth = Depth + 3 });
+			y += height;
+		}
+
+		foreach (LeaderboardListEntry leaderboardComponent in _leaderboardComponents)
+			NestingContext.Add(leaderboardComponent);
 	}
 
 	private void Load()
@@ -73,33 +89,7 @@ public class LeaderboardListWrapper : AbstractComponent
 		_prevButton.IsDisabled = true;
 		_nextButton.IsDisabled = true;
 
-		AsyncHandler.Run(Populate, () => FetchCustomLeaderboards.HandleAsync(StateManager.LeaderboardListState.Category, StateManager.LeaderboardListState.PageIndex, StateManager.LeaderboardListState.PageSize, StateManager.RecordingState.CurrentPlayerId, false));
-
-		void Populate(Page<GetCustomLeaderboardForOverview>? customLeaderboards)
-		{
-			Set();
-
-			void Set()
-			{
-				if (customLeaderboards == null)
-					return;
-
-				StateManager.Dispatch(new SetTotalResults(customLeaderboards.TotalResults));
-
-				int y = 96;
-				foreach (GetCustomLeaderboardForOverview cl in customLeaderboards.Results)
-				{
-					const int height = 16;
-					_leaderboardComponents.Add(new(Bounds.CreateNested(_borderSize, y, Bounds.Size.X - _borderSize * 2, height), cl) { Depth = Depth + 3 });
-					y += height;
-				}
-
-				foreach (LeaderboardListEntry leaderboardComponent in _leaderboardComponents)
-					NestingContext.Add(leaderboardComponent);
-			}
-
-			StateManager.Dispatch(new SetLoading(false));
-		}
+		AsyncHandler.Run(p => StateManager.Dispatch(new PageLoaded(p)), () => FetchCustomLeaderboards.HandleAsync(StateManager.LeaderboardListState.Category, StateManager.LeaderboardListState.PageIndex, StateManager.LeaderboardListState.PageSize, StateManager.RecordingState.CurrentPlayerId, false));
 	}
 
 	public override void Render(Vector2i<int> scrollOffset)
