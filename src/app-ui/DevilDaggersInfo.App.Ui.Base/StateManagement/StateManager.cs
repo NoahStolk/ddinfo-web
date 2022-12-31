@@ -68,12 +68,12 @@ public static class StateManager
 	public static void ReduceAll()
 	{
 		// Copy the actions, because new actions can be dispatched while reducing.
-		List<KeyValuePair<Type, List<IAction>>> copy = _actionsToReduce.ToList();
+		List<KeyValuePair<Type, List<IAction>>> copiedActionsToReduce = _actionsToReduce.ToList();
 		_actionsToReduce.Clear();
 
 		// Collect all the event handlers.
 		List<Action> allEventHandlers = new();
-		foreach (KeyValuePair<Type, List<IAction>> kvp in copy)
+		foreach (KeyValuePair<Type, List<IAction>> kvp in copiedActionsToReduce)
 		{
 			// Reduce the actions first.
 			foreach (IAction action in kvp.Value)

@@ -8,6 +8,7 @@ using DevilDaggersInfo.App.Ui.Base.Extensions;
 using DevilDaggersInfo.App.Ui.Base.Settings;
 using DevilDaggersInfo.App.Ui.Base.StateManagement;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Actions;
+using DevilDaggersInfo.App.Ui.Base.Styling;
 using DevilDaggersInfo.Common;
 using Silk.NET.GLFW;
 using Warp.NET;

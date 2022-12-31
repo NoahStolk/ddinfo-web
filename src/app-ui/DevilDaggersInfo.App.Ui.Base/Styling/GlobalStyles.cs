@@ -5,7 +5,7 @@ using Warp.NET.RenderImpl.Ui.Components.Styles;
 using Warp.NET.RenderImpl.Ui.Rendering.Text;
 using Warp.NET.Text;
 
-namespace DevilDaggersInfo.App.Ui.Base;
+namespace DevilDaggersInfo.App.Ui.Base.Styling;
 
 public static class GlobalStyles
 {

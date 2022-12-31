@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.App.Ui.Base;
+namespace DevilDaggersInfo.App.Ui.Base.Styling;
 
 public static class GlobalColors
 {
