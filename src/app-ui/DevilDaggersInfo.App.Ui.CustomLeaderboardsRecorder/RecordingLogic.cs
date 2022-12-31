@@ -53,8 +53,8 @@ public static class RecordingLogic
 		}
 
 		// Always initialize the process so we detach properly when the game exits.
-		Root.Game.GameMemoryService.Initialize(StateManager.MarkerState.Marker.Value);
-		Root.Game.GameMemoryService.Scan();
+		Root.Dependencies.GameMemoryService.Initialize(StateManager.MarkerState.Marker.Value);
+		Root.Dependencies.GameMemoryService.Scan();
 
 		return true;
 	}
@@ -62,14 +62,14 @@ public static class RecordingLogic
 	public static void Handle()
 	{
 		// Do not execute if the game is not running.
-		if (!Root.Game.GameMemoryService.IsInitialized)
+		if (!Root.Dependencies.GameMemoryService.IsInitialized)
 		{
 			StateManager.Dispatch(new SetRecordingState(RecordingStateType.WaitingForGame));
 			return;
 		}
 
-		MainBlock mainBlock = Root.Game.GameMemoryService.MainBlock;
-		MainBlock mainBlockPrevious = Root.Game.GameMemoryService.MainBlockPrevious;
+		MainBlock mainBlock = Root.Dependencies.GameMemoryService.MainBlock;
+		MainBlock mainBlockPrevious = Root.Dependencies.GameMemoryService.MainBlockPrevious;
 
 		// When a run is scheduled to upload, keep trying until stats have loaded and the replay is valid.
 		if (_uploadRun)
@@ -79,7 +79,7 @@ public static class RecordingLogic
 				return;
 
 			StateManager.Dispatch(new SetRecordingState(RecordingStateType.WaitingForReplay));
-			if (!Root.Game.GameMemoryService.IsReplayValid())
+			if (!Root.Dependencies.GameMemoryService.IsReplayValid())
 				return;
 
 			_uploadRun = false;
@@ -126,7 +126,7 @@ public static class RecordingLogic
 
 	private static void InitializeMarker()
 	{
-		AsyncHandler.Run(SetMarker, () => FetchMarker.HandleAsync(Root.Game.SupportedOperatingSystem));
+		AsyncHandler.Run(SetMarker, () => FetchMarker.HandleAsync(Root.Dependencies.PlatformSpecificValues.OperatingSystem));
 
 		void SetMarker(GetMarker? getMarker)
 		{
@@ -151,7 +151,7 @@ public static class RecordingLogic
 		if (!leaderboardExists.HasValue || !leaderboardExists.Value)
 			return;
 
-		GameMemoryService memoryService = Root.Game.GameMemoryService;
+		GameMemoryService memoryService = Root.Dependencies.GameMemoryService;
 		MainBlock block = memoryService.MainBlock;
 
 		byte[] timeAsBytes = BitConverter.GetBytes(block.Time);
@@ -221,7 +221,7 @@ public static class RecordingLogic
 #else
 			BuildMode = "RELEASE",
 #endif
-			OperatingSystem = Root.Game.SupportedOperatingSystem.ToString(),
+			OperatingSystem = Root.Dependencies.PlatformSpecificValues.OperatingSystem.ToString(),
 			ProhibitedMods = block.ProhibitedMods,
 			Client = "ddinfo-tools",
 			ReplayData = memoryService.ReadReplayFromMemory(),
@@ -239,8 +239,8 @@ public static class RecordingLogic
 		if (uploadSuccess == null)
 			return;
 
+		// TODO: Dispatch submit success action.
 		StateManager.Dispatch(new SetLastSubmission(DateTime.Now));
-		// Root.Game.CustomLeaderboardsRecorderMainLayout.SetUploadSuccess();
 	}
 
 	private static AddGameData GetGameDataForUpload(MainBlock block, byte[] statsBuffer)

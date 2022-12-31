@@ -18,7 +18,7 @@ public class SurvivalEditorSaveLayout : Layout, IExtendedLayout
 
 	public SurvivalEditorSaveLayout()
 	{
-		PathsCloseButton closeButton = new(new PixelBounds(0, 0, 24, 24), () => StateManager.Dispatch(new SetLayout(Root.Game.SurvivalEditorMainLayout)));
+		PathsCloseButton closeButton = new(new PixelBounds(0, 0, 24, 24), () => StateManager.Dispatch(new SetLayout(Root.Dependencies.SurvivalEditorMainLayout)));
 		_pathTextInput = new(new PixelBounds(0, 24, 1024, 16), false, null, null, null, TextInputStyles.Default);
 		TextInput fileTextInput = new(new PixelBounds(0, 48, 512, 16), false, null, null, null, TextInputStyles.Default);
 		TextButton saveButton = new(new PixelBounds(512, 48, 128, 16), () => SaveSpawnset(Path.Combine(_pathTextInput.KeyboardInput.Value.ToString(), fileTextInput.KeyboardInput.Value.ToString())), ButtonStyles.Default, new(Color.Green, TextAlign.Middle, FontSize.H12), "Save");
@@ -52,7 +52,7 @@ public class SurvivalEditorSaveLayout : Layout, IExtendedLayout
 
 	private void Initialize()
 	{
-		if (StateManager.LayoutState.CurrentLayout != Root.Game.SurvivalEditorSaveLayout)
+		if (StateManager.LayoutState.CurrentLayout != Root.Dependencies.SurvivalEditorSaveLayout)
 			return;
 
 		SetComponentsFromPath(UserSettings.DevilDaggersInstallationDirectory);

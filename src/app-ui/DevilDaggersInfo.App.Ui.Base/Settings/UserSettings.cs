@@ -1,3 +1,5 @@
+using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
+
 namespace DevilDaggersInfo.App.Ui.Base.Settings;
 
 public static class UserSettings
@@ -7,7 +9,7 @@ public static class UserSettings
 	private static readonly string _fileDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ddinfo-tools");
 	private static readonly string _filePath = Path.Combine(_fileDirectory, "settings");
 
-	private static string _devilDaggersInstallationDirectory = @"C:\Program Files (x86)\Steam\steamapps\common\devildaggers";
+	private static string _devilDaggersInstallationDirectory = Root.Dependencies.PlatformSpecificValues.DefaultInstallationPath;
 
 	public static string DevilDaggersInstallationDirectory
 	{

@@ -18,7 +18,7 @@ public class SurvivalEditorOpenLayout : Layout, IExtendedLayout
 
 	public SurvivalEditorOpenLayout()
 	{
-		PathsCloseButton closeButton = new(new PixelBounds(0, 0, 24, 24), () => StateManager.Dispatch(new SetLayout(Root.Game.SurvivalEditorMainLayout)));
+		PathsCloseButton closeButton = new(new PixelBounds(0, 0, 24, 24), () => StateManager.Dispatch(new SetLayout(Root.Dependencies.SurvivalEditorMainLayout)));
 		_pathTextInput = new(new PixelBounds(0, 24, 1024, 16), false, null, null, null, TextInputStyles.Default);
 		_pathsScrollArea = new(new PixelBounds(0, 96, 1024, 640))
 		{
@@ -47,7 +47,7 @@ public class SurvivalEditorOpenLayout : Layout, IExtendedLayout
 
 	private void Initialize()
 	{
-		if (StateManager.LayoutState.CurrentLayout != Root.Game.SurvivalEditorOpenLayout)
+		if (StateManager.LayoutState.CurrentLayout != Root.Dependencies.SurvivalEditorOpenLayout)
 			return;
 
 		SetComponentsFromPath(UserSettings.DevilDaggersInstallationDirectory);
@@ -66,7 +66,7 @@ public class SurvivalEditorOpenLayout : Layout, IExtendedLayout
 		if (SpawnsetBinary.TryParse(bytes, out SpawnsetBinary? spawnsetBinary))
 		{
 			StateManager.Dispatch(new LoadSpawnset(Path.GetFileName(filePath), spawnsetBinary));
-			StateManager.Dispatch(new SetLayout(Root.Game.SurvivalEditorMainLayout));
+			StateManager.Dispatch(new SetLayout(Root.Dependencies.SurvivalEditorMainLayout));
 		}
 		else
 		{

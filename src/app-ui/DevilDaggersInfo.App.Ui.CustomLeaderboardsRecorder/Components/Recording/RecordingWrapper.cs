@@ -87,14 +87,14 @@ public class RecordingWrapper : AbstractComponent
 		}
 	}
 
-	private static bool ShouldRenderRecording => Root.Game.GameMemoryService.IsInitialized && (GameStatus)Root.Game.GameMemoryService.MainBlock.Status is not (GameStatus.Title or GameStatus.Menu or GameStatus.Lobby);
+	private static bool ShouldRenderRecording => Root.Dependencies.GameMemoryService.IsInitialized && (GameStatus)Root.Dependencies.GameMemoryService.MainBlock.Status is not (GameStatus.Title or GameStatus.Menu or GameStatus.Lobby);
 
 	public void SetState()
 	{
 		if (!ShouldRenderRecording)
 			return;
 
-		MainBlock block = Root.Game.GameMemoryService.MainBlock;
+		MainBlock block = Root.Dependencies.GameMemoryService.MainBlock;
 		GameStatus gameStatus = (GameStatus)block.Status;
 		Death? death = Deaths.GetDeathByLeaderboardType(GameConstants.CurrentVersion, block.DeathType);
 		float accuracy = block.DaggersFired == 0 ? 0 : block.DaggersHit / (float)block.DaggersFired;

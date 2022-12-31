@@ -23,7 +23,7 @@ public class Menu : AbstractComponent
 
 		Depth = 100;
 
-		MainLayoutBackButton backButton = new(new PixelBounds(0, 0, backButtonWidth, _headerHeight), () => StateManager.Dispatch(new SetLayout(Root.Game.MainLayout)))
+		MainLayoutBackButton backButton = new(new PixelBounds(0, 0, backButtonWidth, _headerHeight), () => StateManager.Dispatch(new SetLayout(Root.Dependencies.MainLayout)))
 		{
 			Depth = 101,
 		};
@@ -38,9 +38,9 @@ public class Menu : AbstractComponent
 
 		const int dropdownEntryDepth = 102;
 		DropdownEntry entryNew = new(new PixelBounds(fileMenu.Bounds.X1, _headerHeight + menuItemHeight * 0, menuItemWidth, menuItemHeight), fileMenu, () => StateManager.Dispatch(new LoadSpawnset("(untitled)", SpawnsetBinary.CreateDefault())), "New", DropdownEntryStyles.Default) { Depth = dropdownEntryDepth };
-		DropdownEntry entryOpen = new(new PixelBounds(fileMenu.Bounds.X1, _headerHeight + menuItemHeight * 1, menuItemWidth, menuItemHeight), fileMenu, () => StateManager.Dispatch(new SetLayout(Root.Game.SurvivalEditorOpenLayout)), "Open", DropdownEntryStyles.Default) { Depth = dropdownEntryDepth };
+		DropdownEntry entryOpen = new(new PixelBounds(fileMenu.Bounds.X1, _headerHeight + menuItemHeight * 1, menuItemWidth, menuItemHeight), fileMenu, () => StateManager.Dispatch(new SetLayout(Root.Dependencies.SurvivalEditorOpenLayout)), "Open", DropdownEntryStyles.Default) { Depth = dropdownEntryDepth };
 		DropdownEntry entryOpenDefault = new(new PixelBounds(fileMenu.Bounds.X1, _headerHeight + menuItemHeight * 2, menuItemWidth, menuItemHeight), fileMenu, () => StateManager.Dispatch(new LoadSpawnset("(untitled)", ContentManager.Content.DefaultSpawnset.DeepCopy())), "Open default (V3)", DropdownEntryStyles.Default) { Depth = dropdownEntryDepth };
-		DropdownEntry entrySave = new(new PixelBounds(fileMenu.Bounds.X1, _headerHeight + menuItemHeight * 3, menuItemWidth, menuItemHeight), fileMenu, () => StateManager.Dispatch(new SetLayout(Root.Game.SurvivalEditorSaveLayout)), "Save", DropdownEntryStyles.Default) { Depth = dropdownEntryDepth };
+		DropdownEntry entrySave = new(new PixelBounds(fileMenu.Bounds.X1, _headerHeight + menuItemHeight * 3, menuItemWidth, menuItemHeight), fileMenu, () => StateManager.Dispatch(new SetLayout(Root.Dependencies.SurvivalEditorSaveLayout)), "Save", DropdownEntryStyles.Default) { Depth = dropdownEntryDepth };
 		DropdownEntry entryReplace = new(new PixelBounds(fileMenu.Bounds.X1, _headerHeight + menuItemHeight * 4, menuItemWidth, menuItemHeight), fileMenu, () => StateManager.Dispatch(new ReplaceCurrentlyActiveSpawnset()), "Replace", DropdownEntryStyles.Default) { Depth = dropdownEntryDepth };
 
 		fileMenu.AddChild(entryNew);

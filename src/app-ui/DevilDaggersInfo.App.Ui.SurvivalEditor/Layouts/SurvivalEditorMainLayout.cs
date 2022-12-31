@@ -63,9 +63,9 @@ public class SurvivalEditorMainLayout : Layout, IExtendedLayout
 		if (Input.IsKeyPressed(Keys.N))
 			StateManager.Dispatch(new LoadSpawnset("(untitled)", SpawnsetBinary.CreateDefault()));
 		else if (Input.IsKeyPressed(Keys.O))
-			StateManager.Dispatch(new SetLayout(Root.Game.SurvivalEditorOpenLayout));
+			StateManager.Dispatch(new SetLayout(Root.Dependencies.SurvivalEditorOpenLayout));
 		else if (Input.IsKeyPressed(Keys.S))
-			StateManager.Dispatch(new SetLayout(Root.Game.SurvivalEditorSaveLayout));
+			StateManager.Dispatch(new SetLayout(Root.Dependencies.SurvivalEditorSaveLayout));
 		else if (Input.IsKeyPressed(Keys.R))
 			StateManager.Dispatch(new ReplaceCurrentlyActiveSpawnset());
 	}

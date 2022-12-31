@@ -58,7 +58,7 @@ public class ReplayViewer3dLayout : Layout, IExtendedLayout
 		if (Input.IsKeyPressed(Keys.Escape))
 		{
 			Graphics.Glfw.SetInputMode(Window, CursorStateAttribute.Cursor, CursorModeValue.CursorNormal);
-			StateManager.Dispatch(new SetLayout(Root.Game.CustomLeaderboardsRecorderMainLayout));
+			StateManager.Dispatch(new SetLayout(Root.Dependencies.CustomLeaderboardsRecorderMainLayout));
 		}
 	}
 

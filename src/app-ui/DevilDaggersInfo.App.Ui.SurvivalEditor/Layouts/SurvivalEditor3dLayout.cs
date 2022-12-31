@@ -27,7 +27,7 @@ public class SurvivalEditor3dLayout : Layout, IExtendedLayout
 
 	private void BuildScene()
 	{
-		if (StateManager.LayoutState.CurrentLayout != Root.Game.SurvivalEditor3dLayout)
+		if (StateManager.LayoutState.CurrentLayout != Root.Dependencies.SurvivalEditor3dLayout)
 			return;
 
 		_currentTick = 0;
@@ -48,7 +48,7 @@ public class SurvivalEditor3dLayout : Layout, IExtendedLayout
 		if (Input.IsKeyPressed(Keys.Escape))
 		{
 			Graphics.Glfw.SetInputMode(Window, CursorStateAttribute.Cursor, CursorModeValue.CursorNormal);
-			StateManager.Dispatch(new SetLayout(Root.Game.SurvivalEditorMainLayout));
+			StateManager.Dispatch(new SetLayout(Root.Dependencies.SurvivalEditorMainLayout));
 		}
 	}
 

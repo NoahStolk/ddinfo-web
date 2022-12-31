@@ -25,7 +25,7 @@ public class CustomLeaderboardsRecorderMainLayout : Layout, IExtendedLayout
 	public CustomLeaderboardsRecorderMainLayout()
 	{
 		const int headerHeight = 24;
-		MainLayoutBackButton backButton = new(new PixelBounds(0, 0, 24, headerHeight), () => StateManager.Dispatch(new SetLayout(Root.Game.MainLayout)));
+		MainLayoutBackButton backButton = new(new PixelBounds(0, 0, 24, headerHeight), () => StateManager.Dispatch(new SetLayout(Root.Dependencies.MainLayout)));
 		_stateWrapper = new(new PixelBounds(0, headerHeight, 256, 96 - headerHeight));
 		_recordingWrapper = new(new PixelBounds(0, 96, 256, 416));
 		LeaderboardListWrapper leaderboardListWrapper = new(new PixelBounds(256, headerHeight, 768, 512 - headerHeight));
@@ -42,7 +42,7 @@ public class CustomLeaderboardsRecorderMainLayout : Layout, IExtendedLayout
 
 	private static void Initialize()
 	{
-		if (StateManager.LayoutState.CurrentLayout != Root.Game.CustomLeaderboardsRecorderMainLayout)
+		if (StateManager.LayoutState.CurrentLayout != Root.Dependencies.CustomLeaderboardsRecorderMainLayout)
 			return;
 
 		if (!File.Exists(UserSettings.ModsSurvivalPath))

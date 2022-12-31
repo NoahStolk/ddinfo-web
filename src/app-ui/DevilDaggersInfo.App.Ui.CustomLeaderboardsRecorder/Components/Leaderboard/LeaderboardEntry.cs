@@ -62,7 +62,7 @@ public class LeaderboardEntry : AbstractComponent
 				return;
 			}
 
-			Root.Game.GameMemoryService.WriteReplayToMemory(getCustomEntryReplayBuffer.Data);
+			Root.Dependencies.GameMemoryService.WriteReplayToMemory(getCustomEntryReplayBuffer.Data);
 		}
 	}
 
@@ -94,7 +94,7 @@ public class LeaderboardEntry : AbstractComponent
 				return;
 			}
 
-			StateManager.Dispatch(new SetLayout(Root.Game.CustomLeaderboardsRecorderReplayViewer3dLayout));
+			StateManager.Dispatch(new SetLayout(Root.Dependencies.CustomLeaderboardsRecorderReplayViewer3dLayout));
 			StateManager.Dispatch(new BuildReplayScene(new[] { replayBinary }));
 		}
 	}
