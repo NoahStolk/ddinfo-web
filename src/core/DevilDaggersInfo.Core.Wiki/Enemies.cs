@@ -13,8 +13,6 @@ public static class Enemies
 		_all.AddRange(EnemiesV3_2.All);
 	}
 
-	public static IReadOnlyList<Enemy> All => _all;
-
 	public static IReadOnlyList<Enemy> GetEnemies(GameVersion gameVersion) => gameVersion switch
 	{
 		GameVersion.V1_0 => EnemiesV1_0.All,
@@ -29,7 +27,7 @@ public static class Enemies
 		=> GetEnemies(gameVersion).FirstOrDefault(e => e.Name == name);
 
 	public static GameVersion? GetFirstAppearance(string enemyName)
-		=> All.Where(e => e.Name == enemyName).MinBy(e => e.GameVersion)?.GameVersion;
+		=> _all.Where(e => e.Name == enemyName).MinBy(e => e.GameVersion)?.GameVersion;
 
 	public static IEnumerable<GameVersion> GetAppearances(string enemyName)
 	{
