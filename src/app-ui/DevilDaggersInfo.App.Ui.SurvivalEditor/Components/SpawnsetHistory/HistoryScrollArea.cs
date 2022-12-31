@@ -54,6 +54,9 @@ public class HistoryScrollArea : ScrollArea
 
 		foreach (AbstractComponent component in _historyComponents)
 			NestingContext.Add(component);
+
+		// TODO: Only scroll when the entry is not visible.
+		ScheduleScrollTarget(new(0, -StateManager.SpawnsetHistoryState.CurrentIndex * 16));
 	}
 
 	public override void Render(Vector2i<int> scrollOffset)
