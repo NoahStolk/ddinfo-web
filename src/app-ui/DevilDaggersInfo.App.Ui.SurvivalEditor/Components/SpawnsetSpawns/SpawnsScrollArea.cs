@@ -1,4 +1,3 @@
-using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.StateManagement;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
@@ -22,7 +21,7 @@ public class SpawnsScrollArea : ScrollArea
 	private int _currentIndex;
 
 	public SpawnsScrollArea(IBounds bounds)
-		: base(bounds, 96, 16, GlobalStyles.DefaultScrollAreaStyle)
+		: base(bounds, 96, 16, ScrollAreaStyles.Default)
 	{
 		StateManager.Subscribe<LoadSpawnset>(SetSpawns);
 		StateManager.Subscribe<SetSpawnsetHistoryIndex>(SetSpawns);

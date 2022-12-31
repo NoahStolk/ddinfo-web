@@ -1,4 +1,3 @@
-using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.StateManagement;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
@@ -19,7 +18,7 @@ public class HistoryScrollArea : ScrollArea
 	private readonly List<AbstractComponent> _historyComponents = new();
 
 	public HistoryScrollArea(IBounds bounds)
-		: base(bounds, 96, 16, GlobalStyles.DefaultScrollAreaStyle)
+		: base(bounds, 96, 16, ScrollAreaStyles.Default)
 	{
 		SetContent();
 

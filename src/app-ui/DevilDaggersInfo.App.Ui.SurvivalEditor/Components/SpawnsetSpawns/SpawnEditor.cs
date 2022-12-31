@@ -40,18 +40,19 @@ public class SpawnEditor : AbstractComponent
 		AddEnemyButton(288, 16, EnemyType.Gigapede);
 		AddEnemyButton(336, 16, EnemyType.Ghostpede);
 
-		Label enemyTypeLabel = new(bounds.CreateNested(0, 0, width, 16), "Enemy", GlobalStyles.LabelDefaultLeft);
-		Label delayLabel = new(bounds.CreateNested(0, 32, width, 16), "Delay", GlobalStyles.LabelDefaultLeft);
-		TextInput delayTextInput = new(bounds.CreateNested(288, 32, width, 16), true, OnDelayChange, OnDelayChange, OnDelayChange, GlobalStyles.TextInput);
+		Label enemyTypeLabel = new(bounds.CreateNested(0, 0, width, 16), "Enemy", LabelStyles.DefaultLeft);
+		Label delayLabel = new(bounds.CreateNested(0, 32, width, 16), "Delay", LabelStyles.DefaultLeft);
+		TextInput delayTextInput = new(bounds.CreateNested(288, 32, width, 16), true, OnDelayChange, OnDelayChange, OnDelayChange, TextInputStyles.Default);
 		delayTextInput.KeyboardInput.SetText("0.0000");
 
 		NestingContext.Add(enemyTypeLabel);
 		NestingContext.Add(delayLabel);
 		NestingContext.Add(delayTextInput);
 
-		TextButton addButton = new(bounds.CreateNested(96, 72, width, 32), AddSpawn, GlobalStyles.AddSpawn, GlobalStyles.SpawnText, "ADD");
-		TextButton insertButton = new(bounds.CreateNested(192, 72, width, 32), InsertSpawn, GlobalStyles.InsertSpawn, GlobalStyles.SpawnText, "INSERT");
-		TextButton editButton = new(bounds.CreateNested(288, 72, width, 32), EditSpawn, GlobalStyles.EditSpawn, GlobalStyles.SpawnText, "EDIT");
+		TextButtonStyle spawnText = new(Color.White, TextAlign.Middle, FontSize.H16);
+		TextButton addButton = new(bounds.CreateNested(96, 72, width, 32), AddSpawn, new(new(0, 127, 0, 255), Color.White, new(0, 191, 0, 255), 1), spawnText, "ADD");
+		TextButton insertButton = new(bounds.CreateNested(192, 72, width, 32), InsertSpawn, new(new(0, 63, 127, 255), Color.White, new(0, 95, 191, 255), 1), spawnText, "INSERT");
+		TextButton editButton = new(bounds.CreateNested(288, 72, width, 32), EditSpawn, new(new(127, 63, 0, 255), Color.White, new(191, 95, 0, 255), 1), spawnText, "EDIT");
 
 		NestingContext.Add(addButton);
 		NestingContext.Add(insertButton);
@@ -59,7 +60,7 @@ public class SpawnEditor : AbstractComponent
 
 		void AddEnemyButton(int x, int y, EnemyType enemyType)
 		{
-			ButtonStyle buttonStyle = _selectedEnemyType == enemyType ? GlobalStyles.SelectedEnemyButtonStyles[enemyType] : GlobalStyles.EnemyButtonStyles[enemyType];
+			ButtonStyle buttonStyle = _selectedEnemyType == enemyType ? ButtonStyles.SelectedEnemies[enemyType] : ButtonStyles.Enemies[enemyType];
 			TextButtonStyle textButtonStyle = new(buttonStyle.BackgroundColor.ReadableColorForBrightness(), TextAlign.Left, FontSize.H12);
 			TextButton button = new(bounds.CreateNested(x, y, 48, 16), () => SetSelectedEnemyType(enemyType), buttonStyle, textButtonStyle, enemyType.GetShortName());
 			_enemyTypeButtons.Add(enemyType, button);
@@ -74,7 +75,7 @@ public class SpawnEditor : AbstractComponent
 		_selectedEnemyType = enemyType;
 
 		foreach (KeyValuePair<EnemyType, TextButton> kvp in _enemyTypeButtons)
-			kvp.Value.ButtonStyle = _selectedEnemyType == kvp.Key ? GlobalStyles.SelectedEnemyButtonStyles[kvp.Key] : GlobalStyles.EnemyButtonStyles[kvp.Key];
+			kvp.Value.ButtonStyle = _selectedEnemyType == kvp.Key ? ButtonStyles.SelectedEnemies[kvp.Key] : ButtonStyles.Enemies[kvp.Key];
 	}
 
 	private void AddSpawn()

@@ -12,7 +12,7 @@ public class PathsScrollArea : ScrollArea
 	private readonly List<Button> _subDirectoryButtons = new();
 
 	public PathsScrollArea(IBounds bounds)
-		: base(bounds, 96, 16, GlobalStyles.DefaultScrollAreaStyle)
+		: base(bounds, 96, 16, ScrollAreaStyles.Default)
 	{
 	}
 

@@ -8,6 +8,8 @@ using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Types.Core.Spawnsets;
 using Warp.NET.RenderImpl.Ui.Components;
 using Warp.NET.RenderImpl.Ui.Components.Styles;
+using Warp.NET.RenderImpl.Ui.Rendering.Text;
+using Warp.NET.Text;
 using Warp.NET.Ui;
 using Warp.NET.Ui.Components;
 
@@ -16,6 +18,9 @@ namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetSettings;
 public class SettingsWrapper : AbstractComponent
 {
 	private const int _offset = 16;
+
+	private static readonly ButtonStyle _spawnsetSetting = new(Color.Black, Color.Gray(0.5f), Color.Gray(0.5f), 1);
+	private static readonly ButtonStyle _selectedSpawnsetSetting = new(Color.Gray(0.5f), Color.White, Color.Gray(0.75f), 1);
 
 	private readonly int _halfWidth;
 	private readonly int _thirdWidth;
@@ -51,7 +56,7 @@ public class SettingsWrapper : AbstractComponent
 		_thirdWidth = (int)MathF.Ceiling(width / 3f);
 		_quarterWidth = _halfWidth / 2;
 
-		Label title = new(bounds.CreateNested(0, 0, width, 48), "Settings", GlobalStyles.LabelTitle);
+		Label title = new(bounds.CreateNested(0, 0, width, 48), "Settings", LabelStyles.Title);
 		NestingContext.Add(title);
 
 		int y = title.Bounds.Size.Y;
@@ -109,13 +114,13 @@ public class SettingsWrapper : AbstractComponent
 	private TextButton CreateFormatButton(int y, int index, int worldVersion, int spawnVersion)
 	{
 		string str = SpawnsetBinary.GetGameVersionString(worldVersion, spawnVersion);
-		return new(Bounds.CreateNested(index * _thirdWidth, y, _thirdWidth, _offset), () => StateManager.Dispatch(new UpdateFormat(worldVersion, spawnVersion)), GlobalStyles.SpawnsetSetting, GlobalStyles.DefaultMiddle, str);
+		return new(Bounds.CreateNested(index * _thirdWidth, y, _thirdWidth, _offset), () => StateManager.Dispatch(new UpdateFormat(worldVersion, spawnVersion)), _spawnsetSetting, TextButtonStyles.DefaultMiddle, str);
 	}
 
 	private TextButton CreateGameModeButton(int y, GameMode gameMode)
 	{
 		int index = (int)gameMode;
-		return new(Bounds.CreateNested(index * _thirdWidth, y, _thirdWidth, _offset), () => StateManager.Dispatch(new UpdateGameMode(gameMode)), GlobalStyles.SpawnsetSetting, GlobalStyles.DefaultMiddle, ToShortString());
+		return new(Bounds.CreateNested(index * _thirdWidth, y, _thirdWidth, _offset), () => StateManager.Dispatch(new UpdateGameMode(gameMode)), _spawnsetSetting, TextButtonStyles.DefaultMiddle, ToShortString());
 
 		string ToShortString() => gameMode switch
 		{
@@ -129,7 +134,7 @@ public class SettingsWrapper : AbstractComponent
 	private TextButton CreateHandButton(int y, HandLevel handLevel)
 	{
 		int index = (int)handLevel - 1;
-		return new(Bounds.CreateNested(index * _quarterWidth, y, _quarterWidth, _offset), () => StateManager.Dispatch(new UpdateHandLevel(handLevel)), GlobalStyles.HandLevelButtonStyles[handLevel], GlobalStyles.HandLevelText, ToShortString());
+		return new(Bounds.CreateNested(index * _quarterWidth, y, _quarterWidth, _offset), () => StateManager.Dispatch(new UpdateHandLevel(handLevel)), ButtonStyles.HandLevels[handLevel], TextButtonStyles.DefaultMiddle, ToShortString());
 
 		string ToShortString() => handLevel switch
 		{
@@ -143,7 +148,7 @@ public class SettingsWrapper : AbstractComponent
 
 	private (SpawnsetTextInput TextInput, Label Label) AddSetting(string labelText, ref int y, Action<string> onInput)
 	{
-		Label label = new(Bounds.CreateNested(0, y, _halfWidth, _offset), labelText, GlobalStyles.LabelDefaultLeft);
+		Label label = new(Bounds.CreateNested(0, y, _halfWidth, _offset), labelText, LabelStyles.DefaultLeft);
 		SpawnsetTextInput textInput = SpawnsetComponentBuilder.CreateSpawnsetTextInput(Bounds.CreateNested(_halfWidth, y, _halfWidth, _offset), onInput);
 		NestingContext.Add(label);
 		NestingContext.Add(textInput);
@@ -178,9 +183,9 @@ public class SettingsWrapper : AbstractComponent
 		_buttonV2V3.ButtonStyle = GetFormatBackground(9, 4);
 		_buttonV3Next.ButtonStyle = GetFormatBackground(9, 6);
 
-		_buttonSurvival.ButtonStyle = spawnset.GameMode == GameMode.Survival ? GlobalStyles.SelectedSpawnsetSetting : GlobalStyles.SpawnsetSetting;
-		_buttonTimeAttack.ButtonStyle = spawnset.GameMode == GameMode.TimeAttack ? GlobalStyles.SelectedSpawnsetSetting : GlobalStyles.SpawnsetSetting;
-		_buttonRace.ButtonStyle = spawnset.GameMode == GameMode.Race ? GlobalStyles.SelectedSpawnsetSetting : GlobalStyles.SpawnsetSetting;
+		_buttonSurvival.ButtonStyle = spawnset.GameMode == GameMode.Survival ? _selectedSpawnsetSetting : _spawnsetSetting;
+		_buttonTimeAttack.ButtonStyle = spawnset.GameMode == GameMode.TimeAttack ? _selectedSpawnsetSetting : _spawnsetSetting;
+		_buttonRace.ButtonStyle = spawnset.GameMode == GameMode.Race ? _selectedSpawnsetSetting : _spawnsetSetting;
 
 		bool practice = spawnset.SpawnVersion > 4;
 		_buttonLevel1.IsActive = practice;
@@ -207,8 +212,8 @@ public class SettingsWrapper : AbstractComponent
 		_buttonLevel3.ButtonStyle = GetStyle(HandLevel.Level3);
 		_buttonLevel4.ButtonStyle = GetStyle(HandLevel.Level4);
 
-		ButtonStyle GetStyle(HandLevel handLevel) => handLevel == spawnset.HandLevel ? GlobalStyles.SelectedHandLevelButtonStyles[handLevel] : GlobalStyles.HandLevelButtonStyles[handLevel];
+		ButtonStyle GetStyle(HandLevel handLevel) => handLevel == spawnset.HandLevel ? ButtonStyles.SelectedHandLevels[handLevel] : ButtonStyles.HandLevels[handLevel];
 
-		ButtonStyle GetFormatBackground(int worldVersion, int spawnVersion) => worldVersion == spawnset.WorldVersion && spawnVersion == spawnset.SpawnVersion ? GlobalStyles.SelectedSpawnsetSetting : GlobalStyles.SpawnsetSetting;
+		ButtonStyle GetFormatBackground(int worldVersion, int spawnVersion) => worldVersion == spawnset.WorldVersion && spawnVersion == spawnset.SpawnVersion ? _selectedSpawnsetSetting : _spawnsetSetting;
 	}
 }

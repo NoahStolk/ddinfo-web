@@ -1,4 +1,3 @@
-using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.Styling;
 using Warp.NET.RenderImpl.Ui.Components;
 using Warp.NET.Ui;
@@ -13,7 +12,7 @@ public class SpawnsWrapper : AbstractComponent
 	{
 		const int titleHeight = 48;
 
-		Label title = new(bounds.CreateNested(0, 0, bounds.Size.X, titleHeight), "Spawns", GlobalStyles.LabelTitle);
+		Label title = new(bounds.CreateNested(0, 0, bounds.Size.X, titleHeight), "Spawns", LabelStyles.Title);
 		SpawnsScrollArea spawnsScrollArea = new(bounds.CreateNested(0, titleHeight, bounds.Size.X, bounds.Size.Y - titleHeight));
 
 		NestingContext.Add(title);

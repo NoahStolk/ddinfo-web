@@ -1,5 +1,4 @@
 using DevilDaggersInfo.Api.App.CustomLeaderboards;
-using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.Styling;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Extensions;
@@ -14,7 +13,7 @@ namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.Leaderbo
 public class CriteriaIcon : TooltipIconButton
 {
 	public CriteriaIcon(IBounds bounds, GetCustomLeaderboardCriteria criteria)
-		: base(bounds, () => { }, GlobalStyles.Borderless, criteria.Type.GetTexture(), GetText(criteria), Color.Black, criteria.Type.GetColor())
+		: base(bounds, () => { }, ButtonStyles.Borderless, criteria.Type.GetTexture(), GetText(criteria), Color.Black, criteria.Type.GetColor())
 	{
 	}
 

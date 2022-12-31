@@ -1,10 +1,11 @@
-using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.Base.Actions;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 using DevilDaggersInfo.App.Ui.Base.Styling;
 using DevilDaggersInfo.Core.Spawnset;
 using Warp.NET.RenderImpl.Ui.Components;
+using Warp.NET.RenderImpl.Ui.Rendering.Text;
+using Warp.NET.Text;
 using Warp.NET.Ui;
 using Warp.NET.Ui.Components;
 using StateManager = DevilDaggersInfo.App.Ui.Base.StateManagement.StateManager;
@@ -25,9 +26,9 @@ public class ArenaWrapper : AbstractComponent
 
 		_arena = new(bounds.CreateNested(0, titleHeight, arenaSize, arenaSize));
 
-		Label title = new(bounds.CreateNested(0, 0, arenaSize, titleHeight), "Arena", GlobalStyles.LabelTitle);
+		Label title = new(bounds.CreateNested(0, 0, arenaSize, titleHeight), "Arena", LabelStyles.Title);
 		ArenaHeightButtons arenaHeightButtons = new(bounds.CreateNested(arenaSize + 8, titleHeight, 80, 320));
-		_shrinkSlider = new(bounds.CreateNested(0, titleHeight + arenaSize, arenaSize, sliderHeight), _arena.SetShrinkCurrent, true, 0, StateManager.SpawnsetState.Spawnset.GetSliderMaxSeconds(), 0.001f, 0, GlobalStyles.DefaultSliderStyle);
+		_shrinkSlider = new(bounds.CreateNested(0, titleHeight + arenaSize, arenaSize, sliderHeight), _arena.SetShrinkCurrent, true, 0, StateManager.SpawnsetState.Spawnset.GetSliderMaxSeconds(), 0.001f, 0, SliderStyles.Default);
 		ArenaToolsWrapper arenaToolsWrapper = new(bounds.CreateNested(0, titleHeight + arenaSize + sliderHeight, 304, 480));
 
 		NestingContext.Add(title);
@@ -36,7 +37,7 @@ public class ArenaWrapper : AbstractComponent
 		NestingContext.Add(_shrinkSlider);
 		NestingContext.Add(arenaToolsWrapper);
 
-		TextButton button3d = new(bounds.CreateNested(0, 0, 64, 16), () => StateManager.Dispatch(new SetLayout(Root.Game.SurvivalEditor3dLayout)), GlobalStyles.DefaultButtonStyle, GlobalStyles.View3dButton, "3D");
+		TextButton button3d = new(bounds.CreateNested(0, 0, 64, 16), () => StateManager.Dispatch(new SetLayout(Root.Game.SurvivalEditor3dLayout)), ButtonStyles.Default, new(Color.White, TextAlign.Middle, FontSize.H12), "3D");
 		NestingContext.Add(button3d);
 
 		StateManager.Subscribe<LoadSpawnset>(SetSliderAndShrinkValues);

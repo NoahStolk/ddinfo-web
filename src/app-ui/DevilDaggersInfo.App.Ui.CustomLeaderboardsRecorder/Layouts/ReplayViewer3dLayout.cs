@@ -1,4 +1,3 @@
-using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.StateManagement;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.Base.Actions;
@@ -23,7 +22,7 @@ public class ReplayViewer3dLayout : Layout, IExtendedLayout
 
 	public ReplayViewer3dLayout()
 	{
-		_shrinkSlider = new(new PixelBounds(0, 752, 1024, 16), f => _currentTick = (int)(f * 60), true, 0, 0, 0.001f, 0, GlobalStyles.DefaultSliderStyle, 0);
+		_shrinkSlider = new(new PixelBounds(0, 752, 1024, 16), f => _currentTick = (int)(f * 60), true, 0, 0, 0.001f, 0, SliderStyles.Default, 0);
 		NestingContext.Add(_shrinkSlider);
 
 		StateManager.Subscribe<BuildReplayScene>(BuildScene);

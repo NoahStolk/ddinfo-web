@@ -1,4 +1,3 @@
-using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.Base.Actions;
 using DevilDaggersInfo.App.Ui.Base.Styling;
@@ -20,7 +19,7 @@ public class SurvivalEditor3dLayout : Layout, IExtendedLayout
 
 	public SurvivalEditor3dLayout()
 	{
-		_shrinkSlider = new(new PixelBounds(0, 752, 1024, 16), f => _currentTick = (int)(f * 60), true, 0, 0, 0.1f, 0, GlobalStyles.DefaultSliderStyle);
+		_shrinkSlider = new(new PixelBounds(0, 752, 1024, 16), f => _currentTick = (int)(f * 60), true, 0, 0, 0.1f, 0, SliderStyles.Default);
 		NestingContext.Add(_shrinkSlider);
 
 		StateManager.Subscribe<SetLayout>(BuildScene);

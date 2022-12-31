@@ -1,4 +1,3 @@
-using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.Settings;
@@ -20,7 +19,7 @@ public class SurvivalEditorOpenLayout : Layout, IExtendedLayout
 	public SurvivalEditorOpenLayout()
 	{
 		PathsCloseButton closeButton = new(new PixelBounds(0, 0, 24, 24), () => StateManager.Dispatch(new SetLayout(Root.Game.SurvivalEditorMainLayout)));
-		_pathTextInput = new(new PixelBounds(0, 24, 1024, 16), false, null, null, null, GlobalStyles.TextInput);
+		_pathTextInput = new(new PixelBounds(0, 24, 1024, 16), false, null, null, null, TextInputStyles.Default);
 		_pathsScrollArea = new(new PixelBounds(0, 96, 1024, 640))
 		{
 			OnDirectorySelect = SetComponentsFromPath,

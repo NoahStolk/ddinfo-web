@@ -1,10 +1,11 @@
-using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.Settings;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.Base.Actions;
 using DevilDaggersInfo.App.Ui.Base.Styling;
 using Warp.NET.RenderImpl.Ui.Components;
+using Warp.NET.RenderImpl.Ui.Rendering.Text;
+using Warp.NET.Text;
 using Warp.NET.Ui;
 using StateManager = DevilDaggersInfo.App.Ui.Base.StateManagement.StateManager;
 
@@ -18,9 +19,9 @@ public class SurvivalEditorSaveLayout : Layout, IExtendedLayout
 	public SurvivalEditorSaveLayout()
 	{
 		PathsCloseButton closeButton = new(new PixelBounds(0, 0, 24, 24), () => StateManager.Dispatch(new SetLayout(Root.Game.SurvivalEditorMainLayout)));
-		_pathTextInput = new(new PixelBounds(0, 24, 1024, 16), false, null, null, null, GlobalStyles.TextInput);
-		TextInput fileTextInput = new(new PixelBounds(0, 48, 512, 16), false, null, null, null, GlobalStyles.TextInput);
-		TextButton saveButton = new(new PixelBounds(512, 48, 128, 16), () => SaveSpawnset(Path.Combine(_pathTextInput.KeyboardInput.Value.ToString(), fileTextInput.KeyboardInput.Value.ToString())), GlobalStyles.DefaultButtonStyle, GlobalStyles.FileSaveButton, "Save");
+		_pathTextInput = new(new PixelBounds(0, 24, 1024, 16), false, null, null, null, TextInputStyles.Default);
+		TextInput fileTextInput = new(new PixelBounds(0, 48, 512, 16), false, null, null, null, TextInputStyles.Default);
+		TextButton saveButton = new(new PixelBounds(512, 48, 128, 16), () => SaveSpawnset(Path.Combine(_pathTextInput.KeyboardInput.Value.ToString(), fileTextInput.KeyboardInput.Value.ToString())), ButtonStyles.Default, new(Color.Green, TextAlign.Middle, FontSize.H12), "Save");
 
 		_pathsScrollArea = new(new PixelBounds(0, 96, 1024, 640))
 		{

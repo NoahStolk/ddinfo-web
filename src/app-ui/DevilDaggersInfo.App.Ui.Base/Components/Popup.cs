@@ -16,11 +16,11 @@ public class Popup : AbstractComponent
 		const int buttonWidth = 128;
 		const int buttonHeight = 32;
 
-		Label label = new(new PixelBounds(0, Constants.NativeHeight / 3, Constants.NativeWidth, 32), text, GlobalStyles.PopupLabel)
+		Label label = new(new PixelBounds(0, Constants.NativeHeight / 3, Constants.NativeWidth, 32), text, LabelStyles.Popup)
 		{
 			Depth = Constants.DepthMax,
 		};
-		TextButton okButton = new(new PixelBounds(Constants.NativeWidth / 2 - buttonWidth / 2, Constants.NativeHeight / 2 - buttonHeight / 2, buttonWidth, buttonHeight), () => parent.NestingContext.Remove(this), GlobalStyles.DefaultButtonStyle, GlobalStyles.Popup, "OK")
+		TextButton okButton = new(new PixelBounds(Constants.NativeWidth / 2 - buttonWidth / 2, Constants.NativeHeight / 2 - buttonHeight / 2, buttonWidth, buttonHeight), () => parent.NestingContext.Remove(this), ButtonStyles.Default, TextButtonStyles.Popup, "OK")
 		{
 			Depth = Constants.DepthMax,
 		};

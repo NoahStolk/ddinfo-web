@@ -6,7 +6,7 @@ namespace DevilDaggersInfo.App.Ui.Base.Components;
 public class PathsCloseButton : TooltipIconButton
 {
 	public PathsCloseButton(IBounds bounds, Action onClick)
-		: base(bounds, onClick, GlobalStyles.DefaultButtonStyle, Textures.CloseButton, "Close", Color.HalfTransparentWhite, Color.White)
+		: base(bounds, onClick, ButtonStyles.Default, Textures.CloseButton, "Close", Color.HalfTransparentWhite, Color.White)
 	{
 	}
 }

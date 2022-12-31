@@ -1,8 +1,9 @@
-using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.StateManagement;
 using DevilDaggersInfo.App.Ui.Base.Styling;
 using Warp.NET.RenderImpl.Ui.Components;
 using Warp.NET.RenderImpl.Ui.Components.Styles;
+using Warp.NET.RenderImpl.Ui.Rendering.Text;
+using Warp.NET.Text;
 using Warp.NET.Ui;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetArena;
@@ -23,6 +24,6 @@ public class HeightButton : TextButton
 	{
 		base.Update(scrollOffset);
 
-		TextButtonStyle = Math.Abs(StateManager.ArenaEditorState.SelectedHeight - _height) < 0.001f ? GlobalStyles.SelectedHeightButton : _textButtonStyle;
+		TextButtonStyle = Math.Abs(StateManager.ArenaEditorState.SelectedHeight - _height) < 0.001f ? new(Color.Blue, TextAlign.Middle, FontSize.H12) : _textButtonStyle;
 	}
 }
