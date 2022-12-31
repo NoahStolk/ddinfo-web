@@ -2,6 +2,8 @@ namespace DevilDaggersInfo.App.Ui.Base.Settings;
 
 public static class UserSettings
 {
+	private const int _version1 = 1;
+
 	private static readonly string _fileDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ddinfo-tools");
 	private static readonly string _filePath = Path.Combine(_fileDirectory, "settings");
 
@@ -33,7 +35,7 @@ public static class UserSettings
 		using FileStream fs = new(_filePath, FileMode.Open);
 		using BinaryReader br = new(fs);
 		int version = br.ReadInt32();
-		if (version != 1)
+		if (version != _version1)
 			return;
 
 		_devilDaggersInstallationDirectory = br.ReadString();
@@ -43,7 +45,7 @@ public static class UserSettings
 	{
 		using MemoryStream ms = new();
 		using BinaryWriter bw = new(ms);
-		bw.Write(1);
+		bw.Write(_version1);
 		bw.Write(_devilDaggersInstallationDirectory);
 
 		Directory.CreateDirectory(_fileDirectory);
