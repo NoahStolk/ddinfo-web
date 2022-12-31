@@ -2,6 +2,7 @@ using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.Extensions;
 using DevilDaggersInfo.App.Ui.Base.StateManagement;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Actions;
+using DevilDaggersInfo.App.Ui.Base.Styling;
 using DevilDaggersInfo.Core.Wiki;
 using Warp.NET.Extensions;
 using Warp.NET.RenderImpl.Ui.Components;
@@ -22,7 +23,7 @@ public class LeaderboardWrapper : AbstractComponent
 	public LeaderboardWrapper(IBounds bounds)
 		: base(bounds)
 	{
-		_label = new(bounds.CreateNested(4, 4, 128, 16), string.Empty, LabelStyle.Default);
+		_label = new(bounds.CreateNested(4, 4, 128, 16), string.Empty, LabelStyles.DefaultLeft);
 		_leaderboardScrollArea = new(bounds.CreateNested(4, 48, 1016, 200));
 
 		NestingContext.Add(_leaderboardScrollArea);

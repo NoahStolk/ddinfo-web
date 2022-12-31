@@ -118,8 +118,7 @@ public class SpawnsScrollArea : ScrollArea
 
 	private void ScrollToEnd()
 	{
-		// TODO: We need to call this AFTER the NestingContext has been updated. Even if we call RecalculateHeight here, it still won't be updated until the NestingContext has performed its Update method.
-		UpdateScrollOffsetAndScrollbarPosition(new(0, -_spawnComponents.Count * SpawnEntryHeight));
+		ScheduleScrollTarget(new(0, -_spawnComponents.Count * SpawnEntryHeight));
 	}
 
 	private void ScrollToFirstSelectedIndex()
@@ -128,7 +127,7 @@ public class SpawnsScrollArea : ScrollArea
 			throw new InvalidOperationException("No spawn selected.");
 
 		// TODO: Only scroll when the spawn is not visible.
-		UpdateScrollOffsetAndScrollbarPosition(new(0, -StateManager.SpawnEditorState.SelectedIndices.Min() * SpawnEntryHeight));
+		ScheduleScrollTarget(new(0, -StateManager.SpawnEditorState.SelectedIndices.Min() * SpawnEntryHeight));
 	}
 
 	private void ScrollToInsertedSpawn()
