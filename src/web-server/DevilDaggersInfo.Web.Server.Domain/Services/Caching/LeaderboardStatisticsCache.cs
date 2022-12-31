@@ -41,7 +41,7 @@ public class LeaderboardStatisticsCache
 	public ArrayStatistics Top100ArrayStatistics { get; } = new();
 	public ArrayStatistics Top1000ArrayStatistics { get; } = new();
 
-	public IReadOnlyList<CompressedEntry> Entries => _entries;
+	public int EntryCount => _entries.Count;
 
 	public static IReadOnlyList<Dagger> StatDaggers { get; } = Daggers.All.OrderByDescending(d => d.UnlockSecond).ToList();
 
@@ -124,7 +124,7 @@ public class LeaderboardStatisticsCache
 
 			const int step = 10;
 
-			int timesStep = (int)(entry.Time / 10000 / step * step);
+			int timesStep = (int)(entry.Time / 10_000 / step * step);
 			int killsStep = entry.Kills / step * step;
 			int gemsStep = entry.Gems / step * step;
 
@@ -147,7 +147,7 @@ public class LeaderboardStatisticsCache
 		Top1000ArrayStatistics.Populate(_entries, 1000);
 
 		PlayersWithLevel1 = _entries.Count(e => e.Gems < 10);
-		PlayersWithLevel2 = _entries.Count(e => e.Gems >= 10 && e.Gems < 70);
+		PlayersWithLevel2 = _entries.Count(e => e.Gems is >= 10 and < 70);
 		PlayersWithLevel3Or4 = _entries.Count(e => e.Gems > 70);
 
 		IsFetched = true;
@@ -176,21 +176,17 @@ public class LeaderboardStatisticsCache
 
 	private static void AddToStatisticsDictionary(Dictionary<int, int> dictionary, int step, int currentKey)
 	{
-		if (dictionary.ContainsKey(currentKey))
-		{
-			dictionary[currentKey]++;
-		}
-		else
-		{
-			dictionary.Add(currentKey, 1);
+		if (!dictionary.ContainsKey(currentKey))
+			dictionary.Add(currentKey, 0);
 
-			// Fill and set remaining keys to 0 as needed.
-			int previous = currentKey - step;
-			while (!dictionary.ContainsKey(previous) && previous >= 0)
-			{
-				dictionary.Add(previous, 0);
-				previous -= step;
-			}
+		dictionary[currentKey]++;
+
+		// Fill and set remaining keys to 0 as needed.
+		int previous = currentKey - step;
+		while (!dictionary.ContainsKey(previous) && previous >= 0)
+		{
+			dictionary.Add(previous, 0);
+			previous -= step;
 		}
 	}
 

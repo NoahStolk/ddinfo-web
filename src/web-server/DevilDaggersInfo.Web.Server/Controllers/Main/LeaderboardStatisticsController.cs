@@ -25,7 +25,7 @@ public class LeaderboardStatisticsController : ControllerBase
 		{
 			DateTime = _leaderboardStatisticsCache.FileName == null ? DateTime.MinValue : HistoryUtils.HistoryFileNameToDateTime(_leaderboardStatisticsCache.FileName),
 			IsFetched = _leaderboardStatisticsCache.IsFetched,
-			TotalEntries = _leaderboardStatisticsCache.Entries.Count,
+			TotalEntries = _leaderboardStatisticsCache.EntryCount,
 			DaggersStatistics = Enumerable.Range(0, LeaderboardStatisticsCache.StatDaggers.Count).Reverse().ToDictionary(i => LeaderboardStatisticsCache.StatDaggers[i].Name, i => _leaderboardStatisticsCache.DaggersStatistics[i]),
 			DeathsStatistics = _leaderboardStatisticsCache.DeathsStatistics.OrderBy(kvp => kvp.Key.LeaderboardDeathType).ToDictionary(kvp => kvp.Key.Name, kvp => kvp.Value),
 			EnemiesStatistics = Enumerable.Range(0, LeaderboardStatisticsCache.StatEnemies.Count).Reverse().ToDictionary(i => LeaderboardStatisticsCache.StatEnemies[i].Name, i => _leaderboardStatisticsCache.EnemiesStatistics[..(i + 1)].Sum()),

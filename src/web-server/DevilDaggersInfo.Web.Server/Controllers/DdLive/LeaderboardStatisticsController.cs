@@ -25,7 +25,7 @@ public class LeaderboardStatisticsController : ControllerBase
 		{
 			DateTime = _leaderboardStatisticsCache.FileName == null ? DateTime.MinValue : HistoryUtils.HistoryFileNameToDateTime(_leaderboardStatisticsCache.FileName),
 			IsFetched = _leaderboardStatisticsCache.IsFetched,
-			TotalEntries = _leaderboardStatisticsCache.Entries.Count,
+			TotalEntries = _leaderboardStatisticsCache.EntryCount,
 			Statistics = (top switch
 			{
 				LeaderboardStatisticsLimitDdLive.Top1000 => _leaderboardStatisticsCache.Top1000ArrayStatistics,
