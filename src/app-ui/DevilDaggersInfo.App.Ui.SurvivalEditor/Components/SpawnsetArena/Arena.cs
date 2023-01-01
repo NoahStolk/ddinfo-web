@@ -189,7 +189,7 @@ public class Arena : AbstractComponent
 			Root.Game.SpriteRenderer.Schedule(new(-8, -8), origin.ToVector2() + new Vector2(realRaceX * TileSize + halfSize, realRaceZ * TileSize + halfSize), Depth + 3, ContentManager.Content.IconDaggerTexture, Color.FromVector3(color));
 		}
 
-		ScissorScheduler.SetScissor(Scissor.Create(Bounds, scrollOffset, ViewportState.Offset, ViewportState.Scale));
+		ScissorScheduler.PushScissor(Scissor.Create(Bounds, scrollOffset, ViewportState.Offset, ViewportState.Scale));
 
 		const int tileUnit = 4;
 		float shrinkStartRadius = StateManager.SpawnsetState.Spawnset.ShrinkStart / tileUnit * TileSize;
@@ -203,7 +203,7 @@ public class Arena : AbstractComponent
 		if (shrinkEndRadius > 0)
 			Root.Game.CircleRenderer.Schedule(center, shrinkEndRadius, Depth + 5, Color.Aqua);
 
-		ScissorScheduler.UnsetScissor();
+		ScissorScheduler.PopScissor();
 
 		IArenaState activeState = GetActiveState();
 		activeState.Render(GetArenaMousePosition(scrollOffset), origin, Depth + 3);
