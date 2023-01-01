@@ -1,6 +1,8 @@
+using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.StateManagement;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Data;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena.Data;
+using DevilDaggersInfo.Core.Spawnset;
 using Silk.NET.GLFW;
 using Warp.NET;
 
@@ -8,23 +10,36 @@ namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena;
 
 public class ArenaBucketState : IArenaState
 {
+	private readonly HashSet<Vector2i<int>> _targetCoords = new();
+
+	private ArenaMousePosition _cachedPosition;
+
 	public void Handle(ArenaMousePosition mousePosition)
 	{
-		if (!Input.IsButtonPressed(MouseButton.Left))
+		bool leftClick = Input.IsButtonPressed(MouseButton.Left);
+		if (!leftClick && _cachedPosition == mousePosition)
 			return;
 
-		HashSet<Vector2i<int>> done = new();
-		float[,] tiles = StateManager.SpawnsetState.Spawnset.ArenaTiles.GetMutableClone();
+		_cachedPosition = mousePosition;
+
+		_targetCoords.Clear();
+
 		int dimension = StateManager.SpawnsetState.Spawnset.ArenaDimension;
 		float targetHeight = StateManager.SpawnsetState.Spawnset.ArenaTiles[mousePosition.Tile.X, mousePosition.Tile.Y];
 		FillNeighbors(mousePosition.Tile.X, mousePosition.Tile.Y);
 
-		Components.SpawnsetArena.Arena.UpdateArena(tiles, SpawnsetEditType.ArenaBucket);
+		if (leftClick)
+		{
+			float[,] tiles = StateManager.SpawnsetState.Spawnset.ArenaTiles.GetMutableClone();
+			foreach (Vector2i<int> coord in _targetCoords)
+				tiles[coord.X, coord.Y] = StateManager.ArenaEditorState.SelectedHeight;
+
+			Components.SpawnsetArena.Arena.UpdateArena(tiles, SpawnsetEditType.ArenaBucket);
+		}
 
 		void FillNeighbors(int x, int y)
 		{
-			tiles[x, y] = StateManager.ArenaEditorState.SelectedHeight;
-			done.Add(new(x, y));
+			_targetCoords.Add(new(x, y));
 
 			int leftX = x - 1;
 			int rightX = x + 1;
@@ -42,10 +57,10 @@ public class ArenaBucketState : IArenaState
 
 			void FillIfApplicable(int newX, int newY)
 			{
-				if (done.Contains(new(newX, newY)))
+				if (_targetCoords.Contains(new(newX, newY)))
 					return;
 
-				float tileHeight = tiles[newX, newY];
+				float tileHeight = StateManager.SpawnsetState.Spawnset.ArenaTiles[newX, newY];
 
 				float clampedTargetHeight = targetHeight;
 				if (targetHeight < StateManager.ArenaEditorState.BucketVoidHeight)
@@ -61,9 +76,18 @@ public class ArenaBucketState : IArenaState
 
 	public void Reset()
 	{
+		_targetCoords.Clear();
 	}
 
 	public void Render(ArenaMousePosition mousePosition, Vector2i<int> origin, float depth)
 	{
+		for (int i = 0; i < SpawnsetBinary.ArenaDimensionMax; i++)
+		{
+			for (int j = 0; j < SpawnsetBinary.ArenaDimensionMax; j++)
+			{
+				if (_targetCoords.Contains(new(i, j)))
+					Root.Game.RectangleRenderer.Schedule(new(Components.SpawnsetArena.Arena.TileSize), origin + new Vector2i<int>(i, j) * Components.SpawnsetArena.Arena.TileSize + Components.SpawnsetArena.Arena.HalfTile, depth, Color.HalfTransparentWhite);
+			}
+		}
 	}
 }
