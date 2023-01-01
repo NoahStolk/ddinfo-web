@@ -118,7 +118,8 @@ public class SpawnsScrollArea : ScrollArea
 
 	private void ScrollToEnd()
 	{
-		ScheduleScrollTarget(new(0, -_spawnComponents.Count * SpawnEntryHeight));
+		int index = _spawnComponents.Count - 1;
+		ScheduleScrollTarget(index * SpawnEntryHeight, (index + 1) * SpawnEntryHeight);
 	}
 
 	private void ScrollToFirstSelectedIndex()
@@ -126,8 +127,8 @@ public class SpawnsScrollArea : ScrollArea
 		if (StateManager.SpawnEditorState.SelectedIndices.Count == 0)
 			throw new InvalidOperationException("No spawn selected.");
 
-		// TODO: Only scroll when the spawn is not visible.
-		ScheduleScrollTarget(new(0, -StateManager.SpawnEditorState.SelectedIndices.Min() * SpawnEntryHeight));
+		int index = StateManager.SpawnEditorState.SelectedIndices.Min();
+		ScheduleScrollTarget(index * SpawnEntryHeight, (index + 1) * SpawnEntryHeight);
 	}
 
 	private void ScrollToInsertedSpawn()

@@ -34,6 +34,7 @@ public class HistoryScrollArea : ScrollArea
 
 		_historyComponents.Clear();
 
+		const int historyEntryHeight = 16;
 		for (int i = 0; i < StateManager.SpawnsetHistoryState.History.Count; i++)
 		{
 			SpawnsetHistoryEntry historyEntry = StateManager.SpawnsetHistoryState.History[i];
@@ -44,7 +45,6 @@ public class HistoryScrollArea : ScrollArea
 			ButtonStyle buttonStyle = new(isActive ? colorBackgroundActive : colorBackground, isActive ? Color.White : Color.Black, hoverBackgroundColor, 1);
 			TextButtonStyle textButtonStyle = new(Color.White, TextAlign.Left, FontSize.H12);
 			int index = i;
-			const int historyEntryHeight = 16;
 			TextButton button = new(Bounds.CreateNested(0, i * historyEntryHeight, ContentBounds.Size.X, historyEntryHeight), () => StateManager.Dispatch(new SetSpawnsetHistoryIndex(index)), buttonStyle, textButtonStyle, historyEntry.EditType.GetChange())
 			{
 				Depth = Depth + 1,
@@ -55,8 +55,8 @@ public class HistoryScrollArea : ScrollArea
 		foreach (AbstractComponent component in _historyComponents)
 			NestingContext.Add(component);
 
-		// TODO: Only scroll when the entry is not visible.
-		ScheduleScrollTarget(new(0, -StateManager.SpawnsetHistoryState.CurrentIndex * 16));
+		int scrollIndex = StateManager.SpawnsetHistoryState.CurrentIndex;
+		ScheduleScrollTarget(scrollIndex * historyEntryHeight, (scrollIndex + 1) * historyEntryHeight);
 	}
 
 	public override void Render(Vector2i<int> scrollOffset)
