@@ -33,6 +33,7 @@
     <!--<ProjectReference Include="..\..\..\..\Warp.NET\src\lib\Warp.NET\Warp.NET.csproj" />-->
     <!--<ProjectReference Include="..\..\..\..\Warp.NET\src\lib\Warp.NET.RenderImpl.Ui\Warp.NET.RenderImpl.Ui.csproj" />-->
     <!--<ProjectReference Include="..\..\..\..\Warp.NET\src\lib\Warp.NET.SourceGen\Warp.NET.SourceGen.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />-->
+    <PackageReference Include="Serilog.Sinks.File" />
   </ItemGroup>
 
   <ItemGroup>

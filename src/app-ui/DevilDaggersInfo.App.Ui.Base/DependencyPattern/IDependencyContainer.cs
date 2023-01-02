@@ -1,5 +1,6 @@
 using DevilDaggersInfo.App.Core.GameMemory;
 using DevilDaggersInfo.App.Ui.Base.Platforms;
+using Serilog.Core;
 
 namespace DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 
@@ -7,6 +8,7 @@ public interface IDependencyContainer
 {
 	#region Main dependencies
 
+	Logger Log { get; }
 	IPlatformSpecificValues PlatformSpecificValues { get; }
 
 	#endregion Main dependencies
