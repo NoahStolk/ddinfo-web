@@ -18,7 +18,7 @@ namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Layouts;
 public class CustomLeaderboardsRecorderMainLayout : Layout, IExtendedLayout
 {
 	private readonly StateWrapper _stateWrapper;
-	private readonly RecordingWrapper _recordingWrapper;
+	private readonly RecordingScrollArea _recordingScrollArea;
 
 	private int _recordingInterval;
 
@@ -27,13 +27,13 @@ public class CustomLeaderboardsRecorderMainLayout : Layout, IExtendedLayout
 		const int headerHeight = 24;
 		MainLayoutBackButton backButton = new(new PixelBounds(0, 0, 24, headerHeight), () => StateManager.Dispatch(new SetLayout(Root.Dependencies.MainLayout)));
 		_stateWrapper = new(new PixelBounds(0, headerHeight, 256, 96 - headerHeight));
-		_recordingWrapper = new(new PixelBounds(0, 96, 256, 416));
+		_recordingScrollArea = new(new PixelBounds(0, 96, 256, 416));
 		LeaderboardListWrapper leaderboardListWrapper = new(new PixelBounds(256, headerHeight, 768, 512 - headerHeight));
 		LeaderboardWrapper leaderboardWrapper = new(new PixelBounds(0, 512, 1024, 256));
 
 		NestingContext.Add(backButton);
 		NestingContext.Add(_stateWrapper);
-		NestingContext.Add(_recordingWrapper);
+		NestingContext.Add(_recordingScrollArea);
 		NestingContext.Add(leaderboardListWrapper);
 		NestingContext.Add(leaderboardWrapper);
 
@@ -70,7 +70,7 @@ public class CustomLeaderboardsRecorderMainLayout : Layout, IExtendedLayout
 			return;
 
 		_stateWrapper.SetState();
-		_recordingWrapper.SetState();
+		_recordingScrollArea.SetState();
 
 		RecordingLogic.Handle();
 	}

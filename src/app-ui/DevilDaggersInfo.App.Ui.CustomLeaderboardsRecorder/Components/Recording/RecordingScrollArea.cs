@@ -2,15 +2,17 @@ using DevilDaggersInfo.App.Core.GameMemory;
 using DevilDaggersInfo.App.Core.GameMemory.Extensions;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.Extensions;
+using DevilDaggersInfo.App.Ui.Base.Styling;
 using DevilDaggersInfo.Common;
 using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Core.Wiki.Objects;
+using Warp.NET.Content;
+using Warp.NET.RenderImpl.Ui.Components;
 using Warp.NET.Ui;
-using Warp.NET.Ui.Components;
 
 namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.Recording;
 
-public class RecordingWrapper : AbstractComponent
+public class RecordingScrollArea : ScrollArea
 {
 	private readonly RecordingValue _status;
 
@@ -30,15 +32,17 @@ public class RecordingWrapper : AbstractComponent
 	private readonly RecordingValue _homingStored;
 	private readonly RecordingValue _homingEaten;
 
+	private readonly RecordingValue _daggersFired;
+	private readonly RecordingValue _daggersHit;
+	private readonly RecordingValue _accuracy;
+
 	private readonly RecordingValue _enemiesKilled;
 	private readonly RecordingValue _enemiesAlive;
 
-	private readonly RecordingValue _accuracy;
-
-	public RecordingWrapper(IBounds bounds)
-		: base(bounds)
+	public RecordingScrollArea(IBounds bounds)
+		: base(bounds, 64, 16, ScrollAreaStyles.Default)
 	{
-		const int labelWidth = 256;
+		int labelWidth = 256 - ScrollbarBounds.Size.X;
 		const int labelHeight = 16;
 
 		int height = 0;
@@ -46,6 +50,7 @@ public class RecordingWrapper : AbstractComponent
 		_status = AddValue(ref height, "Status");
 
 		AddSpacing(ref height);
+		AddIcon(ref height, WarpTextures.IconEye, Color.Orange);
 		_player = AddValue(ref height, "Player");
 		_time = AddValue(ref height, "Time");
 		_hand = AddValue(ref height, "Hand");
@@ -55,21 +60,27 @@ public class RecordingWrapper : AbstractComponent
 		_deathType = AddValue(ref height, "Death");
 
 		AddSpacing(ref height);
+		AddIcon(ref height, WarpTextures.IconGem, Color.Red);
 		_gemsCollected = AddValue(ref height, "Gems collected", Color.Red);
 		_gemsDespawned = AddValue(ref height, "Gems despawned", Color.Gray(0.6f));
 		_gemsEaten = AddValue(ref height, "Gems eaten", Color.Green);
 		_gemsTotal = AddValue(ref height, "Gems total", Color.Red);
 
 		AddSpacing(ref height);
+		AddIcon(ref height, WarpTextures.IconHoming, Color.White);
 		_homingStored = AddValue(ref height, "Homing stored", Color.Purple);
 		_homingEaten = AddValue(ref height, "Homing eaten", Color.Red);
 
 		AddSpacing(ref height);
-		_enemiesKilled = AddValue(ref height, "Enemies killed", Color.Red);
-		_enemiesAlive = AddValue(ref height, "Enemies alive", Color.Yellow);
+		AddIcon(ref height, WarpTextures.IconDagger, Color.Blue);
+		_daggersFired = AddValue(ref height, "Daggers fired", Color.Yellow);
+		_daggersHit = AddValue(ref height, "Daggers hit", Color.Red);
+		_accuracy = AddValue(ref height, "Accuracy", Color.Orange);
 
 		AddSpacing(ref height);
-		_accuracy = AddValue(ref height, "Accuracy", Color.Orange);
+		AddIcon(ref height, WarpTextures.IconSkull, EnemiesV3_2.Skull4.Color.ToWarpColor());
+		_enemiesKilled = AddValue(ref height, "Enemies killed", Color.Red);
+		_enemiesAlive = AddValue(ref height, "Enemies alive", Color.Yellow);
 
 		RecordingValue AddValue(ref int h, string text, Color? color = null)
 		{
@@ -84,6 +95,15 @@ public class RecordingWrapper : AbstractComponent
 		void AddSpacing(ref int h)
 		{
 			h += labelHeight / 2;
+		}
+
+		void AddIcon(ref int h, Texture texture, Color color)
+		{
+			const int iconSize = 16;
+			RecordingIcon recordingIcon = new(bounds.CreateNested(4, h, iconSize, iconSize), texture, color) { Depth = Depth + 100 };
+			NestingContext.Add(recordingIcon);
+
+			h += iconSize;
 		}
 	}
 
@@ -124,10 +144,12 @@ public class RecordingWrapper : AbstractComponent
 		_homingStored.UpdateValue(block.HomingStored.ToString());
 		_homingEaten.UpdateValue(block.HomingEaten.ToString());
 
+		_daggersFired.UpdateValue(block.DaggersFired.ToString());
+		_daggersHit.UpdateValue(block.DaggersHit.ToString());
+		_accuracy.UpdateValue(accuracy.ToString("0.00%"));
+
 		_enemiesKilled.UpdateValue(block.EnemiesKilled.ToString());
 		_enemiesAlive.UpdateValue(block.EnemiesAlive.ToString());
-
-		_accuracy.UpdateValue($"{block.DaggersHit} / {block.DaggersFired} ({accuracy:0.00%})");
 	}
 
 	public override void Render(Vector2i<int> scrollOffset)
@@ -136,7 +158,7 @@ public class RecordingWrapper : AbstractComponent
 			base.Render(scrollOffset);
 
 		const int border = 1;
-		Root.Game.RectangleRenderer.Schedule(Bounds.Size, Bounds.Center + scrollOffset, Depth, Color.Purple);
-		Root.Game.RectangleRenderer.Schedule(Bounds.Size - new Vector2i<int>(border * 2), Bounds.Center + scrollOffset, 1, Color.Black);
+		Root.Game.RectangleRenderer.Schedule(ContentBounds.Size, ContentBounds.Center + scrollOffset, Depth, Color.Purple);
+		Root.Game.RectangleRenderer.Schedule(ContentBounds.Size - new Vector2i<int>(border * 2), ContentBounds.Center + scrollOffset, 1, Color.Black);
 	}
 }
