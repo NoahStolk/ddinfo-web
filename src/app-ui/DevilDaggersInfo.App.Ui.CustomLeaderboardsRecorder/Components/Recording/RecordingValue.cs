@@ -1,3 +1,4 @@
+using DevilDaggersInfo.App.Core.GameMemory;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using Warp.NET.InterpolationStates;
 using Warp.NET.Text;
@@ -13,15 +14,26 @@ public class RecordingValue : AbstractComponent
 
 	private string _value = string.Empty;
 	private Color _color;
+	private readonly Func<MainBlock, string> _valueGetter;
+	private readonly Func<MainBlock, Color>? _colorGetter;
 
-	public RecordingValue(IBounds bounds, string labelText, Color color)
+	public RecordingValue(IBounds bounds, string labelText, Color color, Func<MainBlock, string> valueGetter, Func<MainBlock, Color>? colorGetter)
 		: base(bounds)
 	{
 		_labelText = labelText;
 		_color = color;
+		_valueGetter = valueGetter;
+		_colorGetter = colorGetter;
 	}
 
-	public void UpdateValue(string value, Color? color = null)
+	public void SetState()
+	{
+		string value = _valueGetter(Root.Dependencies.GameMemoryService.MainBlock);
+		Color? color = _colorGetter?.Invoke(Root.Dependencies.GameMemoryService.MainBlock);
+		UpdateValue(value, color);
+	}
+
+	private void UpdateValue(string value, Color? color = null)
 	{
 		if (_value == value)
 			return;
