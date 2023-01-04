@@ -77,27 +77,6 @@ public class LeaderboardListEntry : AbstractComponent
 		StateManager.Dispatch(new SetSelectedCustomLeaderboard(_customLeaderboard));
 	}
 
-	// private static void DownloadAndInstallSpawnset()
-	// {
-	// 	if (StateManager.LeaderboardListState.SelectedCustomLeaderboard == null)
-	// 	{
-	// 		// TODO: Log error.
-	// 		return;
-	// 	}
-	//
-	// 	AsyncHandler.Run(InstallSpawnset, () => FetchSpawnsetById.HandleAsync(StateManager.LeaderboardListState.SelectedCustomLeaderboard.SpawnsetId));
-	// 	void InstallSpawnset(GetSpawnset? spawnset)
-	// 	{
-	// 		if (spawnset == null)
-	// 		{
-	// 			// TODO: Show error.
-	// 			return;
-	// 		}
-	//
-	// 		File.WriteAllBytes(UserSettings.ModsSurvivalPath, spawnset.FileBytes);
-	// 	}
-	// }
-
 	public override void Render(Vector2i<int> scrollOffset)
 	{
 		base.Render(scrollOffset);

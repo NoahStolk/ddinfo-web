@@ -21,13 +21,19 @@ public static class UserSettings
 		}
 	}
 
-	public static string ModsSurvivalPath => Path.Combine(_devilDaggersInstallationDirectory, "mods", "survival");
+	public static string ModsDirectory => Path.Combine(_devilDaggersInstallationDirectory, "mods");
 
-	public static string DdSurvivalPath => Path.Combine(_devilDaggersInstallationDirectory, "dd", "survival");
+	public static string DdDirectory => Path.Combine(_devilDaggersInstallationDirectory, "dd");
 
-	public static string ResAudioPath => Path.Combine(_devilDaggersInstallationDirectory, "res", "audio");
+	public static string ResDirectory => Path.Combine(_devilDaggersInstallationDirectory, "res");
 
-	public static string ResDdPath => Path.Combine(_devilDaggersInstallationDirectory, "res", "dd");
+	public static string ModsSurvivalPath => Path.Combine(ModsDirectory, "survival");
+
+	public static string DdSurvivalPath => Path.Combine(DdDirectory, "survival");
+
+	public static string ResAudioPath => Path.Combine(ResDirectory, "audio");
+
+	public static string ResDdPath => Path.Combine(ResDirectory, "dd");
 
 	public static void Load()
 	{

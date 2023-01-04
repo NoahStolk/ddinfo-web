@@ -1,8 +1,13 @@
+using DevilDaggersInfo.App.Core.ApiClient;
+using DevilDaggersInfo.App.Core.ApiClient.TaskHandlers;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
+using DevilDaggersInfo.App.Ui.Base.Settings;
 using DevilDaggersInfo.App.Ui.Base.StateManagement;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Actions;
 using DevilDaggersInfo.App.Ui.Base.Styling;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Extensions;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Utils;
+using System.Security.Cryptography;
 using Warp.NET.RenderImpl.Ui.Components;
 using Warp.NET.Ui;
 using Warp.NET.Ui.Components;
@@ -15,6 +20,10 @@ public class StateWrapper : AbstractComponent
 	private readonly Label _labelStateValue;
 	private readonly Label _labelSpawnsetValue;
 	private readonly Label _labelSubmissionValue;
+
+ #pragma warning disable S1450 // Cannot change this into a field. The events would not be raised.
+	private FileSystemWatcher? _survivalFileWatcher;
+ #pragma warning restore S1450
 
 	public StateWrapper(IBounds bounds)
 		: base(bounds)
@@ -43,6 +52,39 @@ public class StateWrapper : AbstractComponent
 		NestingContext.Add(_labelStateValue);
 		NestingContext.Add(_labelSpawnsetValue);
 		NestingContext.Add(_labelSubmissionValue);
+	}
+
+	public void Initialize()
+	{
+		UpdateActiveSpawnsetBasedOnHash();
+
+		_survivalFileWatcher = new(UserSettings.ModsDirectory, "survival");
+		_survivalFileWatcher.NotifyFilter = NotifyFilters.CreationTime
+			| NotifyFilters.DirectoryName
+			| NotifyFilters.FileName
+			| NotifyFilters.LastWrite
+			| NotifyFilters.Size;
+		_survivalFileWatcher.IncludeSubdirectories = true; // This needs to be enabled for some reason.
+		_survivalFileWatcher.EnableRaisingEvents = true;
+		_survivalFileWatcher.Changed += (_, _) => UpdateActiveSpawnsetBasedOnHash();
+		_survivalFileWatcher.Deleted += (_, _) => UpdateActiveSpawnsetBasedOnHash();
+		_survivalFileWatcher.Created += (_, _) => UpdateActiveSpawnsetBasedOnHash();
+		_survivalFileWatcher.Renamed += (_, _) => UpdateActiveSpawnsetBasedOnHash();
+		_survivalFileWatcher.Error += (_, _) => UpdateActiveSpawnsetBasedOnHash();
+
+		void UpdateActiveSpawnsetBasedOnHash()
+		{
+			if (!File.Exists(UserSettings.ModsSurvivalPath))
+			{
+				StateManager.Dispatch(new SetActiveSpawnset(null));
+			}
+			else
+			{
+				byte[] fileContents = File.ReadAllBytes(UserSettings.ModsSurvivalPath);
+				byte[] fileHash = MD5.HashData(fileContents);
+				AsyncHandler.Run(s => StateManager.Dispatch(new SetActiveSpawnset(s?.Name)), () => FetchSpawnsetByHash.HandleAsync(fileHash));
+			}
+		}
 	}
 
 	public void SetState()

@@ -1,8 +1,5 @@
-using DevilDaggersInfo.App.Core.ApiClient;
-using DevilDaggersInfo.App.Core.ApiClient.TaskHandlers;
 using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
-using DevilDaggersInfo.App.Ui.Base.Settings;
 using DevilDaggersInfo.App.Ui.Base.StateManagement;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.Base.Actions;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Actions;
@@ -10,7 +7,6 @@ using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.Leaderboard;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.LeaderboardList;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.Recording;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.State;
-using System.Security.Cryptography;
 using Warp.NET.Ui;
 
 namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Layouts;
@@ -40,22 +36,12 @@ public class CustomLeaderboardsRecorderMainLayout : Layout, IExtendedLayout
 		StateManager.Subscribe<SetLayout>(Initialize);
 	}
 
-	private static void Initialize()
+	private void Initialize()
 	{
 		if (StateManager.LayoutState.CurrentLayout != Root.Dependencies.CustomLeaderboardsRecorderMainLayout)
 			return;
 
-		if (!File.Exists(UserSettings.ModsSurvivalPath))
-		{
-			StateManager.Dispatch(new SetActiveSpawnset(null));
-		}
-		else
-		{
-			// TODO: File system watcher.
-			byte[] fileContents = File.ReadAllBytes(UserSettings.ModsSurvivalPath);
-			byte[] fileHash = MD5.HashData(fileContents);
-			AsyncHandler.Run(s => StateManager.Dispatch(new SetActiveSpawnset(s?.Name)), () => FetchSpawnsetByHash.HandleAsync(fileHash));
-		}
+		_stateWrapper.Initialize();
 
 		StateManager.Dispatch(new LoadLeaderboardList());
 	}
