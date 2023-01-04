@@ -17,10 +17,7 @@ public class LeaderboardScrollArea : ScrollArea
 
 	public void SetContent(GetCustomLeaderboard getCustomLeaderboard)
 	{
-		foreach (LeaderboardEntry leaderboardEntry in _leaderboardEntries)
-			NestingContext.Remove(leaderboardEntry);
-
-		_leaderboardEntries.Clear();
+		Clear();
 
 		for (int i = 0; i < getCustomLeaderboard.SortedEntries.Count; i++)
 		{
@@ -30,5 +27,13 @@ public class LeaderboardScrollArea : ScrollArea
 
 			NestingContext.Add(leaderboardEntry);
 		}
+	}
+
+	public void Clear()
+	{
+		foreach (LeaderboardEntry leaderboardEntry in _leaderboardEntries)
+			NestingContext.Remove(leaderboardEntry);
+
+		_leaderboardEntries.Clear();
 	}
 }

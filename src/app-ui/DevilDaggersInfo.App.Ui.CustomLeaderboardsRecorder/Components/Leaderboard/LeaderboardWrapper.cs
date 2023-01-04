@@ -1,14 +1,17 @@
 using DevilDaggersInfo.Api.App.CustomLeaderboards;
+using DevilDaggersInfo.Api.App.Spawnsets;
 using DevilDaggersInfo.App.Core.ApiClient;
 using DevilDaggersInfo.App.Core.ApiClient.TaskHandlers;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.Extensions;
+using DevilDaggersInfo.App.Ui.Base.Settings;
 using DevilDaggersInfo.App.Ui.Base.StateManagement;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Actions;
 using DevilDaggersInfo.App.Ui.Base.Styling;
 using DevilDaggersInfo.Core.Wiki;
 using Warp.NET.Extensions;
 using Warp.NET.RenderImpl.Ui.Components;
+using Warp.NET.RenderImpl.Ui.Rendering.Text;
 using Warp.NET.Text;
 using Warp.NET.Ui;
 using Warp.NET.Ui.Components;
@@ -19,18 +22,43 @@ public class LeaderboardWrapper : AbstractComponent
 {
 	private static readonly Vector2 _iconSize = new(16);
 
-	private readonly Label _label;
+	private readonly Label _spawnsetNameLabel;
+	private readonly TextButton _playButton;
 	private readonly LeaderboardScrollArea _leaderboardScrollArea;
 
 	public LeaderboardWrapper(IBounds bounds)
 		: base(bounds)
 	{
-		_label = new(bounds.CreateNested(4, 4, 128, 16), string.Empty, LabelStyles.DefaultLeft);
+		_spawnsetNameLabel = new(bounds.CreateNested(4, 4, 128, 16), string.Empty, LabelStyles.DefaultLeft);
 		_leaderboardScrollArea = new(bounds.CreateNested(4, 48, 1016, 200));
 
 		NestingContext.Add(_leaderboardScrollArea);
 
+		_playButton = new(bounds.CreateNested(512, 4, 64, 24), DownloadAndInstallSpawnset, ButtonStyles.Default, new(Color.White, TextAlign.Middle, FontSize.H16), "Play")
+		{
+			IsDisabled = true,
+		};
+		NestingContext.Add(_playButton);
+
 		StateManager.Subscribe<SetSelectedCustomLeaderboard>(SetSelectedCustomLeaderboard);
+
+		void DownloadAndInstallSpawnset()
+		{
+			if (StateManager.LeaderboardListState.SelectedCustomLeaderboard == null)
+				return;
+
+			AsyncHandler.Run(InstallSpawnset, () => FetchSpawnsetById.HandleAsync(StateManager.LeaderboardListState.SelectedCustomLeaderboard.SpawnsetId));
+			void InstallSpawnset(GetSpawnset? spawnset)
+			{
+				if (spawnset == null)
+				{
+					// TODO: Show error.
+					return;
+				}
+
+				File.WriteAllBytes(UserSettings.ModsSurvivalPath, spawnset.FileBytes);
+			}
+		}
 	}
 
 	public static IReadOnlyList<int> TableOffsets { get; } = new List<int> { 16, 24, 260, 308, 352, 400, 448, 496, 552, 560, 664, 720, 776, 832, 888, 992 };
@@ -44,15 +72,19 @@ public class LeaderboardWrapper : AbstractComponent
 
 		void UpdateDisplayedCustomLeaderboard(GetCustomLeaderboard? getCustomLeaderboard)
 		{
+			_playButton.IsDisabled = getCustomLeaderboard == null;
+
 			if (getCustomLeaderboard == null)
 			{
-				// Show error and maybe clear displayed leaderboard.
-				return;
+				// TODO: Show error.
+				_spawnsetNameLabel.Text = string.Empty;
+				_leaderboardScrollArea.Clear();
 			}
-
-			_label.Text = getCustomLeaderboard.SpawnsetName;
-
-			_leaderboardScrollArea.SetContent(getCustomLeaderboard);
+			else
+			{
+				_spawnsetNameLabel.Text = getCustomLeaderboard.SpawnsetName;
+				_leaderboardScrollArea.SetContent(getCustomLeaderboard);
+			}
 		}
 	}
 
