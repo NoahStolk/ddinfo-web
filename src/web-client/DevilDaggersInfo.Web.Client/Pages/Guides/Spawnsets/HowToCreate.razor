@@ -214,7 +214,7 @@
 
 <ul class="pl-4">
 	<li class="list-disc">The arena is simply a grid of heights. You cannot have multiple tiles above or below each other.</li>
-	<li class="list-disc">The arena size always consists of 51 by 51 tiles (at least in the editor, this can be changed in theory but I haven't tried it).</li>
+	<li class="list-disc">By default, the arena dimension is 51 (meaning 51 by 51 tiles). This value can technically be changed, but a value of 52 or higher crashes the game, and a value of 50 or lower causes the game to glitch or render incorrectly depending on what value is used. For these reasons, the value cannot be changed in the editor.</li>
 	<li class="list-disc">The player always spawns in the middle (tile 25x25).</li>
 	<li class="list-disc">Tiles are 4 by 4 units in length and width.</li>
 	<li class="list-disc">The arena shrinks in size as time goes on. The default shrink start radius is 50 units and the default shrink end radius is 20 units. The default shrink rate is 0.025. This means the default arena reaches the end radius at 1200 seconds, because (50-20)/0.025 = 1200. (Even though the last tiles actually fall down at around 1187 seconds, the shrinking technically continues for about 13 seconds, it's just that no tiles are affected by it.)</li>

@@ -51,6 +51,7 @@ public class CustomLeaderboardsRecorderMainLayout : Layout, IExtendedLayout
 		}
 		else
 		{
+			// TODO: File system watcher.
 			byte[] fileContents = File.ReadAllBytes(UserSettings.ModsSurvivalPath);
 			byte[] fileHash = MD5.HashData(fileContents);
 			AsyncHandler.Run(s => StateManager.Dispatch(new SetActiveSpawnset(s?.Name)), () => FetchSpawnsetByHash.HandleAsync(fileHash));
