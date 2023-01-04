@@ -1,10 +1,6 @@
 using DevilDaggersInfo.Api.App.CustomLeaderboards;
-using DevilDaggersInfo.Api.App.Spawnsets;
-using DevilDaggersInfo.App.Core.ApiClient;
-using DevilDaggersInfo.App.Core.ApiClient.TaskHandlers;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.Extensions;
-using DevilDaggersInfo.App.Ui.Base.Settings;
 using DevilDaggersInfo.App.Ui.Base.StateManagement;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Actions;
 using DevilDaggersInfo.App.Ui.Base.Styling;
@@ -68,8 +64,6 @@ public class LeaderboardListEntry : AbstractComponent
 		NestingContext.Add(score);
 		NestingContext.Add(nextDagger);
 		NestingContext.Add(worldRecord);
-
-		StateManager.Subscribe<SetSelectedCustomLeaderboard>(LoadCustomLeaderboard);
 	}
 
 	public override void Update(Vector2i<int> scrollOffset)
@@ -81,48 +75,28 @@ public class LeaderboardListEntry : AbstractComponent
 			return;
 
 		StateManager.Dispatch(new SetSelectedCustomLeaderboard(_customLeaderboard));
-		DownloadAndInstallSpawnset();
 	}
 
-	private static void LoadCustomLeaderboard()
-	{
-		if (StateManager.LeaderboardListState.SelectedCustomLeaderboard == null)
-			return;
-
-		AsyncHandler.Run(UpdateDisplayedCustomLeaderboard, () => FetchCustomLeaderboardById.HandleAsync(StateManager.LeaderboardListState.SelectedCustomLeaderboard.Id));
-
-		void UpdateDisplayedCustomLeaderboard(GetCustomLeaderboard? getCustomLeaderboard)
-		{
-			if (getCustomLeaderboard == null)
-			{
-				// Show error and maybe clear displayed leaderboard.
-				return;
-			}
-
-			StateManager.Dispatch(new UpdateDisplayedCustomLeaderboard(getCustomLeaderboard));
-		}
-	}
-
-	private static void DownloadAndInstallSpawnset()
-	{
-		if (StateManager.LeaderboardListState.SelectedCustomLeaderboard == null)
-		{
-			// TODO: Log error.
-			return;
-		}
-
-		AsyncHandler.Run(InstallSpawnset, () => FetchSpawnsetById.HandleAsync(StateManager.LeaderboardListState.SelectedCustomLeaderboard.SpawnsetId));
-		void InstallSpawnset(GetSpawnset? spawnset)
-		{
-			if (spawnset == null)
-			{
-				// TODO: Show error.
-				return;
-			}
-
-			File.WriteAllBytes(UserSettings.ModsSurvivalPath, spawnset.FileBytes);
-		}
-	}
+	// private static void DownloadAndInstallSpawnset()
+	// {
+	// 	if (StateManager.LeaderboardListState.SelectedCustomLeaderboard == null)
+	// 	{
+	// 		// TODO: Log error.
+	// 		return;
+	// 	}
+	//
+	// 	AsyncHandler.Run(InstallSpawnset, () => FetchSpawnsetById.HandleAsync(StateManager.LeaderboardListState.SelectedCustomLeaderboard.SpawnsetId));
+	// 	void InstallSpawnset(GetSpawnset? spawnset)
+	// 	{
+	// 		if (spawnset == null)
+	// 		{
+	// 			// TODO: Show error.
+	// 			return;
+	// 		}
+	//
+	// 		File.WriteAllBytes(UserSettings.ModsSurvivalPath, spawnset.FileBytes);
+	// 	}
+	// }
 
 	public override void Render(Vector2i<int> scrollOffset)
 	{

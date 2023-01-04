@@ -1,3 +1,6 @@
+using DevilDaggersInfo.Api.App.CustomLeaderboards;
+using DevilDaggersInfo.App.Core.ApiClient;
+using DevilDaggersInfo.App.Core.ApiClient.TaskHandlers;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.Extensions;
 using DevilDaggersInfo.App.Ui.Base.StateManagement;
@@ -6,7 +9,6 @@ using DevilDaggersInfo.App.Ui.Base.Styling;
 using DevilDaggersInfo.Core.Wiki;
 using Warp.NET.Extensions;
 using Warp.NET.RenderImpl.Ui.Components;
-using Warp.NET.RenderImpl.Ui.Components.Styles;
 using Warp.NET.Text;
 using Warp.NET.Ui;
 using Warp.NET.Ui.Components;
@@ -28,16 +30,30 @@ public class LeaderboardWrapper : AbstractComponent
 
 		NestingContext.Add(_leaderboardScrollArea);
 
-		StateManager.Subscribe<UpdateDisplayedCustomLeaderboard>(SetCustomLeaderboard);
+		StateManager.Subscribe<SetSelectedCustomLeaderboard>(SetSelectedCustomLeaderboard);
 	}
 
 	public static IReadOnlyList<int> TableOffsets { get; } = new List<int> { 16, 24, 260, 308, 352, 400, 448, 496, 552, 560, 664, 720, 776, 832, 888, 992 };
 
-	private void SetCustomLeaderboard()
+	private void SetSelectedCustomLeaderboard()
 	{
-		_label.Text = StateManager.LeaderboardState.CustomLeaderboard?.SpawnsetName ?? string.Empty;
+		if (StateManager.LeaderboardListState.SelectedCustomLeaderboard == null)
+			return;
 
-		_leaderboardScrollArea.SetContent();
+		AsyncHandler.Run(UpdateDisplayedCustomLeaderboard, () => FetchCustomLeaderboardById.HandleAsync(StateManager.LeaderboardListState.SelectedCustomLeaderboard.Id));
+
+		void UpdateDisplayedCustomLeaderboard(GetCustomLeaderboard? getCustomLeaderboard)
+		{
+			if (getCustomLeaderboard == null)
+			{
+				// Show error and maybe clear displayed leaderboard.
+				return;
+			}
+
+			_label.Text = getCustomLeaderboard.SpawnsetName;
+
+			_leaderboardScrollArea.SetContent(getCustomLeaderboard);
+		}
 	}
 
 	public override void Render(Vector2i<int> scrollOffset)
