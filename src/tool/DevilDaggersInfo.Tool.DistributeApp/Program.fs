@@ -10,18 +10,15 @@ let toolName = "ddinfo-tools"
 
 [<Literal>]
 let contentFileName = "ddinfo"
-let contentFileNameUi = "ddinfo-ui"
 
 let buildAndUpload projectFilePath zipOutputDirectory toolBuildType toolPublishMethod =
     AppBuilder.build projectFilePath publishDirectoryName toolBuildType toolPublishMethod
 
     let publishDirectoryPath = Path.Combine(Path.GetDirectoryName(projectFilePath:string), publishDirectoryName)
 
-    // Copy content files.
+    // Copy content file.
     let contentFilePath = Path.Combine(projectFilePath, "..", "bin", "Debug", "net7.0", contentFileName)
-    let contentFilePathUi = Path.Combine(projectFilePath, "..", "bin", "Debug", "net7.0", contentFileNameUi)
     File.Copy(contentFilePath, Path.Combine(publishDirectoryPath, contentFileName))
-    File.Copy(contentFilePathUi, Path.Combine(publishDirectoryPath, contentFileNameUi))
     
     // Zip build and content file.
     let version = ProjectReader.readVersionFromProjectFile projectFilePath

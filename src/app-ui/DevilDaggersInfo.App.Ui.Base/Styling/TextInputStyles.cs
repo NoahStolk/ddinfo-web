@@ -1,5 +1,5 @@
-using Warp.NET.RenderImpl.Ui.Components.Styles;
-using Warp.NET.RenderImpl.Ui.Rendering.Text;
+using DevilDaggersInfo.App.Ui.Base.Components.Styles;
+using DevilDaggersInfo.App.Ui.Base.Rendering.Text;
 
 namespace DevilDaggersInfo.App.Ui.Base.Styling;
 

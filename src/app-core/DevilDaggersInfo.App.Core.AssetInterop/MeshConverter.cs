@@ -31,6 +31,6 @@ public static class MeshConverter
 			warpVertices[i] = new(ddVertex.Position, ddVertex.TexCoord, ddVertex.Normal);
 		}
 
-		return new(warpVertices, indices, TriangleRenderMode.Triangles);
+		return new(warpVertices, indices);
 	}
 }
