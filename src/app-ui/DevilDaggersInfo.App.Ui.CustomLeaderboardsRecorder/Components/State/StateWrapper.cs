@@ -21,9 +21,9 @@ public class StateWrapper : AbstractComponent
 	private readonly Label _labelSpawnsetValue;
 	private readonly Label _labelSubmissionValue;
 
- #pragma warning disable S1450 // Cannot change this into a field. The events would not be raised.
+#pragma warning disable S1450 // Cannot change this into a local. The events would not be raised.
 	private FileSystemWatcher? _survivalFileWatcher;
- #pragma warning restore S1450
+#pragma warning restore S1450
 
 	public StateWrapper(IBounds bounds)
 		: base(bounds)
