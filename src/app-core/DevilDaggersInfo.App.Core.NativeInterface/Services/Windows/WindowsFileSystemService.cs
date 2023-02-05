@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 using Windows.Win32;
 using Windows.Win32.Foundation;
 using Windows.Win32.System.Com;
@@ -9,6 +10,7 @@ namespace DevilDaggersInfo.App.Core.NativeInterface.Services.Windows;
 /// <summary>
 /// Platform-specific code for interacting with the Windows file system.
 /// </summary>
+[SupportedOSPlatform("windows6.0.6000")]
 public class WindowsFileSystemService : INativeFileSystemService
 {
 	public unsafe string? CreateOpenFileDialog(string dialogTitle, string? extensionFilter)
