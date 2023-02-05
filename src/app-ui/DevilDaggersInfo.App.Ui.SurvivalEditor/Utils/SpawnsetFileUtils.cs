@@ -34,7 +34,10 @@ public static class SpawnsetFileUtils
 			return;
 
 		if (Directory.Exists(filePath))
+		{
 			Root.Dependencies.NativeDialogService.ReportError("Specified file path is an existing directory", "Please specify a file path.");
+			return;
+		}
 
 		if (File.Exists(filePath))
 		{
