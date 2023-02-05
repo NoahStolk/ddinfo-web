@@ -1,42 +1,61 @@
-using DevilDaggersInfo.App.Core.NativeInterface.Native.Windows;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
+using Windows.Win32;
+using Windows.Win32.Foundation;
+using Windows.Win32.System.Com;
+using Windows.Win32.UI.Shell;
 
 namespace DevilDaggersInfo.App.Core.NativeInterface.Services.Windows;
 
 /// <summary>
 /// Platform-specific code for interacting with the Windows file system.
 /// </summary>
+[SupportedOSPlatform("windows6.0.6000")]
 public class WindowsFileSystemService : INativeFileSystemService
 {
-	public INativeFileSystemService.FileResult? OpenFile(string? extensionFilter)
+	public unsafe string? CreateOpenFileDialog(string dialogTitle, string? extensionFilter)
 	{
-		OpenFileName ofn = new()
-		{
-			filter = extensionFilter, // Example: "Log files\0*.log\0Batch files\0*.bat\0",
-			file = new(new char[256]),
-			maxFile = 256,
-			fileTitle = new(new char[64]),
-			maxFileTitle = 64,
-			initialDir = "C:\\",
-			title = "Open file",
-		};
-		ofn.structSize = Marshal.SizeOf(ofn);
+		PInvoke.CoCreateInstance(
+			typeof(FileOpenDialog).GUID,
+			null,
+			CLSCTX.CLSCTX_INPROC_SERVER,
+			out IFileOpenDialog openDialog).ThrowOnFailure();
 
-		if (!NativeMethods.GetOpenFileName(ofn) || ofn.file == null)
-			return null;
-
-		return new(ofn.file, File.ReadAllBytes(ofn.file));
+		openDialog.Show(default);
+		openDialog.GetResult(out IShellItem item);
+		item.GetDisplayName(SIGDN.SIGDN_FILESYSPATH, out PWSTR name);
+		Marshal.FreeCoTaskMem(new(name.Value));
+		return name.ToString();
 	}
 
-	public void SaveDataToFile(byte[] data)
+	public unsafe string? CreateSaveFileDialog(string dialogTitle, string? extensionFilter)
 	{
-		// TODO: Save file dialog.
-		throw new NotImplementedException();
+		PInvoke.CoCreateInstance(
+			typeof(FileSaveDialog).GUID,
+			null,
+			CLSCTX.CLSCTX_INPROC_SERVER,
+			out IFileSaveDialog saveDialog).ThrowOnFailure();
+
+		saveDialog.Show(default);
+		saveDialog.GetResult(out IShellItem item);
+		item.GetDisplayName(SIGDN.SIGDN_FILESYSPATH, out PWSTR name);
+		Marshal.FreeCoTaskMem(new(name.Value));
+		return name.ToString();
 	}
 
-	public string? SelectDirectory()
+	public unsafe string? SelectDirectory()
 	{
-		// TODO: Open directory dialog.
-		throw new NotImplementedException();
+		PInvoke.CoCreateInstance(
+			typeof(FileOpenDialog).GUID,
+			null,
+			CLSCTX.CLSCTX_INPROC_SERVER,
+			out IFileOpenDialog openDialog).ThrowOnFailure();
+
+		openDialog.SetOptions(FILEOPENDIALOGOPTIONS.FOS_PICKFOLDERS);
+		openDialog.Show(default);
+		openDialog.GetResult(out IShellItem item);
+		item.GetDisplayName(SIGDN.SIGDN_FILESYSPATH, out PWSTR name);
+		Marshal.FreeCoTaskMem(new(name.Value));
+		return name.ToString();
 	}
 }

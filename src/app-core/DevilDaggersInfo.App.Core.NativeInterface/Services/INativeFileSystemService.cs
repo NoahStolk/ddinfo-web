@@ -2,11 +2,9 @@ namespace DevilDaggersInfo.App.Core.NativeInterface.Services;
 
 public interface INativeFileSystemService
 {
-	FileResult? OpenFile(string? extensionFilter);
+	string? CreateOpenFileDialog(string dialogTitle, string? extensionFilter);
 
-	void SaveDataToFile(byte[] data);
+	string? CreateSaveFileDialog(string dialogTitle, string? extensionFilter);
 
 	string? SelectDirectory();
-
-	public record FileResult(string Path, byte[] Contents);
 }

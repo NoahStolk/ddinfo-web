@@ -7,21 +7,21 @@ public static class VertexArrayObjectUtils
 {
 	public static unsafe uint CreateFromVertices(float[] vertices)
 	{
-		uint vao = Graphics.Gl.GenVertexArray();
-		Graphics.Gl.BindVertexArray(vao);
+		uint vao = Gl.GenVertexArray();
+		Gl.BindVertexArray(vao);
 
-		uint vbo = Graphics.Gl.GenBuffer();
-		Graphics.Gl.BindBuffer(BufferTargetARB.ArrayBuffer, vbo);
+		uint vbo = Gl.GenBuffer();
+		Gl.BindBuffer(BufferTargetARB.ArrayBuffer, vbo);
 
 		fixed (float* v = &vertices[0])
-			Graphics.Gl.BufferData(BufferTargetARB.ArrayBuffer, (nuint)vertices.Length * sizeof(float), v, BufferUsageARB.StaticDraw);
+			Gl.BufferData(BufferTargetARB.ArrayBuffer, (nuint)vertices.Length * sizeof(float), v, BufferUsageARB.StaticDraw);
 
-		Graphics.Gl.EnableVertexAttribArray(0);
-		Graphics.Gl.VertexAttribPointer(0, 2, VertexAttribPointerType.Float, false, 2 * sizeof(float), (void*)0);
+		Gl.EnableVertexAttribArray(0);
+		Gl.VertexAttribPointer(0, 2, VertexAttribPointerType.Float, false, 2 * sizeof(float), (void*)0);
 
-		Graphics.Gl.BindVertexArray(0);
+		Gl.BindVertexArray(0);
 
-		Graphics.Gl.BindBuffer(BufferTargetARB.ArrayBuffer, 0);
+		Gl.BindBuffer(BufferTargetARB.ArrayBuffer, 0);
 
 		return vao;
 	}

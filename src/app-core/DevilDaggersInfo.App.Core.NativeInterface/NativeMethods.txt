@@ -1,0 +1,7 @@
+MessageBox
+
+CoCreateInstance
+FileOpenDialog
+IFileOpenDialog
+FileSaveDialog
+IFileSaveDialog

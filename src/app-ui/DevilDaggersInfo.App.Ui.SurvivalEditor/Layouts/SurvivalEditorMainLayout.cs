@@ -1,13 +1,11 @@
-using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
-using DevilDaggersInfo.App.Ui.Base.Settings;
-using DevilDaggersInfo.App.Ui.Base.StateManagement.Base.Actions;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Components;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetArena;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetHistory;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetSettings;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetSpawns;
+using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using DevilDaggersInfo.Core.Spawnset;
 using Silk.NET.GLFW;
 using Warp.NET;
@@ -35,15 +33,6 @@ public class SurvivalEditorMainLayout : Layout, IExtendedLayout
 		NestingContext.Add(spawnEditor);
 		NestingContext.Add(historyScrollArea);
 		NestingContext.Add(settingsWrapper);
-
-		StateManager.Subscribe<ReplaceCurrentlyActiveSpawnset>(ReplaceSpawnset);
-	}
-
-	private void ReplaceSpawnset()
-	{
-		File.WriteAllBytes(UserSettings.ModsSurvivalPath, StateManager.SpawnsetState.Spawnset.ToBytes());
-		Popup popup = new(this, "Successfully replaced current survival file");
-		NestingContext.Add(popup);
 	}
 
 	public void Update()
@@ -63,11 +52,11 @@ public class SurvivalEditorMainLayout : Layout, IExtendedLayout
 		if (Input.IsKeyPressed(Keys.N))
 			StateManager.Dispatch(new LoadSpawnset("(untitled)", SpawnsetBinary.CreateDefault()));
 		else if (Input.IsKeyPressed(Keys.O))
-			StateManager.Dispatch(new SetLayout(Root.Dependencies.SurvivalEditorOpenLayout));
+			SpawnsetFileUtils.OpenSpawnset();
 		else if (Input.IsKeyPressed(Keys.S))
-			StateManager.Dispatch(new SetLayout(Root.Dependencies.SurvivalEditorSaveLayout));
+			SpawnsetFileUtils.SaveSpawnset();
 		else if (Input.IsKeyPressed(Keys.R))
-			StateManager.Dispatch(new ReplaceCurrentlyActiveSpawnset());
+			SpawnsetFileUtils.ReplaceSpawnset();
 	}
 
 	public void Render3d()

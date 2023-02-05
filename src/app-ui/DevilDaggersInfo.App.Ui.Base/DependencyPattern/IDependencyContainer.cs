@@ -1,4 +1,5 @@
 using DevilDaggersInfo.App.Core.GameMemory;
+using DevilDaggersInfo.App.Core.NativeInterface.Services;
 using DevilDaggersInfo.App.Ui.Base.Platforms;
 using Serilog.Core;
 
@@ -10,6 +11,8 @@ public interface IDependencyContainer
 
 	Logger Log { get; }
 	IPlatformSpecificValues PlatformSpecificValues { get; }
+	INativeFileSystemService NativeFileSystemService { get; }
+	INativeDialogService NativeDialogService { get; }
 
 	#endregion Main dependencies
 
@@ -30,8 +33,6 @@ public interface IDependencyContainer
 
 	IExtendedLayout SurvivalEditorMainLayout { get; }
 	IExtendedLayout SurvivalEditor3dLayout { get; }
-	IExtendedLayout SurvivalEditorOpenLayout { get; }
-	IExtendedLayout SurvivalEditorSaveLayout { get; }
 
 	#endregion UI DDSE dependencies
 
