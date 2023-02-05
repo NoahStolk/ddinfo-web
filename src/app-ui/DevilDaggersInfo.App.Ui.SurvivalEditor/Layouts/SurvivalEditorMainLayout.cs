@@ -36,14 +36,6 @@ public class SurvivalEditorMainLayout : Layout, IExtendedLayout
 		NestingContext.Add(spawnEditor);
 		NestingContext.Add(historyScrollArea);
 		NestingContext.Add(settingsWrapper);
-
-		StateManager.Subscribe<ReplaceCurrentlyActiveSpawnset>(ReplaceSpawnset);
-	}
-
-	private void ReplaceSpawnset()
-	{
-		File.WriteAllBytes(UserSettings.ModsSurvivalPath, StateManager.SpawnsetState.Spawnset.ToBytes());
-		Root.Dependencies.NativeDialogService.ReportMessage("Successfully replaced current survival file", "The current survival file has been replaced with the current spawnset.");
 	}
 
 	public void Update()
