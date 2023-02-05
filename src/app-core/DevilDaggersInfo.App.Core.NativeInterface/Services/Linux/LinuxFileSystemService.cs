@@ -5,7 +5,12 @@
 /// </summary>
 public class LinuxFileSystemService : INativeFileSystemService
 {
-	public string? GetFilePathFromDialog(string dialogTitle, string? extensionFilter)
+	public string? CreateOpenFileDialog(string dialogTitle, string? extensionFilter)
+	{
+		throw new NotImplementedException();
+	}
+
+	public string? CreateSaveFileDialog(string dialogTitle, string? extensionFilter)
 	{
 		throw new NotImplementedException();
 	}

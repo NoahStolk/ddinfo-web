@@ -11,7 +11,7 @@ public static class SpawnsetFileUtils
 {
 	public static void OpenSpawnset()
 	{
-		string? filePath = Root.Dependencies.NativeFileSystemService.GetFilePathFromDialog("Open spawnset file", null);
+		string? filePath = Root.Dependencies.NativeFileSystemService.CreateOpenFileDialog("Open spawnset file", null);
 		if (filePath == null)
 			return;
 
@@ -29,7 +29,7 @@ public static class SpawnsetFileUtils
 
 	public static void SaveSpawnset()
 	{
-		string? filePath = Root.Dependencies.NativeFileSystemService.GetFilePathFromDialog("Save spawnset file", null);
+		string? filePath = Root.Dependencies.NativeFileSystemService.CreateSaveFileDialog("Save spawnset file", null);
 		if (filePath == null)
 			return;
 
