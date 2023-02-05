@@ -55,14 +55,14 @@ public static class ArenaEditingUtils
 		return PointIsBehindPlane(lineA, lineNormal, squareBr) != tlBehind;
 	}
 
-	public static Vector2 GetLineNormal(Vector2 lineA, Vector2 lineB)
+	private static Vector2 GetLineNormal(Vector2 lineA, Vector2 lineB)
 	{
 		float deltaX = lineB.X - lineA.X;
 		float deltaY = lineB.Y - lineA.Y;
 		return new(-deltaY, deltaX);
 	}
 
-	public static bool PointIsBehindPlane(Vector2 linePoint, Vector2 lineNormal, Vector2 point)
+	private static bool PointIsBehindPlane(Vector2 linePoint, Vector2 lineNormal, Vector2 point)
 	{
 		return Vector2.Dot(lineNormal, Vector2.Normalize(point - linePoint)) < 0;
 	}
