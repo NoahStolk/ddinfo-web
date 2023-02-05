@@ -5,8 +5,7 @@ using DevilDaggersInfo.Types.Web;
 using System.Diagnostics;
 using System.IO.Compression;
 
-// TODO: Check launcher version and close if outdated.
-
+// TODO: Check launcher version and close if outdated, telling the user to update the launcher itself first.
 string installationDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "DDINFO");
 
 #if WINDOWS
@@ -15,24 +14,21 @@ const ToolBuildType toolBuildType = ToolBuildType.WindowsWarp;
 const ToolBuildType toolBuildType = ToolBuildType.LinuxWarp;
 #endif
 
-// TODO: Get version from installed app, or null.
-bool installed = false;
-AppVersion currentVersion = new(0, 0, 0);
-if (installed)
+if (FindExecutableFileName() == null)
 {
-	if (await ShouldUpdate())
-	{
-		foreach (string file in Directory.GetFiles(installationDirectory))
-			File.Delete(file);
-
-		await DownloadAndInstall();
-	}
+	// App is not installed, so install it.
+	await DownloadAndInstall();
 }
-else
+else if (await ShouldUpdate())
 {
+	// App is outdated, clean the old files and install the new version.
+	foreach (string file in Directory.GetFiles(installationDirectory))
+		File.Delete(file);
+
 	await DownloadAndInstall();
 }
 
+// Always launch the app after checking for updates.
 Launch();
 
 async Task<bool> ShouldUpdate()
@@ -45,6 +41,8 @@ async Task<bool> ShouldUpdate()
 		return false;
 	}
 
+	// TODO: Get version from installed app.
+	AppVersion currentVersion = new(0, 0, 0);
 	if (onlineVersion > currentVersion)
 	{
 		Console.WriteLine($"New version available: {onlineVersion}");
@@ -65,13 +63,21 @@ async Task DownloadAndInstall()
 
 void Launch()
 {
-	// TODO: Use something else on Linux.
-	string? newExecutableFileName = Array.Find(Directory.GetFiles(installationDirectory), f => Path.GetExtension(f) == ".exe");
-	if (newExecutableFileName == null)
-		throw new($"Could not launch new version. Please launch it manually. It is installed at {installationDirectory}.");
+	string? executableFileName = FindExecutableFileName();
+	if (executableFileName == null)
+	{
+		Console.WriteLine($"Could not launch new version. Please launch it manually. It is installed at {installationDirectory}.");
+		return;
+	}
 
 	Process process = new();
-	process.StartInfo.FileName = newExecutableFileName;
+	process.StartInfo.FileName = executableFileName;
 	process.StartInfo.WorkingDirectory = installationDirectory;
 	process.Start();
+}
+
+string? FindExecutableFileName()
+{
+	// TODO: Use something else on Linux.
+	return Array.Find(Directory.GetFiles(installationDirectory), f => Path.GetExtension(f) == ".exe");
 }
