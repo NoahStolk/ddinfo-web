@@ -67,16 +67,12 @@ public class SurvivalEditorSaveLayout : Layout, IExtendedLayout
 	private void SaveSpawnset(string filePath)
 	{
 		if (Directory.Exists(filePath))
-		{
-			Popup popup = new(this, "Specified file path is an existing directory.");
-			NestingContext.Add(popup);
-		}
+			Root.Dependencies.NativeDialogService.ReportMessage("Specified file path is an existing directory", "Please specify a file path.");
 
 		if (File.Exists(filePath))
 		{
 			// TODO: Ask to overwrite or cancel.
-			Popup popup = new(this, "File already exists.");
-			NestingContext.Add(popup);
+			Root.Dependencies.NativeDialogService.ReportMessage("File already exists", "Please specify a different file path.");
 		}
 
 		File.WriteAllBytes(filePath, StateManager.SpawnsetState.Spawnset.ToBytes());
