@@ -1,4 +1,6 @@
-using DevilDaggersInfo.App.Core.NativeInterface.Native.Windows;
+using Windows.Win32;
+using Windows.Win32.Foundation;
+using Windows.Win32.UI.WindowsAndMessaging;
 
 namespace DevilDaggersInfo.App.Core.NativeInterface.Services.Windows;
 
@@ -10,24 +12,20 @@ public class WindowsDialogService : INativeDialogService
 			message += Environment.NewLine + exception.Message;
 
 		// TODO: Log exception.
-		NativeMethods.MessageBox(IntPtr.Zero, message, title, 0);
+		PInvoke.MessageBox(HWND.Null, message, title, MESSAGEBOX_STYLE.MB_OK);
 	}
 
 	public void ReportMessage(string title, string message)
 	{
-		NativeMethods.MessageBox(IntPtr.Zero, message, title, 0);
+		PInvoke.MessageBox(HWND.Null, message, title, MESSAGEBOX_STYLE.MB_OK);
 	}
 
 	public bool? PromptYesNo(string title, string message)
 	{
-		int result = NativeMethods.MessageBox(IntPtr.Zero, message, title, 0x00000004 /* MB_YESNO */);
-
-		return result switch
+		return PInvoke.MessageBox(HWND.Null, message, title, MESSAGEBOX_STYLE.MB_YESNO) switch
 		{
-			/* IDYES */
-			6 => true,
-			/* IDNO */
-			7 => false,
+			MESSAGEBOX_RESULT.IDYES => true,
+			MESSAGEBOX_RESULT.IDNO => false,
 			_ => null,
 		};
 	}

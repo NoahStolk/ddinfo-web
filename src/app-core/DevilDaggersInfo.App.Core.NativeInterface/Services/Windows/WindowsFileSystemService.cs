@@ -1,5 +1,8 @@
-using DevilDaggersInfo.App.Core.NativeInterface.Native.Windows;
 using System.Runtime.InteropServices;
+using Windows.Win32;
+using Windows.Win32.Foundation;
+using Windows.Win32.System.Com;
+using Windows.Win32.UI.Shell;
 
 namespace DevilDaggersInfo.App.Core.NativeInterface.Services.Windows;
 
@@ -8,43 +11,39 @@ namespace DevilDaggersInfo.App.Core.NativeInterface.Services.Windows;
 /// </summary>
 public class WindowsFileSystemService : INativeFileSystemService
 {
-	public string? CreateOpenFileDialog(string dialogTitle, string? extensionFilter)
+	public unsafe string? CreateOpenFileDialog(string dialogTitle, string? extensionFilter)
 	{
-		OpenFileName ofn = GetOpenFileName(dialogTitle, extensionFilter);
-		if (!NativeMethods.GetOpenFileName(ofn) || ofn.file == null)
-			return null;
+		PInvoke.CoCreateInstance(
+			typeof(FileOpenDialog).GUID,
+			null,
+			CLSCTX.CLSCTX_INPROC_SERVER,
+			out IFileOpenDialog openDialog).ThrowOnFailure();
 
-		return ofn.file;
+		openDialog.Show(default);
+		openDialog.GetResult(out IShellItem item);
+		item.GetDisplayName(SIGDN.SIGDN_FILESYSPATH, out PWSTR name);
+		Marshal.FreeCoTaskMem(new IntPtr(name.Value));
+		return name.ToString();
 	}
 
-	public string? CreateSaveFileDialog(string dialogTitle, string? extensionFilter)
+	public unsafe string? CreateSaveFileDialog(string dialogTitle, string? extensionFilter)
 	{
-		OpenFileName ofn = GetOpenFileName(dialogTitle, extensionFilter);
-		if (!NativeMethods.GetSaveFileName(ofn) || ofn.file == null)
-			return null;
+		PInvoke.CoCreateInstance(
+			typeof(FileSaveDialog).GUID,
+			null,
+			CLSCTX.CLSCTX_INPROC_SERVER,
+			out IFileSaveDialog saveDialog).ThrowOnFailure();
 
-		return ofn.file;
+		saveDialog.Show(default);
+		saveDialog.GetResult(out IShellItem item);
+		item.GetDisplayName(SIGDN.SIGDN_FILESYSPATH, out PWSTR name);
+		Marshal.FreeCoTaskMem(new IntPtr(name.Value));
+		return name.ToString();
 	}
 
 	public string? SelectDirectory()
 	{
 		// TODO: Open directory dialog.
 		throw new NotImplementedException();
-	}
-
-	private static OpenFileName GetOpenFileName(string dialogTitle, string? extensionFilter)
-	{
-		OpenFileName ofn = new()
-		{
-			filter = extensionFilter, // Example: "Log files\0*.log\0Batch files\0*.bat\0",
-			file = new(new char[256]),
-			maxFile = 256,
-			fileTitle = new(new char[64]),
-			maxFileTitle = 64,
-			initialDir = "C:\\",
-			title = dialogTitle,
-		};
-		ofn.structSize = Marshal.SizeOf(ofn);
-		return ofn;
 	}
 }
