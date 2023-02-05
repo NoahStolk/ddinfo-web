@@ -8,7 +8,7 @@ namespace DevilDaggersInfo.App.Core.NativeInterface.Services.Windows;
 /// </summary>
 public class WindowsFileSystemService : INativeFileSystemService
 {
-	public INativeFileSystemService.FileResult? OpenFile(string? extensionFilter)
+	public string? GetFilePathFromDialog(string dialogTitle, string? extensionFilter)
 	{
 		OpenFileName ofn = new()
 		{
@@ -25,13 +25,7 @@ public class WindowsFileSystemService : INativeFileSystemService
 		if (!NativeMethods.GetOpenFileName(ofn) || ofn.file == null)
 			return null;
 
-		return new(ofn.file, File.ReadAllBytes(ofn.file));
-	}
-
-	public void SaveDataToFile(byte[] data)
-	{
-		// TODO: Save file dialog.
-		throw new NotImplementedException();
+		return ofn.file;
 	}
 
 	public string? SelectDirectory()

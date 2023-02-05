@@ -33,7 +33,6 @@ public interface IDependencyContainer
 
 	IExtendedLayout SurvivalEditorMainLayout { get; }
 	IExtendedLayout SurvivalEditor3dLayout { get; }
-	IExtendedLayout SurvivalEditorSaveLayout { get; }
 
 	#endregion UI DDSE dependencies
 

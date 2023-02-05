@@ -1,7 +1,4 @@
-using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
-using DevilDaggersInfo.App.Ui.Base.Settings;
-using DevilDaggersInfo.App.Ui.Base.StateManagement.Base.Actions;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Components;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetArena;
@@ -55,9 +52,9 @@ public class SurvivalEditorMainLayout : Layout, IExtendedLayout
 		if (Input.IsKeyPressed(Keys.N))
 			StateManager.Dispatch(new LoadSpawnset("(untitled)", SpawnsetBinary.CreateDefault()));
 		else if (Input.IsKeyPressed(Keys.O))
-			DialogUtils.OpenSpawnset();
+			SpawnsetFileUtils.OpenSpawnset();
 		else if (Input.IsKeyPressed(Keys.S))
-			StateManager.Dispatch(new SetLayout(Root.Dependencies.SurvivalEditorSaveLayout));
+			SpawnsetFileUtils.SaveSpawnset();
 		else if (Input.IsKeyPressed(Keys.R))
 			SpawnsetFileUtils.ReplaceSpawnset();
 	}
