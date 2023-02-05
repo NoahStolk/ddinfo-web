@@ -17,4 +17,18 @@ public class WindowsDialogService : INativeDialogService
 	{
 		NativeMethods.MessageBox(IntPtr.Zero, message, title, 0);
 	}
+
+	public bool? PromptYesNo(string title, string message)
+	{
+		int result = NativeMethods.MessageBox(IntPtr.Zero, message, title, 0x00000004 /* MB_YESNO */);
+
+		return result switch
+		{
+			/* IDYES */
+			6 => true,
+			/* IDNO */
+			7 => false,
+			_ => null,
+		};
+	}
 }

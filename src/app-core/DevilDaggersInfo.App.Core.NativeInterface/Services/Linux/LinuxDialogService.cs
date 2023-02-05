@@ -11,4 +11,9 @@ public class LinuxDialogService : INativeDialogService
 	{
 		throw new NotImplementedException();
 	}
+
+	public bool? PromptYesNo(string title, string message)
+	{
+		throw new NotImplementedException();
+	}
 }

@@ -33,6 +33,16 @@ public static class SpawnsetFileUtils
 		if (filePath == null)
 			return;
 
+		if (Directory.Exists(filePath))
+			Root.Dependencies.NativeDialogService.ReportError("Specified file path is an existing directory", "Please specify a file path.");
+
+		if (File.Exists(filePath))
+		{
+			bool? result = Root.Dependencies.NativeDialogService.PromptYesNo("File already exists", "The specified file path already exists. Do you want to overwrite it?");
+			if (result is null or false)
+				return;
+		}
+
 		File.WriteAllBytes(filePath, StateManager.SpawnsetState.Spawnset.ToBytes());
 	}
 
