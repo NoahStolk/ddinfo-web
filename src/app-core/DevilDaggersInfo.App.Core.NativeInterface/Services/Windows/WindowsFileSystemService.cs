@@ -24,7 +24,7 @@ public class WindowsFileSystemService : INativeFileSystemService
 		openDialog.Show(default);
 		openDialog.GetResult(out IShellItem item);
 		item.GetDisplayName(SIGDN.SIGDN_FILESYSPATH, out PWSTR name);
-		Marshal.FreeCoTaskMem(new IntPtr(name.Value));
+		Marshal.FreeCoTaskMem(new(name.Value));
 		return name.ToString();
 	}
 
@@ -39,13 +39,23 @@ public class WindowsFileSystemService : INativeFileSystemService
 		saveDialog.Show(default);
 		saveDialog.GetResult(out IShellItem item);
 		item.GetDisplayName(SIGDN.SIGDN_FILESYSPATH, out PWSTR name);
-		Marshal.FreeCoTaskMem(new IntPtr(name.Value));
+		Marshal.FreeCoTaskMem(new(name.Value));
 		return name.ToString();
 	}
 
-	public string? SelectDirectory()
+	public unsafe string? SelectDirectory()
 	{
-		// TODO: Open directory dialog.
-		throw new NotImplementedException();
+		PInvoke.CoCreateInstance(
+			typeof(FileOpenDialog).GUID,
+			null,
+			CLSCTX.CLSCTX_INPROC_SERVER,
+			out IFileOpenDialog openDialog).ThrowOnFailure();
+
+		openDialog.SetOptions(FILEOPENDIALOGOPTIONS.FOS_PICKFOLDERS);
+		openDialog.Show(default);
+		openDialog.GetResult(out IShellItem item);
+		item.GetDisplayName(SIGDN.SIGDN_FILESYSPATH, out PWSTR name);
+		Marshal.FreeCoTaskMem(new(name.Value));
+		return name.ToString();
 	}
 }
