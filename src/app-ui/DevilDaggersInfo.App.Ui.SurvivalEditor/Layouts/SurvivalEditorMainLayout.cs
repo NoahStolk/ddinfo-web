@@ -67,7 +67,7 @@ public class SurvivalEditorMainLayout : Layout, IExtendedLayout
 		else if (Input.IsKeyPressed(Keys.S))
 			StateManager.Dispatch(new SetLayout(Root.Dependencies.SurvivalEditorSaveLayout));
 		else if (Input.IsKeyPressed(Keys.R))
-			StateManager.Dispatch(new ReplaceCurrentlyActiveSpawnset());
+			SpawnsetFileUtils.ReplaceSpawnset();
 	}
 
 	public void Render3d()
