@@ -2,16 +2,14 @@ using DevilDaggersInfo.App.Launcher;
 
 // TODO: Check launcher version and close if outdated, telling the user to update the launcher itself first.
 
-UpdateLogic updateLogic = new();
-
-if (!updateLogic.IsInstalled())
+if (!UpdateLogic.IsInstalled())
 {
-	await updateLogic.DownloadAndInstall();
+	await UpdateLogic.DownloadAndInstall();
 }
-else if (await updateLogic.ShouldUpdate())
+else if (await UpdateLogic.ShouldUpdate())
 {
-	updateLogic.CleanOldInstallation();
-	await updateLogic.DownloadAndInstall();
+	UpdateLogic.CleanOldInstallation();
+	await UpdateLogic.DownloadAndInstall();
 }
 
-updateLogic.Launch();
+UpdateLogic.Launch();

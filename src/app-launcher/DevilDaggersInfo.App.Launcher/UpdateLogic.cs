@@ -7,7 +7,7 @@ using System.IO.Compression;
 
 namespace DevilDaggersInfo.App.Launcher;
 
-public class UpdateLogic
+public static class UpdateLogic
 {
 	private const ToolBuildType _toolBuildType = ToolBuildType.WindowsWarp;
 // #if WINDOWS
@@ -18,7 +18,7 @@ public class UpdateLogic
 
 	private const string _installationDirectory = "DDINFO TOOLS";
 
-	public async Task<bool> ShouldUpdate()
+	public static async Task<bool> ShouldUpdate()
 	{
 		Cmd.WriteLine(ConsoleColor.Yellow, "Checking for updates...");
 		GetLatestVersion latestVersion = await AsyncHandler.Client.GetLatestVersion(ToolPublishMethod.SelfContained, _toolBuildType);
@@ -47,7 +47,7 @@ public class UpdateLogic
 		return false;
 	}
 
-	public void CleanOldInstallation()
+	public static void CleanOldInstallation()
 	{
 		if (!Directory.Exists(_installationDirectory))
 			return;
@@ -56,7 +56,7 @@ public class UpdateLogic
 			File.Delete(existingFile);
 	}
 
-	public async Task DownloadAndInstall()
+	public static async Task DownloadAndInstall()
 	{
 		Cmd.WriteLine(ConsoleColor.Yellow, "Downloading new version...");
 		GetLatestVersionFile latestInstallation = await AsyncHandler.Client.GetLatestVersionFile(ToolPublishMethod.SelfContained, _toolBuildType);
@@ -67,7 +67,7 @@ public class UpdateLogic
 		Cmd.WriteLine(ConsoleColor.Green, "Update installed.");
 	}
 
-	public void Launch()
+	public static void Launch()
 	{
 		string? executableFileName = FindExecutableFileName();
 		if (executableFileName == null)
@@ -82,13 +82,13 @@ public class UpdateLogic
 		process.Start();
 	}
 
-	private string? FindExecutableFileName()
+	private static string? FindExecutableFileName()
 	{
 		// TODO: Use something else on Linux.
 		return !Directory.Exists(_installationDirectory) ? null : Array.Find(Directory.GetFiles(_installationDirectory), f => Path.GetExtension(f) == ".exe");
 	}
 
-	public bool IsInstalled()
+	public static bool IsInstalled()
 	{
 		return FindExecutableFileName() != null;
 	}
