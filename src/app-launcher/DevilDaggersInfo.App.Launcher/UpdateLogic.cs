@@ -16,12 +16,7 @@ public class UpdateLogic
 // 	private const ToolBuildType _toolBuildType = ToolBuildType.LinuxWarp;
 // #endif
 
-	private readonly string _installationDirectory;
-
-	public UpdateLogic()
-	{
-		_installationDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "DDINFO");
-	}
+	private const string _installationDirectory = "DDINFO TOOLS";
 
 	public async Task<bool> ShouldUpdate()
 	{
