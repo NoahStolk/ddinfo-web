@@ -57,13 +57,10 @@ public static class UpdateLogic
 
 	public static async Task DownloadAndInstall()
 	{
-		Cmd.WriteLine(ConsoleColor.Yellow, "Downloading new version...");
 		GetLatestVersionFile latestInstallation = await AsyncHandler.Client.GetLatestVersionFile(ToolPublishMethod.SelfContained, _toolBuildType);
 		using MemoryStream ms = new(latestInstallation.ZipFileContents);
 		using ZipArchive archive = new(ms);
 		archive.ExtractToDirectory(_installationDirectory, true);
-
-		Cmd.WriteLine(ConsoleColor.Green, "Update installed.");
 	}
 
 	public static void Launch()

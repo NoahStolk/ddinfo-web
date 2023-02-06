@@ -4,12 +4,17 @@ using DevilDaggersInfo.App.Launcher;
 
 if (!UpdateLogic.IsInstalled())
 {
+	Cmd.WriteLine(ConsoleColor.Yellow, "Downloading...");
 	await UpdateLogic.DownloadAndInstall();
+	Cmd.WriteLine(ConsoleColor.Green, "App installed.");
 }
 else if (await UpdateLogic.ShouldUpdate())
 {
 	UpdateLogic.CleanOldInstallation();
+
+	Cmd.WriteLine(ConsoleColor.Yellow, "Downloading new version...");
 	await UpdateLogic.DownloadAndInstall();
+	Cmd.WriteLine(ConsoleColor.Green, "Update installed.");
 }
 
 UpdateLogic.Launch();
