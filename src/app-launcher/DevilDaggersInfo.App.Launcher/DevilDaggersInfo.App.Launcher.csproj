@@ -2,19 +2,20 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <IsWindows Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))' == 'true'">true</IsWindows>
-    <IsLinux Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">true</IsLinux>
+<!--TODO: This breaks System.Console for some reason?-->
+<!--    <IsWindows Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))' == 'true'">true</IsWindows>-->
+<!--    <IsLinux Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">true</IsLinux>-->
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(IsWindows)' == 'true'">
-    <DefineConstants>WINDOWS</DefineConstants>
-    <OutputType>WinExe</OutputType>
-  </PropertyGroup>
+<!--  <PropertyGroup Condition="'$(IsWindows)' == 'true'">-->
+<!--    <DefineConstants>WINDOWS</DefineConstants>-->
+<!--    <OutputType>WinExe</OutputType>-->
+<!--  </PropertyGroup>-->
 
-  <PropertyGroup Condition="'$(IsLinux)' == 'true'">
-    <DefineConstants>LINUX</DefineConstants>
-    <OutputType>Exe</OutputType>
-  </PropertyGroup>
+<!--  <PropertyGroup Condition="'$(IsLinux)' == 'true'">-->
+<!--    <DefineConstants>LINUX</DefineConstants>-->
+<!--    <OutputType>Exe</OutputType>-->
+<!--  </PropertyGroup>-->
 
   <ItemGroup>
     <ProjectReference Include="..\..\api\DevilDaggersInfo.Api.App\DevilDaggersInfo.Api.App.csproj" />

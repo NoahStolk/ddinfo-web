@@ -9,11 +9,12 @@ namespace DevilDaggersInfo.App.Launcher;
 
 public class UpdateLogic
 {
-#if WINDOWS
 	private const ToolBuildType _toolBuildType = ToolBuildType.WindowsWarp;
-#elif LINUX
-	private const ToolBuildType _toolBuildType = ToolBuildType.LinuxWarp;
-#endif
+// #if WINDOWS
+// 	private const ToolBuildType _toolBuildType = ToolBuildType.WindowsWarp;
+// #elif LINUX
+// 	private const ToolBuildType _toolBuildType = ToolBuildType.LinuxWarp;
+// #endif
 
 	private readonly string _installationDirectory;
 
@@ -89,7 +90,7 @@ public class UpdateLogic
 	private string? FindExecutableFileName()
 	{
 		// TODO: Use something else on Linux.
-		return Array.Find(Directory.GetFiles(_installationDirectory), f => Path.GetExtension(f) == ".exe");
+		return !Directory.Exists(_installationDirectory) ? null : Array.Find(Directory.GetFiles(_installationDirectory), f => Path.GetExtension(f) == ".exe");
 	}
 
 	public bool IsInstalled()
