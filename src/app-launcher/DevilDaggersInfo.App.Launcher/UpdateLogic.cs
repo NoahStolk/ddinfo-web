@@ -9,12 +9,11 @@ namespace DevilDaggersInfo.App.Launcher;
 
 public static class UpdateLogic
 {
+#if WINDOWS
 	private const ToolBuildType _toolBuildType = ToolBuildType.WindowsWarp;
-// #if WINDOWS
-// 	private const ToolBuildType _toolBuildType = ToolBuildType.WindowsWarp;
-// #elif LINUX
-// 	private const ToolBuildType _toolBuildType = ToolBuildType.LinuxWarp;
-// #endif
+#elif LINUX
+	private const ToolBuildType _toolBuildType = ToolBuildType.LinuxWarp;
+#endif
 
 	private const string _installationDirectory = "DDINFO TOOLS";
 
