@@ -30,7 +30,7 @@ static async Task BuildAndUploadAsync(string toolName, string projectFilePath, s
 
 	await AppBuilder.BuildAsync(projectFilePath, publishDirectoryName, toolBuildType, toolPublishMethod);
 
-	string publishDirectoryPath = Path.Combine(Path.GetDirectoryName(projectFilePath) ?? throw new(), publishDirectoryName);
+	string publishDirectoryPath = Path.Combine(Path.GetDirectoryName(projectFilePath) ?? throw new($"Cannot get root directory of {projectFilePath}."), publishDirectoryName);
 
 	// Copy content file if it exists.
 	string contentFilePath = Path.Combine(projectFilePath, "..", "bin", "Debug", "net7.0", "ddinfo");

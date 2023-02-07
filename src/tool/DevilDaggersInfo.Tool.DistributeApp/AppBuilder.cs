@@ -22,12 +22,8 @@ public static class AppBuilder
 			_ => throw new NotImplementedException(),
 		};
 
-		bool isSelfContained = toolPublishMethod == ToolPublishMethod.SelfContained;
-
 		Dictionary<string, string> dictionary = new()
 		{
-			{ "PublishSingleFile", isSelfContained.ToString() },
-			{ "SelfContained", isSelfContained.ToString() },
 			{ "PublishTrimmed", "True" },
 			{ "EnableCompressionInSingleFile", "True" },
 			{ "PublishReadyToRun", "False" },
@@ -39,8 +35,19 @@ public static class AppBuilder
 			{ "PublishDir", publishDirectoryName },
 		};
 
-		if (isSelfContained)
-			dictionary.Add("PublishMethod", "SELF_CONTAINED");
+		switch (toolPublishMethod)
+		{
+			case ToolPublishMethod.SelfContained:
+				dictionary.Add("PublishSingleFile", "True");
+				dictionary.Add("SelfContained", "True");
+				dictionary.Add("PublishMethod", "SELF_CONTAINED");
+				break;
+			case ToolPublishMethod.Aot:
+				dictionary.Add("PublishAot", "True");
+				break;
+			case ToolPublishMethod.Default: break;
+			default: throw new ArgumentOutOfRangeException(nameof(toolPublishMethod), toolPublishMethod, null);
+		}
 
 		StringBuilder stringBuilder = new($"publish {projectFilePath}");
 		foreach (KeyValuePair<string, string> keyValuePair in dictionary)
