@@ -4,17 +4,17 @@ namespace DevilDaggersInfo.Api.Admin.Tools;
 
 public record AddDistribution
 {
-	public required string Name { get; set; }
+	public required string Name { get; init; }
 
-	public required ToolPublishMethod PublishMethod { get; set; }
+	public required ToolPublishMethod PublishMethod { get; init; }
 
-	public required ToolBuildType BuildType { get; set; }
+	public required ToolBuildType BuildType { get; init; }
 
-	public required string Version { get; set; }
+	public required string Version { get; init; }
 
-	public required byte[] ZipFileContents { get; set; }
+	public required byte[] ZipFileContents { get; init; }
 
-	public required bool UpdateVersion { get; set; }
+	public required bool UpdateVersion { get; init; }
 
-	public required bool UpdateRequiredVersion { get; set; }
+	public required bool UpdateRequiredVersion { get; init; }
 }

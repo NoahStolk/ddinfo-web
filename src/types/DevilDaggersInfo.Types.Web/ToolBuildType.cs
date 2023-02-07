@@ -8,4 +8,5 @@ public enum ToolBuildType : byte
 	LinuxPhotino = 3,
 	WindowsWarp = 4,
 	LinuxWarp = 5,
+	LinuxConsole = 6,
 }
