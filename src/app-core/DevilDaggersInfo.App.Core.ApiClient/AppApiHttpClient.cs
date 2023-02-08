@@ -14,6 +14,7 @@ public partial class AppApiHttpClient
 
 	private async Task<HttpResponseMessage> SendRequest(HttpMethod httpMethod, string url, JsonContent? body = null)
 	{
+		// TODO: Dispose.
 		HttpRequestMessage request = new()
 		{
 			RequestUri = new(url, UriKind.Relative),

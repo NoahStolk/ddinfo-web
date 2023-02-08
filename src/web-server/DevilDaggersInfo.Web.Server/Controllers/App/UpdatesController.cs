@@ -33,24 +33,4 @@ public class UpdatesController : ControllerBase
 
 		return distribution.ToAppApi();
 	}
-
-	[HttpGet("latest-version-file")]
-	[ProducesResponseType(StatusCodes.Status200OK)]
-	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public async Task<ActionResult<GetLatestVersionFile>> GetLatestVersionFile([Required] ToolPublishMethod publishMethod, [Required] ToolBuildType buildType)
-	{
-		ToolDistribution? distribution = await _toolRepository.GetLatestToolDistributionAsync(_toolName, publishMethod, buildType);
-		if (distribution == null)
-			return NotFound();
-
-		byte[] bytes = _toolRepository.GetToolDistributionFile(_toolName, publishMethod, buildType, distribution.VersionNumber);
-
-		await _toolRepository.UpdateToolDistributionStatisticsAsync(_toolName, publishMethod, buildType, distribution.VersionNumber);
-
-		return new GetLatestVersionFile
-		{
-			ZipFileContents = bytes,
-		};
-	}
 }
