@@ -154,6 +154,7 @@ builder.AddSwaggerDocument("Admin", "This is the admin API for DevilDaggers.info
 builder.AddSwaggerDocument("Dd", "**WARNING:** This API is intended to be used by Devil Daggers only.");
 
 builder.AddSwaggerDocument("App", "**WARNING:** This API is intended to be used by DDINFO TOOLS only.");
+builder.AddSwaggerDocument("AppLauncher", "**WARNING:** This API is intended to be used by DDINFO TOOLS LAUNCHER only.");
 builder.AddSwaggerDocument("Ddae", "**WARNING:** This API is intended to be used by Devil Daggers Asset Editor only.");
 builder.AddSwaggerDocument("Ddcl", "**WARNING:** This API is intended to be used by Devil Daggers Custom Leaderboards only.");
 builder.AddSwaggerDocument("Ddre", "**WARNING:** This API is intended to be used by Devil Daggers Replay Editor only.");
