@@ -1,7 +1,3 @@
-using DevilDaggersInfo.Api.App.Updates;
-using DevilDaggersInfo.App.Core.ApiClient;
-using DevilDaggersInfo.Core.Versioning;
-using DevilDaggersInfo.Types.Web;
 using System.Diagnostics;
 using System.IO.Compression;
 
@@ -9,24 +5,8 @@ namespace DevilDaggersInfo.App.Launcher;
 
 public static class UpdateLogic
 {
-#if WINDOWS
-	private const ToolBuildType _toolBuildType = ToolBuildType.WindowsWarp;
-#elif LINUX
-	private const ToolBuildType _toolBuildType = ToolBuildType.LinuxWarp;
-#endif
-
-	private const string _installationDirectory = "DDINFO TOOLS";
-
 	public static async Task<bool> ShouldUpdate()
 	{
-		Cmd.WriteLine(ConsoleColor.Yellow, "Checking for updates...");
-		GetLatestVersion latestVersion = await AsyncHandler.Client.GetLatestVersion(ToolPublishMethod.SelfContained, _toolBuildType);
-		if (!AppVersion.TryParse(latestVersion.VersionNumber, out AppVersion? onlineVersion))
-		{
-			Cmd.WriteLine(ConsoleColor.Red, $"Could not parse response from API as a valid version number: '{latestVersion.VersionNumber}'");
-			return false;
-		}
-
 		string executableFileName = FindExecutableFileName() ?? throw new InvalidOperationException("ShouldUpdate can only be called when the app is installed.");
 		FileVersionInfo versionInfo = FileVersionInfo.GetVersionInfo(executableFileName);
 		if (versionInfo.FileVersion == null)
@@ -35,32 +15,34 @@ public static class UpdateLogic
 			return true;
 		}
 
-		AppVersion currentVersion = AppVersion.Parse(versionInfo.FileVersion);
-		if (onlineVersion > currentVersion)
+		Cmd.WriteLine(ConsoleColor.Yellow, "Checking for updates...");
+		bool shouldUpdate = await Client.IsLatestVersionAsync("ddinfo-tools", versionInfo.FileVersion);
+
+		if (shouldUpdate)
 		{
-			Cmd.WriteLine(ConsoleColor.Green, $"New version available: {onlineVersion}");
+			Cmd.WriteLine(ConsoleColor.Green, "New version available.");
 			return true;
 		}
 
-		Cmd.WriteLine(ConsoleColor.Green, "No new version available.");
+		Cmd.WriteLine(ConsoleColor.Yellow, "No new version available.");
 		return false;
 	}
 
 	public static void CleanOldInstallation()
 	{
-		if (!Directory.Exists(_installationDirectory))
+		if (!Directory.Exists(Constants.InstallationDirectory))
 			return;
 
-		foreach (string existingFile in Directory.GetFiles(_installationDirectory))
+		foreach (string existingFile in Directory.GetFiles(Constants.InstallationDirectory))
 			File.Delete(existingFile);
 	}
 
-	public static async Task DownloadAndInstall()
+	public static async Task DownloadAndInstallAsync()
 	{
-		GetLatestVersionFile latestInstallation = await AsyncHandler.Client.GetLatestVersionFile(ToolPublishMethod.SelfContained, _toolBuildType);
-		using MemoryStream ms = new(latestInstallation.ZipFileContents);
+		byte[] zipFileContents = await Client.DownloadAppAsync();
+		using MemoryStream ms = new(zipFileContents);
 		using ZipArchive archive = new(ms);
-		archive.ExtractToDirectory(_installationDirectory, true);
+		archive.ExtractToDirectory(Constants.InstallationDirectory, true);
 	}
 
 	public static void Launch()
@@ -68,20 +50,20 @@ public static class UpdateLogic
 		string? executableFileName = FindExecutableFileName();
 		if (executableFileName == null)
 		{
-			Cmd.WriteLine(ConsoleColor.Red, $"Could not launch executable. It should be installed at '{_installationDirectory}'.");
+			Cmd.WriteLine(ConsoleColor.Red, $"Could not launch executable. It should be installed at '{Constants.InstallationDirectory}'.");
 			return;
 		}
 
 		Process process = new();
 		process.StartInfo.FileName = executableFileName;
-		process.StartInfo.WorkingDirectory = _installationDirectory;
+		process.StartInfo.WorkingDirectory = Constants.InstallationDirectory;
 		process.Start();
 	}
 
 	private static string? FindExecutableFileName()
 	{
 		// TODO: Use something else on Linux.
-		return !Directory.Exists(_installationDirectory) ? null : Array.Find(Directory.GetFiles(_installationDirectory), f => Path.GetExtension(f) == ".exe");
+		return !Directory.Exists(Constants.InstallationDirectory) ? null : Array.Find(Directory.GetFiles(Constants.InstallationDirectory), f => Path.GetExtension(f) == ".exe");
 	}
 
 	public static bool IsInstalled()

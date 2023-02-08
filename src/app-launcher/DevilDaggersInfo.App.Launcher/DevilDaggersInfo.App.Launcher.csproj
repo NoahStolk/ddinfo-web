@@ -16,8 +16,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\api\DevilDaggersInfo.Api.App\DevilDaggersInfo.Api.App.csproj" />
-    <ProjectReference Include="..\..\app-core\DevilDaggersInfo.App.Core.ApiClient\DevilDaggersInfo.App.Core.ApiClient.csproj" />
+    <ProjectReference Include="..\..\types\DevilDaggersInfo.Types.Web\DevilDaggersInfo.Types.Web.csproj" />
   </ItemGroup>
 
 </Project>
