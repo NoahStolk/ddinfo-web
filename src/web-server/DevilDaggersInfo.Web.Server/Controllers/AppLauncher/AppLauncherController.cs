@@ -44,10 +44,10 @@ public class AppLauncherController : ControllerBase
 	}
 
 	[HttpGet("latest-version-file")]
-	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(typeof(FileStreamResult), StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public async Task<ActionResult<byte[]>> GetLatestVersionFile([Required] ToolPublishMethod publishMethod, [Required] ToolBuildType buildType)
+	public async Task<ActionResult> GetLatestVersionFile([Required] ToolPublishMethod publishMethod, [Required] ToolBuildType buildType)
 	{
 		ToolDistribution? distribution = await _toolRepository.GetLatestToolDistributionAsync(_toolName, publishMethod, buildType);
 		if (distribution == null)
@@ -57,6 +57,7 @@ public class AppLauncherController : ControllerBase
 
 		await _toolRepository.UpdateToolDistributionStatisticsAsync(_toolName, publishMethod, buildType, distribution.VersionNumber);
 
-		return bytes;
+		MemoryStream ms = new(bytes);
+		return new FileStreamResult(ms, "application/octet-stream");
 	}
 }
