@@ -1,5 +1,68 @@
 [
 	{
+		"VersionNumber": "0.2.0-alpha.0",
+		"Date": "2022-02-09T00:00:00",
+		"Changes": [
+			{
+				"Description": "Added custom leaderboard criteria icons."
+			},
+			{
+				"Description": "Improved UI systems."
+			},
+			{
+				"Description": "Fixed a lot of bugs."
+			},
+			{
+				"Description": "Arena tools optimizations."
+			},
+			{
+				"Description": "Added all memory data to the custom leaderboard screen."
+			},
+			{
+				"Description": "Survival file change is now automatically detected by the custom leaderboards screen."
+			},
+			{
+				"Description": "Now using native file system and message box dialogs."
+			},
+			{
+				"Description": "Added directory picker to configuration screen."
+			},
+			{
+				"Description": "Replaced auto update functionality with separate launcher app."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.1.0-alpha.0",
+		"Date": "2022-12-23T00:00:00",
+		"Changes": [
+			{
+				"Description": "Custom leaderboard support, including spawnset/leaderboard browsing/installation, score browsing, replay injecting, and a WIP 3D previewer for replays."
+			},
+			{
+				"Description": "More survival editor features including 3D viewer."
+			},
+			{
+				"Description": "Rewrote and improved most UI."
+			},
+			{
+				"Description": "New font."
+			},
+			{
+				"Description": "Fixed threading problems, performance is now 10x better."
+			},
+			{
+				"Description": "Auto update for future updates, just click button and new update will be downloaded and launched (still need to manually delete old files for now)."
+			},
+			{
+				"Description": "Settings are saved to appdata (Windows)."
+			},
+			{
+				"Description": "Fixed a lot of bugs."
+			}
+		]
+	},
+	{
 		"VersionNumber": "0.0.0-alpha.0",
 		"Date": "2022-10-09T00:00:00",
 		"Changes": [
