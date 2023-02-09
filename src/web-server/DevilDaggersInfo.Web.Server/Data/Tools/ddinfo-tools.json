@@ -1,6 +1,6 @@
 [
 	{
-		"VersionNumber": "0.2.0-alpha.0",
+		"VersionNumber": "0.2.0.0",
 		"Date": "2022-02-09T00:00:00",
 		"Changes": [
 			{
@@ -33,7 +33,7 @@
 		]
 	},
 	{
-		"VersionNumber": "0.1.0-alpha.0",
+		"VersionNumber": "0.1.0.0",
 		"Date": "2022-12-23T00:00:00",
 		"Changes": [
 			{
@@ -63,7 +63,7 @@
 		]
 	},
 	{
-		"VersionNumber": "0.0.0-alpha.0",
+		"VersionNumber": "0.0.0.0",
 		"Date": "2022-10-09T00:00:00",
 		"Changes": [
 			{

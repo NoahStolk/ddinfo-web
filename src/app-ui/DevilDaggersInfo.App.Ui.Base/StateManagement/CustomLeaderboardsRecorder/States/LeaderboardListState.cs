@@ -16,6 +16,6 @@ public record LeaderboardListState(
 {
 	public static LeaderboardListState GetDefault()
 	{
-		return new(int.MaxValue, int.MaxValue, CustomLeaderboardCategory.Survival, 0, 20, false, null, null);
+		return new(0, 0, CustomLeaderboardCategory.Survival, 0, 20, false, null, null);
 	}
 }

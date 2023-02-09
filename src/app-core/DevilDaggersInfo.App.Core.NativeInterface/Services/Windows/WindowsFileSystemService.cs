@@ -21,7 +21,16 @@ public class WindowsFileSystemService : INativeFileSystemService
 			CLSCTX.CLSCTX_INPROC_SERVER,
 			out IFileOpenDialog openDialog).ThrowOnFailure();
 
-		openDialog.Show(default);
+		try
+		{
+			openDialog.Show(default);
+		}
+		catch (COMException)
+		{
+			// Return null when the user cancels the dialog.
+			return null;
+		}
+
 		openDialog.GetResult(out IShellItem item);
 		item.GetDisplayName(SIGDN.SIGDN_FILESYSPATH, out PWSTR name);
 		Marshal.FreeCoTaskMem(new(name.Value));
@@ -36,7 +45,16 @@ public class WindowsFileSystemService : INativeFileSystemService
 			CLSCTX.CLSCTX_INPROC_SERVER,
 			out IFileSaveDialog saveDialog).ThrowOnFailure();
 
-		saveDialog.Show(default);
+		try
+		{
+			saveDialog.Show(default);
+		}
+		catch (COMException)
+		{
+			// Return null when the user cancels the dialog.
+			return null;
+		}
+
 		saveDialog.GetResult(out IShellItem item);
 		item.GetDisplayName(SIGDN.SIGDN_FILESYSPATH, out PWSTR name);
 		Marshal.FreeCoTaskMem(new(name.Value));
@@ -52,7 +70,17 @@ public class WindowsFileSystemService : INativeFileSystemService
 			out IFileOpenDialog openDialog).ThrowOnFailure();
 
 		openDialog.SetOptions(FILEOPENDIALOGOPTIONS.FOS_PICKFOLDERS);
-		openDialog.Show(default);
+
+		try
+		{
+			openDialog.Show(default);
+		}
+		catch (COMException)
+		{
+			// Return null when the user cancels the dialog.
+			return null;
+		}
+
 		openDialog.GetResult(out IShellItem item);
 		item.GetDisplayName(SIGDN.SIGDN_FILESYSPATH, out PWSTR name);
 		Marshal.FreeCoTaskMem(new(name.Value));

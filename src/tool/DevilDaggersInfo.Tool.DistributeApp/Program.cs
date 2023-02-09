@@ -2,34 +2,28 @@ using DevilDaggersInfo.Api.Main.Authentication;
 using DevilDaggersInfo.Tool.DistributeApp;
 using DevilDaggersInfo.Types.Web;
 
-Console.WriteLine("Distribute app? y/n");
+Console.WriteLine("Distribute app for Windows? y/n");
 if (Console.ReadKey().KeyChar == 'y')
-	await DistributeAppAsync();
+	await DistributeAsync("ddinfo-tools", "app", "DevilDaggersInfo.App", ToolBuildType.WindowsWarp, ToolPublishMethod.SelfContained);
 
-Console.WriteLine("Distribute app launcher? y/n");
+Console.WriteLine("Distribute app for Linux? y/n");
 if (Console.ReadKey().KeyChar == 'y')
-	await DistributeLauncherAsync();
+	await DistributeAsync("ddinfo-tools", "app", "DevilDaggersInfo.App", ToolBuildType.LinuxWarp, ToolPublishMethod.SelfContained);
 
-static async Task DistributeLauncherAsync()
+Console.WriteLine("Distribute app launcher for Windows? y/n");
+if (Console.ReadKey().KeyChar == 'y')
+	await DistributeAsync("ddinfo-tools-launcher", "app-launcher", "DevilDaggersInfo.App.Launcher", ToolBuildType.WindowsConsole, ToolPublishMethod.Aot);
+
+Console.WriteLine("Distribute app launcher for Linux? y/n");
+if (Console.ReadKey().KeyChar == 'y')
+	await DistributeAsync("ddinfo-tools-launcher", "app-launcher", "DevilDaggersInfo.App.Launcher", ToolBuildType.LinuxConsole, ToolPublishMethod.Aot);
+
+static async Task DistributeAsync(string toolName, string srcDir, string projectName, ToolBuildType toolBuildType, ToolPublishMethod toolPublishMethod)
 {
-	const string toolName = "ddinfo-tools-launcher";
 	string root = Path.Combine("..", "..", "..", "..", "..");
-	string projectFilePath = Path.Combine(root, "app-launcher", "DevilDaggersInfo.App.Launcher", "DevilDaggersInfo.App.Launcher.csproj");
-	string zipOutputDirectory = Path.Combine(root, "app-launcher", "DevilDaggersInfo.App.Launcher", "bin");
-
-	await BuildAndUploadAsync(toolName, projectFilePath, zipOutputDirectory, ToolBuildType.WindowsConsole, ToolPublishMethod.Aot);
-	await BuildAndUploadAsync(toolName, projectFilePath, zipOutputDirectory, ToolBuildType.LinuxConsole, ToolPublishMethod.Aot);
-}
-
-static async Task DistributeAppAsync()
-{
-	const string toolName = "ddinfo-tools";
-	string root = Path.Combine("..", "..", "..", "..", "..");
-	string projectFilePath = Path.Combine(root, "app", "DevilDaggersInfo.App", "DevilDaggersInfo.App.csproj");
-	string zipOutputDirectory = Path.Combine(root, "app", "DevilDaggersInfo.App", "bin");
-
-	await BuildAndUploadAsync(toolName, projectFilePath, zipOutputDirectory, ToolBuildType.WindowsWarp, ToolPublishMethod.SelfContained);
-	await BuildAndUploadAsync(toolName, projectFilePath, zipOutputDirectory, ToolBuildType.LinuxWarp, ToolPublishMethod.SelfContained);
+	string projectFilePath = Path.Combine(root, srcDir, projectName, $"{projectName}.csproj");
+	string zipOutputDirectory = Path.Combine(root, srcDir, projectName, "bin");
+	await BuildAndUploadAsync(toolName, projectFilePath, zipOutputDirectory, toolBuildType, toolPublishMethod);
 }
 
 static async Task BuildAndUploadAsync(string toolName, string projectFilePath, string zipOutputDirectory, ToolBuildType toolBuildType, ToolPublishMethod toolPublishMethod)
