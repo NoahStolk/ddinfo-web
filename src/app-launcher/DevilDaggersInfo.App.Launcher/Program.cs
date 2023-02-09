@@ -1,6 +1,13 @@
 using DevilDaggersInfo.App.Launcher;
+using System.Reflection;
 
-// TODO: Check launcher version and warn if outdated, telling the user to update the launcher itself first.
+string launcherVersion = Assembly.GetEntryAssembly()?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? "0.0.0.0";
+Cmd.WriteLine(ConsoleColor.Yellow, $"DDINFO TOOLS LAUNCHER {launcherVersion}");
+if (!await Client.IsLatestVersionAsync("ddinfo-tools-launcher", launcherVersion))
+{
+	Cmd.WriteLine(ConsoleColor.Red, "The launcher is outdated. Please go to https://devildaggers.info/ to download the latest launcher.");
+	Environment.Exit(0);
+}
 
 if (!UpdateLogic.IsInstalled())
 {
