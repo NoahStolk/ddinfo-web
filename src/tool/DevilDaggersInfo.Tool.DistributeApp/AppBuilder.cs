@@ -45,7 +45,7 @@ public static class AppBuilder
 			case ToolPublishMethod.Aot:
 				dictionary.Add("PublishAot", "True");
 				break;
-			case ToolPublishMethod.Default: break;
+			case ToolPublishMethod.Default: throw new NotImplementedException();
 			default: throw new ArgumentOutOfRangeException(nameof(toolPublishMethod), toolPublishMethod, null);
 		}
 
