@@ -13,7 +13,6 @@ public class WindowsDialogService : INativeDialogService
 		if (exception != null)
 			message += Environment.NewLine + exception.Message;
 
-		// TODO: Log exception.
 		PInvoke.MessageBox(HWND.Null, message, title, MESSAGEBOX_STYLE.MB_OK);
 	}
 

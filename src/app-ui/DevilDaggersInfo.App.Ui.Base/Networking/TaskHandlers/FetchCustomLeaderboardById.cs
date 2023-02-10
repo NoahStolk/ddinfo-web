@@ -4,15 +4,8 @@ namespace DevilDaggersInfo.App.Ui.Base.Networking.TaskHandlers;
 
 public static class FetchCustomLeaderboardById
 {
-	public static async Task<GetCustomLeaderboard?> HandleAsync(int customLeaderboardId)
+	public static async Task<GetCustomLeaderboard> HandleAsync(int customLeaderboardId)
 	{
-		try
-		{
-			return await AsyncHandler.Client.GetCustomLeaderboardById(customLeaderboardId);
-		}
-		catch
-		{
-			return null;
-		}
+		return await AsyncHandler.Client.GetCustomLeaderboardById(customLeaderboardId);
 	}
 }

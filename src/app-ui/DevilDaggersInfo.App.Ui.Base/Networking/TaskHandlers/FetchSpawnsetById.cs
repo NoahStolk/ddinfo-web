@@ -4,15 +4,8 @@ namespace DevilDaggersInfo.App.Ui.Base.Networking.TaskHandlers;
 
 public static class FetchSpawnsetById
 {
-	public static async Task<GetSpawnset?> HandleAsync(int spawnsetId)
+	public static async Task<GetSpawnset> HandleAsync(int spawnsetId)
 	{
-		try
-		{
-			return await AsyncHandler.Client.GetSpawnsetById(spawnsetId);
-		}
-		catch
-		{
-			return null;
-		}
+		return await AsyncHandler.Client.GetSpawnsetById(spawnsetId);
 	}
 }

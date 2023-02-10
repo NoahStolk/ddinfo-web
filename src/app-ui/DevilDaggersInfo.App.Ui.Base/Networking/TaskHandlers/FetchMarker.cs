@@ -4,15 +4,8 @@ namespace DevilDaggersInfo.App.Ui.Base.Networking.TaskHandlers;
 
 public static class FetchMarker
 {
-	public static async Task<GetMarker?> HandleAsync(SupportedOperatingSystem supportedOperatingSystem)
+	public static async Task<GetMarker> HandleAsync(SupportedOperatingSystem supportedOperatingSystem)
 	{
-		try
-		{
-			return await AsyncHandler.Client.GetMarker(supportedOperatingSystem);
-		}
-		catch
-		{
-			return null;
-		}
+		return await AsyncHandler.Client.GetMarker(supportedOperatingSystem);
 	}
 }
