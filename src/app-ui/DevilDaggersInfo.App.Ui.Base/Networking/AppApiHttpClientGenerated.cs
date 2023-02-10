@@ -14,7 +14,7 @@ using DevilDaggersInfo.Api.App.Updates;
 using DevilDaggersInfo.Types.Web;
 using System.Net.Http.Json;
 
-namespace DevilDaggersInfo.App.Core.ApiClient;
+namespace DevilDaggersInfo.App.Ui.Base.Networking;
 
 public partial class AppApiHttpClient
 {

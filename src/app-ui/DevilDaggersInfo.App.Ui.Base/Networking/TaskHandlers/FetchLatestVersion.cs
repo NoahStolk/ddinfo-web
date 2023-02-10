@@ -2,7 +2,7 @@ using DevilDaggersInfo.Api.App.Updates;
 using DevilDaggersInfo.Core.Versioning;
 using DevilDaggersInfo.Types.Web;
 
-namespace DevilDaggersInfo.App.Core.ApiClient.TaskHandlers;
+namespace DevilDaggersInfo.App.Ui.Base.Networking.TaskHandlers;
 
 public static class FetchLatestVersion
 {

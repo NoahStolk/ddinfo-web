@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.App.Core.ApiClient;
+namespace DevilDaggersInfo.App.Ui.Base.Networking;
 
 public static class AsyncHandler
 {

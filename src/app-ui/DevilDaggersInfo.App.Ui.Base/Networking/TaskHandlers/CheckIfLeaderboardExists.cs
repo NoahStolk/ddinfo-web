@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.App.Core.ApiClient.TaskHandlers;
+namespace DevilDaggersInfo.App.Ui.Base.Networking.TaskHandlers;
 
 public static class CheckIfLeaderboardExists
 {

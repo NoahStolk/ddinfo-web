@@ -1,7 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
 
-namespace DevilDaggersInfo.App.Core.ApiClient;
+namespace DevilDaggersInfo.App.Ui.Base.Networking;
 
 public partial class AppApiHttpClient
 {
@@ -14,8 +14,7 @@ public partial class AppApiHttpClient
 
 	private async Task<HttpResponseMessage> SendRequest(HttpMethod httpMethod, string url, JsonContent? body = null)
 	{
-		// TODO: Dispose.
-		HttpRequestMessage request = new()
+		using HttpRequestMessage request = new()
 		{
 			RequestUri = new(url, UriKind.Relative),
 			Method = httpMethod,
@@ -27,7 +26,7 @@ public partial class AppApiHttpClient
 
 	private async Task<T> SendGetRequest<T>(string url)
 	{
-		HttpResponseMessage response = await SendRequest(HttpMethod.Get, url);
+		using HttpResponseMessage response = await SendRequest(HttpMethod.Get, url);
 		if (response.StatusCode != HttpStatusCode.OK)
 			throw new HttpRequestException(await response.Content.ReadAsStringAsync(), null, response.StatusCode);
 

@@ -2,7 +2,7 @@ using DevilDaggersInfo.Api.App;
 using DevilDaggersInfo.Api.App.CustomLeaderboards;
 using DevilDaggersInfo.Types.Web;
 
-namespace DevilDaggersInfo.App.Core.ApiClient.TaskHandlers;
+namespace DevilDaggersInfo.App.Ui.Base.Networking.TaskHandlers;
 
 public static class FetchCustomLeaderboards
 {
