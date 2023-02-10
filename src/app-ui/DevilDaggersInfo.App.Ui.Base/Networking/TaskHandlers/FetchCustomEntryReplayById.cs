@@ -4,15 +4,8 @@ namespace DevilDaggersInfo.App.Ui.Base.Networking.TaskHandlers;
 
 public static class FetchCustomEntryReplayById
 {
-	public static async Task<GetCustomEntryReplayBuffer?> HandleAsync(int customEntryId)
+	public static async Task<GetCustomEntryReplayBuffer> HandleAsync(int customEntryId)
 	{
-		try
-		{
-			return await AsyncHandler.Client.GetCustomEntryReplayBufferById(customEntryId);
-		}
-		catch
-		{
-			return null;
-		}
+		return await AsyncHandler.Client.GetCustomEntryReplayBufferById(customEntryId);
 	}
 }

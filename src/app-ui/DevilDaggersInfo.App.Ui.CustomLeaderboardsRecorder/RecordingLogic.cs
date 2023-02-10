@@ -146,9 +146,9 @@ public static class RecordingLogic
 		AsyncHandler.Run(UploadRun, () => CheckIfLeaderboardExists.HandleAsync(survivalHash));
 	}
 
-	private static void UploadRun(bool? leaderboardExists)
+	private static void UploadRun(bool leaderboardExists)
 	{
-		if (!leaderboardExists.HasValue || !leaderboardExists.Value)
+		if (!leaderboardExists)
 			return;
 
 		GameMemoryService memoryService = Root.Dependencies.GameMemoryService;

@@ -62,7 +62,7 @@ public class LeaderboardListWrapper : AbstractComponent
 
 		if (StateManager.LeaderboardListState.Page == null)
 		{
-			// TODO: Show error.
+			Root.Dependencies.NativeDialogService.ReportError("Error", "Could not load leaderboard list.");
 			return;
 		}
 
