@@ -8,6 +8,11 @@ namespace DevilDaggersInfo.App.Core.NativeInterface.Services.Windows;
 [SupportedOSPlatform("windows5.0")]
 public class WindowsDialogService : INativeDialogService
 {
+	public void ReportError(string message, Exception? exception = null)
+	{
+		ReportError("Error", message, exception);
+	}
+
 	public void ReportError(string title, string message, Exception? exception = null)
 	{
 		if (exception != null)

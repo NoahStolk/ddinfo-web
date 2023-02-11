@@ -22,23 +22,17 @@ public class LeaderboardWrapper : AbstractComponent
 {
 	private static readonly Vector2 _iconSize = new(16);
 
-	private readonly Label _spawnsetNameLabel;
 	private readonly TextButton _playButton;
 	private readonly LeaderboardScrollArea _leaderboardScrollArea;
 
 	public LeaderboardWrapper(IBounds bounds)
 		: base(bounds)
 	{
-		_spawnsetNameLabel = new(bounds.CreateNested(4, 4, 128, 16), string.Empty, LabelStyles.DefaultLeft);
-		_leaderboardScrollArea = new(bounds.CreateNested(4, 48, 1016, 200));
+		_playButton = new(bounds.CreateNested(4, 36, 64, 24), DownloadAndInstallSpawnset, ButtonStyles.Default, new(Color.White, TextAlign.Middle, FontSize.H16), "Play") { IsDisabled = true };
+		_leaderboardScrollArea = new(bounds.CreateNested(4, 84, 1016, bounds.Size.Y - 88));
 
-		NestingContext.Add(_leaderboardScrollArea);
-
-		_playButton = new(bounds.CreateNested(512, 4, 64, 24), DownloadAndInstallSpawnset, ButtonStyles.Default, new(Color.White, TextAlign.Middle, FontSize.H16), "Play")
-		{
-			IsDisabled = true,
-		};
 		NestingContext.Add(_playButton);
+		NestingContext.Add(_leaderboardScrollArea);
 
 		StateManager.Subscribe<SetSelectedCustomLeaderboard>(SetSelectedCustomLeaderboard);
 
@@ -52,7 +46,7 @@ public class LeaderboardWrapper : AbstractComponent
 			{
 				if (spawnset == null)
 				{
-					// TODO: Show error.
+					Root.Dependencies.NativeDialogService.ReportError("Could not fetch spawnset.");
 					return;
 				}
 
@@ -76,13 +70,11 @@ public class LeaderboardWrapper : AbstractComponent
 
 			if (getCustomLeaderboard == null)
 			{
-				// TODO: Show error.
-				_spawnsetNameLabel.Text = string.Empty;
+				Root.Dependencies.NativeDialogService.ReportError("Could not fetch custom leaderboard.");
 				_leaderboardScrollArea.Clear();
 			}
 			else
 			{
-				_spawnsetNameLabel.Text = getCustomLeaderboard.SpawnsetName;
 				_leaderboardScrollArea.SetContent(getCustomLeaderboard);
 			}
 		}
@@ -98,7 +90,7 @@ public class LeaderboardWrapper : AbstractComponent
 
 		Root.Game.MonoSpaceFontRenderer24.Schedule(new(1), Bounds.TopLeft + new Vector2i<int>(4) + scrollOffset, Depth - 3, Color.White, StateManager.LeaderboardListState.SelectedCustomLeaderboard?.SpawnsetName ?? string.Empty, TextAlign.Left);
 
-		Vector2 position = Bounds.TopLeft.ToVector2() + new Vector2(8, 36) + scrollOffset.ToVector2();
+		Vector2 position = Bounds.TopLeft.ToVector2() + new Vector2(8, 72) + scrollOffset.ToVector2();
 		const int offset = 8;
 		Root.Game.SpriteRenderer.Schedule(_iconSize, position + new Vector2(TableOffsets[00] - offset, 0), Depth, WarpTextures.IconRank, Color.White);
 		Root.Game.SpriteRenderer.Schedule(_iconSize, position + new Vector2(TableOffsets[01] + offset, 0), Depth, WarpTextures.IconEye, Color.White);

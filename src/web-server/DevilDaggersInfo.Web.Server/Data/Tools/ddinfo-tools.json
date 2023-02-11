@@ -1,5 +1,50 @@
 [
 	{
+		"VersionNumber": "TODO",
+		"Date": "TODO",
+		"Changes": [
+			{
+				"Description": "Improved custom leaderboard UI."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.2.0.4",
+		"Date": "2022-02-11T00:00:00",
+		"Changes": [
+			{
+				"Description": "Replaced COM interop with native file dialog library."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.2.0.3",
+		"Date": "2022-02-10T00:00:00",
+		"Changes": [
+			{
+				"Description": "Fixed IL trimmer breaking JSON serialization."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.2.0.2",
+		"Date": "2022-02-09T00:00:00",
+		"Changes": [
+			{
+				"Description": "Fixed more COM interop crashes."
+			}
+		]
+	},
+	{
+		"VersionNumber": "0.2.0.1",
+		"Date": "2022-02-09T00:00:00",
+		"Changes": [
+			{
+				"Description": "Fixed COM interop crashes."
+			}
+		]
+	},
+	{
 		"VersionNumber": "0.2.0.0",
 		"Date": "2022-02-09T00:00:00",
 		"Changes": [

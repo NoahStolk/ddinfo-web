@@ -10,7 +10,7 @@ public class LeaderboardScrollArea : ScrollArea
 	private readonly List<LeaderboardEntry> _leaderboardEntries = new();
 
 	public LeaderboardScrollArea(IBounds bounds)
-		: base(bounds, 96, 16, ScrollAreaStyles.Default)
+		: base(bounds, 48, 16, ScrollAreaStyles.Default)
 	{
 		Depth = 100;
 	}

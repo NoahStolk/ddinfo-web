@@ -23,7 +23,7 @@ public static class SpawnsetFileUtils
 		}
 		else
 		{
-			Root.Dependencies.NativeDialogService.ReportError("Failed to parse", "The file could not be parsed as a spawnset.");
+			Root.Dependencies.NativeDialogService.ReportError("The file could not be parsed as a spawnset.");
 		}
 	}
 
@@ -35,7 +35,7 @@ public static class SpawnsetFileUtils
 
 		if (Directory.Exists(filePath))
 		{
-			Root.Dependencies.NativeDialogService.ReportError("Specified file path is an existing directory", "Please specify a file path.");
+			Root.Dependencies.NativeDialogService.ReportError("Specified file path is an existing directory. Please specify a file path.");
 			return;
 		}
 

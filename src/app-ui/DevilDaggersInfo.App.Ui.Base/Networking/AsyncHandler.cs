@@ -19,7 +19,7 @@ public static class AsyncHandler
 			}
 			catch (Exception ex)
 			{
-				Root.Dependencies.NativeDialogService.ReportError("API error", "API call failed.", ex);
+				Root.Dependencies.NativeDialogService.ReportError("API call failed.", ex);
 				Root.Dependencies.Log.Write(LogEventLevel.Error, ex, "API error");
 				return default;
 			}
