@@ -48,6 +48,8 @@ public static class CustomLeaderboardConverters
 		SelectedPlayerStats = customLeaderboard.SelectedPlayerStats?.ToAppApi(),
 		SpawnsetId = customLeaderboard.SpawnsetId,
 		SpawnsetName = customLeaderboard.SpawnsetName,
+		SpawnsetAuthorId = customLeaderboard.SpawnsetAuthorId,
+		SpawnsetAuthorName = customLeaderboard.SpawnsetAuthorName,
 		SubmitCount = customLeaderboard.TotalRunsSubmitted,
 		WorldRecord = customLeaderboard.WorldRecord?.ToAppApi(),
 		Criteria = customLeaderboard.Criteria.ConvertAll(c => c.ToAppApi()),
