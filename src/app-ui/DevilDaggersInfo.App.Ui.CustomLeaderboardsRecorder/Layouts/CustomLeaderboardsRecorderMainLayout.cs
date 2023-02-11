@@ -21,11 +21,14 @@ public class CustomLeaderboardsRecorderMainLayout : Layout, IExtendedLayout
 	public CustomLeaderboardsRecorderMainLayout()
 	{
 		const int headerHeight = 24;
+		const int stateWrapperBottom = 96;
+		const int recordingScrollAreaBottom = 444;
+
 		MainLayoutBackButton backButton = new(new PixelBounds(0, 0, 24, headerHeight), () => StateManager.Dispatch(new SetLayout(Root.Dependencies.MainLayout)));
-		_stateWrapper = new(new PixelBounds(0, headerHeight, 256, 96 - headerHeight));
-		_recordingScrollArea = new(new PixelBounds(0, 96, 256, 416));
-		LeaderboardListWrapper leaderboardListWrapper = new(new PixelBounds(256, headerHeight, 768, 512 - headerHeight));
-		LeaderboardWrapper leaderboardWrapper = new(new PixelBounds(0, 512, 1024, 256));
+		_stateWrapper = new(new PixelBounds(0, headerHeight, 256, stateWrapperBottom - headerHeight));
+		_recordingScrollArea = new(new PixelBounds(0, stateWrapperBottom, 256, recordingScrollAreaBottom - stateWrapperBottom));
+		LeaderboardListWrapper leaderboardListWrapper = new(new PixelBounds(256, headerHeight, 768, recordingScrollAreaBottom - headerHeight));
+		LeaderboardWrapper leaderboardWrapper = new(new PixelBounds(0, recordingScrollAreaBottom, 1024, 768 - recordingScrollAreaBottom));
 
 		NestingContext.Add(backButton);
 		NestingContext.Add(_stateWrapper);

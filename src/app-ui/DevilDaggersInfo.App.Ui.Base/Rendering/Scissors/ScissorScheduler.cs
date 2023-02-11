@@ -26,6 +26,7 @@ public static class ScissorScheduler
 			int x2 = Math.Min(aX2, bX2) - x1;
 			int y2 = Math.Min(aY2, bY2) - y1;
 
+			// TODO: Reduce memory allocations.
 			scissor = new(x1, y1, (uint)x2, (uint)y2);
 		}
 

@@ -33,7 +33,7 @@ public class LeaderboardListView : AbstractComponent
 	{
 		if (StateManager.LeaderboardListState.Page == null)
 		{
-			Root.Dependencies.NativeDialogService.ReportError("Error", "Could not load leaderboard list.");
+			Root.Dependencies.NativeDialogService.ReportError("Could not load leaderboard list.");
 			return;
 		}
 

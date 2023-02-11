@@ -2,6 +2,11 @@
 
 public class LinuxDialogService : INativeDialogService
 {
+	public void ReportError(string message, Exception? exception = null)
+	{
+		throw new NotImplementedException();
+	}
+
 	public void ReportError(string title, string message, Exception? exception = null)
 	{
 		throw new NotImplementedException();
