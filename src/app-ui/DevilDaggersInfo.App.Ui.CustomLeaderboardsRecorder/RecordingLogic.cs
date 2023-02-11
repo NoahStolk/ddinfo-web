@@ -131,13 +131,9 @@ public static class RecordingLogic
 		void SetMarker(GetMarker? getMarker)
 		{
 			if (getMarker == null)
-			{
-				// TODO: Show error.
-			}
+				Root.Dependencies.NativeDialogService.ReportError("Failed to retrieve marker.");
 			else
-			{
 				StateManager.Dispatch(new SetMarker(getMarker.Value));
-			}
 		}
 	}
 
@@ -234,13 +230,24 @@ public static class RecordingLogic
 		AsyncHandler.Run(OnSubmit, () => UploadSubmission.HandleAsync(uploadRequest));
 	}
 
-	private static void OnSubmit(GetUploadSuccess? uploadSuccess)
+	private static void OnSubmit(UploadSubmission.ResultWrapper? result)
 	{
-		if (uploadSuccess == null)
+		if (result == null)
+		{
+			// This does not include bad requests. Only connectivity errors and similar will reach this point.
+			Root.Dependencies.NativeDialogService.ReportError("Failed to upload run.");
 			return;
+		}
 
-		// TODO: Dispatch submit success action.
-		StateManager.Dispatch(new SetLastSubmission(DateTime.Now));
+		if (result.Result != null)
+		{
+			StateManager.Dispatch(new SetSuccessfulUpload(result.Result));
+			StateManager.Dispatch(new SetLastSubmission(DateTime.Now));
+		}
+		else if (result.Error != null)
+		{
+			StateManager.Dispatch(new SetFailedUpload(result.Error));
+		}
 	}
 
 	private static AddGameData GetGameDataForUpload(MainBlock block, byte[] statsBuffer)

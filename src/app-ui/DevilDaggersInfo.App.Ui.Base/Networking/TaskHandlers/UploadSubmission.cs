@@ -5,11 +5,20 @@ namespace DevilDaggersInfo.App.Ui.Base.Networking.TaskHandlers;
 
 public static class UploadSubmission
 {
-	public static async Task<GetUploadSuccess?> HandleAsync(AddUploadRequest addUploadRequest)
+	public static async Task<ResultWrapper> HandleAsync(AddUploadRequest addUploadRequest)
 	{
 		HttpResponseMessage hrm = await AsyncHandler.Client.SubmitScore(addUploadRequest);
 
-		// TODO: Also return error if the response is not successful.
-		return hrm.IsSuccessStatusCode ? await hrm.Content.ReadFromJsonAsync<GetUploadSuccess>() : null;
+		if (!hrm.IsSuccessStatusCode)
+			return new() { Error = await hrm.Content.ReadAsStringAsync() };
+
+		return new() { Result = await hrm.Content.ReadFromJsonAsync<GetUploadSuccess>() };
+	}
+
+	public class ResultWrapper
+	{
+		public GetUploadSuccess? Result { get; init; }
+
+		public string? Error { get; init; }
 	}
 }

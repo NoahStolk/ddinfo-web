@@ -18,6 +18,7 @@ public static class StateManager
 	public static MarkerState MarkerState { get; private set; } = MarkerState.GetDefault();
 	public static RecordingState RecordingState { get; private set; } = RecordingState.GetDefault();
 	public static ReplaySceneState ReplaySceneState { get; private set; } = ReplaySceneState.GetDefault();
+	public static UploadSuccessState UploadSuccessState { get; private set; } = UploadSuccessState.GetDefault();
 
 	// Survival editor states.
 	public static ArenaEditorState ArenaEditorState { get; private set; } = ArenaEditorState.GetDefault();
@@ -86,6 +87,7 @@ public static class StateManager
 				MarkerState = stateReducer.MarkerState;
 				RecordingState = stateReducer.RecordingState;
 				ReplaySceneState = stateReducer.ReplaySceneState;
+				UploadSuccessState = stateReducer.UploadSuccessState;
 				ArenaEditorState = stateReducer.ArenaEditorState;
 				SpawnEditorState = stateReducer.SpawnEditorState;
 				SpawnsetHistoryState = stateReducer.SpawnsetHistoryState;

@@ -2,7 +2,7 @@ namespace DevilDaggersInfo.Api.App.CustomLeaderboards;
 
 public record GetUploadSuccess
 {
-	public required string Message { get; init; } = string.Empty;
+	public required string Message { get; init; }
 
 	public required SubmissionType SubmissionType { get; init; }
 
