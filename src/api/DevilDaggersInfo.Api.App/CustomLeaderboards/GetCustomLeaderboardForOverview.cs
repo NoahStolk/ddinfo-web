@@ -10,6 +10,10 @@ public record GetCustomLeaderboardForOverview
 
 	public required string SpawnsetName { get; init; }
 
+	public required int SpawnsetAuthorId { get; init; }
+
+	public required string SpawnsetAuthorName { get; init; }
+
 	public required int PlayerCount { get; init; }
 
 	public required int SubmitCount { get; init; }
