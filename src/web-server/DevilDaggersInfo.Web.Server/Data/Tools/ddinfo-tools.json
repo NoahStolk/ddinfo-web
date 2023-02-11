@@ -1,16 +1,22 @@
 [
 	{
-		"VersionNumber": "TODO",
-		"Date": "TODO",
+		"VersionNumber": "0.2.1.0",
+		"Date": "2023-02-12T00:00:00",
 		"Changes": [
 			{
 				"Description": "Improved custom leaderboard UI."
+			},
+			{
+				"Description": "Submission results are now displayed."
+			},
+			{
+				"Description": "Fixed occasional crash that could happen when opening the custom leaderboards screen while Devil Daggers is open."
 			}
 		]
 	},
 	{
 		"VersionNumber": "0.2.0.4",
-		"Date": "2022-02-11T00:00:00",
+		"Date": "2023-02-11T00:00:00",
 		"Changes": [
 			{
 				"Description": "Replaced COM interop with native file dialog library."
@@ -19,7 +25,7 @@
 	},
 	{
 		"VersionNumber": "0.2.0.3",
-		"Date": "2022-02-10T00:00:00",
+		"Date": "2023-02-10T00:00:00",
 		"Changes": [
 			{
 				"Description": "Fixed IL trimmer breaking JSON serialization."
@@ -28,7 +34,7 @@
 	},
 	{
 		"VersionNumber": "0.2.0.2",
-		"Date": "2022-02-09T00:00:00",
+		"Date": "2023-02-09T00:00:00",
 		"Changes": [
 			{
 				"Description": "Fixed more COM interop crashes."
@@ -37,7 +43,7 @@
 	},
 	{
 		"VersionNumber": "0.2.0.1",
-		"Date": "2022-02-09T00:00:00",
+		"Date": "2023-02-09T00:00:00",
 		"Changes": [
 			{
 				"Description": "Fixed COM interop crashes."
@@ -46,7 +52,7 @@
 	},
 	{
 		"VersionNumber": "0.2.0.0",
-		"Date": "2022-02-09T00:00:00",
+		"Date": "2023-02-09T00:00:00",
 		"Changes": [
 			{
 				"Description": "Added custom leaderboard criteria icons."
@@ -109,7 +115,7 @@
 	},
 	{
 		"VersionNumber": "0.0.0.0",
-		"Date": "2022-10-09T00:00:00",
+		"Date": "2023-10-09T00:00:00",
 		"Changes": [
 			{
 				"Description": "Initial alpha release."

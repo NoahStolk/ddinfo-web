@@ -1,8 +1,10 @@
+using DevilDaggersInfo.App.Core.GameMemory;
 using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.StateManagement;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.Base.Actions;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Actions;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Data;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.Leaderboard;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.LeaderboardList;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.Recording;
@@ -15,8 +17,10 @@ public class CustomLeaderboardsRecorderMainLayout : Layout, IExtendedLayout
 {
 	private readonly StateWrapper _stateWrapper;
 	private readonly RecordingScrollArea _recordingScrollArea;
+	private readonly RecordingResultScrollArea _recordingResultScrollArea;
 
 	private int _recordingInterval;
+	private bool _showRecordingResult;
 
 	public CustomLeaderboardsRecorderMainLayout()
 	{
@@ -27,16 +31,34 @@ public class CustomLeaderboardsRecorderMainLayout : Layout, IExtendedLayout
 		MainLayoutBackButton backButton = new(new PixelBounds(0, 0, 24, headerHeight), () => StateManager.Dispatch(new SetLayout(Root.Dependencies.MainLayout)));
 		_stateWrapper = new(new PixelBounds(0, headerHeight, 256, stateWrapperBottom - headerHeight));
 		_recordingScrollArea = new(new PixelBounds(0, stateWrapperBottom, 256, recordingScrollAreaBottom - stateWrapperBottom));
+		_recordingResultScrollArea = new(new PixelBounds(0, stateWrapperBottom, 256, recordingScrollAreaBottom - stateWrapperBottom));
 		LeaderboardListWrapper leaderboardListWrapper = new(new PixelBounds(256, headerHeight, 768, recordingScrollAreaBottom - headerHeight));
 		LeaderboardWrapper leaderboardWrapper = new(new PixelBounds(0, recordingScrollAreaBottom, 1024, 768 - recordingScrollAreaBottom));
 
 		NestingContext.Add(backButton);
 		NestingContext.Add(_stateWrapper);
 		NestingContext.Add(_recordingScrollArea);
+		NestingContext.Add(_recordingResultScrollArea);
 		NestingContext.Add(leaderboardListWrapper);
 		NestingContext.Add(leaderboardWrapper);
 
 		StateManager.Subscribe<SetLayout>(Initialize);
+		StateManager.Subscribe<SetSuccessfulUpload>(ShowResult);
+		StateManager.Subscribe<SetFailedUpload>(ShowResult);
+		StateManager.Subscribe<SetRecordingState>(Continue);
+
+		void ShowResult()
+		{
+			_showRecordingResult = true;
+
+			// TODO: Fetch and display custom leaderboard.
+		}
+
+		void Continue()
+		{
+			if (StateManager.RecordingState.RecordingStateType == RecordingStateType.Recording)
+				_showRecordingResult = false;
+		}
 	}
 
 	private void Initialize()
@@ -60,7 +82,13 @@ public class CustomLeaderboardsRecorderMainLayout : Layout, IExtendedLayout
 			return;
 
 		_stateWrapper.SetState();
-		_recordingScrollArea.SetState();
+
+		bool gameMemoryInitialized = Root.Dependencies.GameMemoryService.IsInitialized;
+		_recordingScrollArea.IsActive = gameMemoryInitialized && !_showRecordingResult && (GameStatus)Root.Dependencies.GameMemoryService.MainBlock.Status is not (GameStatus.Title or GameStatus.Menu or GameStatus.Lobby);
+		if (_recordingScrollArea.IsActive)
+			_recordingScrollArea.SetState();
+
+		_recordingResultScrollArea.IsActive = gameMemoryInitialized && _showRecordingResult;
 
 		RecordingLogic.Handle();
 	}

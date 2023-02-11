@@ -28,7 +28,7 @@ public class RecordingScrollArea : ScrollArea
 
 		AddSpacing(ref height);
 		AddIcon(ref height, WarpTextures.IconEye, Color.Orange);
-		_recordingValues.Add(AddValue(ref height, "Player", Color.White, b => $"{b.PlayerName} ({b.PlayerId})"));
+		_recordingValues.Add(AddValue(ref height, "Player", Color.White, b => b.IsReplay ? $"{b.ReplayPlayerName} ({b.ReplayPlayerId})" : $"{b.PlayerName} ({b.PlayerId})"));
 		_recordingValues.Add(AddValue(ref height, "Time", Color.White, b => b.Time.ToString(StringFormats.TimeFormat)));
 		_recordingValues.Add(AddValue(ref height, "Hand", Color.White, b => GetUpgrade(b).Name, b => GetUpgrade(b).Color.ToWarpColor()));
 		_recordingValues.Add(AddValue(ref height, "Level 2", UpgradesV3_2.Level2.Color.ToWarpColor(), b => b.LevelUpTime2 == 0 ? "-" : b.LevelUpTime2.ToString(StringFormats.TimeFormat)));
@@ -122,13 +122,8 @@ public class RecordingScrollArea : ScrollArea
 		}
 	}
 
-	private static bool ShouldRenderRecording => Root.Dependencies.GameMemoryService.IsInitialized && (GameStatus)Root.Dependencies.GameMemoryService.MainBlock.Status is not (GameStatus.Title or GameStatus.Menu or GameStatus.Lobby);
-
 	public void SetState()
 	{
-		if (!ShouldRenderRecording)
-			return;
-
 		foreach (RecordingValue recordingValue in _recordingValues)
 			recordingValue.SetState();
 	}
@@ -148,8 +143,7 @@ public class RecordingScrollArea : ScrollArea
 
 	public override void Render(Vector2i<int> scrollOffset)
 	{
-		if (ShouldRenderRecording)
-			base.Render(scrollOffset);
+		base.Render(scrollOffset);
 
 		const int border = 1;
 		Root.Game.RectangleRenderer.Schedule(ContentBounds.Size, ContentBounds.Center + scrollOffset, Depth, Color.Purple);
