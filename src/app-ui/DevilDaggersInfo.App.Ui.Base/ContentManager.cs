@@ -1,6 +1,7 @@
 using DevilDaggersInfo.App.Core.AssetInterop;
 using DevilDaggersInfo.App.Ui.Base.Exceptions;
 using DevilDaggersInfo.App.Ui.Base.Settings;
+using DevilDaggersInfo.App.Ui.Base.Utils;
 using DevilDaggersInfo.Core.Mod;
 using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Types.Core.Assets;
@@ -25,9 +26,11 @@ public static class ContentManager
 			throw new MissingContentException("Installation directory does not exist.");
 
 		// TODO: Use correct Linux file name for executable.
-		// string ddExe = Path.Combine(dir, "dd.exe");
-		// if (!File.Exists(ddExe))
-		// 	throw new MissingContentException("Executable does not exist.");
+#if WINDOWS
+		string ddExe = Path.Combine(UserSettings.DevilDaggersInstallationDirectory, "dd.exe");
+		if (!File.Exists(ddExe))
+			throw new MissingContentException("Executable does not exist.");
+#endif
 
 		if (!File.Exists(UserSettings.DdSurvivalPath))
 			throw new MissingContentException("File 'dd/survival' does not exist.");
@@ -39,7 +42,8 @@ public static class ContentManager
 			throw new MissingContentException("File 'res/dd' does not exist.");
 
 		// TODO: Also verify survival hash.
-		if (!SpawnsetBinary.TryParse(File.ReadAllBytes(UserSettings.DdSurvivalPath), out SpawnsetBinary? defaultSpawnset))
+		byte[] survivalBytes = File.ReadAllBytes(UserSettings.DdSurvivalPath);
+		if (!SpawnsetBinary.TryParse(survivalBytes, out SpawnsetBinary? defaultSpawnset))
 			throw new MissingContentException("File 'dd/survival' could not be parsed.");
 
 		if (Directory.Exists(UserSettings.ModsSurvivalPath))

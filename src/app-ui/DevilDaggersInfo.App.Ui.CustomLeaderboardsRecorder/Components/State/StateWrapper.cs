@@ -6,6 +6,7 @@ using DevilDaggersInfo.App.Ui.Base.Settings;
 using DevilDaggersInfo.App.Ui.Base.StateManagement;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Actions;
 using DevilDaggersInfo.App.Ui.Base.Styling;
+using DevilDaggersInfo.App.Ui.Base.Utils;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Extensions;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Utils;
 using System.Security.Cryptography;
@@ -80,9 +81,16 @@ public class StateWrapper : AbstractComponent
 			}
 			else
 			{
-				byte[] fileContents = File.ReadAllBytes(UserSettings.ModsSurvivalPath);
-				byte[] fileHash = MD5.HashData(fileContents);
-				AsyncHandler.Run(s => StateManager.Dispatch(new SetActiveSpawnset(s?.Name)), () => FetchSpawnsetByHash.HandleAsync(fileHash));
+				try
+				{
+					byte[] fileContents = File.ReadAllBytes(UserSettings.ModsSurvivalPath);
+					byte[] fileHash = MD5.HashData(fileContents);
+					AsyncHandler.Run(s => StateManager.Dispatch(new SetActiveSpawnset(s?.Name)), () => FetchSpawnsetByHash.HandleAsync(fileHash));
+				}
+				catch (Exception ex)
+				{
+					Root.Dependencies.Log.Error(ex, "Failed to update active spawnset based on hash.");
+				}
 			}
 		}
 	}
