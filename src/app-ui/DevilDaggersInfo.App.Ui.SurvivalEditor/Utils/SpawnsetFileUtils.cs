@@ -15,8 +15,18 @@ public static class SpawnsetFileUtils
 		if (filePath == null)
 			return;
 
-		byte[] bytes = File.ReadAllBytes(filePath);
-		if (SpawnsetBinary.TryParse(bytes, out SpawnsetBinary? spawnsetBinary))
+		byte[] fileContents;
+		try
+		{
+			fileContents = File.ReadAllBytes(filePath);
+		}
+		catch (Exception ex)
+		{
+			Root.Dependencies.NativeDialogService.ReportError($"Could not open file '{filePath}'.", ex);
+			return;
+		}
+
+		if (SpawnsetBinary.TryParse(fileContents, out SpawnsetBinary? spawnsetBinary))
 		{
 			StateManager.Dispatch(new LoadSpawnset(Path.GetFileName(filePath), spawnsetBinary));
 			StateManager.Dispatch(new SetLayout(Root.Dependencies.SurvivalEditorMainLayout));
