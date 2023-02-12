@@ -34,6 +34,7 @@ public static class CustomLeaderboardConverters
 					LevelUpTime4 = successfulUploadResponse.LevelUpTime4State.Value,
 				},
 				NewSortedEntries = sortedEntries,
+				IsAscending = successfulUploadResponse.Leaderboard.Category.IsAscending(),
 			},
 			SubmissionType.NewHighscore => new()
 			{
@@ -56,11 +57,13 @@ public static class CustomLeaderboardConverters
 					TimeState = successfulUploadResponse.TimeState.ToAppApi(),
 				},
 				NewSortedEntries = sortedEntries,
+				IsAscending = successfulUploadResponse.Leaderboard.Category.IsAscending(),
 			},
 			_ => new()
 			{
 				NoHighscore = new(),
 				NewSortedEntries = sortedEntries,
+				IsAscending = successfulUploadResponse.Leaderboard.Category.IsAscending(),
 			},
 		};
 	}

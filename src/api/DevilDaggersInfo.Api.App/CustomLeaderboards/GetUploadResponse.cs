@@ -12,4 +12,7 @@ public record GetUploadResponse
 
 	// TODO: Make required when DDCL 1.8.3 is removed.
 	public List<GetCustomEntry>? NewSortedEntries { get; init; }
+
+	// TODO: Make required when DDCL 1.8.3 is removed.
+	public bool IsAscending { get; init; }
 }

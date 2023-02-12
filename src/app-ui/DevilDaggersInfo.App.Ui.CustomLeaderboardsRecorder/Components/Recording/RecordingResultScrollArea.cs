@@ -35,7 +35,7 @@ public class RecordingResultScrollArea : ScrollArea
 		else if (response.FirstScore != null)
 			ShowFirstScoreResult(response.FirstScore);
 		else if (response.Highscore != null)
-			ShowHighscoreResult(response.Highscore);
+			ShowHighscoreResult(response.Highscore, response.IsAscending);
 		else if (response.Rejection != null)
 			ShowRejectionResult(response.Rejection);
 		else
@@ -82,43 +82,10 @@ public class RecordingResultScrollArea : ScrollArea
 		}
 	}
 
-	private void ShowHighscoreResult(GetUploadResponseHighscore response)
+	private void ShowHighscoreResult(GetUploadResponseHighscore response, bool isAscending)
 	{
-		Label header = new(ContentBounds.CreateNested(0, 0, ContentBounds.Size.X, 16), "NEW HIGHSCORE!", LabelStyles.DefaultLeft) { Depth = Depth + 2 };
-		NestingContext.Add(header);
-
-		int y = 24;
-		Add("Rank", response.RankState, i => i.ToString(), i => $"{i:+0;-0;0}");
-		Add("Time", response.TimeState, d => d.ToString(StringFormats.TimeFormat), i => $"{i:+0.0000;-0.0000;0.0000}");
-		Add("Gems collected", response.GemsCollectedState, i => i.ToString(), i => $"{i:+0;-0;0}");
-		Add("Enemies killed", response.EnemiesKilledState, i => i.ToString(), i => $"{i:+0;-0;0}");
-		Add("Daggers fired", response.DaggersFiredState, i => i.ToString(), i => $"{i:+0;-0;0}");
-		Add("Daggers hit", response.DaggersHitState, i => i.ToString(), i => $"{i:+0;-0;0}");
-		Add("Enemies alive", response.EnemiesAliveState, i => i.ToString(), i => $"{i:+0;-0;0}");
-		Add("Homing stored", response.HomingStoredState, i => i.ToString(), i => $"{i:+0;-0;0}");
-		Add("Homing eaten", response.HomingEatenState, i => i.ToString(), i => $"{i:+0;-0;0}");
-		Add("Gems despawned", response.GemsDespawnedState, i => i.ToString(), i => $"{i:+0;-0;0}");
-		Add("Gems eaten", response.GemsEatenState, i => i.ToString(), i => $"{i:+0;-0;0}");
-		Add("Gems total", response.GemsTotalState, i => i.ToString(), i => $"{i:+0;-0;0}");
-		Add("Level up 2", response.LevelUpTime2State, i => i.ToString(StringFormats.TimeFormat), i => $"{i:+0.0000;-0.0000;0.0000}");
-		Add("Level up 3", response.LevelUpTime3State, i => i.ToString(StringFormats.TimeFormat), i => $"{i:+0.0000;-0.0000;0.0000}");
-		Add("Level up 4", response.LevelUpTime4State, i => i.ToString(StringFormats.TimeFormat), i => $"{i:+0.0000;-0.0000;0.0000}");
-
-		void Add<T>(string label, GetScoreState<T> scoreState, Func<T, string> formatter, Func<T, string> formatterDifference)
-			where T : struct
-		{
-			Label left = new(ContentBounds.CreateNested(0, y, ContentBounds.Size.X / 2, 16), label, LabelStyles.DefaultLeft) { Depth = Depth + 2 };
-			Label right = new(ContentBounds.CreateNested(ContentBounds.Size.X / 2, y, ContentBounds.Size.X / 2, 16), GetScoreState(scoreState, formatter, formatterDifference), LabelStyles.DefaultRight) { Depth = Depth + 2 };
-			NestingContext.Add(left);
-			NestingContext.Add(right);
-
-			y += 16;
-
-			static string GetScoreState(GetScoreState<T> scoreState, Func<T, string> formatter, Func<T, string> formatterDifference)
-			{
-				return $"{formatter(scoreState.Value)} ({formatterDifference(scoreState.ValueDifference)})";
-			}
-		}
+		RecordingResultHighscore highscore = new(ContentBounds.CreateNested(0, 0, ContentBounds.Size.X, 416), response, isAscending) { Depth = Depth + 2 };
+		NestingContext.Add(highscore);
 	}
 
 	private void ShowRejectionResult(GetUploadResponseRejection response)
