@@ -84,7 +84,7 @@ public class RecordingResultScrollArea : ScrollArea
 
 	private void ShowHighscoreResult(GetUploadResponseHighscore response, bool isAscending)
 	{
-		RecordingResultHighscore highscore = new(ContentBounds.CreateNested(0, 0, ContentBounds.Size.X, 416), response, isAscending) { Depth = Depth + 2 };
+		RecordingResultHighscore highscore = new(ContentBounds.CreateNested(0, 0, ContentBounds.Size.X, 420), response, isAscending) { Depth = Depth + 2 };
 		NestingContext.Add(highscore);
 	}
 
