@@ -29,7 +29,7 @@ public class RecordingResultHighscore : AbstractComponent
 		AddSpacing(ref y);
 		AddIcon(ref y, WarpTextures.IconEye, Color.Orange);
 		Add("Time", response.TimeState, d => d.ToString(StringFormats.TimeFormat), i => $"{i:+0.0000;-0.0000;+0.0000}", !isAscending);
-		Add("Level up 2", response.LevelUpTime2State, i => i.ToString(StringFormats.TimeFormat), i => $"{i:+0.0000;-0.0000;+0.0000}", false);
+		Add("Level up 2", response.LevelUpTime2State, i => i.ToString(StringFormats.TimeFormat), i => $"{i:+0.0000;-0.0000;+0.0000}", false); // TODO: When value is 0, show "N/A" instead of "0.0000". TODO: When value difference is the same as the previous value, show "N/A".
 		Add("Level up 3", response.LevelUpTime3State, i => i.ToString(StringFormats.TimeFormat), i => $"{i:+0.0000;-0.0000;+0.0000}", false);
 		Add("Level up 4", response.LevelUpTime4State, i => i.ToString(StringFormats.TimeFormat), i => $"{i:+0.0000;-0.0000;+0.0000}", false);
 		AddDeath(ref y);
@@ -37,14 +37,14 @@ public class RecordingResultHighscore : AbstractComponent
 		AddSpacing(ref y);
 		AddIcon(ref y, WarpTextures.IconGem, Color.Red);
 		Add("Gems collected", response.GemsCollectedState, i => i.ToString(), i => $"{i:+0;-0;+0}");
-		Add("Gems despawned", response.GemsDespawnedState, i => i.ToString(), i => $"{i:+0;-0;+0}");
-		Add("Gems eaten", response.GemsEatenState, i => i.ToString(), i => $"{i:+0;-0;+0}");
+		Add("Gems despawned", response.GemsDespawnedState, i => i.ToString(), i => $"{i:+0;-0;+0}", false);
+		Add("Gems eaten", response.GemsEatenState, i => i.ToString(), i => $"{i:+0;-0;+0}", false);
 		Add("Gems total", response.GemsTotalState, i => i.ToString(), i => $"{i:+0;-0;+0}");
 
 		AddSpacing(ref y);
 		AddIcon(ref y, WarpTextures.IconHoming, Color.White);
 		Add("Homing stored", response.HomingStoredState, i => i.ToString(), i => $"{i:+0;-0;+0}");
-		Add("Homing eaten", response.HomingEatenState, i => i.ToString(), i => $"{i:+0;-0;+0}");
+		Add("Homing eaten", response.HomingEatenState, i => i.ToString(), i => $"{i:+0;-0;+0}", false);
 
 		AddSpacing(ref y);
 		AddIcon(ref y, WarpTextures.IconCrosshair, Color.Green);
