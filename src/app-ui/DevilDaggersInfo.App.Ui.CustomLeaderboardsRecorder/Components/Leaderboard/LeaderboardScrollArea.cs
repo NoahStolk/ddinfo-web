@@ -15,13 +15,13 @@ public class LeaderboardScrollArea : ScrollArea
 		Depth = 100;
 	}
 
-	public void SetContent(GetCustomLeaderboard getCustomLeaderboard)
+	public void SetContent(List<GetCustomEntry> sortedEntries)
 	{
 		Clear();
 
-		for (int i = 0; i < getCustomLeaderboard.SortedEntries.Count; i++)
+		for (int i = 0; i < sortedEntries.Count; i++)
 		{
-			GetCustomEntry customEntry = getCustomLeaderboard.SortedEntries[i];
+			GetCustomEntry customEntry = sortedEntries[i];
 			LeaderboardEntry leaderboardEntry = new(Bounds.CreateNested(4, i * LeaderboardEntry.Height, 996, LeaderboardEntry.Height), customEntry) { Depth = 101 };
 			_leaderboardEntries.Add(leaderboardEntry);
 

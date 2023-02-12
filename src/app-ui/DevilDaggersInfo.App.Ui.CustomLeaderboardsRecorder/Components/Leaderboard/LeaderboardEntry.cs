@@ -66,9 +66,9 @@ public class LeaderboardEntry : AbstractComponent
 		_submitDate = _getCustomEntry.SubmitDate.ToString(StringFormats.DateTimeFormat);
 
 		TooltipIconButton watchInGame = new(Bounds.CreateNested(160, 0, 16, 16), WatchInGame, ButtonStyles.Borderless, WarpTextures.IconEye, "Watch in-game", Color.HalfTransparentWhite, Color.White) { IsDisabled = !_getCustomEntry.HasReplay, Depth = Depth + 100 };
-		NestingContext.Add(watchInGame);
-
 		TooltipIconButton watchInReplayViewer = new(Bounds.CreateNested(176, 0, 16, 16), WatchInReplayViewer, ButtonStyles.Borderless, WarpTextures.IconEye, "Watch in replay viewer", Color.HalfTransparentWhite, Color.White) { IsDisabled = !_getCustomEntry.HasReplay, Depth = Depth + 100 };
+
+		NestingContext.Add(watchInGame);
 		NestingContext.Add(watchInReplayViewer);
 	}
 

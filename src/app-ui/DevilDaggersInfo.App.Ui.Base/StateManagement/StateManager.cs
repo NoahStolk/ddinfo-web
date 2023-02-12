@@ -87,7 +87,7 @@ public static class StateManager
 				MarkerState = stateReducer.MarkerState;
 				RecordingState = stateReducer.RecordingState;
 				ReplaySceneState = stateReducer.ReplaySceneState;
-				UploadSuccessState = stateReducer.UploadSuccessState;
+				UploadSuccessState = stateReducer.UploadResponseState;
 				ArenaEditorState = stateReducer.ArenaEditorState;
 				SpawnEditorState = stateReducer.SpawnEditorState;
 				SpawnsetHistoryState = stateReducer.SpawnsetHistoryState;

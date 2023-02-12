@@ -11,11 +11,13 @@ public record LeaderboardListState(
 	int PageIndex,
 	int PageSize,
 	bool IsLoading,
-	GetCustomLeaderboardForOverview? SelectedCustomLeaderboard,
+	LeaderboardListState.CustomLeaderboard? SelectedCustomLeaderboard,
 	Page<GetCustomLeaderboardForOverview>? Page)
 {
 	public static LeaderboardListState GetDefault()
 	{
 		return new(0, 0, CustomLeaderboardCategory.Survival, 0, 20, false, null, null);
 	}
+
+	public record CustomLeaderboard(int Id, int SpawnsetId, string SpawnsetName);
 }

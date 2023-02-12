@@ -230,24 +230,15 @@ public static class RecordingLogic
 		AsyncHandler.Run(OnSubmit, () => UploadSubmission.HandleAsync(uploadRequest));
 	}
 
-	private static void OnSubmit(UploadSubmission.ResultWrapper? result)
+	private static void OnSubmit(GetUploadResponse? response)
 	{
-		if (result == null)
+		if (response == null)
 		{
-			// This does not include bad requests. Only connectivity errors and similar will reach this point.
 			Root.Dependencies.NativeDialogService.ReportError("Failed to upload run.");
 			return;
 		}
 
-		if (result.Result != null)
-		{
-			StateManager.Dispatch(new SetSuccessfulUpload(result.Result));
-			StateManager.Dispatch(new SetLastSubmission(DateTime.Now));
-		}
-		else if (result.Error != null)
-		{
-			StateManager.Dispatch(new SetFailedUpload(result.Error));
-		}
+		StateManager.Dispatch(new SetSuccessfulUpload(response));
 	}
 
 	private static AddGameData GetGameDataForUpload(MainBlock block, byte[] statsBuffer)

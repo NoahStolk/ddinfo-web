@@ -1,4 +1,3 @@
-using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Web.Server.Domain.Extensions;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
@@ -8,26 +7,63 @@ namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.App;
 
 public static class CustomLeaderboardConverters
 {
-	public static AppApi.GetUploadSuccess ToAppApi(this UploadResponse uploadResponse) => new()
+	public static AppApi.GetUploadResponse ToAppApi(this SuccessfulUploadResponse successfulUploadResponse)
 	{
-		DaggersFiredState = uploadResponse.DaggersFiredState.ToAppApi(),
-		DaggersHitState = uploadResponse.DaggersHitState.ToAppApi(),
-		EnemiesAliveState = uploadResponse.EnemiesAliveState.ToAppApi(),
-		EnemiesKilledState = uploadResponse.EnemiesKilledState.ToAppApi(),
-		GemsCollectedState = uploadResponse.GemsCollectedState.ToAppApi(),
-		GemsDespawnedState = uploadResponse.GemsDespawnedState.ToAppApi(),
-		GemsEatenState = uploadResponse.GemsEatenState.ToAppApi(),
-		GemsTotalState = uploadResponse.GemsTotalState.ToAppApi(),
-		HomingEatenState = uploadResponse.HomingEatenState.ToAppApi(),
-		HomingStoredState = uploadResponse.HomingStoredState.ToAppApi(),
-		LevelUpTime2State = uploadResponse.LevelUpTime2State.ToAppApi(),
-		LevelUpTime3State = uploadResponse.LevelUpTime3State.ToAppApi(),
-		LevelUpTime4State = uploadResponse.LevelUpTime4State.ToAppApi(),
-		Message = uploadResponse.Message,
-		RankState = uploadResponse.RankState.ToAppApi(),
-		SubmissionType = uploadResponse.SubmissionType.ToAppApi(),
-		TimeState = uploadResponse.TimeState.ToAppApi(),
-	};
+		List<AppApi.GetCustomEntry> sortedEntries = successfulUploadResponse.SortedEntries.ConvertAll(ce => ce.ToAppApi());
+
+		return successfulUploadResponse.SubmissionType switch
+		{
+			SubmissionType.FirstScore => new()
+			{
+				FirstScore = new()
+				{
+					Rank = successfulUploadResponse.RankState.Value,
+					Time = successfulUploadResponse.TimeState.Value,
+					DaggersFired = successfulUploadResponse.DaggersFiredState.Value,
+					DaggersHit = successfulUploadResponse.DaggersHitState.Value,
+					EnemiesAlive = successfulUploadResponse.EnemiesAliveState.Value,
+					EnemiesKilled = successfulUploadResponse.EnemiesKilledState.Value,
+					GemsCollected = successfulUploadResponse.GemsCollectedState.Value,
+					GemsDespawned = successfulUploadResponse.GemsDespawnedState.Value,
+					GemsEaten = successfulUploadResponse.GemsEatenState.Value,
+					GemsTotal = successfulUploadResponse.GemsTotalState.Value,
+					HomingEaten = successfulUploadResponse.HomingEatenState.Value,
+					HomingStored = successfulUploadResponse.HomingStoredState.Value,
+					LevelUpTime2 = successfulUploadResponse.LevelUpTime2State.Value,
+					LevelUpTime3 = successfulUploadResponse.LevelUpTime3State.Value,
+					LevelUpTime4 = successfulUploadResponse.LevelUpTime4State.Value,
+				},
+				NewSortedEntries = sortedEntries,
+			},
+			SubmissionType.NewHighscore => new()
+			{
+				Highscore = new()
+				{
+					DaggersFiredState = successfulUploadResponse.DaggersFiredState.ToAppApi(),
+					DaggersHitState = successfulUploadResponse.DaggersHitState.ToAppApi(),
+					EnemiesAliveState = successfulUploadResponse.EnemiesAliveState.ToAppApi(),
+					EnemiesKilledState = successfulUploadResponse.EnemiesKilledState.ToAppApi(),
+					GemsCollectedState = successfulUploadResponse.GemsCollectedState.ToAppApi(),
+					GemsDespawnedState = successfulUploadResponse.GemsDespawnedState.ToAppApi(),
+					GemsEatenState = successfulUploadResponse.GemsEatenState.ToAppApi(),
+					GemsTotalState = successfulUploadResponse.GemsTotalState.ToAppApi(),
+					HomingEatenState = successfulUploadResponse.HomingEatenState.ToAppApi(),
+					HomingStoredState = successfulUploadResponse.HomingStoredState.ToAppApi(),
+					LevelUpTime2State = successfulUploadResponse.LevelUpTime2State.ToAppApi(),
+					LevelUpTime3State = successfulUploadResponse.LevelUpTime3State.ToAppApi(),
+					LevelUpTime4State = successfulUploadResponse.LevelUpTime4State.ToAppApi(),
+					RankState = successfulUploadResponse.RankState.ToAppApi(),
+					TimeState = successfulUploadResponse.TimeState.ToAppApi(),
+				},
+				NewSortedEntries = sortedEntries,
+			},
+			_ => new()
+			{
+				NoHighscore = new(),
+				NewSortedEntries = sortedEntries,
+			},
+		};
+	}
 
 	public static AppApi.GetCustomLeaderboard ToAppApi(this SortedCustomLeaderboard sortedCustomLeaderboard) => new()
 	{
@@ -87,14 +123,6 @@ public static class CustomLeaderboardConverters
 	{
 		Dagger = customLeaderboardOverviewWorldRecord.Dagger,
 		Time = customLeaderboardOverviewWorldRecord.Time.ToSecondsTime(),
-	};
-
-	private static AppApi.SubmissionType ToAppApi(this SubmissionType submissionType) => submissionType switch
-	{
-		SubmissionType.NoHighscore => AppApi.SubmissionType.NoHighscore,
-		SubmissionType.NewHighscore => AppApi.SubmissionType.NewHighscore,
-		SubmissionType.FirstScore => AppApi.SubmissionType.FirstScore,
-		_ => throw new InvalidEnumConversionException(submissionType),
 	};
 
 	private static AppApi.GetScoreState<T> ToAppApi<T>(this UploadResponseScoreState<T> scoreState)

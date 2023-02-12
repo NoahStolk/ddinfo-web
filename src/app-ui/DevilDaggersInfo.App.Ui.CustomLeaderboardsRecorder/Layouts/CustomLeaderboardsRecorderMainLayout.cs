@@ -4,7 +4,6 @@ using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.StateManagement;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.Base.Actions;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Actions;
-using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Data;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.Leaderboard;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.LeaderboardList;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.Recording;
@@ -20,7 +19,6 @@ public class CustomLeaderboardsRecorderMainLayout : Layout, IExtendedLayout
 	private readonly RecordingResultScrollArea _recordingResultScrollArea;
 
 	private int _recordingInterval;
-	private bool _showRecordingResult;
 
 	public CustomLeaderboardsRecorderMainLayout()
 	{
@@ -43,22 +41,6 @@ public class CustomLeaderboardsRecorderMainLayout : Layout, IExtendedLayout
 		NestingContext.Add(leaderboardWrapper);
 
 		StateManager.Subscribe<SetLayout>(Initialize);
-		StateManager.Subscribe<SetSuccessfulUpload>(ShowResult);
-		StateManager.Subscribe<SetFailedUpload>(ShowResult);
-		StateManager.Subscribe<SetRecordingState>(Continue);
-
-		void ShowResult()
-		{
-			_showRecordingResult = true;
-
-			// TODO: Fetch and display custom leaderboard.
-		}
-
-		void Continue()
-		{
-			if (StateManager.RecordingState.RecordingStateType == RecordingStateType.Recording)
-				_showRecordingResult = false;
-		}
 	}
 
 	private void Initialize()
@@ -84,11 +66,11 @@ public class CustomLeaderboardsRecorderMainLayout : Layout, IExtendedLayout
 		_stateWrapper.SetState();
 
 		bool gameMemoryInitialized = Root.Dependencies.GameMemoryService.IsInitialized;
-		_recordingScrollArea.IsActive = gameMemoryInitialized && !_showRecordingResult && (GameStatus)Root.Dependencies.GameMemoryService.MainBlock.Status is not (GameStatus.Title or GameStatus.Menu or GameStatus.Lobby);
+		_recordingScrollArea.IsActive = gameMemoryInitialized && !StateManager.RecordingState.ShowUploadResponse && (GameStatus)Root.Dependencies.GameMemoryService.MainBlock.Status is not (GameStatus.Title or GameStatus.Menu or GameStatus.Lobby);
 		if (_recordingScrollArea.IsActive)
 			_recordingScrollArea.SetState();
 
-		_recordingResultScrollArea.IsActive = gameMemoryInitialized && _showRecordingResult;
+		_recordingResultScrollArea.IsActive = gameMemoryInitialized && StateManager.RecordingState.ShowUploadResponse;
 
 		RecordingLogic.Handle();
 	}

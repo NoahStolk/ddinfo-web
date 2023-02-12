@@ -26,7 +26,7 @@ public record StateReducer
 	public MarkerState MarkerState { get; set; } = StateManager.MarkerState;
 	public RecordingState RecordingState { get; set; } = StateManager.RecordingState;
 	public ReplaySceneState ReplaySceneState { get; set; } = StateManager.ReplaySceneState;
-	public UploadSuccessState UploadSuccessState { get; set; } = StateManager.UploadSuccessState;
+	public UploadSuccessState UploadResponseState { get; set; } = StateManager.UploadSuccessState;
 	public ArenaEditorState ArenaEditorState { get; set; } = StateManager.ArenaEditorState;
 	public SpawnEditorState SpawnEditorState { get; set; } = StateManager.SpawnEditorState;
 	public SpawnsetHistoryState SpawnsetHistoryState { get; set; } = StateManager.SpawnsetHistoryState;
