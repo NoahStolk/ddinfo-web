@@ -35,11 +35,19 @@
     <PackageReference Include="NoahStolk.Warp.NET" />
     <PackageReference Include="NoahStolk.Warp.NET.SourceGen" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
   </ItemGroup>
-  
+
+  <!-- In order to use Warp.NET locally, uncomment the following ItemGroup and comment out the NoahStolk.Warp.NET PackageReference above. Using the SourceGen project locally current does not work. -->
   <!--
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Warp.NET\src\common\Warp.NET.Common.Content\Warp.NET.Common.Content.csproj" />
+    <ProjectReference Include="..\..\..\..\Warp.NET\src\common\Warp.NET.Common.Maths\Warp.NET.Common.Maths.csproj" />
+    <ProjectReference Include="..\..\..\..\Warp.NET\src\common\Warp.NET.Common.Parsers.GameDefinition\Warp.NET.Common.Parsers.GameDefinition.csproj" />
+    <ProjectReference Include="..\..\..\..\Warp.NET\src\common\Warp.NET.Common.Parsers.Map\Warp.NET.Common.Parsers.Map.csproj" />
+    <ProjectReference Include="..\..\..\..\Warp.NET\src\common\Warp.NET.Common.Parsers.Model\Warp.NET.Common.Parsers.Model.csproj" />
+    <ProjectReference Include="..\..\..\..\Warp.NET\src\common\Warp.NET.Common.Parsers.Sound\Warp.NET.Common.Parsers.Sound.csproj" />
+    <ProjectReference Include="..\..\..\..\Warp.NET\src\common\Warp.NET.Common.Parsers.Texture\Warp.NET.Common.Parsers.Texture.csproj" />
+    <ProjectReference Include="..\..\..\..\Warp.NET\src\common\Warp.NET.Common.Parsing\Warp.NET.Common.Parsing.csproj" />
     <ProjectReference Include="..\..\..\..\Warp.NET\src\lib\Warp.NET\Warp.NET.csproj" />
-    <ProjectReference Include="..\..\..\..\Warp.NET\src\lib\Warp.NET.SourceGen\Warp.NET.SourceGen.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
   </ItemGroup>
   -->
 
