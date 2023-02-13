@@ -1,5 +1,20 @@
 [
 	{
+		"VersionNumber": "0.2.2.0",
+		"Date": "2023-02-13T00:00:00",
+		"Changes": [
+			{
+				"Description": "Highscore difference is now displayed."
+			},
+			{
+				"Description": "Fixed showing message box when playing an unknown spawnset."
+			},
+			{
+				"Description": "The (updated, in case of a highscore) leaderboard is now displayed after completing a run."
+			}
+		]
+	},
+	{
 		"VersionNumber": "0.2.1.0",
 		"Date": "2023-02-12T00:00:00",
 		"Changes": [
