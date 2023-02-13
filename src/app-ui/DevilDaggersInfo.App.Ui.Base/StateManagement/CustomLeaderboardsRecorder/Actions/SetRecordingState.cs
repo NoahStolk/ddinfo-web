@@ -10,5 +10,13 @@ public record SetRecordingState(RecordingStateType RecordingStateType) : IAction
 		{
 			RecordingStateType = RecordingStateType,
 		};
+
+		if (RecordingStateType == RecordingStateType.Recording)
+		{
+			stateReducer.RecordingState = stateReducer.RecordingState with
+			{
+				ShowUploadResponse = false,
+			};
+		}
 	}
 }

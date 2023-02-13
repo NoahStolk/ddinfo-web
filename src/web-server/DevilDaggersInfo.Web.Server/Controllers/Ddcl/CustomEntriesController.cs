@@ -32,10 +32,14 @@ public class CustomEntriesController : ControllerBase
 	{
 		try
 		{
-			UploadResponse response = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest.ToDomain());
+			SuccessfulUploadResponse response = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest.ToDomain());
 			return response.ToDdclApi();
 		}
-		catch (Exception ex) when (ex is not CustomEntryValidationException)
+		catch (CustomEntryValidationException ex)
+		{
+			return BadRequest(ex.Message);
+		}
+		catch (Exception ex)
 		{
 			ex.Data[nameof(uploadRequest.ClientVersion)] = uploadRequest.ClientVersion;
 			ex.Data[nameof(uploadRequest.OperatingSystem)] = uploadRequest.OperatingSystem;

@@ -194,53 +194,53 @@ public class CustomEntryProcessorTests
 	public async Task TestHomingCount(int expected, int[] homingStored)
 	{
 		UploadRequest uploadRequest = CreateUploadRequest(1, 100, 4, TestConstants.DdclVersion, new() { HomingStored = homingStored });
-		UploadResponse uploadSuccess = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
-		Assert.AreEqual(expected, uploadSuccess.HomingStoredState.Value);
+		SuccessfulUploadResponse response = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
+		Assert.AreEqual(expected, response.HomingStoredState.Value);
 	}
 
 	[TestMethod]
 	public async Task ProcessUploadRequest_ExistingPlayer_ExistingEntry_NoHighscore()
 	{
 		UploadRequest uploadRequest = CreateUploadRequest(10, 1, 3, TestConstants.DdclVersion);
-		UploadResponse uploadSuccess = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
+		SuccessfulUploadResponse response = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
 
 		_dbContext.Verify(db => db.SaveChangesAsync(default), Times.AtLeastOnce);
-		Assert.AreEqual(1, uploadSuccess.SortedEntries.Count);
-		Assert.IsTrue(uploadSuccess.Message.StartsWith("No new highscore"));
+		Assert.AreEqual(1, response.SortedEntries.Count);
+		Assert.AreEqual(SubmissionType.NoHighscore, response.SubmissionType);
 	}
 
 	[TestMethod]
 	public async Task ProcessUploadRequest_ExistingPlayer_ExistingEntry_NewHighscore()
 	{
 		UploadRequest uploadRequest = CreateUploadRequest(20, 1, 4, TestConstants.DdclVersion);
-		UploadResponse uploadSuccess = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
+		SuccessfulUploadResponse response = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
 
 		_dbContext.Verify(db => db.SaveChangesAsync(default), Times.AtLeastOnce);
-		Assert.AreEqual(1, uploadSuccess.SortedEntries.Count);
-		Assert.IsTrue(uploadSuccess.Message.StartsWith("NEW HIGHSCORE"));
+		Assert.AreEqual(1, response.SortedEntries.Count);
+		Assert.AreEqual(SubmissionType.NewHighscore, response.SubmissionType);
 	}
 
 	[TestMethod]
 	public async Task ProcessUploadRequest_ExistingPlayer_NewEntry()
 	{
 		UploadRequest uploadRequest = CreateUploadRequest(20, 2, 5, TestConstants.DdclVersion);
-		UploadResponse uploadSuccess = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
+		SuccessfulUploadResponse response = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
 
 		_dbContext.Verify(db => db.CustomEntries.AddAsync(It.Is<CustomEntryEntity>(ce => ce.PlayerId == 2 && ce.Time == 200000), default), Times.Once);
 		_dbContext.Verify(db => db.SaveChangesAsync(default), Times.AtLeastOnce);
-		Assert.IsTrue(uploadSuccess.Message.StartsWith("Welcome"));
+		Assert.AreEqual(SubmissionType.FirstScore, response.SubmissionType);
 	}
 
 	[TestMethod]
 	public async Task ProcessUploadRequest_NewPlayer()
 	{
 		UploadRequest uploadRequest = CreateUploadRequest(30, 3, 3, TestConstants.DdclVersion);
-		UploadResponse uploadSuccess = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
+		SuccessfulUploadResponse response = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
 
 		_dbContext.Verify(db => db.SaveChangesAsync(default), Times.AtLeastOnce);
 		_dbContext.Verify(db => db.Players.AddAsync(It.Is<PlayerEntity>(p => p.Id == 3 && p.PlayerName == "TestPlayer3"), default), Times.Once);
 		_dbContext.Verify(db => db.CustomEntries.AddAsync(It.Is<CustomEntryEntity>(ce => ce.PlayerId == 3 && ce.Time == 300000), default), Times.Once);
-		Assert.IsTrue(uploadSuccess.Message.StartsWith("Welcome"));
+		Assert.AreEqual(SubmissionType.FirstScore, response.SubmissionType);
 	}
 
 	[DataTestMethod]

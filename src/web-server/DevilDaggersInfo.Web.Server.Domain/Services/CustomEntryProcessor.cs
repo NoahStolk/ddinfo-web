@@ -1,6 +1,7 @@
 using DevilDaggersInfo.Common;
 using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Common.Utils;
+using DevilDaggersInfo.Core.CriteriaExpression;
 using DevilDaggersInfo.Core.Encryption;
 using DevilDaggersInfo.Core.Replay;
 using DevilDaggersInfo.Core.Versioning;
@@ -8,7 +9,6 @@ using DevilDaggersInfo.Types.Core.CustomLeaderboards;
 using DevilDaggersInfo.Types.Core.CustomLeaderboards.Extensions;
 using DevilDaggersInfo.Types.Core.Spawnsets;
 using DevilDaggersInfo.Types.Web;
-using DevilDaggersInfo.Core.CriteriaExpression;
 using DevilDaggersInfo.Web.Server.Domain.Commands.CustomEntries;
 using DevilDaggersInfo.Web.Server.Domain.Configuration;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
@@ -72,7 +72,7 @@ public class CustomEntryProcessor
 			LogAndThrowValidationException(uploadRequest, $"Invalid submission for {uploadRequest.Validation}.\n`Expected: {expected}`\n`Actual:   {actual}`", null, "rotating_light");
 	}
 
-	public async Task<UploadResponse> ProcessUploadRequestAsync(UploadRequest uploadRequest)
+	public async Task<SuccessfulUploadResponse> ProcessUploadRequestAsync(UploadRequest uploadRequest)
 	{
 		// Check if the submission actually came from an allowed program.
 		if (uploadRequest.ValidationVersion == 2)
@@ -294,7 +294,7 @@ public class CustomEntryProcessor
 		};
 	}
 
-	private async Task<UploadResponse> ProcessNewScoreAsync(UploadRequest uploadRequest, CustomLeaderboardEntity customLeaderboard, string spawnsetName)
+	private async Task<SuccessfulUploadResponse> ProcessNewScoreAsync(UploadRequest uploadRequest, CustomLeaderboardEntity customLeaderboard, string spawnsetName)
 	{
 		// Add new custom entry to this leaderboard.
 		CustomEntryEntity newCustomEntry = new()
@@ -371,7 +371,7 @@ public class CustomEntryProcessor
 		};
 	}
 
-	private async Task<UploadResponse> ProcessNoHighscoreAsync(UploadRequest uploadRequest, CustomLeaderboardEntity customLeaderboard, string spawnsetName)
+	private async Task<SuccessfulUploadResponse> ProcessNoHighscoreAsync(UploadRequest uploadRequest, CustomLeaderboardEntity customLeaderboard, string spawnsetName)
 	{
 		if (!uploadRequest.IsReplay)
 		{
@@ -394,7 +394,7 @@ public class CustomEntryProcessor
 		};
 	}
 
-	private async Task<UploadResponse> ProcessHighscoreAsync(UploadRequest uploadRequest, CustomLeaderboardEntity customLeaderboard, string spawnsetName, CustomEntryEntity customEntry)
+	private async Task<SuccessfulUploadResponse> ProcessHighscoreAsync(UploadRequest uploadRequest, CustomLeaderboardEntity customLeaderboard, string spawnsetName, CustomEntryEntity customEntry)
 	{
 		// Store old stats.
 		List<CustomEntryEntity> entries = await GetOrderedEntries(customLeaderboard.Id, customLeaderboard.Category);

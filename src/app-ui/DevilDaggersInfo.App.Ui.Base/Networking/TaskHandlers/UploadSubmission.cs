@@ -1,24 +1,18 @@
 using DevilDaggersInfo.Api.App.CustomLeaderboards;
+using System.Net;
 using System.Net.Http.Json;
 
 namespace DevilDaggersInfo.App.Ui.Base.Networking.TaskHandlers;
 
 public static class UploadSubmission
 {
-	public static async Task<ResultWrapper> HandleAsync(AddUploadRequest addUploadRequest)
+	public static async Task<GetUploadResponse> HandleAsync(AddUploadRequest addUploadRequest)
 	{
-		HttpResponseMessage hrm = await AsyncHandler.Client.SubmitScore(addUploadRequest);
+		HttpResponseMessage response = await AsyncHandler.Client.SubmitScore(addUploadRequest);
 
-		if (!hrm.IsSuccessStatusCode)
-			return new() { Error = await hrm.Content.ReadAsStringAsync() };
+		if (response.StatusCode != HttpStatusCode.OK)
+			throw new HttpRequestException(await response.Content.ReadAsStringAsync(), null, response.StatusCode);
 
-		return new() { Result = await hrm.Content.ReadFromJsonAsync<GetUploadSuccess>() };
-	}
-
-	public class ResultWrapper
-	{
-		public GetUploadSuccess? Result { get; init; }
-
-		public string? Error { get; init; }
+		return await response.Content.ReadFromJsonAsync<GetUploadResponse>() ?? throw new InvalidDataException($"Deserialization error for JSON '{response.Content}'.");
 	}
 }

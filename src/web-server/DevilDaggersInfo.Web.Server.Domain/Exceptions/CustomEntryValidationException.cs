@@ -1,10 +1,10 @@
-using System.Net;
 using System.Runtime.Serialization;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Exceptions;
 
+// TODO: Remove when DDCL 1.8.3 is removed.
 [Serializable]
-public class CustomEntryValidationException : StatusCodeException
+public class CustomEntryValidationException : Exception
 {
 	public CustomEntryValidationException()
 	{
@@ -24,6 +24,4 @@ public class CustomEntryValidationException : StatusCodeException
 		: base(info, context)
 	{
 	}
-
-	public override HttpStatusCode StatusCode => HttpStatusCode.BadRequest;
 }

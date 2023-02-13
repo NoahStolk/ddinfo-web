@@ -35,6 +35,7 @@ public class LeaderboardWrapper : AbstractComponent
 		NestingContext.Add(_leaderboardScrollArea);
 
 		StateManager.Subscribe<SetSelectedCustomLeaderboard>(SetSelectedCustomLeaderboard);
+		StateManager.Subscribe<SetSuccessfulUpload>(SetCustomLeaderboardFromUploadResponse);
 
 		void DownloadAndInstallSpawnset()
 		{
@@ -75,9 +76,18 @@ public class LeaderboardWrapper : AbstractComponent
 			}
 			else
 			{
-				_leaderboardScrollArea.SetContent(getCustomLeaderboard);
+				_leaderboardScrollArea.SetContent(getCustomLeaderboard.SortedEntries);
 			}
 		}
+	}
+
+	private void SetCustomLeaderboardFromUploadResponse()
+	{
+		if (StateManager.UploadResponseState.UploadResponse?.NewSortedEntries == null)
+			return;
+
+		_playButton.IsDisabled = false;
+		_leaderboardScrollArea.SetContent(StateManager.UploadResponseState.UploadResponse.NewSortedEntries);
 	}
 
 	public override void Render(Vector2i<int> scrollOffset)

@@ -8,7 +8,7 @@ public record SetSelectedCustomLeaderboard(GetCustomLeaderboardForOverview Selec
 	{
 		stateReducer.LeaderboardListState = stateReducer.LeaderboardListState with
 		{
-			SelectedCustomLeaderboard = SelectedCustomLeaderboard,
+			SelectedCustomLeaderboard = new(SelectedCustomLeaderboard.Id, SelectedCustomLeaderboard.SpawnsetId, SelectedCustomLeaderboard.SpawnsetName),
 		};
 	}
 }

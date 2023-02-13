@@ -1,11 +1,7 @@
 namespace DevilDaggersInfo.Api.App.CustomLeaderboards;
 
-public record GetUploadSuccess
+public record GetUploadResponseHighscore
 {
-	public required string Message { get; init; }
-
-	public required SubmissionType SubmissionType { get; init; }
-
 	public required GetScoreState<int> RankState { get; init; }
 
 	public required GetScoreState<double> TimeState { get; init; }
