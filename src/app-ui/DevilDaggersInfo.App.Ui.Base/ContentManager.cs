@@ -1,8 +1,8 @@
-using DevilDaggersInfo.App.Core.AssetInterop;
 using DevilDaggersInfo.App.Ui.Base.Exceptions;
 using DevilDaggersInfo.App.Ui.Base.Settings;
 using DevilDaggersInfo.App.Ui.Base.Utils;
 using DevilDaggersInfo.Core.Mod;
+using DevilDaggersInfo.Core.Mod.Extensions;
 using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Types.Core.Assets;
 using Warp.NET.Common.Parsers.Sound;
@@ -98,7 +98,7 @@ public static class ContentManager
 		if (!ddBinary.AssetMap.TryGetValue(new(AssetType.Mesh, meshName), out AssetData? meshData))
 			throw new MissingContentException($"Required mesh '{meshName}' from 'res/dd' was not found.");
 
-		return MeshConverter.ToWarpMesh(meshData.Buffer);
+		return ToWarpMesh(meshData.Buffer);
 	}
 
 	private static Texture GetTexture(ModBinary ddBinary, string textureName)
@@ -106,7 +106,7 @@ public static class ContentManager
 		if (!ddBinary.AssetMap.TryGetValue(new(AssetType.Texture, textureName), out AssetData? textureData))
 			throw new MissingContentException($"Required texture '{textureName}' from 'res/dd' was not found.");
 
-		return TextureConverter.ToWarpTexture(textureData.Buffer);
+		return ToWarpTexture(textureData.Buffer);
 	}
 
 	private static Sound GetSound(ModBinary audioBinary, string soundName)
@@ -116,5 +116,56 @@ public static class ContentManager
 
 		SoundData waveData = WaveParser.Parse(audioData.Buffer);
 		return new(waveData.Channels, waveData.SampleRate, waveData.BitsPerSample, waveData.Data.Length, waveData.Data);
+	}
+
+	private static Mesh ToWarpMesh(byte[] ddMeshBuffer)
+	{
+		using MemoryStream ms = new(ddMeshBuffer);
+		using BinaryReader br = new(ms);
+
+		int indexCount = br.ReadInt32();
+		int vertexCount = br.ReadInt32();
+		_ = br.ReadUInt16();
+
+		DevilDaggersInfo.Core.Mod.Structs.Vertex[] ddVertices = new DevilDaggersInfo.Core.Mod.Structs.Vertex[vertexCount];
+		for (int i = 0; i < ddVertices.Length; i++)
+			ddVertices[i] = br.ReadVertex();
+
+		uint[] indices = new uint[indexCount];
+		for (int i = 0; i < indices.Length; i++)
+			indices[i] = br.ReadUInt32();
+
+		Vertex[] warpVertices = new Vertex[vertexCount];
+		for (int i = 0; i < ddVertices.Length; i++)
+		{
+			DevilDaggersInfo.Core.Mod.Structs.Vertex ddVertex = ddVertices[i];
+			warpVertices[i] = new(ddVertex.Position, ddVertex.TexCoord, ddVertex.Normal);
+		}
+
+		return new(warpVertices, indices);
+	}
+
+	private static Texture ToWarpTexture(byte[] ddTextureBuffer)
+	{
+		const ushort expectedHeader = 16401;
+		const int headerSize = 11;
+		using MemoryStream ms = new(ddTextureBuffer);
+		using BinaryReader br = new(ms);
+		ushort header = br.ReadUInt16();
+		if (header != expectedHeader)
+			throw new($"Invalid texture header. Should be {expectedHeader} but got {header}.");
+
+		int width = br.ReadInt32();
+		int height = br.ReadInt32();
+		if (width < 0 || height < 0)
+			throw new($"Texture dimensions cannot be negative ({width}x{height}).");
+
+		_ = br.ReadByte(); // Mipmap count
+
+		int minimumSize = width * height * 4 + headerSize;
+		if (ddTextureBuffer.Length < minimumSize)
+			throw new($"Invalid texture. Not enough pixel data for complete texture ({ddTextureBuffer.Length:N0} / {minimumSize:N0}).");
+
+		return new(width, height, br.ReadBytes(width * height * 4));
 	}
 }

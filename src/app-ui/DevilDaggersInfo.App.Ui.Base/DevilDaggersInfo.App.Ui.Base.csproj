@@ -18,7 +18,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\api\DevilDaggersInfo.Api.App\DevilDaggersInfo.Api.App.csproj" />
-    <ProjectReference Include="..\..\app-core\DevilDaggersInfo.App.Core.AssetInterop\DevilDaggersInfo.App.Core.AssetInterop.csproj" />
     <ProjectReference Include="..\..\app-core\DevilDaggersInfo.App.Core.GameMemory\DevilDaggersInfo.App.Core.GameMemory.csproj" />
     <ProjectReference Include="..\..\common\DevilDaggersInfo.Common\DevilDaggersInfo.Common.csproj" />
     <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Mod\DevilDaggersInfo.Core.Mod.csproj" />
@@ -31,8 +30,6 @@
   <ItemGroup>
     <PackageReference Include="NoahStolk.Warp.NET" />
     <PackageReference Include="NoahStolk.Warp.NET.SourceGen" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-    <!--<ProjectReference Include="..\..\..\..\Warp.NET\src\lib\Warp.NET\Warp.NET.csproj" />-->
-    <!--<ProjectReference Include="..\..\..\..\Warp.NET\src\lib\Warp.NET.SourceGen\Warp.NET.SourceGen.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />-->
     <PackageReference Include="Serilog.Sinks.File" />
   </ItemGroup>
 
