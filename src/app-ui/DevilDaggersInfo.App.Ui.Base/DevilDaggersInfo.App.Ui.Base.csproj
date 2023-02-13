@@ -28,10 +28,20 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="NoahStolk.Warp.NET" />
-    <PackageReference Include="NoahStolk.Warp.NET.SourceGen" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     <PackageReference Include="Serilog.Sinks.File" />
   </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NoahStolk.Warp.NET" />
+    <PackageReference Include="NoahStolk.Warp.NET.SourceGen" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+  </ItemGroup>
+  
+  <!--
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Warp.NET\src\lib\Warp.NET\Warp.NET.csproj" />
+    <ProjectReference Include="..\..\..\..\Warp.NET\src\lib\Warp.NET.SourceGen\Warp.NET.SourceGen.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+  </ItemGroup>
+  -->
 
   <ItemGroup>
     <AdditionalFiles Include="Content\Content" />

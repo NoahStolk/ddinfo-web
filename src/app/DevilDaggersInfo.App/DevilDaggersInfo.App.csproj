@@ -41,5 +41,11 @@
   <ItemGroup>
     <PackageReference Include="NoahStolk.Warp.NET.SourceGen" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
   </ItemGroup>
+  
+  <!--
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Warp.NET\src\lib\Warp.NET.SourceGen\Warp.NET.SourceGen.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+  </ItemGroup>
+  -->
 
 </Project>
