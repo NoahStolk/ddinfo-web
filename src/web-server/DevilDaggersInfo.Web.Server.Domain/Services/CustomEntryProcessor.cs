@@ -1,6 +1,7 @@
 using DevilDaggersInfo.Common;
 using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Common.Utils;
+using DevilDaggersInfo.Core.CriteriaExpression;
 using DevilDaggersInfo.Core.Encryption;
 using DevilDaggersInfo.Core.Replay;
 using DevilDaggersInfo.Core.Versioning;
@@ -8,7 +9,6 @@ using DevilDaggersInfo.Types.Core.CustomLeaderboards;
 using DevilDaggersInfo.Types.Core.CustomLeaderboards.Extensions;
 using DevilDaggersInfo.Types.Core.Spawnsets;
 using DevilDaggersInfo.Types.Web;
-using DevilDaggersInfo.Core.CriteriaExpression;
 using DevilDaggersInfo.Web.Server.Domain.Commands.CustomEntries;
 using DevilDaggersInfo.Web.Server.Domain.Configuration;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
