@@ -39,7 +39,7 @@ public class CustomEntriesController : ControllerBase
 		{
 			return BadRequest(ex.Message);
 		}
-		catch (Exception ex) when (ex is not CustomEntryValidationException)
+		catch (Exception ex)
 		{
 			ex.Data[nameof(uploadRequest.ClientVersion)] = uploadRequest.ClientVersion;
 			ex.Data[nameof(uploadRequest.OperatingSystem)] = uploadRequest.OperatingSystem;
