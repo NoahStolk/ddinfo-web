@@ -83,11 +83,11 @@ public class LeaderboardWrapper : AbstractComponent
 
 	private void SetCustomLeaderboardFromUploadResponse()
 	{
-		if (StateManager.UploadSuccessState.UploadResponse?.NewSortedEntries == null)
+		if (StateManager.UploadResponseState.UploadResponse?.NewSortedEntries == null)
 			return;
 
 		_playButton.IsDisabled = false;
-		_leaderboardScrollArea.SetContent(StateManager.UploadSuccessState.UploadResponse.NewSortedEntries);
+		_leaderboardScrollArea.SetContent(StateManager.UploadResponseState.UploadResponse.NewSortedEntries);
 	}
 
 	public override void Render(Vector2i<int> scrollOffset)

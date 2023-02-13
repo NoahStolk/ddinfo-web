@@ -23,7 +23,7 @@ public class RecordingResultScrollArea : ScrollArea
 		foreach (AbstractComponent component in NestingContext.OrderedComponents)
 			NestingContext.Remove(component);
 
-		GetUploadResponse? response = StateManager.UploadSuccessState.UploadResponse;
+		GetUploadResponse? response = StateManager.UploadResponseState.UploadResponse;
 		if (response == null)
 		{
 			Root.Dependencies.Log.Warning("ShowResult was called but state UploadResponse is null.");
