@@ -40,24 +40,15 @@ public class CustomEntriesController : ControllerBase
 
 	[HttpPost("submit")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult<GetUploadResponse>> SubmitScore([FromBody] AddUploadRequest uploadRequest)
 	{
 		try
 		{
-			SuccessfulUploadResponse response = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest.ToDomain());
+			UploadResponse response = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest.ToDomain());
 			return response.ToAppApi();
 		}
-		catch (CustomEntryValidationException ex)
-		{
-			return new GetUploadResponse
-			{
-				Rejection = new()
-				{
-					Reason = ex.Message,
-				},
-			};
-		}
-		catch (Exception ex)
+		catch (Exception ex) when (ex is not CustomEntryValidationException)
 		{
 			ex.Data[nameof(uploadRequest.ClientVersion)] = uploadRequest.ClientVersion;
 			ex.Data[nameof(uploadRequest.OperatingSystem)] = uploadRequest.OperatingSystem;

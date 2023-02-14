@@ -1,5 +1,17 @@
 [
 	{
+		"VersionNumber": "0.2.3.0",
+		"Date": "2023-02-14T00:00:00",
+		"Changes": [
+			{
+				"Description": "Improved custom leaderboard upload result UI."
+			},
+			{
+				"Description": "Added application icon."
+			}
+		]
+	},
+	{
 		"VersionNumber": "0.2.2.0",
 		"Date": "2023-02-13T00:00:00",
 		"Changes": [

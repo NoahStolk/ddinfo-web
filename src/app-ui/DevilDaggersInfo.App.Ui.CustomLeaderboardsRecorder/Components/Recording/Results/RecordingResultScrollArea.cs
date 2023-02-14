@@ -4,6 +4,7 @@ using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.StateManagement;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Actions;
 using DevilDaggersInfo.App.Ui.Base.Styling;
+using DevilDaggersInfo.Types.Core.CustomLeaderboards.Extensions;
 using Warp.NET.Ui;
 using Warp.NET.Ui.Components;
 
@@ -35,8 +36,8 @@ public class RecordingResultScrollArea : ScrollArea
 			ShowFirstScoreResult(response.FirstScore);
 		else if (response.Highscore != null)
 			ShowHighscoreResult(response.Highscore, response.IsAscending);
-		else if (response.Rejection != null)
-			ShowRejectionResult(response.Rejection);
+		else if (response.CriteriaRejection != null)
+			ShowRejectionResult(response.CriteriaRejection);
 		else
 			Root.Dependencies.NativeDialogService.ReportError("Invalid upload response from server.");
 	}
@@ -59,9 +60,9 @@ public class RecordingResultScrollArea : ScrollArea
 		NestingContext.Add(highscore);
 	}
 
-	private void ShowRejectionResult(GetUploadResponseRejection response)
+	private void ShowRejectionResult(GetUploadResponseCriteriaRejection response)
 	{
-		Label header = new(ContentBounds.CreateNested(0, 0, ContentBounds.Size.X, 16), response.Reason, LabelStyles.DefaultLeft with { TextColor = Color.Red }) { Depth = Depth + 2 };
+		Label header = new(ContentBounds.CreateNested(0, 0, ContentBounds.Size.X, 16), $"{response.CriteriaName}\nMust be {response.CriteriaOperator.ShortString()} {response.ExpectedValue}\nValue was {response.ActualValue}", LabelStyles.DefaultLeft with { TextColor = Color.Red }) { Depth = Depth + 2 };
 		NestingContext.Add(header);
 	}
 }
