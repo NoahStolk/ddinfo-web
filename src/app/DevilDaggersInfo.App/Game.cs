@@ -101,7 +101,7 @@ public sealed partial class Game : GameBase, IGame
 		Gl.ClearColor(0, 0, 0, 1);
 		Gl.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-		ActivateViewport(Program.Viewport3d);
+		ActivateViewport(ViewportState.Viewport3d);
 
 		StateManager.LayoutState.CurrentLayout?.Render3d();
 

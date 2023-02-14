@@ -21,12 +21,12 @@ public static class ContentManager
 
 	public static void Initialize()
 	{
-		if (!Directory.Exists(UserSettings.DevilDaggersInstallationDirectory))
+		if (!Directory.Exists(UserSettings.Model.DevilDaggersInstallationDirectory))
 			throw new MissingContentException("Installation directory does not exist.");
 
 		// TODO: Use correct Linux file name for executable.
 #if WINDOWS
-		string ddExe = Path.Combine(UserSettings.DevilDaggersInstallationDirectory, "dd.exe");
+		string ddExe = Path.Combine(UserSettings.Model.DevilDaggersInstallationDirectory, "dd.exe");
 		if (!File.Exists(ddExe))
 			throw new MissingContentException("Executable does not exist.");
 #endif

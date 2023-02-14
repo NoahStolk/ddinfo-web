@@ -2,6 +2,7 @@ using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.Exceptions;
+using DevilDaggersInfo.App.Ui.Base.Rendering;
 using DevilDaggersInfo.App.Ui.Base.Rendering.Text;
 using DevilDaggersInfo.App.Ui.Base.Settings;
 using DevilDaggersInfo.App.Ui.Base.StateManagement;
@@ -29,8 +30,19 @@ public class ConfigLayout : Layout, IExtendedLayout
 
 		NestingContext.Add(new TextButton(new PixelBounds(32, 320, 256, 32), CheckInstallationDirectory, ButtonStyles.Default, new(Color.White, TextAlign.Middle, FontSize.H12), "Save and continue"));
 
+		NestingContext.Add(new Checkbox(new PixelBounds(32, 384, 32, 32), OnChangeScaleUiToWindow));
+
 		StateManager.Subscribe<ValidateInstallation>(ValidateInstallation);
 		StateManager.Subscribe<SetLayout>(SetLayout);
+	}
+
+	private static void OnChangeScaleUiToWindow(bool value)
+	{
+		UserSettings.Model = UserSettings.Model with
+		{
+			ScaleUiToWindow = value,
+		};
+		ViewportState.UpdateViewports(CurrentWindowState.Width, CurrentWindowState.Height);
 	}
 
 	private void PickInstallationDirectory()
@@ -42,7 +54,10 @@ public class ConfigLayout : Layout, IExtendedLayout
 
 	private void CheckInstallationDirectory()
 	{
-		UserSettings.DevilDaggersInstallationDirectory = _installationDirectoryInput.KeyboardInput.Value.ToString();
+		UserSettings.Model = UserSettings.Model with
+		{
+			DevilDaggersInstallationDirectory = _installationDirectoryInput.KeyboardInput.Value.ToString(),
+		};
 		ValidateInstallation();
 	}
 
@@ -72,7 +87,7 @@ public class ConfigLayout : Layout, IExtendedLayout
 		if (StateManager.LayoutState.CurrentLayout != Root.Dependencies.ConfigLayout)
 			return;
 
-		_installationDirectoryInput.KeyboardInput.SetText(UserSettings.DevilDaggersInstallationDirectory);
+		_installationDirectoryInput.KeyboardInput.SetText(UserSettings.Model.DevilDaggersInstallationDirectory);
 	}
 
 	public void Update()

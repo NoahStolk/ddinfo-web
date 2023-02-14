@@ -1,31 +1,31 @@
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
+using DevilDaggersInfo.App.Ui.Base.Settings.Model;
+using System.Text.Json;
 
 namespace DevilDaggersInfo.App.Ui.Base.Settings;
 
 public static class UserSettings
 {
-	private const int _version1 = 1;
-
 	private static readonly string _fileDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ddinfo-tools");
 	private static readonly string _filePath = Path.Combine(_fileDirectory, "settings");
 
-	private static string _devilDaggersInstallationDirectory = Root.Dependencies.PlatformSpecificValues.DefaultInstallationPath;
+	private static UserSettingsModel _model = new();
 
-	public static string DevilDaggersInstallationDirectory
+	public static UserSettingsModel Model
 	{
-		get => _devilDaggersInstallationDirectory;
+		get => _model;
 		set
 		{
-			_devilDaggersInstallationDirectory = value;
+			_model = value;
 			Save();
 		}
 	}
 
-	public static string ModsDirectory => Path.Combine(_devilDaggersInstallationDirectory, "mods");
+	public static string ModsDirectory => Path.Combine(_model.DevilDaggersInstallationDirectory, "mods");
 
-	public static string DdDirectory => Path.Combine(_devilDaggersInstallationDirectory, "dd");
+	public static string DdDirectory => Path.Combine(_model.DevilDaggersInstallationDirectory, "dd");
 
-	public static string ResDirectory => Path.Combine(_devilDaggersInstallationDirectory, "res");
+	public static string ResDirectory => Path.Combine(_model.DevilDaggersInstallationDirectory, "res");
 
 	public static string ModsSurvivalPath => Path.Combine(ModsDirectory, "survival");
 
@@ -40,23 +40,24 @@ public static class UserSettings
 		if (!File.Exists(_filePath))
 			return;
 
-		using FileStream fs = new(_filePath, FileMode.Open);
-		using BinaryReader br = new(fs);
-		int version = br.ReadInt32();
-		if (version != _version1)
-			return;
-
-		_devilDaggersInstallationDirectory = br.ReadString();
+		try
+		{
+			UserSettingsModel? json = JsonSerializer.Deserialize<UserSettingsModel>(File.ReadAllText(_filePath));
+			_model = json ?? new()
+			{
+				DevilDaggersInstallationDirectory = Root.Dependencies.PlatformSpecificValues.DefaultInstallationPath,
+				ScaleUiToWindow = true,
+			};
+		}
+		catch (Exception ex)
+		{
+			Root.Dependencies.Log.Error(ex, "Failed to load user settings.");
+		}
 	}
 
 	private static void Save()
 	{
-		using MemoryStream ms = new();
-		using BinaryWriter bw = new(ms);
-		bw.Write(_version1);
-		bw.Write(_devilDaggersInstallationDirectory);
-
 		Directory.CreateDirectory(_fileDirectory);
-		File.WriteAllBytes(_filePath, ms.ToArray());
+		File.WriteAllText(_filePath, JsonSerializer.Serialize(_model));
 	}
 }

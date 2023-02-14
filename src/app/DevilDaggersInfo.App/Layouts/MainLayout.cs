@@ -36,7 +36,7 @@ public class MainLayout : Layout, IExtendedLayout
 		AddButton(0, 0, Color.FromHsv(000, 1, 0.8f), () => StateManager.Dispatch(new SetLayout(Root.Dependencies.SurvivalEditorMainLayout)), "Survival Editor");
 		AddButton(1, 0, Color.FromHsv(032, 1, 0.8f), () => { }, "Practice (todo)");
 		AddButton(0, 1, Color.FromHsv(270, 1, 1.0f), () => StateManager.Dispatch(new SetLayout(Root.Dependencies.CustomLeaderboardsRecorderMainLayout)), "Custom Leaderboards");
-		AddButton(1, 1, Color.FromHsv(300, 1, 1.0f), () => { }, "Memory (todo)");
+		AddButton(1, 1, Color.FromHsv(300, 1, 1.0f), () => { }, "Mod manager (todo)");
 		AddButton(0, 2, Color.FromHsv(130, 1, 0.6f), () => { }, "Asset Editor (todo)");
 		AddButton(1, 2, Color.FromHsv(220, 1, 1.0f), () => { }, "Replay Editor (todo)");
 		AddButton(0, 3, Color.Gray(0.3f), () => StateManager.Dispatch(new SetLayout(Root.Dependencies.ConfigLayout)), "Configuration");
