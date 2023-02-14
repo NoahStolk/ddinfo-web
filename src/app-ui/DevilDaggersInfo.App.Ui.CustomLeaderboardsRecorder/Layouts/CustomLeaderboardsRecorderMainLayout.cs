@@ -7,6 +7,7 @@ using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Ac
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.Leaderboard;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.LeaderboardList;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.Recording;
+using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.Recording.Results;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.State;
 using Warp.NET.Ui;
 
@@ -81,5 +82,8 @@ public class CustomLeaderboardsRecorderMainLayout : Layout, IExtendedLayout
 
 	public void Render()
 	{
+		const int border = 1;
+		Root.Game.RectangleRenderer.Schedule(_recordingScrollArea.ContentBounds.Size, _recordingScrollArea.ContentBounds.Center, 0, Color.Purple);
+		Root.Game.RectangleRenderer.Schedule(_recordingScrollArea.ContentBounds.Size - new Vector2i<int>(border * 2), _recordingScrollArea.ContentBounds.Center, 1, Color.Black);
 	}
 }
