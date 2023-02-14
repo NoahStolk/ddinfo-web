@@ -37,7 +37,11 @@ public class CustomEntriesController : ControllerBase
 		}
 		catch (CustomEntryValidationException ex)
 		{
-			return BadRequest(ex.Message);
+			return BadRequest(new ProblemDetails
+			{
+				Title = "Invalid upload request.",
+				Detail = ex.Message,
+			});
 		}
 		catch (Exception ex)
 		{
