@@ -1,22 +1,16 @@
 using DevilDaggersInfo.Api.App.CustomLeaderboards;
 using DevilDaggersInfo.App.Ui.Base.Components;
-using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.Extensions;
 using DevilDaggersInfo.App.Ui.Base.Styling;
 using DevilDaggersInfo.Common;
 using DevilDaggersInfo.Core.Wiki;
 using System.Diagnostics;
-using Warp.NET.Content;
 using Warp.NET.Ui;
-using Warp.NET.Ui.Components;
 
-namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.Recording;
+namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.Recording.Results;
 
-public class RecordingResultHighscore : AbstractComponent
+public class RecordingResultHighscore : RecordingResultScoreView
 {
-	private const int _yStart = 24;
-	private const int _labelHeight = 16;
-
 	public RecordingResultHighscore(IBounds bounds, GetUploadResponseHighscore response, bool isAscending)
 		: base(bounds)
 	{
@@ -29,9 +23,9 @@ public class RecordingResultHighscore : AbstractComponent
 		AddSpacing(ref y);
 		AddIcon(ref y, WarpTextures.IconEye, Color.Orange);
 		Add("Time", response.TimeState, d => d.ToString(StringFormats.TimeFormat), i => $"{i:+0.0000;-0.0000;+0.0000}", !isAscending);
-		Add("Level up 2", response.LevelUpTime2State, i => i.ToString(StringFormats.TimeFormat), i => $"{i:+0.0000;-0.0000;+0.0000}", false); // TODO: When value is 0, show "N/A" instead of "0.0000". TODO: When value difference is the same as the previous value, show "N/A".
-		Add("Level up 3", response.LevelUpTime3State, i => i.ToString(StringFormats.TimeFormat), i => $"{i:+0.0000;-0.0000;+0.0000}", false);
-		Add("Level up 4", response.LevelUpTime4State, i => i.ToString(StringFormats.TimeFormat), i => $"{i:+0.0000;-0.0000;+0.0000}", false);
+		Add("Level 2", response.LevelUpTime2State, i => i.ToString(StringFormats.TimeFormat), i => $"{i:+0.0000;-0.0000;+0.0000}", false); // TODO: When value is 0, show "N/A" instead of "0.0000". TODO: When value difference is the same as the previous value, show "N/A".
+		Add("Level 3", response.LevelUpTime3State, i => i.ToString(StringFormats.TimeFormat), i => $"{i:+0.0000;-0.0000;+0.0000}", false);
+		Add("Level 4", response.LevelUpTime4State, i => i.ToString(StringFormats.TimeFormat), i => $"{i:+0.0000;-0.0000;+0.0000}", false);
 		AddDeath(ref y);
 
 		AddSpacing(ref y);
@@ -88,29 +82,5 @@ public class RecordingResultHighscore : AbstractComponent
 
 			y += _labelHeight;
 		}
-	}
-
-	private static void AddSpacing(ref int y)
-	{
-		y += _labelHeight / 2;
-	}
-
-	private void AddIcon(ref int y, Texture texture, Color color)
-	{
-		const int iconSize = 16;
-		RecordingIcon recordingIcon = new(Bounds.CreateNested(4, y, iconSize, iconSize), texture, color) { Depth = Depth + 100 };
-		NestingContext.Add(recordingIcon);
-
-		y += iconSize;
-	}
-
-	private void AddDeath(ref int y)
-	{
-		Label left = new(Bounds.CreateNested(0, y, Bounds.Size.X / 2, 16), "Death", LabelStyles.DefaultLeft) { Depth = Depth + 2 };
-		Label right = new(Bounds.CreateNested(Bounds.Size.X / 2, y, Bounds.Size.X / 2, 16), Deaths.GetDeathByLeaderboardType(GameConstants.CurrentVersion, Root.Dependencies.GameMemoryService.MainBlock.DeathType)?.Name ?? "?", LabelStyles.DefaultRight) { Depth = Depth + 2 };
-		NestingContext.Add(left);
-		NestingContext.Add(right);
-
-		y += _labelHeight;
 	}
 }

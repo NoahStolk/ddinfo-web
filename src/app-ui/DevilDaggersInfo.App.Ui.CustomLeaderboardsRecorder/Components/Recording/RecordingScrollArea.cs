@@ -1,7 +1,6 @@
 using DevilDaggersInfo.App.Core.GameMemory;
 using DevilDaggersInfo.App.Core.GameMemory.Extensions;
 using DevilDaggersInfo.App.Ui.Base.Components;
-using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.Extensions;
 using DevilDaggersInfo.App.Ui.Base.Styling;
 using DevilDaggersInfo.Common;
@@ -139,14 +138,5 @@ public class RecordingScrollArea : ScrollArea
 	private static Death? GetDeath(MainBlock block)
 	{
 		return Deaths.GetDeathByLeaderboardType(GameConstants.CurrentVersion, block.DeathType);
-	}
-
-	public override void Render(Vector2i<int> scrollOffset)
-	{
-		base.Render(scrollOffset);
-
-		const int border = 1;
-		Root.Game.RectangleRenderer.Schedule(ContentBounds.Size, ContentBounds.Center + scrollOffset, Depth, Color.Purple);
-		Root.Game.RectangleRenderer.Schedule(ContentBounds.Size - new Vector2i<int>(border * 2), ContentBounds.Center + scrollOffset, 1, Color.Black);
 	}
 }
