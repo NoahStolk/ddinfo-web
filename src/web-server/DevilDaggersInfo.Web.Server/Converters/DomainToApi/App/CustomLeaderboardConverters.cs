@@ -7,7 +7,32 @@ namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.App;
 
 public static class CustomLeaderboardConverters
 {
-	public static AppApi.GetUploadResponse ToAppApi(this SuccessfulUploadResponse successfulUploadResponse)
+	public static AppApi.GetUploadResponse ToAppApi(this UploadResponse uploadResponse)
+	{
+		if (uploadResponse.Success != null)
+			return uploadResponse.Success.ToAppApi();
+
+		if (uploadResponse.Rejection != null)
+			return uploadResponse.Rejection.ToAppApi();
+
+		throw new InvalidOperationException("Invalid upload response. Both Success and Rejection are null.");
+	}
+
+	private static AppApi.GetUploadResponse ToAppApi(this UploadCriteriaRejection uploadCriteriaRejection)
+	{
+		return new()
+		{
+			CriteriaRejection = new()
+			{
+				ActualValue = uploadCriteriaRejection.ActualValue,
+				ExpectedValue = uploadCriteriaRejection.ExpectedValue,
+				CriteriaName = uploadCriteriaRejection.CriteriaName,
+				CriteriaOperator = uploadCriteriaRejection.CriteriaOperator,
+			},
+		};
+	}
+
+	private static AppApi.GetUploadResponse ToAppApi(this SuccessfulUploadResponse successfulUploadResponse)
 	{
 		List<AppApi.GetCustomEntry> sortedEntries = successfulUploadResponse.SortedEntries.ConvertAll(ce => ce.ToAppApi());
 

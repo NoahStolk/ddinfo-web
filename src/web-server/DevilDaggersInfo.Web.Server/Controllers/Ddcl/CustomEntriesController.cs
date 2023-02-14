@@ -32,18 +32,22 @@ public class CustomEntriesController : ControllerBase
 	{
 		try
 		{
-			SuccessfulUploadResponse response = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest.ToDomain());
-			return response.ToDdclApi();
-		}
-		catch (CustomEntryValidationException ex)
-		{
-			return BadRequest(new ProblemDetails
+			UploadResponse response = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest.ToDomain());
+			if (response.Success != null)
+				return response.Success.ToDdclApi();
+
+			if (response.Rejection != null)
 			{
-				Title = "Invalid upload request.",
-				Detail = ex.Message,
-			});
+				// Manually map criteria errors to HTTP 400.
+				return BadRequest(new ProblemDetails
+				{
+					Title = "Criteria validation failed.",
+				});
+			}
+
+			throw new InvalidOperationException("Upload response is neither success nor rejection.");
 		}
-		catch (Exception ex)
+		catch (Exception ex) when (ex is not CustomEntryValidationException)
 		{
 			ex.Data[nameof(uploadRequest.ClientVersion)] = uploadRequest.ClientVersion;
 			ex.Data[nameof(uploadRequest.OperatingSystem)] = uploadRequest.OperatingSystem;

@@ -8,7 +8,7 @@ public record GetUploadResponse
 
 	public GetUploadResponseFirstScore? FirstScore { get; init; }
 
-	public GetUploadResponseRejection? Rejection { get; init; }
+	public GetUploadResponseCriteriaRejection? CriteriaRejection { get; init; }
 
 	// TODO: Make required when DDCL 1.8.3 is removed.
 	public List<GetCustomEntry>? NewSortedEntries { get; init; }

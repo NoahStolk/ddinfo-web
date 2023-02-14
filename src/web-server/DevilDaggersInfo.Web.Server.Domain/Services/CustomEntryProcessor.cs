@@ -72,7 +72,12 @@ public class CustomEntryProcessor
 			LogAndThrowValidationException(uploadRequest, $"Invalid submission for {uploadRequest.Validation}.\n`Expected: {expected}`\n`Actual:   {actual}`", null, "rotating_light");
 	}
 
-	public async Task<SuccessfulUploadResponse> ProcessUploadRequestAsync(UploadRequest uploadRequest)
+	/// <summary>
+	/// Processes an upload request.
+	/// </summary>
+	/// <exception cref="CustomEntryValidationException">Thrown when the request is invalid (unsupported client version, incorrect validation, invalid game status, non-existent spawnset, etc). This exception maps to HTTP 400.</exception>
+	/// <returns>An <see cref="UploadResponse"/> is returned for every successful upload, as well as uploads rejected by criteria.</returns>
+	public async Task<UploadResponse> ProcessUploadRequestAsync(UploadRequest uploadRequest)
 	{
 		// Check if the submission actually came from an allowed program.
 		if (uploadRequest.ValidationVersion == 2)
@@ -133,29 +138,61 @@ public class CustomEntryProcessor
 		if (customLeaderboard.Category.IsTimeAttackOrRace() && !uploadRequest.TimeAttackOrRaceFinished)
 			LogAndThrowValidationException(uploadRequest, $"Didn't complete the {customLeaderboard.Category} spawnset.", spawnsetName);
 
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard);
+		try
+		{
+			HandleCriteria(uploadRequest, spawnsetName, customLeaderboard);
+		}
+		catch (CustomEntryCriteriaException ex)
+		{
+			return new()
+			{
+				Rejection = new()
+				{
+					CriteriaName = ex.CriteriaName,
+					ActualValue = ex.ActualValue,
+					CriteriaOperator = ex.CriteriaOperator,
+					ExpectedValue = ex.ExpectedValue,
+				},
+			};
+		}
 
 		// Make sure HomingDaggers is not negative (happens rarely as a bug, and also for spawnsets with homing disabled which we don't want to display values for anyway).
 		uploadRequest.GameData.HomingStored = Array.ConvertAll(uploadRequest.GameData.HomingStored, i => Math.Max(0, i));
 
 		CustomEntryEntity? customEntry = _dbContext.CustomEntries.FirstOrDefault(ce => ce.PlayerId == uploadRequest.PlayerId && ce.CustomLeaderboardId == customLeaderboard.Id);
 		if (customEntry == null)
-			return await ProcessNewScoreAsync(uploadRequest, customLeaderboard, spawnsetName);
+		{
+			return new()
+			{
+				Success = await ProcessNewScoreAsync(uploadRequest, customLeaderboard, spawnsetName),
+			};
+		}
 
 		// Treat identical replays as no highscore.
 		int requestTimeAsInt = uploadRequest.TimeInSeconds.To10thMilliTime();
 		if (uploadRequest.IsReplay && IsReplayTimeAlmostTheSame(requestTimeAsInt, customEntry.Time) && await IsReplayFileTheSame(customEntry.Id, uploadRequest.ReplayData))
 		{
 			_logger.LogInformation("Score submission replay time was modified because of identical replay (database: {originalTime} - request: {replayTime}).", FormatTimeString(customEntry.Time.ToSecondsTime()), FormatTimeString(uploadRequest.TimeInSeconds));
-			return await ProcessNoHighscoreAsync(uploadRequest, customLeaderboard, spawnsetName);
+			return new()
+			{
+				Success = await ProcessNoHighscoreAsync(uploadRequest, customLeaderboard, spawnsetName),
+			};
 		}
 
 		// User is already on the leaderboard, but did not get a better score.
 		bool isAscending = customLeaderboard.Category.IsAscending();
 		if (isAscending && customEntry.Time <= requestTimeAsInt || !isAscending && customEntry.Time >= requestTimeAsInt)
-			return await ProcessNoHighscoreAsync(uploadRequest, customLeaderboard, spawnsetName);
+		{
+			return new()
+			{
+				Success = await ProcessNoHighscoreAsync(uploadRequest, customLeaderboard, spawnsetName),
+			};
+		}
 
-		return await ProcessHighscoreAsync(uploadRequest, customLeaderboard, spawnsetName, customEntry);
+		return new()
+		{
+			Success = await ProcessHighscoreAsync(uploadRequest, customLeaderboard, spawnsetName, customEntry),
+		};
 	}
 
 	private void HandleCriteria(UploadRequest uploadRequest, string? spawnsetName, CustomLeaderboardEntity customLeaderboard)
@@ -276,9 +313,11 @@ public class CustomEntryProcessor
 				throw new InvalidOperationException($"Could not parse criteria expression '{criteriaExpression}'.");
 
 			int evaluatedValue = expressionParsed.Evaluate(targetCollection);
+			if (IsValidForCriteria(criteria.Operator, evaluatedValue, value))
+				return;
 
-			if (!IsValidForCriteria(criteria.Operator, evaluatedValue, value))
-				LogAndThrowValidationException(uploadRequest, $"Did not meet the {criteriaExpression}. Criteria: {criteria.Operator.Display()} {evaluatedValue}. Value: {value}.", spawnsetName);
+			Log(uploadRequest, spawnsetName, $"Did not meet the {criteriaExpression}. Criteria: {criteria.Operator.Display()} {evaluatedValue}. Value: {value}.");
+			throw new CustomEntryCriteriaException(criteriaExpression, criteria.Operator, evaluatedValue, value);
 		}
 
 		static bool IsValidForCriteria(CustomLeaderboardCriteriaOperator op, int expectedValue, int value) => op switch
@@ -549,8 +588,8 @@ public class CustomEntryProcessor
 		if (requestTimeAsInt == databaseTime)
 			return false;
 
-		const int replayMarginErrorIn10thMillis = 1000;
-		return requestTimeAsInt > databaseTime - replayMarginErrorIn10thMillis && requestTimeAsInt < databaseTime + replayMarginErrorIn10thMillis;
+		const int replayMarginErrorInTenthMillis = 1000;
+		return requestTimeAsInt > databaseTime - replayMarginErrorInTenthMillis && requestTimeAsInt < databaseTime + replayMarginErrorInTenthMillis;
 	}
 
 	/// <summary>
@@ -662,4 +701,20 @@ public class CustomEntryProcessor
 		SpawnsetId = customLeaderboard.SpawnsetId,
 		SpawnsetName = customLeaderboard.Spawnset!.Name,
 	};
+
+	private sealed class CustomEntryCriteriaException : Exception
+	{
+		public CustomEntryCriteriaException(string criteriaName, CustomLeaderboardCriteriaOperator criteriaOperator, int expectedValue, int actualValue)
+		{
+			CriteriaName = criteriaName;
+			CriteriaOperator = criteriaOperator;
+			ExpectedValue = expectedValue;
+			ActualValue = actualValue;
+		}
+
+		public string CriteriaName { get; }
+		public CustomLeaderboardCriteriaOperator CriteriaOperator { get; }
+		public int ExpectedValue { get; }
+		public int ActualValue { get; }
+	}
 }
