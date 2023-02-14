@@ -1,5 +1,6 @@
 using DevilDaggersInfo.Api.App.CustomLeaderboards;
 using DevilDaggersInfo.App.Ui.Base.Components;
+using DevilDaggersInfo.App.Ui.Base.Components.Styles;
 using DevilDaggersInfo.App.Ui.Base.Extensions;
 using DevilDaggersInfo.App.Ui.Base.Styling;
 using DevilDaggersInfo.Common;
@@ -23,9 +24,9 @@ public class RecordingResultHighscore : RecordingResultScoreView
 		AddSpacing(ref y);
 		AddIcon(ref y, WarpTextures.IconEye, Color.Orange);
 		Add("Time", response.TimeState, d => d.ToString(StringFormats.TimeFormat), i => $"{i:+0.0000;-0.0000;+0.0000}", !isAscending);
-		Add("Level 2", response.LevelUpTime2State, i => i.ToString(StringFormats.TimeFormat), i => $"{i:+0.0000;-0.0000;+0.0000}", false); // TODO: When value is 0, show "N/A" instead of "0.0000". TODO: When value difference is the same as the previous value, show "N/A".
-		Add("Level 3", response.LevelUpTime3State, i => i.ToString(StringFormats.TimeFormat), i => $"{i:+0.0000;-0.0000;+0.0000}", false);
-		Add("Level 4", response.LevelUpTime4State, i => i.ToString(StringFormats.TimeFormat), i => $"{i:+0.0000;-0.0000;+0.0000}", false);
+		AddLevelUp("Level 2", response.LevelUpTime2State);
+		AddLevelUp("Level 3", response.LevelUpTime3State);
+		AddLevelUp("Level 4", response.LevelUpTime4State);
 		AddDeath(ref y);
 
 		AddSpacing(ref y);
@@ -76,6 +77,41 @@ public class RecordingResultHighscore : RecordingResultScoreView
 			Label l = new(Bounds.CreateNested(columnWidth * 0, y, columnWidth, 16), label, LabelStyles.DefaultLeft) { Depth = Depth + 2 };
 			Label m = new(Bounds.CreateNested(columnWidth * 1, y, columnWidth, 16), formatter(scoreState.Value), LabelStyles.DefaultRight) { Depth = Depth + 2 };
 			Label r = new(Bounds.CreateNested(columnWidth * 2, y, columnWidth, 16), formatterDifference(scoreState.ValueDifference), LabelStyles.DefaultRight with { TextColor = color }) { Depth = Depth + 2 };
+			NestingContext.Add(l);
+			NestingContext.Add(m);
+			NestingContext.Add(r);
+
+			y += _labelHeight;
+		}
+
+		void AddLevelUp(string label, GetScoreState<double> scoreState)
+		{
+			int comparison = -scoreState.ValueDifference.CompareTo(0);
+			Color color = comparison switch
+			{
+				-1 => Color.Red,
+				0 => Color.White,
+				1 => Color.Green,
+				_ => throw new UnreachableException(),
+			};
+
+			int columnWidth = Bounds.Size.X / 3;
+
+			const double tolerance = 0.000001;
+
+			// Show N/A for level up time when level was not achieved, for both value and difference.
+			// Also, if the previous level up time was 0, but the level was achieved this time, the difference is equal to the value. Show N/A in this case as well.
+			bool levelWasNotAchieved = scoreState.Value <= tolerance;
+			bool diffIsSameAsValue = Math.Abs(scoreState.Value - scoreState.ValueDifference) <= tolerance;
+			bool hideDifference = levelWasNotAchieved || diffIsSameAsValue;
+
+			string levelUp = levelWasNotAchieved ? "N/A" : scoreState.Value.ToString(StringFormats.TimeFormat);
+			string levelUpDifference = hideDifference ? "N/A" : scoreState.ValueDifference.ToString("+0.0000;-0.0000;+0.0000");
+			LabelStyle differenceStyle = hideDifference ? LabelStyles.DefaultRight : LabelStyles.DefaultRight with { TextColor = color };
+
+			Label l = new(Bounds.CreateNested(columnWidth * 0, y, columnWidth, 16), label, LabelStyles.DefaultLeft) { Depth = Depth + 2 };
+			Label m = new(Bounds.CreateNested(columnWidth * 1, y, columnWidth, 16), levelUp, LabelStyles.DefaultRight) { Depth = Depth + 2 };
+			Label r = new(Bounds.CreateNested(columnWidth * 2, y, columnWidth, 16), levelUpDifference, differenceStyle) { Depth = Depth + 2 };
 			NestingContext.Add(l);
 			NestingContext.Add(m);
 			NestingContext.Add(r);

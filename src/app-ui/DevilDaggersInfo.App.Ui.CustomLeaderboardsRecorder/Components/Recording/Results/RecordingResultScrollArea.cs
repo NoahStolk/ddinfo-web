@@ -12,7 +12,7 @@ namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.Recordin
 public class RecordingResultScrollArea : ScrollArea
 {
 	public RecordingResultScrollArea(IBounds bounds)
-		: base(bounds, 64, 16, ScrollAreaStyles.Default)
+		: base(bounds, 32, 16, ScrollAreaStyles.Default)
 	{
 		StateManager.Subscribe<SetSuccessfulUpload>(ShowResult);
 	}
