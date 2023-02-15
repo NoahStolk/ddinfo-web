@@ -21,6 +21,8 @@ public static class UserSettings
 		{
 			_model = value;
 			Save();
+
+			Root.Game.MainLoopRate = _model.MaxFps;
 		}
 	}
 

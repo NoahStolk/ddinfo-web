@@ -77,8 +77,11 @@ public sealed partial class Game : GameBase, IGame
 		StateManager.LayoutState.CurrentLayout?.Render();
 		StateManager.LayoutState.CurrentLayout?.NestingContext.Render(default);
 
-		MonoSpaceFontRenderer12.Schedule(Vector2i<int>.One, new(0, 640), 500, Color.Green, DebugStack.GetString(), TextAlign.Left);
-		MonoSpaceFontRenderer12.Schedule(Vector2i<int>.One, new(960, 736), 500, Color.Green, $"{Fps} FPS\n{Tps} TPS", TextAlign.Left);
+		if (UserSettings.Model.ShowDebugOutput)
+		{
+			MonoSpaceFontRenderer12.Schedule(Vector2i<int>.One, new(0, 640), 500, Color.Green, DebugStack.GetString(), TextAlign.Left);
+			MonoSpaceFontRenderer12.Schedule(Vector2i<int>.One, new(960, 736), 500, Color.Green, $"{Fps} FPS\n{Tps} TPS", TextAlign.Left);
+		}
 
 		if (string.IsNullOrWhiteSpace(TooltipText))
 			return;
@@ -94,6 +97,9 @@ public sealed partial class Game : GameBase, IGame
 	{
 		Gl.ClearColor(0, 0, 0, 1);
 		Gl.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+
+		if (!UserSettings.Model.RenderWhileWindowIsInactive && !WindowIsActive)
+			return;
 
 		ActivateViewport(ViewportState.Viewport3d);
 
