@@ -1,6 +1,8 @@
 using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.Rendering;
+using DevilDaggersInfo.App.Ui.Base.StateManagement;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.Base.Actions;
 using Silk.NET.GLFW;
 using System.Diagnostics;
 using Warp.NET.Content;
@@ -58,7 +60,7 @@ public static class Program
 		DebugStack.Add(sw.ElapsedMilliseconds, debugTimeout, "init game");
 		sw.Stop();
 
-		game.Initialize();
+		StateManager.Dispatch(new SetLayout(Root.Dependencies.ConfigLayout));
 		game.Run();
 	}
 }

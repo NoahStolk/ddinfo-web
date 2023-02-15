@@ -1,6 +1,9 @@
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.Settings.Model;
+using DevilDaggersInfo.App.Ui.Base.StateManagement;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.Base.Actions;
 using System.Text.Json;
+using Warp.NET.Debugging;
 
 namespace DevilDaggersInfo.App.Ui.Base.Settings;
 
@@ -9,7 +12,7 @@ public static class UserSettings
 	private static readonly string _fileDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ddinfo-tools");
 	private static readonly string _filePath = Path.Combine(_fileDirectory, "settings");
 
-	private static UserSettingsModel _model = new();
+	private static UserSettingsModel _model = UserSettingsModel.Default;
 
 	public static UserSettingsModel Model
 	{
@@ -21,11 +24,11 @@ public static class UserSettings
 		}
 	}
 
-	public static string ModsDirectory => Path.Combine(_model.DevilDaggersInstallationDirectory, "mods");
+	public static string ModsDirectory => Path.Combine(Model.DevilDaggersInstallationDirectory, "mods");
 
-	public static string DdDirectory => Path.Combine(_model.DevilDaggersInstallationDirectory, "dd");
+	public static string DdDirectory => Path.Combine(Model.DevilDaggersInstallationDirectory, "dd");
 
-	public static string ResDirectory => Path.Combine(_model.DevilDaggersInstallationDirectory, "res");
+	public static string ResDirectory => Path.Combine(Model.DevilDaggersInstallationDirectory, "res");
 
 	public static string ModsSurvivalPath => Path.Combine(ModsDirectory, "survival");
 
@@ -42,22 +45,23 @@ public static class UserSettings
 
 		try
 		{
-			UserSettingsModel? json = JsonSerializer.Deserialize<UserSettingsModel>(File.ReadAllText(_filePath));
-			_model = json ?? new()
-			{
-				DevilDaggersInstallationDirectory = Root.Dependencies.PlatformSpecificValues.DefaultInstallationPath,
-				ScaleUiToWindow = true,
-			};
+			UserSettingsModel? deserializedModel = JsonSerializer.Deserialize<UserSettingsModel>(File.ReadAllText(_filePath));
+			if (deserializedModel != null)
+				_model = deserializedModel;
 		}
 		catch (Exception ex)
 		{
 			Root.Dependencies.Log.Error(ex, "Failed to load user settings.");
 		}
+
+		StateManager.Dispatch(new UserSettingsLoaded());
 	}
 
 	private static void Save()
 	{
 		Directory.CreateDirectory(_fileDirectory);
 		File.WriteAllText(_filePath, JsonSerializer.Serialize(_model));
+
+		DebugStack.Add("Saved user settings.", 1);
 	}
 }

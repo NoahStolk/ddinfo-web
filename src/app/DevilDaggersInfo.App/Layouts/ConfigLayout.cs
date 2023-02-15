@@ -5,6 +5,7 @@ using DevilDaggersInfo.App.Ui.Base.Exceptions;
 using DevilDaggersInfo.App.Ui.Base.Rendering;
 using DevilDaggersInfo.App.Ui.Base.Rendering.Text;
 using DevilDaggersInfo.App.Ui.Base.Settings;
+using DevilDaggersInfo.App.Ui.Base.Settings.Model;
 using DevilDaggersInfo.App.Ui.Base.StateManagement;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.Base.Actions;
 using DevilDaggersInfo.App.Ui.Base.Styling;
@@ -30,18 +31,42 @@ public class ConfigLayout : Layout, IExtendedLayout
 
 		NestingContext.Add(new TextButton(new PixelBounds(32, 320, 256, 32), CheckInstallationDirectory, ButtonStyles.Default, new(Color.White, TextAlign.Middle, FontSize.H12), "Save and continue"));
 
-		NestingContext.Add(new Checkbox(new PixelBounds(32, 384, 32, 32), OnChangeScaleUiToWindow));
+		NestingContext.Add(new Label(new PixelBounds(32, 384, 256, 32), "Scale UI to window", LabelStyles.DefaultLeft));
+		NestingContext.Add(new Label(new PixelBounds(32, 448, 256, 32), "Show debug output", LabelStyles.DefaultLeft));
+		NestingContext.Add(new Label(new PixelBounds(32, 512, 256, 32), "Render while window is inactive", LabelStyles.DefaultLeft));
+		NestingContext.Add(new Label(new PixelBounds(32, 576, 256, 32), "Always record memory for custom leaderboards", LabelStyles.DefaultLeft));
+		NestingContext.Add(new Label(new PixelBounds(32, 640, 256, 32), "Max FPS", LabelStyles.DefaultLeft));
 
-		StateManager.Subscribe<ValidateInstallation>(ValidateInstallation);
+		Checkbox scaleUiToWindowCheckbox = new(new PixelBounds(48, 416, 24, 24), OnChangeScaleUiToWindow);
+		Checkbox showDebugOutputCheckbox = new(new PixelBounds(48, 480, 24, 24), b => UserSettings.Model = UserSettings.Model with { ShowDebugOutput = b });
+		Checkbox renderWhileWindowIsInactiveCheckbox = new(new PixelBounds(48, 544, 24, 24), b => UserSettings.Model = UserSettings.Model with { RenderWhileWindowIsInactive = b });
+		Checkbox alwaysRecordMemoryForCustomLeaderboardsCheckbox = new(new PixelBounds(48, 608, 24, 24), b => UserSettings.Model = UserSettings.Model with { AlwaysRecordMemoryForCustomLeaderboards = b });
+		Slider maxFpsSlider = new(new PixelBounds(48, 672, 256, 24), f => UserSettings.Model = UserSettings.Model with { MaxFps = (int)f }, false, 60, 300, 1, UserSettings.Model.MaxFps, SliderStyles.Default);
+
+		NestingContext.Add(scaleUiToWindowCheckbox);
+		NestingContext.Add(showDebugOutputCheckbox);
+		NestingContext.Add(renderWhileWindowIsInactiveCheckbox);
+		NestingContext.Add(alwaysRecordMemoryForCustomLeaderboardsCheckbox);
+		NestingContext.Add(maxFpsSlider);
+
 		StateManager.Subscribe<SetLayout>(SetLayout);
+		StateManager.Subscribe<UserSettingsLoaded>(OnUserSettingsLoaded);
+
+		void OnUserSettingsLoaded()
+		{
+			scaleUiToWindowCheckbox.CurrentValue = UserSettings.Model.ScaleUiToWindow;
+			showDebugOutputCheckbox.CurrentValue = UserSettings.Model.ShowDebugOutput;
+			renderWhileWindowIsInactiveCheckbox.CurrentValue = UserSettings.Model.RenderWhileWindowIsInactive;
+			alwaysRecordMemoryForCustomLeaderboardsCheckbox.CurrentValue = UserSettings.Model.AlwaysRecordMemoryForCustomLeaderboards;
+			maxFpsSlider.CurrentValue = UserSettings.Model.MaxFps;
+
+			ValidateInstallation();
+		}
 	}
 
 	private static void OnChangeScaleUiToWindow(bool value)
 	{
-		UserSettings.Model = UserSettings.Model with
-		{
-			ScaleUiToWindow = value,
-		};
+		UserSettings.Model = UserSettings.Model with { ScaleUiToWindow = value };
 		ViewportState.UpdateViewports(CurrentWindowState.Width, CurrentWindowState.Height);
 	}
 

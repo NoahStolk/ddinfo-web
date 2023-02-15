@@ -57,12 +57,6 @@ public sealed partial class Game : GameBase, IGame
 	public RectangleRenderer RectangleRenderer { get; } = new();
 	public CircleRenderer CircleRenderer { get; } = new();
 
-	public void Initialize()
-	{
-		StateManager.Dispatch(new SetLayout(Root.Dependencies.ConfigLayout));
-		StateManager.Dispatch(new ValidateInstallation());
-	}
-
 	protected override void Update()
 	{
 		StateManager.ReduceAll();
