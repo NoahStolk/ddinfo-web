@@ -20,7 +20,7 @@ namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder;
 public static class RecordingLogic
 {
 	private static readonly AesBase32Wrapper _aesBase32Wrapper;
-	private static bool _uploadRun;
+	private static MainBlock? _runToUpload;
 
 #pragma warning disable S3963
 	static RecordingLogic()
@@ -72,7 +72,7 @@ public static class RecordingLogic
 		MainBlock mainBlockPrevious = Root.Dependencies.GameMemoryService.MainBlockPrevious;
 
 		// When a run is scheduled to upload, keep trying until stats have loaded and the replay is valid.
-		if (_uploadRun)
+		if (_runToUpload != null)
 		{
 			StateManager.Dispatch(new SetRecordingState(RecordingStateType.WaitingForStats));
 			if (!mainBlock.StatsLoaded)
@@ -82,8 +82,8 @@ public static class RecordingLogic
 			if (!Root.Dependencies.GameMemoryService.IsReplayValid())
 				return;
 
-			_uploadRun = false;
-			UploadRunIfExists(mainBlock.SurvivalHashMd5);
+			UploadRunIfExists(_runToUpload.Value);
+			_runToUpload = null;
 			return;
 		}
 
@@ -121,7 +121,8 @@ public static class RecordingLogic
 
 		// Determine whether to upload the run or not.
 		bool justDied = !mainBlock.IsPlayerAlive && mainBlockPrevious.IsPlayerAlive;
-		_uploadRun = justDied && (mainBlock.GameMode == 0 || mainBlock.TimeAttackOrRaceFinished);
+		if (justDied && (mainBlock.GameMode == 0 || mainBlock.TimeAttackOrRaceFinished))
+			_runToUpload = mainBlock;
 	}
 
 	private static void InitializeMarker()
@@ -137,94 +138,92 @@ public static class RecordingLogic
 		}
 	}
 
-	private static void UploadRunIfExists(byte[] survivalHash)
+	private static void UploadRunIfExists(MainBlock runToUpload)
 	{
-		AsyncHandler.Run(UploadRun, () => CheckIfLeaderboardExists.HandleAsync(survivalHash));
+		AsyncHandler.Run(leaderboardExists => UploadRun(leaderboardExists, runToUpload), () => CheckIfLeaderboardExists.HandleAsync(runToUpload.SurvivalHashMd5));
 	}
 
-	private static void UploadRun(bool leaderboardExists)
+	private static void UploadRun(bool leaderboardExists, MainBlock runToUpload)
 	{
 		if (!leaderboardExists)
 			return;
 
-		GameMemoryService memoryService = Root.Dependencies.GameMemoryService;
-		MainBlock block = memoryService.MainBlock;
-
-		byte[] timeAsBytes = BitConverter.GetBytes(block.Time);
-		byte[] levelUpTime2AsBytes = BitConverter.GetBytes(block.LevelUpTime2);
-		byte[] levelUpTime3AsBytes = BitConverter.GetBytes(block.LevelUpTime3);
-		byte[] levelUpTime4AsBytes = BitConverter.GetBytes(block.LevelUpTime4);
+		byte[] timeAsBytes = BitConverter.GetBytes(runToUpload.Time);
+		byte[] levelUpTime2AsBytes = BitConverter.GetBytes(runToUpload.LevelUpTime2);
+		byte[] levelUpTime3AsBytes = BitConverter.GetBytes(runToUpload.LevelUpTime3);
+		byte[] levelUpTime4AsBytes = BitConverter.GetBytes(runToUpload.LevelUpTime4);
 
 		string toEncrypt = string.Join(
 			";",
-			block.PlayerId,
+			runToUpload.PlayerId,
 			timeAsBytes.ByteArrayToHexString(),
-			block.GemsCollected,
-			block.GemsDespawned,
-			block.GemsEaten,
-			block.GemsTotal,
-			block.EnemiesAlive,
-			block.EnemiesKilled,
-			block.DeathType,
-			block.DaggersHit,
-			block.DaggersFired,
-			block.HomingStored,
-			block.HomingEaten,
-			block.IsReplay,
-			block.Status,
-			block.SurvivalHashMd5.ByteArrayToHexString(),
+			runToUpload.GemsCollected,
+			runToUpload.GemsDespawned,
+			runToUpload.GemsEaten,
+			runToUpload.GemsTotal,
+			runToUpload.EnemiesAlive,
+			runToUpload.EnemiesKilled,
+			runToUpload.DeathType,
+			runToUpload.DaggersHit,
+			runToUpload.DaggersFired,
+			runToUpload.HomingStored,
+			runToUpload.HomingEaten,
+			runToUpload.IsReplay,
+			runToUpload.Status,
+			runToUpload.SurvivalHashMd5.ByteArrayToHexString(),
 			levelUpTime2AsBytes.ByteArrayToHexString(),
 			levelUpTime3AsBytes.ByteArrayToHexString(),
 			levelUpTime4AsBytes.ByteArrayToHexString(),
-			block.GameMode,
-			block.TimeAttackOrRaceFinished,
-			block.ProhibitedMods);
+			runToUpload.GameMode,
+			runToUpload.TimeAttackOrRaceFinished,
+			runToUpload.ProhibitedMods);
 		string validation = _aesBase32Wrapper.EncryptAndEncode(toEncrypt);
 
+		GameMemoryService memoryService = Root.Dependencies.GameMemoryService;
 		byte[] statsBuffer = memoryService.GetStatsBuffer();
 
 		AddUploadRequest uploadRequest = new()
 		{
-			DaggersFired = block.DaggersFired,
-			DaggersHit = block.DaggersHit,
+			DaggersFired = runToUpload.DaggersFired,
+			DaggersHit = runToUpload.DaggersHit,
 			ClientVersion = Root.Game.AppVersion.ToString(),
-			DeathType = block.DeathType,
-			EnemiesAlive = block.EnemiesAlive,
-			GemsCollected = block.GemsCollected,
-			GemsDespawned = block.GemsDespawned,
-			GemsEaten = block.GemsEaten,
-			GemsTotal = block.GemsTotal,
-			HomingStored = block.HomingStored,
-			HomingEaten = block.HomingEaten,
-			EnemiesKilled = block.EnemiesKilled,
-			LevelUpTime2InSeconds = block.LevelUpTime2,
-			LevelUpTime3InSeconds = block.LevelUpTime3,
-			LevelUpTime4InSeconds = block.LevelUpTime4,
+			DeathType = runToUpload.DeathType,
+			EnemiesAlive = runToUpload.EnemiesAlive,
+			GemsCollected = runToUpload.GemsCollected,
+			GemsDespawned = runToUpload.GemsDespawned,
+			GemsEaten = runToUpload.GemsEaten,
+			GemsTotal = runToUpload.GemsTotal,
+			HomingStored = runToUpload.HomingStored,
+			HomingEaten = runToUpload.HomingEaten,
+			EnemiesKilled = runToUpload.EnemiesKilled,
+			LevelUpTime2InSeconds = runToUpload.LevelUpTime2,
+			LevelUpTime3InSeconds = runToUpload.LevelUpTime3,
+			LevelUpTime4InSeconds = runToUpload.LevelUpTime4,
 			LevelUpTime2AsBytes = levelUpTime2AsBytes,
 			LevelUpTime3AsBytes = levelUpTime3AsBytes,
 			LevelUpTime4AsBytes = levelUpTime4AsBytes,
-			PlayerId = block.PlayerId,
-			SurvivalHashMd5 = block.SurvivalHashMd5,
-			TimeInSeconds = block.Time,
+			PlayerId = runToUpload.PlayerId,
+			SurvivalHashMd5 = runToUpload.SurvivalHashMd5,
+			TimeInSeconds = runToUpload.Time,
 			TimeAsBytes = timeAsBytes,
-			PlayerName = block.PlayerName,
-			IsReplay = block.IsReplay,
+			PlayerName = runToUpload.PlayerName,
+			IsReplay = runToUpload.IsReplay,
 			Validation = HttpUtility.HtmlEncode(validation),
 			ValidationVersion = 2,
-			GameData = GetGameDataForUpload(block, statsBuffer),
+			GameData = GetGameDataForUpload(runToUpload, statsBuffer),
 #if DEBUG
 			BuildMode = "DEBUG",
 #else
 			BuildMode = "RELEASE",
 #endif
 			OperatingSystem = Root.Dependencies.PlatformSpecificValues.OperatingSystem.ToString(),
-			ProhibitedMods = block.ProhibitedMods,
+			ProhibitedMods = runToUpload.ProhibitedMods,
 			Client = "ddinfo-tools",
 			ReplayData = memoryService.ReadReplayFromMemory(),
-			Status = block.Status,
-			ReplayPlayerId = block.ReplayPlayerId,
-			GameMode = block.GameMode,
-			TimeAttackOrRaceFinished = block.TimeAttackOrRaceFinished,
+			Status = runToUpload.Status,
+			ReplayPlayerId = runToUpload.ReplayPlayerId,
+			GameMode = runToUpload.GameMode,
+			TimeAttackOrRaceFinished = runToUpload.TimeAttackOrRaceFinished,
 		};
 
 		AsyncHandler.Run(OnSubmit, () => UploadSubmission.HandleAsync(uploadRequest));
