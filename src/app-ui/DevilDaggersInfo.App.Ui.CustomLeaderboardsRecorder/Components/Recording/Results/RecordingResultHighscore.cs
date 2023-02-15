@@ -46,12 +46,17 @@ public class RecordingResultHighscore : RecordingResultScoreView
 		Add("Daggers fired", response.DaggersFiredState, i => i.ToString(), i => $"{i:+0;-0;+0}");
 		Add("Daggers hit", response.DaggersHitState, i => i.ToString(), i => $"{i:+0;-0;+0}");
 
-		GetScoreState<double> accuracy = new()
+		static double GetAccuracy(int daggersFired, int daggersHit)
+			=> daggersFired == 0 ? 0 : daggersHit / (double)daggersFired;
+
+		double accuracy = GetAccuracy(response.DaggersFiredState.Value, response.DaggersHitState.Value);
+		double oldAccuracy = GetAccuracy(response.DaggersFiredState.Value - response.DaggersFiredState.ValueDifference, response.DaggersHitState.Value - response.DaggersHitState.ValueDifference);
+		GetScoreState<double> accuracyState = new()
 		{
-			Value = response.DaggersFiredState.Value == 0 ? 0 : response.DaggersHitState.Value / (double)response.DaggersFiredState.Value,
-			ValueDifference = response.DaggersFiredState.ValueDifference == 0 ? 0 : response.DaggersHitState.ValueDifference / (double)response.DaggersFiredState.ValueDifference,
+			Value = accuracy,
+			ValueDifference = accuracy - oldAccuracy,
 		};
-		Add("Accuracy", accuracy, i => i.ToString(StringFormats.AccuracyFormat), i => $"{i:+0.00%;-0.00%;+0.00%}");
+		Add("Accuracy", accuracyState, i => i.ToString(StringFormats.AccuracyFormat), i => $"{i:+0.00%;-0.00%;+0.00%}");
 
 		AddSpacing(ref y);
 		AddIcon(ref y, WarpTextures.IconSkull, EnemiesV3_2.Skull4.Color.ToWarpColor());
