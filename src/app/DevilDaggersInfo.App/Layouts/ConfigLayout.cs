@@ -105,15 +105,13 @@ public class ConfigLayout : Layout, IExtendedLayout
 
 		Game.Self.MonoSpaceFontRenderer16.Schedule(Vector2i<int>.One, new(32, 32), 0, Color.White, "SETTINGS", TextAlign.Left);
 
- #pragma warning disable S1075
+#pragma warning disable S1075
 #if LINUX
 		const string examplePath = "/home/{USERNAME}/.local/share/Steam/steamapps/common/devildaggers/";
 #elif WINDOWS
 		const string examplePath = """C:\Program Files (x86)\Steam\steamapps\common\devildaggers""";
-#else
-		const string examplePath = "(no example for this operating system)";
 #endif
- #pragma warning restore S1075
+#pragma warning restore S1075
 
 		const string text = $"""
 			Please configure your Devil Daggers installation directory.
