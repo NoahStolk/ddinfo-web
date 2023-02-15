@@ -1,5 +1,17 @@
 [
 	{
+		"VersionNumber": "0.2.4.0",
+		"Date": "2023-02-16T00:00:00", // probably
+		"Changes": [
+			{
+				"Description": "Fixed concurrency bug where the run would not upload when going to the menu too fast while the app is still waiting for the game to load memory stats and replay."
+			},
+			{
+				"Description": "Fixed incorrect accuracy difference in highscore result."
+			}
+		]
+	},
+	{
 		"VersionNumber": "0.2.3.0",
 		"Date": "2023-02-14T00:00:00",
 		"Changes": [
@@ -142,7 +154,7 @@
 	},
 	{
 		"VersionNumber": "0.0.0.0",
-		"Date": "2023-10-09T00:00:00",
+		"Date": "2022-10-09T00:00:00",
 		"Changes": [
 			{
 				"Description": "Initial alpha release."
