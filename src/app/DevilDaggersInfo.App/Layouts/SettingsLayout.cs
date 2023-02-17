@@ -1,12 +1,15 @@
 using DevilDaggersInfo.App.Ui.Base.Components;
+using DevilDaggersInfo.App.Ui.Base.Components.Styles;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.Rendering;
 using DevilDaggersInfo.App.Ui.Base.Settings;
+using DevilDaggersInfo.App.Ui.Base.Settings.Model;
 using DevilDaggersInfo.App.Ui.Base.StateManagement;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.Base.Actions;
 using DevilDaggersInfo.App.Ui.Base.Styling;
 using Warp.NET.Text;
 using Warp.NET.Ui;
+using Warp.NET.Ui.Components;
 
 namespace DevilDaggersInfo.App.Layouts;
 
@@ -15,23 +18,40 @@ public class SettingsLayout : Layout, IExtendedLayout
 	public SettingsLayout()
 	{
 		const int headerHeight = 24;
+		const int labelX = 256;
+		const int settingX = 512;
+
 		MainLayoutBackButton backButton = new(new PixelBounds(0, 0, 24, headerHeight), () => StateManager.Dispatch(new SetLayout(Root.Dependencies.MainLayout)));
 		NestingContext.Add(backButton);
 
-		NestingContext.Add(new Label(new PixelBounds(32, 384, 256, 32), "Scale UI to window", LabelStyles.DefaultLeft));
-		NestingContext.Add(new Label(new PixelBounds(32, 448, 256, 32), "Show debug output", LabelStyles.DefaultLeft));
-		NestingContext.Add(new Label(new PixelBounds(32, 512, 256, 32), "Render while window is inactive", LabelStyles.DefaultLeft));
-		NestingContext.Add(new Label(new PixelBounds(32, 640, 256, 32), "Max FPS", LabelStyles.DefaultLeft));
+		int y = 128;
+		Checkbox scaleUiToWindowCheckbox = AddCheckbox("Scale UI to window", OnChangeScaleUiToWindow);
+		Checkbox showDebugOutputCheckbox = AddCheckbox("Show debug output", b => UserSettings.Model = UserSettings.Model with { ShowDebugOutput = b });
+		Checkbox renderWhileWindowIsInactiveCheckbox = AddCheckbox("Render while window is inactive", b => UserSettings.Model = UserSettings.Model with { RenderWhileWindowIsInactive = b });
+		Slider maxFpsSlider = AddSlider("Max FPS", f => UserSettings.Model = UserSettings.Model with { MaxFps = (int)f }, false, UserSettingsModel.MaxFpsMin, UserSettingsModel.MaxFpsMax, 1, UserSettings.Model.MaxFps, SliderStyles.Default with { ValueFormat = "0" });
+		Slider lookSpeedSlider = AddSlider("Look speed", f => UserSettings.Model = UserSettings.Model with { LookSpeed = f }, false, UserSettingsModel.LookSpeedMin, UserSettingsModel.LookSpeedMax, 0.05f, UserSettings.Model.LookSpeed, SliderStyles.Default);
+		Slider fieldOfViewSlider = AddSlider("Field of view", f => UserSettings.Model = UserSettings.Model with { FieldOfView = f }, false, UserSettingsModel.FieldOfViewMin, UserSettingsModel.FieldOfViewMax, 0.01f, UserSettings.Model.FieldOfView, SliderStyles.Default);
 
-		Checkbox scaleUiToWindowCheckbox = new(new PixelBounds(48, 416, 24, 24), OnChangeScaleUiToWindow);
-		Checkbox showDebugOutputCheckbox = new(new PixelBounds(48, 480, 24, 24), b => UserSettings.Model = UserSettings.Model with { ShowDebugOutput = b });
-		Checkbox renderWhileWindowIsInactiveCheckbox = new(new PixelBounds(48, 544, 24, 24), b => UserSettings.Model = UserSettings.Model with { RenderWhileWindowIsInactive = b });
-		Slider maxFpsSlider = new(new PixelBounds(48, 608, 256, 24), f => UserSettings.Model = UserSettings.Model with { MaxFps = (int)f }, false, 60, 300, 1, UserSettings.Model.MaxFps, SliderStyles.Default with { ValueFormat = "0" });
+		Checkbox AddCheckbox(string label, Action<bool> onClick)
+		{
+			Checkbox checkbox = new(new PixelBounds(settingX, y, 24, 24), onClick);
+			AddSetting(label, checkbox);
+			return checkbox;
+		}
 
-		NestingContext.Add(scaleUiToWindowCheckbox);
-		NestingContext.Add(showDebugOutputCheckbox);
-		NestingContext.Add(renderWhileWindowIsInactiveCheckbox);
-		NestingContext.Add(maxFpsSlider);
+		Slider AddSlider(string label, Action<float> onChange, bool showValue, float min, float max, float step, float defaultValue, SliderStyle sliderStyle)
+		{
+			Slider slider = new(new PixelBounds(settingX, y, 256, 24), onChange, showValue, min, max, step, defaultValue, sliderStyle);
+			AddSetting(label, slider);
+			return slider;
+		}
+
+		void AddSetting(string label, AbstractComponent component)
+		{
+			NestingContext.Add(new Label(new PixelBounds(labelX, y, 256, 32), label, LabelStyles.DefaultLeft));
+			NestingContext.Add(component);
+			y += 32;
+		}
 
 		StateManager.Subscribe<UserSettingsLoaded>(OnUserSettingsLoaded);
 
@@ -41,6 +61,8 @@ public class SettingsLayout : Layout, IExtendedLayout
 			showDebugOutputCheckbox.CurrentValue = UserSettings.Model.ShowDebugOutput;
 			renderWhileWindowIsInactiveCheckbox.CurrentValue = UserSettings.Model.RenderWhileWindowIsInactive;
 			maxFpsSlider.CurrentValue = UserSettings.Model.MaxFps;
+			lookSpeedSlider.CurrentValue = UserSettings.Model.LookSpeed;
+			fieldOfViewSlider.CurrentValue = UserSettings.Model.FieldOfView;
 		}
 	}
 
