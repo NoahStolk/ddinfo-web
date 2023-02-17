@@ -25,6 +25,8 @@ public class Camera
 
 	public Vector3State PositionState { get; } = new(default);
 
+	public bool IsMenuCamera { get; set; } = true;
+
 	public void Reset(Vector3 position)
 	{
 		PositionState.Physics = position;
@@ -38,6 +40,13 @@ public class Camera
 	{
 		PositionState.PrepareUpdate();
 		_rotationState.PrepareUpdate();
+
+		if (IsMenuCamera)
+		{
+			PositionState.Physics = new(MathF.Sin(Root.Game.Tt) * 5, 6, MathF.Cos(Root.Game.Tt) * 5);
+			_rotationState.Physics = Quaternion.CreateFromRotationMatrix(SetRotationFromDirectionalVector(new Vector3(0, 4, 0) - PositionState.Physics));
+			return;
+		}
 
 		HandleKeys();
 		HandleMouse();
@@ -148,5 +157,28 @@ public class Camera
 		const float nearPlaneDistance = 0.05f;
 		const float farPlaneDistance = 10000f;
 		Projection = Matrix4x4.CreatePerspectiveFieldOfView(MathF.PI / 4 * fieldOfView, aspectRatio, nearPlaneDistance, farPlaneDistance);
+	}
+
+	private static Matrix4x4 SetRotationFromDirectionalVector(Vector3 direction)
+	{
+		Vector3 m3 = Vector3.Normalize(direction);
+		Vector3 m1 = Vector3.Normalize(Vector3.Cross(Vector3.UnitY, m3));
+		Vector3 m2 = Vector3.Normalize(Vector3.Cross(m3, m1));
+
+		Matrix4x4 matrix = Matrix4x4.Identity;
+
+		matrix.M11 = m1.X;
+		matrix.M12 = m1.Y;
+		matrix.M13 = m1.Z;
+
+		matrix.M21 = m2.X;
+		matrix.M22 = m2.Y;
+		matrix.M23 = m2.Z;
+
+		matrix.M31 = m3.X;
+		matrix.M32 = m3.Y;
+		matrix.M33 = m3.Z;
+
+		return matrix;
 	}
 }

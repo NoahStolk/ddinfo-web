@@ -35,7 +35,7 @@ public class SurvivalEditor3dLayout : Layout, IExtendedLayout
 		_shrinkSlider.Max = StateManager.SpawnsetState.Spawnset.GetSliderMaxSeconds();
 		_shrinkSlider.CurrentValue = Math.Clamp(_shrinkSlider.CurrentValue, 0, _shrinkSlider.Max);
 
-		_arenaScene.BuildArena(StateManager.SpawnsetState.Spawnset);
+		_arenaScene.BuildSpawnset(StateManager.SpawnsetState.Spawnset);
 	}
 
 	public unsafe void Update()

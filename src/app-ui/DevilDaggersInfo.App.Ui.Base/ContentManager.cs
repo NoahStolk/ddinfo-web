@@ -59,7 +59,8 @@ public static class ContentManager
 			new(AssetType.Mesh, "tile"),
 			new(AssetType.Texture, "tile"),
 			new(AssetType.Mesh, "pillar"),
-			new(AssetType.Texture, "pillar"));
+			new(AssetType.Texture, "pillar"),
+			new(AssetType.Texture, "post_lut"));
 
 		ModBinaryReadFilter audioReadFilter = ModBinaryReadFilter.Assets(
 			new(AssetType.Audio, "jump1"),
@@ -89,7 +90,8 @@ public static class ContentManager
 			PillarTexture: GetTexture(ddBinary, "pillar"),
 			SoundJump1: GetSound(audioBinary, "jump1"),
 			SoundJump2: GetSound(audioBinary, "jump2"),
-			SoundJump3: GetSound(audioBinary, "jump3"));
+			SoundJump3: GetSound(audioBinary, "jump3"),
+			PostLut: GetTexture(ddBinary, "post_lut"));
 	}
 
 	private static Mesh GetMesh(ModBinary ddBinary, string meshName)
