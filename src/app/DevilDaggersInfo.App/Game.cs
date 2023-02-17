@@ -4,7 +4,6 @@ using DevilDaggersInfo.App.Ui.Base.Rendering;
 using DevilDaggersInfo.App.Ui.Base.Rendering.Renderers;
 using DevilDaggersInfo.App.Ui.Base.Settings;
 using DevilDaggersInfo.App.Ui.Base.StateManagement;
-using DevilDaggersInfo.App.Ui.Base.StateManagement.Base.Actions;
 using DevilDaggersInfo.Common.Utils;
 using DevilDaggersInfo.Core.Versioning;
 using Silk.NET.OpenGL;

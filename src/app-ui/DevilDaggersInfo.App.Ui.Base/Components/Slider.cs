@@ -24,6 +24,6 @@ public class Slider : AbstractSlider
 		Root.Game.RectangleRenderer.Schedule(Bounds.Size, scrollOffset + Bounds.Center, Depth, Color.White);
 		Root.Game.RectangleRenderer.Schedule(Bounds.Size - borderVec, scrollOffset + Bounds.Center, Depth + 1, Hold ? Color.Gray(0.5f) : Hover ? Color.Gray(0.25f) : Color.Black);
 
-		Root.Game.GetFontRenderer(SliderStyle.FontSize).Schedule(Vector2i<int>.One, scrollOffset + Bounds.Center, Depth + 3, SliderStyle.TextColor, CurrentValue.ToString("0.00"), SliderStyle.TextAlign);
+		Root.Game.GetFontRenderer(SliderStyle.FontSize).Schedule(Vector2i<int>.One, scrollOffset + Bounds.Center, Depth + 3, SliderStyle.TextColor, CurrentValue.ToString(SliderStyle.ValueFormat), SliderStyle.TextAlign);
 	}
 }

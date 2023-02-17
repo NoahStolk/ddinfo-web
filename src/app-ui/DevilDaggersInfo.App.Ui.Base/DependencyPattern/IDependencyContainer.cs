@@ -25,6 +25,7 @@ public interface IDependencyContainer
 	#region UI Base dependencies
 
 	IExtendedLayout ConfigLayout { get; }
+	IExtendedLayout SettingsLayout { get; }
 	IExtendedLayout MainLayout { get; }
 
 	#endregion UI Base dependencies

@@ -10,8 +10,6 @@ public record UserSettingsModel
 
 	public required bool RenderWhileWindowIsInactive { get; init; }
 
-	public required bool AlwaysRecordMemoryForCustomLeaderboards { get; init; }
-
 	public required int MaxFps { get; init; }
 
 	public static UserSettingsModel Default { get; } = new()
@@ -20,7 +18,6 @@ public record UserSettingsModel
 		ScaleUiToWindow = true,
 		ShowDebugOutput = false,
 		RenderWhileWindowIsInactive = true,
-		AlwaysRecordMemoryForCustomLeaderboards = false,
 		MaxFps = 300,
 	};
 }
