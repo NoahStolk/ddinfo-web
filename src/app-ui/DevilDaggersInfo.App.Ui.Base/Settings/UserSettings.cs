@@ -50,9 +50,7 @@ public static class UserSettings
 			UserSettingsModel? deserializedModel = JsonSerializer.Deserialize<UserSettingsModel>(File.ReadAllText(_filePath));
 			if (deserializedModel != null)
 			{
-				_model = deserializedModel;
-
-				_model = _model with
+				_model = deserializedModel with
 				{
 					MaxFps = Math.Clamp(_model.MaxFps, UserSettingsModel.MaxFpsMin, UserSettingsModel.MaxFpsMax),
 					LookSpeed = Math.Clamp(_model.LookSpeed, UserSettingsModel.LookSpeedMin, UserSettingsModel.LookSpeedMax),
