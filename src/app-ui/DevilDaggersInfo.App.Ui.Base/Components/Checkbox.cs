@@ -6,7 +6,7 @@ namespace DevilDaggersInfo.App.Ui.Base.Components;
 
 public class Checkbox : AbstractCheckbox
 {
-	public Checkbox(NormalizedBounds bounds, Action<bool> onClick)
+	public Checkbox(IBounds bounds, Action<bool> onClick)
 		: base(bounds, onClick)
 	{
 	}
@@ -17,7 +17,7 @@ public class Checkbox : AbstractCheckbox
 
 		const int margin = 8;
 		const int border = 4;
-		const int borderTick = 16;
+		const int borderTick = 6;
 
 		Vector2i<int> marginVec = new(margin);
 		Vector2i<int> borderVec = new(border);

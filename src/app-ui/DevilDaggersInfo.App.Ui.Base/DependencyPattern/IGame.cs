@@ -10,6 +10,7 @@ public interface IGame
 
 	float Dt { get; }
 	float Tt { get; }
+	float MainLoopRate { get; set; }
 
 	string? TooltipText { get; set; }
 

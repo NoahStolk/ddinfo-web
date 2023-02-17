@@ -1,4 +1,5 @@
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
+using DevilDaggersInfo.App.Ui.Base.Settings;
 using Silk.NET.GLFW;
 using Warp.NET;
 using Warp.NET.Common.Maths;
@@ -119,7 +120,7 @@ public class Camera
 		}
 		else if (Input.IsButtonHeld(_lookButton) && _lockedMousePosition.HasValue && mousePosition != _lockedMousePosition)
 		{
-			const float lookSpeed = 20;
+			float lookSpeed = UserSettings.Model.LookSpeed;
 
 			Vector2i<int> delta = mousePosition - _lockedMousePosition.Value;
 			_yaw -= lookSpeed * delta.X * 0.0001f;
@@ -143,7 +144,7 @@ public class Camera
 
 		float aspectRatio = CurrentWindowState.Width / (float)CurrentWindowState.Height;
 
-		const int fieldOfView = 2;
+		float fieldOfView = UserSettings.Model.FieldOfView;
 		const float nearPlaneDistance = 0.05f;
 		const float farPlaneDistance = 10000f;
 		Projection = Matrix4x4.CreatePerspectiveFieldOfView(MathF.PI / 4 * fieldOfView, aspectRatio, nearPlaneDistance, farPlaneDistance);

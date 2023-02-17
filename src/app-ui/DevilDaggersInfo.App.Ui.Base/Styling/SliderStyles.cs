@@ -6,5 +6,5 @@ namespace DevilDaggersInfo.App.Ui.Base.Styling;
 
 public static class SliderStyles
 {
-	public static SliderStyle Default { get; } = new(Color.White, 2, TextAlign.Middle, FontSize.H12);
+	public static SliderStyle Default { get; } = new(Color.White, 2, TextAlign.Middle, FontSize.H12, "0.00");
 }
