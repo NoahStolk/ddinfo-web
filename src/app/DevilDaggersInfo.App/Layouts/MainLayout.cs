@@ -38,7 +38,7 @@ public class MainLayout : Layout, IExtendedLayout
 		AddButton(2, 0, Color.FromHsv(220, 1, 1.0f), () => { }, "Replay Editor (todo)");
 		AddButton(0, 1, Color.FromHsv(270, 1, 1.0f), () => StateManager.Dispatch(new SetLayout(Root.Dependencies.CustomLeaderboardsRecorderMainLayout)), "Custom Leaderboards");
 		AddButton(1, 1, Color.FromHsv(032, 1, 0.8f), () => { }, "Practice (todo)");
-		AddButton(2, 1, Color.FromHsv(300, 1, 1.0f), () => { }, "Mod Manager (todo)");
+		AddButton(2, 1, Color.FromHsv(320, 1, 0.8f), () => { }, "Mod Manager (todo)");
 		AddButton(0, 2, Color.Gray(0.3f), () => StateManager.Dispatch(new SetLayout(Root.Dependencies.ConfigLayout)), "Configuration");
 		AddButton(1, 2, Color.Gray(0.3f), () => StateManager.Dispatch(new SetLayout(Root.Dependencies.SettingsLayout)), "Settings");
 		AddButton(2, 2, Color.Gray(0.3f), () => Environment.Exit(0), "Exit");
@@ -47,9 +47,9 @@ public class MainLayout : Layout, IExtendedLayout
 		{
 			int xPos = x switch
 			{
-				0 => 128,
-				1 => 384,
-				_ => 640,
+				0 => 160,
+				1 => 416,
+				_ => 672,
 			};
 			int yPos = y * 128 + 256;
 			NestingContext.Add(new TextButton(new PixelBounds(xPos, yPos, 192, 96), onClick, GetStyle(color), textButtonStyle, text));

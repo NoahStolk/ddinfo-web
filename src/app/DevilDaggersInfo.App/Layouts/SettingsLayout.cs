@@ -26,7 +26,7 @@ public class SettingsLayout : Layout, IExtendedLayout
 		Checkbox scaleUiToWindowCheckbox = new(new PixelBounds(48, 416, 24, 24), OnChangeScaleUiToWindow);
 		Checkbox showDebugOutputCheckbox = new(new PixelBounds(48, 480, 24, 24), b => UserSettings.Model = UserSettings.Model with { ShowDebugOutput = b });
 		Checkbox renderWhileWindowIsInactiveCheckbox = new(new PixelBounds(48, 544, 24, 24), b => UserSettings.Model = UserSettings.Model with { RenderWhileWindowIsInactive = b });
-		Slider maxFpsSlider = new(new PixelBounds(48, 608, 256, 24), f => UserSettings.Model = UserSettings.Model with { MaxFps = (int)f }, false, 60, 300, 1, UserSettings.Model.MaxFps, SliderStyles.Default);
+		Slider maxFpsSlider = new(new PixelBounds(48, 608, 256, 24), f => UserSettings.Model = UserSettings.Model with { MaxFps = (int)f }, false, 60, 300, 1, UserSettings.Model.MaxFps, SliderStyles.Default with { ValueFormat = "0" });
 
 		NestingContext.Add(scaleUiToWindowCheckbox);
 		NestingContext.Add(showDebugOutputCheckbox);
@@ -63,6 +63,6 @@ public class SettingsLayout : Layout, IExtendedLayout
 		Vector2i<int> windowScale = new(CurrentWindowState.Width, CurrentWindowState.Height);
 		Game.Self.RectangleRenderer.Schedule(windowScale, windowScale / 2, -100, Color.Gray(0.1f));
 
-		Game.Self.MonoSpaceFontRenderer16.Schedule(Vector2i<int>.One, new(32, 32), 0, Color.White, "Settings", TextAlign.Left);
+		Game.Self.MonoSpaceFontRenderer32.Schedule(Vector2i<int>.One, new(512, 64), 0, Color.White, "Settings", TextAlign.Middle);
 	}
 }

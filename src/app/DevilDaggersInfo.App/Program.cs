@@ -14,7 +14,7 @@ public static class Program
 {
 	public static unsafe void Main()
 	{
-		const int debugTimeout = 5;
+		const int debugTimeout = 3;
 		Stopwatch sw = Stopwatch.StartNew();
 
 		OnChangeWindowSize = (w, h) =>

@@ -21,13 +21,13 @@ public class ConfigLayout : Layout, IExtendedLayout
 
 	public ConfigLayout()
 	{
-		TextButton installationDirectoryButton = new(new PixelBounds(32, 144, 256, 32), PickInstallationDirectory, ButtonStyles.Default, new(Color.White, TextAlign.Middle, FontSize.H12), "Select installation directory");
+		TextButton installationDirectoryButton = new(new PixelBounds(32, 208, 256, 32), PickInstallationDirectory, ButtonStyles.Default, new(Color.White, TextAlign.Middle, FontSize.H12), "Select installation directory");
 		NestingContext.Add(installationDirectoryButton);
 
-		_installationDirectoryInput = new(new PixelBounds(320, 144, 640, 32), false, null, null, null, TextInputStyles.Default with { FontSize = FontSize.H16 });
+		_installationDirectoryInput = new(new PixelBounds(320, 208, 640, 32), false, null, null, null, TextInputStyles.Default with { FontSize = FontSize.H16 });
 		NestingContext.Add(_installationDirectoryInput);
 
-		NestingContext.Add(new TextButton(new PixelBounds(32, 320, 256, 32), CheckInstallationDirectory, ButtonStyles.Default, new(Color.White, TextAlign.Middle, FontSize.H12), "Save and continue"));
+		NestingContext.Add(new TextButton(new PixelBounds(384, 384, 256, 64), CheckInstallationDirectory, ButtonStyles.Default, new(Color.White, TextAlign.Middle, FontSize.H24), "Save and continue"));
 
 		StateManager.Subscribe<SetLayout>(SetLayout);
 		StateManager.Subscribe<UserSettingsLoaded>(ValidateInstallation);
@@ -62,6 +62,7 @@ public class ConfigLayout : Layout, IExtendedLayout
 		}
 
 		StateManager.Dispatch(new SetLayout(Root.Dependencies.MainLayout));
+		_error = null;
 
 		if (_contentInitialized)
 			return;
@@ -91,7 +92,7 @@ public class ConfigLayout : Layout, IExtendedLayout
 		Vector2i<int> windowScale = new(CurrentWindowState.Width, CurrentWindowState.Height);
 		Game.Self.RectangleRenderer.Schedule(windowScale, windowScale / 2, -100, Color.Gray(0.1f));
 
-		Game.Self.MonoSpaceFontRenderer16.Schedule(Vector2i<int>.One, new(32, 32), 0, Color.White, "Configuration", TextAlign.Left);
+		Game.Self.MonoSpaceFontRenderer32.Schedule(Vector2i<int>.One, new(512, 64), 0, Color.White, "Configuration", TextAlign.Middle);
 
 #pragma warning disable S1075
 #if LINUX
@@ -108,8 +109,8 @@ public class ConfigLayout : Layout, IExtendedLayout
 
 			Example: {examplePath}
 			""";
-		Game.Self.MonoSpaceFontRenderer12.Schedule(Vector2i<int>.One, new(32, 64), 0, Color.White, text, TextAlign.Left);
+		Game.Self.MonoSpaceFontRenderer12.Schedule(Vector2i<int>.One, new(32, 128), 0, Color.White, text, TextAlign.Left);
 		if (!string.IsNullOrWhiteSpace(_error))
-			Game.Self.MonoSpaceFontRenderer12.Schedule(Vector2i<int>.One, new(32, 192), 0, Color.Red, _error, TextAlign.Left);
+			Game.Self.MonoSpaceFontRenderer12.Schedule(Vector2i<int>.One, new(32, 256), 0, Color.Red, _error, TextAlign.Left);
 	}
 }
