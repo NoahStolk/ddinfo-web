@@ -18,4 +18,5 @@ public record ContentContainer(
 	Texture PillarTexture,
 	Sound SoundJump1,
 	Sound SoundJump2,
-	Sound SoundJump3);
+	Sound SoundJump3,
+	Texture PostLut);

@@ -1,26 +1,18 @@
-using DevilDaggersInfo.Core.Replay.PostProcessing.ReplaySimulation;
+using DevilDaggersInfo.App.Ui.Base;
 using Silk.NET.OpenGL;
 using Warp.NET.Content;
-using Warp.NET.Debugging;
 
 namespace DevilDaggersInfo.App.Ui.Scene.GameObjects;
 
-public class Player
+public class Skull4
 {
-	private static uint _vao;
-
-	private readonly ReplaySimulation _movementTimeline;
-	private readonly PlayerMovement _mesh;
-
-	public Player(ReplaySimulation movementTimeline)
-	{
-		_movementTimeline = movementTimeline;
-		_mesh = new(_vao, WarpModels.PlayerMovement.MainMesh, Quaternion.Identity, default);
-	}
+	private static uint _vaoMain;
+	private static uint _vaoJaw;
 
 	public static unsafe void Initialize()
 	{
-		_vao = CreateVao(WarpModels.PlayerMovement.MainMesh);
+		_vaoMain = CreateVao(ContentManager.Content.Skull4Mesh);
+		_vaoJaw = CreateVao(ContentManager.Content.Skull4JawMesh);
 
 		static uint CreateVao(Mesh mesh)
 		{
@@ -51,23 +43,23 @@ public class Player
 		}
 	}
 
-	public void Update(int currentTick)
+	public unsafe void Render()
 	{
-		const float offsetY = 3.3f;
+		Matrix4x4 model = Matrix4x4.CreateScale(1.5f) * Matrix4x4.CreateTranslation(new(0, 4f, 0));
+		Shader.SetMatrix4x4(MeshUniforms.Model, model);
 
-		_mesh.PrepareUpdate();
+		ContentManager.Content.Skull4Texture.Use();
 
-		PlayerMovementSnapshot snapshot = _movementTimeline.GetPlayerMovementSnapshot(currentTick);
-		_mesh.RotationState.Physics = snapshot.Rotation;
-		_mesh.PositionState.Physics = snapshot.Position + new Vector3(0, offsetY, 0);
+		Gl.BindVertexArray(_vaoMain);
+		fixed (uint* i = &ContentManager.Content.Skull4Mesh.Indices[0])
+			Gl.DrawElements(PrimitiveType.Triangles, (uint)ContentManager.Content.Skull4Mesh.Indices.Length, DrawElementsType.UnsignedInt, i);
 
-		DebugStack.Add($"Player position: {snapshot.IsOnGround} {snapshot.Position}");
-	}
+		ContentManager.Content.Skull4JawTexture.Use();
 
-	public void Render()
-	{
-		WarpTextures.Blank.Use();
+		Gl.BindVertexArray(_vaoJaw);
+		fixed (uint* i = &ContentManager.Content.Skull4JawMesh.Indices[0])
+			Gl.DrawElements(PrimitiveType.Triangles, (uint)ContentManager.Content.Skull4JawMesh.Indices.Length, DrawElementsType.UnsignedInt, i);
 
-		_mesh.Render();
+		Gl.BindVertexArray(0);
 	}
 }

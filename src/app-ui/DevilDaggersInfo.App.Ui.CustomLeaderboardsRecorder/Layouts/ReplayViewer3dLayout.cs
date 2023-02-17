@@ -41,7 +41,7 @@ public class ReplayViewer3dLayout : Layout, IExtendedLayout
 		_shrinkSlider.Max = StateManager.ReplaySceneState.ReplayBinaries.Max(rb => rb.EventsData.TickCount / 60f);
 		_shrinkSlider.CurrentValue = Math.Clamp(_shrinkSlider.CurrentValue, 0, _shrinkSlider.Max);
 
-		_arenaScene.BuildArena(spawnset);
+		_arenaScene.BuildSpawnset(spawnset);
 
 		ReplaySimulation replaySimulation = ReplaySimulationBuilder.Build(spawnset, StateManager.ReplaySceneState.ReplayBinaries[0]);
 

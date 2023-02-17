@@ -5,12 +5,12 @@ using Warp.NET.InterpolationStates;
 
 namespace DevilDaggersInfo.App.Ui.Scene.GameObjects;
 
-public class MeshObject
+public class PlayerMovement
 {
 	private readonly uint _vao;
 	private readonly Mesh _mesh;
 
-	public MeshObject(uint vao, Mesh mesh, Quaternion rotation, Vector3 position)
+	public PlayerMovement(uint vao, Mesh mesh, Quaternion rotation, Vector3 position)
 	{
 		_vao = vao;
 		_mesh = mesh;
