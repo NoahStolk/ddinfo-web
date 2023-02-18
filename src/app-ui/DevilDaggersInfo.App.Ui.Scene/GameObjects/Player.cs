@@ -1,3 +1,4 @@
+using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.Core.Replay.PostProcessing.ReplaySimulation;
 using Silk.NET.OpenGL;
 using Warp.NET.Content;
@@ -7,6 +8,8 @@ namespace DevilDaggersInfo.App.Ui.Scene.GameObjects;
 
 public class Player
 {
+	private static readonly Quaternion _rotationOffset = Quaternion.CreateFromAxisAngle(Vector3.UnitX, MathF.PI / 2) * Quaternion.CreateFromAxisAngle(Vector3.UnitY, MathF.PI) * Quaternion.CreateFromAxisAngle(Vector3.UnitZ, MathF.PI);
+
 	private static uint _vao;
 
 	private readonly ReplaySimulation _movementTimeline;
@@ -15,7 +18,7 @@ public class Player
 	public Player(ReplaySimulation movementTimeline)
 	{
 		_movementTimeline = movementTimeline;
-		_mesh = new(_vao, WarpModels.PlayerMovement.MainMesh, Quaternion.Identity, default);
+		_mesh = new(_vao, ContentManager.Content.Hand4Mesh, default, default);
 		Light = new(6, default, new(1, 0.5f, 0));
 	}
 
@@ -23,7 +26,7 @@ public class Player
 
 	public static unsafe void Initialize()
 	{
-		_vao = CreateVao(WarpModels.PlayerMovement.MainMesh);
+		_vao = CreateVao(ContentManager.Content.Hand4Mesh);
 
 		static uint CreateVao(Mesh mesh)
 		{
@@ -61,7 +64,7 @@ public class Player
 		_mesh.PrepareUpdate();
 
 		PlayerMovementSnapshot snapshot = _movementTimeline.GetPlayerMovementSnapshot(currentTick);
-		_mesh.RotationState.Physics = snapshot.Rotation;
+		_mesh.RotationState.Physics = snapshot.Rotation * _rotationOffset;
 		_mesh.PositionState.Physics = snapshot.Position + new Vector3(0, offsetY, 0);
 
 		Light.PositionState.Physics = _mesh.PositionState.Physics;
@@ -71,7 +74,7 @@ public class Player
 
 	public void Render()
 	{
-		WarpTextures.Blank.Use();
+		ContentManager.Content.Hand4Texture.Use();
 
 		_mesh.Render();
 	}

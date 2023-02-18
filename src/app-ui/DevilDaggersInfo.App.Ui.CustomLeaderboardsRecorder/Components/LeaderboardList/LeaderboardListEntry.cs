@@ -29,7 +29,7 @@ public class LeaderboardListEntry : LeaderboardListRow
 		int iconOffset = 0;
 		foreach (GetCustomLeaderboardCriteria criteria in customLeaderboard.Criteria)
 		{
-			CriteriaIcon icon = new(bounds.CreateNested(GridCriteria.Index + iconOffset, 0, 16, 16), criteria) { Depth = Depth + 102 };
+			CriteriaIcon icon = new(bounds.CreateNested(GridCriteria.Index + iconOffset, 0, 16, 16), criteria) { Depth = Depth + 1 };
 			NestingContext.Add(icon);
 
 			iconOffset += 16;
