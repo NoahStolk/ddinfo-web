@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.App.Core.NativeInterface.Services.Linux;
+namespace DevilDaggersInfo.App.Core.NativeInterface.Services.Linux;
 
 public class LinuxDialogService : INativeDialogService
 {

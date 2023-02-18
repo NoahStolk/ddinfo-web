@@ -1,5 +1,6 @@
 using DevilDaggersInfo.App.Ui.Base.StateManagement.Base.States;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.States;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.ReplayEditor.States;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.States;
 
 namespace DevilDaggersInfo.App.Ui.Base.StateManagement;
@@ -25,6 +26,9 @@ public static class StateManager
 	public static SpawnEditorState SpawnEditorState { get; private set; } = SpawnEditorState.GetDefault();
 	public static SpawnsetHistoryState SpawnsetHistoryState { get; private set; } = SpawnsetHistoryState.GetDefault();
 	public static SpawnsetState SpawnsetState { get; private set; } = SpawnsetState.GetDefault();
+
+	// Replay editor states.
+	public static ReplayState ReplayState { get; private set; } = ReplayState.GetDefault();
 
 	/// <summary>
 	/// <para>
@@ -92,6 +96,7 @@ public static class StateManager
 				SpawnEditorState = stateReducer.SpawnEditorState;
 				SpawnsetHistoryState = stateReducer.SpawnsetHistoryState;
 				SpawnsetState = stateReducer.SpawnsetState;
+				ReplayState = stateReducer.ReplayState;
 			}
 
 			if (_eventHandlers.TryGetValue(kvp.Key, out List<Action>? eventHandlers))
