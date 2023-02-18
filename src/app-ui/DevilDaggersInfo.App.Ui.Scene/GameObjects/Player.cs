@@ -16,7 +16,10 @@ public class Player
 	{
 		_movementTimeline = movementTimeline;
 		_mesh = new(_vao, WarpModels.PlayerMovement.MainMesh, Quaternion.Identity, default);
+		Light = new(6, default, new(1, 0.5f, 0));
 	}
+
+	public LightObject Light { get; }
 
 	public static unsafe void Initialize()
 	{
@@ -60,6 +63,8 @@ public class Player
 		PlayerMovementSnapshot snapshot = _movementTimeline.GetPlayerMovementSnapshot(currentTick);
 		_mesh.RotationState.Physics = snapshot.Rotation;
 		_mesh.PositionState.Physics = snapshot.Position + new Vector3(0, offsetY, 0);
+
+		Light.PositionState.Physics = _mesh.PositionState.Physics;
 
 		DebugStack.Add($"Player position: {snapshot.IsOnGround} {snapshot.Position}");
 	}

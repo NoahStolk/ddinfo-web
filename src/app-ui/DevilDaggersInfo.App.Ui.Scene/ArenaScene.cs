@@ -93,10 +93,14 @@ public class ArenaScene
 	{
 		_replaySimulation = replaySimulation;
 		_player = new(replaySimulation);
+		_lights.Add(_player.Light);
 	}
 
 	public void Update(int currentTick)
 	{
+		for (int i = 0; i < _lights.Count; i++)
+			_lights[i].PrepareUpdate();
+
 		_camera.Update();
 		_raceDagger?.Update(currentTick);
 		_player?.Update(currentTick);
@@ -123,6 +127,9 @@ public class ArenaScene
 
 	public void Render()
 	{
+		for (int i = 0; i < _lights.Count; i++)
+			_lights[i].PrepareRender();
+
 		_camera.PreRender();
 
 		WarpShaders.Mesh.Use();
