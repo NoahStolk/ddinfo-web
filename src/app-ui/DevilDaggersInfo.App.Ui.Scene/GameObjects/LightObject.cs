@@ -16,4 +16,18 @@ public class LightObject
 	public Vector3State PositionState { get; }
 
 	public Vector3State ColorState { get; }
+
+	public void PrepareUpdate()
+	{
+		RadiusState.PrepareUpdate();
+		PositionState.PrepareUpdate();
+		ColorState.PrepareUpdate();
+	}
+
+	public void PrepareRender()
+	{
+		RadiusState.PrepareRender();
+		PositionState.PrepareRender();
+		ColorState.PrepareRender();
+	}
 }
