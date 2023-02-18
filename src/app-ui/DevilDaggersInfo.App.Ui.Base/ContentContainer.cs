@@ -19,4 +19,6 @@ public record ContentContainer(
 	Sound SoundJump1,
 	Sound SoundJump2,
 	Sound SoundJump3,
-	Texture PostLut);
+	Texture PostLut,
+	Mesh Hand4Mesh,
+	Texture Hand4Texture);

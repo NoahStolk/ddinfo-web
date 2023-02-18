@@ -56,7 +56,7 @@ public static class ReplaySimulationBuilder
 		// Player movement constants
 		const float velocityEpsilon = 0.01f;
 		const float moveSpeed = 11.676f / 60f;
-		const float gravityForce = 0.16f / 60f;
+		const float gravityForce = 0.016f / 60f;
 
 		// Orientation
 		float yaw = lookSpeed * -inputs.MouseX;
@@ -99,7 +99,7 @@ public static class ReplaySimulationBuilder
 			if (playerContext.JumpCooldown <= 0 && inputs.Jump is JumpType.StartedPress or JumpType.Hold)
 			{
 				playerContext.JumpCooldown = 10; // Guess
-				playerContext.VelocityY = 0.35f; // Guess
+				playerContext.VelocityY = 0.1f; // Guess
 				playerContext.SpeedBoost = 1.5f; // Guess
 
 				// TODO: Use Jump2 when jump was not precise.
@@ -131,12 +131,12 @@ public static class ReplaySimulationBuilder
 		float horizontalSpeed = playerContext.Velocity.Length();
 
 		// TODO: When switching directions quickly, decrease accelerationAir by a lot. Air control should be controllable but this control should be lost when changing direction quickly.
-		// bool onlyLeft = inputs is { Left: true, Right: false };
-		// bool onlyRight = inputs is { Right: true, Left: false };
-		// bool onlyForward = inputs is { Forward: true, Backward: false };
-		// bool onlyBackward = inputs is { Backward: true, Forward: false };
-		// bool isStrafing = onlyLeft && onlyForward || onlyLeft && onlyBackward || onlyRight && onlyForward || onlyRight && onlyBackward;
-		float actualMoveSpeed = moveSpeed; // isStrafing ? moveSpeed * 1.41f : moveSpeed;
+		bool onlyLeft = inputs is { Left: true, Right: false };
+		bool onlyRight = inputs is { Right: true, Left: false };
+		bool onlyForward = inputs is { Forward: true, Backward: false };
+		bool onlyBackward = inputs is { Backward: true, Forward: false };
+		bool isStrafing = onlyLeft && onlyForward || onlyLeft && onlyBackward || onlyRight && onlyForward || onlyRight && onlyBackward;
+		float actualMoveSpeed = isStrafing ? moveSpeed * 1.41f : moveSpeed;
 		float addSpeed = Math.Clamp(actualMoveSpeed - horizontalSpeed, 0, 1 / 60f);
 		playerContext.Velocity += addSpeed * wishDirection;
 		playerContext.Position += new Vector3(playerContext.Velocity.X, playerContext.VelocityY, playerContext.Velocity.Y);

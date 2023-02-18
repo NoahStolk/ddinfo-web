@@ -34,7 +34,7 @@ public class PlayerMovement
 		RotationState.PrepareRender();
 		PositionState.PrepareRender();
 
-		Shader.SetMatrix4x4(MeshUniforms.Model, Matrix4x4.CreateFromQuaternion(RotationState.Render) * Matrix4x4.CreateTranslation(PositionState.Render));
+		Shader.SetMatrix4x4(MeshUniforms.Model, Matrix4x4.CreateScale(4) * Matrix4x4.CreateFromQuaternion(RotationState.Render) * Matrix4x4.CreateTranslation(PositionState.Render));
 
 		Gl.BindVertexArray(_vao);
 		fixed (uint* i = &_mesh.Indices[0])

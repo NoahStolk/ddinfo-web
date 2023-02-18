@@ -83,7 +83,7 @@ public class CustomLeaderboardsRecorderMainLayout : Layout, IExtendedLayout
 	public void Render()
 	{
 		const int border = 1;
-		Root.Game.RectangleRenderer.Schedule(_recordingScrollArea.ContentBounds.Size, _recordingScrollArea.ContentBounds.Center, 0, Color.Purple);
-		Root.Game.RectangleRenderer.Schedule(_recordingScrollArea.ContentBounds.Size - new Vector2i<int>(border * 2), _recordingScrollArea.ContentBounds.Center, 1, Color.Black);
+		Root.Game.RectangleRenderer.Schedule(_recordingScrollArea.Bounds.Size, _recordingScrollArea.Bounds.Center, -2, Color.Purple);
+		Root.Game.RectangleRenderer.Schedule(_recordingScrollArea.Bounds.Size - new Vector2i<int>(border * 2), _recordingScrollArea.Bounds.Center, -1, Color.Gray(0.1f));
 	}
 }
