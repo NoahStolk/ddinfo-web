@@ -94,12 +94,13 @@ public static class ReplaySimulationBuilder
 
 			playerContext.Gravity = 0;
 			playerContext.VelocityY = 0;
+			playerContext.Velocity *= 57 * (1 / 60f);
 
 			if (playerContext.JumpCooldown <= 0 && inputs.Jump is JumpType.StartedPress or JumpType.Hold)
 			{
-				playerContext.JumpCooldown = 10;// Guess
-				playerContext.VelocityY = 0.35f;// Guess
-				playerContext.SpeedBoost = 1.5f;// Guess
+				playerContext.JumpCooldown = 10; // Guess
+				playerContext.VelocityY = 0.35f; // Guess
+				playerContext.SpeedBoost = 1.5f; // Guess
 
 				// TODO: Use Jump2 when jump was not precise.
 				// ReplaySound replaySound = ReplaySound.Jump3;
@@ -130,10 +131,8 @@ public static class ReplaySimulationBuilder
 		float horizontalSpeed = playerContext.Velocity.Length();
 
 		// TODO: When switching directions quickly, decrease accelerationAir by a lot. Air control should be controllable but this control should be lost when changing direction quickly.
-		float addSpeed = Math.Clamp(moveSpeed - horizontalSpeed, 0, moveSpeed);
+		float addSpeed = Math.Clamp(moveSpeed - horizontalSpeed, 0, 1 / 60f);
 		playerContext.Velocity += addSpeed * wishDirection;
-
-		// Update state
 		playerContext.Position += new Vector3(playerContext.Velocity.X, playerContext.VelocityY, playerContext.Velocity.Y);
 	}
 
