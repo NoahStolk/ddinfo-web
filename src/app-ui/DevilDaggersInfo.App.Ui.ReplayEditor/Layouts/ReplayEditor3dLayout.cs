@@ -19,6 +19,7 @@ public class ReplayEditor3dLayout : Layout, IExtendedLayout
 	private readonly ArenaScene _arenaScene = new();
 
 	private int _currentTick;
+	private int _maxTick;
 
 	public ReplayEditor3dLayout()
 	{
@@ -34,8 +35,9 @@ public class ReplayEditor3dLayout : Layout, IExtendedLayout
 			throw new InvalidOperationException("Spawnset inside replay is invalid.");
 
 		_currentTick = 0;
+		_maxTick = StateManager.ReplayState.Replay.EventsData.TickCount;
 
-		_timeSlider.Max = StateManager.ReplayState.Replay.EventsData.TickCount / 60f;
+		_timeSlider.Max = _maxTick / 60f;
 		_timeSlider.CurrentValue = Math.Clamp(_timeSlider.CurrentValue, 0, _timeSlider.Max);
 
 		_arenaScene.BuildSpawnset(spawnset);
@@ -47,6 +49,9 @@ public class ReplayEditor3dLayout : Layout, IExtendedLayout
 
 	public unsafe void Update()
 	{
+		if (_currentTick > _maxTick)
+			_currentTick = 0;
+
 		_currentTick++;
 		_timeSlider.CurrentValue = _currentTick / 60f;
 
