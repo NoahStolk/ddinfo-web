@@ -2,6 +2,7 @@ namespace DevilDaggersInfo.App.Ui.Base.Settings.Model;
 
 public record UserSettingsModel
 {
+	// TODO: Required properties cause JSON deserialization to fail when the property is missing from the JSON file.
 	public required string DevilDaggersInstallationDirectory { get; init; }
 
 	public required bool ScaleUiToWindow { get; init; }

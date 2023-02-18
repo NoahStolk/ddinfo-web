@@ -2,16 +2,18 @@ namespace DevilDaggersInfo.Core.Replay.PostProcessing.ReplaySimulation;
 
 public record ReplaySimulation
 {
-	public ReplaySimulation(IReadOnlyList<PlayerMovementSnapshot> movementSnapshots, IReadOnlyList<SoundSnapshot> soundSnapshots)
+	public ReplaySimulation(IReadOnlyList<PlayerMovementSnapshot> movementSnapshots, IReadOnlyList<PlayerInputSnapshot> inputSnapshots, IReadOnlyList<SoundSnapshot> soundSnapshots)
 	{
 		if (movementSnapshots.Count == 0)
 			throw new InvalidOperationException("Cannot create a timeline from an empty list of snapshots.");
 
 		MovementSnapshots = movementSnapshots;
+		InputSnapshots = inputSnapshots;
 		SoundSnapshots = soundSnapshots;
 	}
 
 	public IReadOnlyList<PlayerMovementSnapshot> MovementSnapshots { get; }
+	public IReadOnlyList<PlayerInputSnapshot> InputSnapshots { get; }
 	public IReadOnlyList<SoundSnapshot> SoundSnapshots { get; }
 
 	public PlayerMovementSnapshot GetPlayerMovementSnapshot(int tick)
