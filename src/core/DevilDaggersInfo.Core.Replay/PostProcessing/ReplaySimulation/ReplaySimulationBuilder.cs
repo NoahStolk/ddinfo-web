@@ -131,7 +131,13 @@ public static class ReplaySimulationBuilder
 		float horizontalSpeed = playerContext.Velocity.Length();
 
 		// TODO: When switching directions quickly, decrease accelerationAir by a lot. Air control should be controllable but this control should be lost when changing direction quickly.
-		float addSpeed = Math.Clamp(moveSpeed - horizontalSpeed, 0, 1 / 60f);
+		// bool onlyLeft = inputs is { Left: true, Right: false };
+		// bool onlyRight = inputs is { Right: true, Left: false };
+		// bool onlyForward = inputs is { Forward: true, Backward: false };
+		// bool onlyBackward = inputs is { Backward: true, Forward: false };
+		// bool isStrafing = onlyLeft && onlyForward || onlyLeft && onlyBackward || onlyRight && onlyForward || onlyRight && onlyBackward;
+		float actualMoveSpeed = moveSpeed; // isStrafing ? moveSpeed * 1.41f : moveSpeed;
+		float addSpeed = Math.Clamp(actualMoveSpeed - horizontalSpeed, 0, 1 / 60f);
 		playerContext.Velocity += addSpeed * wishDirection;
 		playerContext.Position += new Vector3(playerContext.Velocity.X, playerContext.VelocityY, playerContext.Velocity.Y);
 	}
