@@ -43,4 +43,11 @@ public interface IDependencyContainer
 	IExtendedLayout CustomLeaderboardsRecorderReplayViewer3dLayout { get; }
 
 	#endregion UI DDCL dependencies
+
+	#region UI DDRE dependencies
+
+	IExtendedLayout ReplayEditorMainLayout { get; }
+	IExtendedLayout ReplayEditor3dLayout { get; }
+
+	#endregion UI DDRE dependencies
 }

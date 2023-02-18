@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Core.Replay.Events.Interfaces;
+using DevilDaggersInfo.Types.Core.Replays;
 
 namespace DevilDaggersInfo.Core.Replay;
 
@@ -40,7 +40,7 @@ public class ReplayBinary<TReplayBinaryHeader>
 	{
 		return new(
 			header: TReplayBinaryHeader.CreateDefault(),
-			compressedEvents: ReplayEventsCompiler.CompileEvents(new List<IEvent> { default(EndEvent) })); // TODO: Check if this is valid by saving this default empty replay and playing it in DD. Might need an initial inputs event.
+			compressedEvents: ReplayEventsCompiler.CompileEvents(new() { new InitialInputsEvent(false, false, false, false, JumpType.None, ShootType.None, ShootType.None, 0, 0, 2), default(EndEvent) }));
 	}
 
 	public byte[] Compile()
