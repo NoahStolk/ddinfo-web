@@ -70,7 +70,7 @@ public class ArenaScene
 
 				float x = (i - halfSize) * 4;
 				float z = (j - halfSize) * 4;
-				_tiles.Add(new(x, z, i, j, spawnset));
+				_tiles.Add(new(x, z, i, j, spawnset, _camera));
 			}
 		}
 
@@ -132,10 +132,9 @@ public class ArenaScene
 		Shader.SetInt(MeshUniforms.TextureLut, 1);
 		Shader.SetFloat(MeshUniforms.LutScale, 1f);
 
-		// TODO: Use spans.
-		Vector3[] lightPositions = _lights.Select(lo => lo.PositionState.Render).ToArray();
-		Vector3[] lightColors = _lights.Select(lo => lo.ColorState.Render).ToArray();
-		float[] lightRadii = _lights.Select(lo => lo.RadiusState.Render).ToArray();
+		Span<Vector3> lightPositions = _lights.Select(lo => lo.PositionState.Render).ToArray();
+		Span<Vector3> lightColors = _lights.Select(lo => lo.ColorState.Render).ToArray();
+		Span<float> lightRadii = _lights.Select(lo => lo.RadiusState.Render).ToArray();
 
 		Shader.SetInt(MeshUniforms.LightCount, lightPositions.Length);
 		Shader.SetVector3Array(MeshUniforms.LightPosition, lightPositions);
@@ -158,8 +157,8 @@ public class ArenaScene
 
 		WarpTextures.TileHitbox.Use();
 
-		// TODO: Use quick sort to fix memory allocations.
-		foreach (Tile tile in _tiles.OrderBy(t => Vector3.DistanceSquared(t.Position with { Y = _camera.PositionState.Render.Y }, _camera.PositionState.Render)))
+		_tiles.Sort(static (a, b) => a.SquaredDistanceToCamera().CompareTo(b.SquaredDistanceToCamera()));
+		foreach (Tile tile in _tiles)
 			tile.RenderHitbox();
 	}
 }

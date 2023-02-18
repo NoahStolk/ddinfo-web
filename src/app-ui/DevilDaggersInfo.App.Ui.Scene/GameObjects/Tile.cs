@@ -17,25 +17,27 @@ public class Tile : GameObject
 	private readonly int _arenaX;
 	private readonly int _arenaY;
 	private readonly SpawnsetBinary _spawnsetBinary;
+	private readonly Camera _camera;
 
 	private readonly TileMeshObject _top;
 	private readonly TileMeshObject _pillar;
 	private readonly TileHitboxMeshObject _tileHitbox;
 
-	public Tile(float positionX, float positionZ, int arenaX, int arenaY, SpawnsetBinary spawnsetBinary)
+	public Tile(float positionX, float positionZ, int arenaX, int arenaY, SpawnsetBinary spawnsetBinary, Camera camera)
 	{
 		_positionX = positionX;
 		_positionZ = positionZ;
 		_arenaX = arenaX;
 		_arenaY = arenaY;
 		_spawnsetBinary = spawnsetBinary;
+		_camera = camera;
 
 		_top = new(_tileVao, ContentManager.Content.TileMesh, positionX, positionZ);
 		_pillar = new(_pillarVao, ContentManager.Content.PillarMesh, positionX, positionZ);
 		_tileHitbox = new(_cubeVao, WarpModels.TileHitbox.MainMesh, positionX, positionZ);
 	}
 
-	public Vector3 Position => new(_positionX, _top.PositionY, _positionZ);
+	public float SquaredDistanceToCamera() => Vector2.DistanceSquared(new(_positionX, _positionZ), new(_camera.PositionState.Render.X, _camera.PositionState.Render.Z));
 
 	public static unsafe void Initialize()
 	{
@@ -89,7 +91,7 @@ public class Tile : GameObject
 
 	public void RenderTop()
 	{
-		if (Position.Y < -3)
+		if (_top.PositionY < -3)
 			return;
 
 		_top.Render();
@@ -97,7 +99,7 @@ public class Tile : GameObject
 
 	public void RenderPillar()
 	{
-		if (Position.Y < -3)
+		if (_top.PositionY < -3)
 			return;
 
 		_pillar.Render();
@@ -105,7 +107,7 @@ public class Tile : GameObject
 
 	public void RenderHitbox()
 	{
-		if (Position.Y < -1)
+		if (_top.PositionY < -1)
 			return;
 
 		_tileHitbox.Render();
