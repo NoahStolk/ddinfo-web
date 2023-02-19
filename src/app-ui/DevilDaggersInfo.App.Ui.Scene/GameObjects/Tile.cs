@@ -6,26 +6,24 @@ using Warp.NET.GameObjects;
 
 namespace DevilDaggersInfo.App.Ui.Scene.GameObjects;
 
-public class Tile : GameObject
+public class Tile
 {
 	private static uint _tileVao;
 	private static uint _pillarVao;
 	private static uint _cubeVao;
 
-	private readonly SpawnsetBinary _spawnsetBinary;
 	private readonly Camera _camera;
 
 	private readonly TileMeshObject _top;
 	private readonly TileMeshObject _pillar;
 	private readonly TileHitboxMeshObject _tileHitbox;
 
-	public Tile(float positionX, float positionZ, int arenaX, int arenaY, SpawnsetBinary spawnsetBinary, Camera camera)
+	public Tile(float positionX, float positionZ, int arenaX, int arenaY, Camera camera)
 	{
 		PositionX = positionX;
 		PositionZ = positionZ;
 		ArenaX = arenaX;
 		ArenaY = arenaY;
-		_spawnsetBinary = spawnsetBinary;
 		_camera = camera;
 
 		_top = new(_tileVao, ContentManager.Content.TileMesh, positionX, positionZ);
@@ -89,11 +87,6 @@ public class Tile : GameObject
 
 		const float tileHitboxOffset = 1;
 		_tileHitbox.Height = Height - tileMeshHeight / 2 + tileHitboxOffset;
-	}
-
-	public void Update(int currentTick)
-	{
-		SetDisplayHeight(_spawnsetBinary.GetActualTileHeight(ArenaX, ArenaY, currentTick / 60f));
 	}
 
 	public void RenderTop()

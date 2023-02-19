@@ -29,6 +29,7 @@ public class SurvivalEditor3dLayout : Layout, IExtendedLayout
 		if (StateManager.LayoutState.CurrentLayout != Root.Dependencies.SurvivalEditor3dLayout)
 			return;
 
+		_arenaScene.Update(0);
 		_currentTick = 0;
 
 		_shrinkSlider.Max = StateManager.SpawnsetState.Spawnset.GetSliderMaxSeconds();
@@ -39,10 +40,12 @@ public class SurvivalEditor3dLayout : Layout, IExtendedLayout
 
 	public unsafe void Update()
 	{
-		_currentTick++;
+		_arenaScene.Update(_currentTick);
+
+		_shrinkSlider.Max = StateManager.SpawnsetState.Spawnset.GetSliderMaxSeconds();
 		_shrinkSlider.CurrentValue = _currentTick / 60f;
 
-		_arenaScene.Update(_currentTick);
+		_currentTick = 0;
 
 		if (Input.IsKeyPressed(Keys.Escape))
 		{
@@ -53,7 +56,7 @@ public class SurvivalEditor3dLayout : Layout, IExtendedLayout
 
 	public void Render3d()
 	{
-		_arenaScene.Render();
+		_arenaScene.Render(_currentTick);
 	}
 
 	public void Render()

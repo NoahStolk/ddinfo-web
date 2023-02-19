@@ -39,7 +39,7 @@ public sealed class EditorArenaScene : IArenaScene
 		scene.AddArena(spawnset);
 
 		int halfSize = spawnset.ArenaDimension / 2;
-		float cameraHeight = Math.Max(4, spawnset.ArenaTiles[halfSize, halfSize] + 4);
+		float cameraHeight = Math.Max(4, spawnset.ArenaTiles[halfSize, halfSize] + 8);
 		Camera.Reset(new(0, cameraHeight, 0));
 		Camera.IsMenuCamera = false;
 	}
@@ -52,12 +52,14 @@ public sealed class EditorArenaScene : IArenaScene
 		Camera.Update();
 		RaceDagger?.Update(currentTick);
 
-		// TODO: Only do this when dragging slider.
-		// for (int i = 0; i < Tiles.Count; i++)
-		// 	Tiles[i].Update(currentTick);
+		for (int i = 0; i < Tiles.Count; i++)
+		{
+			Tile tile = Tiles[i];
+			tile.SetDisplayHeight(StateManager.SpawnsetState.Spawnset.GetActualTileHeight(tile.ArenaX, tile.ArenaY, currentTick / 60f));
+		}
 
 		int scroll = Input.GetScroll();
-		if (scroll == 0 || _closestHitTile == null)
+		if (currentTick > 0 || scroll == 0 || _closestHitTile == null)
 			return;
 
 		float height = StateManager.SpawnsetState.Spawnset.ArenaTiles[_closestHitTile.ArenaX, _closestHitTile.ArenaY] + scroll;
@@ -68,7 +70,7 @@ public sealed class EditorArenaScene : IArenaScene
 		StateManager.Dispatch(new UpdateArena(newArena, SpawnsetEditType.ArenaTileHeight));
 	}
 
-	public void Render()
+	public void Render(int currentTick)
 	{
 		for (int i = 0; i < Lights.Count; i++)
 			Lights[i].PrepareRender();
@@ -93,48 +95,7 @@ public sealed class EditorArenaScene : IArenaScene
 
 		ContentManager.Content.PostLut.Use(TextureUnit.Texture1);
 
-		ContentManager.Content.TileTexture.Use();
-
-		_hitTiles.Clear();
-		Ray ray = Camera.ScreenToWorldPoint();
-		for (int i = 0; i < Tiles.Count; i++)
-		{
-			Tile tile = Tiles[i];
-			Vector3 min = new(tile.PositionX - 2, -2, tile.PositionZ - 2);
-			Vector3 max = new(tile.PositionX + 2, tile.Height + 2, tile.PositionZ + 2);
-			RayVsAabbIntersection? intersects = ray.Intersects(min, max);
-			if (intersects.HasValue)
-				_hitTiles.Add((tile, intersects.Value.Distance));
-		}
-
-		_closestHitTile = _hitTiles.Count == 0 ? null : _hitTiles.MinBy(ht => ht.Distance).Tile;
-
-		for (int i = 0; i < Tiles.Count; i++)
-		{
-			Tile tile = Tiles[i];
-
-			if (_closestHitTile == tile)
-				Shader.SetFloat(MeshUniforms.LutScale, 2.5f);
-
-			tile.RenderTop();
-
-			if (_closestHitTile == tile)
-				Shader.SetFloat(MeshUniforms.LutScale, 1f);
-		}
-
-		ContentManager.Content.PillarTexture.Use();
-		for (int i = 0; i < Tiles.Count; i++)
-		{
-			Tile tile = Tiles[i];
-
-			if (_closestHitTile == tile)
-				Shader.SetFloat(MeshUniforms.LutScale, 2.5f);
-
-			tile.RenderPillar();
-
-			if (_closestHitTile == tile)
-				Shader.SetFloat(MeshUniforms.LutScale, 1f);
-		}
+		RenderTiles(currentTick);
 
 		RaceDagger?.Render();
 
@@ -143,5 +104,63 @@ public sealed class EditorArenaScene : IArenaScene
 		Tiles.Sort(static (a, b) => a.SquaredDistanceToCamera().CompareTo(b.SquaredDistanceToCamera()));
 		foreach (Tile tile in Tiles)
 			tile.RenderHitbox();
+	}
+
+	private void RenderTiles(int currentTick)
+	{
+		if (currentTick == 0)
+		{
+			_hitTiles.Clear();
+			Ray ray = Camera.ScreenToWorldPoint();
+			for (int i = 0; i < Tiles.Count; i++)
+			{
+				Tile tile = Tiles[i];
+				Vector3 min = new(tile.PositionX - 2, -2, tile.PositionZ - 2);
+				Vector3 max = new(tile.PositionX + 2, tile.Height + 2, tile.PositionZ + 2);
+				RayVsAabbIntersection? intersects = ray.Intersects(min, max);
+				if (intersects.HasValue)
+					_hitTiles.Add((tile, intersects.Value.Distance));
+			}
+
+			_closestHitTile = _hitTiles.Count == 0 ? null : _hitTiles.MinBy(ht => ht.Distance).Tile;
+
+			ContentManager.Content.TileTexture.Use();
+			for (int i = 0; i < Tiles.Count; i++)
+			{
+				Tile tile = Tiles[i];
+
+				if (_closestHitTile == tile)
+					Shader.SetFloat(MeshUniforms.LutScale, 2.5f);
+
+				tile.RenderTop();
+
+				if (_closestHitTile == tile)
+					Shader.SetFloat(MeshUniforms.LutScale, 1f);
+			}
+
+			ContentManager.Content.PillarTexture.Use();
+			for (int i = 0; i < Tiles.Count; i++)
+			{
+				Tile tile = Tiles[i];
+
+				if (_closestHitTile == tile)
+					Shader.SetFloat(MeshUniforms.LutScale, 2.5f);
+
+				tile.RenderPillar();
+
+				if (_closestHitTile == tile)
+					Shader.SetFloat(MeshUniforms.LutScale, 1f);
+			}
+		}
+		else
+		{
+			ContentManager.Content.TileTexture.Use();
+			for (int i = 0; i < Tiles.Count; i++)
+				Tiles[i].RenderTop();
+
+			ContentManager.Content.PillarTexture.Use();
+			for (int i = 0; i < Tiles.Count; i++)
+				Tiles[i].RenderPillar();
+		}
 	}
 }

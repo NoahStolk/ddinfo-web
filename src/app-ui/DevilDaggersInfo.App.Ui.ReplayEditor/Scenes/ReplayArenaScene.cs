@@ -12,6 +12,7 @@ namespace DevilDaggersInfo.App.Ui.ReplayEditor.Scenes;
 
 public sealed class ReplayArenaScene : IArenaScene
 {
+	private SpawnsetBinary? _spawnset;
 	private ReplaySimulation? _replaySimulation;
 	private Player? _player;
 
@@ -22,6 +23,7 @@ public sealed class ReplayArenaScene : IArenaScene
 
 	public void Clear()
 	{
+		_spawnset = null;
 		_replaySimulation = null;
 		_player = null;
 
@@ -35,11 +37,13 @@ public sealed class ReplayArenaScene : IArenaScene
 	{
 		Clear();
 
+		_spawnset = spawnset;
+
 		IArenaScene scene = this;
 		scene.AddArena(spawnset);
 
 		int halfSize = spawnset.ArenaDimension / 2;
-		float cameraHeight = Math.Max(4, spawnset.ArenaTiles[halfSize, halfSize] + 4);
+		float cameraHeight = Math.Max(4, spawnset.ArenaTiles[halfSize, halfSize] + 8);
 		Camera.Reset(new(0, cameraHeight, 0));
 		Camera.IsMenuCamera = false;
 	}
@@ -53,6 +57,9 @@ public sealed class ReplayArenaScene : IArenaScene
 
 	public void Update(int currentTick)
 	{
+		if (_spawnset == null)
+			return;
+
 		for (int i = 0; i < Lights.Count; i++)
 			Lights[i].PrepareUpdate();
 
@@ -61,7 +68,10 @@ public sealed class ReplayArenaScene : IArenaScene
 		_player?.Update(currentTick);
 
 		for (int i = 0; i < Tiles.Count; i++)
-			Tiles[i].Update(currentTick);
+		{
+			Tile tile = Tiles[i];
+			tile.SetDisplayHeight(_spawnset.GetActualTileHeight(tile.ArenaX, tile.ArenaY, currentTick / 60f));
+		}
 
 		SoundSnapshot[] soundSnapshots = _replaySimulation?.GetSoundSnapshots(currentTick) ?? Array.Empty<SoundSnapshot>();
 		foreach (SoundSnapshot soundSnapshot in soundSnapshots)

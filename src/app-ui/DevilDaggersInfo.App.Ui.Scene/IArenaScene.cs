@@ -11,10 +11,6 @@ public interface IArenaScene
 	List<LightObject> Lights { get; }
 	RaceDagger? RaceDagger { get; set; }
 
-	void Clear();
-
-	void BuildSpawnset(SpawnsetBinary spawnset);
-
 	public void AddArena(SpawnsetBinary spawnset)
 	{
 		Lights.Add(new(64, default, new(1, 0.5f, 0)));
@@ -30,7 +26,7 @@ public interface IArenaScene
 
 				float x = (i - halfSize) * 4;
 				float z = (j - halfSize) * 4;
-				Tiles.Add(new(x, z, i, j, spawnset, Camera));
+				Tiles.Add(new(x, z, i, j, Camera));
 			}
 		}
 

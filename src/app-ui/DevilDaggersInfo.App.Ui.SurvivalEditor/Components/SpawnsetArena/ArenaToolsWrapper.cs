@@ -1,9 +1,13 @@
 using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.Components.Styles;
+using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
+using DevilDaggersInfo.App.Ui.Base.Rendering.Text;
 using DevilDaggersInfo.App.Ui.Base.StateManagement;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.Base.Actions;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Data;
 using DevilDaggersInfo.App.Ui.Base.Styling;
+using Warp.NET.Text;
 using Warp.NET.Ui;
 using Warp.NET.Ui.Components;
 
@@ -34,6 +38,9 @@ public class ArenaToolsWrapper : AbstractComponent
 
 		foreach (KeyValuePair<ArenaTool, AbstractComponent> kvp in _toolSettingsWrappers)
 			NestingContext.Add(kvp.Value);
+
+		TextButton button3d = new(bounds.CreateNested(bounds.Size.X - 96 + 2, 0, 96, 20), () => StateManager.Dispatch(new SetLayout(Root.Dependencies.SurvivalEditor3dLayout)), ButtonStyles.Default, new(Color.White, TextAlign.Middle, FontSize.H12), "Open 3D editor");
+		NestingContext.Add(button3d);
 
 		UpdateActiveButtonAndSettings();
 

@@ -44,9 +44,6 @@ public sealed class MainMenuArenaScene : IArenaScene
 
 		Camera.Update();
 		RaceDagger?.Update(currentTick);
-
-		for (int i = 0; i < Tiles.Count; i++)
-			Tiles[i].Update(currentTick);
 	}
 
 	public void Render()
