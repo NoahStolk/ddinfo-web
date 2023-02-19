@@ -4,7 +4,7 @@ using DevilDaggersInfo.App.Ui.Base.StateManagement;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.Base.Actions;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Actions;
 using DevilDaggersInfo.App.Ui.Base.Styling;
-using DevilDaggersInfo.App.Ui.Scene;
+using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Scenes;
 using DevilDaggersInfo.Core.Replay.PostProcessing.ReplaySimulation;
 using DevilDaggersInfo.Core.Spawnset;
 using Silk.NET.GLFW;
@@ -16,7 +16,7 @@ namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Layouts;
 public class ReplayViewer3dLayout : Layout, IExtendedLayout
 {
 	private readonly Slider _timeSlider;
-	private readonly ArenaScene _arenaScene = new();
+	private readonly GhostsArenaScene _arenaScene = new();
 
 	private int _currentTick;
 

@@ -6,30 +6,24 @@ using Warp.NET.GameObjects;
 
 namespace DevilDaggersInfo.App.Ui.Scene.GameObjects;
 
-public class Tile : GameObject
+public class Tile
 {
 	private static uint _tileVao;
 	private static uint _pillarVao;
 	private static uint _cubeVao;
 
-	private readonly float _positionX;
-	private readonly float _positionZ;
-	private readonly int _arenaX;
-	private readonly int _arenaY;
-	private readonly SpawnsetBinary _spawnsetBinary;
 	private readonly Camera _camera;
 
 	private readonly TileMeshObject _top;
 	private readonly TileMeshObject _pillar;
 	private readonly TileHitboxMeshObject _tileHitbox;
 
-	public Tile(float positionX, float positionZ, int arenaX, int arenaY, SpawnsetBinary spawnsetBinary, Camera camera)
+	public Tile(float positionX, float positionZ, int arenaX, int arenaY, Camera camera)
 	{
-		_positionX = positionX;
-		_positionZ = positionZ;
-		_arenaX = arenaX;
-		_arenaY = arenaY;
-		_spawnsetBinary = spawnsetBinary;
+		PositionX = positionX;
+		PositionZ = positionZ;
+		ArenaX = arenaX;
+		ArenaY = arenaY;
 		_camera = camera;
 
 		_top = new(_tileVao, ContentManager.Content.TileMesh, positionX, positionZ);
@@ -37,7 +31,11 @@ public class Tile : GameObject
 		_tileHitbox = new(_cubeVao, WarpModels.TileHitbox.MainMesh, positionX, positionZ);
 	}
 
-	public float SquaredDistanceToCamera() => Vector2.DistanceSquared(new(_positionX, _positionZ), new(_camera.PositionState.Render.X, _camera.PositionState.Render.Z));
+	public float PositionX { get; }
+	public float Height { get; private set; }
+	public float PositionZ { get; }
+	public int ArenaX { get; }
+	public int ArenaY { get; }
 
 	public static unsafe void Initialize()
 	{
@@ -75,18 +73,20 @@ public class Tile : GameObject
 		}
 	}
 
-	public void Update(int currentTick)
-	{
-		float y = _spawnsetBinary.GetActualTileHeight(_arenaX, _arenaY, currentTick / 60f);
+	public float SquaredDistanceToCamera() => Vector2.DistanceSquared(new(PositionX, PositionZ), new(_camera.PositionState.Render.X, _camera.PositionState.Render.Z));
 
-		_top.PositionY = y;
-		_pillar.PositionY = y;
+	public void SetDisplayHeight(float height)
+	{
+		Height = height;
+
+		_top.PositionY = Height;
+		_pillar.PositionY = Height;
 
 		const float tileMeshHeight = 4;
-		_tileHitbox.PositionY = y - tileMeshHeight / 2;
+		_tileHitbox.PositionY = Height - tileMeshHeight / 2;
 
 		const float tileHitboxOffset = 1;
-		_tileHitbox.Height = y - tileMeshHeight / 2 + tileHitboxOffset;
+		_tileHitbox.Height = Height - tileMeshHeight / 2 + tileHitboxOffset;
 	}
 
 	public void RenderTop()

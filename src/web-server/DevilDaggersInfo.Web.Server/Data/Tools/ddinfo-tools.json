@@ -1,6 +1,6 @@
 [
 	{
-		"VersionNumber": "0.2.4.0",
+		"VersionNumber": "0.3.0.0",
 		"Date": "2023-02-19T00:00:00",
 		"Changes": [
 			{
@@ -41,10 +41,13 @@
 				]
 			},
 			{
+				"Description": "Set up basic 3D tile editor (still work in progress)."
+			},
+			{
 				"Description": "You can now go to the \"Replay Editor\". For now you can only select a replay to view in 3D (this helps me with testing the simulation). You can also view the input visualization of the replay."
 			},
 			{
-				"Description": "Improved 3D replay simulation (still far from accurate)."
+				"Description": "Improved 3D replay simulation. It's still far from accurate (collisions, bhops, air control, and dagger jumps are missing)."
 			},
 			{
 				"Description": "Improved custom leaderboards UI coloring."
