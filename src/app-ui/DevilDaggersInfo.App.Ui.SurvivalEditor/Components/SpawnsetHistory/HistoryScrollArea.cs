@@ -3,6 +3,7 @@ using DevilDaggersInfo.App.Ui.Base.Components.Styles;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.Rendering.Text;
 using DevilDaggersInfo.App.Ui.Base.StateManagement;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.Base.Actions;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Data;
 using DevilDaggersInfo.App.Ui.Base.Styling;
@@ -20,15 +21,19 @@ public class HistoryScrollArea : ScrollArea
 	public HistoryScrollArea(IBounds bounds)
 		: base(bounds, 96, 16, ScrollAreaStyles.Default)
 	{
-		SetContent();
-
 		StateManager.Subscribe<AddHistory>(SetContent);
 		StateManager.Subscribe<ClearHistory>(SetContent);
 		StateManager.Subscribe<SetSpawnsetHistoryIndex>(SetContent);
+
+		StateManager.Subscribe<SetLayout>(SetContent);
 	}
 
 	private void SetContent()
 	{
+		// When changes are being made in the 3D editor, AddHistory events are fired. However, we don't want to update the history list in that case, because the component isn't active, meaning that all of these updates will build up and cause a huge performance drop when exiting the 3D editor.
+		if (StateManager.LayoutState.CurrentLayout != Root.Dependencies.SurvivalEditorMainLayout)
+			return;
+
 		foreach (AbstractComponent component in _historyComponents)
 			NestingContext.Remove(component);
 
