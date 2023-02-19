@@ -12,10 +12,6 @@ public class Tile : GameObject
 	private static uint _pillarVao;
 	private static uint _cubeVao;
 
-	private readonly float _positionX;
-	private readonly float _positionZ;
-	private readonly int _arenaX;
-	private readonly int _arenaY;
 	private readonly SpawnsetBinary _spawnsetBinary;
 	private readonly Camera _camera;
 
@@ -25,10 +21,10 @@ public class Tile : GameObject
 
 	public Tile(float positionX, float positionZ, int arenaX, int arenaY, SpawnsetBinary spawnsetBinary, Camera camera)
 	{
-		_positionX = positionX;
-		_positionZ = positionZ;
-		_arenaX = arenaX;
-		_arenaY = arenaY;
+		PositionX = positionX;
+		PositionZ = positionZ;
+		ArenaX = arenaX;
+		ArenaY = arenaY;
 		_spawnsetBinary = spawnsetBinary;
 		_camera = camera;
 
@@ -37,7 +33,13 @@ public class Tile : GameObject
 		_tileHitbox = new(_cubeVao, WarpModels.TileHitbox.MainMesh, positionX, positionZ);
 	}
 
-	public float SquaredDistanceToCamera() => Vector2.DistanceSquared(new(_positionX, _positionZ), new(_camera.PositionState.Render.X, _camera.PositionState.Render.Z));
+	public float PositionX { get; }
+	public float Height { get; private set; }
+	public float PositionZ { get; }
+	public int ArenaX { get; }
+	public int ArenaY { get; }
+
+	public float SquaredDistanceToCamera() => Vector2.DistanceSquared(new(PositionX, PositionZ), new(_camera.PositionState.Render.X, _camera.PositionState.Render.Z));
 
 	public static unsafe void Initialize()
 	{
@@ -75,18 +77,23 @@ public class Tile : GameObject
 		}
 	}
 
-	public void Update(int currentTick)
+	public void SetHeight(float height)
 	{
-		float y = _spawnsetBinary.GetActualTileHeight(_arenaX, _arenaY, currentTick / 60f);
+		Height = height;
 
-		_top.PositionY = y;
-		_pillar.PositionY = y;
+		_top.PositionY = Height;
+		_pillar.PositionY = Height;
 
 		const float tileMeshHeight = 4;
-		_tileHitbox.PositionY = y - tileMeshHeight / 2;
+		_tileHitbox.PositionY = Height - tileMeshHeight / 2;
 
 		const float tileHitboxOffset = 1;
-		_tileHitbox.Height = y - tileMeshHeight / 2 + tileHitboxOffset;
+		_tileHitbox.Height = Height - tileMeshHeight / 2 + tileHitboxOffset;
+	}
+
+	public void Update(int currentTick)
+	{
+		SetHeight(_spawnsetBinary.GetActualTileHeight(ArenaX, ArenaY, currentTick / 60f));
 	}
 
 	public void RenderTop()

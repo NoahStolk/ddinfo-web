@@ -1,19 +1,18 @@
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
+using DevilDaggersInfo.App.Ui.Base.StateManagement;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.Base.Actions;
 using DevilDaggersInfo.App.Ui.Base.Styling;
-using DevilDaggersInfo.App.Ui.Scene;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetArena;
 using Silk.NET.GLFW;
 using Warp.NET;
 using Warp.NET.Ui;
-using StateManager = DevilDaggersInfo.App.Ui.Base.StateManagement.StateManager;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Layouts;
 
 public class SurvivalEditor3dLayout : Layout, IExtendedLayout
 {
 	private readonly ShrinkSlider _shrinkSlider;
-	private readonly ArenaScene _arenaScene = new();
+	private readonly EditorArenaScene _arenaScene = new();
 
 	private int _currentTick;
 

@@ -12,22 +12,21 @@ namespace DevilDaggersInfo.App.Ui.Scene;
 
 public class ArenaScene
 {
-	private readonly Camera _camera = new();
-
-	private readonly List<Tile> _tiles = new();
-	private readonly List<LightObject> _lights = new();
-
-	private RaceDagger? _raceDagger;
 	private ReplaySimulation? _replaySimulation;
 	private Player? _player;
 	private Skull4? _skull4;
 
+	protected Camera Camera { get; } = new();
+	protected List<Tile> Tiles { get; } = new();
+	protected List<LightObject> Lights { get; } = new();
+	protected RaceDagger? RaceDagger { get; private set; }
+
 	private void Clear()
 	{
-		_tiles.Clear();
-		_lights.Clear();
+		Tiles.Clear();
+		Lights.Clear();
 
-		_raceDagger = null;
+		RaceDagger = null;
 		_replaySimulation = null;
 		_player = null;
 		_skull4 = null;
@@ -39,7 +38,7 @@ public class ArenaScene
 
 		AddArena(SpawnsetBinary.CreateDefault());
 
-		_camera.IsMenuCamera = true;
+		Camera.IsMenuCamera = true;
 		_skull4 = new();
 	}
 
@@ -51,13 +50,13 @@ public class ArenaScene
 
 		int halfSize = spawnset.ArenaDimension / 2;
 		float cameraHeight = Math.Max(4, spawnset.ArenaTiles[halfSize, halfSize] + 4);
-		_camera.Reset(new(0, cameraHeight, 0));
-		_camera.IsMenuCamera = false;
+		Camera.Reset(new(0, cameraHeight, 0));
+		Camera.IsMenuCamera = false;
 	}
 
 	private void AddArena(SpawnsetBinary spawnset)
 	{
-		_lights.Add(new(64, default, new(1, 0.5f, 0)));
+		Lights.Add(new(64, default, new(1, 0.5f, 0)));
 
 		int halfSize = spawnset.ArenaDimension / 2;
 		for (int i = 0; i < spawnset.ArenaDimension; i++)
@@ -70,11 +69,11 @@ public class ArenaScene
 
 				float x = (i - halfSize) * 4;
 				float z = (j - halfSize) * 4;
-				_tiles.Add(new(x, z, i, j, spawnset, _camera));
+				Tiles.Add(new(x, z, i, j, spawnset, Camera));
 			}
 		}
 
-		_raceDagger = GetRaceDagger();
+		RaceDagger = GetRaceDagger();
 
 		RaceDagger? GetRaceDagger()
 		{
@@ -93,20 +92,20 @@ public class ArenaScene
 	{
 		_replaySimulation = replaySimulation;
 		_player = new(replaySimulation);
-		_lights.Add(_player.Light);
+		Lights.Add(_player.Light);
 	}
 
-	public void Update(int currentTick)
+	public virtual void Update(int currentTick)
 	{
-		for (int i = 0; i < _lights.Count; i++)
-			_lights[i].PrepareUpdate();
+		for (int i = 0; i < Lights.Count; i++)
+			Lights[i].PrepareUpdate();
 
-		_camera.Update();
-		_raceDagger?.Update(currentTick);
+		Camera.Update();
+		RaceDagger?.Update(currentTick);
 		_player?.Update(currentTick);
 
-		for (int i = 0; i < _tiles.Count; i++)
-			_tiles[i].Update(currentTick);
+		for (int i = 0; i < Tiles.Count; i++)
+			Tiles[i].Update(currentTick);
 
 		SoundSnapshot[] soundSnapshots = _replaySimulation?.GetSoundSnapshots(currentTick) ?? Array.Empty<SoundSnapshot>();
 		foreach (SoundSnapshot soundSnapshot in soundSnapshots)
@@ -125,23 +124,23 @@ public class ArenaScene
 		}
 	}
 
-	public void Render()
+	public virtual void Render()
 	{
-		for (int i = 0; i < _lights.Count; i++)
-			_lights[i].PrepareRender();
+		for (int i = 0; i < Lights.Count; i++)
+			Lights[i].PrepareRender();
 
-		_camera.PreRender();
+		Camera.PreRender();
 
 		WarpShaders.Mesh.Use();
-		Shader.SetMatrix4x4(MeshUniforms.View, _camera.ViewMatrix);
-		Shader.SetMatrix4x4(MeshUniforms.Projection, _camera.Projection);
+		Shader.SetMatrix4x4(MeshUniforms.View, Camera.ViewMatrix);
+		Shader.SetMatrix4x4(MeshUniforms.Projection, Camera.Projection);
 		Shader.SetInt(MeshUniforms.TextureDiffuse, 0);
 		Shader.SetInt(MeshUniforms.TextureLut, 1);
 		Shader.SetFloat(MeshUniforms.LutScale, 1f);
 
-		Span<Vector3> lightPositions = _lights.Select(lo => lo.PositionState.Render).ToArray();
-		Span<Vector3> lightColors = _lights.Select(lo => lo.ColorState.Render).ToArray();
-		Span<float> lightRadii = _lights.Select(lo => lo.RadiusState.Render).ToArray();
+		Span<Vector3> lightPositions = Lights.Select(lo => lo.PositionState.Render).ToArray();
+		Span<Vector3> lightColors = Lights.Select(lo => lo.ColorState.Render).ToArray();
+		Span<float> lightRadii = Lights.Select(lo => lo.RadiusState.Render).ToArray();
 
 		Shader.SetInt(MeshUniforms.LightCount, lightPositions.Length);
 		Shader.SetVector3Array(MeshUniforms.LightPosition, lightPositions);
@@ -151,21 +150,22 @@ public class ArenaScene
 		ContentManager.Content.PostLut.Use(TextureUnit.Texture1);
 
 		ContentManager.Content.TileTexture.Use();
-		for (int i = 0; i < _tiles.Count; i++)
-			_tiles[i].RenderTop();
+
+		for (int i = 0; i < Tiles.Count; i++)
+			Tiles[i].RenderTop();
 
 		ContentManager.Content.PillarTexture.Use();
-		for (int i = 0; i < _tiles.Count; i++)
-			_tiles[i].RenderPillar();
+		for (int i = 0; i < Tiles.Count; i++)
+			Tiles[i].RenderPillar();
 
-		_raceDagger?.Render();
+		RaceDagger?.Render();
 		_player?.Render();
 		_skull4?.Render();
 
 		WarpTextures.TileHitbox.Use();
 
-		_tiles.Sort(static (a, b) => a.SquaredDistanceToCamera().CompareTo(b.SquaredDistanceToCamera()));
-		foreach (Tile tile in _tiles)
+		Tiles.Sort(static (a, b) => a.SquaredDistanceToCamera().CompareTo(b.SquaredDistanceToCamera()));
+		foreach (Tile tile in Tiles)
 			tile.RenderHitbox();
 	}
 }

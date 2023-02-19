@@ -5,6 +5,7 @@ using Warp.NET;
 using Warp.NET.Common.Maths;
 using Warp.NET.Extensions;
 using Warp.NET.InterpolationStates;
+using Warp.NET.Intersections;
 
 namespace DevilDaggersInfo.App.Ui.Scene.GameObjects;
 
@@ -153,10 +154,9 @@ public class Camera
 
 		float aspectRatio = CurrentWindowState.Width / (float)CurrentWindowState.Height;
 
-		float fieldOfView = UserSettings.Model.FieldOfView;
 		const float nearPlaneDistance = 0.05f;
 		const float farPlaneDistance = 10000f;
-		Projection = Matrix4x4.CreatePerspectiveFieldOfView(MathF.PI / 4 * fieldOfView, aspectRatio, nearPlaneDistance, farPlaneDistance);
+		Projection = Matrix4x4.CreatePerspectiveFieldOfView(MathUtils.ToRadians(UserSettings.Model.FieldOfView), aspectRatio, nearPlaneDistance, farPlaneDistance);
 	}
 
 	private static Matrix4x4 SetRotationFromDirectionalVector(Vector3 direction)
@@ -180,5 +180,32 @@ public class Camera
 		matrix.M33 = m3.Z;
 
 		return matrix;
+	}
+
+	public Ray ScreenToWorldPoint()
+	{
+		int screenWidth = CurrentWindowState.Width;
+		int screenHeight = CurrentWindowState.Height;
+		float aspectRatio = CurrentWindowState.Width / (float)CurrentWindowState.Height;
+
+		// Remap so (0, 0) is the center of the window and the edges are at -0.5 and +0.5.
+		Vector2 mousePosition = Input.GetMousePosition();
+		Vector2 relative = -new Vector2(mousePosition.X / screenWidth - 0.5f, mousePosition.Y / screenHeight - 0.5f);
+
+		// Angle in radians from the view axis to the top plane of the view pyramid.
+		float verticalAngle = 0.5f * MathUtils.ToRadians(UserSettings.Model.FieldOfView);
+
+		// World space height of the view pyramid measured at 1m depth from the camera.
+		float worldHeight = 2f * MathF.Tan(verticalAngle);
+
+		// Convert relative position to world units.
+		Vector2 temp = relative * worldHeight;
+		Vector3 worldUnits = new(temp.X * aspectRatio, temp.Y, 1);
+
+		// Rotate to match camera orientation.
+		Vector3 direction = Vector3.Transform(worldUnits, _rotationState.Physics);
+
+		// Output a ray from camera position, along this direction.
+		return new(PositionState.Physics, direction);
 	}
 }
