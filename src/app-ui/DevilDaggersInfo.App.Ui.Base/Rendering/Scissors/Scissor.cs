@@ -3,7 +3,7 @@ using Warp.NET.Ui;
 
 namespace DevilDaggersInfo.App.Ui.Base.Rendering.Scissors;
 
-public record Scissor(int X, int Y, uint Width, uint Height)
+public readonly record struct Scissor(int X, int Y, uint Width, uint Height)
 {
 	public static Scissor Create(IBounds bounds, Vector2i<int> scrollOffset, Vector2 viewportOffset, Vector2 uiScale)
 	{

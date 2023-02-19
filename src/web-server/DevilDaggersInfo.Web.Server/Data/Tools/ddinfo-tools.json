@@ -1,14 +1,8 @@
 [
 	{
 		"VersionNumber": "0.2.4.0",
-		"Date": "2023-02-18T00:00:00",
+		"Date": "2023-02-19T00:00:00",
 		"Changes": [
-			{
-				"Description": "Fixed concurrency bug where the run would not upload when going to the menu too fast while the app is still waiting for the game to load memory stats and replay."
-			},
-			{
-				"Description": "Fixed incorrect accuracy difference in highscore result."
-			},
 			{
 				"Description": "Added settings.",
 				"SubChanges": [
@@ -33,7 +27,36 @@
 				]
 			},
 			{
-				"Description": "Improved 3D rendering."
+				"Description": "Improved 3D rendering.",
+				"SubChanges": [
+					{
+						"Description": "Added lighting."
+					},
+					{
+						"Description": "Improved shading."
+					},
+					{
+						"Description": "Now using the actual Devil Daggers hand mesh and texture."
+					}
+				]
+			},
+			{
+				"Description": "You can now go to the \"Replay Editor\". For now you can only select a replay to view in 3D (this helps me with testing the simulation). You can also view the input visualization of the replay."
+			},
+			{
+				"Description": "Improved 3D replay simulation (still far from accurate)."
+			},
+			{
+				"Description": "Improved custom leaderboards UI coloring."
+			},
+			{
+				"Description": "Fixed concurrency bug where the run would not upload when going to the menu too fast while the app is still waiting for the game to load memory stats and replay."
+			},
+			{
+				"Description": "Fixed incorrect accuracy difference in highscore result."
+			},
+			{
+				"Description": "Fixed performance issues."
 			}
 		]
 	},

@@ -17,10 +17,10 @@ public static class ScissorActivator
 		if (_cached == scissor)
 			return;
 
-		if (scissor != null)
+		if (scissor.HasValue)
 		{
 			Gl.Enable(EnableCap.ScissorTest);
-			Gl.Scissor(scissor.X, scissor.Y, scissor.Width, scissor.Height);
+			Gl.Scissor(scissor.Value.X, scissor.Value.Y, scissor.Value.Width, scissor.Value.Height);
 		}
 		else
 		{
