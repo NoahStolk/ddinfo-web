@@ -1,91 +1,47 @@
 // ReSharper disable ForCanBeConvertedToForeach
 using DevilDaggersInfo.App.Ui.Base;
+using DevilDaggersInfo.App.Ui.Scene;
 using DevilDaggersInfo.App.Ui.Scene.GameObjects;
 using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Core.Replay.PostProcessing.ReplaySimulation;
 using DevilDaggersInfo.Core.Spawnset;
-using DevilDaggersInfo.Types.Core.Spawnsets;
 using Silk.NET.OpenGL;
 using Warp.NET.GameObjects.Common;
 
-namespace DevilDaggersInfo.App.Ui.Scene;
+namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Scenes;
 
-public class ArenaScene
+public sealed class GhostsArenaScene : IArenaScene
 {
 	private ReplaySimulation? _replaySimulation;
 	private Player? _player;
-	private Skull4? _skull4;
 
-	protected Camera Camera { get; } = new();
-	protected List<Tile> Tiles { get; } = new();
-	protected List<LightObject> Lights { get; } = new();
-	protected RaceDagger? RaceDagger { get; private set; }
+	public Camera Camera { get; } = new();
+	public List<Tile> Tiles { get; } = new();
+	public List<LightObject> Lights { get; } = new();
+	public RaceDagger? RaceDagger { get; set; }
 
-	private void Clear()
+	public void Clear()
 	{
+		_replaySimulation = null;
+		_player = null;
+
 		Tiles.Clear();
 		Lights.Clear();
 
 		RaceDagger = null;
-		_replaySimulation = null;
-		_player = null;
-		_skull4 = null;
-	}
-
-	public void BuildMainMenu()
-	{
-		Clear();
-
-		AddArena(SpawnsetBinary.CreateDefault());
-
-		Camera.IsMenuCamera = true;
-		_skull4 = new();
 	}
 
 	public void BuildSpawnset(SpawnsetBinary spawnset)
 	{
 		Clear();
 
-		AddArena(spawnset);
+		IArenaScene scene = this;
+		scene.AddArena(spawnset);
 
 		int halfSize = spawnset.ArenaDimension / 2;
 		float cameraHeight = Math.Max(4, spawnset.ArenaTiles[halfSize, halfSize] + 4);
 		Camera.Reset(new(0, cameraHeight, 0));
 		Camera.IsMenuCamera = false;
-	}
-
-	private void AddArena(SpawnsetBinary spawnset)
-	{
-		Lights.Add(new(64, default, new(1, 0.5f, 0)));
-
-		int halfSize = spawnset.ArenaDimension / 2;
-		for (int i = 0; i < spawnset.ArenaDimension; i++)
-		{
-			for (int j = 0; j < spawnset.ArenaDimension; j++)
-			{
-				float y = spawnset.ArenaTiles[i, j];
-				if (y < -2)
-					continue;
-
-				float x = (i - halfSize) * 4;
-				float z = (j - halfSize) * 4;
-				Tiles.Add(new(x, z, i, j, spawnset, Camera));
-			}
-		}
-
-		RaceDagger = GetRaceDagger();
-
-		RaceDagger? GetRaceDagger()
-		{
-			if (spawnset.GameMode != GameMode.Race)
-				return null;
-
-			(int x, float? y, int z) = spawnset.GetRaceDaggerTilePosition();
-			if (!y.HasValue)
-				return null;
-
-			return new(spawnset, x, y.Value, z);
-		}
 	}
 
 	public void BuildPlayerMovement(ReplaySimulation replaySimulation)
@@ -95,7 +51,7 @@ public class ArenaScene
 		Lights.Add(_player.Light);
 	}
 
-	public virtual void Update(int currentTick)
+	public void Update(int currentTick)
 	{
 		for (int i = 0; i < Lights.Count; i++)
 			Lights[i].PrepareUpdate();
@@ -124,7 +80,7 @@ public class ArenaScene
 		}
 	}
 
-	public virtual void Render()
+	public void Render()
 	{
 		for (int i = 0; i < Lights.Count; i++)
 			Lights[i].PrepareRender();
@@ -160,7 +116,6 @@ public class ArenaScene
 
 		RaceDagger?.Render();
 		_player?.Render();
-		_skull4?.Render();
 
 		WarpTextures.TileHitbox.Use();
 

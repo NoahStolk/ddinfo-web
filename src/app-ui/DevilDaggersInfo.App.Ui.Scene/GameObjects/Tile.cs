@@ -39,8 +39,6 @@ public class Tile : GameObject
 	public int ArenaX { get; }
 	public int ArenaY { get; }
 
-	public float SquaredDistanceToCamera() => Vector2.DistanceSquared(new(PositionX, PositionZ), new(_camera.PositionState.Render.X, _camera.PositionState.Render.Z));
-
 	public static unsafe void Initialize()
 	{
 		// TODO: Prevent this from being called multiple times.
@@ -77,7 +75,9 @@ public class Tile : GameObject
 		}
 	}
 
-	public void SetHeight(float height)
+	public float SquaredDistanceToCamera() => Vector2.DistanceSquared(new(PositionX, PositionZ), new(_camera.PositionState.Render.X, _camera.PositionState.Render.Z));
+
+	public void SetDisplayHeight(float height)
 	{
 		Height = height;
 
@@ -93,7 +93,7 @@ public class Tile : GameObject
 
 	public void Update(int currentTick)
 	{
-		SetHeight(_spawnsetBinary.GetActualTileHeight(ArenaX, ArenaY, currentTick / 60f));
+		SetDisplayHeight(_spawnsetBinary.GetActualTileHeight(ArenaX, ArenaY, currentTick / 60f));
 	}
 
 	public void RenderTop()

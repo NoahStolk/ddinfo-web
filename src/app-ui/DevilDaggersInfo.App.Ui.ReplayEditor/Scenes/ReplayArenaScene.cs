@@ -1,22 +1,19 @@
 // ReSharper disable ForCanBeConvertedToForeach
 using DevilDaggersInfo.App.Ui.Base;
-using DevilDaggersInfo.App.Ui.Base.StateManagement;
-using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
-using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Data;
 using DevilDaggersInfo.App.Ui.Scene;
 using DevilDaggersInfo.App.Ui.Scene.GameObjects;
+using DevilDaggersInfo.Common.Exceptions;
+using DevilDaggersInfo.Core.Replay.PostProcessing.ReplaySimulation;
 using DevilDaggersInfo.Core.Spawnset;
 using Silk.NET.OpenGL;
-using Warp.NET;
-using Warp.NET.Intersections;
-using Shader = Warp.NET.Content.Shader;
+using Warp.NET.GameObjects.Common;
 
-namespace DevilDaggersInfo.App.Ui.SurvivalEditor;
+namespace DevilDaggersInfo.App.Ui.ReplayEditor.Scenes;
 
-public sealed class EditorArenaScene : IArenaScene
+public sealed class ReplayArenaScene : IArenaScene
 {
-	private readonly List<(Tile Tile, float Distance)> _hitTiles = new();
-	private Tile? _closestHitTile;
+	private ReplaySimulation? _replaySimulation;
+	private Player? _player;
 
 	public Camera Camera { get; } = new();
 	public List<Tile> Tiles { get; } = new();
@@ -25,6 +22,9 @@ public sealed class EditorArenaScene : IArenaScene
 
 	public void Clear()
 	{
+		_replaySimulation = null;
+		_player = null;
+
 		Tiles.Clear();
 		Lights.Clear();
 
@@ -44,6 +44,13 @@ public sealed class EditorArenaScene : IArenaScene
 		Camera.IsMenuCamera = false;
 	}
 
+	public void BuildPlayerMovement(ReplaySimulation replaySimulation)
+	{
+		_replaySimulation = replaySimulation;
+		_player = new(replaySimulation);
+		Lights.Add(_player.Light);
+	}
+
 	public void Update(int currentTick)
 	{
 		for (int i = 0; i < Lights.Count; i++)
@@ -51,21 +58,26 @@ public sealed class EditorArenaScene : IArenaScene
 
 		Camera.Update();
 		RaceDagger?.Update(currentTick);
+		_player?.Update(currentTick);
 
-		// TODO: Only do this when dragging slider.
-		// for (int i = 0; i < Tiles.Count; i++)
-		// 	Tiles[i].Update(currentTick);
+		for (int i = 0; i < Tiles.Count; i++)
+			Tiles[i].Update(currentTick);
 
-		int scroll = Input.GetScroll();
-		if (scroll == 0 || _closestHitTile == null)
-			return;
-
-		float height = StateManager.SpawnsetState.Spawnset.ArenaTiles[_closestHitTile.ArenaX, _closestHitTile.ArenaY] + scroll;
-		_closestHitTile.SetDisplayHeight(height);
-
-		float[,] newArena = StateManager.SpawnsetState.Spawnset.ArenaTiles.GetMutableClone();
-		newArena[_closestHitTile.ArenaX, _closestHitTile.ArenaY] = height;
-		StateManager.Dispatch(new UpdateArena(newArena, SpawnsetEditType.ArenaTileHeight));
+		SoundSnapshot[] soundSnapshots = _replaySimulation?.GetSoundSnapshots(currentTick) ?? Array.Empty<SoundSnapshot>();
+		foreach (SoundSnapshot soundSnapshot in soundSnapshots)
+		{
+			Sound3dObject sound = new(soundSnapshot.Sound switch
+			{
+				ReplaySound.Jump1 => ContentManager.Content.SoundJump1,
+				ReplaySound.Jump2 => ContentManager.Content.SoundJump2,
+				ReplaySound.Jump3 => ContentManager.Content.SoundJump3,
+				_ => throw new InvalidEnumConversionException(soundSnapshot.Sound),
+			})
+			{
+				Position = soundSnapshot.Position,
+			};
+			sound.Add();
+		}
 	}
 
 	public void Render()
@@ -95,48 +107,15 @@ public sealed class EditorArenaScene : IArenaScene
 
 		ContentManager.Content.TileTexture.Use();
 
-		_hitTiles.Clear();
-		Ray ray = Camera.ScreenToWorldPoint();
 		for (int i = 0; i < Tiles.Count; i++)
-		{
-			Tile tile = Tiles[i];
-			Vector3 min = new(tile.PositionX - 2, -2, tile.PositionZ - 2);
-			Vector3 max = new(tile.PositionX + 2, tile.Height + 2, tile.PositionZ + 2);
-			RayVsAabbIntersection? intersects = ray.Intersects(min, max);
-			if (intersects.HasValue)
-				_hitTiles.Add((tile, intersects.Value.Distance));
-		}
-
-		_closestHitTile = _hitTiles.Count == 0 ? null : _hitTiles.MinBy(ht => ht.Distance).Tile;
-
-		for (int i = 0; i < Tiles.Count; i++)
-		{
-			Tile tile = Tiles[i];
-
-			if (_closestHitTile == tile)
-				Shader.SetFloat(MeshUniforms.LutScale, 2.5f);
-
-			tile.RenderTop();
-
-			if (_closestHitTile == tile)
-				Shader.SetFloat(MeshUniforms.LutScale, 1f);
-		}
+			Tiles[i].RenderTop();
 
 		ContentManager.Content.PillarTexture.Use();
 		for (int i = 0; i < Tiles.Count; i++)
-		{
-			Tile tile = Tiles[i];
-
-			if (_closestHitTile == tile)
-				Shader.SetFloat(MeshUniforms.LutScale, 2.5f);
-
-			tile.RenderPillar();
-
-			if (_closestHitTile == tile)
-				Shader.SetFloat(MeshUniforms.LutScale, 1f);
-		}
+			Tiles[i].RenderPillar();
 
 		RaceDagger?.Render();
+		_player?.Render();
 
 		WarpTextures.TileHitbox.Use();
 

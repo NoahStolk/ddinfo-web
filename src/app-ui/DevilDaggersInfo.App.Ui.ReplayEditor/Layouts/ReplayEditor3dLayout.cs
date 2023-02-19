@@ -5,7 +5,7 @@ using DevilDaggersInfo.App.Ui.Base.StateManagement.Base.Actions;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.ReplayEditor.Actions;
 using DevilDaggersInfo.App.Ui.Base.Styling;
 using DevilDaggersInfo.App.Ui.ReplayEditor.Components;
-using DevilDaggersInfo.App.Ui.Scene;
+using DevilDaggersInfo.App.Ui.ReplayEditor.Scenes;
 using DevilDaggersInfo.Core.Replay.PostProcessing.ReplaySimulation;
 using DevilDaggersInfo.Core.Spawnset;
 using Silk.NET.GLFW;
@@ -18,7 +18,7 @@ public class ReplayEditor3dLayout : Layout, IExtendedLayout
 {
 	private readonly Slider _timeSlider;
 	private readonly InputsVisualizer _inputsVisualizer;
-	private readonly ArenaScene _arenaScene = new();
+	private readonly ReplayArenaScene _arenaScene = new();
 
 	private ReplaySimulation? _replaySimulation;
 	private int _currentTick;
