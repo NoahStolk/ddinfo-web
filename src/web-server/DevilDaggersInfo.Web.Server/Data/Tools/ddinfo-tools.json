@@ -1,10 +1,27 @@
 [
 	{
+		"VersionNumber": "999.999.999.999",
+		"Date": "9999-01-01T00:00:00",
+		"Changes": [
+			{
+				"Description": "Added settings for the arena rectangle tool.",
+				"SubChanges": [
+					{
+						"Description": "Border size"
+					},
+					{
+						"Description": "Whether the rectangle should be filled"
+					}
+				]
+			}
+		]
+	},
+	{
 		"VersionNumber": "0.3.0.0",
 		"Date": "2023-02-19T00:00:00",
 		"Changes": [
 			{
-				"Description": "Added settings.",
+				"Description": "Added application settings.",
 				"SubChanges": [
 					{
 						"Description": "Scale UI to window"
