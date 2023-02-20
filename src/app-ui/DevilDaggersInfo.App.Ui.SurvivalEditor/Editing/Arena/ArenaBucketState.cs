@@ -63,12 +63,12 @@ public class ArenaBucketState : IArenaState
 				float tileHeight = StateManager.SpawnsetState.Spawnset.ArenaTiles[newX, newY];
 
 				float clampedTargetHeight = targetHeight;
-				if (targetHeight < StateManager.ArenaEditorState.BucketVoidHeight)
-					clampedTargetHeight = StateManager.ArenaEditorState.BucketVoidHeight;
-				if (tileHeight < StateManager.ArenaEditorState.BucketVoidHeight)
-					tileHeight = StateManager.ArenaEditorState.BucketVoidHeight;
+				if (targetHeight < StateManager.ArenaBucketState.VoidHeight)
+					clampedTargetHeight = StateManager.ArenaBucketState.VoidHeight;
+				if (tileHeight < StateManager.ArenaBucketState.VoidHeight)
+					tileHeight = StateManager.ArenaBucketState.VoidHeight;
 
-				if (MathF.Abs(tileHeight - clampedTargetHeight) < StateManager.ArenaEditorState.BucketTolerance)
+				if (MathF.Abs(tileHeight - clampedTargetHeight) < StateManager.ArenaBucketState.Tolerance)
 					FillNeighbors(newX, newY);
 			}
 		}

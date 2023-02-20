@@ -7,6 +7,7 @@ using DevilDaggersInfo.App.Ui.Base.StateManagement.Base.Actions;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Data;
 using DevilDaggersInfo.App.Ui.Base.Styling;
+using DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetArena.SettingsWrappers;
 using Warp.NET.Text;
 using Warp.NET.Ui;
 using Warp.NET.Ui.Components;
@@ -25,12 +26,13 @@ public class ArenaToolsWrapper : AbstractComponent
 	public ArenaToolsWrapper(IBounds bounds)
 		: base(bounds)
 	{
-		AddToolButton(0 + _arenaButtonSize * 0, 0, ArenaTool.Pencil, WarpTextures.Pencil, "Pencil");
-		AddToolButton(0 + _arenaButtonSize * 1, 0, ArenaTool.Line, WarpTextures.Line, "Line");
-		AddToolButton(0 + _arenaButtonSize * 2, 0, ArenaTool.Rectangle, WarpTextures.Rectangle, "Rectangle");
-		AddToolButton(0 + _arenaButtonSize * 3, 0, ArenaTool.Bucket, WarpTextures.Bucket, "Bucket");
-		AddToolButton(0 + _arenaButtonSize * 4, 0, ArenaTool.Dagger, WarpTextures.Dagger, "Race dagger");
+		AddToolButton(_arenaButtonSize * 0, 0, ArenaTool.Pencil, WarpTextures.Pencil, "Pencil");
+		AddToolButton(_arenaButtonSize * 1, 0, ArenaTool.Line, WarpTextures.Line, "Line");
+		AddToolButton(_arenaButtonSize * 2, 0, ArenaTool.Rectangle, WarpTextures.Rectangle, "Rectangle");
+		AddToolButton(_arenaButtonSize * 3, 0, ArenaTool.Bucket, WarpTextures.Bucket, "Bucket");
+		AddToolButton(_arenaButtonSize * 4, 0, ArenaTool.Dagger, WarpTextures.Dagger, "Race dagger");
 
+		_toolSettingsWrappers.Add(ArenaTool.Rectangle, new RectangleToolSettingsWrapper(bounds.CreateNested(0, _arenaButtonSize, bounds.Size.X, 64)));
 		_toolSettingsWrappers.Add(ArenaTool.Bucket, new BucketToolSettingsWrapper(bounds.CreateNested(0, _arenaButtonSize, bounds.Size.X, 64)));
 
 		foreach (KeyValuePair<ArenaTool, TooltipIconButton> kvp in _toolButtons)
@@ -39,7 +41,7 @@ public class ArenaToolsWrapper : AbstractComponent
 		foreach (KeyValuePair<ArenaTool, AbstractComponent> kvp in _toolSettingsWrappers)
 			NestingContext.Add(kvp.Value);
 
-		TextButton button3d = new(bounds.CreateNested(bounds.Size.X - 96 + 2, 0, 96, 20), () => StateManager.Dispatch(new SetLayout(Root.Dependencies.SurvivalEditor3dLayout)), ButtonStyles.Default, new(Color.White, TextAlign.Middle, FontSize.H12), "Open 3D editor");
+		TextButton button3d = new(bounds.CreateNested(bounds.Size.X - 96, 0, 96, 20), () => StateManager.Dispatch(new SetLayout(Root.Dependencies.SurvivalEditor3dLayout)), ButtonStyles.Default, new(Color.White, TextAlign.Middle, FontSize.H12), "Open 3D editor");
 		NestingContext.Add(button3d);
 
 		UpdateActiveButtonAndSettings();
