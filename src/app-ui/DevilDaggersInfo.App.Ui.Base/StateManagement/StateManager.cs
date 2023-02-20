@@ -23,6 +23,8 @@ public static class StateManager
 
 	// Survival editor states.
 	public static ArenaEditorState ArenaEditorState { get; private set; } = ArenaEditorState.GetDefault();
+	public static ArenaBucketState ArenaBucketState { get; private set; } = ArenaBucketState.GetDefault();
+	public static ArenaRectangleState ArenaRectangleState { get; private set; } = ArenaRectangleState.GetDefault();
 	public static SpawnEditorState SpawnEditorState { get; private set; } = SpawnEditorState.GetDefault();
 	public static SpawnsetHistoryState SpawnsetHistoryState { get; private set; } = SpawnsetHistoryState.GetDefault();
 	public static SpawnsetState SpawnsetState { get; private set; } = SpawnsetState.GetDefault();
@@ -93,6 +95,8 @@ public static class StateManager
 				ReplaySceneState = stateReducer.ReplaySceneState;
 				UploadResponseState = stateReducer.UploadResponseState;
 				ArenaEditorState = stateReducer.ArenaEditorState;
+				ArenaBucketState = stateReducer.ArenaBucketState;
+				ArenaRectangleState = stateReducer.ArenaRectangleState;
 				SpawnEditorState = stateReducer.SpawnEditorState;
 				SpawnsetHistoryState = stateReducer.SpawnsetHistoryState;
 				SpawnsetState = stateReducer.SpawnsetState;
