@@ -7,7 +7,6 @@ using DevilDaggersInfo.Core.Spawnset;
 using Silk.NET.GLFW;
 using Warp.NET;
 using Warp.NET.Extensions;
-using Warp.NET.Ui;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena;
 
@@ -29,17 +28,21 @@ public class ArenaPencilState : IArenaState
 				return;
 
 			Vector2i<int> pencilEnd = mousePosition.Real;
-			PixelBounds rectangle = ArenaEditingUtils.GetRectangle(_pencilStart.Value / Components.SpawnsetArena.Arena.TileSize, pencilEnd / Components.SpawnsetArena.Arena.TileSize);
-			for (int i = rectangle.X1; i <= rectangle.X2; i++)
+			Vector2 start = ArenaEditingUtils.Snap(_pencilStart.Value.ToVector2(), Vector2.One);
+			Vector2 end = ArenaEditingUtils.Snap(pencilEnd.ToVector2(), Vector2.One);
+			ArenaEditingUtils.Stadium stadium = new(start, end, StateManager.ArenaPencilState.Size / 2 * Components.SpawnsetArena.Arena.TileSize);
+			for (int i = 0; i < SpawnsetBinary.ArenaDimensionMax; i++)
 			{
-				for (int j = rectangle.Y1; j <= rectangle.Y2; j++)
+				for (int j = 0; j < SpawnsetBinary.ArenaDimensionMax; j++)
 				{
 					Vector2i<int> target = new(i, j);
 					if (_modifiedCoords.Contains(target)) // Early rejection, even though we're using a HashSet.
 						continue;
 
 					Vector2 visualTileCenter = new Vector2(i, j) * Components.SpawnsetArena.Arena.TileSize + Components.SpawnsetArena.Arena.HalfTile.ToVector2();
-					if (ArenaEditingUtils.LineIntersectsSquare(_pencilStart.Value.ToVector2(), pencilEnd.ToVector2(), visualTileCenter, Components.SpawnsetArena.Arena.TileSize))
+
+					ArenaEditingUtils.Square square = ArenaEditingUtils.Square.FromCenter(visualTileCenter, Components.SpawnsetArena.Arena.TileSize);
+					if (square.IntersectsStadium(stadium))
 						_modifiedCoords.Add(target);
 				}
 			}

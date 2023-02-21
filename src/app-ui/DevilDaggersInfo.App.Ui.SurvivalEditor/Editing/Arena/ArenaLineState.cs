@@ -3,10 +3,10 @@ using DevilDaggersInfo.App.Ui.Base.StateManagement;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Data;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena.Data;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
+using DevilDaggersInfo.Core.Spawnset;
 using Silk.NET.GLFW;
 using Warp.NET;
 using Warp.NET.Extensions;
-using Warp.NET.Ui;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena;
 
@@ -52,13 +52,17 @@ public class ArenaLineState : IArenaState
 			return;
 
 		Vector2i<int> lineEnd = mousePosition.Real;
-		PixelBounds rectangle = ArenaEditingUtils.GetRectangle(_lineStart.Value / Components.SpawnsetArena.Arena.TileSize, lineEnd / Components.SpawnsetArena.Arena.TileSize);
-		for (int i = rectangle.X1; i <= rectangle.X2; i++)
+		Vector2 start = ArenaEditingUtils.Snap(_lineStart.Value.ToVector2(), Vector2.One);
+		Vector2 end = ArenaEditingUtils.Snap(lineEnd.ToVector2(), Vector2.One);
+		ArenaEditingUtils.Stadium stadium = new(start, end, StateManager.ArenaLineState.Width / 2 * Components.SpawnsetArena.Arena.TileSize);
+		for (int i = 0; i < SpawnsetBinary.ArenaDimensionMax; i++)
 		{
-			for (int j = rectangle.Y1; j <= rectangle.Y2; j++)
+			for (int j = 0; j < SpawnsetBinary.ArenaDimensionMax; j++)
 			{
 				Vector2 visualTileCenter = new Vector2(i, j) * Components.SpawnsetArena.Arena.TileSize + Components.SpawnsetArena.Arena.HalfTile.ToVector2();
-				if (ArenaEditingUtils.LineIntersectsSquare(_lineStart.Value.ToVector2(), lineEnd.ToVector2(), visualTileCenter, Components.SpawnsetArena.Arena.TileSize))
+
+				ArenaEditingUtils.Square square = ArenaEditingUtils.Square.FromCenter(visualTileCenter, Components.SpawnsetArena.Arena.TileSize);
+				if (square.IntersectsStadium(stadium))
 					action(i, j);
 			}
 		}

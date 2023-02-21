@@ -3,6 +3,7 @@ using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.StateManagement;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena.Data;
+using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using DevilDaggersInfo.Types.Core.Spawnsets;
 using Silk.NET.GLFW;
 using Warp.NET;
@@ -43,10 +44,7 @@ public class ArenaDaggerState : IArenaState
 		Vector2 GetDaggerWorldPositionFromMouse()
 		{
 			const float displayTileSize = Components.SpawnsetArena.Arena.TileSize;
-			Vector2 fractionTile = new Vector2(mousePosition.Real.X / displayTileSize, mousePosition.Real.Y / displayTileSize) - new Vector2(0.5f);
-
-			Vector2 snap = StateManager.ArenaDaggerState.Snap;
-			fractionTile = new(MathF.Floor(fractionTile.X / snap.X) * snap.X, MathF.Floor(fractionTile.Y / snap.Y) * snap.Y);
+			Vector2 fractionTile = ArenaEditingUtils.Snap(new Vector2(mousePosition.Real.X / displayTileSize, mousePosition.Real.Y / displayTileSize) - new Vector2(0.5f), StateManager.ArenaDaggerState.Snap);
 
 			int arenaMiddle = StateManager.SpawnsetState.Spawnset.ArenaDimension / 2;
 			return new((fractionTile.X - arenaMiddle) * 4, (fractionTile.Y - arenaMiddle) * 4);
