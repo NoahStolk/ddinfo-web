@@ -29,8 +29,11 @@ public record StateReducer
 	public ReplaySceneState ReplaySceneState { get; set; } = StateManager.ReplaySceneState;
 	public UploadResponseState UploadResponseState { get; set; } = StateManager.UploadResponseState;
 	public ArenaEditorState ArenaEditorState { get; set; } = StateManager.ArenaEditorState;
-	public ArenaBucketState ArenaBucketState { get; set; } = StateManager.ArenaBucketState;
+	public ArenaPencilState ArenaPencilState { get; set; } = StateManager.ArenaPencilState;
+	public ArenaLineState ArenaLineState { get; set; } = StateManager.ArenaLineState;
 	public ArenaRectangleState ArenaRectangleState { get; set; } = StateManager.ArenaRectangleState;
+	public ArenaBucketState ArenaBucketState { get; set; } = StateManager.ArenaBucketState;
+	public ArenaDaggerState ArenaDaggerState { get; set; } = StateManager.ArenaDaggerState;
 	public SpawnEditorState SpawnEditorState { get; set; } = StateManager.SpawnEditorState;
 	public SpawnsetHistoryState SpawnsetHistoryState { get; set; } = StateManager.SpawnsetHistoryState;
 	public SpawnsetState SpawnsetState { get; set; } = StateManager.SpawnsetState;
