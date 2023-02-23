@@ -2,14 +2,15 @@ using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.StateManagement;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
-using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena.Data;
+using DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetArena;
+using DevilDaggersInfo.App.Ui.SurvivalEditor.EditorArena.Data;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using DevilDaggersInfo.Types.Core.Spawnsets;
 using Silk.NET.GLFW;
 using Warp.NET;
 using Warp.NET.Extensions;
 
-namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena;
+namespace DevilDaggersInfo.App.Ui.SurvivalEditor.EditorArena;
 
 public class ArenaDaggerState : IArenaState
 {
@@ -43,7 +44,7 @@ public class ArenaDaggerState : IArenaState
 
 		Vector2 GetDaggerWorldPositionFromMouse()
 		{
-			const float displayTileSize = Components.SpawnsetArena.Arena.TileSize;
+			const float displayTileSize = Arena.TileSize;
 			Vector2 fractionTile = ArenaEditingUtils.Snap(new Vector2(mousePosition.Real.X / displayTileSize, mousePosition.Real.Y / displayTileSize) - new Vector2(0.5f), StateManager.ArenaDaggerState.Snap);
 
 			int arenaMiddle = StateManager.SpawnsetState.Spawnset.ArenaDimension / 2;
@@ -66,7 +67,7 @@ public class ArenaDaggerState : IArenaState
 		float realRaceX = _position.Value.X / 4f + arenaMiddle;
 		float realRaceZ = _position.Value.Y / 4f + arenaMiddle;
 
-		const int tileSize = Components.SpawnsetArena.Arena.TileSize;
+		const int tileSize = Arena.TileSize;
 		const int halfSize = tileSize / 2;
 
 		Root.Game.SpriteRenderer.Schedule(new(-8, -8), origin.ToVector2() + new Vector2(realRaceX * tileSize + halfSize, realRaceZ * tileSize + halfSize), depth, ContentManager.Content.IconDaggerTexture, Color.HalfTransparentWhite);

@@ -1,13 +1,14 @@
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.StateManagement;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Data;
-using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena.Data;
+using DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetArena;
+using DevilDaggersInfo.App.Ui.SurvivalEditor.EditorArena.Data;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using Silk.NET.GLFW;
 using Warp.NET;
 using Warp.NET.Ui;
 
-namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena;
+namespace DevilDaggersInfo.App.Ui.SurvivalEditor.EditorArena;
 
 public class ArenaRectangleState : IArenaState
 {
@@ -28,7 +29,7 @@ public class ArenaRectangleState : IArenaState
 
 			Loop(mousePosition, (i, j) => _newArena[i, j] = StateManager.ArenaEditorState.SelectedHeight);
 
-			Components.SpawnsetArena.Arena.UpdateArena(_newArena, SpawnsetEditType.ArenaRectangle);
+			Arena.UpdateArena(_newArena, SpawnsetEditType.ArenaRectangle);
 
 			Reset();
 		}
@@ -42,7 +43,7 @@ public class ArenaRectangleState : IArenaState
 
 	public void Render(ArenaMousePosition mousePosition, Vector2i<int> origin, float depth)
 	{
-		Loop(mousePosition, (i, j) => Root.Game.RectangleRenderer.Schedule(new(Components.SpawnsetArena.Arena.TileSize), origin + new Vector2i<int>(i, j) * Components.SpawnsetArena.Arena.TileSize + Components.SpawnsetArena.Arena.HalfTile, depth, Color.HalfTransparentWhite));
+		Loop(mousePosition, (i, j) => Root.Game.RectangleRenderer.Schedule(new(Arena.TileSize), origin + new Vector2i<int>(i, j) * Arena.TileSize + Arena.HalfTile, depth, Color.HalfTransparentWhite));
 	}
 
 	private void Loop(ArenaMousePosition mousePosition, Action<int, int> action)

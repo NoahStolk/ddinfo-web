@@ -3,7 +3,7 @@ using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.StateManagement;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 using DevilDaggersInfo.App.Ui.Base.Styling;
-using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Spawns;
+using DevilDaggersInfo.App.Ui.SurvivalEditor.EditorSpawns;
 using Silk.NET.GLFW;
 using System.Collections.Immutable;
 using Warp.NET;

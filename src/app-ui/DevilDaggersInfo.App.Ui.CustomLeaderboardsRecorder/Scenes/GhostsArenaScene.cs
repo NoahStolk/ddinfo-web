@@ -21,7 +21,7 @@ public sealed class GhostsArenaScene : IArenaScene
 	public List<LightObject> Lights { get; } = new();
 	public RaceDagger? RaceDagger { get; set; }
 
-	public void Clear()
+	private void Clear()
 	{
 		_spawnset = null;
 		_replaySimulation = null;
