@@ -410,11 +410,23 @@ public record SpawnsetBinary
 	{
 		int x = WorldToTileCoordinate(arenaDimension, raceDaggerPosition.X);
 		int z = WorldToTileCoordinate(arenaDimension, raceDaggerPosition.Y);
-		float? y = null;
-		if (x >= 0 && x < arenaDimension && z >= 0 && z < arenaDimension)
-			y = arenaTiles[x, z];
-
+		float? y = GetRaceDaggerHeight(arenaDimension, arenaTiles, x, z);
 		return (x, y, z);
+	}
+
+	public float? GetRaceDaggerHeight()
+	{
+		int raceDaggerTileX = WorldToTileCoordinate(ArenaDimension, RaceDaggerPosition.X);
+		int raceDaggerTileZ = WorldToTileCoordinate(ArenaDimension, RaceDaggerPosition.Y);
+		return GetRaceDaggerHeight(ArenaDimension, ArenaTiles, raceDaggerTileX, raceDaggerTileZ);
+	}
+
+	public static float? GetRaceDaggerHeight(int arenaDimension, ImmutableArena arenaTiles, int raceDaggerTileX, int raceDaggerTileZ)
+	{
+		if (raceDaggerTileX >= 0 && raceDaggerTileX < arenaDimension && raceDaggerTileZ >= 0 && raceDaggerTileZ < arenaDimension)
+			return arenaTiles[raceDaggerTileX, raceDaggerTileZ];
+
+		return null;
 	}
 
 	public int WorldToTileCoordinate(float worldCoordinate)

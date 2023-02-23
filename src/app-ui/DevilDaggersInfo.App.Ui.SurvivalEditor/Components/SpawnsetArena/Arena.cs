@@ -112,7 +112,7 @@ public class Arena : AbstractComponent
 		if (scroll != 0)
 		{
 			// TODO: Selection.
-			UpdateArena(mousePosition.Tile.X, mousePosition.Tile.Y, StateManager.SpawnsetState.Spawnset.ArenaTiles[mousePosition.Tile.X, mousePosition.Tile.Y] + scroll, SpawnsetEditType.ArenaTileHeight);
+			UpdateArena(mousePosition.Tile.X, mousePosition.Tile.Y, StateManager.SpawnsetState.Spawnset.ArenaTiles[mousePosition.Tile.X, mousePosition.Tile.Y] - scroll, SpawnsetEditType.ArenaTileHeight);
 			return;
 		}
 

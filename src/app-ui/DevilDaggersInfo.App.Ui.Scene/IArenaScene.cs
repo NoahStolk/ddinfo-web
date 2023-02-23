@@ -37,11 +37,7 @@ public interface IArenaScene
 			if (spawnset.GameMode != GameMode.Race)
 				return null;
 
-			(int x, float? y, int z) = spawnset.GetRaceDaggerTilePosition();
-			if (!y.HasValue)
-				return null;
-
-			return new(spawnset, x, y.Value, z);
+			return new(spawnset);
 		}
 	}
 }
