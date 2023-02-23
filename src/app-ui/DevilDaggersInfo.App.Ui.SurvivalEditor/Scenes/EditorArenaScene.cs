@@ -62,12 +62,15 @@ public sealed class EditorArenaScene : IArenaScene
 		if (currentTick > 0 || scroll == 0 || _closestHitTile == null)
 			return;
 
-		float height = StateManager.SpawnsetState.Spawnset.ArenaTiles[_closestHitTile.ArenaX, _closestHitTile.ArenaY] + scroll;
+		float height = StateManager.SpawnsetState.Spawnset.ArenaTiles[_closestHitTile.ArenaX, _closestHitTile.ArenaY] - scroll;
 		_closestHitTile.SetDisplayHeight(height);
 
 		float[,] newArena = StateManager.SpawnsetState.Spawnset.ArenaTiles.GetMutableClone();
 		newArena[_closestHitTile.ArenaX, _closestHitTile.ArenaY] = height;
 		StateManager.Dispatch(new UpdateArena(newArena, SpawnsetEditType.ArenaTileHeight));
+
+		int dimension = StateManager.SpawnsetState.Spawnset.ArenaDimension;
+		RaceDagger?.UpdatePosition(dimension, new(dimension, newArena), StateManager.SpawnsetState.Spawnset.RaceDaggerPosition);
 	}
 
 	public void Render(int currentTick)
@@ -124,6 +127,7 @@ public sealed class EditorArenaScene : IArenaScene
 
 			_closestHitTile = _hitTiles.Count == 0 ? null : _hitTiles.MinBy(ht => ht.Distance).Tile;
 
+			// Temporarily use LutScale to highlight the target tile.
 			ContentManager.Content.TileTexture.Use();
 			for (int i = 0; i < Tiles.Count; i++)
 			{

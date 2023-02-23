@@ -4,15 +4,59 @@
 		"Date": "9999-01-01T00:00:00",
 		"Changes": [
 			{
-				"Description": "Added settings for the arena rectangle tool.",
+				"Description": "Added more settings for the arena editor.",
 				"SubChanges": [
 					{
-						"Description": "Border size"
+						"Description": "Pencil",
+						"SubChanges": [
+							{
+								"Description": "Size"
+							}
+						]
 					},
 					{
-						"Description": "Whether the rectangle should be filled"
+						"Description": "Line",
+						"SubChanges": [
+							{
+								"Description": "Width"
+							}
+						]
+					},
+					{
+						"Description": "Rectangle",
+						"SubChanges": [
+							{
+								"Description": "Border size"
+							},
+							{
+								"Description": "Whether the rectangle should be filled"
+							}
+						]
+					},
+					{
+						"Description": "Race dagger",
+						"SubChanges": [
+							{
+								"Description": "Snap"
+							}
+						]
 					}
 				]
+			},
+			{
+				"Description": "Changed arena shrink colors."
+			},
+			{
+				"Description": "Improved race dagger editor."
+			},
+			{
+				"Description": "Fixed race dagger always being in the center of a tile in the 3D editor."
+			},
+			{
+				"Description": "Changes made in the 3D editor now affect the race dagger visualization."
+			},
+			{
+				"Description": "Reversed arena editor scroll controls."
 			}
 		]
 	},

@@ -12,23 +12,34 @@ public class RaceDagger
 
 	private static uint _vao;
 
-	private readonly SpawnsetBinary _spawnset;
-	private readonly int _arenaCoordX;
-	private readonly int _arenaCoordZ;
-	private readonly float _worldX;
-	private readonly float _worldZ;
-	private readonly Vector3State _position;
-	private readonly QuaternionState _rotation;
+	private readonly Vector3State _meshPosition;
+	private readonly QuaternionState _meshRotation;
 
-	public RaceDagger(SpawnsetBinary spawnset, int arenaCoordX, float y, int arenaCoordZ)
+	private readonly SpawnsetBinary _spawnsetBinary;
+
+	private int _arenaDimension;
+	private ImmutableArena _arenaTiles;
+	private Vector2 _raceDaggerPosition;
+	private int _arenaCoordX;
+	private int _arenaCoordZ;
+
+	public RaceDagger(SpawnsetBinary spawnsetBinary)
 	{
-		_spawnset = spawnset;
-		_arenaCoordX = arenaCoordX;
-		_arenaCoordZ = arenaCoordZ;
-		_worldX = spawnset.TileToWorldCoordinate(arenaCoordX);
-		_worldZ = spawnset.TileToWorldCoordinate(arenaCoordZ);
-		_position = new(new(_worldX, y + _yOffset, _worldZ));
-		_rotation = new(Quaternion.CreateFromAxisAngle(Vector3.UnitX, MathF.PI * 0.5f));
+		_spawnsetBinary = spawnsetBinary;
+
+		_arenaDimension = _spawnsetBinary.ArenaDimension;
+		_arenaTiles = _spawnsetBinary.ArenaTiles;
+		_raceDaggerPosition = _spawnsetBinary.RaceDaggerPosition;
+		(_arenaCoordX, _arenaCoordZ) = GetPosition();
+
+		_meshPosition = new(new(_spawnsetBinary.RaceDaggerPosition.X, 0, _spawnsetBinary.RaceDaggerPosition.Y));
+		_meshRotation = new(Quaternion.CreateFromAxisAngle(Vector3.UnitX, MathF.PI * 0.5f));
+	}
+
+	private (int ArenaCoordX, int ArenaCoordZ) GetPosition()
+	{
+		(int x, _, int z) = SpawnsetBinary.GetRaceDaggerTilePosition(_arenaDimension, _arenaTiles, _raceDaggerPosition);
+		return (x, z);
 	}
 
 	public static unsafe void Initialize()
@@ -64,25 +75,39 @@ public class RaceDagger
 		}
 	}
 
+	/// <summary>
+	/// Updates the position based on the tiles edited in the 3D editor. TODO: Also implement being able to update the race dagger position in the 3D editor.
+	/// </summary>
+	public void UpdatePosition(int arenaDimension, ImmutableArena arenaTiles, Vector2 raceDaggerPosition)
+	{
+		_arenaDimension = arenaDimension;
+		_arenaTiles = arenaTiles;
+		_raceDaggerPosition = raceDaggerPosition;
+		(_arenaCoordX, _arenaCoordZ) = GetPosition();
+	}
+
 	public void Update(int currentTick)
 	{
-		_position.PrepareUpdate();
-		_rotation.PrepareUpdate();
+		_meshPosition.PrepareUpdate();
+		_meshRotation.PrepareUpdate();
 
 		float currentTime = currentTick / 60f;
-		Vector3 basePosition = new(_worldX, _spawnset.GetActualTileHeight(_arenaCoordX, _arenaCoordZ, currentTime) + _yOffset, _worldZ);
-		_position.Physics = basePosition + new Vector3(0, 0.15f + MathF.Sin(currentTime) * 0.15f, 0);
-		_rotation.Physics = _rotation.Start * Quaternion.CreateFromAxisAngle(Vector3.UnitZ, currentTime);
+		Vector3 basePosition = _meshPosition.Physics with
+		{
+			Y = SpawnsetBinary.GetActualTileHeight(_arenaDimension, _arenaTiles, _spawnsetBinary.ShrinkStart, _spawnsetBinary.ShrinkEnd, _spawnsetBinary.ShrinkRate, _arenaCoordX, _arenaCoordZ, currentTime) + _yOffset,
+		};
+		_meshPosition.Physics = basePosition + new Vector3(0, 0.15f + MathF.Sin(currentTime) * 0.15f, 0);
+		_meshRotation.Physics = _meshRotation.Start * Quaternion.CreateFromAxisAngle(Vector3.UnitZ, currentTime);
 	}
 
 	public unsafe void Render()
 	{
-		_position.PrepareRender();
-		_rotation.PrepareRender();
+		_meshPosition.PrepareRender();
+		_meshRotation.PrepareRender();
 
 		ContentManager.Content.DaggerSilverTexture.Use();
 
-		Matrix4x4 model = Matrix4x4.CreateScale(8) * Matrix4x4.CreateFromQuaternion(_rotation.Render) * Matrix4x4.CreateTranslation(_position.Render);
+		Matrix4x4 model = Matrix4x4.CreateScale(8) * Matrix4x4.CreateFromQuaternion(_meshRotation.Render) * Matrix4x4.CreateTranslation(_meshPosition.Render);
 		Shader.SetMatrix4x4(MeshUniforms.Model, model);
 
 		Gl.BindVertexArray(_vao);
