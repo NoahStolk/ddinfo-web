@@ -4,6 +4,6 @@ public record ArenaLineState(float Width)
 {
 	public static ArenaLineState GetDefault()
 	{
-		return new(0.1f);
+		return new(0);
 	}
 }

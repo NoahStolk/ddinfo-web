@@ -119,8 +119,16 @@ public static class ArenaEditingUtils
 			return PointIsBehindPlane(lineSegment.Start, lineSegment.Normal, BottomRight) != tlBehind;
 		}
 
+		public bool Contains(Vector2 point)
+		{
+			return point.X >= Min.X && point.X <= Max.X && point.Y >= Min.Y && point.Y <= Max.Y;
+		}
+
 		public bool IntersectsStadium(Stadium stadium)
 		{
+			if (Contains(stadium.Start) || Contains(stadium.End))
+				return true;
+
 			float radiusSquared = stadium.Radius * stadium.Radius;
 
 			// Check if any of the 4 corners of the square are inside the stadium start or end.
@@ -143,14 +151,30 @@ public static class ArenaEditingUtils
 				return false;
 
 			// Check if any of the 4 corners of the square are between the stadium edge planes.
-			if (PointIsBehindPlane(stadium.Edge1Point, stadium.Normal, TopLeft) ^ PointIsBehindPlane(stadium.Edge2Point, stadium.Normal, TopLeft))
-				return true;
-			if (PointIsBehindPlane(stadium.Edge1Point, stadium.Normal, TopRight) ^ PointIsBehindPlane(stadium.Edge2Point, stadium.Normal, TopRight))
-				return true;
-			if (PointIsBehindPlane(stadium.Edge1Point, stadium.Normal, BottomLeft) ^ PointIsBehindPlane(stadium.Edge2Point, stadium.Normal, BottomLeft))
+			bool tlBehind1 = PointIsBehindPlane(stadium.Edge1Point, stadium.Normal, TopLeft);
+			bool tlBehind2 = PointIsBehindPlane(stadium.Edge2Point, stadium.Normal, TopLeft);
+			if (tlBehind1 ^ tlBehind2)
 				return true;
 
-			return PointIsBehindPlane(stadium.Edge1Point, stadium.Normal, BottomRight) ^ PointIsBehindPlane(stadium.Edge2Point, stadium.Normal, BottomRight);
+			bool trBehind1 = PointIsBehindPlane(stadium.Edge1Point, stadium.Normal, TopRight);
+			bool trBehind2 = PointIsBehindPlane(stadium.Edge2Point, stadium.Normal, TopRight);
+			if (trBehind1 ^ trBehind2)
+				return true;
+
+			bool blBehind1 = PointIsBehindPlane(stadium.Edge1Point, stadium.Normal, BottomLeft);
+			bool blBehind2 = PointIsBehindPlane(stadium.Edge2Point, stadium.Normal, BottomLeft);
+			if (blBehind1 ^ blBehind2)
+				return true;
+
+			bool brBehind1 = PointIsBehindPlane(stadium.Edge1Point, stadium.Normal, BottomRight);
+			bool brBehind2 = PointIsBehindPlane(stadium.Edge2Point, stadium.Normal, BottomRight);
+			if (brBehind1 ^ brBehind2)
+				return true;
+
+			// Check if one of the 4 corners is in front of both edges, and if one of the 4 corners is behind both edges. If so, the stadium crosses the square.
+			bool oneBehind = tlBehind1 || trBehind1 || blBehind1 || brBehind1; // We only need to check one edge, since we already know that the other edge holds the same value (XOR).
+			bool oneInFront = !tlBehind1 || !trBehind1 || !blBehind1 || !brBehind1;
+			return oneBehind && oneInFront;
 		}
 	}
 }

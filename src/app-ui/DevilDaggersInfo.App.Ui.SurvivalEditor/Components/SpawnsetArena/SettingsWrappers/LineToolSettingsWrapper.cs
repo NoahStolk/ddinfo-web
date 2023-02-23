@@ -12,6 +12,6 @@ public class LineToolSettingsWrapper : AbstractComponent, ISettingsWrapper
 	{
 		int y = 0;
 		ISettingsWrapper wrapper = this;
-		wrapper.AddSlider("Width", ref y, f => StateManager.Dispatch(new SetArenaLineWidth(f)), 0.1f, 10, 0.1f, StateManager.ArenaLineState.Width, "0.0");
+		wrapper.AddSlider("Width", ref y, f => StateManager.Dispatch(new SetArenaLineWidth(f)), 0, 10, 0.1f, StateManager.ArenaLineState.Width, "0.0");
 	}
 }
