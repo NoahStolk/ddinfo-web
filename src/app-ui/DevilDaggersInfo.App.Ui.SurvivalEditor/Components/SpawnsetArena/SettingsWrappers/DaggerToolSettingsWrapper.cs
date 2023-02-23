@@ -12,7 +12,7 @@ public class DaggerToolSettingsWrapper : AbstractComponent, ISettingsWrapper
 	{
 		int y = 0;
 		ISettingsWrapper wrapper = this;
-		wrapper.AddSlider("Snap X", ref y, f => StateManager.Dispatch(new SetArenaDaggerSnap(StateManager.ArenaDaggerState.Snap with { X = f })), 0.05f, 4, 0.05f, StateManager.ArenaDaggerState.Snap.X, "0.00");
-		wrapper.AddSlider("Snap Y", ref y, f => StateManager.Dispatch(new SetArenaDaggerSnap(StateManager.ArenaDaggerState.Snap with { Y = f })), 0.05f, 4, 0.05f, StateManager.ArenaDaggerState.Snap.Y, "0.00");
+		wrapper.AddSlider("Snap X", ref y, f => StateManager.Dispatch(new SetArenaDaggerSnap(StateManager.ArenaDaggerState.Snap with { X = f })), 0.25f, 2, 0.25f, StateManager.ArenaDaggerState.Snap.X, "0.00");
+		wrapper.AddSlider("Snap Y", ref y, f => StateManager.Dispatch(new SetArenaDaggerSnap(StateManager.ArenaDaggerState.Snap with { Y = f })), 0.25f, 2, 0.25f, StateManager.ArenaDaggerState.Snap.Y, "0.00");
 	}
 }
