@@ -26,6 +26,7 @@ public interface IGame
 	SpriteRenderer SpriteRenderer { get; }
 	RectangleRenderer RectangleRenderer { get; }
 	CircleRenderer CircleRenderer { get; }
+	LineRenderer LineRenderer { get; }
 
 	#endregion Renderers
 

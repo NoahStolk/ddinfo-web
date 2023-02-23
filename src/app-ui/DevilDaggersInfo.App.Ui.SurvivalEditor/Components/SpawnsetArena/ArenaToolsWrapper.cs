@@ -32,8 +32,11 @@ public class ArenaToolsWrapper : AbstractComponent
 		AddToolButton(_arenaButtonSize * 3, 0, ArenaTool.Bucket, WarpTextures.Bucket, "Bucket");
 		AddToolButton(_arenaButtonSize * 4, 0, ArenaTool.Dagger, WarpTextures.Dagger, "Race dagger");
 
+		_toolSettingsWrappers.Add(ArenaTool.Pencil, new PencilToolSettingsWrapper(bounds.CreateNested(0, _arenaButtonSize, bounds.Size.X, 64)));
+		_toolSettingsWrappers.Add(ArenaTool.Line, new LineToolSettingsWrapper(bounds.CreateNested(0, _arenaButtonSize, bounds.Size.X, 64)));
 		_toolSettingsWrappers.Add(ArenaTool.Rectangle, new RectangleToolSettingsWrapper(bounds.CreateNested(0, _arenaButtonSize, bounds.Size.X, 64)));
 		_toolSettingsWrappers.Add(ArenaTool.Bucket, new BucketToolSettingsWrapper(bounds.CreateNested(0, _arenaButtonSize, bounds.Size.X, 64)));
+		_toolSettingsWrappers.Add(ArenaTool.Dagger, new DaggerToolSettingsWrapper(bounds.CreateNested(0, _arenaButtonSize, bounds.Size.X, 64)));
 
 		foreach (KeyValuePair<ArenaTool, TooltipIconButton> kvp in _toolButtons)
 			NestingContext.Add(kvp.Value);

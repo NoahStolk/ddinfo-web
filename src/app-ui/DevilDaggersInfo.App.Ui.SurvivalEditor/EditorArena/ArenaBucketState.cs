@@ -1,12 +1,13 @@
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.StateManagement;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Data;
-using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena.Data;
+using DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetArena;
+using DevilDaggersInfo.App.Ui.SurvivalEditor.EditorArena.Data;
 using DevilDaggersInfo.Core.Spawnset;
 using Silk.NET.GLFW;
 using Warp.NET;
 
-namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena;
+namespace DevilDaggersInfo.App.Ui.SurvivalEditor.EditorArena;
 
 public class ArenaBucketState : IArenaState
 {
@@ -34,7 +35,7 @@ public class ArenaBucketState : IArenaState
 			foreach (Vector2i<int> coord in _targetCoords)
 				tiles[coord.X, coord.Y] = StateManager.ArenaEditorState.SelectedHeight;
 
-			Components.SpawnsetArena.Arena.UpdateArena(tiles, SpawnsetEditType.ArenaBucket);
+			Arena.UpdateArena(tiles, SpawnsetEditType.ArenaBucket);
 		}
 
 		void FillNeighbors(int x, int y)
@@ -86,7 +87,7 @@ public class ArenaBucketState : IArenaState
 			for (int j = 0; j < SpawnsetBinary.ArenaDimensionMax; j++)
 			{
 				if (_targetCoords.Contains(new(i, j)))
-					Root.Game.RectangleRenderer.Schedule(new(Components.SpawnsetArena.Arena.TileSize), origin + new Vector2i<int>(i, j) * Components.SpawnsetArena.Arena.TileSize + Components.SpawnsetArena.Arena.HalfTile, depth, Color.HalfTransparentWhite);
+					Root.Game.RectangleRenderer.Schedule(new(Arena.TileSize), origin + new Vector2i<int>(i, j) * Arena.TileSize + Arena.HalfTile, depth, Color.HalfTransparentWhite);
 			}
 		}
 	}

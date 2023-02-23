@@ -11,7 +11,7 @@ using Warp.NET;
 using Warp.NET.Intersections;
 using Shader = Warp.NET.Content.Shader;
 
-namespace DevilDaggersInfo.App.Ui.SurvivalEditor;
+namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Scenes;
 
 public sealed class EditorArenaScene : IArenaScene
 {
@@ -23,7 +23,7 @@ public sealed class EditorArenaScene : IArenaScene
 	public List<LightObject> Lights { get; } = new();
 	public RaceDagger? RaceDagger { get; set; }
 
-	public void Clear()
+	private void Clear()
 	{
 		Tiles.Clear();
 		Lights.Clear();

@@ -28,4 +28,13 @@ public static class UiVertexBuilder
 
 		return vertices;
 	}
+
+	public static float[] Line()
+	{
+		return new[]
+		{
+			0f, 0f,
+			1f, 0f,
+		};
+	}
 }

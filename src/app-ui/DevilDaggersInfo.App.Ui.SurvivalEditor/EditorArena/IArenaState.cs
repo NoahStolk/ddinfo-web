@@ -1,6 +1,6 @@
-using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena.Data;
+using DevilDaggersInfo.App.Ui.SurvivalEditor.EditorArena.Data;
 
-namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena;
+namespace DevilDaggersInfo.App.Ui.SurvivalEditor.EditorArena;
 
 public interface IArenaState
 {

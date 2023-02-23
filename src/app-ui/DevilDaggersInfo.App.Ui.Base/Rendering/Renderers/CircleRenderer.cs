@@ -27,9 +27,9 @@ public class CircleRenderer
 		{
 			ScissorActivator.SetScissor(cl.Scissor);
 
-			Matrix4x4 scaleMatrix = Matrix4x4.CreateScale(cl.Radius, cl.Radius, 1);
-
-			Shader.SetMatrix4x4(UiUniforms.Model, scaleMatrix * Matrix4x4.CreateTranslation(cl.CenterPosition.X, cl.CenterPosition.Y, cl.Depth));
+			Matrix4x4 scale = Matrix4x4.CreateScale(cl.Radius, cl.Radius, 1);
+			Matrix4x4 translation = Matrix4x4.CreateTranslation(cl.CenterPosition.X, cl.CenterPosition.Y, cl.Depth);
+			Shader.SetMatrix4x4(UiUniforms.Model, scale * translation);
 			Shader.SetVector4(UiUniforms.Color, cl.Color);
 			Gl.DrawArrays(PrimitiveType.LineStrip, 0, _circleSubdivisionCount + 1);
 		}

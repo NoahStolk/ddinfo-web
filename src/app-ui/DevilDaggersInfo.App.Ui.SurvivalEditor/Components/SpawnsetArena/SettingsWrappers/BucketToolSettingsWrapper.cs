@@ -12,7 +12,7 @@ public class BucketToolSettingsWrapper : AbstractComponent, ISettingsWrapper
 	{
 		int y = 0;
 		ISettingsWrapper wrapper = this;
-		wrapper.AddSlider("Tolerance", ref y, f => StateManager.Dispatch(new SetArenaBucketTolerance(f)), 0, 10, 0.01f, StateManager.ArenaBucketState.Tolerance, "0.0");
+		wrapper.AddSlider("Tolerance", ref y, f => StateManager.Dispatch(new SetArenaBucketTolerance(f)), 0.01f, 10, 0.01f, StateManager.ArenaBucketState.Tolerance, "0.00");
 		wrapper.AddSlider("Void height", ref y, f => StateManager.Dispatch(new SetArenaBucketVoidHeight(f)), -50, 0, 0.1f, StateManager.ArenaBucketState.VoidHeight, "0.0");
 	}
 }

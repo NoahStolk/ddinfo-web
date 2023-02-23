@@ -5,8 +5,9 @@ using DevilDaggersInfo.App.Ui.Base.Rendering.Scissors;
 using DevilDaggersInfo.App.Ui.Base.StateManagement;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Data;
-using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena;
-using DevilDaggersInfo.App.Ui.SurvivalEditor.Editing.Arena.Data;
+using DevilDaggersInfo.App.Ui.Base.Styling;
+using DevilDaggersInfo.App.Ui.SurvivalEditor.EditorArena;
+using DevilDaggersInfo.App.Ui.SurvivalEditor.EditorArena.Data;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Core.Spawnset;
@@ -53,6 +54,7 @@ public class Arena : AbstractComponent
 	}
 
 	public static Vector2i<int> HalfTile { get; } = new(TileSize / 2);
+	public static Vector2 HalfTileAsVector2 { get; } = new(TileSize / 2f);
 
 	private IArenaState GetActiveState() => StateManager.ArenaEditorState.ArenaTool switch
 	{
@@ -182,11 +184,10 @@ public class Arena : AbstractComponent
 
 			(int raceX, _, int raceZ) = StateManager.SpawnsetState.Spawnset.GetRaceDaggerTilePosition();
 			float actualHeight = StateManager.SpawnsetState.Spawnset.GetActualTileHeight(raceX, raceZ, _currentSecond);
-			float lerp = MathF.Sin(Root.Game.Tt) / 2 + 0.5f;
 			Color tileColor = TileUtils.GetColorFromHeight(actualHeight);
-			Color inverted = Color.Invert(tileColor);
-			Vector3 color = Vector3.Lerp(inverted, inverted.Intensify(96), lerp);
-			Root.Game.SpriteRenderer.Schedule(new(-8, -8), origin.ToVector2() + new Vector2(realRaceX * TileSize + halfSize, realRaceZ * TileSize + halfSize), Depth + 3, ContentManager.Content.IconDaggerTexture, Color.FromVector3(color));
+			Color invertedTileColor = Color.Invert(tileColor);
+			Vector3 daggerColor = Vector3.Lerp(invertedTileColor, invertedTileColor.Intensify(96), MathF.Sin(Root.Game.Tt) / 2 + 0.5f);
+			Root.Game.SpriteRenderer.Schedule(new(-8, -8), origin.ToVector2() + new Vector2(realRaceX * TileSize + halfSize, realRaceZ * TileSize + halfSize), Depth + 3, ContentManager.Content.IconDaggerTexture, Color.FromVector3(daggerColor));
 		}
 
 		ScissorScheduler.PushScissor(Scissor.Create(Bounds, scrollOffset, ViewportState.Offset, ViewportState.Scale));
@@ -197,15 +198,15 @@ public class Arena : AbstractComponent
 		float shrinkEndRadius = StateManager.SpawnsetState.Spawnset.ShrinkEnd / tileUnit * TileSize;
 
 		if (shrinkStartRadius > 0)
-			Root.Game.CircleRenderer.Schedule(center, shrinkStartRadius, Depth + 5, Color.Purple);
+			Root.Game.CircleRenderer.Schedule(center, shrinkStartRadius, Depth + 5, GlobalColors.ShrinkStart);
 		if (shrinkCurrentRadius > 0)
-			Root.Game.CircleRenderer.Schedule(center, shrinkCurrentRadius, Depth + 4, Color.Yellow);
+			Root.Game.CircleRenderer.Schedule(center, shrinkCurrentRadius, Depth + 4, GlobalColors.ShrinkCurrent);
 		if (shrinkEndRadius > 0)
-			Root.Game.CircleRenderer.Schedule(center, shrinkEndRadius, Depth + 5, Color.Aqua);
-
-		ScissorScheduler.PopScissor();
+			Root.Game.CircleRenderer.Schedule(center, shrinkEndRadius, Depth + 5, GlobalColors.ShrinkEnd);
 
 		IArenaState activeState = GetActiveState();
 		activeState.Render(GetArenaMousePosition(scrollOffset), origin, Depth + 3);
+
+		ScissorScheduler.PopScissor();
 	}
 }
