@@ -25,30 +25,28 @@ public class ArenaDaggerState : IArenaState
 		if (Input.IsButtonPressed(MouseButton.Left))
 		{
 			_settingRaceDagger = true;
-			_position = GetDaggerWorldPositionFromMouse();
+			_position = GetSnappedDaggerPosition();
 		}
 		else if (Input.IsButtonHeld(MouseButton.Left))
 		{
 			if (_settingRaceDagger)
-				_position = GetDaggerWorldPositionFromMouse();
+				_position = GetSnappedDaggerPosition();
 		}
 		else if (Input.IsButtonReleased(MouseButton.Left))
 		{
 			if (!_position.HasValue)
 				return;
 
-			StateManager.Dispatch(new UpdateRaceDaggerPosition(_position.Value));
+			Vector2 tileCoordinate = _position.Value / Arena.TileSize;
+			Vector2 daggerPosition = new(StateManager.SpawnsetState.Spawnset.TileToWorldCoordinate(tileCoordinate.X), StateManager.SpawnsetState.Spawnset.TileToWorldCoordinate(tileCoordinate.Y));
+			StateManager.Dispatch(new UpdateRaceDaggerPosition(daggerPosition));
 
 			Reset();
 		}
 
-		Vector2 GetDaggerWorldPositionFromMouse()
+		Vector2 GetSnappedDaggerPosition()
 		{
-			const float displayTileSize = Arena.TileSize;
-			Vector2 fractionTile = ArenaEditingUtils.Snap(new Vector2(mousePosition.Real.X / displayTileSize, mousePosition.Real.Y / displayTileSize) - new Vector2(0.5f), StateManager.ArenaDaggerState.Snap);
-
-			int arenaMiddle = StateManager.SpawnsetState.Spawnset.ArenaDimension / 2;
-			return new((fractionTile.X - arenaMiddle) * 4, (fractionTile.Y - arenaMiddle) * 4);
+			return ArenaEditingUtils.Snap(mousePosition.Real.ToVector2(), StateManager.ArenaDaggerState.Snap * Arena.TileSize);
 		}
 	}
 
@@ -63,13 +61,6 @@ public class ArenaDaggerState : IArenaState
 		if (!_position.HasValue)
 			return;
 
-		int arenaMiddle = StateManager.SpawnsetState.Spawnset.ArenaDimension / 2;
-		float realRaceX = _position.Value.X / 4f + arenaMiddle;
-		float realRaceZ = _position.Value.Y / 4f + arenaMiddle;
-
-		const int tileSize = Arena.TileSize;
-		const int halfSize = tileSize / 2;
-
-		Root.Game.SpriteRenderer.Schedule(new(-8, -8), origin.ToVector2() + new Vector2(realRaceX * tileSize + halfSize, realRaceZ * tileSize + halfSize), depth, ContentManager.Content.IconDaggerTexture, Color.HalfTransparentWhite);
+		Root.Game.SpriteRenderer.Schedule(new(-8, -8), origin.ToVector2() + _position.Value + Arena.HalfTileAsVector2, depth, ContentManager.Content.IconDaggerTexture, Color.HalfTransparentWhite);
 	}
 }
