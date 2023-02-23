@@ -1,6 +1,7 @@
 using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.Components.Styles;
 using DevilDaggersInfo.App.Ui.Base.StateManagement;
+using DevilDaggersInfo.App.Ui.Base.Styling;
 using Warp.NET.Ui;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetArena;
@@ -14,7 +15,7 @@ public class ShrinkSlider : Slider
 
 	protected override void RenderHighlighters(Vector2i<int> scrollOffset)
 	{
-		RenderHighlighter(scrollOffset, GetPercentage(CurrentValue), Color.Yellow);
-		RenderHighlighter(scrollOffset, GetPercentage(StateManager.SpawnsetState.Spawnset.GetShrinkEndTime()), Color.Aqua);
+		RenderHighlighter(scrollOffset, GetPercentage(CurrentValue), GlobalColors.ShrinkCurrent);
+		RenderHighlighter(scrollOffset, GetPercentage(StateManager.SpawnsetState.Spawnset.GetShrinkEndTime()), GlobalColors.ShrinkEnd);
 	}
 }
