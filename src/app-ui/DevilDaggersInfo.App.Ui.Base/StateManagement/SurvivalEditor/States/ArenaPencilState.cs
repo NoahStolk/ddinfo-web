@@ -4,6 +4,6 @@ public record ArenaPencilState(float Size)
 {
 	public static ArenaPencilState GetDefault()
 	{
-		return new(0.1f);
+		return new(0);
 	}
 }

@@ -29,8 +29,8 @@ public class ArenaPencilState : IArenaState
 				return;
 
 			Vector2i<int> pencilEnd = mousePosition.Real;
-			Vector2 start = ArenaEditingUtils.Snap(_pencilStart.Value.ToVector2(), Vector2.One);
-			Vector2 end = ArenaEditingUtils.Snap(pencilEnd.ToVector2(), Vector2.One);
+			Vector2 start = ArenaEditingUtils.Snap(_pencilStart.Value.ToVector2(), Arena.TileSize) + Arena.HalfTileAsVector2;
+			Vector2 end = ArenaEditingUtils.Snap(pencilEnd.ToVector2(), Arena.TileSize) + Arena.HalfTileAsVector2;
 			ArenaEditingUtils.Stadium stadium = new(start, end, StateManager.ArenaPencilState.Size / 2 * Arena.TileSize);
 			for (int i = 0; i < SpawnsetBinary.ArenaDimensionMax; i++)
 			{

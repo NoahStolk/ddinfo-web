@@ -12,6 +12,6 @@ public class PencilToolSettingsWrapper : AbstractComponent, ISettingsWrapper
 	{
 		int y = 0;
 		ISettingsWrapper wrapper = this;
-		wrapper.AddSlider("Size", ref y, f => StateManager.Dispatch(new SetArenaPencilSize(f)), 0.1f, 10, 0.1f, StateManager.ArenaPencilState.Size, "0.0");
+		wrapper.AddSlider("Size", ref y, f => StateManager.Dispatch(new SetArenaPencilSize(f)), 0, 10, 0.1f, StateManager.ArenaPencilState.Size, "0.0");
 	}
 }
