@@ -75,7 +75,7 @@ public class ArenaBucketState : IArenaState
 		}
 	}
 
-	public void Reset()
+	public void HandleOutOfRange(ArenaMousePosition mousePosition)
 	{
 		_targetCoords.Clear();
 	}

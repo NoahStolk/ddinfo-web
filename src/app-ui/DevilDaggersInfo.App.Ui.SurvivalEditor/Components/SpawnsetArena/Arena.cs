@@ -29,8 +29,6 @@ public class Arena : AbstractComponent
 	private readonly ArenaBucketState _bucketState;
 	private readonly ArenaDaggerState _daggerState;
 
-	private readonly List<IArenaState> _states;
-
 	private float _currentSecond;
 	private float _shrinkRadius;
 
@@ -42,15 +40,6 @@ public class Arena : AbstractComponent
 		_rectangleState = new();
 		_bucketState = new();
 		_daggerState = new();
-
-		_states = new()
-		{
-			_pencilState,
-			_lineState,
-			_rectangleState,
-			_bucketState,
-			_daggerState,
-		};
 	}
 
 	public static Vector2i<int> HalfTile { get; } = new(TileSize / 2);
@@ -93,42 +82,30 @@ public class Arena : AbstractComponent
 	{
 		base.Update(scrollOffset);
 
-		bool hover = MouseUiContext.Contains(scrollOffset, Bounds);
-		if (!hover)
-		{
-			Reset();
-			return;
-		}
-
 		ArenaMousePosition mousePosition = GetArenaMousePosition(scrollOffset);
-		if (mousePosition.Tile.X < 0 || mousePosition.Tile.Y < 0 || mousePosition.Tile.X >= StateManager.SpawnsetState.Spawnset.ArenaDimension || mousePosition.Tile.Y >= StateManager.SpawnsetState.Spawnset.ArenaDimension)
-		{
-			Reset();
-			return;
-		}
-
-		Root.Game.TooltipContext = new()
-		{
-			Text = $"{StateManager.SpawnsetState.Spawnset.ArenaTiles[mousePosition.Tile.X, mousePosition.Tile.Y]}\n{{{mousePosition.Tile.X}, {mousePosition.Tile.Y}}}",
-			ForegroundColor = Color.HalfTransparentWhite,
-			BackgroundColor = Color.HalfTransparentBlack,
-		};
-		int scroll = Input.GetScroll();
-		if (scroll != 0)
-		{
-			// TODO: Selection.
-			UpdateArena(mousePosition.Tile.X, mousePosition.Tile.Y, StateManager.SpawnsetState.Spawnset.ArenaTiles[mousePosition.Tile.X, mousePosition.Tile.Y] - scroll, SpawnsetEditType.ArenaTileHeight);
-			return;
-		}
-
+		bool isOutOfRange = mousePosition.Tile.X < 0 || mousePosition.Tile.Y < 0 || mousePosition.Tile.X >= StateManager.SpawnsetState.Spawnset.ArenaDimension || mousePosition.Tile.Y >= StateManager.SpawnsetState.Spawnset.ArenaDimension;
 		IArenaState activeState = GetActiveState();
-		activeState.Handle(mousePosition);
-	}
+		if (isOutOfRange)
+		{
+			activeState.HandleOutOfRange(mousePosition);
+		}
+		else
+		{
+			Root.Game.TooltipContext = new()
+			{
+				Text = $"{StateManager.SpawnsetState.Spawnset.ArenaTiles[mousePosition.Tile.X, mousePosition.Tile.Y]}\n{{{mousePosition.Tile.X}, {mousePosition.Tile.Y}}}",
+				ForegroundColor = Color.HalfTransparentWhite,
+				BackgroundColor = Color.HalfTransparentBlack,
+			};
+			int scroll = Input.GetScroll();
+			if (scroll != 0)
+			{
+				// TODO: Selection.
+				UpdateArena(mousePosition.Tile.X, mousePosition.Tile.Y, StateManager.SpawnsetState.Spawnset.ArenaTiles[mousePosition.Tile.X, mousePosition.Tile.Y] - scroll, SpawnsetEditType.ArenaTileHeight);
+			}
 
-	private void Reset()
-	{
-		foreach (IArenaState state in _states)
-			state.Reset();
+			activeState.Handle(mousePosition);
+		}
 	}
 
 	public void SetShrinkCurrent(float currentSecond)
