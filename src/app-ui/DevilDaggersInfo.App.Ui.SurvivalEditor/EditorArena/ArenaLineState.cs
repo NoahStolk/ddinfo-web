@@ -25,18 +25,29 @@ public class ArenaLineState : IArenaState
 		}
 		else if (Input.IsButtonReleased(MouseButton.Left))
 		{
-			if (!_lineStart.HasValue || _newArena == null)
-				return;
-
-			Loop(mousePosition, (i, j) => _newArena[i, j] = StateManager.ArenaEditorState.SelectedHeight);
-
-			Arena.UpdateArena(_newArena, SpawnsetEditType.ArenaLine);
-
-			Reset();
+			Emit(mousePosition);
 		}
 	}
 
-	public void Reset()
+	public void HandleOutOfRange(ArenaMousePosition mousePosition)
+	{
+		if (Input.IsButtonReleased(MouseButton.Left))
+			Emit(mousePosition);
+	}
+
+	private void Emit(ArenaMousePosition mousePosition)
+	{
+		if (!_lineStart.HasValue || _newArena == null)
+			return;
+
+		Loop(mousePosition, (i, j) => _newArena[i, j] = StateManager.ArenaEditorState.SelectedHeight);
+
+		Arena.UpdateArena(_newArena, SpawnsetEditType.ArenaLine);
+
+		Reset();
+	}
+
+	private void Reset()
 	{
 		_lineStart = null;
 		_newArena = null;

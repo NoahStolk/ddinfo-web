@@ -6,7 +6,7 @@ public interface IArenaState
 {
 	void Handle(ArenaMousePosition mousePosition);
 
-	void Reset();
+	void HandleOutOfRange(ArenaMousePosition mousePosition);
 
 	void Render(ArenaMousePosition mousePosition, Vector2i<int> origin, float depth);
 }

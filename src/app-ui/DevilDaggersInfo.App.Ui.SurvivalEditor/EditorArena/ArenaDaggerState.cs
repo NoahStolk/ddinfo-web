@@ -50,7 +50,12 @@ public class ArenaDaggerState : IArenaState
 		}
 	}
 
-	public void Reset()
+	public void HandleOutOfRange(ArenaMousePosition mousePosition)
+	{
+		Reset();
+	}
+
+	private void Reset()
 	{
 		_settingRaceDagger = false;
 		_position = null;

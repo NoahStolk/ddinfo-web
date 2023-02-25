@@ -24,18 +24,29 @@ public class ArenaRectangleState : IArenaState
 		}
 		else if (Input.IsButtonReleased(MouseButton.Left))
 		{
-			if (!_rectangleStart.HasValue || _newArena == null)
-				return;
-
-			Loop(mousePosition, (i, j) => _newArena[i, j] = StateManager.ArenaEditorState.SelectedHeight);
-
-			Arena.UpdateArena(_newArena, SpawnsetEditType.ArenaRectangle);
-
-			Reset();
+			Emit(mousePosition);
 		}
 	}
 
-	public void Reset()
+	public void HandleOutOfRange(ArenaMousePosition mousePosition)
+	{
+		if (Input.IsButtonReleased(MouseButton.Left))
+			Emit(mousePosition);
+	}
+
+	private void Emit(ArenaMousePosition mousePosition)
+	{
+		if (!_rectangleStart.HasValue || _newArena == null)
+			return;
+
+		Loop(mousePosition, (i, j) => _newArena[i, j] = StateManager.ArenaEditorState.SelectedHeight);
+
+		Arena.UpdateArena(_newArena, SpawnsetEditType.ArenaRectangle);
+
+		Reset();
+	}
+
+	private void Reset()
 	{
 		_rectangleStart = null;
 		_newArena = null;
@@ -51,8 +62,7 @@ public class ArenaRectangleState : IArenaState
 		if (!_rectangleStart.HasValue)
 			return;
 
-		Vector2i<int> rectangleEnd = mousePosition.Tile;
-		PixelBounds rectangle = ArenaEditingUtils.GetRectangle(_rectangleStart.Value, rectangleEnd);
+		PixelBounds rectangle = ArenaEditingUtils.GetRectangle(_rectangleStart.Value, mousePosition.Tile);
 
 		bool filled = StateManager.ArenaRectangleState.Filled;
 		int addedSize = StateManager.ArenaRectangleState.Size - 1;

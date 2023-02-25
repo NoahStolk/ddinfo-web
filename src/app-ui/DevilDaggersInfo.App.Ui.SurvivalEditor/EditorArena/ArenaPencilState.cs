@@ -53,21 +53,34 @@ public class ArenaPencilState : IArenaState
 		}
 		else if (Input.IsButtonReleased(MouseButton.Left))
 		{
-			if (!_pencilStart.HasValue || _modifiedCoords == null)
-				return;
-
-			float[,] newArena = StateManager.SpawnsetState.Spawnset.ArenaTiles.GetMutableClone();
-
-			foreach (Vector2i<int> position in _modifiedCoords)
-				newArena[position.X, position.Y] = StateManager.ArenaEditorState.SelectedHeight;
-
-			Arena.UpdateArena(newArena, SpawnsetEditType.ArenaPencil);
-
-			Reset();
+			Emit();
 		}
 	}
 
-	public void Reset()
+	public void HandleOutOfRange(ArenaMousePosition mousePosition)
+	{
+		if (Input.IsButtonHeld(MouseButton.Left))
+			_pencilStart = mousePosition.Real;
+		else if (Input.IsButtonReleased(MouseButton.Left))
+			Emit();
+	}
+
+	private void Emit()
+	{
+		if (!_pencilStart.HasValue || _modifiedCoords == null)
+			return;
+
+		float[,] newArena = StateManager.SpawnsetState.Spawnset.ArenaTiles.GetMutableClone();
+
+		foreach (Vector2i<int> position in _modifiedCoords)
+			newArena[position.X, position.Y] = StateManager.ArenaEditorState.SelectedHeight;
+
+		Arena.UpdateArena(newArena, SpawnsetEditType.ArenaPencil);
+
+		Reset();
+	}
+
+	private void Reset()
 	{
 		_pencilStart = null;
 		_modifiedCoords = null;
