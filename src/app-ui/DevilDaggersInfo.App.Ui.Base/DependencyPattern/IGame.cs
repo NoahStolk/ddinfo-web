@@ -12,7 +12,7 @@ public interface IGame
 	float Tt { get; }
 	float MainLoopRate { get; set; }
 
-	string? TooltipText { get; set; }
+	TooltipContext? TooltipContext { get; set; }
 
 	#region Renderers
 
