@@ -46,21 +46,25 @@ public class ArenaLineState : IArenaState
 	{
 		Loop(mousePosition, (i, j) => Root.Game.RectangleRenderer.Schedule(new(Arena.TileSize), origin + new Vector2i<int>(i, j) * Arena.TileSize + Arena.HalfTile, depth, Color.HalfTransparentWhite));
 
-		if (!_lineStart.HasValue)
-			return;
+		if (_lineStart.HasValue)
+		{
+			ArenaEditingUtils.Stadium stadium = GetStadium(_lineStart.Value, mousePosition);
 
-		ArenaEditingUtils.Stadium stadium = GetStadium(_lineStart.Value, mousePosition);
+			Root.Game.CircleRenderer.Schedule(origin + stadium.Start.RoundToVector2Int32(), 2, depth + 1, Color.White);
+			Root.Game.CircleRenderer.Schedule(origin + stadium.End.RoundToVector2Int32(), 2, depth + 1, Color.White);
 
-		Root.Game.CircleRenderer.Schedule(origin + stadium.Start.RoundToVector2Int32(), 2, depth + 1, Color.White);
-		Root.Game.CircleRenderer.Schedule(origin + stadium.End.RoundToVector2Int32(), 2, depth + 1, Color.White);
+			Root.Game.CircleRenderer.Schedule(origin + stadium.Start.RoundToVector2Int32(), stadium.Radius, depth + 1, Color.White);
+			Root.Game.CircleRenderer.Schedule(origin + stadium.End.RoundToVector2Int32(), stadium.Radius, depth + 1, Color.White);
 
-		Root.Game.CircleRenderer.Schedule(origin + stadium.Start.RoundToVector2Int32(), stadium.Radius, depth + 1, Color.White);
-		Root.Game.CircleRenderer.Schedule(origin + stadium.End.RoundToVector2Int32(), stadium.Radius, depth + 1, Color.White);
-
-		Vector2 delta = stadium.End - stadium.Start;
-		Root.Game.LineRenderer.Schedule(origin + stadium.Start.RoundToVector2Int32(), origin + stadium.End.RoundToVector2Int32(), depth + 1, Color.White);
-		Root.Game.LineRenderer.Schedule(origin + stadium.Edge1Point.RoundToVector2Int32(), origin + (stadium.Edge1Point + delta).RoundToVector2Int32(), depth + 1, Color.White);
-		Root.Game.LineRenderer.Schedule(origin + stadium.Edge2Point.RoundToVector2Int32(), origin + (stadium.Edge2Point + delta).RoundToVector2Int32(), depth + 1, Color.White);
+			Vector2 delta = stadium.End - stadium.Start;
+			Root.Game.LineRenderer.Schedule(origin + stadium.Start.RoundToVector2Int32(), origin + stadium.End.RoundToVector2Int32(), depth + 1, Color.White);
+			Root.Game.LineRenderer.Schedule(origin + stadium.Edge1Point.RoundToVector2Int32(), origin + (stadium.Edge1Point + delta).RoundToVector2Int32(), depth + 1, Color.White);
+			Root.Game.LineRenderer.Schedule(origin + stadium.Edge2Point.RoundToVector2Int32(), origin + (stadium.Edge2Point + delta).RoundToVector2Int32(), depth + 1, Color.White);
+		}
+		else
+		{
+			Root.Game.CircleRenderer.Schedule(origin + GetSnappedPosition(mousePosition.Real), GetDisplayRadius(), depth + 1, Color.HalfTransparentWhite);
+		}
 	}
 
 	private void Loop(ArenaMousePosition mousePosition, Action<int, int> action)
@@ -84,9 +88,16 @@ public class ArenaLineState : IArenaState
 
 	private static ArenaEditingUtils.Stadium GetStadium(Vector2i<int> lineStart, ArenaMousePosition mousePosition)
 	{
-		Vector2i<int> lineEnd = mousePosition.Real;
-		Vector2 start = ArenaEditingUtils.Snap(lineStart.ToVector2(), Arena.TileSize) + Arena.HalfTileAsVector2;
-		Vector2 end = ArenaEditingUtils.Snap(lineEnd.ToVector2(), Arena.TileSize) + Arena.HalfTileAsVector2;
-		return new(start, end, StateManager.ArenaLineState.Width / 2 * Arena.TileSize);
+		return new(GetSnappedPosition(lineStart).ToVector2(), GetSnappedPosition(mousePosition.Real).ToVector2(), GetDisplayRadius());
+	}
+
+	private static float GetDisplayRadius()
+	{
+		return StateManager.ArenaLineState.Width / 2 * Arena.TileSize;
+	}
+
+	private static Vector2i<int> GetSnappedPosition(Vector2i<int> position)
+	{
+		return ArenaEditingUtils.Snap(position, Arena.TileSize) + Arena.HalfTile;
 	}
 }
