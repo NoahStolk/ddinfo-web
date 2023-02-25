@@ -75,6 +75,8 @@ public class ArenaPencilState : IArenaState
 
 	public void Render(ArenaMousePosition mousePosition, Vector2i<int> origin, float depth)
 	{
+		Root.Game.CircleRenderer.Schedule(origin + GetSnappedPosition(mousePosition.Real), GetDisplayRadius(), depth + 1, _pencilStart.HasValue ? Color.White : Color.HalfTransparentWhite);
+
 		if (_modifiedCoords == null)
 			return;
 
@@ -86,5 +88,15 @@ public class ArenaPencilState : IArenaState
 					Root.Game.RectangleRenderer.Schedule(new(Arena.TileSize), origin + new Vector2i<int>(i, j) * Arena.TileSize + Arena.HalfTile, depth, Color.HalfTransparentWhite);
 			}
 		}
+	}
+
+	private static float GetDisplayRadius()
+	{
+		return StateManager.ArenaPencilState.Size / 2 * Arena.TileSize;
+	}
+
+	private static Vector2i<int> GetSnappedPosition(Vector2i<int> position)
+	{
+		return ArenaEditingUtils.Snap(position, Arena.TileSize) + Arena.HalfTile;
 	}
 }

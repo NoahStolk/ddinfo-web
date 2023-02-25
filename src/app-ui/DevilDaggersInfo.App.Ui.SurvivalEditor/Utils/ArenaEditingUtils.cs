@@ -4,6 +4,16 @@ namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 
 public static class ArenaEditingUtils
 {
+	public static Vector2i<int> Snap(Vector2i<int> vector, int snap)
+	{
+		return new(vector.X / snap * snap, vector.Y / snap * snap);
+	}
+
+	public static Vector2i<int> Snap(Vector2i<int> vector, Vector2i<int> snap)
+	{
+		return new(vector.X / snap.X * snap.X, vector.Y / snap.Y * snap.Y);
+	}
+
 	public static Vector2 Snap(Vector2 vector, float snap)
 	{
 		return new(MathF.Floor(vector.X / snap) * snap, MathF.Floor(vector.Y / snap) * snap);
