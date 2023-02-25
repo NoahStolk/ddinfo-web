@@ -29,12 +29,14 @@ public class ArenaToolsWrapper : AbstractComponent
 		AddToolButton(_arenaButtonSize * 0, 0, ArenaTool.Pencil, WarpTextures.Pencil, "Pencil");
 		AddToolButton(_arenaButtonSize * 1, 0, ArenaTool.Line, WarpTextures.Line, "Line");
 		AddToolButton(_arenaButtonSize * 2, 0, ArenaTool.Rectangle, WarpTextures.Rectangle, "Rectangle");
-		AddToolButton(_arenaButtonSize * 3, 0, ArenaTool.Bucket, WarpTextures.Bucket, "Bucket");
-		AddToolButton(_arenaButtonSize * 4, 0, ArenaTool.Dagger, WarpTextures.Dagger, "Race dagger");
+		AddToolButton(_arenaButtonSize * 3, 0, ArenaTool.Ellipse, WarpTextures.Ellipse, "Ellipse");
+		AddToolButton(_arenaButtonSize * 4, 0, ArenaTool.Bucket, WarpTextures.Bucket, "Bucket");
+		AddToolButton(_arenaButtonSize * 5, 0, ArenaTool.Dagger, WarpTextures.Dagger, "Race dagger");
 
 		_toolSettingsWrappers.Add(ArenaTool.Pencil, new PencilToolSettingsWrapper(bounds.CreateNested(0, _arenaButtonSize, bounds.Size.X, 64)));
 		_toolSettingsWrappers.Add(ArenaTool.Line, new LineToolSettingsWrapper(bounds.CreateNested(0, _arenaButtonSize, bounds.Size.X, 64)));
 		_toolSettingsWrappers.Add(ArenaTool.Rectangle, new RectangleToolSettingsWrapper(bounds.CreateNested(0, _arenaButtonSize, bounds.Size.X, 64)));
+		_toolSettingsWrappers.Add(ArenaTool.Ellipse, new EllipseToolSettingsWrapper(bounds.CreateNested(0, _arenaButtonSize, bounds.Size.X, 64)));
 		_toolSettingsWrappers.Add(ArenaTool.Bucket, new BucketToolSettingsWrapper(bounds.CreateNested(0, _arenaButtonSize, bounds.Size.X, 64)));
 		_toolSettingsWrappers.Add(ArenaTool.Dagger, new DaggerToolSettingsWrapper(bounds.CreateNested(0, _arenaButtonSize, bounds.Size.X, 64)));
 

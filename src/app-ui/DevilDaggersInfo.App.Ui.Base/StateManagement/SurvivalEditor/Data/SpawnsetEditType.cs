@@ -7,6 +7,7 @@ public enum SpawnsetEditType
 	ArenaPencil,
 	ArenaLine,
 	ArenaRectangle,
+	ArenaEllipse,
 	ArenaBucket,
 	RaceDagger,
 	ShrinkStart,
