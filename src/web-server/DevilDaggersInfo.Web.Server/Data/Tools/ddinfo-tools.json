@@ -47,6 +47,9 @@
 				"Description": "Changed arena shrink colors."
 			},
 			{
+				"Description": "The arena editor tooltip is now transparent."
+			},
+			{
 				"Description": "Improved pencil, line, and race dagger editor tools."
 			},
 			{

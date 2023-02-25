@@ -19,6 +19,13 @@ public class TooltipIconButton : IconButton
 		base.Update(scrollOffset);
 
 		if (Hover && !IsDisabled)
-			Root.Game.TooltipText = _tooltipText;
+		{
+			Root.Game.TooltipContext = new()
+			{
+				Text = _tooltipText,
+				ForegroundColor = Color.White,
+				BackgroundColor = Color.Black,
+			};
+		}
 	}
 }

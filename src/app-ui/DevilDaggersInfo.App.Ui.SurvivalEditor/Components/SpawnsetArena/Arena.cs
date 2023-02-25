@@ -107,7 +107,12 @@ public class Arena : AbstractComponent
 			return;
 		}
 
-		Root.Game.TooltipText = $"{StateManager.SpawnsetState.Spawnset.ArenaTiles[mousePosition.Tile.X, mousePosition.Tile.Y]}\n{{{mousePosition.Tile.X}, {mousePosition.Tile.Y}}}";
+		Root.Game.TooltipContext = new()
+		{
+			Text = $"{StateManager.SpawnsetState.Spawnset.ArenaTiles[mousePosition.Tile.X, mousePosition.Tile.Y]}\n{{{mousePosition.Tile.X}, {mousePosition.Tile.Y}}}",
+			ForegroundColor = Color.HalfTransparentWhite,
+			BackgroundColor = Color.HalfTransparentBlack,
+		};
 		int scroll = Input.GetScroll();
 		if (scroll != 0)
 		{
