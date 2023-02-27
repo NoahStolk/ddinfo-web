@@ -64,14 +64,12 @@ public class ArenaRectangleState : IArenaState
 
 		PixelBounds rectangle = ArenaEditingUtils.GetRectangle(_rectangleStart.Value, mousePosition.Tile);
 
-		bool filled = StateManager.ArenaRectangleState.Filled;
-		int addedSize = StateManager.ArenaRectangleState.Size - 1;
-		int startXa = Math.Max(0, rectangle.X1 - addedSize);
-		int startYa = Math.Max(0, rectangle.Y1 - addedSize);
-		int endXa = Math.Min(StateManager.SpawnsetState.Spawnset.ArenaDimension - 1, rectangle.X2 + addedSize);
-		int endYa = Math.Min(StateManager.SpawnsetState.Spawnset.ArenaDimension - 1, rectangle.Y2 + addedSize);
+		int startXa = Math.Max(0, rectangle.X1);
+		int startYa = Math.Max(0, rectangle.Y1);
+		int endXa = Math.Min(StateManager.SpawnsetState.Spawnset.ArenaDimension - 1, rectangle.X2);
+		int endYa = Math.Min(StateManager.SpawnsetState.Spawnset.ArenaDimension - 1, rectangle.Y2);
 
-		if (filled)
+		if (StateManager.ArenaRectangleState.Filled)
 		{
 			for (int i = startXa; i <= endXa; i++)
 			{
@@ -81,18 +79,17 @@ public class ArenaRectangleState : IArenaState
 		}
 		else
 		{
-			int startXb = Math.Max(0, rectangle.X1);
-			int startYb = Math.Max(0, rectangle.Y1);
-			int endXb = Math.Min(StateManager.SpawnsetState.Spawnset.ArenaDimension - 1, rectangle.X2);
-			int endYb = Math.Min(StateManager.SpawnsetState.Spawnset.ArenaDimension - 1, rectangle.Y2);
+			int addedSize = StateManager.ArenaRectangleState.Size;
+			int startXb = Math.Max(0, rectangle.X1 + addedSize);
+			int startYb = Math.Max(0, rectangle.Y1 + addedSize);
+			int endXb = Math.Min(StateManager.SpawnsetState.Spawnset.ArenaDimension - 1, rectangle.X2 - addedSize);
+			int endYb = Math.Min(StateManager.SpawnsetState.Spawnset.ArenaDimension - 1, rectangle.Y2 - addedSize);
 
 			for (int i = startXa; i <= endXa; i++)
 			{
-				bool isEdgeX = i >= startXa && i <= startXb || i >= endXb && i <= endXa;
 				for (int j = startYa; j <= endYa; j++)
 				{
-					bool isEdgeY = j >= startYa && j <= startYb || j >= endYb && j <= endYa;
-					if (!isEdgeX && !isEdgeY)
+					if (i >= startXb && i <= endXb && j >= startYb && j <= endYb)
 						continue;
 
 					action(i, j);
