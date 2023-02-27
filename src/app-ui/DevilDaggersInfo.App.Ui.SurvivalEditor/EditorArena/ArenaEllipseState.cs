@@ -3,6 +3,7 @@ using DevilDaggersInfo.App.Ui.Base.StateManagement;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Data;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetArena;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.EditorArena.Data;
+using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using Silk.NET.GLFW;
 using Warp.NET;
 using Warp.NET.Extensions;
@@ -18,7 +19,7 @@ public class ArenaEllipseState : IArenaState
 	{
 		if (Input.IsButtonPressed(MouseButton.Left))
 		{
-			_ellipseStart = mousePosition.Tile;
+			_ellipseStart = mousePosition.Real;
 			_newArena = StateManager.SpawnsetState.Spawnset.ArenaTiles.GetMutableClone();
 		}
 		else if (Input.IsButtonReleased(MouseButton.Left))
@@ -54,22 +55,47 @@ public class ArenaEllipseState : IArenaState
 	public void Render(ArenaMousePosition mousePosition, Vector2i<int> origin, float depth)
 	{
 		Loop(mousePosition, (i, j) => Root.Game.RectangleRenderer.Schedule(new(Arena.TileSize), origin + new Vector2i<int>(i, j) * Arena.TileSize + Arena.HalfTile, depth, Color.HalfTransparentWhite));
+
+		ArenaEditingUtils.AlignedEllipse? ellipse = GetEllipse(mousePosition);
+		if (ellipse.HasValue)
+			Root.Game.CircleRenderer.Schedule(origin + ellipse.Value.Center.RoundToVector2Int32(), ellipse.Value.Radius, depth + 1, Color.White);
 	}
 
 	private void Loop(ArenaMousePosition mousePosition, Action<int, int> action)
 	{
-		if (!_ellipseStart.HasValue)
+		ArenaEditingUtils.AlignedEllipse? ellipse = GetEllipse(mousePosition);
+		if (!ellipse.HasValue)
 			return;
 
-		float radius = Vector2.Distance(_ellipseStart.Value.ToVector2(), mousePosition.Tile.ToVector2()) / 2f;
-		Vector2 center = Vector2.Lerp(_ellipseStart.Value.ToVector2(), mousePosition.Tile.ToVector2(), 0.5f);
 		for (int i = 0; i < StateManager.SpawnsetState.Spawnset.ArenaDimension; i++)
 		{
 			for (int j = 0; j < StateManager.SpawnsetState.Spawnset.ArenaDimension; j++)
 			{
-				if (Vector2.Distance(new(i, j), center) <= radius)
+				Vector2 visualTileCenter = new Vector2(i, j) * Arena.TileSize + Arena.HalfTileAsVector2;
+
+				ArenaEditingUtils.Square square = ArenaEditingUtils.Square.FromCenter(visualTileCenter, Arena.TileSize);
+				if (ellipse.Value.Contains(square))
 					action(i, j);
 			}
 		}
+	}
+
+	private ArenaEditingUtils.AlignedEllipse? GetEllipse(ArenaMousePosition mousePosition)
+	{
+		if (!_ellipseStart.HasValue)
+			return null;
+
+		return GetEllipse(GetSnappedPosition(_ellipseStart.Value).ToVector2(), GetSnappedPosition(mousePosition.Real).ToVector2());
+	}
+
+	private static ArenaEditingUtils.AlignedEllipse GetEllipse(Vector2 a, Vector2 b)
+	{
+		Vector2 center = (a + b) * 0.5f;
+		return new(center, center - b);
+	}
+
+	private static Vector2i<int> GetSnappedPosition(Vector2i<int> position)
+	{
+		return ArenaEditingUtils.Snap(position, Arena.TileSize) + Arena.HalfTile;
 	}
 }

@@ -187,4 +187,19 @@ public static class ArenaEditingUtils
 			return oneBehind && oneInFront;
 		}
 	}
+
+	public readonly record struct AlignedEllipse(Vector2 Center, Vector2 Radius)
+	{
+		public bool Contains(Vector2 point)
+		{
+			float deltaX = point.X - Center.X;
+			float deltaY = point.Y - Center.Y;
+			return deltaX * deltaX / (Radius.X * Radius.X) + deltaY * deltaY / (Radius.Y * Radius.Y) <= 1f;
+		}
+
+		public bool Contains(Square square)
+		{
+			return Contains(square.TopLeft) || Contains(square.TopRight) || Contains(square.BottomLeft) || Contains(square.BottomRight);
+		}
+	}
 }
