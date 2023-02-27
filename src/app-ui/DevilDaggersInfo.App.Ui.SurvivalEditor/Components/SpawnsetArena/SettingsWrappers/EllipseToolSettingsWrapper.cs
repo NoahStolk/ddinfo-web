@@ -13,8 +13,7 @@ public class EllipseToolSettingsWrapper : AbstractComponent, ISettingsWrapper
 		int y = 0;
 		ISettingsWrapper wrapper = this;
 
-		// TODO
-		// wrapper.AddSlider("Size", ref y, f => StateManager.Dispatch(new SetArenaRectangleSize((int)f)), 1, 10, 1, StateManager.ArenaRectangleState.Size, "0");
-		// wrapper.AddCheckbox("Filled", ref y, b => StateManager.Dispatch(new SetArenaRectangleFilled(b)), StateManager.ArenaRectangleState.Filled);
+		wrapper.AddSlider("Thickness", ref y, f => StateManager.Dispatch(new SetArenaEllipseThickness((int)f)), 1, 10, 1, StateManager.ArenaEllipseState.Thickness, "0");
+		wrapper.AddCheckbox("Filled", ref y, b => StateManager.Dispatch(new SetArenaEllipseFilled(b)), StateManager.ArenaEllipseState.Filled);
 	}
 }
