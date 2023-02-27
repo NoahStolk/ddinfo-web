@@ -56,42 +56,87 @@ public class ArenaEllipseState : IArenaState
 	{
 		Loop(mousePosition, (i, j) => Root.Game.RectangleRenderer.Schedule(new(Arena.TileSize), origin + new Vector2i<int>(i, j) * Arena.TileSize + Arena.HalfTile, depth, Color.HalfTransparentWhite));
 
-		ArenaEditingUtils.AlignedEllipse? ellipse = GetEllipse(mousePosition);
-		if (ellipse.HasValue)
-			Root.Game.CircleRenderer.Schedule(origin + ellipse.Value.Center.RoundToVector2Int32(), ellipse.Value.Radius, depth + 1, Color.White);
+		if (!_ellipseStart.HasValue)
+			return;
+
+		ArenaEditingUtils.AlignedEllipse ellipse = GetEllipse(_ellipseStart.Value, mousePosition);
+		ArenaEditingUtils.AlignedEllipse innerEllipse = GetEllipse(_ellipseStart.Value, mousePosition, StateManager.ArenaEllipseState.Thickness * Arena.TileSize);
+		Root.Game.CircleRenderer.Schedule(origin + ellipse.Center.RoundToVector2Int32(), ellipse.Radius, depth + 1, Color.White);
+		Root.Game.CircleRenderer.Schedule(origin + innerEllipse.Center.RoundToVector2Int32(), innerEllipse.Radius, depth + 1, Color.White);
 	}
 
 	private void Loop(ArenaMousePosition mousePosition, Action<int, int> action)
 	{
-		ArenaEditingUtils.AlignedEllipse? ellipse = GetEllipse(mousePosition);
-		if (!ellipse.HasValue)
+		if (!_ellipseStart.HasValue)
 			return;
 
-		for (int i = 0; i < StateManager.SpawnsetState.Spawnset.ArenaDimension; i++)
-		{
-			for (int j = 0; j < StateManager.SpawnsetState.Spawnset.ArenaDimension; j++)
-			{
-				Vector2 visualTileCenter = new Vector2(i, j) * Arena.TileSize + Arena.HalfTileAsVector2;
+		ArenaEditingUtils.AlignedEllipse ellipse = GetEllipse(_ellipseStart.Value, mousePosition);
 
-				ArenaEditingUtils.Square square = ArenaEditingUtils.Square.FromCenter(visualTileCenter, Arena.TileSize);
-				if (ellipse.Value.Contains(square))
-					action(i, j);
+		if (StateManager.ArenaEllipseState.Filled)
+		{
+			for (int i = 0; i < StateManager.SpawnsetState.Spawnset.ArenaDimension; i++)
+			{
+				for (int j = 0; j < StateManager.SpawnsetState.Spawnset.ArenaDimension; j++)
+				{
+					Vector2 visualTileCenter = new Vector2(i, j) * Arena.TileSize + Arena.HalfTileAsVector2;
+
+					ArenaEditingUtils.Square square = ArenaEditingUtils.Square.FromCenter(visualTileCenter, Arena.TileSize);
+					if (ellipse.Contains(square))
+						action(i, j);
+				}
+			}
+		}
+		else
+		{
+			ArenaEditingUtils.AlignedEllipse innerEllipse = GetEllipse(_ellipseStart.Value, mousePosition, StateManager.ArenaEllipseState.Thickness * Arena.TileSize);
+			for (int i = 0; i < StateManager.SpawnsetState.Spawnset.ArenaDimension; i++)
+			{
+				for (int j = 0; j < StateManager.SpawnsetState.Spawnset.ArenaDimension; j++)
+				{
+					Vector2 visualTileCenter = new Vector2(i, j) * Arena.TileSize + Arena.HalfTileAsVector2;
+					ArenaEditingUtils.Square square = ArenaEditingUtils.Square.FromCenter(visualTileCenter, Arena.TileSize);
+					if (ellipse.Contains(square) && !innerEllipse.Contains(square))
+						action(i, j);
+				}
 			}
 		}
 	}
 
-	private ArenaEditingUtils.AlignedEllipse? GetEllipse(ArenaMousePosition mousePosition)
+	private static ArenaEditingUtils.AlignedEllipse GetEllipse(Vector2i<int> center, ArenaMousePosition mousePosition, float radiusSubtraction = 0)
 	{
-		if (!_ellipseStart.HasValue)
-			return null;
-
-		return GetEllipse(GetSnappedPosition(_ellipseStart.Value).ToVector2(), GetSnappedPosition(mousePosition.Real).ToVector2());
+		return GetEllipse(GetSnappedPosition(center).ToVector2(), GetSnappedPosition(mousePosition.Real).ToVector2(), radiusSubtraction);
 	}
 
-	private static ArenaEditingUtils.AlignedEllipse GetEllipse(Vector2 a, Vector2 b)
+	private static ArenaEditingUtils.AlignedEllipse GetEllipse(Vector2 a, Vector2 b, float radiusSubtraction = 0)
 	{
 		Vector2 center = (a + b) * 0.5f;
-		return new(center, center - b);
+		Vector2 radius = center - b;
+
+		if (MathF.Abs(radius.X) > MathF.Abs(radiusSubtraction))
+		{
+			if (radius.X > 0)
+				radius.X -= radiusSubtraction;
+			else
+				radius.X += radiusSubtraction;
+		}
+		else
+		{
+			radius.X = 0;
+		}
+
+		if (MathF.Abs(radius.Y) > MathF.Abs(radiusSubtraction))
+		{
+			if (radius.Y > 0)
+				radius.Y -= radiusSubtraction;
+			else
+				radius.Y += radiusSubtraction;
+		}
+		else
+		{
+			radius.Y = 0;
+		}
+
+		return new(center, radius);
 	}
 
 	private static Vector2i<int> GetSnappedPosition(Vector2i<int> position)
