@@ -61,8 +61,8 @@ public class ArenaEllipseState : IArenaState
 
 		ArenaEditingUtils.AlignedEllipse ellipse = GetEllipse(_ellipseStart.Value, mousePosition);
 		ArenaEditingUtils.AlignedEllipse innerEllipse = GetEllipse(_ellipseStart.Value, mousePosition, StateManager.ArenaEllipseState.Thickness * Arena.TileSize);
-		Root.Game.CircleRenderer.Schedule(origin + ellipse.Center.RoundToVector2Int32(), ellipse.Radius, depth + 1, Color.White);
-		Root.Game.CircleRenderer.Schedule(origin + innerEllipse.Center.RoundToVector2Int32(), innerEllipse.Radius, depth + 1, Color.White);
+		Root.Game.EllipseRenderer.Schedule(origin + ellipse.Center.RoundToVector2Int32(), ellipse.Radius, depth + 1, Color.White);
+		Root.Game.EllipseRenderer.Schedule(origin + innerEllipse.Center.RoundToVector2Int32(), innerEllipse.Radius, depth + 1, Color.White);
 	}
 
 	private void Loop(ArenaMousePosition mousePosition, Action<int, int> action)
