@@ -4,12 +4,12 @@ using Silk.NET.OpenGL;
 
 namespace DevilDaggersInfo.App.Ui.Base.Rendering.Renderers;
 
-public class CircleRenderer
+public class EllipseRenderer
 {
 	private const int _circleSubdivisionCount = 40;
 
 	private readonly uint _vaoCircleLines = VertexArrayObjectUtils.CreateFromVertices(UiVertexBuilder.CircleLines(_circleSubdivisionCount));
-	private readonly List<CircleLine> _collection = new();
+	private readonly List<EllipseLines> _collection = new();
 
 	public void Schedule(Vector2i<int> center, float radius, float depth, Color color)
 	{
@@ -23,14 +23,14 @@ public class CircleRenderer
 
 		Gl.BindVertexArray(_vaoCircleLines);
 
-		foreach (CircleLine cl in _collection)
+		foreach (EllipseLines el in _collection)
 		{
-			ScissorActivator.SetScissor(cl.Scissor);
+			ScissorActivator.SetScissor(el.Scissor);
 
-			Matrix4x4 scale = Matrix4x4.CreateScale(cl.Radius, cl.Radius, 1);
-			Matrix4x4 translation = Matrix4x4.CreateTranslation(cl.CenterPosition.X, cl.CenterPosition.Y, cl.Depth);
+			Matrix4x4 scale = Matrix4x4.CreateScale(el.Radius, el.Radius, 1);
+			Matrix4x4 translation = Matrix4x4.CreateTranslation(el.CenterPosition.X, el.CenterPosition.Y, el.Depth);
 			Shader.SetMatrix4x4(UiUniforms.Model, scale * translation);
-			Shader.SetVector4(UiUniforms.Color, cl.Color);
+			Shader.SetVector4(UiUniforms.Color, el.Color);
 			Gl.DrawArrays(PrimitiveType.LineStrip, 0, _circleSubdivisionCount + 1);
 		}
 
@@ -39,5 +39,5 @@ public class CircleRenderer
 		_collection.Clear();
 	}
 
-	private readonly record struct CircleLine(Vector2i<int> CenterPosition, float Radius, float Depth, Color Color, Scissor? Scissor);
+	private readonly record struct EllipseLines(Vector2i<int> CenterPosition, float Radius, float Depth, Color Color, Scissor? Scissor);
 }

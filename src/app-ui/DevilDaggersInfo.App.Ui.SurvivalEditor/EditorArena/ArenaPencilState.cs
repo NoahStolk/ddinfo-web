@@ -88,7 +88,7 @@ public class ArenaPencilState : IArenaState
 
 	public void Render(ArenaMousePosition mousePosition, Vector2i<int> origin, float depth)
 	{
-		Root.Game.CircleRenderer.Schedule(origin + GetSnappedPosition(mousePosition.Real), GetDisplayRadius(), depth + 1, _pencilStart.HasValue ? Color.White : Color.HalfTransparentWhite);
+		Root.Game.EllipseRenderer.Schedule(origin + GetSnappedPosition(mousePosition.Real), GetDisplayRadius(), depth + 1, _pencilStart.HasValue ? Color.White : Color.HalfTransparentWhite);
 
 		if (_modifiedCoords == null)
 			return;
