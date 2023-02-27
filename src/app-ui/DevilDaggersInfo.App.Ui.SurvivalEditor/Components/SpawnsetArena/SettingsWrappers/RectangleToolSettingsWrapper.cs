@@ -12,7 +12,7 @@ public class RectangleToolSettingsWrapper : AbstractComponent, ISettingsWrapper
 	{
 		int y = 0;
 		ISettingsWrapper wrapper = this;
-		wrapper.AddSlider("Size", ref y, f => StateManager.Dispatch(new SetArenaRectangleSize((int)f)), 1, 10, 1, StateManager.ArenaRectangleState.Size, "0");
+		wrapper.AddSlider("Thickness", ref y, f => StateManager.Dispatch(new SetArenaRectangleThickness((int)f)), 1, 10, 1, StateManager.ArenaRectangleState.Thickness, "0");
 		wrapper.AddCheckbox("Filled", ref y, b => StateManager.Dispatch(new SetArenaRectangleFilled(b)), StateManager.ArenaRectangleState.Filled);
 	}
 }

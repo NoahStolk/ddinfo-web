@@ -104,7 +104,7 @@ public class ArenaLineState : IArenaState
 
 	private static float GetDisplayRadius()
 	{
-		return StateManager.ArenaLineState.Width / 2 * Arena.TileSize;
+		return StateManager.ArenaLineState.Thickness / 2 * Arena.TileSize;
 	}
 
 	private static Vector2i<int> GetSnappedPosition(Vector2i<int> position)
