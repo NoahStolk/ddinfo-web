@@ -79,7 +79,7 @@ public class ArenaRectangleState : IArenaState
 		}
 		else
 		{
-			int addedSize = StateManager.ArenaRectangleState.Size;
+			int addedSize = StateManager.ArenaRectangleState.Thickness;
 			int startXb = Math.Max(0, rectangle.X1 + addedSize);
 			int startYb = Math.Max(0, rectangle.Y1 + addedSize);
 			int endXb = Math.Min(StateManager.SpawnsetState.Spawnset.ArenaDimension - 1, rectangle.X2 - addedSize);

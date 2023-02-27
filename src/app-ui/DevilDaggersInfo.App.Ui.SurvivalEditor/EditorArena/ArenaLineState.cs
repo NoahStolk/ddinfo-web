@@ -61,11 +61,11 @@ public class ArenaLineState : IArenaState
 		{
 			ArenaEditingUtils.Stadium stadium = GetStadium(_lineStart.Value, mousePosition);
 
-			Root.Game.CircleRenderer.Schedule(origin + stadium.Start.RoundToVector2Int32(), 2, depth + 1, Color.White);
-			Root.Game.CircleRenderer.Schedule(origin + stadium.End.RoundToVector2Int32(), 2, depth + 1, Color.White);
+			Root.Game.EllipseRenderer.Schedule(origin + stadium.Start.RoundToVector2Int32(), 2, depth + 1, Color.White);
+			Root.Game.EllipseRenderer.Schedule(origin + stadium.End.RoundToVector2Int32(), 2, depth + 1, Color.White);
 
-			Root.Game.CircleRenderer.Schedule(origin + stadium.Start.RoundToVector2Int32(), stadium.Radius, depth + 1, Color.White);
-			Root.Game.CircleRenderer.Schedule(origin + stadium.End.RoundToVector2Int32(), stadium.Radius, depth + 1, Color.White);
+			Root.Game.EllipseRenderer.Schedule(origin + stadium.Start.RoundToVector2Int32(), stadium.Radius, depth + 1, Color.White);
+			Root.Game.EllipseRenderer.Schedule(origin + stadium.End.RoundToVector2Int32(), stadium.Radius, depth + 1, Color.White);
 
 			Vector2 delta = stadium.End - stadium.Start;
 			Root.Game.LineRenderer.Schedule(origin + stadium.Start.RoundToVector2Int32(), origin + stadium.End.RoundToVector2Int32(), depth + 1, Color.White);
@@ -74,7 +74,7 @@ public class ArenaLineState : IArenaState
 		}
 		else
 		{
-			Root.Game.CircleRenderer.Schedule(origin + GetSnappedPosition(mousePosition.Real), GetDisplayRadius(), depth + 1, Color.HalfTransparentWhite);
+			Root.Game.EllipseRenderer.Schedule(origin + GetSnappedPosition(mousePosition.Real), GetDisplayRadius(), depth + 1, Color.HalfTransparentWhite);
 		}
 	}
 
@@ -104,7 +104,7 @@ public class ArenaLineState : IArenaState
 
 	private static float GetDisplayRadius()
 	{
-		return StateManager.ArenaLineState.Width / 2 * Arena.TileSize;
+		return StateManager.ArenaLineState.Thickness / 2 * Arena.TileSize;
 	}
 
 	private static Vector2i<int> GetSnappedPosition(Vector2i<int> position)
