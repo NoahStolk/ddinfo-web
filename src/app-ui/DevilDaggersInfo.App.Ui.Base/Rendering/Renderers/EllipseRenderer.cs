@@ -13,6 +13,11 @@ public class EllipseRenderer
 
 	public void Schedule(Vector2i<int> center, float radius, float depth, Color color)
 	{
+		_collection.Add(new(center, new(radius), depth, color, ScissorScheduler.GetCalculatedScissor()));
+	}
+
+	public void Schedule(Vector2i<int> center, Vector2 radius, float depth, Color color)
+	{
 		_collection.Add(new(center, radius, depth, color, ScissorScheduler.GetCalculatedScissor()));
 	}
 
@@ -27,7 +32,7 @@ public class EllipseRenderer
 		{
 			ScissorActivator.SetScissor(el.Scissor);
 
-			Matrix4x4 scale = Matrix4x4.CreateScale(el.Radius, el.Radius, 1);
+			Matrix4x4 scale = Matrix4x4.CreateScale(el.Radius.X, el.Radius.Y, 1);
 			Matrix4x4 translation = Matrix4x4.CreateTranslation(el.CenterPosition.X, el.CenterPosition.Y, el.Depth);
 			Shader.SetMatrix4x4(UiUniforms.Model, scale * translation);
 			Shader.SetVector4(UiUniforms.Color, el.Color);
@@ -39,5 +44,5 @@ public class EllipseRenderer
 		_collection.Clear();
 	}
 
-	private readonly record struct EllipseLines(Vector2i<int> CenterPosition, float Radius, float Depth, Color Color, Scissor? Scissor);
+	private readonly record struct EllipseLines(Vector2i<int> CenterPosition, Vector2 Radius, float Depth, Color Color, Scissor? Scissor);
 }
