@@ -4,6 +4,9 @@
 		"Date": "9999-01-01T00:00:00",
 		"Changes": [
 			{
+				"Description": "Added arena ellipse tool."
+			},
+			{
 				"Description": "Added more settings for the arena editor.",
 				"SubChanges": [
 					{
