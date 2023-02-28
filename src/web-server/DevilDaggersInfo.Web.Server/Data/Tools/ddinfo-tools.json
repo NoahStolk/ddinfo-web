@@ -1,7 +1,7 @@
 [
 	{
-		"VersionNumber": "999.999.999.999",
-		"Date": "9999-01-01T00:00:00",
+		"VersionNumber": "0.4.0.0",
+		"Date": "2023-02-28T00:00:00",
 		"Changes": [
 			{
 				"Description": "Added arena ellipse tool."
@@ -48,6 +48,9 @@
 			},
 			{
 				"Description": "Changed arena shrink colors."
+			},
+			{
+				"Description": "Added controls and additional info text to 3D scenes."
 			},
 			{
 				"Description": "The arena editor tooltip is now transparent."
