@@ -1,9 +1,7 @@
 using DevilDaggersInfo.App.Ui.Base.Components.Styles;
-using DevilDaggersInfo.App.Ui.Base.Rendering.Text;
 using DevilDaggersInfo.App.Ui.Base.StateManagement;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
-using Warp.NET.Text;
 using Warp.NET.Ui;
 using Warp.NET.Ui.Components;
 
@@ -25,13 +23,18 @@ public class ArenaHeightButtons : AbstractComponent
 			AddHeightButton(height, offsetX, offsetY);
 		}
 
-		for (int i = 0; i < 32; i++)
+		for (int i = 0; i < 16; i++)
 		{
 			int offsetX = i % 4 * _arenaButtonSize;
 			int offsetY = i / 4 * _arenaButtonSize;
+			AddHeightButton(i, offsetX, offsetY + _arenaButtonSize * 2 + _arenaButtonSize / 2);
+		}
 
-			float height = i < 16 ? i : 16 + (i - 16) * 2;
-			AddHeightButton(height, offsetX, offsetY + _arenaButtonSize * 2);
+		for (int i = 16; i < 32; i++)
+		{
+			int offsetX = i % 4 * _arenaButtonSize;
+			int offsetY = i / 4 * _arenaButtonSize;
+			AddHeightButton(16 + (i - 16) * 2, offsetX, offsetY + _arenaButtonSize * 3);
 		}
 	}
 
@@ -39,12 +42,8 @@ public class ArenaHeightButtons : AbstractComponent
 	{
 		Color heightColor = TileUtils.GetColorFromHeight(height);
 
-		string text = height.ToString(); // TODO: -1000 should probably be written as -1K.
-		FontSize fontSize = text.Length > 2 ? FontSize.H8 : FontSize.H12;
 		ButtonStyle buttonStyle = new(heightColor, Color.Black, Color.Lerp(heightColor, Color.White, 0.75f), 1);
-		TextButtonStyle textStyle = new(heightColor.ReadableColorForBrightness(), TextAlign.Middle, fontSize);
-
-		HeightButton button = new(Bounds.CreateNested(offsetX, offsetY, _arenaButtonSize, _arenaButtonSize), () => StateManager.Dispatch(new SetArenaSelectedHeight(height)), buttonStyle, textStyle, text, height);
+		HeightButton button = new(Bounds.CreateNested(offsetX, offsetY, _arenaButtonSize, _arenaButtonSize), () => StateManager.Dispatch(new SetArenaSelectedHeight(height)), buttonStyle, height);
 		NestingContext.Add(button);
 	}
 }
