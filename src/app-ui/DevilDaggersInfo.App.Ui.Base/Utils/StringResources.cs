@@ -7,6 +7,20 @@ public static class StringResources
 	private const string _tileEditor3d = "Use the scroll wheel to raise individual tiles.";
 	private const string _escape3d = "Press escape to exit.";
 
+	public const string MainMenu = """
+		This is an alpha version of the rewritten tools.
+		It is still very much a work in progress.
+
+		I also do not have a deadline or schedule for these developments,
+		and there will not be an official release date any time soon.
+
+		If you encounter any problems, please report them on Discord/GitHub.
+
+		Thank you for testing.
+
+		For more information, go to:
+		""";
+
 	public const string ReplaySimulator = $"""
 		{_movement3d}
 		{_camera3d}
