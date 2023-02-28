@@ -1,5 +1,3 @@
-using Warp.NET.Ui;
-
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 
 public static class ArenaEditingUtils
@@ -24,8 +22,7 @@ public static class ArenaEditingUtils
 		return new(MathF.Floor(vector.X / snap.X) * snap.X, MathF.Floor(vector.Y / snap.Y) * snap.Y);
 	}
 
-	// TODO: Do not allocate PixelBounds.
-	public static PixelBounds GetRectangle(Vector2i<int> start, Vector2i<int> end)
+	public static Rectangle GetRectangle(Vector2i<int> start, Vector2i<int> end)
 	{
 		bool startXMin = start.X < end.X;
 		int minX, maxX;
@@ -59,6 +56,17 @@ public static class ArenaEditingUtils
 	private static bool PointIsBehindPlane(Vector2 linePoint, Vector2 lineNormal, Vector2 point)
 	{
 		return Vector2.Dot(lineNormal, Vector2.Normalize(point - linePoint)) < 0;
+	}
+
+	public readonly record struct Rectangle(int X, int Y, int Width, int Height)
+	{
+		public int X1 { get; } = X;
+
+		public int Y1 { get; } = Y;
+
+		public int X2 { get; } = X + Width;
+
+		public int Y2 { get; } = Y + Height;
 	}
 
 	public readonly record struct LineSegment
@@ -151,13 +159,13 @@ public static class ArenaEditingUtils
 			}
 
 			// Check if any of the 4 corners of the square are outside the stadium start or end.
-			if (!(PointIsBehindPlane(stadium.Start, stadium.Direction, TopLeft) ^ PointIsBehindPlane(stadium.End, stadium.Direction, TopLeft)))
+			if (PointIsBehindPlane(stadium.Start, stadium.Direction, TopLeft) == PointIsBehindPlane(stadium.End, stadium.Direction, TopLeft))
 				return false;
-			if (!(PointIsBehindPlane(stadium.Start, stadium.Direction, TopRight) ^ PointIsBehindPlane(stadium.End, stadium.Direction, TopRight)))
+			if (PointIsBehindPlane(stadium.Start, stadium.Direction, TopRight) == PointIsBehindPlane(stadium.End, stadium.Direction, TopRight))
 				return false;
-			if (!(PointIsBehindPlane(stadium.Start, stadium.Direction, BottomLeft) ^ PointIsBehindPlane(stadium.End, stadium.Direction, BottomLeft)))
+			if (PointIsBehindPlane(stadium.Start, stadium.Direction, BottomLeft) == PointIsBehindPlane(stadium.End, stadium.Direction, BottomLeft))
 				return false;
-			if (!(PointIsBehindPlane(stadium.Start, stadium.Direction, BottomRight) ^ PointIsBehindPlane(stadium.End, stadium.Direction, BottomRight)))
+			if (PointIsBehindPlane(stadium.Start, stadium.Direction, BottomRight) == PointIsBehindPlane(stadium.End, stadium.Direction, BottomRight))
 				return false;
 
 			// Check if any of the 4 corners of the square are between the stadium edge planes.
