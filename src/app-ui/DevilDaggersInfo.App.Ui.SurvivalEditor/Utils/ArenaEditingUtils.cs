@@ -60,13 +60,13 @@ public static class ArenaEditingUtils
 
 	public readonly record struct Rectangle(int X, int Y, int Width, int Height)
 	{
-		public int X1 => X;
+		public int X1 { get; } = X;
 
-		public int Y1 => Y;
+		public int Y1 { get; } = Y;
 
-		public int X2 => X + Width;
+		public int X2 { get; } = X + Width;
 
-		public int Y2 => Y + Height;
+		public int Y2 { get; } = Y + Height;
 	}
 
 	public readonly record struct LineSegment
