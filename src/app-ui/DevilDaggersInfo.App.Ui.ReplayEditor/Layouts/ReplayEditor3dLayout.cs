@@ -82,6 +82,6 @@ public class ReplayEditor3dLayout : Layout, IExtendedLayout
 
 	public void Render()
 	{
-		Root.Game.MonoSpaceFontRenderer24.Schedule(Vector2i<int>.One, new(8), 1000, Color.HalfTransparentWhite, StringResources.ReplaySimulator, TextAlign.Left);
+		Root.Game.MonoSpaceFontRenderer24.Schedule(Vector2i<int>.One, new(8, 320), 1000, Color.HalfTransparentWhite, StringResources.ReplaySimulator, TextAlign.Left);
 	}
 }
