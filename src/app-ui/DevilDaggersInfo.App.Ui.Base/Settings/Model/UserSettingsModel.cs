@@ -32,6 +32,6 @@ public record UserSettingsModel
 	public static int MaxFpsMax => 300;
 	public static float LookSpeedMin => 1;
 	public static float LookSpeedMax => 100;
-	public static int FieldOfViewMin => 1;
-	public static int FieldOfViewMax => 179;
+	public static int FieldOfViewMin => 10;
+	public static int FieldOfViewMax => 170;
 }

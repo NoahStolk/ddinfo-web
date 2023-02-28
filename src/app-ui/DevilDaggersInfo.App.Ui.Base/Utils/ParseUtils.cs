@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.App.Ui.Base;
+namespace DevilDaggersInfo.App.Ui.Base.Utils;
 
 public static class ParseUtils
 {

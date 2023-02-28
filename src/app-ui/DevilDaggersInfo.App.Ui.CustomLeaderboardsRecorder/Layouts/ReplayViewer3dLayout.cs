@@ -4,11 +4,13 @@ using DevilDaggersInfo.App.Ui.Base.StateManagement;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.Base.Actions;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Actions;
 using DevilDaggersInfo.App.Ui.Base.Styling;
+using DevilDaggersInfo.App.Ui.Base.Utils;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Scenes;
 using DevilDaggersInfo.Core.Replay.PostProcessing.ReplaySimulation;
 using DevilDaggersInfo.Core.Spawnset;
 using Silk.NET.GLFW;
 using Warp.NET;
+using Warp.NET.Text;
 using Warp.NET.Ui;
 
 namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Layouts;
@@ -69,5 +71,6 @@ public class ReplayViewer3dLayout : Layout, IExtendedLayout
 
 	public void Render()
 	{
+		Root.Game.MonoSpaceFontRenderer24.Schedule(Vector2i<int>.One, new(8), 1000, Color.HalfTransparentWhite, StringResources.ReplaySimulator, TextAlign.Left);
 	}
 }

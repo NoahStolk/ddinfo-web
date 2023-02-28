@@ -2,10 +2,12 @@ using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.StateManagement;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.Base.Actions;
 using DevilDaggersInfo.App.Ui.Base.Styling;
+using DevilDaggersInfo.App.Ui.Base.Utils;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetArena;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Scenes;
 using Silk.NET.GLFW;
 using Warp.NET;
+using Warp.NET.Text;
 using Warp.NET.Ui;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Layouts;
@@ -62,5 +64,6 @@ public class SurvivalEditor3dLayout : Layout, IExtendedLayout
 
 	public void Render()
 	{
+		Root.Game.MonoSpaceFontRenderer24.Schedule(Vector2i<int>.One, new(8), 1000, Color.HalfTransparentWhite, StringResources.SurvivalEditor3d, TextAlign.Left);
 	}
 }
