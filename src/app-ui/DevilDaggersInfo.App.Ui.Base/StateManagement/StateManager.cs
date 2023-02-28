@@ -26,6 +26,7 @@ public static class StateManager
 	public static ArenaPencilState ArenaPencilState { get; private set; } = ArenaPencilState.GetDefault();
 	public static ArenaLineState ArenaLineState { get; private set; } = ArenaLineState.GetDefault();
 	public static ArenaRectangleState ArenaRectangleState { get; private set; } = ArenaRectangleState.GetDefault();
+	public static ArenaEllipseState ArenaEllipseState { get; private set; } = ArenaEllipseState.GetDefault();
 	public static ArenaBucketState ArenaBucketState { get; private set; } = ArenaBucketState.GetDefault();
 	public static ArenaDaggerState ArenaDaggerState { get; private set; } = ArenaDaggerState.GetDefault();
 	public static SpawnEditorState SpawnEditorState { get; private set; } = SpawnEditorState.GetDefault();
@@ -101,6 +102,7 @@ public static class StateManager
 				ArenaPencilState = stateReducer.ArenaPencilState;
 				ArenaLineState = stateReducer.ArenaLineState;
 				ArenaRectangleState = stateReducer.ArenaRectangleState;
+				ArenaEllipseState = stateReducer.ArenaEllipseState;
 				ArenaBucketState = stateReducer.ArenaBucketState;
 				ArenaDaggerState = stateReducer.ArenaDaggerState;
 				SpawnEditorState = stateReducer.SpawnEditorState;

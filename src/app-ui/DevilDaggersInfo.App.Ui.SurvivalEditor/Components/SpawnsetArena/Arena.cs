@@ -26,6 +26,7 @@ public class Arena : AbstractComponent
 	private readonly ArenaPencilState _pencilState;
 	private readonly ArenaLineState _lineState;
 	private readonly ArenaRectangleState _rectangleState;
+	private readonly ArenaEllipseState _ellipseState;
 	private readonly ArenaBucketState _bucketState;
 	private readonly ArenaDaggerState _daggerState;
 
@@ -38,6 +39,7 @@ public class Arena : AbstractComponent
 		_pencilState = new();
 		_lineState = new();
 		_rectangleState = new();
+		_ellipseState = new();
 		_bucketState = new();
 		_daggerState = new();
 	}
@@ -50,6 +52,7 @@ public class Arena : AbstractComponent
 		ArenaTool.Pencil => _pencilState,
 		ArenaTool.Line => _lineState,
 		ArenaTool.Rectangle => _rectangleState,
+		ArenaTool.Ellipse => _ellipseState,
 		ArenaTool.Bucket => _bucketState,
 		ArenaTool.Dagger => _daggerState,
 		_ => throw new InvalidEnumConversionException(StateManager.ArenaEditorState.ArenaTool),

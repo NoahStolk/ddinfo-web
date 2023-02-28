@@ -32,6 +32,7 @@ public record StateReducer
 	public ArenaPencilState ArenaPencilState { get; set; } = StateManager.ArenaPencilState;
 	public ArenaLineState ArenaLineState { get; set; } = StateManager.ArenaLineState;
 	public ArenaRectangleState ArenaRectangleState { get; set; } = StateManager.ArenaRectangleState;
+	public ArenaEllipseState ArenaEllipseState { get; set; } = StateManager.ArenaEllipseState;
 	public ArenaBucketState ArenaBucketState { get; set; } = StateManager.ArenaBucketState;
 	public ArenaDaggerState ArenaDaggerState { get; set; } = StateManager.ArenaDaggerState;
 	public SpawnEditorState SpawnEditorState { get; set; } = StateManager.SpawnEditorState;
