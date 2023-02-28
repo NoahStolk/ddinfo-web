@@ -60,9 +60,13 @@ public class ArenaEllipseState : IArenaState
 			return;
 
 		ArenaEditingUtils.AlignedEllipse ellipse = GetEllipse(_ellipseStart.Value, mousePosition);
-		ArenaEditingUtils.AlignedEllipse innerEllipse = GetEllipse(_ellipseStart.Value, mousePosition, StateManager.ArenaEllipseState.Thickness * Arena.TileSize);
 		Root.Game.EllipseRenderer.Schedule(origin + ellipse.Center.RoundToVector2Int32(), ellipse.Radius, depth + 1, Color.White);
-		Root.Game.EllipseRenderer.Schedule(origin + innerEllipse.Center.RoundToVector2Int32(), innerEllipse.Radius, depth + 1, Color.White);
+
+		if (!StateManager.ArenaEllipseState.Filled)
+		{
+			ArenaEditingUtils.AlignedEllipse innerEllipse = GetEllipse(_ellipseStart.Value, mousePosition, (StateManager.ArenaEllipseState.Thickness - 1) * Arena.TileSize);
+			Root.Game.EllipseRenderer.Schedule(origin + innerEllipse.Center.RoundToVector2Int32(), innerEllipse.Radius, depth + 1, Color.White);
+		}
 	}
 
 	private void Loop(ArenaMousePosition mousePosition, Action<int, int> action)
@@ -88,15 +92,24 @@ public class ArenaEllipseState : IArenaState
 		}
 		else
 		{
-			ArenaEditingUtils.AlignedEllipse innerEllipse = GetEllipse(_ellipseStart.Value, mousePosition, StateManager.ArenaEllipseState.Thickness * Arena.TileSize);
+			ArenaEditingUtils.AlignedEllipse innerEllipse = GetEllipse(_ellipseStart.Value, mousePosition, (StateManager.ArenaEllipseState.Thickness - 1) * Arena.TileSize);
 			for (int i = 0; i < StateManager.SpawnsetState.Spawnset.ArenaDimension; i++)
 			{
 				for (int j = 0; j < StateManager.SpawnsetState.Spawnset.ArenaDimension; j++)
 				{
 					Vector2 visualTileCenter = new Vector2(i, j) * Arena.TileSize + Arena.HalfTileAsVector2;
 					ArenaEditingUtils.Square square = ArenaEditingUtils.Square.FromCenter(visualTileCenter, Arena.TileSize);
-					if (ellipse.Contains(square) && !innerEllipse.Contains(square))
+
+					if (IsBetweenEllipses())
 						action(i, j);
+
+					bool IsBetweenEllipses()
+					{
+						if (ellipse.Intersects(square) || innerEllipse.Intersects(square))
+							return true;
+
+						return ellipse.Contains(square) && !innerEllipse.Contains(square);
+					}
 				}
 			}
 		}

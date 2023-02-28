@@ -201,5 +201,17 @@ public static class ArenaEditingUtils
 		{
 			return Contains(square.TopLeft) || Contains(square.TopRight) || Contains(square.BottomLeft) || Contains(square.BottomRight);
 		}
+
+		public bool Intersects(Square square)
+		{
+			bool tlContained = Contains(square.TopLeft);
+			if (Contains(square.TopRight) != tlContained)
+				return true;
+
+			if (Contains(square.BottomLeft) != tlContained)
+				return true;
+
+			return Contains(square.BottomRight) != tlContained;
+		}
 	}
 }
