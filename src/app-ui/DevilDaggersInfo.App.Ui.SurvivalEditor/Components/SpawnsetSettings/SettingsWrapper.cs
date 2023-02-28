@@ -5,6 +5,7 @@ using DevilDaggersInfo.App.Ui.Base.StateManagement;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 using DevilDaggersInfo.App.Ui.Base.Styling;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
+using DevilDaggersInfo.Common;
 using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Types.Core.Spawnsets;
@@ -68,17 +69,19 @@ public class SettingsWrapper : AbstractComponent
 		_buttonRace = CreateGameModeButton(y, GameMode.Race);
 
 		y += _offset;
+		(_textInputShrinkStart, _) = AddSetting("Shrink start", ref y, ChangeShrinkStart);
+		(_textInputShrinkEnd, _) = AddSetting("Shrink end", ref y, ChangeShrinkEnd);
+		(_textInputShrinkRate, _) = AddSetting("Shrink rate", ref y, ChangeShrinkRate);
+		(_textInputBrightness, _) = AddSetting("Brightness", ref y, ChangeBrightness);
+
+		y += _offset;
 		_buttonLevel1 = CreateHandButton(y, HandLevel.Level1);
 		_buttonLevel2 = CreateHandButton(y, HandLevel.Level2);
 		_buttonLevel3 = CreateHandButton(y, HandLevel.Level3);
 		_buttonLevel4 = CreateHandButton(y, HandLevel.Level4);
 
 		y += _offset;
-		(_textInputShrinkStart, _) = AddSetting("Shrink start", ref y, ChangeShrinkStart);
-		(_textInputShrinkEnd, _) = AddSetting("Shrink end", ref y, ChangeShrinkEnd);
-		(_textInputShrinkRate, _) = AddSetting("Shrink rate", ref y, ChangeShrinkRate);
-		(_textInputBrightness, _) = AddSetting("Brightness", ref y, ChangeBrightness);
-		(_textInputAdditionalGems, _labelAdditionalGems) = AddSetting("Addit. gems", ref y, ChangeAdditionalGems);
+		(_textInputAdditionalGems, _labelAdditionalGems) = AddSetting("Added gems", ref y, ChangeAdditionalGems);
 		(_textInputTimerStart, _labelTimerStart) = AddSetting("Timer start", ref y, ChangeTimerStart);
 
 		NestingContext.Add(_buttonV0V1);
@@ -198,7 +201,7 @@ public class SettingsWrapper : AbstractComponent
 		bool timerStart = spawnset.SpawnVersion > 5;
 		_labelTimerStart.IsActive = timerStart;
 		_textInputTimerStart.IsActive = timerStart;
-		_textInputTimerStart.SetTextIfDeselected(spawnset.TimerStart.ToString("0.0000"));
+		_textInputTimerStart.SetTextIfDeselected(spawnset.TimerStart.ToString(StringFormats.TimeFormat));
 
 		_textInputShrinkStart.SetTextIfDeselected(spawnset.ShrinkStart.ToString("0.0"));
 		_textInputShrinkEnd.SetTextIfDeselected(spawnset.ShrinkEnd.ToString("0.0"));
