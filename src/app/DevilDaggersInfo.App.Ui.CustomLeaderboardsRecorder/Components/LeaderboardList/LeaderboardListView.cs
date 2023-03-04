@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Api.App.CustomLeaderboards;
+using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.StateManagement;
 using Warp.NET.Text;
@@ -31,14 +32,8 @@ public class LeaderboardListView : AbstractComponent
 
 	public void Set()
 	{
-		if (StateManager.LeaderboardListState.Page == null)
-		{
-			Root.Dependencies.NativeDialogService.ReportError("Could not load leaderboard list.");
-			return;
-		}
-
 		int y = 32;
-		foreach (GetCustomLeaderboardForOverview cl in StateManager.LeaderboardListState.Page.Results)
+		foreach (GetCustomLeaderboardForOverview cl in StateManager.LeaderboardListState.PagedCustomLeaderboards)
 		{
 			_leaderboardListEntries.Add(new(Bounds.CreateNested(_borderSize, y, Bounds.Size.X - _borderSize * 2, _rowHeight), cl) { Depth = Depth + 3 });
 			y += _rowHeight;
@@ -61,11 +56,12 @@ public class LeaderboardListView : AbstractComponent
 		}
 		else
 		{
+			int total = StateManager.LeaderboardListState.GetTotal();
+			int totalPages = StateManager.LeaderboardListState.GetTotalPages();
+
 			int page = StateManager.LeaderboardListState.PageIndex + 1;
-			int totalPages = StateManager.LeaderboardListState.MaxPageIndex + 1;
-			int start = StateManager.LeaderboardListState.PageIndex * StateManager.LeaderboardListState.PageSize + 1;
-			int end = Math.Min(StateManager.LeaderboardListState.TotalResults, (StateManager.LeaderboardListState.PageIndex + 1) * StateManager.LeaderboardListState.PageSize);
-			int total = StateManager.LeaderboardListState.TotalResults;
+			int start = StateManager.LeaderboardListState.PageIndex * Constants.CustomLeaderboardsPageSize + 1;
+			int end = Math.Min(total, (StateManager.LeaderboardListState.PageIndex + 1) * Constants.CustomLeaderboardsPageSize);
 			text = $"Page {page} of {totalPages} ({start} - {end} of {total})";
 			color = Color.Yellow;
 		}

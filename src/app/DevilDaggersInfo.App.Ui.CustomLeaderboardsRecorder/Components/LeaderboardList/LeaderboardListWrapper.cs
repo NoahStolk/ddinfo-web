@@ -47,7 +47,7 @@ public class LeaderboardListWrapper : AbstractComponent
 		_firstButton = new(bounds.CreateNested(4, 32, 20, 20), () => StateManager.Dispatch(new SetPageIndex(0)), ButtonStyles.NavigationButton, WarpTextures.ArrowStart, "First", Color.HalfTransparentWhite, Color.White) { Depth = pagingComponentsDepth };
 		_prevButton = new(bounds.CreateNested(24, 32, 20, 20), () => StateManager.Dispatch(new SetPageIndex(StateManager.LeaderboardListState.PageIndex - 1)), ButtonStyles.NavigationButton, WarpTextures.ArrowLeft, "Previous", Color.HalfTransparentWhite, Color.White) { Depth = pagingComponentsDepth };
 		_nextButton = new(bounds.CreateNested(44, 32, 20, 20), () => StateManager.Dispatch(new SetPageIndex(StateManager.LeaderboardListState.PageIndex + 1)), ButtonStyles.NavigationButton, WarpTextures.ArrowRight, "Next", Color.HalfTransparentWhite, Color.White) { Depth = pagingComponentsDepth };
-		_lastButton = new(bounds.CreateNested(64, 32, 20, 20), () => StateManager.Dispatch(new SetPageIndex(StateManager.LeaderboardListState.MaxPageIndex)), ButtonStyles.NavigationButton, WarpTextures.ArrowEnd, "Last", Color.HalfTransparentWhite, Color.White) { Depth = pagingComponentsDepth };
+		_lastButton = new(bounds.CreateNested(64, 32, 20, 20), () => StateManager.Dispatch(new SetPageIndex(StateManager.LeaderboardListState.GetTotalPages() - 1)), ButtonStyles.NavigationButton, WarpTextures.ArrowEnd, "Last", Color.HalfTransparentWhite, Color.White) { Depth = pagingComponentsDepth };
 
 		NestingContext.Add(_firstButton);
 		NestingContext.Add(_prevButton);
@@ -69,7 +69,7 @@ public class LeaderboardListWrapper : AbstractComponent
 	private void SetPage()
 	{
 		bool firstSelected = StateManager.LeaderboardListState.PageIndex == 0;
-		bool lastSelected = StateManager.LeaderboardListState.PageIndex == StateManager.LeaderboardListState.MaxPageIndex;
+		bool lastSelected = StateManager.LeaderboardListState.PageIndex == StateManager.LeaderboardListState.GetTotalPages() - 1;
 		_firstButton.IsDisabled = firstSelected;
 		_prevButton.IsDisabled = firstSelected;
 		_nextButton.IsDisabled = lastSelected;
@@ -85,7 +85,7 @@ public class LeaderboardListWrapper : AbstractComponent
 		_prevButton.IsDisabled = true;
 		_nextButton.IsDisabled = true;
 
-		AsyncHandler.Run(p => StateManager.Dispatch(new PageLoaded(p)), () => FetchCustomLeaderboards.HandleAsync(StateManager.LeaderboardListState.Category, StateManager.LeaderboardListState.PageIndex, StateManager.LeaderboardListState.PageSize, StateManager.RecordingState.CurrentPlayerId, false));
+		AsyncHandler.Run(p => StateManager.Dispatch(new PageLoaded(p)), () => FetchCustomLeaderboards.HandleAsync(StateManager.RecordingState.CurrentPlayerId));
 	}
 
 	public override void Render(Vector2i<int> scrollOffset)

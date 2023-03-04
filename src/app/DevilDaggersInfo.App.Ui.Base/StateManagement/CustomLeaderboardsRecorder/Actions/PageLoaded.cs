@@ -1,4 +1,3 @@
-using DevilDaggersInfo.Api.App;
 using DevilDaggersInfo.Api.App.CustomLeaderboards;
 
 namespace DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Actions;
@@ -6,20 +5,31 @@ namespace DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorde
 /// <summary>
 /// Fires when the custom leaderboard page has loaded.
 /// </summary>
-public record PageLoaded(Page<GetCustomLeaderboardForOverview>? Page) : IAction
+public record PageLoaded(List<GetCustomLeaderboardForOverview>? CustomLeaderboards) : IAction
 {
 	public void Reduce(StateReducer stateReducer)
 	{
-		int totalResults = Page?.TotalResults ?? stateReducer.LeaderboardListState.TotalResults;
-		int newMaxPageIndex = (int)Math.Ceiling((totalResults + 1) / (float)stateReducer.LeaderboardListState.PageSize) - 1;
+		if (CustomLeaderboards == null)
+		{
+			stateReducer.LeaderboardListState = stateReducer.LeaderboardListState with
+			{
+				IsLoading = false,
+				CustomLeaderboards = new(),
+				PageIndex = 0,
+				PagedCustomLeaderboards = new(),
+			};
+			return;
+		}
+
+		int totalResults = CustomLeaderboards.Count(cl => cl.Category == stateReducer.LeaderboardListState.Category);
+		int newMaxPageIndex = (int)Math.Ceiling((totalResults + 1) / (float)Constants.CustomLeaderboardsPageSize) - 1;
 
 		stateReducer.LeaderboardListState = stateReducer.LeaderboardListState with
 		{
 			IsLoading = false,
-			Page = Page,
-			MaxPageIndex = newMaxPageIndex,
+			CustomLeaderboards = CustomLeaderboards,
 			PageIndex = Math.Clamp(stateReducer.LeaderboardListState.PageIndex, 0, newMaxPageIndex),
-			TotalResults = totalResults,
+			PagedCustomLeaderboards = CustomLeaderboards.Skip(stateReducer.LeaderboardListState.PageIndex * Constants.CustomLeaderboardsPageSize).Take(Constants.CustomLeaderboardsPageSize).ToList(),
 		};
 	}
 }
