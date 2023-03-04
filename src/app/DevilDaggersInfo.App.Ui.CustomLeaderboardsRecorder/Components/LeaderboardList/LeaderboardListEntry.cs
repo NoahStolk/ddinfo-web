@@ -90,9 +90,9 @@ public class LeaderboardListEntry : LeaderboardListRow
 		_players.Text = customLeaderboard.PlayerCount.ToString();
 		_worldRecord.Text = customLeaderboard.WorldRecord?.Time.ToString(StringFormats.TimeFormat) ?? "-";
 
-		LabelStyle scoreStyle = new(customLeaderboard.SelectedPlayerStats?.Dagger?.GetColor() ?? Color.White, TextAlign.Right, FontSize.H12);
-		LabelStyle nextDaggerStyle = new(customLeaderboard.SelectedPlayerStats?.NextDagger?.Dagger.GetColor() ?? Color.White, TextAlign.Right, FontSize.H12);
-		LabelStyle worldRecordStyle = new(customLeaderboard.WorldRecord?.Dagger?.GetColor() ?? Color.White, TextAlign.Right, FontSize.H12);
+		LabelStyle scoreStyle = new(customLeaderboard.SelectedPlayerStats?.Dagger?.GetColor() ?? Color.White, TextAlign.Right, FontSize.H12, 4);
+		LabelStyle nextDaggerStyle = new(customLeaderboard.SelectedPlayerStats?.NextDagger?.Dagger.GetColor() ?? Color.White, TextAlign.Right, FontSize.H12, 4);
+		LabelStyle worldRecordStyle = new(customLeaderboard.WorldRecord?.Dagger?.GetColor() ?? Color.White, TextAlign.Right, FontSize.H12, 4);
 
 		_score.LabelStyle = scoreStyle;
 		_nextDagger.LabelStyle = nextDaggerStyle;

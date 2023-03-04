@@ -15,8 +15,8 @@ public class LeaderboardListHeader : LeaderboardListRow
 	public LeaderboardListHeader(IBounds bounds)
 		: base(bounds)
 	{
-		ClickableLabelStyle styleLeft = new(Color.Yellow, Color.Red, TextAlign.Left, FontSize.H12);
-		ClickableLabelStyle styleRight = new(Color.Yellow, Color.Red, TextAlign.Right, FontSize.H12);
+		ClickableLabelStyle styleLeft = new(Color.Yellow, Color.Red, TextAlign.Left, FontSize.H12, 4);
+		ClickableLabelStyle styleRight = new(Color.Yellow, Color.Red, TextAlign.Right, FontSize.H12, 4);
 
 		int labelDepth = Depth + 100;
 		ClickableLabel name = new(bounds.CreateNested(GridName.Index, 0, GridName.Width, bounds.Size.Y), "Name", () => StateManager.Dispatch(new SetSorting(LeaderboardListSorting.Name)), styleLeft) { Depth = labelDepth };

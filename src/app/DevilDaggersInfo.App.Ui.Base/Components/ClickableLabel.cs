@@ -43,13 +43,11 @@ public class ClickableLabel : AbstractComponent
 		if (_text.Length == 0)
 			return;
 
-		// TODO: Fix padding for hyperlinks.
-		int padding = (int)MathF.Round((Bounds.Y2 - Bounds.Y1) / 4f);
 		Vector2i<int> textPosition = _clickableLabelStyle.TextAlign switch
 		{
 			TextAlign.Middle => new Vector2i<int>(Bounds.X1 + Bounds.X2, Bounds.Y1 + Bounds.Y2) / 2,
-			TextAlign.Left => new(Bounds.X1 + padding, Bounds.Y1 + padding),
-			TextAlign.Right => new(Bounds.X2 - padding, Bounds.Y1 + padding),
+			TextAlign.Left => new(Bounds.X1 + _clickableLabelStyle.Padding, Bounds.Y1 + _clickableLabelStyle.Padding),
+			TextAlign.Right => new(Bounds.X2 - _clickableLabelStyle.Padding, Bounds.Y1 + _clickableLabelStyle.Padding),
 			_ => throw new InvalidOperationException("Invalid text align."),
 		};
 

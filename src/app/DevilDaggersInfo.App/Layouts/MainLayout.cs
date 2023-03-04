@@ -45,13 +45,13 @@ public class MainLayout : Layout, IExtendedLayout
 
 		int homePageLinkWidth = homePage.Length * 12; // Root.Game.MonoSpaceFontRenderer24.Font.CharWidth
 		const int homePageLinkHeight = 24;
-		ClickableLabelStyle homePageStyle = new(hyperlinkColor, hyperlinkHoverColor, TextAlign.Middle, FontSize.H24);
+		ClickableLabelStyle homePageStyle = new(hyperlinkColor, hyperlinkHoverColor, TextAlign.Middle, FontSize.H24, 0);
 		ClickableLabel homePageHyperlink = new(new PixelBounds(512 - homePageLinkWidth / 2, 752 - homePageLinkHeight / 2, homePageLinkWidth, homePageLinkHeight), homePage, () => Process.Start(new ProcessStartInfo(homePage) { UseShellExecute = true }), homePageStyle);
 		NestingContext.Add(homePageHyperlink);
 
 		int toolsPageLinkWidth = toolsPage.Length * 8; // Root.Game.MonoSpaceFontRenderer16.Font.CharWidth
 		const int toolsPageLinkHeight = 16;
-		ClickableLabelStyle toolsPageStyle = new(hyperlinkColor, hyperlinkHoverColor, TextAlign.Left, FontSize.H16);
+		ClickableLabelStyle toolsPageStyle = new(hyperlinkColor, hyperlinkHoverColor, TextAlign.Left, FontSize.H16, 0);
 		ClickableLabel toolsPageHyperlink = new(new PixelBounds(8, 148, toolsPageLinkWidth, toolsPageLinkHeight), toolsPage, () => Process.Start(new ProcessStartInfo(homePage) { UseShellExecute = true }), toolsPageStyle);
 		NestingContext.Add(toolsPageHyperlink);
 

@@ -29,12 +29,11 @@ public class Label : AbstractLabel
 
 		if (Text.Length > 0)
 		{
-			int padding = (int)MathF.Round((Bounds.Y2 - Bounds.Y1) / 4f);
 			Vector2i<int> textPosition = LabelStyle.TextAlign switch
 			{
 				TextAlign.Middle => new Vector2i<int>(Bounds.X1 + Bounds.X2, Bounds.Y1 + Bounds.Y2) / 2,
-				TextAlign.Left => new(Bounds.X1 + padding, Bounds.Y1 + padding),
-				TextAlign.Right => new(Bounds.X2 - padding, Bounds.Y1 + padding),
+				TextAlign.Left => new(Bounds.X1 + LabelStyle.Padding, Bounds.Y1 + LabelStyle.Padding),
+				TextAlign.Right => new(Bounds.X2 - LabelStyle.Padding, Bounds.Y1 + LabelStyle.Padding),
 				_ => throw new InvalidOperationException("Invalid text align."),
 			};
 
