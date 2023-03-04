@@ -55,7 +55,7 @@ public record LeaderboardListState(
 			LeaderboardListSorting.Author => Sort(CustomLeaderboards, cl => cl.SpawnsetAuthorName),
 			LeaderboardListSorting.Criteria => Sort(CustomLeaderboards, cl => cl.Criteria.Count),
 			LeaderboardListSorting.Score => Sort(CustomLeaderboards, cl => cl.SelectedPlayerStats?.Time),
-			LeaderboardListSorting.NextDagger => Sort(CustomLeaderboards, cl => cl.SelectedPlayerStats?.NextDagger),
+			LeaderboardListSorting.NextDagger => Sort(CustomLeaderboards, cl => cl.SelectedPlayerStats?.NextDagger?.Time),
 			LeaderboardListSorting.Rank => Sort(CustomLeaderboards, cl => cl.SelectedPlayerStats?.Rank),
 			LeaderboardListSorting.Players => Sort(CustomLeaderboards, cl => cl.PlayerCount),
 			LeaderboardListSorting.WorldRecord => Sort(CustomLeaderboards, cl => cl.WorldRecord?.Time),
