@@ -47,11 +47,15 @@ public class LeaderboardListWrapper : AbstractComponent
 		_prevButton = new(bounds.CreateNested(24, 32, 20, 20), () => StateManager.Dispatch(new SetPageIndex(StateManager.LeaderboardListState.PageIndex - 1)), ButtonStyles.NavigationButton, WarpTextures.ArrowLeft, "Previous", Color.HalfTransparentWhite, Color.White) { Depth = pagingComponentsDepth };
 		_nextButton = new(bounds.CreateNested(44, 32, 20, 20), () => StateManager.Dispatch(new SetPageIndex(StateManager.LeaderboardListState.PageIndex + 1)), ButtonStyles.NavigationButton, WarpTextures.ArrowRight, "Next", Color.HalfTransparentWhite, Color.White) { Depth = pagingComponentsDepth };
 		_lastButton = new(bounds.CreateNested(64, 32, 20, 20), () => StateManager.Dispatch(new SetPageIndex(StateManager.LeaderboardListState.GetTotalPages() - 1)), ButtonStyles.NavigationButton, WarpTextures.ArrowEnd, "Last", Color.HalfTransparentWhite, Color.White) { Depth = pagingComponentsDepth };
+		TextInput spawnsetFilterInput = new(bounds.CreateNested(188, 32, 96, 20), false, null, null, s => StateManager.Dispatch(new SetSpawnsetFilter(s)), TextInputStyles.Default);
+		TextInput authorFilterInput = new(bounds.CreateNested(288, 32, 96, 20), false, null, null, s => StateManager.Dispatch(new SetAuthorFilter(s)), TextInputStyles.Default);
 
 		NestingContext.Add(_firstButton);
 		NestingContext.Add(_prevButton);
 		NestingContext.Add(_nextButton);
 		NestingContext.Add(_lastButton);
+		NestingContext.Add(spawnsetFilterInput);
+		NestingContext.Add(authorFilterInput);
 
 		const int offsetY = 64;
 		_leaderboardListView = new(bounds.CreateNested(0, offsetY, bounds.Size.X, bounds.Size.Y - offsetY));
@@ -60,6 +64,8 @@ public class LeaderboardListWrapper : AbstractComponent
 		StateManager.Subscribe<PageLoaded>(SetPage);
 		StateManager.Subscribe<SetPageIndex>(SetPage);
 		StateManager.Subscribe<SetCategory>(SetPage);
+		StateManager.Subscribe<SetSpawnsetFilter>(SetPage);
+		StateManager.Subscribe<SetAuthorFilter>(SetPage);
 
 		StateManager.Subscribe<SetLayout>(SetLayout);
 	}

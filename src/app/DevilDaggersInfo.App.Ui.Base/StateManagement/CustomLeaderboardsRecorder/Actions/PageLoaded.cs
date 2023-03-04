@@ -20,14 +20,15 @@ public record PageLoaded(List<GetCustomLeaderboardForOverview>? CustomLeaderboar
 			return;
 		}
 
-		int totalResults = CustomLeaderboards.Count(cl => cl.Category == stateReducer.LeaderboardListState.Category);
-		int newMaxPageIndex = (int)Math.Ceiling((totalResults + 1) / (float)Constants.CustomLeaderboardsPageSize) - 1;
-
 		stateReducer.LeaderboardListState = stateReducer.LeaderboardListState with
 		{
 			IsLoading = false,
 			CustomLeaderboards = CustomLeaderboards,
-			PageIndex = Math.Clamp(stateReducer.LeaderboardListState.PageIndex, 0, newMaxPageIndex),
+		};
+
+		stateReducer.LeaderboardListState = stateReducer.LeaderboardListState with
+		{
+			PageIndex = Math.Clamp(stateReducer.LeaderboardListState.PageIndex, 0, stateReducer.LeaderboardListState.GetMaxPageIndex()),
 		};
 	}
 }
