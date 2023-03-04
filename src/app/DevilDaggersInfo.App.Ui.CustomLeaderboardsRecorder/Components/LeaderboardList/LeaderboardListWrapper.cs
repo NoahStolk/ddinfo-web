@@ -70,6 +70,7 @@ public class LeaderboardListWrapper : AbstractComponent
 		StateManager.Subscribe<SetSpawnsetFilter>(SetPage);
 		StateManager.Subscribe<SetAuthorFilter>(SetPage);
 		StateManager.Subscribe<SetFeaturedOnly>(SetPage);
+		StateManager.Subscribe<SetSorting>(SetPage);
 
 		StateManager.Subscribe<SetLayout>(SetLayout);
 	}

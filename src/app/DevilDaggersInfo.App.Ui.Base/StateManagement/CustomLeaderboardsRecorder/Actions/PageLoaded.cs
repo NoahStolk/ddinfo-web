@@ -3,8 +3,9 @@ using DevilDaggersInfo.Api.App.CustomLeaderboards;
 namespace DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Actions;
 
 /// <summary>
-/// Fires when the custom leaderboard page has loaded.
+/// Fires when the custom leaderboards have loaded.
 /// </summary>
+// TODO: Rename.
 public record PageLoaded(List<GetCustomLeaderboardForOverview>? CustomLeaderboards) : IAction
 {
 	public void Reduce(StateReducer stateReducer)
@@ -14,7 +15,7 @@ public record PageLoaded(List<GetCustomLeaderboardForOverview>? CustomLeaderboar
 			stateReducer.LeaderboardListState = stateReducer.LeaderboardListState with
 			{
 				IsLoading = false,
-				CustomLeaderboards = new(),
+				CustomLeaderboards = new List<GetCustomLeaderboardForOverview>(),
 				PageIndex = 0,
 			};
 			return;
