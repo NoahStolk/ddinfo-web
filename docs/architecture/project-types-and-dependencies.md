@@ -13,27 +13,20 @@ DevilDaggersInfo is separated into layers, then into project types, then into in
 | `core`        | Core set of features                                      | `common`, `core`, `types (Core only)`                                      |
 | `types`       | [Enum types](types-libraries.md)                          | `common`                                                                   |
 
-### UI layer
-
-| **Subfolder** | **Project type**                                          | **Can depend on**                                                          |
-|---------------|-----------------------------------------------------------|----------------------------------------------------------------------------|
-| `razor-core`  | Reusable Razor UI libraries                               | `api`, `common`, `core`, `razor-core`, `types`                             |
-
 ### App layer
 
-| **Subfolder** | **Project type**               | **Can depend on**                       |
-|---------------|--------------------------------|-----------------------------------------|
-| `app`         | UI app heads that run natively | `common`, `core`, `razor-core`, `types` |
-| `app-core`    | Core set of features for apps  | `common`, `core`                        |
-| `app-ui`      | UI libraries for app           | `app-core`, `common`, `core`, `types`   |
+| **Subfolder**  | **Project type**                                                  | **Can depend on**         |
+|----------------|-------------------------------------------------------------------|---------------------------|
+| `app`          | The DDINFO TOOLS app separated into multiple UI and core projects | `common`, `core`, `types` |
+| `app-launcher` | The launcher for the DDINFO TOOLS app                             | `types (Web only)`        |
 
 ### Web layer
 
-| **Subfolder** | **Project type**                                          | **Can depend on**                                                        |
-|---------------|-----------------------------------------------------------|--------------------------------------------------------------------------|
-| `web-client`  | Client apps that run in the browser (Blazor WebAssembly)  | `api`, `common`, `core`, `razor-core`, `types`, `web-core`,              |
-| `web-core`    | Reusable web logic                                        | `common`, `core`, `web-core`                                             |
-| `web-server`  | Server code base (ASP.NET Core)                           | `api`, `common`, `core`, `types`, `web-client`, `web-core`, `web-server` |
+| **Subfolder** | **Project type**                                         | **Can depend on**                                                        |
+|---------------|----------------------------------------------------------|--------------------------------------------------------------------------|
+| `web-client`  | Client app that run in the browser (Blazor WebAssembly)  | `api`, `common`, `core`, `types`, `web-core`,                            |
+| `web-core`    | Reusable web logic                                       | `common`, `core`, `web-core`                                             |
+| `web-server`  | Server code base (ASP.NET Core)                          | `api`, `common`, `core`, `types`, `web-client`, `web-core`, `web-server` |
 
 ### Miscellaneous
 
