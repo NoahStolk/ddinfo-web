@@ -20,6 +20,23 @@ public class CustomLeaderboardsController : ControllerBase
 		_customLeaderboardRepository = customLeaderboardRepository;
 	}
 
+	[HttpGet]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	public async Task<ActionResult<List<GetCustomLeaderboardForOverview>>> GetCustomLeaderboards(int selectedPlayerId)
+	{
+		Domain.Models.Page<CustomLeaderboardOverview> customLeaderboards = await _customLeaderboardRepository.GetCustomLeaderboardOverviewsAsync(
+			category: null,
+			spawnsetFilter: null,
+			authorFilter: null,
+			pageIndex: 0,
+			pageSize: int.MaxValue,
+			sortBy: CustomLeaderboardSorting.DateLastPlayed,
+			ascending: false,
+			selectedPlayerId: selectedPlayerId,
+			onlyFeatured: false);
+		return customLeaderboards.Results.ConvertAll(cl => cl.ToAppApi());
+	}
+
 	[HttpGet("{id}")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -39,6 +56,7 @@ public class CustomLeaderboardsController : ControllerBase
 		return customLeaderboard.ToAppApi();
 	}
 
+	[Obsolete("Use GetCustomLeaderboards instead. This is used by DDINFO TOOLS <= 0.4.0.0.")]
 	[HttpGet("overview")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public async Task<ActionResult<Page<GetCustomLeaderboardForOverview>>> GetCustomLeaderboardOverview(
