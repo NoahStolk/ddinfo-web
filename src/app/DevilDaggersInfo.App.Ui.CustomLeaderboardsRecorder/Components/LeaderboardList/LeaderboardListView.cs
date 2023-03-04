@@ -48,7 +48,7 @@ public class LeaderboardListView : AbstractComponent
 		if (StateManager.LeaderboardListState.IsLoading)
 		{
 			text = "Loading...";
-			color = Color.Red;
+			color = Color.Yellow;
 		}
 		else
 		{
@@ -59,7 +59,7 @@ public class LeaderboardListView : AbstractComponent
 			int start = StateManager.LeaderboardListState.PageIndex * Constants.CustomLeaderboardsPageSize + 1;
 			int end = Math.Min(total, (StateManager.LeaderboardListState.PageIndex + 1) * Constants.CustomLeaderboardsPageSize);
 			text = $"Page {page} of {totalPages} ({start} - {end} of {total})";
-			color = Color.Yellow;
+			color = Color.White;
 		}
 
 		Root.Game.MonoSpaceFontRenderer12.Schedule(new(1), scrollOffset + Bounds.TopLeft + new Vector2i<int>(4, 0), Depth + 2, color, text, TextAlign.Left);

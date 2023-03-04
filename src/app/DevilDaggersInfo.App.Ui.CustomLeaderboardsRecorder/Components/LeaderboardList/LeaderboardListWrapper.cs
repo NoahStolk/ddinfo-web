@@ -96,6 +96,6 @@ public class LeaderboardListWrapper : AbstractComponent
 
 		Root.Game.RectangleRenderer.Schedule(new(2, Bounds.Size.Y), new Vector2i<int>(Bounds.X1, Bounds.Center.Y) + scrollOffset, Depth - 5, Color.Gray(0.4f));
 
-		Root.Game.MonoSpaceFontRenderer24.Schedule(new(1), scrollOffset + Bounds.TopLeft + new Vector2i<int>(4, 4), Depth + 2, Color.Yellow, $"{StateManager.LeaderboardListState.Category} leaderboards", TextAlign.Left);
+		Root.Game.MonoSpaceFontRenderer24.Schedule(new(1), scrollOffset + Bounds.TopLeft + new Vector2i<int>(4, 4), Depth + 2, Color.White, $"{StateManager.LeaderboardListState.Category} leaderboards", TextAlign.Left);
 	}
 }
