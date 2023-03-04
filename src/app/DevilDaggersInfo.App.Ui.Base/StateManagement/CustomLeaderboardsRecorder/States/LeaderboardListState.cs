@@ -7,17 +7,14 @@ namespace DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorde
 public record LeaderboardListState(
 	CustomLeaderboardCategory Category,
 	int PageIndex,
-	List<GetCustomLeaderboardForOverview> PagedCustomLeaderboards,
 	bool IsLoading,
 	LeaderboardListState.CustomLeaderboard? SelectedCustomLeaderboard,
 	List<GetCustomLeaderboardForOverview> CustomLeaderboards)
 {
 	public static LeaderboardListState GetDefault()
 	{
-		return new(CustomLeaderboardCategory.Survival, 0, new(), false, null, new());
+		return new(CustomLeaderboardCategory.Survival, 0, false, null, new());
 	}
-
-	public record CustomLeaderboard(int Id, int SpawnsetId, string SpawnsetName);
 
 	public int GetTotal()
 	{
@@ -28,4 +25,15 @@ public record LeaderboardListState(
 	{
 		return (int)Math.Ceiling(GetTotal() / (float)Constants.CustomLeaderboardsPageSize);
 	}
+
+	public List<GetCustomLeaderboardForOverview> GetPagedCustomLeaderboards()
+	{
+		return CustomLeaderboards
+			.Where(cl => cl.Category == Category)
+			.Skip(PageIndex * Constants.CustomLeaderboardsPageSize)
+			.Take(Constants.CustomLeaderboardsPageSize)
+			.ToList();
+	}
+
+	public record CustomLeaderboard(int Id, int SpawnsetId, string SpawnsetName);
 }

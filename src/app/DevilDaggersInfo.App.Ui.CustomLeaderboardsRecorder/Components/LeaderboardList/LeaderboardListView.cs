@@ -20,27 +20,23 @@ public class LeaderboardListView : AbstractComponent
 	{
 		LeaderboardListHeader header = new(bounds.CreateNested(_borderSize, 16, bounds.Size.X - _borderSize * 2, _rowHeight));
 		NestingContext.Add(header);
-	}
 
-	public void Clear()
-	{
-		foreach (LeaderboardListEntry leaderboardListEntry in _leaderboardListEntries)
-			NestingContext.Remove(leaderboardListEntry);
+		int y = 32;
+		for (int i = 0; i < Constants.CustomLeaderboardsPageSize; i++)
+		{
+			LeaderboardListEntry leaderboardListEntry = new(Bounds.CreateNested(_borderSize, y, Bounds.Size.X - _borderSize * 2, _rowHeight)) { Depth = Depth + 3 };
+			_leaderboardListEntries.Add(leaderboardListEntry);
+			NestingContext.Add(leaderboardListEntry);
 
-		_leaderboardListEntries.Clear();
+			y += _rowHeight;
+		}
 	}
 
 	public void Set()
 	{
-		int y = 32;
-		foreach (GetCustomLeaderboardForOverview cl in StateManager.LeaderboardListState.PagedCustomLeaderboards)
-		{
-			_leaderboardListEntries.Add(new(Bounds.CreateNested(_borderSize, y, Bounds.Size.X - _borderSize * 2, _rowHeight), cl) { Depth = Depth + 3 });
-			y += _rowHeight;
-		}
-
-		foreach (LeaderboardListEntry leaderboardListEntry in _leaderboardListEntries)
-			NestingContext.Add(leaderboardListEntry);
+		List<GetCustomLeaderboardForOverview> pagedCustomLeaderboards = StateManager.LeaderboardListState.GetPagedCustomLeaderboards();
+		for (int i = 0; i < Constants.CustomLeaderboardsPageSize; i++)
+			_leaderboardListEntries[i].SetCustomLeaderboard(i < pagedCustomLeaderboards.Count ? pagedCustomLeaderboards[i] : null);
 	}
 
 	public override void Render(Vector2i<int> scrollOffset)

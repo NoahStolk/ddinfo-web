@@ -3,6 +3,7 @@ using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.Networking;
 using DevilDaggersInfo.App.Ui.Base.Networking.TaskHandlers;
 using DevilDaggersInfo.App.Ui.Base.StateManagement;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.Base.Actions;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Actions;
 using DevilDaggersInfo.App.Ui.Base.Styling;
 using DevilDaggersInfo.Types.Web;
@@ -14,8 +15,6 @@ namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.Leaderbo
 
 public class LeaderboardListWrapper : AbstractComponent
 {
-	private const int _borderSize = 1;
-
 	private readonly TooltipIconButton _firstButton;
 	private readonly TooltipIconButton _prevButton;
 	private readonly TooltipIconButton _nextButton;
@@ -58,12 +57,19 @@ public class LeaderboardListWrapper : AbstractComponent
 		_leaderboardListView = new(bounds.CreateNested(0, offsetY, bounds.Size.X, bounds.Size.Y - offsetY));
 		NestingContext.Add(_leaderboardListView);
 
-		StateManager.Subscribe<LoadLeaderboardList>(Load);
-		StateManager.Subscribe<SetCategory>(Load);
-		StateManager.Subscribe<SetPageIndex>(Load);
-		StateManager.Subscribe<SetCurrentPlayerId>(Load);
-
 		StateManager.Subscribe<PageLoaded>(SetPage);
+		StateManager.Subscribe<SetPageIndex>(SetPage);
+		StateManager.Subscribe<SetCategory>(SetPage);
+
+		StateManager.Subscribe<SetLayout>(SetLayout);
+	}
+
+	private static void SetLayout()
+	{
+		if (StateManager.LayoutState.CurrentLayout != Root.Dependencies.CustomLeaderboardsRecorderMainLayout)
+			return;
+
+		AsyncHandler.Run(p => StateManager.Dispatch(new PageLoaded(p)), () => FetchCustomLeaderboards.HandleAsync(StateManager.RecordingState.CurrentPlayerId));
 	}
 
 	private void SetPage()
@@ -76,16 +82,6 @@ public class LeaderboardListWrapper : AbstractComponent
 		_lastButton.IsDisabled = lastSelected;
 
 		_leaderboardListView.Set();
-	}
-
-	private void Load()
-	{
-		_leaderboardListView.Clear();
-
-		_prevButton.IsDisabled = true;
-		_nextButton.IsDisabled = true;
-
-		AsyncHandler.Run(p => StateManager.Dispatch(new PageLoaded(p)), () => FetchCustomLeaderboards.HandleAsync(StateManager.RecordingState.CurrentPlayerId));
 	}
 
 	public override void Render(Vector2i<int> scrollOffset)

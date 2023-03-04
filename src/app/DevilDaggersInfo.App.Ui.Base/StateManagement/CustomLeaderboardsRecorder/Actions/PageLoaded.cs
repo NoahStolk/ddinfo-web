@@ -16,7 +16,6 @@ public record PageLoaded(List<GetCustomLeaderboardForOverview>? CustomLeaderboar
 				IsLoading = false,
 				CustomLeaderboards = new(),
 				PageIndex = 0,
-				PagedCustomLeaderboards = new(),
 			};
 			return;
 		}
@@ -29,7 +28,6 @@ public record PageLoaded(List<GetCustomLeaderboardForOverview>? CustomLeaderboar
 			IsLoading = false,
 			CustomLeaderboards = CustomLeaderboards,
 			PageIndex = Math.Clamp(stateReducer.LeaderboardListState.PageIndex, 0, newMaxPageIndex),
-			PagedCustomLeaderboards = CustomLeaderboards.Skip(stateReducer.LeaderboardListState.PageIndex * Constants.CustomLeaderboardsPageSize).Take(Constants.CustomLeaderboardsPageSize).ToList(),
 		};
 	}
 }
