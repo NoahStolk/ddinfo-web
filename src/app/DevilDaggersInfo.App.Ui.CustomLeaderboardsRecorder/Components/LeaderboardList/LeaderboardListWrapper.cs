@@ -73,6 +73,8 @@ public class LeaderboardListWrapper : AbstractComponent
 		StateManager.Subscribe<SetSorting>(SetPage);
 
 		StateManager.Subscribe<SetLayout>(SetLayout);
+
+		StateManager.Subscribe<SetCurrentPlayerId>(LoadAllLeaderboards);
 	}
 
 	private static void SetLayout()
@@ -80,6 +82,11 @@ public class LeaderboardListWrapper : AbstractComponent
 		if (StateManager.LayoutState.CurrentLayout != Root.Dependencies.CustomLeaderboardsRecorderMainLayout)
 			return;
 
+		LoadAllLeaderboards();
+	}
+
+	private static void LoadAllLeaderboards()
+	{
 		AsyncHandler.Run(p => StateManager.Dispatch(new PageLoaded(p)), () => FetchCustomLeaderboards.HandleAsync(StateManager.RecordingState.CurrentPlayerId));
 	}
 
