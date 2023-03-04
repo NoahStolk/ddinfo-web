@@ -1,15 +1,6 @@
 # Core libraries
 
-There are currently four types of core libraries.
-
-## `app-core`
-
-| **Project**              | **Reasoning**                                                        |
-|--------------------------|----------------------------------------------------------------------|
-| App.Core.ApiClient       | Provides API client base functionality for apps                      |
-| App.Core.AssetInterop    | Provides interoperability between Core.Mod and Warp.NET              |
-| App.Core.GameMemory      | Only apps are able to access game memory                             |
-| App.Core.NativeInterface | Only apps are able to access native functionality through interfaces |
+There are currently two types of core libraries.
 
 ## `core`
 
@@ -23,14 +14,6 @@ There are currently four types of core libraries.
 | Core.Spawnset           | Any project may want to parse spawnset binaries       |
 | Core.Versioning         | Both the apps and the web server require this library |
 | Core.Wiki               | Any project may access wiki information               |
-
-## `razor-core`
-
-| **Project**            | **Reasoning**                                      |
-|------------------------|----------------------------------------------------|
-| Razor.Core.Canvas      | Base functionality for CanvasArena and CanvasChart |
-| Razor.Core.CanvasArena | Any UI project may want to render canvas arenas    |
-| Razor.Core.CanvasChart | Any UI project may want to render canvas charts    |
 
 ## `web-core`
 
