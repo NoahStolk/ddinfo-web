@@ -34,8 +34,8 @@ public class LeaderboardWrapper : AbstractComponent
 		const int iconSize = 16;
 		const int offset = 8;
 		TooltipSprite rankTooltip = new(Bounds.CreateNested(TableOffsets[00] - offset, 64, iconSize, iconSize), WarpTextures.IconRank, Color.White, "Rank");
-		TooltipSprite nameTooltip = new(Bounds.CreateNested(TableOffsets[01] + offset, 64, iconSize, iconSize), WarpTextures.IconEye, Color.White, "Name");
-		TooltipSprite scoreTooltip = new(Bounds.CreateNested(TableOffsets[02] - offset, 64, iconSize, iconSize), WarpTextures.IconStopwatch, Color.White, "Score");
+		TooltipSprite playerTooltip = new(Bounds.CreateNested(TableOffsets[01] + offset, 64, iconSize, iconSize), WarpTextures.IconEye, Color.White, "Player");
+		TooltipSprite timeTooltip = new(Bounds.CreateNested(TableOffsets[02] - offset, 64, iconSize, iconSize), WarpTextures.IconStopwatch, Color.White, "Time");
 		TooltipSprite enemiesAliveTooltip = new(Bounds.CreateNested(TableOffsets[03] - offset, 64, iconSize, iconSize), WarpTextures.IconSkull, Color.Orange, "Enemies alive");
 		TooltipSprite enemiesKilledTooltip = new(Bounds.CreateNested(TableOffsets[04] - offset, 64, iconSize, iconSize), WarpTextures.IconSkull, Color.Red, "Enemies killed");
 		TooltipSprite gemsCollectedTooltip = new(Bounds.CreateNested(TableOffsets[05] - offset, 64, iconSize, iconSize), WarpTextures.IconGem, Color.Red, "Gems collected");
@@ -51,8 +51,8 @@ public class LeaderboardWrapper : AbstractComponent
 		TooltipSprite submitDateTooltip = new(Bounds.CreateNested(TableOffsets[15] - offset, 64, iconSize, iconSize), WarpTextures.IconCalendar, Color.White, "Submit date");
 
 		NestingContext.Add(rankTooltip);
-		NestingContext.Add(nameTooltip);
-		NestingContext.Add(scoreTooltip);
+		NestingContext.Add(playerTooltip);
+		NestingContext.Add(timeTooltip);
 		NestingContext.Add(enemiesAliveTooltip);
 		NestingContext.Add(enemiesKilledTooltip);
 		NestingContext.Add(gemsCollectedTooltip);
