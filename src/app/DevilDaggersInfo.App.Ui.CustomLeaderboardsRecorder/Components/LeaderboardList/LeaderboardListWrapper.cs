@@ -64,7 +64,7 @@ public class LeaderboardListWrapper : AbstractComponent
 		_leaderboardListView = new(bounds.CreateNested(0, offsetY, bounds.Size.X, bounds.Size.Y - offsetY));
 		NestingContext.Add(_leaderboardListView);
 
-		StateManager.Subscribe<PageLoaded>(SetPage);
+		StateManager.Subscribe<CustomLeaderboardsLoaded>(SetPage);
 		StateManager.Subscribe<SetPageIndex>(SetPage);
 		StateManager.Subscribe<SetCategory>(SetPage);
 		StateManager.Subscribe<SetSpawnsetFilter>(SetPage);
@@ -87,7 +87,7 @@ public class LeaderboardListWrapper : AbstractComponent
 
 	private static void LoadAllLeaderboards()
 	{
-		AsyncHandler.Run(p => StateManager.Dispatch(new PageLoaded(p)), () => FetchCustomLeaderboards.HandleAsync(StateManager.RecordingState.CurrentPlayerId));
+		AsyncHandler.Run(p => StateManager.Dispatch(new CustomLeaderboardsLoaded(p)), () => FetchCustomLeaderboards.HandleAsync(StateManager.RecordingState.CurrentPlayerId));
 	}
 
 	private void SetPage()

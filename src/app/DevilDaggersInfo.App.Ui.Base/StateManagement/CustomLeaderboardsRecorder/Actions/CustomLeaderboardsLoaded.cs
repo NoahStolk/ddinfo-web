@@ -5,8 +5,7 @@ namespace DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorde
 /// <summary>
 /// Fires when the custom leaderboards have loaded.
 /// </summary>
-// TODO: Rename.
-public record PageLoaded(List<GetCustomLeaderboardForOverview>? CustomLeaderboards) : IAction
+public record CustomLeaderboardsLoaded(List<GetCustomLeaderboardForOverview>? CustomLeaderboards) : IAction
 {
 	public void Reduce(StateReducer stateReducer)
 	{
@@ -18,18 +17,19 @@ public record PageLoaded(List<GetCustomLeaderboardForOverview>? CustomLeaderboar
 				CustomLeaderboards = new List<GetCustomLeaderboardForOverview>(),
 				PageIndex = 0,
 			};
-			return;
 		}
-
-		stateReducer.LeaderboardListState = stateReducer.LeaderboardListState with
+		else
 		{
-			IsLoading = false,
-			CustomLeaderboards = CustomLeaderboards,
-		};
+			stateReducer.LeaderboardListState = stateReducer.LeaderboardListState with
+			{
+				IsLoading = false,
+				CustomLeaderboards = CustomLeaderboards,
+			};
 
-		stateReducer.LeaderboardListState = stateReducer.LeaderboardListState with
-		{
-			PageIndex = Math.Clamp(stateReducer.LeaderboardListState.PageIndex, 0, stateReducer.LeaderboardListState.GetMaxPageIndex()),
-		};
+			stateReducer.LeaderboardListState = stateReducer.LeaderboardListState with
+			{
+				PageIndex = Math.Clamp(stateReducer.LeaderboardListState.PageIndex, 0, stateReducer.LeaderboardListState.GetMaxPageIndex()),
+			};
+		}
 	}
 }

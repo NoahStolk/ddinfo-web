@@ -16,6 +16,7 @@ namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Layouts;
 public class CustomLeaderboardsRecorderMainLayout : Layout, IExtendedLayout
 {
 	private const int _headerHeight = 24;
+
 	private readonly StateWrapper _stateWrapper;
 	private readonly RecordingScrollArea _recordingScrollArea;
 	private readonly RecordingResultScrollArea _recordingResultScrollArea;

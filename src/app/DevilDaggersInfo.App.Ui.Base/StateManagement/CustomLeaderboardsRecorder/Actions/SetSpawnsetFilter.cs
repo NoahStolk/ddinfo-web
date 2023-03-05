@@ -1,12 +1,12 @@
 namespace DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Actions;
 
-public record SetSpawnsetFilter(string Filter) : IAction
+public record SetSpawnsetFilter(string SpawnsetFilter) : IAction
 {
 	public void Reduce(StateReducer stateReducer)
 	{
 		stateReducer.LeaderboardListState = stateReducer.LeaderboardListState with
 		{
-			SpawnsetName = Filter,
+			SpawnsetFilter = SpawnsetFilter,
 		};
 
 		stateReducer.LeaderboardListState = stateReducer.LeaderboardListState with

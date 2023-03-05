@@ -9,8 +9,8 @@ public record LeaderboardListState(
 	CustomLeaderboardCategory Category,
 	int PageIndex,
 	bool IsLoading,
-	string SpawnsetName,
-	string AuthorName,
+	string SpawnsetFilter,
+	string AuthorFilter,
 	bool FeaturedOnly,
 	IReadOnlyDictionary<LeaderboardListSorting, bool> SortingDirections,
 	LeaderboardListSorting Sorting,
@@ -23,8 +23,8 @@ public record LeaderboardListState(
 			Category: CustomLeaderboardCategory.Survival,
 			PageIndex: 0,
 			IsLoading: false,
-			SpawnsetName: string.Empty,
-			AuthorName: string.Empty,
+			SpawnsetFilter: string.Empty,
+			AuthorFilter: string.Empty,
 			FeaturedOnly: false,
 			SortingDirections: Enum.GetValues<LeaderboardListSorting>().ToDictionary(s => s, _ => true),
 			Sorting: LeaderboardListSorting.Name,
@@ -81,8 +81,8 @@ public record LeaderboardListState(
 	{
 		return
 			cl.Category == Category &&
-			(string.IsNullOrEmpty(SpawnsetName) || cl.SpawnsetName.Contains(SpawnsetName, StringComparison.OrdinalIgnoreCase)) &&
-			(string.IsNullOrEmpty(AuthorName) || cl.SpawnsetAuthorName.Contains(AuthorName, StringComparison.OrdinalIgnoreCase)) &&
+			(string.IsNullOrEmpty(SpawnsetFilter) || cl.SpawnsetName.Contains(SpawnsetFilter, StringComparison.OrdinalIgnoreCase)) &&
+			(string.IsNullOrEmpty(AuthorFilter) || cl.SpawnsetAuthorName.Contains(AuthorFilter, StringComparison.OrdinalIgnoreCase)) &&
 			(!FeaturedOnly || cl.Daggers != null);
 	}
 
