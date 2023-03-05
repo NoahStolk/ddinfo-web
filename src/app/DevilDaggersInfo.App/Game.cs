@@ -127,6 +127,8 @@ public sealed partial class Game : GameBase, IGame
 		WarpShaders.Sprite.Use();
 		Shader.SetMatrix4x4(SpriteUniforms.Projection, _uiProjectionMatrix);
 		SpriteRenderer.Render();
+
+		Gl.Disable(EnableCap.ScissorTest);
 	}
 
 	private static void ActivateViewport(Viewport viewport)
