@@ -1,5 +1,29 @@
 [
 	{
+		"VersionNumber": "0.4.3.0",
+		"Date": "2023-03-05T00:00:00",
+		"Changes": [
+			{
+				"Description": "Improved custom leaderboard UI."
+			},
+			{
+				"Description": "Added spawnset and author filtering to custom leaderboard overview."
+			},
+			{
+				"Description": "Added checkbox to filter out leaderboards that are not featured."
+			},
+			{
+				"Description": "Added sorting to custom leaderboard overview."
+			},
+			{
+				"Description": "Player ID is now cached so you don't need to open the game to view your own rank, score, etc."
+			},
+			{
+				"Description": "Custom leaderboard pagination is now done client-side to improve performance and reduce network usage."
+			}
+		]
+	},
+	{
 		"VersionNumber": "0.4.0.0",
 		"Date": "2023-02-28T00:00:00",
 		"Changes": [

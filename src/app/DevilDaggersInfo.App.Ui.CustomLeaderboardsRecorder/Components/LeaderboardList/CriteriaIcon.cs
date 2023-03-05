@@ -10,10 +10,10 @@ using Warp.NET.Ui;
 
 namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.LeaderboardList;
 
-public class CriteriaIcon : TooltipIconButton
+public class CriteriaIcon : TooltipSprite
 {
 	public CriteriaIcon(IBounds bounds, GetCustomLeaderboardCriteria criteria)
-		: base(bounds, () => { }, ButtonStyles.Borderless, criteria.Type.GetTexture(), GetText(criteria), Color.Black, criteria.Type.GetColor())
+		: base(bounds, criteria.Type.GetTexture(), criteria.Type.GetColor(), GetText(criteria))
 	{
 	}
 
