@@ -1,5 +1,6 @@
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using Warp.NET.Extensions;
+using Warp.NET.Text;
 using Warp.NET.Ui;
 using Warp.NET.Ui.Components;
 
@@ -11,14 +12,16 @@ public class TooltipSprite : AbstractComponent
 	private readonly Color _textureColor;
 	private readonly Vector2 _textureSize;
 	private readonly string _tooltipText;
+	private readonly TextAlign _textAlign;
 
-	public TooltipSprite(IBounds bounds, Texture texture, Color textureColor, string tooltipText)
+	public TooltipSprite(IBounds bounds, Texture texture, Color textureColor, string tooltipText, TextAlign textAlign)
 		: base(bounds)
 	{
 		_texture = texture;
 		_textureColor = textureColor;
 		_textureSize = new(texture.Width, texture.Height);
 		_tooltipText = tooltipText;
+		_textAlign = textAlign;
 	}
 
 	public override void Update(Vector2i<int> scrollOffset)
@@ -32,6 +35,7 @@ public class TooltipSprite : AbstractComponent
 				Text = _tooltipText,
 				ForegroundColor = Color.White,
 				BackgroundColor = Color.Black,
+				TextAlign = _textAlign,
 			};
 		}
 	}

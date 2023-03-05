@@ -33,22 +33,22 @@ public class LeaderboardWrapper : AbstractComponent
 
 		const int iconSize = 16;
 		const int offset = 8;
-		TooltipSprite rankTooltip = new(Bounds.CreateNested(TableOffsets[00] - offset, 64, iconSize, iconSize), WarpTextures.IconRank, Color.White, "Rank");
-		TooltipSprite playerTooltip = new(Bounds.CreateNested(TableOffsets[01] + offset, 64, iconSize, iconSize), WarpTextures.IconEye, Color.White, "Player");
-		TooltipSprite timeTooltip = new(Bounds.CreateNested(TableOffsets[02] - offset, 64, iconSize, iconSize), WarpTextures.IconStopwatch, Color.White, "Time");
-		TooltipSprite enemiesAliveTooltip = new(Bounds.CreateNested(TableOffsets[03] - offset, 64, iconSize, iconSize), WarpTextures.IconSkull, Color.Orange, "Enemies alive");
-		TooltipSprite enemiesKilledTooltip = new(Bounds.CreateNested(TableOffsets[04] - offset, 64, iconSize, iconSize), WarpTextures.IconSkull, Color.Red, "Enemies killed");
-		TooltipSprite gemsCollectedTooltip = new(Bounds.CreateNested(TableOffsets[05] - offset, 64, iconSize, iconSize), WarpTextures.IconGem, Color.Red, "Gems collected");
-		TooltipSprite gemsDespawnedTooltip = new(Bounds.CreateNested(TableOffsets[06] - offset, 64, iconSize, iconSize), WarpTextures.IconGem, Color.Gray(0.5f), "Gems despawned");
-		TooltipSprite gemsEatenTooltip = new(Bounds.CreateNested(TableOffsets[07] - offset, 64, iconSize, iconSize), WarpTextures.IconGem, Color.Green, "Gems eaten");
-		TooltipSprite accuracyTooltip = new(Bounds.CreateNested(TableOffsets[08] - offset, 64, iconSize, iconSize), WarpTextures.IconCrosshair, Color.White, "Accuracy");
-		TooltipSprite deathTooltip = new(Bounds.CreateNested(TableOffsets[09] + offset, 64, iconSize, iconSize), WarpTextures.IconSkull, Color.Gray(0.5f), "Death type");
-		TooltipSprite homingStoredTooltip = new(Bounds.CreateNested(TableOffsets[10] - offset, 64, iconSize, iconSize), WarpTextures.IconHoming, Color.White, "Homing stored");
-		TooltipSprite homingEatenTooltip = new(Bounds.CreateNested(TableOffsets[11] - offset, 64, iconSize, iconSize), WarpTextures.IconHomingMask, Color.Red, "Homing eaten");
-		TooltipSprite level2Tooltip = new(Bounds.CreateNested(TableOffsets[12] - offset, 64, iconSize, iconSize), WarpTextures.IconDagger, UpgradesV3_2.Level2.Color.ToWarpColor(), "Level 2");
-		TooltipSprite level3Tooltip = new(Bounds.CreateNested(TableOffsets[13] - offset, 64, iconSize, iconSize), WarpTextures.IconDagger, UpgradesV3_2.Level3.Color.ToWarpColor(), "Level 3");
-		TooltipSprite level4Tooltip = new(Bounds.CreateNested(TableOffsets[14] - offset, 64, iconSize, iconSize), WarpTextures.IconDagger, UpgradesV3_2.Level4.Color.ToWarpColor(), "Level 4");
-		TooltipSprite submitDateTooltip = new(Bounds.CreateNested(TableOffsets[15] - offset, 64, iconSize, iconSize), WarpTextures.IconCalendar, Color.White, "Submit date");
+		TooltipSprite rankTooltip = new(Bounds.CreateNested(TableOffsets[00] - offset, 64, iconSize, iconSize), WarpTextures.IconRank, Color.White, "Rank", TextAlign.Left);
+		TooltipSprite playerTooltip = new(Bounds.CreateNested(TableOffsets[01] + offset, 64, iconSize, iconSize), WarpTextures.IconEye, Color.White, "Player", TextAlign.Left);
+		TooltipSprite timeTooltip = new(Bounds.CreateNested(TableOffsets[02] - offset, 64, iconSize, iconSize), WarpTextures.IconStopwatch, Color.White, "Time", TextAlign.Left);
+		TooltipSprite enemiesAliveTooltip = new(Bounds.CreateNested(TableOffsets[03] - offset, 64, iconSize, iconSize), WarpTextures.IconSkull, Color.Orange, "Enemies alive", TextAlign.Left);
+		TooltipSprite enemiesKilledTooltip = new(Bounds.CreateNested(TableOffsets[04] - offset, 64, iconSize, iconSize), WarpTextures.IconSkull, Color.Red, "Enemies killed", TextAlign.Left);
+		TooltipSprite gemsCollectedTooltip = new(Bounds.CreateNested(TableOffsets[05] - offset, 64, iconSize, iconSize), WarpTextures.IconGem, Color.Red, "Gems collected", TextAlign.Left);
+		TooltipSprite gemsDespawnedTooltip = new(Bounds.CreateNested(TableOffsets[06] - offset, 64, iconSize, iconSize), WarpTextures.IconGem, Color.Gray(0.5f), "Gems despawned", TextAlign.Left);
+		TooltipSprite gemsEatenTooltip = new(Bounds.CreateNested(TableOffsets[07] - offset, 64, iconSize, iconSize), WarpTextures.IconGem, Color.Green, "Gems eaten", TextAlign.Left);
+		TooltipSprite accuracyTooltip = new(Bounds.CreateNested(TableOffsets[08] - offset, 64, iconSize, iconSize), WarpTextures.IconCrosshair, Color.White, "Accuracy", TextAlign.Left);
+		TooltipSprite deathTooltip = new(Bounds.CreateNested(TableOffsets[09] + offset, 64, iconSize, iconSize), WarpTextures.IconSkull, Color.Gray(0.5f), "Death type", TextAlign.Left);
+		TooltipSprite homingStoredTooltip = new(Bounds.CreateNested(TableOffsets[10] - offset, 64, iconSize, iconSize), WarpTextures.IconHoming, Color.White, "Homing stored", TextAlign.Left);
+		TooltipSprite homingEatenTooltip = new(Bounds.CreateNested(TableOffsets[11] - offset, 64, iconSize, iconSize), WarpTextures.IconHomingMask, Color.Red, "Homing eaten", TextAlign.Left);
+		TooltipSprite level2Tooltip = new(Bounds.CreateNested(TableOffsets[12] - offset, 64, iconSize, iconSize), WarpTextures.IconDagger, UpgradesV3_2.Level2.Color.ToWarpColor(), "Level 2", TextAlign.Left);
+		TooltipSprite level3Tooltip = new(Bounds.CreateNested(TableOffsets[13] - offset, 64, iconSize, iconSize), WarpTextures.IconDagger, UpgradesV3_2.Level3.Color.ToWarpColor(), "Level 3", TextAlign.Left);
+		TooltipSprite level4Tooltip = new(Bounds.CreateNested(TableOffsets[14] - offset, 64, iconSize, iconSize), WarpTextures.IconDagger, UpgradesV3_2.Level4.Color.ToWarpColor(), "Level 4", TextAlign.Left);
+		TooltipSprite submitDateTooltip = new(Bounds.CreateNested(TableOffsets[15] - offset, 64, iconSize, iconSize), WarpTextures.IconCalendar, Color.White, "Submit date", TextAlign.Right);
 
 		NestingContext.Add(rankTooltip);
 		NestingContext.Add(playerTooltip);
