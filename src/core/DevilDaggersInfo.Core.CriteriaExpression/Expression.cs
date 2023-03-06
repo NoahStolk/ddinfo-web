@@ -1,8 +1,8 @@
-using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Core.CriteriaExpression.Exceptions;
 using DevilDaggersInfo.Core.CriteriaExpression.Parts;
 using DevilDaggersInfo.Types.Core.CustomLeaderboards;
 using DevilDaggersInfo.Types.Core.CustomLeaderboards.Extensions;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -203,7 +203,7 @@ public class Expression
 			{
 				ExpressionOperatorType.Add => result + right,
 				ExpressionOperatorType.Subtract => result - right,
-				_ => throw new InvalidEnumConversionException(op.Operator),
+				_ => throw new UnreachableException(),
 			};
 		}
 
@@ -267,7 +267,7 @@ public class Expression
 				CustomLeaderboardCriteriaType.LevelUpTime3 => targetCollection.LevelUpTime3,
 				CustomLeaderboardCriteriaType.LevelUpTime4 => targetCollection.LevelUpTime4,
 				CustomLeaderboardCriteriaType.EnemiesAlive => targetCollection.EnemiesAlive,
-				_ => throw new InvalidEnumConversionException(target.Target),
+				_ => throw new UnreachableException(),
 			};
 		}
 	}

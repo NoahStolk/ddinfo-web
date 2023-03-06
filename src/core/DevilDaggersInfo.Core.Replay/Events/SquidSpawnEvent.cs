@@ -1,6 +1,6 @@
-using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Core.Replay.Events.Interfaces;
 using DevilDaggersInfo.Types.Core.Replays;
+using System.Diagnostics;
 
 namespace DevilDaggersInfo.Core.Replay.Events;
 
@@ -11,7 +11,7 @@ public readonly record struct SquidSpawnEvent(int EntityId, SquidType SquidType,
 		SquidType.Squid1 => EntityType.Squid1,
 		SquidType.Squid2 => EntityType.Squid2,
 		SquidType.Squid3 => EntityType.Squid3,
-		_ => throw new InvalidEnumConversionException(SquidType),
+		_ => throw new UnreachableException(),
 	};
 
 	public void Write(BinaryWriter bw)
@@ -22,7 +22,7 @@ public readonly record struct SquidSpawnEvent(int EntityId, SquidType SquidType,
 			SquidType.Squid1 => 0x03,
 			SquidType.Squid2 => 0x04,
 			SquidType.Squid3 => 0x05,
-			_ => throw new InvalidEnumConversionException(SquidType),
+			_ => throw new UnreachableException(),
 		}));
 
 		bw.Write(A);

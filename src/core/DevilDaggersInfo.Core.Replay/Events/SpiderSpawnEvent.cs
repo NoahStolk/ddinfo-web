@@ -1,6 +1,6 @@
-using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Core.Replay.Events.Interfaces;
 using DevilDaggersInfo.Types.Core.Replays;
+using System.Diagnostics;
 
 namespace DevilDaggersInfo.Core.Replay.Events;
 
@@ -10,7 +10,7 @@ public readonly record struct SpiderSpawnEvent(int EntityId, SpiderType SpiderTy
 	{
 		SpiderType.Spider1 => EntityType.Spider1,
 		SpiderType.Spider2 => EntityType.Spider2,
-		_ => throw new InvalidEnumConversionException(SpiderType),
+		_ => throw new UnreachableException(),
 	};
 
 	public void Write(BinaryWriter bw)
@@ -20,7 +20,7 @@ public readonly record struct SpiderSpawnEvent(int EntityId, SpiderType SpiderTy
 		{
 			SpiderType.Spider1 => 0x08,
 			SpiderType.Spider2 => 0x09,
-			_ => throw new InvalidEnumConversionException(SpiderType),
+			_ => throw new UnreachableException(),
 		}));
 
 		bw.Write(A);

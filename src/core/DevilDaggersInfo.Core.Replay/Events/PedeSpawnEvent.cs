@@ -1,6 +1,6 @@
-using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Core.Replay.Events.Interfaces;
 using DevilDaggersInfo.Types.Core.Replays;
+using System.Diagnostics;
 
 namespace DevilDaggersInfo.Core.Replay.Events;
 
@@ -11,7 +11,7 @@ public readonly record struct PedeSpawnEvent(int EntityId, PedeType PedeType, in
 		PedeType.Centipede => EntityType.Centipede,
 		PedeType.Gigapede => EntityType.Gigapede,
 		PedeType.Ghostpede => EntityType.Ghostpede,
-		_ => throw new InvalidEnumConversionException(PedeType),
+		_ => throw new UnreachableException(),
 	};
 
 	public void Write(BinaryWriter bw)
@@ -22,7 +22,7 @@ public readonly record struct PedeSpawnEvent(int EntityId, PedeType PedeType, in
 			PedeType.Centipede => 0x07,
 			PedeType.Gigapede => 0x0c,
 			PedeType.Ghostpede => 0x0f,
-			_ => throw new InvalidEnumConversionException(PedeType),
+			_ => throw new UnreachableException(),
 		}));
 
 		bw.Write(A);

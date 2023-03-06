@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Common.Exceptions;
+using System.Diagnostics;
 
 namespace DevilDaggersInfo.Types.Core.CustomLeaderboards.Extensions;
 
@@ -14,7 +14,7 @@ public static class CustomLeaderboardCriteriaOperatorExtensions
 		CustomLeaderboardCriteriaOperator.Modulo => "divisible by",
 		CustomLeaderboardCriteriaOperator.NotEqual => "not equal to",
 		CustomLeaderboardCriteriaOperator.Any => string.Empty,
-		_ => throw new InvalidEnumConversionException(criteriaOperator),
+		_ => throw new UnreachableException(),
 	};
 
 	public static string Description(this CustomLeaderboardCriteriaOperator criteriaOperator) => criteriaOperator switch
@@ -33,6 +33,6 @@ public static class CustomLeaderboardCriteriaOperatorExtensions
 		CustomLeaderboardCriteriaOperator.Modulo => "%",
 		CustomLeaderboardCriteriaOperator.NotEqual => "!=",
 		CustomLeaderboardCriteriaOperator.Any => string.Empty,
-		_ => throw new InvalidEnumConversionException(criteriaOperator),
+		_ => throw new UnreachableException(),
 	};
 }

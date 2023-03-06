@@ -1,6 +1,6 @@
-using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Core.Replay.Events.Interfaces;
 using DevilDaggersInfo.Types.Core.Replays;
+using System.Diagnostics;
 
 namespace DevilDaggersInfo.Core.Replay.Events;
 
@@ -15,7 +15,7 @@ public readonly record struct DaggerSpawnEvent(int EntityId, int A, Int16Vec3 Po
 		DaggerType.Level4 => EntityType.Level4Dagger,
 		DaggerType.Level4Homing => EntityType.Level4HomingDagger,
 		DaggerType.Level4HomingSplash => EntityType.Level4HomingSplash,
-		_ => throw new InvalidEnumConversionException(DaggerType),
+		_ => throw new UnreachableException(),
 	};
 
 	public void Write(BinaryWriter bw)

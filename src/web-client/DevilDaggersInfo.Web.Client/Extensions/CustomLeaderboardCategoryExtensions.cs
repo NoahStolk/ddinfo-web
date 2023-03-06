@@ -1,5 +1,5 @@
-using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Types.Web;
+using System.Diagnostics;
 
 namespace DevilDaggersInfo.Web.Client.Extensions;
 
@@ -11,6 +11,6 @@ public static class CustomLeaderboardCategoryExtensions
 		CustomLeaderboardCategory.TimeAttack => "Kill all enemies as quickly as possible.",
 		CustomLeaderboardCategory.Speedrun => "Die as quickly as possible.",
 		CustomLeaderboardCategory.Race => "Reach the dagger as quickly as possible.",
-		_ => throw new InvalidEnumConversionException(category),
+		_ => throw new UnreachableException(),
 	};
 }

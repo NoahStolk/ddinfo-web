@@ -1,5 +1,5 @@
-using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Types.Core.Assets;
+using System.Diagnostics;
 
 namespace DevilDaggersInfo.Core.Asset;
 
@@ -12,7 +12,7 @@ public static class AssetContainer
 		AssetType.Mesh => DdMeshes.All.Cast<AssetInfo>().ToList(),
 		AssetType.Shader => DdShaders.All.Cast<AssetInfo>().ToList(),
 		AssetType.Texture => DdTextures.All.Cast<AssetInfo>().ToList(),
-		_ => throw new InvalidEnumConversionException(assetType),
+		_ => throw new UnreachableException(),
 	};
 
 	public static bool GetIsProhibited(AssetType assetType, string assetName) => assetType switch
@@ -22,6 +22,6 @@ public static class AssetContainer
 		AssetType.Mesh => DdMeshes.All.Find(a => a.AssetName == assetName)?.IsProhibited ?? false,
 		AssetType.Shader => DdShaders.All.Find(a => a.AssetName == assetName)?.IsProhibited ?? false,
 		AssetType.Texture => DdTextures.All.Find(a => a.AssetName == assetName)?.IsProhibited ?? false,
-		_ => throw new InvalidEnumConversionException(assetType),
+		_ => throw new UnreachableException(),
 	};
 }

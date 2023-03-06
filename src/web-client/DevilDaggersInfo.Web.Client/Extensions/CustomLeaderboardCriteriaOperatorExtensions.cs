@@ -1,5 +1,5 @@
-using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Types.Core.CustomLeaderboards;
+using System.Diagnostics;
 
 namespace DevilDaggersInfo.Web.Client.Extensions;
 
@@ -13,6 +13,6 @@ public static class CustomLeaderboardCriteriaOperatorExtensions
 		CustomLeaderboardCriteriaOperator.Equal => "#4f4",
 		CustomLeaderboardCriteriaOperator.Modulo => "#80f",
 		CustomLeaderboardCriteriaOperator.NotEqual => "#f44",
-		_ => throw new InvalidEnumConversionException(criteriaOperator),
+		_ => throw new UnreachableException(),
 	};
 }

@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Common.Exceptions;
+using System.Diagnostics;
 
 namespace DevilDaggersInfo.Core.Wiki;
 
@@ -24,6 +24,6 @@ public static class GameVersions
 		GameVersion.V3_0 => new(2016, 9, 19),
 		GameVersion.V3_1 => new(2021, 2, 19),
 		GameVersion.V3_2 => new(2021, 10, 27),
-		_ => throw new InvalidEnumConversionException(gameVersion),
+		_ => throw new UnreachableException(),
 	};
 }
