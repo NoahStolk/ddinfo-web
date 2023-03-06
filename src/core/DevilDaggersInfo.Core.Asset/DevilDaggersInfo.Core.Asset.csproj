@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\common\DevilDaggersInfo.CommonSourceGen\DevilDaggersInfo.CommonSourceGen.csproj" OutputItemType="Analyzer" />
-    <ProjectReference Include="..\..\common\DevilDaggersInfo.Common\DevilDaggersInfo.Common.csproj" />
     <ProjectReference Include="..\..\types\DevilDaggersInfo.Types.Core\DevilDaggersInfo.Types.Core.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.Core.Asset.SourceGen\DevilDaggersInfo.Core.Asset.SourceGen.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
   </ItemGroup>

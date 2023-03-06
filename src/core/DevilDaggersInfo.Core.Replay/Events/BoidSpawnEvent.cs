@@ -1,6 +1,6 @@
-using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Core.Replay.Events.Interfaces;
 using DevilDaggersInfo.Types.Core.Replays;
+using System.Diagnostics;
 
 namespace DevilDaggersInfo.Core.Replay.Events;
 
@@ -13,7 +13,7 @@ public readonly record struct BoidSpawnEvent(int EntityId, int SpawnerEntityId, 
 		BoidType.Skull3 => EntityType.Skull3,
 		BoidType.Spiderling => EntityType.Spiderling,
 		BoidType.Skull4 => EntityType.Skull4,
-		_ => throw new InvalidEnumConversionException(BoidType),
+		_ => throw new UnreachableException(),
 	};
 
 	public void Write(BinaryWriter bw)
@@ -29,7 +29,7 @@ public readonly record struct BoidSpawnEvent(int EntityId, int SpawnerEntityId, 
 			BoidType.Skull3 => 0x03,
 			BoidType.Spiderling => 0x04,
 			BoidType.Skull4 => 0x05,
-			_ => throw new InvalidEnumConversionException(BoidType),
+			_ => throw new UnreachableException(),
 		}));
 		bw.Write(Position);
 		bw.Write(A);

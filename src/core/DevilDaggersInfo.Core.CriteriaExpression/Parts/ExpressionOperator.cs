@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Common.Exceptions;
+using System.Diagnostics;
 
 namespace DevilDaggersInfo.Core.CriteriaExpression.Parts;
 
@@ -8,6 +8,6 @@ public record ExpressionOperator(ExpressionOperatorType Operator) : IExpressionP
 	{
 		ExpressionOperatorType.Add => "+",
 		ExpressionOperatorType.Subtract => "-",
-		_ => throw new InvalidEnumConversionException(Operator),
+		_ => throw new UnreachableException(),
 	};
 }

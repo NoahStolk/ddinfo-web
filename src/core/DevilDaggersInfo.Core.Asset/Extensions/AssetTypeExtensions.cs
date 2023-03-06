@@ -1,5 +1,5 @@
-using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Types.Core.Assets;
+using System.Diagnostics;
 
 namespace DevilDaggersInfo.Core.Asset.Extensions;
 
@@ -12,7 +12,7 @@ public static class AssetTypeExtensions
 		AssetType.ObjectBinding => ".txt",
 		AssetType.Shader => throw new NotSupportedException($"Asset type '{AssetType.Shader}' has multiple file extensions."),
 		AssetType.Texture => ".png",
-		_ => throw new InvalidEnumConversionException(assetType),
+		_ => throw new UnreachableException(),
 	};
 
 	public static string ToDisplayString(this AssetType assetType) => assetType switch
@@ -22,7 +22,7 @@ public static class AssetTypeExtensions
 		AssetType.ObjectBinding => "Object Binding",
 		AssetType.Shader => "Shader",
 		AssetType.Texture => "Texture",
-		_ => throw new InvalidEnumConversionException(assetType),
+		_ => throw new UnreachableException(),
 	};
 
 	public static AssetType? GetAssetType(this ushort type) => type switch

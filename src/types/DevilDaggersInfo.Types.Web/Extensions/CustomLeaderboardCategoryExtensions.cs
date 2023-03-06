@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Common.Exceptions;
+using System.Diagnostics;
 
 namespace DevilDaggersInfo.Types.Web.Extensions;
 
@@ -10,6 +10,6 @@ public static class CustomLeaderboardCategoryExtensions
 		CustomLeaderboardCategory.TimeAttack => "Time Attack",
 		CustomLeaderboardCategory.Speedrun => nameof(CustomLeaderboardCategory.Speedrun),
 		CustomLeaderboardCategory.Race => nameof(CustomLeaderboardCategory.Race),
-		_ => throw new InvalidEnumConversionException(category),
+		_ => throw new UnreachableException(),
 	};
 }

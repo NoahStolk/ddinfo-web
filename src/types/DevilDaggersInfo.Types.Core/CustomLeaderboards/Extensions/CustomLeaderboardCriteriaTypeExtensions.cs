@@ -1,5 +1,5 @@
 // ReSharper disable StringLiteralTypo
-using DevilDaggersInfo.Common.Exceptions;
+using System.Diagnostics;
 
 namespace DevilDaggersInfo.Types.Core.CustomLeaderboards.Extensions;
 
@@ -55,7 +55,7 @@ public static class CustomLeaderboardCriteriaTypeExtensions
 		CustomLeaderboardCriteriaType.LevelUpTime3 => "Level 3 hand",
 		CustomLeaderboardCriteriaType.LevelUpTime4 => "Level 4 hand",
 		CustomLeaderboardCriteriaType.EnemiesAlive => "Enemies alive",
-		_ => throw new InvalidEnumConversionException(criteriaType),
+		_ => throw new UnreachableException(),
 	};
 
 	public static string GetIdentifier(this CustomLeaderboardCriteriaType criteriaType) => criteriaType switch
@@ -108,7 +108,7 @@ public static class CustomLeaderboardCriteriaTypeExtensions
 		CustomLeaderboardCriteriaType.LevelUpTime3 => "level3",
 		CustomLeaderboardCriteriaType.LevelUpTime4 => "level4",
 		CustomLeaderboardCriteriaType.EnemiesAlive => "enemiesalive",
-		_ => throw new InvalidEnumConversionException(criteriaType),
+		_ => throw new UnreachableException(),
 	};
 
 	public static string ToStringFast(this CustomLeaderboardCriteriaType criteriaType) => criteriaType switch
@@ -161,7 +161,7 @@ public static class CustomLeaderboardCriteriaTypeExtensions
 		CustomLeaderboardCriteriaType.LevelUpTime3 => nameof(CustomLeaderboardCriteriaType.LevelUpTime3),
 		CustomLeaderboardCriteriaType.LevelUpTime4 => nameof(CustomLeaderboardCriteriaType.LevelUpTime4),
 		CustomLeaderboardCriteriaType.EnemiesAlive => nameof(CustomLeaderboardCriteriaType.EnemiesAlive),
-		_ => throw new InvalidEnumConversionException(criteriaType),
+		_ => throw new UnreachableException(),
 	};
 
 	public static bool IsAllowedAsTarget(this CustomLeaderboardCriteriaType criteriaType)

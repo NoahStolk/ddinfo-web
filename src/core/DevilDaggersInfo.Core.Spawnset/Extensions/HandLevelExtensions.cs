@@ -1,7 +1,7 @@
-using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Core.Wiki.Objects;
 using DevilDaggersInfo.Types.Core.Spawnsets;
 using DevilDaggersInfo.Types.Core.Wiki;
+using System.Diagnostics;
 
 namespace DevilDaggersInfo.Core.Spawnset.Extensions;
 
@@ -27,6 +27,6 @@ public static class HandLevelExtensions
 		HandLevel.Level2 => "Level 2",
 		HandLevel.Level3 => "Level 3",
 		HandLevel.Level4 => "Level 4",
-		_ => throw new InvalidEnumConversionException(handLevel),
+		_ => throw new UnreachableException(),
 	};
 }

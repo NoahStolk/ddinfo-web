@@ -1,7 +1,7 @@
-using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Web.Server.Domain.Extensions;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
+using System.Diagnostics;
 using DdclApi = DevilDaggersInfo.Api.Ddcl.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Ddcl;
@@ -58,7 +58,7 @@ public static class CustomLeaderboardConverters
 		SubmissionType.NoHighscore => DdclApi.SubmissionType.NoHighscore,
 		SubmissionType.NewHighscore => DdclApi.SubmissionType.NewHighscore,
 		SubmissionType.FirstScore => DdclApi.SubmissionType.FirstScore,
-		_ => throw new InvalidEnumConversionException(submissionType),
+		_ => throw new UnreachableException(),
 	};
 
 	private static DdclApi.GetScoreState<T> ToDdclApi<T>(this UploadResponseScoreState<T> scoreState)

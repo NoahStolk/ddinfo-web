@@ -1,6 +1,6 @@
-using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Types.Core.CustomLeaderboards;
+using System.Diagnostics;
 
 namespace DevilDaggersInfo.Web.Client.Extensions;
 
@@ -56,6 +56,6 @@ public static class CustomLeaderboardCriteriaTypeExtensions
 		CustomLeaderboardCriteriaType.LevelUpTime3 => UpgradesV3_2.Level3.Color.HexCode,
 		CustomLeaderboardCriteriaType.LevelUpTime4 => UpgradesV3_2.Level4.Color.HexCode,
 		CustomLeaderboardCriteriaType.EnemiesAlive => EnemiesV3_2.Skull4.Color.HexCode,
-		_ => throw new InvalidEnumConversionException(criteriaType),
+		_ => throw new UnreachableException(),
 	};
 }

@@ -1,5 +1,5 @@
-using DevilDaggersInfo.Common.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
+using System.Diagnostics;
 using MainApi = DevilDaggersInfo.Api.Main.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Main;
@@ -21,6 +21,6 @@ public static class CustomLeaderboardConverters
 		MainApi.CustomLeaderboardSorting.Players => CustomLeaderboardSorting.Players,
 		MainApi.CustomLeaderboardSorting.TopPlayer => CustomLeaderboardSorting.TopPlayer,
 		MainApi.CustomLeaderboardSorting.WorldRecord => CustomLeaderboardSorting.WorldRecord,
-		_ => throw new InvalidEnumConversionException(customLeaderboardSorting),
+		_ => throw new UnreachableException(),
 	};
 }
