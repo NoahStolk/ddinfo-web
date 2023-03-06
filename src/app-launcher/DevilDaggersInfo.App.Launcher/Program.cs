@@ -3,7 +3,7 @@ using System.Reflection;
 
 string launcherVersion = Assembly.GetEntryAssembly()?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? "0.0.0.0";
 Cmd.WriteLine(ConsoleColor.Yellow, $"DDINFO TOOLS LAUNCHER {launcherVersion}");
-if (!await Client.IsLatestVersionAsync("ddinfo-tools-launcher", launcherVersion))
+if (!await Client.IsLatestVersionAsync("ddinfo-tools-launcher", launcherVersion, Constants.AppLauncherPublishMethod, Constants.AppLauncherBuildType))
 {
 	Cmd.WriteLine(ConsoleColor.Red, "The launcher is outdated. Please go to https://devildaggers.info/ to download the latest launcher.");
 	Environment.Exit(0);
@@ -15,7 +15,7 @@ if (!UpdateLogic.IsInstalled())
 	await UpdateLogic.DownloadAndInstallAsync();
 	Cmd.WriteLine(ConsoleColor.Green, "App installed.");
 }
-else if (await UpdateLogic.ShouldUpdate())
+else if (await UpdateLogic.ShouldUpdateApp())
 {
 	UpdateLogic.CleanOldInstallation();
 
