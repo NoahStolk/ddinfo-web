@@ -1,14 +1,16 @@
+using DevilDaggersInfo.Types.Web;
+
 namespace DevilDaggersInfo.App.Launcher;
 
 public static class Client
 {
 	private static readonly Uri _baseAddress = new("https://devildaggers.info/");
 
-	public static async Task<bool> IsLatestVersionAsync(string toolName, string version)
+	public static async Task<bool> IsLatestVersionAsync(string toolName, string version, ToolPublishMethod publishMethod, ToolBuildType buildType)
 	{
 		using HttpRequestMessage request = new()
 		{
-			RequestUri = new($"api/app-launcher/is-latest-version?toolName={toolName}&version={version}&publishMethod={Constants.PublishMethod}&buildType={Constants.BuildType}", UriKind.Relative),
+			RequestUri = new($"api/app-launcher/is-latest-version?toolName={toolName}&version={version}&publishMethod={publishMethod}&buildType={buildType}", UriKind.Relative),
 			Method = HttpMethod.Head,
 		};
 
@@ -16,18 +18,18 @@ public static class Client
 
 		using HttpResponseMessage response = await httpClient.SendAsync(request);
 		if (response.IsSuccessStatusCode)
-			return false;
+			return true;
 
 		string error = await response.Content.ReadAsStringAsync();
 		Cmd.WriteLine(ConsoleColor.Red, error);
-		return true;
+		return false;
 	}
 
 	public static async Task<byte[]> DownloadAppAsync()
 	{
 		using HttpRequestMessage request = new()
 		{
-			RequestUri = new($"api/app-launcher/latest-version-file?publishMethod={Constants.PublishMethod}&buildType={Constants.BuildType}", UriKind.Relative),
+			RequestUri = new($"api/app-launcher/latest-version-file?publishMethod={Constants.AppPublishMethod}&buildType={Constants.AppBuildType}", UriKind.Relative),
 			Method = HttpMethod.Get,
 		};
 

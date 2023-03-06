@@ -5,7 +5,7 @@ namespace DevilDaggersInfo.App.Launcher;
 
 public static class UpdateLogic
 {
-	public static async Task<bool> ShouldUpdate()
+	public static async Task<bool> ShouldUpdateApp()
 	{
 		string executableFileName = FindExecutableFileName() ?? throw new InvalidOperationException("ShouldUpdate can only be called when the app is installed.");
 		FileVersionInfo versionInfo = FileVersionInfo.GetVersionInfo(executableFileName);
@@ -16,16 +16,15 @@ public static class UpdateLogic
 		}
 
 		Cmd.WriteLine(ConsoleColor.Yellow, "Checking for updates...");
-		bool shouldUpdate = await Client.IsLatestVersionAsync("ddinfo-tools", versionInfo.FileVersion);
-
-		if (shouldUpdate)
+		bool isLatestApp = await Client.IsLatestVersionAsync("ddinfo-tools", versionInfo.FileVersion, Constants.AppPublishMethod, Constants.AppBuildType);
+		if (isLatestApp)
 		{
-			Cmd.WriteLine(ConsoleColor.Green, "New version available.");
-			return true;
+			Cmd.WriteLine(ConsoleColor.Yellow, "No new version available.");
+			return false;
 		}
 
-		Cmd.WriteLine(ConsoleColor.Yellow, "No new version available.");
-		return false;
+		Cmd.WriteLine(ConsoleColor.Green, "New version available.");
+		return true;
 	}
 
 	public static void CleanOldInstallation()
