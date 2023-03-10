@@ -140,7 +140,7 @@ public class CustomEntryProcessor
 
 		try
 		{
-			HandleCriteria(uploadRequest, spawnsetName, customLeaderboard);
+			HandleAllCriteria(uploadRequest, spawnsetName, customLeaderboard);
 		}
 		catch (CustomEntryCriteriaException ex)
 		{
@@ -195,7 +195,7 @@ public class CustomEntryProcessor
 		};
 	}
 
-	private void HandleCriteria(UploadRequest uploadRequest, string? spawnsetName, CustomLeaderboardEntity customLeaderboard)
+	private void HandleAllCriteria(UploadRequest uploadRequest, string? spawnsetName, CustomLeaderboardEntity customLeaderboard)
 	{
 		TargetCollection targetCollection = new()
 		{
@@ -249,54 +249,54 @@ public class CustomEntryProcessor
 			ThornsAlive = GetFinalEnemyStat(uploadRequest, urd => urd.ThornsAlive),
 		};
 
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.GemsCollectedCriteria, targetCollection.GemsCollected);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.GemsDespawnedCriteria, targetCollection.GemsDespawned);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.GemsEatenCriteria, targetCollection.GemsEaten);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.EnemiesKilledCriteria, targetCollection.EnemiesKilled);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.DaggersFiredCriteria, targetCollection.DaggersFired);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.DaggersHitCriteria, targetCollection.DaggersHit);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.HomingStoredCriteria, targetCollection.HomingStored);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.HomingEatenCriteria, targetCollection.HomingEaten);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.DeathTypeCriteria, targetCollection.DeathType);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.TimeCriteria, targetCollection.Time);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.LevelUpTime2Criteria, targetCollection.LevelUpTime2);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.LevelUpTime3Criteria, targetCollection.LevelUpTime3);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.LevelUpTime4Criteria, targetCollection.LevelUpTime4);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.EnemiesAliveCriteria, targetCollection.EnemiesAlive);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.Skull1KillsCriteria, targetCollection.Skull1Kills);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.Skull2KillsCriteria, targetCollection.Skull2Kills);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.Skull3KillsCriteria, targetCollection.Skull3Kills);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.Skull4KillsCriteria, targetCollection.Skull4Kills);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.SpiderlingKillsCriteria, targetCollection.SpiderlingKills);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.SpiderEggKillsCriteria, targetCollection.SpiderEggKills);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.Squid1KillsCriteria, targetCollection.Squid1Kills);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.Squid2KillsCriteria, targetCollection.Squid2Kills);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.Squid3KillsCriteria, targetCollection.Squid3Kills);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.CentipedeKillsCriteria, targetCollection.CentipedeKills);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.GigapedeKillsCriteria, targetCollection.GigapedeKills);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.GhostpedeKillsCriteria, targetCollection.GhostpedeKills);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.Spider1KillsCriteria, targetCollection.Spider1Kills);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.Spider2KillsCriteria, targetCollection.Spider2Kills);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.LeviathanKillsCriteria, targetCollection.LeviathanKills);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.OrbKillsCriteria, targetCollection.OrbKills);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.ThornKillsCriteria, targetCollection.ThornKills);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.Skull1sAliveCriteria, targetCollection.Skull1sAlive);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.Skull2sAliveCriteria, targetCollection.Skull2sAlive);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.Skull3sAliveCriteria, targetCollection.Skull3sAlive);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.Skull4sAliveCriteria, targetCollection.Skull4sAlive);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.SpiderlingsAliveCriteria, targetCollection.SpiderlingsAlive);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.SpiderEggsAliveCriteria, targetCollection.SpiderEggsAlive);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.Squid1sAliveCriteria, targetCollection.Squid1sAlive);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.Squid2sAliveCriteria, targetCollection.Squid2sAlive);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.Squid3sAliveCriteria, targetCollection.Squid3sAlive);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.CentipedesAliveCriteria, targetCollection.CentipedesAlive);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.GigapedesAliveCriteria, targetCollection.GigapedesAlive);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.GhostpedesAliveCriteria, targetCollection.GhostpedesAlive);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.Spider1sAliveCriteria, targetCollection.Spider1sAlive);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.Spider2sAliveCriteria, targetCollection.Spider2sAlive);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.LeviathansAliveCriteria, targetCollection.LeviathansAlive);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.OrbsAliveCriteria, targetCollection.OrbsAlive);
-		HandleCriteria(uploadRequest, spawnsetName, customLeaderboard.ThornsAliveCriteria, targetCollection.ThornsAlive);
+		HandleCriteria(customLeaderboard.GemsCollectedCriteria, targetCollection.GemsCollected);
+		HandleCriteria(customLeaderboard.GemsDespawnedCriteria, targetCollection.GemsDespawned);
+		HandleCriteria(customLeaderboard.GemsEatenCriteria, targetCollection.GemsEaten);
+		HandleCriteria(customLeaderboard.EnemiesKilledCriteria, targetCollection.EnemiesKilled);
+		HandleCriteria(customLeaderboard.DaggersFiredCriteria, targetCollection.DaggersFired);
+		HandleCriteria(customLeaderboard.DaggersHitCriteria, targetCollection.DaggersHit);
+		HandleCriteria(customLeaderboard.HomingStoredCriteria, targetCollection.HomingStored);
+		HandleCriteria(customLeaderboard.HomingEatenCriteria, targetCollection.HomingEaten);
+		HandleCriteria(customLeaderboard.DeathTypeCriteria, targetCollection.DeathType);
+		HandleCriteria(customLeaderboard.TimeCriteria, targetCollection.Time);
+		HandleCriteria(customLeaderboard.LevelUpTime2Criteria, targetCollection.LevelUpTime2);
+		HandleCriteria(customLeaderboard.LevelUpTime3Criteria, targetCollection.LevelUpTime3);
+		HandleCriteria(customLeaderboard.LevelUpTime4Criteria, targetCollection.LevelUpTime4);
+		HandleCriteria(customLeaderboard.EnemiesAliveCriteria, targetCollection.EnemiesAlive);
+		HandleCriteria(customLeaderboard.Skull1KillsCriteria, targetCollection.Skull1Kills);
+		HandleCriteria(customLeaderboard.Skull2KillsCriteria, targetCollection.Skull2Kills);
+		HandleCriteria(customLeaderboard.Skull3KillsCriteria, targetCollection.Skull3Kills);
+		HandleCriteria(customLeaderboard.Skull4KillsCriteria, targetCollection.Skull4Kills);
+		HandleCriteria(customLeaderboard.SpiderlingKillsCriteria, targetCollection.SpiderlingKills);
+		HandleCriteria(customLeaderboard.SpiderEggKillsCriteria, targetCollection.SpiderEggKills);
+		HandleCriteria(customLeaderboard.Squid1KillsCriteria, targetCollection.Squid1Kills);
+		HandleCriteria(customLeaderboard.Squid2KillsCriteria, targetCollection.Squid2Kills);
+		HandleCriteria(customLeaderboard.Squid3KillsCriteria, targetCollection.Squid3Kills);
+		HandleCriteria(customLeaderboard.CentipedeKillsCriteria, targetCollection.CentipedeKills);
+		HandleCriteria(customLeaderboard.GigapedeKillsCriteria, targetCollection.GigapedeKills);
+		HandleCriteria(customLeaderboard.GhostpedeKillsCriteria, targetCollection.GhostpedeKills);
+		HandleCriteria(customLeaderboard.Spider1KillsCriteria, targetCollection.Spider1Kills);
+		HandleCriteria(customLeaderboard.Spider2KillsCriteria, targetCollection.Spider2Kills);
+		HandleCriteria(customLeaderboard.LeviathanKillsCriteria, targetCollection.LeviathanKills);
+		HandleCriteria(customLeaderboard.OrbKillsCriteria, targetCollection.OrbKills);
+		HandleCriteria(customLeaderboard.ThornKillsCriteria, targetCollection.ThornKills);
+		HandleCriteria(customLeaderboard.Skull1sAliveCriteria, targetCollection.Skull1sAlive);
+		HandleCriteria(customLeaderboard.Skull2sAliveCriteria, targetCollection.Skull2sAlive);
+		HandleCriteria(customLeaderboard.Skull3sAliveCriteria, targetCollection.Skull3sAlive);
+		HandleCriteria(customLeaderboard.Skull4sAliveCriteria, targetCollection.Skull4sAlive);
+		HandleCriteria(customLeaderboard.SpiderlingsAliveCriteria, targetCollection.SpiderlingsAlive);
+		HandleCriteria(customLeaderboard.SpiderEggsAliveCriteria, targetCollection.SpiderEggsAlive);
+		HandleCriteria(customLeaderboard.Squid1sAliveCriteria, targetCollection.Squid1sAlive);
+		HandleCriteria(customLeaderboard.Squid2sAliveCriteria, targetCollection.Squid2sAlive);
+		HandleCriteria(customLeaderboard.Squid3sAliveCriteria, targetCollection.Squid3sAlive);
+		HandleCriteria(customLeaderboard.CentipedesAliveCriteria, targetCollection.CentipedesAlive);
+		HandleCriteria(customLeaderboard.GigapedesAliveCriteria, targetCollection.GigapedesAlive);
+		HandleCriteria(customLeaderboard.GhostpedesAliveCriteria, targetCollection.GhostpedesAlive);
+		HandleCriteria(customLeaderboard.Spider1sAliveCriteria, targetCollection.Spider1sAlive);
+		HandleCriteria(customLeaderboard.Spider2sAliveCriteria, targetCollection.Spider2sAlive);
+		HandleCriteria(customLeaderboard.LeviathansAliveCriteria, targetCollection.LeviathansAlive);
+		HandleCriteria(customLeaderboard.OrbsAliveCriteria, targetCollection.OrbsAlive);
+		HandleCriteria(customLeaderboard.ThornsAliveCriteria, targetCollection.ThornsAlive);
 
 		static int GetFinalEnemyStat(UploadRequest uploadRequest, Func<UploadRequestData, ushort[]> selector)
 		{
@@ -304,7 +304,7 @@ public class CustomEntryProcessor
 			return arr.Length == 0 ? 0 : arr[^1];
 		}
 
-		void HandleCriteria(UploadRequest uploadRequest, string? spawnsetName, CustomLeaderboardCriteriaEntityValue criteria, int value, [CallerArgumentExpression("criteria")] string criteriaExpression = "")
+		void HandleCriteria(CustomLeaderboardCriteriaEntityValue criteria, int value, [CallerArgumentExpression("criteria")] string criteriaExpression = "")
 		{
 			if (criteria.Expression == null)
 				return;
@@ -594,7 +594,7 @@ public class CustomEntryProcessor
 
 	/// <summary>
 	/// Due to a bug in the game, the final time sometimes gains a couple extra ticks if the run is a replay (more common in longer runs).
-	/// If a player first submitted the actual score (non-replay) and then watches the same replay again, it will sent a higher score the second time.
+	/// If a player first submitted the actual score (non-replay) and then watches the same replay again, it will send a higher score the second time.
 	/// We don't want these replay submissions to overwrite the original score. To work around this, simply check if the replay buffer is exactly the same as the original.
 	/// </summary>
 	private async Task<bool> IsReplayFileTheSame(int customEntryId, byte[] newReplay)
@@ -702,7 +702,9 @@ public class CustomEntryProcessor
 		SpawnsetName = customLeaderboard.Spawnset!.Name,
 	};
 
+#pragma warning disable S3871, RCS1194
 	private sealed class CustomEntryCriteriaException : Exception
+#pragma warning restore RCS1194, S3871
 	{
 		public CustomEntryCriteriaException(string criteriaName, CustomLeaderboardCriteriaOperator criteriaOperator, int expectedValue, int actualValue)
 		{
