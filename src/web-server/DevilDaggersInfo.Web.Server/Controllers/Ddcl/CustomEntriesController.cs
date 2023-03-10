@@ -34,7 +34,7 @@ public class CustomEntriesController : ControllerBase
 		{
 			UploadResponse response = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest.ToDomain());
 			if (response.Success != null)
-				return response.Success.ToDdclApi();
+				return response.Success.ToDdclApi(response);
 
 			if (response.Rejection != null)
 			{
