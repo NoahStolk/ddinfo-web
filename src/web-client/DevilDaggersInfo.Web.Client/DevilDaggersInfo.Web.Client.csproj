@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <DateTimeUtcNow>$([System.DateTime]::UtcNow.ToString("yyyy-MM-dd-HH-mm"))</DateTimeUtcNow>
-    <Version>5.7.1.1-$(DateTimeUtcNow)</Version>
+    <Version>5.7.2.0-$(DateTimeUtcNow)</Version>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <IntermediateOutputPath>obj</IntermediateOutputPath>
     <RunAnalyzers>false</RunAnalyzers>
