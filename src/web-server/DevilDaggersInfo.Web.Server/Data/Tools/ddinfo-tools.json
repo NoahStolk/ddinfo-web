@@ -1,5 +1,20 @@
 [
 	{
+		"VersionNumber": "0.4.2.0",
+		"Date": "2023-03-10T00:00:00",
+		"Changes": [
+			{
+				"Description": "Score difference with current highscore is now shown when not getting a highscore."
+			},
+			{
+				"Description": "Added button to reload all leaderboards."
+			},
+			{
+				"Description": "Bug fixes."
+			}
+		]
+	},
+	{
 		"VersionNumber": "0.4.1.0",
 		"Date": "2023-03-05T00:00:00",
 		"Changes": [
