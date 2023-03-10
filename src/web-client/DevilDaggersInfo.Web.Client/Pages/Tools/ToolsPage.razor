@@ -4,41 +4,56 @@
 @using DevilDaggersInfo.Web.Client.Components
 @using DevilDaggersInfo.Web.Client.Components.Tools
 @using DevilDaggersInfo.Web.Client.HttpClients
+@using DevilDaggersInfo.Web.Client.Utils
 @inject MainApiHttpClient Http
 
-<Heading Title="DDINFO TOOLS" />
+<Heading Title="Tools" />
 
-@if (GetTool == null)
+@if (_appTool == null)
 {
 	<Loading />
 }
 else
 {
-	<ToolInfo GetTool="GetTool" />
+	<ToolInfo GetTool="_appTool" />
 
-	<Heading Title="Distributions" Level="2" />
-	
-	<Distributions>
-		<Distribution ToolName="ddinfo-tools-launcher" Note="Recommended" PublishMethod="ToolPublishMethod.Aot" BuildType="ToolBuildType.WindowsConsole" OperatingSystems="Windows 8 and later" Recommended="true" />
-	</Distributions>
+	@if (_launcherWindowsDistribution == null)
+	{
+		<Loading />
+	}
+	else
+	{
+		<Heading Title="Distributions" Level="2" />
 
-	<img src="/images/tools/ddinfo-tools.png" class="object-contain max-h-160 pt-3" alt="DDINFO TOOLS" />
+		<a class="btn btn-download px-2 py-1" href="@GetApiCall(_launcherName, _launcherWindowsDistribution)" download="@GetFileName(_launcherName, _launcherWindowsDistribution)" role="button" target="_top">Download the launcher for Windows (@FileSizeUtils.Format(_launcherWindowsDistribution.FileSize))</a>
+		                                                                                                                                                                                                                                                                                                      
+		<p class="para">Launcher version: @_launcherWindowsDistribution.VersionNumber</p>
+		<p class="para">Windows 7 and older is currently not supported (although Windows 7 can probably be made to work).</p>
+		<p class="para">If anyone wants to test a Linux build, let me know.</p>
+		<p class="para">I'm also open to adding support for Mac if anyone wants it. I don't have a Mac to test it on, so I'd need some help with that.</p>
+	}
 
-	<p class="para">
-		This is an alpha version of the rewritten tools. The main idea of the rewrite is to have a single application instead of three separate ones, to make the tools more user-friendly, and to support Mac and Linux.
-	</p>
-	
-	<p class="para">
-		The tools are still in early development, so expect bugs and missing features. If you encounter any problems, please report them to me on Discord or on GitHub.
-	</p>
-	
-	<p class="para">
-		Keep in mind that there is no support for mods yet. This will be added later.
-	</p>
-	
-	<p class="para">
-		I also do not have a deadline or schedule for these developments, and there will not be an official release date any time soon.
-	</p>
+	<Heading Title="Screenshots" Level="2" />
+
+	bool first = _screenshotIndex == 0;
+	bool last = _screenshotIndex == _screenshotFileNames.Count - 1;
+
+	const string disabledStyle = "disabled:opacity-50 cursor-default btn-disabled";
+	const string enabledStyle = "btn-gray";
+
+	<button disabled="@first" class="@(first ? disabledStyle : enabledStyle) btn w-10 h-10 mx-1" @onclick="() => _screenshotIndex--">@MarkupStrings.NavPrev</button>
+	<button disabled="@last" class="@(last ? disabledStyle : enabledStyle) btn w-10 h-10 mx-1" @onclick="() => _screenshotIndex++">@MarkupStrings.NavNext</button>
+
+	@for (int i = 0; i < _screenshotFileNames.Count; i++)
+	{
+		string fileName = _screenshotFileNames[i];
+		<img class="@(i == _screenshotIndex ? "" : "hidden") object-contain max-h-160 pt-3" src="@($"/images/tools/{fileName}")" alt="DDINFO TOOLS" />
+	}
+
+	<p class="para">This is an alpha version of the rewritten tools. The main idea of the rewrite is to have a single application instead of three separate ones, to make the tools more user-friendly, and to support Mac and Linux.</p>
+	<p class="para">The tools are still in early development, so expect bugs and missing features. If you encounter any problems, please report them to me on Discord or on GitHub.</p>
+	<p class="para">Keep in mind that there is no support for mods yet. This will be added later.</p>
+	<p class="para">I also do not have a deadline or schedule for these developments, and there will not be an official release date any time soon.</p>
 	
 	<Heading Title="System Requirements" Level="2" />
 	
@@ -49,30 +64,34 @@ else
 		<li class="list-disc">A resolution of 1024x768 or larger</li>
 	</ul>
 
-	<p class="para">
-		If your computer can run Devil Daggers, you will be able to run the tools just fine. Note that you actually need to have Devil Daggers installed for the tools to work (otherwise you will be stuck in the configuration screen).
-	</p>
-	
-	<p class="para">
-		Windows 7 is not supported (but can be made to work if anyone wants it).
-	</p>
-	
+	<p class="para">If your computer can run Devil Daggers, you will be able to run the tools just fine. Note that you actually need to have Devil Daggers installed for the tools to work (otherwise you will be stuck in the configuration screen).</p>
+
+	<Heading Title="Running The App" Level="2" />
+    <ol class="pl-4">
+    	<li class="list-decimal">Download the launcher .zip file.</li>
+    	<li class="list-decimal">Extract it.</li>
+    	<li class="list-decimal">Run the .exe file inside it. This will automatically download and launch the latest version of the tools app.</li>
+    </ol>
+
+	<p class="para">I recommend only using the launcher to run the app, as it will automatically update the app on launch if there is a new version.</p>
+	<p class="para">If you still want to run the app manually, you can do so by running the .exe file inside the DDINFO TOOLS subdirectory.</p>
+
 	<Heading Title="Advantages over deprecated tools" Level="2" />
 	
 	<ul class="pl-4">
 		<li class="list-disc">A single application instead of three separate ones.</li>
-		<li class="list-disc">Cross-platform; already runs on Linux, but it's still missing some native implementations for now. Support for Mac is also possible if anyone wants it, I just don't have a Mac to test it on so I'd need some help with that.</li>
-		<li class="list-disc">Automatic updates; there is now a separate launcher program (3 MB download for now) which automatically updates the app on launch.</li>
-		<li class="list-disc">Way smaller download size; 8 MB for all the tools combined instead of ~165 MB. No prerequisites needed.</li>
+		<li class="list-disc">Cross-platform; already runs on Linux, but it's still missing some native implementations for now.</li>
+		<li class="list-disc">Automatic updates.</li>
+		<li class="list-disc">Way smaller download size; 8 MB for all the tools combined instead of ~165 MB, and 3 MB for the launcher. No prerequisites are needed for the programs.</li>
 		<li class="list-disc">Way faster startup time compared to the previous editors.</li>
 	</ul>
-	
+
 	<Heading Title="New Features" Level="2" />
 	
 	<Heading Title="Survival Editor" Level="3" />
 	
 	<ul class="pl-4">
-		<li class="list-disc">3D arena viewer (will be an editor later).</li>
+		<li class="list-disc">3D arena editor (still work in progress).</li>
 		<li class="list-disc">Improved arena shrink preview (also in 3D).</li>
 		<li class="list-disc">Full undo/redo support.</li>
 		<li class="list-disc">More arena actions.</li>
@@ -83,16 +102,13 @@ else
 	<ul class="pl-4">
 		<li class="list-disc">Viewing and installing all spawnsets with leaderboards from within the app (no need to use the Survival Editor anymore).</li>
 		<li class="list-disc">Viewing any score from any spawnset.</li>
+		<li class="list-disc">Searching, filtering, and sorting leaderboards.</li>
 		<li class="list-disc">Injecting any replay into the game without having to play the spawnset first.</li>
 		<li class="list-disc">3D simulation of the replay in the app (very limited and inaccurate for now).</li>
 	</ul>
 
 	<Heading Title="Planned Features" Level="2" />
-	
-	<p class="para">
-		Most of these will make it in before the release.
-	</p>
-	
+
 	<ul class="pl-4">
 		<li class="list-disc">More spawnset editor features.</li>
 		<li class="list-disc">Renewed spawnset manager.</li>
@@ -105,24 +121,46 @@ else
 		<li class="list-disc">Replay enemy tracking.</li>
 		<li class="list-disc">Replay movement and the ability to compare speedrun/race replays using a ghost system in 3D (right now I'm uncertain if mimicking the player movement can be done accurately without having access to the game's code).</li>
 	</ul>
-	
-	<RunInfo />
-	
-	<Heading Title="Source" Level="2" />
-	
-	<p class="para">The source code can be found in the <a class="link" href="https://github.com/NoahStolk/DevilDaggersInfo" target="_blank">DevilDaggersInfo monorepo on GitHub</a>, in the directories src/app, src/app-core, and src/app-ui (for now).</p>
 
+	<Heading Title="Source" Level="2" />
+
+	<p class="para">The source code can be found in the <a class="link" href="https://github.com/NoahStolk/DevilDaggersInfo" target="_blank">DevilDaggersInfo monorepo on GitHub</a> in the src/app directory.</p>
 	<p class="para">The tools run on my own game/UI engine which can also be found on <a class="link" href="https://github.com/NoahStolk/Warp.NET" target="_blank">GitHub</a>.</p>
 
-	<Versions ToolVersions="GetTool.Changelog" />
+	<Versions ToolVersions="_appTool.Changelog" />
 }
 
 @code
 {
-	public GetTool? GetTool { get; set; }
+	private const string _toolsName = "ddinfo-tools";
+	private const string _launcherName = "ddinfo-tools-launcher";
+
+	private static readonly List<string> _screenshotFileNames = new()
+	{
+		"ddinfo-tools-menu.png",
+		"ddinfo-tools-cl.png",
+		"ddinfo-tools-se.png",
+		"ddinfo-tools-se-3d.png",
+		"ddinfo-tools-re-3d.png",
+	};
+
+	private GetTool? _appTool;
+	private GetToolDistribution? _launcherWindowsDistribution;
+	private int _screenshotIndex;
 
 	protected override async Task OnInitializedAsync()
 	{
-		GetTool = await Http.GetTool("ddinfo-tools");
+		_appTool = await Http.GetTool(_toolsName);
+		_launcherWindowsDistribution = await Http.GetLatestToolDistribution(_launcherName, ToolPublishMethod.Aot, ToolBuildType.WindowsConsole);
+	}
+
+	private static string GetApiCall(string toolName, GetToolDistribution distribution)
+	{
+		return $"/api/tools/{toolName}/file?publishMethod={distribution.PublishMethod}&buildType={distribution.BuildType}&version={distribution.VersionNumber}";
+	}
+
+	private static string GetFileName(string toolName, GetToolDistribution distribution)
+	{
+		return $"{toolName}{distribution.VersionNumber}.zip";
 	}
 }
