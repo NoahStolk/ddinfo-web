@@ -10,18 +10,21 @@ public static class CustomLeaderboardConverters
 	public static AppApi.GetUploadResponse ToAppApi(this UploadResponse uploadResponse)
 	{
 		if (uploadResponse.Success != null)
-			return uploadResponse.Success.ToAppApi();
+			return uploadResponse.Success.ToAppApi(uploadResponse);
 
 		if (uploadResponse.Rejection != null)
-			return uploadResponse.Rejection.ToAppApi();
+			return uploadResponse.Rejection.ToAppApi(uploadResponse);
 
 		throw new InvalidOperationException("Invalid upload response. Both Success and Rejection are null.");
 	}
 
-	private static AppApi.GetUploadResponse ToAppApi(this UploadCriteriaRejection uploadCriteriaRejection)
+	private static AppApi.GetUploadResponse ToAppApi(this UploadCriteriaRejection uploadCriteriaRejection, UploadResponse uploadResponse)
 	{
 		return new()
 		{
+			SpawnsetId = uploadResponse.Leaderboard.SpawnsetId,
+			SpawnsetName = uploadResponse.Leaderboard.SpawnsetName,
+			CustomLeaderboardId = uploadResponse.Leaderboard.Id,
 			CriteriaRejection = new()
 			{
 				ActualValue = uploadCriteriaRejection.ActualValue,
@@ -32,7 +35,7 @@ public static class CustomLeaderboardConverters
 		};
 	}
 
-	private static AppApi.GetUploadResponse ToAppApi(this SuccessfulUploadResponse successfulUploadResponse)
+	private static AppApi.GetUploadResponse ToAppApi(this SuccessfulUploadResponse successfulUploadResponse, UploadResponse uploadResponse)
 	{
 		List<AppApi.GetCustomEntry> sortedEntries = successfulUploadResponse.SortedEntries.ConvertAll(ce => ce.ToAppApi());
 
@@ -40,6 +43,9 @@ public static class CustomLeaderboardConverters
 		{
 			SubmissionType.FirstScore => new()
 			{
+				SpawnsetId = uploadResponse.Leaderboard.SpawnsetId,
+				SpawnsetName = uploadResponse.Leaderboard.SpawnsetName,
+				CustomLeaderboardId = uploadResponse.Leaderboard.Id,
 				FirstScore = new()
 				{
 					Rank = successfulUploadResponse.RankState.Value,
@@ -59,10 +65,13 @@ public static class CustomLeaderboardConverters
 					LevelUpTime4 = successfulUploadResponse.LevelUpTime4State.Value,
 				},
 				NewSortedEntries = sortedEntries,
-				IsAscending = successfulUploadResponse.Leaderboard.Category.IsAscending(),
+				IsAscending = uploadResponse.Leaderboard.Category.IsAscending(),
 			},
 			SubmissionType.NewHighscore => new()
 			{
+				SpawnsetId = uploadResponse.Leaderboard.SpawnsetId,
+				SpawnsetName = uploadResponse.Leaderboard.SpawnsetName,
+				CustomLeaderboardId = uploadResponse.Leaderboard.Id,
 				Highscore = new()
 				{
 					DaggersFiredState = successfulUploadResponse.DaggersFiredState.ToAppApi(),
@@ -82,13 +91,32 @@ public static class CustomLeaderboardConverters
 					TimeState = successfulUploadResponse.TimeState.ToAppApi(),
 				},
 				NewSortedEntries = sortedEntries,
-				IsAscending = successfulUploadResponse.Leaderboard.Category.IsAscending(),
+				IsAscending = uploadResponse.Leaderboard.Category.IsAscending(),
 			},
 			_ => new()
 			{
-				NoHighscore = new(),
+				SpawnsetId = uploadResponse.Leaderboard.SpawnsetId,
+				SpawnsetName = uploadResponse.Leaderboard.SpawnsetName,
+				CustomLeaderboardId = uploadResponse.Leaderboard.Id,
+				NoHighscore = new()
+				{
+					DaggersFiredState = successfulUploadResponse.DaggersFiredState.ToAppApi(),
+					DaggersHitState = successfulUploadResponse.DaggersHitState.ToAppApi(),
+					EnemiesAliveState = successfulUploadResponse.EnemiesAliveState.ToAppApi(),
+					EnemiesKilledState = successfulUploadResponse.EnemiesKilledState.ToAppApi(),
+					GemsCollectedState = successfulUploadResponse.GemsCollectedState.ToAppApi(),
+					GemsDespawnedState = successfulUploadResponse.GemsDespawnedState.ToAppApi(),
+					GemsEatenState = successfulUploadResponse.GemsEatenState.ToAppApi(),
+					GemsTotalState = successfulUploadResponse.GemsTotalState.ToAppApi(),
+					HomingEatenState = successfulUploadResponse.HomingEatenState.ToAppApi(),
+					HomingStoredState = successfulUploadResponse.HomingStoredState.ToAppApi(),
+					LevelUpTime2State = successfulUploadResponse.LevelUpTime2State.ToAppApi(),
+					LevelUpTime3State = successfulUploadResponse.LevelUpTime3State.ToAppApi(),
+					LevelUpTime4State = successfulUploadResponse.LevelUpTime4State.ToAppApi(),
+					TimeState = successfulUploadResponse.TimeState.ToAppApi(),
+				},
 				NewSortedEntries = sortedEntries,
-				IsAscending = successfulUploadResponse.Leaderboard.Category.IsAscending(),
+				IsAscending = uploadResponse.Leaderboard.Category.IsAscending(),
 			},
 		};
 	}

@@ -8,9 +8,9 @@ namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Ddcl;
 
 public static class CustomLeaderboardConverters
 {
-	public static DdclApi.GetUploadSuccess ToDdclApi(this SuccessfulUploadResponse successfulUploadResponse) => new()
+	public static DdclApi.GetUploadSuccess ToDdclApi(this SuccessfulUploadResponse successfulUploadResponse, UploadResponse response) => new()
 	{
-		Category = successfulUploadResponse.Leaderboard.Category,
+		Category = response.Leaderboard.Category,
 		DaggersFiredState = successfulUploadResponse.DaggersFiredState.ToDdclApi(),
 		DaggersHitState = successfulUploadResponse.DaggersHitState.ToDdclApi(),
 		EnemiesAliveState = successfulUploadResponse.EnemiesAliveState.ToDdclApi(),
@@ -24,13 +24,13 @@ public static class CustomLeaderboardConverters
 		HomingStoredState = successfulUploadResponse.HomingStoredState.ToDdclApi(),
 		IsHighscore = successfulUploadResponse.SubmissionType == SubmissionType.NewHighscore,
 		IsNewPlayerOnThisLeaderboard = successfulUploadResponse.SubmissionType == SubmissionType.FirstScore,
-		Leaderboard = successfulUploadResponse.Leaderboard.ToDdclApi(),
+		Leaderboard = response.Leaderboard.ToDdclApi(),
 		LevelUpTime2State = successfulUploadResponse.LevelUpTime2State.ToDdclApi(),
 		LevelUpTime3State = successfulUploadResponse.LevelUpTime3State.ToDdclApi(),
 		LevelUpTime4State = successfulUploadResponse.LevelUpTime4State.ToDdclApi(),
 		Message = successfulUploadResponse.Message,
 		RankState = successfulUploadResponse.RankState.ToDdclApi(),
-		SpawnsetName = successfulUploadResponse.Leaderboard.SpawnsetName,
+		SpawnsetName = response.Leaderboard.SpawnsetName,
 		SubmissionType = successfulUploadResponse.SubmissionType.ToDdclApi(),
 		TimeState = successfulUploadResponse.TimeState.ToDdclApi(),
 		TotalPlayers = successfulUploadResponse.SortedEntries.Count,

@@ -146,6 +146,7 @@ public class CustomEntryProcessor
 		{
 			return new()
 			{
+				Leaderboard = ToLeaderboardSummary(customLeaderboard),
 				Rejection = new()
 				{
 					CriteriaName = ex.CriteriaName,
@@ -164,6 +165,7 @@ public class CustomEntryProcessor
 		{
 			return new()
 			{
+				Leaderboard = ToLeaderboardSummary(customLeaderboard),
 				Success = await ProcessNewScoreAsync(uploadRequest, customLeaderboard, spawnsetName),
 			};
 		}
@@ -175,7 +177,8 @@ public class CustomEntryProcessor
 			_logger.LogInformation("Score submission replay time was modified because of identical replay (database: {originalTime} - request: {replayTime}).", FormatTimeString(customEntry.Time.ToSecondsTime()), FormatTimeString(uploadRequest.TimeInSeconds));
 			return new()
 			{
-				Success = await ProcessNoHighscoreAsync(uploadRequest, customLeaderboard, spawnsetName),
+				Leaderboard = ToLeaderboardSummary(customLeaderboard),
+				Success = await ProcessNoHighscoreAsync(uploadRequest, customLeaderboard, spawnsetName, customEntry),
 			};
 		}
 
@@ -185,12 +188,14 @@ public class CustomEntryProcessor
 		{
 			return new()
 			{
-				Success = await ProcessNoHighscoreAsync(uploadRequest, customLeaderboard, spawnsetName),
+				Leaderboard = ToLeaderboardSummary(customLeaderboard),
+				Success = await ProcessNoHighscoreAsync(uploadRequest, customLeaderboard, spawnsetName, customEntry),
 			};
 		}
 
 		return new()
 		{
+			Leaderboard = ToLeaderboardSummary(customLeaderboard),
 			Success = await ProcessHighscoreAsync(uploadRequest, customLeaderboard, spawnsetName, customEntry),
 		};
 	}
@@ -389,7 +394,6 @@ public class CustomEntryProcessor
 		return new()
 		{
 			Message = $"Welcome to the {spawnsetName} leaderboard!",
-			Leaderboard = ToLeaderboardSummary(customLeaderboard),
 			SortedEntries = entries.Select((e, i) => ToEntry(e, i + 1, customLeaderboard.DaggerFromTime(e.Time), replayIds)).ToList(),
 			SubmissionType = SubmissionType.FirstScore,
 			RankState = new(rank),
@@ -410,7 +414,7 @@ public class CustomEntryProcessor
 		};
 	}
 
-	private async Task<SuccessfulUploadResponse> ProcessNoHighscoreAsync(UploadRequest uploadRequest, CustomLeaderboardEntity customLeaderboard, string spawnsetName)
+	private async Task<SuccessfulUploadResponse> ProcessNoHighscoreAsync(UploadRequest uploadRequest, CustomLeaderboardEntity customLeaderboard, string spawnsetName, CustomEntryEntity currentEntry)
 	{
 		if (!uploadRequest.IsReplay)
 		{
@@ -427,9 +431,22 @@ public class CustomEntryProcessor
 		return new()
 		{
 			Message = $"No new highscore for {customLeaderboard.Spawnset!.Name}.",
-			Leaderboard = ToLeaderboardSummary(customLeaderboard),
 			SortedEntries = entries.Select((e, i) => ToEntry(e, i + 1, customLeaderboard.DaggerFromTime(e.Time), replayIds)).ToList(),
 			SubmissionType = SubmissionType.NoHighscore,
+			TimeState = new(uploadRequest.TimeInSeconds, uploadRequest.TimeInSeconds - currentEntry.Time.ToSecondsTime()),
+			EnemiesKilledState = new(uploadRequest.EnemiesKilled, uploadRequest.EnemiesKilled - currentEntry.EnemiesKilled),
+			GemsCollectedState = new(uploadRequest.GemsCollected, uploadRequest.GemsCollected - currentEntry.GemsCollected),
+			GemsDespawnedState = new(uploadRequest.GemsDespawned, uploadRequest.GemsDespawned - currentEntry.GemsDespawned),
+			GemsEatenState = new(uploadRequest.GemsEaten, uploadRequest.GemsEaten - currentEntry.GemsEaten),
+			GemsTotalState = new(uploadRequest.GemsTotal, uploadRequest.GemsTotal - currentEntry.GemsTotal),
+			DaggersHitState = new(uploadRequest.DaggersHit, uploadRequest.DaggersHit - currentEntry.DaggersHit),
+			DaggersFiredState = new(uploadRequest.DaggersFired, uploadRequest.DaggersFired - currentEntry.DaggersFired),
+			EnemiesAliveState = new(uploadRequest.EnemiesAlive, uploadRequest.EnemiesAlive - currentEntry.EnemiesAlive),
+			HomingStoredState = new(uploadRequest.HomingStored, uploadRequest.HomingStored - currentEntry.HomingStored),
+			HomingEatenState = new(uploadRequest.HomingEaten, uploadRequest.HomingEaten - currentEntry.HomingEaten),
+			LevelUpTime2State = new(uploadRequest.LevelUpTime2InSeconds, uploadRequest.LevelUpTime2InSeconds - currentEntry.LevelUpTime2.ToSecondsTime()),
+			LevelUpTime3State = new(uploadRequest.LevelUpTime3InSeconds, uploadRequest.LevelUpTime3InSeconds - currentEntry.LevelUpTime3.ToSecondsTime()),
+			LevelUpTime4State = new(uploadRequest.LevelUpTime4InSeconds, uploadRequest.LevelUpTime4InSeconds - currentEntry.LevelUpTime4.ToSecondsTime()),
 		};
 	}
 
@@ -526,7 +543,6 @@ public class CustomEntryProcessor
 		return new()
 		{
 			Message = $"NEW HIGHSCORE for {customLeaderboard.Spawnset!.Name}!",
-			Leaderboard = ToLeaderboardSummary(customLeaderboard),
 			SortedEntries = entries.Select((e, i) => ToEntry(e, i + 1, customLeaderboard.DaggerFromTime(e.Time), replayIds)).ToList(),
 			SubmissionType = SubmissionType.NewHighscore,
 			RankState = new(rank, rankDiff),
