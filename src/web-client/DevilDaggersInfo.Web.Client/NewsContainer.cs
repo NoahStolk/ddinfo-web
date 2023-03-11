@@ -54,5 +54,10 @@ public static class NewsContainer
 			DateTime = new(2022, 12, 04),
 			Title = "V5.7 Update",
 		},
+		new()
+		{
+			DateTime = new(2023, 03, 11),
+			Title = "New Unified Tools Alpha",
+		},
 	};
 }
