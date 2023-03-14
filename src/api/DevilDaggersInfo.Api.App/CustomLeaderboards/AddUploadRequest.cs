@@ -8,6 +8,7 @@ public record AddUploadRequest
 	[MinLength(16)]
 	public required byte[] SurvivalHashMd5 { get; init; }
 
+	[Range(1, int.MaxValue)]
 	public required int PlayerId { get; init; }
 
 	[StringLength(32)]
