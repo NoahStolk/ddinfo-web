@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,6 +24,8 @@ public class CustomLeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult> CustomLeaderboardExistsBySpawnsetHashObsolete([FromQuery] byte[] hash)
 	{
+		throw new BadRequestException("DDCL 1.8.3 is no longer supported. Go to https://www.devildaggers.info/ and download DDINFO TOOLS to connect to custom leaderboards");
+
 		await _customLeaderboardRepository.GetCustomLeaderboardIdBySpawnsetHashAsync(hash);
 		return Ok();
 	}

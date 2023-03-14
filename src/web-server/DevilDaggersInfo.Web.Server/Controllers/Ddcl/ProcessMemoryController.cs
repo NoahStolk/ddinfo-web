@@ -25,6 +25,8 @@ public class ProcessMemoryController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult<GetMarker>> GetMarkerObsolete([Required] SupportedOperatingSystem operatingSystem)
 	{
+		throw new BadRequestException("DDCL 1.8.3 is no longer supported. Go to https://www.devildaggers.info/ and download DDINFO TOOLS to connect to custom leaderboards");
+
 		return new GetMarker
 		{
 			Value = await _markerRepository.GetMarkerAsync(operatingSystem switch

@@ -30,6 +30,8 @@ public class CustomEntriesController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult<GetUploadSuccess>> SubmitScoreForDdclObsolete([FromBody] AddUploadRequest uploadRequest)
 	{
+		throw new BadRequestException("DDCL 1.8.3 is no longer supported. Go to https://www.devildaggers.info/ and download DDINFO TOOLS to connect to custom leaderboards.");
+
 		try
 		{
 			UploadResponse response = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest.ToDomain());
