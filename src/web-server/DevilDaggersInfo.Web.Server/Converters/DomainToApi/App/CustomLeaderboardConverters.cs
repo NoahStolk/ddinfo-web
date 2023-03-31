@@ -32,6 +32,8 @@ public static class CustomLeaderboardConverters
 				CriteriaName = uploadCriteriaRejection.CriteriaName,
 				CriteriaOperator = uploadCriteriaRejection.CriteriaOperator,
 			},
+			NewSortedEntries = null,
+			IsAscending = uploadResponse.Leaderboard.Category.IsAscending(),
 		};
 	}
 

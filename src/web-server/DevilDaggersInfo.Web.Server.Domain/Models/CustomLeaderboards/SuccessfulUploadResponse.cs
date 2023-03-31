@@ -2,10 +2,6 @@ namespace DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 
 public class SuccessfulUploadResponse
 {
-	// TODO: Remove when DDCL 1.8.3 is removed.
-	[Obsolete("Use SubmissionType instead.")]
-	public required string Message { get; init; }
-
 	public required SubmissionType SubmissionType { get; init; }
 
 	public required List<CustomEntry> SortedEntries { get; init; }

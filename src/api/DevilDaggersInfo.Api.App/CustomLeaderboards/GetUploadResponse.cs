@@ -16,9 +16,7 @@ public record GetUploadResponse
 
 	public GetUploadResponseCriteriaRejection? CriteriaRejection { get; init; }
 
-	// TODO: Make required when DDCL 1.8.3 is removed.
-	public List<GetCustomEntry>? NewSortedEntries { get; init; }
+	public required List<GetCustomEntry>? NewSortedEntries { get; init; }
 
-	// TODO: Make required when DDCL 1.8.3 is removed.
-	public bool IsAscending { get; init; }
+	public required bool IsAscending { get; init; }
 }

@@ -393,7 +393,6 @@ public class CustomEntryProcessor
 		List<int> replayIds = GetExistingReplayIds(entries.ConvertAll(ce => ce.Id));
 		return new()
 		{
-			Message = $"Welcome to the {spawnsetName} leaderboard!",
 			SortedEntries = entries.Select((e, i) => ToEntry(e, i + 1, customLeaderboard.DaggerFromTime(e.Time), replayIds)).ToList(),
 			SubmissionType = SubmissionType.FirstScore,
 			RankState = new(rank),
@@ -427,10 +426,8 @@ public class CustomEntryProcessor
 		List<CustomEntryEntity> entries = await GetOrderedEntries(customLeaderboard.Id, customLeaderboard.Category);
 		List<int> replayIds = GetExistingReplayIds(entries.ConvertAll(ce => ce.Id));
 
-		// ! Navigation property.
 		return new()
 		{
-			Message = $"No new highscore for {customLeaderboard.Spawnset!.Name}.",
 			SortedEntries = entries.Select((e, i) => ToEntry(e, i + 1, customLeaderboard.DaggerFromTime(e.Time), replayIds)).ToList(),
 			SubmissionType = SubmissionType.NoHighscore,
 			TimeState = new(uploadRequest.TimeInSeconds, uploadRequest.TimeInSeconds - currentEntry.Time.ToSecondsTime()),
@@ -539,10 +536,8 @@ public class CustomEntryProcessor
 
 		List<int> replayIds = GetExistingReplayIds(entries.ConvertAll(ce => ce.Id));
 
-		// ! Navigation property.
 		return new()
 		{
-			Message = $"NEW HIGHSCORE for {customLeaderboard.Spawnset!.Name}!",
 			SortedEntries = entries.Select((e, i) => ToEntry(e, i + 1, customLeaderboard.DaggerFromTime(e.Time), replayIds)).ToList(),
 			SubmissionType = SubmissionType.NewHighscore,
 			RankState = new(rank, rankDiff),
