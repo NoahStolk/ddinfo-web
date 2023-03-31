@@ -9,34 +9,36 @@
   <Choose>
     <When Condition="'$(Configuration)' == 'Debug'">
       <Choose>
+        <!--In Debug mode, we determine the OS based on the machine building the project.-->
         <When Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))' == 'true'">
           <PropertyGroup>
             <DefineConstants>$(DefineConstants);WINDOWS</DefineConstants>
             <OutputType>WinExe</OutputType>
           </PropertyGroup>
         </When>
-        <When Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">
+        <Otherwise>
           <PropertyGroup>
             <DefineConstants>$(DefineConstants);LINUX</DefineConstants>
             <OutputType>Exe</OutputType>
           </PropertyGroup>
-        </When>
+        </Otherwise>
       </Choose>
     </When>
     <When Condition="'$(Configuration)' == 'Release'">
       <Choose>
+        <!--In Release mode, we determine the OS based on the runtime identifier.-->
         <When Condition="'$(RuntimeIdentifier)' == 'win-x64'">
           <PropertyGroup>
             <DefineConstants>$(DefineConstants);WINDOWS</DefineConstants>
             <OutputType>WinExe</OutputType>
           </PropertyGroup>
         </When>
-        <When Condition="'$(RuntimeIdentifier)' == 'linux-x64'">
+        <Otherwise>
           <PropertyGroup>
             <DefineConstants>$(DefineConstants);LINUX</DefineConstants>
             <OutputType>Exe</OutputType>
           </PropertyGroup>
-        </When>
+        </Otherwise>
       </Choose>
     </When>
   </Choose>
