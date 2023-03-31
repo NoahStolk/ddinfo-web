@@ -20,9 +20,8 @@ public class CustomLeaderboardsController : ControllerBase
 	// TODO: Remove when DDCL 1.8.3.0 is obsolete.
 	[Obsolete("DDCL 1.8.3 will be removed.")]
 	[HttpHead("/api/custom-leaderboards")]
-	[ProducesResponseType(StatusCodes.Status200OK)]
-	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult> CustomLeaderboardExistsBySpawnsetHashObsolete([FromQuery] byte[] hash)
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	{
 		throw new BadRequestException("DDCL 1.8.3 is no longer supported. Go to https://www.devildaggers.info/ and download DDINFO TOOLS to connect to custom leaderboards");
 

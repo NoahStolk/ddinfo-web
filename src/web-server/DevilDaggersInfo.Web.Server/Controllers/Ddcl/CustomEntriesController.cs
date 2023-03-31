@@ -26,7 +26,6 @@ public class CustomEntriesController : ControllerBase
 	// FORBIDDEN: Used by ddstats-rust (currently not working however (2022-05-28)).
 	[Obsolete("DDCL 1.8.3 will be removed.")]
 	[HttpPost("/api/custom-entries/submit")]
-	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult<GetUploadSuccess>> SubmitScoreForDdclObsolete([FromBody] AddUploadRequest uploadRequest)
 	{

@@ -31,7 +31,7 @@ public class DdstatsRustController : ControllerBase
 		return new DdstatsRustAccessInfo { RequiredVersion = ddstatsRust.RequiredVersionNumber };
 	}
 
-	// This is used by DDCL 1.8.3.
+	// Used by DDCL 1.8.3.
 	[HttpGet("/api/process-memory/marker")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
