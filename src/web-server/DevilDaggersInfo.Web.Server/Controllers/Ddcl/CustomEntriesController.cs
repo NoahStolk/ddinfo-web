@@ -26,10 +26,11 @@ public class CustomEntriesController : ControllerBase
 	// FORBIDDEN: Used by ddstats-rust (currently not working however (2022-05-28)).
 	[Obsolete("DDCL 1.8.3 will be removed.")]
 	[HttpPost("/api/custom-entries/submit")]
-	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult<GetUploadSuccess>> SubmitScoreForDdclObsolete([FromBody] AddUploadRequest uploadRequest)
 	{
+		throw new BadRequestException("DDCL 1.8.3 is no longer supported. Go to https://www.devildaggers.info/ and download DDINFO TOOLS to connect to custom leaderboards.");
+
 		try
 		{
 			UploadResponse response = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest.ToDomain());

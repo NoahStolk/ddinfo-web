@@ -2,10 +2,8 @@
 @using DevilDaggersInfo.Api.Main.CustomLeaderboards
 @using DevilDaggersInfo.Api.Main.Tools
 @using DevilDaggersInfo.Common
-@using DevilDaggersInfo.Types.Web
 @using DevilDaggersInfo.Web.Client.Components
 @using DevilDaggersInfo.Web.Client.Components.Tools
-@using DevilDaggersInfo.Web.Client.Enums
 @using DevilDaggersInfo.Web.Client.HttpClients
 @inject MainApiHttpClient Http
 
@@ -17,13 +15,8 @@
 }
 else
 {
-	<ToolInfo GetTool="GetTool" />
-
-	<Heading Title="Distributions" Level="2" />
-	<Distributions>
-		<Distribution ToolName="@GetTool.Name" Note="Recommended" PublishMethod="ToolPublishMethod.SelfContained" BuildType="ToolBuildType.WindowsConsole" OperatingSystems="Windows 8+" Recommended=true />
-		<Distribution ToolName="@GetTool.Name" Note="Use for Windows 7" PublishMethod="ToolPublishMethod.Default" BuildType="ToolBuildType.WindowsConsole" OperatingSystems="Windows 7+" Prerequisites="ToolDistributionPrerequisites.DotNet6Runtime" />
-	</Distributions>
+	<Heading Title="IMPORTANT" Level="2" />
+	<p class="para">This tool has been deprecated in favor of <a class="link" href="/tools">ddinfo tools</a> and can no longer be used.</p>
 
 	<img src="/images/tools/ddcl.png" class="object-contain max-h-160 pt-3" alt="Custom Leaderboards" />
 
@@ -42,6 +35,12 @@ else
 
 	<RunInfo />
 	<SourceInfo Url="https://github.com/NoahStolk/DevilDaggersCustomLeaderboards" />
+	
+	<Heading Title="Changelog" Level="2" />
+	<Heading Title="@($"Deprecated - {new DateTime(2023, 3, 31).ToString(StringFormats.DateFormat)}")" Level="3" />
+	<ul class="pl-4">
+		<li class="list-disc">The tool has been deprecated in favor of <a class="link" href="/tools">ddinfo tools</a>.</li>
+	</ul>
 	<Versions ToolVersions="GetTool.Changelog" />
 }
 
