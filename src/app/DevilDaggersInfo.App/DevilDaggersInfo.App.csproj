@@ -4,19 +4,42 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <NoWarn>SA1633</NoWarn>
     <Version>0.4.2.0</Version>
-    <IsWindows Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))' == 'true'">true</IsWindows>
-    <IsLinux Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">true</IsLinux>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(IsWindows)' == 'true'">
-    <DefineConstants>WINDOWS</DefineConstants>
-    <OutputType>WinExe</OutputType>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(IsLinux)' == 'true'">
-    <DefineConstants>LINUX</DefineConstants>
-    <OutputType>Exe</OutputType>
-  </PropertyGroup>
+  <Choose>
+    <When Condition="'$(Configuration)' == 'Debug'">
+      <Choose>
+        <When Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))' == 'true'">
+          <PropertyGroup>
+            <DefineConstants>$(DefineConstants);WINDOWS</DefineConstants>
+            <OutputType>WinExe</OutputType>
+          </PropertyGroup>
+        </When>
+        <When Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">
+          <PropertyGroup>
+            <DefineConstants>$(DefineConstants);LINUX</DefineConstants>
+            <OutputType>Exe</OutputType>
+          </PropertyGroup>
+        </When>
+      </Choose>
+    </When>
+    <When Condition="'$(Configuration)' == 'Release'">
+      <Choose>
+        <When Condition="'$(RuntimeIdentifier)' == 'win-x64'">
+          <PropertyGroup>
+            <DefineConstants>$(DefineConstants);WINDOWS</DefineConstants>
+            <OutputType>WinExe</OutputType>
+          </PropertyGroup>
+        </When>
+        <When Condition="'$(RuntimeIdentifier)' == 'linux-x64'">
+          <PropertyGroup>
+            <DefineConstants>$(DefineConstants);LINUX</DefineConstants>
+            <OutputType>Exe</OutputType>
+          </PropertyGroup>
+        </When>
+      </Choose>
+    </When>
+  </Choose>
 
   <PropertyGroup>
     <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
