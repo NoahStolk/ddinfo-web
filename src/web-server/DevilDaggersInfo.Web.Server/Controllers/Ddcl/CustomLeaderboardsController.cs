@@ -1,29 +1,19 @@
-using DevilDaggersInfo.Web.Server.Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Ddcl;
 
+// TODO: Remove controller when DDCL 1.8.3 no longer needs a proper deprecation notice.
 [Obsolete("DDCL 1.8.3 will be removed.")]
 [Route("api/ddcl/custom-leaderboards")]
 [ApiController]
 public class CustomLeaderboardsController : ControllerBase
 {
-	private readonly CustomLeaderboardRepository _customLeaderboardRepository;
-
-	public CustomLeaderboardsController(CustomLeaderboardRepository customLeaderboardRepository)
-	{
-		_customLeaderboardRepository = customLeaderboardRepository;
-	}
-
-	// FORBIDDEN: Used by ddstats-rust.
-	// TODO: Remove when DDCL 1.8.3.0 is obsolete.
 	[Obsolete("DDCL 1.8.3 will be removed.")]
 	[HttpHead("/api/custom-leaderboards")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public async Task<ActionResult> CustomLeaderboardExistsBySpawnsetHashObsolete([FromQuery] byte[] hash)
+	public ActionResult CustomLeaderboardExistsBySpawnsetHashObsolete()
 	{
-		await _customLeaderboardRepository.GetCustomLeaderboardIdBySpawnsetHashAsync(hash);
+		// Always return HTTP 200 since errors from this endpoint are now shown in the old client.
 		return Ok();
 	}
 }

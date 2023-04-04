@@ -23,7 +23,6 @@
     <ProjectReference Include="..\..\api\DevilDaggersInfo.Api.App\DevilDaggersInfo.Api.App.csproj" />
     <ProjectReference Include="..\..\api\DevilDaggersInfo.Api.Clubber\DevilDaggersInfo.Api.Clubber.csproj" />
     <ProjectReference Include="..\..\api\DevilDaggersInfo.Api.Ddae\DevilDaggersInfo.Api.Ddae.csproj" />
-    <ProjectReference Include="..\..\api\DevilDaggersInfo.Api.Ddcl\DevilDaggersInfo.Api.Ddcl.csproj" />
     <ProjectReference Include="..\..\api\DevilDaggersInfo.Api.DdLive\DevilDaggersInfo.Api.DdLive.csproj" />
     <ProjectReference Include="..\..\api\DevilDaggersInfo.Api.Ddre\DevilDaggersInfo.Api.Ddre.csproj" />
     <ProjectReference Include="..\..\api\DevilDaggersInfo.Api.Ddse\DevilDaggersInfo.Api.Ddse.csproj" />
