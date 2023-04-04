@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Ddcl;
 
+// TODO: Remove controller when DDCL 1.8.3 no longer needs a proper deprecation notice.
 [Obsolete("DDCL 1.8.3 will be removed.")]
 [Route("api/ddcl/custom-entries")]
 [ApiController]
