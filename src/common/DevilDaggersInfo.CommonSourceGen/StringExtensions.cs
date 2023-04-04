@@ -44,34 +44,37 @@ public static class StringExtensions
 
 	private static readonly string _warningSuppressionCodes = string.Join(", ", _suppressionCodes);
 
-	public static string BuildSource(this string code)
+	public static string BuildSource(this string code, string newLine = "\n")
 	{
-		StringBuilder sb = new(_fileHeader);
-		sb.Append(Environment.NewLine);
-		sb.Append(Environment.NewLine);
-		sb.Append($"#pragma warning disable {_warningSuppressionCodes}");
-		sb.Append(Environment.NewLine);
-		sb.Append(Environment.NewLine);
-		sb.Append("#nullable enable");
-		sb.Append(Environment.NewLine);
-		sb.Append(Environment.NewLine);
-		sb.Append(code);
-		return sb.ToString().TrimCode();
+		StringBuilder stringBuilder = new(_fileHeader);
+		stringBuilder
+			.Append(newLine)
+			.Append(newLine)
+			.Append("#pragma warning disable ")
+			.Append(_warningSuppressionCodes)
+			.Append(newLine)
+			.Append(newLine)
+			.Append("#nullable enable")
+			.Append(newLine)
+			.Append(newLine)
+			.Append(code);
+
+		return stringBuilder.ToString().TrimCode();
 	}
 
-	private static string TrimCode(this string code)
+	private static string TrimCode(this string code, string newLine = "\n")
 	{
-		StringBuilder sb = new();
-		foreach (string line in code.Split(new[] { Environment.NewLine }, StringSplitOptions.None))
-			sb.AppendLine(line.TrimEnd());
+		StringBuilder stringBuilder = new();
+		foreach (string line in code.Split(new[] { newLine }, StringSplitOptions.None))
+			stringBuilder.AppendLine(line.TrimEnd());
 
-		return sb.ToString();
+		return stringBuilder.ToString();
 	}
 
-	public static string IndentCode(this string code, int count)
+	public static string IndentCode(this string code, int count, string newLine = "\n")
 	{
 		string indentation = new('\t', count);
-		return code.Insert(0, indentation).Replace(Environment.NewLine, Environment.NewLine + indentation);
+		return code.Insert(0, indentation).Replace(newLine, newLine + indentation);
 	}
 
 	public static string TrimStart(this string str, params string[] values)
