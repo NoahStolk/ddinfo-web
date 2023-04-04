@@ -11,15 +11,17 @@ public class AssetDataSourceGenerator : IIncrementalGenerator
 	private const string _className = $"%{nameof(_className)}%";
 	private const string _assetTypeName = $"%{nameof(_assetTypeName)}%";
 	private const string _assetFields = $"%{nameof(_assetFields)}%";
-	private const string _template = $@"namespace DevilDaggersInfo.Core.Asset;
+	private const string _template = $$"""
+		namespace DevilDaggersInfo.Core.Asset;
 
-public static class {_className}
-{{
-{_assetFields}
+		public static class {{_className}}
+		{
+		{{_assetFields}}
 
-	public static readonly List<{_assetTypeName}> All = typeof({_className}).GetFields().Where(f => f.FieldType == typeof({_assetTypeName})).Select(f => ({_assetTypeName})f.GetValue(null)!).ToList();
-}}
-";
+			public static readonly List<{{_assetTypeName}}> All = typeof({{_className}}).GetFields().Where(f => f.FieldType == typeof({{_assetTypeName}})).Select(f => ({{_assetTypeName}})f.GetValue(null)!).ToList();
+		}
+
+		""";
 
 	private enum AssetType
 	{
@@ -82,7 +84,7 @@ public static class {_className}
 		string source = _template
 			.Replace(_className, className)
 			.Replace(_assetTypeName, assetTypeName)
-			.Replace(_assetFields, string.Join(Environment.NewLine, fieldLines).IndentCode(1));
+			.Replace(_assetFields, string.Join("\n", fieldLines).IndentCode(1));
 
 		sourceProductionContext.AddSource(className, SourceText.From(source.BuildSource(), Encoding.UTF8));
 
