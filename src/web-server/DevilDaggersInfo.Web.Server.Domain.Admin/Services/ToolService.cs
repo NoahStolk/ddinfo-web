@@ -34,10 +34,10 @@ public class ToolService
 			throw new AdminDomainException("Distribution already exists.");
 
 		string path = _fileSystemService.GetToolDistributionPath(name, publishMethod, buildType, version);
-		if (File.Exists(path))
+		if (_fileSystemService.FileExists(path))
 			throw new AdminDomainException("File for distribution already exists, but does not exist in the database. Please review the database and the file system.");
 
-		await File.WriteAllBytesAsync(path, zipFileContents);
+		await _fileSystemService.WriteAllBytesAsync(path, zipFileContents);
 
 		if (updateVersion)
 			tool.CurrentVersionNumber = version;

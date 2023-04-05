@@ -47,14 +47,13 @@ public class ModArchiveProcessor
 		}
 		catch
 		{
-			if (File.Exists(zipFilePath))
-				File.Delete(zipFilePath);
+			_fileSystemService.DeleteFileIfExists(zipFilePath);
 
 			throw;
 		}
 
 		// Read and extract the new zip file to validate it and to fill the cache if everything is OK.
-		byte[] zipBytes = await File.ReadAllBytesAsync(zipFilePath);
+		byte[] zipBytes = await _fileSystemService.ReadAllBytesAsync(zipFilePath);
 
 		try
 		{
@@ -74,8 +73,7 @@ public class ModArchiveProcessor
 		}
 		catch (Exception ex)
 		{
-			if (File.Exists(zipFilePath))
-				File.Delete(zipFilePath);
+			_fileSystemService.DeleteFileIfExists(zipFilePath);
 
 			// Rethrow any exception as an invalid mod archive exception, so the middleware can handle it.
 			throw new InvalidModArchiveException("Processing the mod archive failed.", ex);
@@ -99,7 +97,7 @@ public class ModArchiveProcessor
 		// Determine which binaries to keep.
 		Dictionary<BinaryName, byte[]> keptBinaries = new();
 		string originalArchivePath = _modArchiveAccessor.GetModArchivePath(originalModName);
-		if (File.Exists(originalArchivePath))
+		if (_fileSystemService.FileExists(originalArchivePath))
 		{
 			using ZipArchive originalArchive = ZipFile.Open(originalArchivePath, ZipArchiveMode.Read);
 			foreach (ZipArchiveEntry entry in originalArchive.Entries)
@@ -143,17 +141,14 @@ public class ModArchiveProcessor
 	{
 		// Delete archive zip file.
 		string archivePath = _modArchiveAccessor.GetModArchivePath(modName);
-		if (File.Exists(archivePath))
+		if (_fileSystemService.DeleteFileIfExists(archivePath))
 		{
-			File.Delete(archivePath);
-
 			// Clear entire memory cache (can't clear individual entries).
 			_modArchiveCache.Clear();
 		}
 
 		// Clear file cache for this mod.
 		string cachePath = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ModArchiveCache), $"{modName}.json");
-		if (File.Exists(cachePath))
-			File.Delete(cachePath);
+		_fileSystemService.DeleteFileIfExists(cachePath);
 	}
 }

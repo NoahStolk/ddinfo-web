@@ -175,10 +175,10 @@ public class SpawnsetsController : ControllerBase
 	public async Task<ActionResult<byte[]>> GetSpawnsetHash([Required] string fileName)
 	{
 		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), fileName);
-		if (!IoFile.Exists(path))
+		if (!_fileSystemService.FileExists(path))
 			return NotFound();
 
-		byte[] spawnsetBytes = await IoFile.ReadAllBytesAsync(path);
+		byte[] spawnsetBytes = await _fileSystemService.ReadAllBytesAsync(path);
 		return MD5.HashData(spawnsetBytes);
 	}
 
@@ -200,10 +200,10 @@ public class SpawnsetsController : ControllerBase
 	public async Task<ActionResult> GetSpawnsetFile([Required] string fileName)
 	{
 		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), fileName);
-		if (!IoFile.Exists(path))
+		if (!_fileSystemService.FileExists(path))
 			return NotFound();
 
-		return File(await IoFile.ReadAllBytesAsync(path), MediaTypeNames.Application.Octet, fileName);
+		return File(await _fileSystemService.ReadAllBytesAsync(path), MediaTypeNames.Application.Octet, fileName);
 	}
 
 	[HttpGet("{id}")]
@@ -220,7 +220,7 @@ public class SpawnsetsController : ControllerBase
 			return NotFound();
 
 		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), spawnsetEntity.Name);
-		if (!IoFile.Exists(path))
+		if (!_fileSystemService.FileExists(path))
 			return NotFound();
 
 		var customLeaderboard = _dbContext.CustomLeaderboards
@@ -228,7 +228,7 @@ public class SpawnsetsController : ControllerBase
 			.Select(cl => new { cl.Id, cl.SpawnsetId })
 			.FirstOrDefault(cl => cl.SpawnsetId == spawnsetEntity.Id);
 
-		return spawnsetEntity.ToGetSpawnset(customLeaderboard?.Id, await IoFile.ReadAllBytesAsync(path));
+		return spawnsetEntity.ToGetSpawnset(customLeaderboard?.Id, await _fileSystemService.ReadAllBytesAsync(path));
 	}
 
 	[HttpGet("default")]
@@ -244,13 +244,13 @@ public class SpawnsetsController : ControllerBase
 		};
 
 		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), fileName);
-		if (!IoFile.Exists(path))
+		if (!_fileSystemService.FileExists(path))
 		{
 			_logger.LogError("Default spawnset {name} does not exist in the file system.", fileName);
 			return NotFound();
 		}
 
-		return await IoFile.ReadAllBytesAsync(path);
+		return await _fileSystemService.ReadAllBytesAsync(path);
 	}
 
 	[HttpGet("by-author")]

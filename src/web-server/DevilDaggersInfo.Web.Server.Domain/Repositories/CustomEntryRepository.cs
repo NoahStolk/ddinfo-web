@@ -20,16 +20,16 @@ public class CustomEntryRepository
 	public async Task<byte[]> GetCustomEntryReplayBufferByIdAsync(int id)
 	{
 		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{id}.ddreplay");
-		if (!File.Exists(path))
+		if (!_fileSystemService.FileExists(path))
 			throw new NotFoundException($"Replay file with ID '{id}' could not be found.");
 
-		return await File.ReadAllBytesAsync(path);
+		return await _fileSystemService.ReadAllBytesAsync(path);
 	}
 
 	public async Task<(string FileName, byte[] Contents)> GetCustomEntryReplayByIdAsync(int id)
 	{
 		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{id}.ddreplay");
-		if (!File.Exists(path))
+		if (!_fileSystemService.FileExists(path))
 			throw new NotFoundException($"Replay file with ID '{id}' could not be found.");
 
 		// ! Navigation property.
@@ -48,13 +48,13 @@ public class CustomEntryRepository
 			throw new NotFoundException($"Custom entry replay '{id}' could not be found.");
 
 		string fileName = $"{customEntry.SpawnsetId}-{customEntry.SpawnsetName}-{customEntry.PlayerId}-{customEntry.PlayerName}.ddreplay";
-		return (fileName, await File.ReadAllBytesAsync(path));
+		return (fileName, await _fileSystemService.ReadAllBytesAsync(path));
 	}
 
 	public List<int> GetExistingCustomEntryReplayIds(List<int> ids)
 	{
 		return ids
-			.Where(id => File.Exists(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{id}.ddreplay")))
+			.Where(id => _fileSystemService.FileExists(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{id}.ddreplay")))
 			.Select(id => id)
 			.ToList();
 	}

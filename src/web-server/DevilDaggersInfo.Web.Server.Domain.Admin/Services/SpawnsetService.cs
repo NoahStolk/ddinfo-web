@@ -45,7 +45,7 @@ public class SpawnsetService
 
 		// Add file.
 		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), addSpawnset.Name);
-		await File.WriteAllBytesAsync(path, addSpawnset.FileContents);
+		await _fileSystemService.WriteAllBytesAsync(path, addSpawnset.FileContents);
 
 		// Add entity.
 		SpawnsetEntity spawnset = new()
@@ -80,7 +80,7 @@ public class SpawnsetService
 			string directory = _fileSystemService.GetPath(DataSubDirectory.Spawnsets);
 			string oldPath = Path.Combine(directory, spawnset.Name);
 			string newPath = Path.Combine(directory, editSpawnset.Name);
-			File.Move(oldPath, newPath);
+			_fileSystemService.MoveFile(oldPath, newPath);
 
 			_spawnsetHashCache.Clear();
 		}
@@ -104,12 +104,8 @@ public class SpawnsetService
 			throw new AdminDomainException("Spawnset with custom leaderboard cannot be deleted.");
 
 		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), spawnset.Name);
-		bool fileExists = File.Exists(path);
-		if (fileExists)
-		{
-			File.Delete(path);
+		if (_fileSystemService.DeleteFileIfExists(path))
 			_spawnsetHashCache.Clear();
-		}
 
 		_dbContext.Spawnsets.Remove(spawnset);
 		await _dbContext.SaveChangesAsync();

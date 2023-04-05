@@ -26,7 +26,7 @@ public class ToolRepository
 
 	private async Task<string> GetJsonString(string name)
 	{
-		return await File.ReadAllTextAsync(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Tools), $"{name}.json"));
+		return await _fileSystemService.ReadAllTextAsync(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Tools), $"{name}.json"));
 	}
 
 	public async Task<Tool?> GetToolAsync(string name)
@@ -69,13 +69,13 @@ public class ToolRepository
 	public async Task<byte[]> GetToolDistributionFileAsync(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version)
 	{
 		string path = _fileSystemService.GetToolDistributionPath(name, publishMethod, buildType, version);
-		if (!File.Exists(path))
+		if (!_fileSystemService.FileExists(path))
 		{
 			_logger.LogError("Tool distribution file at '{path}' does not exist!", path);
 			throw new NotFoundException("Tool distribution file does not exist.");
 		}
 
-		return await File.ReadAllBytesAsync(path);
+		return await _fileSystemService.ReadAllBytesAsync(path);
 	}
 
 	public async Task<ToolDistribution?> GetLatestToolDistributionAsync(string name, ToolPublishMethod publishMethod, ToolBuildType buildType)
@@ -125,7 +125,7 @@ public class ToolRepository
 	private int GetToolDistributionFileSize(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version)
 	{
 		string path = _fileSystemService.GetToolDistributionPath(name, publishMethod, buildType, version);
-		if (File.Exists(path))
+		if (_fileSystemService.FileExists(path))
 			return (int)new FileInfo(path).Length;
 
 		return 0;

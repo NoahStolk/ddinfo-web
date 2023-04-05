@@ -142,10 +142,10 @@ public class ModsController : ControllerBase
 
 		string fileName = $"{modName}.zip";
 		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Mods), fileName);
-		if (!IoFile.Exists(path))
+		if (!_fileSystemService.FileExists(path))
 			return BadRequest($"Mod file '{fileName}' does not exist.");
 
-		return File(await IoFile.ReadAllBytesAsync(path), MediaTypeNames.Application.Zip, fileName);
+		return File(await _fileSystemService.ReadAllBytesAsync(path), MediaTypeNames.Application.Zip, fileName);
 	}
 
 	[HttpGet("by-author")]

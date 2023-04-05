@@ -88,10 +88,87 @@ public class TestData : ILeaderboardHistoryCache, IFileSystemService
 	}
 
 #pragma warning disable SA1201
-	public string Root => throw new NotImplementedException();
 	public string GetLeaderboardHistoryPathFromDate(DateTime dateTime) => throw new NotImplementedException();
 	public string GetPath(DataSubDirectory subDirectory) => throw new NotImplementedException();
 	public string GetToolDistributionPath(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version) => throw new NotImplementedException();
+	public bool DeleteFileIfExists(string path) => throw new NotImplementedException();
+	public bool FileExists(string path)
+	{
+		throw new NotImplementedException();
+	}
+	public bool DeleteDirectoryIfExists(string path, bool recursive) => throw new NotImplementedException();
+	public bool DirectoryExists(string path)
+	{
+		throw new NotImplementedException();
+	}
+	public void MoveDirectory(string sourcePath, string destinationPath)
+	{
+		throw new NotImplementedException();
+	}
+	public void CreateDirectory(string path)
+	{
+		throw new NotImplementedException();
+	}
+	public string[] GetFiles(string path)
+	{
+		throw new NotImplementedException();
+	}
+	public string[] GetFiles(string path, string searchPattern)
+	{
+		throw new NotImplementedException();
+	}
+	public byte[] ReadAllBytes(string path)
+	{
+		throw new NotImplementedException();
+	}
+	public Task<byte[]> ReadAllBytesAsync(string path)
+	{
+		throw new NotImplementedException();
+	}
+	public Task<byte[]> ReadAllBytesAsync(string path, CancellationToken cancellationToken)
+	{
+		throw new NotImplementedException();
+	}
+	public void WriteAllBytes(string path, byte[] bytes)
+	{
+		throw new NotImplementedException();
+	}
+	public Task WriteAllBytesAsync(string path, byte[] bytes)
+	{
+		throw new NotImplementedException();
+	}
+	public Task WriteAllBytesAsync(string path, byte[] bytes, CancellationToken cancellationToken)
+	{
+		throw new NotImplementedException();
+	}
+	public void MoveFile(string sourcePath, string destinationPath)
+	{
+		throw new NotImplementedException();
+	}
+	public string ReadAllText(string path)
+	{
+		throw new NotImplementedException();
+	}
+	public Task<string> ReadAllTextAsync(string path)
+	{
+		throw new NotImplementedException();
+	}
+	public Task<string> ReadAllTextAsync(string path, CancellationToken cancellationToken)
+	{
+		throw new NotImplementedException();
+	}
+	public void WriteAllText(string path, string text)
+	{
+		throw new NotImplementedException();
+	}
+	public Task WriteAllTextAsync(string path, string text)
+	{
+		throw new NotImplementedException();
+	}
+	public Task WriteAllTextAsync(string path, string text, CancellationToken cancellationToken)
+	{
+		throw new NotImplementedException();
+	}
 	public int GetCount() => throw new NotImplementedException();
 	public void Clear() => throw new NotImplementedException();
 #pragma warning restore SA1201

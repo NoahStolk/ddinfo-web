@@ -13,8 +13,6 @@ public class FileSystemService : IFileSystemService
 			Directory.CreateDirectory(GetPath(e));
 	}
 
-	public string Root => "Data";
-
 	public string[] TryGetFiles(DataSubDirectory subDirectory)
 	{
 		try
@@ -40,10 +38,123 @@ public class FileSystemService : IFileSystemService
 	}
 
 	public string GetPath(DataSubDirectory subDirectory)
-		=> Path.Combine(Root, subDirectory.ToString());
+		=> Path.Combine("Data", subDirectory.ToString());
 
 	public string GetToolDistributionPath(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version)
 	{
 		return Path.Combine(GetPath(DataSubDirectory.Tools), $"{name}-{version}-{buildType}-{publishMethod}.zip");
+	}
+
+	public bool DeleteFileIfExists(string path)
+	{
+		bool exists = File.Exists(path);
+		if (exists)
+			File.Delete(path);
+
+		return exists;
+	}
+
+	public bool FileExists(string path)
+	{
+		return File.Exists(path);
+	}
+
+	public bool DeleteDirectoryIfExists(string path, bool recursive)
+	{
+		bool exists = Directory.Exists(path);
+		if (exists)
+			Directory.Delete(path, recursive);
+
+		return exists;
+	}
+
+	public bool DirectoryExists(string path)
+	{
+		return Directory.Exists(path);
+	}
+
+	public void MoveDirectory(string sourcePath, string destinationPath)
+	{
+		Directory.Move(sourcePath, destinationPath);
+	}
+
+	public void CreateDirectory(string path)
+	{
+		Directory.CreateDirectory(path);
+	}
+
+	public string[] GetFiles(string path)
+	{
+		return Directory.GetFiles(path);
+	}
+
+	public string[] GetFiles(string path, string searchPattern)
+	{
+		return Directory.GetFiles(path, searchPattern);
+	}
+
+	public byte[] ReadAllBytes(string path)
+	{
+		return File.ReadAllBytes(path);
+	}
+
+	public async Task<byte[]> ReadAllBytesAsync(string path)
+	{
+		return await File.ReadAllBytesAsync(path);
+	}
+
+	public async Task<byte[]> ReadAllBytesAsync(string path, CancellationToken cancellationToken)
+	{
+		return await File.ReadAllBytesAsync(path, cancellationToken);
+	}
+
+	public void WriteAllBytes(string path, byte[] bytes)
+	{
+		File.WriteAllBytes(path, bytes);
+	}
+
+	public async Task WriteAllBytesAsync(string path, byte[] bytes)
+	{
+		await File.WriteAllBytesAsync(path, bytes);
+	}
+
+	public async Task WriteAllBytesAsync(string path, byte[] bytes, CancellationToken cancellationToken)
+	{
+		await File.WriteAllBytesAsync(path, bytes, cancellationToken);
+	}
+
+	public void MoveFile(string sourcePath, string destinationPath)
+	{
+		File.Move(sourcePath, destinationPath);
+	}
+
+	public string ReadAllText(string path)
+	{
+		return File.ReadAllText(path);
+	}
+
+	public async Task<string> ReadAllTextAsync(string path)
+	{
+		return await File.ReadAllTextAsync(path);
+	}
+
+	public async Task<string> ReadAllTextAsync(string path, CancellationToken cancellationToken)
+	{
+		return await File.ReadAllTextAsync(path, cancellationToken);
+	}
+
+	public void WriteAllText(string path, string text)
+	{
+		File.WriteAllText(path, text);
+	}
+
+	public async Task WriteAllTextAsync(string path, string text)
+	{
+		await File.WriteAllTextAsync(path, text);
+	}
+
+	public async Task WriteAllTextAsync(string path, string text, CancellationToken cancellationToken)
+	{
+		await File.WriteAllTextAsync(path, text, cancellationToken);
 	}
 }

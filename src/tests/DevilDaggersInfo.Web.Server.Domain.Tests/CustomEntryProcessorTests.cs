@@ -44,8 +44,6 @@ public class CustomEntryProcessorTests
 		fileSystemService.Setup(m => m.GetPath(DataSubDirectory.Spawnsets)).Returns(spawnsetsPath);
 		fileSystemService.Setup(m => m.GetPath(DataSubDirectory.CustomEntryReplays)).Returns(replaysPath);
 
-		Directory.CreateDirectory(replaysPath);
-
 		Mock<ILogger<SpawnsetHashCache>> spawnsetHashCacheLogger = new();
 		Mock<SpawnsetHashCache> spawnsetHashCache = new(fileSystemService.Object, spawnsetHashCacheLogger.Object);
 		Mock<ILogger<CustomEntryProcessor>> customEntryProcessorLogger = new();

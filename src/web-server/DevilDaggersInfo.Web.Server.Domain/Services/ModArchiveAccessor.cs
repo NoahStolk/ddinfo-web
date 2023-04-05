@@ -23,18 +23,18 @@ public class ModArchiveAccessor
 		string modArchivePath = GetModArchivePath(modName);
 		string modScreenshotsDirectory = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ModScreenshots), modName);
 
-		ModArchiveCacheData? modArchiveCacheData = File.Exists(modArchivePath) ? await _modArchiveCache.GetArchiveDataByFilePathAsync(modArchivePath) : null;
+		ModArchiveCacheData? modArchiveCacheData = _fileSystemService.FileExists(modArchivePath) ? await _modArchiveCache.GetArchiveDataByFilePathAsync(modArchivePath) : null;
 
 		return new()
 		{
 			ModArchive = modArchiveCacheData,
-			ScreenshotFileNames = !Directory.Exists(modScreenshotsDirectory) ? null : GetScreenshotFileNames(modScreenshotsDirectory),
+			ScreenshotFileNames = !_fileSystemService.DirectoryExists(modScreenshotsDirectory) ? null : GetScreenshotFileNames(modScreenshotsDirectory),
 		};
 
 		List<string> GetScreenshotFileNames(string s)
 		{
 			// ! Path.GetFileName will never return null because modScreenshotsDirectory is not null.
-			return Directory.GetFiles(s).Select(Path.GetFileName).ToList()!;
+			return _fileSystemService.GetFiles(s).Select(Path.GetFileName).ToList()!;
 		}
 	}
 }

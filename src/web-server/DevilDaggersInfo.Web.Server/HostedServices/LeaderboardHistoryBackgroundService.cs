@@ -61,13 +61,13 @@ public class LeaderboardHistoryBackgroundService : AbstractBackgroundService
 
 		string fileName = $"{DateTime.UtcNow:yyyyMMddHHmm}.bin";
 		string fullPath = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.LeaderboardHistory), fileName);
-		await File.WriteAllBytesAsync(fullPath, historyModel.ToBytes(), stoppingToken);
+		await _fileSystemService.WriteAllBytesAsync(fullPath, historyModel.ToBytes(), stoppingToken);
 		Logger.LogInformation("Task execution for `{service}` succeeded. `{fileName}` with {entries} entries was created.", nameof(LeaderboardHistoryBackgroundService), fullPath, entries.Count);
 	}
 
 	private bool HistoryFileExistsForDate(DateTime dateTime)
 	{
-		foreach (string path in Directory.GetFiles(_fileSystemService.GetPath(DataSubDirectory.LeaderboardHistory), "*.bin"))
+		foreach (string path in _fileSystemService.GetFiles(_fileSystemService.GetPath(DataSubDirectory.LeaderboardHistory), "*.bin"))
 		{
 			string fileName = Path.GetFileNameWithoutExtension(path);
 			if (HistoryUtils.HistoryFileNameToDateTime(fileName).Date == dateTime.Date)

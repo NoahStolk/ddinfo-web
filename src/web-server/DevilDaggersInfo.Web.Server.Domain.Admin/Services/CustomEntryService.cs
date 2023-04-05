@@ -104,8 +104,6 @@ public class CustomEntryService
 		await _dbContext.SaveChangesAsync();
 
 		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{id}.ddreplay");
-		bool fileExists = File.Exists(path);
-		if (fileExists)
-			File.Delete(path);
+		_fileSystemService.DeleteFileIfExists(path);
 	}
 }

@@ -23,11 +23,11 @@ public class AssetsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public ActionResult<Dictionary<string, List<GetAssetInfo>>> GetAssetInfoForDdae()
 	{
-		return Directory.GetFiles(_fileSystemService.GetPath(DataSubDirectory.AssetInfo))
+		return _fileSystemService.GetFiles(_fileSystemService.GetPath(DataSubDirectory.AssetInfo))
 			.Select(p =>
 			{
 				string fileName = Path.GetFileNameWithoutExtension(p);
-				List<GetAssetInfo> assetInfo = JsonConvert.DeserializeObject<List<GetAssetInfo>?>(IoFile.ReadAllText(p)) ?? throw new($"Could not deserialize asset info from file '{fileName}'.");
+				List<GetAssetInfo> assetInfo = JsonConvert.DeserializeObject<List<GetAssetInfo>?>(_fileSystemService.ReadAllText(p)) ?? throw new($"Could not deserialize asset info from file '{fileName}'.");
 				return (fileName, assetInfo);
 			}).
 			ToDictionary(t => t.fileName, t => t.assetInfo);

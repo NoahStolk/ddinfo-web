@@ -17,18 +17,9 @@ public abstract class ModArchiveProcessorTests
 		string modsPath = Path.Combine("Resources", "Mods");
 		string modArchiveCachePath = Path.Combine("Resources", "ModArchiveCache");
 
-		if (Directory.Exists(modsPath))
-			Directory.Delete(modsPath, true);
-
-		if (Directory.Exists(modArchiveCachePath))
-			Directory.Delete(modArchiveCachePath, true);
-
 		Mock<IFileSystemService> fileSystemService = new();
 		fileSystemService.Setup(m => m.GetPath(DataSubDirectory.Mods)).Returns(modsPath);
 		fileSystemService.Setup(m => m.GetPath(DataSubDirectory.ModArchiveCache)).Returns(modArchiveCachePath);
-
-		Directory.CreateDirectory(modsPath);
-		Directory.CreateDirectory(modArchiveCachePath);
 
 		Cache = new(fileSystemService.Object);
 		Accessor = new(fileSystemService.Object, Cache);
