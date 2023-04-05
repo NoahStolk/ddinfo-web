@@ -15,6 +15,9 @@ public class ModScreenshotProcessor
 
 	public void ProcessModScreenshotUpload(string modName, Dictionary<string, byte[]> screenshots)
 	{
+		if (screenshots.Count == 0)
+			return;
+
 		string modScreenshotsDirectory = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ModScreenshots), modName);
 		Directory.CreateDirectory(modScreenshotsDirectory);
 		int i = 0;
