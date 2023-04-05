@@ -42,8 +42,7 @@ public class ModService
 		if (addMod.Binaries.Count > 0)
 			await _modArchiveProcessor.ProcessModBinaryUploadAsync(addMod.Name, GetBinaryNames(addMod.Binaries.ConvertAll(bd => (bd.Name, bd.Data))));
 
-		if (addMod.Screenshots.Count > 0)
-			_modScreenshotProcessor.ProcessModScreenshotUpload(addMod.Name, addMod.Screenshots);
+		_modScreenshotProcessor.ProcessModScreenshotUpload(addMod.Name, addMod.Screenshots);
 
 		ModEntity mod = new()
 		{
