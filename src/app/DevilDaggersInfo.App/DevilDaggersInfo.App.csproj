@@ -59,7 +59,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Spawnset\DevilDaggersInfo.Core.Spawnset.csproj" />
-    <ProjectReference Include="..\DevilDaggersInfo.App.ContentSourceGen\DevilDaggersInfo.App.ContentSourceGen.csproj" OutputItemType="analyzer" ReferenceOutputAssembly="false" />
     <ProjectReference Include="..\DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder\DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.App.Ui.ReplayEditor\DevilDaggersInfo.App.Ui.ReplayEditor.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.App.Ui.SurvivalEditor\DevilDaggersInfo.App.Ui.SurvivalEditor.csproj" />
