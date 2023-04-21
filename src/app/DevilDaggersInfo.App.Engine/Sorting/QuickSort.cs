@@ -1,4 +1,4 @@
-namespace Warp.NET.Sorting;
+namespace DevilDaggersInfo.App.Engine.Sorting;
 
 public static class QuickSort
 {

@@ -1,7 +1,4 @@
-using System;
-using System.Numerics;
-
-namespace Warp.NET.Maths.Numerics;
+namespace DevilDaggersInfo.App.Engine.Maths.Numerics;
 
 public readonly struct Spinor : IEquatable<Spinor>
 {

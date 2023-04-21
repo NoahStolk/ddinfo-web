@@ -1,7 +1,4 @@
-using System;
-using System.IO;
-
-namespace Warp.NET.Parsers.Sound;
+namespace DevilDaggersInfo.App.Engine.Parsers.Sound;
 
 public static class WaveParser
 {

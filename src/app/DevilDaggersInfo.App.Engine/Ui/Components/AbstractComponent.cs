@@ -1,6 +1,6 @@
-using Warp.NET.Maths.Numerics;
+using DevilDaggersInfo.App.Engine.Maths.Numerics;
 
-namespace Warp.NET.Ui.Components;
+namespace DevilDaggersInfo.App.Engine.Ui.Components;
 
 public abstract class AbstractComponent
 {

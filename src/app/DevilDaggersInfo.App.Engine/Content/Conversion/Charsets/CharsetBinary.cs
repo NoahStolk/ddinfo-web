@@ -1,4 +1,4 @@
-namespace Warp.NET.Content.Conversion.Charsets;
+namespace DevilDaggersInfo.App.Engine.Content.Conversion.Charsets;
 
 internal record CharsetBinary(byte[] Characters) : IBinary<CharsetBinary>
 {

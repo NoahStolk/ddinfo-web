@@ -1,6 +1,6 @@
 using Silk.NET.OpenGL;
 
-namespace Warp.NET.Utils;
+namespace DevilDaggersInfo.App.Engine.Utils;
 
 public static class GlUtils
 {

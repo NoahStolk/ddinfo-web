@@ -1,4 +1,4 @@
-namespace Warp.NET.Content.Conversion.Sounds;
+namespace DevilDaggersInfo.App.Engine.Content.Conversion.Sounds;
 
 internal record SoundBinary(short Channels, int SampleRate, short BitsPerSample, byte[] Data) : IBinary<SoundBinary>
 {

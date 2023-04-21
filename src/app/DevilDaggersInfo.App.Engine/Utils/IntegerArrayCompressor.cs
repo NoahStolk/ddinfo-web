@@ -1,4 +1,4 @@
-namespace Warp.NET.Utils;
+namespace DevilDaggersInfo.App.Engine.Utils;
 
 internal static class IntegerArrayCompressor
 {

@@ -1,9 +1,9 @@
+using DevilDaggersInfo.App.ContentSourceGen.Extensions;
+using DevilDaggersInfo.App.ContentSourceGen.Utils;
 using Microsoft.CodeAnalysis;
 using System.Collections.Immutable;
-using Warp.NET.SourceGen.Extensions;
-using Warp.NET.SourceGen.Utils;
 
-namespace Warp.NET.SourceGen.Generators.ShaderUniform;
+namespace DevilDaggersInfo.App.ContentSourceGen.Generators.ShaderUniform;
 
 [Generator]
 public class ShaderUniformGenerator : IIncrementalGenerator

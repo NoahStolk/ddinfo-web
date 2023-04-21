@@ -1,7 +1,7 @@
-using Warp.NET.Maths.Numerics;
-using Warp.NET.Ui.Components;
+using DevilDaggersInfo.App.Engine.Maths.Numerics;
+using DevilDaggersInfo.App.Engine.Ui.Components;
 
-namespace Warp.NET.Ui;
+namespace DevilDaggersInfo.App.Engine.Ui;
 
 public class NestingContext
 {

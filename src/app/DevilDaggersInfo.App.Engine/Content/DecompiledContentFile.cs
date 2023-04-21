@@ -1,4 +1,4 @@
-namespace Warp.NET.Content;
+namespace DevilDaggersInfo.App.Engine.Content;
 
 public record DecompiledContentFile(
 	IReadOnlyDictionary<string, Blob> Blobs,

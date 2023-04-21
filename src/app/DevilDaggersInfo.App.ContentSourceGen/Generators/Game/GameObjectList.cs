@@ -1,6 +1,6 @@
-using Warp.NET.SourceGen.Extensions;
+using DevilDaggersInfo.App.ContentSourceGen.Extensions;
 
-namespace Warp.NET.SourceGen.Generators.Game;
+namespace DevilDaggersInfo.App.ContentSourceGen.Generators.Game;
 
 public record GameObjectList
 {

@@ -1,7 +1,7 @@
-using Warp.NET.Extensions;
-using Warp.NET.Maths.Numerics;
+using DevilDaggersInfo.App.Engine.Extensions;
+using DevilDaggersInfo.App.Engine.Maths.Numerics;
 
-namespace Warp.NET.Ui;
+namespace DevilDaggersInfo.App.Engine.Ui;
 
 public static class MouseUiContext
 {

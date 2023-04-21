@@ -1,7 +1,6 @@
-using System;
 using System.Runtime.Serialization;
 
-namespace Warp.NET.Parsers.Texture;
+namespace DevilDaggersInfo.App.Engine.Parsers.Texture;
 
 [Serializable]
 public class TgaParseException : Exception

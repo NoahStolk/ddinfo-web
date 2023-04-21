@@ -1,7 +1,7 @@
+using DevilDaggersInfo.App.Engine.Maths.Numerics;
 using Silk.NET.GLFW;
-using Warp.NET.Maths.Numerics;
 
-namespace Warp.NET.Ui.Components;
+namespace DevilDaggersInfo.App.Engine.Ui.Components;
 
 public abstract class AbstractDropdown : AbstractComponent
 {

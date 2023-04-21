@@ -1,4 +1,4 @@
-namespace Warp.NET.Content.Conversion.Blobs;
+namespace DevilDaggersInfo.App.Engine.Content.Conversion.Blobs;
 
 internal sealed class BlobContentConverter : IContentConverter<BlobBinary>
 {

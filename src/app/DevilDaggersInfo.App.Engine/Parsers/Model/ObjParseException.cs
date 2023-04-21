@@ -1,7 +1,6 @@
-using System;
 using System.Runtime.Serialization;
 
-namespace Warp.NET.Parsers.Model;
+namespace DevilDaggersInfo.App.Engine.Parsers.Model;
 
 [Serializable]
 public class ObjParseException : Exception

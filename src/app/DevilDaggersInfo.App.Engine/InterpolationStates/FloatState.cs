@@ -1,6 +1,6 @@
-using Warp.NET.Maths;
+using DevilDaggersInfo.App.Engine.Maths;
 
-namespace Warp.NET.InterpolationStates;
+namespace DevilDaggersInfo.App.Engine.InterpolationStates;
 
 public class FloatState : AbstractInterpolationState<float>
 {

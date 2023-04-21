@@ -1,10 +1,10 @@
+using DevilDaggersInfo.App.ContentSourceGen.Extensions;
+using DevilDaggersInfo.App.ContentSourceGen.Utils;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Collections.Immutable;
-using Warp.NET.SourceGen.Extensions;
-using Warp.NET.SourceGen.Utils;
 
-namespace Warp.NET.SourceGen.Generators.Game;
+namespace DevilDaggersInfo.App.ContentSourceGen.Generators.Game;
 
 [Generator]
 public class GameGenerator : IIncrementalGenerator
@@ -16,10 +16,10 @@ public class GameGenerator : IIncrementalGenerator
 	private const string _gameObjectListRemoves = $"%{nameof(_gameObjectListRemoves)}%";
 
 	private const string _gameTemplate = $$"""
+		using DevilDaggersInfo.App.Engine;
 		using System;
 		using System.Collections.Generic;
 		using System.Text;
-		using Warp.NET;
 
 		namespace {{_namespace}};
 

@@ -1,6 +1,6 @@
-using Warp.NET.Maths.Numerics;
+using DevilDaggersInfo.App.Engine.Maths.Numerics;
 
-namespace Warp.NET.InterpolationStates;
+namespace DevilDaggersInfo.App.Engine.InterpolationStates;
 
 public class SpinorState : AbstractInterpolationState<Spinor>
 {

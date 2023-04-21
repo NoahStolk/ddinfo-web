@@ -1,9 +1,9 @@
+using DevilDaggersInfo.App.ContentSourceGen.Extensions;
+using DevilDaggersInfo.App.ContentSourceGen.Utils;
 using Microsoft.CodeAnalysis;
 using System.Collections.Immutable;
-using Warp.NET.SourceGen.Extensions;
-using Warp.NET.SourceGen.Utils;
 
-namespace Warp.NET.SourceGen.Generators.Content;
+namespace DevilDaggersInfo.App.ContentSourceGen.Generators.Content;
 
 [Generator]
 public class ContentGenerator : IIncrementalGenerator
@@ -25,7 +25,7 @@ public class ContentGenerator : IIncrementalGenerator
 
 		namespace {{_namespace}};
 
-		public sealed class {{_className}} : Warp.NET.IContentContainer<{{_contentType}}>
+		public sealed class {{_className}} : DevilDaggersInfo.App.Engine.IContentContainer<{{_contentType}}>
 		{
 			{{_contentFields}}
 

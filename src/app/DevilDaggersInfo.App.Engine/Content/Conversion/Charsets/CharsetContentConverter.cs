@@ -1,4 +1,4 @@
-namespace Warp.NET.Content.Conversion.Charsets;
+namespace DevilDaggersInfo.App.Engine.Content.Conversion.Charsets;
 
 internal sealed class CharsetContentConverter : IContentConverter<CharsetBinary>
 {

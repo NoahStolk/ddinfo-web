@@ -1,4 +1,4 @@
-namespace Warp.NET.Ui.Components;
+namespace DevilDaggersInfo.App.Engine.Ui.Components;
 
 public abstract class AbstractLabel : AbstractComponent
 {

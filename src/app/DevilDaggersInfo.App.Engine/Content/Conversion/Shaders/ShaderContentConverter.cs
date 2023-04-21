@@ -1,4 +1,4 @@
-namespace Warp.NET.Content.Conversion.Shaders;
+namespace DevilDaggersInfo.App.Engine.Content.Conversion.Shaders;
 
 internal sealed class ShaderContentConverter : IContentConverter<ShaderBinary>
 {

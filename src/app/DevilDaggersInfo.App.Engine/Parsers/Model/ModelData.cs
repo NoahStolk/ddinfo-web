@@ -1,7 +1,4 @@
-using System.Collections.Generic;
-using System.Numerics;
-
-namespace Warp.NET.Parsers.Model;
+namespace DevilDaggersInfo.App.Engine.Parsers.Model;
 
 /// <summary>
 /// Represents data parsed from a model format, such as a .obj file.

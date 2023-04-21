@@ -1,4 +1,4 @@
-namespace Warp.NET.Parsers.Texture;
+namespace DevilDaggersInfo.App.Engine.Parsers.Texture;
 
 internal static class BitUtils
 {

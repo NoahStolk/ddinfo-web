@@ -1,7 +1,6 @@
-using System;
 using System.Runtime.Serialization;
 
-namespace Warp.NET.Parsers.Sound;
+namespace DevilDaggersInfo.App.Engine.Parsers.Sound;
 
 [Serializable]
 public class WaveParseException : Exception

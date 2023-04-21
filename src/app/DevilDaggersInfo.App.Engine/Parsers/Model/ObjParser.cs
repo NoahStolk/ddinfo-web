@@ -1,10 +1,6 @@
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Numerics;
-using System.Text;
 
-namespace Warp.NET.Parsers.Model;
+namespace DevilDaggersInfo.App.Engine.Parsers.Model;
 
 public static class ObjParser
 {

@@ -1,4 +1,4 @@
-namespace Warp.NET.Content.Conversion;
+namespace DevilDaggersInfo.App.Engine.Content.Conversion;
 
 internal interface IContentConverter<out TBinary>
 	where TBinary : IBinary<TBinary>

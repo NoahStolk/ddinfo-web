@@ -1,6 +1,6 @@
-using Warp.NET.Parsers.Texture;
+using DevilDaggersInfo.App.Engine.Parsers.Texture;
 
-namespace Warp.NET.Content.Conversion.Textures;
+namespace DevilDaggersInfo.App.Engine.Content.Conversion.Textures;
 
 internal sealed class TextureContentConverter : IContentConverter<TextureBinary>
 {

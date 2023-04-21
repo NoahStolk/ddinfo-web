@@ -1,7 +1,7 @@
-using Warp.NET.Maths.Numerics;
-using Warp.NET.Utils;
+using DevilDaggersInfo.App.Engine.Maths.Numerics;
+using DevilDaggersInfo.App.Engine.Utils;
 
-namespace Warp.NET.Ui;
+namespace DevilDaggersInfo.App.Engine.Ui;
 
 /// <summary>
 /// Represents a "box" used for UI positioning. All values are in pixels.

@@ -1,6 +1,6 @@
-using Warp.NET.SourceGen.Extensions;
+using DevilDaggersInfo.App.ContentSourceGen.Extensions;
 
-namespace Warp.NET.SourceGen.Generators.ShaderUniform;
+namespace DevilDaggersInfo.App.ContentSourceGen.Generators.ShaderUniform;
 
 public sealed record ShaderUniform
 {

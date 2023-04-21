@@ -1,6 +1,6 @@
-using Warp.NET.Parsers.Model;
+using DevilDaggersInfo.App.Engine.Parsers.Model;
 
-namespace Warp.NET.Content.Conversion.Models;
+namespace DevilDaggersInfo.App.Engine.Content.Conversion.Models;
 
 internal sealed class ModelContentConverter : IContentConverter<ModelBinary>
 {

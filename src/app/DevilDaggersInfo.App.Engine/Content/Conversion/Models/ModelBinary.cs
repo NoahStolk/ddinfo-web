@@ -1,7 +1,7 @@
-using Warp.NET.Extensions;
-using Warp.NET.Parsers.Model;
+using DevilDaggersInfo.App.Engine.Extensions;
+using DevilDaggersInfo.App.Engine.Parsers.Model;
 
-namespace Warp.NET.Content.Conversion.Models;
+namespace DevilDaggersInfo.App.Engine.Content.Conversion.Models;
 
 internal record ModelBinary(IReadOnlyList<Vector3> Positions, IReadOnlyList<Vector2> Textures, IReadOnlyList<Vector3> Normals, IReadOnlyList<MeshData> Meshes) : IBinary<ModelBinary>
 {

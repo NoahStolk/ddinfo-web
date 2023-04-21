@@ -1,7 +1,7 @@
 using Silk.NET.OpenGL;
 using System.Collections.Immutable;
 
-namespace Warp.NET.Content;
+namespace DevilDaggersInfo.App.Engine.Content;
 
 public class Texture
 {

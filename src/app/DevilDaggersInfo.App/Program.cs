@@ -1,3 +1,6 @@
+using DevilDaggersInfo.App.Engine;
+using DevilDaggersInfo.App.Engine.Content;
+using DevilDaggersInfo.App.Engine.Debugging;
 using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.Rendering;
@@ -5,8 +8,6 @@ using DevilDaggersInfo.App.Ui.Base.StateManagement;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.Base.Actions;
 using Silk.NET.GLFW;
 using System.Diagnostics;
-using Warp.NET.Content;
-using Warp.NET.Debugging;
 
 namespace DevilDaggersInfo.App;
 

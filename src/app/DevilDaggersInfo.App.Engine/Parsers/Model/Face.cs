@@ -1,4 +1,4 @@
-namespace Warp.NET.Parsers.Model;
+namespace DevilDaggersInfo.App.Engine.Parsers.Model;
 
 public readonly record struct Face(ushort Position, ushort Texture, ushort Normal)
 {

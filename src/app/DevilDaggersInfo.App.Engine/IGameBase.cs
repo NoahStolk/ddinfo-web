@@ -1,4 +1,4 @@
-namespace Warp.NET;
+namespace DevilDaggersInfo.App.Engine;
 
 public interface IGameBase<TSelf>
 	where TSelf : IGameBase<TSelf>

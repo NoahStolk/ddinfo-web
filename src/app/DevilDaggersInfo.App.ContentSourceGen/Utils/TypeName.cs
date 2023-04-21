@@ -1,4 +1,4 @@
-namespace Warp.NET.SourceGen.Utils;
+namespace DevilDaggersInfo.App.ContentSourceGen.Utils;
 
 public record TypeName(string Type, string Namespace = Constants.RootNamespace)
 {

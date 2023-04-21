@@ -1,6 +1,4 @@
-using System.Numerics;
-
-namespace Warp.NET.Maths.Numerics;
+namespace DevilDaggersInfo.App.Engine.Maths.Numerics;
 
 public struct Orientation
 {

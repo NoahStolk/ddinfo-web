@@ -1,4 +1,4 @@
-namespace Warp.NET.Intersections;
+namespace DevilDaggersInfo.App.Engine.Intersections;
 
 public readonly record struct Ray(Vector3 Position, Vector3 Direction)
 {

@@ -1,10 +1,10 @@
+using DevilDaggersInfo.App.ContentSourceGen.Extensions;
+using DevilDaggersInfo.App.ContentSourceGen.Utils;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Collections.Immutable;
-using Warp.NET.SourceGen.Extensions;
-using Warp.NET.SourceGen.Utils;
 
-namespace Warp.NET.SourceGen.Generators.GameObject;
+namespace DevilDaggersInfo.App.ContentSourceGen.Generators.GameObject;
 
 [Generator]
 public class GameObjectGenerator : IIncrementalGenerator

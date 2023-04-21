@@ -1,4 +1,4 @@
-namespace Warp.NET.InterpolationStates;
+namespace DevilDaggersInfo.App.Engine.InterpolationStates;
 
 public class Vector3State : AbstractInterpolationState<Vector3>
 {

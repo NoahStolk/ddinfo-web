@@ -1,4 +1,4 @@
-namespace Warp.NET.Parsers.Sound;
+namespace DevilDaggersInfo.App.Engine.Parsers.Sound;
 
 /// <summary>
 /// Represents data parsed from a sound format, such as a .wav file.

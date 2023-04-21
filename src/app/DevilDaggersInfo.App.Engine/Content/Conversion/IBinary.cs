@@ -1,4 +1,4 @@
-namespace Warp.NET.Content.Conversion;
+namespace DevilDaggersInfo.App.Engine.Content.Conversion;
 
 internal interface IBinary<out TSelf>
 	where TSelf : IBinary<TSelf>

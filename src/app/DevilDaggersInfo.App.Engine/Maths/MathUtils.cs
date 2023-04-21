@@ -1,7 +1,4 @@
-using System;
-using System.Runtime.CompilerServices;
-
-namespace Warp.NET.Maths;
+namespace DevilDaggersInfo.App.Engine.Maths;
 
 public static class MathUtils
 {

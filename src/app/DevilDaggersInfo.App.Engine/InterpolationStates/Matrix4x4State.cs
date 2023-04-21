@@ -1,4 +1,4 @@
-namespace Warp.NET.InterpolationStates;
+namespace DevilDaggersInfo.App.Engine.InterpolationStates;
 
 public class Matrix4x4State : AbstractInterpolationState<Matrix4x4>
 {

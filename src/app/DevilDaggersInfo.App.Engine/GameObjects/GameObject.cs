@@ -1,4 +1,4 @@
-namespace Warp.NET.GameObjects;
+namespace DevilDaggersInfo.App.Engine.GameObjects;
 
 public abstract class GameObject : IGameObject
 {

@@ -1,4 +1,4 @@
-namespace Warp.NET.Debugging;
+namespace DevilDaggersInfo.App.Engine.Debugging;
 
 public enum DebugStackDisplaySetting
 {

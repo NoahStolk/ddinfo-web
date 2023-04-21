@@ -1,4 +1,4 @@
-namespace Warp.NET.Intersections;
+namespace DevilDaggersInfo.App.Engine.Intersections;
 
 public enum Axis
 {

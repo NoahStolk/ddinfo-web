@@ -1,7 +1,7 @@
+using DevilDaggersInfo.App.Engine.Extensions;
 using Silk.NET.GLFW;
-using Warp.NET.Extensions;
 
-namespace Warp.NET;
+namespace DevilDaggersInfo.App.Engine;
 
 public sealed class KeyboardInput
 {

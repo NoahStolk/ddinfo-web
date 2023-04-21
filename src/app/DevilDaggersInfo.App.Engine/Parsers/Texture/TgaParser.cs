@@ -1,6 +1,4 @@
-using System.IO;
-
-namespace Warp.NET.Parsers.Texture;
+namespace DevilDaggersInfo.App.Engine.Parsers.Texture;
 
 public static class TgaParser
 {

@@ -1,4 +1,4 @@
-namespace Warp.NET.Ui;
+namespace DevilDaggersInfo.App.Engine.Ui;
 
 public interface ILayout
 {

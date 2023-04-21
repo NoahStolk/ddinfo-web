@@ -1,4 +1,4 @@
-namespace Warp.NET.SourceGen.Generators.GameObject;
+namespace DevilDaggersInfo.App.ContentSourceGen.Generators.GameObject;
 
 public class GameObject
 {

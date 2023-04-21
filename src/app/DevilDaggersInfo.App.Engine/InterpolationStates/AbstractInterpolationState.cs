@@ -1,4 +1,4 @@
-namespace Warp.NET.InterpolationStates;
+namespace DevilDaggersInfo.App.Engine.InterpolationStates;
 
 public abstract class AbstractInterpolationState<TState>
 	where TState : struct, IEquatable<TState>

@@ -1,7 +1,7 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Warp.NET.SourceGen.Extensions;
+namespace DevilDaggersInfo.App.ContentSourceGen.Extensions;
 
 internal static class CompilationExtensions
 {

@@ -3,7 +3,7 @@ using Silk.NET.OpenGL;
 using ErrorCode = Silk.NET.GLFW.ErrorCode;
 using Monitor = Silk.NET.GLFW.Monitor;
 
-namespace Warp.NET;
+namespace DevilDaggersInfo.App.Engine;
 
 public static class Graphics
 {

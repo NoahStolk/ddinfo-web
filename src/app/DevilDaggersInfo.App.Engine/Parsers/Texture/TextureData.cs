@@ -1,4 +1,4 @@
-namespace Warp.NET.Parsers.Texture;
+namespace DevilDaggersInfo.App.Engine.Parsers.Texture;
 
 /// <summary>
 /// Represents data parsed from a texture format, such as a .tga file.

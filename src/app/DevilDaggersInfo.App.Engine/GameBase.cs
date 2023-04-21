@@ -1,7 +1,7 @@
-using Warp.NET.Debugging;
-using Warp.NET.GameObjects;
+using DevilDaggersInfo.App.Engine.Debugging;
+using DevilDaggersInfo.App.Engine.GameObjects;
 
-namespace Warp.NET;
+namespace DevilDaggersInfo.App.Engine;
 
 public abstract class GameBase
 {

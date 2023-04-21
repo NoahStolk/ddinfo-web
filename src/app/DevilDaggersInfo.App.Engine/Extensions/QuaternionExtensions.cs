@@ -1,7 +1,7 @@
-using Warp.NET.Maths;
-using Warp.NET.Utils;
+using DevilDaggersInfo.App.Engine.Maths;
+using DevilDaggersInfo.App.Engine.Utils;
 
-namespace Warp.NET.Extensions;
+namespace DevilDaggersInfo.App.Engine.Extensions;
 
 public static class QuaternionExtensions
 {

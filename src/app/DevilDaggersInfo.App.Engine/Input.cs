@@ -1,6 +1,6 @@
 using Silk.NET.GLFW;
 
-namespace Warp.NET;
+namespace DevilDaggersInfo.App.Engine;
 
 public static class Input
 {

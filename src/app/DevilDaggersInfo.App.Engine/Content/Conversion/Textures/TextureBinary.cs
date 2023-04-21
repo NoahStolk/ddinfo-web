@@ -1,6 +1,6 @@
-using Warp.NET.Extensions;
+using DevilDaggersInfo.App.Engine.Extensions;
 
-namespace Warp.NET.Content.Conversion.Textures;
+namespace DevilDaggersInfo.App.Engine.Content.Conversion.Textures;
 
 internal record TextureBinary(ushort Width, ushort Height, byte[] ColorData) : IBinary<TextureBinary>
 {

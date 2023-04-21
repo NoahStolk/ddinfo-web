@@ -1,4 +1,4 @@
-namespace Warp.NET.Extensions;
+namespace DevilDaggersInfo.App.Engine.Extensions;
 
 public static class BitArrayExtensions
 {

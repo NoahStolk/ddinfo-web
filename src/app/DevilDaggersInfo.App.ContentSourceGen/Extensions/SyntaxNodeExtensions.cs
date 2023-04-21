@@ -1,6 +1,6 @@
 using Microsoft.CodeAnalysis;
 
-namespace Warp.NET.SourceGen.Extensions;
+namespace DevilDaggersInfo.App.ContentSourceGen.Extensions;
 
 internal static class SyntaxNodeExtensions
 {

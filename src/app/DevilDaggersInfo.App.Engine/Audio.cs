@@ -1,7 +1,7 @@
+using DevilDaggersInfo.App.Engine.Maths.Numerics;
 using Silk.NET.OpenAL;
-using Warp.NET.Maths.Numerics;
 
-namespace Warp.NET;
+namespace DevilDaggersInfo.App.Engine;
 
 public static class Audio
 {

@@ -1,4 +1,4 @@
-namespace Warp.NET.Ui;
+namespace DevilDaggersInfo.App.Engine.Ui;
 
 /// <summary>
 /// An implementation of <see cref="IBounds"/> which uses normalized coordinates. This results in rendering stretched across the entire window.

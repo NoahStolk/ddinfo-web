@@ -1,8 +1,4 @@
-using System;
-using System.Numerics;
-using System.Runtime.CompilerServices;
-
-namespace Warp.NET.Maths.Numerics;
+namespace DevilDaggersInfo.App.Engine.Maths.Numerics;
 
 public readonly record struct Color(byte R, byte G, byte B, byte A)
 {

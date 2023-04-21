@@ -1,6 +1,6 @@
-using Warp.NET.SourceGen.Generators.ShaderUniform;
+using DevilDaggersInfo.App.ContentSourceGen.Generators.ShaderUniform;
 
-namespace Warp.NET.SourceGen.Utils;
+namespace DevilDaggersInfo.App.ContentSourceGen.Utils;
 
 internal static class GlslUtils
 {

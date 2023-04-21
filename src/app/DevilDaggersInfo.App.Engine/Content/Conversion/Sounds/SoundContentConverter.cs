@@ -1,6 +1,6 @@
-using Warp.NET.Parsers.Sound;
+using DevilDaggersInfo.App.Engine.Parsers.Sound;
 
-namespace Warp.NET.Content.Conversion.Sounds;
+namespace DevilDaggersInfo.App.Engine.Content.Conversion.Sounds;
 
 internal sealed class SoundContentConverter : IContentConverter<SoundBinary>
 {

@@ -1,4 +1,4 @@
-namespace Warp.NET.Content.Conversion.Shaders;
+namespace DevilDaggersInfo.App.Engine.Content.Conversion.Shaders;
 
 internal record ShaderBinary(ShaderContentType ShaderContentType, byte[] Code) : IBinary<ShaderBinary>
 {

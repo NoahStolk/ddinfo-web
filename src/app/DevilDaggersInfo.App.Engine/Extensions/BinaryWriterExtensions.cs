@@ -1,6 +1,6 @@
-using Warp.NET.Maths.Numerics;
+using DevilDaggersInfo.App.Engine.Maths.Numerics;
 
-namespace Warp.NET.Extensions;
+namespace DevilDaggersInfo.App.Engine.Extensions;
 
 public static class BinaryWriterExtensions
 {

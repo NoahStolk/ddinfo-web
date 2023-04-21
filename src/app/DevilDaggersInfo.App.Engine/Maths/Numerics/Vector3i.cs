@@ -3,14 +3,10 @@
 #pragma warning disable S1104 // Fields should not have public accessibility
 #pragma warning disable S2328 // "GetHashCode" should not reference mutable fields
 
-using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using System.Numerics;
-using System.Runtime.CompilerServices;
-using System.Text;
 
-namespace Warp.NET.Maths.Numerics;
+namespace DevilDaggersInfo.App.Engine.Maths.Numerics;
 
 public struct Vector3i<T> : IEquatable<Vector3i<T>>, IFormattable
 	where T : IBinaryInteger<T>, IMinMaxValue<T>

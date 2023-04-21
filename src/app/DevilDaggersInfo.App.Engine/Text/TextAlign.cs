@@ -1,4 +1,4 @@
-namespace Warp.NET.Text;
+namespace DevilDaggersInfo.App.Engine.Text;
 
 public enum TextAlign
 {

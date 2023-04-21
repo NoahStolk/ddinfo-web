@@ -1,6 +1,6 @@
-using Warp.NET.SourceGen.Utils;
+using DevilDaggersInfo.App.ContentSourceGen.Utils;
 
-namespace Warp.NET.SourceGen.Extensions;
+namespace DevilDaggersInfo.App.ContentSourceGen.Extensions;
 
 internal static class StringExtensions
 {

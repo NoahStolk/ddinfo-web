@@ -1,8 +1,8 @@
-namespace Warp.NET.SourceGen.Utils;
+namespace DevilDaggersInfo.App.ContentSourceGen.Utils;
 
 internal static class Constants
 {
 	public const string NewLine = "\r\n";
 
-	public const string RootNamespace = "Warp.NET";
+	public const string RootNamespace = "DevilDaggersInfo.App.Engine";
 }

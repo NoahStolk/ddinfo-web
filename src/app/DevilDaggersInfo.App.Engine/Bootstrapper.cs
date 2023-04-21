@@ -1,7 +1,7 @@
-using Warp.NET.Content;
-using Warp.NET.Content.Conversion;
+using DevilDaggersInfo.App.Engine.Content;
+using DevilDaggersInfo.App.Engine.Content.Conversion;
 
-namespace Warp.NET;
+namespace DevilDaggersInfo.App.Engine;
 
 /// <summary>
 /// Used to instantiate game classes.

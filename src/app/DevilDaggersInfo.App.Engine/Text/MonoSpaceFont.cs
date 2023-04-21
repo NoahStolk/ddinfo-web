@@ -1,8 +1,8 @@
+using DevilDaggersInfo.App.Engine.Content;
+using DevilDaggersInfo.App.Engine.Maths.Numerics;
 using System.Collections.Immutable;
-using Warp.NET.Content;
-using Warp.NET.Maths.Numerics;
 
-namespace Warp.NET.Text;
+namespace DevilDaggersInfo.App.Engine.Text;
 
 public class MonoSpaceFont
 {

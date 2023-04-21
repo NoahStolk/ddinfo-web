@@ -1,12 +1,12 @@
-using Warp.NET.Content.Conversion.Blobs;
-using Warp.NET.Content.Conversion.Charsets;
-using Warp.NET.Content.Conversion.Models;
-using Warp.NET.Content.Conversion.Shaders;
-using Warp.NET.Content.Conversion.Sounds;
-using Warp.NET.Content.Conversion.Textures;
-using Warp.NET.Parsers.Model;
+using DevilDaggersInfo.App.Engine.Content.Conversion.Blobs;
+using DevilDaggersInfo.App.Engine.Content.Conversion.Charsets;
+using DevilDaggersInfo.App.Engine.Content.Conversion.Models;
+using DevilDaggersInfo.App.Engine.Content.Conversion.Shaders;
+using DevilDaggersInfo.App.Engine.Content.Conversion.Sounds;
+using DevilDaggersInfo.App.Engine.Content.Conversion.Textures;
+using DevilDaggersInfo.App.Engine.Parsers.Model;
 
-namespace Warp.NET.Content.Conversion;
+namespace DevilDaggersInfo.App.Engine.Content.Conversion;
 
 internal static class ContentFileReader
 {
