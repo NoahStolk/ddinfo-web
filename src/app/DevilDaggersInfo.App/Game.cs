@@ -19,10 +19,11 @@ using Constants = DevilDaggersInfo.App.Ui.Base.Constants;
 
 namespace DevilDaggersInfo.App;
 
-[GenerateGame]
-public sealed partial class Game : GameBase, IGame
+public sealed class Game : GameBase, IGame, IGameBase<Game>
 {
 	private readonly Matrix4x4 _uiProjectionMatrix;
+
+	private static Game? _self;
 
 	private Game()
 	{
@@ -46,6 +47,18 @@ public sealed partial class Game : GameBase, IGame
 		UserCache.Load();
 	}
 
+	public static Game Self
+	{
+		get => _self ?? throw new InvalidOperationException("Game is not initialized.");
+		set
+		{
+			if (_self != null)
+				throw new InvalidOperationException("Game is already initialized.");
+
+			_self = value;
+		}
+	}
+
 	public AppVersion AppVersion { get; }
 
 	public TooltipContext? TooltipContext { get; set; }
@@ -61,6 +74,11 @@ public sealed partial class Game : GameBase, IGame
 	public RectangleRenderer RectangleRenderer { get; } = new();
 	public EllipseRenderer EllipseRenderer { get; } = new();
 	public LineRenderer LineRenderer { get; } = new();
+
+	public static Game Construct()
+	{
+		return new();
+	}
 
 	protected override void Update()
 	{
