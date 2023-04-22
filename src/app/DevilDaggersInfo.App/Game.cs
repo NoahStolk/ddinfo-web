@@ -19,13 +19,13 @@ using Constants = DevilDaggersInfo.App.Ui.Base.Constants;
 
 namespace DevilDaggersInfo.App;
 
-public sealed class Game : GameBase, IGame, IGameBase<Game>
+public sealed class Game : GameBase, IGame
 {
 	private readonly Matrix4x4 _uiProjectionMatrix;
 
 	private static Game? _self;
 
-	private Game()
+	public Game()
 	{
 		AppDomain.CurrentDomain.UnhandledException += (_, args) => Root.Dependencies.Log.Fatal(args.ExceptionObject.ToString());
 

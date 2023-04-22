@@ -52,7 +52,9 @@ public static class Program
 		Root.Dependencies = new DependencyContainer();
 		DebugStack.Add(sw.ElapsedMilliseconds, debugTimeout, "init deps and ui");
 
-		Game game = Bootstrapper.CreateGame<Game>();
+		Game game = new();
+		WarpBase.Game = game;
+		Game.Self = game;
 		Root.Game = game;
 		DebugStack.Add(sw.ElapsedMilliseconds, debugTimeout, "init game");
 		sw.Stop();

@@ -24,18 +24,4 @@ public static class Bootstrapper
 
 		return ContentFileReader.Read(contentFilePath);
 	}
-
-	/// <summary>
-	/// Instantiates the game class.
-	/// </summary>
-	/// <typeparam name="TGame">The game type which must derive from <see cref="GameBase"/> and implement <see cref="IGameBase{TSelf}"/>.</typeparam>
-	/// <returns>The game instance.</returns>
-	public static TGame CreateGame<TGame>()
-		where TGame : GameBase, IGameBase<TGame>
-	{
-		TGame game = TGame.Construct();
-		WarpBase.Game = game;
-		TGame.Self = game;
-		return game;
-	}
 }
