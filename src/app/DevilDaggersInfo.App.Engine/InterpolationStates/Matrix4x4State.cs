@@ -8,5 +8,5 @@ public class Matrix4x4State : AbstractInterpolationState<Matrix4x4>
 	}
 
 	public override void PrepareRender()
-		=> Render = Matrix4x4.Lerp(PhysicsPrevious, Physics, WarpBase.Game.SubFrame);
+		=> Render = Matrix4x4.Lerp(PhysicsPrevious, Physics, EngineNodes.Game.SubFrame);
 }

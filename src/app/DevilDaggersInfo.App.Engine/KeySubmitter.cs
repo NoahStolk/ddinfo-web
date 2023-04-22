@@ -8,7 +8,7 @@ public class KeySubmitter
 	private float _keyHoldSubmitTimer;
 	private Keys _lastPressedKey;
 
-	public Keys? GetKey(float dt)
+	public Keys? GetKey()
 	{
 		Keys key = Input.GetPressedKey();
 		if (key is not (0 or Keys.ShiftLeft or Keys.ShiftRight or Keys.ControlLeft or Keys.ControlRight or Keys.AltLeft or Keys.AltRight))
@@ -20,8 +20,8 @@ public class KeySubmitter
 
 		if (Input.IsKeyHeld(_lastPressedKey))
 		{
-			_keyHoldTimer += dt;
-			_keyHoldSubmitTimer += dt;
+			_keyHoldTimer += EngineNodes.Game.Dt;
+			_keyHoldSubmitTimer += EngineNodes.Game.Dt;
 		}
 		else
 		{

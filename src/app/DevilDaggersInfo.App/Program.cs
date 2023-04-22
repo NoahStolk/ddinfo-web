@@ -53,7 +53,7 @@ public static class Program
 		DebugStack.Add(sw.ElapsedMilliseconds, debugTimeout, "init deps and ui");
 
 		Game game = new();
-		WarpBase.Game = game;
+		EngineNodes.Initialize(game);
 		Root.Game = game;
 		DebugStack.Add(sw.ElapsedMilliseconds, debugTimeout, "init game");
 		sw.Stop();

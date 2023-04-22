@@ -8,5 +8,5 @@ public class QuaternionState : AbstractInterpolationState<Quaternion>
 	}
 
 	public override void PrepareRender()
-		=> Render = Quaternion.Lerp(PhysicsPrevious, Physics, WarpBase.Game.SubFrame);
+		=> Render = Quaternion.Lerp(PhysicsPrevious, Physics, EngineNodes.Game.SubFrame);
 }

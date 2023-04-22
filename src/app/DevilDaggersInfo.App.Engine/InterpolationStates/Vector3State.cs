@@ -8,5 +8,5 @@ public class Vector3State : AbstractInterpolationState<Vector3>
 	}
 
 	public override void PrepareRender()
-		=> Render = Vector3.Lerp(PhysicsPrevious, Physics, WarpBase.Game.SubFrame);
+		=> Render = Vector3.Lerp(PhysicsPrevious, Physics, EngineNodes.Game.SubFrame);
 }

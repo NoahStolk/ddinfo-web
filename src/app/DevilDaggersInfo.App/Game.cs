@@ -61,11 +61,6 @@ public sealed class Game : GameBase, IGame
 	public EllipseRenderer EllipseRenderer { get; } = new();
 	public LineRenderer LineRenderer { get; } = new();
 
-	public static Game Construct()
-	{
-		return new();
-	}
-
 	protected override void Update()
 	{
 		StateManager.ReduceAll();

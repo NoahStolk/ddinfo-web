@@ -27,13 +27,13 @@ public sealed class KeyboardInput
 	public int CursorPositionStart { get; set; }
 	public int CursorPositionEnd { get; set; }
 
-	public void Update(float dt)
+	public void Update()
 	{
-		CursorTimer += dt;
+		CursorTimer += EngineNodes.Game.Dt;
 		if (CursorTimer > _cursorTimerMax)
 			CursorTimer = 0;
 
-		Keys? key = _keySubmitter.GetKey(dt);
+		Keys? key = _keySubmitter.GetKey();
 		if (key.HasValue)
 			HandleKey(key.Value);
 	}

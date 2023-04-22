@@ -41,7 +41,7 @@ public class SurvivalEditorMainLayout : Layout, IExtendedLayout
 		if (!Input.IsCtrlHeld())
 			return;
 
-		Keys? key = _keySubmitter.GetKey(WarpBase.Game.Dt);
+		Keys? key = _keySubmitter.GetKey();
 		if (key.HasValue)
 		{
 			if (key == Keys.Z && StateManager.SpawnsetHistoryState.CurrentIndex > 0)

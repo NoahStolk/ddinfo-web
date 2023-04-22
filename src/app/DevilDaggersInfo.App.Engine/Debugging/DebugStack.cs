@@ -52,7 +52,7 @@ public static class DebugStack
 	/// <param name="memberName">The caller member name (<see cref="CallerMemberNameAttribute"/>).</param>
 	/// <param name="lineNumber">The caller line number (<see cref="CallerLineNumberAttribute"/>).</param>
 	public static void Add(object? value, bool clearAfterFrame = false, [CallerArgumentExpression(nameof(value))] string expression = "", [CallerFilePath] string filePath = "", [CallerMemberName] string memberName = "", [CallerLineNumber] int lineNumber = 0)
-		=> Add(expression, value, WarpBase.Game.Dt, clearAfterFrame, GetCallerDeclaration(filePath, memberName), lineNumber);
+		=> Add(expression, value, EngineNodes.Game.Dt, clearAfterFrame, GetCallerDeclaration(filePath, memberName), lineNumber);
 
 	/// <summary>
 	/// Adds the <paramref name="value"/> to the debug stack and removes it after the <paramref name="timeout"/> has ended.
