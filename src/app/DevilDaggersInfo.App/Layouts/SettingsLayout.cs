@@ -86,8 +86,8 @@ public class SettingsLayout : Layout, IExtendedLayout
 	public void Render()
 	{
 		Vector2i<int> windowScale = new(CurrentWindowState.Width, CurrentWindowState.Height);
-		Game.Self.RectangleRenderer.Schedule(windowScale, windowScale / 2, -100, Color.Gray(0.1f));
+		Root.Game.RectangleRenderer.Schedule(windowScale, windowScale / 2, -100, Color.Gray(0.1f));
 
-		Game.Self.MonoSpaceFontRenderer32.Schedule(Vector2i<int>.One, new(512, 64), 0, Color.White, "Settings", TextAlign.Middle);
+		Root.Game.MonoSpaceFontRenderer32.Schedule(Vector2i<int>.One, new(512, 64), 0, Color.White, "Settings", TextAlign.Middle);
 	}
 }

@@ -110,7 +110,7 @@ public abstract class GameBase
 		{
 			_updateLoopTimer.Restart();
 
-			DebugStack.Update();
+			DebugStack.Update(Dt);
 
 			_updates++;
 			Update();

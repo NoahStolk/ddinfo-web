@@ -96,9 +96,9 @@ public class ConfigLayout : Layout, IExtendedLayout
 	public void Render()
 	{
 		Vector2i<int> windowScale = new(CurrentWindowState.Width, CurrentWindowState.Height);
-		Game.Self.RectangleRenderer.Schedule(windowScale, windowScale / 2, -100, Color.Gray(0.1f));
+		Root.Game.RectangleRenderer.Schedule(windowScale, windowScale / 2, -100, Color.Gray(0.1f));
 
-		Game.Self.MonoSpaceFontRenderer32.Schedule(Vector2i<int>.One, new(512, 64), 0, Color.White, "Configuration", TextAlign.Middle);
+		Root.Game.MonoSpaceFontRenderer32.Schedule(Vector2i<int>.One, new(512, 64), 0, Color.White, "Configuration", TextAlign.Middle);
 
 #pragma warning disable S1075
 #if LINUX
@@ -115,8 +115,8 @@ public class ConfigLayout : Layout, IExtendedLayout
 
 			Example: {examplePath}
 			""";
-		Game.Self.MonoSpaceFontRenderer12.Schedule(Vector2i<int>.One, new(32, 128), 0, Color.White, text, TextAlign.Left);
+		Root.Game.MonoSpaceFontRenderer12.Schedule(Vector2i<int>.One, new(32, 128), 0, Color.White, text, TextAlign.Left);
 		if (!string.IsNullOrWhiteSpace(_error))
-			Game.Self.MonoSpaceFontRenderer12.Schedule(Vector2i<int>.One, new(32, 256), 0, Color.Red, _error, TextAlign.Left);
+			Root.Game.MonoSpaceFontRenderer12.Schedule(Vector2i<int>.One, new(32, 256), 0, Color.Red, _error, TextAlign.Left);
 	}
 }

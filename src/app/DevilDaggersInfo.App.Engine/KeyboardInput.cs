@@ -27,13 +27,13 @@ public sealed class KeyboardInput
 	public int CursorPositionStart { get; set; }
 	public int CursorPositionEnd { get; set; }
 
-	public void Update()
+	public void Update(float dt)
 	{
-		CursorTimer += WarpBase.Game.Dt;
+		CursorTimer += dt;
 		if (CursorTimer > _cursorTimerMax)
 			CursorTimer = 0;
 
-		Keys? key = _keySubmitter.GetKey();
+		Keys? key = _keySubmitter.GetKey(dt);
 		if (key.HasValue)
 			HandleKey(key.Value);
 	}

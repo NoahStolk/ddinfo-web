@@ -5,8 +5,6 @@ public static class DebugStack
 	private static readonly List<DebugStackEntry> _stack = new();
 	private static readonly StringBuilder _stringBuilder = new();
 
-	public static DebugStackDisplaySetting DisplaySetting { get; set; }
-
 	public static string GetString()
 	{
 		if (_stack.Count == 0)
@@ -14,16 +12,16 @@ public static class DebugStack
 
 		_stringBuilder.Clear();
 		foreach (IGrouping<float, DebugStackEntry> group in _stack.GroupBy(dse => dse.Timeout))
-			_stringBuilder.AppendJoin("\n", group.Select(dse => dse.ToString(DisplaySetting))).AppendLine();
+			_stringBuilder.AppendJoin("\n", group.Select(dse => dse.ToString())).AppendLine();
 		return _stringBuilder.ToString();
 	}
 
-	public static void Update()
+	public static void Update(float dt)
 	{
 		for (int i = _stack.Count - 1; i >= 0; i--)
 		{
 			DebugStackEntry entry = _stack[i];
-			entry.Timeout -= WarpBase.Game.Dt;
+			entry.Timeout -= dt;
 			if (entry.Timeout <= 0)
 				_stack.RemoveAt(i);
 		}
@@ -90,24 +88,6 @@ public static class DebugStack
 		public int CallerLineNumber { get; }
 		public float Timeout { get; set; }
 
-		public string ToString(DebugStackDisplaySetting displaySetting) => displaySetting switch
-		{
-			DebugStackDisplaySetting.Simple => $"{Name,-30} {Value}",
-			_ => ToVerboseString(),
-		};
-
-		private string ToVerboseString()
-		{
-			float frameCount = Timeout / WarpBase.Game.Dt;
-			return $"{GetDisplayFrameCount(frameCount),3}: {CallerDeclaration,-30} L{CallerLineNumber} {Name,-30} {Value}";
-
-			static string GetDisplayFrameCount(float frameCount)
-			{
-				if (float.IsNaN(frameCount))
-					return "NaN";
-
-				return float.IsInfinity(frameCount) ? "INF" : frameCount.ToString("###");
-			}
-		}
+		public override string ToString() => $"{Name,-30} {Value}";
 	}
 }

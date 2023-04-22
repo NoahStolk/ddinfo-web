@@ -23,8 +23,6 @@ public sealed class Game : GameBase, IGame
 {
 	private readonly Matrix4x4 _uiProjectionMatrix;
 
-	private static Game? _self;
-
 	public Game()
 	{
 		AppDomain.CurrentDomain.UnhandledException += (_, args) => Root.Dependencies.Log.Fatal(args.ExceptionObject.ToString());
@@ -45,18 +43,6 @@ public sealed class Game : GameBase, IGame
 
 		UserSettings.Load();
 		UserCache.Load();
-	}
-
-	public static Game Self
-	{
-		get => _self ?? throw new InvalidOperationException("Game is not initialized.");
-		set
-		{
-			if (_self != null)
-				throw new InvalidOperationException("Game is already initialized.");
-
-			_self = value;
-		}
 	}
 
 	public AppVersion AppVersion { get; }

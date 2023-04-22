@@ -54,7 +54,6 @@ public static class Program
 
 		Game game = new();
 		WarpBase.Game = game;
-		Game.Self = game;
 		Root.Game = game;
 		DebugStack.Add(sw.ElapsedMilliseconds, debugTimeout, "init game");
 		sw.Stop();

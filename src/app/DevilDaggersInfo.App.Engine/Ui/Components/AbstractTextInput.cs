@@ -66,7 +66,7 @@ public abstract class AbstractTextInput : AbstractComponent
 			KeyboardInput.CursorPositionEnd = GetIndexFromAbsoluteMousePositionX(absoluteMousePositionX);
 		}
 
-		KeyboardInput.Update();
+		KeyboardInput.Update(WarpBase.Game.Dt);
 
 		int GetIndexFromAbsoluteMousePositionX(int absoluteMousePositionX)
 			=> Math.Clamp((int)MathF.Round((absoluteMousePositionX - TextRenderingHorizontalOffset) / (float)CharWidth), 0, KeyboardInput.Value.Length);
