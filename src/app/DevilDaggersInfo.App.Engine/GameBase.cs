@@ -1,5 +1,4 @@
 using DevilDaggersInfo.App.Engine.Debugging;
-using DevilDaggersInfo.App.Engine.GameObjects;
 
 namespace DevilDaggersInfo.App.Engine;
 
@@ -18,10 +17,6 @@ public abstract class GameBase
 
 	private float _updateLength;
 	private float _mainLoopLength;
-
-	private readonly List<IGameObject> _toAdd = new();
-	private readonly List<IGameObject> _toRemove = new();
-	private readonly List<IGameObject> _gameObjects = new();
 
 	private int _currentSecond;
 	private int _updates;
@@ -69,10 +64,6 @@ public abstract class GameBase
 
 	public float AudioVolume { get; set; } = 1;
 
-	public bool IsPaused { get; private set; }
-
-	public IReadOnlyList<IGameObject> GameObjects => _gameObjects;
-
 	protected int Tps { get; private set; }
 	protected int Fps { get; private set; }
 
@@ -87,12 +78,7 @@ public abstract class GameBase
 				Thread.Yield();
 		}
 
-		CleanUp();
 		Graphics.Glfw.Terminate();
-	}
-
-	protected virtual void CleanUp()
-	{
 	}
 
 	private unsafe void Main()
@@ -116,7 +102,7 @@ public abstract class GameBase
 
 		_accumulator += frameTime;
 
-		Dt = IsPaused ? 0 : _updateLength * TimeMultiplier;
+		Dt = _updateLength * TimeMultiplier;
 
 		Graphics.Glfw.PollEvents();
 
@@ -126,16 +112,8 @@ public abstract class GameBase
 
 			DebugStack.Update();
 
-			UpdateAlways();
-
-			if (!IsPaused)
-			{
-				ModifyLists();
-				PrepareUpdate();
-
-				_updates++;
-				Update();
-			}
+			_updates++;
+			Update();
 
 			Input.PostUpdate();
 
@@ -143,8 +121,7 @@ public abstract class GameBase
 			_accumulator -= _updateLength;
 		}
 
-		if (!IsPaused)
-			SubFrame = _updateLoopTimer.Elapsed.Ticks / (float)_ticksInSecond * UpdateRate;
+		SubFrame = _updateLoopTimer.Elapsed.Ticks / (float)_ticksInSecond * UpdateRate;
 
 		PrepareRender();
 
@@ -155,64 +132,9 @@ public abstract class GameBase
 		DebugStack.EndRender();
 	}
 
-	private void ModifyLists()
-	{
-		foreach (IGameObject go in _toAdd)
-			HandleAdds(go);
+	protected abstract void Update();
 
-		foreach (IGameObject go in _toRemove)
-			HandleRemoves(go);
-
-		_toAdd.Clear();
-		_toRemove.Clear();
-	}
-
-	protected virtual void HandleAdds(IGameObject gameObject)
-		=> _gameObjects.Add(gameObject);
-
-	protected virtual void HandleRemoves(IGameObject gameObject)
-		=> _gameObjects.Remove(gameObject);
-
-	public void Add(IGameObject gameObject)
-		=> _toAdd.Add(gameObject);
-
-	public void Remove(IGameObject gameObject)
-		=> _toRemove.Add(gameObject);
-
-	protected virtual void UpdateAlways()
-	{
-	}
-
-	protected virtual void PrepareUpdate()
-	{
-		for (int i = 0; i < GameObjects.Count; i++)
-			GameObjects[i].PrepareUpdate();
-	}
-
-	protected virtual void Update()
-	{
-		for (int i = 0; i < GameObjects.Count; i++)
-			GameObjects[i].Update();
-	}
-
-	public virtual void Clear()
-	{
-		for (int i = 0; i < GameObjects.Count; i++)
-			GameObjects[i].Remove();
-
-		_toAdd.Clear();
-	}
-
-	protected virtual void PrepareRender()
-	{
-		for (int i = 0; i < GameObjects.Count; i++)
-			GameObjects[i].PrepareRender();
-	}
+	protected abstract void PrepareRender();
 
 	protected abstract void Render();
-
-	public virtual void TogglePause()
-	{
-		IsPaused = !IsPaused;
-	}
 }

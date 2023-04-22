@@ -84,8 +84,6 @@ public sealed class Game : GameBase, IGame, IGameBase<Game>
 	{
 		StateManager.ReduceAll();
 
-		base.Update();
-
 		TooltipContext = null;
 
 		MouseUiContext.Reset(ViewportState.MousePosition);
@@ -95,8 +93,6 @@ public sealed class Game : GameBase, IGame, IGameBase<Game>
 
 	protected override void PrepareRender()
 	{
-		base.PrepareRender();
-
 		StateManager.LayoutState.CurrentLayout?.Render();
 		StateManager.LayoutState.CurrentLayout?.NestingContext.Render(default);
 
