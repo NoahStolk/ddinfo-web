@@ -14,10 +14,6 @@ public static class MathUtils
 	public static float Lerp(float value1, float value2, float amount)
 		=> value1 + (value2 - value1) * amount;
 
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static float Square(float value1)
-		=> value1 * value1;
-
 	public static bool IsFloatReal(float value)
 		=> !float.IsNaN(value) && !float.IsInfinity(value);
 }

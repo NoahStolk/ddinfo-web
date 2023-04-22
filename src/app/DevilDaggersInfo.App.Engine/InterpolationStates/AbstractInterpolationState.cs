@@ -11,11 +11,6 @@ public abstract class AbstractInterpolationState<TState>
 		Render = start;
 	}
 
-	/// <summary>
-	/// Indicates whether this state differs from its previous value.
-	/// </summary>
-	public bool IsChanged => !Physics.Equals(PhysicsPrevious);
-
 	public TState Start { get; }
 	public TState PhysicsPrevious { get; private set; }
 	public TState Physics { get; set; }
