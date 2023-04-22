@@ -6,6 +6,10 @@
     <Version>0.4.2.0</Version>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(CI)' == 'true'">
+    <DefineConstants>$(DefineConstants);SKIP_VALUE</DefineConstants>
+  </PropertyGroup>
+
   <Choose>
     <When Condition="'$(Configuration)' == 'Debug'">
       <Choose>
