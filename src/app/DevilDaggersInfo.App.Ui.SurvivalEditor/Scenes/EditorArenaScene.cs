@@ -80,7 +80,7 @@ public sealed class EditorArenaScene : IArenaScene
 
 		Camera.PreRender();
 
-		WarpShaders.Mesh.Use();
+		Shaders.Mesh.Use();
 		Shader.SetMatrix4x4(MeshUniforms.View, Camera.ViewMatrix);
 		Shader.SetMatrix4x4(MeshUniforms.Projection, Camera.Projection);
 		Shader.SetInt(MeshUniforms.TextureDiffuse, 0);
@@ -102,7 +102,7 @@ public sealed class EditorArenaScene : IArenaScene
 
 		RaceDagger?.Render();
 
-		WarpTextures.TileHitbox.Use();
+		Textures.TileHitbox.Use();
 
 		Tiles.Sort(static (a, b) => a.SquaredDistanceToCamera().CompareTo(b.SquaredDistanceToCamera()));
 		foreach (Tile tile in Tiles)

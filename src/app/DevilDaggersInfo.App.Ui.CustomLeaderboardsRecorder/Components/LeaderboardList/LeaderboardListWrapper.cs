@@ -2,6 +2,7 @@ using DevilDaggersInfo.App.Engine.Maths.Numerics;
 using DevilDaggersInfo.App.Engine.Text;
 using DevilDaggersInfo.App.Engine.Ui;
 using DevilDaggersInfo.App.Engine.Ui.Components;
+using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.Components;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.Networking;
@@ -29,11 +30,11 @@ public class LeaderboardListWrapper : AbstractComponent
 	{
 		int pagingComponentsDepth = Depth + 100;
 
-		TooltipIconButton refreshButton = new(bounds.CreateNested(4, 32, 20, 20), () => StateManager.Dispatch(new ReloadAllCustomLeaderboards()), ButtonStyles.NavigationButton, WarpTextures.Reload, "Reload all", TextAlign.Left, Color.HalfTransparentWhite, Color.White) { Depth = pagingComponentsDepth };
-		_firstButton = new(bounds.CreateNested(24, 32, 20, 20), () => StateManager.Dispatch(new SetPageIndex(0)), ButtonStyles.NavigationButton, WarpTextures.ArrowStart, "First", TextAlign.Left, Color.HalfTransparentWhite, Color.White) { Depth = pagingComponentsDepth };
-		_prevButton = new(bounds.CreateNested(44, 32, 20, 20), () => StateManager.Dispatch(new SetPageIndex(StateManager.LeaderboardListState.PageIndex - 1)), ButtonStyles.NavigationButton, WarpTextures.ArrowLeft, "Previous", TextAlign.Left, Color.HalfTransparentWhite, Color.White) { Depth = pagingComponentsDepth };
-		_nextButton = new(bounds.CreateNested(64, 32, 20, 20), () => StateManager.Dispatch(new SetPageIndex(StateManager.LeaderboardListState.PageIndex + 1)), ButtonStyles.NavigationButton, WarpTextures.ArrowRight, "Next", TextAlign.Left, Color.HalfTransparentWhite, Color.White) { Depth = pagingComponentsDepth };
-		_lastButton = new(bounds.CreateNested(84, 32, 20, 20), () => StateManager.Dispatch(new SetPageIndex(StateManager.LeaderboardListState.GetTotalPages() - 1)), ButtonStyles.NavigationButton, WarpTextures.ArrowEnd, "Last", TextAlign.Left, Color.HalfTransparentWhite, Color.White) { Depth = pagingComponentsDepth };
+		TooltipIconButton refreshButton = new(bounds.CreateNested(4, 32, 20, 20), () => StateManager.Dispatch(new ReloadAllCustomLeaderboards()), ButtonStyles.NavigationButton, Textures.Reload, "Reload all", TextAlign.Left, Color.HalfTransparentWhite, Color.White) { Depth = pagingComponentsDepth };
+		_firstButton = new(bounds.CreateNested(24, 32, 20, 20), () => StateManager.Dispatch(new SetPageIndex(0)), ButtonStyles.NavigationButton, Textures.ArrowStart, "First", TextAlign.Left, Color.HalfTransparentWhite, Color.White) { Depth = pagingComponentsDepth };
+		_prevButton = new(bounds.CreateNested(44, 32, 20, 20), () => StateManager.Dispatch(new SetPageIndex(StateManager.LeaderboardListState.PageIndex - 1)), ButtonStyles.NavigationButton, Textures.ArrowLeft, "Previous", TextAlign.Left, Color.HalfTransparentWhite, Color.White) { Depth = pagingComponentsDepth };
+		_nextButton = new(bounds.CreateNested(64, 32, 20, 20), () => StateManager.Dispatch(new SetPageIndex(StateManager.LeaderboardListState.PageIndex + 1)), ButtonStyles.NavigationButton, Textures.ArrowRight, "Next", TextAlign.Left, Color.HalfTransparentWhite, Color.White) { Depth = pagingComponentsDepth };
+		_lastButton = new(bounds.CreateNested(84, 32, 20, 20), () => StateManager.Dispatch(new SetPageIndex(StateManager.LeaderboardListState.GetTotalPages() - 1)), ButtonStyles.NavigationButton, Textures.ArrowEnd, "Last", TextAlign.Left, Color.HalfTransparentWhite, Color.White) { Depth = pagingComponentsDepth };
 		NestingContext.Add(refreshButton);
 		NestingContext.Add(_firstButton);
 		NestingContext.Add(_prevButton);

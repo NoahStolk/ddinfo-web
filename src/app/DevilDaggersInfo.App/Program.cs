@@ -29,19 +29,19 @@ public static class Program
 		const string? ddInfoToolsContentRootDirectory = null;
 #endif
 		DecompiledContentFile ddInfoToolsContent = Bootstrapper.GetDecompiledContent(ddInfoToolsContentRootDirectory, "ddinfo");
-		WarpBlobs.Initialize(ddInfoToolsContent.Blobs);
-		WarpCharsets.Initialize(ddInfoToolsContent.Charsets);
-		WarpModels.Initialize(ddInfoToolsContent.Models);
-		WarpShaders.Initialize(ddInfoToolsContent.Shaders);
-		WarpTextures.Initialize(ddInfoToolsContent.Textures);
-		WarpShaderUniformInitializer.Initialize();
+		Blobs.Initialize(ddInfoToolsContent.Blobs);
+		Charsets.Initialize(ddInfoToolsContent.Charsets);
+		Models.Initialize(ddInfoToolsContent.Models);
+		Shaders.Initialize(ddInfoToolsContent.Shaders);
+		Textures.Initialize(ddInfoToolsContent.Textures);
+		ShaderUniformInitializer.Initialize();
 
-		fixed (byte* ptr = &WarpTextures.ApplicationIcon.Pixels.ToArray()[0])
+		fixed (byte* ptr = &Textures.ApplicationIcon.Pixels.ToArray()[0])
 		{
 			Image image = new()
 			{
-				Width = WarpTextures.ApplicationIcon.Width,
-				Height = WarpTextures.ApplicationIcon.Height,
+				Width = Textures.ApplicationIcon.Width,
+				Height = Textures.ApplicationIcon.Height,
 				Pixels = ptr,
 			};
 			Graphics.Glfw.SetWindowIcon(Window, 1, &image);

@@ -26,7 +26,7 @@ public class Tile
 
 		_top = new(_tileVao, ContentManager.Content.TileMesh, positionX, positionZ);
 		_pillar = new(_pillarVao, ContentManager.Content.PillarMesh, positionX, positionZ);
-		_tileHitbox = new(_cubeVao, WarpModels.TileHitbox.MainMesh, positionX, positionZ);
+		_tileHitbox = new(_cubeVao, Models.TileHitbox.MainMesh, positionX, positionZ);
 	}
 
 	public float PositionX { get; }
@@ -40,7 +40,7 @@ public class Tile
 		// TODO: Prevent this from being called multiple times.
 		_tileVao = CreateVao(ContentManager.Content.TileMesh);
 		_pillarVao = CreateVao(ContentManager.Content.PillarMesh);
-		_cubeVao = CreateVao(WarpModels.TileHitbox.MainMesh);
+		_cubeVao = CreateVao(Models.TileHitbox.MainMesh);
 
 		static uint CreateVao(Mesh mesh)
 		{
