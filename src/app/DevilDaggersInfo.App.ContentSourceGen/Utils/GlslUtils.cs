@@ -1,38 +1,52 @@
-using DevilDaggersInfo.App.ContentSourceGen.Generators.ShaderUniform;
-
 namespace DevilDaggersInfo.App.ContentSourceGen.Utils;
 
 internal static class GlslUtils
 {
 	public static ShaderUniform? GetFromGlslLine(string line)
 	{
-		const string uniform = nameof(uniform);
 		string trimmedLine = line.Trim();
-		if (!trimmedLine.StartsWith(uniform))
+
+		string[] parts = trimmedLine.Split(' ');
+		if (parts.Length < 3)
+			return null;
+		if (parts[0] != "uniform")
 			return null;
 
-		StringBuilder uniformBuilder = new();
-		bool foundSecondSpace = false;
-		for (int i = uniform.Length + 1; i < trimmedLine.Length; i++)
+		string type = GetType(parts);
+		string name = GetName(parts);
+		if (name.Length == 0)
+			return null;
+
+		return new(type, name);
+	}
+
+	private static string GetType(string[] parts)
+	{
+		string underlyingType = parts[1];
+		bool isArray = parts[2].Contains('[');
+		return isArray ? underlyingType + "[]" : underlyingType;
+	}
+
+	private static string GetName(string[] parts)
+	{
+		string end = parts[2];
+
+		for (int i = 0; i < end.Length; i++)
 		{
-			char c = trimmedLine[i];
-			if (!foundSecondSpace)
-			{
-				if (c == ' ')
-					foundSecondSpace = true;
-			}
-			else
-			{
-				if (char.IsLetterOrDigit(c) || c == '_')
-					uniformBuilder.Append(c);
-				else
-					break;
-			}
+			char c = end[i];
+			if (char.IsLetterOrDigit(c) || c == '_')
+				continue;
+
+			return end.Substring(0, i);
 		}
 
-		if (uniformBuilder.Length == 0)
-			return null;
+		return end;
+	}
 
-		return new(uniformBuilder.ToString());
+	public record ShaderUniform(string Type, string Name)
+	{
+		public string Type { get; } = Type;
+
+		public string Name { get; } = Name;
 	}
 }

@@ -34,7 +34,6 @@ public static class Program
 		Models.Initialize(ddInfoToolsContent.Models);
 		Shaders.Initialize(ddInfoToolsContent.Shaders);
 		Textures.Initialize(ddInfoToolsContent.Textures);
-		ShaderUniformInitializer.Initialize();
 
 		fixed (byte* ptr = &Textures.ApplicationIcon.Pixels.ToArray()[0])
 		{

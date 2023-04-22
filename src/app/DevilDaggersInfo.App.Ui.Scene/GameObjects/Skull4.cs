@@ -45,8 +45,7 @@ public class Skull4
 
 	public unsafe void Render()
 	{
-		Matrix4x4 model = Matrix4x4.CreateScale(1.5f) * Matrix4x4.CreateTranslation(new(0, 4f, 0));
-		Shader.SetMatrix4x4(MeshUniforms.Model, model);
+		MeshShader.SetModel(Matrix4x4.CreateScale(1.5f) * Matrix4x4.CreateTranslation(new(0, 4f, 0)));
 
 		ContentManager.Content.Skull4Texture.Use();
 

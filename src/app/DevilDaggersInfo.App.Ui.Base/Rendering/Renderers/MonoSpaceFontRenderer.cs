@@ -67,15 +67,15 @@ public class MonoSpaceFontRenderer
 
 			int originX = relativePosition.X;
 
-			Shader.SetVector4(FontUniforms.Color, mst.Color);
+			FontShader.SetColor(mst.Color);
 			foreach (char c in mst.Text)
 			{
 				float? offset = Font.GetTextureOffset(c);
 				if (offset.HasValue)
 				{
 					Matrix4x4 translationMatrix = Matrix4x4.CreateTranslation(mst.Position.X + relativePosition.X, mst.Position.Y + relativePosition.Y, mst.Depth);
-					Shader.SetMatrix4x4(FontUniforms.Model, scaleMatrix * translationMatrix);
-					Shader.SetFloat(FontUniforms.Offset, offset.Value);
+					FontShader.SetModel(scaleMatrix * translationMatrix);
+					FontShader.SetOffset(offset.Value);
 					Gl.DrawArrays(PrimitiveType.Triangles, 0, 6);
 				}
 

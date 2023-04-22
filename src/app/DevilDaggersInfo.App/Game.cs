@@ -113,14 +113,14 @@ public sealed class Game : GameBase, IGame
 
 		ViewportState.Viewport.Activate();
 
-		Shaders.Ui.Use();
-		Shader.SetMatrix4x4(UiUniforms.Projection, _uiProjectionMatrix);
+		UiShader.Use();
+		UiShader.SetProjection(_uiProjectionMatrix);
 		RectangleRenderer.Render();
 		EllipseRenderer.Render();
 		LineRenderer.Render();
 
-		Shaders.Font.Use();
-		Shader.SetMatrix4x4(FontUniforms.Projection, _uiProjectionMatrix);
+		FontShader.Use();
+		FontShader.SetProjection(_uiProjectionMatrix);
 		MonoSpaceFontRenderer8.Render();
 		MonoSpaceFontRenderer12.Render();
 		MonoSpaceFontRenderer16.Render();
@@ -128,8 +128,8 @@ public sealed class Game : GameBase, IGame
 		MonoSpaceFontRenderer32.Render();
 		MonoSpaceFontRenderer64.Render();
 
-		Shaders.Sprite.Use();
-		Shader.SetMatrix4x4(SpriteUniforms.Projection, _uiProjectionMatrix);
+		SpriteShader.Use();
+		SpriteShader.SetProjection(_uiProjectionMatrix);
 		SpriteRenderer.Render();
 
 		Gl.Disable(EnableCap.ScissorTest);

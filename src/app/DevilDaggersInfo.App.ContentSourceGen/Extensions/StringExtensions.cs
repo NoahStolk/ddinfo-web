@@ -31,11 +31,4 @@ internal static class StringExtensions
 		string indentation = new('\t', count);
 		return code.Replace(Constants.NewLine, Constants.NewLine + indentation);
 	}
-
-	public static string RegularTextToPascalCase(this string str)
-	{
-		return string.Concat(str
-			.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
-			.Select(s => s.FirstCharToUpperCase()));
-	}
 }

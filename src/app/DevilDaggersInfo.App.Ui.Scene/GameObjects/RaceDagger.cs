@@ -107,8 +107,7 @@ public class RaceDagger
 
 		ContentManager.Content.DaggerSilverTexture.Use();
 
-		Matrix4x4 model = Matrix4x4.CreateScale(8) * Matrix4x4.CreateFromQuaternion(_meshRotation.Render) * Matrix4x4.CreateTranslation(_meshPosition.Render);
-		Shader.SetMatrix4x4(MeshUniforms.Model, model);
+		MeshShader.SetModel(Matrix4x4.CreateScale(8) * Matrix4x4.CreateFromQuaternion(_meshRotation.Render) * Matrix4x4.CreateTranslation(_meshPosition.Render));
 
 		Gl.BindVertexArray(_vao);
 		fixed (uint* i = &ContentManager.Content.DaggerMesh.Indices[0])

@@ -35,8 +35,8 @@ public class EllipseRenderer
 
 			Matrix4x4 scale = Matrix4x4.CreateScale(els.Radius.X, els.Radius.Y, 1);
 			Matrix4x4 translation = Matrix4x4.CreateTranslation(els.CenterPosition.X, els.CenterPosition.Y, els.Depth);
-			Shader.SetMatrix4x4(UiUniforms.Model, scale * translation);
-			Shader.SetVector4(UiUniforms.Color, els.Color);
+			UiShader.SetModel(scale * translation);
+			UiShader.SetColor(els.Color);
 			Gl.DrawArrays(PrimitiveType.LineStrip, 0, _circleSubdivisionCount + 1);
 		}
 
