@@ -50,8 +50,8 @@ public class Player
 			Gl.VertexAttribPointer(2, 3, VertexAttribPointerType.Float, false, (uint)sizeof(Vertex), (void*)(5 * sizeof(float)));
 
 			Gl.BindVertexArray(0);
-
 			Gl.BindBuffer(BufferTargetARB.ArrayBuffer, 0);
+			Gl.DeleteBuffer(vbo);
 
 			return vao;
 		}

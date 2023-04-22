@@ -39,8 +39,8 @@ public class SpriteRenderer
 		Gl.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), (void*)(2 * sizeof(float)));
 
 		Gl.BindVertexArray(0);
-
 		Gl.BindBuffer(BufferTargetARB.ArrayBuffer, 0);
+		Gl.DeleteBuffer(vbo);
 	}
 
 	public void Schedule(Vector2 scale, Vector2 centerPosition, float depth, Texture texture, Color color)

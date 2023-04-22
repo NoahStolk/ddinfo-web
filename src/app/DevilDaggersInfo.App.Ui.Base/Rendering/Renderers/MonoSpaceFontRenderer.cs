@@ -31,6 +31,7 @@ public class MonoSpaceFontRenderer
 
 		Gl.BindVertexArray(0);
 		Gl.BindBuffer(BufferTargetARB.ArrayBuffer, 0);
+		Gl.DeleteBuffer(vbo);
 	}
 
 	public MonoSpaceFont Font { get; }
