@@ -88,37 +88,4 @@ public readonly record struct Ray(Vector3 Position, Vector3 Direction)
 			_ => tMin.HasValue ? new(tMin.Value, axis) : null,
 		};
 	}
-
-	public Vector3? Intersects(Triangle triangle)
-	{
-		const float epsilon = 0.0000001f;
-
-		Vector3 edge1 = triangle.P2 - triangle.P1;
-		Vector3 edge2 = triangle.P3 - triangle.P1;
-		Vector3 h = Vector3.Cross(Direction, edge2);
-		float a = Vector3.Dot(edge1, h);
-		if (a is > -epsilon and < epsilon)
-			return null; // Ray is parallel to the triangle.
-
-		float f = 1.0f / a;
-		Vector3 s = Position - triangle.P1;
-		float u = f * Vector3.Dot(s, h);
-		if (u is < 0.0f or > 1.0f)
-			return null;
-
-		Vector3 q = Vector3.Cross(s, edge1);
-		float v = f * Vector3.Dot(Direction, q);
-		if (v < 0.0f || u + v > 1.0f)
-			return null;
-
-		// At this stage we can compute t to find out where the intersection point is on the line.
-		float t = f * Vector3.Dot(edge2, q);
-		if (t <= epsilon)
-		{
-			// This means that there is a line intersection but not a ray intersection.
-			return null;
-		}
-
-		return Position + Direction * t;
-	}
 }
