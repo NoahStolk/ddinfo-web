@@ -61,7 +61,7 @@ public class ModBinaryCacheData
 			if (!TryReadLoudnessLine(line, out string? assetName, out float loudness) || assetName == null)
 				continue;
 
-			AudioAssetInfo? audioAssetData = AudioAudio.All.Find(a => a.AssetName == assetName);
+			AudioAssetInfo? audioAssetData = AudioAudio.All.FirstOrDefault(a => a.AssetName == assetName);
 			if (audioAssetData == null || Math.Abs(audioAssetData.DefaultLoudness - loudness) < 0.01f)
 				continue;
 

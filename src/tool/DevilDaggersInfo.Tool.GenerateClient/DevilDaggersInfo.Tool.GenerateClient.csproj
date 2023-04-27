@@ -9,8 +9,4 @@
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" PrivateAssets="all" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\common\DevilDaggersInfo.CommonSourceGen\DevilDaggersInfo.CommonSourceGen.csproj" />
-  </ItemGroup>
-
 </Project>
