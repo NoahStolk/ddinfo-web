@@ -2,7 +2,6 @@ using DevilDaggersInfo.Core.Asset;
 using DevilDaggersInfo.Core.Mod;
 using DevilDaggersInfo.Core.Mod.Exceptions;
 using DevilDaggersInfo.Core.Mod.Utils;
-using DevilDaggersInfo.Types.Core.Assets;
 using DevilDaggersInfo.Types.Core.Mods;
 using System.Text;
 

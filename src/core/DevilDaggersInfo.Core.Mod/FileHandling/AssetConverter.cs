@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Types.Core.Assets;
+using DevilDaggersInfo.Core.Asset;
 using System.Diagnostics;
 
 namespace DevilDaggersInfo.Core.Mod.FileHandling;
