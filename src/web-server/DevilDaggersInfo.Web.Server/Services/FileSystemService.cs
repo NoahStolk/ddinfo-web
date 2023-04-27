@@ -167,8 +167,9 @@ public class FileSystemService : IFileSystemService
 		await File.WriteAllTextAsync(path, text, cancellationToken);
 	}
 
-	public ZipArchive CreateZipFile(string zipFilePath)
+	public async Task CreateZipFileAsync(string zipFilePath, Func<ZipArchive, Task> func)
 	{
-		return ZipFile.Open(zipFilePath, ZipArchiveMode.Create);
+		using ZipArchive archive = ZipFile.Open(zipFilePath, ZipArchiveMode.Create);
+		await func(archive);
 	}
 }

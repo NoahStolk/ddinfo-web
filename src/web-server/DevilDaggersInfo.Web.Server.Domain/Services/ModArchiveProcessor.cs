@@ -36,13 +36,15 @@ public class ModArchiveProcessor
 
 		try
 		{
-			using ZipArchive archive = _fileSystemService.CreateZipFile(zipFilePath);
-			foreach (KeyValuePair<BinaryName, byte[]> binary in binaries)
+			await _fileSystemService.CreateZipFileAsync(zipFilePath, async za =>
 			{
-				await using Stream entry = archive.CreateEntry(binary.Key.ToFullName(modName), CompressionLevel.SmallestSize).Open();
-				using MemoryStream ms = new(binary.Value);
-				await ms.CopyToAsync(entry);
-			}
+				foreach (KeyValuePair<BinaryName, byte[]> binary in binaries)
+				{
+					await using Stream entry = za.CreateEntry(binary.Key.ToFullName(modName), CompressionLevel.SmallestSize).Open();
+					using MemoryStream ms = new(binary.Value);
+					await ms.CopyToAsync(entry);
+				}
+			});
 		}
 		catch
 		{

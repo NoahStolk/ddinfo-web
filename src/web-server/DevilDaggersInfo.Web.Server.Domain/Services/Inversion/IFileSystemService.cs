@@ -58,7 +58,7 @@ public interface IFileSystemService
 
 	Task WriteAllTextAsync(string path, string text, CancellationToken cancellationToken);
 
-	ZipArchive CreateZipFile(string zipFilePath);
+	Task CreateZipFileAsync(string zipFilePath, Func<ZipArchive, Task> func);
 
 	// TODO: Add ZipFile methods.
 

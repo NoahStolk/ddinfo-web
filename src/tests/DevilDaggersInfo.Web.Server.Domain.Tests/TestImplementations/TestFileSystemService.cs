@@ -90,35 +90,48 @@ public class TestFileSystemService : IFileSystemService
 
 	public byte[] ReadAllBytes(string path)
 	{
-		return _files[path];
+		return ReadAllBytesImpl(path);
 	}
 
 	public async Task<byte[]> ReadAllBytesAsync(string path)
 	{
 		await Task.Yield();
-		return _files[path];
+		return ReadAllBytesImpl(path);
 	}
 
 	public async Task<byte[]> ReadAllBytesAsync(string path, CancellationToken cancellationToken)
 	{
 		await Task.Yield();
-		return _files[path];
+		return ReadAllBytesImpl(path);
+	}
+
+	private byte[] ReadAllBytesImpl(string path)
+	{
+		if (_files.TryGetValue(path, out byte[]? bytes))
+			return bytes;
+
+		throw new FileNotFoundException();
 	}
 
 	public void WriteAllBytes(string path, byte[] bytes)
 	{
-		_files[path] = bytes;
+		WriteAllBytesImpl(path, bytes);
 	}
 
 	public async Task WriteAllBytesAsync(string path, byte[] bytes)
 	{
 		await Task.Yield();
-		_files[path] = bytes;
+		WriteAllBytesImpl(path, bytes);
 	}
 
 	public async Task WriteAllBytesAsync(string path, byte[] bytes, CancellationToken cancellationToken)
 	{
 		await Task.Yield();
+		WriteAllBytesImpl(path, bytes);
+	}
+
+	private void WriteAllBytesImpl(string path, byte[] bytes)
+	{
 		_files[path] = bytes;
 	}
 
@@ -129,19 +142,19 @@ public class TestFileSystemService : IFileSystemService
 
 	public string ReadAllText(string path)
 	{
-		return Encoding.UTF8.GetString(_files[path]);
+		return Encoding.UTF8.GetString(ReadAllBytesImpl(path));
 	}
 
 	public async Task<string> ReadAllTextAsync(string path)
 	{
 		await Task.Yield();
-		return Encoding.UTF8.GetString(_files[path]);
+		return Encoding.UTF8.GetString(ReadAllBytesImpl(path));
 	}
 
 	public async Task<string> ReadAllTextAsync(string path, CancellationToken cancellationToken)
 	{
 		await Task.Yield();
-		return Encoding.UTF8.GetString(_files[path]);
+		return Encoding.UTF8.GetString(ReadAllBytesImpl(path));
 	}
 
 	public void WriteAllText(string path, string text)
@@ -159,16 +172,11 @@ public class TestFileSystemService : IFileSystemService
 		throw new NotImplementedException();
 	}
 
-	public ZipArchive CreateZipFile(string zipFilePath)
+	public async Task CreateZipFileAsync(string zipFilePath, Func<ZipArchive, Task> func)
 	{
-		MemoryStream memoryStream = new();
-		ZipArchive archive = new(memoryStream, ZipArchiveMode.Create, true);
-
-		ZipArchiveEntry demoFile = archive.CreateEntry("empty.txt");
-		using Stream entryStream = demoFile.Open();
-		using StreamWriter streamWriter = new(entryStream);
-		streamWriter.Write("Bar!");
-
-		return archive;
+		using MemoryStream memoryStream = new();
+		using ZipArchive archive = new(memoryStream, ZipArchiveMode.Create);
+		await func(archive);
+		WriteAllBytesImpl(zipFilePath, memoryStream.ToArray());
 	}
 }

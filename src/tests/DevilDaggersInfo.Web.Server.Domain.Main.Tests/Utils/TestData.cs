@@ -175,6 +175,10 @@ public class TestData : ILeaderboardHistoryCache, IFileSystemService
 	{
 		throw new NotImplementedException();
 	}
+	public Task CreateZipFileAsync(string zipFilePath, Func<ZipArchive, Task> func)
+	{
+		throw new NotImplementedException();
+	}
 	public ZipArchive CreateZipFile(string zipFilePath)
 	{
 		throw new NotImplementedException();
