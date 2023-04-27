@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Types.Core.Spawnsets;
+using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using System.Diagnostics;
 

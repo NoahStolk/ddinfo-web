@@ -1,5 +1,3 @@
-using DevilDaggersInfo.Types.Core.Spawnsets;
-
 namespace DevilDaggersInfo.Core.Spawnset;
 
 public readonly struct Spawn
