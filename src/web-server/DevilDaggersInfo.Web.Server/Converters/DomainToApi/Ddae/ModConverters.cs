@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Types.Core.Mods;
+using DevilDaggersInfo.Core.Mod;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;

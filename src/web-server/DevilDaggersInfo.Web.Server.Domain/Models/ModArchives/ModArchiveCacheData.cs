@@ -1,5 +1,5 @@
 using DevilDaggersInfo.Core.Asset;
-using DevilDaggersInfo.Types.Core.Mods;
+using DevilDaggersInfo.Core.Mod;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;

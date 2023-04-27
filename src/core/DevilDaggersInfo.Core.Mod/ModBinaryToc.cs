@@ -1,5 +1,4 @@
 using DevilDaggersInfo.Core.Asset;
-using DevilDaggersInfo.Types.Core.Mods;
 
 namespace DevilDaggersInfo.Core.Mod;
 

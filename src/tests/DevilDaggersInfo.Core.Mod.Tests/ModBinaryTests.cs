@@ -1,6 +1,5 @@
 using DevilDaggersInfo.Core.Asset;
 using DevilDaggersInfo.Core.Mod.Extensions;
-using DevilDaggersInfo.Types.Core.Mods;
 
 namespace DevilDaggersInfo.Core.Mod.Tests;
 
