@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace DevilDaggersInfo.CommonSourceGen;
+namespace DevilDaggersInfo.Tool.GenerateClient.Extensions;
 
 public static class StringExtensions
 {
@@ -83,7 +83,7 @@ public static class StringExtensions
 			return str;
 
 		string? sub = Array.Find(values, str.StartsWith);
-		return sub == null ? str : str.Substring(sub.Length);
+		return sub == null ? str : str[sub.Length..];
 	}
 
 	public static string ToUsingDirective(this string namespaceString)
