@@ -1,5 +1,3 @@
-using DevilDaggersInfo.Types.Core.Spawnsets;
-
 namespace DevilDaggersInfo.Core.Spawnset.View;
 
 public readonly record struct GemState(HandLevel HandLevel, int Value, int TotalGemsCollected)

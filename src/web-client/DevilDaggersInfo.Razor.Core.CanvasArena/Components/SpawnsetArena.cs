@@ -1,6 +1,5 @@
 using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Razor.Core.Canvas.JS;
-using DevilDaggersInfo.Types.Core.Spawnsets;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 

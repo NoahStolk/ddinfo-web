@@ -1,5 +1,5 @@
 using DevilDaggersInfo.Common.Extensions;
-using DevilDaggersInfo.Types.Core.Spawnsets;
+using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Extensions;
