@@ -1,5 +1,5 @@
 // ReSharper disable InconsistentNaming
-namespace DevilDaggersInfo.Types.Core.Wiki;
+namespace DevilDaggersInfo.Core.Wiki;
 
 public enum GameVersion
 {

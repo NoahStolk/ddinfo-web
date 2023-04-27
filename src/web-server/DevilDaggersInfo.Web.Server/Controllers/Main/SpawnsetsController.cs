@@ -2,7 +2,7 @@ using DevilDaggersInfo.Api.Main;
 using DevilDaggersInfo.Api.Main.Spawnsets;
 using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Core.Spawnset.Summary;
-using DevilDaggersInfo.Types.Core.Wiki;
+using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Web.Client;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 using DevilDaggersInfo.Web.Server.Domain.Entities;

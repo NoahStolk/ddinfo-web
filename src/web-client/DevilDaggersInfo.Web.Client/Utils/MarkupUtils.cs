@@ -1,7 +1,6 @@
 using DevilDaggersInfo.Common;
 using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Core.Wiki.Objects;
-using DevilDaggersInfo.Types.Core.Wiki;
 using Microsoft.AspNetCore.Components;
 
 namespace DevilDaggersInfo.Web.Client.Utils;

@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Types.Core.Wiki;
+using DevilDaggersInfo.Core.Wiki;
 
 namespace DevilDaggersInfo.Core.Spawnset.Tests;
 
