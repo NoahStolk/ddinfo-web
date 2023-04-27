@@ -1,5 +1,3 @@
-using DevilDaggersInfo.Types.Core.Spawnsets;
-
 namespace DevilDaggersInfo.Api.Main.Spawnsets;
 
 public record GetSpawnsetOverview

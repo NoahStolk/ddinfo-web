@@ -1,5 +1,6 @@
 using DevilDaggersInfo.Api.Main.Donations;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
+using DevilDaggersInfo.Web.Server.Domain.Main.Converters;
 using Microsoft.EntityFrameworkCore;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Main.Repositories;
@@ -39,7 +40,7 @@ public class DonationRepository
 						{
 							Amount = d.Amount,
 							ConvertedEuroCentsReceived = d.ConvertedEuroCentsReceived,
-							Currency = d.Currency,
+							Currency = d.Currency.ToMainApi(),
 							IsRefunded = d.IsRefunded,
 						})
 						.ToList(),

@@ -6,7 +6,6 @@ using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Extensions;
 using DevilDaggersInfo.Core.CriteriaExpression;
 using DevilDaggersInfo.Core.CriteriaExpression.Parts;
 using DevilDaggersInfo.Types.Core.CustomLeaderboards.Extensions;
-using System.Diagnostics;
 using System.Text;
 
 namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.LeaderboardList;

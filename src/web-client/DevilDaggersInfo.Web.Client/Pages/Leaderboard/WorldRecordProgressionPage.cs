@@ -2,7 +2,6 @@ using DevilDaggersInfo.Api.Main.WorldRecords;
 using DevilDaggersInfo.Common;
 using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Core.Wiki;
-using DevilDaggersInfo.Core.Wiki.Extensions;
 using DevilDaggersInfo.Core.Wiki.Objects;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Data;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Enums;

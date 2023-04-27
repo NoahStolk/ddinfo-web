@@ -1,8 +1,8 @@
-using DevilDaggersInfo.Api.Main.Players;
 using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Core.Claims;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
+using DevilDaggersInfo.Web.Server.Domain.Main.Converters;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
@@ -17,7 +17,7 @@ public class PlayerProfileService
 		_dbContext = dbContext;
 	}
 
-	public async Task UpdateProfileAsync(ClaimsPrincipal claimsPrincipal, int id, EditPlayerProfile editPlayerProfile)
+	public async Task UpdateProfileAsync(ClaimsPrincipal claimsPrincipal, int id, Api.Main.Players.EditPlayerProfile editPlayerProfile)
 	{
 		string? userName = claimsPrincipal.GetName();
 		UserEntity? user = _dbContext.Users.FirstOrDefault(u => u.Name == userName);
@@ -50,7 +50,7 @@ public class PlayerProfileService
 		player.UsesHrtf = editPlayerProfile.UsesHrtf;
 		player.UsesInvertY = editPlayerProfile.UsesInvertY;
 		player.UsesLegacyAudio = editPlayerProfile.UsesLegacyAudio;
-		player.VerticalSync = editPlayerProfile.VerticalSync;
+		player.VerticalSync = editPlayerProfile.VerticalSync.ToDomain();
 
 		await _dbContext.SaveChangesAsync();
 	}

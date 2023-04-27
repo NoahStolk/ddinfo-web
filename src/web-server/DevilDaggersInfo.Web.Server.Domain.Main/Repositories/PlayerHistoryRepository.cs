@@ -1,4 +1,3 @@
-using DevilDaggersInfo.Api.Main.Players;
 using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
@@ -24,7 +23,7 @@ public class PlayerHistoryRepository
 	}
 
 	// TODO: Also move to Domain project since this is used by DDLIVE. We'll also need a separate return type for DDLIVE.
-	public GetPlayerHistory GetPlayerHistoryById(int id)
+	public Api.Main.Players.GetPlayerHistory GetPlayerHistoryById(int id)
 	{
 		// TODO: Add caching.
 		// TODO: Alts may be valid. We would need to check if the main account is below the current player and the alt is above it, then it should not be included in illegitimateScoresAbove. This is kind of annoying to do, so we'll just ignore it for now.
@@ -41,15 +40,15 @@ public class PlayerHistoryRepository
 		Dictionary<string, int> usernamesHistory = new();
 
 		int? scorePreviousForScoreHistory = null;
-		List<GetPlayerHistoryScoreEntry> scoreHistory = new();
+		List<Api.Main.Players.GetPlayerHistoryScoreEntry> scoreHistory = new();
 
 		int? rankPreviousForRankHistory = null;
-		List<GetPlayerHistoryRankEntry> rankHistory = new();
+		List<Api.Main.Players.GetPlayerHistoryRankEntry> rankHistory = new();
 
 		ulong? totalDeathsForActivityHistory = null;
 		ulong? totalTimeForActivityHistory = null;
 		DateTime? datePreviousForActivityHistory = null;
-		List<GetPlayerHistoryActivityEntry> activityHistory = new();
+		List<Api.Main.Players.GetPlayerHistoryActivityEntry> activityHistory = new();
 
 		foreach (string leaderboardHistoryPath in _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory).Where(p => p.EndsWith(".bin")))
 		{

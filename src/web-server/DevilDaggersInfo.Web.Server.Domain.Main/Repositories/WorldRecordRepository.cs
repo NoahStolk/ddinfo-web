@@ -1,9 +1,9 @@
-using DevilDaggersInfo.Api.Main.WorldRecords;
 using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Types.Core.Wiki;
 using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
+using DevilDaggersInfo.Web.Server.Domain.Main.Converters;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardHistory;
 using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
@@ -26,12 +26,12 @@ public class WorldRecordRepository
 		_leaderboardHistoryCache = leaderboardHistoryCache;
 	}
 
-	public GetWorldRecordDataContainer GetWorldRecordData()
+	public Api.Main.WorldRecords.GetWorldRecordDataContainer GetWorldRecordData()
 	{
 		List<BaseWorldRecord> baseWorldRecords = GetBaseWorldRecords();
 		List<BaseWorldRecordHolder> worldRecordHolders = new();
 
-		List<GetWorldRecord> worldRecords = new();
+		List<Api.Main.WorldRecords.GetWorldRecord> worldRecords = new();
 
 		TimeSpan heldConsecutively = default;
 		for (int i = 0; i < baseWorldRecords.Count; i++)
@@ -68,7 +68,7 @@ public class WorldRecordRepository
 			{
 				DateTime = wr.DateTime,
 				Entry = wr.Entry,
-				GameVersion = wr.GameVersion,
+				GameVersion = wr.GameVersion?.ToMainApi(),
 				WorldRecordDuration = duration,
 				WorldRecordImprovement = improvement,
 			});
@@ -99,7 +99,7 @@ public class WorldRecordRepository
 		{
 			WorldRecordHolders = worldRecordHolders
 				.OrderByDescending(wrh => wrh.TotalTimeHeld)
-				.Select(wrh => new GetWorldRecordHolder
+				.Select(wrh => new Api.Main.WorldRecords.GetWorldRecordHolder
 				{
 					FirstHeld = wrh.FirstHeld,
 					Id = wrh.Id,
@@ -174,7 +174,7 @@ public class WorldRecordRepository
 				// If the WR was submitted by an alt, we need to manually fix the ID by looking up the main ID in the database.
 				int? mainPlayerId = _dbContext.Players.Select(p => new { p.Id, p.BanResponsibleId }).FirstOrDefault(p => p.Id == firstLegitPlace.Id)?.BanResponsibleId;
 
-				GetWorldRecordEntry getWorldRecordEntry = new()
+				Api.Main.WorldRecords.GetWorldRecordEntry getWorldRecordEntry = new()
 				{
 					DateTime = leaderboard.DateTime,
 					Id = mainPlayerId ?? firstLegitPlace.Id,
@@ -198,7 +198,7 @@ public class WorldRecordRepository
 			=> new((a.Ticks + b.Ticks) / 2);
 	}
 
-	private sealed record BaseWorldRecord(DateTime DateTime, GetWorldRecordEntry Entry, GameVersion? GameVersion);
+	private sealed record BaseWorldRecord(DateTime DateTime, Api.Main.WorldRecords.GetWorldRecordEntry Entry, GameVersion? GameVersion);
 
 	private sealed class BaseWorldRecordHolder
 	{
