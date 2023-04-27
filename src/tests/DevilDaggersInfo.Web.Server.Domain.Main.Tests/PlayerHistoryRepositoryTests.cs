@@ -1,6 +1,7 @@
 using DevilDaggersInfo.Api.Main.Players;
 using DevilDaggersInfo.Web.Server.Domain.Main.Repositories;
 using DevilDaggersInfo.Web.Server.Domain.Main.Tests.Utils;
+using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -20,8 +21,10 @@ public class PlayerHistoryRepositoryTests
 			.UseInMemoryDatabase(databaseName: nameof(PlayerHistoryRepositoryTests))
 			.Options;
 		TestDbContext dbContext = new(options, new Mock<IHttpContextAccessor>().Object, new Mock<ILogContainerService>().Object);
-		TestData data = new();
-		_repository = new(dbContext, data, data);
+
+		IFileSystemService fileSystemService = LeaderboardHistoryData.GetFileSystemService();
+		ILeaderboardHistoryCache cache = new LeaderboardHistoryCache(fileSystemService);
+		_repository = new(dbContext, fileSystemService, cache);
 	}
 
 	[TestMethod]
