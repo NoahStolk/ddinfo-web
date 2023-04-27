@@ -25,7 +25,7 @@
 		{
 			Expression expression = Expression.Parse(Criteria.Expression);
 
-			<CriteriaExpressionComponent Expression="expression" CriteriaOperator="Criteria.Operator" CriteriaType="CriteriaType"/>
+			<CriteriaExpressionComponent Expression="expression" CriteriaOperator="Criteria.Operator.ToCore()" CriteriaType="CriteriaType.ToCore()"/>
 
 			<span class="text-green text-sm">(@BitConverter.ToString(expression.ToBytes()).Replace("-", " "))</span>
 		}
