@@ -1,6 +1,4 @@
 @using Microsoft.AspNetCore.Components
-@using DevilDaggersInfo.Api.Admin.CustomLeaderboards
-@using DevilDaggersInfo.Types.Core.CustomLeaderboards.Extensions
 @using DevilDaggersInfo.Web.Client.Components
 @using DevilDaggersInfo.Web.Client.Components.Admin
 @using DevilDaggersInfo.Web.Client.Components.Input
@@ -8,13 +6,15 @@
 @using DevilDaggersInfo.Web.Client.StateObjects.Admin.CustomLeaderboards
 @using DevilDaggersInfo.Core.CriteriaExpression
 @using DevilDaggersInfo.Core.CriteriaExpression.Exceptions
+@using DevilDaggersInfo.Core.CriteriaExpression.Extensions
 @using DevilDaggersInfo.Core.CriteriaExpression.Parts
+@using AdminApi = Api.Admin.CustomLeaderboards
 
 <div class="py-1">
-	<SearchDropdown TKey="CustomLeaderboardCriteriaOperator" Values="_operators" Converter="_operatorConverter" ShowDisplayValue="false" @bind-Value="@Criteria.Operator"/>
+	<SearchDropdown TKey="AdminApi.CustomLeaderboardCriteriaOperator" Values="_operators" Converter="_operatorConverter" ShowDisplayValue="false" @bind-Value="@Criteria.Operator"/>
 	<InputTextImmediate class="admin-input mr-2" @bind-Value="Criteria.Expression"/>
 
-	@if (Criteria.Expression == null || Criteria.Operator == CustomLeaderboardCriteriaOperator.Any)
+	@if (Criteria.Expression == null || Criteria.Operator.ToCore() == CustomLeaderboardCriteriaOperator.Any)
 	{
 		<span style="color: @CriteriaType.ToCore().GetColor()">@CriteriaType.ToCore().Display()</span>
 		<span>can be anything</span>
@@ -37,12 +37,12 @@
 </div>
 
 @code {
-	private readonly Dictionary<CustomLeaderboardCriteriaOperator, string> _operators = Enum.GetValues<CustomLeaderboardCriteriaOperator>().ToDictionary(e => e, e => e.ToString());
-	private readonly Func<string, CustomLeaderboardCriteriaOperator> _operatorConverter = Enum.Parse<CustomLeaderboardCriteriaOperator>;
+	private readonly Dictionary<AdminApi.CustomLeaderboardCriteriaOperator, string> _operators = Enum.GetValues<AdminApi.CustomLeaderboardCriteriaOperator>().ToDictionary(e => e, e => e.ToString());
+	private readonly Func<string, AdminApi.CustomLeaderboardCriteriaOperator> _operatorConverter = Enum.Parse<AdminApi.CustomLeaderboardCriteriaOperator>;
 
 	[Parameter]
 	[EditorRequired]
-	public CustomLeaderboardCriteriaType CriteriaType { get; set; }
+	public AdminApi.CustomLeaderboardCriteriaType CriteriaType { get; set; }
 
 	[Parameter]
 	[EditorRequired]

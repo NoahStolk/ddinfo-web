@@ -1,7 +1,6 @@
 using DevilDaggersInfo.Core.CriteriaExpression.Exceptions;
+using DevilDaggersInfo.Core.CriteriaExpression.Extensions;
 using DevilDaggersInfo.Core.CriteriaExpression.Parts;
-using DevilDaggersInfo.Types.Core.CustomLeaderboards;
-using DevilDaggersInfo.Types.Core.CustomLeaderboards.Extensions;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;

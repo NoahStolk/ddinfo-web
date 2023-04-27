@@ -1,5 +1,5 @@
 using DevilDaggersInfo.Common.Extensions;
-using DevilDaggersInfo.Types.Core.CustomLeaderboards;
+using DevilDaggersInfo.Core.CriteriaExpression;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Extensions;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;

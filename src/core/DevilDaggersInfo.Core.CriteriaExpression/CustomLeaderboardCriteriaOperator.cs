@@ -1,5 +1,6 @@
-namespace DevilDaggersInfo.Types.Core.CustomLeaderboards;
+namespace DevilDaggersInfo.Core.CriteriaExpression;
 
+// IMPORTANT: These values are stored in the database and should not be changed.
 public enum CustomLeaderboardCriteriaOperator : byte
 {
 	Any = 0,

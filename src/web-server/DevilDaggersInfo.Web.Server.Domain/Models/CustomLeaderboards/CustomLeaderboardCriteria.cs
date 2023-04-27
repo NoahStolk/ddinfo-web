@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Types.Core.CustomLeaderboards;
+using DevilDaggersInfo.Core.CriteriaExpression;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 

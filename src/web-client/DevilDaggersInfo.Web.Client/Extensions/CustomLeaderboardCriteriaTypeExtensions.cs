@@ -1,5 +1,5 @@
+using DevilDaggersInfo.Core.CriteriaExpression;
 using DevilDaggersInfo.Core.Wiki;
-using DevilDaggersInfo.Types.Core.CustomLeaderboards;
 using System.Diagnostics;
 using AdminApi = DevilDaggersInfo.Api.Admin.CustomLeaderboards;
 using MainApi = DevilDaggersInfo.Api.Main.CustomLeaderboards;

@@ -1,5 +1,4 @@
 using DevilDaggersInfo.Core.CriteriaExpression.Parts;
-using DevilDaggersInfo.Types.Core.CustomLeaderboards;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DevilDaggersInfo.Core.CriteriaExpression.Tests;
