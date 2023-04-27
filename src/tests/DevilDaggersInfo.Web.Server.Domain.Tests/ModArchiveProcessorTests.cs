@@ -1,5 +1,5 @@
+using DevilDaggersInfo.Core.Asset;
 using DevilDaggersInfo.Core.Mod;
-using DevilDaggersInfo.Types.Core.Assets;
 using DevilDaggersInfo.Types.Core.Mods;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;

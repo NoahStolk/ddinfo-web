@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Types.Core.Assets;
+namespace DevilDaggersInfo.Core.Asset;
 
 public enum AssetType : byte
 {
