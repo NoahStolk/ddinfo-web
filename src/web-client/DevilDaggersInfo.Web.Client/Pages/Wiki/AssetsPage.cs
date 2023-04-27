@@ -20,12 +20,9 @@ public partial class AssetsPage
 	private readonly Dictionary<string, bool> _ddShadersSortings = new();
 	private readonly Dictionary<string, bool> _ddTexturesSortings = new();
 
-	private void Sort<TSource, TKey>(ref List<TSource> source, Dictionary<string, bool> sortings, Func<TSource, TKey> sorting, [CallerArgumentExpression("sorting")] string sortingExpression = "")
+	private static void Sort<TSource, TKey>(ref IReadOnlyList<TSource> source, IDictionary<string, bool> sortings, Func<TSource, TKey> sorting, [CallerArgumentExpression("sorting")] string sortingExpression = "")
 	{
-		bool sortDirection = false;
-		if (sortings.ContainsKey(sortingExpression))
-			sortDirection = sortings[sortingExpression];
-		else
+		if (!sortings.TryGetValue(sortingExpression, out bool sortDirection))
 			sortings.Add(sortingExpression, false);
 
 		source = source.OrderBy(sorting, sortDirection).ToList();
