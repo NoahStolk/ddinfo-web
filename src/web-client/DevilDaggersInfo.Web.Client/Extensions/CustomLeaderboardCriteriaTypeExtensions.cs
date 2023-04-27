@@ -1,11 +1,65 @@
 using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Types.Core.CustomLeaderboards;
 using System.Diagnostics;
+using AdminApi = DevilDaggersInfo.Api.Admin.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Client.Extensions;
 
 public static class CustomLeaderboardCriteriaTypeExtensions
 {
+	public static CustomLeaderboardCriteriaType ToCore(this AdminApi.CustomLeaderboardCriteriaType criteriaType) => criteriaType switch
+	{
+		AdminApi.CustomLeaderboardCriteriaType.GemsCollected => CustomLeaderboardCriteriaType.GemsCollected,
+		AdminApi.CustomLeaderboardCriteriaType.GemsDespawned => CustomLeaderboardCriteriaType.GemsDespawned,
+		AdminApi.CustomLeaderboardCriteriaType.GemsEaten => CustomLeaderboardCriteriaType.GemsEaten,
+		AdminApi.CustomLeaderboardCriteriaType.EnemiesKilled => CustomLeaderboardCriteriaType.EnemiesKilled,
+		AdminApi.CustomLeaderboardCriteriaType.DaggersFired => CustomLeaderboardCriteriaType.DaggersFired,
+		AdminApi.CustomLeaderboardCriteriaType.DaggersHit => CustomLeaderboardCriteriaType.DaggersHit,
+		AdminApi.CustomLeaderboardCriteriaType.HomingStored => CustomLeaderboardCriteriaType.HomingStored,
+		AdminApi.CustomLeaderboardCriteriaType.HomingEaten => CustomLeaderboardCriteriaType.HomingEaten,
+		AdminApi.CustomLeaderboardCriteriaType.Skull1Kills => CustomLeaderboardCriteriaType.Skull1Kills,
+		AdminApi.CustomLeaderboardCriteriaType.Skull2Kills => CustomLeaderboardCriteriaType.Skull2Kills,
+		AdminApi.CustomLeaderboardCriteriaType.Skull3Kills => CustomLeaderboardCriteriaType.Skull3Kills,
+		AdminApi.CustomLeaderboardCriteriaType.Skull4Kills => CustomLeaderboardCriteriaType.Skull4Kills,
+		AdminApi.CustomLeaderboardCriteriaType.SpiderlingKills => CustomLeaderboardCriteriaType.SpiderlingKills,
+		AdminApi.CustomLeaderboardCriteriaType.SpiderEggKills => CustomLeaderboardCriteriaType.SpiderEggKills,
+		AdminApi.CustomLeaderboardCriteriaType.Squid1Kills => CustomLeaderboardCriteriaType.Squid1Kills,
+		AdminApi.CustomLeaderboardCriteriaType.Squid2Kills => CustomLeaderboardCriteriaType.Squid2Kills,
+		AdminApi.CustomLeaderboardCriteriaType.Squid3Kills => CustomLeaderboardCriteriaType.Squid3Kills,
+		AdminApi.CustomLeaderboardCriteriaType.CentipedeKills => CustomLeaderboardCriteriaType.CentipedeKills,
+		AdminApi.CustomLeaderboardCriteriaType.GigapedeKills => CustomLeaderboardCriteriaType.GigapedeKills,
+		AdminApi.CustomLeaderboardCriteriaType.GhostpedeKills => CustomLeaderboardCriteriaType.GhostpedeKills,
+		AdminApi.CustomLeaderboardCriteriaType.Spider1Kills => CustomLeaderboardCriteriaType.Spider1Kills,
+		AdminApi.CustomLeaderboardCriteriaType.Spider2Kills => CustomLeaderboardCriteriaType.Spider2Kills,
+		AdminApi.CustomLeaderboardCriteriaType.LeviathanKills => CustomLeaderboardCriteriaType.LeviathanKills,
+		AdminApi.CustomLeaderboardCriteriaType.OrbKills => CustomLeaderboardCriteriaType.OrbKills,
+		AdminApi.CustomLeaderboardCriteriaType.ThornKills => CustomLeaderboardCriteriaType.ThornKills,
+		AdminApi.CustomLeaderboardCriteriaType.Skull1sAlive => CustomLeaderboardCriteriaType.Skull1sAlive,
+		AdminApi.CustomLeaderboardCriteriaType.Skull2sAlive => CustomLeaderboardCriteriaType.Skull2sAlive,
+		AdminApi.CustomLeaderboardCriteriaType.Skull3sAlive => CustomLeaderboardCriteriaType.Skull3sAlive,
+		AdminApi.CustomLeaderboardCriteriaType.Skull4sAlive => CustomLeaderboardCriteriaType.Skull4sAlive,
+		AdminApi.CustomLeaderboardCriteriaType.SpiderlingsAlive => CustomLeaderboardCriteriaType.SpiderlingsAlive,
+		AdminApi.CustomLeaderboardCriteriaType.SpiderEggsAlive => CustomLeaderboardCriteriaType.SpiderEggsAlive,
+		AdminApi.CustomLeaderboardCriteriaType.Squid1sAlive => CustomLeaderboardCriteriaType.Squid1sAlive,
+		AdminApi.CustomLeaderboardCriteriaType.Squid2sAlive => CustomLeaderboardCriteriaType.Squid2sAlive,
+		AdminApi.CustomLeaderboardCriteriaType.Squid3sAlive => CustomLeaderboardCriteriaType.Squid3sAlive,
+		AdminApi.CustomLeaderboardCriteriaType.CentipedesAlive => CustomLeaderboardCriteriaType.CentipedesAlive,
+		AdminApi.CustomLeaderboardCriteriaType.GigapedesAlive => CustomLeaderboardCriteriaType.GigapedesAlive,
+		AdminApi.CustomLeaderboardCriteriaType.GhostpedesAlive => CustomLeaderboardCriteriaType.GhostpedesAlive,
+		AdminApi.CustomLeaderboardCriteriaType.Spider1sAlive => CustomLeaderboardCriteriaType.Spider1sAlive,
+		AdminApi.CustomLeaderboardCriteriaType.Spider2sAlive => CustomLeaderboardCriteriaType.Spider2sAlive,
+		AdminApi.CustomLeaderboardCriteriaType.LeviathansAlive => CustomLeaderboardCriteriaType.LeviathansAlive,
+		AdminApi.CustomLeaderboardCriteriaType.OrbsAlive => CustomLeaderboardCriteriaType.OrbsAlive,
+		AdminApi.CustomLeaderboardCriteriaType.ThornsAlive => CustomLeaderboardCriteriaType.ThornsAlive,
+		AdminApi.CustomLeaderboardCriteriaType.DeathType => CustomLeaderboardCriteriaType.DeathType,
+		AdminApi.CustomLeaderboardCriteriaType.Time => CustomLeaderboardCriteriaType.Time,
+		AdminApi.CustomLeaderboardCriteriaType.LevelUpTime2 => CustomLeaderboardCriteriaType.LevelUpTime2,
+		AdminApi.CustomLeaderboardCriteriaType.LevelUpTime3 => CustomLeaderboardCriteriaType.LevelUpTime3,
+		AdminApi.CustomLeaderboardCriteriaType.LevelUpTime4 => CustomLeaderboardCriteriaType.LevelUpTime4,
+		AdminApi.CustomLeaderboardCriteriaType.EnemiesAlive => CustomLeaderboardCriteriaType.EnemiesAlive,
+		_ => throw new UnreachableException(),
+	};
+
 	public static string GetColor(this CustomLeaderboardCriteriaType criteriaType) => criteriaType switch
 	{
 		CustomLeaderboardCriteriaType.GemsCollected => "#f00", // TODO: Use same color as graph

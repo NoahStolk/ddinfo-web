@@ -1,6 +1,7 @@
 using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Core.Spawnset.View;
 using DevilDaggersInfo.Types.Core.Wiki;
+using DevilDaggersInfo.Web.Client.Extensions;
 using Microsoft.AspNetCore.Components;
 
 namespace DevilDaggersInfo.Web.Client.Pages.Wiki;
@@ -29,7 +30,7 @@ public partial class SpawnsPage
 		_waveCount = _defaultWaveCount;
 		GameVersion = gameVersion;
 
-		byte[] spawnsetBytes = await Http.GetDefaultSpawnset(GameVersion);
+		byte[] spawnsetBytes = await Http.GetDefaultSpawnset(GameVersion.ToMainApi());
 		if (!SpawnsetBinary.TryParse(spawnsetBytes, out _spawnset))
 			return;
 

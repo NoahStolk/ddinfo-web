@@ -1,8 +1,7 @@
-using DevilDaggersInfo.Types.Web;
+using DevilDaggersInfo.Api.Main.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Client.Utils;
 
-// TODO: Source-generate this for all enums.
 public static class EnumConvert
 {
 	public static string GetString(CustomLeaderboardCategory customLeaderboardCategory) => customLeaderboardCategory switch

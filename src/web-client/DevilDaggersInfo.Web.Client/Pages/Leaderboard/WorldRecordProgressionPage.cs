@@ -1,7 +1,7 @@
-using DevilDaggersInfo.Api.Main.WorldRecords;
 using DevilDaggersInfo.Common;
 using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Core.Wiki;
+using DevilDaggersInfo.Core.Wiki.Extensions;
 using DevilDaggersInfo.Core.Wiki.Objects;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Data;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Enums;
@@ -36,8 +36,8 @@ public partial class WorldRecordProgressionPage
 
 	private LineChartDataOptions _dataOptions = LineChartDataOptions.Default;
 
-	private List<GetWorldRecordHolder>? _worldRecordHolders;
-	private List<GetWorldRecord>? _worldRecords;
+	private List<Api.Main.WorldRecords.GetWorldRecordHolder>? _worldRecordHolders;
+	private List<Api.Main.WorldRecords.GetWorldRecord>? _worldRecords;
 
 	private readonly Dictionary<string, bool> _worldRecordHoldersSortings = new();
 	private readonly Dictionary<string, bool> _worldRecordsSortings = new();
@@ -50,8 +50,8 @@ public partial class WorldRecordProgressionPage
 
 	protected override async Task OnInitializedAsync()
 	{
-		GetWorldRecordDataContainer data = await Http.GetWorldRecordData();
-		GetWorldRecord currentWr = data.WorldRecords.MaxBy(wr => wr.DateTime) ?? throw new InvalidOperationException("There are no world records.");
+		Api.Main.WorldRecords.GetWorldRecordDataContainer data = await Http.GetWorldRecordData();
+		Api.Main.WorldRecords.GetWorldRecord currentWr = data.WorldRecords.MaxBy(wr => wr.DateTime) ?? throw new InvalidOperationException("There are no world records.");
 		_currentWorldRecord = currentWr.Entry.Time;
 		_currentWorldRecordHolderId = currentWr.Entry.Id;
 
@@ -59,8 +59,8 @@ public partial class WorldRecordProgressionPage
 
 		DateTime minX = new(2016, 1, 1);
 		DateTime maxX = DateTime.UtcNow;
-		GetWorldRecord firstWr = data.WorldRecords[0];
-		GetWorldRecord lastWr = data.WorldRecords[^1];
+		Api.Main.WorldRecords.GetWorldRecord firstWr = data.WorldRecords[0];
+		Api.Main.WorldRecords.GetWorldRecord lastWr = data.WorldRecords[^1];
 		double minY = Math.Floor(firstWr.Entry.Time / 100.0) * 100;
 		double maxY = Math.Ceiling(lastWr.Entry.Time / 100.0) * 100;
 
@@ -68,7 +68,7 @@ public partial class WorldRecordProgressionPage
 		_dataOptions = new(minX.Ticks, null, maxX.Ticks, minY, 100, maxY);
 		_lineDataSets.Add(new("#f00", true, true, true, set, (_, d) =>
 		{
-			GetWorldRecord? wr = data.WorldRecords.Count <= d.Index ? null : data.WorldRecords[d.Index];
+			Api.Main.WorldRecords.GetWorldRecord? wr = data.WorldRecords.Count <= d.Index ? null : data.WorldRecords[d.Index];
 			if (wr == null)
 				return new();
 
