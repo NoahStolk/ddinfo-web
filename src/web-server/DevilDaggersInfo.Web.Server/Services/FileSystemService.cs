@@ -45,8 +45,13 @@ public class FileSystemService : IFileSystemService
 
 	public long GetDirectorySize(string path)
 	{
-		DirectoryInfo modDirectory = new(path);
-		return modDirectory.EnumerateFiles("*.*", SearchOption.AllDirectories).Sum(fi => fi.Length);
+		DirectoryInfo directoryInfo = new(path);
+		return directoryInfo.EnumerateFiles("*.*", SearchOption.AllDirectories).Sum(fi => fi.Length);
+	}
+
+	public long GetFileSize(string path)
+	{
+		return new FileInfo(path).Length;
 	}
 
 	public string GetToolDistributionPath(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version)

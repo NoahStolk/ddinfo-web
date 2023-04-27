@@ -30,6 +30,14 @@ public class TestFileSystemService : IFileSystemService
 		return _files.Where(f => f.Key.StartsWith(path)).Sum(f => f.Value.Length);
 	}
 
+	public long GetFileSize(string path)
+	{
+		if (_files.TryGetValue(path, out byte[]? bytes))
+			return bytes.Length;
+
+		throw new FileNotFoundException();
+	}
+
 	public string GetToolDistributionPath(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version)
 	{
 		throw new NotImplementedException();

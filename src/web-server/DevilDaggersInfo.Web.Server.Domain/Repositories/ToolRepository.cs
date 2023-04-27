@@ -126,7 +126,7 @@ public class ToolRepository
 	{
 		string path = _fileSystemService.GetToolDistributionPath(name, publishMethod, buildType, version);
 		if (_fileSystemService.FileExists(path))
-			return (int)new FileInfo(path).Length;
+			return (int)_fileSystemService.GetFileSize(path);
 
 		return 0;
 	}

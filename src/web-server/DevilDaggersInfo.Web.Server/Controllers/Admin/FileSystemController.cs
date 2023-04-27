@@ -38,11 +38,11 @@ public class FileSystemController : ControllerBase
 			.ToList();
 	}
 
-	private static DirectoryStatistics GetDirectorySize(string folderPath)
+	private DirectoryStatistics GetDirectorySize(string folderPath)
 	{
-		DirectoryInfo di = new(folderPath);
-		List<FileInfo> allFiles = di.EnumerateFiles("*.*", SearchOption.AllDirectories).ToList();
-		return new(allFiles.Sum(fi => fi.Length), allFiles.Count);
+		long size = _fileSystemService.GetDirectorySize(folderPath);
+		int count = _fileSystemService.GetFiles(folderPath).Length;
+		return new(size, count);
 	}
 
 	private readonly record struct DirectoryStatistics(long Size, int FileCount);

@@ -14,6 +14,8 @@ public interface IFileSystemService
 
 	long GetDirectorySize(string path);
 
+	long GetFileSize(string path);
+
 	string GetToolDistributionPath(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version);
 
 	bool DeleteFileIfExists(string path);
@@ -61,6 +63,4 @@ public interface IFileSystemService
 	Task CreateZipFileAsync(string zipFilePath, Func<ZipArchive, Task> func);
 
 	ZipArchive OpenZipArchive(string zipFilePath);
-
-	// TODO: Add FileInfo methods.
 }
