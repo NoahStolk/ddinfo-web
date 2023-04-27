@@ -100,7 +100,7 @@ public class ModArchiveProcessor
 		string originalArchivePath = _modArchiveAccessor.GetModArchivePath(originalModName);
 		if (_fileSystemService.FileExists(originalArchivePath))
 		{
-			using ZipArchive originalArchive = ZipFile.Open(originalArchivePath, ZipArchiveMode.Read);
+			using ZipArchive originalArchive = _fileSystemService.OpenZipArchive(originalArchivePath);
 			foreach (ZipArchiveEntry entry in originalArchive.Entries)
 			{
 				// Test if we need to skip (delete) this binary.

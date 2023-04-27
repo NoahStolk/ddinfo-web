@@ -60,7 +60,7 @@ public interface IFileSystemService
 
 	Task CreateZipFileAsync(string zipFilePath, Func<ZipArchive, Task> func);
 
-	// TODO: Add ZipFile methods.
+	ZipArchive OpenZipArchive(string zipFilePath);
 
 	// TODO: Add FileInfo methods.
 }

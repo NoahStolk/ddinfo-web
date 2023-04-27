@@ -182,4 +182,9 @@ public class TestFileSystemService : IFileSystemService
 
 		WriteAllBytesImpl(zipFilePath, memoryStream.ToArray());
 	}
+
+	public ZipArchive OpenZipArchive(string zipFilePath)
+	{
+		return new(new MemoryStream(ReadAllBytesImpl(zipFilePath)), ZipArchiveMode.Read);
+	}
 }

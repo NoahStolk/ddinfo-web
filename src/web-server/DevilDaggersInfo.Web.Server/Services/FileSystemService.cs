@@ -172,4 +172,9 @@ public class FileSystemService : IFileSystemService
 		using ZipArchive archive = ZipFile.Open(zipFilePath, ZipArchiveMode.Create);
 		await func(archive);
 	}
+
+	public ZipArchive OpenZipArchive(string zipFilePath)
+	{
+		return ZipFile.Open(zipFilePath, ZipArchiveMode.Read);
+	}
 }

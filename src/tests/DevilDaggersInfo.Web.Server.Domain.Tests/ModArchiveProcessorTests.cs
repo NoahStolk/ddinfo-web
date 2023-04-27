@@ -14,13 +14,13 @@ public abstract class ModArchiveProcessorTests
 {
 	protected ModArchiveProcessorTests()
 	{
-		IFileSystemService fileSystemService = new TestFileSystemService();
-
-		Cache = new(fileSystemService);
-		Accessor = new(fileSystemService, Cache);
-		Processor = new(fileSystemService, Cache, Accessor);
+		FileSystemService = new TestFileSystemService();
+		Cache = new(FileSystemService);
+		Accessor = new(FileSystemService, Cache);
+		Processor = new(FileSystemService, Cache, Accessor);
 	}
 
+	protected IFileSystemService FileSystemService { get; }
 	protected ModArchiveCache Cache { get; }
 	protected ModArchiveAccessor Accessor { get; }
 	protected ModArchiveProcessor Processor { get; }
@@ -60,5 +60,12 @@ public abstract class ModArchiveProcessorTests
 		binary.AddAsset(shaderName, AssetType.ObjectBinding, "shader = \"boid\""u8.ToArray());
 		binary.AddAsset(textureName, AssetType.Texture, File.ReadAllBytes(Path.Combine("Resources", "Textures", "green.png")));
 		return binary;
+	}
+
+	protected async Task<ZipArchive> GetArchiveAsync(string zipFilePath)
+	{
+		byte[] zipBytes = await FileSystemService.ReadAllBytesAsync(zipFilePath);
+		MemoryStream ms = new(zipBytes);
+		return new(ms, ZipArchiveMode.Read);
 	}
 }
