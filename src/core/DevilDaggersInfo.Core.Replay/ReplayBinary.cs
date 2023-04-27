@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Types.Core.Replays;
+using DevilDaggersInfo.Core.Replay.Events.Enums;
 
 namespace DevilDaggersInfo.Core.Replay;
 

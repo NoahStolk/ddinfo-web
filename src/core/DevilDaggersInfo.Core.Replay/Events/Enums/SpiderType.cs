@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Types.Core.Replays;
+namespace DevilDaggersInfo.Core.Replay.Events.Enums;
 
 public enum SpiderType : byte
 {

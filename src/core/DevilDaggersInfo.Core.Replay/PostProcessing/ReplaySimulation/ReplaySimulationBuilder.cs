@@ -1,6 +1,6 @@
+using DevilDaggersInfo.Core.Replay.Events.Enums;
 using DevilDaggersInfo.Core.Replay.Events.Interfaces;
 using DevilDaggersInfo.Core.Spawnset;
-using DevilDaggersInfo.Types.Core.Replays;
 
 namespace DevilDaggersInfo.Core.Replay.PostProcessing.ReplaySimulation;
 

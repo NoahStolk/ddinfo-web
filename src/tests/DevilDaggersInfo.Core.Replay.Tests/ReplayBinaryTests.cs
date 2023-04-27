@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Types.Core.Replays;
+using DevilDaggersInfo.Core.Replay.Events.Enums;
 using System.Security.Cryptography;
 using System.Text;
 
