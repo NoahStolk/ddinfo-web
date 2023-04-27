@@ -1,6 +1,5 @@
 using DevilDaggersInfo.Common;
 using DevilDaggersInfo.Core.Wiki;
-using DevilDaggersInfo.Types.Core.Wiki;
 using DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardHistory;
 using System.Text;
 

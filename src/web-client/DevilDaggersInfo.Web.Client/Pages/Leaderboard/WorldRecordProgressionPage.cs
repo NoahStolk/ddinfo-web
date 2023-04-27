@@ -6,7 +6,6 @@ using DevilDaggersInfo.Core.Wiki.Objects;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Data;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Enums;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Options.LineChart;
-using DevilDaggersInfo.Types.Core.Wiki;
 using DevilDaggersInfo.Web.Client.HttpClients;
 using DevilDaggersInfo.Web.Client.Utils;
 using Microsoft.AspNetCore.Components;

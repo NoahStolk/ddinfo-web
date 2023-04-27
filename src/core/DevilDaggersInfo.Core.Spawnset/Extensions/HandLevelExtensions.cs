@@ -1,5 +1,4 @@
 using DevilDaggersInfo.Core.Wiki.Objects;
-using DevilDaggersInfo.Types.Core.Wiki;
 using System.Diagnostics;
 
 namespace DevilDaggersInfo.Core.Spawnset.Extensions;

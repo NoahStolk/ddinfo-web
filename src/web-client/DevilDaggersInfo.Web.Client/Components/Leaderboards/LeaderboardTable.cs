@@ -1,7 +1,7 @@
 using DevilDaggersInfo.Api.Main;
 using DevilDaggersInfo.Api.Main.Players;
 using DevilDaggersInfo.Common.Extensions;
-using DevilDaggersInfo.Types.Core.Wiki;
+using DevilDaggersInfo.Core.Wiki;
 using Microsoft.AspNetCore.Components;
 
 namespace DevilDaggersInfo.Web.Client.Components.Leaderboards;

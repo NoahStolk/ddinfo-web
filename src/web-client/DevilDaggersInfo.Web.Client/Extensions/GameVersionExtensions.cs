@@ -1,5 +1,5 @@
+using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Core.Wiki.Extensions;
-using DevilDaggersInfo.Types.Core.Wiki;
 
 namespace DevilDaggersInfo.Web.Client.Extensions;
 
