@@ -24,7 +24,7 @@ else
 	{
 		<Heading Title="Distributions" Level="2" />
 
-		<a class="btn btn-download px-2 py-1" href="@GetApiCall(_launcherName, _launcherWindowsDistribution)" download="@GetFileName(_launcherName, _launcherWindowsDistribution)" role="button" target="_top">Download the launcher for Windows (@FileSizeUtils.Format(_launcherWindowsDistribution.FileSize))</a>
+		<a class="btn btn-download px-2 py-1" href="@GetDistributionApiCall(_launcherName, _launcherWindowsDistribution)" download="@GetDistributionFileName(_launcherName, _launcherWindowsDistribution)" role="button" target="_top">Download the launcher for Windows (@FileSizeUtils.Format(_launcherWindowsDistribution.FileSize))</a>
 		                                                                                                                                                                                                                                                                                                      
 		<p class="para">Launcher version: @_launcherWindowsDistribution.VersionNumber</p>
 		<p class="para">Windows 7 and older is currently not supported (although Windows 7 can probably be made to work).</p>
@@ -156,12 +156,12 @@ else
 		_launcherWindowsDistribution = await Http.GetLatestToolDistribution(_launcherName, ToolPublishMethod.Aot, ToolBuildType.WindowsConsole);
 	}
 
-	private static string GetApiCall(string toolName, GetToolDistribution distribution)
+	private static string GetDistributionApiCall(string toolName, GetToolDistribution distribution)
 	{
 		return $"/api/tools/{toolName}/file?publishMethod={distribution.PublishMethod}&buildType={distribution.BuildType}&version={distribution.VersionNumber}";
 	}
 
-	private static string GetFileName(string toolName, GetToolDistribution distribution)
+	private static string GetDistributionFileName(string toolName, GetToolDistribution distribution)
 	{
 		return $"{toolName}{distribution.VersionNumber}.zip";
 	}

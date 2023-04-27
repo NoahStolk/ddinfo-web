@@ -1,5 +1,4 @@
 @page "/tools/custom-leaderboards"
-@using DevilDaggersInfo.Api.Main.CustomLeaderboards
 @using DevilDaggersInfo.Api.Main.Tools
 @using DevilDaggersInfo.Common
 @using DevilDaggersInfo.Web.Client.Components
@@ -9,7 +8,7 @@
 
 <Heading Title="Devil Daggers Custom Leaderboards" />
 
-@if (GetTool == null || GetTotalCustomLeaderboardData == null)
+@if (GetTool == null)
 {
 	<Loading />
 }
@@ -20,20 +19,6 @@ else
 
 	<img src="/images/tools/ddcl.png" class="object-contain max-h-160 pt-3" alt="Custom Leaderboards" />
 
-	<Heading Title="Features" Level="2" />
-	<ul class="pl-4">
-		<li class="list-disc">Participate in @GetTotalCustomLeaderboardData.LeaderboardsPerCategory.Sum(dict => dict.Value).ToString("N0") different custom leaderboards</li>
-		<li class="list-disc">@GetTotalCustomLeaderboardData.PlayersPerCategory.Values.Sum().ToString("N0") players</li>
-		<li class="list-disc">@GetTotalCustomLeaderboardData.ScoresPerCategory.Values.Sum().ToString("N0") scores</li>
-		<li class="list-disc">@GetTotalCustomLeaderboardData.SubmitsPerCategory.Values.Sum().ToString("N0") total submissions (since @Constants.TrackingCustomLeaderboardSubmitCounts.ToString(StringFormats.DateFormat))</li>
-	</ul>
-
-	<Heading Title="System Requirements" Level="2" />
-	<ul class="pl-4">
-		<li class="list-disc">64-bit</li>
-	</ul>
-
-	<RunInfo />
 	<SourceInfo Url="https://github.com/NoahStolk/DevilDaggersCustomLeaderboards" />
 	
 	<Heading Title="Changelog" Level="2" />
@@ -47,11 +32,9 @@ else
 @code
 {
 	public GetTool? GetTool { get; set; }
-	public GetTotalCustomLeaderboardData? GetTotalCustomLeaderboardData { get; set; }
 
 	protected override async Task OnInitializedAsync()
 	{
 		GetTool = await Http.GetTool("DevilDaggersCustomLeaderboards");
-		GetTotalCustomLeaderboardData = await Http.GetTotalCustomLeaderboardData();
 	}
 }
