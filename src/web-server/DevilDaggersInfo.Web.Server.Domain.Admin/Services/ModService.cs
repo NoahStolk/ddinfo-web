@@ -1,4 +1,3 @@
-using DevilDaggersInfo.Api.Admin.Mods;
 using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Core.Mod;
 using DevilDaggersInfo.Types.Web;
@@ -23,7 +22,7 @@ public class ModService
 		_modScreenshotProcessor = modScreenshotProcessor;
 	}
 
-	public async Task AddModAsync(AddMod addMod)
+	public async Task AddModAsync(Api.Admin.Mods.AddMod addMod)
 	{
 		ValidateName(addMod.Name);
 
@@ -61,7 +60,7 @@ public class ModService
 		await _dbContext.SaveChangesAsync();
 	}
 
-	public async Task EditModAsync(int id, EditMod editMod)
+	public async Task EditModAsync(int id, Api.Admin.Mods.EditMod editMod)
 	{
 		ValidateName(editMod.Name);
 

@@ -1,5 +1,5 @@
 using CliWrap;
-using DevilDaggersInfo.Types.Web;
+using DevilDaggersInfo.Api.Admin.Tools;
 using System.Text;
 
 namespace DevilDaggersInfo.Tool.DistributeApp;
