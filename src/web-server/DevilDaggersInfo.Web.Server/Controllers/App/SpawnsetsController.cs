@@ -33,7 +33,7 @@ public class SpawnsetsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public ActionResult<GetSpawnset> GetSpawnsetById([Required] int id)
+	public async Task<ActionResult<GetSpawnset>> GetSpawnsetById([Required] int id)
 	{
 		SpawnsetEntity? spawnsetEntity = _dbContext.Spawnsets
 			.AsNoTracking()
@@ -51,7 +51,7 @@ public class SpawnsetsController : ControllerBase
 			.Select(cl => new { cl.Id, cl.SpawnsetId })
 			.FirstOrDefault(cl => cl.SpawnsetId == spawnsetEntity.Id);
 
-		return spawnsetEntity.ToGetSpawnset(customLeaderboard?.Id, IoFile.ReadAllBytes(path));
+		return spawnsetEntity.ToGetSpawnset(customLeaderboard?.Id, await IoFile.ReadAllBytesAsync(path));
 	}
 
 	[HttpGet("{id}/buffer")]
@@ -80,9 +80,9 @@ public class SpawnsetsController : ControllerBase
 	[HttpGet("by-hash")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public ActionResult<GetSpawnsetByHash> GetSpawnsetByHash([FromQuery] byte[] hash)
+	public async Task<ActionResult<GetSpawnsetByHash>> GetSpawnsetByHash([FromQuery] byte[] hash)
 	{
-		SpawnsetHashCacheData? data = _spawnsetHashCache.GetSpawnset(hash);
+		SpawnsetHashCacheData? data = await _spawnsetHashCache.GetSpawnsetAsync(hash);
 		if (data == null)
 			return NotFound();
 

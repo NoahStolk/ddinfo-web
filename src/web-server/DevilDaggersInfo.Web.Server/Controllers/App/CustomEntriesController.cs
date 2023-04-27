@@ -30,11 +30,11 @@ public class CustomEntriesController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public ActionResult<GetCustomEntryReplayBuffer> GetCustomEntryReplayBufferById([Required] int id)
+	public async Task<ActionResult<GetCustomEntryReplayBuffer>> GetCustomEntryReplayBufferById([Required] int id)
 	{
 		return new GetCustomEntryReplayBuffer
 		{
-			Data = _customEntryRepository.GetCustomEntryReplayBufferById(id),
+			Data = await _customEntryRepository.GetCustomEntryReplayBufferByIdAsync(id),
 		};
 	}
 

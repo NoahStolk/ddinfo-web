@@ -22,7 +22,7 @@ public class SpawnsetHashCache
 		_logger = logger;
 	}
 
-	public SpawnsetHashCacheData? GetSpawnset(byte[] hash)
+	public async Task<SpawnsetHashCacheData?> GetSpawnsetAsync(byte[] hash)
 	{
 		SpawnsetHashCacheData? spawnsetCacheData = _cache.FirstOrDefault(scd => ArrayUtils.AreEqual(scd.Hash, hash));
 		if (spawnsetCacheData != null)
@@ -30,7 +30,7 @@ public class SpawnsetHashCache
 
 		foreach (string spawnsetPath in Directory.GetFiles(_fileSystemService.GetPath(DataSubDirectory.Spawnsets)))
 		{
-			byte[] spawnsetBytes = File.ReadAllBytes(spawnsetPath);
+			byte[] spawnsetBytes = await File.ReadAllBytesAsync(spawnsetPath);
 			if (!SpawnsetBinary.TryParse(spawnsetBytes, out _))
 			{
 				_logger.LogError("Could not parse file at `{path}` to a spawnset. Skipping file for cache.", spawnsetPath);

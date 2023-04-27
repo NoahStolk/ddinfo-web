@@ -313,7 +313,7 @@ public class CustomLeaderboardRepository
 
 	public async Task<int> GetCustomLeaderboardIdBySpawnsetHashAsync(byte[] hash)
 	{
-		SpawnsetHashCacheData? data = _spawnsetHashCache.GetSpawnset(hash);
+		SpawnsetHashCacheData? data = await _spawnsetHashCache.GetSpawnsetAsync(hash);
 		if (data == null)
 			throw new NotFoundException();
 

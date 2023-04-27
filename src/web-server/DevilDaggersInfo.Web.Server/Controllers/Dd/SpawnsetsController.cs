@@ -19,9 +19,9 @@ public class SpawnsetsController : ControllerBase
 	[HttpGet("/api/spawnsets/name-by-hash")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public ActionResult<GetSpawnsetNameByHash> GetSpawnsetNameByHash([FromQuery] byte[] hash)
+	public async Task<ActionResult<GetSpawnsetNameByHash>> GetSpawnsetNameByHash([FromQuery] byte[] hash)
 	{
-		SpawnsetHashCacheData? data = _spawnsetHashCache.GetSpawnset(hash);
+		SpawnsetHashCacheData? data = await _spawnsetHashCache.GetSpawnsetAsync(hash);
 		if (data == null)
 			return NotFound();
 

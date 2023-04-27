@@ -98,7 +98,7 @@ public class CustomEntryProcessor
 			LogAndThrowValidationException(uploadRequest, $"Game status {uploadRequest.Status} is not accepted.", null, "rotating_light");
 
 		// Check for existing spawnset.
-		SpawnsetHashCacheData? spawnsetHashData = _spawnsetHashCache.GetSpawnset(uploadRequest.SurvivalHashMd5);
+		SpawnsetHashCacheData? spawnsetHashData = await _spawnsetHashCache.GetSpawnsetAsync(uploadRequest.SurvivalHashMd5);
 		string? spawnsetName = spawnsetHashData?.Name;
 		if (string.IsNullOrEmpty(spawnsetName))
 			LogAndThrowValidationException(uploadRequest, "This spawnset doesn't exist on DevilDaggers.info.");

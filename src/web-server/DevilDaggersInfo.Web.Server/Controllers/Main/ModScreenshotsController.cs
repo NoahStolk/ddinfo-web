@@ -19,12 +19,12 @@ public class ModScreenshotsController : ControllerBase
 	[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public IActionResult GetScreenshotByFilePath(string modName, string fileName)
+	public async Task<IActionResult> GetScreenshotByFilePath(string modName, string fileName)
 	{
 		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ModScreenshots), modName, fileName);
 		if (!IoFile.Exists(path))
 			return NotFound();
 
-		return File(IoFile.ReadAllBytes(path), "image/png");
+		return File(await IoFile.ReadAllBytesAsync(path), "image/png");
 	}
 }
