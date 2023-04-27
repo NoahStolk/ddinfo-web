@@ -72,7 +72,7 @@ public class ModRepository
 		if (mod == null)
 			throw new NotFoundException();
 
-		ModFileSystemData mfsd = _modArchiveAccessor.GetModFileSystemData(mod.Name);
-		return mod.ToGetMod(mfsd.ModArchive?.Binaries.ConvertAll(macd => macd.Name), mfsd.ScreenshotFileNames);
+		ModFileSystemData fileSystemData = await _modArchiveAccessor.GetModFileSystemDataAsync(mod.Name);
+		return mod.ToGetMod(fileSystemData.ModArchive?.Binaries.ConvertAll(b => b.Name), fileSystemData.ScreenshotFileNames);
 	}
 }

@@ -53,7 +53,7 @@ public class AppLauncherController : ControllerBase
 		if (distribution == null)
 			return NotFound();
 
-		byte[] bytes = _toolRepository.GetToolDistributionFile(_toolName, publishMethod, buildType, distribution.VersionNumber);
+		byte[] bytes = await _toolRepository.GetToolDistributionFileAsync(_toolName, publishMethod, buildType, distribution.VersionNumber);
 
 		await _toolRepository.UpdateToolDistributionStatisticsAsync(_toolName, publishMethod, buildType, distribution.VersionNumber);
 

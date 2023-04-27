@@ -25,7 +25,7 @@ public class ModsController : ControllerBase
 	[Obsolete("DDAE 1.4.0 will be removed.")]
 	[HttpGet("/api/mods/ddae")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	public List<GetModDdae> GetModsObsolete(string? authorFilter = null, string? nameFilter = null, bool? isHostedFilter = null)
+	public async Task<List<GetModDdae>> GetModsObsolete(string? authorFilter = null, string? nameFilter = null, bool? isHostedFilter = null)
 	{
 		// ! Navigation property.
 		IEnumerable<ModEntity> modsQuery = _dbContext.Mods
@@ -45,7 +45,13 @@ public class ModsController : ControllerBase
 
 		List<ModEntity> mods = modsQuery.ToList();
 
-		Dictionary<ModEntity, ModFileSystemData> data = mods.ToDictionary(m => m, m => _modArchiveAccessor.GetModFileSystemData(m.Name));
+		Dictionary<ModEntity, ModFileSystemData> data = new();
+		foreach (ModEntity mod in mods)
+		{
+			ModFileSystemData modData = await _modArchiveAccessor.GetModFileSystemDataAsync(mod.Name);
+			data.Add(mod, modData);
+		}
+
 		if (isHostedFilter.HasValue)
 			data = data.Where(kvp => kvp.Value.ModArchive != null).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 

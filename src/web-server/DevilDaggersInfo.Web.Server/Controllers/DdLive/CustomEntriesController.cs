@@ -20,9 +20,9 @@ public class CustomEntriesController : ControllerBase
 	[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public ActionResult GetCustomEntryReplayById([Required] int id)
+	public async Task<ActionResult> GetCustomEntryReplayById([Required] int id)
 	{
-		(string fileName, byte[] contents) = _customEntryRepository.GetCustomEntryReplayById(id);
+		(string fileName, byte[] contents) = await _customEntryRepository.GetCustomEntryReplayByIdAsync(id);
 		return File(contents, MediaTypeNames.Application.Octet, fileName);
 	}
 }

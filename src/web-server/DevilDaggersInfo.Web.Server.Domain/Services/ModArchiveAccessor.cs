@@ -18,12 +18,12 @@ public class ModArchiveAccessor
 
 	public string GetModArchivePath(string modName) => Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Mods), $"{modName}.zip");
 
-	public ModFileSystemData GetModFileSystemData(string modName)
+	public async Task<ModFileSystemData> GetModFileSystemDataAsync(string modName)
 	{
 		string modArchivePath = GetModArchivePath(modName);
 		string modScreenshotsDirectory = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ModScreenshots), modName);
 
-		ModArchiveCacheData? modArchiveCacheData = File.Exists(modArchivePath) ? _modArchiveCache.GetArchiveDataByFilePath(modArchivePath) : null;
+		ModArchiveCacheData? modArchiveCacheData = File.Exists(modArchivePath) ? await _modArchiveCache.GetArchiveDataByFilePathAsync(modArchivePath) : null;
 
 		return new()
 		{

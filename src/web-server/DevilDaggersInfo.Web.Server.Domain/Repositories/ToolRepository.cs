@@ -66,7 +66,7 @@ public class ToolRepository
 		};
 	}
 
-	public byte[] GetToolDistributionFile(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version)
+	public async Task<byte[]> GetToolDistributionFileAsync(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version)
 	{
 		string path = _fileSystemService.GetToolDistributionPath(name, publishMethod, buildType, version);
 		if (!File.Exists(path))
@@ -75,7 +75,7 @@ public class ToolRepository
 			throw new NotFoundException("Tool distribution file does not exist.");
 		}
 
-		return File.ReadAllBytes(path);
+		return await File.ReadAllBytesAsync(path);
 	}
 
 	public async Task<ToolDistribution?> GetLatestToolDistributionAsync(string name, ToolPublishMethod publishMethod, ToolBuildType buildType)

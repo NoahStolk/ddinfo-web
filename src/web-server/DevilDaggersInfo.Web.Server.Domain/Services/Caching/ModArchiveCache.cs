@@ -22,14 +22,14 @@ public class ModArchiveCache
 		_fileSystemService = fileSystemService;
 	}
 
-	public ModArchiveCacheData GetArchiveDataByBytes(string name, byte[] bytes)
+	public async Task<ModArchiveCacheData> GetArchiveDataByBytesAsync(string name, byte[] bytes)
 	{
 		// Check memory cache.
-		if (_cache.ContainsKey(name))
-			return _cache[name];
+		if (_cache.TryGetValue(name, out ModArchiveCacheData? cachedData))
+			return cachedData;
 
 		// Check file cache.
-		ModArchiveCacheData? fileCache = LoadFromFileCache(name);
+		ModArchiveCacheData? fileCache = await LoadFromFileCacheAsync(name);
 		if (fileCache != null)
 			return fileCache;
 
@@ -38,15 +38,15 @@ public class ModArchiveCache
 		return CreateModArchiveCacheDataFromStream(name, ms, false); // Do not add this to the cache because it is not yet validated.
 	}
 
-	public ModArchiveCacheData GetArchiveDataByFilePath(string filePath)
+	public async Task<ModArchiveCacheData> GetArchiveDataByFilePathAsync(string filePath)
 	{
 		// Check memory cache.
 		string name = Path.GetFileNameWithoutExtension(filePath);
-		if (_cache.ContainsKey(name))
-			return _cache[name];
+		if (_cache.TryGetValue(name, out ModArchiveCacheData? cachedData))
+			return cachedData;
 
 		// Check file cache.
-		ModArchiveCacheData? fileCache = LoadFromFileCache(name);
+		ModArchiveCacheData? fileCache = await LoadFromFileCacheAsync(name);
 		if (fileCache != null)
 			return fileCache;
 
@@ -58,13 +58,13 @@ public class ModArchiveCache
 		}
 	}
 
-	private ModArchiveCacheData? LoadFromFileCache(string name)
+	private async Task<ModArchiveCacheData?> LoadFromFileCacheAsync(string name)
 	{
 		string fileCachePath = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ModArchiveCache), $"{name}.json");
 		if (!File.Exists(fileCachePath))
 			return null;
 
-		ModArchiveCacheData? fileCacheArchiveData = JsonConvert.DeserializeObject<ModArchiveCacheData>(File.ReadAllText(fileCachePath));
+		ModArchiveCacheData? fileCacheArchiveData = JsonConvert.DeserializeObject<ModArchiveCacheData>(await File.ReadAllTextAsync(fileCachePath));
 		if (fileCacheArchiveData == null)
 			return null;
 
@@ -119,7 +119,7 @@ public class ModArchiveCache
 		File.WriteAllText(Path.Combine(fileCacheDirectory, $"{name}.json"), JsonConvert.SerializeObject(archiveData));
 	}
 
-	public void LoadEntireFileCache()
+	public async Task LoadEntireFileCacheAsync()
 	{
 		string fileCacheDirectory = _fileSystemService.GetPath(DataSubDirectory.ModArchiveCache);
 		Directory.CreateDirectory(fileCacheDirectory);
@@ -127,7 +127,7 @@ public class ModArchiveCache
 		foreach (string path in Directory.GetFiles(fileCacheDirectory, "*.json"))
 		{
 			string name = Path.GetFileNameWithoutExtension(path);
-			LoadFromFileCache(name);
+			await LoadFromFileCacheAsync(name);
 		}
 	}
 

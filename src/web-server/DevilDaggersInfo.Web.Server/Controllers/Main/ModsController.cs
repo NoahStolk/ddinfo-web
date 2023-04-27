@@ -33,7 +33,7 @@ public class ModsController : ControllerBase
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	public ActionResult<Page<GetModOverview>> GetMods(
+	public async Task<ActionResult<Page<GetModOverview>>> GetMods(
 		bool onlyHosted,
 		string? modFilter = null,
 		string? authorFilter = null,
@@ -61,7 +61,13 @@ public class ModsController : ControllerBase
 
 		List<ModEntity> mods = modsQuery.ToList();
 
-		Dictionary<ModEntity, ModFileSystemData> data = mods.ToDictionary(m => m, m => _modArchiveAccessor.GetModFileSystemData(m.Name));
+		Dictionary<ModEntity, ModFileSystemData> data = new();
+		foreach (ModEntity mod in mods)
+		{
+			ModFileSystemData modData = await _modArchiveAccessor.GetModFileSystemDataAsync(mod.Name);
+			data.Add(mod, modData);
+		}
+
 		if (onlyHosted)
 			data = data.Where(kvp => kvp.Value.ModArchive != null).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
@@ -98,7 +104,7 @@ public class ModsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public ActionResult<GetMod> GetModById([Required] int id)
+	public async Task<ActionResult<GetMod>> GetModById([Required] int id)
 	{
 		// ! Navigation property.
 		ModEntity? modEntity = _dbContext.Mods
@@ -109,7 +115,7 @@ public class ModsController : ControllerBase
 		if (modEntity == null)
 			return NotFound();
 
-		ModFileSystemData data = _modArchiveAccessor.GetModFileSystemData(modEntity.Name);
+		ModFileSystemData data = await _modArchiveAccessor.GetModFileSystemDataAsync(modEntity.Name);
 
 		return modEntity.ToGetMod(data);
 	}
@@ -129,7 +135,7 @@ public class ModsController : ControllerBase
 	[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public ActionResult GetModFile([Required] string modName)
+	public async Task<ActionResult> GetModFile([Required] string modName)
 	{
 		if (!_dbContext.Mods.Any(m => m.Name == modName))
 			return NotFound();
@@ -139,7 +145,7 @@ public class ModsController : ControllerBase
 		if (!IoFile.Exists(path))
 			return BadRequest($"Mod file '{fileName}' does not exist.");
 
-		return File(IoFile.ReadAllBytes(path), MediaTypeNames.Application.Zip, fileName);
+		return File(await IoFile.ReadAllBytesAsync(path), MediaTypeNames.Application.Zip, fileName);
 	}
 
 	[HttpGet("by-author")]

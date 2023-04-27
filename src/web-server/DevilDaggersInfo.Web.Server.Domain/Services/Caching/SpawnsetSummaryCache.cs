@@ -10,8 +10,8 @@ public class SpawnsetSummaryCache
 	public SpawnsetSummary GetSpawnsetSummaryByFilePath(string filePath)
 	{
 		string name = Path.GetFileNameWithoutExtension(filePath);
-		if (_cache.ContainsKey(name))
-			return _cache[name];
+		if (_cache.TryGetValue(name, out SpawnsetSummary? summary))
+			return summary;
 
 		if (!SpawnsetSummary.TryParse(File.ReadAllBytes(filePath), out SpawnsetSummary? spawnsetSummary))
 			throw new($"Failed to get spawnset summary from spawnset file: '{name}'.");

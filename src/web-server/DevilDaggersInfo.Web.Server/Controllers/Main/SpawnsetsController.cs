@@ -124,9 +124,9 @@ public class SpawnsetsController : ControllerBase
 	[HttpGet("by-hash")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public ActionResult<GetSpawnsetByHash> GetSpawnsetByHash([FromQuery] byte[] hash)
+	public async Task<ActionResult<GetSpawnsetByHash>> GetSpawnsetByHash([FromQuery] byte[] hash)
 	{
-		SpawnsetHashCacheData? data = _spawnsetHashCache.GetSpawnset(hash);
+		SpawnsetHashCacheData? data = await _spawnsetHashCache.GetSpawnsetAsync(hash);
 		if (data == null)
 			return NotFound();
 
@@ -172,13 +172,13 @@ public class SpawnsetsController : ControllerBase
 	[HttpGet("hash")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public ActionResult<byte[]> GetSpawnsetHash([Required] string fileName)
+	public async Task<ActionResult<byte[]>> GetSpawnsetHash([Required] string fileName)
 	{
 		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), fileName);
 		if (!IoFile.Exists(path))
 			return NotFound();
 
-		byte[] spawnsetBytes = IoFile.ReadAllBytes(path);
+		byte[] spawnsetBytes = await IoFile.ReadAllBytesAsync(path);
 		return MD5.HashData(spawnsetBytes);
 	}
 
@@ -197,20 +197,20 @@ public class SpawnsetsController : ControllerBase
 	[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public ActionResult GetSpawnsetFile([Required] string fileName)
+	public async Task<ActionResult> GetSpawnsetFile([Required] string fileName)
 	{
 		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), fileName);
 		if (!IoFile.Exists(path))
 			return NotFound();
 
-		return File(IoFile.ReadAllBytes(path), MediaTypeNames.Application.Octet, fileName);
+		return File(await IoFile.ReadAllBytesAsync(path), MediaTypeNames.Application.Octet, fileName);
 	}
 
 	[HttpGet("{id}")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public ActionResult<GetSpawnset> GetSpawnsetById([Required] int id)
+	public async Task<ActionResult<GetSpawnset>> GetSpawnsetById([Required] int id)
 	{
 		SpawnsetEntity? spawnsetEntity = _dbContext.Spawnsets
 			.AsNoTracking()
@@ -228,13 +228,13 @@ public class SpawnsetsController : ControllerBase
 			.Select(cl => new { cl.Id, cl.SpawnsetId })
 			.FirstOrDefault(cl => cl.SpawnsetId == spawnsetEntity.Id);
 
-		return spawnsetEntity.ToGetSpawnset(customLeaderboard?.Id, IoFile.ReadAllBytes(path));
+		return spawnsetEntity.ToGetSpawnset(customLeaderboard?.Id, await IoFile.ReadAllBytesAsync(path));
 	}
 
 	[HttpGet("default")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public ActionResult<byte[]> GetDefaultSpawnset(GameVersion gameVersion)
+	public async Task<ActionResult<byte[]>> GetDefaultSpawnset(GameVersion gameVersion)
 	{
 		string fileName = gameVersion switch
 		{
@@ -250,7 +250,7 @@ public class SpawnsetsController : ControllerBase
 			return NotFound();
 		}
 
-		return IoFile.ReadAllBytes(path);
+		return await IoFile.ReadAllBytesAsync(path);
 	}
 
 	[HttpGet("by-author")]

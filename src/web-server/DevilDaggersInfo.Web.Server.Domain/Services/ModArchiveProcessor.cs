@@ -58,7 +58,7 @@ public class ModArchiveProcessor
 
 		try
 		{
-			List<ModBinaryCacheData> addedBinaries = _modArchiveCache.GetArchiveDataByBytes(modName, zipBytes).Binaries;
+			List<ModBinaryCacheData> addedBinaries = (await _modArchiveCache.GetArchiveDataByBytesAsync(modName, zipBytes)).Binaries;
 			if (addedBinaries.Count == 0)
 				throw new InvalidModArchiveException("Mod archive does not contain any binaries.");
 

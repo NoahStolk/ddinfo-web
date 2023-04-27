@@ -32,7 +32,7 @@ public class SpawnsetService
 			throw new AdminDomainException("File could not be parsed to a proper survival file.");
 
 		byte[] spawnsetHash = MD5.HashData(addSpawnset.FileContents);
-		SpawnsetHashCacheData? existingSpawnset = _spawnsetHashCache.GetSpawnset(spawnsetHash);
+		SpawnsetHashCacheData? existingSpawnset = await _spawnsetHashCache.GetSpawnsetAsync(spawnsetHash);
 		if (existingSpawnset != null)
 			throw new AdminDomainException($"Spawnset is exactly the same as an already existing spawnset named '{existingSpawnset.Name}'.");
 
