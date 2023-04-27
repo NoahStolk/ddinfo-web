@@ -130,7 +130,7 @@ public class PlayersController : ControllerBase
 
 			stats.Add(new()
 			{
-				CustomLeaderboardCategory = category,
+				CustomLeaderboardCategory = category.ToMainApi(),
 				LeviathanDaggerCount = leviathanDaggers,
 				DevilDaggerCount = devilDaggers,
 				GoldenDaggerCount = goldenDaggers,

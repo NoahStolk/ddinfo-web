@@ -1,5 +1,3 @@
-using DevilDaggersInfo.Types.Web;
-
 namespace DevilDaggersInfo.Api.Main.CustomLeaderboards;
 
 public record GetTotalCustomLeaderboardData
