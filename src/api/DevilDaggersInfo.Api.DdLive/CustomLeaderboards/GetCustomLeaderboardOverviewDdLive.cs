@@ -1,5 +1,3 @@
-using DevilDaggersInfo.Types.Web;
-
 namespace DevilDaggersInfo.Api.DdLive.CustomLeaderboards;
 
 public record GetCustomLeaderboardOverviewDdLive
@@ -22,7 +20,7 @@ public record GetCustomLeaderboardOverviewDdLive
 
 	public required int PlayerCount { get; init; }
 
-	public required CustomLeaderboardCategory Category { get; init; }
+	public required CustomLeaderboardCategoryDdLive Category { get; init; }
 
 	public required int? TopPlayerId { get; init; }
 
@@ -30,5 +28,5 @@ public record GetCustomLeaderboardOverviewDdLive
 
 	public required double? WorldRecord { get; init; }
 
-	public required CustomLeaderboardDagger? WorldRecordDagger { get; init; }
+	public required CustomLeaderboardDaggerDdLive? WorldRecordDagger { get; init; }
 }

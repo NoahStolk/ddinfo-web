@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Common.Extensions;
+using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 using DdLiveApi = DevilDaggersInfo.Api.DdLive.CustomLeaderboards;
 
@@ -17,11 +18,11 @@ public static class CustomLeaderboardConverters
 		DateLastPlayed = customLeaderboard.DateLastPlayed,
 		SubmitCount = customLeaderboard.TotalRunsSubmitted,
 		PlayerCount = customLeaderboard.PlayerCount,
-		Category = customLeaderboard.Category,
+		Category = customLeaderboard.Category.ToCustomLeaderboardCategoryDdLive(),
 		TopPlayerId = customLeaderboard.WorldRecord?.PlayerId,
 		TopPlayerName = customLeaderboard.WorldRecord?.PlayerName,
 		WorldRecord = customLeaderboard.WorldRecord?.Time.ToSecondsTime(),
-		WorldRecordDagger = customLeaderboard.WorldRecord?.Dagger,
+		WorldRecordDagger = customLeaderboard.WorldRecord?.Dagger?.ToCustomLeaderboardDaggerDdLive(),
 	};
 
 	public static DdLiveApi.GetCustomLeaderboardDdLive ToGetCustomLeaderboardDdLive(this SortedCustomLeaderboard customLeaderboard, List<int> customEntryReplayIds) => new()
@@ -33,7 +34,7 @@ public static class CustomLeaderboardConverters
 		Daggers = customLeaderboard.Daggers?.ToGetCustomLeaderboardDaggers(),
 		DateCreated = customLeaderboard.DateCreated,
 		SubmitCount = customLeaderboard.TotalRunsSubmitted,
-		Category = customLeaderboard.Category,
+		Category = customLeaderboard.Category.ToCustomLeaderboardCategoryDdLive(),
 		IsFeatured = customLeaderboard.Daggers != null,
 		DateLastPlayed = customLeaderboard.DateLastPlayed,
 		CustomEntries = customLeaderboard.CustomEntries.ConvertAll(ce => ce.ToGetCustomEntryDdLive(customEntryReplayIds.Contains(ce.Id))),
@@ -55,7 +56,7 @@ public static class CustomLeaderboardConverters
 		PlayerId = customEntry.PlayerId,
 		PlayerName = customEntry.PlayerName,
 		CountryCode = customEntry.CountryCode,
-		Client = customEntry.Client,
+		Client = customEntry.Client.ToCustomLeaderboardsClientDdLive(),
 		ClientVersion = customEntry.ClientVersion,
 		DeathType = customEntry.DeathType,
 		EnemiesAlive = customEntry.EnemiesAlive,
@@ -72,8 +73,36 @@ public static class CustomLeaderboardConverters
 		DaggersHit = customEntry.DaggersHit,
 		SubmitDate = customEntry.SubmitDate,
 		Time = customEntry.Time.ToSecondsTime(),
-		CustomLeaderboardDagger = customEntry.CustomLeaderboardDagger,
+		CustomLeaderboardDagger = customEntry.CustomLeaderboardDagger?.ToCustomLeaderboardDaggerDdLive(),
 		HasGraphs = customEntry.HasGraphs,
 		HasReplay = hasReplay,
+	};
+
+	private static DdLiveApi.CustomLeaderboardCategoryDdLive ToCustomLeaderboardCategoryDdLive(this CustomLeaderboardCategory category) => category switch
+	{
+		CustomLeaderboardCategory.Survival => DdLiveApi.CustomLeaderboardCategoryDdLive.Survival,
+		CustomLeaderboardCategory.TimeAttack => DdLiveApi.CustomLeaderboardCategoryDdLive.TimeAttack,
+		CustomLeaderboardCategory.Speedrun => DdLiveApi.CustomLeaderboardCategoryDdLive.Speedrun,
+		CustomLeaderboardCategory.Race => DdLiveApi.CustomLeaderboardCategoryDdLive.Race,
+		_ => throw new ArgumentOutOfRangeException(nameof(category), category, null),
+	};
+
+	private static DdLiveApi.CustomLeaderboardsClientDdLive ToCustomLeaderboardsClientDdLive(this CustomLeaderboardsClient client) => client switch
+	{
+		CustomLeaderboardsClient.DevilDaggersCustomLeaderboards => DdLiveApi.CustomLeaderboardsClientDdLive.DevilDaggersCustomLeaderboards,
+		CustomLeaderboardsClient.DdstatsRust => DdLiveApi.CustomLeaderboardsClientDdLive.DdstatsRust,
+		CustomLeaderboardsClient.DdinfoTools => DdLiveApi.CustomLeaderboardsClientDdLive.DdinfoTools,
+		_ => throw new ArgumentOutOfRangeException(nameof(client), client, null),
+	};
+
+	private static DdLiveApi.CustomLeaderboardDaggerDdLive ToCustomLeaderboardDaggerDdLive(this CustomLeaderboardDagger dagger) => dagger switch
+	{
+		CustomLeaderboardDagger.Default => DdLiveApi.CustomLeaderboardDaggerDdLive.Default,
+		CustomLeaderboardDagger.Bronze => DdLiveApi.CustomLeaderboardDaggerDdLive.Bronze,
+		CustomLeaderboardDagger.Silver => DdLiveApi.CustomLeaderboardDaggerDdLive.Silver,
+		CustomLeaderboardDagger.Golden => DdLiveApi.CustomLeaderboardDaggerDdLive.Golden,
+		CustomLeaderboardDagger.Devil => DdLiveApi.CustomLeaderboardDaggerDdLive.Devil,
+		CustomLeaderboardDagger.Leviathan => DdLiveApi.CustomLeaderboardDaggerDdLive.Leviathan,
+		_ => throw new ArgumentOutOfRangeException(nameof(dagger), dagger, null),
 	};
 }
