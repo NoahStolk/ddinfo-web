@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Api.App;
 using DevilDaggersInfo.Api.App.CustomLeaderboards;
-using DevilDaggersInfo.Types.Web;
+using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.App;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.App;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.Domain.Repositories;
@@ -67,7 +67,7 @@ public class CustomLeaderboardsController : ControllerBase
 		bool onlyFeatured)
 	{
 		Domain.Models.Page<CustomLeaderboardOverview> customLeaderboards = await _customLeaderboardRepository.GetCustomLeaderboardOverviewsAsync(
-			category: category,
+			category: category.ToDomain(),
 			spawnsetFilter: null,
 			authorFilter: null,
 			pageIndex: pageIndex,

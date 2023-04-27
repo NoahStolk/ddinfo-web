@@ -1,9 +1,6 @@
 @using Microsoft.AspNetCore.Components
 @using DevilDaggersInfo.Api.Admin.CustomLeaderboards
-@using DevilDaggersInfo.Types.Core.CustomLeaderboards
 @using DevilDaggersInfo.Types.Core.CustomLeaderboards.Extensions
-@using DevilDaggersInfo.Types.Web
-@using DevilDaggersInfo.Types.Web.Extensions
 @using DevilDaggersInfo.Web.Client.Components
 @using DevilDaggersInfo.Web.Client.Components.Admin
 @using DevilDaggersInfo.Web.Client.Components.Input
@@ -19,7 +16,7 @@
 
 	@if (Criteria.Expression == null || Criteria.Operator == CustomLeaderboardCriteriaOperator.Any)
 	{
-		<span style="color: @CriteriaType.GetColor()">@CriteriaType.Display()</span>
+		<span style="color: @CriteriaType.ToCore().GetColor()">@CriteriaType.ToCore().Display()</span>
 		<span>can be anything</span>
 	}
 	else
@@ -28,7 +25,7 @@
 		{
 			Expression expression = Expression.Parse(Criteria.Expression);
 
-			<CriteriaExpressionComponent Expression="expression" CriteriaOperator="Criteria.Operator" CriteriaType="CriteriaType"/>
+			<CriteriaExpressionComponent Expression="expression" CriteriaOperator="Criteria.Operator.ToCore()" CriteriaType="CriteriaType.ToCore()"/>
 
 			<span class="text-green text-sm">(@BitConverter.ToString(expression.ToBytes()).Replace("-", " "))</span>
 		}

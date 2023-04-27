@@ -6,9 +6,11 @@ using DevilDaggersInfo.Core.Wiki.Objects;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Data;
 using DevilDaggersInfo.Razor.Core.CanvasChart.Options.LineChart;
 using DevilDaggersInfo.Types.Core.Spawnsets;
+using DevilDaggersInfo.Web.Client.Extensions;
 using DevilDaggersInfo.Web.Client.HttpClients;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using System.Diagnostics;
 using System.Net;
 
 namespace DevilDaggersInfo.Web.Client.Pages.Custom.Leaderboards;
@@ -58,7 +60,8 @@ public partial class EntryPage
 
 		_time = (int)Math.Ceiling(GetCustomEntryData.Time);
 
-		for (HandLevel i = GetCustomEntryData.StartingLevel; i <= HandLevel.Level4; i++)
+		HandLevel handLevel = GetCustomEntryData.StartingLevel.ToCore();
+		for (HandLevel i = handLevel; i <= HandLevel.Level4; i++)
 		{
 			double nextLevelUp = i switch
 			{

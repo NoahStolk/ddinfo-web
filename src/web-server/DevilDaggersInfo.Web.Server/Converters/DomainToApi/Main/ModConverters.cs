@@ -1,5 +1,9 @@
+using DevilDaggersInfo.Types.Core.Assets;
+using DevilDaggersInfo.Types.Core.Mods;
+using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;
+using System.Diagnostics;
 using MainApi = DevilDaggersInfo.Api.Main.Mods;
 
 namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
@@ -15,7 +19,7 @@ public static class ModConverters
 		Id = mod.Id,
 		IsHosted = modFileSystemData.ModArchive != null,
 		LastUpdated = mod.LastUpdated,
-		ModTypes = modFileSystemData.ModArchive?.ModTypes() ?? mod.ModTypes,
+		ModTypes = (modFileSystemData.ModArchive?.ModTypes() ?? mod.ModTypes).ToMainApi(),
 		Name = mod.Name,
 	};
 
@@ -31,14 +35,14 @@ public static class ModConverters
 		{
 			Binaries = modFileSystemData.ModArchive.Binaries.ConvertAll(b => new MainApi.GetModBinary
 			{
-				ModBinaryType = b.ModBinaryType,
+				ModBinaryType = b.ModBinaryType.ToMainApi(),
 				Name = b.Name,
 				Size = b.Size,
 				Assets = b.Chunks.ConvertAll(c => new MainApi.GetModAsset
 				{
 					Name = c.Name,
 					Size = c.Size,
-					Type = c.AssetType,
+					Type = c.AssetType.ToMainApi(),
 					IsProhibited = c.IsProhibited,
 				}),
 				ContainsProhibitedAssets = b.ContainsProhibitedAssets(),
@@ -53,10 +57,29 @@ public static class ModConverters
 			FileSize = modFileSystemData.ModArchive.FileSize,
 			FileSizeExtracted = modFileSystemData.ModArchive.FileSizeExtracted,
 		},
-		ModTypes = modFileSystemData.ModArchive?.ModTypes() ?? mod.ModTypes,
+		ModTypes = (modFileSystemData.ModArchive?.ModTypes() ?? mod.ModTypes).ToMainApi(),
 		Name = mod.Name,
 		ScreenshotFileNames = modFileSystemData.ScreenshotFileNames,
 		TrailerUrl = mod.TrailerUrl,
 		Url = mod.Url,
 	};
+
+	private static MainApi.AssetType ToMainApi(this AssetType assetType) => assetType switch
+	{
+		AssetType.Mesh => MainApi.AssetType.Mesh,
+		AssetType.Texture => MainApi.AssetType.Texture,
+		AssetType.Shader => MainApi.AssetType.Shader,
+		AssetType.Audio => MainApi.AssetType.Audio,
+		AssetType.ObjectBinding => MainApi.AssetType.ObjectBinding,
+		_ => throw new UnreachableException(),
+	};
+
+	private static MainApi.ModBinaryType ToMainApi(this ModBinaryType modBinaryType) => modBinaryType switch
+	{
+		ModBinaryType.Audio => MainApi.ModBinaryType.Audio,
+		ModBinaryType.Dd => MainApi.ModBinaryType.Dd,
+		_ => throw new UnreachableException(),
+	};
+
+	private static MainApi.ModTypes ToMainApi(this ModTypes modTypes) => (MainApi.ModTypes)(int)modTypes;
 }

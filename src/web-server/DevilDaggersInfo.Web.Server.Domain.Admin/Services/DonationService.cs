@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Api.Admin.Donations;
+using DevilDaggersInfo.Web.Server.Domain.Admin.Converters;
 using DevilDaggersInfo.Web.Server.Domain.Admin.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
@@ -23,7 +24,7 @@ public class DonationService
 		{
 			Amount = addDonation.Amount,
 			ConvertedEuroCentsReceived = addDonation.ConvertedEuroCentsReceived,
-			Currency = addDonation.Currency,
+			Currency = addDonation.Currency.ToDomain(),
 			DateReceived = DateTime.UtcNow,
 			IsRefunded = addDonation.IsRefunded,
 			Note = addDonation.Note,
@@ -44,7 +45,7 @@ public class DonationService
 
 		donation.Amount = editDonation.Amount;
 		donation.ConvertedEuroCentsReceived = editDonation.ConvertedEuroCentsReceived;
-		donation.Currency = editDonation.Currency;
+		donation.Currency = editDonation.Currency.ToDomain();
 		donation.IsRefunded = editDonation.IsRefunded;
 		donation.Note = editDonation.Note;
 		donation.PlayerId = editDonation.PlayerId;

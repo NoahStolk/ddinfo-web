@@ -19,8 +19,6 @@ using DevilDaggersInfo.Api.Main.Players;
 using DevilDaggersInfo.Api.Main.Spawnsets;
 using DevilDaggersInfo.Api.Main.Tools;
 using DevilDaggersInfo.Api.Main.WorldRecords;
-using DevilDaggersInfo.Types.Core.Wiki;
-using DevilDaggersInfo.Types.Web;
 using System.Net.Http.Json;
 
 namespace DevilDaggersInfo.Web.Client.HttpClients;

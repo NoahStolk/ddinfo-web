@@ -1,5 +1,3 @@
-using DevilDaggersInfo.Types.Core.CustomLeaderboards;
-
 namespace DevilDaggersInfo.Api.Admin.CustomLeaderboards;
 
 public record GetCustomLeaderboardCriteria

@@ -2,8 +2,6 @@
 @using DevilDaggersInfo.Api.Main.CustomLeaderboards
 @using DevilDaggersInfo.Common
 @using DevilDaggersInfo.Core.Wiki
-@using DevilDaggersInfo.Types.Web
-@using DevilDaggersInfo.Types.Web.Extensions
 @using DevilDaggersInfo.Web.Client.Components
 @using DevilDaggersInfo.Web.Client.Components.Leaderboards
 @using DevilDaggersInfo.Web.Client.Extensions
@@ -70,7 +68,7 @@ else
 					if (Expression.TryParse(criteria.Expression, out Expression? criteriaExpression))
 					{
 						<li class="list-disc">
-							<CriteriaExpressionComponent Expression="criteriaExpression" CriteriaOperator="criteria.Operator" CriteriaType="criteria.Type" />
+							<CriteriaExpressionComponent Expression="criteriaExpression" CriteriaOperator="criteria.Operator.ToCore()" CriteriaType="criteria.Type.ToCore()" />
 						</li>	
 					}
 				}

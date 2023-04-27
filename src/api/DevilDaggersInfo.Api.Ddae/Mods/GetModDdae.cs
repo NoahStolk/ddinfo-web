@@ -1,5 +1,3 @@
-using DevilDaggersInfo.Types.Web;
-
 namespace DevilDaggersInfo.Api.Ddae.Mods;
 
 public record GetModDdae
@@ -14,7 +12,7 @@ public record GetModDdae
 
 	public DateTime LastUpdated { get; init; }
 
-	public ModTypes AssetModTypes { get; init; }
+	public ModTypesDdae AssetModTypes { get; init; }
 
 	public bool IsHostedOnDdInfo { get; init; }
 

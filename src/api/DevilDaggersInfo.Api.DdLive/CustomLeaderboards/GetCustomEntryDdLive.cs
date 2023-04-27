@@ -1,5 +1,3 @@
-using DevilDaggersInfo.Types.Web;
-
 namespace DevilDaggersInfo.Api.DdLive.CustomLeaderboards;
 
 public record GetCustomEntryDdLive
@@ -16,7 +14,7 @@ public record GetCustomEntryDdLive
 
 	public required double Time { get; init; }
 
-	public required CustomLeaderboardDagger? CustomLeaderboardDagger { get; init; }
+	public required CustomLeaderboardDaggerDdLive? CustomLeaderboardDagger { get; init; }
 
 	public required int GemsCollected { get; init; }
 
@@ -48,7 +46,7 @@ public record GetCustomEntryDdLive
 
 	public required string? ClientVersion { get; init; }
 
-	public required CustomLeaderboardsClient Client { get; init; }
+	public required CustomLeaderboardsClientDdLive Client { get; init; }
 
 	public required bool HasGraphs { get; init; }
 

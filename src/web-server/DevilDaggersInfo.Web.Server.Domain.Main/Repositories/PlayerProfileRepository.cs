@@ -1,8 +1,8 @@
-using DevilDaggersInfo.Api.Main.Players;
 using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Core.Claims;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
+using DevilDaggersInfo.Web.Server.Domain.Main.Converters;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
@@ -17,7 +17,7 @@ public class PlayerProfileRepository
 		_dbContext = dbContext;
 	}
 
-	public async Task<GetPlayerProfile> GetProfileAsync(ClaimsPrincipal claimsPrincipal, int id)
+	public async Task<Api.Main.Players.GetPlayerProfile> GetProfileAsync(ClaimsPrincipal claimsPrincipal, int id)
 	{
 		string? userName = claimsPrincipal.GetName();
 		UserEntity? user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Name == userName);
@@ -54,7 +54,7 @@ public class PlayerProfileRepository
 			UsesHrtf = player.UsesHrtf,
 			UsesInvertY = player.UsesInvertY,
 			UsesLegacyAudio = player.UsesLegacyAudio,
-			VerticalSync = player.VerticalSync,
+			VerticalSync = player.VerticalSync.ToMainApi(),
 		};
 	}
 }

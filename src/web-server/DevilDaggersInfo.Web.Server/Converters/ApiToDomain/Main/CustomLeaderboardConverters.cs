@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 using System.Diagnostics;
 using MainApi = DevilDaggersInfo.Api.Main.CustomLeaderboards;
@@ -6,6 +7,15 @@ namespace DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Main;
 
 public static class CustomLeaderboardConverters
 {
+	public static CustomLeaderboardCategory ToDomain(this MainApi.CustomLeaderboardCategory category) => category switch
+	{
+		MainApi.CustomLeaderboardCategory.Survival => CustomLeaderboardCategory.Survival,
+		MainApi.CustomLeaderboardCategory.TimeAttack => CustomLeaderboardCategory.TimeAttack,
+		MainApi.CustomLeaderboardCategory.Speedrun => CustomLeaderboardCategory.Speedrun,
+		MainApi.CustomLeaderboardCategory.Race => CustomLeaderboardCategory.Race,
+		_ => throw new UnreachableException(),
+	};
+
 	public static CustomLeaderboardSorting ToDomain(this MainApi.CustomLeaderboardSorting customLeaderboardSorting) => customLeaderboardSorting switch
 	{
 		MainApi.CustomLeaderboardSorting.SpawnsetName => CustomLeaderboardSorting.SpawnsetName,

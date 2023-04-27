@@ -1,10 +1,21 @@
+using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Server.Domain.Commands.CustomEntries;
+using System.Diagnostics;
 using AppApi = DevilDaggersInfo.Api.App.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Server.Converters.ApiToDomain.App;
 
 public static class CustomLeaderboardConverters
 {
+	public static CustomLeaderboardCategory ToDomain(this AppApi.CustomLeaderboardCategory category) => category switch
+	{
+		AppApi.CustomLeaderboardCategory.Survival => CustomLeaderboardCategory.Survival,
+		AppApi.CustomLeaderboardCategory.TimeAttack => CustomLeaderboardCategory.TimeAttack,
+		AppApi.CustomLeaderboardCategory.Speedrun => CustomLeaderboardCategory.Speedrun,
+		AppApi.CustomLeaderboardCategory.Race => CustomLeaderboardCategory.Race,
+		_ => throw new UnreachableException(),
+	};
+
 	public static UploadRequest ToDomain(this AppApi.AddUploadRequest uploadRequest) => new(
 		survivalHashMd5: uploadRequest.SurvivalHashMd5,
 		playerId: uploadRequest.PlayerId,

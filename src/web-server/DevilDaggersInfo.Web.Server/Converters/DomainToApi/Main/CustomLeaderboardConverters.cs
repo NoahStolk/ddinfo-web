@@ -5,6 +5,7 @@ using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Extensions;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.Domain.Utils;
+using System.Diagnostics;
 using MainApi = DevilDaggersInfo.Api.Main.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
@@ -24,7 +25,7 @@ public static class CustomLeaderboardConverters
 		PlayerCount = customLeaderboard.PlayerCount,
 		TopPlayer = customLeaderboard.WorldRecord?.PlayerName,
 		WorldRecord = customLeaderboard.WorldRecord?.Time.ToSecondsTime(),
-		WorldRecordDagger = customLeaderboard.WorldRecord?.Dagger,
+		WorldRecordDagger = customLeaderboard.WorldRecord?.Dagger?.ToMainApi(),
 	};
 
 	public static MainApi.GetCustomLeaderboard ToGetCustomLeaderboard(this SortedCustomLeaderboard customLeaderboard) => new()
@@ -36,7 +37,7 @@ public static class CustomLeaderboardConverters
 		Daggers = customLeaderboard.Daggers?.ToGetCustomLeaderboardDaggers(),
 		DateCreated = customLeaderboard.DateCreated,
 		SubmitCount = customLeaderboard.TotalRunsSubmitted,
-		Category = customLeaderboard.Category,
+		Category = customLeaderboard.Category.ToMainApi(),
 		IsFeatured = customLeaderboard.Daggers != null,
 		DateLastPlayed = customLeaderboard.DateLastPlayed,
 		CustomEntries = customLeaderboard.CustomEntries.ConvertAll(ce => ce.ToGetCustomEntry(customLeaderboard.Category)),
@@ -50,7 +51,7 @@ public static class CustomLeaderboardConverters
 		PlayerId = customEntry.PlayerId,
 		PlayerName = customEntry.PlayerName,
 		CountryCode = customEntry.CountryCode,
-		Client = customEntry.Client,
+		Client = customEntry.Client.ToMainApi(),
 		ClientVersion = customEntry.ClientVersion,
 		DeathType = category.IsTimeAttackOrRace() ? null : customEntry.DeathType,
 		EnemiesAlive = customEntry.EnemiesAlive,
@@ -67,7 +68,7 @@ public static class CustomLeaderboardConverters
 		DaggersHit = customEntry.DaggersHit,
 		SubmitDate = customEntry.SubmitDate,
 		Time = customEntry.Time.ToSecondsTime(),
-		CustomLeaderboardDagger = customEntry.CustomLeaderboardDagger,
+		CustomLeaderboardDagger = customEntry.CustomLeaderboardDagger?.ToMainApi(),
 		HasGraphs = customEntry.HasGraphs,
 	};
 
@@ -82,9 +83,103 @@ public static class CustomLeaderboardConverters
 
 	private static MainApi.GetCustomLeaderboardCriteria ToGetCustomLeaderboardCriteria(this CustomLeaderboardCriteria criteria) => new()
 	{
-		Type = criteria.Type,
-		Operator = criteria.Operator,
+		Type = criteria.Type.ToMainApi(),
+		Operator = criteria.Operator.ToMainApi(),
 		Expression = criteria.Expression,
+	};
+
+	private static MainApi.CustomLeaderboardsClient ToMainApi(this CustomLeaderboardsClient client) => client switch
+	{
+		CustomLeaderboardsClient.DevilDaggersCustomLeaderboards => MainApi.CustomLeaderboardsClient.DevilDaggersCustomLeaderboards,
+		CustomLeaderboardsClient.DdstatsRust => MainApi.CustomLeaderboardsClient.DdstatsRust,
+		CustomLeaderboardsClient.DdinfoTools => MainApi.CustomLeaderboardsClient.DdinfoTools,
+		_ => throw new ArgumentOutOfRangeException(nameof(client), client, null),
+	};
+
+	public static MainApi.CustomLeaderboardCategory ToMainApi(this CustomLeaderboardCategory category) => category switch
+	{
+		CustomLeaderboardCategory.Survival => MainApi.CustomLeaderboardCategory.Survival,
+		CustomLeaderboardCategory.TimeAttack => MainApi.CustomLeaderboardCategory.TimeAttack,
+		CustomLeaderboardCategory.Speedrun => MainApi.CustomLeaderboardCategory.Speedrun,
+		CustomLeaderboardCategory.Race => MainApi.CustomLeaderboardCategory.Race,
+		_ => throw new UnreachableException(),
+	};
+
+	private static MainApi.CustomLeaderboardDagger ToMainApi(this CustomLeaderboardDagger dagger) => dagger switch
+	{
+		CustomLeaderboardDagger.Default => MainApi.CustomLeaderboardDagger.Default,
+		CustomLeaderboardDagger.Bronze => MainApi.CustomLeaderboardDagger.Bronze,
+		CustomLeaderboardDagger.Silver => MainApi.CustomLeaderboardDagger.Silver,
+		CustomLeaderboardDagger.Golden => MainApi.CustomLeaderboardDagger.Golden,
+		CustomLeaderboardDagger.Devil => MainApi.CustomLeaderboardDagger.Devil,
+		CustomLeaderboardDagger.Leviathan => MainApi.CustomLeaderboardDagger.Leviathan,
+		_ => throw new UnreachableException(),
+	};
+
+	private static MainApi.CustomLeaderboardCriteriaType ToMainApi(this Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType criteriaType) => criteriaType switch
+	{
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType.GemsCollected => MainApi.CustomLeaderboardCriteriaType.GemsCollected,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType.GemsDespawned => MainApi.CustomLeaderboardCriteriaType.GemsDespawned,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType.GemsEaten => MainApi.CustomLeaderboardCriteriaType.GemsEaten,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType.EnemiesKilled => MainApi.CustomLeaderboardCriteriaType.EnemiesKilled,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType.DaggersFired => MainApi.CustomLeaderboardCriteriaType.DaggersFired,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType.DaggersHit => MainApi.CustomLeaderboardCriteriaType.DaggersHit,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType.HomingStored => MainApi.CustomLeaderboardCriteriaType.HomingStored,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType.HomingEaten => MainApi.CustomLeaderboardCriteriaType.HomingEaten,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType.Skull1Kills => MainApi.CustomLeaderboardCriteriaType.Skull1Kills,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType.Skull2Kills => MainApi.CustomLeaderboardCriteriaType.Skull2Kills,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType.Skull3Kills => MainApi.CustomLeaderboardCriteriaType.Skull3Kills,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType.Skull4Kills => MainApi.CustomLeaderboardCriteriaType.Skull4Kills,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType.SpiderlingKills => MainApi.CustomLeaderboardCriteriaType.SpiderlingKills,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType.SpiderEggKills => MainApi.CustomLeaderboardCriteriaType.SpiderEggKills,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType.Squid1Kills => MainApi.CustomLeaderboardCriteriaType.Squid1Kills,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType.Squid2Kills => MainApi.CustomLeaderboardCriteriaType.Squid2Kills,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType.Squid3Kills => MainApi.CustomLeaderboardCriteriaType.Squid3Kills,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType.CentipedeKills => MainApi.CustomLeaderboardCriteriaType.CentipedeKills,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType.GigapedeKills => MainApi.CustomLeaderboardCriteriaType.GigapedeKills,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType.GhostpedeKills => MainApi.CustomLeaderboardCriteriaType.GhostpedeKills,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType.Spider1Kills => MainApi.CustomLeaderboardCriteriaType.Spider1Kills,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType.Spider2Kills => MainApi.CustomLeaderboardCriteriaType.Spider2Kills,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType.LeviathanKills => MainApi.CustomLeaderboardCriteriaType.LeviathanKills,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType.OrbKills => MainApi.CustomLeaderboardCriteriaType.OrbKills,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType.ThornKills => MainApi.CustomLeaderboardCriteriaType.ThornKills,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType.Skull1sAlive => MainApi.CustomLeaderboardCriteriaType.Skull1sAlive,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType.Skull2sAlive => MainApi.CustomLeaderboardCriteriaType.Skull2sAlive,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType.Skull3sAlive => MainApi.CustomLeaderboardCriteriaType.Skull3sAlive,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType.Skull4sAlive => MainApi.CustomLeaderboardCriteriaType.Skull4sAlive,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType.SpiderlingsAlive => MainApi.CustomLeaderboardCriteriaType.SpiderlingsAlive,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType.SpiderEggsAlive => MainApi.CustomLeaderboardCriteriaType.SpiderEggsAlive,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType.Squid1sAlive => MainApi.CustomLeaderboardCriteriaType.Squid1sAlive,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType.Squid2sAlive => MainApi.CustomLeaderboardCriteriaType.Squid2sAlive,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType.Squid3sAlive => MainApi.CustomLeaderboardCriteriaType.Squid3sAlive,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType.CentipedesAlive => MainApi.CustomLeaderboardCriteriaType.CentipedesAlive,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType.GigapedesAlive => MainApi.CustomLeaderboardCriteriaType.GigapedesAlive,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType.GhostpedesAlive => MainApi.CustomLeaderboardCriteriaType.GhostpedesAlive,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType.Spider1sAlive => MainApi.CustomLeaderboardCriteriaType.Spider1sAlive,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType.Spider2sAlive => MainApi.CustomLeaderboardCriteriaType.Spider2sAlive,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType.LeviathansAlive => MainApi.CustomLeaderboardCriteriaType.LeviathansAlive,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType.OrbsAlive => MainApi.CustomLeaderboardCriteriaType.OrbsAlive,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType.ThornsAlive => MainApi.CustomLeaderboardCriteriaType.ThornsAlive,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType.DeathType => MainApi.CustomLeaderboardCriteriaType.DeathType,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType.Time => MainApi.CustomLeaderboardCriteriaType.Time,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType.LevelUpTime2 => MainApi.CustomLeaderboardCriteriaType.LevelUpTime2,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType.LevelUpTime3 => MainApi.CustomLeaderboardCriteriaType.LevelUpTime3,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType.LevelUpTime4 => MainApi.CustomLeaderboardCriteriaType.LevelUpTime4,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType.EnemiesAlive => MainApi.CustomLeaderboardCriteriaType.EnemiesAlive,
+		_ => throw new UnreachableException(),
+	};
+
+	private static MainApi.CustomLeaderboardCriteriaOperator ToMainApi(this Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaOperator @operator) => @operator switch
+	{
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaOperator.Any => MainApi.CustomLeaderboardCriteriaOperator.Any,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaOperator.Equal => MainApi.CustomLeaderboardCriteriaOperator.Equal,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaOperator.LessThan => MainApi.CustomLeaderboardCriteriaOperator.LessThan,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaOperator.GreaterThan => MainApi.CustomLeaderboardCriteriaOperator.GreaterThan,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaOperator.LessThanOrEqual => MainApi.CustomLeaderboardCriteriaOperator.LessThanOrEqual,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaOperator.GreaterThanOrEqual => MainApi.CustomLeaderboardCriteriaOperator.GreaterThanOrEqual,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaOperator.Modulo => MainApi.CustomLeaderboardCriteriaOperator.Modulo,
+		Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaOperator.NotEqual => MainApi.CustomLeaderboardCriteriaOperator.NotEqual,
+		_ => throw new UnreachableException(),
 	};
 
 	// TODO: Use domain models?
@@ -114,7 +209,7 @@ public static class CustomLeaderboardConverters
 			DaggersHit = customEntry.DaggersHit,
 			SubmitDate = customEntry.SubmitDate,
 			Time = customEntry.Time.ToSecondsTime(),
-			CustomLeaderboardDagger = customEntry.CustomLeaderboard.DaggerFromTime(customEntry.Time),
+			CustomLeaderboardDagger = customEntry.CustomLeaderboard.DaggerFromTime(customEntry.Time)?.ToMainApi(),
 
 			GemsCollectedData = GetInt32Arr(customEntryData?.GemsCollectedData),
 			EnemiesKilledData = GetInt32Arr(customEntryData?.EnemiesKilledData),
@@ -163,7 +258,7 @@ public static class CustomLeaderboardConverters
 			GhostpedesKilledData = GetUInt16Arr(customEntryData?.GhostpedesKilledData),
 			SpiderEggsKilledData = GetUInt16Arr(customEntryData?.SpiderEggsKilledData),
 
-			StartingLevel = startingLevel,
+			StartingLevel = startingLevel.ToMainApi(),
 			HasReplay = hasReplay,
 		};
 

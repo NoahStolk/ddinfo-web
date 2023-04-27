@@ -1,5 +1,5 @@
 using DevilDaggersInfo.Api.App.Updates;
-using DevilDaggersInfo.Types.Web;
+using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.App;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.App;
 using DevilDaggersInfo.Web.Server.Domain.Models.Tools;
 using DevilDaggersInfo.Web.Server.Domain.Repositories;
@@ -27,7 +27,7 @@ public class UpdatesController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult<GetLatestVersion>> GetLatestVersion([Required] ToolPublishMethod publishMethod, [Required] ToolBuildType buildType)
 	{
-		ToolDistribution? distribution = await _toolRepository.GetLatestToolDistributionAsync(_toolName, publishMethod, buildType);
+		ToolDistribution? distribution = await _toolRepository.GetLatestToolDistributionAsync(_toolName, publishMethod.ToDomain(), buildType.ToDomain());
 		if (distribution == null)
 			return NotFound();
 

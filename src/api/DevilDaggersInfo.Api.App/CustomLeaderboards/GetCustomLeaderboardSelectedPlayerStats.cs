@@ -1,5 +1,3 @@
-using DevilDaggersInfo.Types.Web;
-
 namespace DevilDaggersInfo.Api.App.CustomLeaderboards;
 
 public record GetCustomLeaderboardSelectedPlayerStats

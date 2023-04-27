@@ -1,5 +1,5 @@
-using DevilDaggersInfo.Api.Admin.Players;
 using DevilDaggersInfo.Types.Web;
+using DevilDaggersInfo.Web.Server.Domain.Admin.Converters;
 using DevilDaggersInfo.Web.Server.Domain.Admin.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
@@ -19,10 +19,10 @@ public class PlayerService
 		_ddLeaderboardService = ddLeaderboardService;
 	}
 
-	public async Task AddPlayerAsync(AddPlayer addPlayer)
+	public async Task AddPlayerAsync(Api.Admin.Players.AddPlayer addPlayer)
 	{
 		Validate(
-			banType: addPlayer.BanType,
+			banType: addPlayer.BanType.ToDomain(),
 			countryCode: addPlayer.CountryCode,
 			dpi: addPlayer.Dpi,
 			inGameSens: addPlayer.InGameSens,
@@ -33,7 +33,7 @@ public class PlayerService
 			usesLegacyAudio: addPlayer.UsesLegacyAudio,
 			usesHrtf: addPlayer.UsesHrtf,
 			usesInvertY: addPlayer.UsesInvertY,
-			verticalSync: addPlayer.VerticalSync,
+			verticalSync: addPlayer.VerticalSync.ToDomain(),
 			banDescription: addPlayer.BanDescription,
 			banResponsibleId: addPlayer.BanResponsibleId);
 
@@ -62,8 +62,8 @@ public class PlayerService
 			UsesLegacyAudio = addPlayer.UsesLegacyAudio,
 			UsesHrtf = addPlayer.UsesHrtf,
 			UsesInvertY = addPlayer.UsesInvertY,
-			VerticalSync = addPlayer.VerticalSync,
-			BanType = addPlayer.BanType,
+			VerticalSync = addPlayer.VerticalSync.ToDomain(),
+			BanType = addPlayer.BanType.ToDomain(),
 			BanDescription = addPlayer.BanDescription,
 			BanResponsibleId = addPlayer.BanResponsibleId,
 			IsBannedFromDdcl = addPlayer.IsBannedFromDdcl,
@@ -78,10 +78,10 @@ public class PlayerService
 		await _dbContext.SaveChangesAsync();
 	}
 
-	public async Task EditPlayerAsync(int id, EditPlayer editPlayer)
+	public async Task EditPlayerAsync(int id, Api.Admin.Players.EditPlayer editPlayer)
 	{
 		Validate(
-			banType: editPlayer.BanType,
+			banType: editPlayer.BanType.ToDomain(),
 			countryCode: editPlayer.CountryCode,
 			dpi: editPlayer.Dpi,
 			inGameSens: editPlayer.InGameSens,
@@ -92,7 +92,7 @@ public class PlayerService
 			usesLegacyAudio: editPlayer.UsesLegacyAudio,
 			usesHrtf: editPlayer.UsesHrtf,
 			usesInvertY: editPlayer.UsesInvertY,
-			verticalSync: editPlayer.VerticalSync,
+			verticalSync: editPlayer.VerticalSync.ToDomain(),
 			banDescription: editPlayer.BanDescription,
 			banResponsibleId: editPlayer.BanResponsibleId);
 
@@ -121,13 +121,13 @@ public class PlayerService
 		player.UsesLegacyAudio = editPlayer.UsesLegacyAudio;
 		player.UsesHrtf = editPlayer.UsesHrtf;
 		player.UsesInvertY = editPlayer.UsesInvertY;
-		player.VerticalSync = editPlayer.VerticalSync;
+		player.VerticalSync = editPlayer.VerticalSync.ToDomain();
 		player.HideSettings = editPlayer.HideSettings;
 		player.HideDonations = editPlayer.HideDonations;
 		player.HidePastUsernames = editPlayer.HidePastUsernames;
 		player.BanDescription = editPlayer.BanDescription;
 		player.BanResponsibleId = editPlayer.BanResponsibleId;
-		player.BanType = editPlayer.BanType;
+		player.BanType = editPlayer.BanType.ToDomain();
 		player.IsBannedFromDdcl = editPlayer.IsBannedFromDdcl;
 
 		UpdatePlayerMods(editPlayer.ModIds ?? new(), player.Id);

@@ -1,5 +1,3 @@
-using DevilDaggersInfo.Types.Core.Spawnsets;
-
 namespace DevilDaggersInfo.Api.Ddse.Spawnsets;
 
 public record GetSpawnsetDataDdse
@@ -8,7 +6,7 @@ public record GetSpawnsetDataDdse
 
 	public required int WorldVersion { get; init; }
 
-	public required GameMode GameMode { get; init; }
+	public required GameModeDdse GameMode { get; init; }
 
 	public required int NonLoopSpawnCount { get; init; }
 

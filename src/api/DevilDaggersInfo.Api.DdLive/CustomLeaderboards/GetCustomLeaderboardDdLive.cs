@@ -1,5 +1,3 @@
-using DevilDaggersInfo.Types.Web;
-
 namespace DevilDaggersInfo.Api.DdLive.CustomLeaderboards;
 
 public record GetCustomLeaderboardDdLive
@@ -22,7 +20,7 @@ public record GetCustomLeaderboardDdLive
 
 	public required bool IsFeatured { get; init; }
 
-	public required CustomLeaderboardCategory Category { get; init; }
+	public required CustomLeaderboardCategoryDdLive Category { get; init; }
 
 	public required List<GetCustomEntryDdLive> CustomEntries { get; init; }
 }

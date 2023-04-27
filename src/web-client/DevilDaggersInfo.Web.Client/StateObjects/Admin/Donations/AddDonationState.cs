@@ -1,5 +1,4 @@
 using DevilDaggersInfo.Api.Admin.Donations;
-using DevilDaggersInfo.Types.Web;
 using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersInfo.Web.Client.StateObjects.Admin.Donations;

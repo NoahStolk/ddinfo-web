@@ -1,5 +1,3 @@
-using DevilDaggersInfo.Types.Core.Mods;
-
 namespace DevilDaggersInfo.Api.Main.Mods;
 
 public record GetModBinary

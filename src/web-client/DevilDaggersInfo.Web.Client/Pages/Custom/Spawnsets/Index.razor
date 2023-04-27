@@ -60,12 +60,12 @@ else
 				<div class="overflow-hidden"><a class="link" href="/custom/spawnset/@spawnset.Id">@spawnset.Name.ToNoBreakString()</a></div>
 				<div class="overflow-hidden hidden md:block">@spawnset.AuthorName.ToNoBreakString()</div>
 				<div class="overflow-hidden hidden md:block">@spawnset.LastUpdated.ToString(StringFormats.DateFormat)</div>
-				<div class="overflow-hidden">@spawnset.GameMode.ToDisplayString()</div>
+				<div class="overflow-hidden">@spawnset.GameMode.ToCore().ToDisplayString()</div>
 				<div class="overflow-hidden hidden xl:block text-right">@(spawnset.LoopLength.HasValue ? (MarkupString)spawnset.LoopLength.Value.ToString(StringFormats.TimeFormat) : MarkupStrings.NoDataMarkup)</div>
 				<div class="overflow-hidden hidden xl:block text-right">@spawnset.LoopSpawnCount</div>
 				<div class="overflow-hidden hidden xl:block text-right">@(spawnset.PreLoopLength.HasValue ? (MarkupString)spawnset.PreLoopLength.Value.ToString(StringFormats.TimeFormat) : MarkupStrings.NoDataMarkup)</div>
 				<div class="overflow-hidden hidden xl:block text-right">@spawnset.PreLoopSpawnCount</div>
-				<div class="overflow-hidden hidden lg:block">@spawnset.Hand.ToDisplayString()</div>
+				<div class="overflow-hidden hidden lg:block">@spawnset.Hand.ToCore().ToDisplayString()</div>
 				<div class="overflow-hidden hidden lg:block text-right">@spawnset.AdditionalGems</div>
 			</div>
 		}

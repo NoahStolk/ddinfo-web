@@ -1,5 +1,3 @@
-using DevilDaggersInfo.Types.Core.Wiki;
-
 namespace DevilDaggersInfo.Api.Main.WorldRecords;
 
 public record GetWorldRecord

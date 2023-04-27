@@ -5,6 +5,7 @@
 @using DevilDaggersInfo.Web.Client.Components
 @using DevilDaggersInfo.Web.Client.Extensions
 @using DevilDaggersInfo.Web.Client.Utils
+@using GameVersion = DevilDaggersInfo.Types.Core.Wiki.GameVersion
 
 <Heading Title="World Record Progression" />
 
@@ -57,6 +58,7 @@ else
 	{
 		bool isCurrentWr = wr.Entry.Time == _currentWorldRecord;
 		int days = (int)Math.Round(wr.WorldRecordDuration.TotalDays);
+		GameVersion? coreGameVersion = wr.GameVersion?.ToCore();
 		string duration = days switch
 		{
 			0 => "Less than 1 day",
@@ -70,7 +72,7 @@ else
 			<div class="hidden md:block">@GetHistoryDateString(wr.DateTime)</div>
 			<div class="hidden lg:block">@duration</div>
 			<div class="hidden xl:block">@(wr.WorldRecordImprovement.HasValue ? new MarkupString(wr.WorldRecordImprovement.Value.ToString(StringFormats.TimeFormat)) : MarkupStrings.NoDataMarkup)</div>
-			<div class="hidden xl:block">@wr.GameVersion.GetGameVersionString()</div>
+			<div class="hidden xl:block">@coreGameVersion.GetGameVersionString()</div>
 		</div>
 	}
 }

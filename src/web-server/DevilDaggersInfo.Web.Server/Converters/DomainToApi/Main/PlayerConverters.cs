@@ -1,5 +1,6 @@
 using DevilDaggersInfo.Api.Main.Players;
 using DevilDaggersInfo.Web.Server.Domain.Models.Players;
+using System.Diagnostics;
 
 namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 
@@ -9,7 +10,7 @@ public static class PlayerConverters
 	{
 		BanDescription = player.BanDescription,
 		BanResponsibleId = player.BanResponsibleId,
-		BanType = player.BanType,
+		BanType = player.BanType.ToMainApi(),
 		CountryCode = player.CountryCode,
 		Id = player.Id,
 	};
@@ -42,6 +43,26 @@ public static class PlayerConverters
 		UsesLegacyAudio = settings.UsesLegacyAudio,
 		UsesHrtf = settings.UsesHrtf,
 		UsesInvertY = settings.UsesInvertY,
-		VerticalSync = settings.VerticalSync,
+		VerticalSync = settings.VerticalSync.ToMainApi(),
+	};
+
+	private static BanType ToMainApi(this Types.Web.BanType banType) => banType switch
+	{
+		Types.Web.BanType.NotBanned => BanType.NotBanned,
+		Types.Web.BanType.Alt => BanType.Alt,
+		Types.Web.BanType.Cheater => BanType.Cheater,
+		Types.Web.BanType.Boosted => BanType.Boosted,
+		Types.Web.BanType.IllegitimateStats => BanType.IllegitimateStats,
+		Types.Web.BanType.BlankName => BanType.BlankName,
+		_ => throw new UnreachableException(),
+	};
+
+	public static VerticalSync ToMainApi(this Types.Web.VerticalSync verticalSync) => verticalSync switch
+	{
+		Types.Web.VerticalSync.Unknown => VerticalSync.Unknown,
+		Types.Web.VerticalSync.Off => VerticalSync.Off,
+		Types.Web.VerticalSync.On => VerticalSync.On,
+		Types.Web.VerticalSync.Adaptive => VerticalSync.Adaptive,
+		_ => throw new UnreachableException(),
 	};
 }
