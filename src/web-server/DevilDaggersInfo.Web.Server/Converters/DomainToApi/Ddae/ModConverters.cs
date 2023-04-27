@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Types.Core.Mods;
+using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;
 using DdaeApi = DevilDaggersInfo.Api.Ddae.Mods;
@@ -19,16 +21,33 @@ public static class ModConverters
 		{
 			Binaries = modFileSystemData.ModArchive.Binaries.ConvertAll(b => new DdaeApi.GetModBinaryDdae
 			{
-				ModBinaryType = b.ModBinaryType,
+				ModBinaryType = b.ModBinaryType.ToDdaeApi(),
 				Name = b.Name,
 				Size = b.Size,
 			}),
 			FileSize = modFileSystemData.ModArchive.FileSize,
 			FileSizeExtracted = modFileSystemData.ModArchive.FileSizeExtracted,
 		},
-		AssetModTypes = modFileSystemData.ModArchive?.ModTypes() ?? mod.ModTypes,
+		AssetModTypes = (modFileSystemData.ModArchive?.ModTypes() ?? mod.ModTypes).ToDdaeApi(),
 		Name = mod.Name,
 		ScreenshotFileNames = modFileSystemData.ScreenshotFileNames ?? new(),
 		TrailerUrl = mod.TrailerUrl,
+	};
+
+	private static DdaeApi.ModBinaryTypeDdae ToDdaeApi(this ModBinaryType modBinaryType) => modBinaryType switch
+	{
+		ModBinaryType.Audio => DdaeApi.ModBinaryTypeDdae.Audio,
+		ModBinaryType.Dd => DdaeApi.ModBinaryTypeDdae.Dd,
+		_ => throw new ArgumentOutOfRangeException(nameof(modBinaryType), modBinaryType, null),
+	};
+
+	private static DdaeApi.ModTypesDdae ToDdaeApi(this ModTypes modTypes) => modTypes switch
+	{
+		ModTypes.None => DdaeApi.ModTypesDdae.None,
+		ModTypes.Audio => DdaeApi.ModTypesDdae.Audio,
+		ModTypes.Texture => DdaeApi.ModTypesDdae.Texture,
+		ModTypes.Mesh => DdaeApi.ModTypesDdae.Mesh,
+		ModTypes.Shader => DdaeApi.ModTypesDdae.Shader,
+		_ => throw new ArgumentOutOfRangeException(nameof(modTypes), modTypes, null),
 	};
 }
