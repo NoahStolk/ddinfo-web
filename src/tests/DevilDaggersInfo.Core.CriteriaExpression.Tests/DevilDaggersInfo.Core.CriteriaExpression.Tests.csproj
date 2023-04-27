@@ -16,7 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\common\DevilDaggersInfo.CommonTest\DevilDaggersInfo.CommonTest.csproj" />
     <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.CriteriaExpression\DevilDaggersInfo.Core.CriteriaExpression.csproj" />
   </ItemGroup>
 

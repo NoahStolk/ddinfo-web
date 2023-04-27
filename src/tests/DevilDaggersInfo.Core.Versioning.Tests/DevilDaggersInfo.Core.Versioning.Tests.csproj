@@ -17,7 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\common\DevilDaggersInfo.CommonTest\DevilDaggersInfo.CommonTest.csproj" />
     <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Versioning\DevilDaggersInfo.Core.Versioning.csproj" />
   </ItemGroup>
 

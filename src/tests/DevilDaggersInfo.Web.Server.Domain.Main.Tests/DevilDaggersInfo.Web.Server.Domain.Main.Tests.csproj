@@ -18,7 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\common\DevilDaggersInfo.CommonTest\DevilDaggersInfo.CommonTest.csproj" />
     <ProjectReference Include="..\..\web-server\DevilDaggersInfo.Web.Server.Domain.Main\DevilDaggersInfo.Web.Server.Domain.Main.csproj" />
   </ItemGroup>
 

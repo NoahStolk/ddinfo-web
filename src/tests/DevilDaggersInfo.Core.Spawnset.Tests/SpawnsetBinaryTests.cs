@@ -17,7 +17,7 @@ public class SpawnsetBinaryTests
 	[DataRow("Scanner")]
 	public void CompareBinaryOutput(string fileName)
 	{
-		byte[] originalBytes = File.ReadAllBytes(Path.Combine(TestUtils.ResourcePath, fileName));
+		byte[] originalBytes = File.ReadAllBytes(Path.Combine("Resources", fileName));
 		SpawnsetBinary spawnset = SpawnsetBinary.Parse(originalBytes);
 		byte[] bytes = spawnset.ToBytes();
 
@@ -27,7 +27,7 @@ public class SpawnsetBinaryTests
 	[TestMethod]
 	public void TestEffectivePlayerSettings()
 	{
-		byte[] originalBytes = File.ReadAllBytes(Path.Combine(TestUtils.ResourcePath, "V3"));
+		byte[] originalBytes = File.ReadAllBytes(Path.Combine("Resources", "V3"));
 		SpawnsetBinary spawnset = SpawnsetBinary.Parse(originalBytes) with
 		{
 			HandLevel = HandLevel.Level2,
@@ -53,7 +53,7 @@ public class SpawnsetBinaryTests
 	[TestMethod]
 	public void TestEffectiveTimerStart()
 	{
-		byte[] originalBytes = File.ReadAllBytes(Path.Combine(TestUtils.ResourcePath, "V3"));
+		byte[] originalBytes = File.ReadAllBytes(Path.Combine("Resources", "V3"));
 		SpawnsetBinary spawnset = SpawnsetBinary.Parse(originalBytes) with
 		{
 			TimerStart = 10,

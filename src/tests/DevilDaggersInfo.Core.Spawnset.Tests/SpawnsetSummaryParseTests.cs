@@ -63,7 +63,7 @@ public class SpawnsetSummaryParseTests
 		int expectedAdditionalGems,
 		float expectedTimerStart)
 	{
-		SpawnsetSummary spawnsetSummary = SpawnsetSummary.Parse(File.ReadAllBytes(Path.Combine(TestUtils.ResourcePath, fileName)));
+		SpawnsetSummary spawnsetSummary = SpawnsetSummary.Parse(File.ReadAllBytes(Path.Combine("Resources", fileName)));
 
 		Assert.AreEqual(expectedSpawnVersion, spawnsetSummary.SpawnVersion);
 		Assert.AreEqual(expectedWorldVersion, spawnsetSummary.WorldVersion);

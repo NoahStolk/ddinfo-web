@@ -14,8 +14,8 @@ public abstract class ModArchiveProcessorTests
 {
 	protected ModArchiveProcessorTests()
 	{
-		string modsPath = Path.Combine(TestUtils.ResourcePath, "Mods");
-		string modArchiveCachePath = Path.Combine(TestUtils.ResourcePath, "ModArchiveCache");
+		string modsPath = Path.Combine("Resources", "Mods");
+		string modArchiveCachePath = Path.Combine("Resources", "ModArchiveCache");
 
 		if (Directory.Exists(modsPath))
 			Directory.Delete(modsPath, true);
@@ -72,7 +72,7 @@ public abstract class ModArchiveProcessorTests
 	{
 		ModBinaryBuilder binary = new(ModBinaryType.Dd);
 		binary.AddAsset(shaderName, AssetType.ObjectBinding, "shader = \"boid\""u8.ToArray());
-		binary.AddAsset(textureName, AssetType.Texture, File.ReadAllBytes(Path.Combine(TestUtils.ResourcePath, "Textures", "green.png")));
+		binary.AddAsset(textureName, AssetType.Texture, File.ReadAllBytes(Path.Combine("Resources", "Textures", "green.png")));
 		return binary;
 	}
 }
