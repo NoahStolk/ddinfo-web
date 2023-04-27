@@ -50,8 +50,4 @@
     <StripSymbols>true</StripSymbols>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\types\DevilDaggersInfo.Types.Web\DevilDaggersInfo.Types.Web.csproj" />
-  </ItemGroup>
-
 </Project>
