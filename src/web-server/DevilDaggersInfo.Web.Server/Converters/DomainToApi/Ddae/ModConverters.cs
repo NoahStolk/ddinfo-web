@@ -41,13 +41,5 @@ public static class ModConverters
 		_ => throw new ArgumentOutOfRangeException(nameof(modBinaryType), modBinaryType, null),
 	};
 
-	private static DdaeApi.ModTypesDdae ToDdaeApi(this ModTypes modTypes) => modTypes switch
-	{
-		ModTypes.None => DdaeApi.ModTypesDdae.None,
-		ModTypes.Audio => DdaeApi.ModTypesDdae.Audio,
-		ModTypes.Texture => DdaeApi.ModTypesDdae.Texture,
-		ModTypes.Mesh => DdaeApi.ModTypesDdae.Mesh,
-		ModTypes.Shader => DdaeApi.ModTypesDdae.Shader,
-		_ => throw new ArgumentOutOfRangeException(nameof(modTypes), modTypes, null),
-	};
+	private static DdaeApi.ModTypesDdae ToDdaeApi(this ModTypes modTypes) => (DdaeApi.ModTypesDdae)(int)modTypes;
 }

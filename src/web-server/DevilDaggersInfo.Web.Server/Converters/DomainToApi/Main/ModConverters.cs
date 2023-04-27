@@ -81,13 +81,5 @@ public static class ModConverters
 		_ => throw new UnreachableException(),
 	};
 
-	private static MainApi.ModTypes ToMainApi(this ModTypes modTypes) => modTypes switch
-	{
-		ModTypes.None => MainApi.ModTypes.None,
-		ModTypes.Audio => MainApi.ModTypes.Audio,
-		ModTypes.Texture => MainApi.ModTypes.Texture,
-		ModTypes.Mesh => MainApi.ModTypes.Mesh,
-		ModTypes.Shader => MainApi.ModTypes.Shader,
-		_ => throw new UnreachableException(),
-	};
+	private static MainApi.ModTypes ToMainApi(this ModTypes modTypes) => (MainApi.ModTypes)(int)modTypes;
 }

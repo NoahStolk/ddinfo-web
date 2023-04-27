@@ -34,13 +34,5 @@ public static class ModConverters
 		ScreenshotNames = screenshotNames,
 	};
 
-	private static ModTypes ToAdminApi(this Types.Web.ModTypes modTypes) => modTypes switch
-	{
-		Types.Web.ModTypes.None => ModTypes.None,
-		Types.Web.ModTypes.Audio => ModTypes.Audio,
-		Types.Web.ModTypes.Texture => ModTypes.Texture,
-		Types.Web.ModTypes.Mesh => ModTypes.Mesh,
-		Types.Web.ModTypes.Shader => ModTypes.Shader,
-		_ => throw new ArgumentOutOfRangeException(nameof(modTypes), modTypes, null),
-	};
+	private static ModTypes ToAdminApi(this Types.Web.ModTypes modTypes) => (ModTypes)(int)modTypes;
 }
