@@ -1,5 +1,5 @@
-using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
+using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;

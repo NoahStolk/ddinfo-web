@@ -1,7 +1,7 @@
 using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Types.Core.Spawnsets;
-using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
+using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Extensions;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.Domain.Utils;

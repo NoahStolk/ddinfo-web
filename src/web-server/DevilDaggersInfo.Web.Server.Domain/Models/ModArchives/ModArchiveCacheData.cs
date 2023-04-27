@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Types.Core.Assets;
 using DevilDaggersInfo.Types.Core.Mods;
-using DevilDaggersInfo.Types.Web;
+using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;
 
@@ -14,15 +14,15 @@ public class ModArchiveCacheData
 	{
 		ModBinaryCacheData? ddBinary = Binaries.Find(b => b.ModBinaryType == ModBinaryType.Dd);
 
-		ModTypes modTypes = Types.Web.ModTypes.None;
+		ModTypes modTypes = Entities.Enums.ModTypes.None;
 		if (Binaries.Any(b => b.ModBinaryType == ModBinaryType.Audio))
-			modTypes |= Types.Web.ModTypes.Audio;
+			modTypes |= Entities.Enums.ModTypes.Audio;
 		if (ddBinary?.Chunks.Any(c => c.AssetType == AssetType.Shader) == true)
-			modTypes |= Types.Web.ModTypes.Shader;
+			modTypes |= Entities.Enums.ModTypes.Shader;
 		if (ddBinary?.Chunks.Any(c => c.AssetType == AssetType.ObjectBinding || c.AssetType == AssetType.Mesh) == true)
-			modTypes |= Types.Web.ModTypes.Mesh;
+			modTypes |= Entities.Enums.ModTypes.Mesh;
 		if (ddBinary?.Chunks.Any(c => c.AssetType == AssetType.Texture) == true)
-			modTypes |= Types.Web.ModTypes.Texture;
+			modTypes |= Entities.Enums.ModTypes.Texture;
 
 		return modTypes;
 	}

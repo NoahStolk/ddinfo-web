@@ -1,5 +1,3 @@
-using DevilDaggersInfo.Types.Web;
-
 namespace DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 
 public record CustomLeaderboardOverviewWorldRecord

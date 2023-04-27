@@ -1,5 +1,5 @@
-using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Server.Domain.Commands.CustomEntries;
+using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using System.Diagnostics;
 using AppApi = DevilDaggersInfo.Api.App.CustomLeaderboards;
 

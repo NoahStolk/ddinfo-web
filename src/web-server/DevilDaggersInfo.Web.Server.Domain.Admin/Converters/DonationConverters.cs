@@ -29,25 +29,25 @@ public static class DonationConverters
 		PlayerId = donation.PlayerId,
 	};
 
-	private static Currency ToAdminApi(this Types.Web.Currency currency) => currency switch
+	private static Currency ToAdminApi(this Entities.Enums.Currency currency) => currency switch
 	{
-		Types.Web.Currency.Eur => Currency.Eur,
-		Types.Web.Currency.Usd => Currency.Usd,
-		Types.Web.Currency.Aud => Currency.Aud,
-		Types.Web.Currency.Gbp => Currency.Gbp,
-		Types.Web.Currency.Sgd => Currency.Sgd,
-		Types.Web.Currency.Rub => Currency.Rub,
+		Entities.Enums.Currency.Eur => Currency.Eur,
+		Entities.Enums.Currency.Usd => Currency.Usd,
+		Entities.Enums.Currency.Aud => Currency.Aud,
+		Entities.Enums.Currency.Gbp => Currency.Gbp,
+		Entities.Enums.Currency.Sgd => Currency.Sgd,
+		Entities.Enums.Currency.Rub => Currency.Rub,
 		_ => throw new ArgumentOutOfRangeException(nameof(currency), currency, null),
 	};
 
-	public static Types.Web.Currency ToDomain(this Currency currency) => currency switch
+	public static Entities.Enums.Currency ToDomain(this Currency currency) => currency switch
 	{
-		Currency.Eur => Types.Web.Currency.Eur,
-		Currency.Usd => Types.Web.Currency.Usd,
-		Currency.Aud => Types.Web.Currency.Aud,
-		Currency.Gbp => Types.Web.Currency.Gbp,
-		Currency.Sgd => Types.Web.Currency.Sgd,
-		Currency.Rub => Types.Web.Currency.Rub,
+		Currency.Eur => Entities.Enums.Currency.Eur,
+		Currency.Usd => Entities.Enums.Currency.Usd,
+		Currency.Aud => Entities.Enums.Currency.Aud,
+		Currency.Gbp => Entities.Enums.Currency.Gbp,
+		Currency.Sgd => Entities.Enums.Currency.Sgd,
+		Currency.Rub => Entities.Enums.Currency.Rub,
 		_ => throw new ArgumentOutOfRangeException(nameof(currency), currency, null),
 	};
 }

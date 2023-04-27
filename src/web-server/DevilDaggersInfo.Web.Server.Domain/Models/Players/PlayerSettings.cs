@@ -1,5 +1,5 @@
-using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
+using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Models.Players;
 

@@ -1,7 +1,7 @@
 using DevilDaggersInfo.Core.Versioning;
-using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Server.Domain.Admin.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
+using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;

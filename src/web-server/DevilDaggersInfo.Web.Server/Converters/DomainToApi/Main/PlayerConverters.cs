@@ -46,23 +46,23 @@ public static class PlayerConverters
 		VerticalSync = settings.VerticalSync.ToMainApi(),
 	};
 
-	private static BanType ToMainApi(this Types.Web.BanType banType) => banType switch
+	private static BanType ToMainApi(this Domain.Entities.Enums.BanType banType) => banType switch
 	{
-		Types.Web.BanType.NotBanned => BanType.NotBanned,
-		Types.Web.BanType.Alt => BanType.Alt,
-		Types.Web.BanType.Cheater => BanType.Cheater,
-		Types.Web.BanType.Boosted => BanType.Boosted,
-		Types.Web.BanType.IllegitimateStats => BanType.IllegitimateStats,
-		Types.Web.BanType.BlankName => BanType.BlankName,
+		Domain.Entities.Enums.BanType.NotBanned => BanType.NotBanned,
+		Domain.Entities.Enums.BanType.Alt => BanType.Alt,
+		Domain.Entities.Enums.BanType.Cheater => BanType.Cheater,
+		Domain.Entities.Enums.BanType.Boosted => BanType.Boosted,
+		Domain.Entities.Enums.BanType.IllegitimateStats => BanType.IllegitimateStats,
+		Domain.Entities.Enums.BanType.BlankName => BanType.BlankName,
 		_ => throw new UnreachableException(),
 	};
 
-	public static VerticalSync ToMainApi(this Types.Web.VerticalSync verticalSync) => verticalSync switch
+	public static VerticalSync ToMainApi(this Domain.Entities.Enums.VerticalSync verticalSync) => verticalSync switch
 	{
-		Types.Web.VerticalSync.Unknown => VerticalSync.Unknown,
-		Types.Web.VerticalSync.Off => VerticalSync.Off,
-		Types.Web.VerticalSync.On => VerticalSync.On,
-		Types.Web.VerticalSync.Adaptive => VerticalSync.Adaptive,
+		Domain.Entities.Enums.VerticalSync.Unknown => VerticalSync.Unknown,
+		Domain.Entities.Enums.VerticalSync.Off => VerticalSync.Off,
+		Domain.Entities.Enums.VerticalSync.On => VerticalSync.On,
+		Domain.Entities.Enums.VerticalSync.Adaptive => VerticalSync.Adaptive,
 		_ => throw new UnreachableException(),
 	};
 }

@@ -5,14 +5,14 @@ namespace DevilDaggersInfo.Web.Server.Domain.Main.Converters;
 
 public static class DonationConverters
 {
-	public static Currency ToMainApi(this Types.Web.Currency currency) => currency switch
+	public static Currency ToMainApi(this Entities.Enums.Currency currency) => currency switch
 	{
-		Types.Web.Currency.Eur => Currency.Eur,
-		Types.Web.Currency.Usd => Currency.Usd,
-		Types.Web.Currency.Aud => Currency.Aud,
-		Types.Web.Currency.Gbp => Currency.Gbp,
-		Types.Web.Currency.Sgd => Currency.Sgd,
-		Types.Web.Currency.Rub => Currency.Rub,
+		Entities.Enums.Currency.Eur => Currency.Eur,
+		Entities.Enums.Currency.Usd => Currency.Usd,
+		Entities.Enums.Currency.Aud => Currency.Aud,
+		Entities.Enums.Currency.Gbp => Currency.Gbp,
+		Entities.Enums.Currency.Sgd => Currency.Sgd,
+		Entities.Enums.Currency.Rub => Currency.Rub,
 		_ => throw new UnreachableException(),
 	};
 }

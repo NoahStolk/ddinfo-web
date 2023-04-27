@@ -1,9 +1,10 @@
 using DevilDaggersInfo.Api.Main.Players;
-using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
+using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Main.Repositories;
 using DevilDaggersInfo.Web.Server.Domain.Main.Services;
+using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.Domain.Repositories;
 using DevilDaggersInfo.Web.Server.Domain.Utils;
 using Microsoft.AspNetCore.Authorization;

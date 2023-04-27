@@ -5,21 +5,21 @@ namespace DevilDaggersInfo.Web.Server.Domain.Main.Converters;
 
 public static class PlayerConverters
 {
-	public static VerticalSync ToMainApi(this Types.Web.VerticalSync verticalSync) => verticalSync switch
+	public static VerticalSync ToMainApi(this Entities.Enums.VerticalSync verticalSync) => verticalSync switch
 	{
-		Types.Web.VerticalSync.Unknown => VerticalSync.Unknown,
-		Types.Web.VerticalSync.Off => VerticalSync.Off,
-		Types.Web.VerticalSync.On => VerticalSync.On,
-		Types.Web.VerticalSync.Adaptive => VerticalSync.Adaptive,
+		Entities.Enums.VerticalSync.Unknown => VerticalSync.Unknown,
+		Entities.Enums.VerticalSync.Off => VerticalSync.Off,
+		Entities.Enums.VerticalSync.On => VerticalSync.On,
+		Entities.Enums.VerticalSync.Adaptive => VerticalSync.Adaptive,
 		_ => throw new UnreachableException(),
 	};
 
-	public static Types.Web.VerticalSync ToDomain(this VerticalSync verticalSync) => verticalSync switch
+	public static Entities.Enums.VerticalSync ToDomain(this VerticalSync verticalSync) => verticalSync switch
 	{
-		VerticalSync.Unknown => Types.Web.VerticalSync.Unknown,
-		VerticalSync.Off => Types.Web.VerticalSync.Off,
-		VerticalSync.On => Types.Web.VerticalSync.On,
-		VerticalSync.Adaptive => Types.Web.VerticalSync.Adaptive,
+		VerticalSync.Unknown => Entities.Enums.VerticalSync.Unknown,
+		VerticalSync.Off => Entities.Enums.VerticalSync.Off,
+		VerticalSync.On => Entities.Enums.VerticalSync.On,
+		VerticalSync.Adaptive => Entities.Enums.VerticalSync.Adaptive,
 		_ => throw new UnreachableException(),
 	};
 }
