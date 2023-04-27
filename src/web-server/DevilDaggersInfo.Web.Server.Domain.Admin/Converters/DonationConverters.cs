@@ -1,5 +1,6 @@
 using DevilDaggersInfo.Api.Admin.Donations;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
+using System.Diagnostics;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Admin.Converters;
 
@@ -37,7 +38,7 @@ public static class DonationConverters
 		Entities.Enums.Currency.Gbp => Currency.Gbp,
 		Entities.Enums.Currency.Sgd => Currency.Sgd,
 		Entities.Enums.Currency.Rub => Currency.Rub,
-		_ => throw new ArgumentOutOfRangeException(nameof(currency), currency, null),
+		_ => throw new UnreachableException(),
 	};
 
 	public static Entities.Enums.Currency ToDomain(this Currency currency) => currency switch
@@ -48,6 +49,6 @@ public static class DonationConverters
 		Currency.Gbp => Entities.Enums.Currency.Gbp,
 		Currency.Sgd => Entities.Enums.Currency.Sgd,
 		Currency.Rub => Entities.Enums.Currency.Rub,
-		_ => throw new ArgumentOutOfRangeException(nameof(currency), currency, null),
+		_ => throw new UnreachableException(),
 	};
 }

@@ -49,8 +49,8 @@ public class PlayerRepository
 		if (player == null)
 			throw new NotFoundException();
 
-		bool isPublicDonator = !player.HideDonations && _dbContext.Donations.Any(d => d.PlayerId == id && !d.IsRefunded && d.ConvertedEuroCentsReceived > 0);
-		return Player.FromEntity(player, isPublicDonator);
+		bool isPublicDonor = !player.HideDonations && _dbContext.Donations.Any(d => d.PlayerId == id && !d.IsRefunded && d.ConvertedEuroCentsReceived > 0);
+		return Player.FromEntity(player, isPublicDonor);
 	}
 
 	public async Task<List<PlayerCommonName>> GetCommonNamesAsync()

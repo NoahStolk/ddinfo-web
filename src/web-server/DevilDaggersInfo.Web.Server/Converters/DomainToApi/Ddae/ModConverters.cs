@@ -2,6 +2,7 @@ using DevilDaggersInfo.Core.Mod;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;
+using System.Diagnostics;
 using DdaeApi = DevilDaggersInfo.Api.Ddae.Mods;
 
 namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Ddae;
@@ -38,7 +39,7 @@ public static class ModConverters
 	{
 		ModBinaryType.Audio => DdaeApi.ModBinaryTypeDdae.Audio,
 		ModBinaryType.Dd => DdaeApi.ModBinaryTypeDdae.Dd,
-		_ => throw new ArgumentOutOfRangeException(nameof(modBinaryType), modBinaryType, null),
+		_ => throw new UnreachableException(),
 	};
 
 	private static DdaeApi.ModTypesDdae ToDdaeApi(this ModTypes modTypes) => (DdaeApi.ModTypesDdae)(int)modTypes;

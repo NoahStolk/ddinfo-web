@@ -99,9 +99,9 @@ public partial class MainApiHttpClient
 		return await SendGetRequest<GetCustomLeaderboard>($"api/custom-leaderboards/{id}");
 	}
 
-	public async Task<List<GetDonator>> GetDonators()
+	public async Task<List<GetDonor>> GetDonors()
 	{
-		return await SendGetRequest<List<GetDonator>>($"api/donations/donators");
+		return await SendGetRequest<List<GetDonor>>($"api/donations/donators");
 	}
 
 	public async Task<GetLeaderboardHistory> GetLeaderboardHistory(DateTime dateTime)

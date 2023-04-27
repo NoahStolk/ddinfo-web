@@ -1,6 +1,7 @@
 using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
+using System.Diagnostics;
 using DdLiveApi = DevilDaggersInfo.Api.DdLive.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.DdLive;
@@ -84,7 +85,7 @@ public static class CustomLeaderboardConverters
 		CustomLeaderboardCategory.TimeAttack => DdLiveApi.CustomLeaderboardCategoryDdLive.TimeAttack,
 		CustomLeaderboardCategory.Speedrun => DdLiveApi.CustomLeaderboardCategoryDdLive.Speedrun,
 		CustomLeaderboardCategory.Race => DdLiveApi.CustomLeaderboardCategoryDdLive.Race,
-		_ => throw new ArgumentOutOfRangeException(nameof(category), category, null),
+		_ => throw new UnreachableException(),
 	};
 
 	private static DdLiveApi.CustomLeaderboardsClientDdLive ToCustomLeaderboardsClientDdLive(this CustomLeaderboardsClient client) => client switch
@@ -92,7 +93,7 @@ public static class CustomLeaderboardConverters
 		CustomLeaderboardsClient.DevilDaggersCustomLeaderboards => DdLiveApi.CustomLeaderboardsClientDdLive.DevilDaggersCustomLeaderboards,
 		CustomLeaderboardsClient.DdstatsRust => DdLiveApi.CustomLeaderboardsClientDdLive.DdstatsRust,
 		CustomLeaderboardsClient.DdinfoTools => DdLiveApi.CustomLeaderboardsClientDdLive.DdinfoTools,
-		_ => throw new ArgumentOutOfRangeException(nameof(client), client, null),
+		_ => throw new UnreachableException(),
 	};
 
 	private static DdLiveApi.CustomLeaderboardDaggerDdLive ToCustomLeaderboardDaggerDdLive(this CustomLeaderboardDagger dagger) => dagger switch
@@ -103,6 +104,6 @@ public static class CustomLeaderboardConverters
 		CustomLeaderboardDagger.Golden => DdLiveApi.CustomLeaderboardDaggerDdLive.Golden,
 		CustomLeaderboardDagger.Devil => DdLiveApi.CustomLeaderboardDaggerDdLive.Devil,
 		CustomLeaderboardDagger.Leviathan => DdLiveApi.CustomLeaderboardDaggerDdLive.Leviathan,
-		_ => throw new ArgumentOutOfRangeException(nameof(dagger), dagger, null),
+		_ => throw new UnreachableException(),
 	};
 }

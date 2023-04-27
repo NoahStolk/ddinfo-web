@@ -14,7 +14,7 @@ public class DonationRepository
 		_dbContext = dbContext;
 	}
 
-	public async Task<List<GetDonator>> GetDonatorsAsync()
+	public async Task<List<GetDonor>> GetDonorsAsync()
 	{
 		var donations = await _dbContext.Donations
 			.AsNoTracking()
@@ -23,16 +23,16 @@ public class DonationRepository
 			.Where(d => !d.IsRefunded && d.ConvertedEuroCentsReceived > 0)
 			.ToListAsync();
 
-		List<int> donatorIds = donations.ConvertAll(d => d.PlayerId);
-		var donators = await _dbContext.Players
+		List<int> donorIds = donations.ConvertAll(d => d.PlayerId);
+		var donors = await _dbContext.Players
 			.AsNoTracking()
 			.Select(p => new { p.Id, p.HideDonations, p.PlayerName })
-			.Where(p => donatorIds.Contains(p.Id))
+			.Where(p => donorIds.Contains(p.Id))
 			.ToListAsync();
 
-		return donators
+		return donors
 			.ConvertAll(
-				p => new GetDonator
+				p => new GetDonor
 				{
 					Donations = donations
 						.Where(d => d.PlayerId == p.Id)
@@ -47,7 +47,7 @@ public class DonationRepository
 					PlayerId = p.HideDonations ? null : p.Id,
 					PlayerName = p.HideDonations ? "(anonymous)" : p.PlayerName,
 				})
-			.OrderByDescending(d => d.Donations.Sum(d => d.ConvertedEuroCentsReceived))
+			.OrderByDescending(donor => donor.Donations.Sum(donation => donation.ConvertedEuroCentsReceived))
 			.ToList();
 	}
 }
