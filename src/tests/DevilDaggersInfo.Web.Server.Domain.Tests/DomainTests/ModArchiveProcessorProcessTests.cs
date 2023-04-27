@@ -3,7 +3,7 @@ using DevilDaggersInfo.Core.Mod;
 using DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;
 using System.IO.Compression;
 
-namespace DevilDaggersInfo.Web.Server.Domain.Tests;
+namespace DevilDaggersInfo.Web.Server.Domain.Tests.DomainTests;
 
 [TestClass]
 public class ModArchiveProcessorProcessTests : ModArchiveProcessorTests
@@ -20,7 +20,7 @@ public class ModArchiveProcessorProcessTests : ModArchiveProcessorTests
 		await Processor.ProcessModBinaryUploadAsync(modName, new() { [binaryName] = binary.Compile() });
 
 		string zipFilePath = Accessor.GetModArchivePath(modName);
-		using ZipArchive archive = ZipFile.Open(zipFilePath, ZipArchiveMode.Read);
+		using ZipArchive archive = await GetArchiveAsync(zipFilePath);
 		Assert.AreEqual(1, archive.Entries.Count);
 
 		ModBinaryCacheData processedBinary = GetProcessedBinaryFromArchiveEntry(archive.Entries[0]);
@@ -43,7 +43,7 @@ public class ModArchiveProcessorProcessTests : ModArchiveProcessorTests
 		await Processor.ProcessModBinaryUploadAsync(modName, new() { [binaryName] = binary.Compile() });
 
 		string zipFilePath = Accessor.GetModArchivePath(modName);
-		using ZipArchive archive = ZipFile.Open(zipFilePath, ZipArchiveMode.Read);
+		using ZipArchive archive = await GetArchiveAsync(zipFilePath);
 		Assert.AreEqual(1, archive.Entries.Count);
 
 		ModBinaryCacheData processedBinary = GetProcessedBinaryFromArchiveEntry(archive.Entries[0]);
@@ -75,7 +75,7 @@ public class ModArchiveProcessorProcessTests : ModArchiveProcessorTests
 		await Processor.ProcessModBinaryUploadAsync(modName, binaries);
 
 		string zipFilePath = Accessor.GetModArchivePath(modName);
-		using ZipArchive archive = ZipFile.Open(zipFilePath, ZipArchiveMode.Read);
+		using ZipArchive archive = await GetArchiveAsync(zipFilePath);
 		Assert.AreEqual(2, archive.Entries.Count);
 
 		ModBinaryCacheData processedBinary1 = GetProcessedBinaryFromArchiveEntry(archive.Entries[0]);

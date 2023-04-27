@@ -61,10 +61,10 @@ public class ModArchiveCache
 	private async Task<ModArchiveCacheData?> LoadFromFileCacheAsync(string name)
 	{
 		string fileCachePath = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ModArchiveCache), $"{name}.json");
-		if (!File.Exists(fileCachePath))
+		if (!_fileSystemService.FileExists(fileCachePath))
 			return null;
 
-		ModArchiveCacheData? fileCacheArchiveData = JsonConvert.DeserializeObject<ModArchiveCacheData>(await File.ReadAllTextAsync(fileCachePath));
+		ModArchiveCacheData? fileCacheArchiveData = JsonConvert.DeserializeObject<ModArchiveCacheData>(await _fileSystemService.ReadAllTextAsync(fileCachePath));
 		if (fileCacheArchiveData == null)
 			return null;
 
@@ -114,17 +114,17 @@ public class ModArchiveCache
 	private void WriteToFileCache(string name, ModArchiveCacheData archiveData)
 	{
 		string fileCacheDirectory = _fileSystemService.GetPath(DataSubDirectory.ModArchiveCache);
-		Directory.CreateDirectory(fileCacheDirectory);
+		_fileSystemService.CreateDirectory(fileCacheDirectory);
 
-		File.WriteAllText(Path.Combine(fileCacheDirectory, $"{name}.json"), JsonConvert.SerializeObject(archiveData));
+		_fileSystemService.WriteAllText(Path.Combine(fileCacheDirectory, $"{name}.json"), JsonConvert.SerializeObject(archiveData));
 	}
 
 	public async Task LoadEntireFileCacheAsync()
 	{
 		string fileCacheDirectory = _fileSystemService.GetPath(DataSubDirectory.ModArchiveCache);
-		Directory.CreateDirectory(fileCacheDirectory);
+		_fileSystemService.CreateDirectory(fileCacheDirectory);
 
-		foreach (string path in Directory.GetFiles(fileCacheDirectory, "*.json"))
+		foreach (string path in _fileSystemService.GetFiles(fileCacheDirectory, "*.json"))
 		{
 			string name = Path.GetFileNameWithoutExtension(path);
 			await LoadFromFileCacheAsync(name);

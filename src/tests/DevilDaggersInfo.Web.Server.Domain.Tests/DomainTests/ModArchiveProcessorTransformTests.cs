@@ -3,7 +3,7 @@ using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;
 using System.IO.Compression;
 
-namespace DevilDaggersInfo.Web.Server.Domain.Tests;
+namespace DevilDaggersInfo.Web.Server.Domain.Tests.DomainTests;
 
 [TestClass]
 public class ModArchiveProcessorTransformTests : ModArchiveProcessorTests
@@ -33,7 +33,7 @@ public class ModArchiveProcessorTransformTests : ModArchiveProcessorTests
 		await Processor.TransformBinariesInModArchiveAsync(modName, newModName, new(), new());
 
 		string zipFilePath = Accessor.GetModArchivePath(newModName);
-		using ZipArchive archive = ZipFile.Open(zipFilePath, ZipArchiveMode.Read);
+		using ZipArchive archive = await GetArchiveAsync(zipFilePath);
 		Assert.AreEqual(2, archive.Entries.Count);
 		AssertBinaryName(binaryName1, archive.Entries[0].Name, newModName);
 		AssertBinaryName(binaryName2, archive.Entries[1].Name, newModName);
@@ -60,7 +60,7 @@ public class ModArchiveProcessorTransformTests : ModArchiveProcessorTests
 		await Processor.TransformBinariesInModArchiveAsync(modName, newModName, new() { binaryName2 }, new());
 
 		string zipFilePath = Accessor.GetModArchivePath(newModName);
-		using ZipArchive archive = ZipFile.Open(zipFilePath, ZipArchiveMode.Read);
+		using ZipArchive archive = await GetArchiveAsync(zipFilePath);
 		Assert.AreEqual(1, archive.Entries.Count);
 		AssertBinaryName(binaryName1, archive.Entries[0].Name, newModName);
 	}
@@ -88,7 +88,7 @@ public class ModArchiveProcessorTransformTests : ModArchiveProcessorTests
 		await Processor.TransformBinariesInModArchiveAsync(modName, newModName, new(), new() { { binaryName3, binary3.Compile() } });
 
 		string zipFilePath = Accessor.GetModArchivePath(newModName);
-		using ZipArchive archive = ZipFile.Open(zipFilePath, ZipArchiveMode.Read);
+		using ZipArchive archive = await GetArchiveAsync(zipFilePath);
 		Assert.AreEqual(3, archive.Entries.Count);
 		AssertBinaryName(binaryName1, archive.Entries[0].Name, newModName);
 		AssertBinaryName(binaryName2, archive.Entries[1].Name, newModName);
@@ -118,7 +118,7 @@ public class ModArchiveProcessorTransformTests : ModArchiveProcessorTests
 		await Processor.TransformBinariesInModArchiveAsync(modName, newModName, new() { binaryName2 }, new() { { binaryName3, binary3.Compile() } });
 
 		string zipFilePath = Accessor.GetModArchivePath(newModName);
-		using ZipArchive archive = ZipFile.Open(zipFilePath, ZipArchiveMode.Read);
+		using ZipArchive archive = await GetArchiveAsync(zipFilePath);
 		Assert.AreEqual(2, archive.Entries.Count);
 		AssertBinaryName(binaryName1, archive.Entries[0].Name, newModName);
 		AssertBinaryName(binaryName3, archive.Entries[1].Name, newModName);
@@ -141,7 +141,7 @@ public class ModArchiveProcessorTransformTests : ModArchiveProcessorTests
 		await Assert.ThrowsExceptionAsync<InvalidModArchiveException>(async () => await Processor.TransformBinariesInModArchiveAsync(modName, newModName, new(), new() { { binaryName2, binary2.Compile() } }));
 
 		string zipFilePath = Accessor.GetModArchivePath(modName);
-		using ZipArchive archive = ZipFile.Open(zipFilePath, ZipArchiveMode.Read);
+		using ZipArchive archive = await GetArchiveAsync(zipFilePath);
 		Assert.AreEqual(1, archive.Entries.Count);
 		AssertBinaryName(binaryName1, archive.Entries[0].Name, modName);
 	}
@@ -164,7 +164,7 @@ public class ModArchiveProcessorTransformTests : ModArchiveProcessorTests
 		await Processor.TransformBinariesInModArchiveAsync(modName, newModName, new() { binaryName1 }, new() { { binaryName2, binary2.Compile() } });
 
 		string zipFilePath = Accessor.GetModArchivePath(newModName);
-		using ZipArchive archive = ZipFile.Open(zipFilePath, ZipArchiveMode.Read);
+		using ZipArchive archive = await GetArchiveAsync(zipFilePath);
 		Assert.AreEqual(1, archive.Entries.Count);
 		AssertBinaryName(binaryName2, archive.Entries[0].Name, newModName);
 

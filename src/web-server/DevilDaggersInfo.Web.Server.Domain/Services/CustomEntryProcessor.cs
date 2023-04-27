@@ -593,7 +593,7 @@ public class CustomEntryProcessor
 
 	private async Task WriteReplayFile(int customEntryId, byte[] replayData)
 	{
-		await File.WriteAllBytesAsync(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{customEntryId}.ddreplay"), replayData);
+		await _fileSystemService.WriteAllBytesAsync(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{customEntryId}.ddreplay"), replayData);
 	}
 
 	private static bool IsReplayTimeAlmostTheSame(int requestTimeAsInt, int databaseTime)
@@ -613,10 +613,10 @@ public class CustomEntryProcessor
 	private async Task<bool> IsReplayFileTheSame(int customEntryId, byte[] newReplay)
 	{
 		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{customEntryId}.ddreplay");
-		if (!File.Exists(path))
+		if (!_fileSystemService.FileExists(path))
 			return false;
 
-		byte[] originalReplay = await File.ReadAllBytesAsync(path);
+		byte[] originalReplay = await _fileSystemService.ReadAllBytesAsync(path);
 		return ArrayUtils.AreEqual(originalReplay, newReplay);
 	}
 
@@ -665,7 +665,7 @@ public class CustomEntryProcessor
 
 	private List<int> GetExistingReplayIds(List<int> customEntryIds)
 	{
-		return customEntryIds.Where(id => File.Exists(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{id}.ddreplay"))).ToList();
+		return customEntryIds.Where(id => _fileSystemService.FileExists(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{id}.ddreplay"))).ToList();
 	}
 
 	// ! Navigation property.

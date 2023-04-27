@@ -459,10 +459,10 @@ public class CustomLeaderboardService
 			throw new CustomLeaderboardValidationException($"Spawnset with ID '{spawnsetId}' does not exist.");
 
 		string spawnsetFilePath = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), spawnset.Name);
-		if (!File.Exists(spawnsetFilePath))
+		if (!_fileSystemService.FileExists(spawnsetFilePath))
 			throw new InvalidOperationException($"Spawnset file '{spawnset.Name}' does not exist. Spawnset with ID '{spawnsetId}' does not have a file which should never happen.");
 
-		if (!SpawnsetBinary.TryParse(await File.ReadAllBytesAsync(spawnsetFilePath), out SpawnsetBinary? spawnsetBinary))
+		if (!SpawnsetBinary.TryParse(await _fileSystemService.ReadAllBytesAsync(spawnsetFilePath), out SpawnsetBinary? spawnsetBinary))
 			throw new InvalidOperationException($"Could not parse survival file '{spawnset.Name}'. Please review the file. Also review how this file ended up in the 'spawnsets' directory, as it should not be possible to upload non-survival files from the Admin API.");
 
 		GameMode requiredGameMode = category.RequiredGameModeForCategory();

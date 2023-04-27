@@ -1,7 +1,7 @@
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Extensions;
 
-namespace DevilDaggersInfo.Web.Server.Domain.Tests;
+namespace DevilDaggersInfo.Web.Server.Domain.Tests.DomainTests;
 
 [TestClass]
 public class CustomLeaderboardCategoryTests

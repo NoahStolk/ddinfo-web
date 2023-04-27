@@ -19,7 +19,7 @@ public class ModScreenshotProcessor
 			return;
 
 		string modScreenshotsDirectory = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ModScreenshots), modName);
-		Directory.CreateDirectory(modScreenshotsDirectory);
+		_fileSystemService.CreateDirectory(modScreenshotsDirectory);
 		int i = 0;
 		foreach (byte[] screenshotContents in screenshots.OrderBy(kvp => kvp.Key).Select(kvp => kvp.Value))
 		{
@@ -32,9 +32,9 @@ public class ModScreenshotProcessor
 				path = Path.Combine(modScreenshotsDirectory, $"{i:00}.png");
 				i++;
 			}
-			while (File.Exists(path));
+			while (_fileSystemService.FileExists(path));
 
-			File.WriteAllBytes(path, screenshotContents);
+			_fileSystemService.WriteAllBytes(path, screenshotContents);
 		}
 	}
 
@@ -42,15 +42,13 @@ public class ModScreenshotProcessor
 	{
 		string screenshotsDirectory = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ModScreenshots), modName);
 		string screenshotFilePath = Path.Combine(screenshotsDirectory, screenshotFileName);
-		if (File.Exists(screenshotFilePath))
-			File.Delete(screenshotFilePath);
+		_fileSystemService.DeleteFileIfExists(screenshotFilePath);
 	}
 
 	public void DeleteScreenshotsDirectory(string modName)
 	{
 		string screenshotsDirectory = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ModScreenshots), modName);
-		if (Directory.Exists(screenshotsDirectory))
-			Directory.Delete(screenshotsDirectory, true);
+		_fileSystemService.DeleteDirectoryIfExists(screenshotsDirectory, true);
 	}
 
 	public void MoveScreenshotsDirectory(string originalModName, string newModName)
@@ -60,10 +58,10 @@ public class ModScreenshotProcessor
 
 		string screenshotsDirectory = _fileSystemService.GetPath(DataSubDirectory.ModScreenshots);
 		string oldScreenshotsDirectory = Path.Combine(screenshotsDirectory, originalModName);
-		if (Directory.Exists(oldScreenshotsDirectory))
+		if (_fileSystemService.DirectoryExists(oldScreenshotsDirectory))
 		{
 			string newScreenshotsDirectory = Path.Combine(screenshotsDirectory, newModName);
-			Directory.Move(oldScreenshotsDirectory, newScreenshotsDirectory);
+			_fileSystemService.MoveDirectory(oldScreenshotsDirectory, newScreenshotsDirectory);
 		}
 	}
 }

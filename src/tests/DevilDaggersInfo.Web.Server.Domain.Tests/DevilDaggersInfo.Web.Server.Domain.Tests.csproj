@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\web-server\DevilDaggersInfo.Web.Server.Domain.Main\DevilDaggersInfo.Web.Server.Domain.Main.csproj" />
     <ProjectReference Include="..\..\web-server\DevilDaggersInfo.Web.Server.Domain\DevilDaggersInfo.Web.Server.Domain.csproj" />
   </ItemGroup>
 

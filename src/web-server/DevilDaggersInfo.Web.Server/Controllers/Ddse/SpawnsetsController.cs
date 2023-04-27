@@ -48,7 +48,7 @@ public class SpawnsetsController : ControllerBase
 			.ToList();
 
 		return query
-			.Where(s => IoFile.Exists(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), s.Name)))
+			.Where(s => _fileSystemService.FileExists(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), s.Name)))
 			.Select(s =>
 			{
 				SpawnsetSummary spawnsetSummary = _spawnsetSummaryCache.GetSpawnsetSummaryByFilePath(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), s.Name));

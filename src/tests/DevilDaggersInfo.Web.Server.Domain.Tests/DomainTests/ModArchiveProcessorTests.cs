@@ -1,40 +1,26 @@
 using DevilDaggersInfo.Core.Asset;
 using DevilDaggersInfo.Core.Mod;
-using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;
 using DevilDaggersInfo.Web.Server.Domain.Services;
 using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
+using DevilDaggersInfo.Web.Server.Domain.Tests.TestImplementations;
 using DevilDaggersInfo.Web.Server.Domain.Utils;
 using System.IO.Compression;
 
-namespace DevilDaggersInfo.Web.Server.Domain.Tests;
+namespace DevilDaggersInfo.Web.Server.Domain.Tests.DomainTests;
 
 public abstract class ModArchiveProcessorTests
 {
 	protected ModArchiveProcessorTests()
 	{
-		string modsPath = Path.Combine("Resources", "Mods");
-		string modArchiveCachePath = Path.Combine("Resources", "ModArchiveCache");
-
-		if (Directory.Exists(modsPath))
-			Directory.Delete(modsPath, true);
-
-		if (Directory.Exists(modArchiveCachePath))
-			Directory.Delete(modArchiveCachePath, true);
-
-		Mock<IFileSystemService> fileSystemService = new();
-		fileSystemService.Setup(m => m.GetPath(DataSubDirectory.Mods)).Returns(modsPath);
-		fileSystemService.Setup(m => m.GetPath(DataSubDirectory.ModArchiveCache)).Returns(modArchiveCachePath);
-
-		Directory.CreateDirectory(modsPath);
-		Directory.CreateDirectory(modArchiveCachePath);
-
-		Cache = new(fileSystemService.Object);
-		Accessor = new(fileSystemService.Object, Cache);
-		Processor = new(fileSystemService.Object, Cache, Accessor);
+		FileSystemService = new TestFileSystemService();
+		Cache = new(FileSystemService);
+		Accessor = new(FileSystemService, Cache);
+		Processor = new(FileSystemService, Cache, Accessor);
 	}
 
+	protected IFileSystemService FileSystemService { get; }
 	protected ModArchiveCache Cache { get; }
 	protected ModArchiveAccessor Accessor { get; }
 	protected ModArchiveProcessor Processor { get; }
@@ -74,5 +60,12 @@ public abstract class ModArchiveProcessorTests
 		binary.AddAsset(shaderName, AssetType.ObjectBinding, "shader = \"boid\""u8.ToArray());
 		binary.AddAsset(textureName, AssetType.Texture, File.ReadAllBytes(Path.Combine("Resources", "Textures", "green.png")));
 		return binary;
+	}
+
+	protected async Task<ZipArchive> GetArchiveAsync(string zipFilePath)
+	{
+		byte[] zipBytes = await FileSystemService.ReadAllBytesAsync(zipFilePath);
+		MemoryStream ms = new(zipBytes);
+		return new(ms, ZipArchiveMode.Read);
 	}
 }

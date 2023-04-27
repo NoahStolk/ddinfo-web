@@ -43,7 +43,7 @@ public class SpawnsetsController : ControllerBase
 			return NotFound();
 
 		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), spawnsetEntity.Name);
-		if (!IoFile.Exists(path))
+		if (!_fileSystemService.FileExists(path))
 			return NotFound();
 
 		var customLeaderboard = _dbContext.CustomLeaderboards
@@ -51,7 +51,7 @@ public class SpawnsetsController : ControllerBase
 			.Select(cl => new { cl.Id, cl.SpawnsetId })
 			.FirstOrDefault(cl => cl.SpawnsetId == spawnsetEntity.Id);
 
-		return spawnsetEntity.ToGetSpawnset(customLeaderboard?.Id, await IoFile.ReadAllBytesAsync(path));
+		return spawnsetEntity.ToGetSpawnset(customLeaderboard?.Id, await _fileSystemService.ReadAllBytesAsync(path));
 	}
 
 	[HttpGet("{id}/buffer")]
@@ -68,12 +68,12 @@ public class SpawnsetsController : ControllerBase
 			throw new NotFoundException();
 
 		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), spawnset.Name);
-		if (!IoFile.Exists(path))
+		if (!_fileSystemService.FileExists(path))
 			throw new NotFoundException();
 
 		return new GetSpawnsetBuffer
 		{
-			Data = await IoFile.ReadAllBytesAsync(path),
+			Data = await _fileSystemService.ReadAllBytesAsync(path),
 		};
 	}
 

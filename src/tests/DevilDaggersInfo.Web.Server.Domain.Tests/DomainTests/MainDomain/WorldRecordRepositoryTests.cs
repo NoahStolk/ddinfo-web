@@ -1,13 +1,11 @@
 using DevilDaggersInfo.Api.Main.WorldRecords;
 using DevilDaggersInfo.Web.Server.Domain.Main.Repositories;
-using DevilDaggersInfo.Web.Server.Domain.Main.Tests.Utils;
+using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
+using DevilDaggersInfo.Web.Server.Domain.Tests.Utils;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
-namespace DevilDaggersInfo.Web.Server.Domain.Main.Tests;
+namespace DevilDaggersInfo.Web.Server.Domain.Tests.DomainTests.MainDomain;
 
 [TestClass]
 public class WorldRecordRepositoryTests
@@ -20,8 +18,10 @@ public class WorldRecordRepositoryTests
 			.UseInMemoryDatabase(databaseName: nameof(WorldRecordRepositoryTests))
 			.Options;
 		TestDbContext dbContext = new(options, new Mock<IHttpContextAccessor>().Object, new Mock<ILogContainerService>().Object);
-		TestData data = new();
-		_repository = new(dbContext, data, data);
+
+		IFileSystemService fileSystemService = LeaderboardHistoryData.GetFileSystemService();
+		ILeaderboardHistoryCache cache = new LeaderboardHistoryCache(fileSystemService);
+		_repository = new(dbContext, fileSystemService, cache);
 	}
 
 	[TestMethod]

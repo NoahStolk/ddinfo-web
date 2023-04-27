@@ -22,9 +22,9 @@ public class ModScreenshotsController : ControllerBase
 	public async Task<IActionResult> GetScreenshotByFilePath(string modName, string fileName)
 	{
 		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ModScreenshots), modName, fileName);
-		if (!IoFile.Exists(path))
+		if (!_fileSystemService.FileExists(path))
 			return NotFound();
 
-		return File(await IoFile.ReadAllBytesAsync(path), "image/png");
+		return File(await _fileSystemService.ReadAllBytesAsync(path), "image/png");
 	}
 }

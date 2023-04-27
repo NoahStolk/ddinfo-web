@@ -1,14 +1,13 @@
-using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardHistory;
-using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
+using DevilDaggersInfo.Web.Server.Domain.Tests.TestImplementations;
 
-namespace DevilDaggersInfo.Web.Server.Domain.Main.Tests.Utils;
+namespace DevilDaggersInfo.Web.Server.Domain.Tests.Utils;
 
-public class TestData : ILeaderboardHistoryCache, IFileSystemService
+public static class LeaderboardHistoryData
 {
-	private readonly IReadOnlyDictionary<string, LeaderboardHistory> _data = new Dictionary<string, LeaderboardHistory>
+	private static readonly IReadOnlyDictionary<string, LeaderboardHistory> _data = new Dictionary<string, LeaderboardHistory>
 	{
 		["2022-01-01.bin"] = CreateLeaderboardHistory(new(2022, 1, 1), new()
 		{
@@ -35,6 +34,15 @@ public class TestData : ILeaderboardHistoryCache, IFileSystemService
 			CreateEntryHistory(4, 3, 82, "Player 3"), // Player 3 joins the leaderboard.
 		}),
 	};
+
+	public static IFileSystemService GetFileSystemService()
+	{
+		IFileSystemService fileSystemService = new TestFileSystemService();
+		foreach (KeyValuePair<string, LeaderboardHistory> kvp in _data)
+			fileSystemService.WriteAllBytes(Path.Combine(nameof(DataSubDirectory.LeaderboardHistory), kvp.Key), kvp.Value.ToBytes());
+
+		return fileSystemService;
+	}
 
 	private static LeaderboardHistory CreateLeaderboardHistory(DateTime dateTime, List<EntryHistory> entries)
 	{
@@ -73,26 +81,4 @@ public class TestData : ILeaderboardHistoryCache, IFileSystemService
 			DaggersHitTotal = 0,
 		};
 	}
-
-	public string[] TryGetFiles(DataSubDirectory subDirectory)
-	{
-		if (subDirectory != DataSubDirectory.LeaderboardHistory)
-			throw new NotImplementedException();
-
-		return _data.Keys.ToArray();
-	}
-
-	public LeaderboardHistory GetLeaderboardHistoryByFilePath(string filePath)
-	{
-		return _data[filePath];
-	}
-
-#pragma warning disable SA1201
-	public string Root => throw new NotImplementedException();
-	public string GetLeaderboardHistoryPathFromDate(DateTime dateTime) => throw new NotImplementedException();
-	public string GetPath(DataSubDirectory subDirectory) => throw new NotImplementedException();
-	public string GetToolDistributionPath(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version) => throw new NotImplementedException();
-	public int GetCount() => throw new NotImplementedException();
-	public void Clear() => throw new NotImplementedException();
-#pragma warning restore SA1201
 }
