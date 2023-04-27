@@ -175,8 +175,11 @@ public class TestFileSystemService : IFileSystemService
 	public async Task CreateZipFileAsync(string zipFilePath, Func<ZipArchive, Task> func)
 	{
 		using MemoryStream memoryStream = new();
-		using ZipArchive archive = new(memoryStream, ZipArchiveMode.Create);
-		await func(archive);
+		using (ZipArchive archive = new(memoryStream, ZipArchiveMode.Create))
+		{
+			await func(archive);
+		}
+
 		WriteAllBytesImpl(zipFilePath, memoryStream.ToArray());
 	}
 }
