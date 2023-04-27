@@ -1,9 +1,9 @@
-using DevilDaggersInfo.Web.Server.Domain.Main.Tests.TestImplementations;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardHistory;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
+using DevilDaggersInfo.Web.Server.Domain.Tests.TestImplementations;
 
-namespace DevilDaggersInfo.Web.Server.Domain.Main.Tests.Utils;
+namespace DevilDaggersInfo.Web.Server.Domain.Tests.Utils;
 
 public static class LeaderboardHistoryData
 {
