@@ -97,6 +97,9 @@ public class CustomEntryProcessor
 		if (uploadRequest.Status is not (3 or 4 or 5))
 			LogAndThrowValidationException(uploadRequest, $"Game status {uploadRequest.Status} is not accepted.", null, "rotating_light");
 
+		if (uploadRequest.PlayerId < 1)
+			LogAndThrowValidationException(uploadRequest, "Player ID is 0 or negative.", null, "rotating_light");
+
 		// Check for existing spawnset.
 		SpawnsetHashCacheData? spawnsetHashData = await _spawnsetHashCache.GetSpawnsetAsync(uploadRequest.SurvivalHashMd5);
 		string? spawnsetName = spawnsetHashData?.Name;

@@ -10,7 +10,6 @@ using DevilDaggersInfo.Web.Client.Extensions;
 using DevilDaggersInfo.Web.Client.HttpClients;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using System.Diagnostics;
 using System.Net;
 
 namespace DevilDaggersInfo.Web.Client.Pages.Custom.Leaderboards;
