@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Core.Asset;
 
-public static class DdObjectBindings2
+public static class DdObjectBindings
 {
 	public static readonly IReadOnlyList<ObjectBindingAssetInfo> All = new List<ObjectBindingAssetInfo>
 	{

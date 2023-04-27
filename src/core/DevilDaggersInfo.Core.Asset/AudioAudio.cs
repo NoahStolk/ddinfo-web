@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Core.Asset;
 
-public static class AudioAudio2
+public static class AudioAudio
 {
 	public static readonly IReadOnlyList<AudioAssetInfo> All = new List<AudioAssetInfo>
 	{

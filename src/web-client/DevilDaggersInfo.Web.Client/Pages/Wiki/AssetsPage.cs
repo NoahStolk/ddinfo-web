@@ -6,12 +6,12 @@ namespace DevilDaggersInfo.Web.Client.Pages.Wiki;
 
 public partial class AssetsPage
 {
-	private IReadOnlyList<AudioAssetInfo> _audioAudio = AudioAudio2.All;
-	private IReadOnlyList<MeshAssetInfo> _ddMeshes = DdMeshes2.All;
-	private IReadOnlyList<ObjectBindingAssetInfo> _ddObjectBindings = DdObjectBindings2.All;
-	private IReadOnlyList<ShaderAssetInfo> _coreShaders = CoreShaders2.All;
-	private IReadOnlyList<ShaderAssetInfo> _ddShaders = DdShaders2.All;
-	private IReadOnlyList<TextureAssetInfo> _ddTextures = DdTextures2.All;
+	private IReadOnlyList<AudioAssetInfo> _audioAudio = AudioAudio.All;
+	private IReadOnlyList<MeshAssetInfo> _ddMeshes = DdMeshes.All;
+	private IReadOnlyList<ObjectBindingAssetInfo> _ddObjectBindings = DdObjectBindings.All;
+	private IReadOnlyList<ShaderAssetInfo> _coreShaders = CoreShaders.All;
+	private IReadOnlyList<ShaderAssetInfo> _ddShaders = DdShaders.All;
+	private IReadOnlyList<TextureAssetInfo> _ddTextures = DdTextures.All;
 
 	private readonly Dictionary<string, bool> _audioAudioSortings = new();
 	private readonly Dictionary<string, bool> _ddMeshesSortings = new();

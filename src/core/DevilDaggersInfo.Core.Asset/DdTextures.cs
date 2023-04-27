@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Core.Asset;
 
-public static class DdTextures2
+public static class DdTextures
 {
 	public static readonly IReadOnlyList<TextureAssetInfo> All = new List<TextureAssetInfo>
 	{

@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Core.Asset;
 
-public static class DdMeshes2
+public static class DdMeshes
 {
 	public static readonly IReadOnlyList<MeshAssetInfo> All = new List<MeshAssetInfo>
 	{

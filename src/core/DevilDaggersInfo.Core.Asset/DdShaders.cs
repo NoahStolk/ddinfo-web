@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Core.Asset;
 
-public static class DdShaders2
+public static class DdShaders
 {
 	public static readonly IReadOnlyList<ShaderAssetInfo> All = new List<ShaderAssetInfo>
 	{
