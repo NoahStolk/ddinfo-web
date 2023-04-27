@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Web.Server.Domain.Entities;
+using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Models.Players;
 
@@ -21,7 +22,7 @@ public record Player
 		BanDescription = player.BanDescription,
 		CountryCode = player.CountryCode,
 		Id = player.Id,
-		IsBanned = player.BanType != Types.Web.BanType.NotBanned,
+		IsBanned = player.BanType != BanType.NotBanned,
 		IsPublicDonator = isPublicDonator,
 		Settings = player.HasVisibleSettings() ? PlayerSettings.FromEntity(player) : null,
 	};

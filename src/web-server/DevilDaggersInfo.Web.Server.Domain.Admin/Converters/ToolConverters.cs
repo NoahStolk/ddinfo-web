@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Types.Web;
+using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using System.Diagnostics;
 using AdminApi = DevilDaggersInfo.Api.Admin.Tools;
 

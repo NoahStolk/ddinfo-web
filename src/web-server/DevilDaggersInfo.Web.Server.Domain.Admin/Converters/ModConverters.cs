@@ -34,5 +34,5 @@ public static class ModConverters
 		ScreenshotNames = screenshotNames,
 	};
 
-	private static ModTypes ToAdminApi(this Types.Web.ModTypes modTypes) => (ModTypes)(int)modTypes;
+	private static ModTypes ToAdminApi(this Entities.Enums.ModTypes modTypes) => (ModTypes)(int)modTypes;
 }

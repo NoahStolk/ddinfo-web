@@ -1,6 +1,6 @@
-using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Core.Claims;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
+using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Main.Converters;
 using Microsoft.EntityFrameworkCore;

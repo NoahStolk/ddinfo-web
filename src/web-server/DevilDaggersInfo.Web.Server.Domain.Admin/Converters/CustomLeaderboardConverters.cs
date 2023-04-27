@@ -97,32 +97,32 @@ public static class CustomLeaderboardConverters
 		Expression = criteria.Expression == null ? null : Expression.TryParse(criteria.Expression, out Expression? expression) ? expression.ToShortString() : null,
 	};
 
-	private static CustomLeaderboardCategory ToAdminApi(this Types.Web.CustomLeaderboardCategory category) => category switch
+	private static CustomLeaderboardCategory ToAdminApi(this Entities.Enums.CustomLeaderboardCategory category) => category switch
 	{
-		Types.Web.CustomLeaderboardCategory.Survival => CustomLeaderboardCategory.Survival,
-		Types.Web.CustomLeaderboardCategory.TimeAttack => CustomLeaderboardCategory.TimeAttack,
-		Types.Web.CustomLeaderboardCategory.Speedrun => CustomLeaderboardCategory.Speedrun,
-		Types.Web.CustomLeaderboardCategory.Race => CustomLeaderboardCategory.Race,
+		Entities.Enums.CustomLeaderboardCategory.Survival => CustomLeaderboardCategory.Survival,
+		Entities.Enums.CustomLeaderboardCategory.TimeAttack => CustomLeaderboardCategory.TimeAttack,
+		Entities.Enums.CustomLeaderboardCategory.Speedrun => CustomLeaderboardCategory.Speedrun,
+		Entities.Enums.CustomLeaderboardCategory.Race => CustomLeaderboardCategory.Race,
 		_ => throw new UnreachableException(),
 	};
 
-	public static Types.Web.CustomLeaderboardCategory ToDomain(this CustomLeaderboardCategory category) => category switch
+	public static Entities.Enums.CustomLeaderboardCategory ToDomain(this CustomLeaderboardCategory category) => category switch
 	{
-		CustomLeaderboardCategory.Survival => Types.Web.CustomLeaderboardCategory.Survival,
-		CustomLeaderboardCategory.TimeAttack => Types.Web.CustomLeaderboardCategory.TimeAttack,
-		CustomLeaderboardCategory.Speedrun => Types.Web.CustomLeaderboardCategory.Speedrun,
-		CustomLeaderboardCategory.Race => Types.Web.CustomLeaderboardCategory.Race,
+		CustomLeaderboardCategory.Survival => Entities.Enums.CustomLeaderboardCategory.Survival,
+		CustomLeaderboardCategory.TimeAttack => Entities.Enums.CustomLeaderboardCategory.TimeAttack,
+		CustomLeaderboardCategory.Speedrun => Entities.Enums.CustomLeaderboardCategory.Speedrun,
+		CustomLeaderboardCategory.Race => Entities.Enums.CustomLeaderboardCategory.Race,
 		_ => throw new UnreachableException(),
 	};
 
-	private static CustomLeaderboardDagger ToAdminApi(this Types.Web.CustomLeaderboardDagger dagger) => dagger switch
+	private static CustomLeaderboardDagger ToAdminApi(this Models.CustomLeaderboards.CustomLeaderboardDagger dagger) => dagger switch
 	{
-		Types.Web.CustomLeaderboardDagger.Default => CustomLeaderboardDagger.Default,
-		Types.Web.CustomLeaderboardDagger.Bronze => CustomLeaderboardDagger.Bronze,
-		Types.Web.CustomLeaderboardDagger.Silver => CustomLeaderboardDagger.Silver,
-		Types.Web.CustomLeaderboardDagger.Golden => CustomLeaderboardDagger.Golden,
-		Types.Web.CustomLeaderboardDagger.Devil => CustomLeaderboardDagger.Devil,
-		Types.Web.CustomLeaderboardDagger.Leviathan => CustomLeaderboardDagger.Leviathan,
+		Models.CustomLeaderboards.CustomLeaderboardDagger.Default => CustomLeaderboardDagger.Default,
+		Models.CustomLeaderboards.CustomLeaderboardDagger.Bronze => CustomLeaderboardDagger.Bronze,
+		Models.CustomLeaderboards.CustomLeaderboardDagger.Silver => CustomLeaderboardDagger.Silver,
+		Models.CustomLeaderboards.CustomLeaderboardDagger.Golden => CustomLeaderboardDagger.Golden,
+		Models.CustomLeaderboards.CustomLeaderboardDagger.Devil => CustomLeaderboardDagger.Devil,
+		Models.CustomLeaderboards.CustomLeaderboardDagger.Leviathan => CustomLeaderboardDagger.Leviathan,
 		_ => throw new UnreachableException(),
 	};
 

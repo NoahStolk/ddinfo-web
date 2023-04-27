@@ -1,7 +1,7 @@
 using DevilDaggersInfo.Types.Core.Assets;
 using DevilDaggersInfo.Types.Core.Mods;
-using DevilDaggersInfo.Types.Web;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
+using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;
 using System.Diagnostics;
 using MainApi = DevilDaggersInfo.Api.Main.Mods;

@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Types.Web;
+namespace DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 
 public enum CustomLeaderboardDagger
 {
