@@ -258,7 +258,7 @@ public static class CustomLeaderboardConverters
 			GhostpedesKilledData = GetUInt16Arr(customEntryData?.GhostpedesKilledData),
 			SpiderEggsKilledData = GetUInt16Arr(customEntryData?.SpiderEggsKilledData),
 
-			StartingLevel = startingLevel,
+			StartingLevel = startingLevel.ToMainApi(),
 			HasReplay = hasReplay,
 		};
 

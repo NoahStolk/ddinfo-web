@@ -47,7 +47,7 @@ public static class SpawnsetConverters
 		_ => throw new UnreachableException(),
 	};
 
-	private static MainApi.HandLevel ToMainApi(this HandLevel handLevel) => handLevel switch
+	public static MainApi.HandLevel ToMainApi(this HandLevel handLevel) => handLevel switch
 	{
 		HandLevel.Level1 => MainApi.HandLevel.Level1,
 		HandLevel.Level2 => MainApi.HandLevel.Level2,
