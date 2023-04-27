@@ -1,4 +1,3 @@
-global using DevilDaggersInfo.CommonTest;
 global using DevilDaggersInfo.Core.Spawnset;
 global using DevilDaggersInfo.Web.Server.Domain.Entities;
 global using JetBrains.Annotations;
