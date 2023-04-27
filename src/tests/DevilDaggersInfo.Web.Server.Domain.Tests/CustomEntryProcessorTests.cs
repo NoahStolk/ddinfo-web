@@ -3,12 +3,12 @@ using DevilDaggersInfo.Web.Server.Domain.Commands.CustomEntries;
 using DevilDaggersInfo.Web.Server.Domain.Configuration;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
-using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Services;
 using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 using DevilDaggersInfo.Web.Server.Domain.Tests.Data;
 using DevilDaggersInfo.Web.Server.Domain.Tests.Extensions;
+using DevilDaggersInfo.Web.Server.Domain.Tests.TestImplementations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -37,15 +37,12 @@ public class CustomEntryProcessorTests
 			.SetUpDbSet(db => db.CustomEntries, mockEntities.MockDbSetCustomEntries)
 			.SetUpDbSet(db => db.CustomEntryData, mockEntities.MockDbSetCustomEntryData);
 
-		string spawnsetsPath = Path.Combine("Resources", "Spawnsets");
-		string replaysPath = Path.Combine("Resources", "Replays");
-
-		Mock<IFileSystemService> fileSystemService = new();
-		fileSystemService.Setup(m => m.GetPath(DataSubDirectory.Spawnsets)).Returns(spawnsetsPath);
-		fileSystemService.Setup(m => m.GetPath(DataSubDirectory.CustomEntryReplays)).Returns(replaysPath);
+		IFileSystemService fileSystemService = new TestFileSystemService();
+		byte[] spawnsetFileContents = File.ReadAllBytes(Path.Combine("Resources", "Spawnsets", "V3"));
+		fileSystemService.WriteAllBytes(Path.Combine("Spawnsets", "V3"), spawnsetFileContents);
 
 		Mock<ILogger<SpawnsetHashCache>> spawnsetHashCacheLogger = new();
-		Mock<SpawnsetHashCache> spawnsetHashCache = new(fileSystemService.Object, spawnsetHashCacheLogger.Object);
+		Mock<SpawnsetHashCache> spawnsetHashCache = new(fileSystemService, spawnsetHashCacheLogger.Object);
 		Mock<ILogger<CustomEntryProcessor>> customEntryProcessorLogger = new();
 
 		const string secret = "secretsecretsecr";
@@ -58,13 +55,10 @@ public class CustomEntryProcessorTests
 			Salt = secret,
 		};
 
-		_customEntryProcessor = new(_dbContext.Object, customEntryProcessorLogger.Object, spawnsetHashCache.Object, fileSystemService.Object, new OptionsWrapper<CustomLeaderboardsOptions>(options), new Mock<ICustomLeaderboardSubmissionLogger>().Object);
+		_customEntryProcessor = new(_dbContext.Object, customEntryProcessorLogger.Object, spawnsetHashCache.Object, fileSystemService, new OptionsWrapper<CustomLeaderboardsOptions>(options), new Mock<ICustomLeaderboardSubmissionLogger>().Object);
 
-		byte[] spawnsetFileContents = File.ReadAllBytes(Path.Combine(spawnsetsPath, "V3"));
-		if (SpawnsetBinary.TryParse(spawnsetFileContents, out SpawnsetBinary? spawnsetBinary))
-			_v3Hash = MD5.HashData(spawnsetBinary.ToBytes());
-		else
-			Assert.Fail("Spawnset could not be parsed.");
+		SpawnsetBinary spawnsetBinary = SpawnsetBinary.Parse(spawnsetFileContents);
+		_v3Hash = MD5.HashData(spawnsetBinary.ToBytes());
 
 		_mockReplay = BuildMockReplay(spawnsetFileContents);
 	}
@@ -228,7 +222,7 @@ public class CustomEntryProcessorTests
 		UploadResponse response = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
 		Assert.IsNotNull(response.Success);
 
-		_dbContext.Verify(db => db.CustomEntries.AddAsync(It.Is<CustomEntryEntity>(ce => ce.PlayerId == 2 && ce.Time == 200000), default), Times.Once);
+		_dbContext.Verify(db => db.CustomEntries.AddAsync(It.Is<CustomEntryEntity>(ce => ce.PlayerId == 2 && ce.Time == 20_0000), default), Times.Once);
 		_dbContext.Verify(db => db.SaveChangesAsync(default), Times.AtLeastOnce);
 		Assert.AreEqual(SubmissionType.FirstScore, response.Success.SubmissionType);
 	}
@@ -242,7 +236,7 @@ public class CustomEntryProcessorTests
 
 		_dbContext.Verify(db => db.SaveChangesAsync(default), Times.AtLeastOnce);
 		_dbContext.Verify(db => db.Players.AddAsync(It.Is<PlayerEntity>(p => p.Id == 3 && p.PlayerName == "TestPlayer3"), default), Times.Once);
-		_dbContext.Verify(db => db.CustomEntries.AddAsync(It.Is<CustomEntryEntity>(ce => ce.PlayerId == 3 && ce.Time == 300000), default), Times.Once);
+		_dbContext.Verify(db => db.CustomEntries.AddAsync(It.Is<CustomEntryEntity>(ce => ce.PlayerId == 3 && ce.Time == 30_0000), default), Times.Once);
 		Assert.AreEqual(SubmissionType.FirstScore, response.Success.SubmissionType);
 	}
 

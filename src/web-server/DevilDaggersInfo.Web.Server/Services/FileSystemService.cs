@@ -2,6 +2,7 @@ using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 using DevilDaggersInfo.Web.Server.Utils;
+using System.IO.Compression;
 
 namespace DevilDaggersInfo.Web.Server.Services;
 
@@ -38,7 +39,15 @@ public class FileSystemService : IFileSystemService
 	}
 
 	public string GetPath(DataSubDirectory subDirectory)
-		=> Path.Combine("Data", subDirectory.ToString());
+	{
+		return Path.Combine("Data", subDirectory.ToString());
+	}
+
+	public long GetDirectorySize(string path)
+	{
+		DirectoryInfo modDirectory = new(path);
+		return modDirectory.EnumerateFiles("*.*", SearchOption.AllDirectories).Sum(fi => fi.Length);
+	}
 
 	public string GetToolDistributionPath(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version)
 	{
@@ -156,5 +165,10 @@ public class FileSystemService : IFileSystemService
 	public async Task WriteAllTextAsync(string path, string text, CancellationToken cancellationToken)
 	{
 		await File.WriteAllTextAsync(path, text, cancellationToken);
+	}
+
+	public ZipArchive CreateZipFile(string zipFilePath)
+	{
+		return ZipFile.Open(zipFilePath, ZipArchiveMode.Create);
 	}
 }

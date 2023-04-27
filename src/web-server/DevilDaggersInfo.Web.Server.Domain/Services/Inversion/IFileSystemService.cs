@@ -1,5 +1,6 @@
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
+using System.IO.Compression;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 
@@ -10,6 +11,8 @@ public interface IFileSystemService
 	string GetLeaderboardHistoryPathFromDate(DateTime dateTime);
 
 	string GetPath(DataSubDirectory subDirectory);
+
+	long GetDirectorySize(string path);
 
 	string GetToolDistributionPath(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version);
 
@@ -54,6 +57,8 @@ public interface IFileSystemService
 	Task WriteAllTextAsync(string path, string text);
 
 	Task WriteAllTextAsync(string path, string text, CancellationToken cancellationToken);
+
+	ZipArchive CreateZipFile(string zipFilePath);
 
 	// TODO: Add ZipFile methods.
 

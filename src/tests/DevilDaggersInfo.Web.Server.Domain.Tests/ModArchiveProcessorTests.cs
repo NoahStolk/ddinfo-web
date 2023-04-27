@@ -1,10 +1,10 @@
 using DevilDaggersInfo.Core.Asset;
 using DevilDaggersInfo.Core.Mod;
-using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;
 using DevilDaggersInfo.Web.Server.Domain.Services;
 using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
+using DevilDaggersInfo.Web.Server.Domain.Tests.TestImplementations;
 using DevilDaggersInfo.Web.Server.Domain.Utils;
 using System.IO.Compression;
 
@@ -14,16 +14,11 @@ public abstract class ModArchiveProcessorTests
 {
 	protected ModArchiveProcessorTests()
 	{
-		string modsPath = Path.Combine("Resources", "Mods");
-		string modArchiveCachePath = Path.Combine("Resources", "ModArchiveCache");
+		IFileSystemService fileSystemService = new TestFileSystemService();
 
-		Mock<IFileSystemService> fileSystemService = new();
-		fileSystemService.Setup(m => m.GetPath(DataSubDirectory.Mods)).Returns(modsPath);
-		fileSystemService.Setup(m => m.GetPath(DataSubDirectory.ModArchiveCache)).Returns(modArchiveCachePath);
-
-		Cache = new(fileSystemService.Object);
-		Accessor = new(fileSystemService.Object, Cache);
-		Processor = new(fileSystemService.Object, Cache, Accessor);
+		Cache = new(fileSystemService);
+		Accessor = new(fileSystemService, Cache);
+		Processor = new(fileSystemService, Cache, Accessor);
 	}
 
 	protected ModArchiveCache Cache { get; }

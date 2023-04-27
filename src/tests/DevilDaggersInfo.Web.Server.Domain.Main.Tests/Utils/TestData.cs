@@ -3,9 +3,11 @@ using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardHistory;
 using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
+using System.IO.Compression;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Main.Tests.Utils;
 
+// TODO: Remove.
 public class TestData : ILeaderboardHistoryCache, IFileSystemService
 {
 	private readonly IReadOnlyDictionary<string, LeaderboardHistory> _data = new Dictionary<string, LeaderboardHistory>
@@ -90,6 +92,10 @@ public class TestData : ILeaderboardHistoryCache, IFileSystemService
 #pragma warning disable SA1201
 	public string GetLeaderboardHistoryPathFromDate(DateTime dateTime) => throw new NotImplementedException();
 	public string GetPath(DataSubDirectory subDirectory) => throw new NotImplementedException();
+	public long GetDirectorySize(string path)
+	{
+		throw new NotImplementedException();
+	}
 	public string GetToolDistributionPath(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version) => throw new NotImplementedException();
 	public bool DeleteFileIfExists(string path) => throw new NotImplementedException();
 	public bool FileExists(string path)
@@ -166,6 +172,10 @@ public class TestData : ILeaderboardHistoryCache, IFileSystemService
 		throw new NotImplementedException();
 	}
 	public Task WriteAllTextAsync(string path, string text, CancellationToken cancellationToken)
+	{
+		throw new NotImplementedException();
+	}
+	public ZipArchive CreateZipFile(string zipFilePath)
 	{
 		throw new NotImplementedException();
 	}
