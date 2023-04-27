@@ -1,11 +1,13 @@
 @page "/custom/leaderboards"
 @using DevilDaggersInfo.Api.Main.CustomLeaderboards
 @using DevilDaggersInfo.Common
-@using DevilDaggersInfo.Types.Core.CustomLeaderboards.Extensions
+@using DevilDaggersInfo.Core.CriteriaExpression.Extensions
 @using DevilDaggersInfo.Web.Client.Components
 @using DevilDaggersInfo.Web.Client.Extensions
 @using DevilDaggersInfo.Web.Client.HttpClients
 @using DevilDaggersInfo.Web.Client.Utils
+@using CustomLeaderboardCriteriaOperator = DevilDaggersInfo.Core.CriteriaExpression.CustomLeaderboardCriteriaOperator
+@using CustomLeaderboardCriteriaType = DevilDaggersInfo.Core.CriteriaExpression.CustomLeaderboardCriteriaType
 @inject MainApiHttpClient Http
 @inject NavigationManager NavigationManager
 
@@ -107,14 +109,14 @@ else
 	<div class="grid gap-2 grid-cols-2 max-w-md">
 		<div class="overflow-y-scroll h-64">
 			<div class="font-bold">Types</div>
-			@foreach (Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType criteriaType in Enum.GetValues<Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaType>())
+			@foreach (CustomLeaderboardCriteriaType criteriaType in Enum.GetValues<CustomLeaderboardCriteriaType>())
 			{
 				<div style="color: @(criteriaType.GetColor());">@criteriaType.Display()</div>
 			}
 		</div>
 		<div>
 			<div class="font-bold">Operators</div>
-			@foreach (Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaOperator criteriaOperator in Enum.GetValues<Types.Core.CustomLeaderboards.CustomLeaderboardCriteriaOperator>())
+			@foreach (CustomLeaderboardCriteriaOperator criteriaOperator in Enum.GetValues<CustomLeaderboardCriteriaOperator>())
 			{
 				<div style="color: @(criteriaOperator.GetColor());">@criteriaOperator.Display()</div>
 			}

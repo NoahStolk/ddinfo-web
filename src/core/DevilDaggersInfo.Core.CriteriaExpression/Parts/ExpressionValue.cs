@@ -2,7 +2,6 @@ using DevilDaggersInfo.Common;
 using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Core.Wiki.Objects;
-using DevilDaggersInfo.Types.Core.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Core.CriteriaExpression.Parts;
 

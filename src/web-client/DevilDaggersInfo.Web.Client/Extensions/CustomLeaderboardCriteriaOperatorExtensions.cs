@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Types.Core.CustomLeaderboards;
+using DevilDaggersInfo.Core.CriteriaExpression;
 using System.Diagnostics;
 using AdminApi = DevilDaggersInfo.Api.Admin.CustomLeaderboards;
 using MainApi = DevilDaggersInfo.Api.Main.CustomLeaderboards;

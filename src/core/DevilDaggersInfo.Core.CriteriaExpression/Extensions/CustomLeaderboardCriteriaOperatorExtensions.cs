@@ -1,6 +1,6 @@
 using System.Diagnostics;
 
-namespace DevilDaggersInfo.Types.Core.CustomLeaderboards.Extensions;
+namespace DevilDaggersInfo.Core.CriteriaExpression.Extensions;
 
 public static class CustomLeaderboardCriteriaOperatorExtensions
 {

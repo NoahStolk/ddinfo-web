@@ -1,5 +1,4 @@
-using DevilDaggersInfo.Types.Core.CustomLeaderboards;
-using DevilDaggersInfo.Types.Core.CustomLeaderboards.Extensions;
+using DevilDaggersInfo.Core.CriteriaExpression.Extensions;
 
 namespace DevilDaggersInfo.Core.CriteriaExpression.Parts;
 

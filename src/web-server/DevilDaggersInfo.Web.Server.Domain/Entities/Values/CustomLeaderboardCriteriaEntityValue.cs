@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Types.Core.CustomLeaderboards;
+using DevilDaggersInfo.Core.CriteriaExpression;
 using Microsoft.EntityFrameworkCore;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Entities.Values;
