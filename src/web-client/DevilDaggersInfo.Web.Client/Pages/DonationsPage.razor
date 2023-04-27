@@ -31,14 +31,14 @@
 	Please be sure to include your leaderboard username and rank in the PayPal message, so I can add you to the list of donations below. Thank you.
 </p>
 
-@if (_donators == null)
+@if (_donors == null)
 {
 	<Loading />
 }
 else
 {
 	<div class="max-w-lg">
-		@foreach (KeyValuePair<GetDonator, string> kvp in _donators)
+		@foreach (KeyValuePair<GetDonor, string> kvp in _donors)
 		{
 			<div class="grid grid-cols-2 justify-items-stretch odd:bg-gray-1 px-2">
 				<div style="white-space: nowrap;" class="justify-self-start font-goethe devil highlight hover:underline text-xl">
@@ -63,13 +63,13 @@ else
 
 @code
 {
-	private Dictionary<GetDonator, string>? _donators;
+	private Dictionary<GetDonor, string>? _donors;
 
 	protected override async Task OnInitializedAsync()
 	{
-		List<GetDonator> donators = await Http.GetDonators();
-		_donators = donators.ToDictionary(d => d, donator => string.Join(" + ", donator.Donations
-			.GroupBy(d => d.Currency)
+		List<GetDonor> donors = await Http.GetDonors();
+		_donors = donors.ToDictionary(donor => donor, donor => string.Join(" + ", donor.Donations
+			.GroupBy(donation => donation.Currency)
 			.Select(g => $"{g.Key.GetChar()} {CentsToString(g.Sum(d => d.Amount))} {g.Key.ToString().ToUpper()}")));
 	}
 
