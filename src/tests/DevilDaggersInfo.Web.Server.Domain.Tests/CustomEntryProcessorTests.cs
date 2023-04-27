@@ -37,8 +37,8 @@ public class CustomEntryProcessorTests
 			.SetUpDbSet(db => db.CustomEntries, mockEntities.MockDbSetCustomEntries)
 			.SetUpDbSet(db => db.CustomEntryData, mockEntities.MockDbSetCustomEntryData);
 
-		string spawnsetsPath = Path.Combine(TestUtils.ResourcePath, "Spawnsets");
-		string replaysPath = Path.Combine(TestUtils.ResourcePath, "Replays");
+		string spawnsetsPath = Path.Combine("Resources", "Spawnsets");
+		string replaysPath = Path.Combine("Resources", "Replays");
 
 		Mock<IFileSystemService> fileSystemService = new();
 		fileSystemService.Setup(m => m.GetPath(DataSubDirectory.Spawnsets)).Returns(spawnsetsPath);

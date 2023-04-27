@@ -19,7 +19,7 @@ public class ToolRepositoryTests
 	{
 		MockEntities mockEntities = new();
 
-		string toolsPath = Path.Combine(TestUtils.ResourcePath, "Tools");
+		string toolsPath = Path.Combine("Resources", "Tools");
 
 		Mock<IFileSystemService> fileSystemService = new();
 		fileSystemService.Setup(m => m.GetPath(DataSubDirectory.Tools)).Returns(toolsPath);

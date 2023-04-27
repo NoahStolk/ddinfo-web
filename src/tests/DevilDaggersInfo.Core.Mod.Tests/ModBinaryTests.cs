@@ -15,7 +15,7 @@ public class ModBinaryTests
 	[DataRow(ModBinaryType.Dd, "dd-texture")] // This works because the textures are 1x1.
 	public void CompareBinaryOutput(ModBinaryType type, string fileName, bool ignoreExactAssetData = false)
 	{
-		string filePath = Path.Combine(TestUtils.ResourcePath, fileName);
+		string filePath = Path.Combine("Resources", fileName);
 		byte[] originalBytes = File.ReadAllBytes(filePath);
 
 		ModBinary modBinary = new(originalBytes, ModBinaryReadFilter.AllAssets);
@@ -42,7 +42,7 @@ public class ModBinaryTests
 	public void ValidateTocSingleAsset()
 	{
 		const string fileName = "dd-single-asset";
-		string filePath = Path.Combine(TestUtils.ResourcePath, fileName);
+		string filePath = Path.Combine("Resources", fileName);
 		byte[] originalBytes = File.ReadAllBytes(filePath);
 		ModBinary modBinary = new(originalBytes, ModBinaryReadFilter.NoAssets);
 
@@ -57,7 +57,7 @@ public class ModBinaryTests
 	public void ValidateTocMultipleAssets()
 	{
 		const string fileName = "dd-nohand";
-		string filePath = Path.Combine(TestUtils.ResourcePath, fileName);
+		string filePath = Path.Combine("Resources", fileName);
 		byte[] originalBytes = File.ReadAllBytes(filePath);
 		ModBinary modBinary = new(originalBytes, ModBinaryReadFilter.NoAssets);
 

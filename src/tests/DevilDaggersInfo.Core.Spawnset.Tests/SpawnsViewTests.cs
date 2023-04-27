@@ -53,7 +53,7 @@ public class SpawnsViewTests
 		const string fileName = "V3";
 		const GameVersion gameVersion = GameVersion.V3_0;
 		const int waveCount = 1;
-		SpawnsetBinary spawnset = SpawnsetBinary.Parse(File.ReadAllBytes(Path.Combine(TestUtils.ResourcePath, fileName)));
+		SpawnsetBinary spawnset = SpawnsetBinary.Parse(File.ReadAllBytes(Path.Combine("Resources", fileName)));
 		SpawnsView spawnsView = new(spawnset, gameVersion, waveCount);
 		Assert.AreEqual(3, spawnsView.PreLoop[0].Seconds);
 		Assert.AreEqual(new(HandLevel.Level1, 2, 2), spawnsView.PreLoop[0].GemState);
@@ -88,7 +88,7 @@ public class SpawnsViewTests
 	[AssertionMethod]
 	private static SpawnsView Parse(string fileName, GameVersion gameVersion, int waveCount, int expectedPreLoopSpawnCount, int expectedWaveSpawnCount)
 	{
-		SpawnsetBinary spawnset = SpawnsetBinary.Parse(File.ReadAllBytes(Path.Combine(TestUtils.ResourcePath, fileName)));
+		SpawnsetBinary spawnset = SpawnsetBinary.Parse(File.ReadAllBytes(Path.Combine("Resources", fileName)));
 		SpawnsView spawnsView = new(spawnset, gameVersion, waveCount);
 		Assert.AreEqual(waveCount, spawnsView.Waves.Length);
 		Assert.AreEqual(expectedPreLoopSpawnCount, spawnsView.PreLoop.Count);
@@ -117,7 +117,7 @@ public class SpawnsViewTests
 	[DataRow("Race", false, false)]
 	public void TestHasSpawns(string fileName, bool expectedHasPreLoopSpawns, bool expectedHasLoopSpawns)
 	{
-		SpawnsetBinary spawnset = SpawnsetBinary.Parse(File.ReadAllBytes(Path.Combine(TestUtils.ResourcePath, fileName)));
+		SpawnsetBinary spawnset = SpawnsetBinary.Parse(File.ReadAllBytes(Path.Combine("Resources", fileName)));
 		SpawnsView spawnsView = new(spawnset, GameVersion.V3_2);
 		Assert.AreEqual(expectedHasPreLoopSpawns, spawnsView.HasPreLoopSpawns);
 		Assert.AreEqual(expectedHasLoopSpawns, spawnsView.HasLoopSpawns);

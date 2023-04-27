@@ -8,7 +8,7 @@ public class ExtractionTests
 	[DataRow(ModBinaryType.Dd, "dd-iconmaskhoming", "iconmaskhoming", "iconmaskhoming.png")]
 	public void ExtractTextureAndCompareToSourcePng(ModBinaryType expectedBinaryType, string modFileName, string assetName, string sourcePngFileName)
 	{
-		string filePath = Path.Combine(TestUtils.ResourcePath, modFileName);
+		string filePath = Path.Combine("Resources", modFileName);
 		ModBinary modBinary = new(File.ReadAllBytes(filePath), ModBinaryReadFilter.AllAssets);
 		Assert.AreEqual(expectedBinaryType, modBinary.Toc.Type);
 		Assert.AreEqual(expectedBinaryType, BinaryFileNameUtils.GetBinaryTypeBasedOnFileName(modFileName));
@@ -16,7 +16,7 @@ public class ExtractionTests
 		KeyValuePair<AssetKey, AssetData> asset = modBinary.AssetMap.First(kvp => kvp.Key.AssetName == assetName);
 
 		byte[] extractedPngContents = modBinary.ExtractAsset(asset.Key);
-		byte[] sourcePngContents = File.ReadAllBytes(Path.Combine(TestUtils.ResourcePath, "Texture", sourcePngFileName));
+		byte[] sourcePngContents = File.ReadAllBytes(Path.Combine("Resources", "Texture", sourcePngFileName));
 
 		CollectionAssert.AreEqual(extractedPngContents, sourcePngContents);
 	}

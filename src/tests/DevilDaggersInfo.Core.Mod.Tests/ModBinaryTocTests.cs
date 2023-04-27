@@ -12,7 +12,7 @@ public class ModBinaryTocTests
 	[DataRow(ModBinaryType.Dd, "dd-texture")]
 	public void DetermineModBinaryType(ModBinaryType expectedType, string fileName)
 	{
-		string filePath = Path.Combine(TestUtils.ResourcePath, fileName);
+		string filePath = Path.Combine("Resources", fileName);
 		byte[] originalBytes = File.ReadAllBytes(filePath);
 
 		ModBinaryType type = ModBinaryToc.DetermineType(originalBytes);
