@@ -1,18 +1,18 @@
 using DevilDaggersInfo.Core.Spawnset.Summary;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Concurrent;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 
 public class SpawnsetSummaryCache
 {
-	private readonly ApplicationDbContext _dbContext;
+	private readonly IServiceScopeFactory _serviceScopeFactory;
 	private readonly ConcurrentDictionary<int, SpawnsetSummary> _cache = new();
 
-	public SpawnsetSummaryCache(ApplicationDbContext dbContext)
+	public SpawnsetSummaryCache(IServiceScopeFactory serviceScopeFactory)
 	{
-		_dbContext = dbContext;
+		_serviceScopeFactory = serviceScopeFactory;
 	}
 
 	public SpawnsetSummary GetSpawnsetSummaryById(int spawnsetId)
@@ -20,7 +20,9 @@ public class SpawnsetSummaryCache
 		if (_cache.TryGetValue(spawnsetId, out SpawnsetSummary? summary))
 			return summary;
 
-		var spawnset = _dbContext.Spawnsets.Select(s => new { s.Id, s.Name, s.File }).FirstOrDefault(s => s.Id == spawnsetId);
+		using IServiceScope scope = _serviceScopeFactory.CreateScope();
+		using ApplicationDbContext dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+		var spawnset = dbContext.Spawnsets.Select(s => new { s.Id, s.Name, s.File }).FirstOrDefault(s => s.Id == spawnsetId);
 		if (spawnset == null)
 			throw new($"Spawnset with ID '{spawnsetId}' not found.");
 
