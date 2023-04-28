@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.Net.Mime;
-using System.Security.Cryptography;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 
@@ -28,37 +27,6 @@ public class SpawnsetsController : ControllerBase
 		_dbContext = dbContext;
 		_spawnsetSummaryCache = spawnsetSummaryCache;
 		_logger = logger;
-	}
-
-	[HttpPost("migrate")]
-	[ProducesResponseType(StatusCodes.Status200OK)]
-	public async Task<ActionResult> MigrateSpawnsets()
-	{
-		List<SpawnsetEntity> spawnsetEntities = await _dbContext.Spawnsets.Where(s => s.File == null || s.File.Length == 0).ToListAsync();
-
-		foreach (SpawnsetEntity spawnset in spawnsetEntities)
-		{
-			try
-			{
-				string spawnsetPath = Path.Combine("Data", "Spawnsets", spawnset.Name);
-				if (!IoFile.Exists(spawnsetPath))
-				{
-					_logger.LogWarning("Spawnset file {spawnsetPath} does not exist.", spawnsetPath);
-					continue;
-				}
-
-				byte[] spawnsetBytes = await IoFile.ReadAllBytesAsync(spawnsetPath);
-				spawnset.File = spawnsetBytes;
-				spawnset.Md5Hash = MD5.HashData(spawnsetBytes);
-				await _dbContext.SaveChangesAsync();
-			}
-			catch (Exception ex)
-			{
-				_logger.LogError(ex, "Error migrating spawnset {name}.", spawnset.Name);
-			}
-		}
-
-		return Ok();
 	}
 
 	[HttpGet]
