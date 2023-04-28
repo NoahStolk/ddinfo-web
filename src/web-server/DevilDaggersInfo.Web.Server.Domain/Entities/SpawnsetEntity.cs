@@ -24,8 +24,8 @@ public class SpawnsetEntity : IAuditable
 	public bool IsPractice { get; set; }
 
 	[MaxLength(70 * 1024)]
-	public required byte[] File { get; set; } // TODO: Use init after migration.
+	public required byte[] File { get; init; }
 
 	[MaxLength(16)]
-	public required byte[] Md5Hash { get; set; } // TODO: Use init after migration.
+	public required byte[] Md5Hash { get; init; }
 }
