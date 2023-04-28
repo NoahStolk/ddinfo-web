@@ -253,15 +253,11 @@ if (!app.Environment.IsDevelopment())
 #if ROLES
 	CreateRolesIfNotExist(serviceProvider);
 #endif
-	Stopwatch sw = Stopwatch.StartNew();
-
 	StringBuilder sb = new();
 	sb.Append("> **Application is now online in the `").Append(app.Environment.EnvironmentName).AppendLine("` environment.**");
 
 	ILogContainerService lcs = app.Services.GetRequiredService<ILogContainerService>();
 	lcs.AddLog($"{DateTime.UtcNow:HH:mm:ss.fff}: Starting...\n{sb}");
-
-	sw.Stop();
 }
 
 app.Run();
