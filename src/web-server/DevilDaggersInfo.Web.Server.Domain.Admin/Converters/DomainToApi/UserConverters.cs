@@ -2,7 +2,7 @@ using DevilDaggersInfo.Api.Admin.Users;
 using DevilDaggersInfo.Web.Core.Claims;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 
-namespace DevilDaggersInfo.Web.Server.Domain.Admin.Converters;
+namespace DevilDaggersInfo.Web.Server.Domain.Admin.Converters.DomainToApi;
 
 public static class UserConverters
 {

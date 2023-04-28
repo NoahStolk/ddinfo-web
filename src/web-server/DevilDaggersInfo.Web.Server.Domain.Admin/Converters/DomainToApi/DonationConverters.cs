@@ -2,7 +2,7 @@ using DevilDaggersInfo.Api.Admin.Donations;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using System.Diagnostics;
 
-namespace DevilDaggersInfo.Web.Server.Domain.Admin.Converters;
+namespace DevilDaggersInfo.Web.Server.Domain.Admin.Converters.DomainToApi;
 
 public static class DonationConverters
 {
@@ -43,17 +43,6 @@ public static class DonationConverters
 		Entities.Enums.Currency.Gbp => Currency.Gbp,
 		Entities.Enums.Currency.Sgd => Currency.Sgd,
 		Entities.Enums.Currency.Rub => Currency.Rub,
-		_ => throw new UnreachableException(),
-	};
-
-	public static Entities.Enums.Currency ToDomain(this Currency currency) => currency switch
-	{
-		Currency.Eur => Entities.Enums.Currency.Eur,
-		Currency.Usd => Entities.Enums.Currency.Usd,
-		Currency.Aud => Entities.Enums.Currency.Aud,
-		Currency.Gbp => Entities.Enums.Currency.Gbp,
-		Currency.Sgd => Entities.Enums.Currency.Sgd,
-		Currency.Rub => Entities.Enums.Currency.Rub,
 		_ => throw new UnreachableException(),
 	};
 }

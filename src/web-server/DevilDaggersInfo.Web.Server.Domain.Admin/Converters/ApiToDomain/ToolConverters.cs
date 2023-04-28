@@ -1,8 +1,9 @@
-using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using System.Diagnostics;
 using AdminApi = DevilDaggersInfo.Api.Admin.Tools;
+using ToolBuildType = DevilDaggersInfo.Web.Server.Domain.Entities.Enums.ToolBuildType;
+using ToolPublishMethod = DevilDaggersInfo.Web.Server.Domain.Entities.Enums.ToolPublishMethod;
 
-namespace DevilDaggersInfo.Web.Server.Domain.Admin.Converters;
+namespace DevilDaggersInfo.Web.Server.Domain.Admin.Converters.ApiToDomain;
 
 public static class ToolConverters
 {

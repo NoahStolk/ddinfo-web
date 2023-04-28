@@ -5,7 +5,7 @@ using DevilDaggersInfo.Web.Server.Domain.Entities.Values;
 using System.Diagnostics;
 using AdminApi = DevilDaggersInfo.Api.Admin.CustomLeaderboards;
 
-namespace DevilDaggersInfo.Web.Server.Domain.Admin.Converters;
+namespace DevilDaggersInfo.Web.Server.Domain.Admin.Converters.DomainToApi;
 
 public static class CustomLeaderboardConverters
 {
@@ -121,28 +121,6 @@ public static class CustomLeaderboardConverters
 		CustomLeaderboardCriteriaOperator.GreaterThanOrEqual => AdminApi.CustomLeaderboardCriteriaOperator.GreaterThanOrEqual,
 		CustomLeaderboardCriteriaOperator.Modulo => AdminApi.CustomLeaderboardCriteriaOperator.Modulo,
 		CustomLeaderboardCriteriaOperator.NotEqual => AdminApi.CustomLeaderboardCriteriaOperator.NotEqual,
-		_ => throw new UnreachableException(),
-	};
-
-	public static Entities.Enums.CustomLeaderboardCategory ToDomain(this AdminApi.CustomLeaderboardCategory category) => category switch
-	{
-		AdminApi.CustomLeaderboardCategory.Survival => Entities.Enums.CustomLeaderboardCategory.Survival,
-		AdminApi.CustomLeaderboardCategory.TimeAttack => Entities.Enums.CustomLeaderboardCategory.TimeAttack,
-		AdminApi.CustomLeaderboardCategory.Speedrun => Entities.Enums.CustomLeaderboardCategory.Speedrun,
-		AdminApi.CustomLeaderboardCategory.Race => Entities.Enums.CustomLeaderboardCategory.Race,
-		_ => throw new UnreachableException(),
-	};
-
-	public static CustomLeaderboardCriteriaOperator ToDomain(this AdminApi.CustomLeaderboardCriteriaOperator @operator) => @operator switch
-	{
-		AdminApi.CustomLeaderboardCriteriaOperator.Any => CustomLeaderboardCriteriaOperator.Any,
-		AdminApi.CustomLeaderboardCriteriaOperator.Equal => CustomLeaderboardCriteriaOperator.Equal,
-		AdminApi.CustomLeaderboardCriteriaOperator.LessThan => CustomLeaderboardCriteriaOperator.LessThan,
-		AdminApi.CustomLeaderboardCriteriaOperator.GreaterThan => CustomLeaderboardCriteriaOperator.GreaterThan,
-		AdminApi.CustomLeaderboardCriteriaOperator.LessThanOrEqual => CustomLeaderboardCriteriaOperator.LessThanOrEqual,
-		AdminApi.CustomLeaderboardCriteriaOperator.GreaterThanOrEqual => CustomLeaderboardCriteriaOperator.GreaterThanOrEqual,
-		AdminApi.CustomLeaderboardCriteriaOperator.Modulo => CustomLeaderboardCriteriaOperator.Modulo,
-		AdminApi.CustomLeaderboardCriteriaOperator.NotEqual => CustomLeaderboardCriteriaOperator.NotEqual,
 		_ => throw new UnreachableException(),
 	};
 }

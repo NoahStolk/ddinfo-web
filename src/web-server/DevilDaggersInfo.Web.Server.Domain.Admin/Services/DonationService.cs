@@ -1,5 +1,5 @@
 using DevilDaggersInfo.Api.Admin.Donations;
-using DevilDaggersInfo.Web.Server.Domain.Admin.Converters;
+using DevilDaggersInfo.Web.Server.Domain.Admin.Converters.ApiToDomain;
 using DevilDaggersInfo.Web.Server.Domain.Admin.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
