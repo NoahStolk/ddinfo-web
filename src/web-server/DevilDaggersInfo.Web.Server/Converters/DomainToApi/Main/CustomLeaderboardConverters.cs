@@ -186,13 +186,21 @@ public static class CustomLeaderboardConverters
 	// TODO: Use domain models?
 	public static MainApi.GetCustomEntryData ToMainApi(this CustomEntryEntity customEntry, CustomEntryDataEntity? customEntryData, HandLevel startingLevel, bool hasReplay)
 	{
-		// ! Navigation property.
+		if (customEntry.Player == null)
+			throw new InvalidOperationException("Player is not included.");
+
+		if (customEntry.CustomLeaderboard == null)
+			throw new InvalidOperationException("Custom leaderboard is not included.");
+
+		if (customEntry.CustomLeaderboard.Spawnset == null)
+			throw new InvalidOperationException("Custom leaderboard spawnset is not included.");
+
 		return new()
 		{
 			CustomEntryId = customEntry.Id,
 			PlayerId = customEntry.PlayerId,
-			PlayerName = customEntry.Player!.PlayerName,
-			SpawnsetName = customEntry.CustomLeaderboard!.Spawnset!.Name,
+			PlayerName = customEntry.Player.PlayerName,
+			SpawnsetName = customEntry.CustomLeaderboard.Spawnset.Name,
 			ClientVersion = customEntry.ClientVersion,
 			DeathType = customEntry.DeathType,
 			EnemiesAlive = customEntry.EnemiesAlive,

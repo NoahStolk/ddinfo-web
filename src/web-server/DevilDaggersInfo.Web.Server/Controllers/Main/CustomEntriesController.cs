@@ -61,6 +61,7 @@ public class CustomEntriesController : ControllerBase
 			.AsNoTracking()
 			.Include(ce => ce.Player)
 			.Include(ce => ce.CustomLeaderboard)
+				.ThenInclude(cl => cl!.Spawnset)
 			.FirstOrDefault(cl => cl.Id == id);
 		if (customEntry == null)
 			return NotFound();
