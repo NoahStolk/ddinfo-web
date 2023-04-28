@@ -54,7 +54,7 @@ public class PlayerRepository
 
 		return new Page<GetPlayerForOverview>
 		{
-			Results = players.ConvertAll(p => p.ToGetPlayerForOverview()),
+			Results = players.ConvertAll(p => p.ToAdminApiOverview()),
 			TotalResults = _dbContext.Players.Count(),
 		};
 	}
@@ -82,6 +82,6 @@ public class PlayerRepository
 		if (player == null)
 			throw new NotFoundException();
 
-		return player.ToGetPlayer();
+		return player.ToAdminApi();
 	}
 }

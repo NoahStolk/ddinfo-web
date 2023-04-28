@@ -26,7 +26,7 @@ public class UserRepository
 			.OrderBy(u => u.Id)
 			.ToListAsync();
 
-		return users.ConvertAll(u => u.ToGetUser());
+		return users.ConvertAll(u => u.ToAdminApi());
 	}
 
 	public async Task<GetUser> GetUserAsync(int id)
@@ -42,6 +42,6 @@ public class UserRepository
 		if (user == null)
 			throw new NotFoundException();
 
-		return user.ToGetUser();
+		return user.ToAdminApi();
 	}
 }

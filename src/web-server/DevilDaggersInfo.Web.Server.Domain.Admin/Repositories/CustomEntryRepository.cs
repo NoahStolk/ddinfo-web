@@ -58,7 +58,7 @@ public class CustomEntryRepository
 
 		return new Page<GetCustomEntryForOverview>
 		{
-			Results = customEntries.ConvertAll(ce => ce.ToGetCustomEntryForOverview()),
+			Results = customEntries.ConvertAll(ce => ce.ToAdminApiOverview()),
 			TotalResults = _dbContext.CustomEntries.Count(),
 		};
 	}
@@ -73,6 +73,6 @@ public class CustomEntryRepository
 		if (customEntry == null)
 			throw new NotFoundException();
 
-		return customEntry.ToGetCustomEntry();
+		return customEntry.ToAdminApi();
 	}
 }

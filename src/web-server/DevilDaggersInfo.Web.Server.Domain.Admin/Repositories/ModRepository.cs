@@ -44,7 +44,7 @@ public class ModRepository
 
 		return new Page<GetModForOverview>
 		{
-			Results = mods.ConvertAll(m => m.ToGetModForOverview()),
+			Results = mods.ConvertAll(m => m.ToAdminApi()),
 			TotalResults = _dbContext.Mods.Count(),
 		};
 	}
@@ -73,6 +73,6 @@ public class ModRepository
 			throw new NotFoundException();
 
 		ModFileSystemData fileSystemData = await _modArchiveAccessor.GetModFileSystemDataAsync(mod.Name);
-		return mod.ToGetMod(fileSystemData.ModArchive?.Binaries.ConvertAll(b => b.Name), fileSystemData.ScreenshotFileNames);
+		return mod.ToAdminApi(fileSystemData.ModArchive?.Binaries.ConvertAll(b => b.Name), fileSystemData.ScreenshotFileNames);
 	}
 }

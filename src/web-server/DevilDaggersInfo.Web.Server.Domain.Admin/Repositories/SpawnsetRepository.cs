@@ -40,7 +40,7 @@ public class SpawnsetRepository
 
 		return new Page<GetSpawnsetForOverview>
 		{
-			Results = spawnsets.ConvertAll(s => s.ToGetSpawnsetForOverview()),
+			Results = spawnsets.ConvertAll(s => s.ToAdminApiOverview()),
 			TotalResults = _dbContext.Spawnsets.Count(),
 		};
 	}
@@ -67,6 +67,6 @@ public class SpawnsetRepository
 		if (spawnset == null)
 			throw new NotFoundException();
 
-		return spawnset.ToGetSpawnset();
+		return spawnset.ToAdminApi();
 	}
 }

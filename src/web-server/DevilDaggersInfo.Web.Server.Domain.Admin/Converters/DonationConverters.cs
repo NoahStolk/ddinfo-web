@@ -6,20 +6,25 @@ namespace DevilDaggersInfo.Web.Server.Domain.Admin.Converters;
 
 public static class DonationConverters
 {
-	// ! Navigation property.
-	public static GetDonationForOverview ToGetDonationForOverview(this DonationEntity donation) => new()
+	public static GetDonationForOverview ToAdminApiOverview(this DonationEntity donation)
 	{
-		Id = donation.Id,
-		Amount = donation.Amount,
-		ConvertedEuroCentsReceived = donation.ConvertedEuroCentsReceived,
-		Currency = donation.Currency.ToAdminApi(),
-		DateReceived = donation.DateReceived,
-		IsRefunded = donation.IsRefunded,
-		Note = donation.Note,
-		PlayerName = donation.Player!.PlayerName,
-	};
+		if (donation.Player == null)
+			throw new InvalidOperationException("Player is not included.");
 
-	public static GetDonation ToGetDonation(this DonationEntity donation) => new()
+		return new()
+		{
+			Id = donation.Id,
+			Amount = donation.Amount,
+			ConvertedEuroCentsReceived = donation.ConvertedEuroCentsReceived,
+			Currency = donation.Currency.ToAdminApi(),
+			DateReceived = donation.DateReceived,
+			IsRefunded = donation.IsRefunded,
+			Note = donation.Note,
+			PlayerName = donation.Player.PlayerName,
+		};
+	}
+
+	public static GetDonation ToAdminApi(this DonationEntity donation) => new()
 	{
 		Id = donation.Id,
 		Amount = donation.Amount,

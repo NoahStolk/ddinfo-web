@@ -6,7 +6,7 @@ namespace DevilDaggersInfo.Web.Server.Domain.Admin.Converters;
 
 public static class PlayerConverters
 {
-	public static GetPlayerForOverview ToGetPlayerForOverview(this PlayerEntity player) => new()
+	public static GetPlayerForOverview ToAdminApiOverview(this PlayerEntity player) => new()
 	{
 		Id = player.Id,
 		PlayerName = player.PlayerName,
@@ -32,32 +32,37 @@ public static class PlayerConverters
 		VerticalSync = player.VerticalSync.ToAdminApi(),
 	};
 
-	// ! Navigation property.
-	public static GetPlayer ToGetPlayer(this PlayerEntity player) => new()
+	public static GetPlayer ToAdminApi(this PlayerEntity player)
 	{
-		Id = player.Id,
-		CommonName = player.CommonName,
-		DiscordUserId = player.DiscordUserId,
-		CountryCode = player.CountryCode,
-		Dpi = player.Dpi,
-		InGameSens = player.InGameSens,
-		Fov = player.Fov,
-		IsRightHanded = player.IsRightHanded,
-		HasFlashHandEnabled = player.HasFlashHandEnabled,
-		Gamma = player.Gamma,
-		UsesLegacyAudio = player.UsesLegacyAudio,
-		UsesHrtf = player.UsesHrtf,
-		UsesInvertY = player.UsesInvertY,
-		VerticalSync = player.VerticalSync.ToAdminApi(),
-		BanType = player.BanType.ToAdminApi(),
-		BanDescription = player.BanDescription,
-		BanResponsibleId = player.BanResponsibleId,
-		IsBannedFromDdcl = player.IsBannedFromDdcl,
-		HideSettings = player.HideSettings,
-		HideDonations = player.HideDonations,
-		HidePastUsernames = player.HidePastUsernames,
-		ModIds = player.PlayerMods!.ConvertAll(pam => pam.ModId),
-	};
+		if (player.PlayerMods == null)
+			throw new InvalidOperationException("Player mods are not included.");
+
+		return new()
+		{
+			Id = player.Id,
+			CommonName = player.CommonName,
+			DiscordUserId = player.DiscordUserId,
+			CountryCode = player.CountryCode,
+			Dpi = player.Dpi,
+			InGameSens = player.InGameSens,
+			Fov = player.Fov,
+			IsRightHanded = player.IsRightHanded,
+			HasFlashHandEnabled = player.HasFlashHandEnabled,
+			Gamma = player.Gamma,
+			UsesLegacyAudio = player.UsesLegacyAudio,
+			UsesHrtf = player.UsesHrtf,
+			UsesInvertY = player.UsesInvertY,
+			VerticalSync = player.VerticalSync.ToAdminApi(),
+			BanType = player.BanType.ToAdminApi(),
+			BanDescription = player.BanDescription,
+			BanResponsibleId = player.BanResponsibleId,
+			IsBannedFromDdcl = player.IsBannedFromDdcl,
+			HideSettings = player.HideSettings,
+			HideDonations = player.HideDonations,
+			HidePastUsernames = player.HidePastUsernames,
+			ModIds = player.PlayerMods.ConvertAll(pam => pam.ModId),
+		};
+	}
 
 	private static BanType ToAdminApi(this Entities.Enums.BanType banType) => banType switch
 	{

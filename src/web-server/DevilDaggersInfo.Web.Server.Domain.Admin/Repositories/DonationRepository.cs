@@ -43,7 +43,7 @@ public class DonationRepository
 
 		return new Page<GetDonationForOverview>
 		{
-			Results = donations.ConvertAll(d => d.ToGetDonationForOverview()),
+			Results = donations.ConvertAll(d => d.ToAdminApiOverview()),
 			TotalResults = _dbContext.Donations.Count(),
 		};
 	}
@@ -56,6 +56,6 @@ public class DonationRepository
 		if (donation == null)
 			throw new NotFoundException();
 
-		return donation.ToGetDonation();
+		return donation.ToAdminApi();
 	}
 }

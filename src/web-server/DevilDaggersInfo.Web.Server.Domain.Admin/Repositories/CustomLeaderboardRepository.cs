@@ -45,7 +45,7 @@ public class CustomLeaderboardRepository
 
 		return new Page<GetCustomLeaderboardForOverview>
 		{
-			Results = customLeaderboards.ConvertAll(cl => cl.ToGetCustomLeaderboardForOverview()),
+			Results = customLeaderboards.ConvertAll(cl => cl.ToAdminApiOverview()),
 			TotalResults = _dbContext.CustomLeaderboards.Count(),
 		};
 	}
@@ -62,6 +62,6 @@ public class CustomLeaderboardRepository
 		if (customLeaderboard == null)
 			throw new NotFoundException($"Leaderboard with ID '{id}' was not found.");
 
-		return customLeaderboard.ToGetCustomLeaderboard();
+		return customLeaderboard.ToAdminApi();
 	}
 }
