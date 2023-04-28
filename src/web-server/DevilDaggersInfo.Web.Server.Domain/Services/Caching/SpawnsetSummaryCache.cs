@@ -20,7 +20,7 @@ public class SpawnsetSummaryCache
 		if (_cache.TryGetValue(spawnsetId, out SpawnsetSummary? summary))
 			return summary;
 
-		var spawnset = _dbContext.Spawnsets.AsNoTracking().Select(s => new { s.Id, s.Name, s.File }).FirstOrDefault(s => s.Id == spawnsetId);
+		var spawnset = _dbContext.Spawnsets.Select(s => new { s.Id, s.Name, s.File }).FirstOrDefault(s => s.Id == spawnsetId);
 		if (spawnset == null)
 			throw new($"Spawnset with ID '{spawnsetId}' not found.");
 
