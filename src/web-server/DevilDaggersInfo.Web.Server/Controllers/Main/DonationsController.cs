@@ -15,8 +15,7 @@ public class DonationsController : ControllerBase
 		_donationRepository = donationRepository;
 	}
 
-	// TODO: Rename to donors.
-	[HttpGet("donators")]
+	[HttpGet("donors")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public async Task<List<GetDonor>> GetDonors()
 		=> await _donationRepository.GetDonorsAsync();

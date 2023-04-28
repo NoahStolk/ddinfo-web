@@ -101,7 +101,7 @@ public partial class MainApiHttpClient
 
 	public async Task<List<GetDonor>> GetDonors()
 	{
-		return await SendGetRequest<List<GetDonor>>($"api/donations/donators");
+		return await SendGetRequest<List<GetDonor>>($"api/donations/donors");
 	}
 
 	public async Task<GetLeaderboardHistory> GetLeaderboardHistory(DateTime dateTime)

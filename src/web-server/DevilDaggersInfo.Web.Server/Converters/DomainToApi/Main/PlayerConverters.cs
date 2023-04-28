@@ -28,7 +28,7 @@ public static class PlayerConverters
 		CountryCode = player.CountryCode,
 		Id = player.Id,
 		IsBanned = player.IsBanned,
-		IsPublicDonator = player.IsPublicDonator,
+		IsPublicDonor = player.IsPublicDonor,
 		Settings = player.Settings?.ToGetPlayerSettings(),
 	};
 

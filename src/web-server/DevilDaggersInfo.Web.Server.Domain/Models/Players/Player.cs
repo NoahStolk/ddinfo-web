@@ -11,7 +11,7 @@ public record Player
 
 	public required string? BanDescription { get; init; }
 
-	public required bool IsPublicDonator { get; init; } // TODO: Rename to IsPublicDonor.
+	public required bool IsPublicDonor { get; init; }
 
 	public required string? CountryCode { get; init; }
 
@@ -23,7 +23,7 @@ public record Player
 		CountryCode = player.CountryCode,
 		Id = player.Id,
 		IsBanned = player.BanType != BanType.NotBanned,
-		IsPublicDonator = isPublicDonor,
+		IsPublicDonor = isPublicDonor,
 		Settings = player.HasVisibleSettings() ? PlayerSettings.FromEntity(player) : null,
 	};
 }
