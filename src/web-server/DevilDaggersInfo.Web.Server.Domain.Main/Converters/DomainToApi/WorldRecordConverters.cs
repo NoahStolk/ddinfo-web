@@ -1,7 +1,7 @@
 using DevilDaggersInfo.Api.Main.WorldRecords;
 using System.Diagnostics;
 
-namespace DevilDaggersInfo.Web.Server.Domain.Main.Converters;
+namespace DevilDaggersInfo.Web.Server.Domain.Main.Converters.DomainToApi;
 
 public static class WorldRecordConverters
 {
