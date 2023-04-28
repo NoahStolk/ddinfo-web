@@ -3,10 +3,8 @@ using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Web.Server.Domain.Admin.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
-using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Models.Spawnsets;
 using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
-using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 using System.Security.Cryptography;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Admin.Services;
@@ -15,13 +13,11 @@ public class SpawnsetService
 {
 	private readonly SpawnsetHashCache _spawnsetHashCache;
 	private readonly ApplicationDbContext _dbContext;
-	private readonly IFileSystemService _fileSystemService;
 
-	public SpawnsetService(SpawnsetHashCache spawnsetHashCache, ApplicationDbContext dbContext, IFileSystemService fileSystemService)
+	public SpawnsetService(SpawnsetHashCache spawnsetHashCache, ApplicationDbContext dbContext)
 	{
 		_spawnsetHashCache = spawnsetHashCache;
 		_dbContext = dbContext;
-		_fileSystemService = fileSystemService;
 	}
 
 	public async Task AddSpawnsetAsync(AddSpawnset addSpawnset)
@@ -36,18 +32,12 @@ public class SpawnsetService
 		if (existingSpawnset != null)
 			throw new AdminDomainException($"Spawnset is exactly the same as an already existing spawnset named '{existingSpawnset.Name}'.");
 
-		// Entity validation.
 		if (!_dbContext.Players.Any(p => p.Id == addSpawnset.PlayerId))
 			throw new AdminDomainException($"Player with ID '{addSpawnset.PlayerId}' does not exist.");
 
 		if (_dbContext.Spawnsets.Any(m => m.Name == addSpawnset.Name))
 			throw new AdminDomainException($"Spawnset with name '{addSpawnset.Name}' already exists.");
 
-		// Add file.
-		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), addSpawnset.Name);
-		await File.WriteAllBytesAsync(path, addSpawnset.FileContents);
-
-		// Add entity.
 		SpawnsetEntity spawnset = new()
 		{
 			HtmlDescription = addSpawnset.HtmlDescription,
@@ -56,6 +46,8 @@ public class SpawnsetService
 			Name = addSpawnset.Name,
 			PlayerId = addSpawnset.PlayerId,
 			LastUpdated = DateTime.UtcNow,
+			File = addSpawnset.FileContents,
+			Md5Hash = MD5.HashData(addSpawnset.FileContents),
 		};
 		_dbContext.Spawnsets.Add(spawnset);
 		await _dbContext.SaveChangesAsync();
@@ -72,18 +64,8 @@ public class SpawnsetService
 		if (spawnset == null)
 			throw new NotFoundException($"Spawnset with ID '{id}' does not exist.");
 
-		if (spawnset.Name != editSpawnset.Name)
-		{
-			if (_dbContext.Spawnsets.Any(m => m.Name == editSpawnset.Name))
-				throw new AdminDomainException($"Spawnset with name '{editSpawnset.Name}' already exists.");
-
-			string directory = _fileSystemService.GetPath(DataSubDirectory.Spawnsets);
-			string oldPath = Path.Combine(directory, spawnset.Name);
-			string newPath = Path.Combine(directory, editSpawnset.Name);
-			File.Move(oldPath, newPath);
-
-			_spawnsetHashCache.Clear();
-		}
+		if (spawnset.Name != editSpawnset.Name && _dbContext.Spawnsets.Any(m => m.Name == editSpawnset.Name))
+			throw new AdminDomainException($"Spawnset with name '{editSpawnset.Name}' already exists.");
 
 		// Do not update LastUpdated here. This value is based only on the file which cannot be edited.
 		spawnset.HtmlDescription = editSpawnset.HtmlDescription;
@@ -102,14 +84,6 @@ public class SpawnsetService
 
 		if (_dbContext.CustomLeaderboards.Any(cl => cl.SpawnsetId == id))
 			throw new AdminDomainException("Spawnset with custom leaderboard cannot be deleted.");
-
-		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), spawnset.Name);
-		bool fileExists = File.Exists(path);
-		if (fileExists)
-		{
-			File.Delete(path);
-			_spawnsetHashCache.Clear();
-		}
 
 		_dbContext.Spawnsets.Remove(spawnset);
 		await _dbContext.SaveChangesAsync();

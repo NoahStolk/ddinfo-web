@@ -41,13 +41,11 @@ public class CustomEntryProcessorTests
 		string replaysPath = Path.Combine("Resources", "Replays");
 
 		Mock<IFileSystemService> fileSystemService = new();
-		fileSystemService.Setup(m => m.GetPath(DataSubDirectory.Spawnsets)).Returns(spawnsetsPath);
 		fileSystemService.Setup(m => m.GetPath(DataSubDirectory.CustomEntryReplays)).Returns(replaysPath);
 
 		Directory.CreateDirectory(replaysPath);
 
-		Mock<ILogger<SpawnsetHashCache>> spawnsetHashCacheLogger = new();
-		Mock<SpawnsetHashCache> spawnsetHashCache = new(fileSystemService.Object, spawnsetHashCacheLogger.Object);
+		SpawnsetHashCache spawnsetHashCache = new(_dbContext.Object);
 		Mock<ILogger<CustomEntryProcessor>> customEntryProcessorLogger = new();
 
 		const string secret = "secretsecretsecr";
@@ -60,7 +58,7 @@ public class CustomEntryProcessorTests
 			Salt = secret,
 		};
 
-		_customEntryProcessor = new(_dbContext.Object, customEntryProcessorLogger.Object, spawnsetHashCache.Object, fileSystemService.Object, new OptionsWrapper<CustomLeaderboardsOptions>(options), new Mock<ICustomLeaderboardSubmissionLogger>().Object);
+		_customEntryProcessor = new(_dbContext.Object, customEntryProcessorLogger.Object, spawnsetHashCache, fileSystemService.Object, new OptionsWrapper<CustomLeaderboardsOptions>(options), new Mock<ICustomLeaderboardSubmissionLogger>().Object);
 
 		byte[] spawnsetFileContents = File.ReadAllBytes(Path.Combine(spawnsetsPath, "V3"));
 		if (SpawnsetBinary.TryParse(spawnsetFileContents, out SpawnsetBinary? spawnsetBinary))

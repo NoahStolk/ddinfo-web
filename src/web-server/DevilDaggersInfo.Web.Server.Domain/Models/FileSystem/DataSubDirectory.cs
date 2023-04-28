@@ -7,7 +7,6 @@ public enum DataSubDirectory
 	ModArchiveCache,
 	Mods,
 	ModScreenshots,
-	Spawnsets,
 	Tools,
 	AssetInfo,
 	CustomEntryReplays,

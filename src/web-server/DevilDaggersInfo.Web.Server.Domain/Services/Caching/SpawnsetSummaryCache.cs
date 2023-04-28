@@ -1,22 +1,33 @@
 using DevilDaggersInfo.Core.Spawnset.Summary;
+using DevilDaggersInfo.Web.Server.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Concurrent;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 
 public class SpawnsetSummaryCache
 {
-	private readonly ConcurrentDictionary<string, SpawnsetSummary> _cache = new();
+	private readonly ApplicationDbContext _dbContext;
+	private readonly ConcurrentDictionary<int, SpawnsetSummary> _cache = new();
 
-	public SpawnsetSummary GetSpawnsetSummaryByFilePath(string filePath)
+	public SpawnsetSummaryCache(ApplicationDbContext dbContext)
 	{
-		string name = Path.GetFileNameWithoutExtension(filePath);
-		if (_cache.TryGetValue(name, out SpawnsetSummary? summary))
+		_dbContext = dbContext;
+	}
+
+	public SpawnsetSummary GetSpawnsetSummaryById(int spawnsetId)
+	{
+		if (_cache.TryGetValue(spawnsetId, out SpawnsetSummary? summary))
 			return summary;
 
-		if (!SpawnsetSummary.TryParse(File.ReadAllBytes(filePath), out SpawnsetSummary? spawnsetSummary))
-			throw new($"Failed to get spawnset summary from spawnset file: '{name}'.");
+		var spawnset = _dbContext.Spawnsets.AsNoTracking().Select(s => new { s.Id, s.Name, s.File }).FirstOrDefault(s => s.Id == spawnsetId);
+		if (spawnset == null)
+			throw new($"Spawnset with ID '{spawnsetId}' not found.");
 
-		_cache.TryAdd(name, spawnsetSummary);
+		if (!SpawnsetSummary.TryParse(spawnset.File, out SpawnsetSummary? spawnsetSummary))
+			throw new($"Failed to get spawnset summary from spawnset '{spawnset.Name}'.");
+
+		_cache.TryAdd(spawnsetId, spawnsetSummary);
 		return spawnsetSummary;
 	}
 

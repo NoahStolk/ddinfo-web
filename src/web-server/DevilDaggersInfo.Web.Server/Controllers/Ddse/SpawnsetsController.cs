@@ -16,13 +16,11 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Ddse;
 public class SpawnsetsController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
-	private readonly IFileSystemService _fileSystemService;
 	private readonly SpawnsetSummaryCache _spawnsetSummaryCache;
 
-	public SpawnsetsController(ApplicationDbContext dbContext, IFileSystemService fileSystemService, SpawnsetSummaryCache spawnsetSummaryCache)
+	public SpawnsetsController(ApplicationDbContext dbContext, SpawnsetSummaryCache spawnsetSummaryCache)
 	{
 		_dbContext = dbContext;
-		_fileSystemService = fileSystemService;
 		_spawnsetSummaryCache = spawnsetSummaryCache;
 	}
 
@@ -48,10 +46,9 @@ public class SpawnsetsController : ControllerBase
 			.ToList();
 
 		return query
-			.Where(s => IoFile.Exists(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), s.Name)))
 			.Select(s =>
 			{
-				SpawnsetSummary spawnsetSummary = _spawnsetSummaryCache.GetSpawnsetSummaryByFilePath(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), s.Name));
+				SpawnsetSummary spawnsetSummary = _spawnsetSummaryCache.GetSpawnsetSummaryById(s.Id);
 				return s.ToDdseApi(spawnsetSummary, spawnsetsWithCustomLeaderboardIds.Contains(s.Id));
 			})
 			.ToList();

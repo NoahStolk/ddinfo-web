@@ -1,8 +1,10 @@
 using DevilDaggersInfo.Common.Utils;
 using DevilDaggersInfo.Core.Spawnset;
+using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Models.Spawnsets;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Collections.Concurrent;
 using System.Security.Cryptography;
@@ -13,13 +15,11 @@ public class SpawnsetHashCache
 {
 	private readonly ConcurrentBag<SpawnsetHashCacheData> _cache = new();
 
-	private readonly IFileSystemService _fileSystemService;
-	private readonly ILogger<SpawnsetHashCache> _logger;
+	private readonly ApplicationDbContext _dbContext;
 
-	public SpawnsetHashCache(IFileSystemService fileSystemService, ILogger<SpawnsetHashCache> logger)
+	public SpawnsetHashCache(ApplicationDbContext dbContext)
 	{
-		_fileSystemService = fileSystemService;
-		_logger = logger;
+		_dbContext = dbContext;
 	}
 
 	public async Task<SpawnsetHashCacheData?> GetSpawnsetAsync(byte[] hash)
@@ -28,27 +28,22 @@ public class SpawnsetHashCache
 		if (spawnsetCacheData != null)
 			return spawnsetCacheData;
 
-		foreach (string spawnsetPath in Directory.GetFiles(_fileSystemService.GetPath(DataSubDirectory.Spawnsets)))
-		{
-			byte[] spawnsetBytes = await File.ReadAllBytesAsync(spawnsetPath);
-			if (!SpawnsetBinary.TryParse(spawnsetBytes, out _))
-			{
-				_logger.LogError("Could not parse file at `{path}` to a spawnset. Skipping file for cache.", spawnsetPath);
-				continue;
-			}
+		var spawnsetEntities = await _dbContext.Spawnsets
+			.Select(s => new { s.Md5Hash, s.Name })
+			.ToListAsync();
 
-			byte[] spawnsetHash = MD5.HashData(spawnsetBytes);
-			string spawnsetName = Path.GetFileName(spawnsetPath);
+		foreach (var spawnsetEntity in spawnsetEntities)
+		{
 			spawnsetCacheData = new()
 			{
-				Hash = spawnsetHash,
-				Name = spawnsetName,
+				Hash = spawnsetEntity.Md5Hash,
+				Name = spawnsetEntity.Name,
 			};
 
-			if (_cache.All(scd => scd.Name != spawnsetName))
+			if (_cache.All(scd => scd.Name != spawnsetEntity.Name))
 				_cache.Add(spawnsetCacheData);
 
-			if (ArrayUtils.AreEqual(spawnsetHash, hash))
+			if (ArrayUtils.AreEqual(spawnsetEntity.Md5Hash, hash))
 				return spawnsetCacheData;
 		}
 

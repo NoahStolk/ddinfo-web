@@ -61,7 +61,6 @@ public class CustomEntriesController : ControllerBase
 			.AsNoTracking()
 			.Include(ce => ce.Player)
 			.Include(ce => ce.CustomLeaderboard)
-				.ThenInclude(cl => cl!.Spawnset)
 			.FirstOrDefault(cl => cl.Id == id);
 		if (customEntry == null)
 			return NotFound();
@@ -71,7 +70,7 @@ public class CustomEntriesController : ControllerBase
 			.FirstOrDefault(ced => ced.CustomEntryId == id);
 
 		// ! Navigation property.
-		SpawnsetSummary ss = _spawnsetSummaryCache.GetSpawnsetSummaryByFilePath(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), customEntry.CustomLeaderboard!.Spawnset!.Name));
-		return customEntry.ToMainApi(customEntryData, ss.EffectivePlayerSettings.HandLevel, IoFile.Exists(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{id}.ddreplay")));
+		SpawnsetSummary summary = _spawnsetSummaryCache.GetSpawnsetSummaryById(customEntry.CustomLeaderboard!.SpawnsetId);
+		return customEntry.ToMainApi(customEntryData, summary.EffectivePlayerSettings.HandLevel, IoFile.Exists(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{id}.ddreplay")));
 	}
 }

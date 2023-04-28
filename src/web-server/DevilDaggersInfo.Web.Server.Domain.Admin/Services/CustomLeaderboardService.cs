@@ -9,7 +9,6 @@ using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Extensions;
-using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.CompilerServices;
@@ -451,19 +450,15 @@ public class CustomLeaderboardService
 			}
 		}
 
-		var spawnset = _dbContext.Spawnsets
+		var spawnset = await _dbContext.Spawnsets
 			.AsNoTracking()
-			.Select(sf => new { sf.Id, sf.Name })
-			.FirstOrDefault(sf => sf.Id == spawnsetId);
+			.Select(sf => new { sf.Id, sf.Name, sf.File })
+			.FirstOrDefaultAsync(sf => sf.Id == spawnsetId);
 		if (spawnset == null)
 			throw new CustomLeaderboardValidationException($"Spawnset with ID '{spawnsetId}' does not exist.");
 
-		string spawnsetFilePath = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), spawnset.Name);
-		if (!File.Exists(spawnsetFilePath))
-			throw new InvalidOperationException($"Spawnset file '{spawnset.Name}' does not exist. Spawnset with ID '{spawnsetId}' does not have a file which should never happen.");
-
-		if (!SpawnsetBinary.TryParse(await File.ReadAllBytesAsync(spawnsetFilePath), out SpawnsetBinary? spawnsetBinary))
-			throw new InvalidOperationException($"Could not parse survival file '{spawnset.Name}'. Please review the file. Also review how this file ended up in the 'spawnsets' directory, as it should not be possible to upload non-survival files from the Admin API.");
+		if (!SpawnsetBinary.TryParse(spawnset.File, out SpawnsetBinary? spawnsetBinary))
+			throw new InvalidOperationException($"Could not parse survival file '{spawnset.Name}'. Please review the file. Also review how this file ended up in the database, as it should not be possible to upload non-survival files from the Admin API.");
 
 		GameMode requiredGameMode = category.RequiredGameModeForCategory();
 		if (spawnsetBinary.GameMode != requiredGameMode)
