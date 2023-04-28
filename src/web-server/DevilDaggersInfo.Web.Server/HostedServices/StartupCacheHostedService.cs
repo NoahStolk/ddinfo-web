@@ -46,7 +46,6 @@ public class StartupCacheHostedService : IHostedService
 
 		// Initiate dynamic caches.
 
-		// SpawnsetHashCache does not need to be initiated as it is fast enough.
 		// SpawnsetSummaryCache does not need to be initiated as it is fast enough.
 
 		// LeaderboardHistoryCache will be initiated here.
