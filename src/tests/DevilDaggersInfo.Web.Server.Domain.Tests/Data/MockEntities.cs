@@ -7,7 +7,20 @@ public class MockEntities
 {
 	public MockEntities()
 	{
-		Spawnset.Player = TestPlayer1;
+		byte[] v3 = File.ReadAllBytes(Path.Combine("Resources", "Spawnsets", "V3"));
+		Spawnset = new()
+		{
+			Id = 1,
+			LastUpdated = DateTime.UtcNow,
+			Name = "V3",
+			PlayerId = 1,
+			HtmlDescription = string.Empty,
+			MaxDisplayWaves = 5,
+			File = v3,
+			Md5Hash = MD5.HashData(v3),
+			Player = TestPlayer1,
+		};
+
 		CustomLeaderboard.Spawnset = Spawnset;
 		CustomEntry.CustomLeaderboard = CustomLeaderboard;
 		CustomEntry.Player = TestPlayer1;
@@ -97,15 +110,7 @@ public class MockEntities
 		PlayerName = "TestPlayer2",
 	};
 
-	public SpawnsetEntity Spawnset { get; } = new()
-	{
-		Id = 1,
-		LastUpdated = DateTime.UtcNow,
-		Name = "V3",
-		PlayerId = 1,
-		HtmlDescription = string.Empty,
-		MaxDisplayWaves = 5,
-	};
+	public SpawnsetEntity Spawnset { get; }
 
 	public CustomLeaderboardEntity CustomLeaderboard { get; } = new()
 	{

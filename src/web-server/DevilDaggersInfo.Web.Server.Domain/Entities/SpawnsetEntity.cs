@@ -22,4 +22,10 @@ public class SpawnsetEntity : IAuditable
 	public DateTime LastUpdated { get; init; }
 
 	public bool IsPractice { get; set; }
+
+	[MaxLength(70 * 1024)]
+	public required byte[] File { get; set; } // TODO: Use init after migration.
+
+	[MaxLength(16)]
+	public required byte[] Md5Hash { get; set; } // TODO: Use init after migration.
 }

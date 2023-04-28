@@ -9,8 +9,8 @@
   </ItemGroup>
 
 <!--  <ItemGroup Label="Temporary dependencies required for efcore migrations to work">-->
-<!--    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.9" />-->
-<!--    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.2" />-->
+<!--    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" />-->
+<!--    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" />-->
 <!--  </ItemGroup>-->
 
   <ItemGroup>

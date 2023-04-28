@@ -1,6 +1,5 @@
 using DevilDaggersInfo.Api.Main.Donations;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
-using DevilDaggersInfo.Web.Server.Domain.Main.Converters;
 using DevilDaggersInfo.Web.Server.Domain.Main.Converters.DomainToApi;
 using Microsoft.EntityFrameworkCore;
 

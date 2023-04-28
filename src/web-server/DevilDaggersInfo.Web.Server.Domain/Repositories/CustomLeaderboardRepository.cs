@@ -8,8 +8,6 @@ using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Extensions;
 using DevilDaggersInfo.Web.Server.Domain.Models;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
-using DevilDaggersInfo.Web.Server.Domain.Models.Spawnsets;
-using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 using DevilDaggersInfo.Web.Server.Domain.Utils;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.CodeAnalysis;
@@ -20,13 +18,11 @@ public class CustomLeaderboardRepository
 {
 	private readonly ApplicationDbContext _dbContext;
 	private readonly CustomEntryRepository _customEntryRepository;
-	private readonly SpawnsetHashCache _spawnsetHashCache;
 
-	public CustomLeaderboardRepository(ApplicationDbContext dbContext, CustomEntryRepository customEntryRepository, SpawnsetHashCache spawnsetHashCache)
+	public CustomLeaderboardRepository(ApplicationDbContext dbContext, CustomEntryRepository customEntryRepository)
 	{
 		_dbContext = dbContext;
 		_customEntryRepository = customEntryRepository;
-		_spawnsetHashCache = spawnsetHashCache;
 	}
 
 	public async Task<Page<CustomLeaderboardOverview>> GetCustomLeaderboardOverviewsAsync(
@@ -313,13 +309,7 @@ public class CustomLeaderboardRepository
 
 	public async Task<int> GetCustomLeaderboardIdBySpawnsetHashAsync(byte[] hash)
 	{
-		SpawnsetHashCacheData? data = await _spawnsetHashCache.GetSpawnsetAsync(hash);
-		if (data == null)
-			throw new NotFoundException();
-
-		var spawnset = await _dbContext.Spawnsets
-			.Select(s => new { s.Id, s.Name })
-			.FirstOrDefaultAsync(s => s.Name == data.Name);
+		var spawnset = await _dbContext.Spawnsets.Select(s => new { s.Id, s.Md5Hash }).FirstOrDefaultAsync(s => s.Md5Hash == hash);
 		if (spawnset == null)
 			throw new NotFoundException();
 

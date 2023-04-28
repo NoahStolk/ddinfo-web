@@ -1,22 +1,35 @@
 using DevilDaggersInfo.Core.Spawnset.Summary;
+using DevilDaggersInfo.Web.Server.Domain.Entities;
+using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Concurrent;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 
 public class SpawnsetSummaryCache
 {
-	private readonly ConcurrentDictionary<string, SpawnsetSummary> _cache = new();
+	private readonly IServiceScopeFactory _serviceScopeFactory;
+	private readonly ConcurrentDictionary<int, SpawnsetSummary> _cache = new();
 
-	public SpawnsetSummary GetSpawnsetSummaryByFilePath(string filePath)
+	public SpawnsetSummaryCache(IServiceScopeFactory serviceScopeFactory)
 	{
-		string name = Path.GetFileNameWithoutExtension(filePath);
-		if (_cache.TryGetValue(name, out SpawnsetSummary? summary))
+		_serviceScopeFactory = serviceScopeFactory;
+	}
+
+	public SpawnsetSummary GetSpawnsetSummaryById(int spawnsetId)
+	{
+		if (_cache.TryGetValue(spawnsetId, out SpawnsetSummary? summary))
 			return summary;
 
-		if (!SpawnsetSummary.TryParse(File.ReadAllBytes(filePath), out SpawnsetSummary? spawnsetSummary))
-			throw new($"Failed to get spawnset summary from spawnset file: '{name}'.");
+		using IServiceScope scope = _serviceScopeFactory.CreateScope();
+		using ApplicationDbContext dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+		var spawnset = dbContext.Spawnsets.Select(s => new { s.Id, s.Name, s.File }).FirstOrDefault(s => s.Id == spawnsetId);
+		if (spawnset == null)
+			throw new($"Spawnset with ID '{spawnsetId}' not found.");
 
-		_cache.TryAdd(name, spawnsetSummary);
+		if (!SpawnsetSummary.TryParse(spawnset.File, out SpawnsetSummary? spawnsetSummary))
+			throw new($"Failed to get spawnset summary from spawnset '{spawnset.Name}'.");
+
+		_cache.TryAdd(spawnsetId, spawnsetSummary);
 		return spawnsetSummary;
 	}
 

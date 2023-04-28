@@ -6,15 +6,11 @@ using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Web.Client;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
-using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
-using DevilDaggersInfo.Web.Server.Domain.Models.Spawnsets;
 using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
-using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.Net.Mime;
-using System.Security.Cryptography;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 
@@ -23,17 +19,13 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 public class SpawnsetsController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
-	private readonly IFileSystemService _fileSystemService;
 	private readonly SpawnsetSummaryCache _spawnsetSummaryCache;
-	private readonly SpawnsetHashCache _spawnsetHashCache;
 	private readonly ILogger<SpawnsetsController> _logger;
 
-	public SpawnsetsController(ApplicationDbContext dbContext, IFileSystemService fileSystemService, SpawnsetSummaryCache spawnsetSummaryCache, SpawnsetHashCache spawnsetHashCache, ILogger<SpawnsetsController> logger)
+	public SpawnsetsController(ApplicationDbContext dbContext, SpawnsetSummaryCache spawnsetSummaryCache, ILogger<SpawnsetsController> logger)
 	{
 		_dbContext = dbContext;
-		_fileSystemService = fileSystemService;
 		_spawnsetSummaryCache = spawnsetSummaryCache;
-		_spawnsetHashCache = spawnsetHashCache;
 		_logger = logger;
 	}
 
@@ -76,20 +68,7 @@ public class SpawnsetsController : ControllerBase
 		}
 
 		List<SpawnsetEntity> spawnsets = spawnsetsQuery.ToList();
-
-		Dictionary<int, SpawnsetSummary> summaries = new();
-		foreach (string filePath in _fileSystemService.TryGetFiles(DataSubDirectory.Spawnsets))
-		{
-			string name = Path.GetFileNameWithoutExtension(filePath);
-			SpawnsetEntity? spawnset = spawnsets.Find(s => s.Name == name);
-			if (spawnset == null)
-				continue;
-
-			summaries[spawnset.Id] = _spawnsetSummaryCache.GetSpawnsetSummaryByFilePath(filePath);
-		}
-
-		// In case a spawnset doesn't have a summary; remove it.
-		spawnsets = spawnsets.Where(s => summaries.ContainsKey(s.Id)).ToList();
+		Dictionary<int, SpawnsetSummary> summaries = spawnsets.ToDictionary(s => s.Id, s => _spawnsetSummaryCache.GetSpawnsetSummaryById(s.Id));
 
 		// ! Navigation property.
 		spawnsets = (sortBy switch
@@ -126,19 +105,20 @@ public class SpawnsetsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult<GetSpawnsetByHash>> GetSpawnsetByHash([FromQuery] byte[] hash)
 	{
-		SpawnsetHashCacheData? data = await _spawnsetHashCache.GetSpawnsetAsync(hash);
-		if (data == null)
-			return NotFound();
-
-		SpawnsetEntity? spawnset = _dbContext.Spawnsets
+		// ! Navigation property.
+		var spawnset = await _dbContext.Spawnsets
 			.AsNoTracking()
 			.Include(s => s.Player)
-			.FirstOrDefault(s => s.Name == data.Name);
+			.Select(s => new
+			{
+				s.Md5Hash,
+				s.Player!.PlayerName,
+				s.Id,
+				s.Name,
+			})
+			.FirstOrDefaultAsync(s => s.Md5Hash == hash);
 		if (spawnset == null)
-		{
-			_logger.LogWarning("Spawnset {name} was found in hash cache but not in database.", data.Name);
 			return NotFound();
-		}
 
 		CustomLeaderboardEntity? customLeaderboard = _dbContext.CustomLeaderboards
 			.AsNoTracking()
@@ -150,10 +130,9 @@ public class SpawnsetsController : ControllerBase
 			.Where(ce => ce.CustomLeaderboardId == customLeaderboard.Id)
 			.ToList();
 
-		// ! Navigation property.
 		return new GetSpawnsetByHash
 		{
-			AuthorName = spawnset.Player!.PlayerName,
+			AuthorName = spawnset.PlayerName,
 			CustomLeaderboard = customLeaderboard == null ? null : new GetSpawnsetByHashCustomLeaderboard
 			{
 				CustomLeaderboardId = customLeaderboard.Id,
@@ -174,12 +153,11 @@ public class SpawnsetsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult<byte[]>> GetSpawnsetHash([Required] string fileName)
 	{
-		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), fileName);
-		if (!IoFile.Exists(path))
+		var spawnset = await _dbContext.Spawnsets.AsNoTracking().Select(s => new { s.Name, s.Md5Hash }).FirstOrDefaultAsync(s => s.Name == fileName);
+		if (spawnset == null)
 			return NotFound();
 
-		byte[] spawnsetBytes = await IoFile.ReadAllBytesAsync(path);
-		return MD5.HashData(spawnsetBytes);
+		return spawnset.Md5Hash;
 	}
 
 	[HttpGet("total-data")]
@@ -199,11 +177,11 @@ public class SpawnsetsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult> GetSpawnsetFile([Required] string fileName)
 	{
-		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), fileName);
-		if (!IoFile.Exists(path))
+		var spawnset = await _dbContext.Spawnsets.AsNoTracking().Select(s => new { s.Name, s.File }).FirstOrDefaultAsync(s => s.Name == fileName);
+		if (spawnset == null)
 			return NotFound();
 
-		return File(await IoFile.ReadAllBytesAsync(path), MediaTypeNames.Application.Octet, fileName);
+		return File(spawnset.File, MediaTypeNames.Application.Octet, fileName);
 	}
 
 	[HttpGet("{id}")]
@@ -212,23 +190,19 @@ public class SpawnsetsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult<GetSpawnset>> GetSpawnsetById([Required] int id)
 	{
-		SpawnsetEntity? spawnsetEntity = _dbContext.Spawnsets
+		SpawnsetEntity? spawnsetEntity = await _dbContext.Spawnsets
 			.AsNoTracking()
 			.Include(s => s.Player)
-			.FirstOrDefault(s => s.Id == id);
+			.FirstOrDefaultAsync(s => s.Id == id);
 		if (spawnsetEntity == null)
 			return NotFound();
 
-		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), spawnsetEntity.Name);
-		if (!IoFile.Exists(path))
-			return NotFound();
-
-		var customLeaderboard = _dbContext.CustomLeaderboards
+		var customLeaderboard = await _dbContext.CustomLeaderboards
 			.AsNoTracking()
 			.Select(cl => new { cl.Id, cl.SpawnsetId })
-			.FirstOrDefault(cl => cl.SpawnsetId == spawnsetEntity.Id);
+			.FirstOrDefaultAsync(cl => cl.SpawnsetId == spawnsetEntity.Id);
 
-		return spawnsetEntity.ToMainApi(customLeaderboard?.Id, await IoFile.ReadAllBytesAsync(path));
+		return spawnsetEntity.ToMainApi(customLeaderboard?.Id, spawnsetEntity.File);
 	}
 
 	[HttpGet("default")]
@@ -236,21 +210,22 @@ public class SpawnsetsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult<byte[]>> GetDefaultSpawnset(GameVersion gameVersion)
 	{
-		string fileName = gameVersion switch
+		string name = gameVersion switch
 		{
 			GameVersion.V1_0 => "V1",
 			GameVersion.V2_0 => "V2",
 			_ => "V3",
 		};
 
-		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), fileName);
-		if (!IoFile.Exists(path))
-		{
-			_logger.LogError("Default spawnset {name} does not exist in the file system.", fileName);
-			return NotFound();
-		}
+		var spawnsetEntity = await _dbContext.Spawnsets
+			.AsNoTracking()
+			.Select(s => new { s.Name, s.File })
+			.FirstOrDefaultAsync(s => s.Name == name);
+		if (spawnsetEntity != null)
+			return spawnsetEntity.File;
 
-		return await IoFile.ReadAllBytesAsync(path);
+		_logger.LogError("Default spawnset {name} does not exist in the file system.", name);
+		return NotFound();
 	}
 
 	[HttpGet("by-author")]

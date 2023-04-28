@@ -5,7 +5,6 @@ using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Services;
-using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 using DevilDaggersInfo.Web.Server.Domain.Tests.Data;
 using DevilDaggersInfo.Web.Server.Domain.Tests.Extensions;
@@ -26,6 +25,13 @@ public class CustomEntryProcessorTests
 
 	public CustomEntryProcessorTests()
 	{
+		string spawnsetsPath = Path.Combine("Resources", "Spawnsets");
+		byte[] spawnsetFileContents = File.ReadAllBytes(Path.Combine(spawnsetsPath, "V3"));
+		if (SpawnsetBinary.TryParse(spawnsetFileContents, out SpawnsetBinary? spawnsetBinary))
+			_v3Hash = MD5.HashData(spawnsetBinary.ToBytes());
+		else
+			Assert.Fail("Spawnset could not be parsed.");
+
 		MockEntities mockEntities = new();
 
 		DbContextOptionsBuilder<ApplicationDbContext> optionsBuilder = new();
@@ -37,20 +43,14 @@ public class CustomEntryProcessorTests
 			.SetUpDbSet(db => db.CustomEntries, mockEntities.MockDbSetCustomEntries)
 			.SetUpDbSet(db => db.CustomEntryData, mockEntities.MockDbSetCustomEntryData);
 
-		string spawnsetsPath = Path.Combine("Resources", "Spawnsets");
-		string replaysPath = Path.Combine("Resources", "Replays");
-
 		Mock<IFileSystemService> fileSystemService = new();
-		fileSystemService.Setup(m => m.GetPath(DataSubDirectory.Spawnsets)).Returns(spawnsetsPath);
+		string replaysPath = Path.Combine("Resources", "Replays");
 		fileSystemService.Setup(m => m.GetPath(DataSubDirectory.CustomEntryReplays)).Returns(replaysPath);
-
 		Directory.CreateDirectory(replaysPath);
 
-		Mock<ILogger<SpawnsetHashCache>> spawnsetHashCacheLogger = new();
-		Mock<SpawnsetHashCache> spawnsetHashCache = new(fileSystemService.Object, spawnsetHashCacheLogger.Object);
 		Mock<ILogger<CustomEntryProcessor>> customEntryProcessorLogger = new();
 
-		const string secret = "secretsecretsecr";
+		const string secret = "0123456789abcdef";
 		_encryptionWrapper = new(secret, secret, secret);
 
 		CustomLeaderboardsOptions options = new()
@@ -60,14 +60,10 @@ public class CustomEntryProcessorTests
 			Salt = secret,
 		};
 
-		_customEntryProcessor = new(_dbContext.Object, customEntryProcessorLogger.Object, spawnsetHashCache.Object, fileSystemService.Object, new OptionsWrapper<CustomLeaderboardsOptions>(options), new Mock<ICustomLeaderboardSubmissionLogger>().Object);
-
-		byte[] spawnsetFileContents = File.ReadAllBytes(Path.Combine(spawnsetsPath, "V3"));
-		if (SpawnsetBinary.TryParse(spawnsetFileContents, out SpawnsetBinary? spawnsetBinary))
-			_v3Hash = MD5.HashData(spawnsetBinary.ToBytes());
-		else
-			Assert.Fail("Spawnset could not be parsed.");
-
+		_customEntryProcessor = new(_dbContext.Object, customEntryProcessorLogger.Object, fileSystemService.Object, new OptionsWrapper<CustomLeaderboardsOptions>(options), new Mock<ICustomLeaderboardSubmissionLogger>().Object)
+		{
+			IsUnitTest = true,
+		};
 		_mockReplay = BuildMockReplay(spawnsetFileContents);
 	}
 

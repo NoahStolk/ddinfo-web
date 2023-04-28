@@ -18,7 +18,6 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using System.Diagnostics;
 using System.Globalization;
 using System.Text;
 
@@ -118,7 +117,6 @@ builder.Services.AddSingleton<ILeaderboardHistoryCache, LeaderboardHistoryCache>
 builder.Services.AddSingleton<LeaderboardStatisticsCache>();
 builder.Services.AddSingleton<ModArchiveCache>();
 builder.Services.AddSingleton<SpawnsetSummaryCache>();
-builder.Services.AddSingleton<SpawnsetHashCache>();
 
 // HTTP services
 builder.Services.AddHttpClient<ClubberClient>();
@@ -254,15 +252,11 @@ if (!app.Environment.IsDevelopment())
 #if ROLES
 	CreateRolesIfNotExist(serviceProvider);
 #endif
-	Stopwatch sw = Stopwatch.StartNew();
-
 	StringBuilder sb = new();
 	sb.Append("> **Application is now online in the `").Append(app.Environment.EnvironmentName).AppendLine("` environment.**");
 
 	ILogContainerService lcs = app.Services.GetRequiredService<ILogContainerService>();
 	lcs.AddLog($"{DateTime.UtcNow:HH:mm:ss.fff}: Starting...\n{sb}");
-
-	sw.Stop();
 }
 
 app.Run();
