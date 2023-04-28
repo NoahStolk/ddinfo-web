@@ -116,7 +116,7 @@ public class SpawnsetsController : ControllerBase
 
 		return new Page<GetSpawnsetOverview>
 		{
-			Results = spawnsets.ConvertAll(s => s.ToGetSpawnsetOverview(summaries[s.Id])),
+			Results = spawnsets.ConvertAll(s => s.ToMainApi(summaries[s.Id])),
 			TotalResults = totalSpawnsets,
 		};
 	}
@@ -228,7 +228,7 @@ public class SpawnsetsController : ControllerBase
 			.Select(cl => new { cl.Id, cl.SpawnsetId })
 			.FirstOrDefault(cl => cl.SpawnsetId == spawnsetEntity.Id);
 
-		return spawnsetEntity.ToGetSpawnset(customLeaderboard?.Id, await IoFile.ReadAllBytesAsync(path));
+		return spawnsetEntity.ToMainApi(customLeaderboard?.Id, await IoFile.ReadAllBytesAsync(path));
 	}
 
 	[HttpGet("default")]

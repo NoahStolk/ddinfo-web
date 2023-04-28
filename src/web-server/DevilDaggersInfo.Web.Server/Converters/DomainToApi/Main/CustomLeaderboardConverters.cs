@@ -13,12 +13,12 @@ namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 
 public static class CustomLeaderboardConverters
 {
-	public static MainApi.GetCustomLeaderboardOverview ToGetCustomLeaderboardOverview(this CustomLeaderboardOverview customLeaderboard) => new()
+	public static MainApi.GetCustomLeaderboardOverview ToMainApi(this CustomLeaderboardOverview customLeaderboard) => new()
 	{
 		Id = customLeaderboard.Id,
 		SpawnsetAuthorName = customLeaderboard.SpawnsetAuthorName,
 		SpawnsetName = customLeaderboard.SpawnsetName,
-		Daggers = customLeaderboard.Daggers?.ToGetCustomLeaderboardDaggers(),
+		Daggers = customLeaderboard.Daggers?.ToMainApi(),
 		IsFeatured = customLeaderboard.Daggers != null,
 		DateCreated = customLeaderboard.DateCreated,
 		DateLastPlayed = customLeaderboard.DateLastPlayed,
@@ -29,23 +29,23 @@ public static class CustomLeaderboardConverters
 		WorldRecordDagger = customLeaderboard.WorldRecord?.Dagger?.ToMainApi(),
 	};
 
-	public static MainApi.GetCustomLeaderboard ToGetCustomLeaderboard(this SortedCustomLeaderboard customLeaderboard) => new()
+	public static MainApi.GetCustomLeaderboard ToMainApi(this SortedCustomLeaderboard customLeaderboard) => new()
 	{
 		SpawnsetId = customLeaderboard.SpawnsetId,
 		SpawnsetAuthorName = customLeaderboard.SpawnsetAuthorName,
 		SpawnsetHtmlDescription = customLeaderboard.SpawnsetHtmlDescription,
 		SpawnsetName = customLeaderboard.SpawnsetName,
-		Daggers = customLeaderboard.Daggers?.ToGetCustomLeaderboardDaggers(),
+		Daggers = customLeaderboard.Daggers?.ToMainApi(),
 		DateCreated = customLeaderboard.DateCreated,
 		SubmitCount = customLeaderboard.TotalRunsSubmitted,
 		Category = customLeaderboard.Category.ToMainApi(),
 		IsFeatured = customLeaderboard.Daggers != null,
 		DateLastPlayed = customLeaderboard.DateLastPlayed,
-		CustomEntries = customLeaderboard.CustomEntries.ConvertAll(ce => ce.ToGetCustomEntry(customLeaderboard.Category)),
-		Criteria = customLeaderboard.Criteria.ConvertAll(clc => clc.ToGetCustomLeaderboardCriteria()),
+		CustomEntries = customLeaderboard.CustomEntries.ConvertAll(ce => ce.ToMainApi(customLeaderboard.Category)),
+		Criteria = customLeaderboard.Criteria.ConvertAll(clc => clc.ToMainApi()),
 	};
 
-	private static MainApi.GetCustomEntry ToGetCustomEntry(this CustomEntry customEntry, CustomLeaderboardCategory category) => new()
+	private static MainApi.GetCustomEntry ToMainApi(this CustomEntry customEntry, CustomLeaderboardCategory category) => new()
 	{
 		Id = customEntry.Id,
 		Rank = customEntry.Rank,
@@ -73,7 +73,7 @@ public static class CustomLeaderboardConverters
 		HasGraphs = customEntry.HasGraphs,
 	};
 
-	private static MainApi.GetCustomLeaderboardDaggers ToGetCustomLeaderboardDaggers(this CustomLeaderboardDaggers customLeaderboard) => new()
+	private static MainApi.GetCustomLeaderboardDaggers ToMainApi(this CustomLeaderboardDaggers customLeaderboard) => new()
 	{
 		Bronze = customLeaderboard.Bronze.ToSecondsTime(),
 		Silver = customLeaderboard.Silver.ToSecondsTime(),
@@ -82,7 +82,7 @@ public static class CustomLeaderboardConverters
 		Leviathan = customLeaderboard.Leviathan.ToSecondsTime(),
 	};
 
-	private static MainApi.GetCustomLeaderboardCriteria ToGetCustomLeaderboardCriteria(this CustomLeaderboardCriteria criteria) => new()
+	private static MainApi.GetCustomLeaderboardCriteria ToMainApi(this CustomLeaderboardCriteria criteria) => new()
 	{
 		Type = criteria.Type.ToMainApi(),
 		Operator = criteria.Operator.ToMainApi(),
@@ -184,7 +184,7 @@ public static class CustomLeaderboardConverters
 	};
 
 	// TODO: Use domain models?
-	public static MainApi.GetCustomEntryData ToGetCustomEntryData(this CustomEntryEntity customEntry, CustomEntryDataEntity? customEntryData, HandLevel startingLevel, bool hasReplay)
+	public static MainApi.GetCustomEntryData ToMainApi(this CustomEntryEntity customEntry, CustomEntryDataEntity? customEntryData, HandLevel startingLevel, bool hasReplay)
 	{
 		// ! Navigation property.
 		return new()

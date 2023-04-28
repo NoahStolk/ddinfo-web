@@ -38,7 +38,7 @@ public static class ToolConverters
 		FileSize = distribution.FileSize,
 	};
 
-	public static MainApi.ToolPublishMethod ToMainApi(this ToolPublishMethod publishMethod) => publishMethod switch
+	private static MainApi.ToolPublishMethod ToMainApi(this ToolPublishMethod publishMethod) => publishMethod switch
 	{
 		ToolPublishMethod.Default => MainApi.ToolPublishMethod.Default,
 		ToolPublishMethod.SelfContained => MainApi.ToolPublishMethod.SelfContained,
@@ -46,7 +46,7 @@ public static class ToolConverters
 		_ => throw new UnreachableException(),
 	};
 
-	public static MainApi.ToolBuildType ToMainApi(this ToolBuildType buildType) => buildType switch
+	private static MainApi.ToolBuildType ToMainApi(this ToolBuildType buildType) => buildType switch
 	{
 		ToolBuildType.WindowsWpf => MainApi.ToolBuildType.WindowsWpf,
 		ToolBuildType.WindowsConsole => MainApi.ToolBuildType.WindowsConsole,

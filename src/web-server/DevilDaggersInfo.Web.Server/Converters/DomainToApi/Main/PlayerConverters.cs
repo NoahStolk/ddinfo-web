@@ -6,7 +6,7 @@ namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 
 public static class PlayerConverters
 {
-	public static GetPlayerForLeaderboard ToGetPlayerForLeaderboard(this PlayerForLeaderboard player) => new()
+	public static GetPlayerForLeaderboard ToMainApi(this PlayerForLeaderboard player) => new()
 	{
 		BanDescription = player.BanDescription,
 		BanResponsibleId = player.BanResponsibleId,
@@ -15,24 +15,24 @@ public static class PlayerConverters
 		Id = player.Id,
 	};
 
-	public static GetPlayerForSettings ToGetPlayerForSettings(this PlayerForSettings player) => new()
+	public static GetPlayerForSettings ToMainApi(this PlayerForSettings player) => new()
 	{
 		CountryCode = player.CountryCode,
 		Id = player.Id,
-		Settings = player.Settings.ToGetPlayerSettings(),
+		Settings = player.Settings.ToMainApi(),
 	};
 
-	public static GetPlayer ToGetPlayer(this Player player) => new()
+	public static GetPlayer ToMainApi(this Player player) => new()
 	{
 		BanDescription = player.BanDescription,
 		CountryCode = player.CountryCode,
 		Id = player.Id,
 		IsBanned = player.IsBanned,
 		IsPublicDonor = player.IsPublicDonor,
-		Settings = player.Settings?.ToGetPlayerSettings(),
+		Settings = player.Settings?.ToMainApi(),
 	};
 
-	public static GetPlayerSettings ToGetPlayerSettings(this PlayerSettings settings) => new()
+	private static GetPlayerSettings ToMainApi(this PlayerSettings settings) => new()
 	{
 		Dpi = settings.Dpi,
 		Fov = settings.Fov,
@@ -57,7 +57,7 @@ public static class PlayerConverters
 		_ => throw new UnreachableException(),
 	};
 
-	public static VerticalSync ToMainApi(this Domain.Entities.Enums.VerticalSync verticalSync) => verticalSync switch
+	private static VerticalSync ToMainApi(this Domain.Entities.Enums.VerticalSync verticalSync) => verticalSync switch
 	{
 		Domain.Entities.Enums.VerticalSync.Unknown => VerticalSync.Unknown,
 		Domain.Entities.Enums.VerticalSync.Off => VerticalSync.Off,

@@ -11,58 +11,64 @@ namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 // TODO: Use domain models.
 public static class ModConverters
 {
-	// ! Navigation property.
-	public static MainApi.GetModOverview ToGetModOverview(this ModEntity mod, ModFileSystemData modFileSystemData) => new()
+	public static MainApi.GetModOverview ToMainApiOverview(this ModEntity mod, ModFileSystemData modFileSystemData)
 	{
-		Authors = mod.PlayerMods!.ConvertAll(pm => pm.Player!.PlayerName),
-		ContainsProhibitedAssets = modFileSystemData.ModArchive?.ContainsProhibitedAssets(),
-		Id = mod.Id,
-		IsHosted = modFileSystemData.ModArchive != null,
-		LastUpdated = mod.LastUpdated,
-		ModTypes = (modFileSystemData.ModArchive?.ModTypes() ?? mod.ModTypes).ToMainApi(),
-		Name = mod.Name,
-	};
+		if (mod.PlayerMods == null)
+			throw new InvalidOperationException("Player mods are not included.");
 
-	// ! Navigation property.
-	public static MainApi.GetMod ToGetMod(this ModEntity mod, ModFileSystemData modFileSystemData) => new()
-	{
-		Authors = mod.PlayerMods!.ConvertAll(pm => pm.Player!.PlayerName),
-		ContainsProhibitedAssets = modFileSystemData.ModArchive?.ContainsProhibitedAssets(),
-		HtmlDescription = mod.HtmlDescription,
-		IsHosted = modFileSystemData.ModArchive != null,
-		LastUpdated = mod.LastUpdated,
-		ModArchive = modFileSystemData.ModArchive == null ? null : new()
+		// ! Navigation property.
+		return new()
 		{
-			Binaries = modFileSystemData.ModArchive.Binaries.ConvertAll(b => new MainApi.GetModBinary
+			Authors = mod.PlayerMods.ConvertAll(pm => pm.Player!.PlayerName),
+			ContainsProhibitedAssets = modFileSystemData.ModArchive?.ContainsProhibitedAssets(),
+			Id = mod.Id,
+			IsHosted = modFileSystemData.ModArchive != null,
+			LastUpdated = mod.LastUpdated,
+			ModTypes = (modFileSystemData.ModArchive?.ModTypes() ?? mod.ModTypes).ToMainApi(),
+			Name = mod.Name,
+		};
+	}
+
+	public static MainApi.GetMod ToMainApi(this ModEntity mod, ModFileSystemData modFileSystemData)
+	{
+		if (mod.PlayerMods == null)
+			throw new InvalidOperationException("Player mods are not included.");
+
+		// ! Navigation property.
+		return new()
+		{
+			Authors = mod.PlayerMods.ConvertAll(pm => pm.Player!.PlayerName),
+			ContainsProhibitedAssets = modFileSystemData.ModArchive?.ContainsProhibitedAssets(),
+			HtmlDescription = mod.HtmlDescription,
+			IsHosted = modFileSystemData.ModArchive != null,
+			LastUpdated = mod.LastUpdated,
+			ModArchive = modFileSystemData.ModArchive == null ? null : new()
 			{
-				ModBinaryType = b.ModBinaryType.ToMainApi(),
-				Name = b.Name,
-				Size = b.Size,
-				Assets = b.Chunks.ConvertAll(c => new MainApi.GetModAsset
+				Binaries = modFileSystemData.ModArchive.Binaries.ConvertAll(b => new MainApi.GetModBinary
 				{
-					Name = c.Name,
-					Size = c.Size,
-					Type = c.AssetType.ToMainApi(),
-					IsProhibited = c.IsProhibited,
+					ModBinaryType = b.ModBinaryType.ToMainApi(),
+					Name = b.Name,
+					Size = b.Size,
+					Assets = b.Chunks.ConvertAll(c => new MainApi.GetModAsset
+					{
+						Name = c.Name, Size = c.Size, Type = c.AssetType.ToMainApi(), IsProhibited = c.IsProhibited,
+					}),
+					ContainsProhibitedAssets = b.ContainsProhibitedAssets(),
+					ModifiedLoudness = b.ModifiedLoudnessAssets?.ConvertAll(a => new MainApi.GetModifiedLoudness
+					{
+						AssetName = a.Name, IsProhibited = a.IsProhibited, DefaultLoudness = a.DefaultLoudness, ModifiedLoudness = a.ModifiedLoudness,
+					}),
 				}),
-				ContainsProhibitedAssets = b.ContainsProhibitedAssets(),
-				ModifiedLoudness = b.ModifiedLoudnessAssets?.ConvertAll(a => new MainApi.GetModifiedLoudness
-				{
-					AssetName = a.Name,
-					IsProhibited = a.IsProhibited,
-					DefaultLoudness = a.DefaultLoudness,
-					ModifiedLoudness = a.ModifiedLoudness,
-				}),
-			}),
-			FileSize = modFileSystemData.ModArchive.FileSize,
-			FileSizeExtracted = modFileSystemData.ModArchive.FileSizeExtracted,
-		},
-		ModTypes = (modFileSystemData.ModArchive?.ModTypes() ?? mod.ModTypes).ToMainApi(),
-		Name = mod.Name,
-		ScreenshotFileNames = modFileSystemData.ScreenshotFileNames,
-		TrailerUrl = mod.TrailerUrl,
-		Url = mod.Url,
-	};
+				FileSize = modFileSystemData.ModArchive.FileSize,
+				FileSizeExtracted = modFileSystemData.ModArchive.FileSizeExtracted,
+			},
+			ModTypes = (modFileSystemData.ModArchive?.ModTypes() ?? mod.ModTypes).ToMainApi(),
+			Name = mod.Name,
+			ScreenshotFileNames = modFileSystemData.ScreenshotFileNames,
+			TrailerUrl = mod.TrailerUrl,
+			Url = mod.Url,
+		};
+	}
 
 	private static MainApi.AssetType ToMainApi(this AssetType assetType) => assetType switch
 	{

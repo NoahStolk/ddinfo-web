@@ -51,7 +51,7 @@ public class SpawnsetsController : ControllerBase
 			.Select(cl => new { cl.Id, cl.SpawnsetId })
 			.FirstOrDefault(cl => cl.SpawnsetId == spawnsetEntity.Id);
 
-		return spawnsetEntity.ToGetSpawnset(customLeaderboard?.Id, await IoFile.ReadAllBytesAsync(path));
+		return spawnsetEntity.ToAppApi(customLeaderboard?.Id, await IoFile.ReadAllBytesAsync(path));
 	}
 
 	[HttpGet("{id}/buffer")]

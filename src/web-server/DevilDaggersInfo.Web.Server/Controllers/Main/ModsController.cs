@@ -72,7 +72,7 @@ public class ModsController : ControllerBase
 			data = data.Where(kvp => kvp.Value.ModArchive != null).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
 		List<GetModOverview> modApiModels = data
-			.Select(kvp => kvp.Key.ToGetModOverview(kvp.Value))
+			.Select(kvp => kvp.Key.ToMainApiOverview(kvp.Value))
 			.ToList();
 
 		modApiModels = (sortBy switch
@@ -117,7 +117,7 @@ public class ModsController : ControllerBase
 
 		ModFileSystemData data = await _modArchiveAccessor.GetModFileSystemDataAsync(modEntity.Name);
 
-		return modEntity.ToGetMod(data);
+		return modEntity.ToMainApi(data);
 	}
 
 	[HttpGet("total-data")]

@@ -38,7 +38,7 @@ public class PlayersController : ControllerBase
 	public async Task<ActionResult<List<GetPlayerForLeaderboard>>> GetPlayersForLeaderboard()
 	{
 		List<Domain.Models.Players.PlayerForLeaderboard> players = await _playerRepository.GetPlayersForLeaderboardAsync();
-		return players.ConvertAll(p => p.ToGetPlayerForLeaderboard());
+		return players.ConvertAll(p => p.ToMainApi());
 	}
 
 	[HttpGet("settings")]
@@ -46,7 +46,7 @@ public class PlayersController : ControllerBase
 	public async Task<ActionResult<List<GetPlayerForSettings>>> GetPlayersForSettings()
 	{
 		List<Domain.Models.Players.PlayerForSettings> players = await _playerRepository.GetPlayersForSettingsAsync();
-		return players.ConvertAll(p => p.ToGetPlayerForSettings());
+		return players.ConvertAll(p => p.ToMainApi());
 	}
 
 	// FORBIDDEN: Used by DDLIVE.
@@ -57,7 +57,7 @@ public class PlayersController : ControllerBase
 	public async Task<ActionResult<GetPlayer>> GetPlayerById([Required] int id)
 	{
 		Domain.Models.Players.Player player = await _playerRepository.GetPlayerAsync(id);
-		return player.ToGetPlayer();
+		return player.ToMainApi();
 	}
 
 	// FORBIDDEN: Used by DDLIVE.

@@ -37,7 +37,7 @@ public class LeaderboardStatisticsController : ControllerBase
 			PlayersWithLevel1 = _leaderboardStatisticsCache.PlayersWithLevel1,
 			PlayersWithLevel2 = _leaderboardStatisticsCache.PlayersWithLevel2,
 			PlayersWithLevel3Or4 = _leaderboardStatisticsCache.PlayersWithLevel3Or4,
-			GlobalStatistics = _leaderboardStatisticsCache.GlobalArrayStatistics.ToGetArrayStatistics(),
+			GlobalStatistics = _leaderboardStatisticsCache.GlobalArrayStatistics.ToMainApi(),
 		};
 	}
 }

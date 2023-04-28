@@ -27,6 +27,6 @@ public class LeaderboardHistoryController : ControllerBase
 	{
 		string historyPath = _fileSystemService.GetLeaderboardHistoryPathFromDate(dateTime);
 		LeaderboardHistory history = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(historyPath);
-		return history.ToDto();
+		return history.ToMainApi();
 	}
 }

@@ -34,7 +34,7 @@ public class CustomLeaderboardsController : ControllerBase
 			ascending: false,
 			selectedPlayerId: null,
 			onlyFeatured: false);
-		return cls.Results.ConvertAll(cl => cl.ToGetCustomLeaderboardOverviewDdLive());
+		return cls.Results.ConvertAll(cl => cl.ToDdLiveApi());
 	}
 
 	[HttpGet("{id}")]
@@ -43,6 +43,6 @@ public class CustomLeaderboardsController : ControllerBase
 	public async Task<ActionResult<GetCustomLeaderboardDdLive>> GetCustomLeaderboardByIdDdLive(int id)
 	{
 		SortedCustomLeaderboard cl = await _customLeaderboardRepository.GetSortedCustomLeaderboardByIdAsync(id);
-		return cl.ToGetCustomLeaderboardDdLive(_customEntryRepository.GetExistingCustomEntryReplayIds(cl.CustomEntries.ConvertAll(ce => ce.Id)));
+		return cl.ToDdLiveApi(_customEntryRepository.GetExistingCustomEntryReplayIds(cl.CustomEntries.ConvertAll(ce => ce.Id)));
 	}
 }

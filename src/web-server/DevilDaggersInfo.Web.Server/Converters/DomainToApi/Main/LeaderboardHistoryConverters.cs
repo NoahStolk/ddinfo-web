@@ -6,20 +6,20 @@ namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 
 public static class LeaderboardHistoryConverters
 {
-	public static GetLeaderboardHistory ToDto(this LeaderboardHistory leaderboard) => new()
+	public static GetLeaderboardHistory ToMainApi(this LeaderboardHistory leaderboard) => new()
 	{
 		DaggersFiredGlobal = leaderboard.DaggersFiredGlobal,
 		DaggersHitGlobal = leaderboard.DaggersHitGlobal,
 		DateTime = leaderboard.DateTime,
 		DeathsGlobal = leaderboard.DeathsGlobal,
-		Entries = leaderboard.Entries.ConvertAll(eh => eh.ToDto(leaderboard.DateTime)),
+		Entries = leaderboard.Entries.ConvertAll(eh => eh.ToMainApi(leaderboard.DateTime)),
 		GemsGlobal = leaderboard.GemsGlobal,
 		KillsGlobal = leaderboard.KillsGlobal,
 		TimeGlobal = leaderboard.TimeGlobal.ToSecondsTime(),
 		TotalPlayers = leaderboard.Players,
 	};
 
-	private static GetEntryHistory ToDto(this EntryHistory entry, DateTime dateTime) => new()
+	private static GetEntryHistory ToMainApi(this EntryHistory entry, DateTime dateTime) => new()
 	{
 		DateTime = dateTime,
 		DaggersFired = entry.DaggersFired,

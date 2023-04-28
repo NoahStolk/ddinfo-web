@@ -46,7 +46,7 @@ public class CustomLeaderboardsController : ControllerBase
 			onlyFeatured: false);
 		return new Page<GetCustomLeaderboardOverview>
 		{
-			Results = cls.Results.ConvertAll(cl => cl.ToGetCustomLeaderboardOverview()),
+			Results = cls.Results.ConvertAll(cl => cl.ToMainApi()),
 			TotalResults = cls.TotalResults,
 		};
 	}
@@ -109,6 +109,6 @@ public class CustomLeaderboardsController : ControllerBase
 	public async Task<ActionResult<GetCustomLeaderboard>> GetCustomLeaderboardById(int id)
 	{
 		Model.SortedCustomLeaderboard cl = await _customLeaderboardRepository.GetSortedCustomLeaderboardByIdAsync(id);
-		return cl.ToGetCustomLeaderboard();
+		return cl.ToMainApi();
 	}
 }

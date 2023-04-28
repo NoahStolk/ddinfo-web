@@ -7,20 +7,20 @@ namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 // TODO: Move elsewhere; this isn't part of the domain.
 public static class LeaderboardConverters
 {
-	public static GetLeaderboard ToGetLeaderboardPublic(this IDdLeaderboardService.LeaderboardResponse leaderboardResponse) => new()
+	public static GetLeaderboard ToMainApi(this IDdLeaderboardService.LeaderboardResponse leaderboardResponse) => new()
 	{
 		DaggersFiredGlobal = leaderboardResponse.DaggersFiredGlobal,
 		DaggersHitGlobal = leaderboardResponse.DaggersHitGlobal,
 		DateTime = leaderboardResponse.DateTime,
 		DeathsGlobal = leaderboardResponse.DeathsGlobal,
-		Entries = leaderboardResponse.Entries.ConvertAll(e => e.ToGetEntryPublic()),
+		Entries = leaderboardResponse.Entries.ConvertAll(e => e.ToMainApi()),
 		GemsGlobal = leaderboardResponse.GemsGlobal,
 		KillsGlobal = leaderboardResponse.KillsGlobal,
 		TotalPlayers = leaderboardResponse.TotalPlayers,
 		TimeGlobal = leaderboardResponse.TimeGlobal == 0 ? 0 : leaderboardResponse.TimeGlobal.ToSecondsTime(),
 	};
 
-	public static GetEntry ToGetEntryPublic(this IDdLeaderboardService.EntryResponse entryResponse) => new()
+	public static GetEntry ToMainApi(this IDdLeaderboardService.EntryResponse entryResponse) => new()
 	{
 		DaggersFired = entryResponse.DaggersFired,
 		DaggersFiredTotal = entryResponse.DaggersFiredTotal,

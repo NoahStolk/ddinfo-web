@@ -32,7 +32,7 @@ public class LeaderboardStatisticsController : ControllerBase
 				LeaderboardStatisticsLimitDdLive.Top100 => _leaderboardStatisticsCache.Top100ArrayStatistics,
 				LeaderboardStatisticsLimitDdLive.Top10 => _leaderboardStatisticsCache.Top10ArrayStatistics,
 				_ => _leaderboardStatisticsCache.GlobalArrayStatistics,
-			}).ToGetArrayStatisticsDdLive(),
+			}).ToDdLiveApi(),
 		};
 	}
 }

@@ -22,7 +22,7 @@ public class LeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult<GetLeaderboard?>> GetLeaderboard([Range(1, int.MaxValue)] int rankStart = 1)
 	{
-		return (await _leaderboardClient.GetLeaderboard(rankStart)).ToGetLeaderboardPublic();
+		return (await _leaderboardClient.GetLeaderboard(rankStart)).ToMainApi();
 	}
 
 	// FORBIDDEN: Used by DDLIVE.
@@ -31,7 +31,7 @@ public class LeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult<GetEntry>> GetEntryById([Required, Range(1, int.MaxValue)] int id)
 	{
-		return (await _leaderboardClient.GetEntryById(id)).ToGetEntryPublic();
+		return (await _leaderboardClient.GetEntryById(id)).ToMainApi();
 	}
 
 	[HttpGet("entry/by-ids")]
@@ -41,7 +41,7 @@ public class LeaderboardsController : ControllerBase
 	{
 		IEnumerable<int> ids = commaSeparatedIds.Split(',').Where(s => int.TryParse(s, out _)).Select(int.Parse);
 
-		return (await _leaderboardClient.GetEntriesByIds(ids)).ConvertAll(e => e.ToGetEntryPublic());
+		return (await _leaderboardClient.GetEntriesByIds(ids)).ConvertAll(e => e.ToMainApi());
 	}
 
 	[HttpGet("entry/by-username")]
@@ -49,7 +49,7 @@ public class LeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult<List<GetEntry>>> GetEntriesByName([Required, MinLength(3), MaxLength(16)] string name)
 	{
-		return (await _leaderboardClient.GetEntriesByName(name)).ConvertAll(e => e.ToGetEntryPublic());
+		return (await _leaderboardClient.GetEntriesByName(name)).ConvertAll(e => e.ToMainApi());
 	}
 
 	[HttpGet("entry/by-rank")]
@@ -63,6 +63,6 @@ public class LeaderboardsController : ControllerBase
 		if (leaderboard.Entries.Count == 0)
 			return NotFound();
 
-		return leaderboard.Entries[0].ToGetEntryPublic();
+		return leaderboard.Entries[0].ToMainApi();
 	}
 }
