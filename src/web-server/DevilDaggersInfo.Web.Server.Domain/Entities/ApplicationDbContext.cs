@@ -87,7 +87,7 @@ public class ApplicationDbContext : DbContext
 		return await base.SaveChangesAsync(cancellationToken);
 	}
 
-	public void BuildAuditLogs()
+	private void BuildAuditLogs()
 	{
 		// Only log when a change was made by a user.
 		string? username = _httpContextAccessor.HttpContext?.User?.GetName();

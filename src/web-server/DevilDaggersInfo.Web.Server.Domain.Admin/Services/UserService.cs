@@ -56,7 +56,7 @@ public class UserService
 
 	public async Task AssignPlayerAsync(int id, AssignPlayer assignPlayer)
 	{
-		UserEntity? user = _dbContext.Users.FirstOrDefault(u => u.Id == id);
+		UserEntity? user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
 		if (user == null)
 			throw new NotFoundException($"User with ID '{id}' was not found.");
 
@@ -69,7 +69,7 @@ public class UserService
 		}
 		else
 		{
-			var player = _dbContext.Players.Select(p => new { p.Id, p.PlayerName }).FirstOrDefault(p => p.Id == assignPlayer.PlayerId);
+			var player = await _dbContext.Players.Select(p => new { p.Id, p.PlayerName }).FirstOrDefaultAsync(p => p.Id == assignPlayer.PlayerId);
 			if (player == null)
 				throw new NotFoundException($"Player with ID '{assignPlayer.PlayerId}' was not found.");
 
@@ -85,19 +85,18 @@ public class UserService
 
 	public async Task ResetPasswordForUser(int id, ResetPassword resetPassword)
 	{
-		UserEntity? user = _dbContext.Users.FirstOrDefault(u => u.Id == id);
+		UserEntity? user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
 		if (user == null)
 			throw new NotFoundException();
 
-		_userManager.UpdatePassword(id, resetPassword.NewPassword);
-		await _dbContext.SaveChangesAsync();
+		await _userManager.UpdatePasswordAsync(id, resetPassword.NewPassword);
 
 		_logger.LogInformation("Password was reset for user '{user}'.", user.Name);
 	}
 
 	public async Task DeleteUser(int id)
 	{
-		UserEntity? user = _dbContext.Users.FirstOrDefault(u => u.Id == id);
+		UserEntity? user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
 		if (user == null)
 			throw new NotFoundException();
 

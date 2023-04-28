@@ -72,7 +72,7 @@ public class PlayerService
 			HidePastUsernames = addPlayer.HidePastUsernames,
 		};
 		_dbContext.Players.Add(player);
-		_dbContext.SaveChanges(); // Save changes here so PlayerMod entities can be assigned properly.
+		await _dbContext.SaveChangesAsync(); // Save changes here so PlayerMod entities can be assigned properly.
 
 		UpdatePlayerMods(addPlayer.ModIds ?? new(), player.Id);
 		await _dbContext.SaveChangesAsync();

@@ -46,7 +46,7 @@ public class UserManager
 		return user;
 	}
 
-	public UserEntity Create(string name, string password)
+	public async Task CreateAsync(string name, string password)
 	{
 		name = name.Trim();
 
@@ -64,16 +64,14 @@ public class UserManager
 		};
 
 		_dbContext.Users.Add(user);
-		_dbContext.SaveChanges();
-
-		return user;
+		await _dbContext.SaveChangesAsync();
 	}
 
-	public void UpdateName(int id, string name)
+	public async Task UpdateNameAsync(int id, string name)
 	{
 		name = name.Trim();
 
-		UserEntity? user = _dbContext.Users.Find(id);
+		UserEntity? user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
 		if (user == null)
 			throw new("User not found.");
 
@@ -82,12 +80,12 @@ public class UserManager
 
 		user.Name = name;
 
-		_dbContext.SaveChanges();
+		await _dbContext.SaveChangesAsync();
 	}
 
-	public void UpdatePassword(int id, string password)
+	public async Task UpdatePasswordAsync(int id, string password)
 	{
-		UserEntity? user = _dbContext.Users.Find(id);
+		UserEntity? user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
 		if (user == null)
 			throw new($"User with ID '{id}' not found.");
 
@@ -96,17 +94,7 @@ public class UserManager
 		user.PasswordHash = passwordHash;
 		user.PasswordSalt = passwordSalt;
 
-		_dbContext.SaveChanges();
-	}
-
-	public void Delete(int id)
-	{
-		UserEntity? user = _dbContext.Users.Find(id);
-		if (user != null)
-		{
-			_dbContext.Users.Remove(user);
-			_dbContext.SaveChanges();
-		}
+		await _dbContext.SaveChangesAsync();
 	}
 
 	public string GenerateJwt(UserEntity userEntity)

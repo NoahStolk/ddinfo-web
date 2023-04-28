@@ -32,9 +32,9 @@ public class AuthenticationController : ControllerBase
 	[HttpPost("register")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	public ActionResult Register([FromBody] RegistrationRequest registrationRequest)
+	public async Task<ActionResult> Register([FromBody] RegistrationRequest registrationRequest)
 	{
-		_authenticationService.Register(registrationRequest);
+		await _authenticationService.RegisterAsync(registrationRequest);
 		return Ok();
 	}
 
@@ -42,9 +42,9 @@ public class AuthenticationController : ControllerBase
 	[HttpPost("update-name")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	public ActionResult UpdateName([FromBody] UpdateNameRequest updateNameRequest)
+	public async Task<ActionResult> UpdateName([FromBody] UpdateNameRequest updateNameRequest)
 	{
-		_authenticationService.UpdateName(updateNameRequest);
+		await _authenticationService.UpdateNameAsync(updateNameRequest);
 		return Ok();
 	}
 
@@ -52,9 +52,9 @@ public class AuthenticationController : ControllerBase
 	[HttpPost("update-password")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	public ActionResult UpdatePassword([FromBody] UpdatePasswordRequest updatePasswordRequest)
+	public async Task<ActionResult> UpdatePassword([FromBody] UpdatePasswordRequest updatePasswordRequest)
 	{
-		_authenticationService.UpdatePassword(updatePasswordRequest);
+		await _authenticationService.UpdatePasswordAsync(updatePasswordRequest);
 		return Ok();
 	}
 }

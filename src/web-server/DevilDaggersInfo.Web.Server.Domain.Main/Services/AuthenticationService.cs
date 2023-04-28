@@ -53,14 +53,14 @@ public class AuthenticationService
 		};
 	}
 
-	public void Register(RegistrationRequest registrationRequest)
+	public async Task RegisterAsync(RegistrationRequest registrationRequest)
 	{
 		if (registrationRequest.Password != registrationRequest.PasswordRepeated)
 			throw new BadRequestException("Passwords don't match.");
 
 		try
 		{
-			_userManager.Create(registrationRequest.Name, registrationRequest.Password);
+			await _userManager.CreateAsync(registrationRequest.Name, registrationRequest.Password);
 			_logger.LogInformation("User '{name}' registered successfully.", registrationRequest.Name);
 		}
 		catch (Exception ex)
@@ -70,7 +70,7 @@ public class AuthenticationService
 		}
 	}
 
-	public void UpdateName(UpdateNameRequest updateNameRequest)
+	public async Task UpdateNameAsync(UpdateNameRequest updateNameRequest)
 	{
 		if (updateNameRequest.NewName == updateNameRequest.CurrentName)
 			throw new BadRequestException("The same username was entered.");
@@ -84,7 +84,7 @@ public class AuthenticationService
 
 		try
 		{
-			_userManager.UpdateName(user.Id, updateNameRequest.NewName);
+			await _userManager.UpdateNameAsync(user.Id, updateNameRequest.NewName);
 			_logger.LogInformation("User '{oldName}' changed their name to '{newName}'.", updateNameRequest.CurrentName, updateNameRequest.NewName);
 		}
 		catch (Exception ex)
@@ -94,7 +94,7 @@ public class AuthenticationService
 		}
 	}
 
-	public void UpdatePassword(UpdatePasswordRequest updatePasswordRequest)
+	public async Task UpdatePasswordAsync(UpdatePasswordRequest updatePasswordRequest)
 	{
 		if (updatePasswordRequest.NewPassword != updatePasswordRequest.PasswordRepeated)
 			throw new BadRequestException("Passwords don't match.");
@@ -111,7 +111,7 @@ public class AuthenticationService
 
 		try
 		{
-			_userManager.UpdatePassword(user.Id, updatePasswordRequest.NewPassword);
+			await _userManager.UpdatePasswordAsync(user.Id, updatePasswordRequest.NewPassword);
 		}
 		catch (Exception ex)
 		{
