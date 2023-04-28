@@ -34,8 +34,6 @@ public class StartupCacheHostedService : IHostedService
 
 	public async Task StartAsync(CancellationToken cancellationToken)
 	{
-		await Task.Yield();
-
 		Stopwatch sw = Stopwatch.StartNew();
 		StringBuilder sb = new();
 
