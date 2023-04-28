@@ -16,8 +16,6 @@ using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Extensions;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
-using DevilDaggersInfo.Web.Server.Domain.Models.Spawnsets;
-using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -33,18 +31,16 @@ public class CustomEntryProcessor
 {
 	private readonly ApplicationDbContext _dbContext;
 	private readonly ILogger<CustomEntryProcessor> _logger;
-	private readonly SpawnsetHashCache _spawnsetHashCache;
 	private readonly IFileSystemService _fileSystemService;
 	private readonly ICustomLeaderboardSubmissionLogger _submissionLogger;
 
 	private readonly AesBase32Wrapper _encryptionWrapper;
 	private readonly Stopwatch _stopwatch;
 
-	public CustomEntryProcessor(ApplicationDbContext dbContext, ILogger<CustomEntryProcessor> logger, SpawnsetHashCache spawnsetHashCache, IFileSystemService fileSystemService, IOptions<CustomLeaderboardsOptions> customLeaderboardsOptions, ICustomLeaderboardSubmissionLogger submissionLogger)
+	public CustomEntryProcessor(ApplicationDbContext dbContext, ILogger<CustomEntryProcessor> logger, IFileSystemService fileSystemService, IOptions<CustomLeaderboardsOptions> customLeaderboardsOptions, ICustomLeaderboardSubmissionLogger submissionLogger)
 	{
 		_dbContext = dbContext;
 		_logger = logger;
-		_spawnsetHashCache = spawnsetHashCache;
 		_fileSystemService = fileSystemService;
 		_submissionLogger = submissionLogger;
 
@@ -52,6 +48,9 @@ public class CustomEntryProcessor
 
 		_stopwatch = Stopwatch.StartNew();
 	}
+
+	// Temporary hack until a proper spawnset repository is implemented.
+	public bool IsUnitTest { get; init; }
 
 	private void ValidateV2(UploadRequest uploadRequest)
 	{
@@ -101,12 +100,14 @@ public class CustomEntryProcessor
 			LogAndThrowValidationException(uploadRequest, "Player ID is 0 or negative.", null, "rotating_light");
 
 		// Check for existing spawnset.
-		SpawnsetHashCacheData? spawnsetHashData = await _spawnsetHashCache.GetSpawnsetAsync(uploadRequest.SurvivalHashMd5);
-		string? spawnsetName = spawnsetHashData?.Name;
-		if (string.IsNullOrEmpty(spawnsetName))
+		var spawnset =
+			IsUnitTest
+			? await _dbContext.Spawnsets.Select(s => new { s.Name, s.Md5Hash }).FirstOrDefaultAsync(s => s.Md5Hash.SequenceEqual(uploadRequest.SurvivalHashMd5))
+			: await _dbContext.Spawnsets.Select(s => new { s.Name, s.Md5Hash }).FirstOrDefaultAsync(s => s.Md5Hash == uploadRequest.SurvivalHashMd5);
+		if (spawnset == null)
 			LogAndThrowValidationException(uploadRequest, "This spawnset doesn't exist on DevilDaggers.info.");
 
-		ValidateReplayBuffer(uploadRequest, spawnsetName);
+		ValidateReplayBuffer(uploadRequest, spawnset.Name);
 
 		// Perform database operations from now on.
 
@@ -122,27 +123,27 @@ public class CustomEntryProcessor
 		}
 		else if (player.IsBannedFromDdcl)
 		{
-			LogAndThrowValidationException(uploadRequest, "Banned.", spawnsetName, "rotating_light");
+			LogAndThrowValidationException(uploadRequest, "Banned.", spawnset.Name, "rotating_light");
 		}
 
 		// Check for existing leaderboard.
 		// ! Navigation property.
-		CustomLeaderboardEntity? customLeaderboard = await _dbContext.CustomLeaderboards.Include(cl => cl.Spawnset).FirstOrDefaultAsync(cl => cl.Spawnset!.Name == spawnsetName);
+		CustomLeaderboardEntity? customLeaderboard = await _dbContext.CustomLeaderboards.Include(cl => cl.Spawnset).FirstOrDefaultAsync(cl => cl.Spawnset!.Name == spawnset.Name);
 		if (customLeaderboard == null)
-			LogAndThrowValidationException(uploadRequest, "This spawnset exists on DevilDaggers.info, but doesn't have a leaderboard.", spawnsetName);
+			LogAndThrowValidationException(uploadRequest, "This spawnset exists on DevilDaggers.info, but doesn't have a leaderboard.", spawnset.Name);
 
 		// Validate game mode.
 		GameMode requiredGameMode = customLeaderboard.Category.RequiredGameModeForCategory();
 		if (uploadRequest.GameMode != (byte)requiredGameMode)
-			LogAndThrowValidationException(uploadRequest, $"Incorrect game mode '{(GameMode)uploadRequest.GameMode}' for category '{customLeaderboard.Category}'. Must be '{requiredGameMode}'.", spawnsetName);
+			LogAndThrowValidationException(uploadRequest, $"Incorrect game mode '{(GameMode)uploadRequest.GameMode}' for category '{customLeaderboard.Category}'. Must be '{requiredGameMode}'.", spawnset.Name);
 
 		// Validate TimeAttack and Race.
 		if (customLeaderboard.Category.IsTimeAttackOrRace() && !uploadRequest.TimeAttackOrRaceFinished)
-			LogAndThrowValidationException(uploadRequest, $"Didn't complete the {customLeaderboard.Category} spawnset.", spawnsetName);
+			LogAndThrowValidationException(uploadRequest, $"Didn't complete the {customLeaderboard.Category} spawnset.", spawnset.Name);
 
 		try
 		{
-			HandleAllCriteria(uploadRequest, spawnsetName, customLeaderboard);
+			HandleAllCriteria(uploadRequest, spawnset.Name, customLeaderboard);
 		}
 		catch (CustomEntryCriteriaException ex)
 		{
@@ -168,7 +169,7 @@ public class CustomEntryProcessor
 			return new()
 			{
 				Leaderboard = ToLeaderboardSummary(customLeaderboard),
-				Success = await ProcessNewScoreAsync(uploadRequest, customLeaderboard, spawnsetName),
+				Success = await ProcessNewScoreAsync(uploadRequest, customLeaderboard, spawnset.Name),
 			};
 		}
 
@@ -180,7 +181,7 @@ public class CustomEntryProcessor
 			return new()
 			{
 				Leaderboard = ToLeaderboardSummary(customLeaderboard),
-				Success = await ProcessNoHighscoreAsync(uploadRequest, customLeaderboard, spawnsetName, customEntry),
+				Success = await ProcessNoHighscoreAsync(uploadRequest, customLeaderboard, spawnset.Name, customEntry),
 			};
 		}
 
@@ -191,14 +192,14 @@ public class CustomEntryProcessor
 			return new()
 			{
 				Leaderboard = ToLeaderboardSummary(customLeaderboard),
-				Success = await ProcessNoHighscoreAsync(uploadRequest, customLeaderboard, spawnsetName, customEntry),
+				Success = await ProcessNoHighscoreAsync(uploadRequest, customLeaderboard, spawnset.Name, customEntry),
 			};
 		}
 
 		return new()
 		{
 			Leaderboard = ToLeaderboardSummary(customLeaderboard),
-			Success = await ProcessHighscoreAsync(uploadRequest, customLeaderboard, spawnsetName, customEntry),
+			Success = await ProcessHighscoreAsync(uploadRequest, customLeaderboard, spawnset.Name, customEntry),
 		};
 	}
 

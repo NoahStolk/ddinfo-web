@@ -6,10 +6,7 @@ using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Web.Client;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
-using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
-using DevilDaggersInfo.Web.Server.Domain.Models.Spawnsets;
 using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
-using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
@@ -22,17 +19,13 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 public class SpawnsetsController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
-	private readonly IFileSystemService _fileSystemService;
 	private readonly SpawnsetSummaryCache _spawnsetSummaryCache;
-	private readonly SpawnsetHashCache _spawnsetHashCache;
 	private readonly ILogger<SpawnsetsController> _logger;
 
-	public SpawnsetsController(ApplicationDbContext dbContext, IFileSystemService fileSystemService, SpawnsetSummaryCache spawnsetSummaryCache, SpawnsetHashCache spawnsetHashCache, ILogger<SpawnsetsController> logger)
+	public SpawnsetsController(ApplicationDbContext dbContext, SpawnsetSummaryCache spawnsetSummaryCache, ILogger<SpawnsetsController> logger)
 	{
 		_dbContext = dbContext;
-		_fileSystemService = fileSystemService;
 		_spawnsetSummaryCache = spawnsetSummaryCache;
-		_spawnsetHashCache = spawnsetHashCache;
 		_logger = logger;
 	}
 
@@ -112,19 +105,20 @@ public class SpawnsetsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult<GetSpawnsetByHash>> GetSpawnsetByHash([FromQuery] byte[] hash)
 	{
-		SpawnsetHashCacheData? data = await _spawnsetHashCache.GetSpawnsetAsync(hash);
-		if (data == null)
-			return NotFound();
-
-		SpawnsetEntity? spawnset = _dbContext.Spawnsets
+		// ! Navigation property.
+		var spawnset = await _dbContext.Spawnsets
 			.AsNoTracking()
 			.Include(s => s.Player)
-			.FirstOrDefault(s => s.Name == data.Name);
+			.Select(s => new
+			{
+				s.Md5Hash,
+				s.Player!.PlayerName,
+				s.Id,
+				s.Name,
+			})
+			.FirstOrDefaultAsync(s => s.Md5Hash == hash);
 		if (spawnset == null)
-		{
-			_logger.LogWarning("Spawnset {name} was found in hash cache but not in database.", data.Name);
 			return NotFound();
-		}
 
 		CustomLeaderboardEntity? customLeaderboard = _dbContext.CustomLeaderboards
 			.AsNoTracking()
@@ -136,10 +130,9 @@ public class SpawnsetsController : ControllerBase
 			.Where(ce => ce.CustomLeaderboardId == customLeaderboard.Id)
 			.ToList();
 
-		// ! Navigation property.
 		return new GetSpawnsetByHash
 		{
-			AuthorName = spawnset.Player!.PlayerName,
+			AuthorName = spawnset.PlayerName,
 			CustomLeaderboard = customLeaderboard == null ? null : new GetSpawnsetByHashCustomLeaderboard
 			{
 				CustomLeaderboardId = customLeaderboard.Id,

@@ -3,20 +3,17 @@ using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Web.Server.Domain.Admin.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
-using DevilDaggersInfo.Web.Server.Domain.Models.Spawnsets;
-using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Admin.Services;
 
 public class SpawnsetService
 {
-	private readonly SpawnsetHashCache _spawnsetHashCache;
 	private readonly ApplicationDbContext _dbContext;
 
-	public SpawnsetService(SpawnsetHashCache spawnsetHashCache, ApplicationDbContext dbContext)
+	public SpawnsetService(ApplicationDbContext dbContext)
 	{
-		_spawnsetHashCache = spawnsetHashCache;
 		_dbContext = dbContext;
 	}
 
@@ -28,7 +25,7 @@ public class SpawnsetService
 			throw new AdminDomainException("File could not be parsed to a proper survival file.");
 
 		byte[] spawnsetHash = MD5.HashData(addSpawnset.FileContents);
-		SpawnsetHashCacheData? existingSpawnset = await _spawnsetHashCache.GetSpawnsetAsync(spawnsetHash);
+		var existingSpawnset = await _dbContext.Spawnsets.Select(s => new { s.Name, s.Md5Hash }).FirstOrDefaultAsync(s => s.Md5Hash == spawnsetHash);
 		if (existingSpawnset != null)
 			throw new AdminDomainException($"Spawnset is exactly the same as an already existing spawnset named '{existingSpawnset.Name}'.");
 
@@ -60,7 +57,7 @@ public class SpawnsetService
 		if (!_dbContext.Players.Any(p => p.Id == editSpawnset.PlayerId))
 			throw new AdminDomainException($"Player with ID '{editSpawnset.PlayerId}' does not exist.");
 
-		SpawnsetEntity? spawnset = _dbContext.Spawnsets.FirstOrDefault(s => s.Id == id);
+		SpawnsetEntity? spawnset = await _dbContext.Spawnsets.FirstOrDefaultAsync(s => s.Id == id);
 		if (spawnset == null)
 			throw new NotFoundException($"Spawnset with ID '{id}' does not exist.");
 
@@ -78,7 +75,7 @@ public class SpawnsetService
 
 	public async Task DeleteSpawnsetAsync(int id)
 	{
-		SpawnsetEntity? spawnset = _dbContext.Spawnsets.FirstOrDefault(s => s.Id == id);
+		SpawnsetEntity? spawnset = await _dbContext.Spawnsets.FirstOrDefaultAsync(s => s.Id == id);
 		if (spawnset == null)
 			throw new NotFoundException($"Spawnset with ID '{id}' does not exist.");
 

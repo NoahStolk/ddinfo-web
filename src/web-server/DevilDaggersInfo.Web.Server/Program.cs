@@ -118,7 +118,6 @@ builder.Services.AddSingleton<ILeaderboardHistoryCache, LeaderboardHistoryCache>
 builder.Services.AddSingleton<LeaderboardStatisticsCache>();
 builder.Services.AddSingleton<ModArchiveCache>();
 builder.Services.AddSingleton<SpawnsetSummaryCache>();
-builder.Services.AddSingleton<SpawnsetHashCache>();
 
 // HTTP services
 builder.Services.AddHttpClient<ClubberClient>();

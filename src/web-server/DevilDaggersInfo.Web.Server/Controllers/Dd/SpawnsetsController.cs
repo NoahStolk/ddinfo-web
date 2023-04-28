@@ -1,7 +1,7 @@
 using DevilDaggersInfo.Api.Dd;
-using DevilDaggersInfo.Web.Server.Domain.Models.Spawnsets;
-using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
+using DevilDaggersInfo.Web.Server.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Dd;
 
@@ -9,11 +9,11 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Dd;
 [ApiController]
 public class SpawnsetsController : ControllerBase
 {
-	private readonly SpawnsetHashCache _spawnsetHashCache;
+	private readonly ApplicationDbContext _dbContext;
 
-	public SpawnsetsController(SpawnsetHashCache spawnsetHashCache)
+	public SpawnsetsController(ApplicationDbContext dbContext)
 	{
-		_spawnsetHashCache = spawnsetHashCache;
+		_dbContext = dbContext;
 	}
 
 	[HttpGet("/api/spawnsets/name-by-hash")]
@@ -21,10 +21,10 @@ public class SpawnsetsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult<GetSpawnsetNameByHash>> GetSpawnsetNameByHash([FromQuery] byte[] hash)
 	{
-		SpawnsetHashCacheData? data = await _spawnsetHashCache.GetSpawnsetAsync(hash);
-		if (data == null)
+		var spawnset = await _dbContext.Spawnsets.Select(s => new { s.Name, s.Md5Hash }).FirstOrDefaultAsync(s => s.Md5Hash == hash);
+		if (spawnset == null)
 			return NotFound();
 
-		return new GetSpawnsetNameByHash { Name = data.Name };
+		return new GetSpawnsetNameByHash { Name = spawnset.Name };
 	}
 }

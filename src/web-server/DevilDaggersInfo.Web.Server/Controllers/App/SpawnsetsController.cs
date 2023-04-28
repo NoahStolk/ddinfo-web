@@ -2,8 +2,6 @@ using DevilDaggersInfo.Api.App.Spawnsets;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.App;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
-using DevilDaggersInfo.Web.Server.Domain.Models.Spawnsets;
-using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
@@ -15,14 +13,10 @@ namespace DevilDaggersInfo.Web.Server.Controllers.App;
 public class SpawnsetsController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
-	private readonly ILogger<SpawnsetsController> _logger;
-	private readonly SpawnsetHashCache _spawnsetHashCache;
 
-	public SpawnsetsController(ApplicationDbContext dbContext, ILogger<SpawnsetsController> logger, SpawnsetHashCache spawnsetHashCache)
+	public SpawnsetsController(ApplicationDbContext dbContext)
 	{
 		_dbContext = dbContext;
-		_logger = logger;
-		_spawnsetHashCache = spawnsetHashCache;
 	}
 
 	[HttpGet("{id}")]
@@ -67,19 +61,20 @@ public class SpawnsetsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult<GetSpawnsetByHash>> GetSpawnsetByHash([FromQuery] byte[] hash)
 	{
-		SpawnsetHashCacheData? data = await _spawnsetHashCache.GetSpawnsetAsync(hash);
-		if (data == null)
-			return NotFound();
-
-		SpawnsetEntity? spawnset = _dbContext.Spawnsets
+		// ! Navigation property.
+		var spawnset = await _dbContext.Spawnsets
 			.AsNoTracking()
 			.Include(s => s.Player)
-			.FirstOrDefault(s => s.Name == data.Name);
+			.Select(s => new
+			{
+				s.Md5Hash,
+				s.Player!.PlayerName,
+				s.Id,
+				s.Name,
+			})
+			.FirstOrDefaultAsync(s => s.Md5Hash == hash);
 		if (spawnset == null)
-		{
-			_logger.LogWarning("Spawnset {name} was found in hash cache but not in database.", data.Name);
 			return NotFound();
-		}
 
 		CustomLeaderboardEntity? customLeaderboard = _dbContext.CustomLeaderboards
 			.AsNoTracking()
@@ -91,10 +86,9 @@ public class SpawnsetsController : ControllerBase
 			.Where(ce => ce.CustomLeaderboardId == customLeaderboard.Id)
 			.ToList();
 
-		// ! Navigation property.
 		return new GetSpawnsetByHash
 		{
-			AuthorName = spawnset.Player!.PlayerName,
+			AuthorName = spawnset.PlayerName,
 			CustomLeaderboard = customLeaderboard == null ? null : new GetSpawnsetByHashCustomLeaderboard
 			{
 				CustomLeaderboardId = customLeaderboard.Id,
