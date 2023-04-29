@@ -14,11 +14,11 @@ public partial class GlobalPage
 
 	[Parameter]
 	[SupplyParameterFromQuery]
-	public string GameMode { get; set; } = "Survival";
+	public string GameMode { get; set; } = nameof(DevilDaggersInfo.Api.Main.Spawnsets.GameMode.Survival);
 
 	[Parameter]
 	[SupplyParameterFromQuery]
-	public string RankSorting { get; set; } = "TimeDesc";
+	public string RankSorting { get; set; } = nameof(CustomLeaderboardRankSorting.TimeDesc);
 
 	[Inject]
 	public required MainApiHttpClient Http { get; set; }
