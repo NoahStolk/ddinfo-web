@@ -521,5 +521,62 @@ public record SpawnsetBinary
 		return GetShrinkEndTime(shrinkStart, shrinkEnd, shrinkRate) + (maxTileHeight + 2) * 4;
 	}
 
+	public (SpawnSectionInfo PreLoopSection, SpawnSectionInfo LoopSection) CalculateSections()
+		=> CalculateSections(Spawns, GameMode);
+
+	public static (SpawnSectionInfo PreLoopSection, SpawnSectionInfo LoopSection) CalculateSections(ImmutableArray<Spawn> spawns, GameMode gameMode)
+	{
+		return gameMode != GameMode.Survival ? CalculateSectionsForNonDefaultGameMode(spawns) : CalculateSectionsForDefaultGameMode(spawns);
+
+		static (SpawnSectionInfo PreLoopSection, SpawnSectionInfo LoopSection) CalculateSectionsForNonDefaultGameMode(ImmutableArray<Spawn> spawns)
+		{
+			int spawnCount = 0;
+			float seconds = 0;
+			for (int i = 0; i < spawns.Length; i++)
+			{
+				Spawn spawn = spawns[i];
+
+				// If the rest of the spawns are empty, break loop.
+				if (spawns.Skip(i).All(s => s.EnemyType == EnemyType.Empty))
+					break;
+
+				seconds += spawn.Delay;
+				if (spawn.EnemyType != EnemyType.Empty)
+					spawnCount++;
+			}
+
+			return (new(spawnCount, spawnCount == 0 ? null : seconds), default);
+		}
+
+		static (SpawnSectionInfo PreLoopSection, SpawnSectionInfo LoopSection) CalculateSectionsForDefaultGameMode(ImmutableArray<Spawn> spawns)
+		{
+			int loopStartIndex = GetLoopStartIndex(spawns);
+
+			int preLoopSpawnCount = 0;
+			int loopSpawnCount = 0;
+			float preLoopSeconds = 0;
+			float loopSeconds = 0;
+			for (int i = 0; i < spawns.Length; i++)
+			{
+				Spawn spawn = spawns[i];
+
+				if (i < loopStartIndex)
+					preLoopSeconds += spawn.Delay;
+				else
+					loopSeconds += spawn.Delay;
+
+				if (spawn.EnemyType != EnemyType.Empty)
+				{
+					if (i < loopStartIndex)
+						preLoopSpawnCount++;
+					else
+						loopSpawnCount++;
+				}
+			}
+
+			return (new(preLoopSpawnCount, preLoopSpawnCount == 0 ? null : preLoopSeconds), new(loopSpawnCount, loopSpawnCount == 0 ? null : loopSeconds));
+		}
+	}
+
 	#endregion Utilities
 }

@@ -74,7 +74,7 @@ public sealed class SpawnsetSummary
 			br.Seek(20);
 		}
 
-		(SpawnSectionInfo preLoopSection, SpawnSectionInfo loopSection) = CalculateSections(spawns.ToImmutableArray(), gameMode);
+		(SpawnSectionInfo preLoopSection, SpawnSectionInfo loopSection) = SpawnsetBinary.CalculateSections(spawns.ToImmutableArray(), gameMode);
 
 		// Settings
 		HandLevel handLevel = HandLevel.Level1;
@@ -90,57 +90,5 @@ public sealed class SpawnsetSummary
 		}
 
 		return new(spawnVersion, worldVersion, gameMode, preLoopSection, loopSection, handLevel, additionalGems, timerStart);
-	}
-
-	private static (SpawnSectionInfo PreLoopSection, SpawnSectionInfo LoopSection) CalculateSections(ImmutableArray<Spawn> spawns, GameMode gameMode)
-		=> gameMode != GameMode.Survival ? CalculateSectionsForNonDefaultGameMode(spawns) : CalculateSectionsForDefaultGameMode(spawns);
-
-	private static (SpawnSectionInfo PreLoopSection, SpawnSectionInfo LoopSection) CalculateSectionsForNonDefaultGameMode(ImmutableArray<Spawn> spawns)
-	{
-		int spawnCount = 0;
-		float seconds = 0;
-		for (int i = 0; i < spawns.Length; i++)
-		{
-			Spawn spawn = spawns[i];
-
-			// If the rest of the spawns are empty, break loop.
-			if (spawns.Skip(i).All(s => s.EnemyType == EnemyType.Empty))
-				break;
-
-			seconds += spawn.Delay;
-			if (spawn.EnemyType != EnemyType.Empty)
-				spawnCount++;
-		}
-
-		return (new(spawnCount, spawnCount == 0 ? null : seconds), default);
-	}
-
-	private static (SpawnSectionInfo PreLoopSection, SpawnSectionInfo LoopSection) CalculateSectionsForDefaultGameMode(ImmutableArray<Spawn> spawns)
-	{
-		int loopStartIndex = SpawnsetBinary.GetLoopStartIndex(spawns);
-
-		int preLoopSpawnCount = 0;
-		int loopSpawnCount = 0;
-		float preLoopSeconds = 0;
-		float loopSeconds = 0;
-		for (int i = 0; i < spawns.Length; i++)
-		{
-			Spawn spawn = spawns[i];
-
-			if (i < loopStartIndex)
-				preLoopSeconds += spawn.Delay;
-			else
-				loopSeconds += spawn.Delay;
-
-			if (spawn.EnemyType != EnemyType.Empty)
-			{
-				if (i < loopStartIndex)
-					preLoopSpawnCount++;
-				else
-					loopSpawnCount++;
-			}
-		}
-
-		return (new(preLoopSpawnCount, preLoopSpawnCount == 0 ? null : preLoopSeconds), new(loopSpawnCount, loopSpawnCount == 0 ? null : loopSeconds));
 	}
 }
