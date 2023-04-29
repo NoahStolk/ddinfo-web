@@ -1,10 +1,8 @@
 using DevilDaggersInfo.Api.Main.CustomLeaderboards;
-using DevilDaggersInfo.Core.Spawnset.Summary;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Repositories;
-using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,14 +16,12 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 public class CustomEntriesController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
-	private readonly SpawnsetSummaryCache _spawnsetSummaryCache;
 	private readonly IFileSystemService _fileSystemService;
 	private readonly CustomEntryRepository _customEntryRepository;
 
-	public CustomEntriesController(ApplicationDbContext dbContext, SpawnsetSummaryCache spawnsetSummaryCache, IFileSystemService fileSystemService, CustomEntryRepository customEntryRepository)
+	public CustomEntriesController(ApplicationDbContext dbContext, IFileSystemService fileSystemService, CustomEntryRepository customEntryRepository)
 	{
 		_dbContext = dbContext;
-		_spawnsetSummaryCache = spawnsetSummaryCache;
 		_fileSystemService = fileSystemService;
 		_customEntryRepository = customEntryRepository;
 	}
@@ -71,7 +67,6 @@ public class CustomEntriesController : ControllerBase
 			.FirstOrDefault(ced => ced.CustomEntryId == id);
 
 		// ! Navigation property.
-		SpawnsetSummary summary = _spawnsetSummaryCache.GetSpawnsetSummaryById(customEntry.CustomLeaderboard!.SpawnsetId);
-		return customEntry.ToMainApi(customEntryData, summary.EffectivePlayerSettings.HandLevel, IoFile.Exists(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{id}.ddreplay")));
+		return customEntry.ToMainApi(customEntryData, customEntry.CustomLeaderboard!.Spawnset!.EffectiveHandLevel, IoFile.Exists(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{id}.ddreplay")));
 	}
 }

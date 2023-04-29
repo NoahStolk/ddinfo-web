@@ -1,14 +1,10 @@
 using DevilDaggersInfo.Api.Main;
 using DevilDaggersInfo.Api.Main.Spawnsets;
 using DevilDaggersInfo.Common.Extensions;
-using DevilDaggersInfo.Core.Spawnset.Summary;
 using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Web.Client;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
-using DevilDaggersInfo.Web.Server.Domain.Converters.CoreToDomain;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
-using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
-using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
@@ -21,42 +17,12 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 public class SpawnsetsController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
-	private readonly SpawnsetSummaryCache _spawnsetSummaryCache;
 	private readonly ILogger<SpawnsetsController> _logger;
 
-	public SpawnsetsController(ApplicationDbContext dbContext, SpawnsetSummaryCache spawnsetSummaryCache, ILogger<SpawnsetsController> logger)
+	public SpawnsetsController(ApplicationDbContext dbContext, ILogger<SpawnsetsController> logger)
 	{
 		_dbContext = dbContext;
-		_spawnsetSummaryCache = spawnsetSummaryCache;
 		_logger = logger;
-	}
-
-	[HttpPost("migrate")]
-	[ProducesResponseType(StatusCodes.Status200OK)]
-	public ActionResult Migrate()
-	{
-		List<SpawnsetEntity> spawnsets = _dbContext.Spawnsets.ToList();
-		foreach (SpawnsetEntity spawnset in spawnsets)
-		{
-			SpawnsetSummary summary = _spawnsetSummaryCache.GetSpawnsetSummaryById(spawnset.Id);
-			spawnset.GameMode = summary.GameMode.ToDomain();
-			spawnset.WorldVersion = summary.WorldVersion;
-			spawnset.SpawnVersion = summary.SpawnVersion;
-			spawnset.PreLoopSpawnCount = summary.PreLoopSection.SpawnCount;
-			spawnset.PreLoopLength = summary.PreLoopSection.Length?.To10thMilliTime();
-			spawnset.LoopSpawnCount = summary.LoopSection.SpawnCount;
-			spawnset.LoopLength = summary.LoopSection.Length?.To10thMilliTime();
-			spawnset.HandLevel = summary.HandLevel.ToDomain();
-			spawnset.AdditionalGems = summary.AdditionalGems;
-			spawnset.TimerStart = summary.TimerStart.To10thMilliTime();
-			spawnset.EffectiveHandLevel = summary.EffectivePlayerSettings.HandLevel.ToDomain();
-			spawnset.EffectiveGemsOrHoming = summary.EffectivePlayerSettings.GemsOrHoming;
-			spawnset.EffectiveHandMesh = summary.EffectivePlayerSettings.HandMesh.ToDomain();
-
-			_dbContext.SaveChanges();
-		}
-
-		return Ok();
 	}
 
 	[HttpGet]
@@ -98,21 +64,21 @@ public class SpawnsetsController : ControllerBase
 		}
 
 		List<SpawnsetEntity> spawnsets = spawnsetsQuery.ToList();
-		Dictionary<int, SpawnsetSummary> summaries = spawnsets.ToDictionary(s => s.Id, s => _spawnsetSummaryCache.GetSpawnsetSummaryById(s.Id));
 
+		// TODO: Improve performance by not loading all spawnsets into memory.
 		// ! Navigation property.
 		spawnsets = (sortBy switch
 		{
 			SpawnsetSorting.Name => spawnsets.OrderBy(s => s.Name.ToLower(), ascending),
 			SpawnsetSorting.AuthorName => spawnsets.OrderBy(s => s.Player!.PlayerName.ToLower(), ascending),
 			SpawnsetSorting.LastUpdated => spawnsets.OrderBy(s => s.LastUpdated, ascending),
-			SpawnsetSorting.GameMode => spawnsets.OrderBy(s => summaries[s.Id].GameMode, ascending),
-			SpawnsetSorting.LoopLength => spawnsets.OrderBy(s => summaries[s.Id].LoopSection.Length, ascending),
-			SpawnsetSorting.LoopSpawnCount => spawnsets.OrderBy(s => summaries[s.Id].LoopSection.SpawnCount, ascending),
-			SpawnsetSorting.PreLoopLength => spawnsets.OrderBy(s => summaries[s.Id].PreLoopSection.Length, ascending),
-			SpawnsetSorting.PreLoopSpawnCount => spawnsets.OrderBy(s => summaries[s.Id].PreLoopSection.SpawnCount, ascending),
-			SpawnsetSorting.Hand => spawnsets.OrderBy(s => summaries[s.Id].HandLevel, ascending),
-			SpawnsetSorting.AdditionalGems => spawnsets.OrderBy(s => summaries[s.Id].AdditionalGems, ascending),
+			SpawnsetSorting.GameMode => spawnsets.OrderBy(s => s.GameMode, ascending),
+			SpawnsetSorting.LoopLength => spawnsets.OrderBy(s => s.LoopLength, ascending),
+			SpawnsetSorting.LoopSpawnCount => spawnsets.OrderBy(s => s.LoopSpawnCount, ascending),
+			SpawnsetSorting.PreLoopLength => spawnsets.OrderBy(s => s.PreLoopLength, ascending),
+			SpawnsetSorting.PreLoopSpawnCount => spawnsets.OrderBy(s => s.PreLoopSpawnCount, ascending),
+			SpawnsetSorting.Hand => spawnsets.OrderBy(s => s.HandLevel, ascending),
+			SpawnsetSorting.AdditionalGems => spawnsets.OrderBy(s => s.AdditionalGems, ascending),
 			_ => spawnsets.OrderBy(s => s.Id, ascending),
 		}).ToList();
 
@@ -125,7 +91,7 @@ public class SpawnsetsController : ControllerBase
 
 		return new Page<GetSpawnsetOverview>
 		{
-			Results = spawnsets.ConvertAll(s => s.ToMainApi(summaries[s.Id])),
+			Results = spawnsets.ConvertAll(s => s.ToMainApi()),
 			TotalResults = totalSpawnsets,
 		};
 	}

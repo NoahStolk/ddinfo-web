@@ -36,20 +36,31 @@ public class SpawnsetEntity : IAuditable
 	[MaxLength(16)]
 	public required byte[] Md5Hash { get; init; }
 
-	// TODO: Use init for all these fields after migration.
-	public required SpawnsetGameMode GameMode { get; set; }
-	public required int SpawnVersion { get; set; }
-	public required int WorldVersion { get; set; }
-	public required int PreLoopSpawnCount { get; set; }
-	public required int? PreLoopLength { get; set; }
-	public required int LoopSpawnCount { get; set; }
-	public required int? LoopLength { get; set; }
-	public required SpawnsetHandLevel HandLevel { get; set; }
-	public required int AdditionalGems { get; set; }
-	public required int TimerStart { get; set; }
-	public required SpawnsetHandLevel EffectiveHandLevel { get; set; }
-	public required int EffectiveGemsOrHoming { get; set; }
-	public required SpawnsetHandLevel EffectiveHandMesh { get; set; }
+	public required SpawnsetGameMode GameMode { get; init; }
+
+	public required int SpawnVersion { get; init; }
+
+	public required int WorldVersion { get; init; }
+
+	public required int PreLoopSpawnCount { get; init; }
+
+	public required int? PreLoopLength { get; init; }
+
+	public required int LoopSpawnCount { get; init; }
+
+	public required int? LoopLength { get; init; }
+
+	public required SpawnsetHandLevel HandLevel { get; init; }
+
+	public required int AdditionalGems { get; init; }
+
+	public required int TimerStart { get; init; }
+
+	public required SpawnsetHandLevel EffectiveHandLevel { get; init; }
+
+	public required int EffectiveGemsOrHoming { get; init; }
+
+	public required SpawnsetHandLevel EffectiveHandMesh { get; init; }
 
 	#endregion
 }

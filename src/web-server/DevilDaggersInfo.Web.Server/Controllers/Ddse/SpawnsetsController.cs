@@ -1,8 +1,6 @@
 using DevilDaggersInfo.Api.Ddse.Spawnsets;
-using DevilDaggersInfo.Core.Spawnset.Summary;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Ddse;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
-using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,12 +12,10 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Ddse;
 public class SpawnsetsController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
-	private readonly SpawnsetSummaryCache _spawnsetSummaryCache;
 
-	public SpawnsetsController(ApplicationDbContext dbContext, SpawnsetSummaryCache spawnsetSummaryCache)
+	public SpawnsetsController(ApplicationDbContext dbContext)
 	{
 		_dbContext = dbContext;
-		_spawnsetSummaryCache = spawnsetSummaryCache;
 	}
 
 	[Obsolete("DDSE 2.46.1 will be removed.")]
@@ -44,11 +40,7 @@ public class SpawnsetsController : ControllerBase
 			.ToList();
 
 		return query
-			.Select(s =>
-			{
-				SpawnsetSummary spawnsetSummary = _spawnsetSummaryCache.GetSpawnsetSummaryById(s.Id);
-				return s.ToDdseApi(spawnsetSummary, spawnsetsWithCustomLeaderboardIds.Contains(s.Id));
-			})
+			.Select(s => s.ToDdseApi(spawnsetsWithCustomLeaderboardIds.Contains(s.Id)))
 			.ToList();
 	}
 }

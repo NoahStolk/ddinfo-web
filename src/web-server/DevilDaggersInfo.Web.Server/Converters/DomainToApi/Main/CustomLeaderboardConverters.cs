@@ -1,6 +1,5 @@
 using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Core.CriteriaExpression;
-using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Extensions;
@@ -184,7 +183,7 @@ public static class CustomLeaderboardConverters
 	};
 
 	// TODO: Use domain models?
-	public static MainApi.GetCustomEntryData ToMainApi(this CustomEntryEntity customEntry, CustomEntryDataEntity? customEntryData, HandLevel startingLevel, bool hasReplay)
+	public static MainApi.GetCustomEntryData ToMainApi(this CustomEntryEntity customEntry, CustomEntryDataEntity? customEntryData, SpawnsetHandLevel startingLevel, bool hasReplay)
 	{
 		if (customEntry.Player == null)
 			throw new InvalidOperationException("Player is not included.");

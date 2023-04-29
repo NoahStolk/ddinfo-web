@@ -14,20 +14,17 @@ public class CachesController : ControllerBase
 	private readonly LeaderboardStatisticsCache _leaderboardStatisticsCache;
 	private readonly ILeaderboardHistoryCache _leaderboardHistoryCache;
 	private readonly ModArchiveCache _modArchiveCache;
-	private readonly SpawnsetSummaryCache _spawnsetSummaryCache;
 	private readonly ILogger<CachesController> _logger;
 
 	public CachesController(
 		LeaderboardStatisticsCache leaderboardStatisticsCache,
 		ILeaderboardHistoryCache leaderboardHistoryCache,
 		ModArchiveCache modArchiveCache,
-		SpawnsetSummaryCache spawnsetSummaryCache,
 		ILogger<CachesController> logger)
 	{
 		_leaderboardStatisticsCache = leaderboardStatisticsCache;
 		_leaderboardHistoryCache = leaderboardHistoryCache;
 		_modArchiveCache = modArchiveCache;
-		_spawnsetSummaryCache = spawnsetSummaryCache;
 		_logger = logger;
 	}
 
@@ -40,7 +37,6 @@ public class CachesController : ControllerBase
 			new() { Name = "LeaderboardHistory", Count = _leaderboardHistoryCache.GetCount() },
 			new() { Name = "LeaderboardStatistics", Count = _leaderboardStatisticsCache.GetCount() },
 			new() { Name = "ModArchive", Count = _modArchiveCache.GetCount() },
-			new() { Name = "SpawnsetSummary", Count = _spawnsetSummaryCache.GetCount() },
 		};
 	}
 
@@ -54,7 +50,6 @@ public class CachesController : ControllerBase
 			case "LeaderboardHistory": _leaderboardHistoryCache.Clear(); break;
 			case "LeaderboardStatistics": _leaderboardStatisticsCache.Initiate(); break;
 			case "ModArchive": _modArchiveCache.Clear(); break;
-			case "SpawnsetSummary": _spawnsetSummaryCache.Clear(); break;
 			default: return NotFound();
 		}
 
