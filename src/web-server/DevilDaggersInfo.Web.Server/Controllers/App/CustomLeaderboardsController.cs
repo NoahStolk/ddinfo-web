@@ -1,11 +1,8 @@
-using DevilDaggersInfo.Api.App;
 using DevilDaggersInfo.Api.App.CustomLeaderboards;
-using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.App;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.App;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.App;
 
@@ -25,7 +22,8 @@ public class CustomLeaderboardsController : ControllerBase
 	public async Task<ActionResult<List<GetCustomLeaderboardForOverview>>> GetCustomLeaderboards(int selectedPlayerId)
 	{
 		Domain.Models.Page<CustomLeaderboardOverview> customLeaderboards = await _customLeaderboardRepository.GetCustomLeaderboardOverviewsAsync(
-			category: null,
+			rankSorting: null,
+			gameMode: null,
 			spawnsetFilter: null,
 			authorFilter: null,
 			pageIndex: 0,
@@ -54,33 +52,6 @@ public class CustomLeaderboardsController : ControllerBase
 		int customLeaderboardId = await _customLeaderboardRepository.GetCustomLeaderboardIdBySpawnsetHashAsync(hash);
 		SortedCustomLeaderboard customLeaderboard = await _customLeaderboardRepository.GetSortedCustomLeaderboardByIdAsync(customLeaderboardId);
 		return customLeaderboard.ToAppApi();
-	}
-
-	[Obsolete("Use GetCustomLeaderboards instead. This is used by DDINFO TOOLS <= 0.4.0.0.")]
-	[HttpGet("overview")]
-	[ProducesResponseType(StatusCodes.Status200OK)]
-	public async Task<ActionResult<Page<GetCustomLeaderboardForOverview>>> GetCustomLeaderboardOverview(
-		[Required] CustomLeaderboardCategory category,
-		int pageIndex,
-		int pageSize,
-		int selectedPlayerId,
-		bool onlyFeatured)
-	{
-		Domain.Models.Page<CustomLeaderboardOverview> customLeaderboards = await _customLeaderboardRepository.GetCustomLeaderboardOverviewsAsync(
-			category: category.ToDomain(),
-			spawnsetFilter: null,
-			authorFilter: null,
-			pageIndex: pageIndex,
-			pageSize: pageSize,
-			sortBy: CustomLeaderboardSorting.DateLastPlayed,
-			ascending: false,
-			selectedPlayerId: selectedPlayerId,
-			onlyFeatured: onlyFeatured);
-		return new Page<GetCustomLeaderboardForOverview>
-		{
-			Results = customLeaderboards.Results.ConvertAll(cl => cl.ToAppApi()),
-			TotalResults = customLeaderboards.TotalResults,
-		};
 	}
 
 	[HttpHead("exists")]

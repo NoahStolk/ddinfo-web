@@ -134,7 +134,7 @@ public class MockEntities
 		Golden = 2500000,
 		Devil = 5000000,
 		Leviathan = 10000000,
-		Category = CustomLeaderboardCategory.Survival,
+		RankSorting = CustomLeaderboardRankSorting.TimeDesc,
 		DateCreated = DateTime.UtcNow,
 		DateLastPlayed = DateTime.UtcNow,
 		SpawnsetId = 1,

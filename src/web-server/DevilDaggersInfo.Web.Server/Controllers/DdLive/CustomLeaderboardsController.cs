@@ -25,7 +25,8 @@ public class CustomLeaderboardsController : ControllerBase
 	public async Task<ActionResult<List<GetCustomLeaderboardOverviewDdLive>>> GetCustomLeaderboardsOverviewDdLive()
 	{
 		Domain.Models.Page<CustomLeaderboardOverview> cls = await _customLeaderboardRepository.GetCustomLeaderboardOverviewsAsync(
-			category: null,
+			rankSorting: null,
+			gameMode: null,
 			spawnsetFilter: null,
 			authorFilter: null,
 			pageIndex: 0,

@@ -6,8 +6,10 @@ public record GetCustomLeaderboard
 
 	public required GetCustomLeaderboardDaggers? Daggers { get; init; }
 
+	[Obsolete("Use RankSorting instead.")]
 	public required CustomLeaderboardCategory Category { get; init; }
 
+	[Obsolete("Use RankSorting instead.")]
 	public required bool IsAscending { get; init; }
 
 	public required List<GetCustomEntry> SortedEntries { get; init; }

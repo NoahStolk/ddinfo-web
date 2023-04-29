@@ -11,7 +11,7 @@ public record GetCustomLeaderboard
 
 	public required bool IsFeatured { get; init; }
 
-	public required CustomLeaderboardCategory Category { get; init; }
+	public required CustomLeaderboardRankSorting RankSorting { get; init; }
 
 	public required GetCustomLeaderboardCriteria GemsCollectedCriteria { get; init; }
 	public required GetCustomLeaderboardCriteria GemsDespawnedCriteria { get; init; }

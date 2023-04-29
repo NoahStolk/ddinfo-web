@@ -49,7 +49,7 @@ public static class SpawnsetConverters
 		};
 	}
 
-	private static MainApi.GameMode ToMainApi(this SpawnsetGameMode gameMode) => gameMode switch
+	public static MainApi.GameMode ToMainApi(this SpawnsetGameMode gameMode) => gameMode switch
 	{
 		SpawnsetGameMode.Survival => MainApi.GameMode.Survival,
 		SpawnsetGameMode.TimeAttack => MainApi.GameMode.TimeAttack,

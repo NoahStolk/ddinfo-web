@@ -2,7 +2,7 @@ namespace DevilDaggersInfo.Api.Admin.CustomLeaderboards;
 
 public record EditCustomLeaderboard
 {
-	public required CustomLeaderboardCategory Category { get; init; }
+	public required CustomLeaderboardRankSorting RankSorting { get; init; }
 
 	public required AddCustomLeaderboardDaggers Daggers { get; init; }
 

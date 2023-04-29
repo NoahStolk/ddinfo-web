@@ -1,5 +1,6 @@
 namespace DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 
+[Obsolete("Category will be replaced by sorting.")]
 public enum CustomLeaderboardCategory
 {
 	Survival = 1,

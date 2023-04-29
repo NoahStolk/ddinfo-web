@@ -1,11 +1,14 @@
 using DevilDaggersInfo.Api.Main;
 using DevilDaggersInfo.Api.Main.CustomLeaderboards;
+using DevilDaggersInfo.Api.Main.Spawnsets;
 using DevilDaggersInfo.Web.Client;
 using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Main;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
+using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Repositories;
 using DevilDaggersInfo.Web.Server.Domain.Utils;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using Model = DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 
@@ -16,17 +19,42 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 public class CustomLeaderboardsController : ControllerBase
 {
 	private readonly CustomLeaderboardRepository _customLeaderboardRepository;
+	private readonly ApplicationDbContext _dbContext;
 
-	public CustomLeaderboardsController(CustomLeaderboardRepository customLeaderboardRepository)
+	public CustomLeaderboardsController(CustomLeaderboardRepository customLeaderboardRepository, ApplicationDbContext dbContext)
 	{
 		_customLeaderboardRepository = customLeaderboardRepository;
+		_dbContext = dbContext;
+	}
+
+	[HttpPost]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	public ActionResult Migrate()
+	{
+		List<CustomLeaderboardEntity> cls = _dbContext.CustomLeaderboards.Include(cl => cl.Spawnset).ToList();
+		foreach (CustomLeaderboardEntity cl in cls)
+		{
+			cl.RankSorting = cl.Category switch
+			{
+				Domain.Entities.Enums.CustomLeaderboardCategory.Survival => Domain.Entities.Enums.CustomLeaderboardRankSorting.TimeDesc,
+				Domain.Entities.Enums.CustomLeaderboardCategory.Speedrun => Domain.Entities.Enums.CustomLeaderboardRankSorting.TimeAsc,
+				Domain.Entities.Enums.CustomLeaderboardCategory.TimeAttack => Domain.Entities.Enums.CustomLeaderboardRankSorting.TimeAsc,
+				Domain.Entities.Enums.CustomLeaderboardCategory.Race => Domain.Entities.Enums.CustomLeaderboardRankSorting.TimeAsc,
+				_ => throw new(),
+			};
+
+			_dbContext.SaveChanges();
+		}
+
+		return Ok();
 	}
 
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult<Page<GetCustomLeaderboardOverview>>> GetCustomLeaderboards(
-		[Required] CustomLeaderboardCategory category,
+		[Required] GameMode gameMode,
+		[Required] CustomLeaderboardRankSorting rankSorting,
 		string? spawnsetFilter = null,
 		string? authorFilter = null,
 		[Range(0, 1000)] int pageIndex = 0,
@@ -35,7 +63,8 @@ public class CustomLeaderboardsController : ControllerBase
 		bool ascending = false)
 	{
 		Domain.Models.Page<Model.CustomLeaderboardOverview> cls = await _customLeaderboardRepository.GetCustomLeaderboardOverviewsAsync(
-			category: category.ToDomain(),
+			rankSorting: rankSorting.ToDomain(),
+			gameMode: gameMode.ToDomain(),
 			spawnsetFilter: spawnsetFilter,
 			authorFilter: authorFilter,
 			pageIndex: pageIndex,
@@ -54,9 +83,9 @@ public class CustomLeaderboardsController : ControllerBase
 	[HttpGet("global-leaderboard")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	public async Task<ActionResult<GetGlobalCustomLeaderboard>> GetGlobalCustomLeaderboardForCategory([Required] CustomLeaderboardCategory category)
+	public async Task<ActionResult<GetGlobalCustomLeaderboard>> GetGlobalCustomLeaderboardForCategory([Required] GameMode gameMode, [Required] CustomLeaderboardRankSorting rankSorting)
 	{
-		Model.GlobalCustomLeaderboard globalCustomLeaderboard = await _customLeaderboardRepository.GetGlobalCustomLeaderboardAsync(category.ToDomain());
+		Model.GlobalCustomLeaderboard globalCustomLeaderboard = await _customLeaderboardRepository.GetGlobalCustomLeaderboardAsync(gameMode.ToDomain(), rankSorting.ToDomain());
 		return new GetGlobalCustomLeaderboard
 		{
 			Entries = globalCustomLeaderboard.Entries
@@ -95,10 +124,10 @@ public class CustomLeaderboardsController : ControllerBase
 		Model.CustomLeaderboardsTotalData totalData = await _customLeaderboardRepository.GetCustomLeaderboardsTotalDataAsync();
 		return new GetTotalCustomLeaderboardData
 		{
-			LeaderboardsPerCategory = totalData.LeaderboardsPerCategory.ToDictionary(kvp => kvp.Key.ToMainApi(), kvp => kvp.Value),
-			PlayersPerCategory = totalData.PlayersPerCategory.ToDictionary(kvp => kvp.Key.ToMainApi(), kvp => kvp.Value),
-			ScoresPerCategory = totalData.ScoresPerCategory.ToDictionary(kvp => kvp.Key.ToMainApi(), kvp => kvp.Value),
-			SubmitsPerCategory = totalData.SubmitsPerCategory.ToDictionary(kvp => kvp.Key.ToMainApi(), kvp => kvp.Value),
+			LeaderboardsPerGameMode = totalData.LeaderboardsPerGameMode.ToDictionary(kvp => kvp.Key.ToMainApi(), kvp => kvp.Value),
+			PlayersPerGameMode = totalData.PlayersPerGameMode.ToDictionary(kvp => kvp.Key.ToMainApi(), kvp => kvp.Value),
+			ScoresPerGameMode = totalData.ScoresPerGameMode.ToDictionary(kvp => kvp.Key.ToMainApi(), kvp => kvp.Value),
+			SubmitsPerGameMode = totalData.SubmitsPerGameMode.ToDictionary(kvp => kvp.Key.ToMainApi(), kvp => kvp.Value),
 			TotalPlayers = totalData.TotalPlayers,
 		};
 	}

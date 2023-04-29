@@ -19,7 +19,7 @@ public static class CustomLeaderboardConverters
 		DateLastPlayed = customLeaderboard.DateLastPlayed,
 		SubmitCount = customLeaderboard.TotalRunsSubmitted,
 		PlayerCount = customLeaderboard.PlayerCount,
-		Category = customLeaderboard.Category.ToDdLiveApi(),
+		Category = GetCategory(customLeaderboard.RankSorting, customLeaderboard.GameMode),
 		TopPlayerId = customLeaderboard.WorldRecord?.PlayerId,
 		TopPlayerName = customLeaderboard.WorldRecord?.PlayerName,
 		WorldRecord = customLeaderboard.WorldRecord?.Time.ToSecondsTime(),
@@ -35,7 +35,7 @@ public static class CustomLeaderboardConverters
 		Daggers = customLeaderboard.Daggers?.ToDdLiveApi(),
 		DateCreated = customLeaderboard.DateCreated,
 		SubmitCount = customLeaderboard.TotalRunsSubmitted,
-		Category = customLeaderboard.Category.ToDdLiveApi(),
+		Category = GetCategory(customLeaderboard.RankSorting, customLeaderboard.GameMode),
 		IsFeatured = customLeaderboard.Daggers != null,
 		DateLastPlayed = customLeaderboard.DateLastPlayed,
 		CustomEntries = customLeaderboard.CustomEntries.ConvertAll(ce => ce.ToDdLiveApi(customEntryReplayIds.Contains(ce.Id))),
@@ -79,15 +79,6 @@ public static class CustomLeaderboardConverters
 		HasReplay = hasReplay,
 	};
 
-	private static DdLiveApi.CustomLeaderboardCategoryDdLive ToDdLiveApi(this CustomLeaderboardCategory category) => category switch
-	{
-		CustomLeaderboardCategory.Survival => DdLiveApi.CustomLeaderboardCategoryDdLive.Survival,
-		CustomLeaderboardCategory.TimeAttack => DdLiveApi.CustomLeaderboardCategoryDdLive.TimeAttack,
-		CustomLeaderboardCategory.Speedrun => DdLiveApi.CustomLeaderboardCategoryDdLive.Speedrun,
-		CustomLeaderboardCategory.Race => DdLiveApi.CustomLeaderboardCategoryDdLive.Race,
-		_ => throw new UnreachableException(),
-	};
-
 	private static DdLiveApi.CustomLeaderboardsClientDdLive ToDdLiveApi(this CustomLeaderboardsClient client) => client switch
 	{
 		CustomLeaderboardsClient.DevilDaggersCustomLeaderboards => DdLiveApi.CustomLeaderboardsClientDdLive.DevilDaggersCustomLeaderboards,
@@ -106,4 +97,23 @@ public static class CustomLeaderboardConverters
 		CustomLeaderboardDagger.Leviathan => DdLiveApi.CustomLeaderboardDaggerDdLive.Leviathan,
 		_ => throw new UnreachableException(),
 	};
+
+	/// <summary>
+	/// Workaround to keep the API backwards compatible with the old categories.
+	/// </summary>
+	private static DdLiveApi.CustomLeaderboardCategoryDdLive GetCategory(CustomLeaderboardRankSorting rankSorting, SpawnsetGameMode gameMode)
+	{
+		if (rankSorting == CustomLeaderboardRankSorting.TimeAsc)
+		{
+			return gameMode switch
+			{
+				SpawnsetGameMode.Survival => DdLiveApi.CustomLeaderboardCategoryDdLive.Speedrun,
+				SpawnsetGameMode.TimeAttack => DdLiveApi.CustomLeaderboardCategoryDdLive.TimeAttack,
+				SpawnsetGameMode.Race => DdLiveApi.CustomLeaderboardCategoryDdLive.Race,
+				_ => throw new UnreachableException(),
+			};
+		}
+
+		return DdLiveApi.CustomLeaderboardCategoryDdLive.Survival;
+	}
 }

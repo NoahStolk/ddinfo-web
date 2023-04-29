@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Api.Main.Players;
+using DevilDaggersInfo.Api.Main.Spawnsets;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
@@ -82,7 +83,8 @@ public class PlayersController : ControllerBase
 			{
 				ce.Time,
 				ce.CustomLeaderboardId,
-				ce.CustomLeaderboard!.Category,
+				ce.CustomLeaderboard!.Spawnset!.GameMode,
+				ce.CustomLeaderboard!.RankSorting,
 				ce.CustomLeaderboard.Leviathan,
 				ce.CustomLeaderboard.Devil,
 				ce.CustomLeaderboard.Golden,
@@ -93,54 +95,50 @@ public class PlayersController : ControllerBase
 			.Where(ce => ce.IsFeatured)
 			.ToListAsync();
 
-		Dictionary<CustomLeaderboardCategory, int> customLeaderboardsByCategory = await _dbContext.CustomLeaderboards
-			.AsNoTracking()
-			.Select(cl => new { cl.Category, cl.IsFeatured })
-			.Where(cl => cl.IsFeatured)
-			.GroupBy(cl => cl.Category)
-			.Select(g => new { Category = g.Key, Count = g.Count() })
-			.ToDictionaryAsync(a => a.Category, a => a.Count);
-
 		List<GetPlayerCustomLeaderboardStatistics> stats = new();
-		foreach (CustomLeaderboardCategory category in Enum.GetValues<CustomLeaderboardCategory>())
+		foreach (SpawnsetGameMode gameMode in Enum.GetValues<SpawnsetGameMode>())
 		{
-			var customEntriesByCategory = customEntries.Where(c => c.Category == category);
-			if (!customEntriesByCategory.Any() || !customLeaderboardsByCategory.ContainsKey(category))
-				continue;
-
-			int leviathanDaggers = 0;
-			int devilDaggers = 0;
-			int goldenDaggers = 0;
-			int silverDaggers = 0;
-			int bronzeDaggers = 0;
-			int defaultDaggers = 0;
-			int played = 0;
-			foreach (var customEntry in customEntriesByCategory)
+			foreach (CustomLeaderboardRankSorting rankSorting in Enum.GetValues<CustomLeaderboardRankSorting>())
 			{
-				played++;
-				switch (CustomLeaderboardUtils.GetDaggerFromTime(category, customEntry.Time, customEntry.Leviathan, customEntry.Devil, customEntry.Golden, customEntry.Silver, customEntry.Bronze))
+				var filteredCustomEntries = customEntries.Where(ce => ce.GameMode == gameMode && ce.RankSorting == rankSorting).ToList();
+				if (filteredCustomEntries.Count == 0)
+					continue;
+
+				int leviathanDaggers = 0;
+				int devilDaggers = 0;
+				int goldenDaggers = 0;
+				int silverDaggers = 0;
+				int bronzeDaggers = 0;
+				int defaultDaggers = 0;
+				int played = 0;
+				foreach (var customEntry in filteredCustomEntries)
 				{
-					case CustomLeaderboardDagger.Leviathan: leviathanDaggers++; break;
-					case CustomLeaderboardDagger.Devil: devilDaggers++; break;
-					case CustomLeaderboardDagger.Golden: goldenDaggers++; break;
-					case CustomLeaderboardDagger.Silver: silverDaggers++; break;
-					case CustomLeaderboardDagger.Bronze: bronzeDaggers++; break;
-					default: defaultDaggers++; break;
+					played++;
+					switch (CustomLeaderboardUtils.GetDaggerFromStat(rankSorting, customEntry.Time, customEntry.Leviathan, customEntry.Devil, customEntry.Golden, customEntry.Silver, customEntry.Bronze))
+					{
+						case CustomLeaderboardDagger.Leviathan: leviathanDaggers++; break;
+						case CustomLeaderboardDagger.Devil: devilDaggers++; break;
+						case CustomLeaderboardDagger.Golden: goldenDaggers++; break;
+						case CustomLeaderboardDagger.Silver: silverDaggers++; break;
+						case CustomLeaderboardDagger.Bronze: bronzeDaggers++; break;
+						default: defaultDaggers++; break;
+					}
 				}
-			}
 
-			stats.Add(new()
-			{
-				CustomLeaderboardCategory = category.ToMainApi(),
-				LeviathanDaggerCount = leviathanDaggers,
-				DevilDaggerCount = devilDaggers,
-				GoldenDaggerCount = goldenDaggers,
-				SilverDaggerCount = silverDaggers,
-				BronzeDaggerCount = bronzeDaggers,
-				DefaultDaggerCount = defaultDaggers,
-				LeaderboardsPlayedCount = played,
-				TotalCount = customLeaderboardsByCategory[category],
-			});
+				stats.Add(new()
+				{
+					GameMode = gameMode.ToMainApi(),
+					RankSorting = rankSorting.ToMainApi(),
+					LeviathanDaggerCount = leviathanDaggers,
+					DevilDaggerCount = devilDaggers,
+					GoldenDaggerCount = goldenDaggers,
+					SilverDaggerCount = silverDaggers,
+					BronzeDaggerCount = bronzeDaggers,
+					DefaultDaggerCount = defaultDaggers,
+					LeaderboardsPlayedCount = played,
+					TotalCount = filteredCustomEntries.Count,
+				});
+			}
 		}
 
 		return stats;

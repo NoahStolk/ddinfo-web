@@ -1,5 +1,6 @@
 @page "/custom/leaderboards"
 @using DevilDaggersInfo.Api.Main.CustomLeaderboards
+@using DevilDaggersInfo.Api.Main.Spawnsets
 @using DevilDaggersInfo.Common
 @using DevilDaggersInfo.Core.CriteriaExpression.Extensions
 @using DevilDaggersInfo.Web.Client.Components
@@ -33,8 +34,10 @@ else
 			<input class="bg-black border-gray-3 border-2 w-48" value="@SpawnsetFilter" @onchange="ChangeInputSpawnsetName" />
 			<span>Author name</span>
 			<input class="bg-black border-gray-3 border-2 w-48" value="@AuthorFilter" @onchange="ChangeInputAuthorName" />
-			<span>Category</span>
-			<SelectList CssWidthClass="w-48" CssOpenerClass="pl-2" TValue="CustomLeaderboardCategory" Values="@(_categories.ToList())" DisplayFunction="@(clc => clc.ToDisplayString())" Default="EnumConvert.GetCustomLeaderboardCategory(Category)" Selected="@SetCategory" />
+			<span>Game mode</span>
+			<SelectList CssWidthClass="w-48" CssOpenerClass="pl-2" TValue="GameMode" Values="@(_gameModes)" DisplayFunction="@(gm => gm.ToCore().ToDisplayString())" Default="EnumConvert.GetGameMode(GameMode)" Selected="@SetGameMode" />
+			<span>Rank sorting</span>
+			<SelectList CssWidthClass="w-48" CssOpenerClass="pl-2" TValue="CustomLeaderboardRankSorting" Values="@(_rankSortings)" DisplayFunction="@(rs => rs.ToDisplayString())" Default="EnumConvert.GetRankSorting(RankSorting)" Selected="@SetRankSorting" />
 		</div>
 
 		<CascadingValue Value="this">
@@ -90,13 +93,13 @@ else
 		}
 	}
 
-	<Heading Level="2" Title="Categories" />
+	<Heading Level="2" Title="Game Modes" />
 
-	@foreach (CustomLeaderboardCategory category in _categories)
+	@foreach (GameMode gameMode in _gameModes)
 	{
 		<div class="flex">
-			<div class="flex-none w-36 sm:w-64"><b>@category.ToDisplayString()</b></div>
-			<div class="flex-1">@category.GetDescription()</div>
+			<div class="flex-none w-36 sm:w-64"><b>@gameMode.ToCore().ToDisplayString()</b></div>
+			<div class="flex-1">@gameMode.GetDescription()</div>
 		</div>
 	}
 
@@ -129,26 +132,26 @@ else
 	<Heading Level="2" Title="Statistics" />
 
 	<div class="grid grid-cols-2 md:grid-cols-5">
-		<div class="font-bold">Category</div>
+		<div class="font-bold">Game Mode</div>
 		<div class="text-right font-bold">Leaderboards</div>
 		<div class="text-right font-bold hidden md:block">Players</div>
 		<div class="text-right font-bold hidden md:block">Scores</div>
 		<div class="text-right font-bold hidden md:block">Submissions*</div>
 
-		@foreach (CustomLeaderboardCategory category in _categories)
+		@foreach (GameMode gameMode in _gameModes)
 		{
-			<div>@category.ToDisplayString()</div>
-			<div class="text-right">@GetTotalCustomLeaderboardData.LeaderboardsPerCategory[category].ToString("N0")</div>
-			<div class="text-right hidden md:block">@GetTotalCustomLeaderboardData.PlayersPerCategory[category].ToString("N0")</div>
-			<div class="text-right hidden md:block">@GetTotalCustomLeaderboardData.ScoresPerCategory[category].ToString("N0")</div>
-			<div class="text-right hidden md:block">@GetTotalCustomLeaderboardData.SubmitsPerCategory[category].ToString("N0")</div>
+			<div>@gameMode.ToCore().ToDisplayString()</div>
+			<div class="text-right">@GetTotalCustomLeaderboardData.LeaderboardsPerGameMode[gameMode].ToString("N0")</div>
+			<div class="text-right hidden md:block">@GetTotalCustomLeaderboardData.PlayersPerGameMode[gameMode].ToString("N0")</div>
+			<div class="text-right hidden md:block">@GetTotalCustomLeaderboardData.ScoresPerGameMode[gameMode].ToString("N0")</div>
+			<div class="text-right hidden md:block">@GetTotalCustomLeaderboardData.SubmitsPerGameMode[gameMode].ToString("N0")</div>
 		}
 
 		<div class="font-bold">Total</div>
-		<div class="text-right font-bold">@GetTotalCustomLeaderboardData.LeaderboardsPerCategory.Values.Sum().ToString("N0")</div>
+		<div class="text-right font-bold">@GetTotalCustomLeaderboardData.LeaderboardsPerGameMode.Values.Sum().ToString("N0")</div>
 		<div class="text-right font-bold hidden md:block">@GetTotalCustomLeaderboardData.TotalPlayers.ToString("N0")</div>
-		<div class="text-right font-bold hidden md:block">@GetTotalCustomLeaderboardData.ScoresPerCategory.Values.Sum().ToString("N0")</div>
-		<div class="text-right font-bold hidden md:block">@GetTotalCustomLeaderboardData.SubmitsPerCategory.Values.Sum().ToString("N0")</div>
+		<div class="text-right font-bold hidden md:block">@GetTotalCustomLeaderboardData.ScoresPerGameMode.Values.Sum().ToString("N0")</div>
+		<div class="text-right font-bold hidden md:block">@GetTotalCustomLeaderboardData.SubmitsPerGameMode.Values.Sum().ToString("N0")</div>
 	</div>
 
 	<i class="inline-block mt-3 hidden md:block">* Submissions are counted since @Constants.TrackingCustomLeaderboardSubmitCounts.ToString(StringFormats.DateFormat).</i>

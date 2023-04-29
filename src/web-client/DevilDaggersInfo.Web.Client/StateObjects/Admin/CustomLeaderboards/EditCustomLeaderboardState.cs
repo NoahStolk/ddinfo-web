@@ -6,7 +6,7 @@ namespace DevilDaggersInfo.Web.Client.StateObjects.Admin.CustomLeaderboards;
 public class EditCustomLeaderboardState : IStateObject<EditCustomLeaderboard>
 {
 	[Required]
-	public CustomLeaderboardCategory Category { get; set; }
+	public CustomLeaderboardRankSorting RankSorting { get; set; }
 
 	public AddCustomLeaderboardDaggersState Daggers { get; set; } = new();
 
@@ -87,7 +87,7 @@ public class EditCustomLeaderboardState : IStateObject<EditCustomLeaderboard>
 
 	public EditCustomLeaderboard ToModel() => new()
 	{
-		Category = Category,
+		RankSorting = RankSorting,
 		Daggers = Daggers.ToModel(),
 		IsFeatured = IsFeatured,
 		GemsCollectedCriteria = GemsCollectedCriteria.ToModel(),

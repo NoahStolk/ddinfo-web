@@ -5,7 +5,6 @@ using DevilDaggersInfo.Core.CriteriaExpression;
 using DevilDaggersInfo.Core.CriteriaExpression.Extensions;
 using DevilDaggersInfo.Core.Encryption;
 using DevilDaggersInfo.Core.Replay;
-using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Core.Versioning;
 using DevilDaggersInfo.Web.Server.Domain.Commands.CustomEntries;
 using DevilDaggersInfo.Web.Server.Domain.Configuration;
@@ -133,13 +132,14 @@ public class CustomEntryProcessor
 			LogAndThrowValidationException(uploadRequest, "This spawnset exists on DevilDaggers.info, but doesn't have a leaderboard.", spawnset.Name);
 
 		// Validate game mode.
-		GameMode requiredGameMode = customLeaderboard.Category.RequiredGameModeForCategory();
-		if (uploadRequest.GameMode != (byte)requiredGameMode)
-			LogAndThrowValidationException(uploadRequest, $"Incorrect game mode '{(GameMode)uploadRequest.GameMode}' for category '{customLeaderboard.Category}'. Must be '{requiredGameMode}'.", spawnset.Name);
+		// ! Navigation property.
+		SpawnsetGameMode spawnsetGameMode = customLeaderboard.Spawnset!.GameMode;
+		if (uploadRequest.GameMode != (byte)spawnsetGameMode)
+			LogAndThrowValidationException(uploadRequest, $"Incorrect game mode '{(SpawnsetGameMode)uploadRequest.GameMode}'. Must be '{spawnsetGameMode}'.", spawnset.Name);
 
 		// Validate TimeAttack and Race.
-		if (customLeaderboard.Category.IsTimeAttackOrRace() && !uploadRequest.TimeAttackOrRaceFinished)
-			LogAndThrowValidationException(uploadRequest, $"Didn't complete the {customLeaderboard.Category} spawnset.", spawnset.Name);
+		if (spawnsetGameMode is SpawnsetGameMode.TimeAttack or SpawnsetGameMode.Race && !uploadRequest.TimeAttackOrRaceFinished)
+			LogAndThrowValidationException(uploadRequest, $"Didn't complete the {spawnsetGameMode} spawnset.", spawnset.Name);
 
 		try
 		{
@@ -160,7 +160,7 @@ public class CustomEntryProcessor
 			};
 		}
 
-		// Make sure HomingDaggers is not negative (happens rarely as a bug, and also for spawnsets with homing disabled which we don't want to display values for anyway).
+		// Make sure HomingDaggers is not negative (happens rarely in DD game memory for some reason). We also do this for spawnsets with homing disabled which we don't want to display values for anyway.
 		uploadRequest.GameData.HomingStored = Array.ConvertAll(uploadRequest.GameData.HomingStored, i => Math.Max(0, i));
 
 		CustomEntryEntity? customEntry = _dbContext.CustomEntries.FirstOrDefault(ce => ce.PlayerId == uploadRequest.PlayerId && ce.CustomLeaderboardId == customLeaderboard.Id);
@@ -185,21 +185,28 @@ public class CustomEntryProcessor
 			};
 		}
 
-		// User is already on the leaderboard, but did not get a better score.
-		bool isAscending = customLeaderboard.Category.IsAscending();
-		if (isAscending && customEntry.Time <= requestTimeAsInt || !isAscending && customEntry.Time >= requestTimeAsInt)
+		bool isHighscore = customLeaderboard.RankSorting switch
 		{
+			CustomLeaderboardRankSorting.TimeDesc => requestTimeAsInt > customEntry.Time,
+			CustomLeaderboardRankSorting.TimeAsc => requestTimeAsInt < customEntry.Time,
+			_ => throw new InvalidOperationException($"Rank sorting '{customLeaderboard.RankSorting}' is not supported."),
+		};
+
+		if (isHighscore)
+		{
+			// User got a highscore.
 			return new()
 			{
 				Leaderboard = ToLeaderboardSummary(customLeaderboard),
-				Success = await ProcessNoHighscoreAsync(uploadRequest, customLeaderboard, spawnset.Name, customEntry),
+				Success = await ProcessHighscoreAsync(uploadRequest, customLeaderboard, spawnset.Name, customEntry),
 			};
 		}
 
+		// User is already on the leaderboard, but did not get a better score.
 		return new()
 		{
 			Leaderboard = ToLeaderboardSummary(customLeaderboard),
-			Success = await ProcessHighscoreAsync(uploadRequest, customLeaderboard, spawnset.Name, customEntry),
+			Success = await ProcessNoHighscoreAsync(uploadRequest, customLeaderboard, spawnset.Name, customEntry),
 		};
 	}
 
@@ -380,12 +387,12 @@ public class CustomEntryProcessor
 		await WriteReplayFile(newCustomEntry.Id, uploadRequest.ReplayData);
 
 		// Calculate rank.
-		List<CustomEntryEntity> entries = await GetOrderedEntries(customLeaderboard.Id, customLeaderboard.Category);
+		List<CustomEntryEntity> entries = await GetOrderedEntries(customLeaderboard.Id, customLeaderboard.RankSorting);
 		int rank = GetRank(entries, uploadRequest.PlayerId);
 		int totalPlayers = entries.Count;
 
 		_submissionLogger.LogHighscore(
-			customLeaderboard.DaggerFromTime(newCustomEntry.Time) ?? CustomLeaderboardDagger.Silver,
+			customLeaderboard.DaggerFromStat(newCustomEntry.Time) ?? CustomLeaderboardDagger.Silver,
 			customLeaderboard.Id,
 			$"`{uploadRequest.PlayerName}` just entered the `{spawnsetName}` leaderboard!",
 			rank,
@@ -396,7 +403,7 @@ public class CustomEntryProcessor
 		List<int> replayIds = GetExistingReplayIds(entries.ConvertAll(ce => ce.Id));
 		return new()
 		{
-			SortedEntries = entries.Select((e, i) => ToEntry(e, i + 1, customLeaderboard.DaggerFromTime(e.Time), replayIds)).ToList(),
+			SortedEntries = entries.Select((e, i) => ToEntry(e, i + 1, customLeaderboard.DaggerFromStat(e.Time), replayIds)).ToList(),
 			SubmissionType = SubmissionType.FirstScore,
 			RankState = new(rank),
 			TimeState = new(newCustomEntry.Time.ToSecondsTime()),
@@ -426,12 +433,12 @@ public class CustomEntryProcessor
 
 		Log(uploadRequest, spawnsetName);
 
-		List<CustomEntryEntity> entries = await GetOrderedEntries(customLeaderboard.Id, customLeaderboard.Category);
+		List<CustomEntryEntity> entries = await GetOrderedEntries(customLeaderboard.Id, customLeaderboard.RankSorting);
 		List<int> replayIds = GetExistingReplayIds(entries.ConvertAll(ce => ce.Id));
 
 		return new()
 		{
-			SortedEntries = entries.Select((e, i) => ToEntry(e, i + 1, customLeaderboard.DaggerFromTime(e.Time), replayIds)).ToList(),
+			SortedEntries = entries.Select((e, i) => ToEntry(e, i + 1, customLeaderboard.DaggerFromStat(e.Time), replayIds)).ToList(),
 			SubmissionType = SubmissionType.NoHighscore,
 			TimeState = new(uploadRequest.TimeInSeconds, uploadRequest.TimeInSeconds - currentEntry.Time.ToSecondsTime()),
 			EnemiesKilledState = new(uploadRequest.EnemiesKilled, uploadRequest.EnemiesKilled - currentEntry.EnemiesKilled),
@@ -453,7 +460,7 @@ public class CustomEntryProcessor
 	private async Task<SuccessfulUploadResponse> ProcessHighscoreAsync(UploadRequest uploadRequest, CustomLeaderboardEntity customLeaderboard, string spawnsetName, CustomEntryEntity customEntry)
 	{
 		// Store old stats.
-		List<CustomEntryEntity> entries = await GetOrderedEntries(customLeaderboard.Id, customLeaderboard.Category);
+		List<CustomEntryEntity> entries = await GetOrderedEntries(customLeaderboard.Id, customLeaderboard.RankSorting);
 		int oldRank = GetRank(entries, uploadRequest.PlayerId);
 		int oldTime = customEntry.Time;
 		int oldGemsCollected = customEntry.GemsCollected;
@@ -509,7 +516,7 @@ public class CustomEntryProcessor
 		await WriteReplayFile(customEntry.Id, uploadRequest.ReplayData);
 
 		// Calculate new rank, diffs, etc.
-		entries = await GetOrderedEntries(customLeaderboard.Id, customLeaderboard.Category);
+		entries = await GetOrderedEntries(customLeaderboard.Id, customLeaderboard.RankSorting);
 		int rank = GetRank(entries, uploadRequest.PlayerId);
 
 		int rankDiff = oldRank - rank;
@@ -529,7 +536,7 @@ public class CustomEntryProcessor
 		int levelUpTime4Diff = customEntry.LevelUpTime4 - oldLevelUpTime4;
 
 		_submissionLogger.LogHighscore(
-			customLeaderboard.DaggerFromTime(customEntry.Time) ?? CustomLeaderboardDagger.Silver,
+			customLeaderboard.DaggerFromStat(customEntry.Time) ?? CustomLeaderboardDagger.Silver,
 			customLeaderboard.Id,
 			$"`{uploadRequest.PlayerName}` just got {FormatTimeString(customEntry.Time.ToSecondsTime())} seconds on the `{spawnsetName}` leaderboard, beating their previous highscore of {FormatTimeString((customEntry.Time - timeDiff).ToSecondsTime())} by {FormatTimeString(Math.Abs(timeDiff.ToSecondsTime()))} seconds!",
 			rank,
@@ -541,7 +548,7 @@ public class CustomEntryProcessor
 
 		return new()
 		{
-			SortedEntries = entries.Select((e, i) => ToEntry(e, i + 1, customLeaderboard.DaggerFromTime(e.Time), replayIds)).ToList(),
+			SortedEntries = entries.Select((e, i) => ToEntry(e, i + 1, customLeaderboard.DaggerFromStat(e.Time), replayIds)).ToList(),
 			SubmissionType = SubmissionType.NewHighscore,
 			RankState = new(rank, rankDiff),
 			TimeState = new(customEntry.Time.ToSecondsTime(), timeDiff.ToSecondsTime()),
@@ -627,7 +634,7 @@ public class CustomEntryProcessor
 		customLeaderboard.TotalRunsSubmitted++;
 	}
 
-	private async Task<List<CustomEntryEntity>> GetOrderedEntries(int customLeaderboardId, CustomLeaderboardCategory category)
+	private async Task<List<CustomEntryEntity>> GetOrderedEntries(int customLeaderboardId, CustomLeaderboardRankSorting rankSorting)
 	{
 		List<CustomEntryEntity> entries = await _dbContext.CustomEntries
 			.AsNoTracking()
@@ -635,7 +642,7 @@ public class CustomEntryProcessor
 			.Where(ce => ce.CustomLeaderboardId == customLeaderboardId)
 			.ToListAsync();
 
-		return entries.Sort(category).ToList();
+		return entries.Sort(rankSorting).ToList();
 	}
 
 	private static int GetRank(List<CustomEntryEntity> orderedEntries, int playerId)
@@ -669,52 +676,62 @@ public class CustomEntryProcessor
 		return customEntryIds.Where(id => File.Exists(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{id}.ddreplay"))).ToList();
 	}
 
-	// ! Navigation property.
-	private static CustomEntry ToEntry(CustomEntryEntity customEntry, int rank, CustomLeaderboardDagger? dagger, List<int> replayIds) => new()
+	private static CustomEntry ToEntry(CustomEntryEntity customEntry, int rank, CustomLeaderboardDagger? dagger, List<int> replayIds)
 	{
-		ClientVersion = customEntry.ClientVersion,
-		DaggersFired = customEntry.DaggersFired,
-		DaggersHit = customEntry.DaggersHit,
-		DeathType = customEntry.DeathType,
-		EnemiesAlive = customEntry.EnemiesAlive,
-		EnemiesKilled = customEntry.EnemiesKilled,
-		GemsCollected = customEntry.GemsCollected,
-		GemsDespawned = customEntry.GemsDespawned,
-		GemsEaten = customEntry.GemsEaten,
-		GemsTotal = customEntry.GemsTotal,
-		HasReplay = replayIds.Contains(customEntry.Id),
-		Id = customEntry.Id,
-		HomingEaten = customEntry.HomingEaten,
-		HomingStored = customEntry.HomingStored,
-		LevelUpTime2 = customEntry.LevelUpTime2,
-		LevelUpTime3 = customEntry.LevelUpTime3,
-		LevelUpTime4 = customEntry.LevelUpTime4,
-		PlayerId = customEntry.PlayerId,
-		PlayerName = customEntry.Player!.PlayerName,
-		Rank = rank,
-		SubmitDate = customEntry.SubmitDate,
-		Time = customEntry.Time,
-		CustomLeaderboardDagger = dagger,
-		Client = default, // TODO
-		CountryCode = null, // TODO
-	};
+		if (customEntry.Player == null)
+			throw new InvalidOperationException("Player is not included.");
 
-	// ! Navigation property.
-	private static CustomLeaderboardSummary ToLeaderboardSummary(CustomLeaderboardEntity customLeaderboard) => new()
-	{
-		Category = customLeaderboard.Category,
-		Daggers = !customLeaderboard.IsFeatured ? null : new()
+		return new()
 		{
-			Bronze = customLeaderboard.Bronze,
-			Silver = customLeaderboard.Silver,
-			Golden = customLeaderboard.Golden,
-			Devil = customLeaderboard.Devil,
-			Leviathan = customLeaderboard.Leviathan,
-		},
-		Id = customLeaderboard.Id,
-		SpawnsetId = customLeaderboard.SpawnsetId,
-		SpawnsetName = customLeaderboard.Spawnset!.Name,
-	};
+			ClientVersion = customEntry.ClientVersion,
+			DaggersFired = customEntry.DaggersFired,
+			DaggersHit = customEntry.DaggersHit,
+			DeathType = customEntry.DeathType,
+			EnemiesAlive = customEntry.EnemiesAlive,
+			EnemiesKilled = customEntry.EnemiesKilled,
+			GemsCollected = customEntry.GemsCollected,
+			GemsDespawned = customEntry.GemsDespawned,
+			GemsEaten = customEntry.GemsEaten,
+			GemsTotal = customEntry.GemsTotal,
+			HasReplay = replayIds.Contains(customEntry.Id),
+			Id = customEntry.Id,
+			HomingEaten = customEntry.HomingEaten,
+			HomingStored = customEntry.HomingStored,
+			LevelUpTime2 = customEntry.LevelUpTime2,
+			LevelUpTime3 = customEntry.LevelUpTime3,
+			LevelUpTime4 = customEntry.LevelUpTime4,
+			PlayerId = customEntry.PlayerId,
+			PlayerName = customEntry.Player.PlayerName,
+			Rank = rank,
+			SubmitDate = customEntry.SubmitDate,
+			Time = customEntry.Time,
+			CustomLeaderboardDagger = dagger,
+			Client = default, // TODO
+			CountryCode = null, // TODO
+		};
+	}
+
+	private static CustomLeaderboardSummary ToLeaderboardSummary(CustomLeaderboardEntity customLeaderboard)
+	{
+		if (customLeaderboard.Spawnset == null)
+			throw new InvalidOperationException("Spawnset is not included.");
+
+		return new()
+		{
+			RankSorting = customLeaderboard.RankSorting,
+			Daggers = !customLeaderboard.IsFeatured ? null : new()
+			{
+				Bronze = customLeaderboard.Bronze,
+				Silver = customLeaderboard.Silver,
+				Golden = customLeaderboard.Golden,
+				Devil = customLeaderboard.Devil,
+				Leviathan = customLeaderboard.Leviathan,
+			},
+			Id = customLeaderboard.Id,
+			SpawnsetId = customLeaderboard.SpawnsetId,
+			SpawnsetName = customLeaderboard.Spawnset.Name,
+		};
+	}
 
 #pragma warning disable S3871, RCS1194
 	private sealed class CustomEntryCriteriaException : Exception

@@ -6,12 +6,10 @@ namespace DevilDaggersInfo.Web.Server.Domain.Admin.Converters.ApiToDomain;
 
 public static class CustomLeaderboardConverters
 {
-	public static Entities.Enums.CustomLeaderboardCategory ToDomain(this AdminApi.CustomLeaderboardCategory category) => category switch
+	public static Entities.Enums.CustomLeaderboardRankSorting ToDomain(this AdminApi.CustomLeaderboardRankSorting rankSorting) => rankSorting switch
 	{
-		AdminApi.CustomLeaderboardCategory.Survival => Entities.Enums.CustomLeaderboardCategory.Survival,
-		AdminApi.CustomLeaderboardCategory.TimeAttack => Entities.Enums.CustomLeaderboardCategory.TimeAttack,
-		AdminApi.CustomLeaderboardCategory.Speedrun => Entities.Enums.CustomLeaderboardCategory.Speedrun,
-		AdminApi.CustomLeaderboardCategory.Race => Entities.Enums.CustomLeaderboardCategory.Race,
+		AdminApi.CustomLeaderboardRankSorting.TimeDesc => Entities.Enums.CustomLeaderboardRankSorting.TimeDesc,
+		AdminApi.CustomLeaderboardRankSorting.TimeAsc => Entities.Enums.CustomLeaderboardRankSorting.TimeAsc,
 		_ => throw new UnreachableException(),
 	};
 

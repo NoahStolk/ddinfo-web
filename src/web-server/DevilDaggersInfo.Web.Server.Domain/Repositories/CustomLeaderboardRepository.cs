@@ -26,7 +26,8 @@ public class CustomLeaderboardRepository
 	}
 
 	public async Task<Page<CustomLeaderboardOverview>> GetCustomLeaderboardOverviewsAsync(
-		CustomLeaderboardCategory? category,
+		CustomLeaderboardRankSorting? rankSorting,
+		SpawnsetGameMode? gameMode,
 		string? spawnsetFilter,
 		string? authorFilter,
 		int pageIndex,
@@ -42,8 +43,14 @@ public class CustomLeaderboardRepository
 			.Include(cl => cl.Spawnset)
 				.ThenInclude(sf => sf!.Player);
 
-		if (category.HasValue)
-			customLeaderboardsQuery = customLeaderboardsQuery.Where(cl => category == cl.Category);
+		if (rankSorting.HasValue)
+			customLeaderboardsQuery = customLeaderboardsQuery.Where(cl => rankSorting == cl.RankSorting);
+
+		if (gameMode.HasValue)
+		{
+			// ! Navigation property.
+			customLeaderboardsQuery = customLeaderboardsQuery.Where(cl => gameMode == cl.Spawnset!.GameMode);
+		}
 
 		if (onlyFeatured)
 			customLeaderboardsQuery = customLeaderboardsQuery.Where(cl => cl.IsFeatured);
@@ -78,7 +85,7 @@ public class CustomLeaderboardRepository
 		List<CustomLeaderboardData> customLeaderboardData = new();
 		foreach (CustomLeaderboardEntity cl in customLeaderboards)
 		{
-			List<CustomEntrySummary> sortedCustomEntries = customEntries.Where(ce => ce.CustomLeaderboardId == cl.Id).Sort(cl.Category).ToList();
+			List<CustomEntrySummary> sortedCustomEntries = customEntries.Where(ce => ce.CustomLeaderboardId == cl.Id).Sort(cl.RankSorting).ToList();
 
 			CustomEntrySummary? worldRecord = sortedCustomEntries.Count == 0 ? null : sortedCustomEntries[0];
 			CustomLeaderboardOverviewWorldRecord? worldRecordModel = worldRecord == null ? null : new()
@@ -86,7 +93,7 @@ public class CustomLeaderboardRepository
 				Time = worldRecord.Time,
 				PlayerId = worldRecord.PlayerId,
 				PlayerName = worldRecord.PlayerName,
-				Dagger = cl.DaggerFromTime(worldRecord.Time),
+				Dagger = cl.DaggerFromStat(worldRecord.Time),
 			};
 
 			CustomEntrySummary? selectedEntry = sortedCustomEntries.Find(ce => ce.PlayerId == selectedPlayerId);
@@ -144,10 +151,9 @@ public class CustomLeaderboardRepository
 		// ! Navigation property.
 		return new()
 		{
-			Category = customLeaderboard.Category,
 			Criteria = GetCriteria(customLeaderboard),
 			CustomEntries = customLeaderboard.CustomEntries
-				.Sort(customLeaderboard.Category)
+				.Sort(customLeaderboard.RankSorting)
 				.Select((ce, i) =>
 				{
 					bool isOldDdcl = ce.Client == CustomLeaderboardsClient.DevilDaggersCustomLeaderboards;
@@ -161,7 +167,7 @@ public class CustomLeaderboardRepository
 						Client = ce.Client,
 						ClientVersion = ce.ClientVersion,
 						CountryCode = ce.Player!.CountryCode,
-						CustomLeaderboardDagger = customLeaderboard.DaggerFromTime(ce.Time),
+						CustomLeaderboardDagger = customLeaderboard.DaggerFromStat(ce.Time),
 						DaggersFired = ce.DaggersFired,
 						DaggersHit = ce.DaggersHit,
 						DeathType = ce.DeathType,
@@ -196,7 +202,9 @@ public class CustomLeaderboardRepository
 			},
 			DateCreated = customLeaderboard.DateCreated,
 			DateLastPlayed = customLeaderboard.DateLastPlayed,
+			GameMode = customLeaderboard.Spawnset!.GameMode,
 			Id = customLeaderboard.Id,
+			RankSorting = customLeaderboard.RankSorting,
 			SpawnsetHtmlDescription = customLeaderboard.Spawnset!.HtmlDescription,
 			SpawnsetName = customLeaderboard.Spawnset.Name,
 			SpawnsetAuthorId = customLeaderboard.Spawnset.PlayerId,
@@ -208,48 +216,50 @@ public class CustomLeaderboardRepository
 
 	public async Task<CustomLeaderboardsTotalData> GetCustomLeaderboardsTotalDataAsync()
 	{
-		var customLeaderboards = await _dbContext.CustomLeaderboards.AsNoTracking().Select(cl => new { cl.Id, cl.Category, cl.TotalRunsSubmitted }).ToListAsync();
+		// ! Navigation property.
+		var customLeaderboards = await _dbContext.CustomLeaderboards.AsNoTracking().Select(cl => new { cl.Id, cl.Spawnset!.GameMode, cl.TotalRunsSubmitted }).ToListAsync();
 
 		// ! Navigation property.
-		var customEntries = await _dbContext.CustomEntries.AsNoTracking().Select(ce => new { ce.PlayerId, ce.CustomLeaderboard!.Category }).ToListAsync();
+		var customEntries = await _dbContext.CustomEntries.AsNoTracking().Select(ce => new { ce.PlayerId, ce.CustomLeaderboard!.Spawnset!.GameMode }).ToListAsync();
 
-		Dictionary<CustomLeaderboardCategory, int> leaderboardsPerCategory = new();
-		Dictionary<CustomLeaderboardCategory, int> scoresPerCategory = new();
-		Dictionary<CustomLeaderboardCategory, int> submitsPerCategory = new();
-		Dictionary<CustomLeaderboardCategory, int> playersPerCategory = new();
-		foreach (CustomLeaderboardCategory category in Enum.GetValues<CustomLeaderboardCategory>())
+		Dictionary<SpawnsetGameMode, int> leaderboardsPerGameMode = new();
+		Dictionary<SpawnsetGameMode, int> scoresPerGameMode = new();
+		Dictionary<SpawnsetGameMode, int> submitsPerGameMode = new();
+		Dictionary<SpawnsetGameMode, int> playersPerGameMode = new();
+		foreach (SpawnsetGameMode gameMode in Enum.GetValues<SpawnsetGameMode>())
 		{
-			leaderboardsPerCategory[category] = customLeaderboards.Count(cl => cl.Category == category);
-			scoresPerCategory[category] = customEntries.Count(cl => cl.Category == category);
-			submitsPerCategory[category] = customLeaderboards.Where(cl => cl.Category == category).Sum(cl => cl.TotalRunsSubmitted);
-			playersPerCategory[category] = customEntries.Where(cl => cl.Category == category).DistinctBy(cl => cl.PlayerId).Count();
+			leaderboardsPerGameMode[gameMode] = customLeaderboards.Count(cl => cl.GameMode == gameMode);
+			scoresPerGameMode[gameMode] = customEntries.Count(ce => ce.GameMode == gameMode);
+			submitsPerGameMode[gameMode] = customLeaderboards.Where(cl => cl.GameMode == gameMode).Sum(cl => cl.TotalRunsSubmitted);
+			playersPerGameMode[gameMode] = customEntries.Where(ce => ce.GameMode == gameMode).DistinctBy(cl => cl.PlayerId).Count();
 		}
 
 		return new()
 		{
-			LeaderboardsPerCategory = leaderboardsPerCategory,
-			ScoresPerCategory = scoresPerCategory,
-			SubmitsPerCategory = submitsPerCategory,
-			PlayersPerCategory = playersPerCategory,
+			LeaderboardsPerGameMode = leaderboardsPerGameMode,
+			ScoresPerGameMode = scoresPerGameMode,
+			SubmitsPerGameMode = submitsPerGameMode,
+			PlayersPerGameMode = playersPerGameMode,
 			TotalPlayers = customEntries.DistinctBy(ce => ce.PlayerId).Count(),
 		};
 	}
 
-	public async Task<GlobalCustomLeaderboard> GetGlobalCustomLeaderboardAsync(CustomLeaderboardCategory category)
+	public async Task<GlobalCustomLeaderboard> GetGlobalCustomLeaderboardAsync(SpawnsetGameMode gameMode, CustomLeaderboardRankSorting rankSorting)
 	{
 		// ! Navigation property.
 		List<CustomLeaderboardEntity> customLeaderboards = await _dbContext.CustomLeaderboards
 			.AsNoTracking()
+			.Include(cl => cl.Spawnset)
 			.Include(cl => cl.CustomEntries!)
 				.ThenInclude(ce => ce.Player)
-			.Where(ce => ce.Category == category && ce.IsFeatured)
+			.Where(cl => cl.Spawnset!.GameMode == gameMode && cl.RankSorting == rankSorting && cl.IsFeatured)
 			.ToListAsync();
 
 		Dictionary<int, (string Name, GlobalCustomLeaderboardEntryData Data)> globalData = new();
 		foreach (CustomLeaderboardEntity customLeaderboard in customLeaderboards)
 		{
 			// ! Navigation property.
-			List<CustomEntryEntity> customEntries = customLeaderboard.CustomEntries!.Sort(category).ToList();
+			List<CustomEntryEntity> customEntries = customLeaderboard.CustomEntries!.Sort(rankSorting).ToList();
 
 			for (int i = 0; i < customEntries.Count; i++)
 			{
@@ -270,7 +280,7 @@ public class CustomLeaderboardRepository
 
 				data.Rankings.Add(new() { Rank = i + 1, TotalPlayers = customEntries.Count });
 
-				switch (customLeaderboard.DaggerFromTime(customEntry.Time) ?? throw new InvalidOperationException("Custom leaderboard without daggers may not be used for processing global custom leaderboard data."))
+				switch (customLeaderboard.DaggerFromStat(customEntry.Time) ?? throw new InvalidOperationException("Custom leaderboard without daggers may not be used for processing global custom leaderboard data."))
 				{
 					case CustomLeaderboardDagger.Leviathan: data.LeviathanCount++; break;
 					case CustomLeaderboardDagger.Devil: data.DevilCount++; break;
@@ -322,45 +332,54 @@ public class CustomLeaderboardRepository
 		return customLeaderboard.Id;
 	}
 
-	// ! Navigation property.
-	private static CustomLeaderboardOverview ToOverview(CustomLeaderboardData cl) => new()
+	private static CustomLeaderboardOverview ToOverview(CustomLeaderboardData cl)
 	{
-		Category = cl.CustomLeaderboard.Category,
-		Criteria = GetCriteria(cl.CustomLeaderboard),
-		Daggers = !cl.CustomLeaderboard.IsFeatured ? null : new()
-		{
-			Bronze = cl.CustomLeaderboard.Bronze,
-			Silver = cl.CustomLeaderboard.Silver,
-			Golden = cl.CustomLeaderboard.Golden,
-			Devil = cl.CustomLeaderboard.Devil,
-			Leviathan = cl.CustomLeaderboard.Leviathan,
-		},
-		DateCreated = cl.CustomLeaderboard.DateCreated,
-		DateLastPlayed = cl.CustomLeaderboard.DateLastPlayed,
-		Id = cl.CustomLeaderboard.Id,
-		PlayerCount = cl.PlayerCount,
-		SelectedPlayerStats = cl.SelectedPlayerStats,
-		SpawnsetAuthorId = cl.CustomLeaderboard.Spawnset!.PlayerId,
-		SpawnsetAuthorName = cl.CustomLeaderboard.Spawnset.Player!.PlayerName,
-		SpawnsetId = cl.CustomLeaderboard.SpawnsetId,
-		SpawnsetName = cl.CustomLeaderboard.Spawnset.Name,
-		TotalRunsSubmitted = cl.CustomLeaderboard.TotalRunsSubmitted,
-		WorldRecord = cl.WorldRecord == null ? null : new()
-		{
-			PlayerId = cl.WorldRecord.PlayerId,
-			PlayerName = cl.WorldRecord.PlayerName,
-			Time = cl.WorldRecord.Time,
-			Dagger = cl.CustomLeaderboard.DaggerFromTime(cl.WorldRecord.Time),
-		},
-	};
+		if (cl.CustomLeaderboard.Spawnset == null)
+			throw new InvalidOperationException("Spawnset is not included.");
 
-	[return: NotNullIfNotNull("selectedEntry")]
+		if (cl.CustomLeaderboard.Spawnset.Player == null)
+			throw new InvalidOperationException("Spawnset author is not included.");
+
+		return new()
+		{
+			Criteria = GetCriteria(cl.CustomLeaderboard),
+			Daggers = !cl.CustomLeaderboard.IsFeatured ? null : new()
+			{
+				Bronze = cl.CustomLeaderboard.Bronze,
+				Silver = cl.CustomLeaderboard.Silver,
+				Golden = cl.CustomLeaderboard.Golden,
+				Devil = cl.CustomLeaderboard.Devil,
+				Leviathan = cl.CustomLeaderboard.Leviathan,
+			},
+			DateCreated = cl.CustomLeaderboard.DateCreated,
+			DateLastPlayed = cl.CustomLeaderboard.DateLastPlayed,
+			GameMode = cl.CustomLeaderboard.Spawnset.GameMode,
+			Id = cl.CustomLeaderboard.Id,
+			PlayerCount = cl.PlayerCount,
+			RankSorting = cl.CustomLeaderboard.RankSorting,
+			SelectedPlayerStats = cl.SelectedPlayerStats,
+			SpawnsetAuthorId = cl.CustomLeaderboard.Spawnset.PlayerId,
+			SpawnsetAuthorName = cl.CustomLeaderboard.Spawnset.Player.PlayerName,
+			SpawnsetId = cl.CustomLeaderboard.SpawnsetId,
+			SpawnsetName = cl.CustomLeaderboard.Spawnset.Name,
+			TotalRunsSubmitted = cl.CustomLeaderboard.TotalRunsSubmitted,
+			WorldRecord = cl.WorldRecord == null ? null : new()
+			{
+				PlayerId = cl.WorldRecord.PlayerId,
+				PlayerName = cl.WorldRecord.PlayerName,
+				Time = cl.WorldRecord.Time,
+				Dagger = cl.CustomLeaderboard.DaggerFromStat(cl.WorldRecord.Time),
+			},
+		};
+	}
+
+	[return: NotNullIfNotNull(nameof(selectedEntry))]
 	private static CustomLeaderboardOverviewSelectedPlayerStats? GetSelectedStats(CustomLeaderboardEntity cl, List<CustomEntrySummary> sortedCustomEntries, CustomEntrySummary? selectedEntry)
 	{
 		if (selectedEntry == null)
 			return null;
 
-		CustomLeaderboardDagger? dagger = cl.DaggerFromTime(selectedEntry.Time);
+		CustomLeaderboardDagger? dagger = cl.DaggerFromStat(selectedEntry.Time);
 		return new()
 		{
 			Dagger = dagger,

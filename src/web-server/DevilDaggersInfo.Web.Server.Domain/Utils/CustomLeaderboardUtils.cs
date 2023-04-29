@@ -7,33 +7,33 @@ namespace DevilDaggersInfo.Web.Server.Domain.Utils;
 public static class CustomLeaderboardUtils
 {
 	// TODO: Add unit tests.
-	public static CustomLeaderboardDagger GetDaggerFromTime(CustomLeaderboardCategory category, int time, int leviathan, int devil, int golden, int silver, int bronze)
+	public static CustomLeaderboardDagger GetDaggerFromStat(CustomLeaderboardRankSorting rankSorting, int stat, int leviathan, int devil, int golden, int silver, int bronze)
 	{
-		if (category.IsAscending())
+		if (rankSorting.IsAscending())
 		{
-			if (time <= leviathan)
+			if (stat <= leviathan)
 				return CustomLeaderboardDagger.Leviathan;
-			if (time <= devil)
+			if (stat <= devil)
 				return CustomLeaderboardDagger.Devil;
-			if (time <= golden)
+			if (stat <= golden)
 				return CustomLeaderboardDagger.Golden;
-			if (time <= silver)
+			if (stat <= silver)
 				return CustomLeaderboardDagger.Silver;
-			if (time <= bronze)
+			if (stat <= bronze)
 				return CustomLeaderboardDagger.Bronze;
 
 			return CustomLeaderboardDagger.Default;
 		}
 
-		if (time >= leviathan)
+		if (stat >= leviathan)
 			return CustomLeaderboardDagger.Leviathan;
-		if (time >= devil)
+		if (stat >= devil)
 			return CustomLeaderboardDagger.Devil;
-		if (time >= golden)
+		if (stat >= golden)
 			return CustomLeaderboardDagger.Golden;
-		if (time >= silver)
+		if (stat >= silver)
 			return CustomLeaderboardDagger.Silver;
-		if (time >= bronze)
+		if (stat >= bronze)
 			return CustomLeaderboardDagger.Bronze;
 
 		return CustomLeaderboardDagger.Default;

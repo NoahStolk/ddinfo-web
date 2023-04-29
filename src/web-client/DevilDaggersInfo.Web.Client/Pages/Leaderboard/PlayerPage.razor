@@ -164,21 +164,24 @@ else
 		}
 		else
 		{
-			foreach (CustomLeaderboardCategory category in Enum.GetValues<CustomLeaderboardCategory>())
+			foreach (GameMode gameMode in Enum.GetValues<GameMode>())
 			{
-				GetPlayerCustomLeaderboardStatistics? stats = GetCustomLeaderboardStatistics.FirstOrDefault(cls => cls.CustomLeaderboardCategory == category);
-				if (stats == null)
-					continue;
+				foreach (CustomLeaderboardRankSorting rankSorting in Enum.GetValues<CustomLeaderboardRankSorting>())
+				{
+					GetPlayerCustomLeaderboardStatistics? stats = GetCustomLeaderboardStatistics.FirstOrDefault(cls => cls.GameMode == gameMode && cls.RankSorting == rankSorting);
+					if (stats == null)
+						continue;
 
-				<PlayerCard Title="@($"Custom Leaderboard Statistics ({category.ToDisplayString()})")">
-					<DataField CssClass="odd:bg-gray-2 px-1" Name="Leviathan daggers">@stats.LeviathanDaggerCount / @stats.TotalCount</DataField>
-					<DataField CssClass="odd:bg-gray-2 px-1" Name="Devil daggers">@stats.DevilDaggerCount / @stats.TotalCount</DataField>
-					<DataField CssClass="odd:bg-gray-2 px-1" Name="Golden daggers">@stats.GoldenDaggerCount / @stats.TotalCount</DataField>
-					<DataField CssClass="odd:bg-gray-2 px-1" Name="Silver daggers">@stats.SilverDaggerCount / @stats.TotalCount</DataField>
-					<DataField CssClass="odd:bg-gray-2 px-1" Name="Bronze daggers">@stats.BronzeDaggerCount / @stats.TotalCount</DataField>
-					<DataField CssClass="odd:bg-gray-2 px-1" Name="Default daggers">@stats.DefaultDaggerCount / @stats.TotalCount</DataField>
-					<DataField CssClass="odd:bg-gray-2 px-1" Name="Played">@stats.LeaderboardsPlayedCount / @stats.TotalCount</DataField>
-				</PlayerCard>
+					<PlayerCard Title="@($"Custom Leaderboard Statistics ({gameMode.ToCore().ToDisplayString()} - {rankSorting.ToDisplayString()})")">
+						<DataField CssClass="odd:bg-gray-2 px-1" Name="Leviathan daggers">@stats.LeviathanDaggerCount / @stats.TotalCount</DataField>
+						<DataField CssClass="odd:bg-gray-2 px-1" Name="Devil daggers">@stats.DevilDaggerCount / @stats.TotalCount</DataField>
+						<DataField CssClass="odd:bg-gray-2 px-1" Name="Golden daggers">@stats.GoldenDaggerCount / @stats.TotalCount</DataField>
+						<DataField CssClass="odd:bg-gray-2 px-1" Name="Silver daggers">@stats.SilverDaggerCount / @stats.TotalCount</DataField>
+						<DataField CssClass="odd:bg-gray-2 px-1" Name="Bronze daggers">@stats.BronzeDaggerCount / @stats.TotalCount</DataField>
+						<DataField CssClass="odd:bg-gray-2 px-1" Name="Default daggers">@stats.DefaultDaggerCount / @stats.TotalCount</DataField>
+						<DataField CssClass="odd:bg-gray-2 px-1" Name="Played">@stats.LeaderboardsPlayedCount / @stats.TotalCount</DataField>
+					</PlayerCard>
+				}
 			}
 		}
 

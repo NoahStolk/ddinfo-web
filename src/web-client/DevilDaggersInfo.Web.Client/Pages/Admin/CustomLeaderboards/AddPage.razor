@@ -13,7 +13,7 @@
 <AdminAuthorizer Base="this" RequiredRole="@Roles.CustomLeaderboards">
 	<AdminAdd TStateObject="AddCustomLeaderboardState" TModel="AddCustomLeaderboard" Name="Custom Leaderboard" OverviewUrl="/admin/custom-leaderboards" ApiCall="Http.AddCustomLeaderboard" StateObject="_addCustomLeaderboardState" OnPopulate="async ac => await PopulateAsync(ac)">
 		<InputWrapper Label="Spawnset"><SearchDropdown TKey="int" Values="@_spawnsetNames" Converter="s => int.Parse(s)" @bind-Value="@_addCustomLeaderboardState.SpawnsetId" /></InputWrapper>
-		<InputWrapper Label="Category"><SearchDropdown TKey="CustomLeaderboardCategory" Values="@(Enum.GetValues<CustomLeaderboardCategory>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<CustomLeaderboardCategory>(s)" ShowDisplayValue="false" @bind-Value="@_addCustomLeaderboardState.Category" /></InputWrapper>
+		<InputWrapper Label="Rank sorting"><SearchDropdown TKey="CustomLeaderboardRankSorting" Values="@(Enum.GetValues<CustomLeaderboardRankSorting>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<CustomLeaderboardRankSorting>(s)" ShowDisplayValue="false" @bind-Value="@_addCustomLeaderboardState.RankSorting" /></InputWrapper>
 		<InputWrapper Label="Featured"><InputCheckbox @bind-Value="@_addCustomLeaderboardState.IsFeatured" /></InputWrapper>
 		@if (_addCustomLeaderboardState.IsFeatured)
 		{

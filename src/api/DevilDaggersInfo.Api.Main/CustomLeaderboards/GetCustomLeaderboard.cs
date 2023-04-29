@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Api.Main.Spawnsets;
+
 namespace DevilDaggersInfo.Api.Main.CustomLeaderboards;
 
 public record GetCustomLeaderboard
@@ -10,6 +12,8 @@ public record GetCustomLeaderboard
 
 	public required string? SpawnsetHtmlDescription { get; init; }
 
+	public required GameMode SpawnsetGameMode { get; init; }
+
 	public required GetCustomLeaderboardDaggers? Daggers { get; init; }
 
 	public required DateTime? DateLastPlayed { get; init; }
@@ -20,7 +24,7 @@ public record GetCustomLeaderboard
 
 	public required bool IsFeatured { get; init; }
 
-	public required CustomLeaderboardCategory Category { get; init; }
+	public required CustomLeaderboardRankSorting RankSorting { get; init; }
 
 	public required List<GetCustomEntry> CustomEntries { get; set; }
 
