@@ -96,15 +96,6 @@ public static class CustomLeaderboardConverters
 		_ => throw new ArgumentOutOfRangeException(nameof(client), client, null),
 	};
 
-	public static MainApi.CustomLeaderboardCategory ToMainApi(this CustomLeaderboardCategory category) => category switch
-	{
-		CustomLeaderboardCategory.Survival => MainApi.CustomLeaderboardCategory.Survival,
-		CustomLeaderboardCategory.TimeAttack => MainApi.CustomLeaderboardCategory.TimeAttack,
-		CustomLeaderboardCategory.Speedrun => MainApi.CustomLeaderboardCategory.Speedrun,
-		CustomLeaderboardCategory.Race => MainApi.CustomLeaderboardCategory.Race,
-		_ => throw new UnreachableException(),
-	};
-
 	public static MainApi.CustomLeaderboardRankSorting ToMainApi(this CustomLeaderboardRankSorting rankSorting) => rankSorting switch
 	{
 		CustomLeaderboardRankSorting.TimeDesc => MainApi.CustomLeaderboardRankSorting.TimeDesc,
