@@ -4,6 +4,7 @@ using System.Diagnostics;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Extensions;
 
+[Obsolete("Category will be replaced by sorting.")]
 public static class CustomLeaderboardCategoryExtensions
 {
 	public static bool IsAscending(this CustomLeaderboardCategory category)

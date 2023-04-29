@@ -17,6 +17,7 @@ public class CustomLeaderboardEntity : IAuditable
 	[ForeignKey(nameof(SpawnsetId))]
 	public SpawnsetEntity? Spawnset { get; set; }
 
+	[Obsolete("Category will be replaced by sorting.")]
 	public CustomLeaderboardCategory Category { get; set; }
 
 	[Column("TimeBronze")]
@@ -95,6 +96,6 @@ public class CustomLeaderboardEntity : IAuditable
 
 	public List<CustomEntryEntity>? CustomEntries { get; set; }
 
-	public CustomLeaderboardDagger? DaggerFromTime(int time)
-		=> IsFeatured ? CustomLeaderboardUtils.GetDaggerFromTime(Category, time, Leviathan, Devil, Golden, Silver, Bronze) : null;
+	public CustomLeaderboardDagger? DaggerFromStat(int stat)
+		=> IsFeatured ? CustomLeaderboardUtils.GetDaggerFromStat(Category, stat, Leviathan, Devil, Golden, Silver, Bronze) : null;
 }

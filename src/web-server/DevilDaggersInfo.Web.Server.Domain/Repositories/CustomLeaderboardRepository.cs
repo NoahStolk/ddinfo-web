@@ -86,7 +86,7 @@ public class CustomLeaderboardRepository
 				Time = worldRecord.Time,
 				PlayerId = worldRecord.PlayerId,
 				PlayerName = worldRecord.PlayerName,
-				Dagger = cl.DaggerFromTime(worldRecord.Time),
+				Dagger = cl.DaggerFromStat(worldRecord.Time),
 			};
 
 			CustomEntrySummary? selectedEntry = sortedCustomEntries.Find(ce => ce.PlayerId == selectedPlayerId);
@@ -161,7 +161,7 @@ public class CustomLeaderboardRepository
 						Client = ce.Client,
 						ClientVersion = ce.ClientVersion,
 						CountryCode = ce.Player!.CountryCode,
-						CustomLeaderboardDagger = customLeaderboard.DaggerFromTime(ce.Time),
+						CustomLeaderboardDagger = customLeaderboard.DaggerFromStat(ce.Time),
 						DaggersFired = ce.DaggersFired,
 						DaggersHit = ce.DaggersHit,
 						DeathType = ce.DeathType,
@@ -270,7 +270,7 @@ public class CustomLeaderboardRepository
 
 				data.Rankings.Add(new() { Rank = i + 1, TotalPlayers = customEntries.Count });
 
-				switch (customLeaderboard.DaggerFromTime(customEntry.Time) ?? throw new InvalidOperationException("Custom leaderboard without daggers may not be used for processing global custom leaderboard data."))
+				switch (customLeaderboard.DaggerFromStat(customEntry.Time) ?? throw new InvalidOperationException("Custom leaderboard without daggers may not be used for processing global custom leaderboard data."))
 				{
 					case CustomLeaderboardDagger.Leviathan: data.LeviathanCount++; break;
 					case CustomLeaderboardDagger.Devil: data.DevilCount++; break;
@@ -350,7 +350,7 @@ public class CustomLeaderboardRepository
 			PlayerId = cl.WorldRecord.PlayerId,
 			PlayerName = cl.WorldRecord.PlayerName,
 			Time = cl.WorldRecord.Time,
-			Dagger = cl.CustomLeaderboard.DaggerFromTime(cl.WorldRecord.Time),
+			Dagger = cl.CustomLeaderboard.DaggerFromStat(cl.WorldRecord.Time),
 		},
 	};
 
@@ -360,7 +360,7 @@ public class CustomLeaderboardRepository
 		if (selectedEntry == null)
 			return null;
 
-		CustomLeaderboardDagger? dagger = cl.DaggerFromTime(selectedEntry.Time);
+		CustomLeaderboardDagger? dagger = cl.DaggerFromStat(selectedEntry.Time);
 		return new()
 		{
 			Dagger = dagger,

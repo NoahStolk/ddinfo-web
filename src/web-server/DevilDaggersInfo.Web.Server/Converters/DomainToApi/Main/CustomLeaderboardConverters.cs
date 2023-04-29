@@ -217,7 +217,7 @@ public static class CustomLeaderboardConverters
 			DaggersHit = customEntry.DaggersHit,
 			SubmitDate = customEntry.SubmitDate,
 			Time = customEntry.Time.ToSecondsTime(),
-			CustomLeaderboardDagger = customEntry.CustomLeaderboard.DaggerFromTime(customEntry.Time)?.ToMainApi(),
+			CustomLeaderboardDagger = customEntry.CustomLeaderboard.DaggerFromStat(customEntry.Time)?.ToMainApi(),
 
 			GemsCollectedData = GetInt32Arr(customEntryData?.GemsCollectedData),
 			EnemiesKilledData = GetInt32Arr(customEntryData?.EnemiesKilledData),

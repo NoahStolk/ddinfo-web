@@ -118,7 +118,7 @@ public class PlayersController : ControllerBase
 			foreach (var customEntry in customEntriesByCategory)
 			{
 				played++;
-				switch (CustomLeaderboardUtils.GetDaggerFromTime(category, customEntry.Time, customEntry.Leviathan, customEntry.Devil, customEntry.Golden, customEntry.Silver, customEntry.Bronze))
+				switch (CustomLeaderboardUtils.GetDaggerFromStat(category, customEntry.Time, customEntry.Leviathan, customEntry.Devil, customEntry.Golden, customEntry.Silver, customEntry.Bronze))
 				{
 					case CustomLeaderboardDagger.Leviathan: leviathanDaggers++; break;
 					case CustomLeaderboardDagger.Devil: devilDaggers++; break;
