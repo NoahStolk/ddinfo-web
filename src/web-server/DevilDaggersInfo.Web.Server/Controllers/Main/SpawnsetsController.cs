@@ -5,7 +5,9 @@ using DevilDaggersInfo.Core.Spawnset.Summary;
 using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Web.Client;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
+using DevilDaggersInfo.Web.Server.Domain.Converters.CoreToDomain;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
+using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +29,34 @@ public class SpawnsetsController : ControllerBase
 		_dbContext = dbContext;
 		_spawnsetSummaryCache = spawnsetSummaryCache;
 		_logger = logger;
+	}
+
+	[HttpPost("migrate")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	public ActionResult Migrate()
+	{
+		List<SpawnsetEntity> spawnsets = _dbContext.Spawnsets.ToList();
+		foreach (SpawnsetEntity spawnset in spawnsets)
+		{
+			SpawnsetSummary summary = _spawnsetSummaryCache.GetSpawnsetSummaryById(spawnset.Id);
+			spawnset.GameMode = summary.GameMode.ToDomain();
+			spawnset.WorldVersion = summary.WorldVersion;
+			spawnset.SpawnVersion = summary.SpawnVersion;
+			spawnset.PreLoopSpawnCount = summary.PreLoopSection.SpawnCount;
+			spawnset.PreLoopLength = summary.PreLoopSection.Length;
+			spawnset.LoopSpawnCount = summary.LoopSection.SpawnCount;
+			spawnset.LoopLength = summary.LoopSection.Length;
+			spawnset.HandLevel = summary.HandLevel.ToDomain();
+			spawnset.AdditionalGems = summary.AdditionalGems;
+			spawnset.TimerStart = summary.TimerStart;
+			spawnset.EffectiveHandLevel = summary.EffectivePlayerSettings.HandLevel.ToDomain();
+			spawnset.EffectiveGemsOrHoming = summary.EffectivePlayerSettings.GemsOrHoming;
+			spawnset.EffectiveHandMesh = summary.EffectivePlayerSettings.HandMesh.ToDomain();
+
+			_dbContext.SaveChanges();
+		}
+
+		return Ok();
 	}
 
 	[HttpGet]
