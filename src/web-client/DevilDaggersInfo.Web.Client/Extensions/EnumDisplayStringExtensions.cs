@@ -16,7 +16,7 @@ public static class EnumDisplayStringExtensions
 
 	public static string ToDisplayString(this CustomLeaderboardRankSorting rankSorting) => rankSorting switch
 	{
-		CustomLeaderboardRankSorting.TimeDesc => "Highest Time (default)",
+		CustomLeaderboardRankSorting.TimeDesc => "Highest Time",
 		CustomLeaderboardRankSorting.TimeAsc => "Lowest Time",
 		_ => throw new UnreachableException(),
 	};
