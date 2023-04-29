@@ -1,6 +1,6 @@
-using DevilDaggersInfo.Core.Spawnset;
-using DevilDaggersInfo.Core.Spawnset.Summary;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
+using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
+using System.Diagnostics;
 using DdseApi = DevilDaggersInfo.Api.Ddse.Spawnsets;
 
 namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Ddse;
@@ -9,37 +9,35 @@ namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Ddse;
 public static class SpawnsetConverters
 {
 	// ! Navigation property.
-	public static DdseApi.GetSpawnsetDdse ToDdseApi(this SpawnsetEntity spawnset, SpawnsetSummary spawnsetSummary, bool hasCustomLeaderboard) => new()
+	public static DdseApi.GetSpawnsetDdse ToDdseApi(this SpawnsetEntity spawnset, bool hasCustomLeaderboard) => new()
 	{
 		MaxDisplayWaves = spawnset.MaxDisplayWaves,
 		HtmlDescription = spawnset.HtmlDescription,
 		LastUpdated = spawnset.LastUpdated,
-		SpawnsetData = spawnsetSummary.ToDdseApi(),
+		SpawnsetData = new()
+		{
+			AdditionalGems = spawnset.EffectiveGemsOrHoming,
+			GameMode = spawnset.GameMode.ToDdseApi(),
+			Hand = (byte)spawnset.EffectiveHandLevel,
+			LoopLength = spawnset.LoopLength,
+			LoopSpawnCount = spawnset.LoopSpawnCount,
+			NonLoopLength = spawnset.PreLoopLength,
+			NonLoopSpawnCount = spawnset.PreLoopSpawnCount,
+			SpawnVersion = spawnset.SpawnVersion,
+			TimerStart = spawnset.TimerStart,
+			WorldVersion = spawnset.WorldVersion,
+		},
 		Name = spawnset.Name,
 		AuthorName = spawnset.Player!.PlayerName,
 		HasCustomLeaderboard = hasCustomLeaderboard,
 		IsPractice = spawnset.IsPractice,
 	};
 
-	private static DdseApi.GetSpawnsetDataDdse ToDdseApi(this SpawnsetSummary spawnsetSummary) => new()
+	private static DdseApi.GameModeDdse ToDdseApi(this SpawnsetGameMode gameMode) => gameMode switch
 	{
-		AdditionalGems = spawnsetSummary.EffectivePlayerSettings.GemsOrHoming,
-		GameMode = spawnsetSummary.GameMode.ToDdseApi(),
-		Hand = (byte)spawnsetSummary.EffectivePlayerSettings.HandLevel,
-		LoopLength = spawnsetSummary.LoopSection.Length,
-		LoopSpawnCount = spawnsetSummary.LoopSection.SpawnCount,
-		NonLoopLength = spawnsetSummary.PreLoopSection.Length,
-		NonLoopSpawnCount = spawnsetSummary.PreLoopSection.SpawnCount,
-		SpawnVersion = spawnsetSummary.SpawnVersion,
-		TimerStart = spawnsetSummary.TimerStart,
-		WorldVersion = spawnsetSummary.WorldVersion,
-	};
-
-	private static DdseApi.GameModeDdse ToDdseApi(this GameMode gameMode) => gameMode switch
-	{
-		GameMode.Survival => DdseApi.GameModeDdse.Survival,
-		GameMode.TimeAttack => DdseApi.GameModeDdse.TimeAttack,
-		GameMode.Race => DdseApi.GameModeDdse.Race,
-		_ => throw new($"Unknown game mode {gameMode}."),
+		SpawnsetGameMode.Survival => DdseApi.GameModeDdse.Survival,
+		SpawnsetGameMode.TimeAttack => DdseApi.GameModeDdse.TimeAttack,
+		SpawnsetGameMode.Race => DdseApi.GameModeDdse.Race,
+		_ => throw new UnreachableException(),
 	};
 }
