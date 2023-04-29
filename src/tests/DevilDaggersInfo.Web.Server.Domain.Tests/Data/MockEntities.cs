@@ -19,6 +19,20 @@ public class MockEntities
 			File = v3,
 			Md5Hash = MD5.HashData(v3),
 			Player = TestPlayer1,
+			GameMode = SpawnsetGameMode.Survival,
+			AdditionalGems = 0,
+			HandLevel = SpawnsetHandLevel.Level1,
+			LoopLength = 56,
+			LoopSpawnCount = 17,
+			SpawnVersion = 4,
+			WorldVersion = 9,
+			TimerStart = 0,
+			EffectiveHandLevel = SpawnsetHandLevel.Level1,
+			EffectiveHandMesh = SpawnsetHandLevel.Level1,
+			PreLoopLength = 451,
+			PreLoopSpawnCount = 90,
+			EffectiveGemsOrHoming = 0,
+			IsPractice = false,
 		};
 
 		CustomLeaderboard.Spawnset = Spawnset;

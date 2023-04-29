@@ -1,6 +1,8 @@
 using DevilDaggersInfo.Api.Admin.Spawnsets;
+using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Web.Server.Domain.Admin.Exceptions;
+using DevilDaggersInfo.Web.Server.Domain.Converters.CoreToDomain;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using Microsoft.EntityFrameworkCore;
@@ -21,7 +23,7 @@ public class SpawnsetService
 	{
 		ValidateName(addSpawnset.Name);
 
-		if (!SpawnsetBinary.TryParse(addSpawnset.FileContents, out _))
+		if (!SpawnsetBinary.TryParse(addSpawnset.FileContents, out SpawnsetBinary? spawnsetBinary))
 			throw new AdminDomainException("File could not be parsed to a proper survival file.");
 
 		byte[] spawnsetHash = MD5.HashData(addSpawnset.FileContents);
@@ -35,6 +37,9 @@ public class SpawnsetService
 		if (_dbContext.Spawnsets.Any(m => m.Name == addSpawnset.Name))
 			throw new AdminDomainException($"Spawnset with name '{addSpawnset.Name}' already exists.");
 
+		(SpawnSectionInfo PreLoopSection, SpawnSectionInfo LoopSection) sections = spawnsetBinary.CalculateSections();
+		EffectivePlayerSettings effectivePlayerSettings = spawnsetBinary.GetEffectivePlayerSettings();
+
 		SpawnsetEntity spawnset = new()
 		{
 			HtmlDescription = addSpawnset.HtmlDescription,
@@ -45,6 +50,19 @@ public class SpawnsetService
 			LastUpdated = DateTime.UtcNow,
 			File = addSpawnset.FileContents,
 			Md5Hash = MD5.HashData(addSpawnset.FileContents),
+			GameMode = spawnsetBinary.GameMode.ToDomain(),
+			SpawnVersion = spawnsetBinary.SpawnVersion,
+			WorldVersion = spawnsetBinary.WorldVersion,
+			PreLoopLength = sections.PreLoopSection.Length?.To10thMilliTime(),
+			PreLoopSpawnCount = sections.PreLoopSection.SpawnCount,
+			LoopLength = sections.LoopSection.Length?.To10thMilliTime(),
+			LoopSpawnCount = sections.LoopSection.SpawnCount,
+			HandLevel = spawnsetBinary.HandLevel.ToDomain(),
+			AdditionalGems = spawnsetBinary.AdditionalGems,
+			TimerStart = spawnsetBinary.TimerStart.To10thMilliTime(),
+			EffectiveHandLevel = effectivePlayerSettings.HandLevel.ToDomain(),
+			EffectiveGemsOrHoming = effectivePlayerSettings.GemsOrHoming,
+			EffectiveHandMesh = effectivePlayerSettings.HandMesh.ToDomain(),
 		};
 		_dbContext.Spawnsets.Add(spawnset);
 		await _dbContext.SaveChangesAsync();
