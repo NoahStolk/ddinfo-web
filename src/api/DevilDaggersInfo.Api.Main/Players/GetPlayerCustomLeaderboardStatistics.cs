@@ -1,10 +1,13 @@
 using DevilDaggersInfo.Api.Main.CustomLeaderboards;
+using DevilDaggersInfo.Api.Main.Spawnsets;
 
 namespace DevilDaggersInfo.Api.Main.Players;
 
 public record GetPlayerCustomLeaderboardStatistics
 {
-	public required CustomLeaderboardCategory CustomLeaderboardCategory { get; init; }
+	public GameMode GameMode { get; init; }
+
+	public CustomLeaderboardRankSorting RankSorting { get; init; }
 
 	public required int LeviathanDaggerCount { get; init; }
 

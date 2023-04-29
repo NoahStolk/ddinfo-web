@@ -20,7 +20,7 @@ public record GetCustomLeaderboard
 
 	public required bool IsFeatured { get; init; }
 
-	public required CustomLeaderboardCategory Category { get; init; }
+	public CustomLeaderboardRankSorting RankSorting { get; init; }
 
 	public required List<GetCustomEntry> CustomEntries { get; set; }
 

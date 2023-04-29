@@ -1,5 +1,6 @@
 using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Core.CriteriaExpression;
+using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Core.Versioning;
 using DevilDaggersInfo.Web.Server.Domain.Constants;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
@@ -26,7 +27,8 @@ public class CustomLeaderboardRepository
 	}
 
 	public async Task<Page<CustomLeaderboardOverview>> GetCustomLeaderboardOverviewsAsync(
-		CustomLeaderboardCategory? category,
+		CustomLeaderboardRankSorting? rankSorting,
+		GameMode? gameMode,
 		string? spawnsetFilter,
 		string? authorFilter,
 		int pageIndex,
@@ -42,8 +44,14 @@ public class CustomLeaderboardRepository
 			.Include(cl => cl.Spawnset)
 				.ThenInclude(sf => sf!.Player);
 
-		if (category.HasValue)
-			customLeaderboardsQuery = customLeaderboardsQuery.Where(cl => category == cl.Category);
+		if (rankSorting.HasValue)
+			customLeaderboardsQuery = customLeaderboardsQuery.Where(cl => rankSorting == cl.RankSorting);
+
+		if (gameMode.HasValue)
+		{
+			// ! Navigation property.
+			customLeaderboardsQuery = customLeaderboardsQuery.Where(cl => gameMode == cl.Spawnset!.GameMode);
+		}
 
 		if (onlyFeatured)
 			customLeaderboardsQuery = customLeaderboardsQuery.Where(cl => cl.IsFeatured);
