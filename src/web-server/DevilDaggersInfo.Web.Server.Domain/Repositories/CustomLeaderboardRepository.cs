@@ -365,7 +365,10 @@ public class CustomLeaderboardRepository
 			TotalRunsSubmitted = cl.CustomLeaderboard.TotalRunsSubmitted,
 			WorldRecord = cl.WorldRecord == null ? null : new()
 			{
-				PlayerId = cl.WorldRecord.PlayerId, PlayerName = cl.WorldRecord.PlayerName, Time = cl.WorldRecord.Time, Dagger = cl.CustomLeaderboard.DaggerFromStat(cl.WorldRecord.Time),
+				PlayerId = cl.WorldRecord.PlayerId,
+				PlayerName = cl.WorldRecord.PlayerName,
+				Time = cl.WorldRecord.Time,
+				Dagger = cl.CustomLeaderboard.DaggerFromStat(cl.WorldRecord.Time),
 			},
 		};
 	}
