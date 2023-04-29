@@ -98,13 +98,11 @@ public class PlayersController : ControllerBase
 		List<GetPlayerCustomLeaderboardStatistics> stats = new();
 		foreach (SpawnsetGameMode gameMode in Enum.GetValues<SpawnsetGameMode>())
 		{
-			var customEntriesByCategory = customEntries.Where(ce => ce.GameMode == gameMode).ToList();
-			if (customEntriesByCategory.Count == 0)
-				continue;
-
 			foreach (CustomLeaderboardRankSorting rankSorting in Enum.GetValues<CustomLeaderboardRankSorting>())
 			{
-				var customEntriesByRankSorting = customEntriesByCategory.Where(ce => ce.RankSorting == rankSorting).ToList();
+				var filteredCustomEntries = customEntries.Where(ce => ce.GameMode == gameMode && ce.RankSorting == rankSorting).ToList();
+				if (filteredCustomEntries.Count == 0)
+					continue;
 
 				int leviathanDaggers = 0;
 				int devilDaggers = 0;
@@ -113,7 +111,7 @@ public class PlayersController : ControllerBase
 				int bronzeDaggers = 0;
 				int defaultDaggers = 0;
 				int played = 0;
-				foreach (var customEntry in customEntriesByCategory)
+				foreach (var customEntry in filteredCustomEntries)
 				{
 					played++;
 					switch (CustomLeaderboardUtils.GetDaggerFromStat(rankSorting, customEntry.Time, customEntry.Leviathan, customEntry.Devil, customEntry.Golden, customEntry.Silver, customEntry.Bronze))
@@ -138,7 +136,7 @@ public class PlayersController : ControllerBase
 					BronzeDaggerCount = bronzeDaggers,
 					DefaultDaggerCount = defaultDaggers,
 					LeaderboardsPlayedCount = played,
-					TotalCount = customEntriesByRankSorting.Count,
+					TotalCount = filteredCustomEntries.Count,
 				});
 			}
 		}
