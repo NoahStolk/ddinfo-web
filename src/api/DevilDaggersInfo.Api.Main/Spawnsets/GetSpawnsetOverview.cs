@@ -12,11 +12,11 @@ public record GetSpawnsetOverview
 
 	public required GameMode GameMode { get; init; }
 
-	public required float? LoopLength { get; init; }
+	public required double? LoopLength { get; init; }
 
 	public required int LoopSpawnCount { get; init; }
 
-	public required float? PreLoopLength { get; init; }
+	public required double? PreLoopLength { get; init; }
 
 	public required int PreLoopSpawnCount { get; init; }
 
