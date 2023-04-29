@@ -20,6 +20,8 @@ public class CustomLeaderboardEntity : IAuditable
 	[Obsolete("Category will be replaced by sorting.")]
 	public CustomLeaderboardCategory Category { get; set; }
 
+	public CustomLeaderboardRankSorting RankSorting { get; set; }
+
 	[Column("TimeBronze")]
 	public int Bronze { get; set; }
 
