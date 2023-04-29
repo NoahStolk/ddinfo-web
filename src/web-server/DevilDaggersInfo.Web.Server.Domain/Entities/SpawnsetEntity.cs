@@ -41,12 +41,12 @@ public class SpawnsetEntity : IAuditable
 	public required int SpawnVersion { get; set; }
 	public required int WorldVersion { get; set; }
 	public required int PreLoopSpawnCount { get; set; }
-	public required float? PreLoopLength { get; set; }
+	public required int? PreLoopLength { get; set; }
 	public required int LoopSpawnCount { get; set; }
-	public required float? LoopLength { get; set; }
+	public required int? LoopLength { get; set; }
 	public required SpawnsetHandLevel HandLevel { get; set; }
 	public required int AdditionalGems { get; set; }
-	public required float TimerStart { get; set; }
+	public required int TimerStart { get; set; }
 	public required SpawnsetHandLevel EffectiveHandLevel { get; set; }
 	public required int EffectiveGemsOrHoming { get; set; }
 	public required SpawnsetHandLevel EffectiveHandMesh { get; set; }

@@ -43,12 +43,12 @@ public class SpawnsetsController : ControllerBase
 			spawnset.WorldVersion = summary.WorldVersion;
 			spawnset.SpawnVersion = summary.SpawnVersion;
 			spawnset.PreLoopSpawnCount = summary.PreLoopSection.SpawnCount;
-			spawnset.PreLoopLength = summary.PreLoopSection.Length;
+			spawnset.PreLoopLength = summary.PreLoopSection.Length?.To10thMilliTime();
 			spawnset.LoopSpawnCount = summary.LoopSection.SpawnCount;
-			spawnset.LoopLength = summary.LoopSection.Length;
+			spawnset.LoopLength = summary.LoopSection.Length?.To10thMilliTime();
 			spawnset.HandLevel = summary.HandLevel.ToDomain();
 			spawnset.AdditionalGems = summary.AdditionalGems;
-			spawnset.TimerStart = summary.TimerStart;
+			spawnset.TimerStart = summary.TimerStart.To10thMilliTime();
 			spawnset.EffectiveHandLevel = summary.EffectivePlayerSettings.HandLevel.ToDomain();
 			spawnset.EffectiveGemsOrHoming = summary.EffectivePlayerSettings.GemsOrHoming;
 			spawnset.EffectiveHandMesh = summary.EffectivePlayerSettings.HandMesh.ToDomain();

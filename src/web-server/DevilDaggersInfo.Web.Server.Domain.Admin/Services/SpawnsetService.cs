@@ -1,9 +1,9 @@
 using DevilDaggersInfo.Api.Admin.Spawnsets;
+using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Web.Server.Domain.Admin.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Converters.CoreToDomain;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
-using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
@@ -53,13 +53,13 @@ public class SpawnsetService
 			GameMode = spawnsetBinary.GameMode.ToDomain(),
 			SpawnVersion = spawnsetBinary.SpawnVersion,
 			WorldVersion = spawnsetBinary.WorldVersion,
-			PreLoopLength = sections.PreLoopSection.Length,
+			PreLoopLength = sections.PreLoopSection.Length?.To10thMilliTime(),
 			PreLoopSpawnCount = sections.PreLoopSection.SpawnCount,
-			LoopLength = sections.LoopSection.Length,
+			LoopLength = sections.LoopSection.Length?.To10thMilliTime(),
 			LoopSpawnCount = sections.LoopSection.SpawnCount,
 			HandLevel = spawnsetBinary.HandLevel.ToDomain(),
 			AdditionalGems = spawnsetBinary.AdditionalGems,
-			TimerStart = spawnsetBinary.TimerStart,
+			TimerStart = spawnsetBinary.TimerStart.To10thMilliTime(),
 			EffectiveHandLevel = effectivePlayerSettings.HandLevel.ToDomain(),
 			EffectiveGemsOrHoming = effectivePlayerSettings.GemsOrHoming,
 			EffectiveHandMesh = effectivePlayerSettings.HandMesh.ToDomain(),
