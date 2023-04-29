@@ -27,8 +27,8 @@ public class CustomLeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult<Page<GetCustomLeaderboardOverview>>> GetCustomLeaderboards(
-		[Required] CustomLeaderboardRankSorting rankSorting,
 		[Required] GameMode gameMode,
+		[Required] CustomLeaderboardRankSorting rankSorting,
 		string? spawnsetFilter = null,
 		string? authorFilter = null,
 		[Range(0, 1000)] int pageIndex = 0,

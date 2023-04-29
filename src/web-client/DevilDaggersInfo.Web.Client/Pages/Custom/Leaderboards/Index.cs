@@ -1,5 +1,6 @@
 using DevilDaggersInfo.Api.Main;
 using DevilDaggersInfo.Api.Main.CustomLeaderboards;
+using DevilDaggersInfo.Api.Main.Spawnsets;
 using DevilDaggersInfo.Web.Client.Extensions;
 using DevilDaggersInfo.Web.Client.Utils;
 using Microsoft.AspNetCore.Components;
@@ -8,13 +9,18 @@ namespace DevilDaggersInfo.Web.Client.Pages.Custom.Leaderboards;
 
 public partial class Index : IHasNavigation
 {
-	private readonly CustomLeaderboardCategory[] _categories = Enum.GetValues<CustomLeaderboardCategory>();
+	private readonly IReadOnlyList<GameMode> _gameModes = Enum.GetValues<GameMode>();
+	private readonly IReadOnlyList<CustomLeaderboardRankSorting> _rankSortings = Enum.GetValues<CustomLeaderboardRankSorting>();
 
 	private readonly Dictionary<CustomLeaderboardSorting, bool> _sortings = new();
 
 	[Parameter]
 	[SupplyParameterFromQuery]
-	public string Category { get; set; } = "Survival";
+	public string GameMode { get; set; } = "Survival";
+
+	[Parameter]
+	[SupplyParameterFromQuery]
+	public string RankSorting { get; set; } = "TimeDesc";
 
 	[Parameter]
 	[SupplyParameterFromQuery]
@@ -90,10 +96,16 @@ public partial class Index : IHasNavigation
 		await Task.CompletedTask;
 	}
 
-	private void SetCategory(CustomLeaderboardCategory category)
+	private void SetGameMode(GameMode gameMode)
 	{
-		Category = EnumConvert.GetString(category);
-		NavigationManager.AddOrModifyQueryParameter(nameof(Category), Category);
+		GameMode = gameMode.ToString();
+		NavigationManager.AddOrModifyQueryParameter(nameof(GameMode), GameMode);
+	}
+
+	private void SetRankSorting(CustomLeaderboardRankSorting rankSorting)
+	{
+		RankSorting = rankSorting.ToString();
+		NavigationManager.AddOrModifyQueryParameter(nameof(RankSorting), RankSorting);
 	}
 
 	private void Sort(CustomLeaderboardSorting sortBy)
@@ -107,12 +119,13 @@ public partial class Index : IHasNavigation
 
 	private async Task Fetch()
 	{
-		CustomLeaderboardCategory category = EnumConvert.GetCustomLeaderboardCategory(Category);
+		GameMode gameMode = EnumConvert.GetGameMode(GameMode);
+		CustomLeaderboardRankSorting rankSorting = EnumConvert.GetRankSorting(RankSorting);
 		int pageIndex = Math.Max(0, PageIndex);
 		int pageSize = PagingUtils.GetValidPageSize(PageSize);
 		CustomLeaderboardSorting sortBy = SortBy.HasValue ? (CustomLeaderboardSorting)SortBy.Value : CustomLeaderboardSorting.DateLastPlayed;
 
-		GetCustomLeaderboards = await Http.GetCustomLeaderboards(category, SpawnsetFilter, AuthorFilter, pageIndex, pageSize, sortBy, Ascending);
+		GetCustomLeaderboards = await Http.GetCustomLeaderboards(gameMode, rankSorting, SpawnsetFilter, AuthorFilter, pageIndex, pageSize, sortBy, Ascending);
 
 		if (PageIndex >= TotalPages)
 		{

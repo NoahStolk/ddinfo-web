@@ -65,11 +65,12 @@ public partial class MainApiHttpClient
 		return await SendGetRequest<GetCustomEntryData>($"api/custom-entries/{id}/data");
 	}
 
-	public async Task<Page<GetCustomLeaderboardOverview>> GetCustomLeaderboards(CustomLeaderboardCategory category, string? spawnsetFilter, string? authorFilter, int pageIndex, int pageSize, CustomLeaderboardSorting? sortBy, bool ascending)
+	public async Task<Page<GetCustomLeaderboardOverview>> GetCustomLeaderboards(GameMode gameMode, CustomLeaderboardRankSorting rankSorting, string? spawnsetFilter, string? authorFilter, int pageIndex, int pageSize, CustomLeaderboardSorting? sortBy, bool ascending)
 	{
 		Dictionary<string, object?> queryParameters = new()
 		{
-			{ nameof(category), category },
+			{ nameof(gameMode), gameMode },
+			{ nameof(rankSorting), rankSorting },
 			{ nameof(spawnsetFilter), spawnsetFilter },
 			{ nameof(authorFilter), authorFilter },
 			{ nameof(pageIndex), pageIndex },
