@@ -4,9 +4,11 @@ using DevilDaggersInfo.Api.Main.Spawnsets;
 using DevilDaggersInfo.Web.Client;
 using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Main;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
+using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Repositories;
 using DevilDaggersInfo.Web.Server.Domain.Utils;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using Model = DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 
@@ -17,10 +19,34 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 public class CustomLeaderboardsController : ControllerBase
 {
 	private readonly CustomLeaderboardRepository _customLeaderboardRepository;
+	private readonly ApplicationDbContext _dbContext;
 
-	public CustomLeaderboardsController(CustomLeaderboardRepository customLeaderboardRepository)
+	public CustomLeaderboardsController(CustomLeaderboardRepository customLeaderboardRepository, ApplicationDbContext dbContext)
 	{
 		_customLeaderboardRepository = customLeaderboardRepository;
+		_dbContext = dbContext;
+	}
+
+	[HttpPost]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	public ActionResult Migrate()
+	{
+		List<CustomLeaderboardEntity> cls = _dbContext.CustomLeaderboards.Include(cl => cl.Spawnset).ToList();
+		foreach (CustomLeaderboardEntity cl in cls)
+		{
+			cl.RankSorting = cl.Category switch
+			{
+				Domain.Entities.Enums.CustomLeaderboardCategory.Survival => Domain.Entities.Enums.CustomLeaderboardRankSorting.TimeDesc,
+				Domain.Entities.Enums.CustomLeaderboardCategory.Speedrun => Domain.Entities.Enums.CustomLeaderboardRankSorting.TimeAsc,
+				Domain.Entities.Enums.CustomLeaderboardCategory.TimeAttack => Domain.Entities.Enums.CustomLeaderboardRankSorting.TimeAsc,
+				Domain.Entities.Enums.CustomLeaderboardCategory.Race => Domain.Entities.Enums.CustomLeaderboardRankSorting.TimeAsc,
+				_ => throw new(),
+			};
+
+			_dbContext.SaveChanges();
+		}
+
+		return Ok();
 	}
 
 	[HttpGet]

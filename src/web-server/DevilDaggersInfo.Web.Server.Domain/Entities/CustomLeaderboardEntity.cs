@@ -17,6 +17,10 @@ public class CustomLeaderboardEntity : IAuditable
 	[ForeignKey(nameof(SpawnsetId))]
 	public SpawnsetEntity? Spawnset { get; set; }
 
+	// TODO: Remove after migration.
+	[Obsolete("Category will be replaced by sorting.")]
+	public CustomLeaderboardCategory Category { get; set; }
+
 	public CustomLeaderboardRankSorting RankSorting { get; set; }
 
 	[Column("TimeBronze")]
