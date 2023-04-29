@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
+using System.Diagnostics;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Converters.CoreToDomain;
 
@@ -11,7 +12,7 @@ public static class SpawnsetConverters
 			DevilDaggersInfo.Core.Spawnset.GameMode.Survival => SpawnsetGameMode.Survival,
 			DevilDaggersInfo.Core.Spawnset.GameMode.TimeAttack => SpawnsetGameMode.TimeAttack,
 			DevilDaggersInfo.Core.Spawnset.GameMode.Race => SpawnsetGameMode.Race,
-			_ => throw new($"Unknown game mode '{gameMode}'."),
+			_ => throw new UnreachableException(),
 		};
 	}
 
@@ -23,7 +24,7 @@ public static class SpawnsetConverters
 			DevilDaggersInfo.Core.Spawnset.HandLevel.Level2 => SpawnsetHandLevel.Level2,
 			DevilDaggersInfo.Core.Spawnset.HandLevel.Level3 => SpawnsetHandLevel.Level3,
 			DevilDaggersInfo.Core.Spawnset.HandLevel.Level4 => SpawnsetHandLevel.Level4,
-			_ => throw new($"Unknown hand level '{handLevel}'."),
+			_ => throw new UnreachableException(),
 		};
 	}
 }
