@@ -9,7 +9,7 @@ public class AddCustomLeaderboardState : IStateObject<AddCustomLeaderboard>
 	public int SpawnsetId { get; set; }
 
 	[Required]
-	public CustomLeaderboardCategory Category { get; set; }
+	public CustomLeaderboardRankSorting RankSorting { get; set; }
 
 	public AddCustomLeaderboardDaggersState Daggers { get; set; } = new();
 
@@ -91,7 +91,7 @@ public class AddCustomLeaderboardState : IStateObject<AddCustomLeaderboard>
 	public AddCustomLeaderboard ToModel() => new()
 	{
 		SpawnsetId = SpawnsetId,
-		Category = Category,
+		RankSorting = RankSorting,
 		Daggers = Daggers.ToModel(),
 		IsFeatured = IsFeatured,
 		GemsCollectedCriteria = GemsCollectedCriteria.ToModel(),

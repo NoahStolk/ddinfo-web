@@ -85,7 +85,7 @@ public class CustomLeaderboardRepository
 		List<CustomLeaderboardData> customLeaderboardData = new();
 		foreach (CustomLeaderboardEntity cl in customLeaderboards)
 		{
-			List<CustomEntrySummary> sortedCustomEntries = customEntries.Where(ce => ce.CustomLeaderboardId == cl.Id).Sort(cl.Category).ToList();
+			List<CustomEntrySummary> sortedCustomEntries = customEntries.Where(ce => ce.CustomLeaderboardId == cl.Id).Sort(cl.RankSorting).ToList();
 
 			CustomEntrySummary? worldRecord = sortedCustomEntries.Count == 0 ? null : sortedCustomEntries[0];
 			CustomLeaderboardOverviewWorldRecord? worldRecordModel = worldRecord == null ? null : new()
@@ -153,7 +153,7 @@ public class CustomLeaderboardRepository
 		{
 			Criteria = GetCriteria(customLeaderboard),
 			CustomEntries = customLeaderboard.CustomEntries
-				.Sort(customLeaderboard.Category)
+				.Sort(customLeaderboard.RankSorting)
 				.Select((ce, i) =>
 				{
 					bool isOldDdcl = ce.Client == CustomLeaderboardsClient.DevilDaggersCustomLeaderboards;
@@ -244,21 +244,22 @@ public class CustomLeaderboardRepository
 		};
 	}
 
-	public async Task<GlobalCustomLeaderboard> GetGlobalCustomLeaderboardAsync(CustomLeaderboardCategory category)
+	public async Task<GlobalCustomLeaderboard> GetGlobalCustomLeaderboardAsync(SpawnsetGameMode gameMode, CustomLeaderboardRankSorting rankSorting)
 	{
 		// ! Navigation property.
 		List<CustomLeaderboardEntity> customLeaderboards = await _dbContext.CustomLeaderboards
 			.AsNoTracking()
+			.Include(cl => cl.Spawnset)
 			.Include(cl => cl.CustomEntries!)
 				.ThenInclude(ce => ce.Player)
-			.Where(ce => ce.Category == category && ce.IsFeatured)
+			.Where(cl => cl.Spawnset!.GameMode == gameMode && cl.RankSorting == rankSorting && cl.IsFeatured)
 			.ToListAsync();
 
 		Dictionary<int, (string Name, GlobalCustomLeaderboardEntryData Data)> globalData = new();
 		foreach (CustomLeaderboardEntity customLeaderboard in customLeaderboards)
 		{
 			// ! Navigation property.
-			List<CustomEntryEntity> customEntries = customLeaderboard.CustomEntries!.Sort(category).ToList();
+			List<CustomEntryEntity> customEntries = customLeaderboard.CustomEntries!.Sort(rankSorting).ToList();
 
 			for (int i = 0; i < customEntries.Count; i++)
 			{

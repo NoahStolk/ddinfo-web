@@ -9,7 +9,6 @@ using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Extensions;
-using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.CompilerServices;
 
@@ -18,12 +17,10 @@ namespace DevilDaggersInfo.Web.Server.Domain.Admin.Services;
 public class CustomLeaderboardService
 {
 	private readonly ApplicationDbContext _dbContext;
-	private readonly IFileSystemService _fileSystemService;
 
-	public CustomLeaderboardService(ApplicationDbContext dbContext, IFileSystemService fileSystemService)
+	public CustomLeaderboardService(ApplicationDbContext dbContext)
 	{
 		_dbContext = dbContext;
-		_fileSystemService = fileSystemService;
 	}
 
 	public async Task AddCustomLeaderboardAsync(Api.Admin.CustomLeaderboards.AddCustomLeaderboard addCustomLeaderboard)
@@ -82,7 +79,7 @@ public class CustomLeaderboardService
 
 		await ValidateCustomLeaderboardAsync(
 			addCustomLeaderboard.SpawnsetId,
-			addCustomLeaderboard.Category.ToDomain(),
+			addCustomLeaderboard.RankSorting.ToDomain(),
 			addCustomLeaderboard.Daggers,
 			addCustomLeaderboard.IsFeatured,
 			addCustomLeaderboard.DeathTypeCriteria,
@@ -95,7 +92,7 @@ public class CustomLeaderboardService
 		{
 			DateCreated = DateTime.UtcNow,
 			SpawnsetId = addCustomLeaderboard.SpawnsetId,
-			Category = addCustomLeaderboard.Category.ToDomain(),
+			RankSorting = addCustomLeaderboard.RankSorting.ToDomain(),
 			Bronze = addCustomLeaderboard.Daggers.Bronze.To10thMilliTime(),
 			Silver = addCustomLeaderboard.Daggers.Silver.To10thMilliTime(),
 			Golden = addCustomLeaderboard.Daggers.Golden.To10thMilliTime(),
@@ -212,8 +209,8 @@ public class CustomLeaderboardService
 
 		if (_dbContext.CustomEntries.Any(ce => ce.CustomLeaderboardId == id))
 		{
-			if (customLeaderboard.Category != editCustomLeaderboard.Category.ToDomain())
-				throw new AdminDomainException("Cannot change category for custom leaderboard with scores.");
+			if (customLeaderboard.RankSorting != editCustomLeaderboard.RankSorting.ToDomain())
+				throw new AdminDomainException("Cannot change rank sorting for custom leaderboard with scores.");
 
 			bool anyCriteriaOperatorChanged =
 				customLeaderboard.GemsCollectedCriteria.Operator != editCustomLeaderboard.GemsCollectedCriteria.Operator.ToDomain() ||
@@ -321,7 +318,7 @@ public class CustomLeaderboardService
 
 		await ValidateCustomLeaderboardAsync(
 			customLeaderboard.SpawnsetId,
-			editCustomLeaderboard.Category.ToDomain(),
+			editCustomLeaderboard.RankSorting.ToDomain(),
 			editCustomLeaderboard.Daggers,
 			editCustomLeaderboard.IsFeatured,
 			editCustomLeaderboard.DeathTypeCriteria,
@@ -330,7 +327,7 @@ public class CustomLeaderboardService
 			editCustomLeaderboard.LevelUpTime3Criteria,
 			editCustomLeaderboard.LevelUpTime4Criteria);
 
-		customLeaderboard.Category = editCustomLeaderboard.Category.ToDomain();
+		customLeaderboard.RankSorting = editCustomLeaderboard.RankSorting.ToDomain();
 		customLeaderboard.Bronze = editCustomLeaderboard.Daggers.Bronze.To10thMilliTime();
 		customLeaderboard.Silver = editCustomLeaderboard.Daggers.Silver.To10thMilliTime();
 		customLeaderboard.Golden = editCustomLeaderboard.Daggers.Golden.To10thMilliTime();
@@ -404,7 +401,7 @@ public class CustomLeaderboardService
 
 	private async Task ValidateCustomLeaderboardAsync(
 		int spawnsetId,
-		CustomLeaderboardCategory category,
+		CustomLeaderboardRankSorting rankSorting,
 		Api.Admin.CustomLeaderboards.AddCustomLeaderboardDaggers customLeaderboardDaggers,
 		bool isFeatured,
 		Api.Admin.CustomLeaderboards.AddCustomLeaderboardCriteria deathTypeCriteria,
@@ -413,8 +410,8 @@ public class CustomLeaderboardService
 		Api.Admin.CustomLeaderboards.AddCustomLeaderboardCriteria levelUpTime3Criteria,
 		Api.Admin.CustomLeaderboards.AddCustomLeaderboardCriteria levelUpTime4Criteria)
 	{
-		if (!Enum.IsDefined(category))
-			throw new CustomLeaderboardValidationException($"Category '{category}' is not defined.");
+		if (!Enum.IsDefined(rankSorting))
+			throw new CustomLeaderboardValidationException($"Rank sorting '{rankSorting}' is not defined.");
 
 		if (isFeatured)
 		{
@@ -426,7 +423,7 @@ public class CustomLeaderboardService
 					throw new CustomLeaderboardValidationException($"All daggers times must be between {min} and {max} for featured leaderboards.");
 			}
 
-			if (category.IsAscending())
+			if (rankSorting.IsAscending())
 			{
 				if (customLeaderboardDaggers.Leviathan >= customLeaderboardDaggers.Devil)
 					throw new CustomLeaderboardValidationException("For ascending leaderboards, Leviathan time must be smaller than Devil time.");
@@ -460,12 +457,11 @@ public class CustomLeaderboardService
 		if (!SpawnsetBinary.TryParse(spawnset.File, out SpawnsetBinary? spawnsetBinary))
 			throw new InvalidOperationException($"Could not parse survival file '{spawnset.Name}'. Please review the file. Also review how this file ended up in the database, as it should not be possible to upload non-survival files from the Admin API.");
 
-		GameMode requiredGameMode = category.RequiredGameModeForCategory();
-		if (spawnsetBinary.GameMode != requiredGameMode)
-			throw new CustomLeaderboardValidationException($"Game mode must be '{requiredGameMode}' when the custom leaderboard category is '{category}'. The spawnset has game mode '{spawnsetBinary.GameMode}'.");
+		if (spawnsetBinary.GameMode == GameMode.TimeAttack && !spawnsetBinary.HasSpawns())
+			throw new CustomLeaderboardValidationException("Time Attack spawnset must have spawns.");
 
-		if (category == CustomLeaderboardCategory.TimeAttack && !spawnsetBinary.HasSpawns())
-			throw new CustomLeaderboardValidationException($"Custom leaderboard with category '{category}' must have spawns.");
+		if (spawnsetBinary.GameMode is GameMode.TimeAttack or GameMode.Race && rankSorting != CustomLeaderboardRankSorting.TimeAsc)
+			throw new CustomLeaderboardValidationException("Time Attack or Race spawnset must use the Time Ascending rank sorting.");
 
 		CustomLeaderboardCriteriaOperator deathTypeOperator = deathTypeCriteria.Operator.ToDomain();
 		if (deathTypeOperator is not (CustomLeaderboardCriteriaOperator.Any or CustomLeaderboardCriteriaOperator.Equal or CustomLeaderboardCriteriaOperator.NotEqual))

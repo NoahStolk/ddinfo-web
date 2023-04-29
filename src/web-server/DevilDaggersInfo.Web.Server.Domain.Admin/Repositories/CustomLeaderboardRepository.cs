@@ -26,7 +26,7 @@ public class CustomLeaderboardRepository
 		// ! Navigation property.
 		customLeaderboardsQuery = sortBy switch
 		{
-			CustomLeaderboardSorting.Category => customLeaderboardsQuery.OrderBy(cl => cl.Category, ascending).ThenBy(cl => cl.Id),
+			CustomLeaderboardSorting.RankSorting => customLeaderboardsQuery.OrderBy(cl => cl.RankSorting, ascending).ThenBy(cl => cl.Id),
 			CustomLeaderboardSorting.DateCreated => customLeaderboardsQuery.OrderBy(cl => cl.DateCreated, ascending).ThenBy(cl => cl.Id),
 			CustomLeaderboardSorting.IsFeatured => customLeaderboardsQuery.OrderBy(cl => cl.IsFeatured, ascending).ThenBy(cl => cl.Id),
 			CustomLeaderboardSorting.SpawnsetName => customLeaderboardsQuery.OrderBy(cl => cl.Spawnset!.Name, ascending).ThenBy(cl => cl.Id),

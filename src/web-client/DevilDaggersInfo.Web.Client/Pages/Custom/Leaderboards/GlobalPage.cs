@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Api.Main.CustomLeaderboards;
+using DevilDaggersInfo.Api.Main.Spawnsets;
 using DevilDaggersInfo.Web.Client.Extensions;
 using DevilDaggersInfo.Web.Client.HttpClients;
 using DevilDaggersInfo.Web.Client.Utils;
@@ -8,9 +9,16 @@ namespace DevilDaggersInfo.Web.Client.Pages.Custom.Leaderboards;
 
 public partial class GlobalPage
 {
+	private readonly IReadOnlyList<GameMode> _gameModes = Enum.GetValues<GameMode>();
+	private readonly IReadOnlyList<CustomLeaderboardRankSorting> _rankSortings = Enum.GetValues<CustomLeaderboardRankSorting>();
+
 	[Parameter]
 	[SupplyParameterFromQuery]
-	public string Category { get; set; } = "Survival";
+	public string GameMode { get; set; } = "Survival";
+
+	[Parameter]
+	[SupplyParameterFromQuery]
+	public string RankSorting { get; set; } = "TimeDesc";
 
 	[Inject]
 	public required MainApiHttpClient Http { get; set; }
@@ -20,14 +28,27 @@ public partial class GlobalPage
 
 	public GetGlobalCustomLeaderboard? GetGlobalCustomLeaderboard { get; set; }
 
-	protected override async Task OnParametersSetAsync()
+	private void SetGameMode(GameMode gameMode)
 	{
-		await Fetch(Category);
+		GameMode = gameMode.ToString();
+		NavigationManager.AddOrModifyQueryParameter(nameof(GameMode), GameMode);
 	}
 
-	private async Task Fetch(string category)
+	private void SetRankSorting(CustomLeaderboardRankSorting rankSorting)
 	{
-		NavigationManager.AddOrModifyQueryParameter(nameof(Category), category);
-		GetGlobalCustomLeaderboard = await Http.GetGlobalCustomLeaderboardForCategory(EnumConvert.GetCustomLeaderboardCategory(category));
+		RankSorting = rankSorting.ToString();
+		NavigationManager.AddOrModifyQueryParameter(nameof(RankSorting), RankSorting);
+	}
+
+	protected override async Task OnParametersSetAsync()
+	{
+		await Fetch();
+	}
+
+	private async Task Fetch()
+	{
+		GameMode gameMode = EnumConvert.GetGameMode(GameMode);
+		CustomLeaderboardRankSorting rankSorting = EnumConvert.GetRankSorting(RankSorting);
+		GetGlobalCustomLeaderboard = await Http.GetGlobalCustomLeaderboardForCategory(gameMode, rankSorting);
 	}
 }

@@ -10,7 +10,7 @@
 
 <AdminAuthorizer Base="this" RequiredRole="@Roles.CustomLeaderboards">
 	<AdminEdit TStateObject="EditCustomLeaderboardState" TModel="EditCustomLeaderboard" Name="Custom Leaderboard" OverviewUrl="/admin/custom-leaderboards" ApiCall="Http.EditCustomLeaderboardById" StateObject="_editCustomLeaderboardState" Id="Id" OnPopulate="async ec => await PopulateAsync(ec)">
-		<InputWrapper Label="Category"><SearchDropdown TKey="CustomLeaderboardCategory" Values="@(Enum.GetValues<CustomLeaderboardCategory>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<CustomLeaderboardCategory>(s)" ShowDisplayValue="false" @bind-Value="@_editCustomLeaderboardState.Category" /></InputWrapper>
+		<InputWrapper Label="Rank sorting"><SearchDropdown TKey="CustomLeaderboardRankSorting" Values="@(Enum.GetValues<CustomLeaderboardRankSorting>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<CustomLeaderboardRankSorting>(s)" ShowDisplayValue="false" @bind-Value="@_editCustomLeaderboardState.RankSorting" /></InputWrapper>
 		<InputWrapper Label="Featured"><InputCheckbox @bind-Value="@_editCustomLeaderboardState.IsFeatured" /></InputWrapper>
 		@if (_editCustomLeaderboardState.IsFeatured)
 		{
@@ -88,7 +88,7 @@
 		try
 		{
 			GetCustomLeaderboard getCustomLeaderboard = await Http.GetCustomLeaderboardById(Id);
-			_editCustomLeaderboardState.Category = getCustomLeaderboard.Category;
+			_editCustomLeaderboardState.RankSorting = getCustomLeaderboard.RankSorting;
 			_editCustomLeaderboardState.IsFeatured = getCustomLeaderboard.IsFeatured;
 			_editCustomLeaderboardState.Daggers.Bronze = getCustomLeaderboard.Daggers.Bronze;
 			_editCustomLeaderboardState.Daggers.Silver = getCustomLeaderboard.Daggers.Silver;

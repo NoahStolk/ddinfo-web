@@ -12,5 +12,5 @@ public record GetCustomLeaderboardForOverview : IAdminOverviewGetDto
 
 	public required DateTime? DateCreated { get; init; }
 
-	public required CustomLeaderboardCategory Category { get; init; }
+	public required CustomLeaderboardRankSorting RankSorting { get; init; }
 }

@@ -28,7 +28,7 @@ public static class CustomLeaderboardConverters
 			},
 			IsFeatured = customLeaderboard.IsFeatured,
 			DateCreated = customLeaderboard.DateCreated,
-			Category = customLeaderboard.Category.ToAdminApi(),
+			RankSorting = customLeaderboard.RankSorting.ToAdminApi(),
 		};
 	}
 
@@ -45,7 +45,7 @@ public static class CustomLeaderboardConverters
 			Leviathan = customLeaderboard.Leviathan.ToSecondsTime(),
 		},
 		IsFeatured = customLeaderboard.IsFeatured,
-		Category = customLeaderboard.Category.ToAdminApi(),
+		RankSorting = customLeaderboard.RankSorting.ToAdminApi(),
 		GemsCollectedCriteria = customLeaderboard.GemsCollectedCriteria.ToAdminApi(),
 		GemsDespawnedCriteria = customLeaderboard.GemsDespawnedCriteria.ToAdminApi(),
 		GemsEatenCriteria = customLeaderboard.GemsEatenCriteria.ToAdminApi(),
@@ -102,12 +102,10 @@ public static class CustomLeaderboardConverters
 		Expression = criteria.Expression == null ? null : Expression.TryParse(criteria.Expression, out Expression? expression) ? expression.ToShortString() : null,
 	};
 
-	private static AdminApi.CustomLeaderboardCategory ToAdminApi(this Entities.Enums.CustomLeaderboardCategory category) => category switch
+	private static AdminApi.CustomLeaderboardRankSorting ToAdminApi(this Entities.Enums.CustomLeaderboardRankSorting category) => category switch
 	{
-		Entities.Enums.CustomLeaderboardCategory.Survival => AdminApi.CustomLeaderboardCategory.Survival,
-		Entities.Enums.CustomLeaderboardCategory.TimeAttack => AdminApi.CustomLeaderboardCategory.TimeAttack,
-		Entities.Enums.CustomLeaderboardCategory.Speedrun => AdminApi.CustomLeaderboardCategory.Speedrun,
-		Entities.Enums.CustomLeaderboardCategory.Race => AdminApi.CustomLeaderboardCategory.Race,
+		Entities.Enums.CustomLeaderboardRankSorting.TimeDesc => AdminApi.CustomLeaderboardRankSorting.TimeDesc,
+		Entities.Enums.CustomLeaderboardRankSorting.TimeAsc => AdminApi.CustomLeaderboardRankSorting.TimeAsc,
 		_ => throw new UnreachableException(),
 	};
 

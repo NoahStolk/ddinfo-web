@@ -5,13 +5,14 @@ namespace DevilDaggersInfo.Web.Server.Domain.Extensions;
 
 public static class SortableCustomEntryExtensions
 {
-	// TODO: Use rank sorting instead.
-	public static IOrderedEnumerable<T> Sort<T>(this IEnumerable<T> customEntries, CustomLeaderboardCategory category)
+	public static IOrderedEnumerable<T> Sort<T>(this IEnumerable<T> customEntries, CustomLeaderboardRankSorting rankSorting)
 		where T : ISortableCustomEntry
 	{
-		if (category.IsAscending())
-			return customEntries.OrderBy(wr => wr.Time).ThenBy(wr => wr.SubmitDate);
-
-		return customEntries.OrderByDescending(wr => wr.Time).ThenBy(wr => wr.SubmitDate);
+		return rankSorting switch
+		{
+			CustomLeaderboardRankSorting.TimeAsc => customEntries.OrderBy(ce => ce.Time).ThenBy(ce => ce.SubmitDate),
+			CustomLeaderboardRankSorting.TimeDesc => customEntries.OrderByDescending(ce => ce.Time).ThenBy(ce => ce.SubmitDate),
+			_ => throw new InvalidOperationException($"Rank sorting '{rankSorting}' not supported."),
+		};
 	}
 }

@@ -57,9 +57,9 @@ public class CustomLeaderboardsController : ControllerBase
 	[HttpGet("global-leaderboard")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	public async Task<ActionResult<GetGlobalCustomLeaderboard>> GetGlobalCustomLeaderboardForCategory([Required] CustomLeaderboardCategory category)
+	public async Task<ActionResult<GetGlobalCustomLeaderboard>> GetGlobalCustomLeaderboardForCategory([Required] GameMode gameMode, [Required] CustomLeaderboardRankSorting rankSorting)
 	{
-		Model.GlobalCustomLeaderboard globalCustomLeaderboard = await _customLeaderboardRepository.GetGlobalCustomLeaderboardAsync(category.ToDomain());
+		Model.GlobalCustomLeaderboard globalCustomLeaderboard = await _customLeaderboardRepository.GetGlobalCustomLeaderboardAsync(gameMode.ToDomain(), rankSorting.ToDomain());
 		return new GetGlobalCustomLeaderboard
 		{
 			Entries = globalCustomLeaderboard.Entries

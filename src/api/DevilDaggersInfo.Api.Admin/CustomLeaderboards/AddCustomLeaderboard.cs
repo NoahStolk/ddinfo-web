@@ -4,7 +4,7 @@ public record AddCustomLeaderboard
 {
 	public required int SpawnsetId { get; init; }
 
-	public required CustomLeaderboardCategory Category { get; init; }
+	public required CustomLeaderboardRankSorting RankSorting { get; init; }
 
 	public required AddCustomLeaderboardDaggers Daggers { get; init; }
 

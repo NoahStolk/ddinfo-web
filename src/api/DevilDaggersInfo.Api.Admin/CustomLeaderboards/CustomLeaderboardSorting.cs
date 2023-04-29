@@ -11,5 +11,5 @@ public enum CustomLeaderboardSorting
 	TimeLeviathan = 6,
 	IsFeatured = 7,
 	DateCreated = 8,
-	Category = 9,
+	RankSorting = 9,
 }

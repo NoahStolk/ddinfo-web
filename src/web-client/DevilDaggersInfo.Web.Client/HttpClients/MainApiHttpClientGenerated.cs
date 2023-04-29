@@ -81,11 +81,12 @@ public partial class MainApiHttpClient
 		return await SendGetRequest<Page<GetCustomLeaderboardOverview>>(BuildUrlWithQuery($"api/custom-leaderboards/", queryParameters));
 	}
 
-	public async Task<GetGlobalCustomLeaderboard> GetGlobalCustomLeaderboardForCategory(CustomLeaderboardCategory category)
+	public async Task<GetGlobalCustomLeaderboard> GetGlobalCustomLeaderboardForCategory(GameMode gameMode, CustomLeaderboardRankSorting rankSorting)
 	{
 		Dictionary<string, object?> queryParameters = new()
 		{
-			{ nameof(category), category }
+			{ nameof(gameMode), gameMode },
+			{ nameof(rankSorting), rankSorting }
 		};
 		return await SendGetRequest<GetGlobalCustomLeaderboard>(BuildUrlWithQuery($"api/custom-leaderboards/global-leaderboard", queryParameters));
 	}

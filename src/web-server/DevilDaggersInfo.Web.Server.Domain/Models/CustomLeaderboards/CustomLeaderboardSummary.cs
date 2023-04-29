@@ -10,7 +10,7 @@ public record CustomLeaderboardSummary
 
 	public required string SpawnsetName { get; init; }
 
-	public required CustomLeaderboardCategory Category { get; init; }
+	public required CustomLeaderboardRankSorting RankSorting { get; init; }
 
 	public required CustomLeaderboardDaggers? Daggers { get; init; }
 }

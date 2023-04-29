@@ -36,7 +36,7 @@ public static class CustomLeaderboardConverters
 				CriteriaOperator = uploadCriteriaRejection.CriteriaOperator.ToAppApi(),
 			},
 			NewSortedEntries = null,
-			IsAscending = uploadResponse.Leaderboard.Category.IsAscending(),
+			IsAscending = uploadResponse.Leaderboard.RankSorting.IsAscending(),
 		};
 	}
 
@@ -70,7 +70,7 @@ public static class CustomLeaderboardConverters
 					LevelUpTime4 = successfulUploadResponse.LevelUpTime4State.Value,
 				},
 				NewSortedEntries = sortedEntries,
-				IsAscending = uploadResponse.Leaderboard.Category.IsAscending(),
+				IsAscending = uploadResponse.Leaderboard.RankSorting.IsAscending(),
 			},
 			SubmissionType.NewHighscore => new()
 			{
@@ -96,7 +96,7 @@ public static class CustomLeaderboardConverters
 					TimeState = successfulUploadResponse.TimeState.ToAppApi(),
 				},
 				NewSortedEntries = sortedEntries,
-				IsAscending = uploadResponse.Leaderboard.Category.IsAscending(),
+				IsAscending = uploadResponse.Leaderboard.RankSorting.IsAscending(),
 			},
 			_ => new()
 			{
@@ -121,7 +121,7 @@ public static class CustomLeaderboardConverters
 					TimeState = successfulUploadResponse.TimeState.ToAppApi(),
 				},
 				NewSortedEntries = sortedEntries,
-				IsAscending = uploadResponse.Leaderboard.Category.IsAscending(),
+				IsAscending = uploadResponse.Leaderboard.RankSorting.IsAscending(),
 			},
 		};
 	}
