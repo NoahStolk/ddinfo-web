@@ -98,10 +98,10 @@ public class CustomLeaderboardsController : ControllerBase
 		Model.CustomLeaderboardsTotalData totalData = await _customLeaderboardRepository.GetCustomLeaderboardsTotalDataAsync();
 		return new GetTotalCustomLeaderboardData
 		{
-			LeaderboardsPerCategory = totalData.LeaderboardsPerCategory.ToDictionary(kvp => kvp.Key.ToMainApi(), kvp => kvp.Value),
-			PlayersPerCategory = totalData.PlayersPerCategory.ToDictionary(kvp => kvp.Key.ToMainApi(), kvp => kvp.Value),
-			ScoresPerCategory = totalData.ScoresPerCategory.ToDictionary(kvp => kvp.Key.ToMainApi(), kvp => kvp.Value),
-			SubmitsPerCategory = totalData.SubmitsPerCategory.ToDictionary(kvp => kvp.Key.ToMainApi(), kvp => kvp.Value),
+			LeaderboardsPerGameMode = totalData.LeaderboardsPerGameMode.ToDictionary(kvp => kvp.Key.ToMainApi(), kvp => kvp.Value),
+			PlayersPerGameMode = totalData.PlayersPerGameMode.ToDictionary(kvp => kvp.Key.ToMainApi(), kvp => kvp.Value),
+			ScoresPerGameMode = totalData.ScoresPerGameMode.ToDictionary(kvp => kvp.Key.ToMainApi(), kvp => kvp.Value),
+			SubmitsPerGameMode = totalData.SubmitsPerGameMode.ToDictionary(kvp => kvp.Key.ToMainApi(), kvp => kvp.Value),
 			TotalPlayers = totalData.TotalPlayers,
 		};
 	}

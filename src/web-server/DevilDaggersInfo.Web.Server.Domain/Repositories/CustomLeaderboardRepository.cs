@@ -216,29 +216,30 @@ public class CustomLeaderboardRepository
 
 	public async Task<CustomLeaderboardsTotalData> GetCustomLeaderboardsTotalDataAsync()
 	{
-		var customLeaderboards = await _dbContext.CustomLeaderboards.AsNoTracking().Select(cl => new { cl.Id, cl.Category, cl.TotalRunsSubmitted }).ToListAsync();
+		// ! Navigation property.
+		var customLeaderboards = await _dbContext.CustomLeaderboards.AsNoTracking().Select(cl => new { cl.Id, cl.Spawnset!.GameMode, cl.TotalRunsSubmitted }).ToListAsync();
 
 		// ! Navigation property.
-		var customEntries = await _dbContext.CustomEntries.AsNoTracking().Select(ce => new { ce.PlayerId, ce.CustomLeaderboard!.Category }).ToListAsync();
+		var customEntries = await _dbContext.CustomEntries.AsNoTracking().Select(ce => new { ce.PlayerId, ce.CustomLeaderboard!.Spawnset!.GameMode }).ToListAsync();
 
-		Dictionary<CustomLeaderboardCategory, int> leaderboardsPerCategory = new();
-		Dictionary<CustomLeaderboardCategory, int> scoresPerCategory = new();
-		Dictionary<CustomLeaderboardCategory, int> submitsPerCategory = new();
-		Dictionary<CustomLeaderboardCategory, int> playersPerCategory = new();
-		foreach (CustomLeaderboardCategory category in Enum.GetValues<CustomLeaderboardCategory>())
+		Dictionary<SpawnsetGameMode, int> leaderboardsPerGameMode = new();
+		Dictionary<SpawnsetGameMode, int> scoresPerGameMode = new();
+		Dictionary<SpawnsetGameMode, int> submitsPerGameMode = new();
+		Dictionary<SpawnsetGameMode, int> playersPerGameMode = new();
+		foreach (SpawnsetGameMode gameMode in Enum.GetValues<SpawnsetGameMode>())
 		{
-			leaderboardsPerCategory[category] = customLeaderboards.Count(cl => cl.Category == category);
-			scoresPerCategory[category] = customEntries.Count(cl => cl.Category == category);
-			submitsPerCategory[category] = customLeaderboards.Where(cl => cl.Category == category).Sum(cl => cl.TotalRunsSubmitted);
-			playersPerCategory[category] = customEntries.Where(cl => cl.Category == category).DistinctBy(cl => cl.PlayerId).Count();
+			leaderboardsPerGameMode[gameMode] = customLeaderboards.Count(cl => cl.GameMode == gameMode);
+			scoresPerGameMode[gameMode] = customEntries.Count(ce => ce.GameMode == gameMode);
+			submitsPerGameMode[gameMode] = customLeaderboards.Where(cl => cl.GameMode == gameMode).Sum(cl => cl.TotalRunsSubmitted);
+			playersPerGameMode[gameMode] = customEntries.Where(ce => ce.GameMode == gameMode).DistinctBy(cl => cl.PlayerId).Count();
 		}
 
 		return new()
 		{
-			LeaderboardsPerCategory = leaderboardsPerCategory,
-			ScoresPerCategory = scoresPerCategory,
-			SubmitsPerCategory = submitsPerCategory,
-			PlayersPerCategory = playersPerCategory,
+			LeaderboardsPerGameMode = leaderboardsPerGameMode,
+			ScoresPerGameMode = scoresPerGameMode,
+			SubmitsPerGameMode = submitsPerGameMode,
+			PlayersPerGameMode = playersPerGameMode,
 			TotalPlayers = customEntries.DistinctBy(ce => ce.PlayerId).Count(),
 		};
 	}
