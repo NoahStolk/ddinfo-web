@@ -1,5 +1,6 @@
 namespace DevilDaggersInfo.Api.DdLive.CustomLeaderboards;
 
+[Obsolete("Use RankSorting instead.")]
 public enum CustomLeaderboardCategoryDdLive
 {
 	Survival = 1,

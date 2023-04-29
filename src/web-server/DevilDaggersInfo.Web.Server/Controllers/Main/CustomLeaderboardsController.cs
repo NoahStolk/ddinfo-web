@@ -37,7 +37,8 @@ public class CustomLeaderboardsController : ControllerBase
 		bool ascending = false)
 	{
 		Domain.Models.Page<Model.CustomLeaderboardOverview> cls = await _customLeaderboardRepository.GetCustomLeaderboardOverviewsAsync(
-			category: category.ToDomain(),
+			rankSorting: rankSorting.ToDomain(),
+			gameMode: gameMode.ToDomain(),
 			spawnsetFilter: spawnsetFilter,
 			authorFilter: authorFilter,
 			pageIndex: pageIndex,

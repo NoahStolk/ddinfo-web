@@ -14,7 +14,9 @@ public record CustomLeaderboardOverview
 
 	public required string SpawnsetAuthorName { get; init; }
 
-	public required CustomLeaderboardCategory Category { get; init; }
+	public required SpawnsetGameMode GameMode { get; init; }
+
+	public required CustomLeaderboardRankSorting RankSorting { get; init; }
 
 	public required CustomLeaderboardDaggers? Daggers { get; init; }
 

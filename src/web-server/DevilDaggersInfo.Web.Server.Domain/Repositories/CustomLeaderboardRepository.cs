@@ -1,6 +1,5 @@
 using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Core.CriteriaExpression;
-using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Core.Versioning;
 using DevilDaggersInfo.Web.Server.Domain.Constants;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
@@ -28,7 +27,7 @@ public class CustomLeaderboardRepository
 
 	public async Task<Page<CustomLeaderboardOverview>> GetCustomLeaderboardOverviewsAsync(
 		CustomLeaderboardRankSorting? rankSorting,
-		GameMode? gameMode,
+		SpawnsetGameMode? gameMode,
 		string? spawnsetFilter,
 		string? authorFilter,
 		int pageIndex,
@@ -152,7 +151,6 @@ public class CustomLeaderboardRepository
 		// ! Navigation property.
 		return new()
 		{
-			Category = customLeaderboard.Category,
 			Criteria = GetCriteria(customLeaderboard),
 			CustomEntries = customLeaderboard.CustomEntries
 				.Sort(customLeaderboard.Category)
@@ -204,7 +202,9 @@ public class CustomLeaderboardRepository
 			},
 			DateCreated = customLeaderboard.DateCreated,
 			DateLastPlayed = customLeaderboard.DateLastPlayed,
+			GameMode = customLeaderboard.Spawnset!.GameMode,
 			Id = customLeaderboard.Id,
+			RankSorting = customLeaderboard.RankSorting,
 			SpawnsetHtmlDescription = customLeaderboard.Spawnset!.HtmlDescription,
 			SpawnsetName = customLeaderboard.Spawnset.Name,
 			SpawnsetAuthorId = customLeaderboard.Spawnset.PlayerId,
@@ -330,39 +330,45 @@ public class CustomLeaderboardRepository
 		return customLeaderboard.Id;
 	}
 
-	// ! Navigation property.
-	private static CustomLeaderboardOverview ToOverview(CustomLeaderboardData cl) => new()
+	private static CustomLeaderboardOverview ToOverview(CustomLeaderboardData cl)
 	{
-		Category = cl.CustomLeaderboard.Category,
-		Criteria = GetCriteria(cl.CustomLeaderboard),
-		Daggers = !cl.CustomLeaderboard.IsFeatured ? null : new()
-		{
-			Bronze = cl.CustomLeaderboard.Bronze,
-			Silver = cl.CustomLeaderboard.Silver,
-			Golden = cl.CustomLeaderboard.Golden,
-			Devil = cl.CustomLeaderboard.Devil,
-			Leviathan = cl.CustomLeaderboard.Leviathan,
-		},
-		DateCreated = cl.CustomLeaderboard.DateCreated,
-		DateLastPlayed = cl.CustomLeaderboard.DateLastPlayed,
-		Id = cl.CustomLeaderboard.Id,
-		PlayerCount = cl.PlayerCount,
-		SelectedPlayerStats = cl.SelectedPlayerStats,
-		SpawnsetAuthorId = cl.CustomLeaderboard.Spawnset!.PlayerId,
-		SpawnsetAuthorName = cl.CustomLeaderboard.Spawnset.Player!.PlayerName,
-		SpawnsetId = cl.CustomLeaderboard.SpawnsetId,
-		SpawnsetName = cl.CustomLeaderboard.Spawnset.Name,
-		TotalRunsSubmitted = cl.CustomLeaderboard.TotalRunsSubmitted,
-		WorldRecord = cl.WorldRecord == null ? null : new()
-		{
-			PlayerId = cl.WorldRecord.PlayerId,
-			PlayerName = cl.WorldRecord.PlayerName,
-			Time = cl.WorldRecord.Time,
-			Dagger = cl.CustomLeaderboard.DaggerFromStat(cl.WorldRecord.Time),
-		},
-	};
+		if (cl.CustomLeaderboard.Spawnset == null)
+			throw new InvalidOperationException("Spawnset is not included.");
 
-	[return: NotNullIfNotNull("selectedEntry")]
+		if (cl.CustomLeaderboard.Spawnset.Player == null)
+			throw new InvalidOperationException("Spawnset author is not included.");
+
+		return new()
+		{
+			Criteria = GetCriteria(cl.CustomLeaderboard),
+			Daggers = !cl.CustomLeaderboard.IsFeatured ? null : new()
+			{
+				Bronze = cl.CustomLeaderboard.Bronze,
+				Silver = cl.CustomLeaderboard.Silver,
+				Golden = cl.CustomLeaderboard.Golden,
+				Devil = cl.CustomLeaderboard.Devil,
+				Leviathan = cl.CustomLeaderboard.Leviathan,
+			},
+			DateCreated = cl.CustomLeaderboard.DateCreated,
+			DateLastPlayed = cl.CustomLeaderboard.DateLastPlayed,
+			GameMode = cl.CustomLeaderboard.Spawnset.GameMode,
+			Id = cl.CustomLeaderboard.Id,
+			PlayerCount = cl.PlayerCount,
+			RankSorting = cl.CustomLeaderboard.RankSorting,
+			SelectedPlayerStats = cl.SelectedPlayerStats,
+			SpawnsetAuthorId = cl.CustomLeaderboard.Spawnset.PlayerId,
+			SpawnsetAuthorName = cl.CustomLeaderboard.Spawnset.Player.PlayerName,
+			SpawnsetId = cl.CustomLeaderboard.SpawnsetId,
+			SpawnsetName = cl.CustomLeaderboard.Spawnset.Name,
+			TotalRunsSubmitted = cl.CustomLeaderboard.TotalRunsSubmitted,
+			WorldRecord = cl.WorldRecord == null ? null : new()
+			{
+				PlayerId = cl.WorldRecord.PlayerId, PlayerName = cl.WorldRecord.PlayerName, Time = cl.WorldRecord.Time, Dagger = cl.CustomLeaderboard.DaggerFromStat(cl.WorldRecord.Time),
+			},
+		};
+	}
+
+	[return: NotNullIfNotNull(nameof(selectedEntry))]
 	private static CustomLeaderboardOverviewSelectedPlayerStats? GetSelectedStats(CustomLeaderboardEntity cl, List<CustomEntrySummary> sortedCustomEntries, CustomEntrySummary? selectedEntry)
 	{
 		if (selectedEntry == null)

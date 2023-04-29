@@ -2,7 +2,6 @@ using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Core.CriteriaExpression;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
-using DevilDaggersInfo.Web.Server.Domain.Extensions;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.Domain.Utils;
 using System.Diagnostics;
@@ -37,14 +36,15 @@ public static class CustomLeaderboardConverters
 		Daggers = customLeaderboard.Daggers?.ToMainApi(),
 		DateCreated = customLeaderboard.DateCreated,
 		SubmitCount = customLeaderboard.TotalRunsSubmitted,
-		Category = customLeaderboard.Category.ToMainApi(),
+		RankSorting = customLeaderboard.RankSorting.ToMainApi(),
 		IsFeatured = customLeaderboard.Daggers != null,
 		DateLastPlayed = customLeaderboard.DateLastPlayed,
-		CustomEntries = customLeaderboard.CustomEntries.ConvertAll(ce => ce.ToMainApi(customLeaderboard.Category)),
+		CustomEntries = customLeaderboard.CustomEntries.ConvertAll(ce => ce.ToMainApi(customLeaderboard.GameMode)),
 		Criteria = customLeaderboard.Criteria.ConvertAll(clc => clc.ToMainApi()),
+		SpawnsetGameMode = customLeaderboard.GameMode.ToMainApi(),
 	};
 
-	private static MainApi.GetCustomEntry ToMainApi(this CustomEntry customEntry, CustomLeaderboardCategory category) => new()
+	private static MainApi.GetCustomEntry ToMainApi(this CustomEntry customEntry, SpawnsetGameMode gameMode) => new()
 	{
 		Id = customEntry.Id,
 		Rank = customEntry.Rank,
@@ -53,7 +53,7 @@ public static class CustomLeaderboardConverters
 		CountryCode = customEntry.CountryCode,
 		Client = customEntry.Client.ToMainApi(),
 		ClientVersion = customEntry.ClientVersion,
-		DeathType = category.IsTimeAttackOrRace() ? null : customEntry.DeathType,
+		DeathType = gameMode is SpawnsetGameMode.TimeAttack or SpawnsetGameMode.Race ? null : customEntry.DeathType,
 		EnemiesAlive = customEntry.EnemiesAlive,
 		GemsCollected = customEntry.GemsCollected,
 		GemsDespawned = customEntry.GemsDespawned,
@@ -102,6 +102,13 @@ public static class CustomLeaderboardConverters
 		CustomLeaderboardCategory.TimeAttack => MainApi.CustomLeaderboardCategory.TimeAttack,
 		CustomLeaderboardCategory.Speedrun => MainApi.CustomLeaderboardCategory.Speedrun,
 		CustomLeaderboardCategory.Race => MainApi.CustomLeaderboardCategory.Race,
+		_ => throw new UnreachableException(),
+	};
+
+	public static MainApi.CustomLeaderboardRankSorting ToMainApi(this CustomLeaderboardRankSorting rankSorting) => rankSorting switch
+	{
+		CustomLeaderboardRankSorting.TimeDesc => MainApi.CustomLeaderboardRankSorting.TimeDesc,
+		CustomLeaderboardRankSorting.TimeAsc => MainApi.CustomLeaderboardRankSorting.TimeAsc,
 		_ => throw new UnreachableException(),
 	};
 

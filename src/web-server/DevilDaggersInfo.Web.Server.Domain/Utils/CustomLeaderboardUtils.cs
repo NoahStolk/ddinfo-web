@@ -7,9 +7,9 @@ namespace DevilDaggersInfo.Web.Server.Domain.Utils;
 public static class CustomLeaderboardUtils
 {
 	// TODO: Add unit tests.
-	public static CustomLeaderboardDagger GetDaggerFromStat(CustomLeaderboardCategory category, int stat, int leviathan, int devil, int golden, int silver, int bronze)
+	public static CustomLeaderboardDagger GetDaggerFromStat(CustomLeaderboardRankSorting rankSorting, int stat, int leviathan, int devil, int golden, int silver, int bronze)
 	{
-		if (category.IsAscending())
+		if (rankSorting.IsAscending())
 		{
 			if (stat <= leviathan)
 				return CustomLeaderboardDagger.Leviathan;

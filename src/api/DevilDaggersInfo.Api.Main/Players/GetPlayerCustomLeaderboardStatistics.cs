@@ -5,9 +5,9 @@ namespace DevilDaggersInfo.Api.Main.Players;
 
 public record GetPlayerCustomLeaderboardStatistics
 {
-	public GameMode GameMode { get; init; }
+	public required GameMode GameMode { get; init; }
 
-	public CustomLeaderboardRankSorting RankSorting { get; init; }
+	public required CustomLeaderboardRankSorting RankSorting { get; init; }
 
 	public required int LeviathanDaggerCount { get; init; }
 

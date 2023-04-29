@@ -33,4 +33,11 @@ public static class CustomLeaderboardConverters
 		MainApi.CustomLeaderboardSorting.WorldRecord => CustomLeaderboardSorting.WorldRecord,
 		_ => throw new UnreachableException(),
 	};
+
+	public static CustomLeaderboardRankSorting ToDomain(this MainApi.CustomLeaderboardRankSorting rankSorting) => rankSorting switch
+	{
+		MainApi.CustomLeaderboardRankSorting.TimeDesc => CustomLeaderboardRankSorting.TimeDesc,
+		MainApi.CustomLeaderboardRankSorting.TimeAsc => CustomLeaderboardRankSorting.TimeAsc,
+		_ => throw new UnreachableException(),
+	};
 }

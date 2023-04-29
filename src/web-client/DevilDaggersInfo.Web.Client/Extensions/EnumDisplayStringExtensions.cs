@@ -14,6 +14,13 @@ public static class EnumDisplayStringExtensions
 		_ => throw new UnreachableException(),
 	};
 
+	public static string ToDisplayString(this CustomLeaderboardRankSorting rankSorting) => rankSorting switch
+	{
+		CustomLeaderboardRankSorting.TimeDesc => "Highest Time (default)",
+		CustomLeaderboardRankSorting.TimeAsc => "Lowest Time",
+		_ => throw new UnreachableException(),
+	};
+
 	public static string ToDisplayString(this GameMode gameMode) => gameMode switch
 	{
 		GameMode.Survival => "Survival",

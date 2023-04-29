@@ -128,17 +128,17 @@ public static class CustomLeaderboardConverters
 
 	public static AppApi.GetCustomLeaderboard ToAppApi(this SortedCustomLeaderboard sortedCustomLeaderboard) => new()
 	{
-		Category = sortedCustomLeaderboard.Category.ToAppApi(),
+		Category = GetCategory(sortedCustomLeaderboard.RankSorting, sortedCustomLeaderboard.GameMode),
 		Criteria = sortedCustomLeaderboard.Criteria.ConvertAll(c => c.ToAppApi()),
 		Daggers = sortedCustomLeaderboard.Daggers?.ToAppApi(),
-		IsAscending = sortedCustomLeaderboard.Category.IsAscending(),
+		IsAscending = sortedCustomLeaderboard.RankSorting.IsAscending(),
 		SortedEntries = sortedCustomLeaderboard.CustomEntries.ConvertAll(ce => ce.ToAppApi()),
 		SpawnsetName = sortedCustomLeaderboard.SpawnsetName,
 	};
 
 	public static AppApi.GetCustomLeaderboardForOverview ToAppApi(this CustomLeaderboardOverview customLeaderboard) => new()
 	{
-		Category = customLeaderboard.Category.ToAppApi(),
+		Category = GetCategory(customLeaderboard.RankSorting, customLeaderboard.GameMode),
 		Daggers = customLeaderboard.Daggers?.ToAppApi(),
 		Id = customLeaderboard.Id,
 		PlayerCount = customLeaderboard.PlayerCount,
@@ -214,15 +214,6 @@ public static class CustomLeaderboardConverters
 		SubmitDate = customEntry.SubmitDate,
 		TimeInSeconds = customEntry.Time.ToSecondsTime(),
 		CustomLeaderboardDagger = customEntry.CustomLeaderboardDagger?.ToAppApi(),
-	};
-
-	private static AppApi.CustomLeaderboardCategory ToAppApi(this CustomLeaderboardCategory category) => category switch
-	{
-		CustomLeaderboardCategory.Survival => AppApi.CustomLeaderboardCategory.Survival,
-		CustomLeaderboardCategory.TimeAttack => AppApi.CustomLeaderboardCategory.TimeAttack,
-		CustomLeaderboardCategory.Speedrun => AppApi.CustomLeaderboardCategory.Speedrun,
-		CustomLeaderboardCategory.Race => AppApi.CustomLeaderboardCategory.Race,
-		_ => throw new UnreachableException(),
 	};
 
 	private static AppApi.CustomLeaderboardDagger ToAppApi(this CustomLeaderboardDagger dagger) => dagger switch
@@ -301,4 +292,23 @@ public static class CustomLeaderboardConverters
 		CustomLeaderboardCriteriaOperator.NotEqual => AppApi.CustomLeaderboardCriteriaOperator.NotEqual,
 		_ => throw new UnreachableException(),
 	};
+
+	/// <summary>
+	/// Workaround to keep the API backwards compatible with the old categories.
+	/// </summary>
+	private static AppApi.CustomLeaderboardCategory GetCategory(CustomLeaderboardRankSorting rankSorting, SpawnsetGameMode gameMode)
+	{
+		if (rankSorting == CustomLeaderboardRankSorting.TimeAsc)
+		{
+			return gameMode switch
+			{
+				SpawnsetGameMode.Survival => AppApi.CustomLeaderboardCategory.Speedrun,
+				SpawnsetGameMode.TimeAttack => AppApi.CustomLeaderboardCategory.TimeAttack,
+				SpawnsetGameMode.Race => AppApi.CustomLeaderboardCategory.Race,
+				_ => throw new UnreachableException(),
+			};
+		}
+
+		return AppApi.CustomLeaderboardCategory.Survival;
+	}
 }

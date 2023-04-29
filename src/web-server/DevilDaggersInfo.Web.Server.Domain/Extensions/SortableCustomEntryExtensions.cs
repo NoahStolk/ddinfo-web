@@ -5,6 +5,7 @@ namespace DevilDaggersInfo.Web.Server.Domain.Extensions;
 
 public static class SortableCustomEntryExtensions
 {
+	// TODO: Use rank sorting instead.
 	public static IOrderedEnumerable<T> Sort<T>(this IEnumerable<T> customEntries, CustomLeaderboardCategory category)
 		where T : ISortableCustomEntry
 	{

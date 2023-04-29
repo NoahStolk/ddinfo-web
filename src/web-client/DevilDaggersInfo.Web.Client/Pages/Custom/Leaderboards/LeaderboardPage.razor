@@ -34,7 +34,8 @@ else
 	<div class="bg-gray-1 max-w-sm px-1">
 		<DataField Name="Author"><span class="whitespace-nowrap">@GetCustomLeaderboard.SpawnsetAuthorName</span></DataField>
 		<DataField Name="Created">@GetCustomLeaderboard.DateCreated.ToString(StringFormats.DateTimeFormat)</DataField>
-		<DataField Name="Category">@GetCustomLeaderboard.Category.ToDisplayString()</DataField>
+		<DataField Name="Game Mode">@GetCustomLeaderboard.SpawnsetGameMode.ToCore().ToDisplayString()</DataField>
+		<DataField Name="Rank Sorting">@GetCustomLeaderboard.RankSorting.ToDisplayString()</DataField>
 		<DataField Name="Submits">@(GetCustomLeaderboard.DateCreated < Constants.TrackingCustomLeaderboardSubmitCounts ? "+" : string.Empty)@GetCustomLeaderboard.SubmitCount</DataField>
 
 		<div class="grid grid-cols-2 text-lg">
@@ -134,7 +135,7 @@ else
 						string? daggerCssClass = ce.CustomLeaderboardDagger?.ToCssClass();
 
 						string enemiesKilled = ce.EnemiesKilled.ToString(StringFormats.LeaderboardIntFormat);
-						string enemiesAlive = GetCustomLeaderboard.Category == CustomLeaderboardCategory.TimeAttack ? "0" : ce.EnemiesAlive.ToString(StringFormats.LeaderboardIntFormat);
+						string enemiesAlive = GetCustomLeaderboard.SpawnsetGameMode == Api.Main.Spawnsets.GameMode.TimeAttack ? "0" : ce.EnemiesAlive.ToString(StringFormats.LeaderboardIntFormat);
 						string gemsCollected = ce.GemsCollected.ToString(StringFormats.LeaderboardIntFormat);
 						MarkupString gemsDespawned = ce.GemsDespawned.HasValue ? (MarkupString)ce.GemsDespawned.Value.ToString(StringFormats.LeaderboardIntFormat) : MarkupStrings.NoDataMarkup;
 						MarkupString gemsEaten = ce.GemsEaten.HasValue ? (MarkupString)ce.GemsEaten.Value.ToString(StringFormats.LeaderboardIntFormat) : MarkupStrings.NoDataMarkup;
