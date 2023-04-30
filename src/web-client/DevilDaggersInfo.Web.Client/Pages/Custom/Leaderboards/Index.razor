@@ -81,11 +81,11 @@ else
 				}
 				else
 				{
-					<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe @CustomLeaderboardDagger.Bronze.ToCssClass()">@customLeaderboard.Daggers.Bronze.ToString(StringFormats.TimeFormat)</div>
-					<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe @CustomLeaderboardDagger.Silver.ToCssClass()">@customLeaderboard.Daggers.Silver.ToString(StringFormats.TimeFormat)</div>
-					<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe @CustomLeaderboardDagger.Golden.ToCssClass()">@customLeaderboard.Daggers.Golden.ToString(StringFormats.TimeFormat)</div>
-					<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe @CustomLeaderboardDagger.Devil.ToCssClass()">@customLeaderboard.Daggers.Devil.ToString(StringFormats.TimeFormat)</div>
-					<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe @CustomLeaderboardDagger.Leviathan.ToCssClass()">@customLeaderboard.Daggers.Leviathan.ToString(StringFormats.TimeFormat)</div>
+					<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe @CustomLeaderboardDagger.Bronze.ToCssClass()">@customLeaderboard.RankSorting.GetDaggerValue(customLeaderboard.Daggers.Bronze)</div>
+					<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe @CustomLeaderboardDagger.Silver.ToCssClass()">@customLeaderboard.RankSorting.GetDaggerValue(customLeaderboard.Daggers.Silver)</div>
+					<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe @CustomLeaderboardDagger.Golden.ToCssClass()">@customLeaderboard.RankSorting.GetDaggerValue(customLeaderboard.Daggers.Golden)</div>
+					<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe @CustomLeaderboardDagger.Devil.ToCssClass()">@customLeaderboard.RankSorting.GetDaggerValue(customLeaderboard.Daggers.Devil)</div>
+					<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe @CustomLeaderboardDagger.Leviathan.ToCssClass()">@customLeaderboard.RankSorting.GetDaggerValue(customLeaderboard.Daggers.Leviathan)</div>
 				}
 				<div class="overflow-hidden text-left hidden lg:block">@(customLeaderboard.TopPlayer?.ToNoBreakString() ?? MarkupStrings.NoDataMarkup)</div>
 				<div class="overflow-hidden text-right hidden lg:block text-xl font-goethe @(customLeaderboard.WorldRecordDagger?.ToCssClass())">@(customLeaderboard.WorldRecord.HasValue ? new(customLeaderboard.WorldRecord.Value.ToString(StringFormats.TimeFormat)) : MarkupStrings.NoDataMarkup)</div>
