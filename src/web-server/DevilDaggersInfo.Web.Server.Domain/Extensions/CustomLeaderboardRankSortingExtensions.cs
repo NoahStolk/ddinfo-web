@@ -13,4 +13,9 @@ public static class CustomLeaderboardRankSortingExtensions
 			_ => throw new InvalidOperationException($"Rank sorting '{rankSorting}' is not supported."),
 		};
 	}
+
+	public static bool IsTime(this CustomLeaderboardRankSorting rankSorting)
+	{
+		return rankSorting is CustomLeaderboardRankSorting.TimeAsc or CustomLeaderboardRankSorting.TimeDesc;
+	}
 }

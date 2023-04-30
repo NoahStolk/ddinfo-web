@@ -14,6 +14,7 @@ using System.Runtime.CompilerServices;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Admin.Services;
 
+// TODO: Unit test.
 public class CustomLeaderboardService
 {
 	private readonly ApplicationDbContext _dbContext;
@@ -93,11 +94,11 @@ public class CustomLeaderboardService
 			DateCreated = DateTime.UtcNow,
 			SpawnsetId = addCustomLeaderboard.SpawnsetId,
 			RankSorting = addCustomLeaderboard.RankSorting.ToDomain(),
-			Bronze = addCustomLeaderboard.Daggers.Bronze.To10thMilliTime(),
-			Silver = addCustomLeaderboard.Daggers.Silver.To10thMilliTime(),
-			Golden = addCustomLeaderboard.Daggers.Golden.To10thMilliTime(),
-			Devil = addCustomLeaderboard.Daggers.Devil.To10thMilliTime(),
-			Leviathan = addCustomLeaderboard.Daggers.Leviathan.To10thMilliTime(),
+			Bronze = GetDaggerValue(addCustomLeaderboard.RankSorting, addCustomLeaderboard.Daggers.Bronze),
+			Silver = GetDaggerValue(addCustomLeaderboard.RankSorting, addCustomLeaderboard.Daggers.Silver),
+			Golden = GetDaggerValue(addCustomLeaderboard.RankSorting, addCustomLeaderboard.Daggers.Golden),
+			Devil = GetDaggerValue(addCustomLeaderboard.RankSorting, addCustomLeaderboard.Daggers.Devil),
+			Leviathan = GetDaggerValue(addCustomLeaderboard.RankSorting, addCustomLeaderboard.Daggers.Leviathan),
 			IsFeatured = addCustomLeaderboard.IsFeatured,
 			GemsCollectedCriteria = new() { Operator = addCustomLeaderboard.GemsCollectedCriteria.Operator.ToDomain(), Expression = gemsCollectedExpression },
 			GemsDespawnedCriteria = new() { Operator = addCustomLeaderboard.GemsDespawnedCriteria.Operator.ToDomain(), Expression = gemsDespawnedCriteriaExpression },
@@ -328,11 +329,11 @@ public class CustomLeaderboardService
 			editCustomLeaderboard.LevelUpTime4Criteria);
 
 		customLeaderboard.RankSorting = editCustomLeaderboard.RankSorting.ToDomain();
-		customLeaderboard.Bronze = editCustomLeaderboard.Daggers.Bronze.To10thMilliTime();
-		customLeaderboard.Silver = editCustomLeaderboard.Daggers.Silver.To10thMilliTime();
-		customLeaderboard.Golden = editCustomLeaderboard.Daggers.Golden.To10thMilliTime();
-		customLeaderboard.Devil = editCustomLeaderboard.Daggers.Devil.To10thMilliTime();
-		customLeaderboard.Leviathan = editCustomLeaderboard.Daggers.Leviathan.To10thMilliTime();
+		customLeaderboard.Bronze = GetDaggerValue(editCustomLeaderboard.RankSorting, editCustomLeaderboard.Daggers.Bronze);
+		customLeaderboard.Silver = GetDaggerValue(editCustomLeaderboard.RankSorting, editCustomLeaderboard.Daggers.Silver);
+		customLeaderboard.Golden = GetDaggerValue(editCustomLeaderboard.RankSorting, editCustomLeaderboard.Daggers.Golden);
+		customLeaderboard.Devil = GetDaggerValue(editCustomLeaderboard.RankSorting, editCustomLeaderboard.Daggers.Devil);
+		customLeaderboard.Leviathan = GetDaggerValue(editCustomLeaderboard.RankSorting, editCustomLeaderboard.Daggers.Leviathan);
 		customLeaderboard.IsFeatured = editCustomLeaderboard.IsFeatured;
 		customLeaderboard.GemsCollectedCriteria = new() { Operator = editCustomLeaderboard.GemsCollectedCriteria.Operator.ToDomain(), Expression = gemsCollectedExpression };
 		customLeaderboard.GemsDespawnedCriteria = new() { Operator = editCustomLeaderboard.GemsDespawnedCriteria.Operator.ToDomain(), Expression = gemsDespawnedCriteriaExpression };
@@ -415,7 +416,7 @@ public class CustomLeaderboardService
 
 		if (isFeatured)
 		{
-			if (rankSorting is CustomLeaderboardRankSorting.TimeAsc or CustomLeaderboardRankSorting.TimeDesc)
+			if (rankSorting.IsTime())
 			{
 				foreach (double dagger in new[] { customLeaderboardDaggers.Leviathan, customLeaderboardDaggers.Devil, customLeaderboardDaggers.Golden, customLeaderboardDaggers.Silver, customLeaderboardDaggers.Bronze })
 				{
@@ -509,6 +510,14 @@ public class CustomLeaderboardService
 			throw new CustomLeaderboardValidationException($"Criteria expression '{criteriaExpression}' is too long.");
 
 		return expressionBytes;
+	}
+
+	private static int GetDaggerValue(Api.Admin.CustomLeaderboards.CustomLeaderboardRankSorting apiRankSorting, double apiValue)
+	{
+		if (apiRankSorting.ToDomain().IsTime())
+			return apiValue.To10thMilliTime();
+
+		return (int)apiValue;
 	}
 
 	private static bool ExpressionEqual(byte[]? a, byte[]? b)
