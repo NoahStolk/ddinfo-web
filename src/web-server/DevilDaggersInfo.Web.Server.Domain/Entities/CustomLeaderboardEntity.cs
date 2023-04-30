@@ -95,6 +95,17 @@ public class CustomLeaderboardEntity : IAuditable
 
 	public List<CustomEntryEntity>? CustomEntries { get; set; }
 
-	public CustomLeaderboardDagger? DaggerFromStat(int stat)
-		=> IsFeatured ? CustomLeaderboardUtils.GetDaggerFromStat(RankSorting, stat, Leviathan, Devil, Golden, Silver, Bronze) : null;
+	public CustomLeaderboardDagger? DaggerFromStat(IDaggerStatCustomEntry entry)
+	{
+		if (!IsFeatured)
+			return null;
+
+		int stat = RankSorting switch
+		{
+			CustomLeaderboardRankSorting.TimeDesc or CustomLeaderboardRankSorting.TimeAsc => entry.Time,
+			_ => throw new InvalidOperationException("Unsupported rank sorting for dagger calculation."),
+		};
+
+		return CustomLeaderboardUtils.GetDaggerFromStat(RankSorting, stat, Leviathan, Devil, Golden, Silver, Bronze);
+	}
 }

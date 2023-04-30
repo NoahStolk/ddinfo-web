@@ -93,7 +93,7 @@ public class CustomLeaderboardRepository
 				Time = worldRecord.Time,
 				PlayerId = worldRecord.PlayerId,
 				PlayerName = worldRecord.PlayerName,
-				Dagger = cl.DaggerFromStat(worldRecord.Time),
+				Dagger = cl.DaggerFromStat(worldRecord),
 			};
 
 			CustomEntrySummary? selectedEntry = sortedCustomEntries.Find(ce => ce.PlayerId == selectedPlayerId);
@@ -167,7 +167,7 @@ public class CustomLeaderboardRepository
 						Client = ce.Client,
 						ClientVersion = ce.ClientVersion,
 						CountryCode = ce.Player!.CountryCode,
-						CustomLeaderboardDagger = customLeaderboard.DaggerFromStat(ce.Time),
+						CustomLeaderboardDagger = customLeaderboard.DaggerFromStat(ce),
 						DaggersFired = ce.DaggersFired,
 						DaggersHit = ce.DaggersHit,
 						DeathType = ce.DeathType,
@@ -280,7 +280,7 @@ public class CustomLeaderboardRepository
 
 				data.Rankings.Add(new() { Rank = i + 1, TotalPlayers = customEntries.Count });
 
-				switch (customLeaderboard.DaggerFromStat(customEntry.Time) ?? throw new InvalidOperationException("Custom leaderboard without daggers may not be used for processing global custom leaderboard data."))
+				switch (customLeaderboard.DaggerFromStat(customEntry) ?? throw new InvalidOperationException("Custom leaderboard without daggers may not be used for processing global custom leaderboard data."))
 				{
 					case CustomLeaderboardDagger.Leviathan: data.LeviathanCount++; break;
 					case CustomLeaderboardDagger.Devil: data.DevilCount++; break;
@@ -368,7 +368,7 @@ public class CustomLeaderboardRepository
 				PlayerId = cl.WorldRecord.PlayerId,
 				PlayerName = cl.WorldRecord.PlayerName,
 				Time = cl.WorldRecord.Time,
-				Dagger = cl.CustomLeaderboard.DaggerFromStat(cl.WorldRecord.Time),
+				Dagger = cl.CustomLeaderboard.DaggerFromStat(cl.WorldRecord),
 			},
 		};
 	}
@@ -379,7 +379,7 @@ public class CustomLeaderboardRepository
 		if (selectedEntry == null)
 			return null;
 
-		CustomLeaderboardDagger? dagger = cl.DaggerFromStat(selectedEntry.Time);
+		CustomLeaderboardDagger? dagger = cl.DaggerFromStat(selectedEntry);
 		return new()
 		{
 			Dagger = dagger,

@@ -4,7 +4,7 @@ using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 namespace DevilDaggersInfo.Web.Server.Domain.Entities;
 
 [Table("CustomEntries")]
-public class CustomEntryEntity : ISortableCustomEntry
+public class CustomEntryEntity : ISortableCustomEntry, IDaggerStatCustomEntry
 {
 	[Key]
 	public int Id { get; init; }

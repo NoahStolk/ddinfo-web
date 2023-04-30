@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 
-public record CustomEntrySummary : ISortableCustomEntry
+public record CustomEntrySummary : ISortableCustomEntry, IDaggerStatCustomEntry
 {
 	public required int CustomLeaderboardId { get; init; }
 

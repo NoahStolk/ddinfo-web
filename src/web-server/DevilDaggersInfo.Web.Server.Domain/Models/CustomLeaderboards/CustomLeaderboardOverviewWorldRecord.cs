@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 
-public record CustomLeaderboardOverviewWorldRecord
+public record CustomLeaderboardOverviewWorldRecord : IDaggerStatCustomEntry
 {
 	public required int Time { get; init; }
 
