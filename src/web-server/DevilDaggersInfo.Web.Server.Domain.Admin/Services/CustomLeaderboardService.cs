@@ -415,12 +415,15 @@ public class CustomLeaderboardService
 
 		if (isFeatured)
 		{
-			foreach (double dagger in new[] { customLeaderboardDaggers.Leviathan, customLeaderboardDaggers.Devil, customLeaderboardDaggers.Golden, customLeaderboardDaggers.Silver, customLeaderboardDaggers.Bronze })
+			if (rankSorting is CustomLeaderboardRankSorting.TimeAsc or CustomLeaderboardRankSorting.TimeDesc)
 			{
-				const int min = 1;
-				const int max = 1500;
-				if (dagger is < min or > max)
-					throw new CustomLeaderboardValidationException($"All daggers times must be between {min} and {max} for featured leaderboards.");
+				foreach (double dagger in new[] { customLeaderboardDaggers.Leviathan, customLeaderboardDaggers.Devil, customLeaderboardDaggers.Golden, customLeaderboardDaggers.Silver, customLeaderboardDaggers.Bronze })
+				{
+					const int min = 1;
+					const int max = 1500;
+					if (dagger is < min or > max)
+						throw new CustomLeaderboardValidationException($"All daggers times must be between {min} and {max} for featured leaderboards.");
+				}
 			}
 
 			if (rankSorting.IsAscending())
