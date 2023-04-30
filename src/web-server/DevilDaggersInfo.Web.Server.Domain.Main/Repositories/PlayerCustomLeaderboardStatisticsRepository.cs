@@ -75,7 +75,7 @@ public class PlayerCustomLeaderboardStatisticsRepository
 				foreach (CustomEntryForStats customEntry in filteredCustomEntries)
 				{
 					played++;
-					switch (CustomLeaderboardUtils.GetDaggerFromStat(rankSorting, customEntry.Time, customEntry.Leviathan, customEntry.Devil, customEntry.Golden, customEntry.Silver, customEntry.Bronze))
+					switch (CustomLeaderboardUtils.GetDaggerFromStat(rankSorting, customEntry, customEntry.Leviathan, customEntry.Devil, customEntry.Golden, customEntry.Silver, customEntry.Bronze))
 					{
 						case CustomLeaderboardDagger.Leviathan: leviathanDaggers++; break;
 						case CustomLeaderboardDagger.Devil: devilDaggers++; break;
@@ -105,7 +105,7 @@ public class PlayerCustomLeaderboardStatisticsRepository
 		return stats;
 	}
 
-	private sealed class CustomEntryForStats
+	private sealed class CustomEntryForStats : IDaggerStatCustomEntry
 	{
 		public required int Time { get; init; }
 		public required int GemsCollected { get; init; }
