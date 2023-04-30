@@ -101,6 +101,9 @@ public static class CustomLeaderboardConverters
 	{
 		CustomLeaderboardRankSorting.TimeDesc => MainApi.CustomLeaderboardRankSorting.TimeDesc,
 		CustomLeaderboardRankSorting.TimeAsc => MainApi.CustomLeaderboardRankSorting.TimeAsc,
+		CustomLeaderboardRankSorting.GemsDesc => MainApi.CustomLeaderboardRankSorting.GemsDesc,
+		CustomLeaderboardRankSorting.KillsDesc => MainApi.CustomLeaderboardRankSorting.KillsDesc,
+		CustomLeaderboardRankSorting.HomingDesc => MainApi.CustomLeaderboardRankSorting.HomingDesc,
 		_ => throw new UnreachableException(),
 	};
 

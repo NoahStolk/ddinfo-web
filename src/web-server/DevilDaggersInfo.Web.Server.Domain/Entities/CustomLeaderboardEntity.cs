@@ -103,6 +103,9 @@ public class CustomLeaderboardEntity : IAuditable
 		int stat = RankSorting switch
 		{
 			CustomLeaderboardRankSorting.TimeDesc or CustomLeaderboardRankSorting.TimeAsc => entry.Time,
+			CustomLeaderboardRankSorting.GemsDesc => entry.GemsCollected,
+			CustomLeaderboardRankSorting.KillsDesc => entry.EnemiesKilled,
+			CustomLeaderboardRankSorting.HomingDesc => entry.HomingStored,
 			_ => throw new InvalidOperationException("Unsupported rank sorting for dagger calculation."),
 		};
 

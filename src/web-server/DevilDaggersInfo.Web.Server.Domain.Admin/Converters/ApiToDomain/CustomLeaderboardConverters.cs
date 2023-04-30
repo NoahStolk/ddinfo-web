@@ -10,6 +10,9 @@ public static class CustomLeaderboardConverters
 	{
 		AdminApi.CustomLeaderboardRankSorting.TimeDesc => Entities.Enums.CustomLeaderboardRankSorting.TimeDesc,
 		AdminApi.CustomLeaderboardRankSorting.TimeAsc => Entities.Enums.CustomLeaderboardRankSorting.TimeAsc,
+		AdminApi.CustomLeaderboardRankSorting.GemsDesc => Entities.Enums.CustomLeaderboardRankSorting.GemsDesc,
+		AdminApi.CustomLeaderboardRankSorting.KillsDesc => Entities.Enums.CustomLeaderboardRankSorting.KillsDesc,
+		AdminApi.CustomLeaderboardRankSorting.HomingDesc => Entities.Enums.CustomLeaderboardRankSorting.HomingDesc,
 		_ => throw new UnreachableException(),
 	};
 

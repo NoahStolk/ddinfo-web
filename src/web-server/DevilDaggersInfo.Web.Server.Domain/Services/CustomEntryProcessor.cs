@@ -188,6 +188,9 @@ public class CustomEntryProcessor
 		{
 			CustomLeaderboardRankSorting.TimeDesc => requestTimeAsInt > customEntry.Time,
 			CustomLeaderboardRankSorting.TimeAsc => requestTimeAsInt < customEntry.Time,
+			CustomLeaderboardRankSorting.GemsDesc => uploadRequest.GemsCollected > customEntry.GemsCollected,
+			CustomLeaderboardRankSorting.KillsDesc => uploadRequest.EnemiesKilled > customEntry.EnemiesKilled,
+			CustomLeaderboardRankSorting.HomingDesc => uploadRequest.HomingStored > customEntry.HomingStored,
 			_ => throw new InvalidOperationException($"Rank sorting '{customLeaderboard.RankSorting}' is not supported."),
 		};
 

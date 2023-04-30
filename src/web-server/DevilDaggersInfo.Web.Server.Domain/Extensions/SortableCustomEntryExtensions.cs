@@ -12,6 +12,9 @@ public static class SortableCustomEntryExtensions
 		{
 			CustomLeaderboardRankSorting.TimeAsc => customEntries.OrderBy(ce => ce.Time).ThenBy(ce => ce.SubmitDate),
 			CustomLeaderboardRankSorting.TimeDesc => customEntries.OrderByDescending(ce => ce.Time).ThenBy(ce => ce.SubmitDate),
+			CustomLeaderboardRankSorting.GemsDesc => customEntries.OrderByDescending(ce => ce.GemsCollected).ThenBy(ce => ce.SubmitDate),
+			CustomLeaderboardRankSorting.KillsDesc => customEntries.OrderByDescending(ce => ce.EnemiesKilled).ThenBy(ce => ce.SubmitDate),
+			CustomLeaderboardRankSorting.HomingDesc => customEntries.OrderByDescending(ce => ce.HomingStored).ThenBy(ce => ce.SubmitDate),
 			_ => throw new InvalidOperationException($"Rank sorting '{rankSorting}' not supported."),
 		};
 	}

@@ -4,6 +4,12 @@ public record CustomLeaderboardOverviewWorldRecord : IDaggerStatCustomEntry
 {
 	public required int Time { get; init; }
 
+	public required int GemsCollected { get; init; }
+
+	public required int EnemiesKilled { get; init; }
+
+	public required int HomingStored { get; init; }
+
 	public required int PlayerId { get; init; }
 
 	public required string PlayerName { get; init; }

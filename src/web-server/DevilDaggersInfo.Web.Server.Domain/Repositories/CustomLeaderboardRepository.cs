@@ -78,7 +78,17 @@ public class CustomLeaderboardRepository
 		List<CustomEntrySummary> customEntries = await _dbContext.CustomEntries
 			.AsNoTracking()
 			.Include(ce => ce.Player)
-			.Select(ce => new CustomEntrySummary { CustomLeaderboardId = ce.CustomLeaderboardId, PlayerId = ce.PlayerId, PlayerName = ce.Player!.PlayerName, Time = ce.Time, SubmitDate = ce.SubmitDate })
+			.Select(ce => new CustomEntrySummary
+			{
+				CustomLeaderboardId = ce.CustomLeaderboardId,
+				PlayerId = ce.PlayerId,
+				PlayerName = ce.Player!.PlayerName,
+				Time = ce.Time,
+				GemsCollected = ce.GemsCollected,
+				EnemiesKilled = ce.EnemiesKilled,
+				HomingStored = ce.HomingStored,
+				SubmitDate = ce.SubmitDate,
+			})
 			.Where(ce => customLeaderboardIds.Contains(ce.CustomLeaderboardId))
 			.ToListAsync();
 
@@ -91,6 +101,9 @@ public class CustomLeaderboardRepository
 			CustomLeaderboardOverviewWorldRecord? worldRecordModel = worldRecord == null ? null : new()
 			{
 				Time = worldRecord.Time,
+				GemsCollected = worldRecord.GemsCollected,
+				EnemiesKilled = worldRecord.EnemiesKilled,
+				HomingStored = worldRecord.HomingStored,
 				PlayerId = worldRecord.PlayerId,
 				PlayerName = worldRecord.PlayerName,
 				Dagger = cl.DaggerFromStat(worldRecord),
@@ -368,6 +381,9 @@ public class CustomLeaderboardRepository
 				PlayerId = cl.WorldRecord.PlayerId,
 				PlayerName = cl.WorldRecord.PlayerName,
 				Time = cl.WorldRecord.Time,
+				GemsCollected = cl.WorldRecord.GemsCollected,
+				EnemiesKilled = cl.WorldRecord.EnemiesKilled,
+				HomingStored = cl.WorldRecord.HomingStored,
 				Dagger = cl.CustomLeaderboard.DaggerFromStat(cl.WorldRecord),
 			},
 		};
