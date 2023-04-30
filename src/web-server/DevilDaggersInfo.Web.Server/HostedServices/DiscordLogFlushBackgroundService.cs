@@ -1,5 +1,3 @@
-using DevilDaggersInfo.Common;
-using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 using DevilDaggersInfo.Web.Server.Extensions;
@@ -80,8 +78,8 @@ public class DiscordLogFlushBackgroundService : AbstractBackgroundService
 				Color = highscoreLog.Dagger.GetDiscordColor(),
 				Url = $"https://devildaggers.info/custom/leaderboard/{highscoreLog.CustomLeaderboardId}",
 			};
-			builder.AddFieldObject("Score", FormatTimeString(highscoreLog.Time.ToSecondsTime()), true);
-			builder.AddFieldObject("Rank", $"{highscoreLog.Rank}/{highscoreLog.TotalPlayers}", true);
+			builder.AddFieldObject(highscoreLog.ScoreField, highscoreLog.ScoreValue, true);
+			builder.AddFieldObject("Rank", highscoreLog.RankValue, true);
 
 			DiscordChannel? discordChannel = DiscordServerConstants.GetDiscordChannel(Channel.CustomLeaderboards, _environment);
 			if (discordChannel == null)
@@ -93,9 +91,6 @@ public class DiscordLogFlushBackgroundService : AbstractBackgroundService
 		{
 			_logger.LogError(ex, "Error while attempting to send leaderboard message.");
 		}
-
-		static string FormatTimeString(double time)
-			=> time.ToString(StringFormats.TimeFormat);
 	}
 
 	private async Task LogToLogChannel(DiscordChannel logChannel) => await LogEntries(_logContainerService.LogEntries, logChannel);

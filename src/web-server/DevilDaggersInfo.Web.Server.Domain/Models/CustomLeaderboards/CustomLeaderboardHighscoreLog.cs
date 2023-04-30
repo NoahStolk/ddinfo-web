@@ -8,9 +8,9 @@ public record CustomLeaderboardHighscoreLog
 
 	public required string Message { get; init; }
 
-	public required int Rank { get; init; }
+	public required string RankValue { get; init; }
 
-	public required int TotalPlayers { get; init; }
+	public required string ScoreField { get; init; }
 
-	public required int Time { get; init; }
+	public required string ScoreValue { get; init; }
 }

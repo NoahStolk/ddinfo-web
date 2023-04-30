@@ -394,12 +394,11 @@ public class CustomEntryProcessor
 		int totalPlayers = entries.Count;
 
 		_submissionLogger.LogHighscore(
-			customLeaderboard.DaggerFromStat(newCustomEntry) ?? CustomLeaderboardDagger.Silver,
-			customLeaderboard.Id,
-			$"`{uploadRequest.PlayerName}` just entered the `{spawnsetName}` leaderboard!",
+			customLeaderboard,
+			newCustomEntry,
+			true,
 			rank,
-			totalPlayers,
-			newCustomEntry.Time);
+			totalPlayers);
 		Log(uploadRequest, spawnsetName);
 
 		List<int> replayIds = GetExistingReplayIds(entries.ConvertAll(ce => ce.Id));
@@ -539,12 +538,11 @@ public class CustomEntryProcessor
 		int levelUpTime4Diff = customEntry.LevelUpTime4 - oldLevelUpTime4;
 
 		_submissionLogger.LogHighscore(
-			customLeaderboard.DaggerFromStat(customEntry) ?? CustomLeaderboardDagger.Silver,
-			customLeaderboard.Id,
-			$"`{uploadRequest.PlayerName}` just got {FormatTimeString(customEntry.Time.ToSecondsTime())} seconds on the `{spawnsetName}` leaderboard, beating their previous highscore of {FormatTimeString((customEntry.Time - timeDiff).ToSecondsTime())} by {FormatTimeString(Math.Abs(timeDiff.ToSecondsTime()))} seconds!",
+			customLeaderboard,
+			customEntry,
+			false,
 			rank,
-			entries.Count,
-			customEntry.Time);
+			entries.Count);
 		Log(uploadRequest, spawnsetName);
 
 		List<int> replayIds = GetExistingReplayIds(entries.ConvertAll(ce => ce.Id));
