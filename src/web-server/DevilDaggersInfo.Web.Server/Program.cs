@@ -79,6 +79,7 @@ builder.Services.AddScoped<DevilDaggersInfo.Web.Server.Domain.Main.Services.Play
 // Main repositories
 builder.Services.AddTransient<DevilDaggersInfo.Web.Server.Domain.Main.Repositories.DonationRepository>();
 builder.Services.AddTransient<DevilDaggersInfo.Web.Server.Domain.Main.Repositories.LeaderboardHistoryStatisticsRepository>();
+builder.Services.AddTransient<DevilDaggersInfo.Web.Server.Domain.Main.Repositories.PlayerCustomLeaderboardStatisticsRepository>();
 builder.Services.AddTransient<DevilDaggersInfo.Web.Server.Domain.Main.Repositories.PlayerHistoryRepository>();
 builder.Services.AddScoped<DevilDaggersInfo.Web.Server.Domain.Main.Repositories.PlayerProfileRepository>();
 builder.Services.AddTransient<DevilDaggersInfo.Web.Server.Domain.Main.Repositories.WorldRecordRepository>();

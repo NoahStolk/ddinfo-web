@@ -1,6 +1,7 @@
 using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
+using DevilDaggersInfo.Web.Server.Domain.Main.Converters.DomainToApi;
 using System.Diagnostics;
 using MainApi = DevilDaggersInfo.Api.Main.Spawnsets;
 
@@ -48,14 +49,6 @@ public static class SpawnsetConverters
 			MaxDisplayWaves = spawnset.MaxDisplayWaves,
 		};
 	}
-
-	public static MainApi.GameMode ToMainApi(this SpawnsetGameMode gameMode) => gameMode switch
-	{
-		SpawnsetGameMode.Survival => MainApi.GameMode.Survival,
-		SpawnsetGameMode.TimeAttack => MainApi.GameMode.TimeAttack,
-		SpawnsetGameMode.Race => MainApi.GameMode.Race,
-		_ => throw new UnreachableException(),
-	};
 
 	public static DevilDaggersInfo.Api.Main.Spawnsets.HandLevel ToMainApi(this SpawnsetHandLevel handLevel) => handLevel switch
 	{
