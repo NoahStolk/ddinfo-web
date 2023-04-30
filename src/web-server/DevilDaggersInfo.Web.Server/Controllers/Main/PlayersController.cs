@@ -1,5 +1,4 @@
 using DevilDaggersInfo.Api.Main.Players;
-using DevilDaggersInfo.Api.Main.Spawnsets;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
@@ -95,11 +94,23 @@ public class PlayersController : ControllerBase
 			.Where(ce => ce.IsFeatured)
 			.ToListAsync();
 
+		// ! Navigation property.
+		Dictionary<(SpawnsetGameMode GameMode, CustomLeaderboardRankSorting RankSorting), int> totalCustomLeaderboards = await _dbContext.CustomLeaderboards
+			.AsNoTracking()
+			.Select(cl => new { cl.Spawnset!.GameMode, cl.RankSorting, cl.IsFeatured })
+			.Where(cl => cl.IsFeatured)
+			.GroupBy(cl => new { cl.GameMode, cl.RankSorting })
+			.Select(g => new { g.Key, Count = g.Count() })
+			.ToDictionaryAsync(a => (a.Key.GameMode, a.Key.RankSorting), a => a.Count);
+
 		List<GetPlayerCustomLeaderboardStatistics> stats = new();
 		foreach (SpawnsetGameMode gameMode in Enum.GetValues<SpawnsetGameMode>())
 		{
 			foreach (CustomLeaderboardRankSorting rankSorting in Enum.GetValues<CustomLeaderboardRankSorting>())
 			{
+				if (!totalCustomLeaderboards.TryGetValue((gameMode, rankSorting), out int totalCount))
+					continue;
+
 				var filteredCustomEntries = customEntries.Where(ce => ce.GameMode == gameMode && ce.RankSorting == rankSorting).ToList();
 				if (filteredCustomEntries.Count == 0)
 					continue;
@@ -136,7 +147,7 @@ public class PlayersController : ControllerBase
 					BronzeDaggerCount = bronzeDaggers,
 					DefaultDaggerCount = defaultDaggers,
 					LeaderboardsPlayedCount = played,
-					TotalCount = filteredCustomEntries.Count,
+					TotalCount = totalCount,
 				});
 			}
 		}
