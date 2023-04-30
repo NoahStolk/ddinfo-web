@@ -7,8 +7,17 @@ namespace DevilDaggersInfo.Web.Server.Domain.Utils;
 public static class CustomLeaderboardUtils
 {
 	// TODO: Add unit tests.
-	public static CustomLeaderboardDagger GetDaggerFromStat(CustomLeaderboardRankSorting rankSorting, int stat, int leviathan, int devil, int golden, int silver, int bronze)
+	public static CustomLeaderboardDagger GetDaggerFromStat(CustomLeaderboardRankSorting rankSorting, IDaggerStatCustomEntry entry, int leviathan, int devil, int golden, int silver, int bronze)
 	{
+		int stat = rankSorting switch
+		{
+			CustomLeaderboardRankSorting.TimeDesc or CustomLeaderboardRankSorting.TimeAsc => entry.Time,
+			CustomLeaderboardRankSorting.GemsDesc => entry.GemsCollected,
+			CustomLeaderboardRankSorting.KillsDesc => entry.EnemiesKilled,
+			CustomLeaderboardRankSorting.HomingDesc => entry.HomingStored,
+			_ => throw new InvalidOperationException("Unsupported rank sorting for dagger calculation."),
+		};
+
 		if (rankSorting.IsAscending())
 		{
 			if (stat <= leviathan)

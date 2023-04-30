@@ -100,15 +100,6 @@ public class CustomLeaderboardEntity : IAuditable
 		if (!IsFeatured)
 			return null;
 
-		int stat = RankSorting switch
-		{
-			CustomLeaderboardRankSorting.TimeDesc or CustomLeaderboardRankSorting.TimeAsc => entry.Time,
-			CustomLeaderboardRankSorting.GemsDesc => entry.GemsCollected,
-			CustomLeaderboardRankSorting.KillsDesc => entry.EnemiesKilled,
-			CustomLeaderboardRankSorting.HomingDesc => entry.HomingStored,
-			_ => throw new InvalidOperationException("Unsupported rank sorting for dagger calculation."),
-		};
-
-		return CustomLeaderboardUtils.GetDaggerFromStat(RankSorting, stat, Leviathan, Devil, Golden, Silver, Bronze);
+		return CustomLeaderboardUtils.GetDaggerFromStat(RankSorting, entry, Leviathan, Devil, Golden, Silver, Bronze);
 	}
 }
