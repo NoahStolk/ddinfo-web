@@ -93,7 +93,7 @@ public class Application
 
 		Shader meshShader = new(_gl, meshShaderContent.VertexCode, meshShaderContent.FragmentCode);
 		Texture tileHitbox = new(_gl, tileHitboxContent.Pixels, (uint)tileHitboxContent.Width, (uint)tileHitboxContent.Height);
-		InternalResources resources = new(meshShader, tileHitbox, tileHitboxModelContent);
+		InternalResources internalResources = new(meshShader, tileHitbox, tileHitboxModelContent);
 
 		UserSettings.Load();
 		UserCache.Load();
@@ -112,11 +112,7 @@ public class Application
 		GameResources gameResources = new(iconDaggerTexture, daggerSilverTexture, skull4Texture, skull4JawTexture, tileTexture, pillarTexture, postLut, hand4Texture);
 
 		// INIT CONTEXT
-		GlobalContext.InputContext = _inputContext;
-		GlobalContext.Window = _window;
-		GlobalContext.Gl = _gl;
-		GlobalContext.InternalResources = resources;
-		GlobalContext.GameResources = gameResources;
+		GlobalContext.Initialize(internalResources, gameResources, _gl, _inputContext, _window);
 
 		MainLayout.Initialize();
 
@@ -152,7 +148,7 @@ public class Application
 
 		_gl.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-		MainLayout.Render();
+		MainLayout.Render(out bool shouldClose);
 
 		_gl.Enable(EnableCap.DepthTest);
 		_gl.Enable(EnableCap.Blend);
@@ -162,6 +158,9 @@ public class Application
 		MainLayout.Render3d();
 
 		_controller.Render();
+
+		if (shouldClose)
+			_window.Close();
 	}
 
 	private void OnWindowOnClosing()

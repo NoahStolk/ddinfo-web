@@ -19,9 +19,6 @@ public class Tile
 
 	public Tile(float positionX, float positionZ, int arenaX, int arenaY, Camera camera)
 	{
-		if (GlobalContext.InternalResources == null)
-			throw new InvalidOperationException();
-
 		PositionX = positionX;
 		PositionZ = positionZ;
 		ArenaX = arenaX;
@@ -41,9 +38,6 @@ public class Tile
 
 	public static unsafe void Initialize()
 	{
-		if (GlobalContext.Gl == null || GlobalContext.InternalResources == null)
-			throw new InvalidOperationException();
-
 		// TODO: Prevent this from being called multiple times.
 		_tileVao = CreateVao(GlobalContext.Gl, ContentManager.Content.TileMesh);
 		_pillarVao = CreateVao(GlobalContext.Gl, ContentManager.Content.PillarMesh);

@@ -17,9 +17,6 @@ public sealed class MainMenuArenaScene : IArenaScene
 		Skull4.Initialize();
 		Tile.Initialize();
 
-		if (GlobalContext.Window == null || GlobalContext.InputContext == null)
-			throw new();
-
 		Camera = new(GlobalContext.Window, GlobalContext.InputContext);
 	}
 
@@ -60,9 +57,6 @@ public sealed class MainMenuArenaScene : IArenaScene
 
 	public void Render()
 	{
-		if (GlobalContext.Gl == null || GlobalContext.InternalResources == null || GlobalContext.GameResources == null)
-			throw new();
-
 		for (int i = 0; i < Lights.Count; i++)
 			Lights[i].PrepareRender();
 

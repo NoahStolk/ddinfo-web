@@ -72,9 +72,6 @@ public class Player
 
 	public void Render()
 	{
-		if (GlobalContext.GameResources == null)
-			throw new InvalidOperationException();
-
 		GlobalContext.GameResources.Hand4Texture.Bind();
 		_mesh.Render();
 	}

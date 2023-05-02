@@ -49,8 +49,10 @@ public static class MainLayout
 		_arenaScene.Render();
 	}
 
-	public static void Render()
+	public static void Render(out bool shouldClose)
 	{
+		shouldClose = false;
+
 		ImGui.SetNextWindowPos(new(0, 0));
 		ImGui.SetNextWindowSize(new(1024, 768));
 
@@ -73,7 +75,11 @@ public static class MainLayout
 		MainButtonAt(2, 1, new(1, 1, 0, alpha), "Mod Manager (todo)");
 		MainButtonAt(0, 2, new(0.3f, 0.3f, 0.3f, alpha), "Configuration");
 		MainButtonAt(1, 2, new(0.3f, 0.3f, 0.3f, alpha), "Settings");
-		MainButtonAt(2, 2, new(0.3f, 0.3f, 0.3f, alpha), "Exit");
+		if (MainButtonAt(2, 2, new(0.3f, 0.3f, 0.3f, alpha), "Exit"))
+		{
+			shouldClose = true;
+			return;
+		}
 
 		Vector4 hyperlinkColor = new(0, 0.625f, 1, 1);
 		Vector4 hyperlinkHoverColor = new(0.25f, 0.875f, 1, 0.25f);

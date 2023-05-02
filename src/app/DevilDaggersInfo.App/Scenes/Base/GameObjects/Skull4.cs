@@ -12,9 +12,6 @@ public class Skull4
 
 	public static unsafe void Initialize()
 	{
-		if (GlobalContext.Gl == null)
-			throw new();
-
 		_vaoMain = CreateVao(GlobalContext.Gl, ContentManager.Content.Skull4Mesh);
 		_vaoJaw = CreateVao(GlobalContext.Gl, ContentManager.Content.Skull4JawMesh);
 
@@ -49,9 +46,6 @@ public class Skull4
 
 	public unsafe void Render()
 	{
-		if (GlobalContext.Gl == null || GlobalContext.InternalResources == null || GlobalContext.GameResources == null)
-			throw new InvalidOperationException();
-
 		GL gl = GlobalContext.Gl;
 		Shader meshShader = GlobalContext.InternalResources.MeshShader;
 

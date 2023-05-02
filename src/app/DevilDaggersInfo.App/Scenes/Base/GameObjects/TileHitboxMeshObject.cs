@@ -52,9 +52,6 @@ public class TileHitboxMeshObject
 
 	public unsafe void Render()
 	{
-		if (GlobalContext.Gl == null || GlobalContext.InternalResources == null)
-			throw new InvalidOperationException();
-
 		GL gl = GlobalContext.Gl;
 		Shader meshShader = GlobalContext.InternalResources.MeshShader;
 

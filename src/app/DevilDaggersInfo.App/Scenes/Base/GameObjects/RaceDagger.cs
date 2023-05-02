@@ -103,9 +103,6 @@ public class RaceDagger
 
 	public unsafe void Render()
 	{
-		if (GlobalContext.Gl == null || GlobalContext.InternalResources == null || GlobalContext.GameResources == null)
-			throw new InvalidOperationException();
-
 		GL gl = GlobalContext.Gl;
 		Shader meshShader = GlobalContext.InternalResources.MeshShader;
 
