@@ -1,4 +1,3 @@
-using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.StateManagement;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.Base.Actions;
 using DevilDaggersInfo.App.Ui.Base.User.Cache.Model;
@@ -35,7 +34,7 @@ public static class UserCache
 			}
 			catch (Exception ex)
 			{
-				Root.Dependencies.Log.Error(ex, "Failed to load user cache.");
+				// Root.Dependencies.Log.Error(ex, "Failed to load user cache.");
 			}
 		}
 

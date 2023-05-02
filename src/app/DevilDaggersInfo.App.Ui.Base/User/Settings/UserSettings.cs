@@ -1,4 +1,3 @@
-using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.StateManagement;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.Base.Actions;
 using DevilDaggersInfo.App.Ui.Base.User.Settings.Model;
@@ -21,7 +20,7 @@ public static class UserSettings
 			_model = value;
 			Save();
 
-			Root.Game.MainLoopRate = _model.MaxFps;
+			// Root.Game.MainLoopRate = _model.MaxFps;
 		}
 	}
 
@@ -58,7 +57,7 @@ public static class UserSettings
 			}
 			catch (Exception ex)
 			{
-				Root.Dependencies.Log.Error(ex, "Failed to load user settings.");
+				// Root.Dependencies.Log.Error(ex, "Failed to load user settings.");
 			}
 		}
 

@@ -4,8 +4,8 @@ namespace DevilDaggersInfo.App;
 
 public class Texture : IDisposable
 {
-    private uint _handle;
-    private GL _gl;
+    private readonly uint _handle;
+    private readonly GL _gl;
 
     public unsafe Texture(GL gl, Span<byte> data, uint width, uint height)
     {
