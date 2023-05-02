@@ -52,12 +52,12 @@ public sealed class MainMenuArenaScene : IArenaScene
 		_skull4 = new();
 	}
 
-	public void Update(int currentTick)
+	public void Update(int currentTick, float delta)
 	{
 		for (int i = 0; i < Lights.Count; i++)
 			Lights[i].PrepareUpdate();
 
-		Camera.Update();
+		Camera.Update(delta);
 		RaceDagger?.Update(currentTick);
 	}
 

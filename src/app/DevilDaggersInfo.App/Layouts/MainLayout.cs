@@ -33,12 +33,12 @@ public static class MainLayout
 		_arenaScene.BuildSpawnset(SpawnsetBinary.CreateDefault());
 	}
 
-	public static void Update()
+	public static void Update(float delta)
 	{
 		if (_arenaScene == null)
 			return;
 
-		_arenaScene.Update(0);
+		_arenaScene.Update(0, delta);
 	}
 
 	public static void Render3d()

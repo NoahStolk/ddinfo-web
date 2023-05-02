@@ -38,6 +38,7 @@ public class Application
 		});
 		_window.Load += OnWindowOnLoad;
 		_window.FramebufferResize += OnWindowOnFramebufferResize;
+		_window.Update += OnWindowOnUpdate;
 		_window.Render += OnWindowOnRender;
 		_window.Closing += OnWindowOnClosing;
 
@@ -138,6 +139,11 @@ public class Application
 		_gl.Viewport(s);
 	}
 
+	private void OnWindowOnUpdate(double delta)
+	{
+		MainLayout.Update((float)delta);
+	}
+
 	private void OnWindowOnRender(double delta)
 	{
 		if (_controller == null || _gl == null)
@@ -148,6 +154,12 @@ public class Application
 		_gl.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
 		MainLayout.Render();
+
+		_gl.Enable(EnableCap.DepthTest);
+		_gl.Enable(EnableCap.Blend);
+		_gl.Enable(EnableCap.CullFace);
+		_gl.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+
 		MainLayout.Render3d();
 
 		_controller.Render();

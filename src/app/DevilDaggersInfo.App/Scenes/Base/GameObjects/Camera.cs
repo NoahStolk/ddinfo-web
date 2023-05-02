@@ -59,27 +59,27 @@ public class Camera
 		_lockedMousePosition = null;
 	}
 
-	public void Update()
+	public void Update(float delta)
 	{
 		PositionState.PrepareUpdate();
 		_rotationState.PrepareUpdate();
 
 		if (IsMenuCamera)
 		{
-			float time = Root.Game.Tt * 0.7f;
+			float time = (float)_window.Time * 0.7f;
 			PositionState.Physics = new(MathF.Sin(time) * 5, 6, MathF.Cos(time) * 5);
 			_rotationState.Physics = Quaternion.CreateFromRotationMatrix(SetRotationFromDirectionalVector(new Vector3(0, 4, 0) - PositionState.Physics));
 			return;
 		}
 
-		HandleKeys();
+		HandleKeys(delta);
 		HandleMouse();
 
 		const float moveSpeed = 25;
 
 		Matrix4x4 rotMat = Matrix4x4.CreateFromQuaternion(_rotationState.Physics);
 		Vector3 transformed = RotateVector(_axisAlignedSpeed, rotMat) + new Vector3(0, _axisAlignedSpeed.Y, 0);
-		PositionState.Physics += transformed * moveSpeed * Root.Game.Dt;
+		PositionState.Physics += transformed * moveSpeed * delta;
 
 		static Vector3 RotateVector(Vector3 vector, Matrix4x4 rotationMatrix)
 		{
@@ -89,7 +89,7 @@ public class Camera
 		}
 	}
 
-	private void HandleKeys()
+	private void HandleKeys(float delta)
 	{
 		const float acceleration = 20;
 		const float friction = 20;
@@ -106,8 +106,8 @@ public class Camera
 		bool upHold = _keyboard.IsKeyPressed(upInput);
 		bool downHold = _keyboard.IsKeyPressed(downInput);
 
-		float accelerationDt = acceleration * Root.Game.Dt;
-		float frictionDt = friction * Root.Game.Dt;
+		float accelerationDt = acceleration * delta;
+		float frictionDt = friction * delta;
 
 		if (leftHold)
 			_axisAlignedSpeed.X += accelerationDt;
