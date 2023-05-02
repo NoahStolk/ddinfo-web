@@ -22,14 +22,6 @@ public interface IDependencyContainer
 
 	#endregion DDCL dependencies
 
-	#region UI Base dependencies
-
-	IExtendedLayout ConfigLayout { get; }
-	IExtendedLayout SettingsLayout { get; }
-	IExtendedLayout MainLayout { get; }
-
-	#endregion UI Base dependencies
-
 	#region UI DDSE dependencies
 
 	IExtendedLayout SurvivalEditorMainLayout { get; }

@@ -1,62 +1,113 @@
-using DevilDaggersInfo.App.Engine.Maths.Numerics;
-using DevilDaggersInfo.App.Engine.Text;
-using DevilDaggersInfo.App.Engine.Ui;
-using DevilDaggersInfo.App.Scenes;
-using DevilDaggersInfo.App.Ui.Base.Components;
-using DevilDaggersInfo.App.Ui.Base.Components.Styles;
-using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
-using DevilDaggersInfo.App.Ui.Base.Networking;
-using DevilDaggersInfo.App.Ui.Base.Networking.TaskHandlers;
-using DevilDaggersInfo.App.Ui.Base.Rendering.Text;
-using DevilDaggersInfo.App.Ui.Base.StateManagement;
-using DevilDaggersInfo.App.Ui.Base.StateManagement.Base.Actions;
-using DevilDaggersInfo.App.Ui.Base.Utils;
 using DevilDaggersInfo.Common.Utils;
-using DevilDaggersInfo.Core.Spawnset;
-using DevilDaggersInfo.Core.Versioning;
+using ImGuiNET;
 using System.Diagnostics;
+using System.Numerics;
 
 namespace DevilDaggersInfo.App.Layouts;
 
-public class MainLayout : Layout, IExtendedLayout
+public static class MainLayout
 {
+	private const string _mainMenu = """
+		This is an alpha version of the rewritten tools.
+		It is still very much a work in progress.
+
+		I also do not have a deadline or schedule for these developments,
+		and there will not be an official release date any time soon.
+
+		If you encounter any problems, please report them on Discord/GitHub.
+
+		Thank you for testing.
+
+		For more information, go to:
+		""";
+
 	private static readonly string _version = VersionUtils.EntryAssemblyVersion;
 
-	private readonly MainMenuArenaScene _arenaScene = new();
+	//private static readonly MainMenuArenaScene _arenaScene = new();
 
-	public MainLayout()
+	// StateManager.Subscribe<InitializeContent>(() => _arenaScene.BuildSpawnset(SpawnsetBinary.CreateDefault()));
+
+	public static void Update()
 	{
-		TextButtonStyle textButtonStyle = new(Color.White, TextAlign.Middle, FontSize.H16);
+		//_arenaScene.Update(0);
+	}
 
-		AddButton(0, 0, Color.FromHsv(000, 1, 0.8f), () => StateManager.Dispatch(new SetLayout(Root.Dependencies.SurvivalEditorMainLayout)), "Survival Editor (wip)");
-		AddButton(1, 0, Color.FromHsv(130, 1, 0.6f), () => { }, "Asset Editor (todo)");
-		AddButton(2, 0, Color.FromHsv(220, 1, 1.0f), () => StateManager.Dispatch(new SetLayout(Root.Dependencies.ReplayEditorMainLayout)), "Replay Editor (wip)");
-		AddButton(0, 1, Color.FromHsv(270, 1, 1.0f), () => StateManager.Dispatch(new SetLayout(Root.Dependencies.CustomLeaderboardsRecorderMainLayout)), "Custom Leaderboards");
-		AddButton(1, 1, Color.FromHsv(032, 1, 0.8f), () => { }, "Practice (todo)");
-		AddButton(2, 1, Color.FromHsv(320, 1, 0.8f), () => { }, "Mod Manager (todo)");
-		AddButton(0, 2, Color.Gray(0.3f), () => StateManager.Dispatch(new SetLayout(Root.Dependencies.ConfigLayout)), "Configuration");
-		AddButton(1, 2, Color.Gray(0.3f), () => StateManager.Dispatch(new SetLayout(Root.Dependencies.SettingsLayout)), "Settings");
-		AddButton(2, 2, Color.Gray(0.3f), () => Environment.Exit(0), "Exit");
+	public static void Render3d()
+	{
+		//_arenaScene.Render();
+	}
 
-		Color hyperlinkColor = new(0, 160, 255, 255);
-		Color hyperlinkHoverColor = new(63, 223, 255, 255);
+	public static void Render()
+	{
+		ImGui.SetNextWindowPos(new(0, 0));
+		ImGui.SetNextWindowSize(new(1024, 768));
+
+		const ImGuiWindowFlags flags = ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoBackground;
+		ImGui.Begin("Main Menu", flags);
+
+		TextAt(_mainMenu, 8, 8);
+		TextAt("DDINFO", 512, 64, new(1, 0, 0, 1), true); // font size 64
+		TextAt("TOOLS", 512, 128, new(1, 0.5f, 0, 1), true); // font size 32
+		TextAt(_version, 512, 176, new(1, 0.8f, 0, 1), true); // font size 24
+		TextAt("Devil Daggers is created by Sorath", 512, 708, default, true);
+		TextAt("DevilDaggers.info is created by Noah Stolk", 512, 724, default, true);
+
+		const float alpha = 0.5f;
+		MainButtonAt(0, 0, new(1, 0, 0, alpha), "Survival Editor (wip)");
+		MainButtonAt(1, 0, new(0, 1, 0, alpha), "Asset Editor (todo)");
+		MainButtonAt(2, 0, new(1, 0, 1, alpha), "Replay Editor (wip)");
+		MainButtonAt(0, 1, new(0, 0, 1, alpha), "Custom Leaderboards");
+		MainButtonAt(1, 1, new(0, 1, 1, alpha), "Practice (todo)");
+		MainButtonAt(2, 1, new(1, 1, 0, alpha), "Mod Manager (todo)");
+		MainButtonAt(0, 2, new(0.3f, 0.3f, 0.3f, alpha), "Configuration");
+		MainButtonAt(1, 2, new(0.3f, 0.3f, 0.3f, alpha), "Settings");
+		MainButtonAt(2, 2, new(0.3f, 0.3f, 0.3f, alpha), "Exit");
+
+		Vector4 hyperlinkColor = new(0, 0.625f, 1, 1);
+		Vector4 hyperlinkHoverColor = new(0.25f, 0.875f, 1, 0.25f);
+
+		ImGui.PushStyleColor(ImGuiCol.Text, hyperlinkColor);
+		ImGui.PushStyleColor(ImGuiCol.Button, default(Vector4));
+		ImGui.PushStyleColor(ImGuiCol.ButtonHovered, hyperlinkHoverColor);
+		ImGui.PushStyleColor(ImGuiCol.ButtonActive, default(Vector4));
 
 		const string homePage = "https://devildaggers.info/";
 		const string toolsPage = "https://devildaggers.info/tools";
 
-		int homePageLinkWidth = homePage.Length * 12; // Root.Game.MonoSpaceFontRenderer24.Font.CharWidth
-		const int homePageLinkHeight = 24;
-		ClickableLabelStyle homePageStyle = new(hyperlinkColor, hyperlinkHoverColor, TextAlign.Middle, FontSize.H24, 0);
-		ClickableLabel homePageHyperlink = new(new PixelBounds(512 - homePageLinkWidth / 2, 752 - homePageLinkHeight / 2, homePageLinkWidth, homePageLinkHeight), homePage, () => Process.Start(new ProcessStartInfo(homePage) { UseShellExecute = true }), homePageStyle);
-		NestingContext.Add(homePageHyperlink);
+		ImGui.SetCursorPos(new(512 - GetTextSize(homePage) / 2, 740));
+		if (ImGui.Button(homePage))
+			Process.Start(new ProcessStartInfo(homePage) { UseShellExecute = true });
 
-		int toolsPageLinkWidth = toolsPage.Length * 8; // Root.Game.MonoSpaceFontRenderer16.Font.CharWidth
-		const int toolsPageLinkHeight = 16;
-		ClickableLabelStyle toolsPageStyle = new(hyperlinkColor, hyperlinkHoverColor, TextAlign.Left, FontSize.H16, 0);
-		ClickableLabel toolsPageHyperlink = new(new PixelBounds(8, 148, toolsPageLinkWidth, toolsPageLinkHeight), toolsPage, () => Process.Start(new ProcessStartInfo(homePage) { UseShellExecute = true }), toolsPageStyle);
-		NestingContext.Add(toolsPageHyperlink);
+		ImGui.SetCursorPos(new(4, 156));
+		if (ImGui.Button(toolsPage))
+			Process.Start(new ProcessStartInfo(homePage) { UseShellExecute = true });
 
-		void AddButton(int x, int y, Color color, Action onClick, string text)
+		ImGui.PopStyleColor();
+		ImGui.PopStyleColor();
+		ImGui.PopStyleColor();
+		ImGui.PopStyleColor();
+
+		ImGui.End();
+
+		static void TextAt(string text, int x, int y, Vector4 color = default, bool center = false)
+		{
+			if (center)
+			{
+				float textSize = GetTextSize(text);
+				ImGui.SetCursorPos(new(x - textSize / 2, y));
+			}
+			else
+			{
+				ImGui.SetCursorPos(new(x, y));
+			}
+
+			if (color == default)
+				ImGui.Text(text);
+			else
+				ImGui.TextColored(color, text);
+		}
+
+		static bool MainButtonAt(int x, int y, Vector4 color, string text)
 		{
 			int xPos = x switch
 			{
@@ -65,44 +116,24 @@ public class MainLayout : Layout, IExtendedLayout
 				_ => 672,
 			};
 			int yPos = y * 128 + 256;
-			NestingContext.Add(new TextButton(new PixelBounds(xPos, yPos, 192, 96), onClick, GetStyle(color), textButtonStyle, text));
 
-			static ButtonStyle GetStyle(Color color)
-			{
-				const int border = 5;
-				return new(color.Intensify(64), color, color.Intensify(96), border);
-			}
+			ImGui.PushStyleColor(ImGuiCol.Button, color);
+			ImGui.PushStyleColor(ImGuiCol.ButtonHovered, color + new Vector4(0, 0, 0, 0.2f));
+			ImGui.PushStyleColor(ImGuiCol.ButtonActive, color + new Vector4(0, 0, 0, 0.3f));
+
+			ImGui.SetCursorPos(new(xPos, yPos));
+			bool value = ImGui.Button(text, new(192, 96));
+
+			ImGui.PopStyleColor();
+			ImGui.PopStyleColor();
+			ImGui.PopStyleColor();
+
+			return value;
 		}
-
-		StateManager.Subscribe<InitializeContent>(() => _arenaScene.BuildSpawnset(SpawnsetBinary.CreateDefault()));
-
-		AsyncHandler.Run(ShowUpdateAvailable, () => FetchLatestVersion.HandleAsync(Root.Game.AppVersion, Root.Dependencies.PlatformSpecificValues.BuildType));
 	}
 
-	private static void ShowUpdateAvailable(AppVersion? newAppVersion)
+	private static float GetTextSize(string text)
 	{
-		if (newAppVersion != null)
-			Root.Dependencies.NativeDialogService.ReportMessage("Update available", $"Version {newAppVersion} is available. Re-run the launcher to install it.");
-	}
-
-	public void Update()
-	{
-		_arenaScene.Update(0);
-	}
-
-	public void Render3d()
-	{
-		_arenaScene.Render();
-	}
-
-	public void Render()
-	{
-		Root.Game.MonoSpaceFontRenderer12.Schedule(Vector2i<int>.One, new(8), 0, Color.White, StringResources.MainMenu, TextAlign.Left);
-
-		Root.Game.MonoSpaceFontRenderer64.Schedule(Vector2i<int>.One, new(512, 64), 0, Color.Red, "DDINFO", TextAlign.Middle);
-		Root.Game.MonoSpaceFontRenderer32.Schedule(Vector2i<int>.One, new(512, 128), 0, new(255, 127, 0, 255), "TOOLS", TextAlign.Middle);
-		Root.Game.MonoSpaceFontRenderer24.Schedule(Vector2i<int>.One, new(512, 176), 0, new(255, 191, 0, 255), _version, TextAlign.Middle);
-		Root.Game.MonoSpaceFontRenderer12.Schedule(Vector2i<int>.One, new(512, 712), 0, Color.White, "Devil Daggers is created by Sorath", TextAlign.Middle);
-		Root.Game.MonoSpaceFontRenderer12.Schedule(Vector2i<int>.One, new(512, 728), 0, Color.White, "DevilDaggers.info is created by Noah Stolk", TextAlign.Middle);
+		return ImGui.GetFontSize() * text.Length / 2; // Width is twice as small as height (which is the font size).
 	}
 }

@@ -53,9 +53,15 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Spawnset\DevilDaggersInfo.Core.Spawnset.csproj" />
-    <ProjectReference Include="..\DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder\DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.csproj" />
-    <ProjectReference Include="..\DevilDaggersInfo.App.Ui.ReplayEditor\DevilDaggersInfo.App.Ui.ReplayEditor.csproj" />
-    <ProjectReference Include="..\DevilDaggersInfo.App.Ui.SurvivalEditor\DevilDaggersInfo.App.Ui.SurvivalEditor.csproj" />
+    <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Versioning\DevilDaggersInfo.Core.Versioning.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Label="External dependencies">
+    <PackageReference Include="Silk.NET.Input" />
+    <PackageReference Include="Silk.NET.OpenAL" />
+    <PackageReference Include="Silk.NET.OpenGL" />
+    <PackageReference Include="Silk.NET.OpenGL.Extensions.ImGui" />
+    <PackageReference Include="Silk.NET.Windowing" />
   </ItemGroup>
 
 </Project>
