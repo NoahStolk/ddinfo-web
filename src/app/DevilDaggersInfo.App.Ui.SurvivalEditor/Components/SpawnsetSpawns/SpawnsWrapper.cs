@@ -1,8 +1,3 @@
-using DevilDaggersInfo.App.Engine.Ui;
-using DevilDaggersInfo.App.Engine.Ui.Components;
-using DevilDaggersInfo.App.Ui.Base.Components;
-using DevilDaggersInfo.App.Ui.Base.Styling;
-
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetSpawns;
 
 public class SpawnsWrapper : AbstractComponent

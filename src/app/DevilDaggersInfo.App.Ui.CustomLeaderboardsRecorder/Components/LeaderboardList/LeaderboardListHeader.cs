@@ -1,13 +1,3 @@
-using DevilDaggersInfo.App.Engine.Maths.Numerics;
-using DevilDaggersInfo.App.Engine.Text;
-using DevilDaggersInfo.App.Engine.Ui;
-using DevilDaggersInfo.App.Ui.Base.Components;
-using DevilDaggersInfo.App.Ui.Base.Components.Styles;
-using DevilDaggersInfo.App.Ui.Base.Rendering.Text;
-using DevilDaggersInfo.App.Ui.Base.StateManagement;
-using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Actions;
-using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Data;
-
 namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.LeaderboardList;
 
 public class LeaderboardListHeader : LeaderboardListRow

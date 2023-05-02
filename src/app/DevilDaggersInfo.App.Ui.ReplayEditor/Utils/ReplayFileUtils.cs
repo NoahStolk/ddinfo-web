@@ -1,6 +1,3 @@
-using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
-using DevilDaggersInfo.App.Ui.Base.StateManagement;
-using DevilDaggersInfo.App.Ui.Base.StateManagement.ReplayEditor.Actions;
 using DevilDaggersInfo.Core.Replay;
 
 namespace DevilDaggersInfo.App.Ui.ReplayEditor.Utils;

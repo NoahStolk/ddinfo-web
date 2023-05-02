@@ -1,6 +1,3 @@
-using DevilDaggersInfo.App.Engine.Ui;
-using DevilDaggersInfo.App.Engine.Ui.Components;
-
 namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.LeaderboardList;
 
 public abstract class LeaderboardListRow : AbstractComponent

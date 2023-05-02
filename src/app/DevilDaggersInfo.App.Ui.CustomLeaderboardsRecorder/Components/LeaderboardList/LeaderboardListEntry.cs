@@ -1,17 +1,5 @@
-using DevilDaggersInfo.Api.App.CustomLeaderboards;
-using DevilDaggersInfo.App.Engine;
-using DevilDaggersInfo.App.Engine.Maths.Numerics;
-using DevilDaggersInfo.App.Engine.Text;
-using DevilDaggersInfo.App.Engine.Ui;
-using DevilDaggersInfo.App.Ui.Base.Components;
-using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
-using DevilDaggersInfo.App.Ui.Base.Rendering.Text;
-using DevilDaggersInfo.App.Ui.Base.StateManagement;
-using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Actions;
-using DevilDaggersInfo.App.Ui.Base.Styling;
 using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Utils;
 using DevilDaggersInfo.Common;
-using Silk.NET.GLFW;
 
 namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.LeaderboardList;
 

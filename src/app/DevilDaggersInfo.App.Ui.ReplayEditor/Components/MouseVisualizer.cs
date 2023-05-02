@@ -1,10 +1,3 @@
-using DevilDaggersInfo.App.Engine.Extensions;
-using DevilDaggersInfo.App.Engine.Maths.Numerics;
-using DevilDaggersInfo.App.Engine.Ui;
-using DevilDaggersInfo.App.Engine.Ui.Components;
-using DevilDaggersInfo.App.Engine.Utils;
-using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
-
 namespace DevilDaggersInfo.App.Ui.ReplayEditor.Components;
 
 public class MouseVisualizer : AbstractComponent

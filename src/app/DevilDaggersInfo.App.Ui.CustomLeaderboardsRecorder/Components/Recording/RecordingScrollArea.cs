@@ -1,12 +1,3 @@
-using DevilDaggersInfo.App.Core.GameMemory;
-using DevilDaggersInfo.App.Core.GameMemory.Extensions;
-using DevilDaggersInfo.App.Engine.Content;
-using DevilDaggersInfo.App.Engine.Maths.Numerics;
-using DevilDaggersInfo.App.Engine.Ui;
-using DevilDaggersInfo.App.Ui.Base;
-using DevilDaggersInfo.App.Ui.Base.Components;
-using DevilDaggersInfo.App.Ui.Base.Extensions;
-using DevilDaggersInfo.App.Ui.Base.Styling;
 using DevilDaggersInfo.Common;
 using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Core.Wiki.Objects;

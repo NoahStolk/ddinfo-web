@@ -1,10 +1,3 @@
-using DevilDaggersInfo.App.Engine.Maths.Numerics;
-using DevilDaggersInfo.App.Engine.Text;
-using DevilDaggersInfo.App.Engine.Ui;
-using DevilDaggersInfo.App.Engine.Ui.Components;
-using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
-using DevilDaggersInfo.App.Ui.Base.Rendering.Text;
-
 namespace DevilDaggersInfo.App.Ui.ReplayEditor.Components;
 
 public class InputVisualizer : AbstractComponent

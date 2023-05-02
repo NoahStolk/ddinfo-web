@@ -1,11 +1,8 @@
 // ReSharper disable ForCanBeConvertedToForeach
 using DevilDaggersInfo.App.Scenes.Base;
 using DevilDaggersInfo.App.Scenes.Base.GameObjects;
-using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.Core.Spawnset;
-using Silk.NET.Input;
 using Silk.NET.OpenGL;
-using Silk.NET.Windowing;
 using System.Numerics;
 
 namespace DevilDaggersInfo.App.Scenes;

@@ -1,16 +1,3 @@
-using DevilDaggersInfo.App.Engine;
-using DevilDaggersInfo.App.Engine.Extensions;
-using DevilDaggersInfo.App.Engine.Maths.Numerics;
-using DevilDaggersInfo.App.Engine.Ui;
-using DevilDaggersInfo.App.Engine.Ui.Components;
-using DevilDaggersInfo.App.Ui.Base;
-using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
-using DevilDaggersInfo.App.Ui.Base.Rendering;
-using DevilDaggersInfo.App.Ui.Base.Rendering.Scissors;
-using DevilDaggersInfo.App.Ui.Base.StateManagement;
-using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
-using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Data;
-using DevilDaggersInfo.App.Ui.Base.Styling;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.EditorArena;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.EditorArena.Data;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;

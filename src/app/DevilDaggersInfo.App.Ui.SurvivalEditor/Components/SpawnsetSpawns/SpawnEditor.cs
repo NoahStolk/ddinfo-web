@@ -1,15 +1,3 @@
-using DevilDaggersInfo.App.Engine.Maths.Numerics;
-using DevilDaggersInfo.App.Engine.Text;
-using DevilDaggersInfo.App.Engine.Ui;
-using DevilDaggersInfo.App.Engine.Ui.Components;
-using DevilDaggersInfo.App.Ui.Base.Components;
-using DevilDaggersInfo.App.Ui.Base.Components.Styles;
-using DevilDaggersInfo.App.Ui.Base.Extensions;
-using DevilDaggersInfo.App.Ui.Base.Rendering.Text;
-using DevilDaggersInfo.App.Ui.Base.StateManagement;
-using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
-using DevilDaggersInfo.App.Ui.Base.Styling;
-using DevilDaggersInfo.App.Ui.Base.Utils;
 using DevilDaggersInfo.Core.Spawnset;
 using System.Collections.Immutable;
 

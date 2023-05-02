@@ -1,17 +1,6 @@
-using DevilDaggersInfo.Api.App.CustomLeaderboards;
-using DevilDaggersInfo.Api.App.ProcessMemory;
-using DevilDaggersInfo.App.Core.GameMemory;
-using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
-using DevilDaggersInfo.App.Ui.Base.Networking;
-using DevilDaggersInfo.App.Ui.Base.Networking.TaskHandlers;
-using DevilDaggersInfo.App.Ui.Base.StateManagement;
-using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Actions;
-using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Data;
-using DevilDaggersInfo.App.Ui.Base.User.Cache;
 using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Core.Encryption;
 #if !SKIP_VALUE
-using DevilDaggersInfo.App.Ui.Base;
 using System.IO.Compression;
 using System.Text;
 #endif

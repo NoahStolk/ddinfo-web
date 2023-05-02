@@ -1,10 +1,3 @@
-using DevilDaggersInfo.Api.App.CustomLeaderboards;
-using DevilDaggersInfo.App.Engine.Maths.Numerics;
-using DevilDaggersInfo.App.Engine.Ui;
-using DevilDaggersInfo.App.Ui.Base.Components;
-using DevilDaggersInfo.App.Ui.Base.StateManagement;
-using DevilDaggersInfo.App.Ui.Base.Styling;
-
 namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.Leaderboard;
 
 public class LeaderboardScrollArea : ScrollArea

@@ -1,20 +1,3 @@
-using DevilDaggersInfo.Api.App.CustomLeaderboards;
-using DevilDaggersInfo.Api.App.Spawnsets;
-using DevilDaggersInfo.App.Engine.Maths.Numerics;
-using DevilDaggersInfo.App.Engine.Text;
-using DevilDaggersInfo.App.Engine.Ui;
-using DevilDaggersInfo.App.Engine.Ui.Components;
-using DevilDaggersInfo.App.Ui.Base;
-using DevilDaggersInfo.App.Ui.Base.Components;
-using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
-using DevilDaggersInfo.App.Ui.Base.Extensions;
-using DevilDaggersInfo.App.Ui.Base.Networking;
-using DevilDaggersInfo.App.Ui.Base.Networking.TaskHandlers;
-using DevilDaggersInfo.App.Ui.Base.Rendering.Text;
-using DevilDaggersInfo.App.Ui.Base.StateManagement;
-using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Actions;
-using DevilDaggersInfo.App.Ui.Base.Styling;
-using DevilDaggersInfo.App.Ui.Base.User.Settings;
 using DevilDaggersInfo.Core.Wiki;
 
 namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.Leaderboard;

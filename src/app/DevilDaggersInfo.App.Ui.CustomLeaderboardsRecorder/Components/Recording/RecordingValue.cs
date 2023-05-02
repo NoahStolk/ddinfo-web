@@ -1,11 +1,3 @@
-using DevilDaggersInfo.App.Core.GameMemory;
-using DevilDaggersInfo.App.Engine.InterpolationStates;
-using DevilDaggersInfo.App.Engine.Maths.Numerics;
-using DevilDaggersInfo.App.Engine.Text;
-using DevilDaggersInfo.App.Engine.Ui;
-using DevilDaggersInfo.App.Engine.Ui.Components;
-using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
-
 namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.Recording;
 
 public class RecordingValue : AbstractComponent

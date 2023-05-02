@@ -1,14 +1,5 @@
 // ReSharper disable ForCanBeConvertedToForeach
-using DevilDaggersInfo.App.Engine;
-using DevilDaggersInfo.App.Engine.Intersections;
-using DevilDaggersInfo.App.Ui.Base;
-using DevilDaggersInfo.App.Ui.Base.StateManagement;
-using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
-using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Data;
-using DevilDaggersInfo.App.Ui.Scene;
-using DevilDaggersInfo.App.Ui.Scene.GameObjects;
 using DevilDaggersInfo.Core.Spawnset;
-using Silk.NET.OpenGL;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Scenes;
 

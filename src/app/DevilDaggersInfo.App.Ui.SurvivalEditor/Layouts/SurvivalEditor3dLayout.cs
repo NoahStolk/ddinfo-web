@@ -1,15 +1,5 @@
-using DevilDaggersInfo.App.Engine;
-using DevilDaggersInfo.App.Engine.Maths.Numerics;
-using DevilDaggersInfo.App.Engine.Text;
-using DevilDaggersInfo.App.Engine.Ui;
-using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
-using DevilDaggersInfo.App.Ui.Base.StateManagement;
-using DevilDaggersInfo.App.Ui.Base.StateManagement.Base.Actions;
-using DevilDaggersInfo.App.Ui.Base.Styling;
-using DevilDaggersInfo.App.Ui.Base.Utils;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetArena;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Scenes;
-using Silk.NET.GLFW;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Layouts;
 

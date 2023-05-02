@@ -3,7 +3,6 @@ using DevilDaggersInfo.App.Engine.InterpolationStates;
 using DevilDaggersInfo.App.Engine.Intersections;
 using DevilDaggersInfo.App.Engine.Maths;
 using DevilDaggersInfo.App.Engine.Maths.Numerics;
-using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.User.Settings;
 using Silk.NET.Input;
 using Silk.NET.Windowing;
