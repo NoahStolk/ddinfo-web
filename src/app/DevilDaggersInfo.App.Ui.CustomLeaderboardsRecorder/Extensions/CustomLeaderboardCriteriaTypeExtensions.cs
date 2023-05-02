@@ -10,7 +10,7 @@ namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Extensions;
 
 public static class CustomLeaderboardCriteriaTypeExtensions
 {
-	public static Texture GetTexture(this CustomLeaderboardCriteriaType type) => type switch
+	public static TextureContent GetTexture(this CustomLeaderboardCriteriaType type) => type switch
 	{
 		CustomLeaderboardCriteriaType.GemsCollected => Textures.IconGem,
 		CustomLeaderboardCriteriaType.GemsDespawned => Textures.IconGem,

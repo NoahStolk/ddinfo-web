@@ -113,7 +113,7 @@ public class RecordingScrollArea : ScrollArea
 			h += labelHeight / 2;
 		}
 
-		void AddIcon(ref int h, Texture texture, Color color)
+		void AddIcon(ref int h, TextureContent texture, Color color)
 		{
 			const int iconSize = 16;
 			RecordingIcon recordingIcon = new(bounds.CreateNested(4, h, iconSize, iconSize), texture, color) { Depth = Depth + 100 };

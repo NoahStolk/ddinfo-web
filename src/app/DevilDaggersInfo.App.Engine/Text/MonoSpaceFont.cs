@@ -9,7 +9,7 @@ public class MonoSpaceFont
 	private readonly string _charset;
 	private readonly char _lineBreak;
 
-	public MonoSpaceFont(Texture texture, Charset charset, char lineBreak = '\n')
+	public MonoSpaceFont(TextureContent texture, Charset charset, char lineBreak = '\n')
 	{
 		Texture = texture;
 		_charset = charset.Characters;
@@ -31,7 +31,7 @@ public class MonoSpaceFont
 		});
 	}
 
-	public Texture Texture { get; }
+	public TextureContent Texture { get; }
 	public int CharAmount { get; }
 	public int CharWidth { get; }
 	public float CharVertexWidth { get; }

@@ -10,5 +10,5 @@ public class FloatState : AbstractInterpolationState<float>
 	}
 
 	public override void PrepareRender()
-		=> Render = MathUtils.Lerp(PhysicsPrevious, Physics, EngineNodes.Game.SubFrame);
+		=> Render = MathUtils.Lerp(PhysicsPrevious, Physics, 0); // TODO: Fix this.
 }

@@ -1,4 +1,3 @@
-using DevilDaggersInfo.App.Ui.Base.StateManagement.Base.States;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.States;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.ReplayEditor.States;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.States;
@@ -21,7 +20,6 @@ namespace DevilDaggersInfo.App.Ui.Base.StateManagement;
 /// </summary>
 public record StateReducer
 {
-	public LayoutState LayoutState { get; set; } = StateManager.LayoutState;
 	public ActiveSpawnsetState ActiveSpawnsetState { get; set; } = StateManager.ActiveSpawnsetState;
 	public LeaderboardListState LeaderboardListState { get; set; } = StateManager.LeaderboardListState;
 	public MarkerState MarkerState { get; set; } = StateManager.MarkerState;

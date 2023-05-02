@@ -9,12 +9,12 @@ namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.Recordin
 
 public class RecordingIcon : AbstractComponent
 {
-	private readonly Texture _texture;
+	private readonly TextureContent _texture;
 	private readonly Color _color;
 
 	private readonly Vector2 _size;
 
-	public RecordingIcon(IBounds bounds, Texture texture, Color color)
+	public RecordingIcon(IBounds bounds, TextureContent texture, Color color)
 		: base(bounds)
 	{
 		_texture = texture;

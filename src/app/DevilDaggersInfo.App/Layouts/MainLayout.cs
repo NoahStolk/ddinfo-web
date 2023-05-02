@@ -1,4 +1,6 @@
+using DevilDaggersInfo.App.Scenes;
 using DevilDaggersInfo.Common.Utils;
+using DevilDaggersInfo.Core.Spawnset;
 using ImGuiNET;
 using System.Diagnostics;
 using System.Numerics;
@@ -23,18 +25,28 @@ public static class MainLayout
 
 	private static readonly string _version = VersionUtils.EntryAssemblyVersion;
 
-	//private static readonly MainMenuArenaScene _arenaScene = new();
+	private static MainMenuArenaScene? _arenaScene;
 
-	// StateManager.Subscribe<InitializeContent>(() => _arenaScene.BuildSpawnset(SpawnsetBinary.CreateDefault()));
+	public static void Initialize()
+	{
+		_arenaScene = new();
+		_arenaScene.BuildSpawnset(SpawnsetBinary.CreateDefault());
+	}
 
 	public static void Update()
 	{
-		//_arenaScene.Update(0);
+		if (_arenaScene == null)
+			return;
+
+		_arenaScene.Update(0);
 	}
 
 	public static void Render3d()
 	{
-		//_arenaScene.Render();
+		if (_arenaScene == null)
+			return;
+
+		_arenaScene.Render();
 	}
 
 	public static void Render()

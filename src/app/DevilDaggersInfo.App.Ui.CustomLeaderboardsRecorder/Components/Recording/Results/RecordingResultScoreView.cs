@@ -24,7 +24,7 @@ public abstract class RecordingResultScoreView : AbstractComponent
 		y += _labelHeight / 2;
 	}
 
-	protected void AddIcon(ref int y, Texture texture, Color color)
+	protected void AddIcon(ref int y, TextureContent texture, Color color)
 	{
 		const int iconSize = 16;
 		RecordingIcon recordingIcon = new(Bounds.CreateNested(4, y, iconSize, iconSize), texture, color) { Depth = Depth + 100 };

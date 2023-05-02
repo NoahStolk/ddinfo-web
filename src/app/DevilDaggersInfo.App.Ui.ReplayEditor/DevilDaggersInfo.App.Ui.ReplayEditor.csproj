@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Replay\DevilDaggersInfo.Core.Replay.csproj" />
-    <ProjectReference Include="..\DevilDaggersInfo.App.Ui.Scene\DevilDaggersInfo.App.Ui.Scene.csproj" />
   </ItemGroup>
 
 </Project>

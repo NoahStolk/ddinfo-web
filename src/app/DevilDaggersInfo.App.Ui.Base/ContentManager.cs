@@ -98,7 +98,7 @@ public static class ContentManager
 			Hand4Texture: GetTexture(ddBinary, "hand6"));
 	}
 
-	private static Mesh GetMesh(ModBinary ddBinary, string meshName)
+	private static MeshContent GetMesh(ModBinary ddBinary, string meshName)
 	{
 		if (!ddBinary.AssetMap.TryGetValue(new(AssetType.Mesh, meshName), out AssetData? meshData))
 			throw new MissingContentException($"Required mesh '{meshName}' from 'res/dd' was not found.");
@@ -106,7 +106,7 @@ public static class ContentManager
 		return ToEngineMesh(meshData.Buffer);
 	}
 
-	private static Texture GetTexture(ModBinary ddBinary, string textureName)
+	private static TextureContent GetTexture(ModBinary ddBinary, string textureName)
 	{
 		if (!ddBinary.AssetMap.TryGetValue(new(AssetType.Texture, textureName), out AssetData? textureData))
 			throw new MissingContentException($"Required texture '{textureName}' from 'res/dd' was not found.");
@@ -114,7 +114,7 @@ public static class ContentManager
 		return ToEngineTexture(textureData.Buffer);
 	}
 
-	private static Sound GetSound(ModBinary audioBinary, string soundName)
+	private static SoundContent GetSound(ModBinary audioBinary, string soundName)
 	{
 		if (!audioBinary.AssetMap.TryGetValue(new(AssetType.Audio, soundName), out AssetData? audioData))
 			throw new MissingContentException($"Required audio '{soundName}' from 'res/audio' was not found.");
@@ -123,7 +123,7 @@ public static class ContentManager
 		return new(waveData.Channels, waveData.SampleRate, waveData.BitsPerSample, waveData.Data.Length, waveData.Data);
 	}
 
-	private static Mesh ToEngineMesh(byte[] ddMeshBuffer)
+	private static MeshContent ToEngineMesh(byte[] ddMeshBuffer)
 	{
 		using MemoryStream ms = new(ddMeshBuffer);
 		using BinaryReader br = new(ms);
@@ -150,7 +150,7 @@ public static class ContentManager
 		return new(engineVertices, indices);
 	}
 
-	private static Texture ToEngineTexture(byte[] ddTextureBuffer)
+	private static TextureContent ToEngineTexture(byte[] ddTextureBuffer)
 	{
 		const ushort expectedHeader = 16401;
 		const int headerSize = 11;

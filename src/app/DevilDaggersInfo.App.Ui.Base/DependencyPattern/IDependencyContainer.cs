@@ -21,25 +21,4 @@ public interface IDependencyContainer
 	GameMemoryService GameMemoryService { get; }
 
 	#endregion DDCL dependencies
-
-	#region UI DDSE dependencies
-
-	IExtendedLayout SurvivalEditorMainLayout { get; }
-	IExtendedLayout SurvivalEditor3dLayout { get; }
-
-	#endregion UI DDSE dependencies
-
-	#region UI DDCL dependencies
-
-	IExtendedLayout CustomLeaderboardsRecorderMainLayout { get; }
-	IExtendedLayout CustomLeaderboardsRecorderReplayViewer3dLayout { get; }
-
-	#endregion UI DDCL dependencies
-
-	#region UI DDRE dependencies
-
-	IExtendedLayout ReplayEditorMainLayout { get; }
-	IExtendedLayout ReplayEditor3dLayout { get; }
-
-	#endregion UI DDRE dependencies
 }

@@ -13,7 +13,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.CriteriaExpression\DevilDaggersInfo.Core.CriteriaExpression.csproj" />
     <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Encryption\DevilDaggersInfo.Core.Encryption.csproj" />
-    <ProjectReference Include="..\DevilDaggersInfo.App.Ui.Scene\DevilDaggersInfo.App.Ui.Scene.csproj" />
   </ItemGroup>
 
 </Project>

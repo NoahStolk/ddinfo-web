@@ -1,4 +1,10 @@
+using DevilDaggersInfo.App.Engine;
+using DevilDaggersInfo.App.Engine.Content;
 using DevilDaggersInfo.App.Layouts;
+using DevilDaggersInfo.App.Ui.Base;
+using DevilDaggersInfo.App.Ui.Base.Exceptions;
+using DevilDaggersInfo.App.Ui.Base.User.Cache;
+using DevilDaggersInfo.App.Ui.Base.User.Settings;
 using DevilDaggersInfo.Common.Utils;
 using DevilDaggersInfo.Core.Versioning;
 using ImGuiNET;
@@ -65,10 +71,56 @@ public class Application
 		style.ScrollbarSize = 32;
 		style.ScrollbarRounding = 0;
 
+		// INIT DDINFO CONTENT
+#if DEBUG
+		const string? ddInfoToolsContentRootDirectory = @"..\..\..\..\..\app\DevilDaggersInfo.App.Ui.Base\Content";
+#else
+		const string? ddInfoToolsContentRootDirectory = null;
+#endif
+		DecompiledContentFile ddInfoToolsContent = Bootstrapper.GetDecompiledContent(ddInfoToolsContentRootDirectory, "ddinfo");
+
+		ddInfoToolsContent.Shaders.TryGetValue("Mesh", out ShaderContent? meshShaderContent);
+		if (meshShaderContent == null)
+			throw new InvalidOperationException("Could not find mesh shader.");
+
+		ddInfoToolsContent.Textures.TryGetValue("TileHitbox", out TextureContent? tileHitboxContent);
+		if (tileHitboxContent == null)
+			throw new InvalidOperationException("Could not find tile hitbox texture.");
+
+		ddInfoToolsContent.Models.TryGetValue("TileHitbox", out ModelContent? tileHitboxModelContent);
+		if (tileHitboxModelContent == null)
+			throw new InvalidOperationException("Could not find tile hitbox model.");
+
+		Shader meshShader = new(_gl, meshShaderContent.VertexCode, meshShaderContent.FragmentCode);
+		Texture tileHitbox = new(_gl, tileHitboxContent.Pixels, (uint)tileHitboxContent.Width, (uint)tileHitboxContent.Height);
+		InternalResources resources = new(meshShader, tileHitbox, tileHitboxModelContent);
+
+		UserSettings.Load();
+		UserCache.Load();
+
+		// INIT DD CONTENT
+		ContentManager.Initialize();
+
+		Texture iconDaggerTexture = new(_gl, ContentManager.Content.IconDaggerTexture.Pixels, (uint)ContentManager.Content.IconDaggerTexture.Width, (uint)ContentManager.Content.IconDaggerTexture.Height);
+		Texture daggerSilverTexture = new(_gl, ContentManager.Content.DaggerSilverTexture.Pixels, (uint)ContentManager.Content.DaggerSilverTexture.Width, (uint)ContentManager.Content.DaggerSilverTexture.Height);
+		Texture skull4Texture = new(_gl, ContentManager.Content.Skull4Texture.Pixels, (uint)ContentManager.Content.Skull4Texture.Width, (uint)ContentManager.Content.Skull4Texture.Height);
+		Texture skull4JawTexture = new(_gl, ContentManager.Content.Skull4JawTexture.Pixels, (uint)ContentManager.Content.Skull4JawTexture.Width, (uint)ContentManager.Content.Skull4JawTexture.Height);
+		Texture tileTexture = new(_gl, ContentManager.Content.TileTexture.Pixels, (uint)ContentManager.Content.TileTexture.Width, (uint)ContentManager.Content.TileTexture.Height);
+		Texture pillarTexture = new(_gl, ContentManager.Content.PillarTexture.Pixels, (uint)ContentManager.Content.PillarTexture.Width, (uint)ContentManager.Content.PillarTexture.Height);
+		Texture postLut = new(_gl, ContentManager.Content.PostLut.Pixels, (uint)ContentManager.Content.PostLut.Width, (uint)ContentManager.Content.PostLut.Height);
+		Texture hand4Texture = new(_gl, ContentManager.Content.Hand4Texture.Pixels, (uint)ContentManager.Content.Hand4Texture.Width, (uint)ContentManager.Content.Hand4Texture.Height);
+		GameResources gameResources = new(iconDaggerTexture, daggerSilverTexture, skull4Texture, skull4JawTexture, tileTexture, pillarTexture, postLut, hand4Texture);
+
+		// INIT CONTEXT
+		GlobalContext.InputContext = _inputContext;
+		GlobalContext.Window = _window;
+		GlobalContext.Gl = _gl;
+		GlobalContext.InternalResources = resources;
+		GlobalContext.GameResources = gameResources;
+
+		MainLayout.Initialize();
+
 		// AppDomain.CurrentDomain.UnhandledException += (_, args) => Root.Dependencies.Log.Fatal(args.ExceptionObject.ToString());
-		//
-		// UserSettings.Load();
-		// UserCache.Load();
 
 		//AsyncHandler.Run(ShowUpdateAvailable, () => FetchLatestVersion.HandleAsync(Root.Game.AppVersion, Root.Dependencies.PlatformSpecificValues.BuildType));
 		// private static void ShowUpdateAvailable(AppVersion? newAppVersion)
@@ -96,7 +148,7 @@ public class Application
 		_gl.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
 		MainLayout.Render();
-		//MainLayout.Render3d();
+		MainLayout.Render3d();
 
 		_controller.Render();
 	}

@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.App.Engine.Content;
 
-public class Charset
+public class Charset // TODO: Remove.
 {
 	public Charset(byte[] binaryContents)
 	{

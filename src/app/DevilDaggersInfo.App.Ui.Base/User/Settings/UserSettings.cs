@@ -1,4 +1,3 @@
-using DevilDaggersInfo.App.Engine.Debugging;
 using DevilDaggersInfo.App.Ui.Base.DependencyPattern;
 using DevilDaggersInfo.App.Ui.Base.StateManagement;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.Base.Actions;
@@ -70,7 +69,5 @@ public static class UserSettings
 	{
 		Directory.CreateDirectory(_fileDirectory);
 		File.WriteAllText(_filePath, JsonSerializer.Serialize(_model));
-
-		DebugStack.Add("Saved user settings.", 1);
 	}
 }
