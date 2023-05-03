@@ -62,10 +62,10 @@ public static class ConfigLayout
 			Example: {examplePath}
 			""";
 
-		ImGui.SetNextWindowPos(new(0, 0));
-		ImGui.SetNextWindowSize(new(1024, 768));
+		ImGui.SetNextWindowPos(default);
+		ImGui.SetNextWindowSize(Constants.LayoutSize);
 
-		ImGui.Begin("Configuration", ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoBackground | ImGuiWindowFlags.NoBringToFrontOnFocus | ImGuiWindowFlags.NoNavFocus);
+		ImGui.Begin("Configuration", Constants.LayoutFlags);
 
 		ImGui.Text(text);
 		if (!string.IsNullOrWhiteSpace(_error))

@@ -2,6 +2,7 @@ using DevilDaggersInfo.App.Ui;
 using DevilDaggersInfo.App.Ui.Config;
 using DevilDaggersInfo.App.Ui.Global;
 using DevilDaggersInfo.App.Ui.Main;
+using DevilDaggersInfo.App.Ui.SurvivalEditor;
 using DevilDaggersInfo.Core.Versioning;
 
 namespace DevilDaggersInfo.App;
@@ -36,6 +37,9 @@ public static class UiRenderer
 				break;
 			case LayoutType.Config:
 				ConfigLayout.Render();
+				break;
+			case LayoutType.SurvivalEditor:
+				SurvivalEditorLayout.Render();
 				break;
 		}
 

@@ -30,10 +30,10 @@ public static class MainLayout
 	{
 		shouldClose = false;
 
-		ImGui.SetNextWindowPos(new(0, 0));
-		ImGui.SetNextWindowSize(new(1024, 768));
+		ImGui.SetNextWindowPos(default);
+		ImGui.SetNextWindowSize(Constants.LayoutSize);
 
-		ImGui.Begin("Main Menu", ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoBackground | ImGuiWindowFlags.NoBringToFrontOnFocus | ImGuiWindowFlags.NoNavFocus);
+		ImGui.Begin("Main Menu", Constants.LayoutFlags);
 
 		TextAt(_mainMenu, 8, 8);
 		TextAt("DDINFO", 512, 64, new(1, 0, 0, 1), true); // TODO: font size 64
@@ -43,7 +43,10 @@ public static class MainLayout
 		TextAt("DevilDaggers.info is created by Noah Stolk", 512, 724, default, true);
 
 		const float buttonAlpha = 0.5f;
-		MainButtonAt(0, 0, new(1, 0, 0, buttonAlpha), "Survival Editor (wip)");
+
+		if (MainButtonAt(0, 0, new(1, 0, 0, buttonAlpha), "Survival Editor (wip)"))
+			UiRenderer.Layout = LayoutType.SurvivalEditor;
+
 		MainButtonAt(1, 0, new(0, 1, 0, buttonAlpha), "Asset Editor (todo)");
 		MainButtonAt(2, 0, new(1, 0, 1, buttonAlpha), "Replay Editor (wip)");
 		MainButtonAt(0, 1, new(0, 0, 1, buttonAlpha), "Custom Leaderboards");
