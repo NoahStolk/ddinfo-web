@@ -1,7 +1,5 @@
 using DevilDaggersInfo.App.Ui.Base.StateManagement;
-using DevilDaggersInfo.App.Ui.Base.User.Settings;
 using DevilDaggersInfo.Core.Spawnset;
-using ImGuiNET;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor;
 
@@ -29,8 +27,6 @@ public static class SpawnsetFileUtils
 		{
 			SpawnsetState.SpawnsetName = Path.GetFileName(filePath);
 			SpawnsetState.Spawnset = spawnsetBinary;
-
-			//StateManager.Dispatch(new LoadSpawnset(Path.GetFileName(filePath), spawnsetBinary));
 		}
 		else
 		{
@@ -48,13 +44,6 @@ public static class SpawnsetFileUtils
 		{
 			UiRenderer.Error = new("Specified file path is an existing directory. Please specify a file path.");
 			return;
-		}
-
-		if (File.Exists(filePath))
-		{
-			// bool? result = Root.NativeDialogService.PromptYesNo("File already exists", "The specified file path already exists. Do you want to overwrite it?");
-			// if (result is null or false)
-			// 	return;
 		}
 
 		File.WriteAllBytes(filePath, StateManager.SpawnsetState.Spawnset.ToBytes());
