@@ -42,18 +42,21 @@ public static class MainLayout
 		TextAt("Devil Daggers is created by Sorath", 512, 708, default, true);
 		TextAt("DevilDaggers.info is created by Noah Stolk", 512, 724, default, true);
 
-		const float alpha = 0.5f;
-		MainButtonAt(0, 0, new(1, 0, 0, alpha), "Survival Editor (wip)");
-		MainButtonAt(1, 0, new(0, 1, 0, alpha), "Asset Editor (todo)");
-		MainButtonAt(2, 0, new(1, 0, 1, alpha), "Replay Editor (wip)");
-		MainButtonAt(0, 1, new(0, 0, 1, alpha), "Custom Leaderboards");
-		MainButtonAt(1, 1, new(0, 1, 1, alpha), "Practice (todo)");
-		MainButtonAt(2, 1, new(1, 1, 0, alpha), "Mod Manager (todo)");
-		MainButtonAt(0, 2, new(0.3f, 0.3f, 0.3f, alpha), "Configuration");
-		if (MainButtonAt(1, 2, new(0.3f, 0.3f, 0.3f, alpha), "Settings"))
+		const float buttonAlpha = 0.5f;
+		MainButtonAt(0, 0, new(1, 0, 0, buttonAlpha), "Survival Editor (wip)");
+		MainButtonAt(1, 0, new(0, 1, 0, buttonAlpha), "Asset Editor (todo)");
+		MainButtonAt(2, 0, new(1, 0, 1, buttonAlpha), "Replay Editor (wip)");
+		MainButtonAt(0, 1, new(0, 0, 1, buttonAlpha), "Custom Leaderboards");
+		MainButtonAt(1, 1, new(0, 1, 1, buttonAlpha), "Practice (todo)");
+		MainButtonAt(2, 1, new(1, 1, 0, buttonAlpha), "Mod Manager (todo)");
+
+		if (MainButtonAt(0, 2, new(0.3f, 0.3f, 0.3f, buttonAlpha), "Configuration"))
+			UiRenderer.Layout = LayoutType.Config;
+
+		if (MainButtonAt(1, 2, new(0.3f, 0.3f, 0.3f, buttonAlpha), "Settings"))
 			_showSettings = true;
 
-		if (MainButtonAt(2, 2, new(0.3f, 0.3f, 0.3f, alpha), "Exit"))
+		if (MainButtonAt(2, 2, new(0.3f, 0.3f, 0.3f, buttonAlpha), "Exit"))
 			shouldClose = true;
 
 		Vector4 hyperlinkColor = new(0, 0.625f, 1, 1);

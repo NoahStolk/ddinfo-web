@@ -1,11 +1,13 @@
+using ImGuiNET;
+
 namespace DevilDaggersInfo.App.Ui.Config;
 
-public class ConfigLayout
+public static class ConfigLayout
 {
 	//private readonly TextInput _installationDirectoryInput;
 
-	private string? _error;
-	private bool _contentInitialized;
+	private static string? _error;
+	private static bool _contentInitialized;
 
 	// public ConfigLayout()
 	// {
@@ -71,38 +73,37 @@ public class ConfigLayout
 	// 	_installationDirectoryInput.KeyboardInput.SetText(UserSettings.Model.DevilDaggersInstallationDirectory);
 	// }
 
-	public void Update()
+	public static void Render()
 	{
-	}
+#pragma warning disable S1075
+#if LINUX
+		const string examplePath = "/home/{USERNAME}/.local/share/Steam/steamapps/common/devildaggers/";
+#elif WINDOWS
+		const string examplePath = """C:\Program Files (x86)\Steam\steamapps\common\devildaggers""";
+#endif
+#pragma warning restore S1075
 
-	public void Render3d()
-	{
-	}
+		const string text = $"""
+			Please configure your Devil Daggers installation directory.
 
-// 	public void Render()
-// 	{
-// 		Vector2i<int> windowScale = new(Graphics.CurrentWindowState.Width, Graphics.CurrentWindowState.Height);
-// 		Root.Game.RectangleRenderer.Schedule(windowScale, windowScale / 2, -100, Color.Gray(0.1f));
-//
-// 		Root.Game.MonoSpaceFontRenderer32.Schedule(Vector2i<int>.One, new(512, 64), 0, Color.White, "Configuration", TextAlign.Middle);
-//
-// #pragma warning disable S1075
-// #if LINUX
-// 		const string examplePath = "/home/{USERNAME}/.local/share/Steam/steamapps/common/devildaggers/";
-// #elif WINDOWS
-// 		const string examplePath = """C:\Program Files (x86)\Steam\steamapps\common\devildaggers""";
-// #endif
-// #pragma warning restore S1075
-//
-// 		const string text = $"""
-// 			Please configure your Devil Daggers installation directory.
-//
-// 			This is the directory containing the executable.
-//
-// 			Example: {examplePath}
-// 			""";
-// 		Root.Game.MonoSpaceFontRenderer12.Schedule(Vector2i<int>.One, new(32, 128), 0, Color.White, text, TextAlign.Left);
-// 		if (!string.IsNullOrWhiteSpace(_error))
-// 			Root.Game.MonoSpaceFontRenderer12.Schedule(Vector2i<int>.One, new(32, 256), 0, Color.Red, _error, TextAlign.Left);
-// 	}
+			This is the directory containing the executable.
+
+			Example: {examplePath}
+			""";
+
+		ImGui.SetNextWindowPos(new(0, 0));
+		ImGui.SetNextWindowSize(new(1024, 768));
+
+		ImGui.Begin("Configuration", ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoBackground | ImGuiWindowFlags.NoBringToFrontOnFocus | ImGuiWindowFlags.NoNavFocus);
+
+		ImGui.Text(text);
+		if (!string.IsNullOrWhiteSpace(_error))
+			ImGui.TextColored(new(1, 0, 0, 1), _error);
+
+		ImGui.SetCursorPos(new(512 - 96, 640));
+		if (ImGui.Button("Save", new(192, 96)))
+			UiRenderer.Layout = LayoutType.Main;
+
+		ImGui.End();
+	}
 }
