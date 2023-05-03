@@ -1,4 +1,3 @@
-using DevilDaggersInfo.App.Ui.SurvivalEditor.EditorSpawns;
 using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Core.Wiki.Objects;

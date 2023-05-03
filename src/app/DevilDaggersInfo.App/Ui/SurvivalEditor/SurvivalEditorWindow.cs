@@ -15,6 +15,10 @@ public static class SurvivalEditorWindow
 
 		SpawnsWindow.Render();
 
+		ImGui.SameLine();
+
+		HistoryWindow.Render();
+
 		ImGui.End();
 	}
 

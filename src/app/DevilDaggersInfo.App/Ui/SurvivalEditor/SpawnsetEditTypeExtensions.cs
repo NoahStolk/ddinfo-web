@@ -1,6 +1,7 @@
+using DevilDaggersInfo.App.Engine.Maths.Numerics;
 using System.Diagnostics;
 
-namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Extensions;
+namespace DevilDaggersInfo.App.Ui.SurvivalEditor;
 
 public static class SpawnsetEditTypeExtensions
 {

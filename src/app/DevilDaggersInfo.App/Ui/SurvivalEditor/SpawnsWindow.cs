@@ -1,5 +1,4 @@
 using DevilDaggersInfo.App.Ui.Base.Extensions;
-using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Data;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.EditorSpawns;
 using DevilDaggersInfo.Common;
 using DevilDaggersInfo.Core.Spawnset.Extensions;
@@ -39,10 +38,17 @@ public static class SpawnsWindow
 			SpawnsetHistoryUtils.Save(SpawnsetEditType.SpawnDelete);
 		}
 
-		ImGui.SetNextWindowSize(new(400, 768 - 64));
-		ImGui.Begin("Spawns", ImGuiWindowFlags.ChildWindow | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoCollapse);
-
 		ImGui.BeginChild("SpawnsChild", new(400 - 8, 768 - 136));
+		RenderSpawnsTable(io);
+		ImGui.EndChild();
+
+		ImGui.BeginChild("SpawnControlsChild", new(400 - 8, 64));
+		ImGui.Button("Add", new(64, 32));
+		ImGui.EndChild();
+	}
+
+	private static void RenderSpawnsTable(ImGuiIOPtr io)
+	{
 		ImGui.PushStyleVar(ImGuiStyleVar.CellPadding, new Vector2(4, 1));
 		if (ImGui.BeginTable("SpawnsTable", 6, ImGuiTableFlags.None))
 		{
@@ -104,11 +110,5 @@ public static class SpawnsWindow
 			ImGui.PopStyleVar();
 			ImGui.EndTable();
 		}
-
-		ImGui.EndChild();
-
-		ImGui.Button("Add", new(64, 32));
-
-		ImGui.End();
 	}
 }

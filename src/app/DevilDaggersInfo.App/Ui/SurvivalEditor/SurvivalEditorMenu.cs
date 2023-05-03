@@ -28,15 +28,20 @@ public static class SurvivalEditorMenu
 		{
 			SpawnsetState.SpawnsetName = "(untitled)";
 			SpawnsetState.Spawnset = SpawnsetBinary.CreateDefault();
+			SpawnsetHistoryUtils.Save(SpawnsetEditType.Reset);
 		}
 
 		if (ImGui.MenuItem("Open"))
+		{
 			OpenSpawnset();
+			SpawnsetHistoryUtils.Save(SpawnsetEditType.Reset);
+		}
 
 		if (ImGui.MenuItem("Open default (V3)"))
 		{
 			SpawnsetState.SpawnsetName = "V3";
 			SpawnsetState.Spawnset = ContentManager.Content.DefaultSpawnset.DeepCopy();
+			SpawnsetHistoryUtils.Save(SpawnsetEditType.Reset);
 		}
 
 		if (ImGui.MenuItem("Save"))
