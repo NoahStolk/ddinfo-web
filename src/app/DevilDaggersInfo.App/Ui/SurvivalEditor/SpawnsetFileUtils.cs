@@ -1,4 +1,5 @@
 using DevilDaggersInfo.App.Ui.Base.StateManagement;
+using DevilDaggersInfo.App.Ui.Main;
 using DevilDaggersInfo.Core.Spawnset;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor;
@@ -19,7 +20,8 @@ public static class SpawnsetFileUtils
 		catch (Exception ex)
 		{
 			// TODO: Log exception.
-			UiRenderer.Error = new($"Could not open file '{filePath}'.");
+			GlobalModals.ShowError = true;
+			GlobalModals.ErrorText = $"Could not open file '{filePath}'.";
 			return;
 		}
 
@@ -30,7 +32,8 @@ public static class SpawnsetFileUtils
 		}
 		else
 		{
-			UiRenderer.Error = new($"The file '{filePath}' could not be parsed as a spawnset.");
+			GlobalModals.ShowError = true;
+			GlobalModals.ErrorText = $"The file '{filePath}' could not be parsed as a spawnset.";
 		}
 	}
 
@@ -39,12 +42,6 @@ public static class SpawnsetFileUtils
 		string? filePath = Root.NativeFileSystemService.CreateSaveFileDialog("Save spawnset file", null);
 		if (filePath == null)
 			return;
-
-		if (Directory.Exists(filePath))
-		{
-			UiRenderer.Error = new("Specified file path is an existing directory. Please specify a file path.");
-			return;
-		}
 
 		File.WriteAllBytes(filePath, StateManager.SpawnsetState.Spawnset.ToBytes());
 	}

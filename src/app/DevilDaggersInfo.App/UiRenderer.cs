@@ -1,36 +1,22 @@
 using DevilDaggersInfo.App.Ui;
 using DevilDaggersInfo.App.Ui.Config;
-using DevilDaggersInfo.App.Ui.Global;
 using DevilDaggersInfo.App.Ui.Main;
 using DevilDaggersInfo.App.Ui.SurvivalEditor;
-using ImGuiNET;
-using System.Diagnostics.CodeAnalysis;
 
 namespace DevilDaggersInfo.App;
 
-[SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1201:Elements should appear in the correct order", Justification = "Readability")]
 public static class UiRenderer
 {
 	private static bool _windowShouldClose;
 	public static bool WindowShouldClose => _windowShouldClose;
 
-	private static bool _showError;
-	private static ErrorWindow.Error? _error;
-	public static ErrorWindow.Error? Error
-	{
-		get => _error;
-		set
-		{
-			_error = value;
-			if (value != null)
-				_showError = true;
-		}
-	}
-
 	public static LayoutType Layout { get; set; }
 
 	public static void Render()
 	{
+		//ImGuiNET.ImGui.ShowUserGuide();
+		//ImGuiNET.ImGui.ShowDemoWindow();
+
 		switch (Layout)
 		{
 			case LayoutType.Main:
@@ -44,7 +30,6 @@ public static class UiRenderer
 				break;
 		}
 
-		if (Error != null)
-			ErrorWindow.Render(ref _showError, Error);
+		GlobalModals.Render();
 	}
 }

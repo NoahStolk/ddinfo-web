@@ -1,3 +1,4 @@
+using DevilDaggersInfo.App.Ui;
 using DevilDaggersInfo.App.Ui.Base.Networking;
 using DevilDaggersInfo.App.Ui.Base.Networking.TaskHandlers;
 using DevilDaggersInfo.App.Ui.Base.User.Cache;
@@ -82,8 +83,8 @@ public class Application
 		AsyncHandler.Run(
 			av =>
 			{
-				MainModals.ShowUpdate = av != null;
-				MainModals.AvailableVersion = av;
+				GlobalModals.ShowUpdate = av != null;
+				GlobalModals.AvailableVersion = av;
 			},
 			() => FetchLatestVersion.HandleAsync(appVersion, Root.PlatformSpecificValues.BuildType));
 	}
