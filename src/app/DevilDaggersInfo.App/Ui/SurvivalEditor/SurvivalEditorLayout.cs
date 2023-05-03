@@ -1,4 +1,6 @@
+using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Utils;
+using DevilDaggersInfo.Core.Spawnset;
 using ImGuiNET;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor;
@@ -11,12 +13,20 @@ public static class SurvivalEditorLayout
 		{
 			if (ImGui.BeginMenu("File"))
 			{
-				ImGui.MenuItem("New"); // () => StateManager.Dispatch(new LoadSpawnset("(untitled)", SpawnsetBinary.CreateDefault()))
+				if (ImGui.MenuItem("New"))
+				{
+					SpawnsetState.SpawnsetName = "(untitled)";
+					SpawnsetState.Spawnset = SpawnsetBinary.CreateDefault();
+				}
 
 				if (ImGui.MenuItem("Open"))
 					SpawnsetFileUtils.OpenSpawnset();
 
-				ImGui.MenuItem("Open default (V3)"); // () => StateManager.Dispatch(new LoadSpawnset("(untitled)", ContentManager.Content.DefaultSpawnset.DeepCopy()))
+				if (ImGui.MenuItem("Open default (V3)"))
+				{
+					SpawnsetState.SpawnsetName = "V3";
+					SpawnsetState.Spawnset = ContentManager.Content.DefaultSpawnset.DeepCopy();
+				}
 
 				if (ImGui.MenuItem("Save"))
 					SpawnsetFileUtils.SaveSpawnset();
