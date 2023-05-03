@@ -1,7 +1,6 @@
 using Silk.NET.OpenGL;
-using System.Numerics;
 
-namespace DevilDaggersInfo.App;
+namespace DevilDaggersInfo.App.Engine;
 
 public class Shader : IDisposable
 {

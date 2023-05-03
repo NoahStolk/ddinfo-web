@@ -1,6 +1,6 @@
 using Silk.NET.OpenGL;
 
-namespace DevilDaggersInfo.App;
+namespace DevilDaggersInfo.App.Engine;
 
 public class Texture : IDisposable
 {
