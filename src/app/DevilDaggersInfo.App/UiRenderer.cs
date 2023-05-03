@@ -26,7 +26,7 @@ public static class UiRenderer
 				ConfigLayout.Render();
 				break;
 			case LayoutType.SurvivalEditor:
-				SurvivalEditorLayout.Render();
+				SurvivalEditorWindow.Render();
 				break;
 		}
 

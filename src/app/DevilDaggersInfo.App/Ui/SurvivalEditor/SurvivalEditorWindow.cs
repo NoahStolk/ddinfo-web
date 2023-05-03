@@ -1,13 +1,22 @@
+using ImGuiNET;
+using System.Numerics;
+
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor;
 
-public static class SurvivalEditorLayout
+public static class SurvivalEditorWindow
 {
 	public static void Render()
 	{
+		ImGui.PushStyleVar(ImGuiStyleVar.WindowMinSize, new Vector2(1024, 768));
+		ImGui.Begin("Survival Editor", ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.MenuBar);
+		ImGui.PopStyleVar();
+
 		SurvivalEditorMenu.Render();
 		SurvivalEditorModals.Render();
 
 		SpawnsWindow.Render();
+
+		ImGui.End();
 	}
 
 	/*

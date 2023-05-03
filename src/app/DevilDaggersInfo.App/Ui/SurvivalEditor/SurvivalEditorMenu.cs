@@ -10,7 +10,7 @@ public static class SurvivalEditorMenu
 {
 	public static void Render()
 	{
-		if (ImGui.BeginMainMenuBar())
+		if (ImGui.BeginMenuBar())
 		{
 			if (ImGui.BeginMenu("File"))
 			{
@@ -18,7 +18,7 @@ public static class SurvivalEditorMenu
 				ImGui.EndMenu();
 			}
 
-			ImGui.EndMainMenuBar();
+			ImGui.EndMenuBar();
 		}
 	}
 

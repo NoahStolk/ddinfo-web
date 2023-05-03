@@ -11,20 +11,21 @@ public static class SpawnsWindow
 {
 	public static void Render()
 	{
-		ImGui.Begin("Spawns");
+		ImGui.SetNextWindowSize(new(384, 512));
+		ImGui.Begin("Spawns", ImGuiWindowFlags.ChildWindow | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoCollapse);
 
-		if (ImGui.BeginTable("table1", 5, ImGuiTableFlags.None))
+		if (ImGui.BeginTable("SpawnsTable", 5, ImGuiTableFlags.None))
 		{
-			ImGui.TableSetupColumn("Enemy");
-			ImGui.TableSetupColumn("Time");
-			ImGui.TableSetupColumn("Delay");
-			ImGui.TableSetupColumn("Gems");
+			ImGui.TableSetupColumn("Enemy", ImGuiTableColumnFlags.WidthFixed, 72);
+			ImGui.TableSetupColumn("Time", ImGuiTableColumnFlags.WidthFixed, 72);
+			ImGui.TableSetupColumn("Delay", ImGuiTableColumnFlags.WidthFixed, 72);
+			ImGui.TableSetupColumn("Gems", ImGuiTableColumnFlags.WidthFixed, 48);
 			// ImGui.SameLine();
 			// ImGui.Text("(?)");
 			// if (ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled))
 			// 	ImGui.SetTooltip("The amount of gems an enemy drops when killed without farming.\nThis is also the amount of gems that will be added to the total gems counter.");
 
-			ImGui.TableSetupColumn("Total gems");
+			ImGui.TableSetupColumn("Total", ImGuiTableColumnFlags.WidthFixed, 96);
 			ImGui.TableHeadersRow();
 
 			foreach (SpawnUiEntry spawn in EditSpawnContext.GetFrom(SpawnsetState.Spawnset))
