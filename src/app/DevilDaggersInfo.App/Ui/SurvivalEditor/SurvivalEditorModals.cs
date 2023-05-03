@@ -19,7 +19,6 @@ public static class SurvivalEditorModals
 
 		Vector2 center = ImGui.GetMainViewport().GetCenter();
 		ImGui.SetNextWindowPos(center, ImGuiCond.Always, new(0.5f, 0.5f));
-		ImGui.SetNextWindowSize(new(512, 128));
 		if (ImGui.BeginPopupModal(_replacedId))
 		{
 			ImGui.Text("The current survival file has been replaced with the current spawnset.");

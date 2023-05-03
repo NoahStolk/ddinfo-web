@@ -32,7 +32,6 @@ public static class GlobalModals
 
 		Vector2 center = ImGui.GetMainViewport().GetCenter();
 		ImGui.SetNextWindowPos(center, ImGuiCond.Always, new(0.5f, 0.5f));
-		ImGui.SetNextWindowSize(new(512, 128));
 		if (ImGui.BeginPopupModal(_updateId))
 		{
 			ImGui.Text($"Version {AvailableVersion} is available. Re-run the launcher to install it.");
@@ -54,7 +53,6 @@ public static class GlobalModals
 
 		Vector2 center = ImGui.GetMainViewport().GetCenter();
 		ImGui.SetNextWindowPos(center, ImGuiCond.Always, new(0.5f, 0.5f));
-		ImGui.SetNextWindowSize(new(512, 128));
 		if (ImGui.BeginPopupModal(_errorId))
 		{
 			ImGui.Text(ErrorText);
