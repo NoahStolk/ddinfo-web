@@ -24,34 +24,34 @@ public class Player
 
 	public LightObject Light { get; }
 
-	public static unsafe void Initialize(GL gl)
+	public static unsafe void Initialize()
 	{
-		_vao = CreateVao(gl, ContentManager.Content.Hand4Mesh);
+		_vao = CreateVao(ContentManager.Content.Hand4Mesh);
 
-		static uint CreateVao(GL gl, MeshContent mesh)
+		static uint CreateVao(MeshContent mesh)
 		{
-			uint vao = gl.GenVertexArray();
-			gl.BindVertexArray(vao);
+			uint vao = Root.Gl.GenVertexArray();
+			Root.Gl.BindVertexArray(vao);
 
-			uint vbo = gl.GenBuffer();
-			gl.BindBuffer(BufferTargetARB.ArrayBuffer, vbo);
+			uint vbo = Root.Gl.GenBuffer();
+			Root.Gl.BindBuffer(BufferTargetARB.ArrayBuffer, vbo);
 
 			fixed (Vertex* v = &mesh.Vertices[0])
-				gl.BufferData(BufferTargetARB.ArrayBuffer, (nuint)(mesh.Vertices.Length * sizeof(Vertex)), v, BufferUsageARB.StaticDraw);
+				Root.Gl.BufferData(BufferTargetARB.ArrayBuffer, (nuint)(mesh.Vertices.Length * sizeof(Vertex)), v, BufferUsageARB.StaticDraw);
 
-			gl.EnableVertexAttribArray(0);
-			gl.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, (uint)sizeof(Vertex), (void*)0);
+			Root.Gl.EnableVertexAttribArray(0);
+			Root.Gl.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, (uint)sizeof(Vertex), (void*)0);
 
-			gl.EnableVertexAttribArray(1);
-			gl.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, (uint)sizeof(Vertex), (void*)(3 * sizeof(float)));
+			Root.Gl.EnableVertexAttribArray(1);
+			Root.Gl.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, (uint)sizeof(Vertex), (void*)(3 * sizeof(float)));
 
 			// TODO: We don't do anything with normals here.
-			gl.EnableVertexAttribArray(2);
-			gl.VertexAttribPointer(2, 3, VertexAttribPointerType.Float, false, (uint)sizeof(Vertex), (void*)(5 * sizeof(float)));
+			Root.Gl.EnableVertexAttribArray(2);
+			Root.Gl.VertexAttribPointer(2, 3, VertexAttribPointerType.Float, false, (uint)sizeof(Vertex), (void*)(5 * sizeof(float)));
 
-			gl.BindVertexArray(0);
-			gl.BindBuffer(BufferTargetARB.ArrayBuffer, 0);
-			gl.DeleteBuffer(vbo);
+			Root.Gl.BindVertexArray(0);
+			Root.Gl.BindBuffer(BufferTargetARB.ArrayBuffer, 0);
+			Root.Gl.DeleteBuffer(vbo);
 
 			return vao;
 		}

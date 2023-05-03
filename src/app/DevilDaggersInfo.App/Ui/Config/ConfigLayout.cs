@@ -1,77 +1,65 @@
+using DevilDaggersInfo.App.Scenes.Base.GameObjects;
+using DevilDaggersInfo.App.Ui.Base;
+using DevilDaggersInfo.App.Ui.Base.Exceptions;
+using DevilDaggersInfo.App.Ui.Base.User.Settings;
 using ImGuiNET;
 
 namespace DevilDaggersInfo.App.Ui.Config;
 
 public static class ConfigLayout
 {
-	//private readonly TextInput _installationDirectoryInput;
-
 	private static string? _error;
 	private static bool _contentInitialized;
+	private static string _installationDirectoryInput = string.Empty;
 
-	// public ConfigLayout()
-	// {
-	// 	TextButton installationDirectoryButton = new(new PixelBounds(32, 208, 256, 32), PickInstallationDirectory, ButtonStyles.Default, new(Color.White, TextAlign.Middle, FontSize.H12), "Select installation directory");
-	// 	NestingContext.Add(installationDirectoryButton);
-	//
-	// 	_installationDirectoryInput = new(new PixelBounds(320, 208, 640, 32), false, null, null, null, TextInputStyles.Default with { FontSize = FontSize.H16 });
-	// 	NestingContext.Add(_installationDirectoryInput);
-	//
-	// 	NestingContext.Add(new TextButton(new PixelBounds(384, 384, 256, 64), CheckInstallationDirectory, ButtonStyles.Default, new(Color.White, TextAlign.Middle, FontSize.H24), "Save and continue"));
-	//
-	// 	StateManager.Subscribe<SetLayout>(SetLayout);
-	// 	StateManager.Subscribe<UserSettingsLoaded>(ValidateInstallation);
-	// }
+	private static void PickInstallationDirectory()
+	{
+		string? directory = Root.NativeFileSystemService.SelectDirectory();
+		if (directory != null)
+			_installationDirectoryInput = directory;
+	}
 
-	// private void PickInstallationDirectory()
-	// {
-	// 	string? directory = Root.Dependencies.NativeFileSystemService.SelectDirectory();
-	// 	if (directory != null)
-	// 		_installationDirectoryInput.KeyboardInput.SetText(directory);
-	// }
-	//
-	// private void CheckInstallationDirectory()
-	// {
-	// 	UserSettings.Model = UserSettings.Model with
-	// 	{
-	// 		DevilDaggersInstallationDirectory = _installationDirectoryInput.KeyboardInput.Value.ToString(),
-	// 	};
-	// 	ValidateInstallation();
-	// }
-	//
-	// private void ValidateInstallation()
-	// {
-	// 	try
-	// 	{
-	// 		ContentManager.Initialize();
-	// 	}
-	// 	catch (MissingContentException ex)
-	// 	{
-	// 		_error = ex.Message;
-	// 		return;
-	// 	}
-	//
-	// 	StateManager.Dispatch(new SetLayout(Root.Dependencies.MainLayout));
-	// 	_error = null;
-	//
-	// 	if (_contentInitialized)
-	// 		return;
-	//
-	// 	StateManager.Dispatch(new InitializeContent());
-	// 	Player.Initialize();
-	// 	RaceDagger.Initialize();
-	// 	Tile.Initialize();
-	// 	Skull4.Initialize();
-	// 	_contentInitialized = true;
-	// }
+	private static void CheckInstallationDirectory()
+	{
+		UserSettings.Model = UserSettings.Model with
+		{
+			DevilDaggersInstallationDirectory = _installationDirectoryInput,
+		};
 
-	// private void SetLayout()
-	// {
-	// 	if (StateManager.LayoutState.CurrentLayout != Root.Dependencies.ConfigLayout)
-	// 		return;
-	//
-	// 	_installationDirectoryInput.KeyboardInput.SetText(UserSettings.Model.DevilDaggersInstallationDirectory);
-	// }
+		ValidateInstallation();
+	}
+
+	/// <summary>
+	/// Is called on launch, and when the user changes the installation directory.
+	/// </summary>
+	public static void ValidateInstallation()
+	{
+		_installationDirectoryInput = UserSettings.Model.DevilDaggersInstallationDirectory;
+
+		try
+		{
+			ContentManager.Initialize();
+		}
+		catch (MissingContentException ex)
+		{
+			_error = ex.Message;
+			return;
+		}
+
+		Root.GameResources = GameResources.Create(Root.Gl);
+		UiRenderer.Layout = LayoutType.Main;
+		_error = null;
+
+		if (_contentInitialized)
+			return;
+
+		Player.Initialize();
+		RaceDagger.Initialize();
+		Tile.Initialize();
+		Skull4.Initialize();
+		Scene.Initialize();
+		_contentInitialized = true;
+	}
 
 	public static void Render()
 	{
@@ -100,9 +88,16 @@ public static class ConfigLayout
 		if (!string.IsNullOrWhiteSpace(_error))
 			ImGui.TextColored(new(1, 0, 0, 1), _error);
 
+		ImGui.SetCursorPos(new(32, 208));
+		if (ImGui.Button("Select installation directory", new(256, 32)))
+			PickInstallationDirectory();
+
+		ImGui.SetCursorPos(new(320, 208));
+		ImGui.InputText("##installationDirectoryInput", ref _installationDirectoryInput, 1024, ImGuiInputTextFlags.None);
+
 		ImGui.SetCursorPos(new(512 - 96, 640));
-		if (ImGui.Button("Save", new(192, 96)))
-			UiRenderer.Layout = LayoutType.Main;
+		if (ImGui.Button("Save and continue", new(192, 96)))
+			CheckInstallationDirectory();
 
 		ImGui.End();
 	}

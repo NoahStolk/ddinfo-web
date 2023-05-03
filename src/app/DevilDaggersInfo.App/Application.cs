@@ -1,7 +1,6 @@
-using DevilDaggersInfo.App.Scenes.Base.GameObjects;
-using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.User.Cache;
 using DevilDaggersInfo.App.Ui.Base.User.Settings;
+using DevilDaggersInfo.App.Ui.Config;
 using DevilDaggersInfo.Common.Utils;
 using DevilDaggersInfo.Core.Versioning;
 using ImGuiNET;
@@ -69,26 +68,15 @@ public class Application
 		style.ScrollbarSize = 32;
 		style.ScrollbarRounding = 0;
 
-		// Load internal resources, such as shaders and icons.
-		InternalResources internalResources = InternalResources.Create(_gl);
-
-		// Load settings.
 		UserSettings.Load();
 		UserCache.Load();
 
-		// Load the DD content manager (based on the user settings) and initialize the DD resources.
-		ContentManager.Initialize();
-		GameResources gameResources = GameResources.Create(_gl);
+		Root.InternalResources = InternalResources.Create(_gl);
+		Root.Gl = _gl;
+		Root.InputContext = _inputContext;
+		Root.Window = _window;
 
-		// Set up Root.
-		Root.Initialize(internalResources, gameResources, _gl, _inputContext, _window);
-
-		// Initialize 3D rendering.
-		Skull4.Initialize();
-		Tile.Initialize();
-
-		// Initialize 3D scene.
-		Scene.Initialize();
+		ConfigLayout.ValidateInstallation();
 
 		// AppDomain.CurrentDomain.UnhandledException += (_, args) => Root.Dependencies.Log.Fatal(args.ExceptionObject.ToString());
 
