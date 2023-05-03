@@ -19,6 +19,10 @@ public static class SurvivalEditorWindow
 
 		HistoryWindow.Render();
 
+		ImGui.SameLine();
+
+		SpawnsetSettingsWindow.Render();
+
 		ImGui.End();
 	}
 

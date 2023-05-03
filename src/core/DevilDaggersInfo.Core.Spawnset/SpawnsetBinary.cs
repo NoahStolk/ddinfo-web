@@ -399,6 +399,7 @@ public record SpawnsetBinary
 	public string GetGameVersionString()
 		=> GetGameVersionString(WorldVersion, SpawnVersion);
 
+	// TODO: Add enum for recognized spawnset format versions.
 	public static string GetGameVersionString(int worldVersion, int spawnVersion)
 		=> worldVersion == 8 ? "V0/V1" : spawnVersion == 4 ? "V2/V3" : "V3.1+";
 
