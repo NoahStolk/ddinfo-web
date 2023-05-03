@@ -60,7 +60,7 @@ public class Application
 		_gl.ClearColor(0, 0, 0, 1);
 
 		ImGuiStylePtr style = ImGui.GetStyle();
-		style.ScrollbarSize = 32;
+		style.ScrollbarSize = 16;
 		style.ScrollbarRounding = 0;
 
 		UserSettings.Load();

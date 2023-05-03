@@ -28,6 +28,7 @@ public static class EditSpawnContext
 	{
 		int i = 0;
 
+		// TODO: Do not allocate a new list every time.
 		List<SpawnUiEntry> spawns = new();
 		foreach (Spawn spawn in preLoopSpawns)
 		{
