@@ -9,7 +9,7 @@ namespace DevilDaggersInfo.App.Scenes;
 
 public sealed class MainMenuArenaScene : IArenaScene
 {
-	private Skull4? _skull4;
+	private readonly Skull4 _skull4;
 
 	public MainMenuArenaScene()
 	{
@@ -17,34 +17,21 @@ public sealed class MainMenuArenaScene : IArenaScene
 		Skull4.Initialize();
 		Tile.Initialize();
 
-		Camera = new(GlobalContext.Window, GlobalContext.InputContext);
+		Camera = new(GlobalContext.Window, GlobalContext.InputContext)
+		{
+			IsMenuCamera = true,
+		};
+
+		IArenaScene scene = this;
+		scene.AddArena(SpawnsetBinary.CreateDefault());
+
+		_skull4 = new();
 	}
 
 	public Camera Camera { get; }
 	public List<Tile> Tiles { get; } = new();
 	public List<LightObject> Lights { get; } = new();
 	public RaceDagger? RaceDagger { get; set; }
-
-	private void Clear()
-	{
-		_skull4 = null;
-
-		Tiles.Clear();
-		Lights.Clear();
-
-		RaceDagger = null;
-	}
-
-	public void BuildSpawnset(SpawnsetBinary spawnset)
-	{
-		Clear();
-
-		IArenaScene scene = this;
-		scene.AddArena(spawnset);
-
-		Camera.IsMenuCamera = true;
-		_skull4 = new();
-	}
 
 	public void Update(int currentTick, float delta)
 	{
@@ -70,7 +57,7 @@ public sealed class MainMenuArenaScene : IArenaScene
 		shader.SetUniform("textureLut", 1);
 		shader.SetUniform("lutScale", 1f);
 
-		// TODO: Prevent allocating memory.
+		// TODO: Prevent allocating memory?
 		Span<Vector3> lightPositions = Lights.Select(lo => lo.PositionState.Render).ToArray();
 		Span<Vector3> lightColors = Lights.Select(lo => lo.ColorState.Render).ToArray();
 		Span<float> lightRadii = Lights.Select(lo => lo.RadiusState.Render).ToArray();
@@ -92,7 +79,7 @@ public sealed class MainMenuArenaScene : IArenaScene
 			Tiles[i].RenderPillar();
 
 		RaceDagger?.Render();
-		_skull4?.Render();
+		_skull4.Render();
 
 		GlobalContext.InternalResources.TileHitboxTexture.Bind();
 
