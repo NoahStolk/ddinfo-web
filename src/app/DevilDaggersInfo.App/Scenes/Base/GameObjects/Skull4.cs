@@ -12,8 +12,8 @@ public class Skull4
 
 	public static unsafe void Initialize()
 	{
-		_vaoMain = CreateVao(GlobalContext.Gl, ContentManager.Content.Skull4Mesh);
-		_vaoJaw = CreateVao(GlobalContext.Gl, ContentManager.Content.Skull4JawMesh);
+		_vaoMain = CreateVao(Root.Gl, ContentManager.Content.Skull4Mesh);
+		_vaoJaw = CreateVao(Root.Gl, ContentManager.Content.Skull4JawMesh);
 
 		static uint CreateVao(GL gl, MeshContent mesh)
 		{
@@ -46,18 +46,18 @@ public class Skull4
 
 	public unsafe void Render()
 	{
-		GL gl = GlobalContext.Gl;
-		Shader meshShader = GlobalContext.InternalResources.MeshShader;
+		GL gl = Root.Gl;
+		Shader meshShader = Root.InternalResources.MeshShader;
 
 		meshShader.SetUniform("model", Matrix4x4.CreateScale(1.5f) * Matrix4x4.CreateTranslation(new(0, 4f, 0)));
 
-		GlobalContext.GameResources.Skull4Texture.Bind();
+		Root.GameResources.Skull4Texture.Bind();
 
 		gl.BindVertexArray(_vaoMain);
 		fixed (uint* i = &ContentManager.Content.Skull4Mesh.Indices[0])
 			gl.DrawElements(PrimitiveType.Triangles, (uint)ContentManager.Content.Skull4Mesh.Indices.Length, DrawElementsType.UnsignedInt, i);
 
-		GlobalContext.GameResources.Skull4JawTexture.Bind();
+		Root.GameResources.Skull4JawTexture.Bind();
 
 		gl.BindVertexArray(_vaoJaw);
 		fixed (uint* i = &ContentManager.Content.Skull4JawMesh.Indices[0])

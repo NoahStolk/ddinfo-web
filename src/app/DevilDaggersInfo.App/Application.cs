@@ -84,7 +84,7 @@ public class Application
 		GameResources gameResources = GameResources.Create(_gl);
 
 		// INIT CONTEXT
-		GlobalContext.Initialize(internalResources, gameResources, _gl, _inputContext, _window);
+		Root.Initialize(internalResources, gameResources, _gl, _inputContext, _window);
 
 		_arenaScene = new();
 

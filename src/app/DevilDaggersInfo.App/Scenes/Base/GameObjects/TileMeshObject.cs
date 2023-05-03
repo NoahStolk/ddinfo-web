@@ -23,8 +23,8 @@ public class TileMeshObject
 
 	public unsafe void Render()
 	{
-		GL gl = GlobalContext.Gl;
-		Shader meshShader = GlobalContext.InternalResources.MeshShader;
+		GL gl = Root.Gl;
+		Shader meshShader = Root.InternalResources.MeshShader;
 
 		Matrix4x4 translationMatrix = Matrix4x4.CreateTranslation(new(_positionX, PositionY, _positionZ));
 		meshShader.SetUniform("model", translationMatrix);

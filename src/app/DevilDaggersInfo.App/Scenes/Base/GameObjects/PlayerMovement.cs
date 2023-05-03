@@ -31,8 +31,8 @@ public class PlayerMovement
 
 	public unsafe void Render()
 	{
-		GL gl = GlobalContext.Gl;
-		Shader meshShader = GlobalContext.InternalResources.MeshShader;
+		GL gl = Root.Gl;
+		Shader meshShader = Root.InternalResources.MeshShader;
 
 		RotationState.PrepareRender();
 		PositionState.PrepareRender();

@@ -103,13 +103,13 @@ public class RaceDagger
 
 	public unsafe void Render()
 	{
-		GL gl = GlobalContext.Gl;
-		Shader meshShader = GlobalContext.InternalResources.MeshShader;
+		GL gl = Root.Gl;
+		Shader meshShader = Root.InternalResources.MeshShader;
 
 		_meshPosition.PrepareRender();
 		_meshRotation.PrepareRender();
 
-		GlobalContext.GameResources.DaggerSilverTexture.Bind();
+		Root.GameResources.DaggerSilverTexture.Bind();
 
 		meshShader.SetUniform("model", Matrix4x4.CreateScale(8) * Matrix4x4.CreateFromQuaternion(_meshRotation.Render) * Matrix4x4.CreateTranslation(_meshPosition.Render));
 

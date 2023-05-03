@@ -4,7 +4,7 @@ using Silk.NET.Windowing;
 
 namespace DevilDaggersInfo.App;
 
-public static class GlobalContext
+public static class Root
 {
 	private static readonly InvalidOperationException _exception = new("Global context is not initialized.");
 

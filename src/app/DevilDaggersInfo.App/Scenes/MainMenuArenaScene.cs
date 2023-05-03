@@ -17,7 +17,7 @@ public sealed class MainMenuArenaScene : IArenaScene
 		Skull4.Initialize();
 		Tile.Initialize();
 
-		Camera = new(GlobalContext.Window, GlobalContext.InputContext)
+		Camera = new(Root.Window, Root.InputContext)
 		{
 			IsMenuCamera = true,
 		};
@@ -49,7 +49,7 @@ public sealed class MainMenuArenaScene : IArenaScene
 
 		Camera.PreRender();
 
-		Shader shader = GlobalContext.InternalResources.MeshShader;
+		Shader shader = Root.InternalResources.MeshShader;
 		shader.Use();
 		shader.SetUniform("view", Camera.ViewMatrix);
 		shader.SetUniform("projection", Camera.Projection);
@@ -67,21 +67,21 @@ public sealed class MainMenuArenaScene : IArenaScene
 		shader.SetUniform("lightColor", lightColors);
 		shader.SetUniform("lightRadius", lightRadii);
 
-		GlobalContext.GameResources.PostLut.Bind(TextureUnit.Texture1);
+		Root.GameResources.PostLut.Bind(TextureUnit.Texture1);
 
-		GlobalContext.GameResources.TileTexture.Bind();
+		Root.GameResources.TileTexture.Bind();
 
 		for (int i = 0; i < Tiles.Count; i++)
 			Tiles[i].RenderTop();
 
-		GlobalContext.GameResources.PillarTexture.Bind();
+		Root.GameResources.PillarTexture.Bind();
 		for (int i = 0; i < Tiles.Count; i++)
 			Tiles[i].RenderPillar();
 
 		RaceDagger?.Render();
 		_skull4.Render();
 
-		GlobalContext.InternalResources.TileHitboxTexture.Bind();
+		Root.InternalResources.TileHitboxTexture.Bind();
 
 		Tiles.Sort(static (a, b) => a.SquaredDistanceToCamera().CompareTo(b.SquaredDistanceToCamera()));
 		foreach (Tile tile in Tiles)

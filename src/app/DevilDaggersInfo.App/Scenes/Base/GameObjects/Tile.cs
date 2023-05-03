@@ -27,7 +27,7 @@ public class Tile
 
 		_top = new(_tileVao, ContentManager.Content.TileMesh, positionX, positionZ);
 		_pillar = new(_pillarVao, ContentManager.Content.PillarMesh, positionX, positionZ);
-		_tileHitbox = new(_cubeVao, GlobalContext.InternalResources.TileHitboxModel.MainMesh, positionX, positionZ);
+		_tileHitbox = new(_cubeVao, Root.InternalResources.TileHitboxModel.MainMesh, positionX, positionZ);
 	}
 
 	public float PositionX { get; }
@@ -39,9 +39,9 @@ public class Tile
 	public static unsafe void Initialize()
 	{
 		// TODO: Prevent this from being called multiple times.
-		_tileVao = CreateVao(GlobalContext.Gl, ContentManager.Content.TileMesh);
-		_pillarVao = CreateVao(GlobalContext.Gl, ContentManager.Content.PillarMesh);
-		_cubeVao = CreateVao(GlobalContext.Gl, GlobalContext.InternalResources.TileHitboxModel.MainMesh);
+		_tileVao = CreateVao(Root.Gl, ContentManager.Content.TileMesh);
+		_pillarVao = CreateVao(Root.Gl, ContentManager.Content.PillarMesh);
+		_cubeVao = CreateVao(Root.Gl, Root.InternalResources.TileHitboxModel.MainMesh);
 
 		static uint CreateVao(GL gl, MeshContent mesh)
 		{

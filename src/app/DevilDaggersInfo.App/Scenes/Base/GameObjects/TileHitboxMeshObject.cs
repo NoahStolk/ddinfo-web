@@ -52,8 +52,8 @@ public class TileHitboxMeshObject
 
 	public unsafe void Render()
 	{
-		GL gl = GlobalContext.Gl;
-		Shader meshShader = GlobalContext.InternalResources.MeshShader;
+		GL gl = Root.Gl;
+		Shader meshShader = Root.InternalResources.MeshShader;
 
 		meshShader.SetUniform("model", _model);
 

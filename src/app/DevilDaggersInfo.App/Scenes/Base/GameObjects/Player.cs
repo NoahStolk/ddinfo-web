@@ -72,7 +72,7 @@ public class Player
 
 	public void Render()
 	{
-		GlobalContext.GameResources.Hand4Texture.Bind();
+		Root.GameResources.Hand4Texture.Bind();
 		_mesh.Render();
 	}
 }
