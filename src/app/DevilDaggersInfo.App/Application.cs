@@ -39,14 +39,7 @@ public class Application
 		_window.Update += OnWindowOnUpdate;
 		_window.Render += OnWindowOnRender;
 		_window.Closing += OnWindowOnClosing;
-
-		if (!AppVersion.TryParse(VersionUtils.EntryAssemblyVersion, out AppVersion? appVersion))
-			throw new InvalidOperationException("The current version number is invalid.");
-
-		AppVersion = appVersion;
 	}
-
-	public AppVersion AppVersion { get; } // TODO: Use to check for updates.
 
 	public void Run()
 	{
@@ -82,7 +75,10 @@ public class Application
 
 		// AppDomain.CurrentDomain.UnhandledException += (_, args) => Root.Dependencies.Log.Fatal(args.ExceptionObject.ToString());
 
-		AsyncHandler.Run(av => UiRenderer.AvailableVersionNumber = av, () => FetchLatestVersion.HandleAsync(AppVersion, Root.PlatformSpecificValues.BuildType));
+		if (!AppVersion.TryParse(VersionUtils.EntryAssemblyVersion, out AppVersion? appVersion))
+			throw new InvalidOperationException("The current version number is invalid.");
+
+		AsyncHandler.Run(av => UiRenderer.AvailableVersionNumber = av, () => FetchLatestVersion.HandleAsync(appVersion, Root.PlatformSpecificValues.BuildType));
 	}
 
 	private void OnWindowOnFramebufferResize(Vector2D<int> s)
