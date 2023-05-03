@@ -49,7 +49,7 @@ public static class SurvivalEditorMenu
 		if (ImGui.MenuItem("Replace"))
 		{
 			File.WriteAllBytes(UserSettings.ModsSurvivalPath, StateManager.SpawnsetState.Spawnset.ToBytes());
-			SurvivalEditorModals.ShowReplaced = true;
+			GlobalModals.ShowReplacedSurvivalFile = true;
 		}
 
 		ImGui.Separator();

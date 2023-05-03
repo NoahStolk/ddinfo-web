@@ -13,7 +13,7 @@ public static class SettingsWindow
 
 		ImGui.SetNextWindowSize(new(512, 128));
 
-		ImGui.Begin("Settings", ref show, ImGuiWindowFlags.NoCollapse);
+		ImGui.Begin("Settings", ref show, ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize);
 
 		float lookSpeed = UserSettings.Model.LookSpeed;
 		ImGui.SliderFloat("Look speed", ref lookSpeed, UserSettingsModel.LookSpeedMin, UserSettingsModel.LookSpeedMax);

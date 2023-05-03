@@ -12,7 +12,6 @@ public static class SurvivalEditorWindow
 		ImGui.PopStyleVar();
 
 		SurvivalEditorMenu.Render();
-		SurvivalEditorModals.Render();
 
 		SpawnsWindow.Render();
 
