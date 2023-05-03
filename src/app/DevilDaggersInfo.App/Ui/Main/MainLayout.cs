@@ -30,7 +30,8 @@ public static class MainLayout
 	{
 		shouldClose = false;
 
-		ImGui.SetNextWindowPos(default);
+		Vector2 center = ImGui.GetMainViewport().GetCenter();
+		ImGui.SetNextWindowPos(center, ImGuiCond.Always, new(0.5f, 0.5f));
 		ImGui.SetNextWindowSize(Constants.LayoutSize);
 
 		ImGui.Begin("Main Menu", Constants.LayoutFlags);

@@ -3,6 +3,7 @@ using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.Exceptions;
 using DevilDaggersInfo.App.Ui.Base.User.Settings;
 using ImGuiNET;
+using System.Numerics;
 
 namespace DevilDaggersInfo.App.Ui.Config;
 
@@ -62,7 +63,8 @@ public static class ConfigLayout
 			Example: {examplePath}
 			""";
 
-		ImGui.SetNextWindowPos(default);
+		Vector2 center = ImGui.GetMainViewport().GetCenter();
+		ImGui.SetNextWindowPos(center, ImGuiCond.Always, new(0.5f, 0.5f));
 		ImGui.SetNextWindowSize(Constants.LayoutSize);
 
 		ImGui.Begin("Configuration", Constants.LayoutFlags);

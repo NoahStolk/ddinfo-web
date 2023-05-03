@@ -1,5 +1,3 @@
-using ImGuiNET;
-
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor;
 
 public static class SurvivalEditorLayout
@@ -9,13 +7,7 @@ public static class SurvivalEditorLayout
 		SurvivalEditorMenu.Render();
 		SurvivalEditorModals.Render();
 
-		ImGui.SetNextWindowPos(new(0, 16));
-		ImGui.SetNextWindowSize(Constants.LayoutSize);
-		ImGui.Begin("Survival Editor", Constants.LayoutFlags);
-
 		SpawnsWindow.Render();
-
-		ImGui.End();
 	}
 
 	/*
