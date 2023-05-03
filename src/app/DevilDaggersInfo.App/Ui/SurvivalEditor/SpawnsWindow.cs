@@ -38,12 +38,16 @@ public static class SpawnsWindow
 			SpawnsetHistoryUtils.Save(SpawnsetEditType.SpawnDelete);
 		}
 
-		ImGui.BeginChild("SpawnsChild", new(400 - 8, 768 - 136));
+		ImGui.BeginChild("SpawnsChild", new(400 - 8, 768 - 64));
+
+		ImGui.BeginChild("SpawnsListChild", new(400 - 8, 768 - 136));
 		RenderSpawnsTable(io);
 		ImGui.EndChild();
 
 		ImGui.BeginChild("SpawnControlsChild", new(400 - 8, 64));
 		ImGui.Button("Add", new(64, 32));
+		ImGui.EndChild();
+
 		ImGui.EndChild();
 	}
 

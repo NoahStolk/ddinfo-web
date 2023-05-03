@@ -1,4 +1,6 @@
+using DevilDaggersInfo.App.Engine.Maths.Numerics;
 using ImGuiNET;
+using System.Numerics;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor;
 
@@ -6,12 +8,19 @@ public static class HistoryWindow
 {
 	public static void Render()
 	{
-		ImGui.BeginChild("HistoryChild", new(384, 512));
+		ImGui.BeginChild("HistoryChild", new(256, 256));
 
 		foreach (SpawnsetHistoryEntry h in SpawnsetState.History)
 		{
-			ImGui.PushStyleColor(ImGuiCol.TextSelectedBg, h.EditType.GetColor());
-			ImGui.Selectable(h.EditType.GetChange());
+			Color color = h.EditType.GetColor();
+			ImGui.PushStyleColor(ImGuiCol.Button, color);
+			ImGui.PushStyleColor(ImGuiCol.ButtonHovered, color + new Vector4(0.3f, 0.3f, 0.3f, 0));
+			ImGui.PushStyleColor(ImGuiCol.ButtonActive, color + new Vector4(0.5f, 0.5f, 0.5f, 0));
+
+			ImGui.Button(h.EditType.GetChange(), new(240, 20));
+
+			ImGui.PopStyleColor();
+			ImGui.PopStyleColor();
 			ImGui.PopStyleColor();
 		}
 

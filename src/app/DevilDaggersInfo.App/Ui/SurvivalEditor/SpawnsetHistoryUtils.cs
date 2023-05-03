@@ -15,6 +15,7 @@ public static class SpawnsetHistoryUtils
 			SpawnsetBinary copy = SpawnsetState.Spawnset.DeepCopy();
 			byte[] hash = MD5.HashData(copy.ToBytes());
 			SpawnsetState.History = new List<SpawnsetHistoryEntry> { new(copy, hash, spawnsetEditType) };
+			SpawnsetState.CurrentHistoryIndex = 0;
 		}
 		else
 		{
