@@ -4,9 +4,9 @@ using ImGuiNET;
 using System.Diagnostics;
 using System.Numerics;
 
-namespace DevilDaggersInfo.App.Windows;
+namespace DevilDaggersInfo.App.Ui.Main;
 
-public static class MainWindow
+public static class MainLayout
 {
 	private const string _mainMenu = """
 		This is an alpha version of the rewritten tools.

@@ -1,4 +1,4 @@
-using DevilDaggersInfo.App.Windows;
+using DevilDaggersInfo.App.Ui.Main;
 
 namespace DevilDaggersInfo.App;
 
@@ -10,6 +10,6 @@ public static class UiRenderer
 
 	public static void RenderUi()
 	{
-		MainWindow.Render(out _windowShouldClose);
+		MainLayout.Render(out _windowShouldClose);
 	}
 }

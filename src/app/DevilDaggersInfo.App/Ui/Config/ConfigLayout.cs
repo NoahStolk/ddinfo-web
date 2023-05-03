@@ -1,6 +1,6 @@
-namespace DevilDaggersInfo.App.Windows;
+namespace DevilDaggersInfo.App.Ui.Config;
 
-public class ConfigWindow
+public class ConfigLayout
 {
 	//private readonly TextInput _installationDirectoryInput;
 
