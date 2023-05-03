@@ -9,7 +9,7 @@ namespace DevilDaggersInfo.App.Ui;
 [SuppressMessage("Critical Code Smell", "S2223:Non-constant static fields should not be visible", Justification = "ref keyword")]
 [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:Fields should be private", Justification = "ref keyword")]
 [SuppressMessage("Usage", "CA2211:Non-constant fields should not be visible", Justification = "ref keyword")]
-public static class GlobalModals
+public static class Modals
 {
 	private const string _updateId = "Update available";
 	private const string _errorId = "Error";

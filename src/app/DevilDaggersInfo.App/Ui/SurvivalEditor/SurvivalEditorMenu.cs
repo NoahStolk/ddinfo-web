@@ -49,7 +49,7 @@ public static class SurvivalEditorMenu
 		if (ImGui.MenuItem("Replace"))
 		{
 			File.WriteAllBytes(UserSettings.ModsSurvivalPath, StateManager.SpawnsetState.Spawnset.ToBytes());
-			GlobalModals.ShowReplacedSurvivalFile = true;
+			Modals.ShowReplacedSurvivalFile = true;
 		}
 
 		ImGui.Separator();
@@ -72,8 +72,8 @@ public static class SurvivalEditorMenu
 		catch (Exception ex)
 		{
 			// TODO: Log exception.
-			GlobalModals.ShowError = true;
-			GlobalModals.ErrorText = $"Could not open file '{filePath}'.";
+			Modals.ShowError = true;
+			Modals.ErrorText = $"Could not open file '{filePath}'.";
 			return;
 		}
 
@@ -84,8 +84,8 @@ public static class SurvivalEditorMenu
 		}
 		else
 		{
-			GlobalModals.ShowError = true;
-			GlobalModals.ErrorText = $"The file '{filePath}' could not be parsed as a spawnset.";
+			Modals.ShowError = true;
+			Modals.ErrorText = $"The file '{filePath}' could not be parsed as a spawnset.";
 		}
 	}
 }

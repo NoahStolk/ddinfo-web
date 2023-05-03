@@ -30,6 +30,6 @@ public static class UiRenderer
 				break;
 		}
 
-		GlobalModals.Render();
+		Modals.Render();
 	}
 }
