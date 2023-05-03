@@ -1,3 +1,5 @@
+using DevilDaggersInfo.App.Ui.Base.Networking;
+using DevilDaggersInfo.App.Ui.Base.Networking.TaskHandlers;
 using DevilDaggersInfo.App.Ui.Base.User.Cache;
 using DevilDaggersInfo.App.Ui.Base.User.Settings;
 using DevilDaggersInfo.App.Ui.Config;
@@ -80,12 +82,7 @@ public class Application
 
 		// AppDomain.CurrentDomain.UnhandledException += (_, args) => Root.Dependencies.Log.Fatal(args.ExceptionObject.ToString());
 
-		//AsyncHandler.Run(ShowUpdateAvailable, () => FetchLatestVersion.HandleAsync(Root.Game.AppVersion, Root.Dependencies.PlatformSpecificValues.BuildType));
-		// private static void ShowUpdateAvailable(AppVersion? newAppVersion)
-		// {
-		// 	if (newAppVersion != null)
-		// 		Root.Dependencies.NativeDialogService.ReportMessage("Update available", $"Version {newAppVersion} is available. Re-run the launcher to install it.");
-		// }
+		AsyncHandler.Run(av => UiRenderer.AvailableVersionNumber = av, () => FetchLatestVersion.HandleAsync(AppVersion, Root.PlatformSpecificValues.BuildType));
 	}
 
 	private void OnWindowOnFramebufferResize(Vector2D<int> s)
@@ -110,7 +107,7 @@ public class Application
 
 		_gl.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-		UiRenderer.RenderUi();
+		UiRenderer.Render();
 		Scene.Render(_gl);
 
 		_imGuiController.Render();

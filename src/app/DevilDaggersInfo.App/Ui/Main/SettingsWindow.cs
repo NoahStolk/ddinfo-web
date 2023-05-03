@@ -11,6 +11,8 @@ public static class SettingsWindow
 		if (!show)
 			return;
 
+		ImGui.SetNextWindowSize(new(512, 128));
+
 		ImGui.Begin("Settings", ref show, ImGuiWindowFlags.NoCollapse);
 
 		float lookSpeed = UserSettings.Model.LookSpeed;

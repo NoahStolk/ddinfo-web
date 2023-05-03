@@ -1,5 +1,6 @@
 using DevilDaggersInfo.App.Core.NativeInterface.Services;
 using DevilDaggersInfo.App.Core.NativeInterface.Services.Windows;
+using DevilDaggersInfo.App.Ui.Base.Platforms;
 using Silk.NET.Input;
 using Silk.NET.OpenGL;
 using Silk.NET.Windowing;
@@ -85,7 +86,9 @@ public static class Root
 
 #if WINDOWS
 	public static INativeFileSystemService NativeFileSystemService { get; } = new WindowsFileSystemService();
+	public static IPlatformSpecificValues PlatformSpecificValues { get; } = new WindowsValues();
 #elif LINUX
 	public static INativeFileSystemService NativeFileSystemService { get; } = new LinuxFileSystemService();
+	public static IPlatformSpecificValues PlatformSpecificValues { get; } = new LinuxValues();
 #endif
 }
