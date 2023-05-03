@@ -23,15 +23,12 @@ public class TileMeshObject
 
 	public unsafe void Render()
 	{
-		GL gl = Root.Gl;
-		Shader meshShader = Root.InternalResources.MeshShader;
-
 		Matrix4x4 translationMatrix = Matrix4x4.CreateTranslation(new(_positionX, PositionY, _positionZ));
-		meshShader.SetUniform("model", translationMatrix);
+		Root.InternalResources.MeshShader.SetUniform("model", translationMatrix);
 
-		gl.BindVertexArray(_vao);
+		Root.Gl.BindVertexArray(_vao);
 		fixed (uint* i = &_mesh.Indices[0])
-			gl.DrawElements(PrimitiveType.Triangles, (uint)_mesh.Indices.Length, DrawElementsType.UnsignedInt, i);
-		gl.BindVertexArray(0);
+			Root.Gl.DrawElements(PrimitiveType.Triangles, (uint)_mesh.Indices.Length, DrawElementsType.UnsignedInt, i);
+		Root.Gl.BindVertexArray(0);
 	}
 }

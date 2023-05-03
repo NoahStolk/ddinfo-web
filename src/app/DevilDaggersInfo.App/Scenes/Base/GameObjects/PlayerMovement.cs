@@ -31,17 +31,14 @@ public class PlayerMovement
 
 	public unsafe void Render()
 	{
-		GL gl = Root.Gl;
-		Shader meshShader = Root.InternalResources.MeshShader;
-
 		RotationState.PrepareRender();
 		PositionState.PrepareRender();
 
-		meshShader.SetUniform("model", Matrix4x4.CreateScale(4) * Matrix4x4.CreateFromQuaternion(RotationState.Render) * Matrix4x4.CreateTranslation(PositionState.Render));
+		Root.InternalResources.MeshShader.SetUniform("model", Matrix4x4.CreateScale(4) * Matrix4x4.CreateFromQuaternion(RotationState.Render) * Matrix4x4.CreateTranslation(PositionState.Render));
 
-		gl.BindVertexArray(_vao);
+		Root.Gl.BindVertexArray(_vao);
 		fixed (uint* i = &_mesh.Indices[0])
-			gl.DrawElements(PrimitiveType.Triangles, (uint)_mesh.Indices.Length, DrawElementsType.UnsignedInt, i);
-		gl.BindVertexArray(0);
+			Root.Gl.DrawElements(PrimitiveType.Triangles, (uint)_mesh.Indices.Length, DrawElementsType.UnsignedInt, i);
+		Root.Gl.BindVertexArray(0);
 	}
 }

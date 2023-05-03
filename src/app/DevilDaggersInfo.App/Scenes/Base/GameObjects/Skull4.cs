@@ -12,33 +12,33 @@ public class Skull4
 
 	public static unsafe void Initialize()
 	{
-		_vaoMain = CreateVao(Root.Gl, ContentManager.Content.Skull4Mesh);
-		_vaoJaw = CreateVao(Root.Gl, ContentManager.Content.Skull4JawMesh);
+		_vaoMain = CreateVao(ContentManager.Content.Skull4Mesh);
+		_vaoJaw = CreateVao(ContentManager.Content.Skull4JawMesh);
 
-		static uint CreateVao(GL gl, MeshContent mesh)
+		static uint CreateVao(MeshContent mesh)
 		{
-			uint vao = gl.GenVertexArray();
-			gl.BindVertexArray(vao);
+			uint vao = Root.Gl.GenVertexArray();
+			Root.Gl.BindVertexArray(vao);
 
-			uint vbo = gl.GenBuffer();
-			gl.BindBuffer(BufferTargetARB.ArrayBuffer, vbo);
+			uint vbo = Root.Gl.GenBuffer();
+			Root.Gl.BindBuffer(BufferTargetARB.ArrayBuffer, vbo);
 
 			fixed (Vertex* v = &mesh.Vertices[0])
-				gl.BufferData(BufferTargetARB.ArrayBuffer, (nuint)(mesh.Vertices.Length * sizeof(Vertex)), v, BufferUsageARB.StaticDraw);
+				Root.Gl.BufferData(BufferTargetARB.ArrayBuffer, (nuint)(mesh.Vertices.Length * sizeof(Vertex)), v, BufferUsageARB.StaticDraw);
 
-			gl.EnableVertexAttribArray(0);
-			gl.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, (uint)sizeof(Vertex), (void*)0);
+			Root.Gl.EnableVertexAttribArray(0);
+			Root.Gl.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, (uint)sizeof(Vertex), (void*)0);
 
-			gl.EnableVertexAttribArray(1);
-			gl.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, (uint)sizeof(Vertex), (void*)(3 * sizeof(float)));
+			Root.Gl.EnableVertexAttribArray(1);
+			Root.Gl.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, (uint)sizeof(Vertex), (void*)(3 * sizeof(float)));
 
 			// TODO: We don't do anything with normals here.
-			gl.EnableVertexAttribArray(2);
-			gl.VertexAttribPointer(2, 3, VertexAttribPointerType.Float, false, (uint)sizeof(Vertex), (void*)(5 * sizeof(float)));
+			Root.Gl.EnableVertexAttribArray(2);
+			Root.Gl.VertexAttribPointer(2, 3, VertexAttribPointerType.Float, false, (uint)sizeof(Vertex), (void*)(5 * sizeof(float)));
 
-			gl.BindVertexArray(0);
-			gl.BindBuffer(BufferTargetARB.ArrayBuffer, 0);
-			gl.DeleteBuffer(vbo);
+			Root.Gl.BindVertexArray(0);
+			Root.Gl.BindBuffer(BufferTargetARB.ArrayBuffer, 0);
+			Root.Gl.DeleteBuffer(vbo);
 
 			return vao;
 		}
@@ -46,23 +46,20 @@ public class Skull4
 
 	public unsafe void Render()
 	{
-		GL gl = Root.Gl;
-		Shader meshShader = Root.InternalResources.MeshShader;
-
-		meshShader.SetUniform("model", Matrix4x4.CreateScale(1.5f) * Matrix4x4.CreateTranslation(new(0, 4f, 0)));
+		Root.InternalResources.MeshShader.SetUniform("model", Matrix4x4.CreateScale(1.5f) * Matrix4x4.CreateTranslation(new(0, 4f, 0)));
 
 		Root.GameResources.Skull4Texture.Bind();
 
-		gl.BindVertexArray(_vaoMain);
+		Root.Gl.BindVertexArray(_vaoMain);
 		fixed (uint* i = &ContentManager.Content.Skull4Mesh.Indices[0])
-			gl.DrawElements(PrimitiveType.Triangles, (uint)ContentManager.Content.Skull4Mesh.Indices.Length, DrawElementsType.UnsignedInt, i);
+			Root.Gl.DrawElements(PrimitiveType.Triangles, (uint)ContentManager.Content.Skull4Mesh.Indices.Length, DrawElementsType.UnsignedInt, i);
 
 		Root.GameResources.Skull4JawTexture.Bind();
 
-		gl.BindVertexArray(_vaoJaw);
+		Root.Gl.BindVertexArray(_vaoJaw);
 		fixed (uint* i = &ContentManager.Content.Skull4JawMesh.Indices[0])
-			gl.DrawElements(PrimitiveType.Triangles, (uint)ContentManager.Content.Skull4JawMesh.Indices.Length, DrawElementsType.UnsignedInt, i);
+			Root.Gl.DrawElements(PrimitiveType.Triangles, (uint)ContentManager.Content.Skull4JawMesh.Indices.Length, DrawElementsType.UnsignedInt, i);
 
-		gl.BindVertexArray(0);
+		Root.Gl.BindVertexArray(0);
 	}
 }

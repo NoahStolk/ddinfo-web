@@ -52,14 +52,11 @@ public class TileHitboxMeshObject
 
 	public unsafe void Render()
 	{
-		GL gl = Root.Gl;
-		Shader meshShader = Root.InternalResources.MeshShader;
+		Root.InternalResources.MeshShader.SetUniform("model", _model);
 
-		meshShader.SetUniform("model", _model);
-
-		gl.BindVertexArray(_vao);
+		Root.Gl.BindVertexArray(_vao);
 		fixed (uint* i = &_mesh.Indices[0])
-			gl.DrawElements(PrimitiveType.Triangles, (uint)_mesh.Indices.Length, DrawElementsType.UnsignedInt, i);
-		gl.BindVertexArray(0);
+			Root.Gl.DrawElements(PrimitiveType.Triangles, (uint)_mesh.Indices.Length, DrawElementsType.UnsignedInt, i);
+		Root.Gl.BindVertexArray(0);
 	}
 }
