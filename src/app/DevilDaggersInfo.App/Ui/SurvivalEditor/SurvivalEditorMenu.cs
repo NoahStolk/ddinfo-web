@@ -14,39 +14,78 @@ public static class SurvivalEditorMenu
 		{
 			if (ImGui.BeginMenu("File"))
 			{
-				if (ImGui.MenuItem("New"))
-				{
-					SpawnsetState.SpawnsetName = "(untitled)";
-					SpawnsetState.Spawnset = SpawnsetBinary.CreateDefault();
-				}
-
-				if (ImGui.MenuItem("Open"))
-					SpawnsetFileUtils.OpenSpawnset();
-
-				if (ImGui.MenuItem("Open default (V3)"))
-				{
-					SpawnsetState.SpawnsetName = "V3";
-					SpawnsetState.Spawnset = ContentManager.Content.DefaultSpawnset.DeepCopy();
-				}
-
-				if (ImGui.MenuItem("Save"))
-					SpawnsetFileUtils.SaveSpawnset();
-
-				if (ImGui.MenuItem("Replace"))
-				{
-					File.WriteAllBytes(UserSettings.ModsSurvivalPath, StateManager.SpawnsetState.Spawnset.ToBytes());
-					SurvivalEditorModals.ShowReplaced = true;
-				}
-
-				ImGui.Separator();
-
-				if (ImGui.MenuItem("Close"))
-					UiRenderer.Layout = LayoutType.Main;
-
+				RenderFileMenu();
 				ImGui.EndMenu();
 			}
 
 			ImGui.EndMainMenuBar();
+		}
+	}
+
+	private static void RenderFileMenu()
+	{
+		if (ImGui.MenuItem("New"))
+		{
+			SpawnsetState.SpawnsetName = "(untitled)";
+			SpawnsetState.Spawnset = SpawnsetBinary.CreateDefault();
+		}
+
+		if (ImGui.MenuItem("Open"))
+			OpenSpawnset();
+
+		if (ImGui.MenuItem("Open default (V3)"))
+		{
+			SpawnsetState.SpawnsetName = "V3";
+			SpawnsetState.Spawnset = ContentManager.Content.DefaultSpawnset.DeepCopy();
+		}
+
+		if (ImGui.MenuItem("Save"))
+		{
+			string? filePath = Root.NativeFileSystemService.CreateSaveFileDialog("Save spawnset file", null);
+			if (filePath != null)
+				File.WriteAllBytes(filePath, StateManager.SpawnsetState.Spawnset.ToBytes());
+		}
+
+		if (ImGui.MenuItem("Replace"))
+		{
+			File.WriteAllBytes(UserSettings.ModsSurvivalPath, StateManager.SpawnsetState.Spawnset.ToBytes());
+			SurvivalEditorModals.ShowReplaced = true;
+		}
+
+		ImGui.Separator();
+
+		if (ImGui.MenuItem("Close"))
+			UiRenderer.Layout = LayoutType.Main;
+	}
+
+	private static void OpenSpawnset()
+	{
+		string? filePath = Root.NativeFileSystemService.CreateOpenFileDialog("Open spawnset file", null);
+		if (filePath == null)
+			return;
+
+		byte[] fileContents;
+		try
+		{
+			fileContents = File.ReadAllBytes(filePath);
+		}
+		catch (Exception ex)
+		{
+			// TODO: Log exception.
+			GlobalModals.ShowError = true;
+			GlobalModals.ErrorText = $"Could not open file '{filePath}'.";
+			return;
+		}
+
+		if (SpawnsetBinary.TryParse(fileContents, out SpawnsetBinary? spawnsetBinary))
+		{
+			SpawnsetState.SpawnsetName = Path.GetFileName(filePath);
+			SpawnsetState.Spawnset = spawnsetBinary;
+		}
+		else
+		{
+			GlobalModals.ShowError = true;
+			GlobalModals.ErrorText = $"The file '{filePath}' could not be parsed as a spawnset.";
 		}
 	}
 }
