@@ -12,23 +12,6 @@ public static class ConfigLayout
 	private static bool _contentInitialized;
 	private static string _installationDirectoryInput = string.Empty;
 
-	private static void PickInstallationDirectory()
-	{
-		string? directory = Root.NativeFileSystemService.SelectDirectory();
-		if (directory != null)
-			_installationDirectoryInput = directory;
-	}
-
-	private static void CheckInstallationDirectory()
-	{
-		UserSettings.Model = UserSettings.Model with
-		{
-			DevilDaggersInstallationDirectory = _installationDirectoryInput,
-		};
-
-		ValidateInstallation();
-	}
-
 	/// <summary>
 	/// Is called on launch, and when the user changes the installation directory.
 	/// </summary>
@@ -90,14 +73,25 @@ public static class ConfigLayout
 
 		ImGui.SetCursorPos(new(32, 208));
 		if (ImGui.Button("Select installation directory", new(256, 32)))
-			PickInstallationDirectory();
+		{
+			string? directory = Root.NativeFileSystemService.SelectDirectory();
+			if (directory != null)
+				_installationDirectoryInput = directory;
+		}
 
 		ImGui.SetCursorPos(new(320, 208));
 		ImGui.InputText("##installationDirectoryInput", ref _installationDirectoryInput, 1024, ImGuiInputTextFlags.None);
 
 		ImGui.SetCursorPos(new(512 - 96, 640));
 		if (ImGui.Button("Save and continue", new(192, 96)))
-			CheckInstallationDirectory();
+		{
+			UserSettings.Model = UserSettings.Model with
+			{
+				DevilDaggersInstallationDirectory = _installationDirectoryInput,
+			};
+
+			ValidateInstallation();
+		}
 
 		ImGui.End();
 	}
