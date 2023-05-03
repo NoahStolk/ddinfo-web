@@ -4,6 +4,7 @@ using DevilDaggersInfo.Common;
 using DevilDaggersInfo.Core.Spawnset.Extensions;
 using DevilDaggersInfo.Core.Wiki;
 using ImGuiNET;
+using Silk.NET.Input;
 using System.Numerics;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor;
@@ -11,9 +12,20 @@ namespace DevilDaggersInfo.App.Ui.SurvivalEditor;
 public static class SpawnsWindow
 {
 	private static readonly bool[] _selected = new bool[2000]; // TODO: Make this dynamic.
+	private static int _lastSelectedIndex = -1;
 
 	public static void Render()
 	{
+		ImGuiIOPtr io = ImGui.GetIO();
+		if (io.KeyCtrl)
+		{
+			// TODO: Only do this when the window is focused.
+			if (io.KeysDown[(int)Key.A])
+				Array.Fill(_selected, true);
+			else if (io.KeysDown[(int)Key.D])
+				Array.Fill(_selected, false);
+		}
+
 		ImGui.SetNextWindowSize(new(400, 768 - 64));
 		ImGui.Begin("Spawns", ImGuiWindowFlags.ChildWindow | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoCollapse);
 
@@ -39,7 +51,25 @@ public static class SpawnsWindow
 				ImGui.TableNextRow();
 				ImGui.TableNextColumn();
 
-				ImGui.Selectable(spawn.Index.ToString(), ref _selected[spawn.Index], ImGuiSelectableFlags.SpanAllColumns);
+				if (ImGui.Selectable(spawn.Index.ToString(), ref _selected[spawn.Index], ImGuiSelectableFlags.SpanAllColumns))
+				{
+					if (!io.KeyCtrl)
+					{
+						Array.Clear(_selected);
+						_selected[spawn.Index] = true;
+					}
+
+					if (io.KeyShift && _lastSelectedIndex != -1)
+					{
+						int start = Math.Clamp(Math.Min(spawn.Index, _lastSelectedIndex), 0, _selected.Length - 1);
+						int end = Math.Clamp(Math.Max(spawn.Index, _lastSelectedIndex), 0, _selected.Length - 1);
+						for (int i = start; i <= end; i++)
+							_selected[i] = true;
+					}
+
+					_lastSelectedIndex = spawn.Index;
+				}
+
 				ImGui.TableNextColumn();
 
 				ImGui.TextColored(spawn.EnemyType.GetColor(GameConstants.CurrentVersion), spawn.EnemyType.ToString());

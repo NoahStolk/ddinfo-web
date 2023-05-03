@@ -34,28 +34,12 @@ public class SpawnsScrollArea : ScrollArea
 	{
 		base.Update(scrollOffset);
 
-		bool ctrl = Input.IsCtrlHeld();
-		bool shift = Input.IsShiftHeld();
-
-		// TODO: Only do this when the component is focused.
-		if (ctrl && Input.IsKeyPressed(Keys.A))
-			StateManager.Dispatch(new SetSpawnSelections(_spawnComponents.ConvertAll(sp => sp.Index)));
-
-		// TODO: Only do this when the component is focused.
-		if (ctrl && Input.IsKeyPressed(Keys.D))
-			StateManager.Dispatch(new SetSpawnSelections(new()));
-
 		// TODO: Only do this when the component is focused.
 		if (Input.IsKeyPressed(Keys.Delete))
 		{
 			StateManager.Dispatch(new DeleteSpawns(StateManager.SpawnsetState.Spawnset.Spawns.Where((_, i) => !StateManager.SpawnEditorState.SelectedIndices.Contains(i)).ToImmutableArray()));
 			StateManager.Dispatch(new SetSpawnSelections(new()));
 		}
-
-		// TODO: Fix this. Right now you can click on File > Save and it will deselect the selected spawns.
-		bool hoverWithoutBlock = ContentBounds.Contains(MouseUiContext.MousePosition.RoundToVector2Int32() - scrollOffset);
-		if (!Input.IsButtonPressed(MouseButton.Left) || !hoverWithoutBlock)
-			return;
 
 		if (shift)
 		{
@@ -87,67 +71,5 @@ public class SpawnsScrollArea : ScrollArea
 
 			StateManager.Dispatch(new SetSpawnSelections(newSelectedIndices.ToList()));
 		}
-		else
-		{
-			HashSet<int> oldSelectedIndices = StateManager.SpawnEditorState.SelectedIndices.ToHashSet();
-			HashSet<int> newSelectedIndices = new();
-
-			SpawnEntry? selectedSpawn = _spawnComponents.Find(sc => sc.Hover);
-
-			if (selectedSpawn != null)
-			{
-				if (!oldSelectedIndices.Contains(selectedSpawn.Index))
-					newSelectedIndices.Add(selectedSpawn.Index);
-
-				_currentIndex = selectedSpawn.Index;
-			}
-
-			StateManager.Dispatch(new SetSpawnSelections(newSelectedIndices.ToList()));
-		}
-	}
-
-	private void ScrollToEnd()
-	{
-		int index = _spawnComponents.Count - 1;
-		ScheduleScrollTarget(index * SpawnEntryHeight, (index + 1) * SpawnEntryHeight);
-	}
-
-	private void ScrollToFirstSelectedIndex()
-	{
-		if (StateManager.SpawnEditorState.SelectedIndices.Count == 0)
-			throw new InvalidOperationException("No spawn selected.");
-
-		int index = StateManager.SpawnEditorState.SelectedIndices.Min();
-		ScheduleScrollTarget(index * SpawnEntryHeight, (index + 1) * SpawnEntryHeight);
-	}
-
-	private void ScrollToInsertedSpawn()
-	{
-		// TODO: Scroll to inserted spawn index.
-	}
-
-	private void SetSpawns()
-	{
-		foreach (SpawnEntry component in _spawnComponents)
-			NestingContext.Remove(component);
-
-		_spawnComponents.Clear();
-
-		int i = 0;
-		foreach (SpawnUiEntry spawn in EditSpawnContext.GetFrom(StateManager.SpawnsetState.Spawnset))
-		{
-			SpawnEntry spawnEntry = new(Bounds.CreateNested(0, i++ * SpawnEntryHeight, ContentBounds.Size.X, SpawnEntryHeight), spawn);
-			_spawnComponents.Add(spawnEntry);
-		}
-
-		foreach (SpawnEntry component in _spawnComponents)
-			NestingContext.Add(component);
-	}
-
-	public override void Render(Vector2i<int> scrollOffset)
-	{
-		base.Render(scrollOffset);
-
-		Root.Game.RectangleRenderer.Schedule(Bounds.Size, Bounds.Center, Depth, Color.Black);
 	}
 }
