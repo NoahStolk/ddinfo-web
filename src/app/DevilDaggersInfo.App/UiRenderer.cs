@@ -27,19 +27,6 @@ public static class UiRenderer
 		}
 	}
 
-	private static bool _showUpdateAvailable;
-	private static UpdateAvailableWindow.UpdateAvailable? _availableVersionNumber;
-	public static UpdateAvailableWindow.UpdateAvailable? AvailableVersionNumber
-	{
-		get => _availableVersionNumber;
-		set
-		{
-			_availableVersionNumber = value;
-			if (value != null)
-				_showUpdateAvailable = true;
-		}
-	}
-
 	public static LayoutType Layout { get; set; }
 
 	public static void Render()
@@ -56,9 +43,6 @@ public static class UiRenderer
 				SurvivalEditorLayout.Render();
 				break;
 		}
-
-		if (AvailableVersionNumber != null)
-			UpdateAvailableWindow.Render(ref _showUpdateAvailable, AvailableVersionNumber);
 
 		if (Error != null)
 			ErrorWindow.Render(ref _showError, Error);
