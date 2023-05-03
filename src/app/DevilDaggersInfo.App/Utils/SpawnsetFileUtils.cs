@@ -20,7 +20,8 @@ public static class SpawnsetFileUtils
 		}
 		catch (Exception ex)
 		{
-			//Root.NativeDialogService.ReportError($"Could not open file '{filePath}'.", ex);
+			// TODO: Log exception.
+			UiRenderer.Error = new($"Could not open file '{filePath}'.");
 			return;
 		}
 
@@ -30,7 +31,7 @@ public static class SpawnsetFileUtils
 		}
 		else
 		{
-			//Root.NativeDialogService.ReportError("The file could not be parsed as a spawnset.");
+			UiRenderer.Error = new($"The file '{filePath}' could not be parsed as a spawnset.");
 		}
 	}
 
@@ -42,7 +43,7 @@ public static class SpawnsetFileUtils
 
 		if (Directory.Exists(filePath))
 		{
-			//Root.NativeDialogService.ReportError("Specified file path is an existing directory. Please specify a file path.");
+			UiRenderer.Error = new("Specified file path is an existing directory. Please specify a file path.");
 			return;
 		}
 
@@ -59,6 +60,6 @@ public static class SpawnsetFileUtils
 	public static void ReplaceSpawnset()
 	{
 		File.WriteAllBytes(UserSettings.ModsSurvivalPath, StateManager.SpawnsetState.Spawnset.ToBytes());
-		//Root.NativeDialogService.ReportMessage("Successfully replaced current survival file", "The current survival file has been replaced with the current spawnset.");
+		UiRenderer.Message = new("Successfully replaced current survival file", "The current survival file has been replaced with the current spawnset.");
 	}
 }
