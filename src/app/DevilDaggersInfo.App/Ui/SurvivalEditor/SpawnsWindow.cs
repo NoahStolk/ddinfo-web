@@ -1,4 +1,5 @@
 using DevilDaggersInfo.App.Ui.Base.Extensions;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Data;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.EditorSpawns;
 using DevilDaggersInfo.Common;
 using DevilDaggersInfo.Core.Spawnset.Extensions;
@@ -35,7 +36,7 @@ public static class SpawnsWindow
 			};
 			Array.Fill(_selected, false);
 
-			// SpawnsetHistoryUtils.Save(stateReducer, SpawnsetEditType.SpawnDelete);
+			SpawnsetHistoryUtils.Save(SpawnsetEditType.SpawnDelete);
 		}
 
 		ImGui.SetNextWindowSize(new(400, 768 - 64));

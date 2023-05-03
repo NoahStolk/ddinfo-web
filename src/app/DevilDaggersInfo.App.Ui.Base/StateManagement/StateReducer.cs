@@ -34,7 +34,6 @@ public record StateReducer
 	public ArenaBucketState ArenaBucketState { get; set; } = StateManager.ArenaBucketState;
 	public ArenaDaggerState ArenaDaggerState { get; set; } = StateManager.ArenaDaggerState;
 	public SpawnEditorState SpawnEditorState { get; set; } = StateManager.SpawnEditorState;
-	public SpawnsetHistoryState SpawnsetHistoryState { get; set; } = StateManager.SpawnsetHistoryState;
 	public SpawnsetState SpawnsetState { get; set; } = StateManager.SpawnsetState;
 	public ReplayState ReplayState { get; set; } = StateManager.ReplayState;
 }

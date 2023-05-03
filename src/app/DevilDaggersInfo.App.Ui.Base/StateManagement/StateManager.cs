@@ -26,7 +26,6 @@ public static class StateManager
 	public static ArenaBucketState ArenaBucketState { get; private set; } = ArenaBucketState.GetDefault();
 	public static ArenaDaggerState ArenaDaggerState { get; private set; } = ArenaDaggerState.GetDefault();
 	public static SpawnEditorState SpawnEditorState { get; private set; } = SpawnEditorState.GetDefault();
-	public static SpawnsetHistoryState SpawnsetHistoryState { get; private set; } = SpawnsetHistoryState.GetDefault();
 	public static SpawnsetState SpawnsetState { get; private set; } = SpawnsetState.GetDefault();
 
 	// Replay editor states.
@@ -101,7 +100,6 @@ public static class StateManager
 				ArenaBucketState = stateReducer.ArenaBucketState;
 				ArenaDaggerState = stateReducer.ArenaDaggerState;
 				SpawnEditorState = stateReducer.SpawnEditorState;
-				SpawnsetHistoryState = stateReducer.SpawnsetHistoryState;
 				SpawnsetState = stateReducer.SpawnsetState;
 				ReplayState = stateReducer.ReplayState;
 			}
