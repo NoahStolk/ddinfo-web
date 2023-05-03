@@ -5,6 +5,7 @@ using DevilDaggersInfo.Core.Spawnset.Extensions;
 using DevilDaggersInfo.Core.Wiki;
 using ImGuiNET;
 using Silk.NET.Input;
+using System.Collections.Immutable;
 using System.Numerics;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor;
@@ -24,6 +25,17 @@ public static class SpawnsWindow
 				Array.Fill(_selected, true);
 			else if (io.KeysDown[(int)Key.D])
 				Array.Fill(_selected, false);
+		}
+
+		if (io.KeysDown[(int)Key.Delete])
+		{
+			SpawnsetState.Spawnset = SpawnsetState.Spawnset with
+			{
+				Spawns = SpawnsetState.Spawnset.Spawns.Where((_, i) => !_selected[i]).ToImmutableArray(),
+			};
+			Array.Fill(_selected, false);
+
+			// SpawnsetHistoryUtils.Save(stateReducer, SpawnsetEditType.SpawnDelete);
 		}
 
 		ImGui.SetNextWindowSize(new(400, 768 - 64));
