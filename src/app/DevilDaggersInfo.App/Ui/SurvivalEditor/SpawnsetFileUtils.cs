@@ -1,9 +1,9 @@
 using DevilDaggersInfo.App.Ui.Base.StateManagement;
 using DevilDaggersInfo.App.Ui.Base.User.Settings;
-using DevilDaggersInfo.App.Ui.SurvivalEditor;
 using DevilDaggersInfo.Core.Spawnset;
+using ImGuiNET;
 
-namespace DevilDaggersInfo.App.Utils;
+namespace DevilDaggersInfo.App.Ui.SurvivalEditor;
 
 public static class SpawnsetFileUtils
 {
@@ -58,11 +58,5 @@ public static class SpawnsetFileUtils
 		}
 
 		File.WriteAllBytes(filePath, StateManager.SpawnsetState.Spawnset.ToBytes());
-	}
-
-	public static void ReplaceSpawnset()
-	{
-		File.WriteAllBytes(UserSettings.ModsSurvivalPath, StateManager.SpawnsetState.Spawnset.ToBytes());
-		UiRenderer.Message = new("Successfully replaced current survival file", "The current survival file has been replaced with the current spawnset.");
 	}
 }

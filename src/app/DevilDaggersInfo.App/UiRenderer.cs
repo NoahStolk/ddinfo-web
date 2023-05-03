@@ -3,6 +3,7 @@ using DevilDaggersInfo.App.Ui.Config;
 using DevilDaggersInfo.App.Ui.Global;
 using DevilDaggersInfo.App.Ui.Main;
 using DevilDaggersInfo.App.Ui.SurvivalEditor;
+using ImGuiNET;
 using System.Diagnostics.CodeAnalysis;
 
 namespace DevilDaggersInfo.App;
@@ -23,19 +24,6 @@ public static class UiRenderer
 			_error = value;
 			if (value != null)
 				_showError = true;
-		}
-	}
-
-	private static bool _showMessage;
-	private static MessageWindow.Message? _message;
-	public static MessageWindow.Message? Message
-	{
-		get => _message;
-		set
-		{
-			_message = value;
-			if (value != null)
-				_showMessage = true;
 		}
 	}
 
@@ -74,8 +62,5 @@ public static class UiRenderer
 
 		if (Error != null)
 			ErrorWindow.Render(ref _showError, Error);
-
-		if (Message != null)
-			MessageWindow.Render(ref _showMessage, Message);
 	}
 }

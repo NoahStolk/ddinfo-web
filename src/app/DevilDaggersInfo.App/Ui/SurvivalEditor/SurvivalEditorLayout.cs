@@ -1,14 +1,19 @@
 using DevilDaggersInfo.App.Ui.Base;
-using DevilDaggersInfo.App.Utils;
+using DevilDaggersInfo.App.Ui.Base.StateManagement;
+using DevilDaggersInfo.App.Ui.Base.User.Settings;
 using DevilDaggersInfo.Core.Spawnset;
 using ImGuiNET;
+using System.Numerics;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor;
 
 public static class SurvivalEditorLayout
 {
+	private const string _replacedId = "Successfully replaced current survival file";
+
 	public static void Render()
 	{
+		bool showReplaced = false;
 		if (ImGui.BeginMainMenuBar())
 		{
 			if (ImGui.BeginMenu("File"))
@@ -32,7 +37,10 @@ public static class SurvivalEditorLayout
 					SpawnsetFileUtils.SaveSpawnset();
 
 				if (ImGui.MenuItem("Replace"))
-					SpawnsetFileUtils.ReplaceSpawnset();
+				{
+					File.WriteAllBytes(UserSettings.ModsSurvivalPath, StateManager.SpawnsetState.Spawnset.ToBytes());
+					showReplaced = true;
+				}
 
 				ImGui.Separator();
 
@@ -45,9 +53,24 @@ public static class SurvivalEditorLayout
 			ImGui.EndMainMenuBar();
 		}
 
+		if (showReplaced)
+			ImGui.OpenPopup(_replacedId);
+
+		Vector2 center = ImGui.GetMainViewport().GetCenter();
+		ImGui.SetNextWindowPos(center, ImGuiCond.Always, new(0.5f, 0.5f));
+		ImGui.SetNextWindowSize(new(512, 128));
+		if (ImGui.BeginPopupModal(_replacedId))
+		{
+			ImGui.Text("The current survival file has been replaced with the current spawnset.");
+
+			if (ImGui.Button("OK", new(120, 0)))
+				ImGui.CloseCurrentPopup();
+
+			ImGui.EndPopup();
+		}
+
 		ImGui.SetNextWindowPos(new(0, 16));
 		ImGui.SetNextWindowSize(Constants.LayoutSize);
-
 		ImGui.Begin("Survival Editor", Constants.LayoutFlags);
 
 		SpawnsWindow.Render();
