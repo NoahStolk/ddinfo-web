@@ -1,4 +1,5 @@
 using DevilDaggersInfo.App.Scenes;
+using DevilDaggersInfo.App.Utils;
 using DevilDaggersInfo.Common.Utils;
 using DevilDaggersInfo.Core.Spawnset;
 using ImGuiNET;
@@ -27,6 +28,8 @@ public static class MainLayout
 
 	private static MainMenuArenaScene? _arenaScene;
 
+	private static bool _showSettings;
+
 	public static void Initialize()
 	{
 		_arenaScene = new();
@@ -35,18 +38,12 @@ public static class MainLayout
 
 	public static void Update(float delta)
 	{
-		if (_arenaScene == null)
-			return;
-
-		_arenaScene.Update(0, delta);
+		_arenaScene?.Update(0, delta);
 	}
 
 	public static void Render3d()
 	{
-		if (_arenaScene == null)
-			return;
-
-		_arenaScene.Render();
+		_arenaScene?.Render();
 	}
 
 	public static void Render(out bool shouldClose)
@@ -56,13 +53,12 @@ public static class MainLayout
 		ImGui.SetNextWindowPos(new(0, 0));
 		ImGui.SetNextWindowSize(new(1024, 768));
 
-		const ImGuiWindowFlags flags = ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoBackground;
-		ImGui.Begin("Main Menu", flags);
+		ImGui.Begin("Main Menu", ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoBackground | ImGuiWindowFlags.NoBringToFrontOnFocus | ImGuiWindowFlags.NoNavFocus);
 
 		TextAt(_mainMenu, 8, 8);
-		TextAt("DDINFO", 512, 64, new(1, 0, 0, 1), true); // font size 64
-		TextAt("TOOLS", 512, 128, new(1, 0.5f, 0, 1), true); // font size 32
-		TextAt(_version, 512, 176, new(1, 0.8f, 0, 1), true); // font size 24
+		TextAt("DDINFO", 512, 64, new(1, 0, 0, 1), true); // TODO: font size 64
+		TextAt("TOOLS", 512, 128, new(1, 0.5f, 0, 1), true); // TODO: font size 32
+		TextAt(_version, 512, 176, new(1, 0.8f, 0, 1), true); // TODO: font size 24
 		TextAt("Devil Daggers is created by Sorath", 512, 708, default, true);
 		TextAt("DevilDaggers.info is created by Noah Stolk", 512, 724, default, true);
 
@@ -74,12 +70,11 @@ public static class MainLayout
 		MainButtonAt(1, 1, new(0, 1, 1, alpha), "Practice (todo)");
 		MainButtonAt(2, 1, new(1, 1, 0, alpha), "Mod Manager (todo)");
 		MainButtonAt(0, 2, new(0.3f, 0.3f, 0.3f, alpha), "Configuration");
-		MainButtonAt(1, 2, new(0.3f, 0.3f, 0.3f, alpha), "Settings");
+		if (MainButtonAt(1, 2, new(0.3f, 0.3f, 0.3f, alpha), "Settings"))
+			_showSettings = true;
+
 		if (MainButtonAt(2, 2, new(0.3f, 0.3f, 0.3f, alpha), "Exit"))
-		{
 			shouldClose = true;
-			return;
-		}
 
 		Vector4 hyperlinkColor = new(0, 0.625f, 1, 1);
 		Vector4 hyperlinkHoverColor = new(0.25f, 0.875f, 1, 0.25f);
@@ -92,7 +87,7 @@ public static class MainLayout
 		const string homePage = "https://devildaggers.info/";
 		const string toolsPage = "https://devildaggers.info/tools";
 
-		ImGui.SetCursorPos(new(512 - GetTextSize(homePage) / 2, 740));
+		ImGui.SetCursorPos(new(512 - ImGuiUtils.GetTextSize(homePage) / 2, 740));
 		if (ImGui.Button(homePage))
 			Process.Start(new ProcessStartInfo(homePage) { UseShellExecute = true });
 
@@ -105,13 +100,15 @@ public static class MainLayout
 		ImGui.PopStyleColor();
 		ImGui.PopStyleColor();
 
+		SettingsLayout.Render(ref _showSettings);
+
 		ImGui.End();
 
 		static void TextAt(string text, int x, int y, Vector4 color = default, bool center = false)
 		{
 			if (center)
 			{
-				float textSize = GetTextSize(text);
+				float textSize = ImGuiUtils.GetTextSize(text);
 				ImGui.SetCursorPos(new(x - textSize / 2, y));
 			}
 			else
@@ -148,10 +145,5 @@ public static class MainLayout
 
 			return value;
 		}
-	}
-
-	private static float GetTextSize(string text)
-	{
-		return ImGui.GetFontSize() * text.Length / 2; // Width is twice as small as height (which is the font size).
 	}
 }
