@@ -8,6 +8,8 @@ public class Shader : IDisposable
 	private readonly uint _handle;
 	private readonly GL _gl;
 
+	private readonly Dictionary<string, int> _uniformLocations = new();
+
 	public Shader(GL gl, string vertexCode, string fragmentCode)
 	{
 		_gl = gl;
@@ -20,7 +22,7 @@ public class Shader : IDisposable
 		_gl.LinkProgram(_handle);
 		_gl.GetProgram(_handle, GLEnum.LinkStatus, out int status);
 		if (status == 0)
-			throw new Exception($"Program failed to link with error: {_gl.GetProgramInfoLog(_handle)}");
+			throw new InvalidOperationException($"Program failed to link with error: {_gl.GetProgramInfoLog(_handle)}");
 
 		_gl.DetachShader(_handle, vertex);
 		_gl.DetachShader(_handle, fragment);
@@ -35,10 +37,14 @@ public class Shader : IDisposable
 
 	private int GetUniformLocation(string name)
 	{
-		int location = _gl.GetUniformLocation(_handle, name);
-		if (location == -1)
-			throw new Exception($"{name} uniform not found on shader.");
+		if (_uniformLocations.TryGetValue(name, out int location))
+			return location;
 
+		location = _gl.GetUniformLocation(_handle, name);
+		if (location == -1)
+			throw new InvalidOperationException($"{name} uniform not found on shader.");
+
+		_uniformLocations.Add(name, location);
 		return location;
 	}
 
@@ -49,7 +55,14 @@ public class Shader : IDisposable
 
 	public unsafe void SetUniform(string name, Matrix4x4 value)
 	{
-		_gl.UniformMatrix4(GetUniformLocation(name), 1, false, (float*)&value);
+		Span<float> data = stackalloc float[16]
+		{
+			value.M11, value.M12, value.M13, value.M14,
+			value.M21, value.M22, value.M23, value.M24,
+			value.M31, value.M32, value.M33, value.M34,
+			value.M41, value.M42, value.M43, value.M44,
+		};
+		_gl.UniformMatrix4(GetUniformLocation(name), 1, false, data);
 	}
 
 	public void SetUniform(string name, float value)
