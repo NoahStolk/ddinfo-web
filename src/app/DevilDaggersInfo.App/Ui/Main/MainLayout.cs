@@ -30,6 +30,8 @@ public static class MainLayout
 	{
 		shouldClose = false;
 
+		MainModals.Render();
+
 		ImGui.SetNextWindowPos(default);
 		ImGui.SetNextWindowSize(Constants.LayoutSize);
 

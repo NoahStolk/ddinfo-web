@@ -3,6 +3,7 @@ using DevilDaggersInfo.App.Ui.Base.Networking.TaskHandlers;
 using DevilDaggersInfo.App.Ui.Base.User.Cache;
 using DevilDaggersInfo.App.Ui.Base.User.Settings;
 using DevilDaggersInfo.App.Ui.Config;
+using DevilDaggersInfo.App.Ui.Main;
 using DevilDaggersInfo.Common.Utils;
 using DevilDaggersInfo.Core.Versioning;
 using ImGuiNET;
@@ -78,7 +79,13 @@ public class Application
 		if (!AppVersion.TryParse(VersionUtils.EntryAssemblyVersion, out AppVersion? appVersion))
 			throw new InvalidOperationException("The current version number is invalid.");
 
-		AsyncHandler.Run(av => UiRenderer.AvailableVersionNumber = av == null ? null : new(av), () => FetchLatestVersion.HandleAsync(appVersion, Root.PlatformSpecificValues.BuildType));
+		AsyncHandler.Run(
+			av =>
+			{
+				MainModals.ShowUpdate = av != null;
+				MainModals.AvailableVersion = av;
+			},
+			() => FetchLatestVersion.HandleAsync(appVersion, Root.PlatformSpecificValues.BuildType));
 	}
 
 	private void OnWindowOnFramebufferResize(Vector2D<int> s)
