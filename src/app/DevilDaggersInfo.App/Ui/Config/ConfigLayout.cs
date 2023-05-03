@@ -29,13 +29,13 @@ public static class ConfigLayout
 			return;
 		}
 
-		Root.GameResources = GameResources.Create(Root.Gl);
 		UiRenderer.Layout = LayoutType.Main;
 		_error = null;
 
 		if (_contentInitialized)
 			return;
 
+		Root.GameResources = GameResources.Create(Root.Gl);
 		Player.Initialize();
 		RaceDagger.Initialize();
 		Tile.Initialize();
