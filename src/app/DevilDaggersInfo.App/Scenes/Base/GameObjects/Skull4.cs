@@ -12,6 +12,7 @@ public class Skull4
 
 	public static unsafe void Initialize()
 	{
+		// TODO: Prevent this from being called multiple times.
 		_vaoMain = CreateVao(ContentManager.Content.Skull4Mesh);
 		_vaoJaw = CreateVao(ContentManager.Content.Skull4JawMesh);
 

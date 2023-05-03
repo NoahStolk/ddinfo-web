@@ -1,9 +1,9 @@
 using DevilDaggersInfo.App.Ui.Base.User.Settings.Model;
 using ImGuiNET;
 
-namespace DevilDaggersInfo.App.Layouts;
+namespace DevilDaggersInfo.App.Windows;
 
-public static class SettingsLayout
+public static class SettingsWindow
 {
 	public static void Render(ref bool show)
 	{

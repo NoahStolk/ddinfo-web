@@ -13,10 +13,6 @@ public sealed class MainMenuArenaScene : IArenaScene
 
 	public MainMenuArenaScene()
 	{
-		// TODO: These should only be called once.
-		Skull4.Initialize();
-		Tile.Initialize();
-
 		Camera = new(Root.Window, Root.InputContext)
 		{
 			IsMenuCamera = true,

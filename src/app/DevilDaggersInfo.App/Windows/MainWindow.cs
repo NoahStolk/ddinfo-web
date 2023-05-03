@@ -4,9 +4,9 @@ using ImGuiNET;
 using System.Diagnostics;
 using System.Numerics;
 
-namespace DevilDaggersInfo.App.Layouts;
+namespace DevilDaggersInfo.App.Windows;
 
-public static class MainLayout
+public static class MainWindow
 {
 	private const string _mainMenu = """
 		This is an alpha version of the rewritten tools.
@@ -80,7 +80,7 @@ public static class MainLayout
 		ImGui.PopStyleColor();
 		ImGui.PopStyleColor();
 
-		SettingsLayout.Render(ref _showSettings);
+		SettingsWindow.Render(ref _showSettings);
 
 		ImGui.End();
 

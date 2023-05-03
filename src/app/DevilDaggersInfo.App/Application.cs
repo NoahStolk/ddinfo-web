@@ -1,5 +1,4 @@
-using DevilDaggersInfo.App.Layouts;
-using DevilDaggersInfo.App.Scenes;
+using DevilDaggersInfo.App.Scenes.Base.GameObjects;
 using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.User.Cache;
 using DevilDaggersInfo.App.Ui.Base.User.Settings;
@@ -18,11 +17,9 @@ public class Application
 {
 	private readonly IWindow _window;
 
-	private ImGuiController? _controller;
+	private ImGuiController? _imGuiController;
 	private GL? _gl;
 	private IInputContext? _inputContext;
-
-	private MainMenuArenaScene? _arenaScene;
 
 	public Application()
 	{
@@ -64,7 +61,7 @@ public class Application
 	{
 		_gl = _window.CreateOpenGL();
 		_inputContext = _window.CreateInput();
-		_controller = new(_gl, _window, _inputContext);
+		_imGuiController = new(_gl, _window, _inputContext);
 
 		_gl.ClearColor(0, 0, 0, 1);
 
@@ -72,21 +69,26 @@ public class Application
 		style.ScrollbarSize = 32;
 		style.ScrollbarRounding = 0;
 
-		// INIT DDINFO CONTENT
+		// Load internal resources, such as shaders and icons.
 		InternalResources internalResources = InternalResources.Create(_gl);
 
-		// LOAD SETTINGS
+		// Load settings.
 		UserSettings.Load();
 		UserCache.Load();
 
-		// INIT DD CONTENT
+		// Load the DD content manager (based on the user settings) and initialize the DD resources.
 		ContentManager.Initialize();
 		GameResources gameResources = GameResources.Create(_gl);
 
-		// INIT CONTEXT
+		// Set up Root.
 		Root.Initialize(internalResources, gameResources, _gl, _inputContext, _window);
 
-		_arenaScene = new();
+		// Initialize 3D rendering.
+		Skull4.Initialize();
+		Tile.Initialize();
+
+		// Initialize 3D scene.
+		Scene.Initialize();
 
 		// AppDomain.CurrentDomain.UnhandledException += (_, args) => Root.Dependencies.Log.Fatal(args.ExceptionObject.ToString());
 
@@ -106,38 +108,32 @@ public class Application
 		_gl.Viewport(s);
 	}
 
-	private void OnWindowOnUpdate(double delta)
+	private static void OnWindowOnUpdate(double delta)
 	{
-		_arenaScene?.Update(0, (float)delta);
+		Scene.Update((float)delta);
 	}
 
 	private void OnWindowOnRender(double delta)
 	{
-		if (_controller == null || _gl == null)
+		if (_imGuiController == null || _gl == null)
 			throw new InvalidOperationException("Window has not loaded.");
 
-		_controller.Update((float)delta);
+		_imGuiController.Update((float)delta);
 
 		_gl.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-		MainLayout.Render(out bool shouldClose);
+		UiRenderer.RenderUi();
+		Scene.Render(_gl);
 
-		_gl.Enable(EnableCap.DepthTest);
-		_gl.Enable(EnableCap.Blend);
-		_gl.Enable(EnableCap.CullFace);
-		_gl.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+		_imGuiController.Render();
 
-		_arenaScene?.Render();
-
-		_controller.Render();
-
-		if (shouldClose)
+		if (UiRenderer.WindowShouldClose)
 			_window.Close();
 	}
 
 	private void OnWindowOnClosing()
 	{
-		_controller?.Dispose();
+		_imGuiController?.Dispose();
 		_inputContext?.Dispose();
 		_gl?.Dispose();
 	}
