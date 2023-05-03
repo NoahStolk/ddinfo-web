@@ -1,6 +1,6 @@
 using DevilDaggersInfo.App.Ui.Base.StateManagement;
-using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Actions;
 using DevilDaggersInfo.App.Ui.Base.User.Settings;
+using DevilDaggersInfo.App.Ui.SurvivalEditor;
 using DevilDaggersInfo.Core.Spawnset;
 
 namespace DevilDaggersInfo.App.Utils;
@@ -27,7 +27,10 @@ public static class SpawnsetFileUtils
 
 		if (SpawnsetBinary.TryParse(fileContents, out SpawnsetBinary? spawnsetBinary))
 		{
-			StateManager.Dispatch(new LoadSpawnset(Path.GetFileName(filePath), spawnsetBinary));
+			SpawnsetState.SpawnsetName = Path.GetFileName(filePath);
+			SpawnsetState.Spawnset = spawnsetBinary;
+
+			//StateManager.Dispatch(new LoadSpawnset(Path.GetFileName(filePath), spawnsetBinary));
 		}
 		else
 		{

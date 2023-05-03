@@ -40,7 +40,7 @@ public static class SurvivalEditorLayout
 
 		ImGui.Begin("Survival Editor", Constants.LayoutFlags);
 
-		ImGui.Text("Test");
+		SpawnsWindow.Render();
 
 		ImGui.End();
 	}
