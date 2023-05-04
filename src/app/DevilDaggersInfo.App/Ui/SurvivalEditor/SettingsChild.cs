@@ -14,11 +14,8 @@ public static class SettingsChild
 		ImGui.BeginChild("SettingsChild", new(288, 384));
 
 		RenderFormat();
-		ImGui.Spacing();
-
+		RenderGameMode();
 		RenderArena();
-		ImGui.Spacing();
-
 		RenderPractice();
 
 		ImGui.Unindent();
@@ -72,6 +69,27 @@ public static class SettingsChild
 		ImGui.Text(minimumGameVersion.ToDisplayString());
 		ImGui.SameLine();
 		ImGui.Text("and newer");
+	}
+
+	private static void RenderGameMode()
+	{
+		ImGui.Spacing();
+		ImGui.Indent(-8);
+		ImGui.Text("Game mode");
+		ImGui.Separator();
+		ImGui.Indent(8);
+
+		foreach (GameMode gameMode in Enum.GetValues<GameMode>())
+		{
+			if (ImGui.RadioButton(gameMode.ToString(), gameMode == SpawnsetState.Spawnset.GameMode) && SpawnsetState.Spawnset.GameMode != gameMode)
+			{
+				SpawnsetState.Spawnset = SpawnsetState.Spawnset with { GameMode = gameMode };
+				SpawnsetHistoryUtils.Save(SpawnsetEditType.GameMode);
+			}
+
+			if (gameMode != GameMode.Race)
+				ImGui.SameLine();
+		}
 	}
 
 	private static void RenderArena()
