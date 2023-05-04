@@ -10,7 +10,7 @@ using System.Numerics;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor;
 
-public static class SpawnsWindow
+public static class SpawnsChild
 {
 	private static readonly bool[] _selected = new bool[2000]; // TODO: Make this dynamic.
 	private static int _lastSelectedIndex = -1;

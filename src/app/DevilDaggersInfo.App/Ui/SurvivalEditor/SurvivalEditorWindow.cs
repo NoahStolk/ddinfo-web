@@ -13,7 +13,7 @@ public static class SurvivalEditorWindow
 
 		SurvivalEditorMenu.Render();
 
-		SpawnsWindow.Render();
+		SpawnsChild.Render();
 
 		ImGui.SameLine();
 
@@ -21,7 +21,7 @@ public static class SurvivalEditorWindow
 
 		ImGui.SameLine();
 
-		SpawnsetSettingsWindow.Render();
+		SpawnsetSettingsChild.Render();
 
 		ImGui.End();
 	}

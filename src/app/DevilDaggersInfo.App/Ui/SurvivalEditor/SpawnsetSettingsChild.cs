@@ -3,7 +3,7 @@ using ImGuiNET;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor;
 
-public static class SpawnsetSettingsWindow
+public static class SpawnsetSettingsChild
 {
 	public static void Render()
 	{
