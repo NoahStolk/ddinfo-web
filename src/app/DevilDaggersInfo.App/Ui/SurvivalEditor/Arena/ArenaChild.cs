@@ -74,9 +74,9 @@ public static class ArenaChild
 
 		IArenaState activeState = GetActiveState();
 		if (mousePosition.IsValid)
-			activeState.HandleOutOfRange(mousePosition);
-		else
 			activeState.Handle(mousePosition);
+		else
+			activeState.HandleOutOfRange(mousePosition);
 
 		// Render
 		RenderArena();

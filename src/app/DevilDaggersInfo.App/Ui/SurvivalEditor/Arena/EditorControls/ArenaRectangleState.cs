@@ -17,7 +17,7 @@ public class ArenaRectangleState : IArenaState
 		if (ArenaChild.LeftMouseJustPressed)
 		{
 			_rectangleStart = mousePosition.Tile;
-			_newArena = StateManager.SpawnsetState.Spawnset.ArenaTiles.GetMutableClone();
+			_newArena = SpawnsetState.Spawnset.ArenaTiles.GetMutableClone();
 		}
 		else if (ArenaChild.LeftMouseJustReleased)
 		{
@@ -38,7 +38,8 @@ public class ArenaRectangleState : IArenaState
 
 		Loop(mousePosition, (i, j) => _newArena[i, j] = StateManager.ArenaEditorState.SelectedHeight);
 
-		//Arena.UpdateArena(_newArena, SpawnsetEditType.ArenaRectangle);
+		SpawnsetState.Spawnset = SpawnsetState.Spawnset with { ArenaTiles = new(SpawnsetState.Spawnset.ArenaDimension, _newArena) };
+		SpawnsetHistoryUtils.Save(SpawnsetEditType.ArenaRectangle);
 
 		Reset();
 	}
@@ -51,12 +52,13 @@ public class ArenaRectangleState : IArenaState
 
 	public void Render(ArenaMousePosition mousePosition)
 	{
+		ImDrawListPtr drawList = ImGui.GetWindowDrawList();
+
 		Loop(mousePosition, (i, j) =>
 		{
-			ImDrawListPtr drawList = ImGui.GetWindowDrawList();
-
-			Vector2 min = new Vector2(i, j) * ArenaChild.TileSize;
-			drawList.AddRect(min, min + new Vector2(ArenaChild.TileSize), ImGui.GetColorU32(Color.HalfTransparentWhite));
+			Vector2 origin = ImGui.GetCursorScreenPos();
+			Vector2 min = origin + new Vector2(i, j) * ArenaChild.TileSize;
+			drawList.AddRectFilled(min, min + new Vector2(ArenaChild.TileSize), ImGui.GetColorU32(Color.HalfTransparentWhite));
 		});
 	}
 
@@ -69,8 +71,8 @@ public class ArenaRectangleState : IArenaState
 
 		int startXa = Math.Max(0, rectangle.X1);
 		int startYa = Math.Max(0, rectangle.Y1);
-		int endXa = Math.Min(StateManager.SpawnsetState.Spawnset.ArenaDimension - 1, rectangle.X2);
-		int endYa = Math.Min(StateManager.SpawnsetState.Spawnset.ArenaDimension - 1, rectangle.Y2);
+		int endXa = Math.Min(SpawnsetState.Spawnset.ArenaDimension - 1, rectangle.X2);
+		int endYa = Math.Min(SpawnsetState.Spawnset.ArenaDimension - 1, rectangle.Y2);
 
 		if (StateManager.ArenaRectangleState.Filled)
 		{
@@ -85,8 +87,8 @@ public class ArenaRectangleState : IArenaState
 			int addedSize = StateManager.ArenaRectangleState.Thickness;
 			int startXb = Math.Max(0, rectangle.X1 + addedSize);
 			int startYb = Math.Max(0, rectangle.Y1 + addedSize);
-			int endXb = Math.Min(StateManager.SpawnsetState.Spawnset.ArenaDimension - 1, rectangle.X2 - addedSize);
-			int endYb = Math.Min(StateManager.SpawnsetState.Spawnset.ArenaDimension - 1, rectangle.Y2 - addedSize);
+			int endXb = Math.Min(SpawnsetState.Spawnset.ArenaDimension - 1, rectangle.X2 - addedSize);
+			int endYb = Math.Min(SpawnsetState.Spawnset.ArenaDimension - 1, rectangle.Y2 - addedSize);
 
 			for (int i = startXa; i <= endXa; i++)
 			{

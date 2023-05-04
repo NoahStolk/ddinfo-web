@@ -50,12 +50,12 @@ public static class SurvivalEditorMenu
 		{
 			string? filePath = Root.NativeFileSystemService.CreateSaveFileDialog("Save spawnset file", null);
 			if (filePath != null)
-				File.WriteAllBytes(filePath, StateManager.SpawnsetState.Spawnset.ToBytes());
+				File.WriteAllBytes(filePath, SpawnsetState.Spawnset.ToBytes());
 		}
 
 		if (ImGui.MenuItem("Replace"))
 		{
-			File.WriteAllBytes(UserSettings.ModsSurvivalPath, StateManager.SpawnsetState.Spawnset.ToBytes());
+			File.WriteAllBytes(UserSettings.ModsSurvivalPath, SpawnsetState.Spawnset.ToBytes());
 			Modals.ShowReplacedSurvivalFile = true;
 		}
 
