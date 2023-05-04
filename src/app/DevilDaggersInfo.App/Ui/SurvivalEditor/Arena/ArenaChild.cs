@@ -1,11 +1,9 @@
 using DevilDaggersInfo.App.Engine.Maths.Numerics;
-using DevilDaggersInfo.App.Ui.Base.StateManagement;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Arena.EditorControls;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.State;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using DevilDaggersInfo.Core.Spawnset;
 using ImGuiNET;
-using System.Diagnostics;
 using System.Numerics;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Arena;
@@ -14,11 +12,12 @@ public static class ArenaChild
 {
 	public const int TileSize = 8;
 	public const int HalfTileSize = TileSize / 2;
+	public static readonly Vector2 HalfTileSizeAsVector2 = new(HalfTileSize);
 
 	private static readonly Vector2 _arenaSize = new(TileSize * SpawnsetBinary.ArenaDimensionMax);
 
-	// private static readonly ArenaPencilState _pencilState = new();
-	// private static readonly ArenaLineState _lineState = new();
+	private static readonly ArenaPencilState _pencilState = new();
+	private static readonly ArenaLineState _lineState = new();
 	private static readonly ArenaRectangleState _rectangleState = new();
 	// private static readonly ArenaEllipseState _ellipseState = new();
 	// private static readonly ArenaBucketState _bucketState = new();
@@ -29,14 +28,15 @@ public static class ArenaChild
 
 	public static bool LeftMouseJustPressed { get; private set; }
 	public static bool LeftMouseJustReleased { get; private set; }
+	public static bool LeftMouseDown { get; private set; }
 
 	public static float SelectedHeight { get; set; }
 	public static ArenaTool ArenaTool { get; set; }
 
 	private static IArenaState GetActiveState() => ArenaTool switch
 	{
-		 // ArenaTool.Pencil => _pencilState,
-		 // ArenaTool.Line => _lineState,
+		 ArenaTool.Pencil => _pencilState,
+		 ArenaTool.Line => _lineState,
 		 ArenaTool.Rectangle => _rectangleState,
 		 // ArenaTool.Ellipse => _ellipseState,
 		 // ArenaTool.Bucket => _bucketState,
@@ -52,10 +52,10 @@ public static class ArenaChild
 
 		// Update
 		ImGuiIOPtr io = ImGui.GetIO();
-		bool leftMouseDown = io.MouseDown[0];
-		LeftMouseJustPressed = leftMouseDown && !_leftMouseDownPrevious;
-		LeftMouseJustReleased = !leftMouseDown && _leftMouseDownPrevious;
-		_leftMouseDownPrevious = leftMouseDown;
+		LeftMouseDown = io.MouseDown[0];
+		LeftMouseJustPressed = LeftMouseDown && !_leftMouseDownPrevious;
+		LeftMouseJustReleased = !LeftMouseDown && _leftMouseDownPrevious;
+		_leftMouseDownPrevious = LeftMouseDown;
 
 		ArenaMousePosition mousePosition = ArenaMousePosition.Get(io, ImGui.GetWindowPos());
 
