@@ -10,6 +10,8 @@ public static class SpawnsetArenaChild
 {
 	public const int TileSize = 6;
 
+	private static readonly Vector2 _arenaSize = new(TileSize * SpawnsetBinary.ArenaDimensionMax);
+
 	private static float _currentSecond;
 	private static float _shrinkRadius;
 
@@ -17,11 +19,23 @@ public static class SpawnsetArenaChild
 	{
 		ImGui.BeginChild("ArenaChild", new(400 - 8, 768 - 64));
 
-		Vector2 origin = ImGui.GetCursorScreenPos();
-		ImDrawListPtr drawList = ImGui.GetWindowDrawList();
-		drawList.AddRectFilled(origin, origin + new Vector2(TileSize * SpawnsetBinary.ArenaDimensionMax), ImGui.GetColorU32(new Vector4(0, 0, 0, 1)));
+		ImGui.BeginChild("Arena", _arenaSize);
 
-		Vector2 halfTileSize = new Vector2(TileSize) / 2;
+		RenderArena();
+
+		ImGui.EndChild();
+
+		ImGui.SliderFloat("Time", ref _currentSecond, 0, SpawnsetState.Spawnset.GetSliderMaxSeconds());
+
+		ImGui.EndChild();
+	}
+
+	private static void RenderArena()
+	{
+		ImDrawListPtr drawList = ImGui.GetWindowDrawList();
+
+		Vector2 origin = ImGui.GetCursorScreenPos();
+		drawList.AddRectFilled(origin, origin + _arenaSize, ImGui.GetColorU32(new Vector4(0, 0, 0, 1)));
 
 		for (int i = 0; i < SpawnsetState.Spawnset.ArenaDimension; i++)
 		{
@@ -34,11 +48,12 @@ public static class SpawnsetArenaChild
 				float height = SpawnsetState.Spawnset.ArenaTiles[i, j];
 				Color colorCurrent = TileUtils.GetColorFromHeight(actualHeight);
 				Color colorValue = TileUtils.GetColorFromHeight(height);
+				Vector2 min = origin + new Vector2(x, y);
+
 				if (Math.Abs(actualHeight - height) < 0.001f)
 				{
 					if (Color.Black != colorValue)
 					{
-						Vector2 min = origin + new Vector2(x, y);
 						drawList.AddRectFilled(min, min + new Vector2(TileSize), ImGui.GetColorU32(colorValue));
 					}
 				}
@@ -46,15 +61,14 @@ public static class SpawnsetArenaChild
 				{
 					if (Color.Black != colorCurrent)
 					{
-						Vector2 min = origin + new Vector2(x, y);
 						drawList.AddRectFilled(min, min + new Vector2(TileSize), ImGui.GetColorU32(colorCurrent));
 					}
 
 					if (Color.Black != colorValue)
 					{
+						const int offset = 2;
 						const int size = 2;
-						Vector2 min = origin + new Vector2(x, y);
-						drawList.AddRectFilled(min + halfTileSize, min + new Vector2(size), ImGui.GetColorU32(colorValue));
+						drawList.AddRectFilled(min + new Vector2(offset), min + new Vector2(offset) + new Vector2(size), ImGui.GetColorU32(colorValue));
 					}
 				}
 			}
@@ -78,7 +92,5 @@ public static class SpawnsetArenaChild
 			drawList.AddCircle(center, 6, ImGui.GetColorU32(Color.FromVector3(daggerColor)));
 			// Root.Game.SpriteRenderer.Schedule(new(-8, -8), origin.ToVector2() + new Vector2(realRaceX * TileSize + halfSize, realRaceZ * TileSize + halfSize), Depth + 3, ContentManager.Content.IconDaggerTexture, Color.FromVector3(daggerColor));
 		}
-
-		ImGui.EndChild();
 	}
 }
