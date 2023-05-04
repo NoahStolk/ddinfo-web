@@ -12,7 +12,7 @@ public static class SpawnsetSettingsWindow
 		RenderVersionRadioButtons();
 
 		float shrinkStart = SpawnsetState.Spawnset.ShrinkStart;
-		ImGui.SliderFloat("Shrink start", ref shrinkStart, 0, 100);
+		ImGui.InputFloat("Shrink start", ref shrinkStart, 1, 5, "%.1f");
 		if (Math.Abs(SpawnsetState.Spawnset.ShrinkStart - shrinkStart) > 0.001f)
 		{
 			SpawnsetState.Spawnset = SpawnsetState.Spawnset with { ShrinkStart = shrinkStart };
@@ -20,7 +20,7 @@ public static class SpawnsetSettingsWindow
 		}
 
 		float shrinkEnd = SpawnsetState.Spawnset.ShrinkEnd;
-		ImGui.SliderFloat("Shrink end", ref shrinkEnd, 0, 100);
+		ImGui.InputFloat("Shrink end", ref shrinkEnd, 1, 5, "%.1f");
 		if (Math.Abs(SpawnsetState.Spawnset.ShrinkEnd - shrinkEnd) > 0.001f)
 		{
 			SpawnsetState.Spawnset = SpawnsetState.Spawnset with { ShrinkEnd = shrinkEnd };
@@ -28,7 +28,7 @@ public static class SpawnsetSettingsWindow
 		}
 
 		float shrinkRate = SpawnsetState.Spawnset.ShrinkRate;
-		ImGui.SliderFloat("Shrink rate", ref shrinkRate, 0, 100);
+		ImGui.InputFloat("Shrink rate", ref shrinkRate, 0.005f, 0.5f, "%.3f");
 		if (Math.Abs(SpawnsetState.Spawnset.ShrinkRate - shrinkRate) > 0.001f)
 		{
 			SpawnsetState.Spawnset = SpawnsetState.Spawnset with { ShrinkRate = shrinkRate };
@@ -36,7 +36,7 @@ public static class SpawnsetSettingsWindow
 		}
 
 		float brightness = SpawnsetState.Spawnset.Brightness;
-		ImGui.SliderFloat("Brightness", ref brightness, 0, 100);
+		ImGui.InputFloat("Brightness", ref brightness, 5, 20, "%.1f");
 		if (Math.Abs(SpawnsetState.Spawnset.Brightness - brightness) > 0.001f)
 		{
 			SpawnsetState.Spawnset = SpawnsetState.Spawnset with { Brightness = brightness };
@@ -70,7 +70,7 @@ public static class SpawnsetSettingsWindow
 		ImGui.BeginDisabled(SpawnsetState.Spawnset.SpawnVersion <= 5);
 
 		float timerStart = SpawnsetState.Spawnset.TimerStart;
-		ImGui.InputFloat("Timer start", ref timerStart, 5);
+		ImGui.InputFloat("Timer start", ref timerStart, 1, 5, "%.4f");
 		if (Math.Abs(SpawnsetState.Spawnset.TimerStart - timerStart) > 0.001f)
 		{
 			SpawnsetState.Spawnset = SpawnsetState.Spawnset with { TimerStart = timerStart };
