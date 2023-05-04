@@ -19,7 +19,7 @@ public static class ArenaChild
 	private static readonly ArenaPencilState _pencilState = new();
 	private static readonly ArenaLineState _lineState = new();
 	private static readonly ArenaRectangleState _rectangleState = new();
-	// private static readonly ArenaEllipseState _ellipseState = new();
+	private static readonly ArenaEllipseState _ellipseState = new();
 	// private static readonly ArenaBucketState _bucketState = new();
 	// private static readonly ArenaDaggerState _daggerState = new();
 
@@ -38,7 +38,7 @@ public static class ArenaChild
 		 ArenaTool.Pencil => _pencilState,
 		 ArenaTool.Line => _lineState,
 		 ArenaTool.Rectangle => _rectangleState,
-		 // ArenaTool.Ellipse => _ellipseState,
+		 ArenaTool.Ellipse => _ellipseState,
 		 // ArenaTool.Bucket => _bucketState,
 		 // ArenaTool.Dagger => _daggerState,
 		 _ => _rectangleState,//throw new UnreachableException(),

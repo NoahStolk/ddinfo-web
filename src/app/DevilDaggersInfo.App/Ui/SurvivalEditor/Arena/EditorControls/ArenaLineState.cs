@@ -1,4 +1,3 @@
-using DevilDaggersInfo.App.Engine.Extensions;
 using DevilDaggersInfo.App.Engine.Maths.Numerics;
 using DevilDaggersInfo.App.Ui.Base.StateManagement;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.State;

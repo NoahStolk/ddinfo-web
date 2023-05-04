@@ -1,5 +1,3 @@
-using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
-
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetArena;
 
 public class ArenaHeightButtons : AbstractComponent
