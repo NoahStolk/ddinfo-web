@@ -81,13 +81,13 @@ public static class ArenaChild
 
 		// Render
 		ArenaCanvas.Render();
-
 		activeState.Render(mousePosition);
 
 		ImGui.EndChild();
 
 		ImGui.SliderFloat("Time", ref _currentSecond, 0, SpawnsetState.Spawnset.GetSliderMaxSeconds());
 		ArenaEditorControls.Render();
+		ArenaHeightButtons.Render();
 
 		ImGui.EndChild();
 	}
