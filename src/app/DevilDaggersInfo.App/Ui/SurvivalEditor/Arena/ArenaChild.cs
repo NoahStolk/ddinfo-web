@@ -4,6 +4,7 @@ using DevilDaggersInfo.App.Ui.SurvivalEditor.State;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using DevilDaggersInfo.Core.Spawnset;
 using ImGuiNET;
+using System.Diagnostics;
 using System.Numerics;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Arena;
@@ -20,8 +21,8 @@ public static class ArenaChild
 	private static readonly ArenaLineState _lineState = new();
 	private static readonly ArenaRectangleState _rectangleState = new();
 	private static readonly ArenaEllipseState _ellipseState = new();
-	// private static readonly ArenaBucketState _bucketState = new();
-	// private static readonly ArenaDaggerState _daggerState = new();
+	private static readonly ArenaBucketState _bucketState = new();
+	private static readonly ArenaDaggerState _daggerState = new();
 
 	private static float _currentSecond;
 	private static bool _leftMouseDownPrevious;
@@ -39,9 +40,9 @@ public static class ArenaChild
 		 ArenaTool.Line => _lineState,
 		 ArenaTool.Rectangle => _rectangleState,
 		 ArenaTool.Ellipse => _ellipseState,
-		 // ArenaTool.Bucket => _bucketState,
-		 // ArenaTool.Dagger => _daggerState,
-		 _ => _rectangleState,//throw new UnreachableException(),
+		 ArenaTool.Bucket => _bucketState,
+		 ArenaTool.Dagger => _daggerState,
+		 _ => throw new UnreachableException(),
 	};
 
 	public static void Render()
@@ -66,10 +67,7 @@ public static class ArenaChild
 			{
 				float[,] newTiles = SpawnsetState.Spawnset.ArenaTiles.GetMutableClone();
 				newTiles[mousePosition.Tile.X, mousePosition.Tile.Y] -= io.MouseWheel;
-				SpawnsetState.Spawnset = SpawnsetState.Spawnset with
-				{
-					ArenaTiles = new(SpawnsetState.Spawnset.ArenaDimension, newTiles),
-				};
+				SpawnsetState.Spawnset = SpawnsetState.Spawnset with { ArenaTiles = new(SpawnsetState.Spawnset.ArenaDimension, newTiles) };
 				SpawnsetHistoryUtils.Save(SpawnsetEditType.ArenaTileHeight);
 			}
 		}

@@ -1,62 +1,74 @@
-// using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
-// using DevilDaggersInfo.Core.Spawnset;
-//
-// namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Arena.EditorControls;
-//
-// public class ArenaDaggerState : IArenaState
-// {
-// 	private bool _settingRaceDagger;
-// 	private Vector2? _position;
-//
-// 	public void Handle(ArenaMousePosition mousePosition)
-// 	{
-// 		if (StateManager.SpawnsetState.Spawnset.GameMode != GameMode.Race)
-// 			return;
-//
-// 		if (Input.IsButtonPressed(MouseButton.Left))
-// 		{
-// 			_settingRaceDagger = true;
-// 			_position = GetSnappedDaggerPosition();
-// 		}
-// 		else if (Input.IsButtonHeld(MouseButton.Left))
-// 		{
-// 			if (_settingRaceDagger)
-// 				_position = GetSnappedDaggerPosition();
-// 		}
-// 		else if (Input.IsButtonReleased(MouseButton.Left))
-// 		{
-// 			if (!_position.HasValue)
-// 				return;
-//
-// 			Vector2 tileCoordinate = _position.Value / Arena.TileSize;
-// 			Vector2 daggerPosition = new(StateManager.SpawnsetState.Spawnset.TileToWorldCoordinate(tileCoordinate.X), StateManager.SpawnsetState.Spawnset.TileToWorldCoordinate(tileCoordinate.Y));
-// 			StateManager.Dispatch(new UpdateRaceDaggerPosition(daggerPosition));
-//
-// 			Reset();
-// 		}
-//
-// 		Vector2 GetSnappedDaggerPosition()
-// 		{
-// 			return ArenaEditingUtils.Snap(mousePosition.Real.ToVector2(), StateManager.ArenaDaggerState.Snap * Arena.TileSize);
-// 		}
-// 	}
-//
-// 	public void HandleOutOfRange(ArenaMousePosition mousePosition)
-// 	{
-// 		Reset();
-// 	}
-//
-// 	private void Reset()
-// 	{
-// 		_settingRaceDagger = false;
-// 		_position = null;
-// 	}
-//
-// 	public void Render(ArenaMousePosition mousePosition, Vector2i<int> origin, float depth)
-// 	{
-// 		if (!_position.HasValue)
-// 			return;
-//
-// 		Root.Game.SpriteRenderer.Schedule(new(-8, -8), origin.ToVector2() + _position.Value + Arena.HalfTileAsVector2, depth, ContentManager.Content.IconDaggerTexture, Color.HalfTransparentWhite);
-// 	}
-// }
+using DevilDaggersInfo.App.Engine.Maths.Numerics;
+using DevilDaggersInfo.App.Ui.Base;
+using DevilDaggersInfo.App.Ui.Base.StateManagement;
+using DevilDaggersInfo.App.Ui.SurvivalEditor.State;
+using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
+using DevilDaggersInfo.Core.Spawnset;
+using ImGuiNET;
+using System.Numerics;
+
+namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Arena.EditorControls;
+
+public class ArenaDaggerState : IArenaState
+{
+	private bool _settingRaceDagger;
+	private Vector2? _position;
+
+	public void Handle(ArenaMousePosition mousePosition)
+	{
+		if (SpawnsetState.Spawnset.GameMode != GameMode.Race)
+			return;
+
+		if (ArenaChild.LeftMouseJustPressed)
+		{
+			_settingRaceDagger = true;
+			_position = GetSnappedDaggerPosition();
+		}
+		else if (ArenaChild.LeftMouseDown)
+		{
+			if (_settingRaceDagger)
+				_position = GetSnappedDaggerPosition();
+		}
+		else if (ArenaChild.LeftMouseJustReleased)
+		{
+			if (!_position.HasValue)
+				return;
+
+			Vector2 tileCoordinate = _position.Value / ArenaChild.TileSize;
+			Vector2 daggerPosition = new(SpawnsetState.Spawnset.TileToWorldCoordinate(tileCoordinate.X), SpawnsetState.Spawnset.TileToWorldCoordinate(tileCoordinate.Y));
+
+			SpawnsetState.Spawnset = SpawnsetState.Spawnset with { RaceDaggerPosition = daggerPosition };
+			SpawnsetHistoryUtils.Save(SpawnsetEditType.RaceDagger);
+
+			Reset();
+		}
+
+		Vector2 GetSnappedDaggerPosition()
+		{
+			return ArenaEditingUtils.Snap(mousePosition.Real, StateManager.ArenaDaggerState.Snap * ArenaChild.TileSize);
+		}
+	}
+
+	public void HandleOutOfRange(ArenaMousePosition mousePosition)
+	{
+		Reset();
+	}
+
+	private void Reset()
+	{
+		_settingRaceDagger = false;
+		_position = null;
+	}
+
+	public void Render(ArenaMousePosition mousePosition)
+	{
+		if (!_position.HasValue)
+			return;
+
+		ImDrawListPtr drawList = ImGui.GetWindowDrawList();
+		Vector2 origin = ImGui.GetCursorScreenPos();
+		Vector2 center = origin + _position.Value + ArenaChild.HalfTileSizeAsVector2;
+		drawList.AddCircle(center, 3, ImGui.GetColorU32(Color.HalfTransparentWhite));
+		//Root.Game.SpriteRenderer.Schedule(new(-8, -8), origin.ToVector2() + _position.Value + Arena.HalfTileAsVector2, depth, ContentManager.Content.IconDaggerTexture, Color.HalfTransparentWhite);
+	}
+}
