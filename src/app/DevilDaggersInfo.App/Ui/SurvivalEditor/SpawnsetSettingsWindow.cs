@@ -43,6 +43,8 @@ public static class SpawnsetSettingsWindow
 			SpawnsetHistoryUtils.Save(SpawnsetEditType.Brightness);
 		}
 
+		ImGui.BeginDisabled(SpawnsetState.Spawnset.SpawnVersion <= 4);
+
 		foreach (HandLevel level in Enum.GetValues<HandLevel>())
 		{
 			if (ImGui.RadioButton(level.ToString(), level == SpawnsetState.Spawnset.HandLevel) && SpawnsetState.Spawnset.HandLevel != level)
@@ -63,6 +65,10 @@ public static class SpawnsetSettingsWindow
 			SpawnsetHistoryUtils.Save(SpawnsetEditType.AdditionalGems);
 		}
 
+		ImGui.EndDisabled();
+
+		ImGui.BeginDisabled(SpawnsetState.Spawnset.SpawnVersion <= 5);
+
 		float timerStart = SpawnsetState.Spawnset.TimerStart;
 		ImGui.InputFloat("Timer start", ref timerStart, 5);
 		if (Math.Abs(SpawnsetState.Spawnset.TimerStart - timerStart) > 0.001f)
@@ -70,6 +76,8 @@ public static class SpawnsetSettingsWindow
 			SpawnsetState.Spawnset = SpawnsetState.Spawnset with { TimerStart = timerStart };
 			SpawnsetHistoryUtils.Save(SpawnsetEditType.TimerStart);
 		}
+
+		ImGui.EndDisabled();
 
 		ImGui.EndChild();
 	}
