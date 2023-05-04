@@ -26,7 +26,7 @@ public static class SpawnsetArenaChild
 
 		if (mousePosition.IsValid)
 		{
-			ImGui.SetTooltip(mousePosition.Tile.ToString("0"));
+			ImGui.SetTooltip($"{SpawnsetState.Spawnset.ArenaTiles[(int)mousePosition.Tile.X, (int)mousePosition.Tile.Y]}\n{mousePosition.Tile.ToString("0")}");
 			if (io.MouseWheel != 0)
 			{
 				float[,] newTiles = SpawnsetState.Spawnset.ArenaTiles.GetMutableClone();
