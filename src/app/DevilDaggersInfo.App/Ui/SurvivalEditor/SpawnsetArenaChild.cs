@@ -21,6 +21,24 @@ public static class SpawnsetArenaChild
 
 		RenderArena();
 
+		ImGuiIOPtr io = ImGui.GetIO();
+		ArenaMousePosition mousePosition = ArenaMousePosition.Get(io, ImGui.GetWindowPos());
+
+		if (mousePosition.IsValid)
+		{
+			ImGui.SetTooltip(mousePosition.Tile.ToString("0"));
+			if (io.MouseWheel != 0)
+			{
+				float[,] newTiles = SpawnsetState.Spawnset.ArenaTiles.GetMutableClone();
+				newTiles[(int)mousePosition.Tile.X, (int)mousePosition.Tile.Y] -= io.MouseWheel;
+				SpawnsetState.Spawnset = SpawnsetState.Spawnset with
+				{
+					ArenaTiles = new(SpawnsetState.Spawnset.ArenaDimension, newTiles),
+				};
+				SpawnsetHistoryUtils.Save(SpawnsetEditType.ArenaTileHeight);
+			}
+		}
+
 		ImGui.EndChild();
 
 		ImGui.SliderFloat("Time", ref _currentSecond, 0, SpawnsetState.Spawnset.GetSliderMaxSeconds());
@@ -87,7 +105,7 @@ public static class SpawnsetArenaChild
 			Vector3 daggerColor = Vector3.Lerp(invertedTileColor, invertedTileColor.Intensify(96), MathF.Sin((float)ImGui.GetTime()) / 2 + 0.5f);
 
 			Vector2 center = origin + new Vector2(realRaceX * TileSize + halfSize, realRaceZ * TileSize + halfSize);
-			drawList.AddCircle(center, 6, ImGui.GetColorU32(Color.FromVector3(daggerColor)));
+			drawList.AddCircle(center, 3, ImGui.GetColorU32(Color.FromVector3(daggerColor)));
 			// Root.Game.SpriteRenderer.Schedule(new(-8, -8), origin.ToVector2() + new Vector2(realRaceX * TileSize + halfSize, realRaceZ * TileSize + halfSize), Depth + 3, ContentManager.Content.IconDaggerTexture, Color.FromVector3(daggerColor));
 		}
 
@@ -107,5 +125,24 @@ public static class SpawnsetArenaChild
 		float shrinkEndRadius = SpawnsetState.Spawnset.ShrinkEnd / tileUnit * TileSize;
 		if (shrinkEndRadius > 0)
 			drawList.AddCircle(arenaCenter, shrinkEndRadius, ImGui.GetColorU32(Color.Red));
+	}
+
+	private readonly record struct ArenaMousePosition(Vector2 Real, Vector2 Tile, bool IsValid)
+	{
+		public static ArenaMousePosition Get(ImGuiIOPtr io, Vector2 offset)
+		{
+			int realX = (int)(io.MousePos.X - offset.X);
+			int realY = (int)(io.MousePos.Y - offset.Y);
+			Vector2 real = new(realX, realY);
+			Vector2 tile = new(MathF.Floor(real.X / TileSize), MathF.Floor(real.Y / TileSize));
+			bool isValid = tile is { X: >= 0, Y: >= 0 } && tile.X < SpawnsetState.Spawnset.ArenaDimension && tile.Y < SpawnsetState.Spawnset.ArenaDimension;
+
+			return new()
+			{
+				Real = real,
+				Tile = tile,
+				IsValid = isValid,
+			};
+		}
 	}
 }
