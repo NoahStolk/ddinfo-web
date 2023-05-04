@@ -1,5 +1,4 @@
 using DevilDaggersInfo.App.Engine.Maths.Numerics;
-using DevilDaggersInfo.App.Ui.Base.StateManagement;
 using DevilDaggersInfo.Core.Spawnset;
 using ImGuiNET;
 using System.Numerics;
@@ -13,7 +12,6 @@ public static class SpawnsetArenaChild
 	private static readonly Vector2 _arenaSize = new(TileSize * SpawnsetBinary.ArenaDimensionMax);
 
 	private static float _currentSecond;
-	private static float _shrinkRadius;
 
 	public static void Render()
 	{
@@ -76,14 +74,14 @@ public static class SpawnsetArenaChild
 
 		if (SpawnsetState.Spawnset.GameMode == GameMode.Race)
 		{
-			int arenaMiddle = StateManager.SpawnsetState.Spawnset.ArenaDimension / 2;
-			float realRaceX = StateManager.SpawnsetState.Spawnset.RaceDaggerPosition.X / 4f + arenaMiddle;
-			float realRaceZ = StateManager.SpawnsetState.Spawnset.RaceDaggerPosition.Y / 4f + arenaMiddle;
+			int arenaMiddle = SpawnsetState.Spawnset.ArenaDimension / 2;
+			float realRaceX = SpawnsetState.Spawnset.RaceDaggerPosition.X / 4f + arenaMiddle;
+			float realRaceZ = SpawnsetState.Spawnset.RaceDaggerPosition.Y / 4f + arenaMiddle;
 
 			const int halfSize = TileSize / 2;
 
-			(int raceX, _, int raceZ) = StateManager.SpawnsetState.Spawnset.GetRaceDaggerTilePosition();
-			float actualHeight = StateManager.SpawnsetState.Spawnset.GetActualTileHeight(raceX, raceZ, _currentSecond);
+			(int raceX, _, int raceZ) = SpawnsetState.Spawnset.GetRaceDaggerTilePosition();
+			float actualHeight = SpawnsetState.Spawnset.GetActualTileHeight(raceX, raceZ, _currentSecond);
 			Color tileColor = TileUtils.GetColorFromHeight(actualHeight);
 			Color invertedTileColor = Color.Invert(tileColor);
 			Vector3 daggerColor = Vector3.Lerp(invertedTileColor, invertedTileColor.Intensify(96), MathF.Sin((float)ImGui.GetTime()) / 2 + 0.5f);
@@ -92,5 +90,22 @@ public static class SpawnsetArenaChild
 			drawList.AddCircle(center, 6, ImGui.GetColorU32(Color.FromVector3(daggerColor)));
 			// Root.Game.SpriteRenderer.Schedule(new(-8, -8), origin.ToVector2() + new Vector2(realRaceX * TileSize + halfSize, realRaceZ * TileSize + halfSize), Depth + 3, ContentManager.Content.IconDaggerTexture, Color.FromVector3(daggerColor));
 		}
+
+		const int tileUnit = 4;
+		Vector2 arenaCenter = origin + new Vector2((int)(SpawnsetBinary.ArenaDimensionMax / 2f * TileSize));
+
+		float shrinkStartRadius = SpawnsetState.Spawnset.ShrinkStart / tileUnit * TileSize;
+		if (shrinkStartRadius > 0)
+			drawList.AddCircle(arenaCenter, shrinkStartRadius, ImGui.GetColorU32(Color.Blue));
+
+		float shrinkEndTime = SpawnsetState.Spawnset.GetShrinkEndTime();
+		float shrinkRadius = shrinkEndTime == 0 ? SpawnsetState.Spawnset.ShrinkStart : Math.Max(SpawnsetState.Spawnset.ShrinkStart - _currentSecond / shrinkEndTime * (SpawnsetState.Spawnset.ShrinkStart - SpawnsetState.Spawnset.ShrinkEnd), SpawnsetState.Spawnset.ShrinkEnd);
+		float shrinkCurrentRadius = shrinkRadius / tileUnit * TileSize;
+		if (shrinkCurrentRadius > 0)
+			drawList.AddCircle(arenaCenter, shrinkCurrentRadius, ImGui.GetColorU32(Color.Purple));
+
+		float shrinkEndRadius = SpawnsetState.Spawnset.ShrinkEnd / tileUnit * TileSize;
+		if (shrinkEndRadius > 0)
+			drawList.AddCircle(arenaCenter, shrinkEndRadius, ImGui.GetColorU32(Color.Red));
 	}
 }

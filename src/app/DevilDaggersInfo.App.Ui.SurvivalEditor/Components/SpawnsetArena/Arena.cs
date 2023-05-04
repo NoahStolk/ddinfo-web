@@ -17,9 +17,6 @@ public class Arena : AbstractComponent
 	private readonly ArenaBucketState _bucketState;
 	private readonly ArenaDaggerState _daggerState;
 
-	private float _currentSecond;
-	private float _shrinkRadius;
-
 	public Arena(IBounds bounds)
 		: base(bounds)
 	{
@@ -98,48 +95,11 @@ public class Arena : AbstractComponent
 		}
 	}
 
-	public void SetShrinkCurrent(float currentSecond)
-	{
-		_currentSecond = currentSecond;
-
-		SpawnsetBinary spawnset = StateManager.SpawnsetState.Spawnset;
-		float shrinkEndTime = spawnset.GetShrinkEndTime();
-		_shrinkRadius = shrinkEndTime == 0 ? spawnset.ShrinkStart : Math.Max(spawnset.ShrinkStart - _currentSecond / shrinkEndTime * (spawnset.ShrinkStart - spawnset.ShrinkEnd), spawnset.ShrinkEnd);
-	}
-
 	public override void Render(Vector2i<int> scrollOffset)
 	{
 		base.Render(scrollOffset);
 
-		if (StateManager.SpawnsetState.Spawnset.GameMode == GameMode.Race)
-		{
-			int arenaMiddle = StateManager.SpawnsetState.Spawnset.ArenaDimension / 2;
-			float realRaceX = StateManager.SpawnsetState.Spawnset.RaceDaggerPosition.X / 4f + arenaMiddle;
-			float realRaceZ = StateManager.SpawnsetState.Spawnset.RaceDaggerPosition.Y / 4f + arenaMiddle;
-
-			const int halfSize = TileSize / 2;
-
-			(int raceX, _, int raceZ) = StateManager.SpawnsetState.Spawnset.GetRaceDaggerTilePosition();
-			float actualHeight = StateManager.SpawnsetState.Spawnset.GetActualTileHeight(raceX, raceZ, _currentSecond);
-			Color tileColor = TileUtils.GetColorFromHeight(actualHeight);
-			Color invertedTileColor = Color.Invert(tileColor);
-			Vector3 daggerColor = Vector3.Lerp(invertedTileColor, invertedTileColor.Intensify(96), MathF.Sin(Root.Game.Tt) / 2 + 0.5f);
-			Root.Game.SpriteRenderer.Schedule(new(-8, -8), origin.ToVector2() + new Vector2(realRaceX * TileSize + halfSize, realRaceZ * TileSize + halfSize), Depth + 3, ContentManager.Content.IconDaggerTexture, Color.FromVector3(daggerColor));
-		}
-
 		ScissorScheduler.PushScissor(Scissor.Create(Bounds, scrollOffset, ViewportState.Offset, ViewportState.Scale));
-
-		const int tileUnit = 4;
-		float shrinkStartRadius = StateManager.SpawnsetState.Spawnset.ShrinkStart / tileUnit * TileSize;
-		float shrinkCurrentRadius = _shrinkRadius / tileUnit * TileSize;
-		float shrinkEndRadius = StateManager.SpawnsetState.Spawnset.ShrinkEnd / tileUnit * TileSize;
-
-		if (shrinkStartRadius > 0)
-			Root.Game.EllipseRenderer.Schedule(center, shrinkStartRadius, Depth + 5, GlobalColors.ShrinkStart);
-		if (shrinkCurrentRadius > 0)
-			Root.Game.EllipseRenderer.Schedule(center, shrinkCurrentRadius, Depth + 4, GlobalColors.ShrinkCurrent);
-		if (shrinkEndRadius > 0)
-			Root.Game.EllipseRenderer.Schedule(center, shrinkEndRadius, Depth + 5, GlobalColors.ShrinkEnd);
 
 		IArenaState activeState = GetActiveState();
 		activeState.Render(GetArenaMousePosition(scrollOffset), origin, Depth + 3);
