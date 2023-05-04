@@ -13,7 +13,7 @@ namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Arena;
 
 public static class ArenaChild
 {
-	public const int TileSize = 6;
+	public const int TileSize = 8;
 	public const int HalfTileSize = TileSize / 2;
 
 	private static readonly Vector2 _arenaSize = new(TileSize * SpawnsetBinary.ArenaDimensionMax);

@@ -8,8 +8,8 @@ public static class SurvivalEditorWindow
 {
 	public static void Render()
 	{
-		ImGui.PushStyleVar(ImGuiStyleVar.WindowMinSize, new Vector2(1024, 768));
-		ImGui.Begin("Survival Editor", ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.MenuBar);
+		ImGui.PushStyleVar(ImGuiStyleVar.WindowMinSize, Constants.MinWindowSize);
+		ImGui.Begin("Survival Editor", ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.MenuBar | ImGuiWindowFlags.NoScrollWithMouse);
 		ImGui.PopStyleVar();
 
 		SurvivalEditorMenu.Render();
@@ -17,16 +17,13 @@ public static class SurvivalEditorWindow
 		SpawnsChild.Render();
 
 		ImGui.SameLine();
-
 		ArenaChild.Render();
 
 		ImGui.SameLine();
-
 		SettingsChild.Render();
 
-		HistoryChild.Render();
-
 		ImGui.SameLine();
+		HistoryChild.Render();
 
 		ImGui.End();
 	}

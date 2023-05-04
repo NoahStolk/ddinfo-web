@@ -27,7 +27,7 @@ public class Application
 	{
 		const int monitorWidth = 3840; // TODO: Get from monitor.
 		const int monitorHeight = 2160;
-		const int windowWidth = 1024;
+		const int windowWidth = 1366;
 		const int windowHeight = 768;
 
 		_window = Window.Create(WindowOptions.Default with

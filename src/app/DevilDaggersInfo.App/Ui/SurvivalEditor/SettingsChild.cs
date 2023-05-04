@@ -9,7 +9,7 @@ public static class SettingsChild
 {
 	public static void Render()
 	{
-		ImGui.BeginChild("SettingsChild", new(384, 256));
+		ImGui.BeginChild("SettingsChild", new(288, 256));
 
 		RenderVersionRadioButtons();
 

@@ -9,7 +9,7 @@ public static class HistoryChild
 {
 	public static void Render()
 	{
-		ImGui.BeginChild("HistoryChild", new(256, 256));
+		ImGui.BeginChild("HistoryChild", new(256, 712));
 
 		foreach (SpawnsetHistoryEntry h in SpawnsetState.History)
 		{
