@@ -3,7 +3,7 @@ using DevilDaggersInfo.Core.Spawnset.Extensions;
 using DevilDaggersInfo.Core.Spawnset.View;
 using System.Collections.Immutable;
 
-namespace DevilDaggersInfo.App.Ui.SurvivalEditor.EditorSpawns;
+namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 
 public static class EditSpawnContext
 {

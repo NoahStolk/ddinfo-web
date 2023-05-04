@@ -1,7 +1,7 @@
 using DevilDaggersInfo.Core.Spawnset;
 using System.Security.Cryptography;
 
-namespace DevilDaggersInfo.App.Ui.SurvivalEditor;
+namespace DevilDaggersInfo.App.Ui.SurvivalEditor.State;
 
 public static class SpawnsetState
 {

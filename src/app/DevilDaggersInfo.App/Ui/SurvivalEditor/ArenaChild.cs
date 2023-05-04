@@ -1,11 +1,13 @@
 using DevilDaggersInfo.App.Engine.Maths.Numerics;
+using DevilDaggersInfo.App.Ui.SurvivalEditor.State;
+using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using DevilDaggersInfo.Core.Spawnset;
 using ImGuiNET;
 using System.Numerics;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor;
 
-public static class SpawnsetArenaChild
+public static class ArenaChild
 {
 	public const int TileSize = 6;
 

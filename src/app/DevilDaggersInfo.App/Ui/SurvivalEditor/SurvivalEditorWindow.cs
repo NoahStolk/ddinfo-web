@@ -17,13 +17,13 @@ public static class SurvivalEditorWindow
 
 		ImGui.SameLine();
 
-		SpawnsetArenaChild.Render();
+		ArenaChild.Render();
 
 		ImGui.SameLine();
 
-		SpawnsetSettingsChild.Render();
+		SettingsChild.Render();
 
-		HistoryWindow.Render();
+		HistoryChild.Render();
 
 		ImGui.SameLine();
 

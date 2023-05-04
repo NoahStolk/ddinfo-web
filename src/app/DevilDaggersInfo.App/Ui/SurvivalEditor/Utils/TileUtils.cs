@@ -1,6 +1,6 @@
 using DevilDaggersInfo.App.Engine.Maths.Numerics;
 
-namespace DevilDaggersInfo.App.Ui.SurvivalEditor;
+namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 
 public static class TileUtils
 {

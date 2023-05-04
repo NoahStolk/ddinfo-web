@@ -1,8 +1,9 @@
+using DevilDaggersInfo.App.Ui.SurvivalEditor.State;
 using DevilDaggersInfo.Common.Utils;
 using DevilDaggersInfo.Core.Spawnset;
 using System.Security.Cryptography;
 
-namespace DevilDaggersInfo.App.Ui.SurvivalEditor;
+namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 
 public static class SpawnsetHistoryUtils
 {

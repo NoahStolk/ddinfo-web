@@ -1,9 +1,11 @@
+using DevilDaggersInfo.App.Ui.SurvivalEditor.State;
+using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using DevilDaggersInfo.Core.Spawnset;
 using ImGuiNET;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor;
 
-public static class SpawnsetSettingsChild
+public static class SettingsChild
 {
 	public static void Render()
 	{

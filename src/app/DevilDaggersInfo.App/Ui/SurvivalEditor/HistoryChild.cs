@@ -1,10 +1,11 @@
 using DevilDaggersInfo.App.Engine.Maths.Numerics;
+using DevilDaggersInfo.App.Ui.SurvivalEditor.State;
 using ImGuiNET;
 using System.Numerics;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor;
 
-public static class HistoryWindow
+public static class HistoryChild
 {
 	public static void Render()
 	{
