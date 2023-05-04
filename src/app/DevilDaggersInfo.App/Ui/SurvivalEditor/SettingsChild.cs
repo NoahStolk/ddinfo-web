@@ -1,6 +1,8 @@
 using DevilDaggersInfo.App.Ui.SurvivalEditor.State;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using DevilDaggersInfo.Core.Spawnset;
+using DevilDaggersInfo.Core.Wiki;
+using DevilDaggersInfo.Core.Wiki.Extensions;
 using ImGuiNET;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor;
@@ -9,9 +11,76 @@ public static class SettingsChild
 {
 	public static void Render()
 	{
-		ImGui.BeginChild("SettingsChild", new(288, 256));
+		ImGui.BeginChild("SettingsChild", new(288, 384));
 
-		RenderVersionRadioButtons();
+		RenderFormat();
+		ImGui.Spacing();
+
+		RenderArena();
+		ImGui.Spacing();
+
+		RenderPractice();
+
+		ImGui.Unindent();
+		ImGui.EndChild();
+	}
+
+	private static void RenderFormat()
+	{
+		ImGui.Text("Format");
+		ImGui.Separator();
+		ImGui.Indent(8);
+
+		ImGui.Text("World version");
+		ImGui.SameLine();
+		for (int i = 8; i < 10; i++)
+		{
+			if (ImGui.RadioButton(i.ToString(), i == SpawnsetState.Spawnset.WorldVersion) && SpawnsetState.Spawnset.WorldVersion != i)
+			{
+				SpawnsetState.Spawnset = SpawnsetState.Spawnset with { WorldVersion = i };
+				SpawnsetHistoryUtils.Save(SpawnsetEditType.Format);
+			}
+
+			if (i < 9)
+				ImGui.SameLine();
+		}
+
+		ImGui.Text("Spawn version");
+		ImGui.SameLine();
+		for (int i = 4; i < 7; i++)
+		{
+			if (ImGui.RadioButton(i.ToString(), i == SpawnsetState.Spawnset.SpawnVersion) && SpawnsetState.Spawnset.SpawnVersion != i)
+			{
+				SpawnsetState.Spawnset = SpawnsetState.Spawnset with { SpawnVersion = i };
+				SpawnsetHistoryUtils.Save(SpawnsetEditType.Format);
+			}
+
+			if (i < 6)
+				ImGui.SameLine();
+		}
+
+		ImGui.Text("Supported in game version:");
+
+		GameVersion minimumGameVersion;
+		if (SpawnsetState.Spawnset.SpawnVersion >= 5)
+			minimumGameVersion = GameVersion.V3_1;
+		else if (SpawnsetState.Spawnset.WorldVersion >= 9)
+			minimumGameVersion = GameVersion.V2_0;
+		else
+			minimumGameVersion = GameVersion.V1_0;
+
+		ImGui.Text(minimumGameVersion.ToDisplayString());
+		ImGui.SameLine();
+		ImGui.Text("and newer");
+	}
+
+	private static void RenderArena()
+	{
+		ImGui.Spacing();
+		ImGui.Indent(-8);
+		ImGui.Text("Arena");
+		ImGui.Separator();
+		ImGui.Indent(8);
 
 		float shrinkStart = SpawnsetState.Spawnset.ShrinkStart;
 		ImGui.InputFloat("Shrink start", ref shrinkStart, 1, 5, "%.1f");
@@ -44,12 +113,21 @@ public static class SettingsChild
 			SpawnsetState.Spawnset = SpawnsetState.Spawnset with { Brightness = brightness };
 			SpawnsetHistoryUtils.Save(SpawnsetEditType.Brightness);
 		}
+	}
 
+	private static void RenderPractice()
+	{
 		ImGui.BeginDisabled(SpawnsetState.Spawnset.SpawnVersion <= 4);
+
+		ImGui.Spacing();
+		ImGui.Indent(-8);
+		ImGui.Text("Practice");
+		ImGui.Separator();
+		ImGui.Indent(8);
 
 		foreach (HandLevel level in Enum.GetValues<HandLevel>())
 		{
-			if (ImGui.RadioButton(level.ToString(), level == SpawnsetState.Spawnset.HandLevel) && SpawnsetState.Spawnset.HandLevel != level)
+			if (ImGui.RadioButton($"Lvl {(int)level}", level == SpawnsetState.Spawnset.HandLevel) && SpawnsetState.Spawnset.HandLevel != level)
 			{
 				SpawnsetState.Spawnset = SpawnsetState.Spawnset with { HandLevel = level };
 				SpawnsetHistoryUtils.Save(SpawnsetEditType.HandLevel);
@@ -81,35 +159,6 @@ public static class SettingsChild
 
 		ImGui.EndDisabled();
 
-		ImGui.EndChild();
-	}
-
-	private static void RenderVersionRadioButtons()
-	{
-		for (int i = 8; i < 10; i++)
-		{
-			if (ImGui.RadioButton(i.ToString(), i == SpawnsetState.Spawnset.WorldVersion) && SpawnsetState.Spawnset.WorldVersion != i)
-			{
-				SpawnsetState.Spawnset = SpawnsetState.Spawnset with { WorldVersion = i };
-				SpawnsetHistoryUtils.Save(SpawnsetEditType.Format);
-			}
-
-			if (i < 9)
-				ImGui.SameLine();
-		}
-
-		for (int i = 4; i < 7; i++)
-		{
-			if (ImGui.RadioButton(i.ToString(), i == SpawnsetState.Spawnset.SpawnVersion) && SpawnsetState.Spawnset.SpawnVersion != i)
-			{
-				SpawnsetState.Spawnset = SpawnsetState.Spawnset with { SpawnVersion = i };
-				SpawnsetHistoryUtils.Save(SpawnsetEditType.Format);
-			}
-
-			if (i < 6)
-				ImGui.SameLine();
-		}
-
-		ImGui.Text(SpawnsetState.Spawnset.GetGameVersionString());
+		ImGui.Unindent();
 	}
 }
