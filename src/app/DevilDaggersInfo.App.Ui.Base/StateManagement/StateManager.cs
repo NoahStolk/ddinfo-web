@@ -18,7 +18,6 @@ public static class StateManager
 	public static UploadResponseState UploadResponseState { get; private set; } = UploadResponseState.GetDefault();
 
 	// Survival editor states.
-	public static ArenaEditorState ArenaEditorState { get; private set; } = ArenaEditorState.GetDefault();
 	public static ArenaPencilState ArenaPencilState { get; private set; } = ArenaPencilState.GetDefault();
 	public static ArenaLineState ArenaLineState { get; private set; } = ArenaLineState.GetDefault();
 	public static ArenaRectangleState ArenaRectangleState { get; private set; } = ArenaRectangleState.GetDefault();
@@ -90,7 +89,6 @@ public static class StateManager
 				RecordingState = stateReducer.RecordingState;
 				ReplaySceneState = stateReducer.ReplaySceneState;
 				UploadResponseState = stateReducer.UploadResponseState;
-				ArenaEditorState = stateReducer.ArenaEditorState;
 				ArenaPencilState = stateReducer.ArenaPencilState;
 				ArenaLineState = stateReducer.ArenaLineState;
 				ArenaRectangleState = stateReducer.ArenaRectangleState;

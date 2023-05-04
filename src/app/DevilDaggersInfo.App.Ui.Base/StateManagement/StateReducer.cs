@@ -26,7 +26,6 @@ public record StateReducer
 	public RecordingState RecordingState { get; set; } = StateManager.RecordingState;
 	public ReplaySceneState ReplaySceneState { get; set; } = StateManager.ReplaySceneState;
 	public UploadResponseState UploadResponseState { get; set; } = StateManager.UploadResponseState;
-	public ArenaEditorState ArenaEditorState { get; set; } = StateManager.ArenaEditorState;
 	public ArenaPencilState ArenaPencilState { get; set; } = StateManager.ArenaPencilState;
 	public ArenaLineState ArenaLineState { get; set; } = StateManager.ArenaLineState;
 	public ArenaRectangleState ArenaRectangleState { get; set; } = StateManager.ArenaRectangleState;

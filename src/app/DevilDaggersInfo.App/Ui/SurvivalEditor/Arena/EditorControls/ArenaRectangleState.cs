@@ -36,7 +36,7 @@ public class ArenaRectangleState : IArenaState
 		if (!_rectangleStart.HasValue || _newArena == null)
 			return;
 
-		Loop(mousePosition, (i, j) => _newArena[i, j] = StateManager.ArenaEditorState.SelectedHeight);
+		Loop(mousePosition, (i, j) => _newArena[i, j] = ArenaChild.SelectedHeight);
 
 		SpawnsetState.Spawnset = SpawnsetState.Spawnset with { ArenaTiles = new(SpawnsetState.Spawnset.ArenaDimension, _newArena) };
 		SpawnsetHistoryUtils.Save(SpawnsetEditType.ArenaRectangle);

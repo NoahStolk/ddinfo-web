@@ -1,6 +1,5 @@
 using DevilDaggersInfo.App.Engine.Maths.Numerics;
 using DevilDaggersInfo.App.Ui.Base.StateManagement;
-using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Data;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Arena.EditorControls;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.State;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
@@ -31,16 +30,19 @@ public static class ArenaChild
 	public static bool LeftMouseJustPressed { get; private set; }
 	public static bool LeftMouseJustReleased { get; private set; }
 
-	private static IArenaState GetActiveState() => _rectangleState;//StateManager.ArenaEditorState.ArenaTool switch
-	//{
-		// ArenaTool.Pencil => _pencilState,
-		// ArenaTool.Line => _lineState,
-		// ArenaTool.Rectangle => _rectangleState,
-		// ArenaTool.Ellipse => _ellipseState,
-		// ArenaTool.Bucket => _bucketState,
-		// ArenaTool.Dagger => _daggerState,
-		// _ => throw new UnreachableException(),
-	//};
+	public static float SelectedHeight { get; set; }
+	public static ArenaTool ArenaTool { get; set; }
+
+	private static IArenaState GetActiveState() => ArenaTool switch
+	{
+		 // ArenaTool.Pencil => _pencilState,
+		 // ArenaTool.Line => _lineState,
+		 ArenaTool.Rectangle => _rectangleState,
+		 // ArenaTool.Ellipse => _ellipseState,
+		 // ArenaTool.Bucket => _bucketState,
+		 // ArenaTool.Dagger => _daggerState,
+		 _ => _rectangleState,//throw new UnreachableException(),
+	};
 
 	public static void Render()
 	{
@@ -86,6 +88,7 @@ public static class ArenaChild
 		ImGui.EndChild();
 
 		ImGui.SliderFloat("Time", ref _currentSecond, 0, SpawnsetState.Spawnset.GetSliderMaxSeconds());
+		ArenaEditorControls.Render();
 
 		ImGui.EndChild();
 	}

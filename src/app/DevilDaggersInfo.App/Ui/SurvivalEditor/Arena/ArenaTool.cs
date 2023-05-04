@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Data;
+namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Arena;
 
 public enum ArenaTool
 {
