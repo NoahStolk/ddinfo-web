@@ -1,19 +1,46 @@
 using DevilDaggersInfo.App.Engine.Maths.Numerics;
+using DevilDaggersInfo.App.Ui.Base.StateManagement;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.Data;
+using DevilDaggersInfo.App.Ui.SurvivalEditor.Arena.EditorControls;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.State;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using DevilDaggersInfo.Core.Spawnset;
 using ImGuiNET;
+using System.Diagnostics;
 using System.Numerics;
 
-namespace DevilDaggersInfo.App.Ui.SurvivalEditor;
+namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Arena;
 
 public static class ArenaChild
 {
 	public const int TileSize = 6;
+	public const int HalfTileSize = TileSize / 2;
 
 	private static readonly Vector2 _arenaSize = new(TileSize * SpawnsetBinary.ArenaDimensionMax);
 
+	// private static readonly ArenaPencilState _pencilState = new();
+	// private static readonly ArenaLineState _lineState = new();
+	private static readonly ArenaRectangleState _rectangleState = new();
+	// private static readonly ArenaEllipseState _ellipseState = new();
+	// private static readonly ArenaBucketState _bucketState = new();
+	// private static readonly ArenaDaggerState _daggerState = new();
+
 	private static float _currentSecond;
+	private static bool _leftMouseDownPrevious;
+
+	public static bool LeftMouseJustPressed { get; private set; }
+	public static bool LeftMouseJustReleased { get; private set; }
+
+	private static IArenaState GetActiveState() => _rectangleState;//StateManager.ArenaEditorState.ArenaTool switch
+	//{
+		// ArenaTool.Pencil => _pencilState,
+		// ArenaTool.Line => _lineState,
+		// ArenaTool.Rectangle => _rectangleState,
+		// ArenaTool.Ellipse => _ellipseState,
+		// ArenaTool.Bucket => _bucketState,
+		// ArenaTool.Dagger => _daggerState,
+		// _ => throw new UnreachableException(),
+	//};
 
 	public static void Render()
 	{
@@ -21,18 +48,22 @@ public static class ArenaChild
 
 		ImGui.BeginChild("Arena", _arenaSize);
 
-		RenderArena();
-
+		// Update
 		ImGuiIOPtr io = ImGui.GetIO();
+		bool leftMouseDown = io.MouseDown[0];
+		LeftMouseJustPressed = leftMouseDown && !_leftMouseDownPrevious;
+		LeftMouseJustReleased = !leftMouseDown && _leftMouseDownPrevious;
+		_leftMouseDownPrevious = leftMouseDown;
+
 		ArenaMousePosition mousePosition = ArenaMousePosition.Get(io, ImGui.GetWindowPos());
 
 		if (mousePosition.IsValid)
 		{
-			ImGui.SetTooltip($"{SpawnsetState.Spawnset.ArenaTiles[(int)mousePosition.Tile.X, (int)mousePosition.Tile.Y]}\n{mousePosition.Tile.ToString("0")}");
+			ImGui.SetTooltip($"{SpawnsetState.Spawnset.ArenaTiles[mousePosition.Tile.X, mousePosition.Tile.Y]}\n{mousePosition.Tile.ToString("0")}");
 			if (io.MouseWheel != 0)
 			{
 				float[,] newTiles = SpawnsetState.Spawnset.ArenaTiles.GetMutableClone();
-				newTiles[(int)mousePosition.Tile.X, (int)mousePosition.Tile.Y] -= io.MouseWheel;
+				newTiles[mousePosition.Tile.X, mousePosition.Tile.Y] -= io.MouseWheel;
 				SpawnsetState.Spawnset = SpawnsetState.Spawnset with
 				{
 					ArenaTiles = new(SpawnsetState.Spawnset.ArenaDimension, newTiles),
@@ -40,6 +71,17 @@ public static class ArenaChild
 				SpawnsetHistoryUtils.Save(SpawnsetEditType.ArenaTileHeight);
 			}
 		}
+
+		IArenaState activeState = GetActiveState();
+		if (mousePosition.IsValid)
+			activeState.HandleOutOfRange(mousePosition);
+		else
+			activeState.Handle(mousePosition);
+
+		// Render
+		RenderArena();
+
+		activeState.Render(mousePosition);
 
 		ImGui.EndChild();
 
@@ -127,24 +169,5 @@ public static class ArenaChild
 		float shrinkEndRadius = SpawnsetState.Spawnset.ShrinkEnd / tileUnit * TileSize;
 		if (shrinkEndRadius > 0)
 			drawList.AddCircle(arenaCenter, shrinkEndRadius, ImGui.GetColorU32(Color.Red));
-	}
-
-	private readonly record struct ArenaMousePosition(Vector2 Real, Vector2 Tile, bool IsValid)
-	{
-		public static ArenaMousePosition Get(ImGuiIOPtr io, Vector2 offset)
-		{
-			int realX = (int)(io.MousePos.X - offset.X);
-			int realY = (int)(io.MousePos.Y - offset.Y);
-			Vector2 real = new(realX, realY);
-			Vector2 tile = new(MathF.Floor(real.X / TileSize), MathF.Floor(real.Y / TileSize));
-			bool isValid = tile is { X: >= 0, Y: >= 0 } && tile.X < SpawnsetState.Spawnset.ArenaDimension && tile.Y < SpawnsetState.Spawnset.ArenaDimension;
-
-			return new()
-			{
-				Real = real,
-				Tile = tile,
-				IsValid = isValid,
-			};
-		}
 	}
 }

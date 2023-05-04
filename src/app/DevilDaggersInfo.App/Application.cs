@@ -60,9 +60,7 @@ public class Application
 
 		_gl.ClearColor(0, 0, 0, 1);
 
-		ImGuiStylePtr style = ImGui.GetStyle();
-		style.ScrollbarSize = 16;
-		style.ScrollbarRounding = 0;
+		ConfigureImGui();
 
 		UserSettings.Load();
 		UserCache.Load();
@@ -80,12 +78,25 @@ public class Application
 			throw new InvalidOperationException("The current version number is invalid.");
 
 		AsyncHandler.Run(
-			av =>
+			static av =>
 			{
 				Modals.ShowUpdate = av != null;
 				Modals.AvailableVersion = av;
 			},
 			() => FetchLatestVersion.HandleAsync(appVersion, Root.PlatformSpecificValues.BuildType));
+	}
+
+	private static void ConfigureImGui()
+	{
+		ImGuiStylePtr style = ImGui.GetStyle();
+		style.ScrollbarSize = 16;
+		style.ScrollbarRounding = 0;
+
+		ImGuiIOPtr io = ImGui.GetIO();
+
+		// This is mainly done for the arena editor, so the window is not moved when editing the arena.
+		// TODO: I think we can also work around this by putting the arena inside a widget.
+		io.ConfigWindowsMoveFromTitleBarOnly = true;
 	}
 
 	private void OnWindowOnFramebufferResize(Vector2D<int> s)

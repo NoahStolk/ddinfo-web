@@ -1,8 +1,11 @@
-using DevilDaggersInfo.App.Ui.SurvivalEditor.Components.SpawnsetArena;
-using DevilDaggersInfo.App.Ui.SurvivalEditor.EditorArena.Data;
+using DevilDaggersInfo.App.Engine.Maths.Numerics;
+using DevilDaggersInfo.App.Ui.Base.StateManagement;
+using DevilDaggersInfo.App.Ui.SurvivalEditor.State;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
+using ImGuiNET;
+using System.Numerics;
 
-namespace DevilDaggersInfo.App.Ui.SurvivalEditor.EditorArena;
+namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Arena.EditorControls;
 
 public class ArenaRectangleState : IArenaState
 {
@@ -11,12 +14,12 @@ public class ArenaRectangleState : IArenaState
 
 	public void Handle(ArenaMousePosition mousePosition)
 	{
-		if (Input.IsButtonPressed(MouseButton.Left))
+		if (ArenaChild.LeftMouseJustPressed)
 		{
 			_rectangleStart = mousePosition.Tile;
 			_newArena = StateManager.SpawnsetState.Spawnset.ArenaTiles.GetMutableClone();
 		}
-		else if (Input.IsButtonReleased(MouseButton.Left))
+		else if (ArenaChild.LeftMouseJustReleased)
 		{
 			Emit(mousePosition);
 		}
@@ -24,7 +27,7 @@ public class ArenaRectangleState : IArenaState
 
 	public void HandleOutOfRange(ArenaMousePosition mousePosition)
 	{
-		if (Input.IsButtonReleased(MouseButton.Left))
+		if (ArenaChild.LeftMouseJustReleased)
 			Emit(mousePosition);
 	}
 
@@ -35,7 +38,7 @@ public class ArenaRectangleState : IArenaState
 
 		Loop(mousePosition, (i, j) => _newArena[i, j] = StateManager.ArenaEditorState.SelectedHeight);
 
-		Arena.UpdateArena(_newArena, SpawnsetEditType.ArenaRectangle);
+		//Arena.UpdateArena(_newArena, SpawnsetEditType.ArenaRectangle);
 
 		Reset();
 	}
@@ -46,9 +49,15 @@ public class ArenaRectangleState : IArenaState
 		_newArena = null;
 	}
 
-	public void Render(ArenaMousePosition mousePosition, Vector2i<int> origin, float depth)
+	public void Render(ArenaMousePosition mousePosition)
 	{
-		Loop(mousePosition, (i, j) => Root.Game.RectangleRenderer.Schedule(new(Arena.TileSize), origin + new Vector2i<int>(i, j) * Arena.TileSize + Arena.HalfTile, depth, Color.HalfTransparentWhite));
+		Loop(mousePosition, (i, j) =>
+		{
+			ImDrawListPtr drawList = ImGui.GetWindowDrawList();
+
+			Vector2 min = new Vector2(i, j) * ArenaChild.TileSize;
+			drawList.AddRect(min, min + new Vector2(ArenaChild.TileSize), ImGui.GetColorU32(Color.HalfTransparentWhite));
+		});
 	}
 
 	private void Loop(ArenaMousePosition mousePosition, Action<int, int> action)
