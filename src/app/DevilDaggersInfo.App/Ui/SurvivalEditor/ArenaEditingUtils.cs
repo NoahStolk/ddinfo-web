@@ -1,4 +1,7 @@
-namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
+using DevilDaggersInfo.App.Engine.Maths.Numerics;
+using System.Numerics;
+
+namespace DevilDaggersInfo.App.Ui.SurvivalEditor;
 
 public static class ArenaEditingUtils
 {

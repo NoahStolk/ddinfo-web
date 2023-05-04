@@ -111,41 +111,6 @@ public class Arena : AbstractComponent
 	{
 		base.Render(scrollOffset);
 
-		Vector2i<int> origin = scrollOffset + new Vector2i<int>(Bounds.X1, Bounds.Y1);
-		Vector2i<int> center = origin + new Vector2i<int>((int)(SpawnsetBinary.ArenaDimensionMax / 2f * TileSize));
-		Vector2i<int> halfTileSize = new Vector2i<int>(TileSize, TileSize) / 2;
-		Root.Game.RectangleRenderer.Schedule(Bounds.Size, center, Depth, Color.Black);
-
-		for (int i = 0; i < StateManager.SpawnsetState.Spawnset.ArenaDimension; i++)
-		{
-			for (int j = 0; j < StateManager.SpawnsetState.Spawnset.ArenaDimension; j++)
-			{
-				int x = i * TileSize;
-				int y = j * TileSize;
-
-				float actualHeight = StateManager.SpawnsetState.Spawnset.GetActualTileHeight(i, j, _currentSecond);
-				float height = StateManager.SpawnsetState.Spawnset.ArenaTiles[i, j];
-				Color colorCurrent = TileUtils.GetColorFromHeight(actualHeight);
-				Color colorValue = TileUtils.GetColorFromHeight(height);
-				if (Math.Abs(actualHeight - height) < 0.001f)
-				{
-					if (Color.Black != colorValue)
-						Root.Game.RectangleRenderer.Schedule(new(TileSize), origin + new Vector2i<int>(x, y) + halfTileSize, Depth + 1, colorValue);
-				}
-				else
-				{
-					if (Color.Black != colorCurrent)
-						Root.Game.RectangleRenderer.Schedule(new(TileSize), origin + new Vector2i<int>(x, y) + halfTileSize, Depth + 1, colorCurrent);
-
-					if (Color.Black != colorValue)
-					{
-						const int size = 2;
-						Root.Game.RectangleRenderer.Schedule(new(size), origin + new Vector2i<int>(x, y) + halfTileSize, Depth + 2, colorValue);
-					}
-				}
-			}
-		}
-
 		if (StateManager.SpawnsetState.Spawnset.GameMode == GameMode.Race)
 		{
 			int arenaMiddle = StateManager.SpawnsetState.Spawnset.ArenaDimension / 2;
