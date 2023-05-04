@@ -9,6 +9,7 @@ public static class HistoryChild
 {
 	public static void Render()
 	{
+		ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(8, 0));
 		ImGui.BeginChild("HistoryChild", new(256, 712));
 
 		foreach (SpawnsetHistoryEntry h in SpawnsetState.History)
@@ -25,6 +26,7 @@ public static class HistoryChild
 			ImGui.PopStyleColor();
 		}
 
+		ImGui.PopStyleVar();
 		ImGui.EndChild();
 	}
 }
