@@ -1,3 +1,5 @@
+using DevilDaggersInfo.App.Ui.SurvivalEditor.State;
+using DevilDaggersInfo.Core.Spawnset;
 using ImGuiNET;
 using System.Numerics;
 
@@ -11,6 +13,8 @@ public static class DaggerChild
 
 	public static void Render()
 	{
+		ImGui.BeginDisabled(SpawnsetState.Spawnset.GameMode != GameMode.Race);
 		ImGui.SliderFloat2("Snap", ref _snap, 0.25f, 2, "%.2f");
+		ImGui.EndDisabled();
 	}
 }

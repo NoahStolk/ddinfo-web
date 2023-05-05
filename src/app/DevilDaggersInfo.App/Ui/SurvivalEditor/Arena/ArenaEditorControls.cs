@@ -1,4 +1,6 @@
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Arena.EditorChildren;
+using DevilDaggersInfo.App.Ui.SurvivalEditor.State;
+using DevilDaggersInfo.Core.Spawnset;
 using ImGuiNET;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Arena;
@@ -9,8 +11,14 @@ public static class ArenaEditorControls
 	{
 		foreach (ArenaTool arenaTool in Enum.GetValues<ArenaTool>())
 		{
+			if (arenaTool == ArenaTool.Dagger)
+				ImGui.BeginDisabled(SpawnsetState.Spawnset.GameMode != GameMode.Race);
+
 			if (ImGui.RadioButton(arenaTool.ToString(), arenaTool == ArenaChild.ArenaTool) && ArenaChild.ArenaTool != arenaTool)
 				ArenaChild.ArenaTool = arenaTool;
+
+			if (arenaTool == ArenaTool.Dagger)
+				ImGui.EndDisabled();
 		}
 
 		switch (ArenaChild.ArenaTool)
