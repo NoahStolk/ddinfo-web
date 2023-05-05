@@ -9,6 +9,8 @@ public static class ArenaEditorControls
 {
 	public static void Render()
 	{
+		ImGui.BeginChild("ArenaEditorControls", new(128, 144));
+
 		foreach (ArenaTool arenaTool in Enum.GetValues<ArenaTool>())
 		{
 			if (arenaTool == ArenaTool.Dagger)
@@ -20,6 +22,12 @@ public static class ArenaEditorControls
 			if (arenaTool == ArenaTool.Dagger)
 				ImGui.EndDisabled();
 		}
+
+		ImGui.EndChild();
+
+		ImGui.SameLine();
+
+		ImGui.BeginChild("ArenaToolControls", new(256, 144));
 
 		switch (ArenaChild.ArenaTool)
 		{
@@ -42,5 +50,7 @@ public static class ArenaEditorControls
 				DaggerChild.Render();
 				break;
 		}
+
+		ImGui.EndChild();
 	}
 }
