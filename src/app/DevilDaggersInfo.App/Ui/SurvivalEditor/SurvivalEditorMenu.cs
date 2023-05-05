@@ -7,7 +7,7 @@ using ImGuiNET;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor;
 
-public static class SurvivalEditorMenu
+public static class SurvivalEditorMenu // TODO: Rename everything to SpawnsetEditor.
 {
 	public static void Render()
 	{

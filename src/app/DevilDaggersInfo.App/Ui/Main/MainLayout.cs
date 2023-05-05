@@ -47,7 +47,7 @@ public static class MainLayout
 
 		const float buttonAlpha = 0.5f;
 
-		if (MainButtonAt(0, 0, new(1, 0, 0, buttonAlpha), "Survival Editor (wip)"))
+		if (MainButtonAt(0, 0, new(1, 0, 0, buttonAlpha), "Spawnset Editor (wip)"))
 			UiRenderer.Layout = LayoutType.SurvivalEditor;
 
 		MainButtonAt(1, 0, new(0, 1, 0, buttonAlpha), "Asset Editor (todo)");
