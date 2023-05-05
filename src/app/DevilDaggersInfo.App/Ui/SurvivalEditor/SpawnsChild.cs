@@ -16,20 +16,53 @@ namespace DevilDaggersInfo.App.Ui.SurvivalEditor;
 public static class SpawnsChild
 {
 	private static readonly bool[] _selected = new bool[2000]; // TODO: Make this dynamic.
+	private static readonly string[] _enemyNames = Enum.GetValues<EnemyType>().Select(et => et.ToString()).ToArray();
+
 	private static int _lastSelectedIndex = -1;
 	private static float _editDelay;
 	private static bool _delayEdited;
+
+	private static int _addEnemyTypeIndex;
+	private static float _addDelay;
 
 	public static void Render()
 	{
 		ImGui.BeginChild("SpawnsChild", new(400 - 8, 768 - 64));
 
-		ImGui.BeginChild("SpawnsListChild", new(400 - 8, 768 - 136));
+		ImGui.BeginChild("SpawnsListChild", new(400 - 8, 768 - 144));
 		RenderSpawnsTable();
 		ImGui.EndChild();
 
-		ImGui.BeginChild("SpawnControlsChild", new(400 - 8, 64));
-		ImGui.Button("Add", new(64, 32));
+		ImGui.BeginChild("SpawnControlsChild", new(400 - 8, 72));
+
+		ImGui.BeginChild("AddAndInsertButtons", new(72, 72));
+		if (ImGui.Button("Add", new(64, 32)))
+		{
+			EnemyType enemyType = _addEnemyTypeIndex is >= 0 and <= 9 ? (EnemyType)_addEnemyTypeIndex : EnemyType.Empty;
+			SpawnsetState.Spawnset = SpawnsetState.Spawnset with { Spawns = SpawnsetState.Spawnset.Spawns.Add(new(enemyType, _addDelay)) };
+			SpawnsetHistoryUtils.Save(SpawnsetEditType.SpawnAdd);
+		}
+
+		if (ImGui.Button("Insert", new(64, 32)))
+		{
+			int selectedIndex = Array.IndexOf(_selected, true);
+			if (selectedIndex == -1)
+				selectedIndex = 0;
+
+			EnemyType enemyType = _addEnemyTypeIndex is >= 0 and <= 9 ? (EnemyType)_addEnemyTypeIndex : EnemyType.Empty;
+			SpawnsetState.Spawnset = SpawnsetState.Spawnset with { Spawns = SpawnsetState.Spawnset.Spawns.Insert(selectedIndex, new(enemyType, _addDelay)) };
+			SpawnsetHistoryUtils.Save(SpawnsetEditType.SpawnInsert);
+		}
+
+		ImGui.EndChild();
+
+		ImGui.SameLine();
+
+		ImGui.BeginChild("AddSpawnControls");
+		ImGui.Combo("Enemy", ref _addEnemyTypeIndex, _enemyNames, _enemyNames.Length);
+		ImGui.InputFloat("Delay", ref _addDelay, 1, 2, "%.4f");
+		ImGui.EndChild();
+
 		ImGui.EndChild();
 
 		ImGui.EndChild();
@@ -55,12 +88,8 @@ public static class SpawnsChild
 
 				if (io.KeysDown[(int)Key.Delete])
 				{
-					SpawnsetState.Spawnset = SpawnsetState.Spawnset with
-					{
-						Spawns = SpawnsetState.Spawnset.Spawns.Where((_, i) => !_selected[i]).ToImmutableArray(),
-					};
+					SpawnsetState.Spawnset = SpawnsetState.Spawnset with { Spawns = SpawnsetState.Spawnset.Spawns.Where((_, i) => !_selected[i]).ToImmutableArray() };
 					Array.Fill(_selected, false);
-
 					SpawnsetHistoryUtils.Save(SpawnsetEditType.SpawnDelete);
 				}
 			}
