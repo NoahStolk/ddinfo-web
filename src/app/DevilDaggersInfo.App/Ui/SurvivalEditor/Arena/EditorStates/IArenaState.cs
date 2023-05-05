@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Arena.EditorControls;
+namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Arena.EditorStates;
 
 public interface IArenaState
 {

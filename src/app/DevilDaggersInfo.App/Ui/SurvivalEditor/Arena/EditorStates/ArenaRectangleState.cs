@@ -5,7 +5,7 @@ using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using ImGuiNET;
 using System.Numerics;
 
-namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Arena.EditorControls;
+namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Arena.EditorStates;
 
 public class ArenaRectangleState : IArenaState
 {

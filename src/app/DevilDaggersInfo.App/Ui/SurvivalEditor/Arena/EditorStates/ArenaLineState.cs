@@ -6,7 +6,7 @@ using DevilDaggersInfo.Core.Spawnset;
 using ImGuiNET;
 using System.Numerics;
 
-namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Arena.EditorControls;
+namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Arena.EditorStates;
 
 public class ArenaLineState : IArenaState
 {
