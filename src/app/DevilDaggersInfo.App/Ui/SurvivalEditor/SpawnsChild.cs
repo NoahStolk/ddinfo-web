@@ -16,6 +16,8 @@ public static class SpawnsChild
 {
 	private static readonly bool[] _selected = new bool[2000]; // TODO: Make this dynamic.
 	private static int _lastSelectedIndex = -1;
+	private static float _editDelay;
+	private static bool _delayEdited;
 
 	public static void Render()
 	{
@@ -99,31 +101,9 @@ public static class SpawnsChild
 					_lastSelectedIndex = spawn.Index;
 				}
 
+				EditContextItem(spawn);
+
 				ImGui.TableNextColumn();
-
-				if (ImGui.BeginPopupContextItem(spawn.Index.ToString()))
-				{
-					ImGui.Text($"Edit #{spawn.Index} ({spawn.EnemyType} at {spawn.Seconds.ToString(StringFormats.TimeFormat)})");
-
- #pragma warning disable S3267
-					foreach (EnemyType enemyType in Enum.GetValues<EnemyType>())
- #pragma warning restore S3267
-					{
-						if (ImGui.Button(enemyType.ToString(), new(96, 16)))
-						{
-							Spawn oldSpawn = SpawnsetState.Spawnset.Spawns[spawn.Index];
-							SpawnsetState.Spawnset = SpawnsetState.Spawnset with
-							{
-								Spawns = SpawnsetState.Spawnset.Spawns.SetItem(spawn.Index, new(enemyType, oldSpawn.Delay)),
-							};
-
-							SpawnsetHistoryUtils.Save(SpawnsetEditType.SpawnEdit);
-							ImGui.CloseCurrentPopup();
-						}
-					}
-
-					ImGui.EndPopup();
-				}
 
 				ImGui.TextColored(spawn.EnemyType.GetColor(GameConstants.CurrentVersion), spawn.EnemyType.ToString());
 				ImGui.TableNextColumn();
@@ -143,6 +123,48 @@ public static class SpawnsChild
 
 			ImGui.PopStyleVar();
 			ImGui.EndTable();
+		}
+	}
+
+	private static void EditContextItem(SpawnUiEntry spawn)
+	{
+		bool saved = false;
+		if (ImGui.BeginPopupContextItem(spawn.Index.ToString()))
+		{
+			if (!_delayEdited)
+				_editDelay = (float)spawn.Delay;
+
+			ImGui.Text($"Edit #{spawn.Index} ({spawn.EnemyType} at {spawn.Seconds.ToString(StringFormats.TimeFormat)})");
+
+			foreach (EnemyType enemyType in Enum.GetValues<EnemyType>())
+			{
+				if (ImGui.Button(enemyType.ToString(), new(96, 18)))
+				{
+					SaveEditedSpawn(spawn.Index, enemyType, _editDelay);
+					saved = true;
+				}
+			}
+
+			ImGui.InputFloat("Delay", ref _editDelay, 1, 5, "%.4f");
+			if (!saved && Math.Abs(_editDelay - spawn.Delay) > 0.0001f)
+				_delayEdited = true;
+
+			if (ImGui.Button("Save", new(128, 20)))
+				SaveEditedSpawn(spawn.Index, spawn.EnemyType, _editDelay);
+
+			ImGui.EndPopup();
+		}
+
+		static void SaveEditedSpawn(int spawnIndex, EnemyType enemyType, float delay)
+		{
+			SpawnsetState.Spawnset = SpawnsetState.Spawnset with
+			{
+				Spawns = SpawnsetState.Spawnset.Spawns.SetItem(spawnIndex, new(enemyType, delay)),
+			};
+
+			SpawnsetHistoryUtils.Save(SpawnsetEditType.SpawnEdit);
+			ImGui.CloseCurrentPopup();
+			_delayEdited = false;
 		}
 	}
 }
