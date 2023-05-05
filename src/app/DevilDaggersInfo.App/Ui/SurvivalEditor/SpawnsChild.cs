@@ -5,6 +5,7 @@ using DevilDaggersInfo.Common;
 using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Core.Spawnset.Extensions;
 using DevilDaggersInfo.Core.Wiki;
+using DevilDaggersInfo.Core.Wiki.Structs;
 using ImGuiNET;
 using Silk.NET.Input;
 using System.Collections.Immutable;
@@ -138,11 +139,22 @@ public static class SpawnsChild
 
 			foreach (EnemyType enemyType in Enum.GetValues<EnemyType>())
 			{
+				Color color = enemyType.GetColor(GameConstants.CurrentVersion);
+				ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(0, 0, 0, 1));
+				ImGui.PushStyleColor(ImGuiCol.Button, color);
+				ImGui.PushStyleColor(ImGuiCol.ButtonHovered, color + new Vector4(0.3f, 0.3f, 0.3f, 0));
+				ImGui.PushStyleColor(ImGuiCol.ButtonActive, color + new Vector4(0.5f, 0.5f, 0.5f, 0));
+
 				if (ImGui.Button(enemyType.ToString(), new(96, 18)))
 				{
 					SaveEditedSpawn(spawn.Index, enemyType, _editDelay);
 					saved = true;
 				}
+
+				ImGui.PopStyleColor();
+				ImGui.PopStyleColor();
+				ImGui.PopStyleColor();
+				ImGui.PopStyleColor();
 			}
 
 			ImGui.InputFloat("Delay", ref _editDelay, 1, 5, "%.4f");
