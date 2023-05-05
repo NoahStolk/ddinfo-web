@@ -26,21 +26,4 @@ public static class SurvivalEditorWindow
 
 		ImGui.End();
 	}
-
-	/*
-	public void Update()
-	{
-		if (!Input.IsCtrlHeld())
-			return;
-
-		Keys? key = _keySubmitter.GetKey();
-		if (key.HasValue)
-		{
-			if (key == Keys.Z && StateManager.SpawnsetHistoryState.CurrentIndex > 0)
-				StateManager.Dispatch(new SetSpawnsetHistoryIndex(StateManager.SpawnsetHistoryState.CurrentIndex - 1));
-			else if (key == Keys.Y && StateManager.SpawnsetHistoryState.CurrentIndex < StateManager.SpawnsetHistoryState.History.Count - 1)
-				StateManager.Dispatch(new SetSpawnsetHistoryIndex(StateManager.SpawnsetHistoryState.CurrentIndex + 1));
-		}
-	}
-	 */
 }
