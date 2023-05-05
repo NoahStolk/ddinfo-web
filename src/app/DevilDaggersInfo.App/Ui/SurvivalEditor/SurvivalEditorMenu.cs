@@ -50,19 +50,19 @@ public static class SurvivalEditorMenu
 
 	private static void RenderFileMenu()
 	{
-		if (ImGui.MenuItem("New"))
+		if (ImGui.MenuItem("New", "Ctrl+N"))
 			NewSpawnset();
 
-		if (ImGui.MenuItem("Open"))
+		if (ImGui.MenuItem("Open", "Ctrl+O"))
 			OpenSpawnset();
 
 		if (ImGui.MenuItem("Open default (V3)"))
 			OpenDefaultSpawnset();
 
-		if (ImGui.MenuItem("Save"))
+		if (ImGui.MenuItem("Save", "Ctrl+S"))
 			SaveSpawnset();
 
-		if (ImGui.MenuItem("Replace"))
+		if (ImGui.MenuItem("Replace", "Ctrl+R"))
 			ReplaceSpawnset();
 
 		ImGui.Separator();
