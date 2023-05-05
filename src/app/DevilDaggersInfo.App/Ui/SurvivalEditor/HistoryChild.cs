@@ -15,7 +15,7 @@ public static class HistoryChild
 	public static void Render()
 	{
 		ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(8, 1));
-		ImGui.BeginChild("HistoryChild", new(256, 712));
+		ImGui.BeginChild("HistoryChild", new(244, 712));
 
 		for (int i = 0; i < SpawnsetState.History.Count; i++)
 		{

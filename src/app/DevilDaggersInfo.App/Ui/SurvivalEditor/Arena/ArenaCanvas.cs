@@ -46,7 +46,7 @@ public static class ArenaCanvas
 					if (Color.Black != colorValue)
 					{
 						const int offset = 2;
-						const int size = 2;
+						const int size = ArenaChild.TileSize - offset * 2;
 						drawList.AddRectFilled(min + new Vector2(offset), min + new Vector2(offset) + new Vector2(size), ImGui.GetColorU32(colorValue));
 					}
 				}
@@ -76,17 +76,17 @@ public static class ArenaCanvas
 		Vector2 arenaCenter = origin + new Vector2((int)(SpawnsetBinary.ArenaDimensionMax / 2f * ArenaChild.TileSize));
 
 		float shrinkStartRadius = SpawnsetState.Spawnset.ShrinkStart / tileUnit * ArenaChild.TileSize;
-		if (shrinkStartRadius > 0)
+		if (shrinkStartRadius is > 0 and < 300)
 			drawList.AddCircle(arenaCenter, shrinkStartRadius, ImGui.GetColorU32(Color.Blue));
 
 		float shrinkEndTime = SpawnsetState.Spawnset.GetShrinkEndTime();
 		float shrinkRadius = shrinkEndTime == 0 ? SpawnsetState.Spawnset.ShrinkStart : Math.Max(SpawnsetState.Spawnset.ShrinkStart - ArenaChild.CurrentSecond / shrinkEndTime * (SpawnsetState.Spawnset.ShrinkStart - SpawnsetState.Spawnset.ShrinkEnd), SpawnsetState.Spawnset.ShrinkEnd);
 		float shrinkCurrentRadius = shrinkRadius / tileUnit * ArenaChild.TileSize;
-		if (shrinkCurrentRadius > 0)
+		if (shrinkCurrentRadius is > 0 and < 300)
 			drawList.AddCircle(arenaCenter, shrinkCurrentRadius, ImGui.GetColorU32(Color.Purple));
 
 		float shrinkEndRadius = SpawnsetState.Spawnset.ShrinkEnd / tileUnit * ArenaChild.TileSize;
-		if (shrinkEndRadius > 0)
+		if (shrinkEndRadius is > 0 and < 300)
 			drawList.AddCircle(arenaCenter, shrinkEndRadius, ImGui.GetColorU32(Color.Red));
 	}
 }

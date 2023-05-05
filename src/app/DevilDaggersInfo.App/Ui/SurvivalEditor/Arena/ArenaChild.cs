@@ -46,7 +46,7 @@ public static class ArenaChild
 
 	public static void Render()
 	{
-		ImGui.BeginChild("ArenaChild", new(400 - 8, 768 - 64));
+		ImGui.BeginChild("ArenaChild", new(416 - 8, 768 - 64));
 
 		ImGui.BeginChild("Arena", ArenaSize);
 
