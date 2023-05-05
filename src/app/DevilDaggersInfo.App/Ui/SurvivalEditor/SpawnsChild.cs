@@ -2,6 +2,7 @@ using DevilDaggersInfo.App.Ui.Base.Extensions;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.State;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using DevilDaggersInfo.Common;
+using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Core.Spawnset.Extensions;
 using DevilDaggersInfo.Core.Wiki;
 using ImGuiNET;
@@ -99,6 +100,30 @@ public static class SpawnsChild
 				}
 
 				ImGui.TableNextColumn();
+
+				if (ImGui.BeginPopupContextItem(spawn.Index.ToString()))
+				{
+					ImGui.Text($"Edit #{spawn.Index} ({spawn.EnemyType} at {spawn.Seconds.ToString(StringFormats.TimeFormat)})");
+
+ #pragma warning disable S3267
+					foreach (EnemyType enemyType in Enum.GetValues<EnemyType>())
+ #pragma warning restore S3267
+					{
+						if (ImGui.Button(enemyType.ToString(), new(96, 16)))
+						{
+							Spawn oldSpawn = SpawnsetState.Spawnset.Spawns[spawn.Index];
+							SpawnsetState.Spawnset = SpawnsetState.Spawnset with
+							{
+								Spawns = SpawnsetState.Spawnset.Spawns.SetItem(spawn.Index, new(enemyType, oldSpawn.Delay)),
+							};
+
+							SpawnsetHistoryUtils.Save(SpawnsetEditType.SpawnEdit);
+							ImGui.CloseCurrentPopup();
+						}
+					}
+
+					ImGui.EndPopup();
+				}
 
 				ImGui.TextColored(spawn.EnemyType.GetColor(GameConstants.CurrentVersion), spawn.EnemyType.ToString());
 				ImGui.TableNextColumn();
