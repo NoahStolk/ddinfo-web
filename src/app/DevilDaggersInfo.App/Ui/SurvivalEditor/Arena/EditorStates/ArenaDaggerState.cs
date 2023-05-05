@@ -18,17 +18,17 @@ public class ArenaDaggerState : IArenaState
 		if (SpawnsetState.Spawnset.GameMode != GameMode.Race)
 			return;
 
-		if (ArenaChild.LeftMouse.JustPressed)
+		if (ImGui.IsMouseClicked(ImGuiMouseButton.Left))
 		{
 			_settingRaceDagger = true;
 			_position = GetSnappedDaggerPosition();
 		}
-		else if (ArenaChild.LeftMouse.Down)
+		else if (ImGui.IsMouseDown(ImGuiMouseButton.Left))
 		{
 			if (_settingRaceDagger)
 				_position = GetSnappedDaggerPosition();
 		}
-		else if (ArenaChild.LeftMouse.JustReleased)
+		else if (ImGui.IsMouseReleased(ImGuiMouseButton.Left))
 		{
 			if (!_position.HasValue)
 				return;

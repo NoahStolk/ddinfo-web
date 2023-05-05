@@ -14,12 +14,12 @@ public class ArenaRectangleState : IArenaState
 
 	public void Handle(ArenaMousePosition mousePosition)
 	{
-		if (ArenaChild.LeftMouse.JustPressed)
+		if (ImGui.IsMouseClicked(ImGuiMouseButton.Left))
 		{
 			_rectangleStart = mousePosition.Tile;
 			_newArena = SpawnsetState.Spawnset.ArenaTiles.GetMutableClone();
 		}
-		else if (ArenaChild.LeftMouse.JustReleased)
+		else if (ImGui.IsMouseReleased(ImGuiMouseButton.Left))
 		{
 			Emit(mousePosition);
 		}
@@ -27,7 +27,7 @@ public class ArenaRectangleState : IArenaState
 
 	public void HandleOutOfRange(ArenaMousePosition mousePosition)
 	{
-		if (ArenaChild.LeftMouse.JustReleased)
+		if (ImGui.IsMouseReleased(ImGuiMouseButton.Left))
 			Emit(mousePosition);
 	}
 

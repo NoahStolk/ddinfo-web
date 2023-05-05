@@ -1,9 +1,7 @@
 using DevilDaggersInfo.App.Engine.Maths.Numerics;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.State;
-using DevilDaggersInfo.App.Utils;
 using DevilDaggersInfo.Core.Spawnset;
 using ImGuiNET;
-using Silk.NET.Input;
 using System.Numerics;
 using System.Security.Cryptography;
 
@@ -11,9 +9,6 @@ namespace DevilDaggersInfo.App.Ui.SurvivalEditor;
 
 public static class HistoryChild
 {
-	private static readonly ImGuiIoState _keyZ = new(false, (int)Key.Z);
-	private static readonly ImGuiIoState _keyY = new(false, (int)Key.Y);
-
 	private static bool _updateScroll;
 
 	static HistoryChild()
@@ -75,14 +70,11 @@ public static class HistoryChild
 		ImGui.EndChild();
 
 		ImGuiIOPtr io = ImGui.GetIO();
-		_keyZ.Update(io);
-		_keyY.Update(io);
-
 		if (io.KeyCtrl)
 		{
-			if (_keyZ.JustPressed && CurrentHistoryIndex > 0)
+			if (ImGui.IsKeyPressed(ImGuiKey.Z) && CurrentHistoryIndex > 0)
 				SetHistoryIndex(CurrentHistoryIndex - 1);
-			else if (_keyY.JustPressed && CurrentHistoryIndex < History.Count - 1)
+			else if (ImGui.IsKeyPressed(ImGuiKey.Y) && CurrentHistoryIndex < History.Count - 1)
 				SetHistoryIndex(CurrentHistoryIndex + 1);
 		}
 

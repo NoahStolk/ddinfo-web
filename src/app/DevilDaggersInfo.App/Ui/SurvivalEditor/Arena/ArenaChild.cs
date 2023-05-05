@@ -1,7 +1,6 @@
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Arena.EditorStates;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.State;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
-using DevilDaggersInfo.App.Utils;
 using DevilDaggersInfo.Core.Spawnset;
 using ImGuiNET;
 using System.Diagnostics;
@@ -26,8 +25,6 @@ public static class ArenaChild
 
 	private static float _currentSecond;
 
-	public static ImGuiIoState LeftMouse { get; } = new(true, 0);
-
 	public static float CurrentSecond => _currentSecond;
 
 	public static float SelectedHeight { get; set; }
@@ -51,7 +48,6 @@ public static class ArenaChild
 		ImGui.BeginChild("Arena", ArenaSize);
 
 		ImGuiIOPtr io = ImGui.GetIO();
-		LeftMouse.Update(io);
 
 		ArenaMousePosition mousePosition = ArenaMousePosition.Get(io, ImGui.GetWindowPos());
 
@@ -68,7 +64,7 @@ public static class ArenaChild
 		}
 
 		IArenaState activeState = GetActiveState();
-		if (ImGui.IsWindowFocused())
+		//if (ImGui.IsWindowFocused()) // TODO: This breaks the first click on the arena.
 		{
 			if (mousePosition.IsValid)
 				activeState.Handle(mousePosition);

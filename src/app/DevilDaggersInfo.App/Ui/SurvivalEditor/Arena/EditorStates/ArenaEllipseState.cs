@@ -15,12 +15,12 @@ public class ArenaEllipseState : IArenaState
 
 	public void Handle(ArenaMousePosition mousePosition)
 	{
-		if (ArenaChild.LeftMouse.JustPressed)
+		if (ImGui.IsMouseClicked(ImGuiMouseButton.Left))
 		{
 			_ellipseStart = mousePosition.Real;
 			_newArena = SpawnsetState.Spawnset.ArenaTiles.GetMutableClone();
 		}
-		else if (ArenaChild.LeftMouse.JustReleased)
+		else if (ImGui.IsMouseReleased(ImGuiMouseButton.Left))
 		{
 			Emit(mousePosition);
 		}
@@ -28,7 +28,7 @@ public class ArenaEllipseState : IArenaState
 
 	public void HandleOutOfRange(ArenaMousePosition mousePosition)
 	{
-		if (ArenaChild.LeftMouse.JustReleased)
+		if (ImGui.IsMouseReleased(ImGuiMouseButton.Left))
 			Emit(mousePosition);
 	}
 

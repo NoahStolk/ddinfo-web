@@ -2,20 +2,13 @@ using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.User.Settings;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.State;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
-using DevilDaggersInfo.App.Utils;
 using DevilDaggersInfo.Core.Spawnset;
 using ImGuiNET;
-using Silk.NET.Input;
 
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor;
 
 public static class SurvivalEditorMenu
 {
-	private static readonly ImGuiIoState _keyN = new(false, (int)Key.N);
-	private static readonly ImGuiIoState _keyO = new(false, (int)Key.O);
-	private static readonly ImGuiIoState _keyS = new(false, (int)Key.S);
-	private static readonly ImGuiIoState _keyR = new(false, (int)Key.R);
-
 	public static void Render()
 	{
 		if (ImGui.BeginMenuBar())
@@ -30,20 +23,16 @@ public static class SurvivalEditorMenu
 		}
 
 		ImGuiIOPtr io = ImGui.GetIO();
-		_keyN.Update(io);
-		_keyO.Update(io);
-		_keyS.Update(io);
-		_keyR.Update(io);
-
 		if (io.KeyCtrl)
 		{
-			if (_keyN.JustPressed)
+			// TODO: Fix manual mapping?
+			if (ImGui.IsKeyPressed(ImGuiKey.N) || ImGui.IsKeyPressed((ImGuiKey)78))
 				NewSpawnset();
-			else if (_keyO.JustPressed)
+			else if (ImGui.IsKeyPressed(ImGuiKey.O) || ImGui.IsKeyPressed((ImGuiKey)79))
 				OpenSpawnset();
-			else if (_keyS.JustPressed)
+			else if (ImGui.IsKeyPressed(ImGuiKey.S) || ImGui.IsKeyPressed((ImGuiKey)83))
 				SaveSpawnset();
-			else if (_keyR.JustPressed)
+			else if (ImGui.IsKeyPressed(ImGuiKey.R) || ImGui.IsKeyPressed((ImGuiKey)82))
 				ReplaceSpawnset();
 		}
 	}

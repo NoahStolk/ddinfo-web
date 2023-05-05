@@ -15,12 +15,12 @@ public class ArenaPencilState : IArenaState
 
 	public void Handle(ArenaMousePosition mousePosition)
 	{
-		if (ArenaChild.LeftMouse.JustPressed)
+		if (ImGui.IsMouseClicked(ImGuiMouseButton.Left))
 		{
 			_pencilStart = mousePosition.Real;
 			_modifiedCoords = new();
 		}
-		else if (ArenaChild.LeftMouse.Down)
+		else if (ImGui.IsMouseDown(ImGuiMouseButton.Left))
 		{
 			if (!_pencilStart.HasValue || _modifiedCoords == null)
 				return;
@@ -48,7 +48,7 @@ public class ArenaPencilState : IArenaState
 			_modifiedCoords.Add(new(mousePosition.Tile.X, mousePosition.Tile.Y));
 			_pencilStart = mousePosition.Real;
 		}
-		else if (ArenaChild.LeftMouse.JustReleased)
+		else if (ImGui.IsMouseReleased(ImGuiMouseButton.Left))
 		{
 			Emit();
 		}
@@ -56,9 +56,9 @@ public class ArenaPencilState : IArenaState
 
 	public void HandleOutOfRange(ArenaMousePosition mousePosition)
 	{
-		if (ArenaChild.LeftMouse.Down)
+		if (ImGui.IsMouseDown(ImGuiMouseButton.Left))
 			_pencilStart = mousePosition.Real;
-		else if (ArenaChild.LeftMouse.JustReleased)
+		else if (ImGui.IsMouseReleased(ImGuiMouseButton.Left))
 			Emit();
 	}
 
