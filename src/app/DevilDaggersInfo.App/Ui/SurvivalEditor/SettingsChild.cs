@@ -1,3 +1,4 @@
+using DevilDaggersInfo.App.Engine.Maths.Numerics;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.State;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using DevilDaggersInfo.Core.Spawnset;
@@ -25,6 +26,10 @@ public static class SettingsChild
 	private static void RenderFormat()
 	{
 		ImGui.Text("Format");
+		ImGui.SameLine();
+		ImGui.TextColored(Color.Gray(0.7f), "(?)");
+		if (ImGui.IsItemHovered())
+			ImGui.SetTooltip("There is generally no reason to change the spawnset format,\nunless you want to play spawnsets in an old version of the game.\n\nThese options are mainly here for backwards compatibility.");
 		ImGui.Separator();
 		ImGui.Indent(8);
 
