@@ -50,7 +50,6 @@ public static class ArenaChild
 
 		ImGui.BeginChild("Arena", ArenaSize);
 
-		// Update
 		ImGuiIOPtr io = ImGui.GetIO();
 		LeftMouse.Update(io);
 
@@ -69,12 +68,14 @@ public static class ArenaChild
 		}
 
 		IArenaState activeState = GetActiveState();
-		if (mousePosition.IsValid)
-			activeState.Handle(mousePosition);
-		else
-			activeState.HandleOutOfRange(mousePosition);
+		if (ImGui.IsWindowFocused())
+		{
+			if (mousePosition.IsValid)
+				activeState.Handle(mousePosition);
+			else
+				activeState.HandleOutOfRange(mousePosition);
+		}
 
-		// Render
 		ArenaCanvas.Render();
 		activeState.Render(mousePosition);
 
