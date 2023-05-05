@@ -23,6 +23,7 @@ public static class HistoryChild
 
 			const int borderSize = 2;
 			ImGui.PushStyleVar(ImGuiStyleVar.FrameBorderSize, borderSize);
+			ImGui.PushStyleVar(ImGuiStyleVar.ButtonTextAlign, new Vector2(0, 0.5f));
 
 			Color color = history.EditType.GetColor();
 			ImGui.PushStyleColor(ImGuiCol.Button, color);
@@ -30,13 +31,15 @@ public static class HistoryChild
 			ImGui.PushStyleColor(ImGuiCol.ButtonActive, color + new Vector4(0.5f, 0.5f, 0.5f, 0));
 			ImGui.PushStyleColor(ImGuiCol.Border, i == SpawnsetState.CurrentHistoryIndex ? Color.White : Color.Black);
 
-			ImGui.Button(history.EditType.GetChange(), new(240, 20));
+			if (ImGui.Button($"{i:00} {history.EditType.GetChange()}", new(226, 20)))
+				SetHistory(i);
 
 			ImGui.PopStyleColor();
 			ImGui.PopStyleColor();
 			ImGui.PopStyleColor();
 			ImGui.PopStyleColor();
 
+			ImGui.PopStyleVar();
 			ImGui.PopStyleVar();
 		}
 
