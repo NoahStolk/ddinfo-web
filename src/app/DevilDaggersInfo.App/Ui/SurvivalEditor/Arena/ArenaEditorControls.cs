@@ -15,11 +15,23 @@ public static class ArenaEditorControls
 
 		switch (ArenaChild.ArenaTool)
 		{
-			case ArenaTool.Bucket:
-				BucketChild.Render();
+			case ArenaTool.Pencil:
+				PencilChild.Render();
+				break;
+			case ArenaTool.Line:
+				LineChild.Render();
 				break;
 			case ArenaTool.Rectangle:
 				RectangleChild.Render();
+				break;
+			case ArenaTool.Ellipse:
+				EllipseChild.Render();
+				break;
+			case ArenaTool.Bucket:
+				BucketChild.Render();
+				break;
+			case ArenaTool.Dagger:
+				DaggerChild.Render();
 				break;
 		}
 	}

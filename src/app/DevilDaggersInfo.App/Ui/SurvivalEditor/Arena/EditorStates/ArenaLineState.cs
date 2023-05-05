@@ -1,5 +1,5 @@
 using DevilDaggersInfo.App.Engine.Maths.Numerics;
-using DevilDaggersInfo.App.Ui.Base.StateManagement;
+using DevilDaggersInfo.App.Ui.SurvivalEditor.Arena.EditorChildren;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.State;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using DevilDaggersInfo.Core.Spawnset;
@@ -109,7 +109,7 @@ public class ArenaLineState : IArenaState
 
 	private static float GetDisplayRadius()
 	{
-		return StateManager.ArenaLineState.Thickness / 2 * ArenaChild.TileSize;
+		return LineChild.Thickness / 2 * ArenaChild.TileSize;
 	}
 
 	private static Vector2 GetSnappedPosition(Vector2 position)

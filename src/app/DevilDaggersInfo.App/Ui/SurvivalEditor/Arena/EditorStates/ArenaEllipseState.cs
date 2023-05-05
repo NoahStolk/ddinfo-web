@@ -1,6 +1,6 @@
 using DevilDaggersInfo.App.Engine.Maths.Numerics;
 using DevilDaggersInfo.App.Extensions;
-using DevilDaggersInfo.App.Ui.Base.StateManagement;
+using DevilDaggersInfo.App.Ui.SurvivalEditor.Arena.EditorChildren;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.State;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using ImGuiNET;
@@ -69,9 +69,9 @@ public class ArenaEllipseState : IArenaState
 
 		drawList.AddEllipse(origin + ellipse.Center, ellipse.Radius, ImGui.GetColorU32(Color.HalfTransparentWhite), 40, 1);
 
-		if (!StateManager.ArenaEllipseState.Filled)
+		if (!EllipseChild.Filled)
 		{
-			ArenaEditingUtils.AlignedEllipse innerEllipse = GetEllipse(_ellipseStart.Value, mousePosition, (StateManager.ArenaEllipseState.Thickness - 1) * ArenaChild.TileSize);
+			ArenaEditingUtils.AlignedEllipse innerEllipse = GetEllipse(_ellipseStart.Value, mousePosition, (EllipseChild.Thickness - 1) * ArenaChild.TileSize);
 			drawList.AddEllipse(origin + innerEllipse.Center, innerEllipse.Radius, ImGui.GetColorU32(Color.White), 40, 1);
 		}
 	}
@@ -83,7 +83,7 @@ public class ArenaEllipseState : IArenaState
 
 		ArenaEditingUtils.AlignedEllipse ellipse = GetEllipse(_ellipseStart.Value, mousePosition);
 
-		if (StateManager.ArenaEllipseState.Filled)
+		if (EllipseChild.Filled)
 		{
 			for (int i = 0; i < SpawnsetState.Spawnset.ArenaDimension; i++)
 			{
@@ -99,7 +99,7 @@ public class ArenaEllipseState : IArenaState
 		}
 		else
 		{
-			ArenaEditingUtils.AlignedEllipse innerEllipse = GetEllipse(_ellipseStart.Value, mousePosition, (StateManager.ArenaEllipseState.Thickness - 1) * ArenaChild.TileSize);
+			ArenaEditingUtils.AlignedEllipse innerEllipse = GetEllipse(_ellipseStart.Value, mousePosition, (EllipseChild.Thickness - 1) * ArenaChild.TileSize);
 			for (int i = 0; i < SpawnsetState.Spawnset.ArenaDimension; i++)
 			{
 				for (int j = 0; j < SpawnsetState.Spawnset.ArenaDimension; j++)

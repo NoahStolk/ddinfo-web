@@ -1,6 +1,5 @@
 using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.States;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.ReplayEditor.States;
-using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.States;
 
 namespace DevilDaggersInfo.App.Ui.Base.StateManagement;
 
@@ -16,12 +15,6 @@ public static class StateManager
 	public static RecordingState RecordingState { get; private set; } = RecordingState.GetDefault();
 	public static ReplaySceneState ReplaySceneState { get; private set; } = ReplaySceneState.GetDefault();
 	public static UploadResponseState UploadResponseState { get; private set; } = UploadResponseState.GetDefault();
-
-	// Survival editor states.
-	public static ArenaPencilState ArenaPencilState { get; private set; } = ArenaPencilState.GetDefault();
-	public static ArenaLineState ArenaLineState { get; private set; } = ArenaLineState.GetDefault();
-	public static ArenaEllipseState ArenaEllipseState { get; private set; } = ArenaEllipseState.GetDefault();
-	public static ArenaDaggerState ArenaDaggerState { get; private set; } = ArenaDaggerState.GetDefault();
 
 	// Replay editor states.
 	public static ReplayState ReplayState { get; private set; } = ReplayState.GetDefault();
@@ -87,10 +80,6 @@ public static class StateManager
 				RecordingState = stateReducer.RecordingState;
 				ReplaySceneState = stateReducer.ReplaySceneState;
 				UploadResponseState = stateReducer.UploadResponseState;
-				ArenaPencilState = stateReducer.ArenaPencilState;
-				ArenaLineState = stateReducer.ArenaLineState;
-				ArenaEllipseState = stateReducer.ArenaEllipseState;
-				ArenaDaggerState = stateReducer.ArenaDaggerState;
 				ReplayState = stateReducer.ReplayState;
 			}
 

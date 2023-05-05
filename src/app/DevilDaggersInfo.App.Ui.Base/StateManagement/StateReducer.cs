@@ -1,6 +1,5 @@
 using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.States;
 using DevilDaggersInfo.App.Ui.Base.StateManagement.ReplayEditor.States;
-using DevilDaggersInfo.App.Ui.Base.StateManagement.SurvivalEditor.States;
 
 namespace DevilDaggersInfo.App.Ui.Base.StateManagement;
 
@@ -26,9 +25,5 @@ public record StateReducer
 	public RecordingState RecordingState { get; set; } = StateManager.RecordingState;
 	public ReplaySceneState ReplaySceneState { get; set; } = StateManager.ReplaySceneState;
 	public UploadResponseState UploadResponseState { get; set; } = StateManager.UploadResponseState;
-	public ArenaPencilState ArenaPencilState { get; set; } = StateManager.ArenaPencilState;
-	public ArenaLineState ArenaLineState { get; set; } = StateManager.ArenaLineState;
-	public ArenaEllipseState ArenaEllipseState { get; set; } = StateManager.ArenaEllipseState;
-	public ArenaDaggerState ArenaDaggerState { get; set; } = StateManager.ArenaDaggerState;
 	public ReplayState ReplayState { get; set; } = StateManager.ReplayState;
 }

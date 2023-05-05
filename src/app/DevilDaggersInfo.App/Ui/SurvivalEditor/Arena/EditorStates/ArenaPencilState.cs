@@ -1,5 +1,5 @@
 using DevilDaggersInfo.App.Engine.Maths.Numerics;
-using DevilDaggersInfo.App.Ui.Base.StateManagement;
+using DevilDaggersInfo.App.Ui.SurvivalEditor.Arena.EditorChildren;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.State;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using DevilDaggersInfo.Core.Spawnset;
@@ -28,7 +28,7 @@ public class ArenaPencilState : IArenaState
 			Vector2 pencilEnd = mousePosition.Real;
 			Vector2 start = ArenaEditingUtils.Snap(_pencilStart.Value, ArenaChild.TileSize) + ArenaChild.HalfTileSizeAsVector2;
 			Vector2 end = ArenaEditingUtils.Snap(pencilEnd, ArenaChild.TileSize) + ArenaChild.HalfTileSizeAsVector2;
-			ArenaEditingUtils.Stadium stadium = new(start, end, StateManager.ArenaPencilState.Size / 2 * ArenaChild.TileSize);
+			ArenaEditingUtils.Stadium stadium = new(start, end, PencilChild.Size / 2 * ArenaChild.TileSize);
 			for (int i = 0; i < SpawnsetBinary.ArenaDimensionMax; i++)
 			{
 				for (int j = 0; j < SpawnsetBinary.ArenaDimensionMax; j++)
@@ -109,7 +109,7 @@ public class ArenaPencilState : IArenaState
 
 	private static float GetDisplayRadius()
 	{
-		return StateManager.ArenaPencilState.Size / 2 * ArenaChild.TileSize;
+		return PencilChild.Size / 2 * ArenaChild.TileSize;
 	}
 
 	private static Vector2 GetSnappedPosition(Vector2 position)

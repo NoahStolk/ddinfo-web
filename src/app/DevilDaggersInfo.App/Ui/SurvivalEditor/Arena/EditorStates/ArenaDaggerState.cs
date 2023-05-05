@@ -1,5 +1,5 @@
 using DevilDaggersInfo.App.Engine.Maths.Numerics;
-using DevilDaggersInfo.App.Ui.Base.StateManagement;
+using DevilDaggersInfo.App.Ui.SurvivalEditor.Arena.EditorChildren;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.State;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using DevilDaggersInfo.Core.Spawnset;
@@ -44,7 +44,7 @@ public class ArenaDaggerState : IArenaState
 
 		Vector2 GetSnappedDaggerPosition()
 		{
-			return ArenaEditingUtils.Snap(mousePosition.Real, StateManager.ArenaDaggerState.Snap * ArenaChild.TileSize);
+			return ArenaEditingUtils.Snap(mousePosition.Real, DaggerChild.Snap * ArenaChild.TileSize);
 		}
 	}
 
