@@ -18,31 +18,10 @@ public static class SpawnsChild
 
 	public static void Render()
 	{
-		ImGuiIOPtr io = ImGui.GetIO();
-		if (io.KeyCtrl)
-		{
-			// TODO: Only do this when the spawns list is focused.
-			if (io.KeysDown[(int)Key.A])
-				Array.Fill(_selected, true);
-			else if (io.KeysDown[(int)Key.D])
-				Array.Fill(_selected, false);
-		}
-
-		if (io.KeysDown[(int)Key.Delete])
-		{
-			SpawnsetState.Spawnset = SpawnsetState.Spawnset with
-			{
-				Spawns = SpawnsetState.Spawnset.Spawns.Where((_, i) => !_selected[i]).ToImmutableArray(),
-			};
-			Array.Fill(_selected, false);
-
-			SpawnsetHistoryUtils.Save(SpawnsetEditType.SpawnDelete);
-		}
-
 		ImGui.BeginChild("SpawnsChild", new(400 - 8, 768 - 64));
 
 		ImGui.BeginChild("SpawnsListChild", new(400 - 8, 768 - 136));
-		RenderSpawnsTable(io);
+		RenderSpawnsTable();
 		ImGui.EndChild();
 
 		ImGui.BeginChild("SpawnControlsChild", new(400 - 8, 64));
@@ -52,11 +31,36 @@ public static class SpawnsChild
 		ImGui.EndChild();
 	}
 
-	private static void RenderSpawnsTable(ImGuiIOPtr io)
+	private static void RenderSpawnsTable()
 	{
 		ImGui.PushStyleVar(ImGuiStyleVar.CellPadding, new Vector2(4, 1));
 		if (ImGui.BeginTable("SpawnsTable", 6, ImGuiTableFlags.None))
 		{
+			ImGuiIOPtr io = ImGui.GetIO();
+
+			bool isFocused = true; // TODO: Get this from ImGui somehow.
+			if (isFocused)
+			{
+				if (io.KeyCtrl)
+				{
+					if (io.KeysDown[(int)Key.A])
+						Array.Fill(_selected, true);
+					else if (io.KeysDown[(int)Key.D])
+						Array.Fill(_selected, false);
+				}
+
+				if (io.KeysDown[(int)Key.Delete])
+				{
+					SpawnsetState.Spawnset = SpawnsetState.Spawnset with
+					{
+						Spawns = SpawnsetState.Spawnset.Spawns.Where((_, i) => !_selected[i]).ToImmutableArray(),
+					};
+					Array.Fill(_selected, false);
+
+					SpawnsetHistoryUtils.Save(SpawnsetEditType.SpawnDelete);
+				}
+			}
+
 			ImGui.TableSetupColumn("#", ImGuiTableColumnFlags.WidthFixed, 16);
 			ImGui.TableSetupColumn("Enemy", ImGuiTableColumnFlags.WidthFixed, 72);
 			ImGui.TableSetupColumn("Time", ImGuiTableColumnFlags.WidthFixed, 72);
