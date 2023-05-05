@@ -1,5 +1,5 @@
 using DevilDaggersInfo.App.Engine.Maths.Numerics;
-using DevilDaggersInfo.App.Ui.Base.StateManagement;
+using DevilDaggersInfo.App.Ui.SurvivalEditor.Arena.EditorChildren;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.State;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using ImGuiNET;
@@ -74,7 +74,7 @@ public class ArenaRectangleState : IArenaState
 		int endXa = Math.Min(SpawnsetState.Spawnset.ArenaDimension - 1, rectangle.X2);
 		int endYa = Math.Min(SpawnsetState.Spawnset.ArenaDimension - 1, rectangle.Y2);
 
-		if (StateManager.ArenaRectangleState.Filled)
+		if (RectangleChild.Filled)
 		{
 			for (int i = startXa; i <= endXa; i++)
 			{
@@ -84,7 +84,7 @@ public class ArenaRectangleState : IArenaState
 		}
 		else
 		{
-			int addedSize = StateManager.ArenaRectangleState.Thickness;
+			int addedSize = RectangleChild.Thickness;
 			int startXb = Math.Max(0, rectangle.X1 + addedSize);
 			int startYb = Math.Max(0, rectangle.Y1 + addedSize);
 			int endXb = Math.Min(SpawnsetState.Spawnset.ArenaDimension - 1, rectangle.X2 - addedSize);

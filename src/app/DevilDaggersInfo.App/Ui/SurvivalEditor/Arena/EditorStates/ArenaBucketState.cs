@@ -1,5 +1,5 @@
 using DevilDaggersInfo.App.Engine.Maths.Numerics;
-using DevilDaggersInfo.App.Ui.Base.StateManagement;
+using DevilDaggersInfo.App.Ui.SurvivalEditor.Arena.EditorChildren;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.State;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using DevilDaggersInfo.Core.Spawnset;
@@ -63,12 +63,12 @@ public class ArenaBucketState : IArenaState
 				float tileHeight = SpawnsetState.Spawnset.ArenaTiles[newX, newY];
 
 				float clampedTargetHeight = targetHeight;
-				if (targetHeight < StateManager.ArenaBucketState.VoidHeight)
-					clampedTargetHeight = StateManager.ArenaBucketState.VoidHeight;
-				if (tileHeight < StateManager.ArenaBucketState.VoidHeight)
-					tileHeight = StateManager.ArenaBucketState.VoidHeight;
+				if (targetHeight < BucketChild.VoidHeight)
+					clampedTargetHeight = BucketChild.VoidHeight;
+				if (tileHeight < BucketChild.VoidHeight)
+					tileHeight = BucketChild.VoidHeight;
 
-				if (MathF.Abs(tileHeight - clampedTargetHeight) < StateManager.ArenaBucketState.Tolerance)
+				if (MathF.Abs(tileHeight - clampedTargetHeight) < BucketChild.Tolerance)
 					FillNeighbors(newX, newY);
 			}
 		}
