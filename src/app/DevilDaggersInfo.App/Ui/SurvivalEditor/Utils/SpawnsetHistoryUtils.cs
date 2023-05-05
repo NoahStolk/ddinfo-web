@@ -15,13 +15,12 @@ public static class SpawnsetHistoryUtils
 		{
 			SpawnsetBinary copy = SpawnsetState.Spawnset.DeepCopy();
 			byte[] hash = MD5.HashData(copy.ToBytes());
-			SpawnsetState.History = new List<SpawnsetHistoryEntry> { new(copy, hash, spawnsetEditType) };
-			SpawnsetState.CurrentHistoryIndex = 0;
+			HistoryChild.UpdateHistory(new List<SpawnsetHistoryEntry> { new(copy, hash, spawnsetEditType) }, 0);
 		}
 		else
 		{
 			SpawnsetBinary copy = SpawnsetState.Spawnset.DeepCopy();
-			byte[] originalHash = SpawnsetState.History[SpawnsetState.CurrentHistoryIndex].Hash;
+			byte[] originalHash = HistoryChild.History[HistoryChild.CurrentHistoryIndex].Hash;
 			byte[] hash = MD5.HashData(copy.ToBytes());
 
 			if (ArrayUtils.AreEqual(originalHash, hash))
@@ -30,19 +29,18 @@ public static class SpawnsetHistoryUtils
 			SpawnsetHistoryEntry historyEntry = new(copy, hash, spawnsetEditType);
 
 			// Clear any newer history.
-			List<SpawnsetHistoryEntry> newHistory = SpawnsetState.History.ToList();
-			newHistory = newHistory.Take(SpawnsetState.CurrentHistoryIndex + 1).Append(historyEntry).ToList();
+			List<SpawnsetHistoryEntry> newHistory = HistoryChild.History.ToList();
+			newHistory = newHistory.Take(HistoryChild.CurrentHistoryIndex + 1).Append(historyEntry).ToList();
 
 			// Remove history if there are too many entries.
-			int newCurrentIndex = SpawnsetState.CurrentHistoryIndex + 1;
+			int newCurrentIndex = HistoryChild.CurrentHistoryIndex + 1;
 			if (newHistory.Count > _maxHistoryEntries)
 			{
 				newHistory.RemoveAt(0);
 				newCurrentIndex--;
 			}
 
-			SpawnsetState.History = newHistory;
-			SpawnsetState.CurrentHistoryIndex = newCurrentIndex;
+			HistoryChild.UpdateHistory(newHistory, newCurrentIndex);
 		}
 	}
 }
