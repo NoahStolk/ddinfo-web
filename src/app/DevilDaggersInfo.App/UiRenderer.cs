@@ -1,4 +1,5 @@
 using DevilDaggersInfo.App.Ui;
+using DevilDaggersInfo.App.Ui.Base.User.Settings;
 using DevilDaggersInfo.App.Ui.Config;
 using DevilDaggersInfo.App.Ui.Main;
 using DevilDaggersInfo.App.Ui.SurvivalEditor;
@@ -29,6 +30,9 @@ public static class UiRenderer
 				SurvivalEditorWindow.Render();
 				break;
 		}
+
+		if (UserSettings.Model.ShowDebugOutput)
+			DebugWindow.Render();
 
 		Modals.Render();
 	}

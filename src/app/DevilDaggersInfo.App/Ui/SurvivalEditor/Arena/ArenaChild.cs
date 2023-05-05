@@ -64,13 +64,14 @@ public static class ArenaChild
 		}
 
 		IArenaState activeState = GetActiveState();
-		//if (ImGui.IsWindowFocused()) // TODO: This breaks the first click on the arena.
-		{
-			if (mousePosition.IsValid)
-				activeState.Handle(mousePosition);
-			else
-				activeState.HandleOutOfRange(mousePosition);
-		}
+
+		// TODO: Only do this when the survival editor window is focused.
+		// This breaks the first click on the arena: if (ImGui.IsWindowFocused())
+		// So don't use that.
+		if (mousePosition.IsValid)
+			activeState.Handle(mousePosition);
+		else
+			activeState.HandleOutOfRange(mousePosition);
 
 		ArenaCanvas.Render();
 		activeState.Render(mousePosition);

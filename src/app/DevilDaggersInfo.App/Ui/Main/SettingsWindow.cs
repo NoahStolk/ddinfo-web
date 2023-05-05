@@ -25,6 +25,11 @@ public static class SettingsWindow
 		if (UserSettings.Model.FieldOfView != fieldOfView)
 			UserSettings.Model = UserSettings.Model with { FieldOfView = fieldOfView };
 
+		bool showDebugOutput = UserSettings.Model.ShowDebugOutput;
+		ImGui.Checkbox("Show debug output", ref showDebugOutput);
+		if (UserSettings.Model.ShowDebugOutput != showDebugOutput)
+			UserSettings.Model = UserSettings.Model with { ShowDebugOutput = showDebugOutput };
+
 		ImGui.End();
 	}
 }

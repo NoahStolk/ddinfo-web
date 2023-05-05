@@ -26,6 +26,8 @@ public static class SurvivalEditorMenu
 		if (io.KeyCtrl)
 		{
 			// TODO: Fix manual mapping?
+			// TODO: Prevent Ctrl+R from opening the replace dialog when the replace dialog is already open.
+			// ... Or just ignore key "presses" when the key is already held down.
 			if (ImGui.IsKeyPressed(ImGuiKey.N) || ImGui.IsKeyPressed((ImGuiKey)78))
 				NewSpawnset();
 			else if (ImGui.IsKeyPressed(ImGuiKey.O) || ImGui.IsKeyPressed((ImGuiKey)79))
