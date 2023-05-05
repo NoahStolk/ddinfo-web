@@ -22,6 +22,8 @@ public static class MainLayout
 		For more information, go to:
 		""";
 
+	private static readonly int _centerX = (int)Constants.LayoutSize.X / 2;
+
 	private static readonly string _version = VersionUtils.EntryAssemblyVersion;
 
 	private static bool _showSettings;
@@ -37,11 +39,11 @@ public static class MainLayout
 		ImGui.Begin("Main Menu", Constants.LayoutFlags);
 
 		TextAt(_mainMenu, 8, 8);
-		TextAt("DDINFO", 512, 64, new(1, 0, 0, 1), true); // TODO: font size 64
-		TextAt("TOOLS", 512, 128, new(1, 0.5f, 0, 1), true); // TODO: font size 32
-		TextAt(_version, 512, 176, new(1, 0.8f, 0, 1), true); // TODO: font size 24
-		TextAt("Devil Daggers is created by Sorath", 512, 708, default, true);
-		TextAt("DevilDaggers.info is created by Noah Stolk", 512, 724, default, true);
+		TextAt("DDINFO", _centerX, 64, new(1, 0, 0, 1), true); // TODO: font size 64
+		TextAt("TOOLS", _centerX, 128, new(1, 0.5f, 0, 1), true); // TODO: font size 32
+		TextAt(_version, _centerX, 176, new(1, 0.8f, 0, 1), true); // TODO: font size 24
+		TextAt("Devil Daggers is created by Sorath", _centerX, 708, default, true);
+		TextAt("DevilDaggers.info is created by Noah Stolk", _centerX, 724, default, true);
 
 		const float buttonAlpha = 0.5f;
 
@@ -74,7 +76,7 @@ public static class MainLayout
 		const string homePage = "https://devildaggers.info/";
 		const string toolsPage = "https://devildaggers.info/tools";
 
-		ImGui.SetCursorPos(new(512 - ImGuiUtils.GetTextSize(homePage) / 2, 740));
+		ImGui.SetCursorPos(new(_centerX - ImGuiUtils.GetTextSize(homePage) / 2, 740));
 		if (ImGui.Button(homePage))
 			Process.Start(new ProcessStartInfo(homePage) { UseShellExecute = true });
 
@@ -113,9 +115,9 @@ public static class MainLayout
 		{
 			int xPos = x switch
 			{
-				0 => 160,
-				1 => 416,
-				_ => 672,
+				0 => _centerX - 96 - 384,
+				1 => _centerX - 96,
+				_ => _centerX - 96 + 384,
 			};
 			int yPos = y * 128 + 256;
 
