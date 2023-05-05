@@ -16,7 +16,7 @@ public class ArenaBucketState : IArenaState
 
 	public void Handle(ArenaMousePosition mousePosition)
 	{
-		if (!ArenaChild.LeftMouseJustPressed && _cachedPosition == mousePosition)
+		if (!ArenaChild.LeftMouse.JustPressed && _cachedPosition == mousePosition)
 			return;
 
 		_cachedPosition = mousePosition;
@@ -27,7 +27,7 @@ public class ArenaBucketState : IArenaState
 		float targetHeight = SpawnsetState.Spawnset.ArenaTiles[mousePosition.Tile.X, mousePosition.Tile.Y];
 		FillNeighbors(mousePosition.Tile.X, mousePosition.Tile.Y);
 
-		if (ArenaChild.LeftMouseJustPressed)
+		if (ArenaChild.LeftMouse.JustPressed)
 		{
 			float[,] newArena = SpawnsetState.Spawnset.ArenaTiles.GetMutableClone();
 			foreach (Vector2i<int> coord in _targetCoords)

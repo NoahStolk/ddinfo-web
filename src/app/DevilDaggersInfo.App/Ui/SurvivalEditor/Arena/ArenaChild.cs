@@ -1,6 +1,7 @@
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Arena.EditorControls;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.State;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
+using DevilDaggersInfo.App.Utils;
 using DevilDaggersInfo.Core.Spawnset;
 using ImGuiNET;
 using System.Diagnostics;
@@ -24,11 +25,8 @@ public static class ArenaChild
 	private static readonly ArenaDaggerState _daggerState = new();
 
 	private static float _currentSecond;
-	private static bool _leftMouseDownPrevious;
 
-	public static bool LeftMouseJustPressed { get; private set; }
-	public static bool LeftMouseJustReleased { get; private set; }
-	public static bool LeftMouseDown { get; private set; }
+	public static ImGuiIoState LeftMouse { get; } = new(true, 0);
 
 	public static float CurrentSecond => _currentSecond;
 
@@ -54,10 +52,7 @@ public static class ArenaChild
 
 		// Update
 		ImGuiIOPtr io = ImGui.GetIO();
-		LeftMouseDown = io.MouseDown[0];
-		LeftMouseJustPressed = LeftMouseDown && !_leftMouseDownPrevious;
-		LeftMouseJustReleased = !LeftMouseDown && _leftMouseDownPrevious;
-		_leftMouseDownPrevious = LeftMouseDown;
+		LeftMouse.Update(io);
 
 		ArenaMousePosition mousePosition = ArenaMousePosition.Get(io, ImGui.GetWindowPos());
 

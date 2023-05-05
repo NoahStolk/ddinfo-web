@@ -21,7 +21,7 @@ public static class SpawnsChild
 		ImGuiIOPtr io = ImGui.GetIO();
 		if (io.KeyCtrl)
 		{
-			// TODO: Only do this when the window is focused.
+			// TODO: Only do this when the spawns list is focused.
 			if (io.KeysDown[(int)Key.A])
 				Array.Fill(_selected, true);
 			else if (io.KeysDown[(int)Key.D])

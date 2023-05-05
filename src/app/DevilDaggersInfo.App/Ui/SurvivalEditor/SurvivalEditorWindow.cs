@@ -41,15 +41,6 @@ public static class SurvivalEditorWindow
 			else if (key == Keys.Y && StateManager.SpawnsetHistoryState.CurrentIndex < StateManager.SpawnsetHistoryState.History.Count - 1)
 				StateManager.Dispatch(new SetSpawnsetHistoryIndex(StateManager.SpawnsetHistoryState.CurrentIndex + 1));
 		}
-
-		if (Input.IsKeyPressed(Keys.N))
-			StateManager.Dispatch(new LoadSpawnset("(untitled)", SpawnsetBinary.CreateDefault()));
-		else if (Input.IsKeyPressed(Keys.O))
-			SpawnsetFileUtils.OpenSpawnset();
-		else if (Input.IsKeyPressed(Keys.S))
-			SpawnsetFileUtils.SaveSpawnset();
-		else if (Input.IsKeyPressed(Keys.R))
-			SpawnsetFileUtils.ReplaceSpawnset();
 	}
 	 */
 }
