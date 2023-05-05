@@ -1,3 +1,4 @@
+using DevilDaggersInfo.App.Scenes;
 using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.User.Settings;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.State;
@@ -59,7 +60,10 @@ public static class SurvivalEditorMenu // TODO: Rename everything to SpawnsetEdi
 		ImGui.Separator();
 
 		if (ImGui.MenuItem("Close"))
+		{
 			UiRenderer.Layout = LayoutType.Main;
+			Scene.SceneType = SceneType.MainMenu;
+		}
 	}
 
 	private static void NewSpawnset()

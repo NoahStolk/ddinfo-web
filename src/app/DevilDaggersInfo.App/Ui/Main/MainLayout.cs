@@ -1,3 +1,4 @@
+using DevilDaggersInfo.App.Scenes;
 using DevilDaggersInfo.App.Utils;
 using DevilDaggersInfo.Common.Utils;
 using ImGuiNET;
@@ -48,7 +49,10 @@ public static class MainLayout
 		const float buttonAlpha = 0.5f;
 
 		if (MainButtonAt(0, 0, new(1, 0, 0, buttonAlpha), "Spawnset Editor (wip)"))
+		{
 			UiRenderer.Layout = LayoutType.SurvivalEditor;
+			Scene.SceneType = SceneType.SpawnsetEditor;
+		}
 
 		MainButtonAt(1, 0, new(0, 1, 0, buttonAlpha), "Asset Editor (todo)");
 		MainButtonAt(2, 0, new(1, 0, 1, buttonAlpha), "Replay Editor (wip)");

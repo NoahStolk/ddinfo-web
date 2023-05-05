@@ -6,15 +6,27 @@ namespace DevilDaggersInfo.App;
 public static class Scene
 {
 	private static MainMenuArenaScene? _arenaScene;
+	private static EditorArenaScene? _spawnsetEditorScene;
+
+	public static SceneType SceneType { get; set; }
 
 	public static void Initialize()
 	{
 		_arenaScene = new();
+		_spawnsetEditorScene = new();
 	}
 
 	public static void Update(float delta)
 	{
-		_arenaScene?.Update(0, delta);
+		switch (SceneType)
+		{
+			case SceneType.MainMenu:
+				_arenaScene?.Update(0, delta);
+				break;
+			case SceneType.SpawnsetEditor:
+				_spawnsetEditorScene?.Update(0);
+				break;
+		}
 	}
 
 	public static void Render(GL gl)
@@ -24,6 +36,14 @@ public static class Scene
 		gl.Enable(EnableCap.CullFace);
 		gl.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 
-		_arenaScene?.Render();
+		switch (SceneType)
+		{
+			case SceneType.MainMenu:
+				_arenaScene?.Render();
+				break;
+			case SceneType.SpawnsetEditor:
+				_spawnsetEditorScene?.Render(0);
+				break;
+		}
 	}
 }

@@ -1,14 +1,26 @@
 // ReSharper disable ForCanBeConvertedToForeach
+using DevilDaggersInfo.App.Engine.Intersections;
+using DevilDaggersInfo.App.Scenes.Base;
+using DevilDaggersInfo.App.Scenes.Base.GameObjects;
+using DevilDaggersInfo.App.Ui.SurvivalEditor.State;
 using DevilDaggersInfo.Core.Spawnset;
+using ImGuiNET;
+using Silk.NET.OpenGL;
+using System.Numerics;
 
-namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Scenes;
+namespace DevilDaggersInfo.App.Scenes;
 
 public sealed class EditorArenaScene : IArenaScene
 {
 	private readonly List<(Tile Tile, float Distance)> _hitTiles = new();
 	private Tile? _closestHitTile;
 
-	public Camera Camera { get; } = new();
+	public EditorArenaScene()
+	{
+		Camera = new(Root.Window, Root.InputContext);
+	}
+
+	public Camera Camera { get; }
 	public List<Tile> Tiles { get; } = new();
 	public List<LightObject> Lights { get; } = new();
 	public RaceDagger? RaceDagger { get; set; }
@@ -21,6 +33,7 @@ public sealed class EditorArenaScene : IArenaScene
 		RaceDagger = null;
 	}
 
+	// TODO: Make immediate.
 	public void BuildSpawnset(SpawnsetBinary spawnset)
 	{
 		Clear();
@@ -39,28 +52,29 @@ public sealed class EditorArenaScene : IArenaScene
 		for (int i = 0; i < Lights.Count; i++)
 			Lights[i].PrepareUpdate();
 
-		Camera.Update();
+		Camera.Update(currentTick / 60f);
 		RaceDagger?.Update(currentTick);
 
 		for (int i = 0; i < Tiles.Count; i++)
 		{
 			Tile tile = Tiles[i];
-			tile.SetDisplayHeight(StateManager.SpawnsetState.Spawnset.GetActualTileHeight(tile.ArenaX, tile.ArenaY, currentTick / 60f));
+			tile.SetDisplayHeight(SpawnsetState.Spawnset.GetActualTileHeight(tile.ArenaX, tile.ArenaY, currentTick / 60f));
 		}
 
-		int scroll = Input.GetScroll();
+		ImGuiIOPtr io = ImGui.GetIO();
+		float scroll = io.MouseWheel;
 		if (currentTick > 0 || scroll == 0 || _closestHitTile == null)
 			return;
 
-		float height = StateManager.SpawnsetState.Spawnset.ArenaTiles[_closestHitTile.ArenaX, _closestHitTile.ArenaY] - scroll;
+		float height = SpawnsetState.Spawnset.ArenaTiles[_closestHitTile.ArenaX, _closestHitTile.ArenaY] - scroll;
 		_closestHitTile.SetDisplayHeight(height);
 
-		float[,] newArena = StateManager.SpawnsetState.Spawnset.ArenaTiles.GetMutableClone();
+		float[,] newArena = SpawnsetState.Spawnset.ArenaTiles.GetMutableClone();
 		newArena[_closestHitTile.ArenaX, _closestHitTile.ArenaY] = height;
-		StateManager.Dispatch(new UpdateArena(newArena, SpawnsetEditType.ArenaTileHeight));
+		//StateManager.Dispatch(new UpdateArena(newArena, SpawnsetEditType.ArenaTileHeight));
 
-		int dimension = StateManager.SpawnsetState.Spawnset.ArenaDimension;
-		RaceDagger?.UpdatePosition(dimension, new(dimension, newArena), StateManager.SpawnsetState.Spawnset.RaceDaggerPosition);
+		int dimension = SpawnsetState.Spawnset.ArenaDimension;
+		RaceDagger?.UpdatePosition(dimension, new(dimension, newArena), SpawnsetState.Spawnset.RaceDaggerPosition);
 	}
 
 	public void Render(int currentTick)
@@ -70,36 +84,38 @@ public sealed class EditorArenaScene : IArenaScene
 
 		Camera.PreRender();
 
-		MeshShader.Use();
-		MeshShader.SetView(Camera.ViewMatrix);
-		MeshShader.SetProjection(Camera.Projection);
-		MeshShader.SetTextureDiffuse(0);
-		MeshShader.SetTextureLut(1);
-		MeshShader.SetLutScale(1f);
+		Shader shader = Root.InternalResources.MeshShader;
+		shader.Use();
+		shader.SetUniform("view", Camera.ViewMatrix);
+		shader.SetUniform("projection", Camera.Projection);
+		shader.SetUniform("textureDiffuse", 0);
+		shader.SetUniform("textureLut", 1);
+		shader.SetUniform("lutScale", 1f);
 
+		// TODO: Prevent allocating memory?
 		Span<Vector3> lightPositions = Lights.Select(lo => lo.PositionState.Render).ToArray();
 		Span<Vector3> lightColors = Lights.Select(lo => lo.ColorState.Render).ToArray();
 		Span<float> lightRadii = Lights.Select(lo => lo.RadiusState.Render).ToArray();
 
-		MeshShader.SetLightCount(lightPositions.Length);
-		MeshShader.SetLightPosition(lightPositions);
-		MeshShader.SetLightColor(lightColors);
-		MeshShader.SetLightRadius(lightRadii);
+		shader.SetUniform("lightCount", lightPositions.Length);
+		shader.SetUniform("lightPosition", lightPositions);
+		shader.SetUniform("lightColor", lightColors);
+		shader.SetUniform("lightRadius", lightRadii);
 
-		ContentManager.Content.PostLut.Use(TextureUnit.Texture1);
+		Root.GameResources.PostLut.Bind(TextureUnit.Texture1);
 
-		RenderTiles(currentTick);
+		RenderTiles(shader, currentTick);
 
 		RaceDagger?.Render();
 
-		Textures.TileHitbox.Use();
+		Root.InternalResources.TileHitboxTexture.Bind();
 
 		Tiles.Sort(static (a, b) => a.SquaredDistanceToCamera().CompareTo(b.SquaredDistanceToCamera()));
 		foreach (Tile tile in Tiles)
 			tile.RenderHitbox();
 	}
 
-	private void RenderTiles(int currentTick)
+	private void RenderTiles(Shader shader, int currentTick)
 	{
 		if (currentTick == 0)
 		{
@@ -118,41 +134,41 @@ public sealed class EditorArenaScene : IArenaScene
 			_closestHitTile = _hitTiles.Count == 0 ? null : _hitTiles.MinBy(ht => ht.Distance).Tile;
 
 			// Temporarily use LutScale to highlight the target tile.
-			ContentManager.Content.TileTexture.Use();
+			Root.GameResources.TileTexture.Bind();
 			for (int i = 0; i < Tiles.Count; i++)
 			{
 				Tile tile = Tiles[i];
 
 				if (_closestHitTile == tile)
-					MeshShader.SetLutScale(2.5f);
+					shader.SetUniform("lutScale", 2.5f);
 
 				tile.RenderTop();
 
 				if (_closestHitTile == tile)
-					MeshShader.SetLutScale(1);
+					shader.SetUniform("lutScale", 1f);
 			}
 
-			ContentManager.Content.PillarTexture.Use();
+			Root.GameResources.PillarTexture.Bind();
 			for (int i = 0; i < Tiles.Count; i++)
 			{
 				Tile tile = Tiles[i];
 
 				if (_closestHitTile == tile)
-					MeshShader.SetLutScale(2.5f);
+					shader.SetUniform("lutScale", 2.5f);
 
 				tile.RenderPillar();
 
 				if (_closestHitTile == tile)
-					MeshShader.SetLutScale(1);
+					shader.SetUniform("lutScale", 1f);
 			}
 		}
 		else
 		{
-			ContentManager.Content.TileTexture.Use();
+			Root.GameResources.TileTexture.Bind();
 			for (int i = 0; i < Tiles.Count; i++)
 				Tiles[i].RenderTop();
 
-			ContentManager.Content.PillarTexture.Use();
+			Root.GameResources.PillarTexture.Bind();
 			for (int i = 0; i < Tiles.Count; i++)
 				Tiles[i].RenderPillar();
 		}
