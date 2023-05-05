@@ -39,10 +39,15 @@ public static class Modals
 
 		Vector2 center = ImGui.GetMainViewport().GetCenter();
 		ImGui.SetNextWindowPos(center, ImGuiCond.Always, new(0.5f, 0.5f));
-		if (ImGui.BeginPopupModal(modalId))
+
+		bool temp = true;
+		if (ImGui.BeginPopupModal(modalId, ref temp, ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoResize))
 		{
 			onBegin();
 
+			ImGui.Spacing();
+			ImGui.Separator();
+			ImGui.Spacing();
 			if (ImGui.Button("OK", new(120, 0)))
 				ImGui.CloseCurrentPopup();
 
