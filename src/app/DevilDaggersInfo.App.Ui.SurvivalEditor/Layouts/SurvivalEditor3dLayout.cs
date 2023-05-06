@@ -1,5 +1,3 @@
-using DevilDaggersInfo.App.Ui.SurvivalEditor.Scenes;
-
 namespace DevilDaggersInfo.App.Ui.SurvivalEditor.Layouts;
 
 public class SurvivalEditor3dLayout : Layout, IExtendedLayout

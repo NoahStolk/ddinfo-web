@@ -1,4 +1,3 @@
-using DevilDaggersInfo.App.Engine.Content;
 using DevilDaggersInfo.App.Ui.Base;
 using Silk.NET.OpenGL;
 using System.Numerics;
@@ -10,39 +9,13 @@ public class Skull4
 	private static uint _vaoMain;
 	private static uint _vaoJaw;
 
-	public static unsafe void Initialize()
+	public static void Initialize()
 	{
-		// TODO: Prevent this from being called multiple times.
-		_vaoMain = CreateVao(ContentManager.Content.Skull4Mesh);
-		_vaoJaw = CreateVao(ContentManager.Content.Skull4JawMesh);
+		if (_vaoMain != 0)
+			throw new InvalidOperationException("Skull 4 is already initialized.");
 
-		static uint CreateVao(MeshContent mesh)
-		{
-			uint vao = Root.Gl.GenVertexArray();
-			Root.Gl.BindVertexArray(vao);
-
-			uint vbo = Root.Gl.GenBuffer();
-			Root.Gl.BindBuffer(BufferTargetARB.ArrayBuffer, vbo);
-
-			fixed (Vertex* v = &mesh.Vertices[0])
-				Root.Gl.BufferData(BufferTargetARB.ArrayBuffer, (nuint)(mesh.Vertices.Length * sizeof(Vertex)), v, BufferUsageARB.StaticDraw);
-
-			Root.Gl.EnableVertexAttribArray(0);
-			Root.Gl.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, (uint)sizeof(Vertex), (void*)0);
-
-			Root.Gl.EnableVertexAttribArray(1);
-			Root.Gl.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, (uint)sizeof(Vertex), (void*)(3 * sizeof(float)));
-
-			// TODO: We don't do anything with normals here.
-			Root.Gl.EnableVertexAttribArray(2);
-			Root.Gl.VertexAttribPointer(2, 3, VertexAttribPointerType.Float, false, (uint)sizeof(Vertex), (void*)(5 * sizeof(float)));
-
-			Root.Gl.BindVertexArray(0);
-			Root.Gl.BindBuffer(BufferTargetARB.ArrayBuffer, 0);
-			Root.Gl.DeleteBuffer(vbo);
-
-			return vao;
-		}
+		_vaoMain = MeshShaderUtils.CreateVao(ContentManager.Content.Skull4Mesh);
+		_vaoJaw = MeshShaderUtils.CreateVao(ContentManager.Content.Skull4JawMesh);
 	}
 
 	public unsafe void Render()
