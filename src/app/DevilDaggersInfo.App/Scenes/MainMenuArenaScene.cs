@@ -13,10 +13,7 @@ public sealed class MainMenuArenaScene : IArenaScene
 
 	public MainMenuArenaScene()
 	{
-		Camera = new(Root.Window, Root.InputContext)
-		{
-			IsMenuCamera = true,
-		};
+		Camera = new(Root.Window, Root.InputContext, true);
 
 		IArenaScene scene = this;
 		scene.FillArena(SpawnsetBinary.CreateDefault());
@@ -38,7 +35,7 @@ public sealed class MainMenuArenaScene : IArenaScene
 		RaceDagger?.Update(currentTick);
 	}
 
-	public void Render()
+	public void Render(int currentTick)
 	{
 		for (int i = 0; i < Lights.Count; i++)
 			Lights[i].PrepareRender();

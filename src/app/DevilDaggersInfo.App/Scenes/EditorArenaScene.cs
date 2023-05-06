@@ -2,6 +2,7 @@
 using DevilDaggersInfo.App.Engine.Intersections;
 using DevilDaggersInfo.App.Scenes.Base;
 using DevilDaggersInfo.App.Scenes.Base.GameObjects;
+using DevilDaggersInfo.App.Ui.Main;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.State;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using DevilDaggersInfo.Core.Spawnset;
@@ -18,7 +19,10 @@ public sealed class EditorArenaScene : IArenaScene
 
 	public EditorArenaScene()
 	{
-		Camera = new(Root.Window, Root.InputContext);
+		Camera = new(Root.Window, Root.InputContext, false)
+		{
+			PositionState = { Physics = new(0, 5, 0) },
+		};
 
 		IArenaScene scene = this;
 		scene.FillArena(SpawnsetState.Spawnset);
@@ -29,7 +33,7 @@ public sealed class EditorArenaScene : IArenaScene
 	public List<LightObject> Lights { get; } = new();
 	public RaceDagger? RaceDagger { get; set; }
 
-	public void Update(int currentTick)
+	public void Update(int currentTick, float delta)
 	{
 		IArenaScene scene = this;
 		scene.FillArena(SpawnsetState.Spawnset);
@@ -37,7 +41,7 @@ public sealed class EditorArenaScene : IArenaScene
 		for (int i = 0; i < Lights.Count; i++)
 			Lights[i].PrepareUpdate();
 
-		Camera.Update(1 / 60f); // TODO: Pass dt.
+		Camera.Update(delta);
 		RaceDagger?.Update(currentTick);
 
 		for (int i = 0; i < Tiles.GetLength(0); i++)
@@ -49,8 +53,7 @@ public sealed class EditorArenaScene : IArenaScene
 			}
 		}
 
-		ImGuiIOPtr io = ImGui.GetIO();
-		float scroll = io.MouseWheel;
+		float scroll = Root.InputContext.Mice[0].ScrollWheels[0].Y;
 		if (currentTick > 0 || scroll == 0 || _closestHitTile == null)
 			return;
 

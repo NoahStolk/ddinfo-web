@@ -10,6 +10,10 @@ public interface IArenaScene
 	List<LightObject> Lights { get; }
 	RaceDagger? RaceDagger { get; set; }
 
+	void Update(int currentTick, float delta);
+
+	void Render(int currentTick);
+
 	public void FillArena(SpawnsetBinary spawnset)
 	{
 		Lights.Clear();

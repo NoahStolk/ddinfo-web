@@ -4,7 +4,12 @@ namespace DevilDaggersInfo.App.Ui.Main;
 
 public static class DebugWindow
 {
-	public static List<string> DebugMessages { get; } = new();
+	private static readonly List<string> _debugMessages = new();
+
+	public static void Add(object? obj)
+	{
+		_debugMessages.Add(obj?.ToString() ?? "null");
+	}
 
 	public static void Render()
 	{
@@ -13,11 +18,11 @@ public static class DebugWindow
 		bool temp = true;
 		ImGui.Begin("Debug", ref temp, ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize);
 
-		foreach (string debugMessage in DebugMessages)
+		foreach (string debugMessage in _debugMessages)
 			ImGui.Text(debugMessage);
 
 		if (ImGui.Button("Clear"))
-			DebugMessages.Clear();
+			_debugMessages.Clear();
 
 		ImGui.End();
 	}

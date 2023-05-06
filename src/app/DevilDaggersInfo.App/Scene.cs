@@ -1,5 +1,5 @@
 using DevilDaggersInfo.App.Scenes;
-using DevilDaggersInfo.App.Ui.SurvivalEditor.State;
+using DevilDaggersInfo.App.Scenes.Base;
 using Silk.NET.OpenGL;
 
 namespace DevilDaggersInfo.App;
@@ -17,17 +17,20 @@ public static class Scene
 		_spawnsetEditorScene = new();
 	}
 
+	private static IArenaScene? GetScene()
+	{
+		return SceneType switch
+		{
+			SceneType.MainMenu => _arenaScene,
+			SceneType.SpawnsetEditor => _spawnsetEditorScene,
+			_ => throw new($"Invalid scene type {SceneType}."),
+		};
+	}
+
 	public static void Update(float delta)
 	{
-		switch (SceneType)
-		{
-			case SceneType.MainMenu:
-				_arenaScene?.Update(0, delta);
-				break;
-			case SceneType.SpawnsetEditor:
-				_spawnsetEditorScene?.Update(0);
-				break;
-		}
+		IArenaScene? activeScene = GetScene();
+		activeScene?.Update(0, delta);
 	}
 
 	public static void Render(GL gl)
@@ -37,14 +40,7 @@ public static class Scene
 		gl.Enable(EnableCap.CullFace);
 		gl.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 
-		switch (SceneType)
-		{
-			case SceneType.MainMenu:
-				_arenaScene?.Render();
-				break;
-			case SceneType.SpawnsetEditor:
-				_spawnsetEditorScene?.Render(0);
-				break;
-		}
+		IArenaScene? activeScene = GetScene();
+		activeScene?.Render(0);
 	}
 }

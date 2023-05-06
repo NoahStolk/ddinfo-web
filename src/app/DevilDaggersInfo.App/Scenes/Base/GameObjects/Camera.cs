@@ -4,7 +4,6 @@ using DevilDaggersInfo.App.Engine.Intersections;
 using DevilDaggersInfo.App.Engine.Maths;
 using DevilDaggersInfo.App.Engine.Maths.Numerics;
 using DevilDaggersInfo.App.Ui.Base.User.Settings;
-using DevilDaggersInfo.App.Ui.Main;
 using Silk.NET.Input;
 using Silk.NET.Windowing;
 using System.Numerics;
@@ -27,7 +26,7 @@ public class Camera
 	private float _pitch;
 	private Vector2i<int>? _lockedMousePosition;
 
-	public Camera(IWindow window, IInputContext inputContext)
+	public Camera(IWindow window, IInputContext inputContext, bool isMenuCamera)
 	{
 		if (inputContext.Keyboards.Count == 0)
 			throw new InvalidOperationException("No keyboard found.");
@@ -41,6 +40,8 @@ public class Camera
 
 		_mouse.MouseDown += OnMouseDown;
 		_mouse.MouseUp += OnMouseUp;
+
+		IsMenuCamera = isMenuCamera;
 	}
 
 	public Matrix4x4 Projection { get; private set; }
@@ -48,16 +49,7 @@ public class Camera
 
 	public Vector3State PositionState { get; } = new(default);
 
-	public bool IsMenuCamera { get; set; } = true;
-
-	public void Reset(Vector3 position)
-	{
-		PositionState.Physics = position;
-		_rotationState.Physics = Quaternion.CreateFromYawPitchRoll(_defaultYaw, 0, 0);
-		_yaw = _defaultYaw;
-		_pitch = 0;
-		_lockedMousePosition = null;
-	}
+	public bool IsMenuCamera { get; }
 
 	public void Update(float delta)
 	{
