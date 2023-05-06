@@ -2,11 +2,10 @@
 using DevilDaggersInfo.App.Engine.Intersections;
 using DevilDaggersInfo.App.Scenes.Base;
 using DevilDaggersInfo.App.Scenes.Base.GameObjects;
-using DevilDaggersInfo.App.Ui.Main;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.State;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using DevilDaggersInfo.Core.Spawnset;
-using ImGuiNET;
+using Silk.NET.Input;
 using Silk.NET.OpenGL;
 using System.Numerics;
 
@@ -19,7 +18,7 @@ public sealed class EditorArenaScene : IArenaScene
 
 	public EditorArenaScene()
 	{
-		Camera = new(Root.Window, Root.InputContext, false)
+		Camera = new(false)
 		{
 			PositionState = { Physics = new(0, 5, 0) },
 		};
@@ -53,7 +52,8 @@ public sealed class EditorArenaScene : IArenaScene
 			}
 		}
 
-		float scroll = Root.InputContext.Mice[0].ScrollWheels[0].Y;
+		ScrollWheel scrollWheel = Root.Mouse?.ScrollWheels.Count > 0 ? Root.Mouse.ScrollWheels[0] : default;
+		float scroll = scrollWheel.Y;
 		if (currentTick > 0 || scroll == 0 || _closestHitTile == null)
 			return;
 

@@ -13,7 +13,7 @@ public sealed class MainMenuArenaScene : IArenaScene
 
 	public MainMenuArenaScene()
 	{
-		Camera = new(Root.Window, Root.InputContext, true);
+		Camera = new(true);
 
 		IArenaScene scene = this;
 		scene.FillArena(SpawnsetBinary.CreateDefault());

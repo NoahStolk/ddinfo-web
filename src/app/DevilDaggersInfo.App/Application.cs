@@ -67,7 +67,8 @@ public class Application
 
 		Root.InternalResources = InternalResources.Create(_gl);
 		Root.Gl = _gl;
-		Root.InputContext = _inputContext;
+		Root.Mouse = _inputContext.Mice.Count == 0 ? null : _inputContext.Mice[0];
+		Root.Keyboard = _inputContext.Keyboards.Count == 0 ? null : _inputContext.Keyboards[0];
 		Root.Window = _window;
 
 		ConfigLayout.ValidateInstallation();

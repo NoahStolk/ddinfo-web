@@ -17,29 +17,18 @@ public class Camera
 
 	private readonly QuaternionState _rotationState = new(Quaternion.CreateFromYawPitchRoll(_defaultYaw, 0, 0));
 
-	private readonly IWindow _window;
-	private readonly IKeyboard _keyboard;
-	private readonly IMouse _mouse;
-
 	private Vector3 _axisAlignedSpeed;
 	private float _yaw;
 	private float _pitch;
 	private Vector2i<int>? _lockedMousePosition;
 
-	public Camera(IWindow window, IInputContext inputContext, bool isMenuCamera)
+	public Camera(bool isMenuCamera)
 	{
-		if (inputContext.Keyboards.Count == 0)
-			throw new InvalidOperationException("No keyboard found.");
-
-		if (inputContext.Mice.Count == 0)
-			throw new InvalidOperationException("No mouse found.");
-
-		_window = window;
-		_keyboard = inputContext.Keyboards[0];
-		_mouse = inputContext.Mice[0];
-
-		_mouse.MouseDown += OnMouseDown;
-		_mouse.MouseUp += OnMouseUp;
+		if (Root.Mouse != null)
+		{
+			Root.Mouse.MouseDown += OnMouseDown;
+			Root.Mouse.MouseUp += OnMouseUp;
+		}
 
 		IsMenuCamera = isMenuCamera;
 	}
@@ -58,7 +47,7 @@ public class Camera
 
 		if (IsMenuCamera)
 		{
-			float time = (float)_window.Time * 0.7f;
+			float time = (float)Root.Window.Time * 0.7f;
 			PositionState.Physics = new(MathF.Sin(time) * 5, 6, MathF.Cos(time) * 5);
 			_rotationState.Physics = Quaternion.CreateFromRotationMatrix(SetRotationFromDirectionalVector(new Vector3(0, 4, 0) - PositionState.Physics));
 			return;
@@ -91,12 +80,12 @@ public class Camera
 		const Key rightInput = Key.D;
 		const Key upInput = Key.Space;
 		const Key downInput = Key.ShiftLeft;
-		bool forwardHold = _keyboard.IsKeyPressed(forwardInput);
-		bool leftHold = _keyboard.IsKeyPressed(leftInput);
-		bool backwardHold = _keyboard.IsKeyPressed(backwardInput);
-		bool rightHold = _keyboard.IsKeyPressed(rightInput);
-		bool upHold = _keyboard.IsKeyPressed(upInput);
-		bool downHold = _keyboard.IsKeyPressed(downInput);
+		bool forwardHold = Root.Keyboard?.IsKeyPressed(forwardInput) ?? false;
+		bool leftHold = Root.Keyboard?.IsKeyPressed(leftInput) ?? false;
+		bool backwardHold = Root.Keyboard?.IsKeyPressed(backwardInput) ?? false;
+		bool rightHold = Root.Keyboard?.IsKeyPressed(rightInput) ?? false;
+		bool upHold = Root.Keyboard?.IsKeyPressed(upInput) ?? false;
+		bool downHold = Root.Keyboard?.IsKeyPressed(downInput) ?? false;
 
 		float accelerationDt = acceleration * delta;
 		float frictionDt = friction * delta;
@@ -132,23 +121,29 @@ public class Camera
 
 	private void OnMouseDown(IMouse mouse, MouseButton mouseButton)
 	{
-		if (mouseButton != _lookButton)
+		if (Root.Mouse == null || mouseButton != _lookButton)
 			return;
 
-		_lockedMousePosition = _mouse.Position.FloorToVector2Int32();
-		_mouse.Cursor.CursorMode = CursorMode.Hidden;
+		_lockedMousePosition = Root.Mouse.Position.FloorToVector2Int32();
+		Root.Mouse.Cursor.CursorMode = CursorMode.Hidden;
 	}
 
 	private void OnMouseUp(IMouse mouse, MouseButton mouseButton)
 	{
+		if (Root.Mouse == null)
+			return;
+
 		_lockedMousePosition = null;
-		_mouse.Cursor.CursorMode = CursorMode.Normal;
+		Root.Mouse.Cursor.CursorMode = CursorMode.Normal;
 	}
 
 	private void HandleMouse()
 	{
-		Vector2i<int> mousePosition = _mouse.Position.FloorToVector2Int32();
-		if (!_mouse.IsButtonPressed(_lookButton) || !_lockedMousePosition.HasValue || mousePosition == _lockedMousePosition)
+		if (Root.Mouse == null)
+			return;
+
+		Vector2i<int> mousePosition = Root.Mouse.Position.FloorToVector2Int32();
+		if (!Root.Mouse.IsButtonPressed(_lookButton) || !_lockedMousePosition.HasValue || mousePosition == _lockedMousePosition)
 			return;
 
 		float lookSpeed = UserSettings.Model.LookSpeed;
@@ -160,7 +155,7 @@ public class Camera
 		_pitch = Math.Clamp(_pitch, MathUtils.ToRadians(-89.9f), MathUtils.ToRadians(89.9f));
 		_rotationState.Physics = Quaternion.CreateFromYawPitchRoll(_yaw, -_pitch, 0);
 
-		_mouse.Position = new(_lockedMousePosition.Value.X, _lockedMousePosition.Value.Y);
+		Root.Mouse.Position = new(_lockedMousePosition.Value.X, _lockedMousePosition.Value.Y);
 	}
 
 	public void PreRender()
@@ -172,10 +167,10 @@ public class Camera
 		Vector3 lookDirection = Vector3.Transform(Vector3.UnitZ, _rotationState.Render);
 		ViewMatrix = Matrix4x4.CreateLookAt(PositionState.Render, PositionState.Render + lookDirection, upDirection);
 
-		float aspectRatio = _window.Size.X / (float)_window.Size.Y;
+		float aspectRatio = Root.Window.Size.X / (float)Root.Window.Size.Y;
 
 		const float nearPlaneDistance = 0.05f;
-		const float farPlaneDistance = 10000f;
+		const float farPlaneDistance = 10_000f;
 		Projection = Matrix4x4.CreatePerspectiveFieldOfView(MathUtils.ToRadians(UserSettings.Model.FieldOfView), aspectRatio, nearPlaneDistance, farPlaneDistance);
 	}
 
@@ -204,12 +199,12 @@ public class Camera
 
 	public Ray ScreenToWorldPoint()
 	{
-		int screenWidth = _window.Size.X;
-		int screenHeight = _window.Size.Y;
-		float aspectRatio = _window.Size.X / (float)_window.Size.Y;
+		int screenWidth = Root.Window.Size.X;
+		int screenHeight = Root.Window.Size.Y;
+		float aspectRatio = Root.Window.Size.X / (float)Root.Window.Size.Y;
 
 		// Remap so (0, 0) is the center of the window and the edges are at -0.5 and +0.5.
-		Vector2 mousePosition = _mouse.Position;
+		Vector2 mousePosition = Root.Mouse?.Position ?? default;
 		Vector2 relative = -new Vector2(mousePosition.X / screenWidth - 0.5f, mousePosition.Y / screenHeight - 0.5f);
 
 		// Angle in radians from the view axis to the top plane of the view pyramid.

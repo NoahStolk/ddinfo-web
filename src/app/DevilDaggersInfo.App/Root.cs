@@ -15,7 +15,6 @@ public static class Root
 	private static InternalResources? _internalResources;
 	private static GameResources? _gameResources;
 	private static GL? _gl;
-	private static IInputContext? _inputContext;
 	private static IWindow? _window;
 
 	/// <summary>
@@ -60,17 +59,8 @@ public static class Root
 		}
 	}
 
-	public static IInputContext InputContext
-	{
-		get => _inputContext ?? throw _notInitializedException;
-		set
-		{
-			if (_inputContext != null)
-				throw _alreadyInitializedException;
-
-			_inputContext = value;
-		}
-	}
+	public static IMouse? Mouse { get; set; }
+	public static IKeyboard? Keyboard { get; set; }
 
 	public static IWindow Window
 	{
