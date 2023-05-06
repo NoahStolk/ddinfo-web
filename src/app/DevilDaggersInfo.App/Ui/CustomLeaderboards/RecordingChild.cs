@@ -1,12 +1,12 @@
 using DevilDaggersInfo.App.Core.GameMemory;
 using DevilDaggersInfo.App.Core.GameMemory.Extensions;
-using DevilDaggersInfo.App.Engine.Content;
 using DevilDaggersInfo.App.Engine.Maths.Numerics;
 using DevilDaggersInfo.App.Ui.Base.Extensions;
 using DevilDaggersInfo.Common;
 using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Core.Wiki.Objects;
 using ImGuiNET;
+using System.Numerics;
 
 namespace DevilDaggersInfo.App.Ui.CustomLeaderboards;
 
@@ -156,14 +156,16 @@ public static class RecordingChild
 
 	private static void RenderRecordingValues()
 	{
+		Vector2 iconSize = new(16);
+
 		ImGui.BeginChild("RecordingValues", new(288, 512));
 
 		MainBlock b = Root.GameMemoryService.MainBlock;
 		RenderValue("Status", ((GameStatus)b.Status).ToDisplayString(), Color.White, _statusIntensity);
 
 		ImGui.Spacing();
-		//AddIcon(Textures.IconEye, Color.Orange);
 
+		ImGui.Image((IntPtr)Root.InternalResources.IconEyeTexture.Handle, iconSize); // TODO: Orange
 		RenderValue("Player", GetPlayerText(b), Color.White, _playerIntensity);
 		RenderValue("Time", b.Time.ToString(StringFormats.TimeFormat), Color.White, _timeIntensity);
 		RenderValue("Hand", GetUpgrade(b).Name, GetUpgrade(b).Color.ToEngineColor(), _handIntensity);
@@ -173,25 +175,25 @@ public static class RecordingChild
 		RenderValue("Death", b.IsPlayerAlive ? "-" : GetDeath(b)?.Name ?? "?", GetDeath(b)?.Color.ToEngineColor() ?? Color.White, _deathIntensity);
 
 		ImGui.Spacing();
-		//AddIcon(Textures.IconGem, Color.Red);
+		ImGui.Image((IntPtr)Root.InternalResources.IconGemTexture.Handle, iconSize); // TODO: Red
 		RenderValue("Gems collected", b.GemsCollected.ToString(), Color.Red, _gemsCollectedIntensity);
 		RenderValue("Gems despawned", b.GemsDespawned.ToString(), Color.Gray(0.6f), _gemsDespawnedIntensity);
 		RenderValue("Gems eaten", b.GemsEaten.ToString(), Color.Green, _gemsEatenIntensity);
 		RenderValue("Gems total", b.GemsTotal.ToString(), Color.Red, _gemsTotalIntensity);
 
 		ImGui.Spacing();
-		//AddIcon(Textures.IconHoming, Color.White);
+		ImGui.Image((IntPtr)Root.InternalResources.IconHomingTexture.Handle, iconSize);
 		RenderValue("Homing stored", b.HomingStored.ToString(), Color.Purple, _homingStoredIntensity);
 		RenderValue("Homing eaten", b.HomingEaten.ToString(), Color.Red, _homingEatenIntensity);
 
 		ImGui.Spacing();
-		//AddIcon(Textures.IconCrosshair, Color.Green);
+		ImGui.Image((IntPtr)Root.InternalResources.IconCrosshairTexture.Handle, iconSize); // TODO: Green
 		RenderValue("Daggers fired", b.DaggersFired.ToString(), Color.Yellow, _daggersFiredIntensity);
 		RenderValue("Daggers hit", b.DaggersHit.ToString(), Color.Red, _daggersHitIntensity);
 		RenderValue("Accuracy", GetAccuracy(b).ToString("0.00%"), Color.Orange, _accuracyIntensity);
 
 		ImGui.Spacing();
-		//AddIcon(Textures.IconSkull, EnemiesV3_2.Skull4.Color.ToEngineColor());
+		ImGui.Image((IntPtr)Root.InternalResources.IconSkullTexture.Handle, iconSize); // TODO: EnemiesV3_2.Skull4.Color.ToEngineColor
 		RenderValue("Enemies killed", b.EnemiesKilled.ToString(), Color.Red, _enemiesKilledIntensity);
 		RenderValue("Enemies alive", b.EnemiesAlive.ToString(), Color.Yellow, _enemiesAliveIntensity);
 
@@ -232,12 +234,6 @@ public static class RecordingChild
 		RenderValue("Leviathans alive", b.LeviathansAlive.ToString(), EnemiesV3_2.Leviathan.Color.ToEngineColor(), _leviathanAliveCountIntensity);
 		RenderValue("Orbs alive", b.OrbsAlive.ToString(), EnemiesV3_2.TheOrb.Color.ToEngineColor(), _orbAliveCountIntensity);
 		RenderValue("Thorns alive", b.ThornsAlive.ToString(), EnemiesV3_2.Thorn.Color.ToEngineColor(), _thornAliveCountIntensity);
-
-		void AddIcon(TextureContent texture, Color color)
-		{
-			// RecordingIcon recordingIcon = new(bounds.CreateNested(4, h, iconSize, iconSize), texture, color) { Depth = Depth + 100 };
-			// NestingContext.Add(recordingIcon);
-		}
 
 		ImGui.End();
 	}

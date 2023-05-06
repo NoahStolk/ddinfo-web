@@ -21,6 +21,8 @@ public class Texture : IDisposable
         }
     }
 
+    public uint Handle => _handle;
+
     private void SetParameters()
     {
         _gl.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int) GLEnum.ClampToEdge);

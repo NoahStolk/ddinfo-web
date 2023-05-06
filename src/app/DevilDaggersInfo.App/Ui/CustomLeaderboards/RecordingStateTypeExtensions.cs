@@ -1,4 +1,3 @@
-using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Data;
 using System.Diagnostics;
 
 namespace DevilDaggersInfo.App.Ui.CustomLeaderboards;

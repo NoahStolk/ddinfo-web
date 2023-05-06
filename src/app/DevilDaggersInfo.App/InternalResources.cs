@@ -8,6 +8,18 @@ public record InternalResources(
 	BlobContent Value,
 	Shader MeshShader,
 	Texture TileHitboxTexture,
+	Texture IconCalendarTexture,
+	Texture IconCrosshairTexture,
+	Texture IconDaggerTexture,
+	Texture IconEggTexture,
+	Texture IconEyeTexture,
+	Texture IconGemTexture,
+	Texture IconHomingTexture,
+	Texture IconHomingMaskTexture,
+	Texture IconRankTexture,
+	Texture IconSkullTexture,
+	Texture IconSpiderTexture,
+	Texture IconStopwatchTexture,
 	ModelContent TileHitboxModel)
 {
 	public static InternalResources Create(GL gl)
@@ -19,24 +31,58 @@ public record InternalResources(
 #endif
 		DecompiledContentFile ddInfoToolsContent = Bootstrapper.GetDecompiledContent(ddInfoToolsContentRootDirectory, "ddinfo");
 
-		ddInfoToolsContent.Blobs.TryGetValue("Value", out BlobContent? blobContent);
-		if (blobContent == null)
-			throw new InvalidOperationException("Could not find value blob.");
+		return new(
+			Value: GetBlobContent(ddInfoToolsContent, "Value"),
+			MeshShader: GetShader(ddInfoToolsContent, "Mesh"),
+			TileHitboxTexture: GetTexture(ddInfoToolsContent, "TileHitbox"),
+			IconCalendarTexture: GetTexture(ddInfoToolsContent, "IconCalendar"),
+			IconCrosshairTexture: GetTexture(ddInfoToolsContent, "IconCrosshair"),
+			IconDaggerTexture: GetTexture(ddInfoToolsContent, "IconDagger"),
+			IconEggTexture: GetTexture(ddInfoToolsContent, "IconEgg"),
+			IconEyeTexture: GetTexture(ddInfoToolsContent, "IconEye"),
+			IconGemTexture: GetTexture(ddInfoToolsContent, "IconGem"),
+			IconHomingTexture: GetTexture(ddInfoToolsContent, "IconHoming"),
+			IconHomingMaskTexture: GetTexture(ddInfoToolsContent, "IconHomingMask"),
+			IconRankTexture: GetTexture(ddInfoToolsContent, "IconRank"),
+			IconSkullTexture: GetTexture(ddInfoToolsContent, "IconSkull"),
+			IconSpiderTexture: GetTexture(ddInfoToolsContent, "IconSpider"),
+			IconStopwatchTexture: GetTexture(ddInfoToolsContent, "IconStopwatch"),
+			TileHitboxModel: GetModelContent(ddInfoToolsContent, "TileHitbox"));
 
-		ddInfoToolsContent.Shaders.TryGetValue("Mesh", out ShaderContent? meshShaderContent);
-		if (meshShaderContent == null)
-			throw new InvalidOperationException("Could not find mesh shader.");
+		static BlobContent GetBlobContent(DecompiledContentFile content, string name)
+		{
+			content.Blobs.TryGetValue(name, out BlobContent? blobContent);
+			if (blobContent == null)
+				throw new InvalidOperationException($"Could not find blob '{name}'.");
 
-		ddInfoToolsContent.Textures.TryGetValue("TileHitbox", out TextureContent? tileHitboxContent);
-		if (tileHitboxContent == null)
-			throw new InvalidOperationException("Could not find tile hitbox texture.");
+			return blobContent;
+		}
 
-		ddInfoToolsContent.Models.TryGetValue("TileHitbox", out ModelContent? tileHitboxModelContent);
-		if (tileHitboxModelContent == null)
-			throw new InvalidOperationException("Could not find tile hitbox model.");
+		Shader GetShader(DecompiledContentFile content, string name)
+		{
+			content.Shaders.TryGetValue(name, out ShaderContent? shaderContent);
+			if (shaderContent == null)
+				throw new InvalidOperationException($"Could not find shader '{name}'.");
 
-		Shader meshShader = new(gl, meshShaderContent.VertexCode, meshShaderContent.FragmentCode);
-		Texture tileHitbox = new(gl, tileHitboxContent.Pixels, (uint)tileHitboxContent.Width, (uint)tileHitboxContent.Height);
-		return new(blobContent, meshShader, tileHitbox, tileHitboxModelContent);
+			return new(gl, shaderContent.VertexCode, shaderContent.FragmentCode);
+		}
+
+		Texture GetTexture(DecompiledContentFile content, string name)
+		{
+			content.Textures.TryGetValue(name, out TextureContent? textureContent);
+			if (textureContent == null)
+				throw new InvalidOperationException($"Could not find texture '{name}'.");
+
+			return new(gl, textureContent.Pixels, (uint)textureContent.Width, (uint)textureContent.Height);
+		}
+
+		static ModelContent GetModelContent(DecompiledContentFile content, string name)
+		{
+			content.Models.TryGetValue(name, out ModelContent? modelContent);
+			if (modelContent == null)
+				throw new InvalidOperationException($"Could not find model '{name}'.");
+
+			return modelContent;
+		}
 	}
 }
