@@ -1,5 +1,4 @@
 using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.States;
-using DevilDaggersInfo.App.Ui.Base.StateManagement.ReplayEditor.States;
 
 namespace DevilDaggersInfo.App.Ui.Base.StateManagement;
 
@@ -25,5 +24,4 @@ public record StateReducer
 	public RecordingState RecordingState { get; set; } = StateManager.RecordingState;
 	public ReplaySceneState ReplaySceneState { get; set; } = StateManager.ReplaySceneState;
 	public UploadResponseState UploadResponseState { get; set; } = StateManager.UploadResponseState;
-	public ReplayState ReplayState { get; set; } = StateManager.ReplayState;
 }

@@ -2,6 +2,7 @@ using DevilDaggersInfo.App.Ui;
 using DevilDaggersInfo.App.Ui.Base.User.Settings;
 using DevilDaggersInfo.App.Ui.Config;
 using DevilDaggersInfo.App.Ui.Main;
+using DevilDaggersInfo.App.Ui.ReplayEditor;
 using DevilDaggersInfo.App.Ui.SpawnsetEditor;
 
 namespace DevilDaggersInfo.App;
@@ -26,8 +27,11 @@ public static class UiRenderer
 			case LayoutType.Config:
 				ConfigLayout.Render();
 				break;
-			case LayoutType.SurvivalEditor:
+			case LayoutType.SpawnsetEditor:
 				SpawnsetEditorWindow.Render();
+				break;
+			case LayoutType.ReplayEditor:
+				ReplayEditorWindow.Render();
 				break;
 		}
 

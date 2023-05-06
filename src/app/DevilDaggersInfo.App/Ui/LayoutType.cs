@@ -4,5 +4,6 @@ public enum LayoutType
 {
 	Config,
 	Main,
-	SurvivalEditor,
+	SpawnsetEditor,
+	ReplayEditor,
 }

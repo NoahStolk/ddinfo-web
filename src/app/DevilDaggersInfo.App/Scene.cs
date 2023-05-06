@@ -8,6 +8,7 @@ public static class Scene
 {
 	private static MainMenuArenaScene? _arenaScene;
 	private static EditorArenaScene? _spawnsetEditorScene;
+	private static ReplayArenaScene? _replayArenaScene;
 
 	public static SceneType SceneType { get; set; }
 
@@ -15,6 +16,7 @@ public static class Scene
 	{
 		_arenaScene = new();
 		_spawnsetEditorScene = new();
+		_replayArenaScene = new();
 	}
 
 	private static IArenaScene? GetScene()
@@ -23,6 +25,7 @@ public static class Scene
 		{
 			SceneType.MainMenu => _arenaScene,
 			SceneType.SpawnsetEditor => _spawnsetEditorScene,
+			SceneType.ReplayEditor => _replayArenaScene,
 			_ => throw new($"Invalid scene type {SceneType}."),
 		};
 	}

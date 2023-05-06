@@ -35,6 +35,8 @@ public class LocalReplayBinaryHeader : IReplayBinaryHeader<LocalReplayBinaryHead
 		Username = username;
 		SpawnsetMd5 = MD5.HashData(spawnsetBuffer);
 		SpawnsetBuffer = spawnsetBuffer;
+
+		Spawnset = SpawnsetBinary.Parse(spawnsetBuffer);
 	}
 
 	private static ReadOnlySpan<byte> Identifier => "ddrpl."u8;
@@ -52,6 +54,8 @@ public class LocalReplayBinaryHeader : IReplayBinaryHeader<LocalReplayBinaryHead
 	public string Username { get; }
 	public byte[] SpawnsetMd5 { get; }
 	public byte[] SpawnsetBuffer { get; }
+
+	public SpawnsetBinary Spawnset { get; }
 
 	public static bool UsesLengthPrefixedEvents => true;
 

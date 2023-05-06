@@ -46,16 +46,21 @@ public static class MainLayout
 		TextAt("Devil Daggers is created by Sorath", _centerX, 708, default, true);
 		TextAt("DevilDaggers.info is created by Noah Stolk", _centerX, 724, default, true);
 
-		const float buttonAlpha = 0.5f;
+		const float buttonAlpha = 0.75f;
 
 		if (MainButtonAt(0, 0, new(1, 0, 0, buttonAlpha), "Spawnset Editor (wip)"))
 		{
-			UiRenderer.Layout = LayoutType.SurvivalEditor;
+			UiRenderer.Layout = LayoutType.SpawnsetEditor;
 			Scene.SceneType = SceneType.SpawnsetEditor;
 		}
 
 		MainButtonAt(1, 0, new(0, 1, 0, buttonAlpha), "Asset Editor (todo)");
-		MainButtonAt(2, 0, new(1, 0, 1, buttonAlpha), "Replay Editor (wip)");
+		if (MainButtonAt(2, 0, new(1, 0, 1, buttonAlpha), "Replay Editor (wip)"))
+		{
+			UiRenderer.Layout = LayoutType.ReplayEditor;
+			Scene.SceneType = SceneType.ReplayEditor;
+		}
+
 		MainButtonAt(0, 1, new(0, 0, 1, buttonAlpha), "Custom Leaderboards");
 		MainButtonAt(1, 1, new(0, 1, 1, buttonAlpha), "Practice (todo)");
 		MainButtonAt(2, 1, new(1, 1, 0, buttonAlpha), "Mod Manager (todo)");

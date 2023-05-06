@@ -1,5 +1,4 @@
 using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.States;
-using DevilDaggersInfo.App.Ui.Base.StateManagement.ReplayEditor.States;
 
 namespace DevilDaggersInfo.App.Ui.Base.StateManagement;
 
@@ -15,9 +14,6 @@ public static class StateManager
 	public static RecordingState RecordingState { get; private set; } = RecordingState.GetDefault();
 	public static ReplaySceneState ReplaySceneState { get; private set; } = ReplaySceneState.GetDefault();
 	public static UploadResponseState UploadResponseState { get; private set; } = UploadResponseState.GetDefault();
-
-	// Replay editor states.
-	public static ReplayState ReplayState { get; private set; } = ReplayState.GetDefault();
 
 	/// <summary>
 	/// <para>
@@ -80,7 +76,6 @@ public static class StateManager
 				RecordingState = stateReducer.RecordingState;
 				ReplaySceneState = stateReducer.ReplaySceneState;
 				UploadResponseState = stateReducer.UploadResponseState;
-				ReplayState = stateReducer.ReplayState;
 			}
 
 			if (_eventHandlers.TryGetValue(kvp.Key, out List<Action>? eventHandlers))

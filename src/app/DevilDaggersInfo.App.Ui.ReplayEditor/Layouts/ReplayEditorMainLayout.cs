@@ -34,10 +34,6 @@ public class ReplayEditorMainLayout : Layout, IExtendedLayout
 			ReplayFileUtils.SaveReplay();
 	}
 
-	public void Render3d()
-	{
-	}
-
 	public void Render()
 	{
 		Vector2i<int> windowSize = new(CurrentWindowState.Width, CurrentWindowState.Height);
