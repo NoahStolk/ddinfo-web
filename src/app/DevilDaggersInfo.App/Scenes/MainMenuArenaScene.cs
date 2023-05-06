@@ -69,13 +69,7 @@ public sealed class MainMenuArenaScene : IArenaScene
 		for (int i = 0; i < Tiles.GetLength(0); i++)
 		{
 			for (int j = 0; j < Tiles.GetLength(1); j++)
-			{
-				Tile tile = Tiles[i, j];
-				if (tile.Height < IArenaScene.MinRenderTileHeight)
-					continue;
-
-				tile.RenderTop();
-			}
+				Tiles[i, j].RenderTop();
 		}
 
 		Root.GameResources.PillarTexture.Bind();
@@ -83,12 +77,7 @@ public sealed class MainMenuArenaScene : IArenaScene
 		for (int i = 0; i < Tiles.GetLength(0); i++)
 		{
 			for (int j = 0; j < Tiles.GetLength(1); j++)
-			{
-				if (Tiles[i, j].Height < IArenaScene.MinRenderTileHeight)
-					continue;
-
 				Tiles[i, j].RenderPillar();
-			}
 		}
 
 		RaceDagger?.Render();

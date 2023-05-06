@@ -5,7 +5,7 @@ namespace DevilDaggersInfo.App.Scenes.Base;
 
 public interface IArenaScene
 {
-	public const float MinRenderTileHeight = -7; // In reality this is probably higher.
+	public const float MinRenderTileHeight = -3;
 
 	Camera Camera { get; }
 	Tile[,] Tiles { get; }

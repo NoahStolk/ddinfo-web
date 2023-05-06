@@ -62,7 +62,7 @@ public class Tile
 
 	public void RenderTop()
 	{
-		if (_top.PositionY < -3)
+		if (_top.PositionY < IArenaScene.MinRenderTileHeight)
 			return;
 
 		_top.Render();
@@ -70,7 +70,7 @@ public class Tile
 
 	public void RenderPillar()
 	{
-		if (_top.PositionY < -3)
+		if (_top.PositionY < IArenaScene.MinRenderTileHeight)
 			return;
 
 		_pillar.Render();
@@ -78,7 +78,7 @@ public class Tile
 
 	public void RenderHitbox()
 	{
-		if (_top.PositionY < -1)
+		if (_top.PositionY < IArenaScene.MinRenderTileHeight + 2)
 			return;
 
 		_tileHitbox.Render();
