@@ -1,5 +1,3 @@
-using DevilDaggersInfo.App.Ui.Base.StateManagement;
-using DevilDaggersInfo.App.Ui.Base.StateManagement.Base.Actions;
 using DevilDaggersInfo.App.Ui.Base.User.Settings.Model;
 using System.Text.Json;
 
@@ -60,8 +58,6 @@ public static class UserSettings
 				// Root.Dependencies.Log.Error(ex, "Failed to load user settings.");
 			}
 		}
-
-		StateManager.Dispatch(new UserSettingsLoaded());
 	}
 
 	private static void Save()

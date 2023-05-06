@@ -1,5 +1,3 @@
-using DevilDaggersInfo.App.Ui.Base.StateManagement;
-using DevilDaggersInfo.App.Ui.Base.StateManagement.Base.Actions;
 using DevilDaggersInfo.App.Ui.Base.User.Cache.Model;
 using System.Text.Json;
 
@@ -37,8 +35,6 @@ public static class UserCache
 				// Root.Dependencies.Log.Error(ex, "Failed to load user cache.");
 			}
 		}
-
-		StateManager.Dispatch(new UserSettingsLoaded());
 	}
 
 	private static void Save()
