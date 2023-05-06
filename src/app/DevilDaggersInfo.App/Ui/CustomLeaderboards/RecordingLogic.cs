@@ -40,7 +40,6 @@ public static class RecordingLogic
 	public static long? Marker { get; private set; }
 	public static RecordingStateType RecordingStateType { get; private set; }
 	public static int CurrentPlayerId { get; private set; }
-	public static string? SpawnsetName { get; private set; }
 	public static DateTime? LastSubmission { get; private set; }
 	public static bool ShowUploadResponse { get; private set; }
 

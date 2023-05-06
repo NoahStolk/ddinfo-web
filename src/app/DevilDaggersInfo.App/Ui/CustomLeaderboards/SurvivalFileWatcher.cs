@@ -1,14 +1,19 @@
+using DevilDaggersInfo.App.Ui.Base.Networking;
+using DevilDaggersInfo.App.Ui.Base.Networking.TaskHandlers;
+using DevilDaggersInfo.App.Ui.Base.User.Settings;
 using System.Security.Cryptography;
 
-namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.State;
+namespace DevilDaggersInfo.App.Ui.CustomLeaderboards;
 
-public class StateWrapper : AbstractComponent
+public static class SurvivalFileWatcher
 {
 #pragma warning disable S1450 // Cannot change this into a local. The events would not be raised.
-	private FileSystemWatcher? _survivalFileWatcher;
+	private static FileSystemWatcher? _survivalFileWatcher;
 #pragma warning restore S1450
 
-	public void Initialize()
+	public static string? SpawnsetName { get; private set; }
+
+	public static void Initialize()
 	{
 		UpdateActiveSpawnsetBasedOnHash();
 
@@ -30,7 +35,7 @@ public class StateWrapper : AbstractComponent
 		{
 			if (!File.Exists(UserSettings.ModsSurvivalPath))
 			{
-				StateManager.Dispatch(new SetActiveSpawnset(null));
+				SpawnsetName = null;
 			}
 			else
 			{
@@ -38,11 +43,13 @@ public class StateWrapper : AbstractComponent
 				{
 					byte[] fileContents = File.ReadAllBytes(UserSettings.ModsSurvivalPath);
 					byte[] fileHash = MD5.HashData(fileContents);
-					AsyncHandler.Run(s => StateManager.Dispatch(new SetActiveSpawnset(s?.Name)), () => FetchSpawnsetByHash.HandleAsync(fileHash));
+					AsyncHandler.Run(s => SpawnsetName = s?.Name, () => FetchSpawnsetByHash.HandleAsync(fileHash));
 				}
-				catch (Exception ex)
+				catch (Exception)
 				{
-					Root.Dependencies.Log.Error(ex, "Failed to update active spawnset based on hash.");
+					// TODO: Log this instead.
+					Modals.ShowError = true;
+					Modals.ErrorText = "Failed to update active spawnset based on hash.";
 				}
 			}
 		}

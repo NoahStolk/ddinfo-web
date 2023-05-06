@@ -23,7 +23,7 @@ public static class StateChild
 			ImGui.TableNextColumn();
 			ImGui.Text("Spawnset");
 			ImGui.TableNextColumn();
-			ImGui.Text(RecordingLogic.SpawnsetName ?? "(unknown)");
+			ImGui.Text(SurvivalFileWatcher.SpawnsetName ?? "(unknown)");
 			ImGui.TableNextRow();
 
 			ImGui.TableNextColumn();

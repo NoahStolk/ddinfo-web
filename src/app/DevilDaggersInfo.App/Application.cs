@@ -4,6 +4,7 @@ using DevilDaggersInfo.App.Ui.Base.Networking.TaskHandlers;
 using DevilDaggersInfo.App.Ui.Base.User.Cache;
 using DevilDaggersInfo.App.Ui.Base.User.Settings;
 using DevilDaggersInfo.App.Ui.Config;
+using DevilDaggersInfo.App.Ui.CustomLeaderboards;
 using DevilDaggersInfo.Common.Utils;
 using DevilDaggersInfo.Core.Versioning;
 using ImGuiNET;
@@ -78,6 +79,8 @@ public class Application
 		Root.Keyboard = _inputContext.Keyboards.Count == 0 ? null : _inputContext.Keyboards[0];
 		Root.Window = _window;
 		Root.Application = this;
+
+		SurvivalFileWatcher.Initialize();
 
 		ConfigLayout.ValidateInstallation();
 

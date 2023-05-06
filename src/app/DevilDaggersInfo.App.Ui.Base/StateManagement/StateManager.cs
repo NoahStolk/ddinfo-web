@@ -8,7 +8,6 @@ public static class StateManager
 	private static readonly Dictionary<Type, List<Action>> _eventHandlers = new();
 
 	// Custom leaderboards recorder states.
-	public static ActiveSpawnsetState ActiveSpawnsetState { get; private set; } = ActiveSpawnsetState.GetDefault();
 	public static LeaderboardListState LeaderboardListState { get; private set; } = LeaderboardListState.GetDefault();
 	public static ReplaySceneState ReplaySceneState { get; private set; } = ReplaySceneState.GetDefault();
 	public static UploadResponseState UploadResponseState { get; private set; } = UploadResponseState.GetDefault();
@@ -68,7 +67,6 @@ public static class StateManager
 				StateReducer stateReducer = new();
 				action.Reduce(stateReducer);
 
-				ActiveSpawnsetState = stateReducer.ActiveSpawnsetState;
 				LeaderboardListState = stateReducer.LeaderboardListState;
 				ReplaySceneState = stateReducer.ReplaySceneState;
 				UploadResponseState = stateReducer.UploadResponseState;
