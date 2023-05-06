@@ -30,7 +30,7 @@ public static class Scene
 	public static void Update(float delta)
 	{
 		IArenaScene? activeScene = GetScene();
-		activeScene?.Update(0, delta);
+		activeScene?.Update(delta);
 	}
 
 	public static void Render(GL gl)
@@ -41,6 +41,6 @@ public static class Scene
 		gl.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 
 		IArenaScene? activeScene = GetScene();
-		activeScene?.Render(0);
+		activeScene?.Render();
 	}
 }

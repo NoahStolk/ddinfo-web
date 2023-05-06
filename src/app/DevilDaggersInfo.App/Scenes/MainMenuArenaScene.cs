@@ -16,6 +16,7 @@ public sealed class MainMenuArenaScene : IArenaScene
 		Camera = new(true);
 
 		IArenaScene scene = this;
+		scene.InitializeArena();
 		scene.FillArena(SpawnsetBinary.CreateDefault());
 
 		_skull4 = new();
@@ -25,17 +26,18 @@ public sealed class MainMenuArenaScene : IArenaScene
 	public Tile[,] Tiles { get; } = new Tile[SpawnsetBinary.ArenaDimensionMax, SpawnsetBinary.ArenaDimensionMax];
 	public List<LightObject> Lights { get; } = new();
 	public RaceDagger? RaceDagger { get; set; }
+	public int CurrentTick => 0;
 
-	public void Update(int currentTick, float delta)
+	public void Update(float delta)
 	{
 		for (int i = 0; i < Lights.Count; i++)
 			Lights[i].PrepareUpdate();
 
 		Camera.Update(delta);
-		RaceDagger?.Update(currentTick);
+		RaceDagger?.Update(CurrentTick);
 	}
 
-	public void Render(int currentTick)
+	public void Render()
 	{
 		for (int i = 0; i < Lights.Count; i++)
 			Lights[i].PrepareRender();
@@ -69,7 +71,7 @@ public sealed class MainMenuArenaScene : IArenaScene
 			for (int j = 0; j < Tiles.GetLength(1); j++)
 			{
 				Tile tile = Tiles[i, j];
-				if (tile.Height < -2)
+				if (tile.Height < IArenaScene.MinRenderTileHeight)
 					continue;
 
 				tile.RenderTop();
@@ -82,7 +84,7 @@ public sealed class MainMenuArenaScene : IArenaScene
 		{
 			for (int j = 0; j < Tiles.GetLength(1); j++)
 			{
-				if (Tiles[i, j].Height < -2)
+				if (Tiles[i, j].Height < IArenaScene.MinRenderTileHeight)
 					continue;
 
 				Tiles[i, j].RenderPillar();
@@ -94,7 +96,7 @@ public sealed class MainMenuArenaScene : IArenaScene
 
 		Root.InternalResources.TileHitboxTexture.Bind();
 
-		Span<Tile> tiles = Tiles.Cast<Tile>().ToArray();
+		Span<Tile> tiles = Tiles.Cast<Tile>().ToArray(); // TODO: Prevent allocating memory.
 		tiles.Sort(static (a, b) => a.SquaredDistanceToCamera().CompareTo(b.SquaredDistanceToCamera()));
 		foreach (Tile tile in tiles)
 			tile.RenderHitbox();

@@ -2,6 +2,7 @@
 using DevilDaggersInfo.App.Engine.Intersections;
 using DevilDaggersInfo.App.Scenes.Base;
 using DevilDaggersInfo.App.Scenes.Base.GameObjects;
+using DevilDaggersInfo.App.Ui.SpawnsetEditor.Arena;
 using DevilDaggersInfo.App.Ui.SpawnsetEditor.State;
 using DevilDaggersInfo.App.Ui.SpawnsetEditor.Utils;
 using DevilDaggersInfo.Core.Spawnset;
@@ -24,15 +25,16 @@ public sealed class EditorArenaScene : IArenaScene
 		};
 
 		IArenaScene scene = this;
-		scene.FillArena(SpawnsetState.Spawnset);
+		scene.InitializeArena();
 	}
 
 	public Camera Camera { get; }
 	public Tile[,] Tiles { get; } = new Tile[SpawnsetBinary.ArenaDimensionMax, SpawnsetBinary.ArenaDimensionMax];
 	public List<LightObject> Lights { get; } = new();
 	public RaceDagger? RaceDagger { get; set; }
+	public int CurrentTick => (int)(ArenaChild.CurrentSecond * 60);
 
-	public void Update(int currentTick, float delta)
+	public void Update(float delta)
 	{
 		IArenaScene scene = this;
 		scene.FillArena(SpawnsetState.Spawnset);
@@ -41,20 +43,20 @@ public sealed class EditorArenaScene : IArenaScene
 			Lights[i].PrepareUpdate();
 
 		Camera.Update(delta);
-		RaceDagger?.Update(currentTick);
+		RaceDagger?.Update(CurrentTick);
 
 		for (int i = 0; i < Tiles.GetLength(0); i++)
 		{
 			for (int j = 0; j < Tiles.GetLength(1); j++)
 			{
 				Tile tile = Tiles[i, j];
-				tile.SetDisplayHeight(SpawnsetState.Spawnset.GetActualTileHeight(tile.ArenaX, tile.ArenaY, currentTick / 60f));
+				tile.SetDisplayHeight(SpawnsetState.Spawnset.GetActualTileHeight(tile.ArenaX, tile.ArenaY, CurrentTick / 60f));
 			}
 		}
 
 		ScrollWheel scrollWheel = Root.Mouse?.ScrollWheels.Count > 0 ? Root.Mouse.ScrollWheels[0] : default;
 		float scroll = scrollWheel.Y;
-		if (currentTick > 0 || scroll == 0 || _closestHitTile == null)
+		if (CurrentTick > 0 || scroll == 0 || _closestHitTile == null)
 			return;
 
 		float height = SpawnsetState.Spawnset.ArenaTiles[_closestHitTile.ArenaX, _closestHitTile.ArenaY] - scroll;
@@ -69,7 +71,7 @@ public sealed class EditorArenaScene : IArenaScene
 		RaceDagger?.UpdatePosition(dimension, new(dimension, newArena), SpawnsetState.Spawnset.RaceDaggerPosition);
 	}
 
-	public void Render(int currentTick)
+	public void Render()
 	{
 		for (int i = 0; i < Lights.Count; i++)
 			Lights[i].PrepareRender();
@@ -96,21 +98,21 @@ public sealed class EditorArenaScene : IArenaScene
 
 		Root.GameResources.PostLut.Bind(TextureUnit.Texture1);
 
-		RenderTiles(shader, currentTick);
+		RenderTiles(shader);
 
 		RaceDagger?.Render();
 
 		Root.InternalResources.TileHitboxTexture.Bind();
 
-		Span<Tile> tiles = Tiles.Cast<Tile>().ToArray();
+		Span<Tile> tiles = Tiles.Cast<Tile>().ToArray(); // TODO: Prevent allocating memory.
 		tiles.Sort(static (a, b) => a.SquaredDistanceToCamera().CompareTo(b.SquaredDistanceToCamera()));
 		foreach (Tile tile in tiles)
 			tile.RenderHitbox();
 	}
 
-	private void RenderTiles(Shader shader, int currentTick)
+	private void RenderTiles(Shader shader)
 	{
-		if (currentTick == 0)
+		if (CurrentTick == 0)
 		{
 			_hitTiles.Clear();
 			Ray ray = Camera.ScreenToWorldPoint();
@@ -138,7 +140,7 @@ public sealed class EditorArenaScene : IArenaScene
 				{
 					Tile tile = Tiles[i, j];
 
-					if (tile.Height < -2)
+					if (tile.Height < IArenaScene.MinRenderTileHeight)
 						continue;
 
 					if (_closestHitTile == tile)
@@ -159,7 +161,7 @@ public sealed class EditorArenaScene : IArenaScene
 				{
 					Tile tile = Tiles[i, j];
 
-					if (tile.Height < -2)
+					if (tile.Height < IArenaScene.MinRenderTileHeight)
 						continue;
 
 					if (_closestHitTile == tile)
@@ -181,7 +183,7 @@ public sealed class EditorArenaScene : IArenaScene
 				for (int j = 0; j < Tiles.GetLength(1); j++)
 				{
 					Tile tile = Tiles[i, j];
-					if (tile.Height < -2)
+					if (tile.Height < IArenaScene.MinRenderTileHeight)
 						continue;
 
 					tile.RenderTop();
@@ -194,7 +196,7 @@ public sealed class EditorArenaScene : IArenaScene
 			{
 				for (int j = 0; j < Tiles.GetLength(1); j++)
 				{
-					if (Tiles[i, j].Height < -2)
+					if (Tiles[i, j].Height < IArenaScene.MinRenderTileHeight)
 						continue;
 
 					Tiles[i, j].RenderPillar();
