@@ -38,6 +38,9 @@ public static class SurvivalEditorMenu // TODO: Rename everything to SpawnsetEdi
 			else if (ImGui.IsKeyPressed(ImGuiKey.R) || ImGui.IsKeyPressed((ImGuiKey)82))
 				ReplaceSpawnset();
 		}
+
+		if (ImGui.IsKeyPressed(ImGuiKey.Escape) || ImGui.IsKeyPressed((ImGuiKey)526))
+			Close();
 	}
 
 	private static void RenderFileMenu()
@@ -59,11 +62,8 @@ public static class SurvivalEditorMenu // TODO: Rename everything to SpawnsetEdi
 
 		ImGui.Separator();
 
-		if (ImGui.MenuItem("Close"))
-		{
-			UiRenderer.Layout = LayoutType.Main;
-			Scene.SceneType = SceneType.MainMenu;
-		}
+		if (ImGui.MenuItem("Close", "Esc"))
+			Close();
 	}
 
 	private static void NewSpawnset()
@@ -125,5 +125,11 @@ public static class SurvivalEditorMenu // TODO: Rename everything to SpawnsetEdi
 	{
 		File.WriteAllBytes(UserSettings.ModsSurvivalPath, SpawnsetState.Spawnset.ToBytes());
 		Modals.ShowReplacedSurvivalFile = true;
+	}
+
+	private static void Close()
+	{
+		UiRenderer.Layout = LayoutType.Main;
+		Scene.SceneType = SceneType.MainMenu;
 	}
 }
