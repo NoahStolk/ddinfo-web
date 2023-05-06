@@ -6,12 +6,13 @@ namespace DevilDaggersInfo.App.Scenes.Base;
 public interface IArenaScene
 {
 	Camera Camera { get; }
-	List<Tile> Tiles { get; }
+	Tile[,] Tiles { get; }
 	List<LightObject> Lights { get; }
 	RaceDagger? RaceDagger { get; set; }
 
-	public void AddArena(SpawnsetBinary spawnset)
+	public void FillArena(SpawnsetBinary spawnset)
 	{
+		Lights.Clear();
 		Lights.Add(new(64, default, new(1, 0.5f, 0)));
 
 		int halfSize = spawnset.ArenaDimension / 2;
@@ -19,13 +20,10 @@ public interface IArenaScene
 		{
 			for (int j = 0; j < spawnset.ArenaDimension; j++)
 			{
-				float y = spawnset.ArenaTiles[i, j];
-				if (y < -2)
-					continue;
-
 				float x = (i - halfSize) * 4;
 				float z = (j - halfSize) * 4;
-				Tiles.Add(new(x, z, i, j, Camera));
+				Tiles[i, j] = new(x, z, i, j, Camera);
+				Tiles[i, j].SetDisplayHeight(spawnset.ArenaTiles[i, j]);
 			}
 		}
 

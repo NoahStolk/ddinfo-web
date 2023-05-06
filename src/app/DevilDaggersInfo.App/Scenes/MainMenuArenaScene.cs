@@ -19,13 +19,13 @@ public sealed class MainMenuArenaScene : IArenaScene
 		};
 
 		IArenaScene scene = this;
-		scene.AddArena(SpawnsetBinary.CreateDefault());
+		scene.FillArena(SpawnsetBinary.CreateDefault());
 
 		_skull4 = new();
 	}
 
 	public Camera Camera { get; }
-	public List<Tile> Tiles { get; } = new();
+	public Tile[,] Tiles { get; } = new Tile[SpawnsetBinary.ArenaDimensionMax, SpawnsetBinary.ArenaDimensionMax];
 	public List<LightObject> Lights { get; } = new();
 	public RaceDagger? RaceDagger { get; set; }
 
@@ -67,20 +67,39 @@ public sealed class MainMenuArenaScene : IArenaScene
 
 		Root.GameResources.TileTexture.Bind();
 
-		for (int i = 0; i < Tiles.Count; i++)
-			Tiles[i].RenderTop();
+		for (int i = 0; i < Tiles.GetLength(0); i++)
+		{
+			for (int j = 0; j < Tiles.GetLength(1); j++)
+			{
+				Tile tile = Tiles[i, j];
+				if (tile.Height < -2)
+					continue;
+
+				tile.RenderTop();
+			}
+		}
 
 		Root.GameResources.PillarTexture.Bind();
-		for (int i = 0; i < Tiles.Count; i++)
-			Tiles[i].RenderPillar();
+
+		for (int i = 0; i < Tiles.GetLength(0); i++)
+		{
+			for (int j = 0; j < Tiles.GetLength(1); j++)
+			{
+				if (Tiles[i, j].Height < -2)
+					continue;
+
+				Tiles[i, j].RenderPillar();
+			}
+		}
 
 		RaceDagger?.Render();
 		_skull4.Render();
 
 		Root.InternalResources.TileHitboxTexture.Bind();
 
-		Tiles.Sort(static (a, b) => a.SquaredDistanceToCamera().CompareTo(b.SquaredDistanceToCamera()));
-		foreach (Tile tile in Tiles)
+		Span<Tile> tiles = Tiles.Cast<Tile>().ToArray();
+		tiles.Sort(static (a, b) => a.SquaredDistanceToCamera().CompareTo(b.SquaredDistanceToCamera()));
+		foreach (Tile tile in tiles)
 			tile.RenderHitbox();
 	}
 }

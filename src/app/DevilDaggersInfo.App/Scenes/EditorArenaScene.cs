@@ -3,6 +3,7 @@ using DevilDaggersInfo.App.Engine.Intersections;
 using DevilDaggersInfo.App.Scenes.Base;
 using DevilDaggersInfo.App.Scenes.Base.GameObjects;
 using DevilDaggersInfo.App.Ui.SurvivalEditor.State;
+using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
 using DevilDaggersInfo.Core.Spawnset;
 using ImGuiNET;
 using Silk.NET.OpenGL;
@@ -18,47 +19,34 @@ public sealed class EditorArenaScene : IArenaScene
 	public EditorArenaScene()
 	{
 		Camera = new(Root.Window, Root.InputContext);
+
+		IArenaScene scene = this;
+		scene.FillArena(SpawnsetState.Spawnset);
 	}
 
 	public Camera Camera { get; }
-	public List<Tile> Tiles { get; } = new();
+	public Tile[,] Tiles { get; } = new Tile[SpawnsetBinary.ArenaDimensionMax, SpawnsetBinary.ArenaDimensionMax];
 	public List<LightObject> Lights { get; } = new();
 	public RaceDagger? RaceDagger { get; set; }
 
-	private void Clear()
-	{
-		Tiles.Clear();
-		Lights.Clear();
-
-		RaceDagger = null;
-	}
-
-	// TODO: Make immediate.
-	public void BuildSpawnset(SpawnsetBinary spawnset)
-	{
-		Clear();
-
-		IArenaScene scene = this;
-		scene.AddArena(spawnset);
-
-		int halfSize = spawnset.ArenaDimension / 2;
-		float cameraHeight = Math.Max(4, spawnset.ArenaTiles[halfSize, halfSize] + 8);
-		Camera.Reset(new(0, cameraHeight, 0));
-		Camera.IsMenuCamera = false;
-	}
-
 	public void Update(int currentTick)
 	{
+		IArenaScene scene = this;
+		scene.FillArena(SpawnsetState.Spawnset);
+
 		for (int i = 0; i < Lights.Count; i++)
 			Lights[i].PrepareUpdate();
 
-		Camera.Update(currentTick / 60f);
+		Camera.Update(1 / 60f); // TODO: Pass dt.
 		RaceDagger?.Update(currentTick);
 
-		for (int i = 0; i < Tiles.Count; i++)
+		for (int i = 0; i < Tiles.GetLength(0); i++)
 		{
-			Tile tile = Tiles[i];
-			tile.SetDisplayHeight(SpawnsetState.Spawnset.GetActualTileHeight(tile.ArenaX, tile.ArenaY, currentTick / 60f));
+			for (int j = 0; j < Tiles.GetLength(1); j++)
+			{
+				Tile tile = Tiles[i, j];
+				tile.SetDisplayHeight(SpawnsetState.Spawnset.GetActualTileHeight(tile.ArenaX, tile.ArenaY, currentTick / 60f));
+			}
 		}
 
 		ImGuiIOPtr io = ImGui.GetIO();
@@ -71,7 +59,8 @@ public sealed class EditorArenaScene : IArenaScene
 
 		float[,] newArena = SpawnsetState.Spawnset.ArenaTiles.GetMutableClone();
 		newArena[_closestHitTile.ArenaX, _closestHitTile.ArenaY] = height;
-		//StateManager.Dispatch(new UpdateArena(newArena, SpawnsetEditType.ArenaTileHeight));
+		SpawnsetState.Spawnset = SpawnsetState.Spawnset with { ArenaTiles = new(SpawnsetState.Spawnset.ArenaDimension, newArena) };
+		SpawnsetHistoryUtils.Save(SpawnsetEditType.ArenaTileHeight);
 
 		int dimension = SpawnsetState.Spawnset.ArenaDimension;
 		RaceDagger?.UpdatePosition(dimension, new(dimension, newArena), SpawnsetState.Spawnset.RaceDaggerPosition);
@@ -110,8 +99,9 @@ public sealed class EditorArenaScene : IArenaScene
 
 		Root.InternalResources.TileHitboxTexture.Bind();
 
-		Tiles.Sort(static (a, b) => a.SquaredDistanceToCamera().CompareTo(b.SquaredDistanceToCamera()));
-		foreach (Tile tile in Tiles)
+		Span<Tile> tiles = Tiles.Cast<Tile>().ToArray();
+		tiles.Sort(static (a, b) => a.SquaredDistanceToCamera().CompareTo(b.SquaredDistanceToCamera()));
+		foreach (Tile tile in tiles)
 			tile.RenderHitbox();
 	}
 
@@ -121,56 +111,92 @@ public sealed class EditorArenaScene : IArenaScene
 		{
 			_hitTiles.Clear();
 			Ray ray = Camera.ScreenToWorldPoint();
-			for (int i = 0; i < Tiles.Count; i++)
+			for (int i = 0; i < Tiles.GetLength(0); i++)
 			{
-				Tile tile = Tiles[i];
-				Vector3 min = new(tile.PositionX - 2, -2, tile.PositionZ - 2);
-				Vector3 max = new(tile.PositionX + 2, tile.Height + 2, tile.PositionZ + 2);
-				RayVsAabbIntersection? intersects = ray.Intersects(min, max);
-				if (intersects.HasValue)
-					_hitTiles.Add((tile, intersects.Value.Distance));
+				for (int j = 0; j < Tiles.GetLength(1); j++)
+				{
+					Tile tile = Tiles[i, j];
+					Vector3 min = new(tile.PositionX - 2, -2, tile.PositionZ - 2);
+					Vector3 max = new(tile.PositionX + 2, tile.Height + 2, tile.PositionZ + 2);
+					RayVsAabbIntersection? intersects = ray.Intersects(min, max);
+					if (intersects.HasValue)
+						_hitTiles.Add((tile, intersects.Value.Distance));
+				}
 			}
 
 			_closestHitTile = _hitTiles.Count == 0 ? null : _hitTiles.MinBy(ht => ht.Distance).Tile;
 
 			// Temporarily use LutScale to highlight the target tile.
 			Root.GameResources.TileTexture.Bind();
-			for (int i = 0; i < Tiles.Count; i++)
+
+			for (int i = 0; i < Tiles.GetLength(0); i++)
 			{
-				Tile tile = Tiles[i];
+				for (int j = 0; j < Tiles.GetLength(1); j++)
+				{
+					Tile tile = Tiles[i, j];
 
-				if (_closestHitTile == tile)
-					shader.SetUniform("lutScale", 2.5f);
+					if (tile.Height < -2)
+						continue;
 
-				tile.RenderTop();
+					if (_closestHitTile == tile)
+						shader.SetUniform("lutScale", 2.5f);
 
-				if (_closestHitTile == tile)
-					shader.SetUniform("lutScale", 1f);
+					tile.RenderTop();
+
+					if (_closestHitTile == tile)
+						shader.SetUniform("lutScale", 1f);
+				}
 			}
 
 			Root.GameResources.PillarTexture.Bind();
-			for (int i = 0; i < Tiles.Count; i++)
+
+			for (int i = 0; i < Tiles.GetLength(0); i++)
 			{
-				Tile tile = Tiles[i];
+				for (int j = 0; j < Tiles.GetLength(1); j++)
+				{
+					Tile tile = Tiles[i, j];
 
-				if (_closestHitTile == tile)
-					shader.SetUniform("lutScale", 2.5f);
+					if (tile.Height < -2)
+						continue;
 
-				tile.RenderPillar();
+					if (_closestHitTile == tile)
+						shader.SetUniform("lutScale", 2.5f);
 
-				if (_closestHitTile == tile)
-					shader.SetUniform("lutScale", 1f);
+					tile.RenderPillar();
+
+					if (_closestHitTile == tile)
+						shader.SetUniform("lutScale", 1f);
+				}
 			}
 		}
 		else
 		{
 			Root.GameResources.TileTexture.Bind();
-			for (int i = 0; i < Tiles.Count; i++)
-				Tiles[i].RenderTop();
+
+			for (int i = 0; i < Tiles.GetLength(0); i++)
+			{
+				for (int j = 0; j < Tiles.GetLength(1); j++)
+				{
+					Tile tile = Tiles[i, j];
+					if (tile.Height < -2)
+						continue;
+
+					tile.RenderTop();
+				}
+			}
 
 			Root.GameResources.PillarTexture.Bind();
-			for (int i = 0; i < Tiles.Count; i++)
-				Tiles[i].RenderPillar();
+
+			for (int i = 0; i < Tiles.GetLength(0); i++)
+			{
+				for (int j = 0; j < Tiles.GetLength(1); j++)
+				{
+					if (Tiles[i, j].Height < -2)
+						continue;
+
+					Tiles[i, j].RenderPillar();
+				}
+			}
 		}
 	}
 }
