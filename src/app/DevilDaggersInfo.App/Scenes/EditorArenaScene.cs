@@ -2,8 +2,8 @@
 using DevilDaggersInfo.App.Engine.Intersections;
 using DevilDaggersInfo.App.Scenes.Base;
 using DevilDaggersInfo.App.Scenes.Base.GameObjects;
-using DevilDaggersInfo.App.Ui.SurvivalEditor.State;
-using DevilDaggersInfo.App.Ui.SurvivalEditor.Utils;
+using DevilDaggersInfo.App.Ui.SpawnsetEditor.State;
+using DevilDaggersInfo.App.Ui.SpawnsetEditor.Utils;
 using DevilDaggersInfo.Core.Spawnset;
 using Silk.NET.Input;
 using Silk.NET.OpenGL;
