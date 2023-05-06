@@ -12,7 +12,7 @@ namespace DevilDaggersInfo.App.Scenes.Base.GameObjects;
 
 public class Camera
 {
-	private const float _defaultYaw = MathF.PI;
+	private const float _defaultYaw = MathF.PI; // TODO: This causes the camera to rotate 180 degrees on start.
 	private const MouseButton _lookButton = MouseButton.Right;
 
 	private readonly QuaternionState _rotationState = new(Quaternion.CreateFromYawPitchRoll(_defaultYaw, 0, 0));
