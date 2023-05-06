@@ -14,8 +14,6 @@ public class CustomLeaderboardsRecorderMainLayout : Layout, IExtendedLayout
 	private readonly RecordingScrollArea _recordingScrollArea;
 	private readonly RecordingResultScrollArea _recordingResultScrollArea;
 
-	private int _recordingInterval;
-
 	public CustomLeaderboardsRecorderMainLayout()
 	{
 		const int stateWrapperBottom = 96;
@@ -46,39 +44,5 @@ public class CustomLeaderboardsRecorderMainLayout : Layout, IExtendedLayout
 		_stateWrapper.Initialize();
 
 		StateManager.Dispatch(new LoadLeaderboardList());
-	}
-
-	public void Update()
-	{
-		_recordingInterval++;
-		if (_recordingInterval < 5)
-			return;
-
-		_recordingInterval = 0;
-		if (!RecordingLogic.Scan())
-			return;
-
-		_stateWrapper.SetState();
-
-		bool gameMemoryInitialized = Root.Dependencies.GameMemoryService.IsInitialized;
-		_recordingScrollArea.IsActive = gameMemoryInitialized && !StateManager.RecordingState.ShowUploadResponse && (GameStatus)Root.Dependencies.GameMemoryService.MainBlock.Status is not (GameStatus.Title or GameStatus.Menu or GameStatus.Lobby);
-		if (_recordingScrollArea.IsActive)
-			_recordingScrollArea.SetState();
-
-		_recordingResultScrollArea.IsActive = gameMemoryInitialized && StateManager.RecordingState.ShowUploadResponse;
-
-		RecordingLogic.Handle();
-	}
-
-	public void Render3d()
-	{
-	}
-
-	public void Render()
-	{
-		Vector2i<int> windowSize = new(CurrentWindowState.Width, CurrentWindowState.Height);
-		Root.Game.RectangleRenderer.Schedule(windowSize, windowSize / 2, -100, Color.Gray(0.1f));
-
-		Root.Game.RectangleRenderer.Schedule(new(windowSize.X, 2), new(windowSize.X / 2, _headerHeight + 1), -99, Color.Gray(0.4f));
 	}
 }

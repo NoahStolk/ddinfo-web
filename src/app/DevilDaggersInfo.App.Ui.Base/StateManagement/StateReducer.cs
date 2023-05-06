@@ -20,8 +20,6 @@ public record StateReducer
 {
 	public ActiveSpawnsetState ActiveSpawnsetState { get; set; } = StateManager.ActiveSpawnsetState;
 	public LeaderboardListState LeaderboardListState { get; set; } = StateManager.LeaderboardListState;
-	public MarkerState MarkerState { get; set; } = StateManager.MarkerState;
-	public RecordingState RecordingState { get; set; } = StateManager.RecordingState;
 	public ReplaySceneState ReplaySceneState { get; set; } = StateManager.ReplaySceneState;
 	public UploadResponseState UploadResponseState { get; set; } = StateManager.UploadResponseState;
 }

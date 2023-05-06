@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Data;
+namespace DevilDaggersInfo.App.Ui.CustomLeaderboards;
 
 public enum RecordingStateType
 {

@@ -15,6 +15,12 @@ public static class UiRenderer
 
 	public static LayoutType Layout { get; set; }
 
+	public static void Update(float delta)
+	{
+		if (Layout == LayoutType.CustomLeaderboards)
+			CustomLeaderboardsWindow.Update(delta);
+	}
+
 	public static void Render()
 	{
 		//ImGuiNET.ImGui.ShowUserGuide();

@@ -10,8 +10,6 @@ public static class StateManager
 	// Custom leaderboards recorder states.
 	public static ActiveSpawnsetState ActiveSpawnsetState { get; private set; } = ActiveSpawnsetState.GetDefault();
 	public static LeaderboardListState LeaderboardListState { get; private set; } = LeaderboardListState.GetDefault();
-	public static MarkerState MarkerState { get; private set; } = MarkerState.GetDefault();
-	public static RecordingState RecordingState { get; private set; } = RecordingState.GetDefault();
 	public static ReplaySceneState ReplaySceneState { get; private set; } = ReplaySceneState.GetDefault();
 	public static UploadResponseState UploadResponseState { get; private set; } = UploadResponseState.GetDefault();
 
@@ -72,8 +70,6 @@ public static class StateManager
 
 				ActiveSpawnsetState = stateReducer.ActiveSpawnsetState;
 				LeaderboardListState = stateReducer.LeaderboardListState;
-				MarkerState = stateReducer.MarkerState;
-				RecordingState = stateReducer.RecordingState;
 				ReplaySceneState = stateReducer.ReplaySceneState;
 				UploadResponseState = stateReducer.UploadResponseState;
 			}

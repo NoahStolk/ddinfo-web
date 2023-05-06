@@ -40,7 +40,14 @@ public class Application
 		_window.Update += OnWindowOnUpdate;
 		_window.Render += OnWindowOnRender;
 		_window.Closing += OnWindowOnClosing;
+
+		if (!AppVersion.TryParse(VersionUtils.EntryAssemblyVersion, out AppVersion? appVersion))
+			throw new InvalidOperationException("The current version number is invalid.");
+
+		AppVersion = appVersion;
 	}
+
+	public AppVersion AppVersion { get; }
 
 	public void Run()
 	{
@@ -70,13 +77,11 @@ public class Application
 		Root.Mouse = _inputContext.Mice.Count == 0 ? null : _inputContext.Mice[0];
 		Root.Keyboard = _inputContext.Keyboards.Count == 0 ? null : _inputContext.Keyboards[0];
 		Root.Window = _window;
+		Root.Application = this;
 
 		ConfigLayout.ValidateInstallation();
 
 		// AppDomain.CurrentDomain.UnhandledException += (_, args) => Root.Dependencies.Log.Fatal(args.ExceptionObject.ToString());
-
-		if (!AppVersion.TryParse(VersionUtils.EntryAssemblyVersion, out AppVersion? appVersion))
-			throw new InvalidOperationException("The current version number is invalid.");
 
 		AsyncHandler.Run(
 			static av =>
@@ -84,7 +89,7 @@ public class Application
 				Modals.ShowUpdate = av != null;
 				Modals.AvailableVersion = av;
 			},
-			() => FetchLatestVersion.HandleAsync(appVersion, Root.PlatformSpecificValues.BuildType));
+			() => FetchLatestVersion.HandleAsync(AppVersion, Root.PlatformSpecificValues.BuildType));
 	}
 
 	private static void ConfigureImGui()
@@ -111,6 +116,7 @@ public class Application
 
 	private static void OnWindowOnUpdate(double delta)
 	{
+		UiRenderer.Update((float)delta);
 		Scene.Update((float)delta);
 	}
 

@@ -1,3 +1,4 @@
+using DevilDaggersInfo.App.Core.GameMemory;
 using DevilDaggersInfo.App.Core.NativeInterface.Services;
 using DevilDaggersInfo.App.Core.NativeInterface.Services.Windows;
 using DevilDaggersInfo.App.Ui.Base.Platforms;
@@ -16,6 +17,7 @@ public static class Root
 	private static GameResources? _gameResources;
 	private static GL? _gl;
 	private static IWindow? _window;
+	private static Application? _application;
 
 	/// <summary>
 	/// Holds the internal resources, such as shaders and icons.
@@ -59,9 +61,6 @@ public static class Root
 		}
 	}
 
-	public static IMouse? Mouse { get; set; }
-	public static IKeyboard? Keyboard { get; set; }
-
 	public static IWindow Window
 	{
 		get => _window ?? throw _notInitializedException;
@@ -74,11 +73,28 @@ public static class Root
 		}
 	}
 
+	public static Application Application
+	{
+		get => _application ?? throw _notInitializedException;
+		set
+		{
+			if (_application != null)
+				throw _alreadyInitializedException;
+
+			_application = value;
+		}
+	}
+
+	public static IMouse? Mouse { get; set; }
+	public static IKeyboard? Keyboard { get; set; }
+
 #if WINDOWS
 	public static INativeFileSystemService NativeFileSystemService { get; } = new WindowsFileSystemService();
 	public static IPlatformSpecificValues PlatformSpecificValues { get; } = new WindowsValues();
+	public static GameMemoryService GameMemoryService { get; } = new(new WindowsMemoryService());
 #elif LINUX
 	public static INativeFileSystemService NativeFileSystemService { get; } = new LinuxFileSystemService();
 	public static IPlatformSpecificValues PlatformSpecificValues { get; } = new LinuxValues();
+	public static GameMemoryService GameMemoryService { get; } = new(new LinuxMemoryService());
 #endif
 }

@@ -1,3 +1,12 @@
+using DevilDaggersInfo.Api.App.CustomLeaderboards;
+using DevilDaggersInfo.Api.App.ProcessMemory;
+using DevilDaggersInfo.App.Core.GameMemory;
+using DevilDaggersInfo.App.Ui.Base.Networking;
+using DevilDaggersInfo.App.Ui.Base.Networking.TaskHandlers;
+using DevilDaggersInfo.App.Ui.Base.StateManagement;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Actions;
+using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Data;
+using DevilDaggersInfo.App.Ui.Base.User.Cache;
 using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Core.Encryption;
 #if !SKIP_VALUE
@@ -6,7 +15,7 @@ using System.Text;
 #endif
 using System.Web;
 
-namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder;
+namespace DevilDaggersInfo.App.Ui.CustomLeaderboards;
 
 public static class RecordingLogic
 {
@@ -20,7 +29,7 @@ public static class RecordingLogic
 #if SKIP_VALUE
 		_aesBase32Wrapper = new(string.Empty, string.Empty, string.Empty);
 #else
-		using MemoryStream msIn = new(Blobs.Value.Data.Select((b, i) => i < 4 ? (byte)(b << 4 | b >> 4) : (byte)~b).ToArray());
+		using MemoryStream msIn = new(Root.InternalResources.Value.Data.Select((b, i) => i < 4 ? (byte)(b << 4 | b >> 4) : (byte)~b).ToArray());
 		using MemoryStream msOut = new();
 		using DeflateStream ds = new(msIn, CompressionMode.Decompress);
 		ds.CopyTo(msOut);
@@ -31,21 +40,28 @@ public static class RecordingLogic
 #endif
 	}
 
+	public static long? Marker { get; private set; }
+	public static RecordingStateType RecordingStateType { get; private set; }
+	public static int CurrentPlayerId { get; private set; }
+	public static string? SpawnsetName { get; private set; }
+	public static DateTime? LastSubmission { get; private set; }
+	public static bool ShowUploadResponse { get; private set; }
+
 	/// <summary>
 	/// Scans game memory. If the marker is not known, fires the call to retrieve it, then returns false because memory can't be scanned until the HTTP call has returned successfully.
 	/// </summary>
 	/// <returns>Whether the marker is known.</returns>
 	public static bool Scan()
 	{
-		if (!StateManager.MarkerState.Marker.HasValue)
+		if (!Marker.HasValue)
 		{
 			InitializeMarker();
 			return false;
 		}
 
 		// Always initialize the process so we detach properly when the game exits.
-		Root.Dependencies.GameMemoryService.Initialize(StateManager.MarkerState.Marker.Value);
-		Root.Dependencies.GameMemoryService.Scan();
+		Root.GameMemoryService.Initialize(Marker.Value);
+		Root.GameMemoryService.Scan();
 
 		return true;
 	}
@@ -53,24 +69,24 @@ public static class RecordingLogic
 	public static void Handle()
 	{
 		// Do not execute if the game is not running.
-		if (!Root.Dependencies.GameMemoryService.IsInitialized)
+		if (!Root.GameMemoryService.IsInitialized)
 		{
-			StateManager.Dispatch(new SetRecordingState(RecordingStateType.WaitingForGame));
+			RecordingStateType = RecordingStateType.WaitingForGame;
 			return;
 		}
 
-		MainBlock mainBlock = Root.Dependencies.GameMemoryService.MainBlock;
-		MainBlock mainBlockPrevious = Root.Dependencies.GameMemoryService.MainBlockPrevious;
+		MainBlock mainBlock = Root.GameMemoryService.MainBlock;
+		MainBlock mainBlockPrevious = Root.GameMemoryService.MainBlockPrevious;
 
 		// When a run is scheduled to upload, keep trying until stats have loaded and the replay is valid.
 		if (_runToUpload != null)
 		{
-			StateManager.Dispatch(new SetRecordingState(RecordingStateType.WaitingForStats));
+			RecordingStateType = RecordingStateType.WaitingForStats;
 			if (!mainBlock.StatsLoaded)
 				return;
 
-			StateManager.Dispatch(new SetRecordingState(RecordingStateType.WaitingForReplay));
-			if (!Root.Dependencies.GameMemoryService.IsReplayValid())
+			RecordingStateType = RecordingStateType.WaitingForReplay;
+			if (!Root.GameMemoryService.IsReplayValid())
 				return;
 
 			UploadRunIfExists(_runToUpload.Value);
@@ -80,35 +96,37 @@ public static class RecordingLogic
 
 		// Set current player ID when it has not been set yet.
 		// When the game starts up it will be set to -1, and then to the player ID.
+		// TODO: Test if this gets reset when the player ID cache is incorrect.
 		if (UserCache.Model.PlayerId == 0 && mainBlock.PlayerId > 0)
 		{
-			StateManager.Dispatch(new SetCurrentPlayerId(mainBlock.PlayerId));
+			CurrentPlayerId = mainBlock.PlayerId;
 		}
 
 		// Indicate recording status.
 		GameStatus status = (GameStatus)mainBlock.Status;
-		if (StateManager.RecordingState.RecordingStateType != RecordingStateType.Recording)
+		if (RecordingStateType != RecordingStateType.Recording)
 		{
 			if (status is GameStatus.Title or GameStatus.Menu or GameStatus.Lobby || Math.Abs(mainBlock.Time - mainBlockPrevious.Time) < 0.0001f)
 			{
-				StateManager.Dispatch(new SetRecordingState(RecordingStateType.WaitingForNextRun));
+				RecordingStateType = RecordingStateType.WaitingForNextRun;
 				return;
 			}
 
-			StateManager.Dispatch(new SetRecordingState(RecordingStateType.Recording));
+			RecordingStateType = RecordingStateType.Recording;
+			ShowUploadResponse = false;
 		}
 
 #if !FORCE_LOCAL_REPLAYS
 		if (status == GameStatus.LocalReplay)
 		{
-			StateManager.Dispatch(new SetRecordingState(RecordingStateType.WaitingForLocalReplay));
+			RecordingStateType = RecordingStateType.WaitingForLocalReplay;
 			return;
 		}
 #endif
 
 		if (status == GameStatus.OwnReplayFromLeaderboard)
 		{
-			StateManager.Dispatch(new SetRecordingState(RecordingStateType.WaitingForLeaderboardReplay));
+			RecordingStateType = RecordingStateType.WaitingForLeaderboardReplay;
 			return;
 		}
 
@@ -120,14 +138,19 @@ public static class RecordingLogic
 
 	private static void InitializeMarker()
 	{
-		AsyncHandler.Run(SetMarker, () => FetchMarker.HandleAsync(Root.Dependencies.PlatformSpecificValues.OperatingSystem));
+		AsyncHandler.Run(SetMarker, () => FetchMarker.HandleAsync(Root.PlatformSpecificValues.OperatingSystem));
 
 		void SetMarker(GetMarker? getMarker)
 		{
 			if (getMarker == null)
-				Root.Dependencies.NativeDialogService.ReportError("Failed to retrieve marker.");
+			{
+				Modals.ShowError = true;
+				Modals.ErrorText = "Failed to retrieve marker.";
+			}
 			else
-				StateManager.Dispatch(new SetMarker(getMarker.Value));
+			{
+				Marker = getMarker.Value;
+			}
 		}
 	}
 
@@ -180,14 +203,13 @@ public static class RecordingLogic
 			runToUpload.ProhibitedMods);
 		string validation = _aesBase32Wrapper.EncryptAndEncode(toEncrypt);
 
-		GameMemoryService memoryService = Root.Dependencies.GameMemoryService;
-		byte[] statsBuffer = memoryService.GetStatsBuffer();
+		byte[] statsBuffer = Root.GameMemoryService.GetStatsBuffer();
 
 		AddUploadRequest uploadRequest = new()
 		{
 			DaggersFired = runToUpload.DaggersFired,
 			DaggersHit = runToUpload.DaggersHit,
-			ClientVersion = Root.Game.AppVersion.ToString(),
+			ClientVersion = Root.Application.AppVersion.ToString(),
 			DeathType = runToUpload.DeathType,
 			EnemiesAlive = runToUpload.EnemiesAlive,
 			GemsCollected = runToUpload.GemsCollected,
@@ -225,10 +247,10 @@ public static class RecordingLogic
 #else
 			BuildMode = "RELEASE",
 #endif
-			OperatingSystem = Root.Dependencies.PlatformSpecificValues.OperatingSystem.ToString(),
+			OperatingSystem = Root.PlatformSpecificValues.OperatingSystem.ToString(),
 			ProhibitedMods = runToUpload.ProhibitedMods,
 			Client = "ddinfo-tools",
-			ReplayData = memoryService.ReadReplayFromMemory(),
+			ReplayData = Root.GameMemoryService.ReadReplayFromMemory(),
 #if FORCE_LOCAL_REPLAYS
 			Status = (int)GameStatus.Dead,
 #else
@@ -246,11 +268,14 @@ public static class RecordingLogic
 	{
 		if (response == null)
 		{
-			Root.Dependencies.NativeDialogService.ReportError("Failed to upload run.");
+			Modals.ShowError = true;
+			Modals.ErrorText = "Failed to upload run.";
 			return;
 		}
 
-		StateManager.Dispatch(new SetSuccessfulUpload(response));
+		// StateManager.Dispatch(new SetSuccessfulUpload(response));
+		ShowUploadResponse = true;
+		LastSubmission = DateTime.Now;
 	}
 
 	private static AddGameData GetGameDataForUpload(MainBlock block, byte[] statsBuffer)

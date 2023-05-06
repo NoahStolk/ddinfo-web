@@ -5,6 +5,7 @@ using Silk.NET.OpenGL;
 namespace DevilDaggersInfo.App;
 
 public record InternalResources(
+	BlobContent Value,
 	Shader MeshShader,
 	Texture TileHitboxTexture,
 	ModelContent TileHitboxModel)
@@ -17,6 +18,10 @@ public record InternalResources(
 		const string? ddInfoToolsContentRootDirectory = null;
 #endif
 		DecompiledContentFile ddInfoToolsContent = Bootstrapper.GetDecompiledContent(ddInfoToolsContentRootDirectory, "ddinfo");
+
+		ddInfoToolsContent.Blobs.TryGetValue("Value", out BlobContent? blobContent);
+		if (blobContent == null)
+			throw new InvalidOperationException("Could not find value blob.");
 
 		ddInfoToolsContent.Shaders.TryGetValue("Mesh", out ShaderContent? meshShaderContent);
 		if (meshShaderContent == null)
@@ -32,6 +37,6 @@ public record InternalResources(
 
 		Shader meshShader = new(gl, meshShaderContent.VertexCode, meshShaderContent.FragmentCode);
 		Texture tileHitbox = new(gl, tileHitboxContent.Pixels, (uint)tileHitboxContent.Width, (uint)tileHitboxContent.Height);
-		return new(meshShader, tileHitbox, tileHitboxModelContent);
+		return new(blobContent, meshShader, tileHitbox, tileHitboxModelContent);
 	}
 }

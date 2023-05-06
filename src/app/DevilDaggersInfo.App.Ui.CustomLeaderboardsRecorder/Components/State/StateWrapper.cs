@@ -1,4 +1,3 @@
-using DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Utils;
 using System.Security.Cryptography;
 
 namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.State;
