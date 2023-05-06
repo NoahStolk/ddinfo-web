@@ -1,4 +1,6 @@
+using DevilDaggersInfo.Core.CriteriaExpression;
 using DevilDaggersInfo.Core.Wiki;
+using DevilDaggersInfo.Core.Wiki.Structs;
 using System.Diagnostics;
 
 namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Extensions;

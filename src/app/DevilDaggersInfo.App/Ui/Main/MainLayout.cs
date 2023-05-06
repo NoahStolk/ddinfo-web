@@ -61,7 +61,11 @@ public static class MainLayout
 			Scene.SceneType = SceneType.ReplayEditor;
 		}
 
-		MainButtonAt(0, 1, new(0, 0, 1, buttonAlpha), "Custom Leaderboards");
+		if (MainButtonAt(0, 1, new(0, 0, 1, buttonAlpha), "Custom Leaderboards"))
+		{
+			UiRenderer.Layout = LayoutType.CustomLeaderboards;
+		}
+
 		MainButtonAt(1, 1, new(0, 1, 1, buttonAlpha), "Practice (todo)");
 		MainButtonAt(2, 1, new(1, 1, 0, buttonAlpha), "Mod Manager (todo)");
 

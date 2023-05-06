@@ -1,6 +1,7 @@
+using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Data;
 using System.Diagnostics;
 
-namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Extensions;
+namespace DevilDaggersInfo.App.Ui.CustomLeaderboards;
 
 public static class RecordingStateTypeExtensions
 {

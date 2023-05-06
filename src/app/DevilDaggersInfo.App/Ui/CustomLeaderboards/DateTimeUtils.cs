@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Common;
 
-namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Utils;
+namespace DevilDaggersInfo.App.Ui.CustomLeaderboards;
 
 public static class DateTimeUtils
 {

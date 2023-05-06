@@ -5,43 +5,9 @@ namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Components.State;
 
 public class StateWrapper : AbstractComponent
 {
-	private readonly Label _labelMemoryValue;
-	private readonly Label _labelStateValue;
-	private readonly Label _labelSpawnsetValue;
-	private readonly Label _labelSubmissionValue;
-
 #pragma warning disable S1450 // Cannot change this into a local. The events would not be raised.
 	private FileSystemWatcher? _survivalFileWatcher;
 #pragma warning restore S1450
-
-	public StateWrapper(IBounds bounds)
-		: base(bounds)
-	{
-		const int labelSeparatorPosition = 80;
-		const int labelHeight = 16;
-		int labelDepth = Depth + 2;
-
-		string[] labelTexts =
-		{
-			"Memory", "State", "Spawnset", "Last upload",
-		};
-
-		for (int i = 0; i < labelTexts.Length; i++)
-		{
-			Label label = new(bounds.CreateNested(0, i * labelHeight, labelSeparatorPosition, labelHeight), labelTexts[i], LabelStyles.DefaultLeft) { Depth = labelDepth };
-			NestingContext.Add(label);
-		}
-
-		_labelMemoryValue = new(bounds.CreateNested(labelSeparatorPosition, labelHeight * 0, labelSeparatorPosition, labelHeight), string.Empty, LabelStyles.DefaultLeft) { Depth = labelDepth };
-		_labelStateValue = new(bounds.CreateNested(labelSeparatorPosition, labelHeight * 1, labelSeparatorPosition, labelHeight), string.Empty, LabelStyles.DefaultLeft) { Depth = labelDepth };
-		_labelSpawnsetValue = new(bounds.CreateNested(labelSeparatorPosition, labelHeight * 2, labelSeparatorPosition, labelHeight), string.Empty, LabelStyles.DefaultLeft) { Depth = labelDepth };
-		_labelSubmissionValue = new(bounds.CreateNested(labelSeparatorPosition, labelHeight * 3, labelSeparatorPosition, labelHeight), string.Empty, LabelStyles.DefaultLeft) { Depth = labelDepth };
-
-		NestingContext.Add(_labelMemoryValue);
-		NestingContext.Add(_labelStateValue);
-		NestingContext.Add(_labelSpawnsetValue);
-		NestingContext.Add(_labelSubmissionValue);
-	}
 
 	public void Initialize()
 	{
@@ -81,13 +47,5 @@ public class StateWrapper : AbstractComponent
 				}
 			}
 		}
-	}
-
-	public void SetState()
-	{
-		_labelMemoryValue.Text = StateManager.MarkerState.Marker.HasValue ? $"0x{StateManager.MarkerState.Marker.Value:X}" : "Waiting...";
-		_labelStateValue.Text = StateManager.RecordingState.RecordingStateType.ToDisplayString();
-		_labelSpawnsetValue.Text = StateManager.ActiveSpawnsetState.Name ?? "(unknown)";
-		_labelSubmissionValue.Text = DateTimeUtils.FormatTimeAgo(StateManager.RecordingState.LastSubmission);
 	}
 }
