@@ -1,7 +1,6 @@
 using DevilDaggersInfo.Api.App.CustomLeaderboards;
 using DevilDaggersInfo.App.Ui.Base.Networking;
 using DevilDaggersInfo.App.Ui.Base.Networking.TaskHandlers;
-using DevilDaggersInfo.App.Ui.Base.StateManagement.CustomLeaderboardsRecorder.Data;
 using DevilDaggersInfo.App.Ui.Base.User.Cache;
 using ImGuiNET;
 using System.Diagnostics;
@@ -19,10 +18,8 @@ public static class LeaderboardListChild
 	private static bool _featuredOnly;
 	private static string _spawnsetFilter = string.Empty;
 	private static string _authorFilter = string.Empty;
-	private static LeaderboardListSorting _sorting;
 
 	private static readonly List<GetCustomLeaderboardForOverview> _customLeaderboards = new();
-	private static readonly Dictionary<LeaderboardListSorting, bool> _sortingDirections = Enum.GetValues<LeaderboardListSorting>().ToDictionary(s => s, _ => true);
 
 	private static CustomLeaderboardCategory Category => Enum.Parse<CustomLeaderboardCategory>(_categoryNames[_categoryIndex]);
 
@@ -30,6 +27,8 @@ public static class LeaderboardListChild
 	public static int PageIndex { get; private set; }
 	public static int TotalPages { get; private set; }
 	public static List<GetCustomLeaderboardForOverview> PagedCustomLeaderboards { get; private set; } = new();
+	public static LeaderboardListSorting Sorting { get; set; }
+	public static bool SortAscending { get; set; }
 
 	public static void Render()
 	{
@@ -97,7 +96,7 @@ public static class LeaderboardListChild
 					PageIndex = Math.Clamp(PageIndex, 0, GetMaxPageIndex());
 				}
 
-				PagedCustomLeaderboards = GetPagedCustomLeaderboards();
+				UpdatePagedCustomLeaderboards();
 			},
 			() => FetchCustomLeaderboards.HandleAsync(UserCache.Model.PlayerId));
 	}
@@ -105,41 +104,40 @@ public static class LeaderboardListChild
 	private static void SetPageIndex(int pageIndex)
 	{
 		PageIndex = Math.Clamp(pageIndex, 0, Math.Max(0, GetMaxPageIndex()));
-		PagedCustomLeaderboards = GetPagedCustomLeaderboards();
+		UpdatePagedCustomLeaderboards();
 	}
 
-	public static int GetTotal()
+	private static int GetTotal()
 	{
 		return _customLeaderboards.Count(Predicate);
 	}
 
-	public static int GetTotalPages()
+	private static int GetTotalPages()
 	{
 		return (int)Math.Ceiling(GetTotal() / (float)_pageSize);
 	}
 
-	public static int GetMaxPageIndex()
+	private static int GetMaxPageIndex()
 	{
 		return Math.Max(0, GetTotalPages() - 1);
 	}
 
-	private static List<GetCustomLeaderboardForOverview> GetPagedCustomLeaderboards()
+	public static void UpdatePagedCustomLeaderboards()
 	{
-		_ = _sortingDirections.TryGetValue(_sorting, out bool isAscending);
-		IEnumerable<GetCustomLeaderboardForOverview> sorted = _sorting switch
+		IEnumerable<GetCustomLeaderboardForOverview> sorted = Sorting switch
 		{
-			LeaderboardListSorting.Name => isAscending ? _customLeaderboards.OrderBy(cl => cl.SpawnsetName.ToLower()) : _customLeaderboards.OrderByDescending(cl => cl.SpawnsetName.ToLower()),
-			LeaderboardListSorting.Author => isAscending ? _customLeaderboards.OrderBy(cl => cl.SpawnsetAuthorName.ToLower()) : _customLeaderboards.OrderByDescending(cl => cl.SpawnsetAuthorName.ToLower()),
-			LeaderboardListSorting.Criteria => isAscending ? _customLeaderboards.OrderBy(cl => cl.Criteria.Count) : _customLeaderboards.OrderByDescending(cl => cl.Criteria.Count),
-			LeaderboardListSorting.Score => isAscending ? _customLeaderboards.OrderBy(cl => cl.SelectedPlayerStats?.Time) : _customLeaderboards.OrderByDescending(cl => cl.SelectedPlayerStats?.Time),
-			LeaderboardListSorting.NextDagger => isAscending ? _customLeaderboards.OrderBy(GetNextDaggerSortingKey) : _customLeaderboards.OrderByDescending(GetNextDaggerSortingKey),
-			LeaderboardListSorting.Rank => isAscending ? _customLeaderboards.OrderBy(GetRankSortingKey) : _customLeaderboards.OrderByDescending(GetRankSortingKey),
-			LeaderboardListSorting.Players => isAscending ? _customLeaderboards.OrderBy(cl => cl.PlayerCount) : _customLeaderboards.OrderByDescending(cl => cl.PlayerCount),
-			LeaderboardListSorting.WorldRecord => isAscending ? _customLeaderboards.OrderBy(cl => cl.WorldRecord?.Time) : _customLeaderboards.OrderByDescending(cl => cl.WorldRecord?.Time),
+			LeaderboardListSorting.Name => SortAscending ? _customLeaderboards.OrderBy(cl => cl.SpawnsetName.ToLower()) : _customLeaderboards.OrderByDescending(cl => cl.SpawnsetName.ToLower()),
+			LeaderboardListSorting.Author => SortAscending ? _customLeaderboards.OrderBy(cl => cl.SpawnsetAuthorName.ToLower()) : _customLeaderboards.OrderByDescending(cl => cl.SpawnsetAuthorName.ToLower()),
+			LeaderboardListSorting.Criteria => SortAscending ? _customLeaderboards.OrderBy(cl => cl.Criteria.Count) : _customLeaderboards.OrderByDescending(cl => cl.Criteria.Count),
+			LeaderboardListSorting.Score => SortAscending ? _customLeaderboards.OrderBy(cl => cl.SelectedPlayerStats?.Time) : _customLeaderboards.OrderByDescending(cl => cl.SelectedPlayerStats?.Time),
+			LeaderboardListSorting.NextDagger => SortAscending ? _customLeaderboards.OrderBy(GetNextDaggerSortingKey) : _customLeaderboards.OrderByDescending(GetNextDaggerSortingKey),
+			LeaderboardListSorting.Rank => SortAscending ? _customLeaderboards.OrderBy(GetRankSortingKey) : _customLeaderboards.OrderByDescending(GetRankSortingKey),
+			LeaderboardListSorting.Players => SortAscending ? _customLeaderboards.OrderBy(cl => cl.PlayerCount) : _customLeaderboards.OrderByDescending(cl => cl.PlayerCount),
+			LeaderboardListSorting.WorldRecord => SortAscending ? _customLeaderboards.OrderBy(cl => cl.WorldRecord?.Time) : _customLeaderboards.OrderByDescending(cl => cl.WorldRecord?.Time),
 			_ => throw new UnreachableException(),
 		};
 
-		return sorted
+		PagedCustomLeaderboards = sorted
 			.Where(Predicate)
 			.Skip(PageIndex * _pageSize)
 			.Take(_pageSize)

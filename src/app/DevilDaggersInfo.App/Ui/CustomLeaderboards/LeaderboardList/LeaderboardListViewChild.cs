@@ -25,21 +25,32 @@ public static class LeaderboardListViewChild
 		}
 	}
 
-	private static void RenderTable()
+	private static unsafe void RenderTable()
 	{
+		const ImGuiTableFlags flags = ImGuiTableFlags.Resizable | ImGuiTableFlags.Reorderable | ImGuiTableFlags.Hideable | ImGuiTableFlags.Sortable | ImGuiTableFlags.SortMulti | ImGuiTableFlags.RowBg | ImGuiTableFlags.BordersV | ImGuiTableFlags.NoBordersInBody;
+
 		ImGui.PushStyleVar(ImGuiStyleVar.CellPadding, new Vector2(4, 1));
-		if (ImGui.BeginTable("LeaderboardListTable", 8, ImGuiTableFlags.None))
+		if (ImGui.BeginTable("LeaderboardListTable", 8, flags))
 		{
-			// TODO: Clickable.
-			ImGui.TableSetupColumn("Name");
-			ImGui.TableSetupColumn("Author");
-			ImGui.TableSetupColumn("Criteria");
-			ImGui.TableSetupColumn("Score");
-			ImGui.TableSetupColumn("Next dagger");
-			ImGui.TableSetupColumn("Rank");
-			ImGui.TableSetupColumn("Players");
-			ImGui.TableSetupColumn("World record");
+			ImGui.TableSetupColumn("Name", ImGuiTableColumnFlags.DefaultSort, 0, (int)LeaderboardListSorting.Name);
+			ImGui.TableSetupColumn("Author", ImGuiTableColumnFlags.None, 0, (int)LeaderboardListSorting.Author);
+			ImGui.TableSetupColumn("Criteria", ImGuiTableColumnFlags.None, 0, (int)LeaderboardListSorting.Criteria);
+			ImGui.TableSetupColumn("Score", ImGuiTableColumnFlags.None, 0, (int)LeaderboardListSorting.Score);
+			ImGui.TableSetupColumn("Next dagger", ImGuiTableColumnFlags.None, 0, (int)LeaderboardListSorting.NextDagger);
+			ImGui.TableSetupColumn("Rank", ImGuiTableColumnFlags.None, 0, (int)LeaderboardListSorting.Rank);
+			ImGui.TableSetupColumn("Players", ImGuiTableColumnFlags.None, 0, (int)LeaderboardListSorting.Players);
+			ImGui.TableSetupColumn("World record", ImGuiTableColumnFlags.None, 0, (int)LeaderboardListSorting.WorldRecord);
 			ImGui.TableHeadersRow();
+
+			ImGuiTableSortSpecsPtr sortsSpecs = ImGui.TableGetSortSpecs();
+			if (sortsSpecs.NativePtr != (void*)0 && sortsSpecs.SpecsDirty)
+			{
+				LeaderboardListChild.Sorting = (LeaderboardListSorting)sortsSpecs.Specs.ColumnUserID;
+				LeaderboardListChild.SortAscending = sortsSpecs.Specs.SortDirection == ImGuiSortDirection.Ascending;
+				LeaderboardListChild.UpdatePagedCustomLeaderboards();
+
+				sortsSpecs.SpecsDirty = false;
+			}
 
 			foreach (GetCustomLeaderboardForOverview lb in LeaderboardListChild.PagedCustomLeaderboards)
 			{

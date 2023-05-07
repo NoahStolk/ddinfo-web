@@ -7,37 +7,8 @@ public class LeaderboardListEntry : LeaderboardListRow
 {
 	private readonly List<CriteriaIcon> _criteriaIcons = new();
 
-	private readonly Label _name;
-	private readonly Label _author;
-	private readonly Label _score;
-	private readonly Label _nextDagger;
-	private readonly Label _rank;
-	private readonly Label _players;
-	private readonly Label _worldRecord;
-
 	private GetCustomLeaderboardForOverview? _customLeaderboard;
 	private bool _isHovering;
-
-	public LeaderboardListEntry(IBounds bounds)
-		: base(bounds)
-	{
-		int labelDepth = Depth + 100;
-		_name = new(bounds.CreateNested(GridName.Index, 0, GridName.Width, bounds.Size.Y), string.Empty, LabelStyles.DefaultLeft) { Depth = labelDepth, RenderOverflow = false };
-		_author = new(bounds.CreateNested(GridAuthor.Index, 0, GridAuthor.Width, bounds.Size.Y), string.Empty, LabelStyles.DefaultLeft) { Depth = labelDepth, RenderOverflow = false };
-		_score = new(bounds.CreateNested(GridScore.Index, 0, GridScore.Width, bounds.Size.Y), string.Empty, LabelStyles.DefaultLeft) { Depth = labelDepth };
-		_nextDagger = new(bounds.CreateNested(GridNextDagger.Index, 0, GridNextDagger.Width, bounds.Size.Y), string.Empty, LabelStyles.DefaultLeft) { Depth = labelDepth };
-		_rank = new(bounds.CreateNested(GridRank.Index, 0, GridRank.Width, bounds.Size.Y), string.Empty, LabelStyles.DefaultRight) { Depth = labelDepth };
-		_players = new(bounds.CreateNested(GridPlayers.Index, 0, GridPlayers.Width, bounds.Size.Y), string.Empty, LabelStyles.DefaultRight) { Depth = labelDepth };
-		_worldRecord = new(bounds.CreateNested(GridWorldRecord.Index, 0, GridWorldRecord.Width, bounds.Size.Y), string.Empty, LabelStyles.DefaultLeft) { Depth = labelDepth };
-
-		NestingContext.Add(_name);
-		NestingContext.Add(_author);
-		NestingContext.Add(_rank);
-		NestingContext.Add(_players);
-		NestingContext.Add(_score);
-		NestingContext.Add(_nextDagger);
-		NestingContext.Add(_worldRecord);
-	}
 
 	public void SetCustomLeaderboard(GetCustomLeaderboardForOverview? customLeaderboard)
 	{
