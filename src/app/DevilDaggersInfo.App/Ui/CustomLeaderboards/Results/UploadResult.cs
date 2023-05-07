@@ -35,6 +35,7 @@ public class UploadResult
 	}
 
 	public DateTime SubmittedAt { get; }
+	public bool IsExpanded { get; set; } = true;
 
 	public GetUploadResponseFirstScore? FirstScore { get; }
 	public GetUploadResponseHighscore? Highscore { get; }
@@ -99,7 +100,7 @@ public class UploadResult
 			{
 				ImGui.Text(label);
 				ImGui.SameLine();
-				ImGui.Text(formatter(value));
+				ImGui.TextUnformatted(formatter(value));
 			}
 		}
 	}
@@ -165,9 +166,10 @@ public class UploadResult
 	private bool RenderHeader(Color color, string title)
 	{
 		ImGui.PushStyleColor(ImGuiCol.Text, color);
-		bool treeNodeValue = ImGui.TreeNode(SubmittedAt.Ticks.ToString(), $"{DateTimeUtils.FormatTimeAgo(SubmittedAt)} - {_spawnsetName} - {title}");
+		if (ImGui.Button($"{SubmittedAt:HH:mm:ss} - {_spawnsetName} - {title}", new(320, 48)))
+			IsExpanded = !IsExpanded;
 		ImGui.PopStyleColor();
-		return treeNodeValue;
+		return IsExpanded;
 	}
 
 	private static void AddStates(
@@ -250,9 +252,11 @@ public class UploadResult
 
 		ImGui.Text(label);
 		ImGui.SameLine();
-		ImGui.Text(formatter(scoreState.Value));
+		ImGui.TextUnformatted(formatter(scoreState.Value));
 		ImGui.SameLine();
-		ImGui.TextColored(color, formatterDifference(scoreState.ValueDifference));
+		ImGui.PushStyleColor(ImGuiCol.Text, color);
+		ImGui.TextUnformatted(formatterDifference(scoreState.ValueDifference));
+		ImGui.PopStyleColor();
 	}
 
 	private static void AddLevelUpScoreState(string label, GetScoreState<double> scoreState)

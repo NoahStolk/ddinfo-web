@@ -283,7 +283,7 @@ public static class RecordingLogic
 		else
 			throw new InvalidOperationException("Invalid upload response returned from server.");
 
-		CustomLeaderboardResultsWindow.Results.Add(uploadResult);
+		CustomLeaderboardResultsWindow.AddResult(uploadResult);
 	}
 
 	private static AddGameData GetGameDataForUpload(MainBlock block, byte[] statsBuffer)

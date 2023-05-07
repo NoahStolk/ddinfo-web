@@ -436,6 +436,7 @@ public class CustomEntryProcessor
 		List<CustomEntryEntity> entries = await GetOrderedEntries(customLeaderboard.Id, customLeaderboard.RankSorting);
 		List<int> replayIds = GetExistingReplayIds(entries.ConvertAll(ce => ce.Id));
 
+		int homingStored = GetFinalHomingValue(uploadRequest);
 		return new()
 		{
 			SortedEntries = entries.Select((e, i) => ToEntry(e, i + 1, customLeaderboard.DaggerFromStat(e.Time), replayIds)).ToList(),
@@ -449,7 +450,7 @@ public class CustomEntryProcessor
 			DaggersHitState = new(uploadRequest.DaggersHit, uploadRequest.DaggersHit - currentEntry.DaggersHit),
 			DaggersFiredState = new(uploadRequest.DaggersFired, uploadRequest.DaggersFired - currentEntry.DaggersFired),
 			EnemiesAliveState = new(uploadRequest.EnemiesAlive, uploadRequest.EnemiesAlive - currentEntry.EnemiesAlive),
-			HomingStoredState = new(uploadRequest.HomingStored, uploadRequest.HomingStored - currentEntry.HomingStored),
+			HomingStoredState = new(homingStored, homingStored - currentEntry.HomingStored),
 			HomingEatenState = new(uploadRequest.HomingEaten, uploadRequest.HomingEaten - currentEntry.HomingEaten),
 			LevelUpTime2State = new(uploadRequest.LevelUpTime2InSeconds, uploadRequest.LevelUpTime2InSeconds - currentEntry.LevelUpTime2.ToSecondsTime()),
 			LevelUpTime3State = new(uploadRequest.LevelUpTime3InSeconds, uploadRequest.LevelUpTime3InSeconds - currentEntry.LevelUpTime3.ToSecondsTime()),
@@ -568,12 +569,12 @@ public class CustomEntryProcessor
 		};
 	}
 
+	/// <summary>
+	/// The <see cref="UploadRequest.HomingStored"/> value is not reliable in game memory and shouldn't be used.
+	/// </summary>
 	private static int GetFinalHomingValue(UploadRequest uploadRequest)
 	{
-		if (uploadRequest.GameData.HomingStored.Length == 0)
-			return 0;
-
-		return uploadRequest.GameData.HomingStored[^1];
+		return uploadRequest.GameData.HomingStored.Length == 0 ? 0 : uploadRequest.GameData.HomingStored[^1];
 	}
 
 	private void ValidateReplayBuffer(UploadRequest uploadRequest, string spawnsetName)
