@@ -1,6 +1,10 @@
 using DevilDaggersInfo.App.Core.GameMemory;
 using DevilDaggersInfo.App.Core.NativeInterface.Services;
+#if WINDOWS
 using DevilDaggersInfo.App.Core.NativeInterface.Services.Windows;
+#elif LINUX
+using DevilDaggersInfo.App.Core.NativeInterface.Services.Linux;
+#endif
 using DevilDaggersInfo.App.Ui.Base.Platforms;
 using Silk.NET.Input;
 using Silk.NET.OpenGL;
