@@ -1,5 +1,8 @@
 using DevilDaggersInfo.Api.App.CustomLeaderboards;
 using DevilDaggersInfo.App.Engine.Maths.Numerics;
+using DevilDaggersInfo.App.Ui.Base.Networking;
+using DevilDaggersInfo.App.Ui.Base.Networking.TaskHandlers;
+using DevilDaggersInfo.App.Ui.CustomLeaderboards.Leaderboard;
 using DevilDaggersInfo.Common;
 using ImGuiNET;
 using System.Numerics;
@@ -60,7 +63,21 @@ public static class LeaderboardListViewChild
 				bool temp = true;
 				if (ImGui.Selectable(lb.SpawnsetName, ref temp, ImGuiSelectableFlags.SpanAllColumns))
 				{
-
+					AsyncHandler.Run(
+						l =>
+						{
+							if (l == null)
+							{
+								Modals.ShowError = true;
+								Modals.ErrorText = "Could not fetch custom leaderboard.";
+								LeaderboardChild.Data = null;
+							}
+							else
+							{
+								LeaderboardChild.Data = new(l, lb.SpawnsetId);
+							}
+						},
+						() => FetchCustomLeaderboardById.HandleAsync(lb.Id));
 				}
 
 				ImGui.TableNextColumn();

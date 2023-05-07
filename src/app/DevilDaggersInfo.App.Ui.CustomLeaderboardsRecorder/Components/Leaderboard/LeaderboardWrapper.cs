@@ -76,29 +76,6 @@ public class LeaderboardWrapper : AbstractComponent
 
 	public static IReadOnlyList<int> TableOffsets { get; } = new List<int> { 16, 24, 260, 308, 352, 400, 448, 496, 552, 560, 664, 720, 776, 832, 888, 992 };
 
-	private void SetSelectedCustomLeaderboard()
-	{
-		if (StateManager.LeaderboardListState.SelectedCustomLeaderboard == null)
-			return;
-
-		AsyncHandler.Run(UpdateDisplayedCustomLeaderboard, () => FetchCustomLeaderboardById.HandleAsync(StateManager.LeaderboardListState.SelectedCustomLeaderboard.Id));
-
-		void UpdateDisplayedCustomLeaderboard(GetCustomLeaderboard? getCustomLeaderboard)
-		{
-			_playButton.IsDisabled = getCustomLeaderboard == null;
-
-			if (getCustomLeaderboard == null)
-			{
-				Root.Dependencies.NativeDialogService.ReportError("Could not fetch custom leaderboard.");
-				_leaderboardScrollArea.Clear();
-			}
-			else
-			{
-				_leaderboardScrollArea.SetContent(getCustomLeaderboard.SortedEntries);
-			}
-		}
-	}
-
 	private void SetCustomLeaderboardFromUploadResponse()
 	{
 		if (StateManager.UploadResponseState.UploadResponse?.NewSortedEntries == null)
@@ -106,17 +83,5 @@ public class LeaderboardWrapper : AbstractComponent
 
 		_playButton.IsDisabled = false;
 		_leaderboardScrollArea.SetContent(StateManager.UploadResponseState.UploadResponse.NewSortedEntries);
-	}
-
-	public override void Render(Vector2i<int> scrollOffset)
-	{
-		Root.Game.RectangleRenderer.Schedule(new(Bounds.Size.X, 2), new Vector2i<int>(Bounds.Center.X, Bounds.Y1) + scrollOffset, Depth - 5, Color.Gray(0.4f));
-
-		if (StateManager.LeaderboardListState.SelectedCustomLeaderboard == null)
-			return;
-
-		base.Render(scrollOffset);
-
-		Root.Game.MonoSpaceFontRenderer24.Schedule(new(1), Bounds.TopLeft + new Vector2i<int>(4) + scrollOffset, Depth - 3, Color.White, StateManager.LeaderboardListState.SelectedCustomLeaderboard.SpawnsetName, TextAlign.Left);
 	}
 }

@@ -1,4 +1,5 @@
 using DevilDaggersInfo.App.Scenes;
+using DevilDaggersInfo.App.Ui.CustomLeaderboards.Leaderboard;
 using DevilDaggersInfo.App.Ui.CustomLeaderboards.LeaderboardList;
 using ImGuiNET;
 
@@ -31,7 +32,7 @@ public static class CustomLeaderboardsWindow
 		ImGui.Begin("Custom Leaderboards", ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoScrollWithMouse);
 		ImGui.PopStyleVar();
 
-		ImGui.BeginChild("LeftRow", new(384, 704));
+		ImGui.BeginChild("LeftRow", new(384, 416));
 
 		StateChild.Render();
 		RecordingChild.Render();
@@ -40,12 +41,14 @@ public static class CustomLeaderboardsWindow
 
 		ImGui.SameLine();
 
-		ImGui.BeginChild("RightRow");
+		ImGui.BeginChild("RightRow", new(0, 416));
 
 		LeaderboardListChild.Render();
 		LeaderboardListViewChild.Render();
 
 		ImGui.EndChild();
+
+		LeaderboardChild.Render();
 
 		ImGui.End();
 
