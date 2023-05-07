@@ -8,6 +8,7 @@ using DevilDaggersInfo.App.Ui.Base.User.Cache;
 using DevilDaggersInfo.App.Ui.Base.User.Settings;
 using DevilDaggersInfo.App.Ui.CustomLeaderboards.LeaderboardList;
 using DevilDaggersInfo.Common;
+using DevilDaggersInfo.Core.Replay;
 using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Core.Wiki.Objects;
 using ImGuiNET;
@@ -103,60 +104,129 @@ public static class LeaderboardChild
 			foreach (GetCustomEntry ce in _sortedEntries)
 			{
 				ImGui.TableNextRow();
-				ImGui.TableNextColumn();
-
-				ImGui.Text(ce.Rank.ToString("00"));
-				ImGui.TableNextColumn();
-
-				ImGui.TextColored(ce.PlayerId == UserCache.Model.PlayerId ? Color.Green : Color.White, ce.PlayerName);
-				ImGui.TableNextColumn();
-
-				ImGui.TextColored(CustomLeaderboardDaggerUtils.GetColor(ce.CustomLeaderboardDagger), ce.TimeInSeconds.ToString(StringFormats.TimeFormat));
-				ImGui.TableNextColumn();
-
-				ImGui.Text(ce.EnemiesAlive.ToString());
-				ImGui.TableNextColumn();
-
-				ImGui.Text(ce.EnemiesKilled.ToString());
-				ImGui.TableNextColumn();
-
-				ImGui.Text(ce.GemsCollected.ToString());
-				ImGui.TableNextColumn();
-
-				ImGui.Text(ce.GemsDespawned?.ToString() ?? "-");
-				ImGui.TableNextColumn();
-
-				ImGui.Text(ce.GemsEaten?.ToString() ?? "-");
-				ImGui.TableNextColumn();
-
-				ImGui.TextUnformatted(GetAccuracy(ce).ToString(StringFormats.AccuracyFormat));
-				ImGui.TableNextColumn();
-
-				Death? death = Deaths.GetDeathByLeaderboardType(GameConstants.CurrentVersion, ce.DeathType);
-				ImGui.TextColored(death?.Color.ToEngineColor() ?? Color.White, death?.Name ?? "Unknown");
-				ImGui.TableNextColumn();
-
-				ImGui.Text(ce.HomingStored.ToString());
-				ImGui.TableNextColumn();
-
-				ImGui.Text(ce.HomingEaten?.ToString() ?? "-");
-				ImGui.TableNextColumn();
-
-				ImGui.Text(ce.LevelUpTime2InSeconds == 0 ? "-" : ce.LevelUpTime2InSeconds.ToString(StringFormats.TimeFormat));
-				ImGui.TableNextColumn();
-
-				ImGui.Text(ce.LevelUpTime3InSeconds == 0 ? "-" : ce.LevelUpTime3InSeconds.ToString(StringFormats.TimeFormat));
-				ImGui.TableNextColumn();
-
-				ImGui.Text(ce.LevelUpTime4InSeconds == 0 ? "-" : ce.LevelUpTime4InSeconds.ToString(StringFormats.TimeFormat));
-				ImGui.TableNextColumn();
-
-				ImGui.Text(ce.SubmitDate.ToString(StringFormats.DateTimeFormat));
-				ImGui.TableNextColumn();
+				RenderCustomEntry(ce);
 			}
 
 			ImGui.PopStyleVar();
 			ImGui.EndTable();
+		}
+	}
+
+	private static void RenderCustomEntry(GetCustomEntry ce)
+	{
+		Vector2 iconSize = new(8);
+
+		ImGui.TableNextColumn();
+
+		ImGui.Text(ce.Rank.ToString("00"));
+
+		ImGui.SameLine();
+		if (ImGui.ImageButton((IntPtr)Root.InternalResources.IconEyeTexture.Handle, iconSize))
+			WatchInGame();
+
+		if (ImGui.IsItemHovered())
+			ImGui.SetTooltip("Watch in game");
+
+		ImGui.SameLine();
+		if (ImGui.ImageButton((IntPtr)Root.InternalResources.IconEyeTexture.Handle, iconSize))
+			WatchInReplayViewer();
+
+		if (ImGui.IsItemHovered())
+			ImGui.SetTooltip("Watch in replay viewer");
+
+		ImGui.TableNextColumn();
+
+		ImGui.TextColored(ce.PlayerId == UserCache.Model.PlayerId ? Color.Green : Color.White, ce.PlayerName);
+		ImGui.TableNextColumn();
+
+		ImGui.TextColored(CustomLeaderboardDaggerUtils.GetColor(ce.CustomLeaderboardDagger), ce.TimeInSeconds.ToString(StringFormats.TimeFormat));
+		ImGui.TableNextColumn();
+
+		ImGui.Text(ce.EnemiesAlive.ToString());
+		ImGui.TableNextColumn();
+
+		ImGui.Text(ce.EnemiesKilled.ToString());
+		ImGui.TableNextColumn();
+
+		ImGui.Text(ce.GemsCollected.ToString());
+		ImGui.TableNextColumn();
+
+		ImGui.Text(ce.GemsDespawned?.ToString() ?? "-");
+		ImGui.TableNextColumn();
+
+		ImGui.Text(ce.GemsEaten?.ToString() ?? "-");
+		ImGui.TableNextColumn();
+
+		ImGui.TextUnformatted(GetAccuracy(ce).ToString(StringFormats.AccuracyFormat));
+		ImGui.TableNextColumn();
+
+		Death? death = Deaths.GetDeathByLeaderboardType(GameConstants.CurrentVersion, ce.DeathType);
+		ImGui.TextColored(death?.Color.ToEngineColor() ?? Color.White, death?.Name ?? "Unknown");
+		ImGui.TableNextColumn();
+
+		ImGui.Text(ce.HomingStored.ToString());
+		ImGui.TableNextColumn();
+
+		ImGui.Text(ce.HomingEaten?.ToString() ?? "-");
+		ImGui.TableNextColumn();
+
+		ImGui.Text(ce.LevelUpTime2InSeconds == 0 ? "-" : ce.LevelUpTime2InSeconds.ToString(StringFormats.TimeFormat));
+		ImGui.TableNextColumn();
+
+		ImGui.Text(ce.LevelUpTime3InSeconds == 0 ? "-" : ce.LevelUpTime3InSeconds.ToString(StringFormats.TimeFormat));
+		ImGui.TableNextColumn();
+
+		ImGui.Text(ce.LevelUpTime4InSeconds == 0 ? "-" : ce.LevelUpTime4InSeconds.ToString(StringFormats.TimeFormat));
+		ImGui.TableNextColumn();
+
+		ImGui.Text(ce.SubmitDate.ToString(StringFormats.DateTimeFormat));
+		ImGui.TableNextColumn();
+
+		void WatchInGame()
+		{
+			AsyncHandler.Run(Inject, () => FetchCustomEntryReplayById.HandleAsync(ce.Id));
+
+			void Inject(GetCustomEntryReplayBuffer? getCustomEntryReplayBuffer)
+			{
+				if (getCustomEntryReplayBuffer == null)
+				{
+					Modals.ShowError = true;
+					Modals.ErrorText = "Could not fetch replay.";
+					return;
+				}
+
+				Root.GameMemoryService.WriteReplayToMemory(getCustomEntryReplayBuffer.Data);
+			}
+		}
+
+		void WatchInReplayViewer()
+		{
+			AsyncHandler.Run(BuildReplayScene, () => FetchCustomEntryReplayById.HandleAsync(ce.Id));
+
+			void BuildReplayScene(GetCustomEntryReplayBuffer? getCustomEntryReplayBuffer)
+			{
+				if (getCustomEntryReplayBuffer == null)
+				{
+					Modals.ShowError = true;
+					Modals.ErrorText = "Could not fetch replay.";
+					return;
+				}
+
+				ReplayBinary<LocalReplayBinaryHeader> replayBinary;
+				try
+				{
+					replayBinary = new(getCustomEntryReplayBuffer.Data);
+				}
+				catch (Exception ex)
+				{
+					Modals.ShowError = true;
+					Modals.ErrorText = "Could not parse replay.";
+					return;
+				}
+
+				// StateManager.Dispatch(new SetLayout(Root.Dependencies.CustomLeaderboardsRecorderReplayViewer3dLayout));
+				// StateManager.Dispatch(new BuildReplayScene(new[] { replayBinary }));
+			}
 		}
 	}
 
