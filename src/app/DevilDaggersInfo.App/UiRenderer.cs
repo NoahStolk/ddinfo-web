@@ -2,6 +2,7 @@ using DevilDaggersInfo.App.Ui;
 using DevilDaggersInfo.App.Ui.Base.User.Settings;
 using DevilDaggersInfo.App.Ui.Config;
 using DevilDaggersInfo.App.Ui.CustomLeaderboards;
+using DevilDaggersInfo.App.Ui.CustomLeaderboards.Results;
 using DevilDaggersInfo.App.Ui.Main;
 using DevilDaggersInfo.App.Ui.ReplayEditor;
 using DevilDaggersInfo.App.Ui.SpawnsetEditor;
@@ -39,6 +40,7 @@ public static class UiRenderer
 				break;
 			case LayoutType.CustomLeaderboards:
 				CustomLeaderboardsWindow.Render();
+				CustomLeaderboardResultsWindow.Render();
 				break;
 			case LayoutType.ReplayEditor:
 				ReplayEditorWindow.Render();

@@ -21,8 +21,6 @@ public static class CustomLeaderboardsWindow
 		if (!RecordingLogic.Scan())
 			return;
 
-		//_recordingResultScrollArea.IsActive = gameMemoryInitialized && StateManager.RecordingState.ShowUploadResponse;
-
 		RecordingLogic.Handle();
 	}
 
