@@ -1,4 +1,3 @@
-using DevilDaggersInfo.App.Scenes;
 using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.User.Settings;
 using DevilDaggersInfo.App.Ui.SpawnsetEditor.State;
@@ -130,6 +129,5 @@ public static class SpawnsetEditorMenu
 	private static void Close()
 	{
 		UiRenderer.Layout = LayoutType.Main;
-		Scene.SceneType = SceneType.MainMenu;
 	}
 }

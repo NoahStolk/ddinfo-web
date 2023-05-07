@@ -1,4 +1,3 @@
-using DevilDaggersInfo.App.Scenes;
 using DevilDaggersInfo.App.Ui.ReplayEditor.State;
 using DevilDaggersInfo.Core.Replay;
 using DevilDaggersInfo.Core.Replay.PostProcessing.ReplaySimulation;
@@ -107,6 +106,5 @@ public static class ReplayEditorMenu
 	private static void Close()
 	{
 		UiRenderer.Layout = LayoutType.Main;
-		Scene.SceneType = SceneType.MainMenu;
 	}
 }

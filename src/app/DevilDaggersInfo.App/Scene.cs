@@ -1,5 +1,6 @@
 using DevilDaggersInfo.App.Scenes;
 using DevilDaggersInfo.App.Scenes.Base;
+using DevilDaggersInfo.App.Ui;
 using Silk.NET.OpenGL;
 
 namespace DevilDaggersInfo.App;
@@ -9,8 +10,6 @@ public static class Scene
 	private static MainMenuArenaScene? _arenaScene;
 	private static EditorArenaScene? _spawnsetEditorScene;
 	private static ReplayArenaScene? _replayArenaScene;
-
-	public static SceneType SceneType { get; set; }
 
 	public static ReplayArenaScene? ReplayArenaScene => _replayArenaScene;
 
@@ -23,12 +22,12 @@ public static class Scene
 
 	private static IArenaScene? GetScene()
 	{
-		return SceneType switch
+		return UiRenderer.Layout switch
 		{
-			SceneType.MainMenu => _arenaScene,
-			SceneType.SpawnsetEditor => _spawnsetEditorScene,
-			SceneType.ReplayEditor => _replayArenaScene,
-			_ => throw new($"Invalid scene type {SceneType}."),
+			LayoutType.Main => _arenaScene,
+			LayoutType.SpawnsetEditor => _spawnsetEditorScene,
+			LayoutType.ReplayEditor or LayoutType.CustomLeaderboards => _replayArenaScene,
+			_ => null,
 		};
 	}
 

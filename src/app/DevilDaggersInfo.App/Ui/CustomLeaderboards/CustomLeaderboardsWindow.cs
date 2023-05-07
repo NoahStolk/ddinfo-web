@@ -1,4 +1,3 @@
-using DevilDaggersInfo.App.Scenes;
 using DevilDaggersInfo.App.Ui.CustomLeaderboards.Leaderboard;
 using DevilDaggersInfo.App.Ui.CustomLeaderboards.LeaderboardList;
 using ImGuiNET;
@@ -51,9 +50,6 @@ public static class CustomLeaderboardsWindow
 		ImGui.End();
 
 		if (ImGui.IsKeyPressed(ImGuiKey.Escape) || ImGui.IsKeyPressed((ImGuiKey)526))
-		{
 			UiRenderer.Layout = LayoutType.Main;
-			Scene.SceneType = SceneType.MainMenu;
-		}
 	}
 }
