@@ -9,10 +9,7 @@ public static class ReplayEditorWindow
 	public static float Time
 	{
 		get => _time;
-		private set
-		{
-			_time = value;
-		}
+		set => _time = value;
 	}
 
 	public static void Update(float delta)
@@ -29,7 +26,7 @@ public static class ReplayEditorWindow
 
 		ReplayEditorMenu.Render();
 
-		ImGui.SliderFloat("Time", ref _time, 0, ReplayState.Replay.Header.Time, "%.4f");
+		ImGui.SliderFloat("Time", ref _time, 0, ReplayState.Replay.Header.Time, "%.4f", ImGuiSliderFlags.NoInput);
 
 		ImGui.End();
 	}

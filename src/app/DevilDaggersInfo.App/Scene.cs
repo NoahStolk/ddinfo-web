@@ -12,6 +12,8 @@ public static class Scene
 
 	public static SceneType SceneType { get; set; }
 
+	public static ReplayArenaScene? ReplayArenaScene => _replayArenaScene;
+
 	public static void Initialize()
 	{
 		_arenaScene = new();

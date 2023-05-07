@@ -1,6 +1,7 @@
 using DevilDaggersInfo.App.Scenes;
 using DevilDaggersInfo.App.Ui.ReplayEditor.State;
 using DevilDaggersInfo.Core.Replay;
+using DevilDaggersInfo.Core.Replay.PostProcessing.ReplaySimulation;
 using ImGuiNET;
 
 namespace DevilDaggersInfo.App.Ui.ReplayEditor;
@@ -87,7 +88,13 @@ public static class ReplayEditorMenu
 		{
 			Modals.ShowError = true;
 			Modals.ErrorText = $"The file '{filePath}' could not be parsed as a local replay.";
+			return;
 		}
+
+		ReplayEditorWindow.Time = 0;
+
+		ReplaySimulation replaySimulation = ReplaySimulationBuilder.Build(ReplayState.Replay);
+		Scene.ReplayArenaScene?.BuildPlayerMovement(replaySimulation);
 	}
 
 	private static void SaveReplay()
