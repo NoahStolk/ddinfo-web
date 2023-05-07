@@ -4,8 +4,12 @@ using DevilDaggersInfo.App.Ui.Base.Networking;
 using DevilDaggersInfo.App.Ui.Base.Networking.TaskHandlers;
 using DevilDaggersInfo.App.Ui.CustomLeaderboards.Leaderboard;
 using DevilDaggersInfo.Common;
+using DevilDaggersInfo.Core.CriteriaExpression;
+using DevilDaggersInfo.Core.CriteriaExpression.Extensions;
+using DevilDaggersInfo.Core.CriteriaExpression.Parts;
 using ImGuiNET;
 using System.Numerics;
+using System.Text;
 
 namespace DevilDaggersInfo.App.Ui.CustomLeaderboards.LeaderboardList;
 
@@ -86,6 +90,17 @@ public static class LeaderboardListViewChild
 				ImGui.TableNextColumn();
 
 				ImGui.Text(lb.Criteria.Count.ToString());
+				foreach (GetCustomLeaderboardCriteria criteria in lb.Criteria)
+				{
+					ImGui.SameLine();
+					ImGui.Image((IntPtr)criteria.Type.GetTexture().Handle, new(13));
+					if (ImGui.IsItemHovered())
+					{
+						// TODO: May need to improve performance here by caching the text, or perhaps return the text from the API.
+						ImGui.SetTooltip(GetText(criteria));
+					}
+				}
+
 				ImGui.TableNextColumn();
 
 				ImGui.TextColored(CustomLeaderboardDaggerUtils.GetColor(lb.SelectedPlayerStats?.Dagger), lb.SelectedPlayerStats?.Time.ToString(StringFormats.TimeFormat) ?? "-");
@@ -109,5 +124,43 @@ public static class LeaderboardListViewChild
 			ImGui.PopStyleVar();
 			ImGui.EndTable();
 		}
+	}
+
+	private static string GetText(GetCustomLeaderboardCriteria criteria)
+	{
+		if (!Expression.TryParse(criteria.Expression, out Expression? criteriaExpression))
+		{
+			// TODO: Log warning.
+			return string.Empty;
+		}
+
+		DevilDaggersInfo.Core.CriteriaExpression.CustomLeaderboardCriteriaType criteriaType = criteria.Type.ToCore();
+		DevilDaggersInfo.Core.CriteriaExpression.CustomLeaderboardCriteriaOperator @operator = criteria.Operator.ToCore();
+
+		StringBuilder sb = new();
+		sb.Append(criteriaType.Display());
+		sb.Append(' ');
+		sb.Append(@operator.ShortString());
+		sb.Append(' ');
+
+		foreach (IExpressionPart expressionPart in criteriaExpression.Parts)
+		{
+			switch (expressionPart)
+			{
+				case ExpressionOperator op:
+					sb.Append(op);
+					break;
+				case ExpressionTarget target:
+					sb.Append(target);
+					break;
+				case ExpressionValue value:
+					sb.Append(value.ToDisplayString(criteriaType));
+					break;
+			}
+
+			sb.Append(' ');
+		}
+
+		return sb.ToString().Trim();
 	}
 }
