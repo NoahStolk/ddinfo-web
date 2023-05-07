@@ -13,6 +13,7 @@ namespace DevilDaggersInfo.App.Scenes;
 public sealed class ReplayArenaScene : IArenaScene
 {
 	private Player? _player;
+	private ReplaySimulation? _replaySimulation;
 
 	public ReplayArenaScene()
 	{
@@ -31,17 +32,20 @@ public sealed class ReplayArenaScene : IArenaScene
 	public RaceDagger? RaceDagger { get; set; }
 	public int CurrentTick => (int)(ReplayEditorWindow.Time * 60);
 
-	// TODO: Implement this.
 	public void BuildPlayerMovement(ReplaySimulation replaySimulation)
 	{
-		_player = new(replaySimulation);
-		Lights.Add(_player.Light);
+		_replaySimulation = replaySimulation;
+		_player = new(_replaySimulation);
+		Lights.Add(_player.Light); // TODO: Move to Player class and set the position there.
 	}
 
 	public void Update(float delta)
 	{
 		IArenaScene scene = this;
 		scene.FillArena(ReplayState.Replay.Header.Spawnset);
+
+		if (_replaySimulation != null && CurrentTick < _replaySimulation.InputSnapshots.Count)
+			ReplayEditorWindow.Snapshot = _replaySimulation.InputSnapshots[CurrentTick];
 
 		for (int i = 0; i < Lights.Count; i++)
 			Lights[i].PrepareUpdate();
