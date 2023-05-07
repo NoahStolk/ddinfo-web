@@ -13,10 +13,28 @@ namespace DevilDaggersInfo.App.Ui.CustomLeaderboards.Results;
 // TODO: Rewrite to use discriminated unions if they ever get added to C#.
 public class UploadResult
 {
-	public UploadResult(GetUploadResponseFirstScore firstScore) => FirstScore = firstScore;
-	public UploadResult(GetUploadResponseHighscore highscore) => Highscore = highscore;
-	public UploadResult(GetUploadResponseNoHighscore noHighscore) => NoHighscore = noHighscore;
-	public UploadResult(GetUploadResponseCriteriaRejection criteriaRejection) => CriteriaRejection = criteriaRejection;
+	private static readonly Vector2 _iconSize = new(16);
+
+	private readonly bool _isAscending;
+	private readonly string _spawnsetName;
+
+	public UploadResult(GetUploadResponseFirstScore firstScore, bool isAscending, string spawnsetName, DateTime submittedAt)
+		: this(isAscending, spawnsetName, submittedAt) => FirstScore = firstScore;
+	public UploadResult(GetUploadResponseHighscore highscore, bool isAscending, string spawnsetName, DateTime submittedAt)
+		: this(isAscending, spawnsetName, submittedAt) => Highscore = highscore;
+	public UploadResult(GetUploadResponseNoHighscore noHighscore, bool isAscending, string spawnsetName, DateTime submittedAt)
+		: this(isAscending, spawnsetName, submittedAt) => NoHighscore = noHighscore;
+	public UploadResult(GetUploadResponseCriteriaRejection criteriaRejection, bool isAscending, string spawnsetName, DateTime submittedAt)
+		: this(isAscending, spawnsetName, submittedAt) => CriteriaRejection = criteriaRejection;
+
+	private UploadResult(bool isAscending, string spawnsetName, DateTime submittedAt)
+	{
+		_isAscending = isAscending;
+		_spawnsetName = spawnsetName;
+		SubmittedAt = submittedAt;
+	}
+
+	public DateTime SubmittedAt { get; }
 
 	public GetUploadResponseFirstScore? FirstScore { get; }
 	public GetUploadResponseHighscore? Highscore { get; }
@@ -37,47 +55,119 @@ public class UploadResult
 			throw new UnreachableException();
 	}
 
-	private static void RenderFirstScore(GetUploadResponseFirstScore firstScore)
+	private void RenderFirstScore(GetUploadResponseFirstScore firstScore)
 	{
+		if (RenderHeader(Color.Aqua, "First score!"))
+		{
+			Add("Rank", firstScore.Rank, i => i.ToString());
 
+			ImGui.Spacing();
+			ImGui.Image((IntPtr)Root.InternalResources.IconEyeTexture.Handle, _iconSize); // TODO: Orange
+			Add("Time", firstScore.Time, d => d.ToString(StringFormats.TimeFormat));
+			Add("Level 2", firstScore.LevelUpTime2, i => i.ToString(StringFormats.TimeFormat));
+			Add("Level 3", firstScore.LevelUpTime3, i => i.ToString(StringFormats.TimeFormat));
+			Add("Level 4", firstScore.LevelUpTime4, i => i.ToString(StringFormats.TimeFormat));
+			//AddDeath();
+
+			ImGui.Spacing();
+			ImGui.Image((IntPtr)Root.InternalResources.IconGemTexture.Handle, _iconSize); // TODO: Red
+			Add("Gems collected", firstScore.GemsCollected, i => i.ToString());
+			Add("Gems despawned", firstScore.GemsDespawned, i => i.ToString());
+			Add("Gems eaten", firstScore.GemsEaten, i => i.ToString());
+			Add("Gems total", firstScore.GemsTotal, i => i.ToString());
+
+			ImGui.Spacing();
+			ImGui.Image((IntPtr)Root.InternalResources.IconHomingTexture.Handle, _iconSize);
+			Add("Homing stored", firstScore.HomingStored, i => i.ToString());
+			Add("Homing eaten", firstScore.HomingEaten, i => i.ToString());
+
+			ImGui.Spacing();
+			ImGui.Image((IntPtr)Root.InternalResources.IconCrosshairTexture.Handle, _iconSize); // TODO: Green
+			Add("Daggers fired", firstScore.DaggersFired, i => i.ToString());
+			Add("Daggers hit", firstScore.DaggersHit, i => i.ToString());
+
+			double accuracy = firstScore.DaggersFired == 0 ? 0 : firstScore.DaggersHit / (double)firstScore.DaggersFired;
+			Add("Accuracy", accuracy, i => i.ToString(StringFormats.AccuracyFormat));
+
+			ImGui.Spacing();
+			ImGui.Image((IntPtr)Root.InternalResources.IconSkullTexture.Handle, _iconSize); // TODO: EnemiesV3_2.Skull4.Color.ToEngineColor())
+			Add("Enemies killed", firstScore.EnemiesKilled, i => i.ToString());
+			Add("Enemies alive", firstScore.EnemiesAlive, i => i.ToString());
+
+			void Add<T>(string label, T value, Func<T, string> formatter)
+				where T : struct
+			{
+				ImGui.Text(label);
+				ImGui.SameLine();
+				ImGui.Text(formatter(value));
+			}
+		}
 	}
 
-	private static void RenderHighscore(GetUploadResponseHighscore highscore)
+	private void RenderHighscore(GetUploadResponseHighscore highscore)
 	{
+		if (RenderHeader(Color.Green, "NEW HIGHSCORE!"))
+		{
+			AddScoreState("Rank", highscore.RankState, i => i.ToString(), i => $"{i:+0;-0;+0}");
 
+			AddStates(
+				_isAscending,
+				highscore.TimeState,
+				highscore.LevelUpTime2State,
+				highscore.LevelUpTime3State,
+				highscore.LevelUpTime4State,
+				highscore.EnemiesKilledState,
+				highscore.EnemiesAliveState,
+				highscore.GemsCollectedState,
+				highscore.GemsDespawnedState,
+				highscore.GemsEatenState,
+				highscore.GemsTotalState,
+				highscore.HomingStoredState,
+				highscore.HomingEatenState,
+				highscore.DaggersFiredState,
+				highscore.DaggersHitState);
+		}
 	}
 
-	private static void RenderNoHighscore(GetUploadResponseNoHighscore noHighscore)
+	private void RenderNoHighscore(GetUploadResponseNoHighscore noHighscore)
 	{
-		ImGui.Text("No new highscore.");
-
-		AddStates(
-			false, // TODO
-			noHighscore.TimeState,
-			noHighscore.LevelUpTime2State,
-			noHighscore.LevelUpTime3State,
-			noHighscore.LevelUpTime4State,
-			noHighscore.EnemiesKilledState,
-			noHighscore.EnemiesAliveState,
-			noHighscore.GemsCollectedState,
-			noHighscore.GemsDespawnedState,
-			noHighscore.GemsEatenState,
-			noHighscore.GemsTotalState,
-			noHighscore.HomingStoredState,
-			noHighscore.HomingEatenState,
-			noHighscore.DaggersFiredState,
-			noHighscore.DaggersHitState);
+		if (RenderHeader(Color.White, "No new highscore."))
+		{
+			AddStates(
+				_isAscending,
+				noHighscore.TimeState,
+				noHighscore.LevelUpTime2State,
+				noHighscore.LevelUpTime3State,
+				noHighscore.LevelUpTime4State,
+				noHighscore.EnemiesKilledState,
+				noHighscore.EnemiesAliveState,
+				noHighscore.GemsCollectedState,
+				noHighscore.GemsDespawnedState,
+				noHighscore.GemsEatenState,
+				noHighscore.GemsTotalState,
+				noHighscore.HomingStoredState,
+				noHighscore.HomingEatenState,
+				noHighscore.DaggersFiredState,
+				noHighscore.DaggersHitState);
+		}
 	}
 
-	private static void RenderCriteriaRejection(GetUploadResponseCriteriaRejection criteriaRejection)
+	private void RenderCriteriaRejection(GetUploadResponseCriteriaRejection criteriaRejection)
 	{
-		ImGui.TextColored(Color.Red, "Run was rejected.");
+		if (RenderHeader(Color.Red, "Rejected score."))
+		{
+			ImGui.Text(criteriaRejection.CriteriaName);
+			ImGui.Text($"Must be {criteriaRejection.CriteriaOperator.ToCore().ShortString()} {criteriaRejection.ExpectedValue}");
+			ImGui.Text($"Value was {criteriaRejection.ActualValue}");
+		}
+	}
 
-		ImGui.Text(criteriaRejection.CriteriaName);
-
-		ImGui.Text($"Must be {criteriaRejection.CriteriaOperator.ToCore().ShortString()} {criteriaRejection.ExpectedValue}");
-
-		ImGui.Text($"Value was {criteriaRejection.ActualValue}");
+	private bool RenderHeader(Color color, string title)
+	{
+		ImGui.PushStyleColor(ImGuiCol.Text, color);
+		bool treeNodeValue = ImGui.TreeNode(SubmittedAt.Ticks.ToString(), $"{DateTimeUtils.FormatTimeAgo(SubmittedAt)} - {_spawnsetName} - {title}");
+		ImGui.PopStyleColor();
+		return treeNodeValue;
 	}
 
 	private static void AddStates(
@@ -97,10 +187,8 @@ public class UploadResult
 		GetScoreState<int> daggersFiredState,
 		GetScoreState<int> daggersHitState)
 	{
-		Vector2 iconSize = new(16);
-
 		ImGui.Spacing();
-		ImGui.Image((IntPtr)Root.InternalResources.IconEyeTexture.Handle, iconSize); // TODO: Orange
+		ImGui.Image((IntPtr)Root.InternalResources.IconEyeTexture.Handle, _iconSize); // TODO: Orange
 
 		AddScoreState("Time", timeState, d => d.ToString(StringFormats.TimeFormat), i => $"{i:+0.0000;-0.0000;+0.0000}", !isAscending);
 		AddLevelUpScoreState("Level 2", levelUpTime2State);
@@ -112,19 +200,19 @@ public class UploadResult
 		// AddDeath(death);
 
 		ImGui.Spacing();
-		ImGui.Image((IntPtr)Root.InternalResources.IconGemTexture.Handle, iconSize); // TODO: Red
+		ImGui.Image((IntPtr)Root.InternalResources.IconGemTexture.Handle, _iconSize); // TODO: Red
 		AddScoreState("Gems collected", gemsCollectedState, i => i.ToString(), i => $"{i:+0;-0;+0}");
 		AddScoreState("Gems despawned", gemsDespawnedState, i => i.ToString(), i => $"{i:+0;-0;+0}", false);
 		AddScoreState("Gems eaten", gemsEatenState, i => i.ToString(), i => $"{i:+0;-0;+0}", false);
 		AddScoreState("Gems total", gemsTotalState, i => i.ToString(), i => $"{i:+0;-0;+0}");
 
 		ImGui.Spacing();
-		ImGui.Image((IntPtr)Root.InternalResources.IconHomingTexture.Handle, iconSize);
+		ImGui.Image((IntPtr)Root.InternalResources.IconHomingTexture.Handle, _iconSize);
 		AddScoreState("Homing stored", homingStoredState, i => i.ToString(), i => $"{i:+0;-0;+0}");
 		AddScoreState("Homing eaten", homingEatenState, i => i.ToString(), i => $"{i:+0;-0;+0}", false);
 
 		ImGui.Spacing();
-		ImGui.Image((IntPtr)Root.InternalResources.IconCrosshairTexture.Handle, iconSize); // TODO: Green
+		ImGui.Image((IntPtr)Root.InternalResources.IconCrosshairTexture.Handle, _iconSize); // TODO: Green
 		AddScoreState("Daggers fired", daggersFiredState, i => i.ToString(), i => $"{i:+0;-0;+0}");
 		AddScoreState("Daggers hit", daggersHitState, i => i.ToString(), i => $"{i:+0;-0;+0}");
 
@@ -141,7 +229,7 @@ public class UploadResult
 		AddScoreState("Accuracy", accuracyState, i => i.ToString(StringFormats.AccuracyFormat), i => $"{i:+0.00%;-0.00%;+0.00%}");
 
 		ImGui.Spacing();
-		ImGui.Image((IntPtr)Root.InternalResources.IconSkullTexture.Handle, iconSize); // TODO: EnemiesV3_2.Skull4.Color.ToEngineColor())
+		ImGui.Image((IntPtr)Root.InternalResources.IconSkullTexture.Handle, _iconSize); // TODO: EnemiesV3_2.Skull4.Color.ToEngineColor())
 		AddScoreState("Enemies killed", enemiesKilledState, i => i.ToString(), i => $"{i:+0;-0;+0}");
 		AddScoreState("Enemies alive", enemiesAliveState, i => i.ToString(), i => $"{i:+0;-0;+0}");
 	}

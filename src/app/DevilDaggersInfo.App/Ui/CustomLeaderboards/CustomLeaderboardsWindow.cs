@@ -30,7 +30,7 @@ public static class CustomLeaderboardsWindow
 		ImGui.Begin("Custom Leaderboards", ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoScrollWithMouse);
 		ImGui.PopStyleVar();
 
-		ImGui.BeginChild("LeftRow", new(384, 416));
+		ImGui.BeginChild("LeftRow", new(288, 416));
 
 		StateChild.Render();
 		RecordingChild.Render();

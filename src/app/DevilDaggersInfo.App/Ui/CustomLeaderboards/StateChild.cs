@@ -6,7 +6,7 @@ public static class StateChild
 {
 	public static void Render()
 	{
-		if (ImGui.BeginTable("StateTable", 2, ImGuiTableFlags.None, new(320, 80)))
+		if (ImGui.BeginTable("StateTable", 2, ImGuiTableFlags.None, new(288, 80)))
 		{
 			ImGui.TableNextColumn();
 			ImGui.Text("Memory");

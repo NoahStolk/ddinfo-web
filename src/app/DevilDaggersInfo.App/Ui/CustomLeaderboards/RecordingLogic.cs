@@ -4,6 +4,7 @@ using DevilDaggersInfo.App.Core.GameMemory;
 using DevilDaggersInfo.App.Ui.Base.Networking;
 using DevilDaggersInfo.App.Ui.Base.Networking.TaskHandlers;
 using DevilDaggersInfo.App.Ui.Base.User.Cache;
+using DevilDaggersInfo.App.Ui.CustomLeaderboards.Results;
 using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Core.Encryption;
 #if !SKIP_VALUE
@@ -39,7 +40,6 @@ public static class RecordingLogic
 
 	public static long? Marker { get; private set; }
 	public static RecordingStateType RecordingStateType { get; private set; }
-	public static int CurrentPlayerId { get; private set; }
 	public static DateTime? LastSubmission { get; private set; }
 	public static bool ShowUploadResponse { get; private set; }
 
@@ -92,10 +92,9 @@ public static class RecordingLogic
 
 		// Set current player ID when it has not been set yet.
 		// When the game starts up it will be set to -1, and then to the player ID.
-		// TODO: Test if this gets reset when the player ID cache is incorrect.
-		if (UserCache.Model.PlayerId == 0 && mainBlock.PlayerId > 0)
+		if (mainBlock.PlayerId > 0 && UserCache.Model.PlayerId != mainBlock.PlayerId)
 		{
-			CurrentPlayerId = mainBlock.PlayerId;
+			UserCache.Model = new() { PlayerId = mainBlock.PlayerId };
 		}
 
 		// Indicate recording status.
@@ -269,9 +268,22 @@ public static class RecordingLogic
 			return;
 		}
 
-		// StateManager.Dispatch(new SetSuccessfulUpload(response));
 		ShowUploadResponse = true;
 		LastSubmission = DateTime.Now;
+
+		UploadResult uploadResult;
+		if (response.FirstScore != null)
+			uploadResult = new(response.FirstScore, response.IsAscending, response.SpawnsetName, DateTime.Now);
+		else if (response.Highscore != null)
+			uploadResult = new(response.Highscore, response.IsAscending, response.SpawnsetName, DateTime.Now);
+		else if (response.NoHighscore != null)
+			uploadResult = new(response.NoHighscore, response.IsAscending, response.SpawnsetName, DateTime.Now);
+		else if (response.CriteriaRejection != null)
+			uploadResult = new(response.CriteriaRejection, response.IsAscending, response.SpawnsetName, DateTime.Now);
+		else
+			throw new InvalidOperationException("Invalid upload response returned from server.");
+
+		CustomLeaderboardResultsWindow.Results.Add(uploadResult);
 	}
 
 	private static AddGameData GetGameDataForUpload(MainBlock block, byte[] statsBuffer)

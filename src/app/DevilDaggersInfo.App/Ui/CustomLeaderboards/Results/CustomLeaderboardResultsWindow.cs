@@ -10,7 +10,7 @@ public static class CustomLeaderboardResultsWindow
 	{
 		ImGui.Begin("Custom Leaderboard Results");
 
-		foreach (UploadResult result in Results)
+		foreach (UploadResult result in Results.OrderByDescending(ur => ur.SubmittedAt))
 			result.Render();
 
 		ImGui.End();
