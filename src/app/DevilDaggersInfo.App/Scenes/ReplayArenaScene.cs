@@ -1,6 +1,7 @@
 // ReSharper disable ForCanBeConvertedToForeach
 using DevilDaggersInfo.App.Scenes.Base;
 using DevilDaggersInfo.App.Scenes.Base.GameObjects;
+using DevilDaggersInfo.App.Ui.ReplayEditor;
 using DevilDaggersInfo.App.Ui.ReplayEditor.State;
 using DevilDaggersInfo.Core.Replay.PostProcessing.ReplaySimulation;
 using DevilDaggersInfo.Core.Spawnset;
@@ -28,7 +29,7 @@ public sealed class ReplayArenaScene : IArenaScene
 	public Tile[,] Tiles { get; } = new Tile[SpawnsetBinary.ArenaDimensionMax, SpawnsetBinary.ArenaDimensionMax];
 	public List<LightObject> Lights { get; } = new();
 	public RaceDagger? RaceDagger { get; set; }
-	public int CurrentTick => 0; // TODO: Implement this.
+	public int CurrentTick => (int)(ReplayEditorWindow.Time * 60);
 
 	// TODO: Implement this.
 	public void BuildPlayerMovement(ReplaySimulation replaySimulation)

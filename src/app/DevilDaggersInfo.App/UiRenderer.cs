@@ -18,8 +18,15 @@ public static class UiRenderer
 
 	public static void Update(float delta)
 	{
-		if (Layout == LayoutType.CustomLeaderboards)
-			CustomLeaderboardsWindow.Update(delta);
+		switch (Layout)
+		{
+			case LayoutType.CustomLeaderboards:
+				CustomLeaderboardsWindow.Update(delta);
+				break;
+			case LayoutType.ReplayEditor:
+				ReplayEditorWindow.Update(delta);
+				break;
+		}
 	}
 
 	public static void Render()
