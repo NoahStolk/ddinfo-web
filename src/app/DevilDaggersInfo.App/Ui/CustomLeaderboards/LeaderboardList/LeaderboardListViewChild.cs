@@ -1,5 +1,6 @@
 using DevilDaggersInfo.Api.App.CustomLeaderboards;
 using DevilDaggersInfo.App.Engine.Maths.Numerics;
+using DevilDaggersInfo.Common;
 using ImGuiNET;
 using System.Numerics;
 
@@ -48,7 +49,6 @@ public static class LeaderboardListViewChild
 				LeaderboardListChild.Sorting = (LeaderboardListSorting)sortsSpecs.Specs.ColumnUserID;
 				LeaderboardListChild.SortAscending = sortsSpecs.Specs.SortDirection == ImGuiSortDirection.Ascending;
 				LeaderboardListChild.UpdatePagedCustomLeaderboards();
-
 				sortsSpecs.SpecsDirty = false;
 			}
 
@@ -71,10 +71,12 @@ public static class LeaderboardListViewChild
 				ImGui.Text(lb.Criteria.Count.ToString());
 				ImGui.TableNextColumn();
 
-				ImGui.Text(lb.SelectedPlayerStats?.Time.ToString() ?? "-");
+				ImGui.TextColored(CustomLeaderboardDaggerUtils.GetColor(lb.SelectedPlayerStats?.Dagger), lb.SelectedPlayerStats?.Time.ToString(StringFormats.TimeFormat) ?? "-");
 				ImGui.TableNextColumn();
 
-				ImGui.Text(lb.SelectedPlayerStats?.NextDagger?.Time.ToString() ?? "-");
+				bool completed = lb.SelectedPlayerStats?.Dagger == CustomLeaderboardDagger.Leviathan;
+				Color color = CustomLeaderboardDaggerUtils.GetColor(completed ? CustomLeaderboardDagger.Leviathan : lb.SelectedPlayerStats?.NextDagger?.Dagger);
+				ImGui.TextColored(color, completed ? "COMPLETED" : lb.SelectedPlayerStats?.NextDagger?.Time.ToString(StringFormats.TimeFormat) ?? "N/A");
 				ImGui.TableNextColumn();
 
 				ImGui.Text(lb.SelectedPlayerStats?.Rank.ToString() ?? "-");
@@ -83,7 +85,7 @@ public static class LeaderboardListViewChild
 				ImGui.Text(lb.PlayerCount.ToString());
 				ImGui.TableNextColumn();
 
-				ImGui.Text(lb.WorldRecord?.Time.ToString() ?? "-");
+				ImGui.TextColored(CustomLeaderboardDaggerUtils.GetColor(lb.WorldRecord?.Dagger), lb.WorldRecord?.Time.ToString(StringFormats.TimeFormat) ?? "-");
 				ImGui.TableNextColumn();
 			}
 

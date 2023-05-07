@@ -1,8 +1,10 @@
+using DevilDaggersInfo.Api.App.CustomLeaderboards;
+using DevilDaggersInfo.App.Engine.Maths.Numerics;
+using DevilDaggersInfo.App.Ui.Base.Extensions;
 using DevilDaggersInfo.Core.Wiki;
-using DevilDaggersInfo.Core.Wiki.Structs;
 using System.Diagnostics;
 
-namespace DevilDaggersInfo.App.Ui.CustomLeaderboardsRecorder.Utils;
+namespace DevilDaggersInfo.App.Ui.CustomLeaderboards.LeaderboardList;
 
 public static class CustomLeaderboardDaggerUtils
 {

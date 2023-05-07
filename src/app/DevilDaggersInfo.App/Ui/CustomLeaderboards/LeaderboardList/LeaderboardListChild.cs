@@ -25,10 +25,12 @@ public static class LeaderboardListChild
 
 	public static bool IsLoading { get; private set; }
 	public static int PageIndex { get; private set; }
-	public static int TotalPages { get; private set; }
 	public static List<GetCustomLeaderboardForOverview> PagedCustomLeaderboards { get; private set; } = new();
 	public static LeaderboardListSorting Sorting { get; set; }
 	public static bool SortAscending { get; set; }
+
+	public static int TotalPages => (int)Math.Ceiling(_customLeaderboards.Count(Predicate) / (float)_pageSize);
+	private static int MaxPageIndex => Math.Max(0, TotalPages - 1);
 
 	public static void Render()
 	{
@@ -57,20 +59,24 @@ public static class LeaderboardListChild
 
 		ImGui.SameLine();
 		ImGui.BeginChild("ComboCategory", new(170, 20));
-		ImGui.Combo("Category", ref _categoryIndex, _categoryNames, _categoryNames.Length);
+		if (ImGui.Combo("Category", ref _categoryIndex, _categoryNames, _categoryNames.Length))
+			UpdatePagedCustomLeaderboards();
 		ImGui.EndChild();
 
 		ImGui.SameLine();
-		ImGui.Checkbox("Featured only", ref _featuredOnly);
+		if (ImGui.Checkbox("Featured only", ref _featuredOnly))
+			UpdatePagedCustomLeaderboards();
 
 		ImGui.SameLine();
 		ImGui.BeginChild("InputSpawnset", new(170, 20));
-		ImGui.InputText("Spawnset filter", ref _spawnsetFilter, 32);
+		if (ImGui.InputText("Spawnset filter", ref _spawnsetFilter, 32))
+			UpdatePagedCustomLeaderboards();
 		ImGui.EndChild();
 
 		ImGui.SameLine();
 		ImGui.BeginChild("InputAuthor", new(170, 20));
-		ImGui.InputText("Author filter", ref _authorFilter, 32);
+		if (ImGui.InputText("Author filter", ref _authorFilter, 32))
+			UpdatePagedCustomLeaderboards();
 		ImGui.EndChild();
 
 		ImGui.EndChild();
@@ -92,8 +98,7 @@ public static class LeaderboardListChild
 				else
 				{
 					_customLeaderboards.AddRange(p);
-					TotalPages = GetTotalPages();
-					PageIndex = Math.Clamp(PageIndex, 0, GetMaxPageIndex());
+					ClampPageIndex();
 				}
 
 				UpdatePagedCustomLeaderboards();
@@ -103,23 +108,14 @@ public static class LeaderboardListChild
 
 	private static void SetPageIndex(int pageIndex)
 	{
-		PageIndex = Math.Clamp(pageIndex, 0, Math.Max(0, GetMaxPageIndex()));
+		PageIndex = pageIndex;
+		ClampPageIndex();
 		UpdatePagedCustomLeaderboards();
 	}
 
-	private static int GetTotal()
+	private static void ClampPageIndex()
 	{
-		return _customLeaderboards.Count(Predicate);
-	}
-
-	private static int GetTotalPages()
-	{
-		return (int)Math.Ceiling(GetTotal() / (float)_pageSize);
-	}
-
-	private static int GetMaxPageIndex()
-	{
-		return Math.Max(0, GetTotalPages() - 1);
+		PageIndex = Math.Clamp(PageIndex, 0, Math.Max(0, MaxPageIndex));
 	}
 
 	public static void UpdatePagedCustomLeaderboards()
@@ -137,6 +133,9 @@ public static class LeaderboardListChild
 			_ => throw new UnreachableException(),
 		};
 
+		// Clamp the page index before any filtering.
+		ClampPageIndex();
+
 		PagedCustomLeaderboards = sorted
 			.Where(Predicate)
 			.Skip(PageIndex * _pageSize)
@@ -145,10 +144,7 @@ public static class LeaderboardListChild
 
 		static int GetRankSortingKey(GetCustomLeaderboardForOverview customLeaderboard)
 		{
-			if (customLeaderboard.SelectedPlayerStats == null)
-				return int.MaxValue;
-
-			return customLeaderboard.SelectedPlayerStats.Rank;
+			return customLeaderboard.SelectedPlayerStats?.Rank ?? int.MaxValue;
 		}
 
 		static double GetNextDaggerSortingKey(GetCustomLeaderboardForOverview customLeaderboard)
@@ -156,10 +152,7 @@ public static class LeaderboardListChild
 			if (customLeaderboard.Daggers == null || customLeaderboard.SelectedPlayerStats == null)
 				return double.MinValue;
 
-			if (customLeaderboard.SelectedPlayerStats.NextDagger == null)
-				return double.MaxValue;
-
-			return customLeaderboard.SelectedPlayerStats.NextDagger.Time;
+			return customLeaderboard.SelectedPlayerStats.NextDagger?.Time ?? double.MaxValue;
 		}
 	}
 
