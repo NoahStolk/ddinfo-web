@@ -58,24 +58,24 @@ public static class LeaderboardListChild
 			SetPageIndex(TotalPages - 1);
 
 		ImGui.SameLine();
-		ImGui.BeginChild("ComboCategory", new(170, 20));
+		ImGui.BeginChild("ComboCategory", new(200, 20));
 		if (ImGui.Combo("Category", ref _categoryIndex, _categoryNames, _categoryNames.Length))
 			UpdatePagedCustomLeaderboards();
 		ImGui.EndChild();
 
 		ImGui.SameLine();
-		if (ImGui.Checkbox("Featured only", ref _featuredOnly))
+		if (ImGui.Checkbox("Featured", ref _featuredOnly))
 			UpdatePagedCustomLeaderboards();
 
 		ImGui.SameLine();
-		ImGui.BeginChild("InputSpawnset", new(170, 20));
-		if (ImGui.InputText("Spawnset filter", ref _spawnsetFilter, 32))
+		ImGui.BeginChild("InputSpawnset", new(150, 20));
+		if (ImGui.InputText("Name", ref _spawnsetFilter, 32))
 			UpdatePagedCustomLeaderboards();
 		ImGui.EndChild();
 
 		ImGui.SameLine();
-		ImGui.BeginChild("InputAuthor", new(170, 20));
-		if (ImGui.InputText("Author filter", ref _authorFilter, 32))
+		ImGui.BeginChild("InputAuthor", new(150, 20));
+		if (ImGui.InputText("Author", ref _authorFilter, 32))
 			UpdatePagedCustomLeaderboards();
 		ImGui.EndChild();
 

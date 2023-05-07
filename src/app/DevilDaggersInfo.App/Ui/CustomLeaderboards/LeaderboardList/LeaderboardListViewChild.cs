@@ -10,20 +10,20 @@ public static class LeaderboardListViewChild
 {
 	public static void Render()
 	{
+		ImGui.BeginChild("LeaderboardList");
+
 		if (LeaderboardListChild.IsLoading)
 		{
 			ImGui.TextColored(Color.Yellow, "Loading...");
 		}
 		else
 		{
-			ImGui.BeginChild("LeaderboardList");
-
 			ImGui.Text($"Page {LeaderboardListChild.PageIndex + 1} of {LeaderboardListChild.TotalPages}");
 
 			RenderTable();
-
-			ImGui.EndChild();
 		}
+
+		ImGui.EndChild();
 	}
 
 	private static unsafe void RenderTable()
