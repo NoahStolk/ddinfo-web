@@ -7,7 +7,14 @@ namespace DevilDaggersInfo.App;
 public record InternalResources(
 	BlobContent Value,
 	Shader MeshShader,
-	Texture TileHitboxTexture,
+	Texture ApplicationIconTexture,
+	Texture ArrowEndTexture,
+	Texture ArrowLeftTexture,
+	Texture ArrowRightTexture,
+	Texture ArrowStartTexture,
+	Texture BucketTexture,
+	Texture DaggerTexture,
+	Texture EllipseTexture,
 	Texture IconCalendarTexture,
 	Texture IconCrosshairTexture,
 	Texture IconDaggerTexture,
@@ -20,6 +27,11 @@ public record InternalResources(
 	Texture IconSkullTexture,
 	Texture IconSpiderTexture,
 	Texture IconStopwatchTexture,
+	Texture LineTexture,
+	Texture PencilTexture,
+	Texture RectangleTexture,
+	Texture ReloadTexture,
+	Texture TileHitboxTexture,
 	ModelContent TileHitboxModel)
 {
 	public static InternalResources Create(GL gl)
@@ -34,7 +46,14 @@ public record InternalResources(
 		return new(
 			Value: GetBlobContent(ddInfoToolsContent, "Value"),
 			MeshShader: GetShader(ddInfoToolsContent, "Mesh"),
-			TileHitboxTexture: GetTexture(ddInfoToolsContent, "TileHitbox"),
+			ApplicationIconTexture: GetTexture(ddInfoToolsContent, "ApplicationIcon"),
+			ArrowEndTexture: GetTexture(ddInfoToolsContent, "ArrowEnd"),
+			ArrowLeftTexture: GetTexture(ddInfoToolsContent, "ArrowLeft"),
+			ArrowRightTexture: GetTexture(ddInfoToolsContent, "ArrowRight"),
+			ArrowStartTexture: GetTexture(ddInfoToolsContent, "ArrowStart"),
+			BucketTexture: GetTexture(ddInfoToolsContent, "Bucket"),
+			DaggerTexture: GetTexture(ddInfoToolsContent, "Dagger"),
+			EllipseTexture: GetTexture(ddInfoToolsContent, "Ellipse"),
 			IconCalendarTexture: GetTexture(ddInfoToolsContent, "IconCalendar"),
 			IconCrosshairTexture: GetTexture(ddInfoToolsContent, "IconCrosshair"),
 			IconDaggerTexture: GetTexture(ddInfoToolsContent, "IconDagger"),
@@ -47,6 +66,11 @@ public record InternalResources(
 			IconSkullTexture: GetTexture(ddInfoToolsContent, "IconSkull"),
 			IconSpiderTexture: GetTexture(ddInfoToolsContent, "IconSpider"),
 			IconStopwatchTexture: GetTexture(ddInfoToolsContent, "IconStopwatch"),
+			LineTexture: GetTexture(ddInfoToolsContent, "Line"),
+			PencilTexture: GetTexture(ddInfoToolsContent, "Pencil"),
+			RectangleTexture: GetTexture(ddInfoToolsContent, "Rectangle"),
+			ReloadTexture: GetTexture(ddInfoToolsContent, "Reload"),
+			TileHitboxTexture: GetTexture(ddInfoToolsContent, "TileHitbox"),
 			TileHitboxModel: GetModelContent(ddInfoToolsContent, "TileHitbox"));
 
 		static BlobContent GetBlobContent(DecompiledContentFile content, string name)

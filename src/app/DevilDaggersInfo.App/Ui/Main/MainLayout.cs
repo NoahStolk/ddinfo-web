@@ -1,4 +1,5 @@
 using DevilDaggersInfo.App.Scenes;
+using DevilDaggersInfo.App.Ui.CustomLeaderboards.LeaderboardList;
 using DevilDaggersInfo.App.Utils;
 using DevilDaggersInfo.Common.Utils;
 using ImGuiNET;
@@ -64,6 +65,7 @@ public static class MainLayout
 		if (MainButtonAt(0, 1, new(0, 0, 1, buttonAlpha), "Custom Leaderboards"))
 		{
 			UiRenderer.Layout = LayoutType.CustomLeaderboards;
+			LeaderboardListChild.LoadAll();
 		}
 
 		MainButtonAt(1, 1, new(0, 1, 1, buttonAlpha), "Practice (todo)");

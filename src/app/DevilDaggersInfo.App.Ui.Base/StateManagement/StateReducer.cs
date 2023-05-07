@@ -18,7 +18,6 @@ namespace DevilDaggersInfo.App.Ui.Base.StateManagement;
 /// </summary>
 public record StateReducer
 {
-	public LeaderboardListState LeaderboardListState { get; set; } = StateManager.LeaderboardListState;
 	public ReplaySceneState ReplaySceneState { get; set; } = StateManager.ReplaySceneState;
 	public UploadResponseState UploadResponseState { get; set; } = StateManager.UploadResponseState;
 }

@@ -1,5 +1,6 @@
 namespace DevilDaggersInfo.Core.Wiki;
 
+// TODO: Rewrite this class to not allocate memory on every call, and remove the skipUnknown parameter.
 public static class Deaths
 {
 	public static IReadOnlyList<Death> GetDeaths(GameVersion gameVersion, bool skipUnknown = true)
