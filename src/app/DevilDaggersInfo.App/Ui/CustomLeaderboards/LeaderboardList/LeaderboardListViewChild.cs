@@ -42,7 +42,7 @@ public static class LeaderboardListViewChild
 		{
 			ImGui.TableSetupColumn("Name", ImGuiTableColumnFlags.DefaultSort, 0, (int)LeaderboardListSorting.Name);
 			ImGui.TableSetupColumn("Author", ImGuiTableColumnFlags.None, 0, (int)LeaderboardListSorting.Author);
-			ImGui.TableSetupColumn("Criteria", ImGuiTableColumnFlags.None, 0, (int)LeaderboardListSorting.Criteria);
+			ImGui.TableSetupColumn("Criteria", ImGuiTableColumnFlags.NoSort);
 			ImGui.TableSetupColumn("Score", ImGuiTableColumnFlags.None, 0, (int)LeaderboardListSorting.Score);
 			ImGui.TableSetupColumn("Next dagger", ImGuiTableColumnFlags.None, 0, (int)LeaderboardListSorting.NextDagger);
 			ImGui.TableSetupColumn("Rank", ImGuiTableColumnFlags.None, 0, (int)LeaderboardListSorting.Rank);
@@ -89,16 +89,16 @@ public static class LeaderboardListViewChild
 				ImGui.Text(lb.SpawnsetAuthorName);
 				ImGui.TableNextColumn();
 
-				ImGui.Text(lb.Criteria.Count.ToString());
 				foreach (GetCustomLeaderboardCriteria criteria in lb.Criteria)
 				{
-					ImGui.SameLine();
 					ImGui.Image((IntPtr)criteria.Type.GetTexture().Handle, new(13));
 					if (ImGui.IsItemHovered())
 					{
 						// TODO: May need to improve performance here by caching the text, or perhaps return the text from the API.
 						ImGui.SetTooltip(GetText(criteria));
 					}
+
+					ImGui.SameLine();
 				}
 
 				ImGui.TableNextColumn();

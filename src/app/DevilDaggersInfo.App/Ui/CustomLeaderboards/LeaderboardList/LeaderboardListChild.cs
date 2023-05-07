@@ -124,7 +124,6 @@ public static class LeaderboardListChild
 		{
 			LeaderboardListSorting.Name => SortAscending ? _customLeaderboards.OrderBy(cl => cl.SpawnsetName.ToLower()) : _customLeaderboards.OrderByDescending(cl => cl.SpawnsetName.ToLower()),
 			LeaderboardListSorting.Author => SortAscending ? _customLeaderboards.OrderBy(cl => cl.SpawnsetAuthorName.ToLower()) : _customLeaderboards.OrderByDescending(cl => cl.SpawnsetAuthorName.ToLower()),
-			LeaderboardListSorting.Criteria => SortAscending ? _customLeaderboards.OrderBy(cl => cl.Criteria.Count) : _customLeaderboards.OrderByDescending(cl => cl.Criteria.Count),
 			LeaderboardListSorting.Score => SortAscending ? _customLeaderboards.OrderBy(cl => cl.SelectedPlayerStats?.Time) : _customLeaderboards.OrderByDescending(cl => cl.SelectedPlayerStats?.Time),
 			LeaderboardListSorting.NextDagger => SortAscending ? _customLeaderboards.OrderBy(GetNextDaggerSortingKey) : _customLeaderboards.OrderByDescending(GetNextDaggerSortingKey),
 			LeaderboardListSorting.Rank => SortAscending ? _customLeaderboards.OrderBy(GetRankSortingKey) : _customLeaderboards.OrderByDescending(GetRankSortingKey),
