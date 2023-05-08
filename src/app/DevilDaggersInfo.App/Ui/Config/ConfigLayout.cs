@@ -1,6 +1,5 @@
 using DevilDaggersInfo.App.Scenes.GameObjects;
 using DevilDaggersInfo.App.Ui.Base;
-using DevilDaggersInfo.App.Ui.Base.Exceptions;
 using DevilDaggersInfo.App.User.Settings;
 using ImGuiNET;
 using System.Numerics;
@@ -24,7 +23,7 @@ public static class ConfigLayout
 		{
 			ContentManager.Initialize();
 		}
-		catch (MissingContentException ex)
+		catch (InvalidGameInstallationException ex)
 		{
 			_error = ex.Message;
 			return;

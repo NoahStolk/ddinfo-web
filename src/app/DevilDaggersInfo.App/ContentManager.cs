@@ -1,6 +1,5 @@
 using DevilDaggersInfo.App.Engine.Content;
 using DevilDaggersInfo.App.Engine.Parsers.Sound;
-using DevilDaggersInfo.App.Ui.Base.Exceptions;
 using DevilDaggersInfo.App.User.Settings;
 using DevilDaggersInfo.Core.Asset;
 using DevilDaggersInfo.Core.Mod;
@@ -22,31 +21,31 @@ public static class ContentManager
 	public static void Initialize()
 	{
 		if (!Directory.Exists(UserSettings.Model.DevilDaggersInstallationDirectory))
-			throw new MissingContentException("Installation directory does not exist.");
+			throw new InvalidGameInstallationException("Installation directory does not exist.");
 
 		// TODO: Use correct Linux file name for executable.
 #if WINDOWS
 		string ddExe = Path.Combine(UserSettings.Model.DevilDaggersInstallationDirectory, "dd.exe");
 		if (!File.Exists(ddExe))
-			throw new MissingContentException("Executable does not exist.");
+			throw new InvalidGameInstallationException("Executable does not exist.");
 #endif
 
 		if (!File.Exists(UserSettings.DdSurvivalPath))
-			throw new MissingContentException("File 'dd/survival' does not exist.");
+			throw new InvalidGameInstallationException("File 'dd/survival' does not exist.");
 
 		if (!File.Exists(UserSettings.ResAudioPath))
-			throw new MissingContentException("File 'res/audio' does not exist.");
+			throw new InvalidGameInstallationException("File 'res/audio' does not exist.");
 
 		if (!File.Exists(UserSettings.ResDdPath))
-			throw new MissingContentException("File 'res/dd' does not exist.");
+			throw new InvalidGameInstallationException("File 'res/dd' does not exist.");
 
 		// TODO: Also verify survival hash.
 		byte[] survivalBytes = File.ReadAllBytes(UserSettings.DdSurvivalPath);
 		if (!SpawnsetBinary.TryParse(survivalBytes, out SpawnsetBinary? defaultSpawnset))
-			throw new MissingContentException("File 'dd/survival' could not be parsed.");
+			throw new InvalidGameInstallationException("File 'dd/survival' could not be parsed.");
 
 		if (Directory.Exists(UserSettings.ModsSurvivalPath))
-			throw new MissingContentException("There must not be a directory named 'survival' in the 'mods' directory. You must delete the directory, or mods will not work.");
+			throw new InvalidGameInstallationException("There must not be a directory named 'survival' in the 'mods' directory. You must delete the directory, or mods will not work.");
 
 		ModBinaryReadFilter ddReadFilter = ModBinaryReadFilter.Assets(
 			new(AssetType.Texture, "iconmaskdagger"),
@@ -101,7 +100,7 @@ public static class ContentManager
 	private static MeshContent GetMesh(ModBinary ddBinary, string meshName)
 	{
 		if (!ddBinary.AssetMap.TryGetValue(new(AssetType.Mesh, meshName), out AssetData? meshData))
-			throw new MissingContentException($"Required mesh '{meshName}' from 'res/dd' was not found.");
+			throw new InvalidGameInstallationException($"Required mesh '{meshName}' from 'res/dd' was not found.");
 
 		return ToEngineMesh(meshData.Buffer);
 	}
@@ -109,15 +108,15 @@ public static class ContentManager
 	private static TextureContent GetTexture(ModBinary ddBinary, string textureName)
 	{
 		if (!ddBinary.AssetMap.TryGetValue(new(AssetType.Texture, textureName), out AssetData? textureData))
-			throw new MissingContentException($"Required texture '{textureName}' from 'res/dd' was not found.");
+			throw new InvalidGameInstallationException($"Required texture '{textureName}' from 'res/dd' was not found.");
 
-		return ToEngineTexture(textureData.Buffer);
+		return ToEngineTexture(textureName, textureData.Buffer);
 	}
 
 	private static SoundContent GetSound(ModBinary audioBinary, string soundName)
 	{
 		if (!audioBinary.AssetMap.TryGetValue(new(AssetType.Audio, soundName), out AssetData? audioData))
-			throw new MissingContentException($"Required audio '{soundName}' from 'res/audio' was not found.");
+			throw new InvalidGameInstallationException($"Required audio '{soundName}' from 'res/audio' was not found.");
 
 		SoundData waveData = WaveParser.Parse(audioData.Buffer);
 		return new(waveData.Channels, waveData.SampleRate, waveData.BitsPerSample, waveData.Data.Length, waveData.Data);
@@ -150,7 +149,7 @@ public static class ContentManager
 		return new(engineVertices, indices);
 	}
 
-	private static TextureContent ToEngineTexture(byte[] ddTextureBuffer)
+	private static TextureContent ToEngineTexture(string textureName, byte[] ddTextureBuffer)
 	{
 		const ushort expectedHeader = 16401;
 		const int headerSize = 11;
@@ -158,18 +157,18 @@ public static class ContentManager
 		using BinaryReader br = new(ms);
 		ushort header = br.ReadUInt16();
 		if (header != expectedHeader)
-			throw new($"Invalid texture header. Should be {expectedHeader} but got {header}.");
+			throw new InvalidGameInstallationException($"Invalid header for texture '{textureName}'. Should be {expectedHeader} but got {header}. Make sure your game files are not corrupted.");
 
 		int width = br.ReadInt32();
 		int height = br.ReadInt32();
 		if (width < 0 || height < 0)
-			throw new($"Texture dimensions cannot be negative ({width}x{height}).");
+			throw new InvalidGameInstallationException($"Dimensions for texture '{textureName}' cannot be negative ({width}x{height}). Make sure your game files are not corrupted.");
 
 		_ = br.ReadByte(); // Mipmap count
 
 		int minimumSize = width * height * 4 + headerSize;
 		if (ddTextureBuffer.Length < minimumSize)
-			throw new($"Invalid texture. Not enough pixel data for complete texture ({ddTextureBuffer.Length:N0} / {minimumSize:N0}).");
+			throw new InvalidGameInstallationException($"Invalid data for texture '{textureName}'. Not enough pixel data for complete texture ({ddTextureBuffer.Length:N0} / {minimumSize:N0}). Make sure your game files are not corrupted.");
 
 		return new(width, height, br.ReadBytes(width * height * 4));
 	}
