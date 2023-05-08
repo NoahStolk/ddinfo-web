@@ -11,6 +11,11 @@ public static class DebugWindow
 		_debugMessages.Add(obj?.ToString() ?? "null");
 	}
 
+	public static void Clear()
+	{
+		_debugMessages.Clear();
+	}
+
 	public static void Render()
 	{
 		ImGui.SetNextWindowSize(new(512, 128));

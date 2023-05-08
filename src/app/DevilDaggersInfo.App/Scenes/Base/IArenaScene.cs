@@ -29,13 +29,12 @@ public interface IArenaScene
 				Tiles[i, j] = new(x, z, i, j, Camera);
 			}
 		}
+
+		Lights.Add(new(64, default, new(1, 0.5f, 0)));
 	}
 
 	public void FillArena(SpawnsetBinary spawnset)
 	{
-		Lights.Clear();
-		Lights.Add(new(64, default, new(1, 0.5f, 0)));
-
 		for (int i = 0; i < spawnset.ArenaDimension; i++)
 		{
 			for (int j = 0; j < spawnset.ArenaDimension; j++)

@@ -35,8 +35,12 @@ public sealed class ReplayArenaScene : IArenaScene
 	public void BuildPlayerMovement(ReplaySimulation replaySimulation)
 	{
 		_replaySimulation = replaySimulation;
+
+		if (_player != null)
+			Lights.Remove(_player.Light);
+
 		_player = new(_replaySimulation);
-		Lights.Add(_player.Light); // TODO: Move to Player class and set the position there.
+		Lights.Add(_player.Light);
 	}
 
 	public void Update(float delta)
