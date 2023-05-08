@@ -1,5 +1,4 @@
 using DevilDaggersInfo.App.Scenes;
-using DevilDaggersInfo.App.Scenes.Base;
 using DevilDaggersInfo.App.Ui;
 using DevilDaggersInfo.App.Ui.ReplayEditor.State;
 using DevilDaggersInfo.App.Ui.SpawnsetEditor.State;
@@ -28,7 +27,7 @@ public static class Scene
 		_replayArenaScene = new(static () => ReplayState.Replay.Header.Spawnset, false, false);
 	}
 
-	private static IArenaScene? GetScene()
+	private static ArenaScene? GetScene()
 	{
 		return UiRenderer.Layout switch
 		{
@@ -41,7 +40,7 @@ public static class Scene
 
 	public static void Update(float delta)
 	{
-		IArenaScene? activeScene = GetScene();
+		ArenaScene? activeScene = GetScene();
 		activeScene?.Update(delta);
 	}
 
@@ -52,7 +51,7 @@ public static class Scene
 		gl.Enable(EnableCap.CullFace);
 		gl.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 
-		IArenaScene? activeScene = GetScene();
+		ArenaScene? activeScene = GetScene();
 		activeScene?.Render();
 	}
 }

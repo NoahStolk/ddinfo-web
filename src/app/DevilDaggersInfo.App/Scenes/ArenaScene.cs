@@ -1,6 +1,5 @@
 // ReSharper disable ForCanBeConvertedToForeach
-using DevilDaggersInfo.App.Scenes.Base;
-using DevilDaggersInfo.App.Scenes.Base.GameObjects;
+using DevilDaggersInfo.App.Scenes.GameObjects;
 using DevilDaggersInfo.Core.Replay.PostProcessing.ReplaySimulation;
 using DevilDaggersInfo.Core.Spawnset;
 using Silk.NET.OpenGL;
@@ -8,8 +7,13 @@ using System.Numerics;
 
 namespace DevilDaggersInfo.App.Scenes;
 
-public sealed class ArenaScene : IArenaScene
+public sealed class ArenaScene
 {
+	public const float MinRenderTileHeight = -3;
+
+	private readonly RaceDagger _raceDagger = new();
+	private readonly List<LightObject> _lights = new();
+
 	private readonly ArenaEditorContext? _editorContext;
 	private readonly Func<SpawnsetBinary> _getSpawnset;
 	private Player? _player;
@@ -24,8 +28,7 @@ public sealed class ArenaScene : IArenaScene
 			PositionState = { Physics = new(0, 5, 0) },
 		};
 
-		IArenaScene scene = this;
-		scene.InitializeArena();
+		InitializeArena();
 
 		if (isEditor)
 			_editorContext = new(this);
@@ -33,10 +36,33 @@ public sealed class ArenaScene : IArenaScene
 
 	public Camera Camera { get; }
 	public Tile[,] Tiles { get; } = new Tile[SpawnsetBinary.ArenaDimensionMax, SpawnsetBinary.ArenaDimensionMax];
-	public List<LightObject> Lights { get; } = new();
-	public RaceDagger RaceDagger { get; set; } = new();
 	public int CurrentTick { get; set; }
 	public ReplaySimulation? ReplaySimulation { get; private set; }
+
+	private void InitializeArena()
+	{
+		const int halfSize = SpawnsetBinary.ArenaDimensionMax / 2;
+		for (int i = 0; i < SpawnsetBinary.ArenaDimensionMax; i++)
+		{
+			for (int j = 0; j < SpawnsetBinary.ArenaDimensionMax; j++)
+			{
+				float x = (i - halfSize) * 4;
+				float z = (j - halfSize) * 4;
+				Tiles[i, j] = new(x, z, i, j, Camera);
+			}
+		}
+
+		_lights.Add(new(64, default, new(1, 0.5f, 0)));
+	}
+
+	private void FillArena(SpawnsetBinary spawnset)
+	{
+		for (int i = 0; i < spawnset.ArenaDimension; i++)
+		{
+			for (int j = 0; j < spawnset.ArenaDimension; j++)
+				Tiles[i, j].SetDisplayHeight(spawnset.ArenaTiles[i, j]);
+		}
+	}
 
 	public void AddSkull4()
 	{
@@ -48,24 +74,23 @@ public sealed class ArenaScene : IArenaScene
 		ReplaySimulation = replaySimulation;
 
 		if (_player != null)
-			Lights.Remove(_player.Light);
+			_lights.Remove(_player.Light);
 
 		_player = new(ReplaySimulation);
-		Lights.Add(_player.Light);
+		_lights.Add(_player.Light);
 	}
 
 	public void Update(float delta)
 	{
 		SpawnsetBinary spawnset = _getSpawnset();
 
-		IArenaScene scene = this;
-		scene.FillArena(spawnset);
+		FillArena(spawnset);
 
-		for (int i = 0; i < Lights.Count; i++)
-			Lights[i].PrepareUpdate();
+		for (int i = 0; i < _lights.Count; i++)
+			_lights[i].PrepareUpdate();
 
 		Camera.Update(delta);
-		RaceDagger.Update(spawnset, CurrentTick);
+		_raceDagger.Update(spawnset, CurrentTick);
 		_player?.Update(CurrentTick);
 
 		for (int i = 0; i < Tiles.GetLength(0); i++)
@@ -82,8 +107,8 @@ public sealed class ArenaScene : IArenaScene
 
 	public void Render()
 	{
-		for (int i = 0; i < Lights.Count; i++)
-			Lights[i].PrepareRender();
+		for (int i = 0; i < _lights.Count; i++)
+			_lights[i].PrepareRender();
 
 		Camera.PreRender();
 
@@ -96,9 +121,9 @@ public sealed class ArenaScene : IArenaScene
 		shader.SetUniform("lutScale", 1f);
 
 		// TODO: Prevent allocating memory?
-		Span<Vector3> lightPositions = Lights.Select(lo => lo.PositionState.Render).ToArray();
-		Span<Vector3> lightColors = Lights.Select(lo => lo.ColorState.Render).ToArray();
-		Span<float> lightRadii = Lights.Select(lo => lo.RadiusState.Render).ToArray();
+		Span<Vector3> lightPositions = _lights.Select(lo => lo.PositionState.Render).ToArray();
+		Span<Vector3> lightColors = _lights.Select(lo => lo.ColorState.Render).ToArray();
+		Span<float> lightRadii = _lights.Select(lo => lo.RadiusState.Render).ToArray();
 
 		shader.SetUniform("lightCount", lightPositions.Length);
 		shader.SetUniform("lightPosition", lightPositions);
@@ -112,7 +137,7 @@ public sealed class ArenaScene : IArenaScene
 		else
 			RenderTilesDefault();
 
-		RaceDagger.Render();
+		_raceDagger.Render();
 		_player?.Render();
 		_skull4?.Render();
 

@@ -1,7 +1,7 @@
 using DevilDaggersInfo.App.Engine.Content;
 using Silk.NET.OpenGL;
 
-namespace DevilDaggersInfo.App.Scenes.Base.GameObjects;
+namespace DevilDaggersInfo.App.Scenes.GameObjects;
 
 public static class MeshShaderUtils
 {

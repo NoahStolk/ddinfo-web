@@ -1,4 +1,4 @@
-using DevilDaggersInfo.App.Scenes.Base.GameObjects;
+using DevilDaggersInfo.App.Scenes.GameObjects;
 using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.Exceptions;
 using DevilDaggersInfo.App.Ui.Base.User.Settings;

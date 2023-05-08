@@ -1,7 +1,7 @@
 using DevilDaggersInfo.App.Engine.InterpolationStates;
 using System.Numerics;
 
-namespace DevilDaggersInfo.App.Scenes.Base.GameObjects;
+namespace DevilDaggersInfo.App.Scenes.GameObjects;
 
 public class LightObject
 {

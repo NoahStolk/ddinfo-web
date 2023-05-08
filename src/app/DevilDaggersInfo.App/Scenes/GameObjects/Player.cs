@@ -2,7 +2,7 @@ using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.Core.Replay.PostProcessing.ReplaySimulation;
 using System.Numerics;
 
-namespace DevilDaggersInfo.App.Scenes.Base.GameObjects;
+namespace DevilDaggersInfo.App.Scenes.GameObjects;
 
 public class Player
 {

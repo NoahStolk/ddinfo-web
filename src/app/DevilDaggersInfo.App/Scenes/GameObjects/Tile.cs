@@ -1,7 +1,7 @@
 using DevilDaggersInfo.App.Ui.Base;
 using System.Numerics;
 
-namespace DevilDaggersInfo.App.Scenes.Base.GameObjects;
+namespace DevilDaggersInfo.App.Scenes.GameObjects;
 
 public class Tile
 {
@@ -62,7 +62,7 @@ public class Tile
 
 	public void RenderTop()
 	{
-		if (_top.PositionY < IArenaScene.MinRenderTileHeight)
+		if (_top.PositionY < ArenaScene.MinRenderTileHeight)
 			return;
 
 		_top.Render();
@@ -70,7 +70,7 @@ public class Tile
 
 	public void RenderPillar()
 	{
-		if (_top.PositionY < IArenaScene.MinRenderTileHeight)
+		if (_top.PositionY < ArenaScene.MinRenderTileHeight)
 			return;
 
 		_pillar.Render();
@@ -78,7 +78,7 @@ public class Tile
 
 	public void RenderHitbox()
 	{
-		if (_top.PositionY < IArenaScene.MinRenderTileHeight + 2)
+		if (_top.PositionY < ArenaScene.MinRenderTileHeight + 2)
 			return;
 
 		_tileHitbox.Render();

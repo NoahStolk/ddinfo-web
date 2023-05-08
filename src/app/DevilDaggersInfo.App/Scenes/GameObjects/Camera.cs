@@ -7,7 +7,7 @@ using DevilDaggersInfo.App.Ui.Base.User.Settings;
 using Silk.NET.Input;
 using System.Numerics;
 
-namespace DevilDaggersInfo.App.Scenes.Base.GameObjects;
+namespace DevilDaggersInfo.App.Scenes.GameObjects;
 
 public class Camera
 {

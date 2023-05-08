@@ -1,6 +1,6 @@
 // ReSharper disable ForCanBeConvertedToForeach
 using DevilDaggersInfo.App.Engine.Intersections;
-using DevilDaggersInfo.App.Scenes.Base.GameObjects;
+using DevilDaggersInfo.App.Scenes.GameObjects;
 using DevilDaggersInfo.App.Ui.SpawnsetEditor.State;
 using DevilDaggersInfo.App.Ui.SpawnsetEditor.Utils;
 using Silk.NET.Input;
