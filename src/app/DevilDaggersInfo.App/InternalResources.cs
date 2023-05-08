@@ -37,7 +37,7 @@ public record InternalResources(
 	public static InternalResources Create(GL gl)
 	{
 #if DEBUG
-		const string? ddInfoToolsContentRootDirectory = @"..\..\..\..\..\app\DevilDaggersInfo.App.Ui.Base\Content";
+		const string? ddInfoToolsContentRootDirectory = @"..\..\..\Content";
 #else
 		const string? ddInfoToolsContentRootDirectory = null;
 #endif

@@ -20,8 +20,4 @@
     <PackageReference Include="Serilog.Sinks.File" />
   </ItemGroup>
 
-  <ItemGroup>
-    <AdditionalFiles Include="Content\**\*" />
-  </ItemGroup>
-
 </Project>
