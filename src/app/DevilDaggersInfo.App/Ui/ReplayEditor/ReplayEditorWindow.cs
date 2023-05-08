@@ -11,10 +11,10 @@ namespace DevilDaggersInfo.App.Ui.ReplayEditor;
 public static class ReplayEditorWindow
 {
 	private static float _time;
-	public static float Time
+
+	public static void Reset()
 	{
-		get => _time;
-		set => _time = value;
+		_time = 0;
 	}
 
 	public static void Update(float delta)

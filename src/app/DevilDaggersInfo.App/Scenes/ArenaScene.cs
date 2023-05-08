@@ -29,7 +29,7 @@ public sealed class ArenaScene : IArenaScene
 	public Camera Camera { get; }
 	public Tile[,] Tiles { get; } = new Tile[SpawnsetBinary.ArenaDimensionMax, SpawnsetBinary.ArenaDimensionMax];
 	public List<LightObject> Lights { get; } = new();
-	public RaceDagger? RaceDagger { get; set; }
+	public RaceDagger RaceDagger { get; set; } = new();
 	public int CurrentTick { get; set; }
 	public SpawnsetBinary Spawnset { get; set; }
 	public ReplaySimulation? ReplaySimulation { get; private set; }
@@ -59,7 +59,7 @@ public sealed class ArenaScene : IArenaScene
 			Lights[i].PrepareUpdate();
 
 		Camera.Update(delta);
-		RaceDagger?.Update(CurrentTick);
+		RaceDagger.Update(Spawnset, CurrentTick);
 		_player?.Update(CurrentTick);
 
 		for (int i = 0; i < Tiles.GetLength(0); i++)
@@ -115,7 +115,7 @@ public sealed class ArenaScene : IArenaScene
 				Tiles[i, j].RenderPillar();
 		}
 
-		RaceDagger?.Render();
+		RaceDagger.Render();
 		_player?.Render();
 		_skull4?.Render();
 

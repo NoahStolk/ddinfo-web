@@ -31,7 +31,7 @@ public sealed class EditorArenaScene : IArenaScene
 	public Camera Camera { get; }
 	public Tile[,] Tiles { get; } = new Tile[SpawnsetBinary.ArenaDimensionMax, SpawnsetBinary.ArenaDimensionMax];
 	public List<LightObject> Lights { get; } = new();
-	public RaceDagger? RaceDagger { get; set; }
+	public RaceDagger RaceDagger { get; set; } = new();
 	public int CurrentTick => (int)(ArenaChild.CurrentSecond * 60);
 
 	public void Update(float delta)
@@ -43,7 +43,7 @@ public sealed class EditorArenaScene : IArenaScene
 			Lights[i].PrepareUpdate();
 
 		Camera.Update(delta);
-		RaceDagger?.Update(CurrentTick);
+		RaceDagger.Update(SpawnsetState.Spawnset, CurrentTick);
 
 		for (int i = 0; i < Tiles.GetLength(0); i++)
 		{
@@ -66,9 +66,6 @@ public sealed class EditorArenaScene : IArenaScene
 		newArena[_closestHitTile.ArenaX, _closestHitTile.ArenaY] = height;
 		SpawnsetState.Spawnset = SpawnsetState.Spawnset with { ArenaTiles = new(SpawnsetState.Spawnset.ArenaDimension, newArena) };
 		SpawnsetHistoryUtils.Save(SpawnsetEditType.ArenaTileHeight);
-
-		int dimension = SpawnsetState.Spawnset.ArenaDimension;
-		RaceDagger?.UpdatePosition(dimension, new(dimension, newArena), SpawnsetState.Spawnset.RaceDaggerPosition);
 	}
 
 	public void Render()
@@ -100,7 +97,7 @@ public sealed class EditorArenaScene : IArenaScene
 
 		RenderTiles(shader);
 
-		RaceDagger?.Render();
+		RaceDagger.Render();
 
 		Root.InternalResources.TileHitboxTexture.Bind();
 

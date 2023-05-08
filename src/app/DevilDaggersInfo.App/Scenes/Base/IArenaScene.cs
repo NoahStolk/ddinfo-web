@@ -10,7 +10,7 @@ public interface IArenaScene
 	Camera Camera { get; }
 	Tile[,] Tiles { get; }
 	List<LightObject> Lights { get; }
-	RaceDagger? RaceDagger { get; set; }
+	RaceDagger RaceDagger { get; set; }
 	int CurrentTick { get; }
 
 	void Update(float delta);
@@ -31,6 +31,7 @@ public interface IArenaScene
 		}
 
 		Lights.Add(new(64, default, new(1, 0.5f, 0)));
+		RaceDagger = new();
 	}
 
 	public void FillArena(SpawnsetBinary spawnset)
@@ -39,16 +40,6 @@ public interface IArenaScene
 		{
 			for (int j = 0; j < spawnset.ArenaDimension; j++)
 				Tiles[i, j].SetDisplayHeight(spawnset.ArenaTiles[i, j]);
-		}
-
-		RaceDagger = GetRaceDagger();
-
-		RaceDagger? GetRaceDagger()
-		{
-			if (spawnset.GameMode != GameMode.Race)
-				return null;
-
-			return new(spawnset);
 		}
 	}
 }

@@ -12,34 +12,15 @@ public class RaceDagger
 
 	private static uint _vao;
 
+	private static readonly Vector3 _hiddenPosition = new(-1000, -1000, -1000);
+
 	private readonly Vector3State _meshPosition;
 	private readonly QuaternionState _meshRotation;
 
-	private readonly SpawnsetBinary _spawnsetBinary;
-
-	private int _arenaDimension;
-	private ImmutableArena _arenaTiles;
-	private Vector2 _raceDaggerPosition;
-	private int _arenaCoordX;
-	private int _arenaCoordZ;
-
-	public RaceDagger(SpawnsetBinary spawnsetBinary)
+	public RaceDagger()
 	{
-		_spawnsetBinary = spawnsetBinary;
-
-		_arenaDimension = _spawnsetBinary.ArenaDimension;
-		_arenaTiles = _spawnsetBinary.ArenaTiles;
-		_raceDaggerPosition = _spawnsetBinary.RaceDaggerPosition;
-		(_arenaCoordX, _arenaCoordZ) = GetPosition();
-
-		_meshPosition = new(new(_spawnsetBinary.RaceDaggerPosition.X, 0, _spawnsetBinary.RaceDaggerPosition.Y));
+		_meshPosition = new(default);
 		_meshRotation = new(Quaternion.CreateFromAxisAngle(Vector3.UnitX, MathF.PI * 0.5f));
-	}
-
-	private (int ArenaCoordX, int ArenaCoordZ) GetPosition()
-	{
-		(int x, _, int z) = SpawnsetBinary.GetRaceDaggerTilePosition(_arenaDimension, _arenaTiles, _raceDaggerPosition);
-		return (x, z);
 	}
 
 	public static void Initialize()
@@ -50,26 +31,18 @@ public class RaceDagger
 		_vao = MeshShaderUtils.CreateVao(ContentManager.Content.DaggerMesh);
 	}
 
-	/// <summary>
-	/// Updates the position based on the tiles edited in the 3D editor. TODO: Also implement being able to update the race dagger position in the 3D editor.
-	/// </summary>
-	public void UpdatePosition(int arenaDimension, ImmutableArena arenaTiles, Vector2 raceDaggerPosition)
-	{
-		_arenaDimension = arenaDimension;
-		_arenaTiles = arenaTiles;
-		_raceDaggerPosition = raceDaggerPosition;
-		(_arenaCoordX, _arenaCoordZ) = GetPosition();
-	}
-
-	public void Update(int currentTick)
+	public void Update(SpawnsetBinary spawnset, int currentTick)
 	{
 		_meshPosition.PrepareUpdate();
 		_meshRotation.PrepareUpdate();
 
 		float currentTime = currentTick / 60f;
-		Vector3 basePosition = _meshPosition.Physics with
+		(int X, float? Y, int Z) raceDaggerPosition = spawnset.GetRaceDaggerTilePosition();
+		Vector3 basePosition = spawnset.GameMode != GameMode.Race ? _hiddenPosition : _meshPosition.Physics with
 		{
-			Y = SpawnsetBinary.GetActualTileHeight(_arenaDimension, _arenaTiles, _spawnsetBinary.ShrinkStart, _spawnsetBinary.ShrinkEnd, _spawnsetBinary.ShrinkRate, _arenaCoordX, _arenaCoordZ, currentTime) + _yOffset,
+			X = spawnset.TileToWorldCoordinate(raceDaggerPosition.X),
+			Y = spawnset.GetActualTileHeight(raceDaggerPosition.X, raceDaggerPosition.Z, currentTime) + _yOffset,
+			Z = spawnset.TileToWorldCoordinate(raceDaggerPosition.Z),
 		};
 		_meshPosition.Physics = basePosition + new Vector3(0, 0.15f + MathF.Sin(currentTime) * 0.15f, 0);
 		_meshRotation.Physics = _meshRotation.Start * Quaternion.CreateFromAxisAngle(Vector3.UnitZ, currentTime);

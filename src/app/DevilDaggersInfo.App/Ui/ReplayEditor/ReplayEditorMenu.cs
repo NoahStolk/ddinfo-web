@@ -90,7 +90,7 @@ public static class ReplayEditorMenu
 			return;
 		}
 
-		ReplayEditorWindow.Time = 0;
+		ReplayEditorWindow.Reset();
 
 		ReplaySimulation replaySimulation = ReplaySimulationBuilder.Build(ReplayState.Replay);
 		Scene.ReplayArenaScene.Spawnset = ReplayState.Replay.Header.Spawnset;
