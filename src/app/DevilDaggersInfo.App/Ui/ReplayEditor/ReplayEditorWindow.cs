@@ -17,12 +17,12 @@ public static class ReplayEditorWindow
 		set => _time = value;
 	}
 
-	public static PlayerInputSnapshot Snapshot { get; set; }
-
 	public static void Update(float delta)
 	{
 		if (_time < ReplayState.Replay.Header.Time)
 			_time += delta;
+
+		Scene.ReplayArenaScene.CurrentTick = (int)MathF.Round(_time * 60);
 	}
 
 	public static void Render()
@@ -35,6 +35,10 @@ public static class ReplayEditorWindow
 
 		ImGui.SliderFloat("Time", ref _time, 0, ReplayState.Replay.Header.Time, "%.4f", ImGuiSliderFlags.NoInput);
 
+		PlayerInputSnapshot snapshot = default;
+		if (Scene.ReplayArenaScene.CurrentTick < Scene.ReplayArenaScene.ReplaySimulation?.InputSnapshots.Count)
+			snapshot = Scene.ReplayArenaScene.ReplaySimulation.InputSnapshots[Scene.ReplayArenaScene.CurrentTick];
+
 		const int border = 4;
 		const int pointerSize = 4;
 		const float pointerScale = 0.25f;
@@ -46,16 +50,16 @@ public static class ReplayEditorWindow
 
 		const int center = size / 2;
 		const float max = center - border - pointerScale / 2;
-		Vector2 pointerCenter = origin + new Vector2(center) + VectorUtils.Clamp(new Vector2(Snapshot.MouseX, Snapshot.MouseY) * pointerScale, -max, max);
+		Vector2 pointerCenter = origin + new Vector2(center) + VectorUtils.Clamp(new Vector2(snapshot.MouseX, snapshot.MouseY) * pointerScale, -max, max);
 		drawList.AddRect(pointerCenter - new Vector2(pointerSize / 2f), pointerCenter + new Vector2(pointerSize / 2f), ImGui.GetColorU32(Color.White));
 
-		RenderInput(Snapshot.Left, "A");
-		RenderInput(Snapshot.Right, "D");
-		RenderInput(Snapshot.Forward, "W");
-		RenderInput(Snapshot.Backward, "S");
-		RenderInput(Snapshot.Jump is JumpType.StartedPress or JumpType.Hold, "Space");
-		RenderInput(Snapshot.Shoot == ShootType.Hold, "LMB");
-		RenderInput(Snapshot.ShootHoming == ShootType.Hold, "RMB");
+		RenderInput(snapshot.Left, "A");
+		RenderInput(snapshot.Right, "D");
+		RenderInput(snapshot.Forward, "W");
+		RenderInput(snapshot.Backward, "S");
+		RenderInput(snapshot.Jump is JumpType.StartedPress or JumpType.Hold, "Space");
+		RenderInput(snapshot.Shoot == ShootType.Hold, "LMB");
+		RenderInput(snapshot.ShootHoming == ShootType.Hold, "RMB");
 
 		ImGui.End();
 	}

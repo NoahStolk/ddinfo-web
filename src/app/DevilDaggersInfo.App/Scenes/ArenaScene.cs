@@ -1,40 +1,75 @@
 // ReSharper disable ForCanBeConvertedToForeach
 using DevilDaggersInfo.App.Scenes.Base;
 using DevilDaggersInfo.App.Scenes.Base.GameObjects;
+using DevilDaggersInfo.Core.Replay.PostProcessing.ReplaySimulation;
 using DevilDaggersInfo.Core.Spawnset;
 using Silk.NET.OpenGL;
 using System.Numerics;
 
 namespace DevilDaggersInfo.App.Scenes;
 
-public sealed class MainMenuArenaScene : IArenaScene
+public sealed class ArenaScene : IArenaScene
 {
-	private readonly Skull4 _skull4;
+	private Player? _player;
+	private Skull4? _skull4;
 
-	public MainMenuArenaScene()
+	public ArenaScene(bool useMenuCamera)
 	{
-		Camera = new(true);
+		Camera = new(useMenuCamera)
+		{
+			PositionState = { Physics = new(0, 5, 0) },
+		};
 
 		IArenaScene scene = this;
 		scene.InitializeArena();
-		scene.FillArena(SpawnsetBinary.CreateDefault());
 
-		_skull4 = new();
+		Spawnset = SpawnsetBinary.CreateDefault();
 	}
 
 	public Camera Camera { get; }
 	public Tile[,] Tiles { get; } = new Tile[SpawnsetBinary.ArenaDimensionMax, SpawnsetBinary.ArenaDimensionMax];
 	public List<LightObject> Lights { get; } = new();
 	public RaceDagger? RaceDagger { get; set; }
-	public int CurrentTick => 0;
+	public int CurrentTick { get; set; }
+	public SpawnsetBinary Spawnset { get; set; }
+	public ReplaySimulation? ReplaySimulation { get; private set; }
+
+	public void AddSkull4()
+	{
+		_skull4 = new();
+	}
+
+	public void SetPlayerMovement(ReplaySimulation replaySimulation)
+	{
+		ReplaySimulation = replaySimulation;
+
+		if (_player != null)
+			Lights.Remove(_player.Light);
+
+		_player = new(ReplaySimulation);
+		Lights.Add(_player.Light);
+	}
 
 	public void Update(float delta)
 	{
+		IArenaScene scene = this;
+		scene.FillArena(Spawnset);
+
 		for (int i = 0; i < Lights.Count; i++)
 			Lights[i].PrepareUpdate();
 
 		Camera.Update(delta);
 		RaceDagger?.Update(CurrentTick);
+		_player?.Update(CurrentTick);
+
+		for (int i = 0; i < Tiles.GetLength(0); i++)
+		{
+			for (int j = 0; j < Tiles.GetLength(1); j++)
+			{
+				Tile tile = Tiles[i, j];
+				tile.SetDisplayHeight(Spawnset.GetActualTileHeight(tile.ArenaX, tile.ArenaY, CurrentTick / 60f));
+			}
+		}
 	}
 
 	public void Render()
@@ -81,7 +116,8 @@ public sealed class MainMenuArenaScene : IArenaScene
 		}
 
 		RaceDagger?.Render();
-		_skull4.Render();
+		_player?.Render();
+		_skull4?.Render();
 
 		Root.InternalResources.TileHitboxTexture.Bind();
 
