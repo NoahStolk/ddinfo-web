@@ -1,7 +1,7 @@
 using DevilDaggersInfo.App.Ui.Base;
-using DevilDaggersInfo.App.Ui.Base.User.Settings;
 using DevilDaggersInfo.App.Ui.SpawnsetEditor.State;
 using DevilDaggersInfo.App.Ui.SpawnsetEditor.Utils;
+using DevilDaggersInfo.App.User.Settings;
 using DevilDaggersInfo.Core.Spawnset;
 using ImGuiNET;
 

@@ -1,7 +1,7 @@
 using DevilDaggersInfo.Api.App.CustomLeaderboards;
 using DevilDaggersInfo.App.Networking;
 using DevilDaggersInfo.App.Networking.TaskHandlers;
-using DevilDaggersInfo.App.Ui.Base.User.Cache;
+using DevilDaggersInfo.App.User.Cache;
 using ImGuiNET;
 using System.Diagnostics;
 using System.Numerics;

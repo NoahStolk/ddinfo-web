@@ -1,6 +1,6 @@
 using DevilDaggersInfo.App.Networking;
 using DevilDaggersInfo.App.Networking.TaskHandlers;
-using DevilDaggersInfo.App.Ui.Base.User.Settings;
+using DevilDaggersInfo.App.User.Settings;
 using System.Security.Cryptography;
 
 namespace DevilDaggersInfo.App.Ui.CustomLeaderboards;

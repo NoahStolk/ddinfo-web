@@ -1,7 +1,7 @@
-using DevilDaggersInfo.App.Ui.Base.User.Settings.Model;
+using DevilDaggersInfo.App.User.Settings.Model;
 using System.Text.Json;
 
-namespace DevilDaggersInfo.App.Ui.Base.User.Settings;
+namespace DevilDaggersInfo.App.User.Settings;
 
 public static class UserSettings
 {

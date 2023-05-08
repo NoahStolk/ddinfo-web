@@ -3,8 +3,8 @@ using DevilDaggersInfo.Api.App.ProcessMemory;
 using DevilDaggersInfo.App.Core.GameMemory;
 using DevilDaggersInfo.App.Networking;
 using DevilDaggersInfo.App.Networking.TaskHandlers;
-using DevilDaggersInfo.App.Ui.Base.User.Cache;
 using DevilDaggersInfo.App.Ui.CustomLeaderboards.Results;
+using DevilDaggersInfo.App.User.Cache;
 using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Core.Encryption;
 #if !SKIP_VALUE

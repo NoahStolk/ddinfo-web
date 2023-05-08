@@ -1,7 +1,7 @@
-using DevilDaggersInfo.App.Ui.Base.User.Cache.Model;
+using DevilDaggersInfo.App.User.Cache.Model;
 using System.Text.Json;
 
-namespace DevilDaggersInfo.App.Ui.Base.User.Cache;
+namespace DevilDaggersInfo.App.User.Cache;
 
 public static class UserCache
 {

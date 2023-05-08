@@ -1,5 +1,5 @@
-using DevilDaggersInfo.App.Ui.Base.User.Settings;
-using DevilDaggersInfo.App.Ui.Base.User.Settings.Model;
+using DevilDaggersInfo.App.User.Settings;
+using DevilDaggersInfo.App.User.Settings.Model;
 using ImGuiNET;
 
 namespace DevilDaggersInfo.App.Ui.Main;

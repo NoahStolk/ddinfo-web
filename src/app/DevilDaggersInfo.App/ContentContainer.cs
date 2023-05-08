@@ -1,7 +1,7 @@
 using DevilDaggersInfo.App.Engine.Content;
 using DevilDaggersInfo.Core.Spawnset;
 
-namespace DevilDaggersInfo.App.Ui.Base;
+namespace DevilDaggersInfo.App;
 
 public record ContentContainer(
 	SpawnsetBinary DefaultSpawnset,

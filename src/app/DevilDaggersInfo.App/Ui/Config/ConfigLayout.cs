@@ -1,7 +1,7 @@
 using DevilDaggersInfo.App.Scenes.GameObjects;
 using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.Ui.Base.Exceptions;
-using DevilDaggersInfo.App.Ui.Base.User.Settings;
+using DevilDaggersInfo.App.User.Settings;
 using ImGuiNET;
 using System.Numerics;
 
