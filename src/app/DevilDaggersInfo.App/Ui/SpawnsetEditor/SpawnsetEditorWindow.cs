@@ -28,7 +28,7 @@ public static class SpawnsetEditorWindow
 		ImGui.End();
 
 		ImGui.PushStyleVar(ImGuiStyleVar.WindowMinSize, Constants.MinWindowSize / 2);
-		if (ImGui.Begin("3D Editor"))
+		if (ImGui.Begin("3D Arena Editor"))
 		{
 			Vector2 framebufferSize = ImGui.GetWindowSize() - new Vector2(32, 48);
 			Scene.SpawnsetEditorFramebufferData.ResizeIfNecessary((int)framebufferSize.X, (int)framebufferSize.Y);
@@ -36,7 +36,7 @@ public static class SpawnsetEditorWindow
 			Vector2 cursorScreenPos = ImGui.GetCursorScreenPos();
 			Scene.SpawnsetEditorScene.Camera.FramebufferOffset = cursorScreenPos;
 			ImDrawListPtr drawList = ImGui.GetWindowDrawList();
-			drawList.AddImage((IntPtr)Scene.SpawnsetEditorFramebufferData.TextureHandle, cursorScreenPos, cursorScreenPos + new Vector2(Scene.SpawnsetEditorFramebufferData.Width, Scene.SpawnsetEditorFramebufferData.Height), new(0, 1), new(1, 0));
+			drawList.AddImage((IntPtr)Scene.SpawnsetEditorFramebufferData.TextureHandle, cursorScreenPos, cursorScreenPos + new Vector2(Scene.SpawnsetEditorFramebufferData.Width, Scene.SpawnsetEditorFramebufferData.Height), Vector2.UnitY, Vector2.UnitX);
 
 			ImGui.End();
 		}

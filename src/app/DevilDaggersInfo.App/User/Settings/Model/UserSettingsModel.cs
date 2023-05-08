@@ -5,11 +5,7 @@ public record UserSettingsModel
 {
 	public required string DevilDaggersInstallationDirectory { get; init; }
 
-	public required bool ScaleUiToWindow { get; init; }
-
 	public required bool ShowDebugOutput { get; init; }
-
-	public required bool RenderWhileWindowIsInactive { get; init; }
 
 	public required int MaxFps { get; init; }
 
@@ -20,9 +16,7 @@ public record UserSettingsModel
 	public static UserSettingsModel Default { get; } = new()
 	{
 		DevilDaggersInstallationDirectory = string.Empty,
-		ScaleUiToWindow = true,
 		ShowDebugOutput = false,
-		RenderWhileWindowIsInactive = true,
 		MaxFps = 300,
 		LookSpeed = 20,
 		FieldOfView = 90,
