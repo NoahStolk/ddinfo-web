@@ -11,6 +11,8 @@ public sealed class ArenaScene
 {
 	public const float MinRenderTileHeight = -3;
 
+	private readonly Tile[] _sortedTiles = new Tile[SpawnsetBinary.ArenaDimensionMax * SpawnsetBinary.ArenaDimensionMax];
+
 	private readonly RaceDagger _raceDagger = new();
 	private readonly List<LightObject> _lights = new();
 
@@ -49,6 +51,7 @@ public sealed class ArenaScene
 				float x = (i - halfSize) * 4;
 				float z = (j - halfSize) * 4;
 				Tiles[i, j] = new(x, z, i, j, Camera);
+				_sortedTiles[i * SpawnsetBinary.ArenaDimensionMax + j] = Tiles[i, j];
 			}
 		}
 
@@ -143,9 +146,8 @@ public sealed class ArenaScene
 
 		Root.InternalResources.TileHitboxTexture.Bind();
 
-		Span<Tile> tiles = Tiles.Cast<Tile>().ToArray(); // TODO: Prevent allocating memory.
-		tiles.Sort(static (a, b) => a.SquaredDistanceToCamera().CompareTo(b.SquaredDistanceToCamera()));
-		foreach (Tile tile in tiles)
+		Array.Sort(_sortedTiles, static (a, b) => a.SquaredDistanceToCamera().CompareTo(b.SquaredDistanceToCamera()));
+		foreach (Tile tile in _sortedTiles)
 			tile.RenderHitbox();
 	}
 
