@@ -1,29 +1,31 @@
 using DevilDaggersInfo.App.Scenes;
 using DevilDaggersInfo.App.Scenes.Base;
 using DevilDaggersInfo.App.Ui;
+using DevilDaggersInfo.App.Ui.ReplayEditor.State;
+using DevilDaggersInfo.App.Ui.SpawnsetEditor.State;
+using DevilDaggersInfo.Core.Spawnset;
 using Silk.NET.OpenGL;
 
 namespace DevilDaggersInfo.App;
 
 public static class Scene
 {
+	private static readonly SpawnsetBinary _mainMenuSpawnset = SpawnsetBinary.CreateDefault();
+
 	private static ArenaScene? _mainMenuScene;
-	private static EditorArenaScene? _spawnsetEditorScene;
+	private static ArenaScene? _spawnsetEditorScene;
 	private static ArenaScene? _replayArenaScene;
 
-	public static ArenaScene ReplayArenaScene
-	{
-		get => _replayArenaScene ?? throw new InvalidOperationException("Scenes are not initialized.");
-		private set => _replayArenaScene = value;
-	}
+	public static ArenaScene SpawnsetEditorScene => _spawnsetEditorScene ?? throw new InvalidOperationException("Scenes are not initialized.");
+	public static ArenaScene ReplayArenaScene => _replayArenaScene ?? throw new InvalidOperationException("Scenes are not initialized.");
 
 	public static void Initialize()
 	{
-		_mainMenuScene = new(true);
+		_mainMenuScene = new(static () => _mainMenuSpawnset, true, false);
 		_mainMenuScene.AddSkull4();
 
-		_spawnsetEditorScene = new();
-		ReplayArenaScene = new(false);
+		_spawnsetEditorScene = new(static () => SpawnsetState.Spawnset, false, true);
+		_replayArenaScene = new(static () => ReplayState.Replay.Header.Spawnset, false, false);
 	}
 
 	private static IArenaScene? GetScene()

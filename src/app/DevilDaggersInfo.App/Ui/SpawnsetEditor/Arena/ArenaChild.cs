@@ -79,6 +79,9 @@ public static class ArenaChild
 		ImGui.EndChild();
 
 		ImGui.SliderFloat("Time", ref _currentSecond, 0, SpawnsetState.Spawnset.GetSliderMaxSeconds());
+
+		Scene.SpawnsetEditorScene.CurrentTick = (int)MathF.Round(_currentSecond * 60);
+
 		ArenaEditorControls.Render();
 		ArenaHeightButtons.Render();
 

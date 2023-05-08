@@ -10,11 +10,15 @@ namespace DevilDaggersInfo.App.Scenes;
 
 public sealed class ArenaScene : IArenaScene
 {
+	private readonly ArenaEditorContext? _editorContext;
+	private readonly Func<SpawnsetBinary> _getSpawnset;
 	private Player? _player;
 	private Skull4? _skull4;
 
-	public ArenaScene(bool useMenuCamera)
+	public ArenaScene(Func<SpawnsetBinary> getSpawnset, bool useMenuCamera, bool isEditor)
 	{
+		_getSpawnset = getSpawnset;
+
 		Camera = new(useMenuCamera)
 		{
 			PositionState = { Physics = new(0, 5, 0) },
@@ -23,7 +27,8 @@ public sealed class ArenaScene : IArenaScene
 		IArenaScene scene = this;
 		scene.InitializeArena();
 
-		Spawnset = SpawnsetBinary.CreateDefault();
+		if (isEditor)
+			_editorContext = new(this);
 	}
 
 	public Camera Camera { get; }
@@ -31,7 +36,6 @@ public sealed class ArenaScene : IArenaScene
 	public List<LightObject> Lights { get; } = new();
 	public RaceDagger RaceDagger { get; set; } = new();
 	public int CurrentTick { get; set; }
-	public SpawnsetBinary Spawnset { get; set; }
 	public ReplaySimulation? ReplaySimulation { get; private set; }
 
 	public void AddSkull4()
@@ -52,14 +56,16 @@ public sealed class ArenaScene : IArenaScene
 
 	public void Update(float delta)
 	{
+		SpawnsetBinary spawnset = _getSpawnset();
+
 		IArenaScene scene = this;
-		scene.FillArena(Spawnset);
+		scene.FillArena(spawnset);
 
 		for (int i = 0; i < Lights.Count; i++)
 			Lights[i].PrepareUpdate();
 
 		Camera.Update(delta);
-		RaceDagger.Update(Spawnset, CurrentTick);
+		RaceDagger.Update(spawnset, CurrentTick);
 		_player?.Update(CurrentTick);
 
 		for (int i = 0; i < Tiles.GetLength(0); i++)
@@ -67,9 +73,11 @@ public sealed class ArenaScene : IArenaScene
 			for (int j = 0; j < Tiles.GetLength(1); j++)
 			{
 				Tile tile = Tiles[i, j];
-				tile.SetDisplayHeight(Spawnset.GetActualTileHeight(tile.ArenaX, tile.ArenaY, CurrentTick / 60f));
+				tile.SetDisplayHeight(spawnset.GetActualTileHeight(tile.ArenaX, tile.ArenaY, CurrentTick / 60f));
 			}
 		}
+
+		_editorContext?.Update(CurrentTick);
 	}
 
 	public void Render()
@@ -99,6 +107,25 @@ public sealed class ArenaScene : IArenaScene
 
 		Root.GameResources.PostLut.Bind(TextureUnit.Texture1);
 
+		if (_editorContext != null && CurrentTick == 0)
+			_editorContext.RenderTiles(shader);
+		else
+			RenderTilesDefault();
+
+		RaceDagger.Render();
+		_player?.Render();
+		_skull4?.Render();
+
+		Root.InternalResources.TileHitboxTexture.Bind();
+
+		Span<Tile> tiles = Tiles.Cast<Tile>().ToArray(); // TODO: Prevent allocating memory.
+		tiles.Sort(static (a, b) => a.SquaredDistanceToCamera().CompareTo(b.SquaredDistanceToCamera()));
+		foreach (Tile tile in tiles)
+			tile.RenderHitbox();
+	}
+
+	private void RenderTilesDefault()
+	{
 		Root.GameResources.TileTexture.Bind();
 
 		for (int i = 0; i < Tiles.GetLength(0); i++)
@@ -114,16 +141,5 @@ public sealed class ArenaScene : IArenaScene
 			for (int j = 0; j < Tiles.GetLength(1); j++)
 				Tiles[i, j].RenderPillar();
 		}
-
-		RaceDagger.Render();
-		_player?.Render();
-		_skull4?.Render();
-
-		Root.InternalResources.TileHitboxTexture.Bind();
-
-		Span<Tile> tiles = Tiles.Cast<Tile>().ToArray(); // TODO: Prevent allocating memory.
-		tiles.Sort(static (a, b) => a.SquaredDistanceToCamera().CompareTo(b.SquaredDistanceToCamera()));
-		foreach (Tile tile in tiles)
-			tile.RenderHitbox();
 	}
 }
