@@ -121,15 +121,21 @@ public static class LeaderboardChild
 		ImGui.Text(ce.Rank.ToString("00"));
 
 		ImGui.SameLine();
+		ImGui.PushID(ce.Id);
 		if (ImGui.ImageButton((IntPtr)Root.InternalResources.IconEyeTexture.Handle, iconSize))
 			WatchInGame();
+
+		ImGui.PopID();
 
 		if (ImGui.IsItemHovered())
 			ImGui.SetTooltip("Watch in game");
 
 		ImGui.SameLine();
+		ImGui.PushID(ce.Id);
 		if (ImGui.ImageButton((IntPtr)Root.InternalResources.IconEyeTexture.Handle, iconSize))
 			WatchInReplayViewer();
+
+		ImGui.PopID();
 
 		if (ImGui.IsItemHovered())
 			ImGui.SetTooltip("Watch in replay viewer");
