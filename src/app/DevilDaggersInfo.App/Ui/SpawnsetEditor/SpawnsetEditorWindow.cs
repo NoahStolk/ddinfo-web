@@ -1,5 +1,6 @@
 using DevilDaggersInfo.App.Ui.SpawnsetEditor.Arena;
 using ImGuiNET;
+using System.Numerics;
 
 namespace DevilDaggersInfo.App.Ui.SpawnsetEditor;
 
@@ -25,5 +26,21 @@ public static class SpawnsetEditorWindow
 		HistoryChild.Render();
 
 		ImGui.End();
+
+		ImGui.PushStyleVar(ImGuiStyleVar.WindowMinSize, Constants.MinWindowSize / 2);
+		if (ImGui.Begin("3D Editor"))
+		{
+			Vector2 framebufferSize = ImGui.GetWindowSize() - new Vector2(32, 48);
+			Scene.SpawnsetEditorFramebufferData.ResizeIfNecessary((int)framebufferSize.X, (int)framebufferSize.Y);
+
+			Vector2 cursorScreenPos = ImGui.GetCursorScreenPos();
+			Scene.SpawnsetEditorScene.Camera.FramebufferOffset = cursorScreenPos;
+			ImDrawListPtr drawList = ImGui.GetWindowDrawList();
+			drawList.AddImage((IntPtr)Scene.SpawnsetEditorFramebufferData.TextureHandle, cursorScreenPos, cursorScreenPos + new Vector2(Scene.SpawnsetEditorFramebufferData.Width, Scene.SpawnsetEditorFramebufferData.Height), new(0, 1), new(1, 0));
+
+			ImGui.End();
+		}
+
+		ImGui.PopStyleVar();
 	}
 }

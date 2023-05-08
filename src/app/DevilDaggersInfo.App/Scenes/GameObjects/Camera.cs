@@ -21,6 +21,9 @@ public class Camera
 	private float _pitch;
 	private Vector2i<int>? _lockedMousePosition;
 
+	private int _windowWidth;
+	private int _windowHeight;
+
 	public Camera(bool isMenuCamera)
 	{
 		if (Root.Mouse != null)
@@ -38,6 +41,8 @@ public class Camera
 	public Vector3State PositionState { get; } = new(default);
 
 	public bool IsMenuCamera { get; }
+
+	public Vector2 FramebufferOffset { get; set; }
 
 	public void Update(float delta)
 	{
@@ -157,8 +162,11 @@ public class Camera
 		Root.Mouse.Position = new(_lockedMousePosition.Value.X, _lockedMousePosition.Value.Y);
 	}
 
-	public void PreRender()
+	public void PreRender(int windowWidth, int windowHeight)
 	{
+		_windowWidth = windowWidth;
+		_windowHeight = windowHeight;
+
 		PositionState.PrepareRender();
 		_rotationState.PrepareRender();
 
@@ -166,7 +174,7 @@ public class Camera
 		Vector3 lookDirection = Vector3.Transform(Vector3.UnitZ, _rotationState.Render);
 		ViewMatrix = Matrix4x4.CreateLookAt(PositionState.Render, PositionState.Render + lookDirection, upDirection);
 
-		float aspectRatio = Root.Window.Size.X / (float)Root.Window.Size.Y;
+		float aspectRatio = windowWidth / (float)windowHeight;
 
 		const float nearPlaneDistance = 0.05f;
 		const float farPlaneDistance = 10_000f;
@@ -198,13 +206,11 @@ public class Camera
 
 	public Ray ScreenToWorldPoint()
 	{
-		int screenWidth = Root.Window.Size.X;
-		int screenHeight = Root.Window.Size.Y;
-		float aspectRatio = Root.Window.Size.X / (float)Root.Window.Size.Y;
+		float aspectRatio = _windowWidth / (float)_windowHeight;
 
 		// Remap so (0, 0) is the center of the window and the edges are at -0.5 and +0.5.
-		Vector2 mousePosition = Root.Mouse?.Position ?? default;
-		Vector2 relative = -new Vector2(mousePosition.X / screenWidth - 0.5f, mousePosition.Y / screenHeight - 0.5f);
+		Vector2 mousePosition = Root.Mouse == null ? default : Root.Mouse.Position - FramebufferOffset;
+		Vector2 relative = -new Vector2(mousePosition.X / _windowWidth - 0.5f, mousePosition.Y / _windowHeight - 0.5f);
 
 		// Angle in radians from the view axis to the top plane of the view pyramid.
 		float verticalAngle = 0.5f * MathUtils.ToRadians(UserSettings.Model.FieldOfView);

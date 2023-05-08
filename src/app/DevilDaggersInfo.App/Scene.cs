@@ -18,6 +18,8 @@ public static class Scene
 	public static ArenaScene SpawnsetEditorScene => _spawnsetEditorScene ?? throw new InvalidOperationException("Scenes are not initialized.");
 	public static ArenaScene ReplayArenaScene => _replayArenaScene ?? throw new InvalidOperationException("Scenes are not initialized.");
 
+	public static FramebufferData SpawnsetEditorFramebufferData { get; } = new();
+
 	public static void Initialize()
 	{
 		_mainMenuScene = new(static () => _mainMenuSpawnset, true, false);
@@ -44,14 +46,32 @@ public static class Scene
 		activeScene?.Update(delta);
 	}
 
-	public static void Render(GL gl)
+	public static unsafe void Render(GL gl)
 	{
+		FramebufferData? framebufferData = UiRenderer.Layout switch
+		{
+			LayoutType.SpawnsetEditor => SpawnsetEditorFramebufferData,
+			_ => null,
+		};
+
+		gl.BindFramebuffer(FramebufferTarget.Framebuffer, framebufferData?.Framebuffer ?? 0);
+
+		// Keep track of the original viewport so we can restore it later.
+		Span<int> originalViewport = stackalloc int[4];
+		gl.GetInteger(GLEnum.Viewport, originalViewport);
+		gl.Viewport(0, 0, (uint)(framebufferData?.Width ?? Root.Window.Size.X), (uint)(framebufferData?.Height ?? Root.Window.Size.Y));
+
+		gl.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+
 		gl.Enable(EnableCap.DepthTest);
 		gl.Enable(EnableCap.Blend);
 		gl.Enable(EnableCap.CullFace);
 		gl.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 
 		ArenaScene? activeScene = GetScene();
-		activeScene?.Render();
+		activeScene?.Render(framebufferData?.Width ?? Root.Window.Size.X, framebufferData?.Height ?? Root.Window.Size.Y);
+
+		gl.Viewport(originalViewport[0], originalViewport[1], (uint)originalViewport[2], (uint)originalViewport[3]);
+		gl.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
 	}
 }

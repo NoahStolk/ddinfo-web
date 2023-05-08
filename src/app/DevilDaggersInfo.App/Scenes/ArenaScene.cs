@@ -108,12 +108,12 @@ public sealed class ArenaScene
 		_editorContext?.Update(CurrentTick);
 	}
 
-	public void Render()
+	public void Render(int windowWidth, int windowHeight)
 	{
 		for (int i = 0; i < _lights.Count; i++)
 			_lights[i].PrepareRender();
 
-		Camera.PreRender();
+		Camera.PreRender(windowWidth, windowHeight);
 
 		Shader shader = Root.InternalResources.MeshShader;
 		shader.Use();
