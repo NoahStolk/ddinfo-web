@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Api.App.CustomLeaderboards;
 
-namespace DevilDaggersInfo.App.Ui.Base.Networking.TaskHandlers;
+namespace DevilDaggersInfo.App.Networking.TaskHandlers;
 
 public static class FetchCustomEntryReplayById
 {

@@ -1,8 +1,8 @@
 using DevilDaggersInfo.Api.App.CustomLeaderboards;
 using DevilDaggersInfo.Api.App.ProcessMemory;
 using DevilDaggersInfo.App.Core.GameMemory;
-using DevilDaggersInfo.App.Ui.Base.Networking;
-using DevilDaggersInfo.App.Ui.Base.Networking.TaskHandlers;
+using DevilDaggersInfo.App.Networking;
+using DevilDaggersInfo.App.Networking.TaskHandlers;
 using DevilDaggersInfo.App.Ui.Base.User.Cache;
 using DevilDaggersInfo.App.Ui.CustomLeaderboards.Results;
 using DevilDaggersInfo.Common.Extensions;

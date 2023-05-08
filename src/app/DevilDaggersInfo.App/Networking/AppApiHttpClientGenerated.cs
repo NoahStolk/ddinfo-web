@@ -12,7 +12,7 @@ using DevilDaggersInfo.Api.App.Spawnsets;
 using DevilDaggersInfo.Api.App.Updates;
 using System.Net.Http.Json;
 
-namespace DevilDaggersInfo.App.Ui.Base.Networking;
+namespace DevilDaggersInfo.App.Networking;
 
 public partial class AppApiHttpClient
 {

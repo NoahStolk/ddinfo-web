@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.App.Ui.Base.Networking;
+namespace DevilDaggersInfo.App.Networking;
 
 public static class AsyncHandler
 {

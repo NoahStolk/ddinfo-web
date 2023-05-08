@@ -2,7 +2,7 @@ using DevilDaggersInfo.Api.App.CustomLeaderboards;
 using System.Net;
 using System.Net.Http.Json;
 
-namespace DevilDaggersInfo.App.Ui.Base.Networking.TaskHandlers;
+namespace DevilDaggersInfo.App.Networking.TaskHandlers;
 
 public static class UploadSubmission
 {

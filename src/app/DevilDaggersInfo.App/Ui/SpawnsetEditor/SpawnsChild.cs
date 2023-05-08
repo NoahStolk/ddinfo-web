@@ -1,4 +1,4 @@
-using DevilDaggersInfo.App.Ui.Base.Extensions;
+using DevilDaggersInfo.App.Extensions;
 using DevilDaggersInfo.App.Ui.SpawnsetEditor.State;
 using DevilDaggersInfo.App.Ui.SpawnsetEditor.Utils;
 using DevilDaggersInfo.Common;

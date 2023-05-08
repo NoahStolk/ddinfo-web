@@ -3,7 +3,7 @@ using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Core.Wiki;
 using System.Diagnostics;
 
-namespace DevilDaggersInfo.App.Ui.Base.Extensions;
+namespace DevilDaggersInfo.App.Extensions;
 
 public static class HandLevelExtensions
 {

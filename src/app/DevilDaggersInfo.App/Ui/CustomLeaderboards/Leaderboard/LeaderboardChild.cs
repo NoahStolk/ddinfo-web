@@ -1,9 +1,9 @@
 using DevilDaggersInfo.Api.App.CustomLeaderboards;
 using DevilDaggersInfo.Api.App.Spawnsets;
 using DevilDaggersInfo.App.Engine.Maths.Numerics;
-using DevilDaggersInfo.App.Ui.Base.Extensions;
-using DevilDaggersInfo.App.Ui.Base.Networking;
-using DevilDaggersInfo.App.Ui.Base.Networking.TaskHandlers;
+using DevilDaggersInfo.App.Extensions;
+using DevilDaggersInfo.App.Networking;
+using DevilDaggersInfo.App.Networking.TaskHandlers;
 using DevilDaggersInfo.App.Ui.Base.User.Cache;
 using DevilDaggersInfo.App.Ui.Base.User.Settings;
 using DevilDaggersInfo.App.Ui.CustomLeaderboards.LeaderboardList;
