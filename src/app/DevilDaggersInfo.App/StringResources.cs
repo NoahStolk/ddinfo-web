@@ -1,5 +1,6 @@
-namespace DevilDaggersInfo.App.Ui.Base.Utils;
+namespace DevilDaggersInfo.App;
 
+// TODO: Implement.
 public static class StringResources
 {
 	private const string _movement3d = "Use WASD, space, and left shift to move around.";

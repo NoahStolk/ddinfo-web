@@ -1,4 +1,3 @@
-using DevilDaggersInfo.App.Ui.Base;
 using Silk.NET.OpenGL;
 
 namespace DevilDaggersInfo.App;

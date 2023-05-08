@@ -1,5 +1,4 @@
 using DevilDaggersInfo.App.Scenes.GameObjects;
-using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.App.User.Settings;
 using ImGuiNET;
 using System.Numerics;

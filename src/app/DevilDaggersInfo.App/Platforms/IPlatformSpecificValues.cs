@@ -1,7 +1,7 @@
 using DevilDaggersInfo.Api.App.ProcessMemory;
 using DevilDaggersInfo.Api.App.Updates;
 
-namespace DevilDaggersInfo.App.Ui.Base.Platforms;
+namespace DevilDaggersInfo.App.Platforms;
 
 public interface IPlatformSpecificValues
 {

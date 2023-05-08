@@ -1,5 +1,4 @@
 using DevilDaggersInfo.App.Engine.InterpolationStates;
-using DevilDaggersInfo.App.Ui.Base;
 using DevilDaggersInfo.Core.Spawnset;
 using Silk.NET.OpenGL;
 using System.Numerics;
