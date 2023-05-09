@@ -27,8 +27,6 @@ public static class MainLayout
 
 	private static readonly string _version = VersionUtils.EntryAssemblyVersion;
 
-	private static bool _showSettings;
-
 	public static void Render(out bool shouldClose)
 	{
 		shouldClose = false;
@@ -68,7 +66,7 @@ public static class MainLayout
 			UiRenderer.Layout = LayoutType.Config;
 
 		if (MainButtonAt(1, 2, new(0.3f, 0.3f, 0.3f, buttonAlpha), "Settings"))
-			_showSettings = true;
+			UiRenderer.ShowSettings();
 
 		if (MainButtonAt(2, 2, new(0.3f, 0.3f, 0.3f, buttonAlpha), "Exit"))
 			shouldClose = true;
@@ -96,8 +94,6 @@ public static class MainLayout
 		ImGui.PopStyleColor();
 		ImGui.PopStyleColor();
 		ImGui.PopStyleColor();
-
-		SettingsWindow.Render(ref _showSettings);
 
 		ImGui.End();
 

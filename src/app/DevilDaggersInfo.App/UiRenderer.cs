@@ -11,10 +11,17 @@ namespace DevilDaggersInfo.App;
 
 public static class UiRenderer
 {
+	private static bool _showSettings;
 	private static bool _windowShouldClose;
+
 	public static bool WindowShouldClose => _windowShouldClose;
 
 	public static LayoutType Layout { get; set; }
+
+	public static void ShowSettings()
+	{
+		_showSettings = true;
+	}
 
 	public static void Render(float delta)
 	{
@@ -47,6 +54,8 @@ public static class UiRenderer
 
 		if (UserSettings.Model.ShowDebugOutput)
 			DebugWindow.Render();
+
+		SettingsWindow.Render(ref _showSettings);
 
 		Modals.Render();
 	}
