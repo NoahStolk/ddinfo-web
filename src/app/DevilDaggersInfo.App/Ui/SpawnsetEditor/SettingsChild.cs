@@ -5,6 +5,7 @@ using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Core.Wiki.Extensions;
 using ImGuiNET;
+using System.Numerics;
 
 namespace DevilDaggersInfo.App.Ui.SpawnsetEditor;
 
@@ -12,10 +13,11 @@ public static class SettingsChild
 {
 	public static void Render()
 	{
-		ImGui.BeginChild("SettingsChild", new(288, 384));
+		ImGui.BeginChild("SettingsChild", new(288, 416));
 
 		RenderFormat();
 		RenderGameMode();
+		RenderRaceDagger();
 		RenderArena();
 		RenderPractice();
 
@@ -95,6 +97,28 @@ public static class SettingsChild
 			if (gameMode != GameMode.Race)
 				ImGui.SameLine();
 		}
+	}
+
+	private static void RenderRaceDagger()
+	{
+		ImGui.BeginDisabled(SpawnsetState.Spawnset.GameMode != GameMode.Race);
+
+		ImGui.Spacing();
+		ImGui.Indent(-8);
+		ImGui.Text("Race dagger");
+		ImGui.Separator();
+		ImGui.Indent(8);
+
+		Vector2 raceDaggerPosition = SpawnsetState.Spawnset.RaceDaggerPosition;
+		ImGui.InputFloat2("Position", ref raceDaggerPosition, "%.2f", ImGuiInputTextFlags.CharsDecimal);
+		if (Math.Abs(SpawnsetState.Spawnset.RaceDaggerPosition.X - raceDaggerPosition.X) > 0.001f ||
+		    Math.Abs(SpawnsetState.Spawnset.RaceDaggerPosition.Y - raceDaggerPosition.Y) > 0.001f)
+		{
+			SpawnsetState.Spawnset = SpawnsetState.Spawnset with { RaceDaggerPosition = raceDaggerPosition };
+			SpawnsetHistoryUtils.Save(SpawnsetEditType.RaceDagger);
+		}
+
+		ImGui.EndDisabled();
 	}
 
 	private static void RenderArena()
@@ -181,7 +205,5 @@ public static class SettingsChild
 		}
 
 		ImGui.EndDisabled();
-
-		ImGui.Unindent();
 	}
 }
