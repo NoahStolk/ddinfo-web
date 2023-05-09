@@ -44,6 +44,7 @@ public static class UiRenderer
 				break;
 			case LayoutType.SpawnsetEditor:
 				SpawnsetEditorWindow.Render();
+				SpawnsetEditor3DWindow.Render();
 				break;
 			case LayoutType.CustomLeaderboards:
 				CustomLeaderboardsWindow.Render();
@@ -51,6 +52,7 @@ public static class UiRenderer
 				break;
 			case LayoutType.ReplayEditor:
 				ReplayEditorWindow.Render();
+				ReplayEditor3DWindow.Render();
 				break;
 		}
 

@@ -19,6 +19,7 @@ public static class Scene
 	public static ArenaScene ReplayArenaScene => _replayArenaScene ?? throw new InvalidOperationException("Scenes are not initialized.");
 
 	public static FramebufferData SpawnsetEditorFramebufferData { get; } = new();
+	public static FramebufferData ReplayEditorFramebufferData { get; } = new();
 
 	public static void Initialize()
 	{
@@ -35,7 +36,7 @@ public static class Scene
 		{
 			LayoutType.Main => _mainMenuScene,
 			LayoutType.SpawnsetEditor => _spawnsetEditorScene,
-			LayoutType.ReplayEditor or LayoutType.CustomLeaderboards => ReplayArenaScene,
+			LayoutType.ReplayEditor => ReplayArenaScene,
 			_ => null,
 		};
 	}
@@ -51,6 +52,7 @@ public static class Scene
 		FramebufferData? framebufferData = UiRenderer.Layout switch
 		{
 			LayoutType.SpawnsetEditor => SpawnsetEditorFramebufferData,
+			LayoutType.ReplayEditor => ReplayEditorFramebufferData,
 			_ => null,
 		};
 
