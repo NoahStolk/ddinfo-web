@@ -52,7 +52,7 @@ public static class UiRenderer
 				break;
 		}
 
-		if (UserSettings.Model.ShowDebugOutput)
+		if (UserSettings.Model.ShowDebugWindow)
 			DebugWindow.Render();
 
 		SettingsWindow.Render(ref _showSettings);

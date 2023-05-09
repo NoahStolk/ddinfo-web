@@ -11,9 +11,19 @@ public static class SettingsWindow
 		if (!show)
 			return;
 
-		ImGui.SetNextWindowSize(new(512, 128));
+		ImGui.SetNextWindowSize(new(512, 256));
 
 		ImGui.Begin("Settings", ref show, ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize);
+
+		int maxFps = UserSettings.Model.MaxFps;
+		ImGui.SliderInt("Max FPS", ref maxFps, UserSettingsModel.MaxFpsMin, UserSettingsModel.MaxFpsMax);
+		if (UserSettings.Model.MaxFps != maxFps)
+			UserSettings.Model = UserSettings.Model with { MaxFps = maxFps };
+
+		bool verticalSync = UserSettings.Model.VerticalSync;
+		ImGui.Checkbox("V-sync", ref verticalSync);
+		if (UserSettings.Model.VerticalSync != verticalSync)
+			UserSettings.Model = UserSettings.Model with { VerticalSync = verticalSync };
 
 		float lookSpeed = UserSettings.Model.LookSpeed;
 		ImGui.SliderFloat("Look speed", ref lookSpeed, UserSettingsModel.LookSpeedMin, UserSettingsModel.LookSpeedMax);
@@ -25,10 +35,10 @@ public static class SettingsWindow
 		if (UserSettings.Model.FieldOfView != fieldOfView)
 			UserSettings.Model = UserSettings.Model with { FieldOfView = fieldOfView };
 
-		bool showDebugOutput = UserSettings.Model.ShowDebugOutput;
-		ImGui.Checkbox("Show debug output", ref showDebugOutput);
-		if (UserSettings.Model.ShowDebugOutput != showDebugOutput)
-			UserSettings.Model = UserSettings.Model with { ShowDebugOutput = showDebugOutput };
+		bool showDebugWindow = UserSettings.Model.ShowDebugWindow;
+		ImGui.Checkbox("Show debug window", ref showDebugWindow);
+		if (UserSettings.Model.ShowDebugWindow != showDebugWindow)
+			UserSettings.Model = UserSettings.Model with { ShowDebugWindow = showDebugWindow };
 
 		ImGui.End();
 	}

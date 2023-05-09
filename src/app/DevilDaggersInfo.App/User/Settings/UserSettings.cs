@@ -15,10 +15,10 @@ public static class UserSettings
 		get => _model;
 		set
 		{
-			_model = value;
+			_model = value.Sanitize();
 			Save();
 
-			// Root.Game.MainLoopRate = _model.MaxFps;
+			Root.Application.UpdateWindow();
 		}
 	}
 
@@ -44,14 +44,7 @@ public static class UserSettings
 			{
 				UserSettingsModel? deserializedModel = JsonSerializer.Deserialize<UserSettingsModel>(File.ReadAllText(_filePath));
 				if (deserializedModel != null)
-				{
-					_model = deserializedModel with
-					{
-						MaxFps = Math.Clamp(deserializedModel.MaxFps, UserSettingsModel.MaxFpsMin, UserSettingsModel.MaxFpsMax),
-						LookSpeed = Math.Clamp(deserializedModel.LookSpeed, UserSettingsModel.LookSpeedMin, UserSettingsModel.LookSpeedMax),
-						FieldOfView = Math.Clamp(deserializedModel.FieldOfView, UserSettingsModel.FieldOfViewMin, UserSettingsModel.FieldOfViewMax),
-					};
-				}
+					_model = deserializedModel.Sanitize();
 			}
 			catch (Exception ex)
 			{
