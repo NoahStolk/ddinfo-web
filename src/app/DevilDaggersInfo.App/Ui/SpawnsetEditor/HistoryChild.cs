@@ -54,8 +54,11 @@ public static class HistoryChild
 			ImGui.PushStyleColor(ImGuiCol.ButtonActive, color + new Vector4(0.5f, 0.5f, 0.5f, 0));
 			ImGui.PushStyleColor(ImGuiCol.Border, i == CurrentHistoryIndex ? Color.White : Color.Black);
 
-			if (ImGui.Button($"{i:00} {history.EditType.GetChange()}", new(226, 20)))
+			ImGui.PushID($"HistoryButton{i}");
+			if (ImGui.Button(history.EditType.GetChange(), new(226, 20)))
 				SetHistoryIndex(i);
+
+			ImGui.PopID();
 
 			ImGui.PopStyleColor();
 			ImGui.PopStyleColor();
