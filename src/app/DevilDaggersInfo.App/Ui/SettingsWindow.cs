@@ -2,7 +2,7 @@ using DevilDaggersInfo.App.User.Settings;
 using DevilDaggersInfo.App.User.Settings.Model;
 using ImGuiNET;
 
-namespace DevilDaggersInfo.App.Ui.Main;
+namespace DevilDaggersInfo.App.Ui;
 
 public static class SettingsWindow
 {
