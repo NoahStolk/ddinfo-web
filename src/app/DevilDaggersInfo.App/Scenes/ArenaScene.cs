@@ -25,10 +25,7 @@ public sealed class ArenaScene
 	{
 		_getSpawnset = getSpawnset;
 
-		Camera = new(useMenuCamera)
-		{
-			PositionState = { Physics = new(0, 5, 0) },
-		};
+		Camera = new(useMenuCamera) { Position = new(0, 5, 0) };
 
 		InitializeArena();
 
@@ -86,11 +83,7 @@ public sealed class ArenaScene
 	public void Update(float delta)
 	{
 		SpawnsetBinary spawnset = _getSpawnset();
-
 		FillArena(spawnset);
-
-		for (int i = 0; i < _lights.Count; i++)
-			_lights[i].PrepareUpdate();
 
 		Camera.Update(delta);
 		_raceDagger.Update(spawnset, CurrentTick);
@@ -110,9 +103,6 @@ public sealed class ArenaScene
 
 	public void Render(int windowWidth, int windowHeight)
 	{
-		for (int i = 0; i < _lights.Count; i++)
-			_lights[i].PrepareRender();
-
 		Camera.PreRender(windowWidth, windowHeight);
 
 		Shader shader = Root.InternalResources.MeshShader;
@@ -124,9 +114,9 @@ public sealed class ArenaScene
 		shader.SetUniform("lutScale", 1f);
 
 		// TODO: Prevent allocating memory?
-		Span<Vector3> lightPositions = _lights.Select(lo => lo.PositionState.Render).ToArray();
-		Span<Vector3> lightColors = _lights.Select(lo => lo.ColorState.Render).ToArray();
-		Span<float> lightRadii = _lights.Select(lo => lo.RadiusState.Render).ToArray();
+		Span<Vector3> lightPositions = _lights.Select(lo => lo.Position).ToArray();
+		Span<Vector3> lightColors = _lights.Select(lo => lo.Color).ToArray();
+		Span<float> lightRadii = _lights.Select(lo => lo.Radius).ToArray();
 
 		shader.SetUniform("lightCount", lightPositions.Length);
 		shader.SetUniform("lightPosition", lightPositions);

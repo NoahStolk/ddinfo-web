@@ -1,4 +1,3 @@
-using DevilDaggersInfo.App.Engine.InterpolationStates;
 using System.Numerics;
 
 namespace DevilDaggersInfo.App.Scenes.GameObjects;
@@ -7,28 +6,12 @@ public class LightObject
 {
 	public LightObject(float radius, Vector3 position, Vector3 color)
 	{
-		RadiusState = new(radius);
-		PositionState = new(position);
-		ColorState = new(color);
+		Radius = radius;
+		Position = position;
+		Color = color;
 	}
 
-	public FloatState RadiusState { get; }
-
-	public Vector3State PositionState { get; }
-
-	public Vector3State ColorState { get; }
-
-	public void PrepareUpdate()
-	{
-		RadiusState.PrepareUpdate();
-		PositionState.PrepareUpdate();
-		ColorState.PrepareUpdate();
-	}
-
-	public void PrepareRender()
-	{
-		RadiusState.PrepareRender();
-		PositionState.PrepareRender();
-		ColorState.PrepareRender();
-	}
+	public float Radius { get; set; }
+	public Vector3 Position { get; set; }
+	public Vector3 Color { get; set; }
 }

@@ -38,7 +38,6 @@ public class Application
 		});
 		_window.Load += OnWindowOnLoad;
 		_window.FramebufferResize += OnWindowOnFramebufferResize;
-		_window.Update += OnWindowOnUpdate;
 		_window.Render += OnWindowOnRender;
 		_window.Closing += OnWindowOnClosing;
 
@@ -48,8 +47,8 @@ public class Application
 		AppVersion = appVersion;
 	}
 
-	public static PerSecondCounter UpdateCounter { get; } = new();
 	public static PerSecondCounter RenderCounter { get; } = new();
+	public static float LastRenderDelta { get; private set; }
 
 	public AppVersion AppVersion { get; }
 
@@ -120,22 +119,20 @@ public class Application
 		_gl.Viewport(s);
 	}
 
-	private static void OnWindowOnUpdate(double delta)
-	{
-		UpdateCounter.Increment();
-
-		UiRenderer.Update((float)delta);
-		Scene.Update((float)delta);
-	}
-
 	private void OnWindowOnRender(double delta)
 	{
-		RenderCounter.Increment();
-
 		if (_imGuiController == null || _gl == null)
 			throw new InvalidOperationException("Window has not loaded.");
 
-		_imGuiController.Update((float)delta);
+		float deltaF = (float)delta;
+
+		RenderCounter.Increment();
+		LastRenderDelta = deltaF;
+
+		UiRenderer.Update(deltaF);
+		Scene.Update(deltaF);
+
+		_imGuiController.Update(deltaF);
 
 		_gl.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 

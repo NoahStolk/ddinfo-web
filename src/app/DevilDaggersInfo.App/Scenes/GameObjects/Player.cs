@@ -33,13 +33,11 @@ public class Player
 	{
 		const float offsetY = 3.3f;
 
-		_mesh.PrepareUpdate();
-
 		PlayerMovementSnapshot snapshot = _movementTimeline.GetPlayerMovementSnapshot(currentTick);
-		_mesh.RotationState.Physics = snapshot.Rotation * _rotationOffset;
-		_mesh.PositionState.Physics = snapshot.Position + new Vector3(0, offsetY, 0);
+		_mesh.Rotation = snapshot.Rotation * _rotationOffset;
+		_mesh.Position = snapshot.Position + new Vector3(0, offsetY, 0);
 
-		Light.PositionState.Physics = _mesh.PositionState.Physics;
+		Light.Position = _mesh.Position;
 	}
 
 	public void Render()

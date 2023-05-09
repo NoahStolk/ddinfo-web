@@ -43,7 +43,7 @@ public class Tile
 		_vaoHitbox = MeshShaderUtils.CreateVao(Root.InternalResources.TileHitboxModel.MainMesh);
 	}
 
-	public float SquaredDistanceToCamera() => Vector2.DistanceSquared(new(PositionX, PositionZ), new(_camera.PositionState.Render.X, _camera.PositionState.Render.Z));
+	public float SquaredDistanceToCamera() => Vector2.DistanceSquared(new(PositionX, PositionZ), new(_camera.Position.X, _camera.Position.Z));
 
 	public void SetDisplayHeight(float height)
 	{

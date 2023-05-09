@@ -1,5 +1,4 @@
 using DevilDaggersInfo.App.Engine.Extensions;
-using DevilDaggersInfo.App.Engine.InterpolationStates;
 using DevilDaggersInfo.App.Engine.Intersections;
 using DevilDaggersInfo.App.Engine.Maths;
 using DevilDaggersInfo.App.Engine.Maths.Numerics;
@@ -14,7 +13,9 @@ public class Camera
 	private const float _defaultYaw = MathF.PI; // TODO: This causes the camera to rotate 180 degrees on start.
 	private const MouseButton _lookButton = MouseButton.Right;
 
-	private readonly QuaternionState _rotationState = new(Quaternion.CreateFromYawPitchRoll(_defaultYaw, 0, 0));
+	private readonly bool _isMenuCamera;
+
+	private Quaternion _rotationState = Quaternion.CreateFromYawPitchRoll(_defaultYaw, 0, 0);
 
 	private Vector3 _axisAlignedSpeed;
 	private float _yaw;
@@ -32,28 +33,23 @@ public class Camera
 			Root.Mouse.MouseUp += OnMouseUp;
 		}
 
-		IsMenuCamera = isMenuCamera;
+		_isMenuCamera = isMenuCamera;
 	}
 
 	public Matrix4x4 Projection { get; private set; }
 	public Matrix4x4 ViewMatrix { get; private set; }
 
-	public Vector3State PositionState { get; } = new(default);
-
-	public bool IsMenuCamera { get; }
+	public Vector3 Position { get; set; }
 
 	public Vector2 FramebufferOffset { get; set; }
 
 	public void Update(float delta)
 	{
-		PositionState.PrepareUpdate();
-		_rotationState.PrepareUpdate();
-
-		if (IsMenuCamera)
+		if (_isMenuCamera)
 		{
 			float time = (float)Root.Window.Time * 0.7f;
-			PositionState.Physics = new(MathF.Sin(time) * 5, 6, MathF.Cos(time) * 5);
-			_rotationState.Physics = Quaternion.CreateFromRotationMatrix(SetRotationFromDirectionalVector(new Vector3(0, 4, 0) - PositionState.Physics));
+			Position = new(MathF.Sin(time) * 5, 6, MathF.Cos(time) * 5);
+			_rotationState = Quaternion.CreateFromRotationMatrix(SetRotationFromDirectionalVector(new Vector3(0, 4, 0) - Position));
 			return;
 		}
 
@@ -62,9 +58,9 @@ public class Camera
 
 		const float moveSpeed = 25;
 
-		Matrix4x4 rotMat = Matrix4x4.CreateFromQuaternion(_rotationState.Physics);
+		Matrix4x4 rotMat = Matrix4x4.CreateFromQuaternion(_rotationState);
 		Vector3 transformed = RotateVector(_axisAlignedSpeed, rotMat) + new Vector3(0, _axisAlignedSpeed.Y, 0);
-		PositionState.Physics += transformed * moveSpeed * delta;
+		Position += transformed * moveSpeed * delta;
 
 		static Vector3 RotateVector(Vector3 vector, Matrix4x4 rotationMatrix)
 		{
@@ -157,7 +153,7 @@ public class Camera
 		_pitch -= lookSpeed * delta.Y * 0.0001f;
 
 		_pitch = Math.Clamp(_pitch, MathUtils.ToRadians(-89.9f), MathUtils.ToRadians(89.9f));
-		_rotationState.Physics = Quaternion.CreateFromYawPitchRoll(_yaw, -_pitch, 0);
+		_rotationState = Quaternion.CreateFromYawPitchRoll(_yaw, -_pitch, 0);
 
 		Root.Mouse.Position = new(_lockedMousePosition.Value.X, _lockedMousePosition.Value.Y);
 	}
@@ -167,12 +163,9 @@ public class Camera
 		_windowWidth = windowWidth;
 		_windowHeight = windowHeight;
 
-		PositionState.PrepareRender();
-		_rotationState.PrepareRender();
-
-		Vector3 upDirection = Vector3.Transform(Vector3.UnitY, _rotationState.Render);
-		Vector3 lookDirection = Vector3.Transform(Vector3.UnitZ, _rotationState.Render);
-		ViewMatrix = Matrix4x4.CreateLookAt(PositionState.Render, PositionState.Render + lookDirection, upDirection);
+		Vector3 upDirection = Vector3.Transform(Vector3.UnitY, _rotationState);
+		Vector3 lookDirection = Vector3.Transform(Vector3.UnitZ, _rotationState);
+		ViewMatrix = Matrix4x4.CreateLookAt(Position, Position + lookDirection, upDirection);
 
 		float aspectRatio = windowWidth / (float)windowHeight;
 
@@ -223,9 +216,9 @@ public class Camera
 		Vector3 worldUnits = new(temp.X * aspectRatio, temp.Y, 1);
 
 		// Rotate to match camera orientation.
-		Vector3 direction = Vector3.Transform(worldUnits, _rotationState.Physics);
+		Vector3 direction = Vector3.Transform(worldUnits, _rotationState);
 
 		// Output a ray from camera position, along this direction.
-		return new(PositionState.Physics, direction);
+		return new(Position, direction);
 	}
 }

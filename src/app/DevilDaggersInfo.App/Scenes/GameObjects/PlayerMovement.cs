@@ -1,5 +1,4 @@
 using DevilDaggersInfo.App.Engine.Content;
-using DevilDaggersInfo.App.Engine.InterpolationStates;
 using Silk.NET.OpenGL;
 using System.Numerics;
 
@@ -15,26 +14,16 @@ public class PlayerMovement
 		_vao = vao;
 		_mesh = mesh;
 
-		RotationState = new(rotation);
-		PositionState = new(position);
+		Rotation = rotation;
+		Position = position;
 	}
 
-	public QuaternionState RotationState { get; }
-
-	public Vector3State PositionState { get; }
-
-	public void PrepareUpdate()
-	{
-		RotationState.PrepareUpdate();
-		PositionState.PrepareUpdate();
-	}
+	public Quaternion Rotation { get; set; }
+	public Vector3 Position { get; set; }
 
 	public unsafe void Render()
 	{
-		RotationState.PrepareRender();
-		PositionState.PrepareRender();
-
-		Root.InternalResources.MeshShader.SetUniform("model", Matrix4x4.CreateScale(4) * Matrix4x4.CreateFromQuaternion(RotationState.Render) * Matrix4x4.CreateTranslation(PositionState.Render));
+		Root.InternalResources.MeshShader.SetUniform("model", Matrix4x4.CreateScale(4) * Matrix4x4.CreateFromQuaternion(Rotation) * Matrix4x4.CreateTranslation(Position));
 
 		Root.Gl.BindVertexArray(_vao);
 		fixed (uint* i = &_mesh.Indices[0])
