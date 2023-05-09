@@ -32,6 +32,7 @@ public class Application
 		Vector2D<int> monitorSize = Silk.NET.Windowing.Monitor.GetMainMonitor(_window).Bounds.Size;
 		_window.Size = windowSize;
 		_window.Position = monitorSize / 2 - windowSize / 2;
+		_window.Title = $"ddinfo tools {VersionUtils.EntryAssemblyVersion}";
 
 		_window.Load += OnWindowOnLoad;
 		_window.FramebufferResize += OnWindowOnFramebufferResize;
