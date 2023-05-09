@@ -100,12 +100,6 @@ public class Application
 		ImGuiStylePtr style = ImGui.GetStyle();
 		style.ScrollbarSize = 16;
 		style.ScrollbarRounding = 0;
-
-		ImGuiIOPtr io = ImGui.GetIO();
-
-		// This is mainly done for the arena editor, so the window is not moved when editing the arena.
-		// TODO: I think we can also work around this by putting the arena inside a widget.
-		io.ConfigWindowsMoveFromTitleBarOnly = true;
 	}
 
 	private void OnWindowOnFramebufferResize(Vector2D<int> size)

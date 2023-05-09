@@ -76,6 +76,10 @@ public static class ArenaChild
 		ArenaCanvas.Render();
 		activeState.Render(mousePosition);
 
+		// Capture mouse input when the mouse is over the canvas.
+		// This prevents dragging the window while drawing on the arena canvas.
+		ImGui.InvisibleButton("ArenaCanvas", ArenaSize, ImGuiButtonFlags.MouseButtonLeft);
+
 		ImGui.EndChild();
 
 		ImGui.SliderFloat("Time", ref _currentSecond, 0, SpawnsetState.Spawnset.GetSliderMaxSeconds());
