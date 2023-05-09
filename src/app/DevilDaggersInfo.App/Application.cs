@@ -102,7 +102,6 @@ public class Application
 		style.ScrollbarRounding = 0;
 
 		ImGuiIOPtr io = ImGui.GetIO();
-		io.WantSaveIniSettings = false;
 
 		// This is mainly done for the arena editor, so the window is not moved when editing the arena.
 		// TODO: I think we can also work around this by putting the arena inside a widget.
