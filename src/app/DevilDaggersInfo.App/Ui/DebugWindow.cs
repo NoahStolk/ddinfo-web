@@ -36,6 +36,8 @@ public static class DebugWindow
 		ImGui.Text(GC.CollectionCount(1) + " gen 1 garbage collections");
 		ImGui.Text(GC.CollectionCount(2) + " gen 2 garbage collections");
 
+		ImGui.Text($"Modal active: {Modals.IsAnyOpen}");
+
 		if (ImGui.Button("Clear"))
 			_debugMessages.Clear();
 

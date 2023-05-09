@@ -21,24 +21,8 @@ public static class SpawnsetEditorMenu
 			ImGui.EndMenuBar();
 		}
 
-		ImGuiIOPtr io = ImGui.GetIO();
-		if (io.KeyCtrl)
-		{
-			// TODO: Fix manual mapping?
-			// TODO: Prevent Ctrl+R from opening the replace dialog when the replace dialog is already open.
-			// ... Or just ignore key "presses" when the key is already held down.
-			if (ImGui.IsKeyPressed(ImGuiKey.N) || ImGui.IsKeyPressed((ImGuiKey)78))
-				NewSpawnset();
-			else if (ImGui.IsKeyPressed(ImGuiKey.O) || ImGui.IsKeyPressed((ImGuiKey)79))
-				OpenSpawnset();
-			else if (ImGui.IsKeyPressed(ImGuiKey.S) || ImGui.IsKeyPressed((ImGuiKey)83))
-				SaveSpawnset();
-			else if (ImGui.IsKeyPressed(ImGuiKey.R) || ImGui.IsKeyPressed((ImGuiKey)82))
-				ReplaceSpawnset();
-		}
-
-		if (ImGui.IsKeyPressed(ImGuiKey.Escape) || ImGui.IsKeyPressed((ImGuiKey)526))
-			Close();
+		if (!Modals.IsAnyOpen)
+			HandleShortcuts();
 	}
 
 	private static void RenderFileMenu()
@@ -64,6 +48,28 @@ public static class SpawnsetEditorMenu
 			Close();
 	}
 
+	private static void HandleShortcuts()
+	{
+		ImGuiIOPtr io = ImGui.GetIO();
+		if (io.KeyCtrl)
+		{
+			// TODO: Fix manual mapping?
+			// TODO: Prevent Ctrl+R from opening the replace dialog when the replace dialog is already open.
+			// ... Or just ignore key "presses" when the key is already held down.
+			if (ImGui.IsKeyPressed(ImGuiKey.N) || ImGui.IsKeyPressed((ImGuiKey)78))
+				NewSpawnset();
+			else if (ImGui.IsKeyPressed(ImGuiKey.O) || ImGui.IsKeyPressed((ImGuiKey)79))
+				OpenSpawnset();
+			else if (ImGui.IsKeyPressed(ImGuiKey.S) || ImGui.IsKeyPressed((ImGuiKey)83))
+				SaveSpawnset();
+			else if (ImGui.IsKeyPressed(ImGuiKey.R) || ImGui.IsKeyPressed((ImGuiKey)82))
+				ReplaceSpawnset();
+		}
+
+		if (ImGui.IsKeyPressed(ImGuiKey.Escape) || ImGui.IsKeyPressed((ImGuiKey)526))
+			Close();
+	}
+
 	private static void NewSpawnset()
 	{
 		SpawnsetState.SpawnsetName = "(untitled)";
@@ -85,8 +91,7 @@ public static class SpawnsetEditorMenu
 		catch (Exception ex)
 		{
 			// TODO: Log exception.
-			Modals.ShowError = true;
-			Modals.ErrorText = $"Could not open file '{filePath}'.";
+			Modals.ShowError($"Could not open file '{filePath}'.");
 			return;
 		}
 
@@ -97,8 +102,7 @@ public static class SpawnsetEditorMenu
 		}
 		else
 		{
-			Modals.ShowError = true;
-			Modals.ErrorText = $"The file '{filePath}' could not be parsed as a spawnset.";
+			Modals.ShowError($"The file '{filePath}' could not be parsed as a spawnset.");
 			return;
 		}
 
@@ -122,7 +126,7 @@ public static class SpawnsetEditorMenu
 	private static void ReplaceSpawnset()
 	{
 		File.WriteAllBytes(UserSettings.ModsSurvivalPath, SpawnsetState.Spawnset.ToBytes());
-		Modals.ShowReplacedSurvivalFile = true;
+		Modals.ShowReplacedSurvivalFile();
 	}
 
 	private static void Close()

@@ -72,8 +72,7 @@ public static class LeaderboardListViewChild
 						{
 							if (l == null)
 							{
-								Modals.ShowError = true;
-								Modals.ErrorText = "Could not fetch custom leaderboard.";
+								Modals.ShowError("Could not fetch custom leaderboard.");
 								LeaderboardChild.Data = null;
 							}
 							else

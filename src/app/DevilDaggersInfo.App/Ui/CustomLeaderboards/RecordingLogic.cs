@@ -138,14 +138,9 @@ public static class RecordingLogic
 		void SetMarker(GetMarker? getMarker)
 		{
 			if (getMarker == null)
-			{
-				Modals.ShowError = true;
-				Modals.ErrorText = "Failed to retrieve marker.";
-			}
+				Modals.ShowError("Failed to retrieve marker.");
 			else
-			{
 				Marker = getMarker.Value;
-			}
 		}
 	}
 
@@ -263,8 +258,7 @@ public static class RecordingLogic
 	{
 		if (response == null)
 		{
-			Modals.ShowError = true;
-			Modals.ErrorText = "Failed to upload run.";
+			Modals.ShowError("Failed to upload run.");
 			return;
 		}
 

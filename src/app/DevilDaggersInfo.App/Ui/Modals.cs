@@ -1,49 +1,71 @@
 using DevilDaggersInfo.Core.Versioning;
 using ImGuiNET;
-using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 
 namespace DevilDaggersInfo.App.Ui;
 
-[SuppressMessage("Minor Code Smell", "S1104:Fields should not have public accessibility", Justification = "ref keyword")]
-[SuppressMessage("Critical Code Smell", "S2223:Non-constant static fields should not be visible", Justification = "ref keyword")]
-[SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:Fields should be private", Justification = "ref keyword")]
-[SuppressMessage("Usage", "CA2211:Non-constant fields should not be visible", Justification = "ref keyword")]
 public static class Modals
 {
 	private const string _updateId = "Update available";
 	private const string _errorId = "Error";
 	private const string _replacedSurvivalFileId = "Successfully replaced current survival file";
 
-	public static bool ShowUpdate;
-	public static bool ShowError;
-	public static bool ShowReplacedSurvivalFile;
+	private static readonly List<ModalData> _modals = new()
+	{
+		new(_updateId, () => ImGui.Text($"Version {_availableVersion} is available. Re-run the launcher to install it.")),
+		new(_errorId, () => ImGui.TextWrapped(_errorText)),
+		new(_replacedSurvivalFileId, () => ImGui.Text("The current survival file has been replaced with the current spawnset.")),
+	};
 
-	public static AppVersion? AvailableVersion { get; set; }
-	public static string? ErrorText { get; set; }
+	private static AppVersion? _availableVersion;
+	private static string? _errorText;
+
+	public static bool IsAnyOpen { get; private set; }
+
+	public static void ShowUpdateAvailable(AppVersion availableVersion)
+	{
+		_availableVersion = availableVersion;
+		_modals.First(m => m.Id == _updateId).ShouldOpen = true;
+	}
+
+	public static void ShowError(string errorText)
+	{
+		_errorText = errorText;
+		_modals.First(m => m.Id == _errorId).ShouldOpen = true;
+	}
+
+	public static void ShowReplacedSurvivalFile()
+	{
+		_modals.First(m => m.Id == _replacedSurvivalFileId).ShouldOpen = true;
+	}
 
 	public static void Render()
 	{
-		ShowModal(ref ShowUpdate, _updateId, () => ImGui.Text($"Version {AvailableVersion} is available. Re-run the launcher to install it."));
-		ShowModal(ref ShowError, _errorId, () => ImGui.TextWrapped(ErrorText));
-		ShowModal(ref ShowReplacedSurvivalFile, _replacedSurvivalFileId, () => ImGui.Text("The current survival file has been replaced with the current spawnset."));
-	}
-
-	private static void ShowModal(ref bool showModal, string modalId, Action onBegin)
-	{
-		if (showModal)
+		ModalData? modalToOpen = _modals.Find(kvp => kvp.ShouldOpen);
+		if (modalToOpen != null)
 		{
-			ImGui.OpenPopup(modalId);
-			showModal = false;
+			ImGui.OpenPopup(modalToOpen.Id);
+			modalToOpen.ShouldOpen = false;
 		}
 
+		IsAnyOpen = false;
+		foreach (ModalData modal in _modals)
+		{
+			bool isOpen = RenderModal(modal.Id, modal.RenderAction);
+			if (isOpen)
+				IsAnyOpen = true;
+		}
+	}
+
+	private static bool RenderModal(string modalId, Action renderAction)
+	{
 		Vector2 center = ImGui.GetMainViewport().GetCenter();
 		ImGui.SetNextWindowPos(center, ImGuiCond.Always, new(0.5f, 0.5f));
 
 		bool temp = true;
 		if (ImGui.BeginPopupModal(modalId, ref temp, ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoResize))
 		{
-			onBegin();
+			renderAction();
 
 			ImGui.Spacing();
 			ImGui.Separator();
@@ -53,5 +75,12 @@ public static class Modals
 
 			ImGui.EndPopup();
 		}
+
+		return ImGui.IsPopupOpen(modalId);
+	}
+
+	private sealed record ModalData(string Id, Action RenderAction)
+	{
+		public bool ShouldOpen { get; set; }
 	}
 }

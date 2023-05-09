@@ -48,8 +48,7 @@ public static class SurvivalFileWatcher
 				catch (Exception)
 				{
 					// TODO: Log this instead.
-					Modals.ShowError = true;
-					Modals.ErrorText = "Failed to update active spawnset based on hash.";
+					Modals.ShowError("Failed to update active spawnset based on hash.");
 				}
 			}
 		}

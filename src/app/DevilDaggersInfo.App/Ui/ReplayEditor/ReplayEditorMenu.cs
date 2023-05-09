@@ -73,8 +73,7 @@ public static class ReplayEditorMenu
 		catch (Exception ex)
 		{
 			// TODO: Log exception.
-			Modals.ShowError = true;
-			Modals.ErrorText = $"Could not open file '{filePath}'.";
+			Modals.ShowError($"Could not open file '{filePath}'.");
 			return;
 		}
 
@@ -85,8 +84,7 @@ public static class ReplayEditorMenu
 		}
 		else
 		{
-			Modals.ShowError = true;
-			Modals.ErrorText = $"The file '{filePath}' could not be parsed as a local replay.";
+			Modals.ShowError($"The file '{filePath}' could not be parsed as a local replay.");
 			return;
 		}
 

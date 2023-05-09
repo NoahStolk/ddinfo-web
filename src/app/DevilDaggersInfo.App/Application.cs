@@ -89,8 +89,8 @@ public class Application
 		AsyncHandler.Run(
 			static av =>
 			{
-				Modals.ShowUpdate = av != null;
-				Modals.AvailableVersion = av;
+				if (av != null)
+					Modals.ShowUpdateAvailable(av);
 			},
 			() => FetchLatestVersion.HandleAsync(AppVersion, Root.PlatformSpecificValues.BuildType));
 	}

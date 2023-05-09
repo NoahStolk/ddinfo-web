@@ -55,8 +55,7 @@ public static class LeaderboardChild
 			{
 				if (spawnset == null)
 				{
-					Modals.ShowError = true;
-					Modals.ErrorText = "Could not fetch spawnset.";
+					Modals.ShowError("Could not fetch spawnset.");
 					return;
 				}
 
@@ -196,8 +195,7 @@ public static class LeaderboardChild
 			{
 				if (getCustomEntryReplayBuffer == null)
 				{
-					Modals.ShowError = true;
-					Modals.ErrorText = "Could not fetch replay.";
+					Modals.ShowError("Could not fetch replay.");
 					return;
 				}
 
@@ -213,8 +211,7 @@ public static class LeaderboardChild
 			{
 				if (getCustomEntryReplayBuffer == null)
 				{
-					Modals.ShowError = true;
-					Modals.ErrorText = "Could not fetch replay.";
+					Modals.ShowError("Could not fetch replay.");
 					return;
 				}
 
@@ -225,8 +222,7 @@ public static class LeaderboardChild
 				}
 				catch (Exception ex)
 				{
-					Modals.ShowError = true;
-					Modals.ErrorText = "Could not parse replay.";
+					Modals.ShowError("Could not parse replay.");
 					return;
 				}
 
