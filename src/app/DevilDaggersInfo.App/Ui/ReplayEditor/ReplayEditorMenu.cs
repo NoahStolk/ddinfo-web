@@ -20,20 +20,8 @@ public static class ReplayEditorMenu
 			ImGui.EndMenuBar();
 		}
 
-		ImGuiIOPtr io = ImGui.GetIO();
-		if (io.KeyCtrl)
-		{
-			// TODO: Fix manual mapping?
-			if (ImGui.IsKeyPressed(ImGuiKey.N) || ImGui.IsKeyPressed((ImGuiKey)78))
-				NewReplay();
-			else if (ImGui.IsKeyPressed(ImGuiKey.O) || ImGui.IsKeyPressed((ImGuiKey)79))
-				OpenReplay();
-			else if (ImGui.IsKeyPressed(ImGuiKey.S) || ImGui.IsKeyPressed((ImGuiKey)83))
-				SaveReplay();
-		}
-
-		if (ImGui.IsKeyPressed(ImGuiKey.Escape) || ImGui.IsKeyPressed((ImGuiKey)526))
-			Close();
+		if (!Modals.IsAnyOpen)
+			HandleShortcuts();
 	}
 
 	private static void RenderFileMenu()
@@ -50,6 +38,24 @@ public static class ReplayEditorMenu
 		ImGui.Separator();
 
 		if (ImGui.MenuItem("Close", "Esc"))
+			Close();
+	}
+
+	private static void HandleShortcuts()
+	{
+		ImGuiIOPtr io = ImGui.GetIO();
+		if (io.KeyCtrl)
+		{
+			// TODO: Fix manual mapping?
+			if (ImGui.IsKeyPressed(ImGuiKey.N) || ImGui.IsKeyPressed((ImGuiKey)78))
+				NewReplay();
+			else if (ImGui.IsKeyPressed(ImGuiKey.O) || ImGui.IsKeyPressed((ImGuiKey)79))
+				OpenReplay();
+			else if (ImGui.IsKeyPressed(ImGuiKey.S) || ImGui.IsKeyPressed((ImGuiKey)83))
+				SaveReplay();
+		}
+
+		if (ImGui.IsKeyPressed(ImGuiKey.Escape) || ImGui.IsKeyPressed((ImGuiKey)526))
 			Close();
 	}
 
