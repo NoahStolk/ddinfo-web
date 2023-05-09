@@ -11,6 +11,14 @@ namespace DevilDaggersInfo.App.Ui.SpawnsetEditor;
 
 public static class SettingsChild
 {
+	private static void InfoTooltip(string tooltipText)
+	{
+		ImGui.SameLine();
+		ImGui.TextColored(Color.Gray(0.7f), "(?)");
+		if (ImGui.IsItemHovered())
+			ImGui.SetTooltip(tooltipText);
+	}
+
 	public static void Render()
 	{
 		ImGui.BeginChild("SettingsChild", new(288, 416));
@@ -28,10 +36,7 @@ public static class SettingsChild
 	private static void RenderFormat()
 	{
 		ImGui.Text("Format");
-		ImGui.SameLine();
-		ImGui.TextColored(Color.Gray(0.7f), "(?)");
-		if (ImGui.IsItemHovered())
-			ImGui.SetTooltip("There is generally no reason to change the spawnset format,\nunless you want to play spawnsets in an old version of the game.\n\nThese options are mainly here for backwards compatibility.");
+		InfoTooltip("There is generally no reason to change the spawnset format,\nunless you want to play spawnsets in an old version of the game.\n\nThese options are mainly here for backwards compatibility.");
 		ImGui.Separator();
 		ImGui.Indent(8);
 
