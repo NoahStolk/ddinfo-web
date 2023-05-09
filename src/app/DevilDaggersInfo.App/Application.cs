@@ -48,6 +48,9 @@ public class Application
 		AppVersion = appVersion;
 	}
 
+	public static PerSecondCounter UpdateCounter { get; } = new();
+	public static PerSecondCounter RenderCounter { get; } = new();
+
 	public AppVersion AppVersion { get; }
 
 	public void Run()
@@ -119,12 +122,16 @@ public class Application
 
 	private static void OnWindowOnUpdate(double delta)
 	{
+		UpdateCounter.Increment();
+
 		UiRenderer.Update((float)delta);
 		Scene.Update((float)delta);
 	}
 
 	private void OnWindowOnRender(double delta)
 	{
+		RenderCounter.Increment();
+
 		if (_imGuiController == null || _gl == null)
 			throw new InvalidOperationException("Window has not loaded.");
 

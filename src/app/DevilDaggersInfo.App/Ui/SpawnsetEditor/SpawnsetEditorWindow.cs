@@ -1,6 +1,5 @@
 using DevilDaggersInfo.App.Ui.SpawnsetEditor.Arena;
 using ImGuiNET;
-using System.Numerics;
 
 namespace DevilDaggersInfo.App.Ui.SpawnsetEditor;
 
