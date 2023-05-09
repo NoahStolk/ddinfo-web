@@ -169,7 +169,7 @@ public static class SpawnsChild
 			foreach (EnemyType enemyType in Enum.GetValues<EnemyType>())
 			{
 				Color color = enemyType.GetColor(GameConstants.CurrentVersion);
-				ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(0, 0, 0, 1));
+				ImGui.PushStyleColor(ImGuiCol.Text, color.ToEngineColor().ReadableColorForBrightness());
 				ImGui.PushStyleColor(ImGuiCol.Button, color);
 				ImGui.PushStyleColor(ImGuiCol.ButtonHovered, color + new Vector4(0.3f, 0.3f, 0.3f, 0));
 				ImGui.PushStyleColor(ImGuiCol.ButtonActive, color + new Vector4(0.5f, 0.5f, 0.5f, 0));
