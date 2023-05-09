@@ -58,10 +58,13 @@ public static class Scene
 
 		gl.BindFramebuffer(FramebufferTarget.Framebuffer, framebufferData?.Framebuffer ?? 0);
 
+		int framebufferWidth = framebufferData?.Width ?? Root.Window.Size.X;
+		int framebufferHeight = framebufferData?.Height ?? Root.Window.Size.Y;
+
 		// Keep track of the original viewport so we can restore it later.
 		Span<int> originalViewport = stackalloc int[4];
 		gl.GetInteger(GLEnum.Viewport, originalViewport);
-		gl.Viewport(0, 0, (uint)(framebufferData?.Width ?? Root.Window.Size.X), (uint)(framebufferData?.Height ?? Root.Window.Size.Y));
+		gl.Viewport(0, 0, (uint)framebufferWidth, (uint)framebufferHeight);
 
 		gl.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
@@ -71,7 +74,7 @@ public static class Scene
 		gl.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 
 		ArenaScene? activeScene = GetScene();
-		activeScene?.Render(framebufferData?.Width ?? Root.Window.Size.X, framebufferData?.Height ?? Root.Window.Size.Y);
+		activeScene?.Render(framebufferWidth, framebufferHeight);
 
 		gl.Viewport(originalViewport[0], originalViewport[1], (uint)originalViewport[2], (uint)originalViewport[3]);
 		gl.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
