@@ -61,9 +61,8 @@ public static class ArenaCanvas
 
 			const int halfSize = ArenaChild.TileSize / 2;
 
-			(int raceX, _, int raceZ) = SpawnsetState.Spawnset.GetRaceDaggerTilePosition();
-			float actualHeight = SpawnsetState.Spawnset.GetActualTileHeight(raceX, raceZ, ArenaChild.CurrentSecond);
-			Color tileColor = TileUtils.GetColorFromHeight(actualHeight);
+			float? actualHeight = SpawnsetState.Spawnset.GetActualRaceDaggerHeight(ArenaChild.CurrentSecond);
+			Color tileColor = actualHeight.HasValue ? TileUtils.GetColorFromHeight(actualHeight.Value) : Color.Black;
 			Color invertedTileColor = Color.Invert(tileColor);
 			Vector3 daggerColor = Vector3.Lerp(invertedTileColor, invertedTileColor.Intensify(96), MathF.Sin((float)ImGui.GetTime()) / 2 + 0.5f);
 

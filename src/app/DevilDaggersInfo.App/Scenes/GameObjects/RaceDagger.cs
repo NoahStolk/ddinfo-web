@@ -37,10 +37,11 @@ public class RaceDagger
 	{
 		float currentTime = currentTick / 60f;
 		(int X, float? Y, int Z) raceDaggerPosition = spawnset.GetRaceDaggerTilePosition();
-		Vector3 basePosition = spawnset.GameMode != GameMode.Race ? _hiddenPosition : new()
+		float? raceDaggerHeight = spawnset.GetActualRaceDaggerHeight(currentTime);
+		Vector3 basePosition = spawnset.GameMode != GameMode.Race || !raceDaggerHeight.HasValue ? _hiddenPosition : new()
 		{
 			X = spawnset.TileToWorldCoordinate(raceDaggerPosition.X),
-			Y = spawnset.GetActualTileHeight(raceDaggerPosition.X, raceDaggerPosition.Z, currentTime) + _yOffset,
+			Y = raceDaggerHeight.Value + _yOffset,
 			Z = spawnset.TileToWorldCoordinate(raceDaggerPosition.Z),
 		};
 		_meshPosition = basePosition + new Vector3(0, 0.15f + MathF.Sin(currentTime) * 0.15f, 0);
