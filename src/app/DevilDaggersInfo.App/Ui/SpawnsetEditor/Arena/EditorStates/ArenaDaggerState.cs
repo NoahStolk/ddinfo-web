@@ -67,7 +67,6 @@ public class ArenaDaggerState : IArenaState
 		ImDrawListPtr drawList = ImGui.GetWindowDrawList();
 		Vector2 origin = ImGui.GetCursorScreenPos();
 		Vector2 center = origin + _position.Value + ArenaChild.HalfTileSizeAsVector2;
-		drawList.AddCircle(center, 3, ImGui.GetColorU32(Color.HalfTransparentWhite));
-		//Root.Game.SpriteRenderer.Schedule(new(-8, -8), origin.ToVector2() + _position.Value + Arena.HalfTileAsVector2, depth, ContentManager.Content.IconDaggerTexture, Color.HalfTransparentWhite);
+		drawList.AddImage((IntPtr)Root.InternalResources.IconDaggerTexture.Handle, center - new Vector2(8), center + new Vector2(8), Vector2.UnitX, Vector2.UnitY, ImGui.GetColorU32(Color.HalfTransparentWhite));
 	}
 }
