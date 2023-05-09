@@ -94,7 +94,7 @@ public static class RecordingLogic
 		// When the game starts up it will be set to -1, and then to the player ID.
 		if (mainBlock.PlayerId > 0 && UserCache.Model.PlayerId != mainBlock.PlayerId)
 		{
-			UserCache.Model = new() { PlayerId = mainBlock.PlayerId };
+			UserCache.Model = UserCache.Model with { PlayerId = mainBlock.PlayerId };
 		}
 
 		// Indicate recording status.

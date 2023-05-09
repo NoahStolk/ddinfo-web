@@ -28,7 +28,13 @@ public static class UserCache
 			{
 				UserCacheModel? deserializedModel = JsonSerializer.Deserialize<UserCacheModel>(File.ReadAllText(_filePath));
 				if (deserializedModel != null)
-					_model = deserializedModel;
+				{
+					_model = deserializedModel with
+					{
+						WindowWidth = Math.Max(deserializedModel.WindowWidth, UserCacheModel.MinWindowWidth),
+						WindowHeight = Math.Max(deserializedModel.WindowHeight, UserCacheModel.MinWindowHeight),
+					};
+				}
 			}
 			catch (Exception ex)
 			{

@@ -1,17 +1,12 @@
 namespace DevilDaggersInfo.App.User.Settings.Model;
 
-// Note: Required properties cause JSON deserialization to fail when the property is missing from the JSON file. After the initial release, we should only add optional properties to this class.
 public record UserSettingsModel
 {
-	public required string DevilDaggersInstallationDirectory { get; init; }
-
-	public required bool ShowDebugOutput { get; init; }
-
-	public required int MaxFps { get; init; }
-
-	public required float LookSpeed { get; init; }
-
-	public required int FieldOfView { get; init; }
+	public string DevilDaggersInstallationDirectory { get; init; } = string.Empty;
+	public bool ShowDebugOutput { get; init; }
+	public int MaxFps { get; init; }
+	public float LookSpeed { get; init; }
+	public int FieldOfView { get; init; }
 
 	public static UserSettingsModel Default { get; } = new()
 	{

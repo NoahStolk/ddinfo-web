@@ -26,9 +26,12 @@ public class Application
 
 	public Application()
 	{
+		UserSettings.Load();
+		UserCache.Load();
+
 		_window = Window.Create(WindowOptions.Default);
 
-		Vector2D<int> windowSize = new(1366, 768);
+		Vector2D<int> windowSize = new(UserCache.Model.WindowWidth, UserCache.Model.WindowHeight);
 		Vector2D<int> monitorSize = Silk.NET.Windowing.Monitor.GetMainMonitor(_window).Bounds.Size;
 		_window.Size = windowSize;
 		_window.Position = monitorSize / 2 - windowSize / 2;
@@ -70,9 +73,6 @@ public class Application
 
 		ConfigureImGui();
 
-		UserSettings.Load();
-		UserCache.Load();
-
 		Root.InternalResources = InternalResources.Create(_gl);
 		Root.Gl = _gl;
 		Root.Mouse = _inputContext.Mice.Count == 0 ? null : _inputContext.Mice[0];
@@ -109,12 +109,18 @@ public class Application
 		io.ConfigWindowsMoveFromTitleBarOnly = true;
 	}
 
-	private void OnWindowOnFramebufferResize(Vector2D<int> s)
+	private void OnWindowOnFramebufferResize(Vector2D<int> size)
 	{
 		if (_gl == null)
 			throw new InvalidOperationException("Window has not loaded.");
 
-		_gl.Viewport(s);
+		_gl.Viewport(size);
+
+		UserCache.Model = UserCache.Model with
+		{
+			WindowWidth = size.X,
+			WindowHeight = size.Y,
+		};
 	}
 
 	private void OnWindowOnRender(double delta)
