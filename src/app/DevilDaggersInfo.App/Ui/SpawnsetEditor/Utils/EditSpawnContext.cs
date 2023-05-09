@@ -7,37 +7,41 @@ namespace DevilDaggersInfo.App.Ui.SpawnsetEditor.Utils;
 
 public static class EditSpawnContext
 {
-	public static List<SpawnUiEntry> GetFrom(SpawnsetBinary spawnsetBinary)
+	private static readonly List<SpawnUiEntry> _spawns = new();
+
+	public static IEnumerable<SpawnUiEntry> Spawns => _spawns;
+
+	public static void BuildFrom(SpawnsetBinary spawnsetBinary)
 	{
-		return GetFrom(spawnsetBinary.Spawns, spawnsetBinary.SpawnVersion, spawnsetBinary.HandLevel, spawnsetBinary.AdditionalGems, spawnsetBinary.TimerStart);
+		BuildFrom(spawnsetBinary.Spawns, spawnsetBinary.SpawnVersion, spawnsetBinary.HandLevel, spawnsetBinary.AdditionalGems, spawnsetBinary.TimerStart);
 	}
 
-	private static List<SpawnUiEntry> GetFrom(ImmutableArray<Spawn> spawns, int spawnVersion, HandLevel handLevel = HandLevel.Level1, int additionalGems = 0, float timerStart = 0)
+	private static void BuildFrom(ImmutableArray<Spawn> spawns, int spawnVersion, HandLevel handLevel = HandLevel.Level1, int additionalGems = 0, float timerStart = 0)
 	{
 		if (spawns.Length == 0)
-			return new();
+		{
+			_spawns.Clear();
+			return;
+		}
 
 		double totalSeconds = SpawnsetBinary.GetEffectiveTimerStart(spawnVersion, timerStart);
 		EffectivePlayerSettings effectivePlayerSettings = SpawnsetBinary.GetEffectivePlayerSettings(spawnVersion, handLevel, additionalGems);
 		GemState gemState = new(effectivePlayerSettings.HandLevel, effectivePlayerSettings.GemsOrHoming, 0);
 
-		return Build(ref totalSeconds, ref gemState, spawns);
+		Build(ref totalSeconds, ref gemState, spawns);
 	}
 
-	private static List<SpawnUiEntry> Build(ref double totalSeconds, ref GemState gemState, ImmutableArray<Spawn> preLoopSpawns)
+	private static void Build(ref double totalSeconds, ref GemState gemState, ImmutableArray<Spawn> preLoopSpawns)
 	{
 		int i = 0;
 
-		// TODO: Do not allocate a new list every time.
-		List<SpawnUiEntry> spawns = new();
+		_spawns.Clear();
 		foreach (Spawn spawn in preLoopSpawns)
 		{
 			totalSeconds += spawn.Delay;
 			int noFarmGems = spawn.EnemyType.GetNoFarmGems();
 			gemState = gemState.Add(noFarmGems);
-			spawns.Add(new(i++, spawn.EnemyType, spawn.Delay, totalSeconds, noFarmGems, gemState));
+			_spawns.Add(new(i++, spawn.EnemyType, spawn.Delay, totalSeconds, noFarmGems, gemState));
 		}
-
-		return spawns;
 	}
 }

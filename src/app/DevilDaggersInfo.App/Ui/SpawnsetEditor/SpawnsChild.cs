@@ -107,7 +107,8 @@ public static class SpawnsChild
 			ImGui.TableSetupColumn("Total", ImGuiTableColumnFlags.WidthFixed, 96);
 			ImGui.TableHeadersRow();
 
-			foreach (SpawnUiEntry spawn in EditSpawnContext.GetFrom(SpawnsetState.Spawnset))
+			EditSpawnContext.BuildFrom(SpawnsetState.Spawnset);
+			foreach (SpawnUiEntry spawn in EditSpawnContext.Spawns)
 			{
 				ImGui.TableNextRow();
 				ImGui.TableNextColumn();
