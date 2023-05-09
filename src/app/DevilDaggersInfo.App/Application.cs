@@ -26,16 +26,13 @@ public class Application
 
 	public Application()
 	{
-		const int monitorWidth = 3840; // TODO: Get from monitor.
-		const int monitorHeight = 2160;
-		const int windowWidth = 1366;
-		const int windowHeight = 768;
+		_window = Window.Create(WindowOptions.Default);
 
-		_window = Window.Create(WindowOptions.Default with
-		{
-			Position = new(monitorWidth / 2 - windowWidth / 2, monitorHeight / 2 - windowHeight / 2),
-			Size = new(windowWidth, windowHeight),
-		});
+		Vector2D<int> windowSize = new(1366, 768);
+		Vector2D<int> monitorSize = Silk.NET.Windowing.Monitor.GetMainMonitor(_window).Bounds.Size;
+		_window.Size = windowSize;
+		_window.Position = monitorSize / 2 - windowSize / 2;
+
 		_window.Load += OnWindowOnLoad;
 		_window.FramebufferResize += OnWindowOnFramebufferResize;
 		_window.Render += OnWindowOnRender;

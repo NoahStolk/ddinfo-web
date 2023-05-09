@@ -25,8 +25,7 @@ public static class DebugWindow
 		bool temp = true;
 		ImGui.Begin("Debug", ref temp, ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize);
 
-		ImGui.Text(Application.RenderCounter.CountPerSecond + " FPS");
-		ImGui.Text(Application.LastRenderDelta + " render delta");
+		ImGui.Text($"{Application.RenderCounter.CountPerSecond} FPS ({1f / Application.LastRenderDelta:000.000})");
 
 		long allocatedBytes = GC.GetAllocatedBytesForCurrentThread();
 		ImGui.Text(allocatedBytes + " bytes allocated on managed heap");
