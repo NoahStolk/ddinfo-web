@@ -1,9 +1,9 @@
 using DevilDaggersInfo.App.Engine.Extensions;
 using DevilDaggersInfo.App.Engine.Intersections;
 using DevilDaggersInfo.App.Engine.Maths;
-using DevilDaggersInfo.App.Engine.Maths.Numerics;
 using DevilDaggersInfo.App.User.Settings;
 using Silk.NET.Input;
+using Silk.NET.Maths;
 using System.Numerics;
 
 namespace DevilDaggersInfo.App.Scenes.GameObjects;
@@ -20,7 +20,7 @@ public class Camera
 	private Vector3 _axisAlignedSpeed;
 	private float _yaw;
 	private float _pitch;
-	private Vector2i<int>? _lockedMousePosition;
+	private Vector2D<int>? _lockedMousePosition;
 
 	private int _windowWidth;
 	private int _windowHeight;
@@ -142,13 +142,13 @@ public class Camera
 		if (Root.Mouse == null)
 			return;
 
-		Vector2i<int> mousePosition = Root.Mouse.Position.FloorToVector2Int32();
+		Vector2D<int> mousePosition = Root.Mouse.Position.FloorToVector2Int32();
 		if (!Root.Mouse.IsButtonPressed(_lookButton) || !_lockedMousePosition.HasValue || mousePosition == _lockedMousePosition)
 			return;
 
 		float lookSpeed = UserSettings.Model.LookSpeed;
 
-		Vector2i<int> delta = mousePosition - _lockedMousePosition.Value;
+		Vector2D<int> delta = mousePosition - _lockedMousePosition.Value;
 		_yaw -= lookSpeed * delta.X * 0.0001f;
 		_pitch -= lookSpeed * delta.Y * 0.0001f;
 

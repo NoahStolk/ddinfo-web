@@ -4,13 +4,14 @@ using DevilDaggersInfo.App.Ui.SpawnsetEditor.State;
 using DevilDaggersInfo.App.Ui.SpawnsetEditor.Utils;
 using DevilDaggersInfo.Core.Spawnset;
 using ImGuiNET;
+using Silk.NET.Maths;
 using System.Numerics;
 
 namespace DevilDaggersInfo.App.Ui.SpawnsetEditor.Arena.EditorStates;
 
 public class ArenaBucketState : IArenaState
 {
-	private readonly HashSet<Vector2i<int>> _targetCoords = new();
+	private readonly HashSet<Vector2D<int>> _targetCoords = new();
 
 	private ArenaMousePosition _cachedPosition;
 
@@ -30,7 +31,7 @@ public class ArenaBucketState : IArenaState
 		if (ImGui.IsMouseClicked(ImGuiMouseButton.Left))
 		{
 			float[,] newArena = SpawnsetState.Spawnset.ArenaTiles.GetMutableClone();
-			foreach (Vector2i<int> coord in _targetCoords)
+			foreach (Vector2D<int> coord in _targetCoords)
 				newArena[coord.X, coord.Y] = ArenaChild.SelectedHeight;
 
 			SpawnsetState.Spawnset = SpawnsetState.Spawnset with { ArenaTiles = new(SpawnsetState.Spawnset.ArenaDimension, newArena) };

@@ -4,6 +4,7 @@ using DevilDaggersInfo.App.Ui.SpawnsetEditor.State;
 using DevilDaggersInfo.App.Ui.SpawnsetEditor.Utils;
 using DevilDaggersInfo.Core.Spawnset;
 using ImGuiNET;
+using Silk.NET.Maths;
 using System.Numerics;
 
 namespace DevilDaggersInfo.App.Ui.SpawnsetEditor.Arena.EditorStates;
@@ -11,7 +12,7 @@ namespace DevilDaggersInfo.App.Ui.SpawnsetEditor.Arena.EditorStates;
 public class ArenaPencilState : IArenaState
 {
 	private Vector2? _pencilStart;
-	private HashSet<Vector2i<int>>? _modifiedCoords;
+	private HashSet<Vector2D<int>>? _modifiedCoords;
 
 	public void Handle(ArenaMousePosition mousePosition)
 	{
@@ -33,7 +34,7 @@ public class ArenaPencilState : IArenaState
 			{
 				for (int j = 0; j < SpawnsetBinary.ArenaDimensionMax; j++)
 				{
-					Vector2i<int> target = new(i, j);
+					Vector2D<int> target = new(i, j);
 					if (_modifiedCoords.Contains(target)) // Early rejection, even though we're using a HashSet.
 						continue;
 
@@ -69,7 +70,7 @@ public class ArenaPencilState : IArenaState
 
 		float[,] newArena = SpawnsetState.Spawnset.ArenaTiles.GetMutableClone();
 
-		foreach (Vector2i<int> position in _modifiedCoords)
+		foreach (Vector2D<int> position in _modifiedCoords)
 			newArena[position.X, position.Y] = ArenaChild.SelectedHeight;
 
 		SpawnsetState.Spawnset = SpawnsetState.Spawnset with { ArenaTiles = new(SpawnsetState.Spawnset.ArenaDimension, newArena) };

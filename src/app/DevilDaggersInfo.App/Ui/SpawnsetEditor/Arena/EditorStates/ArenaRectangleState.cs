@@ -3,13 +3,14 @@ using DevilDaggersInfo.App.Ui.SpawnsetEditor.Arena.EditorChildren;
 using DevilDaggersInfo.App.Ui.SpawnsetEditor.State;
 using DevilDaggersInfo.App.Ui.SpawnsetEditor.Utils;
 using ImGuiNET;
+using Silk.NET.Maths;
 using System.Numerics;
 
 namespace DevilDaggersInfo.App.Ui.SpawnsetEditor.Arena.EditorStates;
 
 public class ArenaRectangleState : IArenaState
 {
-	private Vector2i<int>? _rectangleStart;
+	private Vector2D<int>? _rectangleStart;
 	private float[,]? _newArena;
 
 	public void Handle(ArenaMousePosition mousePosition)

@@ -1,20 +1,10 @@
-using DevilDaggersInfo.App.Engine.Maths.Numerics;
+using Silk.NET.Maths;
 using System.Numerics;
 
 namespace DevilDaggersInfo.App.Ui.SpawnsetEditor.Utils;
 
 public static class ArenaEditingUtils
 {
-	public static Vector2i<int> Snap(Vector2i<int> vector, int snap)
-	{
-		return new(vector.X / snap * snap, vector.Y / snap * snap);
-	}
-
-	public static Vector2i<int> Snap(Vector2i<int> vector, Vector2i<int> snap)
-	{
-		return new(vector.X / snap.X * snap.X, vector.Y / snap.Y * snap.Y);
-	}
-
 	public static Vector2 Snap(Vector2 vector, float snap)
 	{
 		return new(MathF.Floor(vector.X / snap) * snap, MathF.Floor(vector.Y / snap) * snap);
@@ -25,7 +15,7 @@ public static class ArenaEditingUtils
 		return new(MathF.Floor(vector.X / snap.X) * snap.X, MathF.Floor(vector.Y / snap.Y) * snap.Y);
 	}
 
-	public static Rectangle GetRectangle(Vector2i<int> start, Vector2i<int> end)
+	public static Rectangle GetRectangle(Vector2D<int> start, Vector2D<int> end)
 	{
 		bool startXMin = start.X < end.X;
 		int minX, maxX;
@@ -56,20 +46,20 @@ public static class ArenaEditingUtils
 		return new(minX, minY, maxX - minX, maxY - minY);
 	}
 
-	private static bool PointIsBehindPlane(Vector2 linePoint, Vector2 lineNormal, Vector2 point)
+	public readonly record struct Rectangle
 	{
-		return Vector2.Dot(lineNormal, Vector2.Normalize(point - linePoint)) < 0;
-	}
+		public Rectangle(int x, int y, int width, int height)
+		{
+			X1 = x;
+			Y1 = y;
+			X2 = x + width;
+			Y2 = y + height;
+		}
 
-	public readonly record struct Rectangle(int X, int Y, int Width, int Height)
-	{
-		public int X1 { get; } = X;
-
-		public int Y1 { get; } = Y;
-
-		public int X2 { get; } = X + Width;
-
-		public int Y2 { get; } = Y + Height;
+		public int X1 { get; }
+		public int Y1 { get; }
+		public int X2 { get; }
+		public int Y2 { get; }
 	}
 
 	public readonly record struct LineSegment
@@ -196,6 +186,11 @@ public static class ArenaEditingUtils
 			bool oneBehind = tlBehind1 || trBehind1 || blBehind1 || brBehind1; // We only need to check one edge, since we already know that the other edge holds the same value (XOR).
 			bool oneInFront = !tlBehind1 || !trBehind1 || !blBehind1 || !brBehind1;
 			return oneBehind && oneInFront;
+		}
+
+		private static bool PointIsBehindPlane(Vector2 linePoint, Vector2 lineNormal, Vector2 point)
+		{
+			return Vector2.Dot(lineNormal, Vector2.Normalize(point - linePoint)) < 0;
 		}
 	}
 
