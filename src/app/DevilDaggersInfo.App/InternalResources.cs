@@ -7,7 +7,7 @@ namespace DevilDaggersInfo.App;
 public record InternalResources(
 	BlobContent Value,
 	Shader MeshShader,
-	Texture ApplicationIconTexture,
+	TextureContent ApplicationIconTexture,
 	Texture ArrowEndTexture,
 	Texture ArrowLeftTexture,
 	Texture ArrowRightTexture,
@@ -46,7 +46,7 @@ public record InternalResources(
 		return new(
 			Value: GetBlobContent(ddInfoToolsContent, "Value"),
 			MeshShader: GetShader(ddInfoToolsContent, "Mesh"),
-			ApplicationIconTexture: GetTexture(ddInfoToolsContent, "ApplicationIcon"),
+			ApplicationIconTexture: GetTextureContent(ddInfoToolsContent, "ApplicationIcon"),
 			ArrowEndTexture: GetTexture(ddInfoToolsContent, "ArrowEnd"),
 			ArrowLeftTexture: GetTexture(ddInfoToolsContent, "ArrowLeft"),
 			ArrowRightTexture: GetTexture(ddInfoToolsContent, "ArrowRight"),
@@ -91,12 +91,18 @@ public record InternalResources(
 			return new(gl, shaderContent.VertexCode, shaderContent.FragmentCode);
 		}
 
-		Texture GetTexture(DecompiledContentFile content, string name)
+		static TextureContent GetTextureContent(DecompiledContentFile content, string name)
 		{
 			content.Textures.TryGetValue(name, out TextureContent? textureContent);
 			if (textureContent == null)
 				throw new InvalidOperationException($"Could not find texture '{name}'.");
 
+			return textureContent;
+		}
+
+		Texture GetTexture(DecompiledContentFile content, string name)
+		{
+			TextureContent textureContent = GetTextureContent(content, name);
 			return new(gl, textureContent.Pixels, (uint)textureContent.Width, (uint)textureContent.Height);
 		}
 

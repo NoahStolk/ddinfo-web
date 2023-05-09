@@ -7,11 +7,13 @@ using DevilDaggersInfo.App.User.Settings;
 using DevilDaggersInfo.Common.Utils;
 using DevilDaggersInfo.Core.Versioning;
 using ImGuiNET;
+using Silk.NET.Core;
 using Silk.NET.Input;
 using Silk.NET.Maths;
 using Silk.NET.OpenGL;
 using Silk.NET.OpenGL.Extensions.ImGui;
 using Silk.NET.Windowing;
+using System.Runtime.InteropServices;
 
 namespace DevilDaggersInfo.App;
 
@@ -80,6 +82,10 @@ public class Application
 		Root.Application = this;
 
 		ConfigLayout.ValidateInstallation();
+
+		RawImage rawImage = new(Root.InternalResources.ApplicationIconTexture.Width, Root.InternalResources.ApplicationIconTexture.Height, Root.InternalResources.ApplicationIconTexture.Pixels);
+		Span<RawImage> rawImages = MemoryMarshal.CreateSpan(ref rawImage, 1);
+		_window.SetWindowIcon(rawImages);
 
 		// AppDomain.CurrentDomain.UnhandledException += (_, args) => Root.Dependencies.Log.Fatal(args.ExceptionObject.ToString());
 
