@@ -15,4 +15,13 @@ public record UserCacheModel
 
 	public static int MinWindowWidth => 1366;
 	public static int MinWindowHeight => 768;
+
+	public UserCacheModel Sanitize()
+	{
+		return this with
+		{
+			WindowWidth = Math.Max(WindowWidth, MinWindowWidth),
+			WindowHeight = Math.Max(WindowHeight, MinWindowHeight),
+		};
+	}
 }
