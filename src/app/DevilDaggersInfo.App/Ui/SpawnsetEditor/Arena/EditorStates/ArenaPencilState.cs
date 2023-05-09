@@ -57,7 +57,8 @@ public class ArenaPencilState : IArenaState
 
 	public void HandleOutOfRange(ArenaMousePosition mousePosition)
 	{
-		if (ImGui.IsMouseDown(ImGuiMouseButton.Left))
+		// When out of range, continue setting the position of the pencil if the user is still using it.
+		if (_pencilStart.HasValue && ImGui.IsMouseDown(ImGuiMouseButton.Left))
 			_pencilStart = mousePosition.Real;
 		else if (ImGui.IsMouseReleased(ImGuiMouseButton.Left))
 			Emit();
