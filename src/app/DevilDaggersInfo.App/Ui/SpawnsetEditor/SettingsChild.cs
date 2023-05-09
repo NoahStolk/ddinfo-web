@@ -11,6 +11,16 @@ namespace DevilDaggersInfo.App.Ui.SpawnsetEditor;
 
 public static class SettingsChild
 {
+	private static void InfoTooltipWhenDisabled(bool disabled, string tooltipText)
+	{
+		if (disabled)
+		{
+			ImGui.EndDisabled();
+			InfoTooltip(tooltipText);
+			ImGui.BeginDisabled(disabled);
+		}
+	}
+
 	private static void InfoTooltip(string tooltipText)
 	{
 		ImGui.SameLine();
@@ -111,6 +121,7 @@ public static class SettingsChild
 		ImGui.Spacing();
 		ImGui.Indent(-8);
 		ImGui.Text("Race dagger");
+		InfoTooltipWhenDisabled(SpawnsetState.Spawnset.GameMode != GameMode.Race, "Race dagger values can only be set when the game mode is set to Race.");
 		ImGui.Separator();
 		ImGui.Indent(8);
 
@@ -174,6 +185,7 @@ public static class SettingsChild
 		ImGui.Spacing();
 		ImGui.Indent(-8);
 		ImGui.Text("Practice");
+		InfoTooltipWhenDisabled(SpawnsetState.Spawnset.SpawnVersion <= 4, "Practice values are not supported in spawn version 4.");
 		ImGui.Separator();
 		ImGui.Indent(8);
 

@@ -16,6 +16,7 @@ public static class ArenaCanvas
 		Vector2 origin = ImGui.GetCursorScreenPos();
 		drawList.AddRectFilled(origin, origin + ArenaChild.ArenaSize, ImGui.GetColorU32(new Vector4(0, 0, 0, 1)));
 
+		// TODO: Optimize this. Maybe we can draw to a texture and then draw that texture instead.
 		for (int i = 0; i < SpawnsetState.Spawnset.ArenaDimension; i++)
 		{
 			for (int j = 0; j < SpawnsetState.Spawnset.ArenaDimension; j++)
