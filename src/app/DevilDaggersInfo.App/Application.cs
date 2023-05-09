@@ -132,15 +132,12 @@ public class Application
 		RenderCounter.Increment();
 		LastRenderDelta = deltaF;
 
-		UiRenderer.Update(deltaF);
-		Scene.Update(deltaF);
-
 		_imGuiController.Update(deltaF);
 
 		_gl.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-		UiRenderer.Render();
-		Scene.Render(_gl);
+		UiRenderer.Render(deltaF);
+		Scene.Render(deltaF, _gl);
 
 		_imGuiController.Render();
 

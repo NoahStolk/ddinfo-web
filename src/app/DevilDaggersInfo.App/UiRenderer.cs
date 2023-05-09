@@ -16,20 +16,7 @@ public static class UiRenderer
 
 	public static LayoutType Layout { get; set; }
 
-	public static void Update(float delta)
-	{
-		switch (Layout)
-		{
-			case LayoutType.CustomLeaderboards:
-				CustomLeaderboardsWindow.Update(delta);
-				break;
-			case LayoutType.ReplayEditor:
-				ReplayEditorWindow.Update(delta);
-				break;
-		}
-	}
-
-	public static void Render()
+	public static void Render(float delta)
 	{
 		//ImGuiNET.ImGui.ShowUserGuide();
 		//ImGuiNET.ImGui.ShowDemoWindow();
@@ -47,10 +34,12 @@ public static class UiRenderer
 				SpawnsetEditor3DWindow.Render();
 				break;
 			case LayoutType.CustomLeaderboards:
+				CustomLeaderboardsWindow.Update(delta);
 				CustomLeaderboardsWindow.Render();
 				CustomLeaderboardResultsWindow.Render();
 				break;
 			case LayoutType.ReplayEditor:
+				ReplayEditorWindow.Update(delta);
 				ReplayEditorWindow.Render();
 				ReplayEditor3DWindow.Render();
 				break;

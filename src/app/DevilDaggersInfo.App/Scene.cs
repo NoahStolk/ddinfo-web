@@ -41,14 +41,11 @@ public static class Scene
 		};
 	}
 
-	public static void Update(float delta)
+	public static unsafe void Render(float delta, GL gl)
 	{
 		ArenaScene? activeScene = GetScene();
 		activeScene?.Update(delta);
-	}
 
-	public static unsafe void Render(GL gl)
-	{
 		FramebufferData? framebufferData = UiRenderer.Layout switch
 		{
 			LayoutType.SpawnsetEditor => SpawnsetEditorFramebufferData,
@@ -73,7 +70,6 @@ public static class Scene
 		gl.Enable(EnableCap.CullFace);
 		gl.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 
-		ArenaScene? activeScene = GetScene();
 		activeScene?.Render(framebufferWidth, framebufferHeight);
 
 		gl.Viewport(originalViewport[0], originalViewport[1], (uint)originalViewport[2], (uint)originalViewport[3]);
