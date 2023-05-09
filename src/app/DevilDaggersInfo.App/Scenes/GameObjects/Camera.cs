@@ -2,6 +2,7 @@ using DevilDaggersInfo.App.Engine.Extensions;
 using DevilDaggersInfo.App.Engine.Intersections;
 using DevilDaggersInfo.App.Engine.Maths;
 using DevilDaggersInfo.App.User.Settings;
+using ImGuiNET;
 using Silk.NET.Input;
 using Silk.NET.Maths;
 using System.Numerics;
@@ -42,7 +43,7 @@ public class Camera
 
 	public Vector2 FramebufferOffset { get; set; }
 
-	public void Update(float delta)
+	public void Update(bool activateMouse, bool activateKeyboard, float delta)
 	{
 		if (_isMenuCamera)
 		{
@@ -52,8 +53,16 @@ public class Camera
 			return;
 		}
 
-		HandleKeys(delta);
-		HandleMouse();
+		if (activateKeyboard)
+		{
+			ImGuiIOPtr io = ImGui.GetIO();
+			HandleKeys(io, delta);
+		}
+
+		if (activateMouse)
+		{
+			HandleMouse();
+		}
 
 		const float moveSpeed = 25;
 
@@ -69,7 +78,7 @@ public class Camera
 		}
 	}
 
-	private void HandleKeys(float delta)
+	private void HandleKeys(ImGuiIOPtr io, float delta)
 	{
 		const float acceleration = 20;
 		const float friction = 20;
@@ -79,12 +88,12 @@ public class Camera
 		const Key rightInput = Key.D;
 		const Key upInput = Key.Space;
 		const Key downInput = Key.ShiftLeft;
-		bool forwardHold = Root.Keyboard?.IsKeyPressed(forwardInput) ?? false;
-		bool leftHold = Root.Keyboard?.IsKeyPressed(leftInput) ?? false;
-		bool backwardHold = Root.Keyboard?.IsKeyPressed(backwardInput) ?? false;
-		bool rightHold = Root.Keyboard?.IsKeyPressed(rightInput) ?? false;
-		bool upHold = Root.Keyboard?.IsKeyPressed(upInput) ?? false;
-		bool downHold = Root.Keyboard?.IsKeyPressed(downInput) ?? false;
+		bool forwardHold = io.KeysDown[(int)forwardInput];
+		bool leftHold = io.KeysDown[(int)leftInput];
+		bool backwardHold = io.KeysDown[(int)backwardInput];
+		bool rightHold = io.KeysDown[(int)rightInput];
+		bool upHold = io.KeysDown[(int)upInput];
+		bool downHold = io.KeysDown[(int)downInput];
 
 		float accelerationDt = acceleration * delta;
 		float frictionDt = friction * delta;

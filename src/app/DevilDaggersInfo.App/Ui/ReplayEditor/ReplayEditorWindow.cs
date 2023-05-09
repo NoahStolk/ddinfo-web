@@ -22,7 +22,7 @@ public static class ReplayEditorWindow
 		if (_time < ReplayState.Replay.Header.Time)
 			_time += delta;
 
-		Scene.ReplayArenaScene.CurrentTick = (int)MathF.Round(_time * 60);
+		ReplayEditor3DWindow.ArenaScene.CurrentTick = (int)MathF.Round(_time * 60);
 	}
 
 	public static void Render()
@@ -36,8 +36,8 @@ public static class ReplayEditorWindow
 		ImGui.SliderFloat("Time", ref _time, 0, ReplayState.Replay.Header.Time, "%.4f", ImGuiSliderFlags.NoInput);
 
 		PlayerInputSnapshot snapshot = default;
-		if (Scene.ReplayArenaScene.CurrentTick < Scene.ReplayArenaScene.ReplaySimulation?.InputSnapshots.Count)
-			snapshot = Scene.ReplayArenaScene.ReplaySimulation.InputSnapshots[Scene.ReplayArenaScene.CurrentTick];
+		if (ReplayEditor3DWindow.ArenaScene.CurrentTick < ReplayEditor3DWindow.ArenaScene.ReplaySimulation?.InputSnapshots.Count)
+			snapshot = ReplayEditor3DWindow.ArenaScene.ReplaySimulation.InputSnapshots[ReplayEditor3DWindow.ArenaScene.CurrentTick];
 
 		const int border = 4;
 		const int pointerSize = 4;

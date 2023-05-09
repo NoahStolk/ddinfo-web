@@ -8,7 +8,7 @@ public class Skull4
 	private static uint _vaoMain;
 	private static uint _vaoJaw;
 
-	public static void Initialize()
+	public static void InitializeRendering()
 	{
 		if (_vaoMain != 0)
 			throw new InvalidOperationException("Skull 4 is already initialized.");

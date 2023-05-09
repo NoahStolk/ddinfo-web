@@ -1,7 +1,10 @@
+using DevilDaggersInfo.App.Scenes;
 using DevilDaggersInfo.App.Ui.CustomLeaderboards.LeaderboardList;
 using DevilDaggersInfo.App.Utils;
 using DevilDaggersInfo.Common.Utils;
+using DevilDaggersInfo.Core.Spawnset;
 using ImGuiNET;
+using Silk.NET.OpenGL;
 using System.Diagnostics;
 using System.Numerics;
 
@@ -27,7 +30,17 @@ public static class MainLayout
 
 	private static readonly string _version = VersionUtils.EntryAssemblyVersion;
 
-	public static void Render(out bool shouldClose)
+	private static readonly SpawnsetBinary _mainMenuSpawnset = SpawnsetBinary.CreateDefault();
+
+	private static ArenaScene? _mainMenuScene;
+
+	public static void InitializeScene()
+	{
+		_mainMenuScene = new(static () => _mainMenuSpawnset, true, false);
+		_mainMenuScene.AddSkull4();
+	}
+
+	public static void Render(float delta, out bool shouldClose)
 	{
 		shouldClose = false;
 
@@ -97,46 +110,75 @@ public static class MainLayout
 
 		ImGui.End();
 
-		static void TextAt(string text, int x, int y, Vector4 color = default, bool center = false)
-		{
-			if (center)
-			{
-				float textSize = ImGuiUtils.GetTextSize(text);
-				ImGui.SetCursorPos(new(x - textSize / 2, y));
-			}
-			else
-			{
-				ImGui.SetCursorPos(new(x, y));
-			}
+		RenderScene(delta);
+	}
 
-			if (color == default)
-				ImGui.Text(text);
-			else
-				ImGui.TextColored(color, text);
+	private static void TextAt(string text, int x, int y, Vector4 color = default, bool center = false)
+	{
+		if (center)
+		{
+			float textSize = ImGuiUtils.GetTextSize(text);
+			ImGui.SetCursorPos(new(x - textSize / 2, y));
+		}
+		else
+		{
+			ImGui.SetCursorPos(new(x, y));
 		}
 
-		static bool MainButtonAt(int x, int y, Vector4 color, string text)
+		if (color == default)
+			ImGui.Text(text);
+		else
+			ImGui.TextColored(color, text);
+	}
+
+	private static bool MainButtonAt(int x, int y, Vector4 color, string text)
+	{
+		int xPos = x switch
 		{
-			int xPos = x switch
-			{
-				0 => _centerX - 96 - 384,
-				1 => _centerX - 96,
-				_ => _centerX - 96 + 384,
-			};
-			int yPos = y * 128 + 256;
+			0 => _centerX - 96 - 384,
+			1 => _centerX - 96,
+			_ => _centerX - 96 + 384,
+		};
+		int yPos = y * 128 + 256;
 
-			ImGui.PushStyleColor(ImGuiCol.Button, color);
-			ImGui.PushStyleColor(ImGuiCol.ButtonHovered, color + new Vector4(0, 0, 0, 0.2f));
-			ImGui.PushStyleColor(ImGuiCol.ButtonActive, color + new Vector4(0, 0, 0, 0.3f));
+		ImGui.PushStyleColor(ImGuiCol.Button, color);
+		ImGui.PushStyleColor(ImGuiCol.ButtonHovered, color + new Vector4(0, 0, 0, 0.2f));
+		ImGui.PushStyleColor(ImGuiCol.ButtonActive, color + new Vector4(0, 0, 0, 0.3f));
 
-			ImGui.SetCursorPos(new(xPos, yPos));
-			bool value = ImGui.Button(text, new(192, 96));
+		ImGui.SetCursorPos(new(xPos, yPos));
+		bool value = ImGui.Button(text, new(192, 96));
 
-			ImGui.PopStyleColor();
-			ImGui.PopStyleColor();
-			ImGui.PopStyleColor();
+		ImGui.PopStyleColor();
+		ImGui.PopStyleColor();
+		ImGui.PopStyleColor();
 
-			return value;
-		}
+		return value;
+	}
+
+	private static void RenderScene(float delta)
+	{
+		_mainMenuScene?.Update(false, false, delta);
+
+		Root.Gl.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+
+		int framebufferWidth = Root.Window.Size.X;
+		int framebufferHeight = Root.Window.Size.Y;
+
+		// Keep track of the original viewport so we can restore it later.
+		Span<int> originalViewport = stackalloc int[4];
+		Root.Gl.GetInteger(GLEnum.Viewport, originalViewport);
+		Root.Gl.Viewport(0, 0, (uint)framebufferWidth, (uint)framebufferHeight);
+
+		Root.Gl.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+
+		Root.Gl.Enable(EnableCap.DepthTest);
+		Root.Gl.Enable(EnableCap.Blend);
+		Root.Gl.Enable(EnableCap.CullFace);
+		Root.Gl.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+
+		_mainMenuScene?.Render(framebufferWidth, framebufferHeight);
+
+		Root.Gl.Viewport(originalViewport[0], originalViewport[1], (uint)originalViewport[2], (uint)originalViewport[3]);
+		Root.Gl.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
 	}
 }

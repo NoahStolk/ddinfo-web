@@ -20,8 +20,11 @@ public sealed class ArenaEditorContext
 		_arenaScene = arenaScene;
 	}
 
-	public void Update(int currentTick)
+	public void Update(bool isActive, int currentTick)
 	{
+		if (!isActive)
+			return;
+
 		ScrollWheel scrollWheel = Root.Mouse?.ScrollWheels.Count > 0 ? Root.Mouse.ScrollWheels[0] : default;
 		float scroll = scrollWheel.Y;
 		if (currentTick > 0 || scroll == 0 || _closestHitTile == null)

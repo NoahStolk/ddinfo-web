@@ -145,7 +145,6 @@ public class Application
 		_gl.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
 		UiRenderer.Render(deltaF);
-		Scene.Render(deltaF, _gl);
 
 		_imGuiController.Render();
 

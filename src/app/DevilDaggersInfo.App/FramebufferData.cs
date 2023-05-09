@@ -1,3 +1,5 @@
+using DevilDaggersInfo.App.Scenes;
+using ImGuiNET;
 using Silk.NET.OpenGL;
 
 namespace DevilDaggersInfo.App;
@@ -75,5 +77,32 @@ public unsafe class FramebufferData
 		// Delete.
 		Root.Gl.DeleteVertexArray(screenVao);
 		Root.Gl.DeleteBuffer(screenVbo);
+	}
+
+	public void RenderArena(float delta, ArenaScene arenaScene)
+	{
+		arenaScene.Update(ImGui.IsWindowHovered(), ImGui.IsWindowFocused(), delta);
+
+		Root.Gl.BindFramebuffer(FramebufferTarget.Framebuffer, Framebuffer);
+
+		int framebufferWidth = Width;
+		int framebufferHeight = Height;
+
+		// Keep track of the original viewport so we can restore it later.
+		Span<int> originalViewport = stackalloc int[4];
+		Root.Gl.GetInteger(GLEnum.Viewport, originalViewport);
+		Root.Gl.Viewport(0, 0, (uint)framebufferWidth, (uint)framebufferHeight);
+
+		Root.Gl.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+
+		Root.Gl.Enable(EnableCap.DepthTest);
+		Root.Gl.Enable(EnableCap.Blend);
+		Root.Gl.Enable(EnableCap.CullFace);
+		Root.Gl.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+
+		arenaScene.Render(framebufferWidth, framebufferHeight);
+
+		Root.Gl.Viewport(originalViewport[0], originalViewport[1], (uint)originalViewport[2], (uint)originalViewport[3]);
+		Root.Gl.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
 	}
 }

@@ -31,14 +31,14 @@ public static class UiRenderer
 		switch (Layout)
 		{
 			case LayoutType.Main:
-				MainLayout.Render(out _windowShouldClose);
+				MainLayout.Render(delta, out _windowShouldClose);
 				break;
 			case LayoutType.Config:
 				ConfigLayout.Render();
 				break;
 			case LayoutType.SpawnsetEditor:
 				SpawnsetEditorWindow.Render();
-				SpawnsetEditor3DWindow.Render();
+				SpawnsetEditor3DWindow.Render(delta);
 				break;
 			case LayoutType.CustomLeaderboards:
 				CustomLeaderboardsWindow.Update(delta);
@@ -48,7 +48,7 @@ public static class UiRenderer
 			case LayoutType.ReplayEditor:
 				ReplayEditorWindow.Update(delta);
 				ReplayEditorWindow.Render();
-				ReplayEditor3DWindow.Render();
+				ReplayEditor3DWindow.Render(delta);
 				break;
 		}
 

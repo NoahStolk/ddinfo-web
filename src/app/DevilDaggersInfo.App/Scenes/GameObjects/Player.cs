@@ -21,7 +21,7 @@ public class Player
 
 	public LightObject Light { get; }
 
-	public static void Initialize()
+	public static void InitializeRendering()
 	{
 		if (_vao != 0)
 			throw new InvalidOperationException("Player is already initialized.");

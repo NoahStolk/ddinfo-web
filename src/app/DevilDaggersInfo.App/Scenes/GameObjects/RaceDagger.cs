@@ -25,7 +25,7 @@ public class RaceDagger
 		_meshRotationStart = _meshRotation;
 	}
 
-	public static void Initialize()
+	public static void InitializeRendering()
 	{
 		if (_vao != 0)
 			throw new InvalidOperationException("Race dagger is already initialized.");

@@ -33,7 +33,7 @@ public class Tile
 	public int ArenaX { get; }
 	public int ArenaY { get; }
 
-	public static void Initialize()
+	public static void InitializeRendering()
 	{
 		if (_vaoTile != 0)
 			throw new InvalidOperationException("Skull 4 is already initialized.");

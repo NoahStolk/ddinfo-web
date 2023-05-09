@@ -80,12 +80,12 @@ public sealed class ArenaScene
 		_lights.Add(_player.Light);
 	}
 
-	public void Update(float delta)
+	public void Update(bool activateMouse, bool activateKeyboard, float delta)
 	{
 		SpawnsetBinary spawnset = _getSpawnset();
 		FillArena(spawnset);
 
-		Camera.Update(delta);
+		Camera.Update(activateMouse, activateKeyboard, delta);
 		_raceDagger.Update(spawnset, CurrentTick);
 		_player?.Update(CurrentTick);
 
@@ -98,7 +98,7 @@ public sealed class ArenaScene
 			}
 		}
 
-		_editorContext?.Update(CurrentTick);
+		_editorContext?.Update(activateMouse, CurrentTick);
 	}
 
 	public void Render(int windowWidth, int windowHeight)

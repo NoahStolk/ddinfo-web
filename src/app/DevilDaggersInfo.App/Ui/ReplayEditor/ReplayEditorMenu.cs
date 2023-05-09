@@ -97,7 +97,7 @@ public static class ReplayEditorMenu
 		ReplayEditorWindow.Reset();
 
 		ReplaySimulation replaySimulation = ReplaySimulationBuilder.Build(ReplayState.Replay);
-		Scene.ReplayArenaScene.SetPlayerMovement(replaySimulation);
+		ReplayEditor3DWindow.ArenaScene.SetPlayerMovement(replaySimulation);
 	}
 
 	private static void SaveReplay()

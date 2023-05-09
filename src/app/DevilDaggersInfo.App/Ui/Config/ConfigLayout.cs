@@ -1,5 +1,8 @@
 using DevilDaggersInfo.App.Scenes.GameObjects;
 using DevilDaggersInfo.App.Ui.CustomLeaderboards;
+using DevilDaggersInfo.App.Ui.Main;
+using DevilDaggersInfo.App.Ui.ReplayEditor;
+using DevilDaggersInfo.App.Ui.SpawnsetEditor;
 using DevilDaggersInfo.App.User.Settings;
 using ImGuiNET;
 using System.Numerics;
@@ -35,13 +38,23 @@ public static class ConfigLayout
 		if (_contentInitialized)
 			return;
 
+		// Initialize game resources.
 		Root.GameResources = GameResources.Create(Root.Gl);
-		Player.Initialize();
-		RaceDagger.Initialize();
-		Tile.Initialize();
-		Skull4.Initialize();
-		Scene.Initialize();
+
+		// Initialize 3D rendering.
+		Player.InitializeRendering();
+		RaceDagger.InitializeRendering();
+		Tile.InitializeRendering();
+		Skull4.InitializeRendering();
+
+		// Initialize scenes.
+		MainLayout.InitializeScene();
+		SpawnsetEditor3DWindow.InitializeScene();
+		ReplayEditor3DWindow.InitializeScene();
+
+		// Initialize file watchers.
 		SurvivalFileWatcher.Initialize();
+
 		_contentInitialized = true;
 	}
 
