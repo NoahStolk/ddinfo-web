@@ -1,4 +1,5 @@
 using DevilDaggersInfo.App.Scenes.GameObjects;
+using DevilDaggersInfo.App.Ui.CustomLeaderboards;
 using DevilDaggersInfo.App.User.Settings;
 using ImGuiNET;
 using System.Numerics;
@@ -40,6 +41,7 @@ public static class ConfigLayout
 		Tile.Initialize();
 		Skull4.Initialize();
 		Scene.Initialize();
+		SurvivalFileWatcher.Initialize();
 		_contentInitialized = true;
 	}
 
