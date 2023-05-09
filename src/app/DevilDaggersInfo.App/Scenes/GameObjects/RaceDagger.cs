@@ -36,13 +36,12 @@ public class RaceDagger
 	public void Update(SpawnsetBinary spawnset, int currentTick)
 	{
 		float currentTime = currentTick / 60f;
-		(int X, float? Y, int Z) raceDaggerPosition = spawnset.GetRaceDaggerTilePosition();
 		float? raceDaggerHeight = spawnset.GetActualRaceDaggerHeight(currentTime);
 		Vector3 basePosition = spawnset.GameMode != GameMode.Race || !raceDaggerHeight.HasValue ? _hiddenPosition : new()
 		{
-			X = spawnset.TileToWorldCoordinate(raceDaggerPosition.X),
+			X = spawnset.RaceDaggerPosition.X,
 			Y = raceDaggerHeight.Value + _yOffset,
-			Z = spawnset.TileToWorldCoordinate(raceDaggerPosition.Z),
+			Z = spawnset.RaceDaggerPosition.Y,
 		};
 		_meshPosition = basePosition + new Vector3(0, 0.15f + MathF.Sin(currentTime) * 0.15f, 0);
 		_meshRotation = _meshRotationStart * Quaternion.CreateFromAxisAngle(Vector3.UnitZ, currentTime);
