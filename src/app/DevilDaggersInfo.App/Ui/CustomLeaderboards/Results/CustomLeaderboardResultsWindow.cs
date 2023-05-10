@@ -17,9 +17,17 @@ public static class CustomLeaderboardResultsWindow
 
 	public static void Render()
 	{
-		ImGui.PushStyleVar(ImGuiStyleVar.WindowMinSize, new Vector2(640, 320));
+		ImGui.SetNextWindowSizeConstraints(new(-1, 0), new(-1, float.MaxValue));
+		ImGui.PushStyleVar(ImGuiStyleVar.WindowMinSize, new Vector2(0, 320));
 		ImGui.Begin("Custom Leaderboard Submissions (this session)");
 		ImGui.PopStyleVar();
+
+		if (ImGui.Button("Close all"))
+			_results.ForEach(r => r.IsExpanded = false);
+
+		ImGui.SameLine();
+		if (ImGui.Button("Expand all"))
+			_results.ForEach(r => r.IsExpanded = true);
 
 		foreach (UploadResult result in _results.OrderByDescending(ur => ur.SubmittedAt))
 			result.Render();
