@@ -1,6 +1,5 @@
 using DevilDaggersInfo.App.Scenes;
 using DevilDaggersInfo.App.Ui.CustomLeaderboards.LeaderboardList;
-using DevilDaggersInfo.App.Utils;
 using DevilDaggersInfo.Common.Utils;
 using DevilDaggersInfo.Core.Spawnset;
 using ImGuiNET;
@@ -95,7 +94,7 @@ public static class MainLayout
 		const string homePage = "https://devildaggers.info/";
 		const string toolsPage = "https://devildaggers.info/tools";
 
-		ImGui.SetCursorPos(new(_centerX - ImGuiUtils.GetTextSize(homePage) / 2, 740));
+		ImGui.SetCursorPos(new(_centerX - ImGui.CalcTextSize(homePage).X / 2, 740));
 		if (ImGui.Button(homePage))
 			Process.Start(new ProcessStartInfo(homePage) { UseShellExecute = true });
 
@@ -117,7 +116,7 @@ public static class MainLayout
 	{
 		if (center)
 		{
-			float textSize = ImGuiUtils.GetTextSize(text);
+			float textSize = ImGui.CalcTextSize(text).X;
 			ImGui.SetCursorPos(new(x - textSize / 2, y));
 		}
 		else
