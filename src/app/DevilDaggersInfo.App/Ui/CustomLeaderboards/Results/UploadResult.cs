@@ -22,41 +22,44 @@ public class UploadResult
 
 	private readonly bool _isAscending;
 	private readonly string _spawnsetName;
+	private readonly Death? _death;
+	private readonly GetUploadResponseFirstScore? _firstScore;
+	private readonly GetUploadResponseHighscore? _highscore;
+	private readonly GetUploadResponseNoHighscore? _noHighscore;
+	private readonly GetUploadResponseCriteriaRejection? _criteriaRejection;
 
-	public UploadResult(GetUploadResponseFirstScore firstScore, bool isAscending, string spawnsetName, DateTime submittedAt)
-		: this(isAscending, spawnsetName, submittedAt) => FirstScore = firstScore;
-	public UploadResult(GetUploadResponseHighscore highscore, bool isAscending, string spawnsetName, DateTime submittedAt)
-		: this(isAscending, spawnsetName, submittedAt) => Highscore = highscore;
-	public UploadResult(GetUploadResponseNoHighscore noHighscore, bool isAscending, string spawnsetName, DateTime submittedAt)
-		: this(isAscending, spawnsetName, submittedAt) => NoHighscore = noHighscore;
-	public UploadResult(GetUploadResponseCriteriaRejection criteriaRejection, bool isAscending, string spawnsetName, DateTime submittedAt)
-		: this(isAscending, spawnsetName, submittedAt) => CriteriaRejection = criteriaRejection;
-
-	private UploadResult(bool isAscending, string spawnsetName, DateTime submittedAt)
+	public UploadResult(GetUploadResponse uploadResponse, bool isAscending, string spawnsetName, byte deathType, DateTime submittedAt)
 	{
+		if (uploadResponse.FirstScore != null)
+			_firstScore = uploadResponse.FirstScore;
+		else if (uploadResponse.Highscore != null)
+			_highscore = uploadResponse.Highscore;
+		else if (uploadResponse.NoHighscore != null)
+			_noHighscore = uploadResponse.NoHighscore;
+		else if (uploadResponse.CriteriaRejection != null)
+			_criteriaRejection = uploadResponse.CriteriaRejection;
+		else
+			throw new InvalidOperationException("Invalid upload response returned from server.");
+
 		_isAscending = isAscending;
 		_spawnsetName = spawnsetName;
+		_death = Deaths.GetDeathByLeaderboardType(GameConstants.CurrentVersion, deathType);
 		SubmittedAt = submittedAt;
 	}
 
 	public DateTime SubmittedAt { get; }
 	public bool IsExpanded { get; set; } = true;
 
-	public GetUploadResponseFirstScore? FirstScore { get; }
-	public GetUploadResponseHighscore? Highscore { get; }
-	public GetUploadResponseNoHighscore? NoHighscore { get; }
-	public GetUploadResponseCriteriaRejection? CriteriaRejection { get; }
-
 	public void Render()
 	{
-		if (FirstScore != null)
-			RenderFirstScore(FirstScore);
-		else if (Highscore != null)
-			RenderHighscore(Highscore);
-		else if (NoHighscore != null)
-			RenderNoHighscore(NoHighscore);
-		else if (CriteriaRejection != null)
-			RenderCriteriaRejection(CriteriaRejection);
+		if (_firstScore != null)
+			RenderFirstScore(_firstScore);
+		else if (_highscore != null)
+			RenderHighscore(_highscore);
+		else if (_noHighscore != null)
+			RenderNoHighscore(_noHighscore);
+		else if (_criteriaRejection != null)
+			RenderCriteriaRejection(_criteriaRejection);
 		else
 			throw new UnreachableException();
 	}
@@ -80,7 +83,7 @@ public class UploadResult
 			Add("Level 2", firstScore.LevelUpTime2, static i => i.ToString(StringFormats.TimeFormat));
 			Add("Level 3", firstScore.LevelUpTime3, static i => i.ToString(StringFormats.TimeFormat));
 			Add("Level 4", firstScore.LevelUpTime4, static i => i.ToString(StringFormats.TimeFormat));
-			//AddDeath();
+			AddDeath(_death);
 
 			ImGui.EndTable();
 		}
@@ -177,7 +180,8 @@ public class UploadResult
 			highscore.HomingStoredState,
 			highscore.HomingEatenState,
 			highscore.DaggersFiredState,
-			highscore.DaggersHitState);
+			highscore.DaggersHitState,
+			_death);
 		ImGui.Indent(-_indentation);
 	}
 
@@ -203,7 +207,8 @@ public class UploadResult
 			noHighscore.HomingStoredState,
 			noHighscore.HomingEatenState,
 			noHighscore.DaggersFiredState,
-			noHighscore.DaggersHitState);
+			noHighscore.DaggersHitState,
+			_death);
 		ImGui.Indent(-_indentation);
 	}
 
@@ -224,14 +229,25 @@ public class UploadResult
 
 	private bool RenderHeader(Color color, string title)
 	{
-		ImGui.PushStyleColor(ImGuiCol.Text, color);
+		ImGui.PushStyleColor(ImGuiCol.ChildBg, color with { A = 32 });
+		if (ImGui.BeginChild(SubmittedAt.Ticks + _spawnsetName, new(_headerWidth, 48), true))
+		{
+			bool hover = ImGui.IsWindowHovered();
+			if (hover && ImGui.IsMouseReleased(ImGuiMouseButton.Left))
+				IsExpanded = !IsExpanded;
 
-		ImGui.PushID(SubmittedAt.Ticks + _spawnsetName);
-		if (ImGui.Button($"{SubmittedAt:HH:mm:ss} - {_spawnsetName} - {title}", new(_headerWidth, 48)))
-			IsExpanded = !IsExpanded;
-		ImGui.PopID();
+			ImGui.TextColored(color, _spawnsetName);
 
+			string timeAgo = SubmittedAt.ToString("HH:mm:ss");
+			ImGui.SameLine(ImGui.GetWindowWidth() - ImGui.CalcTextSize(timeAgo).X - 8);
+			ImGui.Text(timeAgo);
+
+			ImGui.Text(title);
+		}
+
+		ImGui.EndChild();
 		ImGui.PopStyleColor();
+
 		return IsExpanded;
 	}
 
@@ -251,7 +267,8 @@ public class UploadResult
 		GetScoreState<int> homingStoredState,
 		GetScoreState<int> homingEatenState,
 		GetScoreState<int> daggersFiredState,
-		GetScoreState<int> daggersHitState)
+		GetScoreState<int> daggersHitState,
+		Death? death)
 	{
 		ImGui.Spacing();
 		ImGui.Image((IntPtr)Root.InternalResources.IconEyeTexture.Handle, _iconSize, Vector2.UnitX, Vector2.UnitY, Color.Orange);
@@ -266,10 +283,7 @@ public class UploadResult
 			AddLevelUpScoreState("Level 2", levelUpTime2State);
 			AddLevelUpScoreState("Level 3", levelUpTime3State);
 			AddLevelUpScoreState("Level 4", levelUpTime4State);
-
-			// TODO: Add death type to API.
-			// Death? death = Deaths.GetDeathByLeaderboardType(GameConstants.CurrentVersion, deathType);
-			// AddDeath(death);
+			AddDeath(death);
 
 			ImGui.EndTable();
 		}
@@ -398,8 +412,10 @@ public class UploadResult
 
 	private static void AddDeath(Death? death)
 	{
+		ImGui.TableNextColumn();
 		ImGui.Text("Death");
-		ImGui.SameLine();
+
+		ImGui.TableNextColumn();
 		ImGui.TextColored(death?.Color.ToEngineColor() ?? Color.White, death?.Name ?? "Unknown");
 	}
 

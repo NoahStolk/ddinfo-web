@@ -251,10 +251,10 @@ public static class RecordingLogic
 			TimeAttackOrRaceFinished = runToUpload.TimeAttackOrRaceFinished,
 		};
 
-		AsyncHandler.Run(OnSubmit, () => UploadSubmission.HandleAsync(uploadRequest));
+		AsyncHandler.Run(uploadResponse => OnSubmit(uploadResponse, uploadRequest), () => UploadSubmission.HandleAsync(uploadRequest));
 	}
 
-	private static void OnSubmit(GetUploadResponse? response)
+	private static void OnSubmit(GetUploadResponse? response, AddUploadRequest uploadRequest)
 	{
 		if (response == null)
 		{
@@ -265,18 +265,7 @@ public static class RecordingLogic
 		ShowUploadResponse = true;
 		LastSubmission = DateTime.Now;
 
-		UploadResult uploadResult;
-		if (response.FirstScore != null)
-			uploadResult = new(response.FirstScore, response.IsAscending, response.SpawnsetName, DateTime.Now);
-		else if (response.Highscore != null)
-			uploadResult = new(response.Highscore, response.IsAscending, response.SpawnsetName, DateTime.Now);
-		else if (response.NoHighscore != null)
-			uploadResult = new(response.NoHighscore, response.IsAscending, response.SpawnsetName, DateTime.Now);
-		else if (response.CriteriaRejection != null)
-			uploadResult = new(response.CriteriaRejection, response.IsAscending, response.SpawnsetName, DateTime.Now);
-		else
-			throw new InvalidOperationException("Invalid upload response returned from server.");
-
+		UploadResult uploadResult = new(response, response.IsAscending, response.SpawnsetName, uploadRequest.DeathType, DateTime.Now);
 		CustomLeaderboardResultsWindow.AddResult(uploadResult);
 	}
 

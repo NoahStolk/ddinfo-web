@@ -25,7 +25,7 @@ public static class DateTimeUtils
 		if (diff < TimeSpan.FromDays(1))
 			return $"{hours} hour{S(hours)} and {minutes} minute{S(minutes)} ago";
 
-		return $"{dateTime.Value.ToString(StringFormats.DateTimeFormat)}";
+		return dateTime.Value.ToString(StringFormats.DateTimeFormat);
 
 		static string S(int value)
 			=> value == 1 ? string.Empty : "s";
