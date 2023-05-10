@@ -60,11 +60,17 @@ public static class MainLayout
 		const byte buttonAlpha = 191;
 
 		if (MainButtonAt(0, 0, Colors.SpawnsetEditor with { A = buttonAlpha }, "Spawnset Editor (wip)"))
+		{
 			UiRenderer.Layout = LayoutType.SpawnsetEditor;
+			Colors.SetSpawnsetEditorColors();
+		}
 
 		MainButtonAt(1, 0, Colors.AssetEditor with { A = buttonAlpha }, "Asset Editor (todo)");
 		if (MainButtonAt(2, 0, Colors.ReplayEditor with { A = buttonAlpha }, "Replay Editor (wip)"))
+		{
 			UiRenderer.Layout = LayoutType.ReplayEditor;
+			Colors.SetReplayEditorColors();
+		}
 
 		if (MainButtonAt(0, 1, Colors.CustomLeaderboards with { A = buttonAlpha }, "Custom Leaderboards"))
 		{
