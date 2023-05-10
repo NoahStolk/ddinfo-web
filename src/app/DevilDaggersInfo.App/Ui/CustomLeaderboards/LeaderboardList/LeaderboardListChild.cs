@@ -10,7 +10,7 @@ namespace DevilDaggersInfo.App.Ui.CustomLeaderboards.LeaderboardList;
 
 public static class LeaderboardListChild
 {
-	private const int _pageSize = 20;
+	public const int PageSize = 20;
 
 	private static readonly string[] _categoryNames = Enum.GetValues<CustomLeaderboardCategory>().Select(et => et.ToString()).ToArray();
 
@@ -29,7 +29,8 @@ public static class LeaderboardListChild
 	public static LeaderboardListSorting Sorting { get; set; }
 	public static bool SortAscending { get; set; }
 
-	public static int TotalPages => (int)Math.Ceiling(_customLeaderboards.Count(Predicate) / (float)_pageSize);
+	public static int TotalEntries => _customLeaderboards.Count(Predicate);
+	public static int TotalPages => (int)Math.Ceiling(TotalEntries / (float)PageSize);
 	private static int MaxPageIndex => Math.Max(0, TotalPages - 1);
 
 	public static void Render()
@@ -137,8 +138,8 @@ public static class LeaderboardListChild
 
 		PagedCustomLeaderboards = sorted
 			.Where(Predicate)
-			.Skip(PageIndex * _pageSize)
-			.Take(_pageSize)
+			.Skip(PageIndex * PageSize)
+			.Take(PageSize)
 			.ToList();
 
 		static int GetRankSortingKey(GetCustomLeaderboardForOverview customLeaderboard)

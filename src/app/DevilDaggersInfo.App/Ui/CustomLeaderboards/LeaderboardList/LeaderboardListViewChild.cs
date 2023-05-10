@@ -25,7 +25,14 @@ public static class LeaderboardListViewChild
 		}
 		else
 		{
-			ImGui.Text($"Page {LeaderboardListChild.PageIndex + 1} of {LeaderboardListChild.TotalPages}");
+			int page = LeaderboardListChild.PageIndex + 1;
+			int totalPages = LeaderboardListChild.TotalPages;
+			int totalEntries = LeaderboardListChild.TotalEntries;
+
+			int start = LeaderboardListChild.PageIndex * LeaderboardListChild.PageSize + 1;
+			int end = Math.Min((LeaderboardListChild.PageIndex + 1) * LeaderboardListChild.PageSize, totalEntries);
+
+			ImGui.Text($"Page {page} of {totalPages} ({start}-{end} of {totalEntries})");
 
 			RenderTable();
 		}
