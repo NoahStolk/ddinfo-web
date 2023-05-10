@@ -101,7 +101,7 @@ public static class MainLayout
 
 		ImGui.SetCursorPos(new(4, 156));
 		if (ImGui.Button(toolsPage))
-			Process.Start(new ProcessStartInfo(homePage) { UseShellExecute = true });
+			Process.Start(new ProcessStartInfo(toolsPage) { UseShellExecute = true });
 
 		ImGui.PopStyleColor();
 		ImGui.PopStyleColor();
