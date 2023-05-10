@@ -1,3 +1,4 @@
+using DevilDaggersInfo.App.Engine.Maths.Numerics;
 using DevilDaggersInfo.App.Scenes;
 using DevilDaggersInfo.App.Ui.CustomLeaderboards.LeaderboardList;
 using DevilDaggersInfo.Common.Utils;
@@ -56,32 +57,33 @@ public static class MainLayout
 		TextAt("Devil Daggers is created by Sorath", _centerX, 708, default, true);
 		TextAt("DevilDaggers.info is created by Noah Stolk", _centerX, 724, default, true);
 
-		const float buttonAlpha = 0.75f;
+		const byte buttonAlpha = 191;
 
-		if (MainButtonAt(0, 0, new(1, 0, 0, buttonAlpha), "Spawnset Editor (wip)"))
+		if (MainButtonAt(0, 0, Colors.SpawnsetEditor with { A = buttonAlpha }, "Spawnset Editor (wip)"))
 			UiRenderer.Layout = LayoutType.SpawnsetEditor;
 
-		MainButtonAt(1, 0, new(0, 1, 0, buttonAlpha), "Asset Editor (todo)");
-		if (MainButtonAt(2, 0, new(1, 0, 1, buttonAlpha), "Replay Editor (wip)"))
+		MainButtonAt(1, 0, Colors.AssetEditor with { A = buttonAlpha }, "Asset Editor (todo)");
+		if (MainButtonAt(2, 0, Colors.ReplayEditor with { A = buttonAlpha }, "Replay Editor (wip)"))
 			UiRenderer.Layout = LayoutType.ReplayEditor;
 
-		if (MainButtonAt(0, 1, new(0, 0, 1, buttonAlpha), "Custom Leaderboards"))
+		if (MainButtonAt(0, 1, Colors.CustomLeaderboards with { A = buttonAlpha }, "Custom Leaderboards"))
 		{
 			UiRenderer.Layout = LayoutType.CustomLeaderboards;
 			Colors.SetCustomLeaderboardsColors();
 			LeaderboardListChild.LoadAll();
 		}
 
-		MainButtonAt(1, 1, new(0, 1, 1, buttonAlpha), "Practice (todo)");
-		MainButtonAt(2, 1, new(1, 1, 0, buttonAlpha), "Mod Manager (todo)");
+		MainButtonAt(1, 1, Colors.Practice with { A = buttonAlpha }, "Practice (todo)");
+		MainButtonAt(2, 1, Colors.ModManager with { A = buttonAlpha }, "Mod Manager (todo)");
 
-		if (MainButtonAt(0, 2, new(0.3f, 0.3f, 0.3f, buttonAlpha), "Configuration"))
+		Color gray = new(96, 96, 96, buttonAlpha);
+		if (MainButtonAt(0, 2, gray, "Configuration"))
 			UiRenderer.Layout = LayoutType.Config;
 
-		if (MainButtonAt(1, 2, new(0.3f, 0.3f, 0.3f, buttonAlpha), "Settings"))
+		if (MainButtonAt(1, 2, gray, "Settings"))
 			UiRenderer.ShowSettings();
 
-		if (MainButtonAt(2, 2, new(0.3f, 0.3f, 0.3f, buttonAlpha), "Exit"))
+		if (MainButtonAt(2, 2, gray, "Exit"))
 			shouldClose = true;
 
 		Vector4 hyperlinkColor = new(0, 0.625f, 1, 1);
@@ -103,10 +105,7 @@ public static class MainLayout
 		if (ImGui.Button(toolsPage))
 			Process.Start(new ProcessStartInfo(toolsPage) { UseShellExecute = true });
 
-		ImGui.PopStyleColor();
-		ImGui.PopStyleColor();
-		ImGui.PopStyleColor();
-		ImGui.PopStyleColor();
+		ImGui.PopStyleColor(4);
 
 		ImGui.End();
 
@@ -131,7 +130,7 @@ public static class MainLayout
 			ImGui.TextColored(color, text);
 	}
 
-	private static bool MainButtonAt(int x, int y, Vector4 color, string text)
+	private static bool MainButtonAt(int x, int y, Color color, string text)
 	{
 		int xPos = x switch
 		{
@@ -144,13 +143,14 @@ public static class MainLayout
 		ImGui.PushStyleColor(ImGuiCol.Button, color);
 		ImGui.PushStyleColor(ImGuiCol.ButtonHovered, color + new Vector4(0, 0, 0, 0.2f));
 		ImGui.PushStyleColor(ImGuiCol.ButtonActive, color + new Vector4(0, 0, 0, 0.3f));
+		ImGui.PushStyleColor(ImGuiCol.Border, color with { A = 255 });
 
 		ImGui.SetCursorPos(new(xPos, yPos));
+		ImGui.PushStyleVar(ImGuiStyleVar.FrameBorderSize, 4);
 		bool value = ImGui.Button(text, new(192, 96));
+		ImGui.PopStyleVar();
 
-		ImGui.PopStyleColor();
-		ImGui.PopStyleColor();
-		ImGui.PopStyleColor();
+		ImGui.PopStyleColor(4);
 
 		return value;
 	}

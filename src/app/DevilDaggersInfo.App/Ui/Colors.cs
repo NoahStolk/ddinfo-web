@@ -5,7 +5,12 @@ namespace DevilDaggersInfo.App.Ui;
 
 public static class Colors
 {
+	public static Color SpawnsetEditor => new(250, 66, 66, 255);
 	public static Color CustomLeaderboards => new(150, 66, 250, 255);
+	public static Color AssetEditor => new(66, 250, 66, 255);
+	public static Color ReplayEditor => new(66, 66, 250, 255);
+	public static Color Practice => new(250, 150, 66, 255);
+	public static Color ModManager => new(66, 250, 150, 255);
 
 	public static void SetCustomLeaderboardsColors()
 	{
