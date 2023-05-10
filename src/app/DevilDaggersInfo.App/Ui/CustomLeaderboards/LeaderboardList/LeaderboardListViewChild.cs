@@ -59,38 +59,38 @@ public static class LeaderboardListViewChild
 				sortsSpecs.SpecsDirty = false;
 			}
 
-			foreach (GetCustomLeaderboardForOverview lb in LeaderboardListChild.PagedCustomLeaderboards)
+			foreach (GetCustomLeaderboardForOverview clOverview in LeaderboardListChild.PagedCustomLeaderboards)
 			{
 				ImGui.TableNextRow();
 				ImGui.TableNextColumn();
 
 				bool temp = true;
-				if (ImGui.Selectable(lb.SpawnsetName, ref temp, ImGuiSelectableFlags.SpanAllColumns))
+				if (ImGui.Selectable(clOverview.SpawnsetName, ref temp, ImGuiSelectableFlags.SpanAllColumns, new(0, 16)))
 				{
 					AsyncHandler.Run(
-						l =>
+						cl =>
 						{
-							if (l == null)
+							if (cl == null)
 							{
 								Modals.ShowError("Could not fetch custom leaderboard.");
 								LeaderboardChild.Data = null;
 							}
 							else
 							{
-								LeaderboardChild.Data = new(l, lb.SpawnsetId);
+								LeaderboardChild.Data = new(cl, clOverview.SpawnsetId);
 							}
 						},
-						() => FetchCustomLeaderboardById.HandleAsync(lb.Id));
+						() => FetchCustomLeaderboardById.HandleAsync(clOverview.Id));
 				}
 
 				ImGui.TableNextColumn();
 
-				ImGui.Text(lb.SpawnsetAuthorName);
+				ImGui.Text(clOverview.SpawnsetAuthorName);
 				ImGui.TableNextColumn();
 
-				foreach (GetCustomLeaderboardCriteria criteria in lb.Criteria)
+				foreach (GetCustomLeaderboardCriteria criteria in clOverview.Criteria)
 				{
-					ImGui.Image((IntPtr)criteria.Type.GetTexture().Handle, new(13));
+					ImGui.Image((IntPtr)criteria.Type.GetTexture().Handle, new(16), Vector2.UnitX, Vector2.UnitY, criteria.Type.GetColor());
 					if (ImGui.IsItemHovered())
 					{
 						// TODO: May need to improve performance here by caching the text, or perhaps return the text from the API.
@@ -102,21 +102,21 @@ public static class LeaderboardListViewChild
 
 				ImGui.TableNextColumn();
 
-				ImGui.TextColored(CustomLeaderboardDaggerUtils.GetColor(lb.SelectedPlayerStats?.Dagger), lb.SelectedPlayerStats?.Time.ToString(StringFormats.TimeFormat) ?? "-");
+				ImGui.TextColored(CustomLeaderboardDaggerUtils.GetColor(clOverview.SelectedPlayerStats?.Dagger), clOverview.SelectedPlayerStats?.Time.ToString(StringFormats.TimeFormat) ?? "-");
 				ImGui.TableNextColumn();
 
-				bool completed = lb.SelectedPlayerStats?.Dagger == CustomLeaderboardDagger.Leviathan;
-				Color color = CustomLeaderboardDaggerUtils.GetColor(completed ? CustomLeaderboardDagger.Leviathan : lb.SelectedPlayerStats?.NextDagger?.Dagger);
-				ImGui.TextColored(color, completed ? "COMPLETED" : lb.SelectedPlayerStats?.NextDagger?.Time.ToString(StringFormats.TimeFormat) ?? "N/A");
+				bool completed = clOverview.SelectedPlayerStats?.Dagger == CustomLeaderboardDagger.Leviathan;
+				Color color = CustomLeaderboardDaggerUtils.GetColor(completed ? CustomLeaderboardDagger.Leviathan : clOverview.SelectedPlayerStats?.NextDagger?.Dagger);
+				ImGui.TextColored(color, completed ? "COMPLETED" : clOverview.SelectedPlayerStats?.NextDagger?.Time.ToString(StringFormats.TimeFormat) ?? "N/A");
 				ImGui.TableNextColumn();
 
-				ImGui.Text(lb.SelectedPlayerStats?.Rank.ToString() ?? "-");
+				ImGui.Text(clOverview.SelectedPlayerStats?.Rank.ToString() ?? "-");
 				ImGui.TableNextColumn();
 
-				ImGui.Text(lb.PlayerCount.ToString());
+				ImGui.Text(clOverview.PlayerCount.ToString());
 				ImGui.TableNextColumn();
 
-				ImGui.TextColored(CustomLeaderboardDaggerUtils.GetColor(lb.WorldRecord?.Dagger), lb.WorldRecord?.Time.ToString(StringFormats.TimeFormat) ?? "-");
+				ImGui.TextColored(CustomLeaderboardDaggerUtils.GetColor(clOverview.WorldRecord?.Dagger), clOverview.WorldRecord?.Time.ToString(StringFormats.TimeFormat) ?? "-");
 				ImGui.TableNextColumn();
 			}
 

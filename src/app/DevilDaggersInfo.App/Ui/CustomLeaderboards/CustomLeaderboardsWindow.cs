@@ -29,7 +29,7 @@ public static class CustomLeaderboardsWindow
 		ImGui.Begin("Custom Leaderboards", ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoScrollWithMouse);
 		ImGui.PopStyleVar();
 
-		ImGui.BeginChild("LeftRow", new(288, 416));
+		ImGui.BeginChild("LeftRow", new(288, 464));
 
 		StateChild.Render();
 		RecordingChild.Render();
@@ -38,7 +38,7 @@ public static class CustomLeaderboardsWindow
 
 		ImGui.SameLine();
 
-		ImGui.BeginChild("RightRow", new(0, 416));
+		ImGui.BeginChild("RightRow", new(0, 464));
 
 		LeaderboardListChild.Render();
 		LeaderboardListViewChild.Render();

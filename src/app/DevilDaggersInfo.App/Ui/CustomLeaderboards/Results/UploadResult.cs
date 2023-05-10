@@ -3,6 +3,7 @@ using DevilDaggersInfo.App.Engine.Maths.Numerics;
 using DevilDaggersInfo.App.Extensions;
 using DevilDaggersInfo.Common;
 using DevilDaggersInfo.Core.CriteriaExpression.Extensions;
+using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Core.Wiki.Objects;
 using ImGuiNET;
 using System.Diagnostics;
@@ -63,7 +64,7 @@ public class UploadResult
 			Add("Rank", firstScore.Rank, i => i.ToString());
 
 			ImGui.Spacing();
-			ImGui.Image((IntPtr)Root.InternalResources.IconEyeTexture.Handle, _iconSize); // TODO: Orange
+			ImGui.Image((IntPtr)Root.InternalResources.IconEyeTexture.Handle, _iconSize, Vector2.UnitX, Vector2.UnitY, Color.Orange);
 			Add("Time", firstScore.Time, d => d.ToString(StringFormats.TimeFormat));
 			Add("Level 2", firstScore.LevelUpTime2, i => i.ToString(StringFormats.TimeFormat));
 			Add("Level 3", firstScore.LevelUpTime3, i => i.ToString(StringFormats.TimeFormat));
@@ -71,7 +72,7 @@ public class UploadResult
 			//AddDeath();
 
 			ImGui.Spacing();
-			ImGui.Image((IntPtr)Root.InternalResources.IconGemTexture.Handle, _iconSize); // TODO: Red
+			ImGui.Image((IntPtr)Root.InternalResources.IconGemTexture.Handle, _iconSize, Vector2.UnitX, Vector2.UnitY, Color.Red);
 			Add("Gems collected", firstScore.GemsCollected, i => i.ToString());
 			Add("Gems despawned", firstScore.GemsDespawned, i => i.ToString());
 			Add("Gems eaten", firstScore.GemsEaten, i => i.ToString());
@@ -83,7 +84,7 @@ public class UploadResult
 			Add("Homing eaten", firstScore.HomingEaten, i => i.ToString());
 
 			ImGui.Spacing();
-			ImGui.Image((IntPtr)Root.InternalResources.IconCrosshairTexture.Handle, _iconSize); // TODO: Green
+			ImGui.Image((IntPtr)Root.InternalResources.IconCrosshairTexture.Handle, _iconSize, Vector2.UnitX, Vector2.UnitY, Color.Green);
 			Add("Daggers fired", firstScore.DaggersFired, i => i.ToString());
 			Add("Daggers hit", firstScore.DaggersHit, i => i.ToString());
 
@@ -91,7 +92,7 @@ public class UploadResult
 			Add("Accuracy", accuracy, i => i.ToString(StringFormats.AccuracyFormat));
 
 			ImGui.Spacing();
-			ImGui.Image((IntPtr)Root.InternalResources.IconSkullTexture.Handle, _iconSize); // TODO: EnemiesV3_2.Skull4.Color.ToEngineColor())
+			ImGui.Image((IntPtr)Root.InternalResources.IconSkullTexture.Handle, _iconSize, Vector2.UnitX, Vector2.UnitY, EnemiesV3_2.Skull4.Color.ToEngineColor());
 			Add("Enemies killed", firstScore.EnemiesKilled, i => i.ToString());
 			Add("Enemies alive", firstScore.EnemiesAlive, i => i.ToString());
 
@@ -190,7 +191,7 @@ public class UploadResult
 		GetScoreState<int> daggersHitState)
 	{
 		ImGui.Spacing();
-		ImGui.Image((IntPtr)Root.InternalResources.IconEyeTexture.Handle, _iconSize); // TODO: Orange
+		ImGui.Image((IntPtr)Root.InternalResources.IconEyeTexture.Handle, _iconSize, Vector2.UnitX, Vector2.UnitY, Color.Orange);
 
 		AddScoreState("Time", timeState, d => d.ToString(StringFormats.TimeFormat), i => $"{i:+0.0000;-0.0000;+0.0000}", !isAscending);
 		AddLevelUpScoreState("Level 2", levelUpTime2State);
@@ -202,7 +203,7 @@ public class UploadResult
 		// AddDeath(death);
 
 		ImGui.Spacing();
-		ImGui.Image((IntPtr)Root.InternalResources.IconGemTexture.Handle, _iconSize); // TODO: Red
+		ImGui.Image((IntPtr)Root.InternalResources.IconGemTexture.Handle, _iconSize, Vector2.UnitX, Vector2.UnitY, Color.Red);
 		AddScoreState("Gems collected", gemsCollectedState, i => i.ToString(), i => $"{i:+0;-0;+0}");
 		AddScoreState("Gems despawned", gemsDespawnedState, i => i.ToString(), i => $"{i:+0;-0;+0}", false);
 		AddScoreState("Gems eaten", gemsEatenState, i => i.ToString(), i => $"{i:+0;-0;+0}", false);
@@ -214,7 +215,7 @@ public class UploadResult
 		AddScoreState("Homing eaten", homingEatenState, i => i.ToString(), i => $"{i:+0;-0;+0}", false);
 
 		ImGui.Spacing();
-		ImGui.Image((IntPtr)Root.InternalResources.IconCrosshairTexture.Handle, _iconSize); // TODO: Green
+		ImGui.Image((IntPtr)Root.InternalResources.IconCrosshairTexture.Handle, _iconSize, Vector2.UnitX, Vector2.UnitY, Color.Green);
 		AddScoreState("Daggers fired", daggersFiredState, i => i.ToString(), i => $"{i:+0;-0;+0}");
 		AddScoreState("Daggers hit", daggersHitState, i => i.ToString(), i => $"{i:+0;-0;+0}");
 
@@ -231,7 +232,7 @@ public class UploadResult
 		AddScoreState("Accuracy", accuracyState, i => i.ToString(StringFormats.AccuracyFormat), i => $"{i:+0.00%;-0.00%;+0.00%}");
 
 		ImGui.Spacing();
-		ImGui.Image((IntPtr)Root.InternalResources.IconSkullTexture.Handle, _iconSize); // TODO: EnemiesV3_2.Skull4.Color.ToEngineColor())
+		ImGui.Image((IntPtr)Root.InternalResources.IconSkullTexture.Handle, _iconSize, Vector2.UnitX, Vector2.UnitY, EnemiesV3_2.Skull4.Color.ToEngineColor());
 		AddScoreState("Enemies killed", enemiesKilledState, i => i.ToString(), i => $"{i:+0;-0;+0}");
 		AddScoreState("Enemies alive", enemiesAliveState, i => i.ToString(), i => $"{i:+0;-0;+0}");
 	}
