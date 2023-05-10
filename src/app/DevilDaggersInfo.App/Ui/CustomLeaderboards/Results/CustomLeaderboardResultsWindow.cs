@@ -1,4 +1,5 @@
 using ImGuiNET;
+using System.Numerics;
 
 namespace DevilDaggersInfo.App.Ui.CustomLeaderboards.Results;
 
@@ -16,7 +17,9 @@ public static class CustomLeaderboardResultsWindow
 
 	public static void Render()
 	{
-		ImGui.Begin("Custom Leaderboard Results");
+		ImGui.PushStyleVar(ImGuiStyleVar.WindowMinSize, new Vector2(640, 320));
+		ImGui.Begin("Custom Leaderboard Submissions (this session)");
+		ImGui.PopStyleVar();
 
 		foreach (UploadResult result in _results.OrderByDescending(ur => ur.SubmittedAt))
 			result.Render();

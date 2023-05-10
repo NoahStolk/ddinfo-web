@@ -14,6 +14,9 @@ namespace DevilDaggersInfo.App.Ui.CustomLeaderboards.Results;
 // TODO: Rewrite to use discriminated unions if they ever get added to C#.
 public class UploadResult
 {
+	private const int _columnWidth = 140;
+	private const int _indentation = 12;
+
 	private static readonly Vector2 _iconSize = new(16);
 
 	private readonly bool _isAscending;
@@ -61,48 +64,98 @@ public class UploadResult
 	{
 		if (RenderHeader(Color.Aqua, "First score!"))
 		{
-			Add("Rank", firstScore.Rank, i => i.ToString());
+			ImGui.Indent(_indentation);
 
 			ImGui.Spacing();
 			ImGui.Image((IntPtr)Root.InternalResources.IconEyeTexture.Handle, _iconSize, Vector2.UnitX, Vector2.UnitY, Color.Orange);
-			Add("Time", firstScore.Time, d => d.ToString(StringFormats.TimeFormat));
-			Add("Level 2", firstScore.LevelUpTime2, i => i.ToString(StringFormats.TimeFormat));
-			Add("Level 3", firstScore.LevelUpTime3, i => i.ToString(StringFormats.TimeFormat));
-			Add("Level 4", firstScore.LevelUpTime4, i => i.ToString(StringFormats.TimeFormat));
-			//AddDeath();
+
+			if (ImGui.BeginTable("FirstScore_PlayerTable", 2))
+			{
+				ImGui.TableSetupColumn("#0", ImGuiTableColumnFlags.WidthFixed | ImGuiTableColumnFlags.NoHeaderLabel, _columnWidth);
+				ImGui.TableSetupColumn("#1", ImGuiTableColumnFlags.WidthFixed | ImGuiTableColumnFlags.NoHeaderLabel, _columnWidth);
+
+				Add("Rank", firstScore.Rank, static i => i.ToString());
+				Add("Time", firstScore.Time, static d => d.ToString(StringFormats.TimeFormat));
+				Add("Level 2", firstScore.LevelUpTime2, static i => i.ToString(StringFormats.TimeFormat));
+				Add("Level 3", firstScore.LevelUpTime3, static i => i.ToString(StringFormats.TimeFormat));
+				Add("Level 4", firstScore.LevelUpTime4, static i => i.ToString(StringFormats.TimeFormat));
+				//AddDeath();
+
+				ImGui.EndTable();
+			}
 
 			ImGui.Spacing();
 			ImGui.Image((IntPtr)Root.InternalResources.IconGemTexture.Handle, _iconSize, Vector2.UnitX, Vector2.UnitY, Color.Red);
-			Add("Gems collected", firstScore.GemsCollected, i => i.ToString());
-			Add("Gems despawned", firstScore.GemsDespawned, i => i.ToString());
-			Add("Gems eaten", firstScore.GemsEaten, i => i.ToString());
-			Add("Gems total", firstScore.GemsTotal, i => i.ToString());
+
+			if (ImGui.BeginTable("FirstScore_GemsTable", 2))
+			{
+				ImGui.TableSetupColumn("#0", ImGuiTableColumnFlags.WidthFixed | ImGuiTableColumnFlags.NoHeaderLabel, _columnWidth);
+				ImGui.TableSetupColumn("#1", ImGuiTableColumnFlags.WidthFixed | ImGuiTableColumnFlags.NoHeaderLabel, _columnWidth);
+
+				Add("Gems collected", firstScore.GemsCollected, static i => i.ToString());
+				Add("Gems despawned", firstScore.GemsDespawned, static i => i.ToString());
+				Add("Gems eaten", firstScore.GemsEaten, static i => i.ToString());
+				Add("Gems total", firstScore.GemsTotal, static i => i.ToString());
+
+				ImGui.EndTable();
+			}
 
 			ImGui.Spacing();
 			ImGui.Image((IntPtr)Root.InternalResources.IconHomingTexture.Handle, _iconSize);
-			Add("Homing stored", firstScore.HomingStored, i => i.ToString());
-			Add("Homing eaten", firstScore.HomingEaten, i => i.ToString());
+
+			if (ImGui.BeginTable("FirstScore_HomingTable", 2))
+			{
+				ImGui.TableSetupColumn("#0", ImGuiTableColumnFlags.WidthFixed | ImGuiTableColumnFlags.NoHeaderLabel, _columnWidth);
+				ImGui.TableSetupColumn("#1", ImGuiTableColumnFlags.WidthFixed | ImGuiTableColumnFlags.NoHeaderLabel, _columnWidth);
+
+				Add("Homing stored", firstScore.HomingStored, static i => i.ToString());
+				Add("Homing eaten", firstScore.HomingEaten, static i => i.ToString());
+
+				ImGui.EndTable();
+			}
 
 			ImGui.Spacing();
 			ImGui.Image((IntPtr)Root.InternalResources.IconCrosshairTexture.Handle, _iconSize, Vector2.UnitX, Vector2.UnitY, Color.Green);
-			Add("Daggers fired", firstScore.DaggersFired, i => i.ToString());
-			Add("Daggers hit", firstScore.DaggersHit, i => i.ToString());
 
-			double accuracy = firstScore.DaggersFired == 0 ? 0 : firstScore.DaggersHit / (double)firstScore.DaggersFired;
-			Add("Accuracy", accuracy, i => i.ToString(StringFormats.AccuracyFormat));
+			if (ImGui.BeginTable("FirstScore_DaggersTable", 2))
+			{
+				ImGui.TableSetupColumn("#0", ImGuiTableColumnFlags.WidthFixed | ImGuiTableColumnFlags.NoHeaderLabel, _columnWidth);
+				ImGui.TableSetupColumn("#1", ImGuiTableColumnFlags.WidthFixed | ImGuiTableColumnFlags.NoHeaderLabel, _columnWidth);
+
+				Add("Daggers fired", firstScore.DaggersFired, static i => i.ToString());
+				Add("Daggers hit", firstScore.DaggersHit, static i => i.ToString());
+
+				double accuracy = firstScore.DaggersFired == 0 ? 0 : firstScore.DaggersHit / (double)firstScore.DaggersFired;
+				Add("Accuracy", accuracy, i => i.ToString(StringFormats.AccuracyFormat));
+
+				ImGui.EndTable();
+			}
 
 			ImGui.Spacing();
 			ImGui.Image((IntPtr)Root.InternalResources.IconSkullTexture.Handle, _iconSize, Vector2.UnitX, Vector2.UnitY, EnemiesV3_2.Skull4.Color.ToEngineColor());
-			Add("Enemies killed", firstScore.EnemiesKilled, i => i.ToString());
-			Add("Enemies alive", firstScore.EnemiesAlive, i => i.ToString());
 
-			void Add<T>(string label, T value, Func<T, string> formatter)
-				where T : struct
+			if (ImGui.BeginTable("FirstScore_EnemiesTable", 2))
 			{
-				ImGui.Text(label);
-				ImGui.SameLine();
-				ImGui.TextUnformatted(formatter(value));
+				ImGui.TableSetupColumn("#0", ImGuiTableColumnFlags.WidthFixed | ImGuiTableColumnFlags.NoHeaderLabel, _columnWidth);
+				ImGui.TableSetupColumn("#1", ImGuiTableColumnFlags.WidthFixed | ImGuiTableColumnFlags.NoHeaderLabel, _columnWidth);
+
+				Add("Enemies killed", firstScore.EnemiesKilled, static i => i.ToString());
+				Add("Enemies alive", firstScore.EnemiesAlive, static i => i.ToString());
+
+				ImGui.EndTable();
 			}
+
+			ImGui.Indent(-_indentation);
+		}
+
+		static void Add<T>(string label, T value, Func<T, string> formatter)
+			where T : struct
+		{
+			ImGui.TableNextColumn();
+			ImGui.Text(label);
+
+			ImGui.TableNextColumn();
+			ImGui.TextUnformatted(formatter(value));
 		}
 	}
 
@@ -110,6 +163,7 @@ public class UploadResult
 	{
 		if (RenderHeader(Color.Green, "NEW HIGHSCORE!"))
 		{
+			ImGui.Indent(_indentation);
 			AddScoreState("Rank", highscore.RankState, i => i.ToString(), i => $"{i:+0;-0;+0}");
 
 			AddStates(
@@ -128,6 +182,7 @@ public class UploadResult
 				highscore.HomingEatenState,
 				highscore.DaggersFiredState,
 				highscore.DaggersHitState);
+			ImGui.Indent(-_indentation);
 		}
 	}
 
@@ -135,6 +190,7 @@ public class UploadResult
 	{
 		if (RenderHeader(Color.White, "No new highscore."))
 		{
+			ImGui.Indent(_indentation);
 			AddStates(
 				_isAscending,
 				noHighscore.TimeState,
@@ -151,6 +207,7 @@ public class UploadResult
 				noHighscore.HomingEatenState,
 				noHighscore.DaggersFiredState,
 				noHighscore.DaggersHitState);
+			ImGui.Indent(-_indentation);
 		}
 	}
 
@@ -158,17 +215,22 @@ public class UploadResult
 	{
 		if (RenderHeader(Color.Red, "Rejected score."))
 		{
-			ImGui.Text(criteriaRejection.CriteriaName);
-			ImGui.Text($"Must be {criteriaRejection.CriteriaOperator.ToCore().ShortString()} {criteriaRejection.ExpectedValue}");
-			ImGui.Text($"Value was {criteriaRejection.ActualValue}");
+			ImGui.Indent(_indentation);
+			ImGui.Text($"Run was rejected because the {criteriaRejection.CriteriaName} value was {criteriaRejection.ActualValue}.");
+			ImGui.Text($"It must be {criteriaRejection.CriteriaOperator.ToCore().Display()} {criteriaRejection.ExpectedValue} in order to submit to this leaderboard.");
+			ImGui.Indent(-_indentation);
 		}
 	}
 
 	private bool RenderHeader(Color color, string title)
 	{
 		ImGui.PushStyleColor(ImGuiCol.Text, color);
+
+		ImGui.PushID(SubmittedAt.Ticks + _spawnsetName);
 		if (ImGui.Button($"{SubmittedAt:HH:mm:ss} - {_spawnsetName} - {title}", new(320, 48)))
 			IsExpanded = !IsExpanded;
+		ImGui.PopID();
+
 		ImGui.PopStyleColor();
 		return IsExpanded;
 	}
