@@ -71,6 +71,9 @@ public static class LeaderboardListViewChild
 				ImGui.TableNextRow();
 				ImGui.TableNextColumn();
 
+				ImGui.PushStyleColor(ImGuiCol.Header, Colors.CustomLeaderboards with { A = 24 });
+				ImGui.PushStyleColor(ImGuiCol.HeaderHovered, Colors.CustomLeaderboards with { A = 48 });
+				ImGui.PushStyleColor(ImGuiCol.HeaderActive, Colors.CustomLeaderboards with { A = 72 });
 				bool temp = true;
 				if (ImGui.Selectable(clOverview.SpawnsetName, ref temp, ImGuiSelectableFlags.SpanAllColumns, new(0, 16)))
 				{
@@ -89,6 +92,8 @@ public static class LeaderboardListViewChild
 						},
 						() => FetchCustomLeaderboardById.HandleAsync(clOverview.Id));
 				}
+
+				ImGui.PopStyleColor(3);
 
 				ImGui.TableNextColumn();
 

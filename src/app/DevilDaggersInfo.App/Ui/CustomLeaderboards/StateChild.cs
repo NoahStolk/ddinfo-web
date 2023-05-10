@@ -8,6 +8,8 @@ public static class StateChild
 	{
 		if (ImGui.BeginTable("StateTable", 2, ImGuiTableFlags.None, new(288, 80)))
 		{
+			ImGui.TableSetupColumn(null, ImGuiTableColumnFlags.WidthFixed | ImGuiTableColumnFlags.NoHeaderLabel, 112);
+
 			ImGui.TableNextColumn();
 			ImGui.Text("Memory");
 			ImGui.TableNextColumn();

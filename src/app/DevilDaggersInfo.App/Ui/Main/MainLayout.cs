@@ -68,6 +68,7 @@ public static class MainLayout
 		if (MainButtonAt(0, 1, new(0, 0, 1, buttonAlpha), "Custom Leaderboards"))
 		{
 			UiRenderer.Layout = LayoutType.CustomLeaderboards;
+			Colors.SetCustomLeaderboardsColors();
 			LeaderboardListChild.LoadAll();
 		}
 

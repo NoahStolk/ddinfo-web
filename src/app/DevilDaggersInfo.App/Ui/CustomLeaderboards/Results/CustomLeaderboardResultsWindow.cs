@@ -1,5 +1,7 @@
-#define TESTING
+// #define TESTING
+#if TESTING
 using DevilDaggersInfo.Api.App.CustomLeaderboards;
+#endif
 using ImGuiNET;
 using System.Numerics;
 
