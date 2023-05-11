@@ -145,6 +145,8 @@
           "Microsoft.JSInterop": "7.0.5"
         }
       }
-    }
+    },
+    "net7.0/linux-x64": {},
+    "net7.0/win-x64": {}
   }
 }
