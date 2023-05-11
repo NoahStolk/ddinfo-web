@@ -15,7 +15,9 @@ namespace DevilDaggersInfo.App.Ui.SpawnsetEditor;
 
 public static class SpawnsChild
 {
-	private static readonly bool[] _selected = new bool[2000]; // TODO: Make this dynamic.
+	public const int MaxSpawns = 4096;
+
+	private static readonly bool[] _selected = new bool[MaxSpawns];
 	private static readonly string[] _enemyNames = Enum.GetValues<EnemyType>().Select(et => et.ToString()).ToArray();
 
 	private static int _lastSelectedIndex = -1;
@@ -38,9 +40,16 @@ public static class SpawnsChild
 		ImGui.BeginChild("AddAndInsertButtons", new(72, 72));
 		if (ImGui.Button("Add", new(64, 32)))
 		{
-			EnemyType enemyType = _addEnemyTypeIndex is >= 0 and <= 9 ? (EnemyType)_addEnemyTypeIndex : EnemyType.Empty;
-			SpawnsetState.Spawnset = SpawnsetState.Spawnset with { Spawns = SpawnsetState.Spawnset.Spawns.Add(new(enemyType, _addDelay)) };
-			SpawnsetHistoryUtils.Save(SpawnsetEditType.SpawnAdd);
+			if (SpawnsetState.Spawnset.Spawns.Length >= MaxSpawns)
+			{
+				Modals.ShowError("Reached max amount of spawns.");
+			}
+			else
+			{
+				EnemyType enemyType = _addEnemyTypeIndex is >= 0 and <= 9 ? (EnemyType)_addEnemyTypeIndex : EnemyType.Empty;
+				SpawnsetState.Spawnset = SpawnsetState.Spawnset with { Spawns = SpawnsetState.Spawnset.Spawns.Add(new(enemyType, _addDelay)) };
+				SpawnsetHistoryUtils.Save(SpawnsetEditType.SpawnAdd);
+			}
 		}
 
 		if (ImGui.Button("Insert", new(64, 32)))
@@ -49,9 +58,16 @@ public static class SpawnsChild
 			if (selectedIndex == -1)
 				selectedIndex = 0;
 
-			EnemyType enemyType = _addEnemyTypeIndex is >= 0 and <= 9 ? (EnemyType)_addEnemyTypeIndex : EnemyType.Empty;
-			SpawnsetState.Spawnset = SpawnsetState.Spawnset with { Spawns = SpawnsetState.Spawnset.Spawns.Insert(selectedIndex, new(enemyType, _addDelay)) };
-			SpawnsetHistoryUtils.Save(SpawnsetEditType.SpawnInsert);
+			if (SpawnsetState.Spawnset.Spawns.Length >= MaxSpawns)
+			{
+				Modals.ShowError("Reached max amount of spawns.");
+			}
+			else
+			{
+				EnemyType enemyType = _addEnemyTypeIndex is >= 0 and <= 9 ? (EnemyType)_addEnemyTypeIndex : EnemyType.Empty;
+				SpawnsetState.Spawnset = SpawnsetState.Spawnset with { Spawns = SpawnsetState.Spawnset.Spawns.Insert(selectedIndex, new(enemyType, _addDelay)) };
+				SpawnsetHistoryUtils.Save(SpawnsetEditType.SpawnInsert);
+			}
 		}
 
 		ImGui.EndChild();
@@ -94,7 +110,7 @@ public static class SpawnsChild
 				}
 			}
 
-			ImGui.TableSetupColumn("#", ImGuiTableColumnFlags.WidthFixed, 16);
+			ImGui.TableSetupColumn("#", ImGuiTableColumnFlags.WidthFixed, 24);
 			ImGui.TableSetupColumn("Enemy", ImGuiTableColumnFlags.WidthFixed, 72);
 			ImGui.TableSetupColumn("Time", ImGuiTableColumnFlags.WidthFixed, 72);
 			ImGui.TableSetupColumn("Delay", ImGuiTableColumnFlags.WidthFixed, 72);
@@ -104,7 +120,7 @@ public static class SpawnsChild
 			// if (ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled))
 			// 	ImGui.SetTooltip("The amount of gems an enemy drops when killed without farming.\nThis is also the amount of gems that will be added to the total gems counter.");
 
-			ImGui.TableSetupColumn("Total", ImGuiTableColumnFlags.WidthFixed, 96);
+			ImGui.TableSetupColumn("Total", ImGuiTableColumnFlags.WidthFixed, 88);
 			ImGui.TableHeadersRow();
 
 			EditSpawnContext.BuildFrom(SpawnsetState.Spawnset);
