@@ -19,9 +19,6 @@ public static class ReplayEditorMenu
 
 			ImGui.EndMenuBar();
 		}
-
-		if (!Modals.IsAnyOpen)
-			HandleShortcuts();
 	}
 
 	private static void RenderFileMenu()
@@ -41,31 +38,13 @@ public static class ReplayEditorMenu
 			Close();
 	}
 
-	private static void HandleShortcuts()
-	{
-		ImGuiIOPtr io = ImGui.GetIO();
-		if (io.KeyCtrl)
-		{
-			// TODO: Fix manual mapping?
-			if (ImGui.IsKeyPressed(ImGuiKey.N) || ImGui.IsKeyPressed((ImGuiKey)78))
-				NewReplay();
-			else if (ImGui.IsKeyPressed(ImGuiKey.O) || ImGui.IsKeyPressed((ImGuiKey)79))
-				OpenReplay();
-			else if (ImGui.IsKeyPressed(ImGuiKey.S) || ImGui.IsKeyPressed((ImGuiKey)83))
-				SaveReplay();
-		}
-
-		if (ImGui.IsKeyPressed(ImGuiKey.Escape) || ImGui.IsKeyPressed((ImGuiKey)526))
-			Close();
-	}
-
-	private static void NewReplay()
+	public static void NewReplay()
 	{
 		ReplayState.ReplayName = "(untitled)";
 		ReplayState.Replay = ReplayBinary<LocalReplayBinaryHeader>.CreateDefault();
 	}
 
-	private static void OpenReplay()
+	public static void OpenReplay()
 	{
 		string? filePath = NativeFileDialog.CreateOpenFileDialog("Devil Daggers replay files (*.ddreplay)|*.ddreplay");
 		if (filePath == null)
@@ -100,14 +79,14 @@ public static class ReplayEditorMenu
 		ReplayEditor3DWindow.ArenaScene.SetPlayerMovement(replaySimulation);
 	}
 
-	private static void SaveReplay()
+	public static void SaveReplay()
 	{
 		string? filePath = NativeFileDialog.CreateSaveFileDialog("Devil Daggers replay files (*.ddreplay)|*.ddreplay");
 		if (filePath != null)
 			File.WriteAllBytes(filePath, ReplayState.Replay.Compile());
 	}
 
-	private static void Close()
+	public static void Close()
 	{
 		UiRenderer.Layout = LayoutType.Main;
 	}

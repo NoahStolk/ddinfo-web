@@ -20,9 +20,6 @@ public static class SpawnsetEditorMenu
 
 			ImGui.EndMenuBar();
 		}
-
-		if (!Modals.IsAnyOpen)
-			HandleShortcuts();
 	}
 
 	private static void RenderFileMenu()
@@ -48,35 +45,14 @@ public static class SpawnsetEditorMenu
 			Close();
 	}
 
-	private static void HandleShortcuts()
-	{
-		ImGuiIOPtr io = ImGui.GetIO();
-		if (io.KeyCtrl)
-		{
-			// TODO: Fix manual mapping?
-			// ... Or just ignore key "presses" when the key is already held down.
-			if (ImGui.IsKeyPressed(ImGuiKey.N) || ImGui.IsKeyPressed((ImGuiKey)78))
-				NewSpawnset();
-			else if (ImGui.IsKeyPressed(ImGuiKey.O) || ImGui.IsKeyPressed((ImGuiKey)79))
-				OpenSpawnset();
-			else if (ImGui.IsKeyPressed(ImGuiKey.S) || ImGui.IsKeyPressed((ImGuiKey)83))
-				SaveSpawnset();
-			else if (ImGui.IsKeyPressed(ImGuiKey.R) || ImGui.IsKeyPressed((ImGuiKey)82))
-				ReplaceSpawnset();
-		}
-
-		if (ImGui.IsKeyPressed(ImGuiKey.Escape) || ImGui.IsKeyPressed((ImGuiKey)526))
-			Close();
-	}
-
-	private static void NewSpawnset()
+	public static void NewSpawnset()
 	{
 		SpawnsetState.SpawnsetName = "(untitled)";
 		SpawnsetState.Spawnset = SpawnsetBinary.CreateDefault();
 		SpawnsetHistoryUtils.Save(SpawnsetEditType.Reset);
 	}
 
-	private static void OpenSpawnset()
+	public static void OpenSpawnset()
 	{
 		string? filePath = NativeFileDialog.CreateOpenFileDialog(null);
 		if (filePath == null)
@@ -115,20 +91,20 @@ public static class SpawnsetEditorMenu
 		SpawnsetHistoryUtils.Save(SpawnsetEditType.Reset);
 	}
 
-	private static void SaveSpawnset()
+	public static void SaveSpawnset()
 	{
 		string? filePath = NativeFileDialog.CreateSaveFileDialog(null);
 		if (filePath != null)
 			File.WriteAllBytes(filePath, SpawnsetState.Spawnset.ToBytes());
 	}
 
-	private static void ReplaceSpawnset()
+	public static void ReplaceSpawnset()
 	{
 		File.WriteAllBytes(UserSettings.ModsSurvivalPath, SpawnsetState.Spawnset.ToBytes());
 		Modals.ShowReplacedSurvivalFile();
 	}
 
-	private static void Close()
+	public static void Close()
 	{
 		UiRenderer.Layout = LayoutType.Main;
 	}

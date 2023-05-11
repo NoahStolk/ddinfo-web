@@ -2,6 +2,8 @@ using DevilDaggersInfo.App.Networking;
 using DevilDaggersInfo.App.Networking.TaskHandlers;
 using DevilDaggersInfo.App.Ui;
 using DevilDaggersInfo.App.Ui.Config;
+using DevilDaggersInfo.App.Ui.ReplayEditor;
+using DevilDaggersInfo.App.Ui.SpawnsetEditor;
 using DevilDaggersInfo.App.User.Cache;
 using DevilDaggersInfo.App.User.Settings;
 using DevilDaggersInfo.Common.Utils;
@@ -91,6 +93,22 @@ public class Application
 		Root.Keyboard = _inputContext.Keyboards.Count == 0 ? null : _inputContext.Keyboards[0];
 		Root.Window = _window;
 		Root.Application = this;
+
+		if (Root.Mouse == null)
+		{
+			Modals.ShowError("No mouse available!");
+			Root.Log.Error("No mouse available!");
+		}
+
+		if (Root.Keyboard == null)
+		{
+			Modals.ShowError("No keyboard available!");
+			Root.Log.Error("No keyboard available!");
+		}
+		else
+		{
+			Root.Keyboard.KeyDown += Shortcuts.OnKeyPressed;
+		}
 
 		ConfigLayout.ValidateInstallation();
 
