@@ -1,6 +1,9 @@
 using DevilDaggersInfo.App.Core.GameMemory;
 using DevilDaggersInfo.App.Core.NativeInterface.Services;
 using DevilDaggersInfo.App.Platforms;
+using DevilDaggersInfo.Common.Utils;
+using Serilog;
+using Serilog.Core;
 #if WINDOWS
 using DevilDaggersInfo.App.Core.NativeInterface.Services.Windows;
 #elif LINUX
@@ -91,6 +94,9 @@ public static class Root
 
 	public static IMouse? Mouse { get; set; }
 	public static IKeyboard? Keyboard { get; set; }
+	public static Logger Log { get; } = new LoggerConfiguration()
+		.WriteTo.File($"ddinfo-{VersionUtils.EntryAssemblyVersion}.log", rollingInterval: RollingInterval.Infinite)
+		.CreateLogger();
 
 #if WINDOWS
 	public static INativeFileSystemService NativeFileSystemService { get; } = new WindowsFileSystemService();

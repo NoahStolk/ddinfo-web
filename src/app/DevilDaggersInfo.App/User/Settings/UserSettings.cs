@@ -48,7 +48,7 @@ public static class UserSettings
 			}
 			catch (Exception ex)
 			{
-				// Root.Dependencies.Log.Error(ex, "Failed to load user settings.");
+				Root.Log.Error(ex, "Failed to load user settings.");
 			}
 		}
 	}

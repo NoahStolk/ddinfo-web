@@ -1,3 +1,4 @@
+using DevilDaggersInfo.App.Engine.Maths.Numerics;
 using ImGuiNET;
 
 namespace DevilDaggersInfo.App.Ui;
@@ -37,6 +38,19 @@ public static class DebugWindow
 		ImGui.Text(GC.CollectionCount(2) + " gen 2 garbage collections");
 
 		ImGui.Text($"Modal active: {Modals.IsAnyOpen}");
+
+		if (ImGui.Button("Warning log"))
+			Root.Log.Warning("Test warning! This should be logged as WARNING.");
+
+		if (ImGui.Button("Error log"))
+			Root.Log.Error("Test error! This should be logged as ERROR.");
+
+		ImGui.PushStyleColor(ImGuiCol.Button, Color.Red with { A = 127 });
+		ImGui.PushStyleColor(ImGuiCol.ButtonHovered, Color.Red);
+		if (ImGui.Button("FATAL CRASH"))
+			throw new("Test crash! This should be logged as FATAL.");
+
+		ImGui.PopStyleColor(2);
 
 		if (ImGui.Button("Clear"))
 			_debugMessages.Clear();

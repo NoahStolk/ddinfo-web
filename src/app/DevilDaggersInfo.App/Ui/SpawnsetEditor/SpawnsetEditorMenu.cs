@@ -89,8 +89,8 @@ public static class SpawnsetEditorMenu
 		}
 		catch (Exception ex)
 		{
-			// TODO: Log exception.
 			Modals.ShowError($"Could not open file '{filePath}'.");
+			Root.Log.Error(ex, "Could not open file");
 			return;
 		}
 

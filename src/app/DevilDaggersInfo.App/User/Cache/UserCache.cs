@@ -32,7 +32,7 @@ public static class UserCache
 			}
 			catch (Exception ex)
 			{
-				// Root.Dependencies.Log.Error(ex, "Failed to load user cache.");
+				Root.Log.Error(ex, "Failed to load user cache.");
 			}
 		}
 	}

@@ -1,3 +1,5 @@
+using DevilDaggersInfo.App.Ui;
+
 namespace DevilDaggersInfo.App.Networking;
 
 public static class AsyncHandler
@@ -27,8 +29,8 @@ public static class AsyncHandler
 			}
 			catch (Exception ex)
 			{
-				// Root.Dependencies.NativeDialogService.ReportError("API call failed.", ex);
-				// Root.Dependencies.Log.Error(ex, "API error");
+				Modals.ShowError("API call failed.\n\n" + ex.Message);
+				Root.Log.Error(ex, "API error");
 				return default;
 			}
 		}
