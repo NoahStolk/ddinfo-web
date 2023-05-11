@@ -19,6 +19,8 @@ namespace DevilDaggersInfo.App.Ui.CustomLeaderboards.Leaderboard;
 
 public static class LeaderboardChild
 {
+	private static GetCustomEntry? _selectedCustomEntry;
+
 	private static List<GetCustomEntry> _sortedEntries = new();
 
 	private static LeaderboardData? _data;
@@ -61,6 +63,21 @@ public static class LeaderboardChild
 
 				File.WriteAllBytes(UserSettings.ModsSurvivalPath, spawnset.FileBytes);
 			}
+		}
+
+		if (_selectedCustomEntry != null)
+		{
+			ImGui.BeginDisabled(!_selectedCustomEntry.HasReplay);
+
+			ImGui.SameLine();
+			if (ImGui.Button($"View {_selectedCustomEntry.PlayerName}'s replay in game"))
+				WatchInGame(_selectedCustomEntry.Id);
+
+			ImGui.SameLine();
+			if (ImGui.Button($"View {_selectedCustomEntry.PlayerName}'s replay in replay viewer"))
+				WatchInReplayViewer(_selectedCustomEntry.Id);
+
+			ImGui.EndDisabled();
 		}
 
 		ImGui.BeginChild("LeaderboardTableChild");
@@ -113,31 +130,16 @@ public static class LeaderboardChild
 
 	private static void RenderCustomEntry(GetCustomEntry ce)
 	{
-		Vector2 iconSize = new(8);
-
 		ImGui.TableNextColumn();
 
-		ImGui.Text(ce.Rank.ToString("00"));
+		ImGui.PushStyleColor(ImGuiCol.Header, Colors.CustomLeaderboards with { A = 24 });
+		ImGui.PushStyleColor(ImGuiCol.HeaderHovered, Colors.CustomLeaderboards with { A = 64 });
+		ImGui.PushStyleColor(ImGuiCol.HeaderActive, Colors.CustomLeaderboards with { A = 96 });
+		bool temp = true;
+		if (ImGui.Selectable(ce.Rank.ToString("00"), ref temp, ImGuiSelectableFlags.SpanAllColumns))
+			_selectedCustomEntry = ce;
 
-		ImGui.SameLine();
-		ImGui.PushID(ce.Id);
-		if (ImGui.ImageButton((IntPtr)Root.InternalResources.IconEyeTexture.Handle, iconSize))
-			WatchInGame();
-
-		ImGui.PopID();
-
-		if (ImGui.IsItemHovered())
-			ImGui.SetTooltip("Watch in game");
-
-		ImGui.SameLine();
-		ImGui.PushID(ce.Id);
-		if (ImGui.ImageButton((IntPtr)Root.InternalResources.IconEyeTexture.Handle, iconSize))
-			WatchInReplayViewer();
-
-		ImGui.PopID();
-
-		if (ImGui.IsItemHovered())
-			ImGui.SetTooltip("Watch in replay viewer");
+		ImGui.PopStyleColor(3);
 
 		ImGui.TableNextColumn();
 
@@ -186,50 +188,6 @@ public static class LeaderboardChild
 
 		ImGui.Text(ce.SubmitDate.ToString(StringFormats.DateTimeFormat));
 		ImGui.TableNextColumn();
-
-		void WatchInGame()
-		{
-			AsyncHandler.Run(Inject, () => FetchCustomEntryReplayById.HandleAsync(ce.Id));
-
-			void Inject(GetCustomEntryReplayBuffer? getCustomEntryReplayBuffer)
-			{
-				if (getCustomEntryReplayBuffer == null)
-				{
-					Modals.ShowError("Could not fetch replay.");
-					return;
-				}
-
-				Root.GameMemoryService.WriteReplayToMemory(getCustomEntryReplayBuffer.Data);
-			}
-		}
-
-		void WatchInReplayViewer()
-		{
-			AsyncHandler.Run(BuildReplayScene, () => FetchCustomEntryReplayById.HandleAsync(ce.Id));
-
-			void BuildReplayScene(GetCustomEntryReplayBuffer? getCustomEntryReplayBuffer)
-			{
-				if (getCustomEntryReplayBuffer == null)
-				{
-					Modals.ShowError("Could not fetch replay.");
-					return;
-				}
-
-				ReplayBinary<LocalReplayBinaryHeader> replayBinary;
-				try
-				{
-					replayBinary = new(getCustomEntryReplayBuffer.Data);
-				}
-				catch (Exception ex)
-				{
-					Modals.ShowError("Could not parse replay.");
-					return;
-				}
-
-				// StateManager.Dispatch(new SetLayout(Root.Dependencies.CustomLeaderboardsRecorderReplayViewer3dLayout));
-				// StateManager.Dispatch(new BuildReplayScene(new[] { replayBinary }));
-			}
-		}
 	}
 
 	private static void Sort(ImGuiTableSortSpecsPtr sortsSpecs)
@@ -266,6 +224,50 @@ public static class LeaderboardChild
 	private static float GetAccuracy(GetCustomEntry ce)
 	{
 		return ce.DaggersFired == 0 ? 0 : ce.DaggersHit / (float)ce.DaggersFired;
+	}
+
+	private static void WatchInGame(int id)
+	{
+		AsyncHandler.Run(Inject, () => FetchCustomEntryReplayById.HandleAsync(id));
+
+		void Inject(GetCustomEntryReplayBuffer? getCustomEntryReplayBuffer)
+		{
+			if (getCustomEntryReplayBuffer == null)
+			{
+				Modals.ShowError("Could not fetch replay.");
+				return;
+			}
+
+			Root.GameMemoryService.WriteReplayToMemory(getCustomEntryReplayBuffer.Data);
+		}
+	}
+
+	private static void WatchInReplayViewer(int id)
+	{
+		AsyncHandler.Run(BuildReplayScene, () => FetchCustomEntryReplayById.HandleAsync(id));
+
+		void BuildReplayScene(GetCustomEntryReplayBuffer? getCustomEntryReplayBuffer)
+		{
+			if (getCustomEntryReplayBuffer == null)
+			{
+				Modals.ShowError("Could not fetch replay.");
+				return;
+			}
+
+			ReplayBinary<LocalReplayBinaryHeader> replayBinary;
+			try
+			{
+				replayBinary = new(getCustomEntryReplayBuffer.Data);
+			}
+			catch (Exception ex)
+			{
+				Modals.ShowError("Could not parse replay.");
+				return;
+			}
+
+			// StateManager.Dispatch(new SetLayout(Root.Dependencies.CustomLeaderboardsRecorderReplayViewer3dLayout));
+			// StateManager.Dispatch(new BuildReplayScene(new[] { replayBinary }));
+		}
 	}
 
 	public sealed record LeaderboardData(GetCustomLeaderboard Leaderboard, int SpawnsetId);

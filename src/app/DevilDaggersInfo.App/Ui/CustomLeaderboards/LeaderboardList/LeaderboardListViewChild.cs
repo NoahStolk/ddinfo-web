@@ -72,8 +72,8 @@ public static class LeaderboardListViewChild
 				ImGui.TableNextColumn();
 
 				ImGui.PushStyleColor(ImGuiCol.Header, Colors.CustomLeaderboards with { A = 24 });
-				ImGui.PushStyleColor(ImGuiCol.HeaderHovered, Colors.CustomLeaderboards with { A = 48 });
-				ImGui.PushStyleColor(ImGuiCol.HeaderActive, Colors.CustomLeaderboards with { A = 72 });
+				ImGui.PushStyleColor(ImGuiCol.HeaderHovered, Colors.CustomLeaderboards with { A = 64 });
+				ImGui.PushStyleColor(ImGuiCol.HeaderActive, Colors.CustomLeaderboards with { A = 96 });
 				bool temp = true;
 				if (ImGui.Selectable(clOverview.SpawnsetName, ref temp, ImGuiSelectableFlags.SpanAllColumns, new(0, 16)))
 				{
