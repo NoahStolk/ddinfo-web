@@ -81,7 +81,9 @@ public unsafe class FramebufferData
 
 	public void RenderArena(float delta, ArenaScene arenaScene)
 	{
-		arenaScene.Update(ImGui.IsWindowHovered(), ImGui.IsWindowFocused(), delta);
+		bool hover = ImGui.IsWindowHovered();
+		bool focus = ImGui.IsWindowFocused();
+		arenaScene.Update(hover, hover || focus, delta);
 
 		Root.Gl.BindFramebuffer(FramebufferTarget.Framebuffer, Framebuffer);
 
