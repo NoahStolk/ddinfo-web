@@ -44,6 +44,7 @@ public static class UiRenderer
 				CustomLeaderboardsWindow.Update(delta);
 				CustomLeaderboardsWindow.Render();
 				CustomLeaderboardResultsWindow.Render();
+				CustomLeaderboards3DWindow.Render(delta);
 				break;
 			case LayoutType.ReplayEditor:
 				ReplayEditorWindow.Update(delta);

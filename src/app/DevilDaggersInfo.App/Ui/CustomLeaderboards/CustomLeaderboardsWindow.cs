@@ -10,6 +10,7 @@ public static class CustomLeaderboardsWindow
 
 	public static void Update(float delta)
 	{
+		CustomLeaderboards3DWindow.Update(delta);
 		RecordingChild.Update(delta);
 
 		_recordingInterval++;

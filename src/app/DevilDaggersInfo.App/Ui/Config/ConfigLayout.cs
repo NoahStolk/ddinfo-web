@@ -50,6 +50,7 @@ public static class ConfigLayout
 		// Initialize scenes.
 		MainLayout.InitializeScene();
 		SpawnsetEditor3DWindow.InitializeScene();
+		CustomLeaderboards3DWindow.InitializeScene();
 		ReplayEditor3DWindow.InitializeScene();
 
 		// Initialize file watchers.

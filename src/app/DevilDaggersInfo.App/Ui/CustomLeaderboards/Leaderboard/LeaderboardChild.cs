@@ -265,8 +265,7 @@ public static class LeaderboardChild
 				return;
 			}
 
-			// StateManager.Dispatch(new SetLayout(Root.Dependencies.CustomLeaderboardsRecorderReplayViewer3dLayout));
-			// StateManager.Dispatch(new BuildReplayScene(new[] { replayBinary }));
+			CustomLeaderboards3DWindow.LoadReplay(replayBinary);
 		}
 	}
 
