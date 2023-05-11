@@ -22,6 +22,8 @@ public static class AppBuilder
 			_ => throw new NotImplementedException(),
 		};
 
+		// Example:
+		// dotnet publish -p:PublishTrimmed=True -p:EnableCompressionInSingleFile=True -p:PublishReadyToRun=False -p:PublishProtocol=FileSystem -p:TargetFramework=net7.0 -p:RuntimeIdentifier=win-x64 -p:Platform=x64 -p:Configuration=Release -p:PublishDir=bin\Release\net7.0\win-x64\publish -p:PublishSingleFile=True -p:SelfContained=True -p:PublishMethod=SELF_CONTAINED
 		Dictionary<string, string> dictionary = new()
 		{
 			{ "PublishTrimmed", "True" },
