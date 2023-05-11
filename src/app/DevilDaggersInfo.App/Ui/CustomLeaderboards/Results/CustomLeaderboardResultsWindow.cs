@@ -21,7 +21,7 @@ public static class CustomLeaderboardResultsWindow
 
 	public static void Render()
 	{
-		ImGui.SetNextWindowSizeConstraints(new(-1, 0), new(-1, float.MaxValue));
+		ImGui.SetNextWindowSizeConstraints(new(388, 0), new(388, float.MaxValue));
 		ImGui.PushStyleVar(ImGuiStyleVar.WindowMinSize, new Vector2(0, 320));
 		ImGui.Begin("Custom Leaderboard Submissions (this session)");
 		ImGui.PopStyleVar();
