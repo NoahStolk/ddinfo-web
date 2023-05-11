@@ -1,17 +1,30 @@
 namespace DevilDaggersInfo.App;
 
-// TODO: Implement.
 public static class StringResources
 {
-	private const string _movement3d = "Use WASD, space, and left shift to move around.";
-	private const string _camera3d = "Hold right click to look around.";
-	private const string _tileEditor3d = "Use the scroll wheel to raise individual tiles.";
-	private const string _escape3d = "Press escape to exit.";
+	private const string _movement3D = "Use WASD, space, and left shift to move around.";
+	private const string _camera3D = "Hold right click to look around.";
+	private const string _tileEditor3D = "Use the scroll wheel to raise individual tiles.";
+	private const string _escape3D = "Press escape to exit.";
 
-	public const string ReplaySimulator = $"""
-		{_movement3d}
-		{_camera3d}
-		{_escape3d}
+	public const string MainMenu = """
+		This is an alpha version of the rewritten tools.
+		It is still very much a work in progress.
+
+		I also do not have a deadline or schedule for these developments,
+		and there will not be an official release date any time soon.
+
+		If you encounter any problems, please report them on Discord/GitHub.
+
+		Thank you for testing.
+
+		For more information, go to:
+		""";
+
+	public const string ReplaySimulator3D = $"""
+		{_movement3D}
+		{_camera3D}
+		{_escape3D}
 
 		NOTE: This feature is VERY EXPERIMENTAL and may never fully work.
 
@@ -21,11 +34,11 @@ public static class StringResources
 		Enemy movement is not simulated at all and this most likely won't be implemented.
 		""";
 
-	public const string SurvivalEditor3d = $"""
-		{_movement3d}
-		{_camera3d}
-		{_tileEditor3d}
-		{_escape3d}
+	public const string SpawnsetEditor3D = $"""
+		{_movement3D}
+		{_camera3D}
+		{_tileEditor3D}
+		{_escape3D}
 
 		The 3D editor is still a work in progress.
 		""";

@@ -12,20 +12,6 @@ namespace DevilDaggersInfo.App.Ui.Main;
 
 public static class MainLayout
 {
-	private const string _mainMenu = """
-		This is an alpha version of the rewritten tools.
-		It is still very much a work in progress.
-
-		I also do not have a deadline or schedule for these developments,
-		and there will not be an official release date any time soon.
-
-		If you encounter any problems, please report them on Discord/GitHub.
-
-		Thank you for testing.
-
-		For more information, go to:
-		""";
-
 	private static readonly int _centerX = (int)Constants.LayoutSize.X / 2;
 
 	private static readonly string _version = VersionUtils.EntryAssemblyVersion;
@@ -50,7 +36,7 @@ public static class MainLayout
 
 		ImGui.Begin("Main Menu", Constants.LayoutFlags);
 
-		TextAt(_mainMenu, 8, 8);
+		TextAt(StringResources.MainMenu, 8, 8);
 		TextAt("DDINFO", _centerX, 64, new(1, 0, 0, 1), true); // TODO: font size 64
 		TextAt("TOOLS", _centerX, 128, new(1, 0.5f, 0, 1), true); // TODO: font size 32
 		TextAt(_version, _centerX, 176, new(1, 0.8f, 0, 1), true); // TODO: font size 24
