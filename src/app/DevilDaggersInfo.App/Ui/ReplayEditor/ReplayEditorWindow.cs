@@ -10,13 +10,16 @@ namespace DevilDaggersInfo.App.Ui.ReplayEditor;
 
 public static class ReplayEditorWindow
 {
+	// TODO: Move to 3D window.
 	private static float _time;
 
+	// TODO: Move to 3D window.
 	public static void Reset()
 	{
 		_time = 0;
 	}
 
+	// TODO: Move to 3D window.
 	public static void Update(float delta)
 	{
 		if (_time < ReplayState.Replay.Header.Time)

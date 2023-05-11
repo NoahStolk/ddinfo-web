@@ -11,6 +11,8 @@ public static class CustomLeaderboards3DWindow
 {
 	private static readonly FramebufferData _framebufferData = new();
 
+	private static float _time;
+
 	private static SpawnsetBinary _spawnset = SpawnsetBinary.CreateDefault();
 
 	private static ArenaScene? _arenaScene;
@@ -24,6 +26,7 @@ public static class CustomLeaderboards3DWindow
 
 	public static void LoadReplay(ReplayBinary<LocalReplayBinaryHeader> replayBinary)
 	{
+		_time = 0;
 		_spawnset = replayBinary.Header.Spawnset;
 
 		ReplaySimulation replaySimulation = ReplaySimulationBuilder.Build(replayBinary);
@@ -32,7 +35,10 @@ public static class CustomLeaderboards3DWindow
 
 	public static void Update(float delta)
 	{
-		throw new NotImplementedException();
+		if (_time < ArenaScene.ReplaySimulation?.InputSnapshots.Count / 60f)
+			_time += delta;
+
+		ArenaScene.CurrentTick = (int)MathF.Round(_time * 60);
 	}
 
 	public static void Render(float delta)
