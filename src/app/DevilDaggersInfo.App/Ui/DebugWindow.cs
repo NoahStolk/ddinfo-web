@@ -39,6 +39,9 @@ public static class DebugWindow
 
 		ImGui.Text($"Modal active: {Modals.IsAnyOpen}");
 
+		if (ImGui.Button("Error window"))
+			Modals.ShowError("Test error!");
+
 		if (ImGui.Button("Warning log"))
 			Root.Log.Warning("Test warning! This should be logged as WARNING.");
 
