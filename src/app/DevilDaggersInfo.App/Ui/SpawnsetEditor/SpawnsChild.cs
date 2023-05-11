@@ -20,6 +20,8 @@ public static class SpawnsChild
 	private static readonly bool[] _selected = new bool[MaxSpawns];
 	private static readonly string[] _enemyNames = Enum.GetValues<EnemyType>().Select(et => et.ToString()).ToArray();
 
+	private static int? _scrollToIndex;
+
 	private static int _lastSelectedIndex = -1;
 	private static float _editDelay;
 	private static bool _delayEdited;
@@ -49,6 +51,7 @@ public static class SpawnsChild
 				EnemyType enemyType = _addEnemyTypeIndex is >= 0 and <= 9 ? (EnemyType)_addEnemyTypeIndex : EnemyType.Empty;
 				SpawnsetState.Spawnset = SpawnsetState.Spawnset with { Spawns = SpawnsetState.Spawnset.Spawns.Add(new(enemyType, _addDelay)) };
 				SpawnsetHistoryUtils.Save(SpawnsetEditType.SpawnAdd);
+				_scrollToIndex = SpawnsetState.Spawnset.Spawns.Length - 1;
 			}
 		}
 
@@ -67,6 +70,7 @@ public static class SpawnsChild
 				EnemyType enemyType = _addEnemyTypeIndex is >= 0 and <= 9 ? (EnemyType)_addEnemyTypeIndex : EnemyType.Empty;
 				SpawnsetState.Spawnset = SpawnsetState.Spawnset with { Spawns = SpawnsetState.Spawnset.Spawns.Insert(selectedIndex, new(enemyType, _addDelay)) };
 				SpawnsetHistoryUtils.Save(SpawnsetEditType.SpawnInsert);
+				_scrollToIndex = selectedIndex;
 			}
 		}
 
@@ -128,6 +132,12 @@ public static class SpawnsChild
 			{
 				ImGui.TableNextRow();
 				ImGui.TableNextColumn();
+
+				if (_scrollToIndex.HasValue && spawn.Index == _scrollToIndex.Value)
+				{
+					ImGui.SetScrollHereY();
+					_scrollToIndex = null;
+				}
 
 				if (ImGui.Selectable(spawn.Index.ToString(), ref _selected[spawn.Index], ImGuiSelectableFlags.SpanAllColumns))
 				{
