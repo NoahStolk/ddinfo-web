@@ -399,12 +399,14 @@ public record SpawnsetBinary
 	public string GetGameVersionString()
 		=> GetGameVersionString(WorldVersion, SpawnVersion);
 
+	// TODO: Add enum for recognized spawnset format versions.
 	public static string GetGameVersionString(int worldVersion, int spawnVersion)
 		=> worldVersion == 8 ? "V0/V1" : spawnVersion == 4 ? "V2/V3" : "V3.1+";
 
 	public (int X, float? Y, int Z) GetRaceDaggerTilePosition()
 		=> GetRaceDaggerTilePosition(ArenaDimension, ArenaTiles, RaceDaggerPosition);
 
+	// TODO: Remove the Y component from this method. Use GetRaceDaggerHeight or GetActualRaceDaggerHeight instead.
 	public static (int X, float? Y, int Z) GetRaceDaggerTilePosition(int arenaDimension, ImmutableArena arenaTiles, Vector2 raceDaggerPosition)
 	{
 		int x = WorldToTileCoordinate(arenaDimension, raceDaggerPosition.X);
@@ -496,6 +498,21 @@ public record SpawnsetBinary
 		float shrinkTime = GetShrinkTimeForTile(arenaDimension, shrinkStart, shrinkEnd, shrinkRate, x, y);
 		float shrinkHeight = Math.Max(0, currentTime - shrinkTime) / 4;
 		return tileHeight - shrinkHeight;
+	}
+
+	public float? GetActualRaceDaggerHeight(float currentTime)
+	{
+		int raceDaggerTileX = WorldToTileCoordinate(ArenaDimension, RaceDaggerPosition.X);
+		int raceDaggerTileZ = WorldToTileCoordinate(ArenaDimension, RaceDaggerPosition.Y);
+		return GetActualRaceDaggerHeight(ArenaDimension, ArenaTiles, ShrinkStart, ShrinkEnd, ShrinkRate, raceDaggerTileX, raceDaggerTileZ, currentTime);
+	}
+
+	public static float? GetActualRaceDaggerHeight(int arenaDimension, ImmutableArena arenaTiles, float shrinkStart, float shrinkEnd, float shrinkRate, int raceDaggerTileX, int raceDaggerTileZ, float currentTime)
+	{
+		if (raceDaggerTileX >= 0 && raceDaggerTileX < arenaDimension && raceDaggerTileZ >= 0 && raceDaggerTileZ < arenaDimension)
+			return GetActualTileHeight(arenaDimension, arenaTiles, shrinkStart, shrinkEnd, shrinkRate, raceDaggerTileX, raceDaggerTileZ, currentTime);
+
+		return null;
 	}
 
 	public float GetSliderMaxSeconds()
