@@ -49,7 +49,7 @@ public static class ArenaChild
 
 		ImGuiIOPtr io = ImGui.GetIO();
 
-		ArenaMousePosition mousePosition = ArenaMousePosition.Get(io, ImGui.GetWindowPos());
+		ArenaMousePosition mousePosition = ArenaMousePosition.Get(io, ImGui.GetCursorScreenPos());
 
 		if (mousePosition.IsValid)
 		{
