@@ -64,6 +64,7 @@
   </ItemGroup>
 
   <ItemGroup Label="External dependencies">
+    <PackageReference Include="NativeFileDialogSharp" />
     <PackageReference Include="Serilog.Sinks.File" />
     <PackageReference Include="Silk.NET.Input" />
     <PackageReference Include="Silk.NET.OpenAL" />

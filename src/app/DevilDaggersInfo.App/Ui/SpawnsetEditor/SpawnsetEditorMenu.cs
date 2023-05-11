@@ -78,7 +78,7 @@ public static class SpawnsetEditorMenu
 
 	private static void OpenSpawnset()
 	{
-		string? filePath = Root.NativeFileSystemService.CreateOpenFileDialog("Open spawnset file", null);
+		string? filePath = NativeFileDialog.CreateOpenFileDialog(null);
 		if (filePath == null)
 			return;
 
@@ -117,7 +117,7 @@ public static class SpawnsetEditorMenu
 
 	private static void SaveSpawnset()
 	{
-		string? filePath = Root.NativeFileSystemService.CreateSaveFileDialog("Save spawnset file", null);
+		string? filePath = NativeFileDialog.CreateSaveFileDialog(null);
 		if (filePath != null)
 			File.WriteAllBytes(filePath, SpawnsetState.Spawnset.ToBytes());
 	}

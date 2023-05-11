@@ -89,7 +89,7 @@ public static class ConfigLayout
 		ImGui.SetCursorPos(new(32, 208));
 		if (ImGui.Button("Select installation directory", new(256, 32)))
 		{
-			string? directory = Root.NativeFileSystemService.SelectDirectory();
+			string? directory = NativeFileDialog.SelectDirectory();
 			if (directory != null)
 				_installationDirectoryInput = directory;
 		}

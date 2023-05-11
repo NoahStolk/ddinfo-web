@@ -1,5 +1,4 @@
 using DevilDaggersInfo.App.Core.GameMemory;
-using DevilDaggersInfo.App.Core.NativeInterface.Services;
 using DevilDaggersInfo.App.Platforms;
 using DevilDaggersInfo.Common.Utils;
 using Serilog;
@@ -99,11 +98,9 @@ public static class Root
 		.CreateLogger();
 
 #if WINDOWS
-	public static INativeFileSystemService NativeFileSystemService { get; } = new WindowsFileSystemService();
 	public static IPlatformSpecificValues PlatformSpecificValues { get; } = new WindowsValues();
 	public static GameMemoryService GameMemoryService { get; } = new(new WindowsMemoryService());
 #elif LINUX
-	public static INativeFileSystemService NativeFileSystemService { get; } = new LinuxFileSystemService();
 	public static IPlatformSpecificValues PlatformSpecificValues { get; } = new LinuxValues();
 	public static GameMemoryService GameMemoryService { get; } = new(new LinuxMemoryService());
 #endif
