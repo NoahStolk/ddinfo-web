@@ -8,7 +8,7 @@ using DevilDaggersInfo.Web.Server.Domain.Tests.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
-namespace DevilDaggersInfo.Web.Server.Domain.Tests;
+namespace DevilDaggersInfo.Web.Server.Domain.Tests.Tests.ServerDomain;
 
 [TestClass]
 public class ToolRepositoryTests

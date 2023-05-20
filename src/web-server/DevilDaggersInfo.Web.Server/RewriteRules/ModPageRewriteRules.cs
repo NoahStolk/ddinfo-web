@@ -1,5 +1,4 @@
 // ReSharper disable StringLiteralTypo
-using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Web.Server.Utils;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Net.Http.Headers;
@@ -149,7 +148,7 @@ public class ModPageRewriteRules : IRule
 		if (!request.QueryString.Value.StartsWith(queryStringKey, StringComparison.OrdinalIgnoreCase))
 			return;
 
-		string modName = request.QueryString.Value.TrimStart(queryStringKey);
+		string modName = RewriteRulesUtils.TrimStart(request.QueryString.Value, queryStringKey);
 		int? modId = _escapedNames.ContainsValue(modName) ? _escapedNames.First(kvp => kvp.Value == modName).Key : null;
 		if (!modId.HasValue)
 			return;

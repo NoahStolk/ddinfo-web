@@ -4,7 +4,7 @@ using DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardHistory;
 using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 
-namespace DevilDaggersInfo.Web.Server.Domain.Main.Tests.Utils;
+namespace DevilDaggersInfo.Web.Server.Domain.Tests.Utils;
 
 public class TestData : ILeaderboardHistoryCache, IFileSystemService
 {

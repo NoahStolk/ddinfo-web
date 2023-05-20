@@ -1,5 +1,4 @@
 // ReSharper disable StringLiteralTypo
-using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Web.Server.Utils;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Net.Http.Headers;
@@ -146,7 +145,7 @@ public class CustomLeaderboardPageRewriteRules : IRule
 		if (!request.QueryString.Value.StartsWith(queryStringKey, StringComparison.OrdinalIgnoreCase))
 			return;
 
-		string spawnsetName = request.QueryString.Value.TrimStart(queryStringKey);
+		string spawnsetName = RewriteRulesUtils.TrimStart(request.QueryString.Value, queryStringKey);
 		int? customLeaderboardId = _escapedNames.ContainsValue(spawnsetName) ? _escapedNames.First(kvp => kvp.Value == spawnsetName).Key : null;
 		if (!customLeaderboardId.HasValue)
 			return;

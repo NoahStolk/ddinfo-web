@@ -1,4 +1,3 @@
-using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Web.Server.Utils;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Net.Http.Headers;
@@ -20,7 +19,7 @@ public class PlayerPageRewriteRules : IRule
 		if (!request.QueryString.Value.StartsWith(queryStringKey, StringComparison.OrdinalIgnoreCase))
 			return;
 
-		if (!int.TryParse(request.QueryString.Value.TrimStart(queryStringKey), out int id))
+		if (!int.TryParse(RewriteRulesUtils.TrimStart(request.QueryString.Value, queryStringKey), out int id))
 			return;
 
 		context.Result = RuleResult.EndResponse;
