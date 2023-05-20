@@ -6,13 +6,13 @@ public static class PrimitiveExtensions
 {
 	public static DaggerType ToDaggerType(this byte value) => value switch
 	{
-		1 => DaggerType.Level1,
-		2 => DaggerType.Level2,
-		3 => DaggerType.Level3,
-		4 => DaggerType.Level3Homing,
-		5 => DaggerType.Level4,
-		6 => DaggerType.Level4Homing,
-		7 => DaggerType.Level4HomingSplash,
+		0x01 => DaggerType.Level1,
+		0x02 => DaggerType.Level2,
+		0x03 => DaggerType.Level3,
+		0x04 => DaggerType.Level3Homing,
+		0x05 => DaggerType.Level4,
+		0x06 => DaggerType.Level4Homing,
+		0x07 => DaggerType.Level4HomingSplash,
 		_ => throw new InvalidOperationException($"Invalid {nameof(DaggerType)} '{value}'."),
 	};
 
@@ -28,17 +28,17 @@ public static class PrimitiveExtensions
 
 	public static ShootType ToShootType(this byte value) => value switch
 	{
-		0 => ShootType.None,
-		1 => ShootType.Hold,
-		2 => ShootType.Release,
+		0x00 => ShootType.None,
+		0x01 => ShootType.Hold,
+		0x02 => ShootType.Release,
 		_ => throw new InvalidOperationException($"Invalid {nameof(ShootType)} '{value}'."),
 	};
 
 	public static JumpType ToJumpType(this byte value) => value switch
 	{
-		0 => JumpType.None,
-		1 => JumpType.Hold,
-		2 => JumpType.StartedPress,
+		0x00 => JumpType.None,
+		0x01 => JumpType.Hold,
+		0x02 => JumpType.StartedPress,
 		_ => throw new InvalidOperationException($"Invalid {nameof(JumpType)} '{value}'."),
 	};
 }
