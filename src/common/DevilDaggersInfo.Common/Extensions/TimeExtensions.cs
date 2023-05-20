@@ -1,5 +1,6 @@
 namespace DevilDaggersInfo.Common.Extensions;
 
+// TODO: Refactor to fixed-time struct.
 public static class TimeExtensions
 {
 	public static int To10thMilliTime(this float time) => (int)(time * 10000.0);

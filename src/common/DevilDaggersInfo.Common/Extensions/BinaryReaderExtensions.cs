@@ -2,6 +2,7 @@ using System.Text;
 
 namespace DevilDaggersInfo.Common.Extensions;
 
+// TODO: Move to core mod.
 public static class BinaryReaderExtensions
 {
 	public static string ReadNullTerminatedString(this BinaryReader binaryReader)

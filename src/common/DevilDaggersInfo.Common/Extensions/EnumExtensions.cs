@@ -1,5 +1,6 @@
 namespace DevilDaggersInfo.Common.Extensions;
 
+// TODO: Move to web-core.
 public static class EnumExtensions
 {
 	public static IEnumerable<int> AsEnumerable<TEnum>(this TEnum e)

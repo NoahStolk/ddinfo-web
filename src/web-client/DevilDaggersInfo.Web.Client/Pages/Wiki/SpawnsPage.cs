@@ -45,4 +45,13 @@ public partial class SpawnsPage
 		_waveCount += amount;
 		_spawnsView = new(_spawnset, GameVersion, _waveCount);
 	}
+
+	private static string ReplaceLastOccurrenceOf(string source, string find, string replace)
+	{
+		int position = source.LastIndexOf(find);
+		if (position == -1)
+			return source;
+
+		return source.Remove(position, find.Length).Insert(position, replace);
+	}
 }

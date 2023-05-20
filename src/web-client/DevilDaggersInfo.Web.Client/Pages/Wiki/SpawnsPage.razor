@@ -19,7 +19,7 @@
 <p class="para">
 	@{
 		List<Enemy> enemies = new[] { "Centipede", "Gigapede", "Ghostpede", "Thorn" }.Select(s => Enemies.GetEnemyByName(GameVersion, s)).Where(e => e != null).ToList()!;
-		string enemyString = string.Join(", ", enemies.Select(e => MarkupUtils.EnemyString(e, true))).ReplaceLastOccurrenceOf(", ", " and ");
+		string enemyString = ReplaceLastOccurrenceOf(string.Join(", ", enemies.Select(e => MarkupUtils.EnemyString(e, true))), ", ", " and ");
 		MarkupString note = new($"Note that {enemyString} emerge around 3 seconds later than their actual spawn time.");
 	}
 	@note
