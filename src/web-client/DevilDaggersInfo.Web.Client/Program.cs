@@ -14,10 +14,13 @@ namespace DevilDaggersInfo.Web.Client;
 public static class Program
 {
 	public static string? Version { get; private set; }
+	public static string? BuildTime { get; private set; }
 
 	public static async Task Main(string[] args)
 	{
-		Version = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
+		Assembly executingAssembly = Assembly.GetExecutingAssembly();
+		Version = executingAssembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
+		BuildTime = executingAssembly.GetCustomAttribute<BuildTimeAttribute>()?.BuildTime;
 
 		WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault(args);
 
