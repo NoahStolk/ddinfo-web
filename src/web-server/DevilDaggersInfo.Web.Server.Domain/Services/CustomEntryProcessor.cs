@@ -665,11 +665,12 @@ public class CustomEntryProcessor
 		string replayString = uploadRequest.IsReplay ? " | `Replay`" : string.Empty;
 		string localReplayString = uploadRequest.Status == 8 ? $" | `Local replay from {uploadRequest.ReplayPlayerId}`" : string.Empty;
 		string requestInfo = $"(`{uploadRequest.ClientVersion}` | `{uploadRequest.OperatingSystem}` | `{uploadRequest.BuildMode}` | `{uploadRequest.Client}`{replayString}{localReplayString} | `{replayData}` | `Status {uploadRequest.Status}`)";
+		string playerInfo = $"`{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`)";
 
 		if (!string.IsNullOrEmpty(errorMessage))
-			_submissionLogger.Log(false, $":{errorEmoteNameOverride ?? "warning"}: `{TimeUtils.TicksToTimeString(_stopwatch.ElapsedTicks)}` Upload failed for user `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`. {requestInfo}\n**{errorMessage}**");
+			_submissionLogger.Log(false, $":{errorEmoteNameOverride ?? "warning"}: `{_stopwatch.ElapsedMilliseconds:N0}` Upload failed for user {playerInfo} for `{spawnsetIdentification}`. {requestInfo}\n**{errorMessage}**");
 		else
-			_submissionLogger.Log(true, $":white_check_mark: `{TimeUtils.TicksToTimeString(_stopwatch.ElapsedTicks)}` `{uploadRequest.PlayerName}` just submitted a score of `{FormatTimeString(uploadRequest.TimeInSeconds)}` to `{spawnsetIdentification}`. {requestInfo}");
+			_submissionLogger.Log(true, $":white_check_mark: `{_stopwatch.ElapsedMilliseconds:N0}` {playerInfo} just submitted a score of `{FormatTimeString(uploadRequest.TimeInSeconds)}` to `{spawnsetIdentification}`. {requestInfo}");
 	}
 
 	private List<int> GetExistingReplayIds(List<int> customEntryIds)

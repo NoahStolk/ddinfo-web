@@ -40,7 +40,7 @@ public class StartupCacheHostedService : IHostedService
 		// Initiate static caches.
 		_leaderboardStatisticsCache.Initiate();
 
-		sb.Append("- `LeaderboardStatisticsCache` initiation done at ").AppendLine(TimeUtils.TicksToTimeString(sw.ElapsedTicks));
+		sb.Append("- `LeaderboardStatisticsCache` initiation done at ").Append(sw.ElapsedMilliseconds.ToString("N0")).AppendLine(" ms");
 
 		// Initiate dynamic caches.
 
@@ -50,14 +50,14 @@ public class StartupCacheHostedService : IHostedService
 		foreach (string historyFilePath in _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory).Where(p => p.EndsWith(".bin")))
 			_leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(historyFilePath);
 
-		sb.Append("- `LeaderboardHistoryCache` initiation done at ").AppendLine(TimeUtils.TicksToTimeString(sw.ElapsedTicks));
+		sb.Append("- `LeaderboardHistoryCache` initiation done at ").Append(sw.ElapsedMilliseconds.ToString("N0")).AppendLine(" ms");
 
 		/* The ModArchiveCache is initially very slow because it requires unzipping huge mod archive zip files.
 		 * The idea to fix this; when adding data (based on a mod archive) to the ConcurrentBag, write this data to a JSON file as well, so it is not lost when the site shuts down.
 		 * The cache then needs to be initiated here, by reading all the JSON files and populating the ConcurrentBag on start up.*/
 		await _modArchiveCache.LoadEntireFileCacheAsync();
 
-		sb.Append("- `ModArchiveCache` initiation done at ").AppendLine(TimeUtils.TicksToTimeString(sw.ElapsedTicks));
+		sb.Append("- `ModArchiveCache` initiation done at ").Append(sw.ElapsedMilliseconds.ToString("N0")).AppendLine(" ms");
 
 		if (!_env.IsDevelopment())
 			_logContainerService.AddLog($"{DateTime.UtcNow:HH:mm:ss.fff}: Initiating caches...\n{sb}");
