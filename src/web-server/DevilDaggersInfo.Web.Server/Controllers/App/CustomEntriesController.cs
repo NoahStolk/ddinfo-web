@@ -1,5 +1,4 @@
 using DevilDaggersInfo.Api.App.CustomLeaderboards;
-using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.App;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.App;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
