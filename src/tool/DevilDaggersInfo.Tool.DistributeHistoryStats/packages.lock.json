@@ -1359,7 +1359,7 @@
           "DevilDaggersInfo.Api.Ddse": "[1.0.0, )",
           "DevilDaggersInfo.Api.DdstatsRust": "[1.0.0, )",
           "DevilDaggersInfo.Core.Encryption": "[1.0.0, )",
-          "DevilDaggersInfo.Web.Client": "[5.7.3-2023-05-11-20-10, )",
+          "DevilDaggersInfo.Web.Client": "[5.7.3-2023-05-20-08-23, )",
           "DevilDaggersInfo.Web.Server.Domain.Admin": "[1.0.0, )",
           "DevilDaggersInfo.Web.Server.Domain.Main": "[1.0.0, )",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "[7.0.5, )",
