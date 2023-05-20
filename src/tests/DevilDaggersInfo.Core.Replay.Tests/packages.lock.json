@@ -101,13 +101,9 @@
         "resolved": "1.6.0",
         "contentHash": "COC1aiAJjCoA5GBF+QKL2uLqEBew4JsCkQmoHKbN3TlOZKa2fKLz5CpiRQKDz0RsAOEGsVKqOD5bomsXq/4STQ=="
       },
-      "devildaggersinfo.common": {
-        "type": "Project"
-      },
       "devildaggersinfo.core.replay": {
         "type": "Project",
         "dependencies": {
-          "DevilDaggersInfo.Common": "[1.0.0, )",
           "DevilDaggersInfo.Core.Spawnset": "[1.0.0, )"
         }
       },

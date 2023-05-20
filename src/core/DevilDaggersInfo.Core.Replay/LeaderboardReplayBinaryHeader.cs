@@ -32,7 +32,7 @@ public class LeaderboardReplayBinaryHeader : IReplayBinaryHeader<LeaderboardRepl
 			if (identifier == null)
 				throw new InvalidReplayBinaryException("Leaderboard replay identifier could not be determined.");
 
-			throw new InvalidReplayBinaryException($"'{Encoding.UTF8.GetString(identifier)}' / '{identifier.ByteArrayToHexString()}' is not a valid leaderboard replay identifier.");
+			throw new InvalidReplayBinaryException($"'{Encoding.UTF8.GetString(identifier)}' / '{BitConverter.ToString(identifier)}' is not a valid leaderboard replay identifier.");
 		}
 
 		short usernameLength = br.ReadInt16();

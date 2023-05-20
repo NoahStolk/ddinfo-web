@@ -74,7 +74,7 @@ public class LocalReplayBinaryHeader : IReplayBinaryHeader<LocalReplayBinaryHead
 			if (identifier == null)
 				throw new InvalidReplayBinaryException("Local replay identifier could not be determined.");
 
-			throw new InvalidReplayBinaryException($"'{Encoding.UTF8.GetString(identifier)}' / '{identifier.ByteArrayToHexString()}' is not a valid local replay identifier.");
+			throw new InvalidReplayBinaryException($"'{Encoding.UTF8.GetString(identifier)}' / '{BitConverter.ToString(identifier)}' is not a valid local replay identifier.");
 		}
 
 		int version = br.ReadInt32();
