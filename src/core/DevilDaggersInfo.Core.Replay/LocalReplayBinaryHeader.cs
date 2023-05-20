@@ -1,4 +1,3 @@
-using DevilDaggersInfo.Common.Utils;
 using DevilDaggersInfo.Core.Spawnset;
 using System.Diagnostics.CodeAnalysis;
 using System.Security.Cryptography;
@@ -96,7 +95,7 @@ public class LocalReplayBinaryHeader : IReplayBinaryHeader<LocalReplayBinaryHead
 		int spawnsetLength = br.ReadInt32();
 		byte[] spawnsetBuffer = br.ReadBytes(spawnsetLength);
 
-		if (!ArrayUtils.AreEqual(spawnsetMd5, MD5.HashData(spawnsetBuffer)))
+		if (!spawnsetMd5.SequenceEqual(MD5.HashData(spawnsetBuffer)))
 			throw new InvalidReplayBinaryException("Hashed spawnset data does not match the spawnset buffer.");
 
 		return new(
@@ -128,7 +127,7 @@ public class LocalReplayBinaryHeader : IReplayBinaryHeader<LocalReplayBinaryHead
 			return false;
 
 		identifier = br.ReadBytes(Identifier.Length);
-		return ArrayUtils.AreEqual(Identifier, identifier);
+		return Identifier.SequenceEqual(identifier);
 	}
 
 	public static LocalReplayBinaryHeader CreateDefault()

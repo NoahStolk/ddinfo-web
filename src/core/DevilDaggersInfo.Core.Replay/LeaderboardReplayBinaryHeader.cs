@@ -1,4 +1,3 @@
-using DevilDaggersInfo.Common.Utils;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
@@ -62,7 +61,7 @@ public class LeaderboardReplayBinaryHeader : IReplayBinaryHeader<LeaderboardRepl
 			return false;
 
 		identifier = br.ReadBytes(Identifier.Length);
-		return ArrayUtils.AreEqual(Identifier, identifier);
+		return Identifier.SequenceEqual(identifier);
 	}
 
 	public static LeaderboardReplayBinaryHeader CreateDefault()

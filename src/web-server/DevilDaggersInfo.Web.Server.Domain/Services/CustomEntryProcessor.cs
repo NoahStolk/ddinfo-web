@@ -589,7 +589,7 @@ public class CustomEntryProcessor
 			LogAndThrowValidationException(uploadRequest, $"Could not parse replay: {ex.Message}", spawnsetName, "rotating_light");
 		}
 
-		if (!ArrayUtils.AreEqual(replayBinaryHeader.SpawnsetMd5, uploadRequest.SurvivalHashMd5))
+		if (!replayBinaryHeader.SpawnsetMd5.SequenceEqual(uploadRequest.SurvivalHashMd5))
 			LogAndThrowValidationException(uploadRequest, "Spawnset in replay does not match detected spawnset.", spawnsetName, "rotating_light");
 	}
 
@@ -626,7 +626,7 @@ public class CustomEntryProcessor
 			return false;
 
 		byte[] originalReplay = await File.ReadAllBytesAsync(path);
-		return ArrayUtils.AreEqual(originalReplay, newReplay);
+		return originalReplay.SequenceEqual(newReplay);
 	}
 
 	private static void UpdateLeaderboardStatistics(CustomLeaderboardEntity customLeaderboard)
