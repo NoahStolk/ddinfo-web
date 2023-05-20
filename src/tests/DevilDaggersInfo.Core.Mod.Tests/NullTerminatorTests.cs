@@ -1,6 +1,6 @@
-using DevilDaggersInfo.Common.Extensions;
+using DevilDaggersInfo.Core.Mod.Extensions;
 
-namespace DevilDaggersInfo.Common.Tests;
+namespace DevilDaggersInfo.Core.Mod.Tests;
 
 [TestClass]
 public class NullTerminatorTests
