@@ -278,6 +278,7 @@
       "devildaggersinfo.core.criteriaexpression": {
         "type": "Project",
         "dependencies": {
+          "DevilDaggersInfo.Common": "[1.0.0, )",
           "DevilDaggersInfo.Core.Wiki": "[1.0.0, )"
         }
       },
@@ -303,10 +304,7 @@
         }
       },
       "devildaggersinfo.core.wiki": {
-        "type": "Project",
-        "dependencies": {
-          "DevilDaggersInfo.Common": "[1.0.0, )"
-        }
+        "type": "Project"
       },
       "devildaggersinfo.razor.core.canvas": {
         "type": "Project",

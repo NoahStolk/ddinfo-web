@@ -117,9 +117,6 @@
         "resolved": "7.0.0",
         "contentHash": "jRn6JYnNPW6xgQazROBLSfpdoczRw694vO5kKvMcNnpXuolEixUyw6IBuBs2Y2mlSX/LdLvyyWmfXhaI3ND1Yg=="
       },
-      "devildaggersinfo.common": {
-        "type": "Project"
-      },
       "devildaggersinfo.core.spawnset": {
         "type": "Project",
         "dependencies": {
@@ -127,10 +124,7 @@
         }
       },
       "devildaggersinfo.core.wiki": {
-        "type": "Project",
-        "dependencies": {
-          "DevilDaggersInfo.Common": "[1.0.0, )"
-        }
+        "type": "Project"
       },
       "devildaggersinfo.razor.core.canvas": {
         "type": "Project",

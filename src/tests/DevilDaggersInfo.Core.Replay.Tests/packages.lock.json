@@ -118,10 +118,7 @@
         }
       },
       "devildaggersinfo.core.wiki": {
-        "type": "Project",
-        "dependencies": {
-          "DevilDaggersInfo.Common": "[1.0.0, )"
-        }
+        "type": "Project"
       },
       "Newtonsoft.Json": {
         "type": "CentralTransitive",
