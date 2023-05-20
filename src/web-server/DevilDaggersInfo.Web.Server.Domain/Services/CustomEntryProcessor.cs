@@ -653,7 +653,7 @@ public class CustomEntryProcessor
 		=> time.ToString(StringFormats.TimeFormat);
 
 	private static string GetSpawnsetHashOrName(byte[] spawnsetHash, string? spawnsetName)
-		=> string.IsNullOrEmpty(spawnsetName) ? spawnsetHash.ByteArrayToHexString() : spawnsetName;
+		=> string.IsNullOrEmpty(spawnsetName) ? BitConverter.ToString(spawnsetHash) : spawnsetName;
 
 	private void Log(UploadRequest uploadRequest, string? spawnsetName, string? errorMessage = null, string? errorEmoteNameOverride = null)
 	{
