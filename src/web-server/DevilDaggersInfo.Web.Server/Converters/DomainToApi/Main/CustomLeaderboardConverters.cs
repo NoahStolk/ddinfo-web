@@ -16,6 +16,14 @@ public static class CustomLeaderboardConverters
 	public static MainApi.GetCustomLeaderboardOverview ToMainApi(this CustomLeaderboardOverview customLeaderboard)
 	{
 		bool isTime = customLeaderboard.RankSorting.IsTime();
+		double? worldRecord = customLeaderboard.RankSorting switch
+		{
+			CustomLeaderboardRankSorting.TimeAsc or CustomLeaderboardRankSorting.TimeDesc => customLeaderboard.WorldRecord?.Time.ToSecondsTime(),
+			CustomLeaderboardRankSorting.GemsDesc => customLeaderboard.WorldRecord?.GemsCollected,
+			CustomLeaderboardRankSorting.KillsDesc => customLeaderboard.WorldRecord?.EnemiesKilled,
+			CustomLeaderboardRankSorting.HomingDesc => customLeaderboard.WorldRecord?.HomingStored,
+			_ => throw new InvalidOperationException($"Rank sorting '{customLeaderboard.RankSorting}' is not supported."),
+		};
 
 		return new()
 		{
@@ -30,7 +38,7 @@ public static class CustomLeaderboardConverters
 			SubmitCount = customLeaderboard.TotalRunsSubmitted,
 			PlayerCount = customLeaderboard.PlayerCount,
 			TopPlayer = customLeaderboard.WorldRecord?.PlayerName,
-			WorldRecord = isTime ? customLeaderboard.WorldRecord?.Time.ToSecondsTime() : customLeaderboard.WorldRecord?.Time,
+			WorldRecord = worldRecord,
 			WorldRecordDagger = customLeaderboard.WorldRecord?.Dagger?.ToMainApi(),
 		};
 	}
