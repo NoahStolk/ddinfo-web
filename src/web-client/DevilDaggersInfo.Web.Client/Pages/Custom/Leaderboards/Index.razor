@@ -34,10 +34,11 @@ else
 			<input class="bg-black border-gray-3 border-2 w-48" value="@SpawnsetFilter" @onchange="ChangeInputSpawnsetName" />
 			<span>Author name</span>
 			<input class="bg-black border-gray-3 border-2 w-48" value="@AuthorFilter" @onchange="ChangeInputAuthorName" />
-			<span>Game mode</span>
-			<SelectList CssWidthClass="w-48" CssOpenerClass="pl-2" TValue="GameMode" Values="@(_gameModes)" DisplayFunction="@(gm => gm.ToCore().ToDisplayString())" Default="EnumConvert.GetGameMode(GameMode)" Selected="@SetGameMode" />
-			<span>Rank sorting</span>
-			<SelectList CssWidthClass="w-48" CssOpenerClass="pl-2" TValue="CustomLeaderboardRankSorting" Values="@(_rankSortings)" DisplayFunction="@(rs => rs.ToDisplayString())" Default="EnumConvert.GetRankSorting(RankSorting)" Selected="@SetRankSorting" />
+			@if (_categories != null)
+			{
+				<span>Category</span>
+				<SelectList CssWidthClass="w-48" CssOpenerClass="pl-2" TValue="CategoryDropdown" Values="@(_categories)" DisplayFunction="@(c => c.ToString())" Default="new(EnumConvert.GetGameMode(GameMode), EnumConvert.GetRankSorting(RankSorting))" Selected="@SetCategory" />
+			}
 		</div>
 
 		<CascadingValue Value="this">

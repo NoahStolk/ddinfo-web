@@ -10,9 +10,9 @@ namespace DevilDaggersInfo.Web.Client.Pages.Custom.Leaderboards;
 public partial class Index : IHasNavigation
 {
 	private readonly IReadOnlyList<GameMode> _gameModes = Enum.GetValues<GameMode>();
-	private readonly IReadOnlyList<CustomLeaderboardRankSorting> _rankSortings = Enum.GetValues<CustomLeaderboardRankSorting>();
-
 	private readonly Dictionary<CustomLeaderboardSorting, bool> _sortings = new();
+
+	private IReadOnlyList<CategoryDropdown>? _categories;
 
 	[Parameter]
 	[SupplyParameterFromQuery]
@@ -59,6 +59,9 @@ public partial class Index : IHasNavigation
 			_sortings.Add(e, false);
 
 		GetTotalCustomLeaderboardData = await Http.GetTotalCustomLeaderboardData();
+
+		List<GetCustomLeaderboardAllowedCategory> allowedCategories = await Http.GetCustomLeaderboardAllowedCategories();
+		_categories = allowedCategories.ConvertAll(a => new CategoryDropdown(a.GameMode, a.RankSorting));
 	}
 
 	protected override async Task OnParametersSetAsync()
@@ -96,16 +99,12 @@ public partial class Index : IHasNavigation
 		await Task.CompletedTask;
 	}
 
-	private void SetGameMode(GameMode gameMode)
+	private void SetCategory(CategoryDropdown categoryDropdown)
 	{
-		GameMode = gameMode.ToString();
-		NavigationManager.AddOrModifyQueryParameter(nameof(GameMode), GameMode);
-	}
+		GameMode = categoryDropdown.GameMode.ToString();
+		RankSorting = categoryDropdown.RankSorting.ToString();
 
-	private void SetRankSorting(CustomLeaderboardRankSorting rankSorting)
-	{
-		RankSorting = rankSorting.ToString();
-		NavigationManager.AddOrModifyQueryParameter(nameof(RankSorting), RankSorting);
+		NavigationManager.AddOrModifyQueryParameters(new(nameof(GameMode), GameMode), new(nameof(RankSorting), RankSorting));
 	}
 
 	private void Sort(CustomLeaderboardSorting sortBy)
@@ -131,6 +130,23 @@ public partial class Index : IHasNavigation
 		{
 			PageIndex = TotalPages - 1;
 			NavigationManager.AddOrModifyQueryParameter(nameof(PageIndex), PageIndex);
+		}
+	}
+
+	private sealed class CategoryDropdown
+	{
+		public CategoryDropdown(GameMode gameMode, CustomLeaderboardRankSorting rankSorting)
+		{
+			GameMode = gameMode;
+			RankSorting = rankSorting;
+		}
+
+		public GameMode GameMode { get; }
+		public CustomLeaderboardRankSorting RankSorting { get; }
+
+		public override string ToString()
+		{
+			return $"{GameMode.ToCore().ToDisplayString()}: {RankSorting.ToDisplayString()}";
 		}
 	}
 }
