@@ -11,7 +11,9 @@ public interface ICustomLeaderboardSubmissionLogger
 
 	void ClearLogs(bool valid);
 
-	void LogHighscore(CustomLeaderboardEntity customLeaderboard, CustomEntryEntity customEntry, bool isNewScore, int rank, int totalPlayers);
+	void LogNewScore(CustomLeaderboardEntity customLeaderboard, IDaggerStatCustomEntry customEntry, int rank, int totalPlayers, string playerName, string spawnsetName);
+
+	void LogHighscore(CustomLeaderboardEntity customLeaderboard, IDaggerStatCustomEntry customEntry, int rank, int totalPlayers, string playerName, string spawnsetName, int valueDifference);
 
 	List<CustomLeaderboardHighscoreLog> GetHighscoreLogs();
 

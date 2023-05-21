@@ -393,12 +393,13 @@ public class CustomEntryProcessor
 		int rank = GetRank(entries, uploadRequest.PlayerId);
 		int totalPlayers = entries.Count;
 
-		_submissionLogger.LogHighscore(
+		_submissionLogger.LogNewScore(
 			customLeaderboard,
 			newCustomEntry,
-			true,
 			rank,
-			totalPlayers);
+			totalPlayers,
+			uploadRequest.PlayerName,
+			spawnsetName);
 		Log(uploadRequest, spawnsetName);
 
 		List<int> replayIds = GetExistingReplayIds(entries.ConvertAll(ce => ce.Id));
@@ -537,12 +538,23 @@ public class CustomEntryProcessor
 		int levelUpTime3Diff = customEntry.LevelUpTime3 - oldLevelUpTime3;
 		int levelUpTime4Diff = customEntry.LevelUpTime4 - oldLevelUpTime4;
 
+		int rankSortingValueDifference = customLeaderboard.RankSorting switch
+		{
+			CustomLeaderboardRankSorting.TimeDesc or CustomLeaderboardRankSorting.TimeAsc => timeDiff,
+			CustomLeaderboardRankSorting.KillsDesc => enemiesKilledDiff,
+			CustomLeaderboardRankSorting.GemsDesc => gemsCollectedDiff,
+			CustomLeaderboardRankSorting.HomingDesc => homingStoredDiff,
+			_ => 0,
+		};
+
 		_submissionLogger.LogHighscore(
 			customLeaderboard,
 			customEntry,
-			false,
 			rank,
-			entries.Count);
+			entries.Count,
+			uploadRequest.PlayerName,
+			spawnsetName,
+			rankSortingValueDifference);
 		Log(uploadRequest, spawnsetName);
 
 		List<int> replayIds = GetExistingReplayIds(entries.ConvertAll(ce => ce.Id));

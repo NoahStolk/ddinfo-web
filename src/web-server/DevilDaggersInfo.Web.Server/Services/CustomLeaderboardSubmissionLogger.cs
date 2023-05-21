@@ -33,40 +33,41 @@ public class CustomLeaderboardSubmissionLogger : ICustomLeaderboardSubmissionLog
 			_invalidClLogs.Add(message);
 	}
 
-	public void LogHighscore(CustomLeaderboardEntity customLeaderboard, CustomEntryEntity customEntry, bool isNewScore, int rank, int totalPlayers)
+	public void LogNewScore(
+		CustomLeaderboardEntity customLeaderboard,
+		IDaggerStatCustomEntry customEntry,
+		int rank,
+		int totalPlayers,
+		string playerName,
+		string spawnsetName)
 	{
 		CustomLeaderboardDagger dagger = customLeaderboard.DaggerFromStat(customEntry) ?? CustomLeaderboardDagger.Silver;
-		string scoreField = customLeaderboard.RankSorting switch
+		string scoreField = GetScoreFieldName(customLeaderboard.RankSorting);
+		string scoreValue = GetFormattedScoreValue(customLeaderboard.RankSorting, customEntry);
+		_highscoreLogs.Add(new()
 		{
-			CustomLeaderboardRankSorting.TimeAsc or CustomLeaderboardRankSorting.TimeDesc => "Time",
-			CustomLeaderboardRankSorting.GemsDesc => "Gems",
-			CustomLeaderboardRankSorting.KillsDesc => "Kills",
-			CustomLeaderboardRankSorting.HomingDesc => "Homing",
-			_ => "?",
-		};
+			RankValue = $"{rank}/{totalPlayers}",
+			Dagger = dagger,
+			Message = $"`{playerName}` just entered the `{spawnsetName}` leaderboard!",
+			CustomLeaderboardId = customLeaderboard.Id,
+			ScoreField = scoreField,
+			ScoreValue = scoreValue,
+		});
+	}
 
-		string scoreValue = customLeaderboard.RankSorting switch
-		{
-			CustomLeaderboardRankSorting.TimeAsc or CustomLeaderboardRankSorting.TimeDesc => customEntry.Time.ToSecondsTime().ToString(StringFormats.TimeFormat),
-			CustomLeaderboardRankSorting.GemsDesc => customEntry.GemsCollected.ToString("0"),
-			CustomLeaderboardRankSorting.KillsDesc => customEntry.EnemiesKilled.ToString("0"),
-			CustomLeaderboardRankSorting.HomingDesc => customEntry.HomingStored.ToString("0"),
-			_ => "?",
-		};
-
-		// TODO: Pass these values as parameters.
-		const string playerName = "TEMP1";
-		const string spawnsetName = "TEMP2";
-
-		// TODO: Pass the old entry as a parameter.
-		const int timeDiff = 10000;
-
-		// TODO: Use rank sorting to determine the message text.
-		string message;
-		if (isNewScore)
-			message = $"`{playerName}` just entered the `{spawnsetName}` leaderboard!";
-		else
-			message = $"`{playerName}` just got {FormatTimeString(customEntry.Time.ToSecondsTime())} seconds on the `{spawnsetName}` leaderboard, beating their previous highscore of {FormatTimeString((customEntry.Time - timeDiff).ToSecondsTime())} by {FormatTimeString(Math.Abs(timeDiff.ToSecondsTime()))} seconds!";
+	public void LogHighscore(
+		CustomLeaderboardEntity customLeaderboard,
+		IDaggerStatCustomEntry customEntry,
+		int rank,
+		int totalPlayers,
+		string playerName,
+		string spawnsetName,
+		int valueDifference)
+	{
+		CustomLeaderboardDagger dagger = customLeaderboard.DaggerFromStat(customEntry) ?? CustomLeaderboardDagger.Silver;
+		string scoreField = GetScoreFieldName(customLeaderboard.RankSorting);
+		string scoreValue = GetFormattedScoreValue(customLeaderboard.RankSorting, customEntry);
+		string message = $"`{playerName}` just got {GetScoreMessageText(customLeaderboard.RankSorting, customEntry)} on the `{spawnsetName}` leaderboard!";
 
 		_highscoreLogs.Add(new()
 		{
@@ -75,11 +76,54 @@ public class CustomLeaderboardSubmissionLogger : ICustomLeaderboardSubmissionLog
 			Message = message,
 			CustomLeaderboardId = customLeaderboard.Id,
 			ScoreField = scoreField,
-			ScoreValue = scoreValue,
+			ScoreValue = $"{scoreValue} ({GetFormattedScoreValueDifference(customLeaderboard.RankSorting, valueDifference)})",
 		});
+	}
 
-		static string FormatTimeString(double time)
-			=> time.ToString(StringFormats.TimeFormat);
+	private static string GetScoreMessageText(CustomLeaderboardRankSorting rankSorting, IDaggerStatCustomEntry customEntry)
+	{
+		string value = GetFormattedScoreValue(rankSorting, customEntry);
+		return rankSorting switch
+		{
+			CustomLeaderboardRankSorting.TimeAsc or CustomLeaderboardRankSorting.TimeDesc => $"{value} seconds",
+			CustomLeaderboardRankSorting.GemsDesc => $"{value} gems",
+			CustomLeaderboardRankSorting.KillsDesc => $"{value} kills",
+			CustomLeaderboardRankSorting.HomingDesc => $"{value} homing",
+			_ => "?",
+		};
+	}
+
+	private static string GetScoreFieldName(CustomLeaderboardRankSorting rankSorting)
+	{
+		return rankSorting switch
+		{
+			CustomLeaderboardRankSorting.TimeAsc or CustomLeaderboardRankSorting.TimeDesc => "Time",
+			CustomLeaderboardRankSorting.GemsDesc => "Gems",
+			CustomLeaderboardRankSorting.KillsDesc => "Kills",
+			CustomLeaderboardRankSorting.HomingDesc => "Homing",
+			_ => "?",
+		};
+	}
+
+	private static string GetFormattedScoreValue(CustomLeaderboardRankSorting rankSorting, IDaggerStatCustomEntry customEntry)
+	{
+		return rankSorting switch
+		{
+			CustomLeaderboardRankSorting.TimeAsc or CustomLeaderboardRankSorting.TimeDesc => customEntry.Time.ToSecondsTime().ToString(StringFormats.TimeFormat),
+			CustomLeaderboardRankSorting.GemsDesc => customEntry.GemsCollected.ToString(),
+			CustomLeaderboardRankSorting.KillsDesc => customEntry.EnemiesKilled.ToString(),
+			CustomLeaderboardRankSorting.HomingDesc => customEntry.HomingStored.ToString(),
+			_ => "?",
+		};
+	}
+
+	private static string GetFormattedScoreValueDifference(CustomLeaderboardRankSorting rankSorting, int valueDifference)
+	{
+		return rankSorting switch
+		{
+			CustomLeaderboardRankSorting.TimeAsc or CustomLeaderboardRankSorting.TimeDesc => valueDifference.ToSecondsTime().ToString("+0.0000;-0.0000;+0.0000"),
+			_ => valueDifference.ToString("+0;-0;+0"),
+		};
 	}
 
 	public List<CustomLeaderboardHighscoreLog> GetHighscoreLogs()
