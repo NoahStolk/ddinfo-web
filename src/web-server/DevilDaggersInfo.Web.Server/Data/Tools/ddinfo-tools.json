@@ -1,5 +1,14 @@
 [
 	{
+		"VersionNumber": "0.5.1.2",
+		"Date": "2023-05-21T00:00:00",
+		"Changes": [
+			{
+				"Description": "Fixed sorting bug."
+			}
+		]
+	},
+	{
 		"VersionNumber": "0.5.1.1",
 		"Date": "2023-05-21T00:00:00",
 		"Changes": [
