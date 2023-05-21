@@ -26,7 +26,8 @@ public class PlayerHistoryRepository
 	public Api.Main.Players.GetPlayerHistory GetPlayerHistoryById(int id)
 	{
 		// TODO: Add caching.
-		// TODO: Alts may be valid. We would need to check if the main account is below the current player and the alt is above it, then it should not be included in illegitimateScoresAbove. This is kind of annoying to do, so we'll just ignore it for now.
+		// TODO: Alts may be valid. We would need to check if the main account is below the current player and the alt is above it, then it should not be included in illegitimateScoresAbove.
+		// This is kind of annoying to do, so we'll just ignore it for now.
 		List<int> bannedPlayerIds = _dbContext.Players.Select(p => new { p.Id, p.BanType }).Where(p => p.BanType != BanType.NotBanned).Select(p => p.Id).ToList();
 
 		var player = _dbContext.Players
@@ -104,12 +105,12 @@ public class PlayerHistoryRepository
 
 			if (entry.DeathsTotal > 0)
 			{
-				TimeSpan? span = datePreviousForActivityHistory == null ? null : leaderboard.DateTime - datePreviousForActivityHistory.Value;
+				TimeSpan? timeSpan = datePreviousForActivityHistory == null ? null : leaderboard.DateTime - datePreviousForActivityHistory.Value;
 
 				activityHistory.Add(new()
 				{
-					DeathsIncrement = totalDeathsForActivityHistory.HasValue && span.HasValue ? (entry.DeathsTotal - totalDeathsForActivityHistory.Value) / span.Value.TotalDays : 0,
-					TimeIncrement = totalTimeForActivityHistory.HasValue && span.HasValue ? (entry.TimeTotal - totalTimeForActivityHistory.Value).ToSecondsTime() / span.Value.TotalDays : 0,
+					DeathsIncrement = totalDeathsForActivityHistory.HasValue && timeSpan.HasValue ? (entry.DeathsTotal - totalDeathsForActivityHistory.Value) / timeSpan.Value.TotalDays : 0,
+					TimeIncrement = totalTimeForActivityHistory.HasValue && timeSpan.HasValue ? (entry.TimeTotal - totalTimeForActivityHistory.Value).ToSecondsTime() / timeSpan.Value.TotalDays : 0,
 					DateTime = leaderboard.DateTime,
 				});
 
