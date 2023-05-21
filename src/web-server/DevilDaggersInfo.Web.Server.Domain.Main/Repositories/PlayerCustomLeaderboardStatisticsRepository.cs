@@ -27,6 +27,7 @@ public class PlayerCustomLeaderboardStatisticsRepository
 			{
 				Time = ce.Time,
 				GemsCollected = ce.GemsCollected,
+				GemsDespawned = ce.GemsDespawned,
 				EnemiesKilled = ce.EnemiesKilled,
 				HomingStored = ce.HomingStored,
 				GameMode = ce.CustomLeaderboard!.Spawnset!.GameMode,
@@ -109,6 +110,7 @@ public class PlayerCustomLeaderboardStatisticsRepository
 	{
 		public required int Time { get; init; }
 		public required int GemsCollected { get; init; }
+		public required int GemsDespawned { get; init; }
 		public required int EnemiesKilled { get; init; }
 		public required int HomingStored { get; init; }
 		public required SpawnsetGameMode GameMode { get; init; }

@@ -160,7 +160,10 @@ public static class LeaderboardChild
 		TextDaggerColored(ce.GemsCollected.ToString(), rs => rs == CustomLeaderboardRankSorting.GemsCollectedDesc);
 		ImGui.TableNextColumn();
 
-		ImGui.Text(ce.GemsDespawned?.ToString() ?? "-");
+		if (rankSorting == CustomLeaderboardRankSorting.GemsDespawnedDesc)
+			ImGui.TextColored(daggerColor, ce.GemsDespawned?.ToString() ?? "-");
+		else
+			ImGui.Text(ce.GemsDespawned?.ToString() ?? "-");
 		ImGui.TableNextColumn();
 
 		ImGui.Text(ce.GemsEaten?.ToString() ?? "-");

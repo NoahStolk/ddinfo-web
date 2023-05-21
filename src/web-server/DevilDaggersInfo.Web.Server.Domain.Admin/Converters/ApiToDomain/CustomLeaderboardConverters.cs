@@ -11,6 +11,7 @@ public static class CustomLeaderboardConverters
 		AdminApi.CustomLeaderboardRankSorting.TimeDesc => Entities.Enums.CustomLeaderboardRankSorting.TimeDesc,
 		AdminApi.CustomLeaderboardRankSorting.TimeAsc => Entities.Enums.CustomLeaderboardRankSorting.TimeAsc,
 		AdminApi.CustomLeaderboardRankSorting.GemsCollectedDesc => Entities.Enums.CustomLeaderboardRankSorting.GemsCollectedDesc,
+		AdminApi.CustomLeaderboardRankSorting.GemsDespawnedDesc => Entities.Enums.CustomLeaderboardRankSorting.GemsDespawnedDesc,
 		AdminApi.CustomLeaderboardRankSorting.EnemiesKilledDesc => Entities.Enums.CustomLeaderboardRankSorting.EnemiesKilledDesc,
 		AdminApi.CustomLeaderboardRankSorting.HomingStoredDesc => Entities.Enums.CustomLeaderboardRankSorting.HomingStoredDesc,
 		_ => throw new UnreachableException(),

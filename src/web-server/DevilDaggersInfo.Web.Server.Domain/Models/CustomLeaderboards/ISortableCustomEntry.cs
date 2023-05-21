@@ -6,6 +6,8 @@ public interface ISortableCustomEntry
 
 	int GemsCollected { get; }
 
+	int GemsDespawned { get; }
+
 	int EnemiesKilled { get; }
 
 	int HomingStored { get; }

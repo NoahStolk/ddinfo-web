@@ -6,7 +6,7 @@ public enum CustomLeaderboardRankSorting : byte
 	TimeAsc = 1,
 	GemsCollectedDesc = 2,
 	// GemsCollectedAsc = 3,
-	// GemsDespawnedDesc = 4,
+	GemsDespawnedDesc = 4,
 	// GemsDespawnedAsc = 5,
 	// GemsEatenDesc = 6,
 	// GemsEatenAsc = 7,

@@ -77,7 +77,7 @@ public class DiscordLogFlushBackgroundService : AbstractBackgroundService
 			{
 				CustomLeaderboardRankSorting.TimeAsc or CustomLeaderboardRankSorting.TimeDesc => "stopwatch.png",
 				CustomLeaderboardRankSorting.EnemiesKilledDesc => "skull.png",
-				CustomLeaderboardRankSorting.GemsCollectedDesc => "gem.png",
+				CustomLeaderboardRankSorting.GemsCollectedDesc or CustomLeaderboardRankSorting.GemsDespawnedDesc => "gem.png",
 				CustomLeaderboardRankSorting.HomingStoredDesc => "homing.png",
 				_ => "eye2.png",
 			};

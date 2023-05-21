@@ -157,6 +157,7 @@ else
 						string? timeClass = GetCustomLeaderboard.RankSorting is CustomLeaderboardRankSorting.TimeAsc or CustomLeaderboardRankSorting.TimeDesc ? daggerCssClass : null;
 						string? enemiesKilledClass = GetCustomLeaderboard.RankSorting == CustomLeaderboardRankSorting.EnemiesKilledDesc ? daggerCssClass : null;
 						string? gemsCollectedClass = GetCustomLeaderboard.RankSorting == CustomLeaderboardRankSorting.GemsCollectedDesc ? daggerCssClass : null;
+						string? gemsDespawnedClass = GetCustomLeaderboard.RankSorting == CustomLeaderboardRankSorting.GemsDespawnedDesc ? daggerCssClass : null;
 						string? homingStoredClass = GetCustomLeaderboard.RankSorting == CustomLeaderboardRankSorting.HomingStoredDesc ? daggerCssClass : null;
 
 						<div class="grid gap-3 grid-cols-custom-leaderboard-sm md:grid-cols-custom-leaderboard-md lg:grid-cols-custom-leaderboard-lg xl:grid-cols-custom-leaderboard-xl 2xl:grid-cols-custom-leaderboard-2xl h-6 cursor-pointer 2xl:cursor-default @(grayBackground ? "bg-gray-1" : string.Empty)" @onclick="() => Expand(ce.Id)">
@@ -179,7 +180,7 @@ else
 							<div class="text-right hidden md:block @enemiesKilledClass">@enemiesKilled</div>
 							<div class="text-right hidden md:block">@enemiesAlive</div>
 							<div class="text-right hidden md:block @gemsCollectedClass">@gemsCollected</div>
-							<div class="text-right hidden lg:block">@gemsDespawned</div>
+							<div class="text-right hidden lg:block @gemsDespawnedClass">@gemsDespawned</div>
 							<div class="text-right hidden lg:block">@gemsEaten</div>
 							<div class="text-right hidden md:block">
 								<Tooltip Text="@daggers"><span class="font-goethe text-xl cursor-pointer">@accuracy</span></Tooltip>
@@ -202,7 +203,7 @@ else
 							<div class="md:hidden">Gems Collected</div>
 							<div class="md:hidden text-right @gemsCollectedClass">@gemsCollected</div>
 							<div class="lg:hidden">Gems Despawned</div>
-							<div class="lg:hidden text-right">@gemsDespawned</div>
+							<div class="lg:hidden text-right @gemsDespawnedClass">@gemsDespawned</div>
 							<div class="lg:hidden">Gems Eaten</div>
 							<div class="lg:hidden text-right">@gemsEaten</div>
 							<div class="md:hidden">Accuracy</div>

@@ -104,6 +104,7 @@ public class CustomLeaderboardSubmissionLogger : ICustomLeaderboardSubmissionLog
 		{
 			CustomLeaderboardRankSorting.TimeAsc or CustomLeaderboardRankSorting.TimeDesc => $"{value} seconds",
 			CustomLeaderboardRankSorting.GemsCollectedDesc => $"{value} gems",
+			CustomLeaderboardRankSorting.GemsDespawnedDesc => $"{value} gems despawned",
 			CustomLeaderboardRankSorting.EnemiesKilledDesc => $"{value} kills",
 			CustomLeaderboardRankSorting.HomingStoredDesc => $"{value} homing",
 			_ => "?",
@@ -116,6 +117,7 @@ public class CustomLeaderboardSubmissionLogger : ICustomLeaderboardSubmissionLog
 		{
 			CustomLeaderboardRankSorting.TimeAsc or CustomLeaderboardRankSorting.TimeDesc => "Time",
 			CustomLeaderboardRankSorting.GemsCollectedDesc => "Gems",
+			CustomLeaderboardRankSorting.GemsDespawnedDesc => "Gems Despawned",
 			CustomLeaderboardRankSorting.EnemiesKilledDesc => "Kills",
 			CustomLeaderboardRankSorting.HomingStoredDesc => "Homing",
 			_ => "?",
@@ -128,6 +130,7 @@ public class CustomLeaderboardSubmissionLogger : ICustomLeaderboardSubmissionLog
 		{
 			CustomLeaderboardRankSorting.TimeAsc or CustomLeaderboardRankSorting.TimeDesc => customEntry.Time.ToSecondsTime().ToString(StringFormats.TimeFormat),
 			CustomLeaderboardRankSorting.GemsCollectedDesc => customEntry.GemsCollected.ToString(),
+			CustomLeaderboardRankSorting.GemsDespawnedDesc => customEntry.GemsDespawned.ToString(),
 			CustomLeaderboardRankSorting.EnemiesKilledDesc => customEntry.EnemiesKilled.ToString(),
 			CustomLeaderboardRankSorting.HomingStoredDesc => customEntry.HomingStored.ToString(),
 			_ => "?",

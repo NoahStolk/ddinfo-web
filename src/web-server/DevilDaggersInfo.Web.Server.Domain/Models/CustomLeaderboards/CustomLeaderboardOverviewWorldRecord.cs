@@ -8,6 +8,8 @@ public record CustomLeaderboardOverviewWorldRecord : IDaggerStatCustomEntry
 
 	public required int GemsCollected { get; init; }
 
+	public required int GemsDespawned { get; init; }
+
 	public required int EnemiesKilled { get; init; }
 
 	public required int HomingStored { get; init; }

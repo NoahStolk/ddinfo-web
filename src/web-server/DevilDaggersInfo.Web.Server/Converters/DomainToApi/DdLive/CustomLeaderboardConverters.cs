@@ -113,6 +113,7 @@ public static class CustomLeaderboardConverters
 		CustomLeaderboardRankSorting.TimeDesc => DdLiveApi.CustomLeaderboardRankSortingDdLive.TimeDesc,
 		CustomLeaderboardRankSorting.TimeAsc => DdLiveApi.CustomLeaderboardRankSortingDdLive.TimeAsc,
 		CustomLeaderboardRankSorting.GemsCollectedDesc => DdLiveApi.CustomLeaderboardRankSortingDdLive.GemsCollectedDesc,
+		CustomLeaderboardRankSorting.GemsDespawnedDesc => DdLiveApi.CustomLeaderboardRankSortingDdLive.GemsDespawnedDesc,
 		CustomLeaderboardRankSorting.EnemiesKilledDesc => DdLiveApi.CustomLeaderboardRankSortingDdLive.EnemiesKilledDesc,
 		CustomLeaderboardRankSorting.HomingStoredDesc => DdLiveApi.CustomLeaderboardRankSortingDdLive.HomingStoredDesc,
 		_ => throw new UnreachableException(),

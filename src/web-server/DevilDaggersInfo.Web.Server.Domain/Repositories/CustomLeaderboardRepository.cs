@@ -85,6 +85,7 @@ public class CustomLeaderboardRepository
 				PlayerName = ce.Player!.PlayerName,
 				Time = ce.Time,
 				GemsCollected = ce.GemsCollected,
+				GemsDespawned = ce.GemsDespawned,
 				EnemiesKilled = ce.EnemiesKilled,
 				HomingStored = ce.HomingStored,
 				SubmitDate = ce.SubmitDate,
@@ -480,6 +481,7 @@ public class CustomLeaderboardRepository
 		{
 			Time = worldRecord.Time,
 			GemsCollected = worldRecord.GemsCollected,
+			GemsDespawned = worldRecord.GemsDespawned,
 			EnemiesKilled = worldRecord.EnemiesKilled,
 			HomingStored = worldRecord.HomingStored,
 			PlayerId = playerId,
@@ -495,6 +497,7 @@ public class CustomLeaderboardRepository
 		{
 			CustomLeaderboardRankSorting.TimeAsc or CustomLeaderboardRankSorting.TimeDesc => customEntry.Time.ToSecondsTime(),
 			CustomLeaderboardRankSorting.GemsCollectedDesc => customEntry.GemsCollected,
+			CustomLeaderboardRankSorting.GemsDespawnedDesc => customEntry.GemsDespawned,
 			CustomLeaderboardRankSorting.EnemiesKilledDesc => customEntry.EnemiesKilled,
 			CustomLeaderboardRankSorting.HomingStoredDesc => customEntry.HomingStored,
 			_ => throw new InvalidOperationException($"Rank sorting '{rankSorting}' is not supported."),

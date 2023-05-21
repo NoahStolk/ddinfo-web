@@ -16,6 +16,7 @@ public static class EnumConvert
 	{
 		nameof(CustomLeaderboardRankSorting.TimeAsc) => CustomLeaderboardRankSorting.TimeAsc,
 		nameof(CustomLeaderboardRankSorting.GemsCollectedDesc) => CustomLeaderboardRankSorting.GemsCollectedDesc,
+		nameof(CustomLeaderboardRankSorting.GemsDespawnedDesc) => CustomLeaderboardRankSorting.GemsDespawnedDesc,
 		nameof(CustomLeaderboardRankSorting.EnemiesKilledDesc) => CustomLeaderboardRankSorting.EnemiesKilledDesc,
 		nameof(CustomLeaderboardRankSorting.HomingStoredDesc) => CustomLeaderboardRankSorting.HomingStoredDesc,
 		_ => CustomLeaderboardRankSorting.TimeDesc,

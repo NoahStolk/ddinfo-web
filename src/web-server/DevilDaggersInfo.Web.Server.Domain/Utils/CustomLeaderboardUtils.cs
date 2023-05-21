@@ -14,6 +14,7 @@ public static class CustomLeaderboardUtils
 		{
 			CustomLeaderboardRankSorting.TimeDesc or CustomLeaderboardRankSorting.TimeAsc => entry.Time,
 			CustomLeaderboardRankSorting.GemsCollectedDesc => entry.GemsCollected,
+			CustomLeaderboardRankSorting.GemsDespawnedDesc => entry.GemsDespawned,
 			CustomLeaderboardRankSorting.EnemiesKilledDesc => entry.EnemiesKilled,
 			CustomLeaderboardRankSorting.HomingStoredDesc => entry.HomingStored,
 			_ => throw new InvalidOperationException("Unsupported rank sorting for dagger calculation."),
