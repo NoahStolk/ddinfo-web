@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Extensions;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
@@ -46,5 +47,26 @@ public static class CustomLeaderboardUtils
 			return CustomLeaderboardDagger.Bronze;
 
 		return CustomLeaderboardDagger.Default;
+	}
+
+	public static bool IsGameModeAndRankSortingCombinationAllowed(GameMode gameMode, CustomLeaderboardRankSorting rankSorting)
+	{
+		if (gameMode == GameMode.Survival)
+			return true; // Allow all rank sortings for Survival.
+
+		// Only allow TimeAsc for Time Attack and Race (for now).
+		return rankSorting == CustomLeaderboardRankSorting.TimeAsc;
+	}
+
+	public static List<(GameMode GameMode, CustomLeaderboardRankSorting RankSorting)> GetAllowedGameModeAndRankSortingCombinations()
+	{
+		List<(GameMode GameMode, CustomLeaderboardRankSorting RankSorting)> allowedCombinations = new();
+		foreach (GameMode gameMode in Enum.GetValues<GameMode>())
+		{
+			foreach (CustomLeaderboardRankSorting rankSorting in Enum.GetValues<CustomLeaderboardRankSorting>().Where(rs => IsGameModeAndRankSortingCombinationAllowed(gameMode, rs)))
+				allowedCombinations.Add((gameMode, rankSorting));
+		}
+
+		return allowedCombinations;
 	}
 }

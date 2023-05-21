@@ -9,6 +9,7 @@ using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Extensions;
+using DevilDaggersInfo.Web.Server.Domain.Utils;
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.CompilerServices;
 
@@ -464,8 +465,8 @@ public class CustomLeaderboardService
 		if (spawnsetBinary.GameMode == GameMode.TimeAttack && !spawnsetBinary.HasSpawns())
 			throw new CustomLeaderboardValidationException("Time Attack spawnset must have spawns.");
 
-		if (spawnsetBinary.GameMode is GameMode.TimeAttack or GameMode.Race && rankSorting != CustomLeaderboardRankSorting.TimeAsc)
-			throw new CustomLeaderboardValidationException("Time Attack or Race spawnset must use the Time Ascending rank sorting.");
+		if (!CustomLeaderboardUtils.IsGameModeAndRankSortingCombinationAllowed(spawnsetBinary.GameMode, rankSorting))
+			throw new CustomLeaderboardValidationException($"Combining game mode '{spawnsetBinary.GameMode}' and rank sorting '{rankSorting}' is not allowed.");
 
 		CustomLeaderboardCriteriaOperator deathTypeOperator = deathTypeCriteria.Operator.ToDomain();
 		if (deathTypeOperator is not (CustomLeaderboardCriteriaOperator.Any or CustomLeaderboardCriteriaOperator.Equal or CustomLeaderboardCriteriaOperator.NotEqual))
