@@ -1,4 +1,6 @@
 using DevilDaggersInfo.Api.Clubber;
+using DevilDaggersInfo.Api.Clubber.Players;
+using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Clubber;
 using DevilDaggersInfo.Web.Server.Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -9,10 +11,12 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Clubber;
 [ApiController]
 public class PlayersController : ControllerBase
 {
+	private readonly PlayerHistoryRepository _playerHistoryRepository;
 	private readonly PlayerRepository _playerRepository;
 
-	public PlayersController(PlayerRepository playerRepository)
+	public PlayersController(PlayerHistoryRepository playerHistoryRepository, PlayerRepository playerRepository)
 	{
+		_playerHistoryRepository = playerHistoryRepository;
 		_playerRepository = playerRepository;
 	}
 
@@ -25,5 +29,13 @@ public class PlayersController : ControllerBase
 		{
 			CountryCode = await _playerRepository.GetPlayerCountryCodeAsync(id),
 		};
+	}
+
+	[HttpGet("{id}/history")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	public GetPlayerHistory GetPlayerHistoryById([Required, Range(1, int.MaxValue)] int id)
+	{
+		return _playerHistoryRepository.GetPlayerHistoryById(id).ToClubberApi();
 	}
 }

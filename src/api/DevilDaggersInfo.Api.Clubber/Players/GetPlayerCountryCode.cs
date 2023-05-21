@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Api.Clubber;
+namespace DevilDaggersInfo.Api.Clubber.Players;
 
 public record GetPlayerCountryCode
 {
