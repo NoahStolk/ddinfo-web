@@ -98,16 +98,7 @@ public class CustomLeaderboardRepository
 			List<CustomEntrySummary> sortedCustomEntries = customEntries.Where(ce => ce.CustomLeaderboardId == cl.Id).Sort(cl.RankSorting).ToList();
 
 			CustomEntrySummary? worldRecord = sortedCustomEntries.Count == 0 ? null : sortedCustomEntries[0];
-			CustomLeaderboardOverviewWorldRecord? worldRecordModel = worldRecord == null ? null : new()
-			{
-				Time = worldRecord.Time,
-				GemsCollected = worldRecord.GemsCollected,
-				EnemiesKilled = worldRecord.EnemiesKilled,
-				HomingStored = worldRecord.HomingStored,
-				PlayerId = worldRecord.PlayerId,
-				PlayerName = worldRecord.PlayerName,
-				Dagger = cl.DaggerFromStat(worldRecord),
-			};
+			CustomLeaderboardOverviewWorldRecord? worldRecordModel = worldRecord == null ? null : ToWorldRecordOverviewModel(worldRecord, cl);
 
 			CustomEntrySummary? selectedEntry = sortedCustomEntries.Find(ce => ce.PlayerId == selectedPlayerId);
 			CustomLeaderboardOverviewSelectedPlayerStats? selectedPlayerStatsModel = GetSelectedStats(cl, sortedCustomEntries, selectedEntry);
@@ -376,16 +367,7 @@ public class CustomLeaderboardRepository
 			SpawnsetId = cl.CustomLeaderboard.SpawnsetId,
 			SpawnsetName = cl.CustomLeaderboard.Spawnset.Name,
 			TotalRunsSubmitted = cl.CustomLeaderboard.TotalRunsSubmitted,
-			WorldRecord = cl.WorldRecord == null ? null : new()
-			{
-				PlayerId = cl.WorldRecord.PlayerId,
-				PlayerName = cl.WorldRecord.PlayerName,
-				Time = cl.WorldRecord.Time,
-				GemsCollected = cl.WorldRecord.GemsCollected,
-				EnemiesKilled = cl.WorldRecord.EnemiesKilled,
-				HomingStored = cl.WorldRecord.HomingStored,
-				Dagger = cl.CustomLeaderboard.DaggerFromStat(cl.WorldRecord),
-			},
+			WorldRecord = cl.WorldRecord == null ? null : ToWorldRecordOverviewModel(cl.WorldRecord, cl.CustomLeaderboard),
 		};
 	}
 
@@ -478,6 +460,36 @@ public class CustomLeaderboardRepository
 				Expression = expression,
 			});
 		}
+	}
+
+	private static CustomLeaderboardOverviewWorldRecord ToWorldRecordOverviewModel(CustomEntrySummary worldRecord, CustomLeaderboardEntity cl)
+		=> ToWorldRecordOverviewModel(worldRecord, worldRecord.PlayerId, worldRecord.PlayerName, cl);
+
+	private static CustomLeaderboardOverviewWorldRecord ToWorldRecordOverviewModel(CustomLeaderboardOverviewWorldRecord worldRecord, CustomLeaderboardEntity cl)
+		=> ToWorldRecordOverviewModel(worldRecord, worldRecord.PlayerId, worldRecord.PlayerName, cl);
+
+	private static CustomLeaderboardOverviewWorldRecord ToWorldRecordOverviewModel(IDaggerStatCustomEntry worldRecord, int playerId, string playerName, CustomLeaderboardEntity cl)
+	{
+		double worldRecordValue = cl.RankSorting switch
+		{
+			CustomLeaderboardRankSorting.TimeAsc or CustomLeaderboardRankSorting.TimeDesc => worldRecord.Time.ToSecondsTime(),
+			CustomLeaderboardRankSorting.GemsDesc => worldRecord.GemsCollected,
+			CustomLeaderboardRankSorting.KillsDesc => worldRecord.EnemiesKilled,
+			CustomLeaderboardRankSorting.HomingDesc => worldRecord.HomingStored,
+			_ => throw new InvalidOperationException($"Rank sorting '{cl.RankSorting}' is not supported."),
+		};
+
+		return new()
+		{
+			Time = worldRecord.Time,
+			GemsCollected = worldRecord.GemsCollected,
+			EnemiesKilled = worldRecord.EnemiesKilled,
+			HomingStored = worldRecord.HomingStored,
+			PlayerId = playerId,
+			PlayerName = playerName,
+			Dagger = cl.DaggerFromStat(worldRecord),
+			WorldRecordValue = worldRecordValue,
+		};
 	}
 
 	private sealed class CustomLeaderboardData

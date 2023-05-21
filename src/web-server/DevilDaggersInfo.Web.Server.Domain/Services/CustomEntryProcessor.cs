@@ -667,6 +667,7 @@ public class CustomEntryProcessor
 	private static string GetSpawnsetHashOrName(byte[] spawnsetHash, string? spawnsetName)
 		=> string.IsNullOrEmpty(spawnsetName) ? BitConverter.ToString(spawnsetHash) : spawnsetName;
 
+	// TODO: Clean up and move somewhere else.
 	private void Log(UploadRequest uploadRequest, string? spawnsetName, string? errorMessage = null, string? errorEmoteNameOverride = null)
 	{
 		_stopwatch.Stop();
