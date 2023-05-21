@@ -196,11 +196,11 @@ else
 						</div>
 						<div class="grid grid-cols-2 @(ce.Id == _expandedId ? grayBackground ? "bg-gray-1" : string.Empty : "hidden") pl-[92px] pr-1">
 							<div class="md:hidden">Enemies Killed</div>
-							<div class="md:hidden text-right">@enemiesKilled</div>
+							<div class="md:hidden text-right @enemiesKilledClass">@enemiesKilled</div>
 							<div class="md:hidden">Enemies Alive</div>
 							<div class="md:hidden text-right">@enemiesAlive</div>
 							<div class="md:hidden">Gems Collected</div>
-							<div class="md:hidden text-right">@gemsCollected</div>
+							<div class="md:hidden text-right @gemsCollectedClass">@gemsCollected</div>
 							<div class="lg:hidden">Gems Despawned</div>
 							<div class="lg:hidden text-right">@gemsDespawned</div>
 							<div class="lg:hidden">Gems Eaten</div>
@@ -212,7 +212,7 @@ else
 							<div class="lg:hidden">Death Type</div>
 							<div class="lg:hidden text-right">@death</div>
 							<div class="xl:hidden">Homing Stored</div>
-							<div class="xl:hidden text-right">@homingStored</div>
+							<div class="xl:hidden text-right @homingStoredClass">@homingStored</div>
 							<div class="xl:hidden">Homing Eaten</div>
 							<div class="xl:hidden text-right">@homingEaten</div>
 							<div class="2xl:hidden">Level 2</div>
