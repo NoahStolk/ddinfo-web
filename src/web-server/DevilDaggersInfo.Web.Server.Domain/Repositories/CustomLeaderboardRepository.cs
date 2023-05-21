@@ -383,15 +383,22 @@ public class CustomLeaderboardRepository
 			Dagger = dagger,
 			Rank = sortedCustomEntries.IndexOf(selectedEntry) + 1,
 			Time = selectedEntry.Time,
+			HighscoreValue = GetHighscoreValue(selectedEntry, cl.RankSorting),
 			NextDagger = dagger switch
 			{
-				CustomLeaderboardDagger.Default => new() { Dagger = CustomLeaderboardDagger.Bronze, Time = cl.Bronze },
-				CustomLeaderboardDagger.Bronze => new() { Dagger = CustomLeaderboardDagger.Silver, Time = cl.Silver },
-				CustomLeaderboardDagger.Silver => new() { Dagger = CustomLeaderboardDagger.Golden, Time = cl.Golden },
-				CustomLeaderboardDagger.Golden => new() { Dagger = CustomLeaderboardDagger.Devil, Time = cl.Devil },
-				CustomLeaderboardDagger.Devil => new() { Dagger = CustomLeaderboardDagger.Leviathan, Time = cl.Leviathan },
+				CustomLeaderboardDagger.Default => new() { Dagger = CustomLeaderboardDagger.Bronze, Time = cl.Bronze, DaggerValue = GetDaggerValue(cl.Bronze, cl.RankSorting) },
+				CustomLeaderboardDagger.Bronze => new() { Dagger = CustomLeaderboardDagger.Silver, Time = cl.Silver, DaggerValue = GetDaggerValue(cl.Silver, cl.RankSorting) },
+				CustomLeaderboardDagger.Silver => new() { Dagger = CustomLeaderboardDagger.Golden, Time = cl.Golden, DaggerValue = GetDaggerValue(cl.Golden, cl.RankSorting) },
+				CustomLeaderboardDagger.Golden => new() { Dagger = CustomLeaderboardDagger.Devil, Time = cl.Devil, DaggerValue = GetDaggerValue(cl.Devil, cl.RankSorting) },
+				CustomLeaderboardDagger.Devil => new() { Dagger = CustomLeaderboardDagger.Leviathan, Time = cl.Leviathan, DaggerValue = GetDaggerValue(cl.Leviathan, cl.RankSorting) },
 				_ => null,
 			},
+		};
+
+		static double GetDaggerValue(int databaseValue, CustomLeaderboardRankSorting rankSorting) => rankSorting switch
+		{
+			CustomLeaderboardRankSorting.TimeAsc or CustomLeaderboardRankSorting.TimeDesc => databaseValue.ToSecondsTime(),
+			_ => databaseValue,
 		};
 	}
 
@@ -470,15 +477,6 @@ public class CustomLeaderboardRepository
 
 	private static CustomLeaderboardOverviewWorldRecord ToWorldRecordOverviewModel(IDaggerStatCustomEntry worldRecord, int playerId, string playerName, CustomLeaderboardEntity cl)
 	{
-		double worldRecordValue = cl.RankSorting switch
-		{
-			CustomLeaderboardRankSorting.TimeAsc or CustomLeaderboardRankSorting.TimeDesc => worldRecord.Time.ToSecondsTime(),
-			CustomLeaderboardRankSorting.GemsDesc => worldRecord.GemsCollected,
-			CustomLeaderboardRankSorting.KillsDesc => worldRecord.EnemiesKilled,
-			CustomLeaderboardRankSorting.HomingDesc => worldRecord.HomingStored,
-			_ => throw new InvalidOperationException($"Rank sorting '{cl.RankSorting}' is not supported."),
-		};
-
 		return new()
 		{
 			Time = worldRecord.Time,
@@ -488,7 +486,19 @@ public class CustomLeaderboardRepository
 			PlayerId = playerId,
 			PlayerName = playerName,
 			Dagger = cl.DaggerFromStat(worldRecord),
-			WorldRecordValue = worldRecordValue,
+			WorldRecordValue = GetHighscoreValue(worldRecord, cl.RankSorting),
+		};
+	}
+
+	private static double GetHighscoreValue(IDaggerStatCustomEntry customEntry, CustomLeaderboardRankSorting rankSorting)
+	{
+		return rankSorting switch
+		{
+			CustomLeaderboardRankSorting.TimeAsc or CustomLeaderboardRankSorting.TimeDesc => customEntry.Time.ToSecondsTime(),
+			CustomLeaderboardRankSorting.GemsDesc => customEntry.GemsCollected,
+			CustomLeaderboardRankSorting.KillsDesc => customEntry.EnemiesKilled,
+			CustomLeaderboardRankSorting.HomingDesc => customEntry.HomingStored,
+			_ => throw new InvalidOperationException($"Rank sorting '{rankSorting}' is not supported."),
 		};
 	}
 

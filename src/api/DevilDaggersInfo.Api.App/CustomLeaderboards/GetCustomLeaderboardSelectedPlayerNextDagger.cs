@@ -2,7 +2,10 @@ namespace DevilDaggersInfo.Api.App.CustomLeaderboards;
 
 public record GetCustomLeaderboardSelectedPlayerNextDagger
 {
-	public required double Time { get; init; }
+	[Obsolete("Use DaggerValue instead.")]
+	public double Time { get; init; }
+
+	public required double DaggerValue { get; init; }
 
 	public required CustomLeaderboardDagger Dagger { get; init; }
 }

@@ -175,10 +175,12 @@ public static class CustomLeaderboardConverters
 		Dagger = customLeaderboardOverviewSelectedPlayerStats.Dagger?.ToAppApi(),
 		Rank = customLeaderboardOverviewSelectedPlayerStats.Rank,
 		Time = customLeaderboardOverviewSelectedPlayerStats.Time.ToSecondsTime(),
+		HighscoreValue = customLeaderboardOverviewSelectedPlayerStats.HighscoreValue,
 		NextDagger = customLeaderboardOverviewSelectedPlayerStats.NextDagger == null ? null : new()
 		{
 			Dagger = customLeaderboardOverviewSelectedPlayerStats.NextDagger.Dagger.ToAppApi(),
 			Time = customLeaderboardOverviewSelectedPlayerStats.NextDagger.Time.ToSecondsTime(),
+			DaggerValue = customLeaderboardOverviewSelectedPlayerStats.NextDagger.DaggerValue,
 		},
 	};
 

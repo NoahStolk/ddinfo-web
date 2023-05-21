@@ -4,7 +4,10 @@ public record CustomLeaderboardOverviewSelectedPlayerStats
 {
 	public required int Rank { get; init; }
 
-	public required int Time { get; init; }
+	[Obsolete("Use HighscoreValue instead.")]
+	public int Time { get; init; }
+
+	public required double HighscoreValue { get; init; }
 
 	public required CustomLeaderboardDagger? Dagger { get; init; }
 
