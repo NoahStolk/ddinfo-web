@@ -14,23 +14,23 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 public class PlayersController : ControllerBase
 {
 	private readonly PlayerCustomLeaderboardStatisticsRepository _playerCustomLeaderboardStatisticsRepository;
-	private readonly PlayerRepository _playerRepository;
 	private readonly PlayerHistoryRepository _playerHistoryRepository;
-	private readonly PlayerProfileService _profileService;
 	private readonly PlayerProfileRepository _profileRepository;
+	private readonly PlayerProfileService _profileService;
+	private readonly PlayerRepository _playerRepository;
 
 	public PlayersController(
 		PlayerCustomLeaderboardStatisticsRepository playerCustomLeaderboardStatisticsRepository,
-		PlayerRepository playerRepository,
 		PlayerHistoryRepository playerHistoryRepository,
+		PlayerProfileRepository profileRepository,
 		PlayerProfileService profileService,
-		PlayerProfileRepository profileRepository)
+		PlayerRepository playerRepository)
 	{
 		_playerCustomLeaderboardStatisticsRepository = playerCustomLeaderboardStatisticsRepository;
-		_playerRepository = playerRepository;
 		_playerHistoryRepository = playerHistoryRepository;
-		_profileService = profileService;
 		_profileRepository = profileRepository;
+		_profileService = profileService;
+		_playerRepository = playerRepository;
 	}
 
 	[HttpGet("leaderboard")]
