@@ -8,6 +8,8 @@ public record GetCustomLeaderboardOverview
 
 	public required string SpawnsetAuthorName { get; init; }
 
+	public required CustomLeaderboardRankSorting RankSorting { get; init; }
+
 	public required GetCustomLeaderboardDaggers? Daggers { get; init; }
 
 	public required bool IsFeatured { get; init; }

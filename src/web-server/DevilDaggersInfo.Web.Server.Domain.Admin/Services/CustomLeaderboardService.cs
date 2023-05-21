@@ -9,11 +9,13 @@ using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Extensions;
+using DevilDaggersInfo.Web.Server.Domain.Utils;
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.CompilerServices;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Admin.Services;
 
+// TODO: Unit test.
 public class CustomLeaderboardService
 {
 	private readonly ApplicationDbContext _dbContext;
@@ -93,11 +95,11 @@ public class CustomLeaderboardService
 			DateCreated = DateTime.UtcNow,
 			SpawnsetId = addCustomLeaderboard.SpawnsetId,
 			RankSorting = addCustomLeaderboard.RankSorting.ToDomain(),
-			Bronze = addCustomLeaderboard.Daggers.Bronze.To10thMilliTime(),
-			Silver = addCustomLeaderboard.Daggers.Silver.To10thMilliTime(),
-			Golden = addCustomLeaderboard.Daggers.Golden.To10thMilliTime(),
-			Devil = addCustomLeaderboard.Daggers.Devil.To10thMilliTime(),
-			Leviathan = addCustomLeaderboard.Daggers.Leviathan.To10thMilliTime(),
+			Bronze = GetDaggerValue(addCustomLeaderboard.RankSorting, addCustomLeaderboard.Daggers.Bronze),
+			Silver = GetDaggerValue(addCustomLeaderboard.RankSorting, addCustomLeaderboard.Daggers.Silver),
+			Golden = GetDaggerValue(addCustomLeaderboard.RankSorting, addCustomLeaderboard.Daggers.Golden),
+			Devil = GetDaggerValue(addCustomLeaderboard.RankSorting, addCustomLeaderboard.Daggers.Devil),
+			Leviathan = GetDaggerValue(addCustomLeaderboard.RankSorting, addCustomLeaderboard.Daggers.Leviathan),
 			IsFeatured = addCustomLeaderboard.IsFeatured,
 			GemsCollectedCriteria = new() { Operator = addCustomLeaderboard.GemsCollectedCriteria.Operator.ToDomain(), Expression = gemsCollectedExpression },
 			GemsDespawnedCriteria = new() { Operator = addCustomLeaderboard.GemsDespawnedCriteria.Operator.ToDomain(), Expression = gemsDespawnedCriteriaExpression },
@@ -328,11 +330,11 @@ public class CustomLeaderboardService
 			editCustomLeaderboard.LevelUpTime4Criteria);
 
 		customLeaderboard.RankSorting = editCustomLeaderboard.RankSorting.ToDomain();
-		customLeaderboard.Bronze = editCustomLeaderboard.Daggers.Bronze.To10thMilliTime();
-		customLeaderboard.Silver = editCustomLeaderboard.Daggers.Silver.To10thMilliTime();
-		customLeaderboard.Golden = editCustomLeaderboard.Daggers.Golden.To10thMilliTime();
-		customLeaderboard.Devil = editCustomLeaderboard.Daggers.Devil.To10thMilliTime();
-		customLeaderboard.Leviathan = editCustomLeaderboard.Daggers.Leviathan.To10thMilliTime();
+		customLeaderboard.Bronze = GetDaggerValue(editCustomLeaderboard.RankSorting, editCustomLeaderboard.Daggers.Bronze);
+		customLeaderboard.Silver = GetDaggerValue(editCustomLeaderboard.RankSorting, editCustomLeaderboard.Daggers.Silver);
+		customLeaderboard.Golden = GetDaggerValue(editCustomLeaderboard.RankSorting, editCustomLeaderboard.Daggers.Golden);
+		customLeaderboard.Devil = GetDaggerValue(editCustomLeaderboard.RankSorting, editCustomLeaderboard.Daggers.Devil);
+		customLeaderboard.Leviathan = GetDaggerValue(editCustomLeaderboard.RankSorting, editCustomLeaderboard.Daggers.Leviathan);
 		customLeaderboard.IsFeatured = editCustomLeaderboard.IsFeatured;
 		customLeaderboard.GemsCollectedCriteria = new() { Operator = editCustomLeaderboard.GemsCollectedCriteria.Operator.ToDomain(), Expression = gemsCollectedExpression };
 		customLeaderboard.GemsDespawnedCriteria = new() { Operator = editCustomLeaderboard.GemsDespawnedCriteria.Operator.ToDomain(), Expression = gemsDespawnedCriteriaExpression };
@@ -415,12 +417,15 @@ public class CustomLeaderboardService
 
 		if (isFeatured)
 		{
-			foreach (double dagger in new[] { customLeaderboardDaggers.Leviathan, customLeaderboardDaggers.Devil, customLeaderboardDaggers.Golden, customLeaderboardDaggers.Silver, customLeaderboardDaggers.Bronze })
+			if (rankSorting.IsTime())
 			{
-				const int min = 1;
-				const int max = 1500;
-				if (dagger is < min or > max)
-					throw new CustomLeaderboardValidationException($"All daggers times must be between {min} and {max} for featured leaderboards.");
+				foreach (double dagger in new[] { customLeaderboardDaggers.Leviathan, customLeaderboardDaggers.Devil, customLeaderboardDaggers.Golden, customLeaderboardDaggers.Silver, customLeaderboardDaggers.Bronze })
+				{
+					const int min = 1;
+					const int max = 1500;
+					if (dagger is < min or > max)
+						throw new CustomLeaderboardValidationException($"All daggers times must be between {min} and {max} for featured leaderboards.");
+				}
 			}
 
 			if (rankSorting.IsAscending())
@@ -460,8 +465,8 @@ public class CustomLeaderboardService
 		if (spawnsetBinary.GameMode == GameMode.TimeAttack && !spawnsetBinary.HasSpawns())
 			throw new CustomLeaderboardValidationException("Time Attack spawnset must have spawns.");
 
-		if (spawnsetBinary.GameMode is GameMode.TimeAttack or GameMode.Race && rankSorting != CustomLeaderboardRankSorting.TimeAsc)
-			throw new CustomLeaderboardValidationException("Time Attack or Race spawnset must use the Time Ascending rank sorting.");
+		if (!CustomLeaderboardUtils.IsGameModeAndRankSortingCombinationAllowed(spawnsetBinary.GameMode, rankSorting))
+			throw new CustomLeaderboardValidationException($"Combining game mode '{spawnsetBinary.GameMode}' and rank sorting '{rankSorting}' is not allowed.");
 
 		CustomLeaderboardCriteriaOperator deathTypeOperator = deathTypeCriteria.Operator.ToDomain();
 		if (deathTypeOperator is not (CustomLeaderboardCriteriaOperator.Any or CustomLeaderboardCriteriaOperator.Equal or CustomLeaderboardCriteriaOperator.NotEqual))
@@ -508,6 +513,14 @@ public class CustomLeaderboardService
 		return expressionBytes;
 	}
 
+	private static int GetDaggerValue(Api.Admin.CustomLeaderboards.CustomLeaderboardRankSorting apiRankSorting, double apiValue)
+	{
+		if (apiRankSorting.ToDomain().IsTime())
+			return apiValue.To10thMilliTime();
+
+		return (int)apiValue;
+	}
+
 	private static bool ExpressionEqual(byte[]? a, byte[]? b)
 	{
 		if (a == null && b == null)
@@ -516,15 +529,6 @@ public class CustomLeaderboardService
 		if (a == null || b == null)
 			return false;
 
-		if (a.Length != b.Length)
-			return false;
-
-		for (int i = 0; i < a.Length; i++)
-		{
-			if (a[i] != b[i])
-				return false;
-		}
-
-		return true;
+		return a.SequenceEqual(b);
 	}
 }

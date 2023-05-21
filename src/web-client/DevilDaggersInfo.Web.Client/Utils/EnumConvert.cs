@@ -15,6 +15,9 @@ public static class EnumConvert
 	public static CustomLeaderboardRankSorting GetRankSorting(string str) => str switch
 	{
 		nameof(CustomLeaderboardRankSorting.TimeAsc) => CustomLeaderboardRankSorting.TimeAsc,
+		nameof(CustomLeaderboardRankSorting.GemsDesc) => CustomLeaderboardRankSorting.GemsDesc,
+		nameof(CustomLeaderboardRankSorting.KillsDesc) => CustomLeaderboardRankSorting.KillsDesc,
+		nameof(CustomLeaderboardRankSorting.HomingDesc) => CustomLeaderboardRankSorting.HomingDesc,
 		_ => CustomLeaderboardRankSorting.TimeDesc,
 	};
 }

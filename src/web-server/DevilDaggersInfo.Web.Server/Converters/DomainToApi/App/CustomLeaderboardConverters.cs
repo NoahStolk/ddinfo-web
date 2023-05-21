@@ -293,6 +293,7 @@ public static class CustomLeaderboardConverters
 		_ => throw new UnreachableException(),
 	};
 
+	// TODO: Remove this once the API is updated.
 	/// <summary>
 	/// Workaround to keep the API backwards compatible with the old categories.
 	/// </summary>

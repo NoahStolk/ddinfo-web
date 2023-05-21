@@ -31,13 +31,14 @@ else
 	<div class="bg-gray-1 p-2 text-lg">
 		<div class="grid gap-2 grid-cols-2 max-w-md mb-2">
 			<span>Spawnset name</span>
-			<input class="bg-black border-gray-3 border-2 w-48" value="@SpawnsetFilter" @onchange="ChangeInputSpawnsetName" />
+			<input class="bg-black border-gray-3 border-2 w-64" value="@SpawnsetFilter" @onchange="ChangeInputSpawnsetName" />
 			<span>Author name</span>
-			<input class="bg-black border-gray-3 border-2 w-48" value="@AuthorFilter" @onchange="ChangeInputAuthorName" />
-			<span>Game mode</span>
-			<SelectList CssWidthClass="w-48" CssOpenerClass="pl-2" TValue="GameMode" Values="@(_gameModes)" DisplayFunction="@(gm => gm.ToCore().ToDisplayString())" Default="EnumConvert.GetGameMode(GameMode)" Selected="@SetGameMode" />
-			<span>Rank sorting</span>
-			<SelectList CssWidthClass="w-48" CssOpenerClass="pl-2" TValue="CustomLeaderboardRankSorting" Values="@(_rankSortings)" DisplayFunction="@(rs => rs.ToDisplayString())" Default="EnumConvert.GetRankSorting(RankSorting)" Selected="@SetRankSorting" />
+			<input class="bg-black border-gray-3 border-2 w-64" value="@AuthorFilter" @onchange="ChangeInputAuthorName" />
+			@if (_categories != null)
+			{
+				<span>Category</span>
+				<SelectList CssWidthClass="w-64" CssOpenerClass="pl-2" TValue="CategoryDropdown" Values="@(_categories)" DisplayFunction="@(c => c.ToString())" Default="new(EnumConvert.GetGameMode(GameMode), EnumConvert.GetRankSorting(RankSorting))" Selected="@SetCategory" />
+			}
 		</div>
 
 		<CascadingValue Value="this">
@@ -65,6 +66,12 @@ else
 		@for (int i = 0; i < GetCustomLeaderboards.Results.Count; i++)
 		{
 			GetCustomLeaderboardOverview customLeaderboard = GetCustomLeaderboards.Results[i];
+			string worldRecordFormat = customLeaderboard.RankSorting switch
+			{
+				CustomLeaderboardRankSorting.TimeAsc or CustomLeaderboardRankSorting.TimeDesc => StringFormats.TimeFormat,
+				_ => "0",
+			};
+			
 			<div class="grid gap-3 grid-cols-custom-leaderboards-sm md:grid-cols-custom-leaderboards-md lg:grid-cols-custom-leaderboards-lg xl:grid-cols-custom-leaderboards-xl 2xl:grid-cols-custom-leaderboards-2xl h-6 @(i % 2 == 0 ? "bg-gray-1" : string.Empty)">
 				<div class="overflow-hidden"><a class="link" href="/custom/leaderboard/@customLeaderboard.Id">@customLeaderboard.SpawnsetName.ToNoBreakString()</a></div>
 				<div class="overflow-hidden hidden md:block">@customLeaderboard.SpawnsetAuthorName.ToNoBreakString()</div>
@@ -81,14 +88,14 @@ else
 				}
 				else
 				{
-					<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe @CustomLeaderboardDagger.Bronze.ToCssClass()">@customLeaderboard.Daggers.Bronze.ToString(StringFormats.TimeFormat)</div>
-					<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe @CustomLeaderboardDagger.Silver.ToCssClass()">@customLeaderboard.Daggers.Silver.ToString(StringFormats.TimeFormat)</div>
-					<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe @CustomLeaderboardDagger.Golden.ToCssClass()">@customLeaderboard.Daggers.Golden.ToString(StringFormats.TimeFormat)</div>
-					<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe @CustomLeaderboardDagger.Devil.ToCssClass()">@customLeaderboard.Daggers.Devil.ToString(StringFormats.TimeFormat)</div>
-					<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe @CustomLeaderboardDagger.Leviathan.ToCssClass()">@customLeaderboard.Daggers.Leviathan.ToString(StringFormats.TimeFormat)</div>
+					<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe @CustomLeaderboardDagger.Bronze.ToCssClass()">@customLeaderboard.RankSorting.GetDaggerValue(customLeaderboard.Daggers.Bronze)</div>
+					<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe @CustomLeaderboardDagger.Silver.ToCssClass()">@customLeaderboard.RankSorting.GetDaggerValue(customLeaderboard.Daggers.Silver)</div>
+					<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe @CustomLeaderboardDagger.Golden.ToCssClass()">@customLeaderboard.RankSorting.GetDaggerValue(customLeaderboard.Daggers.Golden)</div>
+					<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe @CustomLeaderboardDagger.Devil.ToCssClass()">@customLeaderboard.RankSorting.GetDaggerValue(customLeaderboard.Daggers.Devil)</div>
+					<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe @CustomLeaderboardDagger.Leviathan.ToCssClass()">@customLeaderboard.RankSorting.GetDaggerValue(customLeaderboard.Daggers.Leviathan)</div>
 				}
 				<div class="overflow-hidden text-left hidden lg:block">@(customLeaderboard.TopPlayer?.ToNoBreakString() ?? MarkupStrings.NoDataMarkup)</div>
-				<div class="overflow-hidden text-right hidden lg:block text-xl font-goethe @(customLeaderboard.WorldRecordDagger?.ToCssClass())">@(customLeaderboard.WorldRecord.HasValue ? new(customLeaderboard.WorldRecord.Value.ToString(StringFormats.TimeFormat)) : MarkupStrings.NoDataMarkup)</div>
+				<div class="overflow-hidden text-right hidden lg:block text-xl font-goethe @(customLeaderboard.WorldRecordDagger?.ToCssClass())">@(customLeaderboard.WorldRecord.HasValue ? new(customLeaderboard.WorldRecord.Value.ToString(worldRecordFormat)) : MarkupStrings.NoDataMarkup)</div>
 			</div>
 		}
 	}

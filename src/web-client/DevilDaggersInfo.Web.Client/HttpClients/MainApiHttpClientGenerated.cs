@@ -101,6 +101,11 @@ public partial class MainApiHttpClient
 		return await SendGetRequest<GetCustomLeaderboard>($"api/custom-leaderboards/{id}");
 	}
 
+	public async Task<List<GetCustomLeaderboardAllowedCategory>> GetCustomLeaderboardAllowedCategories()
+	{
+		return await SendGetRequest<List<GetCustomLeaderboardAllowedCategory>>($"api/custom-leaderboards/allowed-categories");
+	}
+
 	public async Task<List<GetDonor>> GetDonors()
 	{
 		return await SendGetRequest<List<GetDonor>>($"api/donations/donors");

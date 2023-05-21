@@ -1,5 +1,4 @@
-using DevilDaggersInfo.Common;
-using DevilDaggersInfo.Common.Extensions;
+using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 using DevilDaggersInfo.Web.Server.Extensions;
@@ -74,14 +73,30 @@ public class DiscordLogFlushBackgroundService : AbstractBackgroundService
 	{
 		try
 		{
+			string thumbnailImage = highscoreLog.RankSorting switch
+			{
+				CustomLeaderboardRankSorting.TimeAsc or CustomLeaderboardRankSorting.TimeDesc => "stopwatch.png",
+				CustomLeaderboardRankSorting.KillsDesc => "skull.png",
+				CustomLeaderboardRankSorting.GemsDesc => "gem.png",
+				CustomLeaderboardRankSorting.HomingDesc => "homing.png",
+				_ => "eye2.png",
+			};
+
 			DiscordEmbedBuilder builder = new()
 			{
 				Title = highscoreLog.Message,
 				Color = highscoreLog.Dagger.GetDiscordColor(),
 				Url = $"https://devildaggers.info/custom/leaderboard/{highscoreLog.CustomLeaderboardId}",
+				Thumbnail = new()
+				{
+					Url = $"https://devildaggers.info/images/icons/discord-bot/{thumbnailImage}",
+					Height = 32,
+					Width = 32,
+				},
 			};
-			builder.AddFieldObject("Score", FormatTimeString(highscoreLog.Time.ToSecondsTime()), true);
-			builder.AddFieldObject("Rank", $"{highscoreLog.Rank}/{highscoreLog.TotalPlayers}", true);
+			builder.AddFieldObject("Game Mode", highscoreLog.SpawnsetGameMode, false);
+			builder.AddFieldObject(highscoreLog.ScoreField, highscoreLog.ScoreValue, true);
+			builder.AddFieldObject("Rank", highscoreLog.RankValue, true);
 
 			DiscordChannel? discordChannel = DiscordServerConstants.GetDiscordChannel(Channel.CustomLeaderboards, _environment);
 			if (discordChannel == null)
@@ -93,9 +108,6 @@ public class DiscordLogFlushBackgroundService : AbstractBackgroundService
 		{
 			_logger.LogError(ex, "Error while attempting to send leaderboard message.");
 		}
-
-		static string FormatTimeString(double time)
-			=> time.ToString(StringFormats.TimeFormat);
 	}
 
 	private async Task LogToLogChannel(DiscordChannel logChannel) => await LogEntries(_logContainerService.LogEntries, logChannel);
@@ -104,7 +116,7 @@ public class DiscordLogFlushBackgroundService : AbstractBackgroundService
 
 	private static async Task LogEntries(List<string> entries, DiscordChannel channel)
 	{
-		const int timeoutInSeconds = 1;
+		const int errorTimeoutInSeconds = 1;
 
 		while (entries.Count > 0)
 		{
@@ -112,7 +124,7 @@ public class DiscordLogFlushBackgroundService : AbstractBackgroundService
 			if (await channel.SendMessageAsyncSafe(entry))
 				entries.RemoveAt(0);
 			else
-				await Task.Delay(TimeSpan.FromSeconds(timeoutInSeconds));
+				await Task.Delay(TimeSpan.FromSeconds(errorTimeoutInSeconds));
 		}
 	}
 }

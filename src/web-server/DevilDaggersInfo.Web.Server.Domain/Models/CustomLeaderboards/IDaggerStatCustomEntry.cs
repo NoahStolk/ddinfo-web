@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 
-public interface ISortableCustomEntry
+public interface IDaggerStatCustomEntry
 {
 	int Time { get; }
 
@@ -9,6 +9,4 @@ public interface ISortableCustomEntry
 	int EnemiesKilled { get; }
 
 	int HomingStored { get; }
-
-	DateTime SubmitDate { get; }
 }

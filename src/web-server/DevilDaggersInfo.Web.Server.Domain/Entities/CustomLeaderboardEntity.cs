@@ -95,6 +95,11 @@ public class CustomLeaderboardEntity : IAuditable
 
 	public List<CustomEntryEntity>? CustomEntries { get; set; }
 
-	public CustomLeaderboardDagger? DaggerFromStat(int stat)
-		=> IsFeatured ? CustomLeaderboardUtils.GetDaggerFromStat(RankSorting, stat, Leviathan, Devil, Golden, Silver, Bronze) : null;
+	public CustomLeaderboardDagger? DaggerFromStat(IDaggerStatCustomEntry entry)
+	{
+		if (!IsFeatured)
+			return null;
+
+		return CustomLeaderboardUtils.GetDaggerFromStat(RankSorting, entry, Leviathan, Devil, Golden, Silver, Bronze);
+	}
 }

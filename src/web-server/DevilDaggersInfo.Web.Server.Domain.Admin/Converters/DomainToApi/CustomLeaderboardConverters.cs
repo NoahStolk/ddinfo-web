@@ -2,6 +2,7 @@ using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Core.CriteriaExpression;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Values;
+using DevilDaggersInfo.Web.Server.Domain.Extensions;
 using System.Diagnostics;
 using AdminApi = DevilDaggersInfo.Api.Admin.CustomLeaderboards;
 
@@ -18,14 +19,7 @@ public static class CustomLeaderboardConverters
 		{
 			Id = customLeaderboard.Id,
 			SpawnsetName = customLeaderboard.Spawnset.Name,
-			Daggers = new()
-			{
-				Bronze = customLeaderboard.Bronze.ToSecondsTime(),
-				Silver = customLeaderboard.Silver.ToSecondsTime(),
-				Golden = customLeaderboard.Golden.ToSecondsTime(),
-				Devil = customLeaderboard.Devil.ToSecondsTime(),
-				Leviathan = customLeaderboard.Leviathan.ToSecondsTime(),
-			},
+			Daggers = customLeaderboard.ToAdminApiDaggers(),
 			IsFeatured = customLeaderboard.IsFeatured,
 			DateCreated = customLeaderboard.DateCreated,
 			RankSorting = customLeaderboard.RankSorting.ToAdminApi(),
@@ -36,14 +30,7 @@ public static class CustomLeaderboardConverters
 	{
 		Id = customLeaderboard.Id,
 		SpawnsetId = customLeaderboard.SpawnsetId,
-		Daggers = new()
-		{
-			Bronze = customLeaderboard.Bronze.ToSecondsTime(),
-			Silver = customLeaderboard.Silver.ToSecondsTime(),
-			Golden = customLeaderboard.Golden.ToSecondsTime(),
-			Devil = customLeaderboard.Devil.ToSecondsTime(),
-			Leviathan = customLeaderboard.Leviathan.ToSecondsTime(),
-		},
+		Daggers = customLeaderboard.ToAdminApiDaggers(),
 		IsFeatured = customLeaderboard.IsFeatured,
 		RankSorting = customLeaderboard.RankSorting.ToAdminApi(),
 		GemsCollectedCriteria = customLeaderboard.GemsCollectedCriteria.ToAdminApi(),
@@ -96,6 +83,19 @@ public static class CustomLeaderboardConverters
 		ThornsAliveCriteria = customLeaderboard.ThornsAliveCriteria.ToAdminApi(),
 	};
 
+	private static AdminApi.GetCustomLeaderboardDaggers ToAdminApiDaggers(this CustomLeaderboardEntity customLeaderboard)
+	{
+		bool isTime = customLeaderboard.RankSorting.IsTime();
+		return new()
+		{
+			Bronze = isTime ? customLeaderboard.Bronze.ToSecondsTime() : customLeaderboard.Bronze,
+			Silver = isTime ? customLeaderboard.Silver.ToSecondsTime() : customLeaderboard.Silver,
+			Golden = isTime ? customLeaderboard.Golden.ToSecondsTime() : customLeaderboard.Golden,
+			Devil = isTime ? customLeaderboard.Devil.ToSecondsTime() : customLeaderboard.Devil,
+			Leviathan = isTime ? customLeaderboard.Leviathan.ToSecondsTime() : customLeaderboard.Leviathan,
+		};
+	}
+
 	private static AdminApi.GetCustomLeaderboardCriteria ToAdminApi(this CustomLeaderboardCriteriaEntityValue criteria) => new()
 	{
 		Operator = criteria.Operator.ToAdminApi(),
@@ -106,6 +106,9 @@ public static class CustomLeaderboardConverters
 	{
 		Entities.Enums.CustomLeaderboardRankSorting.TimeDesc => AdminApi.CustomLeaderboardRankSorting.TimeDesc,
 		Entities.Enums.CustomLeaderboardRankSorting.TimeAsc => AdminApi.CustomLeaderboardRankSorting.TimeAsc,
+		Entities.Enums.CustomLeaderboardRankSorting.GemsDesc => AdminApi.CustomLeaderboardRankSorting.GemsDesc,
+		Entities.Enums.CustomLeaderboardRankSorting.KillsDesc => AdminApi.CustomLeaderboardRankSorting.KillsDesc,
+		Entities.Enums.CustomLeaderboardRankSorting.HomingDesc => AdminApi.CustomLeaderboardRankSorting.HomingDesc,
 		_ => throw new UnreachableException(),
 	};
 

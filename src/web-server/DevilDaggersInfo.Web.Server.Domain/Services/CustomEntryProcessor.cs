@@ -188,6 +188,9 @@ public class CustomEntryProcessor
 		{
 			CustomLeaderboardRankSorting.TimeDesc => requestTimeAsInt > customEntry.Time,
 			CustomLeaderboardRankSorting.TimeAsc => requestTimeAsInt < customEntry.Time,
+			CustomLeaderboardRankSorting.GemsDesc => uploadRequest.GemsCollected > customEntry.GemsCollected,
+			CustomLeaderboardRankSorting.KillsDesc => uploadRequest.EnemiesKilled > customEntry.EnemiesKilled,
+			CustomLeaderboardRankSorting.HomingDesc => uploadRequest.HomingStored > customEntry.HomingStored,
 			_ => throw new InvalidOperationException($"Rank sorting '{customLeaderboard.RankSorting}' is not supported."),
 		};
 
@@ -390,19 +393,19 @@ public class CustomEntryProcessor
 		int rank = GetRank(entries, uploadRequest.PlayerId);
 		int totalPlayers = entries.Count;
 
-		_submissionLogger.LogHighscore(
-			customLeaderboard.DaggerFromStat(newCustomEntry.Time) ?? CustomLeaderboardDagger.Silver,
-			customLeaderboard.Id,
-			$"`{uploadRequest.PlayerName}` just entered the `{spawnsetName}` leaderboard!",
+		_submissionLogger.LogNewScore(
+			customLeaderboard,
+			newCustomEntry,
 			rank,
 			totalPlayers,
-			newCustomEntry.Time);
+			uploadRequest.PlayerName,
+			spawnsetName);
 		Log(uploadRequest, spawnsetName);
 
 		List<int> replayIds = GetExistingReplayIds(entries.ConvertAll(ce => ce.Id));
 		return new()
 		{
-			SortedEntries = entries.Select((e, i) => ToEntry(e, i + 1, customLeaderboard.DaggerFromStat(e.Time), replayIds)).ToList(),
+			SortedEntries = entries.Select((e, i) => ToEntry(e, i + 1, customLeaderboard.DaggerFromStat(e), replayIds)).ToList(),
 			SubmissionType = SubmissionType.FirstScore,
 			RankState = new(rank),
 			TimeState = new(newCustomEntry.Time.ToSecondsTime()),
@@ -438,7 +441,7 @@ public class CustomEntryProcessor
 		int homingStored = GetFinalHomingValue(uploadRequest);
 		return new()
 		{
-			SortedEntries = entries.Select((e, i) => ToEntry(e, i + 1, customLeaderboard.DaggerFromStat(e.Time), replayIds)).ToList(),
+			SortedEntries = entries.Select((e, i) => ToEntry(e, i + 1, customLeaderboard.DaggerFromStat(e), replayIds)).ToList(),
 			SubmissionType = SubmissionType.NoHighscore,
 			TimeState = new(uploadRequest.TimeInSeconds, uploadRequest.TimeInSeconds - currentEntry.Time.ToSecondsTime()),
 			EnemiesKilledState = new(uploadRequest.EnemiesKilled, uploadRequest.EnemiesKilled - currentEntry.EnemiesKilled),
@@ -535,20 +538,30 @@ public class CustomEntryProcessor
 		int levelUpTime3Diff = customEntry.LevelUpTime3 - oldLevelUpTime3;
 		int levelUpTime4Diff = customEntry.LevelUpTime4 - oldLevelUpTime4;
 
+		int rankSortingValueDifference = customLeaderboard.RankSorting switch
+		{
+			CustomLeaderboardRankSorting.TimeDesc or CustomLeaderboardRankSorting.TimeAsc => timeDiff,
+			CustomLeaderboardRankSorting.KillsDesc => enemiesKilledDiff,
+			CustomLeaderboardRankSorting.GemsDesc => gemsCollectedDiff,
+			CustomLeaderboardRankSorting.HomingDesc => homingStoredDiff,
+			_ => 0,
+		};
+
 		_submissionLogger.LogHighscore(
-			customLeaderboard.DaggerFromStat(customEntry.Time) ?? CustomLeaderboardDagger.Silver,
-			customLeaderboard.Id,
-			$"`{uploadRequest.PlayerName}` just got {FormatTimeString(customEntry.Time.ToSecondsTime())} seconds on the `{spawnsetName}` leaderboard, beating their previous highscore of {FormatTimeString((customEntry.Time - timeDiff).ToSecondsTime())} by {FormatTimeString(Math.Abs(timeDiff.ToSecondsTime()))} seconds!",
+			customLeaderboard,
+			customEntry,
 			rank,
 			entries.Count,
-			customEntry.Time);
+			uploadRequest.PlayerName,
+			spawnsetName,
+			rankSortingValueDifference);
 		Log(uploadRequest, spawnsetName);
 
 		List<int> replayIds = GetExistingReplayIds(entries.ConvertAll(ce => ce.Id));
 
 		return new()
 		{
-			SortedEntries = entries.Select((e, i) => ToEntry(e, i + 1, customLeaderboard.DaggerFromStat(e.Time), replayIds)).ToList(),
+			SortedEntries = entries.Select((e, i) => ToEntry(e, i + 1, customLeaderboard.DaggerFromStat(e), replayIds)).ToList(),
 			SubmissionType = SubmissionType.NewHighscore,
 			RankState = new(rank, rankDiff),
 			TimeState = new(customEntry.Time.ToSecondsTime(), timeDiff.ToSecondsTime()),
@@ -667,9 +680,9 @@ public class CustomEntryProcessor
 		string playerInfo = $"`{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`)";
 
 		if (!string.IsNullOrEmpty(errorMessage))
-			_submissionLogger.Log(false, $":{errorEmoteNameOverride ?? "warning"}: `{_stopwatch.ElapsedMilliseconds:N0}` Upload failed for user {playerInfo} for `{spawnsetIdentification}`. {requestInfo}\n**{errorMessage}**");
+			_submissionLogger.Log(false, $":{errorEmoteNameOverride ?? "warning"}: `{_stopwatch.ElapsedMilliseconds:N0} ms` Upload failed for user {playerInfo} for `{spawnsetIdentification}`. {requestInfo}\n**{errorMessage}**");
 		else
-			_submissionLogger.Log(true, $":white_check_mark: `{_stopwatch.ElapsedMilliseconds:N0}` {playerInfo} just submitted a score of `{FormatTimeString(uploadRequest.TimeInSeconds)}` to `{spawnsetIdentification}`. {requestInfo}");
+			_submissionLogger.Log(true, $":white_check_mark: `{_stopwatch.ElapsedMilliseconds:N0} ms` {playerInfo} just submitted a score of `{FormatTimeString(uploadRequest.TimeInSeconds)}` to `{spawnsetIdentification}`. {requestInfo}");
 	}
 
 	private List<int> GetExistingReplayIds(List<int> customEntryIds)

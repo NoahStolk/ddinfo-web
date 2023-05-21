@@ -2,6 +2,7 @@ using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Core.CriteriaExpression;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
+using DevilDaggersInfo.Web.Server.Domain.Extensions;
 using DevilDaggersInfo.Web.Server.Domain.Main.Converters.DomainToApi;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.Domain.Utils;
@@ -12,38 +13,57 @@ namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 
 public static class CustomLeaderboardConverters
 {
-	public static MainApi.GetCustomLeaderboardOverview ToMainApi(this CustomLeaderboardOverview customLeaderboard) => new()
+	public static MainApi.GetCustomLeaderboardOverview ToMainApi(this CustomLeaderboardOverview customLeaderboard)
 	{
-		Id = customLeaderboard.Id,
-		SpawnsetAuthorName = customLeaderboard.SpawnsetAuthorName,
-		SpawnsetName = customLeaderboard.SpawnsetName,
-		Daggers = customLeaderboard.Daggers?.ToMainApi(),
-		IsFeatured = customLeaderboard.Daggers != null,
-		DateCreated = customLeaderboard.DateCreated,
-		DateLastPlayed = customLeaderboard.DateLastPlayed,
-		SubmitCount = customLeaderboard.TotalRunsSubmitted,
-		PlayerCount = customLeaderboard.PlayerCount,
-		TopPlayer = customLeaderboard.WorldRecord?.PlayerName,
-		WorldRecord = customLeaderboard.WorldRecord?.Time.ToSecondsTime(),
-		WorldRecordDagger = customLeaderboard.WorldRecord?.Dagger?.ToMainApi(),
-	};
+		bool isTime = customLeaderboard.RankSorting.IsTime();
+		double? worldRecord = customLeaderboard.RankSorting switch
+		{
+			CustomLeaderboardRankSorting.TimeAsc or CustomLeaderboardRankSorting.TimeDesc => customLeaderboard.WorldRecord?.Time.ToSecondsTime(),
+			CustomLeaderboardRankSorting.GemsDesc => customLeaderboard.WorldRecord?.GemsCollected,
+			CustomLeaderboardRankSorting.KillsDesc => customLeaderboard.WorldRecord?.EnemiesKilled,
+			CustomLeaderboardRankSorting.HomingDesc => customLeaderboard.WorldRecord?.HomingStored,
+			_ => throw new InvalidOperationException($"Rank sorting '{customLeaderboard.RankSorting}' is not supported."),
+		};
 
-	public static MainApi.GetCustomLeaderboard ToMainApi(this SortedCustomLeaderboard customLeaderboard) => new()
+		return new()
+		{
+			Id = customLeaderboard.Id,
+			SpawnsetAuthorName = customLeaderboard.SpawnsetAuthorName,
+			SpawnsetName = customLeaderboard.SpawnsetName,
+			RankSorting = customLeaderboard.RankSorting.ToMainApi(),
+			Daggers = customLeaderboard.Daggers?.ToMainApi(isTime),
+			IsFeatured = customLeaderboard.Daggers != null,
+			DateCreated = customLeaderboard.DateCreated,
+			DateLastPlayed = customLeaderboard.DateLastPlayed,
+			SubmitCount = customLeaderboard.TotalRunsSubmitted,
+			PlayerCount = customLeaderboard.PlayerCount,
+			TopPlayer = customLeaderboard.WorldRecord?.PlayerName,
+			WorldRecord = worldRecord,
+			WorldRecordDagger = customLeaderboard.WorldRecord?.Dagger?.ToMainApi(),
+		};
+	}
+
+	public static MainApi.GetCustomLeaderboard ToMainApi(this SortedCustomLeaderboard customLeaderboard)
 	{
-		SpawnsetId = customLeaderboard.SpawnsetId,
-		SpawnsetAuthorName = customLeaderboard.SpawnsetAuthorName,
-		SpawnsetHtmlDescription = customLeaderboard.SpawnsetHtmlDescription,
-		SpawnsetName = customLeaderboard.SpawnsetName,
-		Daggers = customLeaderboard.Daggers?.ToMainApi(),
-		DateCreated = customLeaderboard.DateCreated,
-		SubmitCount = customLeaderboard.TotalRunsSubmitted,
-		RankSorting = customLeaderboard.RankSorting.ToMainApi(),
-		IsFeatured = customLeaderboard.Daggers != null,
-		DateLastPlayed = customLeaderboard.DateLastPlayed,
-		CustomEntries = customLeaderboard.CustomEntries.ConvertAll(ce => ce.ToMainApi(customLeaderboard.GameMode)),
-		Criteria = customLeaderboard.Criteria.ConvertAll(clc => clc.ToMainApi()),
-		SpawnsetGameMode = customLeaderboard.GameMode.ToMainApi(),
-	};
+		bool isTime = customLeaderboard.RankSorting.IsTime();
+
+		return new()
+		{
+			SpawnsetId = customLeaderboard.SpawnsetId,
+			SpawnsetAuthorName = customLeaderboard.SpawnsetAuthorName,
+			SpawnsetHtmlDescription = customLeaderboard.SpawnsetHtmlDescription,
+			SpawnsetName = customLeaderboard.SpawnsetName,
+			Daggers = customLeaderboard.Daggers?.ToMainApi(isTime),
+			DateCreated = customLeaderboard.DateCreated,
+			SubmitCount = customLeaderboard.TotalRunsSubmitted,
+			RankSorting = customLeaderboard.RankSorting.ToMainApi(),
+			IsFeatured = customLeaderboard.Daggers != null,
+			DateLastPlayed = customLeaderboard.DateLastPlayed,
+			CustomEntries = customLeaderboard.CustomEntries.ConvertAll(ce => ce.ToMainApi(customLeaderboard.GameMode)),
+			Criteria = customLeaderboard.Criteria.ConvertAll(clc => clc.ToMainApi()),
+			SpawnsetGameMode = customLeaderboard.GameMode.ToMainApi(),
+		};
+	}
 
 	private static MainApi.GetCustomEntry ToMainApi(this CustomEntry customEntry, SpawnsetGameMode gameMode) => new()
 	{
@@ -73,14 +93,17 @@ public static class CustomLeaderboardConverters
 		HasGraphs = customEntry.HasGraphs,
 	};
 
-	private static MainApi.GetCustomLeaderboardDaggers ToMainApi(this CustomLeaderboardDaggers customLeaderboard) => new()
+	private static MainApi.GetCustomLeaderboardDaggers ToMainApi(this CustomLeaderboardDaggers customLeaderboardDaggers, bool isTime)
 	{
-		Bronze = customLeaderboard.Bronze.ToSecondsTime(),
-		Silver = customLeaderboard.Silver.ToSecondsTime(),
-		Golden = customLeaderboard.Golden.ToSecondsTime(),
-		Devil = customLeaderboard.Devil.ToSecondsTime(),
-		Leviathan = customLeaderboard.Leviathan.ToSecondsTime(),
-	};
+		return new()
+		{
+			Bronze = isTime ? customLeaderboardDaggers.Bronze.ToSecondsTime() : customLeaderboardDaggers.Bronze,
+			Silver = isTime ? customLeaderboardDaggers.Silver.ToSecondsTime() : customLeaderboardDaggers.Silver,
+			Golden = isTime ? customLeaderboardDaggers.Golden.ToSecondsTime() : customLeaderboardDaggers.Golden,
+			Devil = isTime ? customLeaderboardDaggers.Devil.ToSecondsTime() : customLeaderboardDaggers.Devil,
+			Leviathan = isTime ? customLeaderboardDaggers.Leviathan.ToSecondsTime() : customLeaderboardDaggers.Leviathan,
+		};
+	}
 
 	private static MainApi.GetCustomLeaderboardCriteria ToMainApi(this CustomLeaderboardCriteria criteria) => new()
 	{
@@ -97,10 +120,13 @@ public static class CustomLeaderboardConverters
 		_ => throw new ArgumentOutOfRangeException(nameof(client), client, null),
 	};
 
-	public static MainApi.CustomLeaderboardRankSorting ToMainApi(this CustomLeaderboardRankSorting rankSorting) => rankSorting switch
+	private static MainApi.CustomLeaderboardRankSorting ToMainApi(this CustomLeaderboardRankSorting rankSorting) => rankSorting switch
 	{
 		CustomLeaderboardRankSorting.TimeDesc => MainApi.CustomLeaderboardRankSorting.TimeDesc,
 		CustomLeaderboardRankSorting.TimeAsc => MainApi.CustomLeaderboardRankSorting.TimeAsc,
+		CustomLeaderboardRankSorting.GemsDesc => MainApi.CustomLeaderboardRankSorting.GemsDesc,
+		CustomLeaderboardRankSorting.KillsDesc => MainApi.CustomLeaderboardRankSorting.KillsDesc,
+		CustomLeaderboardRankSorting.HomingDesc => MainApi.CustomLeaderboardRankSorting.HomingDesc,
 		_ => throw new UnreachableException(),
 	};
 
@@ -216,7 +242,7 @@ public static class CustomLeaderboardConverters
 			DaggersHit = customEntry.DaggersHit,
 			SubmitDate = customEntry.SubmitDate,
 			Time = customEntry.Time.ToSecondsTime(),
-			CustomLeaderboardDagger = customEntry.CustomLeaderboard.DaggerFromStat(customEntry.Time)?.ToMainApi(),
+			CustomLeaderboardDagger = customEntry.CustomLeaderboard.DaggerFromStat(customEntry)?.ToMainApi(),
 
 			GemsCollectedData = GetInt32Arr(customEntryData?.GemsCollectedData),
 			EnemiesKilledData = GetInt32Arr(customEntryData?.EnemiesKilledData),

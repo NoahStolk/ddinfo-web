@@ -9,8 +9,13 @@ public static class CustomLeaderboardRankSortingExtensions
 		return rankSorting switch
 		{
 			CustomLeaderboardRankSorting.TimeAsc => true,
-			CustomLeaderboardRankSorting.TimeDesc => false,
+			CustomLeaderboardRankSorting.TimeDesc or CustomLeaderboardRankSorting.GemsDesc or CustomLeaderboardRankSorting.KillsDesc or CustomLeaderboardRankSorting.HomingDesc => false,
 			_ => throw new InvalidOperationException($"Rank sorting '{rankSorting}' is not supported."),
 		};
+	}
+
+	public static bool IsTime(this CustomLeaderboardRankSorting rankSorting)
+	{
+		return rankSorting is CustomLeaderboardRankSorting.TimeAsc or CustomLeaderboardRankSorting.TimeDesc;
 	}
 }
