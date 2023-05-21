@@ -4,9 +4,9 @@
     "net7.0": {
       "CliWrap": {
         "type": "Direct",
-        "requested": "[3.6.1, )",
-        "resolved": "3.6.1",
-        "contentHash": "vAZOcQBJpf3Lz1gyKnnhbRw6Fhw+/rsQqGJhoVfb5BEeTKbIgAPZ6LrzcJf6XV58CmC2L2t3oKNV8s4BE1HtPQ=="
+        "requested": "[3.6.3, )",
+        "resolved": "3.6.3",
+        "contentHash": "z0fxJnrwkARqINdjTj/zeCjF/PBkmahoh8ap6Itdf5yCnFNhwnHHbEaOlklXccsIYHTZMZgHIOCVUpKnd2dovQ=="
       },
       "Nullable.Extended.Analyzer": {
         "type": "Direct",
