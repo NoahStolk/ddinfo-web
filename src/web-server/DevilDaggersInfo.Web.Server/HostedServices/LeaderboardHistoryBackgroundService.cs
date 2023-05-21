@@ -62,7 +62,6 @@ public class LeaderboardHistoryBackgroundService : AbstractBackgroundService
 		string fileName = $"{DateTime.UtcNow:yyyyMMddHHmm}.bin";
 		string fullPath = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.LeaderboardHistory), fileName);
 		await File.WriteAllBytesAsync(fullPath, historyModel.ToBytes(), stoppingToken);
-		Logger.LogInformation("Task execution for `{service}` succeeded. `{fileName}` with {entries} entries was created.", nameof(LeaderboardHistoryBackgroundService), fullPath, entries.Count);
 	}
 
 	private bool HistoryFileExistsForDate(DateTime dateTime)
