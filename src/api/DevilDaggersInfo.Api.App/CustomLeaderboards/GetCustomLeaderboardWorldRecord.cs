@@ -2,7 +2,10 @@ namespace DevilDaggersInfo.Api.App.CustomLeaderboards;
 
 public record GetCustomLeaderboardWorldRecord
 {
-	public required double Time { get; init; }
+	[Obsolete("Use WorldRecordValue instead.")]
+	public double Time { get; init; }
+
+	public required double WorldRecordValue { get; init; }
 
 	public required CustomLeaderboardDagger? Dagger { get; init; }
 }

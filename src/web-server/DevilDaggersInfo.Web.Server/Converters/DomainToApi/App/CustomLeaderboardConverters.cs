@@ -186,6 +186,7 @@ public static class CustomLeaderboardConverters
 	{
 		Dagger = customLeaderboardOverviewWorldRecord.Dagger?.ToAppApi(),
 		Time = customLeaderboardOverviewWorldRecord.Time.ToSecondsTime(),
+		WorldRecordValue = customLeaderboardOverviewWorldRecord.WorldRecordValue,
 	};
 
 	private static AppApi.GetScoreState<T> ToAppApi<T>(this UploadResponseScoreState<T> scoreState)
