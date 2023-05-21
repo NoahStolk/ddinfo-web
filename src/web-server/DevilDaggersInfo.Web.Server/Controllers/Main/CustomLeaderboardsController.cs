@@ -4,6 +4,7 @@ using DevilDaggersInfo.Api.Main.Spawnsets;
 using DevilDaggersInfo.Web.Client;
 using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Main;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
+using DevilDaggersInfo.Web.Server.Domain.Converters.CoreToDomain;
 using DevilDaggersInfo.Web.Server.Domain.Main.Converters.DomainToApi;
 using DevilDaggersInfo.Web.Server.Domain.Repositories;
 using DevilDaggersInfo.Web.Server.Domain.Utils;
@@ -114,5 +115,17 @@ public class CustomLeaderboardsController : ControllerBase
 	{
 		Model.SortedCustomLeaderboard cl = await _customLeaderboardRepository.GetSortedCustomLeaderboardByIdAsync(id);
 		return cl.ToMainApi();
+	}
+
+	[HttpGet("allowed-categories")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	public ActionResult<List<GetCustomLeaderboardAllowedCategory>> GetCustomLeaderboardAllowedCategories()
+	{
+		List<(DevilDaggersInfo.Core.Spawnset.GameMode GameMode, Domain.Entities.Enums.CustomLeaderboardRankSorting RankSorting)> allowedCategories = CustomLeaderboardUtils.GetAllowedGameModeAndRankSortingCombinations();
+		return allowedCategories.ConvertAll(ac => new GetCustomLeaderboardAllowedCategory
+		{
+			GameMode = ac.GameMode.ToDomain().ToMainApi(),
+			RankSorting = ac.RankSorting.ToMainApi(),
+		});
 	}
 }
