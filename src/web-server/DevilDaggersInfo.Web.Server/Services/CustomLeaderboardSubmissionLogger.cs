@@ -103,9 +103,9 @@ public class CustomLeaderboardSubmissionLogger : ICustomLeaderboardSubmissionLog
 		return rankSorting switch
 		{
 			CustomLeaderboardRankSorting.TimeAsc or CustomLeaderboardRankSorting.TimeDesc => $"{value} seconds",
-			CustomLeaderboardRankSorting.GemsDesc => $"{value} gems",
-			CustomLeaderboardRankSorting.KillsDesc => $"{value} kills",
-			CustomLeaderboardRankSorting.HomingDesc => $"{value} homing",
+			CustomLeaderboardRankSorting.GemsCollectedDesc => $"{value} gems",
+			CustomLeaderboardRankSorting.EnemiesKilledDesc => $"{value} kills",
+			CustomLeaderboardRankSorting.HomingStoredDesc => $"{value} homing",
 			_ => "?",
 		};
 	}
@@ -115,9 +115,9 @@ public class CustomLeaderboardSubmissionLogger : ICustomLeaderboardSubmissionLog
 		return rankSorting switch
 		{
 			CustomLeaderboardRankSorting.TimeAsc or CustomLeaderboardRankSorting.TimeDesc => "Time",
-			CustomLeaderboardRankSorting.GemsDesc => "Gems",
-			CustomLeaderboardRankSorting.KillsDesc => "Kills",
-			CustomLeaderboardRankSorting.HomingDesc => "Homing",
+			CustomLeaderboardRankSorting.GemsCollectedDesc => "Gems",
+			CustomLeaderboardRankSorting.EnemiesKilledDesc => "Kills",
+			CustomLeaderboardRankSorting.HomingStoredDesc => "Homing",
 			_ => "?",
 		};
 	}
@@ -127,9 +127,9 @@ public class CustomLeaderboardSubmissionLogger : ICustomLeaderboardSubmissionLog
 		return rankSorting switch
 		{
 			CustomLeaderboardRankSorting.TimeAsc or CustomLeaderboardRankSorting.TimeDesc => customEntry.Time.ToSecondsTime().ToString(StringFormats.TimeFormat),
-			CustomLeaderboardRankSorting.GemsDesc => customEntry.GemsCollected.ToString(),
-			CustomLeaderboardRankSorting.KillsDesc => customEntry.EnemiesKilled.ToString(),
-			CustomLeaderboardRankSorting.HomingDesc => customEntry.HomingStored.ToString(),
+			CustomLeaderboardRankSorting.GemsCollectedDesc => customEntry.GemsCollected.ToString(),
+			CustomLeaderboardRankSorting.EnemiesKilledDesc => customEntry.EnemiesKilled.ToString(),
+			CustomLeaderboardRankSorting.HomingStoredDesc => customEntry.HomingStored.ToString(),
 			_ => "?",
 		};
 	}

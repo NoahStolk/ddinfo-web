@@ -29,9 +29,9 @@ public static class CustomLeaderboardConverters
 	{
 		MainApi.CustomLeaderboardRankSorting.TimeDesc => CustomLeaderboardRankSorting.TimeDesc,
 		MainApi.CustomLeaderboardRankSorting.TimeAsc => CustomLeaderboardRankSorting.TimeAsc,
-		MainApi.CustomLeaderboardRankSorting.GemsDesc => CustomLeaderboardRankSorting.GemsDesc,
-		MainApi.CustomLeaderboardRankSorting.KillsDesc => CustomLeaderboardRankSorting.KillsDesc,
-		MainApi.CustomLeaderboardRankSorting.HomingDesc => CustomLeaderboardRankSorting.HomingDesc,
+		MainApi.CustomLeaderboardRankSorting.GemsCollectedDesc => CustomLeaderboardRankSorting.GemsCollectedDesc,
+		MainApi.CustomLeaderboardRankSorting.EnemiesKilledDesc => CustomLeaderboardRankSorting.EnemiesKilledDesc,
+		MainApi.CustomLeaderboardRankSorting.HomingStoredDesc => CustomLeaderboardRankSorting.HomingStoredDesc,
 		_ => throw new UnreachableException(),
 	};
 }

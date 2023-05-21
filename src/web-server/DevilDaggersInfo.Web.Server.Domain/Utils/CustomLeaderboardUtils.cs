@@ -13,9 +13,9 @@ public static class CustomLeaderboardUtils
 		int stat = rankSorting switch
 		{
 			CustomLeaderboardRankSorting.TimeDesc or CustomLeaderboardRankSorting.TimeAsc => entry.Time,
-			CustomLeaderboardRankSorting.GemsDesc => entry.GemsCollected,
-			CustomLeaderboardRankSorting.KillsDesc => entry.EnemiesKilled,
-			CustomLeaderboardRankSorting.HomingDesc => entry.HomingStored,
+			CustomLeaderboardRankSorting.GemsCollectedDesc => entry.GemsCollected,
+			CustomLeaderboardRankSorting.EnemiesKilledDesc => entry.EnemiesKilled,
+			CustomLeaderboardRankSorting.HomingStoredDesc => entry.HomingStored,
 			_ => throw new InvalidOperationException("Unsupported rank sorting for dagger calculation."),
 		};
 

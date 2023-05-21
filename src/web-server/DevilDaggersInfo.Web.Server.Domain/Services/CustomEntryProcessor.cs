@@ -188,9 +188,9 @@ public class CustomEntryProcessor
 		{
 			CustomLeaderboardRankSorting.TimeDesc => requestTimeAsInt > customEntry.Time,
 			CustomLeaderboardRankSorting.TimeAsc => requestTimeAsInt < customEntry.Time,
-			CustomLeaderboardRankSorting.GemsDesc => uploadRequest.GemsCollected > customEntry.GemsCollected,
-			CustomLeaderboardRankSorting.KillsDesc => uploadRequest.EnemiesKilled > customEntry.EnemiesKilled,
-			CustomLeaderboardRankSorting.HomingDesc => uploadRequest.HomingStored > customEntry.HomingStored,
+			CustomLeaderboardRankSorting.GemsCollectedDesc => uploadRequest.GemsCollected > customEntry.GemsCollected,
+			CustomLeaderboardRankSorting.EnemiesKilledDesc => uploadRequest.EnemiesKilled > customEntry.EnemiesKilled,
+			CustomLeaderboardRankSorting.HomingStoredDesc => uploadRequest.HomingStored > customEntry.HomingStored,
 			_ => throw new InvalidOperationException($"Rank sorting '{customLeaderboard.RankSorting}' is not supported."),
 		};
 
@@ -541,9 +541,9 @@ public class CustomEntryProcessor
 		int rankSortingValueDifference = customLeaderboard.RankSorting switch
 		{
 			CustomLeaderboardRankSorting.TimeDesc or CustomLeaderboardRankSorting.TimeAsc => timeDiff,
-			CustomLeaderboardRankSorting.KillsDesc => enemiesKilledDiff,
-			CustomLeaderboardRankSorting.GemsDesc => gemsCollectedDiff,
-			CustomLeaderboardRankSorting.HomingDesc => homingStoredDiff,
+			CustomLeaderboardRankSorting.EnemiesKilledDesc => enemiesKilledDiff,
+			CustomLeaderboardRankSorting.GemsCollectedDesc => gemsCollectedDiff,
+			CustomLeaderboardRankSorting.HomingStoredDesc => homingStoredDiff,
 			_ => 0,
 		};
 

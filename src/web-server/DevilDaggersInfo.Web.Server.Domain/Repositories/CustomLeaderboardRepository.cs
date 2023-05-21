@@ -495,9 +495,9 @@ public class CustomLeaderboardRepository
 		return rankSorting switch
 		{
 			CustomLeaderboardRankSorting.TimeAsc or CustomLeaderboardRankSorting.TimeDesc => customEntry.Time.ToSecondsTime(),
-			CustomLeaderboardRankSorting.GemsDesc => customEntry.GemsCollected,
-			CustomLeaderboardRankSorting.KillsDesc => customEntry.EnemiesKilled,
-			CustomLeaderboardRankSorting.HomingDesc => customEntry.HomingStored,
+			CustomLeaderboardRankSorting.GemsCollectedDesc => customEntry.GemsCollected,
+			CustomLeaderboardRankSorting.EnemiesKilledDesc => customEntry.EnemiesKilled,
+			CustomLeaderboardRankSorting.HomingStoredDesc => customEntry.HomingStored,
 			_ => throw new InvalidOperationException($"Rank sorting '{rankSorting}' is not supported."),
 		};
 	}

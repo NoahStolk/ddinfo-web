@@ -18,9 +18,9 @@ public static class EnumDisplayStringExtensions
 	{
 		CustomLeaderboardRankSorting.TimeDesc => "Highest Time",
 		CustomLeaderboardRankSorting.TimeAsc => "Lowest Time",
-		CustomLeaderboardRankSorting.GemsDesc => "Most Gems",
-		CustomLeaderboardRankSorting.KillsDesc => "Most Kills",
-		CustomLeaderboardRankSorting.HomingDesc => "Most Homing",
+		CustomLeaderboardRankSorting.GemsCollectedDesc => "Most Gems",
+		CustomLeaderboardRankSorting.EnemiesKilledDesc => "Most Kills",
+		CustomLeaderboardRankSorting.HomingStoredDesc => "Most Homing",
 		_ => throw new UnreachableException(),
 	};
 

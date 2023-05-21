@@ -4,7 +4,7 @@ public enum CustomLeaderboardRankSorting
 {
 	TimeDesc = 0,
 	TimeAsc = 1,
-	GemsDesc = 2,
-	KillsDesc = 3,
-	HomingDesc = 4,
+	GemsCollectedDesc = 2,
+	EnemiesKilledDesc = 3,
+	HomingStoredDesc = 4,
 }

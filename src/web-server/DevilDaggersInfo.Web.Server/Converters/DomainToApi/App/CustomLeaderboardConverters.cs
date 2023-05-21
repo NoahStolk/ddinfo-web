@@ -312,9 +312,9 @@ public static class CustomLeaderboardConverters
 	{
 		CustomLeaderboardRankSorting.TimeDesc => AppApi.CustomLeaderboardRankSorting.TimeDesc,
 		CustomLeaderboardRankSorting.TimeAsc => AppApi.CustomLeaderboardRankSorting.TimeAsc,
-		CustomLeaderboardRankSorting.GemsDesc => AppApi.CustomLeaderboardRankSorting.GemsDesc,
-		CustomLeaderboardRankSorting.KillsDesc => AppApi.CustomLeaderboardRankSorting.KillsDesc,
-		CustomLeaderboardRankSorting.HomingDesc => AppApi.CustomLeaderboardRankSorting.HomingDesc,
+		CustomLeaderboardRankSorting.GemsCollectedDesc => AppApi.CustomLeaderboardRankSorting.GemsCollectedDesc,
+		CustomLeaderboardRankSorting.EnemiesKilledDesc => AppApi.CustomLeaderboardRankSorting.EnemiesKilledDesc,
+		CustomLeaderboardRankSorting.HomingStoredDesc => AppApi.CustomLeaderboardRankSorting.HomingStoredDesc,
 		_ => throw new UnreachableException(),
 	};
 

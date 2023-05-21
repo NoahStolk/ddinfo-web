@@ -106,9 +106,9 @@ public static class CustomLeaderboardConverters
 	{
 		Entities.Enums.CustomLeaderboardRankSorting.TimeDesc => AdminApi.CustomLeaderboardRankSorting.TimeDesc,
 		Entities.Enums.CustomLeaderboardRankSorting.TimeAsc => AdminApi.CustomLeaderboardRankSorting.TimeAsc,
-		Entities.Enums.CustomLeaderboardRankSorting.GemsDesc => AdminApi.CustomLeaderboardRankSorting.GemsDesc,
-		Entities.Enums.CustomLeaderboardRankSorting.KillsDesc => AdminApi.CustomLeaderboardRankSorting.KillsDesc,
-		Entities.Enums.CustomLeaderboardRankSorting.HomingDesc => AdminApi.CustomLeaderboardRankSorting.HomingDesc,
+		Entities.Enums.CustomLeaderboardRankSorting.GemsCollectedDesc => AdminApi.CustomLeaderboardRankSorting.GemsCollectedDesc,
+		Entities.Enums.CustomLeaderboardRankSorting.EnemiesKilledDesc => AdminApi.CustomLeaderboardRankSorting.EnemiesKilledDesc,
+		Entities.Enums.CustomLeaderboardRankSorting.HomingStoredDesc => AdminApi.CustomLeaderboardRankSorting.HomingStoredDesc,
 		_ => throw new UnreachableException(),
 	};
 
