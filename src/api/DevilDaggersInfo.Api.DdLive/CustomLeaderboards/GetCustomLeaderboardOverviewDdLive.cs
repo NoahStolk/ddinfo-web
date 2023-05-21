@@ -20,7 +20,12 @@ public record GetCustomLeaderboardOverviewDdLive
 
 	public required int PlayerCount { get; init; }
 
+	[Obsolete("Use game mode and rank sorting instead.")]
 	public required CustomLeaderboardCategoryDdLive Category { get; init; }
+
+	public required SpawnsetGameModeDdLive SpawnsetGameMode { get; init; }
+
+	public required CustomLeaderboardRankSortingDdLive RankSorting { get; init; }
 
 	public required int? TopPlayerId { get; init; }
 

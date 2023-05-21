@@ -24,6 +24,8 @@ public static class CustomLeaderboardConverters
 		TopPlayerName = customLeaderboard.WorldRecord?.PlayerName,
 		WorldRecord = customLeaderboard.WorldRecord?.Time.ToSecondsTime(),
 		WorldRecordDagger = customLeaderboard.WorldRecord?.Dagger?.ToDdLiveApi(),
+		RankSorting = customLeaderboard.RankSorting.ToDdLiveApi(),
+		SpawnsetGameMode = customLeaderboard.GameMode.ToDdLiveApi(),
 	};
 
 	public static DdLiveApi.GetCustomLeaderboardDdLive ToDdLiveApi(this SortedCustomLeaderboard customLeaderboard, List<int> customEntryReplayIds) => new()
@@ -98,6 +100,25 @@ public static class CustomLeaderboardConverters
 		_ => throw new UnreachableException(),
 	};
 
+	public static DdLiveApi.SpawnsetGameModeDdLive ToDdLiveApi(this SpawnsetGameMode dagger) => dagger switch
+	{
+		SpawnsetGameMode.Survival => DdLiveApi.SpawnsetGameModeDdLive.Survival,
+		SpawnsetGameMode.TimeAttack => DdLiveApi.SpawnsetGameModeDdLive.TimeAttack,
+		SpawnsetGameMode.Race => DdLiveApi.SpawnsetGameModeDdLive.Race,
+		_ => throw new UnreachableException(),
+	};
+
+	public static DdLiveApi.CustomLeaderboardRankSortingDdLive ToDdLiveApi(this CustomLeaderboardRankSorting dagger) => dagger switch
+	{
+		CustomLeaderboardRankSorting.TimeDesc => DdLiveApi.CustomLeaderboardRankSortingDdLive.TimeDesc,
+		CustomLeaderboardRankSorting.TimeAsc => DdLiveApi.CustomLeaderboardRankSortingDdLive.TimeAsc,
+		CustomLeaderboardRankSorting.GemsDesc => DdLiveApi.CustomLeaderboardRankSortingDdLive.GemsDesc,
+		CustomLeaderboardRankSorting.KillsDesc => DdLiveApi.CustomLeaderboardRankSortingDdLive.KillsDesc,
+		CustomLeaderboardRankSorting.HomingDesc => DdLiveApi.CustomLeaderboardRankSortingDdLive.HomingDesc,
+		_ => throw new UnreachableException(),
+	};
+
+	[Obsolete("Remove when no longer used.")]
 	/// <summary>
 	/// Workaround to keep the API backwards compatible with the old categories.
 	/// </summary>
