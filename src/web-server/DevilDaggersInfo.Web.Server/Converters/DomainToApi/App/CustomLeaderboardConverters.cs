@@ -134,6 +134,8 @@ public static class CustomLeaderboardConverters
 		IsAscending = sortedCustomLeaderboard.RankSorting.IsAscending(),
 		SortedEntries = sortedCustomLeaderboard.CustomEntries.ConvertAll(ce => ce.ToAppApi()),
 		SpawnsetName = sortedCustomLeaderboard.SpawnsetName,
+		RankSorting = sortedCustomLeaderboard.RankSorting.ToAppApi(),
+		SpawnsetGameMode = sortedCustomLeaderboard.GameMode.ToAppApi(),
 	};
 
 	public static AppApi.GetCustomLeaderboardForOverview ToAppApi(this CustomLeaderboardOverview customLeaderboard) => new()

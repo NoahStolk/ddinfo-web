@@ -12,6 +12,10 @@ public record GetCustomLeaderboard
 	[Obsolete("Use RankSorting instead.")]
 	public bool IsAscending { get; init; }
 
+	public required CustomLeaderboardRankSorting RankSorting { get; init; }
+
+	public required SpawnsetGameMode SpawnsetGameMode { get; init; }
+
 	public required List<GetCustomEntry> SortedEntries { get; init; }
 
 	public required List<GetCustomLeaderboardCriteria> Criteria { get; init; }
