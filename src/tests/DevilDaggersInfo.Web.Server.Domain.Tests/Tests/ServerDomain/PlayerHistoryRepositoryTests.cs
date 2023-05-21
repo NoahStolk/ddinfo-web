@@ -1,10 +1,10 @@
-using DevilDaggersInfo.Api.Main.Players;
-using DevilDaggersInfo.Web.Server.Domain.Main.Repositories;
+using DevilDaggersInfo.Web.Server.Domain.Models.Players;
+using DevilDaggersInfo.Web.Server.Domain.Repositories;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 using DevilDaggersInfo.Web.Server.Domain.Tests.Utils;
 using Microsoft.AspNetCore.Http;
 
-namespace DevilDaggersInfo.Web.Server.Domain.Tests.Tests.ServerDomainMain;
+namespace DevilDaggersInfo.Web.Server.Domain.Tests.Tests.ServerDomain;
 
 [TestClass]
 public class PlayerHistoryRepositoryTests
@@ -24,7 +24,7 @@ public class PlayerHistoryRepositoryTests
 	[TestMethod]
 	public void GetPlayerHistory_WithCheater()
 	{
-		GetPlayerHistory historyPlayer1 = _repository.GetPlayerHistoryById(1);
+		PlayerHistory historyPlayer1 = _repository.GetPlayerHistoryById(1);
 
 		// Verify that this player always has first place, even if a cheater has technically been first in the history at some point.
 		Assert.AreEqual(3, historyPlayer1.ScoreHistory.Count);
@@ -41,7 +41,7 @@ public class PlayerHistoryRepositoryTests
 
 		Assert.AreEqual(1, historyPlayer1.BestRank);
 
-		GetPlayerHistory historyPlayer2 = _repository.GetPlayerHistoryById(2);
+		PlayerHistory historyPlayer2 = _repository.GetPlayerHistoryById(2);
 
 		// Verify that this player always has second place, even if a cheater has technically been first in the history at some point.
 		Assert.AreEqual(2, historyPlayer2.ScoreHistory.Count);
@@ -56,7 +56,7 @@ public class PlayerHistoryRepositoryTests
 
 		Assert.AreEqual(2, historyPlayer2.BestRank);
 
-		GetPlayerHistory historyPlayer3 = _repository.GetPlayerHistoryById(3);
+		PlayerHistory historyPlayer3 = _repository.GetPlayerHistoryById(3);
 
 		// Verify that this player's best rank is 3rd, even if a cheater has always been above them.
 		Assert.AreEqual(1, historyPlayer3.ScoreHistory.Count);
@@ -69,7 +69,7 @@ public class PlayerHistoryRepositoryTests
 
 		Assert.AreEqual(3, historyPlayer3.BestRank);
 
-		GetPlayerHistory historyCheater = _repository.GetPlayerHistoryById(4);
+		PlayerHistory historyCheater = _repository.GetPlayerHistoryById(4);
 
 		// A cheater's history is not affected, except if there is another cheater with a better rank (which we don't test here because we don't care about accurate cheater stats).
 		Assert.AreEqual(3, historyCheater.ScoreHistory.Count);

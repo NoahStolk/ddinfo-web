@@ -66,7 +66,7 @@ public class PlayersController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public GetPlayerHistory GetPlayerHistoryById([Required, Range(1, int.MaxValue)] int id)
 	{
-		return _playerHistoryRepository.GetPlayerHistoryById(id);
+		return _playerHistoryRepository.GetPlayerHistoryById(id).ToMainApi();
 	}
 
 	[HttpGet("{id}/custom-leaderboard-statistics")]

@@ -65,4 +65,34 @@ public static class PlayerConverters
 		Domain.Entities.Enums.VerticalSync.Adaptive => VerticalSync.Adaptive,
 		_ => throw new UnreachableException(),
 	};
+
+	public static GetPlayerHistory ToMainApi(this PlayerHistory playerHistory) => new()
+	{
+		Usernames = playerHistory.Usernames,
+		ActivityHistory = playerHistory.ActivityHistory.ConvertAll(ah => new GetPlayerHistoryActivityEntry
+		{
+			DateTime = ah.DateTime,
+			DeathsIncrement = ah.DeathsIncrement,
+			TimeIncrement = ah.TimeIncrement,
+		}),
+		BestRank = playerHistory.BestRank,
+		RankHistory = playerHistory.RankHistory.ConvertAll(rh => new GetPlayerHistoryRankEntry
+		{
+			DateTime = rh.DateTime,
+			Rank = rh.Rank,
+		}),
+		ScoreHistory = playerHistory.ScoreHistory.ConvertAll(sh => new GetPlayerHistoryScoreEntry
+		{
+			DateTime = sh.DateTime,
+			Gems = sh.Gems,
+			Kills = sh.Kills,
+			Rank = sh.Rank,
+			Time = sh.Time,
+			Username = sh.Username,
+			DaggersFired = sh.DaggersFired,
+			DaggersHit = sh.DaggersHit,
+			DeathType = sh.DeathType,
+		}),
+		HidePastUsernames = playerHistory.HidePastUsernames,
+	};
 }

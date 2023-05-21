@@ -3,11 +3,12 @@ using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardHistory;
+using DevilDaggersInfo.Web.Server.Domain.Models.Players;
 using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 using Microsoft.EntityFrameworkCore;
 
-namespace DevilDaggersInfo.Web.Server.Domain.Main.Repositories;
+namespace DevilDaggersInfo.Web.Server.Domain.Repositories;
 
 public class PlayerHistoryRepository
 {
@@ -22,8 +23,7 @@ public class PlayerHistoryRepository
 		_leaderboardHistoryCache = leaderboardHistoryCache;
 	}
 
-	// TODO: Also move to Domain project since this is used by DDLIVE. We'll also need a separate return type for DDLIVE.
-	public Api.Main.Players.GetPlayerHistory GetPlayerHistoryById(int id)
+	public PlayerHistory GetPlayerHistoryById(int id)
 	{
 		// TODO: Add caching.
 		// TODO: Alts may be valid. We would need to check if the main account is below the current player and the alt is above it, then it should not be included in illegitimateScoresAbove.
@@ -41,15 +41,15 @@ public class PlayerHistoryRepository
 		Dictionary<string, int> usernamesHistory = new();
 
 		int? scorePreviousForScoreHistory = null;
-		List<Api.Main.Players.GetPlayerHistoryScoreEntry> scoreHistory = new();
+		List<PlayerHistoryScoreEntry> scoreHistory = new();
 
 		int? rankPreviousForRankHistory = null;
-		List<Api.Main.Players.GetPlayerHistoryRankEntry> rankHistory = new();
+		List<PlayerHistoryRankEntry> rankHistory = new();
 
 		ulong? totalDeathsForActivityHistory = null;
 		ulong? totalTimeForActivityHistory = null;
 		DateTime? datePreviousForActivityHistory = null;
-		List<Api.Main.Players.GetPlayerHistoryActivityEntry> activityHistory = new();
+		List<PlayerHistoryActivityEntry> activityHistory = new();
 
 		foreach (string leaderboardHistoryPath in _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory).Where(p => p.EndsWith(".bin")))
 		{
