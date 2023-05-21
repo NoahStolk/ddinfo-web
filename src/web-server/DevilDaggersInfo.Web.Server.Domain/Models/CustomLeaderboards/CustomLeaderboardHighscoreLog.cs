@@ -1,8 +1,14 @@
+using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
+
 namespace DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 
 public record CustomLeaderboardHighscoreLog
 {
 	public required CustomLeaderboardDagger Dagger { get; init; }
+
+	public required CustomLeaderboardRankSorting RankSorting { get; init; }
+
+	public required SpawnsetGameMode SpawnsetGameMode { get; init; }
 
 	public required int CustomLeaderboardId { get; init; }
 

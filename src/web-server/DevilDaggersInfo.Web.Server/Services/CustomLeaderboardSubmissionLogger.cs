@@ -2,6 +2,7 @@ using DevilDaggersInfo.Common;
 using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
+using DevilDaggersInfo.Web.Server.Domain.Main.Converters.DomainToApi;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 
@@ -9,10 +10,16 @@ namespace DevilDaggersInfo.Web.Server.Services;
 
 public class CustomLeaderboardSubmissionLogger : ICustomLeaderboardSubmissionLogger
 {
+	private readonly ILogger<CustomLeaderboardSubmissionLogger> _logger;
 	private readonly List<CustomLeaderboardHighscoreLog> _highscoreLogs = new();
 
 	private readonly List<string> _validClLogs = new();
 	private readonly List<string> _invalidClLogs = new();
+
+	public CustomLeaderboardSubmissionLogger(ILogger<CustomLeaderboardSubmissionLogger> logger)
+	{
+		_logger = logger;
+	}
 
 	public IReadOnlyList<string> GetLogs(bool valid)
 		=> valid ? _validClLogs : _invalidClLogs;
@@ -41,6 +48,9 @@ public class CustomLeaderboardSubmissionLogger : ICustomLeaderboardSubmissionLog
 		string playerName,
 		string spawnsetName)
 	{
+		if (customLeaderboard.Spawnset == null)
+			_logger.LogError("Spawnset is not included in the custom leaderboard. Defaulting to Survival.");
+
 		CustomLeaderboardDagger dagger = customLeaderboard.DaggerFromStat(customEntry) ?? CustomLeaderboardDagger.Silver;
 		string scoreField = GetScoreFieldName(customLeaderboard.RankSorting);
 		string scoreValue = GetFormattedScoreValue(customLeaderboard.RankSorting, customEntry);
@@ -52,6 +62,8 @@ public class CustomLeaderboardSubmissionLogger : ICustomLeaderboardSubmissionLog
 			CustomLeaderboardId = customLeaderboard.Id,
 			ScoreField = scoreField,
 			ScoreValue = scoreValue,
+			RankSorting = customLeaderboard.RankSorting,
+			SpawnsetGameMode = customLeaderboard.Spawnset?.GameMode ?? SpawnsetGameMode.Survival,
 		});
 	}
 
@@ -64,6 +76,9 @@ public class CustomLeaderboardSubmissionLogger : ICustomLeaderboardSubmissionLog
 		string spawnsetName,
 		int valueDifference)
 	{
+		if (customLeaderboard.Spawnset == null)
+			_logger.LogError("Spawnset is not included in the custom leaderboard. Defaulting to Survival.");
+
 		CustomLeaderboardDagger dagger = customLeaderboard.DaggerFromStat(customEntry) ?? CustomLeaderboardDagger.Silver;
 		string scoreField = GetScoreFieldName(customLeaderboard.RankSorting);
 		string scoreValue = GetFormattedScoreValue(customLeaderboard.RankSorting, customEntry);
@@ -77,6 +92,8 @@ public class CustomLeaderboardSubmissionLogger : ICustomLeaderboardSubmissionLog
 			CustomLeaderboardId = customLeaderboard.Id,
 			ScoreField = scoreField,
 			ScoreValue = $"{scoreValue} ({GetFormattedScoreValueDifference(customLeaderboard.RankSorting, valueDifference)})",
+			RankSorting = customLeaderboard.RankSorting,
+			SpawnsetGameMode = customLeaderboard.Spawnset?.GameMode ?? SpawnsetGameMode.Survival,
 		});
 	}
 
