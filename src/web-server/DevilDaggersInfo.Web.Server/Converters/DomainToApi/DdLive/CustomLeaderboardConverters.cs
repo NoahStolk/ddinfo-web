@@ -100,7 +100,7 @@ public static class CustomLeaderboardConverters
 		_ => throw new UnreachableException(),
 	};
 
-	public static DdLiveApi.SpawnsetGameModeDdLive ToDdLiveApi(this SpawnsetGameMode dagger) => dagger switch
+	private static DdLiveApi.SpawnsetGameModeDdLive ToDdLiveApi(this SpawnsetGameMode dagger) => dagger switch
 	{
 		SpawnsetGameMode.Survival => DdLiveApi.SpawnsetGameModeDdLive.Survival,
 		SpawnsetGameMode.TimeAttack => DdLiveApi.SpawnsetGameModeDdLive.TimeAttack,
@@ -108,7 +108,7 @@ public static class CustomLeaderboardConverters
 		_ => throw new UnreachableException(),
 	};
 
-	public static DdLiveApi.CustomLeaderboardRankSortingDdLive ToDdLiveApi(this CustomLeaderboardRankSorting dagger) => dagger switch
+	private static DdLiveApi.CustomLeaderboardRankSortingDdLive ToDdLiveApi(this CustomLeaderboardRankSorting dagger) => dagger switch
 	{
 		CustomLeaderboardRankSorting.TimeDesc => DdLiveApi.CustomLeaderboardRankSortingDdLive.TimeDesc,
 		CustomLeaderboardRankSorting.TimeAsc => DdLiveApi.CustomLeaderboardRankSortingDdLive.TimeAsc,
