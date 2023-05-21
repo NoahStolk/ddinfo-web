@@ -150,6 +150,8 @@ public static class CustomLeaderboardConverters
 		SubmitCount = customLeaderboard.TotalRunsSubmitted,
 		WorldRecord = customLeaderboard.WorldRecord?.ToAppApi(),
 		Criteria = customLeaderboard.Criteria.ConvertAll(c => c.ToAppApi()),
+		RankSorting = customLeaderboard.RankSorting.ToAppApi(),
+		SpawnsetGameMode = customLeaderboard.GameMode.ToAppApi(),
 	};
 
 	private static AppApi.GetCustomLeaderboardCriteria ToAppApi(this CustomLeaderboardCriteria customLeaderboardCriteria) => new()
@@ -293,7 +295,25 @@ public static class CustomLeaderboardConverters
 		_ => throw new UnreachableException(),
 	};
 
-	// TODO: Remove this once the API is updated.
+	public static AppApi.SpawnsetGameMode ToAppApi(this SpawnsetGameMode dagger) => dagger switch
+	{
+		SpawnsetGameMode.Survival => AppApi.SpawnsetGameMode.Survival,
+		SpawnsetGameMode.TimeAttack => AppApi.SpawnsetGameMode.TimeAttack,
+		SpawnsetGameMode.Race => AppApi.SpawnsetGameMode.Race,
+		_ => throw new UnreachableException(),
+	};
+
+	public static AppApi.CustomLeaderboardRankSorting ToAppApi(this CustomLeaderboardRankSorting dagger) => dagger switch
+	{
+		CustomLeaderboardRankSorting.TimeDesc => AppApi.CustomLeaderboardRankSorting.TimeDesc,
+		CustomLeaderboardRankSorting.TimeAsc => AppApi.CustomLeaderboardRankSorting.TimeAsc,
+		CustomLeaderboardRankSorting.GemsDesc => AppApi.CustomLeaderboardRankSorting.GemsDesc,
+		CustomLeaderboardRankSorting.KillsDesc => AppApi.CustomLeaderboardRankSorting.KillsDesc,
+		CustomLeaderboardRankSorting.HomingDesc => AppApi.CustomLeaderboardRankSorting.HomingDesc,
+		_ => throw new UnreachableException(),
+	};
+
+	// TODO: Remove when 0.5.0.1 and older have been deprecated.
 	/// <summary>
 	/// Workaround to keep the API backwards compatible with the old categories.
 	/// </summary>

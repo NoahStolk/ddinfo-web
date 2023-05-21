@@ -12,11 +12,16 @@ public record GetCustomLeaderboardForOverview
 
 	public required string SpawnsetAuthorName { get; init; }
 
+	public required SpawnsetGameMode SpawnsetGameMode { get; init; }
+
 	public required int PlayerCount { get; init; }
 
 	public required int SubmitCount { get; init; }
 
-	public required CustomLeaderboardCategory Category { get; init; }
+	[Obsolete("Remove when 0.5.0.1 and older have been deprecated.")]
+	public CustomLeaderboardCategory Category { get; init; }
+
+	public required CustomLeaderboardRankSorting RankSorting { get; init; }
 
 	public required GetCustomLeaderboardDaggers? Daggers { get; init; }
 
