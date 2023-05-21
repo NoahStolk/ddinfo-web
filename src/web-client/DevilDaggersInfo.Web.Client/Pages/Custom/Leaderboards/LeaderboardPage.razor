@@ -154,12 +154,17 @@ else
 						bool grayBackground = i++ % 2 == 0;
 						string? leviathanOffsetStyle = daggerCssClass == "leviathan" ? LeviathanAnimationUtils.GetStyle(GetCustomLeaderboard.CustomEntries.Count, i) : null;
 
+						string? timeClass = GetCustomLeaderboard.RankSorting is CustomLeaderboardRankSorting.TimeAsc or CustomLeaderboardRankSorting.TimeDesc ? daggerCssClass : null;
+						string? killsClass = GetCustomLeaderboard.RankSorting == CustomLeaderboardRankSorting.KillsDesc ? daggerCssClass : null;
+						string? gemsClass = GetCustomLeaderboard.RankSorting == CustomLeaderboardRankSorting.GemsDesc ? daggerCssClass : null;
+						string? homingClass = GetCustomLeaderboard.RankSorting == CustomLeaderboardRankSorting.HomingDesc ? daggerCssClass : null;
+
 						<div class="grid gap-3 grid-cols-custom-leaderboard-sm md:grid-cols-custom-leaderboard-md lg:grid-cols-custom-leaderboard-lg xl:grid-cols-custom-leaderboard-xl 2xl:grid-cols-custom-leaderboard-2xl h-6 cursor-pointer 2xl:cursor-default @(grayBackground ? "bg-gray-1" : string.Empty)" @onclick="() => Expand(ce.Id)">
 							<EntryRank PlayerId="@ce.PlayerId" Rank="@ce.Rank" />
 							<EntryFlag CountryCode="@ce.CountryCode" />
 							<EntryUsername DaggerCssClass="@daggerCssClass" LeviathanOffsetStyle="@leviathanOffsetStyle" Id="@ce.PlayerId" Name="@ce.PlayerName" />
 							<div class="text-right whitespace-nowrap">
-								<span class="@daggerCssClass" style="@leviathanOffsetStyle">@ce.Time.ToString(StringFormats.TimeFormat)</span>
+								<span class="@timeClass" style="@leviathanOffsetStyle">@ce.Time.ToString(StringFormats.TimeFormat)</span>
 								@if (ce.HasGraphs)
 								{
 									<a href="@($"/custom/entry/{ce.Id}")">
@@ -171,16 +176,16 @@ else
 									<img class="inline-block mx-1 mb-1" src="/images/icons/color/eye-gray.png" />
 								}
 							</div>
-							<div class="text-right hidden md:block">@enemiesKilled</div>
+							<div class="text-right hidden md:block @killsClass">@enemiesKilled</div>
 							<div class="text-right hidden md:block">@enemiesAlive</div>
-							<div class="text-right hidden md:block">@gemsCollected</div>
+							<div class="text-right hidden md:block @gemsClass">@gemsCollected</div>
 							<div class="text-right hidden lg:block">@gemsDespawned</div>
 							<div class="text-right hidden lg:block">@gemsEaten</div>
 							<div class="text-right hidden md:block">
 								<Tooltip Text="@daggers"><span class="font-goethe text-xl cursor-pointer">@accuracy</span></Tooltip>
 							</div>
 							<div class="text-left hidden lg:block">@death</div>
-							<div class="text-right hidden xl:block">@homingStored</div>
+							<div class="text-right hidden xl:block @homingClass">@homingStored</div>
 							<div class="text-right hidden xl:block">@homingEaten</div>
 							<div class="text-right hidden 2xl:block">@levelUpTime2</div>
 							<div class="text-right hidden 2xl:block">@levelUpTime3</div>

@@ -31,13 +31,13 @@ else
 	<div class="bg-gray-1 p-2 text-lg">
 		<div class="grid gap-2 grid-cols-2 max-w-md mb-2">
 			<span>Spawnset name</span>
-			<input class="bg-black border-gray-3 border-2 w-48" value="@SpawnsetFilter" @onchange="ChangeInputSpawnsetName" />
+			<input class="bg-black border-gray-3 border-2 w-64" value="@SpawnsetFilter" @onchange="ChangeInputSpawnsetName" />
 			<span>Author name</span>
-			<input class="bg-black border-gray-3 border-2 w-48" value="@AuthorFilter" @onchange="ChangeInputAuthorName" />
+			<input class="bg-black border-gray-3 border-2 w-64" value="@AuthorFilter" @onchange="ChangeInputAuthorName" />
 			@if (_categories != null)
 			{
 				<span>Category</span>
-				<SelectList CssWidthClass="w-48" CssOpenerClass="pl-2" TValue="CategoryDropdown" Values="@(_categories)" DisplayFunction="@(c => c.ToString())" Default="new(EnumConvert.GetGameMode(GameMode), EnumConvert.GetRankSorting(RankSorting))" Selected="@SetCategory" />
+				<SelectList CssWidthClass="w-64" CssOpenerClass="pl-2" TValue="CategoryDropdown" Values="@(_categories)" DisplayFunction="@(c => c.ToString())" Default="new(EnumConvert.GetGameMode(GameMode), EnumConvert.GetRankSorting(RankSorting))" Selected="@SetCategory" />
 			}
 		</div>
 
