@@ -1,10 +1,13 @@
 [
 	{
-		"VersionNumber": "0.5.0.2",
-		"Date": "2023-05-20T00:00:00",
+		"VersionNumber": "0.5.1.0",
+		"Date": "2023-05-21T00:00:00",
 		"Changes": [
 			{
 				"Description": "Completely changed all the UI. The new system is much more flexible and easier to use."
+			},
+			{
+				"Description": "Added support for new custom leaderboards (gems, kills, homing)."
 			},
 			{
 				"Description": "Added icon to executable file."
