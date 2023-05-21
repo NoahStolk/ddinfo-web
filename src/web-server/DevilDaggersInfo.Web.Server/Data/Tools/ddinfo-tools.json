@@ -1,5 +1,23 @@
 [
 	{
+		"VersionNumber": "0.5.0.2",
+		"Date": "2023-05-20T00:00:00",
+		"Changes": [
+			{
+				"Description": "Completely changed all the UI. The new system is much more flexible and easier to use."
+			},
+			{
+				"Description": "Added icon to executable file."
+			},
+			{
+				"Description": "Added options to delete and open the current survival."
+			},
+			{
+				"Description": "Bug fixes and improved logging."
+			}
+		]
+	},
+	{
 		"VersionNumber": "0.4.2.0",
 		"Date": "2023-03-10T00:00:00",
 		"Changes": [
