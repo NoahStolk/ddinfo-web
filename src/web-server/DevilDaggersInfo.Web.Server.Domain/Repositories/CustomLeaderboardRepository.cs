@@ -86,8 +86,11 @@ public class CustomLeaderboardRepository
 				Time = ce.Time,
 				GemsCollected = ce.GemsCollected,
 				GemsDespawned = ce.GemsDespawned,
+				GemsEaten = ce.GemsEaten,
 				EnemiesKilled = ce.EnemiesKilled,
+				EnemiesAlive = ce.EnemiesAlive,
 				HomingStored = ce.HomingStored,
+				HomingEaten = ce.HomingEaten,
 				SubmitDate = ce.SubmitDate,
 			})
 			.Where(ce => customLeaderboardIds.Contains(ce.CustomLeaderboardId))
@@ -482,8 +485,11 @@ public class CustomLeaderboardRepository
 			Time = worldRecord.Time,
 			GemsCollected = worldRecord.GemsCollected,
 			GemsDespawned = worldRecord.GemsDespawned,
+			GemsEaten = worldRecord.GemsEaten,
 			EnemiesKilled = worldRecord.EnemiesKilled,
+			EnemiesAlive = worldRecord.EnemiesAlive,
 			HomingStored = worldRecord.HomingStored,
+			HomingEaten = worldRecord.HomingEaten,
 			PlayerId = playerId,
 			PlayerName = playerName,
 			Dagger = cl.DaggerFromStat(worldRecord),
@@ -496,10 +502,13 @@ public class CustomLeaderboardRepository
 		return rankSorting switch
 		{
 			CustomLeaderboardRankSorting.TimeAsc or CustomLeaderboardRankSorting.TimeDesc => customEntry.Time.ToSecondsTime(),
-			CustomLeaderboardRankSorting.GemsCollectedDesc => customEntry.GemsCollected,
-			CustomLeaderboardRankSorting.GemsDespawnedDesc => customEntry.GemsDespawned,
-			CustomLeaderboardRankSorting.EnemiesKilledDesc => customEntry.EnemiesKilled,
-			CustomLeaderboardRankSorting.HomingStoredDesc => customEntry.HomingStored,
+			CustomLeaderboardRankSorting.GemsCollectedAsc or CustomLeaderboardRankSorting.GemsCollectedDesc => customEntry.GemsCollected,
+			CustomLeaderboardRankSorting.GemsDespawnedAsc or CustomLeaderboardRankSorting.GemsDespawnedDesc => customEntry.GemsDespawned,
+			CustomLeaderboardRankSorting.GemsEatenAsc or CustomLeaderboardRankSorting.GemsEatenDesc => customEntry.GemsEaten,
+			CustomLeaderboardRankSorting.EnemiesKilledAsc or CustomLeaderboardRankSorting.EnemiesKilledDesc => customEntry.EnemiesKilled,
+			CustomLeaderboardRankSorting.EnemiesAliveAsc or CustomLeaderboardRankSorting.EnemiesAliveDesc => customEntry.EnemiesAlive,
+			CustomLeaderboardRankSorting.HomingStoredAsc or CustomLeaderboardRankSorting.HomingStoredDesc => customEntry.HomingStored,
+			CustomLeaderboardRankSorting.HomingEatenAsc or CustomLeaderboardRankSorting.HomingEatenDesc => customEntry.HomingEaten,
 			_ => throw new InvalidOperationException($"Rank sorting '{rankSorting}' is not supported."),
 		};
 	}

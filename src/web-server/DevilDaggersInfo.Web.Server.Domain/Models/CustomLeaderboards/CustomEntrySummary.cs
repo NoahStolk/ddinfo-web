@@ -14,9 +14,15 @@ public record CustomEntrySummary : ISortableCustomEntry, IDaggerStatCustomEntry
 
 	public required int GemsDespawned { get; init; }
 
+	public required int GemsEaten { get; init; }
+
 	public required int EnemiesKilled { get; init; }
 
+	public required int EnemiesAlive { get; init; }
+
 	public required int HomingStored { get; init; }
+
+	public required int HomingEaten { get; init; }
 
 	public required DateTime SubmitDate { get; init; }
 }

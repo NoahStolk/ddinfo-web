@@ -8,9 +8,15 @@ public interface ISortableCustomEntry
 
 	int GemsDespawned { get; }
 
+	int GemsEaten { get; }
+
 	int EnemiesKilled { get; }
 
+	int EnemiesAlive { get; }
+
 	int HomingStored { get; }
+
+	int HomingEaten { get; }
 
 	DateTime SubmitDate { get; }
 }

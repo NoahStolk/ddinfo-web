@@ -12,11 +12,14 @@ public static class CustomLeaderboardUtils
 	{
 		int stat = rankSorting switch
 		{
-			CustomLeaderboardRankSorting.TimeDesc or CustomLeaderboardRankSorting.TimeAsc => entry.Time,
-			CustomLeaderboardRankSorting.GemsCollectedDesc => entry.GemsCollected,
-			CustomLeaderboardRankSorting.GemsDespawnedDesc => entry.GemsDespawned,
-			CustomLeaderboardRankSorting.EnemiesKilledDesc => entry.EnemiesKilled,
-			CustomLeaderboardRankSorting.HomingStoredDesc => entry.HomingStored,
+			CustomLeaderboardRankSorting.TimeAsc or CustomLeaderboardRankSorting.TimeDesc => entry.Time,
+			CustomLeaderboardRankSorting.GemsCollectedAsc or CustomLeaderboardRankSorting.GemsCollectedDesc => entry.GemsCollected,
+			CustomLeaderboardRankSorting.GemsDespawnedAsc or CustomLeaderboardRankSorting.GemsDespawnedDesc => entry.GemsDespawned,
+			CustomLeaderboardRankSorting.GemsEatenAsc or CustomLeaderboardRankSorting.GemsEatenDesc => entry.GemsEaten,
+			CustomLeaderboardRankSorting.EnemiesKilledAsc or CustomLeaderboardRankSorting.EnemiesKilledDesc => entry.EnemiesKilled,
+			CustomLeaderboardRankSorting.EnemiesAliveAsc or CustomLeaderboardRankSorting.EnemiesAliveDesc => entry.EnemiesAlive,
+			CustomLeaderboardRankSorting.HomingStoredAsc or CustomLeaderboardRankSorting.HomingStoredDesc => entry.HomingStored,
+			CustomLeaderboardRankSorting.HomingEatenAsc or CustomLeaderboardRankSorting.HomingEatenDesc => entry.HomingEaten,
 			_ => throw new InvalidOperationException("Unsupported rank sorting for dagger calculation."),
 		};
 

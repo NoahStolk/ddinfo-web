@@ -304,12 +304,24 @@ public static class CustomLeaderboardConverters
 
 	public static AppApi.CustomLeaderboardRankSorting ToAppApi(this CustomLeaderboardRankSorting dagger) => dagger switch
 	{
-		CustomLeaderboardRankSorting.TimeDesc => AppApi.CustomLeaderboardRankSorting.TimeDesc,
 		CustomLeaderboardRankSorting.TimeAsc => AppApi.CustomLeaderboardRankSorting.TimeAsc,
+		CustomLeaderboardRankSorting.GemsCollectedAsc => AppApi.CustomLeaderboardRankSorting.GemsCollectedAsc,
+		CustomLeaderboardRankSorting.GemsDespawnedAsc => AppApi.CustomLeaderboardRankSorting.GemsDespawnedAsc,
+		CustomLeaderboardRankSorting.GemsEatenAsc => AppApi.CustomLeaderboardRankSorting.GemsEatenAsc,
+		CustomLeaderboardRankSorting.EnemiesKilledAsc => AppApi.CustomLeaderboardRankSorting.EnemiesKilledAsc,
+		CustomLeaderboardRankSorting.EnemiesAliveAsc => AppApi.CustomLeaderboardRankSorting.EnemiesAliveAsc,
+		CustomLeaderboardRankSorting.HomingStoredAsc => AppApi.CustomLeaderboardRankSorting.HomingStoredAsc,
+		CustomLeaderboardRankSorting.HomingEatenAsc => AppApi.CustomLeaderboardRankSorting.HomingEatenAsc,
+
+		CustomLeaderboardRankSorting.TimeDesc => AppApi.CustomLeaderboardRankSorting.TimeDesc,
 		CustomLeaderboardRankSorting.GemsCollectedDesc => AppApi.CustomLeaderboardRankSorting.GemsCollectedDesc,
 		CustomLeaderboardRankSorting.GemsDespawnedDesc => AppApi.CustomLeaderboardRankSorting.GemsDespawnedDesc,
+		CustomLeaderboardRankSorting.GemsEatenDesc => AppApi.CustomLeaderboardRankSorting.GemsEatenDesc,
 		CustomLeaderboardRankSorting.EnemiesKilledDesc => AppApi.CustomLeaderboardRankSorting.EnemiesKilledDesc,
+		CustomLeaderboardRankSorting.EnemiesAliveDesc => AppApi.CustomLeaderboardRankSorting.EnemiesAliveDesc,
 		CustomLeaderboardRankSorting.HomingStoredDesc => AppApi.CustomLeaderboardRankSorting.HomingStoredDesc,
+		CustomLeaderboardRankSorting.HomingEatenDesc => AppApi.CustomLeaderboardRankSorting.HomingEatenDesc,
+
 		_ => throw new UnreachableException(),
 	};
 }

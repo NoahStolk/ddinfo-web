@@ -8,7 +8,13 @@ public interface IDaggerStatCustomEntry
 
 	int GemsDespawned { get; }
 
+	int GemsEaten { get; }
+
 	int EnemiesKilled { get; }
 
+	int EnemiesAlive { get; }
+
 	int HomingStored { get; }
+
+	int HomingEaten { get; }
 }

@@ -186,12 +186,24 @@ public class CustomEntryProcessor
 
 		bool isHighscore = customLeaderboard.RankSorting switch
 		{
-			CustomLeaderboardRankSorting.TimeDesc => requestTimeAsInt > customEntry.Time,
 			CustomLeaderboardRankSorting.TimeAsc => requestTimeAsInt < customEntry.Time,
+			CustomLeaderboardRankSorting.GemsCollectedAsc => uploadRequest.GemsCollected < customEntry.GemsCollected,
+			CustomLeaderboardRankSorting.GemsDespawnedAsc => uploadRequest.GemsDespawned < customEntry.GemsDespawned,
+			CustomLeaderboardRankSorting.GemsEatenAsc => uploadRequest.GemsEaten < customEntry.GemsEaten,
+			CustomLeaderboardRankSorting.EnemiesKilledAsc => uploadRequest.EnemiesKilled < customEntry.EnemiesKilled,
+			CustomLeaderboardRankSorting.EnemiesAliveAsc => uploadRequest.EnemiesAlive < customEntry.EnemiesAlive,
+			CustomLeaderboardRankSorting.HomingStoredAsc => GetFinalHomingValue(uploadRequest) < customEntry.HomingStored,
+			CustomLeaderboardRankSorting.HomingEatenAsc => uploadRequest.HomingEaten < customEntry.HomingEaten,
+
+			CustomLeaderboardRankSorting.TimeDesc => requestTimeAsInt > customEntry.Time,
 			CustomLeaderboardRankSorting.GemsCollectedDesc => uploadRequest.GemsCollected > customEntry.GemsCollected,
 			CustomLeaderboardRankSorting.GemsDespawnedDesc => uploadRequest.GemsDespawned > customEntry.GemsDespawned,
+			CustomLeaderboardRankSorting.GemsEatenDesc => uploadRequest.GemsEaten > customEntry.GemsEaten,
 			CustomLeaderboardRankSorting.EnemiesKilledDesc => uploadRequest.EnemiesKilled > customEntry.EnemiesKilled,
-			CustomLeaderboardRankSorting.HomingStoredDesc => uploadRequest.HomingStored > customEntry.HomingStored,
+			CustomLeaderboardRankSorting.EnemiesAliveDesc => uploadRequest.EnemiesAlive > customEntry.EnemiesAlive,
+			CustomLeaderboardRankSorting.HomingStoredDesc => GetFinalHomingValue(uploadRequest) > customEntry.HomingStored,
+			CustomLeaderboardRankSorting.HomingEatenDesc => uploadRequest.HomingEaten > customEntry.HomingEaten,
+
 			_ => throw new InvalidOperationException($"Rank sorting '{customLeaderboard.RankSorting}' is not supported."),
 		};
 
@@ -542,10 +554,13 @@ public class CustomEntryProcessor
 		int rankSortingValueDifference = customLeaderboard.RankSorting switch
 		{
 			CustomLeaderboardRankSorting.TimeDesc or CustomLeaderboardRankSorting.TimeAsc => timeDiff,
-			CustomLeaderboardRankSorting.GemsCollectedDesc => gemsCollectedDiff,
-			CustomLeaderboardRankSorting.GemsDespawnedDesc => gemsDespawnedDiff,
-			CustomLeaderboardRankSorting.EnemiesKilledDesc => enemiesKilledDiff,
-			CustomLeaderboardRankSorting.HomingStoredDesc => homingStoredDiff,
+			CustomLeaderboardRankSorting.GemsCollectedAsc or CustomLeaderboardRankSorting.GemsCollectedDesc => gemsCollectedDiff,
+			CustomLeaderboardRankSorting.GemsDespawnedAsc or CustomLeaderboardRankSorting.GemsDespawnedDesc => gemsDespawnedDiff,
+			CustomLeaderboardRankSorting.GemsEatenAsc or CustomLeaderboardRankSorting.GemsEatenDesc => gemsEatenDiff,
+			CustomLeaderboardRankSorting.EnemiesKilledAsc or CustomLeaderboardRankSorting.EnemiesKilledDesc => enemiesKilledDiff,
+			CustomLeaderboardRankSorting.EnemiesAliveAsc or CustomLeaderboardRankSorting.EnemiesAliveDesc => enemiesAliveDiff,
+			CustomLeaderboardRankSorting.HomingStoredAsc or CustomLeaderboardRankSorting.HomingStoredDesc => homingStoredDiff,
+			CustomLeaderboardRankSorting.HomingEatenAsc or CustomLeaderboardRankSorting.HomingEatenDesc => homingEatenDiff,
 			_ => 0,
 		};
 

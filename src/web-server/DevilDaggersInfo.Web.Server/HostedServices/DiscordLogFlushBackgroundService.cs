@@ -76,9 +76,9 @@ public class DiscordLogFlushBackgroundService : AbstractBackgroundService
 			string thumbnailImage = highscoreLog.RankSorting switch
 			{
 				CustomLeaderboardRankSorting.TimeAsc or CustomLeaderboardRankSorting.TimeDesc => "stopwatch.png",
-				CustomLeaderboardRankSorting.EnemiesKilledDesc => "skull.png",
-				CustomLeaderboardRankSorting.GemsCollectedDesc or CustomLeaderboardRankSorting.GemsDespawnedDesc => "gem.png",
-				CustomLeaderboardRankSorting.HomingStoredDesc => "homing.png",
+				CustomLeaderboardRankSorting.GemsCollectedAsc or CustomLeaderboardRankSorting.GemsCollectedDesc or CustomLeaderboardRankSorting.GemsDespawnedAsc or CustomLeaderboardRankSorting.GemsDespawnedDesc or CustomLeaderboardRankSorting.GemsEatenAsc or CustomLeaderboardRankSorting.GemsEatenDesc => "gem.png",
+				CustomLeaderboardRankSorting.EnemiesKilledAsc or CustomLeaderboardRankSorting.EnemiesKilledDesc or CustomLeaderboardRankSorting.EnemiesAliveAsc or CustomLeaderboardRankSorting.EnemiesAliveDesc => "skull.png",
+				CustomLeaderboardRankSorting.HomingStoredAsc or CustomLeaderboardRankSorting.HomingStoredDesc or CustomLeaderboardRankSorting.HomingEatenAsc or CustomLeaderboardRankSorting.HomingEatenDesc => "homing.png",
 				_ => "eye2.png",
 			};
 

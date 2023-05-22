@@ -8,14 +8,24 @@ public static class CustomLeaderboardRankSortingExtensions
 	{
 		return rankSorting switch
 		{
-			CustomLeaderboardRankSorting.TimeAsc
+			CustomLeaderboardRankSorting.TimeAsc or
+			CustomLeaderboardRankSorting.GemsCollectedAsc or
+			CustomLeaderboardRankSorting.GemsDespawnedAsc or
+			CustomLeaderboardRankSorting.GemsEatenAsc or
+			CustomLeaderboardRankSorting.EnemiesKilledAsc or
+			CustomLeaderboardRankSorting.EnemiesAliveAsc or
+			CustomLeaderboardRankSorting.HomingStoredAsc or
+			CustomLeaderboardRankSorting.HomingEatenAsc
 				=> true,
 
 			CustomLeaderboardRankSorting.TimeDesc or
 			CustomLeaderboardRankSorting.GemsCollectedDesc or
 			CustomLeaderboardRankSorting.GemsDespawnedDesc or
+			CustomLeaderboardRankSorting.GemsEatenDesc or
 			CustomLeaderboardRankSorting.EnemiesKilledDesc or
-			CustomLeaderboardRankSorting.HomingStoredDesc
+			CustomLeaderboardRankSorting.EnemiesAliveDesc or
+			CustomLeaderboardRankSorting.HomingStoredDesc or
+			CustomLeaderboardRankSorting.HomingEatenDesc
 				=> false,
 
 			_ => throw new InvalidOperationException($"Rank sorting '{rankSorting}' is not supported."),
