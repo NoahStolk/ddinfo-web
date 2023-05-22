@@ -18,9 +18,6 @@ public record GetCustomLeaderboardForOverview
 
 	public required int SubmitCount { get; init; }
 
-	[Obsolete("Remove when 0.5.0.1 and older have been deprecated.")]
-	public CustomLeaderboardCategory Category { get; init; }
-
 	public required CustomLeaderboardRankSorting RankSorting { get; init; }
 
 	public required GetCustomLeaderboardDaggers? Daggers { get; init; }

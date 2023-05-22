@@ -128,10 +128,8 @@ public static class CustomLeaderboardConverters
 
 	public static AppApi.GetCustomLeaderboard ToAppApi(this SortedCustomLeaderboard sortedCustomLeaderboard) => new()
 	{
-		Category = GetCategory(sortedCustomLeaderboard.RankSorting, sortedCustomLeaderboard.GameMode),
 		Criteria = sortedCustomLeaderboard.Criteria.ConvertAll(c => c.ToAppApi()),
 		Daggers = sortedCustomLeaderboard.Daggers?.ToAppApi(),
-		IsAscending = sortedCustomLeaderboard.RankSorting.IsAscending(),
 		SortedEntries = sortedCustomLeaderboard.CustomEntries.ConvertAll(ce => ce.ToAppApi()),
 		SpawnsetName = sortedCustomLeaderboard.SpawnsetName,
 		RankSorting = sortedCustomLeaderboard.RankSorting.ToAppApi(),
@@ -140,7 +138,6 @@ public static class CustomLeaderboardConverters
 
 	public static AppApi.GetCustomLeaderboardForOverview ToAppApi(this CustomLeaderboardOverview customLeaderboard) => new()
 	{
-		Category = GetCategory(customLeaderboard.RankSorting, customLeaderboard.GameMode),
 		Daggers = customLeaderboard.Daggers?.ToAppApi(),
 		Id = customLeaderboard.Id,
 		PlayerCount = customLeaderboard.PlayerCount,
@@ -176,12 +173,10 @@ public static class CustomLeaderboardConverters
 	{
 		Dagger = customLeaderboardOverviewSelectedPlayerStats.Dagger?.ToAppApi(),
 		Rank = customLeaderboardOverviewSelectedPlayerStats.Rank,
-		Time = customLeaderboardOverviewSelectedPlayerStats.Time.ToSecondsTime(),
 		HighscoreValue = customLeaderboardOverviewSelectedPlayerStats.HighscoreValue,
 		NextDagger = customLeaderboardOverviewSelectedPlayerStats.NextDagger == null ? null : new()
 		{
 			Dagger = customLeaderboardOverviewSelectedPlayerStats.NextDagger.Dagger.ToAppApi(),
-			Time = customLeaderboardOverviewSelectedPlayerStats.NextDagger.Time.ToSecondsTime(),
 			DaggerValue = customLeaderboardOverviewSelectedPlayerStats.NextDagger.DaggerValue,
 		},
 	};
@@ -189,7 +184,6 @@ public static class CustomLeaderboardConverters
 	private static AppApi.GetCustomLeaderboardWorldRecord ToAppApi(this CustomLeaderboardOverviewWorldRecord customLeaderboardOverviewWorldRecord) => new()
 	{
 		Dagger = customLeaderboardOverviewWorldRecord.Dagger?.ToAppApi(),
-		Time = customLeaderboardOverviewWorldRecord.Time.ToSecondsTime(),
 		WorldRecordValue = customLeaderboardOverviewWorldRecord.WorldRecordValue,
 	};
 
@@ -317,24 +311,4 @@ public static class CustomLeaderboardConverters
 		CustomLeaderboardRankSorting.HomingStoredDesc => AppApi.CustomLeaderboardRankSorting.HomingStoredDesc,
 		_ => throw new UnreachableException(),
 	};
-
-	// TODO: Remove when 0.5.0.1 and older have been deprecated.
-	/// <summary>
-	/// Workaround to keep the API backwards compatible with the old categories.
-	/// </summary>
-	private static AppApi.CustomLeaderboardCategory GetCategory(CustomLeaderboardRankSorting rankSorting, SpawnsetGameMode gameMode)
-	{
-		if (rankSorting == CustomLeaderboardRankSorting.TimeAsc)
-		{
-			return gameMode switch
-			{
-				SpawnsetGameMode.Survival => AppApi.CustomLeaderboardCategory.Speedrun,
-				SpawnsetGameMode.TimeAttack => AppApi.CustomLeaderboardCategory.TimeAttack,
-				SpawnsetGameMode.Race => AppApi.CustomLeaderboardCategory.Race,
-				_ => throw new UnreachableException(),
-			};
-		}
-
-		return AppApi.CustomLeaderboardCategory.Survival;
-	}
 }

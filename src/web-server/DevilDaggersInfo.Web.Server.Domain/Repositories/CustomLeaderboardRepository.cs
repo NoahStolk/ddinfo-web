@@ -382,15 +382,14 @@ public class CustomLeaderboardRepository
 		{
 			Dagger = dagger,
 			Rank = sortedCustomEntries.IndexOf(selectedEntry) + 1,
-			Time = selectedEntry.Time,
 			HighscoreValue = GetHighscoreValue(selectedEntry, cl.RankSorting),
 			NextDagger = dagger switch
 			{
-				CustomLeaderboardDagger.Default => new() { Dagger = CustomLeaderboardDagger.Bronze, Time = cl.Bronze, DaggerValue = GetDaggerValue(cl.Bronze, cl.RankSorting) },
-				CustomLeaderboardDagger.Bronze => new() { Dagger = CustomLeaderboardDagger.Silver, Time = cl.Silver, DaggerValue = GetDaggerValue(cl.Silver, cl.RankSorting) },
-				CustomLeaderboardDagger.Silver => new() { Dagger = CustomLeaderboardDagger.Golden, Time = cl.Golden, DaggerValue = GetDaggerValue(cl.Golden, cl.RankSorting) },
-				CustomLeaderboardDagger.Golden => new() { Dagger = CustomLeaderboardDagger.Devil, Time = cl.Devil, DaggerValue = GetDaggerValue(cl.Devil, cl.RankSorting) },
-				CustomLeaderboardDagger.Devil => new() { Dagger = CustomLeaderboardDagger.Leviathan, Time = cl.Leviathan, DaggerValue = GetDaggerValue(cl.Leviathan, cl.RankSorting) },
+				CustomLeaderboardDagger.Default => new() { Dagger = CustomLeaderboardDagger.Bronze, DaggerValue = GetDaggerValue(cl.Bronze, cl.RankSorting) },
+				CustomLeaderboardDagger.Bronze => new() { Dagger = CustomLeaderboardDagger.Silver, DaggerValue = GetDaggerValue(cl.Silver, cl.RankSorting) },
+				CustomLeaderboardDagger.Silver => new() { Dagger = CustomLeaderboardDagger.Golden, DaggerValue = GetDaggerValue(cl.Golden, cl.RankSorting) },
+				CustomLeaderboardDagger.Golden => new() { Dagger = CustomLeaderboardDagger.Devil, DaggerValue = GetDaggerValue(cl.Devil, cl.RankSorting) },
+				CustomLeaderboardDagger.Devil => new() { Dagger = CustomLeaderboardDagger.Leviathan, DaggerValue = GetDaggerValue(cl.Leviathan, cl.RankSorting) },
 				_ => null,
 			},
 		};
