@@ -1,5 +1,14 @@
 [
 	{
+		"VersionNumber": "0.5.2.0",
+		"Date": "2023-05-22T00:00:00",
+		"Changes": [
+			{
+				"Description": "Added support for new custom leaderboards rank sortings."
+			}
+		]
+	},
+	{
 		"VersionNumber": "0.5.1.2",
 		"Date": "2023-05-21T00:00:00",
 		"Changes": [
