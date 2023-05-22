@@ -94,5 +94,6 @@ public static class PlayerConverters
 			DeathType = sh.DeathType,
 		}),
 		HidePastUsernames = playerHistory.HidePastUsernames,
+		RankTimes = playerHistory.RankTimes,
 	};
 }
