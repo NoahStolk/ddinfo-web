@@ -155,9 +155,13 @@ else
 						string? leviathanOffsetStyle = daggerCssClass == "leviathan" ? LeviathanAnimationUtils.GetStyle(GetCustomLeaderboard.CustomEntries.Count, i) : null;
 
 						string? timeClass = GetCustomLeaderboard.RankSorting is CustomLeaderboardRankSorting.TimeAsc or CustomLeaderboardRankSorting.TimeDesc ? daggerCssClass : null;
-						string? enemiesKilledClass = GetCustomLeaderboard.RankSorting == CustomLeaderboardRankSorting.EnemiesKilledDesc ? daggerCssClass : null;
-						string? gemsCollectedClass = GetCustomLeaderboard.RankSorting == CustomLeaderboardRankSorting.GemsCollectedDesc ? daggerCssClass : null;
-						string? homingStoredClass = GetCustomLeaderboard.RankSorting == CustomLeaderboardRankSorting.HomingStoredDesc ? daggerCssClass : null;
+						string? gemsCollectedClass = GetCustomLeaderboard.RankSorting is CustomLeaderboardRankSorting.GemsCollectedAsc or CustomLeaderboardRankSorting.GemsCollectedDesc ? daggerCssClass : null;
+						string? gemsDespawnedClass = GetCustomLeaderboard.RankSorting is CustomLeaderboardRankSorting.GemsDespawnedAsc or CustomLeaderboardRankSorting.GemsDespawnedDesc ? daggerCssClass : null;
+						string? gemsEatenClass = GetCustomLeaderboard.RankSorting is CustomLeaderboardRankSorting.GemsEatenAsc or CustomLeaderboardRankSorting.GemsEatenDesc ? daggerCssClass : null;
+						string? enemiesKilledClass = GetCustomLeaderboard.RankSorting is CustomLeaderboardRankSorting.EnemiesKilledAsc or CustomLeaderboardRankSorting.EnemiesKilledDesc ? daggerCssClass : null;
+						string? enemiesAliveClass = GetCustomLeaderboard.RankSorting is CustomLeaderboardRankSorting.EnemiesAliveAsc or CustomLeaderboardRankSorting.EnemiesAliveDesc ? daggerCssClass : null;
+						string? homingStoredClass = GetCustomLeaderboard.RankSorting is CustomLeaderboardRankSorting.HomingStoredAsc or CustomLeaderboardRankSorting.HomingStoredDesc ? daggerCssClass : null;
+						string? homingEatenClass = GetCustomLeaderboard.RankSorting is CustomLeaderboardRankSorting.HomingEatenAsc or CustomLeaderboardRankSorting.HomingEatenDesc ? daggerCssClass : null;
 
 						<div class="grid gap-3 grid-cols-custom-leaderboard-sm md:grid-cols-custom-leaderboard-md lg:grid-cols-custom-leaderboard-lg xl:grid-cols-custom-leaderboard-xl 2xl:grid-cols-custom-leaderboard-2xl h-6 cursor-pointer 2xl:cursor-default @(grayBackground ? "bg-gray-1" : string.Empty)" @onclick="() => Expand(ce.Id)">
 							<EntryRank PlayerId="@ce.PlayerId" Rank="@ce.Rank" />
@@ -177,16 +181,16 @@ else
 								}
 							</div>
 							<div class="text-right hidden md:block @enemiesKilledClass">@enemiesKilled</div>
-							<div class="text-right hidden md:block">@enemiesAlive</div>
+							<div class="text-right hidden md:block @enemiesAliveClass">@enemiesAlive</div>
 							<div class="text-right hidden md:block @gemsCollectedClass">@gemsCollected</div>
-							<div class="text-right hidden lg:block">@gemsDespawned</div>
+							<div class="text-right hidden lg:block @gemsDespawnedClass">@gemsDespawned</div>
 							<div class="text-right hidden lg:block">@gemsEaten</div>
 							<div class="text-right hidden md:block">
 								<Tooltip Text="@daggers"><span class="font-goethe text-xl cursor-pointer">@accuracy</span></Tooltip>
 							</div>
 							<div class="text-left hidden lg:block">@death</div>
 							<div class="text-right hidden xl:block @homingStoredClass">@homingStored</div>
-							<div class="text-right hidden xl:block">@homingEaten</div>
+							<div class="text-right hidden xl:block @homingEatenClass">@homingEaten</div>
 							<div class="text-right hidden 2xl:block">@levelUpTime2</div>
 							<div class="text-right hidden 2xl:block">@levelUpTime3</div>
 							<div class="text-right hidden 2xl:block">@levelUpTime4</div>
@@ -198,13 +202,13 @@ else
 							<div class="md:hidden">Enemies Killed</div>
 							<div class="md:hidden text-right @enemiesKilledClass">@enemiesKilled</div>
 							<div class="md:hidden">Enemies Alive</div>
-							<div class="md:hidden text-right">@enemiesAlive</div>
+							<div class="md:hidden text-right @enemiesAliveClass">@enemiesAlive</div>
 							<div class="md:hidden">Gems Collected</div>
 							<div class="md:hidden text-right @gemsCollectedClass">@gemsCollected</div>
 							<div class="lg:hidden">Gems Despawned</div>
-							<div class="lg:hidden text-right">@gemsDespawned</div>
+							<div class="lg:hidden text-right @gemsDespawnedClass">@gemsDespawned</div>
 							<div class="lg:hidden">Gems Eaten</div>
-							<div class="lg:hidden text-right">@gemsEaten</div>
+							<div class="lg:hidden text-right @gemsEatenClass">@gemsEaten</div>
 							<div class="md:hidden">Accuracy</div>
 							<div class="md:hidden text-right">
 								<Tooltip Text="@daggers"><span class="text-right font-goethe text-xl cursor-pointer">@accuracy</span></Tooltip>
@@ -214,7 +218,7 @@ else
 							<div class="xl:hidden">Homing Stored</div>
 							<div class="xl:hidden text-right @homingStoredClass">@homingStored</div>
 							<div class="xl:hidden">Homing Eaten</div>
-							<div class="xl:hidden text-right">@homingEaten</div>
+							<div class="xl:hidden text-right @homingEatenClass">@homingEaten</div>
 							<div class="2xl:hidden">Level 2</div>
 							<div class="2xl:hidden text-right">@levelUpTime2</div>
 							<div class="2xl:hidden">Level 3</div>

@@ -27,8 +27,12 @@ public class PlayerCustomLeaderboardStatisticsRepository
 			{
 				Time = ce.Time,
 				GemsCollected = ce.GemsCollected,
+				GemsDespawned = ce.GemsDespawned,
+				GemsEaten = ce.GemsEaten,
 				EnemiesKilled = ce.EnemiesKilled,
+				EnemiesAlive = ce.EnemiesAlive,
 				HomingStored = ce.HomingStored,
+				HomingEaten = ce.HomingEaten,
 				GameMode = ce.CustomLeaderboard!.Spawnset!.GameMode,
 				RankSorting = ce.CustomLeaderboard.RankSorting,
 				Leviathan = ce.CustomLeaderboard.Leviathan,
@@ -109,8 +113,12 @@ public class PlayerCustomLeaderboardStatisticsRepository
 	{
 		public required int Time { get; init; }
 		public required int GemsCollected { get; init; }
+		public required int GemsDespawned { get; init; }
+		public required int GemsEaten { get; init; }
 		public required int EnemiesKilled { get; init; }
+		public required int EnemiesAlive { get; init; }
 		public required int HomingStored { get; init; }
+		public required int HomingEaten { get; init; }
 		public required SpawnsetGameMode GameMode { get; init; }
 		public required CustomLeaderboardRankSorting RankSorting { get; init; }
 		public required int Leviathan { get; init; }

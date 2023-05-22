@@ -8,8 +8,26 @@ public static class CustomLeaderboardRankSortingExtensions
 	{
 		return rankSorting switch
 		{
-			CustomLeaderboardRankSorting.TimeAsc => true,
-			CustomLeaderboardRankSorting.TimeDesc or CustomLeaderboardRankSorting.GemsCollectedDesc or CustomLeaderboardRankSorting.EnemiesKilledDesc or CustomLeaderboardRankSorting.HomingStoredDesc => false,
+			CustomLeaderboardRankSorting.TimeAsc or
+			CustomLeaderboardRankSorting.GemsCollectedAsc or
+			CustomLeaderboardRankSorting.GemsDespawnedAsc or
+			CustomLeaderboardRankSorting.GemsEatenAsc or
+			CustomLeaderboardRankSorting.EnemiesKilledAsc or
+			CustomLeaderboardRankSorting.EnemiesAliveAsc or
+			CustomLeaderboardRankSorting.HomingStoredAsc or
+			CustomLeaderboardRankSorting.HomingEatenAsc
+				=> true,
+
+			CustomLeaderboardRankSorting.TimeDesc or
+			CustomLeaderboardRankSorting.GemsCollectedDesc or
+			CustomLeaderboardRankSorting.GemsDespawnedDesc or
+			CustomLeaderboardRankSorting.GemsEatenDesc or
+			CustomLeaderboardRankSorting.EnemiesKilledDesc or
+			CustomLeaderboardRankSorting.EnemiesAliveDesc or
+			CustomLeaderboardRankSorting.HomingStoredDesc or
+			CustomLeaderboardRankSorting.HomingEatenDesc
+				=> false,
+
 			_ => throw new InvalidOperationException($"Rank sorting '{rankSorting}' is not supported."),
 		};
 	}

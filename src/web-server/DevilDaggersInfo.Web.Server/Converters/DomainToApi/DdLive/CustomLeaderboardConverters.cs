@@ -110,11 +110,24 @@ public static class CustomLeaderboardConverters
 
 	private static DdLiveApi.CustomLeaderboardRankSortingDdLive ToDdLiveApi(this CustomLeaderboardRankSorting dagger) => dagger switch
 	{
-		CustomLeaderboardRankSorting.TimeDesc => DdLiveApi.CustomLeaderboardRankSortingDdLive.TimeDesc,
 		CustomLeaderboardRankSorting.TimeAsc => DdLiveApi.CustomLeaderboardRankSortingDdLive.TimeAsc,
+		CustomLeaderboardRankSorting.GemsCollectedAsc => DdLiveApi.CustomLeaderboardRankSortingDdLive.GemsCollectedAsc,
+		CustomLeaderboardRankSorting.GemsDespawnedAsc => DdLiveApi.CustomLeaderboardRankSortingDdLive.GemsDespawnedAsc,
+		CustomLeaderboardRankSorting.GemsEatenAsc => DdLiveApi.CustomLeaderboardRankSortingDdLive.GemsEatenAsc,
+		CustomLeaderboardRankSorting.EnemiesKilledAsc => DdLiveApi.CustomLeaderboardRankSortingDdLive.EnemiesKilledAsc,
+		CustomLeaderboardRankSorting.EnemiesAliveAsc => DdLiveApi.CustomLeaderboardRankSortingDdLive.EnemiesAliveAsc,
+		CustomLeaderboardRankSorting.HomingStoredAsc => DdLiveApi.CustomLeaderboardRankSortingDdLive.HomingStoredAsc,
+		CustomLeaderboardRankSorting.HomingEatenAsc => DdLiveApi.CustomLeaderboardRankSortingDdLive.HomingEatenAsc,
+
+		CustomLeaderboardRankSorting.TimeDesc => DdLiveApi.CustomLeaderboardRankSortingDdLive.TimeDesc,
 		CustomLeaderboardRankSorting.GemsCollectedDesc => DdLiveApi.CustomLeaderboardRankSortingDdLive.GemsCollectedDesc,
+		CustomLeaderboardRankSorting.GemsDespawnedDesc => DdLiveApi.CustomLeaderboardRankSortingDdLive.GemsDespawnedDesc,
+		CustomLeaderboardRankSorting.GemsEatenDesc => DdLiveApi.CustomLeaderboardRankSortingDdLive.GemsEatenDesc,
 		CustomLeaderboardRankSorting.EnemiesKilledDesc => DdLiveApi.CustomLeaderboardRankSortingDdLive.EnemiesKilledDesc,
+		CustomLeaderboardRankSorting.EnemiesAliveDesc => DdLiveApi.CustomLeaderboardRankSortingDdLive.EnemiesAliveDesc,
 		CustomLeaderboardRankSorting.HomingStoredDesc => DdLiveApi.CustomLeaderboardRankSortingDdLive.HomingStoredDesc,
+		CustomLeaderboardRankSorting.HomingEatenDesc => DdLiveApi.CustomLeaderboardRankSortingDdLive.HomingEatenDesc,
+
 		_ => throw new UnreachableException(),
 	};
 

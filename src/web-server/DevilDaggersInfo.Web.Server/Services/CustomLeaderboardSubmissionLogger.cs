@@ -103,9 +103,13 @@ public class CustomLeaderboardSubmissionLogger : ICustomLeaderboardSubmissionLog
 		return rankSorting switch
 		{
 			CustomLeaderboardRankSorting.TimeAsc or CustomLeaderboardRankSorting.TimeDesc => $"{value} seconds",
-			CustomLeaderboardRankSorting.GemsCollectedDesc => $"{value} gems",
-			CustomLeaderboardRankSorting.EnemiesKilledDesc => $"{value} kills",
-			CustomLeaderboardRankSorting.HomingStoredDesc => $"{value} homing",
+			CustomLeaderboardRankSorting.GemsCollectedAsc or CustomLeaderboardRankSorting.GemsCollectedDesc => $"{value} gems",
+			CustomLeaderboardRankSorting.GemsDespawnedAsc or CustomLeaderboardRankSorting.GemsDespawnedDesc => $"{value} gems despawned",
+			CustomLeaderboardRankSorting.GemsEatenAsc or CustomLeaderboardRankSorting.GemsEatenDesc => $"{value} gems eaten",
+			CustomLeaderboardRankSorting.EnemiesKilledAsc or CustomLeaderboardRankSorting.EnemiesKilledDesc => $"{value} kills",
+			CustomLeaderboardRankSorting.EnemiesAliveAsc or CustomLeaderboardRankSorting.EnemiesAliveDesc => $"{value} enemies alive",
+			CustomLeaderboardRankSorting.HomingStoredAsc or CustomLeaderboardRankSorting.HomingStoredDesc => $"{value} homing",
+			CustomLeaderboardRankSorting.HomingEatenAsc or CustomLeaderboardRankSorting.HomingEatenDesc => $"{value} homing eaten",
 			_ => "?",
 		};
 	}
@@ -115,9 +119,13 @@ public class CustomLeaderboardSubmissionLogger : ICustomLeaderboardSubmissionLog
 		return rankSorting switch
 		{
 			CustomLeaderboardRankSorting.TimeAsc or CustomLeaderboardRankSorting.TimeDesc => "Time",
-			CustomLeaderboardRankSorting.GemsCollectedDesc => "Gems",
-			CustomLeaderboardRankSorting.EnemiesKilledDesc => "Kills",
-			CustomLeaderboardRankSorting.HomingStoredDesc => "Homing",
+			CustomLeaderboardRankSorting.GemsCollectedAsc or CustomLeaderboardRankSorting.GemsCollectedDesc => "Gems",
+			CustomLeaderboardRankSorting.GemsDespawnedAsc or CustomLeaderboardRankSorting.GemsDespawnedDesc => "Gems Despawned",
+			CustomLeaderboardRankSorting.GemsEatenAsc or CustomLeaderboardRankSorting.GemsEatenDesc => "Gems Eaten",
+			CustomLeaderboardRankSorting.EnemiesKilledAsc or CustomLeaderboardRankSorting.EnemiesKilledDesc => "Kills",
+			CustomLeaderboardRankSorting.EnemiesAliveAsc or CustomLeaderboardRankSorting.EnemiesAliveDesc => "Enemies Alive",
+			CustomLeaderboardRankSorting.HomingStoredAsc or CustomLeaderboardRankSorting.HomingStoredDesc => "Homing",
+			CustomLeaderboardRankSorting.HomingEatenAsc or CustomLeaderboardRankSorting.HomingEatenDesc => "Homing Eaten",
 			_ => "?",
 		};
 	}
@@ -127,9 +135,13 @@ public class CustomLeaderboardSubmissionLogger : ICustomLeaderboardSubmissionLog
 		return rankSorting switch
 		{
 			CustomLeaderboardRankSorting.TimeAsc or CustomLeaderboardRankSorting.TimeDesc => customEntry.Time.ToSecondsTime().ToString(StringFormats.TimeFormat),
-			CustomLeaderboardRankSorting.GemsCollectedDesc => customEntry.GemsCollected.ToString(),
-			CustomLeaderboardRankSorting.EnemiesKilledDesc => customEntry.EnemiesKilled.ToString(),
-			CustomLeaderboardRankSorting.HomingStoredDesc => customEntry.HomingStored.ToString(),
+			CustomLeaderboardRankSorting.GemsCollectedAsc or CustomLeaderboardRankSorting.GemsCollectedDesc => customEntry.GemsCollected.ToString(),
+			CustomLeaderboardRankSorting.GemsDespawnedAsc or CustomLeaderboardRankSorting.GemsDespawnedDesc => customEntry.GemsDespawned.ToString(),
+			CustomLeaderboardRankSorting.GemsEatenAsc or CustomLeaderboardRankSorting.GemsEatenDesc => customEntry.GemsEaten.ToString(),
+			CustomLeaderboardRankSorting.EnemiesKilledAsc or CustomLeaderboardRankSorting.EnemiesKilledDesc => customEntry.EnemiesKilled.ToString(),
+			CustomLeaderboardRankSorting.EnemiesAliveAsc or CustomLeaderboardRankSorting.EnemiesAliveDesc => customEntry.EnemiesAlive.ToString(),
+			CustomLeaderboardRankSorting.HomingStoredAsc or CustomLeaderboardRankSorting.HomingStoredDesc => customEntry.HomingStored.ToString(),
+			CustomLeaderboardRankSorting.HomingEatenAsc or CustomLeaderboardRankSorting.HomingEatenDesc => customEntry.HomingEaten.ToString(),
 			_ => "?",
 		};
 	}
