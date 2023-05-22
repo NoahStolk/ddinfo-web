@@ -6,7 +6,20 @@ public static class CustomLeaderboardRankSortingExtensions
 {
 	public static bool IsAscending(this CustomLeaderboardRankSorting rankSorting)
 	{
-		return rankSorting is CustomLeaderboardRankSorting.TimeAsc;
+		return rankSorting switch
+		{
+			CustomLeaderboardRankSorting.TimeAsc
+				=> true,
+
+			CustomLeaderboardRankSorting.TimeDesc or
+			CustomLeaderboardRankSorting.GemsCollectedDesc or
+			CustomLeaderboardRankSorting.GemsDespawnedDesc or
+			CustomLeaderboardRankSorting.EnemiesKilledDesc or
+			CustomLeaderboardRankSorting.HomingStoredDesc
+				=> false,
+
+			_ => throw new InvalidOperationException($"Rank sorting '{rankSorting}' is not supported."),
+		};
 	}
 
 	public static bool IsTime(this CustomLeaderboardRankSorting rankSorting)
