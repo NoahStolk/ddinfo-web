@@ -1,6 +1,6 @@
 using Blazored.LocalStorage;
-using DevilDaggersInfo.Razor.Core.Canvas;
-using DevilDaggersInfo.Razor.Core.CanvasArena;
+using DevilDaggersInfo.Web.Client.Core.Canvas;
+using DevilDaggersInfo.Web.Client.Core.CanvasArena;
 using DevilDaggersInfo.Web.Client.Authentication;
 using DevilDaggersInfo.Web.Client.HttpClients;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -42,8 +42,8 @@ public static class Program
 		builder.Services.AddScoped<AdminAuthenticationStateProvider>();
 		builder.Services.AddScoped<AuthenticationStateProvider>(provider => provider.GetRequiredService<AdminAuthenticationStateProvider>());
 
-		await JSHost.ImportAsync(nameof(WebAssemblyCanvas2d), "../_content/DevilDaggersInfo.Razor.Core.Canvas/js/webAssemblyCanvas2d.js");
-		await JSHost.ImportAsync(nameof(WebAssemblyCanvasArena), "../_content/DevilDaggersInfo.Razor.Core.CanvasArena/js/webAssemblyArena.js");
+		await JSHost.ImportAsync(nameof(WebAssemblyCanvas2d), "../_content/DevilDaggersInfo.Web.Client.Core.Canvas/js/webAssemblyCanvas2d.js");
+		await JSHost.ImportAsync(nameof(WebAssemblyCanvasArena), "../_content/DevilDaggersInfo.Web.Client.Core.CanvasArena/js/webAssemblyArena.js");
 
 		await builder.Build().RunAsync();
 	}
