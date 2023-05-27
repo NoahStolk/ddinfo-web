@@ -1,8 +1,8 @@
-using DevilDaggersInfo.Tool.GenerateClient.Extensions;
-using DevilDaggersInfo.Tool.GenerateClient.Generators.Endpoints;
-using HttpMethod = DevilDaggersInfo.Tool.GenerateClient.Generators.Enums.HttpMethod;
+using DevilDaggersInfo.DevUtil.GenerateClient.Extensions;
+using DevilDaggersInfo.DevUtil.GenerateClient.Generators.Endpoints;
+using HttpMethod = DevilDaggersInfo.DevUtil.GenerateClient.Generators.Enums.HttpMethod;
 
-namespace DevilDaggersInfo.Tool.GenerateClient.Generators;
+namespace DevilDaggersInfo.DevUtil.GenerateClient.Generators;
 
 internal class ApiHttpClientContext
 {

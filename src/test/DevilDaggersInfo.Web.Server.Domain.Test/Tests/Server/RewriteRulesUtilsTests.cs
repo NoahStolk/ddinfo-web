@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Web.Server.RewriteRules;
 
-namespace DevilDaggersInfo.Web.Server.Domain.Tests.Tests.Server;
+namespace DevilDaggersInfo.Web.Server.Domain.Test.Tests.Server;
 
 [TestClass]
 public class RewriteRulesUtilsTests

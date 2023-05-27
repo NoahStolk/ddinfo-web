@@ -2,7 +2,7 @@ using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 using Microsoft.AspNetCore.Http;
 
-namespace DevilDaggersInfo.Web.Server.Domain.Tests.Utils;
+namespace DevilDaggersInfo.Web.Server.Domain.Test.Utils;
 
 public class TestDbContext : ApplicationDbContext
 {

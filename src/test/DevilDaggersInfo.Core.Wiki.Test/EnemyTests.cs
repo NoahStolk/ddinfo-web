@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Core.Wiki.Tests;
+namespace DevilDaggersInfo.Core.Wiki.Test;
 
 [TestClass]
 public class EnemyTests

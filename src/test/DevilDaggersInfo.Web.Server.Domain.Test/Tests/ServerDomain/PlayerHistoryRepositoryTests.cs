@@ -1,10 +1,10 @@
 using DevilDaggersInfo.Web.Server.Domain.Models.Players;
 using DevilDaggersInfo.Web.Server.Domain.Repositories;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
-using DevilDaggersInfo.Web.Server.Domain.Tests.Utils;
+using DevilDaggersInfo.Web.Server.Domain.Test.Utils;
 using Microsoft.AspNetCore.Http;
 
-namespace DevilDaggersInfo.Web.Server.Domain.Tests.Tests.ServerDomain;
+namespace DevilDaggersInfo.Web.Server.Domain.Test.Tests.ServerDomain;
 
 [TestClass]
 public class PlayerHistoryRepositoryTests

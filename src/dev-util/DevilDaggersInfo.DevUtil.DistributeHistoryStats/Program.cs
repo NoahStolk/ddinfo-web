@@ -1,3 +1,3 @@
-using DevilDaggersInfo.Tool.DistributeHistoryStats;
+using DevilDaggersInfo.DevUtil.DistributeHistoryStats;
 
 HighscoreSpreadUtils.SpreadAllHighscoreStats(false, true);

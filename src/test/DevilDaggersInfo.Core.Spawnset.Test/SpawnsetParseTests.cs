@@ -1,6 +1,6 @@
 using System.Numerics;
 
-namespace DevilDaggersInfo.Core.Spawnset.Tests;
+namespace DevilDaggersInfo.Core.Spawnset.Test;
 
 // TODO: Refactor and add separate tests for calculating sections. Probably need to store all the expected spawnset data somewhere else.
 [TestClass]

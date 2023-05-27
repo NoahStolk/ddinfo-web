@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Server.Domain.Tests.Extensions;
+namespace DevilDaggersInfo.Web.Server.Domain.Test.Extensions;
 
 public static class MockExtensions
 {

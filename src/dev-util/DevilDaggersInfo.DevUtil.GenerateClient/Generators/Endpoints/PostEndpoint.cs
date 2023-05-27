@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Tool.GenerateClient.Generators.Endpoints;
+namespace DevilDaggersInfo.DevUtil.GenerateClient.Generators.Endpoints;
 
 internal class PostEndpoint : Endpoint
 {

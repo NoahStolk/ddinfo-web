@@ -1,7 +1,7 @@
 using DevilDaggersInfo.Core.Mod.Exceptions;
 using DevilDaggersInfo.Core.Mod.Parsers;
 
-namespace DevilDaggersInfo.Core.Mod.Tests;
+namespace DevilDaggersInfo.Core.Mod.Test;
 
 [TestClass]
 public class ObjParseTests

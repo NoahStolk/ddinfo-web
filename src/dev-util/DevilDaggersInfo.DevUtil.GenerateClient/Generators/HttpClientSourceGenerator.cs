@@ -1,6 +1,6 @@
-using DevilDaggersInfo.Tool.GenerateClient.Extensions;
+using DevilDaggersInfo.DevUtil.GenerateClient.Extensions;
 
-namespace DevilDaggersInfo.Tool.GenerateClient.Generators;
+namespace DevilDaggersInfo.DevUtil.GenerateClient.Generators;
 
 public class HttpClientSourceGenerator
 {

@@ -6,13 +6,13 @@ using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Services;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
-using DevilDaggersInfo.Web.Server.Domain.Tests.Data;
-using DevilDaggersInfo.Web.Server.Domain.Tests.Extensions;
+using DevilDaggersInfo.Web.Server.Domain.Test.Data;
+using DevilDaggersInfo.Web.Server.Domain.Test.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace DevilDaggersInfo.Web.Server.Domain.Tests.Tests.ServerDomain;
+namespace DevilDaggersInfo.Web.Server.Domain.Test.Tests.ServerDomain;
 
 [TestClass]
 public class CustomEntryProcessorTests

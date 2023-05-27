@@ -1,7 +1,7 @@
 using DevilDaggersInfo.Core.Asset;
 using DevilDaggersInfo.Core.Mod.Extensions;
 
-namespace DevilDaggersInfo.Core.Mod.Tests;
+namespace DevilDaggersInfo.Core.Mod.Test;
 
 [TestClass]
 public class ModBinaryTests

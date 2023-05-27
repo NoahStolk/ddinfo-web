@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Tool.GenerateClient.Generators;
+namespace DevilDaggersInfo.DevUtil.GenerateClient.Generators;
 
 internal class Parameter
 {

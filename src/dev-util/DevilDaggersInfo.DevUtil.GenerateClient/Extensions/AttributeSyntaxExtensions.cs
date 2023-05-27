@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Tool.GenerateClient.Extensions;
+namespace DevilDaggersInfo.DevUtil.GenerateClient.Extensions;
 
 public static class AttributeSyntaxExtensions
 {

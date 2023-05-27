@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Tool.GenerateClient.Generators.Enums;
+namespace DevilDaggersInfo.DevUtil.GenerateClient.Generators.Enums;
 
 public enum HttpMethod
 {

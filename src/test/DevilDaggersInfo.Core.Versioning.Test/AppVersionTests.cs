@@ -1,6 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace DevilDaggersInfo.Core.Versioning.Tests;
+namespace DevilDaggersInfo.Core.Versioning.Test;
 
 [TestClass]
 public class AppVersionTests

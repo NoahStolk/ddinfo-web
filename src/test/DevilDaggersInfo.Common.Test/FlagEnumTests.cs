@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Common.Extensions;
 
-namespace DevilDaggersInfo.Common.Tests;
+namespace DevilDaggersInfo.Common.Test;
 
 [TestClass]
 public class FlagEnumTests

@@ -2,7 +2,7 @@ using DevilDaggersInfo.Core.CriteriaExpression.Exceptions;
 using DevilDaggersInfo.Core.CriteriaExpression.Parts;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace DevilDaggersInfo.Core.CriteriaExpression.Tests;
+namespace DevilDaggersInfo.Core.CriteriaExpression.Test;
 
 [TestClass]
 public class ExpressionValidationTests

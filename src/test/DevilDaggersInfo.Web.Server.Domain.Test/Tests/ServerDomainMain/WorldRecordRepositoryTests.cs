@@ -1,10 +1,10 @@
 using DevilDaggersInfo.Api.Main.WorldRecords;
 using DevilDaggersInfo.Web.Server.Domain.Main.Repositories;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
-using DevilDaggersInfo.Web.Server.Domain.Tests.Utils;
+using DevilDaggersInfo.Web.Server.Domain.Test.Utils;
 using Microsoft.AspNetCore.Http;
 
-namespace DevilDaggersInfo.Web.Server.Domain.Tests.Tests.ServerDomainMain;
+namespace DevilDaggersInfo.Web.Server.Domain.Test.Tests.ServerDomainMain;
 
 [TestClass]
 public class WorldRecordRepositoryTests

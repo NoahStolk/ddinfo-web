@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Core.Mod.Tests;
+namespace DevilDaggersInfo.Core.Mod.Test;
 
 [TestClass]
 public class ModBinaryTocTests

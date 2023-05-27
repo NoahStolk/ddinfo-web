@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Core.Wiki;
 
-namespace DevilDaggersInfo.Core.Spawnset.Tests;
+namespace DevilDaggersInfo.Core.Spawnset.Test;
 
 [TestClass]
 public class SpawnsViewTests

@@ -2,7 +2,7 @@ using DevilDaggersInfo.Core.Replay.Events.Enums;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace DevilDaggersInfo.Core.Replay.Tests;
+namespace DevilDaggersInfo.Core.Replay.Test;
 
 [TestClass]
 public class ReplayBinaryTests

@@ -1,6 +1,6 @@
-using DevilDaggersInfo.Tool.GenerateClient.Extensions;
+using DevilDaggersInfo.DevUtil.GenerateClient.Extensions;
 
-namespace DevilDaggersInfo.Tool.GenerateClient.Generators.Endpoints;
+namespace DevilDaggersInfo.DevUtil.GenerateClient.Generators.Endpoints;
 
 internal class GetEndpoint : Endpoint
 {

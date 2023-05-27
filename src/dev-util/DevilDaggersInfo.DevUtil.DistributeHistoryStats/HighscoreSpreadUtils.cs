@@ -3,7 +3,7 @@ using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardHistory;
 using System.Text;
 
-namespace DevilDaggersInfo.Tool.DistributeHistoryStats;
+namespace DevilDaggersInfo.DevUtil.DistributeHistoryStats;
 
 public static class HighscoreSpreadUtils
 {
