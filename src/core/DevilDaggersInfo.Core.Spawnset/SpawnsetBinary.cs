@@ -346,22 +346,73 @@ public record SpawnsetBinary
 		return 0;
 	}
 
-	public IEnumerable<double> GenerateEndWaveTimes(double endGameSecond, int waveIndex)
+	public SpawnsetBinary GetWithHardcodedEndLoop(int amountOfGeneratedWaves)
 	{
+		if (amountOfGeneratedWaves < 1)
+			throw new ArgumentOutOfRangeException(nameof(amountOfGeneratedWaves), "Amount of generated waves must be at least 1.");
+
+		if (GameMode != GameMode.Survival)
+			throw new InvalidOperationException("Cannot hardcode end loop for non-survival spawnset.");
+
+		if (!HasEndLoop())
+			throw new InvalidOperationException("Spawnset does not have an end loop.");
+
+		// The new spawnset cannot have an actual end loop, so we must remove all empty spawns and add their delay to the next spawn.
+		List<Spawn> newSpawns = new();
+		for (int i = Spawns.Length - 1; i >= 0; i--)
+		{
+			if (Spawns[i].EnemyType == EnemyType.Empty)
+				continue;
+
+			float extraDelayFromPreviousEmptySpawns = 0;
+			if (i > 0)
+			{
+				int previousIndex = 1;
+				while (true)
+				{
+					Spawn previousSpawn = Spawns[i - previousIndex];
+					if (previousSpawn.EnemyType != EnemyType.Empty)
+						break;
+
+					extraDelayFromPreviousEmptySpawns += previousSpawn.Delay;
+					previousIndex++;
+				}
+			}
+
+			newSpawns.Insert(0, new(Spawns[i].EnemyType, Spawns[i].Delay + extraDelayFromPreviousEmptySpawns));
+		}
+
+		// Add the end loop, including the original last empty spawn.
+		// TODO: Check if using doubles is correct.
 		double enemyTimer = 0;
 		double delay = 0;
 
-		foreach (Spawn spawn in Spawns.Skip(GetLoopStartIndex()))
-		{
-			delay += spawn.Delay;
-			while (enemyTimer < delay)
-			{
-				endGameSecond += 1f / 60f;
-				enemyTimer += 1f / 60f + 1f / 60f / 8f * waveIndex;
-			}
+		List<Spawn> originalEndLoop = Spawns.Skip(GetLoopStartIndex()).ToList();
 
-			yield return endGameSecond;
+		// Start at index 1 because the first wave is already added.
+		for (int waveIndex = 1; waveIndex < amountOfGeneratedWaves; waveIndex++)
+		{
+			foreach (Spawn spawn in originalEndLoop)
+			{
+				double spawnDelay = 0;
+				delay += spawn.Delay;
+				while (enemyTimer < delay)
+				{
+					spawnDelay += 1f / 60f;
+					enemyTimer += 1f / 60f + 1f / 60f / 8f * waveIndex;
+				}
+
+				newSpawns.Add(new(spawn.EnemyType, (float)spawnDelay));
+			}
 		}
+
+		// We don't want an actual loop to happen after these hardcoded waves, so we add an empty spawn.
+		newSpawns.Add(new(EnemyType.Empty, 0));
+
+		return this with
+		{
+			Spawns = newSpawns.ToImmutableArray(),
+		};
 	}
 
 	public EffectivePlayerSettings GetEffectivePlayerSettings()

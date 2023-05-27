@@ -65,6 +65,7 @@ public class SpawnsView
 
 		for (int i = 0; i < waveCount; i++)
 		{
+			// TODO: Check if using doubles is correct.
 			double enemyTimer = 0;
 			double delay = 0;
 			foreach (Spawn spawn in loopSpawns)
