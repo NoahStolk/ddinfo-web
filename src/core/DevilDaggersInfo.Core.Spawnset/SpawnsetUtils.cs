@@ -74,10 +74,15 @@ public static class SpawnsetUtils
 		return spawnVersion < 6 ? 0 : timerStart;
 	}
 
-	// TODO: Add enum for recognized spawnset format versions.
-	public static string GetGameVersionString(int worldVersion, int spawnVersion)
+	public static SpawnsetSupportedGameVersion GetSupportedGameVersion(int worldVersion, int spawnVersion)
 	{
-		return worldVersion == 8 ? "V0/V1" : spawnVersion == 4 ? "V2/V3" : "V3.1+";
+		if (spawnVersion >= 5)
+			return SpawnsetSupportedGameVersion.V3_1AndLater; // Practice mode (spawn version 5+) is only available in V3.1+.
+
+		if (worldVersion >= 9)
+			return SpawnsetSupportedGameVersion.V2AndLater; // World version 9 was added in V2.
+
+		return SpawnsetSupportedGameVersion.V0AndLater;
 	}
 
 	public static float? GetRaceDaggerHeight(int arenaDimension, ImmutableArena arenaTiles, int raceDaggerTileX, int raceDaggerTileZ)

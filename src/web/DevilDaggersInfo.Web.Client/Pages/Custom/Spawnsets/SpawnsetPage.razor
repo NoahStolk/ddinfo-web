@@ -5,6 +5,7 @@
 @using DevilDaggersInfo.Web.Client.Utils
 @using DevilDaggersInfo.Common
 @using DevilDaggersInfo.Core.Spawnset
+@using DevilDaggersInfo.Core.Spawnset.Extensions
 
 @if (GetSpawnset == null)
 {
@@ -59,7 +60,7 @@ else
 
 				<Heading Title="Format" Level="2" />
 				<div class="bg-gray-1 max-w-arena-table px-1">
-					<DataField Name="Game version">@SpawnsetBinary.GetGameVersionString()</DataField>
+					<DataField Name="Game version">@SpawnsetBinary.GetSupportedGameVersion().ToDisplayString()</DataField>
 					<DataField Name="Game mode">@SpawnsetBinary.GameMode.ToDisplayString()</DataField>
 				</div>
 				

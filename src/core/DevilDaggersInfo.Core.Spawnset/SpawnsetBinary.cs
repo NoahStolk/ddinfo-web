@@ -343,9 +343,9 @@ public record SpawnsetBinary
 		return SpawnsetUtils.GetEffectiveTimerStart(SpawnVersion, TimerStart);
 	}
 
-	public string GetGameVersionString()
+	public SpawnsetSupportedGameVersion GetSupportedGameVersion()
 	{
-		return SpawnsetUtils.GetGameVersionString(WorldVersion, SpawnVersion);
+		return SpawnsetUtils.GetSupportedGameVersion(WorldVersion, SpawnVersion);
 	}
 
 	public float? GetRaceDaggerHeight()

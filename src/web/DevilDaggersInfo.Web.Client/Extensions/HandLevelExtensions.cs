@@ -5,15 +5,6 @@ namespace DevilDaggersInfo.Web.Client.Extensions;
 
 public static class HandLevelExtensions
 {
-	public static string ToDisplayString(this HandLevel handLevel) => handLevel switch
-	{
-		HandLevel.Level1 => "Level 1",
-		HandLevel.Level2 => "Level 2",
-		HandLevel.Level3 => "Level 3",
-		HandLevel.Level4 => "Level 4",
-		_ => throw new UnreachableException(),
-	};
-
 	public static HandLevel ToCore(this Api.Main.Spawnsets.HandLevel handLevel) => handLevel switch
 	{
 		Api.Main.Spawnsets.HandLevel.Level1 => HandLevel.Level1,
