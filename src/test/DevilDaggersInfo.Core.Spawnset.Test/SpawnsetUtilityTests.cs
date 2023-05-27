@@ -53,7 +53,7 @@ public class SpawnsetUtilityTests
 	[DataRow(0f, 29f, 3f, 0f)]
 	public void TestShrinkEndTime(float start, float end, float rate, float expectedFinalShrinkSecond)
 	{
-		Assert.AreEqual(expectedFinalShrinkSecond, SpawnsetBinary.GetShrinkEndTime(start, end, rate), 0.0001);
+		Assert.AreEqual(expectedFinalShrinkSecond, SpawnsetUtils.GetShrinkEndTime(start, end, rate), 0.0001);
 	}
 
 	[DataTestMethod]
@@ -104,7 +104,7 @@ public class SpawnsetUtilityTests
 	[DataRow(0f, 29f, 3f, 25, 15, 0f)]
 	public void TestShrinkTimeForTile(float start, float end, float rate, int x, int y, float expectedTime)
 	{
-		Assert.AreEqual(expectedTime, SpawnsetBinary.GetShrinkTimeForTile(51, start, end, rate, x, y), 0.0001);
+		Assert.AreEqual(expectedTime, SpawnsetUtils.GetShrinkTimeForTile(51, start, end, rate, x, y), 0.0001);
 	}
 
 	[DataTestMethod]
@@ -119,7 +119,7 @@ public class SpawnsetUtilityTests
 	public void TestRaceDaggerGridPosition(float raceDaggerX, float raceDaggerZ, int expectedTileX, int expectedTileZ)
 	{
 		SpawnsetBinary defaultSpawnset = SpawnsetBinary.CreateDefault();
-		(int x, _, int z) = SpawnsetBinary.GetRaceDaggerTilePosition(defaultSpawnset.ArenaDimension, defaultSpawnset.ArenaTiles, new(raceDaggerX, raceDaggerZ));
+		(int x, _, int z) = SpawnsetUtils.GetRaceDaggerTilePosition(defaultSpawnset.ArenaDimension, defaultSpawnset.ArenaTiles, new(raceDaggerX, raceDaggerZ));
 		Assert.AreEqual(expectedTileX, x);
 		Assert.AreEqual(expectedTileZ, z);
 	}

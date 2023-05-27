@@ -19,8 +19,8 @@ public class SpawnsView
 		if (spawns.Length == 0)
 			return;
 
-		double totalSeconds = SpawnsetBinary.GetEffectiveTimerStart(spawnVersion, timerStart);
-		EffectivePlayerSettings effectivePlayerSettings = SpawnsetBinary.GetEffectivePlayerSettings(spawnVersion, handLevel, additionalGems);
+		double totalSeconds = SpawnsetUtils.GetEffectiveTimerStart(spawnVersion, timerStart);
+		EffectivePlayerSettings effectivePlayerSettings = SpawnsetUtils.GetEffectivePlayerSettings(spawnVersion, handLevel, additionalGems);
 		GemState gemState = new(effectivePlayerSettings.HandLevel, effectivePlayerSettings.GemsOrHoming, 0);
 
 		if (gameMode is GameMode.TimeAttack or GameMode.Race)
@@ -29,7 +29,7 @@ public class SpawnsView
 		}
 		else
 		{
-			int loopStartIndex = SpawnsetBinary.GetLoopStartIndex(spawns);
+			int loopStartIndex = SpawnsetUtils.GetLoopStartIndex(spawns);
 			ImmutableArray<Spawn> preLoopSpawns = spawns.Take(loopStartIndex).ToImmutableArray();
 			ImmutableArray<Spawn> loopSpawns = spawns.Skip(loopStartIndex).ToImmutableArray();
 
