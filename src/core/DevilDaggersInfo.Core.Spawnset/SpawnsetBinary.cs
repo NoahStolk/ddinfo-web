@@ -351,9 +351,6 @@ public record SpawnsetBinary
 		if (amountOfGeneratedWaves < 1)
 			throw new ArgumentOutOfRangeException(nameof(amountOfGeneratedWaves), "Amount of generated waves must be at least 1.");
 
-		if (GameMode != GameMode.Survival)
-			throw new InvalidOperationException("Cannot hardcode end loop for non-survival spawnset.");
-
 		if (!HasEndLoop())
 			throw new InvalidOperationException("Spawnset does not have an end loop.");
 
