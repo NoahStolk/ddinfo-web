@@ -401,41 +401,78 @@ public record SpawnsetBinary
 
 	public float? GetRaceDaggerHeight()
 	{
-		int raceDaggerTileX = SpawnsetUtils.WorldToTileCoordinate(ArenaDimension, RaceDaggerPosition.X);
-		int raceDaggerTileZ = SpawnsetUtils.WorldToTileCoordinate(ArenaDimension, RaceDaggerPosition.Y);
-		return SpawnsetUtils.GetRaceDaggerHeight(ArenaDimension, ArenaTiles, raceDaggerTileX, raceDaggerTileZ);
+		int raceDaggerTileX = WorldToTileCoordinate(RaceDaggerPosition.X);
+		int raceDaggerTileZ = WorldToTileCoordinate(RaceDaggerPosition.Y);
+
+		if (raceDaggerTileX >= 0 && raceDaggerTileX < ArenaDimension && raceDaggerTileZ >= 0 && raceDaggerTileZ < ArenaDimension)
+			return ArenaTiles[raceDaggerTileX, raceDaggerTileZ];
+
+		return null;
 	}
 
 	public int WorldToTileCoordinate(float worldCoordinate)
 	{
-		return SpawnsetUtils.WorldToTileCoordinate(ArenaDimension, worldCoordinate);
+		int arenaMiddle = ArenaDimension / 2;
+		return (int)MathF.Round(worldCoordinate / 4) + arenaMiddle;
 	}
 
 	public int TileToWorldCoordinate(float tileCoordinate)
 	{
-		return SpawnsetUtils.TileToWorldCoordinate(ArenaDimension, tileCoordinate);
+		int arenaMiddle = ArenaDimension / 2;
+		return (int)MathF.Round((tileCoordinate - arenaMiddle) * 4);
 	}
 
 	public float GetShrinkEndTime()
 	{
-		return SpawnsetUtils.GetShrinkEndTime(ShrinkStart, ShrinkEnd, ShrinkRate);
+		float shrinkStart = Math.Max(ShrinkStart, 0);
+		float shrinkEnd = Math.Max(ShrinkEnd, 0);
+
+		if (ShrinkRate <= 0 || shrinkEnd > shrinkStart)
+			return 0;
+
+		return (shrinkStart - shrinkEnd) / ShrinkRate;
 	}
 
 	public float GetShrinkTimeForTile(int x, int y)
 	{
-		return SpawnsetUtils.GetShrinkTimeForTile(ArenaDimension, ShrinkStart, ShrinkEnd, ShrinkRate, x, y);
+		const int tileUnit = 4;
+		float shrinkStartInTiles = ShrinkStart / tileUnit;
+		float shrinkEndInTiles = ShrinkEnd / tileUnit;
+
+		int arenaMiddle = ArenaDimension / 2;
+		Vector2 middle = new(arenaMiddle, arenaMiddle);
+		float distance = Vector2.Distance(new(x, y), middle);
+		if (distance > Math.Max(shrinkStartInTiles, shrinkEndInTiles))
+			return 0;
+
+		if (distance <= shrinkEndInTiles)
+			return float.MaxValue;
+
+		// TODO: Prevent this from overflowing.
+		return (shrinkStartInTiles - distance) / ShrinkRate * tileUnit;
 	}
 
 	public float GetActualTileHeight(int x, int y, float currentTime)
 	{
-		return SpawnsetUtils.GetActualTileHeight(ArenaDimension, ArenaTiles, ShrinkStart, ShrinkEnd, ShrinkRate, x, y, currentTime);
+		if (x < 0 || x >= ArenaDimension)
+			throw new ArgumentOutOfRangeException(nameof(x));
+		if (y < 0 || y >= ArenaDimension)
+			throw new ArgumentOutOfRangeException(nameof(y));
+
+		float tileHeight = ArenaTiles[x, y];
+		float shrinkTime = GetShrinkTimeForTile(x, y);
+		float shrinkHeight = Math.Max(0, currentTime - shrinkTime) / 4;
+		return tileHeight - shrinkHeight;
 	}
 
 	public float? GetActualRaceDaggerHeight(float currentTime)
 	{
-		int raceDaggerTileX = SpawnsetUtils.WorldToTileCoordinate(ArenaDimension, RaceDaggerPosition.X);
-		int raceDaggerTileZ = SpawnsetUtils.WorldToTileCoordinate(ArenaDimension, RaceDaggerPosition.Y);
-		return SpawnsetUtils.GetActualRaceDaggerHeight(ArenaDimension, ArenaTiles, ShrinkStart, ShrinkEnd, ShrinkRate, raceDaggerTileX, raceDaggerTileZ, currentTime);
+		int raceDaggerTileX = WorldToTileCoordinate(RaceDaggerPosition.X);
+		int raceDaggerTileZ = WorldToTileCoordinate(RaceDaggerPosition.Y);
+		if (raceDaggerTileX >= 0 && raceDaggerTileX < ArenaDimension && raceDaggerTileZ >= 0 && raceDaggerTileZ < ArenaDimension)
+			return GetActualTileHeight(raceDaggerTileX, raceDaggerTileZ, currentTime);
+
+		return null;
 	}
 
 	public float GetSliderMaxSeconds()
