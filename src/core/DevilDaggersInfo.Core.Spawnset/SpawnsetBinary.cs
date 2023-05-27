@@ -315,22 +315,53 @@ public record SpawnsetBinary
 
 	public bool HasSpawns()
 	{
-		return SpawnsetUtils.HasSpawns(Spawns);
+		return Spawns.Any(s => s.EnemyType != EnemyType.Empty);
 	}
 
 	public bool HasEndLoop()
 	{
-		return SpawnsetUtils.HasEndLoop(Spawns, GameMode);
+		if (GameMode != GameMode.Survival || !HasSpawns())
+			return false;
+
+		for (int i = GetLoopStartIndex(); i < Spawns.Length; i++)
+		{
+			if (Spawns[i].EnemyType != EnemyType.Empty)
+				return true;
+		}
+
+		return false;
 	}
 
 	public int GetLoopStartIndex()
 	{
-		return SpawnsetUtils.GetLoopStartIndex(Spawns);
+		if (GameMode != GameMode.Survival)
+			throw new InvalidOperationException("Cannot get loop start index from non-survival spawnset.");
+
+		for (int i = Spawns.Length - 1; i >= 0; i--)
+		{
+			if (Spawns[i].EnemyType == EnemyType.Empty)
+				return i;
+		}
+
+		return 0;
 	}
 
 	public IEnumerable<double> GenerateEndWaveTimes(double endGameSecond, int waveIndex)
 	{
-		return SpawnsetUtils.GenerateEndWaveTimes(Spawns, endGameSecond, waveIndex);
+		double enemyTimer = 0;
+		double delay = 0;
+
+		foreach (Spawn spawn in Spawns.Skip(GetLoopStartIndex()))
+		{
+			delay += spawn.Delay;
+			while (enemyTimer < delay)
+			{
+				endGameSecond += 1f / 60f;
+				enemyTimer += 1f / 60f + 1f / 60f / 8f * waveIndex;
+			}
+
+			yield return endGameSecond;
+		}
 	}
 
 	public EffectivePlayerSettings GetEffectivePlayerSettings()
@@ -394,7 +425,56 @@ public record SpawnsetBinary
 
 	public (SpawnSectionInfo PreLoopSection, SpawnSectionInfo LoopSection) CalculateSections()
 	{
-		return SpawnsetUtils.CalculateSections(Spawns, GameMode);
+		return GameMode != GameMode.Survival ? CalculateSectionsForNonDefaultGameMode() : CalculateSectionsForDefaultGameMode();
+
+		(SpawnSectionInfo PreLoopSection, SpawnSectionInfo LoopSection) CalculateSectionsForNonDefaultGameMode()
+		{
+			int spawnCount = 0;
+			float seconds = 0;
+			for (int i = 0; i < Spawns.Length; i++)
+			{
+				Spawn spawn = Spawns[i];
+
+				// If the rest of the spawns are empty, break loop.
+				if (Spawns.Skip(i).All(s => s.EnemyType == EnemyType.Empty))
+					break;
+
+				seconds += spawn.Delay;
+				if (spawn.EnemyType != EnemyType.Empty)
+					spawnCount++;
+			}
+
+			return (new(spawnCount, spawnCount == 0 ? null : seconds), default);
+		}
+
+		(SpawnSectionInfo PreLoopSection, SpawnSectionInfo LoopSection) CalculateSectionsForDefaultGameMode()
+		{
+			int loopStartIndex = GetLoopStartIndex();
+
+			int preLoopSpawnCount = 0;
+			int loopSpawnCount = 0;
+			float preLoopSeconds = 0;
+			float loopSeconds = 0;
+			for (int i = 0; i < Spawns.Length; i++)
+			{
+				Spawn spawn = Spawns[i];
+
+				if (i < loopStartIndex)
+					preLoopSeconds += spawn.Delay;
+				else
+					loopSeconds += spawn.Delay;
+
+				if (spawn.EnemyType != EnemyType.Empty)
+				{
+					if (i < loopStartIndex)
+						preLoopSpawnCount++;
+					else
+						loopSpawnCount++;
+				}
+			}
+
+			return (new(preLoopSpawnCount, preLoopSpawnCount == 0 ? null : preLoopSeconds), new(loopSpawnCount, loopSpawnCount == 0 ? null : loopSeconds));
+		}
 	}
 
 	#endregion Utilities

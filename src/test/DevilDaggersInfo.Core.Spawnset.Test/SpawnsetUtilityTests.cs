@@ -40,6 +40,27 @@ public class SpawnsetUtilityTests
 	}
 
 	[DataTestMethod]
+	[DataRow("V0", 63)]
+	[DataRow("V1", 108)]
+	[DataRow("V2", 79)]
+	[DataRow("V3", 100)]
+	[DataRow("V3_229", 57)]
+	[DataRow("V3_451", 0)]
+	[DataRow("Empty", 0)]
+	[DataRow("EmptySpawn", 0)]
+	[DataRow("NoEndLoop", 2)]
+	[DataRow("TimeAttack", -1)]
+	[DataRow("Scanner", 62)]
+	public void TestLoopStartIndex(string fileName, int loopStartIndex)
+	{
+		SpawnsetBinary spawnset = SpawnsetBinary.Parse(File.ReadAllBytes(Path.Combine("Resources", fileName)));
+		if (loopStartIndex == -1)
+			Assert.ThrowsException<InvalidOperationException>(() => spawnset.GetLoopStartIndex());
+		else
+			Assert.AreEqual(loopStartIndex, spawnset.GetLoopStartIndex());
+	}
+
+	[DataTestMethod]
 	[DataRow(50f, 20f, 0.025f, 1200f)]
 	[DataRow(30f, 20f, 1f, 10f)]
 	[DataRow(30f, 5f, 1f, 25f)]

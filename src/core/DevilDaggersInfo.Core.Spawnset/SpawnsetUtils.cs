@@ -5,51 +5,6 @@ namespace DevilDaggersInfo.Core.Spawnset;
 
 public static class SpawnsetUtils
 {
-	public static bool HasSpawns(ImmutableArray<Spawn> spawns)
-	{
-		return spawns.Any(s => s.EnemyType != EnemyType.Empty);
-	}
-
-	public static bool HasEndLoop(ImmutableArray<Spawn> spawns, GameMode gameMode)
-	{
-		if (gameMode != GameMode.Survival || !HasSpawns(spawns))
-			return false;
-
-		int loopStartIndex = GetLoopStartIndex(spawns);
-		Spawn[] loopSpawns = spawns.Skip(loopStartIndex).ToArray();
-
-		return loopSpawns.Any(s => s.EnemyType != EnemyType.Empty);
-	}
-
-	public static int GetLoopStartIndex(ImmutableArray<Spawn> spawns)
-	{
-		for (int i = spawns.Length - 1; i >= 0; i--)
-		{
-			if (spawns[i].EnemyType == EnemyType.Empty)
-				return i;
-		}
-
-		return 0;
-	}
-
-	public static IEnumerable<double> GenerateEndWaveTimes(ImmutableArray<Spawn> spawns, double endGameSecond, int waveIndex)
-	{
-		double enemyTimer = 0;
-		double delay = 0;
-
-		foreach (Spawn spawn in spawns.Skip(GetLoopStartIndex(spawns)))
-		{
-			delay += spawn.Delay;
-			while (enemyTimer < delay)
-			{
-				endGameSecond += 1f / 60f;
-				enemyTimer += 1f / 60f + 1f / 60f / 8f * waveIndex;
-			}
-
-			yield return endGameSecond;
-		}
-	}
-
 	public static EffectivePlayerSettings GetEffectivePlayerSettings(int spawnVersion, HandLevel handLevel, int additionalGems)
 	{
 		if (spawnVersion < 5)
@@ -174,59 +129,5 @@ public static class SpawnsetUtils
 		}
 
 		return GetShrinkEndTime(shrinkStart, shrinkEnd, shrinkRate) + (maxTileHeight + 2) * 4;
-	}
-
-	public static (SpawnSectionInfo PreLoopSection, SpawnSectionInfo LoopSection) CalculateSections(ImmutableArray<Spawn> spawns, GameMode gameMode)
-	{
-		return gameMode != GameMode.Survival ? CalculateSectionsForNonDefaultGameMode(spawns) : CalculateSectionsForDefaultGameMode(spawns);
-
-		static (SpawnSectionInfo PreLoopSection, SpawnSectionInfo LoopSection) CalculateSectionsForNonDefaultGameMode(ImmutableArray<Spawn> spawns)
-		{
-			int spawnCount = 0;
-			float seconds = 0;
-			for (int i = 0; i < spawns.Length; i++)
-			{
-				Spawn spawn = spawns[i];
-
-				// If the rest of the spawns are empty, break loop.
-				if (spawns.Skip(i).All(s => s.EnemyType == EnemyType.Empty))
-					break;
-
-				seconds += spawn.Delay;
-				if (spawn.EnemyType != EnemyType.Empty)
-					spawnCount++;
-			}
-
-			return (new(spawnCount, spawnCount == 0 ? null : seconds), default);
-		}
-
-		static (SpawnSectionInfo PreLoopSection, SpawnSectionInfo LoopSection) CalculateSectionsForDefaultGameMode(ImmutableArray<Spawn> spawns)
-		{
-			int loopStartIndex = GetLoopStartIndex(spawns);
-
-			int preLoopSpawnCount = 0;
-			int loopSpawnCount = 0;
-			float preLoopSeconds = 0;
-			float loopSeconds = 0;
-			for (int i = 0; i < spawns.Length; i++)
-			{
-				Spawn spawn = spawns[i];
-
-				if (i < loopStartIndex)
-					preLoopSeconds += spawn.Delay;
-				else
-					loopSeconds += spawn.Delay;
-
-				if (spawn.EnemyType != EnemyType.Empty)
-				{
-					if (i < loopStartIndex)
-						preLoopSpawnCount++;
-					else
-						loopSpawnCount++;
-				}
-			}
-
-			return (new(preLoopSpawnCount, preLoopSpawnCount == 0 ? null : preLoopSeconds), new(loopSpawnCount, loopSpawnCount == 0 ? null : loopSeconds));
-		}
 	}
 }

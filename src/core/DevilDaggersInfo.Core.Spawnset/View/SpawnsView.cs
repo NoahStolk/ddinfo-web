@@ -5,33 +5,28 @@ namespace DevilDaggersInfo.Core.Spawnset.View;
 public class SpawnsView
 {
 	public SpawnsView(SpawnsetBinary spawnsetBinary, GameVersion gameVersion, int waveCount = 40)
-		: this(gameVersion, spawnsetBinary.SpawnVersion, spawnsetBinary.GameMode, spawnsetBinary.Spawns, spawnsetBinary.HandLevel, spawnsetBinary.AdditionalGems, spawnsetBinary.TimerStart, waveCount)
-	{
-	}
-
-	public SpawnsView(GameVersion gameVersion, int spawnVersion, GameMode gameMode, ImmutableArray<Spawn> spawns, HandLevel handLevel, int additionalGems, float timerStart, int waveCount)
 	{
 		PreLoop = new();
 		Waves = new List<SpawnView>[waveCount];
 		for (int i = 0; i < waveCount; i++)
 			Waves[i] = new();
 
-		if (spawns.Length == 0)
+		if (spawnsetBinary.Spawns.Length == 0)
 			return;
 
-		double totalSeconds = SpawnsetUtils.GetEffectiveTimerStart(spawnVersion, timerStart);
-		EffectivePlayerSettings effectivePlayerSettings = SpawnsetUtils.GetEffectivePlayerSettings(spawnVersion, handLevel, additionalGems);
+		double totalSeconds = SpawnsetUtils.GetEffectiveTimerStart(spawnsetBinary.SpawnVersion, spawnsetBinary.TimerStart);
+		EffectivePlayerSettings effectivePlayerSettings = SpawnsetUtils.GetEffectivePlayerSettings(spawnsetBinary.SpawnVersion, spawnsetBinary.HandLevel, spawnsetBinary.AdditionalGems);
 		GemState gemState = new(effectivePlayerSettings.HandLevel, effectivePlayerSettings.GemsOrHoming, 0);
 
-		if (gameMode is GameMode.TimeAttack or GameMode.Race)
+		if (spawnsetBinary.GameMode is GameMode.TimeAttack or GameMode.Race)
 		{
-			BuildPreLoop(ref totalSeconds, ref gemState, spawns);
+			BuildPreLoop(ref totalSeconds, ref gemState, spawnsetBinary.Spawns);
 		}
 		else
 		{
-			int loopStartIndex = SpawnsetUtils.GetLoopStartIndex(spawns);
-			ImmutableArray<Spawn> preLoopSpawns = spawns.Take(loopStartIndex).ToImmutableArray();
-			ImmutableArray<Spawn> loopSpawns = spawns.Skip(loopStartIndex).ToImmutableArray();
+			int loopStartIndex = spawnsetBinary.GetLoopStartIndex();
+			ImmutableArray<Spawn> preLoopSpawns = spawnsetBinary.Spawns.Take(loopStartIndex).ToImmutableArray();
+			ImmutableArray<Spawn> loopSpawns = spawnsetBinary.Spawns.Skip(loopStartIndex).ToImmutableArray();
 
 			BuildPreLoop(ref totalSeconds, ref gemState, preLoopSpawns);
 
