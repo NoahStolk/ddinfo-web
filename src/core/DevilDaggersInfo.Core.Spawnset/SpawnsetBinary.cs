@@ -348,11 +348,6 @@ public record SpawnsetBinary
 		return SpawnsetUtils.GetGameVersionString(WorldVersion, SpawnVersion);
 	}
 
-	public (int X, float? Y, int Z) GetRaceDaggerTilePosition()
-	{
-		return SpawnsetUtils.GetRaceDaggerTilePosition(ArenaDimension, ArenaTiles, RaceDaggerPosition);
-	}
-
 	public float? GetRaceDaggerHeight()
 	{
 		int raceDaggerTileX = SpawnsetUtils.WorldToTileCoordinate(ArenaDimension, RaceDaggerPosition.X);

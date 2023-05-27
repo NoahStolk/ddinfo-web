@@ -80,15 +80,6 @@ public static class SpawnsetUtils
 		return worldVersion == 8 ? "V0/V1" : spawnVersion == 4 ? "V2/V3" : "V3.1+";
 	}
 
-	// TODO: Remove the Y component from this method. Use GetRaceDaggerHeight or GetActualRaceDaggerHeight instead.
-	public static (int X, float? Y, int Z) GetRaceDaggerTilePosition(int arenaDimension, ImmutableArena arenaTiles, Vector2 raceDaggerPosition)
-	{
-		int x = WorldToTileCoordinate(arenaDimension, raceDaggerPosition.X);
-		int z = WorldToTileCoordinate(arenaDimension, raceDaggerPosition.Y);
-		float? y = GetRaceDaggerHeight(arenaDimension, arenaTiles, x, z);
-		return (x, y, z);
-	}
-
 	public static float? GetRaceDaggerHeight(int arenaDimension, ImmutableArena arenaTiles, int raceDaggerTileX, int raceDaggerTileZ)
 	{
 		if (raceDaggerTileX >= 0 && raceDaggerTileX < arenaDimension && raceDaggerTileZ >= 0 && raceDaggerTileZ < arenaDimension)

@@ -9,7 +9,9 @@
 	<DataField Name="Brightness">@SpawnsetBinary.Brightness.ToString("0.###")</DataField>
 	@if (SpawnsetBinary.GameMode == GameMode.Race)
 	{
-		(int raceDaggerTileX, float? raceDaggerTileY, int raceDaggerTileZ) = SpawnsetBinary.GetRaceDaggerTilePosition();
+		int raceDaggerTileX = SpawnsetBinary.WorldToTileCoordinate(SpawnsetBinary.RaceDaggerPosition.X);
+		float? raceDaggerTileY = SpawnsetBinary.GetRaceDaggerHeight();
+		int raceDaggerTileZ = SpawnsetBinary.WorldToTileCoordinate(SpawnsetBinary.RaceDaggerPosition.Y);
 
 		<DataField Name="Race dagger position">X: @SpawnsetBinary.RaceDaggerPosition.X.ToString("0.00") Y: @(raceDaggerTileY.HasValue ? raceDaggerTileY.Value.ToString("0.00") : "-") Z: @SpawnsetBinary.RaceDaggerPosition.Y.ToString("0.00")</DataField>
 		<DataField Name="Race dagger tile">@raceDaggerTileX x @raceDaggerTileZ</DataField>

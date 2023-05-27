@@ -91,7 +91,7 @@ public partial class SpawnsetArena
 		float shrinkEndTime = SpawnsetBinary.GetShrinkEndTime();
 		float shrinkRadius = shrinkEndTime == 0 ? SpawnsetBinary.ShrinkStart : Math.Max(SpawnsetBinary.ShrinkStart - CurrentTime / shrinkEndTime * (SpawnsetBinary.ShrinkStart - SpawnsetBinary.ShrinkEnd), SpawnsetBinary.ShrinkEnd);
 
-		(_, float? y, _) = SpawnsetBinary.GetRaceDaggerTilePosition();
+		float? y = SpawnsetBinary.GetRaceDaggerHeight();
 		_context.DrawArena(colors, _canvasSize, shrinkRadius, SpawnsetBinary.GameMode == GameMode.Race && y.HasValue, SpawnsetBinary.RaceDaggerPosition.X, SpawnsetBinary.RaceDaggerPosition.Y);
 	}
 }
