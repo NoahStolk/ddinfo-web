@@ -1,7 +1,7 @@
 using Blazored.LocalStorage;
+using DevilDaggersInfo.Web.Client.Authentication;
 using DevilDaggersInfo.Web.Client.Core.Canvas;
 using DevilDaggersInfo.Web.Client.Core.CanvasArena;
-using DevilDaggersInfo.Web.Client.Authentication;
 using DevilDaggersInfo.Web.Client.HttpClients;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
