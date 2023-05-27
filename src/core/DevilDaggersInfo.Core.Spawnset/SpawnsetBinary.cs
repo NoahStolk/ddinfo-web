@@ -366,17 +366,37 @@ public record SpawnsetBinary
 
 	public EffectivePlayerSettings GetEffectivePlayerSettings()
 	{
-		return SpawnsetUtils.GetEffectivePlayerSettings(SpawnVersion, HandLevel, AdditionalGems);
+		if (SpawnVersion < 5)
+			return new(HandLevel.Level1, 0, HandLevel.Level1);
+
+		return HandLevel switch
+		{
+			HandLevel.Level1 when AdditionalGems < 10 => new(HandLevel.Level1, AdditionalGems, HandLevel.Level1),
+			HandLevel.Level1 when AdditionalGems < 70 => new(HandLevel.Level2, AdditionalGems, HandLevel.Level2),
+			HandLevel.Level1 when AdditionalGems == 70 => new(HandLevel.Level3, 0, HandLevel.Level3),
+			HandLevel.Level1 when AdditionalGems == 71 => new(HandLevel.Level4, 0, HandLevel.Level4),
+			HandLevel.Level1 => new(HandLevel.Level4, 0, HandLevel.Level3),
+			HandLevel.Level2 when AdditionalGems < 0 => new(HandLevel.Level1, AdditionalGems + 10, HandLevel.Level1),
+			HandLevel.Level2 => new(HandLevel.Level2, Math.Min(59, AdditionalGems) + 10, HandLevel.Level2),
+			HandLevel.Level3 => new(HandLevel.Level3, Math.Min(149, AdditionalGems), HandLevel.Level3),
+			_ => new(HandLevel.Level4, AdditionalGems, HandLevel.Level4),
+		};
 	}
 
 	public float GetEffectiveTimerStart()
 	{
-		return SpawnsetUtils.GetEffectiveTimerStart(SpawnVersion, TimerStart);
+		return SpawnVersion < 6 ? 0 : TimerStart;
 	}
 
 	public SpawnsetSupportedGameVersion GetSupportedGameVersion()
 	{
-		return SpawnsetUtils.GetSupportedGameVersion(WorldVersion, SpawnVersion);
+		if (SpawnVersion >= 5)
+			return SpawnsetSupportedGameVersion.V3_1AndLater; // Practice mode (spawn version 5+) is only available in V3.1+.
+
+		if (WorldVersion >= 9)
+			return SpawnsetSupportedGameVersion.V2AndLater; // World version 9 was added in V2.
+
+		return SpawnsetSupportedGameVersion.V0AndLater;
 	}
 
 	public float? GetRaceDaggerHeight()
@@ -420,7 +440,22 @@ public record SpawnsetBinary
 
 	public float GetSliderMaxSeconds()
 	{
-		return SpawnsetUtils.GetSliderMaxSeconds(ArenaDimension, ArenaTiles, ShrinkStart, ShrinkEnd, ShrinkRate);
+		// Determine the max tile height to add additional time to the slider.
+		// For example, when the shrink ends at 200, but there is a tile at height 20, we want to add another 88 seconds ((20 + 2) * 4) to the slider so the shrink transition is always fully visible for all tiles.
+		// Add 2 heights to make sure it is still visible until the height is -2 (the palette should still show something until a height of at least -1 or lower).
+		// Multiply by 4 because a tile falls by 1 unit every 4 seconds.
+		float maxTileHeight = 0;
+		for (int i = 0; i < ArenaDimension; i++)
+		{
+			for (int j = 0; j < ArenaDimension; j++)
+			{
+				float tileHeight = ArenaTiles[i, j];
+				if (maxTileHeight < tileHeight)
+					maxTileHeight = tileHeight;
+			}
+		}
+
+		return GetShrinkEndTime() + (maxTileHeight + 2) * 4;
 	}
 
 	public (SpawnSectionInfo PreLoopSection, SpawnSectionInfo LoopSection) CalculateSections()

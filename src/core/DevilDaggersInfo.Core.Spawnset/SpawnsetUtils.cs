@@ -1,45 +1,9 @@
-using System.Collections.Immutable;
 using System.Numerics;
 
 namespace DevilDaggersInfo.Core.Spawnset;
 
 public static class SpawnsetUtils
 {
-	public static EffectivePlayerSettings GetEffectivePlayerSettings(int spawnVersion, HandLevel handLevel, int additionalGems)
-	{
-		if (spawnVersion < 5)
-			return new(HandLevel.Level1, 0, HandLevel.Level1);
-
-		return handLevel switch
-		{
-			HandLevel.Level1 when additionalGems < 10 => new(HandLevel.Level1, additionalGems, HandLevel.Level1),
-			HandLevel.Level1 when additionalGems < 70 => new(HandLevel.Level2, additionalGems, HandLevel.Level2),
-			HandLevel.Level1 when additionalGems == 70 => new(HandLevel.Level3, 0, HandLevel.Level3),
-			HandLevel.Level1 when additionalGems == 71 => new(HandLevel.Level4, 0, HandLevel.Level4),
-			HandLevel.Level1 => new(HandLevel.Level4, 0, HandLevel.Level3),
-			HandLevel.Level2 when additionalGems < 0 => new(HandLevel.Level1, additionalGems + 10, HandLevel.Level1),
-			HandLevel.Level2 => new(HandLevel.Level2, Math.Min(59, additionalGems) + 10, HandLevel.Level2),
-			HandLevel.Level3 => new(HandLevel.Level3, Math.Min(149, additionalGems), HandLevel.Level3),
-			_ => new(HandLevel.Level4, additionalGems, HandLevel.Level4),
-		};
-	}
-
-	public static float GetEffectiveTimerStart(int spawnVersion, float timerStart)
-	{
-		return spawnVersion < 6 ? 0 : timerStart;
-	}
-
-	public static SpawnsetSupportedGameVersion GetSupportedGameVersion(int worldVersion, int spawnVersion)
-	{
-		if (spawnVersion >= 5)
-			return SpawnsetSupportedGameVersion.V3_1AndLater; // Practice mode (spawn version 5+) is only available in V3.1+.
-
-		if (worldVersion >= 9)
-			return SpawnsetSupportedGameVersion.V2AndLater; // World version 9 was added in V2.
-
-		return SpawnsetSupportedGameVersion.V0AndLater;
-	}
-
 	public static float? GetRaceDaggerHeight(int arenaDimension, ImmutableArena arenaTiles, int raceDaggerTileX, int raceDaggerTileZ)
 	{
 		if (raceDaggerTileX >= 0 && raceDaggerTileX < arenaDimension && raceDaggerTileZ >= 0 && raceDaggerTileZ < arenaDimension)
@@ -109,25 +73,5 @@ public static class SpawnsetUtils
 			return GetActualTileHeight(arenaDimension, arenaTiles, shrinkStart, shrinkEnd, shrinkRate, raceDaggerTileX, raceDaggerTileZ, currentTime);
 
 		return null;
-	}
-
-	public static float GetSliderMaxSeconds(int arenaDimension, ImmutableArena arenaTiles, float shrinkStart, float shrinkEnd, float shrinkRate)
-	{
-		// Determine the max tile height to add additional time to the slider.
-		// For example, when the shrink ends at 200, but there is a tile at height 20, we want to add another 88 seconds ((20 + 2) * 4) to the slider so the shrink transition is always fully visible for all tiles.
-		// Add 2 heights to make sure it is still visible until the height is -2 (the palette should still show something until a height of at least -1 or lower).
-		// Multiply by 4 because a tile falls by 1 unit every 4 seconds.
-		float maxTileHeight = 0;
-		for (int i = 0; i < arenaDimension; i++)
-		{
-			for (int j = 0; j < arenaDimension; j++)
-			{
-				float tileHeight = arenaTiles[i, j];
-				if (maxTileHeight < tileHeight)
-					maxTileHeight = tileHeight;
-			}
-		}
-
-		return GetShrinkEndTime(shrinkStart, shrinkEnd, shrinkRate) + (maxTileHeight + 2) * 4;
 	}
 }

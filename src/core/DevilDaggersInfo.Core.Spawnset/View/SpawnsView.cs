@@ -14,8 +14,8 @@ public class SpawnsView
 		if (spawnsetBinary.Spawns.Length == 0)
 			return;
 
-		double totalSeconds = SpawnsetUtils.GetEffectiveTimerStart(spawnsetBinary.SpawnVersion, spawnsetBinary.TimerStart);
-		EffectivePlayerSettings effectivePlayerSettings = SpawnsetUtils.GetEffectivePlayerSettings(spawnsetBinary.SpawnVersion, spawnsetBinary.HandLevel, spawnsetBinary.AdditionalGems);
+		double totalSeconds = spawnsetBinary.GetEffectiveTimerStart();
+		EffectivePlayerSettings effectivePlayerSettings = spawnsetBinary.GetEffectivePlayerSettings();
 		GemState gemState = new(effectivePlayerSettings.HandLevel, effectivePlayerSettings.GemsOrHoming, 0);
 
 		if (spawnsetBinary.GameMode is GameMode.TimeAttack or GameMode.Race)
