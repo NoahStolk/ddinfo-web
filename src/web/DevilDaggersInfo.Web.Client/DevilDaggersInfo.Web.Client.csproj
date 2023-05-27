@@ -29,7 +29,7 @@
     <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Mod\DevilDaggersInfo.Core.Mod.csproj" />
     <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Replay\DevilDaggersInfo.Core.Replay.csproj" />
     <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Spawnset\DevilDaggersInfo.Core.Spawnset.csproj" />
-    <ProjectReference Include="..\..\web-core\DevilDaggersInfo.Web.Core.Claims\DevilDaggersInfo.Web.Core.Claims.csproj" />
+    <ProjectReference Include="..\DevilDaggersInfo.Web.Core.Claims\DevilDaggersInfo.Web.Core.Claims.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.Web.Client.Core.CanvasArena\DevilDaggersInfo.Web.Client.Core.CanvasArena.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.Web.Client.Core.CanvasChart\DevilDaggersInfo.Web.Client.Core.CanvasChart.csproj" />
   </ItemGroup>

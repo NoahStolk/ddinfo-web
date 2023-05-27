@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\web-server\DevilDaggersInfo.Web.Server\DevilDaggersInfo.Web.Server.csproj" />
+    <ProjectReference Include="..\..\web\DevilDaggersInfo.Web.Server\DevilDaggersInfo.Web.Server.csproj" />
   </ItemGroup>
 
 </Project>
