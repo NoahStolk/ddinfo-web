@@ -399,7 +399,11 @@ public record SpawnsetBinary
 					enemyTimer += 1f / 60f + 1f / 60f / 8f * waveIndex;
 				}
 
-				newSpawns.Add(new(spawn.EnemyType, (float)spawnDelay));
+				EnemyType finalEnemy = spawn.EnemyType;
+				if (waveIndex % 3 == 2 && finalEnemy == EnemyType.Gigapede)
+					finalEnemy = EnemyType.Ghostpede;
+
+				newSpawns.Add(new(finalEnemy, (float)spawnDelay));
 			}
 		}
 
