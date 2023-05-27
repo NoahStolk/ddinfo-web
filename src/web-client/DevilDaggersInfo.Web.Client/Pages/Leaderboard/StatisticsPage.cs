@@ -2,8 +2,8 @@ using DevilDaggersInfo.Api.Main.LeaderboardStatistics;
 using DevilDaggersInfo.Common;
 using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Core.Wiki.Objects;
-using DevilDaggersInfo.Razor.Core.CanvasChart.Data;
-using DevilDaggersInfo.Razor.Core.CanvasChart.Options.BarChart;
+using DevilDaggersInfo.Web.Client.Core.CanvasChart.Data;
+using DevilDaggersInfo.Web.Client.Core.CanvasChart.Options.BarChart;
 using DevilDaggersInfo.Web.Client.Utils;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -95,7 +95,7 @@ public partial class StatisticsPage
 			int start = _statistics.KillsStatistics.ElementAt(i).Key;
 			return new()
 			{
-				new($"<span style='text-align: right;'>{start.ToString("0")} - {(start + 9).ToString("0")}</span>"),
+				new($"<span style='text-align: right;'>{start:0} - {start + 9:0}</span>"),
 				new($"<span style='text-align: right;'>{barData.Y:0}</span>"),
 				new($"<span style='text-align: right;'>{(barData.Y / _statistics.TotalEntries).ToString(_percentageFormat)}</span>"),
 			};
@@ -110,7 +110,7 @@ public partial class StatisticsPage
 			int start = _statistics.GemsStatistics.ElementAt(i).Key;
 			return new()
 			{
-				new($"<span style='text-align: right;'>{start.ToString("0")} - {(start + 9).ToString("0")}</span>"),
+				new($"<span style='text-align: right;'>{start:0} - {start + 9:0}</span>"),
 				new($"<span style='text-align: right;'>{barData.Y:0}</span>"),
 				new($"<span style='text-align: right;'>{(barData.Y / _statistics.TotalEntries).ToString(_percentageFormat)}</span>"),
 			};
