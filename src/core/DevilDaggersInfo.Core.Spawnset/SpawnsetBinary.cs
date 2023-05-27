@@ -346,76 +346,6 @@ public record SpawnsetBinary
 		return 0;
 	}
 
-	public SpawnsetBinary GetWithHardcodedEndLoop(int amountOfGeneratedWaves)
-	{
-		if (amountOfGeneratedWaves < 1)
-			throw new ArgumentOutOfRangeException(nameof(amountOfGeneratedWaves), "Amount of generated waves must be at least 1.");
-
-		if (!HasEndLoop())
-			throw new InvalidOperationException("Spawnset does not have an end loop.");
-
-		// The new spawnset cannot have an actual end loop, so we must remove all empty spawns and add their delay to the next spawn.
-		List<Spawn> newSpawns = new();
-		for (int i = Spawns.Length - 1; i >= 0; i--)
-		{
-			if (Spawns[i].EnemyType == EnemyType.Empty)
-				continue;
-
-			float extraDelayFromPreviousEmptySpawns = 0;
-			if (i > 0)
-			{
-				int previousIndex = 1;
-				while (true)
-				{
-					Spawn previousSpawn = Spawns[i - previousIndex];
-					if (previousSpawn.EnemyType != EnemyType.Empty)
-						break;
-
-					extraDelayFromPreviousEmptySpawns += previousSpawn.Delay;
-					previousIndex++;
-				}
-			}
-
-			newSpawns.Insert(0, new(Spawns[i].EnemyType, Spawns[i].Delay + extraDelayFromPreviousEmptySpawns));
-		}
-
-		// Add the end loop, including the original last empty spawn.
-		// TODO: Check if using doubles is correct.
-		double enemyTimer = 0;
-		double delay = 0;
-
-		List<Spawn> originalEndLoop = Spawns.Skip(GetLoopStartIndex()).ToList();
-
-		// Start at index 1 because the first wave is already added.
-		for (int waveIndex = 1; waveIndex < amountOfGeneratedWaves; waveIndex++)
-		{
-			foreach (Spawn spawn in originalEndLoop)
-			{
-				double spawnDelay = 0;
-				delay += spawn.Delay;
-				while (enemyTimer < delay)
-				{
-					spawnDelay += 1f / 60f;
-					enemyTimer += 1f / 60f + 1f / 60f / 8f * waveIndex;
-				}
-
-				EnemyType finalEnemy = spawn.EnemyType;
-				if (waveIndex % 3 == 2 && finalEnemy == EnemyType.Gigapede)
-					finalEnemy = EnemyType.Ghostpede;
-
-				newSpawns.Add(new(finalEnemy, (float)spawnDelay));
-			}
-		}
-
-		// We don't want an actual loop to happen after these hardcoded waves, so we add an empty spawn.
-		newSpawns.Add(new(EnemyType.Empty, 0));
-
-		return this with
-		{
-			Spawns = newSpawns.ToImmutableArray(),
-		};
-	}
-
 	public EffectivePlayerSettings GetEffectivePlayerSettings()
 	{
 		if (SpawnVersion < 5)
@@ -602,4 +532,112 @@ public record SpawnsetBinary
 	}
 
 	#endregion Utilities
+
+	#region Transformations
+
+	public SpawnsetBinary GetWithTrimmedStart(float startSeconds)
+	{
+		if (startSeconds < 0)
+			throw new ArgumentOutOfRangeException(nameof(startSeconds), "Start seconds must be at least 0.");
+
+		List<Spawn> newSpawns = Spawns.ToList();
+
+		// Remove spawns until the start time is reached.
+		float currentTime = 0;
+		while (newSpawns.Count > 0)
+		{
+			Spawn spawn = newSpawns[0];
+			currentTime += spawn.Delay;
+			if (currentTime >= startSeconds)
+				break;
+
+			newSpawns.RemoveAt(0);
+		}
+
+		// Subtract the start time from the first spawn.
+		if (newSpawns.Count > 0)
+		{
+			float leftOverSeconds = currentTime - startSeconds;
+			newSpawns[0] = new Spawn(newSpawns[0].EnemyType, leftOverSeconds);
+		}
+
+		return this with
+		{
+			Spawns = newSpawns.ToImmutableArray(),
+			TimerStart = startSeconds,
+			SpawnVersion = SpawnVersion < 6 ? 6 : SpawnVersion,
+		};
+	}
+
+	public SpawnsetBinary GetWithHardcodedEndLoop(int amountOfGeneratedWaves)
+	{
+		if (amountOfGeneratedWaves < 1)
+			throw new ArgumentOutOfRangeException(nameof(amountOfGeneratedWaves), "Amount of generated waves must be at least 1.");
+
+		if (!HasEndLoop())
+			throw new InvalidOperationException("Spawnset does not have an end loop.");
+
+		// The new spawnset cannot have an actual end loop, so we must remove all empty spawns and add their delay to the next spawn.
+		List<Spawn> newSpawns = new();
+		for (int i = Spawns.Length - 1; i >= 0; i--)
+		{
+			if (Spawns[i].EnemyType == EnemyType.Empty)
+				continue;
+
+			float extraDelayFromPreviousEmptySpawns = 0;
+			if (i > 0)
+			{
+				int previousIndex = 1;
+				while (true)
+				{
+					Spawn previousSpawn = Spawns[i - previousIndex];
+					if (previousSpawn.EnemyType != EnemyType.Empty)
+						break;
+
+					extraDelayFromPreviousEmptySpawns += previousSpawn.Delay;
+					previousIndex++;
+				}
+			}
+
+			newSpawns.Insert(0, new(Spawns[i].EnemyType, Spawns[i].Delay + extraDelayFromPreviousEmptySpawns));
+		}
+
+		// Add the end loop, including the original last empty spawn.
+		// TODO: Check if using doubles is correct.
+		double enemyTimer = 0;
+		double delay = 0;
+
+		List<Spawn> originalEndLoop = Spawns.Skip(GetLoopStartIndex()).ToList();
+
+		// Start at index 1 because the first wave is already added.
+		for (int waveIndex = 1; waveIndex < amountOfGeneratedWaves; waveIndex++)
+		{
+			foreach (Spawn spawn in originalEndLoop)
+			{
+				double spawnDelay = 0;
+				delay += spawn.Delay;
+				while (enemyTimer < delay)
+				{
+					spawnDelay += 1f / 60f;
+					enemyTimer += 1f / 60f + 1f / 60f / 8f * waveIndex;
+				}
+
+				EnemyType finalEnemy = spawn.EnemyType;
+				if (waveIndex % 3 == 2 && finalEnemy == EnemyType.Gigapede)
+					finalEnemy = EnemyType.Ghostpede;
+
+				newSpawns.Add(new(finalEnemy, (float)spawnDelay));
+			}
+		}
+
+		// We don't want an actual loop to happen after these hardcoded waves, so we add an empty spawn.
+		newSpawns.Add(new(EnemyType.Empty, 0));
+
+		return this with
+		{
+			Spawns = newSpawns.ToImmutableArray(),
+		};
+	}
+
+	#endregion Transformations
 }
