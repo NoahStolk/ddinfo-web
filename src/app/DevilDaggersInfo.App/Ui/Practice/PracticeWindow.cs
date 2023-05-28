@@ -7,21 +7,24 @@ using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Core.Spawnset.View;
 using DevilDaggersInfo.Core.Wiki;
 using ImGuiNET;
+using System.Numerics;
 
 namespace DevilDaggersInfo.App.Ui.Practice;
 
 public static class PracticeWindow
 {
 	private const int _templateWidth = 360;
-	private const int _templateListWidth = 380;
-	private const int _templateContainerWidth = 400;
+	private const int _templateDescriptionHeight = 48;
+
+	private static readonly Vector2 _templateContainerSize = new(400, 480);
+	private static readonly Vector2 _templateListSize = new(380, 380);
 
 	private static readonly List<NoFarmTemplate> _noFarmTemplates = new()
 	{
 		new("First Spider I & Squid II", EnemiesV3_2.Squid2.Color.ToEngineColor(), HandLevel.Level1, 8, 39),
 		new("First Centipede", EnemiesV3_2.Centipede.Color.ToEngineColor(), HandLevel.Level2, 35, 114),
 		new("Centipede & first triple Spider Is", EnemiesV3_2.Spider1.Color.ToEngineColor(), HandLevel.Level3, 11, 174),
-		new("Six Squid Is", EnemiesV3_2.Squid1.Color.ToEngineColor(), HandLevel.Level3, 57, 229),
+		new("Six Squid Is", EnemiesV3_2.Squid3.Color.ToEngineColor(), HandLevel.Level3, 57, 229),
 		new("Gigapedes", EnemiesV3_2.Gigapede.Color.ToEngineColor(), HandLevel.Level3, 81, 259),
 		new("Leviathan", EnemiesV3_2.Leviathan.Color.ToEngineColor(), HandLevel.Level4, 105, 350),
 		new("Post Orb", EnemiesV3_2.TheOrb.Color.ToEngineColor(), HandLevel.Level4, 129, 397),
@@ -36,9 +39,7 @@ public static class PracticeWindow
 		const int endLoopTemplateWaveCount = 33;
 		SpawnsView spawnsView = new(ContentManager.Content.DefaultSpawnset, GameVersion.V3_2, endLoopTemplateWaveCount);
 		for (int i = 0; i < endLoopTemplateWaveCount; i++)
-		{
 			_endLoopTimerStarts.Add((float)spawnsView.Waves[i][0].Seconds);
-		}
 	}
 
 	public static void Render()
@@ -50,20 +51,16 @@ public static class PracticeWindow
 		ImGui.Text("Use these templates to practice specific sections of the game. Click on a template to apply its values.");
 		ImGui.Spacing();
 
-		ImGui.BeginChild("No farm templates", new(_templateContainerWidth, 480), true);
+		ImGui.BeginChild("No farm templates", _templateContainerSize, true);
 		ImGui.Text("No farm templates");
 
+		ImGui.BeginChild("No farm template description", _templateListSize with { Y = _templateDescriptionHeight });
 		ImGui.PushTextWrapPos(ImGui.GetCursorPos().X + _templateWidth);
-		ImGui.Indent(8);
-
-		ImGui.Spacing();
-		ImGui.Text("The amount of gems is based on how many gems you would have at that point, without farming, without losing gems, and without homing usage.");
-		ImGui.Spacing();
-
-		ImGui.Indent(-8);
+		ImGui.Text("The amount of gems is based on how many gems you would have at that point, without farming, without losing gems, and without any homing usage.");
 		ImGui.PopTextWrapPos();
+		ImGui.EndChild();
 
-		ImGui.BeginChild("No farm template list", new(_templateListWidth, 360));
+		ImGui.BeginChild("No farm template list", _templateListSize);
 		foreach (NoFarmTemplate noFarmTemplate in _noFarmTemplates)
 			RenderNoFarmTemplate(noFarmTemplate);
 
@@ -71,20 +68,16 @@ public static class PracticeWindow
 		ImGui.EndChild();
 
 		ImGui.SameLine();
-		ImGui.BeginChild("End loop templates", new(_templateContainerWidth, 480), true);
+		ImGui.BeginChild("End loop templates", _templateContainerSize, true);
 		ImGui.Text("End loop templates");
 
+		ImGui.BeginChild("End loop template description", _templateListSize with { Y = _templateDescriptionHeight });
 		ImGui.PushTextWrapPos(ImGui.GetCursorPos().X + _templateWidth);
-		ImGui.Indent(8);
-
-		ImGui.Spacing();
 		ImGui.Text("The amount of homing for the end loop waves is set to 0. Use one that is realistic for you.");
-		ImGui.Spacing();
-
-		ImGui.Indent(-8);
 		ImGui.PopTextWrapPos();
+		ImGui.EndChild();
 
-		ImGui.BeginChild("End loop template list", new(_templateListWidth, 360));
+		ImGui.BeginChild("End loop template list", _templateListSize);
 		for (int i = 0; i < _endLoopTimerStarts.Count; i++)
 			RenderEndLoopTemplate(i, _endLoopTimerStarts[i]);
 
@@ -104,23 +97,8 @@ public static class PracticeWindow
 		ImGui.InputInt("Added gems", ref _state.AdditionalGems, 1);
 		ImGui.InputFloat("Timer start", ref _state.TimerStart, 1, 5, "%.4f");
 
-		if (ImGui.Button("Apply"))
-		{
-			_state.TimerStart = Math.Clamp(_state.TimerStart, 0, 1400);
-
-			SpawnsetBinary spawnset = ContentManager.Content.DefaultSpawnset;
-			float shrinkStart = MathUtils.Lerp(spawnset.ShrinkStart, spawnset.ShrinkEnd, _state.TimerStart / ((spawnset.ShrinkStart - spawnset.ShrinkEnd) / spawnset.ShrinkRate));
-
-			SpawnsetBinary generatedSpawnset = spawnset.GetWithHardcodedEndLoop(70).GetWithTrimmedStart(_state.TimerStart) with
-			{
-				HandLevel = _state.HandLevel,
-				AdditionalGems = _state.AdditionalGems,
-				TimerStart = _state.TimerStart,
-				SpawnVersion = 6,
-				ShrinkStart = shrinkStart,
-			};
-			File.WriteAllBytes(UserSettings.ModsSurvivalPath, generatedSpawnset.ToBytes());
-		}
+		if (ImGui.Button("Apply", new(80, 30)))
+			Apply();
 
 		ImGui.EndChild();
 
@@ -139,7 +117,10 @@ public static class PracticeWindow
 		{
 			bool hover = ImGui.IsWindowHovered();
 			if (hover && ImGui.IsMouseReleased(ImGuiMouseButton.Left))
+			{
 				_state = new(noFarmTemplate.HandLevel, noFarmTemplate.AdditionalGems, noFarmTemplate.TimerStart);
+				Apply();
+			}
 
 			string timerText = noFarmTemplate.TimerStart.ToString(StringFormats.TimeFormat);
 			(string gemsOrHomingText, Color gemColor) = noFarmTemplate.HandLevel switch
@@ -174,7 +155,10 @@ public static class PracticeWindow
 		{
 			bool hover = ImGui.IsWindowHovered();
 			if (hover && ImGui.IsMouseReleased(ImGuiMouseButton.Left))
+			{
 				_state = new(HandLevel.Level4, 0, timerStart);
+				Apply();
+			}
 
 			string timerText = timerStart.ToString(StringFormats.TimeFormat);
 			float windowWidth = ImGui.GetWindowWidth();
@@ -195,7 +179,25 @@ public static class PracticeWindow
 
 	private static (byte BackgroundAlpha, byte TextAlpha) GetAlpha(bool isActive)
 	{
-		return isActive ? ((byte)48, (byte)255) : ((byte)16, (byte)159);
+		return isActive ? ((byte)48, (byte)255) : ((byte)16, (byte)191);
+	}
+
+	private static void Apply()
+	{
+		_state.TimerStart = Math.Clamp(_state.TimerStart, 0, 1400);
+
+		SpawnsetBinary spawnset = ContentManager.Content.DefaultSpawnset;
+		float shrinkStart = MathUtils.Lerp(spawnset.ShrinkStart, spawnset.ShrinkEnd, _state.TimerStart / ((spawnset.ShrinkStart - spawnset.ShrinkEnd) / spawnset.ShrinkRate));
+
+		SpawnsetBinary generatedSpawnset = spawnset.GetWithHardcodedEndLoop(70).GetWithTrimmedStart(_state.TimerStart) with
+		{
+			HandLevel = _state.HandLevel,
+			AdditionalGems = _state.AdditionalGems,
+			TimerStart = _state.TimerStart,
+			SpawnVersion = 6,
+			ShrinkStart = shrinkStart,
+		};
+		File.WriteAllBytes(UserSettings.ModsSurvivalPath, generatedSpawnset.ToBytes());
 	}
 
 	private struct State
