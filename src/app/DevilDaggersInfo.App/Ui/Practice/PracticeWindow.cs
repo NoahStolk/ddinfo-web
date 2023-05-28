@@ -127,7 +127,12 @@ public static class PracticeWindow
 			{
 				UserSettings.Model = UserSettings.Model with
 				{
-					PracticeTemplates = UserSettings.Model.PracticeTemplates.Append(newTemplate).ToList(),
+					PracticeTemplates = UserSettings.Model.PracticeTemplates
+						.Append(newTemplate)
+						.OrderBy(pt => pt.TimerStart)
+						.ThenBy(pt => pt.HandLevel)
+						.ThenBy(pt => pt.AdditionalGems)
+						.ToList(),
 				};
 			}
 		}
