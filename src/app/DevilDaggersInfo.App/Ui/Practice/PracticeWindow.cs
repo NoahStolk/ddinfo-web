@@ -1,4 +1,6 @@
 using DevilDaggersInfo.App.Engine.Maths;
+using DevilDaggersInfo.App.Engine.Maths.Numerics;
+using DevilDaggersInfo.App.Extensions;
 using DevilDaggersInfo.App.User.Settings;
 using DevilDaggersInfo.Common;
 using DevilDaggersInfo.Core.Spawnset;
@@ -12,13 +14,13 @@ public static class PracticeWindow
 {
 	private static readonly List<NoFarmTemplate> _noFarmTemplates = new()
 	{
-		new("First Spider I & Squid II", HandLevel.Level1, 8, 39),
-		new("First Centipede", HandLevel.Level2, 35, 114),
-		new("Centipede and first triple Spider Is", HandLevel.Level3, 11, 174),
-		new("Six Squid Is", HandLevel.Level3, 57, 229),
-		new("Gigapedes", HandLevel.Level3, 81, 259),
-		new("Leviathan", HandLevel.Level4, 105, 350),
-		new("Post Orb", HandLevel.Level4, 129, 397),
+		new("First Spider I & Squid II", EnemiesV3_2.Squid2.Color.ToEngineColor(), HandLevel.Level1, 8, 39),
+		new("First Centipede", EnemiesV3_2.Centipede.Color.ToEngineColor(), HandLevel.Level2, 35, 114),
+		new("Centipede & first triple Spider Is", EnemiesV3_2.Spider1.Color.ToEngineColor(), HandLevel.Level3, 11, 174),
+		new("Six Squid Is", EnemiesV3_2.Squid1.Color.ToEngineColor(), HandLevel.Level3, 57, 229),
+		new("Gigapedes", EnemiesV3_2.Gigapede.Color.ToEngineColor(), HandLevel.Level3, 81, 259),
+		new("Leviathan", EnemiesV3_2.Leviathan.Color.ToEngineColor(), HandLevel.Level4, 105, 350),
+		new("Post Orb", EnemiesV3_2.TheOrb.Color.ToEngineColor(), HandLevel.Level4, 129, 397),
 	};
 
 	private static readonly List<float> _endLoopTimerStarts = new();
@@ -43,27 +45,22 @@ public static class PracticeWindow
 		ImGui.Begin("Practice", ImGuiWindowFlags.NoCollapse);
 		ImGui.PopStyleVar();
 
+		ImGui.BeginChild("No farm templates", new(380, 480));
+		ImGui.Text("No farm templates");
 		foreach (NoFarmTemplate noFarmTemplate in _noFarmTemplates)
-		{
-			string name = $"{noFarmTemplate.TimerStart} - {noFarmTemplate.Name}";
-			if (ImGui.Button(name))
-			{
-				_handLevel = noFarmTemplate.HandLevel;
-				_additionalGems = noFarmTemplate.AdditionalGems;
-				_timerStart = noFarmTemplate.TimerStart;
-			}
-		}
+			RenderNoFarmTemplate(noFarmTemplate);
 
-		foreach (float endLoopTimerStart in _endLoopTimerStarts)
-		{
-			if (ImGui.Button(endLoopTimerStart.ToString(StringFormats.TimeFormat)))
-			{
-				_handLevel = HandLevel.Level4;
-				_additionalGems = 0;
-				_timerStart = endLoopTimerStart;
-			}
-		}
+		ImGui.EndChild();
 
+		ImGui.SameLine();
+		ImGui.BeginChild("End loop templates", new(380, 480));
+		ImGui.Text("End loop templates");
+		for (int i = 0; i < _endLoopTimerStarts.Count; i++)
+			RenderEndLoopTemplate(i, _endLoopTimerStarts[i]);
+
+		ImGui.EndChild();
+
+		ImGui.BeginChild("Input values", new(380, 192));
 		foreach (HandLevel level in Enum.GetValues<HandLevel>())
 		{
 			if (ImGui.RadioButton($"Lvl {(int)level}", level == _handLevel) && _handLevel != level)
@@ -94,11 +91,75 @@ public static class PracticeWindow
 			File.WriteAllBytes(UserSettings.ModsSurvivalPath, generatedSpawnset.ToBytes());
 		}
 
+		ImGui.EndChild();
+
 		ImGui.End();
 
 		if (ImGui.IsKeyPressed(ImGuiKey.Escape) || ImGui.IsKeyPressed((ImGuiKey)526))
 			UiRenderer.Layout = LayoutType.Main;
 	}
 
-	private sealed record NoFarmTemplate(string Name, HandLevel HandLevel, int AdditionalGems, float TimerStart);
+	private static void RenderNoFarmTemplate(NoFarmTemplate noFarmTemplate)
+	{
+		ImGui.PushStyleColor(ImGuiCol.ChildBg, noFarmTemplate.Color with { A = 32 });
+		if (ImGui.BeginChild(noFarmTemplate.Name, new(360, 48), true))
+		{
+			bool hover = ImGui.IsWindowHovered();
+			if (hover && ImGui.IsMouseReleased(ImGuiMouseButton.Left))
+			{
+				_handLevel = noFarmTemplate.HandLevel;
+				_additionalGems = noFarmTemplate.AdditionalGems;
+				_timerStart = noFarmTemplate.TimerStart;
+			}
+
+			string timerText = noFarmTemplate.TimerStart.ToString(StringFormats.TimeFormat);
+			(string gemsOrHomingText, Color gemColor) = noFarmTemplate.HandLevel switch
+			{
+				HandLevel.Level3 => ($"{noFarmTemplate.AdditionalGems} homing", HandLevel.Level3.GetColor()),
+				HandLevel.Level4 => ($"{noFarmTemplate.AdditionalGems} homing", HandLevel.Level4.GetColor()),
+				_ => ($"{noFarmTemplate.AdditionalGems} gems", Color.Red),
+			};
+			float windowWidth = ImGui.GetWindowWidth();
+
+			ImGui.TextColored(noFarmTemplate.Color, noFarmTemplate.Name);
+			ImGui.SameLine(windowWidth - ImGui.CalcTextSize(timerText).X - 8);
+			ImGui.Text(timerText);
+
+			ImGui.TextColored(noFarmTemplate.HandLevel.GetColor(), noFarmTemplate.HandLevel.ToString());
+			ImGui.SameLine(windowWidth - ImGui.CalcTextSize(gemsOrHomingText).X - 8);
+			ImGui.TextColored(gemColor, gemsOrHomingText);
+		}
+
+		ImGui.EndChild();
+		ImGui.PopStyleColor();
+	}
+
+	private static void RenderEndLoopTemplate(int waveIndex, float timerStart)
+	{
+		string name = $"Wave {waveIndex + 1}";
+		Color color = waveIndex % 3 == 2 ? EnemiesV3_2.Ghostpede.Color.ToEngineColor() : EnemiesV3_2.Gigapede.Color.ToEngineColor();
+		ImGui.PushStyleColor(ImGuiCol.ChildBg, color with { A = 32 });
+		if (ImGui.BeginChild(name, new(360, 30), true))
+		{
+			bool hover = ImGui.IsWindowHovered();
+			if (hover && ImGui.IsMouseReleased(ImGuiMouseButton.Left))
+			{
+				_handLevel = HandLevel.Level4;
+				_additionalGems = 0;
+				_timerStart = timerStart;
+			}
+
+			string timerText = timerStart.ToString(StringFormats.TimeFormat);
+			float windowWidth = ImGui.GetWindowWidth();
+
+			ImGui.TextColored(color, name);
+			ImGui.SameLine(windowWidth - ImGui.CalcTextSize(timerText).X - 8);
+			ImGui.Text(timerText);
+		}
+
+		ImGui.EndChild();
+		ImGui.PopStyleColor();
+	}
+
+	private sealed record NoFarmTemplate(string Name, Color Color, HandLevel HandLevel, int AdditionalGems, float TimerStart);
 }
