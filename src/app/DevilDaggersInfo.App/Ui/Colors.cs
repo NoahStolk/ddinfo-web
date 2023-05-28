@@ -71,4 +71,24 @@ public static class Colors
 		style.Colors[(int)ImGuiCol.SeparatorHovered] = new Color(26, 26, 191, 199);
 		style.Colors[(int)ImGuiCol.SeparatorActive] = new Color(26, 26, 191, 255);
 	}
+
+	public static void SetPracticeColors()
+	{
+		ImGuiStylePtr style = ImGui.GetStyle();
+		style.Colors[(int)ImGuiCol.CheckMark] = Practice;
+		style.Colors[(int)ImGuiCol.SliderGrab] = new Color(61, 61, 224, 255); // TODO
+		style.Colors[(int)ImGuiCol.SliderGrabActive] = Practice;
+		style.Colors[(int)ImGuiCol.Button] = Practice with { A = 102 };
+		style.Colors[(int)ImGuiCol.ButtonHovered] = Practice;
+		style.Colors[(int)ImGuiCol.ButtonActive] = Practice with { B = 191 };
+		style.Colors[(int)ImGuiCol.Header] = Practice with { A = 79 };
+		style.Colors[(int)ImGuiCol.HeaderHovered] = Practice with { A = 204 };
+		style.Colors[(int)ImGuiCol.HeaderActive] = Practice with { A = 255 };
+		style.Colors[(int)ImGuiCol.FrameBg] = new Color(41, 41, 122, 138); // TODO
+		style.Colors[(int)ImGuiCol.TitleBgActive] = new Color(41, 41, 122, 138); // TODO
+		style.Colors[(int)ImGuiCol.FrameBgHovered] = Practice with { A = 102 };
+		style.Colors[(int)ImGuiCol.FrameBgActive] = Practice with { A = 171 };
+		style.Colors[(int)ImGuiCol.SeparatorHovered] = new Color(26, 26, 191, 199); // TODO
+		style.Colors[(int)ImGuiCol.SeparatorActive] = new Color(26, 26, 191, 255); // TODO
+	}
 }

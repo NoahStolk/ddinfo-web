@@ -64,7 +64,12 @@ public static class MainLayout
 			LeaderboardListChild.LoadAll();
 		}
 
-		MainButtonAt(1, 1, Colors.Practice with { A = buttonAlpha }, "Practice (todo)");
+		if (MainButtonAt(1, 1, Colors.Practice with { A = buttonAlpha }, "Practice (wip)"))
+		{
+			UiRenderer.Layout = LayoutType.Practice;
+			Colors.SetPracticeColors();
+		}
+
 		MainButtonAt(2, 1, Colors.ModManager with { A = buttonAlpha }, "Mod Manager (todo)");
 
 		Color gray = new(96, 96, 96, buttonAlpha);
