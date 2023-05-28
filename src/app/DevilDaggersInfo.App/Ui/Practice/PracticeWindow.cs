@@ -12,6 +12,10 @@ namespace DevilDaggersInfo.App.Ui.Practice;
 
 public static class PracticeWindow
 {
+	private const int _templateWidth = 360;
+	private const int _templateListWidth = 380;
+	private const int _templateContainerWidth = 400;
+
 	private static readonly List<NoFarmTemplate> _noFarmTemplates = new()
 	{
 		new("First Spider I & Squid II", EnemiesV3_2.Squid2.Color.ToEngineColor(), HandLevel.Level1, 8, 39),
@@ -25,13 +29,11 @@ public static class PracticeWindow
 
 	private static readonly List<float> _endLoopTimerStarts = new();
 
-	private static HandLevel _handLevel = HandLevel.Level4;
-	private static int _additionalGems;
-	private static float _timerStart;
+	private static State _state;
 
 	static PracticeWindow()
 	{
-		const int endLoopTemplateWaveCount = 50;
+		const int endLoopTemplateWaveCount = 33;
 		SpawnsView spawnsView = new(ContentManager.Content.DefaultSpawnset, GameVersion.V3_2, endLoopTemplateWaveCount);
 		for (int i = 0; i < endLoopTemplateWaveCount; i++)
 		{
@@ -45,46 +47,75 @@ public static class PracticeWindow
 		ImGui.Begin("Practice", ImGuiWindowFlags.NoCollapse);
 		ImGui.PopStyleVar();
 
-		ImGui.BeginChild("No farm templates", new(380, 480));
+		ImGui.Text("Use these templates to practice specific sections of the game. Click on a template to apply its values.");
+		ImGui.Spacing();
+
+		ImGui.BeginChild("No farm templates", new(_templateContainerWidth, 480), true);
 		ImGui.Text("No farm templates");
+
+		ImGui.PushTextWrapPos(ImGui.GetCursorPos().X + _templateWidth);
+		ImGui.Indent(8);
+
+		ImGui.Spacing();
+		ImGui.Text("The amount of gems is based on how many gems you would have at that point, without farming, without losing gems, and without homing usage.");
+		ImGui.Spacing();
+
+		ImGui.Indent(-8);
+		ImGui.PopTextWrapPos();
+
+		ImGui.BeginChild("No farm template list", new(_templateListWidth, 360));
 		foreach (NoFarmTemplate noFarmTemplate in _noFarmTemplates)
 			RenderNoFarmTemplate(noFarmTemplate);
 
 		ImGui.EndChild();
+		ImGui.EndChild();
 
 		ImGui.SameLine();
-		ImGui.BeginChild("End loop templates", new(380, 480));
+		ImGui.BeginChild("End loop templates", new(_templateContainerWidth, 480), true);
 		ImGui.Text("End loop templates");
+
+		ImGui.PushTextWrapPos(ImGui.GetCursorPos().X + _templateWidth);
+		ImGui.Indent(8);
+
+		ImGui.Spacing();
+		ImGui.Text("The amount of homing for the end loop waves is set to 0. Use one that is realistic for you.");
+		ImGui.Spacing();
+
+		ImGui.Indent(-8);
+		ImGui.PopTextWrapPos();
+
+		ImGui.BeginChild("End loop template list", new(_templateListWidth, 360));
 		for (int i = 0; i < _endLoopTimerStarts.Count; i++)
 			RenderEndLoopTemplate(i, _endLoopTimerStarts[i]);
 
 		ImGui.EndChild();
+		ImGui.EndChild();
 
-		ImGui.BeginChild("Input values", new(380, 192));
+		ImGui.BeginChild("Input values", new(512, 192));
 		foreach (HandLevel level in Enum.GetValues<HandLevel>())
 		{
-			if (ImGui.RadioButton($"Lvl {(int)level}", level == _handLevel) && _handLevel != level)
-				_handLevel = level;
+			if (ImGui.RadioButton($"Lvl {(int)level}", level == _state.HandLevel) && _state.HandLevel != level)
+				_state.HandLevel = level;
 
 			if (level != HandLevel.Level4)
 				ImGui.SameLine();
 		}
 
-		ImGui.InputInt("Added gems", ref _additionalGems, 1);
-		ImGui.InputFloat("Timer start", ref _timerStart, 1, 5, "%.4f");
+		ImGui.InputInt("Added gems", ref _state.AdditionalGems, 1);
+		ImGui.InputFloat("Timer start", ref _state.TimerStart, 1, 5, "%.4f");
 
 		if (ImGui.Button("Apply"))
 		{
-			_timerStart = Math.Clamp(_timerStart, 0, 1400);
+			_state.TimerStart = Math.Clamp(_state.TimerStart, 0, 1400);
 
 			SpawnsetBinary spawnset = ContentManager.Content.DefaultSpawnset;
-			float shrinkStart = MathUtils.Lerp(spawnset.ShrinkStart, spawnset.ShrinkEnd, _timerStart / ((spawnset.ShrinkStart - spawnset.ShrinkEnd) / spawnset.ShrinkRate));
+			float shrinkStart = MathUtils.Lerp(spawnset.ShrinkStart, spawnset.ShrinkEnd, _state.TimerStart / ((spawnset.ShrinkStart - spawnset.ShrinkEnd) / spawnset.ShrinkRate));
 
-			SpawnsetBinary generatedSpawnset = spawnset.GetWithHardcodedEndLoop(70).GetWithTrimmedStart(_timerStart) with
+			SpawnsetBinary generatedSpawnset = spawnset.GetWithHardcodedEndLoop(70).GetWithTrimmedStart(_state.TimerStart) with
 			{
-				HandLevel = _handLevel,
-				AdditionalGems = _additionalGems,
-				TimerStart = _timerStart,
+				HandLevel = _state.HandLevel,
+				AdditionalGems = _state.AdditionalGems,
+				TimerStart = _state.TimerStart,
 				SpawnVersion = 6,
 				ShrinkStart = shrinkStart,
 			};
@@ -101,16 +132,14 @@ public static class PracticeWindow
 
 	private static void RenderNoFarmTemplate(NoFarmTemplate noFarmTemplate)
 	{
-		ImGui.PushStyleColor(ImGuiCol.ChildBg, noFarmTemplate.Color with { A = 32 });
-		if (ImGui.BeginChild(noFarmTemplate.Name, new(360, 48), true))
+		(byte backgroundAlpha, byte textAlpha) = GetAlpha(noFarmTemplate.IsEqual(_state));
+
+		ImGui.PushStyleColor(ImGuiCol.ChildBg, noFarmTemplate.Color with { A = backgroundAlpha });
+		if (ImGui.BeginChild(noFarmTemplate.Name, new(_templateWidth, 48), true))
 		{
 			bool hover = ImGui.IsWindowHovered();
 			if (hover && ImGui.IsMouseReleased(ImGuiMouseButton.Left))
-			{
-				_handLevel = noFarmTemplate.HandLevel;
-				_additionalGems = noFarmTemplate.AdditionalGems;
-				_timerStart = noFarmTemplate.TimerStart;
-			}
+				_state = new(noFarmTemplate.HandLevel, noFarmTemplate.AdditionalGems, noFarmTemplate.TimerStart);
 
 			string timerText = noFarmTemplate.TimerStart.ToString(StringFormats.TimeFormat);
 			(string gemsOrHomingText, Color gemColor) = noFarmTemplate.HandLevel switch
@@ -121,13 +150,13 @@ public static class PracticeWindow
 			};
 			float windowWidth = ImGui.GetWindowWidth();
 
-			ImGui.TextColored(noFarmTemplate.Color, noFarmTemplate.Name);
+			ImGui.TextColored(noFarmTemplate.Color with { A = textAlpha }, noFarmTemplate.Name);
 			ImGui.SameLine(windowWidth - ImGui.CalcTextSize(timerText).X - 8);
-			ImGui.Text(timerText);
+			ImGui.TextColored(Color.White with { A = textAlpha }, timerText);
 
-			ImGui.TextColored(noFarmTemplate.HandLevel.GetColor(), noFarmTemplate.HandLevel.ToString());
+			ImGui.TextColored(noFarmTemplate.HandLevel.GetColor() with { A = textAlpha }, noFarmTemplate.HandLevel.ToString());
 			ImGui.SameLine(windowWidth - ImGui.CalcTextSize(gemsOrHomingText).X - 8);
-			ImGui.TextColored(gemColor, gemsOrHomingText);
+			ImGui.TextColored(gemColor with { A = textAlpha }, gemsOrHomingText);
 		}
 
 		ImGui.EndChild();
@@ -136,30 +165,58 @@ public static class PracticeWindow
 
 	private static void RenderEndLoopTemplate(int waveIndex, float timerStart)
 	{
+		(byte backgroundAlpha, byte textAlpha) = GetAlpha(IsEqual(_state, timerStart));
+
 		string name = $"Wave {waveIndex + 1}";
 		Color color = waveIndex % 3 == 2 ? EnemiesV3_2.Ghostpede.Color.ToEngineColor() : EnemiesV3_2.Gigapede.Color.ToEngineColor();
-		ImGui.PushStyleColor(ImGuiCol.ChildBg, color with { A = 32 });
-		if (ImGui.BeginChild(name, new(360, 30), true))
+		ImGui.PushStyleColor(ImGuiCol.ChildBg, color with { A = backgroundAlpha });
+		if (ImGui.BeginChild(name, new(_templateWidth, 30), true))
 		{
 			bool hover = ImGui.IsWindowHovered();
 			if (hover && ImGui.IsMouseReleased(ImGuiMouseButton.Left))
-			{
-				_handLevel = HandLevel.Level4;
-				_additionalGems = 0;
-				_timerStart = timerStart;
-			}
+				_state = new(HandLevel.Level4, 0, timerStart);
 
 			string timerText = timerStart.ToString(StringFormats.TimeFormat);
 			float windowWidth = ImGui.GetWindowWidth();
 
-			ImGui.TextColored(color, name);
+			ImGui.TextColored(color with { A = textAlpha }, name);
 			ImGui.SameLine(windowWidth - ImGui.CalcTextSize(timerText).X - 8);
-			ImGui.Text(timerText);
+			ImGui.TextColored(Color.White with { A = textAlpha }, timerText);
 		}
 
 		ImGui.EndChild();
 		ImGui.PopStyleColor();
+
+		static bool IsEqual(State state, float timerStart)
+		{
+			return state is { HandLevel: HandLevel.Level4, AdditionalGems: 0 } && Math.Abs(state.TimerStart - timerStart) < 0.00001f;
+		}
 	}
 
-	private sealed record NoFarmTemplate(string Name, Color Color, HandLevel HandLevel, int AdditionalGems, float TimerStart);
+	private static (byte BackgroundAlpha, byte TextAlpha) GetAlpha(bool isActive)
+	{
+		return isActive ? ((byte)48, (byte)255) : ((byte)16, (byte)159);
+	}
+
+	private struct State
+	{
+		public HandLevel HandLevel;
+		public int AdditionalGems;
+		public float TimerStart;
+
+		public State(HandLevel handLevel, int additionalGems, float timerStart)
+		{
+			HandLevel = handLevel;
+			AdditionalGems = additionalGems;
+			TimerStart = timerStart;
+		}
+	}
+
+	private sealed record NoFarmTemplate(string Name, Color Color, HandLevel HandLevel, int AdditionalGems, float TimerStart)
+	{
+		public bool IsEqual(State state)
+		{
+			return HandLevel == state.HandLevel && AdditionalGems == state.AdditionalGems && Math.Abs(TimerStart - state.TimerStart) < 0.00001f;
+		}
+	}
 }
