@@ -7,7 +7,7 @@ namespace DevilDaggersInfo.App.Ui.Practice;
 
 public static class PracticeWindow
 {
-	private static HandLevel _handLevel;
+	private static HandLevel _handLevel = HandLevel.Level4;
 	private static int _additionalGems;
 	private static float _timerStart;
 
@@ -31,12 +31,12 @@ public static class PracticeWindow
 
 		if (ImGui.Button("Apply"))
 		{
+			_timerStart = Math.Clamp(_timerStart, 0, 1400);
+
 			SpawnsetBinary spawnset = ContentManager.Content.DefaultSpawnset;
 			float shrinkStart = MathUtils.Lerp(spawnset.ShrinkStart, spawnset.ShrinkEnd, _timerStart / ((spawnset.ShrinkStart - spawnset.ShrinkEnd) / spawnset.ShrinkRate));
 
-			// TODO: Find max wave amount for timer start.
-			// TODO: Timer start can't be higher than 2000.
-			SpawnsetBinary generatedSpawnset = spawnset.GetWithHardcodedEndLoop(50).GetWithTrimmedStart(_timerStart) with
+			SpawnsetBinary generatedSpawnset = spawnset.GetWithHardcodedEndLoop(70).GetWithTrimmedStart(_timerStart) with
 			{
 				HandLevel = _handLevel,
 				AdditionalGems = _additionalGems,
