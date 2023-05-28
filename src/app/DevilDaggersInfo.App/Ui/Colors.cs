@@ -42,9 +42,9 @@ public static class Colors
 	public static ColorConfiguration Practice { get; } = new()
 	{
 		Primary = new(250, 150, 66, 255),
-		Secondary = new(61, 61, 224, 255), // TODO
-		Tertiary = new(41, 41, 122, 255), // TODO
-		Quaternary = new(26, 26, 191, 255), // TODO
+		Secondary = new(224, 133, 61, 255),
+		Tertiary = new(122, 74, 41, 255),
+		Quaternary = new(191, 102, 26, 255),
 	};
 
 	public static Color AssetEditor => new(66, 250, 66, 255);
