@@ -34,6 +34,8 @@ public static class PracticeWindow
 			SpawnsetBinary spawnset = ContentManager.Content.DefaultSpawnset;
 			float shrinkStart = MathUtils.Lerp(spawnset.ShrinkStart, spawnset.ShrinkEnd, _timerStart / ((spawnset.ShrinkStart - spawnset.ShrinkEnd) / spawnset.ShrinkRate));
 
+			// TODO: Find max wave amount for timer start.
+			// TODO: Timer start can't be higher than 2000.
 			SpawnsetBinary generatedSpawnset = spawnset.GetWithHardcodedEndLoop(50).GetWithTrimmedStart(_timerStart) with
 			{
 				HandLevel = _handLevel,
