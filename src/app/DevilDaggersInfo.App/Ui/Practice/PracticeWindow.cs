@@ -2,6 +2,7 @@ using DevilDaggersInfo.App.Engine.Maths;
 using DevilDaggersInfo.App.Engine.Maths.Numerics;
 using DevilDaggersInfo.App.Extensions;
 using DevilDaggersInfo.App.User.Settings;
+using DevilDaggersInfo.App.User.Settings.Model;
 using DevilDaggersInfo.Common;
 using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Core.Spawnset.View;
@@ -13,13 +14,14 @@ namespace DevilDaggersInfo.App.Ui.Practice;
 
 public static class PracticeWindow
 {
+	private const float _timerStartTolerance = 0.00001f;
 	private const int _templateWidth = 360;
 	private const int _templateDescriptionHeight = 48;
 
 	private static readonly Vector2 _templateContainerSize = new(400, 480);
 	private static readonly Vector2 _templateListSize = new(380, 380);
 
-	private static readonly List<NoFarmTemplate> _noFarmTemplates = new()
+	private static readonly List<Template> _noFarmTemplates = new()
 	{
 		new("First Spider I & Squid II", EnemiesV3_2.Squid2.Color.ToEngineColor(), HandLevel.Level1, 8, 39),
 		new("First Centipede", EnemiesV3_2.Centipede.Color.ToEngineColor(), HandLevel.Level2, 35, 114),
@@ -61,8 +63,8 @@ public static class PracticeWindow
 		ImGui.EndChild();
 
 		ImGui.BeginChild("No farm template list", _templateListSize);
-		foreach (NoFarmTemplate noFarmTemplate in _noFarmTemplates)
-			RenderNoFarmTemplate(noFarmTemplate);
+		foreach (Template noFarmTemplate in _noFarmTemplates)
+			RenderTemplate(noFarmTemplate);
 
 		ImGui.EndChild();
 		ImGui.EndChild();
@@ -84,6 +86,23 @@ public static class PracticeWindow
 		ImGui.EndChild();
 		ImGui.EndChild();
 
+		ImGui.SameLine();
+		ImGui.BeginChild("Custom templates", _templateContainerSize, true);
+		ImGui.Text("Custom templates");
+
+		ImGui.BeginChild("Custom template description", _templateListSize with { Y = _templateDescriptionHeight });
+		ImGui.PushTextWrapPos(ImGui.GetCursorPos().X + _templateWidth);
+		ImGui.Text("You can make your own templates and save them. Your custom templates are saved locally on your computer.");
+		ImGui.PopTextWrapPos();
+		ImGui.EndChild();
+
+		ImGui.BeginChild("Custom template list", _templateListSize);
+		for (int i = 0; i < UserSettings.Model.PracticeTemplates.Count; i++)
+			RenderCustomTemplate(UserSettings.Model.PracticeTemplates[i]);
+
+		ImGui.EndChild();
+		ImGui.EndChild();
+
 		ImGui.BeginChild("Input values", new(512, 192));
 		foreach (HandLevel level in Enum.GetValues<HandLevel>())
 		{
@@ -100,6 +119,19 @@ public static class PracticeWindow
 		if (ImGui.Button("Apply", new(80, 30)))
 			Apply();
 
+		ImGui.SameLine();
+		if (ImGui.Button("Save", new(80, 30)))
+		{
+			UserSettingsModel.UserSettingsPracticeTemplate newTemplate = new(_state.HandLevel, _state.AdditionalGems, _state.TimerStart);
+			if (!UserSettings.Model.PracticeTemplates.Contains(newTemplate))
+			{
+				UserSettings.Model = UserSettings.Model with
+				{
+					PracticeTemplates = UserSettings.Model.PracticeTemplates.Append(newTemplate).ToList(),
+				};
+			}
+		}
+
 		ImGui.EndChild();
 
 		ImGui.End();
@@ -108,34 +140,34 @@ public static class PracticeWindow
 			UiRenderer.Layout = LayoutType.Main;
 	}
 
-	private static void RenderNoFarmTemplate(NoFarmTemplate noFarmTemplate)
+	private static void RenderTemplate(Template template)
 	{
-		(byte backgroundAlpha, byte textAlpha) = GetAlpha(noFarmTemplate.IsEqual(_state));
+		(byte backgroundAlpha, byte textAlpha) = GetAlpha(template.IsEqual(_state));
 
-		ImGui.PushStyleColor(ImGuiCol.ChildBg, noFarmTemplate.Color with { A = backgroundAlpha });
-		if (ImGui.BeginChild(noFarmTemplate.Name, new(_templateWidth, 48), true))
+		ImGui.PushStyleColor(ImGuiCol.ChildBg, template.Color with { A = backgroundAlpha });
+		if (ImGui.BeginChild(template.Name, new(_templateWidth, 48), true))
 		{
 			bool hover = ImGui.IsWindowHovered();
 			if (hover && ImGui.IsMouseReleased(ImGuiMouseButton.Left))
 			{
-				_state = new(noFarmTemplate.HandLevel, noFarmTemplate.AdditionalGems, noFarmTemplate.TimerStart);
+				_state = new(template.HandLevel, template.AdditionalGems, template.TimerStart);
 				Apply();
 			}
 
-			string timerText = noFarmTemplate.TimerStart.ToString(StringFormats.TimeFormat);
-			(string gemsOrHomingText, Color gemColor) = noFarmTemplate.HandLevel switch
+			string timerText = template.TimerStart.ToString(StringFormats.TimeFormat);
+			(string gemsOrHomingText, Color gemColor) = template.HandLevel switch
 			{
-				HandLevel.Level3 => ($"{noFarmTemplate.AdditionalGems} homing", HandLevel.Level3.GetColor()),
-				HandLevel.Level4 => ($"{noFarmTemplate.AdditionalGems} homing", HandLevel.Level4.GetColor()),
-				_ => ($"{noFarmTemplate.AdditionalGems} gems", Color.Red),
+				HandLevel.Level3 => ($"{template.AdditionalGems} homing", HandLevel.Level3.GetColor()),
+				HandLevel.Level4 => ($"{template.AdditionalGems} homing", HandLevel.Level4.GetColor()),
+				_ => ($"{template.AdditionalGems} gems", Color.Red),
 			};
 			float windowWidth = ImGui.GetWindowWidth();
 
-			ImGui.TextColored(noFarmTemplate.Color with { A = textAlpha }, noFarmTemplate.Name);
+			ImGui.TextColored(template.Color with { A = textAlpha }, template.Name);
 			ImGui.SameLine(windowWidth - ImGui.CalcTextSize(timerText).X - 8);
 			ImGui.TextColored(Color.White with { A = textAlpha }, timerText);
 
-			ImGui.TextColored(noFarmTemplate.HandLevel.GetColor() with { A = textAlpha }, noFarmTemplate.HandLevel.ToString());
+			ImGui.TextColored(template.HandLevel.GetColor() with { A = textAlpha }, template.HandLevel.ToString());
 			ImGui.SameLine(windowWidth - ImGui.CalcTextSize(gemsOrHomingText).X - 8);
 			ImGui.TextColored(gemColor with { A = textAlpha }, gemsOrHomingText);
 		}
@@ -173,7 +205,57 @@ public static class PracticeWindow
 
 		static bool IsEqual(State state, float timerStart)
 		{
-			return state is { HandLevel: HandLevel.Level4, AdditionalGems: 0 } && Math.Abs(state.TimerStart - timerStart) < 0.00001f;
+			return state is { HandLevel: HandLevel.Level4, AdditionalGems: 0 } && Math.Abs(state.TimerStart - timerStart) < _timerStartTolerance;
+		}
+	}
+
+	private static void RenderCustomTemplate(UserSettingsModel.UserSettingsPracticeTemplate customTemplate)
+	{
+		const int deleteButtonWidth = 64;
+
+		Color color = Color.Blue;
+		string uniqueName = $"{customTemplate.HandLevel}-{customTemplate.AdditionalGems}-{customTemplate.TimerStart.ToString(StringFormats.TimeFormat)}";
+		(byte backgroundAlpha, byte textAlpha) = GetAlpha(_state.IsEqual(customTemplate));
+
+		ImGui.PushStyleColor(ImGuiCol.ChildBg, color with { A = backgroundAlpha });
+		if (ImGui.BeginChild(uniqueName, new(_templateWidth - (deleteButtonWidth + 8), 48), true))
+		{
+			bool hover = ImGui.IsWindowHovered();
+			if (hover && ImGui.IsMouseReleased(ImGuiMouseButton.Left))
+			{
+				_state = new(customTemplate.HandLevel, customTemplate.AdditionalGems, customTemplate.TimerStart);
+				Apply();
+			}
+
+			string timerText = customTemplate.TimerStart.ToString(StringFormats.TimeFormat);
+			(string gemsOrHomingText, Color gemColor) = customTemplate.HandLevel switch
+			{
+				HandLevel.Level3 => ($"{customTemplate.AdditionalGems} homing", HandLevel.Level3.GetColor()),
+				HandLevel.Level4 => ($"{customTemplate.AdditionalGems} homing", HandLevel.Level4.GetColor()),
+				_ => ($"{customTemplate.AdditionalGems} gems", Color.Red),
+			};
+			float windowWidth = ImGui.GetWindowWidth();
+
+			ImGui.TextColored(color with { A = textAlpha }, "Custom template");
+			ImGui.SameLine(windowWidth - ImGui.CalcTextSize(timerText).X - 8);
+			ImGui.TextColored(Color.White with { A = textAlpha }, timerText);
+
+			ImGui.TextColored(customTemplate.HandLevel.GetColor() with { A = textAlpha }, customTemplate.HandLevel.ToString());
+			ImGui.SameLine(windowWidth - ImGui.CalcTextSize(gemsOrHomingText).X - 8);
+			ImGui.TextColored(gemColor with { A = textAlpha }, gemsOrHomingText);
+		}
+
+		ImGui.EndChild();
+
+		ImGui.PopStyleColor();
+
+		ImGui.SameLine();
+		if (ImGui.Button("Delete", new(deleteButtonWidth, 48)))
+		{
+			UserSettings.Model = UserSettings.Model with
+			{
+				PracticeTemplates = UserSettings.Model.PracticeTemplates.Where(pt => customTemplate != pt).ToList(),
+			};
 		}
 	}
 
@@ -202,7 +284,7 @@ public static class PracticeWindow
 
 	private struct State
 	{
-		public HandLevel HandLevel;
+		public HandLevel HandLevel = HandLevel.Level1;
 		public int AdditionalGems;
 		public float TimerStart;
 
@@ -212,13 +294,18 @@ public static class PracticeWindow
 			AdditionalGems = additionalGems;
 			TimerStart = timerStart;
 		}
+
+		public bool IsEqual(UserSettingsModel.UserSettingsPracticeTemplate practiceTemplate)
+		{
+			return HandLevel == practiceTemplate.HandLevel && AdditionalGems == practiceTemplate.AdditionalGems && Math.Abs(TimerStart - practiceTemplate.TimerStart) < _timerStartTolerance;
+		}
 	}
 
-	private sealed record NoFarmTemplate(string Name, Color Color, HandLevel HandLevel, int AdditionalGems, float TimerStart)
+	private readonly record struct Template(string Name, Color Color, HandLevel HandLevel, int AdditionalGems, float TimerStart)
 	{
 		public bool IsEqual(State state)
 		{
-			return HandLevel == state.HandLevel && AdditionalGems == state.AdditionalGems && Math.Abs(TimerStart - state.TimerStart) < 0.00001f;
+			return HandLevel == state.HandLevel && AdditionalGems == state.AdditionalGems && Math.Abs(TimerStart - state.TimerStart) < _timerStartTolerance;
 		}
 	}
 }
