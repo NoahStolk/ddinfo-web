@@ -33,4 +33,22 @@ public class UpdatesController : ControllerBase
 
 		return distribution.ToAppApi();
 	}
+
+	[HttpGet("latest-version-file")]
+	[ProducesResponseType(typeof(FileStreamResult), StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	public async Task<ActionResult> GetLatestVersionFile([Required] ToolPublishMethod publishMethod, [Required] ToolBuildType buildType)
+	{
+		ToolDistribution? distribution = await _toolRepository.GetLatestToolDistributionAsync(_toolName, publishMethod.ToDomain(), buildType.ToDomain());
+		if (distribution == null)
+			return NotFound();
+
+		byte[] bytes = await _toolRepository.GetToolDistributionFileAsync(_toolName, publishMethod.ToDomain(), buildType.ToDomain(), distribution.VersionNumber);
+
+		await _toolRepository.UpdateToolDistributionStatisticsAsync(_toolName, publishMethod.ToDomain(), buildType.ToDomain(), distribution.VersionNumber);
+
+		MemoryStream ms = new(bytes);
+		return new FileStreamResult(ms, "application/octet-stream");
+	}
 }
