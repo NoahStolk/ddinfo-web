@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.AppLauncher;
 
+[Obsolete("The launcher is deprecated.")]
 [Route("api/app-launcher")]
 [ApiController]
 public class AppLauncherController : ControllerBase
@@ -20,6 +21,7 @@ public class AppLauncherController : ControllerBase
 		_toolRepository = toolRepository;
 	}
 
+	[Obsolete("The launcher is deprecated.")]
 	[HttpHead("is-latest-version")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -43,6 +45,7 @@ public class AppLauncherController : ControllerBase
 		return StatusCode(426, "Update required.");
 	}
 
+	[Obsolete("The launcher is deprecated.")]
 	[HttpGet("latest-version-file")]
 	[ProducesResponseType(typeof(FileStreamResult), StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
