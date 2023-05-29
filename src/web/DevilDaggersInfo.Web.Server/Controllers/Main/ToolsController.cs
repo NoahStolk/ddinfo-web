@@ -22,7 +22,6 @@ public class ToolsController : ControllerBase
 
 	// FORBIDDEN: Used by DDSE 2.45.0.0.
 	// FORBIDDEN: Used by DDAE 1.4.0.0.
-	// FORBIDDEN: Used by DDCL 1.8.3.0.
 	[HttpGet("{toolName}")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -62,7 +61,6 @@ public class ToolsController : ControllerBase
 
 	// FORBIDDEN: Used by DDSE 2.45.0.0.
 	// FORBIDDEN: Used by DDAE 1.4.0.0.
-	// FORBIDDEN: Used by DDCL 1.8.3.0.
 	[HttpGet("{toolName}/distribution-latest")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]

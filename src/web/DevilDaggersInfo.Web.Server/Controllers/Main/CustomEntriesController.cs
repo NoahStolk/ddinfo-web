@@ -36,7 +36,6 @@ public class CustomEntriesController : ControllerBase
 	}
 
 	// FORBIDDEN: Used by DDLIVE.
-	// FORBIDDEN: Used by DDCL 1.8.3.0.
 	[HttpGet("{id}/replay")]
 	[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
