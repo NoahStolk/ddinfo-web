@@ -16,7 +16,7 @@ else
 {
 	<ToolInfo GetTool="_appTool" />
 
-	@if (_launcherWindowsDistribution == null)
+	@if (_windowsDistribution == null)
 	{
 		<Loading />
 	}
@@ -24,9 +24,9 @@ else
 	{
 		<Heading Title="Distributions" Level="2" />
 
-		<a class="btn btn-download px-2 py-1" href="@GetDistributionApiCall(_launcherName, _launcherWindowsDistribution)" download="@GetDistributionFileName(_launcherName, _launcherWindowsDistribution)" role="button" target="_top">Download the launcher for Windows (@FileSizeUtils.Format(_launcherWindowsDistribution.FileSize))</a>
+		<a class="btn btn-download px-2 py-1" href="@GetDistributionApiCall(_toolsName, _windowsDistribution)" download="@GetDistributionFileName(_toolsName, _windowsDistribution)" role="button" target="_top">Download for Windows (@FileSizeUtils.Format(_windowsDistribution.FileSize))</a>
 		                                                                                                                                                                                                                                                                                                      
-		<p class="para">Launcher version: @_launcherWindowsDistribution.VersionNumber</p>
+		<p class="para">Current version: @_windowsDistribution.VersionNumber</p>
 		<p class="para">Windows 7 and older is currently not supported (although Windows 7 can probably be made to work).</p>
 		<p class="para">If anyone wants to test a Linux build, let me know.</p>
 		<p class="para">I'm also open to adding support for Mac if anyone wants it. I don't have a Mac to test it on, so I'd need some help with that.</p>
@@ -70,13 +70,10 @@ else
 
 	<Heading Title="Running The App" Level="2" />
     <ol class="pl-4">
-    	<li class="list-decimal">Download the launcher .zip file.</li>
+    	<li class="list-decimal">Download the .zip file.</li>
     	<li class="list-decimal">Extract it.</li>
-    	<li class="list-decimal">Run the .exe file inside it. This will automatically download and launch the latest version of the tools app.</li>
+    	<li class="list-decimal">Run the .exe file inside it. When there is an update available, the app will automatically install it and restart.</li>
     </ol>
-
-	<p class="para">I recommend only using the launcher to run the app, as it will automatically update the app on launch if there is a new version.</p>
-	<p class="para">If you still want to run the app manually, you can do so by running the .exe file inside the DDINFO TOOLS subdirectory.</p>
 
 	<Heading Title="Advantages over deprecated tools" Level="2" />
 	
@@ -84,12 +81,16 @@ else
 		<li class="list-disc">A single application instead of three separate ones.</li>
 		<li class="list-disc">Cross-platform instead of Windows-only. The app already runs on Linux, but it's still missing some native implementations for now.</li>
 		<li class="list-disc">Automatic updates.</li>
-		<li class="list-disc">Way smaller download size; 8 MB for all the tools combined instead of ~165 MB, and 3 MB for the launcher. No prerequisites are needed for the programs.</li>
+		<li class="list-disc">Way smaller download size; ~9 MB for all the tools combined instead of ~165 MB. No prerequisites are needed.</li>
 		<li class="list-disc">Way faster startup time compared to the previous editors.</li>
 	</ul>
 
 	<Heading Title="New Features" Level="2" />
-	
+
+	<ul class="pl-4">
+		<li class="list-disc">Dedicated and simplified practice functionality.</li>
+	</ul>
+
 	<Heading Title="Survival Editor" Level="3" />
 	
 	<ul class="pl-4">
@@ -114,7 +115,6 @@ else
 	<ul class="pl-4">
 		<li class="list-disc">More spawnset editor features.</li>
 		<li class="list-disc">Renewed spawnset manager.</li>
-		<li class="list-disc">Dedicated and simplified practice functionality.</li>
 		<li class="list-disc">Renewed asset editor.</li>
 		<li class="list-disc">Renewed mod manager.</li>
 		<li class="list-disc">Renewed replay viewer.</li>
@@ -135,7 +135,6 @@ else
 @code
 {
 	private const string _toolsName = "ddinfo-tools";
-	private const string _launcherName = "ddinfo-tools-launcher";
 
 	private static readonly List<string> _screenshotFileNames = new()
 	{
@@ -147,13 +146,13 @@ else
 	};
 
 	private GetTool? _appTool;
-	private GetToolDistribution? _launcherWindowsDistribution;
+	private GetToolDistribution? _windowsDistribution;
 	private int _screenshotIndex;
 
 	protected override async Task OnInitializedAsync()
 	{
 		_appTool = await Http.GetTool(_toolsName);
-		_launcherWindowsDistribution = await Http.GetLatestToolDistribution(_launcherName, ToolPublishMethod.Aot, ToolBuildType.WindowsConsole);
+		_windowsDistribution = await Http.GetLatestToolDistribution(_toolsName, ToolPublishMethod.SelfContained, ToolBuildType.WindowsWarp);
 	}
 
 	private static string GetDistributionApiCall(string toolName, GetToolDistribution distribution)
