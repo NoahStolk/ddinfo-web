@@ -1,4 +1,3 @@
-using DevilDaggersInfo.Api.Clubber;
 using DevilDaggersInfo.Api.Clubber.Players;
 using DevilDaggersInfo.Web.Server.Domain.Models.Players;
 
