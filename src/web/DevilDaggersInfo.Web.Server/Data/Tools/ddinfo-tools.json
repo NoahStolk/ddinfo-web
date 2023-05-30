@@ -1,27 +1,27 @@
 [
-	{
-		"VersionNumber": "0.6.0.0",
-		"Date": "2023-05-29T00:00:00", // TODO: Update date
-		"Changes": [
-			{
-				"Description": "Added practice tool.",
-				"SubChanges": [
-					{
-						"Description": "You can now select a template to practice specific sections of the game without having to download custom spawnsets. The app will generate a spawnset on the fly based on the template."
-					},
-					{
-						"Description": "No farm templates exist for various sections of the game, as well as end loop templates where you can fill in the homing value yourself."
-					},
-					{
-						"Description": "You can create custom templates with your preferred homing values. Custom templates are automatically saved locally."
-					}
-				]
-			},
-			{
-				"Description": "Removed the app launcher. If there is an update available, the app will update itself and restart."
-			}
-		]
-	},
+//	{
+//		"VersionNumber": "0.6.0.0",
+//		"Date": "2023-05-29T00:00:00", // TODO: Update date
+//		"Changes": [
+//			{
+//				"Description": "Added practice tool.",
+//				"SubChanges": [
+//					{
+//						"Description": "You can now select a template to practice specific sections of the game without having to download custom spawnsets. The app will generate a spawnset on the fly based on the template."
+//					},
+//					{
+//						"Description": "No farm templates exist for various sections of the game, as well as end loop templates where you can fill in the homing value yourself."
+//					},
+//					{
+//						"Description": "You can create custom templates with your preferred homing values. Custom templates are automatically saved locally."
+//					}
+//				]
+//			},
+//			{
+//				"Description": "Removed the app launcher. If there is an update available, the app will update itself and restart."
+//			}
+//		]
+//	},
 	{
 		"VersionNumber": "0.5.2.0",
 		"Date": "2023-05-22T00:00:00",
