@@ -6,6 +6,7 @@
 
 #nullable enable
 
+using DevilDaggersInfo.Api.App;
 using DevilDaggersInfo.Api.App.CustomLeaderboards;
 using DevilDaggersInfo.Api.App.ProcessMemory;
 using DevilDaggersInfo.Api.App.Spawnsets;
@@ -63,11 +64,11 @@ public partial class AppApiHttpClient
 		return await SendGetRequest<List<GetCustomLeaderboardAllowedCategory>>($"api/app/custom-leaderboards/allowed-categories");
 	}
 
-	public async Task<GetMarker> GetMarker(SupportedOperatingSystem operatingSystem)
+	public async Task<GetMarker> GetMarker(AppOperatingSystem appOperatingSystem)
 	{
 		Dictionary<string, object?> queryParameters = new()
 		{
-			{ nameof(operatingSystem), operatingSystem }
+			{ nameof(appOperatingSystem), appOperatingSystem }
 		};
 		return await SendGetRequest<GetMarker>(BuildUrlWithQuery($"api/app/process-memory/marker", queryParameters));
 	}
@@ -91,22 +92,20 @@ public partial class AppApiHttpClient
 		return await SendGetRequest<GetSpawnsetByHash>(BuildUrlWithQuery($"api/app/spawnsets/by-hash", queryParameters));
 	}
 
-	public async Task<GetLatestVersion> GetLatestVersion(ToolPublishMethod publishMethod, ToolBuildType buildType)
+	public async Task<GetLatestVersion> GetLatestVersion(AppOperatingSystem appOperatingSystem)
 	{
 		Dictionary<string, object?> queryParameters = new()
 		{
-			{ nameof(publishMethod), publishMethod },
-			{ nameof(buildType), buildType }
+			{ nameof(appOperatingSystem), appOperatingSystem }
 		};
 		return await SendGetRequest<GetLatestVersion>(BuildUrlWithQuery($"api/app/updates/latest-version", queryParameters));
 	}
 
-	public async Task<Task> GetLatestVersionFile(ToolPublishMethod publishMethod, ToolBuildType buildType)
+	public async Task<Task> GetLatestVersionFile(AppOperatingSystem appOperatingSystem)
 	{
 		Dictionary<string, object?> queryParameters = new()
 		{
-			{ nameof(publishMethod), publishMethod },
-			{ nameof(buildType), buildType }
+			{ nameof(appOperatingSystem), appOperatingSystem }
 		};
 		return await SendGetRequest<Task>(BuildUrlWithQuery($"api/app/updates/latest-version-file", queryParameters));
 	}

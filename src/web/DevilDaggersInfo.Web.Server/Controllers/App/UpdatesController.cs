@@ -1,6 +1,7 @@
+using DevilDaggersInfo.Api.App;
 using DevilDaggersInfo.Api.App.Updates;
-using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.App;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.App;
+using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Models.Tools;
 using DevilDaggersInfo.Web.Server.Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -25,9 +26,19 @@ public class UpdatesController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public async Task<ActionResult<GetLatestVersion>> GetLatestVersion([Required] ToolPublishMethod publishMethod, [Required] ToolBuildType buildType)
+	public async Task<ActionResult<GetLatestVersion>> GetLatestVersion([Required] AppOperatingSystem appOperatingSystem)
 	{
-		ToolDistribution? distribution = await _toolRepository.GetLatestToolDistributionAsync(_toolName, publishMethod.ToDomain(), buildType.ToDomain());
+		ToolBuildType? buildType = appOperatingSystem switch
+		{
+			AppOperatingSystem.Windows => ToolBuildType.WindowsWarp,
+			AppOperatingSystem.Linux => ToolBuildType.LinuxWarp,
+			_ => null,
+		};
+
+		if (!buildType.HasValue)
+			return NotFound();
+
+		ToolDistribution? distribution = await _toolRepository.GetLatestToolDistributionAsync(_toolName, ToolPublishMethod.SelfContained, buildType.Value);
 		if (distribution == null)
 			return NotFound();
 
@@ -38,15 +49,25 @@ public class UpdatesController : ControllerBase
 	[ProducesResponseType(typeof(FileStreamResult), StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public async Task<ActionResult> GetLatestVersionFile([Required] ToolPublishMethod publishMethod, [Required] ToolBuildType buildType)
+	public async Task<ActionResult> GetLatestVersionFile([Required] AppOperatingSystem appOperatingSystem)
 	{
-		ToolDistribution? distribution = await _toolRepository.GetLatestToolDistributionAsync(_toolName, publishMethod.ToDomain(), buildType.ToDomain());
+		ToolBuildType? buildType = appOperatingSystem switch
+		{
+			AppOperatingSystem.Windows => ToolBuildType.WindowsWarp,
+			AppOperatingSystem.Linux => ToolBuildType.LinuxWarp,
+			_ => null,
+		};
+
+		if (!buildType.HasValue)
+			return NotFound();
+
+		ToolDistribution? distribution = await _toolRepository.GetLatestToolDistributionAsync(_toolName, ToolPublishMethod.SelfContained, buildType.Value);
 		if (distribution == null)
 			return NotFound();
 
-		byte[] bytes = await _toolRepository.GetToolDistributionFileAsync(_toolName, publishMethod.ToDomain(), buildType.ToDomain(), distribution.VersionNumber);
+		byte[] bytes = await _toolRepository.GetToolDistributionFileAsync(_toolName, ToolPublishMethod.SelfContained, buildType.Value, distribution.VersionNumber);
 
-		await _toolRepository.UpdateToolDistributionStatisticsAsync(_toolName, publishMethod.ToDomain(), buildType.ToDomain(), distribution.VersionNumber);
+		await _toolRepository.UpdateToolDistributionStatisticsAsync(_toolName, ToolPublishMethod.SelfContained, buildType.Value, distribution.VersionNumber);
 
 		MemoryStream ms = new(bytes);
 		return new FileStreamResult(ms, "application/octet-stream");

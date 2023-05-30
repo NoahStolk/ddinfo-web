@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Api.App;
 using DevilDaggersInfo.Api.App.ProcessMemory;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Repositories;
@@ -20,15 +21,15 @@ public class ProcessMemoryController : ControllerBase
 	[HttpGet("marker")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	public async Task<ActionResult<GetMarker>> GetMarker([Required] SupportedOperatingSystem operatingSystem)
+	public async Task<ActionResult<GetMarker>> GetMarker([Required] AppOperatingSystem appOperatingSystem)
 	{
 		return new GetMarker
 		{
-			Value = await _markerRepository.GetMarkerAsync(operatingSystem switch
+			Value = await _markerRepository.GetMarkerAsync(appOperatingSystem switch
 			{
-				SupportedOperatingSystem.Windows => "WindowsSteam",
-				SupportedOperatingSystem.Linux => "LinuxSteam",
-				_ => throw new UnsupportedOperatingSystemException($"Operating system '{operatingSystem}' is not supported."),
+				AppOperatingSystem.Windows => "WindowsSteam",
+				AppOperatingSystem.Linux => "LinuxSteam",
+				_ => throw new UnsupportedOperatingSystemException($"Operating system '{appOperatingSystem}' is not supported."),
 			}),
 		};
 	}
