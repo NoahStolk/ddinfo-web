@@ -16,21 +16,26 @@ else
 {
 	<ToolInfo GetTool="_appTool" />
 
-	@if (_windowsDistribution == null)
-	{
-		<Loading />
-	}
-	else
-	{
-		<Heading Title="Distributions" Level="2" />
+	<Heading Title="Distributions" Level="2" />
 
-		<a class="btn btn-download px-2 py-1" href="@GetDistributionApiCall(_toolsName, _windowsDistribution)" download="@GetDistributionFileName(_toolsName, _windowsDistribution)" role="button" target="_top">Download for Windows (@FileSizeUtils.Format(_windowsDistribution.FileSize))</a>
-		                                                                                                                                                                                                                                                                                                      
-		<p class="para">Current version: @_windowsDistribution.VersionNumber</p>
-		<p class="para">Windows 7 and older is currently not supported (although Windows 7 can probably be made to work).</p>
-		<p class="para">If anyone wants to test a Linux build, let me know.</p>
-		<p class="para">I'm also open to adding support for Mac if anyone wants it. I don't have a Mac to test it on, so I'd need some help with that.</p>
+	@if (_windowsDistribution != null)
+	{
+		<a class="btn btn-download px-2 py-1" href="@GetDistributionApiUrl(_toolsName, _windowsDistribution)" download="@GetDistributionFileName(_toolsName, _windowsDistribution)" role="button" target="_top">
+			Download @_windowsDistribution.VersionNumber for Windows (@FileSizeUtils.Format(_windowsDistribution.FileSize))
+		</a>
 	}
+	
+	if (_linuxDistribution != null)
+	{
+		<a class="btn btn-download px-2 py-1" href="@GetDistributionApiUrl(_toolsName, _linuxDistribution)" download="@GetDistributionFileName(_toolsName, _linuxDistribution)" role="button" target="_top">
+			Download @_linuxDistribution.VersionNumber for Linux (@FileSizeUtils.Format(_linuxDistribution.FileSize))
+		</a>
+		
+		<i>Note; custom leaderboards are not supported on Linux yet.</i>
+	}
+
+	<p class="para">Windows 7 and older is currently not supported (although Windows 7 can probably be made to work).</p>
+	<p class="para">I'm also open to adding support for Mac if anyone wants it. I don't have a Mac to test it on, so I'd need some help with that.</p>
 
 	<div class="relative w-full xl:w-1/2 pb-4-3 xl:pb-4-3/2">
 		<iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/4dF4V5eocXY" title="New Tools" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -146,16 +151,28 @@ else
 	};
 
 	private GetTool? _appTool;
+	
 	private GetToolDistribution? _windowsDistribution;
+	private GetToolDistribution? _linuxDistribution;
+	
 	private int _screenshotIndex;
 
 	protected override async Task OnInitializedAsync()
 	{
 		_appTool = await Http.GetTool(_toolsName);
+		
 		_windowsDistribution = await Http.GetLatestToolDistribution(_toolsName, ToolPublishMethod.SelfContained, ToolBuildType.WindowsWarp);
+		
+		try
+		{
+			_linuxDistribution = await Http.GetLatestToolDistribution(_toolsName, ToolPublishMethod.SelfContained, ToolBuildType.LinuxWarp);
+		}
+		catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+		{
+		}
 	}
 
-	private static string GetDistributionApiCall(string toolName, GetToolDistribution distribution)
+	private static string GetDistributionApiUrl(string toolName, GetToolDistribution distribution)
 	{
 		return $"/api/tools/{toolName}/file?publishMethod={distribution.PublishMethod}&buildType={distribution.BuildType}&version={distribution.VersionNumber}";
 	}
