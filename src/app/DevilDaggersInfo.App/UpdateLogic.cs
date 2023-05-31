@@ -7,14 +7,14 @@ namespace DevilDaggersInfo.App;
 
 public static class UpdateLogic
 {
+	private const string _oldTemporaryDirectoryName = "old";
+
 #if WINDOWS
 	private const ToolBuildType _appBuildType = ToolBuildType.WindowsWarp;
 	private const string _exeFileName = "ddinfo-tools.exe"; // TODO: Get this from the AssemblyName MSBuild property.
-	private const string _oldExeFileName = "ddinfo-tools-old.exe";
 #elif LINUX
 	private const ToolBuildType _appBuildType = ToolBuildType.LinuxWarp;
 	private const string _exeFileName = "ddinfo-tools";
-	private const string _oldExeFileName = "ddinfo-tools-old";
 #endif
 
 	private static readonly Uri _baseAddress = new("https://devildaggers.info/");
@@ -26,12 +26,12 @@ public static class UpdateLogic
 	{
 		try
 		{
-			if (File.Exists(_oldExeFileName))
-				File.Delete(_oldExeFileName);
+			if (Directory.Exists(_oldTemporaryDirectoryName))
+				Directory.Delete(_oldTemporaryDirectoryName, true);
 		}
-		catch (UnauthorizedAccessException ex)
+		catch (Exception ex)
 		{
-			Root.Log.Error(ex, "Could not delete old executable on start up (probably because the old executable is currently running).");
+			Root.Log.Error(ex, "Could not delete old directory on start up.");
 		}
 	}
 
@@ -39,24 +39,25 @@ public static class UpdateLogic
 	{
 		try
 		{
-			try
+			// If a previous attempt to update failed, delete the old directory first, so we can create it again.
+			if (Directory.Exists(_oldTemporaryDirectoryName))
 			{
-				// If a previous attempt to update failed, delete the old executable.
-				if (File.Exists(_oldExeFileName))
-				{
-					UpdateWindow.LogMessages.Add("Deleting old executable...");
-					File.Delete(_oldExeFileName);
-				}
-
-				// Rename the currently running executable, so the new executable can be installed.
-				UpdateWindow.LogMessages.Add("Renaming old executable...");
-				File.Move(_exeFileName, _oldExeFileName);
+				UpdateWindow.LogMessages.Add("Re-deleting old directory...");
+				Directory.Delete(_oldTemporaryDirectoryName, true);
 			}
-			catch (UnauthorizedAccessException ex)
+
+			// Move all the current files, including the currently running executable, to a temporary directory.
+			// This way we can install the new files in the original directory without having to worry about file locks.
+			Directory.CreateDirectory(_oldTemporaryDirectoryName);
+			foreach (string? currentFileName in Directory.GetFiles(AssemblyUtils.InstallationDirectory).Select(Path.GetFileName))
 			{
-				const string errorMessage = "Could not delete or rename the old executable, probably because it is currently in use.";
-				UpdateWindow.LogMessages.Add($"{errorMessage}\n{ex.Message}");
-				Root.Log.Error(ex, errorMessage);
+				// Don't move the log file, because it's currently being written to.
+				// It also makes sense to preserve these files, because they contain the logs of previous versions.
+				if (currentFileName == null || Path.GetExtension(currentFileName).Equals(".log", StringComparison.OrdinalIgnoreCase))
+					continue;
+
+				UpdateWindow.LogMessages.Add($"Moving '{currentFileName}'...");
+				File.Move(currentFileName, Path.Combine(_oldTemporaryDirectoryName, currentFileName));
 			}
 
 			UpdateWindow.LogMessages.Add("Downloading update...");

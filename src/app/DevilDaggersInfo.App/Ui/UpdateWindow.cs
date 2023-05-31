@@ -40,7 +40,8 @@ public static class UpdateWindow
 
 			ImGui.EndDisabled();
 
-			LogMessages.ForEach(ImGui.Text);
+			for (int i = 0; i < LogMessages.Count; i++)
+				ImGui.Text(LogMessages[i]);
 
 			ImGui.PopTextWrapPos();
 		}
