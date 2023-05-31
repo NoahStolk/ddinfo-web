@@ -101,8 +101,11 @@ public class Application
 		AsyncHandler.Run(
 			static newVersion =>
 			{
-				if (newVersion != null)
-					UiRenderer.ShowUpdateAvailable();
+				if (newVersion == null)
+					return;
+
+				UiRenderer.ShowUpdateAvailable();
+				UpdateWindow.AvailableUpdateVersion = newVersion;
 			},
 			() => FetchLatestVersion.HandleAsync(Root.Application.AppVersion, Root.PlatformSpecificValues.BuildType));
 

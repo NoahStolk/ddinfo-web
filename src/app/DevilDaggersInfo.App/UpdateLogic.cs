@@ -19,19 +19,45 @@ public static class UpdateLogic
 
 	private static readonly Uri _baseAddress = new("https://devildaggers.info/");
 
-	public static void DeleteOldExecutable()
+	/// <summary>
+	/// Can be called when the application starts up.
+	/// </summary>
+	public static void TryDeleteOldExecutableOnAppStart()
 	{
-		if (File.Exists(_oldExeFileName))
-			File.Delete(_oldExeFileName);
+		try
+		{
+			if (File.Exists(_oldExeFileName))
+				File.Delete(_oldExeFileName);
+		}
+		catch (UnauthorizedAccessException ex)
+		{
+			Root.Log.Error(ex, "Could not delete old executable on start up (probably because the old executable is currently running).");
+		}
 	}
 
 	public static async Task RunAsync()
 	{
 		try
 		{
-			// Rename the currently running executable, so the new executable can be installed.
-			UpdateWindow.LogMessages.Add("Renaming old executable...");
-			File.Move(_exeFileName, _oldExeFileName);
+			try
+			{
+				// If a previous attempt to update failed, delete the old executable.
+				if (File.Exists(_oldExeFileName))
+				{
+					UpdateWindow.LogMessages.Add("Deleting old executable...");
+					File.Delete(_oldExeFileName);
+				}
+
+				// Rename the currently running executable, so the new executable can be installed.
+				UpdateWindow.LogMessages.Add("Renaming old executable...");
+				File.Move(_exeFileName, _oldExeFileName);
+			}
+			catch (UnauthorizedAccessException ex)
+			{
+				const string errorMessage = "Could not delete or rename the old executable, probably because it is currently in use.";
+				UpdateWindow.LogMessages.Add($"{errorMessage}\n{ex.Message}");
+				Root.Log.Error(ex, errorMessage);
+			}
 
 			UpdateWindow.LogMessages.Add("Downloading update...");
 			byte[] zipFileContents = await DownloadAppAsync();
