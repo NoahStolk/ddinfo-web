@@ -1,8 +1,9 @@
 using DevilDaggersInfo.Api.App.Updates;
+using DevilDaggersInfo.App.Ui;
 using System.Diagnostics;
 using System.IO.Compression;
 
-namespace DevilDaggersInfo.App.Ui.Config;
+namespace DevilDaggersInfo.App;
 
 public static class UpdateLogic
 {
@@ -29,23 +30,23 @@ public static class UpdateLogic
 		try
 		{
 			// Rename the currently running executable, so the new executable can be installed.
-			ConfigLayout.LogMessages.Add("Renaming old executable...");
+			UpdateWindow.LogMessages.Add("Renaming old executable...");
 			File.Move(_exeFileName, _oldExeFileName);
 
-			ConfigLayout.LogMessages.Add("Downloading update...");
+			UpdateWindow.LogMessages.Add("Downloading update...");
 			byte[] zipFileContents = await DownloadAppAsync();
 
-			ConfigLayout.LogMessages.Add("Opening ZIP...");
+			UpdateWindow.LogMessages.Add("Opening ZIP...");
 
 			using MemoryStream ms = new(zipFileContents);
 			using ZipArchive archive = new(ms);
 
-			ConfigLayout.LogMessages.Add("Installing update...");
+			UpdateWindow.LogMessages.Add("Installing update...");
 
 			// This will overwrite all the existing files.
 			archive.ExtractToDirectory(AssemblyUtils.InstallationDirectory, true);
 
-			ConfigLayout.LogMessages.Add("Launching new version...");
+			UpdateWindow.LogMessages.Add("Launching new version...");
 			Process process = new();
 			process.StartInfo.FileName = _exeFileName;
 			process.StartInfo.WorkingDirectory = AssemblyUtils.InstallationDirectory;
@@ -56,7 +57,7 @@ public static class UpdateLogic
 		catch (Exception ex)
 		{
 			const string errorMessage = "An error occurred while updating the application.";
-			ConfigLayout.LogMessages.Add($"{errorMessage}\n{ex.Message}");
+			UpdateWindow.LogMessages.Add($"{errorMessage}\n{ex.Message}");
 			Root.Log.Error(ex, errorMessage);
 		}
 	}
