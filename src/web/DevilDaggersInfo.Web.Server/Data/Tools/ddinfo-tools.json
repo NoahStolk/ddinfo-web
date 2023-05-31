@@ -1,7 +1,7 @@
 [
 	{
 		"VersionNumber": "0.6.0.0",
-		"Date": "2023-05-31T00:00:00", // TODO: Update date
+		"Date": "2023-05-31T00:00:00",
 		"Changes": [
 			{
 				"Description": "Added practice tool.",
@@ -18,7 +18,7 @@
 				]
 			},
 			{
-				"Description": "Removed the app launcher. If there is an update available, the app will update itself and restart."
+				"Description": "Removed the app launcher. The app is now able to update itself."
 			}
 		]
 	},

@@ -71,8 +71,6 @@ public static class UpdateLogic
 			using ZipArchive archive = new(ms);
 
 			UpdateWindow.LogMessages.Add("Installing update...");
-
-			// This will overwrite all the existing files.
 			archive.ExtractToDirectory(AssemblyUtils.InstallationDirectory, true);
 
 			UpdateWindow.LogMessages.Add("Launching new version...");
