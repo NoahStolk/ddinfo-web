@@ -22,7 +22,7 @@ public static class UpdateLogic
 	/// <summary>
 	/// Can be called when the application starts up.
 	/// </summary>
-	public static void TryDeleteOldExecutableOnAppStart()
+	public static void TryDeleteOldInstallation()
 	{
 		try
 		{
@@ -31,7 +31,7 @@ public static class UpdateLogic
 		}
 		catch (Exception ex)
 		{
-			Root.Log.Error(ex, "Could not delete old directory on start up.");
+			Root.Log.Error(ex, "Could not delete old directory.");
 		}
 	}
 
@@ -42,21 +42,23 @@ public static class UpdateLogic
 			// If a previous attempt to update failed, delete the old directory first, so we can create it again.
 			if (Directory.Exists(_oldTemporaryDirectoryName))
 			{
-				UpdateWindow.LogMessages.Add("Re-deleting old directory...");
+				UpdateWindow.LogMessages.Add("Deleting old temporary directory...");
 				Directory.Delete(_oldTemporaryDirectoryName, true);
 			}
 
 			// Move all the current files, including the currently running executable, to a temporary directory.
 			// This way we can install the new files in the original directory without having to worry about file locks.
+			UpdateWindow.LogMessages.Add("Creating temporary directory...");
 			Directory.CreateDirectory(_oldTemporaryDirectoryName);
 			foreach (string? currentFileName in Directory.GetFiles(AssemblyUtils.InstallationDirectory).Select(Path.GetFileName))
 			{
 				// Don't move the log file, because it's currently being written to.
 				// It also makes sense to preserve these files, because they contain the logs of previous versions.
+				// Log files should not be present in distributed builds, so these files can safely be ignored.
 				if (currentFileName == null || Path.GetExtension(currentFileName).Equals(".log", StringComparison.OrdinalIgnoreCase))
 					continue;
 
-				UpdateWindow.LogMessages.Add($"Moving '{currentFileName}'...");
+				UpdateWindow.LogMessages.Add($"Moving '{currentFileName}' to temporary directory...");
 				File.Move(currentFileName, Path.Combine(_oldTemporaryDirectoryName, currentFileName));
 			}
 
