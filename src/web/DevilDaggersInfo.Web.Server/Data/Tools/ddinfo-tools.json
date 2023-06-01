@@ -1,5 +1,14 @@
 [
 	{
+		"VersionNumber": "0.6.1.0",
+		"Date": "2023-06-01T00:00:00",
+		"Changes": [
+			{
+				"Description": "Fixed end loop spawnset templates skipping the first spawns."
+			}
+		]
+	},
+	{
 		"VersionNumber": "0.6.0.0",
 		"Date": "2023-05-31T00:00:00",
 		"Changes": [
