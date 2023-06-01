@@ -603,9 +603,8 @@ public record SpawnsetBinary
 		}
 
 		// Add the end loop, including the original last empty spawn.
-		// TODO: Check if using doubles is correct.
-		double enemyTimer = 0;
-		double delay = 0;
+		float enemyTimer = 0;
+		float delay = 0;
 
 		List<Spawn> originalEndLoop = Spawns.Skip(GetLoopStartIndex()).ToList();
 
@@ -614,7 +613,7 @@ public record SpawnsetBinary
 		{
 			foreach (Spawn spawn in originalEndLoop)
 			{
-				double spawnDelay = 0;
+				float spawnDelay = 0;
 				delay += spawn.Delay;
 				while (enemyTimer < delay)
 				{
@@ -626,7 +625,7 @@ public record SpawnsetBinary
 				if (waveIndex % 3 == 2 && finalEnemy == EnemyType.Gigapede)
 					finalEnemy = EnemyType.Ghostpede;
 
-				newSpawns.Add(new(finalEnemy, (float)spawnDelay));
+				newSpawns.Add(new(finalEnemy, spawnDelay));
 			}
 		}
 

@@ -14,7 +14,7 @@ public class SpawnsView
 		if (spawnsetBinary.Spawns.Length == 0)
 			return;
 
-		double totalSeconds = spawnsetBinary.GetEffectiveTimerStart();
+		float totalSeconds = spawnsetBinary.GetEffectiveTimerStart();
 		EffectivePlayerSettings effectivePlayerSettings = spawnsetBinary.GetEffectivePlayerSettings();
 		GemState gemState = new(effectivePlayerSettings.HandLevel, effectivePlayerSettings.GemsOrHoming, 0);
 
@@ -41,7 +41,7 @@ public class SpawnsView
 	public bool HasPreLoopSpawns { get; private set; }
 	public bool HasLoopSpawns { get; private set; }
 
-	private void BuildPreLoop(ref double totalSeconds, ref GemState gemState, ImmutableArray<Spawn> preLoopSpawns)
+	private void BuildPreLoop(ref float totalSeconds, ref GemState gemState, ImmutableArray<Spawn> preLoopSpawns)
 	{
 		HasPreLoopSpawns = preLoopSpawns.Any(s => s.EnemyType != EnemyType.Empty);
 		if (!HasPreLoopSpawns)
@@ -57,7 +57,7 @@ public class SpawnsView
 		}
 	}
 
-	private void BuildLoop(GameVersion gameVersion, int waveCount, ref double totalSeconds, ref GemState gemState, ImmutableArray<Spawn> loopSpawns)
+	private void BuildLoop(GameVersion gameVersion, int waveCount, ref float totalSeconds, ref GemState gemState, ImmutableArray<Spawn> loopSpawns)
 	{
 		HasLoopSpawns = loopSpawns.Any(s => s.EnemyType != EnemyType.Empty);
 		if (!HasLoopSpawns)
@@ -65,9 +65,8 @@ public class SpawnsView
 
 		for (int i = 0; i < waveCount; i++)
 		{
-			// TODO: Check if using doubles is correct.
-			double enemyTimer = 0;
-			double delay = 0;
+			float enemyTimer = 0;
+			float delay = 0;
 			foreach (Spawn spawn in loopSpawns)
 			{
 				delay += spawn.Delay;
