@@ -92,7 +92,7 @@ public class SpawnsViewTests
 		SpawnsView spawnsView = new(spawnset, gameVersion, waveCount);
 		Assert.AreEqual(waveCount, spawnsView.Waves.Length);
 		Assert.AreEqual(expectedPreLoopSpawnCount, spawnsView.PreLoop.Count);
-		Assert.IsTrue(spawnsView.Waves.All(l => l.Count == expectedWaveSpawnCount));
+		Assert.IsTrue(Array.TrueForAll(spawnsView.Waves, l => l.Count == expectedWaveSpawnCount));
 		return spawnsView;
 	}
 
@@ -100,7 +100,7 @@ public class SpawnsViewTests
 	private static void AreEqual(SpawnView a, SpawnView b)
 	{
 		Assert.AreEqual(a.EnemyType, b.EnemyType);
-		Assert.AreEqual(a.Seconds, b.Seconds, 0.0001);
+		Assert.AreEqual(a.Seconds, b.Seconds, 0.0166); // Allow 1 frame difference.
 		Assert.AreEqual(a.NoFarmGems, b.NoFarmGems);
 		Assert.AreEqual(a.GemState, b.GemState);
 	}
