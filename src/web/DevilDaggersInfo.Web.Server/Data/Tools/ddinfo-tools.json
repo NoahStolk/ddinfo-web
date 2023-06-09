@@ -1,5 +1,17 @@
 [
 	{
+		"VersionNumber": "0.6.3.0",
+		"Date": "2023-06-09T00:00:00",
+		"Changes": [
+			{
+				"Description": "Added button to delete current spawnset to practice tool."
+			},
+			{
+				"Description": "The practice values for the currently active spawnset are now displayed for clarity."
+			}
+		]
+	},
+	{
 		"VersionNumber": "0.6.2.0",
 		"Date": "2023-06-01T00:00:00",
 		"Changes": [
