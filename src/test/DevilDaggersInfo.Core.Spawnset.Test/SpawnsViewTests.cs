@@ -28,8 +28,8 @@ public class SpawnsViewTests
 		AreEqual(new(EnemyType.Squid2, 403, 3, new(HandLevel.Level4, 135, 355)), spawnsView.Waves[0][1]);
 
 		AreEqual(new(EnemyType.Gigapede, 415, 50, new(HandLevel.Level4, 187, 407)), spawnsView.Waves[0][3]);
-		AreEqual(new(EnemyType.Gigapede, 468.5667, 50, new(HandLevel.Level4, 272, 492)), spawnsView.Waves[1][3]);
-		AreEqual(new(EnemyType.Gigapede, 516.5667, 50, new(HandLevel.Level4, 357, 577)), spawnsView.Waves[2][3]);
+		AreEqual(new(EnemyType.Gigapede, 468.5667f, 50, new(HandLevel.Level4, 272, 492)), spawnsView.Waves[1][3]);
+		AreEqual(new(EnemyType.Gigapede, 516.5667f, 50, new(HandLevel.Level4, 357, 577)), spawnsView.Waves[2][3]);
 	}
 
 	[TestMethod]
@@ -43,8 +43,8 @@ public class SpawnsViewTests
 		AreEqual(new(EnemyType.Squid2, 403, 3, new(HandLevel.Level4, 135, 355)), spawnsView.Waves[0][1]);
 
 		AreEqual(new(EnemyType.Gigapede, 415, 50, new(HandLevel.Level4, 187, 407)), spawnsView.Waves[0][3]);
-		AreEqual(new(EnemyType.Gigapede, 468.5667, 50, new(HandLevel.Level4, 272, 492)), spawnsView.Waves[1][3]);
-		AreEqual(new(EnemyType.Ghostpede, 516.5667, 10, new(HandLevel.Level4, 317, 537)), spawnsView.Waves[2][3]);
+		AreEqual(new(EnemyType.Gigapede, 468.5667f, 50, new(HandLevel.Level4, 272, 492)), spawnsView.Waves[1][3]);
+		AreEqual(new(EnemyType.Ghostpede, 516.5667f, 10, new(HandLevel.Level4, 317, 537)), spawnsView.Waves[2][3]);
 	}
 
 	[TestMethod]
