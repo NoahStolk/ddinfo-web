@@ -11,8 +11,6 @@ namespace DevilDaggersInfo.App.Ui.Main;
 
 public static class MainLayout
 {
-	private static readonly int _centerX = (int)Constants.LayoutSize.X / 2;
-
 	private static readonly string _version = AssemblyUtils.EntryAssemblyVersion;
 
 	private static readonly SpawnsetBinary _mainMenuSpawnset = SpawnsetBinary.CreateDefault();
@@ -33,55 +31,90 @@ public static class MainLayout
 		ImGui.SetNextWindowPos(center, ImGuiCond.Always, new(0.5f, 0.5f));
 		ImGui.SetNextWindowSize(Constants.LayoutSize);
 
-		ImGui.Begin("Main Menu", Constants.LayoutFlags);
+		ImGui.Begin("Main Menu", ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoBringToFrontOnFocus);
 
-		TextAt(StringResources.MainMenu, 8, 8);
-		// TextAt("DDINFO", _centerX, 64, new(1, 0, 0, 1), true); // TODO: font size 64
-		// TextAt("TOOLS", _centerX, 128, new(1, 0.5f, 0, 1), true); // TODO: font size 32
-		// TextAt(_version, _centerX, 176, new(1, 0.8f, 0, 1), true); // TODO: font size 24
-		TextAt("Devil Daggers is created by Sorath", _centerX, 692, default, true);
-		TextAt("DevilDaggers.info is created by Noah Stolk", _centerX, 708, default, true);
+		ImGui.PushFont(Root.FontGoetheBold);
+		ImGui.Text("ddinfo tools " + _version);
+		ImGui.PopFont();
+		if (ImGui.IsItemHovered())
+			ImGui.SetTooltip(StringResources.MainMenu);
 
-		const byte buttonAlpha = 191;
+		ImGui.Text("Devil Daggers is created by Sorath");
+		ImGui.Text("DevilDaggers.info is created by Noah Stolk");
 
-		if (MainButtonAt(0, 0, Colors.SpawnsetEditor.Primary with { A = buttonAlpha }, "Spawnset Editor (wip)"))
-		{
-			UiRenderer.Layout = LayoutType.SpawnsetEditor;
-			Colors.SetColors(Colors.SpawnsetEditor);
-		}
-
-		MainButtonAt(1, 0, Colors.AssetEditor with { A = buttonAlpha }, "Asset Editor (todo)");
-		if (MainButtonAt(2, 0, Colors.ReplayEditor.Primary with { A = buttonAlpha }, "Replay Editor (wip)"))
-		{
-			UiRenderer.Layout = LayoutType.ReplayEditor;
-			Colors.SetColors(Colors.ReplayEditor);
-		}
-
-		if (MainButtonAt(0, 1, Colors.CustomLeaderboards.Primary with { A = buttonAlpha }, "Custom Leaderboards"))
-		{
-			UiRenderer.Layout = LayoutType.CustomLeaderboards;
-			Colors.SetColors(Colors.CustomLeaderboards);
-			LeaderboardListChild.LoadAll();
-		}
-
-		if (MainButtonAt(1, 1, Colors.Practice.Primary with { A = buttonAlpha }, "Practice (wip)"))
-		{
-			UiRenderer.Layout = LayoutType.Practice;
-			Colors.SetColors(Colors.Practice);
-		}
-
-		MainButtonAt(2, 1, Colors.ModManager with { A = buttonAlpha }, "Mod Manager (todo)");
-
+		const byte buttonAlpha = 127;
 		Color gray = new(96, 96, 96, buttonAlpha);
-		if (MainButtonAt(0, 2, gray, "Configuration"))
-			UiRenderer.Layout = LayoutType.Config;
 
-		if (MainButtonAt(1, 2, gray, "Settings"))
-			UiRenderer.ShowSettings();
+		MainButton(Colors.SpawnsetEditor.Primary with { A = buttonAlpha }, "Spawnset Editor (wip)", GoToSpawnsetEditor);
+		MainButton(Colors.AssetEditor with { A = buttonAlpha }, "Asset Editor (todo)", () => { });
+		MainButton(Colors.ReplayEditor.Primary with { A = buttonAlpha }, "Replay Editor (wip)", GoToReplayEditor);
+		MainButton(Colors.CustomLeaderboards.Primary with { A = buttonAlpha }, "Custom Leaderboards", GoToCustomLeaderboards);
+		MainButton(Colors.Practice.Primary with { A = buttonAlpha }, "Practice (wip)", GoToPractice);
+		MainButton(Colors.ModManager with { A = buttonAlpha }, "Mod Manager (todo)", () => { });
+		MainButton(gray, "Configuration", GoToConfiguration);
+		MainButton(gray, "Settings", UiRenderer.ShowSettings);
 
-		if (MainButtonAt(2, 2, gray, "Exit"))
-			shouldClose = true;
+		bool close = false; // Must declare another local because lambda capture cannot work with out parameter.
+		MainButton(gray, "Exit", () => close = true);
+		shouldClose = close;
 
+		Hyperlink("https://devildaggers.info/");
+		Hyperlink("https://devildaggers.info/tools");
+		Hyperlink("https://github.com/NoahStolk/DevilDaggersInfo");
+
+		ImGui.End();
+
+		RenderScene(delta);
+	}
+
+	private static void GoToSpawnsetEditor()
+	{
+		UiRenderer.Layout = LayoutType.SpawnsetEditor;
+		Colors.SetColors(Colors.SpawnsetEditor);
+	}
+
+	private static void GoToReplayEditor()
+	{
+		UiRenderer.Layout = LayoutType.ReplayEditor;
+		Colors.SetColors(Colors.ReplayEditor);
+	}
+
+	private static void GoToCustomLeaderboards()
+	{
+		UiRenderer.Layout = LayoutType.CustomLeaderboards;
+		Colors.SetColors(Colors.CustomLeaderboards);
+		LeaderboardListChild.LoadAll();
+	}
+
+	private static void GoToPractice()
+	{
+		UiRenderer.Layout = LayoutType.Practice;
+		Colors.SetColors(Colors.Practice);
+	}
+
+	private static void GoToConfiguration()
+	{
+		UiRenderer.Layout = LayoutType.Config;
+	}
+
+	private static void MainButton(Color color, string text, Action action)
+	{
+		ImGui.PushStyleColor(ImGuiCol.Button, color);
+		ImGui.PushStyleColor(ImGuiCol.ButtonHovered, color + new Vector4(0, 0, 0, 0.2f));
+		ImGui.PushStyleColor(ImGuiCol.ButtonActive, color + new Vector4(0, 0, 0, 0.3f));
+		ImGui.PushStyleColor(ImGuiCol.Border, color with { A = 255 });
+
+		ImGui.PushStyleVar(ImGuiStyleVar.FrameBorderSize, 4);
+		if (ImGui.Button(text, new(192, 48)))
+			action.Invoke();
+
+		ImGui.PopStyleVar();
+
+		ImGui.PopStyleColor(4);
+	}
+
+	private static void Hyperlink(string url)
+	{
 		Vector4 hyperlinkColor = new(0, 0.625f, 1, 1);
 		Vector4 hyperlinkHoverColor = new(0.25f, 0.875f, 1, 0.25f);
 
@@ -90,70 +123,10 @@ public static class MainLayout
 		ImGui.PushStyleColor(ImGuiCol.ButtonHovered, hyperlinkHoverColor);
 		ImGui.PushStyleColor(ImGuiCol.ButtonActive, default(Vector4));
 
-		const string homePage = "https://devildaggers.info/";
-		const string toolsPage = "https://devildaggers.info/tools";
-		const string gitHubPage = "https://github.com/NoahStolk/DevilDaggersInfo";
-
-		ImGui.SetCursorPos(new(_centerX - ImGui.CalcTextSize(homePage).X / 2, 724));
-		if (ImGui.Button(homePage))
-			Process.Start(new ProcessStartInfo(homePage) { UseShellExecute = true });
-
-		ImGui.SetCursorPos(new(_centerX - ImGui.CalcTextSize(gitHubPage).X / 2, 740));
-		if (ImGui.Button(gitHubPage))
-			Process.Start(new ProcessStartInfo(gitHubPage) { UseShellExecute = true });
-
-		ImGui.SetCursorPos(new(4, 156));
-		if (ImGui.Button(toolsPage))
-			Process.Start(new ProcessStartInfo(toolsPage) { UseShellExecute = true });
+		if (ImGui.Button(url))
+			Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
 
 		ImGui.PopStyleColor(4);
-
-		ImGui.End();
-
-		RenderScene(delta);
-	}
-
-	private static void TextAt(string text, int x, int y, Vector4 color = default, bool center = false)
-	{
-		if (center)
-		{
-			float textSize = ImGui.CalcTextSize(text).X;
-			ImGui.SetCursorPos(new(x - textSize / 2, y));
-		}
-		else
-		{
-			ImGui.SetCursorPos(new(x, y));
-		}
-
-		if (color == default)
-			ImGui.Text(text);
-		else
-			ImGui.TextColored(color, text);
-	}
-
-	private static bool MainButtonAt(int x, int y, Color color, string text)
-	{
-		int xPos = x switch
-		{
-			0 => _centerX - 96 - 384,
-			1 => _centerX - 96,
-			_ => _centerX - 96 + 384,
-		};
-		int yPos = y * 128 + 256;
-
-		ImGui.PushStyleColor(ImGuiCol.Button, color);
-		ImGui.PushStyleColor(ImGuiCol.ButtonHovered, color + new Vector4(0, 0, 0, 0.2f));
-		ImGui.PushStyleColor(ImGuiCol.ButtonActive, color + new Vector4(0, 0, 0, 0.3f));
-		ImGui.PushStyleColor(ImGuiCol.Border, color with { A = 255 });
-
-		ImGui.SetCursorPos(new(xPos, yPos));
-		ImGui.PushStyleVar(ImGuiStyleVar.FrameBorderSize, 4);
-		bool value = ImGui.Button(text, new(192, 96));
-		ImGui.PopStyleVar();
-
-		ImGui.PopStyleColor(4);
-
-		return value;
 	}
 
 	private static void RenderScene(float delta)
