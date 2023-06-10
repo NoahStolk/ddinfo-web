@@ -1,5 +1,20 @@
 [
 	{
+		"VersionNumber": "0.6.4.0",
+		"Date": "2023-06-10T00:00:00",
+		"Changes": [
+			{
+				"Description": "Fixed some end loop practice templates starting too late which results in the first spawns being skipped."
+			},
+			{
+				"Description": "End loop practice templates now start earlier (0.1 sec after the last Squid II spawn of the previous wave). You can still manually change the timer start and save a custom template if the wait is too long."
+			},
+			{
+				"Description": "Improved styling for practice templates."
+			}
+		]
+	},
+	{
 		"VersionNumber": "0.6.3.0",
 		"Date": "2023-06-09T00:00:00",
 		"Changes": [
@@ -25,7 +40,7 @@
 		"Date": "2023-06-01T00:00:00",
 		"Changes": [
 			{
-				"Description": "Fixed end loop spawnset templates skipping the first spawns."
+				"Description": "Fixed end loop practice templates skipping the first spawns."
 			}
 		]
 	},
