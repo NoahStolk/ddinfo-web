@@ -62,7 +62,8 @@ public static class UiRenderer
 		switch (Layout)
 		{
 			case LayoutType.Main:
-				MainLayout.Render(delta, out _windowShouldClose);
+				MainWindow.Render(out _windowShouldClose);
+				MainScene.Render(delta);
 				break;
 			case LayoutType.Config:
 				ConfigLayout.Render();
