@@ -13,7 +13,6 @@ public static class MainLayout
 	private static readonly SpawnsetBinary _mainMenuSpawnset = SpawnsetBinary.CreateDefault();
 
 	private static ArenaScene? _mainMenuScene;
-	private static Action? _hoveredButtonAction;
 
 	public static void InitializeScene()
 	{
@@ -61,7 +60,7 @@ public static class MainLayout
 
 		Vector2 iconSize = new(36);
 		if (ImGui.ImageButton((IntPtr)Root.InternalResources.ConfigurationTexture.Handle, iconSize))
-			GoToConfiguration();
+			UiRenderer.Layout = LayoutType.Config;
 
 		ImGui.SameLine();
 		if (ImGui.ImageButton((IntPtr)Root.InternalResources.SettingsTexture.Handle, iconSize))
@@ -75,27 +74,36 @@ public static class MainLayout
 		if (ImGui.ImageButton((IntPtr)Root.InternalResources.CloseTexture.Handle, iconSize))
 			shouldClose = true;
 
-		_hoveredButtonAction = null;
-
+		Action? hoveredButtonAction = null;
 		if (ImGui.BeginChild("Main buttons", new(192 + 8, (48 + 4) * 6)))
 		{
 			const byte buttonAlpha = 127;
-			MainButton(Colors.SpawnsetEditor.Primary with { A = buttonAlpha }, "Spawnset Editor (wip)", GoToSpawnsetEditor, ref _hoveredButtonAction, RenderSpawnsetEditorPreview);
-			MainButton(Colors.AssetEditor with { A = buttonAlpha }, "Asset Editor (todo)", () => { }, ref _hoveredButtonAction, RenderAssetEditorPreview);
-			MainButton(Colors.ReplayEditor.Primary with { A = buttonAlpha }, "Replay Editor (wip)", GoToReplayEditor, ref _hoveredButtonAction, RenderReplayEditorPreview);
-			MainButton(Colors.CustomLeaderboards.Primary with { A = buttonAlpha }, "Custom Leaderboards", GoToCustomLeaderboards, ref _hoveredButtonAction, RenderCustomLeaderboardsPreview);
-			MainButton(Colors.Practice.Primary with { A = buttonAlpha }, "Practice (wip)", GoToPractice, ref _hoveredButtonAction, RenderPracticePreview);
-			MainButton(Colors.ModManager with { A = buttonAlpha }, "Mod Manager (todo)", () => { }, ref _hoveredButtonAction, RenderModManagerPreview);
+			MainButton(Colors.SpawnsetEditor.Primary with { A = buttonAlpha }, "Spawnset Editor (wip)", GoToSpawnsetEditor, ref hoveredButtonAction, RenderSpawnsetEditorPreview);
+			MainButton(Colors.AssetEditor with { A = buttonAlpha }, "Asset Editor (todo)", () => { }, ref hoveredButtonAction, RenderAssetEditorPreview);
+			MainButton(Colors.ReplayEditor.Primary with { A = buttonAlpha }, "Replay Editor (wip)", GoToReplayEditor, ref hoveredButtonAction, RenderReplayEditorPreview);
+			MainButton(Colors.CustomLeaderboards.Primary with { A = buttonAlpha }, "Custom Leaderboards", GoToCustomLeaderboards, ref hoveredButtonAction, RenderCustomLeaderboardsPreview);
+			MainButton(Colors.Practice.Primary with { A = buttonAlpha }, "Practice (wip)", GoToPractice, ref hoveredButtonAction, RenderPracticePreview);
+			MainButton(Colors.ModManager with { A = buttonAlpha }, "Mod Manager (todo)", () => { }, ref hoveredButtonAction, RenderModManagerPreview);
+
+			static void GoToSpawnsetEditor() => UiRenderer.Layout = LayoutType.SpawnsetEditor;
+			static void GoToReplayEditor() => UiRenderer.Layout = LayoutType.ReplayEditor;
+			static void GoToPractice() => UiRenderer.Layout = LayoutType.Practice;
+
+			static void GoToCustomLeaderboards()
+			{
+				UiRenderer.Layout = LayoutType.CustomLeaderboards;
+				LeaderboardListChild.LoadAll();
+			}
 		}
 
 		ImGui.EndChild();
 
-		if (_hoveredButtonAction != null)
+		if (hoveredButtonAction != null)
 		{
 			ImGui.SameLine();
 			if (ImGui.BeginChild("Preview", new(512, 256)))
 			{
-				_hoveredButtonAction();
+				hoveredButtonAction();
 			}
 
 			ImGui.EndChild();
@@ -104,32 +112,6 @@ public static class MainLayout
 		ImGui.End();
 
 		RenderScene(delta);
-	}
-
-	private static void GoToSpawnsetEditor()
-	{
-		UiRenderer.Layout = LayoutType.SpawnsetEditor;
-	}
-
-	private static void GoToReplayEditor()
-	{
-		UiRenderer.Layout = LayoutType.ReplayEditor;
-	}
-
-	private static void GoToCustomLeaderboards()
-	{
-		UiRenderer.Layout = LayoutType.CustomLeaderboards;
-		LeaderboardListChild.LoadAll();
-	}
-
-	private static void GoToPractice()
-	{
-		UiRenderer.Layout = LayoutType.Practice;
-	}
-
-	private static void GoToConfiguration()
-	{
-		UiRenderer.Layout = LayoutType.Config;
 	}
 
 	private static void MainButton(Color color, string text, Action action, ref Action? hoveredAction, Action onHover)
