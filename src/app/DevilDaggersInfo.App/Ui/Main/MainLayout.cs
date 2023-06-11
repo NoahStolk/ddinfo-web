@@ -122,14 +122,16 @@ public static class MainLayout
 		ImGui.PushStyleColor(ImGuiCol.Border, color with { A = 255 });
 		ImGui.PushStyleVar(ImGuiStyleVar.FrameBorderSize, 4);
 
-		if (ImGui.Button(text, new(192, 48)))
-			action.Invoke();
+		bool clicked = ImGui.Button(text, new(192, 48));
+
+		ImGui.PopStyleColor(4);
+		ImGui.PopStyleVar();
 
 		if (ImGui.IsItemHovered())
 			hoveredAction = onHover;
 
-		ImGui.PopStyleVar();
-		ImGui.PopStyleColor(4);
+		if (clicked)
+			action.Invoke();
 	}
 
 	private static void RenderSpawnsetEditorPreview()
