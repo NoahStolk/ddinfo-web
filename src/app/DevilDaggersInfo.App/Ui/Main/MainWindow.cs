@@ -56,12 +56,13 @@ public static class MainWindow
 		{
 			const byte buttonAlpha = 127;
 			const float buttonColorDesaturation = 0.3f;
-			ToolButton(Colors.SpawnsetEditor.Primary.Desaturate(buttonColorDesaturation) with { A = buttonAlpha }, "Spawnset Editor (wip)", GoToSpawnsetEditor, ref _hoveredButtonAction, RenderSpawnsetEditorPreview);
-			ToolButton(Colors.AssetEditor.Desaturate(buttonColorDesaturation) with { A = buttonAlpha }, "Asset Editor (todo)", () => { }, ref _hoveredButtonAction, RenderAssetEditorPreview);
-			ToolButton(Colors.ReplayEditor.Primary.Desaturate(buttonColorDesaturation) with { A = buttonAlpha }, "Replay Editor (wip)", GoToReplayEditor, ref _hoveredButtonAction, RenderReplayEditorPreview);
-			ToolButton(Colors.CustomLeaderboards.Primary.Desaturate(buttonColorDesaturation) with { A = buttonAlpha }, "Custom Leaderboards", GoToCustomLeaderboards, ref _hoveredButtonAction, RenderCustomLeaderboardsPreview);
-			ToolButton(Colors.Practice.Primary.Desaturate(buttonColorDesaturation) with { A = buttonAlpha }, "Practice (wip)", GoToPractice, ref _hoveredButtonAction, RenderPracticePreview);
-			ToolButton(Colors.ModManager.Desaturate(buttonColorDesaturation) with { A = buttonAlpha }, "Mod Manager (todo)", () => { }, ref _hoveredButtonAction, RenderModManagerPreview);
+			ToolButton(Colors.SpawnsetEditor.Primary.Desaturate(buttonColorDesaturation).Darken(0.2f) with { A = buttonAlpha }, "Spawnset Editor (wip)", GoToSpawnsetEditor, ref _hoveredButtonAction, RenderSpawnsetEditorPreview);
+			ToolButton(Colors.AssetEditor.Desaturate(buttonColorDesaturation).Darken(0.2f) with { A = buttonAlpha }, "Asset Editor (todo)", () => { }, ref _hoveredButtonAction, RenderAssetEditorPreview);
+			ToolButton(Colors.ReplayEditor.Primary.Desaturate(buttonColorDesaturation).Darken(0.2f) with { A = buttonAlpha }, "Replay Editor (wip)", GoToReplayEditor, ref _hoveredButtonAction, RenderReplayEditorPreview);
+			ImGui.SetCursorPosY(ImGui.GetCursorPosY() + 16);
+			ToolButton(Colors.CustomLeaderboards.Primary.Desaturate(buttonColorDesaturation).Darken(0.2f) with { A = buttonAlpha }, "Custom Leaderboards", GoToCustomLeaderboards, ref _hoveredButtonAction, RenderCustomLeaderboardsPreview);
+			ToolButton(Colors.Practice.Primary.Desaturate(buttonColorDesaturation).Darken(0.2f) with { A = buttonAlpha }, "Practice (wip)", GoToPractice, ref _hoveredButtonAction, RenderPracticePreview);
+			ToolButton(Colors.ModManager.Desaturate(buttonColorDesaturation).Darken(0.2f) with { A = buttonAlpha }, "Mod Manager (todo)", () => { }, ref _hoveredButtonAction, RenderModManagerPreview);
 
 			static void GoToSpawnsetEditor() => UiRenderer.Layout = LayoutType.SpawnsetEditor;
 			static void GoToReplayEditor() => UiRenderer.Layout = LayoutType.ReplayEditor;
@@ -98,7 +99,7 @@ public static class MainWindow
 		ImGui.PushStyleColor(ImGuiCol.ButtonHovered, color + new Vector4(0, 0, 0, 0.2f));
 		ImGui.PushStyleColor(ImGuiCol.ButtonActive, color + new Vector4(0, 0, 0, 0.3f));
 		ImGui.PushStyleColor(ImGuiCol.Border, color with { A = 255 });
-		ImGui.PushStyleVar(ImGuiStyleVar.FrameBorderSize, 4);
+		ImGui.PushStyleVar(ImGuiStyleVar.FrameBorderSize, 2);
 
 		bool clicked = ImGui.Button(text, new(198, 48));
 

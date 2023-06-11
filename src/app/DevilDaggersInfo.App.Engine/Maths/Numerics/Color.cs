@@ -75,6 +75,11 @@ public readonly record struct Color(byte R, byte G, byte B, byte A)
 		return new((byte)(newR * byte.MaxValue), (byte)(newG * byte.MaxValue), (byte)(newB * byte.MaxValue), A);
 	}
 
+	public Color Darken(float amount)
+	{
+		return new((byte)(R * (1 - amount)), (byte)(G * (1 - amount)), (byte)(B * (1 - amount)), A);
+	}
+
 	public int GetHue()
 	{
 		byte min = Math.Min(Math.Min(R, G), B);
