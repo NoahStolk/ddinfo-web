@@ -7,6 +7,8 @@ namespace DevilDaggersInfo.App.Ui.Main;
 
 public static class MainWindow
 {
+	private static Action? _hoveredButtonAction;
+
 	public static void Render(out bool shouldClose)
 	{
 		shouldClose = false;
@@ -18,7 +20,7 @@ public static class MainWindow
 
 		ImGui.SetNextWindowPos(center, ImGuiCond.Always, new(0.5f, 0.5f));
 		ImGui.SetNextWindowSize(windowSize);
-		ImGui.SetNextWindowBgAlpha(0.75f);
+		ImGui.SetNextWindowBgAlpha(0.8f);
 
 		ImGui.Begin("Main Menu", ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoBringToFrontOnFocus);
 
@@ -32,6 +34,7 @@ public static class MainWindow
 		ImGui.Text($"{AssemblyUtils.EntryAssemblyVersion} (ALPHA)");
 		ImGui.Text("Developed by Noah Stolk");
 
+		ImGui.SetCursorPosY(ImGui.GetCursorPosY() + 8);
 		Vector2 iconSize = new(36);
 		if (ImGui.ImageButton((IntPtr)Root.InternalResources.ConfigurationTexture.Handle, iconSize))
 			UiRenderer.Layout = LayoutType.Config;
@@ -48,16 +51,16 @@ public static class MainWindow
 		if (ImGui.ImageButton((IntPtr)Root.InternalResources.CloseTexture.Handle, iconSize))
 			shouldClose = true;
 
-		Action? hoveredButtonAction = null;
-		if (ImGui.BeginChild("Main buttons", mainButtonsSize))
+		ImGui.SetCursorPosY(ImGui.GetCursorPosY() + 8);
+		if (ImGui.BeginChild("Tool buttons", mainButtonsSize))
 		{
 			const byte buttonAlpha = 127;
-			MainButton(Colors.SpawnsetEditor.Primary with { A = buttonAlpha }, "Spawnset Editor (wip)", GoToSpawnsetEditor, ref hoveredButtonAction, RenderSpawnsetEditorPreview);
-			MainButton(Colors.AssetEditor with { A = buttonAlpha }, "Asset Editor (todo)", () => { }, ref hoveredButtonAction, RenderAssetEditorPreview);
-			MainButton(Colors.ReplayEditor.Primary with { A = buttonAlpha }, "Replay Editor (wip)", GoToReplayEditor, ref hoveredButtonAction, RenderReplayEditorPreview);
-			MainButton(Colors.CustomLeaderboards.Primary with { A = buttonAlpha }, "Custom Leaderboards", GoToCustomLeaderboards, ref hoveredButtonAction, RenderCustomLeaderboardsPreview);
-			MainButton(Colors.Practice.Primary with { A = buttonAlpha }, "Practice (wip)", GoToPractice, ref hoveredButtonAction, RenderPracticePreview);
-			MainButton(Colors.ModManager with { A = buttonAlpha }, "Mod Manager (todo)", () => { }, ref hoveredButtonAction, RenderModManagerPreview);
+			ToolButton(Colors.SpawnsetEditor.Primary with { A = buttonAlpha }, "Spawnset Editor (wip)", GoToSpawnsetEditor, ref _hoveredButtonAction, RenderSpawnsetEditorPreview);
+			ToolButton(Colors.AssetEditor with { A = buttonAlpha }, "Asset Editor (todo)", () => { }, ref _hoveredButtonAction, RenderAssetEditorPreview);
+			ToolButton(Colors.ReplayEditor.Primary with { A = buttonAlpha }, "Replay Editor (wip)", GoToReplayEditor, ref _hoveredButtonAction, RenderReplayEditorPreview);
+			ToolButton(Colors.CustomLeaderboards.Primary with { A = buttonAlpha }, "Custom Leaderboards", GoToCustomLeaderboards, ref _hoveredButtonAction, RenderCustomLeaderboardsPreview);
+			ToolButton(Colors.Practice.Primary with { A = buttonAlpha }, "Practice (wip)", GoToPractice, ref _hoveredButtonAction, RenderPracticePreview);
+			ToolButton(Colors.ModManager with { A = buttonAlpha }, "Mod Manager (todo)", () => { }, ref _hoveredButtonAction, RenderModManagerPreview);
 
 			static void GoToSpawnsetEditor() => UiRenderer.Layout = LayoutType.SpawnsetEditor;
 			static void GoToReplayEditor() => UiRenderer.Layout = LayoutType.ReplayEditor;
@@ -72,13 +75,13 @@ public static class MainWindow
 
 		ImGui.EndChild();
 
-		if (hoveredButtonAction != null)
+		if (_hoveredButtonAction != null)
 		{
 			ImGui.SameLine();
 			if (ImGui.BeginChild("Preview", previewSize))
 			{
 				ImGui.PushTextWrapPos(previewSize.X - 16);
-				hoveredButtonAction();
+				_hoveredButtonAction.Invoke();
 				ImGui.PopTextWrapPos();
 			}
 
@@ -88,7 +91,7 @@ public static class MainWindow
 		ImGui.End();
 	}
 
-	private static void MainButton(Color color, string text, Action action, ref Action? hoveredAction, Action onHover)
+	private static void ToolButton(Color color, string text, Action action, ref Action? hoveredAction, Action onHover)
 	{
 		ImGui.PushStyleColor(ImGuiCol.Button, color);
 		ImGui.PushStyleColor(ImGuiCol.ButtonHovered, color + new Vector4(0, 0, 0, 0.2f));
@@ -125,6 +128,9 @@ public static class MainWindow
 			- Use the Race game mode, where the goal is to reach the dagger as fast as possible.
 
 			Be sure to check out the custom leaderboards to see what's possible.
+
+			Note that using custom spawnsets will not submit your score to the official leaderboards.
+			Spawnsets can only be used to practice, not cheat. They're completely safe to use.
 			""");
 	}
 
