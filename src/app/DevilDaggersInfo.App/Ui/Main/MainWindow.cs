@@ -13,6 +13,8 @@ public static class MainWindow
 
 		Vector2 center = ImGui.GetMainViewport().GetCenter();
 		Vector2 windowSize = new(683, 768);
+		Vector2 mainButtonsSize = new(208, 512);
+		Vector2 previewSize = new(windowSize.X - mainButtonsSize.X - 16, 512);
 
 		ImGui.SetNextWindowPos(center, ImGuiCond.Always, new(0.5f, 0.5f));
 		ImGui.SetNextWindowSize(windowSize);
@@ -28,22 +30,7 @@ public static class MainWindow
 
 		ImGui.SetCursorPos(new(textWidth + 16, 39));
 		ImGui.Text($"{AssemblyUtils.EntryAssemblyVersion} (ALPHA)");
-		if (ImGui.IsItemHovered())
-		{
-			string tooltip = $"""
-				Build time: {AssemblyUtils.EntryAssemblyBuildTime}
-
-				{StringResources.AppDescription}
-				""";
-			ImGui.SetTooltip(tooltip);
-		}
-
-		ImGui.Text("Created by Noah Stolk");
-
-		ImGuiExt.Hyperlink("https://devildaggers.info/");
-		ImGuiExt.Hyperlink("https://devildaggers.info/tools");
-		ImGuiExt.Hyperlink("https://github.com/NoahStolk/DevilDaggersInfo");
-		ImGui.Spacing();
+		ImGui.Text("Developed by Noah Stolk");
 
 		Vector2 iconSize = new(36);
 		if (ImGui.ImageButton((IntPtr)Root.InternalResources.ConfigurationTexture.Handle, iconSize))
@@ -62,7 +49,7 @@ public static class MainWindow
 			shouldClose = true;
 
 		Action? hoveredButtonAction = null;
-		if (ImGui.BeginChild("Main buttons", new(192 + 8, (48 + 4) * 6)))
+		if (ImGui.BeginChild("Main buttons", mainButtonsSize))
 		{
 			const byte buttonAlpha = 127;
 			MainButton(Colors.SpawnsetEditor.Primary with { A = buttonAlpha }, "Spawnset Editor (wip)", GoToSpawnsetEditor, ref hoveredButtonAction, RenderSpawnsetEditorPreview);
@@ -88,9 +75,11 @@ public static class MainWindow
 		if (hoveredButtonAction != null)
 		{
 			ImGui.SameLine();
-			if (ImGui.BeginChild("Preview", new(512, 256)))
+			if (ImGui.BeginChild("Preview", previewSize))
 			{
+				ImGui.PushTextWrapPos(previewSize.X - 16);
 				hoveredButtonAction();
+				ImGui.PopTextWrapPos();
 			}
 
 			ImGui.EndChild();
@@ -107,7 +96,7 @@ public static class MainWindow
 		ImGui.PushStyleColor(ImGuiCol.Border, color with { A = 255 });
 		ImGui.PushStyleVar(ImGuiStyleVar.FrameBorderSize, 4);
 
-		bool clicked = ImGui.Button(text, new(192, 48));
+		bool clicked = ImGui.Button(text, new(198, 48));
 
 		ImGui.PopStyleColor(4);
 		ImGui.PopStyleVar();
@@ -117,41 +106,55 @@ public static class MainWindow
 
 		if (clicked)
 			action.Invoke();
+
+		ImGui.Spacing();
 	}
 
 	private static void RenderSpawnsetEditorPreview()
 	{
-		ImGui.Text("Spawnset Editor");
-		ImGui.Text("WIP");
+		ImGuiExt.Title("Spawnset Editor");
+		ImGui.Text("""
+			Create and edit custom spawnsets (levels) for Devil Daggers.
+
+			Some things you can do:
+			- Create your own set of enemy spawns.
+			- Start with any hand upgrade.
+			- Create a custom arena made out of towers and gaps.
+			- Give yourself 10,000 homing daggers.
+			- Use the Time Attack game mode, where the goal is to kill all enemies as fast as possible.
+			- Use the Race game mode, where the goal is to reach the dagger as fast as possible.
+
+			Be sure to check out the custom leaderboards to see what's possible.
+			""");
 	}
 
 	private static void RenderAssetEditorPreview()
 	{
-		ImGui.Text("Asset Editor");
+		ImGuiExt.Title("Asset Editor");
 		ImGui.Text("TODO");
 	}
 
 	private static void RenderReplayEditorPreview()
 	{
-		ImGui.Text("Replay Editor");
+		ImGuiExt.Title("Replay Editor");
 		ImGui.Text("WIP");
 	}
 
 	private static void RenderCustomLeaderboardsPreview()
 	{
-		ImGui.Text("Custom Leaderboards");
+		ImGuiExt.Title("Custom Leaderboards");
 		ImGui.Text("WIP");
 	}
 
 	private static void RenderPracticePreview()
 	{
-		ImGui.Text("Practice");
+		ImGuiExt.Title("Practice");
 		ImGui.Text("WIP");
 	}
 
 	private static void RenderModManagerPreview()
 	{
-		ImGui.Text("Mod Manager");
+		ImGuiExt.Title("Mod Manager");
 		ImGui.Text("TODO");
 	}
 }
