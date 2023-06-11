@@ -15,9 +15,7 @@ public static class StringResources
 
 		If you encounter any problems, please report them on Discord/GitHub.
 
-		Thank you for testing.
-
-		For more information, go to:
+		Thank you for testing!
 		""";
 
 	public const string ReplaySimulator3D = $"""
