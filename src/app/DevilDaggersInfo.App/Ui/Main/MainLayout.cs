@@ -109,26 +109,22 @@ public static class MainLayout
 	private static void GoToSpawnsetEditor()
 	{
 		UiRenderer.Layout = LayoutType.SpawnsetEditor;
-		Colors.SetColors(Colors.SpawnsetEditor);
 	}
 
 	private static void GoToReplayEditor()
 	{
 		UiRenderer.Layout = LayoutType.ReplayEditor;
-		Colors.SetColors(Colors.ReplayEditor);
 	}
 
 	private static void GoToCustomLeaderboards()
 	{
 		UiRenderer.Layout = LayoutType.CustomLeaderboards;
-		Colors.SetColors(Colors.CustomLeaderboards);
 		LeaderboardListChild.LoadAll();
 	}
 
 	private static void GoToPractice()
 	{
 		UiRenderer.Layout = LayoutType.Practice;
-		Colors.SetColors(Colors.Practice);
 	}
 
 	private static void GoToConfiguration()
@@ -187,18 +183,6 @@ public static class MainLayout
 	private static void RenderModManagerPreview()
 	{
 		ImGui.Text("Mod Manager");
-		ImGui.Text("TODO");
-	}
-
-	private static void RenderConfigurationPreview()
-	{
-		ImGui.Text("Configuration");
-		ImGui.Text("TODO");
-	}
-
-	private static void RenderSettingsPreview()
-	{
-		ImGui.Text("Settings");
 		ImGui.Text("TODO");
 	}
 

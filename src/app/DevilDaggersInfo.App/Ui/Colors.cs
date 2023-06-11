@@ -15,6 +15,14 @@ public static class Colors
 	private const byte _alphaFrameBackgroundActive = 171;
 	private const byte _alphaSeparatorHovered = 199;
 
+	public static ColorConfiguration Main { get; } = new()
+	{
+		Primary = new(250, 66, 250, 255),
+		Secondary = new(224, 61, 224, 255),
+		Tertiary = new(122, 41, 122, 255),
+		Quaternary = new(191, 26, 191, 255),
+	};
+
 	public static ColorConfiguration SpawnsetEditor { get; } = new()
 	{
 		Primary = new(250, 66, 66, 255),

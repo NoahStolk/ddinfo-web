@@ -126,6 +126,8 @@ public class Application
 		ImGuiStylePtr style = ImGui.GetStyle();
 		style.ScrollbarSize = 16;
 		style.ScrollbarRounding = 0;
+
+		Colors.SetColors(Colors.Main);
 	}
 
 	private void OnWindowOnFramebufferResize(Vector2D<int> size)
