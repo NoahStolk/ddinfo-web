@@ -55,12 +55,13 @@ public static class MainWindow
 		if (ImGui.BeginChild("Tool buttons", mainButtonsSize))
 		{
 			const byte buttonAlpha = 127;
-			ToolButton(Colors.SpawnsetEditor.Primary with { A = buttonAlpha }, "Spawnset Editor (wip)", GoToSpawnsetEditor, ref _hoveredButtonAction, RenderSpawnsetEditorPreview);
-			ToolButton(Colors.AssetEditor with { A = buttonAlpha }, "Asset Editor (todo)", () => { }, ref _hoveredButtonAction, RenderAssetEditorPreview);
-			ToolButton(Colors.ReplayEditor.Primary with { A = buttonAlpha }, "Replay Editor (wip)", GoToReplayEditor, ref _hoveredButtonAction, RenderReplayEditorPreview);
-			ToolButton(Colors.CustomLeaderboards.Primary with { A = buttonAlpha }, "Custom Leaderboards", GoToCustomLeaderboards, ref _hoveredButtonAction, RenderCustomLeaderboardsPreview);
-			ToolButton(Colors.Practice.Primary with { A = buttonAlpha }, "Practice (wip)", GoToPractice, ref _hoveredButtonAction, RenderPracticePreview);
-			ToolButton(Colors.ModManager with { A = buttonAlpha }, "Mod Manager (todo)", () => { }, ref _hoveredButtonAction, RenderModManagerPreview);
+			const float buttonColorDesaturation = 0.3f;
+			ToolButton(Colors.SpawnsetEditor.Primary.Desaturate(buttonColorDesaturation) with { A = buttonAlpha }, "Spawnset Editor (wip)", GoToSpawnsetEditor, ref _hoveredButtonAction, RenderSpawnsetEditorPreview);
+			ToolButton(Colors.AssetEditor.Desaturate(buttonColorDesaturation) with { A = buttonAlpha }, "Asset Editor (todo)", () => { }, ref _hoveredButtonAction, RenderAssetEditorPreview);
+			ToolButton(Colors.ReplayEditor.Primary.Desaturate(buttonColorDesaturation) with { A = buttonAlpha }, "Replay Editor (wip)", GoToReplayEditor, ref _hoveredButtonAction, RenderReplayEditorPreview);
+			ToolButton(Colors.CustomLeaderboards.Primary.Desaturate(buttonColorDesaturation) with { A = buttonAlpha }, "Custom Leaderboards", GoToCustomLeaderboards, ref _hoveredButtonAction, RenderCustomLeaderboardsPreview);
+			ToolButton(Colors.Practice.Primary.Desaturate(buttonColorDesaturation) with { A = buttonAlpha }, "Practice (wip)", GoToPractice, ref _hoveredButtonAction, RenderPracticePreview);
+			ToolButton(Colors.ModManager.Desaturate(buttonColorDesaturation) with { A = buttonAlpha }, "Mod Manager (todo)", () => { }, ref _hoveredButtonAction, RenderModManagerPreview);
 
 			static void GoToSpawnsetEditor() => UiRenderer.Layout = LayoutType.SpawnsetEditor;
 			static void GoToReplayEditor() => UiRenderer.Layout = LayoutType.ReplayEditor;
@@ -121,8 +122,8 @@ public static class MainWindow
 
 			Some things you can do:
 			- Create your own set of enemy spawns.
+			- Create a custom arena.
 			- Start with any hand upgrade.
-			- Create a custom arena made out of towers and gaps.
 			- Give yourself 10,000 homing daggers.
 			- Use the Time Attack game mode, where the goal is to kill all enemies as fast as possible.
 			- Use the Race game mode, where the goal is to reach the dagger as fast as possible.
