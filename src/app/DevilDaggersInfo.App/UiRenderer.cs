@@ -13,6 +13,7 @@ namespace DevilDaggersInfo.App;
 public static class UiRenderer
 {
 	private static bool _showSettings;
+	private static bool _showAbout;
 	private static bool _showUpdateAvailable;
 	private static bool _windowShouldClose;
 
@@ -23,6 +24,11 @@ public static class UiRenderer
 	public static void ShowSettings()
 	{
 		_showSettings = true;
+	}
+
+	public static void ShowAbout()
+	{
+		_showAbout = true;
 	}
 
 	public static void ShowUpdateAvailable()
@@ -71,6 +77,7 @@ public static class UiRenderer
 			DebugLayout.Render();
 
 		SettingsWindow.Render(ref _showSettings);
+		AboutWindow.Render(ref _showAbout);
 		UpdateWindow.Render(ref _showUpdateAvailable);
 
 		Modals.Render();

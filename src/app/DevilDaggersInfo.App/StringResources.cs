@@ -6,7 +6,7 @@ public static class StringResources
 	private const string _camera3D = "Hold right click to look around.";
 	private const string _tileEditor3D = "Use the scroll wheel to raise individual tiles.";
 
-	public const string MainMenu = """
+	public const string AppDescription = """
 		This is an alpha version of the rewritten tools.
 		It is still very much a work in progress.
 

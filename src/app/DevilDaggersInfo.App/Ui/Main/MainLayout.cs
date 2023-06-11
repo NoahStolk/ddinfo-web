@@ -4,18 +4,16 @@ using DevilDaggersInfo.App.Ui.CustomLeaderboards.LeaderboardList;
 using DevilDaggersInfo.Core.Spawnset;
 using ImGuiNET;
 using Silk.NET.OpenGL;
-using System.Diagnostics;
 using System.Numerics;
 
 namespace DevilDaggersInfo.App.Ui.Main;
 
 public static class MainLayout
 {
-	private static readonly string _version = AssemblyUtils.EntryAssemblyVersion;
-
 	private static readonly SpawnsetBinary _mainMenuSpawnset = SpawnsetBinary.CreateDefault();
 
 	private static ArenaScene? _mainMenuScene;
+	private static Action? _hoveredButtonAction;
 
 	public static void InitializeScene()
 	{
@@ -28,39 +26,80 @@ public static class MainLayout
 		shouldClose = false;
 
 		Vector2 center = ImGui.GetMainViewport().GetCenter();
+		Vector2 windowSize = new(683, 768);
+
 		ImGui.SetNextWindowPos(center, ImGuiCond.Always, new(0.5f, 0.5f));
-		ImGui.SetNextWindowSize(Constants.LayoutSize);
+		ImGui.SetNextWindowSize(windowSize);
+		ImGui.SetNextWindowBgAlpha(0.75f);
 
 		ImGui.Begin("Main Menu", ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoBringToFrontOnFocus);
 
-		ImGui.PushFont(Root.FontGoetheBold);
-		ImGui.Text("ddinfo tools " + _version);
+		ImGui.PushFont(Root.FontGoetheBold60);
+		const string title = "ddinfo tools";
+		ImGui.TextColored(Vector4.Lerp(Color.Red, Color.Orange, MathF.Sin((float)Root.Window.Time)), title);
+		float textWidth = ImGui.CalcTextSize(title).X;
 		ImGui.PopFont();
+
+		ImGui.SetCursorPos(new(textWidth + 16, 39));
+		ImGui.Text($"{AssemblyUtils.EntryAssemblyVersion} (ALPHA)");
 		if (ImGui.IsItemHovered())
-			ImGui.SetTooltip(StringResources.MainMenu);
+		{
+			string tooltip = $"""
+				Build time: {AssemblyUtils.EntryAssemblyBuildTime}
 
-		ImGui.Text("Devil Daggers is created by Sorath");
-		ImGui.Text("DevilDaggers.info is created by Noah Stolk");
+				{StringResources.AppDescription}
+				""";
+			ImGui.SetTooltip(tooltip);
+		}
 
-		const byte buttonAlpha = 127;
-		Color gray = new(96, 96, 96, buttonAlpha);
+		ImGui.Text("Created by Noah Stolk");
 
-		MainButton(Colors.SpawnsetEditor.Primary with { A = buttonAlpha }, "Spawnset Editor (wip)", GoToSpawnsetEditor);
-		MainButton(Colors.AssetEditor with { A = buttonAlpha }, "Asset Editor (todo)", () => { });
-		MainButton(Colors.ReplayEditor.Primary with { A = buttonAlpha }, "Replay Editor (wip)", GoToReplayEditor);
-		MainButton(Colors.CustomLeaderboards.Primary with { A = buttonAlpha }, "Custom Leaderboards", GoToCustomLeaderboards);
-		MainButton(Colors.Practice.Primary with { A = buttonAlpha }, "Practice (wip)", GoToPractice);
-		MainButton(Colors.ModManager with { A = buttonAlpha }, "Mod Manager (todo)", () => { });
-		MainButton(gray, "Configuration", GoToConfiguration);
-		MainButton(gray, "Settings", UiRenderer.ShowSettings);
+		ImGuiExt.Hyperlink("https://devildaggers.info/");
+		ImGuiExt.Hyperlink("https://devildaggers.info/tools");
+		ImGuiExt.Hyperlink("https://github.com/NoahStolk/DevilDaggersInfo");
+		ImGui.Spacing();
 
-		bool close = false; // Must declare another local because lambda capture cannot work with out parameter.
-		MainButton(gray, "Exit", () => close = true);
-		shouldClose = close;
+		Vector2 iconSize = new(36);
+		if (ImGui.ImageButton((IntPtr)Root.InternalResources.ConfigurationTexture.Handle, iconSize))
+			GoToConfiguration();
 
-		Hyperlink("https://devildaggers.info/");
-		Hyperlink("https://devildaggers.info/tools");
-		Hyperlink("https://github.com/NoahStolk/DevilDaggersInfo");
+		ImGui.SameLine();
+		if (ImGui.ImageButton((IntPtr)Root.InternalResources.SettingsTexture.Handle, iconSize))
+			UiRenderer.ShowSettings();
+
+		ImGui.SameLine();
+		if (ImGui.ImageButton((IntPtr)Root.InternalResources.InfoTexture.Handle, iconSize))
+			UiRenderer.ShowAbout();
+
+		ImGui.SameLine();
+		if (ImGui.ImageButton((IntPtr)Root.InternalResources.CloseTexture.Handle, iconSize))
+			shouldClose = true;
+
+		_hoveredButtonAction = null;
+
+		if (ImGui.BeginChild("Main buttons", new(192 + 8, (48 + 4) * 6)))
+		{
+			const byte buttonAlpha = 127;
+			MainButton(Colors.SpawnsetEditor.Primary with { A = buttonAlpha }, "Spawnset Editor (wip)", GoToSpawnsetEditor, ref _hoveredButtonAction, RenderSpawnsetEditorPreview);
+			MainButton(Colors.AssetEditor with { A = buttonAlpha }, "Asset Editor (todo)", () => { }, ref _hoveredButtonAction, RenderAssetEditorPreview);
+			MainButton(Colors.ReplayEditor.Primary with { A = buttonAlpha }, "Replay Editor (wip)", GoToReplayEditor, ref _hoveredButtonAction, RenderReplayEditorPreview);
+			MainButton(Colors.CustomLeaderboards.Primary with { A = buttonAlpha }, "Custom Leaderboards", GoToCustomLeaderboards, ref _hoveredButtonAction, RenderCustomLeaderboardsPreview);
+			MainButton(Colors.Practice.Primary with { A = buttonAlpha }, "Practice (wip)", GoToPractice, ref _hoveredButtonAction, RenderPracticePreview);
+			MainButton(Colors.ModManager with { A = buttonAlpha }, "Mod Manager (todo)", () => { }, ref _hoveredButtonAction, RenderModManagerPreview);
+		}
+
+		ImGui.EndChild();
+
+		if (_hoveredButtonAction != null)
+		{
+			ImGui.SameLine();
+			if (ImGui.BeginChild("Preview", new(512, 256)))
+			{
+				_hoveredButtonAction();
+			}
+
+			ImGui.EndChild();
+		}
 
 		ImGui.End();
 
@@ -97,36 +136,70 @@ public static class MainLayout
 		UiRenderer.Layout = LayoutType.Config;
 	}
 
-	private static void MainButton(Color color, string text, Action action)
+	private static void MainButton(Color color, string text, Action action, ref Action? hoveredAction, Action onHover)
 	{
 		ImGui.PushStyleColor(ImGuiCol.Button, color);
 		ImGui.PushStyleColor(ImGuiCol.ButtonHovered, color + new Vector4(0, 0, 0, 0.2f));
 		ImGui.PushStyleColor(ImGuiCol.ButtonActive, color + new Vector4(0, 0, 0, 0.3f));
 		ImGui.PushStyleColor(ImGuiCol.Border, color with { A = 255 });
-
 		ImGui.PushStyleVar(ImGuiStyleVar.FrameBorderSize, 4);
+
 		if (ImGui.Button(text, new(192, 48)))
 			action.Invoke();
 
-		ImGui.PopStyleVar();
+		if (ImGui.IsItemHovered())
+			hoveredAction = onHover;
 
+		ImGui.PopStyleVar();
 		ImGui.PopStyleColor(4);
 	}
 
-	private static void Hyperlink(string url)
+	private static void RenderSpawnsetEditorPreview()
 	{
-		Vector4 hyperlinkColor = new(0, 0.625f, 1, 1);
-		Vector4 hyperlinkHoverColor = new(0.25f, 0.875f, 1, 0.25f);
+		ImGui.Text("Spawnset Editor");
+		ImGui.Text("WIP");
+	}
 
-		ImGui.PushStyleColor(ImGuiCol.Text, hyperlinkColor);
-		ImGui.PushStyleColor(ImGuiCol.Button, default(Vector4));
-		ImGui.PushStyleColor(ImGuiCol.ButtonHovered, hyperlinkHoverColor);
-		ImGui.PushStyleColor(ImGuiCol.ButtonActive, default(Vector4));
+	private static void RenderAssetEditorPreview()
+	{
+		ImGui.Text("Asset Editor");
+		ImGui.Text("TODO");
+	}
 
-		if (ImGui.Button(url))
-			Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+	private static void RenderReplayEditorPreview()
+	{
+		ImGui.Text("Replay Editor");
+		ImGui.Text("WIP");
+	}
 
-		ImGui.PopStyleColor(4);
+	private static void RenderCustomLeaderboardsPreview()
+	{
+		ImGui.Text("Custom Leaderboards");
+		ImGui.Text("WIP");
+	}
+
+	private static void RenderPracticePreview()
+	{
+		ImGui.Text("Practice");
+		ImGui.Text("WIP");
+	}
+
+	private static void RenderModManagerPreview()
+	{
+		ImGui.Text("Mod Manager");
+		ImGui.Text("TODO");
+	}
+
+	private static void RenderConfigurationPreview()
+	{
+		ImGui.Text("Configuration");
+		ImGui.Text("TODO");
+	}
+
+	private static void RenderSettingsPreview()
+	{
+		ImGui.Text("Settings");
+		ImGui.Text("TODO");
 	}
 
 	private static void RenderScene(float delta)
