@@ -174,40 +174,40 @@ public class CustomLeaderboardService
 		byte[]? levelUpTime3CriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.LevelUpTime3Criteria.Expression, true);
 		byte[]? levelUpTime4CriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.LevelUpTime4Criteria.Expression, true);
 		byte[]? enemiesAliveCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.EnemiesAliveCriteria.Expression);
-		byte[]? skull1KillsCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.Skull1KillsCriteria.Expression);
-		byte[]? skull2KillsCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.Skull2KillsCriteria.Expression);
-		byte[]? skull3KillsCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.Skull3KillsCriteria.Expression);
-		byte[]? skull4KillsCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.Skull4KillsCriteria.Expression);
-		byte[]? spiderlingKillsCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.SpiderlingKillsCriteria.Expression);
-		byte[]? spiderEggKillsCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.SpiderEggKillsCriteria.Expression);
-		byte[]? squid1KillsCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.Squid1KillsCriteria.Expression);
-		byte[]? squid2KillsCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.Squid2KillsCriteria.Expression);
-		byte[]? squid3KillsCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.Squid3KillsCriteria.Expression);
-		byte[]? centipedeKillsCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.CentipedeKillsCriteria.Expression);
-		byte[]? gigapedeKillsCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.GigapedeKillsCriteria.Expression);
-		byte[]? ghostpedeKillsCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.GhostpedeKillsCriteria.Expression);
-		byte[]? spider1KillsCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.Spider1KillsCriteria.Expression);
-		byte[]? spider2KillsCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.Spider2KillsCriteria.Expression);
-		byte[]? leviathanKillsCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.LeviathanKillsCriteria.Expression);
-		byte[]? orbKillsCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.OrbKillsCriteria.Expression);
-		byte[]? thornKillsCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.ThornKillsCriteria.Expression);
-		byte[]? skull1sAliveCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.Skull1sAliveCriteria.Expression);
-		byte[]? skull2sAliveCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.Skull2sAliveCriteria.Expression);
-		byte[]? skull3sAliveCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.Skull3sAliveCriteria.Expression);
-		byte[]? skull4sAliveCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.Skull4sAliveCriteria.Expression);
-		byte[]? spiderlingsAliveCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.SpiderlingsAliveCriteria.Expression);
-		byte[]? spiderEggsAliveCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.SpiderEggsAliveCriteria.Expression);
-		byte[]? squid1sAliveCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.Squid1sAliveCriteria.Expression);
-		byte[]? squid2sAliveCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.Squid2sAliveCriteria.Expression);
-		byte[]? squid3sAliveCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.Squid3sAliveCriteria.Expression);
-		byte[]? centipedesAliveCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.CentipedesAliveCriteria.Expression);
-		byte[]? gigapedesAliveCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.GigapedesAliveCriteria.Expression);
-		byte[]? ghostpedesAliveCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.GhostpedesAliveCriteria.Expression);
-		byte[]? spider1sAliveCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.Spider1sAliveCriteria.Expression);
-		byte[]? spider2sAliveCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.Spider2sAliveCriteria.Expression);
-		byte[]? leviathansAliveCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.LeviathansAliveCriteria.Expression);
-		byte[]? orbsAliveCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.OrbsAliveCriteria.Expression);
-		byte[]? thornsAliveCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.ThornsAliveCriteria.Expression);
+		byte[]? skull1KillCountCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.Skull1KillsCriteria.Expression);
+		byte[]? skull2KillCountCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.Skull2KillsCriteria.Expression);
+		byte[]? skull3KillCountCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.Skull3KillsCriteria.Expression);
+		byte[]? skull4KillCountCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.Skull4KillsCriteria.Expression);
+		byte[]? spiderlingKillCountCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.SpiderlingKillsCriteria.Expression);
+		byte[]? spiderEggKillCountCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.SpiderEggKillsCriteria.Expression);
+		byte[]? squid1KillCountCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.Squid1KillsCriteria.Expression);
+		byte[]? squid2KillCountCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.Squid2KillsCriteria.Expression);
+		byte[]? squid3KillCountCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.Squid3KillsCriteria.Expression);
+		byte[]? centipedeKillCountCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.CentipedeKillsCriteria.Expression);
+		byte[]? gigapedeKillCountCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.GigapedeKillsCriteria.Expression);
+		byte[]? ghostpedeKillCountCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.GhostpedeKillsCriteria.Expression);
+		byte[]? spider1KillCountCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.Spider1KillsCriteria.Expression);
+		byte[]? spider2KillCountCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.Spider2KillsCriteria.Expression);
+		byte[]? leviathanKillCountCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.LeviathanKillsCriteria.Expression);
+		byte[]? orbKillCountCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.OrbKillsCriteria.Expression);
+		byte[]? thornKillCountCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.ThornKillsCriteria.Expression);
+		byte[]? skull1AliveCountCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.Skull1sAliveCriteria.Expression);
+		byte[]? skull2AliveCountCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.Skull2sAliveCriteria.Expression);
+		byte[]? skull3AliveCountCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.Skull3sAliveCriteria.Expression);
+		byte[]? skull4AliveCountCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.Skull4sAliveCriteria.Expression);
+		byte[]? spiderlingAliveCountCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.SpiderlingsAliveCriteria.Expression);
+		byte[]? spiderEggAliveCountCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.SpiderEggsAliveCriteria.Expression);
+		byte[]? squid1AliveCountCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.Squid1sAliveCriteria.Expression);
+		byte[]? squid2AliveCountCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.Squid2sAliveCriteria.Expression);
+		byte[]? squid3AliveCountCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.Squid3sAliveCriteria.Expression);
+		byte[]? centipedeAliveCountCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.CentipedesAliveCriteria.Expression);
+		byte[]? gigapedeAliveCountCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.GigapedesAliveCriteria.Expression);
+		byte[]? ghostpedeAliveCountCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.GhostpedesAliveCriteria.Expression);
+		byte[]? spider1AliveCountCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.Spider1sAliveCriteria.Expression);
+		byte[]? spider2AliveCountCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.Spider2sAliveCriteria.Expression);
+		byte[]? leviathanAliveCountCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.LeviathansAliveCriteria.Expression);
+		byte[]? orbAliveCountCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.OrbsAliveCriteria.Expression);
+		byte[]? thornAliveCountCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.ThornsAliveCriteria.Expression);
 
 		if (_dbContext.CustomEntries.Any(ce => ce.CustomLeaderboardId == id))
 		{
@@ -279,40 +279,40 @@ public class CustomLeaderboardService
 				!ExpressionEqual(levelUpTime3CriteriaExpression, customLeaderboard.LevelUpTime3Criteria.Expression) ||
 				!ExpressionEqual(levelUpTime4CriteriaExpression, customLeaderboard.LevelUpTime4Criteria.Expression) ||
 				!ExpressionEqual(enemiesAliveCriteriaExpression, customLeaderboard.EnemiesAliveCriteria.Expression) ||
-				!ExpressionEqual(skull1KillsCriteriaExpression, customLeaderboard.Skull1KillsCriteria.Expression) ||
-				!ExpressionEqual(skull2KillsCriteriaExpression, customLeaderboard.Skull2KillsCriteria.Expression) ||
-				!ExpressionEqual(skull3KillsCriteriaExpression, customLeaderboard.Skull3KillsCriteria.Expression) ||
-				!ExpressionEqual(skull4KillsCriteriaExpression, customLeaderboard.Skull4KillsCriteria.Expression) ||
-				!ExpressionEqual(spiderlingKillsCriteriaExpression, customLeaderboard.SpiderlingKillsCriteria.Expression) ||
-				!ExpressionEqual(spiderEggKillsCriteriaExpression, customLeaderboard.SpiderEggKillsCriteria.Expression) ||
-				!ExpressionEqual(squid1KillsCriteriaExpression, customLeaderboard.Squid1KillsCriteria.Expression) ||
-				!ExpressionEqual(squid2KillsCriteriaExpression, customLeaderboard.Squid2KillsCriteria.Expression) ||
-				!ExpressionEqual(squid3KillsCriteriaExpression, customLeaderboard.Squid3KillsCriteria.Expression) ||
-				!ExpressionEqual(centipedeKillsCriteriaExpression, customLeaderboard.CentipedeKillsCriteria.Expression) ||
-				!ExpressionEqual(gigapedeKillsCriteriaExpression, customLeaderboard.GigapedeKillsCriteria.Expression) ||
-				!ExpressionEqual(ghostpedeKillsCriteriaExpression, customLeaderboard.GhostpedeKillsCriteria.Expression) ||
-				!ExpressionEqual(spider1KillsCriteriaExpression, customLeaderboard.Spider1KillsCriteria.Expression) ||
-				!ExpressionEqual(spider2KillsCriteriaExpression, customLeaderboard.Spider2KillsCriteria.Expression) ||
-				!ExpressionEqual(leviathanKillsCriteriaExpression, customLeaderboard.LeviathanKillsCriteria.Expression) ||
-				!ExpressionEqual(orbKillsCriteriaExpression, customLeaderboard.OrbKillsCriteria.Expression) ||
-				!ExpressionEqual(thornKillsCriteriaExpression, customLeaderboard.ThornKillsCriteria.Expression) ||
-				!ExpressionEqual(skull1sAliveCriteriaExpression, customLeaderboard.Skull1sAliveCriteria.Expression) ||
-				!ExpressionEqual(skull2sAliveCriteriaExpression, customLeaderboard.Skull2sAliveCriteria.Expression) ||
-				!ExpressionEqual(skull3sAliveCriteriaExpression, customLeaderboard.Skull3sAliveCriteria.Expression) ||
-				!ExpressionEqual(skull4sAliveCriteriaExpression, customLeaderboard.Skull4sAliveCriteria.Expression) ||
-				!ExpressionEqual(spiderlingsAliveCriteriaExpression, customLeaderboard.SpiderlingsAliveCriteria.Expression) ||
-				!ExpressionEqual(spiderEggsAliveCriteriaExpression, customLeaderboard.SpiderEggsAliveCriteria.Expression) ||
-				!ExpressionEqual(squid1sAliveCriteriaExpression, customLeaderboard.Squid1sAliveCriteria.Expression) ||
-				!ExpressionEqual(squid2sAliveCriteriaExpression, customLeaderboard.Squid2sAliveCriteria.Expression) ||
-				!ExpressionEqual(squid3sAliveCriteriaExpression, customLeaderboard.Squid3sAliveCriteria.Expression) ||
-				!ExpressionEqual(centipedesAliveCriteriaExpression, customLeaderboard.CentipedesAliveCriteria.Expression) ||
-				!ExpressionEqual(gigapedesAliveCriteriaExpression, customLeaderboard.GigapedesAliveCriteria.Expression) ||
-				!ExpressionEqual(ghostpedesAliveCriteriaExpression, customLeaderboard.GhostpedesAliveCriteria.Expression) ||
-				!ExpressionEqual(spider1sAliveCriteriaExpression, customLeaderboard.Spider1sAliveCriteria.Expression) ||
-				!ExpressionEqual(spider2sAliveCriteriaExpression, customLeaderboard.Spider2sAliveCriteria.Expression) ||
-				!ExpressionEqual(leviathansAliveCriteriaExpression, customLeaderboard.LeviathansAliveCriteria.Expression) ||
-				!ExpressionEqual(orbsAliveCriteriaExpression, customLeaderboard.OrbsAliveCriteria.Expression) ||
-				!ExpressionEqual(thornsAliveCriteriaExpression, customLeaderboard.ThornsAliveCriteria.Expression);
+				!ExpressionEqual(skull1KillCountCriteriaExpression, customLeaderboard.Skull1KillsCriteria.Expression) ||
+				!ExpressionEqual(skull2KillCountCriteriaExpression, customLeaderboard.Skull2KillsCriteria.Expression) ||
+				!ExpressionEqual(skull3KillCountCriteriaExpression, customLeaderboard.Skull3KillsCriteria.Expression) ||
+				!ExpressionEqual(skull4KillCountCriteriaExpression, customLeaderboard.Skull4KillsCriteria.Expression) ||
+				!ExpressionEqual(spiderlingKillCountCriteriaExpression, customLeaderboard.SpiderlingKillsCriteria.Expression) ||
+				!ExpressionEqual(spiderEggKillCountCriteriaExpression, customLeaderboard.SpiderEggKillsCriteria.Expression) ||
+				!ExpressionEqual(squid1KillCountCriteriaExpression, customLeaderboard.Squid1KillsCriteria.Expression) ||
+				!ExpressionEqual(squid2KillCountCriteriaExpression, customLeaderboard.Squid2KillsCriteria.Expression) ||
+				!ExpressionEqual(squid3KillCountCriteriaExpression, customLeaderboard.Squid3KillsCriteria.Expression) ||
+				!ExpressionEqual(centipedeKillCountCriteriaExpression, customLeaderboard.CentipedeKillsCriteria.Expression) ||
+				!ExpressionEqual(gigapedeKillCountCriteriaExpression, customLeaderboard.GigapedeKillsCriteria.Expression) ||
+				!ExpressionEqual(ghostpedeKillCountCriteriaExpression, customLeaderboard.GhostpedeKillsCriteria.Expression) ||
+				!ExpressionEqual(spider1KillCountCriteriaExpression, customLeaderboard.Spider1KillsCriteria.Expression) ||
+				!ExpressionEqual(spider2KillCountCriteriaExpression, customLeaderboard.Spider2KillsCriteria.Expression) ||
+				!ExpressionEqual(leviathanKillCountCriteriaExpression, customLeaderboard.LeviathanKillsCriteria.Expression) ||
+				!ExpressionEqual(orbKillCountCriteriaExpression, customLeaderboard.OrbKillsCriteria.Expression) ||
+				!ExpressionEqual(thornKillCountCriteriaExpression, customLeaderboard.ThornKillsCriteria.Expression) ||
+				!ExpressionEqual(skull1AliveCountCriteriaExpression, customLeaderboard.Skull1sAliveCriteria.Expression) ||
+				!ExpressionEqual(skull2AliveCountCriteriaExpression, customLeaderboard.Skull2sAliveCriteria.Expression) ||
+				!ExpressionEqual(skull3AliveCountCriteriaExpression, customLeaderboard.Skull3sAliveCriteria.Expression) ||
+				!ExpressionEqual(skull4AliveCountCriteriaExpression, customLeaderboard.Skull4sAliveCriteria.Expression) ||
+				!ExpressionEqual(spiderlingAliveCountCriteriaExpression, customLeaderboard.SpiderlingsAliveCriteria.Expression) ||
+				!ExpressionEqual(spiderEggAliveCountCriteriaExpression, customLeaderboard.SpiderEggsAliveCriteria.Expression) ||
+				!ExpressionEqual(squid1AliveCountCriteriaExpression, customLeaderboard.Squid1sAliveCriteria.Expression) ||
+				!ExpressionEqual(squid2AliveCountCriteriaExpression, customLeaderboard.Squid2sAliveCriteria.Expression) ||
+				!ExpressionEqual(squid3AliveCountCriteriaExpression, customLeaderboard.Squid3sAliveCriteria.Expression) ||
+				!ExpressionEqual(centipedeAliveCountCriteriaExpression, customLeaderboard.CentipedesAliveCriteria.Expression) ||
+				!ExpressionEqual(gigapedeAliveCountCriteriaExpression, customLeaderboard.GigapedesAliveCriteria.Expression) ||
+				!ExpressionEqual(ghostpedeAliveCountCriteriaExpression, customLeaderboard.GhostpedesAliveCriteria.Expression) ||
+				!ExpressionEqual(spider1AliveCountCriteriaExpression, customLeaderboard.Spider1sAliveCriteria.Expression) ||
+				!ExpressionEqual(spider2AliveCountCriteriaExpression, customLeaderboard.Spider2sAliveCriteria.Expression) ||
+				!ExpressionEqual(leviathanAliveCountCriteriaExpression, customLeaderboard.LeviathansAliveCriteria.Expression) ||
+				!ExpressionEqual(orbAliveCountCriteriaExpression, customLeaderboard.OrbsAliveCriteria.Expression) ||
+				!ExpressionEqual(thornAliveCountCriteriaExpression, customLeaderboard.ThornsAliveCriteria.Expression);
 
 			if (anyCriteriaOperatorChanged || anyCriteriaValueChanged)
 				throw new AdminDomainException("Cannot change criteria for custom leaderboard with scores.");
@@ -350,40 +350,40 @@ public class CustomLeaderboardService
 		customLeaderboard.LevelUpTime3Criteria = new() { Operator = editCustomLeaderboard.LevelUpTime3Criteria.Operator.ToDomain(), Expression = levelUpTime3CriteriaExpression };
 		customLeaderboard.LevelUpTime4Criteria = new() { Operator = editCustomLeaderboard.LevelUpTime4Criteria.Operator.ToDomain(), Expression = levelUpTime4CriteriaExpression };
 		customLeaderboard.EnemiesAliveCriteria = new() { Operator = editCustomLeaderboard.EnemiesAliveCriteria.Operator.ToDomain(), Expression = enemiesAliveCriteriaExpression };
-		customLeaderboard.Skull1KillsCriteria = new() { Operator = editCustomLeaderboard.Skull1KillsCriteria.Operator.ToDomain(), Expression = skull1KillsCriteriaExpression };
-		customLeaderboard.Skull2KillsCriteria = new() { Operator = editCustomLeaderboard.Skull2KillsCriteria.Operator.ToDomain(), Expression = skull2KillsCriteriaExpression };
-		customLeaderboard.Skull3KillsCriteria = new() { Operator = editCustomLeaderboard.Skull3KillsCriteria.Operator.ToDomain(), Expression = skull3KillsCriteriaExpression };
-		customLeaderboard.Skull4KillsCriteria = new() { Operator = editCustomLeaderboard.Skull4KillsCriteria.Operator.ToDomain(), Expression = skull4KillsCriteriaExpression };
-		customLeaderboard.SpiderlingKillsCriteria = new() { Operator = editCustomLeaderboard.SpiderlingKillsCriteria.Operator.ToDomain(), Expression = spiderlingKillsCriteriaExpression };
-		customLeaderboard.SpiderEggKillsCriteria = new() { Operator = editCustomLeaderboard.SpiderEggKillsCriteria.Operator.ToDomain(), Expression = spiderEggKillsCriteriaExpression };
-		customLeaderboard.Squid1KillsCriteria = new() { Operator = editCustomLeaderboard.Squid1KillsCriteria.Operator.ToDomain(), Expression = squid1KillsCriteriaExpression };
-		customLeaderboard.Squid2KillsCriteria = new() { Operator = editCustomLeaderboard.Squid2KillsCriteria.Operator.ToDomain(), Expression = squid2KillsCriteriaExpression };
-		customLeaderboard.Squid3KillsCriteria = new() { Operator = editCustomLeaderboard.Squid3KillsCriteria.Operator.ToDomain(), Expression = squid3KillsCriteriaExpression };
-		customLeaderboard.CentipedeKillsCriteria = new() { Operator = editCustomLeaderboard.CentipedeKillsCriteria.Operator.ToDomain(), Expression = centipedeKillsCriteriaExpression };
-		customLeaderboard.GigapedeKillsCriteria = new() { Operator = editCustomLeaderboard.GigapedeKillsCriteria.Operator.ToDomain(), Expression = gigapedeKillsCriteriaExpression };
-		customLeaderboard.GhostpedeKillsCriteria = new() { Operator = editCustomLeaderboard.GhostpedeKillsCriteria.Operator.ToDomain(), Expression = ghostpedeKillsCriteriaExpression };
-		customLeaderboard.Spider1KillsCriteria = new() { Operator = editCustomLeaderboard.Spider1KillsCriteria.Operator.ToDomain(), Expression = spider1KillsCriteriaExpression };
-		customLeaderboard.Spider2KillsCriteria = new() { Operator = editCustomLeaderboard.Spider2KillsCriteria.Operator.ToDomain(), Expression = spider2KillsCriteriaExpression };
-		customLeaderboard.LeviathanKillsCriteria = new() { Operator = editCustomLeaderboard.LeviathanKillsCriteria.Operator.ToDomain(), Expression = leviathanKillsCriteriaExpression };
-		customLeaderboard.OrbKillsCriteria = new() { Operator = editCustomLeaderboard.OrbKillsCriteria.Operator.ToDomain(), Expression = orbKillsCriteriaExpression };
-		customLeaderboard.ThornKillsCriteria = new() { Operator = editCustomLeaderboard.ThornKillsCriteria.Operator.ToDomain(), Expression = thornKillsCriteriaExpression };
-		customLeaderboard.Skull1sAliveCriteria = new() { Operator = editCustomLeaderboard.Skull1sAliveCriteria.Operator.ToDomain(), Expression = skull1sAliveCriteriaExpression };
-		customLeaderboard.Skull2sAliveCriteria = new() { Operator = editCustomLeaderboard.Skull2sAliveCriteria.Operator.ToDomain(), Expression = skull2sAliveCriteriaExpression };
-		customLeaderboard.Skull3sAliveCriteria = new() { Operator = editCustomLeaderboard.Skull3sAliveCriteria.Operator.ToDomain(), Expression = skull3sAliveCriteriaExpression };
-		customLeaderboard.Skull4sAliveCriteria = new() { Operator = editCustomLeaderboard.Skull4sAliveCriteria.Operator.ToDomain(), Expression = skull4sAliveCriteriaExpression };
-		customLeaderboard.SpiderlingsAliveCriteria = new() { Operator = editCustomLeaderboard.SpiderlingsAliveCriteria.Operator.ToDomain(), Expression = spiderlingsAliveCriteriaExpression };
-		customLeaderboard.SpiderEggsAliveCriteria = new() { Operator = editCustomLeaderboard.SpiderEggsAliveCriteria.Operator.ToDomain(), Expression = spiderEggsAliveCriteriaExpression };
-		customLeaderboard.Squid1sAliveCriteria = new() { Operator = editCustomLeaderboard.Squid1sAliveCriteria.Operator.ToDomain(), Expression = squid1sAliveCriteriaExpression };
-		customLeaderboard.Squid2sAliveCriteria = new() { Operator = editCustomLeaderboard.Squid2sAliveCriteria.Operator.ToDomain(), Expression = squid2sAliveCriteriaExpression };
-		customLeaderboard.Squid3sAliveCriteria = new() { Operator = editCustomLeaderboard.Squid3sAliveCriteria.Operator.ToDomain(), Expression = squid3sAliveCriteriaExpression };
-		customLeaderboard.CentipedesAliveCriteria = new() { Operator = editCustomLeaderboard.CentipedesAliveCriteria.Operator.ToDomain(), Expression = centipedesAliveCriteriaExpression };
-		customLeaderboard.GigapedesAliveCriteria = new() { Operator = editCustomLeaderboard.GigapedesAliveCriteria.Operator.ToDomain(), Expression = gigapedesAliveCriteriaExpression };
-		customLeaderboard.GhostpedesAliveCriteria = new() { Operator = editCustomLeaderboard.GhostpedesAliveCriteria.Operator.ToDomain(), Expression = ghostpedesAliveCriteriaExpression };
-		customLeaderboard.Spider1sAliveCriteria = new() { Operator = editCustomLeaderboard.Spider1sAliveCriteria.Operator.ToDomain(), Expression = spider1sAliveCriteriaExpression };
-		customLeaderboard.Spider2sAliveCriteria = new() { Operator = editCustomLeaderboard.Spider2sAliveCriteria.Operator.ToDomain(), Expression = spider2sAliveCriteriaExpression };
-		customLeaderboard.LeviathansAliveCriteria = new() { Operator = editCustomLeaderboard.LeviathansAliveCriteria.Operator.ToDomain(), Expression = leviathansAliveCriteriaExpression };
-		customLeaderboard.OrbsAliveCriteria = new() { Operator = editCustomLeaderboard.OrbsAliveCriteria.Operator.ToDomain(), Expression = orbsAliveCriteriaExpression };
-		customLeaderboard.ThornsAliveCriteria = new() { Operator = editCustomLeaderboard.ThornsAliveCriteria.Operator.ToDomain(), Expression = thornsAliveCriteriaExpression };
+		customLeaderboard.Skull1KillsCriteria = new() { Operator = editCustomLeaderboard.Skull1KillsCriteria.Operator.ToDomain(), Expression = skull1KillCountCriteriaExpression };
+		customLeaderboard.Skull2KillsCriteria = new() { Operator = editCustomLeaderboard.Skull2KillsCriteria.Operator.ToDomain(), Expression = skull2KillCountCriteriaExpression };
+		customLeaderboard.Skull3KillsCriteria = new() { Operator = editCustomLeaderboard.Skull3KillsCriteria.Operator.ToDomain(), Expression = skull3KillCountCriteriaExpression };
+		customLeaderboard.Skull4KillsCriteria = new() { Operator = editCustomLeaderboard.Skull4KillsCriteria.Operator.ToDomain(), Expression = skull4KillCountCriteriaExpression };
+		customLeaderboard.SpiderlingKillsCriteria = new() { Operator = editCustomLeaderboard.SpiderlingKillsCriteria.Operator.ToDomain(), Expression = spiderlingKillCountCriteriaExpression };
+		customLeaderboard.SpiderEggKillsCriteria = new() { Operator = editCustomLeaderboard.SpiderEggKillsCriteria.Operator.ToDomain(), Expression = spiderEggKillCountCriteriaExpression };
+		customLeaderboard.Squid1KillsCriteria = new() { Operator = editCustomLeaderboard.Squid1KillsCriteria.Operator.ToDomain(), Expression = squid1KillCountCriteriaExpression };
+		customLeaderboard.Squid2KillsCriteria = new() { Operator = editCustomLeaderboard.Squid2KillsCriteria.Operator.ToDomain(), Expression = squid2KillCountCriteriaExpression };
+		customLeaderboard.Squid3KillsCriteria = new() { Operator = editCustomLeaderboard.Squid3KillsCriteria.Operator.ToDomain(), Expression = squid3KillCountCriteriaExpression };
+		customLeaderboard.CentipedeKillsCriteria = new() { Operator = editCustomLeaderboard.CentipedeKillsCriteria.Operator.ToDomain(), Expression = centipedeKillCountCriteriaExpression };
+		customLeaderboard.GigapedeKillsCriteria = new() { Operator = editCustomLeaderboard.GigapedeKillsCriteria.Operator.ToDomain(), Expression = gigapedeKillCountCriteriaExpression };
+		customLeaderboard.GhostpedeKillsCriteria = new() { Operator = editCustomLeaderboard.GhostpedeKillsCriteria.Operator.ToDomain(), Expression = ghostpedeKillCountCriteriaExpression };
+		customLeaderboard.Spider1KillsCriteria = new() { Operator = editCustomLeaderboard.Spider1KillsCriteria.Operator.ToDomain(), Expression = spider1KillCountCriteriaExpression };
+		customLeaderboard.Spider2KillsCriteria = new() { Operator = editCustomLeaderboard.Spider2KillsCriteria.Operator.ToDomain(), Expression = spider2KillCountCriteriaExpression };
+		customLeaderboard.LeviathanKillsCriteria = new() { Operator = editCustomLeaderboard.LeviathanKillsCriteria.Operator.ToDomain(), Expression = leviathanKillCountCriteriaExpression };
+		customLeaderboard.OrbKillsCriteria = new() { Operator = editCustomLeaderboard.OrbKillsCriteria.Operator.ToDomain(), Expression = orbKillCountCriteriaExpression };
+		customLeaderboard.ThornKillsCriteria = new() { Operator = editCustomLeaderboard.ThornKillsCriteria.Operator.ToDomain(), Expression = thornKillCountCriteriaExpression };
+		customLeaderboard.Skull1sAliveCriteria = new() { Operator = editCustomLeaderboard.Skull1sAliveCriteria.Operator.ToDomain(), Expression = skull1AliveCountCriteriaExpression };
+		customLeaderboard.Skull2sAliveCriteria = new() { Operator = editCustomLeaderboard.Skull2sAliveCriteria.Operator.ToDomain(), Expression = skull2AliveCountCriteriaExpression };
+		customLeaderboard.Skull3sAliveCriteria = new() { Operator = editCustomLeaderboard.Skull3sAliveCriteria.Operator.ToDomain(), Expression = skull3AliveCountCriteriaExpression };
+		customLeaderboard.Skull4sAliveCriteria = new() { Operator = editCustomLeaderboard.Skull4sAliveCriteria.Operator.ToDomain(), Expression = skull4AliveCountCriteriaExpression };
+		customLeaderboard.SpiderlingsAliveCriteria = new() { Operator = editCustomLeaderboard.SpiderlingsAliveCriteria.Operator.ToDomain(), Expression = spiderlingAliveCountCriteriaExpression };
+		customLeaderboard.SpiderEggsAliveCriteria = new() { Operator = editCustomLeaderboard.SpiderEggsAliveCriteria.Operator.ToDomain(), Expression = spiderEggAliveCountCriteriaExpression };
+		customLeaderboard.Squid1sAliveCriteria = new() { Operator = editCustomLeaderboard.Squid1sAliveCriteria.Operator.ToDomain(), Expression = squid1AliveCountCriteriaExpression };
+		customLeaderboard.Squid2sAliveCriteria = new() { Operator = editCustomLeaderboard.Squid2sAliveCriteria.Operator.ToDomain(), Expression = squid2AliveCountCriteriaExpression };
+		customLeaderboard.Squid3sAliveCriteria = new() { Operator = editCustomLeaderboard.Squid3sAliveCriteria.Operator.ToDomain(), Expression = squid3AliveCountCriteriaExpression };
+		customLeaderboard.CentipedesAliveCriteria = new() { Operator = editCustomLeaderboard.CentipedesAliveCriteria.Operator.ToDomain(), Expression = centipedeAliveCountCriteriaExpression };
+		customLeaderboard.GigapedesAliveCriteria = new() { Operator = editCustomLeaderboard.GigapedesAliveCriteria.Operator.ToDomain(), Expression = gigapedeAliveCountCriteriaExpression };
+		customLeaderboard.GhostpedesAliveCriteria = new() { Operator = editCustomLeaderboard.GhostpedesAliveCriteria.Operator.ToDomain(), Expression = ghostpedeAliveCountCriteriaExpression };
+		customLeaderboard.Spider1sAliveCriteria = new() { Operator = editCustomLeaderboard.Spider1sAliveCriteria.Operator.ToDomain(), Expression = spider1AliveCountCriteriaExpression };
+		customLeaderboard.Spider2sAliveCriteria = new() { Operator = editCustomLeaderboard.Spider2sAliveCriteria.Operator.ToDomain(), Expression = spider2AliveCountCriteriaExpression };
+		customLeaderboard.LeviathansAliveCriteria = new() { Operator = editCustomLeaderboard.LeviathansAliveCriteria.Operator.ToDomain(), Expression = leviathanAliveCountCriteriaExpression };
+		customLeaderboard.OrbsAliveCriteria = new() { Operator = editCustomLeaderboard.OrbsAliveCriteria.Operator.ToDomain(), Expression = orbAliveCountCriteriaExpression };
+		customLeaderboard.ThornsAliveCriteria = new() { Operator = editCustomLeaderboard.ThornsAliveCriteria.Operator.ToDomain(), Expression = thornAliveCountCriteriaExpression };
 
 		await _dbContext.SaveChangesAsync();
 	}
