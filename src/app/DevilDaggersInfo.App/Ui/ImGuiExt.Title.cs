@@ -1,6 +1,6 @@
 using ImGuiNET;
 
-namespace DevilDaggersInfo.App;
+namespace DevilDaggersInfo.App.Ui;
 
 public static partial class ImGuiExt
 {

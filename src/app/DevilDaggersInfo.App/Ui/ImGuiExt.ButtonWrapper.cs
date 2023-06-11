@@ -1,7 +1,7 @@
 using ImGuiNET;
 using System.Numerics;
 
-namespace DevilDaggersInfo.App;
+namespace DevilDaggersInfo.App.Ui;
 
 public static partial class ImGuiExt
 {

@@ -2,7 +2,7 @@ using ImGuiNET;
 using System.Diagnostics;
 using System.Numerics;
 
-namespace DevilDaggersInfo.App;
+namespace DevilDaggersInfo.App.Ui;
 
 public static partial class ImGuiExt
 {
