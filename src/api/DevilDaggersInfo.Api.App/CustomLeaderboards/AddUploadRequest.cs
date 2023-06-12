@@ -93,4 +93,6 @@ public record AddUploadRequest
 	public required byte[] ReplayData { get; init; }
 
 	public required int Status { get; init; }
+
+	public List<AddUploadRequestTimestamp>? Timestamps { get; init; }
 }

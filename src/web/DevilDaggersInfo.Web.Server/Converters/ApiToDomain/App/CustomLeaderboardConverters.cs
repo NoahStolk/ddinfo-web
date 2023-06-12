@@ -55,6 +55,12 @@ public static class CustomLeaderboardConverters
 			SpiderEggsKilled = uploadRequest.GameData.SpiderEggsKilled.ToArray(),
 		};
 
+		List<UploadRequestTimestamp> timestamps = uploadRequest.Timestamps?.ConvertAll(t => new UploadRequestTimestamp
+		{
+			Timestamp = t.Timestamp,
+			TimeInSeconds = t.TimeInSeconds,
+		}) ?? new();
+
 		return new(
 			survivalHashMd5: uploadRequest.SurvivalHashMd5,
 			playerId: uploadRequest.PlayerId,
@@ -91,6 +97,7 @@ public static class CustomLeaderboardConverters
 			timeAttackOrRaceFinished: uploadRequest.TimeAttackOrRaceFinished,
 			gameData: gameData,
 			replayData: uploadRequest.ReplayData,
-			status: uploadRequest.Status);
+			status: uploadRequest.Status,
+			timestamps: timestamps);
 	}
 }

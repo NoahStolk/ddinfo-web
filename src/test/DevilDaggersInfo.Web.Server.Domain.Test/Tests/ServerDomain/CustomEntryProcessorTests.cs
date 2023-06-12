@@ -175,7 +175,20 @@ public class CustomEntryProcessorTests
 			timeAttackOrRaceFinished: timeAttackOrRaceFinished,
 			gameData: gameData,
 			replayData: _mockReplay,
-			status: status);
+			status: status,
+			timestamps: new()
+			{
+				new()
+				{
+					Timestamp = new DateTime(2023, 1, 1, 0, 0, 0).Ticks,
+					TimeInSeconds = 0,
+				},
+				new()
+				{
+					Timestamp = new DateTime(2023, 1, 1, 0, 1, 0).Ticks,
+					TimeInSeconds = 60,
+				},
+			});
 	}
 
 	[DataTestMethod]
