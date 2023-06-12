@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Common.Extensions;
+using DevilDaggersInfo.Core.CriteriaExpression;
 using DevilDaggersInfo.Web.Server.Domain.Constants;
 using DevilDaggersInfo.Web.Server.Domain.Utils;
 
@@ -189,6 +190,75 @@ public class UploadRequest
 		GameMode,
 		TimeAttackOrRaceFinished,
 		ProhibitedMods);
+
+	/// <summary>
+	/// The <see cref="UploadRequest.HomingStored"/> value is not reliable in game memory and shouldn't be used.
+	/// </summary>
+	public int GetFinalHomingValue()
+	{
+		return GameData.HomingStored.Length == 0 ? 0 : GameData.HomingStored[^1];
+	}
+
+	public TargetCollection CreateTargetCollection()
+	{
+		return new()
+		{
+			GemsCollected = GemsCollected,
+			GemsDespawned = GemsDespawned,
+			GemsEaten = GemsEaten,
+			EnemiesKilled = EnemiesKilled,
+			DaggersFired = DaggersFired,
+			DaggersHit = DaggersHit,
+			HomingStored = GetFinalHomingValue(),
+			HomingEaten = HomingEaten,
+			DeathType = DeathType,
+			Time = TimeInSeconds.To10thMilliTime(),
+			LevelUpTime2 = LevelUpTime2InSeconds.To10thMilliTime(),
+			LevelUpTime3 = LevelUpTime3InSeconds.To10thMilliTime(),
+			LevelUpTime4 = LevelUpTime4InSeconds.To10thMilliTime(),
+			EnemiesAlive = EnemiesAlive,
+			Skull1Kills = GetFinalEnemyStat(urd => urd.Skull1sKilled),
+			Skull2Kills = GetFinalEnemyStat(urd => urd.Skull2sKilled),
+			Skull3Kills = GetFinalEnemyStat(urd => urd.Skull3sKilled),
+			Skull4Kills = GetFinalEnemyStat(urd => urd.Skull4sKilled),
+			SpiderlingKills = GetFinalEnemyStat(urd => urd.SpiderlingsKilled),
+			SpiderEggKills = GetFinalEnemyStat(urd => urd.SpiderEggsKilled),
+			Squid1Kills = GetFinalEnemyStat(urd => urd.Squid1sKilled),
+			Squid2Kills = GetFinalEnemyStat(urd => urd.Squid2sKilled),
+			Squid3Kills = GetFinalEnemyStat(urd => urd.Squid3sKilled),
+			CentipedeKills = GetFinalEnemyStat(urd => urd.CentipedesKilled),
+			GigapedeKills = GetFinalEnemyStat(urd => urd.GigapedesKilled),
+			GhostpedeKills = GetFinalEnemyStat(urd => urd.GhostpedesKilled),
+			Spider1Kills = GetFinalEnemyStat(urd => urd.Spider1sKilled),
+			Spider2Kills = GetFinalEnemyStat(urd => urd.Spider2sKilled),
+			LeviathanKills = GetFinalEnemyStat(urd => urd.LeviathansKilled),
+			OrbKills = GetFinalEnemyStat(urd => urd.OrbsKilled),
+			ThornKills = GetFinalEnemyStat(urd => urd.ThornsKilled),
+			Skull1sAlive = GetFinalEnemyStat(urd => urd.Skull1sAlive),
+			Skull2sAlive = GetFinalEnemyStat(urd => urd.Skull2sAlive),
+			Skull3sAlive = GetFinalEnemyStat(urd => urd.Skull3sAlive),
+			Skull4sAlive = GetFinalEnemyStat(urd => urd.Skull4sAlive),
+			SpiderlingsAlive = GetFinalEnemyStat(urd => urd.SpiderlingsAlive),
+			SpiderEggsAlive = GetFinalEnemyStat(urd => urd.SpiderEggsAlive),
+			Squid1sAlive = GetFinalEnemyStat(urd => urd.Squid1sAlive),
+			Squid2sAlive = GetFinalEnemyStat(urd => urd.Squid2sAlive),
+			Squid3sAlive = GetFinalEnemyStat(urd => urd.Squid3sAlive),
+			CentipedesAlive = GetFinalEnemyStat(urd => urd.CentipedesAlive),
+			GigapedesAlive = GetFinalEnemyStat(urd => urd.GigapedesAlive),
+			GhostpedesAlive = GetFinalEnemyStat(urd => urd.GhostpedesAlive),
+			Spider1sAlive = GetFinalEnemyStat(urd => urd.Spider1sAlive),
+			Spider2sAlive = GetFinalEnemyStat(urd => urd.Spider2sAlive),
+			LeviathansAlive = GetFinalEnemyStat(urd => urd.LeviathansAlive),
+			OrbsAlive = GetFinalEnemyStat(urd => urd.OrbsAlive),
+			ThornsAlive = GetFinalEnemyStat(urd => urd.ThornsAlive),
+		};
+	}
+
+	private int GetFinalEnemyStat(Func<UploadRequestData, ushort[]> selector)
+	{
+		ushort[] arr = selector(GameData);
+		return arr.Length == 0 ? 0 : arr[^1];
+	}
 
 	public static string CreateValidationV2(
 		int playerId,

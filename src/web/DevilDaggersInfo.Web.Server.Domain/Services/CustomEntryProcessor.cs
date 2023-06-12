@@ -192,7 +192,7 @@ public class CustomEntryProcessor
 			CustomLeaderboardRankSorting.GemsEatenAsc => uploadRequest.GemsEaten < customEntry.GemsEaten,
 			CustomLeaderboardRankSorting.EnemiesKilledAsc => uploadRequest.EnemiesKilled < customEntry.EnemiesKilled,
 			CustomLeaderboardRankSorting.EnemiesAliveAsc => uploadRequest.EnemiesAlive < customEntry.EnemiesAlive,
-			CustomLeaderboardRankSorting.HomingStoredAsc => GetFinalHomingValue(uploadRequest) < customEntry.HomingStored,
+			CustomLeaderboardRankSorting.HomingStoredAsc => uploadRequest.GetFinalHomingValue() < customEntry.HomingStored,
 			CustomLeaderboardRankSorting.HomingEatenAsc => uploadRequest.HomingEaten < customEntry.HomingEaten,
 
 			CustomLeaderboardRankSorting.TimeDesc => requestTimeAsInt > customEntry.Time,
@@ -201,7 +201,7 @@ public class CustomEntryProcessor
 			CustomLeaderboardRankSorting.GemsEatenDesc => uploadRequest.GemsEaten > customEntry.GemsEaten,
 			CustomLeaderboardRankSorting.EnemiesKilledDesc => uploadRequest.EnemiesKilled > customEntry.EnemiesKilled,
 			CustomLeaderboardRankSorting.EnemiesAliveDesc => uploadRequest.EnemiesAlive > customEntry.EnemiesAlive,
-			CustomLeaderboardRankSorting.HomingStoredDesc => GetFinalHomingValue(uploadRequest) > customEntry.HomingStored,
+			CustomLeaderboardRankSorting.HomingStoredDesc => uploadRequest.GetFinalHomingValue() > customEntry.HomingStored,
 			CustomLeaderboardRankSorting.HomingEatenDesc => uploadRequest.HomingEaten > customEntry.HomingEaten,
 
 			_ => throw new InvalidOperationException($"Rank sorting '{customLeaderboard.RankSorting}' is not supported."),
@@ -227,57 +227,7 @@ public class CustomEntryProcessor
 
 	private void HandleAllCriteria(UploadRequest uploadRequest, string? spawnsetName, CustomLeaderboardEntity customLeaderboard)
 	{
-		TargetCollection targetCollection = new()
-		{
-			GemsCollected = uploadRequest.GemsCollected,
-			GemsDespawned = uploadRequest.GemsDespawned,
-			GemsEaten = uploadRequest.GemsEaten,
-			EnemiesKilled = uploadRequest.EnemiesKilled,
-			DaggersFired = uploadRequest.DaggersFired,
-			DaggersHit = uploadRequest.DaggersHit,
-			HomingStored = GetFinalHomingValue(uploadRequest),
-			HomingEaten = uploadRequest.HomingEaten,
-			DeathType = uploadRequest.DeathType,
-			Time = uploadRequest.TimeInSeconds.To10thMilliTime(),
-			LevelUpTime2 = uploadRequest.LevelUpTime2InSeconds.To10thMilliTime(),
-			LevelUpTime3 = uploadRequest.LevelUpTime3InSeconds.To10thMilliTime(),
-			LevelUpTime4 = uploadRequest.LevelUpTime4InSeconds.To10thMilliTime(),
-			EnemiesAlive = uploadRequest.EnemiesAlive,
-			Skull1Kills = GetFinalEnemyStat(uploadRequest, urd => urd.Skull1sKilled),
-			Skull2Kills = GetFinalEnemyStat(uploadRequest, urd => urd.Skull2sKilled),
-			Skull3Kills = GetFinalEnemyStat(uploadRequest, urd => urd.Skull3sKilled),
-			Skull4Kills = GetFinalEnemyStat(uploadRequest, urd => urd.Skull4sKilled),
-			SpiderlingKills = GetFinalEnemyStat(uploadRequest, urd => urd.SpiderlingsKilled),
-			SpiderEggKills = GetFinalEnemyStat(uploadRequest, urd => urd.SpiderEggsKilled),
-			Squid1Kills = GetFinalEnemyStat(uploadRequest, urd => urd.Squid1sKilled),
-			Squid2Kills = GetFinalEnemyStat(uploadRequest, urd => urd.Squid2sKilled),
-			Squid3Kills = GetFinalEnemyStat(uploadRequest, urd => urd.Squid3sKilled),
-			CentipedeKills = GetFinalEnemyStat(uploadRequest, urd => urd.CentipedesKilled),
-			GigapedeKills = GetFinalEnemyStat(uploadRequest, urd => urd.GigapedesKilled),
-			GhostpedeKills = GetFinalEnemyStat(uploadRequest, urd => urd.GhostpedesKilled),
-			Spider1Kills = GetFinalEnemyStat(uploadRequest, urd => urd.Spider1sKilled),
-			Spider2Kills = GetFinalEnemyStat(uploadRequest, urd => urd.Spider2sKilled),
-			LeviathanKills = GetFinalEnemyStat(uploadRequest, urd => urd.LeviathansKilled),
-			OrbKills = GetFinalEnemyStat(uploadRequest, urd => urd.OrbsKilled),
-			ThornKills = GetFinalEnemyStat(uploadRequest, urd => urd.ThornsKilled),
-			Skull1sAlive = GetFinalEnemyStat(uploadRequest, urd => urd.Skull1sAlive),
-			Skull2sAlive = GetFinalEnemyStat(uploadRequest, urd => urd.Skull2sAlive),
-			Skull3sAlive = GetFinalEnemyStat(uploadRequest, urd => urd.Skull3sAlive),
-			Skull4sAlive = GetFinalEnemyStat(uploadRequest, urd => urd.Skull4sAlive),
-			SpiderlingsAlive = GetFinalEnemyStat(uploadRequest, urd => urd.SpiderlingsAlive),
-			SpiderEggsAlive = GetFinalEnemyStat(uploadRequest, urd => urd.SpiderEggsAlive),
-			Squid1sAlive = GetFinalEnemyStat(uploadRequest, urd => urd.Squid1sAlive),
-			Squid2sAlive = GetFinalEnemyStat(uploadRequest, urd => urd.Squid2sAlive),
-			Squid3sAlive = GetFinalEnemyStat(uploadRequest, urd => urd.Squid3sAlive),
-			CentipedesAlive = GetFinalEnemyStat(uploadRequest, urd => urd.CentipedesAlive),
-			GigapedesAlive = GetFinalEnemyStat(uploadRequest, urd => urd.GigapedesAlive),
-			GhostpedesAlive = GetFinalEnemyStat(uploadRequest, urd => urd.GhostpedesAlive),
-			Spider1sAlive = GetFinalEnemyStat(uploadRequest, urd => urd.Spider1sAlive),
-			Spider2sAlive = GetFinalEnemyStat(uploadRequest, urd => urd.Spider2sAlive),
-			LeviathansAlive = GetFinalEnemyStat(uploadRequest, urd => urd.LeviathansAlive),
-			OrbsAlive = GetFinalEnemyStat(uploadRequest, urd => urd.OrbsAlive),
-			ThornsAlive = GetFinalEnemyStat(uploadRequest, urd => urd.ThornsAlive),
-		};
+		TargetCollection targetCollection = uploadRequest.CreateTargetCollection();
 
 		HandleCriteria(customLeaderboard.GemsCollectedCriteria, targetCollection.GemsCollected);
 		HandleCriteria(customLeaderboard.GemsDespawnedCriteria, targetCollection.GemsDespawned);
@@ -328,12 +278,6 @@ public class CustomEntryProcessor
 		HandleCriteria(customLeaderboard.OrbsAliveCriteria, targetCollection.OrbsAlive);
 		HandleCriteria(customLeaderboard.ThornsAliveCriteria, targetCollection.ThornsAlive);
 
-		static int GetFinalEnemyStat(UploadRequest uploadRequest, Func<UploadRequestData, ushort[]> selector)
-		{
-			ushort[] arr = selector(uploadRequest.GameData);
-			return arr.Length == 0 ? 0 : arr[^1];
-		}
-
 		void HandleCriteria(CustomLeaderboardCriteriaEntityValue criteria, int value, [CallerArgumentExpression("criteria")] string criteriaExpression = "")
 		{
 			if (criteria.Expression == null)
@@ -379,7 +323,7 @@ public class CustomEntryProcessor
 			DaggersHit = uploadRequest.DaggersHit,
 			DaggersFired = uploadRequest.DaggersFired,
 			EnemiesAlive = uploadRequest.EnemiesAlive,
-			HomingStored = GetFinalHomingValue(uploadRequest),
+			HomingStored = uploadRequest.GetFinalHomingValue(),
 			HomingEaten = uploadRequest.HomingEaten,
 			LevelUpTime2 = uploadRequest.LevelUpTime2InSeconds.To10thMilliTime(),
 			LevelUpTime3 = uploadRequest.LevelUpTime3InSeconds.To10thMilliTime(),
@@ -418,7 +362,7 @@ public class CustomEntryProcessor
 		List<int> replayIds = GetExistingReplayIds(entries.ConvertAll(ce => ce.Id));
 		return new()
 		{
-			SortedEntries = entries.Select((e, i) => ToEntry(e, i + 1, customLeaderboard.DaggerFromStat(e), replayIds)).ToList(),
+			SortedEntries = entries.Select((e, i) => ToEntryModel(e, i + 1, customLeaderboard.DaggerFromStat(e), replayIds)).ToList(),
 			SubmissionType = SubmissionType.FirstScore,
 			RankState = new(rank),
 			TimeState = new(newCustomEntry.Time.ToSecondsTime()),
@@ -451,10 +395,10 @@ public class CustomEntryProcessor
 		List<CustomEntryEntity> entries = await GetOrderedEntries(customLeaderboard.Id, customLeaderboard.RankSorting);
 		List<int> replayIds = GetExistingReplayIds(entries.ConvertAll(ce => ce.Id));
 
-		int homingStored = GetFinalHomingValue(uploadRequest);
+		int homingStored = uploadRequest.GetFinalHomingValue();
 		return new()
 		{
-			SortedEntries = entries.Select((e, i) => ToEntry(e, i + 1, customLeaderboard.DaggerFromStat(e), replayIds)).ToList(),
+			SortedEntries = entries.Select((e, i) => ToEntryModel(e, i + 1, customLeaderboard.DaggerFromStat(e), replayIds)).ToList(),
 			SubmissionType = SubmissionType.NoHighscore,
 			TimeState = new(uploadRequest.TimeInSeconds, uploadRequest.TimeInSeconds - currentEntry.Time.ToSecondsTime()),
 			EnemiesKilledState = new(uploadRequest.EnemiesKilled, uploadRequest.EnemiesKilled - currentEntry.EnemiesKilled),
@@ -500,7 +444,7 @@ public class CustomEntryProcessor
 		customEntry.DaggersFired = uploadRequest.DaggersFired;
 		customEntry.DaggersHit = uploadRequest.DaggersHit;
 		customEntry.EnemiesAlive = uploadRequest.EnemiesAlive;
-		customEntry.HomingStored = GetFinalHomingValue(uploadRequest);
+		customEntry.HomingStored = uploadRequest.GetFinalHomingValue();
 		customEntry.HomingEaten = uploadRequest.HomingEaten;
 		customEntry.GemsDespawned = uploadRequest.GemsDespawned;
 		customEntry.GemsEaten = uploadRequest.GemsEaten;
@@ -578,7 +522,7 @@ public class CustomEntryProcessor
 
 		return new()
 		{
-			SortedEntries = entries.Select((e, i) => ToEntry(e, i + 1, customLeaderboard.DaggerFromStat(e), replayIds)).ToList(),
+			SortedEntries = entries.Select((e, i) => ToEntryModel(e, i + 1, customLeaderboard.DaggerFromStat(e), replayIds)).ToList(),
 			SubmissionType = SubmissionType.NewHighscore,
 			RankState = new(rank, rankDiff),
 			TimeState = new(customEntry.Time.ToSecondsTime(), timeDiff.ToSecondsTime()),
@@ -596,14 +540,6 @@ public class CustomEntryProcessor
 			LevelUpTime3State = new(customEntry.LevelUpTime3.ToSecondsTime(), levelUpTime3Diff.ToSecondsTime()),
 			LevelUpTime4State = new(customEntry.LevelUpTime4.ToSecondsTime(), levelUpTime4Diff.ToSecondsTime()),
 		};
-	}
-
-	/// <summary>
-	/// The <see cref="UploadRequest.HomingStored"/> value is not reliable in game memory and shouldn't be used.
-	/// </summary>
-	private static int GetFinalHomingValue(UploadRequest uploadRequest)
-	{
-		return uploadRequest.GameData.HomingStored.Length == 0 ? 0 : uploadRequest.GameData.HomingStored[^1];
 	}
 
 	private void ValidateReplayBuffer(UploadRequest uploadRequest, string spawnsetName)
@@ -708,7 +644,7 @@ public class CustomEntryProcessor
 		return customEntryIds.Where(id => File.Exists(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{id}.ddreplay"))).ToList();
 	}
 
-	private static CustomEntry ToEntry(CustomEntryEntity customEntry, int rank, CustomLeaderboardDagger? dagger, List<int> replayIds)
+	private static CustomEntry ToEntryModel(CustomEntryEntity customEntry, int rank, CustomLeaderboardDagger? dagger, List<int> replayIds)
 	{
 		if (customEntry.Player == null)
 			throw new InvalidOperationException("Player is not included.");

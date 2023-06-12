@@ -5,41 +5,9 @@ namespace DevilDaggersInfo.Web.Server.Converters.ApiToDomain.App;
 
 public static class CustomLeaderboardConverters
 {
-	public static UploadRequest ToDomain(this AppApi.AddUploadRequest uploadRequest) => new(
-		survivalHashMd5: uploadRequest.SurvivalHashMd5,
-		playerId: uploadRequest.PlayerId,
-		playerName: uploadRequest.PlayerName,
-		replayPlayerId: uploadRequest.ReplayPlayerId,
-		timeInSeconds: uploadRequest.TimeInSeconds,
-		timeAsBytes: uploadRequest.TimeAsBytes,
-		gemsCollected: uploadRequest.GemsCollected,
-		enemiesKilled: uploadRequest.EnemiesKilled,
-		daggersFired: uploadRequest.DaggersFired,
-		daggersHit: uploadRequest.DaggersHit,
-		enemiesAlive: uploadRequest.EnemiesAlive,
-		homingStored: uploadRequest.HomingStored,
-		homingEaten: uploadRequest.HomingEaten,
-		gemsDespawned: uploadRequest.GemsDespawned,
-		gemsEaten: uploadRequest.GemsEaten,
-		gemsTotal: uploadRequest.GemsTotal,
-		deathType: uploadRequest.DeathType,
-		levelUpTime2InSeconds: uploadRequest.LevelUpTime2InSeconds,
-		levelUpTime3InSeconds: uploadRequest.LevelUpTime3InSeconds,
-		levelUpTime4InSeconds: uploadRequest.LevelUpTime4InSeconds,
-		levelUpTime2AsBytes: uploadRequest.LevelUpTime2AsBytes,
-		levelUpTime3AsBytes: uploadRequest.LevelUpTime3AsBytes,
-		levelUpTime4AsBytes: uploadRequest.LevelUpTime4AsBytes,
-		clientVersion: uploadRequest.ClientVersion,
-		client: uploadRequest.Client,
-		operatingSystem: uploadRequest.OperatingSystem,
-		buildMode: uploadRequest.BuildMode,
-		validation: uploadRequest.Validation,
-		validationVersion: uploadRequest.ValidationVersion,
-		isReplay: uploadRequest.IsReplay,
-		prohibitedMods: uploadRequest.ProhibitedMods,
-		gameMode: uploadRequest.GameMode,
-		timeAttackOrRaceFinished: uploadRequest.TimeAttackOrRaceFinished,
-		gameData: new UploadRequestData
+	public static UploadRequest ToDomain(this AppApi.AddUploadRequest uploadRequest)
+	{
+		UploadRequestData gameData = new()
 		{
 			GemsCollected = uploadRequest.GameData.GemsCollected.ToArray(),
 			EnemiesKilled = uploadRequest.GameData.EnemiesKilled.ToArray(),
@@ -85,7 +53,44 @@ public static class CustomLeaderboardConverters
 			ThornsKilled = uploadRequest.GameData.ThornsKilled.ToArray(),
 			GhostpedesKilled = uploadRequest.GameData.GhostpedesKilled.ToArray(),
 			SpiderEggsKilled = uploadRequest.GameData.SpiderEggsKilled.ToArray(),
-		},
-		replayData: uploadRequest.ReplayData,
-		status: uploadRequest.Status);
+		};
+
+		return new(
+			survivalHashMd5: uploadRequest.SurvivalHashMd5,
+			playerId: uploadRequest.PlayerId,
+			playerName: uploadRequest.PlayerName,
+			replayPlayerId: uploadRequest.ReplayPlayerId,
+			timeInSeconds: uploadRequest.TimeInSeconds,
+			timeAsBytes: uploadRequest.TimeAsBytes,
+			gemsCollected: uploadRequest.GemsCollected,
+			enemiesKilled: uploadRequest.EnemiesKilled,
+			daggersFired: uploadRequest.DaggersFired,
+			daggersHit: uploadRequest.DaggersHit,
+			enemiesAlive: uploadRequest.EnemiesAlive,
+			homingStored: uploadRequest.HomingStored,
+			homingEaten: uploadRequest.HomingEaten,
+			gemsDespawned: uploadRequest.GemsDespawned,
+			gemsEaten: uploadRequest.GemsEaten,
+			gemsTotal: uploadRequest.GemsTotal,
+			deathType: uploadRequest.DeathType,
+			levelUpTime2InSeconds: uploadRequest.LevelUpTime2InSeconds,
+			levelUpTime3InSeconds: uploadRequest.LevelUpTime3InSeconds,
+			levelUpTime4InSeconds: uploadRequest.LevelUpTime4InSeconds,
+			levelUpTime2AsBytes: uploadRequest.LevelUpTime2AsBytes,
+			levelUpTime3AsBytes: uploadRequest.LevelUpTime3AsBytes,
+			levelUpTime4AsBytes: uploadRequest.LevelUpTime4AsBytes,
+			clientVersion: uploadRequest.ClientVersion,
+			client: uploadRequest.Client,
+			operatingSystem: uploadRequest.OperatingSystem,
+			buildMode: uploadRequest.BuildMode,
+			validation: uploadRequest.Validation,
+			validationVersion: uploadRequest.ValidationVersion,
+			isReplay: uploadRequest.IsReplay,
+			prohibitedMods: uploadRequest.ProhibitedMods,
+			gameMode: uploadRequest.GameMode,
+			timeAttackOrRaceFinished: uploadRequest.TimeAttackOrRaceFinished,
+			gameData: gameData,
+			replayData: uploadRequest.ReplayData,
+			status: uploadRequest.Status);
+	}
 }
