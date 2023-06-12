@@ -79,6 +79,7 @@
   </ItemGroup>
 
   <ItemGroup Label="External dependencies">
+    <PackageReference Include="ImGui.NET" />
     <PackageReference Include="NativeFileDialogSharp" />
     <PackageReference Include="Serilog.Sinks.File" />
   </ItemGroup>

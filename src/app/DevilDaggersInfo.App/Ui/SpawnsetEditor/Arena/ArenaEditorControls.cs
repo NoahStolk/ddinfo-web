@@ -16,6 +16,8 @@ public static class ArenaEditorControls
 		int offsetX = 0;
 		foreach (ArenaTool arenaTool in Enum.GetValues<ArenaTool>())
 		{
+			ReadOnlySpan<char> arenaToolText = arenaTool.ToString();
+
 			bool isDagger = arenaTool == ArenaTool.Dagger;
 			bool isCurrent = arenaTool == ArenaChild.ArenaTool;
 			ImGui.SetCursorPos(new(offsetX + borderSize * 2, borderSize));
@@ -26,14 +28,14 @@ public static class ArenaEditorControls
 			if (isCurrent)
 				ImGui.PushStyleColor(ImGuiCol.Button, ImGui.GetStyle().Colors[(int)ImGuiCol.ButtonHovered]);
 
-			if (ImGui.ImageButton(GetTexture(arenaTool), new(size)) && ArenaChild.ArenaTool != arenaTool)
+			if (ImGui.ImageButton(arenaToolText, GetTexture(arenaTool), new(size)) && ArenaChild.ArenaTool != arenaTool)
 				ArenaChild.ArenaTool = arenaTool;
 
 			if (isCurrent)
 				ImGui.PopStyleColor();
 
 			if (ImGui.IsItemHovered())
-				ImGui.SetTooltip(arenaTool.ToString());
+				ImGui.SetTooltip(arenaToolText);
 
 			if (isDagger)
 				ImGui.EndDisabled();

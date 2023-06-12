@@ -93,10 +93,10 @@ public static class MainWindow
 		ImGui.End();
 	}
 
-	private static void AppButton(Texture icon, string tooltip, Action action)
+	private static void AppButton(Texture icon, ReadOnlySpan<char> tooltip, Action action)
 	{
 		Vector2 iconSize = new(36);
-		if (ImGui.ImageButton((IntPtr)icon.Handle, iconSize))
+		if (ImGui.ImageButton(tooltip, (IntPtr)icon.Handle, iconSize))
 			action();
 
 		if (ImGui.IsItemHovered())
