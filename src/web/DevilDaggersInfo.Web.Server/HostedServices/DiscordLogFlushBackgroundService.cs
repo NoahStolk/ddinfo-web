@@ -62,19 +62,12 @@ public class DiscordLogFlushBackgroundService : AbstractBackgroundService
 	{
 		const int timeoutInSeconds = 1;
 
-		IEnumerable<(string Message, string FileContents)> logs = _customLeaderboardSubmissionLogger.GetLogs(valid);
-		foreach ((string message, string fileContents) in logs)
+		IEnumerable<string> logs = _customLeaderboardSubmissionLogger.GetLogs(valid);
+		foreach (string log in logs)
 		{
 			try
 			{
-				using MemoryStream ms = new();
-				await using StreamWriter sw = new(ms);
-				await sw.WriteAsync(fileContents);
-				DiscordMessageBuilder builder = new DiscordMessageBuilder()
-					.WithContent(message)
-					.AddFile("timestamps.txt", ms, true);
-				await channel.SendMessageAsync(builder);
-
+				await channel.SendMessageAsyncSafe(log);
 				_customLeaderboardSubmissionLogger.ClearLogs(valid);
 			}
 			catch (Exception ex)
