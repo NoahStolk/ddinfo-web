@@ -30,17 +30,17 @@ public class CustomEntryProcessor
 	private readonly ApplicationDbContext _dbContext;
 	private readonly ILogger<CustomEntryProcessor> _logger;
 	private readonly IFileSystemService _fileSystemService;
-	private readonly ICustomLeaderboardSubmissionLogger _submissionLogger;
+	private readonly ICustomLeaderboardHighscoreLogger _highscoreLogger;
 
 	private readonly AesBase32Wrapper _encryptionWrapper;
 	private readonly Stopwatch _stopwatch;
 
-	public CustomEntryProcessor(ApplicationDbContext dbContext, ILogger<CustomEntryProcessor> logger, IFileSystemService fileSystemService, IOptions<CustomLeaderboardsOptions> customLeaderboardsOptions, ICustomLeaderboardSubmissionLogger submissionLogger)
+	public CustomEntryProcessor(ApplicationDbContext dbContext, ILogger<CustomEntryProcessor> logger, IFileSystemService fileSystemService, IOptions<CustomLeaderboardsOptions> customLeaderboardsOptions, ICustomLeaderboardHighscoreLogger highscoreLogger)
 	{
 		_dbContext = dbContext;
 		_logger = logger;
 		_fileSystemService = fileSystemService;
-		_submissionLogger = submissionLogger;
+		_highscoreLogger = highscoreLogger;
 
 		_encryptionWrapper = new(customLeaderboardsOptions.Value.InitializationVector, customLeaderboardsOptions.Value.Password, customLeaderboardsOptions.Value.Salt);
 
@@ -350,7 +350,7 @@ public class CustomEntryProcessor
 		int rank = GetRank(entries, uploadRequest.PlayerId);
 		int totalPlayers = entries.Count;
 
-		_submissionLogger.LogNewScore(
+		_highscoreLogger.LogNewScore(
 			customLeaderboard,
 			newCustomEntry,
 			rank,
@@ -508,7 +508,7 @@ public class CustomEntryProcessor
 			_ => 0,
 		};
 
-		_submissionLogger.LogHighscore(
+		_highscoreLogger.LogHighscore(
 			customLeaderboard,
 			customEntry,
 			rank,
@@ -634,9 +634,9 @@ public class CustomEntryProcessor
 		string playerInfo = $"`{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`)";
 
 		if (!string.IsNullOrEmpty(errorMessage))
-			_submissionLogger.Log(false, $":{errorEmoteNameOverride ?? "warning"}: `{_stopwatch.ElapsedMilliseconds:N0} ms` Upload failed for user {playerInfo} for `{spawnsetIdentification}`. {requestInfo}\n**{errorMessage}**");
+			_highscoreLogger.Log(false, $":{errorEmoteNameOverride ?? "warning"}: `{_stopwatch.ElapsedMilliseconds:N0} ms` Upload failed for user {playerInfo} for `{spawnsetIdentification}`. {requestInfo}\n**{errorMessage}**");
 		else
-			_submissionLogger.Log(true, $":white_check_mark: `{_stopwatch.ElapsedMilliseconds:N0} ms` {playerInfo} just submitted a score of `{FormatTimeString(uploadRequest.TimeInSeconds)}` to `{spawnsetIdentification}`. {requestInfo}");
+			_highscoreLogger.Log(true, $":white_check_mark: `{_stopwatch.ElapsedMilliseconds:N0} ms` {playerInfo} just submitted a score of `{FormatTimeString(uploadRequest.TimeInSeconds)}` to `{spawnsetIdentification}`. {requestInfo}");
 	}
 
 	private List<int> GetExistingReplayIds(List<int> customEntryIds)

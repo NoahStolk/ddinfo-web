@@ -11,20 +11,20 @@ namespace DevilDaggersInfo.Web.Server.HostedServices;
 public class DiscordLogFlushBackgroundService : AbstractBackgroundService
 {
 	private readonly ILogContainerService _logContainerService;
-	private readonly ICustomLeaderboardSubmissionLogger _customLeaderboardSubmissionLogger;
+	private readonly ICustomLeaderboardHighscoreLogger _customLeaderboardHighscoreLogger;
 	private readonly IWebHostEnvironment _environment;
 	private readonly ILogger<DiscordLogFlushBackgroundService> _logger;
 
 	public DiscordLogFlushBackgroundService(
 		ILogContainerService logContainerService,
-		ICustomLeaderboardSubmissionLogger customLeaderboardSubmissionLogger,
+		ICustomLeaderboardHighscoreLogger customLeaderboardHighscoreLogger,
 		IWebHostEnvironment environment,
 		BackgroundServiceMonitor backgroundServiceMonitor,
 		ILogger<DiscordLogFlushBackgroundService> logger)
 		: base(backgroundServiceMonitor, logger)
 	{
 		_logContainerService = logContainerService;
-		_customLeaderboardSubmissionLogger = customLeaderboardSubmissionLogger;
+		_customLeaderboardHighscoreLogger = customLeaderboardHighscoreLogger;
 		_environment = environment;
 		_logger = logger;
 	}
@@ -49,21 +49,21 @@ public class DiscordLogFlushBackgroundService : AbstractBackgroundService
 		if (invalidClLogChannel != null)
 			await LogClLogsToChannel(false, invalidClLogChannel);
 
-		foreach (CustomLeaderboardHighscoreLog highscoreLog in _customLeaderboardSubmissionLogger.GetHighscoreLogs())
+		foreach (CustomLeaderboardHighscoreLog highscoreLog in _customLeaderboardHighscoreLogger.GetHighscoreLogs())
 			await LogHighscore(highscoreLog);
 
-		_customLeaderboardSubmissionLogger.ClearHighscoreLogs();
+		_customLeaderboardHighscoreLogger.ClearHighscoreLogs();
 	}
 
 	private async Task LogClLogsToChannel(bool valid, DiscordChannel channel)
 	{
 		const int timeoutInSeconds = 1;
 
-		IReadOnlyList<string> logs = _customLeaderboardSubmissionLogger.GetLogs(valid);
+		IReadOnlyList<string> logs = _customLeaderboardHighscoreLogger.GetLogs(valid);
 		if (logs.Count > 0)
 		{
 			if (await channel.SendMessageAsyncSafe(string.Join(Environment.NewLine, logs)))
-				_customLeaderboardSubmissionLogger.ClearLogs(valid);
+				_customLeaderboardHighscoreLogger.ClearLogs(valid);
 			else
 				await Task.Delay(TimeSpan.FromSeconds(timeoutInSeconds));
 		}

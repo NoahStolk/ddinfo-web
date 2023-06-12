@@ -7,15 +7,15 @@ using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 
 namespace DevilDaggersInfo.Web.Server.Services;
 
-public class CustomLeaderboardSubmissionLogger : ICustomLeaderboardSubmissionLogger
+public class CustomLeaderboardHighscoreLogger : ICustomLeaderboardHighscoreLogger
 {
-	private readonly ILogger<CustomLeaderboardSubmissionLogger> _logger;
+	private readonly ILogger<CustomLeaderboardHighscoreLogger> _logger;
 	private readonly List<CustomLeaderboardHighscoreLog> _highscoreLogs = new();
 
 	private readonly List<string> _validClLogs = new();
 	private readonly List<string> _invalidClLogs = new();
 
-	public CustomLeaderboardSubmissionLogger(ILogger<CustomLeaderboardSubmissionLogger> logger)
+	public CustomLeaderboardHighscoreLogger(ILogger<CustomLeaderboardHighscoreLogger> logger)
 	{
 		_logger = logger;
 	}

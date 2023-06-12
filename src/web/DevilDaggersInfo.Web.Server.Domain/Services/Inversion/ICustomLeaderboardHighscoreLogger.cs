@@ -3,7 +3,7 @@ using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 
-public interface ICustomLeaderboardSubmissionLogger
+public interface ICustomLeaderboardHighscoreLogger
 {
 	void Log(bool isValid, string message);
 

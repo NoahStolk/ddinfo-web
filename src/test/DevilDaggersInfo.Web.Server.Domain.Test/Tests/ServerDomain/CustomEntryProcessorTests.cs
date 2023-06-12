@@ -60,7 +60,7 @@ public class CustomEntryProcessorTests
 			Salt = secret,
 		};
 
-		_customEntryProcessor = new(_dbContext.Object, customEntryProcessorLogger.Object, fileSystemService.Object, new OptionsWrapper<CustomLeaderboardsOptions>(options), new Mock<ICustomLeaderboardSubmissionLogger>().Object)
+		_customEntryProcessor = new(_dbContext.Object, customEntryProcessorLogger.Object, fileSystemService.Object, new OptionsWrapper<CustomLeaderboardsOptions>(options), new Mock<ICustomLeaderboardHighscoreLogger>().Object)
 		{
 			IsUnitTest = true,
 		};
