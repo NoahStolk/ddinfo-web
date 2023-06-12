@@ -39,11 +39,11 @@ public class CustomLeaderboardSubmissionLogger : ICustomLeaderboardSubmissionLog
 				double timeDifference = timestamp.TimeInSeconds - previous.Value.TimeInSeconds;
 				long timestampDifference = timestamp.Timestamp - previous.Value.Timestamp;
 				TimeSpan timeSpanDifference = TimeSpan.FromTicks(timestampDifference);
-				timestampEntries.Add($"\t{timestamp.TimeInSeconds.ToString(StringFormats.TimeFormat),-20} {dateTime,-20} {timeDifference,-20} {timeSpanDifference,-20}");
+				timestampEntries.Add($"{timestamp.TimeInSeconds.ToString(StringFormats.TimeFormat),-10} {dateTime.ToString(StringFormats.DateTimeUtcFormat),-30} {timeDifference.ToString(StringFormats.TimeFormat),-10} {timeSpanDifference,-20}");
 			}
 			else
 			{
-				timestampEntries.Add($"\t{timestamp.TimeInSeconds.ToString(StringFormats.TimeFormat),-20} {dateTime,-20}");
+				timestampEntries.Add($"{timestamp.TimeInSeconds.ToString(StringFormats.TimeFormat),-10} {dateTime.ToString(StringFormats.DateTimeUtcFormat),-30}");
 			}
 
 			previous = (timestamp.TimeInSeconds, timestamp.Timestamp);
