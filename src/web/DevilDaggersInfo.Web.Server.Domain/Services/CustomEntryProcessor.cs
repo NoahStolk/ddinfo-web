@@ -34,7 +34,7 @@ public class CustomEntryProcessor
 	private readonly ICustomLeaderboardSubmissionLogger _submissionLogger;
 
 	private readonly AesBase32Wrapper _encryptionWrapper;
-	private readonly Stopwatch _stopwatch;
+	private readonly long _startingTimestamp;
 
 	public CustomEntryProcessor(
 		ApplicationDbContext dbContext,
@@ -52,7 +52,7 @@ public class CustomEntryProcessor
 
 		_encryptionWrapper = new(customLeaderboardsOptions.Value.InitializationVector, customLeaderboardsOptions.Value.Password, customLeaderboardsOptions.Value.Salt);
 
-		_stopwatch = Stopwatch.StartNew();
+		_startingTimestamp = Stopwatch.GetTimestamp();
 	}
 
 	// Temporary hack until a proper spawnset repository is implemented.
@@ -635,7 +635,7 @@ public class CustomEntryProcessor
 			uploadRequest.BuildMode,
 			uploadRequest.ReplayData.Length,
 			uploadRequest.Status,
-			_stopwatch.ElapsedMilliseconds,
+			Stopwatch.GetElapsedTime(_startingTimestamp).TotalMilliseconds,
 			errorMessage);
 	}
 

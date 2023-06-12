@@ -30,7 +30,7 @@ public class CustomLeaderboardSubmissionLogger : ICustomLeaderboardSubmissionLog
 		string buildMode,
 		int replaySize,
 		int status,
-		long elapsedMilliseconds,
+		double elapsedMilliseconds,
 		string? errorMessage)
 	{
 		string playerInfo = $"`{playerName}` (`{playerId}`)";

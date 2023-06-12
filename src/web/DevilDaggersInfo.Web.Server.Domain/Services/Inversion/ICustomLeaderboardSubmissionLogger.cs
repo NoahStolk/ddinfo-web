@@ -13,7 +13,7 @@ public interface ICustomLeaderboardSubmissionLogger
 		string buildMode,
 		int replaySize,
 		int status,
-		long elapsedMilliseconds,
+		double elapsedMilliseconds,
 		string? errorMessage);
 
 	IReadOnlyList<string> GetLogs(bool valid);
