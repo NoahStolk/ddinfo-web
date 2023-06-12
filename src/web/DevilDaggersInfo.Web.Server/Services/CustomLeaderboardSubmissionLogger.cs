@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Common;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 
 namespace DevilDaggersInfo.Web.Server.Services;
@@ -18,9 +19,26 @@ public class CustomLeaderboardSubmissionLogger : ICustomLeaderboardSubmissionLog
 			_invalidClLogs.Clear();
 	}
 
-	public void Log(bool isValid, string message)
+	public void Log(
+		string playerName,
+		int playerId,
+		string spawnsetName,
+		double timeInSeconds,
+		string clientName,
+		string clientVersion,
+		string operatingSystem,
+		string buildMode,
+		int replaySize,
+		int status,
+		long elapsedMilliseconds,
+		string? errorMessage)
 	{
-		if (isValid)
+		string playerInfo = $"`{playerName}` (`{playerId}`)";
+		string time = timeInSeconds.ToString(StringFormats.TimeFormat);
+		string requestInfo = $"`{clientName} {clientVersion} {operatingSystem} {buildMode}` | `Replay size {replaySize:N0} bytes` | `Status {status}`";
+		string message = $"`{elapsedMilliseconds:N0} ms` {playerInfo} `{spawnsetName}` `{time}` {requestInfo}";
+
+		if (errorMessage == null)
 			_validClLogs.Add(message);
 		else
 			_invalidClLogs.Add(message);

@@ -69,11 +69,11 @@ public class CustomEntryProcessor
 		catch (Exception ex)
 		{
 			_logger.LogError(ex, "Could not decrypt validation '{validation}'.", uploadRequest.Validation);
-			LogAndThrowValidationException(uploadRequest, $"Could not decrypt validation '{uploadRequest.Validation}'.", null, "rotating_light");
+			LogAndThrowValidationException(uploadRequest, $"Could not decrypt validation '{uploadRequest.Validation}'.");
 		}
 
 		if (actual != expected)
-			LogAndThrowValidationException(uploadRequest, $"Invalid submission for {uploadRequest.Validation}.\n`Expected: {expected}`\n`Actual:   {actual}`", null, "rotating_light");
+			LogAndThrowValidationException(uploadRequest, $"Invalid submission for {uploadRequest.Validation}.\n`Expected: {expected}`\n`Actual:   {actual}`");
 	}
 
 	/// <summary>
@@ -100,10 +100,10 @@ public class CustomEntryProcessor
 
 		// Reject other invalid statuses.
 		if (uploadRequest.Status is not (3 or 4 or 5))
-			LogAndThrowValidationException(uploadRequest, $"Game status {uploadRequest.Status} is not accepted.", null, "rotating_light");
+			LogAndThrowValidationException(uploadRequest, $"Game status {uploadRequest.Status} is not accepted.");
 
 		if (uploadRequest.PlayerId < 1)
-			LogAndThrowValidationException(uploadRequest, "Player ID is 0 or negative.", null, "rotating_light");
+			LogAndThrowValidationException(uploadRequest, "Player ID is 0 or negative.");
 
 		// Check for existing spawnset.
 		var spawnset =
@@ -129,7 +129,7 @@ public class CustomEntryProcessor
 		}
 		else if (player.IsBannedFromDdcl)
 		{
-			LogAndThrowValidationException(uploadRequest, "Banned.", spawnset.Name, "rotating_light");
+			LogAndThrowValidationException(uploadRequest, "Banned.", spawnset.Name);
 		}
 
 		// Check for existing leaderboard.
@@ -184,7 +184,7 @@ public class CustomEntryProcessor
 		int requestTimeAsInt = uploadRequest.TimeInSeconds.To10thMilliTime();
 		if (uploadRequest.IsReplay && IsReplayTimeAlmostTheSame(requestTimeAsInt, customEntry.Time) && await IsReplayFileTheSame(customEntry.Id, uploadRequest.ReplayData))
 		{
-			_logger.LogInformation("Score submission replay time was modified because of identical replay (database: {originalTime} - request: {replayTime}).", FormatTimeString(customEntry.Time.ToSecondsTime()), FormatTimeString(uploadRequest.TimeInSeconds));
+			_logger.LogInformation("Score submission replay time was modified because of identical replay (database: {originalTime} - request: {replayTime}).", customEntry.Time.ToSecondsTime().ToString(StringFormats.TimeFormat), uploadRequest.TimeInSeconds.ToString(StringFormats.TimeFormat));
 			return new()
 			{
 				Leaderboard = ToLeaderboardSummary(customLeaderboard),
@@ -559,17 +559,17 @@ public class CustomEntryProcessor
 		}
 		catch (Exception ex)
 		{
-			LogAndThrowValidationException(uploadRequest, $"Could not parse replay: {ex.Message}", spawnsetName, "rotating_light");
+			LogAndThrowValidationException(uploadRequest, $"Could not parse replay: {ex.Message}", spawnsetName);
 		}
 
 		if (!replayBinaryHeader.SpawnsetMd5.SequenceEqual(uploadRequest.SurvivalHashMd5))
-			LogAndThrowValidationException(uploadRequest, "Spawnset in replay does not match detected spawnset.", spawnsetName, "rotating_light");
+			LogAndThrowValidationException(uploadRequest, "Spawnset in replay does not match detected spawnset.", spawnsetName);
 	}
 
 	[DoesNotReturn]
-	private void LogAndThrowValidationException(UploadRequest uploadRequest, string errorMessage, string? spawnsetName = null, string? errorEmoteNameOverride = null)
+	private void LogAndThrowValidationException(UploadRequest uploadRequest, string errorMessage, string? spawnsetName = null)
 	{
-		Log(uploadRequest, spawnsetName, errorMessage, errorEmoteNameOverride);
+		Log(uploadRequest, spawnsetName, errorMessage);
 		throw new CustomEntryValidationException(errorMessage);
 	}
 
@@ -622,29 +622,21 @@ public class CustomEntryProcessor
 	private static int GetRank(List<CustomEntryEntity> orderedEntries, int playerId)
 		=> orderedEntries.ConvertAll(ce => ce.PlayerId).IndexOf(playerId) + 1;
 
-	private static string FormatTimeString(double time)
-		=> time.ToString(StringFormats.TimeFormat);
-
-	private static string GetSpawnsetHashOrName(byte[] spawnsetHash, string? spawnsetName)
-		=> string.IsNullOrEmpty(spawnsetName) ? BitConverter.ToString(spawnsetHash) : spawnsetName;
-
-	// TODO: Clean up and move somewhere else.
-	private void Log(UploadRequest uploadRequest, string? spawnsetName, string? errorMessage = null, string? errorEmoteNameOverride = null)
+	private void Log(UploadRequest uploadRequest, string? spawnsetName, string? errorMessage = null)
 	{
-		_stopwatch.Stop();
-
-		string spawnsetIdentification = GetSpawnsetHashOrName(uploadRequest.SurvivalHashMd5, spawnsetName);
-
-		string replayData = $"Replay data {uploadRequest.ReplayData.Length:N0} bytes";
-		string replayString = uploadRequest.IsReplay ? " | `Replay`" : string.Empty;
-		string localReplayString = uploadRequest.Status == 8 ? $" | `Local replay from {uploadRequest.ReplayPlayerId}`" : string.Empty;
-		string requestInfo = $"(`{uploadRequest.ClientVersion}` | `{uploadRequest.OperatingSystem}` | `{uploadRequest.BuildMode}` | `{uploadRequest.Client}`{replayString}{localReplayString} | `{replayData}` | `Status {uploadRequest.Status}`)";
-		string playerInfo = $"`{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`)";
-
-		if (!string.IsNullOrEmpty(errorMessage))
-			_submissionLogger.Log(false, $":{errorEmoteNameOverride ?? "warning"}: `{_stopwatch.ElapsedMilliseconds:N0} ms` Upload failed for user {playerInfo} for `{spawnsetIdentification}`. {requestInfo}\n**{errorMessage}**");
-		else
-			_submissionLogger.Log(true, $":white_check_mark: `{_stopwatch.ElapsedMilliseconds:N0} ms` {playerInfo} just submitted a score of `{FormatTimeString(uploadRequest.TimeInSeconds)}` to `{spawnsetIdentification}`. {requestInfo}");
+		_submissionLogger.Log(
+			uploadRequest.PlayerName,
+			uploadRequest.PlayerId,
+			string.IsNullOrEmpty(spawnsetName) ? BitConverter.ToString(uploadRequest.SurvivalHashMd5) : spawnsetName,
+			uploadRequest.TimeInSeconds,
+			uploadRequest.Client,
+			uploadRequest.ClientVersion,
+			uploadRequest.OperatingSystem,
+			uploadRequest.BuildMode,
+			uploadRequest.ReplayData.Length,
+			uploadRequest.Status,
+			_stopwatch.ElapsedMilliseconds,
+			errorMessage);
 	}
 
 	private List<int> GetExistingReplayIds(List<int> customEntryIds)
