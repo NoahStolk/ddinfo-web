@@ -1,4 +1,3 @@
-using DevilDaggersInfo.App.Engine.Maths.Numerics;
 using ImGuiNET;
 
 namespace DevilDaggersInfo.App.Ui;
@@ -55,8 +54,21 @@ public static class Colors
 		Quaternary = new(191, 102, 26, 255),
 	};
 
-	public static Color AssetEditor => new(66, 250, 66, 255);
-	public static Color ModManager => new(66, 250, 150, 255);
+	public static ColorConfiguration AssetEditor { get; } = new()
+	{
+		Primary = new(66, 250, 66, 255),
+		Secondary = new(61, 224, 61, 255),
+		Tertiary = new(41, 122, 41, 255),
+		Quaternary = new(26, 191, 26, 255),
+	};
+
+	public static ColorConfiguration ModManager { get; } = new()
+	{
+		Primary = new(66, 250, 150, 255),
+		Secondary = new(61, 224, 133, 255),
+		Tertiary = new(41, 122, 74, 255),
+		Quaternary = new(26, 191, 102, 255),
+	};
 
 	public static void SetColors(ColorConfiguration colorConfiguration)
 	{

@@ -11,8 +11,6 @@ public static class MainWindow
 
 	public static void Render(out bool shouldClose)
 	{
-		shouldClose = false;
-
 		Vector2 center = ImGui.GetMainViewport().GetCenter();
 		Vector2 windowSize = new(683, 768);
 		Vector2 mainButtonsSize = new(208, 512);
@@ -34,35 +32,38 @@ public static class MainWindow
 		ImGui.Text($"{AssemblyUtils.EntryAssemblyVersion} (ALPHA)");
 		ImGui.Text("Developed by Noah Stolk");
 
-		ImGui.SetCursorPosY(ImGui.GetCursorPosY() + 8);
-		Vector2 iconSize = new(36);
-		if (ImGui.ImageButton((IntPtr)Root.InternalResources.ConfigurationTexture.Handle, iconSize))
-			UiRenderer.Layout = LayoutType.Config;
+		ImGui.SetCursorPos(new(windowSize.X - 208, 8));
+		AppButton(Root.InternalResources.ConfigurationTexture, "Configuration", () => UiRenderer.Layout = LayoutType.Config);
 
 		ImGui.SameLine();
-		if (ImGui.ImageButton((IntPtr)Root.InternalResources.SettingsTexture.Handle, iconSize))
-			UiRenderer.ShowSettings();
+		AppButton(Root.InternalResources.SettingsTexture, "Settings", UiRenderer.ShowSettings);
 
 		ImGui.SameLine();
-		if (ImGui.ImageButton((IntPtr)Root.InternalResources.InfoTexture.Handle, iconSize))
-			UiRenderer.ShowAbout();
+		AppButton(Root.InternalResources.InfoTexture, "About", UiRenderer.ShowAbout);
 
 		ImGui.SameLine();
-		if (ImGui.ImageButton((IntPtr)Root.InternalResources.CloseTexture.Handle, iconSize))
-			shouldClose = true;
+		bool close = false; // Cannot use out parameter inside lambda.
+		AppButton(Root.InternalResources.CloseTexture, "Exit application", () => close = true);
+		shouldClose = close;
 
-		ImGui.SetCursorPosY(ImGui.GetCursorPosY() + 8);
+		ImGui.SetCursorPosY(ImGui.GetCursorPosY() + 40);
 		if (ImGui.BeginChild("Tool buttons", mainButtonsSize))
 		{
-			const byte buttonAlpha = 127;
-			const float buttonColorDesaturation = 0.3f;
-			ToolButton(Colors.SpawnsetEditor.Primary.Desaturate(buttonColorDesaturation).Darken(0.2f) with { A = buttonAlpha }, "Spawnset Editor (wip)", GoToSpawnsetEditor, ref _hoveredButtonAction, RenderSpawnsetEditorPreview);
-			ToolButton(Colors.AssetEditor.Desaturate(buttonColorDesaturation).Darken(0.2f) with { A = buttonAlpha }, "Asset Editor (todo)", () => { }, ref _hoveredButtonAction, RenderAssetEditorPreview);
-			ToolButton(Colors.ReplayEditor.Primary.Desaturate(buttonColorDesaturation).Darken(0.2f) with { A = buttonAlpha }, "Replay Editor (wip)", GoToReplayEditor, ref _hoveredButtonAction, RenderReplayEditorPreview);
+			ToolButton(GetColor(Colors.SpawnsetEditor.Primary), "Spawnset Editor", GoToSpawnsetEditor, ref _hoveredButtonAction, RenderSpawnsetEditorPreview);
+			ToolButton(GetColor(Colors.AssetEditor.Primary), "Asset Editor", () => { }, ref _hoveredButtonAction, RenderAssetEditorPreview);
+			ToolButton(GetColor(Colors.ReplayEditor.Primary), "Replay Editor", GoToReplayEditor, ref _hoveredButtonAction, RenderReplayEditorPreview);
+
 			ImGui.SetCursorPosY(ImGui.GetCursorPosY() + 16);
-			ToolButton(Colors.CustomLeaderboards.Primary.Desaturate(buttonColorDesaturation).Darken(0.2f) with { A = buttonAlpha }, "Custom Leaderboards", GoToCustomLeaderboards, ref _hoveredButtonAction, RenderCustomLeaderboardsPreview);
-			ToolButton(Colors.Practice.Primary.Desaturate(buttonColorDesaturation).Darken(0.2f) with { A = buttonAlpha }, "Practice (wip)", GoToPractice, ref _hoveredButtonAction, RenderPracticePreview);
-			ToolButton(Colors.ModManager.Desaturate(buttonColorDesaturation).Darken(0.2f) with { A = buttonAlpha }, "Mod Manager (todo)", () => { }, ref _hoveredButtonAction, RenderModManagerPreview);
+			ToolButton(GetColor(Colors.CustomLeaderboards.Primary), "Custom Leaderboards", GoToCustomLeaderboards, ref _hoveredButtonAction, RenderCustomLeaderboardsPreview);
+			ToolButton(GetColor(Colors.Practice.Primary), "Practice", GoToPractice, ref _hoveredButtonAction, RenderPracticePreview);
+			ToolButton(GetColor(Colors.ModManager.Primary), "Mod Manager", () => { }, ref _hoveredButtonAction, RenderModManagerPreview);
+
+			static Color GetColor(Color primary)
+			{
+				const byte buttonAlpha = 127;
+				const float buttonColorDesaturation = 0.3f;
+				return primary.Desaturate(buttonColorDesaturation).Darken(0.2f) with { A = buttonAlpha };
+			}
 
 			static void GoToSpawnsetEditor() => UiRenderer.Layout = LayoutType.SpawnsetEditor;
 			static void GoToReplayEditor() => UiRenderer.Layout = LayoutType.ReplayEditor;
@@ -91,6 +92,16 @@ public static class MainWindow
 		}
 
 		ImGui.End();
+	}
+
+	private static void AppButton(Texture icon, string tooltip, Action action)
+	{
+		Vector2 iconSize = new(36);
+		if (ImGui.ImageButton((IntPtr)icon.Handle, iconSize))
+			action();
+
+		if (ImGui.IsItemHovered())
+			ImGui.SetTooltip(tooltip);
 	}
 
 	private static void ToolButton(Color color, string text, Action action, ref Action? hoveredAction, Action onHover)
