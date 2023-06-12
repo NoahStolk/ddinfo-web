@@ -31,16 +31,24 @@ public class CustomEntryProcessor
 	private readonly ILogger<CustomEntryProcessor> _logger;
 	private readonly IFileSystemService _fileSystemService;
 	private readonly ICustomLeaderboardHighscoreLogger _highscoreLogger;
+	private readonly ICustomLeaderboardSubmissionLogger _submissionLogger;
 
 	private readonly AesBase32Wrapper _encryptionWrapper;
 	private readonly Stopwatch _stopwatch;
 
-	public CustomEntryProcessor(ApplicationDbContext dbContext, ILogger<CustomEntryProcessor> logger, IFileSystemService fileSystemService, IOptions<CustomLeaderboardsOptions> customLeaderboardsOptions, ICustomLeaderboardHighscoreLogger highscoreLogger)
+	public CustomEntryProcessor(
+		ApplicationDbContext dbContext,
+		ILogger<CustomEntryProcessor> logger,
+		IFileSystemService fileSystemService,
+		IOptions<CustomLeaderboardsOptions> customLeaderboardsOptions,
+		ICustomLeaderboardHighscoreLogger highscoreLogger,
+		ICustomLeaderboardSubmissionLogger submissionLogger)
 	{
 		_dbContext = dbContext;
 		_logger = logger;
 		_fileSystemService = fileSystemService;
 		_highscoreLogger = highscoreLogger;
+		_submissionLogger = submissionLogger;
 
 		_encryptionWrapper = new(customLeaderboardsOptions.Value.InitializationVector, customLeaderboardsOptions.Value.Password, customLeaderboardsOptions.Value.Salt);
 
@@ -634,9 +642,9 @@ public class CustomEntryProcessor
 		string playerInfo = $"`{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`)";
 
 		if (!string.IsNullOrEmpty(errorMessage))
-			_highscoreLogger.Log(false, $":{errorEmoteNameOverride ?? "warning"}: `{_stopwatch.ElapsedMilliseconds:N0} ms` Upload failed for user {playerInfo} for `{spawnsetIdentification}`. {requestInfo}\n**{errorMessage}**");
+			_submissionLogger.Log(false, $":{errorEmoteNameOverride ?? "warning"}: `{_stopwatch.ElapsedMilliseconds:N0} ms` Upload failed for user {playerInfo} for `{spawnsetIdentification}`. {requestInfo}\n**{errorMessage}**");
 		else
-			_highscoreLogger.Log(true, $":white_check_mark: `{_stopwatch.ElapsedMilliseconds:N0} ms` {playerInfo} just submitted a score of `{FormatTimeString(uploadRequest.TimeInSeconds)}` to `{spawnsetIdentification}`. {requestInfo}");
+			_submissionLogger.Log(true, $":white_check_mark: `{_stopwatch.ElapsedMilliseconds:N0} ms` {playerInfo} just submitted a score of `{FormatTimeString(uploadRequest.TimeInSeconds)}` to `{spawnsetIdentification}`. {requestInfo}");
 	}
 
 	private List<int> GetExistingReplayIds(List<int> customEntryIds)

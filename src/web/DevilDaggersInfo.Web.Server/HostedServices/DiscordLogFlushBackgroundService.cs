@@ -12,12 +12,14 @@ public class DiscordLogFlushBackgroundService : AbstractBackgroundService
 {
 	private readonly ILogContainerService _logContainerService;
 	private readonly ICustomLeaderboardHighscoreLogger _customLeaderboardHighscoreLogger;
+	private readonly ICustomLeaderboardSubmissionLogger _customLeaderboardSubmissionLogger;
 	private readonly IWebHostEnvironment _environment;
 	private readonly ILogger<DiscordLogFlushBackgroundService> _logger;
 
 	public DiscordLogFlushBackgroundService(
 		ILogContainerService logContainerService,
 		ICustomLeaderboardHighscoreLogger customLeaderboardHighscoreLogger,
+		ICustomLeaderboardSubmissionLogger customLeaderboardSubmissionLogger,
 		IWebHostEnvironment environment,
 		BackgroundServiceMonitor backgroundServiceMonitor,
 		ILogger<DiscordLogFlushBackgroundService> logger)
@@ -25,6 +27,7 @@ public class DiscordLogFlushBackgroundService : AbstractBackgroundService
 	{
 		_logContainerService = logContainerService;
 		_customLeaderboardHighscoreLogger = customLeaderboardHighscoreLogger;
+		_customLeaderboardSubmissionLogger = customLeaderboardSubmissionLogger;
 		_environment = environment;
 		_logger = logger;
 	}
@@ -59,11 +62,11 @@ public class DiscordLogFlushBackgroundService : AbstractBackgroundService
 	{
 		const int timeoutInSeconds = 1;
 
-		IReadOnlyList<string> logs = _customLeaderboardHighscoreLogger.GetLogs(valid);
+		IReadOnlyList<string> logs = _customLeaderboardSubmissionLogger.GetLogs(valid);
 		if (logs.Count > 0)
 		{
 			if (await channel.SendMessageAsyncSafe(string.Join(Environment.NewLine, logs)))
-				_customLeaderboardHighscoreLogger.ClearLogs(valid);
+				_customLeaderboardSubmissionLogger.ClearLogs(valid);
 			else
 				await Task.Delay(TimeSpan.FromSeconds(timeoutInSeconds));
 		}
@@ -94,7 +97,7 @@ public class DiscordLogFlushBackgroundService : AbstractBackgroundService
 					Width = 32,
 				},
 			};
-			builder.AddFieldObject("Game Mode", highscoreLog.SpawnsetGameMode, false);
+			builder.AddFieldObject("Game Mode", highscoreLog.SpawnsetGameMode);
 			builder.AddFieldObject(highscoreLog.ScoreField, highscoreLog.ScoreValue, true);
 			builder.AddFieldObject("Rank", highscoreLog.RankValue, true);
 

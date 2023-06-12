@@ -111,6 +111,7 @@ builder.Services.AddSingleton<LeaderboardResponseParser>();
 // Monitoring
 builder.Services.AddSingleton<BackgroundServiceMonitor>();
 builder.Services.AddSingleton<ICustomLeaderboardHighscoreLogger, CustomLeaderboardHighscoreLogger>();
+builder.Services.AddSingleton<ICustomLeaderboardSubmissionLogger, CustomLeaderboardSubmissionLogger>();
 builder.Services.AddSingleton<ILogContainerService, LogContainerService>();
 
 // Caching services

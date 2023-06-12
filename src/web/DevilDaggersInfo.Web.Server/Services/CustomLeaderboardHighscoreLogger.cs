@@ -12,31 +12,9 @@ public class CustomLeaderboardHighscoreLogger : ICustomLeaderboardHighscoreLogge
 	private readonly ILogger<CustomLeaderboardHighscoreLogger> _logger;
 	private readonly List<CustomLeaderboardHighscoreLog> _highscoreLogs = new();
 
-	private readonly List<string> _validClLogs = new();
-	private readonly List<string> _invalidClLogs = new();
-
 	public CustomLeaderboardHighscoreLogger(ILogger<CustomLeaderboardHighscoreLogger> logger)
 	{
 		_logger = logger;
-	}
-
-	public IReadOnlyList<string> GetLogs(bool valid)
-		=> valid ? _validClLogs : _invalidClLogs;
-
-	public void ClearLogs(bool valid)
-	{
-		if (valid)
-			_validClLogs.Clear();
-		else
-			_invalidClLogs.Clear();
-	}
-
-	public void Log(bool isValid, string message)
-	{
-		if (isValid)
-			_validClLogs.Add(message);
-		else
-			_invalidClLogs.Add(message);
 	}
 
 	public void LogNewScore(
