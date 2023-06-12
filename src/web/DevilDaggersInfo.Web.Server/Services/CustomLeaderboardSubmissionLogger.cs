@@ -22,10 +22,10 @@ public class CustomLeaderboardSubmissionLogger : ICustomLeaderboardSubmissionLog
 
 	public void Log(UploadRequest uploadRequest, string spawnsetName, double elapsedMilliseconds, string? errorMessage)
 	{
-		string playerInfo = $"`{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`)";
+		string playerInfo = $"{uploadRequest.PlayerName} ({uploadRequest.PlayerId})";
 		string time = uploadRequest.TimeInSeconds.ToString(StringFormats.TimeFormat);
-		string requestInfo = $"`{uploadRequest.Client} {uploadRequest.ClientVersion} {uploadRequest.OperatingSystem} {uploadRequest.BuildMode}` | `Replay size {uploadRequest.ReplayData.Length:N0} bytes` | `Status {uploadRequest.Status}`";
-		string message = $"`{elapsedMilliseconds:N0} ms` {playerInfo} `{spawnsetName}` `{time}` {requestInfo}";
+		string requestInfo = $"{uploadRequest.Client} {uploadRequest.ClientVersion} {uploadRequest.OperatingSystem} {uploadRequest.BuildMode} | Replay size {uploadRequest.ReplayData.Length:N0} bytes | Status {uploadRequest.Status}";
+		string message = $"`{elapsedMilliseconds:N0} ms | {playerInfo} {spawnsetName} {time} {requestInfo}";
 
 		if (errorMessage == null)
 			_validClLogs.Add(message);
