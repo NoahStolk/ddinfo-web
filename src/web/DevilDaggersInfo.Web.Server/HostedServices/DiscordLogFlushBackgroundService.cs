@@ -62,13 +62,26 @@ public class DiscordLogFlushBackgroundService : AbstractBackgroundService
 	{
 		const int timeoutInSeconds = 1;
 
-		IReadOnlyList<string> logs = _customLeaderboardSubmissionLogger.GetLogs(valid);
-		if (logs.Count > 0)
+		IEnumerable<(string Message, string FileContents)> logs = _customLeaderboardSubmissionLogger.GetLogs(valid);
+		foreach ((string message, string fileContents) in logs)
 		{
-			if (await channel.SendMessageAsyncSafe(string.Join(Environment.NewLine, logs)))
+			try
+			{
+				using MemoryStream ms = new();
+				await using StreamWriter sw = new(ms);
+				await sw.WriteAsync(fileContents);
+				DiscordMessageBuilder builder = new DiscordMessageBuilder()
+					.WithContent(message)
+					.AddFile("timestamps.txt", ms, true);
+				await channel.SendMessageAsync(builder);
+
 				_customLeaderboardSubmissionLogger.ClearLogs(valid);
-			else
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex, "Error sending custom leaderboard submission log to Discord. Trying again in a second.");
 				await Task.Delay(TimeSpan.FromSeconds(timeoutInSeconds));
+			}
 		}
 	}
 
