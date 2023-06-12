@@ -6,7 +6,7 @@ public interface ICustomLeaderboardSubmissionLogger
 {
 	void Log(UploadRequest uploadRequest, string spawnsetName, double elapsedMilliseconds, string? errorMessage);
 
-	IEnumerable<string> GetLogs(bool valid);
+	IReadOnlyList<string> GetLogs(bool valid);
 
 	void ClearLogs(bool valid);
 }

@@ -9,7 +9,7 @@ public class CustomLeaderboardSubmissionLogger : ICustomLeaderboardSubmissionLog
 	private readonly List<string> _validClLogs = new();
 	private readonly List<string> _invalidClLogs = new();
 
-	public IEnumerable<string> GetLogs(bool valid)
+	public IReadOnlyList<string> GetLogs(bool valid)
 	{
 		return valid ? _validClLogs : _invalidClLogs;
 	}
