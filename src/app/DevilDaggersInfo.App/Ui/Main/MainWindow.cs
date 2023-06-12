@@ -139,30 +139,81 @@ public static class MainWindow
 	private static void RenderAssetEditorPreview()
 	{
 		ImGuiExt.Title("Asset Editor");
-		ImGui.Text("TODO");
+		ImGui.Text("""
+			NOT IMPLEMENTED YET
+
+			Create and edit mods for Devil Daggers.
+
+			The following assets can be changed:
+			- Audio
+			- Bindings
+			- Meshes
+			- Shaders
+			- Textures
+
+			Some mods are prohibited, meaning that you cannot submit scores over 1000 seconds with them.
+			""");
 	}
 
 	private static void RenderReplayEditorPreview()
 	{
 		ImGuiExt.Title("Replay Editor");
-		ImGui.Text("WIP");
+		ImGui.Text("""
+			NOT IMPLEMENTED YET
+
+			Create, analyze, and edit replays for Devil Daggers.
+			""");
 	}
 
 	private static void RenderCustomLeaderboardsPreview()
 	{
 		ImGuiExt.Title("Custom Leaderboards");
-		ImGui.Text("WIP");
+		ImGui.Text("""
+			Custom leaderboards are leaderboards for custom spawnsets.
+
+			All game modes are supported:
+			- Survival
+			- Time Attack
+			- Race
+
+			Leaderboards can be sorted by:
+			- Time
+			- Gems collected
+			- Gems despawned
+			- Gems eaten
+			- Enemies killed
+			- Enemies alive
+			- Homing stored
+			- Homing eaten
+
+			Criteria can also be set for custom leaderboards, meaning that in order to submit a score, it has to meet all the criteria.
+
+			This applies to almost every stat in the game, including specific enemy kill counts.
+
+			Examples:
+			- Gems eaten must be less than 30
+			- Squid I kills must be equal to 0
+			- Skull II kills must be greater than or equal to 3
+			- Daggers fired must be less than gems collected + 2
+			- Skull III kills must be greater than Skull I kills + Skull II kills
+			""");
 	}
 
 	private static void RenderPracticePreview()
 	{
 		ImGuiExt.Title("Practice");
-		ImGui.Text("WIP");
+		ImGui.Text("""
+			Practice the main game by starting at any point in time with any hand upgrade and amount of gems/homing.
+			""");
 	}
 
 	private static void RenderModManagerPreview()
 	{
 		ImGuiExt.Title("Mod Manager");
-		ImGui.Text("TODO");
+		ImGui.Text("""
+			NOT IMPLEMENTED YET
+
+			Manage mods downloaded from the website.
+			""");
 	}
 }
