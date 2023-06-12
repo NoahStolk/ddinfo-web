@@ -10,7 +10,9 @@ public class CustomLeaderboardSubmissionLogger : ICustomLeaderboardSubmissionLog
 	private readonly List<string> _invalidClLogs = new();
 
 	public IReadOnlyList<string> GetLogs(bool valid)
-		=> valid ? _validClLogs : _invalidClLogs;
+	{
+		return valid ? _validClLogs : _invalidClLogs;
+	}
 
 	public void ClearLogs(bool valid)
 	{
@@ -25,8 +27,37 @@ public class CustomLeaderboardSubmissionLogger : ICustomLeaderboardSubmissionLog
 		string playerInfo = $"{uploadRequest.PlayerName} ({uploadRequest.PlayerId})";
 		string time = uploadRequest.TimeInSeconds.ToString(StringFormats.TimeFormat);
 		string requestInfo = $"{uploadRequest.Client} {uploadRequest.ClientVersion} {uploadRequest.OperatingSystem} {uploadRequest.BuildMode} | Replay size {uploadRequest.ReplayData.Length:N0} bytes | Status {uploadRequest.Status}";
-		string message = $"`{elapsedMilliseconds:N0} ms | {playerInfo} {spawnsetName} {time} {requestInfo}";
 
+		List<string> timestampEntries = new();
+		(double TimeInSeconds, long Timestamp)? previous = null;
+		foreach (UploadRequestTimestamp timestamp in uploadRequest.Timestamps)
+		{
+			DateTime dateTime = new(timestamp.Timestamp, DateTimeKind.Utc);
+
+			if (previous.HasValue)
+			{
+				double timeDifference = timestamp.TimeInSeconds - previous.Value.TimeInSeconds;
+				long timestampDifference = timestamp.Timestamp - previous.Value.Timestamp;
+				TimeSpan timeSpanDifference = TimeSpan.FromTicks(timestampDifference);
+				timestampEntries.Add($"\t{timestamp.TimeInSeconds.ToString(StringFormats.TimeFormat),-20} {dateTime,-20} {timeDifference,-20} {timeSpanDifference,-20}");
+			}
+			else
+			{
+				timestampEntries.Add($"\t{timestamp.TimeInSeconds.ToString(StringFormats.TimeFormat),-20} {dateTime,-20}");
+			}
+
+			previous = (timestamp.TimeInSeconds, timestamp.Timestamp);
+		}
+
+		string replayMessage = $"`{elapsedMilliseconds:N0} ms | {playerInfo} {spawnsetName} {time} {requestInfo}`";
+		string timestampMessage = $"""
+			{replayMessage}
+			```
+			{string.Join('\n', timestampEntries)}
+			```
+			""";
+
+		string message = uploadRequest.Status == 5 ? replayMessage : timestampMessage;
 		if (errorMessage == null)
 			_validClLogs.Add(message);
 		else

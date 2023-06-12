@@ -43,7 +43,8 @@ public class UploadRequest
 		bool timeAttackOrRaceFinished,
 		UploadRequestData gameData,
 		byte[] replayData,
-		int status)
+		int status,
+		List<UploadRequestTimestamp> timestamps)
 	{
 		ThrowUtils.ThrowIf(survivalHashMd5.Length != 16);
 		ThrowUtils.ThrowIf(playerName.Length > 32);
@@ -90,6 +91,7 @@ public class UploadRequest
 		GameData = gameData;
 		ReplayData = replayData;
 		Status = status;
+		Timestamps = timestamps;
 	}
 
 	public byte[] SurvivalHashMd5 { get; }
@@ -165,7 +167,9 @@ public class UploadRequest
 
 	public byte[] ReplayData { get; }
 
-	public int Status { get; set; }
+	public int Status { get; }
+
+	public List<UploadRequestTimestamp> Timestamps { get; }
 
 	public string CreateValidationV2() => CreateValidationV2(
 		PlayerId,
