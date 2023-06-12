@@ -41,6 +41,6 @@ public class CustomLeaderboardSubmissionLogger : ICustomLeaderboardSubmissionLog
 		if (errorMessage == null)
 			_validClLogs.Add(message);
 		else
-			_invalidClLogs.Add(message);
+			_invalidClLogs.Add($"{message}\n**{errorMessage}**");
 	}
 }
