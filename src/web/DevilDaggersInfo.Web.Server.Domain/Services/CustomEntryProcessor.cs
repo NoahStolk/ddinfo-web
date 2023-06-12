@@ -625,16 +625,8 @@ public class CustomEntryProcessor
 	private void Log(UploadRequest uploadRequest, string? spawnsetName, string? errorMessage = null)
 	{
 		_submissionLogger.Log(
-			uploadRequest.PlayerName,
-			uploadRequest.PlayerId,
+			uploadRequest,
 			string.IsNullOrEmpty(spawnsetName) ? BitConverter.ToString(uploadRequest.SurvivalHashMd5) : spawnsetName,
-			uploadRequest.TimeInSeconds,
-			uploadRequest.Client,
-			uploadRequest.ClientVersion,
-			uploadRequest.OperatingSystem,
-			uploadRequest.BuildMode,
-			uploadRequest.ReplayData.Length,
-			uploadRequest.Status,
 			Stopwatch.GetElapsedTime(_startingTimestamp).TotalMilliseconds,
 			errorMessage);
 	}
