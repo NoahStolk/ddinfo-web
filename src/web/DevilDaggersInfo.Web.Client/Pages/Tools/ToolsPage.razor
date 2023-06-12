@@ -20,7 +20,7 @@ else
 
 	@if (_windowsDistribution != null)
 	{
-		<p>
+		<p class="para">
 			<a class="btn btn-download px-2 py-1" href="@GetDistributionApiUrl(_toolsName, _windowsDistribution)" download="@GetDistributionFileName(_toolsName, _windowsDistribution)" role="button" target="_top">
 				Download @_windowsDistribution.VersionNumber for Windows (@FileSizeUtils.Format(_windowsDistribution.FileSize))
 			</a>
@@ -29,12 +29,12 @@ else
 	
 	if (_linuxDistribution is { FileSize: > 0 })
 	{
-		<p>
+		<p class="para">
 			<a class="btn btn-download px-2 py-1" href="@GetDistributionApiUrl(_toolsName, _linuxDistribution)" download="@GetDistributionFileName(_toolsName, _linuxDistribution)" role="button" target="_top">
 				Download @_linuxDistribution.VersionNumber for Linux (@FileSizeUtils.Format(_linuxDistribution.FileSize))
 			</a>
 		</p>
-		<p>
+		<p class="para">
 			<i>Note; custom leaderboards are not supported on Linux yet.</i>
 		</p>
 	}
