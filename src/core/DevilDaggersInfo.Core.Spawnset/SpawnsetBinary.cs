@@ -348,20 +348,25 @@ public record SpawnsetBinary
 
 	public EffectivePlayerSettings GetEffectivePlayerSettings()
 	{
-		if (SpawnVersion < 5)
+		return GetEffectivePlayerSettings(SpawnVersion, HandLevel, AdditionalGems);
+	}
+
+	public static EffectivePlayerSettings GetEffectivePlayerSettings(int spawnVersion, HandLevel handLevel, int additionalGems)
+	{
+		if (spawnVersion < 5)
 			return new(HandLevel.Level1, 0, HandLevel.Level1);
 
-		return HandLevel switch
+		return handLevel switch
 		{
-			HandLevel.Level1 when AdditionalGems < 10 => new(HandLevel.Level1, AdditionalGems, HandLevel.Level1),
-			HandLevel.Level1 when AdditionalGems < 70 => new(HandLevel.Level2, AdditionalGems, HandLevel.Level2),
-			HandLevel.Level1 when AdditionalGems == 70 => new(HandLevel.Level3, 0, HandLevel.Level3),
-			HandLevel.Level1 when AdditionalGems == 71 => new(HandLevel.Level4, 0, HandLevel.Level4),
+			HandLevel.Level1 when additionalGems < 10 => new(HandLevel.Level1, additionalGems, HandLevel.Level1),
+			HandLevel.Level1 when additionalGems < 70 => new(HandLevel.Level2, additionalGems, HandLevel.Level2),
+			HandLevel.Level1 when additionalGems == 70 => new(HandLevel.Level3, 0, HandLevel.Level3),
+			HandLevel.Level1 when additionalGems == 71 => new(HandLevel.Level4, 0, HandLevel.Level4),
 			HandLevel.Level1 => new(HandLevel.Level4, 0, HandLevel.Level3),
-			HandLevel.Level2 when AdditionalGems < 0 => new(HandLevel.Level1, AdditionalGems + 10, HandLevel.Level1),
-			HandLevel.Level2 => new(HandLevel.Level2, Math.Min(59, AdditionalGems) + 10, HandLevel.Level2),
-			HandLevel.Level3 => new(HandLevel.Level3, Math.Min(149, AdditionalGems), HandLevel.Level3),
-			_ => new(HandLevel.Level4, AdditionalGems, HandLevel.Level4),
+			HandLevel.Level2 when additionalGems < 0 => new(HandLevel.Level1, additionalGems + 10, HandLevel.Level1),
+			HandLevel.Level2 => new(HandLevel.Level2, Math.Min(59, additionalGems) + 10, HandLevel.Level2),
+			HandLevel.Level3 => new(HandLevel.Level3, Math.Min(149, additionalGems), HandLevel.Level3),
+			_ => new(HandLevel.Level4, additionalGems, HandLevel.Level4),
 		};
 	}
 
