@@ -21,15 +21,15 @@ public class ProcessMemoryController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult<GetMarker>> GetMarker([Required] SupportedOperatingSystem operatingSystem)
-		=> await GetMarkerRepo(operatingSystem);
-
-	private async Task<GetMarker> GetMarkerRepo(SupportedOperatingSystem operatingSystem) => new()
 	{
-		Value = await _markerRepository.GetMarkerAsync(operatingSystem switch
+		return new GetMarker
 		{
-			SupportedOperatingSystem.Windows => "WindowsSteam",
-			SupportedOperatingSystem.Linux => "LinuxSteam",
-			_ => throw new UnsupportedOperatingSystemException($"Operating system '{operatingSystem}' is not supported."),
-		}),
-	};
+			Value = await _markerRepository.GetMarkerAsync(operatingSystem switch
+			{
+				SupportedOperatingSystem.Windows => "WindowsSteam",
+				SupportedOperatingSystem.Linux => "LinuxSteam",
+				_ => throw new UnsupportedOperatingSystemException($"Operating system '{operatingSystem}' is not supported."),
+			}),
+		};
+	}
 }
