@@ -1,5 +1,26 @@
 [
 	{
+		"VersionNumber": "0.7.0.0",
+		"Date": "2023-06-13T00:00:00",
+		"Changes": [
+			{
+				"Description": "Rewrote main menu."
+			},
+			{
+				"Description": "Added about window."
+			},
+			{
+				"Description": "Fixed incorrect additional gems for 'First Centipede' practice template."
+			},
+			{
+				"Description": "Effective hand and gems/homing values are now displayed in the practice window."
+			},
+			{
+				"Description": "Improved debug output."
+			}
+		]
+	},
+	{
 		"VersionNumber": "0.6.4.0",
 		"Date": "2023-06-10T00:00:00",
 		"Changes": [
