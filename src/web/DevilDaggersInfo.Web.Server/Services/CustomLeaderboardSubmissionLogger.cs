@@ -33,17 +33,18 @@ public class CustomLeaderboardSubmissionLogger : ICustomLeaderboardSubmissionLog
 		foreach (UploadRequestTimestamp timestamp in uploadRequest.Timestamps)
 		{
 			DateTime dateTime = new(timestamp.Timestamp, DateTimeKind.Utc);
+			const string dateTimeFormat = "yyyy-MM-dd HH:mm:ss.fff UTC";
 
 			if (previous.HasValue)
 			{
 				double timeDifference = timestamp.TimeInSeconds - previous.Value.TimeInSeconds;
 				long timestampDifference = timestamp.Timestamp - previous.Value.Timestamp;
 				TimeSpan timeSpanDifference = TimeSpan.FromTicks(timestampDifference);
-				timestampEntries.Add($"{timestamp.TimeInSeconds.ToString(StringFormats.TimeFormat),-10} {dateTime.ToString(StringFormats.DateTimeUtcFormat),-30} {timeDifference.ToString(StringFormats.TimeFormat),-10} {timeSpanDifference,-20}");
+				timestampEntries.Add($"{timestamp.TimeInSeconds.ToString(StringFormats.TimeFormat),-10} {dateTime.ToString(dateTimeFormat),-30} {timeDifference.ToString(StringFormats.TimeFormat),-10} {timeSpanDifference,-20}");
 			}
 			else
 			{
-				timestampEntries.Add($"{timestamp.TimeInSeconds.ToString(StringFormats.TimeFormat),-10} {dateTime.ToString(StringFormats.DateTimeUtcFormat),-30}");
+				timestampEntries.Add($"{timestamp.TimeInSeconds.ToString(StringFormats.TimeFormat),-10} {dateTime.ToString(dateTimeFormat),-30}");
 			}
 
 			previous = (timestamp.TimeInSeconds, timestamp.Timestamp);
