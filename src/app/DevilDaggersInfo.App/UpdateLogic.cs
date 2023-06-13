@@ -93,7 +93,7 @@ public static class UpdateLogic
 	{
 		using HttpRequestMessage request = new()
 		{
-			RequestUri = new($"api/app/updates/latest-version-file?appOperatingSystem={_operatingSystem}", UriKind.Relative),
+			RequestUri = new($"api/app/updates/latest-file?appOperatingSystem={_operatingSystem}", UriKind.Relative),
 			Method = HttpMethod.Get,
 		};
 

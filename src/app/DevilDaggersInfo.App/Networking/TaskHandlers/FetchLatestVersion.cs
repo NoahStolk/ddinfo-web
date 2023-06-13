@@ -10,7 +10,7 @@ public static class FetchLatestVersion
 	{
 		try
 		{
-			GetLatestVersion latestVersion = await AsyncHandler.Client.GetLatestVersion(appOperatingSystem);
+			GetLatestVersion latestVersion = await AsyncHandler.Client.GetLatest(appOperatingSystem);
 			if (!AppVersion.TryParse(latestVersion.VersionNumber, out AppVersion? onlineVersion))
 				return null;
 

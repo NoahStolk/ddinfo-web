@@ -64,11 +64,12 @@ public partial class AppApiHttpClient
 		return await SendGetRequest<List<GetCustomLeaderboardAllowedCategory>>($"api/app/custom-leaderboards/allowed-categories");
 	}
 
-	public async Task<GetMarker> GetMarker(AppOperatingSystem appOperatingSystem)
+	public async Task<GetMarker> GetMarker(AppOperatingSystem? appOperatingSystem, SupportedOperatingSystem? operatingSystem)
 	{
 		Dictionary<string, object?> queryParameters = new()
 		{
-			{ nameof(appOperatingSystem), appOperatingSystem }
+			{ nameof(appOperatingSystem), appOperatingSystem },
+			{ nameof(operatingSystem), operatingSystem }
 		};
 		return await SendGetRequest<GetMarker>(BuildUrlWithQuery($"api/app/process-memory/marker", queryParameters));
 	}
@@ -92,22 +93,42 @@ public partial class AppApiHttpClient
 		return await SendGetRequest<GetSpawnsetByHash>(BuildUrlWithQuery($"api/app/spawnsets/by-hash", queryParameters));
 	}
 
-	public async Task<GetLatestVersion> GetLatestVersion(AppOperatingSystem appOperatingSystem)
+	public async Task<GetLatestVersion> GetLatestVersion(ToolPublishMethod publishMethod, ToolBuildType buildType)
 	{
 		Dictionary<string, object?> queryParameters = new()
 		{
-			{ nameof(appOperatingSystem), appOperatingSystem }
+			{ nameof(publishMethod), publishMethod },
+			{ nameof(buildType), buildType }
 		};
 		return await SendGetRequest<GetLatestVersion>(BuildUrlWithQuery($"api/app/updates/latest-version", queryParameters));
 	}
 
-	public async Task<Task> GetLatestVersionFile(AppOperatingSystem appOperatingSystem)
+	public async Task<Task> GetLatestVersionFile(ToolPublishMethod publishMethod, ToolBuildType buildType)
+	{
+		Dictionary<string, object?> queryParameters = new()
+		{
+			{ nameof(publishMethod), publishMethod },
+			{ nameof(buildType), buildType }
+		};
+		return await SendGetRequest<Task>(BuildUrlWithQuery($"api/app/updates/latest-version-file", queryParameters));
+	}
+
+	public async Task<GetLatestVersion> GetLatest(AppOperatingSystem appOperatingSystem)
 	{
 		Dictionary<string, object?> queryParameters = new()
 		{
 			{ nameof(appOperatingSystem), appOperatingSystem }
 		};
-		return await SendGetRequest<Task>(BuildUrlWithQuery($"api/app/updates/latest-version-file", queryParameters));
+		return await SendGetRequest<GetLatestVersion>(BuildUrlWithQuery($"api/app/updates/latest", queryParameters));
+	}
+
+	public async Task<Task> GetLatestFile(AppOperatingSystem appOperatingSystem)
+	{
+		Dictionary<string, object?> queryParameters = new()
+		{
+			{ nameof(appOperatingSystem), appOperatingSystem }
+		};
+		return await SendGetRequest<Task>(BuildUrlWithQuery($"api/app/updates/latest-file", queryParameters));
 	}
 
 	private static string BuildUrlWithQuery(string baseUrl, Dictionary<string, object?> queryParameters)
