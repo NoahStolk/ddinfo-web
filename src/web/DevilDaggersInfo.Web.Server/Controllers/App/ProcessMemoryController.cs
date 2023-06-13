@@ -21,8 +21,20 @@ public class ProcessMemoryController : ControllerBase
 	[HttpGet("marker")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	public async Task<ActionResult<GetMarker>> GetMarker([Required] AppOperatingSystem appOperatingSystem)
+
+	// TODO: Make AppOperatingSystem required.
+	public async Task<ActionResult<GetMarker>> GetMarker(AppOperatingSystem? appOperatingSystem, SupportedOperatingSystem? operatingSystem)
 	{
+		if (operatingSystem.HasValue)
+		{
+			appOperatingSystem = operatingSystem switch
+			{
+				SupportedOperatingSystem.Windows => AppOperatingSystem.Windows,
+				SupportedOperatingSystem.Linux => AppOperatingSystem.Linux,
+				_ => throw new UnsupportedOperatingSystemException($"Operating system '{operatingSystem}' is not supported."),
+			};
+		}
+
 		return new GetMarker
 		{
 			Value = await _markerRepository.GetMarkerAsync(appOperatingSystem switch
