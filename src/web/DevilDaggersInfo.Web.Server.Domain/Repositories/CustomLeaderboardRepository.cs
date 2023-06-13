@@ -1,6 +1,5 @@
 using DevilDaggersInfo.Common.Extensions;
 using DevilDaggersInfo.Core.CriteriaExpression;
-using DevilDaggersInfo.Core.Versioning;
 using DevilDaggersInfo.Web.Server.Domain.Constants;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
@@ -165,7 +164,7 @@ public class CustomLeaderboardRepository
 				.Select((ce, i) =>
 				{
 					bool isOldDdcl = ce.Client == CustomLeaderboardsClient.DevilDaggersCustomLeaderboards;
-					AppVersion clientVersionParsed = AppVersion.TryParse(ce.ClientVersion, out AppVersion? version) ? version : new(0, 0, 0);
+					Version clientVersionParsed = Version.TryParse(ce.ClientVersion, out Version? version) ? version : new(0, 0, 0);
 					bool hasV3_1Values = !isOldDdcl || clientVersionParsed >= FeatureConstants.OldDdclV3_1;
 					bool hasHomingEatenValue = !isOldDdcl || clientVersionParsed >= FeatureConstants.OldDdclHomingEaten;
 

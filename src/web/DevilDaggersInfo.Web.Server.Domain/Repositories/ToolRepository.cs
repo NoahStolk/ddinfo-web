@@ -1,4 +1,3 @@
-using DevilDaggersInfo.Core.Versioning;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
@@ -81,7 +80,7 @@ public class ToolRepository
 	public async Task<ToolDistribution?> GetLatestToolDistributionAsync(string name, ToolPublishMethod publishMethod, ToolBuildType buildType)
 	{
 		List<string> versions = await _dbContext.ToolDistributions.Where(td => td.ToolName == name && td.PublishMethod == publishMethod && td.BuildType == buildType).Select(td => td.VersionNumber).ToListAsync();
-		string? highestVersion = versions.MaxBy(AppVersion.Parse);
+		string? highestVersion = versions.MaxBy(Version.Parse);
 		if (highestVersion == null)
 			return null;
 

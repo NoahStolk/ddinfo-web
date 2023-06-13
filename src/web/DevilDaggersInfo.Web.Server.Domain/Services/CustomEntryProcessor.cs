@@ -4,7 +4,6 @@ using DevilDaggersInfo.Core.CriteriaExpression;
 using DevilDaggersInfo.Core.CriteriaExpression.Extensions;
 using DevilDaggersInfo.Core.Encryption;
 using DevilDaggersInfo.Core.Replay;
-using DevilDaggersInfo.Core.Versioning;
 using DevilDaggersInfo.Web.Server.Domain.Commands.CustomEntries;
 using DevilDaggersInfo.Web.Server.Domain.Configuration;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
@@ -94,8 +93,8 @@ public class CustomEntryProcessor
 		if (tool == null)
 			LogAndThrowValidationException(uploadRequest, $"'{uploadRequest.Client}' is not a known tool and submissions will not be accepted.");
 
-		AppVersion clientVersionParsed = AppVersion.Parse(uploadRequest.ClientVersion);
-		if (clientVersionParsed < AppVersion.Parse(tool.RequiredVersionNumber))
+		Version clientVersionParsed = Version.Parse(uploadRequest.ClientVersion);
+		if (clientVersionParsed < Version.Parse(tool.RequiredVersionNumber))
 			LogAndThrowValidationException(uploadRequest, $"You are using an unsupported and outdated version of {uploadRequest.Client}. Please update the program.");
 
 		// Reject other invalid statuses.
