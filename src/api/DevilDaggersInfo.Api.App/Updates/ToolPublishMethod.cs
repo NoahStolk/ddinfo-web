@@ -1,5 +1,6 @@
 namespace DevilDaggersInfo.Api.App.Updates;
 
+[Obsolete]
 public enum ToolPublishMethod
 {
 	SelfContained = 0,

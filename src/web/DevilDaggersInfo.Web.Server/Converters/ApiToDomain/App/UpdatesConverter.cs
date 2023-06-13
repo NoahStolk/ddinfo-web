@@ -4,8 +4,10 @@ using AppApi = DevilDaggersInfo.Api.App.Updates;
 
 namespace DevilDaggersInfo.Web.Server.Converters.ApiToDomain.App;
 
+[Obsolete]
 public static class UpdatesConverters
 {
+	[Obsolete]
 	public static ToolPublishMethod ToDomain(this AppApi.ToolPublishMethod publishMethod) => publishMethod switch
 	{
 		AppApi.ToolPublishMethod.Default => ToolPublishMethod.Default,
@@ -14,6 +16,7 @@ public static class UpdatesConverters
 		_ => throw new UnreachableException(),
 	};
 
+	[Obsolete]
 	public static ToolBuildType ToDomain(this AppApi.ToolBuildType buildType) => buildType switch
 	{
 		AppApi.ToolBuildType.WindowsWpf => ToolBuildType.WindowsWpf,

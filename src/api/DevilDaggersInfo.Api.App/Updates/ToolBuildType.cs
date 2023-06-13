@@ -1,5 +1,6 @@
 namespace DevilDaggersInfo.Api.App.Updates;
 
+[Obsolete]
 public enum ToolBuildType
 {
 	WindowsWpf = 0,
