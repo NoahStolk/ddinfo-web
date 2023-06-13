@@ -1,5 +1,14 @@
 [
 	{
+		"VersionNumber": "0.7.1.0",
+		"Date": "2023-06-13T00:00:00",
+		"Changes": [
+			{
+				"Description": "Some UI fixes."
+			}
+		]
+	},
+	{
 		"VersionNumber": "0.7.0.0",
 		"Date": "2023-06-13T00:00:00",
 		"Changes": [
