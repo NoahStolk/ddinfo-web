@@ -40,45 +40,7 @@ public static class CustomTemplateChild
 
 				string timerStartString = customTemplate.TimerStart.ToString(StringFormats.TimeFormat);
 
-				if (isActive)
-				{
-					float width = buttonSize.X - 96;
-					if (ImGui.BeginChild(buttonName + " name", new(width, 13), false))
-					{
-						string name = customTemplate.Name ?? string.Empty;
-
-						ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, Vector2.Zero);
-						ImGui.PushItemWidth(width);
-						if (ImGui.InputText("##name", ref name, 24))
-						{
-							UserSettingsModel.UserSettingsPracticeTemplate originalTemplate = UserSettings.Model.PracticeTemplates.First(pt => pt == customTemplate);
-							int index = UserSettings.Model.PracticeTemplates.IndexOf(originalTemplate);
-
-							List<UserSettingsModel.UserSettingsPracticeTemplate> newList = UserSettings.Model.PracticeTemplates
-								.Where(pt => pt != originalTemplate)
-								.ToList();
-
-							newList.Insert(index, originalTemplate with
-							{
-								Name = name,
-							});
-
-							UserSettings.Model = UserSettings.Model with
-							{
-								PracticeTemplates = newList,
-							};
-						}
-
-						ImGui.PopItemWidth();
-						ImGui.PopStyleVar();
-					}
-
-					ImGui.EndChild();
-				}
-				else
-				{
-					ImGui.TextColored(color with { A = textAlpha }, string.IsNullOrWhiteSpace(customTemplate.Name) ? "<untitled>" : customTemplate.Name);
-				}
+				ImGui.TextColored(color with { A = textAlpha }, string.IsNullOrWhiteSpace(customTemplate.Name) ? "<untitled>" : customTemplate.Name);
 
 				ImGui.SameLine(windowWidth - ImGui.CalcTextSize(timerStartString).X - 8);
 				ImGui.TextColored(Color.White with { A = textAlpha }, timerStartString);
@@ -98,5 +60,35 @@ public static class CustomTemplateChild
 		ImGui.PopStyleVar();
 
 		ImGui.EndChild();
+
+		if (ImGui.BeginPopupContextItem(buttonName + " rename", ImGuiPopupFlags.MouseButtonRight))
+		{
+			string name = customTemplate.Name ?? string.Empty;
+			ImGui.SetKeyboardFocusHere();
+			if (ImGui.InputText("Name", ref name, 32))
+			{
+				UserSettingsModel.UserSettingsPracticeTemplate originalTemplate = UserSettings.Model.PracticeTemplates.First(pt => pt == customTemplate);
+				int index = UserSettings.Model.PracticeTemplates.IndexOf(originalTemplate);
+
+				List<UserSettingsModel.UserSettingsPracticeTemplate> newList = UserSettings.Model.PracticeTemplates
+					.Where(pt => pt != originalTemplate)
+					.ToList();
+
+				newList.Insert(index, originalTemplate with
+				{
+					Name = name,
+				});
+
+				UserSettings.Model = UserSettings.Model with
+				{
+					PracticeTemplates = newList,
+				};
+			}
+
+			if (ImGui.IsKeyPressed(ImGuiKey.Enter))
+				ImGui.CloseCurrentPopup();
+
+			ImGui.EndPopup();
+		}
 	}
 }
