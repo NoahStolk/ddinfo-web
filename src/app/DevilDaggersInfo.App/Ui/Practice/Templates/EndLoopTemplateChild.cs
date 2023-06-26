@@ -24,7 +24,7 @@ public static class EndLoopTemplateChild
 		if (ImGui.BeginChild(waveName, buttonSize, true))
 		{
 			bool hover = ImGui.IsWindowHovered();
-			ImGui.PushStyleColor(ImGuiCol.ChildBg, hover ? color with { A = 31 } : color with { A = backgroundAlpha });
+			ImGui.PushStyleColor(ImGuiCol.ChildBg, color with { A = (byte)(hover ? backgroundAlpha + 16 : backgroundAlpha) });
 
 			if (ImGui.BeginChild(waveName + " child", buttonSize, false, ImGuiWindowFlags.NoInputs))
 			{

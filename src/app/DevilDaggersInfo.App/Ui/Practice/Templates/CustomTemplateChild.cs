@@ -27,7 +27,7 @@ public static class CustomTemplateChild
 		if (ImGui.BeginChild(buttonName, buttonSize, true))
 		{
 			bool hover = ImGui.IsWindowHovered();
-			ImGui.PushStyleColor(ImGuiCol.ChildBg, hover ? color with { A = 31 } : color with { A = backgroundAlpha });
+			ImGui.PushStyleColor(ImGuiCol.ChildBg, color with { A = (byte)(hover ? backgroundAlpha + 16 : backgroundAlpha) });
 
 			if (ImGui.BeginChild(buttonName + " child", buttonSize, false, ImGuiWindowFlags.NoInputs))
 			{
@@ -49,7 +49,7 @@ public static class CustomTemplateChild
 
 						ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, Vector2.Zero);
 						ImGui.PushItemWidth(width);
-						if (ImGui.InputText("##name", ref name, 32))
+						if (ImGui.InputText("##name", ref name, 24))
 						{
 							UserSettingsModel.UserSettingsPracticeTemplate originalTemplate = UserSettings.Model.PracticeTemplates.First(pt => pt == customTemplate);
 							int index = UserSettings.Model.PracticeTemplates.IndexOf(originalTemplate);

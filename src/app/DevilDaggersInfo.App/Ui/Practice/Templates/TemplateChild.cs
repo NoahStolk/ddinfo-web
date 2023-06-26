@@ -24,7 +24,7 @@ public static class TemplateChild
 		if (ImGui.BeginChild(template.Name, buttonSize, true))
 		{
 			bool hover = ImGui.IsWindowHovered();
-			ImGui.PushStyleColor(ImGuiCol.ChildBg, hover ? template.Color with { A = 31 } : template.Color with { A = backgroundAlpha });
+			ImGui.PushStyleColor(ImGuiCol.ChildBg, template.Color with { A = (byte)(hover ? backgroundAlpha + 16 : backgroundAlpha) });
 
 			if (ImGui.BeginChild(template.Name + " child", buttonSize, false, ImGuiWindowFlags.NoInputs))
 			{
