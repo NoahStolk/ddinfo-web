@@ -26,7 +26,7 @@ public partial class AdminOverview<TGetDto, TSorting> : IHasNavigation
 
 	[Parameter]
 	[EditorRequired]
-	public required Func<int, int, TSorting?, bool, Task<Page<TGetDto>>> ApiCall { get; set; }
+	public required Func<string?, int, int, TSorting?, bool, Task<Page<TGetDto>>> ApiCall { get; set; }
 
 	[Parameter]
 	[EditorRequired]
@@ -41,6 +41,9 @@ public partial class AdminOverview<TGetDto, TSorting> : IHasNavigation
 
 	[Parameter]
 	public required RenderFragment<TGetDto> RowTemplate { get; set; }
+
+	[Parameter]
+	public string? Filter { get; set; }
 
 	[Parameter]
 	public int PageIndex { get; set; }
@@ -70,6 +73,13 @@ public partial class AdminOverview<TGetDto, TSorting> : IHasNavigation
 		await Fetch();
 	}
 
+	private async Task ChangeFilter(ChangeEventArgs e)
+	{
+		Filter = e.Value?.ToString();
+
+		await Fetch();
+	}
+
 	public async Task ChangePageIndex(int pageIndex)
 	{
 		PageIndex = Math.Clamp(pageIndex, 0, TotalPages - 1);
@@ -96,7 +106,7 @@ public partial class AdminOverview<TGetDto, TSorting> : IHasNavigation
 	{
 		try
 		{
-			_page = await ApiCall.Invoke(PageIndex, PageSize, SortBy.HasValue ? (TSorting)(object)SortBy : null, Ascending);
+			_page = await ApiCall.Invoke(Filter, PageIndex, PageSize, SortBy.HasValue ? (TSorting)(object)SortBy : null, Ascending);
 			_errorMessage = null;
 			StateHasChanged();
 		}

@@ -17,9 +17,15 @@ public class SpawnsetRepository
 		_dbContext = dbContext;
 	}
 
-	public async Task<Page<GetSpawnsetForOverview>> GetSpawnsetsAsync(int pageIndex, int pageSize, SpawnsetSorting? sortBy, bool ascending)
+	public async Task<Page<GetSpawnsetForOverview>> GetSpawnsetsAsync(string? filter, int pageIndex, int pageSize, SpawnsetSorting? sortBy, bool ascending)
 	{
 		IQueryable<SpawnsetEntity> spawnsetsQuery = _dbContext.Spawnsets.AsNoTracking().Include(s => s.Player);
+
+		if (!string.IsNullOrWhiteSpace(filter))
+		{
+			// ! Navigation property.
+			spawnsetsQuery = spawnsetsQuery.Where(s => s.Name.Contains(filter) || s.Player!.PlayerName.Contains(filter));
+		}
 
 		// ! Navigation property.
 		spawnsetsQuery = sortBy switch
@@ -41,7 +47,7 @@ public class SpawnsetRepository
 		return new Page<GetSpawnsetForOverview>
 		{
 			Results = spawnsets.ConvertAll(s => s.ToAdminApiOverview()),
-			TotalResults = _dbContext.Spawnsets.Count(),
+			TotalResults = spawnsetsQuery.Count(),
 		};
 	}
 

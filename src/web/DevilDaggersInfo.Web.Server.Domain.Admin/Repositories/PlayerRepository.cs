@@ -17,9 +17,18 @@ public class PlayerRepository
 		_dbContext = dbContext;
 	}
 
-	public async Task<Page<GetPlayerForOverview>> GetPlayersAsync(int pageIndex, int pageSize, PlayerSorting? sortBy, bool ascending)
+	public async Task<Page<GetPlayerForOverview>> GetPlayersAsync(string? filter, int pageIndex, int pageSize, PlayerSorting? sortBy, bool ascending)
 	{
 		IQueryable<PlayerEntity> playersQuery = _dbContext.Players.AsNoTracking();
+
+		if (!string.IsNullOrWhiteSpace(filter))
+		{
+			playersQuery = playersQuery.Where(p =>
+				p.PlayerName.Contains(filter) ||
+				p.CommonName != null && p.CommonName.Contains(filter) ||
+				p.Id.ToString().Contains(filter) ||
+				p.DiscordUserId.HasValue && p.DiscordUserId.Value.ToString().Contains(filter));
+		}
 
 		playersQuery = sortBy switch
 		{
@@ -55,7 +64,7 @@ public class PlayerRepository
 		return new Page<GetPlayerForOverview>
 		{
 			Results = players.ConvertAll(p => p.ToAdminApiOverview()),
-			TotalResults = _dbContext.Players.Count(),
+			TotalResults = playersQuery.Count(),
 		};
 	}
 

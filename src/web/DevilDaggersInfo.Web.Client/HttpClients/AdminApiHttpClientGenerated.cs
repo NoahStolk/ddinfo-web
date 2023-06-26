@@ -40,10 +40,11 @@ public partial class AdminApiHttpClient
 		return await SendRequest(new HttpMethod("POST"), $"api/admin/cache/clear-cache", JsonContent.Create(cacheType));
 	}
 
-	public async Task<Page<GetCustomEntryForOverview>> GetCustomEntries(int pageIndex, int pageSize, CustomEntrySorting? sortBy, bool ascending)
+	public async Task<Page<GetCustomEntryForOverview>> GetCustomEntries(string? filter, int pageIndex, int pageSize, CustomEntrySorting? sortBy, bool ascending)
 	{
 		Dictionary<string, object?> queryParameters = new()
 		{
+			{ nameof(filter), filter },
 			{ nameof(pageIndex), pageIndex },
 			{ nameof(pageSize), pageSize },
 			{ nameof(sortBy), sortBy },
@@ -72,10 +73,11 @@ public partial class AdminApiHttpClient
 		return await SendRequest(new HttpMethod("DELETE"), $"api/admin/custom-entries/{id}");
 	}
 
-	public async Task<Page<GetCustomLeaderboardForOverview>> GetCustomLeaderboards(int pageIndex, int pageSize, CustomLeaderboardSorting? sortBy, bool ascending)
+	public async Task<Page<GetCustomLeaderboardForOverview>> GetCustomLeaderboards(string? filter, int pageIndex, int pageSize, CustomLeaderboardSorting? sortBy, bool ascending)
 	{
 		Dictionary<string, object?> queryParameters = new()
 		{
+			{ nameof(filter), filter },
 			{ nameof(pageIndex), pageIndex },
 			{ nameof(pageSize), pageSize },
 			{ nameof(sortBy), sortBy },
@@ -109,10 +111,11 @@ public partial class AdminApiHttpClient
 		return await SendGetRequest<List<GetDatabaseTableEntry>>($"api/admin/database/");
 	}
 
-	public async Task<Page<GetDonationForOverview>> GetDonations(int pageIndex, int pageSize, DonationSorting? sortBy, bool ascending)
+	public async Task<Page<GetDonationForOverview>> GetDonations(string? filter, int pageIndex, int pageSize, DonationSorting? sortBy, bool ascending)
 	{
 		Dictionary<string, object?> queryParameters = new()
 		{
+			{ nameof(filter), filter },
 			{ nameof(pageIndex), pageIndex },
 			{ nameof(pageSize), pageSize },
 			{ nameof(sortBy), sortBy },
@@ -176,10 +179,11 @@ public partial class AdminApiHttpClient
 		return await SendRequest(new HttpMethod("PUT"), $"api/admin/markers/{name}", JsonContent.Create(value));
 	}
 
-	public async Task<Page<GetModForOverview>> GetMods(int pageIndex, int pageSize, ModSorting? sortBy, bool ascending)
+	public async Task<Page<GetModForOverview>> GetMods(string? filter, int pageIndex, int pageSize, ModSorting? sortBy, bool ascending)
 	{
 		Dictionary<string, object?> queryParameters = new()
 		{
+			{ nameof(filter), filter },
 			{ nameof(pageIndex), pageIndex },
 			{ nameof(pageSize), pageSize },
 			{ nameof(sortBy), sortBy },
@@ -213,10 +217,11 @@ public partial class AdminApiHttpClient
 		return await SendRequest(new HttpMethod("DELETE"), $"api/admin/mods/{id}");
 	}
 
-	public async Task<Page<GetPlayerForOverview>> GetPlayers(int pageIndex, int pageSize, PlayerSorting? sortBy, bool ascending)
+	public async Task<Page<GetPlayerForOverview>> GetPlayers(string? filter, int pageIndex, int pageSize, PlayerSorting? sortBy, bool ascending)
 	{
 		Dictionary<string, object?> queryParameters = new()
 		{
+			{ nameof(filter), filter },
 			{ nameof(pageIndex), pageIndex },
 			{ nameof(pageSize), pageSize },
 			{ nameof(sortBy), sortBy },
@@ -250,10 +255,11 @@ public partial class AdminApiHttpClient
 		return await SendRequest(new HttpMethod("DELETE"), $"api/admin/players/{id}");
 	}
 
-	public async Task<Page<GetSpawnsetForOverview>> GetSpawnsets(int pageIndex, int pageSize, SpawnsetSorting? sortBy, bool ascending)
+	public async Task<Page<GetSpawnsetForOverview>> GetSpawnsets(string? filter, int pageIndex, int pageSize, SpawnsetSorting? sortBy, bool ascending)
 	{
 		Dictionary<string, object?> queryParameters = new()
 		{
+			{ nameof(filter), filter },
 			{ nameof(pageIndex), pageIndex },
 			{ nameof(pageSize), pageSize },
 			{ nameof(sortBy), sortBy },

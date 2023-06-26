@@ -27,11 +27,12 @@ public class ModsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[Authorize(Roles = Roles.Mods)]
 	public async Task<ActionResult<Page<GetModForOverview>>> GetMods(
+		string? filter = null,
 		[Range(0, 1000)] int pageIndex = 0,
 		[Range(Constants.PageSizeMin, Constants.PageSizeMax)] int pageSize = Constants.PageSizeDefault,
 		ModSorting? sortBy = null,
 		bool ascending = false)
-		=> await _modRepository.GetModsAsync(pageIndex, pageSize, sortBy, ascending);
+		=> await _modRepository.GetModsAsync(filter, pageIndex, pageSize, sortBy, ascending);
 
 	[HttpGet("names")]
 	[ProducesResponseType(StatusCodes.Status200OK)]

@@ -17,11 +17,17 @@ public class DonationRepository
 		_dbContext = dbContext;
 	}
 
-	public async Task<Page<GetDonationForOverview>> GetDonationsAsync(int pageIndex, int pageSize, DonationSorting? sortBy, bool ascending)
+	public async Task<Page<GetDonationForOverview>> GetDonationsAsync(string? filter, int pageIndex, int pageSize, DonationSorting? sortBy, bool ascending)
 	{
 		IQueryable<DonationEntity> donationsQuery = _dbContext.Donations
 			.AsNoTracking()
 			.Include(d => d.Player);
+
+		if (!string.IsNullOrWhiteSpace(filter))
+		{
+			// ! Navigation property.
+			donationsQuery = donationsQuery.Where(d => d.Player!.PlayerName.Contains(filter));
+		}
 
 		// ! Navigation property.
 		donationsQuery = sortBy switch
@@ -44,7 +50,7 @@ public class DonationRepository
 		return new Page<GetDonationForOverview>
 		{
 			Results = donations.ConvertAll(d => d.ToAdminApiOverview()),
-			TotalResults = _dbContext.Donations.Count(),
+			TotalResults = donationsQuery.Count(),
 		};
 	}
 

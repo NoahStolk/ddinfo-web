@@ -6,7 +6,7 @@
 @using DevilDaggersInfo.Web.Core.Claims
 
 <AdminAuthorizer Base="this" RequiredRole="@Roles.Players">
-	<AdminOverview @ref="_overview" TGetDto="GetPlayerForOverview" TSorting="PlayerSorting" Title="Admin - Players" ApiCall="(int pageIndex, int pageSize, PlayerSorting? sortBy, bool isAscending) => Http.GetPlayers(pageIndex, pageSize, sortBy, isAscending)" DeletionApiCall="(int id) => Http.DeletePlayerById(id)" GridConfiguration="grid-cols-admin-players-sm md:grid-cols-admin-players-md lg:grid-cols-admin-players-lg xl:grid-cols-admin-players-xl">
+	<AdminOverview @ref="_overview" TGetDto="GetPlayerForOverview" TSorting="PlayerSorting" Title="Admin - Players" ApiCall="Http.GetPlayers" DeletionApiCall="(int id) => Http.DeletePlayerById(id)" GridConfiguration="grid-cols-admin-players-sm md:grid-cols-admin-players-md lg:grid-cols-admin-players-lg xl:grid-cols-admin-players-xl">
 		<TableHeader>
 			<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(PlayerSorting.Id)" @onclick:preventDefault>Id</a>
 			<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(PlayerSorting.PlayerName)" @onclick:preventDefault>Name</a>

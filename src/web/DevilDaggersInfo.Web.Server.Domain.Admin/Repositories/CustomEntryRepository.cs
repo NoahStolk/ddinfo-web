@@ -17,7 +17,7 @@ public class CustomEntryRepository
 		_dbContext = dbContext;
 	}
 
-	public async Task<Page<GetCustomEntryForOverview>> GetCustomEntriesAsync(int pageIndex, int pageSize, CustomEntrySorting? sortBy, bool ascending)
+	public async Task<Page<GetCustomEntryForOverview>> GetCustomEntriesAsync(string? filter, int pageIndex, int pageSize, CustomEntrySorting? sortBy, bool ascending)
 	{
 		// ! Navigation property.
 		IQueryable<CustomEntryEntity> customEntriesQuery = _dbContext.CustomEntries
@@ -25,6 +25,12 @@ public class CustomEntryRepository
 		.Include(ce => ce.Player)
 			.Include(ce => ce.CustomLeaderboard)
 				.ThenInclude(cl => cl!.Spawnset);
+
+		if (!string.IsNullOrWhiteSpace(filter))
+		{
+			// ! Navigation property.
+			customEntriesQuery = customEntriesQuery.Where(ce => ce.Player!.PlayerName.Contains(filter) || ce.CustomLeaderboard!.Spawnset!.Name.Contains(filter));
+		}
 
 		// ! Navigation property.
 		customEntriesQuery = sortBy switch
@@ -59,7 +65,7 @@ public class CustomEntryRepository
 		return new Page<GetCustomEntryForOverview>
 		{
 			Results = customEntries.ConvertAll(ce => ce.ToAdminApiOverview()),
-			TotalResults = _dbContext.CustomEntries.Count(),
+			TotalResults = customEntriesQuery.Count(),
 		};
 	}
 
