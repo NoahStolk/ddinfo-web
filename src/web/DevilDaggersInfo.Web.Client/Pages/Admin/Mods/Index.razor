@@ -6,7 +6,7 @@
 @using DevilDaggersInfo.Web.Core.Claims
 
 <AdminAuthorizer Base="this" RequiredRole="@Roles.Mods">
-	<AdminOverview @ref="_overview" TGetDto="GetModForOverview" TSorting="ModSorting" Title="Admin - Mods" ApiCall="(int pageIndex, int pageSize, ModSorting? sortBy, bool isAscending) => Http.GetMods(pageIndex, pageSize, sortBy, isAscending)" DeletionApiCall="(int id) => Http.DeleteModById(id)" GridConfiguration="grid-cols-admin-mods-sm md:grid-cols-admin-mods-md lg:grid-cols-admin-mods-lg xl:grid-cols-admin-mods-xl">
+	<AdminOverview @ref="_overview" TGetDto="GetModForOverview" TSorting="ModSorting" Title="Admin - Mods" ApiCall="Http.GetMods" DeletionApiCall="(int id) => Http.DeleteModById(id)" GridConfiguration="grid-cols-admin-mods-sm md:grid-cols-admin-mods-md lg:grid-cols-admin-mods-lg xl:grid-cols-admin-mods-xl">
 		<TableHeader>
 			<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(ModSorting.Id)" @onclick:preventDefault>Id</a>
 			<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(ModSorting.Name)" @onclick:preventDefault>Name</a>

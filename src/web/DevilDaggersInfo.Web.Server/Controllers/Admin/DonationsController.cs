@@ -27,11 +27,12 @@ public class DonationsController : ControllerBase
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public async Task<ActionResult<Page<GetDonationForOverview>>> GetDonations(
+		string? filter = null,
 		[Range(0, 1000)] int pageIndex = 0,
 		[Range(Constants.PageSizeMin, Constants.PageSizeMax)] int pageSize = Constants.PageSizeDefault,
 		DonationSorting? sortBy = null,
 		bool ascending = false)
-		=> await _donationRepository.GetDonationsAsync(pageIndex, pageSize, sortBy, ascending);
+		=> await _donationRepository.GetDonationsAsync(filter, pageIndex, pageSize, sortBy, ascending);
 
 	[HttpGet("{id}")]
 	[ProducesResponseType(StatusCodes.Status200OK)]

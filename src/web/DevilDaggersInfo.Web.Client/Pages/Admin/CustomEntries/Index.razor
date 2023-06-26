@@ -6,7 +6,7 @@
 @using DevilDaggersInfo.Web.Core.Claims
 
 <AdminAuthorizer Base="this" RequiredRole="@Roles.Admin">
-	<AdminOverview @ref="_overview" TGetDto="GetCustomEntryForOverview" TSorting="CustomEntrySorting" Title="Admin - Custom Entries" ApiCall="(int pageIndex, int pageSize, CustomEntrySorting? sortBy, bool isAscending) => Http.GetCustomEntries(pageIndex, pageSize, sortBy, isAscending)" DeletionApiCall="(int id) => Http.DeleteCustomEntryById(id)" GridConfiguration="grid-cols-admin-custom-entries-sm md:grid-cols-admin-custom-entries-md lg:grid-cols-admin-custom-entries-lg xl:grid-cols-admin-custom-entries-xl">
+	<AdminOverview @ref="_overview" TGetDto="GetCustomEntryForOverview" TSorting="CustomEntrySorting" Title="Admin - Custom Entries" ApiCall="Http.GetCustomEntries" DeletionApiCall="(int id) => Http.DeleteCustomEntryById(id)" GridConfiguration="grid-cols-admin-custom-entries-sm md:grid-cols-admin-custom-entries-md lg:grid-cols-admin-custom-entries-lg xl:grid-cols-admin-custom-entries-xl">
 		<TableHeader>
 			<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(CustomEntrySorting.Id)" @onclick:preventDefault>Id</a>
 			<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(CustomEntrySorting.SpawnsetName)" @onclick:preventDefault>Name</a>

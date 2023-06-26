@@ -27,11 +27,12 @@ public class SpawnsetsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[Authorize(Roles = Roles.Spawnsets)]
 	public async Task<ActionResult<Page<GetSpawnsetForOverview>>> GetSpawnsets(
+		string? filter = null,
 		[Range(0, 1000)] int pageIndex = 0,
 		[Range(Constants.PageSizeMin, Constants.PageSizeMax)] int pageSize = Constants.PageSizeDefault,
 		SpawnsetSorting? sortBy = null,
 		bool ascending = false)
-		=> await _spawnsetRepository.GetSpawnsetsAsync(pageIndex, pageSize, sortBy, ascending);
+		=> await _spawnsetRepository.GetSpawnsetsAsync(filter, pageIndex, pageSize, sortBy, ascending);
 
 	[HttpGet("names")]
 	[ProducesResponseType(StatusCodes.Status200OK)]

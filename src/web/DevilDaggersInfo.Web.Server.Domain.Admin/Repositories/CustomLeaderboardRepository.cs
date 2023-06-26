@@ -17,11 +17,17 @@ public class CustomLeaderboardRepository
 		_dbContext = dbContext;
 	}
 
-	public async Task<Page<GetCustomLeaderboardForOverview>> GetCustomLeaderboardsAsync(int pageIndex, int pageSize, CustomLeaderboardSorting? sortBy, bool ascending)
+	public async Task<Page<GetCustomLeaderboardForOverview>> GetCustomLeaderboardsAsync(string? filter, int pageIndex, int pageSize, CustomLeaderboardSorting? sortBy, bool ascending)
 	{
 		IQueryable<CustomLeaderboardEntity> customLeaderboardsQuery = _dbContext.CustomLeaderboards
 			.AsNoTracking()
 			.Include(cl => cl.Spawnset);
+
+		if (!string.IsNullOrWhiteSpace(filter))
+		{
+			// ! Navigation property.
+			customLeaderboardsQuery = customLeaderboardsQuery.Where(cl => cl.Spawnset!.Name.Contains(filter));
+		}
 
 		// ! Navigation property.
 		customLeaderboardsQuery = sortBy switch

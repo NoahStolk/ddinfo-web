@@ -21,9 +21,12 @@ public class ModRepository
 		_modArchiveAccessor = modArchiveAccessor;
 	}
 
-	public async Task<Page<GetModForOverview>> GetModsAsync(int pageIndex, int pageSize, ModSorting? sortBy, bool ascending)
+	public async Task<Page<GetModForOverview>> GetModsAsync(string? filter, int pageIndex, int pageSize, ModSorting? sortBy, bool ascending)
 	{
 		IQueryable<ModEntity> modsQuery = _dbContext.Mods.AsNoTracking();
+
+		if (!string.IsNullOrWhiteSpace(filter))
+			modsQuery = modsQuery.Where(m => m.Name.Contains(filter) || m.Url.Contains(filter));
 
 		modsQuery = sortBy switch
 		{

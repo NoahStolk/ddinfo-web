@@ -27,11 +27,12 @@ public class PlayersController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[Authorize(Roles = Roles.Players)]
 	public async Task<ActionResult<Page<GetPlayerForOverview>>> GetPlayers(
+		string? filter = null,
 		[Range(0, 1000)] int pageIndex = 0,
 		[Range(Constants.PageSizeMin, Constants.PageSizeMax)] int pageSize = Constants.PageSizeDefault,
 		PlayerSorting? sortBy = null,
 		bool ascending = false)
-		=> await _playerRepository.GetPlayersAsync(pageIndex, pageSize, sortBy, ascending);
+		=> await _playerRepository.GetPlayersAsync(filter, pageIndex, pageSize, sortBy, ascending);
 
 	[HttpGet("names")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
