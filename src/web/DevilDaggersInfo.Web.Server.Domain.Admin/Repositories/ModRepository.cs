@@ -26,7 +26,7 @@ public class ModRepository
 		IQueryable<ModEntity> modsQuery = _dbContext.Mods.AsNoTracking();
 
 		if (!string.IsNullOrWhiteSpace(filter))
-			modsQuery = modsQuery.Where(m => m.Name.Contains(filter) || m.Url.Contains(filter));
+			modsQuery = modsQuery.Where(m => m.Name.Contains(filter));
 
 		modsQuery = sortBy switch
 		{
