@@ -65,7 +65,7 @@ public class CustomEntryRepository
 		return new Page<GetCustomEntryForOverview>
 		{
 			Results = customEntries.ConvertAll(ce => ce.ToAdminApiOverview()),
-			TotalResults = _dbContext.CustomEntries.Count(),
+			TotalResults = customEntriesQuery.Count(),
 		};
 	}
 

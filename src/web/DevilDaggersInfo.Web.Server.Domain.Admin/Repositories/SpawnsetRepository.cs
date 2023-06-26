@@ -47,7 +47,7 @@ public class SpawnsetRepository
 		return new Page<GetSpawnsetForOverview>
 		{
 			Results = spawnsets.ConvertAll(s => s.ToAdminApiOverview()),
-			TotalResults = _dbContext.Spawnsets.Count(),
+			TotalResults = spawnsetsQuery.Count(),
 		};
 	}
 

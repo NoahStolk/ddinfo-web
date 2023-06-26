@@ -64,7 +64,7 @@ public class PlayerRepository
 		return new Page<GetPlayerForOverview>
 		{
 			Results = players.ConvertAll(p => p.ToAdminApiOverview()),
-			TotalResults = _dbContext.Players.Count(),
+			TotalResults = playersQuery.Count(),
 		};
 	}
 

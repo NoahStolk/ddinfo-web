@@ -52,7 +52,7 @@ public class CustomLeaderboardRepository
 		return new Page<GetCustomLeaderboardForOverview>
 		{
 			Results = customLeaderboards.ConvertAll(cl => cl.ToAdminApiOverview()),
-			TotalResults = _dbContext.CustomLeaderboards.Count(),
+			TotalResults = customLeaderboardsQuery.Count(),
 		};
 	}
 
