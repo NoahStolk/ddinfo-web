@@ -1,5 +1,20 @@
 [
 	{
+		"VersionNumber": "0.7.3.0",
+		"Date": "2023-06-28T00:00:00",
+		"Changes": [
+			{
+				"Description": "Added ability to name and reorder custom practice templates."
+			},
+			{
+				"Description": "The practice window is now responsive."
+			},
+			{
+				"Description": "The practice buttons are now highlighted based on the currently active spawnset instead of what's inside the input fields."
+			}
+		]
+	},
+	{
 		"VersionNumber": "0.7.2.0",
 		"Date": "2023-06-13T00:00:00",
 		"Changes": [
