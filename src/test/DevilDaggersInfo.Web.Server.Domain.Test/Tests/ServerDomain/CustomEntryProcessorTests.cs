@@ -7,17 +7,17 @@ using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Services;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 using DevilDaggersInfo.Web.Server.Domain.Test.Data;
-using DevilDaggersInfo.Web.Server.Domain.Test.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using NSubstitute;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Test.Tests.ServerDomain;
 
 [TestClass]
 public class CustomEntryProcessorTests
 {
-	private readonly Mock<ApplicationDbContext> _dbContext;
+	private readonly ApplicationDbContext _dbContext;
 	private readonly CustomEntryProcessor _customEntryProcessor;
 	private readonly AesBase32Wrapper _encryptionWrapper;
 	private readonly byte[] _mockReplay;
@@ -35,20 +35,20 @@ public class CustomEntryProcessorTests
 		MockEntities mockEntities = new();
 
 		DbContextOptionsBuilder<ApplicationDbContext> optionsBuilder = new();
-		_dbContext = new Mock<ApplicationDbContext>(optionsBuilder.Options, new Mock<IHttpContextAccessor>().Object, new Mock<ILogContainerService>().Object)
-			.SetUpDbSet(db => db.Tools, mockEntities.MockDbSetTools)
-			.SetUpDbSet(db => db.Players, mockEntities.MockDbSetPlayers)
-			.SetUpDbSet(db => db.Spawnsets, mockEntities.MockDbSetSpawnsets)
-			.SetUpDbSet(db => db.CustomLeaderboards, mockEntities.MockDbSetCustomLeaderboards)
-			.SetUpDbSet(db => db.CustomEntries, mockEntities.MockDbSetCustomEntries)
-			.SetUpDbSet(db => db.CustomEntryData, mockEntities.MockDbSetCustomEntryData);
+		_dbContext = Substitute.For<ApplicationDbContext>(optionsBuilder.Options, Substitute.For<IHttpContextAccessor>(), Substitute.For<ILogContainerService>());
+		_dbContext.Tools.Returns(mockEntities.MockDbSetTools);
+		_dbContext.Players.Returns(mockEntities.MockDbSetPlayers);
+		_dbContext.Spawnsets.Returns(mockEntities.MockDbSetSpawnsets);
+		_dbContext.CustomLeaderboards.Returns(mockEntities.MockDbSetCustomLeaderboards);
+		_dbContext.CustomEntries.Returns(mockEntities.MockDbSetCustomEntries);
+		_dbContext.CustomEntryData.Returns(mockEntities.MockDbSetCustomEntryData);
 
-		Mock<IFileSystemService> fileSystemService = new();
+		IFileSystemService fileSystemService = Substitute.For<IFileSystemService>();
 		string replaysPath = Path.Combine("Resources", "Replays");
-		fileSystemService.Setup(m => m.GetPath(DataSubDirectory.CustomEntryReplays)).Returns(replaysPath);
+		fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays).Returns(replaysPath);
 		Directory.CreateDirectory(replaysPath);
 
-		Mock<ILogger<CustomEntryProcessor>> customEntryProcessorLogger = new();
+		ILogger<CustomEntryProcessor> customEntryProcessorLogger = Substitute.For<ILogger<CustomEntryProcessor>>();
 
 		const string secret = "0123456789abcdef";
 		_encryptionWrapper = new(secret, secret, secret);
@@ -60,7 +60,7 @@ public class CustomEntryProcessorTests
 			Salt = secret,
 		};
 
-		_customEntryProcessor = new(_dbContext.Object, customEntryProcessorLogger.Object, fileSystemService.Object, new OptionsWrapper<CustomLeaderboardsOptions>(options), new Mock<ICustomLeaderboardHighscoreLogger>().Object, new Mock<ICustomLeaderboardSubmissionLogger>().Object)
+		_customEntryProcessor = new(_dbContext, customEntryProcessorLogger, fileSystemService, new OptionsWrapper<CustomLeaderboardsOptions>(options), Substitute.For<ICustomLeaderboardHighscoreLogger>(), Substitute.For<ICustomLeaderboardSubmissionLogger>())
 		{
 			IsUnitTest = true,
 		};
@@ -215,7 +215,7 @@ public class CustomEntryProcessorTests
 		UploadResponse response = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
 		Assert.IsNotNull(response.Success);
 
-		_dbContext.Verify(db => db.SaveChangesAsync(default), Times.AtLeastOnce);
+		await _dbContext.ReceivedWithAnyArgs().SaveChangesAsync();
 		Assert.AreEqual(1, response.Success.SortedEntries.Count);
 		Assert.AreEqual(SubmissionType.NoHighscore, response.Success.SubmissionType);
 	}
@@ -227,7 +227,7 @@ public class CustomEntryProcessorTests
 		UploadResponse response = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
 		Assert.IsNotNull(response.Success);
 
-		_dbContext.Verify(db => db.SaveChangesAsync(default), Times.AtLeastOnce);
+		await _dbContext.ReceivedWithAnyArgs().SaveChangesAsync();
 		Assert.AreEqual(1, response.Success.SortedEntries.Count);
 		Assert.AreEqual(SubmissionType.NewHighscore, response.Success.SubmissionType);
 	}
@@ -239,8 +239,8 @@ public class CustomEntryProcessorTests
 		UploadResponse response = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
 		Assert.IsNotNull(response.Success);
 
-		_dbContext.Verify(db => db.CustomEntries.AddAsync(It.Is<CustomEntryEntity>(ce => ce.PlayerId == 2 && ce.Time == 200000), default), Times.Once);
-		_dbContext.Verify(db => db.SaveChangesAsync(default), Times.AtLeastOnce);
+		await _dbContext.CustomEntries.Received(1).AddAsync(Arg.Is<CustomEntryEntity>(ce => ce.PlayerId == 2 && ce.Time == 200000));
+		await _dbContext.ReceivedWithAnyArgs().SaveChangesAsync();
 		Assert.AreEqual(SubmissionType.FirstScore, response.Success.SubmissionType);
 	}
 
@@ -251,9 +251,9 @@ public class CustomEntryProcessorTests
 		UploadResponse response = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
 		Assert.IsNotNull(response.Success);
 
-		_dbContext.Verify(db => db.SaveChangesAsync(default), Times.AtLeastOnce);
-		_dbContext.Verify(db => db.Players.AddAsync(It.Is<PlayerEntity>(p => p.Id == 3 && p.PlayerName == "TestPlayer3"), default), Times.Once);
-		_dbContext.Verify(db => db.CustomEntries.AddAsync(It.Is<CustomEntryEntity>(ce => ce.PlayerId == 3 && ce.Time == 300000), default), Times.Once);
+		await _dbContext.ReceivedWithAnyArgs().SaveChangesAsync();
+		await _dbContext.Players.Received(1).AddAsync(Arg.Is<PlayerEntity>(p => p.Id == 3 && p.PlayerName == "TestPlayer3"));
+		await _dbContext.CustomEntries.Received(1).AddAsync(Arg.Is<CustomEntryEntity>(ce => ce.PlayerId == 3 && ce.Time == 300000));
 		Assert.AreEqual(SubmissionType.FirstScore, response.Success.SubmissionType);
 	}
 
@@ -282,7 +282,7 @@ public class CustomEntryProcessorTests
 		UploadRequest uploadRequest = CreateUploadRequest(10, 1, 4, "0.0.0.0");
 		CustomEntryValidationException ex = await Assert.ThrowsExceptionAsync<CustomEntryValidationException>(async () => await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest));
 
-		_dbContext.Verify(db => db.SaveChangesAsync(default), Times.Never);
+		await _dbContext.DidNotReceive().SaveChangesAsync();
 
 		Assert.IsTrue(ex.Message.Contains("unsupported and outdated"));
 	}
@@ -293,7 +293,7 @@ public class CustomEntryProcessorTests
 		UploadRequest uploadRequest = CreateUploadRequest(10, 1, 4, TestConstants.DdclVersion, new(), "Malformed validation");
 		CustomEntryValidationException ex = await Assert.ThrowsExceptionAsync<CustomEntryValidationException>(async () => await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest));
 
-		_dbContext.Verify(db => db.SaveChangesAsync(default), Times.Never);
+		await _dbContext.DidNotReceive().SaveChangesAsync();
 
 		Assert.IsTrue(ex.Message.StartsWith("Could not decrypt"));
 	}

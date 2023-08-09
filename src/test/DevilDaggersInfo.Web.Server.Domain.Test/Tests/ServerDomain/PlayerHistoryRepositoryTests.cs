@@ -3,6 +3,7 @@ using DevilDaggersInfo.Web.Server.Domain.Repositories;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 using DevilDaggersInfo.Web.Server.Domain.Test.Utils;
 using Microsoft.AspNetCore.Http;
+using NSubstitute;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Test.Tests.ServerDomain;
 
@@ -16,7 +17,7 @@ public class PlayerHistoryRepositoryTests
 		DbContextOptions<TestDbContext> options = new DbContextOptionsBuilder<TestDbContext>()
 			.UseInMemoryDatabase(databaseName: nameof(PlayerHistoryRepositoryTests))
 			.Options;
-		TestDbContext dbContext = new(options, new Mock<IHttpContextAccessor>().Object, new Mock<ILogContainerService>().Object);
+		TestDbContext dbContext = new(options, Substitute.For<IHttpContextAccessor>(), Substitute.For<ILogContainerService>());
 		TestData data = new();
 		_repository = new(dbContext, data, data);
 	}

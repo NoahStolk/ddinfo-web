@@ -6,6 +6,7 @@ using DevilDaggersInfo.Web.Server.Domain.Services;
 using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 using DevilDaggersInfo.Web.Server.Domain.Utils;
+using NSubstitute;
 using System.IO.Compression;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Test.Tests.ServerDomain;
@@ -23,16 +24,16 @@ public abstract class ModArchiveProcessorTests
 		if (Directory.Exists(modArchiveCachePath))
 			Directory.Delete(modArchiveCachePath, true);
 
-		Mock<IFileSystemService> fileSystemService = new();
-		fileSystemService.Setup(m => m.GetPath(DataSubDirectory.Mods)).Returns(modsPath);
-		fileSystemService.Setup(m => m.GetPath(DataSubDirectory.ModArchiveCache)).Returns(modArchiveCachePath);
+		IFileSystemService fileSystemService = Substitute.For<IFileSystemService>();
+		fileSystemService.GetPath(DataSubDirectory.Mods).Returns(modsPath);
+		fileSystemService.GetPath(DataSubDirectory.ModArchiveCache).Returns(modArchiveCachePath);
 
 		Directory.CreateDirectory(modsPath);
 		Directory.CreateDirectory(modArchiveCachePath);
 
-		Cache = new(fileSystemService.Object);
-		Accessor = new(fileSystemService.Object, Cache);
-		Processor = new(fileSystemService.Object, Cache, Accessor);
+		Cache = new(fileSystemService);
+		Accessor = new(fileSystemService, Cache);
+		Processor = new(fileSystemService, Cache, Accessor);
 	}
 
 	protected ModArchiveCache Cache { get; }

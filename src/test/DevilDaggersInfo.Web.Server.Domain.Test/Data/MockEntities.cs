@@ -1,5 +1,5 @@
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
-using MockQueryable.Moq;
+using MockQueryable.NSubstitute;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Test.Data;
 
@@ -56,13 +56,13 @@ public class MockEntities
 			.ToArray();
 	}
 
-	public Mock<DbSet<ToolEntity>> MockDbSetTools { get; }
-	public Mock<DbSet<ToolDistributionEntity>> MockDbSetToolDistributions { get; }
-	public Mock<DbSet<PlayerEntity>> MockDbSetPlayers { get; }
-	public Mock<DbSet<SpawnsetEntity>> MockDbSetSpawnsets { get; }
-	public Mock<DbSet<CustomLeaderboardEntity>> MockDbSetCustomLeaderboards { get; }
-	public Mock<DbSet<CustomEntryEntity>> MockDbSetCustomEntries { get; }
-	public Mock<DbSet<CustomEntryDataEntity>> MockDbSetCustomEntryData { get; }
+	public DbSet<ToolEntity> MockDbSetTools { get; }
+	public DbSet<ToolDistributionEntity> MockDbSetToolDistributions { get; }
+	public DbSet<PlayerEntity> MockDbSetPlayers { get; }
+	public DbSet<SpawnsetEntity> MockDbSetSpawnsets { get; }
+	public DbSet<CustomLeaderboardEntity> MockDbSetCustomLeaderboards { get; }
+	public DbSet<CustomEntryEntity> MockDbSetCustomEntries { get; }
+	public DbSet<CustomEntryDataEntity> MockDbSetCustomEntryData { get; }
 
 	public ToolEntity Ddcl { get; } = new()
 	{
