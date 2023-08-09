@@ -4,9 +4,9 @@ using DevilDaggersInfo.Web.Server.Domain.Models.Tools;
 using DevilDaggersInfo.Web.Server.Domain.Repositories;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 using DevilDaggersInfo.Web.Server.Domain.Test.Data;
-using DevilDaggersInfo.Web.Server.Domain.Test.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using NSubstitute;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Test.Tests.ServerDomain;
 
@@ -21,12 +21,13 @@ public class ToolRepositoryTests
 
 		string toolsPath = Path.Combine("Resources", "Tools");
 
-		Mock<IFileSystemService> fileSystemService = new();
-		fileSystemService.Setup(m => m.GetPath(DataSubDirectory.Tools)).Returns(toolsPath);
+		IFileSystemService fileSystemService = Substitute.For<IFileSystemService>();
+		fileSystemService.GetPath(DataSubDirectory.Tools).Returns(toolsPath);
 
 		DbContextOptionsBuilder<ApplicationDbContext> optionsBuilder = new();
-		Mock<ApplicationDbContext> dbContext = new Mock<ApplicationDbContext>(optionsBuilder.Options, new Mock<IHttpContextAccessor>().Object, new Mock<ILogContainerService>().Object).SetUpDbSet(db => db.ToolDistributions, mockEntities.MockDbSetToolDistributions);
-		_toolRepository = new(dbContext.Object, fileSystemService.Object, new Mock<ILogger<ToolRepository>>().Object);
+		ApplicationDbContext dbContext = Substitute.For<ApplicationDbContext>(optionsBuilder.Options, Substitute.For<IHttpContextAccessor>(), Substitute.For<ILogContainerService>());
+		dbContext.ToolDistributions.Returns(mockEntities.MockDbSetToolDistributions);
+		_toolRepository = new(dbContext, fileSystemService, Substitute.For<ILogger<ToolRepository>>());
 	}
 
 	[TestMethod]
