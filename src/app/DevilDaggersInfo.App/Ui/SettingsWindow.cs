@@ -13,6 +13,7 @@ public static class SettingsWindow
 
 		ImGui.SetNextWindowSize(new(512, 256));
 
+		// TODO: ImGui.Begin allocates for some reason.
 		if (ImGui.Begin("Settings", ref show, ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize))
 		{
 			float lookSpeed = UserSettings.Model.LookSpeed;
@@ -29,8 +30,8 @@ public static class SettingsWindow
 			ImGui.Checkbox("Show debug", ref showDebug);
 			if (UserSettings.Model.ShowDebug != showDebug)
 				UserSettings.Model = UserSettings.Model with { ShowDebug = showDebug };
-		}
 
-		ImGui.End();
+			ImGui.End();
+		}
 	}
 }

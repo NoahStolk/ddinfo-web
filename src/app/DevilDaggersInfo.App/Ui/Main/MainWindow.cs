@@ -9,6 +9,8 @@ public static class MainWindow
 {
 	private static Action? _hoveredButtonAction;
 
+	private static readonly string _version = $"{AssemblyUtils.EntryAssemblyVersion} (ALPHA)";
+
 	public static void Render(out bool shouldClose)
 	{
 		Vector2 center = ImGui.GetMainViewport().GetCenter();
@@ -28,11 +30,11 @@ public static class MainWindow
 		ImGui.PopFont();
 
 		ImGui.SetCursorPos(new(textWidth + 16, 39));
-		ImGui.Text($"{AssemblyUtils.EntryAssemblyVersion} (ALPHA)");
+		ImGui.Text(_version);
 		ImGui.Text("Developed by Noah Stolk");
 
 		ImGui.SetCursorPos(new(windowSize.X - 208, 8));
-		AppButton(Root.InternalResources.ConfigurationTexture, "Configuration", () => UiRenderer.Layout = LayoutType.Config);
+		AppButton(Root.InternalResources.ConfigurationTexture, "Configuration", static () => UiRenderer.Layout = LayoutType.Config);
 
 		ImGui.SameLine();
 		AppButton(Root.InternalResources.SettingsTexture, "Settings", UiRenderer.ShowSettings);
@@ -103,7 +105,7 @@ public static class MainWindow
 			ImGui.SetTooltip(tooltip);
 	}
 
-	private static void ToolButton(Color color, string text, Action action, ref Action? hoveredAction, Action onHover)
+	private static void ToolButton(Color color, ReadOnlySpan<char> text, Action action, ref Action? hoveredAction, Action onHover)
 	{
 		ImGui.PushStyleColor(ImGuiCol.Button, color);
 		ImGui.PushStyleColor(ImGuiCol.ButtonHovered, color + new Vector4(0, 0, 0, 0.2f));
