@@ -136,7 +136,9 @@ public static class CustomTemplatesChild
 		ImGui.PushStyleColor(ImGuiCol.ButtonHovered, gray with { A = 223 });
 		ImGui.PushID($"dd {customTemplate}");
 
+		ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, Vector2.Zero);
 		ImGui.ImageButton("CustomTemplateReorderImageButton", (IntPtr)Root.InternalResources.DragIndicatorTexture.Handle, new(32, 48), Vector2.Zero, Vector2.One, _customTemplateIndexToReorder == i ? Color.Gray(0.7f) : gray);
+		ImGui.PopStyleVar();
 
 		if (ImGui.IsItemHovered())
 			ImGui.SetTooltip("Reorder");
@@ -161,6 +163,8 @@ public static class CustomTemplatesChild
 		ImGui.PushStyleColor(ImGuiCol.ButtonActive, Color.Red);
 		ImGui.PushStyleColor(ImGuiCol.ButtonHovered, Color.Red with { A = 223 });
 		ImGui.PushID(customTemplate.ToString());
+
+		ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(12));
 		if (ImGui.ImageButton("CustomTemplateDeleteImageButton", (IntPtr)Root.InternalResources.BinTexture.Handle, new(24), Vector2.Zero, Vector2.One))
 		{
 			UserSettings.Model = UserSettings.Model with
@@ -168,6 +172,8 @@ public static class CustomTemplatesChild
 				PracticeTemplates = UserSettings.Model.PracticeTemplates.Where(pt => customTemplate != pt).ToList(),
 			};
 		}
+
+		ImGui.PopStyleVar();
 
 		if (ImGui.IsItemHovered())
 			ImGui.SetTooltip("Delete permanently");
