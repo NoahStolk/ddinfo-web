@@ -1,13 +1,8 @@
-// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-
 using ImGuiNET;
 using Silk.NET.Input;
 using Silk.NET.Maths;
 using Silk.NET.OpenGL;
 using Silk.NET.Windowing;
-using System.Buffers;
-using System.Drawing;
 
 namespace DevilDaggersInfo.App.Engine.ImGui;
 
@@ -267,25 +262,22 @@ public class ImGuiController : IDisposable
 		if (_windowWidth > 0 && _windowHeight > 0)
 			io.DisplayFramebufferScale = new Vector2(_view.FramebufferSize.X / _windowWidth, _view.FramebufferSize.Y / _windowHeight);
 
-		io.DeltaTime = deltaSeconds; // DeltaTime is in seconds.
+		io.DeltaTime = deltaSeconds;
 	}
 
 	private void UpdateImGuiInput()
 	{
-		// TODO: This method allocates.
 		ImGuiIOPtr io = ImGuiNET.ImGui.GetIO();
 
-		MouseState mouseState = new(_input.Mice[0], MemoryPool<byte>.Shared);
+		IMouse mouseState = _input.Mice[0];
 		IKeyboard keyboardState = _input.Keyboards[0];
 
 		io.MouseDown[0] = mouseState.IsButtonPressed(MouseButton.Left);
 		io.MouseDown[1] = mouseState.IsButtonPressed(MouseButton.Right);
 		io.MouseDown[2] = mouseState.IsButtonPressed(MouseButton.Middle);
+		io.MousePos = mouseState.Position;
 
-		Point point = new((int)mouseState.Position.X, (int)mouseState.Position.Y);
-		io.MousePos = new Vector2(point.X, point.Y);
-
-		ScrollWheel wheel = mouseState.GetScrollWheels()[0];
+		ScrollWheel wheel = mouseState.ScrollWheels[0];
 		io.MouseWheel = wheel.Y;
 		io.MouseWheelH = wheel.X;
 
@@ -338,7 +330,7 @@ public class ImGuiController : IDisposable
 
 	private unsafe void SetupRenderState(ImDrawDataPtr drawDataPtr)
 	{
-		// Setup render state: alpha-blending enabled, no face culling, no depth testing, scissor enabled, polygon fill
+		// Set up render state: alpha-blending enabled, no face culling, no depth testing, scissor enabled, polygon fill.
 		_gl.Enable(GLEnum.Blend);
 		_gl.BlendEquation(GLEnum.FuncAdd);
 		_gl.BlendFuncSeparate(GLEnum.SrcAlpha, GLEnum.OneMinusSrcAlpha, GLEnum.One, GLEnum.OneMinusSrcAlpha);
