@@ -82,6 +82,7 @@
     <PackageReference Include="ImGui.NET" />
     <PackageReference Include="NativeFileDialogSharp" />
     <PackageReference Include="Serilog.Sinks.File" />
+    <PackageReference Include="Silk.NET.OpenGL.Extensions.ImGui" /> <!--TODO: Remove-->
   </ItemGroup>
 
   <ItemGroup Label="Fonts">
