@@ -29,7 +29,9 @@ public static class RunAnalysisWindow
 		if (ImGui.Begin("Run Analysis"))
 		{
 			SplitsChild.Render();
-			GemCollectionChild.Render();
+
+			// TODO: Fix graphs in GemCollectionChild.
+			// GemCollectionChild.Render();
 
 			ImGui.End();
 		}
