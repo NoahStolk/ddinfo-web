@@ -7,6 +7,9 @@ namespace DevilDaggersInfo.App.Ui.SpawnsetEditor.Arena;
 
 public static class ArenaEditorControls
 {
+	private static readonly ArenaTool[] _arenaTools = Enum.GetValues<ArenaTool>();
+	private static readonly Dictionary<ArenaTool, string> _arenaToolNames = _arenaTools.ToDictionary(at => at, at => at.ToString());
+
 	public static void Render()
 	{
 		ImGui.BeginChild("ArenaEditorControls", new(256, 26));
@@ -14,9 +17,10 @@ public static class ArenaEditorControls
 		const int borderSize = 2;
 		const int size = 16;
 		int offsetX = 0;
-		foreach (ArenaTool arenaTool in Enum.GetValues<ArenaTool>())
+		for (int i = 0; i < _arenaTools.Length; i++)
 		{
-			ReadOnlySpan<char> arenaToolText = arenaTool.ToString();
+			ArenaTool arenaTool = _arenaTools[i];
+			ReadOnlySpan<char> arenaToolText = _arenaToolNames[arenaTool];
 
 			bool isDagger = arenaTool == ArenaTool.Dagger;
 			bool isCurrent = arenaTool == ArenaChild.ArenaTool;
