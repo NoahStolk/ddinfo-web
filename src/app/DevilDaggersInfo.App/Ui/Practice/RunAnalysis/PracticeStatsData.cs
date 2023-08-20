@@ -9,6 +9,8 @@ public class PracticeStatsData
 	private readonly List<Statistic> _statistics = new();
 
 	public IReadOnlyList<Statistic> Statistics => _statistics;
+	public static float TimerStart { get; private set; }
+	public static float TimerEnd { get; private set; }
 
 	public void Populate()
 	{
@@ -39,6 +41,9 @@ public class PracticeStatsData
 				HomingEaten = homingEaten,
 			});
 		}
+
+		TimerStart = Root.GameMemoryService.MainBlock.StartTimer;
+		TimerEnd = Root.GameMemoryService.MainBlock.StartTimer + Root.GameMemoryService.MainBlock.Time;
 	}
 
 	public struct Statistic
