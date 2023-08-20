@@ -1,59 +1,132 @@
 using DevilDaggersInfo.App.Ui.Practice.RunAnalysis.Data;
 using ImGuiNET;
+using System.Diagnostics;
+using System.Numerics;
 
 namespace DevilDaggersInfo.App.Ui.Practice.RunAnalysis;
 
 public static class GemCollectionChild
 {
-	private static readonly List<int> _gemsCollectedDelta = new();
-	private static readonly List<int> _gemsDespawnedDelta = new();
-	private static readonly List<int> _gemsEatenDelta = new();
-	private static readonly List<int> _gemsTotalDelta = new();
+	private static readonly List<int> _gemsCollected = new();
+	private static readonly List<int> _gemsDespawned = new();
+	private static readonly List<int> _gemsEaten = new();
+	private static readonly List<int> _gemsTotal = new();
 
-	private static int _maxGemsCollectedDelta;
-	private static int _maxGemsDespawnedDelta;
-	private static int _maxGemsEatenDelta;
-	private static int _maxGemsTotalDelta;
+	// Allow up to an hour of data (roughly 3600 seconds in game).
+	private static readonly Vector2[] _gemsCollectedPoints = new Vector2[60 * 60];
+	private static readonly Vector2[] _gemsDespawnedPoints = new Vector2[60 * 60];
+	private static readonly Vector2[] _gemsEatenPoints = new Vector2[60 * 60];
+	private static readonly Vector2[] _gemsTotalPoints = new Vector2[60 * 60];
+
+	private static int _maxGemsCollected;
+	private static int _maxGemsDespawned;
+	private static int _maxGemsEaten;
+	private static int _maxGemsTotal;
+
+	private static bool _showGemsCollected = true;
+	private static bool _showGemsDespawned = true;
+	private static bool _showGemsEaten = true;
+	private static bool _showGemsTotal = true;
+
+	private static readonly char[] _tooltipBuffer = new char[256];
 
 	public static void Update(IReadOnlyList<StatisticEntry> data)
 	{
-		_gemsCollectedDelta.Clear();
-		_gemsDespawnedDelta.Clear();
-		_gemsEatenDelta.Clear();
-		_gemsTotalDelta.Clear();
+		_gemsCollected.Clear();
+		_gemsDespawned.Clear();
+		_gemsEaten.Clear();
+		_gemsTotal.Clear();
 
 		for (int i = 0; i < data.Count; i++)
 		{
-			_gemsCollectedDelta.Add(data[i].GemsCollected - data[Math.Max(i - 1, 0)].GemsCollected);
-			_gemsDespawnedDelta.Add(data[i].GemsDespawned - data[Math.Max(i - 1, 0)].GemsDespawned);
-			_gemsEatenDelta.Add(data[i].GemsEaten - data[Math.Max(i - 1, 0)].GemsEaten);
-			_gemsTotalDelta.Add(data[i].GemsTotal - data[Math.Max(i - 1, 0)].GemsTotal);
+			_gemsCollected.Add(data[i].GemsCollected);
+			_gemsDespawned.Add(data[i].GemsDespawned);
+			_gemsEaten.Add(data[i].GemsEaten);
+			_gemsTotal.Add(data[i].GemsTotal);
 		}
 
-		_maxGemsCollectedDelta = _gemsCollectedDelta.Count > 0 ? _gemsCollectedDelta.Max() : 0;
-		_maxGemsDespawnedDelta = _gemsDespawnedDelta.Count > 0 ? _gemsDespawnedDelta.Max() : 0;
-		_maxGemsEatenDelta = _gemsEatenDelta.Count > 0 ? _gemsEatenDelta.Max() : 0;
-		_maxGemsTotalDelta = _gemsTotalDelta.Count > 0 ? _gemsTotalDelta.Max() : 0;
+		_maxGemsCollected = _gemsCollected.Count > 0 ? _gemsCollected.Max() : 0;
+		_maxGemsDespawned = _gemsDespawned.Count > 0 ? _gemsDespawned.Max() : 0;
+		_maxGemsEaten = _gemsEaten.Count > 0 ? _gemsEaten.Max() : 0;
+		_maxGemsTotal = _gemsTotal.Count > 0 ? _gemsTotal.Max() : 0;
 	}
 
 	public static unsafe void Render()
 	{
-		const float height = 120;
+		Debug.Assert(_gemsCollected.Count == _gemsDespawned.Count && _gemsCollected.Count == _gemsEaten.Count && _gemsCollected.Count == _gemsTotal.Count, "All lists should have the same length.");
+
+		if (_gemsCollected.Count == 0)
+			return;
+
+		const float height = 256;
 		if (ImGui.BeginChild("Gem Collection"))
 		{
-			fixed (float* f = _gemsCollectedDelta.Select(i => (float)i).ToArray())
-				ImGui.PlotLines("Gems collected", ref f[0], _gemsCollectedDelta.Count, 0, null, 0, _maxGemsCollectedDelta, new(0, height));
+			ImGui.Checkbox("Gems Collected", ref _showGemsCollected);
+			ImGui.Checkbox("Gems Despawned", ref _showGemsDespawned);
+			ImGui.Checkbox("Gems Eaten", ref _showGemsEaten);
+			ImGui.Checkbox("Gems Total", ref _showGemsTotal);
 
-			fixed (float* f = _gemsDespawnedDelta.Select(i => -(float)i).ToArray())
-				ImGui.PlotLines("Gems despawned", ref f[0], _gemsDespawnedDelta.Count, 0, null, -_maxGemsDespawnedDelta, 0, new(0, height));
+			ImDrawListPtr drawListPtr = ImGui.GetWindowDrawList();
+			Vector2 pos = ImGui.GetCursorScreenPos();
+			Vector2 size = new(ImGui.GetWindowWidth(), height);
+			drawListPtr.AddRectFilled(pos, pos + size, 0xff000000);
 
-			fixed (float* f = _gemsEatenDelta.Select(i => -(float)i).ToArray())
-				ImGui.PlotLines("Gems eaten", ref f[0], _gemsEatenDelta.Count, 0, null, -_maxGemsEatenDelta, 0, new(0, height));
+			int max = Math.Max(
+				_showGemsCollected ? _maxGemsCollected : 0,
+				Math.Max(
+					_showGemsDespawned ? _maxGemsDespawned : 0,
+					Math.Max(
+						_showGemsEaten ? _maxGemsEaten : 0,
+						_showGemsTotal ? _maxGemsTotal : 0)));
 
-			fixed (float* f = _gemsTotalDelta.Select(i => (float)i).ToArray())
-				ImGui.PlotLines("Gems total", ref f[0], _gemsTotalDelta.Count, 0, null, 0, _maxGemsTotalDelta, new(0, height));
+			if (_showGemsCollected)
+				RenderGraph(_gemsCollected, max, _gemsCollectedPoints, 0xff0000ff, pos, size, drawListPtr);
+
+			if (_showGemsDespawned)
+				RenderGraph(_gemsDespawned, max, _gemsDespawnedPoints, 0xff888888, pos, size, drawListPtr);
+
+			if (_showGemsEaten)
+				RenderGraph(_gemsEaten, max, _gemsEatenPoints, 0xff00ff00, pos, size, drawListPtr);
+
+			if (_showGemsTotal)
+				RenderGraph(_gemsTotal, max, _gemsTotalPoints, 0xff000066, pos, size, drawListPtr);
+
+			Vector2 mousePos = ImGui.GetMousePos();
+			if (mousePos.X >= pos.X && mousePos.X <= pos.X + size.X && mousePos.Y >= pos.Y && mousePos.Y <= pos.Y + size.Y)
+			{
+				int index = Math.Clamp((int)((mousePos.X - pos.X) / size.X * _gemsCollected.Count), 0, _gemsCollected.Count - 1);
+				int gemsCollected = _gemsCollected[index];
+				int gemsDespawned = _gemsDespawned[index];
+				int gemsEaten = _gemsEaten[index];
+				int gemsTotal = _gemsTotal[index];
+
+				UnsafeCharBufferWriter writer = new(_tooltipBuffer);
+				writer.Write("Gems Collected: ");
+				writer.WriteLine(gemsCollected);
+				writer.Write("Gems Despawned: ");
+				writer.WriteLine(gemsDespawned);
+				writer.Write("Gems Eaten: ");
+				writer.WriteLine(gemsEaten);
+				writer.Write("Gems Total: ");
+				writer.WriteLine(gemsTotal);
+				ImGui.SetTooltip(writer);
+			}
 
 			ImGui.EndChild();
+		}
+
+		void RenderGraph(IReadOnlyList<int> data, int maxDataEntry, Vector2[] pointsArray, uint color, Vector2 cursorScreenPos, Vector2 graphSize, ImDrawListPtr drawListPtr)
+		{
+			pointsArray.AsSpan().Clear();
+			for (int i = 0; i < data.Count; i++)
+			{
+				float normalizedX = i / (float)(data.Count - 1);
+				float normalizedY = data[i] / (float)maxDataEntry;
+				pointsArray[i] = new(cursorScreenPos.X + normalizedX * graphSize.X, cursorScreenPos.Y + height - normalizedY * graphSize.Y);
+			}
+
+			fixed (Vector2* p = pointsArray)
+				drawListPtr.AddPolyline(ref p[0], data.Count, color, ImDrawFlags.RoundCornersDefault, 1);
 		}
 	}
 }
