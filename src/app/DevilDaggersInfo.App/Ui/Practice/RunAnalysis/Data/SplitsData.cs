@@ -36,7 +36,8 @@ public class SplitsData
 				_homingSplitData[homingSplitDataIndex] = new((int)RunAnalysisWindow.StatsData.TimerStart, SplitDataEntryKind.Start, firstHomingStored, firstHomingStored);
 				homingSplitDataIndex++;
 			}
-			else if (!addedTimerEnd && splitEntry.Seconds > RunAnalysisWindow.StatsData.TimerEnd)
+
+			if (!addedTimerEnd && splitEntry.Seconds > RunAnalysisWindow.StatsData.TimerEnd)
 			{
 				int? lastHomingStored = RunAnalysisWindow.StatsData.Statistics.Count > 0 ? RunAnalysisWindow.StatsData.Statistics[^1].HomingStored : null;
 				addedTimerEnd = true;
