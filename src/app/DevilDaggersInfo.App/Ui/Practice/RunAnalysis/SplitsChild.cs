@@ -1,58 +1,14 @@
 using DevilDaggersInfo.App.Engine.Maths.Numerics;
+using DevilDaggersInfo.App.Ui.Practice.RunAnalysis.Data;
 using ImGuiNET;
 
 namespace DevilDaggersInfo.App.Ui.Practice.RunAnalysis;
 
 public static class SplitsChild
 {
-	private static readonly IReadOnlyList<(int Label, int Seconds)> _splitData = new List<(int Label, int Seconds)>
-	{
-		(350, 366),
-		(700, 709),
-		(800, 800),
-		(880, 875),
-		(930, 942),
-		(1000, 996),
-		(1040, 1047),
-		(1080, 1091),
-		(1130, 1133),
-		(1160, 1170),
-	};
-	private static readonly (int DisplayTimer, int? Homing, int? HomingPrevious)[] _homingSplitData = new (int DisplayTimer, int? Homing, int? HomingPrevious)[_splitData.Count + 2]; // Include start and end.
-
 	public static void Render()
 	{
-		// TODO: Move to PracticeStatsData.
-		bool addedTimerStart = false;
-		bool addedTimerEnd = false;
-		int homingSplitDataIndex = 0;
-		for (int i = 0; i < _splitData.Count; i++)
-		{
-			(int Label, int Seconds) splitEntry = _splitData[i];
-
-			if (!addedTimerStart && splitEntry.Seconds > PracticeStatsData.TimerStart)
-			{
-				int? firstHomingStored = RunAnalysisWindow.StatsData.Statistics.Count > 0 ? RunAnalysisWindow.StatsData.Statistics[0].HomingStored : null;
-				addedTimerStart = true;
-				_homingSplitData[homingSplitDataIndex] = ((int)PracticeStatsData.TimerStart, firstHomingStored, firstHomingStored);
-				homingSplitDataIndex++;
-			}
-			else if (!addedTimerEnd && splitEntry.Seconds > PracticeStatsData.TimerEnd)
-			{
-				int? lastHomingStored = RunAnalysisWindow.StatsData.Statistics.Count > 0 ? RunAnalysisWindow.StatsData.Statistics[^1].HomingStored : null;
-				addedTimerEnd = true;
-				_homingSplitData[homingSplitDataIndex] = ((int)PracticeStatsData.TimerEnd, lastHomingStored, homingSplitDataIndex == 0 ? null : _homingSplitData[homingSplitDataIndex - 1].Homing);
-				homingSplitDataIndex++;
-			}
-
-			int actualIndex = splitEntry.Seconds - (int)MathF.Ceiling(PracticeStatsData.TimerStart); // TODO: Test if ceiling is correct.
-			bool hasValue = actualIndex >= 0 && actualIndex < RunAnalysisWindow.StatsData.Statistics.Count;
-			int? homing = hasValue ? RunAnalysisWindow.StatsData.Statistics[actualIndex].HomingStored : null;
-			int? previousHoming = homingSplitDataIndex > 0 ? _homingSplitData[homingSplitDataIndex - 1].Homing : null;
-
-			_homingSplitData[homingSplitDataIndex] = (splitEntry.Label, homing, previousHoming);
-			homingSplitDataIndex++;
-		}
+		IReadOnlyList<SplitDataEntry> data = RunAnalysisWindow.StatsData.SplitsData.HomingSplitData;
 
 		if (ImGui.BeginChild("Splits", new(192, 224)))
 		{
@@ -63,15 +19,22 @@ public static class SplitsChild
 				ImGui.TableSetupColumn("Delta", ImGuiTableColumnFlags.None, 40);
 				ImGui.TableHeadersRow();
 
-				for (int i = 0; i < _homingSplitData.Length; i++)
+				for (int i = 0; i < data.Count; i++)
 				{
-					float displayTimer = _homingSplitData[i].DisplayTimer;
-					int? homing = _homingSplitData[i].Homing;
-					int? homingPrevious = _homingSplitData[i].HomingPrevious;
+					float displayTimer = data[i].DisplayTimer;
+					int? homing = data[i].Homing;
+					int? homingPrevious = data[i].HomingPrevious;
 
 					Color textColor = homing.HasValue ? Color.White : Color.Gray(0.5f);
-
+					uint backgroundColor = data[i].Kind switch
+					{
+						SplitDataEntryKind.Start => 0x2200ff00,
+						SplitDataEntryKind.End => 0x220000ff,
+						_ => 0x00000000,
+					};
 					ImGui.TableNextRow();
+
+					ImGui.TableSetBgColor(ImGuiTableBgTarget.RowBg0, backgroundColor);
 
 					ImGui.TableNextColumn();
 					ImGui.TextColored(textColor, UnsafeSpan.Get(displayTimer));
@@ -89,6 +52,8 @@ public static class SplitsChild
 						_ => Color.White,
 					};
 					ImGui.TextColored(color, delta.HasValue ? UnsafeSpan.Get(delta.Value, "+0;-0;+0") : "-");
+
+					ImGui.PopStyleColor();
 				}
 
 				ImGui.EndTable();
