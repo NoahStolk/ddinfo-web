@@ -26,7 +26,7 @@ public static class RunAnalysisWindow
 
 	public static void Render()
 	{
-		ImGui.PushStyleVar(ImGuiStyleVar.WindowMinSize, new Vector2(512, 512));
+		ImGui.PushStyleVar(ImGuiStyleVar.WindowMinSize, new Vector2(512, 1024));
 		if (ImGui.Begin("Run Analysis"))
 		{
 			SplitsChild.Render();
