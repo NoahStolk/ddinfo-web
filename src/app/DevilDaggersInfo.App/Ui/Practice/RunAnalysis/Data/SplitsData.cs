@@ -53,5 +53,12 @@ public class SplitsData
 			_homingSplitData[homingSplitDataIndex] = new(splitEntry.Label, SplitDataEntryKind.Default, homing, previousHoming);
 			homingSplitDataIndex++;
 		}
+
+		// Clear values before timer start and after timer end.
+		for (int i = 0; i < homingSplitDataIndex; i++)
+		{
+			if (_homingSplitData[i].DisplayTimer < (int)RunAnalysisWindow.StatsData.TimerStart || _homingSplitData[i].DisplayTimer > (int)RunAnalysisWindow.StatsData.TimerEnd)
+				_homingSplitData[i] = new(_homingSplitData[i].DisplayTimer, _homingSplitData[i].Kind, null, null);
+		}
 	}
 }
