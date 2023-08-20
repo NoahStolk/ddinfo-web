@@ -1,4 +1,3 @@
-using DevilDaggersInfo.Core.Versioning;
 using DevilDaggersInfo.Web.Server.Domain.Admin.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
@@ -23,7 +22,7 @@ public class ToolService
 
 	public async Task AddDistribution(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version, byte[] zipFileContents, bool updateVersion, bool updateRequiredVersion)
 	{
-		if (!AppVersion.TryParse(version, out _))
+		if (!Version.TryParse(version, out _))
 			throw new AdminDomainException($"'{version}' is not a correct version number.");
 
 		ToolEntity? tool = await _dbContext.Tools.FirstOrDefaultAsync(t => t.Name == name);
