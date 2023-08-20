@@ -118,18 +118,19 @@ public static class GemCollectionChild
 			ReadOnlySpan<int> maxValues = stackalloc int[] { _showGemsCollected ? _maxGemsCollected : 0, _showGemsDespawned ? _maxGemsDespawned : 0, _showGemsEaten ? _maxGemsEaten : 0, _showGemsTotal ? _maxGemsTotal : 0 };
 			int max = MathUtils.Max(maxValues);
 			RenderGraphScales(drawListPtr, pos, size, max);
+			RenderGraphSplits(drawListPtr, pos, size);
 
 			if (_showGemsCollected)
-				RenderGraphLine(_gemsCollected, max, _gemsCollectedPoints, 0xff0000ff, pos, size, drawListPtr);
+				RenderGraphLine(drawListPtr, _gemsCollected, max, _gemsCollectedPoints, 0xff0000ff, pos, size);
 
 			if (_showGemsDespawned)
-				RenderGraphLine(_gemsDespawned, max, _gemsDespawnedPoints, 0xff888888, pos, size, drawListPtr);
+				RenderGraphLine(drawListPtr, _gemsDespawned, max, _gemsDespawnedPoints, 0xff888888, pos, size);
 
 			if (_showGemsEaten)
-				RenderGraphLine(_gemsEaten, max, _gemsEatenPoints, 0xff00ff00, pos, size, drawListPtr);
+				RenderGraphLine(drawListPtr, _gemsEaten, max, _gemsEatenPoints, 0xff00ff00, pos, size);
 
 			if (_showGemsTotal)
-				RenderGraphLine(_gemsTotal, max, _gemsTotalPoints, 0xff000066, pos, size, drawListPtr);
+				RenderGraphLine(drawListPtr, _gemsTotal, max, _gemsTotalPoints, 0xff000066, pos, size);
 
 			if (mousePos.X >= pos.X && mousePos.X <= pos.X + size.X && mousePos.Y >= pos.Y && mousePos.Y <= pos.Y + size.Y)
 			{
@@ -158,12 +159,13 @@ public static class GemCollectionChild
 			ReadOnlySpan<int> maxValues = stackalloc int[] { _showHomingStored ? _maxHomingStored : 0, _showHomingEaten ? _maxHomingEaten : 0 };
 			int max = MathUtils.Max(maxValues);
 			RenderGraphScales(drawListPtr, pos, size, max);
+			RenderGraphSplits(drawListPtr, pos, size);
 
 			if (_showHomingStored)
-				RenderGraphLine(_homingStored, max, _homingStoredPoints, UpgradeColors.Level4.ToEngineColor().ToArgbUInt(), pos, size, drawListPtr);
+				RenderGraphLine(drawListPtr, _homingStored, max, _homingStoredPoints, UpgradeColors.Level4.ToEngineColor().ToArgbUInt(), pos, size);
 
 			if (_showHomingEaten)
-				RenderGraphLine(_homingEaten, max, _homingEatenPoints, 0xff0000ff, pos, size, drawListPtr);
+				RenderGraphLine(drawListPtr, _homingEaten, max, _homingEatenPoints, 0xff0000ff, pos, size);
 
 			if (mousePos.X >= pos.X && mousePos.X <= pos.X + size.X && mousePos.Y >= pos.Y && mousePos.Y <= pos.Y + size.Y)
 			{
@@ -204,7 +206,7 @@ public static class GemCollectionChild
 			drawListPtr.AddText(pos + size - timerEndTextSize, 0xffffffff, timerEndSpan);
 		}
 
-		void RenderGraphLine(IReadOnlyList<int> data, int maxDataEntry, Vector2[] pointsArray, uint color, Vector2 cursorScreenPos, Vector2 graphSize, ImDrawListPtr drawListPtr)
+		void RenderGraphLine(ImDrawListPtr drawListPtr, IReadOnlyList<int> data, int maxDataEntry, Vector2[] pointsArray, uint color, Vector2 cursorScreenPos, Vector2 graphSize)
 		{
 			pointsArray.AsSpan().Clear();
 			for (int i = 0; i < data.Count; i++)
@@ -216,6 +218,24 @@ public static class GemCollectionChild
 
 			fixed (Vector2* p = pointsArray)
 				drawListPtr.AddPolyline(ref p[0], data.Count, color, ImDrawFlags.None, 1);
+		}
+
+		void RenderGraphSplits(ImDrawListPtr drawListPtr, Vector2 pos, Vector2 size)
+		{
+			float timerStart = RunAnalysisWindow.StatsData.TimerStart;
+			float timerEnd = RunAnalysisWindow.StatsData.TimerEnd;
+
+			for (int i = 0; i < SplitsData.SplitData.Count; i++)
+			{
+				int time = SplitsData.SplitData[i].Seconds;
+				if (time < timerStart || time > timerEnd)
+					continue;
+
+				float normalizedX = (time - timerStart) / (timerEnd - timerStart);
+				float posX = pos.X + normalizedX * ImGui.GetWindowWidth();
+
+				drawListPtr.AddLine(new(posX, pos.Y), new(posX, pos.Y + size.Y), 0xff404040);
+			}
 		}
 	}
 
