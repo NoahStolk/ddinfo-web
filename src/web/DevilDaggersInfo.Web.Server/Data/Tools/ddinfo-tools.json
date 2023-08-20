@@ -4,7 +4,7 @@
 		"Date": "9999-06-28T00:00:00",
 		"Changes": [
 			{
-				"Description": "Added splits to practice tool."
+				"Description": "Added splits and graphs to practice tool."
 			},
 			{
 				"Description": "Various performance improvements."
