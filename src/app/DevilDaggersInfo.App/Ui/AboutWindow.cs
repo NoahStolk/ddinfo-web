@@ -66,7 +66,7 @@ public static class AboutWindow
 			ImGui.PopTextWrapPos();
 		}
 
-		ImGui.End();
+		ImGui.End(); // End About ddinfo tools
 	}
 
 	private static void RenderGitHubButton()
