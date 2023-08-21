@@ -82,19 +82,19 @@ public static class SpawnsChild
 				}
 
 				ImGui.EndChild(); // End AddAndInsertButtons
+
+				ImGui.SameLine();
+
+				if (ImGui.BeginChild("AddSpawnControls"))
+				{
+					ImGui.Combo("Enemy", ref _addEnemyTypeIndex, _enemyNames, _enemyNames.Length);
+					ImGui.InputFloat("Delay", ref _addDelay, 1, 2, "%.4f");
+				}
+
+				ImGui.EndChild(); // End AddSpawnControls
 			}
 
 			ImGui.EndChild(); // End SpawnControlsChild
-
-			ImGui.SameLine();
-
-			if (ImGui.BeginChild("AddSpawnControls"))
-			{
-				ImGui.Combo("Enemy", ref _addEnemyTypeIndex, _enemyNames, _enemyNames.Length);
-				ImGui.InputFloat("Delay", ref _addDelay, 1, 2, "%.4f");
-			}
-
-			ImGui.EndChild(); // End AddSpawnControls
 		}
 
 		ImGui.EndChild(); // End SpawnsChild
