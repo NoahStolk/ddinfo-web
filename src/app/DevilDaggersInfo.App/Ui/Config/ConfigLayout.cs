@@ -86,20 +86,22 @@ public static class ConfigLayout
 		ImGui.Text(text);
 		ImGui.Spacing();
 
-		ImGui.BeginChild("Input", new(1366, 128));
-		if (ImGui.Button("Select installation directory", new(224, 24)))
+		if (ImGui.BeginChild("Input", new(1366, 128)))
 		{
-			string? directory = NativeFileDialog.SelectDirectory();
-			if (directory != null)
-				_installationDirectoryInput = directory;
+			if (ImGui.Button("Select installation directory", new(224, 24)))
+			{
+				string? directory = NativeFileDialog.SelectDirectory();
+				if (directory != null)
+					_installationDirectoryInput = directory;
+			}
+
+			ImGui.InputText("##installationDirectoryInput", ref _installationDirectoryInput, 1024, ImGuiInputTextFlags.None);
+
+			if (!string.IsNullOrWhiteSpace(_error))
+				ImGui.TextColored(new(1, 0, 0, 1), _error);
 		}
 
-		ImGui.InputText("##installationDirectoryInput", ref _installationDirectoryInput, 1024, ImGuiInputTextFlags.None);
-
-		if (!string.IsNullOrWhiteSpace(_error))
-			ImGui.TextColored(new(1, 0, 0, 1), _error);
-
-		ImGui.EndChild();
+		ImGui.EndChild(); // End Input
 
 		if (ImGui.Button("Save and continue", new(192, 96)))
 		{
