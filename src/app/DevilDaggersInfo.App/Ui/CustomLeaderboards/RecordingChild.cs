@@ -165,6 +165,7 @@ public static class RecordingChild
 
 			ImGui.Spacing();
 
+			// TODO: Use spans here.
 			ImGuiImage.Image(Root.InternalResources.IconEyeTexture.Handle, iconSize, Color.Orange);
 			RenderValue("Player", GetPlayerText(b), Color.White, _playerIntensity);
 			RenderValue("Time", b.Time.ToString(StringFormats.TimeFormat), Color.White, _timeIntensity);
