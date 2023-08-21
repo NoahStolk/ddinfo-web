@@ -1,6 +1,9 @@
 [
 	/*
 	- Fixed some textures being flipped incorrectly.
+	- Fixed some possible crashes.
+	- Various performance improvements.
+	- Fixed occasional crash when opening the custom leaderboards tool.
 	*/
 	{
 		"VersionNumber": "0.8.0.0",
