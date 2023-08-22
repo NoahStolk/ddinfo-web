@@ -4,6 +4,8 @@
 	- Fixed some possible crashes.
 	- Various performance improvements.
 	- Fixed occasional crash when opening the custom leaderboards tool.
+	- Fixed spawnset editor spawns selection not being cleared when using undo/redo.
+	- Fixed spawnset editor spawns selection not being cleared when switching to a different spawnset.
 	*/
 	{
 		"VersionNumber": "0.8.0.0",
