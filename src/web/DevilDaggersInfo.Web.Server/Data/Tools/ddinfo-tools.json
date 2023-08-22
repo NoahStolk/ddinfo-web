@@ -7,7 +7,9 @@
 	- Fixed spawnset editor spawns selection not being cleared when using undo/redo.
 	- Fixed spawnset editor spawns selection not being cleared when switching to a different spawnset.
 	- Fixed spawnset editor 3D camera not stopping when the mouse leaves the window.
-	- Fixed tiles being edited in the arena editor when the window was not focused.
+	- Fixed tiles being edited in the arena editor using arena tools when the window was not focused.
+	- Fixed tiles being edited in the arena editor using scroll wheel when the window was not focused.
+	- Fixed arena tooltip being shown when the window was not focused.
 	- The spawnset editor window no longer loses focus when using undo/redo.
 	*/
 	{
