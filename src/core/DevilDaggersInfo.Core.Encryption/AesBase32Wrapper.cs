@@ -43,27 +43,27 @@ public class AesBase32Wrapper
 		// The encrypted input is in Base32 format.
 		byte[] buffer = Base32Encoding.ToBytes(inputEncrypted);
 
-		using Aes csp = Aes.Create();
-		ICryptoTransform decryptTransform = GetCryptoTransform(csp, TransformType.Decrypt);
+		using Aes aes = Aes.Create();
+		ICryptoTransform decryptTransform = GetCryptoTransform(aes, TransformType.Decrypt);
 		byte[] decrypted = decryptTransform.TransformFinalBlock(buffer, 0, buffer.Length);
 
 		// The decrypted output is in UTF-8 format.
 		return Encoding.UTF8.GetString(decrypted);
 	}
 
-	private ICryptoTransform GetCryptoTransform(Aes csp, TransformType transformType)
+	private ICryptoTransform GetCryptoTransform(SymmetricAlgorithm symmetricAlgorithm, TransformType transformType)
 	{
-		csp.Mode = CipherMode.CBC;
-		csp.Padding = PaddingMode.PKCS7;
-		csp.IV = Encoding.UTF8.GetBytes(_initializationVector);
+		symmetricAlgorithm.Mode = CipherMode.CBC;
+		symmetricAlgorithm.Padding = PaddingMode.PKCS7;
+		symmetricAlgorithm.IV = Encoding.UTF8.GetBytes(_initializationVector);
 
-		using Rfc2898DeriveBytes spec = new(Encoding.UTF8.GetBytes(_password), Encoding.UTF8.GetBytes(_salt), 65536);
-		csp.Key = spec.GetBytes(16);
+		using Rfc2898DeriveBytes spec = new(Encoding.UTF8.GetBytes(_password), Encoding.UTF8.GetBytes(_salt), 65536, HashAlgorithmName.SHA1);
+		symmetricAlgorithm.Key = spec.GetBytes(16);
 
 		return transformType switch
 		{
-			TransformType.Encrypt => csp.CreateEncryptor(),
-			TransformType.Decrypt => csp.CreateDecryptor(),
+			TransformType.Encrypt => symmetricAlgorithm.CreateEncryptor(),
+			TransformType.Decrypt => symmetricAlgorithm.CreateDecryptor(),
 			_ => throw new($"Unknown {nameof(TransformType)} '{transformType}'."),
 		};
 	}
