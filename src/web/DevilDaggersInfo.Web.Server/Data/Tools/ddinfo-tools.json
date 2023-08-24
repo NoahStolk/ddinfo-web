@@ -11,7 +11,8 @@
 	- Fixed tiles being edited in the arena editor using scroll wheel when the window was not focused.
 	- Fixed arena tooltip being shown when the window was not focused.
 	- The spawnset editor window no longer loses focus when using undo/redo.
-	- The 3D arena editor is now only active when the window is focused and hovered.
+	- The 3D arena editor is now only active when the window is focused.
+	- You can now select multiple tiles at once in the 3D arena editor.
 	- Various other improvements to the 3D arena editor.
 	*/
 	{
