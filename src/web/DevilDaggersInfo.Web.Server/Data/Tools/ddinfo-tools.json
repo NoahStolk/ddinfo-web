@@ -4,16 +4,29 @@
 		//"Date": "2023-08-20T00:00:00",
 		"Changes": [
 			{
-				"Description": "You can now select multiple tiles at once in the 3D arena editor."
+				"Description": "Spawnset Editor",
+				"SubChanges": [
+					{
+						"Description": "You can now select multiple tiles at once in the 3D arena editor."
+					},
+					{
+						"Description": "The 3D arena editor is now only active when the window is focused."
+					},
+					{
+						"Description": "The spawnset editor window no longer loses focus when using undo/redo."
+					},
+					{
+						"Description": "Various other improvements to the 3D arena editor."
+					}
+				]
 			},
 			{
-				"Description": "The 3D arena editor is now only active when the window is focused."
-			},
-			{
-				"Description": "The spawnset editor window no longer loses focus when using undo/redo."
-			},
-			{
-				"Description": "Various other improvements to the 3D arena editor."
+				"Description": "Replay Editor",
+				"SubChanges": [
+					{
+						"Description": "Improved UI for current inputs."
+					}
+				]
 			},
 			{
 				"Description": "Fixes",

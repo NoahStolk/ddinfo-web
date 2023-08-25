@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Core.Spawnset;
+using DevilDaggersInfo.Core.Wiki;
 using System.Diagnostics.CodeAnalysis;
 using System.Security.Cryptography;
 using System.Text;
@@ -53,6 +54,8 @@ public class LocalReplayBinaryHeader : IReplayBinaryHeader<LocalReplayBinaryHead
 	public string Username { get; }
 	public byte[] SpawnsetMd5 { get; }
 	public byte[] SpawnsetBuffer { get; }
+
+	public float Accuracy => DaggersFired == 0 ? 0 : DaggersHit / (float)DaggersFired;
 
 	public SpawnsetBinary Spawnset { get; }
 
@@ -148,6 +151,9 @@ public class LocalReplayBinaryHeader : IReplayBinaryHeader<LocalReplayBinaryHead
 			username: string.Empty,
 			spawnsetBuffer: spawnsetBuffer);
 	}
+
+	public static DateTimeOffset GetTimestampFromTimestampSinceGameRelease(long timestampSinceGameRelease)
+		=> GameVersions.GetReleaseDate(GameVersion.V1_0) + TimeSpan.FromSeconds(timestampSinceGameRelease);
 
 	public byte[] ToBytes()
 	{
