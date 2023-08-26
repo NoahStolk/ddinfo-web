@@ -33,6 +33,9 @@ public static class EnemyHitLogBuilder
 				if (daggerEntityType == null)
 					continue;
 
+				// TODO: In case of enemies with multiple weak points (squids, pedes, etc), we need to keep track of all the weak point's HP separately in the EnemyHitLogBuildContext.
+				// If we don't do that we subtract too much damage from the enemy's HP.
+				// For example, level 4 homing deals 10 damage, but when hitting a Gigapede segment with only 3 HP left, this should not count as 10 damage.
 				int damage = buildContext.EntityType.GetDamage(daggerEntityType.Value, hit.UserData);
 				buildContext.CurrentHp -= damage;
 				buildContext.Events.Add(new(currentTick, buildContext.CurrentHp, damage, daggerEntityType.Value.GetDaggerType(), hit.UserData));

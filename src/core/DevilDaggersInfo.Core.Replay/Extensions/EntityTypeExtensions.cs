@@ -95,7 +95,7 @@ public static class EntityTypeExtensions
 			{
 				EntityType.Thorn => 1, // Thorns are an exception
 				EntityType.Centipede or EntityType.Gigapede or EntityType.Ghostpede => 10, // Only splash damages pedes (including Ghostpede)
-				_ => 0,
+				_ => 0, // TODO: This is probably wrong. Squids and Skulls should be damaged by splash.
 			},
 			_ => 0,
 		};
