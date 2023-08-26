@@ -51,13 +51,13 @@ Every event starts with an event type, which is a single byte. After that, addit
 
 #### <a id="dagger-spawn-event"></a>Dagger spawn event ####
 
-| Data type     | Size | Meaning                      |
-|---------------|------|------------------------------|
-| int32         |    4 | N/A (hardcoded at 0)         |
-| vec3<int16>   |    6 | Position                     |
-| mat3x3<int16> |   18 | Orientation                  |
-| int8 (bool)   |    1 | Shot (as opposed to rapid)   |
-| uint8         |    1 | [Dagger type](#dagger-types) |
+| Data type           | Size | Meaning                      |
+|---------------------|------|------------------------------|
+| int32               |    4 | N/A (hardcoded at 0)         |
+| vec3&lt;int16&gt;   |    6 | Position                     |
+| mat3x3&lt;int16&gt; |   18 | Orientation                  |
+| int8 (bool)         |    1 | Shot (as opposed to rapid)   |
+| uint8               |    1 | [Dagger type](#dagger-types) |
 
 ##### <a id="dagger-types"></a>Dagger types #####
 
@@ -73,25 +73,25 @@ Every event starts with an event type, which is a single byte. After that, addit
 
 #### <a id="squid-spawn-event"></a>Squid spawn event ####
 
-| Data type     | Size | Meaning            |
-|---------------|------|--------------------|
-| int32         |    4 | ?                  |
-| vec3<float32> |   12 | Position           |
-| vec3<float32> |   12 | Direction          |
-| float32       |    4 | Rotation (radians) |
+| Data type           | Size | Meaning            |
+|---------------------|------|--------------------|
+| int32               |    4 | ?                  |
+| vec3&lt;float32&gt; |   12 | Position           |
+| vec3&lt;float32&gt; |   12 | Direction          |
+| float32             |    4 | Rotation (radians) |
 
 #### <a id="boid-spawn-event"></a>Boid spawn event ####
 
-| Data type      | Size | Meaning                  |
-|----------------|------|--------------------------|
-| int32          |    4 | Spawner entity ID        |
-| uint8          |    1 | [Boid type](#boid-types) |
-| vec3<int16>    |    6 | Position                 |
-| vec3<int16>?   |    6 | ?                        |
-| vec3<int16>?   |    6 | ?                        |
-| vec3<int16>?   |    6 | ?                        |
-| vec3<float32>? |   12 | ?                        |
-| float32        |    4 | Speed                    |
+| Data type            | Size | Meaning                  |
+|----------------------|------|--------------------------|
+| int32                |    4 | Spawner entity ID        |
+| uint8                |    1 | [Boid type](#boid-types) |
+| vec3&lt;int16&gt;    |    6 | Position                 |
+| vec3&lt;int16&gt;?   |    6 | ?                        |
+| vec3&lt;int16&gt;?   |    6 | ?                        |
+| vec3&lt;int16&gt;?   |    6 | ?                        |
+| vec3&lt;float32&gt;? |   12 | ?                        |
+| float32              |    4 | Speed                    |
 
 ##### <a id="boid-types"></a>Boid types ###
 
@@ -105,27 +105,27 @@ Every event starts with an event type, which is a single byte. After that, addit
 
 #### <a id="pede-spawn-event"></a>Pede spawn event ####
 
-| Data type       | Size | Meaning     |
-|-----------------|------|-------------|
-| int32           |    4 | ?           |
-| vec3<float32>   |   12 | Position    |
-| vec3<float32>?  |   12 | ?           |
-| mat3x3<float32> |   36 | Orientation |
+| Data type             | Size | Meaning     |
+|-----------------------|------|-------------|
+| int32                 |    4 | ?           |
+| vec3&lt;float32&gt;   |   12 | Position    |
+| vec3&lt;float32&gt;?  |   12 | ?           |
+| mat3x3&lt;float32&gt; |   36 | Orientation |
 
 #### <a id="spider-spawn-event"></a>Spider spawn event ####
 
-| Data type     | Size | Meaning  |
-|---------------|------|----------|
-| int32         |    4 | ?        |
-| vec3<float32> |   12 | Position |
+| Data type           | Size | Meaning  |
+|---------------------|------|----------|
+| int32               |    4 | ?        |
+| vec3&lt;float32&gt; |   12 | Position |
 
 #### <a id="spider-egg-spawn-event"></a>Spider Egg spawn event ####
 
-| Data type      | Size | Meaning              |
-|----------------|------|----------------------|
-| int32          |    4 | Spawner entity ID    |
-| vec3<float32>  |   12 | Position?            |
-| vec3<float32>? |   12 | Target position?     |
+| Data type            | Size | Meaning              |
+|----------------------|------|----------------------|
+| int32                |    4 | Spawner entity ID    |
+| vec3&lt;float32&gt;  |   12 | Position?            |
+| vec3&lt;float32&gt;? |   12 | Target position?     |
 
 #### <a id="leviathan-spawn-event"></a>Leviathan spawn event ####
 
@@ -135,32 +135,32 @@ Every event starts with an event type, which is a single byte. After that, addit
 
 #### <a id="thorn-spawn-event"></a>Thorn spawn event ####
 
-| Data type     | Size | Meaning             |
-|---------------|------|---------------------|
-| int32         |    4 | ?                   |
-| vec3<float32> |   12 | Position?           |
-| float32       |    4 | Rotation (radians)? |
+| Data type           | Size | Meaning             |
+|---------------------|------|---------------------|
+| int32               |    4 | ?                   |
+| vec3&lt;float32&gt; |   12 | Position?           |
+| float32             |    4 | Rotation (radians)? |
 
 ### <a id="entity-position-event"></a>Entity position event ###
 
-| Data type   | Size | Meaning   |
-|-------------|------|-----------|
-| int32       |    4 | Entity ID |
-| vec3<int16> |    6 | Position  |
+| Data type         | Size | Meaning   |
+|-------------------|------|-----------|
+| int32             |    4 | Entity ID |
+| vec3&lt;int16&gt; |    6 | Position  |
 
 ### <a id="entity-orientation-event"></a>Entity orientation event ###
 
-| Data type     | Size | Meaning     |
-|---------------|------|-------------|
-| int32         |    4 | Entity ID   |
-| mat3x3<int16> |   18 | Orientation |
+| Data type           | Size | Meaning     |
+|---------------------|------|-------------|
+| int32               |    4 | Entity ID   |
+| mat3x3&lt;int16&gt; |   18 | Orientation |
 
 ### <a id="entity-target-event"></a>Entity target event ###
 
-| Data type   | Size | Meaning         |
-|-------------|------|-----------------|
-| int32       |    4 | Entity ID       |
-| vec3<int16> |    6 | Target position |
+| Data type         | Size | Meaning         |
+|-------------------|------|-----------------|
+| int32             |    4 | Entity ID       |
+| vec3&lt;int16&gt; |    6 | Target position |
 
 ### <a id="hit-event"></a>Hit event ###
 
@@ -221,13 +221,13 @@ All other enemies are always hit, regardless of this value.
 
 ### <a id="transmute-event"></a>Transmute event ###
 
-| Data type   | Size | Meaning   |
-|-------------|------|-----------|
-| int32       |    4 | Entity ID |
-| vec3<int16> |    6 | ?         |
-| vec3<int16> |    6 | ?         |
-| vec3<int16> |    6 | ?         |
-| vec3<int16> |    6 | ?         |
+| Data type         | Size | Meaning   |
+|-------------------|------|-----------|
+| int32             |    4 | Entity ID |
+| vec3&lt;int16&gt; |    6 | ?         |
+| vec3&lt;int16&gt; |    6 | ?         |
+| vec3&lt;int16&gt; |    6 | ?         |
+| vec3&lt;int16&gt; |    6 | ?         |
 
 ### <a id="inputs-event"></a>Inputs event ###
 
