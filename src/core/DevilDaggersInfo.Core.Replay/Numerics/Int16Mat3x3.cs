@@ -1,7 +1,9 @@
 // ReSharper disable InconsistentNaming
+using DevilDaggersInfo.Core.Replay.Utils;
+
 namespace DevilDaggersInfo.Core.Replay.Numerics;
 
-public readonly record struct Int16Mat3x3(short M11, short M12, short M13, short M21, short M22, short M23, short M31, short M32, short M33)
+public readonly record struct Int16Mat3x3(short M11, short M12, short M13, short M21, short M22, short M23, short M31, short M32, short M33) : ISpanFormattable
 {
 	public static Int16Mat3x3 Identity { get; } = new(1, 0, 0, 0, 1, 0, 0, 0, 1);
 
@@ -21,5 +23,38 @@ public readonly record struct Int16Mat3x3(short M11, short M12, short M13, short
 	}
 
 	public override string ToString()
-		=> $"<{M11}, {M12}, {M13}> <{M21}, {M22}, {M23}> <{M31}, {M32}, {M33}>";
+	{
+		return $"<{M11}, {M12}, {M13}> <{M21}, {M22}, {M23}> <{M31}, {M32}, {M33}>";
+	}
+
+	public string ToString(string? format, IFormatProvider? formatProvider)
+	{
+		return $"<{M11.ToString(format, formatProvider)}, {M12.ToString(format, formatProvider)}, {M13.ToString(format, formatProvider)}> <{M21.ToString(format, formatProvider)}, {M22.ToString(format, formatProvider)}, {M23.ToString(format, formatProvider)}> <{M31.ToString(format, formatProvider)}, {M32.ToString(format, formatProvider)}, {M33.ToString(format, formatProvider)}>";
+	}
+
+	public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider? provider)
+	{
+		charsWritten = 0;
+
+		return
+			SpanWrite.TryWriteChar(destination, ref charsWritten, '<') &&
+			SpanWrite.TryWrite(destination, ref charsWritten, M11, format, provider) &&
+			SpanWrite.TryWriteString(destination, ref charsWritten, ", ") &&
+			SpanWrite.TryWrite(destination, ref charsWritten, M12, format, provider) &&
+			SpanWrite.TryWriteString(destination, ref charsWritten, ", ") &&
+			SpanWrite.TryWrite(destination, ref charsWritten, M13, format, provider) &&
+			SpanWrite.TryWriteString(destination, ref charsWritten, "> <") &&
+			SpanWrite.TryWrite(destination, ref charsWritten, M21, format, provider) &&
+			SpanWrite.TryWriteString(destination, ref charsWritten, ", ") &&
+			SpanWrite.TryWrite(destination, ref charsWritten, M22, format, provider) &&
+			SpanWrite.TryWriteString(destination, ref charsWritten, ", ") &&
+			SpanWrite.TryWrite(destination, ref charsWritten, M23, format, provider) &&
+			SpanWrite.TryWriteString(destination, ref charsWritten, "> <") &&
+			SpanWrite.TryWrite(destination, ref charsWritten, M31, format, provider) &&
+			SpanWrite.TryWriteString(destination, ref charsWritten, ", ") &&
+			SpanWrite.TryWrite(destination, ref charsWritten, M32, format, provider) &&
+			SpanWrite.TryWriteString(destination, ref charsWritten, ", ") &&
+			SpanWrite.TryWrite(destination, ref charsWritten, M33, format, provider) &&
+			SpanWrite.TryWriteChar(destination, ref charsWritten, '>');
+	}
 }
