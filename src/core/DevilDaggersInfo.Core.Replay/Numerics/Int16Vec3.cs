@@ -34,28 +34,20 @@ public readonly record struct Int16Vec3(short X, short Y, short Z) : ISpanFormat
 		if (!formattedX)
 			return false;
 
-		if (charsWritten + 2 >= destination.Length)
+		if (!", ".TryCopyTo(destination[charsWritten..]))
 			return false;
 
-		destination[charsWritten] = ',';
-		charsWritten++;
-
-		destination[charsWritten] = ' ';
-		charsWritten++;
+		charsWritten += 2;
 
 		bool formattedY = Y.TryFormat(destination[charsWritten..], out int charsWrittenY, format, provider);
 		charsWritten += charsWrittenY;
 		if (!formattedY)
 			return false;
 
-		if (charsWritten + 2 >= destination.Length)
+		if (!", ".TryCopyTo(destination[charsWritten..]))
 			return false;
 
-		destination[charsWritten] = ',';
-		charsWritten++;
-
-		destination[charsWritten] = ' ';
-		charsWritten++;
+		charsWritten += 2;
 
 		bool formattedZ = Z.TryFormat(destination[charsWritten..], out int charsWrittenZ, format, provider);
 		charsWritten += charsWrittenZ;
