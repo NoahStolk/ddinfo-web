@@ -9,7 +9,7 @@ Data is compressed using ZLIB. In order to get raw event data, make sure to:
 
 ### <a id="entity-ids"></a>Entity IDs ###
 
-Events work with entity IDs, which are integer values. An entity in Devil Daggers is an enemy or a dagger. Every entity has its own ID which can be referenced to from other events. The entity IDs are not stored, but can be defined by reading the [spawn events](#spawn-events) in order. The first entity spawning in the replay will have ID 1, the second entity will have ID 2, etc. It is thought that entity ID 0 is reserved for the player (used in the hit event when the player dies).
+Events work with entity IDs, which are integer values. An entity in Devil Daggers is an enemy or a dagger. Every entity has its own ID which can be referenced to from other events. The entity IDs are not stored, but can be defined by reading the [spawn events](#spawn-events) in order. The first entity spawning in the replay will have ID 1, the second entity will have ID 2, etc. Entity ID 0 is reserved for miscellaneous purposes, such as the player (used in the hit event when the player dies) or the void (when a dagger disappears).
 
 ## Raw replay events
 
@@ -133,7 +133,7 @@ Every event starts with an event type, which is a single byte. After that, addit
 |-----------|------|----------|
 | int32     |    4 | ?        |
 
-#### <a id="thorn-spawn-event"></a>Thorm spawn event ####
+#### <a id="thorn-spawn-event"></a>Thorn spawn event ####
 
 | Data type     | Size | Meaning             |
 |---------------|------|---------------------|
@@ -172,7 +172,7 @@ Every event starts with an event type, which is a single byte. After that, addit
 
 Examples:
 - If entity ID A is 0, it means the player died. Entity ID B will contain the [death type](#death-types). User data will be 0.
-- When a dagger is deleted from the scene; Entity ID A is the entity ID of the dagger and entity ID B is 0.
+- When a dagger is deleted from the scene; entity ID A is the entity ID of the dagger and entity ID B is 0.
 - When a dagger is eaten by Ghostpede; entity ID A is the entity ID of the Ghostpede and entity ID B is the entity ID of the dagger.
 - When a Level 4 homing splash 'dagger' hits a Squid I; entity ID A is the entity ID of the Squid I and entity ID B is the entity ID of the homing splash 'dagger'.
 
