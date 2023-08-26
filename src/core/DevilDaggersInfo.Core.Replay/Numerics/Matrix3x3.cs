@@ -1,5 +1,8 @@
+using DevilDaggersInfo.Core.Replay.Utils;
+
 namespace DevilDaggersInfo.Core.Replay.Numerics;
 
+// ReSharper disable once InconsistentNaming
 public readonly record struct Matrix3x3(float M11, float M12, float M13, float M21, float M22, float M23, float M31, float M32, float M33) : ISpanFormattable
 {
 	public static Matrix3x3 Identity { get; } = new(1, 0, 0, 0, 1, 0, 0, 0, 1);
@@ -18,104 +21,25 @@ public readonly record struct Matrix3x3(float M11, float M12, float M13, float M
 	{
 		charsWritten = 0;
 
-		if (destination.IsEmpty)
-			return false;
-
-		if (charsWritten + 1 >= destination.Length)
-			return false;
-
-		destination[charsWritten++] = '<';
-
-		bool formattedM11 = M11.TryFormat(destination[charsWritten..], out int charsWrittenM11, format, provider);
-		charsWritten += charsWrittenM11;
-		if (!formattedM11)
-			return false;
-
-		if (!", ".TryCopyTo(destination[charsWritten..]))
-			return false;
-
-		charsWritten += 2;
-
-		bool formattedM12 = M12.TryFormat(destination[charsWritten..], out int charsWrittenM12, format, provider);
-		charsWritten += charsWrittenM12;
-		if (!formattedM12)
-			return false;
-
-		if (!", ".TryCopyTo(destination[charsWritten..]))
-			return false;
-
-		charsWritten += 2;
-
-		bool formattedM13 = M13.TryFormat(destination[charsWritten..], out int charsWrittenM13, format, provider);
-		charsWritten += charsWrittenM13;
-		if (!formattedM13)
-			return false;
-
-		if (!"> <".TryCopyTo(destination[charsWritten..]))
-			return false;
-
-		charsWritten += 3;
-
-		bool formattedM21 = M21.TryFormat(destination[charsWritten..], out int charsWrittenM21, format, provider);
-		charsWritten += charsWrittenM21;
-		if (!formattedM21)
-			return false;
-
-		if (!", ".TryCopyTo(destination[charsWritten..]))
-			return false;
-
-		charsWritten += 2;
-
-		bool formattedM22 = M22.TryFormat(destination[charsWritten..], out int charsWrittenM22, format, provider);
-		charsWritten += charsWrittenM22;
-		if (!formattedM22)
-			return false;
-
-		if (!", ".TryCopyTo(destination[charsWritten..]))
-			return false;
-
-		charsWritten += 2;
-
-		bool formattedM23 = M23.TryFormat(destination[charsWritten..], out int charsWrittenM23, format, provider);
-		charsWritten += charsWrittenM23;
-		if (!formattedM23)
-			return false;
-
-		if (!"> <".TryCopyTo(destination[charsWritten..]))
-			return false;
-
-		charsWritten += 3;
-
-		bool formattedM31 = M31.TryFormat(destination[charsWritten..], out int charsWrittenM31, format, provider);
-		charsWritten += charsWrittenM31;
-		if (!formattedM31)
-			return false;
-
-		if (!", ".TryCopyTo(destination[charsWritten..]))
-			return false;
-
-		charsWritten += 2;
-
-		bool formattedM32 = M32.TryFormat(destination[charsWritten..], out int charsWrittenM32, format, provider);
-		charsWritten += charsWrittenM32;
-		if (!formattedM32)
-			return false;
-
-		if (!", ".TryCopyTo(destination[charsWritten..]))
-			return false;
-
-		charsWritten += 2;
-
-		bool formattedM33 = M33.TryFormat(destination[charsWritten..], out int charsWrittenM33, format, provider);
-		charsWritten += charsWrittenM33;
-		if (!formattedM33)
-			return false;
-
-		if (charsWritten + 1 >= destination.Length)
-			return false;
-
-		destination[charsWritten++] = '>';
-
-		return true;
+		return
+			SpanWrite.TryWriteChar(destination, ref charsWritten, '<') &&
+			SpanWrite.TryWrite(destination, ref charsWritten, M11, format, provider) &&
+			SpanWrite.TryWriteString(destination, ref charsWritten, ", ") &&
+			SpanWrite.TryWrite(destination, ref charsWritten, M12, format, provider) &&
+			SpanWrite.TryWriteString(destination, ref charsWritten, ", ") &&
+			SpanWrite.TryWrite(destination, ref charsWritten, M13, format, provider) &&
+			SpanWrite.TryWriteString(destination, ref charsWritten, "> <") &&
+			SpanWrite.TryWrite(destination, ref charsWritten, M21, format, provider) &&
+			SpanWrite.TryWriteString(destination, ref charsWritten, ", ") &&
+			SpanWrite.TryWrite(destination, ref charsWritten, M22, format, provider) &&
+			SpanWrite.TryWriteString(destination, ref charsWritten, ", ") &&
+			SpanWrite.TryWrite(destination, ref charsWritten, M23, format, provider) &&
+			SpanWrite.TryWriteString(destination, ref charsWritten, "> <") &&
+			SpanWrite.TryWrite(destination, ref charsWritten, M31, format, provider) &&
+			SpanWrite.TryWriteString(destination, ref charsWritten, ", ") &&
+			SpanWrite.TryWrite(destination, ref charsWritten, M32, format, provider) &&
+			SpanWrite.TryWriteString(destination, ref charsWritten, ", ") &&
+			SpanWrite.TryWrite(destination, ref charsWritten, M33, format, provider) &&
+			SpanWrite.TryWriteChar(destination, ref charsWritten, '>');
 	}
 }

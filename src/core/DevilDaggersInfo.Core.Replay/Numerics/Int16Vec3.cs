@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Core.Replay.Utils;
+
 namespace DevilDaggersInfo.Core.Replay.Numerics;
 
 public readonly record struct Int16Vec3(short X, short Y, short Z) : ISpanFormattable
@@ -26,31 +28,11 @@ public readonly record struct Int16Vec3(short X, short Y, short Z) : ISpanFormat
 	{
 		charsWritten = 0;
 
-		if (destination.IsEmpty || destination.Length < 7)
-			return false;
-
-		bool formattedX = X.TryFormat(destination[charsWritten..], out int charsWrittenX, format, provider);
-		charsWritten += charsWrittenX;
-		if (!formattedX)
-			return false;
-
-		if (!", ".TryCopyTo(destination[charsWritten..]))
-			return false;
-
-		charsWritten += 2;
-
-		bool formattedY = Y.TryFormat(destination[charsWritten..], out int charsWrittenY, format, provider);
-		charsWritten += charsWrittenY;
-		if (!formattedY)
-			return false;
-
-		if (!", ".TryCopyTo(destination[charsWritten..]))
-			return false;
-
-		charsWritten += 2;
-
-		bool formattedZ = Z.TryFormat(destination[charsWritten..], out int charsWrittenZ, format, provider);
-		charsWritten += charsWrittenZ;
-		return formattedZ;
+		return
+			SpanWrite.TryWrite(destination, ref charsWritten, X, format, provider) &&
+			SpanWrite.TryWriteString(destination, ref charsWritten, ", ") &&
+			SpanWrite.TryWrite(destination, ref charsWritten, Y, format, provider) &&
+			SpanWrite.TryWriteString(destination, ref charsWritten, ", ") &&
+			SpanWrite.TryWrite(destination, ref charsWritten, Z, format, provider);
 	}
 }
