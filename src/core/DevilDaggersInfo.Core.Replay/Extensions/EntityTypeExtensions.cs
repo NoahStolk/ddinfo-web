@@ -1,4 +1,6 @@
 using DevilDaggersInfo.Core.Replay.Events.Enums;
+using DevilDaggersInfo.Core.Wiki;
+using DevilDaggersInfo.Core.Wiki.Structs;
 
 namespace DevilDaggersInfo.Core.Replay.Extensions;
 
@@ -96,6 +98,37 @@ public static class EntityTypeExtensions
 				_ => 0,
 			},
 			_ => 0,
+		};
+	}
+
+	public static Color GetColor(this EntityType? entityType)
+	{
+		return entityType switch
+		{
+			EntityType.Level1Dagger => UpgradesV3_2.Level1.Color,
+			EntityType.Level2Dagger => UpgradesV3_2.Level2.Color,
+			EntityType.Level3Dagger => UpgradesV3_2.Level3.Color, // TODO: Use different color.
+			EntityType.Level3HomingDagger => UpgradesV3_2.Level3.Color,
+			EntityType.Level4Dagger => UpgradesV3_2.Level4.Color, // TODO: Use different color.
+			EntityType.Level4HomingDagger => UpgradesV3_2.Level4.Color,
+			EntityType.Level4HomingSplash => UpgradesV3_2.Level4.Color,
+			EntityType.Squid1 => EnemiesV3_2.Squid1.Color,
+			EntityType.Squid2 => EnemiesV3_2.Squid2.Color,
+			EntityType.Squid3 => EnemiesV3_2.Squid3.Color,
+			EntityType.Skull1 => EnemiesV3_2.Skull1.Color,
+			EntityType.Skull2 => EnemiesV3_2.Skull2.Color,
+			EntityType.Skull3 => EnemiesV3_2.Skull3.Color,
+			EntityType.Spiderling => EnemiesV3_2.Spiderling.Color,
+			EntityType.Skull4 => EnemiesV3_2.Skull4.Color,
+			EntityType.Centipede => EnemiesV3_2.Centipede.Color,
+			EntityType.Gigapede => EnemiesV3_2.Gigapede.Color,
+			EntityType.Ghostpede => EnemiesV3_2.Ghostpede.Color,
+			EntityType.Spider1 => EnemiesV3_2.Spider1.Color,
+			EntityType.Spider2 => EnemiesV3_2.Spider2.Color,
+			EntityType.SpiderEgg => EnemiesV3_2.SpiderEgg1.Color,
+			EntityType.Leviathan => EnemiesV3_2.Leviathan.Color,
+			EntityType.Thorn => EnemiesV3_2.Thorn.Color,
+			_ => new(191, 0, 255),
 		};
 	}
 }
