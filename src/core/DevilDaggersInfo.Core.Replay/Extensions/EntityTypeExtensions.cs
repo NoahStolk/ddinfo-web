@@ -51,7 +51,7 @@ public static class EntityTypeExtensions
 		EntityType.Squid3 => userData is >= 0 and < 3,
 		EntityType.Leviathan => userData is >= 0 and < 6,
 		EntityType.Squid1 or EntityType.Spider1 or EntityType.Spider2 => userData == 0,
-		_ => true, // Everything else is a hit by default, including pedes (when damaging a dead pede segment, the ID is negated, which we ignore anyway.
+		_ => true, // Everything else is a hit by default, including pedes (when damaging a dead pede segment, the ID of the pede is negated, which is ignored automatically).
 	};
 
 	public static int GetInitialTransmuteHp(this EntityType entityType) => entityType switch

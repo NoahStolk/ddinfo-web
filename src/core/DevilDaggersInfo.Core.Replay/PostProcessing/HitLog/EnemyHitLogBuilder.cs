@@ -29,7 +29,9 @@ public static class EnemyHitLogBuilder
 				if (buildContext == null)
 					continue;
 
+ #pragma warning disable S4158
 				EntityType? daggerEntityType = daggers.TryGetValue(hit.EntityIdB, out EntityType value) ? value : null;
+ #pragma warning restore S4158
 				if (daggerEntityType == null)
 					continue;
 
