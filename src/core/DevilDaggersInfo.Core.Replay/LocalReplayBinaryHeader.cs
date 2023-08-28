@@ -8,6 +8,8 @@ namespace DevilDaggersInfo.Core.Replay;
 
 public class LocalReplayBinaryHeader : IReplayBinaryHeader<LocalReplayBinaryHeader>
 {
+	private const int _unknownLength = 10;
+
 	public LocalReplayBinaryHeader(
 		int version,
 		long timestampSinceGameRelease,
@@ -20,8 +22,12 @@ public class LocalReplayBinaryHeader : IReplayBinaryHeader<LocalReplayBinaryHead
 		int kills,
 		int playerId,
 		string username,
+		byte[] unknown,
 		byte[] spawnsetBuffer)
 	{
+		if (unknown.Length != _unknownLength)
+			throw new ArgumentException($"Unknown byte array must be {_unknownLength} bytes long.", nameof(unknown));
+
 		Version = version;
 		TimestampSinceGameRelease = timestampSinceGameRelease;
 		Time = time;
@@ -33,6 +39,7 @@ public class LocalReplayBinaryHeader : IReplayBinaryHeader<LocalReplayBinaryHead
 		Kills = kills;
 		PlayerId = playerId;
 		Username = username;
+		Unknown = unknown;
 		SpawnsetMd5 = MD5.HashData(spawnsetBuffer);
 		SpawnsetBuffer = spawnsetBuffer;
 
@@ -52,6 +59,7 @@ public class LocalReplayBinaryHeader : IReplayBinaryHeader<LocalReplayBinaryHead
 	public int Kills { get; }
 	public int PlayerId { get; }
 	public string Username { get; }
+	public byte[] Unknown { get; }
 	public byte[] SpawnsetMd5 { get; }
 	public byte[] SpawnsetBuffer { get; }
 
@@ -93,7 +101,7 @@ public class LocalReplayBinaryHeader : IReplayBinaryHeader<LocalReplayBinaryHead
 		int usernameLength = br.ReadInt32();
 		byte[] usernameBytes = br.ReadBytes(usernameLength);
 		string username = Encoding.UTF8.GetString(usernameBytes);
-		br.BaseStream.Seek(10, SeekOrigin.Current);
+		byte[] unknown = br.ReadBytes(_unknownLength);
 		byte[] spawnsetMd5 = br.ReadBytes(16);
 		int spawnsetLength = br.ReadInt32();
 		byte[] spawnsetBuffer = br.ReadBytes(spawnsetLength);
@@ -113,6 +121,7 @@ public class LocalReplayBinaryHeader : IReplayBinaryHeader<LocalReplayBinaryHead
 			kills: kills,
 			playerId: playerId,
 			username: username,
+			unknown: unknown,
 			spawnsetBuffer: spawnsetBuffer);
 	}
 
@@ -139,7 +148,7 @@ public class LocalReplayBinaryHeader : IReplayBinaryHeader<LocalReplayBinaryHead
 		byte[] spawnsetBuffer = spawnset.ToBytes();
 		return new(
 			version: 1,
-			timestampSinceGameRelease: 0, // TODO: Convert current time to timestamp.
+			timestampSinceGameRelease: GetTimestampSinceGameReleaseFromDateTimeOffset(DateTimeOffset.UtcNow),
 			time: 0,
 			startTime: 0,
 			daggersFired: 0,
@@ -149,11 +158,15 @@ public class LocalReplayBinaryHeader : IReplayBinaryHeader<LocalReplayBinaryHead
 			kills: 0,
 			playerId: 0,
 			username: string.Empty,
+			unknown: new byte[_unknownLength],
 			spawnsetBuffer: spawnsetBuffer);
 	}
 
-	public static DateTimeOffset GetTimestampFromTimestampSinceGameRelease(long timestampSinceGameRelease)
+	public static DateTimeOffset GetDateTimeOffsetFromTimestampSinceGameRelease(long timestampSinceGameRelease)
 		=> GameVersions.GetReleaseDate(GameVersion.V1_0) + TimeSpan.FromSeconds(timestampSinceGameRelease);
+
+	public static long GetTimestampSinceGameReleaseFromDateTimeOffset(DateTimeOffset dateTimeOffset)
+		=> (long)(dateTimeOffset - GameVersions.GetReleaseDate(GameVersion.V1_0)).TotalSeconds;
 
 	public byte[] ToBytes()
 	{
@@ -173,7 +186,7 @@ public class LocalReplayBinaryHeader : IReplayBinaryHeader<LocalReplayBinaryHead
 		bw.Write(PlayerId);
 		bw.Write(Username.Length);
 		bw.Write(Encoding.UTF8.GetBytes(Username));
-		bw.Seek(10, SeekOrigin.Current);
+		bw.Write(Unknown);
 		bw.Write(SpawnsetMd5);
 		bw.Write(SpawnsetBuffer.Length);
 		bw.Write(SpawnsetBuffer);
