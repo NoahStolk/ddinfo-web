@@ -17,35 +17,35 @@ Every event starts with an event type, which is a single byte. After that, addit
 
 ### Event types
 
-| Event type                                            | Value  |   Size (excluding event type byte itself)   |
+| Event type                                            | Value  | Size (excluding event type byte itself)     |
 |-------------------------------------------------------|--------|---------------------------------------------|
 | [Spawn event](#spawn-events)                          | `0x00` | Variable, see [entity types](#entity-types) |
-| [Entity position event](#entity-position-event)       | `0x01` |                                         10  |
-| [Entity orientation event](#entity-orientation-event) | `0x02` |                                         22  |
-| [Entity target event](#entity-target-event)           | `0x04` |                                         10  |
-| [Hit event](#hit-event)                               | `0x05` |                                         12  |
-| Gem event                                             | `0x06` |                                          0  |
-| [Transmute event](#transmute-event)                   | `0x07` |                                         28  |
-| [Inputs event](#inputs-event)                         | `0x09` |          12 (16 for the first inputs event) |
-| End event                                             | `0x0b` |                                          0  |
+| [Entity position event](#entity-position-event)       | `0x01` | 10                                          |
+| [Entity orientation event](#entity-orientation-event) | `0x02` | 22                                          |
+| [Entity target event](#entity-target-event)           | `0x04` | 10                                          |
+| [Hit event](#hit-event)                               | `0x05` | 12                                          |
+| Gem event                                             | `0x06` | 0                                           |
+| [Transmute event](#transmute-event)                   | `0x07` | 28                                          |
+| [Inputs event](#inputs-event)                         | `0x09` | 12 (16 for the first inputs event)          |
+| End event                                             | `0x0b` | 0                                           |
 
 ### <a id="entity-types"></a>Entity types ###
 
 | Entity type                                       | Value  | Size (excluding entity type byte itself) |
 |---------------------------------------------------|--------|------------------------------------------|
-| [Dagger](#dagger-spawn-event)                     | `0x01` |                                       30 |
-| [Squid I](#squid-spawn-event)                     | `0x03` |                                       32 |
-| [Squid II](#squid-spawn-event)                    | `0x04` |                                       32 |
-| [Squid III](#squid-spawn-event)                   | `0x05` |                                       32 |
-| [Boid (skulls and spiderling)](#boid-spawn-event) | `0x06` |                                       45 |
-| [Centipede](#pede-spawn-event)                    | `0x07` |                                       64 |
-| [Gigapede](#pede-spawn-event)                     | `0x0c` |                                       64 |
-| [Ghostpede](#pede-spawn-event)                    | `0x0f` |                                       64 |
-| [Spider I](#spider-spawn-event)                   | `0x08` |                                       16 |
-| [Spider II](#spider-spawn-event)                  | `0x09` |                                       16 |
-| [Spider Egg (I and II)](#spider-egg-spawn-event)  | `0x0a` |                                       28 |
-| [Leviathan](#leviathan-spawn-event)               | `0x0b` |                                        4 |
-| [Thorn](#thorn-spawn-event)                       | `0x0d` |                                       20 |
+| [Dagger](#dagger-spawn-event)                     | `0x01` | 30                                       |
+| [Squid I](#squid-spawn-event)                     | `0x03` | 32                                       |
+| [Squid II](#squid-spawn-event)                    | `0x04` | 32                                       |
+| [Squid III](#squid-spawn-event)                   | `0x05` | 32                                       |
+| [Boid (skulls and spiderling)](#boid-spawn-event) | `0x06` | 45                                       |
+| [Centipede](#pede-spawn-event)                    | `0x07` | 64                                       |
+| [Gigapede](#pede-spawn-event)                     | `0x0c` | 64                                       |
+| [Ghostpede](#pede-spawn-event)                    | `0x0f` | 64                                       |
+| [Spider I](#spider-spawn-event)                   | `0x08` | 16                                       |
+| [Spider II](#spider-spawn-event)                  | `0x09` | 16                                       |
+| [Spider Egg (I and II)](#spider-egg-spawn-event)  | `0x0a` | 28                                       |
+| [Leviathan](#leviathan-spawn-event)               | `0x0b` | 4                                        |
+| [Thorn](#thorn-spawn-event)                       | `0x0d` | 20                                       |
 
 ### <a id="spawn-events"></a>Spawn events ###
 
@@ -53,11 +53,11 @@ Every event starts with an event type, which is a single byte. After that, addit
 
 | Data type           | Size | Meaning                      |
 |---------------------|------|------------------------------|
-| int32               |    4 | N/A (hardcoded at 0)         |
-| vec3&lt;int16&gt;   |    6 | Position                     |
-| mat3x3&lt;int16&gt; |   18 | Orientation                  |
-| int8 (bool)         |    1 | Shot (as opposed to rapid)   |
-| uint8               |    1 | [Dagger type](#dagger-types) |
+| int32               | 4    | N/A (hardcoded at 0)         |
+| vec3&lt;int16&gt;   | 6    | Position                     |
+| mat3x3&lt;int16&gt; | 18   | Orientation                  |
+| int8 (bool)         | 1    | Shot (as opposed to rapid)   |
+| uint8               | 1    | [Dagger type](#dagger-types) |
 
 ##### <a id="dagger-types"></a>Dagger types #####
 
@@ -75,23 +75,21 @@ Every event starts with an event type, which is a single byte. After that, addit
 
 | Data type           | Size | Meaning            |
 |---------------------|------|--------------------|
-| int32               |    4 | ?                  |
-| vec3&lt;float32&gt; |   12 | Position           |
-| vec3&lt;float32&gt; |   12 | Direction          |
-| float32             |    4 | Rotation (radians) |
+| int32               | 4    | ?                  |
+| vec3&lt;float32&gt; | 12   | Position           |
+| vec3&lt;float32&gt; | 12   | Direction          |
+| float32             | 4    | Rotation (radians) |
 
 #### <a id="boid-spawn-event"></a>Boid spawn event ####
 
-| Data type            | Size | Meaning                  |
-|----------------------|------|--------------------------|
-| int32                |    4 | Spawner entity ID        |
-| uint8                |    1 | [Boid type](#boid-types) |
-| vec3&lt;int16&gt;    |    6 | Position                 |
-| vec3&lt;int16&gt;?   |    6 | ?                        |
-| vec3&lt;int16&gt;?   |    6 | ?                        |
-| vec3&lt;int16&gt;?   |    6 | ?                        |
-| vec3&lt;float32&gt;? |   12 | ?                        |
-| float32              |    4 | Speed                    |
+| Data type           | Size | Meaning                  |
+|---------------------|------|--------------------------|
+| int32               | 4    | Spawner entity ID        |
+| uint8               | 1    | [Boid type](#boid-types) |
+| vec3&lt;int16&gt;   | 6    | Position                 |
+| mat3x3&lt;int16&gt; | 18   | Orientation              |
+| vec3&lt;float32&gt; | 12   | Velocity                 |
+| float32             | 4    | Speed                    |
 
 ##### <a id="boid-types"></a>Boid types ###
 
@@ -107,68 +105,68 @@ Every event starts with an event type, which is a single byte. After that, addit
 
 | Data type             | Size | Meaning     |
 |-----------------------|------|-------------|
-| int32                 |    4 | ?           |
-| vec3&lt;float32&gt;   |   12 | Position    |
-| vec3&lt;float32&gt;?  |   12 | ?           |
-| mat3x3&lt;float32&gt; |   36 | Orientation |
+| int32                 | 4    | ?           |
+| vec3&lt;float32&gt;   | 12   | Position    |
+| vec3&lt;float32&gt;?  | 12   | ?           |
+| mat3x3&lt;float32&gt; | 36   | Orientation |
 
 #### <a id="spider-spawn-event"></a>Spider spawn event ####
 
 | Data type           | Size | Meaning  |
 |---------------------|------|----------|
-| int32               |    4 | ?        |
-| vec3&lt;float32&gt; |   12 | Position |
+| int32               | 4    | ?        |
+| vec3&lt;float32&gt; | 12   | Position |
 
 #### <a id="spider-egg-spawn-event"></a>Spider Egg spawn event ####
 
 | Data type            | Size | Meaning              |
 |----------------------|------|----------------------|
-| int32                |    4 | Spawner entity ID    |
-| vec3&lt;float32&gt;  |   12 | Position?            |
-| vec3&lt;float32&gt;? |   12 | Target position?     |
+| int32                | 4    | Spawner entity ID    |
+| vec3&lt;float32&gt;  | 12   | Position?            |
+| vec3&lt;float32&gt;? | 12   | Target position?     |
 
 #### <a id="leviathan-spawn-event"></a>Leviathan spawn event ####
 
 | Data type | Size | Meaning  |
 |-----------|------|----------|
-| int32     |    4 | ?        |
+| int32     | 4    | ?        |
 
 #### <a id="thorn-spawn-event"></a>Thorn spawn event ####
 
 | Data type           | Size | Meaning             |
 |---------------------|------|---------------------|
-| int32               |    4 | ?                   |
-| vec3&lt;float32&gt; |   12 | Position?           |
-| float32             |    4 | Rotation (radians)? |
+| int32               | 4    | ?                   |
+| vec3&lt;float32&gt; | 12   | Position?           |
+| float32             | 4    | Rotation (radians)? |
 
 ### <a id="entity-position-event"></a>Entity position event ###
 
 | Data type         | Size | Meaning   |
 |-------------------|------|-----------|
-| int32             |    4 | Entity ID |
-| vec3&lt;int16&gt; |    6 | Position  |
+| int32             | 4    | Entity ID |
+| vec3&lt;int16&gt; | 6    | Position  |
 
 ### <a id="entity-orientation-event"></a>Entity orientation event ###
 
 | Data type           | Size | Meaning     |
 |---------------------|------|-------------|
-| int32               |    4 | Entity ID   |
-| mat3x3&lt;int16&gt; |   18 | Orientation |
+| int32               | 4    | Entity ID   |
+| mat3x3&lt;int16&gt; | 18   | Orientation |
 
 ### <a id="entity-target-event"></a>Entity target event ###
 
 | Data type         | Size | Meaning         |
 |-------------------|------|-----------------|
-| int32             |    4 | Entity ID       |
-| vec3&lt;int16&gt; |    6 | Target position |
+| int32             | 4    | Entity ID       |
+| vec3&lt;int16&gt; | 6    | Target position |
 
 ### <a id="hit-event"></a>Hit event ###
 
 | Data type | Size | Meaning                |
 |-----------|------|------------------------|
-| int32     |    4 | Entity ID A            |
-| int32     |    4 | Entity ID B (optional) |
-| int32     |    4 | User data              |
+| int32     | 4    | Entity ID A            |
+| int32     | 4    | Entity ID B (optional) |
+| int32     | 4    | User data              |
 
 Examples:
 - If entity ID A is 0, it means the player died. Entity ID B will contain the [death type](#death-types). User data will be 0.
@@ -201,33 +199,33 @@ All other enemies are always hit, regardless of this value.
 
 | Death type  | Value |
 |-------------|-------|
-| FALLEN      |     0 |
-| SWARMED     |     1 |
-| IMPALED     |     2 |
-| GORED       |     3 |
-| INFESTED    |     4 |
-| OPENED      |     5 |
-| PURGED      |     6 |
-| DESECRATED  |     7 |
-| SACRIFICED  |     8 |
-| EVISCERATED |     9 |
-| ANNIHILATED |    10 |
-| INTOXICATED |    11 |
-| ENVENOMATED |    12 |
-| INCARNATED  |    13 |
-| DISCARNATED |    14 |
-| ENTANGLED   |    15 |
-| HAUNTED     |    16 |
+| FALLEN      | 0     |
+| SWARMED     | 1     |
+| IMPALED     | 2     |
+| GORED       | 3     |
+| INFESTED    | 4     |
+| OPENED      | 5     |
+| PURGED      | 6     |
+| DESECRATED  | 7     |
+| SACRIFICED  | 8     |
+| EVISCERATED | 9     |
+| ANNIHILATED | 10    |
+| INTOXICATED | 11    |
+| ENVENOMATED | 12    |
+| INCARNATED  | 13    |
+| DISCARNATED | 14    |
+| ENTANGLED   | 15    |
+| HAUNTED     | 16    |
 
 ### <a id="transmute-event"></a>Transmute event ###
 
 | Data type         | Size | Meaning   |
 |-------------------|------|-----------|
-| int32             |    4 | Entity ID |
-| vec3&lt;int16&gt; |    6 | ?         |
-| vec3&lt;int16&gt; |    6 | ?         |
-| vec3&lt;int16&gt; |    6 | ?         |
-| vec3&lt;int16&gt; |    6 | ?         |
+| int32             | 4    | Entity ID |
+| vec3&lt;int16&gt; | 6    | ?         |
+| vec3&lt;int16&gt; | 6    | ?         |
+| vec3&lt;int16&gt; | 6    | ?         |
+| vec3&lt;int16&gt; | 6    | ?         |
 
 ### <a id="inputs-event"></a>Inputs event ###
 
@@ -235,17 +233,17 @@ Input events mark the end of the game tick. They are always the last event in th
 
 | Data type    | Size | Meaning                                                                |
 |--------------|------|------------------------------------------------------------------------|
-| uint8 (bool) |    1 | Holding left                                                           |
-| uint8 (bool) |    1 | Holding right                                                          |
-| uint8 (bool) |    1 | Holding forward                                                        |
-| uint8 (bool) |    1 | Holding backward                                                       |
-| uint8        |    1 | [Jump](#jump-types)                                                    |
-| uint8        |    1 | [Shoot](#shoot-types)                                                  |
-| uint8        |    1 | [Shoot homing](#shoot-types)                                           |
-| int16        |    2 | Relative mouse offset X                                                |
-| int16        |    2 | Relative mouse offset Y                                                |
-| float32      |    4 | Look speed (only present in the first inputs event)                    |
-| uint8        |    1 | Byte (always `0x0A`) to mark the end of the event (or whole game tick) |
+| uint8 (bool) | 1    | Holding left                                                           |
+| uint8 (bool) | 1    | Holding right                                                          |
+| uint8 (bool) | 1    | Holding forward                                                        |
+| uint8 (bool) | 1    | Holding backward                                                       |
+| uint8        | 1    | [Jump](#jump-types)                                                    |
+| uint8        | 1    | [Shoot](#shoot-types)                                                  |
+| uint8        | 1    | [Shoot homing](#shoot-types)                                           |
+| int16        | 2    | Relative mouse offset X                                                |
+| int16        | 2    | Relative mouse offset Y                                                |
+| float32      | 4    | Look speed (only present in the first inputs event)                    |
+| uint8        | 1    | Byte (always `0x0A`) to mark the end of the event (or whole game tick) |
 
 #### <a id="jump-types"></a>Jump types ####
 

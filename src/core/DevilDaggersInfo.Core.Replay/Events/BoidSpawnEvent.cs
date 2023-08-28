@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace DevilDaggersInfo.Core.Replay.Events;
 
-public readonly record struct BoidSpawnEvent(int EntityId, int SpawnerEntityId, BoidType BoidType, Int16Vec3 Position, Int16Vec3 A, Int16Vec3 B, Int16Vec3 C, Vector3 D, float Speed) : IEntitySpawnEvent
+public readonly record struct BoidSpawnEvent(int EntityId, int SpawnerEntityId, BoidType BoidType, Int16Vec3 Position, Int16Mat3x3 Orientation, Vector3 Velocity, float Speed) : IEntitySpawnEvent
 {
 	public EntityType EntityType => BoidType switch
 	{
@@ -32,10 +32,8 @@ public readonly record struct BoidSpawnEvent(int EntityId, int SpawnerEntityId, 
 			_ => throw new UnreachableException(),
 		}));
 		bw.Write(Position);
-		bw.Write(A);
-		bw.Write(B);
-		bw.Write(C);
-		bw.Write(D);
+		bw.Write(Orientation);
+		bw.Write(Velocity);
 		bw.Write(Speed);
 	}
 }

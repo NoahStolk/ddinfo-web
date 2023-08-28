@@ -196,14 +196,12 @@ public static class ReplayEventsParser
 		int spawner = br.ReadInt32();
 		byte boidTypeByte = br.ReadByte();
 		Int16Vec3 position = br.ReadInt16Vec3();
-		Int16Vec3 a = br.ReadInt16Vec3();
-		Int16Vec3 b = br.ReadInt16Vec3();
-		Int16Vec3 c = br.ReadInt16Vec3();
-		Vector3 d = br.ReadVector3();
+		Int16Mat3x3 orientation = br.ReadInt16Mat3x3();
+		Vector3 velocity = br.ReadVector3();
 		float speed = br.ReadSingle();
 		BoidType boidType = boidTypeByte.ToBoidType();
 
-		return new(entityId, spawner, boidType, position, a, b, c, d, speed);
+		return new(entityId, spawner, boidType, position, orientation, velocity, speed);
 	}
 
 	private static PedeSpawnEvent ParsePedeSpawnEvent(BinaryReader br, PedeType pedeType, int entityId)
@@ -228,9 +226,9 @@ public static class ReplayEventsParser
 	{
 		int spawnerEntityId = br.ReadInt32();
 		Vector3 position = br.ReadVector3(); // Not sure
-		Vector3 b = br.ReadVector3(); // Target position?
+		Vector3 targetPosition = br.ReadVector3(); // Not sure
 
-		return new(entityId, spawnerEntityId, position, b);
+		return new(entityId, spawnerEntityId, position, targetPosition);
 	}
 
 	private static LeviathanSpawnEvent ParseLeviathanSpawnEvent(BinaryReader br, int entityId)

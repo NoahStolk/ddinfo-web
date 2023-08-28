@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Core.Replay.Events.Enums;
+using DevilDaggersInfo.Core.Replay.Numerics;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -31,7 +32,7 @@ public class ReplayBinaryTests
 
 		for (int i = 0; i < 30; i++)
 		{
-			replayBinary.EventsData.AddEvent(new BoidSpawnEvent(i + 1, 0, BoidType.Skull4, default, default, default, default, default, 10));
+			replayBinary.EventsData.AddEvent(new BoidSpawnEvent(i + 1, 0, BoidType.Skull4, default, Int16Mat3x3.Identity, default, 10));
 			replayBinary.EventsData.AddEvent(new InputsEvent(true, false, false, false, JumpType.None, ShootType.None, ShootType.None, 10, 0));
 		}
 
