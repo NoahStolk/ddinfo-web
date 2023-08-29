@@ -1,13 +1,16 @@
 [
 	{
 		"VersionNumber": "0.9.0.0",
-		//"Date": "2023-08-20T00:00:00",
+		"Date": "2023-08-29T00:00:00",
 		"Changes": [
 			{
 				"Description": "Spawnset Editor",
 				"SubChanges": [
 					{
 						"Description": "You can now select multiple tiles at once in the 3D arena editor."
+					},
+					{
+						"Description": "The spawnset editor now shows warnings when the end loop is too short or when the player spawn tile is void."
 					},
 					{
 						"Description": "The 3D arena editor is now only active when the window is focused."
@@ -25,6 +28,21 @@
 				"SubChanges": [
 					{
 						"Description": "Improved UI for current inputs."
+					},
+					{
+						"Description": "Replay file data is now displayed."
+					},
+					{
+						"Description": "Added event viewer. You can browse and filter events and view all the (known) data."
+					},
+					{
+						"Description": "Added entity viewer. You can browse and select entities. For now, only enemy HP logs are shown (which are still a work in progress)."
+					},
+					{
+						"Description": "Added menu item to download and open a replay from the official leaderboards."
+					},
+					{
+						"Description": "Added menu item to inject the current replay into the game."
 					}
 				]
 			},
