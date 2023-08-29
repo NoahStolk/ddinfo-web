@@ -77,6 +77,8 @@ public record SpawnsetBinary
 	public int AdditionalGems { get; init; }
 	public float TimerStart { get; init; }
 
+	public static ReadOnlySpan<byte> V3Hash => new byte[] { 0x56, 0x9f, 0xea, 0xd8, 0x7a, 0xbf, 0x4d, 0x30, 0xfd, 0xee, 0x42, 0x31, 0xa6, 0x39, 0x80, 0x51 };
+
 	#region Parsing
 
 	public static bool TryParse(byte[] fileContents, [NotNullWhen(true)] out SpawnsetBinary? spawnsetBinary)
