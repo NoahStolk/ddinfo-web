@@ -34,6 +34,7 @@ public class Application
 	{
 		_mainAppWindow.WindowInstance.Run();
 
+		// TODO: Currently, the overlay is created when exiting the main window.
 		OverlayWindow overlayWindow = new();
 		overlayWindow.WindowInstance.Run();
 	}
