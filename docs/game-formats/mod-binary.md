@@ -87,55 +87,55 @@ The internal structure of resource binaries consists of 3 parts:
 
 Fixed-length buffer of 12 bytes. Contains the length of the TOC buffer, as well as format identifiers.
 
-| Binary (hex)     | Data type               | Meaning                               | Value |
-|------------------|-------------------------|---------------------------------------|-------|
-| 3A68783A72673A01 | Magic                   | Format identifier                     | -     |
-| 15340000         | 32-bit unsigned integer | Table of contents (TOC) buffer length | 13333 |
+| Binary (hex)     | Data type | Meaning                               | Example value |
+|------------------|-----------|---------------------------------------|---------------|
+| 3A68783A72673A01 | Magic     | Format identifier                     | -             |
+| 15340000         | uint32    | Table of contents (TOC) buffer length | 13333         |
 
 ### Table of contents (TOC) buffer
 
 Variable-length buffer that lists all the chunks (assets). Here are the first 3 entries in the TOC buffer for the resource file 'dd':
 
-| Binary (hex) | Data type               | Meaning            | Value |
-|--------------|-------------------------|--------------------|-------|
-| 10           | 8-bit unsigned integer  | Chunk type         | 16    |
-| 00           | 8-bit unsigned integer  | Empty              | 0     |
-| 6465627567   | String                  | Chunk name         | debug |
-| 00           | 8-bit unsigned integer  | Null terminator    | \0    |
-| 21340000     | 32-bit unsigned integer | Data start offset  | 13345 |
-| 6E070000     | 32-bit unsigned integer | Data buffer length | 1902  |
-| 00000000     | ?                       | ?                  | ?     |
+| Binary (hex) | Data type | Meaning            | Example value |
+|--------------|-----------|--------------------|---------------|
+| 10           | uint8     | Chunk type         | 16            |
+| 00           | uint8     | Empty              | 0             |
+| 6465627567   | string    | Chunk name         | debug         |
+| 00           | uint8     | Null terminator    | \0            |
+| 21340000     | uint32    | Data start offset  | 13345         |
+| 6E070000     | uint32    | Data buffer length | 1902          |
+| 00000000     | ?         | ?                  | ?             |
 
-| Binary (hex) | Data type               | Meaning            | Value |
-|--------------|-------------------------|--------------------|-------|
-| 11           | 8-bit unsigned integer  | Chunk type         | 17    |
-| 00           | 8-bit unsigned integer  | Empty              | 0     |
-| 6465627567   | String                  | Chunk name         | debug |
-| 00           | 8-bit unsigned integer  | Null terminator    | \0    |
-| 8F3B0000     | 32-bit unsigned integer | Data start offset  | 15247 |
-| 00000000     | 32-bit unsigned integer | Data buffer length | 0     |
-| 7BCC0557     | ?                       | ?                  | ?     |
+| Binary (hex) | Data type | Meaning            | Example value |
+|--------------|-----------|--------------------|---------------|
+| 11           | uint8     | Chunk type         | 17            |
+| 00           | uint8     | Empty              | 0             |
+| 6465627567   | string    | Chunk name         | debug         |
+| 00           | uint8     | Null terminator    | \0            |
+| 8F3B0000     | uint32    | Data start offset  | 15247         |
+| 00000000     | uint32    | Data buffer length | 0             |
+| 7BCC0557     | ?         | ?                  | ?             |
 
-| Binary (hex) | Data type               | Meaning            | Value |
-|--------------|-------------------------|--------------------|-------|
-| 10           | 8-bit unsigned integer  | Chunk type         | 16    |
-| 00           | 8-bit unsigned integer  | Empty              | 0     |
-| 6465707468   | String                  | Chunk name         | depth |
-| 00           | 8-bit unsigned integer  | Null terminator    | \0    |
-| 8F3B0000     | 32-bit unsigned integer | Data start offset  | 15247 |
-| AB010000     | 32-bit unsigned integer | Data buffer length | 427   |
-| 00000000     | ?                       | ?                  | ?     |
+| Binary (hex) | Data type | Meaning            | Example value |
+|--------------|-----------|--------------------|---------------|
+| 10           | uint8     | Chunk type         | 16            |
+| 00           | uint8     | Empty              | 0             |
+| 6465707468   | string    | Chunk name         | depth         |
+| 00           | uint8     | Null terminator    | \0            |
+| 8F3B0000     | uint32    | Data start offset  | 15247         |
+| AB010000     | uint32    | Data buffer length | 427           |
+| 00000000     | ?         | ?                  | ?             |
 
 The first byte represent the chunk type. Here's the list of chunk types: 
 
-| Binary (hex) | Data type              | Meaning         | Value |
-|--------------|------------------------|-----------------|-------|
-| 01           | 8-bit unsigned integer | Model           | 1     |
-| 02           | 8-bit unsigned integer | Texture         | 2     |
-| 10           | 8-bit unsigned integer | Shader          | 16    |
-| 11           | 8-bit unsigned integer | Unused/Empty`*` | 17    |
-| 20           | 8-bit unsigned integer | Audio           | 32    |
-| 80           | 8-bit unsigned integer | Model binding   | 128   |
+| Chunk type      | Value |
+|-----------------|-------|
+| Model           | 0x01  |
+| Texture         | 0x02  |
+| Shader          | 0x10  |
+| Unused/Empty`*` | 0x11  |
+| Audio           | 0x20  |
+| Model binding   | 0x80  |
 
 `*` These might have been meant for fragment shader entries in the TOC buffer but now seem to be unused. Shaders are now 1 chunk containing 2 files (a vertex shader and a fragment shader), but it might not have been like this during initial development of the game.
 
@@ -166,23 +166,23 @@ The chunk data for a model chunk consists of 4 parts:
 
 Here are the model headers for 'dagger', 'hand', and 'hand2':
 
-| Binary (hex) | Data type               | Meaning      | Value                                         |
-|--------------|-------------------------|--------------|-----------------------------------------------|
-| B4000000     | 32-bit unsigned integer | Index count  | 180                                           |
-| A4000000     | 32-bit unsigned integer | Vertex count | 164                                           |
-| 2000         | ?                       | ?            | 32 (this used to be 288 (0x2001) before V3.1) |
+| Binary (hex) | Data type | Meaning      | Example value                                 |
+|--------------|-----------|--------------|-----------------------------------------------|
+| B4000000     | uint32    | Index count  | 180                                           |
+| A4000000     | uint32    | Vertex count | 164                                           |
+| 2000         | ?         | ?            | 32 (this used to be 288 (0x2001) before V3.1) |
 
-| Binary (hex) | Data type               | Meaning      | Value                                         |
-|--------------|-------------------------|--------------|-----------------------------------------------|
-| 78030000     | 32-bit unsigned integer | Index count  | 888                                           |
-| B9000000     | 32-bit unsigned integer | Vertex count | 185                                           |
-| 2000         | ?                       | ?            | 32 (this used to be 288 (0x2001) before V3.1) |
+| Binary (hex) | Data type | Meaning      | Example value                                 |
+|--------------|-----------|--------------|-----------------------------------------------|
+| 78030000     | uint32    | Index count  | 888                                           |
+| B9000000     | uint32    | Vertex count | 185                                           |
+| 2000         | ?         | ?            | 32 (this used to be 288 (0x2001) before V3.1) |
 
-| Binary (hex) | Data type               | Meaning      | Value                                         |
-|--------------|-------------------------|--------------|-----------------------------------------------|
-| A4040000     | 32-bit unsigned integer | Index count  | 1188                                          |
-| EE000000     | 32-bit unsigned integer | Vertex count | 238                                           |
-| 2000         | ?                       | ?            | 32 (this used to be 288 (0x2001) before V3.1) |
+| Binary (hex) | Data type | Meaning      | Example value                                 |
+|--------------|-----------|--------------|-----------------------------------------------|
+| A4040000     | uint32    | Index count  | 1188                                          |
+| EE000000     | uint32    | Vertex count | 238                                           |
+| 2000         | ?         | ?            | 32 (this used to be 288 (0x2001) before V3.1) |
 
 ##### Model vertex format
 
@@ -194,20 +194,20 @@ The vertices are stored as a list of vertex objects, which are defined as:
 
 Here is an example:
 
-| Binary (hex) | Data type             | Meaning              | Value       |
-|--------------|-----------------------|----------------------|-------------|
-| 9A99193D     | 32-bit floating point | Position X           | 0.0375      |
-| 00000000     | 32-bit floating point | Position Y           | 0           |
-| 075F983C     | 32-bit floating point | Position Z           | 0.0186      |
-| 6E12433E     | 32-bit floating point | Texture Coordinate U | 0.19049999  |
-| 653B3FBF     | 32-bit floating point | Texture Coordinate V | -0.74700004 |
-| 6F1223BF     | 32-bit floating point | Normal X             | -0.637      |
-| 492E7F3D     | 32-bit floating point | Normal Y             | 0.0623      |
-| 1158993E     | 32-bit floating point | Normal Z             | 0.29950002  |
+| Binary (hex) | Data type | Meaning              | Example value |
+|--------------|-----------|----------------------|---------------|
+| 9A99193D     | float32   | Position X           | 0.0375        |
+| 00000000     | float32   | Position Y           | 0             |
+| 075F983C     | float32   | Position Z           | 0.0186        |
+| 6E12433E     | float32   | Texture Coordinate U | 0.19049999    |
+| 653B3FBF     | float32   | Texture Coordinate V | -0.74700004   |
+| 6F1223BF     | float32   | Normal X             | -0.637        |
+| 492E7F3D     | float32   | Normal Y             | 0.0623        |
+| 1158993E     | float32   | Normal Z             | 0.29950002    |
 
 ##### Model index format
 
-The indices are stored as a list of 32-bit unsigned integers.
+The indices are stored as a list of uint32s.
 
 #### Shader chunks
 
@@ -224,23 +224,23 @@ The chunk data for a shader chunk consists of 4 parts:
 
 Here are the shader headers for 'debug', 'depth', and 'particle':
 
-| Binary (hex) | Data type               | Meaning                       | Value |
-|--------------|-------------------------|-------------------------------|-------|
-| 05000000     | 32-bit unsigned integer | Shader name length            | 5     |
-| FB020000     | 32-bit unsigned integer | Vertex shader buffer length   | 763   |
-| 62040000     | 32-bit unsigned integer | Fragment shader buffer length | 1122  |
+| Binary (hex) | Data type | Meaning                       | Value |
+|--------------|-----------|-------------------------------|-------|
+| 05000000     | uint32    | Shader name length            | 5     |
+| FB020000     | uint32    | Vertex shader buffer length   | 763   |
+| 62040000     | uint32    | Fragment shader buffer length | 1122  |
 
-| Binary (hex) | Data type               | Meaning                       | Value |
-|--------------|-------------------------|-------------------------------|-------|
-| 05000000     | 32-bit unsigned integer | Shader name length            | 5     |
-| EA000000     | 32-bit unsigned integer | Vertex shader buffer length   | 234   |
-| B0000000     | 32-bit unsigned integer | Fragment shader buffer length | 176   |
+| Binary (hex) | Data type | Meaning                       | Value |
+|--------------|-----------|-------------------------------|-------|
+| 05000000     | uint32    | Shader name length            | 5     |
+| EA000000     | uint32    | Vertex shader buffer length   | 234   |
+| B0000000     | uint32    | Fragment shader buffer length | 176   |
 
-| Binary (hex) | Data type               | Meaning                       | Value |
-|--------------|-------------------------|-------------------------------|-------|
-| 08000000     | 32-bit unsigned integer | Shader name length            | 5     |
-| E8050000     | 32-bit unsigned integer | Vertex shader buffer length   | 1512  |
-| 0C090000     | 32-bit unsigned integer | Fragment shader buffer length | 2316  |
+| Binary (hex) | Data type | Meaning                       | Value |
+|--------------|-----------|-------------------------------|-------|
+| 08000000     | uint32    | Shader name length            | 5     |
+| E8050000     | uint32    | Vertex shader buffer length   | 1512  |
+| 0C090000     | uint32    | Fragment shader buffer length | 2316  |
 
 The shader name is listed so the format reader understands at which point to start reading the vertex and fragment buffers.
 
@@ -286,27 +286,27 @@ return totalBufferLength;
 
 Here are the texture headers for 'dagger', 'hand', and 'sorathmask':
 
-| Binary (hex) | Data type               | Meaning                  | Value |
-|--------------|-------------------------|--------------------------|-------|
-| 1140         | 16-bit unsigned integer | Identifier?              | 16401 |
-| 40000000     | 32-bit unsigned integer | Texture width in pixels  | 64    |
-| 40000000     | 32-bit unsigned integer | Texture height in pixels | 64    |
-| 07           | 32-bit unsigned integer | Texture mipmap count     | 7     |
+| Binary (hex) | Data type | Meaning                  | Value |
+|--------------|-----------|--------------------------|-------|
+| 1140         | uint16    | Identifier?              | 16401 |
+| 40000000     | uint32    | Texture width in pixels  | 64    |
+| 40000000     | uint32    | Texture height in pixels | 64    |
+| 07           | uint32    | Texture mipmap count     | 7     |
 
-| Binary (hex) | Data type               | Meaning                  | Value |
-|--------------|-------------------------|--------------------------|-------|
-| 1140         | 16-bit unsigned integer | Identifier?              | 16401 |
-| 00010000     | 32-bit unsigned integer | Texture width in pixels  | 256   |
-| 00010000     | 32-bit unsigned integer | Texture height in pixels | 256   |
-| 09           | 32-bit unsigned integer | Texture mipmap count     | 9     |
+| Binary (hex) | Data type | Meaning                  | Value |
+|--------------|-----------|--------------------------|-------|
+| 1140         | uint16    | Identifier?              | 16401 |
+| 00010000     | uint32    | Texture width in pixels  | 256   |
+| 00010000     | uint32    | Texture height in pixels | 256   |
+| 09           | uint32    | Texture mipmap count     | 9     |
 
-| Binary (hex) | Data type               | Meaning                  | Value |
-|--------------|-------------------------|--------------------------|-------|
-| 1140         | 16-bit unsigned integer | Identifier?              | 16401 |
-| F0000000     | 32-bit unsigned integer | Texture width in pixels  | 240   |
-| F0000000     | 32-bit unsigned integer | Texture height in pixels | 240   |
-| 08           | 32-bit unsigned integer | Texture mipmap count     | 8     |
+| Binary (hex) | Data type | Meaning                  | Value |
+|--------------|-----------|--------------------------|-------|
+| 1140         | uint16    | Identifier?              | 16401 |
+| F0000000     | uint32    | Texture width in pixels  | 240   |
+| F0000000     | uint32    | Texture height in pixels | 240   |
+| 08           | uint32    | Texture mipmap count     | 8     |
 
 ##### Pixel data format
 
-Each pixel contains 4 color components in the order: alpha, blue, green, red. All components are 8-bit unsigned integers (bytes). The stride of a texture can be calculated by multiplying the texture width by 4.
+Each pixel contains 4 color components in the order: alpha, blue, green, red. All components are uint8s (bytes). The stride of a texture can be calculated by multiplying the texture width by 4.

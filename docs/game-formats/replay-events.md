@@ -56,7 +56,7 @@ Every event starts with an event type, which is a single byte. After that, addit
 | int32               | 4    | N/A (hardcoded at 0)         |
 | vec3&lt;int16&gt;   | 6    | Position                     |
 | mat3x3&lt;int16&gt; | 18   | Orientation                  |
-| int8 (bool)         | 1    | Shot (as opposed to rapid)   |
+| int8 (boolean)      | 1    | Shot (as opposed to rapid)   |
 | uint8               | 1    | [Dagger type](#dagger-types) |
 
 ##### <a id="dagger-types"></a>Dagger types #####
@@ -231,19 +231,19 @@ All other enemies are always hit, regardless of this value.
 
 Input events mark the end of the game tick. They are always the last event in the group of events representing one game tick.
 
-| Data type    | Size | Meaning                                                              |
-|--------------|------|----------------------------------------------------------------------|
-| uint8 (bool) | 1    | Holding left                                                         |
-| uint8 (bool) | 1    | Holding right                                                        |
-| uint8 (bool) | 1    | Holding forward                                                      |
-| uint8 (bool) | 1    | Holding backward                                                     |
-| uint8        | 1    | [Jump](#jump-types)                                                  |
-| uint8        | 1    | [Shoot](#shoot-types)                                                |
-| uint8        | 1    | [Shoot homing](#shoot-types)                                         |
-| int16        | 2    | Relative mouse offset X                                              |
-| int16        | 2    | Relative mouse offset Y                                              |
-| float32      | 4    | Look speed (only present in the first inputs event)                  |
-| uint8        | 1    | Byte (always 0x0A) to mark the end of the event (or whole game tick) |
+| Data type       | Size | Meaning                                                              |
+|-----------------|------|----------------------------------------------------------------------|
+| uint8 (boolean) | 1    | Holding left                                                         |
+| uint8 (boolean) | 1    | Holding right                                                        |
+| uint8 (boolean) | 1    | Holding forward                                                      |
+| uint8 (boolean) | 1    | Holding backward                                                     |
+| uint8           | 1    | [Jump](#jump-types)                                                  |
+| uint8           | 1    | [Shoot](#shoot-types)                                                |
+| uint8           | 1    | [Shoot homing](#shoot-types)                                         |
+| int16           | 2    | Relative mouse offset X                                              |
+| int16           | 2    | Relative mouse offset Y                                              |
+| float32         | 4    | Look speed (only present in the first inputs event)                  |
+| uint8           | 1    | Byte (always 0x0A) to mark the end of the event (or whole game tick) |
 
 #### <a id="jump-types"></a>Jump types ####
 
