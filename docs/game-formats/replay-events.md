@@ -169,7 +169,7 @@ Every event starts with an event type, which is a single byte. After that, addit
 | int32     | 4    | User data              |
 
 Examples:
-- If entity ID A is 0, it means the player died. Entity ID B will contain the [death type](#death-types). User data will be 0.
+- If entity ID A is 0, it means the player died. Entity ID B will contain the [death type](death-types.md). User data will be 0.
 - When a dagger is deleted from the scene; entity ID A is the entity ID of the dagger and entity ID B is 0.
 - When a dagger is eaten by Ghostpede; entity ID A is the entity ID of the Ghostpede and entity ID B is the entity ID of the dagger.
 - When a Level 4 homing splash 'dagger' hits a Squid I; entity ID A is the entity ID of the Squid I and entity ID B is the entity ID of the homing splash 'dagger'.
@@ -194,28 +194,6 @@ Any other value means the enemy was hit but not damaged.
 In case of pedes, each segment has its own ID which is always a hit. When damaging a dead pede segment, the value is negated.
 
 All other enemies are always hit, regardless of this value.
-
-#### <a id="death-types"></a>Death types ####
-
-| Death type  | Value |
-|-------------|-------|
-| FALLEN      | 0     |
-| SWARMED     | 1     |
-| IMPALED     | 2     |
-| GORED       | 3     |
-| INFESTED    | 4     |
-| OPENED      | 5     |
-| PURGED      | 6     |
-| DESECRATED  | 7     |
-| SACRIFICED  | 8     |
-| EVISCERATED | 9     |
-| ANNIHILATED | 10    |
-| INTOXICATED | 11    |
-| ENVENOMATED | 12    |
-| INCARNATED  | 13    |
-| DISCARNATED | 14    |
-| ENTANGLED   | 15    |
-| HAUNTED     | 16    |
 
 ### <a id="transmute-event"></a>Transmute event ###
 

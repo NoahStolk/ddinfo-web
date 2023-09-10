@@ -27,91 +27,91 @@ Devil Daggers stores various read-only data in memory so it can easily be read b
 
 ## Main
 
-| Data name                  | Offset | Data type       | Size in bytes |
-|----------------------------|--------|-----------------|---------------|
-| Marker (`__ddstats__\0`)   |      0 | string          | 12            |
-| Format version             |     12 | int32           | 4             |
-| Player ID                  |     16 | int32           | 4             |
-| Player name                |     20 | string          | 32            |
-| Timer time                 |     52 | float32         | 4             |
-| Gems collected             |     56 | int32           | 4             |
-| Enemies killed             |     60 | int32           | 4             |
-| Daggers fired              |     64 | int32           | 4             |
-| Daggers hit                |     68 | int32           | 4             |
-| Enemies alive              |     72 | int32           | 4             |
-| Level gems                 |     76 | int32           | 4             |
-| Homing daggers             |     80 | int32           | 4             |
-| Gems despawned             |     84 | int32           | 4             |
-| Gems eaten                 |     88 | int32           | 4             |
-| Gems total                 |     92 | int32           | 4             |
-| Homing daggers eaten       |     96 | int32           | 4             |
-| Skull Is alive             |    100 | uint16          | 2             |
-| Skull IIs alive            |    102 | uint16          | 2             |
-| Skull IIIs alive           |    104 | uint16          | 2             |
-| Spiderlings alive          |    106 | uint16          | 2             |
-| Skull IVs alive            |    108 | uint16          | 2             |
-| Squid Is alive             |    110 | uint16          | 2             |
-| Squid IIs alive            |    112 | uint16          | 2             |
-| Squid IIIs alive           |    114 | uint16          | 2             |
-| Centipedes alive           |    116 | uint16          | 2             |
-| Gigapedes alive            |    118 | uint16          | 2             |
-| Spider Is alive            |    120 | uint16          | 2             |
-| Spider IIs alive           |    122 | uint16          | 2             |
-| Leviathans alive           |    124 | uint16          | 2             |
-| Orbs alive                 |    126 | uint16          | 2             |
-| Thorns alive               |    128 | uint16          | 2             |
-| Ghostpedes alive           |    130 | uint16          | 2             |
-| Spider eggs alive          |    132 | uint16          | 2             |
-| Skull Is killed            |    134 | uint16          | 2             |
-| Skull IIs killed           |    136 | uint16          | 2             |
-| Skull IIIs killed          |    138 | uint16          | 2             |
-| Spiderlings killed         |    140 | uint16          | 2             |
-| Skull IVs killed           |    142 | uint16          | 2             |
-| Squid Is killed            |    144 | uint16          | 2             |
-| Squid IIs killed           |    146 | uint16          | 2             |
-| Squid IIIs killed          |    148 | uint16          | 2             |
-| Centipedes killed          |    150 | uint16          | 2             |
-| Gigapedes killed           |    152 | uint16          | 2             |
-| Spider Is killed           |    154 | uint16          | 2             |
-| Spider IIs killed          |    156 | uint16          | 2             |
-| Leviathans killed          |    158 | uint16          | 2             |
-| Orbs killed                |    160 | uint16          | 2             |
-| Thorns killed              |    162 | uint16          | 2             |
-| Ghostpedes killed          |    164 | uint16          | 2             |
-| Spider eggs killed         |    166 | uint16          | 2             |
-| Is player alive            |    168 | uint8 (boolean) | 1             |
-| Is replay                  |    169 | uint8 (boolean) | 1             |
-| Death type                 |    170 | uint8           | 1             |
-| Is in game                 |    171 | uint8 (boolean) | 1             |
-| Replay player ID           |    172 | int32           | 4             |
-| Replay player name         |    176 | String          | 32            |
-| Survival hash              |    208 | MD5 hash bytes  | 16            |
-| Level up time 2            |    224 | float32         | 4             |
-| Level up time 3            |    228 | float32         | 4             |
-| Level up time 4            |    232 | float32         | 4             |
-| Leviathan down time        |    236 | float32         | 4             |
-| Orb down time              |    240 | float32         | 4             |
-| Game status                |    244 | int32           | 4             |
-| Max homing                 |    248 | int32           | 4             |
-| Max homing time            |    252 | float32         | 4             |
-| Max enemies alive          |    256 | int32           | 4             |
-| Max enemies alive time     |    260 | float32         | 4             |
-| Max time                   |    264 | float32         | 4             |
-| N/A (padding)              |    268 | N/A             | 4             |
-| Graph stats base address   |    272 | int64 (pointer) | 8             |
-| Graph stats count          |    280 | int32           | 4             |
-| Graph stats loaded         |    284 | uint8 (boolean) | 1             |
-| N/A (padding)              |    285 | N/A             | 3             |
-| Hand level start           |    288 | int32           | 4             |
-| Homing start               |    292 | int32           | 4             |
-| Timer start                |    296 | float32         | 4             |
-| Prohibited mods            |    300 | uint8 (boolean) | 1             |
-| N/A (padding)              |    301 | N/A             | 3             |
-| Replay base address        |    304 | int64 (pointer) | 8             |
-| Replay buffer length       |    312 | int32           | 4             |
-| Play replay from memory    |    316 | uint8 (boolean) | 1             |
-| Game mode                  |    317 | uint8           | 1             |
-| TimeAttack / Race finished |    318 | uint8 (boolean) | 1             |
+| Data name                    | Offset | Data type       | Size in bytes |
+|------------------------------|--------|-----------------|---------------|
+| Marker (`__ddstats__\0`)     |      0 | string          | 12            |
+| Format version               |     12 | int32           | 4             |
+| Player ID                    |     16 | int32           | 4             |
+| Player name                  |     20 | string          | 32            |
+| Timer time                   |     52 | float32         | 4             |
+| Gems collected               |     56 | int32           | 4             |
+| Enemies killed               |     60 | int32           | 4             |
+| Daggers fired                |     64 | int32           | 4             |
+| Daggers hit                  |     68 | int32           | 4             |
+| Enemies alive                |     72 | int32           | 4             |
+| Level gems                   |     76 | int32           | 4             |
+| Homing daggers               |     80 | int32           | 4             |
+| Gems despawned               |     84 | int32           | 4             |
+| Gems eaten                   |     88 | int32           | 4             |
+| Gems total                   |     92 | int32           | 4             |
+| Homing daggers eaten         |     96 | int32           | 4             |
+| Skull Is alive               |    100 | uint16          | 2             |
+| Skull IIs alive              |    102 | uint16          | 2             |
+| Skull IIIs alive             |    104 | uint16          | 2             |
+| Spiderlings alive            |    106 | uint16          | 2             |
+| Skull IVs alive              |    108 | uint16          | 2             |
+| Squid Is alive               |    110 | uint16          | 2             |
+| Squid IIs alive              |    112 | uint16          | 2             |
+| Squid IIIs alive             |    114 | uint16          | 2             |
+| Centipedes alive             |    116 | uint16          | 2             |
+| Gigapedes alive              |    118 | uint16          | 2             |
+| Spider Is alive              |    120 | uint16          | 2             |
+| Spider IIs alive             |    122 | uint16          | 2             |
+| Leviathans alive             |    124 | uint16          | 2             |
+| Orbs alive                   |    126 | uint16          | 2             |
+| Thorns alive                 |    128 | uint16          | 2             |
+| Ghostpedes alive             |    130 | uint16          | 2             |
+| Spider eggs alive            |    132 | uint16          | 2             |
+| Skull Is killed              |    134 | uint16          | 2             |
+| Skull IIs killed             |    136 | uint16          | 2             |
+| Skull IIIs killed            |    138 | uint16          | 2             |
+| Spiderlings killed           |    140 | uint16          | 2             |
+| Skull IVs killed             |    142 | uint16          | 2             |
+| Squid Is killed              |    144 | uint16          | 2             |
+| Squid IIs killed             |    146 | uint16          | 2             |
+| Squid IIIs killed            |    148 | uint16          | 2             |
+| Centipedes killed            |    150 | uint16          | 2             |
+| Gigapedes killed             |    152 | uint16          | 2             |
+| Spider Is killed             |    154 | uint16          | 2             |
+| Spider IIs killed            |    156 | uint16          | 2             |
+| Leviathans killed            |    158 | uint16          | 2             |
+| Orbs killed                  |    160 | uint16          | 2             |
+| Thorns killed                |    162 | uint16          | 2             |
+| Ghostpedes killed            |    164 | uint16          | 2             |
+| Spider eggs killed           |    166 | uint16          | 2             |
+| Is player alive              |    168 | uint8 (boolean) | 1             |
+| Is replay                    |    169 | uint8 (boolean) | 1             |
+| [Death type](death-types.md) |    170 | uint8           | 1             |
+| Is in game                   |    171 | uint8 (boolean) | 1             |
+| Replay player ID             |    172 | int32           | 4             |
+| Replay player name           |    176 | String          | 32            |
+| Survival hash                |    208 | MD5 hash bytes  | 16            |
+| Level up time 2              |    224 | float32         | 4             |
+| Level up time 3              |    228 | float32         | 4             |
+| Level up time 4              |    232 | float32         | 4             |
+| Leviathan down time          |    236 | float32         | 4             |
+| Orb down time                |    240 | float32         | 4             |
+| Game status                  |    244 | int32           | 4             |
+| Max homing                   |    248 | int32           | 4             |
+| Max homing time              |    252 | float32         | 4             |
+| Max enemies alive            |    256 | int32           | 4             |
+| Max enemies alive time       |    260 | float32         | 4             |
+| Max time                     |    264 | float32         | 4             |
+| N/A (padding)                |    268 | N/A             | 4             |
+| Graph stats base address     |    272 | int64 (pointer) | 8             |
+| Graph stats count            |    280 | int32           | 4             |
+| Graph stats loaded           |    284 | uint8 (boolean) | 1             |
+| N/A (padding)                |    285 | N/A             | 3             |
+| Hand level start             |    288 | int32           | 4             |
+| Homing start                 |    292 | int32           | 4             |
+| Timer start                  |    296 | float32         | 4             |
+| Prohibited mods              |    300 | uint8 (boolean) | 1             |
+| N/A (padding)                |    301 | N/A             | 3             |
+| Replay base address          |    304 | int64 (pointer) | 8             |
+| Replay buffer length         |    312 | int32           | 4             |
+| Play replay from memory      |    316 | uint8 (boolean) | 1             |
+| Game mode                    |    317 | uint8           | 1             |
+| TimeAttack / Race finished   |    318 | uint8 (boolean) | 1             |
 
 ## Graph stats
 
@@ -176,25 +176,3 @@ Devil Daggers stores various read-only data in memory so it can easily be read b
 | Own replay from leaderboard | 6     |
 | Other player's replay       | 7     |
 | Local replay                | 8     |
-
-## Death types
-
-| Death type  | Value |
-|-------------|-------|
-| FALLEN      | 0     |
-| SWARMED     | 1     |
-| IMPALED     | 2     |
-| GORED       | 3     |
-| INFESTED    | 4     |
-| OPENED      | 5     |
-| PURGED      | 6     |
-| DESECRATED  | 7     |
-| SACRIFICED  | 8     |
-| EVISCERATED | 9     |
-| ANNIHILATED | 10    |
-| INTOXICATED | 11    |
-| ENVENOMATED | 12    |
-| INCARNATED  | 13    |
-| DISCARNATED | 14    |
-| ENTANGLED   | 15    |
-| HAUNTED     | 16    |

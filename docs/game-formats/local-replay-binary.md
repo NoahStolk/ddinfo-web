@@ -8,7 +8,7 @@
 | float32                           | 4                            | Time at end of run                                       | N/A (depends on run)          |
 | float32                           | 4                            | Start time                                               | N/A (depends on spawnset)     |
 | int32                             | 4                            | Daggers fired                                            | N/A (depends on run)          |
-| int32                             | 4                            | Death type                                               | N/A (depends on run)          |
+| int32                             | 4                            | [Death type](death-types.md)                             | N/A (depends on run)          |
 | int32                             | 4                            | Gems                                                     | N/A (depends on run)          |
 | int32                             | 4                            | Daggers hit                                              | N/A (depends on run)          |
 | int32                             | 4                            | Kills                                                    | N/A (depends on run)          |
