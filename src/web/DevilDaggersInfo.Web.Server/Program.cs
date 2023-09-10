@@ -155,7 +155,6 @@ builder.AddSwaggerDocument("Dd", "**WARNING:** This API is intended to be used b
 builder.AddSwaggerDocument("App", "**WARNING:** This API is intended to be used by DDINFO TOOLS only.");
 builder.AddSwaggerDocument("Ddae", "**WARNING:** This API is intended to be used by Devil Daggers Asset Editor only.");
 builder.AddSwaggerDocument("Ddcl", "**WARNING:** This API is intended to be used by Devil Daggers Custom Leaderboards only.");
-builder.AddSwaggerDocument("Ddre", "**WARNING:** This API is intended to be used by Devil Daggers Replay Editor only.");
 builder.AddSwaggerDocument("Ddse", "**WARNING:** This API is intended to be used by Devil Daggers Survival Editor only.");
 
 builder.AddSwaggerDocument("DdLive", "**WARNING:** This API is intended to be used by DDLIVE only.");
