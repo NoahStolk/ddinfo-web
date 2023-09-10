@@ -1,4 +1,13 @@
 [
+	/*{
+		"VersionNumber": "??",
+		"Date": "??",
+		"Changes": [
+			{
+				"Description": "Added menu item to replay editor to open the current local replay from game."
+			}
+		]
+	},*/
 	{
 		"VersionNumber": "0.9.0.0",
 		"Date": "2023-08-29T00:00:00",
