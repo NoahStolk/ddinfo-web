@@ -4,7 +4,7 @@ There are multiple HTTP endpoints used for Devil Daggers to connect to the leade
 
 ## POST http://dd.hasmodai.com/backend15/get_scores.php
 
-Used to get 100 scores from the leaderboard.
+Used to get scores from the leaderboard (max 100 at a time).
 
 ### Parameters
 
@@ -44,6 +44,53 @@ This data is repeated for each score returned.
 | Player id                    | int32         | 4               |
 | Time in 10th of milliseconds | int32         | 4               |
 | Kills                        | int32         | 4               |
+| Gems                         | int32         | 4               |
+| [Death type](death-types.md) | int32         | 4               |
+| Total deaths                 | uint64        | 8               |
+| Total kills                  | uint64        | 8               |
+| Total daggers fired          | uint64        | 8               |
+| Total time played            | uint64        | 8               |
+| Total gems                   | uint64        | 8               |
+| Total daggers hit            | uint64        | 8               |
+| ?                            | ?             | 4               |
+
+## POST http://dd.hasmodai.com/backend16/get_user_search_public.php
+
+Used to search for a user by username.
+
+### Parameters
+
+| Name   | Type                                                   | Description                |
+|:-------|:-------------------------------------------------------|:---------------------------|
+| search | string (must be between 3 and 16 characters in length) | The username to search for |
+
+### Response
+
+The response is in binary and has the following format:
+
+#### Header
+
+| Data name             | Offset | Data type | Size in bytes |
+|:----------------------|:-------|:----------|:--------------|
+| ?                     | 0      | ?         | 11            |
+| Total scores returned | 11     | uint16    | 2             |
+| ?                     | 13     | ?         | 6             |
+
+#### Scores
+
+This data is repeated for each score returned.
+
+| Data name                    | Data type     | Size in bytes   |
+|:-----------------------------|:--------------|:----------------|
+| Username length              | int16         | 2               |
+| Username                     | string (utf8) | username length |
+| Rank                         | int32         | 4               |
+| Player id                    | int32         | 4               |
+| ?                            | ?             | 4               |
+| Time in 10th of milliseconds | int32         | 4               |
+| Kills                        | int32         | 4               |
+| Daggers fired                | int32         | 4               |
+| Daggers hit                  | int32         | 4               |
 | Gems                         | int32         | 4               |
 | [Death type](death-types.md) | int32         | 4               |
 | Total deaths                 | uint64        | 8               |
