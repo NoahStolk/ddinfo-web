@@ -6,7 +6,7 @@
 @using DevilDaggersInfo.Web.Client.HttpClients
 @inject MainApiHttpClient Http
 
-<Heading Title="Devil Daggers Custom Leaderboards" />
+<Heading Title="Devil Daggers Custom Leaderboards (DEPRECATED)" />
 
 @if (GetTool == null)
 {
@@ -20,7 +20,7 @@ else
 	<img src="/images/tools/ddcl.png" class="object-contain max-h-160 pt-3" alt="Custom Leaderboards" />
 
 	<SourceInfo Url="https://github.com/NoahStolk/DevilDaggersCustomLeaderboards" />
-	
+
 	<Heading Title="Changelog" Level="2" />
 	<Heading Title="@($"Deprecated - {new DateTime(2023, 3, 31).ToString(StringFormats.DateFormat)}")" Level="3" />
 	<ul class="pl-4">
