@@ -11,16 +11,17 @@ flowchart TD;
 	devildaggersinfo[Website]
 	devildaggers[Devil Daggers game]
 	ddse[DDSE]
-	ddcl[DDCL]
+	ddcl[DDCL (obsolete)]
 	ddae[DDAE]
-	ddre[DDRE]
+	ddre[DDRE (obsolete)]
+	tools[ddinfo tools (new)]
 	ddstatsrust[ddstats-rust]
 	ddlive[DDLIVE]
 	clubberserver[Clubber server]
 	clubberapi[Clubber API]
 	devildaggersleaderboards[Devil Daggers leaderboards server]
 
-	class database,filesystem,server,api,devildaggersinfo,ddse,ddcl,ddae,ddre ddinfo;
+	class database,filesystem,server,api,devildaggersinfo,ddse,ddcl,ddae,ddre,tools ddinfo;
 	class devildaggers,ddstatsrust,ddlive,clubberserver,clubberapi,devildaggersleaderboards external;
 
 	classDef ddinfo fill:#a60,stroke:#333,stroke-width:4px;
@@ -54,5 +55,6 @@ flowchart TD;
 		ddcl --> api
 		ddae --> api
 		ddre --> api
+		tools --> api
 	end
 ```
