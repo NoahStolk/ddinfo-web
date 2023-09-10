@@ -17,35 +17,35 @@ Every event starts with an event type, which is a single byte. After that, addit
 
 ### Event types
 
-| Event type                                            | Value  | Size (excluding event type byte itself)     |
-|-------------------------------------------------------|--------|---------------------------------------------|
-| [Spawn event](#spawn-events)                          | `0x00` | Variable, see [entity types](#entity-types) |
-| [Entity position event](#entity-position-event)       | `0x01` | 10                                          |
-| [Entity orientation event](#entity-orientation-event) | `0x02` | 22                                          |
-| [Entity target event](#entity-target-event)           | `0x04` | 10                                          |
-| [Hit event](#hit-event)                               | `0x05` | 12                                          |
-| Gem event                                             | `0x06` | 0                                           |
-| [Transmute event](#transmute-event)                   | `0x07` | 28                                          |
-| [Inputs event](#inputs-event)                         | `0x09` | 12 (16 for the first inputs event)          |
-| End event                                             | `0x0b` | 0                                           |
+| Event type                                            | Value | Size (excluding event type byte itself)     |
+|-------------------------------------------------------|-------|---------------------------------------------|
+| [Spawn event](#spawn-events)                          | 0x00  | Variable, see [entity types](#entity-types) |
+| [Entity position event](#entity-position-event)       | 0x01  | 10                                          |
+| [Entity orientation event](#entity-orientation-event) | 0x02  | 22                                          |
+| [Entity target event](#entity-target-event)           | 0x04  | 10                                          |
+| [Hit event](#hit-event)                               | 0x05  | 12                                          |
+| Gem event                                             | 0x06  | 0                                           |
+| [Transmute event](#transmute-event)                   | 0x07  | 28                                          |
+| [Inputs event](#inputs-event)                         | 0x09  | 12 (16 for the first inputs event)          |
+| End event                                             | 0x0B  | 0                                           |
 
 ### <a id="entity-types"></a>Entity types ###
 
-| Entity type                                       | Value  | Size (excluding entity type byte itself) |
-|---------------------------------------------------|--------|------------------------------------------|
-| [Dagger](#dagger-spawn-event)                     | `0x01` | 30                                       |
-| [Squid I](#squid-spawn-event)                     | `0x03` | 32                                       |
-| [Squid II](#squid-spawn-event)                    | `0x04` | 32                                       |
-| [Squid III](#squid-spawn-event)                   | `0x05` | 32                                       |
-| [Boid (skulls and spiderling)](#boid-spawn-event) | `0x06` | 45                                       |
-| [Centipede](#pede-spawn-event)                    | `0x07` | 64                                       |
-| [Gigapede](#pede-spawn-event)                     | `0x0c` | 64                                       |
-| [Ghostpede](#pede-spawn-event)                    | `0x0f` | 64                                       |
-| [Spider I](#spider-spawn-event)                   | `0x08` | 16                                       |
-| [Spider II](#spider-spawn-event)                  | `0x09` | 16                                       |
-| [Spider Egg (I and II)](#spider-egg-spawn-event)  | `0x0a` | 28                                       |
-| [Leviathan](#leviathan-spawn-event)               | `0x0b` | 4                                        |
-| [Thorn](#thorn-spawn-event)                       | `0x0d` | 20                                       |
+| Entity type                                       | Value | Size (excluding entity type byte itself) |
+|---------------------------------------------------|-------|------------------------------------------|
+| [Dagger](#dagger-spawn-event)                     | 0x01  | 30                                       |
+| [Squid I](#squid-spawn-event)                     | 0x03  | 32                                       |
+| [Squid II](#squid-spawn-event)                    | 0x04  | 32                                       |
+| [Squid III](#squid-spawn-event)                   | 0x05  | 32                                       |
+| [Boid (skulls and spiderling)](#boid-spawn-event) | 0x06  | 45                                       |
+| [Centipede](#pede-spawn-event)                    | 0x07  | 64                                       |
+| [Gigapede](#pede-spawn-event)                     | 0x0C  | 64                                       |
+| [Ghostpede](#pede-spawn-event)                    | 0x0F  | 64                                       |
+| [Spider I](#spider-spawn-event)                   | 0x08  | 16                                       |
+| [Spider II](#spider-spawn-event)                  | 0x09  | 16                                       |
+| [Spider Egg (I and II)](#spider-egg-spawn-event)  | 0x0A  | 28                                       |
+| [Leviathan](#leviathan-spawn-event)               | 0x0B  | 4                                        |
+| [Thorn](#thorn-spawn-event)                       | 0x0D  | 20                                       |
 
 ### <a id="spawn-events"></a>Spawn events ###
 
@@ -61,15 +61,15 @@ Every event starts with an event type, which is a single byte. After that, addit
 
 ##### <a id="dagger-types"></a>Dagger types #####
 
-| Dagger type           | Value  |
-|-----------------------|--------|
-| Level 1               | `0x01` |
-| Level 2               | `0x02` |
-| Level 3               | `0x03` |
-| Level 3 homing        | `0x04` |
-| Level 4               | `0x05` |
-| Level 4 homing        | `0x06` |
-| Level 4 homing splash | `0x07` |
+| Dagger type           | Value |
+|-----------------------|-------|
+| Level 1               | 0x01  |
+| Level 2               | 0x02  |
+| Level 3               | 0x03  |
+| Level 3 homing        | 0x04  |
+| Level 4               | 0x05  |
+| Level 4 homing        | 0x06  |
+| Level 4 homing splash | 0x07  |
 
 #### <a id="squid-spawn-event"></a>Squid spawn event ####
 
@@ -93,13 +93,13 @@ Every event starts with an event type, which is a single byte. After that, addit
 
 ##### <a id="boid-types"></a>Boid types ###
 
-| Boid type  | Value  |
-|------------|--------|
-| Skull I    | `0x01` |
-| Skull II   | `0x02` |
-| Skull III  | `0x03` |
-| Spiderling | `0x04` |
-| Skull IV   | `0x05` |
+| Boid type  | Value |
+|------------|-------|
+| Skull I    | 0x01  |
+| Skull II   | 0x02  |
+| Skull III  | 0x03  |
+| Spiderling | 0x04  |
+| Skull IV   | 0x05  |
 
 #### <a id="pede-spawn-event"></a>Pede spawn event ####
 
@@ -180,14 +180,14 @@ These values represent a part of an enemy. This is used to determine whether an 
 
 Weak points:
 
-| Enemy type | Weak point values            |
-|------------|------------------------------|
-| Squid I    | `0`                          |
-| Squid II   | `0`, `1`                     |
-| Squid III  | `0`, `1`, `2`                |
-| Leviathan  | `0`, `1`, `2`, `3`, `4`, `5` |
-| Spider I   | `0`                          |
-| Spider II  | `0`                          |
+| Enemy type | Weak point values |
+|------------|-------------------|
+| Squid I    | 0                 |
+| Squid II   | 0, 1              |
+| Squid III  | 0, 1, 2           |
+| Leviathan  | 0, 1, 2, 3, 4, 5  |
+| Spider I   | 0                 |
+| Spider II  | 0                 |
 
 Any other value means the enemy was hit but not damaged.
 
@@ -231,32 +231,32 @@ All other enemies are always hit, regardless of this value.
 
 Input events mark the end of the game tick. They are always the last event in the group of events representing one game tick.
 
-| Data type    | Size | Meaning                                                                |
-|--------------|------|------------------------------------------------------------------------|
-| uint8 (bool) | 1    | Holding left                                                           |
-| uint8 (bool) | 1    | Holding right                                                          |
-| uint8 (bool) | 1    | Holding forward                                                        |
-| uint8 (bool) | 1    | Holding backward                                                       |
-| uint8        | 1    | [Jump](#jump-types)                                                    |
-| uint8        | 1    | [Shoot](#shoot-types)                                                  |
-| uint8        | 1    | [Shoot homing](#shoot-types)                                           |
-| int16        | 2    | Relative mouse offset X                                                |
-| int16        | 2    | Relative mouse offset Y                                                |
-| float32      | 4    | Look speed (only present in the first inputs event)                    |
-| uint8        | 1    | Byte (always `0x0A`) to mark the end of the event (or whole game tick) |
+| Data type    | Size | Meaning                                                              |
+|--------------|------|----------------------------------------------------------------------|
+| uint8 (bool) | 1    | Holding left                                                         |
+| uint8 (bool) | 1    | Holding right                                                        |
+| uint8 (bool) | 1    | Holding forward                                                      |
+| uint8 (bool) | 1    | Holding backward                                                     |
+| uint8        | 1    | [Jump](#jump-types)                                                  |
+| uint8        | 1    | [Shoot](#shoot-types)                                                |
+| uint8        | 1    | [Shoot homing](#shoot-types)                                         |
+| int16        | 2    | Relative mouse offset X                                              |
+| int16        | 2    | Relative mouse offset Y                                              |
+| float32      | 4    | Look speed (only present in the first inputs event)                  |
+| uint8        | 1    | Byte (always 0x0A) to mark the end of the event (or whole game tick) |
 
 #### <a id="jump-types"></a>Jump types ####
 
-| Jump type     | Value  |
-|---------------|--------|
-| None          | `0x00` |
-| Holding jump  | `0x01` |
-| Pressing jump | `0x02` |
+| Jump type     | Value |
+|---------------|-------|
+| None          | 0x00  |
+| Holding jump  | 0x01  |
+| Pressing jump | 0x02  |
 
 #### <a id="shoot-types"></a>Shoot types ####
 
-| Shoot type            | Value  |
-|-----------------------|--------|
-| None                  | `0x00` |
-| Holding shoot input   | `0x01` |
-| Releasing shoot input | `0x02` |
+| Shoot type            | Value |
+|-----------------------|-------|
+| None                  | 0x00  |
+| Holding shoot input   | 0x01  |
+| Releasing shoot input | 0x02  |
