@@ -33,6 +33,9 @@ public class Application
 	public void Run()
 	{
 		_mainAppWindow.WindowInstance.Run();
+
+		OverlayWindow overlayWindow = new();
+		overlayWindow.WindowInstance.Run();
 	}
 
 	public void Destroy()
