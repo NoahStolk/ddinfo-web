@@ -8,9 +8,9 @@ Used to get scores from the leaderboard (max 100 at a time).
 
 ### Parameters
 
-| Name   | Type  | Description                           | Examples                                                                  |
-|:-------|:------|:--------------------------------------|:--------------------------------------------------------------------------|
-| offset | int32 | The offset of the scores to retrieve. | Offset 0 returns top 100 scores, offset 1000 returns scores 1001 to 1100. |
+| Name   | Type  | Description                           | Examples                                                                      |
+|:-------|:------|:--------------------------------------|:------------------------------------------------------------------------------|
+| offset | int32 | The offset of the scores to retrieve. | `offset=0` returns top 100 scores, `offset=1000` returns scores 1001 to 1100. |
 
 ### Response
 
@@ -179,3 +179,17 @@ The response is in binary and has the following format:
 | Total time played            | uint64        | 8               |
 | Total gems                   | uint64        | 8               |
 | Total daggers hit            | uint64        | 8               |
+
+## POST http://dd.hasmodai.com/backend16/get_replay.php
+
+Used to get a replay by its player id.
+
+### Parameters
+
+| Name   | Type | Description                          | Examples                                         |
+|:-------|:-----|:-------------------------------------|:-------------------------------------------------|
+| replay | int  | The player id to get the replay for. | `uid=1` returns the replay for player with id 1. |
+
+### Response
+
+[Leaderboard replay binary](leaderboard-replay-binary.md)
