@@ -50,6 +50,7 @@ public static class Shortcuts
 				Action? action = key switch
 				{
 					Key.O => SpawnsetEditorMenu.OpenCurrentSpawnset,
+					Key.S => SpawnsetEditorMenu.SaveSpawnsetAs,
 					Key.D => SpawnsetEditorMenu.OpenDefaultSpawnset,
 					_ => null,
 				};

@@ -42,6 +42,9 @@ public static class SpawnsetEditorMenu
 		if (ImGui.MenuItem("Save", "Ctrl+S"))
 			SaveSpawnset();
 
+		if (ImGui.MenuItem("Save as", "Ctrl+Shift+S"))
+			SaveSpawnsetAs();
+
 		ImGui.Separator();
 
 		if (ImGui.MenuItem("Open current", "Ctrl+Shift+O"))
@@ -82,8 +85,8 @@ public static class SpawnsetEditorMenu
 
 	public static void NewSpawnset()
 	{
-		SpawnsetState.SpawnsetName = "(untitled)";
 		SpawnsetState.Spawnset = SpawnsetBinary.CreateDefault();
+		SpawnsetState.SetFile(null, "(untitled)");
 		SpawnsetHistoryUtils.Save(SpawnsetEditType.Reset);
 		SpawnsChild.ClearAllSelections();
 	}
@@ -111,8 +114,8 @@ public static class SpawnsetEditorMenu
 
 		if (SpawnsetBinary.TryParse(fileContents, out SpawnsetBinary? spawnsetBinary))
 		{
-			SpawnsetState.SpawnsetName = Path.GetFileName(filePath);
 			SpawnsetState.Spawnset = spawnsetBinary;
+			SpawnsetState.SetFile(filePath, Path.GetFileName(filePath));
 		}
 		else
 		{
@@ -126,17 +129,33 @@ public static class SpawnsetEditorMenu
 
 	public static void OpenDefaultSpawnset()
 	{
-		SpawnsetState.SpawnsetName = "V3";
 		SpawnsetState.Spawnset = ContentManager.Content.DefaultSpawnset.DeepCopy();
+		SpawnsetState.SetFile(null, "V3");
 		SpawnsetHistoryUtils.Save(SpawnsetEditType.Reset);
 		SpawnsChild.ClearAllSelections();
 	}
 
 	public static void SaveSpawnset()
 	{
+		if (SpawnsetState.SpawnsetPath != null)
+		{
+			File.WriteAllBytes(SpawnsetState.SpawnsetPath, SpawnsetState.Spawnset.ToBytes());
+			SpawnsetState.SetFile(SpawnsetState.SpawnsetPath, SpawnsetState.SpawnsetName);
+		}
+		else
+		{
+			SaveSpawnsetAs();
+		}
+	}
+
+	public static void SaveSpawnsetAs()
+	{
 		string? filePath = NativeFileDialog.CreateSaveFileDialog(null);
 		if (filePath != null)
+		{
 			File.WriteAllBytes(filePath, SpawnsetState.Spawnset.ToBytes());
+			SpawnsetState.SetFile(filePath, Path.GetFileName(filePath));
+		}
 	}
 
 	public static void OpenCurrentSpawnset()
