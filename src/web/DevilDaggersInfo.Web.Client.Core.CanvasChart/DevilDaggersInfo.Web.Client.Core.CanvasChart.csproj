@@ -5,11 +5,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="DevilDaggersInfo.Core" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\common\DevilDaggersInfo.Common\DevilDaggersInfo.Common.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.Web.Client.Core.Canvas\DevilDaggersInfo.Web.Client.Core.Canvas.csproj" />
   </ItemGroup>
 

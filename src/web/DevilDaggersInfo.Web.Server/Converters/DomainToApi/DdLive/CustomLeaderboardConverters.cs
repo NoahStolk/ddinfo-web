@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Common.Extensions;
+using DevilDaggersInfo.Core.Common.Extensions;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 using System.Diagnostics;

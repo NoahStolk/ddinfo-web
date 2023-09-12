@@ -1,5 +1,5 @@
 using DevilDaggersInfo.Api.Main.LeaderboardHistoryStatistics;
-using DevilDaggersInfo.Common.Extensions;
+using DevilDaggersInfo.Core.Common.Extensions;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardHistory;
 using DevilDaggersInfo.Web.Server.Domain.Services.Caching;

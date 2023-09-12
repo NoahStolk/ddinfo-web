@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Common;
+using DevilDaggersInfo.Core.Common;
 
 namespace DevilDaggersInfo.Web.Client.Models.Internal;
 

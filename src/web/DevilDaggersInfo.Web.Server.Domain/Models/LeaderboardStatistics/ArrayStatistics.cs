@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Common.Extensions;
+using DevilDaggersInfo.Core.Common.Extensions;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardStatistics;
 

@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Common;
+using DevilDaggersInfo.Core.Common;
 using ApiAdmin = DevilDaggersInfo.Api.Admin.CustomLeaderboards;
 using ApiMain = DevilDaggersInfo.Api.Main.CustomLeaderboards;
 

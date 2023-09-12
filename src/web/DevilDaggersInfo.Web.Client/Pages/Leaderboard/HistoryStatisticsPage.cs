@@ -1,5 +1,5 @@
 using DevilDaggersInfo.Api.Main.LeaderboardHistoryStatistics;
-using DevilDaggersInfo.Common;
+using DevilDaggersInfo.Core.Common;
 using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Core.Wiki.Extensions;
 using DevilDaggersInfo.Web.Client.Core.CanvasChart.Data;

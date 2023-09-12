@@ -1,5 +1,5 @@
-using DevilDaggersInfo.Common;
-using DevilDaggersInfo.Common.Extensions;
+using DevilDaggersInfo.Core.Common;
+using DevilDaggersInfo.Core.Common.Extensions;
 using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Core.Wiki.Extensions;
 using DevilDaggersInfo.Core.Wiki.Objects;

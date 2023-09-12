@@ -1,5 +1,5 @@
-using DevilDaggersInfo.Common;
-using DevilDaggersInfo.Common.Extensions;
+using DevilDaggersInfo.Core.Common;
+using DevilDaggersInfo.Core.Common.Extensions;
 using DevilDaggersInfo.Core.CriteriaExpression;
 using DevilDaggersInfo.Core.CriteriaExpression.Extensions;
 using DevilDaggersInfo.Core.Encryption;

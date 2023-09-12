@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Common.Extensions;
+using DevilDaggersInfo.Core.Common.Extensions;
 using DevilDaggersInfo.Core.Asset;
 using System.Runtime.CompilerServices;
 

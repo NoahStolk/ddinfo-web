@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Common;
+using DevilDaggersInfo.Core.Common;
 using DevilDaggersInfo.Web.Client.Core.Canvas;
 using DevilDaggersInfo.Web.Client.Core.Canvas.JS;
 using DevilDaggersInfo.Web.Client.Core.CanvasChart.Data;

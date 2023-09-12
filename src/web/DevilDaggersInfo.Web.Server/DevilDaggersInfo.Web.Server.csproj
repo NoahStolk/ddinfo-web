@@ -27,7 +27,6 @@
     <ProjectReference Include="..\..\api\DevilDaggersInfo.Api.Ddse\DevilDaggersInfo.Api.Ddse.csproj" />
     <ProjectReference Include="..\..\api\DevilDaggersInfo.Api.Dd\DevilDaggersInfo.Api.Dd.csproj" />
     <ProjectReference Include="..\..\api\DevilDaggersInfo.Api.DdstatsRust\DevilDaggersInfo.Api.DdstatsRust.csproj" />
-    <ProjectReference Include="..\..\core\DevilDaggersInfo.Core.Encryption\DevilDaggersInfo.Core.Encryption.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.Web.Client\DevilDaggersInfo.Web.Client.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.Web.Server.Domain.Admin\DevilDaggersInfo.Web.Server.Domain.Admin.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.Web.Server.Domain.Main\DevilDaggersInfo.Web.Server.Domain.Main.csproj" />

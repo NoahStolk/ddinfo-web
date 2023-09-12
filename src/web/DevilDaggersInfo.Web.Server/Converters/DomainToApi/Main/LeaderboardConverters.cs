@@ -1,5 +1,5 @@
 using DevilDaggersInfo.Api.Main.Leaderboards;
-using DevilDaggersInfo.Common.Extensions;
+using DevilDaggersInfo.Core.Common.Extensions;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 
 namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;

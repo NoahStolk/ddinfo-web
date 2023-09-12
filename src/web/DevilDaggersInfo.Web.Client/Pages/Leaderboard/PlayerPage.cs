@@ -2,7 +2,7 @@ using DevilDaggersInfo.Api.Main.Leaderboards;
 using DevilDaggersInfo.Api.Main.Mods;
 using DevilDaggersInfo.Api.Main.Players;
 using DevilDaggersInfo.Api.Main.Spawnsets;
-using DevilDaggersInfo.Common;
+using DevilDaggersInfo.Core.Common;
 using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Core.Wiki.Extensions;
 using DevilDaggersInfo.Core.Wiki.Objects;

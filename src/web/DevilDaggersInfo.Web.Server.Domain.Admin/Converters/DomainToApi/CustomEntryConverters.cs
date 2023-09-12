@@ -1,5 +1,5 @@
 using DevilDaggersInfo.Api.Admin.CustomEntries;
-using DevilDaggersInfo.Common.Extensions;
+using DevilDaggersInfo.Core.Common.Extensions;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Admin.Converters.DomainToApi;

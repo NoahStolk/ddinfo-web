@@ -1,5 +1,5 @@
 using DevilDaggersInfo.Api.Admin.CustomEntries;
-using DevilDaggersInfo.Common.Extensions;
+using DevilDaggersInfo.Core.Common.Extensions;
 using DevilDaggersInfo.Core.CriteriaExpression;
 using DevilDaggersInfo.Core.CriteriaExpression.Parts;
 using DevilDaggersInfo.Core.Spawnset;
