@@ -20,9 +20,13 @@
     <PackageReference Include="MSTest.TestAdapter" />
     <PackageReference Include="MSTest.TestFramework" />
     <PackageReference Include="NSubstitute" />
+
+    <!-- TODO: This should be a transitive dependency coming from DevilDaggersInfo.Web.Server.Domain.Admin/Main -> DevilDaggersInfo.Web.Server.Domain -> DevilDaggersInfo.Core. -->
+    <PackageReference Include="SixLabors.ImageSharp" />
   </ItemGroup>
 
   <ItemGroup>
+    <!-- TODO: Reference DevilDaggersInfo.Web.Server.Domain or rename the test project. -->
     <ProjectReference Include="..\..\web\DevilDaggersInfo.Web.Server\DevilDaggersInfo.Web.Server.csproj" />
   </ItemGroup>
 
