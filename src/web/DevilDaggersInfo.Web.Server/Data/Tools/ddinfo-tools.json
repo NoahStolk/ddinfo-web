@@ -5,6 +5,9 @@
 		"Changes": [
 			{
 				"Description": "Added menu item to replay editor to open the current local replay from game."
+			},
+			{
+				"Description": "Fixed practice window crashing when survival file was not yet loaded."
 			}
 		]
 	},*/
