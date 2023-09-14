@@ -1,3 +1,4 @@
+using DevilDaggersInfo.App.Ui.Popups;
 using DevilDaggersInfo.App.Ui.SpawnsetEditor.State;
 using DevilDaggersInfo.App.Ui.SpawnsetEditor.Utils;
 using DevilDaggersInfo.App.User.Settings;
@@ -107,7 +108,7 @@ public static class SpawnsetEditorMenu
 		}
 		catch (Exception ex)
 		{
-			Modals.ShowError($"Could not open file '{filePath}'.");
+			PopupManager.ShowError($"Could not open file '{filePath}'.");
 			Root.Log.Error(ex, "Could not open file");
 			return;
 		}
@@ -119,7 +120,7 @@ public static class SpawnsetEditorMenu
 		}
 		else
 		{
-			Modals.ShowError($"The file '{filePath}' could not be parsed as a spawnset.");
+			PopupManager.ShowError($"The file '{filePath}' could not be parsed as a spawnset.");
 			return;
 		}
 
@@ -138,24 +139,16 @@ public static class SpawnsetEditorMenu
 	public static void SaveSpawnset()
 	{
 		if (SpawnsetState.SpawnsetPath != null)
-		{
-			File.WriteAllBytes(SpawnsetState.SpawnsetPath, SpawnsetState.Spawnset.ToBytes());
-			SpawnsetState.SetFile(SpawnsetState.SpawnsetPath, SpawnsetState.SpawnsetName);
-		}
+			SpawnsetState.SaveFile();
 		else
-		{
 			SaveSpawnsetAs();
-		}
 	}
 
 	public static void SaveSpawnsetAs()
 	{
 		string? filePath = NativeFileDialog.CreateSaveFileDialog(null);
 		if (filePath != null)
-		{
-			File.WriteAllBytes(filePath, SpawnsetState.Spawnset.ToBytes());
-			SpawnsetState.SetFile(filePath, Path.GetFileName(filePath));
-		}
+			SpawnsetState.SaveFile(filePath);
 	}
 
 	public static void OpenCurrentSpawnset()
@@ -167,7 +160,7 @@ public static class SpawnsetEditorMenu
 	public static void ReplaceCurrentSpawnset()
 	{
 		File.WriteAllBytes(UserSettings.ModsSurvivalPath, SpawnsetState.Spawnset.ToBytes());
-		Modals.ShowReplacedSurvivalFile();
+		PopupManager.ShowReplacedSurvivalFile();
 	}
 
 	public static void DeleteCurrentSpawnset()
@@ -175,11 +168,12 @@ public static class SpawnsetEditorMenu
 		if (File.Exists(UserSettings.ModsSurvivalPath))
 			File.Delete(UserSettings.ModsSurvivalPath);
 
-		Modals.ShowDeletedSurvivalFile();
+		PopupManager.ShowDeletedSurvivalFile();
 	}
 
 	public static void Close()
 	{
-		UiRenderer.Layout = LayoutType.Main;
+		if (SpawnsetState.PromptSaveSpawnset())
+			UiRenderer.Layout = LayoutType.Main;
 	}
 }

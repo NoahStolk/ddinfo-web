@@ -1,3 +1,4 @@
+using DevilDaggersInfo.App.Ui.Popups;
 using DevilDaggersInfo.Core.Spawnset;
 using System.Security.Cryptography;
 
@@ -29,11 +30,32 @@ public static class SpawnsetState
 
 	public static bool IsSpawnsetModified { get; private set; }
 
+	public static void SaveFile()
+	{
+		if (SpawnsetPath != null)
+			SaveFile(SpawnsetPath);
+	}
+
+	public static void SaveFile(string path)
+	{
+		File.WriteAllBytes(path, Spawnset.ToBytes());
+		SetFile(path, Path.GetFileName(path));
+	}
+
 	public static void SetFile(string? path, string? name)
 	{
 		SpawnsetPath = path;
 		SpawnsetName = name;
 		_fileSpawnsetMd5Hash = _memorySpawnsetMd5Hash;
 		IsSpawnsetModified = !_fileSpawnsetMd5Hash.SequenceEqual(_memorySpawnsetMd5Hash);
+	}
+
+	public static bool PromptSaveSpawnset()
+	{
+		if (!IsSpawnsetModified)
+			return true;
+
+		PopupManager.ShowSaveSpawnsetPrompt();
+		return false;
 	}
 }
