@@ -86,7 +86,7 @@ public static class SpawnsetEditorMenu
 	public static void NewSpawnset()
 	{
 		SpawnsetState.Spawnset = SpawnsetBinary.CreateDefault();
-		SpawnsetState.SetFile(null, "(untitled)");
+		SpawnsetState.SetFile(null, null);
 		SpawnsetHistoryUtils.Save(SpawnsetEditType.Reset);
 		SpawnsChild.ClearAllSelections();
 	}
