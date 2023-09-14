@@ -1,5 +1,6 @@
 using DevilDaggersInfo.App.Ui.Popups;
 using DevilDaggersInfo.Core.Spawnset;
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Cryptography;
 
 namespace DevilDaggersInfo.App.Ui.SpawnsetEditor.State;
@@ -8,9 +9,19 @@ public static class SpawnsetState
 {
 	public const string UntitledName = "<untitled>";
 
-	private static SpawnsetBinary _spawnset = SpawnsetBinary.CreateDefault();
-	private static byte[] _memorySpawnsetMd5Hash = Array.Empty<byte>();
-	private static byte[] _fileSpawnsetMd5Hash = Array.Empty<byte>();
+	private static SpawnsetBinary _spawnset;
+	private static byte[] _memorySpawnsetMd5Hash;
+	private static byte[] _fileSpawnsetMd5Hash;
+
+	[SuppressMessage("Minor Code Smell", "S3963:\"static\" fields should be initialized inline", Justification = "Readability")]
+	static SpawnsetState()
+	{
+		_spawnset = SpawnsetBinary.CreateDefault();
+
+		byte[] spawnsetBytes = _spawnset.ToBytes();
+		_memorySpawnsetMd5Hash = MD5.HashData(spawnsetBytes);
+		_fileSpawnsetMd5Hash = MD5.HashData(spawnsetBytes);
+	}
 
 	public static SpawnsetBinary Spawnset
 	{
