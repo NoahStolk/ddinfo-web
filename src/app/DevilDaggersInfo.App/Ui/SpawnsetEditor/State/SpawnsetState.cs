@@ -30,12 +30,6 @@ public static class SpawnsetState
 
 	public static bool IsSpawnsetModified { get; private set; }
 
-	public static void SaveFile()
-	{
-		if (SpawnsetPath != null)
-			SaveFile(SpawnsetPath);
-	}
-
 	public static void SaveFile(string path)
 	{
 		File.WriteAllBytes(path, Spawnset.ToBytes());
@@ -50,12 +44,11 @@ public static class SpawnsetState
 		IsSpawnsetModified = !_fileSpawnsetMd5Hash.SequenceEqual(_memorySpawnsetMd5Hash);
 	}
 
-	public static bool PromptSaveSpawnset()
+	public static void PromptSaveSpawnset(Action action)
 	{
 		if (!IsSpawnsetModified)
-			return true;
-
-		PopupManager.ShowSaveSpawnsetPrompt();
-		return false;
+			action();
+		else
+			PopupManager.ShowSaveSpawnsetPrompt(action);
 	}
 }

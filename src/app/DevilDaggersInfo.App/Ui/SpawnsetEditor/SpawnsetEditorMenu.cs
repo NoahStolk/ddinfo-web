@@ -139,7 +139,7 @@ public static class SpawnsetEditorMenu
 	public static void SaveSpawnset()
 	{
 		if (SpawnsetState.SpawnsetPath != null)
-			SpawnsetState.SaveFile();
+			SpawnsetState.SaveFile(SpawnsetState.SpawnsetPath);
 		else
 			SaveSpawnsetAs();
 	}
@@ -173,7 +173,6 @@ public static class SpawnsetEditorMenu
 
 	public static void Close()
 	{
-		if (SpawnsetState.PromptSaveSpawnset())
-			UiRenderer.Layout = LayoutType.Main;
+		SpawnsetState.PromptSaveSpawnset(() => UiRenderer.Layout = LayoutType.Main);
 	}
 }

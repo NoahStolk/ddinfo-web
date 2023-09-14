@@ -1,3 +1,4 @@
+using DevilDaggersInfo.App.Ui.SpawnsetEditor;
 using DevilDaggersInfo.App.Ui.SpawnsetEditor.State;
 using ImGuiNET;
 using System.Numerics;
@@ -30,20 +31,17 @@ public static class PopupManager
 		_openPopups.Add(new Message(_deletedSurvivalFileId, "The current survival file has been deleted."));
 	}
 
-	public static void ShowSaveSpawnsetPrompt()
+	public static void ShowSaveSpawnsetPrompt(Action action)
 	{
 		_openPopups.Add(new Question(
 			_saveSpawnsetId,
 			"Do you want to save the current spawnset?",
 			() =>
 			{
-				SpawnsetState.SaveFile();
-				UiRenderer.Layout = LayoutType.Main;
+				SpawnsetEditorMenu.SaveSpawnset();
+				action();
 			},
-			() =>
-			{
-				UiRenderer.Layout = LayoutType.Main;
-			}));
+			action));
 	}
 
 	public static void Render()
