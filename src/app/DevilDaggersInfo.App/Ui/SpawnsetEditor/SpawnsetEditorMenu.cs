@@ -86,17 +86,20 @@ public static class SpawnsetEditorMenu
 
 	public static void NewSpawnset()
 	{
-		SpawnsetState.Spawnset = SpawnsetBinary.CreateDefault();
-		SpawnsetState.SetFile(null, null);
-		SpawnsetHistoryUtils.Save(SpawnsetEditType.Reset);
-		SpawnsChild.ClearAllSelections();
+		SpawnsetState.PromptSaveSpawnset(() =>
+		{
+			SpawnsetState.Spawnset = SpawnsetBinary.CreateDefault();
+			SpawnsetState.SetFile(null, null);
+			SpawnsetHistoryUtils.Save(SpawnsetEditType.Reset);
+			SpawnsChild.ClearAllSelections();
+		});
 	}
 
 	public static void OpenSpawnset()
 	{
 		string? filePath = NativeFileDialog.CreateOpenFileDialog(null);
 		if (filePath != null)
-			OpenSpawnset(filePath);
+			SpawnsetState.PromptSaveSpawnset(() => OpenSpawnset(filePath));
 	}
 
 	private static void OpenSpawnset(string filePath)
@@ -130,10 +133,13 @@ public static class SpawnsetEditorMenu
 
 	public static void OpenDefaultSpawnset()
 	{
-		SpawnsetState.Spawnset = ContentManager.Content.DefaultSpawnset.DeepCopy();
-		SpawnsetState.SetFile(null, "V3");
-		SpawnsetHistoryUtils.Save(SpawnsetEditType.Reset);
-		SpawnsChild.ClearAllSelections();
+		SpawnsetState.PromptSaveSpawnset(() =>
+		{
+			SpawnsetState.Spawnset = ContentManager.Content.DefaultSpawnset.DeepCopy();
+			SpawnsetState.SetFile(null, "V3");
+			SpawnsetHistoryUtils.Save(SpawnsetEditType.Reset);
+			SpawnsChild.ClearAllSelections();
+		});
 	}
 
 	public static void SaveSpawnset()
@@ -154,7 +160,9 @@ public static class SpawnsetEditorMenu
 	public static void OpenCurrentSpawnset()
 	{
 		if (File.Exists(UserSettings.ModsSurvivalPath))
-			OpenSpawnset(UserSettings.ModsSurvivalPath);
+			SpawnsetState.PromptSaveSpawnset(() => OpenSpawnset(UserSettings.ModsSurvivalPath));
+		else
+			PopupManager.ShowError("There is no modded survival file to open.");
 	}
 
 	public static void ReplaceCurrentSpawnset()
