@@ -3,7 +3,7 @@ using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;
 using System.Diagnostics;
-using DdaeApi = DevilDaggersInfo.Api.Ddae.Mods;
+using DdaeApi = DevilDaggersInfo.Web.ApiSpec.Ddae.Mods;
 
 namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Ddae;
 

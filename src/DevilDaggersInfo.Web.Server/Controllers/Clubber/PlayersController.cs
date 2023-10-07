@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Api.Clubber.Players;
+using DevilDaggersInfo.Web.ApiSpec.Clubber.Players;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Clubber;
 using DevilDaggersInfo.Web.Server.Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;

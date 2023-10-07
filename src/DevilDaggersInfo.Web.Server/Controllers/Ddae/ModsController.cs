@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Api.Ddae.Mods;
+using DevilDaggersInfo.Web.ApiSpec.Ddae.Mods;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Ddae;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;

@@ -2,7 +2,7 @@ using DevilDaggersInfo.Core.Common.Extensions;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using System.Diagnostics;
-using DdseApi = DevilDaggersInfo.Api.Ddse.Spawnsets;
+using DdseApi = DevilDaggersInfo.Web.ApiSpec.Ddse.Spawnsets;
 
 namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Ddse;
 

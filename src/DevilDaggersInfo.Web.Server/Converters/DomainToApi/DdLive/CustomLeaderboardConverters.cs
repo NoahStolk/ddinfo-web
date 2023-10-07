@@ -2,7 +2,7 @@ using DevilDaggersInfo.Core.Common.Extensions;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 using System.Diagnostics;
-using DdLiveApi = DevilDaggersInfo.Api.DdLive.CustomLeaderboards;
+using DdLiveApi = DevilDaggersInfo.Web.ApiSpec.DdLive.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.DdLive;
 

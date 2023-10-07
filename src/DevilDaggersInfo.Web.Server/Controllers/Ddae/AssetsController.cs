@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Api.Ddae.Assets;
+using DevilDaggersInfo.Web.ApiSpec.Ddae.Assets;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 using Microsoft.AspNetCore.Mvc;

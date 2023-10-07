@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Api.DdLive.LeaderboardStatistics;
+using DevilDaggersInfo.Web.ApiSpec.DdLive.LeaderboardStatistics;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.DdLive;
 using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 using DevilDaggersInfo.Web.Server.Utils;

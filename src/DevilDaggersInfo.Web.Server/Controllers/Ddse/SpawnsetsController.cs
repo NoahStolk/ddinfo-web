@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Api.Ddse.Spawnsets;
+using DevilDaggersInfo.Web.ApiSpec.Ddse.Spawnsets;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Ddse;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;

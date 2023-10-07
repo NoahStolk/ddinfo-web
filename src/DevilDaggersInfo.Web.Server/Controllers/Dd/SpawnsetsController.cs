@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Api.Dd;
+using DevilDaggersInfo.Web.ApiSpec.Dd;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

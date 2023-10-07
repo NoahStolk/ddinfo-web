@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Api.DdstatsRust;
+using DevilDaggersInfo.Web.ApiSpec.DdstatsRust;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Repositories;

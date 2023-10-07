@@ -1,5 +1,5 @@
 using DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardStatistics;
-using DdLiveApi = DevilDaggersInfo.Api.DdLive.LeaderboardStatistics;
+using DdLiveApi = DevilDaggersInfo.Web.ApiSpec.DdLive.LeaderboardStatistics;
 
 namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.DdLive;
 

@@ -20,13 +20,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DevilDaggersInfo.Web.ApiSpec.Clubber\DevilDaggersInfo.Web.ApiSpec.Clubber.csproj" />
+    <ProjectReference Include="..\DevilDaggersInfo.Web.ApiSpec.Ddae\DevilDaggersInfo.Web.ApiSpec.Ddae.csproj" />
+    <ProjectReference Include="..\DevilDaggersInfo.Web.ApiSpec.DdLive\DevilDaggersInfo.Web.ApiSpec.DdLive.csproj" />
+    <ProjectReference Include="..\DevilDaggersInfo.Web.ApiSpec.Ddse\DevilDaggersInfo.Web.ApiSpec.Ddse.csproj" />
+    <ProjectReference Include="..\DevilDaggersInfo.Web.ApiSpec.Dd\DevilDaggersInfo.Web.ApiSpec.Dd.csproj" />
+    <ProjectReference Include="..\DevilDaggersInfo.Web.ApiSpec.DdstatsRust\DevilDaggersInfo.Web.ApiSpec.DdstatsRust.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.Web.ApiSpec.Tools\DevilDaggersInfo.Web.ApiSpec.Tools.csproj" />
-    <ProjectReference Include="..\DevilDaggersInfo.Api.Clubber\DevilDaggersInfo.Api.Clubber.csproj" />
-    <ProjectReference Include="..\DevilDaggersInfo.Api.Ddae\DevilDaggersInfo.Api.Ddae.csproj" />
-    <ProjectReference Include="..\DevilDaggersInfo.Api.DdLive\DevilDaggersInfo.Api.DdLive.csproj" />
-    <ProjectReference Include="..\DevilDaggersInfo.Api.Ddse\DevilDaggersInfo.Api.Ddse.csproj" />
-    <ProjectReference Include="..\DevilDaggersInfo.Api.Dd\DevilDaggersInfo.Api.Dd.csproj" />
-    <ProjectReference Include="..\DevilDaggersInfo.Api.DdstatsRust\DevilDaggersInfo.Api.DdstatsRust.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.Web.Client\DevilDaggersInfo.Web.Client.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.Web.Server.Domain.Admin\DevilDaggersInfo.Web.Server.Domain.Admin.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.Web.Server.Domain.Main\DevilDaggersInfo.Web.Server.Domain.Main.csproj" />
