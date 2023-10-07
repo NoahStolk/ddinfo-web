@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace DevilDaggersInfo.Api.Admin.Donations;
+namespace DevilDaggersInfo.Web.ApiSpec.Admin.Donations;
 
 public record EditDonation
 {

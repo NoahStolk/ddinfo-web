@@ -1,6 +1,6 @@
-using DevilDaggersInfo.Api.Main.Spawnsets;
+using DevilDaggersInfo.Web.ApiSpec.Main.Spawnsets;
 
-namespace DevilDaggersInfo.Api.Main.CustomLeaderboards;
+namespace DevilDaggersInfo.Web.ApiSpec.Main.CustomLeaderboards;
 
 public record GetCustomEntryData
 {

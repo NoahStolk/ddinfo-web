@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Api.App.CustomLeaderboards;
+namespace DevilDaggersInfo.Web.ApiSpec.App.CustomLeaderboards;
 
 public record GetCustomLeaderboardDaggers
 {

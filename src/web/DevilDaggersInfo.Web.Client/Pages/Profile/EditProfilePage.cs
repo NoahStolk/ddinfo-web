@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Api.Main.Players;
+using DevilDaggersInfo.Web.ApiSpec.Main.Players;
 using DevilDaggersInfo.Web.Client.Authentication;
 using DevilDaggersInfo.Web.Client.Enums;
 using DevilDaggersInfo.Web.Client.Extensions;

@@ -1,8 +1,8 @@
-using DevilDaggersInfo.Api.Admin.CustomEntries;
 using DevilDaggersInfo.Core.Common.Extensions;
 using DevilDaggersInfo.Core.CriteriaExpression;
 using DevilDaggersInfo.Core.CriteriaExpression.Parts;
 using DevilDaggersInfo.Core.Spawnset;
+using DevilDaggersInfo.Web.ApiSpec.Admin.CustomEntries;
 using DevilDaggersInfo.Web.Server.Domain.Admin.Converters.ApiToDomain;
 using DevilDaggersInfo.Web.Server.Domain.Admin.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
@@ -25,7 +25,7 @@ public class CustomLeaderboardService
 		_dbContext = dbContext;
 	}
 
-	public async Task AddCustomLeaderboardAsync(Api.Admin.CustomLeaderboards.AddCustomLeaderboard addCustomLeaderboard)
+	public async Task AddCustomLeaderboardAsync(ApiSpec.Admin.CustomLeaderboards.AddCustomLeaderboard addCustomLeaderboard)
 	{
 		if (_dbContext.CustomLeaderboards.Any(cl => cl.SpawnsetId == addCustomLeaderboard.SpawnsetId))
 			throw new AdminDomainException("A leaderboard for this spawnset already exists.");
@@ -154,7 +154,7 @@ public class CustomLeaderboardService
 		await _dbContext.SaveChangesAsync();
 	}
 
-	public async Task EditCustomLeaderboardAsync(int id, Api.Admin.CustomLeaderboards.EditCustomLeaderboard editCustomLeaderboard)
+	public async Task EditCustomLeaderboardAsync(int id, ApiSpec.Admin.CustomLeaderboards.EditCustomLeaderboard editCustomLeaderboard)
 	{
 		CustomLeaderboardEntity? customLeaderboard = _dbContext.CustomLeaderboards.FirstOrDefault(cl => cl.Id == id);
 		if (customLeaderboard == null)
@@ -404,13 +404,13 @@ public class CustomLeaderboardService
 	private async Task ValidateCustomLeaderboardAsync(
 		int spawnsetId,
 		CustomLeaderboardRankSorting rankSorting,
-		Api.Admin.CustomLeaderboards.AddCustomLeaderboardDaggers customLeaderboardDaggers,
+		ApiSpec.Admin.CustomLeaderboards.AddCustomLeaderboardDaggers customLeaderboardDaggers,
 		bool isFeatured,
-		Api.Admin.CustomLeaderboards.AddCustomLeaderboardCriteria deathTypeCriteria,
-		Api.Admin.CustomLeaderboards.AddCustomLeaderboardCriteria timeCriteria,
-		Api.Admin.CustomLeaderboards.AddCustomLeaderboardCriteria levelUpTime2Criteria,
-		Api.Admin.CustomLeaderboards.AddCustomLeaderboardCriteria levelUpTime3Criteria,
-		Api.Admin.CustomLeaderboards.AddCustomLeaderboardCriteria levelUpTime4Criteria)
+		ApiSpec.Admin.CustomLeaderboards.AddCustomLeaderboardCriteria deathTypeCriteria,
+		ApiSpec.Admin.CustomLeaderboards.AddCustomLeaderboardCriteria timeCriteria,
+		ApiSpec.Admin.CustomLeaderboards.AddCustomLeaderboardCriteria levelUpTime2Criteria,
+		ApiSpec.Admin.CustomLeaderboards.AddCustomLeaderboardCriteria levelUpTime3Criteria,
+		ApiSpec.Admin.CustomLeaderboards.AddCustomLeaderboardCriteria levelUpTime4Criteria)
 	{
 		if (!Enum.IsDefined(rankSorting))
 			throw new CustomLeaderboardValidationException($"Rank sorting '{rankSorting}' is not defined.");
@@ -513,7 +513,7 @@ public class CustomLeaderboardService
 		return expressionBytes;
 	}
 
-	private static int GetDaggerValue(Api.Admin.CustomLeaderboards.CustomLeaderboardRankSorting apiRankSorting, double apiValue)
+	private static int GetDaggerValue(ApiSpec.Admin.CustomLeaderboards.CustomLeaderboardRankSorting apiRankSorting, double apiValue)
 	{
 		if (apiRankSorting.ToDomain().IsTime())
 			return apiValue.To10thMilliTime();

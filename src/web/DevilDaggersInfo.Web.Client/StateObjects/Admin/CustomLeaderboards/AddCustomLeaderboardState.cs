@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Api.Admin.CustomLeaderboards;
+using DevilDaggersInfo.Web.ApiSpec.Admin.CustomLeaderboards;
 using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersInfo.Web.Client.StateObjects.Admin.CustomLeaderboards;

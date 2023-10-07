@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Api.Admin.Users;
+namespace DevilDaggersInfo.Web.ApiSpec.Admin.Users;
 
 public record ResetPassword
 {

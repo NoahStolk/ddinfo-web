@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Api.Main.WorldRecords;
+namespace DevilDaggersInfo.Web.ApiSpec.Main.WorldRecords;
 
 public record GetWorldRecordEntry
 {

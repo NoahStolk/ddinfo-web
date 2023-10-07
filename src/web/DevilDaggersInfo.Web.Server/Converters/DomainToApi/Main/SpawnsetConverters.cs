@@ -3,7 +3,7 @@ using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Main.Converters.DomainToApi;
 using System.Diagnostics;
-using MainApi = DevilDaggersInfo.Api.Main.Spawnsets;
+using MainApi = DevilDaggersInfo.Web.ApiSpec.Main.Spawnsets;
 
 namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 
@@ -50,12 +50,12 @@ public static class SpawnsetConverters
 		};
 	}
 
-	public static DevilDaggersInfo.Api.Main.Spawnsets.HandLevel ToMainApi(this SpawnsetHandLevel handLevel) => handLevel switch
+	public static MainApi.HandLevel ToMainApi(this SpawnsetHandLevel handLevel) => handLevel switch
 	{
-		SpawnsetHandLevel.Level1 => Api.Main.Spawnsets.HandLevel.Level1,
-		SpawnsetHandLevel.Level2 => Api.Main.Spawnsets.HandLevel.Level2,
-		SpawnsetHandLevel.Level3 => Api.Main.Spawnsets.HandLevel.Level3,
-		SpawnsetHandLevel.Level4 => Api.Main.Spawnsets.HandLevel.Level4,
+		SpawnsetHandLevel.Level1 => MainApi.HandLevel.Level1,
+		SpawnsetHandLevel.Level2 => MainApi.HandLevel.Level2,
+		SpawnsetHandLevel.Level3 => MainApi.HandLevel.Level3,
+		SpawnsetHandLevel.Level4 => MainApi.HandLevel.Level4,
 		_ => throw new UnreachableException(),
 	};
 }

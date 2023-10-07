@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Api.Main.WorldRecords;
+using DevilDaggersInfo.Web.ApiSpec.Main.WorldRecords;
 using DevilDaggersInfo.Web.Server.Domain.Main.Repositories;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 using DevilDaggersInfo.Web.Server.Domain.Test.Utils;

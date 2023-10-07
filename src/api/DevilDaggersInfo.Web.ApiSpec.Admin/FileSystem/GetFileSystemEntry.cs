@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Api.Admin.FileSystem;
+namespace DevilDaggersInfo.Web.ApiSpec.Admin.FileSystem;
 
 public record GetFileSystemEntry
 {

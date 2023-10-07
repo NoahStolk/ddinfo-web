@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Api.Admin.Spawnsets;
+namespace DevilDaggersInfo.Web.ApiSpec.Admin.Spawnsets;
 
 public record GetSpawnset
 {

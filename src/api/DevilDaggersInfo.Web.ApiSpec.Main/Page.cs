@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Api.Main;
+namespace DevilDaggersInfo.Web.ApiSpec.Main;
 
 public record Page<T>
 {

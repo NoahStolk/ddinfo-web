@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Api.Main.Donations;
+namespace DevilDaggersInfo.Web.ApiSpec.Main.Donations;
 
 public record GetDonor
 {

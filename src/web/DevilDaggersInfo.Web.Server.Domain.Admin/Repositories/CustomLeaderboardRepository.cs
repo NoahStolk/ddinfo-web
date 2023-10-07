@@ -1,5 +1,5 @@
-using DevilDaggersInfo.Api.Admin;
-using DevilDaggersInfo.Api.Admin.CustomLeaderboards;
+using DevilDaggersInfo.Web.ApiSpec.Admin;
+using DevilDaggersInfo.Web.ApiSpec.Admin.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.Domain.Admin.Converters.DomainToApi;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;

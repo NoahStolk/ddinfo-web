@@ -8,7 +8,7 @@
 @using DevilDaggersInfo.Core.CriteriaExpression.Exceptions
 @using DevilDaggersInfo.Core.CriteriaExpression.Extensions
 @using DevilDaggersInfo.Core.CriteriaExpression.Parts
-@using AdminApi = Api.Admin.CustomLeaderboards
+@using AdminApi = Web.ApiSpec.Admin.CustomLeaderboards
 
 <div class="py-1">
 	<SearchDropdown TKey="AdminApi.CustomLeaderboardCriteriaOperator" Values="_operators" Converter="_operatorConverter" ShowDisplayValue="false" @bind-Value="@Criteria.Operator"/>

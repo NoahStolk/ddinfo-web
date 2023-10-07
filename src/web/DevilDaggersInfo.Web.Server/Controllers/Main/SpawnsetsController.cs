@@ -1,7 +1,7 @@
-using DevilDaggersInfo.Api.Main;
-using DevilDaggersInfo.Api.Main.Spawnsets;
 using DevilDaggersInfo.Core.Common.Extensions;
 using DevilDaggersInfo.Core.Wiki;
+using DevilDaggersInfo.Web.ApiSpec.Main;
+using DevilDaggersInfo.Web.ApiSpec.Main.Spawnsets;
 using DevilDaggersInfo.Web.Client;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 using DevilDaggersInfo.Web.Server.Domain.Entities;

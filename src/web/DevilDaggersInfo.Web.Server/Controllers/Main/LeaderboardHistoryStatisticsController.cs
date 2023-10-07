@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Api.Main.LeaderboardHistoryStatistics;
+using DevilDaggersInfo.Web.ApiSpec.Main.LeaderboardHistoryStatistics;
 using DevilDaggersInfo.Web.Server.Domain.Main.Repositories;
 using Microsoft.AspNetCore.Mvc;
 

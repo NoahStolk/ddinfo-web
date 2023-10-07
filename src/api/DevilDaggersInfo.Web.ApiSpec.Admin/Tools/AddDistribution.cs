@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Api.Admin.Tools;
+namespace DevilDaggersInfo.Web.ApiSpec.Admin.Tools;
 
 public record AddDistribution
 {

@@ -1,5 +1,4 @@
 @page "/custom/leaderboard/{Id:int}"
-@using DevilDaggersInfo.Api.Main.CustomLeaderboards
 @using DevilDaggersInfo.Core.Common
 @using DevilDaggersInfo.Core.Wiki
 @using DevilDaggersInfo.Web.Client.Components
@@ -8,6 +7,7 @@
 @using DevilDaggersInfo.Web.Client.HttpClients
 @using DevilDaggersInfo.Web.Client.Utils
 @using DevilDaggersInfo.Core.CriteriaExpression
+@using DevilDaggersInfo.Web.ApiSpec.Main.CustomLeaderboards
 @inject MainApiHttpClient Http
 
 @if (GetCustomLeaderboard == null)
@@ -135,7 +135,7 @@ else
 						string? daggerCssClass = ce.CustomLeaderboardDagger?.ToCssClass();
 
 						string enemiesKilled = ce.EnemiesKilled.ToString(StringFormats.LeaderboardIntFormat);
-						string enemiesAlive = GetCustomLeaderboard.SpawnsetGameMode == Api.Main.Spawnsets.GameMode.TimeAttack ? "0" : ce.EnemiesAlive.ToString(StringFormats.LeaderboardIntFormat);
+						string enemiesAlive = GetCustomLeaderboard.SpawnsetGameMode == Web.ApiSpec.Main.Spawnsets.GameMode.TimeAttack ? "0" : ce.EnemiesAlive.ToString(StringFormats.LeaderboardIntFormat);
 						string gemsCollected = ce.GemsCollected.ToString(StringFormats.LeaderboardIntFormat);
 						MarkupString gemsDespawned = ce.GemsDespawned.HasValue ? (MarkupString)ce.GemsDespawned.Value.ToString(StringFormats.LeaderboardIntFormat) : MarkupStrings.NoDataMarkup;
 						MarkupString gemsEaten = ce.GemsEaten.HasValue ? (MarkupString)ce.GemsEaten.Value.ToString(StringFormats.LeaderboardIntFormat) : MarkupStrings.NoDataMarkup;

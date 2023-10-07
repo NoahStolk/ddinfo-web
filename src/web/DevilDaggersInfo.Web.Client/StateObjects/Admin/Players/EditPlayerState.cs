@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Api.Admin.Players;
+using DevilDaggersInfo.Web.ApiSpec.Admin.Players;
 using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersInfo.Web.Client.StateObjects.Admin.Players;

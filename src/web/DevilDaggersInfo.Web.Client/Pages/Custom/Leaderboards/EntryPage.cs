@@ -1,9 +1,9 @@
-using DevilDaggersInfo.Api.Main.CustomLeaderboards;
 using DevilDaggersInfo.Core.Common;
 using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Core.Spawnset.Extensions;
 using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Core.Wiki.Objects;
+using DevilDaggersInfo.Web.ApiSpec.Main.CustomLeaderboards;
 using DevilDaggersInfo.Web.Client.Core.CanvasChart.Data;
 using DevilDaggersInfo.Web.Client.Core.CanvasChart.Options.LineChart;
 using DevilDaggersInfo.Web.Client.Extensions;

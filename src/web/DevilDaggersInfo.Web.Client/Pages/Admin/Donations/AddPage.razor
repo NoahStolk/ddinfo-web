@@ -1,13 +1,13 @@
 @page "/admin/donations/add"
 @inherits BaseAdminPage
-@using DevilDaggersInfo.Api.Admin.Donations
-@using DevilDaggersInfo.Api.Admin.Players
 @using DevilDaggersInfo.Web.Client.Components.Admin
 @using DevilDaggersInfo.Web.Client.Components.Input
 @using DevilDaggersInfo.Web.Client.Enums
 @using DevilDaggersInfo.Web.Client.StateObjects.Admin.Donations
 @using DevilDaggersInfo.Web.Core.Claims
 @using Microsoft.AspNetCore.Components
+@using DevilDaggersInfo.Web.ApiSpec.Admin.Donations
+@using DevilDaggersInfo.Web.ApiSpec.Admin.Players
 
 <AdminAuthorizer Base="this" RequiredRole="@Roles.Admin">
 	<AdminAdd TStateObject="AddDonationState" TModel="AddDonation" Name="Donation" OverviewUrl="/admin/donations" ApiCall="Http.AddDonation" StateObject="_addDonationState" OnPopulate="async ac => await PopulateAsync(ac)">

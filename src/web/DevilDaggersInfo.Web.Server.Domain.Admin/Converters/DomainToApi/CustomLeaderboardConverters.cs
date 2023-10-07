@@ -4,7 +4,7 @@ using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Values;
 using DevilDaggersInfo.Web.Server.Domain.Extensions;
 using System.Diagnostics;
-using AdminApi = DevilDaggersInfo.Api.Admin.CustomLeaderboards;
+using AdminApi = DevilDaggersInfo.Web.ApiSpec.Admin.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Admin.Converters.DomainToApi;
 

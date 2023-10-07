@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Api.Admin.CustomEntries;
+namespace DevilDaggersInfo.Web.ApiSpec.Admin.CustomEntries;
 
 public enum CustomEntrySorting
 {

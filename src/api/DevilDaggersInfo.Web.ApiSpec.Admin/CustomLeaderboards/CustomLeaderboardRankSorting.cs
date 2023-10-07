@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Api.Admin.CustomLeaderboards;
+namespace DevilDaggersInfo.Web.ApiSpec.Admin.CustomLeaderboards;
 
 public enum CustomLeaderboardRankSorting
 {

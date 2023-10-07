@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Api.Main.WorldRecords;
+using DevilDaggersInfo.Web.ApiSpec.Main.WorldRecords;
 using DevilDaggersInfo.Web.Server.Domain.Main.Repositories;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Api.Admin.Mods;
+using DevilDaggersInfo.Web.ApiSpec.Admin.Mods;
 using DevilDaggersInfo.Web.Client.Utils;
 using Microsoft.AspNetCore.Components.Forms;
 
@@ -6,7 +6,7 @@ namespace DevilDaggersInfo.Web.Client.Pages.Admin.Mods;
 
 public abstract class BaseAdminModPage : BaseAdminPage
 {
-	protected IReadOnlyDictionary<int, string> ModTypes { get; } = Enum.GetValues<ModTypes>().Where(mt => mt != Api.Admin.Mods.ModTypes.None).ToDictionary(e => (int)e, e => e.ToString());
+	protected IReadOnlyDictionary<int, string> ModTypes { get; } = Enum.GetValues<ModTypes>().Where(mt => mt != ApiSpec.Admin.Mods.ModTypes.None).ToDictionary(e => (int)e, e => e.ToString());
 
 	protected static async Task<Dictionary<string, byte[]>> GetFiles(InputFileChangeEventArgs e, int maximumFileCount, long maxAllowedSize, List<string> errorList)
 	{

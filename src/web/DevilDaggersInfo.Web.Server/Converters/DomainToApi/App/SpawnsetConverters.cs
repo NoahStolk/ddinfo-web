@@ -1,5 +1,5 @@
 using DevilDaggersInfo.Web.Server.Domain.Entities;
-using AppApi = DevilDaggersInfo.Api.App.Spawnsets;
+using AppApi = DevilDaggersInfo.Web.ApiSpec.App.Spawnsets;
 
 namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.App;
 

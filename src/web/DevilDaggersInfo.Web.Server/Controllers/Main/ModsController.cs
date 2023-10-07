@@ -1,6 +1,6 @@
-using DevilDaggersInfo.Api.Main;
-using DevilDaggersInfo.Api.Main.Mods;
 using DevilDaggersInfo.Core.Common.Extensions;
+using DevilDaggersInfo.Web.ApiSpec.Main;
+using DevilDaggersInfo.Web.ApiSpec.Main.Mods;
 using DevilDaggersInfo.Web.Client;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 using DevilDaggersInfo.Web.Server.Domain.Entities;

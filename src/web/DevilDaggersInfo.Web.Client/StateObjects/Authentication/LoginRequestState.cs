@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Api.Main.Authentication;
+using DevilDaggersInfo.Web.ApiSpec.Main.Authentication;
 
 namespace DevilDaggersInfo.Web.Client.StateObjects.Authentication;
 

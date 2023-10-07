@@ -1,6 +1,6 @@
-using DevilDaggersInfo.Api.Main;
-using DevilDaggersInfo.Api.Main.CustomLeaderboards;
-using DevilDaggersInfo.Api.Main.Spawnsets;
+using DevilDaggersInfo.Web.ApiSpec.Main;
+using DevilDaggersInfo.Web.ApiSpec.Main.CustomLeaderboards;
+using DevilDaggersInfo.Web.ApiSpec.Main.Spawnsets;
 using DevilDaggersInfo.Web.Client;
 using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Main;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;

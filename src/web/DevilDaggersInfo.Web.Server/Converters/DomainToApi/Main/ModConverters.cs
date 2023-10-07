@@ -4,7 +4,7 @@ using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;
 using System.Diagnostics;
-using MainApi = DevilDaggersInfo.Api.Main.Mods;
+using MainApi = DevilDaggersInfo.Web.ApiSpec.Main.Mods;
 
 namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 

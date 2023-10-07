@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Api.App.ProcessMemory;
+namespace DevilDaggersInfo.Web.ApiSpec.App.ProcessMemory;
 
 public record GetMarker
 {

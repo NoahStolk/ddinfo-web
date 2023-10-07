@@ -1,6 +1,5 @@
 using DevilDaggersInfo.Web.Core.Claims;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
-using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Main.Converters.DomainToApi;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +16,7 @@ public class PlayerProfileRepository
 		_dbContext = dbContext;
 	}
 
-	public async Task<Api.Main.Players.GetPlayerProfile> GetProfileAsync(ClaimsPrincipal claimsPrincipal, int id)
+	public async Task<ApiSpec.Main.Players.GetPlayerProfile> GetProfileAsync(ClaimsPrincipal claimsPrincipal, int id)
 	{
 		string? userName = claimsPrincipal.GetName();
 		UserEntity? user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Name == userName);
@@ -36,7 +35,7 @@ public class PlayerProfileRepository
 		if (player == null)
 			throw new NotFoundException($"Player with ID '{id}' could not be found.");
 
-		if (player.BanType != BanType.NotBanned)
+		if (player.BanType != Entities.Enums.BanType.NotBanned)
 			throw new InvalidProfileRequestException("Player is banned.");
 
 		return new()

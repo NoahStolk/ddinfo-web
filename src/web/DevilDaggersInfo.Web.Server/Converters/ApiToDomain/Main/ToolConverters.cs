@@ -1,28 +1,28 @@
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using System.Diagnostics;
-using AppApi = DevilDaggersInfo.Api.Main.Tools;
+using MainApi = DevilDaggersInfo.Web.ApiSpec.Main.Tools;
 
 namespace DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Main;
 
 public static class ToolConverters
 {
-	public static ToolPublishMethod ToDomain(this AppApi.ToolPublishMethod publishMethod) => publishMethod switch
+	public static ToolPublishMethod ToDomain(this MainApi.ToolPublishMethod publishMethod) => publishMethod switch
 	{
-		AppApi.ToolPublishMethod.Default => ToolPublishMethod.Default,
-		AppApi.ToolPublishMethod.SelfContained => ToolPublishMethod.SelfContained,
-		AppApi.ToolPublishMethod.Aot => ToolPublishMethod.Aot,
+		MainApi.ToolPublishMethod.Default => ToolPublishMethod.Default,
+		MainApi.ToolPublishMethod.SelfContained => ToolPublishMethod.SelfContained,
+		MainApi.ToolPublishMethod.Aot => ToolPublishMethod.Aot,
 		_ => throw new UnreachableException(),
 	};
 
-	public static ToolBuildType ToDomain(this AppApi.ToolBuildType buildType) => buildType switch
+	public static ToolBuildType ToDomain(this MainApi.ToolBuildType buildType) => buildType switch
 	{
-		AppApi.ToolBuildType.WindowsWpf => ToolBuildType.WindowsWpf,
-		AppApi.ToolBuildType.WindowsConsole => ToolBuildType.WindowsConsole,
-		AppApi.ToolBuildType.WindowsPhotino => ToolBuildType.WindowsPhotino,
-		AppApi.ToolBuildType.LinuxPhotino => ToolBuildType.LinuxPhotino,
-		AppApi.ToolBuildType.WindowsWarp => ToolBuildType.WindowsWarp,
-		AppApi.ToolBuildType.LinuxWarp => ToolBuildType.LinuxWarp,
-		AppApi.ToolBuildType.LinuxConsole => ToolBuildType.LinuxConsole,
+		MainApi.ToolBuildType.WindowsWpf => ToolBuildType.WindowsWpf,
+		MainApi.ToolBuildType.WindowsConsole => ToolBuildType.WindowsConsole,
+		MainApi.ToolBuildType.WindowsPhotino => ToolBuildType.WindowsPhotino,
+		MainApi.ToolBuildType.LinuxPhotino => ToolBuildType.LinuxPhotino,
+		MainApi.ToolBuildType.WindowsWarp => ToolBuildType.WindowsWarp,
+		MainApi.ToolBuildType.LinuxWarp => ToolBuildType.LinuxWarp,
+		MainApi.ToolBuildType.LinuxConsole => ToolBuildType.LinuxConsole,
 		_ => throw new UnreachableException(),
 	};
 }

@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Api.Admin.BackgroundServices;
+using DevilDaggersInfo.Web.ApiSpec.Admin.BackgroundServices;
 using DevilDaggersInfo.Web.Core.Claims;
 using DevilDaggersInfo.Web.Server.Services;
 using Microsoft.AspNetCore.Authorization;

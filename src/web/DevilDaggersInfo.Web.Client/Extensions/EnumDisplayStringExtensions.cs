@@ -1,5 +1,5 @@
-using DevilDaggersInfo.Api.Main.CustomLeaderboards;
 using DevilDaggersInfo.Core.Spawnset;
+using DevilDaggersInfo.Web.ApiSpec.Main.CustomLeaderboards;
 using System.Diagnostics;
 
 namespace DevilDaggersInfo.Web.Client.Extensions;
@@ -43,11 +43,11 @@ public static class EnumDisplayStringExtensions
 		_ => throw new UnreachableException(),
 	};
 
-	public static GameMode ToCore(this Api.Main.Spawnsets.GameMode gameMode) => gameMode switch
+	public static GameMode ToCore(this ApiSpec.Main.Spawnsets.GameMode gameMode) => gameMode switch
 	{
-		Api.Main.Spawnsets.GameMode.Survival => GameMode.Survival,
-		Api.Main.Spawnsets.GameMode.TimeAttack => GameMode.TimeAttack,
-		Api.Main.Spawnsets.GameMode.Race => GameMode.Race,
+		ApiSpec.Main.Spawnsets.GameMode.Survival => GameMode.Survival,
+		ApiSpec.Main.Spawnsets.GameMode.TimeAttack => GameMode.TimeAttack,
+		ApiSpec.Main.Spawnsets.GameMode.Race => GameMode.Race,
 		_ => throw new UnreachableException(),
 	};
 }

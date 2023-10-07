@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Api.Main.Players;
+using DevilDaggersInfo.Web.ApiSpec.Main.Players;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Main.Converters.DomainToApi;

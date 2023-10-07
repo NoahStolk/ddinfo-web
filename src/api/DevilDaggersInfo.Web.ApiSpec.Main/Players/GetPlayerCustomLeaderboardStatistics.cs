@@ -1,7 +1,7 @@
-using DevilDaggersInfo.Api.Main.CustomLeaderboards;
-using DevilDaggersInfo.Api.Main.Spawnsets;
+using DevilDaggersInfo.Web.ApiSpec.Main.CustomLeaderboards;
+using DevilDaggersInfo.Web.ApiSpec.Main.Spawnsets;
 
-namespace DevilDaggersInfo.Api.Main.Players;
+namespace DevilDaggersInfo.Web.ApiSpec.Main.Players;
 
 public record GetPlayerCustomLeaderboardStatistics
 {

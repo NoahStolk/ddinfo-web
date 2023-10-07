@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace DevilDaggersInfo.Api.Admin.CustomEntries;
+namespace DevilDaggersInfo.Web.ApiSpec.Admin.CustomEntries;
 
 public record AddCustomEntry
 {

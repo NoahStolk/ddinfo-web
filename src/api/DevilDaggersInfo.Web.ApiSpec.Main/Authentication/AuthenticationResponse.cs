@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Api.Main.Authentication;
+namespace DevilDaggersInfo.Web.ApiSpec.Main.Authentication;
 
 public record AuthenticationResponse
 {

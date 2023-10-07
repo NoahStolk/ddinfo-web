@@ -1,6 +1,5 @@
 using DevilDaggersInfo.Web.Core.Claims;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
-using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Main.Converters.ApiToDomain;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +16,7 @@ public class PlayerProfileService
 		_dbContext = dbContext;
 	}
 
-	public async Task UpdateProfileAsync(ClaimsPrincipal claimsPrincipal, int id, Api.Main.Players.EditPlayerProfile editPlayerProfile)
+	public async Task UpdateProfileAsync(ClaimsPrincipal claimsPrincipal, int id, ApiSpec.Main.Players.EditPlayerProfile editPlayerProfile)
 	{
 		string? userName = claimsPrincipal.GetName();
 		UserEntity? user = _dbContext.Users.FirstOrDefault(u => u.Name == userName);
@@ -34,7 +33,7 @@ public class PlayerProfileService
 		if (player == null)
 			throw new NotFoundException($"Player with ID '{id}' could not be found.");
 
-		if (player.BanType != BanType.NotBanned)
+		if (player.BanType != Entities.Enums.BanType.NotBanned)
 			throw new InvalidProfileRequestException("Player is banned.");
 
 		player.CountryCode = editPlayerProfile.CountryCode;

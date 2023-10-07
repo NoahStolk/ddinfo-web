@@ -6,19 +6,19 @@
 
 #nullable enable
 
-using DevilDaggersInfo.Api.Main;
-using DevilDaggersInfo.Api.Main.Authentication;
-using DevilDaggersInfo.Api.Main.CustomLeaderboards;
-using DevilDaggersInfo.Api.Main.Donations;
-using DevilDaggersInfo.Api.Main.LeaderboardHistory;
-using DevilDaggersInfo.Api.Main.LeaderboardHistoryStatistics;
-using DevilDaggersInfo.Api.Main.LeaderboardStatistics;
-using DevilDaggersInfo.Api.Main.Leaderboards;
-using DevilDaggersInfo.Api.Main.Mods;
-using DevilDaggersInfo.Api.Main.Players;
-using DevilDaggersInfo.Api.Main.Spawnsets;
-using DevilDaggersInfo.Api.Main.Tools;
-using DevilDaggersInfo.Api.Main.WorldRecords;
+using DevilDaggersInfo.Web.ApiSpec.Main;
+using DevilDaggersInfo.Web.ApiSpec.Main.Authentication;
+using DevilDaggersInfo.Web.ApiSpec.Main.CustomLeaderboards;
+using DevilDaggersInfo.Web.ApiSpec.Main.Donations;
+using DevilDaggersInfo.Web.ApiSpec.Main.LeaderboardHistory;
+using DevilDaggersInfo.Web.ApiSpec.Main.LeaderboardHistoryStatistics;
+using DevilDaggersInfo.Web.ApiSpec.Main.Leaderboards;
+using DevilDaggersInfo.Web.ApiSpec.Main.LeaderboardStatistics;
+using DevilDaggersInfo.Web.ApiSpec.Main.Mods;
+using DevilDaggersInfo.Web.ApiSpec.Main.Players;
+using DevilDaggersInfo.Web.ApiSpec.Main.Spawnsets;
+using DevilDaggersInfo.Web.ApiSpec.Main.Tools;
+using DevilDaggersInfo.Web.ApiSpec.Main.WorldRecords;
 using System.Net.Http.Json;
 
 namespace DevilDaggersInfo.Web.Client.HttpClients;

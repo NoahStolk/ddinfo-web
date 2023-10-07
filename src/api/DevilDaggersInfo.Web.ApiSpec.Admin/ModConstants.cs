@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Api.Admin;
+namespace DevilDaggersInfo.Web.ApiSpec.Admin;
 
 public static class ModConstants
 {

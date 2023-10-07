@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Api.Main.Players;
+using DevilDaggersInfo.Web.ApiSpec.Main.Players;
 using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersInfo.Web.Client.StateObjects.Profile;

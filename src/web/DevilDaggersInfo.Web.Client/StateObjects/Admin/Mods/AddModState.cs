@@ -1,5 +1,5 @@
-using DevilDaggersInfo.Api.Admin;
-using DevilDaggersInfo.Api.Admin.Mods;
+using DevilDaggersInfo.Web.ApiSpec.Admin;
+using DevilDaggersInfo.Web.ApiSpec.Admin.Mods;
 using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersInfo.Web.Client.StateObjects.Admin.Mods;

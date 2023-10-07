@@ -2,7 +2,6 @@ using DevilDaggersInfo.Core.Common.Extensions;
 using DevilDaggersInfo.Core.Mod;
 using DevilDaggersInfo.Web.Server.Domain.Admin.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
-using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Services;
 using Microsoft.EntityFrameworkCore;
@@ -22,7 +21,7 @@ public class ModService
 		_modScreenshotProcessor = modScreenshotProcessor;
 	}
 
-	public async Task AddModAsync(Api.Admin.Mods.AddMod addMod)
+	public async Task AddModAsync(ApiSpec.Admin.Mods.AddMod addMod)
 	{
 		ValidateName(addMod.Name);
 
@@ -45,7 +44,7 @@ public class ModService
 
 		ModEntity mod = new()
 		{
-			ModTypes = addMod.ModTypes?.ToFlagEnum<ModTypes>() ?? ModTypes.None,
+			ModTypes = addMod.ModTypes?.ToFlagEnum<Entities.Enums.ModTypes>() ?? Entities.Enums.ModTypes.None,
 			HtmlDescription = addMod.HtmlDescription,
 			IsHidden = addMod.IsHidden,
 			LastUpdated = DateTime.UtcNow,
@@ -60,7 +59,7 @@ public class ModService
 		await _dbContext.SaveChangesAsync();
 	}
 
-	public async Task EditModAsync(int id, Api.Admin.Mods.EditMod editMod)
+	public async Task EditModAsync(int id, ApiSpec.Admin.Mods.EditMod editMod)
 	{
 		ValidateName(editMod.Name);
 
@@ -93,7 +92,7 @@ public class ModService
 
 		_modScreenshotProcessor.ProcessModScreenshotUpload(editMod.Name, editMod.Screenshots);
 
-		mod.ModTypes = editMod.ModTypes?.ToFlagEnum<ModTypes>() ?? ModTypes.None;
+		mod.ModTypes = editMod.ModTypes?.ToFlagEnum<Entities.Enums.ModTypes>() ?? Entities.Enums.ModTypes.None;
 		mod.HtmlDescription = editMod.HtmlDescription;
 		mod.IsHidden = editMod.IsHidden;
 		mod.Name = editMod.Name;

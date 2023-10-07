@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Api.Main.Tools;
+namespace DevilDaggersInfo.Web.ApiSpec.Main.Tools;
 
 public record GetToolVersion
 {

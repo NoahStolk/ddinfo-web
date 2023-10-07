@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Api.Admin.Caches;
+namespace DevilDaggersInfo.Web.ApiSpec.Admin.Caches;
 
 public record GetCacheEntry
 {

@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Api.Admin.Players;
+using DevilDaggersInfo.Web.ApiSpec.Admin.Players;
 using System.Diagnostics;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Admin.Converters.ApiToDomain;

@@ -6,19 +6,19 @@
 
 #nullable enable
 
-using DevilDaggersInfo.Api.Admin;
-using DevilDaggersInfo.Api.Admin.BackgroundServices;
-using DevilDaggersInfo.Api.Admin.Caches;
-using DevilDaggersInfo.Api.Admin.CustomEntries;
-using DevilDaggersInfo.Api.Admin.CustomLeaderboards;
-using DevilDaggersInfo.Api.Admin.Database;
-using DevilDaggersInfo.Api.Admin.Donations;
-using DevilDaggersInfo.Api.Admin.FileSystem;
-using DevilDaggersInfo.Api.Admin.Mods;
-using DevilDaggersInfo.Api.Admin.Players;
-using DevilDaggersInfo.Api.Admin.Spawnsets;
-using DevilDaggersInfo.Api.Admin.Tools;
-using DevilDaggersInfo.Api.Admin.Users;
+using DevilDaggersInfo.Web.ApiSpec.Admin;
+using DevilDaggersInfo.Web.ApiSpec.Admin.BackgroundServices;
+using DevilDaggersInfo.Web.ApiSpec.Admin.Caches;
+using DevilDaggersInfo.Web.ApiSpec.Admin.CustomEntries;
+using DevilDaggersInfo.Web.ApiSpec.Admin.CustomLeaderboards;
+using DevilDaggersInfo.Web.ApiSpec.Admin.Database;
+using DevilDaggersInfo.Web.ApiSpec.Admin.Donations;
+using DevilDaggersInfo.Web.ApiSpec.Admin.FileSystem;
+using DevilDaggersInfo.Web.ApiSpec.Admin.Mods;
+using DevilDaggersInfo.Web.ApiSpec.Admin.Players;
+using DevilDaggersInfo.Web.ApiSpec.Admin.Spawnsets;
+using DevilDaggersInfo.Web.ApiSpec.Admin.Tools;
+using DevilDaggersInfo.Web.ApiSpec.Admin.Users;
 using System.Net.Http.Json;
 
 namespace DevilDaggersInfo.Web.Client.HttpClients;

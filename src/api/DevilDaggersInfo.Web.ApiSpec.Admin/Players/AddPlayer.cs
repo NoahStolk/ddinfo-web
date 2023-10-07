@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace DevilDaggersInfo.Api.Admin.Players;
+namespace DevilDaggersInfo.Web.ApiSpec.Admin.Players;
 
 public record AddPlayer
 {

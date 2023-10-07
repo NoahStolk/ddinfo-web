@@ -1,7 +1,7 @@
-using DevilDaggersInfo.Api.Admin;
-using DevilDaggersInfo.Api.Admin.Mods;
-using DevilDaggersInfo.Api.Admin.Players;
 using DevilDaggersInfo.Core.Common.Extensions;
+using DevilDaggersInfo.Web.ApiSpec.Admin;
+using DevilDaggersInfo.Web.ApiSpec.Admin.Mods;
+using DevilDaggersInfo.Web.ApiSpec.Admin.Players;
 using DevilDaggersInfo.Web.Client.Components.Admin;
 using DevilDaggersInfo.Web.Client.Enums;
 using DevilDaggersInfo.Web.Client.StateObjects.Admin.Mods;

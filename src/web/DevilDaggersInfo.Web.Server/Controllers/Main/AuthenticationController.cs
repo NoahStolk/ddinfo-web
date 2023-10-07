@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Api.Main.Authentication;
+using DevilDaggersInfo.Web.ApiSpec.Main.Authentication;
 using DevilDaggersInfo.Web.Server.Domain.Main.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

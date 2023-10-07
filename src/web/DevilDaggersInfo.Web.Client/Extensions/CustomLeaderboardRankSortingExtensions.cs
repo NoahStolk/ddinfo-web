@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Core.Common;
-using ApiAdmin = DevilDaggersInfo.Api.Admin.CustomLeaderboards;
-using ApiMain = DevilDaggersInfo.Api.Main.CustomLeaderboards;
+using ApiAdmin = DevilDaggersInfo.Web.ApiSpec.Admin.CustomLeaderboards;
+using ApiMain = DevilDaggersInfo.Web.ApiSpec.Main.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Client.Extensions;
 

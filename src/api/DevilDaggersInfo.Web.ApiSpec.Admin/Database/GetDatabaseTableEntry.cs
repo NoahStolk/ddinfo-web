@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Api.Admin.Database;
+namespace DevilDaggersInfo.Web.ApiSpec.Admin.Database;
 
 public record GetDatabaseTableEntry
 {

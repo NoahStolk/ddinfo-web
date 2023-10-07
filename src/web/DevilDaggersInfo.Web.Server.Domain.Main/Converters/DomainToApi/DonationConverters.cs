@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Api.Main.Donations;
+using DevilDaggersInfo.Web.ApiSpec.Main.Donations;
 using System.Diagnostics;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Main.Converters.DomainToApi;

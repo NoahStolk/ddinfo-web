@@ -1,7 +1,7 @@
-using DevilDaggersInfo.Api.Main.LeaderboardStatistics;
 using DevilDaggersInfo.Core.Common;
 using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Core.Wiki.Objects;
+using DevilDaggersInfo.Web.ApiSpec.Main.LeaderboardStatistics;
 using DevilDaggersInfo.Web.Client.Core.CanvasChart.Data;
 using DevilDaggersInfo.Web.Client.Core.CanvasChart.Options.BarChart;
 using DevilDaggersInfo.Web.Client.Utils;

@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Api.Admin.Database;
+using DevilDaggersInfo.Web.ApiSpec.Admin.Database;
 using DevilDaggersInfo.Web.Core.Claims;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;

@@ -1,5 +1,5 @@
-using DevilDaggersInfo.Api.Main.CustomLeaderboards;
 using DevilDaggersInfo.Core.Common.Extensions;
+using DevilDaggersInfo.Web.ApiSpec.Main.CustomLeaderboards;
 using Microsoft.AspNetCore.Components;
 using System.Net;
 

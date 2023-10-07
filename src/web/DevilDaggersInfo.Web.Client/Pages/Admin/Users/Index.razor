@@ -1,9 +1,9 @@
 @page "/admin/users"
 @inherits BaseAdminPage
-@using DevilDaggersInfo.Api.Admin.Users
 @using DevilDaggersInfo.Web.Client.Components
 @using DevilDaggersInfo.Web.Client.Components.Admin
 @using DevilDaggersInfo.Web.Core.Claims
+@using DevilDaggersInfo.Web.ApiSpec.Admin.Users
 
 <AdminAuthorizer Base="this" RequiredRole="@Roles.Players">
 	<Heading Title="Admin - Users" />

@@ -1,7 +1,7 @@
 using DevilDaggersInfo.Core.CriteriaExpression;
 using System.Diagnostics;
-using AdminApi = DevilDaggersInfo.Api.Admin.CustomLeaderboards;
-using MainApi = DevilDaggersInfo.Api.Main.CustomLeaderboards;
+using AdminApi = DevilDaggersInfo.Web.ApiSpec.Admin.CustomLeaderboards;
+using MainApi = DevilDaggersInfo.Web.ApiSpec.Main.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Client.Extensions;
 

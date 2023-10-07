@@ -1,5 +1,5 @@
 using DevilDaggersInfo.Web.Server.Domain.Commands.CustomEntries;
-using AppApi = DevilDaggersInfo.Api.App.CustomLeaderboards;
+using AppApi = DevilDaggersInfo.Web.ApiSpec.App.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Server.Converters.ApiToDomain.App;
 

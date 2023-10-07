@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Api.App.Updates;
+namespace DevilDaggersInfo.Web.ApiSpec.App.Updates;
 
 public record GetLatestVersion
 {

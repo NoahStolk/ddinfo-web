@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Api.Admin;
+using DevilDaggersInfo.Web.ApiSpec.Admin;
 using DevilDaggersInfo.Web.Client.Pages;
 using DevilDaggersInfo.Web.Core.Claims;
 using Microsoft.AspNetCore.Components;

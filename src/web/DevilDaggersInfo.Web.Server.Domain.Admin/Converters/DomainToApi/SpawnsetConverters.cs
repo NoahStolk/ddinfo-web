@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Api.Admin.Spawnsets;
+using DevilDaggersInfo.Web.ApiSpec.Admin.Spawnsets;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Extensions;
 

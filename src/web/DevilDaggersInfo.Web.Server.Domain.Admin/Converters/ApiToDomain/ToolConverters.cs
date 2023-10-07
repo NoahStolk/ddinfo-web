@@ -1,5 +1,5 @@
 using System.Diagnostics;
-using AdminApi = DevilDaggersInfo.Api.Admin.Tools;
+using AdminApi = DevilDaggersInfo.Web.ApiSpec.Admin.Tools;
 using ToolBuildType = DevilDaggersInfo.Web.Server.Domain.Entities.Enums.ToolBuildType;
 using ToolPublishMethod = DevilDaggersInfo.Web.Server.Domain.Entities.Enums.ToolPublishMethod;
 

@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Api.Main.Spawnsets;
+using DevilDaggersInfo.Web.ApiSpec.Main.Spawnsets;
 using System.Diagnostics;
 
 namespace DevilDaggersInfo.Web.Client.Extensions;

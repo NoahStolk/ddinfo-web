@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Api.Admin.BackgroundServices;
+using DevilDaggersInfo.Web.ApiSpec.Admin.BackgroundServices;
 using System.Collections.Concurrent;
 
 namespace DevilDaggersInfo.Web.Server.Services;

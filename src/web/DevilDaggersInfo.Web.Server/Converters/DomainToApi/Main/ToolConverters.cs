@@ -1,7 +1,7 @@
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Models.Tools;
 using System.Diagnostics;
-using MainApi = DevilDaggersInfo.Api.Main.Tools;
+using MainApi = DevilDaggersInfo.Web.ApiSpec.Main.Tools;
 
 namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 

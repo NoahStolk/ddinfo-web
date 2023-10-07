@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Api.Main.Leaderboards;
+using DevilDaggersInfo.Web.ApiSpec.Main.Leaderboards;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 using Microsoft.AspNetCore.Mvc;

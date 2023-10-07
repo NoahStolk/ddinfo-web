@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Api.Main.WorldRecords;
+using DevilDaggersInfo.Web.ApiSpec.Main.WorldRecords;
 using System.Diagnostics;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Main.Converters.DomainToApi;

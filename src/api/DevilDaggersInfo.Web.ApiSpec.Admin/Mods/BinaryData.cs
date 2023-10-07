@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace DevilDaggersInfo.Api.Admin.Mods;
+namespace DevilDaggersInfo.Web.ApiSpec.Admin.Mods;
 
 public record BinaryData
 {

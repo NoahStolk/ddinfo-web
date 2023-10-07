@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Api.Admin.Players;
+using DevilDaggersInfo.Web.ApiSpec.Admin.Players;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using System.Diagnostics;
 

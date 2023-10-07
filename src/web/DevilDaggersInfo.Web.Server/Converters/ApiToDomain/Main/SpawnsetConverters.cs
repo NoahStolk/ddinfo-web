@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using System.Diagnostics;
-using MainApi = DevilDaggersInfo.Api.Main.Spawnsets;
+using MainApi = DevilDaggersInfo.Web.ApiSpec.Main.Spawnsets;
 
 namespace DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Main;
 

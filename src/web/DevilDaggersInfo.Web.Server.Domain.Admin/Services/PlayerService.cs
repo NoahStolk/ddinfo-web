@@ -1,7 +1,6 @@
 using DevilDaggersInfo.Web.Server.Domain.Admin.Converters.ApiToDomain;
 using DevilDaggersInfo.Web.Server.Domain.Admin.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
-using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 using Microsoft.EntityFrameworkCore;
@@ -19,7 +18,7 @@ public class PlayerService
 		_ddLeaderboardService = ddLeaderboardService;
 	}
 
-	public async Task AddPlayerAsync(Api.Admin.Players.AddPlayer addPlayer)
+	public async Task AddPlayerAsync(ApiSpec.Admin.Players.AddPlayer addPlayer)
 	{
 		Validate(
 			banType: addPlayer.BanType.ToDomain(),
@@ -78,7 +77,7 @@ public class PlayerService
 		await _dbContext.SaveChangesAsync();
 	}
 
-	public async Task EditPlayerAsync(int id, Api.Admin.Players.EditPlayer editPlayer)
+	public async Task EditPlayerAsync(int id, ApiSpec.Admin.Players.EditPlayer editPlayer)
 	{
 		Validate(
 			banType: editPlayer.BanType.ToDomain(),
@@ -181,7 +180,7 @@ public class PlayerService
 	}
 
 	private static void Validate(
-		BanType banType,
+		Entities.Enums.BanType banType,
 		string? countryCode,
 		int? dpi,
 		float? inGameSens,
@@ -192,11 +191,11 @@ public class PlayerService
 		bool? usesLegacyAudio,
 		bool? usesHrtf,
 		bool? usesInvertY,
-		VerticalSync verticalSync,
+		Entities.Enums.VerticalSync verticalSync,
 		string? banDescription,
 		int? banResponsibleId)
 	{
-		if (banType != BanType.NotBanned)
+		if (banType != Entities.Enums.BanType.NotBanned)
 		{
 			if (!string.IsNullOrWhiteSpace(countryCode))
 				throw new AdminDomainException("Banned players must not have a country code.");
@@ -210,7 +209,7 @@ public class PlayerService
 				usesLegacyAudio.HasValue ||
 				usesHrtf.HasValue ||
 				usesInvertY.HasValue ||
-				verticalSync != VerticalSync.Unknown)
+				verticalSync != Entities.Enums.VerticalSync.Unknown)
 			{
 				throw new AdminDomainException("Banned players must not have settings.");
 			}

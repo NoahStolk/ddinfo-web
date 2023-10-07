@@ -1,11 +1,11 @@
-using DevilDaggersInfo.Api.Main.Leaderboards;
-using DevilDaggersInfo.Api.Main.Mods;
-using DevilDaggersInfo.Api.Main.Players;
-using DevilDaggersInfo.Api.Main.Spawnsets;
 using DevilDaggersInfo.Core.Common;
 using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Core.Wiki.Extensions;
 using DevilDaggersInfo.Core.Wiki.Objects;
+using DevilDaggersInfo.Web.ApiSpec.Main.Leaderboards;
+using DevilDaggersInfo.Web.ApiSpec.Main.Mods;
+using DevilDaggersInfo.Web.ApiSpec.Main.Players;
+using DevilDaggersInfo.Web.ApiSpec.Main.Spawnsets;
 using DevilDaggersInfo.Web.Client.Core.CanvasChart.Data;
 using DevilDaggersInfo.Web.Client.Core.CanvasChart.Enums;
 using DevilDaggersInfo.Web.Client.Core.CanvasChart.Options.LineChart;

@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using System.Diagnostics;
-using MainApi = DevilDaggersInfo.Api.Main.CustomLeaderboards;
+using MainApi = DevilDaggersInfo.Web.ApiSpec.Main.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Main.Converters.DomainToApi;
 

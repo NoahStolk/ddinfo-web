@@ -1,5 +1,5 @@
-using DevilDaggersInfo.Api.Main;
-using DevilDaggersInfo.Api.Main.Spawnsets;
+using DevilDaggersInfo.Web.ApiSpec.Main;
+using DevilDaggersInfo.Web.ApiSpec.Main.Spawnsets;
 using DevilDaggersInfo.Web.Client.Extensions;
 using DevilDaggersInfo.Web.Client.Utils;
 using Microsoft.AspNetCore.Components;

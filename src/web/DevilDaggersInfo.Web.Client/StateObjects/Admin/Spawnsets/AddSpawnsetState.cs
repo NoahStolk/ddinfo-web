@@ -1,5 +1,5 @@
-using DevilDaggersInfo.Api.Admin;
-using DevilDaggersInfo.Api.Admin.Spawnsets;
+using DevilDaggersInfo.Web.ApiSpec.Admin;
+using DevilDaggersInfo.Web.ApiSpec.Admin.Spawnsets;
 using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersInfo.Web.Client.StateObjects.Admin.Spawnsets;

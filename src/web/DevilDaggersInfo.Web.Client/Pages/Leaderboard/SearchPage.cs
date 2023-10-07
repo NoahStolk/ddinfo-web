@@ -1,6 +1,6 @@
-using DevilDaggersInfo.Api.Main.Leaderboards;
-using DevilDaggersInfo.Api.Main.Players;
 using DevilDaggersInfo.Core.Common.Extensions;
+using DevilDaggersInfo.Web.ApiSpec.Main.Leaderboards;
+using DevilDaggersInfo.Web.ApiSpec.Main.Players;
 using DevilDaggersInfo.Web.Client.Extensions;
 using Microsoft.AspNetCore.Components;
 using System.Diagnostics.CodeAnalysis;

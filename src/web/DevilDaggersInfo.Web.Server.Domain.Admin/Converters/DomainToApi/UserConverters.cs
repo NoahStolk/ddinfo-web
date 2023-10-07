@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Api.Admin.Users;
+using DevilDaggersInfo.Web.ApiSpec.Admin.Users;
 using DevilDaggersInfo.Web.Core.Claims;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 

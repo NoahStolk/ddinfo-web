@@ -1,5 +1,5 @@
-using DevilDaggersInfo.Api.Main.CustomLeaderboards;
-using DevilDaggersInfo.Api.Main.Spawnsets;
+using DevilDaggersInfo.Web.ApiSpec.Main.CustomLeaderboards;
+using DevilDaggersInfo.Web.ApiSpec.Main.Spawnsets;
 using DevilDaggersInfo.Web.Client.Extensions;
 using DevilDaggersInfo.Web.Client.HttpClients;
 using DevilDaggersInfo.Web.Client.Utils;
@@ -14,7 +14,7 @@ public partial class GlobalPage
 
 	[Parameter]
 	[SupplyParameterFromQuery]
-	public string GameMode { get; set; } = nameof(DevilDaggersInfo.Api.Main.Spawnsets.GameMode.Survival);
+	public string GameMode { get; set; } = nameof(ApiSpec.Main.Spawnsets.GameMode.Survival);
 
 	[Parameter]
 	[SupplyParameterFromQuery]

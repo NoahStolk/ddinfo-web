@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Api.Admin.Donations;
+namespace DevilDaggersInfo.Web.ApiSpec.Admin.Donations;
 
 public record GetDonationForOverview : IAdminOverviewGetDto
 {

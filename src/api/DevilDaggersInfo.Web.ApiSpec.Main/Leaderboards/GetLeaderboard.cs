@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Api.Main.Leaderboards;
+namespace DevilDaggersInfo.Web.ApiSpec.Main.Leaderboards;
 
 public record GetLeaderboard : IGetLeaderboardGlobalDto
 {

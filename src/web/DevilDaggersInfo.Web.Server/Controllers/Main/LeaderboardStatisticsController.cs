@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Api.Main.LeaderboardStatistics;
+using DevilDaggersInfo.Web.ApiSpec.Main.LeaderboardStatistics;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 using DevilDaggersInfo.Web.Server.Utils;

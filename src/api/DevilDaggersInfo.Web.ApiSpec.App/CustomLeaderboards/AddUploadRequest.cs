@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace DevilDaggersInfo.Api.App.CustomLeaderboards;
+namespace DevilDaggersInfo.Web.ApiSpec.App.CustomLeaderboards;
 
 public record AddUploadRequest
 {

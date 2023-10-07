@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Api.Admin.Tools;
+using DevilDaggersInfo.Web.ApiSpec.Admin.Tools;
 
 namespace DevilDaggersInfo.Web.Client.StateObjects.Admin.Tools;
 

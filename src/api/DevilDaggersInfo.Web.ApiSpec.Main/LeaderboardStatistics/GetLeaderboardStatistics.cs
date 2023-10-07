@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Api.Main.LeaderboardStatistics;
+namespace DevilDaggersInfo.Web.ApiSpec.Main.LeaderboardStatistics;
 
 public record GetLeaderboardStatistics
 {

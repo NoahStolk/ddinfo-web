@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Api.Main.LeaderboardHistory;
+namespace DevilDaggersInfo.Web.ApiSpec.Main.LeaderboardHistory;
 
 public record GetLeaderboardHistory : IGetLeaderboardGlobalDto
 {

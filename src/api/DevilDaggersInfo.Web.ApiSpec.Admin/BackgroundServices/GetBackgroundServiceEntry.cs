@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Api.Admin.BackgroundServices;
+namespace DevilDaggersInfo.Web.ApiSpec.Admin.BackgroundServices;
 
 public record GetBackgroundServiceEntry
 {
