@@ -23,9 +23,13 @@ public class ToolRepository
 		_logger = logger;
 	}
 
-	private async Task<string> GetJsonString(string name)
+	private async Task<string?> GetJsonString(string name)
 	{
-		return await File.ReadAllTextAsync(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Tools), $"{name}.json"));
+		string filePath = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Tools), $"{name}.json");
+		if (!File.Exists(filePath))
+			return null;
+
+		return await File.ReadAllTextAsync(filePath);
 	}
 
 	public async Task<Tool?> GetToolAsync(string name)
@@ -42,10 +46,11 @@ public class ToolRepository
 			.GroupBy(td => td.VersionNumber)
 			.ToDictionary(td => td.Key, td => td.Sum(g => g.DownloadCount));
 
-		List<ChangelogEntry> changelog = JsonConvert.DeserializeObject<List<ChangelogEntry>>(await GetJsonString(name)) ?? throw new("Could not deserialize Changelogs.json.");
+		string? changelogJsonString = await GetJsonString(name);
+		List<ChangelogEntry>? changelog = changelogJsonString == null ? null : JsonConvert.DeserializeObject<List<ChangelogEntry>>(changelogJsonString);
 		return new()
 		{
-			Changelog = changelog.ConvertAll(ce => new ToolVersion
+			Changelog = changelog?.ConvertAll(ce => new ToolVersion
 			{
 				Changes = ce.Changes.Select(ToModel).ToList(),
 				Date = ce.Date,
