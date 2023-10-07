@@ -22,8 +22,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\api\DevilDaggersInfo.Api.Admin\DevilDaggersInfo.Api.Admin.csproj" />
-    <ProjectReference Include="..\..\api\DevilDaggersInfo.Api.Main\DevilDaggersInfo.Api.Main.csproj" />
+    <ProjectReference Include="..\..\api\DevilDaggersInfo.Web.ApiSpec.Admin\DevilDaggersInfo.Web.ApiSpec.Admin.csproj" />
+    <ProjectReference Include="..\..\api\DevilDaggersInfo.Web.ApiSpec.Main\DevilDaggersInfo.Web.ApiSpec.Main.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.Web.Core.Claims\DevilDaggersInfo.Web.Core.Claims.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.Web.Client.Core.CanvasArena\DevilDaggersInfo.Web.Client.Core.CanvasArena.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.Web.Client.Core.CanvasChart\DevilDaggersInfo.Web.Client.Core.CanvasChart.csproj" />

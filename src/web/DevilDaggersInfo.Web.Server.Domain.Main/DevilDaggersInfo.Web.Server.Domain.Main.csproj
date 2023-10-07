@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\..\api\DevilDaggersInfo.Api.Main\DevilDaggersInfo.Api.Main.csproj" />
+    <ProjectReference Include="..\..\api\DevilDaggersInfo.Web.ApiSpec.Main\DevilDaggersInfo.Web.ApiSpec.Main.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.Web.Server.Domain\DevilDaggersInfo.Web.Server.Domain.csproj" />
   </ItemGroup>
 
