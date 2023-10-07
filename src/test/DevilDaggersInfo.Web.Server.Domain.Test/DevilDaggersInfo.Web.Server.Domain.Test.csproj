@@ -27,7 +27,7 @@
 
   <ItemGroup>
     <!-- TODO: Reference DevilDaggersInfo.Web.Server.Domain or rename the test project. -->
-    <ProjectReference Include="..\..\web\DevilDaggersInfo.Web.Server\DevilDaggersInfo.Web.Server.csproj" />
+    <ProjectReference Include="..\..\DevilDaggersInfo.Web.Server\DevilDaggersInfo.Web.Server.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -22,15 +22,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\api\DevilDaggersInfo.Web.ApiSpec.Admin\DevilDaggersInfo.Web.ApiSpec.Admin.csproj" />
-    <ProjectReference Include="..\..\api\DevilDaggersInfo.Web.ApiSpec.Main\DevilDaggersInfo.Web.ApiSpec.Main.csproj" />
+    <ProjectReference Include="..\DevilDaggersInfo.Web.ApiSpec.Admin\DevilDaggersInfo.Web.ApiSpec.Admin.csproj" />
+    <ProjectReference Include="..\DevilDaggersInfo.Web.ApiSpec.Main\DevilDaggersInfo.Web.ApiSpec.Main.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.Web.Core.Claims\DevilDaggersInfo.Web.Core.Claims.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.Web.Client.Core.CanvasArena\DevilDaggersInfo.Web.Client.Core.CanvasArena.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.Web.Client.Core.CanvasChart\DevilDaggersInfo.Web.Client.Core.CanvasChart.csproj" />
   </ItemGroup>
 
   <Target Name="tailwind build" BeforeTargets="Compile" Condition="'$(TailwindBuild)' == 'true'">
-    <Exec Command="..\..\tw.exe -i tailwind.css -o wwwroot\tailwind.min.css --minify" ContinueOnError="true">
+    <Exec Command="..\tw.exe -i tailwind.css -o wwwroot\tailwind.min.css --minify" ContinueOnError="true">
       <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
     </Exec>
     <Error Condition="'$(ErrorCode)' != '0'" Text="Error building CSS file" />

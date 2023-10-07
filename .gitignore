@@ -287,9 +287,3 @@ tailwind.css.map
 
 # Data protection
 */**/DevilDaggersInfo.Web.Server/keys
-
-# OBJ mesh files for unit tests
-!*.obj
-
-# Value file
-*/**/Blobs/Value.bin
