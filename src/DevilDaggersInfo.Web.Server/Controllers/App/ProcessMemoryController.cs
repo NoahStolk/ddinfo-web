@@ -1,5 +1,5 @@
-using DevilDaggersInfo.Web.ApiSpec.App;
-using DevilDaggersInfo.Web.ApiSpec.App.ProcessMemory;
+using DevilDaggersInfo.Web.ApiSpec.Tools;
+using DevilDaggersInfo.Web.ApiSpec.Tools.ProcessMemory;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;

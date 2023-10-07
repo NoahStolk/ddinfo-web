@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Web.ApiSpec.App.Updates;
+using DevilDaggersInfo.Web.ApiSpec.Tools.Updates;
 using DevilDaggersInfo.Web.Server.Domain.Models.Tools;
 
 namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.App;

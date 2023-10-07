@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DevilDaggersInfo.Web.ApiSpec.App\DevilDaggersInfo.Web.ApiSpec.App.csproj" />
+    <ProjectReference Include="..\DevilDaggersInfo.Web.ApiSpec.Tools\DevilDaggersInfo.Web.ApiSpec.Tools.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.Api.Clubber\DevilDaggersInfo.Api.Clubber.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.Api.Ddae\DevilDaggersInfo.Api.Ddae.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.Api.DdLive\DevilDaggersInfo.Api.DdLive.csproj" />

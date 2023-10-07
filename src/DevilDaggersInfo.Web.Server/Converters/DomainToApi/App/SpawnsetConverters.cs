@@ -1,5 +1,5 @@
 using DevilDaggersInfo.Web.Server.Domain.Entities;
-using AppApi = DevilDaggersInfo.Web.ApiSpec.App.Spawnsets;
+using ToolsApi = DevilDaggersInfo.Web.ApiSpec.Tools.Spawnsets;
 
 namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.App;
 
@@ -7,7 +7,7 @@ namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.App;
 public static class SpawnsetConverters
 {
 	// ! Navigation property.
-	public static AppApi.GetSpawnset ToAppApi(this SpawnsetEntity spawnset, int? customLeaderboardId, byte[] fileBytes) => new()
+	public static ToolsApi.GetSpawnset ToAppApi(this SpawnsetEntity spawnset, int? customLeaderboardId, byte[] fileBytes) => new()
 	{
 		AuthorName = spawnset.Player!.PlayerName,
 		FileBytes = fileBytes,

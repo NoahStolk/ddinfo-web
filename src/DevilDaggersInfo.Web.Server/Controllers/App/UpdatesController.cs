@@ -1,5 +1,5 @@
-using DevilDaggersInfo.Web.ApiSpec.App;
-using DevilDaggersInfo.Web.ApiSpec.App.Updates;
+using DevilDaggersInfo.Web.ApiSpec.Tools;
+using DevilDaggersInfo.Web.ApiSpec.Tools.Updates;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.App;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Models.Tools;

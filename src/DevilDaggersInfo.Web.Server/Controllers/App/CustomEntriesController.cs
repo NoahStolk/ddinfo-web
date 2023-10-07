@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Web.ApiSpec.App.CustomLeaderboards;
+using DevilDaggersInfo.Web.ApiSpec.Tools.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.App;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.App;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;

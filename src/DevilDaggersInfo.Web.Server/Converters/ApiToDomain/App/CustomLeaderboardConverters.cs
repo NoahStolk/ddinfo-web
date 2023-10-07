@@ -1,11 +1,11 @@
 using DevilDaggersInfo.Web.Server.Domain.Commands.CustomEntries;
-using AppApi = DevilDaggersInfo.Web.ApiSpec.App.CustomLeaderboards;
+using ToolsApi = DevilDaggersInfo.Web.ApiSpec.Tools.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Server.Converters.ApiToDomain.App;
 
 public static class CustomLeaderboardConverters
 {
-	public static UploadRequest ToDomain(this AppApi.AddUploadRequest uploadRequest)
+	public static UploadRequest ToDomain(this ToolsApi.AddUploadRequest uploadRequest)
 	{
 		UploadRequestData gameData = new()
 		{
