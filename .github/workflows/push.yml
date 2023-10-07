@@ -2,9 +2,6 @@ on:
     push:
         branches:
             - main
-    pull_request:
-        branches:
-            - main
 jobs:
     build:
         runs-on: ubuntu-latest
@@ -21,3 +18,12 @@ jobs:
                 run: dotnet build src/DevilDaggersInfo.sln -c Release
             -   name: Test
                 run: dotnet test src/DevilDaggersInfo.sln -c Release --no-build
+            -   name: Pack
+                run: |
+                    dotnet pack src/api/DevilDaggersInfo.Web.ApiSpec.Admin -c Release -o .
+                    dotnet pack src/api/DevilDaggersInfo.Web.ApiSpec.App -c Release -o .
+                    dotnet pack src/api/DevilDaggersInfo.Web.ApiSpec.Main -c Release -o .
+            -   name: Push
+                run: dotnet nuget push *.nupkg -s nuget.org -k ${NUGET_SECRET} -n --skip-duplicate
+                env:
+                    NUGET_SECRET: ${{ secrets.NUGET_SECRET }}
