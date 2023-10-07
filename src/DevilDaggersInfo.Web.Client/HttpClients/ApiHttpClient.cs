@@ -8,16 +8,15 @@ namespace DevilDaggersInfo.Web.Client.HttpClients;
 
 public abstract class ApiHttpClient
 {
-	private readonly HttpClient _client;
 	private readonly ILocalStorageService _localStorageService;
 
 	protected ApiHttpClient(HttpClient client, ILocalStorageService localStorageService)
 	{
-		_client = client;
+		Client = client;
 		_localStorageService = localStorageService;
 	}
 
-	public HttpClient Client => _client;
+	public HttpClient Client { get; }
 
 	protected async Task<HttpResponseMessage> SendRequest(HttpMethod httpMethod, string url, JsonContent? body = null)
 	{
@@ -31,7 +30,7 @@ public abstract class ApiHttpClient
 		if (token != null)
 			request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-		return await _client.SendAsync(request);
+		return await Client.SendAsync(request);
 	}
 
 	protected async Task<T> SendGetRequest<T>(string url)
@@ -41,5 +40,14 @@ public abstract class ApiHttpClient
 			throw new HttpRequestException(await response.Content.ReadAsStringAsync(), null, response.StatusCode);
 
 		return await response.Content.ReadFromJsonAsync<T>() ?? throw new InvalidDataException($"Deserialization error in {url} for JSON '{response.Content}'.");
+	}
+
+	protected static string BuildUrlWithQuery(string baseUrl, Dictionary<string, object?> queryParameters)
+	{
+		if (queryParameters.Count == 0)
+			return baseUrl;
+
+		string queryParameterString = string.Join('&', queryParameters.Select(kvp => $"{kvp.Key}={kvp.Value}"));
+		return $"{baseUrl.TrimEnd('/')}?{queryParameterString}";
 	}
 }
