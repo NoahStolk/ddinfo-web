@@ -1,20 +1,12 @@
-# DevilDaggersInfo
+# ddinfo-web
 
-DevilDaggersInfo consists of a website, web server, and various tools created specifically for the game Devil Daggers.
+Website, web server, web API hosted at [devildaggers.info](https://devildaggers.info/).
 
-The purpose of the project is to make it easier for players to play and understand the game, and to provide a platform for the community to create and share custom spawnsets (levels), mods, participate in custom leaderboards, and a lot more.
-
-While the project provides many ways to practice and modify the game, it does **not** allow you to cheat, or encourage cheating at all. You are also asked to not redistribute the game assets, and only use them for modding purposes.
-
-Most of these features have been discussed with the community and the developer of Devil Daggers (Sorath), some of which have been done in collaboration.
-
-**This repository contains the entire DevilDaggersInfo project, which consists of many features.**
-
-## [devildaggers.info](https://devildaggers.info/) website
+The purpose of this website is to make it easier for players to understand the game, and to provide a platform for the community to create and share custom spawnsets (levels), mods, participate in custom leaderboards, and a lot more.
 
 ![Home page](images/home-page.png)
 
-### Features
+## Website features
 
 - Viewing and searching the official leaderboards
 - Viewing leaderboard data for any player
@@ -39,11 +31,9 @@ Most of these features have been discussed with the community and the developer 
 - Browsing the APIs
 - An admin portal for moderators to upload spawnsets and mods, manage custom leaderboards and player data, and more
 
-## Web server
+## Web server features
 
 The web server is responsible for serving the website and providing various APIs used by the website and the tools, but also by other projects, such as DDLIVE, ddstats-rust, Clubber, and Devil Daggers itself.
-
-### Features
 
 - Integration with the official leaderboards
 - Keeping track of leaderboard history, statistics, and world record progression for the official leaderboards
@@ -60,7 +50,7 @@ The web server is responsible for serving the website and providing various APIs
   - Hosting graph data for every score
 - Hosting mods
 - Providing APIs used by the website, as well as APIs for:
-  - The tools app
+  - [ddinfo-tools](https://github.com/NoahStolk/ddinfo-tools)
   - The deprecated Windows-only tools
     - [DDSE 2](https://github.com/NoahStolk/DevilDaggersSurvivalEditor)
     - [DDAE 1](https://github.com/NoahStolk/DevilDaggersAssetEditor)
@@ -69,41 +59,10 @@ The web server is responsible for serving the website and providing various APIs
   - [Clubber](https://github.com/Spoertm/Clubber)
   - Devil Daggers itself
 
-## Tools
-
-### Features
-
-The new tools are currently in development. The new tools app is a complete rewrite of the old Windows-only tools, combined into one app, and will be cross-platform.
-
-#### Custom leaderboards client
-
-![Custom leaderboards](images/custom-leaderboards.png)
-
-#### Spawnset (level) editor including a 3D editor
-
-![Spawnset editor](images/spawnset-editor-1.png)
-![Spawnset editor](images/spawnset-editor-2.png)
-
-#### Practice mode
-
-![Practice](images/practice.png)
-
-These features are planned or in development:
-
-- Replay previewer including input visualization
-- Renewed spawnset manager
-- Renewed asset editor for mods
-- Renewed mod manager
-- Replay previewer (and possibly editor)
-- Replay enemy tracking
-
-These features are planned but may not be possible to implement:
-
-- Replay movement and the ability to compare speedrun/race replays using a ghost system in 3D
-
 ## Other repositories
 
 - [ddinfo-core](https://github.com/NoahStolk/ddinfo-core/) - core libraries for parsing spawnsets, mods, replays, and more
+- [ddinfo-tools](https://github.com/NoahStolk/ddinfo-tools) - cross-platform tools for practicing the game, creating and editing spawnsets and mods, connecting to custom leaderboards, and more
 
 ### Deprecated tools
 
