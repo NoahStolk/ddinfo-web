@@ -10,5 +10,9 @@ public record GetTool
 
 	public required string VersionNumberRequired { get; init; }
 
-	public required IReadOnlyList<GetToolVersion>? Changelog { get; init; }
+	// TODO: This is only used as a fallback for DDSE/DDAE changelog windows. Remove this when DDSE/DDAE are no longer supported.
+	[Obsolete("This data is no longer available.")]
+	public IReadOnlyList<GetToolVersion>? Changelog { get; set; }
+
+	public required IReadOnlyList<GetToolDownloadCount> DownloadCounts { get; init; }
 }

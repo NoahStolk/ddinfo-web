@@ -9,25 +9,11 @@ public static class ToolConverters
 {
 	public static MainApi.GetTool ToMainApi(this Tool tool) => new()
 	{
-		Changelog = tool.Changelog?.Select(ToMainApi).ToList(),
 		DisplayName = tool.DisplayName,
+		DownloadCounts = tool.DownloadCounts.Select(kvp => new MainApi.GetToolDownloadCount { Version = kvp.Key, Count = kvp.Value }).ToList(),
 		Name = tool.Name,
 		VersionNumber = tool.VersionNumber,
 		VersionNumberRequired = tool.VersionNumberRequired,
-	};
-
-	private static MainApi.GetToolVersion ToMainApi(this ToolVersion toolVersion) => new()
-	{
-		Changes = toolVersion.Changes.Select(tvc => tvc.ToMainApi()).ToList(),
-		Date = toolVersion.Date,
-		DownloadCount = toolVersion.DownloadCount,
-		VersionNumber = toolVersion.VersionNumber,
-	};
-
-	private static MainApi.GetToolVersionChange ToMainApi(this ToolVersionChange toolVersionChange) => new()
-	{
-		Description = toolVersionChange.Description,
-		SubChanges = toolVersionChange.SubChanges?.Select(tvc => tvc.ToMainApi()).ToList(),
 	};
 
 	public static MainApi.GetToolDistribution ToMainApi(this ToolDistribution distribution) => new()

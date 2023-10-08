@@ -23,22 +23,13 @@ public class ToolRepository
 		_logger = logger;
 	}
 
-	private async Task<string?> GetJsonString(string name)
-	{
-		string filePath = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Tools), $"{name}.json");
-		if (!File.Exists(filePath))
-			return null;
-
-		return await File.ReadAllTextAsync(filePath);
-	}
-
 	public async Task<Tool?> GetToolAsync(string name)
 	{
 		ToolEntity? tool = await _dbContext.Tools.AsNoTracking().FirstOrDefaultAsync(t => t.Name == name);
 		if (tool == null)
 			return null;
 
-		Dictionary<string, int> downloads = (await _dbContext.ToolDistributions
+		Dictionary<string, int> downloadCounts = (await _dbContext.ToolDistributions
 			.AsNoTracking()
 			.Select(td => new { td.ToolName, td.VersionNumber, td.DownloadCount })
 			.Where(td => td.ToolName == name)
@@ -46,27 +37,13 @@ public class ToolRepository
 			.GroupBy(td => td.VersionNumber)
 			.ToDictionary(td => td.Key, td => td.Sum(g => g.DownloadCount));
 
-		string? changelogJsonString = await GetJsonString(name);
-		List<ChangelogEntry>? changelog = changelogJsonString == null ? null : JsonConvert.DeserializeObject<List<ChangelogEntry>>(changelogJsonString);
 		return new()
 		{
-			Changelog = changelog?.ConvertAll(ce => new ToolVersion
-			{
-				Changes = ce.Changes.Select(ToModel).ToList(),
-				Date = ce.Date,
-				DownloadCount = downloads.TryGetValue(ce.VersionNumber, out int value) ? value : 0,
-				VersionNumber = ce.VersionNumber,
-			}),
+			DownloadCounts = downloadCounts,
 			Name = tool.Name,
 			DisplayName = tool.DisplayName,
 			VersionNumberRequired = tool.RequiredVersionNumber,
 			VersionNumber = tool.CurrentVersionNumber,
-		};
-
-		static ToolVersionChange ToModel(Change change) => new()
-		{
-			Description = change.Description,
-			SubChanges = change.SubChanges?.Select(ToModel).ToList(),
 		};
 	}
 

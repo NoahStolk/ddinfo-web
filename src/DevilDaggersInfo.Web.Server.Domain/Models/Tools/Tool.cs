@@ -10,5 +10,5 @@ public class Tool
 
 	public string VersionNumberRequired { get; init; } = string.Empty;
 
-	public IReadOnlyList<ToolVersion>? Changelog { get; init; }
+	public required IReadOnlyDictionary<string, int> DownloadCounts { get; init; }
 }

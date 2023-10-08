@@ -1,8 +1,9 @@
 namespace DevilDaggersInfo.Web.ApiSpec.Main.Tools;
 
+[Obsolete("This data is no longer available.")]
 public record GetToolVersionChange
 {
-	public required string Description { get; init; }
+	public string Description { get; init; } = string.Empty;
 
-	public required IReadOnlyList<GetToolVersionChange>? SubChanges { get; init; }
+	public IReadOnlyList<GetToolVersionChange>? SubChanges { get; init; }
 }

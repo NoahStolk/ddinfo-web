@@ -32,7 +32,29 @@ public class ToolsController : ControllerBase
 		if (tool == null)
 			return NotFound();
 
-		return tool.ToMainApi();
+		GetTool model = tool.ToMainApi();
+
+		// TODO: This is only used as a fallback for DDSE/DDAE changelog windows. Remove this when DDSE/DDAE are no longer supported.
+		if (toolName is "DevilDaggersSurvivalEditor" or "DevilDaggersAssetEditor")
+		{
+			model.Changelog = new List<GetToolVersion>
+			{
+				new()
+				{
+					VersionNumber = "Changelog moved to GitHub",
+					Date = new DateTime(2023, 10, 9),
+					Changes = new List<GetToolVersionChange>
+					{
+						new()
+						{
+							Description = "The changelog has been moved to GitHub. Please visit the GitHub page for the changelog.",
+						},
+					},
+				},
+			};
+		}
+
+		return model;
 	}
 
 	// FORBIDDEN: Used by DDSE 2.45.0.0.
