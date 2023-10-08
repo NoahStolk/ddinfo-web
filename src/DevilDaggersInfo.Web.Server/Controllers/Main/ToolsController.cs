@@ -41,8 +41,8 @@ public class ToolsController : ControllerBase
 			{
 				new()
 				{
-					VersionNumber = "Changelog moved to GitHub",
-					Date = new DateTime(2023, 10, 9),
+					VersionNumber = "0.0.0.0",
+					Date = new(2023, 10, 09),
 					Changes = new List<GetToolVersionChange>
 					{
 						new()
