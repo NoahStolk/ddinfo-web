@@ -15,7 +15,7 @@
 }
 else
 {
-	<ToolInfo GetTool="GetTool" />
+	<ToolInfo GetTool="GetTool" ShowDownloadCountNote="true" />
 
 	<Heading Title="Distributions" Level="2" />
 	<Distributions>
@@ -23,7 +23,7 @@ else
 		<Distribution ToolName="@GetTool.Name" Note="Use for Windows 7" PublishMethod="ToolPublishMethod.Default" BuildType="ToolBuildType.WindowsWpf" OperatingSystems="Windows 7+" Prerequisites="ToolDistributionPrerequisites.DotNet6DesktopRuntime" />
 	</Distributions>
 
-	<SourceInfo Url="https://github.com/NoahStolk/DevilDaggersAssetEditor" />
+	<SourceInfo Url="https://github.com/NoahStolk/DevilDaggersAssetEditor" UrlChangelog="https://github.com/NoahStolk/DevilDaggersAssetEditor/blob/master/CHANGELOG.md" />
 
 	<img src="/images/tools/ddae.png" class="object-contain max-h-160 pt-3" alt="Asset Editor" />
 
@@ -44,9 +44,6 @@ else
 	</ul>
 
 	<RunInfo />
-
-	<Heading Title="Changelog" Level="2" />
-	<Versions ToolVersions="GetTool.Changelog" />
 }
 
 @code

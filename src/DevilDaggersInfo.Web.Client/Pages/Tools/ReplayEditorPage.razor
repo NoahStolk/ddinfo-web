@@ -1,38 +1,9 @@
 @page "/tools/replay-editor"
-@using DevilDaggersInfo.Core.Common
-@using DevilDaggersInfo.Web.ApiSpec.Main.Tools
 @using DevilDaggersInfo.Web.Client.Components
-@using DevilDaggersInfo.Web.Client.Components.Tools
-@using DevilDaggersInfo.Web.Client.HttpClients
-@inject MainApiHttpClient Http
 
 <Heading Title="Devil Daggers Replay Editor (DEPRECATED)" />
 
-@if (GetTool == null)
-{
-	<Loading />
-}
-else
-{
-	<Heading Title="IMPORTANT" Level="2" />
-	<p class="para">This tool has been deprecated in favor of <a class="link" href="/tools">ddinfo tools</a> and can no longer be used.</p>
+<Heading Title="IMPORTANT" Level="2" />
+<p class="para">This tool has been deprecated in favor of <a class="link" href="/tools">ddinfo tools</a> and can no longer be used.</p>
 
-	<img src="/images/tools/ddre.png" class="object-contain max-h-160 pt-3" alt="Replay Editor" />
-
-	<Heading Title="Changelog" Level="2" />
-	<Heading Title="@($"Deprecated - {new DateTime(2023, 9, 10).ToString(StringFormats.DateFormat)}")" Level="3" />
-	<ul class="pl-4">
-		<li class="list-disc">The tool has been deprecated in favor of <a class="link" href="/tools">ddinfo tools</a>.</li>
-	</ul>
-	<Versions ToolVersions="GetTool.Changelog" />
-}
-
-@code
-{
-	public GetTool? GetTool { get; set; }
-
-	protected override async Task OnInitializedAsync()
-	{
-		GetTool = await Http.GetTool("DevilDaggersReplayEditor");
-	}
-}
+<img src="/images/tools/ddre.png" class="object-contain max-h-160 pt-3" alt="Replay Editor" />
