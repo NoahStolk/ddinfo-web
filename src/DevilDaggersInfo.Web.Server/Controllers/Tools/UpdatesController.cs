@@ -1,13 +1,13 @@
 using DevilDaggersInfo.Web.ApiSpec.Tools;
 using DevilDaggersInfo.Web.ApiSpec.Tools.Updates;
-using DevilDaggersInfo.Web.Server.Converters.DomainToApi.App;
+using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Tools;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Models.Tools;
 using DevilDaggersInfo.Web.Server.Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
-namespace DevilDaggersInfo.Web.Server.Controllers.App;
+namespace DevilDaggersInfo.Web.Server.Controllers.Tools;
 
 [Route("api/app/updates")]
 [ApiController]

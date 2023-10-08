@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Web.ApiSpec.Tools.CustomLeaderboards;
-using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.App;
-using DevilDaggersInfo.Web.Server.Converters.DomainToApi.App;
+using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Tools;
+using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Tools;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.Domain.Repositories;
@@ -8,7 +8,7 @@ using DevilDaggersInfo.Web.Server.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
-namespace DevilDaggersInfo.Web.Server.Controllers.App;
+namespace DevilDaggersInfo.Web.Server.Controllers.Tools;
 
 [Route("api/app/custom-entries")]
 [ApiController]

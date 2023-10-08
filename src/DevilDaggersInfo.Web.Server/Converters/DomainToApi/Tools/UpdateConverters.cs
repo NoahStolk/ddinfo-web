@@ -1,7 +1,7 @@
 using DevilDaggersInfo.Web.ApiSpec.Tools.Updates;
 using DevilDaggersInfo.Web.Server.Domain.Models.Tools;
 
-namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.App;
+namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Tools;
 
 public static class UpdateConverters
 {

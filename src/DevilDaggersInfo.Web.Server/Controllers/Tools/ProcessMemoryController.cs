@@ -5,7 +5,7 @@ using DevilDaggersInfo.Web.Server.Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
-namespace DevilDaggersInfo.Web.Server.Controllers.App;
+namespace DevilDaggersInfo.Web.Server.Controllers.Tools;
 
 [Route("api/app/process-memory")]
 [ApiController]

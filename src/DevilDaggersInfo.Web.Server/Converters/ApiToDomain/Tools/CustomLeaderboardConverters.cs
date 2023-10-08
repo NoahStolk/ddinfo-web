@@ -1,7 +1,7 @@
 using DevilDaggersInfo.Web.Server.Domain.Commands.CustomEntries;
 using ToolsApi = DevilDaggersInfo.Web.ApiSpec.Tools.CustomLeaderboards;
 
-namespace DevilDaggersInfo.Web.Server.Converters.ApiToDomain.App;
+namespace DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Tools;
 
 public static class CustomLeaderboardConverters
 {

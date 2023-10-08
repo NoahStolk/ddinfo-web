@@ -6,7 +6,7 @@ using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 using System.Diagnostics;
 using ToolsApi = DevilDaggersInfo.Web.ApiSpec.Tools.CustomLeaderboards;
 
-namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.App;
+namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Tools;
 
 public static class CustomLeaderboardConverters
 {

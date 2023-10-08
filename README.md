@@ -1,6 +1,6 @@
 # ddinfo-web
 
-Website, web server, web API hosted at [devildaggers.info](https://devildaggers.info/).
+Website, web server, web API hosted at [devildaggers.info](https://devildaggers.info/)
 
 The purpose of this website is to make it easier for players to understand the game, and to provide a platform for the community to create and share custom spawnsets (levels), mods, participate in custom leaderboards, and a lot more.
 
