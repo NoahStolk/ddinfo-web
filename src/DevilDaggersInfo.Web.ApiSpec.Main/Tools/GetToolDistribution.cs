@@ -6,7 +6,7 @@ public record GetToolDistribution
 
 	public required int FileSize { get; init; }
 
-	public required ToolPublishMethod PublishMethod { get; set; }
+	public required ToolPublishMethod PublishMethod { get; init; }
 
-	public required ToolBuildType BuildType { get; set; }
+	public required ToolBuildType BuildType { get; init; }
 }
