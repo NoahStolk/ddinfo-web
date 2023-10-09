@@ -18,7 +18,7 @@
 	</ItemGroup>
 
 	<ItemGroup Label="DevilDaggersInfo">
-		<PackageVersion Include="DevilDaggersInfo.Core" Version="0.1.0" />
+		<PackageVersion Include="DevilDaggersInfo.Core" Version="0.1.1-alpha.0" />
 	</ItemGroup>
 
 	<ItemGroup Label="Discord">
@@ -30,10 +30,6 @@
 		<PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.11" />
 		<PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.11" />
 		<PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.11" />
-	</ItemGroup>
-
-	<ItemGroup Label="Image processing">
-		<PackageVersion Include="SixLabors.ImageSharp" Version="3.0.2" />
 	</ItemGroup>
 
 	<ItemGroup Label="Json">
