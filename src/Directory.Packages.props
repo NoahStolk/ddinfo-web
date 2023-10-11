@@ -4,58 +4,37 @@
 		<PackageVersion Include="Blazored.LocalStorage" Version="4.4.0" />
 		<PackageVersion Include="Microsoft.AspNetCore.Components" Version="7.0.11" />
 		<PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="7.0.12" />
+		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.12" />
+		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="7.0.12" />
+		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.12" />
+		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="7.0.12" />
+		<PackageVersion Include="Microsoft.Extensions.Http" Version="7.0.0" />
+		<PackageVersion Include="Microsoft.JSInterop.WebAssembly" Version="7.0.12" />
 	</ItemGroup>
 
 	<ItemGroup Label="AspNetCore server">
+		<PackageVersion Include="DSharpPlus" Version="4.4.2" />
 		<PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.12" />
-		<PackageVersion Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="7.0.12" />
-	</ItemGroup>
-
-	<ItemGroup Label="Configuration">
-		<PackageVersion Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
 		<PackageVersion Include="Microsoft.Extensions.Configuration.Abstractions" Version="7.0.0" />
-		<PackageVersion Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
+		<PackageVersion Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="7.0.12" />
+		<PackageVersion Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+		<PackageVersion Include="Microsoft.EntityFrameworkCore" Version="7.0.12" />
+		<PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.12" />
+		<PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.12" />
+		<PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.12" />
+		<PackageVersion Include="NSwag.AspNetCore" Version="13.20.0" />
+		<PackageVersion Include="Pomelo.EntityFrameworkCore.MySql" Version="7.0.0" />
+		<PackageVersion Include="Sentry.AspNetCore" Version="3.40.0" />
+		<PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="6.32.3" />
 	</ItemGroup>
 
 	<ItemGroup Label="DevilDaggersInfo">
 		<PackageVersion Include="DevilDaggersInfo.Core" Version="0.1.1" />
 	</ItemGroup>
 
-	<ItemGroup Label="Discord">
-		<PackageVersion Include="DSharpPlus" Version="4.4.2" />
-	</ItemGroup>
-
-	<ItemGroup Label="EntityFrameworkCore">
-		<PackageVersion Include="Microsoft.EntityFrameworkCore" Version="7.0.12" />
-		<PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.12" />
-		<PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.12" />
-		<PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.12" />
-	</ItemGroup>
-
 	<ItemGroup Label="Json">
 		<PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageVersion Include="System.Net.Http.Json" Version="7.0.1" />
-	</ItemGroup>
-
-	<ItemGroup Label="Jwt">
-		<PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="6.32.3" />
-	</ItemGroup>
-
-	<ItemGroup Label="Misc">
-		<PackageVersion Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
-		<PackageVersion Include="Microsoft.Extensions.Http" Version="7.0.0" />
-	</ItemGroup>
-
-	<ItemGroup Label="NSwag">
-		<PackageVersion Include="NSwag.AspNetCore" Version="13.20.0" />
-	</ItemGroup>
-
-	<ItemGroup Label="Pomelo">
-		<PackageVersion Include="Pomelo.EntityFrameworkCore.MySql" Version="7.0.0" />
-	</ItemGroup>
-
-	<ItemGroup Label="Sentry">
-		<PackageVersion Include="Sentry.AspNetCore" Version="3.40.0" />
 	</ItemGroup>
 
 	<ItemGroup Label="Static code analysis">
@@ -73,14 +52,6 @@
 		<PackageVersion Include="MSTest.TestAdapter" Version="3.1.1" />
 		<PackageVersion Include="MSTest.TestFramework" Version="3.1.1" />
 		<PackageVersion Include="NSubstitute" Version="5.1.0" />
-	</ItemGroup>
-
-	<ItemGroup Label="WebAssembly">
-		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.12" />
-		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="7.0.12" />
-		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.12" />
-		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="7.0.12" />
-		<PackageVersion Include="Microsoft.JSInterop.WebAssembly" Version="7.0.12" />
 	</ItemGroup>
 
 </Project>
