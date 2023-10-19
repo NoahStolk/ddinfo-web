@@ -36,7 +36,7 @@ public class ModBinaryCacheData
 			Name = c.Name,
 			Size = c.Size,
 			AssetType = c.AssetType,
-			IsProhibited = AssetContainer.GetIsProhibited(c.AssetType, c.Name),
+			IsProhibited = AssetContainer.IsProhibited(c.AssetType, c.Name),
 		}).ToList();
 
 		ModBinaryChunk? loudnessChunk = modBinary.Toc.Chunks.FirstOrDefault(c => c.IsLoudness());
