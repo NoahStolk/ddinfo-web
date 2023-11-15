@@ -3,7 +3,7 @@
 	<ItemGroup Label="AspNetCore client">
 		<PackageVersion Include="Blazored.LocalStorage" Version="4.4.0" />
 		<PackageVersion Include="Microsoft.AspNetCore.Components" Version="7.0.12" />
-		<PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="7.0.12" />
+		<PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="8.0.0" />
 		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.12" />
 		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="7.0.12" />
 		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.12" />
