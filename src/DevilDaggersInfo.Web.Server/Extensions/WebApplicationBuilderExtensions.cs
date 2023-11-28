@@ -29,8 +29,8 @@ public static class WebApplicationBuilderExtensions
 			};
 			config.DocumentName = apiNamespace.ToUpper();
 			config.OperationProcessors.Insert(0, new ApiOperationProcessor(apiNamespace));
-			config.SchemaType = SchemaType.OpenApi3;
-			config.GenerateEnumMappingDescription = true;
+			config.SchemaSettings.SchemaType = SchemaType.OpenApi3;
+			config.SchemaSettings.GenerateEnumMappingDescription = true;
 		});
 	}
 }
