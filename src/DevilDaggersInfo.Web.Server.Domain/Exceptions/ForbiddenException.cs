@@ -1,9 +1,7 @@
 using System.Net;
-using System.Runtime.Serialization;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Exceptions;
 
-[Serializable]
 public class ForbiddenException : StatusCodeException
 {
 	public ForbiddenException()
@@ -17,11 +15,6 @@ public class ForbiddenException : StatusCodeException
 
 	public ForbiddenException(string? message, Exception? innerException)
 		: base(message, innerException)
-	{
-	}
-
-	protected ForbiddenException(SerializationInfo info, StreamingContext context)
-		: base(info, context)
 	{
 	}
 

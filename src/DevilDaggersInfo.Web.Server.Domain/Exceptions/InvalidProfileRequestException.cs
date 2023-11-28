@@ -1,9 +1,7 @@
 using System.Net;
-using System.Runtime.Serialization;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Exceptions;
 
-[Serializable]
 public class InvalidProfileRequestException : StatusCodeException
 {
 	public InvalidProfileRequestException()
@@ -17,11 +15,6 @@ public class InvalidProfileRequestException : StatusCodeException
 
 	public InvalidProfileRequestException(string? message, Exception? innerException)
 		: base(message, innerException)
-	{
-	}
-
-	protected InvalidProfileRequestException(SerializationInfo info, StreamingContext context)
-		: base(info, context)
 	{
 	}
 
