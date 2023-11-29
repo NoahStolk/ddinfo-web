@@ -34,7 +34,7 @@
 
 	<ItemGroup Label="Json">
 		<PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
-		<PackageVersion Include="System.Net.Http.Json" Version="7.0.1" />
+		<PackageVersion Include="System.Net.Http.Json" Version="8.0.0" />
 	</ItemGroup>
 
 	<ItemGroup Label="Static code analysis">
