@@ -24,7 +24,7 @@
 		<PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.12" />
 		<PackageVersion Include="NSwag.AspNetCore" Version="13.20.0" />
 		<PackageVersion Include="Pomelo.EntityFrameworkCore.MySql" Version="7.0.0" />
-		<PackageVersion Include="Sentry.AspNetCore" Version="3.40.1" />
+		<PackageVersion Include="Sentry.AspNetCore" Version="3.41.3" />
 		<PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="7.0.3" />
 	</ItemGroup>
 
