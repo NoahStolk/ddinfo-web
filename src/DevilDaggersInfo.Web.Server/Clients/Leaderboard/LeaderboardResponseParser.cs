@@ -31,6 +31,7 @@ public class LeaderboardResponseParser
 			string username = Encoding.UTF8.GetString(br.ReadBytes(usernameLength));
 			int rank = br.ReadInt32();
 			int id = br.ReadInt32();
+			_ = br.ReadInt32(); // The new endpoint (dd3 instead of backend15) has a 4-byte padding here (or some unknown value -- haven't looked into what it means).
 			int time = br.ReadInt32();
 			int kills = br.ReadInt32();
 			int daggersFired = br.ReadInt32();
