@@ -238,7 +238,7 @@ public partial class EntryPage
 		LineChartDataOptions dataOptions = new(0, _time / 10, _time, 0, maxData / 8, maxData);
 		LineChartOptions chartOptions = new()
 		{
-			HighlighterKeys = dataSets.ConvertAll(ds => ds.Name).Prepend("Time").ToList(), GridOptions = new() {MinimumRowHeightInPx = 50,}, Backgrounds = _backgrounds, HighlighterWidth = 320,
+			HighlighterKeys = dataSets.ConvertAll(ds => ds.Name).Prepend("Time").ToList(), GridOptions = new() { MinimumRowHeightInPx = 50 }, Backgrounds = _backgrounds, HighlighterWidth = 320,
 		};
 		_lineCharts.Add((name, dataOptions, chartOptions, dataSets.ConvertAll(ds => ds.Set)));
 	}
