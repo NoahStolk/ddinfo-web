@@ -10,7 +10,7 @@ public class DdLeaderboardService : IDdLeaderboardService
 {
 	private const string _getScoresUrl = "http://dd.hasmodai.com/dd3/get_scores.php";
 	private const string _getUserSearchUrl = "http://dd.hasmodai.com/dd3/get_user_search_public.php";
-	private const string _getUsersByIdsUrl = "http://l.sorath.com/dd/get_multiple_users_by_id_public.php";
+	private const string _getUsersByIdsUrl = "http://dd.hasmodai.com/dd3/get_multiple_users_by_id_public.php";
 	private const string _getUserByIdUrl = "http://dd.hasmodai.com/dd3/get_user_by_id_public.php";
 
 	private readonly HttpClient _httpClient;
