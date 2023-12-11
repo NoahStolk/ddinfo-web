@@ -10,7 +10,7 @@
 		<InvariantGlobalization>true</InvariantGlobalization>
 		<WarningsAsErrors>nullable</WarningsAsErrors>
 		<EnablePreviewFeatures>true</EnablePreviewFeatures>
-		<LangVersion>preview</LangVersion>
+		<LangVersion>11.0</LangVersion>
 		<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
 		<RuntimeIdentifiers>win-x64;linux-x64</RuntimeIdentifiers>
 	</PropertyGroup>
