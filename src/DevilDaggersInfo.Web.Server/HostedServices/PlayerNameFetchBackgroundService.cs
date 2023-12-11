@@ -41,7 +41,7 @@ public class PlayerNameFetchBackgroundService : AbstractBackgroundService
 			catch (DdLeaderboardException)
 			{
 				const int interval = 5;
-				Logger.LogWarning("Couldn't get entries. Waiting {interval} seconds...", interval);
+				Logger.LogWarning("Couldn't get entries from DD leaderboards. Waiting {Interval} seconds...", interval);
 
 				await Task.Delay(TimeSpan.FromSeconds(interval), stoppingToken);
 			}

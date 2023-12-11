@@ -41,7 +41,7 @@ public class LeaderboardHistoryBackgroundService : AbstractBackgroundService
 			catch (DdLeaderboardException)
 			{
 				const int interval = 5;
-				Logger.LogWarning("Couldn't get leaderboard (page {page} of {total}). Waiting {interval} seconds...", i, leaderboardPageCount, interval);
+				Logger.LogWarning("Couldn't get DD leaderboard (page {Page} of {Total}). Waiting {Interval} seconds...", i, leaderboardPageCount, interval);
 
 				await Task.Delay(TimeSpan.FromSeconds(interval), stoppingToken);
 				continue; // Continue without increasing i, so the request is retried.

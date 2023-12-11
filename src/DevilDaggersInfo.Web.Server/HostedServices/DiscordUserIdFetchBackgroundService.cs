@@ -35,7 +35,7 @@ public class DiscordUserIdFetchBackgroundService : AbstractBackgroundService
 			if (users == null)
 			{
 				const int interval = 5;
-				Logger.LogWarning("Couldn't get users. Waiting {interval} seconds...", interval);
+				Logger.LogWarning("Couldn't get users from Clubber. Waiting {Interval} seconds...", interval);
 
 				await Task.Delay(TimeSpan.FromSeconds(interval), stoppingToken);
 			}
