@@ -15,18 +15,18 @@ public class ModArchiveCacheData
 		ModBinaryCacheData? ddBinary = Binaries.Find(b => b.ModBinaryType == ModBinaryType.Dd);
 
 		ModTypes modTypes = Entities.Enums.ModTypes.None;
-		if (Binaries.Any(b => b.ModBinaryType == ModBinaryType.Audio))
+		if (Binaries.Exists(b => b.ModBinaryType == ModBinaryType.Audio))
 			modTypes |= Entities.Enums.ModTypes.Audio;
-		if (ddBinary?.Chunks.Any(c => c.AssetType == AssetType.Shader) == true)
+		if (ddBinary?.Chunks.Exists(c => c.AssetType == AssetType.Shader) == true)
 			modTypes |= Entities.Enums.ModTypes.Shader;
-		if (ddBinary?.Chunks.Any(c => c.AssetType == AssetType.ObjectBinding || c.AssetType == AssetType.Mesh) == true)
+		if (ddBinary?.Chunks.Exists(c => c.AssetType == AssetType.ObjectBinding || c.AssetType == AssetType.Mesh) == true)
 			modTypes |= Entities.Enums.ModTypes.Mesh;
-		if (ddBinary?.Chunks.Any(c => c.AssetType == AssetType.Texture) == true)
+		if (ddBinary?.Chunks.Exists(c => c.AssetType == AssetType.Texture) == true)
 			modTypes |= Entities.Enums.ModTypes.Texture;
 
 		return modTypes;
 	}
 
 	public bool ContainsProhibitedAssets()
-		=> Binaries.Any(b => b.ContainsProhibitedAssets());
+		=> Binaries.Exists(b => b.ContainsProhibitedAssets());
 }

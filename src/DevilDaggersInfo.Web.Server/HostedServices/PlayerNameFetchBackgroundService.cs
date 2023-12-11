@@ -2,6 +2,7 @@ using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 using DevilDaggersInfo.Web.Server.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace DevilDaggersInfo.Web.Server.HostedServices;
 
@@ -24,7 +25,7 @@ public class PlayerNameFetchBackgroundService : AbstractBackgroundService
 		using IServiceScope scope = _serviceScopeFactory.CreateScope();
 		await using ApplicationDbContext dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-		IEnumerable<PlayerEntity> players = dbContext.Players.AsEnumerable();
+		List<int> playerIds = await dbContext.Players.Select(p => p.Id).ToListAsync(stoppingToken);
 
 		int attempts = 0;
 		List<IDdLeaderboardService.EntryResponse>? entries = null;
@@ -36,7 +37,7 @@ public class PlayerNameFetchBackgroundService : AbstractBackgroundService
 
 			try
 			{
-				entries = await _leaderboardClient.GetEntriesByIds(players.Select(p => p.Id));
+				entries = await _leaderboardClient.GetEntriesByIds(playerIds);
 			}
 			catch (DdLeaderboardException)
 			{
@@ -53,7 +54,7 @@ public class PlayerNameFetchBackgroundService : AbstractBackgroundService
 		List<(int PlayerId, string OldName, string NewName)> logs = new();
 		foreach (IDdLeaderboardService.EntryResponse entry in entries)
 		{
-			PlayerEntity? player = players.FirstOrDefault(p => p.Id == entry.Id);
+			PlayerEntity? player = await dbContext.Players.FirstOrDefaultAsync(p => p.Id == entry.Id, stoppingToken);
 			if (player == null || player.PlayerName == entry.Username)
 				continue;
 

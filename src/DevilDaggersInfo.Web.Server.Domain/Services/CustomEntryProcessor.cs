@@ -692,9 +692,9 @@ public class CustomEntryProcessor
 		};
 	}
 
-#pragma warning disable S3871, RCS1194
+#pragma warning disable CA1032, RCS1194, S3871
 	private sealed class CustomEntryCriteriaException : Exception
-#pragma warning restore RCS1194, S3871
+#pragma warning restore S3871, RCS1194, CA1032
 	{
 		public CustomEntryCriteriaException(string criteriaName, CustomLeaderboardCriteriaOperator criteriaOperator, int expectedValue, int actualValue)
 		{

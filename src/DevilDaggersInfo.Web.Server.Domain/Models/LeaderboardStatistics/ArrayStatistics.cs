@@ -16,11 +16,11 @@ public class ArrayStatistics
 		if (limit.HasValue)
 			entries = entries.Take(limit.Value).ToList();
 
-		Times.Populate(entries.Select(e => e.Time.ToSecondsTime()), d => d);
-		Kills.Populate(entries.Select(e => (double)e.Kills), d => d);
-		Gems.Populate(entries.Select(e => (double)e.Gems), d => d);
-		DaggersFired.Populate(entries.Select(e => (double)e.DaggersFired), d => Math.Round(d / 100) * 100);
-		DaggersHit.Populate(entries.Select(e => (double)e.DaggersHit), d => Math.Round(d / 100) * 100);
-		Accuracy.Populate(entries.Select(e => e.DaggersFired == 0 ? 0 : e.DaggersHit / (double)e.DaggersFired * 100), Math.Floor);
+		Times.Populate(entries.ConvertAll(e => e.Time.ToSecondsTime()), d => d);
+		Kills.Populate(entries.ConvertAll(e => (double)e.Kills), d => d);
+		Gems.Populate(entries.ConvertAll(e => (double)e.Gems), d => d);
+		DaggersFired.Populate(entries.ConvertAll(e => (double)e.DaggersFired), d => Math.Round(d / 100) * 100);
+		DaggersHit.Populate(entries.ConvertAll(e => (double)e.DaggersHit), d => Math.Round(d / 100) * 100);
+		Accuracy.Populate(entries.ConvertAll(e => e.DaggersFired == 0 ? 0 : e.DaggersHit / (double)e.DaggersFired * 100), Math.Floor);
 	}
 }

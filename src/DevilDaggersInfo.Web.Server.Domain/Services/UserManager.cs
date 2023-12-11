@@ -1,6 +1,7 @@
 using DevilDaggersInfo.Web.Core.Claims;
 using DevilDaggersInfo.Web.Server.Domain.Configuration;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
+using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Utils;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -51,7 +52,7 @@ public class UserManager
 		name = name.Trim();
 
 		if (_dbContext.Users.Any(u => u.Name == name))
-			throw new($"Name '{name}' is already taken.");
+			throw new BadRequestException($"Name '{name}' is already taken.");
 
 		PasswordValidator.CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
 
@@ -73,10 +74,10 @@ public class UserManager
 
 		UserEntity? user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
 		if (user == null)
-			throw new("User not found.");
+			throw new NotFoundException("User not found.");
 
 		if (_dbContext.Users.Any(u => u.Name == name))
-			throw new($"Name '{user.Name}' is already taken.");
+			throw new BadRequestException($"Name '{user.Name}' is already taken.");
 
 		user.Name = name;
 
@@ -87,7 +88,7 @@ public class UserManager
 	{
 		UserEntity? user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
 		if (user == null)
-			throw new($"User with ID '{id}' not found.");
+			throw new NotFoundException($"User with ID '{id}' not found.");
 
 		PasswordValidator.CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
 

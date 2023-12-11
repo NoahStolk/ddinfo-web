@@ -52,7 +52,7 @@ public class CustomEntriesController : ControllerBase
 			ex.Data[nameof(uploadRequest.ClientVersion)] = uploadRequest.ClientVersion;
 			ex.Data[nameof(uploadRequest.OperatingSystem)] = uploadRequest.OperatingSystem;
 			ex.Data[nameof(uploadRequest.BuildMode)] = uploadRequest.BuildMode;
-			_logger.LogError(ex, "Upload failed for user `{playerName}` (`{playerId}`) for `{spawnset}`.", uploadRequest.PlayerName, uploadRequest.PlayerId, BitConverter.ToString(uploadRequest.SurvivalHashMd5));
+			_logger.LogError(ex, "Upload failed for user `{PlayerName}` (`{PlayerId}`) for `{Spawnset}`.", uploadRequest.PlayerName, uploadRequest.PlayerId, BitConverter.ToString(uploadRequest.SurvivalHashMd5));
 			throw;
 		}
 	}
