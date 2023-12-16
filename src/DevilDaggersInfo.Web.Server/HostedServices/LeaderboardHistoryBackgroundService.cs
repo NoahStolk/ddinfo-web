@@ -31,12 +31,13 @@ public class LeaderboardHistoryBackgroundService : AbstractBackgroundService
 		List<IDdLeaderboardService.EntryResponse> entries = new();
 
 		const int leaderboardPageCount = 5;
+		const int playerPerPage = 100;
 		for (int i = 0; i < leaderboardPageCount;)
 		{
 			IDdLeaderboardService.LeaderboardResponse response;
 			try
 			{
-				response = await _leaderboardClient.GetLeaderboard(100 * i + 1);
+				response = await _leaderboardClient.GetLeaderboard(playerPerPage * i + 1);
 			}
 			catch (DdLeaderboardException)
 			{
@@ -54,7 +55,13 @@ public class LeaderboardHistoryBackgroundService : AbstractBackgroundService
 			i++;
 		}
 
-		entries = entries.OrderBy(e => e.Rank).ToList();
+		if (entries.Count != leaderboardPageCount * playerPerPage)
+			Logger.LogWarning("Leaderboard entries count ({Count}) does not match expected count ({ExpectedCount}). Duplicates and ranks below the expected count will be removed.", entries.Count, leaderboardPageCount * playerPerPage);
+
+		entries = entries.DistinctBy(e => e.Rank).Where(e => e.Rank <= leaderboardPageCount * playerPerPage).OrderBy(e => e.Rank).ToList();
+
+		if (entries.Count != leaderboardPageCount * playerPerPage)
+			Logger.LogWarning("Leaderboard entries count ({Count}) does not match expected count ({ExpectedCount}). Some ranks appear to be missing.", entries.Count, leaderboardPageCount * playerPerPage);
 
 		// ! Loop is endless.
 		LeaderboardHistory historyModel = ConvertToHistoryModel(leaderboard!, entries);
