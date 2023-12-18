@@ -5,7 +5,7 @@ namespace DevilDaggersInfo.Web.Server.Clients.Leaderboard;
 
 public class LeaderboardResponseParser
 {
-	public IDdLeaderboardService.LeaderboardResponse ParseGetLeaderboardResponse(byte[] response)
+	public IDdLeaderboardService.LeaderboardResponse ParseGetLeaderboardResponse(byte[] response, int limit)
 	{
 		using MemoryStream ms = new(response);
 		using BinaryReader br = new(ms);
@@ -25,7 +25,7 @@ public class LeaderboardResponseParser
 		br.BaseStream.Seek(4, SeekOrigin.Current);
 
 		List<IDdLeaderboardService.EntryResponse> entries = new();
-		for (int i = 0; i < totalEntries; i++)
+		for (int i = 0; i < Math.Min(limit, totalEntries); i++)
 		{
 			short usernameLength = br.ReadInt16();
 			string username = Encoding.UTF8.GetString(br.ReadBytes(usernameLength));
@@ -78,7 +78,6 @@ public class LeaderboardResponseParser
 			TimeGlobal = timeGlobal,
 			GemsGlobal = gemsGlobal,
 			DaggersHitGlobal = daggersHitGlobal,
-			TotalEntries = totalEntries,
 			TotalPlayers = totalPlayers,
 			Entries = entries,
 		};

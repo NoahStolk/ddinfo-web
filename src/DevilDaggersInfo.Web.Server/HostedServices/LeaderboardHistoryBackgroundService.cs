@@ -37,7 +37,7 @@ public class LeaderboardHistoryBackgroundService : AbstractBackgroundService
 			IDdLeaderboardService.LeaderboardResponse response;
 			try
 			{
-				response = await _leaderboardClient.GetLeaderboard(playerPerPage * i + 1);
+				response = await _leaderboardClient.GetLeaderboard(playerPerPage * i + 1, 100);
 			}
 			catch (DdLeaderboardException)
 			{

@@ -44,10 +44,10 @@ public class DdLeaderboardService : IDdLeaderboardService
 		}
 	}
 
-	public async Task<IDdLeaderboardService.LeaderboardResponse> GetLeaderboard(int rankStart)
+	public async Task<IDdLeaderboardService.LeaderboardResponse> GetLeaderboard(int rankStart, int limit)
 	{
 		return await ExecuteAndParse(
-			_leaderboardResponseParser.ParseGetLeaderboardResponse,
+			r => _leaderboardResponseParser.ParseGetLeaderboardResponse(r, limit),
 			_getScoresUrl,
 			new KeyValuePair<string?, string?>("offset", (rankStart - 1).ToString()));
 	}

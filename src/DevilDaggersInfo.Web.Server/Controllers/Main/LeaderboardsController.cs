@@ -20,9 +20,9 @@ public class LeaderboardsController : ControllerBase
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	public async Task<ActionResult<GetLeaderboard?>> GetLeaderboard([Range(1, int.MaxValue)] int rankStart = 1)
+	public async Task<ActionResult<GetLeaderboard?>> GetLeaderboard([Range(1, int.MaxValue)] int rankStart = 1, [Range(1, 1000)] int limit = 100)
 	{
-		return (await _leaderboardClient.GetLeaderboard(rankStart)).ToMainApi();
+		return (await _leaderboardClient.GetLeaderboard(rankStart, limit)).ToMainApi();
 	}
 
 	// FORBIDDEN: Used by DDLIVE.
@@ -58,7 +58,7 @@ public class LeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult<GetEntry>> GetEntryByRank([Required, Range(1, int.MaxValue)] int rank)
 	{
-		IDdLeaderboardService.LeaderboardResponse leaderboard = await _leaderboardClient.GetLeaderboard(rank);
+		IDdLeaderboardService.LeaderboardResponse leaderboard = await _leaderboardClient.GetLeaderboard(rank, 1);
 
 		if (leaderboard.Entries.Count == 0)
 			return NotFound();

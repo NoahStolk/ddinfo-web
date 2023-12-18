@@ -2,7 +2,7 @@ namespace DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 
 public interface IDdLeaderboardService
 {
-	Task<LeaderboardResponse> GetLeaderboard(int rankStart);
+	Task<LeaderboardResponse> GetLeaderboard(int rankStart, int limit);
 
 	Task<List<EntryResponse>> GetEntriesByName(string name);
 
@@ -27,8 +27,6 @@ public interface IDdLeaderboardService
 		public required ulong DaggersHitGlobal { get; init; }
 
 		public required ulong DaggersFiredGlobal { get; init; }
-
-		public required ushort TotalEntries { get; init; }
 
 		public required List<EntryResponse> Entries { get; init; }
 	}
