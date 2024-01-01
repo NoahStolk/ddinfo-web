@@ -1,29 +1,29 @@
 on:
-    push:
-        branches:
-            - main
+  push:
+    branches:
+      - main
 jobs:
-    build:
-        runs-on: ubuntu-latest
-        timeout-minutes: 5
-        steps:
-            -   name: Set up dotnet
-                uses: actions/setup-dotnet@v1
-                with:
-                    dotnet-version: '7.0.401'
-                    include-prerelease: false
-            -   name: Checkout
-                uses: actions/checkout@v2
-            -   name: Build
-                run: dotnet build src/DevilDaggersInfo.Web.sln -c Release
-            -   name: Test
-                run: dotnet test src/DevilDaggersInfo.Web.sln -c Release --no-build
-            -   name: Pack
-                run: |
-                    dotnet pack src/DevilDaggersInfo.Web.ApiSpec.Admin -c Release -o .
-                    dotnet pack src/DevilDaggersInfo.Web.ApiSpec.Main -c Release -o .
-                    dotnet pack src/DevilDaggersInfo.Web.ApiSpec.Tools -c Release -o .
-            -   name: Push
-                run: dotnet nuget push *.nupkg -s nuget.org -k ${NUGET_SECRET} -n --skip-duplicate
-                env:
-                    NUGET_SECRET: ${{ secrets.NUGET_SECRET }}
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Set up dotnet
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '7.0.401'
+          include-prerelease: false
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build
+        run: dotnet build src/DevilDaggersInfo.Web.sln -c Release
+      - name: Test
+        run: dotnet test src/DevilDaggersInfo.Web.sln -c Release --no-build
+      - name: Pack
+        run: |
+          dotnet pack src/DevilDaggersInfo.Web.ApiSpec.Admin -c Release -o .
+          dotnet pack src/DevilDaggersInfo.Web.ApiSpec.Main -c Release -o .
+          dotnet pack src/DevilDaggersInfo.Web.ApiSpec.Tools -c Release -o .
+      - name: Push
+        run: dotnet nuget push *.nupkg -s nuget.org -k ${NUGET_SECRET} -n --skip-duplicate
+        env:
+          NUGET_SECRET: ${{ secrets.NUGET_SECRET }}
