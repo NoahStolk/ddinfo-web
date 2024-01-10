@@ -3,33 +3,33 @@
 	<ItemGroup Label="AspNetCore client">
 		<PackageVersion Include="Blazored.LocalStorage" Version="4.4.0" />
 		<PackageVersion Include="Microsoft.AspNetCore.Components" Version="7.0.12" />
-		<PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="8.0.0" />
-		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.0" />
-		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="8.0.0" />
-		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.0" />
-		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.0" />
+		<PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="8.0.1" />
+		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.1" />
+		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="8.0.1" />
+		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.1" />
+		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.1" />
 		<PackageVersion Include="Microsoft.Extensions.Http" Version="8.0.0" />
-		<PackageVersion Include="Microsoft.JSInterop.WebAssembly" Version="8.0.0" />
+		<PackageVersion Include="Microsoft.JSInterop.WebAssembly" Version="8.0.1" />
 	</ItemGroup>
 
 	<ItemGroup Label="AspNetCore server">
 		<PackageVersion Include="DSharpPlus" Version="4.4.6" />
-		<PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
+		<PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.1" />
 		<PackageVersion Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
-		<PackageVersion Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.0" />
+		<PackageVersion Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.1" />
 		<PackageVersion Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
-		<PackageVersion Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
-		<PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.0" />
-		<PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.0" />
-		<PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.0" />
-		<PackageVersion Include="NSwag.AspNetCore" Version="14.0.0-preview010" />
+		<PackageVersion Include="Microsoft.EntityFrameworkCore" Version="8.0.1" />
+		<PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.1" />
+		<PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.1" />
+		<PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.1" />
+		<PackageVersion Include="NSwag.AspNetCore" Version="14.0.0" />
 		<PackageVersion Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.0-beta.2" />
-		<PackageVersion Include="Sentry.AspNetCore" Version="3.41.2" />
-		<PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="7.0.3" />
+		<PackageVersion Include="Sentry.AspNetCore" Version="3.41.3" />
+		<PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="7.1.2" />
 	</ItemGroup>
 
 	<ItemGroup Label="DevilDaggersInfo">
-		<PackageVersion Include="DevilDaggersInfo.Core" Version="0.7.5" />
+		<PackageVersion Include="DevilDaggersInfo.Core" Version="0.7.6" />
 	</ItemGroup>
 
 	<ItemGroup Label="Json">
@@ -39,9 +39,9 @@
 
 	<ItemGroup Label="Static code analysis">
 		<PackageVersion Include="Nullable.Extended.Analyzer" Version="1.15.6169" />
-		<PackageVersion Include="Roslynator.Analyzers" Version="4.6.4" />
-		<PackageVersion Include="SonarAnalyzer.CSharp" Version="9.14.0.81108" />
-		<PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.507" />
+		<PackageVersion Include="Roslynator.Analyzers" Version="4.9.0" />
+		<PackageVersion Include="SonarAnalyzer.CSharp" Version="9.16.0.82469" />
+		<PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.556" />
 	</ItemGroup>
 
 	<ItemGroup Label="Tests">
