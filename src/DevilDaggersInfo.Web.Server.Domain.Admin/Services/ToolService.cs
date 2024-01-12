@@ -54,6 +54,6 @@ public class ToolService
 		_dbContext.ToolDistributions.Add(distribution);
 		await _dbContext.SaveChangesAsync();
 
-		_logger.LogInformation("{tool} {version} {buildType} {publishMethod} was published.", name, version, buildType, publishMethod);
+		_logger.LogInformation("{Tool} {Version} {BuildType} {PublishMethod} was published.", name, version, buildType, publishMethod);
 	}
 }

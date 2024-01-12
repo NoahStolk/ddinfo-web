@@ -20,14 +20,14 @@ public class LoggingController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public ActionResult TestException(string? message)
 	{
-		throw new Exception("Test exception:" + message);
+		throw new InvalidOperationException("Test exception:" + message);
 	}
 
 	[HttpPost("log-error")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public ActionResult LogError(string? message)
 	{
-		_logger.LogError("Test log error: {message}", message);
+		_logger.LogError("Test log error: {Message}", message);
 		return Ok();
 	}
 
@@ -35,7 +35,7 @@ public class LoggingController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public ActionResult LogWarning(string? message)
 	{
-		_logger.LogWarning("Test log warning: {message}", message);
+		_logger.LogWarning("Test log warning: {Message}", message);
 		return Ok();
 	}
 
@@ -43,7 +43,7 @@ public class LoggingController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public ActionResult LogInfo(string? message)
 	{
-		_logger.LogInformation("Test log info: {message}", message);
+		_logger.LogInformation("Test log info: {Message}", message);
 		return Ok();
 	}
 }

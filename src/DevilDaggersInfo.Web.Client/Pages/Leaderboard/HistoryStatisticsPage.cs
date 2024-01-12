@@ -220,24 +220,24 @@ public partial class HistoryStatisticsPage
 		RegisterAccuracy();
 		void RegisterAccuracy()
 		{
-			Func<ulong, ulong, double> converter = static (hit, fired) => fired == 0 ? 0 : hit / (double)fired;
+			static double CalculateAccuracy(ulong hit, ulong fired) => fired == 0 ? 0 : hit / (double)fired;
 
 			IEnumerable<GetLeaderboardHistoryStatistics> relevantData = _statistics.Where(hs => hs.DaggersFiredGlobal > 0 && hs.DaggersFiredGlobalUpdated);
-			IEnumerable<double> accuracy = relevantData.Select(hs => converter(hs.DaggersHitGlobal, hs.DaggersFiredGlobal));
+			IEnumerable<double> accuracy = relevantData.Select(hs => CalculateAccuracy(hs.DaggersHitGlobal, hs.DaggersFiredGlobal));
 			double max = (int)Math.Ceiling((int)(accuracy.Max() * 100) / 5.0) * 5 / 100.0 + 0.0001;
 			_accuracyOptions = new(relevantData.Min(hs => hs.DateTime.Ticks), null, maxX.Ticks, 0.2, 0.01, max, true);
 
-			List<LineData> set = relevantData.Select((hs, i) => new LineData(hs.DateTime.Ticks, converter(hs.DaggersHitGlobal, hs.DaggersFiredGlobal), i)).ToList();
+			List<LineData> set = relevantData.Select((hs, i) => new LineData(hs.DateTime.Ticks, CalculateAccuracy(hs.DaggersHitGlobal, hs.DaggersFiredGlobal), i)).ToList();
 			_accuracyData.Add(new("#f80", false, false, false, set, (ds, d) =>
 			{
 				GetLeaderboardHistoryStatistics? stat = relevantData.Count() <= d.Index ? null : relevantData.ElementAt(d.Index);
-				return stat == null ? new() : new List<MarkupString>
-				{
+				return stat == null ? [] :
+				[
 					new($"<span style='text-align: right;'>{stat.DateTime.ToString(StringFormats.DateFormat)}</span>"),
-					new($"<span style='color: {ds.Color}; text-align: right;'>{converter(stat.DaggersHitGlobal, stat.DaggersFiredGlobal).ToString(StringFormats.AccuracyFormat)}</span>"),
+					new($"<span style='color: {ds.Color}; text-align: right;'>{CalculateAccuracy(stat.DaggersHitGlobal, stat.DaggersFiredGlobal).ToString(StringFormats.AccuracyFormat)}</span>"),
 					new($"<span style='text-align: right;'>{(stat.DaggersFiredGlobal == 10_000 ? "?" : stat.DaggersHitGlobal.ToString(StringFormats.LeaderboardIntFormat))}</span>"),
 					new($"<span style='text-align: right;'>{(stat.DaggersFiredGlobal == 10_000 ? "?" : stat.DaggersFiredGlobal.ToString(StringFormats.LeaderboardIntFormat))}</span>"),
-				};
+				];
 			}));
 		}
 	}

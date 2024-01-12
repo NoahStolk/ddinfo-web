@@ -24,7 +24,7 @@ public class LeaderboardResponseParser
 
 		br.BaseStream.Seek(4, SeekOrigin.Current);
 
-		List<IDdLeaderboardService.EntryResponse> entries = new();
+		List<IDdLeaderboardService.EntryResponse> entries = [];
 		for (int i = 0; i < Math.Min(limit, totalEntries); i++)
 		{
 			short usernameLength = br.ReadInt16();
@@ -93,7 +93,7 @@ public class LeaderboardResponseParser
 
 		br.BaseStream.Seek(6, SeekOrigin.Current);
 
-		List<IDdLeaderboardService.EntryResponse> entries = new();
+		List<IDdLeaderboardService.EntryResponse> entries = [];
 		for (int i = 0; i < Math.Min((short)100, totalResults); i++)
 		{
 			short usernameLength = br.ReadInt16();
@@ -149,7 +149,7 @@ public class LeaderboardResponseParser
 
 		br.BaseStream.Seek(19, SeekOrigin.Begin);
 
-		List<IDdLeaderboardService.EntryResponse> entries = new();
+		List<IDdLeaderboardService.EntryResponse> entries = [];
 		while (br.BaseStream.Position < br.BaseStream.Length)
 		{
 			entries.Add(ReadEntry(br));

@@ -5,11 +5,11 @@ using System.Text.RegularExpressions;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Utils;
 
-public static class PasswordValidator
+public static partial class PasswordValidator
 {
 	public static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
 	{
-		if (!Regex.IsMatch(password, AuthenticationConstants.PasswordRegex))
+		if (!PasswordRegex().IsMatch(password))
 			throw new ArgumentException("Password does not meet the requirements.", nameof(password));
 
 		using HMACSHA512 hmac = new();
@@ -34,4 +34,7 @@ public static class PasswordValidator
 
 		return true;
 	}
+
+	[GeneratedRegex(AuthenticationConstants.PasswordRegex)]
+	private static partial Regex PasswordRegex();
 }

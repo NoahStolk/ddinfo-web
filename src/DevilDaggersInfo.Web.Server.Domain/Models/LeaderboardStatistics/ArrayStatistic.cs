@@ -6,12 +6,12 @@ public class ArrayStatistic
 	public double Median { get; private set; }
 	public double Mode { get; private set; }
 
-	public void Populate(IEnumerable<double> data, Func<double, double> modeTransformer)
+	public void Populate(List<double> data, Func<double, double> modeTransformer)
 	{
-		data = data.OrderBy(n => n);
+		data = data.OrderBy(n => n).ToList();
 
 		Average = data.Average();
-		Median = data.ElementAt(data.Count() / 2);
+		Median = data[data.Count / 2];
 		Mode = data
 			.GroupBy(modeTransformer)
 			.OrderByDescending(g => g.Count())

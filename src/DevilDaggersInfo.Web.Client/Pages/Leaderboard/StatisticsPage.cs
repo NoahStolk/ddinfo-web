@@ -14,18 +14,18 @@ public partial class StatisticsPage
 {
 	private const string _percentageFormat = "0.000%";
 
-	private static readonly BarChartOptions _scoreBarChartOptions = new() { ChartMarginXInPx = 60, HighlighterKeys = new() { "Score Range", "Players", "% Of All" }, HighlighterWidth = 360 };
-	private static readonly BarChartOptions _killsBarChartOptions = new() { ChartMarginXInPx = 60, HighlighterKeys = new() { "Kills Range", "Players", "% Of All" }, HighlighterWidth = 320 };
-	private static readonly BarChartOptions _gemsBarChartOptions = new() { ChartMarginXInPx = 60, HighlighterKeys = new() { "Gems Range", "Players", "% Of All" }, HighlighterWidth = 320 };
-	private static readonly BarChartOptions _upgradesBarChartOptions = new() { ChartMarginXInPx = 60, ChartMarginYInPx = 80, HighlighterKeys = new() { "Upgrade", "Players", "% Of All" }, HighlighterWidth = 320 };
-	private static readonly BarChartOptions _daggersBarChartOptions = new() { ChartMarginXInPx = 60, ChartMarginYInPx = 80, HighlighterKeys = new() { "Dagger", "Players", "% Of All" }, HighlighterWidth = 320 };
-	private static readonly BarChartOptions _deathsBarChartOptions = new() { ChartMarginXInPx = 60, ChartMarginYInPx = 80, HighlighterKeys = new() { "Death Type", "Players", "% Of All" }, HighlighterWidth = 320 };
-	private static readonly BarChartOptions _enemiesBarChartOptions = new() { ChartMarginXInPx = 60, ChartMarginYInPx = 80, HighlighterKeys = new() { "Enemy", "Players", "% Of All" }, HighlighterWidth = 320 };
+	private static readonly BarChartOptions _scoreBarChartOptions = new() { ChartMarginXInPx = 60, HighlighterKeys = ["Score Range", "Players", "% Of All"], HighlighterWidth = 360 };
+	private static readonly BarChartOptions _killsBarChartOptions = new() { ChartMarginXInPx = 60, HighlighterKeys = ["Kills Range", "Players", "% Of All"], HighlighterWidth = 320 };
+	private static readonly BarChartOptions _gemsBarChartOptions = new() { ChartMarginXInPx = 60, HighlighterKeys = ["Gems Range", "Players", "% Of All"], HighlighterWidth = 320 };
+	private static readonly BarChartOptions _upgradesBarChartOptions = new() { ChartMarginXInPx = 60, ChartMarginYInPx = 80, HighlighterKeys = ["Upgrade", "Players", "% Of All"], HighlighterWidth = 320 };
+	private static readonly BarChartOptions _daggersBarChartOptions = new() { ChartMarginXInPx = 60, ChartMarginYInPx = 80, HighlighterKeys = ["Dagger", "Players", "% Of All"], HighlighterWidth = 320 };
+	private static readonly BarChartOptions _deathsBarChartOptions = new() { ChartMarginXInPx = 60, ChartMarginYInPx = 80, HighlighterKeys = ["Death Type", "Players", "% Of All"], HighlighterWidth = 320 };
+	private static readonly BarChartOptions _enemiesBarChartOptions = new() { ChartMarginXInPx = 60, ChartMarginYInPx = 80, HighlighterKeys = ["Enemy", "Players", "% Of All"], HighlighterWidth = 320 };
 
 	private static readonly List<string> _daggers = Daggers.All.Select(d => d.Name).ToList();
 	private static readonly List<string> _deathTypes = Deaths.GetDeaths(GameConstants.CurrentVersion).Select(d => d.Name).ToList();
 	private static readonly List<string> _enemies = Enemies.GetEnemies(GameConstants.CurrentVersion).Where(e => e.FirstSpawnSecond.HasValue).OrderByDescending(e => e.FirstSpawnSecond).Select(e => e.Name).Reverse().ToList();
-	private static readonly List<string> _upgrades = new() { "Level 1", "Level 2", "Level 3 / 4" };
+	private static readonly List<string> _upgrades = ["Level 1", "Level 2", "Level 3 / 4"];
 
 	private GetLeaderboardStatistics? _statistics;
 
@@ -77,12 +77,12 @@ public partial class StatisticsPage
 				BarData barData = ds.Data[i];
 				int start = data.ElementAt(i).Key;
 				Dagger dagger = Daggers.GetDaggerFromSeconds(GameConstants.CurrentVersion, start);
-				return new()
-				{
+				return
+				[
 					new($"<span class='{dagger.Name.ToLower()}' style='text-align: right;'>{start.ToString(StringFormats.TimeFormat)} - {(start + 9.9999).ToString(StringFormats.TimeFormat)}</span>"),
 					new($"<span style='text-align: right;'>{barData.Y:0}</span>"),
 					new($"<span style='text-align: right;'>{(barData.Y / _statistics.TotalEntries).ToString(_percentageFormat)}</span>"),
-				};
+				];
 			});
 		}
 
@@ -93,12 +93,12 @@ public partial class StatisticsPage
 		{
 			BarData barData = ds.Data[i];
 			int start = _statistics.KillsStatistics.ElementAt(i).Key;
-			return new()
-			{
+			return
+			[
 				new($"<span style='text-align: right;'>{start:0} - {start + 9:0}</span>"),
 				new($"<span style='text-align: right;'>{barData.Y:0}</span>"),
 				new($"<span style='text-align: right;'>{(barData.Y / _statistics.TotalEntries).ToString(_percentageFormat)}</span>"),
-			};
+			];
 		});
 
 		List<BarData> gemsSet = _statistics.GemsStatistics.Where(kvp => kvp.Key < 500).Select((kvp, i) => new BarData("#f00", kvp.Value, i)).ToList();
@@ -108,31 +108,31 @@ public partial class StatisticsPage
 		{
 			BarData barData = ds.Data[i];
 			int start = _statistics.GemsStatistics.ElementAt(i).Key;
-			return new()
-			{
+			return
+			[
 				new($"<span style='text-align: right;'>{start:0} - {start + 9:0}</span>"),
 				new($"<span style='text-align: right;'>{barData.Y:0}</span>"),
 				new($"<span style='text-align: right;'>{(barData.Y / _statistics.TotalEntries).ToString(_percentageFormat)}</span>"),
-			};
+			];
 		});
 
-		List<BarData> upgradesSet = new()
-		{
+		List<BarData> upgradesSet =
+		[
 			new(UpgradesV3_2.Level1.Color.HexCode, _statistics.PlayersWithLevel1, _statistics.PlayersWithLevel1),
 			new(UpgradesV3_2.Level2.Color.HexCode, _statistics.PlayersWithLevel2, _statistics.PlayersWithLevel2),
 			new(UpgradesV3_2.Level3.Color.HexCode, _statistics.PlayersWithLevel3Or4, _statistics.PlayersWithLevel3Or4),
-		};
+		];
 		const double upgradesScale = 50000.0;
 		_upgradesDataOptions = new(0, upgradesScale, Math.Ceiling(new[] { _statistics.PlayersWithLevel1, _statistics.PlayersWithLevel2, _statistics.PlayersWithLevel3Or4 }.Max() / upgradesScale) * upgradesScale);
 		_upgradesData = new(upgradesSet, (ds, i) =>
 		{
 			BarData barData = ds.Data[i];
-			return new()
-			{
+			return
+			[
 				new($"<span style='color: {barData.Color}; text-align: right;'>{_upgrades[i]}</span>"),
 				new($"<span style='text-align: right;'>{barData.Y:0}</span>"),
 				new($"<span style='text-align: right;'>{(barData.Y / _statistics.TotalEntries).ToString(_percentageFormat)}</span>"),
-			};
+			];
 		});
 
 		List<BarData> daggersSet = _statistics.DaggersStatistics.Select((kvp, i) => new BarData(Daggers.GetDaggerByName(kvp.Key)?.Color.HexCode ?? MarkupStrings.NoDataColor, kvp.Value, i)).ToList();
@@ -142,12 +142,12 @@ public partial class StatisticsPage
 		{
 			BarData barData = ds.Data[i];
 			string dagger = _daggers[i];
-			return new()
-			{
+			return
+			[
 				new($"<span class='{dagger.ToLower()}' style='text-align: right;'>{dagger}</span>"),
 				new($"<span style='text-align: right;'>{barData.Y:0}</span>"),
 				new($"<span style='text-align: right;'>{(barData.Y / _statistics.TotalEntries).ToString(_percentageFormat)}</span>"),
-			};
+			];
 		});
 
 		List<BarData> deathsSet = _statistics.DeathsStatistics.Select((kvp, i) => new BarData(Deaths.GetDeathByName(GameConstants.CurrentVersion, kvp.Key)?.Color.HexCode ?? MarkupStrings.NoDataColor, kvp.Value, i)).ToList();
@@ -156,12 +156,12 @@ public partial class StatisticsPage
 		_deathsData = new(deathsSet, (ds, i) =>
 		{
 			BarData barData = ds.Data[i];
-			return new()
-			{
+			return
+			[
 				new($"<span style='color: {barData.Color}; text-align: right;'>{_deathTypes[i]}</span>"),
 				new($"<span style='text-align: right;'>{barData.Y:0}</span>"),
 				new($"<span style='text-align: right;'>{(barData.Y / _statistics.TotalEntries).ToString(_percentageFormat)}</span>"),
-			};
+			];
 		});
 
 		List<BarData> enemiesSet = _statistics.EnemiesStatistics.Select((kvp, i) => new BarData(Enemies.GetEnemyByName(GameConstants.CurrentVersion, kvp.Key)?.Color.HexCode ?? MarkupStrings.NoDataColor, kvp.Value, i)).ToList();
@@ -170,12 +170,12 @@ public partial class StatisticsPage
 		_enemiesData = new(enemiesSet, (ds, i) =>
 		{
 			BarData barData = ds.Data[i];
-			return new()
-			{
+			return
+			[
 				new($"<span style='color: {barData.Color}; text-align: right;'>{_enemies[i]}</span>"),
 				new($"<span style='text-align: right;'>{barData.Y:0}</span>"),
 				new($"<span style='text-align: right;'>{(barData.Y / _statistics.TotalEntries).ToString(_percentageFormat)}</span>"),
-			};
+			];
 		});
 	}
 }

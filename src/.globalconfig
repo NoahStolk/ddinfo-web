@@ -181,6 +181,27 @@ dotnet_diagnostic.S1135.severity                                         = sugge
 
 # Severity: none
 
+# Do not expose generic lists.
+dotnet_diagnostic.CA1002.severity                                        = none
+
+# Enum storage should be Int32.
+dotnet_diagnostic.CA1028.severity                                        = none
+
+# Validate arguments of public methods.
+dotnet_diagnostic.CA1062.severity                                        = none
+
+# Properties should not return arrays.
+dotnet_diagnostic.CA1819.severity                                        = none
+
+# Use the LoggerMessage delegates.
+dotnet_diagnostic.CA1848.severity                                        = none
+
+# Do not directly await a Task.
+dotnet_diagnostic.CA2007.severity                                        = none
+
+# Do not use broken cryptographic algorithms.
+dotnet_diagnostic.CA5351.severity                                        = none
+
 # Missing XML comment for publicly visible type or member.
 dotnet_diagnostic.CS1591.severity                                        = none
 
@@ -189,6 +210,9 @@ dotnet_diagnostic.RCS1090.severity                                       = none
 
 # Add parentheses when necessary.
 dotnet_diagnostic.RCS1123.severity                                       = none
+
+# XML comment analysis is disabled due to project configuration.
+dotnet_diagnostic.SA0001.severity                                        = none
 
 # The keyword 'new' should be followed by a space. (C# 9)
 dotnet_diagnostic.SA1000.severity                                        = none

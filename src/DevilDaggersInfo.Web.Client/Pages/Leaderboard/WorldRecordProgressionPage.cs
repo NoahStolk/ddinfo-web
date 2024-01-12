@@ -90,7 +90,7 @@ public partial class WorldRecordProgressionPage
 		_worldRecords = data.WorldRecords.OrderByDescending(wr => wr.DateTime).ToList();
 	}
 
-	private string GetHistoryDateString(DateTime dateTime)
+	private static string GetHistoryDateString(DateTime dateTime)
 	{
 		int daysAgo = (int)Math.Round((DateTime.UtcNow - dateTime).TotalDays);
 		return $"{dateTime:MMM dd} '{dateTime:yy} ({daysAgo:N0} day{S(daysAgo)} ago)";
