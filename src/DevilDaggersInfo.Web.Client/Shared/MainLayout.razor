@@ -1,3 +1,4 @@
+@using DevilDaggersInfo.Web.Client.Components;
 @inherits LayoutComponentBase
 
 <div class="flex flex-col sm:flex-row">
@@ -11,7 +12,11 @@
 		</div>
 		<footer class="flex-shrink-0 pt-3">
 			<p>&copy; DevilDaggers.info 2017-@DateTime.UtcNow.Year</p>
-			<p>Version @Program.Version (@Program.BuildTime)</p>
+			<p>
+				Version
+				<Tooltip Position="TooltipPosition.Right" Text="@Program.VersionHash" TextSizeClass="@string.Empty"><span class="cursor-pointer">@Program.Version</span></Tooltip>
+				(@Program.BuildTime)
+			</p>
 			<p><a class="link" href="//devildaggers.com/" target="_blank">Devil Daggers</a> is created by <a class="link" href="//sorath.com/" target="_blank">Sorath</a></p>
 			<p><a class="link" href="//devildaggers.info/" target="_blank">DevilDaggers.info</a> is created by <a class="link" href="//noahstolk.com/" target="_blank">Noah Stolk</a></p>
 			<p><a class="link" href="@Constants.DiscordUrl" target="_blank">Discord server</a></p>

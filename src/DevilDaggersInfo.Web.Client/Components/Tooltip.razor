@@ -1,4 +1,4 @@
-<span class="tooltip @(Position.ToString().ToLower()) whitespace-nowrap font-calibri text-sm" title="@(Text)">
+<span class="tooltip @(Position.ToString().ToLower()) whitespace-nowrap font-calibri @TextSizeClass" title="@(Text)">
 	@ChildContent
 </span>
 
@@ -12,4 +12,7 @@
 	
 	[Parameter]
 	public TooltipPosition Position { get; set; }
+
+	[Parameter]
+	public string TextSizeClass { get; set; } = "text-sm";
 }

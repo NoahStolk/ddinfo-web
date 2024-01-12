@@ -14,13 +14,25 @@ namespace DevilDaggersInfo.Web.Client;
 public static class Program
 {
 	public static string? Version { get; private set; }
+	public static string? VersionHash { get; private set; }
 	public static string? BuildTime { get; private set; }
 
 	public static async Task Main(string[] args)
 	{
 		Assembly executingAssembly = Assembly.GetExecutingAssembly();
-		Version = executingAssembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
 		BuildTime = executingAssembly.GetCustomAttribute<BuildTimeAttribute>()?.BuildTime;
+
+		string? informationalVersion = executingAssembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
+		string[]? split = informationalVersion?.Split('+');
+		if (split is not { Length: 2 })
+		{
+			Version = informationalVersion;
+		}
+		else
+		{
+			Version = split[0];
+			VersionHash = split[1];
+		}
 
 		WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault(args);
 
