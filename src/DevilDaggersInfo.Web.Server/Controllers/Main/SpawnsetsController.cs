@@ -220,7 +220,7 @@ public class SpawnsetsController : ControllerBase
 		if (spawnsetEntity != null)
 			return spawnsetEntity.File;
 
-		_logger.LogError("Default spawnset {name} does not exist in the file system.", name);
+		_logger.LogError("Default spawnset {Name} does not exist in the file system.", name);
 		return NotFound();
 	}
 

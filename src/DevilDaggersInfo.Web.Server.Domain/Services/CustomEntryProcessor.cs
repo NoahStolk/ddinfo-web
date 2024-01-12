@@ -67,7 +67,7 @@ public class CustomEntryProcessor
 		}
 		catch (Exception ex)
 		{
-			_logger.LogError(ex, "Could not decrypt validation '{validation}'.", uploadRequest.Validation);
+			_logger.LogError(ex, "Could not decrypt validation '{Validation}'.", uploadRequest.Validation);
 			LogAndThrowValidationException(uploadRequest, $"Could not decrypt validation '{uploadRequest.Validation}'.");
 		}
 
@@ -183,7 +183,7 @@ public class CustomEntryProcessor
 		int requestTimeAsInt = uploadRequest.TimeInSeconds.To10thMilliTime();
 		if (uploadRequest.IsReplay && IsReplayTimeAlmostTheSame(requestTimeAsInt, customEntry.Time) && await IsReplayFileTheSame(customEntry.Id, uploadRequest.ReplayData))
 		{
-			_logger.LogInformation("Score submission replay time was modified because of identical replay (database: {originalTime} - request: {replayTime}).", customEntry.Time.ToSecondsTime().ToString(StringFormats.TimeFormat), uploadRequest.TimeInSeconds.ToString(StringFormats.TimeFormat));
+			_logger.LogInformation("Score submission replay time was modified because of identical replay (database: {OriginalTime} - request: {ReplayTime}).", customEntry.Time.ToSecondsTime().ToString(StringFormats.TimeFormat), uploadRequest.TimeInSeconds.ToString(StringFormats.TimeFormat));
 			return new()
 			{
 				Leaderboard = ToLeaderboardSummary(customLeaderboard),
@@ -692,9 +692,9 @@ public class CustomEntryProcessor
 		};
 	}
 
-#pragma warning disable CA1032, RCS1194, S3871
+#pragma warning disable CA1032, CA1064, RCS1194, S3871
 	private sealed class CustomEntryCriteriaException : Exception
-#pragma warning restore S3871, RCS1194, CA1032
+#pragma warning restore S3871, RCS1194, CA1064, CA1032
 	{
 		public CustomEntryCriteriaException(string criteriaName, CustomLeaderboardCriteriaOperator criteriaOperator, int expectedValue, int actualValue)
 		{

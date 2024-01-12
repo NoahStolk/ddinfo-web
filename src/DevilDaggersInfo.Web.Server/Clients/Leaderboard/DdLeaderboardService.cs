@@ -8,10 +8,10 @@ namespace DevilDaggersInfo.Web.Server.Clients.Leaderboard;
 
 public class DdLeaderboardService : IDdLeaderboardService
 {
-	private const string _getScoresUrl = "http://dd.hasmodai.com/dd3/get_scores.php";
-	private const string _getUserSearchUrl = "http://dd.hasmodai.com/dd3/get_user_search_public.php";
-	private const string _getUsersByIdsUrl = "http://dd.hasmodai.com/dd3/get_multiple_users_by_id_public.php";
-	private const string _getUserByIdUrl = "http://dd.hasmodai.com/dd3/get_user_by_id_public.php";
+	private static readonly Uri _getScoresUrl = new("http://dd.hasmodai.com/dd3/get_scores.php");
+	private static readonly Uri _getUserSearchUrl = new("http://dd.hasmodai.com/dd3/get_user_search_public.php");
+	private static readonly Uri _getUsersByIdsUrl = new("http://dd.hasmodai.com/dd3/get_multiple_users_by_id_public.php");
+	private static readonly Uri _getUserByIdUrl = new("http://dd.hasmodai.com/dd3/get_user_by_id_public.php");
 
 	private readonly HttpClient _httpClient;
 	private readonly LeaderboardResponseParser _leaderboardResponseParser;
@@ -24,7 +24,7 @@ public class DdLeaderboardService : IDdLeaderboardService
 		_logger = logger;
 	}
 
-	private async Task<TResponse> ExecuteAndParse<TResponse>(Func<byte[], TResponse> parser, string url, params KeyValuePair<string?, string?>[] parameters)
+	private async Task<TResponse> ExecuteAndParse<TResponse>(Func<byte[], TResponse> parser, Uri url, params KeyValuePair<string?, string?>[] parameters)
 		where TResponse : class
 	{
 		try
@@ -79,7 +79,7 @@ public class DdLeaderboardService : IDdLeaderboardService
 			new KeyValuePair<string?, string?>("uid", id.ToString()));
 	}
 
-	private void LogError(Exception ex, string url, params KeyValuePair<string?, string?>[] parameters)
+	private void LogError(Exception ex, Uri url, params KeyValuePair<string?, string?>[] parameters)
 	{
 		string error = ex switch
 		{
@@ -87,6 +87,6 @@ public class DdLeaderboardService : IDdLeaderboardService
 			EndOfStreamException => "incomplete response",
 			_ => "unexpected error",
 		};
-		_logger.LogError(ex, "Error ({error}) while attempting to fetch data from {url} with parameters: {parameters}", error, url, string.Join(", ", parameters.Select(p => $"{p.Key}: {p.Value}")));
+		_logger.LogError(ex, "Error ({Error}) while attempting to fetch data from {Url} with parameters: {Parameters}", error, url, string.Join(", ", parameters.Select(p => $"{p.Key}: {p.Value}")));
 	}
 }

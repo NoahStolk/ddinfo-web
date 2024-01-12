@@ -50,7 +50,7 @@ public class ToolRepository
 		string path = _fileSystemService.GetToolDistributionPath(name, publishMethod, buildType, version);
 		if (!File.Exists(path))
 		{
-			_logger.LogError("Tool distribution file at '{path}' does not exist!", path);
+			_logger.LogError("Tool distribution file at '{Path}' does not exist!", path);
 			throw new NotFoundException("Tool distribution file does not exist.");
 		}
 

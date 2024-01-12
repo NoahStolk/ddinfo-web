@@ -26,7 +26,7 @@ public static class HighscoreSpreadUtils
 			Console.WriteLine(_log.ToString());
 	}
 
-	public static Dictionary<string, LeaderboardHistory> GetAllLeaderboards()
+	private static Dictionary<string, LeaderboardHistory> GetAllLeaderboards()
 	{
 		Dictionary<string, LeaderboardHistory> leaderboards = new();
 		foreach (string path in Directory.GetFiles(@"C:\Users\NOAH\source\repos\DevilDaggersInfo\src\web-server\DevilDaggersInfo.Web.Server\Data\LeaderboardHistory", "*.bin"))
@@ -38,7 +38,7 @@ public static class HighscoreSpreadUtils
 		return leaderboards;
 	}
 
-	public static void SpreadHighscoreStats(List<LeaderboardHistory> leaderboards, LeaderboardHistory leaderboard)
+	private static void SpreadHighscoreStats(List<LeaderboardHistory> leaderboards, LeaderboardHistory leaderboard)
 	{
 		List<EntryHistory> changes = new();
 		foreach (EntryHistory entry in leaderboard.Entries)
@@ -69,7 +69,7 @@ public static class HighscoreSpreadUtils
 		_log.AppendLine();
 	}
 
-	public static bool HasMissingStats(this EntryHistory entry)
+	private static bool HasMissingStats(this EntryHistory entry)
 		=> entry.Gems == 0 || entry.Kills == 0 || entry.DeathType == 255 || entry.DaggersHit == 0 || entry.DaggersFired is 0 or 10000;
 
 	private static EntryHistory Combine(EntryHistory entry, List<EntryHistory> entries)
