@@ -1,9 +1,7 @@
 using System.Net;
-using System.Runtime.Serialization;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Exceptions;
 
-[Serializable]
 public class DdLeaderboardException : StatusCodeException
 {
 	public DdLeaderboardException()
@@ -17,11 +15,6 @@ public class DdLeaderboardException : StatusCodeException
 
 	public DdLeaderboardException(string? message, Exception? innerException)
 		: base(message, innerException)
-	{
-	}
-
-	protected DdLeaderboardException(SerializationInfo info, StreamingContext context)
-		: base(info, context)
 	{
 	}
 

@@ -3,51 +3,51 @@
 	<ItemGroup Label="AspNetCore client">
 		<PackageVersion Include="Blazored.LocalStorage" Version="4.4.0" />
 		<PackageVersion Include="Microsoft.AspNetCore.Components" Version="7.0.12" />
-		<PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="7.0.12" />
-		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.12" />
-		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="7.0.12" />
-		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.12" />
-		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="7.0.12" />
-		<PackageVersion Include="Microsoft.Extensions.Http" Version="7.0.0" />
-		<PackageVersion Include="Microsoft.JSInterop.WebAssembly" Version="7.0.12" />
+		<PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="8.0.1" />
+		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.1" />
+		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="8.0.1" />
+		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.1" />
+		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.1" />
+		<PackageVersion Include="Microsoft.Extensions.Http" Version="8.0.0" />
+		<PackageVersion Include="Microsoft.JSInterop.WebAssembly" Version="8.0.1" />
 	</ItemGroup>
 
 	<ItemGroup Label="AspNetCore server">
 		<PackageVersion Include="DSharpPlus" Version="4.4.6" />
-		<PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.12" />
-		<PackageVersion Include="Microsoft.Extensions.Configuration.Abstractions" Version="7.0.0" />
-		<PackageVersion Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="7.0.12" />
+		<PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.1" />
+		<PackageVersion Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
+		<PackageVersion Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.1" />
 		<PackageVersion Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
-		<PackageVersion Include="Microsoft.EntityFrameworkCore" Version="7.0.12" />
-		<PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.12" />
-		<PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.12" />
-		<PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.12" />
-		<PackageVersion Include="NSwag.AspNetCore" Version="13.20.0" />
-		<PackageVersion Include="Pomelo.EntityFrameworkCore.MySql" Version="7.0.0" />
-		<PackageVersion Include="Sentry.AspNetCore" Version="3.40.1" />
-		<PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="7.0.3" />
+		<PackageVersion Include="Microsoft.EntityFrameworkCore" Version="8.0.1" />
+		<PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.1" />
+		<PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.1" />
+		<PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.1" />
+		<PackageVersion Include="NSwag.AspNetCore" Version="14.0.0" />
+		<PackageVersion Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.0-beta.2" />
+		<PackageVersion Include="Sentry.AspNetCore" Version="3.41.3" />
+		<PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="7.1.2" />
 	</ItemGroup>
 
 	<ItemGroup Label="DevilDaggersInfo">
-		<PackageVersion Include="DevilDaggersInfo.Core" Version="0.7.5" />
+		<PackageVersion Include="DevilDaggersInfo.Core" Version="0.7.6" />
 	</ItemGroup>
 
 	<ItemGroup Label="Json">
 		<PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
-		<PackageVersion Include="System.Net.Http.Json" Version="7.0.1" />
+		<PackageVersion Include="System.Net.Http.Json" Version="8.0.0" />
 	</ItemGroup>
 
 	<ItemGroup Label="Static code analysis">
 		<PackageVersion Include="Nullable.Extended.Analyzer" Version="1.15.6169" />
-		<PackageVersion Include="Roslynator.Analyzers" Version="4.6.0" />
-		<PackageVersion Include="SonarAnalyzer.CSharp" Version="9.12.0.78982" />
-		<PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.507" />
+		<PackageVersion Include="Roslynator.Analyzers" Version="4.9.0" />
+		<PackageVersion Include="SonarAnalyzer.CSharp" Version="9.16.0.82469" />
+		<PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.556" />
 	</ItemGroup>
 
 	<ItemGroup Label="Tests">
 		<PackageVersion Include="coverlet.collector" Version="6.0.0" />
-		<PackageVersion Include="JetBrains.Annotations" Version="2023.2.0" />
-		<PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.7.2" />
+		<PackageVersion Include="JetBrains.Annotations" Version="2023.3.0" />
+		<PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
 		<PackageVersion Include="MockQueryable.NSubstitute" Version="7.0.0" />
 		<PackageVersion Include="MSTest.TestAdapter" Version="3.1.1" />
 		<PackageVersion Include="MSTest.TestFramework" Version="3.1.1" />

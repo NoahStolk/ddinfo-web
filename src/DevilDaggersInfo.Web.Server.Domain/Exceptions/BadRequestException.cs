@@ -1,9 +1,7 @@
 using System.Net;
-using System.Runtime.Serialization;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Exceptions;
 
-[Serializable]
 public class BadRequestException : StatusCodeException
 {
 	public BadRequestException()
@@ -17,11 +15,6 @@ public class BadRequestException : StatusCodeException
 
 	public BadRequestException(string? message, Exception? innerException)
 		: base(message, innerException)
-	{
-	}
-
-	protected BadRequestException(SerializationInfo info, StreamingContext context)
-		: base(info, context)
 	{
 	}
 

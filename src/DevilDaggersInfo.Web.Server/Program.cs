@@ -243,7 +243,7 @@ app.UseEndpoints(endpoints =>
 });
 
 app.UseOpenApi();
-app.UseSwaggerUi3();
+app.UseSwaggerUi();
 
 if (!app.Environment.IsDevelopment())
 {
