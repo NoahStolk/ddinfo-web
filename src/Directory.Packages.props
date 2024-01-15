@@ -29,7 +29,7 @@
 	</ItemGroup>
 
 	<ItemGroup Label="DevilDaggersInfo">
-		<PackageVersion Include="DevilDaggersInfo.Core" Version="0.8.0" />
+		<PackageVersion Include="DevilDaggersInfo.Core" Version="0.8.1" />
 	</ItemGroup>
 
 	<ItemGroup Label="Json">
