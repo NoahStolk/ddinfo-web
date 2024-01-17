@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Repositories;
 
+[Obsolete("Tool support from the web server will be removed.")]
 public class ToolRepository
 {
 	private readonly ApplicationDbContext _dbContext;

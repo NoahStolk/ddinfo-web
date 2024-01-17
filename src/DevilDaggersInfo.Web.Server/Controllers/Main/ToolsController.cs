@@ -9,6 +9,7 @@ using System.Net.Mime;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 
+[Obsolete("Tool support from the web server will be removed.")]
 [Route("api/tools")]
 [ApiController]
 public class ToolsController : ControllerBase
@@ -22,6 +23,7 @@ public class ToolsController : ControllerBase
 
 	// FORBIDDEN: Used by DDSE 2.45.0.0.
 	// FORBIDDEN: Used by DDAE 1.4.0.0.
+	[Obsolete("Tool support from the web server will be removed.")]
 	[HttpGet("{toolName}")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -59,6 +61,7 @@ public class ToolsController : ControllerBase
 
 	// FORBIDDEN: Used by DDSE 2.45.0.0.
 	// FORBIDDEN: Used by DDAE 1.4.0.0.
+	[Obsolete("Tool support from the web server will be removed.")]
 	[HttpGet("{toolName}/file")]
 	[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -83,6 +86,7 @@ public class ToolsController : ControllerBase
 
 	// FORBIDDEN: Used by DDSE 2.45.0.0.
 	// FORBIDDEN: Used by DDAE 1.4.0.0.
+	[Obsolete("Tool support from the web server will be removed.")]
 	[HttpGet("{toolName}/distribution-latest")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -96,6 +100,7 @@ public class ToolsController : ControllerBase
 		return distribution.ToMainApi();
 	}
 
+	[Obsolete("Tool support from the web server will be removed.")]
 	[HttpGet("{toolName}/distribution")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
