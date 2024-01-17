@@ -1,29 +1,19 @@
 @page "/tools/asset-editor"
 @using DevilDaggersInfo.Web.Client.Components
 @using DevilDaggersInfo.Web.Client.Components.Tools
-@using DevilDaggersInfo.Web.Client.Enums
 @using DevilDaggersInfo.Web.Client.HttpClients
 @using DevilDaggersInfo.Web.ApiSpec.Main.Mods
-@using DevilDaggersInfo.Web.ApiSpec.Main.Tools
 @inject MainApiHttpClient Http
 
 <Heading Title="Devil Daggers Asset Editor" />
 
-@if (GetTool == null || GetTotalModData == null)
+@if (GetTotalModData == null)
 {
 	<Loading />
 }
 else
 {
-	<ToolInfo GetTool="GetTool" ShowDownloadCountNote="true" />
-
-	<Heading Title="Distributions" Level="2" />
-	<Distributions>
-		<Distribution ToolName="@GetTool.Name" Note="Recommended" PublishMethod="ToolPublishMethod.SelfContained" BuildType="ToolBuildType.WindowsWpf" OperatingSystems="Windows 8+" Recommended=true />
-		<Distribution ToolName="@GetTool.Name" Note="Use for Windows 7" PublishMethod="ToolPublishMethod.Default" BuildType="ToolBuildType.WindowsWpf" OperatingSystems="Windows 7+" Prerequisites="ToolDistributionPrerequisites.DotNet6DesktopRuntime" />
-	</Distributions>
-
-	<SourceInfo Url="https://github.com/NoahStolk/DevilDaggersAssetEditor" UrlChangelog="https://github.com/NoahStolk/DevilDaggersAssetEditor/blob/master/CHANGELOG.md" />
+	<ToolLinks GitHubMainUrl="https://github.com/NoahStolk/DevilDaggersAssetEditor" GitHubReleasesUrl="https://github.com/NoahStolk/DevilDaggersAssetEditor/releases" GitHubChangelogUrl="https://github.com/NoahStolk/DevilDaggersAssetEditor/blob/master/CHANGELOG.md" />
 
 	<img src="/images/tools/ddae.png" class="object-contain max-h-160 pt-3" alt="Asset Editor" />
 
@@ -40,6 +30,7 @@ else
 
 	<Heading Title="System Requirements" Level="2" />
 	<ul class="pl-4">
+		<li class="list-disc">Microsoft Windows</li>
 		<li class="list-disc">64-bit</li>
 	</ul>
 
@@ -48,12 +39,10 @@ else
 
 @code
 {
-	public GetTool? GetTool { get; set; }
 	public GetTotalModData? GetTotalModData { get; set; }
 
 	protected override async Task OnInitializedAsync()
 	{
-		GetTool = await Http.GetTool("DevilDaggersAssetEditor");
 		GetTotalModData = await Http.GetTotalModData();
 	}
 }

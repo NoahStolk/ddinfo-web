@@ -1,0 +1,18 @@
+<p class="para">You can download the program from <a class="link" href="@GitHubReleasesUrl" target="_blank">GitHub</a>.</p>
+
+<p class="para">This is also where you can find the <a class="link" href="@GitHubMainUrl" target="_blank">source code</a> and the <a class="link" href="@GitHubChangelogUrl" target="_blank">changelog</a>.</p>
+
+@code
+{
+	[Parameter]
+	[EditorRequired]
+	public required string GitHubMainUrl { get; set; }
+
+	[Parameter]
+	[EditorRequired]
+	public required string GitHubReleasesUrl { get; set; }
+
+	[Parameter]
+	[EditorRequired]
+	public required string GitHubChangelogUrl { get; set; }
+}
