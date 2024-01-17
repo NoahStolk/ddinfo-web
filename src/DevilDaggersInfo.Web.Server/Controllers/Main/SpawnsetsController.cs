@@ -28,7 +28,7 @@ public class SpawnsetsController : ControllerBase
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	public ActionResult<Page<GetSpawnsetOverview>> GetSpawnsets(
+	public async Task<ActionResult<Page<GetSpawnsetOverview>>> GetSpawnsets(
 		bool practiceOnly,
 		bool withCustomLeaderboardOnly,
 		string? spawnsetFilter = null,
@@ -63,7 +63,7 @@ public class SpawnsetsController : ControllerBase
 			spawnsetsQuery = spawnsetsQuery.Where(s => s.Player!.PlayerName.Contains(authorFilter));
 		}
 
-		List<SpawnsetEntity> spawnsets = spawnsetsQuery.ToList();
+		List<SpawnsetEntity> spawnsets = await spawnsetsQuery.ToListAsync();
 
 		// TODO: Improve performance by not loading all spawnsets into memory.
 		// ! Navigation property.
@@ -226,14 +226,14 @@ public class SpawnsetsController : ControllerBase
 
 	[HttpGet("by-author")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	public ActionResult<List<GetSpawnsetName>> GetSpawnsetsByAuthorId([Required] int playerId)
+	public async Task<ActionResult<List<GetSpawnsetName>>> GetSpawnsetsByAuthorId([Required] int playerId)
 	{
-		var spawnsets = _dbContext.Spawnsets
+		var spawnsets = await _dbContext.Spawnsets
 			.AsNoTracking()
 			.Select(s => new { s.Id, s.PlayerId, s.Name, s.LastUpdated })
 			.Where(s => s.PlayerId == playerId)
 			.OrderByDescending(s => s.LastUpdated)
-			.ToList();
+			.ToListAsync();
 
 		return spawnsets.ConvertAll(s => new GetSpawnsetName
 		{
