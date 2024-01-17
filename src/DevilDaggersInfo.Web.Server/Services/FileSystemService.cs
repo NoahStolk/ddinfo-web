@@ -41,9 +41,4 @@ public class FileSystemService : IFileSystemService
 
 	public string GetPath(DataSubDirectory subDirectory)
 		=> Path.Combine(Root, subDirectory.ToString());
-
-	public string GetToolDistributionPath(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version)
-	{
-		return Path.Combine(GetPath(DataSubDirectory.Tools), $"{name}-{version}-{buildType}-{publishMethod}.zip");
-	}
 }
