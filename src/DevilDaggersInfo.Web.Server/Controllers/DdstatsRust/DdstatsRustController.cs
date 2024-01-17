@@ -11,12 +11,10 @@ namespace DevilDaggersInfo.Web.Server.Controllers.DdstatsRust;
 [ApiController]
 public class DdstatsRustController : ControllerBase
 {
-	private readonly ApplicationDbContext _dbContext;
 	private readonly MarkerRepository _markerRepository;
 
-	public DdstatsRustController(ApplicationDbContext dbContext, MarkerRepository markerRepository)
+	public DdstatsRustController(MarkerRepository markerRepository)
 	{
-		_dbContext = dbContext;
 		_markerRepository = markerRepository;
 	}
 
@@ -24,14 +22,9 @@ public class DdstatsRustController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public ActionResult<DdstatsRustAccessInfo> GetIntegration()
 	{
-		ToolEntity? ddstatsRust = _dbContext.Tools.AsNoTracking().FirstOrDefault(t => t.Name == "ddstats-rust");
-		if (ddstatsRust == null)
-			throw new("ddstats-rust not found in database.");
-
-		return new DdstatsRustAccessInfo { RequiredVersion = ddstatsRust.RequiredVersionNumber };
+		return new DdstatsRustAccessInfo { RequiredVersion = "0.6.10.5" };
 	}
 
-	// Used by DDCL 1.8.3.
 	[HttpGet("/api/process-memory/marker")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]

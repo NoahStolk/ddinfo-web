@@ -36,7 +36,6 @@ public class CustomEntryProcessorTests
 
 		DbContextOptionsBuilder<ApplicationDbContext> optionsBuilder = new();
 		_dbContext = Substitute.For<ApplicationDbContext>(optionsBuilder.Options, Substitute.For<IHttpContextAccessor>(), Substitute.For<ILogContainerService>());
-		_dbContext.Tools.Returns(mockEntities.MockDbSetTools);
 		_dbContext.Players.Returns(mockEntities.MockDbSetPlayers);
 		_dbContext.Spawnsets.Returns(mockEntities.MockDbSetSpawnsets);
 		_dbContext.CustomLeaderboards.Returns(mockEntities.MockDbSetCustomLeaderboards);
