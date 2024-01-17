@@ -1,148 +1,113 @@
 @page "/tools"
 @using DevilDaggersInfo.Web.Client.Components
-@using DevilDaggersInfo.Web.Client.Components.Tools
-@using DevilDaggersInfo.Web.Client.HttpClients
 @using DevilDaggersInfo.Web.Client.Utils
-@using DevilDaggersInfo.Web.ApiSpec.Main.Tools
-@inject MainApiHttpClient Http
 
 <Heading Title="Tools" />
 
-@if (_appTool == null)
-{
-	<Loading />
-}
-else
-{
-	<ToolInfo GetTool="_appTool" ShowDownloadCountNote="false" />
+<p class="para">You can download the tools from <a class="link" href="https://github.com/NoahStolk/ddinfo-tools/releases" target="_blank">GitHub</a>.</p>
 
-	<Heading Title="Distributions" Level="2" />
+<p class="para">This is also where you can find the <a class="link" href="https://github.com/NoahStolk/ddinfo-tools" target="_blank">source code</a> and the <a class="link" href="https://github.com/NoahStolk/ddinfo-tools/blob/main/CHANGELOG.md" target="_blank">changelog</a>.</p>
 
-	@if (_windowsDistribution != null)
-	{
-		<p class="para">
-			<a class="btn btn-download px-2 py-1" href="@GetDistributionApiUrl(_toolsName, _windowsDistribution)" download="@GetDistributionFileName(_toolsName, _windowsDistribution)" role="button" target="_top">
-				Download @_windowsDistribution.VersionNumber for Windows (@FileSizeUtils.Format(_windowsDistribution.FileSize))
-			</a>
-		</p>
-	}
-	
-	if (_linuxDistribution is { FileSize: > 0 })
-	{
-		<p class="para">
-			<a class="btn btn-download px-2 py-1" href="@GetDistributionApiUrl(_toolsName, _linuxDistribution)" download="@GetDistributionFileName(_toolsName, _linuxDistribution)" role="button" target="_top">
-				Download @_linuxDistribution.VersionNumber for Linux (@FileSizeUtils.Format(_linuxDistribution.FileSize))
-			</a>
-		</p>
-		<p class="para">
-			<i>Note; custom leaderboards are not supported on Linux yet.</i>
-		</p>
-	}
+<Heading Title="Running The App" Level="2" />
+<ol class="pl-4">
+	<li class="list-decimal">Go to the GitHub releases page.</li>
+	<li class="list-decimal">Under "Assets", download the .zip file (<span class="path">ddinfo-tools-win-x64.zip</span> on Windows, <span class="path">ddinfo-tools-linux-x64.zip</span> on Linux).</li>
+    <li class="list-decimal">Extract it.</li>
+    <li class="list-decimal">Run the executable inside it.</li>
+</ol>
 
-	<p class="para">Windows 7 and older is currently not supported (although Windows 7 can probably be made to work).</p>
-	<p class="para">I'm also open to adding support for Mac if anyone wants it. I don't have a Mac to test it on, so I'd need some help with that.</p>
+<Heading Title="Video" Level="2" />
 
-	<SourceInfo Url="https://github.com/NoahStolk/ddinfo-tools" UrlChangelog="https://github.com/NoahStolk/ddinfo-tools/blob/main/CHANGELOG.md" />
+<div class="relative w-full xl:w-1/2 pb-4-3 xl:pb-4-3/2">
+	<iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/4dF4V5eocXY" title="New Tools" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
 
-	<div class="relative w-full xl:w-1/2 pb-4-3 xl:pb-4-3/2">
-		<iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/4dF4V5eocXY" title="New Tools" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-	</div>
+<Heading Title="Screenshots" Level="2" />
 
-	<Heading Title="Screenshots" Level="2" />
-
+@{
 	bool first = _screenshotIndex == 0;
 	bool last = _screenshotIndex == _screenshotFileNames.Count - 1;
 
 	const string disabledStyle = "disabled:opacity-50 cursor-default btn-disabled";
 	const string enabledStyle = "btn-gray";
-
-	<button disabled="@first" class="@(first ? disabledStyle : enabledStyle) btn w-10 h-10 mx-1" @onclick="() => _screenshotIndex--">@MarkupStrings.NavPrev</button>
-	<button disabled="@last" class="@(last ? disabledStyle : enabledStyle) btn w-10 h-10 mx-1" @onclick="() => _screenshotIndex++">@MarkupStrings.NavNext</button>
-
-	@for (int i = 0; i < _screenshotFileNames.Count; i++)
-	{
-		string fileName = _screenshotFileNames[i];
-		<img class="@(i == _screenshotIndex ? "" : "hidden") object-contain max-h-160 pt-3" src="@($"/images/tools/{fileName}")" alt="DDINFO TOOLS" />
-	}
-
-	<p class="para">This is an alpha version of the rewritten tools. The main idea of the rewrite is to have a single application instead of three separate ones, to make the tools more user-friendly, and to support Mac and Linux.</p>
-	<p class="para">The tools are still in early development, so expect bugs and missing features. If you encounter any problems, please report them to me on Discord or on GitHub.</p>
-	<p class="para">Keep in mind that there is no support for mods yet. This will be added later.</p>
-	<p class="para">I also do not have a deadline or schedule for these developments, and there will not be an official release date any time soon.</p>
-	
-	<Heading Title="System Requirements" Level="2" />
-	
-	<ul class="pl-4">
-		<li class="list-disc">64-bit processor and operating system</li>
-		<li class="list-disc">GPU with OpenGL 3.3 support</li>
-		<li class="list-disc">A screen resolution of 1366x768 or larger</li>
-	</ul>
-
-	<p class="para">If your computer can run Devil Daggers, you will be able to run the tools just fine. Note that you actually need to have Devil Daggers installed for the tools to work (otherwise you will be stuck in the configuration screen).</p>
-
-	<Heading Title="Running The App" Level="2" />
-    <ol class="pl-4">
-    	<li class="list-decimal">Download the .zip file.</li>
-    	<li class="list-decimal">Extract it.</li>
-    	<li class="list-decimal">Run the .exe file inside it. The app is able to automatically install updates, so you don't need to download it from the website again.</li>
-    </ol>
-
-	<Heading Title="Advantages Over Deprecated Tools" Level="2" />
-	
-	<ul class="pl-4">
-		<li class="list-disc">A single application instead of three separate ones.</li>
-		<li class="list-disc">Cross-platform instead of Windows-only. The app already runs on Linux, but it's still missing some native implementations for now.</li>
-		<li class="list-disc">Automatic updates.</li>
-		<li class="list-disc">Way smaller download size; ~9 MB for all the tools combined instead of ~165 MB. No prerequisites are needed.</li>
-		<li class="list-disc">Way faster startup time compared to the previous editors.</li>
-	</ul>
-
-	<Heading Title="New Features" Level="2" />
-
-	<ul class="pl-4">
-		<li class="list-disc">Dedicated and simplified practice functionality.</li>
-	</ul>
-
-	<Heading Title="Survival Editor" Level="3" />
-	
-	<ul class="pl-4">
-		<li class="list-disc">3D arena editor (still work in progress).</li>
-		<li class="list-disc">Improved arena shrink preview (also in 3D).</li>
-		<li class="list-disc">Full undo/redo support.</li>
-		<li class="list-disc">More arena actions.</li>
-	</ul>
-	
-	<Heading Title="Custom Leaderboards" Level="3" />
-	
-	<ul class="pl-4">
-		<li class="list-disc">Viewing and installing all spawnsets with leaderboards from within the app (no need to use the Survival Editor anymore).</li>
-		<li class="list-disc">Viewing any score from any spawnset.</li>
-		<li class="list-disc">Searching, filtering, and sorting leaderboards.</li>
-		<li class="list-disc">Injecting any replay into the game without having to play the spawnset first.</li>
-		<li class="list-disc">3D simulation of the replay in the app (very limited and inaccurate for now).</li>
-	</ul>
-
-	<Heading Title="Planned Features" Level="2" />
-
-	<ul class="pl-4">
-		<li class="list-disc">More spawnset editor features.</li>
-		<li class="list-disc">Renewed spawnset manager.</li>
-		<li class="list-disc">Renewed asset editor.</li>
-		<li class="list-disc">Renewed mod manager.</li>
-		<li class="list-disc">Renewed replay viewer.</li>
-		<li class="list-disc">Replay editing.</li>
-		<li class="list-disc">Replay input visualization.</li>
-		<li class="list-disc">Replay enemy tracking.</li>
-		<li class="list-disc">Replay movement and the ability to compare speedrun/race replays using a ghost system in 3D (right now I'm uncertain if mimicking the player movement can be done accurately without having access to the game's code).</li>
-	</ul>
 }
+
+<button disabled="@first" class="@(first ? disabledStyle : enabledStyle) btn w-10 h-10 mx-1" @onclick="() => _screenshotIndex--">@MarkupStrings.NavPrev</button>
+<button disabled="@last" class="@(last ? disabledStyle : enabledStyle) btn w-10 h-10 mx-1" @onclick="() => _screenshotIndex++">@MarkupStrings.NavNext</button>
+
+@for (int i = 0; i < _screenshotFileNames.Count; i++)
+{
+	string fileName = _screenshotFileNames[i];
+	<img class="@(i == _screenshotIndex ? "" : "hidden") object-contain max-h-160 pt-3" src="@($"/images/tools/{fileName}")" alt="DDINFO TOOLS" />
+}
+
+@* <p class="para">This is an alpha version of the rewritten tools. The main idea of the rewrite is to have a single application instead of three separate ones, to make the tools more user-friendly, and to support Mac and Linux.</p> *@
+@* <p class="para">The tools are still in early development, so expect bugs and missing features. If you encounter any problems, please report them to me on Discord or on GitHub.</p> *@
+@* <p class="para">Keep in mind that there is no support for mods yet. This will be added later.</p> *@
+@* <p class="para">I also do not have a deadline or schedule for these developments, and there will not be an official release date any time soon.</p> *@
+
+<Heading Title="System Requirements" Level="2" />
+
+<ul class="pl-4">
+	<li class="list-disc">64-bit processor and operating system</li>
+	<li class="list-disc">GPU with OpenGL 3.3 support</li>
+	<li class="list-disc">A screen resolution of 1366x768 or larger</li>
+</ul>
+
+<p class="para">If your computer can run Devil Daggers, you will be able to run the tools just fine. Note that you actually need to have Devil Daggers installed for the tools to work (otherwise you will be stuck in the configuration screen).</p>
+
+<Heading Title="Advantages Over Deprecated Tools" Level="2" />
+
+<ul class="pl-4">
+	<li class="list-disc">A single application instead of three separate ones.</li>
+	<li class="list-disc">Cross-platform instead of Windows-only. The app already runs on Linux, but it's still missing some native implementations for now.</li>
+	<li class="list-disc">Way smaller download size; ~9 MB for all the tools combined instead of ~165 MB. No prerequisites are needed.</li>
+	<li class="list-disc">Way faster startup time compared to the previous editors.</li>
+</ul>
+
+<Heading Title="New Features" Level="2" />
+
+<ul class="pl-4">
+	<li class="list-disc">Dedicated and simplified practice functionality.</li>
+</ul>
+
+<Heading Title="Survival Editor" Level="3" />
+
+<ul class="pl-4">
+	<li class="list-disc">3D arena editor (still work in progress).</li>
+	<li class="list-disc">Improved arena shrink preview (also in 3D).</li>
+	<li class="list-disc">Full undo/redo support.</li>
+	<li class="list-disc">More arena actions.</li>
+</ul>
+
+<Heading Title="Custom Leaderboards" Level="3" />
+
+<ul class="pl-4">
+	<li class="list-disc">Viewing and installing all spawnsets with leaderboards from within the app (no need to use the Survival Editor anymore).</li>
+	<li class="list-disc">Viewing any score from any spawnset.</li>
+	<li class="list-disc">Searching, filtering, and sorting leaderboards.</li>
+	<li class="list-disc">Injecting any replay into the game without having to play the spawnset first.</li>
+	<li class="list-disc">3D simulation of the replay in the app (very limited and inaccurate for now).</li>
+</ul>
+
+<Heading Title="Planned Features" Level="2" />
+
+<ul class="pl-4">
+	<li class="list-disc">More spawnset editor features.</li>
+	<li class="list-disc">Renewed spawnset manager.</li>
+	<li class="list-disc">Renewed asset editor.</li>
+	<li class="list-disc">Renewed mod manager.</li>
+	<li class="list-disc">Renewed replay viewer.</li>
+	<li class="list-disc">Replay editing.</li>
+	<li class="list-disc">Replay input visualization.</li>
+	<li class="list-disc">Replay enemy tracking.</li>
+	<li class="list-disc">Replay movement and the ability to compare speedrun/race replays using a ghost system in 3D (right now I'm uncertain if mimicking the player movement can be done accurately without having access to the game's code).</li>
+</ul>
 
 @code
 {
-	private const string _toolsName = "ddinfo-tools";
-
-	private static readonly List<string> _screenshotFileNames = new()
-	{
+	private static readonly List<string> _screenshotFileNames =
+	[
 		Path.Combine("ddinfo-tools", "practice.png"),
 		Path.Combine("ddinfo-tools", "practice-splits.png"),
 		Path.Combine("ddinfo-tools", "custom-leaderboards.png"),
@@ -150,37 +115,7 @@ else
 		Path.Combine("ddinfo-tools", "spawnset-editor-2.png"),
 		Path.Combine("ddinfo-tools", "spawnset-editor-3.png"),
 		Path.Combine("ddinfo-tools", "replay-editor.png"),
-	};
+	];
 
-	private GetTool? _appTool;
-	
-	private GetToolDistribution? _windowsDistribution;
-	private GetToolDistribution? _linuxDistribution;
-	
 	private int _screenshotIndex;
-
-	protected override async Task OnInitializedAsync()
-	{
-		_appTool = await Http.GetTool(_toolsName);
-		
-		_windowsDistribution = await Http.GetLatestToolDistribution(_toolsName, ToolPublishMethod.SelfContained, ToolBuildType.WindowsWarp);
-		
-		try
-		{
-			_linuxDistribution = await Http.GetLatestToolDistribution(_toolsName, ToolPublishMethod.SelfContained, ToolBuildType.LinuxWarp);
-		}
-		catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
-		{
-		}
-	}
-
-	private static string GetDistributionApiUrl(string toolName, GetToolDistribution distribution)
-	{
-		return $"/api/tools/{toolName}/file?publishMethod={distribution.PublishMethod}&buildType={distribution.BuildType}&version={distribution.VersionNumber}";
-	}
-
-	private static string GetDistributionFileName(string toolName, GetToolDistribution distribution)
-	{
-		return $"{toolName}{distribution.VersionNumber}.zip";
-	}
 }
