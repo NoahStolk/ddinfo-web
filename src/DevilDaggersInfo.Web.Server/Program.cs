@@ -152,7 +152,7 @@ builder.AddSwaggerDocument("Admin", "This is the admin API for DevilDaggers.info
 
 builder.AddSwaggerDocument("Dd", "**WARNING:** This API is intended to be used by Devil Daggers only.");
 
-builder.AddSwaggerDocument("App", "**WARNING:** This API is intended to be used by ddinfo tools only.");
+builder.AddSwaggerDocument("Tools", "**WARNING:** This API is intended to be used by ddinfo tools only.");
 builder.AddSwaggerDocument("Ddae", "**WARNING:** This API is intended to be used by Devil Daggers Asset Editor only.");
 builder.AddSwaggerDocument("Ddse", "**WARNING:** This API is intended to be used by Devil Daggers Survival Editor only.");
 
