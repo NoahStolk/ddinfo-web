@@ -6,7 +6,6 @@ using Newtonsoft.Json;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Ddae;
 
-[Obsolete("DDAE 1.4.0 will be removed.")]
 [Route("api/ddae/assets")]
 [ApiController]
 public class AssetsController : ControllerBase
@@ -18,10 +17,22 @@ public class AssetsController : ControllerBase
 		_fileSystemService = fileSystemService;
 	}
 
-	[Obsolete("DDAE 1.4.0 will be removed.")]
+	[Obsolete("Support for DDAE 1.4.0 will be dropped.")]
 	[HttpGet("/api/assets/ddae/info")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	public ActionResult<Dictionary<string, List<GetAssetInfo>>> GetAssetInfoForDdae()
+	public ActionResult<Dictionary<string, List<GetAssetInfo>>> GetAssetInfoObsolete()
+	{
+		return GetAssetInfoImpl();
+	}
+
+	[HttpGet("info")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	public ActionResult<Dictionary<string, List<GetAssetInfo>>> GetAssetInfo()
+	{
+		return GetAssetInfoImpl();
+	}
+
+	private ActionResult<Dictionary<string, List<GetAssetInfo>>> GetAssetInfoImpl()
 	{
 		return Directory.GetFiles(_fileSystemService.GetPath(DataSubDirectory.AssetInfo))
 			.Select(p =>
