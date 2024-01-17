@@ -17,22 +17,9 @@ public class AssetsController : ControllerBase
 		_fileSystemService = fileSystemService;
 	}
 
-	[Obsolete("Support for DDAE 1.4.0 will be dropped.")]
-	[HttpGet("/api/assets/ddae/info")]
-	[ProducesResponseType(StatusCodes.Status200OK)]
-	public ActionResult<Dictionary<string, List<GetAssetInfo>>> GetAssetInfoObsolete()
-	{
-		return GetAssetInfoImpl();
-	}
-
 	[HttpGet("info")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public ActionResult<Dictionary<string, List<GetAssetInfo>>> GetAssetInfo()
-	{
-		return GetAssetInfoImpl();
-	}
-
-	private ActionResult<Dictionary<string, List<GetAssetInfo>>> GetAssetInfoImpl()
 	{
 		return Directory.GetFiles(_fileSystemService.GetPath(DataSubDirectory.AssetInfo))
 			.Select(p =>
