@@ -27,7 +27,7 @@ public class AssetsController : ControllerBase
 			.Select(p =>
 			{
 				string fileName = Path.GetFileNameWithoutExtension(p);
-				List<GetAssetInfo> assetInfo = JsonConvert.DeserializeObject<List<GetAssetInfo>?>(IoFile.ReadAllText(p)) ?? throw new($"Could not deserialize asset info from file '{fileName}'.");
+				List<GetAssetInfo> assetInfo = JsonConvert.DeserializeObject<List<GetAssetInfo>?>(IoFile.ReadAllText(p)) ?? throw new InvalidOperationException($"Could not deserialize asset info from file '{fileName}'.");
 				return (fileName, assetInfo);
 			}).
 			ToDictionary(t => t.fileName, t => t.assetInfo);

@@ -14,6 +14,6 @@ public class CustomEntriesController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public ActionResult SubmitScoreForDdclObsolete()
 	{
-		throw new BadRequestException("DDCL 1.8.3 is no longer supported. Go to https://www.devildaggers.info/ and download DDINFO TOOLS to connect to custom leaderboards.");
+		throw new BadRequestException("DDCL 1.8.3 is no longer supported. Go to https://www.devildaggers.info/ and download ddinfo-tools to connect to custom leaderboards.");
 	}
 }
