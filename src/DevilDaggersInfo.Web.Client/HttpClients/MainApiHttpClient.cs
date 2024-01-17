@@ -48,16 +48,6 @@ public class MainApiHttpClient : ApiHttpClient
 		return await SendRequest(HttpMethod.Post, "api/authentication/update-password", JsonContent.Create(updatePasswordRequest));
 	}
 
-	public async Task<byte[]> GetCustomEntryReplayBufferById(int id)
-	{
-		return await SendGetRequest<byte[]>($"api/custom-entries/{id}/replay-buffer");
-	}
-
-	public async Task<Task> GetCustomEntryReplayById(int id)
-	{
-		return await SendGetRequest<Task>($"api/custom-entries/{id}/replay");
-	}
-
 	public async Task<GetCustomEntryData> GetCustomEntryDataById(int id)
 	{
 		return await SendGetRequest<GetCustomEntryData>($"api/custom-entries/{id}/data");
@@ -159,15 +149,6 @@ public class MainApiHttpClient : ApiHttpClient
 		return await SendGetRequest<List<GetEntry>>(BuildUrlWithQuery("api/leaderboards/entry/by-username", queryParameters));
 	}
 
-	public async Task<GetEntry> GetEntryByRank(int rank)
-	{
-		Dictionary<string, object?> queryParameters = new()
-		{
-			{ nameof(rank), rank },
-		};
-		return await SendGetRequest<GetEntry>(BuildUrlWithQuery("api/leaderboards/entry/by-rank", queryParameters));
-	}
-
 	public async Task<GetLeaderboardStatistics> GetLeaderboardStatistics()
 	{
 		return await SendGetRequest<GetLeaderboardStatistics>("api/leaderboard-statistics/");
@@ -198,11 +179,6 @@ public class MainApiHttpClient : ApiHttpClient
 		return await SendGetRequest<GetTotalModData>("api/mods/total-data");
 	}
 
-	public async Task<Task> GetModFile(string modName)
-	{
-		return await SendGetRequest<Task>($"api/mods/{modName}/file");
-	}
-
 	public async Task<List<GetModName>> GetModsByAuthorId(int playerId)
 	{
 		Dictionary<string, object?> queryParameters = new()
@@ -210,16 +186,6 @@ public class MainApiHttpClient : ApiHttpClient
 			{ nameof(playerId), playerId },
 		};
 		return await SendGetRequest<List<GetModName>>(BuildUrlWithQuery("api/mods/by-author", queryParameters));
-	}
-
-	public async Task<Task> GetScreenshotByFilePath(string modName, string fileName)
-	{
-		Dictionary<string, object?> queryParameters = new()
-		{
-			{ nameof(modName), modName },
-			{ nameof(fileName), fileName },
-		};
-		return await SendGetRequest<Task>(BuildUrlWithQuery("api/mod-screenshots/", queryParameters));
 	}
 
 	public async Task<List<GetPlayerForLeaderboard>> GetPlayersForLeaderboard()
@@ -273,32 +239,9 @@ public class MainApiHttpClient : ApiHttpClient
 		return await SendGetRequest<Page<GetSpawnsetOverview>>(BuildUrlWithQuery("api/spawnsets/", queryParameters));
 	}
 
-	public async Task<GetSpawnsetByHash> GetSpawnsetByHash(byte[] hash)
-	{
-		Dictionary<string, object?> queryParameters = new()
-		{
-			{ nameof(hash), Uri.EscapeDataString(Convert.ToBase64String(hash)) },
-		};
-		return await SendGetRequest<GetSpawnsetByHash>(BuildUrlWithQuery("api/spawnsets/by-hash", queryParameters));
-	}
-
-	public async Task<byte[]> GetSpawnsetHash(string fileName)
-	{
-		Dictionary<string, object?> queryParameters = new()
-		{
-			{ nameof(fileName), fileName },
-		};
-		return await SendGetRequest<byte[]>(BuildUrlWithQuery("api/spawnsets/hash", queryParameters));
-	}
-
 	public async Task<GetTotalSpawnsetData> GetTotalSpawnsetData()
 	{
 		return await SendGetRequest<GetTotalSpawnsetData>("api/spawnsets/total-data");
-	}
-
-	public async Task<Task> GetSpawnsetFile(string fileName)
-	{
-		return await SendGetRequest<Task>($"api/spawnsets/{fileName}/file");
 	}
 
 	public async Task<GetSpawnset> GetSpawnsetById(int id)
@@ -329,17 +272,6 @@ public class MainApiHttpClient : ApiHttpClient
 		return await SendGetRequest<GetTool>($"api/tools/{toolName}");
 	}
 
-	public async Task<Task> GetToolDistributionFile(string toolName, ToolPublishMethod publishMethod, ToolBuildType buildType, string? version)
-	{
-		Dictionary<string, object?> queryParameters = new()
-		{
-			{ nameof(publishMethod), publishMethod },
-			{ nameof(buildType), buildType },
-			{ nameof(version), version },
-		};
-		return await SendGetRequest<Task>(BuildUrlWithQuery($"api/tools/{toolName}/file", queryParameters));
-	}
-
 	public async Task<GetToolDistribution> GetLatestToolDistribution(string toolName, ToolPublishMethod publishMethod, ToolBuildType buildType)
 	{
 		Dictionary<string, object?> queryParameters = new()
@@ -348,17 +280,6 @@ public class MainApiHttpClient : ApiHttpClient
 			{ nameof(buildType), buildType },
 		};
 		return await SendGetRequest<GetToolDistribution>(BuildUrlWithQuery($"api/tools/{toolName}/distribution-latest", queryParameters));
-	}
-
-	public async Task<GetToolDistribution> GetToolDistributionByVersion(string toolName, ToolPublishMethod publishMethod, ToolBuildType buildType, string version)
-	{
-		Dictionary<string, object?> queryParameters = new()
-		{
-			{ nameof(publishMethod), publishMethod },
-			{ nameof(buildType), buildType },
-			{ nameof(version), version },
-		};
-		return await SendGetRequest<GetToolDistribution>(BuildUrlWithQuery($"api/tools/{toolName}/distribution", queryParameters));
 	}
 
 	public async Task<GetWorldRecordDataContainer> GetWorldRecordData()
