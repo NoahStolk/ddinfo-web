@@ -2,6 +2,8 @@ namespace DevilDaggersInfo.Web.ApiSpec.Ddse.Spawnsets;
 
 public record GetSpawnsetDdse
 {
+	public required int Id { get; init; }
+
 	public required int? MaxDisplayWaves { get; init; }
 
 	public required string? HtmlDescription { get; init; }

@@ -12,6 +12,7 @@ public static class SpawnsetConverters
 	// ! Navigation property.
 	public static DdseApi.GetSpawnsetDdse ToDdseApi(this SpawnsetEntity spawnset, bool hasCustomLeaderboard) => new()
 	{
+		Id = spawnset.Id,
 		MaxDisplayWaves = spawnset.MaxDisplayWaves,
 		HtmlDescription = spawnset.HtmlDescription,
 		LastUpdated = spawnset.LastUpdated,
