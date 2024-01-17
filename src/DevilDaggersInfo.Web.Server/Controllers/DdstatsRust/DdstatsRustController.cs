@@ -1,9 +1,7 @@
 using DevilDaggersInfo.Web.ApiSpec.DdstatsRust;
-using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.DdstatsRust;
