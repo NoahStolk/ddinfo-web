@@ -75,7 +75,6 @@
 						<NavDropdown Text="Admin" IconType="shield">
 							@if (_roles.Contains(Roles.Admin))
 							{
-								<NavItem Href="admin/tools/add-distribution" IconType="pencil" Text="Add Tool" />
 								<NavItem Href="admin/custom-entries" IconType="ellipses" Text="Custom Entries" />
 								<NavItem Href="admin/donations" IconType="heart" Text="Donations" />
 							}
@@ -109,14 +108,14 @@
 
 @code
 {
-	private List<string> _roles = new();
+	private List<string> _roles = [];
 	private int? _playerId;
 
 	public bool ShowNavMenuMobile { get; set; }
 
 	public bool ExpandNavMenu { get; set; }
 
-	public List<NavDropdown> NavDropdowns { get; } = new();
+	public List<NavDropdown> NavDropdowns { get; } = [];
 
 	protected override async Task OnInitializedAsync()
 	{
