@@ -166,7 +166,6 @@ public class SpawnsetsController : ControllerBase
 		};
 	}
 
-	// FORBIDDEN: Used by DDSE 2.45.0.0 ... 2.46.1.0.
 	[HttpGet("{fileName}/file")]
 	[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]

@@ -130,7 +130,6 @@ public class ModsController : ControllerBase
 		};
 	}
 
-	// FORBIDDEN: Used by DDAE 1.4.0.0.
 	[HttpGet("{modName}/file")]
 	[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
