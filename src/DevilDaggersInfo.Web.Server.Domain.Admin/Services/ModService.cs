@@ -55,7 +55,7 @@ public class ModService
 		_dbContext.Mods.Add(mod);
 		await _dbContext.SaveChangesAsync(); // Save changes here so PlayerMods entities can be assigned properly.
 
-		UpdatePlayerMods(addMod.PlayerIds ?? new(), mod.Id);
+		UpdatePlayerMods(addMod.PlayerIds ?? [], mod.Id);
 		await _dbContext.SaveChangesAsync();
 	}
 
@@ -100,7 +100,7 @@ public class ModService
 		mod.Url = editMod.Url ?? string.Empty;
 		await _dbContext.SaveChangesAsync(); // Save changes here so PlayerMods entities can be assigned properly.
 
-		UpdatePlayerMods(editMod.PlayerIds ?? new(), mod.Id);
+		UpdatePlayerMods(editMod.PlayerIds ?? [], mod.Id);
 		await _dbContext.SaveChangesAsync();
 	}
 
@@ -136,10 +136,6 @@ public class ModService
 
 		if (name.Any(c => Path.GetInvalidFileNameChars().Contains(c)))
 			throw new AdminDomainException("Mod name must not contain invalid file name characters.");
-
-		// Temporarily disallow + because it breaks old API calls where the mod name is in the URL. TODO: Remove this after old API calls have been removed.
-		if (name.Any(c => c == '+'))
-			throw new AdminDomainException("Mod name must not contain the + character.");
 	}
 
 	private static Dictionary<BinaryName, byte[]> GetBinaryNames(List<(string Name, byte[] Data)> binaries)
