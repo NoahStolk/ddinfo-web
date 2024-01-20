@@ -82,6 +82,7 @@ public class CustomEntryProcessor
 	/// <returns>An <see cref="UploadResponse"/> is returned for every successful upload, as well as uploads rejected by criteria.</returns>
 	public async Task<UploadResponse> ProcessUploadRequestAsync(UploadRequest uploadRequest)
 	{
+		// TODO: Use IOptions.
 		const string clientName = "ddinfo-tools";
 		const string requiredVersionNumber = "0.7.0.0";
 

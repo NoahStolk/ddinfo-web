@@ -6,13 +6,13 @@ namespace DevilDaggersInfo.Web.Server.Services;
 
 public class FileSystemService : IFileSystemService
 {
+	private const string _root = "Data";
+
 	public FileSystemService()
 	{
 		foreach (DataSubDirectory e in (DataSubDirectory[])Enum.GetValues(typeof(DataSubDirectory)))
 			Directory.CreateDirectory(GetPath(e));
 	}
-
-	public string Root => "Data";
 
 	public string[] TryGetFiles(DataSubDirectory subDirectory)
 	{
@@ -39,5 +39,7 @@ public class FileSystemService : IFileSystemService
 	}
 
 	public string GetPath(DataSubDirectory subDirectory)
-		=> Path.Combine(Root, subDirectory.ToString());
+	{
+		return Path.Combine(_root, subDirectory.ToString());
+	}
 }
