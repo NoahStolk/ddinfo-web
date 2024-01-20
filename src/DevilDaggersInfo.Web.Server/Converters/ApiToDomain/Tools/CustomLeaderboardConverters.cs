@@ -59,7 +59,7 @@ public static class CustomLeaderboardConverters
 		{
 			Timestamp = t.Timestamp,
 			TimeInSeconds = t.TimeInSeconds,
-		}) ?? new();
+		}) ?? [];
 
 		return new(
 			survivalHashMd5: uploadRequest.SurvivalHashMd5,

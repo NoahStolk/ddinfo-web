@@ -36,7 +36,6 @@ public class CustomEntryProcessorTests
 
 		DbContextOptionsBuilder<ApplicationDbContext> optionsBuilder = new();
 		_dbContext = Substitute.For<ApplicationDbContext>(optionsBuilder.Options, Substitute.For<IHttpContextAccessor>(), Substitute.For<ILogContainerService>());
-		_dbContext.Tools.Returns(mockEntities.MockDbSetTools);
 		_dbContext.Players.Returns(mockEntities.MockDbSetPlayers);
 		_dbContext.Spawnsets.Returns(mockEntities.MockDbSetSpawnsets);
 		_dbContext.CustomLeaderboards.Returns(mockEntities.MockDbSetCustomLeaderboards);
@@ -164,7 +163,7 @@ public class CustomEntryProcessorTests
 			levelUpTime3AsBytes: BitConverter.GetBytes(levelUpTime3),
 			levelUpTime4AsBytes: BitConverter.GetBytes(levelUpTime4),
 			clientVersion: clientVersion,
-			client: "DevilDaggersCustomLeaderboards",
+			client: "ddinfo-tools",
 			operatingSystem: "Windows",
 			buildMode: "Release",
 			validation: validation ?? HttpUtility.HtmlEncode(_encryptionWrapper.EncryptAndEncode(calculatedValidation)),
@@ -176,19 +175,19 @@ public class CustomEntryProcessorTests
 			gameData: gameData,
 			replayData: _mockReplay,
 			status: status,
-			timestamps: new()
-			{
+			timestamps:
+			[
 				new()
 				{
-					Timestamp = new DateTime(2023, 1, 1, 0, 0, 0).Ticks,
+					Timestamp = new DateTime(2023, 1, 1, 0, 0, 0, DateTimeKind.Utc).Ticks,
 					TimeInSeconds = 0,
 				},
 				new()
 				{
-					Timestamp = new DateTime(2023, 1, 1, 0, 1, 0).Ticks,
+					Timestamp = new DateTime(2023, 1, 1, 0, 1, 0, DateTimeKind.Utc).Ticks,
 					TimeInSeconds = 60,
 				},
-			});
+			]);
 	}
 
 	[DataTestMethod]

@@ -1,4 +1,3 @@
-using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardHistory;
 using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
@@ -10,30 +9,34 @@ public class TestData : ILeaderboardHistoryCache, IFileSystemService
 {
 	private readonly IReadOnlyDictionary<string, LeaderboardHistory> _data = new Dictionary<string, LeaderboardHistory>
 	{
-		["2022-01-01.bin"] = CreateLeaderboardHistory(new(2022, 1, 1), new()
-		{
-			CreateEntryHistory(1, 1, 90, "Player 1"),
-			CreateEntryHistory(2, 2, 80, "Player 2"),
-		}),
-		["2022-01-02.bin"] = CreateLeaderboardHistory(new(2022, 1, 2), new()
-		{
-			CreateEntryHistory(1, 4, 100000, "Cheater"), // Cheater makes it to first place.
-			CreateEntryHistory(2, 1, 90, "Player 1"),
-			CreateEntryHistory(3, 2, 80, "Player 2"),
-		}),
-		["2022-01-03.bin"] = CreateLeaderboardHistory(new(2022, 1, 3), new()
-		{
-			CreateEntryHistory(1, 1, 95, "Player 1"),
-			CreateEntryHistory(2, 2, 85, "Player 2"),
-			CreateEntryHistory(3, 4, 0, "Cheater"), // Cheater is removed from the leaderboard.
-		}),
-		["2022-01-04.bin"] = CreateLeaderboardHistory(new(2022, 1, 4), new()
-		{
-			CreateEntryHistory(1, 4, 1000000, "Cheater"), // Cheater makes it to first place again.
-			CreateEntryHistory(2, 1, 98, "Player 1"),
-			CreateEntryHistory(3, 2, 85, "Player 2"),
-			CreateEntryHistory(4, 3, 82, "Player 3"), // Player 3 joins the leaderboard.
-		}),
+		["2022-01-01.bin"] = CreateLeaderboardHistory(
+			new(2022, 1, 1, 0, 0, 0, DateTimeKind.Utc),
+			[
+				CreateEntryHistory(1, 1, 90, "Player 1"),
+				CreateEntryHistory(2, 2, 80, "Player 2"),
+			]),
+		["2022-01-02.bin"] = CreateLeaderboardHistory(
+			new(2022, 1, 2, 0, 0, 0, DateTimeKind.Utc),
+			[
+				CreateEntryHistory(1, 4, 100000, "Cheater"), // Cheater makes it to first place.
+				CreateEntryHistory(2, 1, 90, "Player 1"),
+				CreateEntryHistory(3, 2, 80, "Player 2"),
+			]),
+		["2022-01-03.bin"] = CreateLeaderboardHistory(
+			new(2022, 1, 3, 0, 0, 0, DateTimeKind.Utc),
+			[
+				CreateEntryHistory(1, 1, 95, "Player 1"),
+				CreateEntryHistory(2, 2, 85, "Player 2"),
+				CreateEntryHistory(3, 4, 0, "Cheater"), // Cheater is removed from the leaderboard.
+			]),
+		["2022-01-04.bin"] = CreateLeaderboardHistory(
+			new(2022, 1, 4, 0, 0, 0, DateTimeKind.Utc),
+			[
+				CreateEntryHistory(1, 4, 1000000, "Cheater"), // Cheater makes it to first place again.
+				CreateEntryHistory(2, 1, 98, "Player 1"),
+				CreateEntryHistory(3, 2, 85, "Player 2"),
+				CreateEntryHistory(4, 3, 82, "Player 3"), // Player 3 joins the leaderboard.
+			]),
 	};
 
 	private static LeaderboardHistory CreateLeaderboardHistory(DateTime dateTime, List<EntryHistory> entries)
@@ -88,10 +91,8 @@ public class TestData : ILeaderboardHistoryCache, IFileSystemService
 	}
 
 #pragma warning disable SA1201
-	public string Root => throw new NotImplementedException();
 	public string GetLeaderboardHistoryPathFromDate(DateTime dateTime) => throw new NotImplementedException();
 	public string GetPath(DataSubDirectory subDirectory) => throw new NotImplementedException();
-	public string GetToolDistributionPath(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version) => throw new NotImplementedException();
 	public int GetCount() => throw new NotImplementedException();
 	public void Clear() => throw new NotImplementedException();
 #pragma warning restore SA1201

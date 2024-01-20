@@ -10,7 +10,6 @@ using DevilDaggersInfo.Web.ApiSpec.Main.LeaderboardStatistics;
 using DevilDaggersInfo.Web.ApiSpec.Main.Mods;
 using DevilDaggersInfo.Web.ApiSpec.Main.Players;
 using DevilDaggersInfo.Web.ApiSpec.Main.Spawnsets;
-using DevilDaggersInfo.Web.ApiSpec.Main.Tools;
 using DevilDaggersInfo.Web.ApiSpec.Main.WorldRecords;
 using System.Net.Http.Json;
 
@@ -265,21 +264,6 @@ public class MainApiHttpClient : ApiHttpClient
 			{ nameof(playerId), playerId },
 		};
 		return await SendGetRequest<List<GetSpawnsetName>>(BuildUrlWithQuery("api/spawnsets/by-author", queryParameters));
-	}
-
-	public async Task<GetTool> GetTool(string toolName)
-	{
-		return await SendGetRequest<GetTool>($"api/tools/{toolName}");
-	}
-
-	public async Task<GetToolDistribution> GetLatestToolDistribution(string toolName, ToolPublishMethod publishMethod, ToolBuildType buildType)
-	{
-		Dictionary<string, object?> queryParameters = new()
-		{
-			{ nameof(publishMethod), publishMethod },
-			{ nameof(buildType), buildType },
-		};
-		return await SendGetRequest<GetToolDistribution>(BuildUrlWithQuery($"api/tools/{toolName}/distribution-latest", queryParameters));
 	}
 
 	public async Task<GetWorldRecordDataContainer> GetWorldRecordData()

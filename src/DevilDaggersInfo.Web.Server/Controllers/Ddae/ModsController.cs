@@ -31,36 +31,6 @@ public class ModsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public async Task<List<GetModDdae>> GetMods(string? authorFilter = null, string? nameFilter = null, bool? isHostedFilter = null)
 	{
-		return await GetModsImpl(authorFilter, nameFilter, isHostedFilter);
-	}
-
-	[Obsolete("Support for DDAE 1.4.0 will be dropped.")]
-	[HttpGet("/api/mods/ddae")]
-	[ProducesResponseType(StatusCodes.Status200OK)]
-	public async Task<List<GetModDdae>> GetModsObsolete(string? authorFilter = null, string? nameFilter = null, bool? isHostedFilter = null)
-	{
-		return await GetModsImpl(authorFilter, nameFilter, isHostedFilter);
-	}
-
-	[HttpGet("{modName}/file")]
-	[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
-	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public async Task<ActionResult> GetModFile([Required] string modName)
-	{
-		if (!_dbContext.Mods.Any(m => m.Name == modName))
-			return NotFound();
-
-		string fileName = $"{modName}.zip";
-		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Mods), fileName);
-		if (!IoFile.Exists(path))
-			return BadRequest($"Mod file '{fileName}' does not exist.");
-
-		return File(await IoFile.ReadAllBytesAsync(path), MediaTypeNames.Application.Zip, fileName);
-	}
-
-	private async Task<List<GetModDdae>> GetModsImpl(string? authorFilter, string? nameFilter, bool? isHostedFilter)
-	{
 		// ! Navigation property.
 		IEnumerable<ModEntity> modsQuery = _dbContext.Mods
 			.AsNoTracking()
@@ -92,5 +62,22 @@ public class ModsController : ControllerBase
 		return data
 			.Select(kvp => kvp.Key.ToDdaeApi(kvp.Value))
 			.ToList();
+	}
+
+	[HttpGet("{modName}/file")]
+	[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	public async Task<ActionResult> GetModFile([Required] string modName)
+	{
+		if (!_dbContext.Mods.Any(m => m.Name == modName))
+			return NotFound();
+
+		string fileName = $"{modName}.zip";
+		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Mods), fileName);
+		if (!IoFile.Exists(path))
+			return BadRequest($"Mod file '{fileName}' does not exist.");
+
+		return File(await IoFile.ReadAllBytesAsync(path), MediaTypeNames.Application.Zip, fileName);
 	}
 }

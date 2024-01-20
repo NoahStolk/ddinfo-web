@@ -1,4 +1,3 @@
-using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 using DevilDaggersInfo.Web.Server.Utils;
@@ -7,13 +6,13 @@ namespace DevilDaggersInfo.Web.Server.Services;
 
 public class FileSystemService : IFileSystemService
 {
+	private const string _root = "Data";
+
 	public FileSystemService()
 	{
 		foreach (DataSubDirectory e in (DataSubDirectory[])Enum.GetValues(typeof(DataSubDirectory)))
 			Directory.CreateDirectory(GetPath(e));
 	}
-
-	public string Root => "Data";
 
 	public string[] TryGetFiles(DataSubDirectory subDirectory)
 	{
@@ -40,10 +39,7 @@ public class FileSystemService : IFileSystemService
 	}
 
 	public string GetPath(DataSubDirectory subDirectory)
-		=> Path.Combine(Root, subDirectory.ToString());
-
-	public string GetToolDistributionPath(string name, ToolPublishMethod publishMethod, ToolBuildType buildType, string version)
 	{
-		return Path.Combine(GetPath(DataSubDirectory.Tools), $"{name}-{version}-{buildType}-{publishMethod}.zip");
+		return Path.Combine(_root, subDirectory.ToString());
 	}
 }

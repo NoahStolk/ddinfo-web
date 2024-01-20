@@ -8,8 +8,6 @@ public static class Constants
 
 	public static DateTime TrackingCustomLeaderboardSubmitCounts { get; } = new(2020, 8, 25);
 
-	public static DateTime TrackingToolDownloadCounts { get; } = new(2020, 9, 20);
-
 	// TODO: Move to main and admin API projects?
 	public const int PageSizeDefault = 25;
 	public const int PageSizeMin = 15;

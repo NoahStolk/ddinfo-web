@@ -71,7 +71,6 @@ builder.Services.AddTransient<CustomLeaderboardRepository>();
 builder.Services.AddTransient<MarkerRepository>();
 builder.Services.AddTransient<PlayerHistoryRepository>();
 builder.Services.AddTransient<PlayerRepository>();
-builder.Services.AddTransient<ToolRepository>();
 
 // Main domain services
 builder.Services.AddScoped<DevilDaggersInfo.Web.Server.Domain.Main.Services.AuthenticationService>();
@@ -92,7 +91,6 @@ builder.Services.AddTransient<DevilDaggersInfo.Web.Server.Domain.Admin.Services.
 builder.Services.AddTransient<DevilDaggersInfo.Web.Server.Domain.Admin.Services.ModService>();
 builder.Services.AddTransient<DevilDaggersInfo.Web.Server.Domain.Admin.Services.PlayerService>();
 builder.Services.AddTransient<DevilDaggersInfo.Web.Server.Domain.Admin.Services.SpawnsetService>();
-builder.Services.AddTransient<DevilDaggersInfo.Web.Server.Domain.Admin.Services.ToolService>();
 builder.Services.AddTransient<DevilDaggersInfo.Web.Server.Domain.Admin.Services.UserService>();
 
 // Admin repositories
@@ -235,12 +233,9 @@ app.UseCors(defaultCorsPolicy);
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseEndpoints(endpoints =>
-{
-	endpoints.MapRazorPages();
-	endpoints.MapControllers();
-	endpoints.MapFallbackToPage("/_Host");
-});
+app.MapRazorPages();
+app.MapControllers();
+app.MapFallbackToPage("/_Host");
 
 app.UseOpenApi();
 app.UseSwaggerUi();

@@ -111,9 +111,5 @@ public class SpawnsetService
 
 		if (name.Any(c => Path.GetInvalidFileNameChars().Contains(c)))
 			throw new AdminDomainException("Spawnset name must not contain invalid file name characters.");
-
-		// Temporarily disallow + because it breaks old API calls where the spawnset name is in the URL. TODO: Remove this after old API calls have been removed.
-		if (name.Any(c => c == '+'))
-			throw new AdminDomainException("Spawnset name must not contain the + character.");
 	}
 }

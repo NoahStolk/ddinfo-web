@@ -10,7 +10,6 @@ using DevilDaggersInfo.Web.ApiSpec.Admin.FileSystem;
 using DevilDaggersInfo.Web.ApiSpec.Admin.Mods;
 using DevilDaggersInfo.Web.ApiSpec.Admin.Players;
 using DevilDaggersInfo.Web.ApiSpec.Admin.Spawnsets;
-using DevilDaggersInfo.Web.ApiSpec.Admin.Tools;
 using DevilDaggersInfo.Web.ApiSpec.Admin.Users;
 using System.Net.Http.Json;
 
@@ -289,11 +288,6 @@ public class AdminApiHttpClient : ApiHttpClient
 	public async Task<HttpResponseMessage> DeleteSpawnsetById(int id)
 	{
 		return await SendRequest(HttpMethod.Delete, $"api/admin/spawnsets/{id}");
-	}
-
-	public async Task<HttpResponseMessage> AddDistribution(AddDistribution distribution)
-	{
-		return await SendRequest(HttpMethod.Post, "api/admin/tools/", JsonContent.Create(distribution));
 	}
 
 	public async Task<List<GetUser>> GetUsers()

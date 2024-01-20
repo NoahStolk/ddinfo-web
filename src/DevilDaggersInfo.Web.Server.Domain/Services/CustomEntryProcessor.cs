@@ -82,6 +82,10 @@ public class CustomEntryProcessor
 	/// <returns>An <see cref="UploadResponse"/> is returned for every successful upload, as well as uploads rejected by criteria.</returns>
 	public async Task<UploadResponse> ProcessUploadRequestAsync(UploadRequest uploadRequest)
 	{
+		// TODO: Use IOptions.
+		const string clientName = "ddinfo-tools";
+		const string requiredVersionNumber = "0.7.0.0";
+
 		// Check if the submission actually came from an allowed program.
 		if (uploadRequest.ValidationVersion == 2)
 			ValidateV2(uploadRequest);
@@ -89,12 +93,11 @@ public class CustomEntryProcessor
 			LogAndThrowValidationException(uploadRequest, $"Validation version '{uploadRequest.ValidationVersion}' is not implemented.");
 
 		// Check for required client and version.
-		var tool = _dbContext.Tools.Select(t => new { t.Name, t.RequiredVersionNumber }).FirstOrDefault(t => t.Name == uploadRequest.Client);
-		if (tool == null)
+		if (uploadRequest.Client != clientName)
 			LogAndThrowValidationException(uploadRequest, $"'{uploadRequest.Client}' is not a known tool and submissions will not be accepted.");
 
 		Version clientVersionParsed = Version.Parse(uploadRequest.ClientVersion);
-		if (clientVersionParsed < Version.Parse(tool.RequiredVersionNumber))
+		if (clientVersionParsed < Version.Parse(requiredVersionNumber))
 			LogAndThrowValidationException(uploadRequest, $"You are using an unsupported and outdated version of {uploadRequest.Client}. Please update the program.");
 
 		// Reject other invalid statuses.
