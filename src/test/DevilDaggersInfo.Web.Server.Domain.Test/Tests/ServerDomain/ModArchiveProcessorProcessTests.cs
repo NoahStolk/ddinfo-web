@@ -1,5 +1,6 @@
 using DevilDaggersInfo.Core.Asset;
 using DevilDaggersInfo.Core.Mod;
+using DevilDaggersInfo.Core.Mod.Builders;
 using DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;
 using System.IO.Compression;
 
@@ -16,7 +17,7 @@ public class ModArchiveProcessorProcessTests : ModArchiveProcessorTests
 		BinaryName binaryName = new(ModBinaryType.Dd, "main");
 		const string assetName = "binding";
 
-		ModBinaryBuilder binary = CreateWithBinding(assetName);
+		DdModBinaryBuilder binary = CreateWithBinding(assetName);
 		await Processor.ProcessModBinaryUploadAsync(modName, new() { [binaryName] = binary.Compile() });
 
 		string zipFilePath = Accessor.GetModArchivePath(modName);
@@ -26,9 +27,9 @@ public class ModArchiveProcessorProcessTests : ModArchiveProcessorTests
 		ModBinaryCacheData processedBinary = GetProcessedBinaryFromArchiveEntry(archive.Entries[0]);
 		Assert.AreEqual(ModBinaryType.Dd, processedBinary.ModBinaryType);
 		AssertBinaryName(binaryName, processedBinary.Name, modName);
-		Assert.AreEqual(1, processedBinary.Chunks.Count);
-		Assert.AreEqual(assetName, processedBinary.Chunks[0].Name);
-		Assert.AreEqual(AssetType.ObjectBinding, processedBinary.Chunks[0].AssetType);
+		Assert.AreEqual(1, processedBinary.Entries.Count);
+		Assert.AreEqual(assetName, processedBinary.Entries[0].Name);
+		Assert.AreEqual(AssetType.ObjectBinding, processedBinary.Entries[0].AssetType);
 	}
 
 	[TestMethod]
@@ -49,11 +50,11 @@ public class ModArchiveProcessorProcessTests : ModArchiveProcessorTests
 		ModBinaryCacheData processedBinary = GetProcessedBinaryFromArchiveEntry(archive.Entries[0]);
 		Assert.AreEqual(ModBinaryType.Dd, processedBinary.ModBinaryType);
 		AssertBinaryName(binaryName, processedBinary.Name, modName);
-		Assert.AreEqual(2, processedBinary.Chunks.Count);
-		Assert.AreEqual(assetName1, processedBinary.Chunks[0].Name);
-		Assert.AreEqual(AssetType.ObjectBinding, processedBinary.Chunks[0].AssetType);
-		Assert.AreEqual(assetName2, processedBinary.Chunks[1].Name);
-		Assert.AreEqual(AssetType.Texture, processedBinary.Chunks[1].AssetType);
+		Assert.AreEqual(2, processedBinary.Entries.Count);
+		Assert.AreEqual(assetName1, processedBinary.Entries[0].Name);
+		Assert.AreEqual(AssetType.ObjectBinding, processedBinary.Entries[0].AssetType);
+		Assert.AreEqual(assetName2, processedBinary.Entries[1].Name);
+		Assert.AreEqual(AssetType.Texture, processedBinary.Entries[1].AssetType);
 	}
 
 	[TestMethod]
@@ -81,19 +82,19 @@ public class ModArchiveProcessorProcessTests : ModArchiveProcessorTests
 		ModBinaryCacheData processedBinary1 = GetProcessedBinaryFromArchiveEntry(archive.Entries[0]);
 		Assert.AreEqual(ModBinaryType.Dd, processedBinary1.ModBinaryType);
 		AssertBinaryName(binaryName1, processedBinary1.Name, modName);
-		Assert.AreEqual(2, processedBinary1.Chunks.Count);
-		Assert.AreEqual(assetName1, processedBinary1.Chunks[0].Name);
-		Assert.AreEqual(AssetType.ObjectBinding, processedBinary1.Chunks[0].AssetType);
-		Assert.AreEqual(assetName2, processedBinary1.Chunks[1].Name);
-		Assert.AreEqual(AssetType.Texture, processedBinary1.Chunks[1].AssetType);
+		Assert.AreEqual(2, processedBinary1.Entries.Count);
+		Assert.AreEqual(assetName1, processedBinary1.Entries[0].Name);
+		Assert.AreEqual(AssetType.ObjectBinding, processedBinary1.Entries[0].AssetType);
+		Assert.AreEqual(assetName2, processedBinary1.Entries[1].Name);
+		Assert.AreEqual(AssetType.Texture, processedBinary1.Entries[1].AssetType);
 
 		ModBinaryCacheData processedBinary2 = GetProcessedBinaryFromArchiveEntry(archive.Entries[1]);
 		Assert.AreEqual(ModBinaryType.Dd, processedBinary2.ModBinaryType);
 		AssertBinaryName(binaryName2, processedBinary2.Name, modName);
-		Assert.AreEqual(2, processedBinary2.Chunks.Count);
-		Assert.AreEqual(assetName1, processedBinary2.Chunks[0].Name);
-		Assert.AreEqual(AssetType.ObjectBinding, processedBinary2.Chunks[0].AssetType);
-		Assert.AreEqual(assetName2, processedBinary2.Chunks[1].Name);
-		Assert.AreEqual(AssetType.Texture, processedBinary2.Chunks[1].AssetType);
+		Assert.AreEqual(2, processedBinary2.Entries.Count);
+		Assert.AreEqual(assetName1, processedBinary2.Entries[0].Name);
+		Assert.AreEqual(AssetType.ObjectBinding, processedBinary2.Entries[0].AssetType);
+		Assert.AreEqual(assetName2, processedBinary2.Entries[1].Name);
+		Assert.AreEqual(AssetType.Texture, processedBinary2.Entries[1].AssetType);
 	}
 }

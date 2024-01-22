@@ -1,5 +1,6 @@
 using DevilDaggersInfo.Core.Asset;
 using DevilDaggersInfo.Core.Mod;
+using DevilDaggersInfo.Core.Mod.Builders;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;
 using DevilDaggersInfo.Web.Server.Domain.Services;
@@ -62,18 +63,18 @@ public abstract class ModArchiveProcessorTests
 		return ModBinaryCacheData.CreateFromFile(entry.Name, extractedContents);
 	}
 
-	protected static ModBinaryBuilder CreateWithBinding(string assetName)
+	protected static DdModBinaryBuilder CreateWithBinding(string assetName)
 	{
-		ModBinaryBuilder binary = new(ModBinaryType.Dd);
-		binary.AddAsset(assetName, AssetType.ObjectBinding, "shader = \"boid\""u8.ToArray());
+		DdModBinaryBuilder binary = new();
+		binary.AddObjectBinding(assetName, "shader = \"boid\""u8.ToArray());
 		return binary;
 	}
 
-	protected static ModBinaryBuilder CreateWithBindingAndTexture(string shaderName, string textureName)
+	protected static DdModBinaryBuilder CreateWithBindingAndTexture(string shaderName, string textureName)
 	{
-		ModBinaryBuilder binary = new(ModBinaryType.Dd);
-		binary.AddAsset(shaderName, AssetType.ObjectBinding, "shader = \"boid\""u8.ToArray());
-		binary.AddAsset(textureName, AssetType.Texture, File.ReadAllBytes(Path.Combine("Resources", "Textures", "green.png")));
+		DdModBinaryBuilder binary = new();
+		binary.AddObjectBinding(shaderName, "shader = \"boid\""u8.ToArray());
+		binary.AddTexture(textureName, File.ReadAllBytes(Path.Combine("Resources", "Textures", "green.png")));
 		return binary;
 	}
 }

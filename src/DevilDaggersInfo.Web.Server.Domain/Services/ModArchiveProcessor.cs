@@ -64,7 +64,7 @@ public class ModArchiveProcessor
 
 			foreach (ModBinaryCacheData binary in addedBinaries)
 			{
-				if (binary.Chunks.Count == 0)
+				if (binary.Entries.Count == 0)
 					throw new InvalidModBinaryException($"Mod binary '{binary.Name}' does not contain any assets.");
 
 				BinaryName expectedName = BinaryName.Parse(binary.Name, modName);
