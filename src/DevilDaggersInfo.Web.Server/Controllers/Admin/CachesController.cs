@@ -36,7 +36,7 @@ public class CachesController : ControllerBase
 		{
 			new() { Name = "LeaderboardHistory", Count = _leaderboardHistoryCache.GetCount() },
 			new() { Name = "LeaderboardStatistics", Count = _leaderboardStatisticsCache.GetCount() },
-			new() { Name = "ModArchive", Count = _modArchiveCache.GetCount() },
+			new() { Name = "ModArchive", Count = _modArchiveCache.Count },
 		};
 	}
 

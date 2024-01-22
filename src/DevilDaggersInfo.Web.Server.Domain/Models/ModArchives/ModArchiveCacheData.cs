@@ -28,5 +28,7 @@ public class ModArchiveCacheData
 	}
 
 	public bool ContainsProhibitedAssets()
-		=> Binaries.Exists(b => b.ContainsProhibitedAssets());
+	{
+		return Binaries.Exists(b => b.ContainsProhibitedAssets());
+	}
 }

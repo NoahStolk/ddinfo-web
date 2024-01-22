@@ -22,6 +22,8 @@ public class ModArchiveCache
 		_fileSystemService = fileSystemService;
 	}
 
+	public int Count => _cache.Count;
+
 	public async Task<ModArchiveCacheData> GetArchiveDataByBytesAsync(string name, byte[] bytes)
 	{
 		// Check memory cache.
@@ -34,7 +36,7 @@ public class ModArchiveCache
 			return fileCache;
 
 		// Unzip zip file bytes.
-		using MemoryStream ms = new(bytes);
+		await using MemoryStream ms = new(bytes);
 		return CreateModArchiveCacheDataFromStream(name, ms, false); // Do not add this to the cache because it is not yet validated.
 	}
 
@@ -132,8 +134,7 @@ public class ModArchiveCache
 	}
 
 	public void Clear()
-		=> _cache.Clear();
-
-	public int GetCount()
-		=> _cache.Count;
+	{
+		_cache.Clear();
+	}
 }
