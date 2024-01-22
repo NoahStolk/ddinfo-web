@@ -171,7 +171,7 @@ public class ModArchiveProcessorTransformTests : ModArchiveProcessorTests
 
 		// Test if the asset name is actually updated.
 		ModBinaryCacheData modBinaryCacheData = GetProcessedBinaryFromArchiveEntry(archive.Entries[0]);
-		Assert.AreEqual(1, modBinaryCacheData.Entries.Count);
-		Assert.AreEqual(assetName2, modBinaryCacheData.Entries[0].Name);
+		Assert.AreEqual(1, modBinaryCacheData.TocEntries.Count);
+		Assert.AreEqual(assetName2, modBinaryCacheData.TocEntries[0].Name);
 	}
 }

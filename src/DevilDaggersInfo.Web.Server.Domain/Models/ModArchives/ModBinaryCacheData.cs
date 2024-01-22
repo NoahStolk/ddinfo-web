@@ -8,19 +8,19 @@ namespace DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;
 
 public class ModBinaryCacheData
 {
-	public ModBinaryCacheData(string name, long size, ModBinaryType modBinaryType, List<ModTocEntryCacheData> entries, List<ModifiedLoudnessAssetCacheData>? modifiedLoudnessAssets)
+	public ModBinaryCacheData(string name, long size, ModBinaryType modBinaryType, List<ModTocEntryCacheData> tocEntries, List<ModifiedLoudnessAssetCacheData>? modifiedLoudnessAssets)
 	{
 		Name = name;
 		Size = size;
 		ModBinaryType = modBinaryType;
-		Entries = entries;
+		TocEntries = tocEntries;
 		ModifiedLoudnessAssets = modifiedLoudnessAssets;
 	}
 
 	public string Name { get; }
 	public long Size { get; }
 	public ModBinaryType ModBinaryType { get; }
-	public List<ModTocEntryCacheData> Entries { get; }
+	public List<ModTocEntryCacheData> TocEntries { get; }
 	public List<ModifiedLoudnessAssetCacheData>? ModifiedLoudnessAssets { get; }
 
 	public static ModBinaryCacheData CreateFromFile(string fileName, byte[] fileContents)
@@ -101,6 +101,6 @@ public class ModBinaryCacheData
 
 	public bool ContainsProhibitedAssets()
 	{
-		return Entries.Exists(c => c.IsProhibited);
+		return TocEntries.Exists(c => c.IsProhibited);
 	}
 }
