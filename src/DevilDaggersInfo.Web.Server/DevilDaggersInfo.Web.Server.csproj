@@ -3,6 +3,7 @@
   <PropertyGroup>
     <UserSecretsId>DevilDaggersInfo.Web.BlazorWasm.Server-263F51EE-93E3-4591-979C-D593FC68F5E7</UserSecretsId>
     <IncludeOpenAPIAnalyzers>true</IncludeOpenAPIAnalyzers>
+    <SentryImplicitUsings>false</SentryImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>
