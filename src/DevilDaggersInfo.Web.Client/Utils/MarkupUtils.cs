@@ -22,7 +22,7 @@ public static class MarkupUtils
 
 	public static MarkupString DeathString(byte deathType, GameVersion gameVersion = GameConstants.CurrentVersion, string textSizeClass = "text-lg")
 	{
-		Death? death = Deaths.GetDeathByLeaderboardType(gameVersion, deathType);
+		Death? death = Deaths.GetDeathByType(gameVersion, deathType);
 		return DeathString(death, textSizeClass);
 	}
 
