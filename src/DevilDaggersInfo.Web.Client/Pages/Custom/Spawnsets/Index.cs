@@ -8,6 +8,8 @@ namespace DevilDaggersInfo.Web.Client.Pages.Custom.Spawnsets;
 
 public partial class Index : IHasNavigation
 {
+	private readonly Dictionary<SpawnsetSorting, bool> _sortings = new();
+
 	[Parameter]
 	[SupplyParameterFromQuery]
 	public bool PracticeOnly { get; set; }
@@ -39,8 +41,6 @@ public partial class Index : IHasNavigation
 	[Parameter]
 	[SupplyParameterFromQuery]
 	public bool Ascending { get; set; }
-
-	private readonly Dictionary<SpawnsetSorting, bool> _sortings = new();
 
 	public Page<GetSpawnsetOverview>? GetSpawnsets { get; set; }
 

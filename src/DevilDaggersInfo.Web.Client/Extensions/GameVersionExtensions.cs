@@ -1,5 +1,6 @@
 using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Core.Wiki.Extensions;
+using System.Diagnostics;
 
 namespace DevilDaggersInfo.Web.Client.Extensions;
 
@@ -20,7 +21,7 @@ public static class GameVersionExtensions
 		GameVersion.V3_0 => ApiSpec.Main.WorldRecords.GameVersion.V3_0,
 		GameVersion.V3_1 => ApiSpec.Main.WorldRecords.GameVersion.V3_1,
 		GameVersion.V3_2 => ApiSpec.Main.WorldRecords.GameVersion.V3_2,
-		_ => throw new($"Unknown game version {gameVersion}."),
+		_ => throw new UnreachableException($"Unknown game version {gameVersion}."),
 	};
 
 	public static GameVersion ToCore(this ApiSpec.Main.WorldRecords.GameVersion gameVersion) => gameVersion switch
@@ -30,6 +31,6 @@ public static class GameVersionExtensions
 		ApiSpec.Main.WorldRecords.GameVersion.V3_0 => GameVersion.V3_0,
 		ApiSpec.Main.WorldRecords.GameVersion.V3_1 => GameVersion.V3_1,
 		ApiSpec.Main.WorldRecords.GameVersion.V3_2 => GameVersion.V3_2,
-		_ => throw new($"Unknown game version {gameVersion}."),
+		_ => throw new UnreachableException($"Unknown game version {gameVersion}."),
 	};
 }

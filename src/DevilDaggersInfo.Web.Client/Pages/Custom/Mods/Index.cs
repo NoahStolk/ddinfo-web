@@ -8,6 +8,8 @@ namespace DevilDaggersInfo.Web.Client.Pages.Custom.Mods;
 
 public partial class Index : IHasNavigation
 {
+	private readonly Dictionary<ModSorting, bool> _sortings = new();
+
 	[Parameter]
 	[SupplyParameterFromQuery]
 	public bool HostedOnly { get; set; }
@@ -35,8 +37,6 @@ public partial class Index : IHasNavigation
 	[Parameter]
 	[SupplyParameterFromQuery]
 	public bool Ascending { get; set; }
-
-	private readonly Dictionary<ModSorting, bool> _sortings = new();
 
 	public Page<GetModOverview>? GetMods { get; set; }
 

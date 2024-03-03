@@ -7,18 +7,39 @@ namespace DevilDaggersInfo.Web.Client.Pages.Custom.Leaderboards;
 
 public partial class LeaderboardPage
 {
-	[Parameter]
-	[EditorRequired]
-	public int Id { get; set; }
-
-	public GetCustomLeaderboard? GetCustomLeaderboard { get; set; }
-
 	private bool _notFound;
 	private int? _expandedId;
 	private CustomEntrySorting _sortBy;
 	private bool _ascending;
 
 	private readonly Dictionary<CustomEntrySorting, bool> _sortings = new();
+
+	[Parameter]
+	[EditorRequired]
+	public int Id { get; set; }
+
+	public GetCustomLeaderboard? GetCustomLeaderboard { get; set; }
+
+	private enum CustomEntrySorting
+	{
+		Rank,
+		Flag,
+		Player,
+		Time,
+		EnemiesKilled,
+		EnemiesAlive,
+		GemsCollected,
+		GemsDespawned,
+		GemsEaten,
+		Accuracy,
+		DeathType,
+		HomingStored,
+		HomingEaten,
+		LevelUpTime2,
+		LevelUpTime3,
+		LevelUpTime4,
+		SubmitDate,
+	}
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -73,26 +94,5 @@ public partial class LeaderboardPage
 			CustomEntrySorting.SubmitDate => GetCustomLeaderboard.CustomEntries.OrderBy(ce => ce.SubmitDate, _ascending).ToList(),
 			_ => GetCustomLeaderboard.CustomEntries,
 		};
-	}
-
-	private enum CustomEntrySorting
-	{
-		Rank,
-		Flag,
-		Player,
-		Time,
-		EnemiesKilled,
-		EnemiesAlive,
-		GemsCollected,
-		GemsDespawned,
-		GemsEaten,
-		Accuracy,
-		DeathType,
-		HomingStored,
-		HomingEaten,
-		LevelUpTime2,
-		LevelUpTime3,
-		LevelUpTime4,
-		SubmitDate,
 	}
 }

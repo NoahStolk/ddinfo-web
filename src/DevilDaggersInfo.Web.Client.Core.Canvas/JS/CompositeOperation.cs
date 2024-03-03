@@ -1,6 +1,7 @@
 // ReSharper disable InconsistentNaming
 namespace DevilDaggersInfo.Web.Client.Core.Canvas.JS;
 
+#pragma warning disable CA1707
 public enum CompositeOperation
 {
 	Source_Over,
@@ -30,3 +31,4 @@ public enum CompositeOperation
 	Color,
 	Luminosity,
 }
+#pragma warning restore CA1707

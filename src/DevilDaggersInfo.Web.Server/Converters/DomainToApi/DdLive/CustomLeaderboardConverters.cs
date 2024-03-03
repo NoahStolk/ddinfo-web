@@ -131,10 +131,10 @@ public static class CustomLeaderboardConverters
 		_ => throw new UnreachableException(),
 	};
 
-	[Obsolete("Remove when no longer used.")]
 	/// <summary>
 	/// Workaround to keep the API backwards compatible with the old categories.
 	/// </summary>
+	[Obsolete("Remove when no longer used.")]
 	private static DdLiveApi.CustomLeaderboardCategoryDdLive GetCategory(CustomLeaderboardRankSorting rankSorting, SpawnsetGameMode gameMode)
 	{
 		if (rankSorting == CustomLeaderboardRankSorting.TimeAsc)

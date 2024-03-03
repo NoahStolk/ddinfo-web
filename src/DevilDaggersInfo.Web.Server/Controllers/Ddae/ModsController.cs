@@ -41,7 +41,7 @@ public class ModsController : ControllerBase
 		if (!string.IsNullOrWhiteSpace(authorFilter))
 		{
 			// ! Navigation property.
-			modsQuery = modsQuery.Where(m => m.PlayerMods!.Any(pm => pm.Player!.PlayerName.Contains(authorFilter, StringComparison.InvariantCultureIgnoreCase)));
+			modsQuery = modsQuery.Where(m => m.PlayerMods!.Exists(pm => pm.Player!.PlayerName.Contains(authorFilter, StringComparison.InvariantCultureIgnoreCase)));
 		}
 
 		if (!string.IsNullOrWhiteSpace(nameFilter))
