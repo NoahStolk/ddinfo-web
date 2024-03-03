@@ -24,7 +24,7 @@
 }
 else
 {
-	<Heading Title="@($"Custom Leaderboard - {GetCustomLeaderboard.SpawnsetName}")" />
+	<Heading Title="@($"Custom Leaderboard - {GetCustomLeaderboard.SpawnsetName}")" BreakAll="true" />
 
 	if (!GetCustomLeaderboard.IsFeatured)
 	{
@@ -70,7 +70,7 @@ else
 					{
 						<li class="list-disc">
 							<CriteriaExpressionComponent Expression="criteriaExpression" CriteriaOperator="criteria.Operator.ToCore()" CriteriaType="criteria.Type.ToCore()" />
-						</li>	
+						</li>
 					}
 				}
 			</ul>
