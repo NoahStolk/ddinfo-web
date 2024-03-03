@@ -7,8 +7,8 @@ namespace DevilDaggersInfo.Web.Client;
 /// </summary>
 public static class NewsContainer
 {
-	public static List<NewsItem> Items { get; } = new()
-	{
+	public static List<NewsItem> Items { get; } =
+	[
 		new()
 		{
 			DateTime = new(2022, 01, 02),
@@ -59,5 +59,5 @@ public static class NewsContainer
 			DateTime = new(2023, 03, 11),
 			Title = "New Unified Tools Alpha",
 		},
-	};
+	];
 }

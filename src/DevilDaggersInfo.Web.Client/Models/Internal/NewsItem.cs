@@ -6,7 +6,7 @@ public class NewsItem
 {
 	public required string Title { get; init; }
 
-	public DateTime DateTime { get; init; }
+	public DateOnly DateTime { get; init; }
 
 	public string GetHtmlPath() => Path.Combine("news", $"{Title}.html");
 

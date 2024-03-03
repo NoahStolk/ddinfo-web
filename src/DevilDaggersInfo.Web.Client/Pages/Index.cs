@@ -7,7 +7,7 @@ namespace DevilDaggersInfo.Web.Client.Pages;
 public partial class Index
 {
 	private readonly Section[] _sections =
-	{
+	[
 		new("View the official leaderboard", "home/leaderboard.png", "/leaderboard", "Leaderboard"),
 		new("Check out mods made by the community", "home/mod.png", "/custom/mods", "Mods"),
 		new("Check out spawnsets made by the community", "home/spawnset.png", "/custom/spawnsets", "Spawnsets"),
@@ -16,7 +16,7 @@ public partial class Index
 		new("Participate in custom leaderboards for spawnsets", "home/custom-leaderboard.png", "/custom/leaderboards", "Custom Leaderboards"),
 		new("Check out the world record progression and other statistics", "home/graph.png", "/leaderboard/world-record-progression", "World Record Progression"),
 		new("Check out various wiki pages about the game, such as spawn times, enemy types, or hand upgrades", "home/enemies.png", "/wiki/enemies", "Enemies Wiki"),
-	};
+	];
 
 	[Inject]
 	public required MainApiHttpClient Http { get; set; }
