@@ -2,15 +2,15 @@
 <div class="max-h-lb-name overflow-hidden">
 	@if (IsBanned)
 	{
-		<a href="/leaderboard/player/@Id" class="@(IsBanned ? string.Empty : DaggerCssClass)"><span class="font-goethe text-xl hover:underline text-color-ban">@Name.ToNoBreakString()</span></a>
+		<a href="/leaderboard/player/@Id" class="@(IsBanned ? string.Empty : DaggerCssClass)"><span class="font-goethe text-xl hover:underline text-color-ban">@WebUtility.HtmlEncode(Name).ToNoBreakString()</span></a>
 	}
 	else if (DaggerCssClass == "leviathan")
 	{
-		<a href="/leaderboard/player/@Id" class="@DaggerCssClass highlight hover:underline" style="@LeviathanOffsetStyle">@Name.ToNoBreakString()</a>
+		<a href="/leaderboard/player/@Id" class="@DaggerCssClass highlight hover:underline" style="@LeviathanOffsetStyle">@WebUtility.HtmlEncode(Name).ToNoBreakString()</a>
 	}
 	else
 	{
-		<a href="/leaderboard/player/@Id" class="@DaggerCssClass highlight hover:underline">@Name.ToNoBreakString()</a>
+		<a href="/leaderboard/player/@Id" class="@DaggerCssClass highlight hover:underline">@WebUtility.HtmlEncode(Name).ToNoBreakString()</a>
 	}
 </div>
 
@@ -18,17 +18,17 @@
 	[Parameter]
 	[EditorRequired]
 	public int Id { get; set; }
-	
+
 	[Parameter]
 	[EditorRequired]
 	public required string Name { get; set; }
-	
+
 	[Parameter]
 	public string? DaggerCssClass { get; set; }
-	
+
 	[Parameter]
 	public string? LeviathanOffsetStyle { get; set; }
-	
+
 	[Parameter]
 	public bool IsBanned { get; set; }
 }
