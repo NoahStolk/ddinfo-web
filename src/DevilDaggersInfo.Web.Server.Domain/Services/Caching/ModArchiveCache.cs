@@ -62,11 +62,11 @@ public class ModArchiveCache
 
 	private async Task<ModArchiveCacheData?> LoadFromFileCacheAsync(string name)
 	{
-		string fileCachePath = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ModArchiveCache), $"{name}.json");
-		if (!File.Exists(fileCachePath))
+		string? json = await _fileSystemService.GetModArchiveCacheDataJsonAsync(name);
+		if (json == null)
 			return null;
 
-		ModArchiveCacheData? fileCacheArchiveData = JsonConvert.DeserializeObject<ModArchiveCacheData>(await File.ReadAllTextAsync(fileCachePath));
+		ModArchiveCacheData? fileCacheArchiveData = JsonConvert.DeserializeObject<ModArchiveCacheData>(json);
 		if (fileCacheArchiveData == null)
 			return null;
 

@@ -42,4 +42,10 @@ public class FileSystemService : IFileSystemService
 	{
 		return Path.Combine(_root, subDirectory.ToString());
 	}
+
+	public async Task<string?> GetModArchiveCacheDataJsonAsync(string modName)
+	{
+		string filePath = Path.Combine(GetPath(DataSubDirectory.ModArchiveCache), $"{modName}.json");
+		return IoFile.Exists(filePath) ? await IoFile.ReadAllTextAsync(filePath) : null;
+	}
 }
