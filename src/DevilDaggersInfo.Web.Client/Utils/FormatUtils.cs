@@ -3,7 +3,9 @@ namespace DevilDaggersInfo.Web.Client.Utils;
 public static class FormatUtils
 {
 	public static string FormatDaggersInt32(int hit, int fired, bool isHistory = false)
-		=> FormatDaggersUInt64((ulong)hit, (ulong)fired, isHistory);
+	{
+		return FormatDaggersUInt64((ulong)hit, (ulong)fired, isHistory);
+	}
 
 	public static string FormatDaggersUInt64(ulong hit, ulong fired, bool isHistory = false)
 	{
@@ -19,7 +21,9 @@ public static class FormatUtils
 	}
 
 	public static string FormatDateTimeAsTimeAgo(DateTime? dateTime)
-		=> dateTime.HasValue ? FormatDateTimeAsTimeAgo(dateTime.Value) : "Never";
+	{
+		return dateTime.HasValue ? FormatDateTimeAsTimeAgo(dateTime.Value) : "Never";
+	}
 
 	public static string FormatDateTimeAsTimeAgo(DateTime dateTime)
 	{

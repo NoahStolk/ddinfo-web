@@ -13,9 +13,13 @@
 
 @code
 {
-	[Parameter, EditorRequired] public SpawnView SpawnView { get; set; }
+	[Parameter]
+	[EditorRequired]
+	public SpawnView SpawnView { get; set; }
 
-	[Parameter, EditorRequired] public GameVersion GameVersion { get; set; }
+	[Parameter]
+	[EditorRequired]
+	public GameVersion GameVersion { get; set; }
 
 	private string GetHandLevelHexColor(HandLevel handLevel)
 	{

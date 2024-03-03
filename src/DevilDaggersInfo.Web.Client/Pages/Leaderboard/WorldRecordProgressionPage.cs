@@ -97,7 +97,9 @@ public partial class WorldRecordProgressionPage
 	}
 
 	private static string S(int value)
-		=> value == 1 ? string.Empty : "s";
+	{
+		return value == 1 ? string.Empty : "s";
+	}
 
 	private static void Sort<TSource, TKey>(ref List<TSource> source, Dictionary<string, bool> sortings, Func<TSource, TKey> sorting, [CallerArgumentExpression("sorting")] string sortingExpression = "")
 	{
