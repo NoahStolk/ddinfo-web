@@ -24,7 +24,7 @@ public class AdminAuthenticationStateProvider : AuthenticationStateProvider
 
 	public override async Task<AuthenticationState> GetAuthenticationStateAsync()
 	{
-		string token = await _localStorageService.GetItemAsStringAsync(LocalStorageAuthKey);
+		string? token = await _localStorageService.GetItemAsStringAsync(LocalStorageAuthKey);
 		if (string.IsNullOrEmpty(token))
 			return await ClearTokenAndGetDefaultState();
 
