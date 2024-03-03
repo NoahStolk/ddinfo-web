@@ -17,16 +17,18 @@ public class ModArchiveCacheData
 		ModTypes modTypes = Entities.Enums.ModTypes.None;
 		if (Binaries.Exists(b => b.ModBinaryType == ModBinaryType.Audio))
 			modTypes |= Entities.Enums.ModTypes.Audio;
-		if (ddBinary?.Chunks.Exists(c => c.AssetType == AssetType.Shader) == true)
+		if (ddBinary?.TocEntries.Exists(c => c.AssetType == AssetType.Shader) == true)
 			modTypes |= Entities.Enums.ModTypes.Shader;
-		if (ddBinary?.Chunks.Exists(c => c.AssetType == AssetType.ObjectBinding || c.AssetType == AssetType.Mesh) == true)
+		if (ddBinary?.TocEntries.Exists(c => c.AssetType == AssetType.ObjectBinding || c.AssetType == AssetType.Mesh) == true)
 			modTypes |= Entities.Enums.ModTypes.Mesh;
-		if (ddBinary?.Chunks.Exists(c => c.AssetType == AssetType.Texture) == true)
+		if (ddBinary?.TocEntries.Exists(c => c.AssetType == AssetType.Texture) == true)
 			modTypes |= Entities.Enums.ModTypes.Texture;
 
 		return modTypes;
 	}
 
 	public bool ContainsProhibitedAssets()
-		=> Binaries.Exists(b => b.ContainsProhibitedAssets());
+	{
+		return Binaries.Exists(b => b.ContainsProhibitedAssets());
+	}
 }

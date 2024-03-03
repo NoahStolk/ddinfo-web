@@ -7,7 +7,7 @@ namespace DevilDaggersInfo.Web.Server.Domain.Test.Utils;
 
 public class TestData : ILeaderboardHistoryCache, IFileSystemService
 {
-	private readonly IReadOnlyDictionary<string, LeaderboardHistory> _data = new Dictionary<string, LeaderboardHistory>
+	private readonly IReadOnlyDictionary<string, LeaderboardHistory> _leaderboardHistory = new Dictionary<string, LeaderboardHistory>
 	{
 		["2022-01-01.bin"] = CreateLeaderboardHistory(
 			new(2022, 1, 1, 0, 0, 0, DateTimeKind.Utc),
@@ -37,6 +37,11 @@ public class TestData : ILeaderboardHistoryCache, IFileSystemService
 				CreateEntryHistory(3, 2, 85, "Player 2"),
 				CreateEntryHistory(4, 3, 82, "Player 3"), // Player 3 joins the leaderboard.
 			]),
+	};
+
+	private readonly IReadOnlyDictionary<string, string> _modArchiveCache = new Dictionary<string, string>
+	{
+		["test"] = """{"FileSize":8400,"FileSizeExtracted":21891,"Binaries":[{"Name":"dd-test-main","Size":21891,"ModBinaryType":1,"Chunks":[{"Name":"dagger6","Size":21855,"AssetType":2,"IsProhibited":false}],"ModifiedLoudnessAssets":null}]}""",
 	};
 
 	private static LeaderboardHistory CreateLeaderboardHistory(DateTime dateTime, List<EntryHistory> entries)
@@ -79,20 +84,37 @@ public class TestData : ILeaderboardHistoryCache, IFileSystemService
 
 	public string[] TryGetFiles(DataSubDirectory subDirectory)
 	{
-		if (subDirectory != DataSubDirectory.LeaderboardHistory)
-			throw new NotImplementedException();
-
-		return _data.Keys.ToArray();
+		return subDirectory switch
+		{
+			DataSubDirectory.LeaderboardHistory => _leaderboardHistory.Keys.ToArray(),
+			DataSubDirectory.ModArchiveCache => _modArchiveCache.Keys.ToArray(),
+			_ => throw new NotImplementedException(),
+		};
 	}
 
 	public LeaderboardHistory GetLeaderboardHistoryByFilePath(string filePath)
 	{
-		return _data[filePath];
+		return _leaderboardHistory[filePath];
+	}
+
+	public string GetPath(DataSubDirectory subDirectory)
+	{
+		return subDirectory switch
+		{
+			DataSubDirectory.LeaderboardHistory => "LeaderboardHistory",
+			DataSubDirectory.ModArchiveCache => "ModArchiveCache",
+			_ => throw new NotImplementedException(),
+		};
+	}
+
+	public async Task<string?> GetModArchiveCacheDataJsonAsync(string modName)
+	{
+		await Task.Yield();
+		return _modArchiveCache.GetValueOrDefault(modName);
 	}
 
 #pragma warning disable SA1201
 	public string GetLeaderboardHistoryPathFromDate(DateTime dateTime) => throw new NotImplementedException();
-	public string GetPath(DataSubDirectory subDirectory) => throw new NotImplementedException();
 	public int GetCount() => throw new NotImplementedException();
 	public void Clear() => throw new NotImplementedException();
 #pragma warning restore SA1201

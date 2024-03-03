@@ -2,25 +2,28 @@ using DevilDaggersInfo.Core.Asset;
 using DevilDaggersInfo.Core.Mod;
 using DevilDaggersInfo.Core.Mod.Exceptions;
 using DevilDaggersInfo.Core.Mod.Utils;
+using Newtonsoft.Json;
 using System.Text;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;
 
 public class ModBinaryCacheData
 {
-	public ModBinaryCacheData(string name, long size, ModBinaryType modBinaryType, List<ModChunkCacheData> chunks, List<ModifiedLoudnessAssetCacheData>? modifiedLoudnessAssets)
+	public ModBinaryCacheData(string name, long size, ModBinaryType modBinaryType, List<ModTocEntryCacheData> tocEntries, List<ModifiedLoudnessAssetCacheData>? modifiedLoudnessAssets)
 	{
 		Name = name;
 		Size = size;
 		ModBinaryType = modBinaryType;
-		Chunks = chunks;
+		TocEntries = tocEntries;
 		ModifiedLoudnessAssets = modifiedLoudnessAssets;
 	}
 
 	public string Name { get; }
 	public long Size { get; }
 	public ModBinaryType ModBinaryType { get; }
-	public List<ModChunkCacheData> Chunks { get; }
+
+	[JsonProperty("Chunks")]
+	public List<ModTocEntryCacheData> TocEntries { get; }
 	public List<ModifiedLoudnessAssetCacheData>? ModifiedLoudnessAssets { get; }
 
 	public static ModBinaryCacheData CreateFromFile(string fileName, byte[] fileContents)
@@ -31,7 +34,7 @@ public class ModBinaryCacheData
 		if (modBinary.Toc.Type != binaryTypeFromFileName)
 			throw new InvalidModBinaryException($"Binary '{fileName}' has type mismatch; file name claims '{binaryTypeFromFileName}' but file contents claim '{modBinary.Toc.Type}'.");
 
-		List<ModChunkCacheData> chunks = modBinary.Toc.Chunks.Select(c => new ModChunkCacheData
+		List<ModTocEntryCacheData> tocEntries = modBinary.Toc.Entries.Select(c => new ModTocEntryCacheData
 		{
 			Name = c.Name,
 			Size = c.Size,
@@ -39,22 +42,22 @@ public class ModBinaryCacheData
 			IsProhibited = AssetContainer.IsProhibited(c.AssetType, c.Name),
 		}).ToList();
 
-		ModBinaryChunk? loudnessChunk = modBinary.Toc.Chunks.FirstOrDefault(c => c.IsLoudness());
+		ModBinaryTocEntry? loudnessTocEntry = modBinary.Toc.Entries.FirstOrDefault(c => c.IsLoudness());
 		List<ModifiedLoudnessAssetCacheData>? modifiedLoudnessAssets = null;
-		if (loudnessChunk != null)
+		if (loudnessTocEntry != null)
 		{
-			byte[] loudnessBytes = new byte[loudnessChunk.Size];
-			Buffer.BlockCopy(fileContents, loudnessChunk.Offset, loudnessBytes, 0, loudnessChunk.Size);
+			byte[] loudnessBytes = new byte[loudnessTocEntry.Size];
+			Buffer.BlockCopy(fileContents, loudnessTocEntry.Offset, loudnessBytes, 0, loudnessTocEntry.Size);
 			string loudnessString = Encoding.UTF8.GetString(loudnessBytes);
 			modifiedLoudnessAssets = ReadModifiedLoudnessValues(loudnessString);
 		}
 
-		return new(fileName, fileContents.Length, modBinary.Toc.Type, chunks, modifiedLoudnessAssets);
+		return new(fileName, fileContents.Length, modBinary.Toc.Type, tocEntries, modifiedLoudnessAssets);
 	}
 
 	private static List<ModifiedLoudnessAssetCacheData> ReadModifiedLoudnessValues(string loudnessString)
 	{
-		List<ModifiedLoudnessAssetCacheData> loudnessAssets = new();
+		List<ModifiedLoudnessAssetCacheData> loudnessAssets = [];
 
 		foreach (string line in loudnessString.Split('\n'))
 		{
@@ -100,5 +103,7 @@ public class ModBinaryCacheData
 	}
 
 	public bool ContainsProhibitedAssets()
-		=> Chunks.Any(c => c.IsProhibited);
+	{
+		return TocEntries.Exists(c => c.IsProhibited);
+	}
 }

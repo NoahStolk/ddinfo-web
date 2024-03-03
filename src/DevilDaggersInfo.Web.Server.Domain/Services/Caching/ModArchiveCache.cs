@@ -22,6 +22,8 @@ public class ModArchiveCache
 		_fileSystemService = fileSystemService;
 	}
 
+	public int Count => _cache.Count;
+
 	public async Task<ModArchiveCacheData> GetArchiveDataByBytesAsync(string name, byte[] bytes)
 	{
 		// Check memory cache.
@@ -34,7 +36,7 @@ public class ModArchiveCache
 			return fileCache;
 
 		// Unzip zip file bytes.
-		using MemoryStream ms = new(bytes);
+		await using MemoryStream ms = new(bytes);
 		return CreateModArchiveCacheDataFromStream(name, ms, false); // Do not add this to the cache because it is not yet validated.
 	}
 
@@ -50,7 +52,7 @@ public class ModArchiveCache
 		if (fileCache != null)
 			return fileCache;
 
-		// Unzip zip file.
+		// Unzip zip file. TODO: This should only be done manually from the admin pages.
 		lock (_fileStreamLock)
 		{
 			using FileStream fs = new(filePath, FileMode.Open);
@@ -60,11 +62,11 @@ public class ModArchiveCache
 
 	private async Task<ModArchiveCacheData?> LoadFromFileCacheAsync(string name)
 	{
-		string fileCachePath = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ModArchiveCache), $"{name}.json");
-		if (!File.Exists(fileCachePath))
+		string? json = await _fileSystemService.GetModArchiveCacheDataJsonAsync(name);
+		if (json == null)
 			return null;
 
-		ModArchiveCacheData? fileCacheArchiveData = JsonConvert.DeserializeObject<ModArchiveCacheData>(await File.ReadAllTextAsync(fileCachePath));
+		ModArchiveCacheData? fileCacheArchiveData = JsonConvert.DeserializeObject<ModArchiveCacheData>(json);
 		if (fileCacheArchiveData == null)
 			return null;
 
@@ -132,8 +134,7 @@ public class ModArchiveCache
 	}
 
 	public void Clear()
-		=> _cache.Clear();
-
-	public int GetCount()
-		=> _cache.Count;
+	{
+		_cache.Clear();
+	}
 }

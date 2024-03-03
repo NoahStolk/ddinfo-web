@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Core.Mod;
+using DevilDaggersInfo.Core.Mod.Builders;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;
 using System.IO.Compression;
@@ -21,8 +22,8 @@ public class ModArchiveProcessorTransformTests : ModArchiveProcessorTests
 		BinaryName binaryName2 = new(ModBinaryType.Dd, "main2");
 		const string assetName = "binding";
 
-		ModBinaryBuilder binary1 = CreateWithBinding(assetName);
-		ModBinaryBuilder binary2 = CreateWithBinding(assetName);
+		DdModBinaryBuilder binary1 = CreateWithBinding(assetName);
+		DdModBinaryBuilder binary2 = CreateWithBinding(assetName);
 		Dictionary<BinaryName, byte[]> binaries = new()
 		{
 			[binaryName1] = binary1.Compile(),
@@ -170,7 +171,7 @@ public class ModArchiveProcessorTransformTests : ModArchiveProcessorTests
 
 		// Test if the asset name is actually updated.
 		ModBinaryCacheData modBinaryCacheData = GetProcessedBinaryFromArchiveEntry(archive.Entries[0]);
-		Assert.AreEqual(1, modBinaryCacheData.Chunks.Count);
-		Assert.AreEqual(assetName2, modBinaryCacheData.Chunks[0].Name);
+		Assert.AreEqual(1, modBinaryCacheData.TocEntries.Count);
+		Assert.AreEqual(assetName2, modBinaryCacheData.TocEntries[0].Name);
 	}
 }

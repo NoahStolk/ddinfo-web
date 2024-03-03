@@ -49,7 +49,7 @@ public static class ModConverters
 					ModBinaryType = b.ModBinaryType.ToMainApi(),
 					Name = b.Name,
 					Size = b.Size,
-					Assets = b.Chunks.ConvertAll(c => new MainApi.GetModAsset
+					Assets = b.TocEntries.ConvertAll(c => new MainApi.GetModAsset
 					{
 						Name = c.Name, Size = c.Size, Type = c.AssetType.ToMainApi(), IsProhibited = c.IsProhibited,
 					}),

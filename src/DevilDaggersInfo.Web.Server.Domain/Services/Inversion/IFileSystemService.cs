@@ -9,4 +9,6 @@ public interface IFileSystemService
 	string GetLeaderboardHistoryPathFromDate(DateTime dateTime);
 
 	string GetPath(DataSubDirectory subDirectory);
+
+	Task<string?> GetModArchiveCacheDataJsonAsync(string modName);
 }
