@@ -3,25 +3,25 @@
 	<ItemGroup Label="AspNetCore client">
 		<PackageVersion Include="Blazored.LocalStorage" Version="4.4.0" />
 		<PackageVersion Include="Microsoft.AspNetCore.Components" Version="7.0.12" />
-		<PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="8.0.1" />
-		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.1" />
-		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="8.0.1" />
-		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.1" />
-		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.1" />
+		<PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="8.0.2" />
+		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.2" />
+		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="8.0.2" />
+		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.2" />
+		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.2" />
 		<PackageVersion Include="Microsoft.Extensions.Http" Version="8.0.0" />
-		<PackageVersion Include="Microsoft.JSInterop.WebAssembly" Version="8.0.1" />
+		<PackageVersion Include="Microsoft.JSInterop.WebAssembly" Version="8.0.2" />
 	</ItemGroup>
 
 	<ItemGroup Label="AspNetCore server">
 		<PackageVersion Include="DSharpPlus" Version="4.4.6" />
-		<PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.1" />
+		<PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.2" />
 		<PackageVersion Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
-		<PackageVersion Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.1" />
+		<PackageVersion Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.2" />
 		<PackageVersion Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
-		<PackageVersion Include="Microsoft.EntityFrameworkCore" Version="8.0.1" />
-		<PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.1" />
-		<PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.1" />
-		<PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.1" />
+		<PackageVersion Include="Microsoft.EntityFrameworkCore" Version="8.0.2" />
+		<PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.2" />
+		<PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.2" />
+		<PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.2" />
 		<PackageVersion Include="NSwag.AspNetCore" Version="14.0.2" />
 		<PackageVersion Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.1" />
 		<PackageVersion Include="Sentry.AspNetCore" Version="4.0.0" />
