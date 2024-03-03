@@ -36,7 +36,7 @@ else
 		string longestTimeHeldConsecutivelyString = $"{longestTimeHeldConsecutively} day{S(longestTimeHeldConsecutively)}";
 
 		<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 @(isCurrentWrHolder ? "bg-dark-red" : string.Empty)">
-			<div>@string.Join(", ", wrh.Usernames)</div>
+			<div><a class="link" href="/leaderboard/player/@(wrh.Id)">@string.Join(", ", wrh.Usernames)</a></div>
 			<div>@totalTimeHeldString</div>
 			<div class="hidden md:block">@longestTimeHeldConsecutivelyString</div>
 			<div class="hidden lg:block">@wrh.WorldRecordCount</div>
@@ -56,7 +56,7 @@ else
 	</div>
 	@foreach (GetWorldRecord wr in _worldRecords)
 	{
-		bool isCurrentWr = wr.Entry.Time == _currentWorldRecord;
+		bool isCurrentWr = Math.Abs(wr.Entry.Time - _currentWorldRecord) < 0.00001f;
 		int days = (int)Math.Round(wr.WorldRecordDuration.TotalDays);
 		GameVersion? coreGameVersion = wr.GameVersion?.ToCore();
 		string duration = days switch
@@ -67,7 +67,7 @@ else
 		};
 
 		<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 @(isCurrentWr ? "bg-dark-red" : string.Empty)">
-			<div>@wr.Entry.Username</div>
+			<div><a class="link" href="/leaderboard/player/@(wr.Entry.Id)">@wr.Entry.Username</a></div>
 			<div>@wr.Entry.Time.ToString(StringFormats.TimeFormat)</div>
 			<div class="hidden md:block">@GetHistoryDateString(wr.DateTime)</div>
 			<div class="hidden lg:block">@duration</div>
