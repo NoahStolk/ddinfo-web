@@ -5,6 +5,8 @@ namespace DevilDaggersInfo.Web.Client.Components.Input;
 public partial class Dropdown<TKey>
 	where TKey : notnull
 {
+	private bool _show;
+
 	private string SelectedDisplayValue => CurrentValue == null || Values?.ContainsKey(CurrentValue) != true ? "<None selected>" : DisplayValue(CurrentValue);
 
 	[Parameter]
@@ -18,8 +20,6 @@ public partial class Dropdown<TKey>
 	[Parameter]
 	public bool ShowDisplayValue { get; set; } = true;
 
-	private bool _show = false;
-
 	public void HandleSelect(TKey? item)
 	{
 		CurrentValue = item;
@@ -27,9 +27,9 @@ public partial class Dropdown<TKey>
 		StateHasChanged();
 	}
 
-	protected override bool TryParseValueFromString(string? value, out TKey result, out string validationMessage)
+	protected override bool TryParseValueFromString(string? value, out TKey result, out string validationErrorMessage)
 	{
-		validationMessage = string.Empty;
+		validationErrorMessage = string.Empty;
 		result = Converter(value ?? string.Empty);
 		return true;
 	}

@@ -22,6 +22,11 @@ public class PlayerHistoryRepositoryTests
 		_repository = new(dbContext, data, data);
 	}
 
+	private static DateTime CreateDateTime(int year, int month, int day)
+	{
+		return new(year, month, day, 0, 0, 0, DateTimeKind.Utc);
+	}
+
 	[TestMethod]
 	public void GetPlayerHistory_WithCheater()
 	{
@@ -32,13 +37,13 @@ public class PlayerHistoryRepositoryTests
 		Assert.AreEqual(1, historyPlayer1.ScoreHistory[0].Rank);
 		Assert.AreEqual(1, historyPlayer1.ScoreHistory[1].Rank);
 		Assert.AreEqual(1, historyPlayer1.ScoreHistory[2].Rank);
-		Assert.AreEqual(new(2022, 1, 1), historyPlayer1.ScoreHistory[0].DateTime);
-		Assert.AreEqual(new(2022, 1, 3), historyPlayer1.ScoreHistory[1].DateTime);
-		Assert.AreEqual(new(2022, 1, 4), historyPlayer1.ScoreHistory[2].DateTime);
+		Assert.AreEqual(CreateDateTime(2022, 1, 1), historyPlayer1.ScoreHistory[0].DateTime);
+		Assert.AreEqual(CreateDateTime(2022, 1, 3), historyPlayer1.ScoreHistory[1].DateTime);
+		Assert.AreEqual(CreateDateTime(2022, 1, 4), historyPlayer1.ScoreHistory[2].DateTime);
 
 		Assert.AreEqual(1, historyPlayer1.RankHistory.Count);
 		Assert.AreEqual(1, historyPlayer1.RankHistory[0].Rank);
-		Assert.AreEqual(new(2022, 1, 1), historyPlayer1.RankHistory[0].DateTime);
+		Assert.AreEqual(CreateDateTime(2022, 1, 1), historyPlayer1.RankHistory[0].DateTime);
 
 		Assert.AreEqual(1, historyPlayer1.BestRank);
 
@@ -48,12 +53,12 @@ public class PlayerHistoryRepositoryTests
 		Assert.AreEqual(2, historyPlayer2.ScoreHistory.Count);
 		Assert.AreEqual(2, historyPlayer2.ScoreHistory[0].Rank);
 		Assert.AreEqual(2, historyPlayer2.ScoreHistory[1].Rank);
-		Assert.AreEqual(new(2022, 1, 1), historyPlayer2.ScoreHistory[0].DateTime);
-		Assert.AreEqual(new(2022, 1, 3), historyPlayer2.ScoreHistory[1].DateTime);
+		Assert.AreEqual(CreateDateTime(2022, 1, 1), historyPlayer2.ScoreHistory[0].DateTime);
+		Assert.AreEqual(CreateDateTime(2022, 1, 3), historyPlayer2.ScoreHistory[1].DateTime);
 
 		Assert.AreEqual(1, historyPlayer2.RankHistory.Count);
 		Assert.AreEqual(2, historyPlayer2.RankHistory[0].Rank);
-		Assert.AreEqual(new(2022, 1, 1), historyPlayer2.RankHistory[0].DateTime);
+		Assert.AreEqual(CreateDateTime(2022, 1, 1), historyPlayer2.RankHistory[0].DateTime);
 
 		Assert.AreEqual(2, historyPlayer2.BestRank);
 
@@ -62,11 +67,11 @@ public class PlayerHistoryRepositoryTests
 		// Verify that this player's best rank is 3rd, even if a cheater has always been above them.
 		Assert.AreEqual(1, historyPlayer3.ScoreHistory.Count);
 		Assert.AreEqual(3, historyPlayer3.ScoreHistory[0].Rank);
-		Assert.AreEqual(new(2022, 1, 4), historyPlayer3.RankHistory[0].DateTime);
+		Assert.AreEqual(CreateDateTime(2022, 1, 4), historyPlayer3.RankHistory[0].DateTime);
 
 		Assert.AreEqual(1, historyPlayer3.RankHistory.Count);
 		Assert.AreEqual(3, historyPlayer3.RankHistory[0].Rank);
-		Assert.AreEqual(new(2022, 1, 4), historyPlayer3.RankHistory[0].DateTime);
+		Assert.AreEqual(CreateDateTime(2022, 1, 4), historyPlayer3.RankHistory[0].DateTime);
 
 		Assert.AreEqual(3, historyPlayer3.BestRank);
 
@@ -77,17 +82,17 @@ public class PlayerHistoryRepositoryTests
 		Assert.AreEqual(1, historyCheater.ScoreHistory[0].Rank);
 		Assert.AreEqual(3, historyCheater.ScoreHistory[1].Rank);
 		Assert.AreEqual(1, historyCheater.ScoreHistory[2].Rank);
-		Assert.AreEqual(new(2022, 1, 2), historyCheater.ScoreHistory[0].DateTime);
-		Assert.AreEqual(new(2022, 1, 3), historyCheater.ScoreHistory[1].DateTime);
-		Assert.AreEqual(new(2022, 1, 4), historyCheater.ScoreHistory[2].DateTime);
+		Assert.AreEqual(CreateDateTime(2022, 1, 2), historyCheater.ScoreHistory[0].DateTime);
+		Assert.AreEqual(CreateDateTime(2022, 1, 3), historyCheater.ScoreHistory[1].DateTime);
+		Assert.AreEqual(CreateDateTime(2022, 1, 4), historyCheater.ScoreHistory[2].DateTime);
 
 		Assert.AreEqual(3, historyCheater.RankHistory.Count);
 		Assert.AreEqual(1, historyCheater.RankHistory[0].Rank);
 		Assert.AreEqual(3, historyCheater.RankHistory[1].Rank);
 		Assert.AreEqual(1, historyCheater.RankHistory[2].Rank);
-		Assert.AreEqual(new(2022, 1, 2), historyCheater.RankHistory[0].DateTime);
-		Assert.AreEqual(new(2022, 1, 3), historyCheater.RankHistory[1].DateTime);
-		Assert.AreEqual(new(2022, 1, 4), historyCheater.RankHistory[2].DateTime);
+		Assert.AreEqual(CreateDateTime(2022, 1, 2), historyCheater.RankHistory[0].DateTime);
+		Assert.AreEqual(CreateDateTime(2022, 1, 3), historyCheater.RankHistory[1].DateTime);
+		Assert.AreEqual(CreateDateTime(2022, 1, 4), historyCheater.RankHistory[2].DateTime);
 
 		Assert.AreEqual(1, historyCheater.BestRank);
 	}

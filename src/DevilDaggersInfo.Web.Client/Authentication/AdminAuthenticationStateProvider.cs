@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using System.Net;
 using System.Net.Http.Json;
 using System.Security.Claims;
+using System.Text.Json;
 
 namespace DevilDaggersInfo.Web.Client.Authentication;
 
@@ -33,7 +34,7 @@ public class AdminAuthenticationStateProvider : AuthenticationStateProvider
 		if (httpResponseMessage.StatusCode != HttpStatusCode.OK)
 			return await ClearTokenAndGetDefaultState();
 
-		AuthenticationResponse authenticationResponse = await httpResponseMessage.Content.ReadFromJsonAsync<AuthenticationResponse>() ?? throw new($"Could not deserialize {nameof(AuthenticationResponse)}.");
+		AuthenticationResponse authenticationResponse = await httpResponseMessage.Content.ReadFromJsonAsync<AuthenticationResponse>() ?? throw new JsonException($"Could not deserialize {nameof(AuthenticationResponse)}.");
 		if (string.IsNullOrEmpty(authenticationResponse.Name))
 			return await ClearTokenAndGetDefaultState();
 

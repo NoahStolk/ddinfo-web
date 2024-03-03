@@ -7,6 +7,8 @@ public partial class SearchDropdown<TKey>
 {
 	private string? _searchValue;
 
+	private bool _show;
+
 	private string SelectedDisplayValue => CurrentValue == null || Values?.ContainsKey(CurrentValue) != true ? "<None selected>" : DisplayValue(CurrentValue);
 
 	[Parameter]
@@ -19,8 +21,6 @@ public partial class SearchDropdown<TKey>
 
 	[Parameter]
 	public bool ShowDisplayValue { get; set; } = true;
-
-	private bool _show = false;
 
 	private Dictionary<TKey, string> FilteredItems => Values == null ? new() : _searchValue == null ? Values : Values
 		.Where(kvp =>
@@ -35,9 +35,9 @@ public partial class SearchDropdown<TKey>
 		StateHasChanged();
 	}
 
-	protected override bool TryParseValueFromString(string? value, out TKey result, out string validationMessage)
+	protected override bool TryParseValueFromString(string? value, out TKey result, out string validationErrorMessage)
 	{
-		validationMessage = string.Empty;
+		validationErrorMessage = string.Empty;
 		result = Converter(value ?? string.Empty);
 		return true;
 	}

@@ -7,7 +7,7 @@ int totalPages = BitConverter.ToInt32(init, 75) / 100 + 1;
 
 string start = DateTime.UtcNow.ToString("yyyyMMddHHmm");
 Stopwatch stopwatch = new();
-List<CompressedEntry> entries = new();
+List<CompressedEntry> entries = [];
 for (int i = 0; i < totalPages; i++)
 {
 	stopwatch.Restart();
@@ -15,7 +15,7 @@ for (int i = 0; i < totalPages; i++)
 	Console.WriteLine($"Fetching page {i + 1}/{totalPages} took {stopwatch.ElapsedMilliseconds / 1000f} seconds.");
 
 	// Write the file after every fetch in case it crashes and all progress is lost.
-	File.WriteAllBytes($"{start}.bin", GetBytes(entries));
+	await File.WriteAllBytesAsync($"{start}.bin", GetBytes(entries));
 }
 
 static byte[] GetBytes(List<CompressedEntry> entries)
@@ -71,15 +71,15 @@ static async Task<List<CompressedEntry>> Fetch(int rank)
 
 static async Task<byte[]> ExecuteRequest(int rank)
 {
-	List<KeyValuePair<string?, string?>> postValues = new()
-	{
+	List<KeyValuePair<string?, string?>> postValues =
+	[
 		new("user", "0"),
 		new("level", "survival"),
 		new("offset", (rank - 1).ToString()),
-	};
+	];
 
 	using FormUrlEncodedContent content = new(postValues);
 	using HttpClient client = new();
-	HttpResponseMessage response = await client.PostAsync("http://dd.hasmodai.com/backend15/get_scores.php", content);
+	HttpResponseMessage response = await client.PostAsync(new Uri("http://dd.hasmodai.com/backend15/get_scores.php"), content);
 	return await response.Content.ReadAsByteArrayAsync();
 }

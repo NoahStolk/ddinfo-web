@@ -5,7 +5,7 @@ namespace DevilDaggersInfo.Web.Client.Components.Input;
 public partial class MultiSearchDropdown
 {
 	private string? _searchValue;
-	private bool _show = false;
+	private bool _show;
 
 	private string SelectedDisplayValue => $"{CurrentValue?.Count ?? 0} selected";
 
@@ -20,7 +20,7 @@ public partial class MultiSearchDropdown
 
 	private void Add(int i)
 	{
-		CurrentValue ??= new();
+		CurrentValue ??= [];
 		if (!CurrentValue.Contains(i))
 			CurrentValue.Add(i);
 	}
@@ -31,10 +31,10 @@ public partial class MultiSearchDropdown
 			CurrentValue.Remove(i);
 	}
 
-	protected override bool TryParseValueFromString(string? value, out List<int> result, out string validationMessage)
+	protected override bool TryParseValueFromString(string? value, out List<int> result, out string validationErrorMessage)
 	{
-		validationMessage = string.Empty;
-		result = value?.Split(',').Select(int.Parse).ToList() ?? new();
+		validationErrorMessage = string.Empty;
+		result = value?.Split(',').Select(int.Parse).ToList() ?? [];
 		return true;
 	}
 

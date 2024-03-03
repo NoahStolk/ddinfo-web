@@ -4,6 +4,8 @@ namespace DevilDaggersInfo.Web.Client.Components.Input;
 
 public partial class InputNullableBoolean
 {
+	private bool _show;
+
 	private string SelectedDisplayValue => CurrentValue switch
 	{
 		true => True,
@@ -11,12 +13,14 @@ public partial class InputNullableBoolean
 		null => "Unknown",
 	};
 
-	private bool _show = false;
+	[Parameter]
+	public bool ShowDisplayValue { get; set; } = true;
 
-	[Parameter] public bool ShowDisplayValue { get; set; } = true;
+	[Parameter]
+	public string False { get; set; } = "False";
 
-	[Parameter] public string False { get; set; } = "False";
-	[Parameter] public string True { get; set; } = "True";
+	[Parameter]
+	public string True { get; set; } = "True";
 
 	public void HandleSelect(bool? item)
 	{
@@ -25,9 +29,9 @@ public partial class InputNullableBoolean
 		StateHasChanged();
 	}
 
-	protected override bool TryParseValueFromString(string? value, out bool? result, out string validationMessage)
+	protected override bool TryParseValueFromString(string? value, out bool? result, out string validationErrorMessage)
 	{
-		validationMessage = string.Empty;
+		validationErrorMessage = string.Empty;
 		result = value == False ? false : value == True ? true : null;
 		return true;
 	}

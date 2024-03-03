@@ -9,9 +9,9 @@ public static class HighscoreSpreadUtils
 {
 	private static readonly StringBuilder _log = new();
 
-	public static void SpreadAllHighscoreStats(bool writeLogToFile, bool useConsole)
+	public static void SpreadAllHighscoreStats(string rootDirectory, bool writeLogToFile, bool useConsole)
 	{
-		Dictionary<string, LeaderboardHistory> leaderboards = GetAllLeaderboards();
+		Dictionary<string, LeaderboardHistory> leaderboards = GetAllLeaderboards(rootDirectory);
 
 		_log.Clear();
 		foreach (KeyValuePair<string, LeaderboardHistory> kvp in leaderboards)
@@ -26,10 +26,10 @@ public static class HighscoreSpreadUtils
 			Console.WriteLine(_log.ToString());
 	}
 
-	private static Dictionary<string, LeaderboardHistory> GetAllLeaderboards()
+	private static Dictionary<string, LeaderboardHistory> GetAllLeaderboards(string rootDirectory)
 	{
 		Dictionary<string, LeaderboardHistory> leaderboards = new();
-		foreach (string path in Directory.GetFiles(@"C:\Users\NOAH\source\repos\DevilDaggersInfo\src\web-server\DevilDaggersInfo.Web.Server\Data\LeaderboardHistory", "*.bin"))
+		foreach (string path in Directory.GetFiles(rootDirectory, "*.bin"))
 		{
 			byte[] bytes = File.ReadAllBytes(path);
 			leaderboards.Add(path, LeaderboardHistory.CreateFromFile(bytes));
@@ -40,12 +40,12 @@ public static class HighscoreSpreadUtils
 
 	private static void SpreadHighscoreStats(List<LeaderboardHistory> leaderboards, LeaderboardHistory leaderboard)
 	{
-		List<EntryHistory> changes = new();
+		List<EntryHistory> changes = [];
 		foreach (EntryHistory entry in leaderboard.Entries)
 		{
 			if (entry.Id != 0 && entry.HasMissingStats())
 			{
-				IEnumerable<LeaderboardHistory> leaderboardsWithStats = leaderboards.Where(l => l.Entries.Any(e => e.Id == entry.Id && e.Time >= entry.Time - 1 && e.Time <= entry.Time + 1)).ToList();
+				IEnumerable<LeaderboardHistory> leaderboardsWithStats = leaderboards.Where(l => l.Entries.Exists(e => e.Id == entry.Id && e.Time >= entry.Time - 1 && e.Time <= entry.Time + 1)).ToList();
 				if (!leaderboardsWithStats.Any())
 					continue;
 
@@ -70,7 +70,9 @@ public static class HighscoreSpreadUtils
 	}
 
 	private static bool HasMissingStats(this EntryHistory entry)
-		=> entry.Gems == 0 || entry.Kills == 0 || entry.DeathType == 255 || entry.DaggersHit == 0 || entry.DaggersFired is 0 or 10000;
+	{
+		return entry.Gems == 0 || entry.Kills == 0 || entry.DeathType == 255 || entry.DaggersHit == 0 || entry.DaggersFired is 0 or 10000;
+	}
 
 	private static EntryHistory Combine(EntryHistory entry, List<EntryHistory> entries)
 	{
