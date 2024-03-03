@@ -52,7 +52,7 @@ public class ModArchiveCache
 		if (fileCache != null)
 			return fileCache;
 
-		// Unzip zip file.
+		// Unzip zip file. TODO: This should only be done manually from the admin pages.
 		lock (_fileStreamLock)
 		{
 			using FileStream fs = new(filePath, FileMode.Open);

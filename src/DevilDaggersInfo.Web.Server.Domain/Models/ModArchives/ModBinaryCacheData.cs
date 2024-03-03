@@ -2,6 +2,7 @@ using DevilDaggersInfo.Core.Asset;
 using DevilDaggersInfo.Core.Mod;
 using DevilDaggersInfo.Core.Mod.Exceptions;
 using DevilDaggersInfo.Core.Mod.Utils;
+using Newtonsoft.Json;
 using System.Text;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;
@@ -20,6 +21,8 @@ public class ModBinaryCacheData
 	public string Name { get; }
 	public long Size { get; }
 	public ModBinaryType ModBinaryType { get; }
+
+	[JsonProperty("Chunks")]
 	public List<ModTocEntryCacheData> TocEntries { get; }
 	public List<ModifiedLoudnessAssetCacheData>? ModifiedLoudnessAssets { get; }
 
