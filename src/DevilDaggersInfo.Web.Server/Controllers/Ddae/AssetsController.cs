@@ -1,6 +1,7 @@
 using DevilDaggersInfo.Web.ApiSpec.Ddae.Assets;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
+using DevilDaggersInfo.Web.Server.Utils.AssetInfo;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -10,24 +11,35 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Ddae;
 [ApiController]
 public class AssetsController : ControllerBase
 {
-	private readonly IFileSystemService _fileSystemService;
-
-	public AssetsController(IFileSystemService fileSystemService)
-	{
-		_fileSystemService = fileSystemService;
-	}
-
 	[HttpGet("info")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public ActionResult<Dictionary<string, List<GetAssetInfo>>> GetAssetInfo()
 	{
-		return Directory.GetFiles(_fileSystemService.GetPath(DataSubDirectory.AssetInfo))
-			.Select(p =>
+		List<GetAssetInfo> audioAudio = AudioAudio.All.Select(ConvertAssetInfo).ToList();
+		List<GetAssetInfo> coreShaders = CoreShaders.All.Select(ConvertAssetInfo).ToList();
+		List<GetAssetInfo> ddMeshes = DdMeshes.All.Select(ConvertAssetInfo).ToList();
+		List<GetAssetInfo> ddObjectBindings = DdObjectBindings.All.Select(ConvertAssetInfo).ToList();
+		List<GetAssetInfo> ddShaders = DdShaders.All.Select(ConvertAssetInfo).ToList();
+		List<GetAssetInfo> ddTextures = DdTextures.All.Select(ConvertAssetInfo).ToList();
+
+		return new Dictionary<string, List<GetAssetInfo>>
+		{
+			["audioAudio"] = audioAudio,
+			["coreShaders"] = coreShaders,
+			["ddModels"] = ddMeshes, // Use old naming for legacy asset editor.
+			["ddModelBindings"] = ddObjectBindings, // Use old naming for legacy asset editor.
+			["ddShaders"] = ddShaders,
+			["ddTextures"] = ddTextures,
+		};
+
+		static GetAssetInfo ConvertAssetInfo(AssetInfoEntry assetInfoEntry)
+		{
+			return new()
 			{
-				string fileName = Path.GetFileNameWithoutExtension(p);
-				List<GetAssetInfo> assetInfo = JsonConvert.DeserializeObject<List<GetAssetInfo>?>(IoFile.ReadAllText(p)) ?? throw new InvalidOperationException($"Could not deserialize asset info from file '{fileName}'.");
-				return (fileName, assetInfo);
-			}).
-			ToDictionary(t => t.fileName, t => t.assetInfo);
+				Description = assetInfoEntry.Description,
+				Name = assetInfoEntry.Name,
+				Tags = assetInfoEntry.Tags,
+			};
+		}
 	}
 }
