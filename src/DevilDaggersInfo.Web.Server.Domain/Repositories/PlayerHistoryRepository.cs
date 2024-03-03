@@ -51,12 +51,18 @@ public class PlayerHistoryRepository
 		DateTime? datePreviousForActivityHistory = null;
 		List<PlayerHistoryActivityEntry> activityHistory = new();
 
+		Dictionary<int, TimeSpan> rankTimes = new();
+		DateTime? datePrevious = null;
+
 		foreach (string leaderboardHistoryPath in _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory).Where(p => p.EndsWith(".bin")))
 		{
 			LeaderboardHistory leaderboard = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
 			EntryHistory? entry = leaderboard.Entries.Find(e => e.Id == id);
 			if (entry == null)
+			{
+				datePrevious = leaderboard.DateTime;
 				continue;
+			}
 
 			int illegitimateScoresAbove = leaderboard.Entries.Count(e => e.Rank < entry.Rank && bannedPlayerIds.Contains(e.Id));
 			int correctedRank = entry.Rank - illegitimateScoresAbove;
@@ -103,6 +109,15 @@ public class PlayerHistoryRepository
 				rankPreviousForRankHistory = correctedRank;
 			}
 
+			if (datePrevious.HasValue)
+			{
+				// TODO: The TODO at the top of this method needs to be resolved before this can be accurate.
+				if (rankTimes.ContainsKey(correctedRank))
+					rankTimes[correctedRank] += leaderboard.DateTime - datePrevious.Value;
+				else
+					rankTimes.Add(correctedRank, leaderboard.DateTime - datePrevious.Value);
+			}
+
 			if (entry.DeathsTotal > 0)
 			{
 				TimeSpan? timeSpan = datePreviousForActivityHistory == null ? null : leaderboard.DateTime - datePreviousForActivityHistory.Value;
@@ -118,6 +133,8 @@ public class PlayerHistoryRepository
 				totalTimeForActivityHistory = entry.TimeTotal;
 				datePreviousForActivityHistory = leaderboard.DateTime;
 			}
+
+			datePrevious = leaderboard.DateTime;
 		}
 
 		return new()
@@ -128,6 +145,7 @@ public class PlayerHistoryRepository
 			RankHistory = rankHistory,
 			ScoreHistory = scoreHistory,
 			Usernames = usernamesHistory.OrderByDescending(kvp => kvp.Value).Select(kvp => kvp.Key).ToList(),
+			RankTimes = rankTimes,
 		};
 	}
 }

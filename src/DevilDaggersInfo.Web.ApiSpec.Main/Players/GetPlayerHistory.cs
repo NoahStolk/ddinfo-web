@@ -13,4 +13,6 @@ public record GetPlayerHistory
 	public required List<GetPlayerHistoryActivityEntry> ActivityHistory { get; init; }
 
 	public required List<GetPlayerHistoryRankEntry> RankHistory { get; init; }
+
+	public required Dictionary<int, TimeSpan> RankTimes { get; init; }
 }
