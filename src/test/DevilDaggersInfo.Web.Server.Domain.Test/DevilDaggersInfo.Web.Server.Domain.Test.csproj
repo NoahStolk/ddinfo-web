@@ -31,4 +31,8 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <GlobalAnalyzerConfigFiles Include="..\Tests.globalconfig" />
+  </ItemGroup>
+  
 </Project>

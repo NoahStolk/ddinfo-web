@@ -187,6 +187,9 @@ dotnet_diagnostic.CA1002.severity                                        = none
 # Enum storage should be Int32.
 dotnet_diagnostic.CA1028.severity                                        = none
 
+# URI properties should not be strings.
+dotnet_diagnostic.CA1056.severity                                        = none
+
 # Validate arguments of public methods.
 dotnet_diagnostic.CA1062.severity                                        = none
 

@@ -1,0 +1,9 @@
+is_global = true
+
+global_level = 10
+
+# Avoid constant arrays as arguments.
+dotnet_diagnostic.CA1861.severity = none
+
+# Identifiers should not contain underscores.
+dotnet_diagnostic.CA1707.severity = none
