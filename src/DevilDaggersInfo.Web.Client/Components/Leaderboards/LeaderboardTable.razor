@@ -25,7 +25,7 @@
 		@{
 			int i = 0;
 
-			List<List<int>> groupsOfAlts = new();
+			List<List<int>> groupsOfAlts = [];
 			if (IsHistory)
 			{
 				foreach (GetPlayerForLeaderboard player in Players)
@@ -34,7 +34,7 @@
 					{
 						List<int>? existingGroup = groupsOfAlts.FirstOrDefault(l => l.Contains(player.BanResponsibleId.Value));
 						if (existingGroup == null)
-							groupsOfAlts.Add(new() { player.Id, player.BanResponsibleId.Value });
+							groupsOfAlts.Add([player.Id, player.BanResponsibleId.Value]);
 						else
 							existingGroup.Add(player.Id);
 					}

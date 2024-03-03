@@ -60,17 +60,24 @@
 @code
 {
 	private static string GetRoleButtonText(bool isAssigned)
-		=> isAssigned ? "➖" : "➕";
+	{
+		return isAssigned ? "➖" : "➕";
+	}
 
 	private static string GetRoleButtonClass(bool enabled, bool isAssigned)
-		=> $"btn px-2 {(enabled ? GetButtonColor(isAssigned ? Color.Red : Color.Green) : "btn-disabled text-gray-6")}";
-
-	private static string GetButtonColor(Color color) => color switch
 	{
-		Color.Red => "btn-red",
-		Color.Green => "btn-green",
-		_ => "btn-gray",
-	};
+		return $"btn px-2 {(enabled ? GetButtonColor(isAssigned ? Color.Red : Color.Green) : "btn-disabled text-gray-6")}";
+	}
+
+	private static string GetButtonColor(Color color)
+	{
+		return color switch
+		{
+			Color.Red => "btn-red",
+			Color.Green => "btn-green",
+			_ => "btn-gray",
+		};
+	}
 
 	private enum Color
 	{

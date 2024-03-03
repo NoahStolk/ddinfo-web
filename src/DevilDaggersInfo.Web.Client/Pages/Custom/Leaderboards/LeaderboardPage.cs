@@ -14,12 +14,6 @@ public partial class LeaderboardPage
 
 	private readonly Dictionary<CustomEntrySorting, bool> _sortings = new();
 
-	[Parameter]
-	[EditorRequired]
-	public int Id { get; set; }
-
-	public GetCustomLeaderboard? GetCustomLeaderboard { get; set; }
-
 	private enum CustomEntrySorting
 	{
 		Rank,
@@ -40,6 +34,12 @@ public partial class LeaderboardPage
 		LevelUpTime4,
 		SubmitDate,
 	}
+
+	[Parameter]
+	[EditorRequired]
+	public int Id { get; set; }
+
+	public GetCustomLeaderboard? GetCustomLeaderboard { get; set; }
 
 	protected override async Task OnInitializedAsync()
 	{

@@ -15,13 +15,15 @@ public partial class EditPage
 {
 	private Dictionary<int, string>? _playerNames;
 	private readonly EditModState _editModState = new();
-	private readonly List<string> _binaryFileSizeErrors = new();
-	private readonly List<string> _screenshotFileSizeErrors = new();
-
-	[Parameter, EditorRequired] public int Id { get; set; }
+	private readonly List<string> _binaryFileSizeErrors = [];
+	private readonly List<string> _screenshotFileSizeErrors = [];
 
 	private IReadOnlyList<string>? _binaryNames;
 	private IReadOnlyList<string>? _screenshotNames;
+
+	[Parameter]
+	[EditorRequired]
+	public int Id { get; set; }
 
 	private async Task PopulateAsync(AdminEdit<EditModState, EditMod> editComponent)
 	{

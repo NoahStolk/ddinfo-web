@@ -21,7 +21,7 @@ public partial class PlayerPage
 {
 	private readonly LineChartOptions _progressionScoreLineChartOptions = new()
 	{
-		HighlighterKeys = new() { "Date", "Time", "Player", "Rank", "Gems", "Kills", "Accuracy", "Death Type", "Game Version" },
+		HighlighterKeys = ["Date", "Time", "Player", "Rank", "Gems", "Kills", "Accuracy", "Death Type", "Game Version"],
 		GridOptions = new()
 		{
 			MinimumRowHeightInPx = 30,
@@ -32,7 +32,7 @@ public partial class PlayerPage
 
 	private readonly LineChartOptions _progressionRankLineChartOptions = new()
 	{
-		HighlighterKeys = new() { "Date", "Rank", "Game Version" },
+		HighlighterKeys = ["Date", "Rank", "Game Version"],
 		GridOptions = new()
 		{
 			MinimumRowHeightInPx = 30,
@@ -43,7 +43,7 @@ public partial class PlayerPage
 
 	private readonly LineChartOptions _activityDeathsLineChartOptions = new()
 	{
-		HighlighterKeys = new() { "Date", "Avg Deaths / Day" },
+		HighlighterKeys = ["Date", "Avg Deaths / Day"],
 		GridOptions = new()
 		{
 			MinimumRowHeightInPx = 30,
@@ -55,7 +55,7 @@ public partial class PlayerPage
 
 	private readonly LineChartOptions _activityTimeLineChartOptions = new()
 	{
-		HighlighterKeys = new() { "Date", "Avg Total Time / Day" },
+		HighlighterKeys = ["Date", "Avg Total Time / Day"],
 		GridOptions = new()
 		{
 			MinimumRowHeightInPx = 30,
@@ -65,10 +65,10 @@ public partial class PlayerPage
 		HighlighterWidth = 320,
 	};
 
-	private readonly List<LineDataSet> _progressionScoreData = new();
-	private readonly List<LineDataSet> _progressionRankData = new();
-	private readonly List<LineDataSet> _activityDeathsData = new();
-	private readonly List<LineDataSet> _activityTimeData = new();
+	private readonly List<LineDataSet> _progressionScoreData = [];
+	private readonly List<LineDataSet> _progressionRankData = [];
+	private readonly List<LineDataSet> _activityDeathsData = [];
+	private readonly List<LineDataSet> _activityTimeData = [];
 
 	private LineChartDataOptions _progressionScoreOptions = LineChartDataOptions.Default;
 	private LineChartDataOptions _progressionRankOptions = LineChartDataOptions.Default;
@@ -142,12 +142,12 @@ public partial class PlayerPage
 			{
 				GetPlayerHistoryScoreEntry? scoreEntry = GetPlayerHistory.ScoreHistory.Count <= d.Index ? null : GetPlayerHistory.ScoreHistory[d.Index];
 				if (scoreEntry == null)
-					return new();
+					return [];
 
 				GameVersion? gameVersion = GameVersions.GetGameVersionFromDate(scoreEntry.DateTime);
 				Dagger dagger = Daggers.GetDaggerFromSeconds(gameVersion ?? GameVersion.V1_0, scoreEntry.Time);
-				return new()
-				{
+				return
+				[
 					new($"<span style='text-align: right;'>{scoreEntry.DateTime.ToString(StringFormats.DateFormat)}</span>"),
 					new($"<span style='text-align: right;' class='{dagger.Name.ToLower()}'>{scoreEntry.Time.ToString(StringFormats.TimeFormat)}</span>"),
 					new($"<span style='text-align: right;' class='{dagger.Name.ToLower()}'>{scoreEntry.Username}</span>"),
@@ -157,7 +157,7 @@ public partial class PlayerPage
 					new($"<span style='text-align: right;'>{(scoreEntry.DaggersFired == 0 ? 0 : scoreEntry.DaggersHit / (double)scoreEntry.DaggersFired).ToString(StringFormats.AccuracyFormat)}</span>"),
 					new($"<span style='text-align: right;'>{MarkupUtils.DeathString(scoreEntry.DeathType, gameVersion ?? GameVersion.V1_0)}</span>"),
 					new($"<span style='text-align: right;'>{gameVersion.GetGameVersionString()}</span>"),
-				};
+				];
 			}));
 		}
 
@@ -175,12 +175,12 @@ public partial class PlayerPage
 			_progressionRankData.Add(new("#ff0", false, true, true, set, (_, d) =>
 			{
 				GetPlayerHistoryRankEntry? rankEntry = GetPlayerHistory.RankHistory.Count <= d.Index ? null : GetPlayerHistory.RankHistory[d.Index];
-				return rankEntry == null ? new() : new()
-				{
+				return rankEntry == null ? [] :
+				[
 					new($"<span style='text-align: right;'>{rankEntry.DateTime.ToString(StringFormats.DateFormat)}</span>"),
 					new($"<span style='text-align: right;'>{rankEntry.Rank}</span>"),
 					new($"<span style='text-align: right;'>{GameVersions.GetGameVersionFromDate(rankEntry.DateTime).GetGameVersionString()}</span>"),
-				};
+				];
 			}));
 		}
 
@@ -202,11 +202,11 @@ public partial class PlayerPage
 			_activityDeathsData.Add(new("#0f0", false, true, true, deathsSet, (ds, d) =>
 			{
 				GetPlayerHistoryActivityEntry? activityEntry = GetPlayerHistory.ActivityHistory.Count <= d.Index ? null : GetPlayerHistory.ActivityHistory[d.Index];
-				return activityEntry == null ? new() : new()
-				{
+				return activityEntry == null ? [] :
+				[
 					new($"<span style='text-align: right;'>{activityEntry.DateTime.ToString(StringFormats.DateFormat)}</span>"),
 					new($"<span style='color: {ds.Color}; text-align: right;'>{activityEntry.DeathsIncrement.ToString("0.0")}</span>"),
-				};
+				];
 			}));
 
 			List<LineData> timeSet = GetPlayerHistory.ActivityHistory.Select((ah, i) => new LineData(ah.DateTime.Ticks, ah.TimeIncrement, i)).ToList();
@@ -214,11 +214,11 @@ public partial class PlayerPage
 			_activityTimeData.Add(new("#f80", false, true, true, timeSet, (ds, d) =>
 			{
 				GetPlayerHistoryActivityEntry? activityEntry = GetPlayerHistory.ActivityHistory.Count <= d.Index ? null : GetPlayerHistory.ActivityHistory[d.Index];
-				return activityEntry == null ? new() : new()
-				{
+				return activityEntry == null ? [] :
+				[
 					new($"<span style='text-align: right;'>{activityEntry.DateTime.ToString(StringFormats.DateFormat)}</span>"),
 					new($"<span style='color: {ds.Color}; text-align: right;'>{activityEntry.TimeIncrement.ToString("0.0000")}</span>"),
-				};
+				];
 			}));
 		}
 	}

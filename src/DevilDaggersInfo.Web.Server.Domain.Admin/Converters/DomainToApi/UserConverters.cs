@@ -23,7 +23,7 @@ public static class UserConverters
 
 		static bool IsInRole(UserEntity user, string roleName)
 		{
-			return user.UserRoles?.Any(ur => ur.Role?.Name == roleName) == true;
+			return user.UserRoles?.Exists(ur => ur.Role?.Name == roleName) == true;
 		}
 	}
 }

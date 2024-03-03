@@ -56,7 +56,7 @@ public partial class WorldRecordProgressionPage
 
 		_totalTimeSinceFirstRecord = DateTime.UtcNow - data.WorldRecords.OrderBy(wr => wr.DateTime).First().DateTime;
 
-		DateTime minX = new(2016, 1, 1);
+		DateTime minX = new(2016, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 		DateTime maxX = DateTime.UtcNow;
 		ApiSpec.Main.WorldRecords.GetWorldRecord firstWr = data.WorldRecords[0];
 		ApiSpec.Main.WorldRecords.GetWorldRecord lastWr = data.WorldRecords[^1];

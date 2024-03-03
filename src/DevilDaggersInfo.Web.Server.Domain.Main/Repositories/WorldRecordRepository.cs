@@ -13,7 +13,7 @@ namespace DevilDaggersInfo.Web.Server.Domain.Main.Repositories;
 
 public class WorldRecordRepository
 {
-	private static readonly DateTime _automationStart = new(2019, 10, 26);
+	private static readonly DateTime _automationStart = new(2019, 10, 26, 0, 0, 0, DateTimeKind.Utc);
 
 	private readonly ApplicationDbContext _dbContext;
 	private readonly IFileSystemService _fileSystemService;
@@ -29,9 +29,9 @@ public class WorldRecordRepository
 	public ApiMain.GetWorldRecordDataContainer GetWorldRecordData()
 	{
 		List<BaseWorldRecord> baseWorldRecords = GetBaseWorldRecords();
-		List<BaseWorldRecordHolder> worldRecordHolders = new();
+		List<BaseWorldRecordHolder> worldRecordHolders = [];
 
-		List<ApiMain.GetWorldRecord> worldRecords = new();
+		List<ApiMain.GetWorldRecord> worldRecords = [];
 
 		TimeSpan heldConsecutively = default;
 		for (int i = 0; i < baseWorldRecords.Count; i++)
@@ -130,7 +130,7 @@ public class WorldRecordRepository
 		List<int> bannedPlayerIds = _dbContext.Players.Select(p => new { p.Id, p.BanType }).Where(p => p.BanType != BanType.Alt && p.BanType != BanType.NotBanned).Select(p => p.Id).ToList();
 
 		DateTime? previousDate = null;
-		List<BaseWorldRecord> worldRecords = new();
+		List<BaseWorldRecord> worldRecords = [];
 		int worldRecord = 0;
 
 		List<LeaderboardHistory> history = _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory).Where(p => p.EndsWith(".bin")).Select(f => _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(f)).OrderBy(lbh => lbh.DateTime).ToList();
@@ -195,7 +195,9 @@ public class WorldRecordRepository
 		return worldRecords;
 
 		static DateTime GetAverage(DateTime a, DateTime b)
-			=> new((a.Ticks + b.Ticks) / 2);
+		{
+			return new((a.Ticks + b.Ticks) / 2, DateTimeKind.Utc);
+		}
 	}
 
 	private sealed record BaseWorldRecord(DateTime DateTime, ApiMain.GetWorldRecordEntry Entry, GameVersion? GameVersion);
@@ -205,7 +207,7 @@ public class WorldRecordRepository
 		public BaseWorldRecordHolder(int id, string username, TimeSpan totalTimeHeld, TimeSpan longestTimeHeldConsecutively, int worldRecordCount, DateTime firstHeld, DateTime lastHeld)
 		{
 			Id = id;
-			Usernames = new() { username };
+			Usernames = [username];
 			TotalTimeHeld = totalTimeHeld;
 			LongestTimeHeldConsecutively = longestTimeHeldConsecutively;
 			WorldRecordCount = worldRecordCount;
