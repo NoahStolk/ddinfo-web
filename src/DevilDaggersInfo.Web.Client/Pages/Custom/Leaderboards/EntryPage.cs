@@ -71,7 +71,7 @@ public partial class EntryPage
 			};
 
 			Upgrade? upgrade = i.GetUpgradeByHandLevel();
-			string color = !upgrade.HasValue ? "#fff2" : $"{upgrade.Value.Color.HexCode}08";
+			string color = upgrade == null ? "#fff2" : $"{upgrade.Color.HexCode}08";
 			_backgrounds.Add(new() { Color = color, ChartEndXValue = nextLevelUp == 0 ? _time : nextLevelUp });
 			if (nextLevelUp == 0)
 				break;

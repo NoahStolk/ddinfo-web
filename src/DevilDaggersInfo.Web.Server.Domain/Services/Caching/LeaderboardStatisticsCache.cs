@@ -108,7 +108,7 @@ public class LeaderboardStatisticsCache
 		bool countingEnemies = true;
 		foreach (CompressedEntry entry in _entries)
 		{
-			if (!cachedDeathTypes.TryGetValue(entry.DeathType, out Death death))
+			if (!cachedDeathTypes.TryGetValue(entry.DeathType, out Death? death))
 				_logger.LogError("Invalid death type 0x{Death} for entry with time {Time} in leaderboard statistics.", entry.DeathType.ToString("X"), entry.Time);
 			else if (!DeathsStatistics.ContainsKey(death))
 				_logger.LogError("Death type 0x{Death} does not have an entry in the DeathsStatistics dictionary.", entry.DeathType.ToString("X"));

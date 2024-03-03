@@ -1,6 +1,7 @@
 using DevilDaggersInfo.Core.Common;
 using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Core.Wiki.Objects;
+using DevilDaggersInfo.Core.Wiki.Structs;
 using Microsoft.AspNetCore.Components;
 
 namespace DevilDaggersInfo.Web.Client.Utils;
@@ -40,8 +41,13 @@ public static class MarkupUtils
 
 	public static MarkupString EnemyString(Enemy enemy, bool plural = false)
 	{
-		string style = $"color: {enemy.Color.HexCode};";
-		return new($@"<span style=""{style}"" class=""font-goethe text-lg"">{enemy.Name}{(plural ? "s" : string.Empty)}</span>");
+		return EnemyString(enemy.Color, enemy.Name, plural);
+	}
+
+	public static MarkupString EnemyString(Color enemyColor, string enemyName, bool plural = false)
+	{
+		string style = $"color: {enemyColor.HexCode};";
+		return new($@"<span style=""{style}"" class=""font-goethe text-lg"">{enemyName}{(plural ? "s" : string.Empty)}</span>");
 	}
 
 	public static MarkupString LeaderboardTime(double timeInSeconds)
