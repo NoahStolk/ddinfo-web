@@ -37,17 +37,9 @@ public class AdminApiHttpClient : ApiHttpClient
 		return await SendRequest(HttpMethod.Post, "api/admin/cache/clear-cache", JsonContent.Create(cacheType));
 	}
 
-	public async Task<Page<GetCustomEntryForOverview>> GetCustomEntries(string? filter, int pageIndex, int pageSize, CustomEntrySorting? sortBy, bool ascending)
+	public async Task<List<GetCustomEntryForOverview>> GetCustomEntries()
 	{
-		Dictionary<string, object?> queryParameters = new()
-		{
-			{ nameof(filter), filter },
-			{ nameof(pageIndex), pageIndex },
-			{ nameof(pageSize), pageSize },
-			{ nameof(sortBy), sortBy },
-			{ nameof(ascending), ascending },
-		};
-		return await SendGetRequest<Page<GetCustomEntryForOverview>>(BuildUrlWithQuery("api/admin/custom-entries/", queryParameters));
+		return await SendGetRequest<List<GetCustomEntryForOverview>>("api/admin/custom-entries/");
 	}
 
 	public async Task<GetCustomEntry> GetCustomEntryById(int id)

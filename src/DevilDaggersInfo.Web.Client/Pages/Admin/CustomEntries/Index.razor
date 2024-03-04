@@ -2,60 +2,63 @@
 @inherits BaseAdminPage
 @using DevilDaggersInfo.Core.Common
 @using DevilDaggersInfo.Web.ApiSpec.Admin.CustomEntries
-@using DevilDaggersInfo.Web.Client.Components.Admin
-@using DevilDaggersInfo.Web.Core.Claims
+@using Microsoft.AspNetCore.Components.QuickGrid
 
-<AdminAuthorizer Base="this" RequiredRole="@Roles.Admin">
-	<AdminOverview @ref="_overview" TGetDto="GetCustomEntryForOverview" TSorting="CustomEntrySorting" Title="Admin - Custom Entries" ApiCall="Http.GetCustomEntries" DeletionApiCall="(int id) => Http.DeleteCustomEntryById(id)" GridConfiguration="grid-cols-admin-custom-entries-sm md:grid-cols-admin-custom-entries-md lg:grid-cols-admin-custom-entries-lg xl:grid-cols-admin-custom-entries-xl">
-		<TableHeader>
-			<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(CustomEntrySorting.Id)" @onclick:preventDefault>Id</a>
-			<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(CustomEntrySorting.SpawnsetName)" @onclick:preventDefault>Name</a>
-			<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(CustomEntrySorting.PlayerName)" @onclick:preventDefault>Player</a>
-			<a class="link overflow-hidden hidden md:block text-right" href="" @onclick="() => _overview.Sort(CustomEntrySorting.Time)" @onclick:preventDefault>Time</a>
-			<a class="link overflow-hidden hidden md:block text-right" href="" @onclick="() => _overview.Sort(CustomEntrySorting.GemsCollected)" @onclick:preventDefault>Gems</a>
-			<a class="link overflow-hidden hidden md:block text-right" href="" @onclick="() => _overview.Sort(CustomEntrySorting.GemsDespawned)" @onclick:preventDefault>Gems desp</a>
-			<a class="link overflow-hidden hidden md:block text-right" href="" @onclick="() => _overview.Sort(CustomEntrySorting.GemsEaten)" @onclick:preventDefault>Gems eaten</a>
-			<a class="link overflow-hidden hidden md:block text-right" href="" @onclick="() => _overview.Sort(CustomEntrySorting.GemsTotal)" @onclick:preventDefault>Gems total</a>
-			<a class="link overflow-hidden hidden lg:block text-right" href="" @onclick="() => _overview.Sort(CustomEntrySorting.EnemiesKilled)" @onclick:preventDefault>Kills</a>
-			<a class="link overflow-hidden hidden lg:block text-right" href="" @onclick="() => _overview.Sort(CustomEntrySorting.EnemiesAlive)" @onclick:preventDefault>Alive</a>
-			<a class="link overflow-hidden hidden lg:block text-right" href="" @onclick="() => _overview.Sort(CustomEntrySorting.DaggersFired)" @onclick:preventDefault>Fired</a>
-			<a class="link overflow-hidden hidden lg:block text-right" href="" @onclick="() => _overview.Sort(CustomEntrySorting.DaggersHit)" @onclick:preventDefault>Hit</a>
-			<a class="link overflow-hidden hidden lg:block text-right" href="" @onclick="() => _overview.Sort(CustomEntrySorting.HomingStored)" @onclick:preventDefault>Homing</a>
-			<a class="link overflow-hidden hidden lg:block text-right" href="" @onclick="() => _overview.Sort(CustomEntrySorting.HomingEaten)" @onclick:preventDefault>Homing eaten</a>
-			<a class="link overflow-hidden hidden lg:block text-left" href="" @onclick="() => _overview.Sort(CustomEntrySorting.DeathType)" @onclick:preventDefault>Death</a>
-			<a class="link overflow-hidden hidden xl:block text-right" href="" @onclick="() => _overview.Sort(CustomEntrySorting.LevelUpTime2)" @onclick:preventDefault>Level 2</a>
-			<a class="link overflow-hidden hidden xl:block text-right" href="" @onclick="() => _overview.Sort(CustomEntrySorting.LevelUpTime3)" @onclick:preventDefault>Level 3</a>
-			<a class="link overflow-hidden hidden xl:block text-right" href="" @onclick="() => _overview.Sort(CustomEntrySorting.LevelUpTime4)" @onclick:preventDefault>Level 4</a>
-			<a class="link overflow-hidden hidden xl:block text-left" href="" @onclick="() => _overview.Sort(CustomEntrySorting.SubmitDate)" @onclick:preventDefault>Date</a>
-			<a class="link overflow-hidden hidden xl:block text-right" href="" @onclick="() => _overview.Sort(CustomEntrySorting.ClientVersion)" @onclick:preventDefault>Version</a>
-		</TableHeader>
-		<RowTemplate Context="customLeaderboard">
-			<div class="overflow-hidden text-right">@customLeaderboard.Id</div>
-			<div class="overflow-hidden text-left">@customLeaderboard.SpawnsetName</div>
-			<div class="overflow-hidden text-left">@customLeaderboard.PlayerName</div>
-			<div class="overflow-hidden hidden md:block text-right">@customLeaderboard.Time.ToString(StringFormats.TimeFormat)</div>
-			<div class="overflow-hidden hidden md:block text-right">@customLeaderboard.GemsCollected</div>
-			<div class="overflow-hidden hidden md:block text-right">@customLeaderboard.GemsDespawned</div>
-			<div class="overflow-hidden hidden md:block text-right">@customLeaderboard.GemsEaten</div>
-			<div class="overflow-hidden hidden md:block text-right">@customLeaderboard.GemsTotal</div>
-			<div class="overflow-hidden hidden lg:block text-right">@customLeaderboard.EnemiesKilled</div>
-			<div class="overflow-hidden hidden lg:block text-right">@customLeaderboard.EnemiesAlive</div>
-			<div class="overflow-hidden hidden lg:block text-right">@customLeaderboard.DaggersFired</div>
-			<div class="overflow-hidden hidden lg:block text-right">@customLeaderboard.DaggersHit</div>
-			<div class="overflow-hidden hidden lg:block text-right">@customLeaderboard.HomingStored</div>
-			<div class="overflow-hidden hidden lg:block text-right">@customLeaderboard.HomingEaten</div>
-			<div class="overflow-hidden hidden lg:block text-left">@customLeaderboard.DeathType</div>
-			<div class="overflow-hidden hidden xl:block text-right">@customLeaderboard.LevelUpTime2.ToString(StringFormats.TimeFormat)</div>
-			<div class="overflow-hidden hidden xl:block text-right">@customLeaderboard.LevelUpTime3.ToString(StringFormats.TimeFormat)</div>
-			<div class="overflow-hidden hidden xl:block text-right">@customLeaderboard.LevelUpTime4.ToString(StringFormats.TimeFormat)</div>
-			<div class="overflow-hidden hidden xl:block text-left">@customLeaderboard.SubmitDate.ToString(StringFormats.DateTimeUtcFormat)</div>
-			<div class="overflow-hidden hidden xl:block text-right">@customLeaderboard.ClientVersion</div>
-		</RowTemplate>
-	</AdminOverview>
-</AdminAuthorizer>
+<div class="grid">
+    <QuickGrid Items="@FilteredItems" Pagination="@_pagination">
+        <PropertyColumn Property="@(ce => ce.Id)" Sortable="true" />
+        <PropertyColumn Property="@(ce => ce.SpawnsetName)" Sortable="true" Align="Align.Left" Class="search-box-name">
+            <ColumnOptions>
+                <div class="search-box">
+                    <input type="search" autofocus @bind="_spawnsetNameFilter" @bind:event="oninput" placeholder="Spawnset name..." />
+                </div>
+            </ColumnOptions>
+        </PropertyColumn>
+        <PropertyColumn Property="@(ce => ce.PlayerName)" Sortable="true" Align="Align.Left">
+	        <ColumnOptions>
+		        <div class="search-box">
+			        <input type="search" autofocus @bind="_playerNameFilter" @bind:event="oninput" placeholder="Player name..." />
+		        </div>
+	        </ColumnOptions>
+        </PropertyColumn>
+        <PropertyColumn Property="@(ce => ce.Time)" Sortable="true" Align="Align.Right" Format="@StringFormats.TimeFormat" />
+        <PropertyColumn Property="@(ce => ce.GemsCollected)" Sortable="true" Align="Align.Right" />
+        <PropertyColumn Property="@(ce => ce.GemsDespawned)" Sortable="true" Align="Align.Right" />
+        <PropertyColumn Property="@(ce => ce.GemsEaten)" Sortable="true" Align="Align.Right" />
+        <PropertyColumn Property="@(ce => ce.GemsTotal)" Sortable="true" Align="Align.Right" />
+        <PropertyColumn Property="@(ce => ce.EnemiesKilled)" Sortable="true" Align="Align.Right" />
+        <PropertyColumn Property="@(ce => ce.EnemiesAlive)" Sortable="true" Align="Align.Right" />
+        <PropertyColumn Property="@(ce => ce.DaggersFired)" Sortable="true" Align="Align.Right" />
+        <PropertyColumn Property="@(ce => ce.DaggersHit)" Sortable="true" Align="Align.Right" />
+        <PropertyColumn Property="@(ce => ce.HomingStored)" Sortable="true" Align="Align.Right" />
+        <PropertyColumn Property="@(ce => ce.HomingEaten)" Sortable="true" Align="Align.Right" />
+        <PropertyColumn Property="@(ce => ce.DeathType)" Sortable="true" Align="Align.Left" />
+        <PropertyColumn Property="@(ce => ce.LevelUpTime2)" Sortable="true" Align="Align.Right" Format="@StringFormats.TimeFormat" />
+        <PropertyColumn Property="@(ce => ce.LevelUpTime3)" Sortable="true" Align="Align.Right" Format="@StringFormats.TimeFormat" />
+        <PropertyColumn Property="@(ce => ce.LevelUpTime4)" Sortable="true" Align="Align.Right" Format="@StringFormats.TimeFormat" />
+        <PropertyColumn Property="@(ce => ce.SubmitDate)" Sortable="true" Align="Align.Left" Format="@StringFormats.DateTimeUtcFormat" />
+        <PropertyColumn Property="@(ce => ce.ClientVersion)" Sortable="true" Align="Align.Right" />
+    </QuickGrid>
+</div>
+
+<Paginator State="@_pagination" />
 
 @code
 {
-	// ! Blazor ref.
-	private AdminOverview<GetCustomEntryForOverview, CustomEntrySorting> _overview = null!;
+	private readonly PaginationState _pagination = new() { ItemsPerPage = 25 };
+
+	private IQueryable<GetCustomEntryForOverview>? _itemsQueryable;
+	private string _spawnsetNameFilter = string.Empty;
+	private string _playerNameFilter = string.Empty;
+
+	IQueryable<GetCustomEntryForOverview>? FilteredItems => _itemsQueryable?
+		.Where(ce =>
+			ce.SpawnsetName.Contains(_spawnsetNameFilter, StringComparison.CurrentCultureIgnoreCase) &&
+			ce.PlayerName.Contains(_playerNameFilter, StringComparison.CurrentCultureIgnoreCase));
+
+	protected override async Task OnInitializedAsync()
+	{
+		List<GetCustomEntryForOverview> customEntries = await Http.GetCustomEntries();
+		_itemsQueryable = customEntries.AsQueryable();
+	}
 }
