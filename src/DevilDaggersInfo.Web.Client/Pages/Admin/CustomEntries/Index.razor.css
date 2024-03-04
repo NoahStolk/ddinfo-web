@@ -18,12 +18,14 @@
 
 /* Subtle stripe effect */
 ::deep tr:nth-child(even) {
-	background: rgba(255,255,255,0.1);
+	background: rgba(255, 255, 255, 0.1);
 }
 
 /* Magnifying glass */
-::deep .search-box-name .col-options-button {
-	background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="#ffffff" stroke-width="2"> <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /> </svg>');
+.col-options-button {
+	background-color: black;
+	color: white;
+	background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="#000" viewBox="0 0 24 24" stroke="#fff" stroke-width="2"> <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /> </svg>');
 }
 
 ::deep .quickgrid .col-title {
@@ -33,4 +35,9 @@
 
 ::deep .quickgrid .sort-indicator {
 	color: white;
+}
+
+nav {
+	background-color: #ddd;
+	color: #000;
 }
