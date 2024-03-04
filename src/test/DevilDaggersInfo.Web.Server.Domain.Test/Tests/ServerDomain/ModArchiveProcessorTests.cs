@@ -1,4 +1,3 @@
-using DevilDaggersInfo.Core.Asset;
 using DevilDaggersInfo.Core.Mod;
 using DevilDaggersInfo.Core.Mod.Builders;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;

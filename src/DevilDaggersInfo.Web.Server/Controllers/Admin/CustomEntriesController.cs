@@ -38,7 +38,9 @@ public class CustomEntriesController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult<GetCustomEntry>> GetCustomEntryById(int id)
-		=> await _customEntryRepository.GetCustomEntryAsync(id);
+	{
+		return await _customEntryRepository.GetCustomEntryAsync(id);
+	}
 
 	[HttpPost]
 	[ProducesResponseType(StatusCodes.Status200OK)]
