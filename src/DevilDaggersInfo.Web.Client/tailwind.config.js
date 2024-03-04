@@ -42,11 +42,6 @@ module.exports = {
 			},
 			gridTemplateColumns: {
 				// Admin
-				'admin-custom-entries-xl': createMinmaxGrid([1, 4, 3, 1.5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 2.5, 1, 1]),
-				'admin-custom-entries-lg': createMinmaxGrid([1, 4, 3, 1.5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]),
-				'admin-custom-entries-md': createMinmaxGrid([1, 4, 3, 1.5, 1, 1, 1, 1, 1, 1]),
-				'admin-custom-entries-sm': createMinmaxGrid([1, 4, 3, 1, 1]),
-
 				'admin-custom-leaderboards-xl': createMinmaxGrid([1, 4, 1, 1, 1, 1, 1, 1, 4, 2, 1, 1]),
 				'admin-custom-leaderboards-lg': createMinmaxGrid([1, 4, 1, 1, 1, 1, 1, 1, 1, 1]),
 				'admin-custom-leaderboards-md': createMinmaxGrid([1, 4, 1, 1, 1, 1, 1, 1, 1]),

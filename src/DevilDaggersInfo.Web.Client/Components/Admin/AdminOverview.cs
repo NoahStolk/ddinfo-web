@@ -33,10 +33,6 @@ public partial class AdminOverview<TGetDto, TSorting> : IHasNavigation
 	public required Func<int, Task<HttpResponseMessage>> DeletionApiCall { get; set; }
 
 	[Parameter]
-	[EditorRequired]
-	public required string GridConfiguration { get; set; }
-
-	[Parameter]
 	public required RenderFragment TableHeader { get; set; }
 
 	[Parameter]
