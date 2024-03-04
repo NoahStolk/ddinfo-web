@@ -9,26 +9,26 @@
 <AdminAuthorizer Base="this" RequiredRole="@Roles.Admin">
 	<AdminOverview @ref="_overview" TGetDto="GetCustomEntryForOverview" TSorting="CustomEntrySorting" Title="Admin - Custom Entries" ApiCall="Http.GetCustomEntries" DeletionApiCall="(int id) => Http.DeleteCustomEntryById(id)">
 		<TableHeader>
-			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-right" href="" @onclick="() => _overview.Sort(CustomEntrySorting.Id)" @onclick:preventDefault>Id</th>
-			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-left" href="" @onclick="() => _overview.Sort(CustomEntrySorting.SpawnsetName)" @onclick:preventDefault>Name</th>
-			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-left" href="" @onclick="() => _overview.Sort(CustomEntrySorting.PlayerName)" @onclick:preventDefault>Player</th>
-			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-right" href="" @onclick="() => _overview.Sort(CustomEntrySorting.Time)" @onclick:preventDefault>Time</th>
-			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-right" href="" @onclick="() => _overview.Sort(CustomEntrySorting.GemsCollected)" @onclick:preventDefault>Gems</th>
-			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-right" href="" @onclick="() => _overview.Sort(CustomEntrySorting.GemsDespawned)" @onclick:preventDefault>Gems&nbsp;desp</th>
-			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-right" href="" @onclick="() => _overview.Sort(CustomEntrySorting.GemsEaten)" @onclick:preventDefault>Gems&nbsp;eaten</th>
-			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-right" href="" @onclick="() => _overview.Sort(CustomEntrySorting.GemsTotal)" @onclick:preventDefault>Gems&nbsp;total</th>
-			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-right" href="" @onclick="() => _overview.Sort(CustomEntrySorting.EnemiesKilled)" @onclick:preventDefault>Kills</th>
-			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-right" href="" @onclick="() => _overview.Sort(CustomEntrySorting.EnemiesAlive)" @onclick:preventDefault>Alive</th>
-			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-right" href="" @onclick="() => _overview.Sort(CustomEntrySorting.DaggersFired)" @onclick:preventDefault>Fired</th>
-			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-right" href="" @onclick="() => _overview.Sort(CustomEntrySorting.DaggersHit)" @onclick:preventDefault>Hit</th>
-			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-right" href="" @onclick="() => _overview.Sort(CustomEntrySorting.HomingStored)" @onclick:preventDefault>Homing</th>
-			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-right" href="" @onclick="() => _overview.Sort(CustomEntrySorting.HomingEaten)" @onclick:preventDefault>Homing&nbsp;eaten</th>
-			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-left" href="" @onclick="() => _overview.Sort(CustomEntrySorting.DeathType)" @onclick:preventDefault>Death</th>
-			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-right" href="" @onclick="() => _overview.Sort(CustomEntrySorting.LevelUpTime2)" @onclick:preventDefault>Level&nbsp;2</th>
-			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-right" href="" @onclick="() => _overview.Sort(CustomEntrySorting.LevelUpTime3)" @onclick:preventDefault>Level&nbsp;3</th>
-			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-right" href="" @onclick="() => _overview.Sort(CustomEntrySorting.LevelUpTime4)" @onclick:preventDefault>Level&nbsp;4</th>
-			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-left" href="" @onclick="() => _overview.Sort(CustomEntrySorting.SubmitDate)" @onclick:preventDefault>Date</th>
-			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-right" href="" @onclick="() => _overview.Sort(CustomEntrySorting.ClientVersion)" @onclick:preventDefault>Version</th>
+			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-right" @onclick="() => _overview.Sort(CustomEntrySorting.Id)" @onclick:preventDefault>Id</th>
+			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-left" @onclick="() => _overview.Sort(CustomEntrySorting.SpawnsetName)" @onclick:preventDefault>Name</th>
+			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-left" @onclick="() => _overview.Sort(CustomEntrySorting.PlayerName)" @onclick:preventDefault>Player</th>
+			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-right" @onclick="() => _overview.Sort(CustomEntrySorting.Time)" @onclick:preventDefault>Time</th>
+			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-right" @onclick="() => _overview.Sort(CustomEntrySorting.GemsCollected)" @onclick:preventDefault>Gems</th>
+			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-right" @onclick="() => _overview.Sort(CustomEntrySorting.GemsDespawned)" @onclick:preventDefault>Gems&nbsp;desp</th>
+			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-right" @onclick="() => _overview.Sort(CustomEntrySorting.GemsEaten)" @onclick:preventDefault>Gems&nbsp;eaten</th>
+			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-right" @onclick="() => _overview.Sort(CustomEntrySorting.GemsTotal)" @onclick:preventDefault>Gems&nbsp;total</th>
+			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-right" @onclick="() => _overview.Sort(CustomEntrySorting.EnemiesKilled)" @onclick:preventDefault>Kills</th>
+			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-right" @onclick="() => _overview.Sort(CustomEntrySorting.EnemiesAlive)" @onclick:preventDefault>Alive</th>
+			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-right" @onclick="() => _overview.Sort(CustomEntrySorting.DaggersFired)" @onclick:preventDefault>Fired</th>
+			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-right" @onclick="() => _overview.Sort(CustomEntrySorting.DaggersHit)" @onclick:preventDefault>Hit</th>
+			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-right" @onclick="() => _overview.Sort(CustomEntrySorting.HomingStored)" @onclick:preventDefault>Homing</th>
+			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-right" @onclick="() => _overview.Sort(CustomEntrySorting.HomingEaten)" @onclick:preventDefault>Homing&nbsp;eaten</th>
+			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-left" @onclick="() => _overview.Sort(CustomEntrySorting.DeathType)" @onclick:preventDefault>Death</th>
+			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-right" @onclick="() => _overview.Sort(CustomEntrySorting.LevelUpTime2)" @onclick:preventDefault>Level&nbsp;2</th>
+			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-right" @onclick="() => _overview.Sort(CustomEntrySorting.LevelUpTime3)" @onclick:preventDefault>Level&nbsp;3</th>
+			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-right" @onclick="() => _overview.Sort(CustomEntrySorting.LevelUpTime4)" @onclick:preventDefault>Level&nbsp;4</th>
+			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-left" @onclick="() => _overview.Sort(CustomEntrySorting.SubmitDate)" @onclick:preventDefault>Date</th>
+			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-right" @onclick="() => _overview.Sort(CustomEntrySorting.ClientVersion)" @onclick:preventDefault>Version</th>
 		</TableHeader>
 		<RowTemplate Context="customLeaderboard">
 			<td class="overflow-hidden break-normal px-2 text-right">@customLeaderboard.Id.ToNoBreakString()</td>

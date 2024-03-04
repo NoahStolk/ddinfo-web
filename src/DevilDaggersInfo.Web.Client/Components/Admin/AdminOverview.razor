@@ -56,12 +56,8 @@ else
 					{
 						<tr class="@(i++ % 2 == 0 ? "bg-gray-1" : null)">
 							@RowTemplate(result)
-							<td>
-								<a class="link" href="@($"{NavigationManager.Uri}/edit/{result.Id}")">Edit</a>
-							</td>
-							<td>
-								<a class="link" href="" @onclick="() => _deletion?.Set(result.Id)" @onclick:preventDefault>Delete</a>
-							</td>
+							<td><a class="link" href="@($"{NavigationManager.Uri}/edit/{result.Id}")">Edit</a></td>
+							<td><a class="link" href="" @onclick="() => _deletion?.Set(result.Id)" @onclick:preventDefault>Delete</a></td>
 						</tr>
 					}
 				}
