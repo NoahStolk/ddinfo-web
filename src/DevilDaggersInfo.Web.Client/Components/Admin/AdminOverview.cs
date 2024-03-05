@@ -89,11 +89,13 @@ public partial class AdminOverview<TGetDto, TSorting> : IHasNavigation
 		await FetchAsync();
 	}
 
-	private void Sort(TSorting sorting)
+	private async Task SortAsync(TSorting sorting)
 	{
 		SortBy = (int)(object)sorting;
 		_sortings[sorting] = !_sortings[sorting];
 		Ascending = _sortings[sorting];
+
+		await FetchAsync();
 	}
 
 	private async Task FetchAsync()

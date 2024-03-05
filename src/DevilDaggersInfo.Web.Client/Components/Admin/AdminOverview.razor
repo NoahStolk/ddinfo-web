@@ -47,7 +47,7 @@ else
 				<tr>
 					@foreach (AdminOverviewColumn<TGetDto, TSorting> column in Columns)
 					{
-						<th class="link overflow-hidden break-normal whitespace-nowrap cursor-pointer px-2 @column.TextAlignCssClass" @onclick="@(() => Sort(column.Sorting))" @onclick:preventDefault>@column.Header.ToNoBreakString()</th>
+						<th class="link overflow-hidden break-normal whitespace-nowrap cursor-pointer px-2 @column.TextAlignCssClass" @onclick="@(() => SortAsync(column.Sorting))" @onclick:preventDefault>@column.Header.ToNoBreakString()</th>
 					}
 					<th></th>
 					<th></th>
