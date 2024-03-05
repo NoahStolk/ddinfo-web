@@ -3,60 +3,45 @@
 @using DevilDaggersInfo.Core.Common
 @using DevilDaggersInfo.Web.ApiSpec.Admin.CustomEntries
 @using DevilDaggersInfo.Web.Client.Components.Admin
-@using DevilDaggersInfo.Web.Client.Extensions
 @using DevilDaggersInfo.Web.Core.Claims
 
 <AdminAuthorizer Base="this" RequiredRole="@Roles.Admin">
-	<AdminOverview @ref="_overview" TGetDto="GetCustomEntryForOverview" TSorting="CustomEntrySorting" Title="Admin - Custom Entries" ApiCall="Http.GetCustomEntries" DeletionApiCall="(int id) => Http.DeleteCustomEntryById(id)">
-		<TableHeader>
-			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-right" @onclick="() => _overview.Sort(CustomEntrySorting.Id)" @onclick:preventDefault>Id</th>
-			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-left" @onclick="() => _overview.Sort(CustomEntrySorting.SpawnsetName)" @onclick:preventDefault>Name</th>
-			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-left" @onclick="() => _overview.Sort(CustomEntrySorting.PlayerName)" @onclick:preventDefault>Player</th>
-			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-right" @onclick="() => _overview.Sort(CustomEntrySorting.Time)" @onclick:preventDefault>Time</th>
-			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-right" @onclick="() => _overview.Sort(CustomEntrySorting.GemsCollected)" @onclick:preventDefault>Gems</th>
-			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-right" @onclick="() => _overview.Sort(CustomEntrySorting.GemsDespawned)" @onclick:preventDefault>Gems&nbsp;desp</th>
-			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-right" @onclick="() => _overview.Sort(CustomEntrySorting.GemsEaten)" @onclick:preventDefault>Gems&nbsp;eaten</th>
-			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-right" @onclick="() => _overview.Sort(CustomEntrySorting.GemsTotal)" @onclick:preventDefault>Gems&nbsp;total</th>
-			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-right" @onclick="() => _overview.Sort(CustomEntrySorting.EnemiesKilled)" @onclick:preventDefault>Kills</th>
-			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-right" @onclick="() => _overview.Sort(CustomEntrySorting.EnemiesAlive)" @onclick:preventDefault>Alive</th>
-			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-right" @onclick="() => _overview.Sort(CustomEntrySorting.DaggersFired)" @onclick:preventDefault>Fired</th>
-			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-right" @onclick="() => _overview.Sort(CustomEntrySorting.DaggersHit)" @onclick:preventDefault>Hit</th>
-			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-right" @onclick="() => _overview.Sort(CustomEntrySorting.HomingStored)" @onclick:preventDefault>Homing</th>
-			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-right" @onclick="() => _overview.Sort(CustomEntrySorting.HomingEaten)" @onclick:preventDefault>Homing&nbsp;eaten</th>
-			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-left" @onclick="() => _overview.Sort(CustomEntrySorting.DeathType)" @onclick:preventDefault>Death</th>
-			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-right" @onclick="() => _overview.Sort(CustomEntrySorting.LevelUpTime2)" @onclick:preventDefault>Level&nbsp;2</th>
-			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-right" @onclick="() => _overview.Sort(CustomEntrySorting.LevelUpTime3)" @onclick:preventDefault>Level&nbsp;3</th>
-			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-right" @onclick="() => _overview.Sort(CustomEntrySorting.LevelUpTime4)" @onclick:preventDefault>Level&nbsp;4</th>
-			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-left" @onclick="() => _overview.Sort(CustomEntrySorting.SubmitDate)" @onclick:preventDefault>Date</th>
-			<th class="link overflow-hidden break-normal cursor-pointer px-2 text-right" @onclick="() => _overview.Sort(CustomEntrySorting.ClientVersion)" @onclick:preventDefault>Version</th>
-		</TableHeader>
-		<RowTemplate Context="customLeaderboard">
-			<td class="overflow-hidden break-normal px-2 text-right">@customLeaderboard.Id.ToNoBreakString()</td>
-			<td class="overflow-hidden break-normal px-2 text-left">@customLeaderboard.SpawnsetName.ToNoBreakString()</td>
-			<td class="overflow-hidden break-normal px-2 text-left">@customLeaderboard.PlayerName.ToNoBreakString()</td>
-			<td class="overflow-hidden break-normal px-2 text-right">@customLeaderboard.Time.ToString(StringFormats.TimeFormat).ToNoBreakString()</td>
-			<td class="overflow-hidden break-normal px-2 text-right">@customLeaderboard.GemsCollected.ToNoBreakString()</td>
-			<td class="overflow-hidden break-normal px-2 text-right">@customLeaderboard.GemsDespawned.ToNoBreakString()</td>
-			<td class="overflow-hidden break-normal px-2 text-right">@customLeaderboard.GemsEaten.ToNoBreakString()</td>
-			<td class="overflow-hidden break-normal px-2 text-right">@customLeaderboard.GemsTotal.ToNoBreakString()</td>
-			<td class="overflow-hidden break-normal px-2 text-right">@customLeaderboard.EnemiesKilled.ToNoBreakString()</td>
-			<td class="overflow-hidden break-normal px-2 text-right">@customLeaderboard.EnemiesAlive.ToNoBreakString()</td>
-			<td class="overflow-hidden break-normal px-2 text-right">@customLeaderboard.DaggersFired.ToNoBreakString()</td>
-			<td class="overflow-hidden break-normal px-2 text-right">@customLeaderboard.DaggersHit.ToNoBreakString()</td>
-			<td class="overflow-hidden break-normal px-2 text-right">@customLeaderboard.HomingStored.ToNoBreakString()</td>
-			<td class="overflow-hidden break-normal px-2 text-right">@customLeaderboard.HomingEaten.ToNoBreakString()</td>
-			<td class="overflow-hidden break-normal px-2 text-left">@customLeaderboard.DeathType.ToNoBreakString()</td>
-			<td class="overflow-hidden break-normal px-2 text-right">@customLeaderboard.LevelUpTime2.ToString(StringFormats.TimeFormat).ToNoBreakString()</td>
-			<td class="overflow-hidden break-normal px-2 text-right">@customLeaderboard.LevelUpTime3.ToString(StringFormats.TimeFormat).ToNoBreakString()</td>
-			<td class="overflow-hidden break-normal px-2 text-right">@customLeaderboard.LevelUpTime4.ToString(StringFormats.TimeFormat).ToNoBreakString()</td>
-			<td class="overflow-hidden break-normal px-2 text-left">@customLeaderboard.SubmitDate.ToString(StringFormats.DateTimeUtcFormat).ToNoBreakString()</td>
-			<td class="overflow-hidden break-normal px-2 text-right">@customLeaderboard.ClientVersion.ToNoBreakString()</td>
-		</RowTemplate>
-	</AdminOverview>
+	<AdminOverview
+		@ref="_overview"
+		TGetDto="GetCustomEntryForOverview"
+		TSorting="CustomEntrySorting"
+		Title="Admin - Custom Entries"
+		ApiCall="Http.GetCustomEntries"
+		DeletionApiCall="(int id) => Http.DeleteCustomEntryById(id)"
+		Columns="_columns"/>
 </AdminAuthorizer>
 
 @code
 {
 	// ! Blazor ref.
 	private AdminOverview<GetCustomEntryForOverview, CustomEntrySorting> _overview = null!;
+
+	private readonly List<AdminOverviewColumn<GetCustomEntryForOverview, CustomEntrySorting>> _columns =
+	[
+		new(CustomEntrySorting.Id, "Id", ce => ce.Id, TextAlign.Right),
+		new(CustomEntrySorting.SpawnsetName, "Name", ce => ce.SpawnsetName, TextAlign.Left),
+		new(CustomEntrySorting.PlayerName, "Player", ce => ce.PlayerName, TextAlign.Left),
+		new(CustomEntrySorting.Time, "Time", ce => ce.Time.ToString(StringFormats.TimeFormat), TextAlign.Right),
+		new(CustomEntrySorting.GemsCollected, "Gems", ce => ce.GemsCollected, TextAlign.Right),
+		new(CustomEntrySorting.GemsDespawned, "Gems despawned", ce => ce.GemsDespawned, TextAlign.Right),
+		new(CustomEntrySorting.GemsEaten, "Gems eaten", ce => ce.GemsEaten, TextAlign.Right),
+		new(CustomEntrySorting.GemsTotal, "Gems total", ce => ce.GemsTotal, TextAlign.Right),
+		new(CustomEntrySorting.EnemiesKilled, "Kills", ce => ce.EnemiesKilled, TextAlign.Right),
+		new(CustomEntrySorting.EnemiesAlive, "Alive", ce => ce.EnemiesAlive, TextAlign.Right),
+		new(CustomEntrySorting.DaggersFired, "Fired", ce => ce.DaggersFired, TextAlign.Right),
+		new(CustomEntrySorting.DaggersHit, "Hit", ce => ce.DaggersHit, TextAlign.Right),
+		new(CustomEntrySorting.HomingStored, "Homing", ce => ce.HomingStored, TextAlign.Right),
+		new(CustomEntrySorting.HomingEaten, "Homing eaten", ce => ce.HomingEaten, TextAlign.Right),
+		new(CustomEntrySorting.DeathType, "Death", ce => ce.DeathType, TextAlign.Left),
+		new(CustomEntrySorting.LevelUpTime2, "Level 2", ce => ce.LevelUpTime2.ToString(StringFormats.TimeFormat), TextAlign.Right),
+		new(CustomEntrySorting.LevelUpTime3, "Level 3", ce => ce.LevelUpTime3.ToString(StringFormats.TimeFormat), TextAlign.Right),
+		new(CustomEntrySorting.LevelUpTime4, "Level 4", ce => ce.LevelUpTime4.ToString(StringFormats.TimeFormat), TextAlign.Right),
+		new(CustomEntrySorting.SubmitDate, "Date", ce => ce.SubmitDate.ToString(StringFormats.DateTimeUtcFormat), TextAlign.Left),
+		new(CustomEntrySorting.ClientVersion, "Version", ce => ce.ClientVersion, TextAlign.Right),
+	];
 }

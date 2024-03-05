@@ -4,6 +4,7 @@
 @inject NavigationManager NavigationManager
 @using DevilDaggersInfo.Web.Client.Components
 @using DevilDaggersInfo.Web.Client.Enums
+@using DevilDaggersInfo.Web.Client.Extensions
 
 <Heading Title="@Title" />
 
@@ -25,14 +26,14 @@
 }
 else
 {
-	<Deletion AfterDelete="Fetch" ApiCall="@DeletionApiCall" @ref="_deletion" />
+	<Deletion AfterDelete="FetchAsync" ApiCall="@DeletionApiCall" @ref="_deletion" />
 
 	<div class="bg-gray-1 p-2 text-lg">
 		<a class="btn btn-green block w-24 mb-2 mx-1" href="@($"{NavigationManager.Uri}/add")">Add new</a>
 
 		<div class="m-1">
 			<span>Filter</span>
-			<input class="bg-black border-gray-3 border-2" value="@Filter" @onchange="ChangeFilter" />
+			<input class="bg-black border-gray-3 border-2" value="@Filter" @onchange="ChangeFilterAsync" />
 		</div>
 
 		<CascadingValue Value="this">
@@ -41,10 +42,13 @@ else
 	</div>
 
 	<div class="overflow-x-auto">
-		<table class="table-auto">
+		<table class="table-auto w-full">
 			<thead>
 				<tr>
-					@TableHeader
+					@foreach (AdminOverviewColumn<TGetDto, TSorting> column in Columns)
+					{
+						<th class="link overflow-hidden break-normal whitespace-nowrap cursor-pointer px-2 @column.TextAlignCssClass" @onclick="@(() => Sort(column.Sorting))" @onclick:preventDefault>@column.Header.ToNoBreakString()</th>
+					}
 					<th></th>
 					<th></th>
 				</tr>
@@ -55,7 +59,10 @@ else
 					foreach (TGetDto result in _page.Results)
 					{
 						<tr class="@(i++ % 2 == 0 ? "bg-gray-1" : null)">
-							@RowTemplate(result)
+							@foreach (AdminOverviewColumn<TGetDto, TSorting> column in Columns)
+							{
+								<td class="overflow-hidden break-normal whitespace-nowrap px-2 @column.TextAlignCssClass">@column.DataGetter.Invoke(result).ToNoBreakString()</td>
+							}
 							<td><a class="link" href="@($"{NavigationManager.Uri}/edit/{result.Id}")">Edit</a></td>
 							<td><a class="link" href="" @onclick="() => _deletion?.Set(result.Id)" @onclick:preventDefault>Delete</a></td>
 						</tr>

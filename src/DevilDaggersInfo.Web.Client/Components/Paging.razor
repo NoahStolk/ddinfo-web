@@ -9,18 +9,18 @@
 }
 <div class="flex">
 	<div class="w-10 h-10 mx-1">
-		<button disabled="@f" class="@(f ? disabledStyle : enabledStyle) btn" @onclick="() => Parent.ChangePageIndex(0)">@MarkupStrings.NavStart</button>
+		<button disabled="@f" class="@(f ? disabledStyle : enabledStyle) btn" @onclick="() => Parent.ChangePageIndexAsync(0)">@MarkupStrings.NavStart</button>
 	</div>
 	<div class="w-10 h-10 mx-1">
-		<button disabled="@f" class="@(f ? disabledStyle : enabledStyle) btn" @onclick="() => Parent.ChangePageIndex(Parent.PageIndex - 1)">@MarkupStrings.NavPrev</button>
+		<button disabled="@f" class="@(f ? disabledStyle : enabledStyle) btn" @onclick="() => Parent.ChangePageIndexAsync(Parent.PageIndex - 1)">@MarkupStrings.NavPrev</button>
 	</div>
 	<div class="w-10 h-10 mx-1">
-		<button disabled="@l" class="@(l ? disabledStyle : enabledStyle) btn" @onclick="() => Parent.ChangePageIndex(Parent.PageIndex + 1)">@MarkupStrings.NavNext</button>
+		<button disabled="@l" class="@(l ? disabledStyle : enabledStyle) btn" @onclick="() => Parent.ChangePageIndexAsync(Parent.PageIndex + 1)">@MarkupStrings.NavNext</button>
 	</div>
 	<div class="w-10 h-10 mx-1">
-		<button disabled="@l" class="@(l ? disabledStyle : enabledStyle) btn" @onclick="() => Parent.ChangePageIndex(Parent.TotalPages - 1)">@MarkupStrings.NavEnd</button>
+		<button disabled="@l" class="@(l ? disabledStyle : enabledStyle) btn" @onclick="() => Parent.ChangePageIndexAsync(Parent.TotalPages - 1)">@MarkupStrings.NavEnd</button>
 	</div>
-	<SelectList CssClass="relative h-10 mx-1" CssWidthClass="w-10" CssOpenerClass="text-center pt-[6px]" TValue="int" Values="@(Constants.PageSizeOptions.ToList())" DisplayFunction="@(i => i.ToString())" Default="pageSize" Selected="@(i => Parent.ChangePageSize(i))" />
+	<SelectList CssClass="relative h-10 mx-1" CssWidthClass="w-10" CssOpenerClass="text-center pt-[6px]" TValue="int" Values="@(Constants.PageSizeOptions.ToList())" DisplayFunction="@(i => i.ToString())" Default="pageSize" Selected="@(i => Parent.ChangePageSizeAsync(i))" />
 </div>
 @if (Parent.TotalResults == 0)
 {
