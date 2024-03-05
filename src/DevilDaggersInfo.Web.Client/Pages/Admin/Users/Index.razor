@@ -4,9 +4,17 @@
 @using DevilDaggersInfo.Web.Client.Components.Admin
 @using DevilDaggersInfo.Web.Core.Claims
 @using DevilDaggersInfo.Web.ApiSpec.Admin.Users
+@using DevilDaggersInfo.Web.Client.Enums
 
 <AdminAuthorizer Base="this" RequiredRole="@Roles.Players">
 	<Heading Title="Admin - Users" />
+
+	@if (_errorMessage != null)
+	{
+		<ResultBar Title="Failed to retrieve overview" ResultBarType="ResultBarType.FatalError" DismissEvent="Dismiss">
+			@_errorMessage
+		</ResultBar>
+	}
 
 	@if (_users == null)
 	{
@@ -17,42 +25,48 @@
 	}
 	else
 	{
-		<Deletion AfterDelete="Fetch" ApiCall="(int id) => Http.DeleteUserById(id)" @ref="_deletion" />
+		<Deletion AfterDelete="FetchAsync" ApiCall="(int id) => Http.DeleteUserById(id)" @ref="_deletion" />
 
-		<div class="grid gap-2 grid-cols-admin-users-sm md:grid-cols-admin-users-md lg:grid-cols-admin-users-lg xl:grid-cols-admin-users-xl">
-			<div class="font-bold">Id</div>
-			<div class="font-bold">Name</div>
-			<div class="font-bold">PlayerId</div>
-			<div class="font-bold">PlayerName</div>
-			<div class="font-bold">Admin</div>
-			<div class="font-bold">CLs</div>
-			<div class="font-bold">Mods</div>
-			<div class="font-bold">Players</div>
-			<div class="font-bold">Spawnsets</div>
-			<div></div>
-			<div></div>
-		</div>
-		<div>
-			@{
-				int i = 0;
-				foreach (GetUser user in _users)
-				{
-					<div class="grid gap-2 grid-cols-admin-users-sm md:grid-cols-admin-users-md lg:grid-cols-admin-users-lg xl:grid-cols-admin-users-xl @(i++ % 2 == 0 ? "bg-gray-1" : string.Empty)">
-						<div class="overflow-hidden">@user.Id</div>
-						<div class="overflow-hidden">@user.Name</div>
-						<div class="overflow-hidden">@user.PlayerId</div>
-						<div class="overflow-hidden">@user.PlayerName</div>
-						<div class="overflow-hidden"><button disabled="@(!IsAdmin)" class="@GetRoleButtonClass(IsAdmin == true, user.IsAdmin)" @onclick="async () => await ToggleRole(user.Id, Roles.Admin)">@GetRoleButtonText(user.IsAdmin)</button></div>
-						<div class="overflow-hidden"><button disabled="@(!IsAdmin)" class="@GetRoleButtonClass(IsAdmin == true, user.IsCustomLeaderboardsMaintainer)" @onclick="async () => await ToggleRole(user.Id, Roles.CustomLeaderboards)">@GetRoleButtonText(user.IsCustomLeaderboardsMaintainer)</button></div>
-						<div class="overflow-hidden"><button disabled="@(!IsAdmin)" class="@GetRoleButtonClass(IsAdmin == true, user.IsModsMaintainer)" @onclick="async () => await ToggleRole(user.Id, Roles.Mods)">@GetRoleButtonText(user.IsModsMaintainer)</button></div>
-						<div class="overflow-hidden"><button disabled="@(!IsAdmin)" class="@GetRoleButtonClass(IsAdmin == true, user.IsPlayersMaintainer)" @onclick="async () => await ToggleRole(user.Id, Roles.Players)">@GetRoleButtonText(user.IsPlayersMaintainer)</button></div>
-						<div class="overflow-hidden"><button disabled="@(!IsAdmin)" class="@GetRoleButtonClass(IsAdmin == true, user.IsSpawnsetsMaintainer)" @onclick="async () => await ToggleRole(user.Id, Roles.Spawnsets)">@GetRoleButtonText(user.IsSpawnsetsMaintainer)</button></div>
-						<div class="overflow-hidden"><a class="btn btn-gray-light block w-14" href="@($"/admin/users/assign-player/{user.Id}")">Assign</a></div>
-						<div class="overflow-hidden"><button disabled="@(!IsAdmin)" class="btn w-14 @(IsAdmin == true ? "btn-gray-light" : "btn-disabled text-gray-6")" @onclick="() => _deletion?.Set(user.Id)">Delete</button></div>
-						<div class="overflow-hidden"><button disabled="@(!IsAdmin)" class="btn w-14 @(IsAdmin == true ? "btn-gray-light" : "btn-disabled text-gray-6")" @onclick="@(() => NavigationManager.NavigateTo($"/admin/users/reset-password/{user.Id}"))">Reset</button></div>
-					</div>
-				}
-			}
+		<div class="overflow-x-auto">
+			<table class="table-auto w-full">
+				<thead>
+					<tr>
+						<th class="font-bold overflow-hidden break-normal whitespace-nowrap px-2 text-left">Id</th>
+						<th class="font-bold overflow-hidden break-normal whitespace-nowrap px-2 text-left">Name</th>
+						<th class="font-bold overflow-hidden break-normal whitespace-nowrap px-2 text-left">PlayerId</th>
+						<th class="font-bold overflow-hidden break-normal whitespace-nowrap px-2 text-left">PlayerName</th>
+						<th class="font-bold overflow-hidden break-normal whitespace-nowrap px-2 text-left">Admin</th>
+						<th class="font-bold overflow-hidden break-normal whitespace-nowrap px-2 text-left">CLs</th>
+						<th class="font-bold overflow-hidden break-normal whitespace-nowrap px-2 text-left">Mods</th>
+						<th class="font-bold overflow-hidden break-normal whitespace-nowrap px-2 text-left">Players</th>
+						<th class="font-bold overflow-hidden break-normal whitespace-nowrap px-2 text-left">Spawnsets</th>
+						<th></th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					@{
+						int i = 0;
+						foreach (GetUser user in _users)
+						{
+							<tr class="@(i++ % 2 == 0 ? "bg-gray-1" : string.Empty)">
+								<td class="overflow-hidden break-normal whitespace-nowrap px-2 text-left">@user.Id</td>
+								<td class="overflow-hidden break-normal whitespace-nowrap px-2 text-left">@user.Name</td>
+								<td class="overflow-hidden break-normal whitespace-nowrap px-2 text-left">@user.PlayerId</td>
+								<td class="overflow-hidden break-normal whitespace-nowrap px-2 text-left">@user.PlayerName</td>
+								<td class="overflow-hidden break-normal whitespace-nowrap px-2 text-left"><button disabled="@(!IsAdmin)" class="@GetRoleButtonClass(IsAdmin == true, user.IsAdmin)" @onclick="async () => await ToggleRoleAsync(user.Id, Roles.Admin)">@GetRoleButtonText(user.IsAdmin)</button></td>
+								<td class="overflow-hidden break-normal whitespace-nowrap px-2 text-left"><button disabled="@(!IsAdmin)" class="@GetRoleButtonClass(IsAdmin == true, user.IsCustomLeaderboardsMaintainer)" @onclick="async () => await ToggleRoleAsync(user.Id, Roles.CustomLeaderboards)">@GetRoleButtonText(user.IsCustomLeaderboardsMaintainer)</button></td>
+								<td class="overflow-hidden break-normal whitespace-nowrap px-2 text-left"><button disabled="@(!IsAdmin)" class="@GetRoleButtonClass(IsAdmin == true, user.IsModsMaintainer)" @onclick="async () => await ToggleRoleAsync(user.Id, Roles.Mods)">@GetRoleButtonText(user.IsModsMaintainer)</button></td>
+								<td class="overflow-hidden break-normal whitespace-nowrap px-2 text-left"><button disabled="@(!IsAdmin)" class="@GetRoleButtonClass(IsAdmin == true, user.IsPlayersMaintainer)" @onclick="async () => await ToggleRoleAsync(user.Id, Roles.Players)">@GetRoleButtonText(user.IsPlayersMaintainer)</button></td>
+								<td class="overflow-hidden break-normal whitespace-nowrap px-2 text-left"><button disabled="@(!IsAdmin)" class="@GetRoleButtonClass(IsAdmin == true, user.IsSpawnsetsMaintainer)" @onclick="async () => await ToggleRoleAsync(user.Id, Roles.Spawnsets)">@GetRoleButtonText(user.IsSpawnsetsMaintainer)</button></td>
+								<td class="overflow-hidden break-normal whitespace-nowrap px-2 text-left"><a class="btn btn-gray-light block w-14" href="@($"/admin/users/assign-player/{user.Id}")">Assign</a></td>
+								<td class="overflow-hidden break-normal whitespace-nowrap px-2 text-left"><button disabled="@(!IsAdmin)" class="btn w-14 @(IsAdmin == true ? "btn-gray-light" : "btn-disabled text-gray-6")" @onclick="() => _deletion?.Set(user.Id)">Delete</button></td>
+								<td class="overflow-hidden break-normal whitespace-nowrap px-2 text-left"><button disabled="@(!IsAdmin)" class="btn w-14 @(IsAdmin == true ? "btn-gray-light" : "btn-disabled text-gray-6")" @onclick="@(() => NavigationManager.NavigateTo($"/admin/users/reset-password/{user.Id}"))">Reset</button></td>
+							</tr>
+						}
+					}
+				</tbody>
+			</table>
 		</div>
 	}
 </AdminAuthorizer>

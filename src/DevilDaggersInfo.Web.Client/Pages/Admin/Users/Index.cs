@@ -19,10 +19,10 @@ public partial class Index
 	{
 		await base.OnInitializedAsync();
 
-		await Fetch();
+		await FetchAsync();
 	}
 
-	private async Task Fetch()
+	private async Task FetchAsync()
 	{
 		try
 		{
@@ -42,10 +42,10 @@ public partial class Index
 		}
 	}
 
-	private async Task ToggleRole(int userId, string roleName)
+	private async Task ToggleRoleAsync(int userId, string roleName)
 	{
 		await Http.ToggleRole(userId, new() { RoleName = roleName });
-		await Fetch();
+		await FetchAsync();
 	}
 
 	private void Dismiss()

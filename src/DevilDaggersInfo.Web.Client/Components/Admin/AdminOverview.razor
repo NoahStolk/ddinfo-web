@@ -63,8 +63,8 @@ else
 							{
 								<td class="overflow-hidden break-normal whitespace-nowrap px-2 @column.TextAlignCssClass">@column.DataGetter.Invoke(result)?.ToNoBreakString()</td>
 							}
-							<td><a class="link" href="@($"{NavigationManager.Uri}/edit/{result.Id}")">Edit</a></td>
-							<td><a class="link" href="" @onclick="() => _deletion?.Set(result.Id)" @onclick:preventDefault>Delete</a></td>
+							<td class="overflow-hidden break-normal whitespace-nowrap px-2 text-left"><a class="link" href="@($"{NavigationManager.Uri}/edit/{result.Id}")">Edit</a></td>
+							<td class="overflow-hidden break-normal whitespace-nowrap px-2 text-left"><a class="link" href="" @onclick="() => _deletion?.Set(result.Id)" @onclick:preventDefault>Delete</a></td>
 						</tr>
 					}
 				}
