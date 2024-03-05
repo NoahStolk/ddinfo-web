@@ -32,20 +32,26 @@ public class ModsController : ControllerBase
 		[Range(Constants.PageSizeMin, Constants.PageSizeMax)] int pageSize = Constants.PageSizeDefault,
 		ModSorting? sortBy = null,
 		bool ascending = false)
-		=> await _modRepository.GetModsAsync(filter, pageIndex, pageSize, sortBy, ascending);
+	{
+		return await _modRepository.GetModsAsync(filter, pageIndex, pageSize, sortBy, ascending);
+	}
 
 	[HttpGet("names")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[Authorize(Roles = Roles.Players)]
 	public async Task<ActionResult<List<GetModName>>> GetModNames()
-		=> await _modRepository.GetModNamesAsync();
+	{
+		return await _modRepository.GetModNamesAsync();
+	}
 
 	[HttpGet("{id}")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	[Authorize(Roles = Roles.Mods)]
 	public async Task<ActionResult<GetMod>> GetModById(int id)
-		=> await _modRepository.GetModAsync(id);
+	{
+		return await _modRepository.GetModAsync(id);
+	}
 
 	[HttpPost]
 	[ProducesResponseType(StatusCodes.Status200OK)]

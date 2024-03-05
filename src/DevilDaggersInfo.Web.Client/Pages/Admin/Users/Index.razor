@@ -1,101 +1,37 @@
 @page "/admin/users"
 @inherits BaseAdminPage
-@using DevilDaggersInfo.Web.Client.Components
 @using DevilDaggersInfo.Web.Client.Components.Admin
 @using DevilDaggersInfo.Web.Core.Claims
 @using DevilDaggersInfo.Web.ApiSpec.Admin.Users
-@using DevilDaggersInfo.Web.Client.Enums
+@using DevilDaggersInfo.Core.Common
 
 <AdminAuthorizer Base="this" RequiredRole="@Roles.Players">
-	<Heading Title="Admin - Users" />
-
-	@if (_errorMessage != null)
-	{
-		<ResultBar Title="Failed to retrieve overview" ResultBarType="ResultBarType.FatalError" DismissEvent="Dismiss">
-			@_errorMessage
-		</ResultBar>
-	}
-
-	@if (_users == null)
-	{
-		if (!_errorThrown)
-		{
-			<Loading />
-		}
-	}
-	else
-	{
-		<Deletion AfterDelete="FetchAsync" ApiCall="(int id) => Http.DeleteUserById(id)" @ref="_deletion" />
-
-		<div class="overflow-x-auto">
-			<table class="table-auto w-full">
-				<thead>
-					<tr>
-						<th class="font-bold overflow-hidden break-normal whitespace-nowrap px-2 text-left">Id</th>
-						<th class="font-bold overflow-hidden break-normal whitespace-nowrap px-2 text-left">Name</th>
-						<th class="font-bold overflow-hidden break-normal whitespace-nowrap px-2 text-left">PlayerId</th>
-						<th class="font-bold overflow-hidden break-normal whitespace-nowrap px-2 text-left">PlayerName</th>
-						<th class="font-bold overflow-hidden break-normal whitespace-nowrap px-2 text-left">Admin</th>
-						<th class="font-bold overflow-hidden break-normal whitespace-nowrap px-2 text-left">CLs</th>
-						<th class="font-bold overflow-hidden break-normal whitespace-nowrap px-2 text-left">Mods</th>
-						<th class="font-bold overflow-hidden break-normal whitespace-nowrap px-2 text-left">Players</th>
-						<th class="font-bold overflow-hidden break-normal whitespace-nowrap px-2 text-left">Spawnsets</th>
-						<th></th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
-					@{
-						int i = 0;
-						foreach (GetUser user in _users)
-						{
-							<tr class="@(i++ % 2 == 0 ? "bg-gray-1" : string.Empty)">
-								<td class="overflow-hidden break-normal whitespace-nowrap px-2 text-left">@user.Id</td>
-								<td class="overflow-hidden break-normal whitespace-nowrap px-2 text-left">@user.Name</td>
-								<td class="overflow-hidden break-normal whitespace-nowrap px-2 text-left">@user.PlayerId</td>
-								<td class="overflow-hidden break-normal whitespace-nowrap px-2 text-left">@user.PlayerName</td>
-								<td class="overflow-hidden break-normal whitespace-nowrap px-2 text-left"><button disabled="@(!IsAdmin)" class="@GetRoleButtonClass(IsAdmin == true, user.IsAdmin)" @onclick="async () => await ToggleRoleAsync(user.Id, Roles.Admin)">@GetRoleButtonText(user.IsAdmin)</button></td>
-								<td class="overflow-hidden break-normal whitespace-nowrap px-2 text-left"><button disabled="@(!IsAdmin)" class="@GetRoleButtonClass(IsAdmin == true, user.IsCustomLeaderboardsMaintainer)" @onclick="async () => await ToggleRoleAsync(user.Id, Roles.CustomLeaderboards)">@GetRoleButtonText(user.IsCustomLeaderboardsMaintainer)</button></td>
-								<td class="overflow-hidden break-normal whitespace-nowrap px-2 text-left"><button disabled="@(!IsAdmin)" class="@GetRoleButtonClass(IsAdmin == true, user.IsModsMaintainer)" @onclick="async () => await ToggleRoleAsync(user.Id, Roles.Mods)">@GetRoleButtonText(user.IsModsMaintainer)</button></td>
-								<td class="overflow-hidden break-normal whitespace-nowrap px-2 text-left"><button disabled="@(!IsAdmin)" class="@GetRoleButtonClass(IsAdmin == true, user.IsPlayersMaintainer)" @onclick="async () => await ToggleRoleAsync(user.Id, Roles.Players)">@GetRoleButtonText(user.IsPlayersMaintainer)</button></td>
-								<td class="overflow-hidden break-normal whitespace-nowrap px-2 text-left"><button disabled="@(!IsAdmin)" class="@GetRoleButtonClass(IsAdmin == true, user.IsSpawnsetsMaintainer)" @onclick="async () => await ToggleRoleAsync(user.Id, Roles.Spawnsets)">@GetRoleButtonText(user.IsSpawnsetsMaintainer)</button></td>
-								<td class="overflow-hidden break-normal whitespace-nowrap px-2 text-left"><a class="btn btn-gray-light block w-14" href="@($"/admin/users/assign-player/{user.Id}")">Assign</a></td>
-								<td class="overflow-hidden break-normal whitespace-nowrap px-2 text-left"><button disabled="@(!IsAdmin)" class="btn w-14 @(IsAdmin == true ? "btn-gray-light" : "btn-disabled text-gray-6")" @onclick="() => _deletion?.Set(user.Id)">Delete</button></td>
-								<td class="overflow-hidden break-normal whitespace-nowrap px-2 text-left"><button disabled="@(!IsAdmin)" class="btn w-14 @(IsAdmin == true ? "btn-gray-light" : "btn-disabled text-gray-6")" @onclick="@(() => NavigationManager.NavigateTo($"/admin/users/reset-password/{user.Id}"))">Reset</button></td>
-							</tr>
-						}
-					}
-				</tbody>
-			</table>
-		</div>
-	}
+	<AdminOverview
+		@ref="_overview"
+		TGetDto="GetUser"
+		TSorting="UserSorting"
+		Title="Admin - Users"
+		ApiCall="Http.GetUsers"
+		DeletionApiCall="(int id) => Http.DeleteUserById(id)"
+		Columns="_columns" />
 </AdminAuthorizer>
 
 @code
 {
-	private static string GetRoleButtonText(bool isAssigned)
-	{
-		return isAssigned ? "➖" : "➕";
-	}
+	// ! Blazor ref.
+	private AdminOverview<GetUser, UserSorting> _overview = null!;
 
-	private static string GetRoleButtonClass(bool enabled, bool isAssigned)
-	{
-		return $"btn px-2 {(enabled ? GetButtonColor(isAssigned ? Color.Red : Color.Green) : "btn-disabled text-gray-6")}";
-	}
-
-	private static string GetButtonColor(Color color)
-	{
-		return color switch
-		{
-			Color.Red => "btn-red",
-			Color.Green => "btn-green",
-			_ => "btn-gray",
-		};
-	}
-
-	private enum Color
-	{
-		Red,
-		Green,
-	}
+	private readonly List<AdminOverviewColumn<GetUser, UserSorting>> _columns =
+	[
+		new(UserSorting.Id, "Id", d => d.Id, TextAlign.Right),
+		new(UserSorting.Name, "Name", d => d.Name, TextAlign.Left),
+		new(UserSorting.PlayerId, "Player Id", d => d.PlayerId, TextAlign.Right),
+		new(UserSorting.PlayerName, "Player Name", d => d.PlayerName, TextAlign.Left),
+		new(UserSorting.RegistrationDate, "Registration Date", d => d.RegistrationDate.ToString(StringFormats.DateTimeUtcFormat), TextAlign.Right),
+		new(UserSorting.AdminRole, "Admin", d => d.IsAdmin, TextAlign.Left),
+		new(UserSorting.CustomLeaderboardsRole, "Custom Leaderboards", d => d.IsCustomLeaderboardsMaintainer, TextAlign.Left),
+		new(UserSorting.ModsRole, "Mods", d => d.IsModsMaintainer, TextAlign.Left),
+		new(UserSorting.PlayersRole, "Players", d => d.IsPlayersMaintainer, TextAlign.Left),
+		new(UserSorting.SpawnsetsRole, "Spawnsets", d => d.IsSpawnsetsMaintainer, TextAlign.Left),
+	];
 }

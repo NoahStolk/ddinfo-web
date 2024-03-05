@@ -32,13 +32,17 @@ public class CustomLeaderboardsController : ControllerBase
 		[Range(Constants.PageSizeMin, Constants.PageSizeMax)] int pageSize = Constants.PageSizeDefault,
 		CustomLeaderboardSorting? sortBy = null,
 		bool ascending = false)
-		=> await _customLeaderboardRepository.GetCustomLeaderboardsAsync(filter, pageIndex, pageSize, sortBy, ascending);
+	{
+		return await _customLeaderboardRepository.GetCustomLeaderboardsAsync(filter, pageIndex, pageSize, sortBy, ascending);
+	}
 
 	[HttpGet("{id}")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult<GetCustomLeaderboard>> GetCustomLeaderboardById(int id)
-		=> await _customLeaderboardRepository.GetCustomLeaderboardAsync(id);
+	{
+		return await _customLeaderboardRepository.GetCustomLeaderboardAsync(id);
+	}
 
 	[HttpPost]
 	[ProducesResponseType(StatusCodes.Status200OK)]

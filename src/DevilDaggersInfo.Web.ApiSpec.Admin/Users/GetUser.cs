@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.ApiSpec.Admin.Users;
 
-public record GetUser
+public record GetUser : IAdminOverviewGetDto
 {
 	public required int Id { get; init; }
 
@@ -19,4 +19,6 @@ public record GetUser
 	public required int? PlayerId { get; init; }
 
 	public required string PlayerName { get; init; }
+
+	public required DateTime RegistrationDate { get; init; }
 }

@@ -32,20 +32,26 @@ public class PlayersController : ControllerBase
 		[Range(Constants.PageSizeMin, Constants.PageSizeMax)] int pageSize = Constants.PageSizeDefault,
 		PlayerSorting? sortBy = null,
 		bool ascending = false)
-		=> await _playerRepository.GetPlayersAsync(filter, pageIndex, pageSize, sortBy, ascending);
+	{
+		return await _playerRepository.GetPlayersAsync(filter, pageIndex, pageSize, sortBy, ascending);
+	}
 
 	[HttpGet("names")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[Authorize(Roles = $"{Roles.Players},{Roles.Mods},{Roles.Spawnsets}")]
 	public async Task<ActionResult<List<GetPlayerName>>> GetPlayerNames()
-		=> await _playerRepository.GetPlayerNamesAsync();
+	{
+		return await _playerRepository.GetPlayerNamesAsync();
+	}
 
 	[HttpGet("{id}")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	[Authorize(Roles = Roles.Players)]
 	public async Task<ActionResult<GetPlayer>> GetPlayerById(int id)
-		=> await _playerRepository.GetPlayerAsync(id);
+	{
+		return await _playerRepository.GetPlayerAsync(id);
+	}
 
 	[HttpPost]
 	[ProducesResponseType(StatusCodes.Status200OK)]

@@ -290,9 +290,17 @@ public class AdminApiHttpClient : ApiHttpClient
 		return await SendRequest(HttpMethod.Delete, $"api/admin/spawnsets/{id}");
 	}
 
-	public async Task<List<GetUser>> GetUsers()
+	public async Task<Page<GetUser>> GetUsers(string? filter, int pageIndex, int pageSize, UserSorting? sortBy, bool ascending)
 	{
-		return await SendGetRequest<List<GetUser>>("api/admin/users/");
+		Dictionary<string, object?> queryParameters = new()
+		{
+			{ nameof(filter), filter },
+			{ nameof(pageIndex), pageIndex },
+			{ nameof(pageSize), pageSize },
+			{ nameof(sortBy), sortBy },
+			{ nameof(ascending), ascending },
+		};
+		return await SendGetRequest<Page<GetUser>>(BuildUrlWithQuery("api/admin/users/", queryParameters));
 	}
 
 	public async Task<GetUser> GetUserById(int id)
