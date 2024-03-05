@@ -6,7 +6,7 @@ public record AdminOverviewColumn<TGetDto, TSorting>
 	where TGetDto : IAdminOverviewGetDto
 	where TSorting : struct, Enum
 {
-	public AdminOverviewColumn(TSorting sorting, string header, Func<TGetDto, object> dataGetter, TextAlign textAlign)
+	public AdminOverviewColumn(TSorting sorting, string header, Func<TGetDto, object?> dataGetter, TextAlign textAlign)
 	{
 		Sorting = sorting;
 		Header = header;
@@ -18,7 +18,7 @@ public record AdminOverviewColumn<TGetDto, TSorting>
 
 	public string Header { get; }
 
-	public Func<TGetDto, object> DataGetter { get; }
+	public Func<TGetDto, object?> DataGetter { get; }
 
 	public TextAlign TextAlign { get; }
 

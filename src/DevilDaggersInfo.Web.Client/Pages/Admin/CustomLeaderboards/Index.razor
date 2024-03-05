@@ -7,33 +7,14 @@
 @using DevilDaggersInfo.Web.Core.Claims
 
 <AdminAuthorizer Base="this" RequiredRole="@Roles.CustomLeaderboards">
-	<AdminOverview @ref="_overview" TGetDto="GetCustomLeaderboardForOverview" TSorting="CustomLeaderboardSorting" Title="Admin - Custom Leaderboards" ApiCall="Http.GetCustomLeaderboards" DeletionApiCall="(int id) => Http.DeleteCustomLeaderboardById(id)" GridConfiguration="grid-cols-admin-custom-leaderboards-sm md:grid-cols-admin-custom-leaderboards-md lg:grid-cols-admin-custom-leaderboards-lg xl:grid-cols-admin-custom-leaderboards-xl">
-		<TableHeader>
-			<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(CustomLeaderboardSorting.Id)" @onclick:preventDefault>Id</a>
-			<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(CustomLeaderboardSorting.SpawnsetName)" @onclick:preventDefault>Name</a>
-			<a class="link overflow-hidden hidden md:block text-right" href="" @onclick="() => _overview.Sort(CustomLeaderboardSorting.TimeBronze)" @onclick:preventDefault>Bronze</a>
-			<a class="link overflow-hidden hidden md:block text-right" href="" @onclick="() => _overview.Sort(CustomLeaderboardSorting.TimeSilver)" @onclick:preventDefault>Silver</a>
-			<a class="link overflow-hidden hidden md:block text-right" href="" @onclick="() => _overview.Sort(CustomLeaderboardSorting.TimeGolden)" @onclick:preventDefault>Golden</a>
-			<a class="link overflow-hidden hidden md:block text-right" href="" @onclick="() => _overview.Sort(CustomLeaderboardSorting.TimeDevil)" @onclick:preventDefault>Devil</a>
-			<a class="link overflow-hidden hidden md:block text-right" href="" @onclick="() => _overview.Sort(CustomLeaderboardSorting.TimeLeviathan)" @onclick:preventDefault>Levi</a>
-			<a class="link overflow-hidden hidden lg:block text-left" href="" @onclick="() => _overview.Sort(CustomLeaderboardSorting.IsFeatured)" @onclick:preventDefault>Featured</a>
-			<a class="link overflow-hidden hidden xl:block text-left" href="" @onclick="() => _overview.Sort(CustomLeaderboardSorting.DateCreated)" @onclick:preventDefault>Date created</a>
-			<a class="link overflow-hidden hidden xl:block text-left" href="" @onclick="() => _overview.Sort(CustomLeaderboardSorting.RankSorting)" @onclick:preventDefault>Rank sorting</a>
-		</TableHeader>
-		<RowTemplate Context="customLeaderboard">
-			<div class="overflow-hidden text-right">@customLeaderboard.Id</div>
-			<div class="overflow-hidden text-left">@customLeaderboard.SpawnsetName</div>
-			<div class="overflow-hidden hidden md:block text-right">@customLeaderboard.RankSorting.GetDaggerValue(customLeaderboard.Daggers.Bronze)</div>
-			<div class="overflow-hidden hidden md:block text-right">@customLeaderboard.RankSorting.GetDaggerValue(customLeaderboard.Daggers.Silver)</div>
-			<div class="overflow-hidden hidden md:block text-right">@customLeaderboard.RankSorting.GetDaggerValue(customLeaderboard.Daggers.Golden)</div>
-			<div class="overflow-hidden hidden md:block text-right">@customLeaderboard.RankSorting.GetDaggerValue(customLeaderboard.Daggers.Devil)</div>
-			<div class="overflow-hidden hidden md:block text-right">@customLeaderboard.RankSorting.GetDaggerValue(customLeaderboard.Daggers.Leviathan)</div>
-			<div class="overflow-hidden hidden lg:block text-left">@customLeaderboard.IsFeatured</div>
-			<div class="overflow-hidden hidden xl:block text-left">@customLeaderboard.DateCreated?.ToString(StringFormats.DateFormat)</div>
-			<div class="overflow-hidden hidden xl:block text-left">@customLeaderboard.RankSorting</div>
-		</RowTemplate>
-	</AdminOverview>
-
+	<AdminOverview
+		@ref="_overview"
+		TGetDto="GetCustomLeaderboardForOverview"
+		TSorting="CustomLeaderboardSorting"
+		Title="Admin - Custom Leaderboards"
+		ApiCall="Http.GetCustomLeaderboards"
+		DeletionApiCall="(int id) => Http.DeleteCustomLeaderboardById(id)"
+		Columns="_columns" />
 	<a class="btn btn-red block w-32 mb-2 mx-1 mt-2 font-bold" href="/admin/custom-leaderboards/edit-marker">Edit marker</a>
 </AdminAuthorizer>
 
@@ -41,4 +22,18 @@
 {
 	// ! Blazor ref.
 	private AdminOverview<GetCustomLeaderboardForOverview, CustomLeaderboardSorting> _overview = null!;
+
+	private readonly List<AdminOverviewColumn<GetCustomLeaderboardForOverview, CustomLeaderboardSorting>> _columns =
+	[
+		new(CustomLeaderboardSorting.Id, "Id", cl => cl.Id, TextAlign.Right),
+		new(CustomLeaderboardSorting.SpawnsetName, "Name", cl => cl.SpawnsetName, TextAlign.Left),
+		new(CustomLeaderboardSorting.TimeBronze, "Bronze", cl => cl.RankSorting.GetDaggerValue(cl.Daggers.Bronze), TextAlign.Right),
+		new(CustomLeaderboardSorting.TimeSilver, "Silver", cl => cl.RankSorting.GetDaggerValue(cl.Daggers.Silver), TextAlign.Right),
+		new(CustomLeaderboardSorting.TimeGolden, "Golden", cl => cl.RankSorting.GetDaggerValue(cl.Daggers.Golden), TextAlign.Right),
+		new(CustomLeaderboardSorting.TimeDevil, "Devil", cl => cl.RankSorting.GetDaggerValue(cl.Daggers.Devil), TextAlign.Right),
+		new(CustomLeaderboardSorting.TimeLeviathan, "Levi", cl => cl.RankSorting.GetDaggerValue(cl.Daggers.Leviathan), TextAlign.Right),
+		new(CustomLeaderboardSorting.IsFeatured, "Featured", cl => cl.IsFeatured, TextAlign.Left),
+		new(CustomLeaderboardSorting.DateCreated, "Date created", cl => cl.DateCreated?.ToString(StringFormats.DateFormat), TextAlign.Left),
+		new(CustomLeaderboardSorting.RankSorting, "Rank sorting", cl => cl.RankSorting, TextAlign.Left),
+	];
 }

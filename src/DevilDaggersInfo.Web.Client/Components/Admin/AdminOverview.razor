@@ -61,7 +61,7 @@ else
 						<tr class="@(i++ % 2 == 0 ? "bg-gray-1" : null)">
 							@foreach (AdminOverviewColumn<TGetDto, TSorting> column in Columns)
 							{
-								<td class="overflow-hidden break-normal whitespace-nowrap px-2 @column.TextAlignCssClass">@column.DataGetter.Invoke(result).ToNoBreakString()</td>
+								<td class="overflow-hidden break-normal whitespace-nowrap px-2 @column.TextAlignCssClass">@column.DataGetter.Invoke(result)?.ToNoBreakString()</td>
 							}
 							<td><a class="link" href="@($"{NavigationManager.Uri}/edit/{result.Id}")">Edit</a></td>
 							<td><a class="link" href="" @onclick="() => _deletion?.Set(result.Id)" @onclick:preventDefault>Delete</a></td>

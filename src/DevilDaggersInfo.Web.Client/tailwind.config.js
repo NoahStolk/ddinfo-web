@@ -41,32 +41,6 @@ module.exports = {
 				'goethe': ['goethe'],
 			},
 			gridTemplateColumns: {
-				// Admin
-				'admin-custom-leaderboards-xl': createMinmaxGrid([1, 4, 1, 1, 1, 1, 1, 1, 4, 2, 1, 1]),
-				'admin-custom-leaderboards-lg': createMinmaxGrid([1, 4, 1, 1, 1, 1, 1, 1, 1, 1]),
-				'admin-custom-leaderboards-md': createMinmaxGrid([1, 4, 1, 1, 1, 1, 1, 1, 1]),
-				'admin-custom-leaderboards-sm': createMinmaxGrid([1, 4, 1, 1]),
-
-				'admin-donations-xl': createMinmaxGrid([1, 3, 1, 1, 3, 2, 4, 1, 1, 1]),
-				'admin-donations-lg': createMinmaxGrid([1, 3, 1, 1, 3, 2, 1, 1]),
-				'admin-donations-md': createMinmaxGrid([1, 3, 1, 1, 3, 1, 1]),
-				'admin-donations-sm': createMinmaxGrid([1, 3, 1, 1, 1]),
-
-				'admin-mods-xl': createMinmaxGrid([1, 4, 1, 2, 5, 5, 3, 5, 1, 1]),
-				'admin-mods-lg': createMinmaxGrid([1, 4, 1, 2, 5, 1, 1]),
-				'admin-mods-md': createMinmaxGrid([1, 4, 1, 2, 1, 1]),
-				'admin-mods-sm': createMinmaxGrid([1, 4, 1, 1, 1]),
-
-				'admin-players-xl': createMinmaxGrid([1, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 2, 1, 4, 1, 1, 1, 1, 1, 1, 1]),
-				'admin-players-lg': createMinmaxGrid([1, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]),
-				'admin-players-md': createMinmaxGrid([1, 4, 4, 1, 1, 1, 1, 1, 1, 1]),
-				'admin-players-sm': createMinmaxGrid([1, 4, 1, 1]),
-
-				'admin-spawnsets-xl': createMinmaxGrid([1, 3, 3, 2, 8, 2, 1, 1, 1]),
-				'admin-spawnsets-lg': createMinmaxGrid([1, 3, 3, 2, 1, 1]),
-				'admin-spawnsets-md': createMinmaxGrid([1, 3, 3, 1, 1]),
-				'admin-spawnsets-sm': createMinmaxGrid([1, 3, 1, 1]),
-
 				'admin-users-xl': createMinmaxGrid([1, 4, 2, 4, 1, 1, 1, 1, 1, 2, 2, 2]),
 				'admin-users-lg': createMinmaxGrid([1, 4, 2, 4, 1, 1, 1, 1, 1, 2, 2, 2]),
 				'admin-users-md': createMinmaxGrid([1, 4, 2, 4, 1, 1, 1, 1, 1, 2, 2, 2]),
