@@ -6,60 +6,44 @@
 @using DevilDaggersInfo.Web.Core.Claims
 
 <AdminAuthorizer Base="this" RequiredRole="@Roles.Players">
-	<AdminOverview @ref="_overview" TGetDto="GetPlayerForOverview" TSorting="PlayerSorting" Title="Admin - Players" ApiCall="Http.GetPlayers" DeletionApiCall="(int id) => Http.DeletePlayerById(id)" GridConfiguration="grid-cols-admin-players-sm md:grid-cols-admin-players-md lg:grid-cols-admin-players-lg xl:grid-cols-admin-players-xl">
-		<TableHeader>
-			<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(PlayerSorting.Id)" @onclick:preventDefault>Id</a>
-			<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(PlayerSorting.PlayerName)" @onclick:preventDefault>Name</a>
-			<a class="link overflow-hidden hidden md:block text-left" href="" @onclick="() => _overview.Sort(PlayerSorting.CommonName)" @onclick:preventDefault>Common name</a>
-			<a class="link overflow-hidden hidden md:block text-left" href="" @onclick="() => _overview.Sort(PlayerSorting.DiscordUserId)" @onclick:preventDefault>Discord ID</a>
-			<a class="link overflow-hidden hidden md:block text-left" href="" @onclick="() => _overview.Sort(PlayerSorting.CountryCode)" @onclick:preventDefault>Country</a>
-			<a class="link overflow-hidden hidden md:block text-right" href="" @onclick="() => _overview.Sort(PlayerSorting.Dpi)" @onclick:preventDefault>DPI</a>
-			<a class="link overflow-hidden hidden md:block text-right" href="" @onclick="() => _overview.Sort(PlayerSorting.InGameSens)" @onclick:preventDefault>Sens</a>
-			<a class="link overflow-hidden hidden md:block text-right" href="" @onclick="() => _overview.Sort(PlayerSorting.Fov)" @onclick:preventDefault>FOV</a>
-			<a class="link overflow-hidden hidden lg:block text-left" href="" @onclick="() => _overview.Sort(PlayerSorting.IsRightHanded)" @onclick:preventDefault>Right hand</a>
-			<a class="link overflow-hidden hidden lg:block text-left" href="" @onclick="() => _overview.Sort(PlayerSorting.HasFlashHandEnabled)" @onclick:preventDefault>Flash hand</a>
-			<a class="link overflow-hidden hidden lg:block text-right" href="" @onclick="() => _overview.Sort(PlayerSorting.Gamma)" @onclick:preventDefault>Gamma</a>
-			<a class="link overflow-hidden hidden lg:block text-left" href="" @onclick="() => _overview.Sort(PlayerSorting.UsesLegacyAudio)" @onclick:preventDefault>Legacy audio</a>
-			<a class="link overflow-hidden hidden lg:block text-left" href="" @onclick="() => _overview.Sort(PlayerSorting.UsesHrtf)" @onclick:preventDefault>HRTF</a>
-			<a class="link overflow-hidden hidden xl:block text-left" href="" @onclick="() => _overview.Sort(PlayerSorting.UsesInvertY)" @onclick:preventDefault>Invert Y</a>
-			<a class="link overflow-hidden hidden xl:block text-left" href="" @onclick="() => _overview.Sort(PlayerSorting.VerticalSync)" @onclick:preventDefault>V-sync</a>
-			<a class="link overflow-hidden hidden xl:block text-left" href="" @onclick="() => _overview.Sort(PlayerSorting.BanType)" @onclick:preventDefault>Ban type</a>
-			<a class="link overflow-hidden hidden xl:block text-left" href="" @onclick="() => _overview.Sort(PlayerSorting.BanDescription)" @onclick:preventDefault>Ban description</a>
-			<a class="link overflow-hidden hidden xl:block text-right" href="" @onclick="() => _overview.Sort(PlayerSorting.BanResponsibleId)" @onclick:preventDefault>Ban responsible ID</a>
-			<a class="link overflow-hidden hidden xl:block text-left" href="" @onclick="() => _overview.Sort(PlayerSorting.IsBannedFromDdcl)" @onclick:preventDefault>Banned from DDCL</a>
-			<a class="link overflow-hidden hidden xl:block text-left" href="" @onclick="() => _overview.Sort(PlayerSorting.HideSettings)" @onclick:preventDefault>Hide settings</a>
-			<a class="link overflow-hidden hidden xl:block text-left" href="" @onclick="() => _overview.Sort(PlayerSorting.HideDonations)" @onclick:preventDefault>Hide donations</a>
-			<a class="link overflow-hidden hidden xl:block text-left" href="" @onclick="() => _overview.Sort(PlayerSorting.HidePastUsernames)" @onclick:preventDefault>Hide past names</a>
-		</TableHeader>
-		<RowTemplate Context="player">
-			<div class="overflow-hidden text-right">@player.Id</div>
-			<div class="overflow-hidden text-left">@player.PlayerName</div>
-			<div class="overflow-hidden hidden md:block text-left">@player.CommonName</div>
-			<div class="overflow-hidden hidden md:block text-right">@player.DiscordUserId</div>
-			<div class="overflow-hidden hidden md:block text-left">@player.CountryCode</div>
-			<div class="overflow-hidden hidden md:block text-right">@player.Dpi</div>
-			<div class="overflow-hidden hidden md:block text-right">@player.InGameSens?.ToString(StringFormats.InGameSensFormat)</div>
-			<div class="overflow-hidden hidden md:block text-right">@player.Fov</div>
-			<div class="overflow-hidden hidden lg:block text-left">@player.IsRightHanded</div>
-			<div class="overflow-hidden hidden lg:block text-left">@player.HasFlashHandEnabled</div>
-			<div class="overflow-hidden hidden lg:block text-right">@player.Gamma?.ToString(StringFormats.GammaFormat)</div>
-			<div class="overflow-hidden hidden lg:block text-left">@player.UsesLegacyAudio</div>
-			<div class="overflow-hidden hidden lg:block text-left">@player.UsesHrtf</div>
-			<div class="overflow-hidden hidden xl:block text-left">@player.UsesInvertY</div>
-			<div class="overflow-hidden hidden xl:block text-left">@player.VerticalSync</div>
-			<div class="overflow-hidden hidden xl:block text-left">@player.BanType</div>
-			<div class="overflow-hidden hidden xl:block text-left">@player.BanDescription</div>
-			<div class="overflow-hidden hidden xl:block text-right">@player.BanResponsibleId</div>
-			<div class="overflow-hidden hidden xl:block text-left">@player.IsBannedFromDdcl</div>
-			<div class="overflow-hidden hidden xl:block text-left">@player.HideSettings</div>
-			<div class="overflow-hidden hidden xl:block text-left">@player.HideDonations</div>
-			<div class="overflow-hidden hidden xl:block text-left">@player.HidePastUsernames</div>
-		</RowTemplate>
-	</AdminOverview>
+	<AdminOverview
+		@ref="_overview"
+		TGetDto="GetPlayerForOverview"
+		TSorting="PlayerSorting"
+		Title="Admin - Players"
+		ApiCall="Http.GetPlayers"
+		DeletionApiCall="(int id) => Http.DeletePlayerById(id)"
+		Columns="_columns" />
 </AdminAuthorizer>
 
 @code
 {
 	// ! Blazor ref.
 	private AdminOverview<GetPlayerForOverview, PlayerSorting> _overview = null!;
+
+	private readonly List<AdminOverviewColumn<GetPlayerForOverview, PlayerSorting>> _columns =
+	[
+		new(PlayerSorting.Id, "Id", d => d.Id, TextAlign.Right),
+		new(PlayerSorting.PlayerName, "Name", d => d.PlayerName, TextAlign.Left),
+		new(PlayerSorting.CommonName, "Common name", d => d.CommonName, TextAlign.Left),
+		new(PlayerSorting.DiscordUserId, "Discord ID", d => d.DiscordUserId, TextAlign.Right),
+		new(PlayerSorting.CountryCode, "Country", d => d.CountryCode, TextAlign.Left),
+		new(PlayerSorting.Dpi, "DPI", d => d.Dpi, TextAlign.Right),
+		new(PlayerSorting.InGameSens, "Sens", d => d.InGameSens?.ToString(StringFormats.InGameSensFormat), TextAlign.Right),
+		new(PlayerSorting.Fov, "FOV", d => d.Fov, TextAlign.Right),
+		new(PlayerSorting.IsRightHanded, "Right hand", d => d.IsRightHanded, TextAlign.Left),
+		new(PlayerSorting.HasFlashHandEnabled, "Flash hand", d => d.HasFlashHandEnabled, TextAlign.Left),
+		new(PlayerSorting.Gamma, "Gamma", d => d.Gamma?.ToString(StringFormats.GammaFormat), TextAlign.Right),
+		new(PlayerSorting.UsesLegacyAudio, "Legacy audio", d => d.UsesLegacyAudio, TextAlign.Left),
+		new(PlayerSorting.UsesHrtf, "HRTF", d => d.UsesHrtf, TextAlign.Left),
+		new(PlayerSorting.UsesInvertY, "Invert Y", d => d.UsesInvertY, TextAlign.Left),
+		new(PlayerSorting.VerticalSync, "V-sync", d => d.VerticalSync, TextAlign.Left),
+		new(PlayerSorting.BanType, "Ban type", d => d.BanType, TextAlign.Left),
+		new(PlayerSorting.BanDescription, "Ban description", d => d.BanDescription, TextAlign.Left),
+		new(PlayerSorting.BanResponsibleId, "Ban responsible ID", d => d.BanResponsibleId, TextAlign.Right),
+		new(PlayerSorting.IsBannedFromDdcl, "Banned from DDCL", d => d.IsBannedFromDdcl, TextAlign.Left),
+		new(PlayerSorting.HideSettings, "Hide settings", d => d.HideSettings, TextAlign.Left),
+		new(PlayerSorting.HideDonations, "Hide donations", d => d.HideDonations, TextAlign.Left),
+		new(PlayerSorting.HidePastUsernames, "Hide past names", d => d.HidePastUsernames, TextAlign.Left),
+	];
 }

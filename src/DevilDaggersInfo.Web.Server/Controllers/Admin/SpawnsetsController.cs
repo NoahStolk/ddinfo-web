@@ -32,20 +32,26 @@ public class SpawnsetsController : ControllerBase
 		[Range(Constants.PageSizeMin, Constants.PageSizeMax)] int pageSize = Constants.PageSizeDefault,
 		SpawnsetSorting? sortBy = null,
 		bool ascending = false)
-		=> await _spawnsetRepository.GetSpawnsetsAsync(filter, pageIndex, pageSize, sortBy, ascending);
+	{
+		return await _spawnsetRepository.GetSpawnsetsAsync(filter, pageIndex, pageSize, sortBy, ascending);
+	}
 
 	[HttpGet("names")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[Authorize(Roles = Roles.CustomLeaderboards)]
 	public async Task<ActionResult<List<GetSpawnsetName>>> GetSpawnsetNames()
-		=> await _spawnsetRepository.GetSpawnsetNamesAsync();
+	{
+		return await _spawnsetRepository.GetSpawnsetNamesAsync();
+	}
 
 	[HttpGet("{id}")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	[Authorize(Roles = Roles.Spawnsets)]
 	public async Task<ActionResult<GetSpawnset>> GetSpawnsetById(int id)
-		=> await _spawnsetRepository.GetSpawnset(id);
+	{
+		return await _spawnsetRepository.GetSpawnset(id);
+	}
 
 	[HttpPost]
 	[ProducesResponseType(StatusCodes.Status200OK)]

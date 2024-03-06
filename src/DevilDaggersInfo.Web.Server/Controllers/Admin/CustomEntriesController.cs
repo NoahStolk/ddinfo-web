@@ -32,7 +32,9 @@ public class CustomEntriesController : ControllerBase
 		[Range(Constants.PageSizeMin, Constants.PageSizeMax)] int pageSize = Constants.PageSizeDefault,
 		CustomEntrySorting? sortBy = null,
 		bool ascending = false)
-		=> await _customEntryRepository.GetCustomEntriesAsync(filter, pageIndex, pageSize, sortBy, ascending);
+	{
+		return await _customEntryRepository.GetCustomEntriesAsync(filter, pageIndex, pageSize, sortBy, ascending);
+	}
 
 	[HttpGet("{id}")]
 	[ProducesResponseType(StatusCodes.Status200OK)]

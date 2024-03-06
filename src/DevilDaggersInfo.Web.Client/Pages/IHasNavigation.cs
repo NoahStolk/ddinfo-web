@@ -8,7 +8,7 @@ public interface IHasNavigation
 	public int TotalPages { get; }
 	public int TotalResults { get; }
 
-	public Task ChangePageIndex(int pageIndex);
+	public Task ChangePageIndexAsync(int pageIndex);
 
-	public Task ChangePageSize(int pageSize);
+	public Task ChangePageSizeAsync(int pageSize);
 }

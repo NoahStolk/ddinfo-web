@@ -1,12 +1,12 @@
 @page "/admin/spawnsets/edit/{Id:int}"
 @inherits BaseAdminPage
+@using DevilDaggersInfo.Web.ApiSpec.Admin.Players
+@using DevilDaggersInfo.Web.ApiSpec.Admin.Spawnsets
 @using DevilDaggersInfo.Web.Client.Components.Admin
 @using DevilDaggersInfo.Web.Client.Components.Input
 @using DevilDaggersInfo.Web.Client.Enums
 @using DevilDaggersInfo.Web.Client.StateObjects.Admin.Spawnsets
 @using DevilDaggersInfo.Web.Core.Claims
-@using DevilDaggersInfo.Web.ApiSpec.Admin.Players
-@using DevilDaggersInfo.Web.ApiSpec.Admin.Spawnsets
 
 <AdminAuthorizer Base="this" RequiredRole="@Roles.Spawnsets">
 	<AdminEdit TStateObject="EditSpawnsetState" TModel="EditSpawnset" Name="Spawnset" OverviewUrl="/admin/spawnsets" ApiCall="Http.EditSpawnsetById" StateObject="_editSpawnsetState" Id="Id" OnPopulate="async ec => await PopulateAsync(ec)">

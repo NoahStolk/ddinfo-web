@@ -1,9 +1,12 @@
+using DevilDaggersInfo.Web.ApiSpec.Admin;
 using DevilDaggersInfo.Web.ApiSpec.Admin.Users;
+using DevilDaggersInfo.Web.Client;
 using DevilDaggersInfo.Web.Core.Claims;
 using DevilDaggersInfo.Web.Server.Domain.Admin.Repositories;
 using DevilDaggersInfo.Web.Server.Domain.Admin.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 
@@ -23,15 +26,24 @@ public class UsersController : ControllerBase
 	[HttpGet]
 	[Authorize(Roles = Roles.Players)]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	public async Task<ActionResult<List<GetUser>>> GetUsers()
-		=> await _userRepository.GetUsersAsync();
+	public async Task<ActionResult<Page<GetUser>>> GetUsers(
+		string? filter = null,
+		[Range(0, 1000)] int pageIndex = 0,
+		[Range(Constants.PageSizeMin, Constants.PageSizeMax)] int pageSize = Constants.PageSizeDefault,
+		UserSorting? sortBy = null,
+		bool ascending = false)
+	{
+		return await _userRepository.GetUsersAsync(filter, pageIndex, pageSize, sortBy, ascending);
+	}
 
 	[HttpGet("{id}")]
 	[Authorize(Roles = Roles.Players)]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult<GetUser>> GetUserById(int id)
-		=> await _userRepository.GetUserAsync(id);
+	{
+		return await _userRepository.GetUserAsync(id);
+	}
 
 	[HttpPatch("{id}/toggle-role")]
 	[Authorize(Roles = Roles.Admin)]

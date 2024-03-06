@@ -24,7 +24,9 @@ public class MarkersController : ControllerBase
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public async Task<ActionResult<List<string>>> GetMarkers()
-		=> await _markerRepository.GetMarkerNamesAsync();
+	{
+		return await _markerRepository.GetMarkerNamesAsync();
+	}
 
 	[HttpPut("{name}")]
 	[ProducesResponseType(StatusCodes.Status200OK)]

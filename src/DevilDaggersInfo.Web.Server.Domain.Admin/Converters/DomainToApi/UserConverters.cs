@@ -19,6 +19,7 @@ public static class UserConverters
 			IsSpawnsetsMaintainer = IsInRole(user, Roles.Spawnsets),
 			PlayerId = user.PlayerId,
 			PlayerName = user.Player?.PlayerName ?? string.Empty,
+			RegistrationDate = user.DateRegistered ?? DateTime.UnixEpoch,
 		};
 
 		static bool IsInRole(UserEntity user, string roleName)

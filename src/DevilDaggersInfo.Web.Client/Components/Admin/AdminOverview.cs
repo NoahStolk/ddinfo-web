@@ -34,13 +34,7 @@ public partial class AdminOverview<TGetDto, TSorting> : IHasNavigation
 
 	[Parameter]
 	[EditorRequired]
-	public required string GridConfiguration { get; set; }
-
-	[Parameter]
-	public required RenderFragment TableHeader { get; set; }
-
-	[Parameter]
-	public required RenderFragment<TGetDto> RowTemplate { get; set; }
+	public required List<AdminOverviewColumn<TGetDto, TSorting>> Columns { get; set; } = [];
 
 	[Parameter]
 	public string? Filter { get; set; }
@@ -70,39 +64,41 @@ public partial class AdminOverview<TGetDto, TSorting> : IHasNavigation
 
 	protected override async Task OnParametersSetAsync()
 	{
-		await Fetch();
+		await FetchAsync();
 	}
 
-	private async Task ChangeFilter(ChangeEventArgs e)
+	private async Task ChangeFilterAsync(ChangeEventArgs e)
 	{
 		Filter = e.Value?.ToString();
 
-		await Fetch();
+		await FetchAsync();
 	}
 
-	public async Task ChangePageIndex(int pageIndex)
+	public async Task ChangePageIndexAsync(int pageIndex)
 	{
 		PageIndex = Math.Clamp(pageIndex, 0, TotalPages - 1);
 
-		await Fetch();
+		await FetchAsync();
 	}
 
-	public async Task ChangePageSize(int pageSize)
+	public async Task ChangePageSizeAsync(int pageSize)
 	{
 		PageSize = pageSize;
 		PageIndex = Math.Clamp(PageIndex, 0, TotalPages - 1);
 
-		await Fetch();
+		await FetchAsync();
 	}
 
-	public void Sort(TSorting sorting)
+	private async Task SortAsync(TSorting sorting)
 	{
 		SortBy = (int)(object)sorting;
 		_sortings[sorting] = !_sortings[sorting];
 		Ascending = _sortings[sorting];
+
+		await FetchAsync();
 	}
 
-	private async Task Fetch()
+	private async Task FetchAsync()
 	{
 		try
 		{

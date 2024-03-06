@@ -32,14 +32,18 @@ public class DonationsController : ControllerBase
 		[Range(Constants.PageSizeMin, Constants.PageSizeMax)] int pageSize = Constants.PageSizeDefault,
 		DonationSorting? sortBy = null,
 		bool ascending = false)
-		=> await _donationRepository.GetDonationsAsync(filter, pageIndex, pageSize, sortBy, ascending);
+	{
+		return await _donationRepository.GetDonationsAsync(filter, pageIndex, pageSize, sortBy, ascending);
+	}
 
 	[HttpGet("{id}")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	[Authorize(Roles = Roles.Spawnsets)]
 	public async Task<ActionResult<GetDonation>> GetDonationById(int id)
-		=> await _donationRepository.GetDonationAsync(id);
+	{
+		return await _donationRepository.GetDonationAsync(id);
+	}
 
 	[HttpPost]
 	[ProducesResponseType(StatusCodes.Status200OK)]

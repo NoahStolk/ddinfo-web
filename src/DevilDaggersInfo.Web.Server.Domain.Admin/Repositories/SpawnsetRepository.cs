@@ -44,7 +44,7 @@ public class SpawnsetRepository
 			.Take(pageSize)
 			.ToListAsync();
 
-		return new Page<GetSpawnsetForOverview>
+		return new()
 		{
 			Results = spawnsets.ConvertAll(s => s.ToAdminApiOverview()),
 			TotalResults = spawnsetsQuery.Count(),

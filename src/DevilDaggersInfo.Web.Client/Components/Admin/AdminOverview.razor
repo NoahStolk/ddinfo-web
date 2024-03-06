@@ -4,6 +4,7 @@
 @inject NavigationManager NavigationManager
 @using DevilDaggersInfo.Web.Client.Components
 @using DevilDaggersInfo.Web.Client.Enums
+@using DevilDaggersInfo.Web.Client.Extensions
 
 <Heading Title="@Title" />
 
@@ -25,14 +26,14 @@
 }
 else
 {
-	<Deletion AfterDelete="Fetch" ApiCall="@DeletionApiCall" @ref="_deletion" />
+	<Deletion AfterDelete="FetchAsync" ApiCall="@DeletionApiCall" @ref="_deletion" />
 
 	<div class="bg-gray-1 p-2 text-lg">
 		<a class="btn btn-green block w-24 mb-2 mx-1" href="@($"{NavigationManager.Uri}/add")">Add new</a>
 
 		<div class="m-1">
 			<span>Filter</span>
-			<input class="bg-black border-gray-3 border-2" value="@Filter" @onchange="ChangeFilter" />
+			<input class="bg-black border-gray-3 border-2" value="@Filter" @onchange="ChangeFilterAsync" />
 		</div>
 
 		<CascadingValue Value="this">
@@ -40,22 +41,34 @@ else
 		</CascadingValue>
 	</div>
 
-	<div class="grid gap-2 @GridConfiguration">
-		@TableHeader
-		<div></div>
-		<div></div>
-	</div>
-	<div>
-		@{
-			int i = 0;
-			foreach (TGetDto result in _page.Results)
-			{
-				<div class="grid gap-2 @GridConfiguration @(i++ % 2 == 0 ? "bg-gray-1" : string.Empty)">
-					@RowTemplate(result)
-					<div><a class="link" href="@($"{NavigationManager.Uri}/edit/{result.Id}")">Edit</a></div>
-					<div><a class="link" href="" @onclick="() => _deletion?.Set(result.Id)" @onclick:preventDefault>Delete</a></div>
-				</div>
-			}
-		}
+	<div class="overflow-x-auto">
+		<table class="table-auto w-full">
+			<thead>
+				<tr>
+					@foreach (AdminOverviewColumn<TGetDto, TSorting> column in Columns)
+					{
+						<th class="link overflow-hidden break-normal whitespace-nowrap cursor-pointer px-2 @column.TextAlignCssClass" @onclick="@(() => SortAsync(column.Sorting))" @onclick:preventDefault>@column.Header.ToNoBreakString()</th>
+					}
+					<th></th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				@{
+					int i = 0;
+					foreach (TGetDto result in _page.Results)
+					{
+						<tr class="@(i++ % 2 == 0 ? "bg-gray-1" : null)">
+							@foreach (AdminOverviewColumn<TGetDto, TSorting> column in Columns)
+							{
+								<td class="overflow-hidden break-normal whitespace-nowrap px-2 @column.TextAlignCssClass">@column.DataGetter.Invoke(result)?.ToNoBreakString()</td>
+							}
+							<td class="overflow-hidden break-normal whitespace-nowrap px-2 text-left"><a class="link" href="@($"{NavigationManager.Uri}/edit/{result.Id}")">Edit</a></td>
+							<td class="overflow-hidden break-normal whitespace-nowrap px-2 text-left"><a class="link" href="" @onclick="() => _deletion?.Set(result.Id)" @onclick:preventDefault>Delete</a></td>
+						</tr>
+					}
+				}
+			</tbody>
+		</table>
 	</div>
 }
