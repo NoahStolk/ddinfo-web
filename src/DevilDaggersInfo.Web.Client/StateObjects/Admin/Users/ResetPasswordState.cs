@@ -6,8 +6,11 @@ public class ResetPasswordState : IStateObject<ResetPassword>
 {
 	public string NewPassword { get; set; } = string.Empty;
 
-	public ResetPassword ToModel() => new()
+	public ResetPassword ToModel()
 	{
-		NewPassword = NewPassword,
-	};
+		return new()
+		{
+			NewPassword = NewPassword,
+		};
+	}
 }

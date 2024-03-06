@@ -6,8 +6,11 @@ public class AssignPlayerState : IStateObject<AssignPlayer>
 {
 	public int PlayerId { get; set; }
 
-	public AssignPlayer ToModel() => new()
+	public AssignPlayer ToModel()
 	{
-		PlayerId = PlayerId,
-	};
+		return new()
+		{
+			PlayerId = PlayerId,
+		};
+	}
 }
