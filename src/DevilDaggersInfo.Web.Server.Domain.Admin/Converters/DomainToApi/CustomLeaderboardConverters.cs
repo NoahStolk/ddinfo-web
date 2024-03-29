@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Core.Common.Extensions;
+using DevilDaggersInfo.Core.Common;
 using DevilDaggersInfo.Core.CriteriaExpression;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Values;
@@ -91,11 +91,11 @@ public static class CustomLeaderboardConverters
 		bool isTime = customLeaderboard.RankSorting.IsTime();
 		return new()
 		{
-			Bronze = isTime ? customLeaderboard.Bronze.ToSecondsTime() : customLeaderboard.Bronze,
-			Silver = isTime ? customLeaderboard.Silver.ToSecondsTime() : customLeaderboard.Silver,
-			Golden = isTime ? customLeaderboard.Golden.ToSecondsTime() : customLeaderboard.Golden,
-			Devil = isTime ? customLeaderboard.Devil.ToSecondsTime() : customLeaderboard.Devil,
-			Leviathan = isTime ? customLeaderboard.Leviathan.ToSecondsTime() : customLeaderboard.Leviathan,
+			Bronze = isTime ? GameTime.FromGameUnits(customLeaderboard.Bronze).Seconds : customLeaderboard.Bronze,
+			Silver = isTime ? GameTime.FromGameUnits(customLeaderboard.Silver).Seconds : customLeaderboard.Silver,
+			Golden = isTime ? GameTime.FromGameUnits(customLeaderboard.Golden).Seconds : customLeaderboard.Golden,
+			Devil = isTime ? GameTime.FromGameUnits(customLeaderboard.Devil).Seconds : customLeaderboard.Devil,
+			Leviathan = isTime ? GameTime.FromGameUnits(customLeaderboard.Leviathan).Seconds : customLeaderboard.Leviathan,
 		};
 	}
 
