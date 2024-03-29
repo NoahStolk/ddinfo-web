@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Core.Common;
 using DevilDaggersInfo.Core.Common.Extensions;
 using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Core.Wiki.Objects;
@@ -115,7 +116,7 @@ public class LeaderboardStatisticsCache
 			else
 				DeathsStatistics[death]++;
 
-			double seconds = entry.Time.ToSecondsTime();
+			double seconds = GameTime.FromGameUnits(entry.Time).Seconds;
 
 			if (seconds < currentDaggerTime)
 			{

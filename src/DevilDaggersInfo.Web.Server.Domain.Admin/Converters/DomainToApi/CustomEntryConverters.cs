@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Core.Common.Extensions;
+using DevilDaggersInfo.Core.Common;
 using DevilDaggersInfo.Web.ApiSpec.Admin.CustomEntries;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 
@@ -32,13 +32,13 @@ public static class CustomEntryConverters
 			GemsTotal = customEntry.GemsTotal,
 			HomingStored = customEntry.HomingStored,
 			HomingEaten = customEntry.HomingEaten,
-			LevelUpTime2 = customEntry.LevelUpTime2.ToSecondsTime(),
-			LevelUpTime3 = customEntry.LevelUpTime3.ToSecondsTime(),
-			LevelUpTime4 = customEntry.LevelUpTime4.ToSecondsTime(),
+			LevelUpTime2 = GameTime.FromGameUnits(customEntry.LevelUpTime2).Seconds,
+			LevelUpTime3 = GameTime.FromGameUnits(customEntry.LevelUpTime3).Seconds,
+			LevelUpTime4 = GameTime.FromGameUnits(customEntry.LevelUpTime4).Seconds,
 			PlayerName = customEntry.Player.PlayerName,
 			SpawnsetName = customEntry.CustomLeaderboard.Spawnset.Name,
 			SubmitDate = customEntry.SubmitDate,
-			Time = customEntry.Time.ToSecondsTime(),
+			Time = GameTime.FromGameUnits(customEntry.Time).Seconds,
 		};
 	}
 
@@ -62,13 +62,13 @@ public static class CustomEntryConverters
 			GemsTotal = customEntry.GemsTotal,
 			HomingStored = customEntry.HomingStored,
 			HomingEaten = customEntry.HomingEaten,
-			LevelUpTime2 = customEntry.LevelUpTime2.ToSecondsTime(),
-			LevelUpTime3 = customEntry.LevelUpTime3.ToSecondsTime(),
-			LevelUpTime4 = customEntry.LevelUpTime4.ToSecondsTime(),
+			LevelUpTime2 = GameTime.FromGameUnits(customEntry.LevelUpTime2).Seconds,
+			LevelUpTime3 = GameTime.FromGameUnits(customEntry.LevelUpTime3).Seconds,
+			LevelUpTime4 = GameTime.FromGameUnits(customEntry.LevelUpTime4).Seconds,
 			PlayerId = customEntry.PlayerId,
 			SpawnsetId = customEntry.CustomLeaderboard.SpawnsetId,
 			SubmitDate = customEntry.SubmitDate,
-			Time = customEntry.Time.ToSecondsTime(),
+			Time = GameTime.FromGameUnits(customEntry.Time).Seconds,
 		};
 	}
 }

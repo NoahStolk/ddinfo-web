@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Core.Common;
 using DevilDaggersInfo.Core.Common.Extensions;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
@@ -85,7 +86,7 @@ public class PlayerHistoryRepository
 					Gems = entry.Gems,
 					Kills = entry.Kills,
 					Rank = correctedRank,
-					Time = entry.Time.ToSecondsTime(),
+					Time = GameTime.FromGameUnits(entry.Time).Seconds,
 					Username = entry.Username,
 				});
 
@@ -110,7 +111,7 @@ public class PlayerHistoryRepository
 				activityHistory.Add(new()
 				{
 					DeathsIncrement = totalDeathsForActivityHistory.HasValue && timeSpan.HasValue ? (entry.DeathsTotal - totalDeathsForActivityHistory.Value) / timeSpan.Value.TotalDays : 0,
-					TimeIncrement = totalTimeForActivityHistory.HasValue && timeSpan.HasValue ? (entry.TimeTotal - totalTimeForActivityHistory.Value).ToSecondsTime() / timeSpan.Value.TotalDays : 0,
+					TimeIncrement = totalTimeForActivityHistory.HasValue && timeSpan.HasValue ? GameTime.FromGameUnits(entry.TimeTotal - totalTimeForActivityHistory.Value).Seconds / timeSpan.Value.TotalDays : 0,
 					DateTime = leaderboard.DateTime,
 				});
 
