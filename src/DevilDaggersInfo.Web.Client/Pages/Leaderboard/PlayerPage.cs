@@ -205,7 +205,7 @@ public partial class PlayerPage
 				return activityEntry == null ? [] :
 				[
 					new($"<span style='text-align: right;'>{activityEntry.DateTime.ToString(StringFormats.DateFormat)}</span>"),
-					new($"<span style='color: {ds.Color}; text-align: right;'>{activityEntry.DeathsIncrement.ToString("0.0")}</span>"),
+					new($"<span style='color: {ds.Color}; text-align: right;'>{activityEntry.DeathsIncrement:0.0}</span>"),
 				];
 			}));
 
@@ -217,7 +217,7 @@ public partial class PlayerPage
 				return activityEntry == null ? [] :
 				[
 					new($"<span style='text-align: right;'>{activityEntry.DateTime.ToString(StringFormats.DateFormat)}</span>"),
-					new($"<span style='color: {ds.Color}; text-align: right;'>{activityEntry.TimeIncrement.ToString("0.0000")}</span>"),
+					new($"<span style='color: {ds.Color}; text-align: right;'>{activityEntry.TimeIncrement.ToString(StringFormats.TimeFormat)}</span>"),
 				];
 			}));
 		}
