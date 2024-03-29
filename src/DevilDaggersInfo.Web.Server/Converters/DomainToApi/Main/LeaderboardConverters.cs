@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Core.Common.Extensions;
+using DevilDaggersInfo.Core.Common;
 using DevilDaggersInfo.Web.ApiSpec.Main.Leaderboards;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 
@@ -19,7 +19,7 @@ public static class LeaderboardConverters
 			GemsGlobal = leaderboardResponse.GemsGlobal,
 			KillsGlobal = leaderboardResponse.KillsGlobal,
 			TotalPlayers = leaderboardResponse.TotalPlayers,
-			TimeGlobal = leaderboardResponse.TimeGlobal == 0 ? 0 : leaderboardResponse.TimeGlobal.ToSecondsTime(),
+			TimeGlobal = leaderboardResponse.TimeGlobal == 0 ? 0 : GameTime.FromGameUnits(leaderboardResponse.TimeGlobal).Seconds,
 		};
 	}
 
@@ -39,8 +39,8 @@ public static class LeaderboardConverters
 			Kills = entryResponse.Kills,
 			KillsTotal = entryResponse.KillsTotal,
 			Rank = entryResponse.Rank,
-			Time = entryResponse.Time.ToSecondsTime(),
-			TimeTotal = entryResponse.TimeTotal.ToSecondsTime(),
+			Time = GameTime.FromGameUnits(entryResponse.Time).Seconds,
+			TimeTotal = GameTime.FromGameUnits(entryResponse.TimeTotal).Seconds,
 			Username = entryResponse.Username,
 		};
 	}

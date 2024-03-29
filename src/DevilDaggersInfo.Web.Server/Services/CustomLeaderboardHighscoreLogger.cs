@@ -1,5 +1,4 @@
 using DevilDaggersInfo.Core.Common;
-using DevilDaggersInfo.Core.Common.Extensions;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
@@ -111,7 +110,7 @@ public class CustomLeaderboardHighscoreLogger : ICustomLeaderboardHighscoreLogge
 	{
 		return rankSorting switch
 		{
-			CustomLeaderboardRankSorting.TimeAsc or CustomLeaderboardRankSorting.TimeDesc => customEntry.Time.ToSecondsTime().ToString(StringFormats.TimeFormat),
+			CustomLeaderboardRankSorting.TimeAsc or CustomLeaderboardRankSorting.TimeDesc => GameTime.FromGameUnits(customEntry.Time).Seconds.ToString(StringFormats.TimeFormat),
 			CustomLeaderboardRankSorting.GemsCollectedAsc or CustomLeaderboardRankSorting.GemsCollectedDesc => customEntry.GemsCollected.ToString(),
 			CustomLeaderboardRankSorting.GemsDespawnedAsc or CustomLeaderboardRankSorting.GemsDespawnedDesc => customEntry.GemsDespawned.ToString(),
 			CustomLeaderboardRankSorting.GemsEatenAsc or CustomLeaderboardRankSorting.GemsEatenDesc => customEntry.GemsEaten.ToString(),
@@ -127,7 +126,7 @@ public class CustomLeaderboardHighscoreLogger : ICustomLeaderboardHighscoreLogge
 	{
 		return rankSorting switch
 		{
-			CustomLeaderboardRankSorting.TimeAsc or CustomLeaderboardRankSorting.TimeDesc => valueDifference.ToSecondsTime().ToString("+0.0000;-0.0000;+0.0000"),
+			CustomLeaderboardRankSorting.TimeAsc or CustomLeaderboardRankSorting.TimeDesc => GameTime.FromGameUnits(valueDifference).Seconds.ToString("+0.0000;-0.0000;+0.0000"),
 			_ => valueDifference.ToString("+0;-0;+0"),
 		};
 	}

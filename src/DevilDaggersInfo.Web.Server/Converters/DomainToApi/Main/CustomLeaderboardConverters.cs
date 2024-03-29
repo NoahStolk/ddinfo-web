@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Core.Common.Extensions;
+using DevilDaggersInfo.Core.Common;
 using DevilDaggersInfo.Core.CriteriaExpression;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
@@ -76,13 +76,13 @@ public static class CustomLeaderboardConverters
 			HomingStored = customEntry.HomingStored,
 			HomingEaten = customEntry.HomingEaten,
 			EnemiesKilled = customEntry.EnemiesKilled,
-			LevelUpTime2 = customEntry.LevelUpTime2.ToSecondsTime(),
-			LevelUpTime3 = customEntry.LevelUpTime3.ToSecondsTime(),
-			LevelUpTime4 = customEntry.LevelUpTime4.ToSecondsTime(),
+			LevelUpTime2 = GameTime.FromGameUnits(customEntry.LevelUpTime2).Seconds,
+			LevelUpTime3 = GameTime.FromGameUnits(customEntry.LevelUpTime3).Seconds,
+			LevelUpTime4 = GameTime.FromGameUnits(customEntry.LevelUpTime4).Seconds,
 			DaggersFired = customEntry.DaggersFired,
 			DaggersHit = customEntry.DaggersHit,
 			SubmitDate = customEntry.SubmitDate,
-			Time = customEntry.Time.ToSecondsTime(),
+			Time = GameTime.FromGameUnits(customEntry.Time).Seconds,
 			CustomLeaderboardDagger = customEntry.CustomLeaderboardDagger?.ToMainApi(),
 			HasGraphs = customEntry.HasGraphs,
 		};
@@ -92,11 +92,11 @@ public static class CustomLeaderboardConverters
 	{
 		return new()
 		{
-			Bronze = isTime ? customLeaderboardDaggers.Bronze.ToSecondsTime() : customLeaderboardDaggers.Bronze,
-			Silver = isTime ? customLeaderboardDaggers.Silver.ToSecondsTime() : customLeaderboardDaggers.Silver,
-			Golden = isTime ? customLeaderboardDaggers.Golden.ToSecondsTime() : customLeaderboardDaggers.Golden,
-			Devil = isTime ? customLeaderboardDaggers.Devil.ToSecondsTime() : customLeaderboardDaggers.Devil,
-			Leviathan = isTime ? customLeaderboardDaggers.Leviathan.ToSecondsTime() : customLeaderboardDaggers.Leviathan,
+			Bronze = isTime ? GameTime.FromGameUnits(customLeaderboardDaggers.Bronze).Seconds : customLeaderboardDaggers.Bronze,
+			Silver = isTime ? GameTime.FromGameUnits(customLeaderboardDaggers.Silver).Seconds : customLeaderboardDaggers.Silver,
+			Golden = isTime ? GameTime.FromGameUnits(customLeaderboardDaggers.Golden).Seconds : customLeaderboardDaggers.Golden,
+			Devil = isTime ? GameTime.FromGameUnits(customLeaderboardDaggers.Devil).Seconds : customLeaderboardDaggers.Devil,
+			Leviathan = isTime ? GameTime.FromGameUnits(customLeaderboardDaggers.Leviathan).Seconds : customLeaderboardDaggers.Leviathan,
 		};
 	}
 
@@ -261,13 +261,13 @@ public static class CustomLeaderboardConverters
 			HomingStored = customEntry.HomingStored,
 			HomingEaten = customEntry.HomingEaten,
 			EnemiesKilled = customEntry.EnemiesKilled,
-			LevelUpTime2 = customEntry.LevelUpTime2.ToSecondsTime(),
-			LevelUpTime3 = customEntry.LevelUpTime3.ToSecondsTime(),
-			LevelUpTime4 = customEntry.LevelUpTime4.ToSecondsTime(),
+			LevelUpTime2 = GameTime.FromGameUnits(customEntry.LevelUpTime2).Seconds,
+			LevelUpTime3 = GameTime.FromGameUnits(customEntry.LevelUpTime3).Seconds,
+			LevelUpTime4 = GameTime.FromGameUnits(customEntry.LevelUpTime4).Seconds,
 			DaggersFired = customEntry.DaggersFired,
 			DaggersHit = customEntry.DaggersHit,
 			SubmitDate = customEntry.SubmitDate,
-			Time = customEntry.Time.ToSecondsTime(),
+			Time = GameTime.FromGameUnits(customEntry.Time).Seconds,
 			CustomLeaderboardDagger = customEntry.CustomLeaderboard.DaggerFromStat(customEntry)?.ToMainApi(),
 
 			GemsCollectedData = GetInt32Arr(customEntryData?.GemsCollectedData),
