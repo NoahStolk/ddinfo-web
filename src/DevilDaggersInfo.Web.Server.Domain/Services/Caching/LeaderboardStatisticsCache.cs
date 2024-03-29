@@ -1,5 +1,4 @@
 using DevilDaggersInfo.Core.Common;
-using DevilDaggersInfo.Core.Common.Extensions;
 using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Core.Wiki.Objects;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;

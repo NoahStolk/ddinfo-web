@@ -1,5 +1,4 @@
 using DevilDaggersInfo.Core.Common;
-using DevilDaggersInfo.Core.Common.Extensions;
 using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;

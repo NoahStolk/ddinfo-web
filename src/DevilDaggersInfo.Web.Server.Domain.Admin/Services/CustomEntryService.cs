@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Core.Common.Extensions;
+using DevilDaggersInfo.Core.Common;
 using DevilDaggersInfo.Web.ApiSpec.Admin.CustomEntries;
 using DevilDaggersInfo.Web.Server.Domain.Admin.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
@@ -45,12 +45,12 @@ public class CustomEntryService
 			GemsTotal = addCustomEntry.GemsTotal,
 			HomingStored = addCustomEntry.HomingStored,
 			HomingEaten = addCustomEntry.HomingEaten,
-			LevelUpTime2 = addCustomEntry.LevelUpTime2.To10thMilliTime(),
-			LevelUpTime3 = addCustomEntry.LevelUpTime3.To10thMilliTime(),
-			LevelUpTime4 = addCustomEntry.LevelUpTime4.To10thMilliTime(),
+			LevelUpTime2 = (int)GameTime.FromSeconds(addCustomEntry.LevelUpTime2).GameUnits,
+			LevelUpTime3 = (int)GameTime.FromSeconds(addCustomEntry.LevelUpTime3).GameUnits,
+			LevelUpTime4 = (int)GameTime.FromSeconds(addCustomEntry.LevelUpTime4).GameUnits,
 			PlayerId = addCustomEntry.PlayerId,
 			SubmitDate = addCustomEntry.SubmitDate,
-			Time = addCustomEntry.Time.To10thMilliTime(),
+			Time = (int)GameTime.FromSeconds(addCustomEntry.Time).GameUnits,
 		};
 		_dbContext.CustomEntries.Add(customEntry);
 		await _dbContext.SaveChangesAsync();
@@ -81,12 +81,12 @@ public class CustomEntryService
 		customEntry.GemsTotal = editCustomEntry.GemsTotal;
 		customEntry.HomingStored = editCustomEntry.HomingStored;
 		customEntry.HomingEaten = editCustomEntry.HomingEaten;
-		customEntry.LevelUpTime2 = editCustomEntry.LevelUpTime2.To10thMilliTime();
-		customEntry.LevelUpTime3 = editCustomEntry.LevelUpTime3.To10thMilliTime();
-		customEntry.LevelUpTime4 = editCustomEntry.LevelUpTime4.To10thMilliTime();
+		customEntry.LevelUpTime2 = (int)GameTime.FromSeconds(editCustomEntry.LevelUpTime2).GameUnits;
+		customEntry.LevelUpTime3 = (int)GameTime.FromSeconds(editCustomEntry.LevelUpTime3).GameUnits;
+		customEntry.LevelUpTime4 = (int)GameTime.FromSeconds(editCustomEntry.LevelUpTime4).GameUnits;
 		customEntry.PlayerId = editCustomEntry.PlayerId;
 		customEntry.SubmitDate = editCustomEntry.SubmitDate;
-		customEntry.Time = editCustomEntry.Time.To10thMilliTime();
+		customEntry.Time = (int)GameTime.FromSeconds(editCustomEntry.Time).GameUnits;
 		await _dbContext.SaveChangesAsync();
 	}
 

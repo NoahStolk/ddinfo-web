@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Core.Common.Extensions;
+using DevilDaggersInfo.Core.Common;
 using DevilDaggersInfo.Web.ApiSpec.Main.LeaderboardHistory;
 using DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardHistory;
 
@@ -17,7 +17,7 @@ public static class LeaderboardHistoryConverters
 			Entries = leaderboard.Entries.ConvertAll(eh => eh.ToMainApi(leaderboard.DateTime)),
 			GemsGlobal = leaderboard.GemsGlobal,
 			KillsGlobal = leaderboard.KillsGlobal,
-			TimeGlobal = leaderboard.TimeGlobal.ToSecondsTime(),
+			TimeGlobal = GameTime.FromGameUnits(leaderboard.TimeGlobal).Seconds,
 			TotalPlayers = leaderboard.Players,
 		};
 	}
@@ -39,8 +39,8 @@ public static class LeaderboardHistoryConverters
 			Kills = entry.Kills,
 			KillsTotal = entry.KillsTotal,
 			Rank = entry.Rank,
-			Time = entry.Time.ToSecondsTime(),
-			TimeTotal = entry.TimeTotal.ToSecondsTime(),
+			Time = GameTime.FromGameUnits(entry.Time).Seconds,
+			TimeTotal = GameTime.FromGameUnits(entry.TimeTotal).Seconds,
 			Username = entry.Username,
 		};
 	}
