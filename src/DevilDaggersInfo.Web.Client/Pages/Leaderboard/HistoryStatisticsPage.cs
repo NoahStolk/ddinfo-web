@@ -15,7 +15,7 @@ public partial class HistoryStatisticsPage
 {
 	private readonly LineChartOptions _playersLineChartOptions = new()
 	{
-		HighlighterKeys = new() { "Date", "Players", "Game Version" },
+		HighlighterKeys = ["Date", "Players", "Game Version"],
 		GridOptions = new() { MinimumRowHeightInPx = 50 },
 		ScaleYOptions = new() { NumberFormat = StringFormats.LeaderboardIntFormat },
 		ChartMarginXInPx = 60,
@@ -25,7 +25,7 @@ public partial class HistoryStatisticsPage
 
 	private readonly LineChartOptions _entrancesLineChartOptions = new()
 	{
-		HighlighterKeys = new() { "Date", "Top 1 Score", "Top 2 Score", "Top 3 Score", "Top 10 Score", "Top 100 Score", "Game Version" },
+		HighlighterKeys = ["Date", "Top 1 Score", "Top 2 Score", "Top 3 Score", "Top 10 Score", "Top 100 Score", "Game Version"],
 		GridOptions = new() { MinimumRowHeightInPx = 50 },
 		XScaleDisplayUnit = ScaleDisplayUnit.TicksAsDate,
 		Backgrounds = LineChartUtils.GameVersionBackgrounds,
@@ -33,7 +33,7 @@ public partial class HistoryStatisticsPage
 
 	private readonly LineChartOptions _timeLineChartOptions = new()
 	{
-		HighlighterKeys = new() { "Date", "Global Time" },
+		HighlighterKeys = ["Date", "Global Time"],
 		GridOptions = new() { MinimumRowHeightInPx = 50 },
 		ScaleYOptions = new() { NumberFormat = StringFormats.LeaderboardIntFormat },
 		ChartMarginXInPx = 100,
@@ -44,7 +44,7 @@ public partial class HistoryStatisticsPage
 
 	private readonly LineChartOptions _deathsLineChartOptions = new()
 	{
-		HighlighterKeys = new() { "Date", "Global Deaths" },
+		HighlighterKeys = ["Date", "Global Deaths"],
 		GridOptions = new() { MinimumRowHeightInPx = 50 },
 		ScaleYOptions = new() { NumberFormat = StringFormats.LeaderboardIntFormat },
 		ChartMarginXInPx = 100,
@@ -54,7 +54,7 @@ public partial class HistoryStatisticsPage
 
 	private readonly LineChartOptions _gemsLineChartOptions = new()
 	{
-		HighlighterKeys = new() { "Date", "Global Gems" },
+		HighlighterKeys = ["Date", "Global Gems"],
 		GridOptions = new() { MinimumRowHeightInPx = 50 },
 		ScaleYOptions = new() { NumberFormat = StringFormats.LeaderboardIntFormat },
 		ChartMarginXInPx = 100,
@@ -64,7 +64,7 @@ public partial class HistoryStatisticsPage
 
 	private readonly LineChartOptions _killsLineChartOptions = new()
 	{
-		HighlighterKeys = new() { "Date", "Global Kills" },
+		HighlighterKeys = ["Date", "Global Kills"],
 		GridOptions = new() { MinimumRowHeightInPx = 50 },
 		ScaleYOptions = new() { NumberFormat = StringFormats.LeaderboardIntFormat },
 		ChartMarginXInPx = 100,
@@ -74,7 +74,7 @@ public partial class HistoryStatisticsPage
 
 	private readonly LineChartOptions _accuracyLineChartOptions = new()
 	{
-		HighlighterKeys = new() { "Date", "Global Accuracy", "Global Daggers Hit", "Global Daggers Fired" },
+		HighlighterKeys = ["Date", "Global Accuracy", "Global Daggers Hit", "Global Daggers Fired"],
 		GridOptions = new() { MinimumRowHeightInPx = 50 },
 		ScaleYOptions = new() { NumberFormat = "0%" },
 		XScaleDisplayUnit = ScaleDisplayUnit.TicksAsDate,
@@ -82,13 +82,13 @@ public partial class HistoryStatisticsPage
 		Backgrounds = LineChartUtils.GameVersionBackgrounds,
 	};
 
-	private readonly List<LineDataSet> _playersData = new();
-	private readonly List<LineDataSet> _entrancesData = new();
-	private readonly List<LineDataSet> _timeData = new();
-	private readonly List<LineDataSet> _deathsData = new();
-	private readonly List<LineDataSet> _gemsData = new();
-	private readonly List<LineDataSet> _killsData = new();
-	private readonly List<LineDataSet> _accuracyData = new();
+	private readonly List<LineDataSet> _playersData = [];
+	private readonly List<LineDataSet> _entrancesData = [];
+	private readonly List<LineDataSet> _timeData = [];
+	private readonly List<LineDataSet> _deathsData = [];
+	private readonly List<LineDataSet> _gemsData = [];
+	private readonly List<LineDataSet> _killsData = [];
+	private readonly List<LineDataSet> _accuracyData = [];
 
 	private LineChartDataOptions _playersOptions = LineChartDataOptions.Default;
 	private LineChartDataOptions _entrancesOptions = LineChartDataOptions.Default;
@@ -126,12 +126,12 @@ public partial class HistoryStatisticsPage
 			_playersData.Add(new("#f00", false, false, false, set, (ds, d) =>
 			{
 				GetLeaderboardHistoryStatistics? stats = relevantData.Count() <= d.Index ? null : relevantData.ElementAt(d.Index);
-				return stats == null ? new() : new()
-				{
+				return stats == null ? [] :
+				[
 					new($"<span style='text-align: right;'>{stats.DateTime.ToString(StringFormats.DateFormat)}</span>"),
 					new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString(StringFormats.LeaderboardIntFormat)}</span>"),
 					new($"<span style='text-align: right;'>{GameVersions.GetGameVersionFromDate(stats.DateTime).GetGameVersionString()}</span>"),
-				};
+				];
 			}));
 		}
 
@@ -154,8 +154,8 @@ public partial class HistoryStatisticsPage
 			_entrancesData.Add(new(top1, false, false, false, relevantData.Where(hs => hs.Top1EntranceUpdated).Select((hs, i) => new LineData(hs.DateTime.Ticks, hs.Top1Entrance, i)).ToList(), (_, d) =>
 			{
 				GetLeaderboardHistoryStatistics? stats = relevantData.Count() <= d.Index ? null : relevantData.ElementAt(d.Index);
-				return stats == null ? new() : new()
-				{
+				return stats == null ? [] :
+				[
 					new($"<span style='text-align: right;'>{stats.DateTime.ToString(StringFormats.DateFormat)}</span>"),
 					new($"<span style='color: {top1}; text-align: right;'>{stats.Top1Entrance.ToString(StringFormats.TimeFormat)}</span>"),
 					new($"<span style='color: {top2}; text-align: right;'>{stats.Top2Entrance.ToString(StringFormats.TimeFormat)}</span>"),
@@ -163,7 +163,7 @@ public partial class HistoryStatisticsPage
 					new($"<span style='color: {top10}; text-align: right;'>{stats.Top10Entrance.ToString(StringFormats.TimeFormat)}</span>"),
 					new($"<span style='color: {top100}; text-align: right;'>{stats.Top100Entrance.ToString(StringFormats.TimeFormat)}</span>"),
 					new($"<span style='text-align: right;'>{GameVersions.GetGameVersionFromDate(stats.DateTime).GetGameVersionString()}</span>"),
-				};
+				];
 			}));
 
 			_entrancesData.Add(new(top2, false, false, false, relevantData.Where(hs => hs.Top2EntranceUpdated).Select((hs, i) => new LineData(hs.DateTime.Ticks, hs.Top2Entrance, i)).ToList(), null));
@@ -186,11 +186,11 @@ public partial class HistoryStatisticsPage
 			_timeData.Add(new("#f00", false, false, false, set, (ds, d) =>
 			{
 				GetLeaderboardHistoryStatistics? stat = relevantData.Count() <= d.Index ? null : relevantData.ElementAt(d.Index);
-				return stat == null ? new() : new List<MarkupString>
-				{
+				return stat == null ? [] :
+				[
 					new($"<span style='text-align: right;'>{stat.DateTime.ToString(StringFormats.DateFormat)}</span>"),
 					new($"<span style='color: {ds.Color}; text-align: right;'>{stat.TimeGlobal.ToString(StringFormats.LeaderboardGlobalTimeFormat)}</span>"),
-				};
+				];
 			}));
 		}
 
@@ -209,11 +209,11 @@ public partial class HistoryStatisticsPage
 			dataSets.Add(new("#f00", false, false, false, set, (ds, d) =>
 			{
 				GetLeaderboardHistoryStatistics? stat = relevantData.Count() <= d.Index ? null : relevantData.ElementAt(d.Index);
-				return stat == null ? new() : new List<MarkupString>
-				{
+				return stat == null ? [] :
+				[
 					new($"<span style='text-align: right;'>{stat.DateTime.ToString(StringFormats.DateFormat)}</span>"),
 					new($"<span style='color: {ds.Color}; text-align: right;'>{valueSelector(stat).ToString(StringFormats.LeaderboardIntFormat)}</span>"),
-				};
+				];
 			}));
 		}
 

@@ -18,7 +18,7 @@ public partial class WorldRecordProgressionPage
 {
 	private readonly LineChartOptions _lineChartOptions = new()
 	{
-		HighlighterKeys = new() { "Date", "Time", "Player", "Gems", "Kills", "Accuracy", "Death Type", "Game Version" },
+		HighlighterKeys = ["Date", "Time", "Player", "Gems", "Kills", "Accuracy", "Death Type", "Game Version"],
 		GridOptions = new()
 		{
 			MinimumRowHeightInPx = 50,
@@ -27,7 +27,7 @@ public partial class WorldRecordProgressionPage
 		Backgrounds = LineChartUtils.GameVersionBackgrounds,
 	};
 
-	private readonly List<LineDataSet> _lineDataSets = new();
+	private readonly List<LineDataSet> _lineDataSets = [];
 
 	private double _currentWorldRecord;
 	private int _currentWorldRecordHolderId;
@@ -69,12 +69,12 @@ public partial class WorldRecordProgressionPage
 		{
 			ApiSpec.Main.WorldRecords.GetWorldRecord? wr = data.WorldRecords.Count <= d.Index ? null : data.WorldRecords[d.Index];
 			if (wr == null)
-				return new();
+				return [];
 
 			GameVersion? gameVersion = GameVersions.GetGameVersionFromDate(wr.DateTime);
 			Dagger dagger = Daggers.GetDaggerFromSeconds(gameVersion ?? GameVersion.V1_0, wr.Entry.Time);
-			return new()
-			{
+			return
+			[
 				new($"<span style='text-align: right;'>{wr.DateTime.ToString(StringFormats.DateFormat)}</span>"),
 				new($"<span style='text-align: right;' class='{dagger.Name.ToLower()}'>{wr.Entry.Time.ToString(StringFormats.TimeFormat)}</span>"),
 				new($"<span style='text-align: right;' class='{dagger.Name.ToLower()}'>{wr.Entry.Username}</span>"),
@@ -83,7 +83,7 @@ public partial class WorldRecordProgressionPage
 				new($"<span style='text-align: right;'>{(wr.Entry.DaggersFired == 0 ? 0 : wr.Entry.DaggersHit / (double)wr.Entry.DaggersFired).ToString(StringFormats.AccuracyFormat)}</span>"),
 				new($"<span style='text-align: right;'>{MarkupUtils.DeathString(wr.Entry.DeathType, gameVersion ?? GameVersion.V1_0)}</span>"),
 				new($"<span style='text-align: right;'>{gameVersion.GetGameVersionString()}</span>"),
-			};
+			];
 		}));
 
 		_worldRecordHolders = data.WorldRecordHolders.OrderByDescending(wrh => wrh.LastHeld).ToList();

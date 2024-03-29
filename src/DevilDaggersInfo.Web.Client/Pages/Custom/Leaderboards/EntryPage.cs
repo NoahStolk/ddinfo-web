@@ -16,22 +16,22 @@ namespace DevilDaggersInfo.Web.Client.Pages.Custom.Leaderboards;
 
 public partial class EntryPage
 {
-	private static readonly Func<LineDataSet, LineData, List<MarkupString>> _initialHighlightTransformation = static (ds, d) => new List<MarkupString>
-	{
+	private static readonly Func<LineDataSet, LineData, List<MarkupString>> _initialHighlightTransformation = static (ds, d) =>
+	[
 		new($"<span style='text-align: right;'>{d.X.ToString(StringFormats.TimeFormat)}</span>"),
 		new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y:0}</span>"),
-	};
-	private static readonly Func<LineDataSet, LineData, List<MarkupString>> _highlightTransformation = static (ds, d) => new List<MarkupString>
-	{
+	];
+	private static readonly Func<LineDataSet, LineData, List<MarkupString>> _highlightTransformation = static (ds, d) =>
+	[
 		new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y:0}</span>"),
-	};
+	];
 
 	private bool _notFound;
 
-	private readonly List<(string Name, LineChartDataOptions DataOptions, LineChartOptions ChartOptions, List<LineDataSet> Sets)> _lineCharts = new();
+	private readonly List<(string Name, LineChartDataOptions DataOptions, LineChartOptions ChartOptions, List<LineDataSet> Sets)> _lineCharts = [];
 	private int _time;
 
-	private readonly List<LineChartBackground> _backgrounds = new();
+	private readonly List<LineChartBackground> _backgrounds = [];
 
 	[Parameter]
 	[EditorRequired]
@@ -108,13 +108,13 @@ public partial class EntryPage
 			List<MarkupString> AccuracyHighlighter(LineDataSet ds, LineData d)
 			{
 				Accuracy? stat = stats.Length <= d.Index ? null : stats[d.Index];
-				return stat == null ? new() : new List<MarkupString>
-				{
+				return stat == null ? [] :
+				[
 					new($"<span style='text-align: right;'>{d.X:0.0000}</span>"),
 					new($"<span style='color: {ds.Color}; text-align: right;'>{stat.Acc:0.00%}</span>"),
 					new($"<span style='text-align: right;'>{stat.Hit}</span>"),
 					new($"<span style='text-align: right;'>{stat.Fired}</span>"),
-				};
+				];
 			}
 
 			double minAcc = stats.Select(t => t.Acc).Min();
@@ -122,12 +122,12 @@ public partial class EntryPage
 			LineChartDataOptions dataOptions = new(0, _time / 10, _time, Math.Floor(minAcc * 10) / 10, 0.1, Math.Ceiling(maxAcc * 10) / 10, true);
 			LineChartOptions chartOptions = new()
 			{
-				HighlighterKeys = new() { "Time", "Accuracy", "Daggers Hit", "Daggers Fired" },
+				HighlighterKeys = ["Time", "Accuracy", "Daggers Hit", "Daggers Fired"],
 				GridOptions = new() { MinimumRowHeightInPx = 50 },
 				ScaleYOptions = new() { NumberFormat = "0%" },
 				Backgrounds = _backgrounds,
 			};
-			_lineCharts.Add(("Accuracy", dataOptions, chartOptions, new() { new("#f80", false, true, false, stats.Select((t, i) => new LineData(i, t.Acc, i)).ToList(), AccuracyHighlighter) }));
+			_lineCharts.Add(("Accuracy", dataOptions, chartOptions, [new("#f80", false, true, false, stats.Select((t, i) => new LineData(i, t.Acc, i)).ToList(), AccuracyHighlighter)]));
 		}
 
 		AddLineChart(
@@ -198,7 +198,7 @@ public partial class EntryPage
 	// TODO: Use INumber in .NET 7.
 	private void AddLineChart(string chartName, params (ushort[]? Data, string Name, string HexColor)[] dataSets)
 	{
-		List<(LineDataSet Set, string Name)> sets = new();
+		List<(LineDataSet Set, string Name)> sets = [];
 		foreach ((ushort[]? Data, string Name, string HexColor) dataSet in dataSets)
 			AddDataSet(sets, dataSet.Data, dataSet.Name, dataSet.HexColor);
 
@@ -208,7 +208,7 @@ public partial class EntryPage
 	// TODO: Use INumber in .NET 7.
 	private void AddLineChart(string chartName, params (int[]? Data, string Name, string HexColor)[] dataSets)
 	{
-		List<(LineDataSet Set, string Name)> sets = new();
+		List<(LineDataSet Set, string Name)> sets = [];
 		foreach ((int[]? Data, string Name, string HexColor) dataSet in dataSets)
 			AddDataSet(sets, dataSet.Data, dataSet.Name, dataSet.HexColor);
 
