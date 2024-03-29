@@ -8,7 +8,7 @@ public static class ScaleUtils
 			throw new ArgumentOutOfRangeException(nameof(min), $"Parameter {nameof(min)} cannot be larger than parameter {nameof(max)}.");
 
 		if (chartSize <= 0 || minimumSizeInPx <= 0 || min == max)
-			return new();
+			return [];
 
 		double range = max - min;
 
@@ -38,7 +38,7 @@ public static class ScaleUtils
 		}
 		else
 		{
-			scales = new List<double>();
+			scales = [];
 
 			double increment = !allowFractionalScales && step.Value < 1 ? 1 : step.Value;
 			for (double i = min; i <= max; i += increment)

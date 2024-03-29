@@ -108,7 +108,7 @@ public class UserManager
 			Subject = ClaimsIdentityUtils.CreateClaimsIdentity(
 				id: userEntity.Id,
 				name: userEntity.Name,
-				roles: (userEntity.UserRoles?.Select(ur => ur.Role?.Name).Where(s => s != null).ToList() ?? new())!,
+				roles: (userEntity.UserRoles?.Select(ur => ur.Role?.Name).Where(s => s != null).ToList() ?? [])!,
 				playerId: userEntity.PlayerId),
 			Expires = DateTime.UtcNow.AddDays(7),
 			SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(keyBytes), SecurityAlgorithms.HmacSha256Signature),

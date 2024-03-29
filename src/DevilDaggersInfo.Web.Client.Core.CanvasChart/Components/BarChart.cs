@@ -50,7 +50,7 @@ public partial class BarChart
 	public BarChartOptions Options { get; set; } = new();
 
 	[Parameter]
-	public List<MarkupString> HighlighterValues { get; set; } = new();
+	public List<MarkupString> HighlighterValues { get; set; } = [];
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{

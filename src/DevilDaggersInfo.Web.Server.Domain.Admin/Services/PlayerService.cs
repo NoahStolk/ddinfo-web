@@ -39,7 +39,7 @@ public class PlayerService
 		if (_dbContext.Players.Any(p => p.Id == addPlayer.Id))
 			throw new AdminDomainException($"Player with ID '{addPlayer.Id}' already exists.");
 
-		foreach (int modId in addPlayer.ModIds ?? new())
+		foreach (int modId in addPlayer.ModIds ?? [])
 		{
 			if (!_dbContext.Mods.Any(m => m.Id == modId))
 				throw new AdminDomainException($"Mod with ID '{modId}' does not exist.");
@@ -73,7 +73,7 @@ public class PlayerService
 		_dbContext.Players.Add(player);
 		await _dbContext.SaveChangesAsync(); // Save changes here so PlayerMod entities can be assigned properly.
 
-		UpdatePlayerMods(addPlayer.ModIds ?? new(), player.Id);
+		UpdatePlayerMods(addPlayer.ModIds ?? [], player.Id);
 		await _dbContext.SaveChangesAsync();
 	}
 
@@ -95,7 +95,7 @@ public class PlayerService
 			banDescription: editPlayer.BanDescription,
 			banResponsibleId: editPlayer.BanResponsibleId);
 
-		foreach (int modId in editPlayer.ModIds ?? new())
+		foreach (int modId in editPlayer.ModIds ?? [])
 		{
 			if (!_dbContext.Mods.Any(m => m.Id == modId))
 				throw new AdminDomainException($"Mod with ID '{modId}' does not exist.");
@@ -129,7 +129,7 @@ public class PlayerService
 		player.BanType = editPlayer.BanType.ToDomain();
 		player.IsBannedFromDdcl = editPlayer.IsBannedFromDdcl;
 
-		UpdatePlayerMods(editPlayer.ModIds ?? new(), player.Id);
+		UpdatePlayerMods(editPlayer.ModIds ?? [], player.Id);
 		await _dbContext.SaveChangesAsync();
 	}
 

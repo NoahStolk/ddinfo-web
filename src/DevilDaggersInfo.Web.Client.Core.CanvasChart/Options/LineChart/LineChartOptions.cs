@@ -20,7 +20,7 @@ public class LineChartOptions
 	public ScaleDisplayUnit XScaleDisplayUnit { get; set; }
 	public ScaleDisplayUnit YScaleDisplayUnit { get; set; }
 	public double HighlighterWidth { get; set; } = 256;
-	public List<string> HighlighterKeys { get; set; } = new();
+	public List<string> HighlighterKeys { get; set; } = [];
 
 	public LineChartHighlighterLineOptions? HighlighterLineOptions { get; set; } = new();
 }

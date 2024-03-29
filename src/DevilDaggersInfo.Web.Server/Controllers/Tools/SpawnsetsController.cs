@@ -97,7 +97,7 @@ public class SpawnsetsController : ControllerBase
 					HasReplay = false,
 					CustomEntryId = ce.Id,
 					Time = ce.Time,
-				}) ?? new(),
+				}) ?? [],
 			},
 			SpawnsetId = spawnset.Id,
 			Name = spawnset.Name,

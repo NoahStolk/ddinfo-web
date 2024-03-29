@@ -24,12 +24,12 @@ public class EditModState : IStateObject<EditMod>
 
 	public List<int>? PlayerIds { get; set; }
 
-	public List<string> BinariesToDelete { get; set; } = new();
+	public List<string> BinariesToDelete { get; set; } = [];
 
 	[MaxLength(ModConstants.BinaryMaxFiles, ErrorMessage = ModConstants.BinaryMaxFilesErrorMessage)]
-	public List<BinaryDataState> Binaries { get; set; } = new();
+	public List<BinaryDataState> Binaries { get; set; } = [];
 
-	public List<string> ScreenshotsToDelete { get; set; } = new();
+	public List<string> ScreenshotsToDelete { get; set; } = [];
 
 	[MaxLength(ModConstants.ScreenshotMaxFiles, ErrorMessage = ModConstants.ScreenshotMaxFilesErrorMessage)]
 	public Dictionary<string, byte[]> Screenshots { get; set; } = new();

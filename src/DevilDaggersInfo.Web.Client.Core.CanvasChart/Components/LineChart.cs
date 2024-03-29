@@ -48,7 +48,7 @@ public partial class LineChart
 	public LineChartOptions Options { get; set; } = new();
 
 	[Parameter]
-	public List<MarkupString> HighlighterValues { get; set; } = new();
+	public List<MarkupString> HighlighterValues { get; set; } = [];
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
@@ -180,7 +180,7 @@ public partial class LineChart
 			if (dataSet.Data.Count < 1)
 				return;
 
-			List<LinePosition> linePositions = new();
+			List<LinePosition> linePositions = [];
 			for (int i = 0; i < dataSet.Data.Count; i++)
 			{
 				LineData data = dataSet.Data[i];

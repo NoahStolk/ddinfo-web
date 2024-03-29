@@ -13,8 +13,8 @@ public partial class AddPage
 {
 	private Dictionary<int, string>? _playerNames;
 	private readonly AddModState _addModState = new();
-	private readonly List<string> _binaryFileSizeErrors = new();
-	private readonly List<string> _screenshotFileSizeErrors = new();
+	private readonly List<string> _binaryFileSizeErrors = [];
+	private readonly List<string> _screenshotFileSizeErrors = [];
 
 	private async Task PopulateAsync(AdminAdd<AddModState, AddMod> addComponent)
 	{

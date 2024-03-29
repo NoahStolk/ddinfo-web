@@ -22,7 +22,7 @@ public class LeaderboardHistoryStatisticsRepository
 	{
 		string? firstPath = _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory).Where(p => p.EndsWith(".bin")).MinBy(p => p);
 		if (firstPath == null)
-			return new();
+			return [];
 
 		LeaderboardHistory current = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(firstPath);
 
@@ -39,7 +39,7 @@ public class LeaderboardHistoryStatisticsRepository
 		double rank1 = GetTimeOr0(current, 1);
 		int totalPlayers = current.Players;
 
-		List<GetLeaderboardHistoryStatistics> leaderboardHistoryStatistics = new();
+		List<GetLeaderboardHistoryStatistics> leaderboardHistoryStatistics = [];
 		DateTime dateTime = current.DateTime;
 		Add(true, true, true, true, true, true, true, true, true, true, true, true);
 

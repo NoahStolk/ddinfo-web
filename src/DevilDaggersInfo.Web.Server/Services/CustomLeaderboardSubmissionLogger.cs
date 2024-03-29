@@ -6,8 +6,8 @@ namespace DevilDaggersInfo.Web.Server.Services;
 
 public class CustomLeaderboardSubmissionLogger : ICustomLeaderboardSubmissionLogger
 {
-	private readonly List<string> _validClLogs = new();
-	private readonly List<string> _invalidClLogs = new();
+	private readonly List<string> _validClLogs = [];
+	private readonly List<string> _invalidClLogs = [];
 
 	public IReadOnlyList<string> GetLogs(bool valid)
 	{
@@ -28,7 +28,7 @@ public class CustomLeaderboardSubmissionLogger : ICustomLeaderboardSubmissionLog
 		string time = uploadRequest.TimeInSeconds.ToString(StringFormats.TimeFormat);
 		string requestInfo = $"{uploadRequest.Client} {uploadRequest.ClientVersion} {uploadRequest.OperatingSystem} {uploadRequest.BuildMode} | Replay size {uploadRequest.ReplayData.Length:N0} bytes | Status {uploadRequest.Status}";
 
-		List<string> timestampEntries = new();
+		List<string> timestampEntries = [];
 		(double TimeInSeconds, long Timestamp)? previous = null;
 		foreach (UploadRequestTimestamp timestamp in uploadRequest.Timestamps)
 		{

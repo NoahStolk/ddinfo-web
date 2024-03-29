@@ -10,7 +10,7 @@ namespace DevilDaggersInfo.Web.Server.Services;
 public class CustomLeaderboardHighscoreLogger : ICustomLeaderboardHighscoreLogger
 {
 	private readonly ILogger<CustomLeaderboardHighscoreLogger> _logger;
-	private readonly List<CustomLeaderboardHighscoreLog> _highscoreLogs = new();
+	private readonly List<CustomLeaderboardHighscoreLog> _highscoreLogs = [];
 
 	public CustomLeaderboardHighscoreLogger(ILogger<CustomLeaderboardHighscoreLogger> logger)
 	{

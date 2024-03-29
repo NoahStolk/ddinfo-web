@@ -14,7 +14,7 @@ public class BarChartOptions
 	public BarChartScaleOptions ScaleYOptions { get; set; } = new();
 
 	public double HighlighterWidth { get; set; } = 256;
-	public List<string> HighlighterKeys { get; set; } = new();
+	public List<string> HighlighterKeys { get; set; } = [];
 
 	//public LineChartHighlighterLineOptions? HighlighterLineOptions { get; set; } = new();
 }

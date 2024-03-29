@@ -5,7 +5,7 @@ namespace DevilDaggersInfo.Web.Server.Services;
 
 public class BackgroundServiceMonitor
 {
-	private readonly ConcurrentBag<BackgroundServiceLog> _backgroundServiceLogs = new();
+	private readonly ConcurrentBag<BackgroundServiceLog> _backgroundServiceLogs = [];
 
 	public void Register(string name, TimeSpan interval)
 	{

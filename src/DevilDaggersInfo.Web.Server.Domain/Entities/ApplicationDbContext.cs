@@ -112,7 +112,7 @@ public class ApplicationDbContext : DbContext
 
 	private void LogAddedEntity(string? username, EntityEntry entry)
 	{
-		List<string> logs = new();
+		List<string> logs = [];
 		foreach (PropertyEntry newProperty in entry.Properties)
 		{
 			string property = newProperty.Metadata.PropertyInfo?.Name ?? "<null>";
@@ -126,7 +126,7 @@ public class ApplicationDbContext : DbContext
 
 	private void LogDeletedEntity(string? username, EntityEntry entry, IAuditable entity)
 	{
-		List<string> logs = new();
+		List<string> logs = [];
 		foreach (PropertyEntry deletedProperty in entry.Properties)
 		{
 			string property = deletedProperty.Metadata.PropertyInfo?.Name ?? "<null>";
@@ -140,7 +140,7 @@ public class ApplicationDbContext : DbContext
 
 	private void LogModifiedEntity(string? username, EntityEntry entry, IAuditable entity)
 	{
-		List<string> logs = new();
+		List<string> logs = [];
 		foreach (PropertyEntry modifiedProperty in entry.Properties.Where(c => c.IsModified))
 		{
 			string property = modifiedProperty.Metadata.PropertyInfo?.Name ?? "<null>";

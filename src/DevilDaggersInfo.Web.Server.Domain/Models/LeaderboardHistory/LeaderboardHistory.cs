@@ -18,7 +18,7 @@ public record LeaderboardHistory
 
 	public required ulong DaggersFiredGlobal { get; init; }
 
-	public required List<EntryHistory> Entries { get; init; } = new();
+	public required List<EntryHistory> Entries { get; init; } = [];
 
 	public static LeaderboardHistory CreateFromFile(byte[] bytes)
 	{
@@ -36,7 +36,7 @@ public record LeaderboardHistory
 			DeathsGlobal = br.ReadUInt64(),
 			DaggersHitGlobal = br.ReadUInt64(),
 			DaggersFiredGlobal = br.ReadUInt64(),
-			Entries = new(),
+			Entries = [],
 		};
 
 		int entryCount = br.ReadInt32();

@@ -41,15 +41,15 @@ public class PlayerHistoryRepository
 		Dictionary<string, int> usernamesHistory = new();
 
 		int? scorePreviousForScoreHistory = null;
-		List<PlayerHistoryScoreEntry> scoreHistory = new();
+		List<PlayerHistoryScoreEntry> scoreHistory = [];
 
 		int? rankPreviousForRankHistory = null;
-		List<PlayerHistoryRankEntry> rankHistory = new();
+		List<PlayerHistoryRankEntry> rankHistory = [];
 
 		ulong? totalDeathsForActivityHistory = null;
 		ulong? totalTimeForActivityHistory = null;
 		DateTime? datePreviousForActivityHistory = null;
-		List<PlayerHistoryActivityEntry> activityHistory = new();
+		List<PlayerHistoryActivityEntry> activityHistory = [];
 
 		foreach (string leaderboardHistoryPath in _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory).Where(p => p.EndsWith(".bin")))
 		{

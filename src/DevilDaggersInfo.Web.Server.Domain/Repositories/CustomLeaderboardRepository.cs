@@ -95,7 +95,7 @@ public class CustomLeaderboardRepository
 			.Where(ce => customLeaderboardIds.Contains(ce.CustomLeaderboardId))
 			.ToListAsync();
 
-		List<CustomLeaderboardData> customLeaderboardData = new();
+		List<CustomLeaderboardData> customLeaderboardData = [];
 		foreach (CustomLeaderboardEntity cl in customLeaderboards)
 		{
 			List<CustomEntrySummary> sortedCustomEntries = customEntries.Where(ce => ce.CustomLeaderboardId == cl.Id).Sort(cl.RankSorting).ToList();
@@ -406,7 +406,7 @@ public class CustomLeaderboardRepository
 
 	private static List<CustomLeaderboardCriteria> GetCriteria(CustomLeaderboardEntity customLeaderboard)
 	{
-		List<CustomLeaderboardCriteria> criteria = new();
+		List<CustomLeaderboardCriteria> criteria = [];
 		AddCriteria(CustomLeaderboardCriteriaType.GemsCollected, customLeaderboard.GemsCollectedCriteria.Operator, customLeaderboard.GemsCollectedCriteria.Expression);
 		AddCriteria(CustomLeaderboardCriteriaType.GemsDespawned, customLeaderboard.GemsDespawnedCriteria.Operator, customLeaderboard.GemsDespawnedCriteria.Expression);
 		AddCriteria(CustomLeaderboardCriteriaType.GemsEaten, customLeaderboard.GemsEatenCriteria.Operator, customLeaderboard.GemsEatenCriteria.Expression);
