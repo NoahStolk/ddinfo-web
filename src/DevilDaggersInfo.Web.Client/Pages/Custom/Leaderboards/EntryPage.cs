@@ -11,6 +11,7 @@ using DevilDaggersInfo.Web.Client.HttpClients;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System.Net;
+using System.Numerics;
 
 namespace DevilDaggersInfo.Web.Client.Pages.Custom.Leaderboards;
 
@@ -117,8 +118,8 @@ public partial class EntryPage
 				];
 			}
 
-			double minAcc = stats.Select(t => t.Acc).Min();
-			double maxAcc = stats.Select(t => t.Acc).Max();
+			double minAcc = stats.Min(t => t.Acc);
+			double maxAcc = stats.Max(t => t.Acc);
 			LineChartDataOptions dataOptions = new(0, _time / 10, _time, Math.Floor(minAcc * 10) / 10, 0.1, Math.Ceiling(maxAcc * 10) / 10, true);
 			LineChartOptions chartOptions = new()
 			{
@@ -195,37 +196,21 @@ public partial class EntryPage
 			(GetCustomEntryData.OrbsKilledData, "Orbs Killed", EnemyColors.TheOrb.HexCode));
 	}
 
-	// TODO: Use INumber in .NET 7.
-	private void AddLineChart(string chartName, params (ushort[]? Data, string Name, string HexColor)[] dataSets)
+	private void AddLineChart<T>(string chartName, params (T[]? Data, string Name, string HexColor)[] dataSets)
+		where T : struct, INumber<T>
 	{
 		List<(LineDataSet Set, string Name)> sets = [];
-		foreach ((ushort[]? Data, string Name, string HexColor) dataSet in dataSets)
+		foreach ((T[]? Data, string Name, string HexColor) dataSet in dataSets)
 			AddDataSet(sets, dataSet.Data, dataSet.Name, dataSet.HexColor);
 
 		AddDataSets(sets, chartName);
 	}
 
-	// TODO: Use INumber in .NET 7.
-	private void AddLineChart(string chartName, params (int[]? Data, string Name, string HexColor)[] dataSets)
-	{
-		List<(LineDataSet Set, string Name)> sets = [];
-		foreach ((int[]? Data, string Name, string HexColor) dataSet in dataSets)
-			AddDataSet(sets, dataSet.Data, dataSet.Name, dataSet.HexColor);
-
-		AddDataSets(sets, chartName);
-	}
-
-	// TODO: Use INumber in .NET 7.
-	private void AddDataSet(List<(LineDataSet Set, string Name)> dataSets, ushort[]? data, string name, string color)
-	{
-		AddDataSet(dataSets, data?.Select(u => (int)u).ToArray(), name, color);
-	}
-
-	// TODO: Use INumber in .NET 7.
-	private void AddDataSet(List<(LineDataSet Set, string Name)> dataSets, int[]? data, string name, string color)
+	private void AddDataSet<T>(List<(LineDataSet Set, string Name)> dataSets, T[]? data, string name, string color)
+		where T : struct, INumber<T>
 	{
 		if (data != null)
-			dataSets.Add((new(color, false, true, false, data.Take(_time).Select((val, i) => new LineData(i, val, val)).ToList(), dataSets.Count == 0 ? _initialHighlightTransformation : _highlightTransformation), name));
+			dataSets.Add((new(color, false, true, false, data.Take(_time).Select((val, i) => new LineData(i, double.CreateChecked(val), int.CreateChecked(val))).ToList(), dataSets.Count == 0 ? _initialHighlightTransformation : _highlightTransformation), name));
 	}
 
 	private void AddDataSets(List<(LineDataSet Set, string Name)> dataSets, string name)
@@ -233,14 +218,20 @@ public partial class EntryPage
 		if (dataSets.Count == 0)
 			return;
 
-		double maxData = dataSets.Select(ds => ds.Set.Data.Select(d => d.Y).Max()).Max();
+		double maxData = dataSets.Max(ds => ds.Set.Data.Max(d => d.Y));
 		int digits = ((int)Math.Round(maxData)).ToString().Length;
 		int roundingPoint = (int)Math.Pow(10, digits - 1);
 		maxData = Math.Ceiling(maxData / roundingPoint) * roundingPoint;
 		LineChartDataOptions dataOptions = new(0, _time / 10, _time, 0, maxData / 8, maxData);
 		LineChartOptions chartOptions = new()
 		{
-			HighlighterKeys = dataSets.ConvertAll(ds => ds.Name).Prepend("Time").ToList(), GridOptions = new() { MinimumRowHeightInPx = 50 }, Backgrounds = _backgrounds, HighlighterWidth = 320,
+			HighlighterKeys = dataSets.ConvertAll(ds => ds.Name).Prepend("Time").ToList(),
+			GridOptions = new()
+			{
+				MinimumRowHeightInPx = 50,
+			},
+			Backgrounds = _backgrounds,
+			HighlighterWidth = 320,
 		};
 		_lineCharts.Add((name, dataOptions, chartOptions, dataSets.ConvertAll(ds => ds.Set)));
 	}
