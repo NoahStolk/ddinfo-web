@@ -17,13 +17,16 @@ public record Player
 
 	public required PlayerSettings? Settings { get; init; }
 
-	public static Player FromEntity(PlayerEntity player, bool isPublicDonor) => new()
+	public static Player FromEntity(PlayerEntity player, bool isPublicDonor)
 	{
-		BanDescription = player.BanDescription,
-		CountryCode = player.CountryCode,
-		Id = player.Id,
-		IsBanned = player.BanType != BanType.NotBanned,
-		IsPublicDonor = isPublicDonor,
-		Settings = player.HasVisibleSettings() ? PlayerSettings.FromEntity(player) : null,
-	};
+		return new()
+		{
+			BanDescription = player.BanDescription,
+			CountryCode = player.CountryCode,
+			Id = player.Id,
+			IsBanned = player.BanType != BanType.NotBanned,
+			IsPublicDonor = isPublicDonor,
+			Settings = player.HasVisibleSettings() ? PlayerSettings.FromEntity(player) : null,
+		};
+	}
 }

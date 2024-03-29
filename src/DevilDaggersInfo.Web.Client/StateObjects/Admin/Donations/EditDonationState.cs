@@ -18,13 +18,16 @@ public class EditDonationState : IStateObject<EditDonation>
 
 	public bool IsRefunded { get; set; }
 
-	public EditDonation ToModel() => new()
+	public EditDonation ToModel()
 	{
-		PlayerId = PlayerId,
-		Amount = Amount,
-		Currency = Currency,
-		ConvertedEuroCentsReceived = ConvertedEuroCentsReceived,
-		Note = Note,
-		IsRefunded = IsRefunded,
-	};
+		return new()
+		{
+			PlayerId = PlayerId,
+			Amount = Amount,
+			Currency = Currency,
+			ConvertedEuroCentsReceived = ConvertedEuroCentsReceived,
+			Note = Note,
+			IsRefunded = IsRefunded,
+		};
+	}
 }

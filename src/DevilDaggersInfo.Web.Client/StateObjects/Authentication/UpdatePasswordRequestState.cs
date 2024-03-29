@@ -12,11 +12,14 @@ public class UpdatePasswordRequestState : IStateObject<UpdatePasswordRequest>
 
 	public string PasswordRepeated { get; set; } = string.Empty;
 
-	public UpdatePasswordRequest ToModel() => new()
+	public UpdatePasswordRequest ToModel()
 	{
-		CurrentName = CurrentName,
-		CurrentPassword = CurrentPassword,
-		NewPassword = NewPassword,
-		PasswordRepeated = PasswordRepeated,
-	};
+		return new()
+		{
+			CurrentName = CurrentName,
+			CurrentPassword = CurrentPassword,
+			NewPassword = NewPassword,
+			PasswordRepeated = PasswordRepeated,
+		};
+	}
 }

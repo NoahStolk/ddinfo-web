@@ -6,36 +6,42 @@ namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 
 public static class LeaderboardHistoryConverters
 {
-	public static GetLeaderboardHistory ToMainApi(this LeaderboardHistory leaderboard) => new()
+	public static GetLeaderboardHistory ToMainApi(this LeaderboardHistory leaderboard)
 	{
-		DaggersFiredGlobal = leaderboard.DaggersFiredGlobal,
-		DaggersHitGlobal = leaderboard.DaggersHitGlobal,
-		DateTime = leaderboard.DateTime,
-		DeathsGlobal = leaderboard.DeathsGlobal,
-		Entries = leaderboard.Entries.ConvertAll(eh => eh.ToMainApi(leaderboard.DateTime)),
-		GemsGlobal = leaderboard.GemsGlobal,
-		KillsGlobal = leaderboard.KillsGlobal,
-		TimeGlobal = leaderboard.TimeGlobal.ToSecondsTime(),
-		TotalPlayers = leaderboard.Players,
-	};
+		return new()
+		{
+			DaggersFiredGlobal = leaderboard.DaggersFiredGlobal,
+			DaggersHitGlobal = leaderboard.DaggersHitGlobal,
+			DateTime = leaderboard.DateTime,
+			DeathsGlobal = leaderboard.DeathsGlobal,
+			Entries = leaderboard.Entries.ConvertAll(eh => eh.ToMainApi(leaderboard.DateTime)),
+			GemsGlobal = leaderboard.GemsGlobal,
+			KillsGlobal = leaderboard.KillsGlobal,
+			TimeGlobal = leaderboard.TimeGlobal.ToSecondsTime(),
+			TotalPlayers = leaderboard.Players,
+		};
+	}
 
-	private static GetEntryHistory ToMainApi(this EntryHistory entry, DateTime dateTime) => new()
+	private static GetEntryHistory ToMainApi(this EntryHistory entry, DateTime dateTime)
 	{
-		DateTime = dateTime,
-		DaggersFired = entry.DaggersFired,
-		DaggersFiredTotal = entry.DaggersFiredTotal,
-		DaggersHit = entry.DaggersHit,
-		DaggersHitTotal = entry.DaggersHitTotal,
-		DeathsTotal = entry.DeathsTotal,
-		DeathType = entry.DeathType,
-		Gems = entry.Gems,
-		GemsTotal = entry.GemsTotal,
-		Id = entry.Id,
-		Kills = entry.Kills,
-		KillsTotal = entry.KillsTotal,
-		Rank = entry.Rank,
-		Time = entry.Time.ToSecondsTime(),
-		TimeTotal = entry.TimeTotal.ToSecondsTime(),
-		Username = entry.Username,
-	};
+		return new()
+		{
+			DateTime = dateTime,
+			DaggersFired = entry.DaggersFired,
+			DaggersFiredTotal = entry.DaggersFiredTotal,
+			DaggersHit = entry.DaggersHit,
+			DaggersHitTotal = entry.DaggersHitTotal,
+			DeathsTotal = entry.DeathsTotal,
+			DeathType = entry.DeathType,
+			Gems = entry.Gems,
+			GemsTotal = entry.GemsTotal,
+			Id = entry.Id,
+			Kills = entry.Kills,
+			KillsTotal = entry.KillsTotal,
+			Rank = entry.Rank,
+			Time = entry.Time.ToSecondsTime(),
+			TimeTotal = entry.TimeTotal.ToSecondsTime(),
+			Username = entry.Username,
+		};
+	}
 }

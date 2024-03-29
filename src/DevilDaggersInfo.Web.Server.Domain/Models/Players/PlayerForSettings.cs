@@ -10,10 +10,13 @@ public record PlayerForSettings
 
 	public required PlayerSettings Settings { get; init; }
 
-	public static PlayerForSettings FromEntity(PlayerEntity player) => new()
+	public static PlayerForSettings FromEntity(PlayerEntity player)
 	{
-		CountryCode = player.CountryCode,
-		Id = player.Id,
-		Settings = PlayerSettings.FromEntity(player),
-	};
+		return new()
+		{
+			CountryCode = player.CountryCode,
+			Id = player.Id,
+			Settings = PlayerSettings.FromEntity(player),
+		};
+	}
 }

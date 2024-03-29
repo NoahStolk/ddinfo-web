@@ -34,18 +34,21 @@ public class EditModState : IStateObject<EditMod>
 	[MaxLength(ModConstants.ScreenshotMaxFiles, ErrorMessage = ModConstants.ScreenshotMaxFilesErrorMessage)]
 	public Dictionary<string, byte[]> Screenshots { get; set; } = new();
 
-	public EditMod ToModel() => new()
+	public EditMod ToModel()
 	{
-		Name = Name,
-		IsHidden = IsHidden,
-		TrailerUrl = TrailerUrl,
-		HtmlDescription = HtmlDescription,
-		ModTypes = ModTypes,
-		Url = Url,
-		PlayerIds = PlayerIds,
-		BinariesToDelete = BinariesToDelete,
-		Binaries = Binaries.ConvertAll(b => b.ToModel()),
-		ScreenshotsToDelete = ScreenshotsToDelete,
-		Screenshots = Screenshots,
-	};
+		return new()
+		{
+			Name = Name,
+			IsHidden = IsHidden,
+			TrailerUrl = TrailerUrl,
+			HtmlDescription = HtmlDescription,
+			ModTypes = ModTypes,
+			Url = Url,
+			PlayerIds = PlayerIds,
+			BinariesToDelete = BinariesToDelete,
+			Binaries = Binaries.ConvertAll(b => b.ToModel()),
+			ScreenshotsToDelete = ScreenshotsToDelete,
+			Screenshots = Screenshots,
+		};
+	}
 }

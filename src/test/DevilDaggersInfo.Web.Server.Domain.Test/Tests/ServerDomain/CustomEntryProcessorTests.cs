@@ -86,7 +86,10 @@ public class CustomEntryProcessorTests
 		return ms.ToArray();
 	}
 
-	private UploadRequest CreateUploadRequest(float time, int playerId, int status, string clientVersion) => CreateUploadRequest(time, playerId, status, clientVersion, new());
+	private UploadRequest CreateUploadRequest(float time, int playerId, int status, string clientVersion)
+	{
+		return CreateUploadRequest(time, playerId, status, clientVersion, new());
+	}
 
 	private UploadRequest CreateUploadRequest(float time, int playerId, int status, string clientVersion, UploadRequestData gameData, string? validation = null)
 	{

@@ -30,16 +30,19 @@ public class AddModState : IStateObject<AddMod>
 	[MaxLength(ModConstants.ScreenshotMaxFiles, ErrorMessage = ModConstants.ScreenshotMaxFilesErrorMessage)]
 	public Dictionary<string, byte[]> Screenshots { get; set; } = new();
 
-	public AddMod ToModel() => new()
+	public AddMod ToModel()
 	{
-		Name = Name,
-		IsHidden = IsHidden,
-		TrailerUrl = TrailerUrl,
-		HtmlDescription = HtmlDescription,
-		ModTypes = ModTypes,
-		Url = Url,
-		PlayerIds = PlayerIds,
-		Binaries = Binaries.ConvertAll(b => b.ToModel()),
-		Screenshots = Screenshots,
-	};
+		return new()
+		{
+			Name = Name,
+			IsHidden = IsHidden,
+			TrailerUrl = TrailerUrl,
+			HtmlDescription = HtmlDescription,
+			ModTypes = ModTypes,
+			Url = Url,
+			PlayerIds = PlayerIds,
+			Binaries = Binaries.ConvertAll(b => b.ToModel()),
+			Screenshots = Screenshots,
+		};
+	}
 }

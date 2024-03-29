@@ -114,8 +114,19 @@ public class TestData : ILeaderboardHistoryCache, IFileSystemService
 	}
 
 #pragma warning disable SA1201
-	public string GetLeaderboardHistoryPathFromDate(DateTime dateTime) => throw new NotImplementedException();
-	public int GetCount() => throw new NotImplementedException();
-	public void Clear() => throw new NotImplementedException();
+	public string GetLeaderboardHistoryPathFromDate(DateTime dateTime)
+	{
+		throw new NotImplementedException();
+	}
+
+	public int GetCount()
+	{
+		throw new NotImplementedException();
+	}
+
+	public void Clear()
+	{
+		throw new NotImplementedException();
+	}
 #pragma warning restore SA1201
 }

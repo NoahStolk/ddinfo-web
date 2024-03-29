@@ -179,39 +179,57 @@ public class IntegerArrayCompressorTests
 
 	[TestMethod]
 	public void Test1BitCompression()
-		=> TestCompression([0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0]);
+	{
+		TestCompression([0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0]);
+	}
 
 	[TestMethod]
 	public void Test2BitCompression()
-		=> TestCompression([0, 0, 0, 1, 3, 1, 2]);
+	{
+		TestCompression([0, 0, 0, 1, 3, 1, 2]);
+	}
 
 	[TestMethod]
 	public void Test3BitCompression()
-		=> TestCompression([7, 3, 4, 1, 0, 5, 5, 5, 5, 0, 4]);
+	{
+		TestCompression([7, 3, 4, 1, 0, 5, 5, 5, 5, 0, 4]);
+	}
 
 	[TestMethod]
 	public void Test4BitCompression()
-		=> TestCompression([7, 3, 4, 1, 9, 14, 15, 1, 13, 9, 4, 11]);
+	{
+		TestCompression([7, 3, 4, 1, 9, 14, 15, 1, 13, 9, 4, 11]);
+	}
 
 	[TestMethod]
 	public void Test8BitCompression()
-		=> TestCompression([9, 4, 11, 255, 19, 39, 192, 85, 19, 4, 85]);
+	{
+		TestCompression([9, 4, 11, 255, 19, 39, 192, 85, 19, 4, 85]);
+	}
 
 	[TestMethod]
 	public void Test9BitCompression()
-		=> TestCompression([9, 4, 11, 255, 19, 39, 192, 85, 19, 4, 85, 499]);
+	{
+		TestCompression([9, 4, 11, 255, 19, 39, 192, 85, 19, 4, 85, 499]);
+	}
 
 	[TestMethod]
 	public void Test11BitCompression()
-		=> TestCompression([9, 4, 11, 255, 19, 39, 192, 85, 19, 4, 85, 499, 2000]);
+	{
+		TestCompression([9, 4, 11, 255, 19, 39, 192, 85, 19, 4, 85, 499, 2000]);
+	}
 
 	[TestMethod]
 	public void Test15BitCompression()
-		=> TestCompression([9, 4, 11, 255, 19, 39, 192, 85, 19, 4, 85, 499, 32000]);
+	{
+		TestCompression([9, 4, 11, 255, 19, 39, 192, 85, 19, 4, 85, 499, 32000]);
+	}
 
 	[TestMethod]
 	public void Test16BitCompression()
-		=> TestCompression([9, 4, 11, 255, 19, 39, 192, 85, 19, 4, 85, 499, 64000]);
+	{
+		TestCompression([9, 4, 11, 255, 19, 39, 192, 85, 19, 4, 85, 499, 64000]);
+	}
 
 	[AssertionMethod]
 	private static void TestCompression(int[] values)

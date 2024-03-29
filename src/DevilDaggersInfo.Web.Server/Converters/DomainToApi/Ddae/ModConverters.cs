@@ -10,37 +10,46 @@ namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Ddae;
 // TODO: Use domain models.
 public static class ModConverters
 {
-	// ! Navigation property.
-	public static DdaeApi.GetModDdae ToDdaeApi(this ModEntity mod, ModFileSystemData modFileSystemData) => new()
+	public static DdaeApi.GetModDdae ToDdaeApi(this ModEntity mod, ModFileSystemData modFileSystemData)
 	{
-		Authors = mod.PlayerMods!.ConvertAll(pm => pm.Player!.PlayerName),
-		ContainsProhibitedAssets = modFileSystemData.ModArchive?.ContainsProhibitedAssets(),
-		HtmlDescription = mod.HtmlDescription,
-		IsHostedOnDdInfo = modFileSystemData.ModArchive != null,
-		LastUpdated = mod.LastUpdated,
-		ModArchive = modFileSystemData.ModArchive == null ? null : new()
+		// ! Navigation property.
+		return new()
 		{
-			Binaries = modFileSystemData.ModArchive.Binaries.ConvertAll(b => new DdaeApi.GetModBinaryDdae
+			Authors = mod.PlayerMods!.ConvertAll(pm => pm.Player!.PlayerName),
+			ContainsProhibitedAssets = modFileSystemData.ModArchive?.ContainsProhibitedAssets(),
+			HtmlDescription = mod.HtmlDescription,
+			IsHostedOnDdInfo = modFileSystemData.ModArchive != null,
+			LastUpdated = mod.LastUpdated,
+			ModArchive = modFileSystemData.ModArchive == null ? null : new()
 			{
-				ModBinaryType = b.ModBinaryType.ToDdaeApi(),
-				Name = b.Name,
-				Size = b.Size,
-			}),
-			FileSize = modFileSystemData.ModArchive.FileSize,
-			FileSizeExtracted = modFileSystemData.ModArchive.FileSizeExtracted,
-		},
-		AssetModTypes = (modFileSystemData.ModArchive?.ModTypes() ?? mod.ModTypes).ToDdaeApi(),
-		Name = mod.Name,
-		ScreenshotFileNames = modFileSystemData.ScreenshotFileNames ?? new(),
-		TrailerUrl = mod.TrailerUrl,
-	};
+				Binaries = modFileSystemData.ModArchive.Binaries.ConvertAll(b => new DdaeApi.GetModBinaryDdae
+				{
+					ModBinaryType = b.ModBinaryType.ToDdaeApi(),
+					Name = b.Name,
+					Size = b.Size,
+				}),
+				FileSize = modFileSystemData.ModArchive.FileSize,
+				FileSizeExtracted = modFileSystemData.ModArchive.FileSizeExtracted,
+			},
+			AssetModTypes = (modFileSystemData.ModArchive?.ModTypes() ?? mod.ModTypes).ToDdaeApi(),
+			Name = mod.Name,
+			ScreenshotFileNames = modFileSystemData.ScreenshotFileNames ?? [],
+			TrailerUrl = mod.TrailerUrl,
+		};
+	}
 
-	private static DdaeApi.ModBinaryTypeDdae ToDdaeApi(this ModBinaryType modBinaryType) => modBinaryType switch
+	private static DdaeApi.ModBinaryTypeDdae ToDdaeApi(this ModBinaryType modBinaryType)
 	{
-		ModBinaryType.Audio => DdaeApi.ModBinaryTypeDdae.Audio,
-		ModBinaryType.Dd => DdaeApi.ModBinaryTypeDdae.Dd,
-		_ => throw new UnreachableException(),
-	};
+		return modBinaryType switch
+		{
+			ModBinaryType.Audio => DdaeApi.ModBinaryTypeDdae.Audio,
+			ModBinaryType.Dd => DdaeApi.ModBinaryTypeDdae.Dd,
+			_ => throw new UnreachableException(),
+		};
+	}
 
-	private static DdaeApi.ModTypesDdae ToDdaeApi(this ModTypes modTypes) => (DdaeApi.ModTypesDdae)(int)modTypes;
+	private static DdaeApi.ModTypesDdae ToDdaeApi(this ModTypes modTypes)
+	{
+		return (DdaeApi.ModTypesDdae)(int)modTypes;
+	}
 }

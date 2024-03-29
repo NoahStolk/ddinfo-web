@@ -8,9 +8,12 @@ public class LoginRequestState : IStateObject<LoginRequest>
 
 	public string Password { get; set; } = string.Empty;
 
-	public LoginRequest ToModel() => new()
+	public LoginRequest ToModel()
 	{
-		Name = Name,
-		Password = Password,
-	};
+		return new()
+		{
+			Name = Name,
+			Password = Password,
+		};
+	}
 }

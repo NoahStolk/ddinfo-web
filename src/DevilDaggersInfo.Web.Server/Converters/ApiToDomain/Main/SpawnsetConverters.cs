@@ -6,11 +6,14 @@ namespace DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Main;
 
 public static class SpawnsetConverters
 {
-	public static SpawnsetGameMode ToDomain(this MainApi.GameMode gameMode) => gameMode switch
+	public static SpawnsetGameMode ToDomain(this MainApi.GameMode gameMode)
 	{
-		MainApi.GameMode.Survival => SpawnsetGameMode.Survival,
-		MainApi.GameMode.TimeAttack => SpawnsetGameMode.TimeAttack,
-		MainApi.GameMode.Race => SpawnsetGameMode.Race,
-		_ => throw new UnreachableException(),
-	};
+		return gameMode switch
+		{
+			MainApi.GameMode.Survival => SpawnsetGameMode.Survival,
+			MainApi.GameMode.TimeAttack => SpawnsetGameMode.TimeAttack,
+			MainApi.GameMode.Race => SpawnsetGameMode.Race,
+			_ => throw new UnreachableException(),
+		};
+	}
 }

@@ -6,31 +6,34 @@ namespace DevilDaggersInfo.Web.Server.Domain.Admin.Converters.DomainToApi;
 
 public static class PlayerConverters
 {
-	public static GetPlayerForOverview ToAdminApiOverview(this PlayerEntity player) => new()
+	public static GetPlayerForOverview ToAdminApiOverview(this PlayerEntity player)
 	{
-		Id = player.Id,
-		PlayerName = player.PlayerName,
-		CommonName = player.CommonName,
-		DiscordUserId = player.DiscordUserId,
-		CountryCode = player.CountryCode,
-		Dpi = player.Dpi,
-		InGameSens = player.InGameSens,
-		Fov = player.Fov,
-		BanType = player.BanType.ToAdminApi(),
-		BanDescription = player.BanDescription,
-		BanResponsibleId = player.BanResponsibleId,
-		Gamma = player.Gamma,
-		HasFlashHandEnabled = player.HasFlashHandEnabled,
-		HideDonations = player.HideDonations,
-		HidePastUsernames = player.HidePastUsernames,
-		HideSettings = player.HideSettings,
-		IsBannedFromDdcl = player.IsBannedFromDdcl,
-		IsRightHanded = player.IsRightHanded,
-		UsesLegacyAudio = player.UsesLegacyAudio,
-		UsesHrtf = player.UsesHrtf,
-		UsesInvertY = player.UsesInvertY,
-		VerticalSync = player.VerticalSync.ToAdminApi(),
-	};
+		return new()
+		{
+			Id = player.Id,
+			PlayerName = player.PlayerName,
+			CommonName = player.CommonName,
+			DiscordUserId = player.DiscordUserId,
+			CountryCode = player.CountryCode,
+			Dpi = player.Dpi,
+			InGameSens = player.InGameSens,
+			Fov = player.Fov,
+			BanType = player.BanType.ToAdminApi(),
+			BanDescription = player.BanDescription,
+			BanResponsibleId = player.BanResponsibleId,
+			Gamma = player.Gamma,
+			HasFlashHandEnabled = player.HasFlashHandEnabled,
+			HideDonations = player.HideDonations,
+			HidePastUsernames = player.HidePastUsernames,
+			HideSettings = player.HideSettings,
+			IsBannedFromDdcl = player.IsBannedFromDdcl,
+			IsRightHanded = player.IsRightHanded,
+			UsesLegacyAudio = player.UsesLegacyAudio,
+			UsesHrtf = player.UsesHrtf,
+			UsesInvertY = player.UsesInvertY,
+			VerticalSync = player.VerticalSync.ToAdminApi(),
+		};
+	}
 
 	public static GetPlayer ToAdminApi(this PlayerEntity player)
 	{
@@ -64,23 +67,29 @@ public static class PlayerConverters
 		};
 	}
 
-	private static BanType ToAdminApi(this Entities.Enums.BanType banType) => banType switch
+	private static BanType ToAdminApi(this Entities.Enums.BanType banType)
 	{
-		Entities.Enums.BanType.NotBanned => BanType.NotBanned,
-		Entities.Enums.BanType.Alt => BanType.Alt,
-		Entities.Enums.BanType.Cheater => BanType.Cheater,
-		Entities.Enums.BanType.Boosted => BanType.Boosted,
-		Entities.Enums.BanType.IllegitimateStats => BanType.IllegitimateStats,
-		Entities.Enums.BanType.BlankName => BanType.BlankName,
-		_ => throw new UnreachableException(),
-	};
+		return banType switch
+		{
+			Entities.Enums.BanType.NotBanned => BanType.NotBanned,
+			Entities.Enums.BanType.Alt => BanType.Alt,
+			Entities.Enums.BanType.Cheater => BanType.Cheater,
+			Entities.Enums.BanType.Boosted => BanType.Boosted,
+			Entities.Enums.BanType.IllegitimateStats => BanType.IllegitimateStats,
+			Entities.Enums.BanType.BlankName => BanType.BlankName,
+			_ => throw new UnreachableException(),
+		};
+	}
 
-	private static VerticalSync ToAdminApi(this Entities.Enums.VerticalSync verticalSync) => verticalSync switch
+	private static VerticalSync ToAdminApi(this Entities.Enums.VerticalSync verticalSync)
 	{
-		Entities.Enums.VerticalSync.Unknown => VerticalSync.Unknown,
-		Entities.Enums.VerticalSync.Off => VerticalSync.Off,
-		Entities.Enums.VerticalSync.On => VerticalSync.On,
-		Entities.Enums.VerticalSync.Adaptive => VerticalSync.Adaptive,
-		_ => throw new UnreachableException(),
-	};
+		return verticalSync switch
+		{
+			Entities.Enums.VerticalSync.Unknown => VerticalSync.Unknown,
+			Entities.Enums.VerticalSync.Off => VerticalSync.Off,
+			Entities.Enums.VerticalSync.On => VerticalSync.On,
+			Entities.Enums.VerticalSync.Adaptive => VerticalSync.Adaptive,
+			_ => throw new UnreachableException(),
+		};
+	}
 }

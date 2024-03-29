@@ -64,5 +64,8 @@ public class StartupCacheHostedService : IHostedService
 		sw.Stop();
 	}
 
-	public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
+	public Task StopAsync(CancellationToken cancellationToken)
+	{
+		return Task.CompletedTask;
+	}
 }

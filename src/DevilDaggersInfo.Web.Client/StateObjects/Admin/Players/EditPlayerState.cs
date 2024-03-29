@@ -56,28 +56,31 @@ public class EditPlayerState : IStateObject<EditPlayer>
 
 	public List<int>? ModIds { get; set; }
 
-	public EditPlayer ToModel() => new()
+	public EditPlayer ToModel()
 	{
-		CommonName = CommonName,
-		DiscordUserId = DiscordUserId,
-		CountryCode = CountryCode,
-		Dpi = Dpi,
-		InGameSens = InGameSens,
-		Fov = Fov,
-		IsRightHanded = IsRightHanded,
-		HasFlashHandEnabled = HasFlashHandEnabled,
-		Gamma = Gamma,
-		UsesLegacyAudio = UsesLegacyAudio,
-		UsesHrtf = UsesHrtf,
-		UsesInvertY = UsesInvertY,
-		VerticalSync = VerticalSync,
-		BanType = BanType,
-		BanDescription = BanDescription,
-		BanResponsibleId = BanResponsibleId,
-		IsBannedFromDdcl = IsBannedFromDdcl,
-		HideSettings = HideSettings,
-		HideDonations = HideDonations,
-		HidePastUsernames = HidePastUsernames,
-		ModIds = ModIds,
-	};
+		return new()
+		{
+			CommonName = CommonName,
+			DiscordUserId = DiscordUserId,
+			CountryCode = CountryCode,
+			Dpi = Dpi,
+			InGameSens = InGameSens,
+			Fov = Fov,
+			IsRightHanded = IsRightHanded,
+			HasFlashHandEnabled = HasFlashHandEnabled,
+			Gamma = Gamma,
+			UsesLegacyAudio = UsesLegacyAudio,
+			UsesHrtf = UsesHrtf,
+			UsesInvertY = UsesInvertY,
+			VerticalSync = VerticalSync,
+			BanType = BanType,
+			BanDescription = BanDescription,
+			BanResponsibleId = BanResponsibleId,
+			IsBannedFromDdcl = IsBannedFromDdcl,
+			HideSettings = HideSettings,
+			HideDonations = HideDonations,
+			HidePastUsernames = HidePastUsernames,
+			ModIds = ModIds,
+		};
+	}
 }

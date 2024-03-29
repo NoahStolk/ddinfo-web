@@ -79,5 +79,8 @@ else
 			.Select(g => $"{g.Key.GetChar()} {CentsToString(g.Sum(d => d.Amount))} {g.Key.ToString().ToUpper()}")));
 	}
 
-	private static string CentsToString(int cents) => (cents / 100.0).ToString("0.00");
+	private static string CentsToString(int cents)
+	{
+		return (cents / 100.0).ToString("0.00");
+	}
 }

@@ -47,49 +47,79 @@ public partial class WebAssemblyCanvas2d : Canvas
 	}
 
 	public void ClearRect(double x, double y, double width, double height)
-		=> ClearRect(Id, x, y, width, height);
+	{
+		ClearRect(Id, x, y, width, height);
+	}
 
 	public void FillRect(double x, double y, double width, double height)
-		=> FillRect(Id, x, y, width, height);
+	{
+		FillRect(Id, x, y, width, height);
+	}
 
 	public void StrokeRect(double x, double y, double width, double height)
-		=> StrokeRect(Id, x, y, width, height);
+	{
+		StrokeRect(Id, x, y, width, height);
+	}
 
 	public void BeginPath()
-		=> BeginPath(Id);
+	{
+		BeginPath(Id);
+	}
 
 	public void ClosePath()
-		=> ClosePath(Id);
+	{
+		ClosePath(Id);
+	}
 
 	public void Stroke()
-		=> Stroke(Id);
+	{
+		Stroke(Id);
+	}
 
 	public void Fill()
-		=> Fill(Id);
+	{
+		Fill(Id);
+	}
 
 	public void Circle(double x, double y, double radius)
-		=> Arc(Id, x, y, radius, 0.0f, MathF.PI * 2);
+	{
+		Arc(Id, x, y, radius, 0.0f, MathF.PI * 2);
+	}
 
 	public void MoveTo(double x, double y)
-		=> MoveTo(Id, x, y);
+	{
+		MoveTo(Id, x, y);
+	}
 
 	public void LineTo(double x, double y)
-		=> LineTo(Id, x, y);
+	{
+		LineTo(Id, x, y);
+	}
 
 	public void Save()
-		=> Save(Id);
+	{
+		Save(Id);
+	}
 
 	public void Restore()
-		=> Restore(Id);
+	{
+		Restore(Id);
+	}
 
 	public void Translate(double x, double y)
-		=> Translate(Id, x, y);
+	{
+		Translate(Id, x, y);
+	}
 
 	public void Rotate(double angle)
-		=> Rotate(Id, angle);
+	{
+		Rotate(Id, angle);
+	}
 
 	public void StrokeText(string text, double x, double y)
-		=> StrokeText(Id, text, x, y);
+	{
+		StrokeText(Id, text, x, y);
+	}
 
 	#region JSImport
 

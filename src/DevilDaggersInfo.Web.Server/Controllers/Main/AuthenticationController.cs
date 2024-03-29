@@ -21,13 +21,17 @@ public class AuthenticationController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public ActionResult<AuthenticationResponse> Authenticate([FromBody] AuthenticationRequest authenticationRequest)
-		=> _authenticationService.Authenticate(authenticationRequest);
+	{
+		return _authenticationService.Authenticate(authenticationRequest);
+	}
 
 	[HttpPost("login")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public ActionResult<LoginResponse> Login([FromBody] LoginRequest loginRequest)
-		=> _authenticationService.Login(loginRequest);
+	{
+		return _authenticationService.Login(loginRequest);
+	}
 
 	[HttpPost("register")]
 	[ProducesResponseType(StatusCodes.Status200OK)]

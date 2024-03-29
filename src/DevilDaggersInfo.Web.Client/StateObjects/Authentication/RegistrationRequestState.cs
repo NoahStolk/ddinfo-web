@@ -10,10 +10,13 @@ public class RegistrationRequestState : IStateObject<RegistrationRequest>
 
 	public string PasswordRepeated { get; set; } = string.Empty;
 
-	public RegistrationRequest ToModel() => new()
+	public RegistrationRequest ToModel()
 	{
-		Name = Name,
-		Password = Password,
-		PasswordRepeated = PasswordRepeated,
-	};
+		return new()
+		{
+			Name = Name,
+			Password = Password,
+			PasswordRepeated = PasswordRepeated,
+		};
+	}
 }

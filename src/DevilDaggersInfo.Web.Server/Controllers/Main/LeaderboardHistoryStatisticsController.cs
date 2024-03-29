@@ -18,5 +18,7 @@ public class LeaderboardHistoryStatisticsController : ControllerBase
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public List<GetLeaderboardHistoryStatistics> GetLeaderboardHistoryStatistics()
-		=> _leaderboardHistoryStatisticsRepository.GetLeaderboardHistoryStatistics();
+	{
+		return _leaderboardHistoryStatisticsRepository.GetLeaderboardHistoryStatistics();
+	}
 }

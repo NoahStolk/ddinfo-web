@@ -70,22 +70,31 @@ public static class ModConverters
 		};
 	}
 
-	private static MainApi.AssetType ToMainApi(this AssetType assetType) => assetType switch
+	private static MainApi.AssetType ToMainApi(this AssetType assetType)
 	{
-		AssetType.Mesh => MainApi.AssetType.Mesh,
-		AssetType.Texture => MainApi.AssetType.Texture,
-		AssetType.Shader => MainApi.AssetType.Shader,
-		AssetType.Audio => MainApi.AssetType.Audio,
-		AssetType.ObjectBinding => MainApi.AssetType.ObjectBinding,
-		_ => throw new UnreachableException(),
-	};
+		return assetType switch
+		{
+			AssetType.Mesh => MainApi.AssetType.Mesh,
+			AssetType.Texture => MainApi.AssetType.Texture,
+			AssetType.Shader => MainApi.AssetType.Shader,
+			AssetType.Audio => MainApi.AssetType.Audio,
+			AssetType.ObjectBinding => MainApi.AssetType.ObjectBinding,
+			_ => throw new UnreachableException(),
+		};
+	}
 
-	private static MainApi.ModBinaryType ToMainApi(this ModBinaryType modBinaryType) => modBinaryType switch
+	private static MainApi.ModBinaryType ToMainApi(this ModBinaryType modBinaryType)
 	{
-		ModBinaryType.Audio => MainApi.ModBinaryType.Audio,
-		ModBinaryType.Dd => MainApi.ModBinaryType.Dd,
-		_ => throw new UnreachableException(),
-	};
+		return modBinaryType switch
+		{
+			ModBinaryType.Audio => MainApi.ModBinaryType.Audio,
+			ModBinaryType.Dd => MainApi.ModBinaryType.Dd,
+			_ => throw new UnreachableException(),
+		};
+	}
 
-	private static MainApi.ModTypes ToMainApi(this ModTypes modTypes) => (MainApi.ModTypes)(int)modTypes;
+	private static MainApi.ModTypes ToMainApi(this ModTypes modTypes)
+	{
+		return (MainApi.ModTypes)(int)modTypes;
+	}
 }

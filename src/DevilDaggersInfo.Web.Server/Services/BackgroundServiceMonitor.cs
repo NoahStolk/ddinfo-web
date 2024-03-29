@@ -8,7 +8,9 @@ public class BackgroundServiceMonitor
 	private readonly ConcurrentBag<BackgroundServiceLog> _backgroundServiceLogs = new();
 
 	public void Register(string name, TimeSpan interval)
-		=> _backgroundServiceLogs.Add(new(name, interval));
+	{
+		_backgroundServiceLogs.Add(new(name, interval));
+	}
 
 	public void Update(string name, DateTime lastExecuted)
 	{

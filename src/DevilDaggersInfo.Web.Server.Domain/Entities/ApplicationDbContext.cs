@@ -37,7 +37,10 @@ public class ApplicationDbContext : DbContext
 	public virtual DbSet<UserRoleEntity> UserRoles => Set<UserRoleEntity>();
 
 #if DEBUG
-	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.LogTo(Console.WriteLine);
+	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+	{
+		optionsBuilder.LogTo(Console.WriteLine);
+	}
 #endif
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)

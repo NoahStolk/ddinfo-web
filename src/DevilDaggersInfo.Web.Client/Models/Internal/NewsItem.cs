@@ -8,7 +8,13 @@ public class NewsItem
 
 	public DateOnly DateTime { get; init; }
 
-	public string GetHtmlPath() => Path.Combine("news", $"{Title}.html");
+	public string GetHtmlPath()
+	{
+		return Path.Combine("news", $"{Title}.html");
+	}
 
-	public string ToDisplayTitle() => $"{DateTime.ToString(StringFormats.DateFormat)} - {Title}";
+	public string ToDisplayTitle()
+	{
+		return $"{DateTime.ToString(StringFormats.DateFormat)} - {Title}";
+	}
 }

@@ -113,9 +113,15 @@ public class DiscordLogFlushBackgroundService : AbstractBackgroundService
 		}
 	}
 
-	private async Task LogToLogChannel(DiscordChannel logChannel) => await LogEntries(_logContainerService.LogEntries, logChannel);
+	private async Task LogToLogChannel(DiscordChannel logChannel)
+	{
+		await LogEntries(_logContainerService.LogEntries, logChannel);
+	}
 
-	private async Task LogToAuditLogChannel(DiscordChannel auditLogChannel) => await LogEntries(_logContainerService.AuditLogEntries, auditLogChannel);
+	private async Task LogToAuditLogChannel(DiscordChannel auditLogChannel)
+	{
+		await LogEntries(_logContainerService.AuditLogEntries, auditLogChannel);
+	}
 
 	private static async Task LogEntries(List<string> entries, DiscordChannel channel)
 	{

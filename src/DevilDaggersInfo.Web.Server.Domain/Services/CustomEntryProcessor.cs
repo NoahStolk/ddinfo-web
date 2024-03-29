@@ -622,7 +622,9 @@ public class CustomEntryProcessor
 	}
 
 	private static int GetRank(List<CustomEntryEntity> orderedEntries, int playerId)
-		=> orderedEntries.ConvertAll(ce => ce.PlayerId).IndexOf(playerId) + 1;
+	{
+		return orderedEntries.ConvertAll(ce => ce.PlayerId).IndexOf(playerId) + 1;
+	}
 
 	private void Log(UploadRequest uploadRequest, string? spawnsetName, string? errorMessage = null)
 	{

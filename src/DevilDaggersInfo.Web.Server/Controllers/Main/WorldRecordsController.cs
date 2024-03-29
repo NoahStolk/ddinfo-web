@@ -18,5 +18,7 @@ public class WorldRecordsController : ControllerBase
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public GetWorldRecordDataContainer GetWorldRecordData()
-		=> _worldRecordRepository.GetWorldRecordData();
+	{
+		return _worldRecordRepository.GetWorldRecordData();
+	}
 }

@@ -5,20 +5,26 @@ namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 
 public static class LeaderboardStatisticsConverters
 {
-	private static GetArrayStatistic ToMainApi(this ArrayStatistic arrayStatistic) => new()
+	private static GetArrayStatistic ToMainApi(this ArrayStatistic arrayStatistic)
 	{
-		Average = arrayStatistic.Average,
-		Median = arrayStatistic.Median,
-		Mode = arrayStatistic.Mode,
-	};
+		return new()
+		{
+			Average = arrayStatistic.Average,
+			Median = arrayStatistic.Median,
+			Mode = arrayStatistic.Mode,
+		};
+	}
 
-	public static GetArrayStatistics ToMainApi(this ArrayStatistics arrayStatistics) => new()
+	public static GetArrayStatistics ToMainApi(this ArrayStatistics arrayStatistics)
 	{
-		Accuracy = arrayStatistics.Accuracy.ToMainApi(),
-		DaggersFired = arrayStatistics.DaggersFired.ToMainApi(),
-		DaggersHit = arrayStatistics.DaggersHit.ToMainApi(),
-		Gems = arrayStatistics.Gems.ToMainApi(),
-		Kills = arrayStatistics.Kills.ToMainApi(),
-		Times = arrayStatistics.Times.ToMainApi(),
-	};
+		return new()
+		{
+			Accuracy = arrayStatistics.Accuracy.ToMainApi(),
+			DaggersFired = arrayStatistics.DaggersFired.ToMainApi(),
+			DaggersHit = arrayStatistics.DaggersHit.ToMainApi(),
+			Gems = arrayStatistics.Gems.ToMainApi(),
+			Kills = arrayStatistics.Kills.ToMainApi(),
+			Times = arrayStatistics.Times.ToMainApi(),
+		};
+	}
 }

@@ -18,5 +18,7 @@ public class DonationsController : ControllerBase
 	[HttpGet("donors")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public async Task<List<GetDonor>> GetDonors()
-		=> await _donationRepository.GetDonorsAsync();
+	{
+		return await _donationRepository.GetDonorsAsync();
+	}
 }

@@ -16,7 +16,10 @@ public class ModArchiveAccessor
 		_modArchiveCache = modArchiveCache;
 	}
 
-	public string GetModArchivePath(string modName) => Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Mods), $"{modName}.zip");
+	public string GetModArchivePath(string modName)
+	{
+		return Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Mods), $"{modName}.zip");
+	}
 
 	public async Task<ModFileSystemData> GetModFileSystemDataAsync(string modName)
 	{

@@ -13,9 +13,12 @@ public class BinaryDataState : IStateObject<BinaryData>
 
 	public required byte[] Data { get; set; }
 
-	public BinaryData ToModel() => new()
+	public BinaryData ToModel()
 	{
-		Name = Name,
-		Data = Data,
-	};
+		return new()
+		{
+			Name = Name,
+			Data = Data,
+		};
+	}
 }

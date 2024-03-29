@@ -171,29 +171,32 @@ public class UploadRequest
 
 	public List<UploadRequestTimestamp> Timestamps { get; }
 
-	public string CreateValidationV2() => CreateValidationV2(
-		PlayerId,
-		TimeAsBytes,
-		GemsCollected,
-		GemsDespawned,
-		GemsEaten,
-		GemsTotal,
-		EnemiesAlive,
-		EnemiesKilled,
-		DeathType,
-		DaggersHit,
-		DaggersFired,
-		HomingStored,
-		HomingEaten,
-		IsReplay,
-		Status,
-		SurvivalHashMd5,
-		LevelUpTime2AsBytes,
-		LevelUpTime3AsBytes,
-		LevelUpTime4AsBytes,
-		GameMode,
-		TimeAttackOrRaceFinished,
-		ProhibitedMods);
+	public string CreateValidationV2()
+	{
+		return CreateValidationV2(
+			PlayerId,
+			TimeAsBytes,
+			GemsCollected,
+			GemsDespawned,
+			GemsEaten,
+			GemsTotal,
+			EnemiesAlive,
+			EnemiesKilled,
+			DeathType,
+			DaggersHit,
+			DaggersFired,
+			HomingStored,
+			HomingEaten,
+			IsReplay,
+			Status,
+			SurvivalHashMd5,
+			LevelUpTime2AsBytes,
+			LevelUpTime3AsBytes,
+			LevelUpTime4AsBytes,
+			GameMode,
+			TimeAttackOrRaceFinished,
+			ProhibitedMods);
+	}
 
 	/// <summary>
 	/// The <see cref="UploadRequest.HomingStored"/> value is not reliable in game memory and shouldn't be used.

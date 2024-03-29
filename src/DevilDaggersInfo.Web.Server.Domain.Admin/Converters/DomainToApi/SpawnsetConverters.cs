@@ -23,14 +23,17 @@ public static class SpawnsetConverters
 		};
 	}
 
-	public static GetSpawnset ToAdminApi(this SpawnsetEntity spawnset) => new()
+	public static GetSpawnset ToAdminApi(this SpawnsetEntity spawnset)
 	{
-		Id = spawnset.Id,
-		PlayerId = spawnset.PlayerId,
-		Name = spawnset.Name,
-		MaxDisplayWaves = spawnset.MaxDisplayWaves,
-		HtmlDescription = spawnset.HtmlDescription,
-		LastUpdated = spawnset.LastUpdated,
-		IsPractice = spawnset.IsPractice,
-	};
+		return new()
+		{
+			Id = spawnset.Id,
+			PlayerId = spawnset.PlayerId,
+			Name = spawnset.Name,
+			MaxDisplayWaves = spawnset.MaxDisplayWaves,
+			HtmlDescription = spawnset.HtmlDescription,
+			LastUpdated = spawnset.LastUpdated,
+			IsPractice = spawnset.IsPractice,
+		};
+	}
 }

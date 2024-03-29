@@ -9,37 +9,43 @@ namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Ddse;
 // TODO: Use domain models.
 public static class SpawnsetConverters
 {
-	// ! Navigation property.
-	public static DdseApi.GetSpawnsetDdse ToDdseApi(this SpawnsetEntity spawnset, bool hasCustomLeaderboard) => new()
+	public static DdseApi.GetSpawnsetDdse ToDdseApi(this SpawnsetEntity spawnset, bool hasCustomLeaderboard)
 	{
-		Id = spawnset.Id,
-		MaxDisplayWaves = spawnset.MaxDisplayWaves,
-		HtmlDescription = spawnset.HtmlDescription,
-		LastUpdated = spawnset.LastUpdated,
-		SpawnsetData = new()
+		// ! Navigation property.
+		return new()
 		{
-			AdditionalGems = spawnset.EffectiveGemsOrHoming,
-			GameMode = spawnset.GameMode.ToDdseApi(),
-			Hand = (byte)spawnset.EffectiveHandLevel,
-			LoopLength = (float?)spawnset.LoopLength?.ToSecondsTime(),
-			LoopSpawnCount = spawnset.LoopSpawnCount,
-			NonLoopLength = (float?)spawnset.PreLoopLength?.ToSecondsTime(),
-			NonLoopSpawnCount = spawnset.PreLoopSpawnCount,
-			SpawnVersion = spawnset.SpawnVersion,
-			TimerStart = (float)spawnset.TimerStart.ToSecondsTime(),
-			WorldVersion = spawnset.WorldVersion,
-		},
-		Name = spawnset.Name,
-		AuthorName = spawnset.Player!.PlayerName,
-		HasCustomLeaderboard = hasCustomLeaderboard,
-		IsPractice = spawnset.IsPractice,
-	};
+			Id = spawnset.Id,
+			MaxDisplayWaves = spawnset.MaxDisplayWaves,
+			HtmlDescription = spawnset.HtmlDescription,
+			LastUpdated = spawnset.LastUpdated,
+			SpawnsetData = new()
+			{
+				AdditionalGems = spawnset.EffectiveGemsOrHoming,
+				GameMode = spawnset.GameMode.ToDdseApi(),
+				Hand = (byte)spawnset.EffectiveHandLevel,
+				LoopLength = (float?)spawnset.LoopLength?.ToSecondsTime(),
+				LoopSpawnCount = spawnset.LoopSpawnCount,
+				NonLoopLength = (float?)spawnset.PreLoopLength?.ToSecondsTime(),
+				NonLoopSpawnCount = spawnset.PreLoopSpawnCount,
+				SpawnVersion = spawnset.SpawnVersion,
+				TimerStart = (float)spawnset.TimerStart.ToSecondsTime(),
+				WorldVersion = spawnset.WorldVersion,
+			},
+			Name = spawnset.Name,
+			AuthorName = spawnset.Player!.PlayerName,
+			HasCustomLeaderboard = hasCustomLeaderboard,
+			IsPractice = spawnset.IsPractice,
+		};
+	}
 
-	private static DdseApi.GameModeDdse ToDdseApi(this SpawnsetGameMode gameMode) => gameMode switch
+	private static DdseApi.GameModeDdse ToDdseApi(this SpawnsetGameMode gameMode)
 	{
-		SpawnsetGameMode.Survival => DdseApi.GameModeDdse.Survival,
-		SpawnsetGameMode.TimeAttack => DdseApi.GameModeDdse.TimeAttack,
-		SpawnsetGameMode.Race => DdseApi.GameModeDdse.Race,
-		_ => throw new UnreachableException(),
-	};
+		return gameMode switch
+		{
+			SpawnsetGameMode.Survival => DdseApi.GameModeDdse.Survival,
+			SpawnsetGameMode.TimeAttack => DdseApi.GameModeDdse.TimeAttack,
+			SpawnsetGameMode.Race => DdseApi.GameModeDdse.Race,
+			_ => throw new UnreachableException(),
+		};
+	}
 }

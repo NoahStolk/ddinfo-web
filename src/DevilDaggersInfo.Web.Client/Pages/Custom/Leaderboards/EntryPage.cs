@@ -217,7 +217,9 @@ public partial class EntryPage
 
 	// TODO: Use INumber in .NET 7.
 	private void AddDataSet(List<(LineDataSet Set, string Name)> dataSets, ushort[]? data, string name, string color)
-		=> AddDataSet(dataSets, data?.Select(u => (int)u).ToArray(), name, color);
+	{
+		AddDataSet(dataSets, data?.Select(u => (int)u).ToArray(), name, color);
+	}
 
 	// TODO: Use INumber in .NET 7.
 	private void AddDataSet(List<(LineDataSet Set, string Name)> dataSets, int[]? data, string name, string color)

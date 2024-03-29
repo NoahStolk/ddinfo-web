@@ -38,21 +38,24 @@ public class EditPlayerProfileState : IStateObject<EditPlayerProfile>
 
 	public bool HidePastUsernames { get; set; }
 
-	public EditPlayerProfile ToModel() => new()
+	public EditPlayerProfile ToModel()
 	{
-		CountryCode = CountryCode,
-		Dpi = Dpi,
-		InGameSens = InGameSens,
-		Fov = Fov,
-		IsRightHanded = IsRightHanded,
-		HasFlashHandEnabled = HasFlashHandEnabled,
-		Gamma = Gamma,
-		UsesLegacyAudio = UsesLegacyAudio,
-		UsesHrtf = UsesHrtf,
-		UsesInvertY = UsesInvertY,
-		VerticalSync = VerticalSync,
-		HideSettings = HideSettings,
-		HideDonations = HideDonations,
-		HidePastUsernames = HidePastUsernames,
-	};
+		return new()
+		{
+			CountryCode = CountryCode,
+			Dpi = Dpi,
+			InGameSens = InGameSens,
+			Fov = Fov,
+			IsRightHanded = IsRightHanded,
+			HasFlashHandEnabled = HasFlashHandEnabled,
+			Gamma = Gamma,
+			UsesLegacyAudio = UsesLegacyAudio,
+			UsesHrtf = UsesHrtf,
+			UsesInvertY = UsesInvertY,
+			VerticalSync = VerticalSync,
+			HideSettings = HideSettings,
+			HideDonations = HideDonations,
+			HidePastUsernames = HidePastUsernames,
+		};
+	}
 }

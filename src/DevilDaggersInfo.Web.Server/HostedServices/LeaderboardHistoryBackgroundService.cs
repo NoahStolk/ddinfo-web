@@ -83,33 +83,36 @@ public class LeaderboardHistoryBackgroundService : AbstractBackgroundService
 		return false;
 	}
 
-	private static LeaderboardHistory ConvertToHistoryModel(IDdLeaderboardService.LeaderboardResponse leaderboard, List<IDdLeaderboardService.EntryResponse> entries) => new()
+	private static LeaderboardHistory ConvertToHistoryModel(IDdLeaderboardService.LeaderboardResponse leaderboard, List<IDdLeaderboardService.EntryResponse> entries)
 	{
-		DaggersFiredGlobal = leaderboard.DaggersFiredGlobal,
-		DaggersHitGlobal = leaderboard.DaggersHitGlobal,
-		DateTime = leaderboard.DateTime,
-		DeathsGlobal = leaderboard.DeathsGlobal,
-		Entries = entries.ConvertAll(e => new EntryHistory
+		return new()
 		{
-			DaggersFired = e.DaggersFired,
-			DaggersFiredTotal = e.DaggersFiredTotal,
-			DaggersHit = e.DaggersHit,
-			DaggersHitTotal = e.DaggersHitTotal,
-			DeathsTotal = e.DeathsTotal,
-			DeathType = (byte)e.DeathType,
-			Gems = e.Gems,
-			GemsTotal = e.GemsTotal,
-			Id = e.Id,
-			Kills = e.Kills,
-			KillsTotal = e.KillsTotal,
-			Rank = e.Rank,
-			Time = e.Time,
-			TimeTotal = e.TimeTotal,
-			Username = e.Username,
-		}),
-		GemsGlobal = leaderboard.GemsGlobal,
-		KillsGlobal = leaderboard.KillsGlobal,
-		Players = leaderboard.TotalPlayers,
-		TimeGlobal = leaderboard.TimeGlobal,
-	};
+			DaggersFiredGlobal = leaderboard.DaggersFiredGlobal,
+			DaggersHitGlobal = leaderboard.DaggersHitGlobal,
+			DateTime = leaderboard.DateTime,
+			DeathsGlobal = leaderboard.DeathsGlobal,
+			Entries = entries.ConvertAll(e => new EntryHistory
+			{
+				DaggersFired = e.DaggersFired,
+				DaggersFiredTotal = e.DaggersFiredTotal,
+				DaggersHit = e.DaggersHit,
+				DaggersHitTotal = e.DaggersHitTotal,
+				DeathsTotal = e.DeathsTotal,
+				DeathType = (byte)e.DeathType,
+				Gems = e.Gems,
+				GemsTotal = e.GemsTotal,
+				Id = e.Id,
+				Kills = e.Kills,
+				KillsTotal = e.KillsTotal,
+				Rank = e.Rank,
+				Time = e.Time,
+				TimeTotal = e.TimeTotal,
+				Username = e.Username,
+			}),
+			GemsGlobal = leaderboard.GemsGlobal,
+			KillsGlobal = leaderboard.KillsGlobal,
+			Players = leaderboard.TotalPlayers,
+			TimeGlobal = leaderboard.TimeGlobal,
+		};
+	}
 }

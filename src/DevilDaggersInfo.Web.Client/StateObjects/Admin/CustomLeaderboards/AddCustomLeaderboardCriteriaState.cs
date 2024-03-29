@@ -8,9 +8,12 @@ public class AddCustomLeaderboardCriteriaState : IStateObject<AddCustomLeaderboa
 
 	public string? Expression { get; set; }
 
-	public AddCustomLeaderboardCriteria ToModel() => new()
+	public AddCustomLeaderboardCriteria ToModel()
 	{
-		Expression = Expression,
-		Operator = Operator,
-	};
+		return new()
+		{
+			Expression = Expression,
+			Operator = Operator,
+		};
+	}
 }

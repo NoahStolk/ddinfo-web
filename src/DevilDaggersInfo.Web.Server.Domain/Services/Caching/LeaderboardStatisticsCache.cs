@@ -196,5 +196,7 @@ public class LeaderboardStatisticsCache
 	}
 
 	public int GetCount()
-		=> _entries.Count;
+	{
+		return _entries.Count;
+	}
 }

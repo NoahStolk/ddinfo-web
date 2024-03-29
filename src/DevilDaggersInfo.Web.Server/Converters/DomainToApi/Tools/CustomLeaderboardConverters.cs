@@ -126,202 +126,240 @@ public static class CustomLeaderboardConverters
 		};
 	}
 
-	public static ToolsApi.GetCustomLeaderboard ToAppApi(this SortedCustomLeaderboard sortedCustomLeaderboard) => new()
+	public static ToolsApi.GetCustomLeaderboard ToAppApi(this SortedCustomLeaderboard sortedCustomLeaderboard)
 	{
-		Criteria = sortedCustomLeaderboard.Criteria.ConvertAll(c => c.ToAppApi()),
-		Daggers = sortedCustomLeaderboard.Daggers?.ToAppApi(),
-		SortedEntries = sortedCustomLeaderboard.CustomEntries.ConvertAll(ce => ce.ToAppApi()),
-		SpawnsetName = sortedCustomLeaderboard.SpawnsetName,
-		RankSorting = sortedCustomLeaderboard.RankSorting.ToAppApi(),
-		SpawnsetGameMode = sortedCustomLeaderboard.GameMode.ToAppApi(),
-	};
-
-	public static ToolsApi.GetCustomLeaderboardForOverview ToAppApi(this CustomLeaderboardOverview customLeaderboard) => new()
-	{
-		Daggers = customLeaderboard.Daggers?.ToAppApi(),
-		Id = customLeaderboard.Id,
-		PlayerCount = customLeaderboard.PlayerCount,
-		SelectedPlayerStats = customLeaderboard.SelectedPlayerStats?.ToAppApi(),
-		SpawnsetId = customLeaderboard.SpawnsetId,
-		SpawnsetName = customLeaderboard.SpawnsetName,
-		SpawnsetAuthorId = customLeaderboard.SpawnsetAuthorId,
-		SpawnsetAuthorName = customLeaderboard.SpawnsetAuthorName,
-		SubmitCount = customLeaderboard.TotalRunsSubmitted,
-		WorldRecord = customLeaderboard.WorldRecord?.ToAppApi(),
-		Criteria = customLeaderboard.Criteria.ConvertAll(c => c.ToAppApi()),
-		RankSorting = customLeaderboard.RankSorting.ToAppApi(),
-		SpawnsetGameMode = customLeaderboard.GameMode.ToAppApi(),
-	};
-
-	private static ToolsApi.GetCustomLeaderboardCriteria ToAppApi(this CustomLeaderboardCriteria customLeaderboardCriteria) => new()
-	{
-		Type = customLeaderboardCriteria.Type.ToAppApi(),
-		Expression = customLeaderboardCriteria.Expression,
-		Operator = customLeaderboardCriteria.Operator.ToAppApi(),
-	};
-
-	private static ToolsApi.GetCustomLeaderboardDaggers ToAppApi(this CustomLeaderboardDaggers customLeaderboardDaggers) => new()
-	{
-		Bronze = customLeaderboardDaggers.Bronze.ToSecondsTime(),
-		Silver = customLeaderboardDaggers.Silver.ToSecondsTime(),
-		Golden = customLeaderboardDaggers.Golden.ToSecondsTime(),
-		Devil = customLeaderboardDaggers.Devil.ToSecondsTime(),
-		Leviathan = customLeaderboardDaggers.Leviathan.ToSecondsTime(),
-	};
-
-	private static ToolsApi.GetCustomLeaderboardSelectedPlayerStats ToAppApi(this CustomLeaderboardOverviewSelectedPlayerStats customLeaderboardOverviewSelectedPlayerStats) => new()
-	{
-		Dagger = customLeaderboardOverviewSelectedPlayerStats.Dagger?.ToAppApi(),
-		Rank = customLeaderboardOverviewSelectedPlayerStats.Rank,
-		HighscoreValue = customLeaderboardOverviewSelectedPlayerStats.HighscoreValue,
-		NextDagger = customLeaderboardOverviewSelectedPlayerStats.NextDagger == null ? null : new()
+		return new()
 		{
-			Dagger = customLeaderboardOverviewSelectedPlayerStats.NextDagger.Dagger.ToAppApi(),
-			DaggerValue = customLeaderboardOverviewSelectedPlayerStats.NextDagger.DaggerValue,
-		},
-	};
+			Criteria = sortedCustomLeaderboard.Criteria.ConvertAll(c => c.ToAppApi()),
+			Daggers = sortedCustomLeaderboard.Daggers?.ToAppApi(),
+			SortedEntries = sortedCustomLeaderboard.CustomEntries.ConvertAll(ce => ce.ToAppApi()),
+			SpawnsetName = sortedCustomLeaderboard.SpawnsetName,
+			RankSorting = sortedCustomLeaderboard.RankSorting.ToAppApi(),
+			SpawnsetGameMode = sortedCustomLeaderboard.GameMode.ToAppApi(),
+		};
+	}
 
-	private static ToolsApi.GetCustomLeaderboardWorldRecord ToAppApi(this CustomLeaderboardOverviewWorldRecord customLeaderboardOverviewWorldRecord) => new()
+	public static ToolsApi.GetCustomLeaderboardForOverview ToAppApi(this CustomLeaderboardOverview customLeaderboard)
 	{
-		Dagger = customLeaderboardOverviewWorldRecord.Dagger?.ToAppApi(),
-		WorldRecordValue = customLeaderboardOverviewWorldRecord.WorldRecordValue,
-	};
+		return new()
+		{
+			Daggers = customLeaderboard.Daggers?.ToAppApi(),
+			Id = customLeaderboard.Id,
+			PlayerCount = customLeaderboard.PlayerCount,
+			SelectedPlayerStats = customLeaderboard.SelectedPlayerStats?.ToAppApi(),
+			SpawnsetId = customLeaderboard.SpawnsetId,
+			SpawnsetName = customLeaderboard.SpawnsetName,
+			SpawnsetAuthorId = customLeaderboard.SpawnsetAuthorId,
+			SpawnsetAuthorName = customLeaderboard.SpawnsetAuthorName,
+			SubmitCount = customLeaderboard.TotalRunsSubmitted,
+			WorldRecord = customLeaderboard.WorldRecord?.ToAppApi(),
+			Criteria = customLeaderboard.Criteria.ConvertAll(c => c.ToAppApi()),
+			RankSorting = customLeaderboard.RankSorting.ToAppApi(),
+			SpawnsetGameMode = customLeaderboard.GameMode.ToAppApi(),
+		};
+	}
+
+	private static ToolsApi.GetCustomLeaderboardCriteria ToAppApi(this CustomLeaderboardCriteria customLeaderboardCriteria)
+	{
+		return new()
+		{
+			Type = customLeaderboardCriteria.Type.ToAppApi(),
+			Expression = customLeaderboardCriteria.Expression,
+			Operator = customLeaderboardCriteria.Operator.ToAppApi(),
+		};
+	}
+
+	private static ToolsApi.GetCustomLeaderboardDaggers ToAppApi(this CustomLeaderboardDaggers customLeaderboardDaggers)
+	{
+		return new()
+		{
+			Bronze = customLeaderboardDaggers.Bronze.ToSecondsTime(),
+			Silver = customLeaderboardDaggers.Silver.ToSecondsTime(),
+			Golden = customLeaderboardDaggers.Golden.ToSecondsTime(),
+			Devil = customLeaderboardDaggers.Devil.ToSecondsTime(),
+			Leviathan = customLeaderboardDaggers.Leviathan.ToSecondsTime(),
+		};
+	}
+
+	private static ToolsApi.GetCustomLeaderboardSelectedPlayerStats ToAppApi(this CustomLeaderboardOverviewSelectedPlayerStats customLeaderboardOverviewSelectedPlayerStats)
+	{
+		return new()
+		{
+			Dagger = customLeaderboardOverviewSelectedPlayerStats.Dagger?.ToAppApi(),
+			Rank = customLeaderboardOverviewSelectedPlayerStats.Rank,
+			HighscoreValue = customLeaderboardOverviewSelectedPlayerStats.HighscoreValue,
+			NextDagger = customLeaderboardOverviewSelectedPlayerStats.NextDagger == null ? null : new()
+			{
+				Dagger = customLeaderboardOverviewSelectedPlayerStats.NextDagger.Dagger.ToAppApi(),
+				DaggerValue = customLeaderboardOverviewSelectedPlayerStats.NextDagger.DaggerValue,
+			},
+		};
+	}
+
+	private static ToolsApi.GetCustomLeaderboardWorldRecord ToAppApi(this CustomLeaderboardOverviewWorldRecord customLeaderboardOverviewWorldRecord)
+	{
+		return new()
+		{
+			Dagger = customLeaderboardOverviewWorldRecord.Dagger?.ToAppApi(),
+			WorldRecordValue = customLeaderboardOverviewWorldRecord.WorldRecordValue,
+		};
+	}
 
 	private static ToolsApi.GetScoreState<T> ToAppApi<T>(this UploadResponseScoreState<T> scoreState)
 		where T : struct
-		=> new(scoreState.Value, scoreState.ValueDifference);
-
-	private static ToolsApi.GetCustomEntry ToAppApi(this CustomEntry customEntry) => new()
 	{
-		DaggersFired = customEntry.DaggersFired,
-		DaggersHit = customEntry.DaggersHit,
-		DeathType = customEntry.DeathType,
-		EnemiesAlive = customEntry.EnemiesAlive,
-		EnemiesKilled = customEntry.EnemiesKilled,
-		GemsCollected = customEntry.GemsCollected,
-		GemsDespawned = customEntry.GemsDespawned,
-		GemsEaten = customEntry.GemsEaten,
-		GemsTotal = customEntry.GemsTotal,
-		HasReplay = customEntry.HasReplay,
-		HomingEaten = customEntry.HomingEaten,
-		HomingStored = customEntry.HomingStored,
-		Id = customEntry.Id,
-		LevelUpTime2InSeconds = customEntry.LevelUpTime2.ToSecondsTime(),
-		LevelUpTime3InSeconds = customEntry.LevelUpTime3.ToSecondsTime(),
-		LevelUpTime4InSeconds = customEntry.LevelUpTime4.ToSecondsTime(),
-		PlayerId = customEntry.PlayerId,
-		PlayerName = customEntry.PlayerName,
-		Rank = customEntry.Rank,
-		SubmitDate = customEntry.SubmitDate,
-		TimeInSeconds = customEntry.Time.ToSecondsTime(),
-		CustomLeaderboardDagger = customEntry.CustomLeaderboardDagger?.ToAppApi(),
-	};
+		return new(scoreState.Value, scoreState.ValueDifference);
+	}
 
-	private static ToolsApi.CustomLeaderboardDagger ToAppApi(this CustomLeaderboardDagger dagger) => dagger switch
+	private static ToolsApi.GetCustomEntry ToAppApi(this CustomEntry customEntry)
 	{
-		CustomLeaderboardDagger.Default => ToolsApi.CustomLeaderboardDagger.Default,
-		CustomLeaderboardDagger.Bronze => ToolsApi.CustomLeaderboardDagger.Bronze,
-		CustomLeaderboardDagger.Silver => ToolsApi.CustomLeaderboardDagger.Silver,
-		CustomLeaderboardDagger.Golden => ToolsApi.CustomLeaderboardDagger.Golden,
-		CustomLeaderboardDagger.Devil => ToolsApi.CustomLeaderboardDagger.Devil,
-		CustomLeaderboardDagger.Leviathan => ToolsApi.CustomLeaderboardDagger.Leviathan,
-		_ => throw new UnreachableException(),
-	};
+		return new()
+		{
+			DaggersFired = customEntry.DaggersFired,
+			DaggersHit = customEntry.DaggersHit,
+			DeathType = customEntry.DeathType,
+			EnemiesAlive = customEntry.EnemiesAlive,
+			EnemiesKilled = customEntry.EnemiesKilled,
+			GemsCollected = customEntry.GemsCollected,
+			GemsDespawned = customEntry.GemsDespawned,
+			GemsEaten = customEntry.GemsEaten,
+			GemsTotal = customEntry.GemsTotal,
+			HasReplay = customEntry.HasReplay,
+			HomingEaten = customEntry.HomingEaten,
+			HomingStored = customEntry.HomingStored,
+			Id = customEntry.Id,
+			LevelUpTime2InSeconds = customEntry.LevelUpTime2.ToSecondsTime(),
+			LevelUpTime3InSeconds = customEntry.LevelUpTime3.ToSecondsTime(),
+			LevelUpTime4InSeconds = customEntry.LevelUpTime4.ToSecondsTime(),
+			PlayerId = customEntry.PlayerId,
+			PlayerName = customEntry.PlayerName,
+			Rank = customEntry.Rank,
+			SubmitDate = customEntry.SubmitDate,
+			TimeInSeconds = customEntry.Time.ToSecondsTime(),
+			CustomLeaderboardDagger = customEntry.CustomLeaderboardDagger?.ToAppApi(),
+		};
+	}
 
-	private static ToolsApi.CustomLeaderboardCriteriaType ToAppApi(this CustomLeaderboardCriteriaType criteriaType) => criteriaType switch
+	private static ToolsApi.CustomLeaderboardDagger ToAppApi(this CustomLeaderboardDagger dagger)
 	{
-		CustomLeaderboardCriteriaType.GemsCollected => ToolsApi.CustomLeaderboardCriteriaType.GemsCollected,
-		CustomLeaderboardCriteriaType.GemsDespawned => ToolsApi.CustomLeaderboardCriteriaType.GemsDespawned,
-		CustomLeaderboardCriteriaType.GemsEaten => ToolsApi.CustomLeaderboardCriteriaType.GemsEaten,
-		CustomLeaderboardCriteriaType.EnemiesKilled => ToolsApi.CustomLeaderboardCriteriaType.EnemiesKilled,
-		CustomLeaderboardCriteriaType.DaggersFired => ToolsApi.CustomLeaderboardCriteriaType.DaggersFired,
-		CustomLeaderboardCriteriaType.DaggersHit => ToolsApi.CustomLeaderboardCriteriaType.DaggersHit,
-		CustomLeaderboardCriteriaType.HomingStored => ToolsApi.CustomLeaderboardCriteriaType.HomingStored,
-		CustomLeaderboardCriteriaType.HomingEaten => ToolsApi.CustomLeaderboardCriteriaType.HomingEaten,
-		CustomLeaderboardCriteriaType.Skull1Kills => ToolsApi.CustomLeaderboardCriteriaType.Skull1Kills,
-		CustomLeaderboardCriteriaType.Skull2Kills => ToolsApi.CustomLeaderboardCriteriaType.Skull2Kills,
-		CustomLeaderboardCriteriaType.Skull3Kills => ToolsApi.CustomLeaderboardCriteriaType.Skull3Kills,
-		CustomLeaderboardCriteriaType.Skull4Kills => ToolsApi.CustomLeaderboardCriteriaType.Skull4Kills,
-		CustomLeaderboardCriteriaType.SpiderlingKills => ToolsApi.CustomLeaderboardCriteriaType.SpiderlingKills,
-		CustomLeaderboardCriteriaType.SpiderEggKills => ToolsApi.CustomLeaderboardCriteriaType.SpiderEggKills,
-		CustomLeaderboardCriteriaType.Squid1Kills => ToolsApi.CustomLeaderboardCriteriaType.Squid1Kills,
-		CustomLeaderboardCriteriaType.Squid2Kills => ToolsApi.CustomLeaderboardCriteriaType.Squid2Kills,
-		CustomLeaderboardCriteriaType.Squid3Kills => ToolsApi.CustomLeaderboardCriteriaType.Squid3Kills,
-		CustomLeaderboardCriteriaType.CentipedeKills => ToolsApi.CustomLeaderboardCriteriaType.CentipedeKills,
-		CustomLeaderboardCriteriaType.GigapedeKills => ToolsApi.CustomLeaderboardCriteriaType.GigapedeKills,
-		CustomLeaderboardCriteriaType.GhostpedeKills => ToolsApi.CustomLeaderboardCriteriaType.GhostpedeKills,
-		CustomLeaderboardCriteriaType.Spider1Kills => ToolsApi.CustomLeaderboardCriteriaType.Spider1Kills,
-		CustomLeaderboardCriteriaType.Spider2Kills => ToolsApi.CustomLeaderboardCriteriaType.Spider2Kills,
-		CustomLeaderboardCriteriaType.LeviathanKills => ToolsApi.CustomLeaderboardCriteriaType.LeviathanKills,
-		CustomLeaderboardCriteriaType.OrbKills => ToolsApi.CustomLeaderboardCriteriaType.OrbKills,
-		CustomLeaderboardCriteriaType.ThornKills => ToolsApi.CustomLeaderboardCriteriaType.ThornKills,
-		CustomLeaderboardCriteriaType.Skull1sAlive => ToolsApi.CustomLeaderboardCriteriaType.Skull1sAlive,
-		CustomLeaderboardCriteriaType.Skull2sAlive => ToolsApi.CustomLeaderboardCriteriaType.Skull2sAlive,
-		CustomLeaderboardCriteriaType.Skull3sAlive => ToolsApi.CustomLeaderboardCriteriaType.Skull3sAlive,
-		CustomLeaderboardCriteriaType.Skull4sAlive => ToolsApi.CustomLeaderboardCriteriaType.Skull4sAlive,
-		CustomLeaderboardCriteriaType.SpiderlingsAlive => ToolsApi.CustomLeaderboardCriteriaType.SpiderlingsAlive,
-		CustomLeaderboardCriteriaType.SpiderEggsAlive => ToolsApi.CustomLeaderboardCriteriaType.SpiderEggsAlive,
-		CustomLeaderboardCriteriaType.Squid1sAlive => ToolsApi.CustomLeaderboardCriteriaType.Squid1sAlive,
-		CustomLeaderboardCriteriaType.Squid2sAlive => ToolsApi.CustomLeaderboardCriteriaType.Squid2sAlive,
-		CustomLeaderboardCriteriaType.Squid3sAlive => ToolsApi.CustomLeaderboardCriteriaType.Squid3sAlive,
-		CustomLeaderboardCriteriaType.CentipedesAlive => ToolsApi.CustomLeaderboardCriteriaType.CentipedesAlive,
-		CustomLeaderboardCriteriaType.GigapedesAlive => ToolsApi.CustomLeaderboardCriteriaType.GigapedesAlive,
-		CustomLeaderboardCriteriaType.GhostpedesAlive => ToolsApi.CustomLeaderboardCriteriaType.GhostpedesAlive,
-		CustomLeaderboardCriteriaType.Spider1sAlive => ToolsApi.CustomLeaderboardCriteriaType.Spider1sAlive,
-		CustomLeaderboardCriteriaType.Spider2sAlive => ToolsApi.CustomLeaderboardCriteriaType.Spider2sAlive,
-		CustomLeaderboardCriteriaType.LeviathansAlive => ToolsApi.CustomLeaderboardCriteriaType.LeviathansAlive,
-		CustomLeaderboardCriteriaType.OrbsAlive => ToolsApi.CustomLeaderboardCriteriaType.OrbsAlive,
-		CustomLeaderboardCriteriaType.ThornsAlive => ToolsApi.CustomLeaderboardCriteriaType.ThornsAlive,
-		CustomLeaderboardCriteriaType.DeathType => ToolsApi.CustomLeaderboardCriteriaType.DeathType,
-		CustomLeaderboardCriteriaType.Time => ToolsApi.CustomLeaderboardCriteriaType.Time,
-		CustomLeaderboardCriteriaType.LevelUpTime2 => ToolsApi.CustomLeaderboardCriteriaType.LevelUpTime2,
-		CustomLeaderboardCriteriaType.LevelUpTime3 => ToolsApi.CustomLeaderboardCriteriaType.LevelUpTime3,
-		CustomLeaderboardCriteriaType.LevelUpTime4 => ToolsApi.CustomLeaderboardCriteriaType.LevelUpTime4,
-		CustomLeaderboardCriteriaType.EnemiesAlive => ToolsApi.CustomLeaderboardCriteriaType.EnemiesAlive,
-		_ => throw new UnreachableException(),
-	};
+		return dagger switch
+		{
+			CustomLeaderboardDagger.Default => ToolsApi.CustomLeaderboardDagger.Default,
+			CustomLeaderboardDagger.Bronze => ToolsApi.CustomLeaderboardDagger.Bronze,
+			CustomLeaderboardDagger.Silver => ToolsApi.CustomLeaderboardDagger.Silver,
+			CustomLeaderboardDagger.Golden => ToolsApi.CustomLeaderboardDagger.Golden,
+			CustomLeaderboardDagger.Devil => ToolsApi.CustomLeaderboardDagger.Devil,
+			CustomLeaderboardDagger.Leviathan => ToolsApi.CustomLeaderboardDagger.Leviathan,
+			_ => throw new UnreachableException(),
+		};
+	}
 
-	private static ToolsApi.CustomLeaderboardCriteriaOperator ToAppApi(this CustomLeaderboardCriteriaOperator @operator) => @operator switch
+	private static ToolsApi.CustomLeaderboardCriteriaType ToAppApi(this CustomLeaderboardCriteriaType criteriaType)
 	{
-		CustomLeaderboardCriteriaOperator.Any => ToolsApi.CustomLeaderboardCriteriaOperator.Any,
-		CustomLeaderboardCriteriaOperator.Equal => ToolsApi.CustomLeaderboardCriteriaOperator.Equal,
-		CustomLeaderboardCriteriaOperator.LessThan => ToolsApi.CustomLeaderboardCriteriaOperator.LessThan,
-		CustomLeaderboardCriteriaOperator.GreaterThan => ToolsApi.CustomLeaderboardCriteriaOperator.GreaterThan,
-		CustomLeaderboardCriteriaOperator.LessThanOrEqual => ToolsApi.CustomLeaderboardCriteriaOperator.LessThanOrEqual,
-		CustomLeaderboardCriteriaOperator.GreaterThanOrEqual => ToolsApi.CustomLeaderboardCriteriaOperator.GreaterThanOrEqual,
-		CustomLeaderboardCriteriaOperator.Modulo => ToolsApi.CustomLeaderboardCriteriaOperator.Modulo,
-		CustomLeaderboardCriteriaOperator.NotEqual => ToolsApi.CustomLeaderboardCriteriaOperator.NotEqual,
-		_ => throw new UnreachableException(),
-	};
+		return criteriaType switch
+		{
+			CustomLeaderboardCriteriaType.GemsCollected => ToolsApi.CustomLeaderboardCriteriaType.GemsCollected,
+			CustomLeaderboardCriteriaType.GemsDespawned => ToolsApi.CustomLeaderboardCriteriaType.GemsDespawned,
+			CustomLeaderboardCriteriaType.GemsEaten => ToolsApi.CustomLeaderboardCriteriaType.GemsEaten,
+			CustomLeaderboardCriteriaType.EnemiesKilled => ToolsApi.CustomLeaderboardCriteriaType.EnemiesKilled,
+			CustomLeaderboardCriteriaType.DaggersFired => ToolsApi.CustomLeaderboardCriteriaType.DaggersFired,
+			CustomLeaderboardCriteriaType.DaggersHit => ToolsApi.CustomLeaderboardCriteriaType.DaggersHit,
+			CustomLeaderboardCriteriaType.HomingStored => ToolsApi.CustomLeaderboardCriteriaType.HomingStored,
+			CustomLeaderboardCriteriaType.HomingEaten => ToolsApi.CustomLeaderboardCriteriaType.HomingEaten,
+			CustomLeaderboardCriteriaType.Skull1Kills => ToolsApi.CustomLeaderboardCriteriaType.Skull1Kills,
+			CustomLeaderboardCriteriaType.Skull2Kills => ToolsApi.CustomLeaderboardCriteriaType.Skull2Kills,
+			CustomLeaderboardCriteriaType.Skull3Kills => ToolsApi.CustomLeaderboardCriteriaType.Skull3Kills,
+			CustomLeaderboardCriteriaType.Skull4Kills => ToolsApi.CustomLeaderboardCriteriaType.Skull4Kills,
+			CustomLeaderboardCriteriaType.SpiderlingKills => ToolsApi.CustomLeaderboardCriteriaType.SpiderlingKills,
+			CustomLeaderboardCriteriaType.SpiderEggKills => ToolsApi.CustomLeaderboardCriteriaType.SpiderEggKills,
+			CustomLeaderboardCriteriaType.Squid1Kills => ToolsApi.CustomLeaderboardCriteriaType.Squid1Kills,
+			CustomLeaderboardCriteriaType.Squid2Kills => ToolsApi.CustomLeaderboardCriteriaType.Squid2Kills,
+			CustomLeaderboardCriteriaType.Squid3Kills => ToolsApi.CustomLeaderboardCriteriaType.Squid3Kills,
+			CustomLeaderboardCriteriaType.CentipedeKills => ToolsApi.CustomLeaderboardCriteriaType.CentipedeKills,
+			CustomLeaderboardCriteriaType.GigapedeKills => ToolsApi.CustomLeaderboardCriteriaType.GigapedeKills,
+			CustomLeaderboardCriteriaType.GhostpedeKills => ToolsApi.CustomLeaderboardCriteriaType.GhostpedeKills,
+			CustomLeaderboardCriteriaType.Spider1Kills => ToolsApi.CustomLeaderboardCriteriaType.Spider1Kills,
+			CustomLeaderboardCriteriaType.Spider2Kills => ToolsApi.CustomLeaderboardCriteriaType.Spider2Kills,
+			CustomLeaderboardCriteriaType.LeviathanKills => ToolsApi.CustomLeaderboardCriteriaType.LeviathanKills,
+			CustomLeaderboardCriteriaType.OrbKills => ToolsApi.CustomLeaderboardCriteriaType.OrbKills,
+			CustomLeaderboardCriteriaType.ThornKills => ToolsApi.CustomLeaderboardCriteriaType.ThornKills,
+			CustomLeaderboardCriteriaType.Skull1sAlive => ToolsApi.CustomLeaderboardCriteriaType.Skull1sAlive,
+			CustomLeaderboardCriteriaType.Skull2sAlive => ToolsApi.CustomLeaderboardCriteriaType.Skull2sAlive,
+			CustomLeaderboardCriteriaType.Skull3sAlive => ToolsApi.CustomLeaderboardCriteriaType.Skull3sAlive,
+			CustomLeaderboardCriteriaType.Skull4sAlive => ToolsApi.CustomLeaderboardCriteriaType.Skull4sAlive,
+			CustomLeaderboardCriteriaType.SpiderlingsAlive => ToolsApi.CustomLeaderboardCriteriaType.SpiderlingsAlive,
+			CustomLeaderboardCriteriaType.SpiderEggsAlive => ToolsApi.CustomLeaderboardCriteriaType.SpiderEggsAlive,
+			CustomLeaderboardCriteriaType.Squid1sAlive => ToolsApi.CustomLeaderboardCriteriaType.Squid1sAlive,
+			CustomLeaderboardCriteriaType.Squid2sAlive => ToolsApi.CustomLeaderboardCriteriaType.Squid2sAlive,
+			CustomLeaderboardCriteriaType.Squid3sAlive => ToolsApi.CustomLeaderboardCriteriaType.Squid3sAlive,
+			CustomLeaderboardCriteriaType.CentipedesAlive => ToolsApi.CustomLeaderboardCriteriaType.CentipedesAlive,
+			CustomLeaderboardCriteriaType.GigapedesAlive => ToolsApi.CustomLeaderboardCriteriaType.GigapedesAlive,
+			CustomLeaderboardCriteriaType.GhostpedesAlive => ToolsApi.CustomLeaderboardCriteriaType.GhostpedesAlive,
+			CustomLeaderboardCriteriaType.Spider1sAlive => ToolsApi.CustomLeaderboardCriteriaType.Spider1sAlive,
+			CustomLeaderboardCriteriaType.Spider2sAlive => ToolsApi.CustomLeaderboardCriteriaType.Spider2sAlive,
+			CustomLeaderboardCriteriaType.LeviathansAlive => ToolsApi.CustomLeaderboardCriteriaType.LeviathansAlive,
+			CustomLeaderboardCriteriaType.OrbsAlive => ToolsApi.CustomLeaderboardCriteriaType.OrbsAlive,
+			CustomLeaderboardCriteriaType.ThornsAlive => ToolsApi.CustomLeaderboardCriteriaType.ThornsAlive,
+			CustomLeaderboardCriteriaType.DeathType => ToolsApi.CustomLeaderboardCriteriaType.DeathType,
+			CustomLeaderboardCriteriaType.Time => ToolsApi.CustomLeaderboardCriteriaType.Time,
+			CustomLeaderboardCriteriaType.LevelUpTime2 => ToolsApi.CustomLeaderboardCriteriaType.LevelUpTime2,
+			CustomLeaderboardCriteriaType.LevelUpTime3 => ToolsApi.CustomLeaderboardCriteriaType.LevelUpTime3,
+			CustomLeaderboardCriteriaType.LevelUpTime4 => ToolsApi.CustomLeaderboardCriteriaType.LevelUpTime4,
+			CustomLeaderboardCriteriaType.EnemiesAlive => ToolsApi.CustomLeaderboardCriteriaType.EnemiesAlive,
+			_ => throw new UnreachableException(),
+		};
+	}
 
-	public static ToolsApi.SpawnsetGameMode ToAppApi(this SpawnsetGameMode dagger) => dagger switch
+	private static ToolsApi.CustomLeaderboardCriteriaOperator ToAppApi(this CustomLeaderboardCriteriaOperator @operator)
 	{
-		SpawnsetGameMode.Survival => ToolsApi.SpawnsetGameMode.Survival,
-		SpawnsetGameMode.TimeAttack => ToolsApi.SpawnsetGameMode.TimeAttack,
-		SpawnsetGameMode.Race => ToolsApi.SpawnsetGameMode.Race,
-		_ => throw new UnreachableException(),
-	};
+		return @operator switch
+		{
+			CustomLeaderboardCriteriaOperator.Any => ToolsApi.CustomLeaderboardCriteriaOperator.Any,
+			CustomLeaderboardCriteriaOperator.Equal => ToolsApi.CustomLeaderboardCriteriaOperator.Equal,
+			CustomLeaderboardCriteriaOperator.LessThan => ToolsApi.CustomLeaderboardCriteriaOperator.LessThan,
+			CustomLeaderboardCriteriaOperator.GreaterThan => ToolsApi.CustomLeaderboardCriteriaOperator.GreaterThan,
+			CustomLeaderboardCriteriaOperator.LessThanOrEqual => ToolsApi.CustomLeaderboardCriteriaOperator.LessThanOrEqual,
+			CustomLeaderboardCriteriaOperator.GreaterThanOrEqual => ToolsApi.CustomLeaderboardCriteriaOperator.GreaterThanOrEqual,
+			CustomLeaderboardCriteriaOperator.Modulo => ToolsApi.CustomLeaderboardCriteriaOperator.Modulo,
+			CustomLeaderboardCriteriaOperator.NotEqual => ToolsApi.CustomLeaderboardCriteriaOperator.NotEqual,
+			_ => throw new UnreachableException(),
+		};
+	}
 
-	public static ToolsApi.CustomLeaderboardRankSorting ToAppApi(this CustomLeaderboardRankSorting dagger) => dagger switch
+	public static ToolsApi.SpawnsetGameMode ToAppApi(this SpawnsetGameMode dagger)
 	{
-		CustomLeaderboardRankSorting.TimeAsc => ToolsApi.CustomLeaderboardRankSorting.TimeAsc,
-		CustomLeaderboardRankSorting.GemsCollectedAsc => ToolsApi.CustomLeaderboardRankSorting.GemsCollectedAsc,
-		CustomLeaderboardRankSorting.GemsDespawnedAsc => ToolsApi.CustomLeaderboardRankSorting.GemsDespawnedAsc,
-		CustomLeaderboardRankSorting.GemsEatenAsc => ToolsApi.CustomLeaderboardRankSorting.GemsEatenAsc,
-		CustomLeaderboardRankSorting.EnemiesKilledAsc => ToolsApi.CustomLeaderboardRankSorting.EnemiesKilledAsc,
-		CustomLeaderboardRankSorting.EnemiesAliveAsc => ToolsApi.CustomLeaderboardRankSorting.EnemiesAliveAsc,
-		CustomLeaderboardRankSorting.HomingStoredAsc => ToolsApi.CustomLeaderboardRankSorting.HomingStoredAsc,
-		CustomLeaderboardRankSorting.HomingEatenAsc => ToolsApi.CustomLeaderboardRankSorting.HomingEatenAsc,
+		return dagger switch
+		{
+			SpawnsetGameMode.Survival => ToolsApi.SpawnsetGameMode.Survival,
+			SpawnsetGameMode.TimeAttack => ToolsApi.SpawnsetGameMode.TimeAttack,
+			SpawnsetGameMode.Race => ToolsApi.SpawnsetGameMode.Race,
+			_ => throw new UnreachableException(),
+		};
+	}
 
-		CustomLeaderboardRankSorting.TimeDesc => ToolsApi.CustomLeaderboardRankSorting.TimeDesc,
-		CustomLeaderboardRankSorting.GemsCollectedDesc => ToolsApi.CustomLeaderboardRankSorting.GemsCollectedDesc,
-		CustomLeaderboardRankSorting.GemsDespawnedDesc => ToolsApi.CustomLeaderboardRankSorting.GemsDespawnedDesc,
-		CustomLeaderboardRankSorting.GemsEatenDesc => ToolsApi.CustomLeaderboardRankSorting.GemsEatenDesc,
-		CustomLeaderboardRankSorting.EnemiesKilledDesc => ToolsApi.CustomLeaderboardRankSorting.EnemiesKilledDesc,
-		CustomLeaderboardRankSorting.EnemiesAliveDesc => ToolsApi.CustomLeaderboardRankSorting.EnemiesAliveDesc,
-		CustomLeaderboardRankSorting.HomingStoredDesc => ToolsApi.CustomLeaderboardRankSorting.HomingStoredDesc,
-		CustomLeaderboardRankSorting.HomingEatenDesc => ToolsApi.CustomLeaderboardRankSorting.HomingEatenDesc,
+	public static ToolsApi.CustomLeaderboardRankSorting ToAppApi(this CustomLeaderboardRankSorting dagger)
+	{
+		return dagger switch
+		{
+			CustomLeaderboardRankSorting.TimeAsc => ToolsApi.CustomLeaderboardRankSorting.TimeAsc,
+			CustomLeaderboardRankSorting.GemsCollectedAsc => ToolsApi.CustomLeaderboardRankSorting.GemsCollectedAsc,
+			CustomLeaderboardRankSorting.GemsDespawnedAsc => ToolsApi.CustomLeaderboardRankSorting.GemsDespawnedAsc,
+			CustomLeaderboardRankSorting.GemsEatenAsc => ToolsApi.CustomLeaderboardRankSorting.GemsEatenAsc,
+			CustomLeaderboardRankSorting.EnemiesKilledAsc => ToolsApi.CustomLeaderboardRankSorting.EnemiesKilledAsc,
+			CustomLeaderboardRankSorting.EnemiesAliveAsc => ToolsApi.CustomLeaderboardRankSorting.EnemiesAliveAsc,
+			CustomLeaderboardRankSorting.HomingStoredAsc => ToolsApi.CustomLeaderboardRankSorting.HomingStoredAsc,
+			CustomLeaderboardRankSorting.HomingEatenAsc => ToolsApi.CustomLeaderboardRankSorting.HomingEatenAsc,
 
-		_ => throw new UnreachableException(),
-	};
+			CustomLeaderboardRankSorting.TimeDesc => ToolsApi.CustomLeaderboardRankSorting.TimeDesc,
+			CustomLeaderboardRankSorting.GemsCollectedDesc => ToolsApi.CustomLeaderboardRankSorting.GemsCollectedDesc,
+			CustomLeaderboardRankSorting.GemsDespawnedDesc => ToolsApi.CustomLeaderboardRankSorting.GemsDespawnedDesc,
+			CustomLeaderboardRankSorting.GemsEatenDesc => ToolsApi.CustomLeaderboardRankSorting.GemsEatenDesc,
+			CustomLeaderboardRankSorting.EnemiesKilledDesc => ToolsApi.CustomLeaderboardRankSorting.EnemiesKilledDesc,
+			CustomLeaderboardRankSorting.EnemiesAliveDesc => ToolsApi.CustomLeaderboardRankSorting.EnemiesAliveDesc,
+			CustomLeaderboardRankSorting.HomingStoredDesc => ToolsApi.CustomLeaderboardRankSorting.HomingStoredDesc,
+			CustomLeaderboardRankSorting.HomingEatenDesc => ToolsApi.CustomLeaderboardRankSorting.HomingEatenDesc,
+
+			_ => throw new UnreachableException(),
+		};
+	}
 }

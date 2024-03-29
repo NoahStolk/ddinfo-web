@@ -14,12 +14,15 @@ public class AddCustomLeaderboardDaggersState : IStateObject<AddCustomLeaderboar
 
 	public double Leviathan { get; set; }
 
-	public AddCustomLeaderboardDaggers ToModel() => new()
+	public AddCustomLeaderboardDaggers ToModel()
 	{
-		Bronze = Bronze,
-		Silver = Silver,
-		Golden = Golden,
-		Devil = Devil,
-		Leviathan = Leviathan,
-	};
+		return new()
+		{
+			Bronze = Bronze,
+			Silver = Silver,
+			Golden = Golden,
+			Devil = Devil,
+			Leviathan = Leviathan,
+		};
+	}
 }

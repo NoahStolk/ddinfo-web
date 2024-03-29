@@ -50,12 +50,15 @@ public static class SpawnsetConverters
 		};
 	}
 
-	public static MainApi.HandLevel ToMainApi(this SpawnsetHandLevel handLevel) => handLevel switch
+	public static MainApi.HandLevel ToMainApi(this SpawnsetHandLevel handLevel)
 	{
-		SpawnsetHandLevel.Level1 => MainApi.HandLevel.Level1,
-		SpawnsetHandLevel.Level2 => MainApi.HandLevel.Level2,
-		SpawnsetHandLevel.Level3 => MainApi.HandLevel.Level3,
-		SpawnsetHandLevel.Level4 => MainApi.HandLevel.Level4,
-		_ => throw new UnreachableException(),
-	};
+		return handLevel switch
+		{
+			SpawnsetHandLevel.Level1 => MainApi.HandLevel.Level1,
+			SpawnsetHandLevel.Level2 => MainApi.HandLevel.Level2,
+			SpawnsetHandLevel.Level3 => MainApi.HandLevel.Level3,
+			SpawnsetHandLevel.Level4 => MainApi.HandLevel.Level4,
+			_ => throw new UnreachableException(),
+		};
+	}
 }

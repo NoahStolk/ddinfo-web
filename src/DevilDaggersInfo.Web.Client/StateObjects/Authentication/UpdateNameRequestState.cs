@@ -10,10 +10,13 @@ public class UpdateNameRequestState : IStateObject<UpdateNameRequest>
 
 	public string NewName { get; set; } = string.Empty;
 
-	public UpdateNameRequest ToModel() => new()
+	public UpdateNameRequest ToModel()
 	{
-		CurrentName = CurrentName,
-		CurrentPassword = CurrentPassword,
-		NewName = NewName,
-	};
+		return new()
+		{
+			CurrentName = CurrentName,
+			CurrentPassword = CurrentPassword,
+			NewName = NewName,
+		};
+	}
 }

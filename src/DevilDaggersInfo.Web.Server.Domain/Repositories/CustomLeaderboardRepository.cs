@@ -472,10 +472,14 @@ public class CustomLeaderboardRepository
 	}
 
 	private static CustomLeaderboardOverviewWorldRecord ToWorldRecordOverviewModel(CustomEntrySummary worldRecord, CustomLeaderboardEntity cl)
-		=> ToWorldRecordOverviewModel(worldRecord, worldRecord.PlayerId, worldRecord.PlayerName, cl);
+	{
+		return ToWorldRecordOverviewModel(worldRecord, worldRecord.PlayerId, worldRecord.PlayerName, cl);
+	}
 
 	private static CustomLeaderboardOverviewWorldRecord ToWorldRecordOverviewModel(CustomLeaderboardOverviewWorldRecord worldRecord, CustomLeaderboardEntity cl)
-		=> ToWorldRecordOverviewModel(worldRecord, worldRecord.PlayerId, worldRecord.PlayerName, cl);
+	{
+		return ToWorldRecordOverviewModel(worldRecord, worldRecord.PlayerId, worldRecord.PlayerName, cl);
+	}
 
 	private static CustomLeaderboardOverviewWorldRecord ToWorldRecordOverviewModel(IDaggerStatCustomEntry worldRecord, int playerId, string playerName, CustomLeaderboardEntity cl)
 	{

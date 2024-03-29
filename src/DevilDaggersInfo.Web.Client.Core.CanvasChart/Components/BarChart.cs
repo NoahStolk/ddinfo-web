@@ -214,7 +214,10 @@ public partial class BarChart
 		_highlighter.ChangeState();
 	}
 
-	protected override bool ShouldRender() => _shouldRender;
+	protected override bool ShouldRender()
+	{
+		return _shouldRender;
+	}
 
 	private void SetHighlighterVisibility(bool visible)
 	{

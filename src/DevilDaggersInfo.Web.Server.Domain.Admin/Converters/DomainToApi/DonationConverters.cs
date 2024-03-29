@@ -24,25 +24,31 @@ public static class DonationConverters
 		};
 	}
 
-	public static GetDonation ToAdminApi(this DonationEntity donation) => new()
+	public static GetDonation ToAdminApi(this DonationEntity donation)
 	{
-		Id = donation.Id,
-		Amount = donation.Amount,
-		ConvertedEuroCentsReceived = donation.ConvertedEuroCentsReceived,
-		Currency = donation.Currency.ToAdminApi(),
-		IsRefunded = donation.IsRefunded,
-		Note = donation.Note,
-		PlayerId = donation.PlayerId,
-	};
+		return new()
+		{
+			Id = donation.Id,
+			Amount = donation.Amount,
+			ConvertedEuroCentsReceived = donation.ConvertedEuroCentsReceived,
+			Currency = donation.Currency.ToAdminApi(),
+			IsRefunded = donation.IsRefunded,
+			Note = donation.Note,
+			PlayerId = donation.PlayerId,
+		};
+	}
 
-	private static Currency ToAdminApi(this Entities.Enums.Currency currency) => currency switch
+	private static Currency ToAdminApi(this Entities.Enums.Currency currency)
 	{
-		Entities.Enums.Currency.Eur => Currency.Eur,
-		Entities.Enums.Currency.Usd => Currency.Usd,
-		Entities.Enums.Currency.Aud => Currency.Aud,
-		Entities.Enums.Currency.Gbp => Currency.Gbp,
-		Entities.Enums.Currency.Sgd => Currency.Sgd,
-		Entities.Enums.Currency.Rub => Currency.Rub,
-		_ => throw new UnreachableException(),
-	};
+		return currency switch
+		{
+			Entities.Enums.Currency.Eur => Currency.Eur,
+			Entities.Enums.Currency.Usd => Currency.Usd,
+			Entities.Enums.Currency.Aud => Currency.Aud,
+			Entities.Enums.Currency.Gbp => Currency.Gbp,
+			Entities.Enums.Currency.Sgd => Currency.Sgd,
+			Entities.Enums.Currency.Rub => Currency.Rub,
+			_ => throw new UnreachableException(),
+		};
+	}
 }

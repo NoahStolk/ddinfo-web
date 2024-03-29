@@ -19,12 +19,15 @@ public class EditSpawnsetState : IStateObject<EditSpawnset>
 
 	public bool IsPractice { get; set; }
 
-	public EditSpawnset ToModel() => new()
+	public EditSpawnset ToModel()
 	{
-		PlayerId = PlayerId,
-		Name = Name,
-		MaxDisplayWaves = MaxDisplayWaves,
-		HtmlDescription = HtmlDescription,
-		IsPractice = IsPractice,
-	};
+		return new()
+		{
+			PlayerId = PlayerId,
+			Name = Name,
+			MaxDisplayWaves = MaxDisplayWaves,
+			HtmlDescription = HtmlDescription,
+			IsPractice = IsPractice,
+		};
+	}
 }

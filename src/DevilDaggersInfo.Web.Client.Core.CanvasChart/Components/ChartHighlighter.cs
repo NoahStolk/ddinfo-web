@@ -14,5 +14,8 @@ public partial class ChartHighlighter
 	[Parameter]
 	public required RenderFragment ChildContent { get; set; }
 
-	public void ChangeState() => StateHasChanged();
+	public void ChangeState()
+	{
+		StateHasChanged();
+	}
 }

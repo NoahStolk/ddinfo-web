@@ -25,17 +25,20 @@ public record PlayerSettings
 
 	public required VerticalSync VerticalSync { get; init; }
 
-	public static PlayerSettings FromEntity(PlayerEntity player) => new()
+	public static PlayerSettings FromEntity(PlayerEntity player)
 	{
-		Dpi = player.Dpi,
-		Fov = player.Fov,
-		Gamma = player.Gamma,
-		UsesFlashHand = player.HasFlashHandEnabled,
-		InGameSens = player.InGameSens,
-		IsRightHanded = player.IsRightHanded,
-		UsesLegacyAudio = player.UsesLegacyAudio,
-		UsesHrtf = player.UsesHrtf,
-		UsesInvertY = player.UsesInvertY,
-		VerticalSync = player.VerticalSync,
-	};
+		return new()
+		{
+			Dpi = player.Dpi,
+			Fov = player.Fov,
+			Gamma = player.Gamma,
+			UsesFlashHand = player.HasFlashHandEnabled,
+			InGameSens = player.InGameSens,
+			IsRightHanded = player.IsRightHanded,
+			UsesLegacyAudio = player.UsesLegacyAudio,
+			UsesHrtf = player.UsesHrtf,
+			UsesInvertY = player.UsesInvertY,
+			VerticalSync = player.VerticalSync,
+		};
+	}
 }

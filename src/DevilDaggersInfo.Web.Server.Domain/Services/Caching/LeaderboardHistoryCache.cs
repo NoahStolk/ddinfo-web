@@ -19,8 +19,12 @@ public class LeaderboardHistoryCache : ILeaderboardHistoryCache
 	}
 
 	public void Clear()
-		=> _cache.Clear();
+	{
+		_cache.Clear();
+	}
 
 	public int GetCount()
-		=> _cache.Count;
+	{
+		return _cache.Count;
+	}
 }

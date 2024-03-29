@@ -5,20 +5,26 @@ namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.DdLive;
 
 public static class LeaderboardStatisticsConverters
 {
-	public static DdLiveApi.GetArrayStatisticsDdLive ToDdLiveApi(this ArrayStatistics arrayStatistics) => new()
+	public static DdLiveApi.GetArrayStatisticsDdLive ToDdLiveApi(this ArrayStatistics arrayStatistics)
 	{
-		Accuracy = arrayStatistics.Accuracy.ToDdLiveApi(),
-		DaggersFired = arrayStatistics.DaggersFired.ToDdLiveApi(),
-		DaggersHit = arrayStatistics.DaggersHit.ToDdLiveApi(),
-		Gems = arrayStatistics.Gems.ToDdLiveApi(),
-		Kills = arrayStatistics.Kills.ToDdLiveApi(),
-		Times = arrayStatistics.Times.ToDdLiveApi(),
-	};
+		return new()
+		{
+			Accuracy = arrayStatistics.Accuracy.ToDdLiveApi(),
+			DaggersFired = arrayStatistics.DaggersFired.ToDdLiveApi(),
+			DaggersHit = arrayStatistics.DaggersHit.ToDdLiveApi(),
+			Gems = arrayStatistics.Gems.ToDdLiveApi(),
+			Kills = arrayStatistics.Kills.ToDdLiveApi(),
+			Times = arrayStatistics.Times.ToDdLiveApi(),
+		};
+	}
 
-	private static DdLiveApi.GetArrayStatisticDdLive ToDdLiveApi(this ArrayStatistic arrayStatistic) => new()
+	private static DdLiveApi.GetArrayStatisticDdLive ToDdLiveApi(this ArrayStatistic arrayStatistic)
 	{
-		Average = arrayStatistic.Average,
-		Median = arrayStatistic.Median,
-		Mode = arrayStatistic.Mode,
-	};
+		return new()
+		{
+			Average = arrayStatistic.Average,
+			Median = arrayStatistic.Median,
+			Mode = arrayStatistic.Mode,
+		};
+	}
 }

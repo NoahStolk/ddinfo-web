@@ -57,7 +57,9 @@ public class PlayerEntity : IAuditable
 	public List<PlayerModEntity>? PlayerMods { get; set; }
 
 	public bool HasVisibleSettings()
-		=> !HideSettings && HasSettings();
+	{
+		return !HideSettings && HasSettings();
+	}
 
 	public bool HasSettings()
 	{
