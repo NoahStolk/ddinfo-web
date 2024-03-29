@@ -55,16 +55,21 @@ public static class CustomLeaderboardUtils
 
 	public static bool IsGameModeAndRankSortingCombinationAllowed(GameMode gameMode, CustomLeaderboardRankSorting rankSorting)
 	{
+		// Allow all rank sortings for Survival.
 		if (gameMode == GameMode.Survival)
-			return true; // Allow all rank sortings for Survival.
+			return true;
 
-		// Only allow TimeAsc for Time Attack and Race (for now).
+		// Allow both time rank sortings for Race.
+		if (gameMode == GameMode.Race)
+			return rankSorting is CustomLeaderboardRankSorting.TimeAsc or CustomLeaderboardRankSorting.TimeDesc;
+
+		// Only allow ascending time sort for TimeAttack for now.
 		return rankSorting == CustomLeaderboardRankSorting.TimeAsc;
 	}
 
 	public static List<(GameMode GameMode, CustomLeaderboardRankSorting RankSorting)> GetAllowedGameModeAndRankSortingCombinations()
 	{
-		List<(GameMode GameMode, CustomLeaderboardRankSorting RankSorting)> allowedCombinations = new();
+		List<(GameMode GameMode, CustomLeaderboardRankSorting RankSorting)> allowedCombinations = [];
 		foreach (GameMode gameMode in Enum.GetValues<GameMode>())
 		{
 			foreach (CustomLeaderboardRankSorting rankSorting in Enum.GetValues<CustomLeaderboardRankSorting>().Where(rs => IsGameModeAndRankSortingCombinationAllowed(gameMode, rs)))
