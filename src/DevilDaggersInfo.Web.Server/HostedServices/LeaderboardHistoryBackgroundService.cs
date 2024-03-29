@@ -28,7 +28,7 @@ public class LeaderboardHistoryBackgroundService : AbstractBackgroundService
 			return;
 
 		IDdLeaderboardService.LeaderboardResponse? leaderboard = null;
-		List<IDdLeaderboardService.EntryResponse> entries = new();
+		List<IDdLeaderboardService.EntryResponse> entries = [];
 
 		const int leaderboardPageCount = 5;
 		const int playerPerPage = 100;
@@ -39,10 +39,10 @@ public class LeaderboardHistoryBackgroundService : AbstractBackgroundService
 			{
 				response = await _leaderboardClient.GetLeaderboard(playerPerPage * i + 1, 100);
 			}
-			catch (DdLeaderboardException)
+			catch (DdLeaderboardException ex)
 			{
 				const int interval = 5;
-				Logger.LogWarning("Couldn't get DD leaderboard (page {Page} of {Total}). Waiting {Interval} seconds...", i, leaderboardPageCount, interval);
+				Logger.LogWarning(ex, "Couldn't get DD leaderboard (page {Page} of {Total}). Waiting {Interval} seconds...", i, leaderboardPageCount, interval);
 
 				await Task.Delay(TimeSpan.FromSeconds(interval), stoppingToken);
 				continue; // Continue without increasing i, so the request is retried.

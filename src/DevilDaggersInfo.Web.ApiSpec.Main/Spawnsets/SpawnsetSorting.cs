@@ -1,6 +1,8 @@
 namespace DevilDaggersInfo.Web.ApiSpec.Main.Spawnsets;
 
+#pragma warning disable CA1027 // Not a flag enum.
 public enum SpawnsetSorting
+#pragma warning restore CA1027
 {
 	Name = 0,
 	AuthorName = 1,

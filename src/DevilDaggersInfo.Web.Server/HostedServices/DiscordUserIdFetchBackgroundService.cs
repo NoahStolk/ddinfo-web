@@ -9,7 +9,7 @@ public class DiscordUserIdFetchBackgroundService : AbstractBackgroundService
 	private readonly IServiceScopeFactory _serviceScopeFactory;
 	private readonly ClubberClient _clubberClient;
 
-	public DiscordUserIdFetchBackgroundService(IServiceScopeFactory serviceScopeFactory, ClubberClient clubberClient, BackgroundServiceMonitor backgroundServiceMonitor, ILogger<LeaderboardHistoryBackgroundService> logger)
+	public DiscordUserIdFetchBackgroundService(IServiceScopeFactory serviceScopeFactory, ClubberClient clubberClient, BackgroundServiceMonitor backgroundServiceMonitor, ILogger<DiscordUserIdFetchBackgroundService> logger)
 		: base(backgroundServiceMonitor, logger)
 	{
 		_serviceScopeFactory = serviceScopeFactory;
@@ -47,7 +47,7 @@ public class DiscordUserIdFetchBackgroundService : AbstractBackgroundService
 		List<int> ids = users.ConvertAll(u => u.LeaderboardId);
 		List<PlayerEntity> players = dbContext.Players.Where(p => ids.Contains(p.Id) && p.DiscordUserId == null).ToList();
 
-		List<(int PlayerId, ulong? OldId, ulong NewId)> logs = new();
+		List<(int PlayerId, ulong? OldId, ulong NewId)> logs = [];
 		foreach (PlayerEntity player in players)
 		{
 			DdUser? user = users.Where(u => u.LeaderboardId == player.Id).MinBy(u => u.DiscordId);

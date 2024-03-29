@@ -11,7 +11,7 @@ List<CompressedEntry> entries = [];
 for (int i = 0; i < totalPages; i++)
 {
 	stopwatch.Restart();
-	entries.AddRange(await Fetch(i * 100 + 1));
+	entries.AddRange(await FetchAsync(i * 100 + 1));
 	Console.WriteLine($"Fetching page {i + 1}/{totalPages} took {stopwatch.ElapsedMilliseconds / 1000f} seconds.");
 
 	// Write the file after every fetch in case it crashes and all progress is lost.
@@ -35,7 +35,7 @@ static byte[] GetBytes(List<CompressedEntry> entries)
 	return ms.ToArray();
 }
 
-static async Task<List<CompressedEntry>> Fetch(int rank)
+static async Task<List<CompressedEntry>> FetchAsync(int rank)
 {
 	byte[] data = await ExecuteRequest(rank);
 
@@ -43,7 +43,7 @@ static async Task<List<CompressedEntry>> Fetch(int rank)
 	int rankIterator = 0;
 	int bytePos = 83;
 
-	List<CompressedEntry> compressedEntries = new();
+	List<CompressedEntry> compressedEntries = [];
 	while (rankIterator < entryCount)
 	{
 		short usernameLength = BitConverter.ToInt16(data, bytePos);

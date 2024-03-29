@@ -21,7 +21,7 @@ public static class IntegerArrayCompressor
 	/// </summary>
 	public static byte[] CompressData(int[] data)
 	{
-		if (data.Length == 0 || data.All(i => i <= 0))
+		if (data.Length == 0 || Array.TrueForAll(data, i => i <= 0))
 			return Array.Empty<byte>();
 
 		byte bitCount = GetBitCount(data.Max());

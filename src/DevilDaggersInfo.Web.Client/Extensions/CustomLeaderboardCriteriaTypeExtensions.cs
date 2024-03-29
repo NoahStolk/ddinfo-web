@@ -124,12 +124,12 @@ public static class CustomLeaderboardCriteriaTypeExtensions
 	{
 		return criteriaType switch
 		{
-			CustomLeaderboardCriteriaType.GemsCollected => "#f00",// TODO: Use same color as graph
-			CustomLeaderboardCriteriaType.GemsDespawned => "#888",// TODO: Use same color as graph
-			CustomLeaderboardCriteriaType.GemsEaten => "#0f0",// TODO: Use same color as graph
-			CustomLeaderboardCriteriaType.EnemiesKilled => "#f80",// TODO: Use same color as graph
-			CustomLeaderboardCriteriaType.DaggersFired => "#f80",// TODO: Use same color as graph
-			CustomLeaderboardCriteriaType.DaggersHit => "#f80",// TODO: Use same color as graph
+			CustomLeaderboardCriteriaType.GemsCollected => "#f00", // TODO: Use same color as graph
+			CustomLeaderboardCriteriaType.GemsDespawned => "#888", // TODO: Use same color as graph
+			CustomLeaderboardCriteriaType.GemsEaten => "#0f0", // TODO: Use same color as graph
+			CustomLeaderboardCriteriaType.EnemiesKilled => "#f80", // TODO: Use same color as graph
+			CustomLeaderboardCriteriaType.DaggersFired => "#f80", // TODO: Use same color as graph
+			CustomLeaderboardCriteriaType.DaggersHit => "#f80", // TODO: Use same color as graph
 			CustomLeaderboardCriteriaType.HomingStored => UpgradesV3_2.Level4.Color.HexCode,
 			CustomLeaderboardCriteriaType.HomingEaten => EnemiesV3_2.Ghostpede.Color.HexCode,
 			CustomLeaderboardCriteriaType.Skull1Kills => EnemiesV3_2.Skull1.Color.HexCode,

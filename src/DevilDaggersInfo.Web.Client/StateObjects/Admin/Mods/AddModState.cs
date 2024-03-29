@@ -25,7 +25,7 @@ public class AddModState : IStateObject<AddMod>
 	public List<int>? PlayerIds { get; set; }
 
 	[MaxLength(ModConstants.BinaryMaxFiles, ErrorMessage = ModConstants.BinaryMaxFilesErrorMessage)]
-	public List<BinaryDataState> Binaries { get; set; } = new();
+	public List<BinaryDataState> Binaries { get; set; } = [];
 
 	[MaxLength(ModConstants.ScreenshotMaxFiles, ErrorMessage = ModConstants.ScreenshotMaxFilesErrorMessage)]
 	public Dictionary<string, byte[]> Screenshots { get; set; } = new();

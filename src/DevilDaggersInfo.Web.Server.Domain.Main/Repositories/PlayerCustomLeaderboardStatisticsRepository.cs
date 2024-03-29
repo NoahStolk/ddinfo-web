@@ -46,7 +46,7 @@ public class PlayerCustomLeaderboardStatisticsRepository
 			.ToListAsync();
 
 		if (customEntries.Count == 0)
-			return new();
+			return [];
 
 		// ! Navigation property.
 		Dictionary<(SpawnsetGameMode GameMode, CustomLeaderboardRankSorting RankSorting), int> totalCustomLeaderboards = await _dbContext.CustomLeaderboards
@@ -57,7 +57,7 @@ public class PlayerCustomLeaderboardStatisticsRepository
 			.Select(g => new { g.Key, Count = g.Count() })
 			.ToDictionaryAsync(a => (a.Key.GameMode, a.Key.RankSorting), a => a.Count);
 
-		List<GetPlayerCustomLeaderboardStatistics> stats = new();
+		List<GetPlayerCustomLeaderboardStatistics> stats = [];
 		foreach (SpawnsetGameMode gameMode in Enum.GetValues<SpawnsetGameMode>())
 		{
 			foreach (CustomLeaderboardRankSorting rankSorting in Enum.GetValues<CustomLeaderboardRankSorting>())

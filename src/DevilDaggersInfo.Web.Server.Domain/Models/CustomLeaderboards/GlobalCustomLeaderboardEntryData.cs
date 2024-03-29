@@ -3,7 +3,7 @@ namespace DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 // TODO: Immutable.
 public record GlobalCustomLeaderboardEntryData
 {
-	public List<CustomLeaderboardRanking> Rankings { get; } = new();
+	public List<CustomLeaderboardRanking> Rankings { get; } = [];
 
 	public int LeviathanCount { get; set; } // TODO: init
 

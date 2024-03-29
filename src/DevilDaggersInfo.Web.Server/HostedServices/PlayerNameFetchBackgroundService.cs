@@ -11,7 +11,7 @@ public class PlayerNameFetchBackgroundService : AbstractBackgroundService
 	private readonly IServiceScopeFactory _serviceScopeFactory;
 	private readonly IDdLeaderboardService _leaderboardClient;
 
-	public PlayerNameFetchBackgroundService(IServiceScopeFactory serviceScopeFactory, IDdLeaderboardService leaderboardClient, BackgroundServiceMonitor backgroundServiceMonitor, ILogger<LeaderboardHistoryBackgroundService> logger)
+	public PlayerNameFetchBackgroundService(IServiceScopeFactory serviceScopeFactory, IDdLeaderboardService leaderboardClient, BackgroundServiceMonitor backgroundServiceMonitor, ILogger<PlayerNameFetchBackgroundService> logger)
 		: base(backgroundServiceMonitor, logger)
 	{
 		_serviceScopeFactory = serviceScopeFactory;
@@ -39,10 +39,10 @@ public class PlayerNameFetchBackgroundService : AbstractBackgroundService
 			{
 				entries = await _leaderboardClient.GetEntriesByIds(playerIds);
 			}
-			catch (DdLeaderboardException)
+			catch (DdLeaderboardException ex)
 			{
 				const int interval = 5;
-				Logger.LogWarning("Couldn't get entries from DD leaderboards. Waiting {Interval} seconds...", interval);
+				Logger.LogWarning(ex, "Couldn't get entries from DD leaderboards. Waiting {Interval} seconds...", interval);
 
 				await Task.Delay(TimeSpan.FromSeconds(interval), stoppingToken);
 			}
@@ -51,7 +51,7 @@ public class PlayerNameFetchBackgroundService : AbstractBackgroundService
 		if (entries == null)
 			return;
 
-		List<(int PlayerId, string OldName, string NewName)> logs = new();
+		List<(int PlayerId, string OldName, string NewName)> logs = [];
 		foreach (IDdLeaderboardService.EntryResponse entry in entries)
 		{
 			PlayerEntity? player = await dbContext.Players.FirstOrDefaultAsync(p => p.Id == entry.Id, stoppingToken);
