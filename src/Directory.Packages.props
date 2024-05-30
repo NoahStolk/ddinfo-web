@@ -48,7 +48,7 @@
 		<PackageVersion Include="JetBrains.Annotations" Version="2023.3.0" />
 		<PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.10.0" />
 		<PackageVersion Include="MockQueryable.NSubstitute" Version="7.0.1" />
-		<PackageVersion Include="MSTest.TestAdapter" Version="3.4.1" />
+		<PackageVersion Include="MSTest.TestAdapter" Version="3.4.2" />
 		<PackageVersion Include="MSTest.TestFramework" Version="3.4.1" />
 		<PackageVersion Include="NSubstitute" Version="5.1.0" />
 	</ItemGroup>
