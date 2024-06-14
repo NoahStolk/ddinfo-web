@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Core.Common.Extensions;
+using DevilDaggersInfo.Core.Common;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 using System.Diagnostics;
@@ -24,7 +24,7 @@ public static class CustomLeaderboardConverters
 			Category = GetCategory(customLeaderboard.RankSorting, customLeaderboard.GameMode),
 			TopPlayerId = customLeaderboard.WorldRecord?.PlayerId,
 			TopPlayerName = customLeaderboard.WorldRecord?.PlayerName,
-			WorldRecord = customLeaderboard.WorldRecord?.Time.ToSecondsTime(),
+			WorldRecord = customLeaderboard.WorldRecord == null ? null : GameTime.FromGameUnits(customLeaderboard.WorldRecord.Time).Seconds,
 			WorldRecordDagger = customLeaderboard.WorldRecord?.Dagger?.ToDdLiveApi(),
 			RankSorting = customLeaderboard.RankSorting.ToDdLiveApi(),
 			SpawnsetGameMode = customLeaderboard.GameMode.ToDdLiveApi(),
@@ -53,11 +53,11 @@ public static class CustomLeaderboardConverters
 	{
 		return new()
 		{
-			Bronze = customLeaderboard.Bronze.ToSecondsTime(),
-			Silver = customLeaderboard.Silver.ToSecondsTime(),
-			Golden = customLeaderboard.Golden.ToSecondsTime(),
-			Devil = customLeaderboard.Devil.ToSecondsTime(),
-			Leviathan = customLeaderboard.Leviathan.ToSecondsTime(),
+			Bronze = GameTime.FromGameUnits(customLeaderboard.Bronze).Seconds,
+			Silver = GameTime.FromGameUnits(customLeaderboard.Silver).Seconds,
+			Golden = GameTime.FromGameUnits(customLeaderboard.Golden).Seconds,
+			Devil = GameTime.FromGameUnits(customLeaderboard.Devil).Seconds,
+			Leviathan = GameTime.FromGameUnits(customLeaderboard.Leviathan).Seconds,
 		};
 	}
 
@@ -80,13 +80,13 @@ public static class CustomLeaderboardConverters
 			HomingStored = customEntry.HomingStored,
 			HomingEaten = customEntry.HomingEaten,
 			EnemiesKilled = customEntry.EnemiesKilled,
-			LevelUpTime2 = customEntry.LevelUpTime2.ToSecondsTime(),
-			LevelUpTime3 = customEntry.LevelUpTime3.ToSecondsTime(),
-			LevelUpTime4 = customEntry.LevelUpTime4.ToSecondsTime(),
+			LevelUpTime2 = GameTime.FromGameUnits(customEntry.LevelUpTime2).Seconds,
+			LevelUpTime3 = GameTime.FromGameUnits(customEntry.LevelUpTime3).Seconds,
+			LevelUpTime4 = GameTime.FromGameUnits(customEntry.LevelUpTime4).Seconds,
 			DaggersFired = customEntry.DaggersFired,
 			DaggersHit = customEntry.DaggersHit,
 			SubmitDate = customEntry.SubmitDate,
-			Time = customEntry.Time.ToSecondsTime(),
+			Time = GameTime.FromGameUnits(customEntry.Time).Seconds,
 			CustomLeaderboardDagger = customEntry.CustomLeaderboardDagger?.ToDdLiveApi(),
 			HasGraphs = customEntry.HasGraphs,
 			HasReplay = hasReplay,

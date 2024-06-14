@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Core.Common.Extensions;
+using DevilDaggersInfo.Core.Common;
 using DevilDaggersInfo.Core.CriteriaExpression;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Extensions;
@@ -173,11 +173,11 @@ public static class CustomLeaderboardConverters
 	{
 		return new()
 		{
-			Bronze = customLeaderboardDaggers.Bronze.ToSecondsTime(),
-			Silver = customLeaderboardDaggers.Silver.ToSecondsTime(),
-			Golden = customLeaderboardDaggers.Golden.ToSecondsTime(),
-			Devil = customLeaderboardDaggers.Devil.ToSecondsTime(),
-			Leviathan = customLeaderboardDaggers.Leviathan.ToSecondsTime(),
+			Bronze = GameTime.FromGameUnits(customLeaderboardDaggers.Bronze).Seconds,
+			Silver = GameTime.FromGameUnits(customLeaderboardDaggers.Silver).Seconds,
+			Golden = GameTime.FromGameUnits(customLeaderboardDaggers.Golden).Seconds,
+			Devil = GameTime.FromGameUnits(customLeaderboardDaggers.Devil).Seconds,
+			Leviathan = GameTime.FromGameUnits(customLeaderboardDaggers.Leviathan).Seconds,
 		};
 	}
 
@@ -228,14 +228,14 @@ public static class CustomLeaderboardConverters
 			HomingEaten = customEntry.HomingEaten,
 			HomingStored = customEntry.HomingStored,
 			Id = customEntry.Id,
-			LevelUpTime2InSeconds = customEntry.LevelUpTime2.ToSecondsTime(),
-			LevelUpTime3InSeconds = customEntry.LevelUpTime3.ToSecondsTime(),
-			LevelUpTime4InSeconds = customEntry.LevelUpTime4.ToSecondsTime(),
+			LevelUpTime2InSeconds = GameTime.FromGameUnits(customEntry.LevelUpTime2).Seconds,
+			LevelUpTime3InSeconds = GameTime.FromGameUnits(customEntry.LevelUpTime3).Seconds,
+			LevelUpTime4InSeconds = GameTime.FromGameUnits(customEntry.LevelUpTime4).Seconds,
 			PlayerId = customEntry.PlayerId,
 			PlayerName = customEntry.PlayerName,
 			Rank = customEntry.Rank,
 			SubmitDate = customEntry.SubmitDate,
-			TimeInSeconds = customEntry.Time.ToSecondsTime(),
+			TimeInSeconds = GameTime.FromGameUnits(customEntry.Time).Seconds,
 			CustomLeaderboardDagger = customEntry.CustomLeaderboardDagger?.ToAppApi(),
 		};
 	}

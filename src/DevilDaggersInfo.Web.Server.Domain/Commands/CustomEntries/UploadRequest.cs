@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Core.Common;
 using DevilDaggersInfo.Core.Common.Extensions;
 using DevilDaggersInfo.Core.CriteriaExpression;
 using DevilDaggersInfo.Web.Server.Domain.Constants;
@@ -59,7 +60,7 @@ public class UploadRequest
 		PlayerId = playerId;
 		PlayerName = playerName;
 		ReplayPlayerId = replayPlayerId;
-		TimeInSeconds = timeInSeconds;
+		Time = GameTime.FromSeconds(timeInSeconds);
 		TimeAsBytes = timeAsBytes;
 		GemsCollected = gemsCollected;
 		EnemiesKilled = enemiesKilled;
@@ -72,9 +73,9 @@ public class UploadRequest
 		GemsEaten = gemsEaten;
 		GemsTotal = gemsTotal;
 		DeathType = deathType;
-		LevelUpTime2InSeconds = levelUpTime2InSeconds;
-		LevelUpTime3InSeconds = levelUpTime3InSeconds;
-		LevelUpTime4InSeconds = levelUpTime4InSeconds;
+		LevelUpTime2 = GameTime.FromSeconds(levelUpTime2InSeconds);
+		LevelUpTime3 = GameTime.FromSeconds(levelUpTime3InSeconds);
+		LevelUpTime4 = GameTime.FromSeconds(levelUpTime4InSeconds);
 		LevelUpTime2AsBytes = levelUpTime2AsBytes;
 		LevelUpTime3AsBytes = levelUpTime3AsBytes;
 		LevelUpTime4AsBytes = levelUpTime4AsBytes;
@@ -102,7 +103,7 @@ public class UploadRequest
 
 	public int ReplayPlayerId { get; }
 
-	public double TimeInSeconds { get; }
+	public GameTime Time { get; }
 
 	public byte[] TimeAsBytes { get; }
 
@@ -131,11 +132,11 @@ public class UploadRequest
 
 	public byte DeathType { get; }
 
-	public double LevelUpTime2InSeconds { get; }
+	public GameTime LevelUpTime2 { get; }
 
-	public double LevelUpTime3InSeconds { get; }
+	public GameTime LevelUpTime3 { get; }
 
-	public double LevelUpTime4InSeconds { get; }
+	public GameTime LevelUpTime4 { get; }
 
 	public byte[] LevelUpTime2AsBytes { get; }
 
@@ -219,10 +220,10 @@ public class UploadRequest
 			HomingStored = GetFinalHomingValue(),
 			HomingEaten = HomingEaten,
 			DeathType = DeathType,
-			Time = TimeInSeconds.To10thMilliTime(),
-			LevelUpTime2 = LevelUpTime2InSeconds.To10thMilliTime(),
-			LevelUpTime3 = LevelUpTime3InSeconds.To10thMilliTime(),
-			LevelUpTime4 = LevelUpTime4InSeconds.To10thMilliTime(),
+			Time = (int)Time.GameUnits,
+			LevelUpTime2 = (int)LevelUpTime2.GameUnits,
+			LevelUpTime3 = (int)LevelUpTime3.GameUnits,
+			LevelUpTime4 = (int)LevelUpTime4.GameUnits,
 			EnemiesAlive = EnemiesAlive,
 			Skull1Kills = GetFinalEnemyStat(urd => urd.Skull1sKilled),
 			Skull2Kills = GetFinalEnemyStat(urd => urd.Skull2sKilled),

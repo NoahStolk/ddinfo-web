@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Core.Common;
 using DevilDaggersInfo.Core.Common.Extensions;
 using DevilDaggersInfo.Core.CriteriaExpression;
 using DevilDaggersInfo.Web.Server.Domain.Constants;
@@ -273,7 +274,7 @@ public class CustomLeaderboardRepository
 				CustomEntryEntity customEntry = customEntries[i];
 
 				GlobalCustomLeaderboardEntryData data;
-				if (!globalData.ContainsKey(customEntry.PlayerId))
+				if (!globalData.TryGetValue(customEntry.PlayerId, out (string Name, GlobalCustomLeaderboardEntryData Data) value))
 				{
 					data = new();
 
@@ -282,7 +283,7 @@ public class CustomLeaderboardRepository
 				}
 				else
 				{
-					data = globalData[customEntry.PlayerId].Data;
+					data = value.Data;
 				}
 
 				data.Rankings.Add(new() { Rank = i + 1, TotalPlayers = customEntries.Count });
@@ -300,7 +301,7 @@ public class CustomLeaderboardRepository
 		}
 
 		// ! Navigation property.
-		return new GlobalCustomLeaderboard
+		return new()
 		{
 			Entries = globalData
 				.Select(kvp => new GlobalCustomLeaderboardEntry
@@ -399,7 +400,7 @@ public class CustomLeaderboardRepository
 
 		static double GetDaggerValue(int databaseValue, CustomLeaderboardRankSorting rankSorting) => rankSorting switch
 		{
-			CustomLeaderboardRankSorting.TimeAsc or CustomLeaderboardRankSorting.TimeDesc => databaseValue.ToSecondsTime(),
+			CustomLeaderboardRankSorting.TimeAsc or CustomLeaderboardRankSorting.TimeDesc => GameTime.FromGameUnits(databaseValue).Seconds,
 			_ => databaseValue,
 		};
 	}
@@ -504,7 +505,7 @@ public class CustomLeaderboardRepository
 	{
 		return rankSorting switch
 		{
-			CustomLeaderboardRankSorting.TimeAsc or CustomLeaderboardRankSorting.TimeDesc => customEntry.Time.ToSecondsTime(),
+			CustomLeaderboardRankSorting.TimeAsc or CustomLeaderboardRankSorting.TimeDesc => GameTime.FromGameUnits(customEntry.Time).Seconds,
 			CustomLeaderboardRankSorting.GemsCollectedAsc or CustomLeaderboardRankSorting.GemsCollectedDesc => customEntry.GemsCollected,
 			CustomLeaderboardRankSorting.GemsDespawnedAsc or CustomLeaderboardRankSorting.GemsDespawnedDesc => customEntry.GemsDespawned,
 			CustomLeaderboardRankSorting.GemsEatenAsc or CustomLeaderboardRankSorting.GemsEatenDesc => customEntry.GemsEaten,

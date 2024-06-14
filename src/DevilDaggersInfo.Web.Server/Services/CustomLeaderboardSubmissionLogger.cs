@@ -25,7 +25,7 @@ public class CustomLeaderboardSubmissionLogger : ICustomLeaderboardSubmissionLog
 	public void Log(UploadRequest uploadRequest, string spawnsetName, double elapsedMilliseconds, string? errorMessage)
 	{
 		string playerInfo = $"{uploadRequest.PlayerName} ({uploadRequest.PlayerId})";
-		string time = uploadRequest.TimeInSeconds.ToString(StringFormats.TimeFormat);
+		string time = uploadRequest.Time.Seconds.ToString(StringFormats.TimeFormat);
 		string requestInfo = $"{uploadRequest.Client} {uploadRequest.ClientVersion} {uploadRequest.OperatingSystem} {uploadRequest.BuildMode} | Replay size {uploadRequest.ReplayData.Length:N0} bytes | Status {uploadRequest.Status}";
 
 		List<string> timestampEntries = [];
