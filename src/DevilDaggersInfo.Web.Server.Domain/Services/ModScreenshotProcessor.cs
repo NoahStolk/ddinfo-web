@@ -1,6 +1,7 @@
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 using DevilDaggersInfo.Web.Server.Domain.Utils;
+using SixLabors.ImageSharp;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Services;
 
@@ -13,7 +14,7 @@ public class ModScreenshotProcessor
 		_fileSystemService = fileSystemService;
 	}
 
-	public void ProcessModScreenshotUpload(string modName, Dictionary<string, byte[]> screenshots)
+	public async Task ProcessModScreenshotUploadAsync(string modName, Dictionary<string, byte[]> screenshots)
 	{
 		if (screenshots.Count == 0)
 			return;
@@ -23,19 +24,42 @@ public class ModScreenshotProcessor
 		int i = 0;
 		foreach (byte[] screenshotContents in screenshots.OrderBy(kvp => kvp.Key).Select(kvp => kvp.Value))
 		{
-			if (!PngFileUtils.HasValidPngHeader(screenshotContents))
-				continue;
-
-			string path;
-			do
+			if (PngFileUtils.HasValidPngHeader(screenshotContents))
 			{
-				path = Path.Combine(modScreenshotsDirectory, $"{i:00}.png");
-				i++;
+				await WriteScreenshotAsync(i, modScreenshotsDirectory, screenshotContents);
 			}
-			while (File.Exists(path));
+			else
+			{
+				await using MemoryStream inputStream = new(screenshotContents);
+				await using MemoryStream outputStream = new();
 
-			File.WriteAllBytes(path, screenshotContents);
+				try
+				{
+					using Image image = await Image.LoadAsync(inputStream);
+					await image.SaveAsPngAsync(outputStream);
+				}
+				catch (Exception ex) when (ex is InvalidImageContentException or UnknownImageFormatException)
+				{
+					continue;
+				}
+
+				await WriteScreenshotAsync(i, modScreenshotsDirectory, outputStream.ToArray());
+			}
+
+			i++;
 		}
+	}
+
+	private static async Task WriteScreenshotAsync(int i, string modScreenshotsDirectory, byte[] screenshotContents)
+	{
+		string path;
+		do
+		{
+			path = Path.Combine(modScreenshotsDirectory, $"{i:00}.png");
+		}
+		while (File.Exists(path));
+
+		await File.WriteAllBytesAsync(path, screenshotContents);
 	}
 
 	public void DeleteScreenshot(string modName, string screenshotFileName)
