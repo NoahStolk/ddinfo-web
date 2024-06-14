@@ -4,6 +4,9 @@
     <Version>5.7.11.0</Version>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <IntermediateOutputPath>obj</IntermediateOutputPath>
+
+    <!--Disable SIMD so the website can run on older hardware.-->
+    <WasmEnableSIMD>false</WasmEnableSIMD>
   </PropertyGroup>
 
   <ItemGroup>
