@@ -22,9 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DevilDaggersInfo.Web.ApiSpec.Clubber\DevilDaggersInfo.Web.ApiSpec.Clubber.csproj" />
-    <ProjectReference Include="..\DevilDaggersInfo.Web.ApiSpec.Ddae\DevilDaggersInfo.Web.ApiSpec.Ddae.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.Web.ApiSpec.DdLive\DevilDaggersInfo.Web.ApiSpec.DdLive.csproj" />
-    <ProjectReference Include="..\DevilDaggersInfo.Web.ApiSpec.Ddse\DevilDaggersInfo.Web.ApiSpec.Ddse.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.Web.ApiSpec.Dd\DevilDaggersInfo.Web.ApiSpec.Dd.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.Web.ApiSpec.DdstatsRust\DevilDaggersInfo.Web.ApiSpec.DdstatsRust.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.Web.ApiSpec.Tools\DevilDaggersInfo.Web.ApiSpec.Tools.csproj" />
