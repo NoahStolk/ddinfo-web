@@ -24,7 +24,7 @@
 		<PackageVersion Include="NSwag.AspNetCore" Version="14.0.8" />
 		<PackageVersion Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.2" />
 		<PackageVersion Include="Sentry.AspNetCore" Version="4.7.0" />
-		<PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="7.6.1" />
+		<PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="7.6.2" />
 	</ItemGroup>
 
 	<ItemGroup Label="DevilDaggersInfo">
