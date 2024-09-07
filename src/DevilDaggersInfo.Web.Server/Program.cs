@@ -252,7 +252,7 @@ if (!app.Environment.IsDevelopment())
 	lcs.AddLog($"{DateTime.UtcNow:HH:mm:ss.fff}: Starting...\n{sb}");
 }
 
-app.Run();
+await app.RunAsync();
 
 #if ROLES
 private static void CreateRolesIfNotExist(IServiceProvider serviceProvider)
