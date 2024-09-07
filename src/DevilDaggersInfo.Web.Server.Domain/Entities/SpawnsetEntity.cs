@@ -23,6 +23,7 @@ public class SpawnsetEntity : IAuditable
 
 	public DateTime LastUpdated { get; init; }
 
+	[Obsolete("Practice spawnsets are now always generated and there's no need for them to be marked as such.")]
 	public bool IsPractice { get; set; }
 
 	[MaxLength(70 * 1024)]
