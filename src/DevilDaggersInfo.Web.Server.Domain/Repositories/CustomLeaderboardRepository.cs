@@ -301,7 +301,7 @@ public class CustomLeaderboardRepository
 		}
 
 		// ! Navigation property.
-		return new()
+		return new GlobalCustomLeaderboard
 		{
 			Entries = globalData
 				.Select(kvp => new GlobalCustomLeaderboardEntry
