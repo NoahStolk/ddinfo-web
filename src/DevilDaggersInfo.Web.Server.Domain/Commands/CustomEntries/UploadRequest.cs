@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Core.Common;
 using DevilDaggersInfo.Core.Common.Extensions;
 using DevilDaggersInfo.Core.CriteriaExpression;
 using DevilDaggersInfo.Web.Server.Domain.Constants;
@@ -219,10 +220,10 @@ public class UploadRequest
 			HomingStored = GetFinalHomingValue(),
 			HomingEaten = HomingEaten,
 			DeathType = DeathType,
-			Time = TimeInSeconds.To10thMilliTime(),
-			LevelUpTime2 = LevelUpTime2InSeconds.To10thMilliTime(),
-			LevelUpTime3 = LevelUpTime3InSeconds.To10thMilliTime(),
-			LevelUpTime4 = LevelUpTime4InSeconds.To10thMilliTime(),
+			Time = (int)GameTime.FromSeconds(TimeInSeconds).GameUnits,
+			LevelUpTime2 = (int)GameTime.FromSeconds(LevelUpTime2InSeconds).GameUnits,
+			LevelUpTime3 = (int)GameTime.FromSeconds(LevelUpTime3InSeconds).GameUnits,
+			LevelUpTime4 = (int)GameTime.FromSeconds(LevelUpTime4InSeconds).GameUnits,
 			EnemiesAlive = EnemiesAlive,
 			Skull1Kills = GetFinalEnemyStat(urd => urd.Skull1sKilled),
 			Skull2Kills = GetFinalEnemyStat(urd => urd.Skull2sKilled),
