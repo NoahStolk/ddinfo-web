@@ -9,7 +9,7 @@ public class BackgroundServiceMonitor
 
 	public void Register(string name, TimeSpan interval)
 	{
-		_backgroundServiceLogs.Add(new(name, interval));
+		_backgroundServiceLogs.Add(new BackgroundServiceLog(name, interval));
 	}
 
 	public void Update(string name, DateTime lastExecuted)

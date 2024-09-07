@@ -9,12 +9,12 @@ public static class DiscordServerConstants
 
 	private static readonly Dictionary<Channel, ChannelWrapper> _channels = new()
 	{
-		{ Channel.MaintainersAuditLog, new(975077254046580828) },
-		{ Channel.MonitoringCustomLeaderboardValid, new(975077530732208148) },
-		{ Channel.MonitoringCustomLeaderboardInvalid, new(975077543575175228) },
-		{ Channel.MonitoringLog, new(975077324468920421) },
-		{ Channel.MonitoringTest, new(TestChannelId) },
-		{ Channel.CustomLeaderboards, new(578316107836817418) },
+		{ Channel.MaintainersAuditLog, new ChannelWrapper(975077254046580828) },
+		{ Channel.MonitoringCustomLeaderboardValid, new ChannelWrapper(975077530732208148) },
+		{ Channel.MonitoringCustomLeaderboardInvalid, new ChannelWrapper(975077543575175228) },
+		{ Channel.MonitoringLog, new ChannelWrapper(975077324468920421) },
+		{ Channel.MonitoringTest, new ChannelWrapper(TestChannelId) },
+		{ Channel.CustomLeaderboards, new ChannelWrapper(578316107836817418) },
 	};
 
 	/// <summary>

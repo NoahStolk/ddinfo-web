@@ -1,5 +1,6 @@
 using DevilDaggersInfo.Web.Server.NSwag;
 using NJsonSchema;
+using NSwag;
 
 namespace DevilDaggersInfo.Web.Server.Extensions;
 
@@ -22,7 +23,7 @@ public static class WebApplicationBuilderExtensions
 			{
 				document.Info.Title = $"DevilDaggers.info API ({apiNamespace.ToUpper()})";
 				document.Info.Description = description;
-				document.Info.Contact = new()
+				document.Info.Contact = new OpenApiContact
 				{
 					Name = "Noah Stolk", Url = "//noahstolk.com/",
 				};

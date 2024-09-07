@@ -85,7 +85,7 @@ public class LeaderboardHistoryBackgroundService : AbstractBackgroundService
 
 	private static LeaderboardHistory ConvertToHistoryModel(IDdLeaderboardService.LeaderboardResponse leaderboard, List<IDdLeaderboardService.EntryResponse> entries)
 	{
-		return new()
+		return new LeaderboardHistory
 		{
 			DaggersFiredGlobal = leaderboard.DaggersFiredGlobal,
 			DaggersHitGlobal = leaderboard.DaggersHitGlobal,

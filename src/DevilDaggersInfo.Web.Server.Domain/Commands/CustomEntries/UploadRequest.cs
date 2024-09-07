@@ -208,7 +208,7 @@ public class UploadRequest
 
 	public TargetCollection CreateTargetCollection()
 	{
-		return new()
+		return new TargetCollection
 		{
 			GemsCollected = GemsCollected,
 			GemsDespawned = GemsDespawned,

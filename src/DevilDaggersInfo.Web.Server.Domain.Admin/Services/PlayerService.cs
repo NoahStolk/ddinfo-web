@@ -101,9 +101,9 @@ public class PlayerService
 				throw new AdminDomainException($"Mod with ID '{modId}' does not exist.");
 		}
 
-		PlayerEntity? player = _dbContext.Players
+		PlayerEntity? player = await _dbContext.Players
 			.Include(p => p.PlayerMods)
-			.FirstOrDefault(p => p.Id == id);
+			.FirstOrDefaultAsync(p => p.Id == id);
 		if (player == null)
 			throw new NotFoundException($"Player with ID '{id}' does not exist.");
 

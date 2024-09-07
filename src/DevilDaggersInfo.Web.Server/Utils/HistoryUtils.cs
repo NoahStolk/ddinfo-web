@@ -10,6 +10,6 @@ public static class HistoryUtils
 		int hour = int.Parse(dateString[8..10]);
 		int minute = int.Parse(dateString[10..12]);
 
-		return new(year, month, day, hour, minute, 0, DateTimeKind.Utc);
+		return new DateTime(year, month, day, hour, minute, 0, DateTimeKind.Utc);
 	}
 }

@@ -21,7 +21,7 @@ public class DiscordBotService : IHostedService
 
 	public async Task StartAsync(CancellationToken cancellationToken)
 	{
-		_client = new(new()
+		_client = new DiscordClient(new DiscordConfiguration
 		{
 			Token = _discordBotOptions.Value.BotToken,
 			TokenType = TokenType.Bot,

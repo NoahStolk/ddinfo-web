@@ -90,7 +90,7 @@ public class DiscordLogFlushBackgroundService : AbstractBackgroundService
 				Title = highscoreLog.Message,
 				Color = highscoreLog.Dagger.GetDiscordColor(),
 				Url = $"https://devildaggers.info/custom/leaderboard/{highscoreLog.CustomLeaderboardId}",
-				Thumbnail = new()
+				Thumbnail = new DiscordEmbedBuilder.EmbedThumbnail
 				{
 					Url = $"https://devildaggers.info/images/icons/discord-bot/{thumbnailImage}",
 					Height = 32,

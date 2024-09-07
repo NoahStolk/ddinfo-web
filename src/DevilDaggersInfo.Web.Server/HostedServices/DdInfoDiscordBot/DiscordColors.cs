@@ -15,6 +15,6 @@ public static class DiscordColors
 
 	private static DiscordColor ToDiscordColor(Color color)
 	{
-		return new(color.R, color.G, color.B);
+		return new DiscordColor(color.R, color.G, color.B);
 	}
 }

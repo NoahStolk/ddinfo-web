@@ -31,7 +31,7 @@ public class CustomLeaderboardHighscoreLogger : ICustomLeaderboardHighscoreLogge
 		CustomLeaderboardDagger dagger = customLeaderboard.DaggerFromStat(customEntry) ?? CustomLeaderboardDagger.Silver;
 		string scoreField = GetScoreFieldName(customLeaderboard.RankSorting);
 		string scoreValue = GetFormattedScoreValue(customLeaderboard.RankSorting, customEntry);
-		_highscoreLogs.Add(new()
+		_highscoreLogs.Add(new CustomLeaderboardHighscoreLog
 		{
 			RankValue = $"{rank}/{totalPlayers}",
 			Dagger = dagger,
@@ -61,7 +61,7 @@ public class CustomLeaderboardHighscoreLogger : ICustomLeaderboardHighscoreLogge
 		string scoreValue = GetFormattedScoreValue(customLeaderboard.RankSorting, customEntry);
 		string message = $"`{playerName}` just got {GetScoreMessageText(customLeaderboard.RankSorting, customEntry)} on the `{spawnsetName}` leaderboard!";
 
-		_highscoreLogs.Add(new()
+		_highscoreLogs.Add(new CustomLeaderboardHighscoreLog
 		{
 			RankValue = $"{rank}/{totalPlayers}",
 			Dagger = dagger,

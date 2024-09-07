@@ -72,9 +72,9 @@ public class ModService
 				throw new AdminDomainException($"Player with ID '{playerId}' does not exist.");
 		}
 
-		ModEntity? mod = _dbContext.Mods
+		ModEntity? mod = await _dbContext.Mods
 			.Include(m => m.PlayerMods)
-			.FirstOrDefault(m => m.Id == id);
+			.FirstOrDefaultAsync(m => m.Id == id);
 		if (mod == null)
 			throw new NotFoundException($"Mod with ID '{id}' does not exist.");
 
