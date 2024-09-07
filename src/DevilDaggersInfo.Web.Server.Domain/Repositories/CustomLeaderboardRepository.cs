@@ -58,12 +58,16 @@ public class CustomLeaderboardRepository
 		// Casing is ignored by default because of IQueryable.
 		if (!string.IsNullOrWhiteSpace(spawnsetFilter))
 		{
+			spawnsetFilter = spawnsetFilter.Trim();
+
 			// ! Navigation property.
 			customLeaderboardsQuery = customLeaderboardsQuery.Where(cl => cl.Spawnset!.Name.Contains(spawnsetFilter));
 		}
 
 		if (!string.IsNullOrWhiteSpace(authorFilter))
 		{
+			authorFilter = authorFilter.Trim();
+
 			// ! Navigation property.
 			customLeaderboardsQuery = customLeaderboardsQuery.Where(cl => cl.Spawnset!.Player!.PlayerName.Contains(authorFilter));
 		}
