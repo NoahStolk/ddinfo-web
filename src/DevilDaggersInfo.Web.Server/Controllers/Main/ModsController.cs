@@ -107,11 +107,11 @@ public class ModsController : ControllerBase
 	public async Task<ActionResult<GetMod>> GetModById([Required] int id)
 	{
 		// ! Navigation property.
-		ModEntity? modEntity = _dbContext.Mods
+		ModEntity? modEntity = await _dbContext.Mods
 			.AsNoTracking()
 			.Include(m => m.PlayerMods!)
 				.ThenInclude(pm => pm.Player)
-			.FirstOrDefault(m => m.Id == id);
+			.FirstOrDefaultAsync(m => m.Id == id);
 		if (modEntity == null)
 			return NotFound();
 
