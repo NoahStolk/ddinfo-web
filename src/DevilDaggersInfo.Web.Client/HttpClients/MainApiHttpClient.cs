@@ -222,11 +222,10 @@ public class MainApiHttpClient : ApiHttpClient
 		return await SendRequest(HttpMethod.Put, $"api/players/{id}/profile", JsonContent.Create(editPlayerProfile));
 	}
 
-	public async Task<Page<GetSpawnsetOverview>> GetSpawnsets(bool practiceOnly, bool withCustomLeaderboardOnly, string? spawnsetFilter, string? authorFilter, int pageIndex, int pageSize, SpawnsetSorting? sortBy, bool ascending)
+	public async Task<Page<GetSpawnsetOverview>> GetSpawnsets(bool withCustomLeaderboardOnly, string? spawnsetFilter, string? authorFilter, int pageIndex, int pageSize, SpawnsetSorting? sortBy, bool ascending)
 	{
 		Dictionary<string, object?> queryParameters = new()
 		{
-			{ nameof(practiceOnly), practiceOnly },
 			{ nameof(withCustomLeaderboardOnly), withCustomLeaderboardOnly },
 			{ nameof(spawnsetFilter), spawnsetFilter },
 			{ nameof(authorFilter), authorFilter },

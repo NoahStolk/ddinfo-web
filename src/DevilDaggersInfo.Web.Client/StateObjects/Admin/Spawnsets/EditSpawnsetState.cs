@@ -17,17 +17,14 @@ public class EditSpawnsetState : IStateObject<EditSpawnset>
 	[StringLength(2048)]
 	public string? HtmlDescription { get; set; }
 
-	public bool IsPractice { get; set; }
-
 	public EditSpawnset ToModel()
 	{
-		return new()
+		return new EditSpawnset
 		{
 			PlayerId = PlayerId,
 			Name = Name,
 			MaxDisplayWaves = MaxDisplayWaves,
 			HtmlDescription = HtmlDescription,
-			IsPractice = IsPractice,
 		};
 	}
 }

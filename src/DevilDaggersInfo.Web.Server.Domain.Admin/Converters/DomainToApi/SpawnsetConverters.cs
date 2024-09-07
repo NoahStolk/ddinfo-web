@@ -11,7 +11,7 @@ public static class SpawnsetConverters
 		if (spawnset.Player == null)
 			throw new InvalidOperationException("Player is not included.");
 
-		return new()
+		return new GetSpawnsetForOverview
 		{
 			Id = spawnset.Id,
 			Author = spawnset.Player.PlayerName,
@@ -19,13 +19,12 @@ public static class SpawnsetConverters
 			MaxDisplayWaves = spawnset.MaxDisplayWaves,
 			HtmlDescription = spawnset.HtmlDescription?.TrimAfter(40, true),
 			LastUpdated = spawnset.LastUpdated,
-			IsPractice = spawnset.IsPractice,
 		};
 	}
 
 	public static GetSpawnset ToAdminApi(this SpawnsetEntity spawnset)
 	{
-		return new()
+		return new GetSpawnset
 		{
 			Id = spawnset.Id,
 			PlayerId = spawnset.PlayerId,
@@ -33,7 +32,6 @@ public static class SpawnsetConverters
 			MaxDisplayWaves = spawnset.MaxDisplayWaves,
 			HtmlDescription = spawnset.HtmlDescription,
 			LastUpdated = spawnset.LastUpdated,
-			IsPractice = spawnset.IsPractice,
 		};
 	}
 }

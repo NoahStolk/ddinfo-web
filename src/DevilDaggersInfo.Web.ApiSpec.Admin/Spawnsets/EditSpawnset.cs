@@ -14,6 +14,4 @@ public record EditSpawnset
 
 	[StringLength(2048)]
 	public required string? HtmlDescription { get; init; }
-
-	public required bool IsPractice { get; init; }
 }

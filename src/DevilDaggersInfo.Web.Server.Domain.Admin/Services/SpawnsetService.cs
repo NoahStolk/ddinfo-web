@@ -43,7 +43,6 @@ public class SpawnsetService
 		SpawnsetEntity spawnset = new()
 		{
 			HtmlDescription = addSpawnset.HtmlDescription,
-			IsPractice = addSpawnset.IsPractice,
 			MaxDisplayWaves = addSpawnset.MaxDisplayWaves,
 			Name = addSpawnset.Name,
 			PlayerId = addSpawnset.PlayerId,
@@ -84,7 +83,6 @@ public class SpawnsetService
 
 		// Do not update LastUpdated here. This value is based only on the file which cannot be edited.
 		spawnset.HtmlDescription = editSpawnset.HtmlDescription;
-		spawnset.IsPractice = editSpawnset.IsPractice;
 		spawnset.MaxDisplayWaves = editSpawnset.MaxDisplayWaves;
 		spawnset.Name = editSpawnset.Name;
 		spawnset.PlayerId = editSpawnset.PlayerId;

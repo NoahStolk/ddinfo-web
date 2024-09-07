@@ -13,6 +13,4 @@ public record GetSpawnsetForOverview : IAdminOverviewGetDto
 	public required string? HtmlDescription { get; init; }
 
 	public required DateTime LastUpdated { get; init; }
-
-	public required bool IsPractice { get; init; }
 }
