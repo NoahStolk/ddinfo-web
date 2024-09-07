@@ -29,7 +29,6 @@ public class SpawnsetsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult<Page<GetSpawnsetOverview>>> GetSpawnsets(
-		bool practiceOnly,
 		bool withCustomLeaderboardOnly,
 		string? spawnsetFilter = null,
 		string? authorFilter = null,
@@ -39,9 +38,6 @@ public class SpawnsetsController : ControllerBase
 		bool ascending = false)
 	{
 		IQueryable<SpawnsetEntity> spawnsetsQuery = _dbContext.Spawnsets.AsNoTracking().Include(s => s.Player);
-
-		if (practiceOnly)
-			spawnsetsQuery = spawnsetsQuery.Where(s => s.IsPractice);
 
 		if (withCustomLeaderboardOnly)
 		{
