@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Core.Common.Extensions;
+using DevilDaggersInfo.Core.Common;
 using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
@@ -179,7 +179,7 @@ public class WorldRecordRepository
 					DateTime = leaderboard.DateTime,
 					Id = mainPlayerId ?? firstLegitPlace.Id,
 					Username = firstLegitPlace.Username,
-					Time = firstLegitPlace.Time.ToSecondsTime(),
+					Time = GameTime.FromGameUnits(firstLegitPlace.Time).Seconds,
 					Kills = firstLegitPlace.Kills,
 					Gems = firstLegitPlace.Gems,
 					DeathType = firstLegitPlace.DeathType,

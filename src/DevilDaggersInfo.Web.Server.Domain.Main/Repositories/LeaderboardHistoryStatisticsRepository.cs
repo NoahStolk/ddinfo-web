@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Core.Common.Extensions;
+using DevilDaggersInfo.Core.Common;
 using DevilDaggersInfo.Web.ApiSpec.Main.LeaderboardHistoryStatistics;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardHistory;
@@ -31,7 +31,7 @@ public class LeaderboardHistoryStatisticsRepository
 		ulong deathsGlobal = current.DeathsGlobal;
 		ulong gemsGlobal = current.GemsGlobal;
 		ulong killsGlobal = current.KillsGlobal;
-		double timeGlobal = current.TimeGlobal.ToSecondsTime();
+		double timeGlobal = GameTime.FromGameUnits(current.TimeGlobal).Seconds;
 		double rank100 = GetTimeOr0(current, 100);
 		double rank10 = GetTimeOr0(current, 10);
 		double rank3 = GetTimeOr0(current, 3);
@@ -94,7 +94,7 @@ public class LeaderboardHistoryStatisticsRepository
 				totalPlayersUpdated = true;
 			}
 
-			double currentTimeGlobal = current.TimeGlobal.ToSecondsTime();
+			double currentTimeGlobal = GameTime.FromGameUnits(current.TimeGlobal).Seconds;
 			if (Math.Abs(timeGlobal - currentTimeGlobal) > 0.0002)
 			{
 				timeGlobal = currentTimeGlobal;
@@ -151,6 +151,9 @@ public class LeaderboardHistoryStatisticsRepository
 		});
 
 		static double GetTimeOr0(LeaderboardHistory history, int rank)
-			=> history.Entries.Find(eh => eh.Rank == rank)?.Time.ToSecondsTime() ?? 0;
+		{
+			EntryHistory? entry = history.Entries.Find(eh => eh.Rank == rank);
+			return entry == null ? 0 : GameTime.FromGameUnits(entry.Time).Seconds;
+		}
 	}
 }

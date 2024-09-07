@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Core.Common.Extensions;
+using DevilDaggersInfo.Core.Common;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using System.Diagnostics;
@@ -23,12 +23,12 @@ public static class SpawnsetConverters
 				AdditionalGems = spawnset.EffectiveGemsOrHoming,
 				GameMode = spawnset.GameMode.ToDdseApi(),
 				Hand = (byte)spawnset.EffectiveHandLevel,
-				LoopLength = (float?)spawnset.LoopLength?.ToSecondsTime(),
+				LoopLength = spawnset.LoopLength.HasValue ? (float)GameTime.FromGameUnits(spawnset.LoopLength.Value).Seconds : null,
 				LoopSpawnCount = spawnset.LoopSpawnCount,
-				NonLoopLength = (float?)spawnset.PreLoopLength?.ToSecondsTime(),
+				NonLoopLength = spawnset.PreLoopLength.HasValue ? (float)GameTime.FromGameUnits(spawnset.PreLoopLength.Value).Seconds : null,
 				NonLoopSpawnCount = spawnset.PreLoopSpawnCount,
 				SpawnVersion = spawnset.SpawnVersion,
-				TimerStart = (float)spawnset.TimerStart.ToSecondsTime(),
+				TimerStart = (float)GameTime.FromGameUnits(spawnset.TimerStart).Seconds,
 				WorldVersion = spawnset.WorldVersion,
 			},
 			Name = spawnset.Name,

@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Core.Common.Extensions;
+using DevilDaggersInfo.Core.Common;
 using DevilDaggersInfo.Core.CriteriaExpression;
 using DevilDaggersInfo.Core.CriteriaExpression.Parts;
 using DevilDaggersInfo.Core.Spawnset;
@@ -514,10 +514,13 @@ public class CustomLeaderboardService
 		return expressionBytes;
 	}
 
+	/// <summary>
+	/// Gets the dagger value in game units if the rank sorting is time, otherwise the value as is.
+	/// </summary>
 	private static int GetDaggerValue(ApiSpec.Admin.CustomLeaderboards.CustomLeaderboardRankSorting apiRankSorting, double apiValue)
 	{
 		if (apiRankSorting.ToDomain().IsTime())
-			return apiValue.To10thMilliTime();
+			return (int)GameTime.FromSeconds(apiValue).GameUnits;
 
 		return (int)apiValue;
 	}

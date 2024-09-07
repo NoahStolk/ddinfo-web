@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Core.Common.Extensions;
+using DevilDaggersInfo.Core.Common;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardStatistics;
 
@@ -16,7 +16,7 @@ public class ArrayStatistics
 		if (limit.HasValue)
 			entries = entries.Take(limit.Value).ToList();
 
-		Times.Populate(entries.ConvertAll(e => e.Time.ToSecondsTime()), d => d);
+		Times.Populate(entries.ConvertAll(e => GameTime.FromGameUnits(e.Time).Seconds), d => d);
 		Kills.Populate(entries.ConvertAll(e => (double)e.Kills), d => d);
 		Gems.Populate(entries.ConvertAll(e => (double)e.Gems), d => d);
 		DaggersFired.Populate(entries.ConvertAll(e => (double)e.DaggersFired), d => Math.Round(d / 100) * 100);
