@@ -57,10 +57,10 @@ public class UserRepository
 			.Take(pageSize)
 			.ToListAsync();
 
-		return new()
+		return new Page<GetUser>
 		{
 			Results = users.ConvertAll(u => u.ToAdminApi()),
-			TotalResults = usersQuery.Count(),
+			TotalResults = await usersQuery.CountAsync(),
 		};
 	}
 

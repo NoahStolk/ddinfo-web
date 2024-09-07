@@ -44,10 +44,10 @@ public class SpawnsetRepository
 			.Take(pageSize)
 			.ToListAsync();
 
-		return new()
+		return new Page<GetSpawnsetForOverview>
 		{
 			Results = spawnsets.ConvertAll(s => s.ToAdminApiOverview()),
-			TotalResults = spawnsetsQuery.Count(),
+			TotalResults = await spawnsetsQuery.CountAsync(),
 		};
 	}
 

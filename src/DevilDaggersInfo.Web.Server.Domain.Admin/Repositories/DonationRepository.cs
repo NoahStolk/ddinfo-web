@@ -50,7 +50,7 @@ public class DonationRepository
 		return new Page<GetDonationForOverview>
 		{
 			Results = donations.ConvertAll(d => d.ToAdminApiOverview()),
-			TotalResults = donationsQuery.Count(),
+			TotalResults = await donationsQuery.CountAsync(),
 		};
 	}
 

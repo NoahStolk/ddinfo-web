@@ -48,7 +48,7 @@ public class ModRepository
 		return new Page<GetModForOverview>
 		{
 			Results = mods.ConvertAll(m => m.ToAdminApi()),
-			TotalResults = modsQuery.Count(),
+			TotalResults = await modsQuery.CountAsync(),
 		};
 	}
 
