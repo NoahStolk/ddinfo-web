@@ -25,6 +25,8 @@ public class CustomLeaderboardRepository
 
 		if (!string.IsNullOrWhiteSpace(filter))
 		{
+			filter = filter.Trim();
+
 			// ! Navigation property.
 			customLeaderboardsQuery = customLeaderboardsQuery.Where(cl => cl.Spawnset!.Name.Contains(filter));
 		}

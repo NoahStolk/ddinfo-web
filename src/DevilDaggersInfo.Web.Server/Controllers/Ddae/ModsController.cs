@@ -40,12 +40,17 @@ public class ModsController : ControllerBase
 
 		if (!string.IsNullOrWhiteSpace(authorFilter))
 		{
+			authorFilter = authorFilter.Trim();
+
 			// ! Navigation property.
 			modsQuery = modsQuery.Where(m => m.PlayerMods!.Exists(pm => pm.Player!.PlayerName.Contains(authorFilter, StringComparison.InvariantCultureIgnoreCase)));
 		}
 
 		if (!string.IsNullOrWhiteSpace(nameFilter))
+		{
+			nameFilter = nameFilter.Trim();
 			modsQuery = modsQuery.Where(m => m.Name.Contains(nameFilter, StringComparison.InvariantCultureIgnoreCase));
+		}
 
 		List<ModEntity> mods = modsQuery.ToList();
 
