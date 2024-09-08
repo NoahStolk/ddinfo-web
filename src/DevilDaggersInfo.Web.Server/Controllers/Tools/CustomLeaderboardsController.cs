@@ -34,7 +34,7 @@ public class CustomLeaderboardsController : ControllerBase
 			ascending: false,
 			selectedPlayerId: selectedPlayerId,
 			onlyFeatured: false);
-		return customLeaderboards.Results.ConvertAll(cl => cl.ToAppApi());
+		return customLeaderboards.Results.ConvertAll(cl => cl.ToToolsApi());
 	}
 
 	[HttpGet("{id}")]
@@ -43,7 +43,7 @@ public class CustomLeaderboardsController : ControllerBase
 	public async Task<ActionResult<GetCustomLeaderboard>> GetCustomLeaderboardById(int id)
 	{
 		SortedCustomLeaderboard cl = await _customLeaderboardRepository.GetSortedCustomLeaderboardByIdAsync(id);
-		return cl.ToAppApi();
+		return cl.ToToolsApi();
 	}
 
 	[HttpGet("by-hash")]
@@ -53,7 +53,7 @@ public class CustomLeaderboardsController : ControllerBase
 	{
 		int customLeaderboardId = await _customLeaderboardRepository.GetCustomLeaderboardIdBySpawnsetHashAsync(hash);
 		SortedCustomLeaderboard customLeaderboard = await _customLeaderboardRepository.GetSortedCustomLeaderboardByIdAsync(customLeaderboardId);
-		return customLeaderboard.ToAppApi();
+		return customLeaderboard.ToToolsApi();
 	}
 
 	[HttpHead("exists")]
@@ -72,8 +72,8 @@ public class CustomLeaderboardsController : ControllerBase
 		List<(DevilDaggersInfo.Core.Spawnset.GameMode GameMode, Domain.Entities.Enums.CustomLeaderboardRankSorting RankSorting)> allowedCategories = CustomLeaderboardUtils.GetAllowedGameModeAndRankSortingCombinations();
 		return allowedCategories.ConvertAll(ac => new GetCustomLeaderboardAllowedCategory
 		{
-			GameMode = ac.GameMode.ToDomain().ToAppApi(),
-			RankSorting = ac.RankSorting.ToAppApi(),
+			GameMode = ac.GameMode.ToDomain().ToToolsApi(),
+			RankSorting = ac.RankSorting.ToToolsApi(),
 		});
 	}
 }

@@ -27,4 +27,8 @@ public record GetCustomLeaderboardForOverview
 	public required GetCustomLeaderboardSelectedPlayerStats? SelectedPlayerStats { get; init; }
 
 	public required List<GetCustomLeaderboardCriteria> Criteria { get; init; }
+
+	public required DateTime DateCreated { get; init; }
+
+	public required DateTime? DateLastPlayed { get; init; }
 }

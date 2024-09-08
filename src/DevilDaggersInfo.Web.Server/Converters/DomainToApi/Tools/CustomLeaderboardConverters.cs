@@ -10,48 +10,48 @@ namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Tools;
 
 public static class CustomLeaderboardConverters
 {
-	public static ToolsApi.GetUploadResponse ToAppApi(this UploadResponse uploadResponse)
+	public static ToolsApi.GetUploadResponse ToToolsApi(this UploadResponse uploadResponse)
 	{
 		if (uploadResponse.Success != null)
-			return uploadResponse.Success.ToAppApi(uploadResponse);
+			return uploadResponse.Success.ToToolsApi(uploadResponse);
 
 		if (uploadResponse.Rejection != null)
-			return uploadResponse.Rejection.ToAppApi(uploadResponse);
+			return uploadResponse.Rejection.ToToolsApi(uploadResponse);
 
 		throw new InvalidOperationException("Invalid upload response. Both Success and Rejection are null.");
 	}
 
-	private static ToolsApi.GetUploadResponse ToAppApi(this UploadCriteriaRejection uploadCriteriaRejection, UploadResponse uploadResponse)
+	private static ToolsApi.GetUploadResponse ToToolsApi(this UploadCriteriaRejection uploadCriteriaRejection, UploadResponse uploadResponse)
 	{
-		return new()
+		return new ToolsApi.GetUploadResponse
 		{
 			SpawnsetId = uploadResponse.Leaderboard.SpawnsetId,
 			SpawnsetName = uploadResponse.Leaderboard.SpawnsetName,
 			CustomLeaderboardId = uploadResponse.Leaderboard.Id,
-			CriteriaRejection = new()
+			CriteriaRejection = new ToolsApi.GetUploadResponseCriteriaRejection
 			{
 				ActualValue = uploadCriteriaRejection.ActualValue,
 				ExpectedValue = uploadCriteriaRejection.ExpectedValue,
 				CriteriaName = uploadCriteriaRejection.CriteriaName,
-				CriteriaOperator = uploadCriteriaRejection.CriteriaOperator.ToAppApi(),
+				CriteriaOperator = uploadCriteriaRejection.CriteriaOperator.ToToolsApi(),
 			},
 			NewSortedEntries = null,
 			IsAscending = uploadResponse.Leaderboard.RankSorting.IsAscending(),
 		};
 	}
 
-	private static ToolsApi.GetUploadResponse ToAppApi(this SuccessfulUploadResponse successfulUploadResponse, UploadResponse uploadResponse)
+	private static ToolsApi.GetUploadResponse ToToolsApi(this SuccessfulUploadResponse successfulUploadResponse, UploadResponse uploadResponse)
 	{
-		List<ToolsApi.GetCustomEntry> sortedEntries = successfulUploadResponse.SortedEntries.ConvertAll(ce => ce.ToAppApi());
+		List<ToolsApi.GetCustomEntry> sortedEntries = successfulUploadResponse.SortedEntries.ConvertAll(ce => ce.ToToolsApi());
 
 		return successfulUploadResponse.SubmissionType switch
 		{
-			SubmissionType.FirstScore => new()
+			SubmissionType.FirstScore => new ToolsApi.GetUploadResponse
 			{
 				SpawnsetId = uploadResponse.Leaderboard.SpawnsetId,
 				SpawnsetName = uploadResponse.Leaderboard.SpawnsetName,
 				CustomLeaderboardId = uploadResponse.Leaderboard.Id,
-				FirstScore = new()
+				FirstScore = new ToolsApi.GetUploadResponseFirstScore
 				{
 					Rank = successfulUploadResponse.RankState.Value,
 					Time = successfulUploadResponse.TimeState.Value,
@@ -72,53 +72,53 @@ public static class CustomLeaderboardConverters
 				NewSortedEntries = sortedEntries,
 				IsAscending = uploadResponse.Leaderboard.RankSorting.IsAscending(),
 			},
-			SubmissionType.NewHighscore => new()
+			SubmissionType.NewHighscore => new ToolsApi.GetUploadResponse
 			{
 				SpawnsetId = uploadResponse.Leaderboard.SpawnsetId,
 				SpawnsetName = uploadResponse.Leaderboard.SpawnsetName,
 				CustomLeaderboardId = uploadResponse.Leaderboard.Id,
-				Highscore = new()
+				Highscore = new ToolsApi.GetUploadResponseHighscore
 				{
-					DaggersFiredState = successfulUploadResponse.DaggersFiredState.ToAppApi(),
-					DaggersHitState = successfulUploadResponse.DaggersHitState.ToAppApi(),
-					EnemiesAliveState = successfulUploadResponse.EnemiesAliveState.ToAppApi(),
-					EnemiesKilledState = successfulUploadResponse.EnemiesKilledState.ToAppApi(),
-					GemsCollectedState = successfulUploadResponse.GemsCollectedState.ToAppApi(),
-					GemsDespawnedState = successfulUploadResponse.GemsDespawnedState.ToAppApi(),
-					GemsEatenState = successfulUploadResponse.GemsEatenState.ToAppApi(),
-					GemsTotalState = successfulUploadResponse.GemsTotalState.ToAppApi(),
-					HomingEatenState = successfulUploadResponse.HomingEatenState.ToAppApi(),
-					HomingStoredState = successfulUploadResponse.HomingStoredState.ToAppApi(),
-					LevelUpTime2State = successfulUploadResponse.LevelUpTime2State.ToAppApi(),
-					LevelUpTime3State = successfulUploadResponse.LevelUpTime3State.ToAppApi(),
-					LevelUpTime4State = successfulUploadResponse.LevelUpTime4State.ToAppApi(),
-					RankState = successfulUploadResponse.RankState.ToAppApi(),
-					TimeState = successfulUploadResponse.TimeState.ToAppApi(),
+					DaggersFiredState = successfulUploadResponse.DaggersFiredState.ToToolsApi(),
+					DaggersHitState = successfulUploadResponse.DaggersHitState.ToToolsApi(),
+					EnemiesAliveState = successfulUploadResponse.EnemiesAliveState.ToToolsApi(),
+					EnemiesKilledState = successfulUploadResponse.EnemiesKilledState.ToToolsApi(),
+					GemsCollectedState = successfulUploadResponse.GemsCollectedState.ToToolsApi(),
+					GemsDespawnedState = successfulUploadResponse.GemsDespawnedState.ToToolsApi(),
+					GemsEatenState = successfulUploadResponse.GemsEatenState.ToToolsApi(),
+					GemsTotalState = successfulUploadResponse.GemsTotalState.ToToolsApi(),
+					HomingEatenState = successfulUploadResponse.HomingEatenState.ToToolsApi(),
+					HomingStoredState = successfulUploadResponse.HomingStoredState.ToToolsApi(),
+					LevelUpTime2State = successfulUploadResponse.LevelUpTime2State.ToToolsApi(),
+					LevelUpTime3State = successfulUploadResponse.LevelUpTime3State.ToToolsApi(),
+					LevelUpTime4State = successfulUploadResponse.LevelUpTime4State.ToToolsApi(),
+					RankState = successfulUploadResponse.RankState.ToToolsApi(),
+					TimeState = successfulUploadResponse.TimeState.ToToolsApi(),
 				},
 				NewSortedEntries = sortedEntries,
 				IsAscending = uploadResponse.Leaderboard.RankSorting.IsAscending(),
 			},
-			_ => new()
+			_ => new ToolsApi.GetUploadResponse
 			{
 				SpawnsetId = uploadResponse.Leaderboard.SpawnsetId,
 				SpawnsetName = uploadResponse.Leaderboard.SpawnsetName,
 				CustomLeaderboardId = uploadResponse.Leaderboard.Id,
-				NoHighscore = new()
+				NoHighscore = new ToolsApi.GetUploadResponseNoHighscore
 				{
-					DaggersFiredState = successfulUploadResponse.DaggersFiredState.ToAppApi(),
-					DaggersHitState = successfulUploadResponse.DaggersHitState.ToAppApi(),
-					EnemiesAliveState = successfulUploadResponse.EnemiesAliveState.ToAppApi(),
-					EnemiesKilledState = successfulUploadResponse.EnemiesKilledState.ToAppApi(),
-					GemsCollectedState = successfulUploadResponse.GemsCollectedState.ToAppApi(),
-					GemsDespawnedState = successfulUploadResponse.GemsDespawnedState.ToAppApi(),
-					GemsEatenState = successfulUploadResponse.GemsEatenState.ToAppApi(),
-					GemsTotalState = successfulUploadResponse.GemsTotalState.ToAppApi(),
-					HomingEatenState = successfulUploadResponse.HomingEatenState.ToAppApi(),
-					HomingStoredState = successfulUploadResponse.HomingStoredState.ToAppApi(),
-					LevelUpTime2State = successfulUploadResponse.LevelUpTime2State.ToAppApi(),
-					LevelUpTime3State = successfulUploadResponse.LevelUpTime3State.ToAppApi(),
-					LevelUpTime4State = successfulUploadResponse.LevelUpTime4State.ToAppApi(),
-					TimeState = successfulUploadResponse.TimeState.ToAppApi(),
+					DaggersFiredState = successfulUploadResponse.DaggersFiredState.ToToolsApi(),
+					DaggersHitState = successfulUploadResponse.DaggersHitState.ToToolsApi(),
+					EnemiesAliveState = successfulUploadResponse.EnemiesAliveState.ToToolsApi(),
+					EnemiesKilledState = successfulUploadResponse.EnemiesKilledState.ToToolsApi(),
+					GemsCollectedState = successfulUploadResponse.GemsCollectedState.ToToolsApi(),
+					GemsDespawnedState = successfulUploadResponse.GemsDespawnedState.ToToolsApi(),
+					GemsEatenState = successfulUploadResponse.GemsEatenState.ToToolsApi(),
+					GemsTotalState = successfulUploadResponse.GemsTotalState.ToToolsApi(),
+					HomingEatenState = successfulUploadResponse.HomingEatenState.ToToolsApi(),
+					HomingStoredState = successfulUploadResponse.HomingStoredState.ToToolsApi(),
+					LevelUpTime2State = successfulUploadResponse.LevelUpTime2State.ToToolsApi(),
+					LevelUpTime3State = successfulUploadResponse.LevelUpTime3State.ToToolsApi(),
+					LevelUpTime4State = successfulUploadResponse.LevelUpTime4State.ToToolsApi(),
+					TimeState = successfulUploadResponse.TimeState.ToToolsApi(),
 				},
 				NewSortedEntries = sortedEntries,
 				IsAscending = uploadResponse.Leaderboard.RankSorting.IsAscending(),
@@ -126,52 +126,54 @@ public static class CustomLeaderboardConverters
 		};
 	}
 
-	public static ToolsApi.GetCustomLeaderboard ToAppApi(this SortedCustomLeaderboard sortedCustomLeaderboard)
+	public static ToolsApi.GetCustomLeaderboard ToToolsApi(this SortedCustomLeaderboard sortedCustomLeaderboard)
 	{
-		return new()
+		return new ToolsApi.GetCustomLeaderboard
 		{
-			Criteria = sortedCustomLeaderboard.Criteria.ConvertAll(c => c.ToAppApi()),
-			Daggers = sortedCustomLeaderboard.Daggers?.ToAppApi(),
-			SortedEntries = sortedCustomLeaderboard.CustomEntries.ConvertAll(ce => ce.ToAppApi()),
+			Criteria = sortedCustomLeaderboard.Criteria.ConvertAll(c => c.ToToolsApi()),
+			Daggers = sortedCustomLeaderboard.Daggers?.ToToolsApi(),
+			SortedEntries = sortedCustomLeaderboard.CustomEntries.ConvertAll(ce => ce.ToToolsApi()),
 			SpawnsetName = sortedCustomLeaderboard.SpawnsetName,
-			RankSorting = sortedCustomLeaderboard.RankSorting.ToAppApi(),
-			SpawnsetGameMode = sortedCustomLeaderboard.GameMode.ToAppApi(),
+			RankSorting = sortedCustomLeaderboard.RankSorting.ToToolsApi(),
+			SpawnsetGameMode = sortedCustomLeaderboard.GameMode.ToToolsApi(),
 		};
 	}
 
-	public static ToolsApi.GetCustomLeaderboardForOverview ToAppApi(this CustomLeaderboardOverview customLeaderboard)
+	public static ToolsApi.GetCustomLeaderboardForOverview ToToolsApi(this CustomLeaderboardOverview customLeaderboard)
 	{
-		return new()
+		return new ToolsApi.GetCustomLeaderboardForOverview
 		{
-			Daggers = customLeaderboard.Daggers?.ToAppApi(),
+			Daggers = customLeaderboard.Daggers?.ToToolsApi(),
 			Id = customLeaderboard.Id,
 			PlayerCount = customLeaderboard.PlayerCount,
-			SelectedPlayerStats = customLeaderboard.SelectedPlayerStats?.ToAppApi(),
+			SelectedPlayerStats = customLeaderboard.SelectedPlayerStats?.ToToolsApi(),
 			SpawnsetId = customLeaderboard.SpawnsetId,
 			SpawnsetName = customLeaderboard.SpawnsetName,
 			SpawnsetAuthorId = customLeaderboard.SpawnsetAuthorId,
 			SpawnsetAuthorName = customLeaderboard.SpawnsetAuthorName,
 			SubmitCount = customLeaderboard.TotalRunsSubmitted,
-			WorldRecord = customLeaderboard.WorldRecord?.ToAppApi(),
-			Criteria = customLeaderboard.Criteria.ConvertAll(c => c.ToAppApi()),
-			RankSorting = customLeaderboard.RankSorting.ToAppApi(),
-			SpawnsetGameMode = customLeaderboard.GameMode.ToAppApi(),
+			WorldRecord = customLeaderboard.WorldRecord?.ToToolsApi(),
+			Criteria = customLeaderboard.Criteria.ConvertAll(c => c.ToToolsApi()),
+			RankSorting = customLeaderboard.RankSorting.ToToolsApi(),
+			SpawnsetGameMode = customLeaderboard.GameMode.ToToolsApi(),
+			DateCreated = customLeaderboard.DateCreated,
+			DateLastPlayed = customLeaderboard.DateLastPlayed,
 		};
 	}
 
-	private static ToolsApi.GetCustomLeaderboardCriteria ToAppApi(this CustomLeaderboardCriteria customLeaderboardCriteria)
+	private static ToolsApi.GetCustomLeaderboardCriteria ToToolsApi(this CustomLeaderboardCriteria customLeaderboardCriteria)
 	{
-		return new()
+		return new ToolsApi.GetCustomLeaderboardCriteria
 		{
-			Type = customLeaderboardCriteria.Type.ToAppApi(),
+			Type = customLeaderboardCriteria.Type.ToToolsApi(),
 			Expression = customLeaderboardCriteria.Expression,
-			Operator = customLeaderboardCriteria.Operator.ToAppApi(),
+			Operator = customLeaderboardCriteria.Operator.ToToolsApi(),
 		};
 	}
 
-	private static ToolsApi.GetCustomLeaderboardDaggers ToAppApi(this CustomLeaderboardDaggers customLeaderboardDaggers)
+	private static ToolsApi.GetCustomLeaderboardDaggers ToToolsApi(this CustomLeaderboardDaggers customLeaderboardDaggers)
 	{
-		return new()
+		return new ToolsApi.GetCustomLeaderboardDaggers
 		{
 			Bronze = GameTime.FromGameUnits(customLeaderboardDaggers.Bronze).Seconds,
 			Silver = GameTime.FromGameUnits(customLeaderboardDaggers.Silver).Seconds,
@@ -181,39 +183,39 @@ public static class CustomLeaderboardConverters
 		};
 	}
 
-	private static ToolsApi.GetCustomLeaderboardSelectedPlayerStats ToAppApi(this CustomLeaderboardOverviewSelectedPlayerStats customLeaderboardOverviewSelectedPlayerStats)
+	private static ToolsApi.GetCustomLeaderboardSelectedPlayerStats ToToolsApi(this CustomLeaderboardOverviewSelectedPlayerStats customLeaderboardOverviewSelectedPlayerStats)
 	{
-		return new()
+		return new ToolsApi.GetCustomLeaderboardSelectedPlayerStats
 		{
-			Dagger = customLeaderboardOverviewSelectedPlayerStats.Dagger?.ToAppApi(),
+			Dagger = customLeaderboardOverviewSelectedPlayerStats.Dagger?.ToToolsApi(),
 			Rank = customLeaderboardOverviewSelectedPlayerStats.Rank,
 			HighscoreValue = customLeaderboardOverviewSelectedPlayerStats.HighscoreValue,
-			NextDagger = customLeaderboardOverviewSelectedPlayerStats.NextDagger == null ? null : new()
+			NextDagger = customLeaderboardOverviewSelectedPlayerStats.NextDagger == null ? null : new ToolsApi.GetCustomLeaderboardSelectedPlayerNextDagger
 			{
-				Dagger = customLeaderboardOverviewSelectedPlayerStats.NextDagger.Dagger.ToAppApi(),
+				Dagger = customLeaderboardOverviewSelectedPlayerStats.NextDagger.Dagger.ToToolsApi(),
 				DaggerValue = customLeaderboardOverviewSelectedPlayerStats.NextDagger.DaggerValue,
 			},
 		};
 	}
 
-	private static ToolsApi.GetCustomLeaderboardWorldRecord ToAppApi(this CustomLeaderboardOverviewWorldRecord customLeaderboardOverviewWorldRecord)
+	private static ToolsApi.GetCustomLeaderboardWorldRecord ToToolsApi(this CustomLeaderboardOverviewWorldRecord customLeaderboardOverviewWorldRecord)
 	{
-		return new()
+		return new ToolsApi.GetCustomLeaderboardWorldRecord
 		{
-			Dagger = customLeaderboardOverviewWorldRecord.Dagger?.ToAppApi(),
+			Dagger = customLeaderboardOverviewWorldRecord.Dagger?.ToToolsApi(),
 			WorldRecordValue = customLeaderboardOverviewWorldRecord.WorldRecordValue,
 		};
 	}
 
-	private static ToolsApi.GetScoreState<T> ToAppApi<T>(this UploadResponseScoreState<T> scoreState)
+	private static ToolsApi.GetScoreState<T> ToToolsApi<T>(this UploadResponseScoreState<T> scoreState)
 		where T : struct
 	{
-		return new(scoreState.Value, scoreState.ValueDifference);
+		return new ToolsApi.GetScoreState<T>(scoreState.Value, scoreState.ValueDifference);
 	}
 
-	private static ToolsApi.GetCustomEntry ToAppApi(this CustomEntry customEntry)
+	private static ToolsApi.GetCustomEntry ToToolsApi(this CustomEntry customEntry)
 	{
-		return new()
+		return new ToolsApi.GetCustomEntry
 		{
 			DaggersFired = customEntry.DaggersFired,
 			DaggersHit = customEntry.DaggersHit,
@@ -236,11 +238,11 @@ public static class CustomLeaderboardConverters
 			Rank = customEntry.Rank,
 			SubmitDate = customEntry.SubmitDate,
 			TimeInSeconds = GameTime.FromGameUnits(customEntry.Time).Seconds,
-			CustomLeaderboardDagger = customEntry.CustomLeaderboardDagger?.ToAppApi(),
+			CustomLeaderboardDagger = customEntry.CustomLeaderboardDagger?.ToToolsApi(),
 		};
 	}
 
-	private static ToolsApi.CustomLeaderboardDagger ToAppApi(this CustomLeaderboardDagger dagger)
+	private static ToolsApi.CustomLeaderboardDagger ToToolsApi(this CustomLeaderboardDagger dagger)
 	{
 		return dagger switch
 		{
@@ -254,7 +256,7 @@ public static class CustomLeaderboardConverters
 		};
 	}
 
-	private static ToolsApi.CustomLeaderboardCriteriaType ToAppApi(this CustomLeaderboardCriteriaType criteriaType)
+	private static ToolsApi.CustomLeaderboardCriteriaType ToToolsApi(this CustomLeaderboardCriteriaType criteriaType)
 	{
 		return criteriaType switch
 		{
@@ -310,7 +312,7 @@ public static class CustomLeaderboardConverters
 		};
 	}
 
-	private static ToolsApi.CustomLeaderboardCriteriaOperator ToAppApi(this CustomLeaderboardCriteriaOperator @operator)
+	private static ToolsApi.CustomLeaderboardCriteriaOperator ToToolsApi(this CustomLeaderboardCriteriaOperator @operator)
 	{
 		return @operator switch
 		{
@@ -326,7 +328,7 @@ public static class CustomLeaderboardConverters
 		};
 	}
 
-	public static ToolsApi.SpawnsetGameMode ToAppApi(this SpawnsetGameMode dagger)
+	public static ToolsApi.SpawnsetGameMode ToToolsApi(this SpawnsetGameMode dagger)
 	{
 		return dagger switch
 		{
@@ -337,7 +339,7 @@ public static class CustomLeaderboardConverters
 		};
 	}
 
-	public static ToolsApi.CustomLeaderboardRankSorting ToAppApi(this CustomLeaderboardRankSorting dagger)
+	public static ToolsApi.CustomLeaderboardRankSorting ToToolsApi(this CustomLeaderboardRankSorting dagger)
 	{
 		return dagger switch
 		{

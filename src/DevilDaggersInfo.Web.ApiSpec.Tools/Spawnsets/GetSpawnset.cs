@@ -8,7 +8,9 @@ public record GetSpawnset
 
 	public required string AuthorName { get; init; }
 
-	public required bool IsPractice { get; init; }
+	// TODO: Remove when ddinfo-tools 0.13.5.0 and older are deprecated. ddinfo-tools 0.13.5.0 and older are compiled with this property being required.
+	[Obsolete("Practice spawnsets are now always generated and there's no need for them to be marked as such.")]
+	public bool IsPractice { get; init; }
 
 	public required int? CustomLeaderboardId { get; init; }
 

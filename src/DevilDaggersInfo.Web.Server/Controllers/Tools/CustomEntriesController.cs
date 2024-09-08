@@ -45,7 +45,7 @@ public class CustomEntriesController : ControllerBase
 		try
 		{
 			UploadResponse response = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest.ToDomain());
-			return response.ToAppApi();
+			return response.ToToolsApi();
 		}
 		catch (Exception ex) when (ex is not CustomEntryValidationException)
 		{
