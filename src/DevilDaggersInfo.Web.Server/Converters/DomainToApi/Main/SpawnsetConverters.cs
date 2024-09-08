@@ -15,7 +15,7 @@ public static class SpawnsetConverters
 		if (spawnset.Player == null)
 			throw new InvalidOperationException("Player is not included.");
 
-		return new()
+		return new MainApi.GetSpawnsetOverview
 		{
 			AdditionalGems = spawnset.EffectiveGemsOrHoming,
 			GameMode = spawnset.GameMode.ToMainApi(),
@@ -36,12 +36,11 @@ public static class SpawnsetConverters
 		if (spawnset.Player == null)
 			throw new InvalidOperationException("Player is not included.");
 
-		return new()
+		return new MainApi.GetSpawnset
 		{
 			AuthorName = spawnset.Player.PlayerName,
 			FileBytes = fileBytes,
 			Id = spawnset.Id,
-			IsPractice = spawnset.IsPractice,
 			LastUpdated = spawnset.LastUpdated,
 			Name = spawnset.Name,
 			CustomLeaderboardId = customLeaderboardId,

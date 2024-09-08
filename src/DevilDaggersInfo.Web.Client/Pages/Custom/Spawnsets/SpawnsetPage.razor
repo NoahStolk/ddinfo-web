@@ -34,7 +34,6 @@ else
 				<div class="bg-gray-1 max-w-arena-table px-1">
 					<DataField Name="Author"><span class="whitespace-nowrap">@GetSpawnset.AuthorName</span></DataField>
 					<DataField Name="Last updated">@GetSpawnset.LastUpdated.ToString(StringFormats.DateTimeFormat)</DataField>
-					<DataField Name="Practice">@(GetSpawnset.IsPractice ? "Yes" : "No")</DataField>
 					<DataField Name="File size">@FileSizeUtils.Format(GetSpawnset.FileBytes.Length)</DataField>
 
 					<div class="grid grid-cols-2 text-lg">
@@ -63,7 +62,7 @@ else
 					<DataField Name="Game version">@SpawnsetBinary.GetSupportedGameVersion().ToDisplayString()</DataField>
 					<DataField Name="Game mode">@SpawnsetBinary.GameMode.ToDisplayString()</DataField>
 				</div>
-				
+
 				<SpawnsetArenaData SpawnsetBinary="SpawnsetBinary" />
 				<SpawnsetArenaWrapper SpawnsetBinary="SpawnsetBinary" />
 
