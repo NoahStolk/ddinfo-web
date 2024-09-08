@@ -18,20 +18,17 @@ public class AddSpawnsetState : IStateObject<AddSpawnset>
 	[StringLength(2048)]
 	public string? HtmlDescription { get; set; }
 
-	public bool IsPractice { get; set; }
-
 	[MaxLength(SpawnsetConstants.MaxFileSize, ErrorMessage = SpawnsetConstants.MaxFileSizeErrorMessage)]
-	public byte[] FileContents { get; set; } = Array.Empty<byte>();
+	public byte[] FileContents { get; set; } = [];
 
 	public AddSpawnset ToModel()
 	{
-		return new()
+		return new AddSpawnset
 		{
 			PlayerId = PlayerId,
 			Name = Name,
 			MaxDisplayWaves = MaxDisplayWaves,
 			HtmlDescription = HtmlDescription,
-			IsPractice = IsPractice,
 			FileContents = FileContents,
 		};
 	}

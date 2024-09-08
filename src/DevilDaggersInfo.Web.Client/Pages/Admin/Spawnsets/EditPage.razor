@@ -14,7 +14,6 @@
 		<InputWrapper Label="Name"><InputText class="admin-input" @bind-Value="@_editSpawnsetState.Name" /></InputWrapper>
 		<InputWrapper Label="Max display waves"><InputNumber class="admin-input" @bind-Value="_editSpawnsetState.MaxDisplayWaves" /></InputWrapper>
 		<InputWrapper Label="HTML description"><InputTextArea class="admin-input w-full h-64" @bind-Value="@_editSpawnsetState.HtmlDescription" /></InputWrapper>
-		<InputWrapper Label="Practice"><InputCheckbox @bind-Value="@_editSpawnsetState.IsPractice" /></InputWrapper>
 	</AdminEdit>
 </AdminAuthorizer>
 
@@ -36,7 +35,6 @@
 
 			GetSpawnset getSpawnset = await Http.GetSpawnsetById(Id);
 			_editSpawnsetState.HtmlDescription = getSpawnset.HtmlDescription;
-			_editSpawnsetState.IsPractice = getSpawnset.IsPractice;
 			_editSpawnsetState.MaxDisplayWaves = getSpawnset.MaxDisplayWaves;
 			_editSpawnsetState.Name = getSpawnset.Name;
 			_editSpawnsetState.PlayerId = getSpawnset.PlayerId;

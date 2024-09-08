@@ -12,10 +12,6 @@ public partial class Index : IHasNavigation
 
 	[Parameter]
 	[SupplyParameterFromQuery]
-	public bool PracticeOnly { get; set; }
-
-	[Parameter]
-	[SupplyParameterFromQuery]
 	public bool WithCustomLeaderboardOnly { get; set; }
 
 	[Parameter]
@@ -70,12 +66,6 @@ public partial class Index : IHasNavigation
 		NavigationManager.AddOrModifyQueryParameter(nameof(AuthorFilter), AuthorFilter);
 	}
 
-	private void ChangeInputPracticeOnly(bool value)
-	{
-		PracticeOnly = value;
-		NavigationManager.AddOrModifyQueryParameter(nameof(PracticeOnly), PracticeOnly);
-	}
-
 	private void ChangeInputWithCustomLeaderboardOnly(bool value)
 	{
 		WithCustomLeaderboardOnly = value;
@@ -106,7 +96,7 @@ public partial class Index : IHasNavigation
 		_sortings[sortBy] = !_sortings[sortBy];
 		Ascending = _sortings[sortBy];
 
-		NavigationManager.AddOrModifyQueryParameters(new(nameof(SortBy), SortBy), new(nameof(Ascending), Ascending));
+		NavigationManager.AddOrModifyQueryParameters(new KeyValuePair<string, object?>(nameof(SortBy), SortBy), new KeyValuePair<string, object?>(nameof(Ascending), Ascending));
 	}
 
 	private async Task Fetch()
@@ -115,7 +105,7 @@ public partial class Index : IHasNavigation
 		int pageSize = PagingUtils.GetValidPageSize(PageSize);
 		SpawnsetSorting sortBy = SortBy.HasValue ? (SpawnsetSorting)SortBy.Value : SpawnsetSorting.LastUpdated;
 
-		GetSpawnsets = await Http.GetSpawnsets(PracticeOnly, WithCustomLeaderboardOnly, SpawnsetFilter, AuthorFilter, pageIndex, pageSize, sortBy, Ascending);
+		GetSpawnsets = await Http.GetSpawnsets(WithCustomLeaderboardOnly, SpawnsetFilter, AuthorFilter, pageIndex, pageSize, sortBy, Ascending);
 
 		if (PageIndex >= TotalPages)
 		{

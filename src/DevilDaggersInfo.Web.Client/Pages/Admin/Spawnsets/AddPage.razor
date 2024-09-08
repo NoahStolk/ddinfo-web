@@ -14,7 +14,6 @@
 		<InputWrapper Label="Name"><InputText class="admin-input" @bind-Value="@_addSpawnsetState.Name" /></InputWrapper>
 		<InputWrapper Label="Max display waves"><InputNumber class="admin-input" @bind-Value="_addSpawnsetState.MaxDisplayWaves" /></InputWrapper>
 		<InputWrapper Label="HTML description"><InputTextArea class="admin-input w-full h-64" @bind-Value="@_addSpawnsetState.HtmlDescription" /></InputWrapper>
-		<InputWrapper Label="Practice"><InputCheckbox @bind-Value="@_addSpawnsetState.IsPractice" /></InputWrapper>
 		<InputWrapper Label="File"><InputFile OnChange="LoadFile" /></InputWrapper>
 	</AdminAdd>
 </AdminAuthorizer>

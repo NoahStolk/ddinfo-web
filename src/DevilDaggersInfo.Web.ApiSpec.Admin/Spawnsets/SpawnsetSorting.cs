@@ -8,5 +8,4 @@ public enum SpawnsetSorting
 	MaxDisplayWaves = 3,
 	HtmlDescription = 4,
 	LastUpdated = 5,
-	IsPractice = 6,
 }

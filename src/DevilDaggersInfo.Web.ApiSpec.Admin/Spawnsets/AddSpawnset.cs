@@ -15,8 +15,6 @@ public record AddSpawnset
 	[StringLength(2048)]
 	public required string? HtmlDescription { get; init; }
 
-	public required bool IsPractice { get; init; }
-
 	[MaxLength(SpawnsetConstants.MaxFileSize, ErrorMessage = SpawnsetConstants.MaxFileSizeErrorMessage)]
 	public required byte[] FileContents { get; init; }
 }

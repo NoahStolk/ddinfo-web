@@ -8,8 +8,6 @@ public record GetSpawnset
 
 	public required string AuthorName { get; init; }
 
-	public required bool IsPractice { get; init; }
-
 	public required int? CustomLeaderboardId { get; init; }
 
 	public required string? HtmlDescription { get; init; }
