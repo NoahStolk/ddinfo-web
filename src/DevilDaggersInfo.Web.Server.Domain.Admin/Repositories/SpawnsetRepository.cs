@@ -23,6 +23,8 @@ public class SpawnsetRepository
 
 		if (!string.IsNullOrWhiteSpace(filter))
 		{
+			filter = filter.Trim();
+
 			// ! Navigation property.
 			spawnsetsQuery = spawnsetsQuery.Where(s => s.Name.Contains(filter) || s.Player!.PlayerName.Contains(filter));
 		}

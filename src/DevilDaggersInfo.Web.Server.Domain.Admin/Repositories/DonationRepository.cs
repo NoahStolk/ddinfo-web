@@ -25,6 +25,8 @@ public class DonationRepository
 
 		if (!string.IsNullOrWhiteSpace(filter))
 		{
+			filter = filter.Trim();
+
 			// ! Navigation property.
 			donationsQuery = donationsQuery.Where(d => d.Player!.PlayerName.Contains(filter));
 		}

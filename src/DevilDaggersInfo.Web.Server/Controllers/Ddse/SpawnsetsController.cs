@@ -27,12 +27,17 @@ public class SpawnsetsController : ControllerBase
 
 		if (!string.IsNullOrWhiteSpace(authorFilter))
 		{
+			authorFilter = authorFilter.Trim();
+
 			// ! Navigation property.
 			spawnsetsQuery = spawnsetsQuery.Where(sf => sf.Player!.PlayerName.Contains(authorFilter));
 		}
 
 		if (!string.IsNullOrWhiteSpace(nameFilter))
+		{
+			nameFilter = nameFilter.Trim();
 			spawnsetsQuery = spawnsetsQuery.Where(sf => sf.Name.Contains(nameFilter));
+		}
 
 		List<int> spawnsetsWithCustomLeaderboardIds = await _dbContext.CustomLeaderboards
 			.Select(cl => cl.SpawnsetId)

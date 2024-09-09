@@ -23,6 +23,8 @@ public class PlayerRepository
 
 		if (!string.IsNullOrWhiteSpace(filter))
 		{
+			filter = filter.Trim();
+
 			playersQuery = playersQuery.Where(p =>
 				p.PlayerName.Contains(filter) ||
 				p.CommonName != null && p.CommonName.Contains(filter) ||

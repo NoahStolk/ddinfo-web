@@ -50,10 +50,15 @@ public class SpawnsetsController : ControllerBase
 
 		// Casing is ignored by default because of IQueryable.
 		if (!string.IsNullOrWhiteSpace(spawnsetFilter))
+		{
+			spawnsetFilter = spawnsetFilter.Trim();
 			spawnsetsQuery = spawnsetsQuery.Where(s => s.Name.Contains(spawnsetFilter));
+		}
 
 		if (!string.IsNullOrWhiteSpace(authorFilter))
 		{
+			authorFilter = authorFilter.Trim();
+
 			// ! Navigation property.
 			spawnsetsQuery = spawnsetsQuery.Where(s => s.Player!.PlayerName.Contains(authorFilter));
 		}

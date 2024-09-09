@@ -29,6 +29,8 @@ public class UserRepository
 
 		if (!string.IsNullOrWhiteSpace(filter))
 		{
+			filter = filter.Trim();
+
 			// ! Navigation property.
 			usersQuery = usersQuery.Where(u =>
 				u.Name.Contains(filter) ||

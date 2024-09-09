@@ -28,6 +28,8 @@ public class CustomEntryRepository
 
 		if (!string.IsNullOrWhiteSpace(filter))
 		{
+			filter = filter.Trim();
+
 			// ! Navigation property.
 			customEntriesQuery = customEntriesQuery.Where(ce => ce.Player!.PlayerName.Contains(filter) || ce.CustomLeaderboard!.Spawnset!.Name.Contains(filter));
 		}
