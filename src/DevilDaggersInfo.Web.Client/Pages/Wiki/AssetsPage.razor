@@ -6,14 +6,14 @@
 <Heading Title="Game Assets" />
 
 <p class="para">
-	This page lists all the game's assets. Assets can be extracted and modified using <a class="link" href="tools/asset-editor">Devil Daggers Asset Editor</a>.
+	This page lists all the game's assets. Assets can be extracted and modified using <a class="link" href="tools">ddinfo-tools</a>.
 </p>
 
 <Heading Title="Audio Assets" Level="2" />
 <div class="bg-gray-3 grid gap-3 grid-cols-3">
-	<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _audioAudio, _audioAudioSortings, aad => aad.AssetName)">Asset</a></div>
-	<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _audioAudio, _audioAudioSortings, aad => aad.IsProhibited)">Prohibited for 1000+</a></div>
-	<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _audioAudio, _audioAudioSortings, aad => aad.DefaultLoudness)">Loudness</a></div>
+	<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _audioAudio, _audioAudioSortings, a => a.AssetName)">Asset</a></div>
+	<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _audioAudio, _audioAudioSortings, a => a.IsProhibited)">Prohibited for 1000+</a></div>
+	<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _audioAudio, _audioAudioSortings, a => a.DefaultLoudness)">Loudness</a></div>
 </div>
 @foreach (AudioAssetInfo audio in _audioAudio)
 {
@@ -26,10 +26,10 @@
 
 <Heading Title="Mesh Assets" Level="2" />
 <div class="bg-gray-3 grid gap-3 grid-cols-4">
-	<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _ddMeshes, _ddMeshesSortings, mad => mad.AssetName)">Asset</a></div>
-	<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _ddMeshes, _ddMeshesSortings, mad => mad.IsProhibited)">Prohibited for 1000+</a></div>
-	<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _ddMeshes, _ddMeshesSortings, mad => mad.DefaultIndexCount)">Indices</a></div>
-	<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _ddMeshes, _ddMeshesSortings, mad => mad.DefaultVertexCount)">Vertices</a></div>
+	<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _ddMeshes, _ddMeshesSortings, a => a.AssetName)">Asset</a></div>
+	<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _ddMeshes, _ddMeshesSortings, a => a.IsProhibited)">Prohibited for 1000+</a></div>
+	<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _ddMeshes, _ddMeshesSortings, a => a.DefaultIndexCount)">Indices</a></div>
+	<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _ddMeshes, _ddMeshesSortings, a => a.DefaultVertexCount)">Vertices</a></div>
 </div>
 @foreach (MeshAssetInfo mesh in _ddMeshes)
 {
@@ -43,8 +43,8 @@
 
 <Heading Title="Object Binding Assets" Level="2" />
 <div class="bg-gray-3 grid gap-3 grid-cols-2">
-	<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _ddObjectBindings, _ddObjectBindingsSortings, mbad => mbad.AssetName)">Asset</a></div>
-	<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _ddObjectBindings, _ddObjectBindingsSortings, mbad => mbad.IsProhibited)">Prohibited for 1000+</a></div>
+	<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _ddObjectBindings, _ddObjectBindingsSortings, a => a.AssetName)">Asset</a></div>
+	<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _ddObjectBindings, _ddObjectBindingsSortings, a => a.IsProhibited)">Prohibited for 1000+</a></div>
 </div>
 @foreach (ObjectBindingAssetInfo objectBinding in _ddObjectBindings)
 {
@@ -56,8 +56,8 @@
 
 <Heading Title="Shader Assets (core)" Level="2" />
 <div class="bg-gray-3 grid gap-3 grid-cols-2">
-	<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _coreShaders, _coreShadersSortings, sad => sad.AssetName)">Asset</a></div>
-	<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _coreShaders, _coreShadersSortings, sad => sad.IsProhibited)">Prohibited for 1000+</a></div>
+	<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _coreShaders, _coreShadersSortings, a => a.AssetName)">Asset</a></div>
+	<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _coreShaders, _coreShadersSortings, a => a.IsProhibited)">Prohibited for 1000+</a></div>
 </div>
 @foreach (ShaderAssetInfo shader in _coreShaders)
 {
@@ -69,8 +69,8 @@
 
 <Heading Title="Shader Assets (dd)" Level="2" />
 <div class="bg-gray-3 grid gap-3 grid-cols-2">
-	<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _ddShaders, _ddShadersSortings, sad => sad.AssetName)">Asset</a></div>
-	<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _ddShaders, _ddShadersSortings, sad => sad.IsProhibited)">Prohibited for 1000+</a></div>
+	<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _ddShaders, _ddShadersSortings, a => a.AssetName)">Asset</a></div>
+	<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _ddShaders, _ddShadersSortings, a => a.IsProhibited)">Prohibited for 1000+</a></div>
 </div>
 @foreach (ShaderAssetInfo shader in _ddShaders)
 {
@@ -82,12 +82,12 @@
 
 <Heading Title="Texture Assets" Level="2" />
 <div class="bg-gray-3 grid gap-3 grid-cols-6">
-	<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _ddTextures, _ddTexturesSortings, tad => tad.AssetName)">Asset</a></div>
-	<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _ddTextures, _ddTexturesSortings, tad => tad.IsProhibited)">Prohibited for 1000+</a></div>
-	<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _ddTextures, _ddTexturesSortings, tad => tad.DefaultWidth)">Width</a></div>
-	<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _ddTextures, _ddTexturesSortings, tad => tad.DefaultHeight)">Height</a></div>
-	<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _ddTextures, _ddTexturesSortings, tad => tad.IsTextureForMesh)">For mesh</a></div>
-	<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _ddTextures, _ddTexturesSortings, tad => tad.ObjectBinding)">Object binding</a></div>
+	<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _ddTextures, _ddTexturesSortings, a => a.AssetName)">Asset</a></div>
+	<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _ddTextures, _ddTexturesSortings, a => a.IsProhibited)">Prohibited for 1000+</a></div>
+	<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _ddTextures, _ddTexturesSortings, a => a.DefaultWidth)">Width</a></div>
+	<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _ddTextures, _ddTexturesSortings, a => a.DefaultHeight)">Height</a></div>
+	<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _ddTextures, _ddTexturesSortings, a => a.IsTextureForMesh)">For mesh</a></div>
+	<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(ref _ddTextures, _ddTexturesSortings, a => a.ObjectBinding)">Object binding</a></div>
 </div>
 @foreach (TextureAssetInfo texture in _ddTextures)
 {
