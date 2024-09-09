@@ -228,6 +228,7 @@ public class CustomLeaderboardRepository
 
 	public async Task<CustomLeaderboardsTotalData> GetCustomLeaderboardsTotalDataAsync()
 	{
+		// TODO: This should be cached and updated periodically.
 		// ! Navigation property.
 		var customLeaderboards = await _dbContext.CustomLeaderboards.AsNoTracking().Select(cl => new { cl.Id, cl.Spawnset!.GameMode, cl.TotalRunsSubmitted }).ToListAsync();
 
