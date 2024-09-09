@@ -31,7 +31,7 @@ public class ModArchiveProcessorTransformTests : ModArchiveProcessorTests
 		};
 		await Processor.ProcessModBinaryUploadAsync(modName, binaries);
 
-		await Processor.TransformBinariesInModArchiveAsync(modName, newModName, [], new());
+		await Processor.TransformBinariesInModArchiveAsync(modName, newModName, [], new Dictionary<BinaryName, byte[]>());
 
 		string zipFilePath = Accessor.GetModArchivePath(newModName);
 		using ZipArchive archive = ZipFile.Open(zipFilePath, ZipArchiveMode.Read);
@@ -58,7 +58,7 @@ public class ModArchiveProcessorTransformTests : ModArchiveProcessorTests
 		};
 		await Processor.ProcessModBinaryUploadAsync(modName, binaries);
 
-		await Processor.TransformBinariesInModArchiveAsync(modName, newModName, [binaryName2], new());
+		await Processor.TransformBinariesInModArchiveAsync(modName, newModName, [binaryName2], new Dictionary<BinaryName, byte[]>());
 
 		string zipFilePath = Accessor.GetModArchivePath(newModName);
 		using ZipArchive archive = ZipFile.Open(zipFilePath, ZipArchiveMode.Read);
@@ -86,7 +86,7 @@ public class ModArchiveProcessorTransformTests : ModArchiveProcessorTests
 		await Processor.ProcessModBinaryUploadAsync(modName, binaries);
 
 		ModBinaryBuilder binary3 = CreateWithBinding(assetName);
-		await Processor.TransformBinariesInModArchiveAsync(modName, newModName, [], new() { { binaryName3, binary3.Compile() } });
+		await Processor.TransformBinariesInModArchiveAsync(modName, newModName, [], new Dictionary<BinaryName, byte[]> { { binaryName3, binary3.Compile() } });
 
 		string zipFilePath = Accessor.GetModArchivePath(newModName);
 		using ZipArchive archive = ZipFile.Open(zipFilePath, ZipArchiveMode.Read);
@@ -116,7 +116,7 @@ public class ModArchiveProcessorTransformTests : ModArchiveProcessorTests
 		await Processor.ProcessModBinaryUploadAsync(modName, binaries);
 
 		ModBinaryBuilder binary3 = CreateWithBinding(assetName);
-		await Processor.TransformBinariesInModArchiveAsync(modName, newModName, [binaryName2], new() { { binaryName3, binary3.Compile() } });
+		await Processor.TransformBinariesInModArchiveAsync(modName, newModName, [binaryName2], new Dictionary<BinaryName, byte[]> { { binaryName3, binary3.Compile() } });
 
 		string zipFilePath = Accessor.GetModArchivePath(newModName);
 		using ZipArchive archive = ZipFile.Open(zipFilePath, ZipArchiveMode.Read);
@@ -139,7 +139,7 @@ public class ModArchiveProcessorTransformTests : ModArchiveProcessorTests
 		await Processor.ProcessModBinaryUploadAsync(modName, binaries);
 
 		ModBinaryBuilder binary2 = CreateWithBinding(assetName);
-		await Assert.ThrowsExceptionAsync<InvalidModArchiveException>(async () => await Processor.TransformBinariesInModArchiveAsync(modName, newModName, [], new() { { binaryName2, binary2.Compile() } }));
+		await Assert.ThrowsExceptionAsync<InvalidModArchiveException>(async () => await Processor.TransformBinariesInModArchiveAsync(modName, newModName, [], new Dictionary<BinaryName, byte[]> { { binaryName2, binary2.Compile() } }));
 
 		string zipFilePath = Accessor.GetModArchivePath(modName);
 		using ZipArchive archive = ZipFile.Open(zipFilePath, ZipArchiveMode.Read);
@@ -162,7 +162,7 @@ public class ModArchiveProcessorTransformTests : ModArchiveProcessorTests
 		await Processor.ProcessModBinaryUploadAsync(modName, binaries);
 
 		ModBinaryBuilder binary2 = CreateWithBinding(assetName2);
-		await Processor.TransformBinariesInModArchiveAsync(modName, newModName, [binaryName1], new() { { binaryName2, binary2.Compile() } });
+		await Processor.TransformBinariesInModArchiveAsync(modName, newModName, [binaryName1], new Dictionary<BinaryName, byte[]> { { binaryName2, binary2.Compile() } });
 
 		string zipFilePath = Accessor.GetModArchivePath(newModName);
 		using ZipArchive archive = ZipFile.Open(zipFilePath, ZipArchiveMode.Read);

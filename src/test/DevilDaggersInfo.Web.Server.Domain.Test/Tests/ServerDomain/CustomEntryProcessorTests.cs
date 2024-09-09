@@ -50,7 +50,7 @@ public class CustomEntryProcessorTests
 		ILogger<CustomEntryProcessor> customEntryProcessorLogger = Substitute.For<ILogger<CustomEntryProcessor>>();
 
 		const string secret = "0123456789abcdef";
-		_encryptionWrapper = new(secret, secret, secret);
+		_encryptionWrapper = new AesBase32Wrapper(secret, secret, secret);
 
 		CustomLeaderboardsOptions options = new()
 		{
@@ -59,7 +59,7 @@ public class CustomEntryProcessorTests
 			Salt = secret,
 		};
 
-		_customEntryProcessor = new(_dbContext, customEntryProcessorLogger, fileSystemService, new OptionsWrapper<CustomLeaderboardsOptions>(options), Substitute.For<ICustomLeaderboardHighscoreLogger>(), Substitute.For<ICustomLeaderboardSubmissionLogger>())
+		_customEntryProcessor = new CustomEntryProcessor(_dbContext, customEntryProcessorLogger, fileSystemService, new OptionsWrapper<CustomLeaderboardsOptions>(options), Substitute.For<ICustomLeaderboardHighscoreLogger>(), Substitute.For<ICustomLeaderboardSubmissionLogger>())
 		{
 			IsUnitTest = true,
 		};
@@ -88,7 +88,7 @@ public class CustomEntryProcessorTests
 
 	private UploadRequest CreateUploadRequest(float time, int playerId, int status, string clientVersion)
 	{
-		return CreateUploadRequest(time, playerId, status, clientVersion, new());
+		return CreateUploadRequest(time, playerId, status, clientVersion, new UploadRequestData());
 	}
 
 	private UploadRequest CreateUploadRequest(float time, int playerId, int status, string clientVersion, UploadRequestData gameData, string? validation = null)
@@ -141,7 +141,7 @@ public class CustomEntryProcessorTests
 			timeAttackOrRaceFinished: timeAttackOrRaceFinished,
 			prohibitedMods: prohibitedMods);
 
-		return new(
+		return new UploadRequest(
 			survivalHashMd5: _v3Hash,
 			playerId: playerId,
 			playerName: $"TestPlayer{playerId}",
@@ -180,12 +180,12 @@ public class CustomEntryProcessorTests
 			status: status,
 			timestamps:
 			[
-				new()
+				new UploadRequestTimestamp
 				{
 					Timestamp = new DateTime(2023, 1, 1, 0, 0, 0, DateTimeKind.Utc).Ticks,
 					TimeInSeconds = 0,
 				},
-				new()
+				new UploadRequestTimestamp
 				{
 					Timestamp = new DateTime(2023, 1, 1, 0, 1, 0, DateTimeKind.Utc).Ticks,
 					TimeInSeconds = 60,
@@ -204,7 +204,7 @@ public class CustomEntryProcessorTests
 	[DataRow(0, new int[] { })]
 	public async Task TestHomingCount(int expected, int[] homingStored)
 	{
-		UploadRequest uploadRequest = CreateUploadRequest(1, 100, 4, TestConstants.DdclVersion, new() { HomingStored = homingStored });
+		UploadRequest uploadRequest = CreateUploadRequest(1, 100, 4, TestConstants.DdclVersion, new UploadRequestData { HomingStored = homingStored });
 		UploadResponse response = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
 		Assert.IsNotNull(response.Success);
 		Assert.AreEqual(expected, response.Success.HomingStoredState.Value);
@@ -292,7 +292,7 @@ public class CustomEntryProcessorTests
 	[TestMethod]
 	public async Task ProcessUploadRequest_InvalidValidation()
 	{
-		UploadRequest uploadRequest = CreateUploadRequest(10, 1, 4, TestConstants.DdclVersion, new(), "Malformed validation");
+		UploadRequest uploadRequest = CreateUploadRequest(10, 1, 4, TestConstants.DdclVersion, new UploadRequestData(), "Malformed validation");
 		CustomEntryValidationException ex = await Assert.ThrowsExceptionAsync<CustomEntryValidationException>(async () => await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest));
 
 		await _dbContext.DidNotReceive().SaveChangesAsync();

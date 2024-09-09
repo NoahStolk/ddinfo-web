@@ -9,7 +9,7 @@
 
 <Heading Title="World Record Progression" />
 
-@if (_worldRecordHolders == null || _worldRecords == null || _dataOptions == null)
+@if (_worldRecordHolders == null || _worldRecords == null)
 {
 	<Loading />
 }
@@ -32,7 +32,7 @@ else
 		int totalTimeHeld = (int)Math.Round(wrh.TotalTimeHeld.TotalDays);
 		int longestTimeHeldConsecutively = (int)Math.Round(wrh.LongestTimeHeldConsecutively.TotalDays);
 
-		string totalTimeHeldString = $"{totalTimeHeld} day{S(totalTimeHeld)} ({(wrh.TotalTimeHeld / _totalTimeSinceFirstRecord):0.00%})";
+		string totalTimeHeldString = $"{totalTimeHeld} day{S(totalTimeHeld)} ({wrh.TotalTimeHeld / _totalTimeSinceFirstRecord:0.00%})";
 		string longestTimeHeldConsecutivelyString = $"{longestTimeHeldConsecutively} day{S(longestTimeHeldConsecutively)}";
 
 		<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 @(isCurrentWrHolder ? "bg-dark-red" : string.Empty)">

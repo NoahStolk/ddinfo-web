@@ -1,6 +1,7 @@
 using DevilDaggersInfo.Core.Common;
 using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardHistory;
+using System.Globalization;
 using System.Text;
 
 namespace DevilDaggersInfo.DevUtil.DistributeHistoryStats;
@@ -56,14 +57,14 @@ public static class HighscoreSpreadUtils
 		if (changes.Count == 0)
 			return;
 
-		_log.AppendLine(leaderboard.DateTime.ToString());
+		_log.AppendLine(leaderboard.DateTime.ToString(CultureInfo.InvariantCulture));
 		foreach (EntryHistory entry in changes)
 		{
 			_log.Append("\tSet missing stats for ").Append(entry.Username).Append(' ').AppendLine(entry.Time.ToString(StringFormats.TimeFormat));
 			_log.Append("\t\tGems: ").Append(entry.Gems).AppendLine();
 			_log.Append("\t\tKills: ").Append(entry.Kills).AppendLine();
 			_log.Append("\t\tDeathType: ").AppendLine(Deaths.GetDeathByType(GameVersions.GetGameVersionFromDate(leaderboard.DateTime) ?? GameVersion.V1_0, entry.DeathType)?.Name ?? "Unknown");
-			_log.Append("\t\tAccuracy: ").AppendFormat("{0:00.00%}", entry.DaggersHit / (float)entry.DaggersFired).AppendLine();
+			_log.Append("\t\tAccuracy: ").Append($"{entry.DaggersHit / (float)entry.DaggersFired:00.00%}").AppendLine();
 		}
 
 		_log.AppendLine();

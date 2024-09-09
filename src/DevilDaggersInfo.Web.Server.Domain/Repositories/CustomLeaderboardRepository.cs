@@ -110,7 +110,7 @@ public class CustomLeaderboardRepository
 
 			CustomEntrySummary? selectedEntry = sortedCustomEntries.Find(ce => ce.PlayerId == selectedPlayerId);
 			CustomLeaderboardOverviewSelectedPlayerStats? selectedPlayerStatsModel = GetSelectedStats(cl, sortedCustomEntries, selectedEntry);
-			customLeaderboardData.Add(new(cl, worldRecordModel, selectedPlayerStatsModel, sortedCustomEntries.Count));
+			customLeaderboardData.Add(new CustomLeaderboardData(cl, worldRecordModel, selectedPlayerStatsModel, sortedCustomEntries.Count));
 		}
 
 		// ! Navigation property.
@@ -135,7 +135,7 @@ public class CustomLeaderboardRepository
 		int totalCustomLeaderboards = customLeaderboards.Count;
 		int lastPageIndex = totalCustomLeaderboards / pageSize;
 
-		return new(
+		return new Page<CustomLeaderboardOverview>(
 			Results: customLeaderboardData
 				.Skip(Math.Min(pageIndex, lastPageIndex) * pageSize)
 				.Take(pageSize)
@@ -161,7 +161,7 @@ public class CustomLeaderboardRepository
 		List<int> existingReplayIds = _customEntryRepository.GetExistingCustomEntryReplayIds(customLeaderboard.CustomEntries!.ConvertAll(ce => ce.Id));
 
 		// ! Navigation property.
-		return new()
+		return new SortedCustomLeaderboard
 		{
 			Criteria = GetCriteria(customLeaderboard),
 			CustomEntries = customLeaderboard.CustomEntries
@@ -169,7 +169,7 @@ public class CustomLeaderboardRepository
 				.Select((ce, i) =>
 				{
 					bool isOldDdcl = ce.Client == CustomLeaderboardsClient.DevilDaggersCustomLeaderboards;
-					Version clientVersionParsed = Version.TryParse(ce.ClientVersion, out Version? version) ? version : new(0, 0, 0);
+					Version clientVersionParsed = Version.TryParse(ce.ClientVersion, out Version? version) ? version : new Version(0, 0, 0);
 					bool hasV3_1Values = !isOldDdcl || clientVersionParsed >= FeatureConstants.OldDdclV3_1;
 					bool hasHomingEatenValue = !isOldDdcl || clientVersionParsed >= FeatureConstants.OldDdclHomingEaten;
 
@@ -204,7 +204,7 @@ public class CustomLeaderboardRepository
 					};
 				})
 				.ToList(),
-			Daggers = !customLeaderboard.IsFeatured ? null : new()
+			Daggers = !customLeaderboard.IsFeatured ? null : new CustomLeaderboardDaggers
 			{
 				Bronze = customLeaderboard.Bronze,
 				Silver = customLeaderboard.Silver,
@@ -246,7 +246,7 @@ public class CustomLeaderboardRepository
 			playersPerGameMode[gameMode] = customEntries.Where(ce => ce.GameMode == gameMode).DistinctBy(cl => cl.PlayerId).Count();
 		}
 
-		return new()
+		return new CustomLeaderboardsTotalData
 		{
 			LeaderboardsPerGameMode = leaderboardsPerGameMode,
 			ScoresPerGameMode = scoresPerGameMode,
@@ -280,7 +280,7 @@ public class CustomLeaderboardRepository
 				GlobalCustomLeaderboardEntryData data;
 				if (!globalData.TryGetValue(customEntry.PlayerId, out (string Name, GlobalCustomLeaderboardEntryData Data) value))
 				{
-					data = new();
+					data = new GlobalCustomLeaderboardEntryData();
 
 					// ! Navigation property.
 					globalData.Add(customEntry.PlayerId, (customEntry.Player!.PlayerName, data));
@@ -290,7 +290,7 @@ public class CustomLeaderboardRepository
 					data = value.Data;
 				}
 
-				data.Rankings.Add(new() { Rank = i + 1, TotalPlayers = customEntries.Count });
+				data.Rankings.Add(new CustomLeaderboardRanking { Rank = i + 1, TotalPlayers = customEntries.Count });
 
 				switch (customLeaderboard.DaggerFromStat(customEntry) ?? throw new InvalidOperationException("Custom leaderboard without daggers may not be used for processing global custom leaderboard data."))
 				{
@@ -352,10 +352,10 @@ public class CustomLeaderboardRepository
 		if (cl.CustomLeaderboard.Spawnset.Player == null)
 			throw new InvalidOperationException("Spawnset author is not included.");
 
-		return new()
+		return new CustomLeaderboardOverview
 		{
 			Criteria = GetCriteria(cl.CustomLeaderboard),
-			Daggers = !cl.CustomLeaderboard.IsFeatured ? null : new()
+			Daggers = !cl.CustomLeaderboard.IsFeatured ? null : new CustomLeaderboardDaggers
 			{
 				Bronze = cl.CustomLeaderboard.Bronze,
 				Silver = cl.CustomLeaderboard.Silver,
@@ -386,18 +386,18 @@ public class CustomLeaderboardRepository
 			return null;
 
 		CustomLeaderboardDagger? dagger = cl.DaggerFromStat(selectedEntry);
-		return new()
+		return new CustomLeaderboardOverviewSelectedPlayerStats
 		{
 			Dagger = dagger,
 			Rank = sortedCustomEntries.IndexOf(selectedEntry) + 1,
 			HighscoreValue = GetHighscoreValue(selectedEntry, cl.RankSorting),
 			NextDagger = dagger switch
 			{
-				CustomLeaderboardDagger.Default => new() { Dagger = CustomLeaderboardDagger.Bronze, DaggerValue = GetDaggerValue(cl.Bronze, cl.RankSorting) },
-				CustomLeaderboardDagger.Bronze => new() { Dagger = CustomLeaderboardDagger.Silver, DaggerValue = GetDaggerValue(cl.Silver, cl.RankSorting) },
-				CustomLeaderboardDagger.Silver => new() { Dagger = CustomLeaderboardDagger.Golden, DaggerValue = GetDaggerValue(cl.Golden, cl.RankSorting) },
-				CustomLeaderboardDagger.Golden => new() { Dagger = CustomLeaderboardDagger.Devil, DaggerValue = GetDaggerValue(cl.Devil, cl.RankSorting) },
-				CustomLeaderboardDagger.Devil => new() { Dagger = CustomLeaderboardDagger.Leviathan, DaggerValue = GetDaggerValue(cl.Leviathan, cl.RankSorting) },
+				CustomLeaderboardDagger.Default => new CustomLeaderboardOverviewSelectedPlayerNextDagger { Dagger = CustomLeaderboardDagger.Bronze, DaggerValue = GetDaggerValue(cl.Bronze, cl.RankSorting) },
+				CustomLeaderboardDagger.Bronze => new CustomLeaderboardOverviewSelectedPlayerNextDagger { Dagger = CustomLeaderboardDagger.Silver, DaggerValue = GetDaggerValue(cl.Silver, cl.RankSorting) },
+				CustomLeaderboardDagger.Silver => new CustomLeaderboardOverviewSelectedPlayerNextDagger { Dagger = CustomLeaderboardDagger.Golden, DaggerValue = GetDaggerValue(cl.Golden, cl.RankSorting) },
+				CustomLeaderboardDagger.Golden => new CustomLeaderboardOverviewSelectedPlayerNextDagger { Dagger = CustomLeaderboardDagger.Devil, DaggerValue = GetDaggerValue(cl.Devil, cl.RankSorting) },
+				CustomLeaderboardDagger.Devil => new CustomLeaderboardOverviewSelectedPlayerNextDagger { Dagger = CustomLeaderboardDagger.Leviathan, DaggerValue = GetDaggerValue(cl.Leviathan, cl.RankSorting) },
 				_ => null,
 			},
 		};
@@ -467,7 +467,7 @@ public class CustomLeaderboardRepository
 			if (expression == null)
 				return;
 
-			criteria.Add(new()
+			criteria.Add(new CustomLeaderboardCriteria
 			{
 				Type = criteriaType,
 				Operator = op,
@@ -488,7 +488,7 @@ public class CustomLeaderboardRepository
 
 	private static CustomLeaderboardOverviewWorldRecord ToWorldRecordOverviewModel(IDaggerStatCustomEntry worldRecord, int playerId, string playerName, CustomLeaderboardEntity cl)
 	{
-		return new()
+		return new CustomLeaderboardOverviewWorldRecord
 		{
 			Time = worldRecord.Time,
 			GemsCollected = worldRecord.GemsCollected,

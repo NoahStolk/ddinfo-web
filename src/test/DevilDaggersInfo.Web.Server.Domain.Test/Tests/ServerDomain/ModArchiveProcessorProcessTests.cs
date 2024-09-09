@@ -18,7 +18,7 @@ public class ModArchiveProcessorProcessTests : ModArchiveProcessorTests
 		const string assetName = "binding";
 
 		DdModBinaryBuilder binary = CreateWithBinding(assetName);
-		await Processor.ProcessModBinaryUploadAsync(modName, new() { [binaryName] = binary.Compile() });
+		await Processor.ProcessModBinaryUploadAsync(modName, new Dictionary<BinaryName, byte[]> { [binaryName] = binary.Compile() });
 
 		string zipFilePath = Accessor.GetModArchivePath(modName);
 		using ZipArchive archive = ZipFile.Open(zipFilePath, ZipArchiveMode.Read);
@@ -41,7 +41,7 @@ public class ModArchiveProcessorProcessTests : ModArchiveProcessorTests
 		const string assetName2 = "texture";
 
 		ModBinaryBuilder binary = CreateWithBindingAndTexture(assetName1, assetName2);
-		await Processor.ProcessModBinaryUploadAsync(modName, new() { [binaryName] = binary.Compile() });
+		await Processor.ProcessModBinaryUploadAsync(modName, new Dictionary<BinaryName, byte[]> { [binaryName] = binary.Compile() });
 
 		string zipFilePath = Accessor.GetModArchivePath(modName);
 		using ZipArchive archive = ZipFile.Open(zipFilePath, ZipArchiveMode.Read);

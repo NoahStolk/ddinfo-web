@@ -8,7 +8,7 @@ public class MockEntities
 	public MockEntities()
 	{
 		byte[] v3 = File.ReadAllBytes(Path.Combine("Resources", "Spawnsets", "V3"));
-		Spawnset = new()
+		Spawnset = new SpawnsetEntity
 		{
 			Id = 1,
 			LastUpdated = DateTime.UtcNow,

@@ -76,7 +76,7 @@ public class PlayerHistoryRepository
 			// + 1 and - 1 are used to fix off-by-one errors in the history based on screenshots and videos. This is due to a rounding error in Devil Daggers itself.
 			if (!scorePreviousForScoreHistory.HasValue || scorePreviousForScoreHistory < entry.Time - 1 || scorePreviousForScoreHistory > entry.Time + 1)
 			{
-				scoreHistory.Add(new()
+				scoreHistory.Add(new PlayerHistoryScoreEntry
 				{
 					DaggersFired = entry.DaggersFired,
 					DaggersHit = entry.DaggersHit,
@@ -94,7 +94,7 @@ public class PlayerHistoryRepository
 
 			if (!rankPreviousForRankHistory.HasValue || rankPreviousForRankHistory != correctedRank)
 			{
-				rankHistory.Add(new()
+				rankHistory.Add(new PlayerHistoryRankEntry
 				{
 					DateTime = leaderboard.DateTime,
 					Rank = correctedRank,
@@ -107,7 +107,7 @@ public class PlayerHistoryRepository
 			{
 				TimeSpan? timeSpan = datePreviousForActivityHistory == null ? null : leaderboard.DateTime - datePreviousForActivityHistory.Value;
 
-				activityHistory.Add(new()
+				activityHistory.Add(new PlayerHistoryActivityEntry
 				{
 					DeathsIncrement = totalDeathsForActivityHistory.HasValue && timeSpan.HasValue ? (entry.DeathsTotal - totalDeathsForActivityHistory.Value) / timeSpan.Value.TotalDays : 0,
 					TimeIncrement = totalTimeForActivityHistory.HasValue && timeSpan.HasValue ? GameTime.FromGameUnits(entry.TimeTotal - totalTimeForActivityHistory.Value).Seconds / timeSpan.Value.TotalDays : 0,
@@ -120,7 +120,7 @@ public class PlayerHistoryRepository
 			}
 		}
 
-		return new()
+		return new PlayerHistory
 		{
 			ActivityHistory = activityHistory,
 			BestRank = bestRank,

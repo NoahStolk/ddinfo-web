@@ -19,7 +19,7 @@ public partial class WorldRecordProgressionPage
 	private readonly LineChartOptions _lineChartOptions = new()
 	{
 		HighlighterKeys = ["Date", "Time", "Player", "Gems", "Kills", "Accuracy", "Death Type", "Game Version"],
-		GridOptions = new()
+		GridOptions = new LineChartGridOptions
 		{
 			MinimumRowHeightInPx = 50,
 		},
@@ -44,9 +44,6 @@ public partial class WorldRecordProgressionPage
 	[Inject]
 	public required MainApiHttpClient Http { get; set; }
 
-	[Inject]
-	public required IJSRuntime JsRuntime { get; set; }
-
 	protected override async Task OnInitializedAsync()
 	{
 		ApiSpec.Main.WorldRecords.GetWorldRecordDataContainer data = await Http.GetWorldRecordData();
@@ -64,8 +61,8 @@ public partial class WorldRecordProgressionPage
 		double maxY = Math.Ceiling(lastWr.Entry.Time / 100.0) * 100;
 
 		List<LineData> set = data.WorldRecords.Select((wr, i) => new LineData(wr.DateTime.Ticks, wr.Entry.Time, i)).ToList();
-		_dataOptions = new(minX.Ticks, null, maxX.Ticks, minY, 100, maxY);
-		_lineDataSets.Add(new("#f00", true, true, true, set, (_, d) =>
+		_dataOptions = new LineChartDataOptions(minX.Ticks, null, maxX.Ticks, minY, 100, maxY);
+		_lineDataSets.Add(new LineDataSet("#f00", true, true, true, set, (_, d) =>
 		{
 			ApiSpec.Main.WorldRecords.GetWorldRecord? wr = data.WorldRecords.Count <= d.Index ? null : data.WorldRecords[d.Index];
 			if (wr == null)
@@ -75,14 +72,14 @@ public partial class WorldRecordProgressionPage
 			Dagger dagger = Daggers.GetDaggerFromSeconds(gameVersion ?? GameVersion.V1_0, wr.Entry.Time);
 			return
 			[
-				new($"<span style='text-align: right;'>{wr.DateTime.ToString(StringFormats.DateFormat)}</span>"),
-				new($"<span style='text-align: right;' class='{dagger.Name.ToLower()}'>{wr.Entry.Time.ToString(StringFormats.TimeFormat)}</span>"),
-				new($"<span style='text-align: right;' class='{dagger.Name.ToLower()}'>{wr.Entry.Username}</span>"),
-				new($"<span style='text-align: right;'>{wr.Entry.Gems}</span>"),
-				new($"<span style='text-align: right;'>{wr.Entry.Kills}</span>"),
-				new($"<span style='text-align: right;'>{(wr.Entry.DaggersFired == 0 ? 0 : wr.Entry.DaggersHit / (double)wr.Entry.DaggersFired).ToString(StringFormats.AccuracyFormat)}</span>"),
-				new($"<span style='text-align: right;'>{MarkupUtils.DeathString(wr.Entry.DeathType, gameVersion ?? GameVersion.V1_0)}</span>"),
-				new($"<span style='text-align: right;'>{gameVersion.GetGameVersionString()}</span>"),
+				new MarkupString($"<span style='text-align: right;'>{wr.DateTime.ToString(StringFormats.DateFormat)}</span>"),
+				new MarkupString($"<span style='text-align: right;' class='{dagger.Name.ToLower()}'>{wr.Entry.Time.ToString(StringFormats.TimeFormat)}</span>"),
+				new MarkupString($"<span style='text-align: right;' class='{dagger.Name.ToLower()}'>{wr.Entry.Username}</span>"),
+				new MarkupString($"<span style='text-align: right;'>{wr.Entry.Gems}</span>"),
+				new MarkupString($"<span style='text-align: right;'>{wr.Entry.Kills}</span>"),
+				new MarkupString($"<span style='text-align: right;'>{(wr.Entry.DaggersFired == 0 ? 0 : wr.Entry.DaggersHit / (double)wr.Entry.DaggersFired).ToString(StringFormats.AccuracyFormat)}</span>"),
+				new MarkupString($"<span style='text-align: right;'>{MarkupUtils.DeathString(wr.Entry.DeathType, gameVersion ?? GameVersion.V1_0)}</span>"),
+				new MarkupString($"<span style='text-align: right;'>{gameVersion.GetGameVersionString()}</span>"),
 			];
 		}));
 

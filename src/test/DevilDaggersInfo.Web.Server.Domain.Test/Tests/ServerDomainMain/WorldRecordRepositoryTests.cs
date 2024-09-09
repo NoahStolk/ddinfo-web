@@ -19,7 +19,7 @@ public class WorldRecordRepositoryTests
 			.Options;
 		TestDbContext dbContext = new(options, Substitute.For<IHttpContextAccessor>(), Substitute.For<ILogContainerService>());
 		TestData data = new();
-		_repository = new(dbContext, data, data);
+		_repository = new WorldRecordRepository(dbContext, data, data);
 	}
 
 	[TestMethod]

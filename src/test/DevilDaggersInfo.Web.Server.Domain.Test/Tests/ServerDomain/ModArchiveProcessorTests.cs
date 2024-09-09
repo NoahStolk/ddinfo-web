@@ -31,9 +31,9 @@ public abstract class ModArchiveProcessorTests
 		Directory.CreateDirectory(modsPath);
 		Directory.CreateDirectory(modArchiveCachePath);
 
-		Cache = new(fileSystemService);
-		Accessor = new(fileSystemService, Cache);
-		Processor = new(fileSystemService, Cache, Accessor);
+		Cache = new ModArchiveCache(fileSystemService);
+		Accessor = new ModArchiveAccessor(fileSystemService, Cache);
+		Processor = new ModArchiveProcessor(fileSystemService, Cache, Accessor);
 	}
 
 	protected ModArchiveCache Cache { get; }
