@@ -1,9 +1,7 @@
 using DevilDaggersInfo.Web.ApiSpec.Tools.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Tools;
-using DevilDaggersInfo.Web.Server.Domain.Converters.CoreToDomain;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.Domain.Repositories;
-using DevilDaggersInfo.Web.Server.Domain.Utils;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Tools;
