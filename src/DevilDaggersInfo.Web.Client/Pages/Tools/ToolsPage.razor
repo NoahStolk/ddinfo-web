@@ -34,10 +34,6 @@
 	<img class="@(i == _screenshotIndex ? "" : "hidden") object-contain max-h-160 pt-3" src="@($"/images/tools/{fileName}")" alt="DDINFO TOOLS" />
 }
 
-@* <p class="para">This is an alpha version of the rewritten tools. The main idea of the rewrite is to have a single application instead of three separate ones, to make the tools more user-friendly, and to support Mac and Linux.</p> *@
-@* <p class="para">The tools are still in early development, so expect bugs and missing features. If you encounter any problems, please report them to me on Discord or on GitHub.</p> *@
-@* <p class="para">I also do not have a deadline or schedule for these developments, and there will not be an official release date any time soon.</p> *@
-
 <Heading Title="System Requirements" Level="2" />
 
 <ul class="pl-4">
@@ -75,25 +71,11 @@
 <Heading Title="Custom Leaderboards" Level="3" />
 
 <ul class="pl-4">
-	<li class="list-disc">Viewing and installing all spawnsets with leaderboards from within the app (no need to use the Survival Editor anymore).</li>
+	<li class="list-disc">Viewing and installing all spawnsets with leaderboards from within the app (no need to use the old Survival Editor anymore).</li>
 	<li class="list-disc">Viewing any score from any spawnset.</li>
 	<li class="list-disc">Searching, filtering, and sorting leaderboards.</li>
 	<li class="list-disc">Injecting any replay into the game without having to play the spawnset first.</li>
 	<li class="list-disc">3D simulation of the replay in the app (very limited and inaccurate for now).</li>
-</ul>
-
-<Heading Title="Planned Features" Level="2" />
-
-<ul class="pl-4">
-	<li class="list-disc">More spawnset editor features.</li>
-	<li class="list-disc">Renewed spawnset manager.</li>
-	<li class="list-disc">Renewed asset editor.</li>
-	<li class="list-disc">Renewed mod manager.</li>
-	<li class="list-disc">Renewed replay viewer.</li>
-	<li class="list-disc">Replay editing.</li>
-	<li class="list-disc">Replay input visualization.</li>
-	<li class="list-disc">Replay enemy tracking.</li>
-	<li class="list-disc">Replay movement and the ability to compare speedrun/race replays using a ghost system in 3D (right now I'm uncertain if mimicking the player movement can be done accurately without having access to the game's code).</li>
 </ul>
 
 @code
@@ -108,6 +90,7 @@
 		Path.Combine("ddinfo-tools", "spawnset-editor-3.png"),
 		Path.Combine("ddinfo-tools", "replay-editor.png"),
 		Path.Combine("ddinfo-tools", "replay-editor-events-viewer.png"),
+		// TODO: Add asset-editor.
 	];
 
 	private int _screenshotIndex;
