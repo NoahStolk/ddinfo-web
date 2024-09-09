@@ -4,13 +4,12 @@ using DevilDaggersInfo.Web.ApiSpec.Main.Spawnsets;
 using DevilDaggersInfo.Web.Client;
 using DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Main;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
-using DevilDaggersInfo.Web.Server.Domain.Converters.CoreToDomain;
 using DevilDaggersInfo.Web.Server.Domain.Main.Converters.DomainToApi;
 using DevilDaggersInfo.Web.Server.Domain.Repositories;
 using DevilDaggersInfo.Web.Server.Domain.Utils;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
-using Model = DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
+using MainApi = DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 
@@ -38,7 +37,7 @@ public class CustomLeaderboardsController : ControllerBase
 		CustomLeaderboardSorting? sortBy = null,
 		bool ascending = false)
 	{
-		Domain.Models.Page<Model.CustomLeaderboardOverview> cls = await _customLeaderboardRepository.GetCustomLeaderboardOverviewsAsync(
+		Domain.Models.Page<MainApi.CustomLeaderboardOverview> cls = await _customLeaderboardRepository.GetCustomLeaderboardOverviewsAsync(
 			rankSorting: rankSorting.ToDomain(),
 			gameMode: gameMode.ToDomain(),
 			spawnsetFilter: spawnsetFilter,
@@ -61,7 +60,7 @@ public class CustomLeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult<GetGlobalCustomLeaderboard>> GetGlobalCustomLeaderboardForCategory([Required] GameMode gameMode, [Required] CustomLeaderboardRankSorting rankSorting)
 	{
-		Model.GlobalCustomLeaderboard globalCustomLeaderboard = await _customLeaderboardRepository.GetGlobalCustomLeaderboardAsync(gameMode.ToDomain(), rankSorting.ToDomain());
+		MainApi.GlobalCustomLeaderboard globalCustomLeaderboard = await _customLeaderboardRepository.GetGlobalCustomLeaderboardAsync(gameMode.ToDomain(), rankSorting.ToDomain());
 		return new GetGlobalCustomLeaderboard
 		{
 			Entries = globalCustomLeaderboard.Entries
@@ -97,7 +96,7 @@ public class CustomLeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public async Task<ActionResult<GetTotalCustomLeaderboardData>> GetTotalCustomLeaderboardData()
 	{
-		Model.CustomLeaderboardsTotalData totalData = await _customLeaderboardRepository.GetCustomLeaderboardsTotalDataAsync();
+		MainApi.CustomLeaderboardsTotalData totalData = await _customLeaderboardRepository.GetCustomLeaderboardsTotalDataAsync();
 		return new GetTotalCustomLeaderboardData
 		{
 			LeaderboardsPerGameMode = totalData.LeaderboardsPerGameMode.ToDictionary(kvp => kvp.Key.ToMainApi(), kvp => kvp.Value),
@@ -113,19 +112,15 @@ public class CustomLeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult<GetCustomLeaderboard>> GetCustomLeaderboardById(int id)
 	{
-		Model.SortedCustomLeaderboard cl = await _customLeaderboardRepository.GetSortedCustomLeaderboardByIdAsync(id);
+		MainApi.SortedCustomLeaderboard cl = await _customLeaderboardRepository.GetSortedCustomLeaderboardByIdAsync(id);
 		return cl.ToMainApi();
 	}
 
 	[HttpGet("allowed-categories")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	public ActionResult<List<GetCustomLeaderboardAllowedCategory>> GetCustomLeaderboardAllowedCategories()
+	public async Task<ActionResult<List<GetCustomLeaderboardAllowedCategory>>> GetCustomLeaderboardAllowedCategories()
 	{
-		List<(DevilDaggersInfo.Core.Spawnset.GameMode GameMode, Domain.Entities.Enums.CustomLeaderboardRankSorting RankSorting)> allowedCategories = CustomLeaderboardUtils.GetAllowedGameModeAndRankSortingCombinations();
-		return allowedCategories.ConvertAll(ac => new GetCustomLeaderboardAllowedCategory
-		{
-			GameMode = ac.GameMode.ToDomain().ToMainApi(),
-			RankSorting = ac.RankSorting.ToMainApi(),
-		});
+		List<MainApi.CustomLeaderboardAllowedCategory> allowedCategories = await _customLeaderboardRepository.GetCustomLeaderboardAllowedCategories();
+		return allowedCategories.ConvertAll(ac => ac.ToMainApi());
 	}
 }

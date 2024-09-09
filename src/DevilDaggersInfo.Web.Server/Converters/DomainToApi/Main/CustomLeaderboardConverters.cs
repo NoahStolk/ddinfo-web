@@ -88,6 +88,16 @@ public static class CustomLeaderboardConverters
 		};
 	}
 
+	public static MainApi.GetCustomLeaderboardAllowedCategory ToMainApi(this CustomLeaderboardAllowedCategory allowedCategory)
+	{
+		return new MainApi.GetCustomLeaderboardAllowedCategory
+		{
+			GameMode = allowedCategory.GameMode.ToMainApi(),
+			RankSorting = allowedCategory.RankSorting.ToMainApi(),
+			LeaderboardCount = allowedCategory.LeaderboardCount,
+		};
+	}
+
 	private static MainApi.GetCustomLeaderboardDaggers ToMainApi(this CustomLeaderboardDaggers customLeaderboardDaggers, bool isTime)
 	{
 		return new MainApi.GetCustomLeaderboardDaggers

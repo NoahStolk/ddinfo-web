@@ -344,6 +344,23 @@ public class CustomLeaderboardRepository
 		return customLeaderboard.Id;
 	}
 
+	public async Task<List<CustomLeaderboardAllowedCategory>> GetCustomLeaderboardAllowedCategories()
+	{
+		List<(SpawnsetGameMode GameMode, CustomLeaderboardRankSorting RankSorting)> allowedCategories = CustomLeaderboardUtils.GetAllowedGameModeAndRankSortingCombinations();
+
+		// ! Navigation property.
+		var customLeaderboards = await _dbContext.CustomLeaderboards
+			.Select(cl => new { cl.Spawnset!.GameMode, cl.RankSorting })
+			.ToListAsync();
+
+		return allowedCategories.ConvertAll(ac => new CustomLeaderboardAllowedCategory
+		{
+			GameMode = ac.GameMode,
+			RankSorting = ac.RankSorting,
+			LeaderboardCount = customLeaderboards.Count(cl => cl.GameMode == ac.GameMode && cl.RankSorting == ac.RankSorting),
+		});
+	}
+
 	private static CustomLeaderboardOverview ToOverview(CustomLeaderboardData cl)
 	{
 		if (cl.CustomLeaderboard.Spawnset == null)

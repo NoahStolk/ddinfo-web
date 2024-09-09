@@ -61,7 +61,7 @@ public partial class Index : IHasNavigation
 		GetTotalCustomLeaderboardData = await Http.GetTotalCustomLeaderboardData();
 
 		List<GetCustomLeaderboardAllowedCategory> allowedCategories = await Http.GetCustomLeaderboardAllowedCategories();
-		_categories = allowedCategories.ConvertAll(a => new CategoryDropdown(a.GameMode, a.RankSorting));
+		_categories = allowedCategories.ConvertAll(a => new CategoryDropdown(a.GameMode, a.RankSorting, a.LeaderboardCount));
 	}
 
 	protected override async Task OnParametersSetAsync()
@@ -135,10 +135,13 @@ public partial class Index : IHasNavigation
 
 	private sealed class CategoryDropdown
 	{
-		public CategoryDropdown(GameMode gameMode, CustomLeaderboardRankSorting rankSorting)
+		private readonly int _leaderboardCount;
+
+		public CategoryDropdown(GameMode gameMode, CustomLeaderboardRankSorting rankSorting, int leaderboardCount)
 		{
 			GameMode = gameMode;
 			RankSorting = rankSorting;
+			_leaderboardCount = leaderboardCount;
 		}
 
 		public GameMode GameMode { get; }
@@ -146,7 +149,9 @@ public partial class Index : IHasNavigation
 
 		public override string ToString()
 		{
-			return $"{GameMode.ToCore().ToDisplayString()}: {RankSorting.ToDisplayString()}";
+			string gameMode = GameMode.ToCore().ToDisplayString();
+			string rankSorting = RankSorting.ToDisplayString();
+			return $"{gameMode}: {rankSorting} ({_leaderboardCount})";
 		}
 	}
 }

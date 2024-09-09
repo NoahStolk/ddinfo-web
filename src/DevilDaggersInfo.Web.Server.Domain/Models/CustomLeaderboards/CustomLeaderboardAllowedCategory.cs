@@ -1,6 +1,8 @@
-namespace DevilDaggersInfo.Web.ApiSpec.Tools.CustomLeaderboards;
+using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 
-public record GetCustomLeaderboardAllowedCategory
+namespace DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
+
+public record CustomLeaderboardAllowedCategory
 {
 	public required SpawnsetGameMode GameMode { get; init; }
 

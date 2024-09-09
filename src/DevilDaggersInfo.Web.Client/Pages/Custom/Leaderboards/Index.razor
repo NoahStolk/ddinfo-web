@@ -22,23 +22,22 @@
 	Check out the global custom leaderboards <a class="link" href="/custom/leaderboards/global">here</a>.
 </p>
 
-@if (GetCustomLeaderboards == null)
+@if (GetCustomLeaderboards == null || _categories == null)
 {
 	<Loading />
 }
 else
 {
+	CategoryDropdown defaultCategoryDropdown = _categories.Count > 0 ? _categories[0] : new CategoryDropdown(EnumConvert.GetGameMode(GameMode), EnumConvert.GetRankSorting(RankSorting), 0);
+
 	<div class="bg-gray-1 p-2 text-lg">
 		<div class="grid gap-2 grid-cols-2 max-w-md mb-2">
 			<span>Spawnset name</span>
-			<input class="bg-black border-gray-3 border-2 w-64" value="@SpawnsetFilter" @onchange="ChangeInputSpawnsetName" />
+			<input class="bg-black border-gray-3 border-2 w-80" value="@SpawnsetFilter" @onchange="ChangeInputSpawnsetName" />
 			<span>Author name</span>
-			<input class="bg-black border-gray-3 border-2 w-64" value="@AuthorFilter" @onchange="ChangeInputAuthorName" />
-			@if (_categories != null)
-			{
-				<span>Category</span>
-				<SelectList CssWidthClass="w-64" CssOpenerClass="pl-2" TValue="CategoryDropdown" Values="@(_categories)" DisplayFunction="@(c => c.ToString())" Default="new CategoryDropdown(EnumConvert.GetGameMode(GameMode), EnumConvert.GetRankSorting(RankSorting))" Selected="@SetCategory" />
-			}
+			<input class="bg-black border-gray-3 border-2 w-80" value="@AuthorFilter" @onchange="ChangeInputAuthorName" />
+			<span>Category</span>
+			<SelectList CssWidthClass="w-80" CssOpenerClass="pl-2" TValue="CategoryDropdown" Values="@(_categories)" DisplayFunction="@(c => c.ToString())" Default="defaultCategoryDropdown" Selected="@SetCategory" />
 		</div>
 
 		<CascadingValue Value="this">
@@ -71,7 +70,7 @@ else
 				CustomLeaderboardRankSorting.TimeAsc or CustomLeaderboardRankSorting.TimeDesc => StringFormats.TimeFormat,
 				_ => "0",
 			};
-			
+
 			<div class="grid gap-3 grid-cols-custom-leaderboards-sm md:grid-cols-custom-leaderboards-md lg:grid-cols-custom-leaderboards-lg xl:grid-cols-custom-leaderboards-xl 2xl:grid-cols-custom-leaderboards-2xl h-6 @(i % 2 == 0 ? "bg-gray-1" : string.Empty)">
 				<div class="overflow-hidden"><a class="link" href="/custom/leaderboard/@customLeaderboard.Id">@customLeaderboard.SpawnsetName.ToNoBreakString()</a></div>
 				<div class="overflow-hidden hidden md:block">@customLeaderboard.SpawnsetAuthorName.ToNoBreakString()</div>

@@ -5,6 +5,7 @@ using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Web.ApiSpec.Admin.CustomEntries;
 using DevilDaggersInfo.Web.Server.Domain.Admin.Converters.ApiToDomain;
 using DevilDaggersInfo.Web.Server.Domain.Admin.Exceptions;
+using DevilDaggersInfo.Web.Server.Domain.Converters.CoreToDomain;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Values;
@@ -466,7 +467,7 @@ public class CustomLeaderboardService
 		if (spawnsetBinary.GameMode == GameMode.TimeAttack && !spawnsetBinary.HasSpawns())
 			throw new CustomLeaderboardValidationException("Time Attack spawnset must have spawns.");
 
-		if (!CustomLeaderboardUtils.IsGameModeAndRankSortingCombinationAllowed(spawnsetBinary.GameMode, rankSorting))
+		if (!CustomLeaderboardUtils.IsGameModeAndRankSortingCombinationAllowed(spawnsetBinary.GameMode.ToDomain(), rankSorting))
 			throw new CustomLeaderboardValidationException($"Combining game mode '{spawnsetBinary.GameMode}' and rank sorting '{rankSorting}' is not allowed.");
 
 		CustomLeaderboardCriteriaOperator deathTypeOperator = deathTypeCriteria.Operator.ToDomain();

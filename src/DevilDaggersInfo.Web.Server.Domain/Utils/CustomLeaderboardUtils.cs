@@ -1,4 +1,3 @@
-using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Extensions;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
@@ -53,24 +52,24 @@ public static class CustomLeaderboardUtils
 		return CustomLeaderboardDagger.Default;
 	}
 
-	public static bool IsGameModeAndRankSortingCombinationAllowed(GameMode gameMode, CustomLeaderboardRankSorting rankSorting)
+	public static bool IsGameModeAndRankSortingCombinationAllowed(SpawnsetGameMode gameMode, CustomLeaderboardRankSorting rankSorting)
 	{
 		// Allow all rank sortings for Survival.
-		if (gameMode == GameMode.Survival)
+		if (gameMode == SpawnsetGameMode.Survival)
 			return true;
 
 		// Allow both time rank sortings for Race.
-		if (gameMode == GameMode.Race)
+		if (gameMode == SpawnsetGameMode.Race)
 			return rankSorting is CustomLeaderboardRankSorting.TimeAsc or CustomLeaderboardRankSorting.TimeDesc;
 
 		// Only allow ascending time sort for TimeAttack for now.
 		return rankSorting == CustomLeaderboardRankSorting.TimeAsc;
 	}
 
-	public static List<(GameMode GameMode, CustomLeaderboardRankSorting RankSorting)> GetAllowedGameModeAndRankSortingCombinations()
+	public static List<(SpawnsetGameMode GameMode, CustomLeaderboardRankSorting RankSorting)> GetAllowedGameModeAndRankSortingCombinations()
 	{
-		List<(GameMode GameMode, CustomLeaderboardRankSorting RankSorting)> allowedCombinations = [];
-		foreach (GameMode gameMode in Enum.GetValues<GameMode>())
+		List<(SpawnsetGameMode GameMode, CustomLeaderboardRankSorting RankSorting)> allowedCombinations = [];
+		foreach (SpawnsetGameMode gameMode in Enum.GetValues<SpawnsetGameMode>())
 		{
 			foreach (CustomLeaderboardRankSorting rankSorting in Enum.GetValues<CustomLeaderboardRankSorting>().Where(rs => IsGameModeAndRankSortingCombinationAllowed(gameMode, rs)))
 				allowedCombinations.Add((gameMode, rankSorting));

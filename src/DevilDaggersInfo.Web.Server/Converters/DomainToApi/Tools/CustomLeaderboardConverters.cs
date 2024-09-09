@@ -161,6 +161,16 @@ public static class CustomLeaderboardConverters
 		};
 	}
 
+	public static ToolsApi.GetCustomLeaderboardAllowedCategory ToToolsApi(this CustomLeaderboardAllowedCategory customLeaderboardAllowedCategory)
+	{
+		return new ToolsApi.GetCustomLeaderboardAllowedCategory
+		{
+			GameMode = customLeaderboardAllowedCategory.GameMode.ToToolsApi(),
+			RankSorting = customLeaderboardAllowedCategory.RankSorting.ToToolsApi(),
+			LeaderboardCount = customLeaderboardAllowedCategory.LeaderboardCount,
+		};
+	}
+
 	private static ToolsApi.GetCustomLeaderboardCriteria ToToolsApi(this CustomLeaderboardCriteria customLeaderboardCriteria)
 	{
 		return new ToolsApi.GetCustomLeaderboardCriteria

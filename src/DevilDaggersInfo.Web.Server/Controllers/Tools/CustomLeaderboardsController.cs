@@ -67,13 +67,9 @@ public class CustomLeaderboardsController : ControllerBase
 
 	[HttpGet("allowed-categories")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	public ActionResult<List<GetCustomLeaderboardAllowedCategory>> GetCustomLeaderboardAllowedCategories()
+	public async Task<ActionResult<List<GetCustomLeaderboardAllowedCategory>>> GetCustomLeaderboardAllowedCategories()
 	{
-		List<(DevilDaggersInfo.Core.Spawnset.GameMode GameMode, Domain.Entities.Enums.CustomLeaderboardRankSorting RankSorting)> allowedCategories = CustomLeaderboardUtils.GetAllowedGameModeAndRankSortingCombinations();
-		return allowedCategories.ConvertAll(ac => new GetCustomLeaderboardAllowedCategory
-		{
-			GameMode = ac.GameMode.ToDomain().ToToolsApi(),
-			RankSorting = ac.RankSorting.ToToolsApi(),
-		});
+		List<CustomLeaderboardAllowedCategory> customLeaderboardAllowedCategories = await _customLeaderboardRepository.GetCustomLeaderboardAllowedCategories();
+		return customLeaderboardAllowedCategories.ConvertAll(ac => ac.ToToolsApi());
 	}
 }
