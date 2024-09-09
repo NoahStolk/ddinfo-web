@@ -37,7 +37,7 @@ else
 			@if (_categories != null)
 			{
 				<span>Category</span>
-				<SelectList CssWidthClass="w-64" CssOpenerClass="pl-2" TValue="CategoryDropdown" Values="@(_categories)" DisplayFunction="@(c => c.ToString())" Default="new(EnumConvert.GetGameMode(GameMode), EnumConvert.GetRankSorting(RankSorting))" Selected="@SetCategory" />
+				<SelectList CssWidthClass="w-64" CssOpenerClass="pl-2" TValue="CategoryDropdown" Values="@(_categories)" DisplayFunction="@(c => c.ToString())" Default="new CategoryDropdown(EnumConvert.GetGameMode(GameMode), EnumConvert.GetRankSorting(RankSorting))" Selected="@SetCategory" />
 			}
 		</div>
 
@@ -95,7 +95,7 @@ else
 					<div class="overflow-hidden text-right hidden xl:block text-xl font-goethe @CustomLeaderboardDagger.Leviathan.ToCssClass()">@customLeaderboard.RankSorting.GetDaggerValue(customLeaderboard.Daggers.Leviathan)</div>
 				}
 				<div class="overflow-hidden text-left hidden lg:block">@(customLeaderboard.TopPlayer?.ToNoBreakString() ?? MarkupStrings.NoDataMarkup)</div>
-				<div class="overflow-hidden text-right hidden lg:block text-xl font-goethe @(customLeaderboard.WorldRecordDagger?.ToCssClass())">@(customLeaderboard.WorldRecord.HasValue ? new(customLeaderboard.WorldRecord.Value.ToString(worldRecordFormat)) : MarkupStrings.NoDataMarkup)</div>
+				<div class="overflow-hidden text-right hidden lg:block text-xl font-goethe @(customLeaderboard.WorldRecordDagger?.ToCssClass())">@(customLeaderboard.WorldRecord.HasValue ? new MarkupString(customLeaderboard.WorldRecord.Value.ToString(worldRecordFormat)) : MarkupStrings.NoDataMarkup)</div>
 			</div>
 		}
 	}

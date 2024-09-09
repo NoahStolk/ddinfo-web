@@ -104,7 +104,7 @@ public partial class Index : IHasNavigation
 		GameMode = categoryDropdown.GameMode.ToString();
 		RankSorting = categoryDropdown.RankSorting.ToString();
 
-		NavigationManager.AddOrModifyQueryParameters(new(nameof(GameMode), GameMode), new(nameof(RankSorting), RankSorting));
+		NavigationManager.AddOrModifyQueryParameters(new KeyValuePair<string, object?>(nameof(GameMode), GameMode), new KeyValuePair<string, object?>(nameof(RankSorting), RankSorting));
 	}
 
 	private void Sort(CustomLeaderboardSorting sortBy)
@@ -113,7 +113,7 @@ public partial class Index : IHasNavigation
 		_sortings[sortBy] = !_sortings[sortBy];
 		Ascending = _sortings[sortBy];
 
-		NavigationManager.AddOrModifyQueryParameters(new(nameof(SortBy), SortBy), new(nameof(Ascending), Ascending));
+		NavigationManager.AddOrModifyQueryParameters(new KeyValuePair<string, object?>(nameof(SortBy), SortBy), new KeyValuePair<string, object?>(nameof(Ascending), Ascending));
 	}
 
 	private async Task Fetch()

@@ -40,7 +40,7 @@ public partial class SpawnsetArena
 			await JSRuntime.InvokeAsync<object>("arenaInitialResize");
 		}
 
-		_context = new(_canvasId);
+		_context = new WebAssemblyCanvasArena(_canvasId);
 
 		Render();
 	}

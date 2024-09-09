@@ -32,7 +32,7 @@ public class AddModState : IStateObject<AddMod>
 
 	public AddMod ToModel()
 	{
-		return new()
+		return new AddMod
 		{
 			Name = Name,
 			IsHidden = IsHidden,

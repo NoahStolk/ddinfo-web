@@ -10,7 +10,7 @@ public class AddCustomLeaderboardCriteriaState : IStateObject<AddCustomLeaderboa
 
 	public AddCustomLeaderboardCriteria ToModel()
 	{
-		return new()
+		return new AddCustomLeaderboardCriteria
 		{
 			Expression = Expression,
 			Operator = Operator,

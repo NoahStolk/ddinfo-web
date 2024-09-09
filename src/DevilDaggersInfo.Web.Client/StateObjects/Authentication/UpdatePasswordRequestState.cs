@@ -14,7 +14,7 @@ public class UpdatePasswordRequestState : IStateObject<UpdatePasswordRequest>
 
 	public UpdatePasswordRequest ToModel()
 	{
-		return new()
+		return new UpdatePasswordRequest
 		{
 			CurrentName = CurrentName,
 			CurrentPassword = CurrentPassword,

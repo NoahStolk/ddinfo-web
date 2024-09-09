@@ -61,7 +61,7 @@ public class AddPlayerState : IStateObject<AddPlayer>
 
 	public AddPlayer ToModel()
 	{
-		return new()
+		return new AddPlayer
 		{
 			Id = Id,
 			CommonName = CommonName,

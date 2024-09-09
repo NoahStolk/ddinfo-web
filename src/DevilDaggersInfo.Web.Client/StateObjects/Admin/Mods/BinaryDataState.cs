@@ -15,7 +15,7 @@ public class BinaryDataState : IStateObject<BinaryData>
 
 	public BinaryData ToModel()
 	{
-		return new()
+		return new BinaryData
 		{
 			Name = Name,
 			Data = Data,

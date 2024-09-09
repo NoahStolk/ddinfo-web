@@ -69,7 +69,7 @@
 
 	private async Task UpdateComponent()
 	{
-		await DateSelected.InvokeAsync(new(_year, _month, _day));
+		await DateSelected.InvokeAsync(new DateTime(_year, _month, _day));
 	}
 
 	private void NextYear()

@@ -31,12 +31,12 @@ public readonly record struct Color(byte R, byte G, byte B)
 
 		return hi switch
 		{
-			0 => new(v, t, p),
-			1 => new(q, v, p),
-			2 => new(p, v, t),
-			3 => new(p, q, v),
-			4 => new(t, p, v),
-			_ => new(v, p, q),
+			0 => new Color(v, t, p),
+			1 => new Color(q, v, p),
+			2 => new Color(p, v, t),
+			3 => new Color(p, q, v),
+			4 => new Color(t, p, v),
+			_ => new Color(v, p, q),
 		};
 	}
 }

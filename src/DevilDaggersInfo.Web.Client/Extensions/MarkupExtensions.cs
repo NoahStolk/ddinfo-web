@@ -12,7 +12,7 @@ public static class MarkupExtensions
 
 	public static MarkupString ToNoBreakString(this string? str)
 	{
-		return new(str?.Replace(" ", "&nbsp;") ?? string.Empty);
+		return new MarkupString(str?.Replace(" ", "&nbsp;") ?? string.Empty);
 	}
 
 	public static string ToCssClass(this CustomLeaderboardDagger customLeaderboardDagger)

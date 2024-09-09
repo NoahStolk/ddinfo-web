@@ -58,7 +58,7 @@ public class EditPlayerState : IStateObject<EditPlayer>
 
 	public EditPlayer ToModel()
 	{
-		return new()
+		return new EditPlayer
 		{
 			CommonName = CommonName,
 			DiscordUserId = DiscordUserId,

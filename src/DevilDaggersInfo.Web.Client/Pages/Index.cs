@@ -32,7 +32,7 @@ public partial class Index
 			return;
 
 		string html = await Http.Client.GetStringAsync(LatestNews.GetHtmlPath());
-		LatestNewsContent = new(html);
+		LatestNewsContent = new MarkupString(html);
 	}
 
 	private sealed record Section(string Text, string ImageUrl, string Url, string Alt);

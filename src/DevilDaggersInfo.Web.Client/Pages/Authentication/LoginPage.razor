@@ -41,7 +41,7 @@
 
 		if (httpResponseMessage.StatusCode == HttpStatusCode.OK)
 		{
-			LoginResponse authenticationResponse = await httpResponseMessage.Content.ReadFromJsonAsync<LoginResponse>() ?? throw new($"Could not deserialize {nameof(LoginResponse)}.");
+			LoginResponse authenticationResponse = await httpResponseMessage.Content.ReadFromJsonAsync<LoginResponse>() ?? throw new Exception($"Could not deserialize {nameof(LoginResponse)}.");
 			await Auth.SetTokenAsync(authenticationResponse.Token);
 			Navigation.NavigateTo("/", true);
 		}

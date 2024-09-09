@@ -36,7 +36,7 @@ public class EditModState : IStateObject<EditMod>
 
 	public EditMod ToModel()
 	{
-		return new()
+		return new EditMod
 		{
 			Name = Name,
 			IsHidden = IsHidden,

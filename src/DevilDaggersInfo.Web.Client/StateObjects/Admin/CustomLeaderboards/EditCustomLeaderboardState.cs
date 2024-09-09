@@ -87,7 +87,7 @@ public class EditCustomLeaderboardState : IStateObject<EditCustomLeaderboard>
 
 	public EditCustomLeaderboard ToModel()
 	{
-		return new()
+		return new EditCustomLeaderboard
 		{
 			RankSorting = RankSorting,
 			Daggers = Daggers.ToModel(),

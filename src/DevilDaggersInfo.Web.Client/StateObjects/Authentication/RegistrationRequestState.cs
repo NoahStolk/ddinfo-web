@@ -12,7 +12,7 @@ public class RegistrationRequestState : IStateObject<RegistrationRequest>
 
 	public RegistrationRequest ToModel()
 	{
-		return new()
+		return new RegistrationRequest
 		{
 			Name = Name,
 			Password = Password,

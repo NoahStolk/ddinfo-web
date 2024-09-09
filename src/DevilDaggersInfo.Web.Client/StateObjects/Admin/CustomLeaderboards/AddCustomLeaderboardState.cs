@@ -90,7 +90,7 @@ public class AddCustomLeaderboardState : IStateObject<AddCustomLeaderboard>
 
 	public AddCustomLeaderboard ToModel()
 	{
-		return new()
+		return new AddCustomLeaderboard
 		{
 			SpawnsetId = SpawnsetId,
 			RankSorting = RankSorting,

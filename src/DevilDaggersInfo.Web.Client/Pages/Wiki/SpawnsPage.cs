@@ -34,7 +34,7 @@ public partial class SpawnsPage
 		if (!SpawnsetBinary.TryParse(spawnsetBytes, out _spawnset))
 			return;
 
-		_spawnsView = new(_spawnset, GameVersion, _waveCount);
+		_spawnsView = new SpawnsView(_spawnset, GameVersion, _waveCount);
 	}
 
 	private void IncreaseWaveCount(int amount)
@@ -43,7 +43,7 @@ public partial class SpawnsPage
 			return;
 
 		_waveCount += amount;
-		_spawnsView = new(_spawnset, GameVersion, _waveCount);
+		_spawnsView = new SpawnsView(_spawnset, GameVersion, _waveCount);
 	}
 
 	private static string ReplaceLastOccurrenceOf(string source, string find, string replace)

@@ -202,15 +202,15 @@
 		Enemy? orb = Enemies.GetEnemyByName(GameVersion, "The Orb");
 		MarkupString? leviString = levi != null ? MarkupUtils.EnemyString(levi) : null;
 		MarkupString? orbString = orb != null ? MarkupUtils.EnemyString(orb) : null;
-		MarkupString leviAndOrb = GameVersion is GameVersion.V1_0 or GameVersion.V2_0 ? new(leviString + " beckons, it") : new(leviString + " or " + orbString + " beckon, they");
+		MarkupString leviAndOrb = GameVersion is GameVersion.V1_0 or GameVersion.V2_0 ? new MarkupString(leviString + " beckons, it") : new MarkupString(leviString + " or " + orbString + " beckon, they");
 
-		Dictionary<Enemy, Enemy> transmutations = GameVersion == GameVersion.V1_0 ? new()
+		Dictionary<Enemy, Enemy> transmutations = GameVersion == GameVersion.V1_0 ? new Dictionary<Enemy, Enemy>
 		{
 			[EnemiesV1_0.Skull1] = EnemiesV1_0.TransmutedSkull2,
 			[EnemiesV1_0.Skull2] = EnemiesV1_0.TransmutedSkull3,
 			[EnemiesV1_0.Skull3] = EnemiesV1_0.TransmutedSkull4,
 		}
-		: new()
+		: new Dictionary<Enemy, Enemy>
 		{
 			[Enemies.GetEnemyByName(GameVersion, "Skull I")!] = Enemies.GetEnemyByName(GameVersion, "Transmuted Skull I")!,
 			[Enemies.GetEnemyByName(GameVersion, "Skull II")!] = Enemies.GetEnemyByName(GameVersion, "Transmuted Skull II")!,

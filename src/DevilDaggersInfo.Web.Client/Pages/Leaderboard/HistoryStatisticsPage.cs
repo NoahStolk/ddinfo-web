@@ -16,8 +16,8 @@ public partial class HistoryStatisticsPage
 	private readonly LineChartOptions _playersLineChartOptions = new()
 	{
 		HighlighterKeys = ["Date", "Players", "Game Version"],
-		GridOptions = new() { MinimumRowHeightInPx = 50 },
-		ScaleYOptions = new() { NumberFormat = StringFormats.LeaderboardIntFormat },
+		GridOptions = new LineChartGridOptions { MinimumRowHeightInPx = 50 },
+		ScaleYOptions = new LineChartScaleOptions { NumberFormat = StringFormats.LeaderboardIntFormat },
 		ChartMarginXInPx = 60,
 		XScaleDisplayUnit = ScaleDisplayUnit.TicksAsDate,
 		Backgrounds = LineChartUtils.GameVersionBackgrounds,
@@ -26,7 +26,7 @@ public partial class HistoryStatisticsPage
 	private readonly LineChartOptions _entrancesLineChartOptions = new()
 	{
 		HighlighterKeys = ["Date", "Top 1 Score", "Top 2 Score", "Top 3 Score", "Top 10 Score", "Top 100 Score", "Game Version"],
-		GridOptions = new() { MinimumRowHeightInPx = 50 },
+		GridOptions = new LineChartGridOptions { MinimumRowHeightInPx = 50 },
 		XScaleDisplayUnit = ScaleDisplayUnit.TicksAsDate,
 		Backgrounds = LineChartUtils.GameVersionBackgrounds,
 	};
@@ -34,8 +34,8 @@ public partial class HistoryStatisticsPage
 	private readonly LineChartOptions _timeLineChartOptions = new()
 	{
 		HighlighterKeys = ["Date", "Global Time"],
-		GridOptions = new() { MinimumRowHeightInPx = 50 },
-		ScaleYOptions = new() { NumberFormat = StringFormats.LeaderboardIntFormat },
+		GridOptions = new LineChartGridOptions { MinimumRowHeightInPx = 50 },
+		ScaleYOptions = new LineChartScaleOptions { NumberFormat = StringFormats.LeaderboardIntFormat },
 		ChartMarginXInPx = 100,
 		XScaleDisplayUnit = ScaleDisplayUnit.TicksAsDate,
 		HighlighterWidth = 320,
@@ -45,8 +45,8 @@ public partial class HistoryStatisticsPage
 	private readonly LineChartOptions _deathsLineChartOptions = new()
 	{
 		HighlighterKeys = ["Date", "Global Deaths"],
-		GridOptions = new() { MinimumRowHeightInPx = 50 },
-		ScaleYOptions = new() { NumberFormat = StringFormats.LeaderboardIntFormat },
+		GridOptions = new LineChartGridOptions { MinimumRowHeightInPx = 50 },
+		ScaleYOptions = new LineChartScaleOptions { NumberFormat = StringFormats.LeaderboardIntFormat },
 		ChartMarginXInPx = 100,
 		XScaleDisplayUnit = ScaleDisplayUnit.TicksAsDate,
 		Backgrounds = LineChartUtils.GameVersionBackgrounds,
@@ -55,8 +55,8 @@ public partial class HistoryStatisticsPage
 	private readonly LineChartOptions _gemsLineChartOptions = new()
 	{
 		HighlighterKeys = ["Date", "Global Gems"],
-		GridOptions = new() { MinimumRowHeightInPx = 50 },
-		ScaleYOptions = new() { NumberFormat = StringFormats.LeaderboardIntFormat },
+		GridOptions = new LineChartGridOptions { MinimumRowHeightInPx = 50 },
+		ScaleYOptions = new LineChartScaleOptions { NumberFormat = StringFormats.LeaderboardIntFormat },
 		ChartMarginXInPx = 100,
 		XScaleDisplayUnit = ScaleDisplayUnit.TicksAsDate,
 		Backgrounds = LineChartUtils.GameVersionBackgrounds,
@@ -65,8 +65,8 @@ public partial class HistoryStatisticsPage
 	private readonly LineChartOptions _killsLineChartOptions = new()
 	{
 		HighlighterKeys = ["Date", "Global Kills"],
-		GridOptions = new() { MinimumRowHeightInPx = 50 },
-		ScaleYOptions = new() { NumberFormat = StringFormats.LeaderboardIntFormat },
+		GridOptions = new LineChartGridOptions { MinimumRowHeightInPx = 50 },
+		ScaleYOptions = new LineChartScaleOptions { NumberFormat = StringFormats.LeaderboardIntFormat },
 		ChartMarginXInPx = 100,
 		XScaleDisplayUnit = ScaleDisplayUnit.TicksAsDate,
 		Backgrounds = LineChartUtils.GameVersionBackgrounds,
@@ -75,8 +75,8 @@ public partial class HistoryStatisticsPage
 	private readonly LineChartOptions _accuracyLineChartOptions = new()
 	{
 		HighlighterKeys = ["Date", "Global Accuracy", "Global Daggers Hit", "Global Daggers Fired"],
-		GridOptions = new() { MinimumRowHeightInPx = 50 },
-		ScaleYOptions = new() { NumberFormat = "0%" },
+		GridOptions = new LineChartGridOptions { MinimumRowHeightInPx = 50 },
+		ScaleYOptions = new LineChartScaleOptions { NumberFormat = "0%" },
 		XScaleDisplayUnit = ScaleDisplayUnit.TicksAsDate,
 		HighlighterWidth = 320,
 		Backgrounds = LineChartUtils.GameVersionBackgrounds,
@@ -122,15 +122,15 @@ public partial class HistoryStatisticsPage
 			double maxY = Math.Ceiling(totalPlayers.Max() / scale) * scale;
 
 			List<LineData> set = relevantData.Select((hs, i) => new LineData(hs.DateTime.Ticks, hs.TotalPlayers, i)).ToList();
-			_playersOptions = new(relevantData.Min(hs => hs.DateTime.Ticks), null, maxX.Ticks, minY, scale, maxY);
-			_playersData.Add(new("#f00", false, false, false, set, (ds, d) =>
+			_playersOptions = new LineChartDataOptions(relevantData.Min(hs => hs.DateTime.Ticks), null, maxX.Ticks, minY, scale, maxY);
+			_playersData.Add(new LineDataSet("#f00", false, false, false, set, (ds, d) =>
 			{
 				GetLeaderboardHistoryStatistics? stats = relevantData.Count() <= d.Index ? null : relevantData.ElementAt(d.Index);
 				return stats == null ? [] :
 				[
-					new($"<span style='text-align: right;'>{stats.DateTime.ToString(StringFormats.DateFormat)}</span>"),
-					new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString(StringFormats.LeaderboardIntFormat)}</span>"),
-					new($"<span style='text-align: right;'>{GameVersions.GetGameVersionFromDate(stats.DateTime).GetGameVersionString()}</span>"),
+					new MarkupString($"<span style='text-align: right;'>{stats.DateTime.ToString(StringFormats.DateFormat)}</span>"),
+					new MarkupString($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString(StringFormats.LeaderboardIntFormat)}</span>"),
+					new MarkupString($"<span style='text-align: right;'>{GameVersions.GetGameVersionFromDate(stats.DateTime).GetGameVersionString()}</span>"),
 				];
 			}));
 		}
@@ -144,32 +144,32 @@ public partial class HistoryStatisticsPage
 			const double scale = 200;
 			double minY = Math.Floor(top100Entrances.Min() / scale) * scale;
 			double maxY = Math.Ceiling(top1Entrances.Max() / scale) * scale;
-			_entrancesOptions = new(relevantData.Min(hs => hs.DateTime.Ticks), null, maxX.Ticks, minY, scale, maxY);
+			_entrancesOptions = new LineChartDataOptions(relevantData.Min(hs => hs.DateTime.Ticks), null, maxX.Ticks, minY, scale, maxY);
 
 			const string top1 = "#fc0";
 			const string top2 = "#bbb";
 			const string top3 = "#a42";
 			const string top10 = "#0aa";
 			const string top100 = "#07a";
-			_entrancesData.Add(new(top1, false, false, false, relevantData.Where(hs => hs.Top1EntranceUpdated).Select((hs, i) => new LineData(hs.DateTime.Ticks, hs.Top1Entrance, i)).ToList(), (_, d) =>
+			_entrancesData.Add(new LineDataSet(top1, false, false, false, relevantData.Where(hs => hs.Top1EntranceUpdated).Select((hs, i) => new LineData(hs.DateTime.Ticks, hs.Top1Entrance, i)).ToList(), (_, d) =>
 			{
 				GetLeaderboardHistoryStatistics? stats = relevantData.Count() <= d.Index ? null : relevantData.ElementAt(d.Index);
 				return stats == null ? [] :
 				[
-					new($"<span style='text-align: right;'>{stats.DateTime.ToString(StringFormats.DateFormat)}</span>"),
-					new($"<span style='color: {top1}; text-align: right;'>{stats.Top1Entrance.ToString(StringFormats.TimeFormat)}</span>"),
-					new($"<span style='color: {top2}; text-align: right;'>{stats.Top2Entrance.ToString(StringFormats.TimeFormat)}</span>"),
-					new($"<span style='color: {top3}; text-align: right;'>{stats.Top3Entrance.ToString(StringFormats.TimeFormat)}</span>"),
-					new($"<span style='color: {top10}; text-align: right;'>{stats.Top10Entrance.ToString(StringFormats.TimeFormat)}</span>"),
-					new($"<span style='color: {top100}; text-align: right;'>{stats.Top100Entrance.ToString(StringFormats.TimeFormat)}</span>"),
-					new($"<span style='text-align: right;'>{GameVersions.GetGameVersionFromDate(stats.DateTime).GetGameVersionString()}</span>"),
+					new MarkupString($"<span style='text-align: right;'>{stats.DateTime.ToString(StringFormats.DateFormat)}</span>"),
+					new MarkupString($"<span style='color: {top1}; text-align: right;'>{stats.Top1Entrance.ToString(StringFormats.TimeFormat)}</span>"),
+					new MarkupString($"<span style='color: {top2}; text-align: right;'>{stats.Top2Entrance.ToString(StringFormats.TimeFormat)}</span>"),
+					new MarkupString($"<span style='color: {top3}; text-align: right;'>{stats.Top3Entrance.ToString(StringFormats.TimeFormat)}</span>"),
+					new MarkupString($"<span style='color: {top10}; text-align: right;'>{stats.Top10Entrance.ToString(StringFormats.TimeFormat)}</span>"),
+					new MarkupString($"<span style='color: {top100}; text-align: right;'>{stats.Top100Entrance.ToString(StringFormats.TimeFormat)}</span>"),
+					new MarkupString($"<span style='text-align: right;'>{GameVersions.GetGameVersionFromDate(stats.DateTime).GetGameVersionString()}</span>"),
 				];
 			}));
 
-			_entrancesData.Add(new(top2, false, false, false, relevantData.Where(hs => hs.Top2EntranceUpdated).Select((hs, i) => new LineData(hs.DateTime.Ticks, hs.Top2Entrance, i)).ToList(), null));
-			_entrancesData.Add(new(top3, false, false, false, relevantData.Where(hs => hs.Top3EntranceUpdated).Select((hs, i) => new LineData(hs.DateTime.Ticks, hs.Top3Entrance, i)).ToList(), null));
-			_entrancesData.Add(new(top10, false, false, false, relevantData.Where(hs => hs.Top10EntranceUpdated).Select((hs, i) => new LineData(hs.DateTime.Ticks, hs.Top10Entrance, i)).ToList(), null));
-			_entrancesData.Add(new(top100, false, false, false, relevantData.Where(hs => hs.Top100EntranceUpdated).Select((hs, i) => new LineData(hs.DateTime.Ticks, hs.Top100Entrance, i)).ToList(), null));
+			_entrancesData.Add(new LineDataSet(top2, false, false, false, relevantData.Where(hs => hs.Top2EntranceUpdated).Select((hs, i) => new LineData(hs.DateTime.Ticks, hs.Top2Entrance, i)).ToList(), null));
+			_entrancesData.Add(new LineDataSet(top3, false, false, false, relevantData.Where(hs => hs.Top3EntranceUpdated).Select((hs, i) => new LineData(hs.DateTime.Ticks, hs.Top3Entrance, i)).ToList(), null));
+			_entrancesData.Add(new LineDataSet(top10, false, false, false, relevantData.Where(hs => hs.Top10EntranceUpdated).Select((hs, i) => new LineData(hs.DateTime.Ticks, hs.Top10Entrance, i)).ToList(), null));
+			_entrancesData.Add(new LineDataSet(top100, false, false, false, relevantData.Where(hs => hs.Top100EntranceUpdated).Select((hs, i) => new LineData(hs.DateTime.Ticks, hs.Top100Entrance, i)).ToList(), null));
 		}
 
 		RegisterTime();
@@ -180,16 +180,16 @@ public partial class HistoryStatisticsPage
 			const double scale = 300_000_000;
 			double minY = Math.Floor(stats.Min() / scale) * scale;
 			double maxY = Math.Ceiling(stats.Max() / scale) * scale;
-			_timeOptions = new(relevantData.Min(hs => hs.DateTime.Ticks), null, maxX.Ticks, minY, scale, maxY);
+			_timeOptions = new LineChartDataOptions(relevantData.Min(hs => hs.DateTime.Ticks), null, maxX.Ticks, minY, scale, maxY);
 
 			List<LineData> set = relevantData.Select((hs, i) => new LineData(hs.DateTime.Ticks, hs.TimeGlobal, i)).ToList();
-			_timeData.Add(new("#f00", false, false, false, set, (ds, d) =>
+			_timeData.Add(new LineDataSet("#f00", false, false, false, set, (ds, d) =>
 			{
 				GetLeaderboardHistoryStatistics? stat = relevantData.Count() <= d.Index ? null : relevantData.ElementAt(d.Index);
 				return stat == null ? [] :
 				[
-					new($"<span style='text-align: right;'>{stat.DateTime.ToString(StringFormats.DateFormat)}</span>"),
-					new($"<span style='color: {ds.Color}; text-align: right;'>{stat.TimeGlobal.ToString(StringFormats.LeaderboardGlobalTimeFormat)}</span>"),
+					new MarkupString($"<span style='text-align: right;'>{stat.DateTime.ToString(StringFormats.DateFormat)}</span>"),
+					new MarkupString($"<span style='color: {ds.Color}; text-align: right;'>{stat.TimeGlobal.ToString(StringFormats.LeaderboardGlobalTimeFormat)}</span>"),
 				];
 			}));
 		}
@@ -203,16 +203,16 @@ public partial class HistoryStatisticsPage
 			IEnumerable<ulong> stats = relevantData.Select(valueSelector);
 			double minY = Math.Floor(stats.Min() / scale) * scale;
 			double maxY = Math.Ceiling(stats.Max() / scale) * scale;
-			lineChartDataOptions = new(relevantData.Min(hs => hs.DateTime.Ticks), null, maxX.Ticks, minY, scale, maxY);
+			lineChartDataOptions = new LineChartDataOptions(relevantData.Min(hs => hs.DateTime.Ticks), null, maxX.Ticks, minY, scale, maxY);
 
 			List<LineData> set = relevantData.Select((hs, i) => new LineData(hs.DateTime.Ticks, valueSelector(hs), i)).ToList();
-			dataSets.Add(new("#f00", false, false, false, set, (ds, d) =>
+			dataSets.Add(new LineDataSet("#f00", false, false, false, set, (ds, d) =>
 			{
 				GetLeaderboardHistoryStatistics? stat = relevantData.Count() <= d.Index ? null : relevantData.ElementAt(d.Index);
 				return stat == null ? [] :
 				[
-					new($"<span style='text-align: right;'>{stat.DateTime.ToString(StringFormats.DateFormat)}</span>"),
-					new($"<span style='color: {ds.Color}; text-align: right;'>{valueSelector(stat).ToString(StringFormats.LeaderboardIntFormat)}</span>"),
+					new MarkupString($"<span style='text-align: right;'>{stat.DateTime.ToString(StringFormats.DateFormat)}</span>"),
+					new MarkupString($"<span style='color: {ds.Color}; text-align: right;'>{valueSelector(stat).ToString(StringFormats.LeaderboardIntFormat)}</span>"),
 				];
 			}));
 		}
@@ -225,18 +225,18 @@ public partial class HistoryStatisticsPage
 			IEnumerable<GetLeaderboardHistoryStatistics> relevantData = _statistics.Where(hs => hs.DaggersFiredGlobal > 0 && hs.DaggersFiredGlobalUpdated);
 			IEnumerable<double> accuracy = relevantData.Select(hs => CalculateAccuracy(hs.DaggersHitGlobal, hs.DaggersFiredGlobal));
 			double max = (int)Math.Ceiling((int)(accuracy.Max() * 100) / 5.0) * 5 / 100.0 + 0.0001;
-			_accuracyOptions = new(relevantData.Min(hs => hs.DateTime.Ticks), null, maxX.Ticks, 0.2, 0.01, max, true);
+			_accuracyOptions = new LineChartDataOptions(relevantData.Min(hs => hs.DateTime.Ticks), null, maxX.Ticks, 0.2, 0.01, max, true);
 
 			List<LineData> set = relevantData.Select((hs, i) => new LineData(hs.DateTime.Ticks, CalculateAccuracy(hs.DaggersHitGlobal, hs.DaggersFiredGlobal), i)).ToList();
-			_accuracyData.Add(new("#f80", false, false, false, set, (ds, d) =>
+			_accuracyData.Add(new LineDataSet("#f80", false, false, false, set, (ds, d) =>
 			{
 				GetLeaderboardHistoryStatistics? stat = relevantData.Count() <= d.Index ? null : relevantData.ElementAt(d.Index);
 				return stat == null ? [] :
 				[
-					new($"<span style='text-align: right;'>{stat.DateTime.ToString(StringFormats.DateFormat)}</span>"),
-					new($"<span style='color: {ds.Color}; text-align: right;'>{CalculateAccuracy(stat.DaggersHitGlobal, stat.DaggersFiredGlobal).ToString(StringFormats.AccuracyFormat)}</span>"),
-					new($"<span style='text-align: right;'>{(stat.DaggersFiredGlobal == 10_000 ? "?" : stat.DaggersHitGlobal.ToString(StringFormats.LeaderboardIntFormat))}</span>"),
-					new($"<span style='text-align: right;'>{(stat.DaggersFiredGlobal == 10_000 ? "?" : stat.DaggersFiredGlobal.ToString(StringFormats.LeaderboardIntFormat))}</span>"),
+					new MarkupString($"<span style='text-align: right;'>{stat.DateTime.ToString(StringFormats.DateFormat)}</span>"),
+					new MarkupString($"<span style='color: {ds.Color}; text-align: right;'>{CalculateAccuracy(stat.DaggersHitGlobal, stat.DaggersFiredGlobal).ToString(StringFormats.AccuracyFormat)}</span>"),
+					new MarkupString($"<span style='text-align: right;'>{(stat.DaggersFiredGlobal == 10_000 ? "?" : stat.DaggersHitGlobal.ToString(StringFormats.LeaderboardIntFormat))}</span>"),
+					new MarkupString($"<span style='text-align: right;'>{(stat.DaggersFiredGlobal == 10_000 ? "?" : stat.DaggersFiredGlobal.ToString(StringFormats.LeaderboardIntFormat))}</span>"),
 				];
 			}));
 		}

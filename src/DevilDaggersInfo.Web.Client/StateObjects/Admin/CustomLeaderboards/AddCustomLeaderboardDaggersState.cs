@@ -16,7 +16,7 @@ public class AddCustomLeaderboardDaggersState : IStateObject<AddCustomLeaderboar
 
 	public AddCustomLeaderboardDaggers ToModel()
 	{
-		return new()
+		return new AddCustomLeaderboardDaggers
 		{
 			Bronze = Bronze,
 			Silver = Silver,

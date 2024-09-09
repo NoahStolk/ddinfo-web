@@ -12,7 +12,7 @@ public class UpdateNameRequestState : IStateObject<UpdateNameRequest>
 
 	public UpdateNameRequest ToModel()
 	{
-		return new()
+		return new UpdateNameRequest
 		{
 			CurrentName = CurrentName,
 			CurrentPassword = CurrentPassword,

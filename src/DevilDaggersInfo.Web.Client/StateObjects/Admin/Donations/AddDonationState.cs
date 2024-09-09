@@ -20,7 +20,7 @@ public class AddDonationState : IStateObject<AddDonation>
 
 	public AddDonation ToModel()
 	{
-		return new()
+		return new AddDonation
 		{
 			PlayerId = PlayerId,
 			Amount = Amount,

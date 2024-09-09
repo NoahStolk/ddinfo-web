@@ -189,7 +189,7 @@
 
 		try
 		{
-			HttpResponseMessage hrm = await Http.ToggleRole(Id, new() { RoleName = roleName });
+			HttpResponseMessage hrm = await Http.ToggleRole(Id, new ToggleRole { RoleName = roleName });
 
 			if (hrm.StatusCode == HttpStatusCode.OK)
 				NavigationManager.NavigateTo("/admin/users");

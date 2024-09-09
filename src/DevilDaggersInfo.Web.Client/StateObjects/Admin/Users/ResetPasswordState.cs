@@ -8,7 +8,7 @@ public class ResetPasswordState : IStateObject<ResetPassword>
 
 	public ResetPassword ToModel()
 	{
-		return new()
+		return new ResetPassword
 		{
 			NewPassword = NewPassword,
 		};

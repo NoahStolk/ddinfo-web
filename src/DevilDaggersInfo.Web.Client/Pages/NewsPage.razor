@@ -36,13 +36,13 @@ else
 
 	protected override async Task OnInitializedAsync()
 	{
-		NewsItemsContent = new();
+		NewsItemsContent = new Dictionary<NewsItem, MarkupString>();
 		foreach (NewsItem newsItem in NewsContainer.Items)
 		{
 			try
 			{
 				string html = await Http.Client.GetStringAsync(newsItem.GetHtmlPath());
-				NewsItemsContent.Add(newsItem, new(html));
+				NewsItemsContent.Add(newsItem, new MarkupString(html));
 			}
 			catch
 			{

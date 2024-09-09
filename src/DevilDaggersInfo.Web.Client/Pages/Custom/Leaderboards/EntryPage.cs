@@ -19,12 +19,12 @@ public partial class EntryPage
 {
 	private static readonly Func<LineDataSet, LineData, List<MarkupString>> _initialHighlightTransformation = static (ds, d) =>
 	[
-		new($"<span style='text-align: right;'>{d.X.ToString(StringFormats.TimeFormat)}</span>"),
-		new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y:0}</span>"),
+		new MarkupString($"<span style='text-align: right;'>{d.X.ToString(StringFormats.TimeFormat)}</span>"),
+		new MarkupString($"<span style='color: {ds.Color}; text-align: right;'>{d.Y:0}</span>"),
 	];
 	private static readonly Func<LineDataSet, LineData, List<MarkupString>> _highlightTransformation = static (ds, d) =>
 	[
-		new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y:0}</span>"),
+		new MarkupString($"<span style='color: {ds.Color}; text-align: right;'>{d.Y:0}</span>"),
 	];
 
 	private bool _notFound;
@@ -73,7 +73,7 @@ public partial class EntryPage
 
 			Upgrade? upgrade = i.GetUpgradeByHandLevel();
 			string color = upgrade == null ? "#fff2" : $"{upgrade.Color.HexCode}08";
-			_backgrounds.Add(new() { Color = color, ChartEndXValue = nextLevelUp == 0 ? _time : nextLevelUp });
+			_backgrounds.Add(new LineChartBackground { Color = color, ChartEndXValue = nextLevelUp == 0 ? _time : nextLevelUp });
 			if (nextLevelUp == 0)
 				break;
 		}
@@ -103,7 +103,7 @@ public partial class EntryPage
 			{
 				int hit = GetCustomEntryData.DaggersHitData[i];
 				int fired = GetCustomEntryData.DaggersFiredData[i];
-				stats[i] = new(hit, fired, fired == 0 ? 0 : hit / (double)fired);
+				stats[i] = new Accuracy(hit, fired, fired == 0 ? 0 : hit / (double)fired);
 			}
 
 			List<MarkupString> AccuracyHighlighter(LineDataSet ds, LineData d)
@@ -111,10 +111,10 @@ public partial class EntryPage
 				Accuracy? stat = stats.Length <= d.Index ? null : stats[d.Index];
 				return stat == null ? [] :
 				[
-					new($"<span style='text-align: right;'>{d.X:0.0000}</span>"),
-					new($"<span style='color: {ds.Color}; text-align: right;'>{stat.Acc:0.00%}</span>"),
-					new($"<span style='text-align: right;'>{stat.Hit}</span>"),
-					new($"<span style='text-align: right;'>{stat.Fired}</span>"),
+					new MarkupString($"<span style='text-align: right;'>{d.X:0.0000}</span>"),
+					new MarkupString($"<span style='color: {ds.Color}; text-align: right;'>{stat.Acc:0.00%}</span>"),
+					new MarkupString($"<span style='text-align: right;'>{stat.Hit}</span>"),
+					new MarkupString($"<span style='text-align: right;'>{stat.Fired}</span>"),
 				];
 			}
 
@@ -124,11 +124,11 @@ public partial class EntryPage
 			LineChartOptions chartOptions = new()
 			{
 				HighlighterKeys = ["Time", "Accuracy", "Daggers Hit", "Daggers Fired"],
-				GridOptions = new() { MinimumRowHeightInPx = 50 },
-				ScaleYOptions = new() { NumberFormat = "0%" },
+				GridOptions = new LineChartGridOptions { MinimumRowHeightInPx = 50 },
+				ScaleYOptions = new LineChartScaleOptions { NumberFormat = "0%" },
 				Backgrounds = _backgrounds,
 			};
-			_lineCharts.Add(("Accuracy", dataOptions, chartOptions, [new("#f80", false, true, false, stats.Select((t, i) => new LineData(i, t.Acc, i)).ToList(), AccuracyHighlighter)]));
+			_lineCharts.Add(("Accuracy", dataOptions, chartOptions, [new LineDataSet("#f80", false, true, false, stats.Select((t, i) => new LineData(i, t.Acc, i)).ToList(), AccuracyHighlighter)]));
 		}
 
 		AddLineChart(
@@ -210,7 +210,7 @@ public partial class EntryPage
 		where T : struct, INumber<T>
 	{
 		if (data != null)
-			dataSets.Add((new(color, false, true, false, data.Take(_time).Select((val, i) => new LineData(i, double.CreateChecked(val), int.CreateChecked(val))).ToList(), dataSets.Count == 0 ? _initialHighlightTransformation : _highlightTransformation), name));
+			dataSets.Add((new LineDataSet(color, false, true, false, data.Take(_time).Select((val, i) => new LineData(i, double.CreateChecked(val), int.CreateChecked(val))).ToList(), dataSets.Count == 0 ? _initialHighlightTransformation : _highlightTransformation), name));
 	}
 
 	private void AddDataSets(List<(LineDataSet Set, string Name)> dataSets, string name)
@@ -226,7 +226,7 @@ public partial class EntryPage
 		LineChartOptions chartOptions = new()
 		{
 			HighlighterKeys = dataSets.ConvertAll(ds => ds.Name).Prepend("Time").ToList(),
-			GridOptions = new()
+			GridOptions = new LineChartGridOptions
 			{
 				MinimumRowHeightInPx = 50,
 			},

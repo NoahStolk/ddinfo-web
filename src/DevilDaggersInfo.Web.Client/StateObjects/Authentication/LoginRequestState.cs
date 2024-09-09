@@ -10,7 +10,7 @@ public class LoginRequestState : IStateObject<LoginRequest>
 
 	public LoginRequest ToModel()
 	{
-		return new()
+		return new LoginRequest
 		{
 			Name = Name,
 			Password = Password,

@@ -81,7 +81,7 @@ public partial class HistoryPage
 		if (query.Length < 16 || !int.TryParse(query[14..16], out int minute))
 			minute = 0;
 
-		return new(year, month, day, hour, minute, 0, DateTimeKind.Utc);
+		return new DateTime(year, month, day, hour, minute, 0, DateTimeKind.Utc);
 	}
 
 	private static bool DatesEqual(DateTime a, DateTime b)

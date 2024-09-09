@@ -40,7 +40,7 @@ public class EditPlayerProfileState : IStateObject<EditPlayerProfile>
 
 	public EditPlayerProfile ToModel()
 	{
-		return new()
+		return new EditPlayerProfile
 		{
 			CountryCode = CountryCode,
 			Dpi = Dpi,

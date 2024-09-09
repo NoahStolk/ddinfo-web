@@ -49,7 +49,7 @@ public partial class SpawnsetPage
 		}
 
 		SpawnsetBinary = spawnsetBinary;
-		SpawnsView = new(spawnsetBinary, GameConstants.CurrentVersion, GetSpawnset.MaxDisplayWaves ?? _defaultWaveCount);
+		SpawnsView = new SpawnsView(spawnsetBinary, GameConstants.CurrentVersion, GetSpawnset.MaxDisplayWaves ?? _defaultWaveCount);
 		EffectivePlayerSettings = spawnsetBinary.GetEffectivePlayerSettings();
 	}
 }

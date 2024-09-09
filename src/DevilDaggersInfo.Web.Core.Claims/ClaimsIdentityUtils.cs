@@ -13,9 +13,9 @@ public static class ClaimsIdentityUtils
 			new("id", id.ToString()),
 		];
 		if (playerId.HasValue)
-			allClaims.Add(new("playerId", playerId.Value.ToString()));
+			allClaims.Add(new Claim("playerId", playerId.Value.ToString()));
 
 		allClaims.AddRange(claimRoles);
-		return new(allClaims, "serverAuth");
+		return new ClaimsIdentity(allClaims, "serverAuth");
 	}
 }

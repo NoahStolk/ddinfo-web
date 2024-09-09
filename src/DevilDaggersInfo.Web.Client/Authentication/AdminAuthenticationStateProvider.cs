@@ -52,7 +52,7 @@ public class AdminAuthenticationStateProvider : AuthenticationStateProvider
 			if (await _localStorageService.ContainKeyAsync(LocalStorageAuthKey))
 				await _localStorageService.RemoveItemAsync(LocalStorageAuthKey);
 
-			return new(new ClaimsPrincipal(new ClaimsIdentity()));
+			return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
 		}
 	}
 
