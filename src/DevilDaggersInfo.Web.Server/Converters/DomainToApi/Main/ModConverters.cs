@@ -17,7 +17,7 @@ public static class ModConverters
 			throw new InvalidOperationException("Player mods are not included.");
 
 		// ! Navigation property.
-		return new()
+		return new MainApi.GetModOverview
 		{
 			Authors = mod.PlayerMods.ConvertAll(pm => pm.Player!.PlayerName),
 			ContainsProhibitedAssets = modFileSystemData.ModArchive?.ContainsProhibitedAssets(),
@@ -35,14 +35,14 @@ public static class ModConverters
 			throw new InvalidOperationException("Player mods are not included.");
 
 		// ! Navigation property.
-		return new()
+		return new MainApi.GetMod
 		{
 			Authors = mod.PlayerMods.ConvertAll(pm => pm.Player!.PlayerName),
 			ContainsProhibitedAssets = modFileSystemData.ModArchive?.ContainsProhibitedAssets(),
 			HtmlDescription = mod.HtmlDescription,
 			IsHosted = modFileSystemData.ModArchive != null,
 			LastUpdated = mod.LastUpdated,
-			ModArchive = modFileSystemData.ModArchive == null ? null : new()
+			ModArchive = modFileSystemData.ModArchive == null ? null : new MainApi.GetModArchive
 			{
 				Binaries = modFileSystemData.ModArchive.Binaries.ConvertAll(b => new MainApi.GetModBinary
 				{

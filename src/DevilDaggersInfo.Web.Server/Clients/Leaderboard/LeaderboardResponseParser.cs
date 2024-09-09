@@ -69,7 +69,7 @@ public class LeaderboardResponseParser
 			entries.Add(entry);
 		}
 
-		return new()
+		return new IDdLeaderboardService.LeaderboardResponse
 		{
 			DateTime = DateTime.UtcNow,
 			DeathsGlobal = deathsGlobal,
@@ -190,7 +190,7 @@ public class LeaderboardResponseParser
 		ulong gemsTotal = br.ReadUInt64();
 		ulong daggersHitTotal = br.ReadUInt64();
 
-		return new()
+		return new IDdLeaderboardService.EntryResponse
 		{
 			Username = username,
 			Rank = rank,

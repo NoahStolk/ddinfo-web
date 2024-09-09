@@ -42,7 +42,7 @@ public class FileSystemController : ControllerBase
 	{
 		DirectoryInfo di = new(folderPath);
 		List<FileInfo> allFiles = di.EnumerateFiles("*.*", SearchOption.AllDirectories).ToList();
-		return new(allFiles.Sum(fi => fi.Length), allFiles.Count);
+		return new DirectoryStatistics(allFiles.Sum(fi => fi.Length), allFiles.Count);
 	}
 
 	private readonly record struct DirectoryStatistics(long Size, int FileCount);

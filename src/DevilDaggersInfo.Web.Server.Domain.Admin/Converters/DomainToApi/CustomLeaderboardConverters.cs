@@ -15,7 +15,7 @@ public static class CustomLeaderboardConverters
 		if (customLeaderboard.Spawnset == null)
 			throw new InvalidOperationException("Spawnset is not included.");
 
-		return new()
+		return new AdminApi.GetCustomLeaderboardForOverview
 		{
 			Id = customLeaderboard.Id,
 			SpawnsetName = customLeaderboard.Spawnset.Name,
@@ -28,7 +28,7 @@ public static class CustomLeaderboardConverters
 
 	public static AdminApi.GetCustomLeaderboard ToAdminApi(this CustomLeaderboardEntity customLeaderboard)
 	{
-		return new()
+		return new AdminApi.GetCustomLeaderboard
 		{
 			Id = customLeaderboard.Id,
 			SpawnsetId = customLeaderboard.SpawnsetId,
@@ -89,7 +89,7 @@ public static class CustomLeaderboardConverters
 	private static AdminApi.GetCustomLeaderboardDaggers ToAdminApiDaggers(this CustomLeaderboardEntity customLeaderboard)
 	{
 		bool isTime = customLeaderboard.RankSorting.IsTime();
-		return new()
+		return new AdminApi.GetCustomLeaderboardDaggers
 		{
 			Bronze = isTime ? GameTime.FromGameUnits(customLeaderboard.Bronze).Seconds : customLeaderboard.Bronze,
 			Silver = isTime ? GameTime.FromGameUnits(customLeaderboard.Silver).Seconds : customLeaderboard.Silver,
@@ -101,7 +101,7 @@ public static class CustomLeaderboardConverters
 
 	private static AdminApi.GetCustomLeaderboardCriteria ToAdminApi(this CustomLeaderboardCriteriaEntityValue criteria)
 	{
-		return new()
+		return new AdminApi.GetCustomLeaderboardCriteria
 		{
 			Operator = criteria.Operator.ToAdminApi(),
 			Expression = criteria.Expression == null ? null : Expression.TryParse(criteria.Expression, out Expression? expression) ? expression.ToShortString() : null,

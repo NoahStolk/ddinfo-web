@@ -13,14 +13,14 @@ public static class ModConverters
 	public static DdaeApi.GetModDdae ToDdaeApi(this ModEntity mod, ModFileSystemData modFileSystemData)
 	{
 		// ! Navigation property.
-		return new()
+		return new DdaeApi.GetModDdae
 		{
 			Authors = mod.PlayerMods!.ConvertAll(pm => pm.Player!.PlayerName),
 			ContainsProhibitedAssets = modFileSystemData.ModArchive?.ContainsProhibitedAssets(),
 			HtmlDescription = mod.HtmlDescription,
 			IsHostedOnDdInfo = modFileSystemData.ModArchive != null,
 			LastUpdated = mod.LastUpdated,
-			ModArchive = modFileSystemData.ModArchive == null ? null : new()
+			ModArchive = modFileSystemData.ModArchive == null ? null : new DdaeApi.GetModArchiveDdae
 			{
 				Binaries = modFileSystemData.ModArchive.Binaries.ConvertAll(b => new DdaeApi.GetModBinaryDdae
 				{

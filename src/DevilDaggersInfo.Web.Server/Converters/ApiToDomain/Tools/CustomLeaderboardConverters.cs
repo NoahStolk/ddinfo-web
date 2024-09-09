@@ -61,7 +61,7 @@ public static class CustomLeaderboardConverters
 			TimeInSeconds = t.TimeInSeconds,
 		}) ?? [];
 
-		return new(
+		return new UploadRequest(
 			survivalHashMd5: uploadRequest.SurvivalHashMd5,
 			playerId: uploadRequest.PlayerId,
 			playerName: uploadRequest.PlayerName,

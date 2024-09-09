@@ -121,7 +121,7 @@ public class LeaderboardHistoryStatisticsRepository
 
 		return leaderboardHistoryStatistics;
 
-		void Add(bool daggersFiredUpdated, bool daggersHitUpdated, bool deathsUpdated, bool gemsUpdated, bool killsUpdated, bool totalPlayersUpdated, bool timeUpdated, bool rank100Updated, bool rank10Updated, bool rank3Updated, bool rank2Updated, bool rank1Updated) => leaderboardHistoryStatistics.Add(new()
+		void Add(bool daggersFiredUpdated, bool daggersHitUpdated, bool deathsUpdated, bool gemsUpdated, bool killsUpdated, bool totalPlayersUpdated, bool timeUpdated, bool rank100Updated, bool rank10Updated, bool rank3Updated, bool rank2Updated, bool rank1Updated) => leaderboardHistoryStatistics.Add(new GetLeaderboardHistoryStatistics
 		{
 			DateTime = dateTime,
 			DaggersFiredGlobal = daggersFiredGlobal,

@@ -7,7 +7,7 @@ public static class LeaderboardStatisticsConverters
 {
 	private static GetArrayStatistic ToMainApi(this ArrayStatistic arrayStatistic)
 	{
-		return new()
+		return new GetArrayStatistic
 		{
 			Average = arrayStatistic.Average,
 			Median = arrayStatistic.Median,
@@ -17,7 +17,7 @@ public static class LeaderboardStatisticsConverters
 
 	public static GetArrayStatistics ToMainApi(this ArrayStatistics arrayStatistics)
 	{
-		return new()
+		return new GetArrayStatistics
 		{
 			Accuracy = arrayStatistics.Accuracy.ToMainApi(),
 			DaggersFired = arrayStatistics.DaggersFired.ToMainApi(),

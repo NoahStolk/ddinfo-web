@@ -7,7 +7,7 @@ public static class LeaderboardStatisticsConverters
 {
 	public static DdLiveApi.GetArrayStatisticsDdLive ToDdLiveApi(this ArrayStatistics arrayStatistics)
 	{
-		return new()
+		return new DdLiveApi.GetArrayStatisticsDdLive
 		{
 			Accuracy = arrayStatistics.Accuracy.ToDdLiveApi(),
 			DaggersFired = arrayStatistics.DaggersFired.ToDdLiveApi(),
@@ -20,7 +20,7 @@ public static class LeaderboardStatisticsConverters
 
 	private static DdLiveApi.GetArrayStatisticDdLive ToDdLiveApi(this ArrayStatistic arrayStatistic)
 	{
-		return new()
+		return new DdLiveApi.GetArrayStatisticDdLive
 		{
 			Average = arrayStatistic.Average,
 			Median = arrayStatistic.Median,

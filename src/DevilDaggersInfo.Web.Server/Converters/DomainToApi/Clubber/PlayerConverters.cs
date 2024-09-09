@@ -7,7 +7,7 @@ public static class PlayerConverters
 {
 	public static GetPlayerHistory ToClubberApi(this PlayerHistory playerHistory)
 	{
-		return new()
+		return new GetPlayerHistory
 		{
 			Usernames = playerHistory.Usernames,
 			ActivityHistory = playerHistory.ActivityHistory.ConvertAll(ah => new GetPlayerHistoryActivityEntry

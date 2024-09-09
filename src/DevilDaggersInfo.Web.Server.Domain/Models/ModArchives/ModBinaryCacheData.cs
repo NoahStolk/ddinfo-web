@@ -52,7 +52,7 @@ public class ModBinaryCacheData
 			modifiedLoudnessAssets = ReadModifiedLoudnessValues(loudnessString);
 		}
 
-		return new(fileName, fileContents.Length, modBinary.Toc.Type, tocEntries, modifiedLoudnessAssets);
+		return new ModBinaryCacheData(fileName, fileContents.Length, modBinary.Toc.Type, tocEntries, modifiedLoudnessAssets);
 	}
 
 	private static List<ModifiedLoudnessAssetCacheData> ReadModifiedLoudnessValues(string loudnessString)

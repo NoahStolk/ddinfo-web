@@ -28,7 +28,7 @@ public class ModArchiveAccessor
 
 		ModArchiveCacheData? modArchiveCacheData = File.Exists(modArchivePath) ? await _modArchiveCache.GetArchiveDataByFilePathAsync(modArchivePath) : null;
 
-		return new()
+		return new ModFileSystemData
 		{
 			ModArchive = modArchiveCacheData,
 			ScreenshotFileNames = !Directory.Exists(modScreenshotsDirectory) ? null : GetScreenshotFileNames(modScreenshotsDirectory),

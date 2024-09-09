@@ -9,7 +9,7 @@ public static class LeaderboardConverters
 {
 	public static GetLeaderboard ToMainApi(this IDdLeaderboardService.LeaderboardResponse leaderboardResponse)
 	{
-		return new()
+		return new GetLeaderboard
 		{
 			DaggersFiredGlobal = leaderboardResponse.DaggersFiredGlobal,
 			DaggersHitGlobal = leaderboardResponse.DaggersHitGlobal,
@@ -25,7 +25,7 @@ public static class LeaderboardConverters
 
 	public static GetEntry ToMainApi(this IDdLeaderboardService.EntryResponse entryResponse)
 	{
-		return new()
+		return new GetEntry
 		{
 			DaggersFired = entryResponse.DaggersFired,
 			DaggersFiredTotal = entryResponse.DaggersFiredTotal,

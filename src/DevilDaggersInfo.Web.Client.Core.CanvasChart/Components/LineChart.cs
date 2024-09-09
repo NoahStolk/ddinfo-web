@@ -194,9 +194,9 @@ public partial class LineChart
 
 				if (i == dataSet.Data.Count - 1)
 				{
-					linePositions.Add(new(x, y));
+					linePositions.Add(new LinePosition(x, y));
 					if (dataSet.AppendEnd && percX != 1)
-						linePositions.Add(new(Options.ChartMarginXInPx + ChartWidth, y));
+						linePositions.Add(new LinePosition(Options.ChartMarginXInPx + ChartWidth, y));
 				}
 				else
 				{
@@ -204,24 +204,24 @@ public partial class LineChart
 					{
 						if (dataSet.PrependStart && percX != 0)
 						{
-							linePositions.Add(new(Options.ChartMarginXInPx, y));
-							linePositions.Add(new(x, y));
+							linePositions.Add(new LinePosition(Options.ChartMarginXInPx, y));
+							linePositions.Add(new LinePosition(x, y));
 						}
 						else
 						{
-							linePositions.Add(new(x, y));
+							linePositions.Add(new LinePosition(x, y));
 						}
 					}
 					else
 					{
-						linePositions.Add(new(x, y));
+						linePositions.Add(new LinePosition(x, y));
 					}
 
 					if (dataSet.IsSteppedLine)
 					{
 						double percNextX = LerpUtils.RevLerp(DataOptions.MinX, DataOptions.MaxX, dataSet.Data[i + 1].X);
 						double nextX = Options.ChartMarginXInPx + percNextX * ChartWidth;
-						linePositions.Add(new(nextX, y));
+						linePositions.Add(new LinePosition(nextX, y));
 					}
 				}
 			}

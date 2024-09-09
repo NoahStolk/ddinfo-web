@@ -90,7 +90,7 @@ public class PlayerCustomLeaderboardStatisticsRepository
 					}
 				}
 
-				stats.Add(new()
+				stats.Add(new GetPlayerCustomLeaderboardStatistics
 				{
 					GameMode = gameMode.ToMainApi(),
 					RankSorting = rankSorting.ToMainApi(),

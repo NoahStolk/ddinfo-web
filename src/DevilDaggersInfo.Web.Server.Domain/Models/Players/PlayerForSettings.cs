@@ -12,7 +12,7 @@ public record PlayerForSettings
 
 	public static PlayerForSettings FromEntity(PlayerEntity player)
 	{
-		return new()
+		return new PlayerForSettings
 		{
 			CountryCode = player.CountryCode,
 			Id = player.Id,

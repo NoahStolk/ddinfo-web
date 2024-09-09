@@ -19,7 +19,7 @@ public record Player
 
 	public static Player FromEntity(PlayerEntity player, bool isPublicDonor)
 	{
-		return new()
+		return new Player
 		{
 			BanDescription = player.BanDescription,
 			CountryCode = player.CountryCode,

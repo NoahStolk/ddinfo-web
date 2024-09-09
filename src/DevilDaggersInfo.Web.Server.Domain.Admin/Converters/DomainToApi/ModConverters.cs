@@ -8,7 +8,7 @@ public static class ModConverters
 {
 	public static GetModForOverview ToAdminApi(this ModEntity mod)
 	{
-		return new()
+		return new GetModForOverview
 		{
 			Id = mod.Id,
 			ModTypes = mod.ModTypes.ToAdminApi(),
@@ -26,7 +26,7 @@ public static class ModConverters
 		if (mod.PlayerMods == null)
 			throw new InvalidOperationException("Player mods are not included.");
 
-		return new()
+		return new GetMod
 		{
 			Id = mod.Id,
 			ModTypes = mod.ModTypes.ToAdminApi(),

@@ -8,7 +8,7 @@ public static class PlayerConverters
 {
 	public static GetPlayerForLeaderboard ToMainApi(this PlayerForLeaderboard player)
 	{
-		return new()
+		return new GetPlayerForLeaderboard
 		{
 			BanDescription = player.BanDescription,
 			BanResponsibleId = player.BanResponsibleId,
@@ -20,7 +20,7 @@ public static class PlayerConverters
 
 	public static GetPlayerForSettings ToMainApi(this PlayerForSettings player)
 	{
-		return new()
+		return new GetPlayerForSettings
 		{
 			CountryCode = player.CountryCode,
 			Id = player.Id,
@@ -30,7 +30,7 @@ public static class PlayerConverters
 
 	public static GetPlayer ToMainApi(this Player player)
 	{
-		return new()
+		return new GetPlayer
 		{
 			BanDescription = player.BanDescription,
 			CountryCode = player.CountryCode,
@@ -43,7 +43,7 @@ public static class PlayerConverters
 
 	private static GetPlayerSettings ToMainApi(this PlayerSettings settings)
 	{
-		return new()
+		return new GetPlayerSettings
 		{
 			Dpi = settings.Dpi,
 			Fov = settings.Fov,
@@ -86,7 +86,7 @@ public static class PlayerConverters
 
 	public static GetPlayerHistory ToMainApi(this PlayerHistory playerHistory)
 	{
-		return new()
+		return new GetPlayerHistory
 		{
 			Usernames = playerHistory.Usernames,
 			ActivityHistory = playerHistory.ActivityHistory.ConvertAll(ah => new GetPlayerHistoryActivityEntry

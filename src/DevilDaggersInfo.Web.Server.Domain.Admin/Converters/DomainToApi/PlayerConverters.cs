@@ -8,7 +8,7 @@ public static class PlayerConverters
 {
 	public static GetPlayerForOverview ToAdminApiOverview(this PlayerEntity player)
 	{
-		return new()
+		return new GetPlayerForOverview
 		{
 			Id = player.Id,
 			PlayerName = player.PlayerName,
@@ -40,7 +40,7 @@ public static class PlayerConverters
 		if (player.PlayerMods == null)
 			throw new InvalidOperationException("Player mods are not included.");
 
-		return new()
+		return new GetPlayer
 		{
 			Id = player.Id,
 			CommonName = player.CommonName,

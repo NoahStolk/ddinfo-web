@@ -11,7 +11,7 @@ public static class DonationConverters
 		if (donation.Player == null)
 			throw new InvalidOperationException("Player is not included.");
 
-		return new()
+		return new GetDonationForOverview
 		{
 			Id = donation.Id,
 			Amount = donation.Amount,
@@ -26,7 +26,7 @@ public static class DonationConverters
 
 	public static GetDonation ToAdminApi(this DonationEntity donation)
 	{
-		return new()
+		return new GetDonation
 		{
 			Id = donation.Id,
 			Amount = donation.Amount,

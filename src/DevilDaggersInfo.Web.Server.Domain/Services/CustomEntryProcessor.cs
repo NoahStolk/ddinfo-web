@@ -48,7 +48,7 @@ public class CustomEntryProcessor
 		_highscoreLogger = highscoreLogger;
 		_submissionLogger = submissionLogger;
 
-		_encryptionWrapper = new(customLeaderboardsOptions.Value.InitializationVector, customLeaderboardsOptions.Value.Password, customLeaderboardsOptions.Value.Salt);
+		_encryptionWrapper = new AesBase32Wrapper(customLeaderboardsOptions.Value.InitializationVector, customLeaderboardsOptions.Value.Password, customLeaderboardsOptions.Value.Salt);
 
 		_startingTimestamp = Stopwatch.GetTimestamp();
 	}
@@ -122,7 +122,7 @@ public class CustomEntryProcessor
 		var player = await _dbContext.Players.Select(p => new { p.Id, p.IsBannedFromDdcl }).FirstOrDefaultAsync(p => p.Id == uploadRequest.PlayerId);
 		if (player == null)
 		{
-			await _dbContext.Players.AddAsync(new()
+			await _dbContext.Players.AddAsync(new PlayerEntity
 			{
 				Id = uploadRequest.PlayerId,
 				PlayerName = uploadRequest.PlayerName,
@@ -155,10 +155,10 @@ public class CustomEntryProcessor
 		}
 		catch (CustomEntryCriteriaException ex)
 		{
-			return new()
+			return new UploadResponse
 			{
 				Leaderboard = ToLeaderboardSummary(customLeaderboard),
-				Rejection = new()
+				Rejection = new UploadCriteriaRejection
 				{
 					CriteriaName = ex.CriteriaName,
 					ActualValue = ex.ActualValue,
@@ -174,7 +174,7 @@ public class CustomEntryProcessor
 		CustomEntryEntity? customEntry = _dbContext.CustomEntries.FirstOrDefault(ce => ce.PlayerId == uploadRequest.PlayerId && ce.CustomLeaderboardId == customLeaderboard.Id);
 		if (customEntry == null)
 		{
-			return new()
+			return new UploadResponse
 			{
 				Leaderboard = ToLeaderboardSummary(customLeaderboard),
 				Success = await ProcessNewScoreAsync(uploadRequest, customLeaderboard, spawnset.Name),
@@ -186,7 +186,7 @@ public class CustomEntryProcessor
 		if (uploadRequest.IsReplay && IsReplayTimeAlmostTheSame(requestTimeAsInt, customEntry.Time) && await IsReplayFileTheSame(customEntry.Id, uploadRequest.ReplayData))
 		{
 			_logger.LogInformation("Score submission replay time was modified because of identical replay (database: {OriginalTime} - request: {ReplayTime}).", GameTime.FromGameUnits(customEntry.Time).Seconds.ToString(StringFormats.TimeFormat), uploadRequest.Time.Seconds.ToString(StringFormats.TimeFormat));
-			return new()
+			return new UploadResponse
 			{
 				Leaderboard = ToLeaderboardSummary(customLeaderboard),
 				Success = await ProcessNoHighscoreAsync(uploadRequest, customLeaderboard, spawnset.Name, customEntry),
@@ -219,7 +219,7 @@ public class CustomEntryProcessor
 		if (isHighscore)
 		{
 			// User got a highscore.
-			return new()
+			return new UploadResponse
 			{
 				Leaderboard = ToLeaderboardSummary(customLeaderboard),
 				Success = await ProcessHighscoreAsync(uploadRequest, customLeaderboard, spawnset.Name, customEntry),
@@ -227,7 +227,7 @@ public class CustomEntryProcessor
 		}
 
 		// User is already on the leaderboard, but did not get a better score.
-		return new()
+		return new UploadResponse
 		{
 			Leaderboard = ToLeaderboardSummary(customLeaderboard),
 			Success = await ProcessNoHighscoreAsync(uploadRequest, customLeaderboard, spawnset.Name, customEntry),
@@ -369,25 +369,25 @@ public class CustomEntryProcessor
 		Log(uploadRequest, spawnsetName);
 
 		List<int> replayIds = GetExistingReplayIds(entries.ConvertAll(ce => ce.Id));
-		return new()
+		return new SuccessfulUploadResponse
 		{
 			SortedEntries = entries.Select((e, i) => ToEntryModel(e, i + 1, customLeaderboard.DaggerFromStat(e), replayIds)).ToList(),
 			SubmissionType = SubmissionType.FirstScore,
-			RankState = new(rank),
-			TimeState = new(GameTime.FromGameUnits(newCustomEntry.Time).Seconds),
-			EnemiesKilledState = new(newCustomEntry.EnemiesKilled),
-			GemsCollectedState = new(newCustomEntry.GemsCollected),
-			GemsDespawnedState = new(newCustomEntry.GemsDespawned),
-			GemsEatenState = new(newCustomEntry.GemsEaten),
-			GemsTotalState = new(newCustomEntry.GemsTotal),
-			DaggersHitState = new(newCustomEntry.DaggersHit),
-			DaggersFiredState = new(newCustomEntry.DaggersFired),
-			EnemiesAliveState = new(newCustomEntry.EnemiesAlive),
-			HomingStoredState = new(newCustomEntry.HomingStored),
-			HomingEatenState = new(newCustomEntry.HomingEaten),
-			LevelUpTime2State = new(GameTime.FromGameUnits(newCustomEntry.LevelUpTime2).Seconds),
-			LevelUpTime3State = new(GameTime.FromGameUnits(newCustomEntry.LevelUpTime3).Seconds),
-			LevelUpTime4State = new(GameTime.FromGameUnits(newCustomEntry.LevelUpTime4).Seconds),
+			RankState = new UploadResponseScoreState<int>(rank),
+			TimeState = new UploadResponseScoreState<double>(GameTime.FromGameUnits(newCustomEntry.Time).Seconds),
+			EnemiesKilledState = new UploadResponseScoreState<int>(newCustomEntry.EnemiesKilled),
+			GemsCollectedState = new UploadResponseScoreState<int>(newCustomEntry.GemsCollected),
+			GemsDespawnedState = new UploadResponseScoreState<int>(newCustomEntry.GemsDespawned),
+			GemsEatenState = new UploadResponseScoreState<int>(newCustomEntry.GemsEaten),
+			GemsTotalState = new UploadResponseScoreState<int>(newCustomEntry.GemsTotal),
+			DaggersHitState = new UploadResponseScoreState<int>(newCustomEntry.DaggersHit),
+			DaggersFiredState = new UploadResponseScoreState<int>(newCustomEntry.DaggersFired),
+			EnemiesAliveState = new UploadResponseScoreState<int>(newCustomEntry.EnemiesAlive),
+			HomingStoredState = new UploadResponseScoreState<int>(newCustomEntry.HomingStored),
+			HomingEatenState = new UploadResponseScoreState<int>(newCustomEntry.HomingEaten),
+			LevelUpTime2State = new UploadResponseScoreState<double>(GameTime.FromGameUnits(newCustomEntry.LevelUpTime2).Seconds),
+			LevelUpTime3State = new UploadResponseScoreState<double>(GameTime.FromGameUnits(newCustomEntry.LevelUpTime3).Seconds),
+			LevelUpTime4State = new UploadResponseScoreState<double>(GameTime.FromGameUnits(newCustomEntry.LevelUpTime4).Seconds),
 		};
 	}
 
@@ -405,24 +405,24 @@ public class CustomEntryProcessor
 		List<int> replayIds = GetExistingReplayIds(entries.ConvertAll(ce => ce.Id));
 
 		int homingStored = uploadRequest.GetFinalHomingValue();
-		return new()
+		return new SuccessfulUploadResponse
 		{
 			SortedEntries = entries.Select((e, i) => ToEntryModel(e, i + 1, customLeaderboard.DaggerFromStat(e), replayIds)).ToList(),
 			SubmissionType = SubmissionType.NoHighscore,
-			TimeState = new(uploadRequest.Time.Seconds, (uploadRequest.Time - GameTime.FromGameUnits(currentEntry.Time)).Seconds),
-			EnemiesKilledState = new(uploadRequest.EnemiesKilled, uploadRequest.EnemiesKilled - currentEntry.EnemiesKilled),
-			GemsCollectedState = new(uploadRequest.GemsCollected, uploadRequest.GemsCollected - currentEntry.GemsCollected),
-			GemsDespawnedState = new(uploadRequest.GemsDespawned, uploadRequest.GemsDespawned - currentEntry.GemsDespawned),
-			GemsEatenState = new(uploadRequest.GemsEaten, uploadRequest.GemsEaten - currentEntry.GemsEaten),
-			GemsTotalState = new(uploadRequest.GemsTotal, uploadRequest.GemsTotal - currentEntry.GemsTotal),
-			DaggersHitState = new(uploadRequest.DaggersHit, uploadRequest.DaggersHit - currentEntry.DaggersHit),
-			DaggersFiredState = new(uploadRequest.DaggersFired, uploadRequest.DaggersFired - currentEntry.DaggersFired),
-			EnemiesAliveState = new(uploadRequest.EnemiesAlive, uploadRequest.EnemiesAlive - currentEntry.EnemiesAlive),
-			HomingStoredState = new(homingStored, homingStored - currentEntry.HomingStored),
-			HomingEatenState = new(uploadRequest.HomingEaten, uploadRequest.HomingEaten - currentEntry.HomingEaten),
-			LevelUpTime2State = new(uploadRequest.LevelUpTime2.Seconds, (uploadRequest.LevelUpTime2 - GameTime.FromGameUnits(currentEntry.LevelUpTime2)).Seconds),
-			LevelUpTime3State = new(uploadRequest.LevelUpTime3.Seconds, (uploadRequest.LevelUpTime3 - GameTime.FromGameUnits(currentEntry.LevelUpTime3)).Seconds),
-			LevelUpTime4State = new(uploadRequest.LevelUpTime4.Seconds, (uploadRequest.LevelUpTime4 - GameTime.FromGameUnits(currentEntry.LevelUpTime4)).Seconds),
+			TimeState = new UploadResponseScoreState<double>(uploadRequest.Time.Seconds, (uploadRequest.Time - GameTime.FromGameUnits(currentEntry.Time)).Seconds),
+			EnemiesKilledState = new UploadResponseScoreState<int>(uploadRequest.EnemiesKilled, uploadRequest.EnemiesKilled - currentEntry.EnemiesKilled),
+			GemsCollectedState = new UploadResponseScoreState<int>(uploadRequest.GemsCollected, uploadRequest.GemsCollected - currentEntry.GemsCollected),
+			GemsDespawnedState = new UploadResponseScoreState<int>(uploadRequest.GemsDespawned, uploadRequest.GemsDespawned - currentEntry.GemsDespawned),
+			GemsEatenState = new UploadResponseScoreState<int>(uploadRequest.GemsEaten, uploadRequest.GemsEaten - currentEntry.GemsEaten),
+			GemsTotalState = new UploadResponseScoreState<int>(uploadRequest.GemsTotal, uploadRequest.GemsTotal - currentEntry.GemsTotal),
+			DaggersHitState = new UploadResponseScoreState<int>(uploadRequest.DaggersHit, uploadRequest.DaggersHit - currentEntry.DaggersHit),
+			DaggersFiredState = new UploadResponseScoreState<int>(uploadRequest.DaggersFired, uploadRequest.DaggersFired - currentEntry.DaggersFired),
+			EnemiesAliveState = new UploadResponseScoreState<int>(uploadRequest.EnemiesAlive, uploadRequest.EnemiesAlive - currentEntry.EnemiesAlive),
+			HomingStoredState = new UploadResponseScoreState<int>(homingStored, homingStored - currentEntry.HomingStored),
+			HomingEatenState = new UploadResponseScoreState<int>(uploadRequest.HomingEaten, uploadRequest.HomingEaten - currentEntry.HomingEaten),
+			LevelUpTime2State = new UploadResponseScoreState<double>(uploadRequest.LevelUpTime2.Seconds, (uploadRequest.LevelUpTime2 - GameTime.FromGameUnits(currentEntry.LevelUpTime2)).Seconds),
+			LevelUpTime3State = new UploadResponseScoreState<double>(uploadRequest.LevelUpTime3.Seconds, (uploadRequest.LevelUpTime3 - GameTime.FromGameUnits(currentEntry.LevelUpTime3)).Seconds),
+			LevelUpTime4State = new UploadResponseScoreState<double>(uploadRequest.LevelUpTime4.Seconds, (uploadRequest.LevelUpTime4 - GameTime.FromGameUnits(currentEntry.LevelUpTime4)).Seconds),
 		};
 	}
 
@@ -469,7 +469,7 @@ public class CustomEntryProcessor
 		CustomEntryDataEntity? customEntryData = await _dbContext.CustomEntryData.FirstOrDefaultAsync(ced => ced.CustomEntryId == customEntry.Id);
 		if (customEntryData == null)
 		{
-			customEntryData = new() { CustomEntryId = customEntry.Id };
+			customEntryData = new CustomEntryDataEntity { CustomEntryId = customEntry.Id };
 			customEntryData.Populate(uploadRequest.GameData);
 			await _dbContext.CustomEntryData.AddAsync(customEntryData);
 		}
@@ -529,25 +529,25 @@ public class CustomEntryProcessor
 
 		List<int> replayIds = GetExistingReplayIds(entries.ConvertAll(ce => ce.Id));
 
-		return new()
+		return new SuccessfulUploadResponse
 		{
 			SortedEntries = entries.Select((e, i) => ToEntryModel(e, i + 1, customLeaderboard.DaggerFromStat(e), replayIds)).ToList(),
 			SubmissionType = SubmissionType.NewHighscore,
-			RankState = new(rank, rankDiff),
-			TimeState = new(GameTime.FromGameUnits(customEntry.Time).Seconds, GameTime.FromGameUnits(timeDiff).Seconds),
-			EnemiesKilledState = new(customEntry.EnemiesKilled, enemiesKilledDiff),
-			GemsCollectedState = new(customEntry.GemsCollected, gemsCollectedDiff),
-			GemsDespawnedState = new(customEntry.GemsDespawned, gemsDespawnedDiff),
-			GemsTotalState = new(customEntry.GemsTotal, gemsTotalDiff),
-			GemsEatenState = new(customEntry.GemsEaten, gemsEatenDiff),
-			DaggersHitState = new(customEntry.DaggersHit, daggersHitDiff),
-			DaggersFiredState = new(customEntry.DaggersFired, daggersFiredDiff),
-			EnemiesAliveState = new(customEntry.EnemiesAlive, enemiesAliveDiff),
-			HomingStoredState = new(customEntry.HomingStored, homingStoredDiff),
-			HomingEatenState = new(customEntry.HomingEaten, homingEatenDiff),
-			LevelUpTime2State = new(GameTime.FromGameUnits(customEntry.LevelUpTime2).Seconds, GameTime.FromGameUnits(levelUpTime2Diff).Seconds),
-			LevelUpTime3State = new(GameTime.FromGameUnits(customEntry.LevelUpTime3).Seconds, GameTime.FromGameUnits(levelUpTime3Diff).Seconds),
-			LevelUpTime4State = new(GameTime.FromGameUnits(customEntry.LevelUpTime4).Seconds, GameTime.FromGameUnits(levelUpTime4Diff).Seconds),
+			RankState = new UploadResponseScoreState<int>(rank, rankDiff),
+			TimeState = new UploadResponseScoreState<double>(GameTime.FromGameUnits(customEntry.Time).Seconds, GameTime.FromGameUnits(timeDiff).Seconds),
+			EnemiesKilledState = new UploadResponseScoreState<int>(customEntry.EnemiesKilled, enemiesKilledDiff),
+			GemsCollectedState = new UploadResponseScoreState<int>(customEntry.GemsCollected, gemsCollectedDiff),
+			GemsDespawnedState = new UploadResponseScoreState<int>(customEntry.GemsDespawned, gemsDespawnedDiff),
+			GemsTotalState = new UploadResponseScoreState<int>(customEntry.GemsTotal, gemsTotalDiff),
+			GemsEatenState = new UploadResponseScoreState<int>(customEntry.GemsEaten, gemsEatenDiff),
+			DaggersHitState = new UploadResponseScoreState<int>(customEntry.DaggersHit, daggersHitDiff),
+			DaggersFiredState = new UploadResponseScoreState<int>(customEntry.DaggersFired, daggersFiredDiff),
+			EnemiesAliveState = new UploadResponseScoreState<int>(customEntry.EnemiesAlive, enemiesAliveDiff),
+			HomingStoredState = new UploadResponseScoreState<int>(customEntry.HomingStored, homingStoredDiff),
+			HomingEatenState = new UploadResponseScoreState<int>(customEntry.HomingEaten, homingEatenDiff),
+			LevelUpTime2State = new UploadResponseScoreState<double>(GameTime.FromGameUnits(customEntry.LevelUpTime2).Seconds, GameTime.FromGameUnits(levelUpTime2Diff).Seconds),
+			LevelUpTime3State = new UploadResponseScoreState<double>(GameTime.FromGameUnits(customEntry.LevelUpTime3).Seconds, GameTime.FromGameUnits(levelUpTime3Diff).Seconds),
+			LevelUpTime4State = new UploadResponseScoreState<double>(GameTime.FromGameUnits(customEntry.LevelUpTime4).Seconds, GameTime.FromGameUnits(levelUpTime4Diff).Seconds),
 		};
 	}
 
@@ -644,7 +644,7 @@ public class CustomEntryProcessor
 		if (customEntry.Player == null)
 			throw new InvalidOperationException("Player is not included.");
 
-		return new()
+		return new CustomEntry
 		{
 			ClientVersion = customEntry.ClientVersion,
 			DaggersFired = customEntry.DaggersFired,
@@ -679,10 +679,10 @@ public class CustomEntryProcessor
 		if (customLeaderboard.Spawnset == null)
 			throw new InvalidOperationException("Spawnset is not included.");
 
-		return new()
+		return new CustomLeaderboardSummary
 		{
 			RankSorting = customLeaderboard.RankSorting,
-			Daggers = !customLeaderboard.IsFeatured ? null : new()
+			Daggers = !customLeaderboard.IsFeatured ? null : new CustomLeaderboardDaggers
 			{
 				Bronze = customLeaderboard.Bronze,
 				Silver = customLeaderboard.Silver,

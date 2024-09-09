@@ -64,7 +64,7 @@ public class WorldRecordRepository
 
 			heldConsecutively += duration;
 
-			worldRecords.Add(new()
+			worldRecords.Add(new ApiMain.GetWorldRecord
 			{
 				DateTime = wr.DateTime,
 				Entry = wr.Entry,
@@ -76,7 +76,7 @@ public class WorldRecordRepository
 			BaseWorldRecordHolder? holder = worldRecordHolders.Find(wrh => wrh.Id == wr.Entry.Id);
 			if (holder == null)
 			{
-				worldRecordHolders.Add(new(wr.Entry.Id, wr.Entry.Username, duration, heldConsecutively, 1, firstHeld, lastHeld));
+				worldRecordHolders.Add(new BaseWorldRecordHolder(wr.Entry.Id, wr.Entry.Username, duration, heldConsecutively, 1, firstHeld, lastHeld));
 			}
 			else
 			{
@@ -95,7 +95,7 @@ public class WorldRecordRepository
 			}
 		}
 
-		return new()
+		return new ApiMain.GetWorldRecordDataContainer
 		{
 			WorldRecordHolders = worldRecordHolders
 				.OrderByDescending(wrh => wrh.TotalTimeHeld)
@@ -124,6 +124,7 @@ public class WorldRecordRepository
 		};
 	}
 
+	// TODO: Make async.
 	private List<BaseWorldRecord> GetBaseWorldRecords()
 	{
 		// WRs made on an alt can be legit, we'll just swap it with the main account.
@@ -172,6 +173,7 @@ public class WorldRecordRepository
 					date = leaderboard.DateTime;
 
 				// If the WR was submitted by an alt, we need to manually fix the ID by looking up the main ID in the database.
+				// TODO: Fix multiple queries.
 				int? mainPlayerId = _dbContext.Players.Select(p => new { p.Id, p.BanResponsibleId }).FirstOrDefault(p => p.Id == firstLegitPlace.Id)?.BanResponsibleId;
 
 				ApiMain.GetWorldRecordEntry getWorldRecordEntry = new()
@@ -186,7 +188,7 @@ public class WorldRecordRepository
 					DaggersHit = firstLegitPlace.DaggersHit,
 					DaggersFired = firstLegitPlace.DaggersFired,
 				};
-				worldRecords.Add(new(date, getWorldRecordEntry, GameVersions.GetGameVersionFromDate(date)));
+				worldRecords.Add(new BaseWorldRecord(date, getWorldRecordEntry, GameVersions.GetGameVersionFromDate(date)));
 			}
 
 			previousDate = leaderboard.DateTime;
@@ -196,7 +198,7 @@ public class WorldRecordRepository
 
 		static DateTime GetAverage(DateTime a, DateTime b)
 		{
-			return new((a.Ticks + b.Ticks) / 2, DateTimeKind.Utc);
+			return new DateTime((a.Ticks + b.Ticks) / 2, DateTimeKind.Utc);
 		}
 	}
 

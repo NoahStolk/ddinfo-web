@@ -17,7 +17,7 @@ public static class CustomLeaderboardConverters
 	{
 		bool isTime = customLeaderboard.RankSorting.IsTime();
 
-		return new()
+		return new MainApi.GetCustomLeaderboardOverview
 		{
 			Id = customLeaderboard.Id,
 			SpawnsetAuthorName = customLeaderboard.SpawnsetAuthorName,
@@ -39,7 +39,7 @@ public static class CustomLeaderboardConverters
 	{
 		bool isTime = customLeaderboard.RankSorting.IsTime();
 
-		return new()
+		return new MainApi.GetCustomLeaderboard
 		{
 			SpawnsetId = customLeaderboard.SpawnsetId,
 			SpawnsetAuthorName = customLeaderboard.SpawnsetAuthorName,
@@ -59,7 +59,7 @@ public static class CustomLeaderboardConverters
 
 	private static MainApi.GetCustomEntry ToMainApi(this CustomEntry customEntry, SpawnsetGameMode gameMode)
 	{
-		return new()
+		return new MainApi.GetCustomEntry
 		{
 			Id = customEntry.Id,
 			Rank = customEntry.Rank,
@@ -90,7 +90,7 @@ public static class CustomLeaderboardConverters
 
 	private static MainApi.GetCustomLeaderboardDaggers ToMainApi(this CustomLeaderboardDaggers customLeaderboardDaggers, bool isTime)
 	{
-		return new()
+		return new MainApi.GetCustomLeaderboardDaggers
 		{
 			Bronze = isTime ? GameTime.FromGameUnits(customLeaderboardDaggers.Bronze).Seconds : customLeaderboardDaggers.Bronze,
 			Silver = isTime ? GameTime.FromGameUnits(customLeaderboardDaggers.Silver).Seconds : customLeaderboardDaggers.Silver,
@@ -102,7 +102,7 @@ public static class CustomLeaderboardConverters
 
 	private static MainApi.GetCustomLeaderboardCriteria ToMainApi(this CustomLeaderboardCriteria criteria)
 	{
-		return new()
+		return new MainApi.GetCustomLeaderboardCriteria
 		{
 			Type = criteria.Type.ToMainApi(),
 			Operator = criteria.Operator.ToMainApi(),
@@ -245,7 +245,7 @@ public static class CustomLeaderboardConverters
 		if (customEntry.CustomLeaderboard.Spawnset == null)
 			throw new InvalidOperationException("Custom leaderboard spawnset is not included.");
 
-		return new()
+		return new MainApi.GetCustomEntryData
 		{
 			CustomEntryId = customEntry.Id,
 			PlayerId = customEntry.PlayerId,

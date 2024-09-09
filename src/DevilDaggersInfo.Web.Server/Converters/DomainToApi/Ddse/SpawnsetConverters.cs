@@ -12,13 +12,13 @@ public static class SpawnsetConverters
 	public static DdseApi.GetSpawnsetDdse ToDdseApi(this SpawnsetEntity spawnset, bool hasCustomLeaderboard)
 	{
 		// ! Navigation property.
-		return new()
+		return new DdseApi.GetSpawnsetDdse
 		{
 			Id = spawnset.Id,
 			MaxDisplayWaves = spawnset.MaxDisplayWaves,
 			HtmlDescription = spawnset.HtmlDescription,
 			LastUpdated = spawnset.LastUpdated,
-			SpawnsetData = new()
+			SpawnsetData = new DdseApi.GetSpawnsetDataDdse
 			{
 				AdditionalGems = spawnset.EffectiveGemsOrHoming,
 				GameMode = spawnset.GameMode.ToDdseApi(),

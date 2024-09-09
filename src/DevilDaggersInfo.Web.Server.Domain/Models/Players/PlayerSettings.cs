@@ -27,7 +27,7 @@ public record PlayerSettings
 
 	public static PlayerSettings FromEntity(PlayerEntity player)
 	{
-		return new()
+		return new PlayerSettings
 		{
 			Dpi = player.Dpi,
 			Fov = player.Fov,

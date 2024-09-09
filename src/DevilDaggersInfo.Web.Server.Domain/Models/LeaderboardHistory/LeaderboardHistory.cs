@@ -28,7 +28,7 @@ public record LeaderboardHistory
 
 		LeaderboardHistory leaderboardHistory = new()
 		{
-			DateTime = new(br.ReadInt64()),
+			DateTime = new DateTime(br.ReadInt64()),
 			Players = br.ReadInt32(),
 			TimeGlobal = br.ReadUInt64(),
 			KillsGlobal = br.ReadUInt64(),

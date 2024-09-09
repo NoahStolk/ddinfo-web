@@ -31,7 +31,7 @@ public class AssetsController : ControllerBase
 
 		static GetAssetInfo ConvertAssetInfo(AssetInfoEntry assetInfoEntry)
 		{
-			return new()
+			return new GetAssetInfo
 			{
 				Description = assetInfoEntry.Description,
 				Name = assetInfoEntry.Name,

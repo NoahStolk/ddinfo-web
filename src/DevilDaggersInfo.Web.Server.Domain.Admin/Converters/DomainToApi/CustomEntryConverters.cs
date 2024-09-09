@@ -17,7 +17,7 @@ public static class CustomEntryConverters
 		if (customEntry.CustomLeaderboard.Spawnset == null)
 			throw new InvalidOperationException("Custom leaderboard spawnset is not included.");
 
-		return new()
+		return new GetCustomEntryForOverview
 		{
 			Id = customEntry.Id,
 			ClientVersion = customEntry.ClientVersion,
@@ -47,7 +47,7 @@ public static class CustomEntryConverters
 		if (customEntry.CustomLeaderboard == null)
 			throw new InvalidOperationException("Custom leaderboard is not included.");
 
-		return new()
+		return new GetCustomEntry
 		{
 			Id = customEntry.Id,
 			ClientVersion = customEntry.ClientVersion,

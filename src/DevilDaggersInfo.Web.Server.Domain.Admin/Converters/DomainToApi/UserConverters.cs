@@ -8,7 +8,7 @@ public static class UserConverters
 {
 	public static GetUser ToAdminApi(this UserEntity user)
 	{
-		return new()
+		return new GetUser
 		{
 			Id = user.Id,
 			Name = user.Name,

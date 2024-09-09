@@ -57,5 +57,5 @@ public record CustomEntry
 
 	public bool HasGraphs => Client != CustomLeaderboardsClient.DevilDaggersCustomLeaderboards || ClientVersionParsed >= FeatureConstants.OldDdclGraphs;
 
-	private Version ClientVersionParsed => Version.TryParse(ClientVersion, out Version? version) ? version : new(0, 0, 0);
+	private Version ClientVersionParsed => Version.TryParse(ClientVersion, out Version? version) ? version : new Version(0, 0, 0);
 }

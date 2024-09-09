@@ -76,7 +76,7 @@ public class LeaderboardStatisticsCache
 			using BinaryReader br = new(fs);
 			while (br.BaseStream.Position <= br.BaseStream.Length - 15)
 			{
-				_entries.Add(new()
+				_entries.Add(new CompressedEntry
 				{
 					Time = br.ReadUInt32(),
 					Kills = br.ReadUInt16(),

@@ -8,7 +8,7 @@ public static class LeaderboardHistoryConverters
 {
 	public static GetLeaderboardHistory ToMainApi(this LeaderboardHistory leaderboard)
 	{
-		return new()
+		return new GetLeaderboardHistory
 		{
 			DaggersFiredGlobal = leaderboard.DaggersFiredGlobal,
 			DaggersHitGlobal = leaderboard.DaggersHitGlobal,
@@ -24,7 +24,7 @@ public static class LeaderboardHistoryConverters
 
 	private static GetEntryHistory ToMainApi(this EntryHistory entry, DateTime dateTime)
 	{
-		return new()
+		return new GetEntryHistory
 		{
 			DateTime = dateTime,
 			DaggersFired = entry.DaggersFired,

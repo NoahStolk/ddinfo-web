@@ -10,7 +10,7 @@ public static class CustomLeaderboardConverters
 {
 	public static DdLiveApi.GetCustomLeaderboardOverviewDdLive ToDdLiveApi(this CustomLeaderboardOverview customLeaderboard)
 	{
-		return new()
+		return new DdLiveApi.GetCustomLeaderboardOverviewDdLive
 		{
 			Id = customLeaderboard.Id,
 			SpawnsetName = customLeaderboard.SpawnsetName,
@@ -33,7 +33,7 @@ public static class CustomLeaderboardConverters
 
 	public static DdLiveApi.GetCustomLeaderboardDdLive ToDdLiveApi(this SortedCustomLeaderboard customLeaderboard, List<int> customEntryReplayIds)
 	{
-		return new()
+		return new DdLiveApi.GetCustomLeaderboardDdLive
 		{
 			SpawnsetId = customLeaderboard.SpawnsetId,
 			SpawnsetAuthorName = customLeaderboard.SpawnsetAuthorName,
@@ -51,7 +51,7 @@ public static class CustomLeaderboardConverters
 
 	private static DdLiveApi.GetCustomLeaderboardDaggersDdLive ToDdLiveApi(this CustomLeaderboardDaggers customLeaderboard)
 	{
-		return new()
+		return new DdLiveApi.GetCustomLeaderboardDaggersDdLive
 		{
 			Bronze = GameTime.FromGameUnits(customLeaderboard.Bronze).Seconds,
 			Silver = GameTime.FromGameUnits(customLeaderboard.Silver).Seconds,
@@ -63,7 +63,7 @@ public static class CustomLeaderboardConverters
 
 	private static DdLiveApi.GetCustomEntryDdLive ToDdLiveApi(this CustomEntry customEntry, bool hasReplay)
 	{
-		return new()
+		return new DdLiveApi.GetCustomEntryDdLive
 		{
 			Id = customEntry.Id,
 			Rank = customEntry.Rank,
