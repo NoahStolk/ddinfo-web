@@ -65,9 +65,7 @@ public class PlayerHistoryRepository
 
 			if (!hideUsernames && !string.IsNullOrWhiteSpace(entry.Username))
 			{
- #pragma warning disable CA1854
 				if (usernamesHistory.ContainsKey(entry.Username))
- #pragma warning restore CA1854
 					usernamesHistory[entry.Username]++;
 				else
 					usernamesHistory.Add(entry.Username, 1);
@@ -105,18 +103,36 @@ public class PlayerHistoryRepository
 
 			if (entry.DeathsTotal > 0)
 			{
-				TimeSpan? timeSpan = datePreviousForActivityHistory == null ? null : leaderboard.DateTime - datePreviousForActivityHistory.Value;
+				TimeSpan? timeSpan = datePreviousForActivityHistory.HasValue ? leaderboard.DateTime - datePreviousForActivityHistory.Value : null;
 
 				activityHistory.Add(new PlayerHistoryActivityEntry
 				{
-					DeathsIncrement = totalDeathsForActivityHistory.HasValue && timeSpan.HasValue ? (entry.DeathsTotal - totalDeathsForActivityHistory.Value) / timeSpan.Value.TotalDays : 0,
-					TimeIncrement = totalTimeForActivityHistory.HasValue && timeSpan.HasValue ? GameTime.FromGameUnits(entry.TimeTotal - totalTimeForActivityHistory.Value).Seconds / timeSpan.Value.TotalDays : 0,
+					DeathsIncrement = totalDeathsForActivityHistory.HasValue && timeSpan.HasValue ? GetDeathsIncrement(entry.DeathsTotal, totalDeathsForActivityHistory.Value, timeSpan.Value) : 0,
+					TimeIncrement = totalTimeForActivityHistory.HasValue && timeSpan.HasValue ? GetTimeIncrement(entry.TimeTotal, totalTimeForActivityHistory.Value, timeSpan.Value) : 0,
 					DateTime = leaderboard.DateTime,
 				});
 
 				totalDeathsForActivityHistory = entry.DeathsTotal;
 				totalTimeForActivityHistory = entry.TimeTotal;
 				datePreviousForActivityHistory = leaderboard.DateTime;
+
+				static double GetDeathsIncrement(ulong deathsTotal, ulong totalDeathsForActivityHistory, TimeSpan timeSpan)
+				{
+					ulong deathsTotalDifference = deathsTotal - totalDeathsForActivityHistory;
+					if (deathsTotalDifference > long.MaxValue)
+						deathsTotalDifference = 0; // Ignore negative differences.
+
+					return deathsTotalDifference / timeSpan.TotalDays;
+				}
+
+				static double GetTimeIncrement(ulong timeTotal, ulong totalTimeForActivityHistory, TimeSpan timeSpan)
+				{
+					ulong timeTotalDifference = timeTotal - totalTimeForActivityHistory;
+					if (timeTotalDifference > long.MaxValue)
+						timeTotalDifference = 0; // Ignore negative differences.
+
+					return GameTime.FromGameUnits(timeTotalDifference).Seconds / timeSpan.TotalDays;
+				}
 			}
 		}
 
