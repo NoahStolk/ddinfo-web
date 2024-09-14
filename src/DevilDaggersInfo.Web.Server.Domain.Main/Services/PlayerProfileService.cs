@@ -19,7 +19,7 @@ public class PlayerProfileService
 	public async Task UpdateProfileAsync(ClaimsPrincipal claimsPrincipal, int id, ApiSpec.Main.Players.EditPlayerProfile editPlayerProfile)
 	{
 		string? userName = claimsPrincipal.GetName();
-		UserEntity? user = _dbContext.Users.FirstOrDefault(u => u.Name == userName);
+		UserEntity? user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Name == userName);
 		if (user == null)
 			throw new UnauthorizedException();
 

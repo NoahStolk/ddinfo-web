@@ -36,12 +36,12 @@ public class PlayerService
 			banDescription: addPlayer.BanDescription,
 			banResponsibleId: addPlayer.BanResponsibleId);
 
-		if (_dbContext.Players.Any(p => p.Id == addPlayer.Id))
+		if (await _dbContext.Players.AnyAsync(p => p.Id == addPlayer.Id))
 			throw new AdminDomainException($"Player with ID '{addPlayer.Id}' already exists.");
 
 		foreach (int modId in addPlayer.ModIds ?? [])
 		{
-			if (!_dbContext.Mods.Any(m => m.Id == modId))
+			if (!await _dbContext.Mods.AnyAsync(m => m.Id == modId))
 				throw new AdminDomainException($"Mod with ID '{modId}' does not exist.");
 		}
 
@@ -97,7 +97,7 @@ public class PlayerService
 
 		foreach (int modId in editPlayer.ModIds ?? [])
 		{
-			if (!_dbContext.Mods.Any(m => m.Id == modId))
+			if (!await _dbContext.Mods.AnyAsync(m => m.Id == modId))
 				throw new AdminDomainException($"Mod with ID '{modId}' does not exist.");
 		}
 
@@ -135,20 +135,20 @@ public class PlayerService
 
 	public async Task DeletePlayerAsync(int id)
 	{
-		PlayerEntity? player = _dbContext.Players.FirstOrDefault(p => p.Id == id);
+		PlayerEntity? player = await _dbContext.Players.FirstOrDefaultAsync(p => p.Id == id);
 		if (player == null)
 			throw new NotFoundException($"Player with ID '{id}' does not exist.");
 
-		if (_dbContext.CustomEntries.Any(ce => ce.PlayerId == id))
+		if (await _dbContext.CustomEntries.AnyAsync(ce => ce.PlayerId == id))
 			throw new AdminDomainException("Player with custom leaderboard scores cannot be deleted.");
 
-		if (_dbContext.Donations.Any(d => d.PlayerId == id))
+		if (await _dbContext.Donations.AnyAsync(d => d.PlayerId == id))
 			throw new AdminDomainException("Player with donations cannot be deleted.");
 
-		if (_dbContext.PlayerMods.Any(pam => pam.PlayerId == id))
+		if (await _dbContext.PlayerMods.AnyAsync(pam => pam.PlayerId == id))
 			throw new AdminDomainException("Player with mods cannot be deleted.");
 
-		if (_dbContext.Spawnsets.Any(sf => sf.PlayerId == id))
+		if (await _dbContext.Spawnsets.AnyAsync(sf => sf.PlayerId == id))
 			throw new AdminDomainException("Player with spawnsets cannot be deleted.");
 
 		_dbContext.Players.Remove(player);

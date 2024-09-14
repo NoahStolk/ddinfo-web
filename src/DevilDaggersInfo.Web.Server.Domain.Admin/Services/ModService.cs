@@ -28,12 +28,12 @@ public class ModService
 		if (addMod.PlayerIds == null || addMod.PlayerIds.Count == 0)
 			throw new AdminDomainException("Mod must have at least one author.");
 
-		if (_dbContext.Mods.Any(m => m.Name == addMod.Name))
+		if (await _dbContext.Mods.AnyAsync(m => m.Name == addMod.Name))
 			throw new AdminDomainException($"Mod with name '{addMod.Name}' already exists.");
 
 		foreach (int playerId in addMod.PlayerIds)
 		{
-			if (!_dbContext.Players.Any(p => p.Id == playerId))
+			if (!await _dbContext.Players.AnyAsync(p => p.Id == playerId))
 				throw new AdminDomainException($"Player with ID '{playerId}' does not exist.");
 		}
 
@@ -68,7 +68,7 @@ public class ModService
 
 		foreach (int playerId in editMod.PlayerIds)
 		{
-			if (!_dbContext.Players.Any(p => p.Id == playerId))
+			if (!await _dbContext.Players.AnyAsync(p => p.Id == playerId))
 				throw new AdminDomainException($"Player with ID '{playerId}' does not exist.");
 		}
 
@@ -78,7 +78,7 @@ public class ModService
 		if (mod == null)
 			throw new NotFoundException($"Mod with ID '{id}' does not exist.");
 
-		if (mod.Name != editMod.Name && _dbContext.Mods.Any(m => m.Name == editMod.Name))
+		if (mod.Name != editMod.Name && await _dbContext.Mods.AnyAsync(m => m.Name == editMod.Name))
 			throw new AdminDomainException($"Mod with name '{editMod.Name}' already exists.");
 
 		bool isUpdated = await _modArchiveProcessor.TransformBinariesInModArchiveAsync(mod.Name, editMod.Name, editMod.BinariesToDelete.ConvertAll(s => BinaryName.Parse(s, mod.Name)), GetBinaryNames(editMod.Binaries.ConvertAll(bd => (bd.Name, bd.Data))));
@@ -106,7 +106,7 @@ public class ModService
 
 	public async Task DeleteModAsync(int id)
 	{
-		ModEntity? mod = _dbContext.Mods.FirstOrDefault(m => m.Id == id);
+		ModEntity? mod = await _dbContext.Mods.FirstOrDefaultAsync(m => m.Id == id);
 		if (mod == null)
 			throw new NotFoundException($"Mod with ID '{id}' does not exist.");
 

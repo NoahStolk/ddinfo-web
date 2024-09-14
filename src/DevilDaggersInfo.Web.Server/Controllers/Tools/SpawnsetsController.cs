@@ -76,15 +76,15 @@ public class SpawnsetsController : ControllerBase
 		if (spawnset == null)
 			return NotFound();
 
-		CustomLeaderboardEntity? customLeaderboard = _dbContext.CustomLeaderboards
+		CustomLeaderboardEntity? customLeaderboard = await _dbContext.CustomLeaderboards
 			.AsNoTracking()
-			.FirstOrDefault(cl => cl.SpawnsetId == spawnset.Id);
+			.FirstOrDefaultAsync(cl => cl.SpawnsetId == spawnset.Id);
 
-		var customEntries = customLeaderboard == null ? null : _dbContext.CustomEntries
+		var customEntries = customLeaderboard == null ? null : await _dbContext.CustomEntries
 			.AsNoTracking()
 			.Select(ce => new { ce.Id, ce.CustomLeaderboardId, ce.Time })
 			.Where(ce => ce.CustomLeaderboardId == customLeaderboard.Id)
-			.ToList();
+			.ToListAsync();
 
 		return new GetSpawnsetByHash
 		{

@@ -33,7 +33,7 @@ public class CustomEntryRepository
 			throw new NotFoundException($"Replay file with ID '{id}' could not be found.");
 
 		// ! Navigation property.
-		var customEntry = _dbContext.CustomEntries
+		var customEntry = await _dbContext.CustomEntries
 			.AsNoTracking()
 			.Select(ce => new
 			{
@@ -43,7 +43,7 @@ public class CustomEntryRepository
 				ce.PlayerId,
 				ce.Player!.PlayerName,
 			})
-			.FirstOrDefault(ce => ce.Id == id);
+			.FirstOrDefaultAsync(ce => ce.Id == id);
 		if (customEntry == null)
 			throw new NotFoundException($"Custom entry replay '{id}' could not be found.");
 

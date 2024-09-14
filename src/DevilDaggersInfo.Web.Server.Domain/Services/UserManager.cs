@@ -51,7 +51,7 @@ public class UserManager
 	{
 		name = name.Trim();
 
-		if (_dbContext.Users.Any(u => u.Name == name))
+		if (await _dbContext.Users.AnyAsync(u => u.Name == name))
 			throw new BadRequestException($"Name '{name}' is already taken.");
 
 		PasswordValidator.CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
@@ -76,7 +76,7 @@ public class UserManager
 		if (user == null)
 			throw new NotFoundException("User not found.");
 
-		if (_dbContext.Users.Any(u => u.Name == name))
+		if (await _dbContext.Users.AnyAsync(u => u.Name == name))
 			throw new BadRequestException($"Name '{user.Name}' is already taken.");
 
 		user.Name = name;

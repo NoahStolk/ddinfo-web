@@ -171,7 +171,7 @@ public class CustomEntryProcessor
 		// Make sure HomingDaggers is not negative (happens rarely in DD game memory for some reason). We also do this for spawnsets with homing disabled which we don't want to display values for anyway.
 		uploadRequest.GameData.HomingStored = Array.ConvertAll(uploadRequest.GameData.HomingStored, i => Math.Max(0, i));
 
-		CustomEntryEntity? customEntry = _dbContext.CustomEntries.FirstOrDefault(ce => ce.PlayerId == uploadRequest.PlayerId && ce.CustomLeaderboardId == customLeaderboard.Id);
+		CustomEntryEntity? customEntry = await _dbContext.CustomEntries.FirstOrDefaultAsync(ce => ce.PlayerId == uploadRequest.PlayerId && ce.CustomLeaderboardId == customLeaderboard.Id);
 		if (customEntry == null)
 		{
 			return new UploadResponse

@@ -31,10 +31,10 @@ public class SpawnsetService
 		if (existingSpawnset != null)
 			throw new AdminDomainException($"Spawnset is exactly the same as an already existing spawnset named '{existingSpawnset.Name}'.");
 
-		if (!_dbContext.Players.Any(p => p.Id == addSpawnset.PlayerId))
+		if (!await _dbContext.Players.AnyAsync(p => p.Id == addSpawnset.PlayerId))
 			throw new AdminDomainException($"Player with ID '{addSpawnset.PlayerId}' does not exist.");
 
-		if (_dbContext.Spawnsets.Any(m => m.Name == addSpawnset.Name))
+		if (await _dbContext.Spawnsets.AnyAsync(m => m.Name == addSpawnset.Name))
 			throw new AdminDomainException($"Spawnset with name '{addSpawnset.Name}' already exists.");
 
 		(SpawnSectionInfo PreLoopSection, SpawnSectionInfo LoopSection) sections = spawnsetBinary.CalculateSections();
@@ -71,14 +71,14 @@ public class SpawnsetService
 	{
 		ValidateName(editSpawnset.Name);
 
-		if (!_dbContext.Players.Any(p => p.Id == editSpawnset.PlayerId))
+		if (!await _dbContext.Players.AnyAsync(p => p.Id == editSpawnset.PlayerId))
 			throw new AdminDomainException($"Player with ID '{editSpawnset.PlayerId}' does not exist.");
 
 		SpawnsetEntity? spawnset = await _dbContext.Spawnsets.FirstOrDefaultAsync(s => s.Id == id);
 		if (spawnset == null)
 			throw new NotFoundException($"Spawnset with ID '{id}' does not exist.");
 
-		if (spawnset.Name != editSpawnset.Name && _dbContext.Spawnsets.Any(m => m.Name == editSpawnset.Name))
+		if (spawnset.Name != editSpawnset.Name && await _dbContext.Spawnsets.AnyAsync(m => m.Name == editSpawnset.Name))
 			throw new AdminDomainException($"Spawnset with name '{editSpawnset.Name}' already exists.");
 
 		// Do not update LastUpdated here. This value is based only on the file which cannot be edited.
@@ -95,7 +95,7 @@ public class SpawnsetService
 		if (spawnset == null)
 			throw new NotFoundException($"Spawnset with ID '{id}' does not exist.");
 
-		if (_dbContext.CustomLeaderboards.Any(cl => cl.SpawnsetId == id))
+		if (await _dbContext.CustomLeaderboards.AnyAsync(cl => cl.SpawnsetId == id))
 			throw new AdminDomainException("Spawnset with custom leaderboard cannot be deleted.");
 
 		_dbContext.Spawnsets.Remove(spawnset);

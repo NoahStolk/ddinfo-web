@@ -29,7 +29,7 @@ public class CustomLeaderboardService
 
 	public async Task AddCustomLeaderboardAsync(ApiSpec.Admin.CustomLeaderboards.AddCustomLeaderboard addCustomLeaderboard)
 	{
-		if (_dbContext.CustomLeaderboards.Any(cl => cl.SpawnsetId == addCustomLeaderboard.SpawnsetId))
+		if (await _dbContext.CustomLeaderboards.AnyAsync(cl => cl.SpawnsetId == addCustomLeaderboard.SpawnsetId))
 			throw new AdminDomainException("A leaderboard for this spawnset already exists.");
 
 		byte[]? gemsCollectedExpression = ValidateCriteriaExpression(addCustomLeaderboard.GemsCollectedCriteria.Expression);
@@ -211,7 +211,7 @@ public class CustomLeaderboardService
 		byte[]? orbAliveCountCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.OrbsAliveCriteria.Expression);
 		byte[]? thornAliveCountCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.ThornsAliveCriteria.Expression);
 
-		if (_dbContext.CustomEntries.Any(ce => ce.CustomLeaderboardId == id))
+		if (await _dbContext.CustomEntries.AnyAsync(ce => ce.CustomLeaderboardId == id))
 		{
 			if (customLeaderboard.RankSorting != editCustomLeaderboard.RankSorting.ToDomain())
 				throw new AdminDomainException("Cannot change rank sorting for custom leaderboard with scores.");
@@ -396,7 +396,7 @@ public class CustomLeaderboardService
 		if (customLeaderboard == null)
 			throw new NotFoundException($"Custom leaderboard with ID '{id}' does not exist.");
 
-		if (_dbContext.CustomEntries.Any(ce => ce.CustomLeaderboardId == id))
+		if (await _dbContext.CustomEntries.AnyAsync(ce => ce.CustomLeaderboardId == id))
 			throw new AdminDomainException("Custom leaderboard with scores cannot be deleted.");
 
 		_dbContext.CustomLeaderboards.Remove(customLeaderboard);

@@ -49,7 +49,7 @@ public class PlayerRepository
 		if (player == null)
 			throw new NotFoundException();
 
-		bool isPublicDonor = !player.HideDonations && _dbContext.Donations.Any(d => d.PlayerId == id && !d.IsRefunded && d.ConvertedEuroCentsReceived > 0);
+		bool isPublicDonor = !player.HideDonations && await _dbContext.Donations.AnyAsync(d => d.PlayerId == id && !d.IsRefunded && d.ConvertedEuroCentsReceived > 0);
 		return Player.FromEntity(player, isPublicDonor);
 	}
 

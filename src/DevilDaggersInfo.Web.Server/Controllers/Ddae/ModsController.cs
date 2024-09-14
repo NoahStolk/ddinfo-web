@@ -75,7 +75,7 @@ public class ModsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult> GetModFile([Required] string modName)
 	{
-		if (!_dbContext.Mods.Any(m => m.Name == modName))
+		if (!await _dbContext.Mods.AnyAsync(m => m.Name == modName))
 			return NotFound();
 
 		string fileName = $"{modName}.zip";

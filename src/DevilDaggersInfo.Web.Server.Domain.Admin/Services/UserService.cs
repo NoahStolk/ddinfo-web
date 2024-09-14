@@ -25,14 +25,14 @@ public class UserService
 	{
 		string roleName = toggleRole.RoleName;
 
-		if (!_dbContext.Roles.Any(r => r.Name == roleName))
+		if (!await _dbContext.Roles.AnyAsync(r => r.Name == roleName))
 			throw new NotFoundException();
 
 		// ! Navigation property.
-		UserEntity? user = _dbContext.Users
+		UserEntity? user = await _dbContext.Users
 			.Include(u => u.UserRoles!)
 				.ThenInclude(ur => ur.Role)
-			.FirstOrDefault(u => u.Id == id);
+			.FirstOrDefaultAsync(u => u.Id == id);
 		if (user == null)
 			throw new NotFoundException();
 
@@ -73,7 +73,7 @@ public class UserService
 			if (player == null)
 				throw new NotFoundException($"Player with ID '{assignPlayer.PlayerId}' was not found.");
 
-			if (_dbContext.Users.Any(u => u.PlayerId == player.Id))
+			if (await _dbContext.Users.AnyAsync(u => u.PlayerId == player.Id))
 				throw new AdminDomainException($"Player with ID '{player.Id}' is already linked.");
 
 			user.PlayerId = player.Id;
