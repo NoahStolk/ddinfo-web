@@ -22,7 +22,7 @@ public static class IntegerArrayCompressor
 	public static byte[] CompressData(int[] data)
 	{
 		if (data.Length == 0 || Array.TrueForAll(data, i => i <= 0))
-			return Array.Empty<byte>();
+			return [];
 
 		byte bitCount = GetBitCount(data.Max());
 		BitArray bitArray = new(new[] { bitCount })
@@ -108,7 +108,7 @@ public static class IntegerArrayCompressor
 		return value;
 	}
 
-	public static byte[] ToBytes(this BitArray bitArray)
+	private static byte[] ToBytes(this BitArray bitArray)
 	{
 		byte[] bytes = new byte[(bitArray.Length - 1) / 8 + 1];
 		bitArray.CopyTo(bytes, 0);

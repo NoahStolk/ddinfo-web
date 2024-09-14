@@ -338,7 +338,7 @@ public static class CustomLeaderboardConverters
 		};
 	}
 
-	public static ToolsApi.SpawnsetGameMode ToToolsApi(this SpawnsetGameMode dagger)
+	private static ToolsApi.SpawnsetGameMode ToToolsApi(this SpawnsetGameMode dagger)
 	{
 		return dagger switch
 		{
@@ -349,7 +349,7 @@ public static class CustomLeaderboardConverters
 		};
 	}
 
-	public static ToolsApi.CustomLeaderboardRankSorting ToToolsApi(this CustomLeaderboardRankSorting dagger)
+	private static ToolsApi.CustomLeaderboardRankSorting ToToolsApi(this CustomLeaderboardRankSorting dagger)
 	{
 		return dagger switch
 		{

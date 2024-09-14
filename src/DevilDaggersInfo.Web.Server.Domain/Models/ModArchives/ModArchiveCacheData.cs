@@ -6,7 +6,7 @@ namespace DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;
 
 public class ModArchiveCacheData
 {
-	public long FileSize { get; set; }
+	public long FileSize { get; init; }
 	public long FileSizeExtracted { get; set; }
 	public List<ModBinaryCacheData> Binaries { get; set; } = [];
 
