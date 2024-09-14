@@ -145,10 +145,8 @@ public class ModService
 		foreach ((string name, byte[] data) in binaries)
 		{
 			BinaryName binaryName = new(ModBinaryToc.DetermineType(data), name);
-			if (dict.ContainsKey(binaryName))
+			if (!dict.TryAdd(binaryName, data))
 				throw new InvalidModArchiveException("Binary names must all be unique.");
-
-			dict.Add(binaryName, data);
 		}
 
 		return dict;

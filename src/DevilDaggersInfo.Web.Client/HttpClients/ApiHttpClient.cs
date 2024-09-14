@@ -20,12 +20,10 @@ public abstract class ApiHttpClient
 
 	protected async Task<HttpResponseMessage> SendRequest(HttpMethod httpMethod, string url, JsonContent? body = null)
 	{
-		HttpRequestMessage request = new()
-		{
-			RequestUri = new Uri(url, UriKind.Relative),
-			Method = httpMethod,
-			Content = body,
-		};
+		using HttpRequestMessage request = new();
+		request.RequestUri = new Uri(url, UriKind.Relative);
+		request.Method = httpMethod;
+		request.Content = body;
 		string? token = await _localStorageService.GetItemAsStringAsync(AdminAuthenticationStateProvider.LocalStorageAuthKey);
 		if (token != null)
 			request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
