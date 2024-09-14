@@ -27,7 +27,7 @@ public class CustomLeaderboardHighscoreLogger : ICustomLeaderboardHighscoreLogge
 		if (customLeaderboard.Spawnset == null)
 			_logger.LogError("Spawnset is not included in the custom leaderboard. Defaulting to Survival.");
 
-		CustomLeaderboardDagger dagger = customLeaderboard.DaggerFromStat(customEntry) ?? CustomLeaderboardDagger.Silver;
+		CustomLeaderboardDagger? dagger = customLeaderboard.DaggerFromStat(customEntry);
 		string scoreField = GetScoreFieldName(customLeaderboard.RankSorting);
 		string scoreValue = GetFormattedScoreValue(customLeaderboard.RankSorting, customEntry);
 		_highscoreLogs.Add(new CustomLeaderboardHighscoreLog
@@ -55,7 +55,7 @@ public class CustomLeaderboardHighscoreLogger : ICustomLeaderboardHighscoreLogge
 		if (customLeaderboard.Spawnset == null)
 			_logger.LogError("Spawnset is not included in the custom leaderboard. Defaulting to Survival.");
 
-		CustomLeaderboardDagger dagger = customLeaderboard.DaggerFromStat(customEntry) ?? CustomLeaderboardDagger.Silver;
+		CustomLeaderboardDagger? dagger = customLeaderboard.DaggerFromStat(customEntry);
 		string scoreField = GetScoreFieldName(customLeaderboard.RankSorting);
 		string scoreValue = GetFormattedScoreValue(customLeaderboard.RankSorting, customEntry);
 		string message = $"`{playerName}` just got {GetScoreMessageText(customLeaderboard.RankSorting, customEntry)} on the `{spawnsetName}` leaderboard!";

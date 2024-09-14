@@ -6,7 +6,7 @@ namespace DevilDaggersInfo.Web.Server.Extensions;
 
 public static class CustomLeaderboardDaggerExtensions
 {
-	public static DiscordColor GetDiscordColor(this CustomLeaderboardDagger dagger)
+	public static DiscordColor GetDiscordColor(this CustomLeaderboardDagger? dagger)
 	{
 		return dagger switch
 		{
@@ -15,6 +15,7 @@ public static class CustomLeaderboardDaggerExtensions
 			CustomLeaderboardDagger.Golden => DiscordColors.Golden,
 			CustomLeaderboardDagger.Silver => DiscordColors.Silver,
 			CustomLeaderboardDagger.Bronze => DiscordColors.Bronze,
+			null => DiscordColors.None,
 			_ => DiscordColors.Default,
 		};
 	}

@@ -4,7 +4,7 @@ namespace DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 
 public record CustomLeaderboardHighscoreLog
 {
-	public required CustomLeaderboardDagger Dagger { get; init; }
+	public required CustomLeaderboardDagger? Dagger { get; init; }
 
 	public required CustomLeaderboardRankSorting RankSorting { get; init; }
 
