@@ -1,22 +1,28 @@
 using DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardStatistics;
 using System.Diagnostics;
 
-byte[] init = await ExecuteRequest(1);
-
-int totalPages = BitConverter.ToInt32(init, 75) / 100 + 1;
-
 string start = DateTime.UtcNow.ToString("yyyyMMddHHmm");
-Stopwatch stopwatch = new();
+long startTimeStamp = Stopwatch.GetTimestamp();
 List<CompressedEntry> entries = [];
-for (int i = 0; i < totalPages; i++)
+int offset = 0;
+while (true)
 {
-	stopwatch.Restart();
-	entries.AddRange(await FetchAsync(i * 100 + 1));
-	Console.WriteLine($"Fetching page {i + 1}/{totalPages} took {stopwatch.ElapsedMilliseconds / 1000f} seconds.");
+	long subTimeStamp = Stopwatch.GetTimestamp();
 
-	// Write the file after every fetch in case it crashes and all progress is lost.
-	await File.WriteAllBytesAsync($"{start}.bin", GetBytes(entries));
+	(int totalPlayers, List<CompressedEntry> compressedEntries) = await FetchAsync(offset);
+	if (compressedEntries.Count == 0)
+		break;
+
+	entries.AddRange(compressedEntries);
+	offset += compressedEntries.Count;
+
+	float percentage = totalPlayers == 0 ? 0 : (float)offset / totalPlayers;
+	Console.WriteLine($"Fetched ranks {offset}/{totalPlayers} ({percentage:0.00%}). Processing took {Stopwatch.GetElapsedTime(subTimeStamp).TotalSeconds:0.00} seconds.");
 }
+
+Console.WriteLine($"Total processing time: {Stopwatch.GetElapsedTime(startTimeStamp)}");
+
+await File.WriteAllBytesAsync($"{start}.bin", GetBytes(entries));
 
 static byte[] GetBytes(List<CompressedEntry> entries)
 {
@@ -35,11 +41,12 @@ static byte[] GetBytes(List<CompressedEntry> entries)
 	return ms.ToArray();
 }
 
-static async Task<List<CompressedEntry>> FetchAsync(int rank)
+static async Task<(int TotalPlayers, List<CompressedEntry> Entries)> FetchAsync(int rank)
 {
 	byte[] data = await ExecuteRequest(rank);
 
 	int entryCount = BitConverter.ToInt16(data, 59);
+	int totalPlayers = BitConverter.ToInt32(data, 75);
 	int rankIterator = 0;
 	int bytePos = 83;
 
@@ -51,35 +58,33 @@ static async Task<List<CompressedEntry>> FetchAsync(int rank)
 
 		CompressedEntry entry = new()
 		{
-			Time = (uint)BitConverter.ToInt32(data, bytePos + 8),
-			Kills = (ushort)BitConverter.ToInt32(data, bytePos + 12),
-			Gems = (ushort)BitConverter.ToInt32(data, bytePos + 24),
-			DaggersHit = (ushort)BitConverter.ToInt32(data, bytePos + 20),
-			DaggersFired = (uint)BitConverter.ToInt32(data, bytePos + 16),
-			DeathType = (byte)BitConverter.ToInt16(data, bytePos + 28),
+			Time = (uint)BitConverter.ToInt32(data, bytePos + 12),
+			Kills = (ushort)BitConverter.ToInt32(data, bytePos + 16),
+			Gems = (ushort)BitConverter.ToInt32(data, bytePos + 28),
+			DaggersHit = (ushort)BitConverter.ToInt32(data, bytePos + 24),
+			DaggersFired = (uint)BitConverter.ToInt32(data, bytePos + 20),
+			DeathType = (byte)BitConverter.ToInt16(data, bytePos + 32),
 		};
 		compressedEntries.Add(entry);
 
-		bytePos += 84;
+		bytePos += 88;
 		rankIterator++;
 	}
 
-	Console.WriteLine($"Fetched rank {rank} - {rank + 99}.");
-
-	return compressedEntries;
+	return (totalPlayers, compressedEntries);
 }
 
-static async Task<byte[]> ExecuteRequest(int rank)
+static async Task<byte[]> ExecuteRequest(int offset)
 {
 	List<KeyValuePair<string?, string?>> postValues =
 	[
 		new("user", "0"),
 		new("level", "survival"),
-		new("offset", (rank - 1).ToString()),
+		new("offset", offset.ToString()),
 	];
 
 	using FormUrlEncodedContent content = new(postValues);
 	using HttpClient client = new();
-	HttpResponseMessage response = await client.PostAsync(new Uri("http://dd.hasmodai.com/backend15/get_scores.php"), content);
+	HttpResponseMessage response = await client.PostAsync(new Uri("http://dd.hasmodai.com/dd3/get_scores.php"), content);
 	return await response.Content.ReadAsByteArrayAsync();
 }
