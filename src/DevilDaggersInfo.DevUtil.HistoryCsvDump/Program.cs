@@ -6,10 +6,14 @@ const string baseDirectory = """C:\Users\NOAH\source\repos\ddinfo-web\src\DevilD
 // Find all players that have ever been in the top 10.
 string[] files = Directory.GetFiles(baseDirectory, "*.bin", SearchOption.TopDirectoryOnly).Order().ToArray();
 List<LeaderboardHistory> leaderboardHistories = files.Select(file => LeaderboardHistory.CreateFromFile(File.ReadAllBytes(file))).ToList();
-List<int> top10Players = [];
+List<(int Id, string Name)> top10Players = [];
 foreach (LeaderboardHistory leaderboardHistory in leaderboardHistories)
-	top10Players.AddRange(leaderboardHistory.Entries.Where(e => e.Rank <= 10).Select(e => e.Id));
-top10Players = top10Players.Distinct().Order().ToList();
+	top10Players.AddRange(leaderboardHistory.Entries.Where(e => e.Rank <= 10).Select(e => (e.Id, e.Username)));
+top10Players = top10Players
+	.DistinctBy(p => p.Id)
+	.Where(p => p.Id is not (0 or 152_846 or 233_257 or 316_836 or 999_999))
+	.OrderBy(p => p.Id)
+	.ToList();
 
 // For each date; find the player's score and keep track of it.
 Dictionary<int, int> currentBestTimes = new();
@@ -37,8 +41,8 @@ while (currentDate < DateOnly.FromDateTime(DateTime.UtcNow))
 		DaysSinceRelease = currentDate.DayNumber - releaseDate.DayNumber,
 		ScoreEntries = top10Players.ConvertAll(p => new ScoreEntry
 		{
-			PlayerId = p,
-			Time = currentBestTimes.GetValueOrDefault(p, 0),
+			PlayerId = p.Id,
+			Time = currentBestTimes.GetValueOrDefault(p.Id, 0),
 		}),
 	});
 
@@ -46,12 +50,12 @@ while (currentDate < DateOnly.FromDateTime(DateTime.UtcNow))
 }
 
 StringBuilder csvBuilder = new();
-csvBuilder.AppendLine("Days since release;" + string.Join(";", top10Players.Select(p => p.ToString())));
+csvBuilder.AppendLine("Days since release;" + string.Join(";", top10Players.Select(p => p.Name)));
 foreach (DayEntry dayEntry in dayEntries)
 {
 	csvBuilder.AppendLine($"{dayEntry.DaysSinceRelease};" + string.Join(";", top10Players.Select(p =>
 	{
-		ScoreEntry? scoreEntry = dayEntry.ScoreEntries.Find(s => s.PlayerId == p);
+		ScoreEntry? scoreEntry = dayEntry.ScoreEntries.Find(s => s.PlayerId == p.Id);
 		return scoreEntry == null ? "0.0000" : (scoreEntry.Time / 10_000f).ToString("0.0000");
 	})));
 }
