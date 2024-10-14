@@ -3,12 +3,72 @@ using System.Text;
 
 const string baseDirectory = """C:\Users\NOAH\source\repos\ddinfo-web\src\DevilDaggersInfo.Web.Server\Data\LeaderboardHistory""";
 
+Dictionary<int, string> names = new()
+{
+	[0] = "unknown",
+	[1] = "m4ttbush",
+	[2] = "jtn",
+	[4] = "b0necarver",
+	[5] = "life",
+	[6] = "Boneman",
+	[8] = "woods",
+	[112] = "weaksauce",
+	[229] = "Sojk",
+	[362] = "atro",
+	[438] = "Kaijt",
+	[1029] = "ohsnaplol",
+	[1135] = "bowsr",
+	[1545] = "KrosisOne",
+	[1677] = "ANT4",
+	[2049] = "kudemizu",
+	[2076] = "Mymeleon",
+	[2144] = "pmcc",
+	[2316] = "aircawn",
+	[3294] = "aiunzovovor",
+	[4795] = "Moz",
+	[6760] = "TSTAB",
+	[10098] = "Stephanstein",
+	[10210] = "sjorsbw",
+	[14201] = "yokshu",
+	[18469] = "trauma queen",
+	[19218] = "Jane",
+	[21854] = "xvlv",
+	[27510] = "L0s Blitz0r",
+	[40892] = "Shef",
+	[48687] = "Hahmo",
+	[82891] = "DraQu",
+	[86805] = "L Saille",
+	[88424] = "glum",
+	[93991] = "cookie",
+	[105641] = "jay",
+	[106722] = "pocket",
+	[116704] = "pocket (alt)",
+	[118832] = "Chupacabra",
+	[134802] = "gLad",
+	[148788] = "Bintr",
+	[152846] = "sjorsbw (pocket alt)",
+	[173419] = "Kasa",
+	[182924] = "axe",
+	[187974] = "L Saille (alt)",
+	[188777] = "_whipsta",
+	[193297] = "Driftkon",
+	[219601] = "Disres",
+	[233257] = "sotp (alt)",
+	[234946] = "sotp",
+	[244105] = "skunky",
+	[244645] = "pride",
+	[247080] = "SilentSong",
+	[262630] = "Owl City",
+	[316836] = "sotp (alt2)",
+	[999999] = "blankname",
+};
+
 // Find all players that have ever been in the top 10.
 string[] files = Directory.GetFiles(baseDirectory, "*.bin", SearchOption.TopDirectoryOnly).Order().ToArray();
 List<LeaderboardHistory> leaderboardHistories = files.Select(file => LeaderboardHistory.CreateFromFile(File.ReadAllBytes(file))).ToList();
 List<(int Id, string Name)> top10Players = [];
 foreach (LeaderboardHistory leaderboardHistory in leaderboardHistories)
-	top10Players.AddRange(leaderboardHistory.Entries.Where(e => e.Rank <= 10).Select(e => (e.Id, e.Username)));
+	top10Players.AddRange(leaderboardHistory.Entries.Where(e => e.Rank <= 10).Select(e => (e.Id, names.GetValueOrDefault(e.Id, e.Username))));
 top10Players = top10Players
 	.DistinctBy(p => p.Id)
 	.Where(p => p.Id is not (0 or 152_846 or 233_257 or 316_836 or 999_999))
