@@ -15,6 +15,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Build
-        run: dotnet build src/DevilDaggersInfo.Web.sln -c Release
+        run: dotnet build src/DevilDaggersInfo.Web.slnx -c Release
       - name: Test
-        run: dotnet test src/DevilDaggersInfo.Web.sln -c Release --no-build
+        run: dotnet test src/DevilDaggersInfo.Web.slnx -c Release --no-build
