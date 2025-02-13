@@ -10,7 +10,7 @@ jobs:
       - name: Set up dotnet
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '8.0.403'
+          dotnet-version: '9.0.200'
           include-prerelease: false
       - name: Checkout
         uses: actions/checkout@v2
