@@ -423,8 +423,8 @@ public class CustomLeaderboardService
 			{
 				foreach (double dagger in new[] { customLeaderboardDaggers.Leviathan, customLeaderboardDaggers.Devil, customLeaderboardDaggers.Golden, customLeaderboardDaggers.Silver, customLeaderboardDaggers.Bronze })
 				{
-					const int min = 1;
-					const int max = 1500;
+					const int min = 0;
+					const int max = 7200;
 					if (dagger is < min or > max)
 						throw new CustomLeaderboardValidationException($"All daggers times must be between {min} and {max} for featured leaderboards.");
 				}
