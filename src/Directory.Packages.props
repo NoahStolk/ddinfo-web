@@ -1,5 +1,9 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="Current">
 
+	<PropertyGroup>
+		<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+	</PropertyGroup>
+
 	<ItemGroup Label="AspNetCore client">
 		<PackageVersion Include="Blazored.LocalStorage" Version="4.5.0" />
 		<PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="8.0.10" />
@@ -36,13 +40,6 @@
 		<PackageVersion Include="System.Net.Http.Json" Version="8.0.1" />
 	</ItemGroup>
 
-	<ItemGroup Label="Static code analysis">
-		<PackageVersion Include="Nullable.Extended.Analyzer" Version="1.15.6581" />
-		<PackageVersion Include="Roslynator.Analyzers" Version="4.13.1" />
-		<PackageVersion Include="SonarAnalyzer.CSharp" Version="10.9.0.115408" />
-		<PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.556" />
-	</ItemGroup>
-
 	<ItemGroup Label="Tests">
 		<PackageVersion Include="coverlet.collector" Version="6.0.4" />
 		<PackageVersion Include="JetBrains.Annotations" Version="2024.3.0" />
@@ -51,6 +48,13 @@
 		<PackageVersion Include="MSTest.TestAdapter" Version="3.8.3" />
 		<PackageVersion Include="MSTest.TestFramework" Version="3.8.3" />
 		<PackageVersion Include="NSubstitute" Version="5.3.0" />
+	</ItemGroup>
+
+	<ItemGroup Label="Static code analysis">
+		<GlobalPackageReference Include="Nullable.Extended.Analyzer" Version="1.15.6581" />
+		<GlobalPackageReference Include="Roslynator.Analyzers" Version="4.13.1" />
+		<GlobalPackageReference Include="SonarAnalyzer.CSharp" Version="10.9.0.115408" />
+		<GlobalPackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.556" />
 	</ItemGroup>
 
 </Project>
