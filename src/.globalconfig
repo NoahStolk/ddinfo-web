@@ -193,6 +193,10 @@ dotnet_diagnostic.CA1056.severity                                        = none
 # Validate arguments of public methods.
 dotnet_diagnostic.CA1062.severity                                        = none
 
+# Because an application's API isn't typically referenced from outside the assembly, types can be made internal. (.NET 10)
+# The ApiSpec projects are published as NuGet packages, so their types have to stay public.
+dotnet_diagnostic.CA1515.severity                                        = none
+
 # Properties should not return arrays.
 dotnet_diagnostic.CA1819.severity                                        = none
 

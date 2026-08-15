@@ -3,6 +3,9 @@
   <PropertyGroup>
     <UserSecretsId>DevilDaggersInfo.Web.BlazorWasm.Server-263F51EE-93E3-4591-979C-D593FC68F5E7</UserSecretsId>
     <SentryImplicitUsings>false</SentryImplicitUsings>
+    <!-- Only the server is published for a specific runtime. Setting this globally makes the Blazor WebAssembly client
+         look for Mono runtime packs for these RIDs, which are no longer published as of .NET 10. -->
+    <RuntimeIdentifiers>win-x64;linux-x64</RuntimeIdentifiers>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,8 +17,8 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="MySql.EntityFrameworkCore" />
     <PackageReference Include="NSwag.AspNetCore" />
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" />
     <PackageReference Include="Sentry.AspNetCore" />
   </ItemGroup>
 

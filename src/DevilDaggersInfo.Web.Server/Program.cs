@@ -47,7 +47,7 @@ builder.Services.AddCors(options => options.AddPolicy(defaultCorsPolicy, corsBui
 builder.Services.AddDbContext<ApplicationDbContext>((sp, options) =>
 {
 	MySqlOptions mySqlOptions = sp.GetRequiredService<IOptions<MySqlOptions>>().Value;
-	options.UseMySql(mySqlOptions.ConnectionString, MySqlServerVersion.LatestSupportedServerVersion, providerOptions => providerOptions.EnableRetryOnFailure(5));
+	options.UseMySQL(mySqlOptions.ConnectionString, providerOptions => providerOptions.EnableRetryOnFailure(5));
 	options.EnableSensitiveDataLogging(builder.Environment.IsDevelopment());
 });
 
