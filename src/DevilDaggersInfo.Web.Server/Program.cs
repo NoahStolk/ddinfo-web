@@ -242,9 +242,6 @@ app.UseSwaggerUi();
 
 if (!app.Environment.IsDevelopment())
 {
-#if ROLES
-	CreateRolesIfNotExist(serviceProvider);
-#endif
 	StringBuilder sb = new();
 	sb.Append("> **Application is now online in the `").Append(app.Environment.EnvironmentName).AppendLine("` environment.**");
 
@@ -253,22 +250,3 @@ if (!app.Environment.IsDevelopment())
 }
 
 await app.RunAsync();
-
-#if ROLES
-private static void CreateRolesIfNotExist(IServiceProvider serviceProvider)
-{
-	using ApplicationDbContext dbContext = serviceProvider.GetRequiredService<ApplicationDbContext>();
-	bool anyChanges = false;
-	foreach (string roleName in Roles.All)
-	{
-		if (!dbContext.Roles.Any(r => r.Name == roleName))
-		{
-			dbContext.Roles.Add(new RoleEntity { Name = roleName });
-			anyChanges = true;
-		}
-	}
-
-	if (anyChanges)
-		dbContext.SaveChanges();
-}
-#endif
