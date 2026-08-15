@@ -37,6 +37,6 @@ else if (GetEntries != null)
 	{
 		<span>Showing @GetEntries.Count result@(GetEntries.Count == 1 ? string.Empty : "s") for "@Username".</span>
 		<LeaderboardTableInfo />
-		<LeaderboardTable TGetEntryDto="GetEntry" Entries="GetEntries" Players="Players" IsHistory="false" GameVersion="GameConstants.CurrentVersion" />
+		<LeaderboardTable TGetEntryDto="GetEntry" Entries="GetEntries" Players="(Players ?? [])" IsHistory="false" GameVersion="GameConstants.CurrentVersion" />
 	}
 }

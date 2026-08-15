@@ -54,5 +54,5 @@ else
 
 	<LeaderboardGlobal Leaderboard="GetLeaderboardHistory" IsHistory="true" />
 	<LeaderboardTableInfo />
-	<LeaderboardTable TGetEntryDto="GetEntryHistory" Entries="GetLeaderboardHistory.Entries.Skip(Rank - 1).Take(100).ToList()" Players="Players" IsHistory="true" GameVersion="_gameVersion" />
+	<LeaderboardTable TGetEntryDto="GetEntryHistory" Entries="GetLeaderboardHistory.Entries.Skip(Rank - 1).Take(100).ToList()" Players="(Players ?? [])" IsHistory="true" GameVersion="_gameVersion" />
 }

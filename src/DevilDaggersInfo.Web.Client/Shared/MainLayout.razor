@@ -14,7 +14,7 @@
 			<p>&copy; DevilDaggers.info 2017-@DateTime.UtcNow.Year</p>
 			<p>
 				Version
-				<Tooltip Position="TooltipPosition.Right" Text="@Program.VersionHash" TextSizeClass="@string.Empty"><span class="cursor-pointer">@Program.Version</span></Tooltip>
+				<Tooltip Position="TooltipPosition.Right" Text="@(Program.VersionHash ?? "?")" TextSizeClass="@string.Empty"><span class="cursor-pointer">@Program.Version</span></Tooltip>
 				(@Program.BuildTime)
 			</p>
 			<p><a class="link" href="//devildaggers.com/" target="_blank">Devil Daggers</a> is created by <a class="link" href="//sorath.com/" target="_blank">Sorath</a></p>
