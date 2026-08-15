@@ -79,7 +79,7 @@ Blazor WASM. Pages under `Pages/<Area>/`, reusable components under `Components/
 ## Conventions
 
 - `.editorconfig`: **tabs** everywhere (spaces only in `.csproj`/`.pubxml`/`.slnx`/`.yml`). Existing code uses `_camelCase` private fields, explicit types over `var`, and file-scoped namespaces.
-- `Directory.Build.props`: `net10.0`, `LangVersion 12.0`, nullable enabled with `WarningsAsErrors=nullable`, `AnalysisMode=All`, implicit usings, invariant globalization. Analyzer warnings (StyleCop, Sonar, Roslynator, Nullable.Extended) are numerous and non-blocking — don't chase pre-existing ones, but don't add new ones either.
+- `Directory.Build.props`: `net10.0`, `LangVersion 14.0`, nullable enabled with `WarningsAsErrors=nullable`, `AnalysisMode=All`, implicit usings, invariant globalization. Analyzer warnings (StyleCop, Sonar, Roslynator, Nullable.Extended) are numerous and non-blocking — don't chase pre-existing ones, but don't add new ones either.
 - `Directory.Packages.props`: central package management. Add new packages there as `<PackageVersion>` and reference them without a version in the csproj. Dependabot keeps versions current.
 - Tests use MSTest + NSubstitute + EF Core InMemory (`TestDbContext`, `TestData`, `MockEntities`); test-only analyzer relaxations live in `src/test/Tests.globalconfig`.
 
