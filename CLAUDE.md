@@ -13,20 +13,20 @@ Core parsing libraries (spawnsets, mods, replays, wiki data) live in a separate 
 All commands run from the repository root. The solution uses the `.slnx` format.
 
 ```bash
-# Build (see Tailwind note below — CI=true is required on Linux/macOS)
-CI=true dotnet build src/DevilDaggersInfo.Web.slnx -c Release
+# Build
+dotnet build src/DevilDaggersInfo.Web.slnx -c Release
 
 # Test
-CI=true dotnet test src/DevilDaggersInfo.Web.slnx -c Release --no-build
+dotnet test src/DevilDaggersInfo.Web.slnx -c Release --no-build
 
 # Single test / filtered
-CI=true dotnet test src/test/DevilDaggersInfo.Web.Server.Domain.Test --filter "FullyQualifiedName~WorldRecordRepositoryTests"
+dotnet test src/test/DevilDaggersInfo.Web.Server.Domain.Test --filter "FullyQualifiedName~WorldRecordRepositoryTests"
 
 # Run the site (server hosts the Blazor WASM client)
-CI=true dotnet run --project src/DevilDaggersInfo.Web.Server   # https://localhost:5001
+dotnet run --project src/DevilDaggersInfo.Web.Server   # https://localhost:5001
 ```
 
-**Tailwind gotcha:** `DevilDaggersInfo.Web.Client.csproj` runs `..\tw.exe` (a Windows Tailwind CLI binary, not committed) before compile. Any build that includes the client fails with `Error building CSS file` unless Tailwind is disabled — set `CI=true` (as CI does) or pass `-p:TailwindBuild=false`. Generated `wwwroot/tailwind.min.css` is gitignored, so a locally built site has no styles.
+**Tailwind:** building the client runs the Tailwind standalone CLI to generate `wwwroot/tailwind.min.css`. The pinned CLI version is downloaded on first build into `src/tools/` (gitignored, ~43MB, cached across builds) for the host platform — Windows, Linux and macOS on x64/arm64 are all handled. Both the binary and the generated CSS are gitignored. Pass `-p:TailwindBuild=false` to skip the step entirely (useful offline, or when only touching server code).
 
 **Runtime prerequisites:** projects target `net8.0`; the test project targets `net9.0` (temporary, see its TODO). Running tests requires a .NET 9 runtime to be installed.
 
@@ -34,7 +34,7 @@ CI=true dotnet run --project src/DevilDaggersInfo.Web.Server   # https://localho
 
 Database migration scripts: see `docs/setup/generating-database-migration-scripts.md` (requires temporarily adding EF package references to `Web.Server.Domain`).
 
-CI (`.github/workflows/`) builds + tests on PR, and on push to `main` also packs and pushes `ApiSpec.Admin`, `ApiSpec.Main` and `ApiSpec.Tools` to nuget.org — changes to those three projects are public API surface with their own `<Version>`.
+CI (`.github/workflows/`) builds + tests on PR — including the Tailwind step, so CSS/markup drift is caught — and on push to `main` also packs and pushes `ApiSpec.Admin`, `ApiSpec.Main` and `ApiSpec.Tools` to nuget.org — changes to those three projects are public API surface with their own `<Version>`.
 
 ## Architecture
 

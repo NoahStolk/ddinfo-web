@@ -29,11 +29,27 @@
     <ProjectReference Include="..\DevilDaggersInfo.Web.Client.Core.CanvasChart\DevilDaggersInfo.Web.Client.Core.CanvasChart.csproj" />
   </ItemGroup>
 
-  <Target Name="tailwind build" BeforeTargets="Compile" Condition="'$(TailwindBuild)' == 'true'">
-    <Exec Command="..\tw.exe -i tailwind.css -o wwwroot\tailwind.min.css --minify" ContinueOnError="true">
-      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
-    </Exec>
-    <Error Condition="'$(ErrorCode)' != '0'" Text="Error building CSS file" />
+  <PropertyGroup Label="Tailwind">
+    <TailwindVersion>3.4.17</TailwindVersion>
+    <TailwindArch>x64</TailwindArch>
+    <TailwindArch Condition="'$(NETCoreSdkPortableRuntimeIdentifier)' != '' And $(NETCoreSdkPortableRuntimeIdentifier.EndsWith('arm64'))">arm64</TailwindArch>
+    <TailwindPlatform Condition="$([MSBuild]::IsOSPlatform('Windows'))">windows-$(TailwindArch).exe</TailwindPlatform>
+    <TailwindPlatform Condition="$([MSBuild]::IsOSPlatform('Linux'))">linux-$(TailwindArch)</TailwindPlatform>
+    <TailwindPlatform Condition="$([MSBuild]::IsOSPlatform('OSX'))">macos-$(TailwindArch)</TailwindPlatform>
+    <TailwindDirectory>$(MSBuildThisFileDirectory)../tools/</TailwindDirectory>
+    <TailwindExecutable>$(TailwindDirectory)tailwindcss-$(TailwindVersion)-$(TailwindPlatform)</TailwindExecutable>
+  </PropertyGroup>
+
+  <!-- The Tailwind standalone CLI is a platform-specific binary that is downloaded on demand instead of being committed. -->
+  <Target Name="RestoreTailwindCli" Condition="'$(TailwindBuild)' == 'true' And !Exists('$(TailwindExecutable)')">
+    <Error Condition="'$(TailwindPlatform)' == ''" Text="No Tailwind CSS CLI is available for this platform. Build with -p:TailwindBuild=false to skip generating the CSS file." />
+    <Message Importance="high" Text="Downloading Tailwind CSS CLI $(TailwindVersion) for $(TailwindPlatform)..." />
+    <DownloadFile SourceUrl="https://github.com/tailwindlabs/tailwindcss/releases/download/v$(TailwindVersion)/tailwindcss-$(TailwindPlatform)" DestinationFolder="$(TailwindDirectory)" DestinationFileName="$([System.IO.Path]::GetFileName('$(TailwindExecutable)'))" Retries="3" />
+    <Exec Command="chmod +x &quot;$(TailwindExecutable)&quot;" Condition="!$([MSBuild]::IsOSPlatform('Windows'))" />
+  </Target>
+
+  <Target Name="BuildTailwindCss" BeforeTargets="Compile" DependsOnTargets="RestoreTailwindCli" Condition="'$(TailwindBuild)' == 'true'">
+    <Exec Command="&quot;$(TailwindExecutable)&quot; -i tailwind.css -o wwwroot/tailwind.min.css --minify" WorkingDirectory="$(MSBuildThisFileDirectory)" />
   </Target>
 
 </Project>

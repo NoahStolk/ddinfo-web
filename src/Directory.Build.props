@@ -21,8 +21,4 @@
 		<DebugSymbols>False</DebugSymbols>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(CI)' == 'true'">
-		<TailwindBuild>false</TailwindBuild>
-	</PropertyGroup>
-
 </Project>

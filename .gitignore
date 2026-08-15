@@ -285,5 +285,9 @@ database-exports/
 tailwind.min.css
 tailwind.css.map
 
+# Tailwind standalone CLI, downloaded on demand by the build
+/src/tools/
+/src/tw.exe
+
 # Data protection
 */**/DevilDaggersInfo.Web.Server/keys
