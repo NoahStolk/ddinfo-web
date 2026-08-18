@@ -1,9 +1,8 @@
 @using DevilDaggersInfo.Web.Client.Utils
 <div>
-	@if (!string.IsNullOrEmpty(CountryCode))
+	@if (UserUtils.TryGetCountry(CountryCode, out Country country))
 	{
-		string countryCode = UserUtils.CountryNames.ContainsKey(CountryCode) ? UserUtils.CountryNames[CountryCode] : "?";
-		<Tooltip Position=TooltipPosition.Right Text="@countryCode"><img class="cursor-pointer inline-block" src="/images/flags/@(CountryCode).png" /></Tooltip>
+		<Tooltip Position=TooltipPosition.Right Text="@country.Name"><img class="cursor-pointer inline-block" src="@country.FlagPath" /></Tooltip>
 	}
 </div>
 
