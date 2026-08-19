@@ -104,7 +104,6 @@ builder.Services.AddTransient<DevilDaggersInfo.Web.Server.Domain.Admin.Repositor
 builder.Services.AddTransient<DevilDaggersInfo.Web.Server.Domain.Admin.Repositories.UserRepository>();
 
 // Utilities
-builder.Services.AddSingleton<LeaderboardResponseParser>();
 
 // Monitoring
 builder.Services.AddSingleton<BackgroundServiceMonitor>();
