@@ -51,9 +51,16 @@ public class PlayerHistoryRepository
 		DateTime? datePreviousForActivityHistory = null;
 		List<PlayerHistoryActivityEntry> activityHistory = [];
 
-		foreach (string leaderboardHistoryPath in _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory).Where(p => p.EndsWith(".bin")))
+		// The score, rank and activity histories are all built from running state, so these must be processed in
+		// chronological order.
+		List<LeaderboardHistory> leaderboardHistories = _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory)
+			.Where(p => p.EndsWith(".bin"))
+			.Select(p => _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(p))
+			.OrderBy(lbh => lbh.DateTime)
+			.ToList();
+
+		foreach (LeaderboardHistory leaderboard in leaderboardHistories)
 		{
-			LeaderboardHistory leaderboard = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
 			EntryHistory? entry = leaderboard.Entries.Find(e => e.Id == id);
 			if (entry == null)
 				continue;
