@@ -39,7 +39,7 @@
 
 	<ItemGroup Label="Tests">
 		<PackageVersion Include="coverlet.collector" Version="6.0.4" />
-		<PackageVersion Include="JetBrains.Annotations" Version="2024.3.0" />
+		<PackageVersion Include="JetBrains.Annotations" Version="2026.2.0" />
 		<PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
 		<PackageVersion Include="MockQueryable.NSubstitute" Version="10.0.8" />
 		<PackageVersion Include="MSTest.TestAdapter" Version="3.8.3" />
