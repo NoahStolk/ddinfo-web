@@ -101,7 +101,7 @@
 	[Parameter]
 	[EditorRequired]
 	public required List<GetEntry> Entries { get; set; }
-	
+
 	[Parameter]
 	[EditorRequired]
 	public List<GetPlayerForSettings>? Players { get; set; }
@@ -114,7 +114,7 @@
 
 	protected override void OnInitialized()
 	{
-		foreach (LeaderboardSorting e in (LeaderboardSorting[])Enum.GetValues(typeof(LeaderboardSorting)))
+		foreach (LeaderboardSorting e in Enum.GetValues<LeaderboardSorting>())
 			_sortings.Add(e, false);
 	}
 

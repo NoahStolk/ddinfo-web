@@ -10,7 +10,7 @@ public class FileSystemService : IFileSystemService
 
 	public FileSystemService()
 	{
-		foreach (DataSubDirectory e in (DataSubDirectory[])Enum.GetValues(typeof(DataSubDirectory)))
+		foreach (DataSubDirectory e in Enum.GetValues<DataSubDirectory>())
 			Directory.CreateDirectory(GetPath(e));
 	}
 
