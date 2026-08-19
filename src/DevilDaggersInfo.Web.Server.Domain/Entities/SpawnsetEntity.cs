@@ -26,7 +26,10 @@ public class SpawnsetEntity : IAuditable
 	[Obsolete("Practice spawnsets are now always generated and there's no need for them to be marked as such.")]
 	public bool IsPractice { get; init; }
 
+	// The column type is explicit because 70 KiB exceeds the maximum size of a VARBINARY column, which the provider
+	// would otherwise derive from MaxLength. MySQL rejects varbinary(71680).
 	[MaxLength(70 * 1024)]
+	[Column(TypeName = "longblob")]
 	public required byte[] File { get; init; }
 
 	#region File data needed for querying

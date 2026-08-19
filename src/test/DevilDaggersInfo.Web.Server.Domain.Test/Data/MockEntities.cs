@@ -41,11 +41,11 @@ public class MockEntities
 
 		PropertyInfo[] properties = typeof(MockEntities).GetProperties();
 
-		MockDbSetPlayers = GetEntities<PlayerEntity>().AsQueryable().BuildMockDbSet();
-		MockDbSetSpawnsets = GetEntities<SpawnsetEntity>().AsQueryable().BuildMockDbSet();
-		MockDbSetCustomLeaderboards = GetEntities<CustomLeaderboardEntity>().AsQueryable().BuildMockDbSet();
-		MockDbSetCustomEntries = GetEntities<CustomEntryEntity>().AsQueryable().BuildMockDbSet();
-		MockDbSetCustomEntryData = GetEntities<CustomEntryDataEntity>().AsQueryable().BuildMockDbSet();
+		MockDbSetPlayers = GetEntities<PlayerEntity>().BuildMockDbSet();
+		MockDbSetSpawnsets = GetEntities<SpawnsetEntity>().BuildMockDbSet();
+		MockDbSetCustomLeaderboards = GetEntities<CustomLeaderboardEntity>().BuildMockDbSet();
+		MockDbSetCustomEntries = GetEntities<CustomEntryEntity>().BuildMockDbSet();
+		MockDbSetCustomEntryData = GetEntities<CustomEntryDataEntity>().BuildMockDbSet();
 
 		// ! Reflection.
 		T[] GetEntities<T>() => properties

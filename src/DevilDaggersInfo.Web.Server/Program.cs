@@ -47,7 +47,7 @@ builder.Services.AddCors(options => options.AddPolicy(defaultCorsPolicy, corsBui
 builder.Services.AddDbContext<ApplicationDbContext>((sp, options) =>
 {
 	MySqlOptions mySqlOptions = sp.GetRequiredService<IOptions<MySqlOptions>>().Value;
-	options.UseMySql(mySqlOptions.ConnectionString, MySqlServerVersion.LatestSupportedServerVersion, providerOptions => providerOptions.EnableRetryOnFailure(5));
+	options.UseMySQL(mySqlOptions.ConnectionString, providerOptions => providerOptions.EnableRetryOnFailure(5));
 	options.EnableSensitiveDataLogging(builder.Environment.IsDevelopment());
 });
 
@@ -150,7 +150,7 @@ builder.AddSwaggerDocument("Admin", "This is the admin API for DevilDaggers.info
 
 builder.AddSwaggerDocument("Dd", "**WARNING:** This API is intended to be used by Devil Daggers only.");
 
-builder.AddSwaggerDocument("Tools", "**WARNING:** This API is intended to be used by ddinfo tools only.");
+builder.AddSwaggerDocument("Tools", "**WARNING:** This API is intended to be used by ddinfo-tools only.");
 builder.AddSwaggerDocument("Ddae", "**WARNING:** This API is intended to be used by Devil Daggers Asset Editor only.");
 builder.AddSwaggerDocument("Ddse", "**WARNING:** This API is intended to be used by Devil Daggers Survival Editor only.");
 
@@ -242,9 +242,6 @@ app.UseSwaggerUi();
 
 if (!app.Environment.IsDevelopment())
 {
-#if ROLES
-	CreateRolesIfNotExist(serviceProvider);
-#endif
 	StringBuilder sb = new();
 	sb.Append("> **Application is now online in the `").Append(app.Environment.EnvironmentName).AppendLine("` environment.**");
 
@@ -253,22 +250,3 @@ if (!app.Environment.IsDevelopment())
 }
 
 await app.RunAsync();
-
-#if ROLES
-private static void CreateRolesIfNotExist(IServiceProvider serviceProvider)
-{
-	using ApplicationDbContext dbContext = serviceProvider.GetRequiredService<ApplicationDbContext>();
-	bool anyChanges = false;
-	foreach (string roleName in Roles.All)
-	{
-		if (!dbContext.Roles.Any(r => r.Name == roleName))
-		{
-			dbContext.Roles.Add(new RoleEntity { Name = roleName });
-			anyChanges = true;
-		}
-	}
-
-	if (anyChanges)
-		dbContext.SaveChanges();
-}
-#endif

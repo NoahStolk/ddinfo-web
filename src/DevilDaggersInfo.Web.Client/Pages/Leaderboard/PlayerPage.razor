@@ -65,7 +65,7 @@ else
 		{
 			@*TODO: custom entries*@
 			bool hasSettings = GetPlayer.Settings != null;
-			bool hasCountry = GetPlayer.CountryCode != null && UserUtils.CountryNames.ContainsKey(GetPlayer.CountryCode);
+			bool hasCountry = UserUtils.TryGetCountry(GetPlayer.CountryCode, out Country country);
 			if (hasSettings || hasCountry)
 			{
 				<PlayerCard Title="Settings">
@@ -130,8 +130,8 @@ else
 					@if (hasCountry)
 					{
 						<TallDataField CssClass="odd:bg-gray-2 px-1" Name="Country">
-							<img class="inline" src="/images/flags/@(GetPlayer.CountryCode).png" />
-							@(UserUtils.CountryNames[GetPlayer.CountryCode!])
+							<img class="inline" src="@country.FlagPath" />
+							@country.Name
 						</TallDataField>
 					}
 				</PlayerCard>

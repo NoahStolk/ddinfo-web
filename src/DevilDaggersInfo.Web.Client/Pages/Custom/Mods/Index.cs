@@ -45,7 +45,7 @@ public partial class Index : IHasNavigation
 
 	protected override void OnInitialized()
 	{
-		foreach (ModSorting e in (ModSorting[])Enum.GetValues(typeof(ModSorting)))
+		foreach (ModSorting e in Enum.GetValues<ModSorting>())
 			_sortings.Add(e, false);
 	}
 

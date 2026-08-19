@@ -10,7 +10,7 @@ public class FileSystemService : IFileSystemService
 
 	public FileSystemService()
 	{
-		foreach (DataSubDirectory e in (DataSubDirectory[])Enum.GetValues(typeof(DataSubDirectory)))
+		foreach (DataSubDirectory e in Enum.GetValues<DataSubDirectory>())
 			Directory.CreateDirectory(GetPath(e));
 	}
 
@@ -18,7 +18,11 @@ public class FileSystemService : IFileSystemService
 	{
 		try
 		{
-			return Directory.GetFiles(GetPath(subDirectory));
+			// Directory.GetFiles does not guarantee any order. NTFS happens to return entries sorted by name, but ext4
+			// returns them in hash order, so callers that depend on file names being chronological break on Linux.
+			string[] files = Directory.GetFiles(GetPath(subDirectory));
+			Array.Sort(files, StringComparer.Ordinal);
+			return files;
 		}
 		catch
 		{

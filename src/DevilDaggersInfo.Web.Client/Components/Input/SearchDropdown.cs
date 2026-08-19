@@ -13,7 +13,7 @@ public partial class SearchDropdown<TKey>
 
 	[Parameter]
 	[EditorRequired]
-	public Dictionary<TKey, string>? Values { get; set; }
+	public IReadOnlyDictionary<TKey, string>? Values { get; set; }
 
 	[Parameter]
 	[EditorRequired]
@@ -22,7 +22,7 @@ public partial class SearchDropdown<TKey>
 	[Parameter]
 	public bool ShowDisplayValue { get; set; } = true;
 
-	private Dictionary<TKey, string> FilteredItems => Values == null ? new Dictionary<TKey, string>() : _searchValue == null ? Values : Values
+	private IReadOnlyDictionary<TKey, string> FilteredItems => Values == null ? new Dictionary<TKey, string>() : _searchValue == null ? Values : Values
 		.Where(kvp =>
 			kvp.Key.ToString()?.Contains(_searchValue, StringComparison.InvariantCultureIgnoreCase) == true ||
 			kvp.Value.Contains(_searchValue, StringComparison.InvariantCultureIgnoreCase))

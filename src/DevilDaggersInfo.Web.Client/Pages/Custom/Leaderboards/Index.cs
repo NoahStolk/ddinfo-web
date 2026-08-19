@@ -55,7 +55,7 @@ public partial class Index : IHasNavigation
 
 	protected override async Task OnInitializedAsync()
 	{
-		foreach (CustomLeaderboardSorting e in (CustomLeaderboardSorting[])Enum.GetValues(typeof(CustomLeaderboardSorting)))
+		foreach (CustomLeaderboardSorting e in Enum.GetValues<CustomLeaderboardSorting>())
 			_sortings.Add(e, false);
 
 		GetTotalCustomLeaderboardData = await Http.GetTotalCustomLeaderboardData();

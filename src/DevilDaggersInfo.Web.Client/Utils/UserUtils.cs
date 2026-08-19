@@ -1,9 +1,11 @@
 // ReSharper disable StringLiteralTypo
 namespace DevilDaggersInfo.Web.Client.Utils;
 
-public static class UserUtils
+internal static class UserUtils
 {
-	public static Dictionary<string, string> CountryNames { get; } = new()
+	// Keys are canonical ISO 3166-1 alpha-2 codes, which is what the database stores and what the APIs emit.
+	// The comparer makes lookups tolerate whatever casing a caller happens to have.
+	private static readonly Dictionary<string, string> _countryNames = new(StringComparer.OrdinalIgnoreCase)
 	{
 		{ "AD", "Andorra" },
 		{ "AE", "United Arab Emirates" },
@@ -255,4 +257,23 @@ public static class UserUtils
 		{ "ZM", "Zambia" },
 		{ "ZW", "Zimbabwe" },
 	};
+
+	public static IReadOnlyDictionary<string, string> CountryNames => _countryNames;
+
+	/// <summary>
+	/// Resolves a country code of any casing to its display name and flag image path. Returns false for a code that has
+	/// no entry, which also means no flag image exists for it.
+	/// </summary>
+	public static bool TryGetCountry(string? countryCode, out Country country)
+	{
+		if (countryCode != null && _countryNames.TryGetValue(countryCode, out string? name))
+		{
+			// The flag images are named in lower case; this is the only place that casing is relied upon.
+			country = new Country(countryCode.ToUpperInvariant(), name, $"/images/flags/{countryCode.ToLowerInvariant()}.png");
+			return true;
+		}
+
+		country = default;
+		return false;
+	}
 }

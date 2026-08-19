@@ -15,23 +15,6 @@ public partial class LeaderboardTable<TGetEntryDto>
 
 	private Dictionary<LeaderboardSorting, bool> _sortings = new();
 
-	private enum LeaderboardSorting
-	{
-		Rank,
-		Flag,
-		Player,
-		Time,
-		Kills,
-		Gems,
-		Accuracy,
-		DeathType,
-		TotalTime,
-		TotalKills,
-		TotalGems,
-		TotalAccuracy,
-		TotalDeaths,
-	}
-
 	[Parameter]
 	public bool IsHistory { get; set; }
 
@@ -49,7 +32,7 @@ public partial class LeaderboardTable<TGetEntryDto>
 
 	protected override void OnInitialized()
 	{
-		foreach (LeaderboardSorting e in (LeaderboardSorting[])Enum.GetValues(typeof(LeaderboardSorting)))
+		foreach (LeaderboardSorting e in Enum.GetValues<LeaderboardSorting>())
 			_sortings.Add(e, false);
 	}
 

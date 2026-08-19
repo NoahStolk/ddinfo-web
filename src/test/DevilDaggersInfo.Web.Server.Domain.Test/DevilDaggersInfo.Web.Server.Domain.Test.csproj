@@ -1,8 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <!-- TODO: Remove when all projects are on the same target framework again (.NET 10) -->
-    <TargetFramework>net9.0</TargetFramework>
     <IsPackable>false</IsPackable>
     <RunSettingsFilePath>$(MSBuildProjectDirectory)\..\.runsettings</RunSettingsFilePath>
   </PropertyGroup>

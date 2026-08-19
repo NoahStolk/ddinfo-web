@@ -43,7 +43,7 @@ public partial class LeaderboardPage
 
 	protected override async Task OnInitializedAsync()
 	{
-		foreach (CustomEntrySorting e in (CustomEntrySorting[])Enum.GetValues(typeof(CustomEntrySorting)))
+		foreach (CustomEntrySorting e in Enum.GetValues<CustomEntrySorting>())
 			_sortings.Add(e, false);
 
 		try

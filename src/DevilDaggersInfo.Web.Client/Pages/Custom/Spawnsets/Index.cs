@@ -45,7 +45,7 @@ public partial class Index : IHasNavigation
 
 	protected override void OnInitialized()
 	{
-		foreach (SpawnsetSorting e in (SpawnsetSorting[])Enum.GetValues(typeof(SpawnsetSorting)))
+		foreach (SpawnsetSorting e in Enum.GetValues<SpawnsetSorting>())
 			_sortings.Add(e, false);
 	}
 
