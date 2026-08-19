@@ -14,7 +14,8 @@ using NSubstitute;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Test.Tests.ServerDomain;
 
-[TestClass]
+// Uploads write replay files named after the custom entry ID, which is the same for every test case.
+[NotInParallel]
 internal sealed class CustomEntryProcessorTests
 {
 	private readonly ApplicationDbContext _dbContext;
@@ -27,10 +28,10 @@ internal sealed class CustomEntryProcessorTests
 	{
 		string spawnsetsPath = Path.Combine("Resources", "Spawnsets");
 		byte[] spawnsetFileContents = File.ReadAllBytes(Path.Combine(spawnsetsPath, "V3"));
-		if (SpawnsetBinary.TryParse(spawnsetFileContents, out SpawnsetBinary? spawnsetBinary))
-			_v3Hash = MD5.HashData(spawnsetBinary.ToBytes());
-		else
-			Assert.Fail("Spawnset could not be parsed.");
+		if (!SpawnsetBinary.TryParse(spawnsetFileContents, out SpawnsetBinary? spawnsetBinary))
+			throw new InvalidOperationException("Spawnset could not be parsed.");
+
+		_v3Hash = MD5.HashData(spawnsetBinary.ToBytes());
 
 		MockEntities mockEntities = new();
 
@@ -193,110 +194,111 @@ internal sealed class CustomEntryProcessorTests
 			]);
 	}
 
-	[DataTestMethod]
-	[DataRow(4, new[] { 1, 2, 3, 4 })]
-	[DataRow(0, new[] { 1, 2, 3, 0 })]
-	[DataRow(9, new[] { 1, 2, 3, 9 })]
-	[DataRow(0, new[] { 1, 2, 3, -1 })]
-	[DataRow(0, new[] { 0 })]
-	[DataRow(8, new[] { 8 })]
-	[DataRow(2, new[] { 3, 2 })]
-	[DataRow(0, new int[] { })]
+	[Test]
+	[Arguments(4, new[] { 1, 2, 3, 4 })]
+	[Arguments(0, new[] { 1, 2, 3, 0 })]
+	[Arguments(9, new[] { 1, 2, 3, 9 })]
+	[Arguments(0, new[] { 1, 2, 3, -1 })]
+	[Arguments(0, new[] { 0 })]
+	[Arguments(8, new[] { 8 })]
+	[Arguments(2, new[] { 3, 2 })]
+	[Arguments(0, new int[] { })]
 	public async Task TestHomingCount(int expected, int[] homingStored)
 	{
 		UploadRequest uploadRequest = CreateUploadRequest(1, 100, 4, TestConstants.DdclVersion, new UploadRequestData { HomingStored = homingStored });
 		UploadResponse response = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
-		Assert.IsNotNull(response.Success);
-		Assert.AreEqual(expected, response.Success.HomingStoredState.Value);
+		await Assert.That(response.Success).IsNotNull();
+		await Assert.That(response.Success?.HomingStoredState.Value).IsEqualTo(expected);
 	}
 
-	[TestMethod]
+	[Test]
 	public async Task ProcessUploadRequest_ExistingPlayer_ExistingEntry_NoHighscore()
 	{
 		UploadRequest uploadRequest = CreateUploadRequest(10, 1, 3, TestConstants.DdclVersion);
 		UploadResponse response = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
-		Assert.IsNotNull(response.Success);
+		await Assert.That(response.Success).IsNotNull();
 
 		await _dbContext.ReceivedWithAnyArgs().SaveChangesAsync();
-		Assert.AreEqual(1, response.Success.SortedEntries.Count);
-		Assert.AreEqual(SubmissionType.NoHighscore, response.Success.SubmissionType);
+		await Assert.That(response.Success?.SortedEntries.Count).IsEqualTo(1);
+		await Assert.That(response.Success?.SubmissionType).IsEqualTo(SubmissionType.NoHighscore);
 	}
 
-	[TestMethod]
+	[Test]
 	public async Task ProcessUploadRequest_ExistingPlayer_ExistingEntry_NewHighscore()
 	{
 		UploadRequest uploadRequest = CreateUploadRequest(20, 1, 4, TestConstants.DdclVersion);
 		UploadResponse response = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
-		Assert.IsNotNull(response.Success);
+		await Assert.That(response.Success).IsNotNull();
 
 		await _dbContext.ReceivedWithAnyArgs().SaveChangesAsync();
-		Assert.AreEqual(1, response.Success.SortedEntries.Count);
-		Assert.AreEqual(SubmissionType.NewHighscore, response.Success.SubmissionType);
+		await Assert.That(response.Success?.SortedEntries.Count).IsEqualTo(1);
+		await Assert.That(response.Success?.SubmissionType).IsEqualTo(SubmissionType.NewHighscore);
 	}
 
-	[TestMethod]
+	[Test]
 	public async Task ProcessUploadRequest_ExistingPlayer_NewEntry()
 	{
 		UploadRequest uploadRequest = CreateUploadRequest(20, 2, 5, TestConstants.DdclVersion);
 		UploadResponse response = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
-		Assert.IsNotNull(response.Success);
+		await Assert.That(response.Success).IsNotNull();
 
 		await _dbContext.CustomEntries.Received(1).AddAsync(Arg.Is<CustomEntryEntity>(ce => ce.PlayerId == 2 && ce.Time == 200000));
 		await _dbContext.ReceivedWithAnyArgs().SaveChangesAsync();
-		Assert.AreEqual(SubmissionType.FirstScore, response.Success.SubmissionType);
+		await Assert.That(response.Success?.SubmissionType).IsEqualTo(SubmissionType.FirstScore);
 	}
 
-	[TestMethod]
+	[Test]
 	public async Task ProcessUploadRequest_NewPlayer()
 	{
 		UploadRequest uploadRequest = CreateUploadRequest(30, 3, 3, TestConstants.DdclVersion);
 		UploadResponse response = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
-		Assert.IsNotNull(response.Success);
+		await Assert.That(response.Success).IsNotNull();
 
 		await _dbContext.ReceivedWithAnyArgs().SaveChangesAsync();
 		await _dbContext.Players.Received(1).AddAsync(Arg.Is<PlayerEntity>(p => p.Id == 3 && p.PlayerName == "TestPlayer3"));
 		await _dbContext.CustomEntries.Received(1).AddAsync(Arg.Is<CustomEntryEntity>(ce => ce.PlayerId == 3 && ce.Time == 300000));
-		Assert.AreEqual(SubmissionType.FirstScore, response.Success.SubmissionType);
+		await Assert.That(response.Success?.SubmissionType).IsEqualTo(SubmissionType.FirstScore);
 	}
 
-	[DataTestMethod]
-	[DataRow(0, false)]
-	[DataRow(1, false)]
-	[DataRow(2, false)]
-	[DataRow(3, true)]
-	[DataRow(4, true)]
-	[DataRow(5, true)]
-	[DataRow(6, false)]
-	[DataRow(7, false)]
-	[DataRow(8, false)]
+	[Test]
+	[Arguments(0, false)]
+	[Arguments(1, false)]
+	[Arguments(2, false)]
+	[Arguments(3, true)]
+	[Arguments(4, true)]
+	[Arguments(5, true)]
+	[Arguments(6, false)]
+	[Arguments(7, false)]
+	[Arguments(8, false)]
 	public async Task ProcessUploadRequest_InvalidStatus(int status, bool accepted)
 	{
 		UploadRequest uploadRequest = CreateUploadRequest(30, 3, status, TestConstants.DdclVersion);
 		if (accepted)
 			await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
 		else
-			await Assert.ThrowsExceptionAsync<CustomEntryValidationException>(async () => await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest));
+			await Assert.That(async () => await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest)).Throws<CustomEntryValidationException>();
 	}
 
-	[TestMethod]
+	[Test]
 	public async Task ProcessUploadRequest_Outdated()
 	{
 		UploadRequest uploadRequest = CreateUploadRequest(10, 1, 4, "0.0.0.0");
-		CustomEntryValidationException ex = await Assert.ThrowsExceptionAsync<CustomEntryValidationException>(async () => await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest));
+		await Assert.That(async () => await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest))
+			.Throws<CustomEntryValidationException>()
+			.WithMessageContaining("unsupported and outdated");
 
 		await _dbContext.DidNotReceive().SaveChangesAsync();
-
-		Assert.IsTrue(ex.Message.Contains("unsupported and outdated"));
 	}
 
-	[TestMethod]
+	[Test]
 	public async Task ProcessUploadRequest_InvalidValidation()
 	{
 		UploadRequest uploadRequest = CreateUploadRequest(10, 1, 4, TestConstants.DdclVersion, new UploadRequestData(), "Malformed validation");
-		CustomEntryValidationException ex = await Assert.ThrowsExceptionAsync<CustomEntryValidationException>(async () => await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest));
+		CustomEntryValidationException? ex = await Assert.That(async () => await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest))
+			.Throws<CustomEntryValidationException>();
 
 		await _dbContext.DidNotReceive().SaveChangesAsync();
 
-		Assert.IsTrue(ex.Message.StartsWith("Could not decrypt"));
+		await Assert.That(ex?.Message).StartsWith("Could not decrypt");
 	}
 }

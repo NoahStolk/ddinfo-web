@@ -6,11 +6,12 @@ using System.IO.Compression;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Test.Tests.ServerDomain;
 
-[TestClass]
+// The base class clears and rewrites the shared mod and mod archive cache directories for every test case.
+[NotInParallel]
 internal sealed class ModArchiveProcessorProcessTests : ModArchiveProcessorTests
 {
 	// TODO: Add a failing test where the ModBinaryType is incorrect.
-	[TestMethod]
+	[Test]
 	public async Task ProcessNewMod_1Binary_1Asset()
 	{
 		const string modName = "mod";
@@ -22,17 +23,17 @@ internal sealed class ModArchiveProcessorProcessTests : ModArchiveProcessorTests
 
 		string zipFilePath = Accessor.GetModArchivePath(modName);
 		await using ZipArchive archive = await ZipFile.OpenAsync(zipFilePath, ZipArchiveMode.Read);
-		Assert.AreEqual(1, archive.Entries.Count);
+		await Assert.That(archive.Entries.Count).IsEqualTo(1);
 
-		ModBinaryCacheData processedBinary = GetProcessedBinaryFromArchiveEntry(archive.Entries[0]);
-		Assert.AreEqual(ModBinaryType.Dd, processedBinary.ModBinaryType);
-		AssertBinaryName(binaryName, processedBinary.Name, modName);
-		Assert.AreEqual(1, processedBinary.TocEntries.Count);
-		Assert.AreEqual(assetName, processedBinary.TocEntries[0].Name);
-		Assert.AreEqual(AssetType.ObjectBinding, processedBinary.TocEntries[0].AssetType);
+		ModBinaryCacheData processedBinary = await GetProcessedBinaryFromArchiveEntryAsync(archive.Entries[0]);
+		await Assert.That(processedBinary.ModBinaryType).IsEqualTo(ModBinaryType.Dd);
+		await AssertBinaryNameAsync(binaryName, processedBinary.Name, modName);
+		await Assert.That(processedBinary.TocEntries.Count).IsEqualTo(1);
+		await Assert.That(processedBinary.TocEntries[0].Name).IsEqualTo(assetName);
+		await Assert.That(processedBinary.TocEntries[0].AssetType).IsEqualTo(AssetType.ObjectBinding);
 	}
 
-	[TestMethod]
+	[Test]
 	public async Task ProcessNewMod_1Binary_2Assets()
 	{
 		const string modName = "mod";
@@ -45,19 +46,19 @@ internal sealed class ModArchiveProcessorProcessTests : ModArchiveProcessorTests
 
 		string zipFilePath = Accessor.GetModArchivePath(modName);
 		await using ZipArchive archive = await ZipFile.OpenAsync(zipFilePath, ZipArchiveMode.Read);
-		Assert.AreEqual(1, archive.Entries.Count);
+		await Assert.That(archive.Entries.Count).IsEqualTo(1);
 
-		ModBinaryCacheData processedBinary = GetProcessedBinaryFromArchiveEntry(archive.Entries[0]);
-		Assert.AreEqual(ModBinaryType.Dd, processedBinary.ModBinaryType);
-		AssertBinaryName(binaryName, processedBinary.Name, modName);
-		Assert.AreEqual(2, processedBinary.TocEntries.Count);
-		Assert.AreEqual(assetName1, processedBinary.TocEntries[0].Name);
-		Assert.AreEqual(AssetType.ObjectBinding, processedBinary.TocEntries[0].AssetType);
-		Assert.AreEqual(assetName2, processedBinary.TocEntries[1].Name);
-		Assert.AreEqual(AssetType.Texture, processedBinary.TocEntries[1].AssetType);
+		ModBinaryCacheData processedBinary = await GetProcessedBinaryFromArchiveEntryAsync(archive.Entries[0]);
+		await Assert.That(processedBinary.ModBinaryType).IsEqualTo(ModBinaryType.Dd);
+		await AssertBinaryNameAsync(binaryName, processedBinary.Name, modName);
+		await Assert.That(processedBinary.TocEntries.Count).IsEqualTo(2);
+		await Assert.That(processedBinary.TocEntries[0].Name).IsEqualTo(assetName1);
+		await Assert.That(processedBinary.TocEntries[0].AssetType).IsEqualTo(AssetType.ObjectBinding);
+		await Assert.That(processedBinary.TocEntries[1].Name).IsEqualTo(assetName2);
+		await Assert.That(processedBinary.TocEntries[1].AssetType).IsEqualTo(AssetType.Texture);
 	}
 
-	[TestMethod]
+	[Test]
 	public async Task ProcessNewMod_2Binaries_2Assets()
 	{
 		const string modName = "mod";
@@ -77,24 +78,24 @@ internal sealed class ModArchiveProcessorProcessTests : ModArchiveProcessorTests
 
 		string zipFilePath = Accessor.GetModArchivePath(modName);
 		await using ZipArchive archive = await ZipFile.OpenAsync(zipFilePath, ZipArchiveMode.Read);
-		Assert.AreEqual(2, archive.Entries.Count);
+		await Assert.That(archive.Entries.Count).IsEqualTo(2);
 
-		ModBinaryCacheData processedBinary1 = GetProcessedBinaryFromArchiveEntry(archive.Entries[0]);
-		Assert.AreEqual(ModBinaryType.Dd, processedBinary1.ModBinaryType);
-		AssertBinaryName(binaryName1, processedBinary1.Name, modName);
-		Assert.AreEqual(2, processedBinary1.TocEntries.Count);
-		Assert.AreEqual(assetName1, processedBinary1.TocEntries[0].Name);
-		Assert.AreEqual(AssetType.ObjectBinding, processedBinary1.TocEntries[0].AssetType);
-		Assert.AreEqual(assetName2, processedBinary1.TocEntries[1].Name);
-		Assert.AreEqual(AssetType.Texture, processedBinary1.TocEntries[1].AssetType);
+		ModBinaryCacheData processedBinary1 = await GetProcessedBinaryFromArchiveEntryAsync(archive.Entries[0]);
+		await Assert.That(processedBinary1.ModBinaryType).IsEqualTo(ModBinaryType.Dd);
+		await AssertBinaryNameAsync(binaryName1, processedBinary1.Name, modName);
+		await Assert.That(processedBinary1.TocEntries.Count).IsEqualTo(2);
+		await Assert.That(processedBinary1.TocEntries[0].Name).IsEqualTo(assetName1);
+		await Assert.That(processedBinary1.TocEntries[0].AssetType).IsEqualTo(AssetType.ObjectBinding);
+		await Assert.That(processedBinary1.TocEntries[1].Name).IsEqualTo(assetName2);
+		await Assert.That(processedBinary1.TocEntries[1].AssetType).IsEqualTo(AssetType.Texture);
 
-		ModBinaryCacheData processedBinary2 = GetProcessedBinaryFromArchiveEntry(archive.Entries[1]);
-		Assert.AreEqual(ModBinaryType.Dd, processedBinary2.ModBinaryType);
-		AssertBinaryName(binaryName2, processedBinary2.Name, modName);
-		Assert.AreEqual(2, processedBinary2.TocEntries.Count);
-		Assert.AreEqual(assetName1, processedBinary2.TocEntries[0].Name);
-		Assert.AreEqual(AssetType.ObjectBinding, processedBinary2.TocEntries[0].AssetType);
-		Assert.AreEqual(assetName2, processedBinary2.TocEntries[1].Name);
-		Assert.AreEqual(AssetType.Texture, processedBinary2.TocEntries[1].AssetType);
+		ModBinaryCacheData processedBinary2 = await GetProcessedBinaryFromArchiveEntryAsync(archive.Entries[1]);
+		await Assert.That(processedBinary2.ModBinaryType).IsEqualTo(ModBinaryType.Dd);
+		await AssertBinaryNameAsync(binaryName2, processedBinary2.Name, modName);
+		await Assert.That(processedBinary2.TocEntries.Count).IsEqualTo(2);
+		await Assert.That(processedBinary2.TocEntries[0].Name).IsEqualTo(assetName1);
+		await Assert.That(processedBinary2.TocEntries[0].AssetType).IsEqualTo(AssetType.ObjectBinding);
+		await Assert.That(processedBinary2.TocEntries[1].Name).IsEqualTo(assetName2);
+		await Assert.That(processedBinary2.TocEntries[1].AssetType).IsEqualTo(AssetType.Texture);
 	}
 }
