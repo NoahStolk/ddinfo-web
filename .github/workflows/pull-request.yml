@@ -8,11 +8,11 @@ jobs:
     timeout-minutes: 20
     steps:
       - name: Set up dotnet
-        uses: actions/setup-dotnet@v5
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: '10.0.x'
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
       - name: Build
         run: dotnet build src/DevilDaggersInfo.Web.slnx -c Release
       - name: Test
