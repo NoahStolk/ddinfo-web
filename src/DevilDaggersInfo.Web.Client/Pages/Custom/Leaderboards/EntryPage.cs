@@ -38,12 +38,6 @@ public sealed partial class EntryPage
 	[EditorRequired]
 	public int Id { get; set; }
 
-	[Inject]
-	public required MainApiHttpClient Http { get; set; }
-
-	[Inject]
-	public required IJSRuntime JsRuntime { get; set; }
-
 	public GetCustomEntryData? GetCustomEntryData { get; set; }
 
 	protected override async Task OnInitializedAsync()

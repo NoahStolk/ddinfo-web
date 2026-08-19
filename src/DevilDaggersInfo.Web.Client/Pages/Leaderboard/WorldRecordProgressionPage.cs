@@ -41,9 +41,6 @@ public sealed partial class WorldRecordProgressionPage
 	private readonly Dictionary<string, bool> _worldRecordHoldersSortings = new();
 	private readonly Dictionary<string, bool> _worldRecordsSortings = new();
 
-	[Inject]
-	public required MainApiHttpClient Http { get; set; }
-
 	protected override async Task OnInitializedAsync()
 	{
 		ApiSpec.Main.WorldRecords.GetWorldRecordDataContainer data = await Http.GetWorldRecordData();

@@ -9,6 +9,10 @@
 @using DevilDaggersInfo.Web.Client.Core.CanvasChart.Components
 @using DevilDaggersInfo.Web.Client.Utils
 @using DevilDaggersInfo.Web.Client.Extensions
+@using DevilDaggersInfo.Web.Client.HttpClients
+@inject MainApiHttpClient Http
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JsRuntime
 
 @if (GetEntry == null)
 {

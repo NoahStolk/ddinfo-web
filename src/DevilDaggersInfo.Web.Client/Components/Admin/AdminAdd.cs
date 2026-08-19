@@ -35,7 +35,7 @@ public sealed partial class AdminAdd<TStateObject, TModel>
 	[EditorRequired]
 	public required Func<AdminAdd<TStateObject, TModel>, Task> OnPopulate { get; set; }
 
-	public ErrorState State { get; set; }
+	internal ErrorState State { get; set; }
 	public string? ErrorMessage { get; set; }
 
 	protected override async Task OnInitializedAsync()

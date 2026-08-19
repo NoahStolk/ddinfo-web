@@ -14,12 +14,6 @@ public sealed partial class SpawnsetPage
 
 	private bool _notFound;
 
-	[Inject]
-	public required MainApiHttpClient Http { get; set; }
-
-	[Inject]
-	public required NavigationManager NavigationManager { get; set; }
-
 	[Parameter]
 	[EditorRequired]
 	public int Id { get; set; }

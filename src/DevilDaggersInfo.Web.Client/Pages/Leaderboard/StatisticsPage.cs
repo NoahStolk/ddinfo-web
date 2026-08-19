@@ -49,9 +49,6 @@ public sealed partial class StatisticsPage
 	private BarChartDataOptions _deathsDataOptions = BarChartDataOptions.Default;
 	private BarChartDataOptions _enemiesDataOptions = BarChartDataOptions.Default;
 
-	[Inject]
-	public required IJSRuntime JsRuntime { get; set; }
-
 	protected override async Task OnInitializedAsync()
 	{
 		_statistics = await Http.GetLeaderboardStatistics();

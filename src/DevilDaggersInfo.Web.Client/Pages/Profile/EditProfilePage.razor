@@ -4,6 +4,11 @@
 @using DevilDaggersInfo.Web.Client.Enums
 @using DevilDaggersInfo.Web.Client.Utils
 @using DevilDaggersInfo.Web.ApiSpec.Main.Players
+@using DevilDaggersInfo.Web.Client.Authentication
+@using DevilDaggersInfo.Web.Client.HttpClients
+@inject AdminAuthenticationStateProvider Auth
+@inject NavigationManager NavigationManager
+@inject MainApiHttpClient Http
 @{
 	const string disabledStyle = "disabled:opacity-50 cursor-default btn-disabled";
 	const string enabledStyle = "btn-green";

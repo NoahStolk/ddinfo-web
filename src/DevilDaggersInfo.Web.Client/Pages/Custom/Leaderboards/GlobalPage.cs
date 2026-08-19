@@ -20,12 +20,6 @@ public sealed partial class GlobalPage
 	[SupplyParameterFromQuery]
 	public string RankSorting { get; set; } = nameof(CustomLeaderboardRankSorting.TimeDesc);
 
-	[Inject]
-	public required MainApiHttpClient Http { get; set; }
-
-	[Inject]
-	public required NavigationManager NavigationManager { get; set; }
-
 	public GetGlobalCustomLeaderboard? GetGlobalCustomLeaderboard { get; set; }
 
 	private void SetGameMode(GameMode gameMode)

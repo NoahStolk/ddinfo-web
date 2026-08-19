@@ -100,9 +100,6 @@ public sealed partial class HistoryStatisticsPage
 
 	private List<GetLeaderboardHistoryStatistics>? _statistics;
 
-	[Inject]
-	public required IJSRuntime JsRuntime { get; set; }
-
 	protected override async Task OnInitializedAsync()
 	{
 		_statistics = await Http.GetLeaderboardHistoryStatistics();

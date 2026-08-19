@@ -82,15 +82,6 @@ public sealed partial class PlayerPage
 	[EditorRequired]
 	public int Id { get; set; }
 
-	[Inject]
-	public required MainApiHttpClient Http { get; set; }
-
-	[Inject]
-	public required NavigationManager NavigationManager { get; set; }
-
-	[Inject]
-	public required IJSRuntime JsRuntime { get; set; }
-
 	public GetEntry? GetEntry { get; set; }
 	public GetPlayer? GetPlayer { get; set; }
 	public GetPlayerHistory? GetPlayerHistory { get; set; }

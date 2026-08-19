@@ -18,10 +18,7 @@ public sealed partial class Index
 		new("Check out various wiki pages about the game, such as spawn times, enemy types, or hand upgrades", "home/enemies.png", "/wiki/enemies", "Enemies Wiki"),
 	];
 
-	[Inject]
-	public required MainApiHttpClient Http { get; set; }
-
-	public NewsItem? LatestNews { get; set; }
+	private NewsItem? LatestNews { get; set; }
 
 	public MarkupString? LatestNewsContent { get; set; }
 
