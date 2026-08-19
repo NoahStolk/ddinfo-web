@@ -54,7 +54,7 @@ public sealed partial class Deletion
 	public void Cancel()
 	{
 		State = DeleteState.None;
-		IdToDelete = default;
+		IdToDelete = null;
 		StateHasChanged();
 	}
 }

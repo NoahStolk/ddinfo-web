@@ -6,10 +6,8 @@ using DevilDaggersInfo.Core.Wiki.Objects;
 using DevilDaggersInfo.Web.Client.Core.CanvasChart.Data;
 using DevilDaggersInfo.Web.Client.Core.CanvasChart.Enums;
 using DevilDaggersInfo.Web.Client.Core.CanvasChart.Options.LineChart;
-using DevilDaggersInfo.Web.Client.HttpClients;
 using DevilDaggersInfo.Web.Client.Utils;
 using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
 using System.Runtime.CompilerServices;
 
 namespace DevilDaggersInfo.Web.Client.Pages.Leaderboard;
@@ -97,10 +95,7 @@ public sealed partial class WorldRecordProgressionPage
 
 	private static void Sort<TSource, TKey>(ref List<TSource> source, Dictionary<string, bool> sortings, Func<TSource, TKey> sorting, [CallerArgumentExpression("sorting")] string sortingExpression = "")
 	{
-		bool sortDirection = false;
-		if (sortings.ContainsKey(sortingExpression))
-			sortDirection = sortings[sortingExpression];
-		else
+		if (!sortings.TryGetValue(sortingExpression, out bool sortDirection))
 			sortings.Add(sortingExpression, false);
 
 		source = source.OrderBy(sorting, sortDirection).ToList();

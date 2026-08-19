@@ -63,7 +63,7 @@ else
 		<InputWrapper Label="Legacy audio"><InputNullableBoolean False="Off" True="On" @bind-Value="@_editPlayerState.UsesLegacyAudio" /></InputWrapper>
 		<InputWrapper Label="HRTF"><InputNullableBoolean False="Off" True="On" @bind-Value="@_editPlayerState.UsesHrtf" /></InputWrapper>
 		<InputWrapper Label="Invert Y"><InputNullableBoolean False="Off" True="On" @bind-Value="@_editPlayerState.UsesInvertY" /></InputWrapper>
-		<InputWrapper Label="V-sync"><Dropdown TKey=VerticalSync Values="@(Enum.GetValues<VerticalSync>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<VerticalSync>(s)" ShowDisplayValue=false @bind-Value="@_editPlayerState.VerticalSync" /></InputWrapper>
+		<InputWrapper Label="V-sync"><Dropdown TKey=VerticalSync Values="@(Enum.GetValues<VerticalSync>().ToDictionary(e => e, e => e.ToString()))" Converter="Enum.Parse<VerticalSync>" ShowDisplayValue=false @bind-Value="@_editPlayerState.VerticalSync" /></InputWrapper>
 		<InputWrapper Label="Hide my donations"><InputCheckbox @bind-Value="@_editPlayerState.HideDonations" /></InputWrapper>
 		<InputWrapper Label="Hide my past usernames"><InputCheckbox @bind-Value="@_editPlayerState.HidePastUsernames" /></InputWrapper>
 		<InputWrapper Label="Hide my game settings"><InputCheckbox @bind-Value="@_editPlayerState.HideSettings" /></InputWrapper>

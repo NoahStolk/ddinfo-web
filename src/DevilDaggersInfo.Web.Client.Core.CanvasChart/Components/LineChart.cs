@@ -323,8 +323,6 @@ public sealed partial class LineChart : IAsyncDisposable
 		}
 	}
 
-	private readonly record struct LinePosition(double X, double Y);
-
 	public async ValueTask DisposeAsync()
 	{
 		if (_objectReference == null)
@@ -342,4 +340,6 @@ public sealed partial class LineChart : IAsyncDisposable
 		_objectReference.Dispose();
 		_objectReference = null;
 	}
+
+	private readonly record struct LinePosition(double X, double Y);
 }

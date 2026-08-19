@@ -3,7 +3,6 @@
 @using DevilDaggersInfo.Web.Client.Core.CanvasChart.Components
 @using DevilDaggersInfo.Web.Client.HttpClients
 @inject MainApiHttpClient Http
-@inject IJSRuntime JsRuntime
 
 <Heading Title="Leaderboard History Statistics" />
 
@@ -23,7 +22,7 @@ else
 			<Heading Title="Top Scores" Level="2" />
 			<LineChart DataOptions="_entrancesOptions" UniqueName="#entrances-chart" DataSets="_entrancesData" Options="_entrancesLineChartOptions" />
 		</div>
-		
+
 		<div>
 			<Heading Title="Global Time" Level="2" />
 			<LineChart DataOptions="_timeOptions" UniqueName="#time-chart" DataSets="_timeData" Options="_timeLineChartOptions" />

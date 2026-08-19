@@ -72,10 +72,8 @@ public sealed class PlayerHistoryRepository
 
 			if (!hideUsernames && !string.IsNullOrWhiteSpace(entry.Username))
 			{
-				if (usernamesHistory.ContainsKey(entry.Username))
+				if (!usernamesHistory.TryAdd(entry.Username, 1))
 					usernamesHistory[entry.Username]++;
-				else
-					usernamesHistory.Add(entry.Username, 1);
 			}
 
 			// + 1 and - 1 are used to fix off-by-one errors in the history based on screenshots and videos. This is due to a rounding error in Devil Daggers itself.

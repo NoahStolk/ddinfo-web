@@ -26,7 +26,7 @@
 		<DataAnnotationsValidator />
 		<ValidationSummary />
 
-		<InputWrapper Label="Player"><SearchDropdown TKey="int" Values="@_playerNames" Converter="s => int.Parse(s)" @bind-Value="@AssignPlayerState.PlayerId" /></InputWrapper>
+		<InputWrapper Label="Player"><SearchDropdown TKey="int" Values="@_playerNames" Converter="int.Parse" @bind-Value="@AssignPlayerState.PlayerId" /></InputWrapper>
 
 		<button class="btn btn-gray p-1" type="submit">Assign player</button>
 	</EditForm>

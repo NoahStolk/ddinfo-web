@@ -1,10 +1,7 @@
 using DevilDaggersInfo.Web.ApiSpec.Main.Players;
-using DevilDaggersInfo.Web.Client.Authentication;
 using DevilDaggersInfo.Web.Client.Enums;
 using DevilDaggersInfo.Web.Client.Extensions;
-using DevilDaggersInfo.Web.Client.HttpClients;
 using DevilDaggersInfo.Web.Client.StateObjects.Profile;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using System.Net;

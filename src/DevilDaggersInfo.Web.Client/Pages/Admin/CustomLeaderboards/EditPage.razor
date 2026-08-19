@@ -10,7 +10,7 @@
 
 <AdminAuthorizer Base="this" RequiredRole="@Roles.CustomLeaderboards">
 	<AdminEdit TStateObject="EditCustomLeaderboardState" TModel="EditCustomLeaderboard" Name="Custom Leaderboard" OverviewUrl="/admin/custom-leaderboards" ApiCall="Http.EditCustomLeaderboardById" StateObject="_editCustomLeaderboardState" Id="Id" OnPopulate="async ec => await PopulateAsync(ec)">
-		<InputWrapper Label="Rank sorting"><SearchDropdown TKey="CustomLeaderboardRankSorting" Values="@(Enum.GetValues<CustomLeaderboardRankSorting>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<CustomLeaderboardRankSorting>(s)" ShowDisplayValue="false" @bind-Value="@_editCustomLeaderboardState.RankSorting" /></InputWrapper>
+		<InputWrapper Label="Rank sorting"><SearchDropdown TKey="CustomLeaderboardRankSorting" Values="@(Enum.GetValues<CustomLeaderboardRankSorting>().ToDictionary(e => e, e => e.ToString()))" Converter="Enum.Parse<CustomLeaderboardRankSorting>" ShowDisplayValue="false" @bind-Value="@_editCustomLeaderboardState.RankSorting" /></InputWrapper>
 		<InputWrapper Label="Featured"><InputCheckbox @bind-Value="@_editCustomLeaderboardState.IsFeatured" /></InputWrapper>
 		@if (_editCustomLeaderboardState.IsFeatured)
 		{
@@ -37,9 +37,9 @@
 		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.LevelUpTime3" Criteria="_editCustomLeaderboardState.LevelUpTime3Criteria" />
 		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.LevelUpTime4" Criteria="_editCustomLeaderboardState.LevelUpTime4Criteria" />
 		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.EnemiesAlive" Criteria="_editCustomLeaderboardState.EnemiesAliveCriteria" />
-		
+
 		<Heading Level="2" Title="Enemy criteria" />
-		
+
 		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.Skull1Kills" Criteria="_editCustomLeaderboardState.Skull1KillsCriteria" />
 		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.Skull2Kills" Criteria="_editCustomLeaderboardState.Skull2KillsCriteria" />
 		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.Skull3Kills" Criteria="_editCustomLeaderboardState.Skull3KillsCriteria" />
@@ -144,7 +144,7 @@
 			_editCustomLeaderboardState.LeviathansAliveCriteria.Operator = getCustomLeaderboard.LeviathansAliveCriteria.Operator;
 			_editCustomLeaderboardState.OrbsAliveCriteria.Operator = getCustomLeaderboard.OrbsAliveCriteria.Operator;
 			_editCustomLeaderboardState.ThornsAliveCriteria.Operator = getCustomLeaderboard.ThornsAliveCriteria.Operator;
-			
+
 			_editCustomLeaderboardState.GemsCollectedCriteria.Expression = getCustomLeaderboard.GemsCollectedCriteria.Expression;
 			_editCustomLeaderboardState.GemsDespawnedCriteria.Expression = getCustomLeaderboard.GemsDespawnedCriteria.Expression;
 			_editCustomLeaderboardState.GemsEatenCriteria.Expression = getCustomLeaderboard.GemsEatenCriteria.Expression;

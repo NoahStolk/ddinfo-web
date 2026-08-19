@@ -6,7 +6,6 @@ using DevilDaggersInfo.Web.Client.Core.CanvasChart.Data;
 using DevilDaggersInfo.Web.Client.Core.CanvasChart.Options.BarChart;
 using DevilDaggersInfo.Web.Client.Utils;
 using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
 
 namespace DevilDaggersInfo.Web.Client.Pages.Leaderboard;
 
@@ -59,7 +58,7 @@ public sealed partial class StatisticsPage
 		IEnumerable<KeyValuePair<int, int>> sub500Scores = _statistics.TimesStatistics.Where(kvp => kvp.Key < 500);
 		SetScoreChart(sub500Scores, 5000.0, ref _sub500Data, ref _sub500DataOptions);
 
-		IEnumerable<KeyValuePair<int, int>> sub1000Scores = _statistics.TimesStatistics.Where(kvp => kvp.Key >= 500 && kvp.Key < 1000);
+		IEnumerable<KeyValuePair<int, int>> sub1000Scores = _statistics.TimesStatistics.Where(kvp => kvp.Key is >= 500 and < 1000);
 		SetScoreChart(sub1000Scores, 20.0, ref _sub1000Data, ref _sub1000DataOptions);
 
 		IEnumerable<KeyValuePair<int, int>> post1000Scores = _statistics.TimesStatistics.Where(kvp => kvp.Key >= 1000);

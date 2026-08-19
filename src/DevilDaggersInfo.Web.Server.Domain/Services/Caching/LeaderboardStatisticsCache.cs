@@ -181,8 +181,7 @@ public sealed class LeaderboardStatisticsCache
 
 	private static void AddToStatisticsDictionary(Dictionary<int, int> dictionary, int step, int currentKey)
 	{
-		if (!dictionary.ContainsKey(currentKey))
-			dictionary.Add(currentKey, 0);
+		dictionary.TryAdd(currentKey, 0);
 
 		dictionary[currentKey]++;
 

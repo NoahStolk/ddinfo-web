@@ -32,24 +32,22 @@
 
 @code
 {
-	private bool _showList;
 	public bool ShowList
 	{
-		get => _showList;
+		get;
 		set
 		{
-			_showList = value;
+			field = value;
 			StateHasChanged();
 		}
 	}
 
-	private bool _isActive;
 	public bool IsActive
 	{
-		get => _isActive;
+		get;
 		set
 		{
-			_isActive = value;
+			field = value;
 			StateHasChanged();
 		}
 	}
@@ -59,11 +57,11 @@
 
 	[Parameter]
 	public required RenderFragment ChildContent { get; set; }
-	
+
 	[Parameter]
 	[EditorRequired]
 	public required string Text { get; set; }
-	
+
 	[Parameter]
 	[EditorRequired]
 	public required string IconType { get; set; }

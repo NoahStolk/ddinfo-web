@@ -21,7 +21,7 @@ internal sealed class ModArchiveProcessorProcessTests : ModArchiveProcessorTests
 		await Processor.ProcessModBinaryUploadAsync(modName, new Dictionary<BinaryName, byte[]> { [binaryName] = binary.Compile() });
 
 		string zipFilePath = Accessor.GetModArchivePath(modName);
-		using ZipArchive archive = ZipFile.Open(zipFilePath, ZipArchiveMode.Read);
+		await using ZipArchive archive = await ZipFile.OpenAsync(zipFilePath, ZipArchiveMode.Read);
 		Assert.AreEqual(1, archive.Entries.Count);
 
 		ModBinaryCacheData processedBinary = GetProcessedBinaryFromArchiveEntry(archive.Entries[0]);
@@ -44,7 +44,7 @@ internal sealed class ModArchiveProcessorProcessTests : ModArchiveProcessorTests
 		await Processor.ProcessModBinaryUploadAsync(modName, new Dictionary<BinaryName, byte[]> { [binaryName] = binary.Compile() });
 
 		string zipFilePath = Accessor.GetModArchivePath(modName);
-		using ZipArchive archive = ZipFile.Open(zipFilePath, ZipArchiveMode.Read);
+		await using ZipArchive archive = await ZipFile.OpenAsync(zipFilePath, ZipArchiveMode.Read);
 		Assert.AreEqual(1, archive.Entries.Count);
 
 		ModBinaryCacheData processedBinary = GetProcessedBinaryFromArchiveEntry(archive.Entries[0]);
@@ -76,7 +76,7 @@ internal sealed class ModArchiveProcessorProcessTests : ModArchiveProcessorTests
 		await Processor.ProcessModBinaryUploadAsync(modName, binaries);
 
 		string zipFilePath = Accessor.GetModArchivePath(modName);
-		using ZipArchive archive = ZipFile.Open(zipFilePath, ZipArchiveMode.Read);
+		await using ZipArchive archive = await ZipFile.OpenAsync(zipFilePath, ZipArchiveMode.Read);
 		Assert.AreEqual(2, archive.Entries.Count);
 
 		ModBinaryCacheData processedBinary1 = GetProcessedBinaryFromArchiveEntry(archive.Entries[0]);

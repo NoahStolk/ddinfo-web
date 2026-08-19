@@ -48,7 +48,7 @@ public sealed partial class SpawnsPage
 
 	private static string ReplaceLastOccurrenceOf(string source, string find, string replace)
 	{
-		int position = source.LastIndexOf(find);
+		int position = source.LastIndexOf(find, StringComparison.Ordinal);
 		if (position == -1)
 			return source;
 

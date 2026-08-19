@@ -1,4 +1,3 @@
-using DevilDaggersInfo.Core.Common.Extensions;
 using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Web.ApiSpec.Main;
 using DevilDaggersInfo.Web.ApiSpec.Main.Spawnsets;

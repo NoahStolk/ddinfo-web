@@ -7,9 +7,7 @@ using DevilDaggersInfo.Web.ApiSpec.Main.CustomLeaderboards;
 using DevilDaggersInfo.Web.Client.Core.CanvasChart.Data;
 using DevilDaggersInfo.Web.Client.Core.CanvasChart.Options.LineChart;
 using DevilDaggersInfo.Web.Client.Extensions;
-using DevilDaggersInfo.Web.Client.HttpClients;
 using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
 using System.Net;
 using System.Numerics;
 

@@ -9,10 +9,8 @@ using DevilDaggersInfo.Web.ApiSpec.Main.Spawnsets;
 using DevilDaggersInfo.Web.Client.Core.CanvasChart.Data;
 using DevilDaggersInfo.Web.Client.Core.CanvasChart.Enums;
 using DevilDaggersInfo.Web.Client.Core.CanvasChart.Options.LineChart;
-using DevilDaggersInfo.Web.Client.HttpClients;
 using DevilDaggersInfo.Web.Client.Utils;
 using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
 using System.Net;
 
 namespace DevilDaggersInfo.Web.Client.Pages.Leaderboard;

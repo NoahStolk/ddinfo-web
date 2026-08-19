@@ -11,8 +11,8 @@
 
 <AdminAuthorizer Base="this" RequiredRole="@Roles.CustomLeaderboards">
 	<AdminAdd TStateObject="AddCustomLeaderboardState" TModel="AddCustomLeaderboard" Name="Custom Leaderboard" OverviewUrl="/admin/custom-leaderboards" ApiCall="Http.AddCustomLeaderboard" StateObject="_addCustomLeaderboardState" OnPopulate="async ac => await PopulateAsync(ac)">
-		<InputWrapper Label="Spawnset"><SearchDropdown TKey="int" Values="@_spawnsetNames" Converter="s => int.Parse(s)" @bind-Value="@_addCustomLeaderboardState.SpawnsetId" /></InputWrapper>
-		<InputWrapper Label="Rank sorting"><SearchDropdown TKey="CustomLeaderboardRankSorting" Values="@(Enum.GetValues<CustomLeaderboardRankSorting>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<CustomLeaderboardRankSorting>(s)" ShowDisplayValue="false" @bind-Value="@_addCustomLeaderboardState.RankSorting" /></InputWrapper>
+		<InputWrapper Label="Spawnset"><SearchDropdown TKey="int" Values="@_spawnsetNames" Converter="int.Parse" @bind-Value="@_addCustomLeaderboardState.SpawnsetId" /></InputWrapper>
+		<InputWrapper Label="Rank sorting"><SearchDropdown TKey="CustomLeaderboardRankSorting" Values="@(Enum.GetValues<CustomLeaderboardRankSorting>().ToDictionary(e => e, e => e.ToString()))" Converter="Enum.Parse<CustomLeaderboardRankSorting>" ShowDisplayValue="false" @bind-Value="@_addCustomLeaderboardState.RankSorting" /></InputWrapper>
 		<InputWrapper Label="Featured"><InputCheckbox @bind-Value="@_addCustomLeaderboardState.IsFeatured" /></InputWrapper>
 		@if (_addCustomLeaderboardState.IsFeatured)
 		{
@@ -39,9 +39,9 @@
 		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.LevelUpTime3" Criteria="_addCustomLeaderboardState.LevelUpTime3Criteria" />
 		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.LevelUpTime4" Criteria="_addCustomLeaderboardState.LevelUpTime4Criteria" />
 		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.EnemiesAlive" Criteria="_addCustomLeaderboardState.EnemiesAliveCriteria" />
-		
+
 		<Heading Level="2" Title="Enemy criteria" />
-		
+
 		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.Skull1Kills" Criteria="_addCustomLeaderboardState.Skull1KillsCriteria" />
 		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.Skull2Kills" Criteria="_addCustomLeaderboardState.Skull2KillsCriteria" />
 		<CriteriaField CriteriaType="CustomLeaderboardCriteriaType.Skull3Kills" Criteria="_addCustomLeaderboardState.Skull3KillsCriteria" />

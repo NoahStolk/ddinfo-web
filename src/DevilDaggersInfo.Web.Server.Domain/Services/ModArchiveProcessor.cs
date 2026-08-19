@@ -37,11 +37,11 @@ public sealed class ModArchiveProcessor
 
 		try
 		{
-			using ZipArchive archive = ZipFile.Open(zipFilePath, ZipArchiveMode.Create);
+			await using ZipArchive archive = await ZipFile.OpenAsync(zipFilePath, ZipArchiveMode.Create);
 			foreach (KeyValuePair<BinaryName, byte[]> binary in binaries)
 			{
-				await using Stream entry = archive.CreateEntry(binary.Key.ToFullName(modName), CompressionLevel.SmallestSize).Open();
-				using MemoryStream ms = new(binary.Value);
+				await using Stream entry = await archive.CreateEntry(binary.Key.ToFullName(modName), CompressionLevel.SmallestSize).OpenAsync();
+				await using MemoryStream ms = new(binary.Value);
 				await ms.CopyToAsync(entry);
 			}
 		}
@@ -101,7 +101,7 @@ public sealed class ModArchiveProcessor
 		string originalArchivePath = _modArchiveAccessor.GetModArchivePath(originalModName);
 		if (File.Exists(originalArchivePath))
 		{
-			using ZipArchive originalArchive = ZipFile.Open(originalArchivePath, ZipArchiveMode.Read);
+			await using ZipArchive originalArchive = await ZipFile.OpenAsync(originalArchivePath, ZipArchiveMode.Read);
 			foreach (ZipArchiveEntry entry in originalArchive.Entries)
 			{
 				// Test if we need to skip (delete) this binary.
@@ -111,7 +111,7 @@ public sealed class ModArchiveProcessor
 
 				byte[] extractedContents = new byte[entry.Length];
 
-				await using Stream entryStream = entry.Open();
+				await using Stream entryStream = await entry.OpenAsync();
 				int readBytes = StreamUtils.ForceReadAllBytes(entryStream, extractedContents, 0, extractedContents.Length);
 				if (readBytes != extractedContents.Length)
 					throw new InvalidOperationException($"Reading all bytes from archived mod binary did not complete. {readBytes} out of {extractedContents.Length} bytes were read.");

@@ -1,7 +1,6 @@
 using DevilDaggersInfo.Web.ApiSpec.Main.CustomLeaderboards;
 using DevilDaggersInfo.Web.ApiSpec.Main.Spawnsets;
 using DevilDaggersInfo.Web.Client.Extensions;
-using DevilDaggersInfo.Web.Client.HttpClients;
 using DevilDaggersInfo.Web.Client.Utils;
 using Microsoft.AspNetCore.Components;
 

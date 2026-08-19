@@ -33,7 +33,7 @@ public sealed class WorldRecordRepository
 
 		List<ApiMain.GetWorldRecord> worldRecords = [];
 
-		TimeSpan heldConsecutively = default;
+		TimeSpan heldConsecutively = TimeSpan.Zero;
 		for (int i = 0; i < baseWorldRecords.Count; i++)
 		{
 			BaseWorldRecord wr = baseWorldRecords[i];
@@ -60,7 +60,7 @@ public sealed class WorldRecordRepository
 			}
 
 			if (i != 0 && wr.Entry.Id != baseWorldRecords[i - 1].Entry.Id)
-				heldConsecutively = default;
+				heldConsecutively = TimeSpan.Zero;
 
 			heldConsecutively += duration;
 

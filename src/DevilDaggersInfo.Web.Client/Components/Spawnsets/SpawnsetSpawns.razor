@@ -1,6 +1,6 @@
 @using DevilDaggersInfo.Core.Spawnset.View
 @using DevilDaggersInfo.Core.Wiki
-@if (!SpawnsView.HasPreLoopSpawns && !SpawnsView.HasLoopSpawns)
+@if (SpawnsView is { HasPreLoopSpawns: false, HasLoopSpawns: false })
 {
 	<div>This spawnset has no spawns.</div>
 }

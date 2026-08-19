@@ -34,7 +34,7 @@ public static class ScaleUtils
 			int stepCount = allowFractionalScales || maxCount <= 0 ? calculatedCount : Math.Min(calculatedCount, maxCount);
 
 			double calculatedStep = range / stepCount;
-			scales = Enumerable.Range(0, stepCount).Select(i => i * calculatedStep + min).Append(max).ToList();
+			scales = [.. Enumerable.Range(0, stepCount).Select(i => i * calculatedStep + min), max];
 		}
 		else
 		{

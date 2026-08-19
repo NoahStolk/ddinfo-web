@@ -23,12 +23,12 @@
 		<InputWrapper Label="Legacy audio"><InputNullableBoolean False="Off" True="On" @bind-Value="@_editPlayerState.UsesLegacyAudio" /></InputWrapper>
 		<InputWrapper Label="HRTF"><InputNullableBoolean False="Off" True="On" @bind-Value="@_editPlayerState.UsesHrtf" /></InputWrapper>
 		<InputWrapper Label="Invert Y"><InputNullableBoolean False="Off" True="On" @bind-Value="@_editPlayerState.UsesInvertY" /></InputWrapper>
-		<InputWrapper Label="V-sync"><SearchDropdown TKey="VerticalSync" Values="@(Enum.GetValues<VerticalSync>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<VerticalSync>(s)" ShowDisplayValue="false" @bind-Value="@_editPlayerState.VerticalSync" /></InputWrapper>
+		<InputWrapper Label="V-sync"><SearchDropdown TKey="VerticalSync" Values="@(Enum.GetValues<VerticalSync>().ToDictionary(e => e, e => e.ToString()))" Converter="Enum.Parse<VerticalSync>" ShowDisplayValue="false" @bind-Value="@_editPlayerState.VerticalSync" /></InputWrapper>
 		<InputWrapper Label="Hide donations"><InputCheckbox @bind-Value="@_editPlayerState.HideDonations" /></InputWrapper>
 		<InputWrapper Label="Hide past usernames"><InputCheckbox @bind-Value="@_editPlayerState.HidePastUsernames" /></InputWrapper>
 		<InputWrapper Label="Hide settings"><InputCheckbox @bind-Value="@_editPlayerState.HideSettings" /></InputWrapper>
 		<InputWrapper Label="Mods"><MultiSearchDropdown Values="@_modNames" @bind-Value="@_editPlayerState.ModIds" /></InputWrapper>
-		<InputWrapper Label="Ban type"><SearchDropdown TKey="BanType" Values="@(Enum.GetValues<BanType>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<BanType>(s)" ShowDisplayValue="false" @bind-Value="@_editPlayerState.BanType" /></InputWrapper>
+		<InputWrapper Label="Ban type"><SearchDropdown TKey="BanType" Values="@(Enum.GetValues<BanType>().ToDictionary(e => e, e => e.ToString()))" Converter="Enum.Parse<BanType>" ShowDisplayValue="false" @bind-Value="@_editPlayerState.BanType" /></InputWrapper>
 		<InputWrapper Label="Ban description"><InputText class="admin-input" @bind-Value="@_editPlayerState.BanDescription" /></InputWrapper>
 		<InputWrapper Label="Ban responsible ID (alt owner)"><InputNumber class="admin-input" @bind-Value="@_editPlayerState.BanResponsibleId" /></InputWrapper>
 		<InputWrapper Label="Banned from DDCL"><InputCheckbox @bind-Value="@_editPlayerState.IsBannedFromDdcl" /></InputWrapper>

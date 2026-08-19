@@ -40,7 +40,9 @@ public sealed partial class MultiSearchDropdown
 
 	private string DisplayValue(int key)
 	{
-		string value = Values?.ContainsKey(key) == true ? Values[key] : "???";
+		if (Values == null || !Values.TryGetValue(key, out string? value))
+			value = "???";
+
 		return $"{key} ({value})";
 	}
 

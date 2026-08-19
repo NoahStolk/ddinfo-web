@@ -13,7 +13,7 @@ public sealed partial class LeaderboardTable<TGetEntryDto>
 	private LeaderboardSorting _sortBy;
 	private bool _ascending;
 
-	private Dictionary<LeaderboardSorting, bool> _sortings = new();
+	private readonly Dictionary<LeaderboardSorting, bool> _sortings = new();
 
 	[Parameter]
 	public bool IsHistory { get; set; }

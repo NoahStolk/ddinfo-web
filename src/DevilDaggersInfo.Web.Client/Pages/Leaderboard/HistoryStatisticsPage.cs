@@ -7,7 +7,6 @@ using DevilDaggersInfo.Web.Client.Core.CanvasChart.Enums;
 using DevilDaggersInfo.Web.Client.Core.CanvasChart.Options.LineChart;
 using DevilDaggersInfo.Web.Client.Utils;
 using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
 
 namespace DevilDaggersInfo.Web.Client.Pages.Leaderboard;
 
@@ -112,7 +111,7 @@ public sealed partial class HistoryStatisticsPage
 		RegisterTotalPlayers();
 		void RegisterTotalPlayers()
 		{
-			IEnumerable<GetLeaderboardHistoryStatistics> relevantData = _statistics.Where(hs => hs.TotalPlayers > 0 && hs.TotalPlayersUpdated);
+			IEnumerable<GetLeaderboardHistoryStatistics> relevantData = _statistics.Where(hs => hs is { TotalPlayers: > 0, TotalPlayersUpdated: true });
 			IEnumerable<int> totalPlayers = relevantData.Select(hs => hs.TotalPlayers);
 			const double scale = 50_000;
 			double minY = Math.Floor(totalPlayers.Min() / scale) * scale;
@@ -172,7 +171,7 @@ public sealed partial class HistoryStatisticsPage
 		RegisterTime();
 		void RegisterTime()
 		{
-			IEnumerable<GetLeaderboardHistoryStatistics> relevantData = _statistics.Where(hs => hs.TimeGlobal > 0 && hs.TimeGlobalUpdated);
+			IEnumerable<GetLeaderboardHistoryStatistics> relevantData = _statistics.Where(hs => hs is { TimeGlobal: > 0, TimeGlobalUpdated: true });
 			IEnumerable<double> stats = relevantData.Select(hs => hs.TimeGlobal);
 			const double scale = 300_000_000;
 			double minY = Math.Floor(stats.Min() / scale) * scale;
@@ -219,7 +218,7 @@ public sealed partial class HistoryStatisticsPage
 		{
 			static double CalculateAccuracy(ulong hit, ulong fired) => fired == 0 ? 0 : hit / (double)fired;
 
-			IEnumerable<GetLeaderboardHistoryStatistics> relevantData = _statistics.Where(hs => hs.DaggersFiredGlobal > 0 && hs.DaggersFiredGlobalUpdated);
+			IEnumerable<GetLeaderboardHistoryStatistics> relevantData = _statistics.Where(hs => hs is { DaggersFiredGlobal: > 0, DaggersFiredGlobalUpdated: true });
 			IEnumerable<double> accuracy = relevantData.Select(hs => CalculateAccuracy(hs.DaggersHitGlobal, hs.DaggersFiredGlobal));
 			double max = (int)Math.Ceiling((int)(accuracy.Max() * 100) / 5.0) * 5 / 100.0 + 0.0001;
 			_accuracyOptions = new LineChartDataOptions(relevantData.Min(hs => hs.DateTime.Ticks), null, maxX.Ticks, 0.2, 0.01, max, true);

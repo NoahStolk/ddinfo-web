@@ -7,7 +7,6 @@ namespace DevilDaggersInfo.Web.Client.Pages.Leaderboard;
 
 public sealed partial class Index
 {
-	private int _rank = 1;
 	private string? _apiError;
 	private bool _reloading;
 
@@ -15,7 +14,11 @@ public sealed partial class Index
 
 	[Parameter]
 	[SupplyParameterFromQuery]
-	public int Rank { get => _rank; set => _rank = Math.Max(1, value); }
+	public int Rank
+	{
+		get;
+		set => field = Math.Max(1, value);
+	} = 1;
 
 	public GetLeaderboard? GetLeaderboard { get; set; }
 

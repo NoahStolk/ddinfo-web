@@ -110,7 +110,7 @@
 	private LeaderboardSorting _sortBy;
 	private bool _ascending;
 
-	private Dictionary<LeaderboardSorting, bool> _sortings = new();
+	private readonly Dictionary<LeaderboardSorting, bool> _sortings = new();
 
 	protected override void OnInitialized()
 	{

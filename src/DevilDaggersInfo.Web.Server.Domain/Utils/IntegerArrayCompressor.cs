@@ -25,7 +25,7 @@ public static class IntegerArrayCompressor
 			return [];
 
 		byte bitCount = GetBitCount(data.Max());
-		BitArray bitArray = new(new[] { bitCount })
+		BitArray bitArray = new([bitCount])
 		{
 			Length = 8 + data.Length * bitCount,
 		};

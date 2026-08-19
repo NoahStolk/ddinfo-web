@@ -53,7 +53,7 @@ public sealed class CustomEntryProcessor
 		_startingTimestamp = Stopwatch.GetTimestamp();
 	}
 
-	// Temporary hack until a proper spawnset repository is implemented.
+	[Obsolete("Use a real database provider in an integration test.")]
 	public bool IsUnitTest { get; init; }
 
 	private void ValidateV2(UploadRequest uploadRequest)
@@ -109,7 +109,7 @@ public sealed class CustomEntryProcessor
 		// Check for existing spawnset.
 		var spawnset =
 			IsUnitTest
-			? await _dbContext.Spawnsets.Select(s => new { s.Name, s.Md5Hash }).FirstOrDefaultAsync(s => s.Md5Hash.SequenceEqual(uploadRequest.SurvivalHashMd5))
+			? await _dbContext.Spawnsets.Select(s => new { s.Name, s.Md5Hash }).FirstOrDefaultAsync(s => ((IEnumerable<byte>)s.Md5Hash).SequenceEqual(uploadRequest.SurvivalHashMd5))
 			: await _dbContext.Spawnsets.Select(s => new { s.Name, s.Md5Hash }).FirstOrDefaultAsync(s => s.Md5Hash == uploadRequest.SurvivalHashMd5);
 		if (spawnset == null)
 			LogAndThrowValidationException(uploadRequest, "This spawnset doesn't exist on DevilDaggers.info.");

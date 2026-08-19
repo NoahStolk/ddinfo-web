@@ -30,7 +30,7 @@
 			{
 				foreach (GetPlayerForLeaderboard player in Players)
 				{
-					if (player.BanType == BanType.Alt && player.BanResponsibleId.HasValue)
+					if (player is { BanType: BanType.Alt, BanResponsibleId: not null })
 					{
 						List<int>? existingGroup = groupsOfAlts.FirstOrDefault(l => l.Contains(player.BanResponsibleId.Value));
 						if (existingGroup == null)
