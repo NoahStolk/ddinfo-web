@@ -7,7 +7,6 @@ using NSubstitute;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Test.Tests.ServerDomain;
 
-[TestClass]
 internal sealed class PlayerHistoryRepositoryTests
 {
 	private readonly PlayerHistoryRepository _repository;
@@ -27,73 +26,73 @@ internal sealed class PlayerHistoryRepositoryTests
 		return new DateTime(year, month, day, 0, 0, 0, DateTimeKind.Utc);
 	}
 
-	[TestMethod]
-	public void GetPlayerHistory_WithCheater()
+	[Test]
+	public async Task GetPlayerHistory_WithCheater()
 	{
 		PlayerHistory historyPlayer1 = _repository.GetPlayerHistoryById(1);
 
 		// Verify that this player always has first place, even if a cheater has technically been first in the history at some point.
-		Assert.AreEqual(3, historyPlayer1.ScoreHistory.Count);
-		Assert.AreEqual(1, historyPlayer1.ScoreHistory[0].Rank);
-		Assert.AreEqual(1, historyPlayer1.ScoreHistory[1].Rank);
-		Assert.AreEqual(1, historyPlayer1.ScoreHistory[2].Rank);
-		Assert.AreEqual(CreateDateTime(2022, 1, 1), historyPlayer1.ScoreHistory[0].DateTime);
-		Assert.AreEqual(CreateDateTime(2022, 1, 3), historyPlayer1.ScoreHistory[1].DateTime);
-		Assert.AreEqual(CreateDateTime(2022, 1, 4), historyPlayer1.ScoreHistory[2].DateTime);
+		await Assert.That(historyPlayer1.ScoreHistory.Count).IsEqualTo(3);
+		await Assert.That(historyPlayer1.ScoreHistory[0].Rank).IsEqualTo(1);
+		await Assert.That(historyPlayer1.ScoreHistory[1].Rank).IsEqualTo(1);
+		await Assert.That(historyPlayer1.ScoreHistory[2].Rank).IsEqualTo(1);
+		await Assert.That(historyPlayer1.ScoreHistory[0].DateTime).IsEqualTo(CreateDateTime(2022, 1, 1));
+		await Assert.That(historyPlayer1.ScoreHistory[1].DateTime).IsEqualTo(CreateDateTime(2022, 1, 3));
+		await Assert.That(historyPlayer1.ScoreHistory[2].DateTime).IsEqualTo(CreateDateTime(2022, 1, 4));
 
-		Assert.AreEqual(1, historyPlayer1.RankHistory.Count);
-		Assert.AreEqual(1, historyPlayer1.RankHistory[0].Rank);
-		Assert.AreEqual(CreateDateTime(2022, 1, 1), historyPlayer1.RankHistory[0].DateTime);
+		await Assert.That(historyPlayer1.RankHistory.Count).IsEqualTo(1);
+		await Assert.That(historyPlayer1.RankHistory[0].Rank).IsEqualTo(1);
+		await Assert.That(historyPlayer1.RankHistory[0].DateTime).IsEqualTo(CreateDateTime(2022, 1, 1));
 
-		Assert.AreEqual(1, historyPlayer1.BestRank);
+		await Assert.That(historyPlayer1.BestRank).IsEqualTo(1);
 
 		PlayerHistory historyPlayer2 = _repository.GetPlayerHistoryById(2);
 
 		// Verify that this player always has second place, even if a cheater has technically been first in the history at some point.
-		Assert.AreEqual(2, historyPlayer2.ScoreHistory.Count);
-		Assert.AreEqual(2, historyPlayer2.ScoreHistory[0].Rank);
-		Assert.AreEqual(2, historyPlayer2.ScoreHistory[1].Rank);
-		Assert.AreEqual(CreateDateTime(2022, 1, 1), historyPlayer2.ScoreHistory[0].DateTime);
-		Assert.AreEqual(CreateDateTime(2022, 1, 3), historyPlayer2.ScoreHistory[1].DateTime);
+		await Assert.That(historyPlayer2.ScoreHistory.Count).IsEqualTo(2);
+		await Assert.That(historyPlayer2.ScoreHistory[0].Rank).IsEqualTo(2);
+		await Assert.That(historyPlayer2.ScoreHistory[1].Rank).IsEqualTo(2);
+		await Assert.That(historyPlayer2.ScoreHistory[0].DateTime).IsEqualTo(CreateDateTime(2022, 1, 1));
+		await Assert.That(historyPlayer2.ScoreHistory[1].DateTime).IsEqualTo(CreateDateTime(2022, 1, 3));
 
-		Assert.AreEqual(1, historyPlayer2.RankHistory.Count);
-		Assert.AreEqual(2, historyPlayer2.RankHistory[0].Rank);
-		Assert.AreEqual(CreateDateTime(2022, 1, 1), historyPlayer2.RankHistory[0].DateTime);
+		await Assert.That(historyPlayer2.RankHistory.Count).IsEqualTo(1);
+		await Assert.That(historyPlayer2.RankHistory[0].Rank).IsEqualTo(2);
+		await Assert.That(historyPlayer2.RankHistory[0].DateTime).IsEqualTo(CreateDateTime(2022, 1, 1));
 
-		Assert.AreEqual(2, historyPlayer2.BestRank);
+		await Assert.That(historyPlayer2.BestRank).IsEqualTo(2);
 
 		PlayerHistory historyPlayer3 = _repository.GetPlayerHistoryById(3);
 
 		// Verify that this player's best rank is 3rd, even if a cheater has always been above them.
-		Assert.AreEqual(1, historyPlayer3.ScoreHistory.Count);
-		Assert.AreEqual(3, historyPlayer3.ScoreHistory[0].Rank);
-		Assert.AreEqual(CreateDateTime(2022, 1, 4), historyPlayer3.RankHistory[0].DateTime);
+		await Assert.That(historyPlayer3.ScoreHistory.Count).IsEqualTo(1);
+		await Assert.That(historyPlayer3.ScoreHistory[0].Rank).IsEqualTo(3);
+		await Assert.That(historyPlayer3.RankHistory[0].DateTime).IsEqualTo(CreateDateTime(2022, 1, 4));
 
-		Assert.AreEqual(1, historyPlayer3.RankHistory.Count);
-		Assert.AreEqual(3, historyPlayer3.RankHistory[0].Rank);
-		Assert.AreEqual(CreateDateTime(2022, 1, 4), historyPlayer3.RankHistory[0].DateTime);
+		await Assert.That(historyPlayer3.RankHistory.Count).IsEqualTo(1);
+		await Assert.That(historyPlayer3.RankHistory[0].Rank).IsEqualTo(3);
+		await Assert.That(historyPlayer3.RankHistory[0].DateTime).IsEqualTo(CreateDateTime(2022, 1, 4));
 
-		Assert.AreEqual(3, historyPlayer3.BestRank);
+		await Assert.That(historyPlayer3.BestRank).IsEqualTo(3);
 
 		PlayerHistory historyCheater = _repository.GetPlayerHistoryById(4);
 
 		// A cheater's history is not affected, except if there is another cheater with a better rank (which we don't test here because we don't care about accurate cheater stats).
-		Assert.AreEqual(3, historyCheater.ScoreHistory.Count);
-		Assert.AreEqual(1, historyCheater.ScoreHistory[0].Rank);
-		Assert.AreEqual(3, historyCheater.ScoreHistory[1].Rank);
-		Assert.AreEqual(1, historyCheater.ScoreHistory[2].Rank);
-		Assert.AreEqual(CreateDateTime(2022, 1, 2), historyCheater.ScoreHistory[0].DateTime);
-		Assert.AreEqual(CreateDateTime(2022, 1, 3), historyCheater.ScoreHistory[1].DateTime);
-		Assert.AreEqual(CreateDateTime(2022, 1, 4), historyCheater.ScoreHistory[2].DateTime);
+		await Assert.That(historyCheater.ScoreHistory.Count).IsEqualTo(3);
+		await Assert.That(historyCheater.ScoreHistory[0].Rank).IsEqualTo(1);
+		await Assert.That(historyCheater.ScoreHistory[1].Rank).IsEqualTo(3);
+		await Assert.That(historyCheater.ScoreHistory[2].Rank).IsEqualTo(1);
+		await Assert.That(historyCheater.ScoreHistory[0].DateTime).IsEqualTo(CreateDateTime(2022, 1, 2));
+		await Assert.That(historyCheater.ScoreHistory[1].DateTime).IsEqualTo(CreateDateTime(2022, 1, 3));
+		await Assert.That(historyCheater.ScoreHistory[2].DateTime).IsEqualTo(CreateDateTime(2022, 1, 4));
 
-		Assert.AreEqual(3, historyCheater.RankHistory.Count);
-		Assert.AreEqual(1, historyCheater.RankHistory[0].Rank);
-		Assert.AreEqual(3, historyCheater.RankHistory[1].Rank);
-		Assert.AreEqual(1, historyCheater.RankHistory[2].Rank);
-		Assert.AreEqual(CreateDateTime(2022, 1, 2), historyCheater.RankHistory[0].DateTime);
-		Assert.AreEqual(CreateDateTime(2022, 1, 3), historyCheater.RankHistory[1].DateTime);
-		Assert.AreEqual(CreateDateTime(2022, 1, 4), historyCheater.RankHistory[2].DateTime);
+		await Assert.That(historyCheater.RankHistory.Count).IsEqualTo(3);
+		await Assert.That(historyCheater.RankHistory[0].Rank).IsEqualTo(1);
+		await Assert.That(historyCheater.RankHistory[1].Rank).IsEqualTo(3);
+		await Assert.That(historyCheater.RankHistory[2].Rank).IsEqualTo(1);
+		await Assert.That(historyCheater.RankHistory[0].DateTime).IsEqualTo(CreateDateTime(2022, 1, 2));
+		await Assert.That(historyCheater.RankHistory[1].DateTime).IsEqualTo(CreateDateTime(2022, 1, 3));
+		await Assert.That(historyCheater.RankHistory[2].DateTime).IsEqualTo(CreateDateTime(2022, 1, 4));
 
-		Assert.AreEqual(1, historyCheater.BestRank);
+		await Assert.That(historyCheater.BestRank).IsEqualTo(1);
 	}
 }

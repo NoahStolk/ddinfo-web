@@ -7,7 +7,6 @@ using NSubstitute;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Test.Tests.ServerDomainMain;
 
-[TestClass]
 internal sealed class WorldRecordRepositoryTests
 {
 	private readonly WorldRecordRepository _repository;
@@ -22,22 +21,22 @@ internal sealed class WorldRecordRepositoryTests
 		_repository = new WorldRecordRepository(dbContext, data, data);
 	}
 
-	[TestMethod]
-	public void GetWorldRecords_WithCheater()
+	[Test]
+	public async Task GetWorldRecords_WithCheater()
 	{
 		GetWorldRecordDataContainer worldRecordData = _repository.GetWorldRecordData();
 
-		Assert.AreEqual(1, worldRecordData.WorldRecordHolders.Count);
-		Assert.AreEqual(1, worldRecordData.WorldRecordHolders[0].Id);
-		Assert.AreEqual(3, worldRecordData.WorldRecordHolders[0].WorldRecordCount);
+		await Assert.That(worldRecordData.WorldRecordHolders.Count).IsEqualTo(1);
+		await Assert.That(worldRecordData.WorldRecordHolders[0].Id).IsEqualTo(1);
+		await Assert.That(worldRecordData.WorldRecordHolders[0].WorldRecordCount).IsEqualTo(3);
 
 		const double delta = 0.00001;
-		Assert.AreEqual(3, worldRecordData.WorldRecords.Count);
-		Assert.AreEqual(1, worldRecordData.WorldRecords[0].Entry.Id);
-		Assert.AreEqual(0.0090, worldRecordData.WorldRecords[0].Entry.Time, delta);
-		Assert.AreEqual(1, worldRecordData.WorldRecords[1].Entry.Id);
-		Assert.AreEqual(0.0095, worldRecordData.WorldRecords[1].Entry.Time, delta);
-		Assert.AreEqual(1, worldRecordData.WorldRecords[2].Entry.Id);
-		Assert.AreEqual(0.0098, worldRecordData.WorldRecords[2].Entry.Time, delta);
+		await Assert.That(worldRecordData.WorldRecords.Count).IsEqualTo(3);
+		await Assert.That(worldRecordData.WorldRecords[0].Entry.Id).IsEqualTo(1);
+		await Assert.That(worldRecordData.WorldRecords[0].Entry.Time).IsEqualTo(0.0090).Within(delta);
+		await Assert.That(worldRecordData.WorldRecords[1].Entry.Id).IsEqualTo(1);
+		await Assert.That(worldRecordData.WorldRecords[1].Entry.Time).IsEqualTo(0.0095).Within(delta);
+		await Assert.That(worldRecordData.WorldRecords[2].Entry.Id).IsEqualTo(1);
+		await Assert.That(worldRecordData.WorldRecords[2].Entry.Time).IsEqualTo(0.0098).Within(delta);
 	}
 }

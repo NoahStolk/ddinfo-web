@@ -41,22 +41,22 @@ internal abstract class ModArchiveProcessorTests
 	protected ModArchiveProcessor Processor { get; }
 
 	[AssertionMethod]
-	protected static void AssertBinaryName(BinaryName binaryName, string name, string modName)
+	protected static async Task AssertBinaryNameAsync(BinaryName binaryName, string name, string modName)
 	{
-		Assert.AreEqual(binaryName.ToFullName(modName), name);
-		Assert.AreEqual(binaryName, BinaryName.Parse(name, modName));
+		await Assert.That(name).IsEqualTo(binaryName.ToFullName(modName));
+		await Assert.That(BinaryName.Parse(name, modName)).IsEqualTo(binaryName);
 	}
 
 	[AssertionMethod]
-	protected static ModBinaryCacheData GetProcessedBinaryFromArchiveEntry(ZipArchiveEntry entry)
+	protected static async Task<ModBinaryCacheData> GetProcessedBinaryFromArchiveEntryAsync(ZipArchiveEntry entry)
 	{
-		Assert.IsFalse(string.IsNullOrEmpty(entry.Name));
+		await Assert.That(string.IsNullOrEmpty(entry.Name)).IsFalse();
 
 		byte[] extractedContents = new byte[entry.Length];
-		using (Stream entryStream = entry.Open())
+		await using (Stream entryStream = await entry.OpenAsync())
 		{
 			int readBytes = StreamUtils.ForceReadAllBytes(entryStream, extractedContents, 0, extractedContents.Length);
-			Assert.AreEqual(extractedContents.Length, readBytes, "Premature end of stream.");
+			await Assert.That(readBytes).IsEqualTo(extractedContents.Length).Because("Premature end of stream.");
 		}
 
 		return ModBinaryCacheData.CreateFromFile(entry.Name, extractedContents);

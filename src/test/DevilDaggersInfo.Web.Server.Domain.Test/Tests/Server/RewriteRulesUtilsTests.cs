@@ -2,15 +2,14 @@ using DevilDaggersInfo.Web.Server.RewriteRules;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Test.Tests.Server;
 
-[TestClass]
 internal sealed class RewriteRulesUtilsTests
 {
-	[TestMethod]
-	public void TestTrimStart()
+	[Test]
+	public async Task TestTrimStart()
 	{
-		Assert.AreEqual("Test", RewriteRulesUtils.TrimStart("AudioTest", "Audio"));
-		Assert.AreEqual("Audio", RewriteRulesUtils.TrimStart("AudioAudio", "Audio"));
-		Assert.AreEqual("Test", RewriteRulesUtils.TrimStart("AudioTest", "Audio", "Test"));
-		Assert.AreEqual("Test", RewriteRulesUtils.TrimStart("AudioTest", "Test", "Audio"));
+		await Assert.That(RewriteRulesUtils.TrimStart("AudioTest", "Audio")).IsEqualTo("Test");
+		await Assert.That(RewriteRulesUtils.TrimStart("AudioAudio", "Audio")).IsEqualTo("Audio");
+		await Assert.That(RewriteRulesUtils.TrimStart("AudioTest", "Audio", "Test")).IsEqualTo("Test");
+		await Assert.That(RewriteRulesUtils.TrimStart("AudioTest", "Test", "Audio")).IsEqualTo("Test");
 	}
 }

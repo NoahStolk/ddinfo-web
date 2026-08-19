@@ -6,16 +6,17 @@ using System.IO.Compression;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Test.Tests.ServerDomain;
 
-[TestClass]
+// The base class clears and rewrites the shared mod and mod archive cache directories for every test case.
+[NotInParallel]
 internal sealed class ModArchiveProcessorTransformTests : ModArchiveProcessorTests
 {
-	[DataTestMethod]
-	[DataRow("mod", "mod-renamed")]
-	[DataRow("mod", "renamed")]
-	[DataRow("mod", "modd")]
-	[DataRow("mod", "mmod")]
-	[DataRow("mod", "m")]
-	[DataRow("mod", "")]
+	[Test]
+	[Arguments("mod", "mod-renamed")]
+	[Arguments("mod", "renamed")]
+	[Arguments("mod", "modd")]
+	[Arguments("mod", "mmod")]
+	[Arguments("mod", "m")]
+	[Arguments("mod", "")]
 	public async Task Transform_Rename(string modName, string newModName)
 	{
 		BinaryName binaryName1 = new(ModBinaryType.Dd, "main1");
@@ -35,14 +36,14 @@ internal sealed class ModArchiveProcessorTransformTests : ModArchiveProcessorTes
 
 		string zipFilePath = Accessor.GetModArchivePath(newModName);
 		await using ZipArchive archive = await ZipFile.OpenAsync(zipFilePath, ZipArchiveMode.Read);
-		Assert.AreEqual(2, archive.Entries.Count);
-		AssertBinaryName(binaryName1, archive.Entries[0].Name, newModName);
-		AssertBinaryName(binaryName2, archive.Entries[1].Name, newModName);
+		await Assert.That(archive.Entries.Count).IsEqualTo(2);
+		await AssertBinaryNameAsync(binaryName1, archive.Entries[0].Name, newModName);
+		await AssertBinaryNameAsync(binaryName2, archive.Entries[1].Name, newModName);
 	}
 
-	[DataTestMethod]
-	[DataRow("mod", "mod")]
-	[DataRow("mod", "mod-renamed")]
+	[Test]
+	[Arguments("mod", "mod")]
+	[Arguments("mod", "mod-renamed")]
 	public async Task Transform_Remove1(string modName, string newModName)
 	{
 		BinaryName binaryName1 = new(ModBinaryType.Dd, "main");
@@ -62,13 +63,13 @@ internal sealed class ModArchiveProcessorTransformTests : ModArchiveProcessorTes
 
 		string zipFilePath = Accessor.GetModArchivePath(newModName);
 		await using ZipArchive archive = await ZipFile.OpenAsync(zipFilePath, ZipArchiveMode.Read);
-		Assert.AreEqual(1, archive.Entries.Count);
-		AssertBinaryName(binaryName1, archive.Entries[0].Name, newModName);
+		await Assert.That(archive.Entries.Count).IsEqualTo(1);
+		await AssertBinaryNameAsync(binaryName1, archive.Entries[0].Name, newModName);
 	}
 
-	[DataTestMethod]
-	[DataRow("mod", "mod")]
-	[DataRow("mod", "mod-renamed")]
+	[Test]
+	[Arguments("mod", "mod")]
+	[Arguments("mod", "mod-renamed")]
 	public async Task Transform_Add1(string modName, string newModName)
 	{
 		BinaryName binaryName1 = new(ModBinaryType.Dd, "main1");
@@ -90,15 +91,15 @@ internal sealed class ModArchiveProcessorTransformTests : ModArchiveProcessorTes
 
 		string zipFilePath = Accessor.GetModArchivePath(newModName);
 		await using ZipArchive archive = await ZipFile.OpenAsync(zipFilePath, ZipArchiveMode.Read);
-		Assert.AreEqual(3, archive.Entries.Count);
-		AssertBinaryName(binaryName1, archive.Entries[0].Name, newModName);
-		AssertBinaryName(binaryName2, archive.Entries[1].Name, newModName);
-		AssertBinaryName(binaryName3, archive.Entries[2].Name, newModName);
+		await Assert.That(archive.Entries.Count).IsEqualTo(3);
+		await AssertBinaryNameAsync(binaryName1, archive.Entries[0].Name, newModName);
+		await AssertBinaryNameAsync(binaryName2, archive.Entries[1].Name, newModName);
+		await AssertBinaryNameAsync(binaryName3, archive.Entries[2].Name, newModName);
 	}
 
-	[DataTestMethod]
-	[DataRow("mod", "mod")]
-	[DataRow("mod", "mod-renamed")]
+	[Test]
+	[Arguments("mod", "mod")]
+	[Arguments("mod", "mod-renamed")]
 	public async Task Transform_Remove1_Add1(string modName, string newModName)
 	{
 		BinaryName binaryName1 = new(ModBinaryType.Dd, "main1");
@@ -120,14 +121,14 @@ internal sealed class ModArchiveProcessorTransformTests : ModArchiveProcessorTes
 
 		string zipFilePath = Accessor.GetModArchivePath(newModName);
 		await using ZipArchive archive = await ZipFile.OpenAsync(zipFilePath, ZipArchiveMode.Read);
-		Assert.AreEqual(2, archive.Entries.Count);
-		AssertBinaryName(binaryName1, archive.Entries[0].Name, newModName);
-		AssertBinaryName(binaryName3, archive.Entries[1].Name, newModName);
+		await Assert.That(archive.Entries.Count).IsEqualTo(2);
+		await AssertBinaryNameAsync(binaryName1, archive.Entries[0].Name, newModName);
+		await AssertBinaryNameAsync(binaryName3, archive.Entries[1].Name, newModName);
 	}
 
-	[DataTestMethod]
-	[DataRow("mod", "mod")]
-	[DataRow("mod", "mod-renamed")]
+	[Test]
+	[Arguments("mod", "mod")]
+	[Arguments("mod", "mod-renamed")]
 	public async Task Transform_Remove1_Add1_SameName_Fail(string modName, string newModName)
 	{
 		BinaryName binaryName1 = new(ModBinaryType.Dd, "main1");
@@ -139,17 +140,17 @@ internal sealed class ModArchiveProcessorTransformTests : ModArchiveProcessorTes
 		await Processor.ProcessModBinaryUploadAsync(modName, binaries);
 
 		ModBinaryBuilder binary2 = CreateWithBinding(assetName);
-		await Assert.ThrowsExceptionAsync<InvalidModArchiveException>(async () => await Processor.TransformBinariesInModArchiveAsync(modName, newModName, [], new Dictionary<BinaryName, byte[]> { { binaryName2, binary2.Compile() } }));
+		await Assert.That(async () => await Processor.TransformBinariesInModArchiveAsync(modName, newModName, [], new Dictionary<BinaryName, byte[]> { { binaryName2, binary2.Compile() } })).Throws<InvalidModArchiveException>();
 
 		string zipFilePath = Accessor.GetModArchivePath(modName);
 		await using ZipArchive archive = await ZipFile.OpenAsync(zipFilePath, ZipArchiveMode.Read);
-		Assert.AreEqual(1, archive.Entries.Count);
-		AssertBinaryName(binaryName1, archive.Entries[0].Name, modName);
+		await Assert.That(archive.Entries.Count).IsEqualTo(1);
+		await AssertBinaryNameAsync(binaryName1, archive.Entries[0].Name, modName);
 	}
 
-	[DataTestMethod]
-	[DataRow("mod", "mod")]
-	[DataRow("mod", "mod-renamed")]
+	[Test]
+	[Arguments("mod", "mod")]
+	[Arguments("mod", "mod-renamed")]
 	public async Task Transform_Replace1(string modName, string newModName)
 	{
 		BinaryName binaryName1 = new(ModBinaryType.Dd, "main1");
@@ -166,12 +167,12 @@ internal sealed class ModArchiveProcessorTransformTests : ModArchiveProcessorTes
 
 		string zipFilePath = Accessor.GetModArchivePath(newModName);
 		await using ZipArchive archive = await ZipFile.OpenAsync(zipFilePath, ZipArchiveMode.Read);
-		Assert.AreEqual(1, archive.Entries.Count);
-		AssertBinaryName(binaryName2, archive.Entries[0].Name, newModName);
+		await Assert.That(archive.Entries.Count).IsEqualTo(1);
+		await AssertBinaryNameAsync(binaryName2, archive.Entries[0].Name, newModName);
 
 		// Test if the asset name is actually updated.
-		ModBinaryCacheData modBinaryCacheData = GetProcessedBinaryFromArchiveEntry(archive.Entries[0]);
-		Assert.AreEqual(1, modBinaryCacheData.TocEntries.Count);
-		Assert.AreEqual(assetName2, modBinaryCacheData.TocEntries[0].Name);
+		ModBinaryCacheData modBinaryCacheData = await GetProcessedBinaryFromArchiveEntryAsync(archive.Entries[0]);
+		await Assert.That(modBinaryCacheData.TocEntries.Count).IsEqualTo(1);
+		await Assert.That(modBinaryCacheData.TocEntries[0].Name).IsEqualTo(assetName2);
 	}
 }

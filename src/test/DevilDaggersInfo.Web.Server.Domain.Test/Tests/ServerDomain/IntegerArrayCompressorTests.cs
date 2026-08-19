@@ -2,50 +2,49 @@ using DevilDaggersInfo.Web.Server.Domain.Utils;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Test.Tests.ServerDomain;
 
-[TestClass]
 internal sealed class IntegerArrayCompressorTests
 {
-	[TestMethod]
-	public void TestGetMaxBitCount()
+	[Test]
+	public async Task TestGetMaxBitCount()
 	{
-		Assert.ThrowsException<ArgumentOutOfRangeException>(() => IntegerArrayCompressor.GetBitCount(-1));
-		Assert.AreEqual(0, IntegerArrayCompressor.GetBitCount(0));
-		Assert.AreEqual(1, IntegerArrayCompressor.GetBitCount(1));
-		Assert.AreEqual(2, IntegerArrayCompressor.GetBitCount(2));
-		Assert.AreEqual(2, IntegerArrayCompressor.GetBitCount(3));
-		Assert.AreEqual(3, IntegerArrayCompressor.GetBitCount(4));
-		Assert.AreEqual(3, IntegerArrayCompressor.GetBitCount(5));
-		Assert.AreEqual(3, IntegerArrayCompressor.GetBitCount(6));
-		Assert.AreEqual(3, IntegerArrayCompressor.GetBitCount(7));
-		Assert.AreEqual(4, IntegerArrayCompressor.GetBitCount(8));
-		Assert.AreEqual(4, IntegerArrayCompressor.GetBitCount(9));
-		Assert.AreEqual(4, IntegerArrayCompressor.GetBitCount(15));
-		Assert.AreEqual(5, IntegerArrayCompressor.GetBitCount(16));
-		Assert.AreEqual(5, IntegerArrayCompressor.GetBitCount(31));
-		Assert.AreEqual(8, IntegerArrayCompressor.GetBitCount(byte.MaxValue));
-		Assert.AreEqual(9, IntegerArrayCompressor.GetBitCount(byte.MaxValue + 1));
-		Assert.AreEqual(15, IntegerArrayCompressor.GetBitCount(short.MaxValue));
-		Assert.AreEqual(16, IntegerArrayCompressor.GetBitCount(ushort.MaxValue));
-		Assert.AreEqual(17, IntegerArrayCompressor.GetBitCount(ushort.MaxValue + 1));
-		Assert.AreEqual(31, IntegerArrayCompressor.GetBitCount(int.MaxValue));
+		await Assert.That(() => IntegerArrayCompressor.GetBitCount(-1)).Throws<ArgumentOutOfRangeException>();
+		await Assert.That((int)IntegerArrayCompressor.GetBitCount(0)).IsEqualTo(0);
+		await Assert.That((int)IntegerArrayCompressor.GetBitCount(1)).IsEqualTo(1);
+		await Assert.That((int)IntegerArrayCompressor.GetBitCount(2)).IsEqualTo(2);
+		await Assert.That((int)IntegerArrayCompressor.GetBitCount(3)).IsEqualTo(2);
+		await Assert.That((int)IntegerArrayCompressor.GetBitCount(4)).IsEqualTo(3);
+		await Assert.That((int)IntegerArrayCompressor.GetBitCount(5)).IsEqualTo(3);
+		await Assert.That((int)IntegerArrayCompressor.GetBitCount(6)).IsEqualTo(3);
+		await Assert.That((int)IntegerArrayCompressor.GetBitCount(7)).IsEqualTo(3);
+		await Assert.That((int)IntegerArrayCompressor.GetBitCount(8)).IsEqualTo(4);
+		await Assert.That((int)IntegerArrayCompressor.GetBitCount(9)).IsEqualTo(4);
+		await Assert.That((int)IntegerArrayCompressor.GetBitCount(15)).IsEqualTo(4);
+		await Assert.That((int)IntegerArrayCompressor.GetBitCount(16)).IsEqualTo(5);
+		await Assert.That((int)IntegerArrayCompressor.GetBitCount(31)).IsEqualTo(5);
+		await Assert.That((int)IntegerArrayCompressor.GetBitCount(byte.MaxValue)).IsEqualTo(8);
+		await Assert.That((int)IntegerArrayCompressor.GetBitCount(byte.MaxValue + 1)).IsEqualTo(9);
+		await Assert.That((int)IntegerArrayCompressor.GetBitCount(short.MaxValue)).IsEqualTo(15);
+		await Assert.That((int)IntegerArrayCompressor.GetBitCount(ushort.MaxValue)).IsEqualTo(16);
+		await Assert.That((int)IntegerArrayCompressor.GetBitCount(ushort.MaxValue + 1)).IsEqualTo(17);
+		await Assert.That((int)IntegerArrayCompressor.GetBitCount(int.MaxValue)).IsEqualTo(31);
 	}
 
-	[TestMethod]
-	public void Test1BitNumbers()
+	[Test]
+	public async Task Test1BitNumbers()
 	{
 		const byte bitCount = 1;
 		bool[] binary0 = [false];
 		bool[] binary1 = [true];
 
-		CollectionAssert.AreEqual(binary0, IntegerArrayCompressor.GetBitsFromValue(0, bitCount));
-		CollectionAssert.AreEqual(binary1, IntegerArrayCompressor.GetBitsFromValue(1, bitCount));
+		await Assert.That(IntegerArrayCompressor.GetBitsFromValue(0, bitCount)).IsEquivalentTo(binary0, CollectionOrdering.Matching);
+		await Assert.That(IntegerArrayCompressor.GetBitsFromValue(1, bitCount)).IsEquivalentTo(binary1, CollectionOrdering.Matching);
 
-		Assert.AreEqual(0, IntegerArrayCompressor.GetValueFromBits(binary0));
-		Assert.AreEqual(1, IntegerArrayCompressor.GetValueFromBits(binary1));
+		await Assert.That(IntegerArrayCompressor.GetValueFromBits(binary0)).IsEqualTo(0);
+		await Assert.That(IntegerArrayCompressor.GetValueFromBits(binary1)).IsEqualTo(1);
 	}
 
-	[TestMethod]
-	public void Test2BitNumbers()
+	[Test]
+	public async Task Test2BitNumbers()
 	{
 		const byte bitCount = 2;
 		bool[] binary0 = [false, false];
@@ -53,19 +52,19 @@ internal sealed class IntegerArrayCompressorTests
 		bool[] binary2 = [true, false];
 		bool[] binary3 = [true, true];
 
-		CollectionAssert.AreEqual(binary0, IntegerArrayCompressor.GetBitsFromValue(0, bitCount));
-		CollectionAssert.AreEqual(binary1, IntegerArrayCompressor.GetBitsFromValue(1, bitCount));
-		CollectionAssert.AreEqual(binary2, IntegerArrayCompressor.GetBitsFromValue(2, bitCount));
-		CollectionAssert.AreEqual(binary3, IntegerArrayCompressor.GetBitsFromValue(3, bitCount));
+		await Assert.That(IntegerArrayCompressor.GetBitsFromValue(0, bitCount)).IsEquivalentTo(binary0, CollectionOrdering.Matching);
+		await Assert.That(IntegerArrayCompressor.GetBitsFromValue(1, bitCount)).IsEquivalentTo(binary1, CollectionOrdering.Matching);
+		await Assert.That(IntegerArrayCompressor.GetBitsFromValue(2, bitCount)).IsEquivalentTo(binary2, CollectionOrdering.Matching);
+		await Assert.That(IntegerArrayCompressor.GetBitsFromValue(3, bitCount)).IsEquivalentTo(binary3, CollectionOrdering.Matching);
 
-		Assert.AreEqual(0, IntegerArrayCompressor.GetValueFromBits(binary0));
-		Assert.AreEqual(1, IntegerArrayCompressor.GetValueFromBits(binary1));
-		Assert.AreEqual(2, IntegerArrayCompressor.GetValueFromBits(binary2));
-		Assert.AreEqual(3, IntegerArrayCompressor.GetValueFromBits(binary3));
+		await Assert.That(IntegerArrayCompressor.GetValueFromBits(binary0)).IsEqualTo(0);
+		await Assert.That(IntegerArrayCompressor.GetValueFromBits(binary1)).IsEqualTo(1);
+		await Assert.That(IntegerArrayCompressor.GetValueFromBits(binary2)).IsEqualTo(2);
+		await Assert.That(IntegerArrayCompressor.GetValueFromBits(binary3)).IsEqualTo(3);
 	}
 
-	[TestMethod]
-	public void Test3BitNumbers()
+	[Test]
+	public async Task Test3BitNumbers()
 	{
 		const byte bitCount = 3;
 		bool[] binary0 = [false, false, false];
@@ -77,27 +76,27 @@ internal sealed class IntegerArrayCompressorTests
 		bool[] binary6 = [true, true, false];
 		bool[] binary7 = [true, true, true];
 
-		CollectionAssert.AreEqual(binary0, IntegerArrayCompressor.GetBitsFromValue(0, bitCount));
-		CollectionAssert.AreEqual(binary1, IntegerArrayCompressor.GetBitsFromValue(1, bitCount));
-		CollectionAssert.AreEqual(binary2, IntegerArrayCompressor.GetBitsFromValue(2, bitCount));
-		CollectionAssert.AreEqual(binary3, IntegerArrayCompressor.GetBitsFromValue(3, bitCount));
-		CollectionAssert.AreEqual(binary4, IntegerArrayCompressor.GetBitsFromValue(4, bitCount));
-		CollectionAssert.AreEqual(binary5, IntegerArrayCompressor.GetBitsFromValue(5, bitCount));
-		CollectionAssert.AreEqual(binary6, IntegerArrayCompressor.GetBitsFromValue(6, bitCount));
-		CollectionAssert.AreEqual(binary7, IntegerArrayCompressor.GetBitsFromValue(7, bitCount));
+		await Assert.That(IntegerArrayCompressor.GetBitsFromValue(0, bitCount)).IsEquivalentTo(binary0, CollectionOrdering.Matching);
+		await Assert.That(IntegerArrayCompressor.GetBitsFromValue(1, bitCount)).IsEquivalentTo(binary1, CollectionOrdering.Matching);
+		await Assert.That(IntegerArrayCompressor.GetBitsFromValue(2, bitCount)).IsEquivalentTo(binary2, CollectionOrdering.Matching);
+		await Assert.That(IntegerArrayCompressor.GetBitsFromValue(3, bitCount)).IsEquivalentTo(binary3, CollectionOrdering.Matching);
+		await Assert.That(IntegerArrayCompressor.GetBitsFromValue(4, bitCount)).IsEquivalentTo(binary4, CollectionOrdering.Matching);
+		await Assert.That(IntegerArrayCompressor.GetBitsFromValue(5, bitCount)).IsEquivalentTo(binary5, CollectionOrdering.Matching);
+		await Assert.That(IntegerArrayCompressor.GetBitsFromValue(6, bitCount)).IsEquivalentTo(binary6, CollectionOrdering.Matching);
+		await Assert.That(IntegerArrayCompressor.GetBitsFromValue(7, bitCount)).IsEquivalentTo(binary7, CollectionOrdering.Matching);
 
-		Assert.AreEqual(0, IntegerArrayCompressor.GetValueFromBits(binary0));
-		Assert.AreEqual(1, IntegerArrayCompressor.GetValueFromBits(binary1));
-		Assert.AreEqual(2, IntegerArrayCompressor.GetValueFromBits(binary2));
-		Assert.AreEqual(3, IntegerArrayCompressor.GetValueFromBits(binary3));
-		Assert.AreEqual(4, IntegerArrayCompressor.GetValueFromBits(binary4));
-		Assert.AreEqual(5, IntegerArrayCompressor.GetValueFromBits(binary5));
-		Assert.AreEqual(6, IntegerArrayCompressor.GetValueFromBits(binary6));
-		Assert.AreEqual(7, IntegerArrayCompressor.GetValueFromBits(binary7));
+		await Assert.That(IntegerArrayCompressor.GetValueFromBits(binary0)).IsEqualTo(0);
+		await Assert.That(IntegerArrayCompressor.GetValueFromBits(binary1)).IsEqualTo(1);
+		await Assert.That(IntegerArrayCompressor.GetValueFromBits(binary2)).IsEqualTo(2);
+		await Assert.That(IntegerArrayCompressor.GetValueFromBits(binary3)).IsEqualTo(3);
+		await Assert.That(IntegerArrayCompressor.GetValueFromBits(binary4)).IsEqualTo(4);
+		await Assert.That(IntegerArrayCompressor.GetValueFromBits(binary5)).IsEqualTo(5);
+		await Assert.That(IntegerArrayCompressor.GetValueFromBits(binary6)).IsEqualTo(6);
+		await Assert.That(IntegerArrayCompressor.GetValueFromBits(binary7)).IsEqualTo(7);
 	}
 
-	[TestMethod]
-	public void Test8BitNumbers()
+	[Test]
+	public async Task Test8BitNumbers()
 	{
 		const byte bitCount = 8;
 		bool[] binary0 = [false, false, false, false, false, false, false, false];
@@ -106,21 +105,21 @@ internal sealed class IntegerArrayCompressorTests
 		bool[] binary75 = [false, true, false, false, true, false, true, true];
 		bool[] binary255 = [true, true, true, true, true, true, true, true];
 
-		CollectionAssert.AreEqual(binary0, IntegerArrayCompressor.GetBitsFromValue(0, bitCount));
-		CollectionAssert.AreEqual(binary16, IntegerArrayCompressor.GetBitsFromValue(16, bitCount));
-		CollectionAssert.AreEqual(binary72, IntegerArrayCompressor.GetBitsFromValue(72, bitCount));
-		CollectionAssert.AreEqual(binary75, IntegerArrayCompressor.GetBitsFromValue(75, bitCount));
-		CollectionAssert.AreEqual(binary255, IntegerArrayCompressor.GetBitsFromValue(255, bitCount));
+		await Assert.That(IntegerArrayCompressor.GetBitsFromValue(0, bitCount)).IsEquivalentTo(binary0, CollectionOrdering.Matching);
+		await Assert.That(IntegerArrayCompressor.GetBitsFromValue(16, bitCount)).IsEquivalentTo(binary16, CollectionOrdering.Matching);
+		await Assert.That(IntegerArrayCompressor.GetBitsFromValue(72, bitCount)).IsEquivalentTo(binary72, CollectionOrdering.Matching);
+		await Assert.That(IntegerArrayCompressor.GetBitsFromValue(75, bitCount)).IsEquivalentTo(binary75, CollectionOrdering.Matching);
+		await Assert.That(IntegerArrayCompressor.GetBitsFromValue(255, bitCount)).IsEquivalentTo(binary255, CollectionOrdering.Matching);
 
-		Assert.AreEqual(0, IntegerArrayCompressor.GetValueFromBits(binary0));
-		Assert.AreEqual(16, IntegerArrayCompressor.GetValueFromBits(binary16));
-		Assert.AreEqual(72, IntegerArrayCompressor.GetValueFromBits(binary72));
-		Assert.AreEqual(75, IntegerArrayCompressor.GetValueFromBits(binary75));
-		Assert.AreEqual(255, IntegerArrayCompressor.GetValueFromBits(binary255));
+		await Assert.That(IntegerArrayCompressor.GetValueFromBits(binary0)).IsEqualTo(0);
+		await Assert.That(IntegerArrayCompressor.GetValueFromBits(binary16)).IsEqualTo(16);
+		await Assert.That(IntegerArrayCompressor.GetValueFromBits(binary72)).IsEqualTo(72);
+		await Assert.That(IntegerArrayCompressor.GetValueFromBits(binary75)).IsEqualTo(75);
+		await Assert.That(IntegerArrayCompressor.GetValueFromBits(binary255)).IsEqualTo(255);
 	}
 
-	[TestMethod]
-	public void Test9BitNumbers()
+	[Test]
+	public async Task Test9BitNumbers()
 	{
 		const byte bitCount = 9;
 		bool[] binary0 = [false, false, false, false, false, false, false, false, false];
@@ -130,23 +129,23 @@ internal sealed class IntegerArrayCompressorTests
 		bool[] binary255 = [false, true, true, true, true, true, true, true, true];
 		bool[] binary511 = [true, true, true, true, true, true, true, true, true];
 
-		CollectionAssert.AreEqual(binary0, IntegerArrayCompressor.GetBitsFromValue(0, bitCount));
-		CollectionAssert.AreEqual(binary16, IntegerArrayCompressor.GetBitsFromValue(16, bitCount));
-		CollectionAssert.AreEqual(binary72, IntegerArrayCompressor.GetBitsFromValue(72, bitCount));
-		CollectionAssert.AreEqual(binary75, IntegerArrayCompressor.GetBitsFromValue(75, bitCount));
-		CollectionAssert.AreEqual(binary255, IntegerArrayCompressor.GetBitsFromValue(255, bitCount));
-		CollectionAssert.AreEqual(binary511, IntegerArrayCompressor.GetBitsFromValue(511, bitCount));
+		await Assert.That(IntegerArrayCompressor.GetBitsFromValue(0, bitCount)).IsEquivalentTo(binary0, CollectionOrdering.Matching);
+		await Assert.That(IntegerArrayCompressor.GetBitsFromValue(16, bitCount)).IsEquivalentTo(binary16, CollectionOrdering.Matching);
+		await Assert.That(IntegerArrayCompressor.GetBitsFromValue(72, bitCount)).IsEquivalentTo(binary72, CollectionOrdering.Matching);
+		await Assert.That(IntegerArrayCompressor.GetBitsFromValue(75, bitCount)).IsEquivalentTo(binary75, CollectionOrdering.Matching);
+		await Assert.That(IntegerArrayCompressor.GetBitsFromValue(255, bitCount)).IsEquivalentTo(binary255, CollectionOrdering.Matching);
+		await Assert.That(IntegerArrayCompressor.GetBitsFromValue(511, bitCount)).IsEquivalentTo(binary511, CollectionOrdering.Matching);
 
-		Assert.AreEqual(0, IntegerArrayCompressor.GetValueFromBits(binary0));
-		Assert.AreEqual(16, IntegerArrayCompressor.GetValueFromBits(binary16));
-		Assert.AreEqual(72, IntegerArrayCompressor.GetValueFromBits(binary72));
-		Assert.AreEqual(75, IntegerArrayCompressor.GetValueFromBits(binary75));
-		Assert.AreEqual(255, IntegerArrayCompressor.GetValueFromBits(binary255));
-		Assert.AreEqual(511, IntegerArrayCompressor.GetValueFromBits(binary511));
+		await Assert.That(IntegerArrayCompressor.GetValueFromBits(binary0)).IsEqualTo(0);
+		await Assert.That(IntegerArrayCompressor.GetValueFromBits(binary16)).IsEqualTo(16);
+		await Assert.That(IntegerArrayCompressor.GetValueFromBits(binary72)).IsEqualTo(72);
+		await Assert.That(IntegerArrayCompressor.GetValueFromBits(binary75)).IsEqualTo(75);
+		await Assert.That(IntegerArrayCompressor.GetValueFromBits(binary255)).IsEqualTo(255);
+		await Assert.That(IntegerArrayCompressor.GetValueFromBits(binary511)).IsEqualTo(511);
 	}
 
-	[TestMethod]
-	public void Test16BitNumbers()
+	[Test]
+	public async Task Test16BitNumbers()
 	{
 		const byte bitCount = 16;
 		bool[] binary0 = [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false];
@@ -158,90 +157,90 @@ internal sealed class IntegerArrayCompressorTests
 		bool[] binary32767 = [false, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true];
 		bool[] binary65535 = [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true];
 
-		CollectionAssert.AreEqual(binary0, IntegerArrayCompressor.GetBitsFromValue(0, bitCount));
-		CollectionAssert.AreEqual(binary16, IntegerArrayCompressor.GetBitsFromValue(16, bitCount));
-		CollectionAssert.AreEqual(binary72, IntegerArrayCompressor.GetBitsFromValue(72, bitCount));
-		CollectionAssert.AreEqual(binary75, IntegerArrayCompressor.GetBitsFromValue(75, bitCount));
-		CollectionAssert.AreEqual(binary255, IntegerArrayCompressor.GetBitsFromValue(255, bitCount));
-		CollectionAssert.AreEqual(binary511, IntegerArrayCompressor.GetBitsFromValue(511, bitCount));
-		CollectionAssert.AreEqual(binary32767, IntegerArrayCompressor.GetBitsFromValue(32767, bitCount));
-		CollectionAssert.AreEqual(binary65535, IntegerArrayCompressor.GetBitsFromValue(65535, bitCount));
+		await Assert.That(IntegerArrayCompressor.GetBitsFromValue(0, bitCount)).IsEquivalentTo(binary0, CollectionOrdering.Matching);
+		await Assert.That(IntegerArrayCompressor.GetBitsFromValue(16, bitCount)).IsEquivalentTo(binary16, CollectionOrdering.Matching);
+		await Assert.That(IntegerArrayCompressor.GetBitsFromValue(72, bitCount)).IsEquivalentTo(binary72, CollectionOrdering.Matching);
+		await Assert.That(IntegerArrayCompressor.GetBitsFromValue(75, bitCount)).IsEquivalentTo(binary75, CollectionOrdering.Matching);
+		await Assert.That(IntegerArrayCompressor.GetBitsFromValue(255, bitCount)).IsEquivalentTo(binary255, CollectionOrdering.Matching);
+		await Assert.That(IntegerArrayCompressor.GetBitsFromValue(511, bitCount)).IsEquivalentTo(binary511, CollectionOrdering.Matching);
+		await Assert.That(IntegerArrayCompressor.GetBitsFromValue(32767, bitCount)).IsEquivalentTo(binary32767, CollectionOrdering.Matching);
+		await Assert.That(IntegerArrayCompressor.GetBitsFromValue(65535, bitCount)).IsEquivalentTo(binary65535, CollectionOrdering.Matching);
 
-		Assert.AreEqual(0, IntegerArrayCompressor.GetValueFromBits(binary0));
-		Assert.AreEqual(16, IntegerArrayCompressor.GetValueFromBits(binary16));
-		Assert.AreEqual(72, IntegerArrayCompressor.GetValueFromBits(binary72));
-		Assert.AreEqual(75, IntegerArrayCompressor.GetValueFromBits(binary75));
-		Assert.AreEqual(255, IntegerArrayCompressor.GetValueFromBits(binary255));
-		Assert.AreEqual(511, IntegerArrayCompressor.GetValueFromBits(binary511));
-		Assert.AreEqual(32767, IntegerArrayCompressor.GetValueFromBits(binary32767));
-		Assert.AreEqual(65535, IntegerArrayCompressor.GetValueFromBits(binary65535));
+		await Assert.That(IntegerArrayCompressor.GetValueFromBits(binary0)).IsEqualTo(0);
+		await Assert.That(IntegerArrayCompressor.GetValueFromBits(binary16)).IsEqualTo(16);
+		await Assert.That(IntegerArrayCompressor.GetValueFromBits(binary72)).IsEqualTo(72);
+		await Assert.That(IntegerArrayCompressor.GetValueFromBits(binary75)).IsEqualTo(75);
+		await Assert.That(IntegerArrayCompressor.GetValueFromBits(binary255)).IsEqualTo(255);
+		await Assert.That(IntegerArrayCompressor.GetValueFromBits(binary511)).IsEqualTo(511);
+		await Assert.That(IntegerArrayCompressor.GetValueFromBits(binary32767)).IsEqualTo(32767);
+		await Assert.That(IntegerArrayCompressor.GetValueFromBits(binary65535)).IsEqualTo(65535);
 	}
 
-	[TestMethod]
-	public void Test1BitCompression()
+	[Test]
+	public async Task Test1BitCompression()
 	{
-		TestCompression([0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0]);
+		await TestCompressionAsync([0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0]);
 	}
 
-	[TestMethod]
-	public void Test2BitCompression()
+	[Test]
+	public async Task Test2BitCompression()
 	{
-		TestCompression([0, 0, 0, 1, 3, 1, 2]);
+		await TestCompressionAsync([0, 0, 0, 1, 3, 1, 2]);
 	}
 
-	[TestMethod]
-	public void Test3BitCompression()
+	[Test]
+	public async Task Test3BitCompression()
 	{
-		TestCompression([7, 3, 4, 1, 0, 5, 5, 5, 5, 0, 4]);
+		await TestCompressionAsync([7, 3, 4, 1, 0, 5, 5, 5, 5, 0, 4]);
 	}
 
-	[TestMethod]
-	public void Test4BitCompression()
+	[Test]
+	public async Task Test4BitCompression()
 	{
-		TestCompression([7, 3, 4, 1, 9, 14, 15, 1, 13, 9, 4, 11]);
+		await TestCompressionAsync([7, 3, 4, 1, 9, 14, 15, 1, 13, 9, 4, 11]);
 	}
 
-	[TestMethod]
-	public void Test8BitCompression()
+	[Test]
+	public async Task Test8BitCompression()
 	{
-		TestCompression([9, 4, 11, 255, 19, 39, 192, 85, 19, 4, 85]);
+		await TestCompressionAsync([9, 4, 11, 255, 19, 39, 192, 85, 19, 4, 85]);
 	}
 
-	[TestMethod]
-	public void Test9BitCompression()
+	[Test]
+	public async Task Test9BitCompression()
 	{
-		TestCompression([9, 4, 11, 255, 19, 39, 192, 85, 19, 4, 85, 499]);
+		await TestCompressionAsync([9, 4, 11, 255, 19, 39, 192, 85, 19, 4, 85, 499]);
 	}
 
-	[TestMethod]
-	public void Test11BitCompression()
+	[Test]
+	public async Task Test11BitCompression()
 	{
-		TestCompression([9, 4, 11, 255, 19, 39, 192, 85, 19, 4, 85, 499, 2000]);
+		await TestCompressionAsync([9, 4, 11, 255, 19, 39, 192, 85, 19, 4, 85, 499, 2000]);
 	}
 
-	[TestMethod]
-	public void Test15BitCompression()
+	[Test]
+	public async Task Test15BitCompression()
 	{
-		TestCompression([9, 4, 11, 255, 19, 39, 192, 85, 19, 4, 85, 499, 32000]);
+		await TestCompressionAsync([9, 4, 11, 255, 19, 39, 192, 85, 19, 4, 85, 499, 32000]);
 	}
 
-	[TestMethod]
-	public void Test16BitCompression()
+	[Test]
+	public async Task Test16BitCompression()
 	{
-		TestCompression([9, 4, 11, 255, 19, 39, 192, 85, 19, 4, 85, 499, 64000]);
+		await TestCompressionAsync([9, 4, 11, 255, 19, 39, 192, 85, 19, 4, 85, 499, 64000]);
 	}
 
 	[AssertionMethod]
-	private static void TestCompression(int[] values)
+	private static async Task TestCompressionAsync(int[] values)
 	{
 		int expectedBitCount = IntegerArrayCompressor.GetBitCount(values.Max());
 		int expectedCompressedByteLength = (values.Length * expectedBitCount - 1) / 8 + 1;
 
 		byte[] compressedData = IntegerArrayCompressor.CompressData(values);
-		Assert.AreEqual(expectedBitCount, compressedData[0]);
-		Assert.AreEqual(expectedCompressedByteLength, compressedData.Length - 1);
+		await Assert.That((int)compressedData[0]).IsEqualTo(expectedBitCount);
+		await Assert.That(compressedData.Length - 1).IsEqualTo(expectedCompressedByteLength);
 
 		int[] extractedData = IntegerArrayCompressor.ExtractData(compressedData);
-		CollectionAssert.AreEqual(values, extractedData[..values.Length]);
+		await Assert.That(extractedData[..values.Length]).IsEquivalentTo(values, CollectionOrdering.Matching);
 	}
 }

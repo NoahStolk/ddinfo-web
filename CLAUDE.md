@@ -17,10 +17,10 @@ All commands run from the repository root. The solution uses the `.slnx` format.
 dotnet build src/DevilDaggersInfo.Web.slnx -c Release
 
 # Test
-dotnet test src/DevilDaggersInfo.Web.slnx -c Release --no-build
+dotnet test --solution src/DevilDaggersInfo.Web.slnx -c Release --no-build
 
 # Single test / filtered
-dotnet test src/test/DevilDaggersInfo.Web.Server.Domain.Test --filter "FullyQualifiedName~WorldRecordRepositoryTests"
+dotnet test --project src/test/DevilDaggersInfo.Web.Server.Domain.Test --treenode-filter "/*/*/WorldRecordRepositoryTests/*"
 
 # Run the site (server hosts the Blazor WASM client)
 dotnet run --project src/DevilDaggersInfo.Web.Server   # https://localhost:5001
@@ -28,7 +28,7 @@ dotnet run --project src/DevilDaggersInfo.Web.Server   # https://localhost:5001
 
 **Tailwind:** building the client runs the Tailwind standalone CLI to generate `wwwroot/tailwind.min.css`. The pinned CLI version is downloaded on first build into `src/tools/` (gitignored, ~43MB, cached across builds) for the host platform — Windows, Linux and macOS on x64/arm64 are all handled. Both the binary and the generated CSS are gitignored. Pass `-p:TailwindBuild=false` to skip the step entirely (useful offline, or when only touching server code).
 
-**Runtime prerequisites:** every project targets `net10.0`. `global.json` (repository root) pins the SDK to the 10.0.1xx feature band with `rollForward: latestFeature`, so a .NET 10 SDK is required and a .NET 11 SDK will not be picked up.
+**Runtime prerequisites:** every project targets `net10.0`. `global.json` (repository root) pins the SDK to the 10.0.1xx feature band with `rollForward: latestFeature`, so a .NET 10 SDK is required and a .NET 11 SDK will not be picked up. The same file opts `dotnet test` into the Microsoft.Testing.Platform runner (`"test": { "runner": "Microsoft.Testing.Platform" }`) that TUnit builds on — hence `--solution`/`--project` instead of a bare path, and `--treenode-filter` instead of `--filter`.
 
 **Config:** `appsettings.json` (production, with `__PLACEHOLDER__` values injected at deploy time) and `appsettings.Development.json` (non-secret local values) are both tracked; real local secrets go in user secrets (`dotnet user-secrets`). The server binds and validates required option sections at startup (`Authentication`, `CustomLeaderboards`, `Discord`, `MySql`) via `AddValidatedOptions`, so it will not start without them. Database is MySQL (Oracle's `MySql.EntityFrameworkCore` provider, over Connector/NET — note the connection string dialect differs from MySqlConnector's); uploaded/generated files live under a `Data` directory next to the server (see `FileSystemService`).
 
@@ -81,7 +81,7 @@ Blazor WASM. Pages under `Pages/<Area>/`, reusable components under `Components/
 - `.editorconfig`: **tabs** everywhere (spaces only in `.csproj`/`.pubxml`/`.slnx`/`.yml`). Existing code uses `_camelCase` private fields, explicit types over `var`, and file-scoped namespaces.
 - `Directory.Build.props`: `net10.0`, `LangVersion 14.0`, nullable enabled with `WarningsAsErrors=nullable`, `AnalysisMode=All`, implicit usings, invariant globalization. Analyzer warnings (StyleCop, Sonar, Roslynator, Nullable.Extended) are numerous and non-blocking — don't chase pre-existing ones, but don't add new ones either.
 - `Directory.Packages.props`: central package management. Add new packages there as `<PackageVersion>` and reference them without a version in the csproj. Dependabot keeps versions current.
-- Tests use MSTest + NSubstitute + EF Core InMemory (`TestDbContext`, `TestData`, `MockEntities`); test-only analyzer relaxations live in `src/test/Tests.globalconfig`.
+- Tests use TUnit + NSubstitute + EF Core InMemory (`TestDbContext`, `TestData`, `MockEntities`); test-only analyzer relaxations live in `src/test/Tests.globalconfig`. TUnit assertions are awaited (`await Assert.That(actual).IsEqualTo(expected)`), so test methods return `Task`, and `IsEquivalentTo` needs `CollectionOrdering.Matching` to compare collections in order. TUnit runs tests in parallel, so classes that share the file system or a substituted `DbContext` across their cases are marked `[NotInParallel]`.
 
 ## Reference docs
 
