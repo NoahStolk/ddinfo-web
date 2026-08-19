@@ -37,7 +37,6 @@ public class CustomLeaderboardRepository
 		int? selectedPlayerId,
 		bool onlyFeatured)
 	{
-		// ! Navigation property.
 		IQueryable<CustomLeaderboardEntity> customLeaderboardsQuery = _dbContext.CustomLeaderboards.AsNoTracking();
 
 		if (rankSorting.HasValue)
@@ -542,27 +541,23 @@ public class CustomLeaderboardRepository
 		};
 	}
 
-	private sealed class CustomLeaderboardData
+	private sealed class CustomLeaderboardData(
+		CustomLeaderboardEntity customLeaderboard,
+		SpawnsetGameMode gameMode,
+		string spawnsetName,
+		int spawnsetAuthorId,
+		string spawnsetAuthorName,
+		CustomLeaderboardOverviewWorldRecord? worldRecord,
+		CustomLeaderboardOverviewSelectedPlayerStats? selectedPlayerStats,
+		int playerCount)
 	{
-		public CustomLeaderboardData(CustomLeaderboardEntity customLeaderboard, SpawnsetGameMode gameMode, string spawnsetName, int spawnsetAuthorId, string spawnsetAuthorName, CustomLeaderboardOverviewWorldRecord? worldRecord, CustomLeaderboardOverviewSelectedPlayerStats? selectedPlayerStats, int playerCount)
-		{
-			CustomLeaderboard = customLeaderboard;
-			GameMode = gameMode;
-			SpawnsetName = spawnsetName;
-			SpawnsetAuthorId = spawnsetAuthorId;
-			SpawnsetAuthorName = spawnsetAuthorName;
-			WorldRecord = worldRecord;
-			SelectedPlayerStats = selectedPlayerStats;
-			PlayerCount = playerCount;
-		}
-
-		public CustomLeaderboardEntity CustomLeaderboard { get; }
-		public SpawnsetGameMode GameMode { get; }
-		public string SpawnsetName { get; }
-		public int SpawnsetAuthorId { get; }
-		public string SpawnsetAuthorName { get; }
-		public CustomLeaderboardOverviewWorldRecord? WorldRecord { get; }
-		public CustomLeaderboardOverviewSelectedPlayerStats? SelectedPlayerStats { get; }
-		public int PlayerCount { get; }
+		public CustomLeaderboardEntity CustomLeaderboard { get; } = customLeaderboard;
+		public SpawnsetGameMode GameMode { get; } = gameMode;
+		public string SpawnsetName { get; } = spawnsetName;
+		public int SpawnsetAuthorId { get; } = spawnsetAuthorId;
+		public string SpawnsetAuthorName { get; } = spawnsetAuthorName;
+		public CustomLeaderboardOverviewWorldRecord? WorldRecord { get; } = worldRecord;
+		public CustomLeaderboardOverviewSelectedPlayerStats? SelectedPlayerStats { get; } = selectedPlayerStats;
+		public int PlayerCount { get; } = playerCount;
 	}
 }
