@@ -38,10 +38,7 @@ public class CustomLeaderboardRepository
 		bool onlyFeatured)
 	{
 		// ! Navigation property.
-		IQueryable<CustomLeaderboardEntity> customLeaderboardsQuery = _dbContext.CustomLeaderboards
-			.AsNoTracking()
-			.Include(cl => cl.Spawnset)
-				.ThenInclude(sf => sf!.Player);
+		IQueryable<CustomLeaderboardEntity> customLeaderboardsQuery = _dbContext.CustomLeaderboards.AsNoTracking();
 
 		if (rankSorting.HasValue)
 			customLeaderboardsQuery = customLeaderboardsQuery.Where(cl => rankSorting == cl.RankSorting);
@@ -72,11 +69,22 @@ public class CustomLeaderboardRepository
 			customLeaderboardsQuery = customLeaderboardsQuery.Where(cl => cl.Spawnset!.Player!.PlayerName.Contains(authorFilter));
 		}
 
-		// Execute query.
-		List<CustomLeaderboardEntity> customLeaderboards = await customLeaderboardsQuery.ToListAsync();
+		// Execute query. Only the spawnset columns the overview needs are selected: materialising the spawnset entity
+		// would also fetch its file, which is a BLOB averaging 13 KiB per row that the overview never uses.
+		// ! Navigation property.
+		var customLeaderboards = await customLeaderboardsQuery
+			.Select(cl => new
+			{
+				CustomLeaderboard = cl,
+				GameMode = cl.Spawnset!.GameMode,
+				SpawnsetName = cl.Spawnset!.Name,
+				SpawnsetAuthorId = cl.Spawnset!.PlayerId,
+				SpawnsetAuthorName = cl.Spawnset!.Player!.PlayerName,
+			})
+			.ToListAsync();
 
 		// Query custom entries for additional data.
-		List<int> customLeaderboardIds = customLeaderboards.ConvertAll(cl => cl.Id);
+		List<int> customLeaderboardIds = customLeaderboards.ConvertAll(cl => cl.CustomLeaderboard.Id);
 
 		// ! Navigation property.
 		List<CustomEntrySummary> customEntries = await _dbContext.CustomEntries
@@ -101,8 +109,9 @@ public class CustomLeaderboardRepository
 			.ToListAsync();
 
 		List<CustomLeaderboardData> customLeaderboardData = [];
-		foreach (CustomLeaderboardEntity cl in customLeaderboards)
+		foreach (var row in customLeaderboards)
 		{
+			CustomLeaderboardEntity cl = row.CustomLeaderboard;
 			List<CustomEntrySummary> sortedCustomEntries = customEntries.Where(ce => ce.CustomLeaderboardId == cl.Id).Sort(cl.RankSorting).ToList();
 
 			CustomEntrySummary? worldRecord = sortedCustomEntries.Count == 0 ? null : sortedCustomEntries[0];
@@ -110,15 +119,15 @@ public class CustomLeaderboardRepository
 
 			CustomEntrySummary? selectedEntry = sortedCustomEntries.Find(ce => ce.PlayerId == selectedPlayerId);
 			CustomLeaderboardOverviewSelectedPlayerStats? selectedPlayerStatsModel = GetSelectedStats(cl, sortedCustomEntries, selectedEntry);
-			customLeaderboardData.Add(new CustomLeaderboardData(cl, worldRecordModel, selectedPlayerStatsModel, sortedCustomEntries.Count));
+			customLeaderboardData.Add(new CustomLeaderboardData(cl, row.GameMode, row.SpawnsetName, row.SpawnsetAuthorId, row.SpawnsetAuthorName, worldRecordModel, selectedPlayerStatsModel, sortedCustomEntries.Count));
 		}
 
 		// ! Navigation property.
 		customLeaderboardData = (sortBy switch
 		{
-			CustomLeaderboardSorting.AuthorName => customLeaderboardData.OrderBy(cl => cl.CustomLeaderboard.Spawnset!.Player!.PlayerName.ToLower(), ascending),
+			CustomLeaderboardSorting.AuthorName => customLeaderboardData.OrderBy(cl => cl.SpawnsetAuthorName.ToLower(), ascending),
 			CustomLeaderboardSorting.DateLastPlayed => customLeaderboardData.OrderBy(cl => cl.CustomLeaderboard.DateLastPlayed ?? cl.CustomLeaderboard.DateCreated, ascending),
-			CustomLeaderboardSorting.SpawnsetName => customLeaderboardData.OrderBy(cl => cl.CustomLeaderboard.Spawnset!.Name.ToLower(), ascending),
+			CustomLeaderboardSorting.SpawnsetName => customLeaderboardData.OrderBy(cl => cl.SpawnsetName.ToLower(), ascending),
 			CustomLeaderboardSorting.TimeBronze => customLeaderboardData.OrderBy(cl => cl.CustomLeaderboard.IsFeatured ? cl.CustomLeaderboard.Bronze : 0, ascending),
 			CustomLeaderboardSorting.TimeSilver => customLeaderboardData.OrderBy(cl => cl.CustomLeaderboard.IsFeatured ? cl.CustomLeaderboard.Silver : 0, ascending),
 			CustomLeaderboardSorting.TimeGolden => customLeaderboardData.OrderBy(cl => cl.CustomLeaderboard.IsFeatured ? cl.CustomLeaderboard.Golden : 0, ascending),
@@ -364,12 +373,6 @@ public class CustomLeaderboardRepository
 
 	private static CustomLeaderboardOverview ToOverview(CustomLeaderboardData cl)
 	{
-		if (cl.CustomLeaderboard.Spawnset == null)
-			throw new InvalidOperationException("Spawnset is not included.");
-
-		if (cl.CustomLeaderboard.Spawnset.Player == null)
-			throw new InvalidOperationException("Spawnset author is not included.");
-
 		return new CustomLeaderboardOverview
 		{
 			Criteria = GetCriteria(cl.CustomLeaderboard),
@@ -383,15 +386,15 @@ public class CustomLeaderboardRepository
 			},
 			DateCreated = cl.CustomLeaderboard.DateCreated,
 			DateLastPlayed = cl.CustomLeaderboard.DateLastPlayed,
-			GameMode = cl.CustomLeaderboard.Spawnset.GameMode,
+			GameMode = cl.GameMode,
 			Id = cl.CustomLeaderboard.Id,
 			PlayerCount = cl.PlayerCount,
 			RankSorting = cl.CustomLeaderboard.RankSorting,
 			SelectedPlayerStats = cl.SelectedPlayerStats,
-			SpawnsetAuthorId = cl.CustomLeaderboard.Spawnset.PlayerId,
-			SpawnsetAuthorName = cl.CustomLeaderboard.Spawnset.Player.PlayerName,
+			SpawnsetAuthorId = cl.SpawnsetAuthorId,
+			SpawnsetAuthorName = cl.SpawnsetAuthorName,
 			SpawnsetId = cl.CustomLeaderboard.SpawnsetId,
-			SpawnsetName = cl.CustomLeaderboard.Spawnset.Name,
+			SpawnsetName = cl.SpawnsetName,
 			TotalRunsSubmitted = cl.CustomLeaderboard.TotalRunsSubmitted,
 			WorldRecord = cl.WorldRecord == null ? null : ToWorldRecordOverviewModel(cl.WorldRecord, cl.CustomLeaderboard),
 		};
@@ -541,15 +544,23 @@ public class CustomLeaderboardRepository
 
 	private sealed class CustomLeaderboardData
 	{
-		public CustomLeaderboardData(CustomLeaderboardEntity customLeaderboard, CustomLeaderboardOverviewWorldRecord? worldRecord, CustomLeaderboardOverviewSelectedPlayerStats? selectedPlayerStats, int playerCount)
+		public CustomLeaderboardData(CustomLeaderboardEntity customLeaderboard, SpawnsetGameMode gameMode, string spawnsetName, int spawnsetAuthorId, string spawnsetAuthorName, CustomLeaderboardOverviewWorldRecord? worldRecord, CustomLeaderboardOverviewSelectedPlayerStats? selectedPlayerStats, int playerCount)
 		{
 			CustomLeaderboard = customLeaderboard;
+			GameMode = gameMode;
+			SpawnsetName = spawnsetName;
+			SpawnsetAuthorId = spawnsetAuthorId;
+			SpawnsetAuthorName = spawnsetAuthorName;
 			WorldRecord = worldRecord;
 			SelectedPlayerStats = selectedPlayerStats;
 			PlayerCount = playerCount;
 		}
 
 		public CustomLeaderboardEntity CustomLeaderboard { get; }
+		public SpawnsetGameMode GameMode { get; }
+		public string SpawnsetName { get; }
+		public int SpawnsetAuthorId { get; }
+		public string SpawnsetAuthorName { get; }
 		public CustomLeaderboardOverviewWorldRecord? WorldRecord { get; }
 		public CustomLeaderboardOverviewSelectedPlayerStats? SelectedPlayerStats { get; }
 		public int PlayerCount { get; }
