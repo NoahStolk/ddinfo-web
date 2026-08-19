@@ -26,6 +26,7 @@
     <ProjectReference Include="..\DevilDaggersInfo.Web.Core.Claims\DevilDaggersInfo.Web.Core.Claims.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.Web.Client.Core.CanvasArena\DevilDaggersInfo.Web.Client.Core.CanvasArena.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.Web.Client.Core.CanvasChart\DevilDaggersInfo.Web.Client.Core.CanvasChart.csproj" />
+    <ProjectReference Include="..\DevilDaggersInfo.Web.Core.Utils\DevilDaggersInfo.Web.Core.Utils.csproj" />
   </ItemGroup>
 
   <PropertyGroup Label="Tailwind">

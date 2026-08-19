@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DevilDaggersInfo.Web.Core.Claims\DevilDaggersInfo.Web.Core.Claims.csproj" />
+    <ProjectReference Include="..\DevilDaggersInfo.Web.Core.Utils\DevilDaggersInfo.Web.Core.Utils.csproj" />
   </ItemGroup>
 
 </Project>

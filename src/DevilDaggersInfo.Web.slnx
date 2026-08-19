@@ -1,5 +1,6 @@
 ﻿<Solution>
   <Folder Name="/test/">
+    <Project Path="test/DevilDaggersInfo.Web.Core.Utils.Test/DevilDaggersInfo.Web.Core.Utils.Test.csproj" />
     <Project Path="test\DevilDaggersInfo.Web.Server.Domain.Test\DevilDaggersInfo.Web.Server.Domain.Test.csproj" />
   </Folder>
   <Project Path="DevilDaggersInfo.DevUtil.DistributeHistoryStats\DevilDaggersInfo.DevUtil.DistributeHistoryStats.csproj" />
@@ -19,6 +20,7 @@
   <Project Path="DevilDaggersInfo.Web.Client.Core.Canvas\DevilDaggersInfo.Web.Client.Core.Canvas.csproj" Type="C#" />
   <Project Path="DevilDaggersInfo.Web.Client\DevilDaggersInfo.Web.Client.csproj" />
   <Project Path="DevilDaggersInfo.Web.Core.Claims\DevilDaggersInfo.Web.Core.Claims.csproj" />
+  <Project Path="DevilDaggersInfo.Web.Core.Utils/DevilDaggersInfo.Web.Core.Utils.csproj" />
   <Project Path="DevilDaggersInfo.Web.Server.Domain.Admin\DevilDaggersInfo.Web.Server.Domain.Admin.csproj" />
   <Project Path="DevilDaggersInfo.Web.Server.Domain.Main\DevilDaggersInfo.Web.Server.Domain.Main.csproj" />
   <Project Path="DevilDaggersInfo.Web.Server.Domain\DevilDaggersInfo.Web.Server.Domain.csproj" />

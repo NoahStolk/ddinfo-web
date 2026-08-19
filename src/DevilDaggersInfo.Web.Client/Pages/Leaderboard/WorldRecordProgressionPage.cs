@@ -1,5 +1,4 @@
 using DevilDaggersInfo.Core.Common;
-using DevilDaggersInfo.Core.Common.Extensions;
 using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Core.Wiki.Extensions;
 using DevilDaggersInfo.Core.Wiki.Objects;
@@ -7,6 +6,7 @@ using DevilDaggersInfo.Web.Client.Core.CanvasChart.Data;
 using DevilDaggersInfo.Web.Client.Core.CanvasChart.Enums;
 using DevilDaggersInfo.Web.Client.Core.CanvasChart.Options.LineChart;
 using DevilDaggersInfo.Web.Client.Utils;
+using DevilDaggersInfo.Web.Core.Utils;
 using Microsoft.AspNetCore.Components;
 using System.Runtime.CompilerServices;
 

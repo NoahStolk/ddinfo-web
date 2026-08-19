@@ -1,5 +1,4 @@
 using DevilDaggersInfo.Core.Common;
-using DevilDaggersInfo.Core.Common.Extensions;
 using DevilDaggersInfo.Core.CriteriaExpression;
 using DevilDaggersInfo.Web.Server.Domain.Constants;
 using DevilDaggersInfo.Web.Server.Domain.Utils;
@@ -295,7 +294,7 @@ public sealed class UploadRequest
 		return string.Join(
 			";",
 			playerId,
-			timeAsBytes.ByteArrayToHexString(),
+			Convert.ToHexString(timeAsBytes),
 			gemsCollected,
 			gemsDespawned,
 			gemsEaten,
@@ -309,10 +308,10 @@ public sealed class UploadRequest
 			homingEaten,
 			isReplay,
 			status,
-			survivalHashMd5.ByteArrayToHexString(),
-			levelUpTime2AsBytes.ByteArrayToHexString(),
-			levelUpTime3AsBytes.ByteArrayToHexString(),
-			levelUpTime4AsBytes.ByteArrayToHexString(),
+			Convert.ToHexString(survivalHashMd5),
+			Convert.ToHexString(levelUpTime2AsBytes),
+			Convert.ToHexString(levelUpTime3AsBytes),
+			Convert.ToHexString(levelUpTime4AsBytes),
 			gameMode,
 			timeAttackOrRaceFinished,
 			prohibitedMods);
