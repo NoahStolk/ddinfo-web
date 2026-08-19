@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersInfo.Web.Client.StateObjects.Admin.Spawnsets;
 
-public class AddSpawnsetState : IStateObject<AddSpawnset>
+internal sealed class AddSpawnsetState : IStateObject<AddSpawnset>
 {
 	[Required]
 	public int PlayerId { get; set; }

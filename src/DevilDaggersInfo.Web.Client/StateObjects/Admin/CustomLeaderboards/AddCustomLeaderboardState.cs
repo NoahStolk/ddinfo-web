@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersInfo.Web.Client.StateObjects.Admin.CustomLeaderboards;
 
-public class AddCustomLeaderboardState : IStateObject<AddCustomLeaderboard>
+internal sealed class AddCustomLeaderboardState : IStateObject<AddCustomLeaderboard>
 {
 	[Required]
 	public int SpawnsetId { get; set; }

@@ -2,7 +2,7 @@ using DevilDaggersInfo.Web.ApiSpec.Admin.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Client.StateObjects.Admin.CustomLeaderboards;
 
-public class AddCustomLeaderboardDaggersState : IStateObject<AddCustomLeaderboardDaggers>
+internal sealed class AddCustomLeaderboardDaggersState : IStateObject<AddCustomLeaderboardDaggers>
 {
 	public double Bronze { get; set; }
 

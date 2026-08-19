@@ -2,7 +2,7 @@ using DevilDaggersInfo.Web.ApiSpec.Admin;
 
 namespace DevilDaggersInfo.Web.Client.Components.Admin;
 
-public record AdminOverviewColumn<TGetDto, TSorting>
+public sealed record AdminOverviewColumn<TGetDto, TSorting>
 	where TGetDto : IAdminOverviewGetDto
 	where TSorting : struct, Enum
 {

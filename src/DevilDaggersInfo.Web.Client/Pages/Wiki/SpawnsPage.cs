@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace DevilDaggersInfo.Web.Client.Pages.Wiki;
 
-public partial class SpawnsPage
+public sealed partial class SpawnsPage
 {
 	private const int _defaultWaveCount = 40;
 

@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace DevilDaggersInfo.Web.Client.Components.Input;
 
-public partial class MultiSelectList
+public sealed partial class MultiSelectList
 {
 	private bool _show;
 

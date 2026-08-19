@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace DevilDaggersInfo.Web.Client.Utils;
 
-public static class MarkupStrings
+internal static class MarkupStrings
 {
 	private const int _buttonSize = 40; // Hardcoded in Razor components
 	private const int _margin = 10;

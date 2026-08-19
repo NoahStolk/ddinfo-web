@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.Client.Utils;
 
-public static class LeviathanAnimationUtils
+internal static class LeviathanAnimationUtils
 {
 	public static string? GetStyle(int total, int index)
 	{

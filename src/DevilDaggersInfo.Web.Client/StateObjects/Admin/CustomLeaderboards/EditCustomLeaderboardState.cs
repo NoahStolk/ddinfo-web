@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersInfo.Web.Client.StateObjects.Admin.CustomLeaderboards;
 
-public class EditCustomLeaderboardState : IStateObject<EditCustomLeaderboard>
+internal sealed class EditCustomLeaderboardState : IStateObject<EditCustomLeaderboard>
 {
 	[Required]
 	public CustomLeaderboardRankSorting RankSorting { get; set; }

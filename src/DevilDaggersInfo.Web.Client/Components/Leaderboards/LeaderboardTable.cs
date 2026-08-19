@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace DevilDaggersInfo.Web.Client.Components.Leaderboards;
 
-public partial class LeaderboardTable<TGetEntryDto>
+public sealed partial class LeaderboardTable<TGetEntryDto>
 	where TGetEntryDto : class, IGetEntryDto
 {
 	private int? _expandedId;

@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.Client.Utils;
 
-public static class PagingUtils
+internal static class PagingUtils
 {
 	public static int GetValidPageSize(int value)
 	{

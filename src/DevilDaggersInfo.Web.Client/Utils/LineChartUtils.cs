@@ -3,7 +3,7 @@ using DevilDaggersInfo.Web.Client.Core.CanvasChart.Options.LineChart;
 
 namespace DevilDaggersInfo.Web.Client.Utils;
 
-public static class LineChartUtils
+internal static class LineChartUtils
 {
 	public static List<LineChartBackground> GameVersionBackgrounds { get; } =
 	[

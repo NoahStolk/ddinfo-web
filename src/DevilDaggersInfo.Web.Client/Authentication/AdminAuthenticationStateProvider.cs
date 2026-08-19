@@ -10,7 +10,7 @@ using System.Text.Json;
 
 namespace DevilDaggersInfo.Web.Client.Authentication;
 
-public class AdminAuthenticationStateProvider : AuthenticationStateProvider
+public sealed class AdminAuthenticationStateProvider : AuthenticationStateProvider
 {
 	public const string LocalStorageAuthKey = "auth";
 

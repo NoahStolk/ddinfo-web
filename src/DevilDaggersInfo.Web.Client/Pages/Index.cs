@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace DevilDaggersInfo.Web.Client.Pages;
 
-public partial class Index
+public sealed partial class Index
 {
 	private readonly Section[] _sections =
 	[

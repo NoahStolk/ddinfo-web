@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace DevilDaggersInfo.Web.Client.Pages.Custom.Spawnsets;
 
-public partial class Index : IHasNavigation
+public sealed partial class Index : IHasNavigation
 {
 	private readonly Dictionary<SpawnsetSorting, bool> _sortings = new();
 

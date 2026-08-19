@@ -5,7 +5,7 @@ using MainApi = DevilDaggersInfo.Web.ApiSpec.Main.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Client.Extensions;
 
-public static class CustomLeaderboardCriteriaOperatorExtensions
+internal static class CustomLeaderboardCriteriaOperatorExtensions
 {
 	public static CustomLeaderboardCriteriaOperator ToCore(this AdminApi.CustomLeaderboardCriteriaOperator criteriaOperator)
 	{

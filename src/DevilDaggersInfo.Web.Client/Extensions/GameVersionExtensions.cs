@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace DevilDaggersInfo.Web.Client.Extensions;
 
-public static class GameVersionExtensions
+internal static class GameVersionExtensions
 {
 	public static string GetGameVersionString(this GameVersion? gameVersion)
 	{

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersInfo.Web.Client.StateObjects.Admin.Mods;
 
-public class BinaryDataState : IStateObject<BinaryData>
+internal sealed class BinaryDataState : IStateObject<BinaryData>
 {
 	/// <summary>
 	/// This name should not contain the type prefix or the mod name.

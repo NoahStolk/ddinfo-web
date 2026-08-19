@@ -10,7 +10,7 @@ using Microsoft.JSInterop;
 
 namespace DevilDaggersInfo.Web.Client.Pages.Leaderboard;
 
-public partial class StatisticsPage
+public sealed partial class StatisticsPage
 {
 	private const string _percentageFormat = "0.000%";
 

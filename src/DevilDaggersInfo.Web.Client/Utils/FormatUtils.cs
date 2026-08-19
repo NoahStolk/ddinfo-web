@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.Client.Utils;
 
-public static class FormatUtils
+internal static class FormatUtils
 {
 	public static string FormatDaggersInt32(int hit, int fired, bool isHistory = false)
 	{

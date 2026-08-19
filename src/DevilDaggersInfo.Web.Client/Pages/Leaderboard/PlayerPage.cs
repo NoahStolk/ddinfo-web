@@ -17,7 +17,7 @@ using System.Net;
 
 namespace DevilDaggersInfo.Web.Client.Pages.Leaderboard;
 
-public partial class PlayerPage
+public sealed partial class PlayerPage
 {
 	private readonly LineChartOptions _progressionScoreLineChartOptions = new()
 	{

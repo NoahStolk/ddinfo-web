@@ -15,7 +15,7 @@ using System.Net.Http.Json;
 
 namespace DevilDaggersInfo.Web.Client.HttpClients;
 
-public class AdminApiHttpClient : ApiHttpClient
+public sealed class AdminApiHttpClient : ApiHttpClient
 {
 	public AdminApiHttpClient(HttpClient client, ILocalStorageService localStorageService)
 		: base(client, localStorageService)

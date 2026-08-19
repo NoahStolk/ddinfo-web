@@ -7,7 +7,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace DevilDaggersInfo.Web.Client.Pages.Leaderboard;
 
-public partial class SearchPage
+public sealed partial class SearchPage
 {
 	private string? _apiError;
 	private bool _loading;

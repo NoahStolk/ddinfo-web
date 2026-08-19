@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace DevilDaggersInfo.Web.Client.Pages.Leaderboard;
 
-public partial class Index
+public sealed partial class Index
 {
 	private int _rank = 1;
 	private string? _apiError;

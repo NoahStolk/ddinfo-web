@@ -2,7 +2,7 @@ using DevilDaggersInfo.Web.ApiSpec.Main.Authentication;
 
 namespace DevilDaggersInfo.Web.Client.StateObjects.Authentication;
 
-public class RegistrationRequestState : IStateObject<RegistrationRequest>
+public sealed class RegistrationRequestState : IStateObject<RegistrationRequest>
 {
 	public string Name { get; set; } = string.Empty;
 

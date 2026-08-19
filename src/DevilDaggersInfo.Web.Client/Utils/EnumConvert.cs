@@ -3,7 +3,7 @@ using DevilDaggersInfo.Web.ApiSpec.Main.Spawnsets;
 
 namespace DevilDaggersInfo.Web.Client.Utils;
 
-public static class EnumConvert
+internal static class EnumConvert
 {
 	public static GameMode GetGameMode(string str)
 	{

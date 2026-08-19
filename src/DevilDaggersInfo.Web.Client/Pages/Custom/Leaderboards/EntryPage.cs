@@ -15,7 +15,7 @@ using System.Numerics;
 
 namespace DevilDaggersInfo.Web.Client.Pages.Custom.Leaderboards;
 
-public partial class EntryPage
+public sealed partial class EntryPage
 {
 	private static readonly Func<LineDataSet, LineData, List<MarkupString>> _initialHighlightTransformation = static (ds, d) =>
 	[

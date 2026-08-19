@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersInfo.Web.Client.StateObjects.Admin.Spawnsets;
 
-public class EditSpawnsetState : IStateObject<EditSpawnset>
+internal sealed class EditSpawnsetState : IStateObject<EditSpawnset>
 {
 	[Required]
 	public int PlayerId { get; set; }

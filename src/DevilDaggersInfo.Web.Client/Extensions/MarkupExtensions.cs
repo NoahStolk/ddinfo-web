@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace DevilDaggersInfo.Web.Client.Extensions;
 
-public static class MarkupExtensions
+internal static class MarkupExtensions
 {
 	public static MarkupString ToNoBreakString(this object? obj)
 	{

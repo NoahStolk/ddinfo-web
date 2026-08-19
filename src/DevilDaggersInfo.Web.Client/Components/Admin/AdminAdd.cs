@@ -7,7 +7,7 @@ using System.Net;
 
 namespace DevilDaggersInfo.Web.Client.Components.Admin;
 
-public partial class AdminAdd<TStateObject, TModel>
+public sealed partial class AdminAdd<TStateObject, TModel>
 	where TStateObject : IStateObject<TModel>
 {
 	private bool _submitting;

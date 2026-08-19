@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersInfo.Web.Client.StateObjects.Profile;
 
-public class EditPlayerProfileState : IStateObject<EditPlayerProfile>
+internal sealed class EditPlayerProfileState : IStateObject<EditPlayerProfile>
 {
 	[StringLength(2)]
 	public string? CountryCode { get; set; }

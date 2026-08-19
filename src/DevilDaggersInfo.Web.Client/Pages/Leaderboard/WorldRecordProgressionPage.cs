@@ -14,7 +14,7 @@ using System.Runtime.CompilerServices;
 
 namespace DevilDaggersInfo.Web.Client.Pages.Leaderboard;
 
-public partial class WorldRecordProgressionPage
+public sealed partial class WorldRecordProgressionPage
 {
 	private readonly LineChartOptions _lineChartOptions = new()
 	{

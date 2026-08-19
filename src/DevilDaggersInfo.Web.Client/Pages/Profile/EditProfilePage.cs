@@ -11,7 +11,7 @@ using System.Net;
 
 namespace DevilDaggersInfo.Web.Client.Pages.Profile;
 
-public partial class EditProfilePage
+public sealed partial class EditProfilePage
 {
 	private AuthenticationState? _state;
 	private int _playerId;

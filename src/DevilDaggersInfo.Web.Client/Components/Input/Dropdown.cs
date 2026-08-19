@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace DevilDaggersInfo.Web.Client.Components.Input;
 
-public partial class Dropdown<TKey>
+public sealed partial class Dropdown<TKey>
 	where TKey : notnull
 {
 	private bool _show;

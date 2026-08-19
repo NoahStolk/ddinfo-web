@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace DevilDaggersInfo.Web.Client.Components.Input;
 
-public partial class InputNullableBoolean
+public sealed partial class InputNullableBoolean
 {
 	private bool _show;
 

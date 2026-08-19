@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersInfo.Web.Client.StateObjects.Admin.Players;
 
-public class EditPlayerState : IStateObject<EditPlayer>
+internal sealed class EditPlayerState : IStateObject<EditPlayer>
 {
 	[StringLength(32)]
 	public string? CommonName { get; set; }

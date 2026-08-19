@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 
 namespace DevilDaggersInfo.Web.Client.Components.Admin;
 
-public partial class AdminOverview<TGetDto, TSorting> : IHasNavigation
+public sealed partial class AdminOverview<TGetDto, TSorting> : IHasNavigation
 	where TGetDto : IAdminOverviewGetDto
 	where TSorting : struct, Enum
 {

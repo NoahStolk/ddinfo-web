@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace DevilDaggersInfo.Web.Client.Extensions;
 
-public static class HandLevelExtensions
+internal static class HandLevelExtensions
 {
 	public static HandLevel ToCore(this ApiSpec.Main.Spawnsets.HandLevel handLevel)
 	{
