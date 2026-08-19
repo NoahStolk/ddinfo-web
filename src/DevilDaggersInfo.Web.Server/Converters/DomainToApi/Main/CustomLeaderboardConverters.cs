@@ -11,7 +11,7 @@ using MainApi = DevilDaggersInfo.Web.ApiSpec.Main.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 
-public static class CustomLeaderboardConverters
+internal static class CustomLeaderboardConverters
 {
 	public static MainApi.GetCustomLeaderboardOverview ToMainApi(this CustomLeaderboardOverview customLeaderboard)
 	{

@@ -4,7 +4,7 @@ using NSwag;
 
 namespace DevilDaggersInfo.Web.Server.Extensions;
 
-public static class WebApplicationBuilderExtensions
+internal static class WebApplicationBuilderExtensions
 {
 	public static void AddValidatedOptions<TOptions>(this WebApplicationBuilder builder, string configSection)
 		where TOptions : class

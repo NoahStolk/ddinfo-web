@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 
-public static class PlayerConverters
+internal static class PlayerConverters
 {
 	public static GetPlayerForLeaderboard ToMainApi(this PlayerForLeaderboard player)
 	{

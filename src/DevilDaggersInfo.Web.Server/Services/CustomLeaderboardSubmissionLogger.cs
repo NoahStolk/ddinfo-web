@@ -4,7 +4,7 @@ using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 
 namespace DevilDaggersInfo.Web.Server.Services;
 
-public class CustomLeaderboardSubmissionLogger : ICustomLeaderboardSubmissionLogger
+internal sealed class CustomLeaderboardSubmissionLogger : ICustomLeaderboardSubmissionLogger
 {
 	private readonly List<string> _validClLogs = [];
 	private readonly List<string> _invalidClLogs = [];

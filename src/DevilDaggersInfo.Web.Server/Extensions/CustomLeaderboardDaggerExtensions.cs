@@ -4,7 +4,7 @@ using DSharpPlus.Entities;
 
 namespace DevilDaggersInfo.Web.Server.Extensions;
 
-public static class CustomLeaderboardDaggerExtensions
+internal static class CustomLeaderboardDaggerExtensions
 {
 	public static DiscordColor GetDiscordColor(this CustomLeaderboardDagger? dagger)
 	{

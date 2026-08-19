@@ -10,7 +10,7 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 [Route("api/admin/database")]
 [ApiController]
 [Authorize(Roles = Roles.Admin)]
-public class DatabaseController : ControllerBase
+public sealed class DatabaseController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
 

@@ -6,7 +6,7 @@ using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 
 namespace DevilDaggersInfo.Web.Server.Services;
 
-public class CustomLeaderboardHighscoreLogger : ICustomLeaderboardHighscoreLogger
+internal sealed class CustomLeaderboardHighscoreLogger : ICustomLeaderboardHighscoreLogger
 {
 	private readonly ILogger<CustomLeaderboardHighscoreLogger> _logger;
 	private readonly List<CustomLeaderboardHighscoreLog> _highscoreLogs = [];

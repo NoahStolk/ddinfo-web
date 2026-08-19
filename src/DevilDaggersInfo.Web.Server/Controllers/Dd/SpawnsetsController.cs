@@ -7,7 +7,7 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Dd;
 
 [Route("api/dd/spawnsets")]
 [ApiController]
-public class SpawnsetsController : ControllerBase
+public sealed class SpawnsetsController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
 

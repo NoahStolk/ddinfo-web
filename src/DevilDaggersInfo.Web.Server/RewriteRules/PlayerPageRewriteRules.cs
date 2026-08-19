@@ -4,7 +4,7 @@ using Microsoft.Net.Http.Headers;
 
 namespace DevilDaggersInfo.Web.Server.RewriteRules;
 
-public class PlayerPageRewriteRules : IRule
+internal sealed class PlayerPageRewriteRules : IRule
 {
 	public void ApplyRule(RewriteContext context)
 	{

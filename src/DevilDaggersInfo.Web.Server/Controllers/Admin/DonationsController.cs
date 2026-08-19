@@ -13,7 +13,7 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 [Route("api/admin/donations")]
 [ApiController]
 [Authorize(Roles = Roles.Admin)]
-public class DonationsController : ControllerBase
+public sealed class DonationsController : ControllerBase
 {
 	private readonly DonationRepository _donationRepository;
 	private readonly DonationService _donationService;

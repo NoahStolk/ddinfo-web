@@ -3,7 +3,7 @@ using NSwag.Generation.Processors.Contexts;
 
 namespace DevilDaggersInfo.Web.Server.NSwag;
 
-public class ApiOperationProcessor : IOperationProcessor
+internal sealed class ApiOperationProcessor : IOperationProcessor
 {
 	private readonly string _apiName;
 

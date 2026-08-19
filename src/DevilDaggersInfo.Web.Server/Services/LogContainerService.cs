@@ -2,7 +2,7 @@ using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 
 namespace DevilDaggersInfo.Web.Server.Services;
 
-public class LogContainerService : ILogContainerService
+internal sealed class LogContainerService : ILogContainerService
 {
 	public List<string> AuditLogEntries { get; } = [];
 	public List<string> LogEntries { get; } = [];

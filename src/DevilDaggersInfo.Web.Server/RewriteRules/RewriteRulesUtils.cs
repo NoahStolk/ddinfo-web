@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.Server.RewriteRules;
 
-public static class RewriteRulesUtils
+internal static class RewriteRulesUtils
 {
 	public static string TrimStart(string str, params string[] values)
 	{

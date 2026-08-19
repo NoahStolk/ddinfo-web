@@ -3,7 +3,7 @@ using DSharpPlus.Entities;
 
 namespace DevilDaggersInfo.Web.Server.HostedServices.DdInfoDiscordBot;
 
-public static class DiscordServerConstants
+internal static class DiscordServerConstants
 {
 	public const long TestChannelId = 975077574399131718;
 

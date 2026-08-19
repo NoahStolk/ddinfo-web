@@ -17,7 +17,7 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 
 [Route("api/mods")]
 [ApiController]
-public class ModsController : ControllerBase
+public sealed class ModsController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
 	private readonly IFileSystemService _fileSystemService;

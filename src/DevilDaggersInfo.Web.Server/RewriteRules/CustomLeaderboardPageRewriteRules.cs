@@ -8,7 +8,7 @@ namespace DevilDaggersInfo.Web.Server.RewriteRules;
 /// <summary>
 /// Redirects old custom leaderboard pages from the V4 website. Only the custom leaderboards that existed at that point are included here (dumped with SQL).
 /// </summary>
-public class CustomLeaderboardPageRewriteRules : IRule
+internal sealed class CustomLeaderboardPageRewriteRules : IRule
 {
 	private static readonly Dictionary<int, string> _names = new()
 	{

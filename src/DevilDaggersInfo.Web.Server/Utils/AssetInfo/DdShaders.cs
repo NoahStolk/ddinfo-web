@@ -1,7 +1,7 @@
 // ReSharper disable StringLiteralTypo
 namespace DevilDaggersInfo.Web.Server.Utils.AssetInfo;
 
-public static class DdShaders
+internal static class DdShaders
 {
 	public static AssetInfoEntry[] All { get; } =
 	[

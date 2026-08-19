@@ -13,7 +13,7 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 [Route("api/admin/custom-entries")]
 [ApiController]
 [Authorize(Roles = Roles.Admin)]
-public class CustomEntriesController : ControllerBase
+public sealed class CustomEntriesController : ControllerBase
 {
 	private readonly CustomEntryRepository _customEntryRepository;
 	private readonly CustomEntryService _customEntryService;

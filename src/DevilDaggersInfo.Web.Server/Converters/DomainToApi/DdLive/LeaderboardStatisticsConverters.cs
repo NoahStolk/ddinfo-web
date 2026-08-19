@@ -3,7 +3,7 @@ using DdLiveApi = DevilDaggersInfo.Web.ApiSpec.DdLive.LeaderboardStatistics;
 
 namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.DdLive;
 
-public static class LeaderboardStatisticsConverters
+internal static class LeaderboardStatisticsConverters
 {
 	public static DdLiveApi.GetArrayStatisticsDdLive ToDdLiveApi(this ArrayStatistics arrayStatistics)
 	{

@@ -12,7 +12,7 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Tools;
 
 [Route("api/app/custom-entries")]
 [ApiController]
-public class CustomEntriesController : ControllerBase
+public sealed class CustomEntriesController : ControllerBase
 {
 	private readonly ILogger<CustomEntriesController> _logger;
 	private readonly CustomEntryProcessor _customEntryProcessor;

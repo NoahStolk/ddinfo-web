@@ -6,7 +6,7 @@ using DdLiveApi = DevilDaggersInfo.Web.ApiSpec.DdLive.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.DdLive;
 
-public static class CustomLeaderboardConverters
+internal static class CustomLeaderboardConverters
 {
 	public static DdLiveApi.GetCustomLeaderboardOverviewDdLive ToDdLiveApi(this CustomLeaderboardOverview customLeaderboard)
 	{

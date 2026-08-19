@@ -4,7 +4,7 @@ using ToolsApi = DevilDaggersInfo.Web.ApiSpec.Tools.Spawnsets;
 namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Tools;
 
 // TODO: Use domain models.
-public static class SpawnsetConverters
+internal static class SpawnsetConverters
 {
 	public static ToolsApi.GetSpawnset ToToolsApi(this SpawnsetEntity spawnset, int? customLeaderboardId, byte[] fileBytes)
 	{

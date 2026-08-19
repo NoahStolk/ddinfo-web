@@ -9,7 +9,7 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Tools;
 
 [Route("api/app/process-memory")]
 [ApiController]
-public class ProcessMemoryController : ControllerBase
+public sealed class ProcessMemoryController : ControllerBase
 {
 	private readonly MarkerRepository _markerRepository;
 

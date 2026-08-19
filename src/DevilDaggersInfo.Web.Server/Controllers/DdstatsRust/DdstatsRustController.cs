@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 namespace DevilDaggersInfo.Web.Server.Controllers.DdstatsRust;
 
 [ApiController]
-public class DdstatsRustController : ControllerBase
+public sealed class DdstatsRustController : ControllerBase
 {
 	private readonly MarkerRepository _markerRepository;
 

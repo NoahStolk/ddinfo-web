@@ -8,7 +8,7 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 
 [Route("api/leaderboards")]
 [ApiController]
-public class LeaderboardsController : ControllerBase
+public sealed class LeaderboardsController : ControllerBase
 {
 	private readonly IDdLeaderboardService _leaderboardClient;
 

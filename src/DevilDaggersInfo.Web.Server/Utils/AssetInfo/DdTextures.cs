@@ -1,7 +1,7 @@
 // ReSharper disable StringLiteralTypo
 namespace DevilDaggersInfo.Web.Server.Utils.AssetInfo;
 
-public static class DdTextures
+internal static class DdTextures
 {
 	public static AssetInfoEntry[] All { get; } =
 	[

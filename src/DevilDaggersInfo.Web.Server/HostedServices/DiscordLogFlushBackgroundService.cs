@@ -8,7 +8,7 @@ using DSharpPlus.Entities;
 
 namespace DevilDaggersInfo.Web.Server.HostedServices;
 
-public class DiscordLogFlushBackgroundService : AbstractBackgroundService
+internal sealed class DiscordLogFlushBackgroundService : AbstractBackgroundService
 {
 	private readonly ILogContainerService _logContainerService;
 	private readonly ICustomLeaderboardHighscoreLogger _customLeaderboardHighscoreLogger;

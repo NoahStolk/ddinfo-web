@@ -6,7 +6,7 @@ using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 
 namespace DevilDaggersInfo.Web.Server.Clients.Leaderboard;
 
-public class DdLeaderboardService : IDdLeaderboardService
+internal sealed class DdLeaderboardService : IDdLeaderboardService
 {
 	private static readonly Uri _getScoresUrl = new("http://dd.hasmodai.com/dd3/get_scores.php");
 	private static readonly Uri _getUserSearchUrl = new("http://dd.hasmodai.com/dd3/get_user_search_public.php");

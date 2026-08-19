@@ -9,7 +9,7 @@ using MainApi = DevilDaggersInfo.Web.ApiSpec.Main.Mods;
 namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 
 // TODO: Use domain models.
-public static class ModConverters
+internal static class ModConverters
 {
 	public static MainApi.GetModOverview ToMainApiOverview(this ModEntity mod, ModFileSystemData modFileSystemData)
 	{

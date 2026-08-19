@@ -7,7 +7,7 @@ using DdseApi = DevilDaggersInfo.Web.ApiSpec.Ddse.Spawnsets;
 namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Ddse;
 
 // TODO: Use domain models.
-public static class SpawnsetConverters
+internal static class SpawnsetConverters
 {
 	public static DdseApi.GetSpawnsetDdse ToDdseApi(this SpawnsetEntity spawnset, bool hasCustomLeaderboard)
 	{

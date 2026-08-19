@@ -2,7 +2,7 @@ using DevilDaggersInfo.Web.Server.Services;
 
 namespace DevilDaggersInfo.Web.Server.HostedServices;
 
-public abstract class AbstractBackgroundService : BackgroundService
+internal abstract class AbstractBackgroundService : BackgroundService
 {
 	private readonly BackgroundServiceMonitor _backgroundServiceMonitor;
 	private readonly string _name;

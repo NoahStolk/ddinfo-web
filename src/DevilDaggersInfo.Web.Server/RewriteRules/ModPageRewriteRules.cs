@@ -8,7 +8,7 @@ namespace DevilDaggersInfo.Web.Server.RewriteRules;
 /// <summary>
 /// Redirects old mod pages from the V4 website. Only the mods that existed at that point are included here (dumped with SQL).
 /// </summary>
-public class ModPageRewriteRules : IRule
+internal sealed class ModPageRewriteRules : IRule
 {
 	private static readonly Dictionary<int, string> _names = new()
 	{

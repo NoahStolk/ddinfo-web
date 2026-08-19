@@ -6,7 +6,7 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 
 [Route("api/world-records")]
 [ApiController]
-public class WorldRecordsController : ControllerBase
+public sealed class WorldRecordsController : ControllerBase
 {
 	private readonly WorldRecordRepository _worldRecordRepository;
 

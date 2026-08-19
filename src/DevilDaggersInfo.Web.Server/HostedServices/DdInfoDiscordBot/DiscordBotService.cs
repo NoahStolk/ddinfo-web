@@ -6,7 +6,7 @@ using Microsoft.Extensions.Options;
 
 namespace DevilDaggersInfo.Web.Server.HostedServices.DdInfoDiscordBot;
 
-public class DiscordBotService : IHostedService
+internal sealed class DiscordBotService : IHostedService
 {
 	private readonly IOptions<DiscordOptions> _discordBotOptions;
 	private readonly IWebHostEnvironment _environment;

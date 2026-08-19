@@ -6,7 +6,7 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 
 [Route("api/donations")]
 [ApiController]
-public class DonationsController : ControllerBase
+public sealed class DonationsController : ControllerBase
 {
 	private readonly DonationRepository _donationRepository;
 

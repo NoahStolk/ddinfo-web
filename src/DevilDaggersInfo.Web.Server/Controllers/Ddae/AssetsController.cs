@@ -6,7 +6,7 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Ddae;
 
 [Route("api/ddae/assets")]
 [ApiController]
-public class AssetsController : ControllerBase
+public sealed class AssetsController : ControllerBase
 {
 	[HttpGet("info")]
 	[ProducesResponseType(StatusCodes.Status200OK)]

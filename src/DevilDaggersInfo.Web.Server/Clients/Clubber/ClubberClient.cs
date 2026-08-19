@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.Server.Clients.Clubber;
 
-public class ClubberClient
+internal sealed class ClubberClient
 {
 	private readonly HttpClient _httpClient;
 	private readonly ILogger<ClubberClient> _logger;

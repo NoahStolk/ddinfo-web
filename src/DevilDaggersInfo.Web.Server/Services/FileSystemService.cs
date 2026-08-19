@@ -4,7 +4,7 @@ using DevilDaggersInfo.Web.Server.Utils;
 
 namespace DevilDaggersInfo.Web.Server.Services;
 
-public class FileSystemService : IFileSystemService
+internal sealed class FileSystemService : IFileSystemService
 {
 	private const string _root = "Data";
 

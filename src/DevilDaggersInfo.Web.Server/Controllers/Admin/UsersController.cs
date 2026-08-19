@@ -12,7 +12,7 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 
 [Route("api/admin/users")]
 [ApiController]
-public class UsersController : ControllerBase
+public sealed class UsersController : ControllerBase
 {
 	private readonly UserRepository _userRepository;
 	private readonly UserService _userService;

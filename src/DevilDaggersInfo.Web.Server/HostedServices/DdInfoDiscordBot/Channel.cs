@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.Server.HostedServices.DdInfoDiscordBot;
 
-public enum Channel
+internal enum Channel
 {
 	MaintainersAuditLog,
 	MonitoringCustomLeaderboardValid,

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace DevilDaggersInfo.Web.Server.HostedServices;
 
-public class StartupCacheHostedService : IHostedService
+internal sealed class StartupCacheHostedService : IHostedService
 {
 	private readonly IWebHostEnvironment _env;
 	private readonly IFileSystemService _fileSystemService;

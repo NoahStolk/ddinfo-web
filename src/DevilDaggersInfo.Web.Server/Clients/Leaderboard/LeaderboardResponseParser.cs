@@ -3,7 +3,7 @@ using System.Text;
 
 namespace DevilDaggersInfo.Web.Server.Clients.Leaderboard;
 
-public class LeaderboardResponseParser
+internal sealed class LeaderboardResponseParser
 {
 	public IDdLeaderboardService.LeaderboardResponse ParseGetLeaderboardResponse(byte[] response, int limit)
 	{

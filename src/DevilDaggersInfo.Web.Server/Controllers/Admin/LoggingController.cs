@@ -7,7 +7,7 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 [Route("api/admin/logging")]
 [ApiController]
 [Authorize(Roles = Roles.Admin)]
-public class LoggingController : ControllerBase
+public sealed class LoggingController : ControllerBase
 {
 	private readonly ILogger<LoggingController> _logger;
 

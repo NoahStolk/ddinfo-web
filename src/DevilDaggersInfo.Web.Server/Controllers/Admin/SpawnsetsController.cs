@@ -12,7 +12,7 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 
 [Route("api/admin/spawnsets")]
 [ApiController]
-public class SpawnsetsController : ControllerBase
+public sealed class SpawnsetsController : ControllerBase
 {
 	private readonly SpawnsetRepository _spawnsetRepository;
 	private readonly SpawnsetService _spawnsetService;
