@@ -40,7 +40,7 @@ public class ModService
 		if (addMod.Binaries.Count > 0)
 			await _modArchiveProcessor.ProcessModBinaryUploadAsync(addMod.Name, GetBinaryNames(addMod.Binaries.ConvertAll(bd => (bd.Name, bd.Data))));
 
-		_modScreenshotProcessor.ProcessModScreenshotUpload(addMod.Name, addMod.Screenshots);
+		await _modScreenshotProcessor.ProcessModScreenshotUploadAsync(addMod.Name, addMod.Screenshots);
 
 		ModEntity mod = new()
 		{
@@ -90,7 +90,7 @@ public class ModService
 		foreach (string screenshotToDelete in editMod.ScreenshotsToDelete)
 			_modScreenshotProcessor.DeleteScreenshot(editMod.Name, screenshotToDelete);
 
-		_modScreenshotProcessor.ProcessModScreenshotUpload(editMod.Name, editMod.Screenshots);
+		await _modScreenshotProcessor.ProcessModScreenshotUploadAsync(editMod.Name, editMod.Screenshots);
 
 		mod.ModTypes = editMod.ModTypes?.ToFlagEnum<Entities.Enums.ModTypes>() ?? Entities.Enums.ModTypes.None;
 		mod.HtmlDescription = editMod.HtmlDescription;
