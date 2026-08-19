@@ -79,10 +79,22 @@ jobs:
           if ($json -match '__[A-Z_]+__') { throw 'Unreplaced placeholder left in appsettings.json.' }
           Write-Host 'All placeholders replaced.'
 
-      # Data (mods, replays, leaderboard history) and keys (data protection key ring) live inside the site
-      # folder on the host and are not in the repository, so they must be skipped: a plain sync would
-      # delete them.
-      - name: Deploy via MSDeploy
+      # Deployment runs in two passes so that a failure can never leave the site unable to start.
+      #
+      # Pass 1 copies everything with deletions disabled. If it fails, the old file set is still complete
+      # and the app still boots. Pass 2 then prunes files the new build no longer ships; if that fails, the
+      # app already has everything it needs and only stale leftovers remain.
+      #
+      # Data (mods, replays, leaderboard history), keys (data protection key ring) and logs live inside the
+      # site folder on the host and are not in the repository, so they must be skipped: a plain sync would
+      # delete them. app_offline.htm is deliberately NOT skipped -- the AppOffline rule owns that file's
+      # whole lifecycle, writing it before the sync and removing it after, and skipping the path stops the
+      # rule from cleaning it up. A failed deploy then leaves the site returning 503 with no way for a later
+      # deploy to recover it.
+      #
+      # Retries are here because IIS can still hold handles to assemblies for a moment after the app goes
+      # offline, which msdeploy reports as ERROR_INSUFFICIENT_ACCESS_TO_SITE_FOLDER rather than as a lock.
+      - name: Deploy via MSDeploy (copy, no deletions)
         shell: powershell
         run: |
           $extra = @()
@@ -92,8 +104,29 @@ jobs:
             -source:contentPath="${{ github.workspace }}\publish" `
             -dest:contentPath="devildaggers.info",computerName="https://${{ secrets.MSDEPLOY_HOST }}:8172/msdeploy.axd?site=devildaggers.info",userName="${{ secrets.MSDEPLOY_USER }}",password="${{ secrets.MSDEPLOY_PASS }}",authType="Basic" `
             -enableRule:AppOffline `
+            -enableRule:DoNotDeleteRule `
+            -retryAttempts:5 `
+            -retryInterval:3000 `
             -skip:objectName=dirPath,absolutePath=.*\\Data `
             -skip:objectName=dirPath,absolutePath=.*\\keys `
             -skip:objectName=dirPath,absolutePath=.*\\logs `
-            -skip:objectName=filePath,absolutePath=.*\\app_offline\.htm `
+            -allowUntrusted @extra
+
+      - name: Deploy via MSDeploy (prune removed files)
+        shell: powershell
+        run: |
+          Write-Host 'If this step fails, the site is already serving the new build --'
+          Write-Host 'only cleanup of files the new build no longer ships was left incomplete.'
+          $extra = @()
+          if ('${{ inputs.dry_run }}' -eq 'true') { $extra += '-whatif' }
+          & "C:\Program Files\IIS\Microsoft Web Deploy V3\msdeploy.exe" `
+            -verb:sync `
+            -source:contentPath="${{ github.workspace }}\publish" `
+            -dest:contentPath="devildaggers.info",computerName="https://${{ secrets.MSDEPLOY_HOST }}:8172/msdeploy.axd?site=devildaggers.info",userName="${{ secrets.MSDEPLOY_USER }}",password="${{ secrets.MSDEPLOY_PASS }}",authType="Basic" `
+            -enableRule:AppOffline `
+            -retryAttempts:5 `
+            -retryInterval:3000 `
+            -skip:objectName=dirPath,absolutePath=.*\\Data `
+            -skip:objectName=dirPath,absolutePath=.*\\keys `
+            -skip:objectName=dirPath,absolutePath=.*\\logs `
             -allowUntrusted @extra
