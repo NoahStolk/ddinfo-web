@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.Client.Core.Canvas.JS;
 
-public class BoundingClientRect
+public sealed class BoundingClientRect
 {
 	public double X { get; set; }
 

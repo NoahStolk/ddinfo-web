@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.Client.Core.CanvasChart.Options.BarChart;
 
-public class BarChartOptions
+public sealed class BarChartOptions
 {
 	public string CanvasBackgroundColor { get; set; } = "#080808";
 	public string ChartBackgroundColor { get; set; } = "#0b0b0b";

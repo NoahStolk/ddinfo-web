@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.Client.Core.CanvasChart.Data;
 
-public class BarData
+public sealed class BarData
 {
 	public BarData(string color, double y, int index)
 	{

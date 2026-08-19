@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace DevilDaggersInfo.Web.Client.Core.CanvasChart.Components;
 
-public partial class ChartHighlighter
+public sealed partial class ChartHighlighter
 {
 	public bool IsVisible { get; set; }
 
