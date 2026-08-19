@@ -30,11 +30,11 @@ dotnet run --project src/DevilDaggersInfo.Web.Server   # https://localhost:5001
 
 **Runtime prerequisites:** projects target `net8.0`; the test project targets `net9.0` (temporary, see its TODO). Running tests requires a .NET 9 runtime to be installed.
 
-**Config:** `appsettings.json` / `appsettings.Development.json` are gitignored. The server binds and validates required option sections at startup (`Authentication`, `CustomLeaderboards`, `Discord`, `MySql`) via `AddValidatedOptions`, so it will not start without them. Database is MySQL (Pomelo EF Core); uploaded/generated files live under a `Data` directory next to the server (see `FileSystemService`).
+**Config:** `appsettings.json` (production, with `__PLACEHOLDER__` values injected at deploy time) and `appsettings.Development.json` (non-secret local values) are both tracked; real local secrets go in user secrets (`dotnet user-secrets`). The server binds and validates required option sections at startup (`Authentication`, `CustomLeaderboards`, `Discord`, `MySql`) via `AddValidatedOptions`, so it will not start without them. Database is MySQL (Pomelo EF Core); uploaded/generated files live under a `Data` directory next to the server (see `FileSystemService`).
 
 Database migration scripts: see `docs/setup/generating-database-migration-scripts.md` (requires temporarily adding EF package references to `Web.Server.Domain`).
 
-CI (`.github/workflows/`) builds + tests on PR — including the Tailwind step, so CSS/markup drift is caught — and on push to `main` also packs and pushes `ApiSpec.Admin`, `ApiSpec.Main` and `ApiSpec.Tools` to nuget.org — changes to those three projects are public API surface with their own `<Version>`.
+CI (`.github/workflows/`) builds + tests on PR — including the Tailwind step, so CSS/markup drift is caught — and on push to `main` also packs and pushes `ApiSpec.Admin`, `ApiSpec.Main` and `ApiSpec.Tools` to nuget.org — changes to those three projects are public API surface with their own `<Version>`. Deployment is a separate manual `workflow_dispatch` workflow that publishes on a Windows runner and syncs to IIS with MSDeploy — see `docs/setup/deploying.md`; note that `Data/` and `keys/` on the host are deliberately skipped by the sync.
 
 ## Architecture
 
