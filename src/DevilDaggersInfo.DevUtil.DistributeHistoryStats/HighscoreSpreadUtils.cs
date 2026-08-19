@@ -6,7 +6,7 @@ using System.Text;
 
 namespace DevilDaggersInfo.DevUtil.DistributeHistoryStats;
 
-public static class HighscoreSpreadUtils
+internal static class HighscoreSpreadUtils
 {
 	private static readonly StringBuilder _log = new();
 
