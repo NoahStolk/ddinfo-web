@@ -8,9 +8,10 @@ using Microsoft.JSInterop;
 
 namespace DevilDaggersInfo.Web.Client.Core.CanvasChart.Components;
 
-public partial class BarChart
+public partial class BarChart : IAsyncDisposable
 {
 	private WebAssemblyCanvas2d? _context;
+	private DotNetObjectReference<BarChart>? _objectReference;
 	private object? _canvasReference;
 	private ChartHighlighter? _highlighter;
 
@@ -56,9 +57,10 @@ public partial class BarChart
 	{
 		if (firstRender)
 		{
+			_objectReference = DotNetObjectReference.Create(this);
 			await JSRuntime.InvokeAsync<object>("initChart");
-			await JSRuntime.InvokeAsync<object>("registerChart", DotNetObjectReference.Create(this), UniqueName);
-			await JSRuntime.InvokeAsync<object>("chartInitialResize", DotNetObjectReference.Create(this));
+			await JSRuntime.InvokeAsync<object>("registerChart", _objectReference, UniqueName);
+			await JSRuntime.InvokeAsync<object>("chartInitialResize");
 		}
 
 		_context = new WebAssemblyCanvas2d($"{UniqueName}-canvas");
@@ -228,5 +230,23 @@ public partial class BarChart
 			_highlighter.IsVisible = visible;
 			_highlighter.ChangeState();
 		}
+	}
+
+	public async ValueTask DisposeAsync()
+	{
+		if (_objectReference == null)
+			return;
+
+		try
+		{
+			await JSRuntime.InvokeVoidAsync("unregisterChart", UniqueName);
+		}
+		catch (JSDisconnectedException)
+		{
+			// The renderer is already gone, so there is nothing left to unregister.
+		}
+
+		_objectReference.Dispose();
+		_objectReference = null;
 	}
 }

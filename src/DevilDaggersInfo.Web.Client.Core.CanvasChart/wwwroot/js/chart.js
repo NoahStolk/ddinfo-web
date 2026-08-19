@@ -3,7 +3,7 @@ function onResize() {
 		const chart = window.charts[i];
 		if (!chart || !chart.canvas) {
 			console.log("Chart at index " + i + " is null or doesn't have a canvas.");
-			return;
+			continue;
 		}
 
 		const bounds = chart.canvasContainer.getBoundingClientRect();
@@ -12,17 +12,22 @@ function onResize() {
 
 		chart.canvas.width = canvasWidth;
 		chart.canvas.height = canvasHeight;
-		chart.canvas.style.width = canvasWidth;
-		chart.canvas.style.height = canvasHeight;
+		chart.canvas.style.width = canvasWidth + "px";
+		chart.canvas.style.height = canvasHeight + "px";
 		chart.chartWrapperComponent.invokeMethodAsync('OnResize', canvasWidth, canvasHeight);
 	}
 }
 
-window.chartInitialResize = (_) => {
+window.chartInitialResize = () => {
 	onResize();
 };
 
+// Every chart component calls this on its first render, so it must not reset state that other charts on the same page
+// have already registered.
 window.initChart = () => {
+	if (window.charts)
+		return;
+
 	window.charts = [];
 
 	window.addEventListener("resize", onResize);
@@ -49,6 +54,7 @@ window.registerChart = (chartWrapperComponent, chartName) => {
 
 	const chart = {
 		chartWrapperComponent: chartWrapperComponent,
+		chartName: chartName,
 		canvasContainer: canvasContainer,
 		canvas: canvasElements[0],
 	};
@@ -63,4 +69,21 @@ window.registerChart = (chartWrapperComponent, chartName) => {
 	}
 
 	window.charts.push(chart);
+};
+
+// Charts are not reset between navigations, so a disposed component must remove itself. Otherwise its detached canvas
+// stays in the list and reports a zero-sized bounding rect.
+window.unregisterChart = (chartName) => {
+	if (!window.charts)
+		return;
+
+	const index = window.charts.findIndex(c => c && c.chartName === chartName);
+	if (index === -1)
+		return;
+
+	const chart = window.charts[index];
+	if (chart.canvas)
+		chart.canvas.onmousemove = null;
+
+	window.charts.splice(index, 1);
 };
