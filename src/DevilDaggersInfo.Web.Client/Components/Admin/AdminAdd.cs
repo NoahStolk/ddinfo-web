@@ -7,7 +7,7 @@ using System.Net;
 
 namespace DevilDaggersInfo.Web.Client.Components.Admin;
 
-public partial class AdminAdd<TStateObject, TModel>
+public sealed partial class AdminAdd<TStateObject, TModel>
 	where TStateObject : IStateObject<TModel>
 {
 	private bool _submitting;
@@ -35,7 +35,7 @@ public partial class AdminAdd<TStateObject, TModel>
 	[EditorRequired]
 	public required Func<AdminAdd<TStateObject, TModel>, Task> OnPopulate { get; set; }
 
-	public ErrorState State { get; set; }
+	internal ErrorState State { get; set; }
 	public string? ErrorMessage { get; set; }
 
 	protected override async Task OnInitializedAsync()

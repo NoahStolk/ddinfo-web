@@ -3,9 +3,9 @@ using System.Text;
 
 namespace DevilDaggersInfo.Web.Server.Clients.Leaderboard;
 
-public class LeaderboardResponseParser
+internal static class LeaderboardResponseParser
 {
-	public IDdLeaderboardService.LeaderboardResponse ParseGetLeaderboardResponse(byte[] response, int limit)
+	public static IDdLeaderboardService.LeaderboardResponse ParseGetLeaderboardResponse(byte[] response, int limit)
 	{
 		using MemoryStream ms = new(response);
 		using BinaryReader br = new(ms);
@@ -83,7 +83,7 @@ public class LeaderboardResponseParser
 		};
 	}
 
-	public List<IDdLeaderboardService.EntryResponse> ParseGetEntriesByName(byte[] response)
+	public static List<IDdLeaderboardService.EntryResponse> ParseGetEntriesByName(byte[] response)
 	{
 		using MemoryStream ms = new(response);
 		using BinaryReader br = new(ms);
@@ -142,7 +142,7 @@ public class LeaderboardResponseParser
 		return entries;
 	}
 
-	public List<IDdLeaderboardService.EntryResponse> ParseGetEntriesByIds(byte[] response)
+	public static List<IDdLeaderboardService.EntryResponse> ParseGetEntriesByIds(byte[] response)
 	{
 		using MemoryStream ms = new(response);
 		using BinaryReader br = new(ms);
@@ -159,7 +159,7 @@ public class LeaderboardResponseParser
 		return entries;
 	}
 
-	public IDdLeaderboardService.EntryResponse ParseGetEntryById(byte[] response)
+	public static IDdLeaderboardService.EntryResponse ParseGetEntryById(byte[] response)
 	{
 		using MemoryStream ms = new(response);
 		using BinaryReader br = new(ms);

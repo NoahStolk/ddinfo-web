@@ -2,7 +2,7 @@ using System.Net;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Exceptions;
 
-public class DdLeaderboardException : StatusCodeException
+public sealed class DdLeaderboardException : StatusCodeException
 {
 	public DdLeaderboardException()
 	{

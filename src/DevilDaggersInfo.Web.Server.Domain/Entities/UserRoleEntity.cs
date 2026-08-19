@@ -1,7 +1,7 @@
 namespace DevilDaggersInfo.Web.Server.Domain.Entities;
 
 [Table("UserRoles")]
-public class UserRoleEntity
+public sealed class UserRoleEntity
 {
 	public int UserId { get; set; }
 

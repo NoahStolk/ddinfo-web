@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersInfo.Web.Client.StateObjects.Admin.Mods;
 
-public class EditModState : IStateObject<EditMod>
+internal sealed class EditModState : IStateObject<EditMod>
 {
 	[StringLength(64)]
 	public string Name { get; set; } = string.Empty;

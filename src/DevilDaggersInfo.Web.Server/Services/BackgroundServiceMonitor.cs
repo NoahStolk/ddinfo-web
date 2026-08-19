@@ -3,7 +3,9 @@ using System.Collections.Concurrent;
 
 namespace DevilDaggersInfo.Web.Server.Services;
 
-public class BackgroundServiceMonitor
+// Injected into BackgroundServicesController, which MVC requires to be public,
+// so this cannot be made internal.
+public sealed class BackgroundServiceMonitor
 {
 	private readonly ConcurrentBag<BackgroundServiceLog> _backgroundServiceLogs = [];
 

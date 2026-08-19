@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.Client.Core.CanvasChart.Options.BarChart;
 
-public class BarChartGridOptions
+public sealed class BarChartGridOptions
 {
 	public float LineThickness { get; set; } = 1;
 	public string LineColor { get; set; } = "#333";

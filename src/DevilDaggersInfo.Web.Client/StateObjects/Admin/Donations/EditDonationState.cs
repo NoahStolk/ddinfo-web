@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersInfo.Web.Client.StateObjects.Admin.Donations;
 
-public class EditDonationState : IStateObject<EditDonation>
+internal sealed class EditDonationState : IStateObject<EditDonation>
 {
 	public int PlayerId { get; set; }
 

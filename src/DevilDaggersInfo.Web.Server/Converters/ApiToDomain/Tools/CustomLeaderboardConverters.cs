@@ -3,7 +3,7 @@ using ToolsApi = DevilDaggersInfo.Web.ApiSpec.Tools.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Tools;
 
-public static class CustomLeaderboardConverters
+internal static class CustomLeaderboardConverters
 {
 	public static UploadRequest ToDomain(this ToolsApi.AddUploadRequest uploadRequest)
 	{

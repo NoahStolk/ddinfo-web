@@ -14,7 +14,7 @@ using System.Runtime.CompilerServices;
 
 namespace DevilDaggersInfo.Web.Client.Pages.Leaderboard;
 
-public partial class WorldRecordProgressionPage
+public sealed partial class WorldRecordProgressionPage
 {
 	private readonly LineChartOptions _lineChartOptions = new()
 	{
@@ -40,9 +40,6 @@ public partial class WorldRecordProgressionPage
 
 	private readonly Dictionary<string, bool> _worldRecordHoldersSortings = new();
 	private readonly Dictionary<string, bool> _worldRecordsSortings = new();
-
-	[Inject]
-	public required MainApiHttpClient Http { get; set; }
 
 	protected override async Task OnInitializedAsync()
 	{

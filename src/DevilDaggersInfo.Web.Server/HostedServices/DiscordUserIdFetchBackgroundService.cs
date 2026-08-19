@@ -4,7 +4,7 @@ using DevilDaggersInfo.Web.Server.Services;
 
 namespace DevilDaggersInfo.Web.Server.HostedServices;
 
-public class DiscordUserIdFetchBackgroundService : AbstractBackgroundService
+internal sealed class DiscordUserIdFetchBackgroundService : AbstractBackgroundService
 {
 	private readonly IServiceScopeFactory _serviceScopeFactory;
 	private readonly ClubberClient _clubberClient;

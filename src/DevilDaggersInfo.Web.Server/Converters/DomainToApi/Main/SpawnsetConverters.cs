@@ -9,7 +9,7 @@ using MainApi = DevilDaggersInfo.Web.ApiSpec.Main.Spawnsets;
 namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 
 // TODO: Use domain models.
-public static class SpawnsetConverters
+internal static class SpawnsetConverters
 {
 	public static MainApi.GetSpawnsetOverview ToMainApi(this SpawnsetOverview spawnset)
 	{

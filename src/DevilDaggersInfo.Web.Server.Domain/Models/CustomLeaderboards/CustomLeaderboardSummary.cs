@@ -2,7 +2,7 @@ using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 
-public record CustomLeaderboardSummary
+public sealed record CustomLeaderboardSummary
 {
 	public required int Id { get; init; }
 

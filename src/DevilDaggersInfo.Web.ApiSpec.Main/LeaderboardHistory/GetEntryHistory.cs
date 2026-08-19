@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.ApiSpec.Main.LeaderboardHistory;
 
-public record GetEntryHistory : IGetEntryDto
+public sealed record GetEntryHistory : IGetEntryDto
 {
 	public required DateTime DateTime { get; init; }
 

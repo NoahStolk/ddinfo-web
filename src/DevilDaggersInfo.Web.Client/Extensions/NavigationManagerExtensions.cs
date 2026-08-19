@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace DevilDaggersInfo.Web.Client.Extensions;
 
-public static class NavigationManagerExtensions
+internal static class NavigationManagerExtensions
 {
 	public static void AddOrModifyQueryParameter(this NavigationManager navigationManager, string key, object? value)
 	{

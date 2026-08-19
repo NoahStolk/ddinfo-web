@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersInfo.Web.ApiSpec.Admin.Mods;
 
-public record EditMod
+public sealed record EditMod
 {
 	[StringLength(64)]
 	public required string Name { get; init; }

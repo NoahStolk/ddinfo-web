@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 
-public record CustomLeaderboardOverviewSelectedPlayerStats
+public sealed record CustomLeaderboardOverviewSelectedPlayerStats
 {
 	public required int Rank { get; init; }
 

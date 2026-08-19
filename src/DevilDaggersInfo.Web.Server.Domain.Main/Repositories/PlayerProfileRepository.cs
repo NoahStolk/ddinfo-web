@@ -8,7 +8,7 @@ using System.Security.Claims;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Main.Repositories;
 
-public class PlayerProfileRepository
+public sealed class PlayerProfileRepository
 {
 	private readonly ApplicationDbContext _dbContext;
 

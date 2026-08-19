@@ -2,7 +2,7 @@ using DevilDaggersInfo.Web.ApiSpec.Main.Donations;
 
 namespace DevilDaggersInfo.Web.Client.Extensions;
 
-public static class CurrencyExtensions
+internal static class CurrencyExtensions
 {
 	public static char GetChar(this Currency currency)
 	{

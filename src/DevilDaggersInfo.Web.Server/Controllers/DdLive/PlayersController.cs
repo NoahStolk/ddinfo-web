@@ -7,7 +7,7 @@ namespace DevilDaggersInfo.Web.Server.Controllers.DdLive;
 
 [Route("api/ddlive/players")]
 [ApiController]
-public class PlayersController : ControllerBase
+public sealed class PlayersController : ControllerBase
 {
 	private readonly PlayerRepository _playerRepository;
 

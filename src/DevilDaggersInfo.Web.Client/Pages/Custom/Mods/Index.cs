@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace DevilDaggersInfo.Web.Client.Pages.Custom.Mods;
 
-public partial class Index : IHasNavigation
+public sealed partial class Index : IHasNavigation
 {
 	private readonly Dictionary<ModSorting, bool> _sortings = new();
 

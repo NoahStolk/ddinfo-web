@@ -7,7 +7,7 @@ using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Main.Repositories;
 
-public class LeaderboardHistoryStatisticsRepository
+public sealed class LeaderboardHistoryStatisticsRepository
 {
 	private readonly IFileSystemService _fileSystemService;
 	private readonly ILeaderboardHistoryCache _leaderboardHistoryCache;

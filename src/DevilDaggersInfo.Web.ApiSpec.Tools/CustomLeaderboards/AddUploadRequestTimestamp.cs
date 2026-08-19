@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.ApiSpec.Tools.CustomLeaderboards;
 
-public record AddUploadRequestTimestamp
+public sealed record AddUploadRequestTimestamp
 {
 	public required double TimeInSeconds { get; init; }
 

@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.ApiSpec.Main.Mods;
 
-public record GetModArchive
+public sealed record GetModArchive
 {
 	public required long FileSize { get; init; }
 

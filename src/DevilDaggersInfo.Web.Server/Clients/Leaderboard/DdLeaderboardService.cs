@@ -6,7 +6,7 @@ using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 
 namespace DevilDaggersInfo.Web.Server.Clients.Leaderboard;
 
-public class DdLeaderboardService : IDdLeaderboardService
+internal sealed class DdLeaderboardService : IDdLeaderboardService
 {
 	private static readonly Uri _getScoresUrl = new("http://dd.hasmodai.com/dd3/get_scores.php");
 	private static readonly Uri _getUserSearchUrl = new("http://dd.hasmodai.com/dd3/get_user_search_public.php");
@@ -14,13 +14,11 @@ public class DdLeaderboardService : IDdLeaderboardService
 	private static readonly Uri _getUserByIdUrl = new("http://dd.hasmodai.com/dd3/get_user_by_id_public.php");
 
 	private readonly HttpClient _httpClient;
-	private readonly LeaderboardResponseParser _leaderboardResponseParser;
 	private readonly ILogger<DdLeaderboardService> _logger;
 
-	public DdLeaderboardService(HttpClient httpClient, LeaderboardResponseParser leaderboardResponseParser, ILogger<DdLeaderboardService> logger)
+	public DdLeaderboardService(HttpClient httpClient, ILogger<DdLeaderboardService> logger)
 	{
 		_httpClient = httpClient;
-		_leaderboardResponseParser = leaderboardResponseParser;
 		_logger = logger;
 	}
 
@@ -47,7 +45,7 @@ public class DdLeaderboardService : IDdLeaderboardService
 	public async Task<IDdLeaderboardService.LeaderboardResponse> GetLeaderboard(int rankStart, int limit)
 	{
 		return await ExecuteAndParse(
-			r => _leaderboardResponseParser.ParseGetLeaderboardResponse(r, limit),
+			r => LeaderboardResponseParser.ParseGetLeaderboardResponse(r, limit),
 			_getScoresUrl,
 			new KeyValuePair<string?, string?>("offset", (rankStart - 1).ToString()));
 	}
@@ -58,7 +56,7 @@ public class DdLeaderboardService : IDdLeaderboardService
 			throw new ArgumentOutOfRangeException(nameof(name));
 
 		return await ExecuteAndParse(
-			_leaderboardResponseParser.ParseGetEntriesByName,
+			LeaderboardResponseParser.ParseGetEntriesByName,
 			_getUserSearchUrl,
 			new KeyValuePair<string?, string?>("search", name));
 	}
@@ -66,7 +64,7 @@ public class DdLeaderboardService : IDdLeaderboardService
 	public async Task<List<IDdLeaderboardService.EntryResponse>> GetEntriesByIds(IEnumerable<int> ids)
 	{
 		return await ExecuteAndParse(
-			_leaderboardResponseParser.ParseGetEntriesByIds,
+			LeaderboardResponseParser.ParseGetEntriesByIds,
 			_getUsersByIdsUrl,
 			new KeyValuePair<string?, string?>("uid", string.Join(',', ids)));
 	}
@@ -74,7 +72,7 @@ public class DdLeaderboardService : IDdLeaderboardService
 	public async Task<IDdLeaderboardService.EntryResponse> GetEntryById(int id)
 	{
 		return await ExecuteAndParse(
-			_leaderboardResponseParser.ParseGetEntryById,
+			LeaderboardResponseParser.ParseGetEntryById,
 			_getUserByIdUrl,
 			new KeyValuePair<string?, string?>("uid", id.ToString()));
 	}

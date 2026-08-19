@@ -2,7 +2,7 @@ using DevilDaggersInfo.Core.Common;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardStatistics;
 
-public class ArrayStatistics
+public sealed class ArrayStatistics
 {
 	public ArrayStatistic Times { get; } = new();
 	public ArrayStatistic Kills { get; } = new();

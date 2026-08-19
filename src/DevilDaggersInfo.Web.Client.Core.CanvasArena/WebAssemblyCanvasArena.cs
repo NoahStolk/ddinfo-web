@@ -3,7 +3,7 @@ using System.Runtime.InteropServices.JavaScript;
 
 namespace DevilDaggersInfo.Web.Client.Core.CanvasArena;
 
-public partial class WebAssemblyCanvasArena : WebAssemblyCanvas2d
+public sealed partial class WebAssemblyCanvasArena : WebAssemblyCanvas2d
 {
 	private const string _moduleName = nameof(WebAssemblyCanvasArena);
 

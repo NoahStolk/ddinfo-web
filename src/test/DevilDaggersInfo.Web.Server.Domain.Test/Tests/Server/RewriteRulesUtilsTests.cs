@@ -3,7 +3,7 @@ using DevilDaggersInfo.Web.Server.RewriteRules;
 namespace DevilDaggersInfo.Web.Server.Domain.Test.Tests.Server;
 
 [TestClass]
-public class RewriteRulesUtilsTests
+internal sealed class RewriteRulesUtilsTests
 {
 	[TestMethod]
 	public void TestTrimStart()

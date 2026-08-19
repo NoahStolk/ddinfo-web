@@ -5,7 +5,7 @@ using MainApi = DevilDaggersInfo.Web.ApiSpec.Main.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Main;
 
-public static class CustomLeaderboardConverters
+internal static class CustomLeaderboardConverters
 {
 	public static CustomLeaderboardSorting ToDomain(this MainApi.CustomLeaderboardSorting customLeaderboardSorting)
 	{

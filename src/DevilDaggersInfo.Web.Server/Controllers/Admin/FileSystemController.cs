@@ -10,7 +10,7 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 [Route("api/admin/file-system")]
 [ApiController]
 [Authorize(Roles = Roles.Admin)]
-public class FileSystemController : ControllerBase
+public sealed class FileSystemController : ControllerBase
 {
 	private readonly IFileSystemService _fileSystemService;
 

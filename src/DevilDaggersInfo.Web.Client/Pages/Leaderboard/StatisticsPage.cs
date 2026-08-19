@@ -10,7 +10,7 @@ using Microsoft.JSInterop;
 
 namespace DevilDaggersInfo.Web.Client.Pages.Leaderboard;
 
-public partial class StatisticsPage
+public sealed partial class StatisticsPage
 {
 	private const string _percentageFormat = "0.000%";
 
@@ -48,9 +48,6 @@ public partial class StatisticsPage
 	private BarChartDataOptions _daggersDataOptions = BarChartDataOptions.Default;
 	private BarChartDataOptions _deathsDataOptions = BarChartDataOptions.Default;
 	private BarChartDataOptions _enemiesDataOptions = BarChartDataOptions.Default;
-
-	[Inject]
-	public required IJSRuntime JsRuntime { get; set; }
 
 	protected override async Task OnInitializedAsync()
 	{

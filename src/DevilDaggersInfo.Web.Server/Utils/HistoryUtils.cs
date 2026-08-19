@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.Server.Utils;
 
-public static class HistoryUtils
+internal static class HistoryUtils
 {
 	public static DateTime HistoryFileNameToDateTime(string dateString)
 	{

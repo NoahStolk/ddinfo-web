@@ -2,7 +2,7 @@ using System.Net;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Exceptions;
 
-public class CustomLeaderboardValidationException : StatusCodeException
+public sealed class CustomLeaderboardValidationException : StatusCodeException
 {
 	public CustomLeaderboardValidationException()
 	{

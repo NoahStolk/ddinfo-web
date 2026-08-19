@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.ApiSpec.Admin.CustomLeaderboards;
 
-public record AddCustomLeaderboardCriteria
+public sealed record AddCustomLeaderboardCriteria
 {
 	public required CustomLeaderboardCriteriaOperator Operator { get; init; }
 

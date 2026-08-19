@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardHistory;
 
-public record LeaderboardHistory
+public sealed record LeaderboardHistory
 {
 	public required DateTime DateTime { get; init; }
 

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace DevilDaggersInfo.Web.Server.Configuration;
 
-public class ConfigureJwtBearerOptions : IConfigureNamedOptions<JwtBearerOptions>
+internal sealed class ConfigureJwtBearerOptions : IConfigureNamedOptions<JwtBearerOptions>
 {
 	private readonly IOptions<AuthenticationOptions> _authenticationOptions;
 

@@ -5,7 +5,7 @@ using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Test.Utils;
 
-public class TestData : ILeaderboardHistoryCache, IFileSystemService
+internal sealed class TestData : ILeaderboardHistoryCache, IFileSystemService
 {
 	private readonly IReadOnlyDictionary<string, LeaderboardHistory> _leaderboardHistory = new Dictionary<string, LeaderboardHistory>
 	{

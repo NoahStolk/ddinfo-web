@@ -8,7 +8,7 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 
 [Route("api/leaderboard-statistics")]
 [ApiController]
-public class LeaderboardStatisticsController : ControllerBase
+public sealed class LeaderboardStatisticsController : ControllerBase
 {
 	private readonly LeaderboardStatisticsCache _leaderboardStatisticsCache;
 

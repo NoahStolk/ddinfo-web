@@ -14,7 +14,7 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Ddae;
 
 [Route("api/ddae/mods")]
 [ApiController]
-public class ModsController : ControllerBase
+public sealed class ModsController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
 	private readonly ModArchiveAccessor _modArchiveAccessor;

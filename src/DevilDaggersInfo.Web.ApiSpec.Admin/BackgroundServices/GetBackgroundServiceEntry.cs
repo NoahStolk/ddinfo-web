@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.ApiSpec.Admin.BackgroundServices;
 
-public record GetBackgroundServiceEntry
+public sealed record GetBackgroundServiceEntry
 {
 	public required string Name { get; init; }
 

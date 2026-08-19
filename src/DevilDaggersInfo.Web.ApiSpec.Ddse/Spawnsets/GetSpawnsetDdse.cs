@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.ApiSpec.Ddse.Spawnsets;
 
-public record GetSpawnsetDdse
+public sealed record GetSpawnsetDdse
 {
 	public required int Id { get; init; }
 

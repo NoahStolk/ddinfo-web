@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardHistory;
 
-public record EntryHistory
+public sealed record EntryHistory
 {
 	public required int Rank { get; init; }
 

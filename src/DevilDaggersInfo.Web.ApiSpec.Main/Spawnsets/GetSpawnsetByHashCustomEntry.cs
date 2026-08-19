@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.ApiSpec.Main.Spawnsets;
 
-public record GetSpawnsetByHashCustomEntry
+public sealed record GetSpawnsetByHashCustomEntry
 {
 	public required int CustomEntryId { get; init; }
 

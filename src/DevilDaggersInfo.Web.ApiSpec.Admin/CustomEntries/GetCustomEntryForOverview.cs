@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.ApiSpec.Admin.CustomEntries;
 
-public record GetCustomEntryForOverview : IAdminOverviewGetDto
+public sealed record GetCustomEntryForOverview : IAdminOverviewGetDto
 {
 	public required int Id { get; init; }
 

@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.Server.Clients.Clubber;
 
-public record DdUser
+internal sealed record DdUser
 {
 	public required ulong DiscordId { get; init; }
 

@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.ApiSpec.Tools.CustomLeaderboards;
 
-public record GetCustomLeaderboardWorldRecord
+public sealed record GetCustomLeaderboardWorldRecord
 {
 	public required double WorldRecordValue { get; init; }
 

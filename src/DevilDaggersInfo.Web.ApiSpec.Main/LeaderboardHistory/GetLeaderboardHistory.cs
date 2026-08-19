@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.ApiSpec.Main.LeaderboardHistory;
 
-public record GetLeaderboardHistory : IGetLeaderboardGlobalDto
+public sealed record GetLeaderboardHistory : IGetLeaderboardGlobalDto
 {
 	public required DateTime DateTime { get; init; }
 

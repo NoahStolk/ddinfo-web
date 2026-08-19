@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.ApiSpec.Admin.Players;
 
-public record GetPlayerForOverview : IAdminOverviewGetDto
+public sealed record GetPlayerForOverview : IAdminOverviewGetDto
 {
 	public required int Id { get; init; }
 

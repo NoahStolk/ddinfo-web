@@ -8,7 +8,7 @@ using Microsoft.JSInterop;
 
 namespace DevilDaggersInfo.Web.Client.Core.CanvasChart.Components;
 
-public partial class BarChart : IAsyncDisposable
+public sealed partial class BarChart : IAsyncDisposable
 {
 	private WebAssemblyCanvas2d? _context;
 	private DotNetObjectReference<BarChart>? _objectReference;

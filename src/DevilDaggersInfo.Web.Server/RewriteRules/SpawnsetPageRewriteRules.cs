@@ -8,7 +8,7 @@ namespace DevilDaggersInfo.Web.Server.RewriteRules;
 /// <summary>
 /// Redirects old spawnset pages from the V4 website. Only the spawnsets that existed at that point are included here (dumped with SQL).
 /// </summary>
-public class SpawnsetPageRewriteRules : IRule
+internal sealed class SpawnsetPageRewriteRules : IRule
 {
 	private static readonly Dictionary<int, string> _names = new()
 	{

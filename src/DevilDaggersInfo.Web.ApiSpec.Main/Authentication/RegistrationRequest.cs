@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersInfo.Web.ApiSpec.Main.Authentication;
 
-public record RegistrationRequest
+public sealed record RegistrationRequest
 {
 	[StringLength(32, MinimumLength = 2)]
 	public required string Name { get; init; }

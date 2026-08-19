@@ -1,7 +1,7 @@
 namespace DevilDaggersInfo.Web.Server.Domain.Entities;
 
 [Table("Markers")]
-public class MarkerEntity
+public sealed class MarkerEntity
 {
 	[Key]
 	[StringLength(64)]

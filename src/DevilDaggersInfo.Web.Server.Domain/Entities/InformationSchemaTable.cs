@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 namespace DevilDaggersInfo.Web.Server.Domain.Entities;
 
 [Keyless]
-public class InformationSchemaTable
+public sealed class InformationSchemaTable
 {
 	public string? Table { get; set; }
 

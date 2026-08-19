@@ -8,7 +8,7 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Clubber;
 
 [Route("api/clubber/players")]
 [ApiController]
-public class PlayersController : ControllerBase
+public sealed class PlayersController : ControllerBase
 {
 	private readonly PlayerHistoryRepository _playerHistoryRepository;
 	private readonly PlayerRepository _playerRepository;

@@ -7,7 +7,7 @@ namespace DevilDaggersInfo.Web.Server.Controllers.DdLive;
 
 [Route("api/ddlive/custom-entries")]
 [ApiController]
-public class CustomEntriesController : ControllerBase
+public sealed class CustomEntriesController : ControllerBase
 {
 	private readonly CustomEntryRepository _customEntryRepository;
 

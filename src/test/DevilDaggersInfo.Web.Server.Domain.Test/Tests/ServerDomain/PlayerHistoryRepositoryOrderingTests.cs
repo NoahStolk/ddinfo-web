@@ -11,7 +11,7 @@ namespace DevilDaggersInfo.Web.Server.Domain.Test.Tests.ServerDomain;
 // This lives in its own class because TestDbContext seeds in its constructor, and MSTest constructs the test class once
 // per test method, which would seed the same in-memory database twice.
 [TestClass]
-public class PlayerHistoryRepositoryOrderingTests
+internal sealed class PlayerHistoryRepositoryOrderingTests
 {
 	private readonly TestData _data = new();
 	private readonly TestDbContext _dbContext;

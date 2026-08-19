@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DevilDaggersInfo.Web.Server.Middleware;
 
-public class ExceptionMiddleware
+internal sealed class ExceptionMiddleware
 {
 	private readonly RequestDelegate _next;
 	private readonly ILogger<ExceptionMiddleware> _logger;

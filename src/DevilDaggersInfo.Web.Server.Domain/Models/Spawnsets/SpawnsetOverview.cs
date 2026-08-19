@@ -6,7 +6,7 @@ namespace DevilDaggersInfo.Web.Server.Domain.Models.Spawnsets;
 /// The subset of a spawnset needed for an overview listing. Querying this instead of the entity keeps the spawnset's
 /// file bytes out of the result, which the overview does not use.
 /// </summary>
-public record SpawnsetOverview
+public sealed record SpawnsetOverview
 {
 	public required int Id { get; init; }
 

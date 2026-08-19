@@ -1,7 +1,7 @@
 // ReSharper disable InconsistentNaming
 namespace DevilDaggersInfo.Web.ApiSpec.Admin.CustomLeaderboards;
 
-public record GetCustomLeaderboard
+public sealed record GetCustomLeaderboard
 {
 	public required int Id { get; init; }
 

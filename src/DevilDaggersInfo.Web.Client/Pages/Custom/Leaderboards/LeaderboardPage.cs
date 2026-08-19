@@ -5,7 +5,7 @@ using System.Net;
 
 namespace DevilDaggersInfo.Web.Client.Pages.Custom.Leaderboards;
 
-public partial class LeaderboardPage
+public sealed partial class LeaderboardPage
 {
 	private bool _notFound;
 	private int? _expandedId;

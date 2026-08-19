@@ -8,7 +8,7 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 [Route("api/authentication")]
 [ApiController]
 [ApiExplorerSettings(IgnoreApi = true)]
-public class AuthenticationController : ControllerBase
+public sealed class AuthenticationController : ControllerBase
 {
 	private readonly AuthenticationService _authenticationService;
 

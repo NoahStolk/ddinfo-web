@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.Server.Domain.Models.Players;
 
-public record PlayerCommonName
+public sealed record PlayerCommonName
 {
 	public required int Id { get; init; }
 

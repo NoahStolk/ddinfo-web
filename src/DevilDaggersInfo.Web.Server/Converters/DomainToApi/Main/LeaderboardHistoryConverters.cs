@@ -4,7 +4,7 @@ using DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardHistory;
 
 namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 
-public static class LeaderboardHistoryConverters
+internal static class LeaderboardHistoryConverters
 {
 	public static GetLeaderboardHistory ToMainApi(this LeaderboardHistory leaderboard)
 	{

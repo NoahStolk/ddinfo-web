@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace DevilDaggersInfo.Web.Client.Core.CanvasChart.Data;
 
-public class LineDataSet
+public sealed class LineDataSet
 {
 	public LineDataSet(string color, bool prependStart, bool appendEnd, bool isSteppedLine, List<LineData> data, Func<LineDataSet, LineData, List<MarkupString>>? toHighlighterValue)
 	{

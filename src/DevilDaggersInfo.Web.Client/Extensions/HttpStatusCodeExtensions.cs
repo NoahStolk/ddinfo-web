@@ -4,7 +4,7 @@ using System.Net;
 
 namespace DevilDaggersInfo.Web.Client.Extensions;
 
-public static class HttpStatusCodeExtensions
+internal static class HttpStatusCodeExtensions
 {
 	public static ErrorState GetErrorState(this HttpStatusCode httpStatusCode)
 	{

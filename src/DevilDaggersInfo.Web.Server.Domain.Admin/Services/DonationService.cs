@@ -6,7 +6,7 @@ using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Admin.Services;
 
-public class DonationService
+public sealed class DonationService
 {
 	private readonly ApplicationDbContext _dbContext;
 

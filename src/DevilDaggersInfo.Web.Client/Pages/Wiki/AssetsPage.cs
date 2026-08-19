@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 
 namespace DevilDaggersInfo.Web.Client.Pages.Wiki;
 
-public partial class AssetsPage
+public sealed partial class AssetsPage
 {
 	private IReadOnlyList<AudioAssetInfo> _audioAudio = AudioAudio.All;
 	private IReadOnlyList<MeshAssetInfo> _ddMeshes = DdMeshes.All;

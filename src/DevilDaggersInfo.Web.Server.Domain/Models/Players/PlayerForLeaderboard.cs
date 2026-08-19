@@ -2,7 +2,7 @@ using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Models.Players;
 
-public record PlayerForLeaderboard
+public sealed record PlayerForLeaderboard
 {
 	public required int Id { get; init; }
 

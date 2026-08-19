@@ -11,7 +11,7 @@ using System.Net;
 
 namespace DevilDaggersInfo.Web.Client.Pages.Profile;
 
-public partial class EditProfilePage
+public sealed partial class EditProfilePage
 {
 	private AuthenticationState? _state;
 	private int _playerId;
@@ -19,17 +19,8 @@ public partial class EditProfilePage
 
 	private readonly EditPlayerProfileState _editPlayerState = new();
 
-	public ErrorState State { get; set; }
+	private ErrorState State { get; set; }
 	public string? Message { get; set; }
-
-	[Inject]
-	public required AdminAuthenticationStateProvider Auth { get; set; }
-
-	[Inject]
-	public required NavigationManager NavigationManager { get; set; }
-
-	[Inject]
-	public required MainApiHttpClient Http { get; set; }
 
 	protected override async Task OnInitializedAsync()
 	{

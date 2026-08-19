@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.ApiSpec.Admin.Users;
 
-public record GetUser : IAdminOverviewGetDto
+public sealed record GetUser : IAdminOverviewGetDto
 {
 	public required int Id { get; init; }
 

@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.Server.Utils.AssetInfo;
 
-public record AssetInfoEntry
+internal sealed record AssetInfoEntry
 {
 	public AssetInfoEntry(string name, string description, List<string> tags)
 	{

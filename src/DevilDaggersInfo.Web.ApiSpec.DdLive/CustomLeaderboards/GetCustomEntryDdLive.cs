@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.ApiSpec.DdLive.CustomLeaderboards;
 
-public record GetCustomEntryDdLive
+public sealed record GetCustomEntryDdLive
 {
 	public required int Id { get; init; }
 

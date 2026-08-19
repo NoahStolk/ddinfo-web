@@ -5,9 +5,9 @@ using System.Net;
 
 namespace DevilDaggersInfo.Web.Client.Components.Admin;
 
-public partial class Deletion
+public sealed partial class Deletion
 {
-	public DeleteState State { get; set; }
+	private DeleteState State { get; set; }
 	public int? IdToDelete { get; set; }
 	public string? ApiResponse { get; set; }
 

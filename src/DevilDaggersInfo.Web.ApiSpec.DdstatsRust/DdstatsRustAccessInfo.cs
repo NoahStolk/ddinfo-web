@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.ApiSpec.DdstatsRust;
 
-public record DdstatsRustAccessInfo
+public sealed record DdstatsRustAccessInfo
 {
 	public required string RequiredVersion { get; init; }
 }

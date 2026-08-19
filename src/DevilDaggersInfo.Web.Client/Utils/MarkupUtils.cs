@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace DevilDaggersInfo.Web.Client.Utils;
 
-public static class MarkupUtils
+internal static class MarkupUtils
 {
 	public static MarkupString DaggerString(Dagger dagger)
 	{

@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.ApiSpec.Clubber.Players;
 
-public record GetPlayerHistory
+public sealed record GetPlayerHistory
 {
 	public required int? BestRank { get; init; }
 

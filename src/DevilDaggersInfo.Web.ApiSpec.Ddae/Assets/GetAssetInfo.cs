@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.ApiSpec.Ddae.Assets;
 
-public record GetAssetInfo
+public sealed record GetAssetInfo
 {
 	public required string Name { get; init; }
 

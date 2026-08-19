@@ -9,7 +9,7 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 
 [Route("api/leaderboard-history")]
 [ApiController]
-public class LeaderboardHistoryController : ControllerBase
+public sealed class LeaderboardHistoryController : ControllerBase
 {
 	private readonly IFileSystemService _fileSystemService;
 	private readonly ILeaderboardHistoryCache _leaderboardHistoryCache;

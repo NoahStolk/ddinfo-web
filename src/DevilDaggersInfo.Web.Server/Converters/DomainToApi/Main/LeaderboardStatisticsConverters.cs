@@ -3,7 +3,7 @@ using DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardStatistics;
 
 namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 
-public static class LeaderboardStatisticsConverters
+internal static class LeaderboardStatisticsConverters
 {
 	private static GetArrayStatistic ToMainApi(this ArrayStatistic arrayStatistic)
 	{

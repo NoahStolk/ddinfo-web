@@ -7,7 +7,7 @@ using System.Text;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;
 
-public class ModBinaryCacheData
+public sealed class ModBinaryCacheData
 {
 	public ModBinaryCacheData(string name, long size, ModBinaryType modBinaryType, List<ModTocEntryCacheData> tocEntries, List<ModifiedLoudnessAssetCacheData>? modifiedLoudnessAssets)
 	{

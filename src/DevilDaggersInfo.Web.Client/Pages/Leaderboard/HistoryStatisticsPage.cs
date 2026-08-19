@@ -11,7 +11,7 @@ using Microsoft.JSInterop;
 
 namespace DevilDaggersInfo.Web.Client.Pages.Leaderboard;
 
-public partial class HistoryStatisticsPage
+public sealed partial class HistoryStatisticsPage
 {
 	private readonly LineChartOptions _playersLineChartOptions = new()
 	{
@@ -99,9 +99,6 @@ public partial class HistoryStatisticsPage
 	private LineChartDataOptions _accuracyOptions = LineChartDataOptions.Default;
 
 	private List<GetLeaderboardHistoryStatistics>? _statistics;
-
-	[Inject]
-	public required IJSRuntime JsRuntime { get; set; }
 
 	protected override async Task OnInitializedAsync()
 	{

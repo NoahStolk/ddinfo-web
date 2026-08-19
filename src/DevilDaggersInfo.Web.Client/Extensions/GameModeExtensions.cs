@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace DevilDaggersInfo.Web.Client.Extensions;
 
-public static class GameModeExtensions
+internal static class GameModeExtensions
 {
 	public static string GetDescription(this GameMode category)
 	{

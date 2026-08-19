@@ -3,7 +3,7 @@ using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Models.Players;
 
-public record Player
+public sealed record Player
 {
 	public required int Id { get; init; }
 

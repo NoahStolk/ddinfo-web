@@ -5,7 +5,7 @@ using Microsoft.JSInterop;
 
 namespace DevilDaggersInfo.Web.Client.Core.CanvasArena.Components;
 
-public partial class SpawnsetArena
+public sealed partial class SpawnsetArena
 {
 	// Currently only allow one arena.
 	private const string _canvasId = "arena-canvas";

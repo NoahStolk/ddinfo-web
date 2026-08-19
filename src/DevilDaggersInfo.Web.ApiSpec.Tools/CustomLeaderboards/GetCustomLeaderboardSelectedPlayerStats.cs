@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.ApiSpec.Tools.CustomLeaderboards;
 
-public record GetCustomLeaderboardSelectedPlayerStats
+public sealed record GetCustomLeaderboardSelectedPlayerStats
 {
 	public required int Rank { get; init; }
 

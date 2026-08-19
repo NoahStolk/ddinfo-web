@@ -2,7 +2,7 @@ using System.Net;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Exceptions;
 
-public class UnsupportedOperatingSystemException : StatusCodeException
+public sealed class UnsupportedOperatingSystemException : StatusCodeException
 {
 	public UnsupportedOperatingSystemException()
 	{

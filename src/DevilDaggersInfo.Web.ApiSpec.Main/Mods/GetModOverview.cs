@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.ApiSpec.Main.Mods;
 
-public record GetModOverview
+public sealed record GetModOverview
 {
 	public required int Id { get; init; }
 

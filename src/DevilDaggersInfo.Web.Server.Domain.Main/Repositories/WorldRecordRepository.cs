@@ -11,7 +11,7 @@ using ApiMain = DevilDaggersInfo.Web.ApiSpec.Main.WorldRecords;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Main.Repositories;
 
-public class WorldRecordRepository
+public sealed class WorldRecordRepository
 {
 	private static readonly DateTime _automationStart = new(2019, 10, 26, 0, 0, 0, DateTimeKind.Utc);
 

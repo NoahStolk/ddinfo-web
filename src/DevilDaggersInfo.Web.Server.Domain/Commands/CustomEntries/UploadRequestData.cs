@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.Server.Domain.Commands.CustomEntries;
 
-public class UploadRequestData
+public sealed class UploadRequestData
 {
 	public int[] GemsCollected { get; init; } = [];
 	public int[] EnemiesKilled { get; init; } = [];

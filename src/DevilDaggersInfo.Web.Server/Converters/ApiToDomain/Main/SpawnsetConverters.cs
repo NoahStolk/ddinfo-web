@@ -4,7 +4,7 @@ using MainApi = DevilDaggersInfo.Web.ApiSpec.Main.Spawnsets;
 
 namespace DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Main;
 
-public static class SpawnsetConverters
+internal static class SpawnsetConverters
 {
 	public static SpawnsetGameMode ToDomain(this MainApi.GameMode gameMode)
 	{

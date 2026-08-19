@@ -4,7 +4,7 @@ using ApiMain = DevilDaggersInfo.Web.ApiSpec.Main.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Client.Extensions;
 
-public static class CustomLeaderboardRankSortingExtensions
+internal static class CustomLeaderboardRankSortingExtensions
 {
 	public static string GetDaggerValue(this ApiMain.CustomLeaderboardRankSorting apiRankSorting, double apiValue)
 	{

@@ -2,7 +2,7 @@ using DevilDaggersInfo.Core.Common;
 
 namespace DevilDaggersInfo.Web.Client.Models.Internal;
 
-public class NewsItem
+internal sealed class NewsItem
 {
 	public required string Title { get; init; }
 

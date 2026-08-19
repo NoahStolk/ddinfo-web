@@ -11,7 +11,7 @@ using System.Runtime.InteropServices.JavaScript;
 
 namespace DevilDaggersInfo.Web.Client;
 
-public static class Program
+internal static class Program
 {
 	public static string? Version { get; private set; }
 	public static string? VersionHash { get; private set; }

@@ -7,7 +7,7 @@ using DevilDaggersInfo.Web.Server.Domain.Test.Utils;
 namespace DevilDaggersInfo.Web.Server.Domain.Test.Tests.ServerDomain;
 
 [TestClass]
-public class ModArchiveCacheTests
+internal sealed class ModArchiveCacheTests
 {
 	[TestMethod]
 	public async Task GetModArchiveCacheData()

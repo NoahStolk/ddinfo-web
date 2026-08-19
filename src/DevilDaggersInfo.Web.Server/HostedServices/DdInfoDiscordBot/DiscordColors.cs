@@ -4,7 +4,7 @@ using DSharpPlus.Entities;
 
 namespace DevilDaggersInfo.Web.Server.HostedServices.DdInfoDiscordBot;
 
-public static class DiscordColors
+internal static class DiscordColors
 {
 	public static DiscordColor Default { get; } = ToDiscordColor(Daggers.Default.Color);
 	public static DiscordColor Bronze { get; } = ToDiscordColor(Daggers.Bronze.Color);

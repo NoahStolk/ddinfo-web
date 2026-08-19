@@ -3,7 +3,7 @@ using DevilDaggersInfo.Web.ApiSpec.Main.Players;
 
 namespace DevilDaggersInfo.Web.Client.Pages.Leaderboard;
 
-public partial class PlayerSettingsPage
+public sealed partial class PlayerSettingsPage
 {
 	public List<GetEntry>? GetEntries { get; set; }
 

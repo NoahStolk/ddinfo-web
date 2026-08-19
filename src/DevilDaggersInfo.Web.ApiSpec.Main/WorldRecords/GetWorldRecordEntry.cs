@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.ApiSpec.Main.WorldRecords;
 
-public record GetWorldRecordEntry
+public sealed record GetWorldRecordEntry
 {
 	public required DateTime DateTime { get; init; }
 

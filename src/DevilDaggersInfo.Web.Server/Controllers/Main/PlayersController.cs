@@ -11,7 +11,7 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 
 [Route("api/players")]
 [ApiController]
-public class PlayersController : ControllerBase
+public sealed class PlayersController : ControllerBase
 {
 	private readonly PlayerCustomLeaderboardStatisticsRepository _playerCustomLeaderboardStatisticsRepository;
 	private readonly PlayerHistoryRepository _playerHistoryRepository;

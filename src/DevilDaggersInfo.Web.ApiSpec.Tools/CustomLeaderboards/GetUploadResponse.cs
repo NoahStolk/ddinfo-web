@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.ApiSpec.Tools.CustomLeaderboards;
 
-public record GetUploadResponse
+public sealed record GetUploadResponse
 {
 	public required int SpawnsetId { get; init; }
 

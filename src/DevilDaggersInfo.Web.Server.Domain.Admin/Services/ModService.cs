@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Admin.Services;
 
-public class ModService
+public sealed class ModService
 {
 	private readonly ApplicationDbContext _dbContext;
 	private readonly ModArchiveProcessor _modArchiveProcessor;

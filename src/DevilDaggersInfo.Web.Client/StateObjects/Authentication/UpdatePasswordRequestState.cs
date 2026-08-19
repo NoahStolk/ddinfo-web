@@ -2,7 +2,7 @@ using DevilDaggersInfo.Web.ApiSpec.Main.Authentication;
 
 namespace DevilDaggersInfo.Web.Client.StateObjects.Authentication;
 
-public class UpdatePasswordRequestState : IStateObject<UpdatePasswordRequest>
+public sealed class UpdatePasswordRequestState : IStateObject<UpdatePasswordRequest>
 {
 	public string CurrentName { get; set; } = string.Empty;
 

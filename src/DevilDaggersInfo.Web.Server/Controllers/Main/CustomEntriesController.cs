@@ -13,7 +13,7 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 
 [Route("api/custom-entries")]
 [ApiController]
-public class CustomEntriesController : ControllerBase
+public sealed class CustomEntriesController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
 	private readonly IFileSystemService _fileSystemService;

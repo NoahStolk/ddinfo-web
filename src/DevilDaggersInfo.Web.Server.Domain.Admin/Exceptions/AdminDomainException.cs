@@ -3,7 +3,7 @@ using System.Net;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Admin.Exceptions;
 
-public class AdminDomainException : StatusCodeException
+public sealed class AdminDomainException : StatusCodeException
 {
 	public AdminDomainException()
 	{

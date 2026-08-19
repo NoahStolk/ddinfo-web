@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Repositories;
 
-public class PlayerRepository
+public sealed class PlayerRepository
 {
 	private readonly ApplicationDbContext _dbContext;
 

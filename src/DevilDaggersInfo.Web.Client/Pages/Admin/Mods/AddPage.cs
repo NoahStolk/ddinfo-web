@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 
 namespace DevilDaggersInfo.Web.Client.Pages.Admin.Mods;
 
-public partial class AddPage
+public sealed partial class AddPage
 {
 	private Dictionary<int, string>? _playerNames;
 	private readonly AddModState _addModState = new();

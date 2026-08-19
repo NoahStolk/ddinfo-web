@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.ApiSpec.Main.Players;
 
-public record GetPlayerHistoryScoreEntry
+public sealed record GetPlayerHistoryScoreEntry
 {
 	public required DateTime DateTime { get; init; }
 

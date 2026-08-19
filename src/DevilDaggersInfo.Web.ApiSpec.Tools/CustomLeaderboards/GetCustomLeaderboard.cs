@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.ApiSpec.Tools.CustomLeaderboards;
 
-public record GetCustomLeaderboard
+public sealed record GetCustomLeaderboard
 {
 	public required string SpawnsetName { get; init; }
 

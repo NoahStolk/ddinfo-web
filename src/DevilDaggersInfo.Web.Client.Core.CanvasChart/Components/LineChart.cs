@@ -10,7 +10,7 @@ using Microsoft.JSInterop;
 
 namespace DevilDaggersInfo.Web.Client.Core.CanvasChart.Components;
 
-public partial class LineChart : IAsyncDisposable
+public sealed partial class LineChart : IAsyncDisposable
 {
 	private WebAssemblyCanvas2d? _context;
 	private DotNetObjectReference<LineChart>? _objectReference;

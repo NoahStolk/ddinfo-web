@@ -6,7 +6,7 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 
 [Route("api/leaderboard-history-statistics")]
 [ApiController]
-public class LeaderboardHistoryStatisticsController : ControllerBase
+public sealed class LeaderboardHistoryStatisticsController : ControllerBase
 {
 	private readonly LeaderboardHistoryStatisticsRepository _leaderboardHistoryStatisticsRepository;
 

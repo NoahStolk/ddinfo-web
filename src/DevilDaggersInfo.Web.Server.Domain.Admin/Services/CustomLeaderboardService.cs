@@ -18,7 +18,7 @@ using System.Runtime.CompilerServices;
 namespace DevilDaggersInfo.Web.Server.Domain.Admin.Services;
 
 // TODO: Unit test.
-public class CustomLeaderboardService
+public sealed class CustomLeaderboardService
 {
 	private readonly ApplicationDbContext _dbContext;
 

@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.Client.Utils;
 
-public static class FileSizeUtils
+internal static class FileSizeUtils
 {
 	public static string Format(long fileSizeInBytes)
 	{

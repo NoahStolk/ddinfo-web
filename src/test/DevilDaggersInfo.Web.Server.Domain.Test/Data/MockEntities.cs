@@ -3,7 +3,7 @@ using MockQueryable.NSubstitute;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Test.Data;
 
-public class MockEntities
+internal sealed class MockEntities
 {
 	public MockEntities()
 	{

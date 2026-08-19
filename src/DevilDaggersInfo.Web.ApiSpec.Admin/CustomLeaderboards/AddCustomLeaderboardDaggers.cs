@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.ApiSpec.Admin.CustomLeaderboards;
 
-public record AddCustomLeaderboardDaggers
+public sealed record AddCustomLeaderboardDaggers
 {
 	public required double Bronze { get; init; }
 

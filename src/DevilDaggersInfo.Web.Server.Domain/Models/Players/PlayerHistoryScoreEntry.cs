@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.Server.Domain.Models.Players;
 
-public record PlayerHistoryScoreEntry
+public sealed record PlayerHistoryScoreEntry
 {
 	public required DateTime DateTime { get; init; }
 

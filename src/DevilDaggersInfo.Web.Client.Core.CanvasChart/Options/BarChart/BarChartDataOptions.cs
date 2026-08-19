@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.Client.Core.CanvasChart.Options.BarChart;
 
-public class BarChartDataOptions
+public sealed class BarChartDataOptions
 {
 	public BarChartDataOptions(double minY, double? stepY, double maxY)
 	{

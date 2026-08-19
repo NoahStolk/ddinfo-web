@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardStatistics;
 
-public class ArrayStatistic
+public sealed class ArrayStatistic
 {
 	public double Average { get; private set; }
 	public double Median { get; private set; }

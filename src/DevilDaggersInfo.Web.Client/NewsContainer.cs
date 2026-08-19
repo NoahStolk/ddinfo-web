@@ -5,7 +5,7 @@ namespace DevilDaggersInfo.Web.Client;
 /// <summary>
 /// Include the news in the build so we don't rely on static files that might be cached incorrectly.
 /// </summary>
-public static class NewsContainer
+internal static class NewsContainer
 {
 	public static List<NewsItem> Items { get; } =
 	[

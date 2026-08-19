@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace DevilDaggersInfo.Web.Client.Components.Input;
 
-public partial class SearchDropdown<TKey>
+public sealed partial class SearchDropdown<TKey>
 	where TKey : notnull
 {
 	private string? _searchValue;

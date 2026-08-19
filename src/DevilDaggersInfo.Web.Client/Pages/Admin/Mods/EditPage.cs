@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 
 namespace DevilDaggersInfo.Web.Client.Pages.Admin.Mods;
 
-public partial class EditPage
+public sealed partial class EditPage
 {
 	private Dictionary<int, string>? _playerNames;
 	private readonly EditModState _editModState = new();

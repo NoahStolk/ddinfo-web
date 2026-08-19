@@ -11,7 +11,7 @@ using System.IO.Compression;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Services;
 
-public class ModArchiveProcessor
+public sealed class ModArchiveProcessor
 {
 	private readonly IFileSystemService _fileSystemService;
 	private readonly ModArchiveCache _modArchiveCache;

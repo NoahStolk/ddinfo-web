@@ -3,7 +3,7 @@ using DevilDaggersInfo.Web.Server.Domain.Models.Players;
 
 namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Clubber;
 
-public static class PlayerConverters
+internal static class PlayerConverters
 {
 	public static GetPlayerHistory ToClubberApi(this PlayerHistory playerHistory)
 	{

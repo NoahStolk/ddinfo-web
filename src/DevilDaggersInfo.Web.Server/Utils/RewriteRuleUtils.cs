@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.Server.Utils;
 
-public static class RewriteRuleUtils
+internal static class RewriteRuleUtils
 {
 	public static bool EndsWithContent(string pathString)
 	{

@@ -10,7 +10,7 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 [Route("api/admin/markers")]
 [ApiController]
 [Authorize(Roles = Roles.CustomLeaderboards)]
-public class MarkersController : ControllerBase
+public sealed class MarkersController : ControllerBase
 {
 	private readonly MarkerRepository _markerRepository;
 	private readonly MarkerService _markerService;

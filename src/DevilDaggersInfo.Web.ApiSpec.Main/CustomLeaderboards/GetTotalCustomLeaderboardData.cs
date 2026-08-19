@@ -2,7 +2,7 @@ using DevilDaggersInfo.Web.ApiSpec.Main.Spawnsets;
 
 namespace DevilDaggersInfo.Web.ApiSpec.Main.CustomLeaderboards;
 
-public record GetTotalCustomLeaderboardData
+public sealed record GetTotalCustomLeaderboardData
 {
 	public required Dictionary<GameMode, int> LeaderboardsPerGameMode { get; init; }
 

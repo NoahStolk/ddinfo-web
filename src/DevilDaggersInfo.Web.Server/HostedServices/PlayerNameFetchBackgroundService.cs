@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DevilDaggersInfo.Web.Server.HostedServices;
 
-public class PlayerNameFetchBackgroundService : AbstractBackgroundService
+internal sealed class PlayerNameFetchBackgroundService : AbstractBackgroundService
 {
 	private readonly IServiceScopeFactory _serviceScopeFactory;
 	private readonly IDdLeaderboardService _leaderboardClient;

@@ -13,7 +13,7 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 [Route("api/admin/custom-leaderboards")]
 [ApiController]
 [Authorize(Roles = Roles.CustomLeaderboards)]
-public class CustomLeaderboardsController : ControllerBase
+public sealed class CustomLeaderboardsController : ControllerBase
 {
 	private readonly CustomLeaderboardRepository _customLeaderboardRepository;
 	private readonly CustomLeaderboardService _customLeaderboardService;

@@ -2,7 +2,7 @@ using DevilDaggersInfo.Core.Asset;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;
 
-public record ModTocEntryCacheData
+public sealed record ModTocEntryCacheData
 {
 	public required string Name { get; init; }
 

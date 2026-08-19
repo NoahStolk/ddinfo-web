@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.ApiSpec.DdLive.Players;
 
-public record GetCommonName
+public sealed record GetCommonName
 {
 	public required int Id { get; init; }
 

@@ -9,7 +9,7 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 [Route("api/admin/cache")]
 [ApiController]
 [Authorize(Roles = Roles.Admin)]
-public class CachesController : ControllerBase
+public sealed class CachesController : ControllerBase
 {
 	private readonly LeaderboardStatisticsCache _leaderboardStatisticsCache;
 	private readonly ILeaderboardHistoryCache _leaderboardHistoryCache;

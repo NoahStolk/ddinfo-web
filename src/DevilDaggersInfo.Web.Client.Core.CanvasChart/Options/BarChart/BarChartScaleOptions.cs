@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.Client.Core.CanvasChart.Options.BarChart;
 
-public class BarChartScaleOptions
+public sealed class BarChartScaleOptions
 {
 	public string TextColor { get; set; } = "#ccc";
 	public string? NumberFormat { get; set; } = "0";

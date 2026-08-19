@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.ApiSpec.Tools.Spawnsets;
 
-public record GetSpawnsetByHashCustomLeaderboard
+public sealed record GetSpawnsetByHashCustomLeaderboard
 {
 	public required int CustomLeaderboardId { get; init; }
 

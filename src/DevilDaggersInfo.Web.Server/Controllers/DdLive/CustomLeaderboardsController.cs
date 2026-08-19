@@ -8,7 +8,7 @@ namespace DevilDaggersInfo.Web.Server.Controllers.DdLive;
 
 [Route("api/ddlive/custom-leaderboards")]
 [ApiController]
-public class CustomLeaderboardsController : ControllerBase
+public sealed class CustomLeaderboardsController : ControllerBase
 {
 	private readonly CustomEntryRepository _customEntryRepository;
 	private readonly CustomLeaderboardRepository _customLeaderboardRepository;

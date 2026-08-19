@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.Client.Components.Admin;
 
-public enum DeleteState
+internal enum DeleteState
 {
 	None = 0,
 	Confirm = 1,

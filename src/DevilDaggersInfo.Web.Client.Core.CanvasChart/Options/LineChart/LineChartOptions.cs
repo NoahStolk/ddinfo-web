@@ -2,7 +2,7 @@ using DevilDaggersInfo.Web.Client.Core.CanvasChart.Enums;
 
 namespace DevilDaggersInfo.Web.Client.Core.CanvasChart.Options.LineChart;
 
-public class LineChartOptions
+public sealed class LineChartOptions
 {
 	public string CanvasBackgroundColor { get; set; } = "#040404";
 	public string ChartBackgroundColor { get; set; } = "#080808";

@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace DevilDaggersInfo.Web.Client.Extensions;
 
-public static class EnumDisplayStringExtensions
+internal static class EnumDisplayStringExtensions
 {
 	public static string ToDisplayString(this CustomLeaderboardsClient client)
 	{

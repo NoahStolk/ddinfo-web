@@ -2,7 +2,7 @@ using System.Net;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Exceptions;
 
-public class InvalidModArchiveException : StatusCodeException
+public sealed class InvalidModArchiveException : StatusCodeException
 {
 	public InvalidModArchiveException()
 	{

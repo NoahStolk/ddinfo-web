@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Main.Repositories;
 
-public class PlayerCustomLeaderboardStatisticsRepository
+public sealed class PlayerCustomLeaderboardStatisticsRepository
 {
 	private readonly ApplicationDbContext _dbContext;
 

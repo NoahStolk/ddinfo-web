@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.ApiSpec.Tools.CustomLeaderboards;
 
-public record AddGameData
+public sealed record AddGameData
 {
 	public required List<int> GemsCollected { get; init; }
 	public required List<int> EnemiesKilled { get; init; }

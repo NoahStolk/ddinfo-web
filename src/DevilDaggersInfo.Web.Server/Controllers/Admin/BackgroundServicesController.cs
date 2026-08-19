@@ -9,7 +9,7 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 [Route("api/admin/background-services")]
 [ApiController]
 [Authorize(Roles = Roles.Admin)]
-public class BackgroundServicesController : ControllerBase
+public sealed class BackgroundServicesController : ControllerBase
 {
 	private readonly BackgroundServiceMonitor _backgroundServiceMonitor;
 

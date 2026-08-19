@@ -2,7 +2,7 @@ using System.Net;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Exceptions;
 
-public class BadRequestException : StatusCodeException
+public sealed class BadRequestException : StatusCodeException
 {
 	public BadRequestException()
 	{

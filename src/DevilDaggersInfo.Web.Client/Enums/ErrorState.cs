@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.Client.Enums;
 
-public enum ErrorState
+internal enum ErrorState
 {
 	None,
 	ValidationError,

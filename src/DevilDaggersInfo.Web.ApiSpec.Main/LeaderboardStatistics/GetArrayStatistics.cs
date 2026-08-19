@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.ApiSpec.Main.LeaderboardStatistics;
 
-public record GetArrayStatistics
+public sealed record GetArrayStatistics
 {
 	public required GetArrayStatistic Times { get; init; }
 

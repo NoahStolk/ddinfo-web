@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace DevilDaggersInfo.Web.Client.Pages.Custom.Leaderboards;
 
-public partial class GlobalPage
+public sealed partial class GlobalPage
 {
 	private readonly IReadOnlyList<GameMode> _gameModes = Enum.GetValues<GameMode>();
 	private readonly IReadOnlyList<CustomLeaderboardRankSorting> _rankSortings = Enum.GetValues<CustomLeaderboardRankSorting>();
@@ -19,12 +19,6 @@ public partial class GlobalPage
 	[Parameter]
 	[SupplyParameterFromQuery]
 	public string RankSorting { get; set; } = nameof(CustomLeaderboardRankSorting.TimeDesc);
-
-	[Inject]
-	public required MainApiHttpClient Http { get; set; }
-
-	[Inject]
-	public required NavigationManager NavigationManager { get; set; }
 
 	public GetGlobalCustomLeaderboard? GetGlobalCustomLeaderboard { get; set; }
 

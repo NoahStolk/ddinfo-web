@@ -6,6 +6,9 @@
 @using DevilDaggersInfo.Web.Client.Components.Spawnsets
 @using DevilDaggersInfo.Web.Client.Extensions
 @using DevilDaggersInfo.Web.Client.Utils
+@using DevilDaggersInfo.Web.Client.HttpClients
+@inject MainApiHttpClient Http
+@inject NavigationManager NavigationManager
 
 @if (GetSpawnset == null)
 {

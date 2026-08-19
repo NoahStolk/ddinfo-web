@@ -6,7 +6,7 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 
 [Route("api/mod-screenshots")]
 [ApiController]
-public class ModScreenshotsController : ControllerBase
+public sealed class ModScreenshotsController : ControllerBase
 {
 	private readonly IFileSystemService _fileSystemService;
 

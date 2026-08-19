@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.ApiSpec.Ddae.Mods;
 
-public record GetModBinaryDdae
+public sealed record GetModBinaryDdae
 {
 	public required string Name { get; init; }
 

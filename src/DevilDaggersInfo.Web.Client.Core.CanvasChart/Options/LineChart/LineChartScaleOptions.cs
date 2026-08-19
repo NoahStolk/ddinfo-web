@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.Client.Core.CanvasChart.Options.LineChart;
 
-public class LineChartScaleOptions
+public sealed class LineChartScaleOptions
 {
 	public string TextColor { get; set; } = "#ccc";
 	public string? NumberFormat { get; set; } = "0";

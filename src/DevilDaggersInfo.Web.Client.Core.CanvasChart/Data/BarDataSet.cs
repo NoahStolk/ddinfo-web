@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace DevilDaggersInfo.Web.Client.Core.CanvasChart.Data;
 
-public class BarDataSet
+public sealed class BarDataSet
 {
 	public BarDataSet(List<BarData> data, Func<BarDataSet, int, List<MarkupString>> toHighlighterValue)
 	{

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersInfo.Web.Client.StateObjects.Admin.Players;
 
-public class AddPlayerState : IStateObject<AddPlayer>
+internal sealed class AddPlayerState : IStateObject<AddPlayer>
 {
 	[Range(1, int.MaxValue)]
 	public int Id { get; set; }

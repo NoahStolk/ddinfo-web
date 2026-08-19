@@ -1,7 +1,7 @@
 // ReSharper disable StringLiteralTypo
 namespace DevilDaggersInfo.Web.Server.Utils.AssetInfo;
 
-public static class AudioAudio
+internal static class AudioAudio
 {
 	public static AssetInfoEntry[] All { get; } =
 	[

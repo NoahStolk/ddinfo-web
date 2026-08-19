@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace DevilDaggersInfo.Web.Client.Pages.Leaderboard;
 
-public partial class HistoryPage
+public sealed partial class HistoryPage
 {
 	private const string _queryFormat = "yyyy-MM-dd-HH-mm";
 

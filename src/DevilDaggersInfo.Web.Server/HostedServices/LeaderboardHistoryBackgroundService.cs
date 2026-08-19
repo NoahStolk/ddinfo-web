@@ -7,7 +7,7 @@ using DevilDaggersInfo.Web.Server.Utils;
 
 namespace DevilDaggersInfo.Web.Server.HostedServices;
 
-public class LeaderboardHistoryBackgroundService : AbstractBackgroundService
+internal sealed class LeaderboardHistoryBackgroundService : AbstractBackgroundService
 {
 	private readonly IFileSystemService _fileSystemService;
 	private readonly IDdLeaderboardService _leaderboardClient;

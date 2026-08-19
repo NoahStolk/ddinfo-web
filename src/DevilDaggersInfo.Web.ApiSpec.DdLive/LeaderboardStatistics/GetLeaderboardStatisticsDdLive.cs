@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.ApiSpec.DdLive.LeaderboardStatistics;
 
-public record GetLeaderboardStatisticsDdLive
+public sealed record GetLeaderboardStatisticsDdLive
 {
 	public required DateTime DateTime { get; init; }
 

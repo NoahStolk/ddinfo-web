@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.Client.Core.CanvasChart.Options.LineChart;
 
-public class LineChartDataOptions
+public sealed class LineChartDataOptions
 {
 	public LineChartDataOptions(double minX, double? stepX, double maxX, double minY, double? stepY, double maxY, bool allowFractionalScales = false, bool reverseY = false)
 	{

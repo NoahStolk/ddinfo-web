@@ -12,7 +12,7 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 
 [Route("api/admin/mods")]
 [ApiController]
-public class ModsController : ControllerBase
+public sealed class ModsController : ControllerBase
 {
 	private readonly ModRepository _modRepository;
 	private readonly ModService _modService;

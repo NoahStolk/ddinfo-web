@@ -2,7 +2,7 @@ using DevilDaggersInfo.Web.ApiSpec.Main.Spawnsets;
 
 namespace DevilDaggersInfo.Web.ApiSpec.Main.CustomLeaderboards;
 
-public record GetCustomLeaderboardAllowedCategory
+public sealed record GetCustomLeaderboardAllowedCategory
 {
 	public required GameMode GameMode { get; init; }
 

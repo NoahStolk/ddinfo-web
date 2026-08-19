@@ -9,7 +9,7 @@ using System.IO.Compression;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 
-public class ModArchiveCache
+public sealed class ModArchiveCache
 {
 	private readonly object _fileStreamLock = new();
 

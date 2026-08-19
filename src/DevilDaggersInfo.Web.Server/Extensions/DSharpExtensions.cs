@@ -3,7 +3,7 @@ using DSharpPlus.Entities;
 
 namespace DevilDaggersInfo.Web.Server.Extensions;
 
-public static class DSharpExtensions
+internal static class DSharpExtensions
 {
 	public static async Task<bool> SendMessageAsyncSafe(this DiscordChannel channel, string? message, DiscordEmbed? embed = null)
 	{

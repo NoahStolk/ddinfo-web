@@ -6,7 +6,7 @@ using DevilDaggersInfo.Web.Server.Domain.Utils;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Commands.CustomEntries;
 
-public class UploadRequest
+public sealed class UploadRequest
 {
 	public UploadRequest(
 		byte[] survivalHashMd5,

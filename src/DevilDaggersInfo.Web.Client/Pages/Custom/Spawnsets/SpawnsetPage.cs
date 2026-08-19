@@ -8,17 +8,11 @@ using System.Net;
 
 namespace DevilDaggersInfo.Web.Client.Pages.Custom.Spawnsets;
 
-public partial class SpawnsetPage
+public sealed partial class SpawnsetPage
 {
 	private const int _defaultWaveCount = 40;
 
 	private bool _notFound;
-
-	[Inject]
-	public required MainApiHttpClient Http { get; set; }
-
-	[Inject]
-	public required NavigationManager NavigationManager { get; set; }
 
 	[Parameter]
 	[EditorRequired]

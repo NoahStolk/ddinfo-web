@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace DevilDaggersInfo.Web.Client.Components;
 
-public partial class ResultBar
+public sealed partial class ResultBar
 {
 	[Parameter]
 	public required RenderFragment ChildContent { get; set; }

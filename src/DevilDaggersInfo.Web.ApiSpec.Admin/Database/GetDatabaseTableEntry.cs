@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.ApiSpec.Admin.Database;
 
-public record GetDatabaseTableEntry
+public sealed record GetDatabaseTableEntry
 {
 	public required string Name { get; init; }
 

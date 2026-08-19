@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 
-public record UploadResponse
+public sealed record UploadResponse
 {
 	public required CustomLeaderboardSummary Leaderboard { get; init; }
 

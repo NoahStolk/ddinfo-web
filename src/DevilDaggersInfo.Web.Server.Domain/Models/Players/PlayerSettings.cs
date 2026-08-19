@@ -3,7 +3,7 @@ using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Models.Players;
 
-public record PlayerSettings
+public sealed record PlayerSettings
 {
 	public required int? Dpi { get; init; }
 

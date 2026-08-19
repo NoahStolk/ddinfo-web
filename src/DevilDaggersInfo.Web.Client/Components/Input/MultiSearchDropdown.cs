@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace DevilDaggersInfo.Web.Client.Components.Input;
 
-public partial class MultiSearchDropdown
+public sealed partial class MultiSearchDropdown
 {
 	private string? _searchValue;
 	private bool _show;

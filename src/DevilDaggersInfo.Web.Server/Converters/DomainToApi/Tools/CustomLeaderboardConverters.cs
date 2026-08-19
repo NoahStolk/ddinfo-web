@@ -8,7 +8,7 @@ using ToolsApi = DevilDaggersInfo.Web.ApiSpec.Tools.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Tools;
 
-public static class CustomLeaderboardConverters
+internal static class CustomLeaderboardConverters
 {
 	public static ToolsApi.GetUploadResponse ToToolsApi(this UploadResponse uploadResponse)
 	{

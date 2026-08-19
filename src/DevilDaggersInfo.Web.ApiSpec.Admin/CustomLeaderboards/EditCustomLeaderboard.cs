@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.ApiSpec.Admin.CustomLeaderboards;
 
-public record EditCustomLeaderboard
+public sealed record EditCustomLeaderboard
 {
 	public required CustomLeaderboardRankSorting RankSorting { get; init; }
 

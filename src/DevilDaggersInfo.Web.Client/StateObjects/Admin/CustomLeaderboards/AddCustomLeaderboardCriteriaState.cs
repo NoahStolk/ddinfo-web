@@ -2,7 +2,7 @@ using DevilDaggersInfo.Web.ApiSpec.Admin.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Client.StateObjects.Admin.CustomLeaderboards;
 
-public class AddCustomLeaderboardCriteriaState : IStateObject<AddCustomLeaderboardCriteria>
+public sealed class AddCustomLeaderboardCriteriaState : IStateObject<AddCustomLeaderboardCriteria>
 {
 	public CustomLeaderboardCriteriaOperator Operator { get; set; }
 

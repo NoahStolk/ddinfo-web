@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersInfo.Web.ApiSpec.Admin.Mods;
 
-public record BinaryData
+public sealed record BinaryData
 {
 	/// <summary>
 	/// This name should not contain the type prefix or the mod name.

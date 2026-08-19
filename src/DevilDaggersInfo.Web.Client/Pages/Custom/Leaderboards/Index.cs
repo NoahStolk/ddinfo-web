@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace DevilDaggersInfo.Web.Client.Pages.Custom.Leaderboards;
 
-public partial class Index : IHasNavigation
+public sealed partial class Index : IHasNavigation
 {
 	private readonly IReadOnlyList<GameMode> _gameModes = Enum.GetValues<GameMode>();
 	private readonly Dictionary<CustomLeaderboardSorting, bool> _sortings = new();

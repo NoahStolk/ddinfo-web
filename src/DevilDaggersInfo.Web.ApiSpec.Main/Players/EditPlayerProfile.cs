@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersInfo.Web.ApiSpec.Main.Players;
 
-public record EditPlayerProfile
+public sealed record EditPlayerProfile
 {
 	[StringLength(2)]
 	public required string? CountryCode { get; init; }
