@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.ApiSpec.Tools.CustomLeaderboards;
 
-public record GetUploadResponseCriteriaRejection
+public sealed record GetUploadResponseCriteriaRejection
 {
 	public required string CriteriaName { get; init; }
 

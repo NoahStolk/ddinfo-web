@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.ApiSpec.Admin.Players;
 
-public record GetPlayer
+public sealed record GetPlayer
 {
 	public required int Id { get; init; }
 

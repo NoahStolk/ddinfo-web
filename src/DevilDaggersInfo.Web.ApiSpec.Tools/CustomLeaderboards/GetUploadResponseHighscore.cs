@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.ApiSpec.Tools.CustomLeaderboards;
 
-public record GetUploadResponseHighscore
+public sealed record GetUploadResponseHighscore
 {
 	public required GetScoreState<int> RankState { get; init; }
 

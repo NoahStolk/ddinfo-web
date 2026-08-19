@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.ApiSpec.Admin.FileSystem;
 
-public record GetFileSystemEntry
+public sealed record GetFileSystemEntry
 {
 	public required string Name { get; init; }
 

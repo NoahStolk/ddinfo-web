@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersInfo.Web.ApiSpec.Admin.Players;
 
-public record EditPlayer
+public sealed record EditPlayer
 {
 	[StringLength(32)]
 	public required string? CommonName { get; init; }

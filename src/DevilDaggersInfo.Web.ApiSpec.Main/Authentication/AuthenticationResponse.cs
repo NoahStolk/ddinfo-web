@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.ApiSpec.Main.Authentication;
 
-public record AuthenticationResponse
+public sealed record AuthenticationResponse
 {
 	public required int Id { get; init; }
 

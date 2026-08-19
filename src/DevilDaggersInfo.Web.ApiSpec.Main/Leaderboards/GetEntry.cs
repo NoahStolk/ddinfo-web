@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.ApiSpec.Main.Leaderboards;
 
-public record GetEntry : IGetEntryDto
+public sealed record GetEntry : IGetEntryDto
 {
 	public required int Rank { get; init; }
 

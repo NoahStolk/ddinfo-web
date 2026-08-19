@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.ApiSpec.Main.Mods;
 
-public record GetModifiedLoudness
+public sealed record GetModifiedLoudness
 {
 	public required string AssetName { get; init; }
 

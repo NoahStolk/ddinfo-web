@@ -2,7 +2,7 @@ using DevilDaggersInfo.Web.ApiSpec.Main.Spawnsets;
 
 namespace DevilDaggersInfo.Web.ApiSpec.Main.CustomLeaderboards;
 
-public record GetCustomLeaderboard
+public sealed record GetCustomLeaderboard
 {
 	public required int SpawnsetId { get; init; }
 

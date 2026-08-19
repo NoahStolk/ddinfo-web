@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.ApiSpec.DdLive.LeaderboardStatistics;
 
-public record GetArrayStatisticDdLive
+public sealed record GetArrayStatisticDdLive
 {
 	public required double Average { get; init; }
 

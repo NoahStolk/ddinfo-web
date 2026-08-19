@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.ApiSpec.Tools.CustomLeaderboards;
 
-public record GetCustomLeaderboardSelectedPlayerNextDagger
+public sealed record GetCustomLeaderboardSelectedPlayerNextDagger
 {
 	public required double DaggerValue { get; init; }
 

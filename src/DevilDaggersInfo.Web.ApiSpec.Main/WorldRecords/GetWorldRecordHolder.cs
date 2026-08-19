@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.ApiSpec.Main.WorldRecords;
 
-public record GetWorldRecordHolder
+public sealed record GetWorldRecordHolder
 {
 	public required int Id { get; init; }
 

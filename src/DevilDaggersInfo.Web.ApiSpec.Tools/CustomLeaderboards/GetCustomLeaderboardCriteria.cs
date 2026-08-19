@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.ApiSpec.Tools.CustomLeaderboards;
 
-public record GetCustomLeaderboardCriteria
+public sealed record GetCustomLeaderboardCriteria
 {
 	public required CustomLeaderboardCriteriaType Type { get; init; }
 

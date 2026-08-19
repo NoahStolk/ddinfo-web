@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.ApiSpec.DdstatsRust;
 
-public record GetMarker
+public sealed record GetMarker
 {
 	public required long Value { get; init; }
 }

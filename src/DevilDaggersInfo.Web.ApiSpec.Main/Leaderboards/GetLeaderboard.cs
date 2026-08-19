@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.ApiSpec.Main.Leaderboards;
 
-public record GetLeaderboard : IGetLeaderboardGlobalDto
+public sealed record GetLeaderboard : IGetLeaderboardGlobalDto
 {
 	public required DateTime DateTime { get; init; }
 

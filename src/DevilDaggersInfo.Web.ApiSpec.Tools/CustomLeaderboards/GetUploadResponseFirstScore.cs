@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.ApiSpec.Tools.CustomLeaderboards;
 
-public record GetUploadResponseFirstScore
+public sealed record GetUploadResponseFirstScore
 {
 	public required int Rank { get; init; }
 

@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersInfo.Web.ApiSpec.Tools.CustomLeaderboards;
 
-public record AddUploadRequest
+public sealed record AddUploadRequest
 {
 	[MaxLength(16)]
 	[MinLength(16)]

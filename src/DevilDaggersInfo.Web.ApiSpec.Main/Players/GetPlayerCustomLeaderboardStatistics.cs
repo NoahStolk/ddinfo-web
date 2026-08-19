@@ -3,7 +3,7 @@ using DevilDaggersInfo.Web.ApiSpec.Main.Spawnsets;
 
 namespace DevilDaggersInfo.Web.ApiSpec.Main.Players;
 
-public record GetPlayerCustomLeaderboardStatistics
+public sealed record GetPlayerCustomLeaderboardStatistics
 {
 	public required GameMode GameMode { get; init; }
 

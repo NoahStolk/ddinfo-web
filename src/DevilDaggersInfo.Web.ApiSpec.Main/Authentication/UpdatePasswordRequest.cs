@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersInfo.Web.ApiSpec.Main.Authentication;
 
-public record UpdatePasswordRequest
+public sealed record UpdatePasswordRequest
 {
 	public required string CurrentName { get; init; }
 

@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersInfo.Web.ApiSpec.Admin.Players;
 
-public record AddPlayer
+public sealed record AddPlayer
 {
 	[Range(1, int.MaxValue)]
 	public required int Id { get; init; }

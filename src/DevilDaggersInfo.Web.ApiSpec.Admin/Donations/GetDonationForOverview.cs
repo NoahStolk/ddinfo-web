@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.ApiSpec.Admin.Donations;
 
-public record GetDonationForOverview : IAdminOverviewGetDto
+public sealed record GetDonationForOverview : IAdminOverviewGetDto
 {
 	public required int Id { get; init; }
 

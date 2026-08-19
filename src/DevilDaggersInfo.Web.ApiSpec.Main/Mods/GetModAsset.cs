@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.ApiSpec.Main.Mods;
 
-public record GetModAsset
+public sealed record GetModAsset
 {
 	public required AssetType Type { get; init; }
 

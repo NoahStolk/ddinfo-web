@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.ApiSpec.Main.Players;
 
-public record GetPlayerProfile
+public sealed record GetPlayerProfile
 {
 	public required string? CountryCode { get; init; }
 

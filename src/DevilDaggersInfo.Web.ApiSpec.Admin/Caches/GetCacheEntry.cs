@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.ApiSpec.Admin.Caches;
 
-public record GetCacheEntry
+public sealed record GetCacheEntry
 {
 	public required string Name { get; init; }
 
