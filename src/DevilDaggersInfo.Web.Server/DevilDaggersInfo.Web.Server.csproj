@@ -33,4 +33,16 @@
     <ProjectReference Include="..\DevilDaggersInfo.Web.Server.Domain.Main\DevilDaggersInfo.Web.Server.Domain.Main.csproj" />
   </ItemGroup>
 
+  <!-- Never publish the local development config or the runtime data directories: production keeps its own
+       Data directory on the host, and the deployment only overwrites the files it ships. -->
+  <ItemGroup>
+    <Content Update="appsettings.Development.json" CopyToPublishDirectory="Never" />
+    <Content Update="Data\CustomEntryReplays\**\*" CopyToPublishDirectory="Never" />
+    <Content Update="Data\LeaderboardHistory\**\*" CopyToPublishDirectory="Never" />
+    <Content Update="Data\LeaderboardStatistics\**\*" CopyToPublishDirectory="Never" />
+    <Content Update="Data\ModArchiveCache\**\*" CopyToPublishDirectory="Never" />
+    <Content Update="Data\Mods\**\*" CopyToPublishDirectory="Never" />
+    <Content Update="Data\ModScreenshots\**\*" CopyToPublishDirectory="Never" />
+  </ItemGroup>
+
 </Project>

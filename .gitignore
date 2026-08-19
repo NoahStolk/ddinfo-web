@@ -264,10 +264,6 @@ __pycache__/
 *site.min.css
 *site.min.js
 
-# App settings
-appsettings.json
-appsettings.Development.json
-
 # Database backups
 database-exports/
 
@@ -278,8 +274,6 @@ database-exports/
 */**/DevilDaggersInfo.Web.Server/Data/Mods
 */**/DevilDaggersInfo.Web.Server/Data/ModArchiveCache
 */**/DevilDaggersInfo.Web.Server/Data/ModScreenshots
-*/**/DevilDaggersInfo.Web.Server/Data/ResponseTimes
-*/**/DevilDaggersInfo.Web.Server/Data/Tools/*.zip
 
 # Tailwind
 tailwind.min.css

@@ -1,0 +1,99 @@
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Preview the sync without changing the site (msdeploy -whatif)'
+        type: boolean
+        required: false
+        default: false
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up dotnet
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '9.0.203'
+
+      - name: Build
+        run: dotnet build src/DevilDaggersInfo.Web.slnx -c Release
+
+      - name: Test
+        run: dotnet test src/DevilDaggersInfo.Web.slnx -c Release --no-build
+
+  deploy:
+    needs: test
+    # MSDeploy is Windows-only, which is the entire reason deployment lives in CI.
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up dotnet
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '9.0.203'
+
+      - name: Publish
+        run: dotnet publish src/DevilDaggersInfo.Web.Server/DevilDaggersInfo.Web.Server.csproj -c Release -o ./publish
+
+      # The published appsettings.json ships with __PLACEHOLDER__ values. Literal string replacement is
+      # used instead of sed so that secrets containing regular expression or delimiter characters cannot
+      # corrupt the file, and any placeholder left behind fails the deployment instead of taking the site
+      # down at startup.
+      - name: Inject secrets into appsettings
+        shell: pwsh
+        env:
+          AUTHENTICATION_JWT_KEY: ${{ secrets.AUTHENTICATION_JWT_KEY }}
+          CUSTOM_LEADERBOARDS_INITIALIZATION_VECTOR: ${{ secrets.CUSTOM_LEADERBOARDS_INITIALIZATION_VECTOR }}
+          CUSTOM_LEADERBOARDS_PASSWORD: ${{ secrets.CUSTOM_LEADERBOARDS_PASSWORD }}
+          CUSTOM_LEADERBOARDS_SALT: ${{ secrets.CUSTOM_LEADERBOARDS_SALT }}
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+          MYSQL_CONNECTION_STRING: ${{ secrets.MYSQL_CONNECTION_STRING }}
+          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $path = 'publish/appsettings.json'
+          $json = Get-Content $path -Raw
+          $names = @(
+            'AUTHENTICATION_JWT_KEY',
+            'CUSTOM_LEADERBOARDS_INITIALIZATION_VECTOR',
+            'CUSTOM_LEADERBOARDS_PASSWORD',
+            'CUSTOM_LEADERBOARDS_SALT',
+            'DISCORD_BOT_TOKEN',
+            'MYSQL_CONNECTION_STRING',
+            'SENTRY_DSN'
+          )
+          foreach ($name in $names) {
+            $value = [Environment]::GetEnvironmentVariable($name)
+            if ([string]::IsNullOrEmpty($value)) { throw "Secret $name is not set." }
+            if ($value.Contains('"') -or $value.Contains('\')) { throw "Secret $name contains a character that must be JSON-escaped." }
+            $json = $json.Replace("__${name}__", $value)
+          }
+          Set-Content $path -Value $json -NoNewline
+          if ($json -match '__[A-Z_]+__') { throw 'Unreplaced placeholder left in appsettings.json.' }
+          Write-Host 'All placeholders replaced.'
+
+      # Data (mods, replays, leaderboard history) and keys (data protection key ring) live inside the site
+      # folder on the host and are not in the repository, so they must be skipped: a plain sync would
+      # delete them.
+      - name: Deploy via MSDeploy
+        shell: powershell
+        run: |
+          $extra = @()
+          if ('${{ inputs.dry_run }}' -eq 'true') { $extra += '-whatif' }
+          & "C:\Program Files\IIS\Microsoft Web Deploy V3\msdeploy.exe" `
+            -verb:sync `
+            -source:contentPath="${{ github.workspace }}\publish" `
+            -dest:contentPath="devildaggers.info",computerName="https://${{ secrets.MSDEPLOY_HOST }}:8172/msdeploy.axd?site=devildaggers.info",userName="${{ secrets.MSDEPLOY_USER }}",password="${{ secrets.MSDEPLOY_PASS }}",authType="Basic" `
+            -enableRule:AppOffline `
+            -skip:objectName=dirPath,absolutePath=.*\\Data `
+            -skip:objectName=dirPath,absolutePath=.*\\keys `
+            -skip:objectName=dirPath,absolutePath=.*\\logs `
+            -skip:objectName=filePath,absolutePath=.*\\app_offline\.htm `
+            -allowUntrusted @extra
