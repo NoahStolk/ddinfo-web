@@ -103,8 +103,6 @@ builder.Services.AddTransient<DevilDaggersInfo.Web.Server.Domain.Admin.Repositor
 builder.Services.AddTransient<DevilDaggersInfo.Web.Server.Domain.Admin.Repositories.SpawnsetRepository>();
 builder.Services.AddTransient<DevilDaggersInfo.Web.Server.Domain.Admin.Repositories.UserRepository>();
 
-// Utilities
-
 // Monitoring
 builder.Services.AddSingleton<BackgroundServiceMonitor>();
 builder.Services.AddSingleton<ICustomLeaderboardHighscoreLogger, CustomLeaderboardHighscoreLogger>();
