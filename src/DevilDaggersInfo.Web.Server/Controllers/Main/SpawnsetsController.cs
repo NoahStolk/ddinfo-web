@@ -5,6 +5,8 @@ using DevilDaggersInfo.Web.ApiSpec.Main.Spawnsets;
 using DevilDaggersInfo.Web.Client;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
+using DevilDaggersInfo.Web.Server.Domain.Extensions;
+using DevilDaggersInfo.Web.Server.Domain.Models.Spawnsets;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
@@ -37,16 +39,10 @@ public class SpawnsetsController : ControllerBase
 		SpawnsetSorting? sortBy = null,
 		bool ascending = false)
 	{
-		IQueryable<SpawnsetEntity> spawnsetsQuery = _dbContext.Spawnsets.AsNoTracking().Include(s => s.Player);
+		IQueryable<SpawnsetEntity> spawnsetsQuery = _dbContext.Spawnsets.AsNoTracking();
 
 		if (withCustomLeaderboardOnly)
-		{
-			List<int> spawnsetsWithCustomLeaderboardIds = await _dbContext.CustomLeaderboards
-				.Select(cl => cl.SpawnsetId)
-				.ToListAsync();
-
-			spawnsetsQuery = spawnsetsQuery.Where(s => spawnsetsWithCustomLeaderboardIds.Contains(s.Id));
-		}
+			spawnsetsQuery = spawnsetsQuery.Where(s => _dbContext.CustomLeaderboards.Any(cl => cl.SpawnsetId == s.Id));
 
 		// Casing is ignored by default because of IQueryable.
 		if (!string.IsNullOrWhiteSpace(spawnsetFilter))
@@ -63,31 +59,49 @@ public class SpawnsetsController : ControllerBase
 			spawnsetsQuery = spawnsetsQuery.Where(s => s.Player!.PlayerName.Contains(authorFilter));
 		}
 
-		List<SpawnsetEntity> spawnsets = await spawnsetsQuery.ToListAsync();
+		int totalSpawnsets = await spawnsetsQuery.CountAsync();
 
-		// TODO: Improve performance by not loading all spawnsets into memory.
+		// Sorting is applied to the query so the database does it, which means LOWER() is not needed: the column
+		// collation is already case insensitive, and wrapping the column would prevent an index from being used.
 		// ! Navigation property.
-		spawnsets = (sortBy switch
+		spawnsetsQuery = sortBy switch
 		{
-			SpawnsetSorting.Name => spawnsets.OrderBy(s => s.Name.ToLower(), ascending),
-			SpawnsetSorting.AuthorName => spawnsets.OrderBy(s => s.Player!.PlayerName.ToLower(), ascending),
-			SpawnsetSorting.LastUpdated => spawnsets.OrderBy(s => s.LastUpdated, ascending),
-			SpawnsetSorting.GameMode => spawnsets.OrderBy(s => s.GameMode, ascending),
-			SpawnsetSorting.LoopLength => spawnsets.OrderBy(s => s.LoopLength, ascending),
-			SpawnsetSorting.LoopSpawnCount => spawnsets.OrderBy(s => s.LoopSpawnCount, ascending),
-			SpawnsetSorting.PreLoopLength => spawnsets.OrderBy(s => s.PreLoopLength, ascending),
-			SpawnsetSorting.PreLoopSpawnCount => spawnsets.OrderBy(s => s.PreLoopSpawnCount, ascending),
-			SpawnsetSorting.Hand => spawnsets.OrderBy(s => s.HandLevel, ascending),
-			SpawnsetSorting.AdditionalGems => spawnsets.OrderBy(s => s.AdditionalGems, ascending),
-			_ => spawnsets.OrderBy(s => s.Id, ascending),
-		}).ToList();
+			SpawnsetSorting.Name => spawnsetsQuery.OrderBy(s => s.Name, ascending),
+			SpawnsetSorting.AuthorName => spawnsetsQuery.OrderBy(s => s.Player!.PlayerName, ascending),
+			SpawnsetSorting.LastUpdated => spawnsetsQuery.OrderBy(s => s.LastUpdated, ascending),
+			SpawnsetSorting.GameMode => spawnsetsQuery.OrderBy(s => s.GameMode, ascending),
+			SpawnsetSorting.LoopLength => spawnsetsQuery.OrderBy(s => s.LoopLength, ascending),
+			SpawnsetSorting.LoopSpawnCount => spawnsetsQuery.OrderBy(s => s.LoopSpawnCount, ascending),
+			SpawnsetSorting.PreLoopLength => spawnsetsQuery.OrderBy(s => s.PreLoopLength, ascending),
+			SpawnsetSorting.PreLoopSpawnCount => spawnsetsQuery.OrderBy(s => s.PreLoopSpawnCount, ascending),
+			SpawnsetSorting.Hand => spawnsetsQuery.OrderBy(s => s.HandLevel, ascending),
+			SpawnsetSorting.AdditionalGems => spawnsetsQuery.OrderBy(s => s.AdditionalGems, ascending),
+			_ => spawnsetsQuery.OrderBy(s => s.Id, ascending),
+		};
 
-		int totalSpawnsets = spawnsets.Count;
 		int lastPageIndex = totalSpawnsets / pageSize;
-		spawnsets = spawnsets
+
+		// Only the columns the overview needs are selected. Materialising the entity would also fetch the spawnset
+		// file, which is a BLOB of up to 70 KiB per row that the overview never uses.
+		// ! Navigation property.
+		List<SpawnsetOverview> spawnsets = await spawnsetsQuery
 			.Skip(Math.Min(pageIndex, lastPageIndex) * pageSize)
 			.Take(pageSize)
-			.ToList();
+			.Select(s => new SpawnsetOverview
+			{
+				Id = s.Id,
+				Name = s.Name,
+				AuthorName = s.Player!.PlayerName,
+				LastUpdated = s.LastUpdated,
+				GameMode = s.GameMode,
+				LoopLength = s.LoopLength,
+				LoopSpawnCount = s.LoopSpawnCount,
+				PreLoopLength = s.PreLoopLength,
+				PreLoopSpawnCount = s.PreLoopSpawnCount,
+				EffectiveHandLevel = s.EffectiveHandLevel,
+				EffectiveGemsOrHoming = s.EffectiveGemsOrHoming,
+			})
+			.ToListAsync();
 
 		return new Page<GetSpawnsetOverview>
 		{

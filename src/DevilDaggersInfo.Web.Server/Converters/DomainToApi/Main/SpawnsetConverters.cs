@@ -1,5 +1,6 @@
 using DevilDaggersInfo.Core.Common;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
+using DevilDaggersInfo.Web.Server.Domain.Models.Spawnsets;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Main.Converters.DomainToApi;
 using System.Diagnostics;
@@ -10,6 +11,24 @@ namespace DevilDaggersInfo.Web.Server.Converters.DomainToApi.Main;
 // TODO: Use domain models.
 public static class SpawnsetConverters
 {
+	public static MainApi.GetSpawnsetOverview ToMainApi(this SpawnsetOverview spawnset)
+	{
+		return new MainApi.GetSpawnsetOverview
+		{
+			AdditionalGems = spawnset.EffectiveGemsOrHoming,
+			GameMode = spawnset.GameMode.ToMainApi(),
+			Hand = spawnset.EffectiveHandLevel.ToMainApi(),
+			Id = spawnset.Id,
+			LoopLength = spawnset.LoopLength.HasValue ? GameTime.FromGameUnits(spawnset.LoopLength.Value).Seconds : null,
+			LoopSpawnCount = spawnset.LoopSpawnCount,
+			PreLoopLength = spawnset.PreLoopLength.HasValue ? GameTime.FromGameUnits(spawnset.PreLoopLength.Value).Seconds : null,
+			PreLoopSpawnCount = spawnset.PreLoopSpawnCount,
+			AuthorName = spawnset.AuthorName,
+			LastUpdated = spawnset.LastUpdated,
+			Name = spawnset.Name,
+		};
+	}
+
 	public static MainApi.GetSpawnsetOverview ToMainApi(this SpawnsetEntity spawnset)
 	{
 		if (spawnset.Player == null)
