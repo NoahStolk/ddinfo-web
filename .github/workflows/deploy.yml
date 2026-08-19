@@ -9,7 +9,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -17,7 +17,7 @@ jobs:
       - name: Set up dotnet
         uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: '9.0.203'
+          dotnet-version: '10.0.x'
 
       - name: Build
         run: dotnet build src/DevilDaggersInfo.Web.slnx -c Release
@@ -29,7 +29,7 @@ jobs:
     needs: test
     # MSDeploy is Windows-only, which is the entire reason deployment lives in CI.
     runs-on: windows-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -37,7 +37,7 @@ jobs:
       - name: Set up dotnet
         uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: '9.0.203'
+          dotnet-version: '10.0.x'
 
       - name: Publish
         run: dotnet publish src/DevilDaggersInfo.Web.Server/DevilDaggersInfo.Web.Server.csproj -c Release -o ./publish
