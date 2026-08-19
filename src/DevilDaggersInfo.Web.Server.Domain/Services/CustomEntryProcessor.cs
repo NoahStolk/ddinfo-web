@@ -23,7 +23,7 @@ using System.Web;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Services;
 
-public class CustomEntryProcessor
+public sealed class CustomEntryProcessor
 {
 	private readonly ApplicationDbContext _dbContext;
 	private readonly ILogger<CustomEntryProcessor> _logger;

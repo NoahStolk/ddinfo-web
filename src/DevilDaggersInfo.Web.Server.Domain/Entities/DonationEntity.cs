@@ -3,7 +3,7 @@ using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 namespace DevilDaggersInfo.Web.Server.Domain.Entities;
 
 [Table("Donations")]
-public class DonationEntity
+public sealed class DonationEntity
 {
 	[Key]
 	public int Id { get; init; }

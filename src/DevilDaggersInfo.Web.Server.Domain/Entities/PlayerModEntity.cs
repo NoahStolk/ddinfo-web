@@ -1,7 +1,7 @@
 namespace DevilDaggersInfo.Web.Server.Domain.Entities;
 
 [Table("PlayerAssetMods")]
-public class PlayerModEntity
+public sealed class PlayerModEntity
 {
 	public int PlayerId { get; set; }
 

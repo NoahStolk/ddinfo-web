@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;
 
-public record ModifiedLoudnessAssetCacheData
+public sealed record ModifiedLoudnessAssetCacheData
 {
 	public required string Name { get; init; }
 	public required bool IsProhibited { get; init; }

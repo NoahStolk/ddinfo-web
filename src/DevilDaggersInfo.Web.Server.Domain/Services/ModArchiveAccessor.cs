@@ -5,7 +5,7 @@ using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Services;
 
-public class ModArchiveAccessor
+public sealed class ModArchiveAccessor
 {
 	private readonly IFileSystemService _fileSystemService;
 	private readonly ModArchiveCache _modArchiveCache;

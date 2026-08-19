@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 
-public class LeaderboardHistoryCache : ILeaderboardHistoryCache
+public sealed class LeaderboardHistoryCache : ILeaderboardHistoryCache
 {
 	private readonly ConcurrentDictionary<string, LeaderboardHistory> _cache = new();
 

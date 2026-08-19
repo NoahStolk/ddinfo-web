@@ -7,7 +7,7 @@ using System.Security.Claims;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Main.Services;
 
-public class PlayerProfileService
+public sealed class PlayerProfileService
 {
 	private readonly ApplicationDbContext _dbContext;
 

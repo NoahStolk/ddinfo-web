@@ -2,7 +2,7 @@ using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 
-public record CustomLeaderboardHighscoreLog
+public sealed record CustomLeaderboardHighscoreLog
 {
 	public required CustomLeaderboardDagger? Dagger { get; init; }
 

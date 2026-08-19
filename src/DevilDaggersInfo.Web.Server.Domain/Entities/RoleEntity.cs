@@ -1,7 +1,7 @@
 namespace DevilDaggersInfo.Web.Server.Domain.Entities;
 
 [Table("Roles")]
-public class RoleEntity
+public sealed class RoleEntity
 {
 	[Key]
 	[StringLength(32)]

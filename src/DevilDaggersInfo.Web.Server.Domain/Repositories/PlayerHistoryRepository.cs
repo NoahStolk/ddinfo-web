@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Repositories;
 
-public class PlayerHistoryRepository
+public sealed class PlayerHistoryRepository
 {
 	private readonly ApplicationDbContext _dbContext;
 	private readonly IFileSystemService _fileSystemService;

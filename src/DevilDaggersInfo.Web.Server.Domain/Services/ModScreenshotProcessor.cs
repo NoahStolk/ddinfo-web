@@ -4,7 +4,7 @@ using DevilDaggersInfo.Web.Server.Domain.Utils;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Services;
 
-public class ModScreenshotProcessor
+public sealed class ModScreenshotProcessor
 {
 	private readonly IFileSystemService _fileSystemService;
 

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Admin.Repositories;
 
-public class ModRepository
+public sealed class ModRepository
 {
 	private readonly ApplicationDbContext _dbContext;
 	private readonly ModArchiveAccessor _modArchiveAccessor;

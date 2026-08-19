@@ -2,7 +2,7 @@ using DevilDaggersInfo.Web.Server.Domain.Entities;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Models.Players;
 
-public record PlayerForSettings
+public sealed record PlayerForSettings
 {
 	public required int Id { get; init; }
 

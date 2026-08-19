@@ -13,7 +13,7 @@ using System.Text;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Services;
 
-public class UserManager
+public sealed class UserManager
 {
 	private readonly ApplicationDbContext _dbContext;
 	private readonly IOptions<AuthenticationOptions> _authenticationOptions;

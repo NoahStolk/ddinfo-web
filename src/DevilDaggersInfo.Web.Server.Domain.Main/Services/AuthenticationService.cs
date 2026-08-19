@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Main.Services;
 
-public class AuthenticationService
+public sealed class AuthenticationService
 {
 	private readonly UserManager _userManager;
 	private readonly ILogger<AuthenticationService> _logger;

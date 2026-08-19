@@ -1,7 +1,7 @@
 namespace DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 
 // TODO: Immutable.
-public record GlobalCustomLeaderboardEntryData
+public sealed record GlobalCustomLeaderboardEntryData
 {
 	public List<CustomLeaderboardRanking> Rankings { get; } = [];
 

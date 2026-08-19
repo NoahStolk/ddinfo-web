@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Admin.Services;
 
-public class MarkerService
+public sealed class MarkerService
 {
 	private readonly ApplicationDbContext _dbContext;
 	private readonly ILogger<MarkerService> _logger;

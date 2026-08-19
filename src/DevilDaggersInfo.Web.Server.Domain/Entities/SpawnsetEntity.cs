@@ -3,7 +3,7 @@ using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 namespace DevilDaggersInfo.Web.Server.Domain.Entities;
 
 [Table("SpawnsetFiles")]
-public class SpawnsetEntity : IAuditable
+public sealed class SpawnsetEntity : IAuditable
 {
 	[Key]
 	public int Id { get; init; }

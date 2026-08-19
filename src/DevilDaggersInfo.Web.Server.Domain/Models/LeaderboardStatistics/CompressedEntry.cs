@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardStatistics;
 
-public record CompressedEntry
+public sealed record CompressedEntry
 {
 	public required uint Time { get; init; }
 

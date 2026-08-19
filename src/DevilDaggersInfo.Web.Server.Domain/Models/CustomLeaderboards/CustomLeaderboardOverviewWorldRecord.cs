@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 
-public record CustomLeaderboardOverviewWorldRecord : IDaggerStatCustomEntry
+public sealed record CustomLeaderboardOverviewWorldRecord : IDaggerStatCustomEntry
 {
 	public required double WorldRecordValue { get; init; }
 

@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 
-public class SuccessfulUploadResponse
+public sealed class SuccessfulUploadResponse
 {
 	public required SubmissionType SubmissionType { get; init; }
 

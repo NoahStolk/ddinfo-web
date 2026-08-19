@@ -10,7 +10,7 @@ using System.Security.Cryptography;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Admin.Services;
 
-public class SpawnsetService
+public sealed class SpawnsetService
 {
 	private readonly ApplicationDbContext _dbContext;
 

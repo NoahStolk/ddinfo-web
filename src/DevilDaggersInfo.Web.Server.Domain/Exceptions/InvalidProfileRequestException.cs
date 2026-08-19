@@ -2,7 +2,7 @@ using System.Net;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Exceptions;
 
-public class InvalidProfileRequestException : StatusCodeException
+public sealed class InvalidProfileRequestException : StatusCodeException
 {
 	public InvalidProfileRequestException()
 	{

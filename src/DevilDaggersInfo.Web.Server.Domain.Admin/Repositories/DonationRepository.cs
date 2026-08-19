@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Admin.Repositories;
 
-public class DonationRepository
+public sealed class DonationRepository
 {
 	private readonly ApplicationDbContext _dbContext;
 

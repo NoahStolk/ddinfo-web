@@ -8,7 +8,7 @@ using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Admin.Services;
 
-public class CustomEntryService
+public sealed class CustomEntryService
 {
 	private readonly IFileSystemService _fileSystemService;
 	private readonly ApplicationDbContext _dbContext;

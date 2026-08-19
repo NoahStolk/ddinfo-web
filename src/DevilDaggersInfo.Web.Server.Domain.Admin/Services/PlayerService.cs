@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Admin.Services;
 
-public class PlayerService
+public sealed class PlayerService
 {
 	private readonly ApplicationDbContext _dbContext;
 	private readonly IDdLeaderboardService _ddLeaderboardService;

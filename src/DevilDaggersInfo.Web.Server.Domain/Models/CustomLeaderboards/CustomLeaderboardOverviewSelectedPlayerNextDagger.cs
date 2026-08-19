@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 
-public record CustomLeaderboardOverviewSelectedPlayerNextDagger
+public sealed record CustomLeaderboardOverviewSelectedPlayerNextDagger
 {
 	public required double DaggerValue { get; init; }
 

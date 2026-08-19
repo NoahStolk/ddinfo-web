@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 
-public class LeaderboardStatisticsCache
+public sealed class LeaderboardStatisticsCache
 {
 	private readonly List<CompressedEntry> _entries = [];
 

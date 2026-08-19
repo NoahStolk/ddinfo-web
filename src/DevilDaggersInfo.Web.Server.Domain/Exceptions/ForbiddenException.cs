@@ -2,7 +2,7 @@ using System.Net;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Exceptions;
 
-public class ForbiddenException : StatusCodeException
+public sealed class ForbiddenException : StatusCodeException
 {
 	public ForbiddenException()
 	{

@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 
-public record CustomLeaderboardDaggers
+public sealed record CustomLeaderboardDaggers
 {
 	public required int Bronze { get; init; }
 

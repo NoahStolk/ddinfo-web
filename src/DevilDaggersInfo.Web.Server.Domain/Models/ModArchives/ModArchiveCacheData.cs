@@ -4,7 +4,7 @@ using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;
 
-public class ModArchiveCacheData
+public sealed class ModArchiveCacheData
 {
 	public long FileSize { get; init; }
 	public long FileSizeExtracted { get; set; }

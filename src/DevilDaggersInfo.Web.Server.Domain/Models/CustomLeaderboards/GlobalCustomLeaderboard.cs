@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 
-public record GlobalCustomLeaderboard
+public sealed record GlobalCustomLeaderboard
 {
 	public required List<GlobalCustomLeaderboardEntry> Entries { get; init; }
 

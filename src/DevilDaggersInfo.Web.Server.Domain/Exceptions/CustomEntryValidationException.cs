@@ -2,7 +2,7 @@ using System.Net;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Exceptions;
 
-public class CustomEntryValidationException : StatusCodeException
+public sealed class CustomEntryValidationException : StatusCodeException
 {
 	public CustomEntryValidationException()
 	{

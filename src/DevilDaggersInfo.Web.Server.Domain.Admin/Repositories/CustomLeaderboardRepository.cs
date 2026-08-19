@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Admin.Repositories;
 
-public class CustomLeaderboardRepository
+public sealed class CustomLeaderboardRepository
 {
 	private readonly ApplicationDbContext _dbContext;
 

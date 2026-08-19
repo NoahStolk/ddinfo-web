@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Repositories;
 
-public class CustomEntryRepository
+public sealed class CustomEntryRepository
 {
 	private readonly ApplicationDbContext _dbContext;
 	private readonly IFileSystemService _fileSystemService;

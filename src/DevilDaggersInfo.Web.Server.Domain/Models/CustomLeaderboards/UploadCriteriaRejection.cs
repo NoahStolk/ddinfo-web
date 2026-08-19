@@ -2,7 +2,7 @@ using DevilDaggersInfo.Core.CriteriaExpression;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 
-public record UploadCriteriaRejection
+public sealed record UploadCriteriaRejection
 {
 	public required string CriteriaName { get; init; }
 

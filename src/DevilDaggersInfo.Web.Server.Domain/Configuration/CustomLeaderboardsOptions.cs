@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.Server.Domain.Configuration;
 
-public record CustomLeaderboardsOptions
+public sealed record CustomLeaderboardsOptions
 {
 	public required string InitializationVector { get; init; }
 

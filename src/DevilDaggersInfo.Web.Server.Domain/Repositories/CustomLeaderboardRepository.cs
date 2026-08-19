@@ -14,7 +14,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Repositories;
 
-public class CustomLeaderboardRepository
+public sealed class CustomLeaderboardRepository
 {
 	private readonly ApplicationDbContext _dbContext;
 	private readonly CustomEntryRepository _customEntryRepository;

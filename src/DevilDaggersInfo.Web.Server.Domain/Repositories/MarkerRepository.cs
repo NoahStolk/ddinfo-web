@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Repositories;
 
-public class MarkerRepository
+public sealed class MarkerRepository
 {
 	private readonly ApplicationDbContext _dbContext;
 

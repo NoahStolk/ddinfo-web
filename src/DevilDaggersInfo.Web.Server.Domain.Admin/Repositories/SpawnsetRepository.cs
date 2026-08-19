@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Admin.Repositories;
 
-public class SpawnsetRepository
+public sealed class SpawnsetRepository
 {
 	private readonly ApplicationDbContext _dbContext;
 

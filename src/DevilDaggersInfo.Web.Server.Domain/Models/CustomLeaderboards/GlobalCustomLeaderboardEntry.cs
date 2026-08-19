@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 
-public record GlobalCustomLeaderboardEntry
+public sealed record GlobalCustomLeaderboardEntry
 {
 	public required int PlayerId { get; init; }
 

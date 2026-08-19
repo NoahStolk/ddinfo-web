@@ -2,7 +2,7 @@ using DevilDaggersInfo.Core.CriteriaExpression;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 
-public record CustomLeaderboardCriteria
+public sealed record CustomLeaderboardCriteria
 {
 	public required CustomLeaderboardCriteriaType Type { get; init; }
 
