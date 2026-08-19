@@ -3,7 +3,7 @@ using DevilDaggersInfo.Web.Server.Domain.Utils;
 namespace DevilDaggersInfo.Web.Server.Domain.Test.Tests.ServerDomain;
 
 [TestClass]
-public class IntegerArrayCompressorTests
+internal sealed class IntegerArrayCompressorTests
 {
 	[TestMethod]
 	public void TestGetMaxBitCount()

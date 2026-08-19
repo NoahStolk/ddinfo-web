@@ -8,7 +8,7 @@ using NSubstitute;
 namespace DevilDaggersInfo.Web.Server.Domain.Test.Tests.ServerDomain;
 
 [TestClass]
-public class PlayerHistoryRepositoryTests
+internal sealed class PlayerHistoryRepositoryTests
 {
 	private readonly PlayerHistoryRepository _repository;
 

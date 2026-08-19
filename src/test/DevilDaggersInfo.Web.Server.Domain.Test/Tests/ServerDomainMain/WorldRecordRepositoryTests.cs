@@ -8,7 +8,7 @@ using NSubstitute;
 namespace DevilDaggersInfo.Web.Server.Domain.Test.Tests.ServerDomainMain;
 
 [TestClass]
-public class WorldRecordRepositoryTests
+internal sealed class WorldRecordRepositoryTests
 {
 	private readonly WorldRecordRepository _repository;
 

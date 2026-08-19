@@ -11,7 +11,7 @@ using System.IO.Compression;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Test.Tests.ServerDomain;
 
-public abstract class ModArchiveProcessorTests
+internal abstract class ModArchiveProcessorTests
 {
 	protected ModArchiveProcessorTests()
 	{

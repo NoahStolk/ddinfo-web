@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Test.Utils;
 
-public class TestDbContext : ApplicationDbContext
+internal sealed class TestDbContext : ApplicationDbContext
 {
 	public TestDbContext(DbContextOptions<TestDbContext> options, IHttpContextAccessor httpContextAccessor, ILogContainerService logContainerService)
 		: base(options, httpContextAccessor, logContainerService)

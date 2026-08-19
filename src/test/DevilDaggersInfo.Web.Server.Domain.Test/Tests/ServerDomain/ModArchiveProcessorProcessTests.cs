@@ -7,7 +7,7 @@ using System.IO.Compression;
 namespace DevilDaggersInfo.Web.Server.Domain.Test.Tests.ServerDomain;
 
 [TestClass]
-public class ModArchiveProcessorProcessTests : ModArchiveProcessorTests
+internal sealed class ModArchiveProcessorProcessTests : ModArchiveProcessorTests
 {
 	// TODO: Add a failing test where the ModBinaryType is incorrect.
 	[TestMethod]

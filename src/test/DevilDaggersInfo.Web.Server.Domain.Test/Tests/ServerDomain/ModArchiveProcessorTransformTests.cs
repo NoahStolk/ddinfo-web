@@ -7,7 +7,7 @@ using System.IO.Compression;
 namespace DevilDaggersInfo.Web.Server.Domain.Test.Tests.ServerDomain;
 
 [TestClass]
-public class ModArchiveProcessorTransformTests : ModArchiveProcessorTests
+internal sealed class ModArchiveProcessorTransformTests : ModArchiveProcessorTests
 {
 	[DataTestMethod]
 	[DataRow("mod", "mod-renamed")]

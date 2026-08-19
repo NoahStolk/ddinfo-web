@@ -4,7 +4,7 @@ using DevilDaggersInfo.Web.Server.Domain.Utils;
 namespace DevilDaggersInfo.Web.Server.Domain.Test.Tests.ServerDomain;
 
 [TestClass]
-public class PasswordValidationTests
+internal sealed class PasswordValidationTests
 {
 	[DataTestMethod]
 	[DataRow("asdfasdfasD1")]

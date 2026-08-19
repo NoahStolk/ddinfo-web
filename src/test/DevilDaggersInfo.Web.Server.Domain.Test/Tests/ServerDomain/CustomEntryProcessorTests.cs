@@ -15,7 +15,7 @@ using NSubstitute;
 namespace DevilDaggersInfo.Web.Server.Domain.Test.Tests.ServerDomain;
 
 [TestClass]
-public class CustomEntryProcessorTests
+internal sealed class CustomEntryProcessorTests
 {
 	private readonly ApplicationDbContext _dbContext;
 	private readonly CustomEntryProcessor _customEntryProcessor;
