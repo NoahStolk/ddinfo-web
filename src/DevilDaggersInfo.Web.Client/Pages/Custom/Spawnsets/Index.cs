@@ -96,7 +96,7 @@ public sealed partial class Index : IHasNavigation
 		_sortings[sortBy] = !_sortings[sortBy];
 		Ascending = _sortings[sortBy];
 
-		NavigationManager.AddOrModifyQueryParameters(new KeyValuePair<string, object?>(nameof(SortBy), SortBy), new KeyValuePair<string, object?>(nameof(Ascending), Ascending));
+		NavigationManager.AddOrModifyQueryParameters([new KeyValuePair<string, object?>(nameof(SortBy), SortBy), new KeyValuePair<string, object?>(nameof(Ascending), Ascending)]);
 	}
 
 	private async Task Fetch()

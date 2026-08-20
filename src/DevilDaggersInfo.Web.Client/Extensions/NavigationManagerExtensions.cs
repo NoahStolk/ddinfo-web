@@ -11,7 +11,7 @@ internal static class NavigationManagerExtensions
 			navigationManager.AddOrModifyQueryParameters(new Dictionary<string, object?> { { key, value } });
 		}
 
-		public void AddOrModifyQueryParameters(params KeyValuePair<string, object?>[] parameters)
+		public void AddOrModifyQueryParameters(KeyValuePair<string, object?>[] parameters)
 		{
 			navigationManager.AddOrModifyQueryParameters(parameters.ToDictionary(kvp => kvp.Key, kvp => kvp.Value));
 		}
