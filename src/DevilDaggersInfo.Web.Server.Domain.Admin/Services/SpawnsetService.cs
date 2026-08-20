@@ -41,7 +41,7 @@ public sealed class SpawnsetService(ApplicationDbContext dbContext)
 			PlayerId = addSpawnset.PlayerId,
 			LastUpdated = DateTime.UtcNow,
 			File = addSpawnset.FileContents,
-			Md5Hash = MD5.HashData(addSpawnset.FileContents),
+			Md5Hash = spawnsetHash,
 			GameMode = spawnsetBinary.GameMode.ToDomain(),
 			SpawnVersion = spawnsetBinary.SpawnVersion,
 			WorldVersion = spawnsetBinary.WorldVersion,
