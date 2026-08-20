@@ -18,10 +18,7 @@ jobs:
       - name: Test
         run: dotnet test --solution src/DevilDaggersInfo.Web.slnx -c Release --no-build
       - name: Pack
-        run: |
-          dotnet pack src/DevilDaggersInfo.Web.ApiSpec.Admin -c Release -o .
-          dotnet pack src/DevilDaggersInfo.Web.ApiSpec.Main -c Release -o .
-          dotnet pack src/DevilDaggersInfo.Web.ApiSpec.Tools -c Release -o .
+        run: dotnet pack src/DevilDaggersInfo.Web.ApiSpec.Tools -c Release -o .
       - name: Push
         run: dotnet nuget push *.nupkg -s nuget.org -k ${NUGET_SECRET} -n --skip-duplicate
         env:

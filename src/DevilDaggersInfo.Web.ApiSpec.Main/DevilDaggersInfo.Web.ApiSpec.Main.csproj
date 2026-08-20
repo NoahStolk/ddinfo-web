@@ -1,12 +1,1 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup Label="Package information">
-    <PackageId>DevilDaggersInfo.Web.ApiSpec.Main</PackageId>
-    <Authors>Noah Stolk</Authors>
-    <Copyright>Copyright © Noah Stolk</Copyright>
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/NoahStolk/ddinfo-web</RepositoryUrl>
-    <Version>2.0.0</Version>
-  </PropertyGroup>
-
-</Project>
+<Project Sdk="Microsoft.NET.Sdk" />
