@@ -13,19 +13,8 @@ using System.Text;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Services;
 
-public sealed class UserManager
+public sealed class UserManager(ApplicationDbContext context, IOptions<AuthenticationOptions> authenticationOptions, ILogger<UserManager> logger)
 {
-	private readonly ApplicationDbContext _dbContext;
-	private readonly IOptions<AuthenticationOptions> _authenticationOptions;
-	private readonly ILogger<UserManager> _logger;
-
-	public UserManager(ApplicationDbContext context, IOptions<AuthenticationOptions> authenticationOptions, ILogger<UserManager> logger)
-	{
-		_dbContext = context;
-		_authenticationOptions = authenticationOptions;
-		_logger = logger;
-	}
-
 	public UserEntity? Authenticate(string name, string password)
 	{
 		name = name.Trim();
@@ -34,7 +23,7 @@ public sealed class UserManager
 			return null;
 
 		// ! Navigation property.
-		UserEntity? user = _dbContext.Users
+		UserEntity? user = context.Users
 			.Include(u => u.UserRoles)!
 			.ThenInclude(ur => ur.Role)
 			.SingleOrDefault(u => u.Name == name);
@@ -51,7 +40,7 @@ public sealed class UserManager
 	{
 		name = name.Trim();
 
-		if (await _dbContext.Users.AnyAsync(u => u.Name == name))
+		if (await context.Users.AnyAsync(u => u.Name == name))
 			throw new BadRequestException($"Name '{name}' is already taken.");
 
 		PasswordValidator.CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
@@ -64,29 +53,29 @@ public sealed class UserManager
 			DateRegistered = DateTime.UtcNow,
 		};
 
-		_dbContext.Users.Add(user);
-		await _dbContext.SaveChangesAsync();
+		context.Users.Add(user);
+		await context.SaveChangesAsync();
 	}
 
 	public async Task UpdateNameAsync(int id, string name)
 	{
 		name = name.Trim();
 
-		UserEntity? user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
+		UserEntity? user = await context.Users.FirstOrDefaultAsync(u => u.Id == id);
 		if (user == null)
 			throw new NotFoundException("User not found.");
 
-		if (await _dbContext.Users.AnyAsync(u => u.Name == name))
+		if (await context.Users.AnyAsync(u => u.Name == name))
 			throw new BadRequestException($"Name '{user.Name}' is already taken.");
 
 		user.Name = name;
 
-		await _dbContext.SaveChangesAsync();
+		await context.SaveChangesAsync();
 	}
 
 	public async Task UpdatePasswordAsync(int id, string password)
 	{
-		UserEntity? user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
+		UserEntity? user = await context.Users.FirstOrDefaultAsync(u => u.Id == id);
 		if (user == null)
 			throw new NotFoundException($"User with ID '{id}' not found.");
 
@@ -95,12 +84,12 @@ public sealed class UserManager
 		user.PasswordHash = passwordHash;
 		user.PasswordSalt = passwordSalt;
 
-		await _dbContext.SaveChangesAsync();
+		await context.SaveChangesAsync();
 	}
 
 	public string GenerateJwt(UserEntity userEntity)
 	{
-		byte[] keyBytes = Encoding.ASCII.GetBytes(_authenticationOptions.Value.JwtKey);
+		byte[] keyBytes = Encoding.ASCII.GetBytes(authenticationOptions.Value.JwtKey);
 
 		// ! LINQ filters out null values.
 		SecurityTokenDescriptor tokenDescriptor = new()
@@ -124,7 +113,7 @@ public sealed class UserManager
 	{
 		try
 		{
-			byte[] keyBytes = Encoding.ASCII.GetBytes(_authenticationOptions.Value.JwtKey);
+			byte[] keyBytes = Encoding.ASCII.GetBytes(authenticationOptions.Value.JwtKey);
 
 			TokenValidationParameters tokenValidationParameters = new()
 			{
@@ -148,7 +137,7 @@ public sealed class UserManager
 			string? name = principal.GetName();
 
 			// ! Navigation property.
-			return _dbContext.Users
+			return context.Users
 				.Include(u => u.UserRoles)!
 					.ThenInclude(ur => ur.Role)
 				.FirstOrDefault(u => u.Name == name);
@@ -157,7 +146,7 @@ public sealed class UserManager
 		{
 			ex.Data.Add("JWT", jwt);
 			if (ex is not SecurityTokenExpiredException)
-				_logger.LogWarning(ex, "Exception occurred in GetUserByJwt.");
+				logger.LogWarning(ex, "Exception occurred in GetUserByJwt.");
 
 			return null;
 		}

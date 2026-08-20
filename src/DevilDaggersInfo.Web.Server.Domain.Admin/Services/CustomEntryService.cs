@@ -8,26 +8,17 @@ using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Admin.Services;
 
-public sealed class CustomEntryService
+public sealed class CustomEntryService(IFileSystemService fileSystemService, ApplicationDbContext dbContext)
 {
-	private readonly IFileSystemService _fileSystemService;
-	private readonly ApplicationDbContext _dbContext;
-
-	public CustomEntryService(IFileSystemService fileSystemService, ApplicationDbContext dbContext)
-	{
-		_fileSystemService = fileSystemService;
-		_dbContext = dbContext;
-	}
-
 	public async Task AddCustomEntryAsync(AddCustomEntry addCustomEntry)
 	{
-		if (!_dbContext.Players.Any(p => p.Id == addCustomEntry.PlayerId))
+		if (!dbContext.Players.Any(p => p.Id == addCustomEntry.PlayerId))
 			throw new AdminDomainException($"Player with ID '{addCustomEntry.PlayerId}' does not exist.");
 
-		if (!_dbContext.CustomLeaderboards.Any(cl => cl.Id == addCustomEntry.CustomLeaderboardId))
+		if (!dbContext.CustomLeaderboards.Any(cl => cl.Id == addCustomEntry.CustomLeaderboardId))
 			throw new AdminDomainException($"Custom leaderboard with ID '{addCustomEntry.CustomLeaderboardId}' does not exist.");
 
-		if (_dbContext.CustomEntries.Any(cl => cl.CustomLeaderboardId == addCustomEntry.CustomLeaderboardId && cl.PlayerId == addCustomEntry.PlayerId))
+		if (dbContext.CustomEntries.Any(cl => cl.CustomLeaderboardId == addCustomEntry.CustomLeaderboardId && cl.PlayerId == addCustomEntry.PlayerId))
 			throw new AdminDomainException("A score for this player already exists on this custom leaderboard.");
 
 		CustomEntryEntity customEntry = new()
@@ -52,19 +43,19 @@ public sealed class CustomEntryService
 			SubmitDate = addCustomEntry.SubmitDate,
 			Time = (int)GameTime.FromSeconds(addCustomEntry.Time).GameUnits,
 		};
-		_dbContext.CustomEntries.Add(customEntry);
-		await _dbContext.SaveChangesAsync();
+		dbContext.CustomEntries.Add(customEntry);
+		await dbContext.SaveChangesAsync();
 	}
 
 	public async Task EditCustomEntryAsync(int id, EditCustomEntry editCustomEntry)
 	{
-		if (!_dbContext.Players.Any(p => p.Id == editCustomEntry.PlayerId))
+		if (!dbContext.Players.Any(p => p.Id == editCustomEntry.PlayerId))
 			throw new AdminDomainException($"Player with ID '{editCustomEntry.PlayerId}' does not exist.");
 
-		if (!_dbContext.CustomLeaderboards.Any(cl => cl.Id == editCustomEntry.CustomLeaderboardId))
+		if (!dbContext.CustomLeaderboards.Any(cl => cl.Id == editCustomEntry.CustomLeaderboardId))
 			throw new AdminDomainException($"Custom leaderboard with ID '{editCustomEntry.CustomLeaderboardId}' does not exist.");
 
-		CustomEntryEntity? customEntry = _dbContext.CustomEntries.FirstOrDefault(ce => ce.Id == id);
+		CustomEntryEntity? customEntry = dbContext.CustomEntries.FirstOrDefault(ce => ce.Id == id);
 		if (customEntry == null)
 			throw new NotFoundException();
 
@@ -87,23 +78,23 @@ public sealed class CustomEntryService
 		customEntry.PlayerId = editCustomEntry.PlayerId;
 		customEntry.SubmitDate = editCustomEntry.SubmitDate;
 		customEntry.Time = (int)GameTime.FromSeconds(editCustomEntry.Time).GameUnits;
-		await _dbContext.SaveChangesAsync();
+		await dbContext.SaveChangesAsync();
 	}
 
 	public async Task DeleteCustomEntryAsync(int id)
 	{
-		CustomEntryEntity? customEntry = _dbContext.CustomEntries.FirstOrDefault(ced => ced.Id == id);
+		CustomEntryEntity? customEntry = dbContext.CustomEntries.FirstOrDefault(ced => ced.Id == id);
 		if (customEntry == null)
 			throw new NotFoundException();
 
-		CustomEntryDataEntity? customEntryData = _dbContext.CustomEntryData.FirstOrDefault(ced => ced.CustomEntryId == id);
+		CustomEntryDataEntity? customEntryData = dbContext.CustomEntryData.FirstOrDefault(ced => ced.CustomEntryId == id);
 		if (customEntryData != null)
-			_dbContext.CustomEntryData.Remove(customEntryData);
+			dbContext.CustomEntryData.Remove(customEntryData);
 
-		_dbContext.CustomEntries.Remove(customEntry);
-		await _dbContext.SaveChangesAsync();
+		dbContext.CustomEntries.Remove(customEntry);
+		await dbContext.SaveChangesAsync();
 
-		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{id}.ddreplay");
+		string path = Path.Combine(fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{id}.ddreplay");
 		bool fileExists = File.Exists(path);
 		if (fileExists)
 			File.Delete(path);

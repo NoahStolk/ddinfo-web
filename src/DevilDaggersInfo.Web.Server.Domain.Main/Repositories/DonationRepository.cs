@@ -5,18 +5,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Main.Repositories;
 
-public sealed class DonationRepository
+public sealed class DonationRepository(ApplicationDbContext dbContext)
 {
-	private readonly ApplicationDbContext _dbContext;
-
-	public DonationRepository(ApplicationDbContext dbContext)
-	{
-		_dbContext = dbContext;
-	}
-
 	public async Task<List<GetDonor>> GetDonorsAsync()
 	{
-		var donations = await _dbContext.Donations
+		var donations = await dbContext.Donations
 			.AsNoTracking()
 			.Include(d => d.Player)
 			.Select(d => new { d.Amount, d.ConvertedEuroCentsReceived, d.Currency, d.IsRefunded, d.PlayerId })
@@ -24,7 +17,7 @@ public sealed class DonationRepository
 			.ToListAsync();
 
 		List<int> donorIds = donations.ConvertAll(d => d.PlayerId);
-		var donors = await _dbContext.Players
+		var donors = await dbContext.Players
 			.AsNoTracking()
 			.Select(p => new { p.Id, p.HideDonations, p.PlayerName })
 			.Where(p => donorIds.Contains(p.Id))

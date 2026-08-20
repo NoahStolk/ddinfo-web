@@ -8,19 +8,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Admin.Repositories;
 
-public sealed class CustomEntryRepository
+public sealed class CustomEntryRepository(ApplicationDbContext dbContext)
 {
-	private readonly ApplicationDbContext _dbContext;
-
-	public CustomEntryRepository(ApplicationDbContext dbContext)
-	{
-		_dbContext = dbContext;
-	}
-
 	public async Task<Page<GetCustomEntryForOverview>> GetCustomEntriesAsync(string? filter, int pageIndex, int pageSize, CustomEntrySorting? sortBy, bool ascending)
 	{
 		// ! Navigation property.
-		IQueryable<CustomEntryEntity> customEntriesQuery = _dbContext.CustomEntries
+		IQueryable<CustomEntryEntity> customEntriesQuery = dbContext.CustomEntries
 			.AsNoTracking()
 		.Include(ce => ce.Player)
 			.Include(ce => ce.CustomLeaderboard)
@@ -73,7 +66,7 @@ public sealed class CustomEntryRepository
 
 	public async Task<GetCustomEntry> GetCustomEntryAsync(int id)
 	{
-		CustomEntryEntity? customEntry = await _dbContext.CustomEntries
+		CustomEntryEntity? customEntry = await dbContext.CustomEntries
 			.AsNoTracking()
 			.Include(ce => ce.CustomLeaderboard)
 			.FirstOrDefaultAsync(cl => cl.Id == id);

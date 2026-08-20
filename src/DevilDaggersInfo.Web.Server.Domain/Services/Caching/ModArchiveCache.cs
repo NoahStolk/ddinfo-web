@@ -9,18 +9,11 @@ using System.IO.Compression;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 
-public sealed class ModArchiveCache
+public sealed class ModArchiveCache(IFileSystemService fileSystemService)
 {
 	private readonly object _fileStreamLock = new();
 
 	private readonly ConcurrentDictionary<string, ModArchiveCacheData> _cache = new();
-
-	private readonly IFileSystemService _fileSystemService;
-
-	public ModArchiveCache(IFileSystemService fileSystemService)
-	{
-		_fileSystemService = fileSystemService;
-	}
 
 	public int Count => _cache.Count;
 
@@ -62,7 +55,7 @@ public sealed class ModArchiveCache
 
 	private async Task<ModArchiveCacheData?> LoadFromFileCacheAsync(string name)
 	{
-		string? json = await _fileSystemService.GetModArchiveCacheDataJsonAsync(name);
+		string? json = await fileSystemService.GetModArchiveCacheDataJsonAsync(name);
 		if (json == null)
 			return null;
 
@@ -115,7 +108,7 @@ public sealed class ModArchiveCache
 
 	private void WriteToFileCache(string name, ModArchiveCacheData archiveData)
 	{
-		string fileCacheDirectory = _fileSystemService.GetPath(DataSubDirectory.ModArchiveCache);
+		string fileCacheDirectory = fileSystemService.GetPath(DataSubDirectory.ModArchiveCache);
 		Directory.CreateDirectory(fileCacheDirectory);
 
 		File.WriteAllText(Path.Combine(fileCacheDirectory, $"{name}.json"), JsonConvert.SerializeObject(archiveData));
@@ -123,7 +116,7 @@ public sealed class ModArchiveCache
 
 	public async Task LoadEntireFileCacheAsync()
 	{
-		string fileCacheDirectory = _fileSystemService.GetPath(DataSubDirectory.ModArchiveCache);
+		string fileCacheDirectory = fileSystemService.GetPath(DataSubDirectory.ModArchiveCache);
 		Directory.CreateDirectory(fileCacheDirectory);
 
 		foreach (string path in Directory.GetFiles(fileCacheDirectory, "*.json"))

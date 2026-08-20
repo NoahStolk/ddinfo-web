@@ -7,24 +7,15 @@ using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Main.Repositories;
 
-public sealed class LeaderboardHistoryStatisticsRepository
+public sealed class LeaderboardHistoryStatisticsRepository(IFileSystemService fileSystemService, ILeaderboardHistoryCache leaderboardHistoryCache)
 {
-	private readonly IFileSystemService _fileSystemService;
-	private readonly ILeaderboardHistoryCache _leaderboardHistoryCache;
-
-	public LeaderboardHistoryStatisticsRepository(IFileSystemService fileSystemService, ILeaderboardHistoryCache leaderboardHistoryCache)
-	{
-		_fileSystemService = fileSystemService;
-		_leaderboardHistoryCache = leaderboardHistoryCache;
-	}
-
 	public List<GetLeaderboardHistoryStatistics> GetLeaderboardHistoryStatistics()
 	{
-		string? firstPath = _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory).Where(p => p.EndsWith(".bin")).MinBy(p => p);
+		string? firstPath = fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory).Where(p => p.EndsWith(".bin")).MinBy(p => p);
 		if (firstPath == null)
 			return [];
 
-		LeaderboardHistory current = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(firstPath);
+		LeaderboardHistory current = leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(firstPath);
 
 		ulong daggersFiredGlobal = current.DaggersFiredGlobal;
 		ulong daggersHitGlobal = current.DaggersHitGlobal;
@@ -47,8 +38,8 @@ public sealed class LeaderboardHistoryStatisticsRepository
 		while (dateTime < DateTime.UtcNow.AddDays(-dayOffset))
 		{
 			dateTime = dateTime.AddDays(dayOffset);
-			string historyPath = _fileSystemService.GetLeaderboardHistoryPathFromDate(dateTime);
-			current = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(historyPath);
+			string historyPath = fileSystemService.GetLeaderboardHistoryPathFromDate(dateTime);
+			current = leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(historyPath);
 
 			bool daggersFiredUpdated = false;
 			bool daggersHitUpdated = false;

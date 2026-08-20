@@ -6,18 +6,11 @@ using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Admin.Services;
 
-public sealed class DonationService
+public sealed class DonationService(ApplicationDbContext dbContext)
 {
-	private readonly ApplicationDbContext _dbContext;
-
-	public DonationService(ApplicationDbContext dbContext)
-	{
-		_dbContext = dbContext;
-	}
-
 	public async Task AddDonationAsync(AddDonation addDonation)
 	{
-		if (!_dbContext.Players.Any(p => p.Id == addDonation.PlayerId))
+		if (!dbContext.Players.Any(p => p.Id == addDonation.PlayerId))
 			throw new AdminDomainException($"Player with ID '{addDonation.PlayerId}' does not exist.");
 
 		DonationEntity donation = new()
@@ -30,16 +23,16 @@ public sealed class DonationService
 			Note = addDonation.Note,
 			PlayerId = addDonation.PlayerId,
 		};
-		_dbContext.Donations.Add(donation);
-		await _dbContext.SaveChangesAsync();
+		dbContext.Donations.Add(donation);
+		await dbContext.SaveChangesAsync();
 	}
 
 	public async Task EditDonationAsync(int id, EditDonation editDonation)
 	{
-		if (!_dbContext.Players.Any(p => p.Id == editDonation.PlayerId))
+		if (!dbContext.Players.Any(p => p.Id == editDonation.PlayerId))
 			throw new AdminDomainException($"Player with ID '{editDonation.PlayerId}' does not exist.");
 
-		DonationEntity? donation = _dbContext.Donations.FirstOrDefault(d => d.Id == id);
+		DonationEntity? donation = dbContext.Donations.FirstOrDefault(d => d.Id == id);
 		if (donation == null)
 			throw new NotFoundException();
 
@@ -49,16 +42,16 @@ public sealed class DonationService
 		donation.IsRefunded = editDonation.IsRefunded;
 		donation.Note = editDonation.Note;
 		donation.PlayerId = editDonation.PlayerId;
-		await _dbContext.SaveChangesAsync();
+		await dbContext.SaveChangesAsync();
 	}
 
 	public async Task DeleteDonationAsync(int id)
 	{
-		DonationEntity? donation = _dbContext.Donations.FirstOrDefault(d => d.Id == id);
+		DonationEntity? donation = dbContext.Donations.FirstOrDefault(d => d.Id == id);
 		if (donation == null)
 			throw new NotFoundException();
 
-		_dbContext.Donations.Remove(donation);
-		await _dbContext.SaveChangesAsync();
+		dbContext.Donations.Remove(donation);
+		await dbContext.SaveChangesAsync();
 	}
 }

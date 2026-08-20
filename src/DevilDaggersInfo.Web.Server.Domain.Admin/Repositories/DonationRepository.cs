@@ -8,18 +8,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Admin.Repositories;
 
-public sealed class DonationRepository
+public sealed class DonationRepository(ApplicationDbContext dbContext)
 {
-	private readonly ApplicationDbContext _dbContext;
-
-	public DonationRepository(ApplicationDbContext dbContext)
-	{
-		_dbContext = dbContext;
-	}
-
 	public async Task<Page<GetDonationForOverview>> GetDonationsAsync(string? filter, int pageIndex, int pageSize, DonationSorting? sortBy, bool ascending)
 	{
-		IQueryable<DonationEntity> donationsQuery = _dbContext.Donations
+		IQueryable<DonationEntity> donationsQuery = dbContext.Donations
 			.AsNoTracking()
 			.Include(d => d.Player);
 
@@ -58,7 +51,7 @@ public sealed class DonationRepository
 
 	public async Task<GetDonation> GetDonationAsync(int id)
 	{
-		DonationEntity? donation = await _dbContext.Donations
+		DonationEntity? donation = await dbContext.Donations
 			.AsNoTracking()
 			.FirstOrDefaultAsync(d => d.Id == id);
 		if (donation == null)

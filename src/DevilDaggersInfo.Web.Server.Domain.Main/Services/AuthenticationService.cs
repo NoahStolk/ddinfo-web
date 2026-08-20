@@ -6,20 +6,11 @@ using Microsoft.Extensions.Logging;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Main.Services;
 
-public sealed class AuthenticationService
+public sealed class AuthenticationService(UserManager userManager, ILogger<AuthenticationService> logger)
 {
-	private readonly UserManager _userManager;
-	private readonly ILogger<AuthenticationService> _logger;
-
-	public AuthenticationService(UserManager userManager, ILogger<AuthenticationService> logger)
-	{
-		_userManager = userManager;
-		_logger = logger;
-	}
-
 	public AuthenticationResponse Authenticate(AuthenticationRequest authenticationRequest)
 	{
-		UserEntity? user = _userManager.GetUserByJwt(authenticationRequest.Jwt);
+		UserEntity? user = userManager.GetUserByJwt(authenticationRequest.Jwt);
 		if (user == null)
 			throw new BadRequestException("Failed to authenticate. The token is invalid.");
 
@@ -35,16 +26,16 @@ public sealed class AuthenticationService
 
 	public LoginResponse Login(LoginRequest loginRequest)
 	{
-		UserEntity? user = _userManager.Authenticate(loginRequest.Name, loginRequest.Password);
+		UserEntity? user = userManager.Authenticate(loginRequest.Name, loginRequest.Password);
 		if (user == null)
 		{
-			_logger.LogInformation("User '{Name}' failed to login.", loginRequest.Name);
+			logger.LogInformation("User '{Name}' failed to login.", loginRequest.Name);
 			throw new BadRequestException("Username or password is incorrect.");
 		}
 
-		string tokenString = _userManager.GenerateJwt(user);
+		string tokenString = userManager.GenerateJwt(user);
 
-		_logger.LogInformation("User '{Name}' logged in successfully.", loginRequest.Name);
+		logger.LogInformation("User '{Name}' logged in successfully.", loginRequest.Name);
 		return new LoginResponse
 		{
 			Id = user.Id,
@@ -60,12 +51,12 @@ public sealed class AuthenticationService
 
 		try
 		{
-			await _userManager.CreateAsync(registrationRequest.Name, registrationRequest.Password);
-			_logger.LogInformation("User '{Name}' registered successfully.", registrationRequest.Name);
+			await userManager.CreateAsync(registrationRequest.Name, registrationRequest.Password);
+			logger.LogInformation("User '{Name}' registered successfully.", registrationRequest.Name);
 		}
 		catch (Exception ex)
 		{
-			_logger.LogInformation(ex, "User '{Name}' failed to register.", registrationRequest.Name);
+			logger.LogInformation(ex, "User '{Name}' failed to register.", registrationRequest.Name);
 			throw new BadRequestException(ex.Message);
 		}
 	}
@@ -75,21 +66,21 @@ public sealed class AuthenticationService
 		if (updateNameRequest.NewName == updateNameRequest.CurrentName)
 			throw new BadRequestException("The same username was entered.");
 
-		UserEntity? user = _userManager.Authenticate(updateNameRequest.CurrentName, updateNameRequest.CurrentPassword);
+		UserEntity? user = userManager.Authenticate(updateNameRequest.CurrentName, updateNameRequest.CurrentPassword);
 		if (user == null)
 		{
-			_logger.LogInformation("User '{Name}' failed to authenticate while attempting to update name.", updateNameRequest.CurrentName);
+			logger.LogInformation("User '{Name}' failed to authenticate while attempting to update name.", updateNameRequest.CurrentName);
 			throw new BadRequestException("Username or password is incorrect.");
 		}
 
 		try
 		{
-			await _userManager.UpdateNameAsync(user.Id, updateNameRequest.NewName);
-			_logger.LogInformation("User '{OldName}' changed their name to '{NewName}'.", updateNameRequest.CurrentName, updateNameRequest.NewName);
+			await userManager.UpdateNameAsync(user.Id, updateNameRequest.NewName);
+			logger.LogInformation("User '{OldName}' changed their name to '{NewName}'.", updateNameRequest.CurrentName, updateNameRequest.NewName);
 		}
 		catch (Exception ex)
 		{
-			_logger.LogWarning(ex, "User '{Name}' failed to update name.", updateNameRequest.CurrentName);
+			logger.LogWarning(ex, "User '{Name}' failed to update name.", updateNameRequest.CurrentName);
 			throw new BadRequestException(ex.Message);
 		}
 	}
@@ -102,20 +93,20 @@ public sealed class AuthenticationService
 		if (updatePasswordRequest.NewPassword == updatePasswordRequest.CurrentPassword)
 			throw new BadRequestException("The same password was entered.");
 
-		UserEntity? user = _userManager.Authenticate(updatePasswordRequest.CurrentName, updatePasswordRequest.CurrentPassword);
+		UserEntity? user = userManager.Authenticate(updatePasswordRequest.CurrentName, updatePasswordRequest.CurrentPassword);
 		if (user == null)
 		{
-			_logger.LogInformation("User '{Name}' failed to authenticate while attempting to update password.", updatePasswordRequest.CurrentName);
+			logger.LogInformation("User '{Name}' failed to authenticate while attempting to update password.", updatePasswordRequest.CurrentName);
 			throw new BadRequestException("Username or password is incorrect.");
 		}
 
 		try
 		{
-			await _userManager.UpdatePasswordAsync(user.Id, updatePasswordRequest.NewPassword);
+			await userManager.UpdatePasswordAsync(user.Id, updatePasswordRequest.NewPassword);
 		}
 		catch (Exception ex)
 		{
-			_logger.LogWarning(ex, "User '{Name}' failed to update password.", updatePasswordRequest.CurrentName);
+			logger.LogWarning(ex, "User '{Name}' failed to update password.", updatePasswordRequest.CurrentName);
 			throw new BadRequestException(ex.Message);
 		}
 	}

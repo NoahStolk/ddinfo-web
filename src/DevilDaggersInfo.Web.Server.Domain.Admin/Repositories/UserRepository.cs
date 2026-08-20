@@ -8,19 +8,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Admin.Repositories;
 
-public sealed class UserRepository
+public sealed class UserRepository(ApplicationDbContext dbContext)
 {
-	private readonly ApplicationDbContext _dbContext;
-
-	public UserRepository(ApplicationDbContext dbContext)
-	{
-		_dbContext = dbContext;
-	}
-
 	public async Task<Page<GetUser>> GetUsersAsync(string? filter, int pageIndex, int pageSize, UserSorting? sortBy, bool ascending)
 	{
 		// ! Navigation property.
-		IQueryable<UserEntity> usersQuery = _dbContext.Users
+		IQueryable<UserEntity> usersQuery = dbContext.Users
 			.AsNoTracking()
 			.Include(u => u.UserRoles!)
 				.ThenInclude(ur => ur.Role)
@@ -69,7 +62,7 @@ public sealed class UserRepository
 	public async Task<GetUser> GetUserAsync(int id)
 	{
 		// ! Navigation property.
-		UserEntity? user = await _dbContext.Users
+		UserEntity? user = await dbContext.Users
 			.AsNoTracking()
 			.Include(u => u.UserRoles!)
 				.ThenInclude(ur => ur.Role)

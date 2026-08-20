@@ -3,17 +3,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Admin.Repositories;
 
-public sealed class MarkerRepository
+public sealed class MarkerRepository(ApplicationDbContext dbContext)
 {
-	private readonly ApplicationDbContext _dbContext;
-
-	public MarkerRepository(ApplicationDbContext dbContext)
-	{
-		_dbContext = dbContext;
-	}
-
 	public async Task<List<string>> GetMarkerNamesAsync()
 	{
-		return await _dbContext.Markers.AsNoTracking().Select(m => m.Name).ToListAsync();
+		return await dbContext.Markers.AsNoTracking().Select(m => m.Name).ToListAsync();
 	}
 }

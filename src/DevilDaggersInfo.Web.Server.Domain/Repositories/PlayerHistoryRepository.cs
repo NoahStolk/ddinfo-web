@@ -10,27 +10,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Repositories;
 
-public sealed class PlayerHistoryRepository
+public sealed class PlayerHistoryRepository(ApplicationDbContext dbContext, IFileSystemService fileSystemService, ILeaderboardHistoryCache leaderboardHistoryCache)
 {
-	private readonly ApplicationDbContext _dbContext;
-	private readonly IFileSystemService _fileSystemService;
-	private readonly ILeaderboardHistoryCache _leaderboardHistoryCache;
-
-	public PlayerHistoryRepository(ApplicationDbContext dbContext, IFileSystemService fileSystemService, ILeaderboardHistoryCache leaderboardHistoryCache)
-	{
-		_dbContext = dbContext;
-		_fileSystemService = fileSystemService;
-		_leaderboardHistoryCache = leaderboardHistoryCache;
-	}
-
 	public PlayerHistory GetPlayerHistoryById(int id)
 	{
 		// TODO: Add caching.
 		// TODO: Alts may be valid. We would need to check if the main account is below the current player and the alt is above it, then it should not be included in illegitimateScoresAbove.
 		// This is kind of annoying to do, so we'll just ignore it for now.
-		List<int> bannedPlayerIds = [.. _dbContext.Players.Select(p => new { p.Id, p.BanType }).Where(p => p.BanType != BanType.NotBanned).Select(p => p.Id)];
+		List<int> bannedPlayerIds = [.. dbContext.Players.Select(p => new { p.Id, p.BanType }).Where(p => p.BanType != BanType.NotBanned).Select(p => p.Id)];
 
-		var player = _dbContext.Players
+		var player = dbContext.Players
 			.AsNoTracking()
 			.Select(p => new { p.Id, p.HidePastUsernames })
 			.FirstOrDefault(p => p.Id == id);
@@ -55,9 +44,9 @@ public sealed class PlayerHistoryRepository
 		// chronological order.
 		List<LeaderboardHistory> leaderboardHistories =
 		[
-			.. _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory)
+			.. fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory)
 				.Where(p => p.EndsWith(".bin"))
-				.Select(p => _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(p))
+				.Select(leaderboardHistoryCache.GetLeaderboardHistoryByFilePath)
 				.OrderBy(lbh => lbh.DateTime),
 		];
 

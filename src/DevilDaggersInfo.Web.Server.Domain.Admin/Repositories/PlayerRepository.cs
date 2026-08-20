@@ -8,18 +8,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Admin.Repositories;
 
-public sealed class PlayerRepository
+public sealed class PlayerRepository(ApplicationDbContext dbContext)
 {
-	private readonly ApplicationDbContext _dbContext;
-
-	public PlayerRepository(ApplicationDbContext dbContext)
-	{
-		_dbContext = dbContext;
-	}
-
 	public async Task<Page<GetPlayerForOverview>> GetPlayersAsync(string? filter, int pageIndex, int pageSize, PlayerSorting? sortBy, bool ascending)
 	{
-		IQueryable<PlayerEntity> playersQuery = _dbContext.Players.AsNoTracking();
+		IQueryable<PlayerEntity> playersQuery = dbContext.Players.AsNoTracking();
 
 		if (!string.IsNullOrWhiteSpace(filter))
 		{
@@ -72,7 +65,7 @@ public sealed class PlayerRepository
 
 	public async Task<List<GetPlayerName>> GetPlayerNamesAsync()
 	{
-		var players = await _dbContext.Players
+		var players = await dbContext.Players
 			.AsNoTracking()
 			.Select(p => new { p.Id, p.PlayerName })
 			.ToListAsync();
@@ -86,7 +79,7 @@ public sealed class PlayerRepository
 
 	public async Task<GetPlayer> GetPlayerAsync(int id)
 	{
-		PlayerEntity? player = await _dbContext.Players
+		PlayerEntity? player = await dbContext.Players
 			.AsNoTracking()
 			.Include(p => p.PlayerMods)
 			.FirstOrDefaultAsync(p => p.Id == id);

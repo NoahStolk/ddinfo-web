@@ -6,18 +6,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Repositories;
 
-public sealed class PlayerRepository
+public sealed class PlayerRepository(ApplicationDbContext dbContext)
 {
-	private readonly ApplicationDbContext _dbContext;
-
-	public PlayerRepository(ApplicationDbContext dbContext)
-	{
-		_dbContext = dbContext;
-	}
-
 	public async Task<List<PlayerForLeaderboard>> GetPlayersForLeaderboardAsync()
 	{
-		return await _dbContext.Players
+		return await dbContext.Players
 			.AsNoTracking()
 			.Select(p => new PlayerForLeaderboard
 			{
@@ -32,7 +25,7 @@ public sealed class PlayerRepository
 
 	public async Task<List<PlayerForSettings>> GetPlayersForSettingsAsync()
 	{
-		List<PlayerEntity> players = await _dbContext.Players
+		List<PlayerEntity> players = await dbContext.Players
 			.AsNoTracking()
 			.Where(p => p.BanType == BanType.NotBanned && !p.HideSettings)
 			.ToListAsync();
@@ -43,20 +36,20 @@ public sealed class PlayerRepository
 
 	public async Task<Player> GetPlayerAsync(int id)
 	{
-		PlayerEntity? player = await _dbContext.Players
+		PlayerEntity? player = await dbContext.Players
 			.AsNoTracking()
 			.FirstOrDefaultAsync(p => p.Id == id);
 		if (player == null)
 			throw new NotFoundException();
 
-		bool isPublicDonor = !player.HideDonations && await _dbContext.Donations.AnyAsync(d => d.PlayerId == id && !d.IsRefunded && d.ConvertedEuroCentsReceived > 0);
+		bool isPublicDonor = !player.HideDonations && await dbContext.Donations.AnyAsync(d => d.PlayerId == id && !d.IsRefunded && d.ConvertedEuroCentsReceived > 0);
 		return Player.FromEntity(player, isPublicDonor);
 	}
 
 	public async Task<List<PlayerCommonName>> GetCommonNamesAsync()
 	{
 		// ! LINQ filters out null values.
-		return await _dbContext.Players
+		return await dbContext.Players
 			.AsNoTracking()
 			.Select(p => new { p.Id, p.CommonName })
 			.Where(p => p.CommonName != null)
@@ -70,7 +63,7 @@ public sealed class PlayerRepository
 
 	public async Task<string?> GetPlayerCountryCodeAsync(int id)
 	{
-		var player = await _dbContext.Players.AsNoTracking().Select(p => new { p.Id, p.CountryCode }).FirstOrDefaultAsync(p => p.Id == id);
+		var player = await dbContext.Players.AsNoTracking().Select(p => new { p.Id, p.CountryCode }).FirstOrDefaultAsync(p => p.Id == id);
 		return player?.CountryCode;
 	}
 }

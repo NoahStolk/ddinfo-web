@@ -4,18 +4,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Repositories;
 
-public sealed class MarkerRepository
+public sealed class MarkerRepository(ApplicationDbContext dbContext)
 {
-	private readonly ApplicationDbContext _dbContext;
-
-	public MarkerRepository(ApplicationDbContext dbContext)
-	{
-		_dbContext = dbContext;
-	}
-
 	public async Task<long> GetMarkerAsync(string name)
 	{
-		MarkerEntity? marker = await _dbContext.Markers.FirstOrDefaultAsync(m => m.Name == name);
+		MarkerEntity? marker = await dbContext.Markers.FirstOrDefaultAsync(m => m.Name == name);
 		if (marker == null)
 			throw new NotFoundException($"Marker key '{name}' was not found in database.");
 

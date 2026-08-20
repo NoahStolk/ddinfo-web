@@ -11,29 +11,18 @@ using System.IO.Compression;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Services;
 
-public sealed class ModArchiveProcessor
+public sealed class ModArchiveProcessor(IFileSystemService fileSystemService, ModArchiveCache modArchiveCache, ModArchiveAccessor modArchiveAccessor)
 {
-	private readonly IFileSystemService _fileSystemService;
-	private readonly ModArchiveCache _modArchiveCache;
-	private readonly ModArchiveAccessor _modArchiveAccessor;
-
-	public ModArchiveProcessor(IFileSystemService fileSystemService, ModArchiveCache modArchiveCache, ModArchiveAccessor modArchiveAccessor)
-	{
-		_fileSystemService = fileSystemService;
-		_modArchiveCache = modArchiveCache;
-		_modArchiveAccessor = modArchiveAccessor;
-	}
-
 	public async Task ProcessModBinaryUploadAsync(string modName, Dictionary<BinaryName, byte[]> binaries)
 	{
 		// Validate if there is enough space.
-		DirectoryInfo modDirectory = new(_fileSystemService.GetPath(DataSubDirectory.Mods));
+		DirectoryInfo modDirectory = new(fileSystemService.GetPath(DataSubDirectory.Mods));
 		long usedSpace = modDirectory.EnumerateFiles("*.*", SearchOption.AllDirectories).Sum(fi => fi.Length);
 		if (usedSpace > ModConstants.BinaryMaxHostingSpace)
 			throw new Exception($"Cannot upload mod with binaries because the limit of {ModConstants.BinaryMaxHostingSpace:N0} bytes is exceeded.");
 
 		// Add binaries to new zip archive.
-		string zipFilePath = _modArchiveAccessor.GetModArchivePath(modName);
+		string zipFilePath = modArchiveAccessor.GetModArchivePath(modName);
 
 		try
 		{
@@ -58,7 +47,7 @@ public sealed class ModArchiveProcessor
 
 		try
 		{
-			List<ModBinaryCacheData> addedBinaries = (await _modArchiveCache.GetArchiveDataByBytesAsync(modName, zipBytes)).Binaries;
+			List<ModBinaryCacheData> addedBinaries = (await modArchiveCache.GetArchiveDataByBytesAsync(modName, zipBytes)).Binaries;
 			if (addedBinaries.Count == 0)
 				throw new InvalidModArchiveException("Mod archive does not contain any binaries.");
 
@@ -98,7 +87,7 @@ public sealed class ModArchiveProcessor
 
 		// Determine which binaries to keep.
 		Dictionary<BinaryName, byte[]> keptBinaries = new();
-		string originalArchivePath = _modArchiveAccessor.GetModArchivePath(originalModName);
+		string originalArchivePath = modArchiveAccessor.GetModArchivePath(originalModName);
 		if (File.Exists(originalArchivePath))
 		{
 			await using ZipArchive originalArchive = await ZipFile.OpenAsync(originalArchivePath, ZipArchiveMode.Read);
@@ -142,17 +131,17 @@ public sealed class ModArchiveProcessor
 	public void DeleteModFilesAndClearCache(string modName)
 	{
 		// Delete archive zip file.
-		string archivePath = _modArchiveAccessor.GetModArchivePath(modName);
+		string archivePath = modArchiveAccessor.GetModArchivePath(modName);
 		if (File.Exists(archivePath))
 		{
 			File.Delete(archivePath);
 
 			// Clear entire memory cache (can't clear individual entries).
-			_modArchiveCache.Clear();
+			modArchiveCache.Clear();
 		}
 
 		// Clear file cache for this mod.
-		string cachePath = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ModArchiveCache), $"{modName}.json");
+		string cachePath = Path.Combine(fileSystemService.GetPath(DataSubDirectory.ModArchiveCache), $"{modName}.json");
 		if (File.Exists(cachePath))
 			File.Delete(cachePath);
 	}

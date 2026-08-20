@@ -6,20 +6,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Repositories;
 
-public sealed class CustomEntryRepository
+public sealed class CustomEntryRepository(ApplicationDbContext dbContext, IFileSystemService fileSystemService)
 {
-	private readonly ApplicationDbContext _dbContext;
-	private readonly IFileSystemService _fileSystemService;
-
-	public CustomEntryRepository(ApplicationDbContext dbContext, IFileSystemService fileSystemService)
-	{
-		_dbContext = dbContext;
-		_fileSystemService = fileSystemService;
-	}
-
 	public async Task<byte[]> GetCustomEntryReplayBufferByIdAsync(int id)
 	{
-		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{id}.ddreplay");
+		string path = Path.Combine(fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{id}.ddreplay");
 		if (!File.Exists(path))
 			throw new NotFoundException($"Replay file with ID '{id}' could not be found.");
 
@@ -28,12 +19,12 @@ public sealed class CustomEntryRepository
 
 	public async Task<(string FileName, byte[] Contents)> GetCustomEntryReplayByIdAsync(int id)
 	{
-		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{id}.ddreplay");
+		string path = Path.Combine(fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{id}.ddreplay");
 		if (!File.Exists(path))
 			throw new NotFoundException($"Replay file with ID '{id}' could not be found.");
 
 		// ! Navigation property.
-		var customEntry = await _dbContext.CustomEntries
+		var customEntry = await dbContext.CustomEntries
 			.AsNoTracking()
 			.Select(ce => new
 			{
@@ -56,7 +47,7 @@ public sealed class CustomEntryRepository
 		return
 		[
 			.. ids
-				.Where(id => File.Exists(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{id}.ddreplay")))
+				.Where(id => File.Exists(Path.Combine(fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{id}.ddreplay")))
 				.Select(id => id),
 		];
 	}

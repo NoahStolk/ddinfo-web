@@ -8,19 +8,12 @@ using System.Security.Claims;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Main.Repositories;
 
-public sealed class PlayerProfileRepository
+public sealed class PlayerProfileRepository(ApplicationDbContext dbContext)
 {
-	private readonly ApplicationDbContext _dbContext;
-
-	public PlayerProfileRepository(ApplicationDbContext dbContext)
-	{
-		_dbContext = dbContext;
-	}
-
 	public async Task<GetPlayerProfile> GetProfileAsync(ClaimsPrincipal claimsPrincipal, int id)
 	{
 		string? userName = claimsPrincipal.GetName();
-		UserEntity? user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Name == userName);
+		UserEntity? user = await dbContext.Users.FirstOrDefaultAsync(u => u.Name == userName);
 		if (user == null)
 			throw new UnauthorizedException();
 
@@ -30,7 +23,7 @@ public sealed class PlayerProfileRepository
 		if (user.PlayerId != id)
 			throw new ForbiddenException("Not allowed to access another player's profile.");
 
-		PlayerEntity? player = await _dbContext.Players
+		PlayerEntity? player = await dbContext.Players
 			.AsNoTracking()
 			.FirstOrDefaultAsync(p => p.Id == id);
 		if (player == null)

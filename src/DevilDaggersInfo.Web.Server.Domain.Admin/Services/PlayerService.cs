@@ -7,17 +7,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Admin.Services;
 
-public sealed class PlayerService
+public sealed class PlayerService(ApplicationDbContext dbContext, IDdLeaderboardService ddLeaderboardService)
 {
-	private readonly ApplicationDbContext _dbContext;
-	private readonly IDdLeaderboardService _ddLeaderboardService;
-
-	public PlayerService(ApplicationDbContext dbContext, IDdLeaderboardService ddLeaderboardService)
-	{
-		_dbContext = dbContext;
-		_ddLeaderboardService = ddLeaderboardService;
-	}
-
 	public async Task AddPlayerAsync(ApiSpec.Admin.Players.AddPlayer addPlayer)
 	{
 		Validate(
@@ -36,12 +27,12 @@ public sealed class PlayerService
 			banDescription: addPlayer.BanDescription,
 			banResponsibleId: addPlayer.BanResponsibleId);
 
-		if (await _dbContext.Players.AnyAsync(p => p.Id == addPlayer.Id))
+		if (await dbContext.Players.AnyAsync(p => p.Id == addPlayer.Id))
 			throw new AdminDomainException($"Player with ID '{addPlayer.Id}' already exists.");
 
 		foreach (int modId in addPlayer.ModIds ?? [])
 		{
-			if (!await _dbContext.Mods.AnyAsync(m => m.Id == modId))
+			if (!await dbContext.Mods.AnyAsync(m => m.Id == modId))
 				throw new AdminDomainException($"Mod with ID '{modId}' does not exist.");
 		}
 
@@ -70,11 +61,11 @@ public sealed class PlayerService
 			HideDonations = addPlayer.HideDonations,
 			HidePastUsernames = addPlayer.HidePastUsernames,
 		};
-		_dbContext.Players.Add(player);
-		await _dbContext.SaveChangesAsync(); // Save changes here so PlayerMod entities can be assigned properly.
+		dbContext.Players.Add(player);
+		await dbContext.SaveChangesAsync(); // Save changes here so PlayerMod entities can be assigned properly.
 
 		UpdatePlayerMods(addPlayer.ModIds ?? [], player.Id);
-		await _dbContext.SaveChangesAsync();
+		await dbContext.SaveChangesAsync();
 	}
 
 	public async Task EditPlayerAsync(int id, ApiSpec.Admin.Players.EditPlayer editPlayer)
@@ -97,11 +88,11 @@ public sealed class PlayerService
 
 		foreach (int modId in editPlayer.ModIds ?? [])
 		{
-			if (!await _dbContext.Mods.AnyAsync(m => m.Id == modId))
+			if (!await dbContext.Mods.AnyAsync(m => m.Id == modId))
 				throw new AdminDomainException($"Mod with ID '{modId}' does not exist.");
 		}
 
-		PlayerEntity? player = await _dbContext.Players
+		PlayerEntity? player = await dbContext.Players
 			.Include(p => p.PlayerMods)
 			.FirstOrDefaultAsync(p => p.Id == id);
 		if (player == null)
@@ -130,36 +121,36 @@ public sealed class PlayerService
 		player.IsBannedFromDdcl = editPlayer.IsBannedFromDdcl;
 
 		UpdatePlayerMods(editPlayer.ModIds ?? [], player.Id);
-		await _dbContext.SaveChangesAsync();
+		await dbContext.SaveChangesAsync();
 	}
 
 	public async Task DeletePlayerAsync(int id)
 	{
-		PlayerEntity? player = await _dbContext.Players.FirstOrDefaultAsync(p => p.Id == id);
+		PlayerEntity? player = await dbContext.Players.FirstOrDefaultAsync(p => p.Id == id);
 		if (player == null)
 			throw new NotFoundException($"Player with ID '{id}' does not exist.");
 
-		if (await _dbContext.CustomEntries.AnyAsync(ce => ce.PlayerId == id))
+		if (await dbContext.CustomEntries.AnyAsync(ce => ce.PlayerId == id))
 			throw new AdminDomainException("Player with custom leaderboard scores cannot be deleted.");
 
-		if (await _dbContext.Donations.AnyAsync(d => d.PlayerId == id))
+		if (await dbContext.Donations.AnyAsync(d => d.PlayerId == id))
 			throw new AdminDomainException("Player with donations cannot be deleted.");
 
-		if (await _dbContext.PlayerMods.AnyAsync(pam => pam.PlayerId == id))
+		if (await dbContext.PlayerMods.AnyAsync(pam => pam.PlayerId == id))
 			throw new AdminDomainException("Player with mods cannot be deleted.");
 
-		if (await _dbContext.Spawnsets.AnyAsync(sf => sf.PlayerId == id))
+		if (await dbContext.Spawnsets.AnyAsync(sf => sf.PlayerId == id))
 			throw new AdminDomainException("Player with spawnsets cannot be deleted.");
 
-		_dbContext.Players.Remove(player);
-		await _dbContext.SaveChangesAsync();
+		dbContext.Players.Remove(player);
+		await dbContext.SaveChangesAsync();
 	}
 
 	private async Task<string> GetPlayerName(int id)
 	{
 		try
 		{
-			return (await _ddLeaderboardService.GetEntryById(id)).Username;
+			return (await ddLeaderboardService.GetEntryById(id)).Username;
 		}
 		catch
 		{
@@ -171,12 +162,12 @@ public sealed class PlayerService
 	{
 		foreach (PlayerModEntity newEntity in modIds.ConvertAll(ami => new PlayerModEntity { ModId = ami, PlayerId = playerId }))
 		{
-			if (!_dbContext.PlayerMods.Any(pam => pam.ModId == newEntity.ModId && pam.PlayerId == newEntity.PlayerId))
-				_dbContext.PlayerMods.Add(newEntity);
+			if (!dbContext.PlayerMods.Any(pam => pam.ModId == newEntity.ModId && pam.PlayerId == newEntity.PlayerId))
+				dbContext.PlayerMods.Add(newEntity);
 		}
 
-		foreach (PlayerModEntity entityToRemove in _dbContext.PlayerMods.Where(pam => pam.PlayerId == playerId && !modIds.Contains(pam.ModId)))
-			_dbContext.PlayerMods.Remove(entityToRemove);
+		foreach (PlayerModEntity entityToRemove in dbContext.PlayerMods.Where(pam => pam.PlayerId == playerId && !modIds.Contains(pam.ModId)))
+			dbContext.PlayerMods.Remove(entityToRemove);
 	}
 
 	private static void Validate(

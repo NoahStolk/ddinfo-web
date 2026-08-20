@@ -8,18 +8,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Admin.Repositories;
 
-public sealed class CustomLeaderboardRepository
+public sealed class CustomLeaderboardRepository(ApplicationDbContext dbContext)
 {
-	private readonly ApplicationDbContext _dbContext;
-
-	public CustomLeaderboardRepository(ApplicationDbContext dbContext)
-	{
-		_dbContext = dbContext;
-	}
-
 	public async Task<Page<GetCustomLeaderboardForOverview>> GetCustomLeaderboardsAsync(string? filter, int pageIndex, int pageSize, CustomLeaderboardSorting? sortBy, bool ascending)
 	{
-		IQueryable<CustomLeaderboardEntity> customLeaderboardsQuery = _dbContext.CustomLeaderboards
+		IQueryable<CustomLeaderboardEntity> customLeaderboardsQuery = dbContext.CustomLeaderboards
 			.AsNoTracking()
 			.Include(cl => cl.Spawnset);
 
@@ -61,7 +54,7 @@ public sealed class CustomLeaderboardRepository
 	public async Task<GetCustomLeaderboard> GetCustomLeaderboardAsync(int id)
 	{
 		// ! Navigation property.
-		CustomLeaderboardEntity? customLeaderboard = await _dbContext.CustomLeaderboards
+		CustomLeaderboardEntity? customLeaderboard = await dbContext.CustomLeaderboards
 			.AsNoTracking()
 			.Include(cl => cl.Spawnset)
 				.ThenInclude(sf => sf!.Player)

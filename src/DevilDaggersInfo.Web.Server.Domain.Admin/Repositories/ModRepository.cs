@@ -10,20 +10,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Admin.Repositories;
 
-public sealed class ModRepository
+public sealed class ModRepository(ApplicationDbContext dbContext, ModArchiveAccessor modArchiveAccessor)
 {
-	private readonly ApplicationDbContext _dbContext;
-	private readonly ModArchiveAccessor _modArchiveAccessor;
-
-	public ModRepository(ApplicationDbContext dbContext, ModArchiveAccessor modArchiveAccessor)
-	{
-		_dbContext = dbContext;
-		_modArchiveAccessor = modArchiveAccessor;
-	}
-
 	public async Task<Page<GetModForOverview>> GetModsAsync(string? filter, int pageIndex, int pageSize, ModSorting? sortBy, bool ascending)
 	{
-		IQueryable<ModEntity> modsQuery = _dbContext.Mods.AsNoTracking();
+		IQueryable<ModEntity> modsQuery = dbContext.Mods.AsNoTracking();
 
 		if (!string.IsNullOrWhiteSpace(filter))
 		{
@@ -57,7 +48,7 @@ public sealed class ModRepository
 
 	public async Task<List<GetModName>> GetModNamesAsync()
 	{
-		var mods = await _dbContext.Mods
+		var mods = await dbContext.Mods
 			.AsNoTracking()
 			.Select(m => new { m.Id, m.Name })
 			.ToListAsync();
@@ -71,14 +62,14 @@ public sealed class ModRepository
 
 	public async Task<GetMod> GetModAsync(int id)
 	{
-		ModEntity? mod = await _dbContext.Mods
+		ModEntity? mod = await dbContext.Mods
 			.AsNoTracking()
 			.Include(m => m.PlayerMods)
 			.FirstOrDefaultAsync(m => m.Id == id);
 		if (mod == null)
 			throw new NotFoundException();
 
-		ModFileSystemData fileSystemData = await _modArchiveAccessor.GetModFileSystemDataAsync(mod.Name);
+		ModFileSystemData fileSystemData = await modArchiveAccessor.GetModFileSystemDataAsync(mod.Name);
 		return mod.ToAdminApi(fileSystemData.ModArchive?.Binaries.ConvertAll(b => b.Name), fileSystemData.ScreenshotFileNames);
 	}
 }

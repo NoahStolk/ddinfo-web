@@ -8,18 +8,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Admin.Repositories;
 
-public sealed class SpawnsetRepository
+public sealed class SpawnsetRepository(ApplicationDbContext dbContext)
 {
-	private readonly ApplicationDbContext _dbContext;
-
-	public SpawnsetRepository(ApplicationDbContext dbContext)
-	{
-		_dbContext = dbContext;
-	}
-
 	public async Task<Page<GetSpawnsetForOverview>> GetSpawnsetsAsync(string? filter, int pageIndex, int pageSize, SpawnsetSorting? sortBy, bool ascending)
 	{
-		IQueryable<SpawnsetEntity> spawnsetsQuery = _dbContext.Spawnsets.AsNoTracking().Include(s => s.Player);
+		IQueryable<SpawnsetEntity> spawnsetsQuery = dbContext.Spawnsets.AsNoTracking().Include(s => s.Player);
 
 		if (!string.IsNullOrWhiteSpace(filter))
 		{
@@ -54,7 +47,7 @@ public sealed class SpawnsetRepository
 
 	public async Task<List<GetSpawnsetName>> GetSpawnsetNamesAsync()
 	{
-		var spawnsets = await _dbContext.Spawnsets
+		var spawnsets = await dbContext.Spawnsets
 			.AsNoTracking()
 			.Select(s => new { s.Id, s.Name })
 			.ToListAsync();
@@ -68,7 +61,7 @@ public sealed class SpawnsetRepository
 
 	public async Task<GetSpawnset> GetSpawnset(int id)
 	{
-		SpawnsetEntity? spawnset = await _dbContext.Spawnsets
+		SpawnsetEntity? spawnset = await dbContext.Spawnsets
 			.AsNoTracking()
 			.FirstOrDefaultAsync(p => p.Id == id);
 		if (spawnset == null)

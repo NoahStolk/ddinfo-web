@@ -14,17 +14,8 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Repositories;
 
-public sealed class CustomLeaderboardRepository
+public sealed class CustomLeaderboardRepository(ApplicationDbContext dbContext, CustomEntryRepository customEntryRepository)
 {
-	private readonly ApplicationDbContext _dbContext;
-	private readonly CustomEntryRepository _customEntryRepository;
-
-	public CustomLeaderboardRepository(ApplicationDbContext dbContext, CustomEntryRepository customEntryRepository)
-	{
-		_dbContext = dbContext;
-		_customEntryRepository = customEntryRepository;
-	}
-
 	public async Task<Page<CustomLeaderboardOverview>> GetCustomLeaderboardOverviewsAsync(
 		CustomLeaderboardRankSorting? rankSorting,
 		SpawnsetGameMode? gameMode,
@@ -37,7 +28,7 @@ public sealed class CustomLeaderboardRepository
 		int? selectedPlayerId,
 		bool onlyFeatured)
 	{
-		IQueryable<CustomLeaderboardEntity> customLeaderboardsQuery = _dbContext.CustomLeaderboards.AsNoTracking();
+		IQueryable<CustomLeaderboardEntity> customLeaderboardsQuery = dbContext.CustomLeaderboards.AsNoTracking();
 
 		if (rankSorting.HasValue)
 			customLeaderboardsQuery = customLeaderboardsQuery.Where(cl => rankSorting == cl.RankSorting);
@@ -86,7 +77,7 @@ public sealed class CustomLeaderboardRepository
 		List<int> customLeaderboardIds = customLeaderboards.ConvertAll(cl => cl.CustomLeaderboard.Id);
 
 		// ! Navigation property.
-		List<CustomEntrySummary> customEntries = await _dbContext.CustomEntries
+		List<CustomEntrySummary> customEntries = await dbContext.CustomEntries
 			.AsNoTracking()
 			.Include(ce => ce.Player)
 			.Select(ce => new CustomEntrySummary
@@ -160,7 +151,7 @@ public sealed class CustomLeaderboardRepository
 	public async Task<SortedCustomLeaderboard> GetSortedCustomLeaderboardByIdAsync(int id)
 	{
 		// ! Navigation property.
-		CustomLeaderboardEntity? customLeaderboard = await _dbContext.CustomLeaderboards
+		CustomLeaderboardEntity? customLeaderboard = await dbContext.CustomLeaderboards
 			.AsNoTracking()
 			.Include(cl => cl.CustomEntries!)
 				.ThenInclude(ce => ce.Player)
@@ -171,7 +162,7 @@ public sealed class CustomLeaderboardRepository
 			throw new NotFoundException($"Custom leaderboard '{id}' could not be found.");
 
 		// ! Navigation property.
-		List<int> existingReplayIds = _customEntryRepository.GetExistingCustomEntryReplayIds(customLeaderboard.CustomEntries!.ConvertAll(ce => ce.Id));
+		List<int> existingReplayIds = customEntryRepository.GetExistingCustomEntryReplayIds(customLeaderboard.CustomEntries!.ConvertAll(ce => ce.Id));
 
 		// ! Navigation property.
 		return new SortedCustomLeaderboard
@@ -243,10 +234,10 @@ public sealed class CustomLeaderboardRepository
 	{
 		// TODO: This should be cached and updated periodically.
 		// ! Navigation property.
-		var customLeaderboards = await _dbContext.CustomLeaderboards.AsNoTracking().Select(cl => new { cl.Id, cl.Spawnset!.GameMode, cl.TotalRunsSubmitted }).ToListAsync();
+		var customLeaderboards = await dbContext.CustomLeaderboards.AsNoTracking().Select(cl => new { cl.Id, cl.Spawnset!.GameMode, cl.TotalRunsSubmitted }).ToListAsync();
 
 		// ! Navigation property.
-		var customEntries = await _dbContext.CustomEntries.AsNoTracking().Select(ce => new { ce.PlayerId, ce.CustomLeaderboard!.Spawnset!.GameMode }).ToListAsync();
+		var customEntries = await dbContext.CustomEntries.AsNoTracking().Select(ce => new { ce.PlayerId, ce.CustomLeaderboard!.Spawnset!.GameMode }).ToListAsync();
 
 		Dictionary<SpawnsetGameMode, int> leaderboardsPerGameMode = new();
 		Dictionary<SpawnsetGameMode, int> scoresPerGameMode = new();
@@ -273,7 +264,7 @@ public sealed class CustomLeaderboardRepository
 	public async Task<GlobalCustomLeaderboard> GetGlobalCustomLeaderboardAsync(SpawnsetGameMode gameMode, CustomLeaderboardRankSorting rankSorting)
 	{
 		// ! Navigation property.
-		List<CustomLeaderboardEntity> customLeaderboards = await _dbContext.CustomLeaderboards
+		List<CustomLeaderboardEntity> customLeaderboards = await dbContext.CustomLeaderboards
 			.AsNoTracking()
 			.Include(cl => cl.Spawnset)
 			.Include(cl => cl.CustomEntries!)
@@ -347,11 +338,11 @@ public sealed class CustomLeaderboardRepository
 
 	public async Task<int> GetCustomLeaderboardIdBySpawnsetHashAsync(byte[] hash)
 	{
-		var spawnset = await _dbContext.Spawnsets.Select(s => new { s.Id, s.Md5Hash }).FirstOrDefaultAsync(s => s.Md5Hash == hash);
+		var spawnset = await dbContext.Spawnsets.Select(s => new { s.Id, s.Md5Hash }).FirstOrDefaultAsync(s => s.Md5Hash == hash);
 		if (spawnset == null)
 			throw new NotFoundException();
 
-		var customLeaderboard = await _dbContext.CustomLeaderboards
+		var customLeaderboard = await dbContext.CustomLeaderboards
 			.Select(cl => new { cl.Id, cl.SpawnsetId })
 			.FirstOrDefaultAsync(cl => cl.SpawnsetId == spawnset.Id);
 		if (customLeaderboard == null)
@@ -365,7 +356,7 @@ public sealed class CustomLeaderboardRepository
 		List<(SpawnsetGameMode GameMode, CustomLeaderboardRankSorting RankSorting)> allowedCategories = CustomLeaderboardUtils.GetAllowedGameModeAndRankSortingCombinations();
 
 		// ! Navigation property.
-		var customLeaderboards = await _dbContext.CustomLeaderboards
+		var customLeaderboards = await dbContext.CustomLeaderboards
 			.Select(cl => new { cl.Spawnset!.GameMode, cl.RankSorting })
 			.ToListAsync();
 

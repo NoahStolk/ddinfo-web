@@ -8,19 +8,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Main.Repositories;
 
-public sealed class PlayerCustomLeaderboardStatisticsRepository
+public sealed class PlayerCustomLeaderboardStatisticsRepository(ApplicationDbContext dbContext)
 {
-	private readonly ApplicationDbContext _dbContext;
-
-	public PlayerCustomLeaderboardStatisticsRepository(ApplicationDbContext dbContext)
-	{
-		_dbContext = dbContext;
-	}
-
 	public async Task<List<GetPlayerCustomLeaderboardStatistics>> GetCustomLeaderboardStatisticsByPlayerIdAsync(int playerId)
 	{
 		// ! Navigation property.
-		List<CustomEntryForStats> customEntries = await _dbContext.CustomEntries
+		List<CustomEntryForStats> customEntries = await dbContext.CustomEntries
 			.AsNoTracking()
 			.Where(cl => cl.PlayerId == playerId)
 			.Select(ce => new CustomEntryForStats
@@ -49,7 +42,7 @@ public sealed class PlayerCustomLeaderboardStatisticsRepository
 			return [];
 
 		// ! Navigation property.
-		Dictionary<(SpawnsetGameMode GameMode, CustomLeaderboardRankSorting RankSorting), int> totalCustomLeaderboards = await _dbContext.CustomLeaderboards
+		Dictionary<(SpawnsetGameMode GameMode, CustomLeaderboardRankSorting RankSorting), int> totalCustomLeaderboards = await dbContext.CustomLeaderboards
 			.AsNoTracking()
 			.Select(cl => new { cl.Spawnset!.GameMode, cl.RankSorting, cl.IsFeatured })
 			.Where(cl => cl.IsFeatured)

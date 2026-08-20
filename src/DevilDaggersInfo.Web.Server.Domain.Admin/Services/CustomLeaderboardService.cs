@@ -18,18 +18,11 @@ using System.Runtime.CompilerServices;
 namespace DevilDaggersInfo.Web.Server.Domain.Admin.Services;
 
 // TODO: Unit test.
-public sealed class CustomLeaderboardService
+public sealed class CustomLeaderboardService(ApplicationDbContext dbContext)
 {
-	private readonly ApplicationDbContext _dbContext;
-
-	public CustomLeaderboardService(ApplicationDbContext dbContext)
-	{
-		_dbContext = dbContext;
-	}
-
 	public async Task AddCustomLeaderboardAsync(ApiSpec.Admin.CustomLeaderboards.AddCustomLeaderboard addCustomLeaderboard)
 	{
-		if (await _dbContext.CustomLeaderboards.AnyAsync(cl => cl.SpawnsetId == addCustomLeaderboard.SpawnsetId))
+		if (await dbContext.CustomLeaderboards.AnyAsync(cl => cl.SpawnsetId == addCustomLeaderboard.SpawnsetId))
 			throw new AdminDomainException("A leaderboard for this spawnset already exists.");
 
 		byte[]? gemsCollectedExpression = ValidateCriteriaExpression(addCustomLeaderboard.GemsCollectedCriteria.Expression);
@@ -152,13 +145,13 @@ public sealed class CustomLeaderboardService
 			OrbsAliveCriteria = new CustomLeaderboardCriteriaEntityValue { Operator = addCustomLeaderboard.OrbsAliveCriteria.Operator.ToDomain(), Expression = orbAliveCountCriteriaExpression },
 			ThornsAliveCriteria = new CustomLeaderboardCriteriaEntityValue { Operator = addCustomLeaderboard.ThornsAliveCriteria.Operator.ToDomain(), Expression = thornAliveCountCriteriaExpression },
 		};
-		_dbContext.CustomLeaderboards.Add(customLeaderboard);
-		await _dbContext.SaveChangesAsync();
+		dbContext.CustomLeaderboards.Add(customLeaderboard);
+		await dbContext.SaveChangesAsync();
 	}
 
 	public async Task EditCustomLeaderboardAsync(int id, ApiSpec.Admin.CustomLeaderboards.EditCustomLeaderboard editCustomLeaderboard)
 	{
-		CustomLeaderboardEntity? customLeaderboard = await _dbContext.CustomLeaderboards.FirstOrDefaultAsync(cl => cl.Id == id);
+		CustomLeaderboardEntity? customLeaderboard = await dbContext.CustomLeaderboards.FirstOrDefaultAsync(cl => cl.Id == id);
 		if (customLeaderboard == null)
 			throw new NotFoundException($"Custom leaderboard with ID '{id}' does not exist.");
 
@@ -211,7 +204,7 @@ public sealed class CustomLeaderboardService
 		byte[]? orbAliveCountCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.OrbsAliveCriteria.Expression);
 		byte[]? thornAliveCountCriteriaExpression = ValidateCriteriaExpression(editCustomLeaderboard.ThornsAliveCriteria.Expression);
 
-		if (await _dbContext.CustomEntries.AnyAsync(ce => ce.CustomLeaderboardId == id))
+		if (await dbContext.CustomEntries.AnyAsync(ce => ce.CustomLeaderboardId == id))
 		{
 			if (customLeaderboard.RankSorting != editCustomLeaderboard.RankSorting.ToDomain())
 				throw new AdminDomainException("Cannot change rank sorting for custom leaderboard with scores.");
@@ -387,20 +380,20 @@ public sealed class CustomLeaderboardService
 		customLeaderboard.OrbsAliveCriteria = new CustomLeaderboardCriteriaEntityValue { Operator = editCustomLeaderboard.OrbsAliveCriteria.Operator.ToDomain(), Expression = orbAliveCountCriteriaExpression };
 		customLeaderboard.ThornsAliveCriteria = new CustomLeaderboardCriteriaEntityValue { Operator = editCustomLeaderboard.ThornsAliveCriteria.Operator.ToDomain(), Expression = thornAliveCountCriteriaExpression };
 
-		await _dbContext.SaveChangesAsync();
+		await dbContext.SaveChangesAsync();
 	}
 
 	public async Task DeleteCustomLeaderboardAsync(int id)
 	{
-		CustomLeaderboardEntity? customLeaderboard = await _dbContext.CustomLeaderboards.FirstOrDefaultAsync(cl => cl.Id == id);
+		CustomLeaderboardEntity? customLeaderboard = await dbContext.CustomLeaderboards.FirstOrDefaultAsync(cl => cl.Id == id);
 		if (customLeaderboard == null)
 			throw new NotFoundException($"Custom leaderboard with ID '{id}' does not exist.");
 
-		if (await _dbContext.CustomEntries.AnyAsync(ce => ce.CustomLeaderboardId == id))
+		if (await dbContext.CustomEntries.AnyAsync(ce => ce.CustomLeaderboardId == id))
 			throw new AdminDomainException("Custom leaderboard with scores cannot be deleted.");
 
-		_dbContext.CustomLeaderboards.Remove(customLeaderboard);
-		await _dbContext.SaveChangesAsync();
+		dbContext.CustomLeaderboards.Remove(customLeaderboard);
+		await dbContext.SaveChangesAsync();
 	}
 
 	private async Task ValidateCustomLeaderboardAsync(
@@ -454,7 +447,7 @@ public sealed class CustomLeaderboardService
 			}
 		}
 
-		var spawnset = await _dbContext.Spawnsets
+		var spawnset = await dbContext.Spawnsets
 			.AsNoTracking()
 			.Select(sf => new { sf.Id, sf.Name, sf.File })
 			.FirstOrDefaultAsync(sf => sf.Id == spawnsetId);

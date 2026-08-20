@@ -7,19 +7,12 @@ using System.Security.Claims;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Main.Services;
 
-public sealed class PlayerProfileService
+public sealed class PlayerProfileService(ApplicationDbContext dbContext)
 {
-	private readonly ApplicationDbContext _dbContext;
-
-	public PlayerProfileService(ApplicationDbContext dbContext)
-	{
-		_dbContext = dbContext;
-	}
-
 	public async Task UpdateProfileAsync(ClaimsPrincipal claimsPrincipal, int id, ApiSpec.Main.Players.EditPlayerProfile editPlayerProfile)
 	{
 		string? userName = claimsPrincipal.GetName();
-		UserEntity? user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Name == userName);
+		UserEntity? user = await dbContext.Users.FirstOrDefaultAsync(u => u.Name == userName);
 		if (user == null)
 			throw new UnauthorizedException();
 
@@ -29,7 +22,7 @@ public sealed class PlayerProfileService
 		if (user.PlayerId != id)
 			throw new ForbiddenException("Not allowed to access another player's profile.");
 
-		PlayerEntity? player = await _dbContext.Players.FirstOrDefaultAsync(p => p.Id == id);
+		PlayerEntity? player = await dbContext.Players.FirstOrDefaultAsync(p => p.Id == id);
 		if (player == null)
 			throw new NotFoundException($"Player with ID '{id}' could not be found.");
 
@@ -51,6 +44,6 @@ public sealed class PlayerProfileService
 		player.UsesLegacyAudio = editPlayerProfile.UsesLegacyAudio;
 		player.VerticalSync = editPlayerProfile.VerticalSync.ToDomain();
 
-		await _dbContext.SaveChangesAsync();
+		await dbContext.SaveChangesAsync();
 	}
 }

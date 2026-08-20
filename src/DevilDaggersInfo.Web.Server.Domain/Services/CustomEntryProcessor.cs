@@ -23,35 +23,16 @@ using System.Web;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Services;
 
-public sealed class CustomEntryProcessor
+public sealed class CustomEntryProcessor(
+	ApplicationDbContext dbContext,
+	ILogger<CustomEntryProcessor> logger,
+	IFileSystemService fileSystemService,
+	IOptions<CustomLeaderboardsOptions> customLeaderboardsOptions,
+	ICustomLeaderboardHighscoreLogger highscoreLogger,
+	ICustomLeaderboardSubmissionLogger submissionLogger)
 {
-	private readonly ApplicationDbContext _dbContext;
-	private readonly ILogger<CustomEntryProcessor> _logger;
-	private readonly IFileSystemService _fileSystemService;
-	private readonly ICustomLeaderboardHighscoreLogger _highscoreLogger;
-	private readonly ICustomLeaderboardSubmissionLogger _submissionLogger;
-
-	private readonly AesBase32Wrapper _encryptionWrapper;
-	private readonly long _startingTimestamp;
-
-	public CustomEntryProcessor(
-		ApplicationDbContext dbContext,
-		ILogger<CustomEntryProcessor> logger,
-		IFileSystemService fileSystemService,
-		IOptions<CustomLeaderboardsOptions> customLeaderboardsOptions,
-		ICustomLeaderboardHighscoreLogger highscoreLogger,
-		ICustomLeaderboardSubmissionLogger submissionLogger)
-	{
-		_dbContext = dbContext;
-		_logger = logger;
-		_fileSystemService = fileSystemService;
-		_highscoreLogger = highscoreLogger;
-		_submissionLogger = submissionLogger;
-
-		_encryptionWrapper = new AesBase32Wrapper(customLeaderboardsOptions.Value.InitializationVector, customLeaderboardsOptions.Value.Password, customLeaderboardsOptions.Value.Salt);
-
-		_startingTimestamp = Stopwatch.GetTimestamp();
-	}
+	private readonly AesBase32Wrapper _encryptionWrapper = new(customLeaderboardsOptions.Value.InitializationVector, customLeaderboardsOptions.Value.Password, customLeaderboardsOptions.Value.Salt);
+	private readonly long _startingTimestamp = Stopwatch.GetTimestamp();
 
 	[Obsolete("Use a real database provider in an integration test.")]
 	public bool IsUnitTest { get; init; }
@@ -66,7 +47,7 @@ public sealed class CustomEntryProcessor
 		}
 		catch (Exception ex)
 		{
-			_logger.LogError(ex, "Could not decrypt validation '{Validation}'.", uploadRequest.Validation);
+			logger.LogError(ex, "Could not decrypt validation '{Validation}'.", uploadRequest.Validation);
 			LogAndThrowValidationException(uploadRequest, $"Could not decrypt validation '{uploadRequest.Validation}'.");
 		}
 
@@ -109,8 +90,8 @@ public sealed class CustomEntryProcessor
 		// Check for existing spawnset.
 		var spawnset =
 			IsUnitTest
-			? await _dbContext.Spawnsets.Select(s => new { s.Name, s.Md5Hash }).FirstOrDefaultAsync(s => ((IEnumerable<byte>)s.Md5Hash).SequenceEqual(uploadRequest.SurvivalHashMd5))
-			: await _dbContext.Spawnsets.Select(s => new { s.Name, s.Md5Hash }).FirstOrDefaultAsync(s => s.Md5Hash == uploadRequest.SurvivalHashMd5);
+			? await dbContext.Spawnsets.Select(s => new { s.Name, s.Md5Hash }).FirstOrDefaultAsync(s => ((IEnumerable<byte>)s.Md5Hash).SequenceEqual(uploadRequest.SurvivalHashMd5))
+			: await dbContext.Spawnsets.Select(s => new { s.Name, s.Md5Hash }).FirstOrDefaultAsync(s => s.Md5Hash == uploadRequest.SurvivalHashMd5);
 		if (spawnset == null)
 			LogAndThrowValidationException(uploadRequest, "This spawnset doesn't exist on DevilDaggers.info.");
 
@@ -119,10 +100,10 @@ public sealed class CustomEntryProcessor
 		// Perform database operations from now on.
 
 		// Add new player if necessary.
-		var player = await _dbContext.Players.Select(p => new { p.Id, p.IsBannedFromDdcl }).FirstOrDefaultAsync(p => p.Id == uploadRequest.PlayerId);
+		var player = await dbContext.Players.Select(p => new { p.Id, p.IsBannedFromDdcl }).FirstOrDefaultAsync(p => p.Id == uploadRequest.PlayerId);
 		if (player == null)
 		{
-			await _dbContext.Players.AddAsync(new PlayerEntity
+			await dbContext.Players.AddAsync(new PlayerEntity
 			{
 				Id = uploadRequest.PlayerId,
 				PlayerName = uploadRequest.PlayerName,
@@ -135,7 +116,7 @@ public sealed class CustomEntryProcessor
 
 		// Check for existing leaderboard.
 		// ! Navigation property.
-		CustomLeaderboardEntity? customLeaderboard = await _dbContext.CustomLeaderboards.Include(cl => cl.Spawnset).FirstOrDefaultAsync(cl => cl.Spawnset!.Name == spawnset.Name);
+		CustomLeaderboardEntity? customLeaderboard = await dbContext.CustomLeaderboards.Include(cl => cl.Spawnset).FirstOrDefaultAsync(cl => cl.Spawnset!.Name == spawnset.Name);
 		if (customLeaderboard == null)
 			LogAndThrowValidationException(uploadRequest, "This spawnset exists on DevilDaggers.info, but doesn't have a leaderboard.", spawnset.Name);
 
@@ -171,7 +152,7 @@ public sealed class CustomEntryProcessor
 		// Make sure HomingDaggers is not negative (happens rarely in DD game memory for some reason). We also do this for spawnsets with homing disabled which we don't want to display values for anyway.
 		uploadRequest.GameData.HomingStored = Array.ConvertAll(uploadRequest.GameData.HomingStored, i => Math.Max(0, i));
 
-		CustomEntryEntity? customEntry = await _dbContext.CustomEntries.FirstOrDefaultAsync(ce => ce.PlayerId == uploadRequest.PlayerId && ce.CustomLeaderboardId == customLeaderboard.Id);
+		CustomEntryEntity? customEntry = await dbContext.CustomEntries.FirstOrDefaultAsync(ce => ce.PlayerId == uploadRequest.PlayerId && ce.CustomLeaderboardId == customLeaderboard.Id);
 		if (customEntry == null)
 		{
 			return new UploadResponse
@@ -185,7 +166,7 @@ public sealed class CustomEntryProcessor
 		int requestTimeAsInt = (int)uploadRequest.Time.GameUnits;
 		if (uploadRequest.IsReplay && IsReplayTimeAlmostTheSame(requestTimeAsInt, customEntry.Time) && await IsReplayFileTheSame(customEntry.Id, uploadRequest.ReplayData))
 		{
-			_logger.LogInformation("Score submission replay time was modified because of identical replay (database: {OriginalTime} - request: {ReplayTime}).", GameTime.FromGameUnits(customEntry.Time).Seconds.ToString(StringFormats.TimeFormat), uploadRequest.Time.Seconds.ToString(StringFormats.TimeFormat));
+			logger.LogInformation("Score submission replay time was modified because of identical replay (database: {OriginalTime} - request: {ReplayTime}).", GameTime.FromGameUnits(customEntry.Time).Seconds.ToString(StringFormats.TimeFormat), uploadRequest.Time.Seconds.ToString(StringFormats.TimeFormat));
 			return new UploadResponse
 			{
 				Leaderboard = ToLeaderboardSummary(customLeaderboard),
@@ -342,15 +323,15 @@ public sealed class CustomEntryProcessor
 			Client = uploadRequest.Client.ClientFromString(),
 			CustomLeaderboard = customLeaderboard,
 		};
-		await _dbContext.CustomEntries.AddAsync(newCustomEntry);
+		await dbContext.CustomEntries.AddAsync(newCustomEntry);
 
 		CustomEntryDataEntity newCustomEntryData = new() { CustomEntry = newCustomEntry };
 		newCustomEntryData.Populate(uploadRequest.GameData);
-		await _dbContext.CustomEntryData.AddAsync(newCustomEntryData);
+		await dbContext.CustomEntryData.AddAsync(newCustomEntryData);
 
 		UpdateLeaderboardStatistics(customLeaderboard);
 
-		await _dbContext.SaveChangesAsync();
+		await dbContext.SaveChangesAsync();
 
 		await WriteReplayFile(newCustomEntry.Id, uploadRequest.ReplayData);
 
@@ -359,7 +340,7 @@ public sealed class CustomEntryProcessor
 		int rank = GetRank(entries, uploadRequest.PlayerId);
 		int totalPlayers = entries.Count;
 
-		_highscoreLogger.LogNewScore(
+		highscoreLogger.LogNewScore(
 			customLeaderboard,
 			newCustomEntry,
 			rank,
@@ -396,7 +377,7 @@ public sealed class CustomEntryProcessor
 		if (!uploadRequest.IsReplay)
 		{
 			UpdateLeaderboardStatistics(customLeaderboard);
-			await _dbContext.SaveChangesAsync();
+			await dbContext.SaveChangesAsync();
 		}
 
 		Log(uploadRequest, spawnsetName);
@@ -466,12 +447,12 @@ public sealed class CustomEntryProcessor
 		customEntry.ClientVersion = uploadRequest.ClientVersion;
 		customEntry.Client = uploadRequest.Client.ClientFromString();
 
-		CustomEntryDataEntity? customEntryData = await _dbContext.CustomEntryData.FirstOrDefaultAsync(ced => ced.CustomEntryId == customEntry.Id);
+		CustomEntryDataEntity? customEntryData = await dbContext.CustomEntryData.FirstOrDefaultAsync(ced => ced.CustomEntryId == customEntry.Id);
 		if (customEntryData == null)
 		{
 			customEntryData = new CustomEntryDataEntity { CustomEntryId = customEntry.Id };
 			customEntryData.Populate(uploadRequest.GameData);
-			await _dbContext.CustomEntryData.AddAsync(customEntryData);
+			await dbContext.CustomEntryData.AddAsync(customEntryData);
 		}
 		else
 		{
@@ -480,7 +461,7 @@ public sealed class CustomEntryProcessor
 
 		UpdateLeaderboardStatistics(customLeaderboard);
 
-		await _dbContext.SaveChangesAsync();
+		await dbContext.SaveChangesAsync();
 
 		await WriteReplayFile(customEntry.Id, uploadRequest.ReplayData);
 
@@ -517,7 +498,7 @@ public sealed class CustomEntryProcessor
 			_ => 0,
 		};
 
-		_highscoreLogger.LogHighscore(
+		highscoreLogger.LogHighscore(
 			customLeaderboard,
 			customEntry,
 			rank,
@@ -576,7 +557,7 @@ public sealed class CustomEntryProcessor
 
 	private async Task WriteReplayFile(int customEntryId, byte[] replayData)
 	{
-		await File.WriteAllBytesAsync(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{customEntryId}.ddreplay"), replayData);
+		await File.WriteAllBytesAsync(Path.Combine(fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{customEntryId}.ddreplay"), replayData);
 	}
 
 	private static bool IsReplayTimeAlmostTheSame(int requestTimeAsInt, int databaseTime)
@@ -595,7 +576,7 @@ public sealed class CustomEntryProcessor
 	/// </summary>
 	private async Task<bool> IsReplayFileTheSame(int customEntryId, byte[] newReplay)
 	{
-		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{customEntryId}.ddreplay");
+		string path = Path.Combine(fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{customEntryId}.ddreplay");
 		if (!File.Exists(path))
 			return false;
 
@@ -611,7 +592,7 @@ public sealed class CustomEntryProcessor
 
 	private async Task<List<CustomEntryEntity>> GetOrderedEntries(int customLeaderboardId, CustomLeaderboardRankSorting rankSorting)
 	{
-		List<CustomEntryEntity> entries = await _dbContext.CustomEntries
+		List<CustomEntryEntity> entries = await dbContext.CustomEntries
 			.AsNoTracking()
 			.Include(ce => ce.Player)
 			.Where(ce => ce.CustomLeaderboardId == customLeaderboardId)
@@ -627,7 +608,7 @@ public sealed class CustomEntryProcessor
 
 	private void Log(UploadRequest uploadRequest, string? spawnsetName, string? errorMessage = null)
 	{
-		_submissionLogger.Log(
+		submissionLogger.Log(
 			uploadRequest,
 			string.IsNullOrEmpty(spawnsetName) ? BitConverter.ToString(uploadRequest.SurvivalHashMd5) : spawnsetName,
 			Stopwatch.GetElapsedTime(_startingTimestamp).TotalMilliseconds,
@@ -636,7 +617,7 @@ public sealed class CustomEntryProcessor
 
 	private List<int> GetExistingReplayIds(List<int> customEntryIds)
 	{
-		return [.. customEntryIds.Where(id => File.Exists(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{id}.ddreplay")))];
+		return [.. customEntryIds.Where(id => File.Exists(Path.Combine(fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{id}.ddreplay")))];
 	}
 
 	private static CustomEntry ToEntryModel(CustomEntryEntity customEntry, int rank, CustomLeaderboardDagger? dagger, List<int> replayIds)

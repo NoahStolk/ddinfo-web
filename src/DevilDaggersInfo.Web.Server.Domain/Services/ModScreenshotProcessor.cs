@@ -4,21 +4,14 @@ using DevilDaggersInfo.Web.Server.Domain.Utils;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Services;
 
-public sealed class ModScreenshotProcessor
+public sealed class ModScreenshotProcessor(IFileSystemService fileSystemService)
 {
-	private readonly IFileSystemService _fileSystemService;
-
-	public ModScreenshotProcessor(IFileSystemService fileSystemService)
-	{
-		_fileSystemService = fileSystemService;
-	}
-
 	public void ProcessModScreenshotUpload(string modName, Dictionary<string, byte[]> screenshots)
 	{
 		if (screenshots.Count == 0)
 			return;
 
-		string modScreenshotsDirectory = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ModScreenshots), modName);
+		string modScreenshotsDirectory = Path.Combine(fileSystemService.GetPath(DataSubDirectory.ModScreenshots), modName);
 		Directory.CreateDirectory(modScreenshotsDirectory);
 		int i = 0;
 		foreach (byte[] screenshotContents in screenshots.OrderBy(kvp => kvp.Key).Select(kvp => kvp.Value))
@@ -40,7 +33,7 @@ public sealed class ModScreenshotProcessor
 
 	public void DeleteScreenshot(string modName, string screenshotFileName)
 	{
-		string screenshotsDirectory = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ModScreenshots), modName);
+		string screenshotsDirectory = Path.Combine(fileSystemService.GetPath(DataSubDirectory.ModScreenshots), modName);
 		string screenshotFilePath = Path.Combine(screenshotsDirectory, screenshotFileName);
 		if (File.Exists(screenshotFilePath))
 			File.Delete(screenshotFilePath);
@@ -48,7 +41,7 @@ public sealed class ModScreenshotProcessor
 
 	public void DeleteScreenshotsDirectory(string modName)
 	{
-		string screenshotsDirectory = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ModScreenshots), modName);
+		string screenshotsDirectory = Path.Combine(fileSystemService.GetPath(DataSubDirectory.ModScreenshots), modName);
 		if (Directory.Exists(screenshotsDirectory))
 			Directory.Delete(screenshotsDirectory, true);
 	}
@@ -58,7 +51,7 @@ public sealed class ModScreenshotProcessor
 		if (originalModName == newModName)
 			return;
 
-		string screenshotsDirectory = _fileSystemService.GetPath(DataSubDirectory.ModScreenshots);
+		string screenshotsDirectory = fileSystemService.GetPath(DataSubDirectory.ModScreenshots);
 		string oldScreenshotsDirectory = Path.Combine(screenshotsDirectory, originalModName);
 		if (Directory.Exists(oldScreenshotsDirectory))
 		{

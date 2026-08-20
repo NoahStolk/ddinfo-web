@@ -10,15 +10,8 @@ using System.Security.Cryptography;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Admin.Services;
 
-public sealed class SpawnsetService
+public sealed class SpawnsetService(ApplicationDbContext dbContext)
 {
-	private readonly ApplicationDbContext _dbContext;
-
-	public SpawnsetService(ApplicationDbContext dbContext)
-	{
-		_dbContext = dbContext;
-	}
-
 	public async Task AddSpawnsetAsync(AddSpawnset addSpawnset)
 	{
 		ValidateName(addSpawnset.Name);
@@ -27,14 +20,14 @@ public sealed class SpawnsetService
 			throw new AdminDomainException("File could not be parsed to a proper survival file.");
 
 		byte[] spawnsetHash = MD5.HashData(addSpawnset.FileContents);
-		var existingSpawnset = await _dbContext.Spawnsets.Select(s => new { s.Name, s.Md5Hash }).FirstOrDefaultAsync(s => s.Md5Hash == spawnsetHash);
+		var existingSpawnset = await dbContext.Spawnsets.Select(s => new { s.Name, s.Md5Hash }).FirstOrDefaultAsync(s => s.Md5Hash == spawnsetHash);
 		if (existingSpawnset != null)
 			throw new AdminDomainException($"Spawnset is exactly the same as an already existing spawnset named '{existingSpawnset.Name}'.");
 
-		if (!await _dbContext.Players.AnyAsync(p => p.Id == addSpawnset.PlayerId))
+		if (!await dbContext.Players.AnyAsync(p => p.Id == addSpawnset.PlayerId))
 			throw new AdminDomainException($"Player with ID '{addSpawnset.PlayerId}' does not exist.");
 
-		if (await _dbContext.Spawnsets.AnyAsync(m => m.Name == addSpawnset.Name))
+		if (await dbContext.Spawnsets.AnyAsync(m => m.Name == addSpawnset.Name))
 			throw new AdminDomainException($"Spawnset with name '{addSpawnset.Name}' already exists.");
 
 		(SpawnSectionInfo PreLoopSection, SpawnSectionInfo LoopSection) sections = spawnsetBinary.CalculateSections();
@@ -63,22 +56,22 @@ public sealed class SpawnsetService
 			EffectiveGemsOrHoming = effectivePlayerSettings.GemsOrHoming,
 			EffectiveHandMesh = effectivePlayerSettings.HandMesh.ToDomain(),
 		};
-		_dbContext.Spawnsets.Add(spawnset);
-		await _dbContext.SaveChangesAsync();
+		dbContext.Spawnsets.Add(spawnset);
+		await dbContext.SaveChangesAsync();
 	}
 
 	public async Task EditSpawnsetAsync(int id, EditSpawnset editSpawnset)
 	{
 		ValidateName(editSpawnset.Name);
 
-		if (!await _dbContext.Players.AnyAsync(p => p.Id == editSpawnset.PlayerId))
+		if (!await dbContext.Players.AnyAsync(p => p.Id == editSpawnset.PlayerId))
 			throw new AdminDomainException($"Player with ID '{editSpawnset.PlayerId}' does not exist.");
 
-		SpawnsetEntity? spawnset = await _dbContext.Spawnsets.FirstOrDefaultAsync(s => s.Id == id);
+		SpawnsetEntity? spawnset = await dbContext.Spawnsets.FirstOrDefaultAsync(s => s.Id == id);
 		if (spawnset == null)
 			throw new NotFoundException($"Spawnset with ID '{id}' does not exist.");
 
-		if (spawnset.Name != editSpawnset.Name && await _dbContext.Spawnsets.AnyAsync(m => m.Name == editSpawnset.Name))
+		if (spawnset.Name != editSpawnset.Name && await dbContext.Spawnsets.AnyAsync(m => m.Name == editSpawnset.Name))
 			throw new AdminDomainException($"Spawnset with name '{editSpawnset.Name}' already exists.");
 
 		// Do not update LastUpdated here. This value is based only on the file which cannot be edited.
@@ -86,20 +79,20 @@ public sealed class SpawnsetService
 		spawnset.MaxDisplayWaves = editSpawnset.MaxDisplayWaves;
 		spawnset.Name = editSpawnset.Name;
 		spawnset.PlayerId = editSpawnset.PlayerId;
-		await _dbContext.SaveChangesAsync();
+		await dbContext.SaveChangesAsync();
 	}
 
 	public async Task DeleteSpawnsetAsync(int id)
 	{
-		SpawnsetEntity? spawnset = await _dbContext.Spawnsets.FirstOrDefaultAsync(s => s.Id == id);
+		SpawnsetEntity? spawnset = await dbContext.Spawnsets.FirstOrDefaultAsync(s => s.Id == id);
 		if (spawnset == null)
 			throw new NotFoundException($"Spawnset with ID '{id}' does not exist.");
 
-		if (await _dbContext.CustomLeaderboards.AnyAsync(cl => cl.SpawnsetId == id))
+		if (await dbContext.CustomLeaderboards.AnyAsync(cl => cl.SpawnsetId == id))
 			throw new AdminDomainException("Spawnset with custom leaderboard cannot be deleted.");
 
-		_dbContext.Spawnsets.Remove(spawnset);
-		await _dbContext.SaveChangesAsync();
+		dbContext.Spawnsets.Remove(spawnset);
+		await dbContext.SaveChangesAsync();
 	}
 
 	private static void ValidateName(string name)
