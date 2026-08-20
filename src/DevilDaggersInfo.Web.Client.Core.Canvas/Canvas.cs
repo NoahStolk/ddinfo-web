@@ -1,11 +1,6 @@
 namespace DevilDaggersInfo.Web.Client.Core.Canvas;
 
-public abstract class Canvas
+public abstract class Canvas(string id)
 {
-	protected Canvas(string id)
-	{
-		Id = id;
-	}
-
-	protected string Id { get; }
+	protected string Id { get; } = id;
 }

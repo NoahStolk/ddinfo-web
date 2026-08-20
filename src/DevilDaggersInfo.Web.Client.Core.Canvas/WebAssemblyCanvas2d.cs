@@ -3,14 +3,9 @@ using System.Runtime.InteropServices.JavaScript;
 
 namespace DevilDaggersInfo.Web.Client.Core.Canvas;
 
-public partial class WebAssemblyCanvas2d : Canvas
+public partial class WebAssemblyCanvas2d(string id) : Canvas(id)
 {
 	private const string _moduleName = nameof(WebAssemblyCanvas2d);
-
-	public WebAssemblyCanvas2d(string id)
-		: base(id)
-	{
-	}
 
 	public string FillStyle
 	{
