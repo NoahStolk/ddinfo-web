@@ -1,4 +1,5 @@
-﻿using DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardHistory;
+﻿using DevilDaggersInfo.DevUtil.HistoryCsvDump;
+using DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardHistory;
 using System.Text;
 
 const string baseDirectory = """C:\Users\NOAH\source\repos\ddinfo-web\src\DevilDaggersInfo.Web.Server\Data\LeaderboardHistory""";
@@ -123,15 +124,3 @@ foreach (DayEntry dayEntry in dayEntries)
 }
 
 await File.WriteAllTextAsync(Path.Combine(baseDirectory, "history.csv"), csvBuilder.ToString());
-
-internal sealed record DayEntry
-{
-	public required int DaysSinceRelease { get; init; }
-	public required List<ScoreEntry> ScoreEntries { get; init; }
-}
-
-internal sealed record ScoreEntry
-{
-	public required int PlayerId { get; init; }
-	public required int Time { get; init; }
-}

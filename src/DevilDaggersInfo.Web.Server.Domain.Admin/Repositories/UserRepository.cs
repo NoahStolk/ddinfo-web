@@ -34,8 +34,8 @@ public sealed class UserRepository
 			// ! Navigation property.
 			usersQuery = usersQuery.Where(u =>
 				u.Name.Contains(filter) ||
-				u.Player!.CommonName != null && u.Player!.CommonName.Contains(filter) ||
-				u.Player!.PlayerName.Contains(filter) ||
+				u.Player!.CommonName != null && u.Player.CommonName.Contains(filter) ||
+				u.Player.PlayerName.Contains(filter) ||
 				u.PlayerId.HasValue && u.PlayerId.Value.ToString().Contains(filter));
 		}
 

@@ -76,9 +76,9 @@ public sealed class CustomLeaderboardRepository
 			{
 				CustomLeaderboard = cl,
 				GameMode = cl.Spawnset!.GameMode,
-				SpawnsetName = cl.Spawnset!.Name,
-				SpawnsetAuthorId = cl.Spawnset!.PlayerId,
-				SpawnsetAuthorName = cl.Spawnset!.Player!.PlayerName,
+				SpawnsetName = cl.Spawnset.Name,
+				SpawnsetAuthorId = cl.Spawnset.PlayerId,
+				SpawnsetAuthorName = cl.Spawnset.Player!.PlayerName,
 			})
 			.ToListAsync();
 
@@ -230,7 +230,7 @@ public sealed class CustomLeaderboardRepository
 			GameMode = customLeaderboard.Spawnset!.GameMode,
 			Id = customLeaderboard.Id,
 			RankSorting = customLeaderboard.RankSorting,
-			SpawnsetHtmlDescription = customLeaderboard.Spawnset!.HtmlDescription,
+			SpawnsetHtmlDescription = customLeaderboard.Spawnset.HtmlDescription,
 			SpawnsetName = customLeaderboard.Spawnset.Name,
 			SpawnsetAuthorId = customLeaderboard.Spawnset.PlayerId,
 			SpawnsetAuthorName = customLeaderboard.Spawnset.Player!.PlayerName,
