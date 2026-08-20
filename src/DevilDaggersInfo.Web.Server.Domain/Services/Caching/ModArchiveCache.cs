@@ -11,7 +11,7 @@ namespace DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 
 public sealed class ModArchiveCache(IFileSystemService fileSystemService)
 {
-	private readonly object _fileStreamLock = new();
+	private readonly Lock _fileStreamLock = new();
 
 	private readonly ConcurrentDictionary<string, ModArchiveCacheData> _cache = new();
 
