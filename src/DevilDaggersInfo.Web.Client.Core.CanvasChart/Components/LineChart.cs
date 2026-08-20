@@ -202,22 +202,10 @@ public sealed partial class LineChart : IAsyncDisposable
 				}
 				else
 				{
-					if (i == 0)
-					{
-						if (dataSet.PrependStart && percX != 0)
-						{
-							linePositions.Add(new LinePosition(Options.ChartMarginXInPx, y));
-							linePositions.Add(new LinePosition(x, y));
-						}
-						else
-						{
-							linePositions.Add(new LinePosition(x, y));
-						}
-					}
-					else
-					{
-						linePositions.Add(new LinePosition(x, y));
-					}
+					if (i == 0 && dataSet.PrependStart && percX != 0)
+						linePositions.Add(new LinePosition(Options.ChartMarginXInPx, y));
+
+					linePositions.Add(new LinePosition(x, y));
 
 					if (dataSet.IsSteppedLine)
 					{
