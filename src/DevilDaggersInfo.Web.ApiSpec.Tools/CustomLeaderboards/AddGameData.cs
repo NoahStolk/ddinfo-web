@@ -13,6 +13,7 @@ public sealed record AddGameData
 	public required List<int> GemsEaten { get; init; }
 	public required List<int> GemsTotal { get; init; }
 
+	// TODO: Rename to Skull1KillCount, Skull1AliveCount, etc.
 	public required List<ushort> Skull1sAlive { get; init; }
 	public required List<ushort> Skull2sAlive { get; init; }
 	public required List<ushort> Skull3sAlive { get; init; }

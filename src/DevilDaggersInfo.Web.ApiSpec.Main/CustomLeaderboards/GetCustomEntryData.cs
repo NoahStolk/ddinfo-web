@@ -59,6 +59,7 @@ public sealed record GetCustomEntryData
 	public required int[]? GemsEatenData { get; init; }
 	public required int[]? GemsTotalData { get; init; }
 
+	// TODO: Rename to Skull1KillCount, Skull1AliveCount, etc.
 	public required ushort[]? Skull1sAliveData { get; init; }
 	public required ushort[]? Skull2sAliveData { get; init; }
 	public required ushort[]? Skull3sAliveData { get; init; }
