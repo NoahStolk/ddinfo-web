@@ -21,9 +21,9 @@ public sealed partial class StatisticsPage
 	private static readonly BarChartOptions _deathsBarChartOptions = new() { ChartMarginXInPx = 60, ChartMarginYInPx = 80, HighlighterKeys = ["Death Type", "Players", "% Of All"], HighlighterWidth = 320 };
 	private static readonly BarChartOptions _enemiesBarChartOptions = new() { ChartMarginXInPx = 60, ChartMarginYInPx = 80, HighlighterKeys = ["Enemy", "Players", "% Of All"], HighlighterWidth = 320 };
 
-	private static readonly List<string> _daggers = Daggers.All.Select(d => d.Name).ToList();
-	private static readonly List<string> _deathTypes = Deaths.GetDeaths(GameConstants.CurrentVersion).Select(d => d.Name).ToList();
-	private static readonly List<string> _enemies = Enemies.GetEnemies(GameConstants.CurrentVersion).Where(e => e.FirstSpawnSecond.HasValue).OrderByDescending(e => e.FirstSpawnSecond).Select(e => e.Name).Reverse().ToList();
+	private static readonly List<string> _daggers = [.. Daggers.All.Select(d => d.Name)];
+	private static readonly List<string> _deathTypes = [.. Deaths.GetDeaths(GameConstants.CurrentVersion).Select(d => d.Name)];
+	private static readonly List<string> _enemies = [.. Enemies.GetEnemies(GameConstants.CurrentVersion).Where(e => e.FirstSpawnSecond.HasValue).OrderByDescending(e => e.FirstSpawnSecond).Select(e => e.Name).Reverse()];
 	private static readonly List<string> _upgrades = ["Level 1", "Level 2", "Level 3 / 4"];
 
 	private GetLeaderboardStatistics? _statistics;
@@ -55,34 +55,16 @@ public sealed partial class StatisticsPage
 		if (!_statistics.IsFetched)
 			return;
 
-		IEnumerable<KeyValuePair<int, int>> sub500Scores = _statistics.TimesStatistics.Where(kvp => kvp.Key < 500);
-		SetScoreChart(sub500Scores, 5000.0, ref _sub500Data, ref _sub500DataOptions);
+		List<KeyValuePair<int, int>> sub500Scores = [.. _statistics.TimesStatistics.Where(kvp => kvp.Key < 500)];
+		SetScoreChart(sub500Scores, 5000.0, out _sub500Data, out _sub500DataOptions, _statistics.TotalEntries);
 
-		IEnumerable<KeyValuePair<int, int>> sub1000Scores = _statistics.TimesStatistics.Where(kvp => kvp.Key is >= 500 and < 1000);
-		SetScoreChart(sub1000Scores, 20.0, ref _sub1000Data, ref _sub1000DataOptions);
+		List<KeyValuePair<int, int>> sub1000Scores = [.. _statistics.TimesStatistics.Where(kvp => kvp.Key is >= 500 and < 1000)];
+		SetScoreChart(sub1000Scores, 20.0, out _sub1000Data, out _sub1000DataOptions, _statistics.TotalEntries);
 
-		IEnumerable<KeyValuePair<int, int>> post1000Scores = _statistics.TimesStatistics.Where(kvp => kvp.Key >= 1000);
-		SetScoreChart(post1000Scores, 2.0, ref _post1000Data, ref _post1000DataOptions);
+		List<KeyValuePair<int, int>> post1000Scores = [.. _statistics.TimesStatistics.Where(kvp => kvp.Key >= 1000)];
+		SetScoreChart(post1000Scores, 2.0, out _post1000Data, out _post1000DataOptions, _statistics.TotalEntries);
 
-		void SetScoreChart(IEnumerable<KeyValuePair<int, int>> data, double scale, ref BarDataSet? dataSet, ref BarChartDataOptions dataOptions)
-		{
-			List<BarData> set = data.Select((kvp, i) => new BarData(Daggers.GetDaggerFromSeconds(GameConstants.CurrentVersion, kvp.Key).Color.HexCode, kvp.Value, i)).ToList();
-			dataOptions = new BarChartDataOptions(0, scale, Math.Ceiling(data.Max(kvp => kvp.Value) / scale) * scale);
-			dataSet = new BarDataSet(set, (ds, i) =>
-			{
-				BarData barData = ds.Data[i];
-				int start = data.ElementAt(i).Key;
-				Dagger dagger = Daggers.GetDaggerFromSeconds(GameConstants.CurrentVersion, start);
-				return
-				[
-					new MarkupString($"<span class='{dagger.Name.ToLower()}' style='text-align: right;'>{start.ToString(StringFormats.TimeFormat)} - {(start + 9.9999).ToString(StringFormats.TimeFormat)}</span>"),
-					new MarkupString($"<span style='text-align: right;'>{barData.Y:0}</span>"),
-					new MarkupString($"<span style='text-align: right;'>{(barData.Y / _statistics.TotalEntries).ToString(_percentageFormat)}</span>"),
-				];
-			});
-		}
-
-		List<BarData> killsSet = _statistics.KillsStatistics.Where(kvp => kvp.Key < 1000).Select((kvp, i) => new BarData("#880", kvp.Value, i)).ToList();
+		List<BarData> killsSet = [.. _statistics.KillsStatistics.Where(kvp => kvp.Key < 1000).Select((kvp, i) => new BarData("#880", kvp.Value, i))];
 		const double killsScale = 2500.0;
 		_killsDataOptions = new BarChartDataOptions(0, killsScale, Math.Ceiling(_statistics.KillsStatistics.Max(kvp => kvp.Value) / killsScale) * killsScale);
 		_killsData = new BarDataSet(killsSet, (ds, i) =>
@@ -97,7 +79,7 @@ public sealed partial class StatisticsPage
 			];
 		});
 
-		List<BarData> gemsSet = _statistics.GemsStatistics.Where(kvp => kvp.Key < 500).Select((kvp, i) => new BarData("#f00", kvp.Value, i)).ToList();
+		List<BarData> gemsSet = [.. _statistics.GemsStatistics.Where(kvp => kvp.Key < 500).Select((kvp, i) => new BarData("#f00", kvp.Value, i))];
 		const double gemsScale = 20000.0;
 		_gemsDataOptions = new BarChartDataOptions(0, gemsScale, Math.Ceiling(_statistics.GemsStatistics.Max(kvp => kvp.Value) / gemsScale) * gemsScale);
 		_gemsData = new BarDataSet(gemsSet, (ds, i) =>
@@ -131,7 +113,7 @@ public sealed partial class StatisticsPage
 			];
 		});
 
-		List<BarData> daggersSet = _statistics.DaggersStatistics.Select((kvp, i) => new BarData(Daggers.GetDaggerByName(kvp.Key)?.Color.HexCode ?? MarkupStrings.NoDataColor, kvp.Value, i)).ToList();
+		List<BarData> daggersSet = [.. _statistics.DaggersStatistics.Select((kvp, i) => new BarData(Daggers.GetDaggerByName(kvp.Key)?.Color.HexCode ?? MarkupStrings.NoDataColor, kvp.Value, i))];
 		const double daggersScale = 20000.0;
 		_daggersDataOptions = new BarChartDataOptions(0, daggersScale, Math.Ceiling(_statistics.DaggersStatistics.Max(kvp => kvp.Value) / daggersScale) * daggersScale);
 		_daggersData = new BarDataSet(daggersSet, (ds, i) =>
@@ -146,7 +128,7 @@ public sealed partial class StatisticsPage
 			];
 		});
 
-		List<BarData> deathsSet = _statistics.DeathsStatistics.Select((kvp, i) => new BarData(Deaths.GetDeathByName(GameConstants.CurrentVersion, kvp.Key)?.Color.HexCode ?? MarkupStrings.NoDataColor, kvp.Value, i)).ToList();
+		List<BarData> deathsSet = [.. _statistics.DeathsStatistics.Select((kvp, i) => new BarData(Deaths.GetDeathByName(GameConstants.CurrentVersion, kvp.Key)?.Color.HexCode ?? MarkupStrings.NoDataColor, kvp.Value, i))];
 		const double deathsScale = 20000.0;
 		_deathsDataOptions = new BarChartDataOptions(0, deathsScale, Math.Ceiling(_statistics.DeathsStatistics.Max(kvp => kvp.Value) / deathsScale) * deathsScale);
 		_deathsData = new BarDataSet(deathsSet, (ds, i) =>
@@ -160,7 +142,7 @@ public sealed partial class StatisticsPage
 			];
 		});
 
-		List<BarData> enemiesSet = _statistics.EnemiesStatistics.Select((kvp, i) => new BarData(Enemies.GetEnemyByName(GameConstants.CurrentVersion, kvp.Key)?.Color.HexCode ?? MarkupStrings.NoDataColor, kvp.Value, i)).ToList();
+		List<BarData> enemiesSet = [.. _statistics.EnemiesStatistics.Select((kvp, i) => new BarData(Enemies.GetEnemyByName(GameConstants.CurrentVersion, kvp.Key)?.Color.HexCode ?? MarkupStrings.NoDataColor, kvp.Value, i))];
 		const double enemiesScale = 50000.0;
 		_enemiesDataOptions = new BarChartDataOptions(0, enemiesScale, Math.Ceiling(_statistics.EnemiesStatistics.Max(kvp => kvp.Value) / enemiesScale) * enemiesScale);
 		_enemiesData = new BarDataSet(enemiesSet, (ds, i) =>
@@ -171,6 +153,24 @@ public sealed partial class StatisticsPage
 				new MarkupString($"<span style='color: {barData.Color}; text-align: right;'>{_enemies[i]}</span>"),
 				new MarkupString($"<span style='text-align: right;'>{barData.Y:0}</span>"),
 				new MarkupString($"<span style='text-align: right;'>{(barData.Y / _statistics.TotalEntries).ToString(_percentageFormat)}</span>"),
+			];
+		});
+	}
+
+	private static void SetScoreChart(List<KeyValuePair<int, int>> data, double scale, out BarDataSet dataSet, out BarChartDataOptions dataOptions, int totalEntries)
+	{
+		List<BarData> set = [.. data.Select((kvp, i) => new BarData(Daggers.GetDaggerFromSeconds(GameConstants.CurrentVersion, kvp.Key).Color.HexCode, kvp.Value, i))];
+		dataOptions = new BarChartDataOptions(0, scale, Math.Ceiling(data.Max(kvp => kvp.Value) / scale) * scale);
+		dataSet = new BarDataSet(set, (ds, i) =>
+		{
+			BarData barData = ds.Data[i];
+			int start = data[i].Key;
+			Dagger dagger = Daggers.GetDaggerFromSeconds(GameConstants.CurrentVersion, start);
+			return
+			[
+				new MarkupString($"<span class='{dagger.Name.ToLower()}' style='text-align: right;'>{start.ToString(StringFormats.TimeFormat)} - {(start + 9.9999).ToString(StringFormats.TimeFormat)}</span>"),
+				new MarkupString($"<span style='text-align: right;'>{barData.Y:0}</span>"),
+				new MarkupString($"<span style='text-align: right;'>{(barData.Y / totalEntries).ToString(_percentageFormat)}</span>"),
 			];
 		});
 	}
