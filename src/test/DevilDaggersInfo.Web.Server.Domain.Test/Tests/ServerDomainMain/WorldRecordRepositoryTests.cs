@@ -24,7 +24,7 @@ internal sealed class WorldRecordRepositoryTests
 	[Test]
 	public async Task GetWorldRecords_WithCheater()
 	{
-		GetWorldRecordDataContainer worldRecordData = _repository.GetWorldRecordData();
+		GetWorldRecordDataContainer worldRecordData = await _repository.GetWorldRecordDataAsync();
 
 		await Assert.That(worldRecordData.WorldRecordHolders.Count).IsEqualTo(1);
 		await Assert.That(worldRecordData.WorldRecordHolders[0].Id).IsEqualTo(1);

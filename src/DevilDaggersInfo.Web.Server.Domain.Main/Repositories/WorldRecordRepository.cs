@@ -7,28 +7,18 @@ using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardHistory;
 using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
+using Microsoft.EntityFrameworkCore;
 using ApiMain = DevilDaggersInfo.Web.ApiSpec.Main.WorldRecords;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Main.Repositories;
 
-public sealed class WorldRecordRepository
+public sealed class WorldRecordRepository(ApplicationDbContext dbContext, IFileSystemService fileSystemService, ILeaderboardHistoryCache leaderboardHistoryCache)
 {
 	private static readonly DateTime _automationStart = new(2019, 10, 26, 0, 0, 0, DateTimeKind.Utc);
 
-	private readonly ApplicationDbContext _dbContext;
-	private readonly IFileSystemService _fileSystemService;
-	private readonly ILeaderboardHistoryCache _leaderboardHistoryCache;
-
-	public WorldRecordRepository(ApplicationDbContext dbContext, IFileSystemService fileSystemService, ILeaderboardHistoryCache leaderboardHistoryCache)
+	public async Task<ApiMain.GetWorldRecordDataContainer> GetWorldRecordDataAsync()
 	{
-		_dbContext = dbContext;
-		_fileSystemService = fileSystemService;
-		_leaderboardHistoryCache = leaderboardHistoryCache;
-	}
-
-	public ApiMain.GetWorldRecordDataContainer GetWorldRecordData()
-	{
-		List<BaseWorldRecord> baseWorldRecords = GetBaseWorldRecords();
+		List<BaseWorldRecord> baseWorldRecords = await GetBaseWorldRecordsAsync();
 		List<BaseWorldRecordHolder> worldRecordHolders = [];
 
 		List<ApiMain.GetWorldRecord> worldRecords = [];
@@ -97,20 +87,22 @@ public sealed class WorldRecordRepository
 
 		return new ApiMain.GetWorldRecordDataContainer
 		{
-			WorldRecordHolders = worldRecordHolders
-				.OrderByDescending(wrh => wrh.TotalTimeHeld)
-				.Select(wrh => new ApiMain.GetWorldRecordHolder
-				{
-					FirstHeld = wrh.FirstHeld,
-					Id = wrh.Id,
-					LastHeld = wrh.LastHeld,
-					LongestTimeHeldConsecutively = wrh.LongestTimeHeldConsecutively,
-					MostRecentUsername = wrh.MostRecentUsername,
-					TotalTimeHeld = wrh.TotalTimeHeld,
-					Usernames = wrh.Usernames,
-					WorldRecordCount = wrh.WorldRecordCount,
-				})
-				.ToList(),
+			WorldRecordHolders =
+			[
+				.. worldRecordHolders
+					.OrderByDescending(wrh => wrh.TotalTimeHeld)
+					.Select(wrh => new ApiMain.GetWorldRecordHolder
+					{
+						FirstHeld = wrh.FirstHeld,
+						Id = wrh.Id,
+						LastHeld = wrh.LastHeld,
+						LongestTimeHeldConsecutively = wrh.LongestTimeHeldConsecutively,
+						MostRecentUsername = wrh.MostRecentUsername,
+						TotalTimeHeld = wrh.TotalTimeHeld,
+						Usernames = wrh.Usernames,
+						WorldRecordCount = wrh.WorldRecordCount,
+					}),
+			],
 			WorldRecords = worldRecords,
 		};
 
@@ -124,17 +116,17 @@ public sealed class WorldRecordRepository
 		};
 	}
 
-	// TODO: Make async.
-	private List<BaseWorldRecord> GetBaseWorldRecords()
+	private async Task<List<BaseWorldRecord>> GetBaseWorldRecordsAsync()
 	{
 		// WRs made on an alt can be legit, we'll just swap it with the main account.
-		List<int> bannedPlayerIds = _dbContext.Players.Select(p => new { p.Id, p.BanType }).Where(p => p.BanType != BanType.Alt && p.BanType != BanType.NotBanned).Select(p => p.Id).ToList();
+		IQueryable<int> query = dbContext.Players.Select(p => new { p.Id, p.BanType }).Where(p => p.BanType != BanType.Alt && p.BanType != BanType.NotBanned).Select(p => p.Id);
+		List<int> bannedPlayerIds = await query.ToListAsync();
 
 		DateTime? previousDate = null;
 		List<BaseWorldRecord> worldRecords = [];
 		int worldRecord = 0;
 
-		List<LeaderboardHistory> history = _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory).Where(p => p.EndsWith(".bin")).Select(f => _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(f)).OrderBy(lbh => lbh.DateTime).ToList();
+		List<LeaderboardHistory> history = [.. fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory).Where(p => p.EndsWith(".bin")).Select(f => leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(f)).OrderBy(lbh => lbh.DateTime)];
 		foreach (LeaderboardHistory leaderboard in history)
 		{
 			// Find the WR, if the actual first place is not legit, get second place, etc.
@@ -174,7 +166,7 @@ public sealed class WorldRecordRepository
 
 				// If the WR was submitted by an alt, we need to manually fix the ID by looking up the main ID in the database.
 				// TODO: Fix multiple queries.
-				int? mainPlayerId = _dbContext.Players.Select(p => new { p.Id, p.BanResponsibleId }).FirstOrDefault(p => p.Id == firstLegitPlace.Id)?.BanResponsibleId;
+				int? mainPlayerId = (await dbContext.Players.Select(p => new { p.Id, p.BanResponsibleId }).FirstOrDefaultAsync(p => p.Id == firstLegitPlace.Id))?.BanResponsibleId;
 
 				ApiMain.GetWorldRecordEntry getWorldRecordEntry = new()
 				{
@@ -204,29 +196,16 @@ public sealed class WorldRecordRepository
 
 	private sealed record BaseWorldRecord(DateTime DateTime, ApiMain.GetWorldRecordEntry Entry, GameVersion? GameVersion);
 
-	private sealed class BaseWorldRecordHolder
+	private sealed class BaseWorldRecordHolder(int id, string username, TimeSpan totalTimeHeld, TimeSpan longestTimeHeldConsecutively, int worldRecordCount, DateTime firstHeld, DateTime lastHeld)
 	{
-		public BaseWorldRecordHolder(int id, string username, TimeSpan totalTimeHeld, TimeSpan longestTimeHeldConsecutively, int worldRecordCount, DateTime firstHeld, DateTime lastHeld)
-		{
-			Id = id;
-			Usernames = [username];
-			TotalTimeHeld = totalTimeHeld;
-			LongestTimeHeldConsecutively = longestTimeHeldConsecutively;
-			WorldRecordCount = worldRecordCount;
-			FirstHeld = firstHeld;
-			LastHeld = lastHeld;
+		public int Id { get; } = id;
+		public List<string> Usernames { get; } = [username];
+		public TimeSpan TotalTimeHeld { get; set; } = totalTimeHeld;
+		public TimeSpan LongestTimeHeldConsecutively { get; set; } = longestTimeHeldConsecutively;
+		public int WorldRecordCount { get; set; } = worldRecordCount;
+		public DateTime FirstHeld { get; set; } = firstHeld;
+		public DateTime LastHeld { get; set; } = lastHeld;
 
-			MostRecentUsername = username;
-		}
-
-		public int Id { get; }
-		public List<string> Usernames { get; }
-		public TimeSpan TotalTimeHeld { get; set; }
-		public TimeSpan LongestTimeHeldConsecutively { get; set; }
-		public int WorldRecordCount { get; set; }
-		public DateTime FirstHeld { get; set; }
-		public DateTime LastHeld { get; set; }
-
-		public string MostRecentUsername { get; set; }
+		public string MostRecentUsername { get; set; } = username;
 	}
 }
