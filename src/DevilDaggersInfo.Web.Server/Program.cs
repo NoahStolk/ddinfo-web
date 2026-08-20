@@ -31,7 +31,12 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.WebHost.UseSentry(o =>
 {
 	o.TracesSampleRate = 0.025;
-	o.MinimumEventLevel = LogLevel.Information;
+
+	// Sentry.AspNetCore 6.0.0 stopped honouring the Logging:LogLevel filters for its own provider (5.14.1 is
+	// the last version that does), so MinimumEventLevel is now the only thing standing between the framework's
+	// Information logs -- "Request starting ...", one per static file request -- and the event quota. Until the
+	// 4.13.0 -> 6.8.0 bump the Warning default in appsettings.json filtered those out before Sentry saw them.
+	o.MinimumEventLevel = LogLevel.Warning;
 });
 builder.WebHost.UseStaticWebAssets();
 
