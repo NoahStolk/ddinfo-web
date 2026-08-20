@@ -10,15 +10,8 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 [Route("api/admin/file-system")]
 [ApiController]
 [Authorize(Roles = Roles.Admin)]
-public sealed class FileSystemController : ControllerBase
+public sealed class FileSystemController(IFileSystemService fileSystemService) : ControllerBase
 {
-	private readonly IFileSystemService _fileSystemService;
-
-	public FileSystemController(IFileSystemService fileSystemService)
-	{
-		_fileSystemService = fileSystemService;
-	}
-
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public ActionResult<List<GetFileSystemEntry>> GetFileSystemInfo()
@@ -27,7 +20,7 @@ public sealed class FileSystemController : ControllerBase
 			.OrderBy(dsd => dsd.ToString())
 			.Select(dsd =>
 			{
-				DirectoryStatistics statistics = GetDirectorySize(_fileSystemService.GetPath(dsd));
+				DirectoryStatistics statistics = GetDirectorySize(fileSystemService.GetPath(dsd));
 				return new GetFileSystemEntry
 				{
 					Count = statistics.FileCount,

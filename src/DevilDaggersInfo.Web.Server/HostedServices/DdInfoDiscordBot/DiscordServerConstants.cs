@@ -37,14 +37,9 @@ internal static class DiscordServerConstants
 		}
 	}
 
-	private sealed class ChannelWrapper
+	private sealed class ChannelWrapper(ulong channelId)
 	{
-		public ChannelWrapper(ulong channelId)
-		{
-			ChannelId = channelId;
-		}
-
-		public ulong ChannelId { get; }
+		public ulong ChannelId { get; } = channelId;
 
 		public DiscordChannel? DiscordChannel { get; set; }
 	}

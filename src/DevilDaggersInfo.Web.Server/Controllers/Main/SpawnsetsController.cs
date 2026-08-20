@@ -15,17 +15,8 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 
 [Route("api/spawnsets")]
 [ApiController]
-public sealed class SpawnsetsController : ControllerBase
+public sealed class SpawnsetsController(ApplicationDbContext dbContext, ILogger<SpawnsetsController> logger) : ControllerBase
 {
-	private readonly ApplicationDbContext _dbContext;
-	private readonly ILogger<SpawnsetsController> _logger;
-
-	public SpawnsetsController(ApplicationDbContext dbContext, ILogger<SpawnsetsController> logger)
-	{
-		_dbContext = dbContext;
-		_logger = logger;
-	}
-
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -38,10 +29,10 @@ public sealed class SpawnsetsController : ControllerBase
 		SpawnsetSorting? sortBy = null,
 		bool ascending = false)
 	{
-		IQueryable<SpawnsetEntity> spawnsetsQuery = _dbContext.Spawnsets.AsNoTracking();
+		IQueryable<SpawnsetEntity> spawnsetsQuery = dbContext.Spawnsets.AsNoTracking();
 
 		if (withCustomLeaderboardOnly)
-			spawnsetsQuery = spawnsetsQuery.Where(s => _dbContext.CustomLeaderboards.Any(cl => cl.SpawnsetId == s.Id));
+			spawnsetsQuery = spawnsetsQuery.Where(s => dbContext.CustomLeaderboards.Any(cl => cl.SpawnsetId == s.Id));
 
 		// Casing is ignored by default because of IQueryable.
 		if (!string.IsNullOrWhiteSpace(spawnsetFilter))
@@ -115,7 +106,7 @@ public sealed class SpawnsetsController : ControllerBase
 	public async Task<ActionResult<GetSpawnsetByHash>> GetSpawnsetByHash([FromQuery] byte[] hash)
 	{
 		// ! Navigation property.
-		var spawnset = await _dbContext.Spawnsets
+		var spawnset = await dbContext.Spawnsets
 			.AsNoTracking()
 			.Include(s => s.Player)
 			.Select(s => new
@@ -129,11 +120,11 @@ public sealed class SpawnsetsController : ControllerBase
 		if (spawnset == null)
 			return NotFound();
 
-		CustomLeaderboardEntity? customLeaderboard = await _dbContext.CustomLeaderboards
+		CustomLeaderboardEntity? customLeaderboard = await dbContext.CustomLeaderboards
 			.AsNoTracking()
 			.FirstOrDefaultAsync(cl => cl.SpawnsetId == spawnset.Id);
 
-		var customEntries = customLeaderboard == null ? null : await _dbContext.CustomEntries
+		var customEntries = customLeaderboard == null ? null : await dbContext.CustomEntries
 			.AsNoTracking()
 			.Select(ce => new { ce.Id, ce.CustomLeaderboardId, ce.Time })
 			.Where(ce => ce.CustomLeaderboardId == customLeaderboard.Id)
@@ -162,7 +153,7 @@ public sealed class SpawnsetsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult<byte[]>> GetSpawnsetHash([Required] string fileName)
 	{
-		var spawnset = await _dbContext.Spawnsets.AsNoTracking().Select(s => new { s.Name, s.Md5Hash }).FirstOrDefaultAsync(s => s.Name == fileName);
+		var spawnset = await dbContext.Spawnsets.AsNoTracking().Select(s => new { s.Name, s.Md5Hash }).FirstOrDefaultAsync(s => s.Name == fileName);
 		if (spawnset == null)
 			return NotFound();
 
@@ -175,7 +166,7 @@ public sealed class SpawnsetsController : ControllerBase
 	{
 		return new GetTotalSpawnsetData
 		{
-			Count = _dbContext.Spawnsets.AsNoTracking().Select(s => s.Id).Count(),
+			Count = dbContext.Spawnsets.AsNoTracking().Select(s => s.Id).Count(),
 		};
 	}
 
@@ -185,7 +176,7 @@ public sealed class SpawnsetsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult> GetSpawnsetFile([Required] string fileName)
 	{
-		var spawnset = await _dbContext.Spawnsets.AsNoTracking().Select(s => new { s.Name, s.File }).FirstOrDefaultAsync(s => s.Name == fileName);
+		var spawnset = await dbContext.Spawnsets.AsNoTracking().Select(s => new { s.Name, s.File }).FirstOrDefaultAsync(s => s.Name == fileName);
 		if (spawnset == null)
 			return NotFound();
 
@@ -198,14 +189,14 @@ public sealed class SpawnsetsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult<GetSpawnset>> GetSpawnsetById([Required] int id)
 	{
-		SpawnsetEntity? spawnsetEntity = await _dbContext.Spawnsets
+		SpawnsetEntity? spawnsetEntity = await dbContext.Spawnsets
 			.AsNoTracking()
 			.Include(s => s.Player)
 			.FirstOrDefaultAsync(s => s.Id == id);
 		if (spawnsetEntity == null)
 			return NotFound();
 
-		var customLeaderboard = await _dbContext.CustomLeaderboards
+		var customLeaderboard = await dbContext.CustomLeaderboards
 			.AsNoTracking()
 			.Select(cl => new { cl.Id, cl.SpawnsetId })
 			.FirstOrDefaultAsync(cl => cl.SpawnsetId == spawnsetEntity.Id);
@@ -225,14 +216,14 @@ public sealed class SpawnsetsController : ControllerBase
 			_ => "V3",
 		};
 
-		var spawnsetEntity = await _dbContext.Spawnsets
+		var spawnsetEntity = await dbContext.Spawnsets
 			.AsNoTracking()
 			.Select(s => new { s.Name, s.File })
 			.FirstOrDefaultAsync(s => s.Name == name);
 		if (spawnsetEntity != null)
 			return spawnsetEntity.File;
 
-		_logger.LogError("Default spawnset {Name} does not exist in the file system.", name);
+		logger.LogError("Default spawnset {Name} does not exist in the file system.", name);
 		return NotFound();
 	}
 
@@ -240,7 +231,7 @@ public sealed class SpawnsetsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public async Task<ActionResult<List<GetSpawnsetName>>> GetSpawnsetsByAuthorId([Required] int playerId)
 	{
-		var spawnsets = await _dbContext.Spawnsets
+		var spawnsets = await dbContext.Spawnsets
 			.AsNoTracking()
 			.Select(s => new { s.Id, s.PlayerId, s.Name, s.LastUpdated })
 			.Where(s => s.PlayerId == playerId)

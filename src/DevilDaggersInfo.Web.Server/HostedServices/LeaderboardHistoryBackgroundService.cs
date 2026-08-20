@@ -7,18 +7,13 @@ using DevilDaggersInfo.Web.Server.Utils;
 
 namespace DevilDaggersInfo.Web.Server.HostedServices;
 
-internal sealed class LeaderboardHistoryBackgroundService : AbstractBackgroundService
+internal sealed class LeaderboardHistoryBackgroundService(
+	IFileSystemService fileSystemService,
+	IDdLeaderboardService leaderboardClient,
+	BackgroundServiceMonitor backgroundServiceMonitor,
+	ILogger<LeaderboardHistoryBackgroundService> logger)
+	: AbstractBackgroundService(backgroundServiceMonitor, logger)
 {
-	private readonly IFileSystemService _fileSystemService;
-	private readonly IDdLeaderboardService _leaderboardClient;
-
-	public LeaderboardHistoryBackgroundService(IFileSystemService fileSystemService, IDdLeaderboardService leaderboardClient, BackgroundServiceMonitor backgroundServiceMonitor, ILogger<LeaderboardHistoryBackgroundService> logger)
-		: base(backgroundServiceMonitor, logger)
-	{
-		_fileSystemService = fileSystemService;
-		_leaderboardClient = leaderboardClient;
-	}
-
 	protected override TimeSpan Interval => TimeSpan.FromMinutes(1);
 
 	protected override async Task ExecuteTaskAsync(CancellationToken stoppingToken)
@@ -37,7 +32,7 @@ internal sealed class LeaderboardHistoryBackgroundService : AbstractBackgroundSe
 			IDdLeaderboardService.LeaderboardResponse response;
 			try
 			{
-				response = await _leaderboardClient.GetLeaderboard(playerPerPage * i + 1, 100);
+				response = await leaderboardClient.GetLeaderboard(playerPerPage * i + 1, 100);
 			}
 			catch (DdLeaderboardException ex)
 			{
@@ -67,13 +62,13 @@ internal sealed class LeaderboardHistoryBackgroundService : AbstractBackgroundSe
 		LeaderboardHistory historyModel = ConvertToHistoryModel(leaderboard!, entries);
 
 		string fileName = $"{DateTime.UtcNow:yyyyMMddHHmm}.bin";
-		string fullPath = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.LeaderboardHistory), fileName);
+		string fullPath = Path.Combine(fileSystemService.GetPath(DataSubDirectory.LeaderboardHistory), fileName);
 		await IoFile.WriteAllBytesAsync(fullPath, historyModel.ToBytes(), stoppingToken);
 	}
 
 	private bool HistoryFileExistsForDate(DateTime dateTime)
 	{
-		foreach (string path in Directory.GetFiles(_fileSystemService.GetPath(DataSubDirectory.LeaderboardHistory), "*.bin"))
+		foreach (string path in Directory.GetFiles(fileSystemService.GetPath(DataSubDirectory.LeaderboardHistory), "*.bin"))
 		{
 			string fileName = Path.GetFileNameWithoutExtension(path);
 			if (HistoryUtils.HistoryFileNameToDateTime(fileName).Date == dateTime.Date)

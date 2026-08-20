@@ -10,20 +10,13 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Ddse;
 
 [Route("api/ddse/spawnsets")]
 [ApiController]
-public sealed class SpawnsetsController : ControllerBase
+public sealed class SpawnsetsController(ApplicationDbContext dbContext) : ControllerBase
 {
-	private readonly ApplicationDbContext _dbContext;
-
-	public SpawnsetsController(ApplicationDbContext dbContext)
-	{
-		_dbContext = dbContext;
-	}
-
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public async Task<List<GetSpawnsetDdse>> GetSpawnsets(string? authorFilter = null, string? nameFilter = null)
 	{
-		IQueryable<SpawnsetEntity> spawnsetsQuery = _dbContext.Spawnsets.AsNoTracking().Include(sf => sf.Player);
+		IQueryable<SpawnsetEntity> spawnsetsQuery = dbContext.Spawnsets.AsNoTracking().Include(sf => sf.Player);
 
 		if (!string.IsNullOrWhiteSpace(authorFilter))
 		{
@@ -39,7 +32,7 @@ public sealed class SpawnsetsController : ControllerBase
 			spawnsetsQuery = spawnsetsQuery.Where(sf => sf.Name.Contains(nameFilter));
 		}
 
-		List<int> spawnsetsWithCustomLeaderboardIds = await _dbContext.CustomLeaderboards
+		List<int> spawnsetsWithCustomLeaderboardIds = await dbContext.CustomLeaderboards
 			.Select(cl => cl.SpawnsetId)
 			.ToListAsync();
 
@@ -54,7 +47,7 @@ public sealed class SpawnsetsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult> GetSpawnsetFile([Required] int spawnsetId)
 	{
-		var spawnset = await _dbContext.Spawnsets.AsNoTracking().Select(s => new { s.Id, s.Name, s.File }).FirstOrDefaultAsync(s => s.Id == spawnsetId);
+		var spawnset = await dbContext.Spawnsets.AsNoTracking().Select(s => new { s.Id, s.Name, s.File }).FirstOrDefaultAsync(s => s.Id == spawnsetId);
 		if (spawnset == null)
 			return NotFound();
 

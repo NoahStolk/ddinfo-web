@@ -9,19 +9,12 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 [Route("api/admin/background-services")]
 [ApiController]
 [Authorize(Roles = Roles.Admin)]
-public sealed class BackgroundServicesController : ControllerBase
+public sealed class BackgroundServicesController(BackgroundServiceMonitor backgroundServiceMonitor) : ControllerBase
 {
-	private readonly BackgroundServiceMonitor _backgroundServiceMonitor;
-
-	public BackgroundServicesController(BackgroundServiceMonitor backgroundServiceMonitor)
-	{
-		_backgroundServiceMonitor = backgroundServiceMonitor;
-	}
-
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public ActionResult<List<GetBackgroundServiceEntry>> GetBackgroundServices()
 	{
-		return _backgroundServiceMonitor.GetEntries();
+		return backgroundServiceMonitor.GetEntries();
 	}
 }

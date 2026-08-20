@@ -6,24 +6,15 @@ using Microsoft.Extensions.Options;
 
 namespace DevilDaggersInfo.Web.Server.HostedServices.DdInfoDiscordBot;
 
-internal sealed class DiscordBotService : IHostedService
+internal sealed class DiscordBotService(IOptions<DiscordOptions> discordBotOptions, IWebHostEnvironment environment) : IHostedService
 {
-	private readonly IOptions<DiscordOptions> _discordBotOptions;
-	private readonly IWebHostEnvironment _environment;
-
 	private DiscordClient? _client;
-
-	public DiscordBotService(IOptions<DiscordOptions> discordBotOptions, IWebHostEnvironment environment)
-	{
-		_discordBotOptions = discordBotOptions;
-		_environment = environment;
-	}
 
 	public async Task StartAsync(CancellationToken cancellationToken)
 	{
 		_client = new DiscordClient(new DiscordConfiguration
 		{
-			Token = _discordBotOptions.Value.BotToken,
+			Token = discordBotOptions.Value.BotToken,
 			TokenType = TokenType.Bot,
 		});
 
@@ -40,11 +31,11 @@ internal sealed class DiscordBotService : IHostedService
 
 	public async Task StopAsync(CancellationToken cancellationToken)
 	{
-		if (!_environment.IsDevelopment())
+		if (!environment.IsDevelopment())
 		{
-			DiscordChannel? logChannel = DiscordServerConstants.GetDiscordChannel(Channel.MonitoringLog, _environment);
+			DiscordChannel? logChannel = DiscordServerConstants.GetDiscordChannel(Channel.MonitoringLog, environment);
 			if (logChannel != null)
-				await logChannel.SendMessageAsyncSafe($"> **Application is shutting down in the `{_environment.EnvironmentName}` environment. Disconnecting from Discord...**");
+				await logChannel.SendMessageAsyncSafe($"> **Application is shutting down in the `{environment.EnvironmentName}` environment. Disconnecting from Discord...**");
 		}
 
 		if (_client != null)

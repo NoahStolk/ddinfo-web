@@ -7,15 +7,8 @@ using System.ComponentModel.DataAnnotations;
 namespace DevilDaggersInfo.Web.Server.Controllers.DdstatsRust;
 
 [ApiController]
-public sealed class DdstatsRustController : ControllerBase
+public sealed class DdstatsRustController(MarkerRepository markerRepository) : ControllerBase
 {
-	private readonly MarkerRepository _markerRepository;
-
-	public DdstatsRustController(MarkerRepository markerRepository)
-	{
-		_markerRepository = markerRepository;
-	}
-
 	[HttpGet("/api/integrations/ddstats-rust")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public ActionResult<DdstatsRustAccessInfo> GetIntegration()
@@ -30,7 +23,7 @@ public sealed class DdstatsRustController : ControllerBase
 	{
 		return new GetMarker
 		{
-			Value = await _markerRepository.GetMarkerAsync(operatingSystem switch
+			Value = await markerRepository.GetMarkerAsync(operatingSystem switch
 			{
 				SupportedOperatingSystem.Windows => "WindowsSteam",
 				SupportedOperatingSystem.Linux => "LinuxSteam",

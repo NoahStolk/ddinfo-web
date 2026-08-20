@@ -13,17 +13,8 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 [Route("api/admin/custom-entries")]
 [ApiController]
 [Authorize(Roles = Roles.Admin)]
-public sealed class CustomEntriesController : ControllerBase
+public sealed class CustomEntriesController(CustomEntryRepository customEntryRepository, CustomEntryService customEntryService) : ControllerBase
 {
-	private readonly CustomEntryRepository _customEntryRepository;
-	private readonly CustomEntryService _customEntryService;
-
-	public CustomEntriesController(CustomEntryRepository customEntryRepository, CustomEntryService customEntryService)
-	{
-		_customEntryRepository = customEntryRepository;
-		_customEntryService = customEntryService;
-	}
-
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public async Task<ActionResult<Page<GetCustomEntryForOverview>>> GetCustomEntries(
@@ -33,7 +24,7 @@ public sealed class CustomEntriesController : ControllerBase
 		CustomEntrySorting? sortBy = null,
 		bool ascending = false)
 	{
-		return await _customEntryRepository.GetCustomEntriesAsync(filter, pageIndex, pageSize, sortBy, ascending);
+		return await customEntryRepository.GetCustomEntriesAsync(filter, pageIndex, pageSize, sortBy, ascending);
 	}
 
 	[HttpGet("{id}")]
@@ -41,7 +32,7 @@ public sealed class CustomEntriesController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult<GetCustomEntry>> GetCustomEntryById(int id)
 	{
-		return await _customEntryRepository.GetCustomEntryAsync(id);
+		return await customEntryRepository.GetCustomEntryAsync(id);
 	}
 
 	[HttpPost]
@@ -49,7 +40,7 @@ public sealed class CustomEntriesController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult> AddCustomEntry(AddCustomEntry addCustomEntry)
 	{
-		await _customEntryService.AddCustomEntryAsync(addCustomEntry);
+		await customEntryService.AddCustomEntryAsync(addCustomEntry);
 		return Ok();
 	}
 
@@ -59,7 +50,7 @@ public sealed class CustomEntriesController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult> EditCustomEntryById(int id, EditCustomEntry editCustomEntry)
 	{
-		await _customEntryService.EditCustomEntryAsync(id, editCustomEntry);
+		await customEntryService.EditCustomEntryAsync(id, editCustomEntry);
 		return Ok();
 	}
 
@@ -68,7 +59,7 @@ public sealed class CustomEntriesController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult> DeleteCustomEntryById(int id)
 	{
-		await _customEntryService.DeleteCustomEntryAsync(id);
+		await customEntryService.DeleteCustomEntryAsync(id);
 		return Ok();
 	}
 }

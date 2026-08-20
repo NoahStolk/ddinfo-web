@@ -8,65 +8,50 @@ using DSharpPlus.Entities;
 
 namespace DevilDaggersInfo.Web.Server.HostedServices;
 
-internal sealed class DiscordLogFlushBackgroundService : AbstractBackgroundService
+internal sealed class DiscordLogFlushBackgroundService(
+	ILogContainerService logContainerService,
+	ICustomLeaderboardHighscoreLogger customLeaderboardHighscoreLogger,
+	ICustomLeaderboardSubmissionLogger customLeaderboardSubmissionLogger,
+	IWebHostEnvironment environment,
+	BackgroundServiceMonitor backgroundServiceMonitor,
+	ILogger<DiscordLogFlushBackgroundService> logger)
+	: AbstractBackgroundService(backgroundServiceMonitor, logger)
 {
-	private readonly ILogContainerService _logContainerService;
-	private readonly ICustomLeaderboardHighscoreLogger _customLeaderboardHighscoreLogger;
-	private readonly ICustomLeaderboardSubmissionLogger _customLeaderboardSubmissionLogger;
-	private readonly IWebHostEnvironment _environment;
-	private readonly ILogger<DiscordLogFlushBackgroundService> _logger;
-
-	public DiscordLogFlushBackgroundService(
-		ILogContainerService logContainerService,
-		ICustomLeaderboardHighscoreLogger customLeaderboardHighscoreLogger,
-		ICustomLeaderboardSubmissionLogger customLeaderboardSubmissionLogger,
-		IWebHostEnvironment environment,
-		BackgroundServiceMonitor backgroundServiceMonitor,
-		ILogger<DiscordLogFlushBackgroundService> logger)
-		: base(backgroundServiceMonitor, logger)
-	{
-		_logContainerService = logContainerService;
-		_customLeaderboardHighscoreLogger = customLeaderboardHighscoreLogger;
-		_customLeaderboardSubmissionLogger = customLeaderboardSubmissionLogger;
-		_environment = environment;
-		_logger = logger;
-	}
-
 	protected override TimeSpan Interval => TimeSpan.FromSeconds(2);
 
 	protected override async Task ExecuteTaskAsync(CancellationToken stoppingToken)
 	{
-		DiscordChannel? logChannel = DiscordServerConstants.GetDiscordChannel(Channel.MonitoringLog, _environment);
+		DiscordChannel? logChannel = DiscordServerConstants.GetDiscordChannel(Channel.MonitoringLog, environment);
 		if (logChannel != null)
 			await LogToLogChannel(logChannel);
 
-		DiscordChannel? auditLogChannel = DiscordServerConstants.GetDiscordChannel(Channel.MaintainersAuditLog, _environment);
+		DiscordChannel? auditLogChannel = DiscordServerConstants.GetDiscordChannel(Channel.MaintainersAuditLog, environment);
 		if (auditLogChannel != null)
 			await LogToAuditLogChannel(auditLogChannel);
 
-		DiscordChannel? validClLogChannel = DiscordServerConstants.GetDiscordChannel(Channel.MonitoringCustomLeaderboardValid, _environment);
+		DiscordChannel? validClLogChannel = DiscordServerConstants.GetDiscordChannel(Channel.MonitoringCustomLeaderboardValid, environment);
 		if (validClLogChannel != null)
 			await LogClLogsToChannel(true, validClLogChannel);
 
-		DiscordChannel? invalidClLogChannel = DiscordServerConstants.GetDiscordChannel(Channel.MonitoringCustomLeaderboardInvalid, _environment);
+		DiscordChannel? invalidClLogChannel = DiscordServerConstants.GetDiscordChannel(Channel.MonitoringCustomLeaderboardInvalid, environment);
 		if (invalidClLogChannel != null)
 			await LogClLogsToChannel(false, invalidClLogChannel);
 
-		foreach (CustomLeaderboardHighscoreLog highscoreLog in _customLeaderboardHighscoreLogger.GetHighscoreLogs())
+		foreach (CustomLeaderboardHighscoreLog highscoreLog in customLeaderboardHighscoreLogger.GetHighscoreLogs())
 			await LogHighscore(highscoreLog);
 
-		_customLeaderboardHighscoreLogger.ClearHighscoreLogs();
+		customLeaderboardHighscoreLogger.ClearHighscoreLogs();
 	}
 
 	private async Task LogClLogsToChannel(bool valid, DiscordChannel channel)
 	{
 		const int timeoutInSeconds = 1;
 
-		IReadOnlyList<string> logs = _customLeaderboardSubmissionLogger.GetLogs(valid);
+		IReadOnlyList<string> logs = customLeaderboardSubmissionLogger.GetLogs(valid);
 		if (logs.Count > 0)
 		{
 			if (await channel.SendMessageAsyncSafe(string.Join(Environment.NewLine, logs)))
-				_customLeaderboardSubmissionLogger.ClearLogs(valid);
+				customLeaderboardSubmissionLogger.ClearLogs(valid);
 			else
 				await Task.Delay(TimeSpan.FromSeconds(timeoutInSeconds));
 		}
@@ -101,7 +86,7 @@ internal sealed class DiscordLogFlushBackgroundService : AbstractBackgroundServi
 			builder.AddFieldObject(highscoreLog.ScoreField, highscoreLog.ScoreValue, true);
 			builder.AddFieldObject("Rank", highscoreLog.RankValue, true);
 
-			DiscordChannel? discordChannel = DiscordServerConstants.GetDiscordChannel(Channel.CustomLeaderboards, _environment);
+			DiscordChannel? discordChannel = DiscordServerConstants.GetDiscordChannel(Channel.CustomLeaderboards, environment);
 			if (discordChannel == null)
 				return;
 
@@ -109,18 +94,18 @@ internal sealed class DiscordLogFlushBackgroundService : AbstractBackgroundServi
 		}
 		catch (Exception ex)
 		{
-			_logger.LogError(ex, "Error while attempting to send leaderboard message.");
+			logger.LogError(ex, "Error while attempting to send leaderboard message.");
 		}
 	}
 
 	private async Task LogToLogChannel(DiscordChannel logChannel)
 	{
-		await LogEntries(_logContainerService.LogEntries, logChannel);
+		await LogEntries(logContainerService.LogEntries, logChannel);
 	}
 
 	private async Task LogToAuditLogChannel(DiscordChannel auditLogChannel)
 	{
-		await LogEntries(_logContainerService.AuditLogEntries, auditLogChannel);
+		await LogEntries(logContainerService.AuditLogEntries, auditLogChannel);
 	}
 
 	private static async Task LogEntries(List<string> entries, DiscordChannel channel)

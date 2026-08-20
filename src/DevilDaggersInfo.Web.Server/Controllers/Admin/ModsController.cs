@@ -12,17 +12,8 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 
 [Route("api/admin/mods")]
 [ApiController]
-public sealed class ModsController : ControllerBase
+public sealed class ModsController(ModRepository modRepository, ModService modService) : ControllerBase
 {
-	private readonly ModRepository _modRepository;
-	private readonly ModService _modService;
-
-	public ModsController(ModRepository modRepository, ModService modService)
-	{
-		_modRepository = modRepository;
-		_modService = modService;
-	}
-
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[Authorize(Roles = Roles.Mods)]
@@ -33,7 +24,7 @@ public sealed class ModsController : ControllerBase
 		ModSorting? sortBy = null,
 		bool ascending = false)
 	{
-		return await _modRepository.GetModsAsync(filter, pageIndex, pageSize, sortBy, ascending);
+		return await modRepository.GetModsAsync(filter, pageIndex, pageSize, sortBy, ascending);
 	}
 
 	[HttpGet("names")]
@@ -41,7 +32,7 @@ public sealed class ModsController : ControllerBase
 	[Authorize(Roles = Roles.Players)]
 	public async Task<ActionResult<List<GetModName>>> GetModNames()
 	{
-		return await _modRepository.GetModNamesAsync();
+		return await modRepository.GetModNamesAsync();
 	}
 
 	[HttpGet("{id}")]
@@ -50,7 +41,7 @@ public sealed class ModsController : ControllerBase
 	[Authorize(Roles = Roles.Mods)]
 	public async Task<ActionResult<GetMod>> GetModById(int id)
 	{
-		return await _modRepository.GetModAsync(id);
+		return await modRepository.GetModAsync(id);
 	}
 
 	[HttpPost]
@@ -59,7 +50,7 @@ public sealed class ModsController : ControllerBase
 	[Authorize(Roles = Roles.Mods)]
 	public async Task<ActionResult> AddMod(AddMod addMod)
 	{
-		await _modService.AddModAsync(addMod);
+		await modService.AddModAsync(addMod);
 		return Ok();
 	}
 
@@ -70,7 +61,7 @@ public sealed class ModsController : ControllerBase
 	[Authorize(Roles = Roles.Mods)]
 	public async Task<ActionResult> EditModById(int id, EditMod editMod)
 	{
-		await _modService.EditModAsync(id, editMod);
+		await modService.EditModAsync(id, editMod);
 		return Ok();
 	}
 
@@ -80,7 +71,7 @@ public sealed class ModsController : ControllerBase
 	[Authorize(Roles = Roles.Mods)]
 	public async Task<ActionResult> DeleteModById(int id)
 	{
-		await _modService.DeleteModAsync(id);
+		await modService.DeleteModAsync(id);
 		return Ok();
 	}
 }

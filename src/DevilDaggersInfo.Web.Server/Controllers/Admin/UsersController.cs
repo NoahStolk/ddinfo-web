@@ -12,17 +12,8 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 
 [Route("api/admin/users")]
 [ApiController]
-public sealed class UsersController : ControllerBase
+public sealed class UsersController(UserRepository userRepository, UserService userService) : ControllerBase
 {
-	private readonly UserRepository _userRepository;
-	private readonly UserService _userService;
-
-	public UsersController(UserRepository userRepository, UserService userService)
-	{
-		_userRepository = userRepository;
-		_userService = userService;
-	}
-
 	[HttpGet]
 	[Authorize(Roles = Roles.Players)]
 	[ProducesResponseType(StatusCodes.Status200OK)]
@@ -33,7 +24,7 @@ public sealed class UsersController : ControllerBase
 		UserSorting? sortBy = null,
 		bool ascending = false)
 	{
-		return await _userRepository.GetUsersAsync(filter, pageIndex, pageSize, sortBy, ascending);
+		return await userRepository.GetUsersAsync(filter, pageIndex, pageSize, sortBy, ascending);
 	}
 
 	[HttpGet("{id}")]
@@ -42,7 +33,7 @@ public sealed class UsersController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult<GetUser>> GetUserById(int id)
 	{
-		return await _userRepository.GetUserAsync(id);
+		return await userRepository.GetUserAsync(id);
 	}
 
 	[HttpPatch("{id}/toggle-role")]
@@ -51,7 +42,7 @@ public sealed class UsersController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult> ToggleRole(int id, ToggleRole toggleRole)
 	{
-		await _userService.ToggleRoleAsync(id, toggleRole);
+		await userService.ToggleRoleAsync(id, toggleRole);
 		return Ok();
 	}
 
@@ -62,7 +53,7 @@ public sealed class UsersController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult> AssignPlayer(int id, AssignPlayer assignPlayer)
 	{
-		await _userService.AssignPlayerAsync(id, assignPlayer);
+		await userService.AssignPlayerAsync(id, assignPlayer);
 		return Ok();
 	}
 
@@ -72,7 +63,7 @@ public sealed class UsersController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult> ResetPasswordForUserById(int id, ResetPassword resetPassword)
 	{
-		await _userService.ResetPasswordForUser(id, resetPassword);
+		await userService.ResetPasswordForUser(id, resetPassword);
 		return Ok();
 	}
 
@@ -82,7 +73,7 @@ public sealed class UsersController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult> DeleteUserById(int id)
 	{
-		await _userService.DeleteUser(id);
+		await userService.DeleteUser(id);
 		return Ok();
 	}
 }

@@ -13,17 +13,8 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 [Route("api/admin/custom-leaderboards")]
 [ApiController]
 [Authorize(Roles = Roles.CustomLeaderboards)]
-public sealed class CustomLeaderboardsController : ControllerBase
+public sealed class CustomLeaderboardsController(CustomLeaderboardRepository customLeaderboardRepository, CustomLeaderboardService customLeaderboardService) : ControllerBase
 {
-	private readonly CustomLeaderboardRepository _customLeaderboardRepository;
-	private readonly CustomLeaderboardService _customLeaderboardService;
-
-	public CustomLeaderboardsController(CustomLeaderboardRepository customLeaderboardRepository, CustomLeaderboardService customLeaderboardService)
-	{
-		_customLeaderboardRepository = customLeaderboardRepository;
-		_customLeaderboardService = customLeaderboardService;
-	}
-
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public async Task<ActionResult<Page<GetCustomLeaderboardForOverview>>> GetCustomLeaderboards(
@@ -33,7 +24,7 @@ public sealed class CustomLeaderboardsController : ControllerBase
 		CustomLeaderboardSorting? sortBy = null,
 		bool ascending = false)
 	{
-		return await _customLeaderboardRepository.GetCustomLeaderboardsAsync(filter, pageIndex, pageSize, sortBy, ascending);
+		return await customLeaderboardRepository.GetCustomLeaderboardsAsync(filter, pageIndex, pageSize, sortBy, ascending);
 	}
 
 	[HttpGet("{id}")]
@@ -41,7 +32,7 @@ public sealed class CustomLeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult<GetCustomLeaderboard>> GetCustomLeaderboardById(int id)
 	{
-		return await _customLeaderboardRepository.GetCustomLeaderboardAsync(id);
+		return await customLeaderboardRepository.GetCustomLeaderboardAsync(id);
 	}
 
 	[HttpPost]
@@ -49,7 +40,7 @@ public sealed class CustomLeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult> AddCustomLeaderboard(AddCustomLeaderboard addCustomLeaderboard)
 	{
-		await _customLeaderboardService.AddCustomLeaderboardAsync(addCustomLeaderboard);
+		await customLeaderboardService.AddCustomLeaderboardAsync(addCustomLeaderboard);
 		return Ok();
 	}
 
@@ -59,7 +50,7 @@ public sealed class CustomLeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult> EditCustomLeaderboardById(int id, EditCustomLeaderboard editCustomLeaderboard)
 	{
-		await _customLeaderboardService.EditCustomLeaderboardAsync(id, editCustomLeaderboard);
+		await customLeaderboardService.EditCustomLeaderboardAsync(id, editCustomLeaderboard);
 		return Ok();
 	}
 
@@ -69,7 +60,7 @@ public sealed class CustomLeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult> DeleteCustomLeaderboardById(int id)
 	{
-		await _customLeaderboardService.DeleteCustomLeaderboardAsync(id);
+		await customLeaderboardService.DeleteCustomLeaderboardAsync(id);
 		return Ok();
 	}
 }

@@ -13,17 +13,8 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 [Route("api/admin/donations")]
 [ApiController]
 [Authorize(Roles = Roles.Admin)]
-public sealed class DonationsController : ControllerBase
+public sealed class DonationsController(DonationRepository donationRepository, DonationService donationService) : ControllerBase
 {
-	private readonly DonationRepository _donationRepository;
-	private readonly DonationService _donationService;
-
-	public DonationsController(DonationRepository donationRepository, DonationService donationService)
-	{
-		_donationRepository = donationRepository;
-		_donationService = donationService;
-	}
-
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public async Task<ActionResult<Page<GetDonationForOverview>>> GetDonations(
@@ -33,7 +24,7 @@ public sealed class DonationsController : ControllerBase
 		DonationSorting? sortBy = null,
 		bool ascending = false)
 	{
-		return await _donationRepository.GetDonationsAsync(filter, pageIndex, pageSize, sortBy, ascending);
+		return await donationRepository.GetDonationsAsync(filter, pageIndex, pageSize, sortBy, ascending);
 	}
 
 	[HttpGet("{id}")]
@@ -42,7 +33,7 @@ public sealed class DonationsController : ControllerBase
 	[Authorize(Roles = Roles.Spawnsets)]
 	public async Task<ActionResult<GetDonation>> GetDonationById(int id)
 	{
-		return await _donationRepository.GetDonationAsync(id);
+		return await donationRepository.GetDonationAsync(id);
 	}
 
 	[HttpPost]
@@ -50,7 +41,7 @@ public sealed class DonationsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult> AddDonation(AddDonation addDonation)
 	{
-		await _donationService.AddDonationAsync(addDonation);
+		await donationService.AddDonationAsync(addDonation);
 		return Ok();
 	}
 
@@ -60,7 +51,7 @@ public sealed class DonationsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult> EditDonationById(int id, EditDonation editDonation)
 	{
-		await _donationService.EditDonationAsync(id, editDonation);
+		await donationService.EditDonationAsync(id, editDonation);
 		return Ok();
 	}
 
@@ -69,7 +60,7 @@ public sealed class DonationsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult> DeleteDonationById(int id)
 	{
-		await _donationService.DeleteDonationAsync(id);
+		await donationService.DeleteDonationAsync(id);
 		return Ok();
 	}
 }

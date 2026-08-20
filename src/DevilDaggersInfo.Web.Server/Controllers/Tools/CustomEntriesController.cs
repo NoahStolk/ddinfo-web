@@ -12,19 +12,8 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Tools;
 
 [Route("api/app/custom-entries")]
 [ApiController]
-public sealed class CustomEntriesController : ControllerBase
+public sealed class CustomEntriesController(ILogger<CustomEntriesController> logger, CustomEntryProcessor customEntryProcessor, CustomEntryRepository customEntryRepository) : ControllerBase
 {
-	private readonly ILogger<CustomEntriesController> _logger;
-	private readonly CustomEntryProcessor _customEntryProcessor;
-	private readonly CustomEntryRepository _customEntryRepository;
-
-	public CustomEntriesController(ILogger<CustomEntriesController> logger, CustomEntryProcessor customEntryProcessor, CustomEntryRepository customEntryRepository)
-	{
-		_logger = logger;
-		_customEntryProcessor = customEntryProcessor;
-		_customEntryRepository = customEntryRepository;
-	}
-
 	[HttpGet("{id}/replay-buffer")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -33,7 +22,7 @@ public sealed class CustomEntriesController : ControllerBase
 	{
 		return new GetCustomEntryReplayBuffer
 		{
-			Data = await _customEntryRepository.GetCustomEntryReplayBufferByIdAsync(id),
+			Data = await customEntryRepository.GetCustomEntryReplayBufferByIdAsync(id),
 		};
 	}
 
@@ -44,7 +33,7 @@ public sealed class CustomEntriesController : ControllerBase
 	{
 		try
 		{
-			UploadResponse response = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest.ToDomain());
+			UploadResponse response = await customEntryProcessor.ProcessUploadRequestAsync(uploadRequest.ToDomain());
 			return response.ToToolsApi();
 		}
 		catch (Exception ex) when (ex is not CustomEntryValidationException)
@@ -52,7 +41,7 @@ public sealed class CustomEntriesController : ControllerBase
 			ex.Data[nameof(uploadRequest.ClientVersion)] = uploadRequest.ClientVersion;
 			ex.Data[nameof(uploadRequest.OperatingSystem)] = uploadRequest.OperatingSystem;
 			ex.Data[nameof(uploadRequest.BuildMode)] = uploadRequest.BuildMode;
-			_logger.LogError(ex, "Upload failed for user `{PlayerName}` (`{PlayerId}`) for `{Spawnset}`.", uploadRequest.PlayerName, uploadRequest.PlayerId, BitConverter.ToString(uploadRequest.SurvivalHashMd5));
+			logger.LogError(ex, "Upload failed for user `{PlayerName}` (`{PlayerId}`) for `{Spawnset}`.", uploadRequest.PlayerName, uploadRequest.PlayerId, BitConverter.ToString(uploadRequest.SurvivalHashMd5));
 			throw;
 		}
 	}

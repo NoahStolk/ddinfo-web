@@ -17,19 +17,8 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 
 [Route("api/mods")]
 [ApiController]
-public sealed class ModsController : ControllerBase
+public sealed class ModsController(ApplicationDbContext dbContext, IFileSystemService fileSystemService, ModArchiveAccessor modArchiveAccessor) : ControllerBase
 {
-	private readonly ApplicationDbContext _dbContext;
-	private readonly IFileSystemService _fileSystemService;
-	private readonly ModArchiveAccessor _modArchiveAccessor;
-
-	public ModsController(ApplicationDbContext dbContext, IFileSystemService fileSystemService, ModArchiveAccessor modArchiveAccessor)
-	{
-		_dbContext = dbContext;
-		_fileSystemService = fileSystemService;
-		_modArchiveAccessor = modArchiveAccessor;
-	}
-
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -43,7 +32,7 @@ public sealed class ModsController : ControllerBase
 		bool ascending = false)
 	{
 		// ! Navigation property.
-		IEnumerable<ModEntity> modsQuery = _dbContext.Mods
+		IEnumerable<ModEntity> modsQuery = dbContext.Mods
 			.AsNoTracking()
 			.Include(am => am.PlayerMods!)
 				.ThenInclude(pam => pam.Player)
@@ -69,7 +58,7 @@ public sealed class ModsController : ControllerBase
 		Dictionary<ModEntity, ModFileSystemData> data = new();
 		foreach (ModEntity mod in mods)
 		{
-			ModFileSystemData modData = await _modArchiveAccessor.GetModFileSystemDataAsync(mod.Name);
+			ModFileSystemData modData = await modArchiveAccessor.GetModFileSystemDataAsync(mod.Name);
 			data.Add(mod, modData);
 		}
 
@@ -115,7 +104,7 @@ public sealed class ModsController : ControllerBase
 	public async Task<ActionResult<GetMod>> GetModById([Required] int id)
 	{
 		// ! Navigation property.
-		ModEntity? modEntity = await _dbContext.Mods
+		ModEntity? modEntity = await dbContext.Mods
 			.AsNoTracking()
 			.Include(m => m.PlayerMods!)
 				.ThenInclude(pm => pm.Player)
@@ -123,7 +112,7 @@ public sealed class ModsController : ControllerBase
 		if (modEntity == null)
 			return NotFound();
 
-		ModFileSystemData data = await _modArchiveAccessor.GetModFileSystemDataAsync(modEntity.Name);
+		ModFileSystemData data = await modArchiveAccessor.GetModFileSystemDataAsync(modEntity.Name);
 
 		return modEntity.ToMainApi(data);
 	}
@@ -134,7 +123,7 @@ public sealed class ModsController : ControllerBase
 	{
 		return new GetTotalModData
 		{
-			Count = _dbContext.Mods.AsNoTracking().Select(m => m.Id).Count(),
+			Count = dbContext.Mods.AsNoTracking().Select(m => m.Id).Count(),
 		};
 	}
 
@@ -144,11 +133,11 @@ public sealed class ModsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult> GetModFile([Required] string modName)
 	{
-		if (!await _dbContext.Mods.AnyAsync(m => m.Name == modName))
+		if (!await dbContext.Mods.AnyAsync(m => m.Name == modName))
 			return NotFound();
 
 		string fileName = $"{modName}.zip";
-		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Mods), fileName);
+		string path = Path.Combine(fileSystemService.GetPath(DataSubDirectory.Mods), fileName);
 		if (!IoFile.Exists(path))
 			return BadRequest($"Mod file '{fileName}' does not exist.");
 
@@ -160,7 +149,7 @@ public sealed class ModsController : ControllerBase
 	public ActionResult<List<GetModName>> GetModsByAuthorId([Required] int playerId)
 	{
 		// ! Navigation property.
-		var mods = _dbContext.Mods
+		var mods = dbContext.Mods
 			.AsNoTracking()
 			.Include(m => m.PlayerMods)
 			.Select(m => new { m.Id, m.Name, m.PlayerMods, m.LastUpdated })

@@ -9,15 +9,8 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Tools;
 
 [Route("api/app/process-memory")]
 [ApiController]
-public sealed class ProcessMemoryController : ControllerBase
+public sealed class ProcessMemoryController(MarkerRepository markerRepository) : ControllerBase
 {
-	private readonly MarkerRepository _markerRepository;
-
-	public ProcessMemoryController(MarkerRepository markerRepository)
-	{
-		_markerRepository = markerRepository;
-	}
-
 	[HttpGet("marker")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -25,7 +18,7 @@ public sealed class ProcessMemoryController : ControllerBase
 	{
 		return new GetMarker
 		{
-			Value = await _markerRepository.GetMarkerAsync(appOperatingSystem switch
+			Value = await markerRepository.GetMarkerAsync(appOperatingSystem switch
 			{
 				AppOperatingSystem.Windows => "WindowsSteam",
 				AppOperatingSystem.Linux => "LinuxSteam",

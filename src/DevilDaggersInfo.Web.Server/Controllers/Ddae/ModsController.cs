@@ -14,25 +14,14 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Ddae;
 
 [Route("api/ddae/mods")]
 [ApiController]
-public sealed class ModsController : ControllerBase
+public sealed class ModsController(ApplicationDbContext dbContext, ModArchiveAccessor modArchiveAccessor, IFileSystemService fileSystemService) : ControllerBase
 {
-	private readonly ApplicationDbContext _dbContext;
-	private readonly ModArchiveAccessor _modArchiveAccessor;
-	private readonly IFileSystemService _fileSystemService;
-
-	public ModsController(ApplicationDbContext dbContext, ModArchiveAccessor modArchiveAccessor, IFileSystemService fileSystemService)
-	{
-		_dbContext = dbContext;
-		_modArchiveAccessor = modArchiveAccessor;
-		_fileSystemService = fileSystemService;
-	}
-
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public async Task<List<GetModDdae>> GetMods(string? authorFilter = null, string? nameFilter = null, bool? isHostedFilter = null)
 	{
 		// ! Navigation property.
-		IEnumerable<ModEntity> modsQuery = _dbContext.Mods
+		IEnumerable<ModEntity> modsQuery = dbContext.Mods
 			.AsNoTracking()
 			.Include(m => m.PlayerMods!)
 				.ThenInclude(pm => pm.Player)
@@ -57,7 +46,7 @@ public sealed class ModsController : ControllerBase
 		Dictionary<ModEntity, ModFileSystemData> data = new();
 		foreach (ModEntity mod in mods)
 		{
-			ModFileSystemData modData = await _modArchiveAccessor.GetModFileSystemDataAsync(mod.Name);
+			ModFileSystemData modData = await modArchiveAccessor.GetModFileSystemDataAsync(mod.Name);
 			data.Add(mod, modData);
 		}
 
@@ -73,11 +62,11 @@ public sealed class ModsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult> GetModFile([Required] string modName)
 	{
-		if (!await _dbContext.Mods.AnyAsync(m => m.Name == modName))
+		if (!await dbContext.Mods.AnyAsync(m => m.Name == modName))
 			return NotFound();
 
 		string fileName = $"{modName}.zip";
-		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Mods), fileName);
+		string path = Path.Combine(fileSystemService.GetPath(DataSubDirectory.Mods), fileName);
 		if (!IoFile.Exists(path))
 			return BadRequest($"Mod file '{fileName}' does not exist.");
 

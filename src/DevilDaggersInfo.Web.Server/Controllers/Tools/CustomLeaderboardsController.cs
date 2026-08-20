@@ -8,20 +8,13 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Tools;
 
 [Route("api/app/custom-leaderboards")]
 [ApiController]
-public sealed class CustomLeaderboardsController : ControllerBase
+public sealed class CustomLeaderboardsController(CustomLeaderboardRepository customLeaderboardRepository) : ControllerBase
 {
-	private readonly CustomLeaderboardRepository _customLeaderboardRepository;
-
-	public CustomLeaderboardsController(CustomLeaderboardRepository customLeaderboardRepository)
-	{
-		_customLeaderboardRepository = customLeaderboardRepository;
-	}
-
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public async Task<ActionResult<List<GetCustomLeaderboardForOverview>>> GetCustomLeaderboards(int selectedPlayerId)
 	{
-		Domain.Models.Page<CustomLeaderboardOverview> customLeaderboards = await _customLeaderboardRepository.GetCustomLeaderboardOverviewsAsync(
+		Domain.Models.Page<CustomLeaderboardOverview> customLeaderboards = await customLeaderboardRepository.GetCustomLeaderboardOverviewsAsync(
 			rankSorting: null,
 			gameMode: null,
 			spawnsetFilter: null,
@@ -40,7 +33,7 @@ public sealed class CustomLeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult<GetCustomLeaderboard>> GetCustomLeaderboardById(int id)
 	{
-		SortedCustomLeaderboard cl = await _customLeaderboardRepository.GetSortedCustomLeaderboardByIdAsync(id);
+		SortedCustomLeaderboard cl = await customLeaderboardRepository.GetSortedCustomLeaderboardByIdAsync(id);
 		return cl.ToToolsApi();
 	}
 
@@ -49,8 +42,8 @@ public sealed class CustomLeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult<GetCustomLeaderboard>> GetCustomLeaderboardBySpawnsetHash([FromQuery] byte[] hash)
 	{
-		int customLeaderboardId = await _customLeaderboardRepository.GetCustomLeaderboardIdBySpawnsetHashAsync(hash);
-		SortedCustomLeaderboard customLeaderboard = await _customLeaderboardRepository.GetSortedCustomLeaderboardByIdAsync(customLeaderboardId);
+		int customLeaderboardId = await customLeaderboardRepository.GetCustomLeaderboardIdBySpawnsetHashAsync(hash);
+		SortedCustomLeaderboard customLeaderboard = await customLeaderboardRepository.GetSortedCustomLeaderboardByIdAsync(customLeaderboardId);
 		return customLeaderboard.ToToolsApi();
 	}
 
@@ -59,7 +52,7 @@ public sealed class CustomLeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult> CustomLeaderboardExistsBySpawnsetHash([FromQuery] byte[] hash)
 	{
-		await _customLeaderboardRepository.GetCustomLeaderboardIdBySpawnsetHashAsync(hash);
+		await customLeaderboardRepository.GetCustomLeaderboardIdBySpawnsetHashAsync(hash);
 		return Ok();
 	}
 
@@ -67,7 +60,7 @@ public sealed class CustomLeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public async Task<ActionResult<List<GetCustomLeaderboardAllowedCategory>>> GetCustomLeaderboardAllowedCategories()
 	{
-		List<CustomLeaderboardAllowedCategory> customLeaderboardAllowedCategories = await _customLeaderboardRepository.GetCustomLeaderboardAllowedCategories();
+		List<CustomLeaderboardAllowedCategory> customLeaderboardAllowedCategories = await customLeaderboardRepository.GetCustomLeaderboardAllowedCategories();
 		return customLeaderboardAllowedCategories.ConvertAll(ac => ac.ToToolsApi());
 	}
 }

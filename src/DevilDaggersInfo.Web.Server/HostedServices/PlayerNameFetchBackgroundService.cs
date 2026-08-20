@@ -6,23 +6,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DevilDaggersInfo.Web.Server.HostedServices;
 
-internal sealed class PlayerNameFetchBackgroundService : AbstractBackgroundService
+internal sealed class PlayerNameFetchBackgroundService(
+	IServiceScopeFactory serviceScopeFactory,
+	IDdLeaderboardService leaderboardClient,
+	BackgroundServiceMonitor backgroundServiceMonitor,
+	ILogger<PlayerNameFetchBackgroundService> logger)
+	: AbstractBackgroundService(backgroundServiceMonitor, logger)
 {
-	private readonly IServiceScopeFactory _serviceScopeFactory;
-	private readonly IDdLeaderboardService _leaderboardClient;
-
-	public PlayerNameFetchBackgroundService(IServiceScopeFactory serviceScopeFactory, IDdLeaderboardService leaderboardClient, BackgroundServiceMonitor backgroundServiceMonitor, ILogger<PlayerNameFetchBackgroundService> logger)
-		: base(backgroundServiceMonitor, logger)
-	{
-		_serviceScopeFactory = serviceScopeFactory;
-		_leaderboardClient = leaderboardClient;
-	}
-
 	protected override TimeSpan Interval => TimeSpan.FromHours(12);
 
 	protected override async Task ExecuteTaskAsync(CancellationToken stoppingToken)
 	{
-		using IServiceScope scope = _serviceScopeFactory.CreateScope();
+		using IServiceScope scope = serviceScopeFactory.CreateScope();
 		await using ApplicationDbContext dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
 		List<int> playerIds = await dbContext.Players.Select(p => p.Id).ToListAsync(stoppingToken);
@@ -37,7 +32,7 @@ internal sealed class PlayerNameFetchBackgroundService : AbstractBackgroundServi
 
 			try
 			{
-				entries = await _leaderboardClient.GetEntriesByIds(playerIds);
+				entries = await leaderboardClient.GetEntriesByIds(playerIds);
 			}
 			catch (DdLeaderboardException ex)
 			{

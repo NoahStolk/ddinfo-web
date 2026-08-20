@@ -6,15 +6,9 @@ using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 
 namespace DevilDaggersInfo.Web.Server.Services;
 
-internal sealed class CustomLeaderboardHighscoreLogger : ICustomLeaderboardHighscoreLogger
+internal sealed class CustomLeaderboardHighscoreLogger(ILogger<CustomLeaderboardHighscoreLogger> logger) : ICustomLeaderboardHighscoreLogger
 {
-	private readonly ILogger<CustomLeaderboardHighscoreLogger> _logger;
 	private readonly List<CustomLeaderboardHighscoreLog> _highscoreLogs = [];
-
-	public CustomLeaderboardHighscoreLogger(ILogger<CustomLeaderboardHighscoreLogger> logger)
-	{
-		_logger = logger;
-	}
 
 	public void LogNewScore(
 		CustomLeaderboardEntity customLeaderboard,
@@ -25,7 +19,7 @@ internal sealed class CustomLeaderboardHighscoreLogger : ICustomLeaderboardHighs
 		string spawnsetName)
 	{
 		if (customLeaderboard.Spawnset == null)
-			_logger.LogError("Spawnset is not included in the custom leaderboard. Defaulting to Survival.");
+			logger.LogError("Spawnset is not included in the custom leaderboard. Defaulting to Survival.");
 
 		CustomLeaderboardDagger? dagger = customLeaderboard.DaggerFromStat(customEntry);
 		string scoreField = GetScoreFieldName(customLeaderboard.RankSorting);
@@ -53,7 +47,7 @@ internal sealed class CustomLeaderboardHighscoreLogger : ICustomLeaderboardHighs
 		int valueDifference)
 	{
 		if (customLeaderboard.Spawnset == null)
-			_logger.LogError("Spawnset is not included in the custom leaderboard. Defaulting to Survival.");
+			logger.LogError("Spawnset is not included in the custom leaderboard. Defaulting to Survival.");
 
 		CustomLeaderboardDagger? dagger = customLeaderboard.DaggerFromStat(customEntry);
 		string scoreField = GetScoreFieldName(customLeaderboard.RankSorting);

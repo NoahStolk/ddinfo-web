@@ -8,21 +8,14 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 
 [Route("api/leaderboards")]
 [ApiController]
-public sealed class LeaderboardsController : ControllerBase
+public sealed class LeaderboardsController(IDdLeaderboardService leaderboardClient) : ControllerBase
 {
-	private readonly IDdLeaderboardService _leaderboardClient;
-
-	public LeaderboardsController(IDdLeaderboardService leaderboardClient)
-	{
-		_leaderboardClient = leaderboardClient;
-	}
-
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult<GetLeaderboard?>> GetLeaderboard([Range(1, int.MaxValue)] int rankStart = 1, [Range(1, 1000)] int limit = 100)
 	{
-		return (await _leaderboardClient.GetLeaderboard(rankStart, limit)).ToMainApi();
+		return (await leaderboardClient.GetLeaderboard(rankStart, limit)).ToMainApi();
 	}
 
 	// FORBIDDEN: Used by DDLIVE.
@@ -31,7 +24,7 @@ public sealed class LeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult<GetEntry>> GetEntryById([Required, Range(1, int.MaxValue)] int id)
 	{
-		return (await _leaderboardClient.GetEntryById(id)).ToMainApi();
+		return (await leaderboardClient.GetEntryById(id)).ToMainApi();
 	}
 
 	[HttpGet("entry/by-ids")]
@@ -41,7 +34,7 @@ public sealed class LeaderboardsController : ControllerBase
 	{
 		IEnumerable<int> ids = commaSeparatedIds.Split(',').Where(s => int.TryParse(s, out _)).Select(int.Parse);
 
-		return (await _leaderboardClient.GetEntriesByIds(ids)).ConvertAll(e => e.ToMainApi());
+		return (await leaderboardClient.GetEntriesByIds(ids)).ConvertAll(e => e.ToMainApi());
 	}
 
 	[HttpGet("entry/by-username")]
@@ -49,7 +42,7 @@ public sealed class LeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult<List<GetEntry>>> GetEntriesByName([Required, MinLength(3), MaxLength(16)] string name)
 	{
-		return (await _leaderboardClient.GetEntriesByName(name)).ConvertAll(e => e.ToMainApi());
+		return (await leaderboardClient.GetEntriesByName(name)).ConvertAll(e => e.ToMainApi());
 	}
 
 	[HttpGet("entry/by-rank")]
@@ -58,7 +51,7 @@ public sealed class LeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult<GetEntry>> GetEntryByRank([Required, Range(1, int.MaxValue)] int rank)
 	{
-		IDdLeaderboardService.LeaderboardResponse leaderboard = await _leaderboardClient.GetLeaderboard(rank, 1);
+		IDdLeaderboardService.LeaderboardResponse leaderboard = await leaderboardClient.GetLeaderboard(rank, 1);
 
 		if (leaderboard.Entries.Count == 0)
 			return NotFound();

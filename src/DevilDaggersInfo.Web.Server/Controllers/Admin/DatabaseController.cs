@@ -10,20 +10,13 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 [Route("api/admin/database")]
 [ApiController]
 [Authorize(Roles = Roles.Admin)]
-public sealed class DatabaseController : ControllerBase
+public sealed class DatabaseController(ApplicationDbContext dbContext) : ControllerBase
 {
-	private readonly ApplicationDbContext _dbContext;
-
-	public DatabaseController(ApplicationDbContext dbContext)
-	{
-		_dbContext = dbContext;
-	}
-
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public async Task<ActionResult<List<GetDatabaseTableEntry>>> GetDatabaseInfo()
 	{
-		List<InformationSchemaTable> tables = await _dbContext.InformationSchemaTables
+		List<InformationSchemaTable> tables = await dbContext.InformationSchemaTables
 			.FromSqlRaw($"""
 				SELECT
 					table_name AS `{nameof(InformationSchemaTable.Table)}`,

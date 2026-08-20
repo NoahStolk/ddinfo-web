@@ -6,19 +6,12 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 
 [Route("api/donations")]
 [ApiController]
-public sealed class DonationsController : ControllerBase
+public sealed class DonationsController(DonationRepository donationRepository) : ControllerBase
 {
-	private readonly DonationRepository _donationRepository;
-
-	public DonationsController(DonationRepository donationRepository)
-	{
-		_donationRepository = donationRepository;
-	}
-
 	[HttpGet("donors")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public async Task<List<GetDonor>> GetDonors()
 	{
-		return await _donationRepository.GetDonorsAsync();
+		return await donationRepository.GetDonorsAsync();
 	}
 }

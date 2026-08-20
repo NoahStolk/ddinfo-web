@@ -6,22 +6,15 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 
 [Route("api/mod-screenshots")]
 [ApiController]
-public sealed class ModScreenshotsController : ControllerBase
+public sealed class ModScreenshotsController(IFileSystemService fileSystemService) : ControllerBase
 {
-	private readonly IFileSystemService _fileSystemService;
-
-	public ModScreenshotsController(IFileSystemService fileSystemService)
-	{
-		_fileSystemService = fileSystemService;
-	}
-
 	[HttpGet]
 	[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<IActionResult> GetScreenshotByFilePath(string modName, string fileName)
 	{
-		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ModScreenshots), modName, fileName);
+		string path = Path.Combine(fileSystemService.GetPath(DataSubDirectory.ModScreenshots), modName, fileName);
 		if (!IoFile.Exists(path))
 			return NotFound();
 

@@ -10,22 +10,13 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 [Route("api/admin/markers")]
 [ApiController]
 [Authorize(Roles = Roles.CustomLeaderboards)]
-public sealed class MarkersController : ControllerBase
+public sealed class MarkersController(MarkerRepository markerRepository, MarkerService markerService) : ControllerBase
 {
-	private readonly MarkerRepository _markerRepository;
-	private readonly MarkerService _markerService;
-
-	public MarkersController(MarkerRepository markerRepository, MarkerService markerService)
-	{
-		_markerRepository = markerRepository;
-		_markerService = markerService;
-	}
-
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public async Task<ActionResult<List<string>>> GetMarkers()
 	{
-		return await _markerRepository.GetMarkerNamesAsync();
+		return await markerRepository.GetMarkerNamesAsync();
 	}
 
 	[HttpPut("{name}")]
@@ -33,7 +24,7 @@ public sealed class MarkersController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult> EditMarker(string name, [Required, FromBody] long value)
 	{
-		await _markerService.EditMarkerAsync(name, value);
+		await markerService.EditMarkerAsync(name, value);
 		return Ok();
 	}
 }

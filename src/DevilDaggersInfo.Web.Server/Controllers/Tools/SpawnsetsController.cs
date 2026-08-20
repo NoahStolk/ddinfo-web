@@ -10,29 +10,22 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Tools;
 
 [Route("api/app/spawnsets")]
 [ApiController]
-public sealed class SpawnsetsController : ControllerBase
+public sealed class SpawnsetsController(ApplicationDbContext dbContext) : ControllerBase
 {
-	private readonly ApplicationDbContext _dbContext;
-
-	public SpawnsetsController(ApplicationDbContext dbContext)
-	{
-		_dbContext = dbContext;
-	}
-
 	[HttpGet("{id}")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult<GetSpawnset>> GetSpawnsetById([Required] int id)
 	{
-		SpawnsetEntity? spawnsetEntity = await _dbContext.Spawnsets
+		SpawnsetEntity? spawnsetEntity = await dbContext.Spawnsets
 			.AsNoTracking()
 			.Include(s => s.Player)
 			.FirstOrDefaultAsync(s => s.Id == id);
 		if (spawnsetEntity == null)
 			return NotFound();
 
-		var customLeaderboard = await _dbContext.CustomLeaderboards
+		var customLeaderboard = await dbContext.CustomLeaderboards
 			.AsNoTracking()
 			.Select(cl => new { cl.Id, cl.SpawnsetId })
 			.FirstOrDefaultAsync(cl => cl.SpawnsetId == spawnsetEntity.Id);
@@ -46,7 +39,7 @@ public sealed class SpawnsetsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult<GetSpawnsetBuffer>> GetSpawnsetBufferById([Required] int id)
 	{
-		var spawnset = await _dbContext.Spawnsets
+		var spawnset = await dbContext.Spawnsets
 			.AsNoTracking()
 			.Select(s => new { s.Id, s.Name, s.File })
 			.FirstOrDefaultAsync(s => s.Id == id);
@@ -62,7 +55,7 @@ public sealed class SpawnsetsController : ControllerBase
 	public async Task<ActionResult<GetSpawnsetByHash>> GetSpawnsetByHash([FromQuery] byte[] hash)
 	{
 		// ! Navigation property.
-		var spawnset = await _dbContext.Spawnsets
+		var spawnset = await dbContext.Spawnsets
 			.AsNoTracking()
 			.Include(s => s.Player)
 			.Select(s => new
@@ -76,11 +69,11 @@ public sealed class SpawnsetsController : ControllerBase
 		if (spawnset == null)
 			return NotFound();
 
-		CustomLeaderboardEntity? customLeaderboard = await _dbContext.CustomLeaderboards
+		CustomLeaderboardEntity? customLeaderboard = await dbContext.CustomLeaderboards
 			.AsNoTracking()
 			.FirstOrDefaultAsync(cl => cl.SpawnsetId == spawnset.Id);
 
-		var customEntries = customLeaderboard == null ? null : await _dbContext.CustomEntries
+		var customEntries = customLeaderboard == null ? null : await dbContext.CustomEntries
 			.AsNoTracking()
 			.Select(ce => new { ce.Id, ce.CustomLeaderboardId, ce.Time })
 			.Where(ce => ce.CustomLeaderboardId == customLeaderboard.Id)

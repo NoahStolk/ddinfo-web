@@ -9,24 +9,15 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 
 [Route("api/leaderboard-history")]
 [ApiController]
-public sealed class LeaderboardHistoryController : ControllerBase
+public sealed class LeaderboardHistoryController(IFileSystemService fileSystemService, ILeaderboardHistoryCache leaderboardHistoryCache) : ControllerBase
 {
-	private readonly IFileSystemService _fileSystemService;
-	private readonly ILeaderboardHistoryCache _leaderboardHistoryCache;
-
-	public LeaderboardHistoryController(IFileSystemService fileSystemService, ILeaderboardHistoryCache leaderboardHistoryCache)
-	{
-		_fileSystemService = fileSystemService;
-		_leaderboardHistoryCache = leaderboardHistoryCache;
-	}
-
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public ActionResult<GetLeaderboardHistory> GetLeaderboardHistory(DateTime dateTime)
 	{
-		string historyPath = _fileSystemService.GetLeaderboardHistoryPathFromDate(dateTime);
-		LeaderboardHistory history = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(historyPath);
+		string historyPath = fileSystemService.GetLeaderboardHistoryPathFromDate(dateTime);
+		LeaderboardHistory history = leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(historyPath);
 		return history.ToMainApi();
 	}
 }

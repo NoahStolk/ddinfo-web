@@ -8,17 +8,8 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Clubber;
 
 [Route("api/clubber/players")]
 [ApiController]
-public sealed class PlayersController : ControllerBase
+public sealed class PlayersController(PlayerHistoryRepository playerHistoryRepository, PlayerRepository playerRepository) : ControllerBase
 {
-	private readonly PlayerHistoryRepository _playerHistoryRepository;
-	private readonly PlayerRepository _playerRepository;
-
-	public PlayersController(PlayerHistoryRepository playerHistoryRepository, PlayerRepository playerRepository)
-	{
-		_playerHistoryRepository = playerHistoryRepository;
-		_playerRepository = playerRepository;
-	}
-
 	[HttpGet("{id}/country-code")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -26,7 +17,7 @@ public sealed class PlayersController : ControllerBase
 	{
 		return new GetPlayerCountryCode
 		{
-			CountryCode = await _playerRepository.GetPlayerCountryCodeAsync(id),
+			CountryCode = await playerRepository.GetPlayerCountryCodeAsync(id),
 		};
 	}
 
@@ -35,6 +26,6 @@ public sealed class PlayersController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public GetPlayerHistory GetPlayerHistoryById([Required, Range(1, int.MaxValue)] int id)
 	{
-		return _playerHistoryRepository.GetPlayerHistoryById(id).ToClubberApi();
+		return playerHistoryRepository.GetPlayerHistoryById(id).ToClubberApi();
 	}
 }

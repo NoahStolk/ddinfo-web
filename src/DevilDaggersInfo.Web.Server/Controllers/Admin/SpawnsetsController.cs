@@ -12,17 +12,8 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 
 [Route("api/admin/spawnsets")]
 [ApiController]
-public sealed class SpawnsetsController : ControllerBase
+public sealed class SpawnsetsController(SpawnsetRepository spawnsetRepository, SpawnsetService spawnsetService) : ControllerBase
 {
-	private readonly SpawnsetRepository _spawnsetRepository;
-	private readonly SpawnsetService _spawnsetService;
-
-	public SpawnsetsController(SpawnsetRepository spawnsetRepository, SpawnsetService spawnsetService)
-	{
-		_spawnsetRepository = spawnsetRepository;
-		_spawnsetService = spawnsetService;
-	}
-
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[Authorize(Roles = Roles.Spawnsets)]
@@ -33,7 +24,7 @@ public sealed class SpawnsetsController : ControllerBase
 		SpawnsetSorting? sortBy = null,
 		bool ascending = false)
 	{
-		return await _spawnsetRepository.GetSpawnsetsAsync(filter, pageIndex, pageSize, sortBy, ascending);
+		return await spawnsetRepository.GetSpawnsetsAsync(filter, pageIndex, pageSize, sortBy, ascending);
 	}
 
 	[HttpGet("names")]
@@ -41,7 +32,7 @@ public sealed class SpawnsetsController : ControllerBase
 	[Authorize(Roles = Roles.CustomLeaderboards)]
 	public async Task<ActionResult<List<GetSpawnsetName>>> GetSpawnsetNames()
 	{
-		return await _spawnsetRepository.GetSpawnsetNamesAsync();
+		return await spawnsetRepository.GetSpawnsetNamesAsync();
 	}
 
 	[HttpGet("{id}")]
@@ -50,7 +41,7 @@ public sealed class SpawnsetsController : ControllerBase
 	[Authorize(Roles = Roles.Spawnsets)]
 	public async Task<ActionResult<GetSpawnset>> GetSpawnsetById(int id)
 	{
-		return await _spawnsetRepository.GetSpawnset(id);
+		return await spawnsetRepository.GetSpawnset(id);
 	}
 
 	[HttpPost]
@@ -59,7 +50,7 @@ public sealed class SpawnsetsController : ControllerBase
 	[Authorize(Roles = Roles.Spawnsets)]
 	public async Task<ActionResult> AddSpawnset(AddSpawnset addSpawnset)
 	{
-		await _spawnsetService.AddSpawnsetAsync(addSpawnset);
+		await spawnsetService.AddSpawnsetAsync(addSpawnset);
 		return Ok();
 	}
 
@@ -70,7 +61,7 @@ public sealed class SpawnsetsController : ControllerBase
 	[Authorize(Roles = Roles.Spawnsets)]
 	public async Task<ActionResult> EditSpawnsetById(int id, EditSpawnset editSpawnset)
 	{
-		await _spawnsetService.EditSpawnsetAsync(id, editSpawnset);
+		await spawnsetService.EditSpawnsetAsync(id, editSpawnset);
 		return Ok();
 	}
 
@@ -81,7 +72,7 @@ public sealed class SpawnsetsController : ControllerBase
 	[Authorize(Roles = Roles.Spawnsets)]
 	public async Task<ActionResult> DeleteSpawnsetById(int id)
 	{
-		await _spawnsetService.DeleteSpawnsetAsync(id);
+		await spawnsetService.DeleteSpawnsetAsync(id);
 		return Ok();
 	}
 }

@@ -3,17 +3,10 @@ using NSwag.Generation.Processors.Contexts;
 
 namespace DevilDaggersInfo.Web.Server.NSwag;
 
-internal sealed class ApiOperationProcessor : IOperationProcessor
+internal sealed class ApiOperationProcessor(string apiName) : IOperationProcessor
 {
-	private readonly string _apiName;
-
-	public ApiOperationProcessor(string apiName)
-	{
-		_apiName = apiName;
-	}
-
 	public bool Process(OperationProcessorContext context)
 	{
-		return context.ControllerType.Namespace?.EndsWith($"Controllers.{_apiName}") == true;
+		return context.ControllerType.Namespace?.EndsWith($"Controllers.{apiName}") == true;
 	}
 }

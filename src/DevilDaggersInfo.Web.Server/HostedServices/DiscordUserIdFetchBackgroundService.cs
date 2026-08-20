@@ -4,23 +4,18 @@ using DevilDaggersInfo.Web.Server.Services;
 
 namespace DevilDaggersInfo.Web.Server.HostedServices;
 
-internal sealed class DiscordUserIdFetchBackgroundService : AbstractBackgroundService
+internal sealed class DiscordUserIdFetchBackgroundService(
+	IServiceScopeFactory serviceScopeFactory,
+	ClubberClient clubberClient,
+	BackgroundServiceMonitor backgroundServiceMonitor,
+	ILogger<DiscordUserIdFetchBackgroundService> logger)
+	: AbstractBackgroundService(backgroundServiceMonitor, logger)
 {
-	private readonly IServiceScopeFactory _serviceScopeFactory;
-	private readonly ClubberClient _clubberClient;
-
-	public DiscordUserIdFetchBackgroundService(IServiceScopeFactory serviceScopeFactory, ClubberClient clubberClient, BackgroundServiceMonitor backgroundServiceMonitor, ILogger<DiscordUserIdFetchBackgroundService> logger)
-		: base(backgroundServiceMonitor, logger)
-	{
-		_serviceScopeFactory = serviceScopeFactory;
-		_clubberClient = clubberClient;
-	}
-
 	protected override TimeSpan Interval => TimeSpan.FromHours(12);
 
 	protected override async Task ExecuteTaskAsync(CancellationToken stoppingToken)
 	{
-		using IServiceScope scope = _serviceScopeFactory.CreateScope();
+		using IServiceScope scope = serviceScopeFactory.CreateScope();
 		await using ApplicationDbContext dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
 		int attempts = 0;
@@ -31,7 +26,7 @@ internal sealed class DiscordUserIdFetchBackgroundService : AbstractBackgroundSe
 			if (attempts > 5)
 				break;
 
-			users = await _clubberClient.GetUsers();
+			users = await clubberClient.GetUsers();
 			if (users == null)
 			{
 				const int interval = 5;

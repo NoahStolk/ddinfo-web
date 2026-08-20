@@ -8,23 +8,14 @@ namespace DevilDaggersInfo.Web.Server.Controllers.DdLive;
 
 [Route("api/ddlive/custom-leaderboards")]
 [ApiController]
-public sealed class CustomLeaderboardsController : ControllerBase
+public sealed class CustomLeaderboardsController(CustomEntryRepository customEntryRepository, CustomLeaderboardRepository customLeaderboardRepository) : ControllerBase
 {
-	private readonly CustomEntryRepository _customEntryRepository;
-	private readonly CustomLeaderboardRepository _customLeaderboardRepository;
-
-	public CustomLeaderboardsController(CustomEntryRepository customEntryRepository, CustomLeaderboardRepository customLeaderboardRepository)
-	{
-		_customEntryRepository = customEntryRepository;
-		_customLeaderboardRepository = customLeaderboardRepository;
-	}
-
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult<List<GetCustomLeaderboardOverviewDdLive>>> GetCustomLeaderboardsOverviewDdLive()
 	{
-		Domain.Models.Page<CustomLeaderboardOverview> cls = await _customLeaderboardRepository.GetCustomLeaderboardOverviewsAsync(
+		Domain.Models.Page<CustomLeaderboardOverview> cls = await customLeaderboardRepository.GetCustomLeaderboardOverviewsAsync(
 			rankSorting: null,
 			gameMode: null,
 			spawnsetFilter: null,
@@ -43,7 +34,7 @@ public sealed class CustomLeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult<GetCustomLeaderboardDdLive>> GetCustomLeaderboardByIdDdLive(int id)
 	{
-		SortedCustomLeaderboard cl = await _customLeaderboardRepository.GetSortedCustomLeaderboardByIdAsync(id);
-		return cl.ToDdLiveApi(_customEntryRepository.GetExistingCustomEntryReplayIds(cl.CustomEntries.ConvertAll(ce => ce.Id)));
+		SortedCustomLeaderboard cl = await customLeaderboardRepository.GetSortedCustomLeaderboardByIdAsync(id);
+		return cl.ToDdLiveApi(customEntryRepository.GetExistingCustomEntryReplayIds(cl.CustomEntries.ConvertAll(ce => ce.Id)));
 	}
 }

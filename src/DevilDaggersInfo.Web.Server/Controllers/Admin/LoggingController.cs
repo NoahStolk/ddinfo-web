@@ -7,15 +7,8 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 [Route("api/admin/logging")]
 [ApiController]
 [Authorize(Roles = Roles.Admin)]
-public sealed class LoggingController : ControllerBase
+public sealed class LoggingController(ILogger<LoggingController> logger) : ControllerBase
 {
-	private readonly ILogger<LoggingController> _logger;
-
-	public LoggingController(ILogger<LoggingController> logger)
-	{
-		_logger = logger;
-	}
-
 	[HttpPost("test-exception")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public ActionResult TestException(string? message)
@@ -27,7 +20,7 @@ public sealed class LoggingController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public ActionResult LogError(string? message)
 	{
-		_logger.LogError("Test log error: {Message}", message);
+		logger.LogError("Test log error: {Message}", message);
 		return Ok();
 	}
 
@@ -35,7 +28,7 @@ public sealed class LoggingController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public ActionResult LogWarning(string? message)
 	{
-		_logger.LogWarning("Test log warning: {Message}", message);
+		logger.LogWarning("Test log warning: {Message}", message);
 		return Ok();
 	}
 
@@ -43,7 +36,7 @@ public sealed class LoggingController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public ActionResult LogInfo(string? message)
 	{
-		_logger.LogInformation("Test log info: {Message}", message);
+		logger.LogInformation("Test log info: {Message}", message);
 		return Ok();
 	}
 }

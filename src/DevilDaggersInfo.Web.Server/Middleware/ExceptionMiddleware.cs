@@ -3,28 +3,19 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DevilDaggersInfo.Web.Server.Middleware;
 
-internal sealed class ExceptionMiddleware
+internal sealed class ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger)
 {
-	private readonly RequestDelegate _next;
-	private readonly ILogger<ExceptionMiddleware> _logger;
-
-	public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger)
-	{
-		_next = next;
-		_logger = logger;
-	}
-
 	public async Task InvokeAsync(HttpContext context)
 	{
 		try
 		{
-			await _next(context);
+			await next(context);
 		}
 		catch (StatusCodeException ex)
 		{
 			if (context.Response.HasStarted)
 			{
-				_logger.LogWarning(ex, "The response has already started, the exception middleware will not be executed.");
+				logger.LogWarning(ex, "The response has already started, the exception middleware will not be executed.");
 				throw;
 			}
 

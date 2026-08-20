@@ -8,21 +8,14 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 [Route("api/authentication")]
 [ApiController]
 [ApiExplorerSettings(IgnoreApi = true)]
-public sealed class AuthenticationController : ControllerBase
+public sealed class AuthenticationController(AuthenticationService authenticationService) : ControllerBase
 {
-	private readonly AuthenticationService _authenticationService;
-
-	public AuthenticationController(AuthenticationService authenticationService)
-	{
-		_authenticationService = authenticationService;
-	}
-
 	[HttpPost("authenticate")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public ActionResult<AuthenticationResponse> Authenticate([FromBody] AuthenticationRequest authenticationRequest)
 	{
-		return _authenticationService.Authenticate(authenticationRequest);
+		return authenticationService.Authenticate(authenticationRequest);
 	}
 
 	[HttpPost("login")]
@@ -30,7 +23,7 @@ public sealed class AuthenticationController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public ActionResult<LoginResponse> Login([FromBody] LoginRequest loginRequest)
 	{
-		return _authenticationService.Login(loginRequest);
+		return authenticationService.Login(loginRequest);
 	}
 
 	[HttpPost("register")]
@@ -38,7 +31,7 @@ public sealed class AuthenticationController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult> Register([FromBody] RegistrationRequest registrationRequest)
 	{
-		await _authenticationService.RegisterAsync(registrationRequest);
+		await authenticationService.RegisterAsync(registrationRequest);
 		return Ok();
 	}
 
@@ -48,7 +41,7 @@ public sealed class AuthenticationController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult> UpdateName([FromBody] UpdateNameRequest updateNameRequest)
 	{
-		await _authenticationService.UpdateNameAsync(updateNameRequest);
+		await authenticationService.UpdateNameAsync(updateNameRequest);
 		return Ok();
 	}
 
@@ -58,7 +51,7 @@ public sealed class AuthenticationController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult> UpdatePassword([FromBody] UpdatePasswordRequest updatePasswordRequest)
 	{
-		await _authenticationService.UpdatePasswordAsync(updatePasswordRequest);
+		await authenticationService.UpdatePasswordAsync(updatePasswordRequest);
 		return Ok();
 	}
 }

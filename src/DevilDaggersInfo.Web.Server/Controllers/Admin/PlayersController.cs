@@ -12,17 +12,8 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 
 [Route("api/admin/players")]
 [ApiController]
-public sealed class PlayersController : ControllerBase
+public sealed class PlayersController(PlayerRepository playerRepository, PlayerService playerService) : ControllerBase
 {
-	private readonly PlayerRepository _playerRepository;
-	private readonly PlayerService _playerService;
-
-	public PlayersController(PlayerRepository playerRepository, PlayerService playerService)
-	{
-		_playerRepository = playerRepository;
-		_playerService = playerService;
-	}
-
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[Authorize(Roles = Roles.Players)]
@@ -33,7 +24,7 @@ public sealed class PlayersController : ControllerBase
 		PlayerSorting? sortBy = null,
 		bool ascending = false)
 	{
-		return await _playerRepository.GetPlayersAsync(filter, pageIndex, pageSize, sortBy, ascending);
+		return await playerRepository.GetPlayersAsync(filter, pageIndex, pageSize, sortBy, ascending);
 	}
 
 	[HttpGet("names")]
@@ -41,7 +32,7 @@ public sealed class PlayersController : ControllerBase
 	[Authorize(Roles = $"{Roles.Players},{Roles.Mods},{Roles.Spawnsets}")]
 	public async Task<ActionResult<List<GetPlayerName>>> GetPlayerNames()
 	{
-		return await _playerRepository.GetPlayerNamesAsync();
+		return await playerRepository.GetPlayerNamesAsync();
 	}
 
 	[HttpGet("{id}")]
@@ -50,7 +41,7 @@ public sealed class PlayersController : ControllerBase
 	[Authorize(Roles = Roles.Players)]
 	public async Task<ActionResult<GetPlayer>> GetPlayerById(int id)
 	{
-		return await _playerRepository.GetPlayerAsync(id);
+		return await playerRepository.GetPlayerAsync(id);
 	}
 
 	[HttpPost]
@@ -60,7 +51,7 @@ public sealed class PlayersController : ControllerBase
 	[Authorize(Roles = Roles.Players)]
 	public async Task<ActionResult> AddPlayer(AddPlayer addPlayer)
 	{
-		await _playerService.AddPlayerAsync(addPlayer);
+		await playerService.AddPlayerAsync(addPlayer);
 		return Ok();
 	}
 
@@ -71,7 +62,7 @@ public sealed class PlayersController : ControllerBase
 	[Authorize(Roles = Roles.Players)]
 	public async Task<ActionResult> EditPlayerById(int id, EditPlayer editPlayer)
 	{
-		await _playerService.EditPlayerAsync(id, editPlayer);
+		await playerService.EditPlayerAsync(id, editPlayer);
 		return Ok();
 	}
 
@@ -82,7 +73,7 @@ public sealed class PlayersController : ControllerBase
 	[Authorize(Roles = Roles.Players)]
 	public async Task<ActionResult> DeletePlayerById(int id)
 	{
-		await _playerService.DeletePlayerAsync(id);
+		await playerService.DeletePlayerAsync(id);
 		return Ok();
 	}
 }

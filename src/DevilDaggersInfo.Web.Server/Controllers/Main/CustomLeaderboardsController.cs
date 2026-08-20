@@ -15,15 +15,8 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 
 [Route("api/custom-leaderboards")]
 [ApiController]
-public sealed class CustomLeaderboardsController : ControllerBase
+public sealed class CustomLeaderboardsController(CustomLeaderboardRepository customLeaderboardRepository) : ControllerBase
 {
-	private readonly CustomLeaderboardRepository _customLeaderboardRepository;
-
-	public CustomLeaderboardsController(CustomLeaderboardRepository customLeaderboardRepository)
-	{
-		_customLeaderboardRepository = customLeaderboardRepository;
-	}
-
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -37,7 +30,7 @@ public sealed class CustomLeaderboardsController : ControllerBase
 		CustomLeaderboardSorting? sortBy = null,
 		bool ascending = false)
 	{
-		Domain.Models.Page<MainApi.CustomLeaderboardOverview> cls = await _customLeaderboardRepository.GetCustomLeaderboardOverviewsAsync(
+		Domain.Models.Page<MainApi.CustomLeaderboardOverview> cls = await customLeaderboardRepository.GetCustomLeaderboardOverviewsAsync(
 			rankSorting: rankSorting.ToDomain(),
 			gameMode: gameMode.ToDomain(),
 			spawnsetFilter: spawnsetFilter,
@@ -60,7 +53,7 @@ public sealed class CustomLeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult<GetGlobalCustomLeaderboard>> GetGlobalCustomLeaderboardForCategory([Required] GameMode gameMode, [Required] CustomLeaderboardRankSorting rankSorting)
 	{
-		MainApi.GlobalCustomLeaderboard globalCustomLeaderboard = await _customLeaderboardRepository.GetGlobalCustomLeaderboardAsync(gameMode.ToDomain(), rankSorting.ToDomain());
+		MainApi.GlobalCustomLeaderboard globalCustomLeaderboard = await customLeaderboardRepository.GetGlobalCustomLeaderboardAsync(gameMode.ToDomain(), rankSorting.ToDomain());
 		return new GetGlobalCustomLeaderboard
 		{
 			Entries =
@@ -98,7 +91,7 @@ public sealed class CustomLeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public async Task<ActionResult<GetTotalCustomLeaderboardData>> GetTotalCustomLeaderboardData()
 	{
-		MainApi.CustomLeaderboardsTotalData totalData = await _customLeaderboardRepository.GetCustomLeaderboardsTotalDataAsync();
+		MainApi.CustomLeaderboardsTotalData totalData = await customLeaderboardRepository.GetCustomLeaderboardsTotalDataAsync();
 		return new GetTotalCustomLeaderboardData
 		{
 			LeaderboardsPerGameMode = totalData.LeaderboardsPerGameMode.ToDictionary(kvp => kvp.Key.ToMainApi(), kvp => kvp.Value),
@@ -114,7 +107,7 @@ public sealed class CustomLeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult<GetCustomLeaderboard>> GetCustomLeaderboardById(int id)
 	{
-		MainApi.SortedCustomLeaderboard cl = await _customLeaderboardRepository.GetSortedCustomLeaderboardByIdAsync(id);
+		MainApi.SortedCustomLeaderboard cl = await customLeaderboardRepository.GetSortedCustomLeaderboardByIdAsync(id);
 		return cl.ToMainApi();
 	}
 
@@ -122,7 +115,7 @@ public sealed class CustomLeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public async Task<ActionResult<List<GetCustomLeaderboardAllowedCategory>>> GetCustomLeaderboardAllowedCategories()
 	{
-		List<MainApi.CustomLeaderboardAllowedCategory> allowedCategories = await _customLeaderboardRepository.GetCustomLeaderboardAllowedCategories();
+		List<MainApi.CustomLeaderboardAllowedCategory> allowedCategories = await customLeaderboardRepository.GetCustomLeaderboardAllowedCategories();
 		return allowedCategories.ConvertAll(ac => ac.ToMainApi());
 	}
 }

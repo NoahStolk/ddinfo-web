@@ -7,20 +7,13 @@ namespace DevilDaggersInfo.Web.Server.Controllers.DdLive;
 
 [Route("api/ddlive/players")]
 [ApiController]
-public sealed class PlayersController : ControllerBase
+public sealed class PlayersController(PlayerRepository playerRepository) : ControllerBase
 {
-	private readonly PlayerRepository _playerRepository;
-
-	public PlayersController(PlayerRepository playerRepository)
-	{
-		_playerRepository = playerRepository;
-	}
-
 	[HttpGet("common-names")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public async Task<ActionResult<List<GetCommonName>>> GetCommonNames()
 	{
-		List<PlayerCommonName> commonNames = await _playerRepository.GetCommonNamesAsync();
+		List<PlayerCommonName> commonNames = await playerRepository.GetCommonNamesAsync();
 		return commonNames.ConvertAll(cn => new GetCommonName
 		{
 			CommonName = cn.CommonName,
