@@ -63,23 +63,25 @@ public sealed class CustomLeaderboardsController : ControllerBase
 		MainApi.GlobalCustomLeaderboard globalCustomLeaderboard = await _customLeaderboardRepository.GetGlobalCustomLeaderboardAsync(gameMode.ToDomain(), rankSorting.ToDomain());
 		return new GetGlobalCustomLeaderboard
 		{
-			Entries = globalCustomLeaderboard.Entries
-				.ConvertAll(e => new GetGlobalCustomLeaderboardEntry
-				{
-					DefaultDaggerCount = e.DefaultDaggerCount,
-					BronzeDaggerCount = e.BronzeDaggerCount,
-					SilverDaggerCount = e.SilverDaggerCount,
-					GoldenDaggerCount = e.GoldenDaggerCount,
-					DevilDaggerCount = e.DevilDaggerCount,
-					LeviathanDaggerCount = e.LeviathanDaggerCount,
-					LeaderboardsPlayedCount = e.LeaderboardsPlayedCount,
-					PlayerId = e.PlayerId,
-					PlayerName = e.PlayerName,
-					Points = e.Points,
-				})
-				.OrderByDescending(ce => ce.Points)
-				.ThenByDescending(ce => ce.LeaderboardsPlayedCount)
-				.ToList(),
+			Entries =
+			[
+				.. globalCustomLeaderboard.Entries
+					.ConvertAll(e => new GetGlobalCustomLeaderboardEntry
+					{
+						DefaultDaggerCount = e.DefaultDaggerCount,
+						BronzeDaggerCount = e.BronzeDaggerCount,
+						SilverDaggerCount = e.SilverDaggerCount,
+						GoldenDaggerCount = e.GoldenDaggerCount,
+						DevilDaggerCount = e.DevilDaggerCount,
+						LeviathanDaggerCount = e.LeviathanDaggerCount,
+						LeaderboardsPlayedCount = e.LeaderboardsPlayedCount,
+						PlayerId = e.PlayerId,
+						PlayerName = e.PlayerName,
+						Points = e.Points,
+					})
+					.OrderByDescending(ce => ce.Points)
+					.ThenByDescending(ce => ce.LeaderboardsPlayedCount),
+			],
 			TotalLeaderboards = globalCustomLeaderboard.TotalLeaderboards,
 			TotalPoints = globalCustomLeaderboard.TotalPoints,
 			DefaultBonus = GlobalCustomLeaderboardUtils.DefaultBonus,

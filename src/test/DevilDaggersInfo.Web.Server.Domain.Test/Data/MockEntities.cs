@@ -48,10 +48,12 @@ internal sealed class MockEntities
 		MockDbSetCustomEntryData = GetEntities<CustomEntryDataEntity>().BuildMockDbSet();
 
 		// ! Reflection.
-		T[] GetEntities<T>() => properties
-			.Where(pi => pi.PropertyType == typeof(T))
-			.Select(pi => (T)pi.GetValue(this)!)
-			.ToArray();
+		T[] GetEntities<T>() =>
+		[
+			.. properties
+				.Where(pi => pi.PropertyType == typeof(T))
+				.Select(pi => (T)pi.GetValue(this)!),
+		];
 	}
 
 	public DbSet<PlayerEntity> MockDbSetPlayers { get; }

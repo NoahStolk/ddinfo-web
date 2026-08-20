@@ -12,12 +12,12 @@ public sealed class AssetsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public ActionResult<Dictionary<string, List<GetAssetInfo>>> GetAssetInfo()
 	{
-		List<GetAssetInfo> audioAudio = AudioAudio.All.Select(ConvertAssetInfo).ToList();
-		List<GetAssetInfo> coreShaders = CoreShaders.All.Select(ConvertAssetInfo).ToList();
-		List<GetAssetInfo> ddMeshes = DdMeshes.All.Select(ConvertAssetInfo).ToList();
-		List<GetAssetInfo> ddObjectBindings = DdObjectBindings.All.Select(ConvertAssetInfo).ToList();
-		List<GetAssetInfo> ddShaders = DdShaders.All.Select(ConvertAssetInfo).ToList();
-		List<GetAssetInfo> ddTextures = DdTextures.All.Select(ConvertAssetInfo).ToList();
+		List<GetAssetInfo> audioAudio = [.. AudioAudio.All.Select(ConvertAssetInfo)];
+		List<GetAssetInfo> coreShaders = [.. CoreShaders.All.Select(ConvertAssetInfo)];
+		List<GetAssetInfo> ddMeshes = [.. DdMeshes.All.Select(ConvertAssetInfo)];
+		List<GetAssetInfo> ddObjectBindings = [.. DdObjectBindings.All.Select(ConvertAssetInfo)];
+		List<GetAssetInfo> ddShaders = [.. DdShaders.All.Select(ConvertAssetInfo)];
+		List<GetAssetInfo> ddTextures = [.. DdTextures.All.Select(ConvertAssetInfo)];
 
 		return new Dictionary<string, List<GetAssetInfo>>
 		{

@@ -86,8 +86,8 @@ internal sealed class TestData : ILeaderboardHistoryCache, IFileSystemService
 	{
 		return subDirectory switch
 		{
-			DataSubDirectory.LeaderboardHistory => _leaderboardHistory.Keys.ToArray(),
-			DataSubDirectory.ModArchiveCache => _modArchiveCache.Keys.ToArray(),
+			DataSubDirectory.LeaderboardHistory => [.. _leaderboardHistory.Keys],
+			DataSubDirectory.ModArchiveCache => [.. _modArchiveCache.Keys],
 			_ => throw new NotImplementedException(),
 		};
 	}

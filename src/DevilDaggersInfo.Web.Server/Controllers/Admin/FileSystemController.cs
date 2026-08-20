@@ -41,7 +41,7 @@ public sealed class FileSystemController : ControllerBase
 	private static DirectoryStatistics GetDirectorySize(string folderPath)
 	{
 		DirectoryInfo di = new(folderPath);
-		List<FileInfo> allFiles = di.EnumerateFiles("*.*", SearchOption.AllDirectories).ToList();
+		List<FileInfo> allFiles = [.. di.EnumerateFiles("*.*", SearchOption.AllDirectories)];
 		return new DirectoryStatistics(allFiles.Sum(fi => fi.Length), allFiles.Count);
 	}
 

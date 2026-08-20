@@ -58,7 +58,7 @@ internal sealed class LeaderboardHistoryBackgroundService : AbstractBackgroundSe
 		if (entries.Count != leaderboardPageCount * playerPerPage)
 			Logger.LogWarning("Leaderboard entries count ({Count}) does not match expected count ({ExpectedCount}). Duplicates and ranks below the expected count will be removed.", entries.Count, leaderboardPageCount * playerPerPage);
 
-		entries = entries.DistinctBy(e => e.Rank).Where(e => e.Rank <= leaderboardPageCount * playerPerPage).OrderBy(e => e.Rank).ToList();
+		entries = [.. entries.DistinctBy(e => e.Rank).Where(e => e.Rank <= leaderboardPageCount * playerPerPage).OrderBy(e => e.Rank)];
 
 		if (entries.Count != leaderboardPageCount * playerPerPage)
 			Logger.LogWarning("Leaderboard entries count ({Count}) does not match expected count ({ExpectedCount}). Some ranks appear to be missing.", entries.Count, leaderboardPageCount * playerPerPage);

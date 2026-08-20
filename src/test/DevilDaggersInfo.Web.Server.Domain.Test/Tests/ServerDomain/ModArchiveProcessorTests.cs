@@ -65,14 +65,14 @@ internal abstract class ModArchiveProcessorTests
 	protected static DdModBinaryBuilder CreateWithBinding(string assetName)
 	{
 		DdModBinaryBuilder binary = new();
-		binary.AddObjectBinding(assetName, "shader = \"boid\""u8.ToArray());
+		binary.AddObjectBinding(assetName, [.. "shader = \"boid\""u8]);
 		return binary;
 	}
 
 	protected static DdModBinaryBuilder CreateWithBindingAndTexture(string shaderName, string textureName)
 	{
 		DdModBinaryBuilder binary = new();
-		binary.AddObjectBinding(shaderName, "shader = \"boid\""u8.ToArray());
+		binary.AddObjectBinding(shaderName, [.. "shader = \"boid\""u8]);
 		binary.AddTexture(textureName, File.ReadAllBytes(Path.Combine("Resources", "Textures", "green.png")));
 		return binary;
 	}

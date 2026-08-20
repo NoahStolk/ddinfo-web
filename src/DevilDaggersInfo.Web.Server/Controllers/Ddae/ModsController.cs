@@ -52,7 +52,7 @@ public sealed class ModsController : ControllerBase
 			modsQuery = modsQuery.Where(m => m.Name.Contains(nameFilter, StringComparison.InvariantCultureIgnoreCase));
 		}
 
-		List<ModEntity> mods = modsQuery.ToList();
+		List<ModEntity> mods = [.. modsQuery];
 
 		Dictionary<ModEntity, ModFileSystemData> data = new();
 		foreach (ModEntity mod in mods)
@@ -64,9 +64,7 @@ public sealed class ModsController : ControllerBase
 		if (isHostedFilter.HasValue)
 			data = data.Where(kvp => kvp.Value.ModArchive != null).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
-		return data
-			.Select(kvp => kvp.Key.ToDdaeApi(kvp.Value))
-			.ToList();
+		return [.. data.Select(kvp => kvp.Key.ToDdaeApi(kvp.Value))];
 	}
 
 	[HttpGet("{modName}/file")]

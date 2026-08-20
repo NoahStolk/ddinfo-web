@@ -23,15 +23,17 @@ public sealed class BackgroundServiceMonitor
 
 	public List<GetBackgroundServiceEntry> GetEntries()
 	{
-		return _backgroundServiceLogs
-			.OrderBy(bsl => bsl.Name)
-			.Select(bsl => new GetBackgroundServiceEntry
-			{
-				Name =bsl.Name.Replace("BackgroundService", string.Empty),
-				Interval = bsl.Interval,
-				LastExecuted = bsl.LastExecuted,
-			})
-			.ToList();
+		return
+		[
+			.. _backgroundServiceLogs
+				.OrderBy(bsl => bsl.Name)
+				.Select(bsl => new GetBackgroundServiceEntry
+				{
+					Name = bsl.Name.Replace("BackgroundService", string.Empty),
+					Interval = bsl.Interval,
+					LastExecuted = bsl.LastExecuted,
+				}),
+		];
 	}
 
 	private sealed class BackgroundServiceLog

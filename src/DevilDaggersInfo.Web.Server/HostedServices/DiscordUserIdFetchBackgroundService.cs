@@ -45,7 +45,7 @@ internal sealed class DiscordUserIdFetchBackgroundService : AbstractBackgroundSe
 			return;
 
 		List<int> ids = users.ConvertAll(u => u.LeaderboardId);
-		List<PlayerEntity> players = dbContext.Players.Where(p => ids.Contains(p.Id) && p.DiscordUserId == null).ToList();
+		List<PlayerEntity> players = [.. dbContext.Players.Where(p => ids.Contains(p.Id) && p.DiscordUserId == null)];
 
 		List<(int PlayerId, ulong? OldId, ulong NewId)> logs = [];
 		foreach (PlayerEntity player in players)

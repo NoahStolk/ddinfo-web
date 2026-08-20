@@ -26,7 +26,7 @@ internal sealed class FileSystemService : IFileSystemService
 		}
 		catch
 		{
-			return Array.Empty<string>();
+			return [];
 		}
 	}
 
