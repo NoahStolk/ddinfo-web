@@ -79,7 +79,7 @@ public sealed partial class BarChart : IAsyncDisposable
 		_context.ClearRect(0, 0, _canvasWidth, _canvasHeight);
 
 		// Determine grid.
-		List<double> xScales = Enumerable.Range(0, DataSet.Data.Count).Select(i => (double)i).ToList();
+		List<double> xScales = [.. Enumerable.Range(0, DataSet.Data.Count).Select(i => (double)i)];
 		List<double> yScales = ScaleUtils.CalculateScales(ChartHeight, DataOptions.MinY, DataOptions.MaxY, DataOptions.StepY, Options.GridOptions.MinimumRowHeightInPx, false);
 		double fullBarWidth = 1 / (double)DataSet.Data.Count * ChartWidth;
 
@@ -133,7 +133,7 @@ public sealed partial class BarChart : IAsyncDisposable
 				< 20 => 2,
 				_ => 1,
 			};
-			List<string> xScaleTexts = XScaleTexts.ToList();
+			List<string> xScaleTexts = [.. XScaleTexts];
 			for (int i = 0; i < xScales.Count; i++)
 			{
 				if (i >= xScaleTexts.Count || i % skippedXScaleTexts != 0)

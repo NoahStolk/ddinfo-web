@@ -17,7 +17,7 @@ internal static class HighscoreSpreadUtils
 		_log.Clear();
 		foreach (KeyValuePair<string, LeaderboardHistory> kvp in leaderboards)
 		{
-			SpreadHighscoreStats(leaderboards.Select(lb => lb.Value).ToList(), kvp.Value);
+			SpreadHighscoreStats([.. leaderboards.Select(lb => lb.Value)], kvp.Value);
 			File.WriteAllBytes(kvp.Key, kvp.Value.ToBytes());
 		}
 
@@ -46,11 +46,11 @@ internal static class HighscoreSpreadUtils
 		{
 			if (entry.Id != 0 && entry.HasMissingStats())
 			{
-				IEnumerable<LeaderboardHistory> leaderboardsWithStats = leaderboards.Where(l => l.Entries.Exists(e => e.Id == entry.Id && e.Time >= entry.Time - 1 && e.Time <= entry.Time + 1)).ToList();
-				if (!leaderboardsWithStats.Any())
+				List<LeaderboardHistory> leaderboardsWithStats = [.. leaderboards.Where(l => l.Entries.Exists(e => e.Id == entry.Id && e.Time >= entry.Time - 1 && e.Time <= entry.Time + 1))];
+				if (leaderboardsWithStats.Count == 0)
 					continue;
 
-				changes.Add(Combine(entry, leaderboardsWithStats.SelectMany(lb => lb.Entries).Where(e => e.Id == entry.Id).ToList()));
+				changes.Add(Combine(entry, [.. leaderboardsWithStats.SelectMany(lb => lb.Entries).Where(e => e.Id == entry.Id)]));
 			}
 		}
 

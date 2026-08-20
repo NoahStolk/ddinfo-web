@@ -53,9 +53,11 @@ public sealed class CustomEntryRepository
 
 	public List<int> GetExistingCustomEntryReplayIds(List<int> ids)
 	{
-		return ids
-			.Where(id => File.Exists(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{id}.ddreplay")))
-			.Select(id => id)
-			.ToList();
+		return
+		[
+			.. ids
+				.Where(id => File.Exists(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{id}.ddreplay")))
+				.Select(id => id),
+		];
 	}
 }

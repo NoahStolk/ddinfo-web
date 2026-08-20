@@ -64,16 +64,18 @@ Dictionary<int, string> names = new()
 };
 
 // Find all players that have ever been in the top 10.
-string[] files = Directory.GetFiles(baseDirectory, "*.bin", SearchOption.TopDirectoryOnly).Order().ToArray();
-List<LeaderboardHistory> leaderboardHistories = files.Select(file => LeaderboardHistory.CreateFromFile(File.ReadAllBytes(file))).ToList();
+string[] files = [.. Directory.GetFiles(baseDirectory, "*.bin", SearchOption.TopDirectoryOnly).Order()];
+List<LeaderboardHistory> leaderboardHistories = [.. files.Select(file => LeaderboardHistory.CreateFromFile(File.ReadAllBytes(file)))];
 List<(int Id, string Name)> top10Players = [];
 foreach (LeaderboardHistory leaderboardHistory in leaderboardHistories)
 	top10Players.AddRange(leaderboardHistory.Entries.Where(e => e.Rank <= 10).Select(e => (e.Id, names.GetValueOrDefault(e.Id, e.Username))));
-top10Players = top10Players
-	.DistinctBy(p => p.Id)
-	.Where(p => p.Id is not (0 or 152_846 or 233_257 or 316_836 or 999_999))
-	.OrderBy(p => p.Id)
-	.ToList();
+top10Players =
+[
+	.. top10Players
+		.DistinctBy(p => p.Id)
+		.Where(p => p.Id is not (0 or 152_846 or 233_257 or 316_836 or 999_999))
+		.OrderBy(p => p.Id),
+];
 
 // For each date; find the player's score and keep track of it.
 Dictionary<int, int> currentBestTimes = new();

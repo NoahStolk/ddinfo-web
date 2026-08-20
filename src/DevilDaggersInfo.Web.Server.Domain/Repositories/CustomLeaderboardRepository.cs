@@ -111,7 +111,7 @@ public sealed class CustomLeaderboardRepository
 		foreach (var row in customLeaderboards)
 		{
 			CustomLeaderboardEntity cl = row.CustomLeaderboard;
-			List<CustomEntrySummary> sortedCustomEntries = customEntries.Where(ce => ce.CustomLeaderboardId == cl.Id).Sort(cl.RankSorting).ToList();
+			List<CustomEntrySummary> sortedCustomEntries = [.. customEntries.Where(ce => ce.CustomLeaderboardId == cl.Id).Sort(cl.RankSorting)];
 
 			CustomEntrySummary? worldRecord = sortedCustomEntries.Count == 0 ? null : sortedCustomEntries[0];
 			CustomLeaderboardOverviewWorldRecord? worldRecordModel = worldRecord == null ? null : ToWorldRecordOverviewModel(worldRecord, cl);
@@ -122,33 +122,38 @@ public sealed class CustomLeaderboardRepository
 		}
 
 		// ! Navigation property.
-		customLeaderboardData = (sortBy switch
-		{
-			CustomLeaderboardSorting.AuthorName => customLeaderboardData.OrderBy(cl => cl.SpawnsetAuthorName.ToLower(), ascending),
-			CustomLeaderboardSorting.DateLastPlayed => customLeaderboardData.OrderBy(cl => cl.CustomLeaderboard.DateLastPlayed ?? cl.CustomLeaderboard.DateCreated, ascending),
-			CustomLeaderboardSorting.SpawnsetName => customLeaderboardData.OrderBy(cl => cl.SpawnsetName.ToLower(), ascending),
-			CustomLeaderboardSorting.TimeBronze => customLeaderboardData.OrderBy(cl => cl.CustomLeaderboard.IsFeatured ? cl.CustomLeaderboard.Bronze : 0, ascending),
-			CustomLeaderboardSorting.TimeSilver => customLeaderboardData.OrderBy(cl => cl.CustomLeaderboard.IsFeatured ? cl.CustomLeaderboard.Silver : 0, ascending),
-			CustomLeaderboardSorting.TimeGolden => customLeaderboardData.OrderBy(cl => cl.CustomLeaderboard.IsFeatured ? cl.CustomLeaderboard.Golden : 0, ascending),
-			CustomLeaderboardSorting.TimeDevil => customLeaderboardData.OrderBy(cl => cl.CustomLeaderboard.IsFeatured ? cl.CustomLeaderboard.Devil : 0, ascending),
-			CustomLeaderboardSorting.TimeLeviathan => customLeaderboardData.OrderBy(cl => cl.CustomLeaderboard.IsFeatured ? cl.CustomLeaderboard.Leviathan : 0, ascending),
-			CustomLeaderboardSorting.DateCreated => customLeaderboardData.OrderBy(cl => cl.CustomLeaderboard.DateCreated, ascending),
-			CustomLeaderboardSorting.Players => customLeaderboardData.OrderBy(cl => cl.PlayerCount, ascending),
-			CustomLeaderboardSorting.Submits => customLeaderboardData.OrderBy(cl => cl.CustomLeaderboard.TotalRunsSubmitted, ascending),
-			CustomLeaderboardSorting.WorldRecord => customLeaderboardData.OrderBy(cl => cl.WorldRecord?.Time, ascending),
-			CustomLeaderboardSorting.TopPlayer => customLeaderboardData.OrderBy(cl => cl.WorldRecord?.PlayerName.ToLower(), ascending),
-			_ => customLeaderboardData.OrderBy(cl => cl.CustomLeaderboard.Id, ascending),
-		}).ToList();
+		customLeaderboardData =
+		[
+			.. sortBy switch
+			{
+				CustomLeaderboardSorting.AuthorName => customLeaderboardData.OrderBy(cl => cl.SpawnsetAuthorName.ToLower(), ascending),
+				CustomLeaderboardSorting.DateLastPlayed => customLeaderboardData.OrderBy(cl => cl.CustomLeaderboard.DateLastPlayed ?? cl.CustomLeaderboard.DateCreated, ascending),
+				CustomLeaderboardSorting.SpawnsetName => customLeaderboardData.OrderBy(cl => cl.SpawnsetName.ToLower(), ascending),
+				CustomLeaderboardSorting.TimeBronze => customLeaderboardData.OrderBy(cl => cl.CustomLeaderboard.IsFeatured ? cl.CustomLeaderboard.Bronze : 0, ascending),
+				CustomLeaderboardSorting.TimeSilver => customLeaderboardData.OrderBy(cl => cl.CustomLeaderboard.IsFeatured ? cl.CustomLeaderboard.Silver : 0, ascending),
+				CustomLeaderboardSorting.TimeGolden => customLeaderboardData.OrderBy(cl => cl.CustomLeaderboard.IsFeatured ? cl.CustomLeaderboard.Golden : 0, ascending),
+				CustomLeaderboardSorting.TimeDevil => customLeaderboardData.OrderBy(cl => cl.CustomLeaderboard.IsFeatured ? cl.CustomLeaderboard.Devil : 0, ascending),
+				CustomLeaderboardSorting.TimeLeviathan => customLeaderboardData.OrderBy(cl => cl.CustomLeaderboard.IsFeatured ? cl.CustomLeaderboard.Leviathan : 0, ascending),
+				CustomLeaderboardSorting.DateCreated => customLeaderboardData.OrderBy(cl => cl.CustomLeaderboard.DateCreated, ascending),
+				CustomLeaderboardSorting.Players => customLeaderboardData.OrderBy(cl => cl.PlayerCount, ascending),
+				CustomLeaderboardSorting.Submits => customLeaderboardData.OrderBy(cl => cl.CustomLeaderboard.TotalRunsSubmitted, ascending),
+				CustomLeaderboardSorting.WorldRecord => customLeaderboardData.OrderBy(cl => cl.WorldRecord?.Time, ascending),
+				CustomLeaderboardSorting.TopPlayer => customLeaderboardData.OrderBy(cl => cl.WorldRecord?.PlayerName.ToLower(), ascending),
+				_ => customLeaderboardData.OrderBy(cl => cl.CustomLeaderboard.Id, ascending),
+			},
+		];
 
 		int totalCustomLeaderboards = customLeaderboards.Count;
 		int lastPageIndex = totalCustomLeaderboards / pageSize;
 
 		return new Page<CustomLeaderboardOverview>(
-			Results: customLeaderboardData
-				.Skip(Math.Min(pageIndex, lastPageIndex) * pageSize)
-				.Take(pageSize)
-				.Select(ToOverview)
-				.ToList(),
+			Results:
+			[
+				.. customLeaderboardData
+					.Skip(Math.Min(pageIndex, lastPageIndex) * pageSize)
+					.Take(pageSize)
+					.Select(ToOverview),
+			],
 			TotalResults: totalCustomLeaderboards);
 	}
 
@@ -280,7 +285,7 @@ public sealed class CustomLeaderboardRepository
 		foreach (CustomLeaderboardEntity customLeaderboard in customLeaderboards)
 		{
 			// ! Navigation property.
-			List<CustomEntryEntity> customEntries = customLeaderboard.CustomEntries!.Sort(rankSorting).ToList();
+			List<CustomEntryEntity> customEntries = [.. customLeaderboard.CustomEntries!.Sort(rankSorting)];
 
 			for (int i = 0; i < customEntries.Count; i++)
 			{
@@ -316,23 +321,25 @@ public sealed class CustomLeaderboardRepository
 		// ! Navigation property.
 		return new GlobalCustomLeaderboard
 		{
-			Entries = globalData
-				.Select(kvp => new GlobalCustomLeaderboardEntry
-				{
-					DefaultDaggerCount = kvp.Value.Data.DefaultCount,
-					BronzeDaggerCount = kvp.Value.Data.BronzeCount,
-					SilverDaggerCount = kvp.Value.Data.SilverCount,
-					GoldenDaggerCount = kvp.Value.Data.GoldenCount,
-					DevilDaggerCount = kvp.Value.Data.DevilCount,
-					LeviathanDaggerCount = kvp.Value.Data.LeviathanCount,
-					LeaderboardsPlayedCount = kvp.Value.Data.TotalPlayed,
-					PlayerId = kvp.Key,
-					PlayerName = kvp.Value.Name,
-					Points = GlobalCustomLeaderboardUtils.GetPoints(kvp.Value.Data),
-				})
-				.OrderByDescending(ce => ce.Points)
-				.ThenByDescending(ce => ce.LeaderboardsPlayedCount)
-				.ToList(),
+			Entries =
+			[
+				.. globalData
+					.Select(kvp => new GlobalCustomLeaderboardEntry
+					{
+						DefaultDaggerCount = kvp.Value.Data.DefaultCount,
+						BronzeDaggerCount = kvp.Value.Data.BronzeCount,
+						SilverDaggerCount = kvp.Value.Data.SilverCount,
+						GoldenDaggerCount = kvp.Value.Data.GoldenCount,
+						DevilDaggerCount = kvp.Value.Data.DevilCount,
+						LeviathanDaggerCount = kvp.Value.Data.LeviathanCount,
+						LeaderboardsPlayedCount = kvp.Value.Data.TotalPlayed,
+						PlayerId = kvp.Key,
+						PlayerName = kvp.Value.Name,
+						Points = GlobalCustomLeaderboardUtils.GetPoints(kvp.Value.Data),
+					})
+					.OrderByDescending(ce => ce.Points)
+					.ThenByDescending(ce => ce.LeaderboardsPlayedCount),
+			],
 			TotalLeaderboards = customLeaderboards.Count,
 			TotalPoints = customLeaderboards.Sum(cl => cl.CustomEntries!.Count * GlobalCustomLeaderboardUtils.RankingMultiplier + GlobalCustomLeaderboardUtils.LeviathanBonus),
 		};
@@ -480,7 +487,7 @@ public sealed class CustomLeaderboardRepository
 		AddCriteria(CustomLeaderboardCriteriaType.LeviathansAlive, customLeaderboard.LeviathansAliveCriteria.Operator, customLeaderboard.LeviathansAliveCriteria.Expression);
 		AddCriteria(CustomLeaderboardCriteriaType.OrbsAlive, customLeaderboard.OrbsAliveCriteria.Operator, customLeaderboard.OrbsAliveCriteria.Expression);
 		AddCriteria(CustomLeaderboardCriteriaType.ThornsAlive, customLeaderboard.ThornsAliveCriteria.Operator, customLeaderboard.ThornsAliveCriteria.Expression);
-		return criteria.Where(c => c.Operator != CustomLeaderboardCriteriaOperator.Any).ToList();
+		return [.. criteria.Where(c => c.Operator != CustomLeaderboardCriteriaOperator.Any)];
 
 		void AddCriteria(CustomLeaderboardCriteriaType criteriaType, CustomLeaderboardCriteriaOperator op, byte[]? expression)
 		{

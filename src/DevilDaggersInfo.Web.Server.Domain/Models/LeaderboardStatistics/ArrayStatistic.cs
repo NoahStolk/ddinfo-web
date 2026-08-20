@@ -8,7 +8,7 @@ public sealed class ArrayStatistic
 
 	public void Populate(List<double> data, Func<double, double> modeTransformer)
 	{
-		data = data.OrderBy(n => n).ToList();
+		data = [.. data.Order()];
 
 		Average = data.Average();
 		Median = data[data.Count / 2];

@@ -30,24 +30,27 @@ public sealed class DonationRepository
 			.Where(p => donorIds.Contains(p.Id))
 			.ToListAsync();
 
-		return donors
-			.ConvertAll(
-				p => new GetDonor
+		return
+		[
+			.. donors
+				.ConvertAll(p => new GetDonor
 				{
-					Donations = donations
-						.Where(d => d.PlayerId == p.Id)
-						.Select(d => new GetDonation
-						{
-							Amount = d.Amount,
-							ConvertedEuroCentsReceived = d.ConvertedEuroCentsReceived,
-							Currency = d.Currency.ToMainApi(),
-							IsRefunded = d.IsRefunded,
-						})
-						.ToList(),
+					Donations =
+					[
+						.. donations
+							.Where(d => d.PlayerId == p.Id)
+							.Select(d => new GetDonation
+							{
+								Amount = d.Amount,
+								ConvertedEuroCentsReceived = d.ConvertedEuroCentsReceived,
+								Currency = d.Currency.ToMainApi(),
+								IsRefunded = d.IsRefunded,
+							}),
+					],
 					PlayerId = p.HideDonations ? null : p.Id,
 					PlayerName = p.HideDonations ? "(anonymous)" : p.PlayerName,
 				})
-			.OrderByDescending(donor => donor.Donations.Sum(donation => donation.ConvertedEuroCentsReceived))
-			.ToList();
+				.OrderByDescending(donor => donor.Donations.Sum(donation => donation.ConvertedEuroCentsReceived)),
+		];
 	}
 }

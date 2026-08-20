@@ -14,7 +14,7 @@ public sealed class ArrayStatistics
 	public void Populate(List<CompressedEntry> entries, int? limit = null)
 	{
 		if (limit.HasValue)
-			entries = entries.Take(limit.Value).ToList();
+			entries = [.. entries.Take(limit.Value)];
 
 		Times.Populate(entries.ConvertAll(e => GameTime.FromGameUnits(e.Time).Seconds), d => d);
 		Kills.Populate(entries.ConvertAll(e => (double)e.Kills), d => d);

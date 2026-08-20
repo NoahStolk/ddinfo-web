@@ -65,7 +65,7 @@ public sealed class PlayerCustomLeaderboardStatisticsRepository
 				if (!totalCustomLeaderboards.TryGetValue((gameMode, rankSorting), out int totalCount))
 					continue;
 
-				List<CustomEntryForStats> filteredCustomEntries = customEntries.Where(ce => ce.GameMode == gameMode && ce.RankSorting == rankSorting).ToList();
+				List<CustomEntryForStats> filteredCustomEntries = [.. customEntries.Where(ce => ce.GameMode == gameMode && ce.RankSorting == rankSorting)];
 				if (filteredCustomEntries.Count == 0)
 					continue;
 

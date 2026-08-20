@@ -34,13 +34,16 @@ public sealed class ModBinaryCacheData
 		if (modBinary.Toc.Type != binaryTypeFromFileName)
 			throw new InvalidModBinaryException($"Binary '{fileName}' has type mismatch; file name claims '{binaryTypeFromFileName}' but file contents claim '{modBinary.Toc.Type}'.");
 
-		List<ModTocEntryCacheData> tocEntries = modBinary.Toc.Entries.Select(c => new ModTocEntryCacheData
-		{
-			Name = c.Name,
-			Size = c.Size,
-			AssetType = c.AssetType,
-			IsProhibited = AssetContainer.IsProhibited(c.AssetType, c.Name),
-		}).ToList();
+		List<ModTocEntryCacheData> tocEntries =
+		[
+			.. modBinary.Toc.Entries.Select(c => new ModTocEntryCacheData
+			{
+				Name = c.Name,
+				Size = c.Size,
+				AssetType = c.AssetType,
+				IsProhibited = AssetContainer.IsProhibited(c.AssetType, c.Name),
+			}),
+		];
 
 		ModBinaryTocEntry? loudnessTocEntry = modBinary.Toc.Entries.FirstOrDefault(c => c.IsLoudness());
 		List<ModifiedLoudnessAssetCacheData>? modifiedLoudnessAssets = null;
