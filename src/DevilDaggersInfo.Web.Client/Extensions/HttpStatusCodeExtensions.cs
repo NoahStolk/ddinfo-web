@@ -6,21 +6,24 @@ namespace DevilDaggersInfo.Web.Client.Extensions;
 
 internal static class HttpStatusCodeExtensions
 {
-	public static ErrorState GetErrorState(this HttpStatusCode httpStatusCode)
+	extension(HttpStatusCode httpStatusCode)
 	{
-		return httpStatusCode switch
+		public ErrorState GetErrorState()
 		{
-			HttpStatusCode.BadRequest or HttpStatusCode.NotFound => ErrorState.ValidationError,
-			_ => ErrorState.FatalError,
-		};
-	}
+			return httpStatusCode switch
+			{
+				HttpStatusCode.BadRequest or HttpStatusCode.NotFound => ErrorState.ValidationError,
+				_ => ErrorState.FatalError,
+			};
+		}
 
-	public static DeleteState GetDeleteState(this HttpStatusCode httpStatusCode)
-	{
-		return httpStatusCode switch
+		public DeleteState GetDeleteState()
 		{
-			HttpStatusCode.BadRequest or HttpStatusCode.NotFound => DeleteState.ValidationError,
-			_ => DeleteState.FatalError,
-		};
+			return httpStatusCode switch
+			{
+				HttpStatusCode.BadRequest or HttpStatusCode.NotFound => DeleteState.ValidationError,
+				_ => DeleteState.FatalError,
+			};
+		}
 	}
 }

@@ -4,18 +4,21 @@ namespace DevilDaggersInfo.Web.Client.Extensions;
 
 internal static class NavigationManagerExtensions
 {
-	public static void AddOrModifyQueryParameter(this NavigationManager navigationManager, string key, object? value)
+	extension(NavigationManager navigationManager)
 	{
-		navigationManager.AddOrModifyQueryParameters(new Dictionary<string, object?> { { key, value } });
-	}
+		public void AddOrModifyQueryParameter(string key, object? value)
+		{
+			navigationManager.AddOrModifyQueryParameters(new Dictionary<string, object?> { { key, value } });
+		}
 
-	public static void AddOrModifyQueryParameters(this NavigationManager navigationManager, params KeyValuePair<string, object?>[] parameters)
-	{
-		navigationManager.AddOrModifyQueryParameters(parameters.ToDictionary(kvp => kvp.Key, kvp => kvp.Value));
-	}
+		public void AddOrModifyQueryParameters(params KeyValuePair<string, object?>[] parameters)
+		{
+			navigationManager.AddOrModifyQueryParameters(parameters.ToDictionary(kvp => kvp.Key, kvp => kvp.Value));
+		}
 
-	private static void AddOrModifyQueryParameters(this NavigationManager navigationManager, IReadOnlyDictionary<string, object?> parameters)
-	{
-		navigationManager.NavigateTo(navigationManager.GetUriWithQueryParameters(parameters));
+		private void AddOrModifyQueryParameters(IReadOnlyDictionary<string, object?> parameters)
+		{
+			navigationManager.NavigateTo(navigationManager.GetUriWithQueryParameters(parameters));
+		}
 	}
 }
