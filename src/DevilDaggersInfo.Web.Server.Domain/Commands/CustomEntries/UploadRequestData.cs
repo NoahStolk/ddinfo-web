@@ -13,6 +13,7 @@ public sealed class UploadRequestData
 	public int[] GemsEaten { get; init; } = [];
 	public int[] GemsTotal { get; init; } = [];
 
+	// TODO: Rename to Skull1KillCount, Skull1AliveCount, etc.
 	public ushort[] Skull1sAlive { get; init; } = [];
 	public ushort[] Skull2sAlive { get; init; } = [];
 	public ushort[] Skull3sAlive { get; init; } = [];

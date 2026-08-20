@@ -62,6 +62,7 @@ internal sealed class EditCustomLeaderboardState : IStateObject<EditCustomLeader
 	public AddCustomLeaderboardCriteriaState OrbKillsCriteria { get; set; } = new();
 	public AddCustomLeaderboardCriteriaState ThornKillsCriteria { get; set; } = new();
 
+	// TODO: Rename to Skull1KillCountCriteria, Skull1AliveCountCriteria, etc.
 	public AddCustomLeaderboardCriteriaState Skull1sAliveCriteria { get; set; } = new();
 	public AddCustomLeaderboardCriteriaState Skull2sAliveCriteria { get; set; } = new();
 	public AddCustomLeaderboardCriteriaState Skull3sAliveCriteria { get; set; } = new();

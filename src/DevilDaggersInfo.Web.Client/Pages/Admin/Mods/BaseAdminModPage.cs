@@ -16,7 +16,7 @@ public abstract class BaseAdminModPage : BaseAdminPage
 		Dictionary<string, byte[]> files = new();
 		foreach (IBrowserFile browserFile in browserFiles)
 		{
-			using MemoryStream ms = new();
+			await using MemoryStream ms = new();
 
 			try
 			{

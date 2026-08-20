@@ -57,6 +57,7 @@ public sealed class CustomLeaderboardEntity : IAuditable
 	public CustomLeaderboardCriteriaEntityValue LevelUpTime4Criteria { get; set; } = new();
 	public CustomLeaderboardCriteriaEntityValue EnemiesAliveCriteria { get; set; } = new();
 
+	// TODO: Rename to Skull1KillCountCriteria, Skull1AliveCountCriteria, etc.
 	public CustomLeaderboardCriteriaEntityValue Skull1KillsCriteria { get; set; } = new();
 	public CustomLeaderboardCriteriaEntityValue Skull2KillsCriteria { get; set; } = new();
 	public CustomLeaderboardCriteriaEntityValue Skull3KillsCriteria { get; set; } = new();

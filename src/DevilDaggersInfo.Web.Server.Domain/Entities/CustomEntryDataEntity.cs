@@ -22,6 +22,7 @@ public sealed class CustomEntryDataEntity
 	public byte[] GemsEatenData { get; set; } = [];
 	public byte[] GemsTotalData { get; set; } = [];
 
+	// TODO: Rename to Skull1KillCountData, Skull1AliveCountData, etc.
 	public byte[] Skull1sAliveData { get; set; } = [];
 	public byte[] Skull2sAliveData { get; set; } = [];
 	public byte[] Skull3sAliveData { get; set; } = [];

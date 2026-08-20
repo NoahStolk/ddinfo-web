@@ -117,15 +117,15 @@ public sealed partial class PlayerPage
 
 		if (GetPlayerHistory.ScoreHistory.Count > 0)
 		{
-			DateTime minX = GetPlayerHistory.ScoreHistory.Select(sh => sh.DateTime).Min();
+			DateTime minX = GetPlayerHistory.ScoreHistory.Min(sh => sh.DateTime);
 			DateTime maxX = DateTime.UtcNow;
 
-			IEnumerable<double> scores = GetPlayerHistory.ScoreHistory.Select(sh => sh.Time);
+			List<double> scores = GetPlayerHistory.ScoreHistory.ConvertAll(sh => sh.Time);
 			const double scale = 50.0;
 			double minY = Math.Floor(scores.Min() / scale) * scale;
 			double maxY = Math.Ceiling(scores.Max() / scale) * scale;
 
-			List<LineData> set = GetPlayerHistory.ScoreHistory.Select((sh, i) => new LineData(sh.DateTime.Ticks, sh.Time, i)).ToList();
+			List<LineData> set = [.. GetPlayerHistory.ScoreHistory.Select((sh, i) => new LineData(sh.DateTime.Ticks, sh.Time, i))];
 			_progressionScoreOptions = new LineChartDataOptions(minX.Ticks, null, maxX.Ticks, minY, scale, maxY);
 			_progressionScoreData.Add(new LineDataSet("#f00", true, true, true, set, (_, d) =>
 			{
@@ -152,14 +152,14 @@ public sealed partial class PlayerPage
 
 		if (GetPlayerHistory.RankHistory.Count > 0)
 		{
-			DateTime minX = GetPlayerHistory.RankHistory.Select(rh => rh.DateTime).Min();
+			DateTime minX = GetPlayerHistory.RankHistory.Min(rh => rh.DateTime);
 			DateTime maxX = DateTime.UtcNow;
 
 			IEnumerable<int> rank = GetPlayerHistory.RankHistory.Select(rh => rh.Rank);
 			const double scale = 10.0;
 			double maxY = Math.Ceiling(rank.Max() / scale) * scale;
 
-			List<LineData> set = GetPlayerHistory.RankHistory.Select((rh, i) => new LineData(rh.DateTime.Ticks, rh.Rank, i)).ToList();
+			List<LineData> set = [.. GetPlayerHistory.RankHistory.Select((rh, i) => new LineData(rh.DateTime.Ticks, rh.Rank, i))];
 			_progressionRankOptions = new LineChartDataOptions(minX.Ticks, null, maxX.Ticks, 0, scale, maxY, false, true);
 			_progressionRankData.Add(new LineDataSet("#ff0", false, true, true, set, (_, d) =>
 			{
@@ -175,7 +175,7 @@ public sealed partial class PlayerPage
 
 		if (GetPlayerHistory.ActivityHistory.Count > 0)
 		{
-			DateTime minX = GetPlayerHistory.ActivityHistory.Select(ah => ah.DateTime).Min();
+			DateTime minX = GetPlayerHistory.ActivityHistory.Min(ah => ah.DateTime);
 			DateTime maxX = DateTime.UtcNow;
 
 			IEnumerable<double> deaths = GetPlayerHistory.ActivityHistory.Select(ah => ah.DeathsIncrement);
@@ -186,7 +186,7 @@ public sealed partial class PlayerPage
 			const double timeScale = 2000.0;
 			double timeMaxY = Math.Ceiling(time.Max() / timeScale) * timeScale;
 
-			List<LineData> deathsSet = GetPlayerHistory.ActivityHistory.Select((ah, i) => new LineData(ah.DateTime.Ticks, ah.DeathsIncrement, i)).ToList();
+			List<LineData> deathsSet = [.. GetPlayerHistory.ActivityHistory.Select((ah, i) => new LineData(ah.DateTime.Ticks, ah.DeathsIncrement, i))];
 			_activityDeathsOptions = new LineChartDataOptions(minX.Ticks, null, maxX.Ticks, 0, deathsScale, deathsMaxY);
 			_activityDeathsData.Add(new LineDataSet("#0f0", false, true, true, deathsSet, (ds, d) =>
 			{
@@ -198,7 +198,7 @@ public sealed partial class PlayerPage
 				];
 			}));
 
-			List<LineData> timeSet = GetPlayerHistory.ActivityHistory.Select((ah, i) => new LineData(ah.DateTime.Ticks, ah.TimeIncrement, i)).ToList();
+			List<LineData> timeSet = [.. GetPlayerHistory.ActivityHistory.Select((ah, i) => new LineData(ah.DateTime.Ticks, ah.TimeIncrement, i))];
 			_activityTimeOptions = new LineChartDataOptions(minX.Ticks, null, maxX.Ticks, 0, timeScale, timeMaxY);
 			_activityTimeData.Add(new LineDataSet("#f80", false, true, true, timeSet, (ds, d) =>
 			{
