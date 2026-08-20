@@ -36,8 +36,8 @@ public sealed class ModArchiveAccessor
 
 		List<string> GetScreenshotFileNames(string s)
 		{
-			// ! Path.GetFileName will never return null because modScreenshotsDirectory is not null.
-			return Directory.GetFiles(s).Select(Path.GetFileName).ToList()!;
+			// ! LINQ
+			return [.. Directory.GetFiles(s).Select(Path.GetFileName)!];
 		}
 	}
 }

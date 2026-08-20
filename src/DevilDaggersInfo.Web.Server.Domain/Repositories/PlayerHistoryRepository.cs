@@ -28,7 +28,7 @@ public sealed class PlayerHistoryRepository
 		// TODO: Add caching.
 		// TODO: Alts may be valid. We would need to check if the main account is below the current player and the alt is above it, then it should not be included in illegitimateScoresAbove.
 		// This is kind of annoying to do, so we'll just ignore it for now.
-		List<int> bannedPlayerIds = _dbContext.Players.Select(p => new { p.Id, p.BanType }).Where(p => p.BanType != BanType.NotBanned).Select(p => p.Id).ToList();
+		List<int> bannedPlayerIds = [.. _dbContext.Players.Select(p => new { p.Id, p.BanType }).Where(p => p.BanType != BanType.NotBanned).Select(p => p.Id)];
 
 		var player = _dbContext.Players
 			.AsNoTracking()
@@ -38,7 +38,7 @@ public sealed class PlayerHistoryRepository
 		int? bestRank = null;
 
 		bool hideUsernames = player?.HidePastUsernames ?? false;
-		Dictionary<string, int> usernamesHistory = new();
+		Dictionary<string, int> pastUsernameCounts = new();
 
 		int? scorePreviousForScoreHistory = null;
 		List<PlayerHistoryScoreEntry> scoreHistory = [];
@@ -53,11 +53,13 @@ public sealed class PlayerHistoryRepository
 
 		// The score, rank and activity histories are all built from running state, so these must be processed in
 		// chronological order.
-		List<LeaderboardHistory> leaderboardHistories = _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory)
-			.Where(p => p.EndsWith(".bin"))
-			.Select(p => _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(p))
-			.OrderBy(lbh => lbh.DateTime)
-			.ToList();
+		List<LeaderboardHistory> leaderboardHistories =
+		[
+			.. _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory)
+				.Where(p => p.EndsWith(".bin"))
+				.Select(p => _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(p))
+				.OrderBy(lbh => lbh.DateTime),
+		];
 
 		foreach (LeaderboardHistory leaderboard in leaderboardHistories)
 		{
@@ -70,11 +72,8 @@ public sealed class PlayerHistoryRepository
 			if (!bestRank.HasValue || correctedRank < bestRank)
 				bestRank = correctedRank;
 
-			if (!hideUsernames && !string.IsNullOrWhiteSpace(entry.Username))
-			{
-				if (!usernamesHistory.TryAdd(entry.Username, 1))
-					usernamesHistory[entry.Username]++;
-			}
+			if (!hideUsernames && !string.IsNullOrWhiteSpace(entry.Username) && !pastUsernameCounts.TryAdd(entry.Username, 1))
+				pastUsernameCounts[entry.Username]++;
 
 			// + 1 and - 1 are used to fix off-by-one errors in the history based on screenshots and videos. This is due to a rounding error in Devil Daggers itself.
 			if (!scorePreviousForScoreHistory.HasValue || scorePreviousForScoreHistory < entry.Time - 1 || scorePreviousForScoreHistory > entry.Time + 1)
@@ -148,7 +147,7 @@ public sealed class PlayerHistoryRepository
 			HidePastUsernames = hideUsernames,
 			RankHistory = rankHistory,
 			ScoreHistory = scoreHistory,
-			Usernames = usernamesHistory.OrderByDescending(kvp => kvp.Value).Select(kvp => kvp.Key).ToList(),
+			Usernames = [.. pastUsernameCounts.OrderByDescending(kvp => kvp.Value).Select(kvp => kvp.Key)],
 		};
 	}
 }

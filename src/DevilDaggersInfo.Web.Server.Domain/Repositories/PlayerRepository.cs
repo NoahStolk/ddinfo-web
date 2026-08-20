@@ -38,7 +38,7 @@ public sealed class PlayerRepository
 			.ToListAsync();
 
 		// Note; cannot evaluate HasVisibleSettings() against database (IQueryable).
-		return players.Where(p => p.HasVisibleSettings()).Select(PlayerForSettings.FromEntity).ToList();
+		return [.. players.Where(p => p.HasVisibleSettings()).Select(PlayerForSettings.FromEntity)];
 	}
 
 	public async Task<Player> GetPlayerAsync(int id)

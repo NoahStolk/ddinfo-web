@@ -4,18 +4,21 @@ namespace DevilDaggersInfo.Web.Core.Claims;
 
 public static class ClaimsPrincipalExtensions
 {
-	public static string? GetName(this ClaimsPrincipal claimsPrincipal)
+	extension(ClaimsPrincipal claimsPrincipal)
 	{
-		return claimsPrincipal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-	}
+		public string? GetName()
+		{
+			return claimsPrincipal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+		}
 
-	public static List<string> GetRoles(this ClaimsPrincipal claimsPrincipal)
-	{
-		return claimsPrincipal.FindAll(ClaimTypes.Role).Select(c => c.Value).ToList();
-	}
+		public List<string> GetRoles()
+		{
+			return [.. claimsPrincipal.FindAll(ClaimTypes.Role).Select(c => c.Value)];
+		}
 
-	public static int? GetPlayerId(this ClaimsPrincipal claimsPrincipal)
-	{
-		return int.TryParse(claimsPrincipal.FindFirst("playerId")?.Value, out int playerId) ? playerId : null;
+		public int? GetPlayerId()
+		{
+			return int.TryParse(claimsPrincipal.FindFirst("playerId")?.Value, out int playerId) ? playerId : null;
+		}
 	}
 }

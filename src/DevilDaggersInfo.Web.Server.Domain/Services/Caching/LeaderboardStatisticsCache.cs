@@ -43,9 +43,9 @@ public sealed class LeaderboardStatisticsCache
 
 	public int EntryCount => _entries.Count;
 
-	public static IReadOnlyList<Dagger> StatDaggers { get; } = Daggers.All.OrderByDescending(d => d.UnlockSecond).ToList();
+	public static IReadOnlyList<Dagger> StatDaggers { get; } = [.. Daggers.All.OrderByDescending(d => d.UnlockSecond)];
 
-	public static IReadOnlyList<Enemy> StatEnemies { get; } = Enemies.GetEnemies(GameConstants.CurrentVersion).Where(e => e.FirstSpawnSecond.HasValue).OrderByDescending(e => e.FirstSpawnSecond).ToList();
+	public static IReadOnlyList<Enemy> StatEnemies { get; } = [.. Enemies.GetEnemies(GameConstants.CurrentVersion).Where(e => e.FirstSpawnSecond.HasValue).OrderByDescending(e => e.FirstSpawnSecond)];
 
 	public void Initiate()
 	{

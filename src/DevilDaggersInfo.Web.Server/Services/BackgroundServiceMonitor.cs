@@ -17,8 +17,7 @@ public sealed class BackgroundServiceMonitor
 	public void Update(string name, DateTime lastExecuted)
 	{
 		BackgroundServiceLog? backgroundServiceLog = _backgroundServiceLogs.FirstOrDefault(bsl => bsl.Name == name);
-		if (backgroundServiceLog != null)
-			backgroundServiceLog.LastExecuted = lastExecuted;
+		backgroundServiceLog?.LastExecuted = lastExecuted;
 	}
 
 	public List<GetBackgroundServiceEntry> GetEntries()
@@ -36,16 +35,10 @@ public sealed class BackgroundServiceMonitor
 		];
 	}
 
-	private sealed class BackgroundServiceLog
+	private sealed class BackgroundServiceLog(string name, TimeSpan interval)
 	{
-		public BackgroundServiceLog(string name, TimeSpan interval)
-		{
-			Name = name;
-			Interval = interval;
-		}
-
-		public string Name { get; }
-		public TimeSpan Interval { get; }
+		public string Name { get; } = name;
+		public TimeSpan Interval { get; } = interval;
 
 		public DateTime LastExecuted { get; set; }
 	}

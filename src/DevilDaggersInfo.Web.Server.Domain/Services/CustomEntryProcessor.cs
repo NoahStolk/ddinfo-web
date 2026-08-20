@@ -371,7 +371,7 @@ public sealed class CustomEntryProcessor
 		List<int> replayIds = GetExistingReplayIds(entries.ConvertAll(ce => ce.Id));
 		return new SuccessfulUploadResponse
 		{
-			SortedEntries = entries.Select((e, i) => ToEntryModel(e, i + 1, customLeaderboard.DaggerFromStat(e), replayIds)).ToList(),
+			SortedEntries = [.. entries.Select((e, i) => ToEntryModel(e, i + 1, customLeaderboard.DaggerFromStat(e), replayIds))],
 			SubmissionType = SubmissionType.FirstScore,
 			RankState = new UploadResponseScoreState<int>(rank),
 			TimeState = new UploadResponseScoreState<double>(GameTime.FromGameUnits(newCustomEntry.Time).Seconds),
@@ -407,7 +407,7 @@ public sealed class CustomEntryProcessor
 		int homingStored = uploadRequest.GetFinalHomingValue();
 		return new SuccessfulUploadResponse
 		{
-			SortedEntries = entries.Select((e, i) => ToEntryModel(e, i + 1, customLeaderboard.DaggerFromStat(e), replayIds)).ToList(),
+			SortedEntries = [.. entries.Select((e, i) => ToEntryModel(e, i + 1, customLeaderboard.DaggerFromStat(e), replayIds))],
 			SubmissionType = SubmissionType.NoHighscore,
 			TimeState = new UploadResponseScoreState<double>(uploadRequest.Time.Seconds, (uploadRequest.Time - GameTime.FromGameUnits(currentEntry.Time)).Seconds),
 			EnemiesKilledState = new UploadResponseScoreState<int>(uploadRequest.EnemiesKilled, uploadRequest.EnemiesKilled - currentEntry.EnemiesKilled),
@@ -531,7 +531,7 @@ public sealed class CustomEntryProcessor
 
 		return new SuccessfulUploadResponse
 		{
-			SortedEntries = entries.Select((e, i) => ToEntryModel(e, i + 1, customLeaderboard.DaggerFromStat(e), replayIds)).ToList(),
+			SortedEntries = [.. entries.Select((e, i) => ToEntryModel(e, i + 1, customLeaderboard.DaggerFromStat(e), replayIds))],
 			SubmissionType = SubmissionType.NewHighscore,
 			RankState = new UploadResponseScoreState<int>(rank, rankDiff),
 			TimeState = new UploadResponseScoreState<double>(GameTime.FromGameUnits(customEntry.Time).Seconds, GameTime.FromGameUnits(timeDiff).Seconds),
@@ -617,7 +617,7 @@ public sealed class CustomEntryProcessor
 			.Where(ce => ce.CustomLeaderboardId == customLeaderboardId)
 			.ToListAsync();
 
-		return entries.Sort(rankSorting).ToList();
+		return [.. entries.Sort(rankSorting)];
 	}
 
 	private static int GetRank(List<CustomEntryEntity> orderedEntries, int playerId)
@@ -636,7 +636,7 @@ public sealed class CustomEntryProcessor
 
 	private List<int> GetExistingReplayIds(List<int> customEntryIds)
 	{
-		return customEntryIds.Where(id => File.Exists(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{id}.ddreplay"))).ToList();
+		return [.. customEntryIds.Where(id => File.Exists(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{id}.ddreplay")))];
 	}
 
 	private static CustomEntry ToEntryModel(CustomEntryEntity customEntry, int rank, CustomLeaderboardDagger? dagger, List<int> replayIds)
