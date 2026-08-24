@@ -12,6 +12,7 @@ internal sealed class DdLeaderboardService : IDdLeaderboardService
 	private static readonly Uri _getUserSearchUrl = new("http://dd.hasmodai.com/dd3/get_user_search_public.php");
 	private static readonly Uri _getUsersByIdsUrl = new("http://dd.hasmodai.com/dd3/get_multiple_users_by_id_public.php");
 	private static readonly Uri _getUserByIdUrl = new("http://dd.hasmodai.com/dd3/get_user_by_id_public.php");
+	private static readonly Uri _getRunsUrl = new("http://dd.hasmodai.com/dd3/get_recent.php");
 
 	private readonly HttpClient _httpClient;
 	private readonly ILogger<DdLeaderboardService> _logger;
@@ -75,6 +76,17 @@ internal sealed class DdLeaderboardService : IDdLeaderboardService
 			LeaderboardResponseParser.ParseGetEntryById,
 			_getUserByIdUrl,
 			new KeyValuePair<string?, string?>("uid", id.ToString()));
+	}
+
+	public async Task<List<IDdLeaderboardService.RunResponse>> GetRunsByTimestamp(DateTimeOffset before, int limit)
+	{
+		long timestamp = before.ToUnixTimeSeconds();
+		List<IDdLeaderboardService.RunResponse>? runs = await _httpClient.GetFromJsonAsync<List<IDdLeaderboardService.RunResponse>>($"{_getRunsUrl}?{nameof(before)}={timestamp}?{nameof(limit)}={limit}");
+		if (runs != null)
+			return runs;
+
+		LogError(null, _getRunsUrl, new(nameof(before), timestamp.ToString()), new(nameof(limit), limit.ToString()));
+		throw new DdLeaderboardException("The response from the leaderboard servers could not be parsed.");
 	}
 
 	private void LogError(Exception ex, Uri url, params KeyValuePair<string?, string?>[] parameters)
