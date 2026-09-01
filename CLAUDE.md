@@ -140,8 +140,10 @@ Gotchas worth knowing before writing a test:
   converted only for time rank sortings; a gems-based leaderboard reports raw gem counts.
 - `CustomLeaderboardEntity.IsFeatured` defaults to false, which makes every `daggers` and `customLeaderboardDagger`
   field null. Set it when asserting on daggers — this is the most common seeding trap.
-- `ExceptionMiddleware` sets `application/problem+json` and then calls `WriteAsJsonAsync`, which overwrites it with
-  `application/json`. The body is still a `ProblemDetails`; assert on `title`.
+- `ExceptionMiddleware` turns a `StatusCodeException` into an RFC 7807 `application/problem+json` response whose `title`
+  is the exception message. The content type has to be passed to `WriteAsJsonAsync`, which otherwise overwrites it.
+  Validation failures rejected by `[ApiController]` never reach the middleware and keep the framework's own shape with
+  an `errors` member.
 - `ApplicationDbContext.OnConfiguring` calls `LogTo(Console.WriteLine)` under `#if DEBUG`, so a Debug test run prints
   every SQL statement. Filter it out when reading output, or run `-c Release`.
 - A build failure combined with `--no-build` silently runs the previous binary. Check the build result before trusting

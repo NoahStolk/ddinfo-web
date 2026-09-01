@@ -178,10 +178,9 @@ internal sealed class ToolsSubmitScoreTests : ApplicationTest
 
 		await Assert.That(response.StatusCode).IsEqualTo(HttpStatusCode.BadRequest);
 
-		// ExceptionMiddleware sets "application/problem+json; charset=utf-8" and then calls WriteAsJsonAsync, which
-		// overwrites it. The body is still a ProblemDetails, so this pins the content type actually sent rather than
-		// the one the middleware intends; change it here if the middleware is ever corrected.
-		await Assert.That(response.Content.Headers.ContentType?.MediaType).IsEqualTo("application/json");
+		// Errors from the domain layer are RFC 7807 problem responses.
+		await Assert.That(response.Content.Headers.ContentType?.MediaType).IsEqualTo("application/problem+json");
+		await Assert.That(response.Content.Headers.ContentType?.CharSet).IsEqualTo("utf-8");
 
 		using JsonDocument document = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
 		await Assert.That(document.RootElement.GetProperty("title").GetString()).StartsWith("Could not decrypt");
