@@ -53,19 +53,21 @@ public sealed class SpawnsetsController(ApplicationDbContext dbContext, ILogger<
 
 		// Sorting is applied to the query so the database does it, which means LOWER() is not needed: the column
 		// collation is already case insensitive, and wrapping the column would prevent an index from being used.
+		// Id breaks ties so the ordering is total. Without it the database is free to return rows with equal sort
+		// keys in a different order per query, which makes paging drop and repeat rows across pages.
 		// ! Navigation property.
 		spawnsetsQuery = sortBy switch
 		{
-			SpawnsetSorting.Name => spawnsetsQuery.OrderBy(s => s.Name, ascending),
-			SpawnsetSorting.AuthorName => spawnsetsQuery.OrderBy(s => s.Player!.PlayerName, ascending),
-			SpawnsetSorting.LastUpdated => spawnsetsQuery.OrderBy(s => s.LastUpdated, ascending),
-			SpawnsetSorting.GameMode => spawnsetsQuery.OrderBy(s => s.GameMode, ascending),
-			SpawnsetSorting.LoopLength => spawnsetsQuery.OrderBy(s => s.LoopLength, ascending),
-			SpawnsetSorting.LoopSpawnCount => spawnsetsQuery.OrderBy(s => s.LoopSpawnCount, ascending),
-			SpawnsetSorting.PreLoopLength => spawnsetsQuery.OrderBy(s => s.PreLoopLength, ascending),
-			SpawnsetSorting.PreLoopSpawnCount => spawnsetsQuery.OrderBy(s => s.PreLoopSpawnCount, ascending),
-			SpawnsetSorting.Hand => spawnsetsQuery.OrderBy(s => s.HandLevel, ascending),
-			SpawnsetSorting.AdditionalGems => spawnsetsQuery.OrderBy(s => s.AdditionalGems, ascending),
+			SpawnsetSorting.Name => spawnsetsQuery.OrderBy(s => s.Name, ascending).ThenBy(s => s.Id),
+			SpawnsetSorting.AuthorName => spawnsetsQuery.OrderBy(s => s.Player!.PlayerName, ascending).ThenBy(s => s.Id),
+			SpawnsetSorting.LastUpdated => spawnsetsQuery.OrderBy(s => s.LastUpdated, ascending).ThenBy(s => s.Id),
+			SpawnsetSorting.GameMode => spawnsetsQuery.OrderBy(s => s.GameMode, ascending).ThenBy(s => s.Id),
+			SpawnsetSorting.LoopLength => spawnsetsQuery.OrderBy(s => s.LoopLength, ascending).ThenBy(s => s.Id),
+			SpawnsetSorting.LoopSpawnCount => spawnsetsQuery.OrderBy(s => s.LoopSpawnCount, ascending).ThenBy(s => s.Id),
+			SpawnsetSorting.PreLoopLength => spawnsetsQuery.OrderBy(s => s.PreLoopLength, ascending).ThenBy(s => s.Id),
+			SpawnsetSorting.PreLoopSpawnCount => spawnsetsQuery.OrderBy(s => s.PreLoopSpawnCount, ascending).ThenBy(s => s.Id),
+			SpawnsetSorting.Hand => spawnsetsQuery.OrderBy(s => s.HandLevel, ascending).ThenBy(s => s.Id),
+			SpawnsetSorting.AdditionalGems => spawnsetsQuery.OrderBy(s => s.AdditionalGems, ascending).ThenBy(s => s.Id),
 			_ => spawnsetsQuery.OrderBy(s => s.Id, ascending),
 		};
 
