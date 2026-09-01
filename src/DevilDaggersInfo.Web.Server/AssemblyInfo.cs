@@ -1,4 +1,6 @@
 using System.Runtime.CompilerServices;
 
-// RewriteRulesUtils is covered by tests in the domain test project.
-[assembly: InternalsVisibleTo("DevilDaggersInfo.Web.Server.Domain.Test")]
+// The integration tests boot the real host through WebApplicationFactory<Program>, which needs the compiler-generated
+// entry point type, and filter the application's own hosted services out of the service collection by type. They also
+// cover internal helpers such as RewriteRulesUtils.
+[assembly: InternalsVisibleTo("DevilDaggersInfo.Web.Server.IntegrationTest")]

@@ -8,15 +8,16 @@
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" />
-    <PackageReference Include="MockQueryable.NSubstitute" />
     <PackageReference Include="NSubstitute" />
     <PackageReference Include="TUnit" />
   </ItemGroup>
 
+  <!-- Deliberately references only the domain projects. Referencing the server project would pull in the Blazor client,
+       whose build runs the Tailwind CLI, which makes these tests slow to build and unbuildable offline. Anything that
+       needs the web layer belongs in DevilDaggersInfo.Web.Server.IntegrationTest. -->
   <ItemGroup>
-    <!-- TODO: Reference DevilDaggersInfo.Web.Server.Domain or rename the test project. -->
-    <ProjectReference Include="..\..\DevilDaggersInfo.Web.Server\DevilDaggersInfo.Web.Server.csproj" />
+    <ProjectReference Include="..\..\DevilDaggersInfo.Web.Server.Domain\DevilDaggersInfo.Web.Server.Domain.csproj" />
+    <ProjectReference Include="..\..\DevilDaggersInfo.Web.Server.Domain.Main\DevilDaggersInfo.Web.Server.Domain.Main.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -34,9 +34,6 @@ public sealed class CustomEntryProcessor(
 	private readonly AesBase32Wrapper _encryptionWrapper = new(customLeaderboardsOptions.Value.InitializationVector, customLeaderboardsOptions.Value.Password, customLeaderboardsOptions.Value.Salt);
 	private readonly long _startingTimestamp = Stopwatch.GetTimestamp();
 
-	[Obsolete("Use a real database provider in an integration test.")]
-	public bool IsUnitTest { get; init; }
-
 	private void ValidateV2(UploadRequest uploadRequest)
 	{
 		string expected = uploadRequest.CreateValidationV2();
@@ -88,10 +85,7 @@ public sealed class CustomEntryProcessor(
 			LogAndThrowValidationException(uploadRequest, "Player ID is 0 or negative.");
 
 		// Check for existing spawnset.
-		var spawnset =
-			IsUnitTest
-			? await dbContext.Spawnsets.Select(s => new { s.Name, s.Md5Hash }).FirstOrDefaultAsync(s => ((IEnumerable<byte>)s.Md5Hash).SequenceEqual(uploadRequest.SurvivalHashMd5))
-			: await dbContext.Spawnsets.Select(s => new { s.Name, s.Md5Hash }).FirstOrDefaultAsync(s => s.Md5Hash == uploadRequest.SurvivalHashMd5);
+		var spawnset = await dbContext.Spawnsets.Select(s => new { s.Name, s.Md5Hash }).FirstOrDefaultAsync(s => s.Md5Hash == uploadRequest.SurvivalHashMd5);
 		if (spawnset == null)
 			LogAndThrowValidationException(uploadRequest, "This spawnset doesn't exist on DevilDaggers.info.");
 

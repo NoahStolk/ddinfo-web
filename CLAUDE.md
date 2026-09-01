@@ -22,6 +22,13 @@ dotnet test --solution src/DevilDaggersInfo.Web.slnx -c Release --no-build
 # Single test / filtered
 dotnet test --project src/test/DevilDaggersInfo.Web.Server.Domain.Test --treenode-filter "/*/*/WorldRecordRepositoryTests/*"
 
+# Fast, Docker-free loop (the two unit test projects)
+dotnet test --project src/test/DevilDaggersInfo.Web.Server.Domain.Test
+dotnet test --project src/test/DevilDaggersInfo.Web.Core.Utils.Test
+
+# Integration tests (needs Docker)
+dotnet test --project src/test/DevilDaggersInfo.Web.Server.IntegrationTest
+
 # Run the site (server hosts the Blazor WASM client)
 dotnet run --project src/DevilDaggersInfo.Web.Server   # https://localhost:5001
 ```
@@ -81,7 +88,49 @@ Blazor WASM. Pages under `Pages/<Area>/`, reusable components under `Components/
 - `.editorconfig`: **tabs** everywhere (spaces only in `.csproj`/`.pubxml`/`.slnx`/`.yml`). Existing code uses `_camelCase` private fields, explicit types over `var`, and file-scoped namespaces.
 - `Directory.Build.props`: `net10.0`, `LangVersion 14.0`, nullable enabled with `WarningsAsErrors=nullable`, `AnalysisMode=All`, implicit usings, invariant globalization. Analyzer warnings (StyleCop, Sonar, Roslynator, Nullable.Extended) are numerous and non-blocking — don't chase pre-existing ones, but don't add new ones either.
 - `Directory.Packages.props`: central package management. Add new packages there as `<PackageVersion>` and reference them without a version in the csproj. Dependabot keeps versions current.
-- Tests use TUnit + NSubstitute + EF Core InMemory (`TestDbContext`, `TestData`, `MockEntities`); test-only analyzer relaxations live in `src/test/Tests.globalconfig`. TUnit assertions are awaited (`await Assert.That(actual).IsEqualTo(expected)`), so test methods return `Task`, and `IsEquivalentTo` needs `CollectionOrdering.Matching` to compare collections in order. TUnit runs tests in parallel, so classes that share the file system or a substituted `DbContext` across their cases are marked `[NotInParallel]`.
+- Tests use TUnit; test-only analyzer relaxations live in `src/test/Tests.globalconfig`. TUnit assertions are awaited (`await Assert.That(actual).IsEqualTo(expected)`), so test methods return `Task`, and `IsEquivalentTo` needs `CollectionOrdering.Matching` to compare collections in order. TUnit runs tests in parallel, so classes sharing a database or a data directory across their cases are marked `[NotInParallel(nameof(TheClass))]` — the keyed form serialises within the class instead of against the whole assembly.
+
+## Testing
+
+Three test projects, split by what infrastructure they need:
+
+| Project | Docker | Scope |
+| --- | --- | --- |
+| `test/DevilDaggersInfo.Web.Core.Utils.Test` | no | `Web.Core.Utils` only. |
+| `test/DevilDaggersInfo.Web.Server.Domain.Test` | no | Pure domain logic and EF InMemory repository tests. References **only** the domain projects — deliberately not `Web.Server`, since that pulls in the Blazor client and its Tailwind build, which would make this project slow to build and unbuildable offline. Runs in about a second. |
+| `test/DevilDaggersInfo.Web.Server.IntegrationTest` | **yes** | The real host over HTTP, and domain services against a real MySQL server. |
+
+### Integration tests
+
+`MySqlFixture` starts **one** pinned `mysql:8.0.43` container per test session via Testcontainers, consumed through
+`[ClassDataSource<MySqlFixture>(Shared = SharedType.PerTestSession)]`. The container starts lazily, so a filtered run
+that touches no integration test never starts Docker at all. Without a reachable Docker daemon the assembly-level
+`[RequiresDocker]` attribute skips these tests rather than failing them.
+
+Each test class gets its own database (`ddinfo_<classname>`) and its own scratch data directory, so classes run in
+parallel; `TestApplication.ResetAsync()` truncates every table between tests. Truncation rather than deletion matters
+because `AUTO_INCREMENT` restarts at 1, and `CustomEntryProcessor` names replay files after the entry ID. The table list
+is derived from `dbContext.Model`, so a newly added entity cannot be forgotten. `MySqlFixture.BootstrapDatabase` is the
+key for the one schema actually named `devildaggers`, which `Admin.DatabaseController`'s `information_schema` query
+hard-codes.
+
+The schema comes from `EnsureCreatedAsync()`. There are no EF migrations in this repo, and generating the schema from the
+model means CI validates that the entity model can be materialised on MySQL at all — something no test did before.
+
+`TestApplication` is a `WebApplicationFactory<Program>` that boots the real `Program.cs`. It runs in the Development
+environment (which is why three of the six hosted services are never registered), strips the remaining hosted services
+by filtering service descriptors whose implementation type lives in the server assembly, redirects `IFileSystemService`
+and data protection keys to a temp directory, and substitutes `IDdLeaderboardService`. Use `CreateApiClient(jwt)` for
+HTTP, `CreateScope()` to resolve domain services directly, and `CreateJwtAsync(name, roles)` to mint a token with the
+production `UserManager`. `WebApplicationFactory<Program>` needs the compiler-generated entry point type, which is
+`internal`; `Web.Server/AssemblyInfo.cs` grants access with `InternalsVisibleTo`.
+
+Two gotchas worth knowing before writing a test:
+
+- Paged endpoints validate `pageSize` against `Constants.PageSizeMin`/`Max` (15–35, default 25). A larger page size is a
+  `400`, not a clamp.
+- `ApplicationDbContext.OnConfiguring` calls `LogTo(Console.WriteLine)` under `#if DEBUG`, so a Debug test run prints
+  every SQL statement. Filter it out when reading output, or run `-c Release`.
 
 ## Reference docs
 

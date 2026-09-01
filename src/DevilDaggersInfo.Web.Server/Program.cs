@@ -64,7 +64,7 @@ builder.Services.AddHttpContextAccessor();
 
 // Domain services
 builder.Services.AddScoped<CustomEntryProcessor>();
-builder.Services.AddSingleton<IFileSystemService, FileSystemService>();
+builder.Services.AddSingleton<IFileSystemService>(_ => new FileSystemService("Data"));
 builder.Services.AddTransient<ModArchiveAccessor>();
 builder.Services.AddTransient<ModArchiveProcessor>();
 builder.Services.AddTransient<ModScreenshotProcessor>();

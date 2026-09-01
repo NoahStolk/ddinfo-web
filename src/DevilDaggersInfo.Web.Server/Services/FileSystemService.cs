@@ -6,10 +6,14 @@ namespace DevilDaggersInfo.Web.Server.Services;
 
 internal sealed class FileSystemService : IFileSystemService
 {
-	private const string _root = "Data";
+	private readonly string _root;
 
-	public FileSystemService()
+	// The root is injected so that integration tests can point the real implementation at a scratch directory instead
+	// of the process working directory. Production passes "Data", which resolves next to the server executable.
+	public FileSystemService(string root)
 	{
+		_root = root;
+
 		foreach (DataSubDirectory e in Enum.GetValues<DataSubDirectory>())
 			Directory.CreateDirectory(GetPath(e));
 	}
