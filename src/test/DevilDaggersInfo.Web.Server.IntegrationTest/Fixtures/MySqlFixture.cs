@@ -110,7 +110,7 @@ internal sealed class MySqlFixture : IAsyncInitializer, IAsyncDisposable
 	{
 		foreach (Lazy<Task<TestApplication>> application in _applications.Values)
 		{
-			if (application.IsValueCreated && application.Value.IsCompletedSuccessfully)
+			if (application is { IsValueCreated: true, Value.IsCompletedSuccessfully: true })
 				await application.Value.Result.DisposeAsync();
 		}
 

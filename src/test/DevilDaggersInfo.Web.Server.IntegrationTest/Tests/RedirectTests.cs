@@ -8,10 +8,10 @@ namespace DevilDaggersInfo.Web.Server.IntegrationTest.Tests;
 /// the internet, and nothing else exercises them.
 /// </summary>
 [NotInParallel(nameof(RedirectTests))]
-internal sealed class RedirectTests
+internal sealed class RedirectTests : ApplicationTest
 {
-	[ClassDataSource<MySqlFixture>(Shared = SharedType.PerTestSession)]
-	public required MySqlFixture MySql { get; init; }
+	// Rewrite rules run before routing and never reach the database.
+	protected override bool ResetBeforeEachTest => false;
 
 	[Test]
 	[Arguments("Home/Index", "/")]
@@ -41,9 +41,7 @@ internal sealed class RedirectTests
 	[Arguments("guides/asset-editor", "/guides/creating-mods")]
 	public async Task LegacyUrl_RedirectsToCurrentLocation(string requested, string expectedLocation)
 	{
-		TestApplication app = await MySql.GetApplicationAsync(nameof(RedirectTests));
-
-		using HttpClient client = app.CreateApiClient();
+		using HttpClient client = App.CreateApiClient();
 		using HttpResponseMessage response = await client.GetAsync(requested);
 
 		// AddRedirect emits a root-relative Location, so the expectations carry a leading slash even though the
@@ -55,9 +53,7 @@ internal sealed class RedirectTests
 	[Test]
 	public async Task UnknownPath_FallsThroughToTheBlazorHostPage()
 	{
-		TestApplication app = await MySql.GetApplicationAsync(nameof(RedirectTests));
-
-		using HttpClient client = app.CreateApiClient();
+		using HttpClient client = App.CreateApiClient();
 		using HttpResponseMessage response = await client.GetAsync("some/path/that/does/not/exist");
 
 		// MapFallbackToPage("/_Host") serves the client shell for anything the server does not route itself.

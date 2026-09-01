@@ -125,12 +125,27 @@ HTTP, `CreateScope()` to resolve domain services directly, and `CreateJwtAsync(n
 production `UserManager`. `WebApplicationFactory<Program>` needs the compiler-generated entry point type, which is
 `internal`; `Web.Server/AssemblyInfo.cs` grants access with `InternalsVisibleTo`.
 
-Two gotchas worth knowing before writing a test:
+Derive HTTP test classes from `Fixtures/ApplicationTest.cs`. It injects the fixture, resolves the per-class application
+and truncates the database before each case, so a test body starts with seeding rather than setup. Override
+`ResetBeforeEachTest` to skip the truncate for classes that never read the database, or `DatabaseKey` to opt into the
+`devildaggers` schema.
+
+Gotchas worth knowing before writing a test:
 
 - Paged endpoints validate `pageSize` against `Constants.PageSizeMin`/`Max` (15–35, default 25). A larger page size is a
-  `400`, not a clamp.
+  `400`, not a clamp. Some list endpoints also have a required non-nullable parameter with no default
+  (`withCustomLeaderboardOnly`, `onlyHosted`), which is likewise a `400` when omitted.
+- Enum *values* serialize as integers, but enum *dictionary keys* serialize as names (`"Survival"`, not `"0"`).
+- Times are stored in game units and returned in seconds: `seconds = gameUnits / 10000.0`. Dagger thresholds are
+  converted only for time rank sortings; a gems-based leaderboard reports raw gem counts.
+- `CustomLeaderboardEntity.IsFeatured` defaults to false, which makes every `daggers` and `customLeaderboardDagger`
+  field null. Set it when asserting on daggers — this is the most common seeding trap.
+- `ExceptionMiddleware` sets `application/problem+json` and then calls `WriteAsJsonAsync`, which overwrites it with
+  `application/json`. The body is still a `ProblemDetails`; assert on `title`.
 - `ApplicationDbContext.OnConfiguring` calls `LogTo(Console.WriteLine)` under `#if DEBUG`, so a Debug test run prints
   every SQL statement. Filter it out when reading output, or run `-c Release`.
+- A build failure combined with `--no-build` silently runs the previous binary. Check the build result before trusting
+  a filtered test run.
 
 ## Reference docs
 

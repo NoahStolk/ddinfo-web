@@ -11,7 +11,7 @@ namespace DevilDaggersInfo.Web.Server.IntegrationTest.Tests;
 
 // Submissions write replay files named after the custom entry ID, which the reset makes the same for every test case.
 [NotInParallel(nameof(CustomEntryProcessorTests))]
-internal sealed class CustomEntryProcessorTests
+internal sealed class CustomEntryProcessorTests : ApplicationTest
 {
 	private readonly AesBase32Wrapper _encryptionWrapper;
 	private readonly byte[] _mockReplay;
@@ -30,9 +30,6 @@ internal sealed class CustomEntryProcessorTests
 		const string secret = "0123456789abcdef";
 		_encryptionWrapper = new AesBase32Wrapper(secret, secret, secret);
 	}
-
-	[ClassDataSource<MySqlFixture>(Shared = SharedType.PerTestSession)]
-	public required MySqlFixture MySql { get; init; }
 
 	private static byte[] BuildMockReplay(byte[] spawnsetFileContents)
 	{
@@ -55,13 +52,12 @@ internal sealed class CustomEntryProcessorTests
 	}
 
 	/// <summary>
-	/// Resets the database and seeds the spawnset, leaderboard, and the two players plus the existing entry that the
-	/// submission cases are written against.
+	/// Seeds the spawnset, leaderboard, and the two players plus the existing entry that the submission cases are
+	/// written against. The database has already been truncated by the base class.
 	/// </summary>
 	private async Task<TestApplication> ArrangeAsync()
 	{
-		TestApplication app = await MySql.GetApplicationAsync(nameof(CustomEntryProcessorTests));
-		await app.ResetAsync();
+		TestApplication app = App;
 
 		await app.SeedAsync(dbContext =>
 		{

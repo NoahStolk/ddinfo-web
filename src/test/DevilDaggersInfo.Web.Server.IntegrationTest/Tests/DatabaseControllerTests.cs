@@ -5,11 +5,8 @@ using System.Net;
 namespace DevilDaggersInfo.Web.Server.IntegrationTest.Tests;
 
 [NotInParallel(nameof(DatabaseControllerTests))]
-internal sealed class DatabaseControllerTests
+internal sealed class DatabaseControllerTests : ApplicationTest
 {
-	[ClassDataSource<MySqlFixture>(Shared = SharedType.PerTestSession)]
-	public required MySqlFixture MySql { get; init; }
-
 	/// <summary>
 	/// This test class deliberately does not use the bootstrap database, so the schema it runs against is not named
 	/// "devildaggers". The endpoint used to hard-code that name and would have reported an empty database here.
@@ -17,11 +14,8 @@ internal sealed class DatabaseControllerTests
 	[Test]
 	public async Task GetDatabaseInfo_ReportsTablesOfTheConfiguredSchema()
 	{
-		TestApplication app = await MySql.GetApplicationAsync(nameof(DatabaseControllerTests));
-		await app.ResetAsync();
-
-		string jwt = await app.CreateJwtAsync("db-admin", Roles.Admin);
-		using HttpClient client = app.CreateApiClient(jwt);
+		string jwt = await App.CreateJwtAsync("db-admin", Roles.Admin);
+		using HttpClient client = App.CreateApiClient(jwt);
 		using HttpResponseMessage response = await client.GetAsync("api/admin/database");
 
 		await Assert.That(response.StatusCode).IsEqualTo(HttpStatusCode.OK);

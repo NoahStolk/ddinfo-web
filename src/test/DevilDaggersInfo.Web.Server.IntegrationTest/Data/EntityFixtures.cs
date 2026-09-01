@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Web.Server.Domain.Utils;
+
 namespace DevilDaggersInfo.Web.Server.IntegrationTest.Data;
 
 /// <summary>
@@ -24,6 +26,76 @@ internal static class EntityFixtures
 			Url = $"https://example.invalid/{name}",
 			ModTypes = ModTypes.Audio,
 			LastUpdated = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc),
+		};
+	}
+
+	/// <summary>
+	/// A player with enough settings filled in that <c>HasSettings()</c> is true, which is what makes them visible on
+	/// the settings page.
+	/// </summary>
+	internal static PlayerEntity PlayerWithSettings(int id, string name)
+	{
+		PlayerEntity player = Player(id, name);
+		player.Dpi = 800;
+		player.InGameSens = 1.5f;
+		player.Fov = 105;
+		player.IsRightHanded = true;
+		player.VerticalSync = VerticalSync.Off;
+		return player;
+	}
+
+	internal static UserEntity User(string name, int? playerId = null)
+	{
+		PasswordValidator.CreatePasswordHash("Integration-test-1", out byte[] hash, out byte[] salt);
+		return new UserEntity
+		{
+			Name = name,
+			PasswordHash = hash,
+			PasswordSalt = salt,
+			DateRegistered = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc),
+			PlayerId = playerId,
+		};
+	}
+
+	internal static DonationEntity Donation(int playerId, int amountInEurCents, bool isRefunded = false)
+	{
+		return new DonationEntity
+		{
+			PlayerId = playerId,
+			Amount = amountInEurCents,
+			ConvertedEuroCentsReceived = amountInEurCents,
+			Currency = Currency.Eur,
+			DateReceived = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc),
+			IsRefunded = isRefunded,
+		};
+	}
+
+	internal static CustomLeaderboardEntity CustomLeaderboard(int spawnsetId, CustomLeaderboardRankSorting rankSorting = CustomLeaderboardRankSorting.TimeDesc)
+	{
+		return new CustomLeaderboardEntity
+		{
+			SpawnsetId = spawnsetId,
+			RankSorting = rankSorting,
+			Bronze = 600000,
+			Silver = 1200000,
+			Golden = 2500000,
+			Devil = 5000000,
+			Leviathan = 10000000,
+			DateCreated = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc),
+			DateLastPlayed = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc),
+			TotalRunsSubmitted = 0,
+		};
+	}
+
+	internal static CustomEntryEntity CustomEntry(int customLeaderboardId, int playerId, int time)
+	{
+		return new CustomEntryEntity
+		{
+			CustomLeaderboardId = customLeaderboardId,
+			PlayerId = playerId,
+			Time = time,
+			ClientVersion = TestConstants.DdclVersion,
+			SubmitDate = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc),
 		};
 	}
 

@@ -10,18 +10,12 @@ namespace DevilDaggersInfo.Web.Server.IntegrationTest.Tests;
 // Every test in this class shares one database and one data directory, and the reset between tests would otherwise
 // race. Other classes get their own database, so they still run in parallel with this one.
 [NotInParallel(nameof(HarnessTests))]
-internal sealed class HarnessTests
+internal sealed class HarnessTests : ApplicationTest
 {
-	[ClassDataSource<MySqlFixture>(Shared = SharedType.PerTestSession)]
-	public required MySqlFixture MySql { get; init; }
-
 	[Test]
 	public async Task Schema_IsCreatedFromTheEntityModel()
 	{
-		TestApplication app = await MySql.GetApplicationAsync(nameof(HarnessTests));
-		await app.ResetAsync();
-
-		await using AsyncServiceScope scope = app.CreateScope();
+		await using AsyncServiceScope scope = App.CreateScope();
 		ApplicationDbContext dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
 		// Reaching every DbSet proves each entity was mapped to a table the server actually accepts.
@@ -44,21 +38,18 @@ internal sealed class HarnessTests
 	[Test]
 	public async Task Reset_TruncatesTables_AndResetsAutoIncrement()
 	{
-		TestApplication app = await MySql.GetApplicationAsync(nameof(HarnessTests));
-		await app.ResetAsync();
+		await App.SeedAsync(dbContext => dbContext.Mods.Add(EntityFixtures.Mod("first")));
 
-		await app.SeedAsync(dbContext => dbContext.Mods.Add(EntityFixtures.Mod("first")));
-
-		await using (AsyncServiceScope scope = app.CreateScope())
+		await using (AsyncServiceScope scope = App.CreateScope())
 		{
 			ApplicationDbContext dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 			await Assert.That(await dbContext.Mods.Select(m => m.Id).SingleAsync()).IsEqualTo(1);
 		}
 
-		await app.ResetAsync();
-		await app.SeedAsync(dbContext => dbContext.Mods.Add(EntityFixtures.Mod("second")));
+		await App.ResetAsync();
+		await App.SeedAsync(dbContext => dbContext.Mods.Add(EntityFixtures.Mod("second")));
 
-		await using (AsyncServiceScope scope = app.CreateScope())
+		await using (AsyncServiceScope scope = App.CreateScope())
 		{
 			ApplicationDbContext dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
@@ -71,10 +62,7 @@ internal sealed class HarnessTests
 	[Test]
 	public async Task FileSystemService_IsRootedOutsideTheWorkingDirectory()
 	{
-		TestApplication app = await MySql.GetApplicationAsync(nameof(HarnessTests));
-		await app.ResetAsync();
-
-		await using AsyncServiceScope scope = app.CreateScope();
+		await using AsyncServiceScope scope = App.CreateScope();
 		IFileSystemService fileSystemService = scope.ServiceProvider.GetRequiredService<IFileSystemService>();
 
 		string path = fileSystemService.GetPath(DataSubDirectory.Mods);
@@ -87,25 +75,22 @@ internal sealed class HarnessTests
 	[Test]
 	public async Task AdminEndpoint_RejectsAnonymous_AndWrongRole_AndAcceptsCorrectRole()
 	{
-		TestApplication app = await MySql.GetApplicationAsync(nameof(HarnessTests));
-		await app.ResetAsync();
-
 		// api/admin/players requires Roles.Players.
-		using (HttpClient anonymous = app.CreateApiClient())
+		using (HttpClient anonymous = App.CreateApiClient())
 		{
 			using HttpResponseMessage response = await anonymous.GetAsync("api/admin/players?pageIndex=0&pageSize=25");
 			await Assert.That(response.StatusCode).IsEqualTo(HttpStatusCode.Unauthorized);
 		}
 
-		string wrongRoleJwt = await app.CreateJwtAsync("mods-only", Roles.Mods);
-		using (HttpClient wrongRole = app.CreateApiClient(wrongRoleJwt))
+		string wrongRoleJwt = await App.CreateJwtAsync("mods-only", Roles.Mods);
+		using (HttpClient wrongRole = App.CreateApiClient(wrongRoleJwt))
 		{
 			using HttpResponseMessage response = await wrongRole.GetAsync("api/admin/players?pageIndex=0&pageSize=25");
 			await Assert.That(response.StatusCode).IsEqualTo(HttpStatusCode.Forbidden);
 		}
 
-		string correctRoleJwt = await app.CreateJwtAsync("players-role", Roles.Players);
-		using (HttpClient correctRole = app.CreateApiClient(correctRoleJwt))
+		string correctRoleJwt = await App.CreateJwtAsync("players-role", Roles.Players);
+		using (HttpClient correctRole = App.CreateApiClient(correctRoleJwt))
 		{
 			using HttpResponseMessage response = await correctRole.GetAsync("api/admin/players?pageIndex=0&pageSize=25");
 			await Assert.That(response.StatusCode).IsEqualTo(HttpStatusCode.OK);
@@ -119,10 +104,7 @@ internal sealed class HarnessTests
 	[Arguments(36, HttpStatusCode.BadRequest)]
 	public async Task PagedEndpoint_EnforcesPageSizeRange(int pageSize, HttpStatusCode expected)
 	{
-		TestApplication app = await MySql.GetApplicationAsync(nameof(HarnessTests));
-		await app.ResetAsync();
-
-		using HttpClient client = app.CreateApiClient();
+		using HttpClient client = App.CreateApiClient();
 		using HttpResponseMessage response = await client.GetAsync($"api/spawnsets?withCustomLeaderboardOnly=false&pageIndex=0&pageSize={pageSize}");
 
 		await Assert.That(response.StatusCode).IsEqualTo(expected);
@@ -131,16 +113,13 @@ internal sealed class HarnessTests
 	[Test]
 	public async Task MainEndpoint_ReturnsSeededData()
 	{
-		TestApplication app = await MySql.GetApplicationAsync(nameof(HarnessTests));
-		await app.ResetAsync();
-
-		await app.SeedAsync(dbContext =>
+		await App.SeedAsync(dbContext =>
 		{
 			dbContext.Players.Add(EntityFixtures.Player(1, "Player 1"));
 			dbContext.Spawnsets.Add(EntityFixtures.Spawnset("V3", playerId: 1));
 		});
 
-		using HttpClient client = app.CreateApiClient();
+		using HttpClient client = App.CreateApiClient();
 		using HttpResponseMessage response = await client.GetAsync("api/spawnsets?withCustomLeaderboardOnly=false&pageIndex=0&pageSize=25");
 
 		await Assert.That(response.StatusCode).IsEqualTo(HttpStatusCode.OK);
