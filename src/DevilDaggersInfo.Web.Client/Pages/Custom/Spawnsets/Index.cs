@@ -51,7 +51,7 @@ public sealed partial class Index : IHasNavigation
 
 	protected override async Task OnParametersSetAsync()
 	{
-		await Fetch();
+		await FetchAsync();
 	}
 
 	private void ChangeInputSpawnsetName(ChangeEventArgs e)
@@ -99,7 +99,7 @@ public sealed partial class Index : IHasNavigation
 		NavigationManager.AddOrModifyQueryParameters([new KeyValuePair<string, object?>(nameof(SortBy), SortBy), new KeyValuePair<string, object?>(nameof(Ascending), Ascending)]);
 	}
 
-	private async Task Fetch()
+	private async Task FetchAsync()
 	{
 		int pageIndex = Math.Max(0, PageIndex);
 		int pageSize = PagingUtils.GetValidPageSize(PageSize);

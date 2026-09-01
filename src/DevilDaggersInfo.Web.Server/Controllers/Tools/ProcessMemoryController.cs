@@ -16,14 +16,14 @@ public sealed class ProcessMemoryController(MarkerRepository markerRepository) :
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult<GetMarker>> GetMarker([Required] AppOperatingSystem appOperatingSystem)
 	{
-		return new GetMarker
+		string markerName = appOperatingSystem switch
 		{
-			Value = await markerRepository.GetMarkerAsync(appOperatingSystem switch
-			{
-				AppOperatingSystem.Windows => "WindowsSteam",
-				AppOperatingSystem.Linux => "LinuxSteam",
-				_ => throw new UnsupportedOperatingSystemException($"Operating system '{appOperatingSystem}' is not supported."),
-			}),
+			AppOperatingSystem.Windows => "WindowsSteam",
+			AppOperatingSystem.Linux => "LinuxSteam",
+			_ => throw new UnsupportedOperatingSystemException($"Operating system '{appOperatingSystem}' is not supported."),
 		};
+		long marker = await markerRepository.GetMarkerAsync(markerName);
+
+		return new GetMarker { Value = marker };
 	}
 }

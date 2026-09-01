@@ -29,27 +29,6 @@ internal static class SpawnsetConverters
 		};
 	}
 
-	public static MainApi.GetSpawnsetOverview ToMainApi(this SpawnsetEntity spawnset)
-	{
-		if (spawnset.Player == null)
-			throw new InvalidOperationException("Player is not included.");
-
-		return new MainApi.GetSpawnsetOverview
-		{
-			AdditionalGems = spawnset.EffectiveGemsOrHoming,
-			GameMode = spawnset.GameMode.ToMainApi(),
-			Hand = spawnset.EffectiveHandLevel.ToMainApi(),
-			Id = spawnset.Id,
-			LoopLength = spawnset.LoopLength.HasValue ? GameTime.FromGameUnits(spawnset.LoopLength.Value).Seconds : null,
-			LoopSpawnCount = spawnset.LoopSpawnCount,
-			PreLoopLength = spawnset.PreLoopLength.HasValue ? GameTime.FromGameUnits(spawnset.PreLoopLength.Value).Seconds : null,
-			PreLoopSpawnCount = spawnset.PreLoopSpawnCount,
-			AuthorName = spawnset.Player.PlayerName,
-			LastUpdated = spawnset.LastUpdated,
-			Name = spawnset.Name,
-		};
-	}
-
 	public static MainApi.GetSpawnset ToMainApi(this SpawnsetEntity spawnset, int? customLeaderboardId, byte[] fileBytes)
 	{
 		if (spawnset.Player == null)
