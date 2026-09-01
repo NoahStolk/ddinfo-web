@@ -1,5 +1,3 @@
-using System.Net;
-
 namespace DevilDaggersInfo.Web.Server.IntegrationTest.Fixtures;
 
 /// <summary>

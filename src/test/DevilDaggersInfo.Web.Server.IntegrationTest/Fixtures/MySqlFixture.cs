@@ -23,8 +23,7 @@ internal sealed class MySqlFixture : IAsyncInitializer, IAsyncDisposable
 	/// </summary>
 	internal const string BootstrapDatabase = "devildaggers";
 
-	private readonly MySqlContainer _container = new MySqlBuilder()
-		.WithImage(_image)
+	private readonly MySqlContainer _container = new MySqlBuilder(_image)
 		.WithDatabase(BootstrapDatabase)
 		.WithUsername("root")
 		.WithPassword("root")

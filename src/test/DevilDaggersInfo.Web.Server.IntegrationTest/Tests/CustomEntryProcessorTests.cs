@@ -1,12 +1,10 @@
 using DevilDaggersInfo.Core.Encryption;
 using DevilDaggersInfo.Web.Server.Domain.Commands.CustomEntries;
-using DevilDaggersInfo.Web.Server.Domain.Configuration;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.Domain.Services;
 using DevilDaggersInfo.Web.Server.IntegrationTest.Fixtures;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using System.Web;
 
 namespace DevilDaggersInfo.Web.Server.IntegrationTest.Tests;

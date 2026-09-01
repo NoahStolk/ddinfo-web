@@ -7,14 +7,9 @@ namespace DevilDaggersInfo.Web.Server.IntegrationTest.Fixtures;
 /// rest of the suite. CI runs on ubuntu-latest, where Docker is preinstalled, and therefore never skips.
 /// </summary>
 [AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Class | AttributeTargets.Method)]
-internal sealed class RequiresDockerAttribute : SkipAttribute
+internal sealed class RequiresDockerAttribute() : SkipAttribute("Docker is not available.")
 {
 	private static readonly Lazy<Task<bool>> _isAvailable = new(IsDockerAvailableAsync);
-
-	public RequiresDockerAttribute()
-		: base("Docker is not available.")
-	{
-	}
 
 	public override async Task<bool> ShouldSkip(TestRegisteredContext context)
 	{
