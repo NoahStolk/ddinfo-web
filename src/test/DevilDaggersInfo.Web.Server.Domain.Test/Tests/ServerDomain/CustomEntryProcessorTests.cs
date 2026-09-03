@@ -60,7 +60,13 @@ internal sealed class CustomEntryProcessorTests
 			Salt = secret,
 		};
 
-		_customEntryProcessor = new CustomEntryProcessor(_dbContext, customEntryProcessorLogger, fileSystemService, new OptionsWrapper<CustomLeaderboardsOptions>(options), Substitute.For<ICustomLeaderboardHighscoreLogger>(), Substitute.For<ICustomLeaderboardSubmissionLogger>())
+		_customEntryProcessor = new CustomEntryProcessor(
+			dbContext: _dbContext,
+			logger: customEntryProcessorLogger,
+			fileSystemService: fileSystemService,
+			customLeaderboardsOptions: new OptionsWrapper<CustomLeaderboardsOptions>(options),
+			highscoreLogger: Substitute.For<ICustomLeaderboardHighscoreLogger>(),
+			submissionLogger: Substitute.For<ICustomLeaderboardSubmissionLogger>())
 		{
 			IsUnitTest = true,
 		};

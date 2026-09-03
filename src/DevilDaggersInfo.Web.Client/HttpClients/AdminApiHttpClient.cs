@@ -15,13 +15,8 @@ using System.Net.Http.Json;
 
 namespace DevilDaggersInfo.Web.Client.HttpClients;
 
-public sealed class AdminApiHttpClient : ApiHttpClient
+public sealed class AdminApiHttpClient(HttpClient client, ILocalStorageService localStorageService) : ApiHttpClient(client, localStorageService)
 {
-	public AdminApiHttpClient(HttpClient client, ILocalStorageService localStorageService)
-		: base(client, localStorageService)
-	{
-	}
-
 	public async Task<List<GetBackgroundServiceEntry>> GetBackgroundServices()
 	{
 		return await SendGetRequest<List<GetBackgroundServiceEntry>>("api/admin/background-services/");

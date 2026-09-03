@@ -15,13 +15,8 @@ using System.Net.Http.Json;
 
 namespace DevilDaggersInfo.Web.Client.HttpClients;
 
-public sealed class MainApiHttpClient : ApiHttpClient
+public sealed class MainApiHttpClient(HttpClient client, ILocalStorageService localStorageService) : ApiHttpClient(client, localStorageService)
 {
-	public MainApiHttpClient(HttpClient client, ILocalStorageService localStorageService)
-		: base(client, localStorageService)
-	{
-	}
-
 	public async Task<HttpResponseMessage> Authenticate(AuthenticationRequest authenticationRequest)
 	{
 		return await SendRequest(HttpMethod.Post, "api/authentication/authenticate", JsonContent.Create(authenticationRequest));
@@ -52,7 +47,15 @@ public sealed class MainApiHttpClient : ApiHttpClient
 		return await SendGetRequest<GetCustomEntryData>($"api/custom-entries/{id}/data");
 	}
 
-	public async Task<Page<GetCustomLeaderboardOverview>> GetCustomLeaderboards(GameMode gameMode, CustomLeaderboardRankSorting rankSorting, string? spawnsetFilter, string? authorFilter, int pageIndex, int pageSize, CustomLeaderboardSorting? sortBy, bool ascending)
+	public async Task<Page<GetCustomLeaderboardOverview>> GetCustomLeaderboards(
+		GameMode gameMode,
+		CustomLeaderboardRankSorting rankSorting,
+		string? spawnsetFilter,
+		string? authorFilter,
+		int pageIndex,
+		int pageSize,
+		CustomLeaderboardSorting? sortBy,
+		bool ascending)
 	{
 		Dictionary<string, object?> queryParameters = new()
 		{
@@ -222,7 +225,14 @@ public sealed class MainApiHttpClient : ApiHttpClient
 		return await SendRequest(HttpMethod.Put, $"api/players/{id}/profile", JsonContent.Create(editPlayerProfile));
 	}
 
-	public async Task<Page<GetSpawnsetOverview>> GetSpawnsets(bool withCustomLeaderboardOnly, string? spawnsetFilter, string? authorFilter, int pageIndex, int pageSize, SpawnsetSorting? sortBy, bool ascending)
+	public async Task<Page<GetSpawnsetOverview>> GetSpawnsets(
+		bool withCustomLeaderboardOnly,
+		string? spawnsetFilter,
+		string? authorFilter,
+		int pageIndex,
+		int pageSize,
+		SpawnsetSorting? sortBy,
+		bool ascending)
 	{
 		Dictionary<string, object?> queryParameters = new()
 		{
