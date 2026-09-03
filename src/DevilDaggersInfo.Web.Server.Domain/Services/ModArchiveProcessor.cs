@@ -7,11 +7,12 @@ using DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;
 using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 using DevilDaggersInfo.Web.Server.Domain.Utils;
+using Microsoft.Extensions.Logging;
 using System.IO.Compression;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Services;
 
-public sealed class ModArchiveProcessor(IFileSystemService fileSystemService, ModArchiveCache modArchiveCache, ModArchiveAccessor modArchiveAccessor)
+public sealed class ModArchiveProcessor(IFileSystemService fileSystemService, ModArchiveCache modArchiveCache, ModArchiveAccessor modArchiveAccessor, ILogger<ModArchiveProcessor> logger)
 {
 	public async Task ProcessModBinaryUploadAsync(string modName, Dictionary<BinaryName, byte[]> binaries)
 	{
@@ -19,7 +20,7 @@ public sealed class ModArchiveProcessor(IFileSystemService fileSystemService, Mo
 		DirectoryInfo modDirectory = new(fileSystemService.GetPath(DataSubDirectory.Mods));
 		long usedSpace = modDirectory.EnumerateFiles("*.*", SearchOption.AllDirectories).Sum(fi => fi.Length);
 		if (usedSpace > ModConstants.BinaryMaxHostingSpace)
-			throw new Exception($"Cannot upload mod with binaries because the limit of {ModConstants.BinaryMaxHostingSpace:N0} bytes is exceeded.");
+			logger.LogWarning("File storage limit of {Max} bytes is exceeded.", ModConstants.BinaryMaxHostingSpace.ToString("N0"));
 
 		// Add binaries to new zip archive.
 		string zipFilePath = modArchiveAccessor.GetModArchivePath(modName);

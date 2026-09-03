@@ -6,6 +6,7 @@ using DevilDaggersInfo.Web.Server.Domain.Services;
 using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 using DevilDaggersInfo.Web.Server.Domain.Utils;
+using Microsoft.Extensions.Logging;
 using NSubstitute;
 using System.IO.Compression;
 
@@ -33,7 +34,7 @@ internal abstract class ModArchiveProcessorTests
 
 		Cache = new ModArchiveCache(fileSystemService);
 		Accessor = new ModArchiveAccessor(fileSystemService, Cache);
-		Processor = new ModArchiveProcessor(fileSystemService, Cache, Accessor);
+		Processor = new ModArchiveProcessor(fileSystemService, Cache, Accessor, Substitute.For<ILogger<ModArchiveProcessor>>());
 	}
 
 	protected ModArchiveCache Cache { get; }
