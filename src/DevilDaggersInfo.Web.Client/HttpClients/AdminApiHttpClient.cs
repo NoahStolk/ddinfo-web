@@ -136,9 +136,9 @@ public sealed class AdminApiHttpClient(HttpClient client, ILocalStorageService l
 		return await SendRequest(HttpMethod.Delete, $"api/admin/donations/{id}");
 	}
 
-	public async Task<List<GetFileSystemEntry>> GetFileSystemInfo()
+	public async Task<GetFileSystemInfo> GetFileSystemInfo()
 	{
-		return await SendGetRequest<List<GetFileSystemEntry>>("api/admin/file-system/");
+		return await SendGetRequest<GetFileSystemInfo>("api/admin/file-system/");
 	}
 
 	public async Task<HttpResponseMessage> TestException(string? message)

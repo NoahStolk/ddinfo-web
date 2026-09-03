@@ -1,5 +1,6 @@
 using DevilDaggersInfo.Web.ApiSpec.Admin.FileSystem;
 using DevilDaggersInfo.Web.Core.Claims;
+using DevilDaggersInfo.Web.Server.Domain.Constants;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 using Microsoft.AspNetCore.Authorization;
@@ -14,21 +15,30 @@ public sealed class FileSystemController(IFileSystemService fileSystemService) :
 {
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	public ActionResult<List<GetFileSystemEntry>> GetFileSystemInfo()
+	public ActionResult<GetFileSystemInfo> GetFileSystemInfo()
 	{
-		return Enum.GetValues<DataSubDirectory>()
-			.OrderBy(dsd => dsd.ToString())
-			.Select(dsd =>
-			{
-				DirectoryStatistics statistics = GetDirectorySize(fileSystemService.GetPath(dsd));
-				return new GetFileSystemEntry
+		List<GetFileSystemEntry> entries =
+		[
+			.. Enum.GetValues<DataSubDirectory>()
+				.OrderBy(subDir => subDir.ToString())
+				.Select(subDir =>
 				{
-					Count = statistics.FileCount,
-					Size = statistics.Size,
-					Name = dsd.ToString(),
-				};
-			})
-			.ToList();
+					DirectoryStatistics statistics = GetDirectorySize(fileSystemService.GetPath(subDir));
+					return new GetFileSystemEntry
+					{
+						Count = statistics.FileCount,
+						Size = statistics.Size,
+						Name = subDir.ToString(),
+					};
+				}),
+		];
+
+		return new GetFileSystemInfo
+		{
+			TotalSize = entries.Sum(entry => entry.Size),
+			AllowedSizeByModArchiveProcessor = ModConstants.BinaryMaxHostingSpace,
+			Entries = entries,
+		};
 	}
 
 	private static DirectoryStatistics GetDirectorySize(string folderPath)

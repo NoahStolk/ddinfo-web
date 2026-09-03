@@ -9,22 +9,26 @@
 <AdminAuthorizer Base="this" RequiredRole="@Roles.Admin">
 	<Heading Title="Admin - File System" />
 
-	@if (_fileSystemEntries == null)
+	@if (_fileSystemInfo == null)
 	{
 		<Loading />
 	}
 	else
 	{
-		<a class="btn btn-green cursor-pointer block w-40 mb-2 mx-1" @onclick="async () => await Fetch()">Refresh</a>
+		<a class="btn btn-green cursor-pointer block w-40 mb-2 mx-1" @onclick="async () => await FetchAsync()">Refresh</a>
 
-		<div class="grid gap-x-2 grid-cols-4">
+		<div>@_fileSystemInfo.TotalSize.ToString("N0") bytes / @_fileSystemInfo.AllowedSizeByModArchiveProcessor.ToString("N0") bytes</div>
+
+		<div class="grid gap-x-2 grid-cols-5">
 			<span class="font-bold col-span-2">Name</span>
 			<span class="font-bold text-right">Size</span>
+			<span class="font-bold text-right">Size in bytes</span>
 			<span class="font-bold text-right">Count</span>
-			@foreach (GetFileSystemEntry fse in _fileSystemEntries)
+			@foreach (GetFileSystemEntry fse in _fileSystemInfo.Entries)
 			{
 				<span class="col-span-2">@fse.Name</span>
 				<span class="text-right">@FileSizeUtils.Format(fse.Size)</span>
+				<span class="text-right">@fse.Size.ToString("N0")</span>
 				<span class="text-right">@fse.Count.ToString("N0")</span>
 			}
 		</div>
@@ -33,21 +37,21 @@
 
 @code
 {
-	private List<GetFileSystemEntry>? _fileSystemEntries;
+	private GetFileSystemInfo? _fileSystemInfo;
 
 	protected override async Task OnInitializedAsync()
 	{
 		await base.OnInitializedAsync();
 
-		await Fetch();
+		await FetchAsync();
 	}
 
-	private async Task Fetch()
+	private async Task FetchAsync()
 	{
 		try
 		{
-			_fileSystemEntries = null;
-			_fileSystemEntries = await Http.GetFileSystemInfo();
+			_fileSystemInfo = null;
+			_fileSystemInfo = await Http.GetFileSystemInfo();
 			StateHasChanged();
 		}
 		catch (AccessTokenNotAvailableException exception)
