@@ -26,7 +26,12 @@
 		<PackageVersion Include="MySql.EntityFrameworkCore" Version="10.0.9" />
 		<PackageVersion Include="NSwag.AspNetCore" Version="14.7.1" />
 		<PackageVersion Include="Sentry.AspNetCore" Version="6.12.0" />
-		<PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="8.2.0" />
+
+		<!--
+		Keep in line with the Microsoft.IdentityModel.* version that Microsoft.AspNetCore.Authentication.JwtBearer depends on.
+		A higher version mixes Microsoft.IdentityModel.* versions at runtime.
+		-->
+		<PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="8.19.2" />
 	</ItemGroup>
 
 	<ItemGroup Label="DevilDaggersInfo">
