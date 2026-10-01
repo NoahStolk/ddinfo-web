@@ -1,16 +1,26 @@
 using DevilDaggersInfo.Core.Asset;
 using DevilDaggersInfo.Core.Mod;
 using DevilDaggersInfo.Core.Mod.Builders;
+using DevilDaggersInfo.Web.Server.Domain.Exceptions;
+using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;
 using System.IO.Compression;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Test.Tests.ServerDomain;
 
-// The base class clears and rewrites the shared mod and mod archive cache directories for every test case.
-[NotInParallel]
 internal sealed class ModArchiveProcessorProcessTests : ModArchiveProcessorTests
 {
 	// TODO: Add a failing test where the ModBinaryType is incorrect.
+	[Test]
+	public async Task ProcessNewMod_InvalidBinary_IsNotStored()
+	{
+		const string modName = "mod";
+		BinaryName binaryName = new(ModBinaryType.Dd, "main");
+
+		await Assert.That(async () => await Processor.ProcessModBinaryUploadAsync(modName, new Dictionary<BinaryName, byte[]> { [binaryName] = [1, 2, 3] })).Throws<InvalidModArchiveException>();
+		await Assert.That(await FileSystem.ListAsync(DataSubDirectory.Mods)).IsEmpty();
+	}
+
 	[Test]
 	public async Task ProcessNewMod_1Binary_1Asset()
 	{
@@ -21,8 +31,7 @@ internal sealed class ModArchiveProcessorProcessTests : ModArchiveProcessorTests
 		DdModBinaryBuilder binary = CreateWithBinding(assetName);
 		await Processor.ProcessModBinaryUploadAsync(modName, new Dictionary<BinaryName, byte[]> { [binaryName] = binary.Compile() });
 
-		string zipFilePath = Accessor.GetModArchivePath(modName);
-		await using ZipArchive archive = await ZipFile.OpenAsync(zipFilePath, ZipArchiveMode.Read);
+		await using ZipArchive archive = await OpenArchiveAsync(modName);
 		await Assert.That(archive.Entries.Count).IsEqualTo(1);
 
 		ModBinaryCacheData processedBinary = await GetProcessedBinaryFromArchiveEntryAsync(archive.Entries[0]);
@@ -44,8 +53,7 @@ internal sealed class ModArchiveProcessorProcessTests : ModArchiveProcessorTests
 		ModBinaryBuilder binary = CreateWithBindingAndTexture(assetName1, assetName2);
 		await Processor.ProcessModBinaryUploadAsync(modName, new Dictionary<BinaryName, byte[]> { [binaryName] = binary.Compile() });
 
-		string zipFilePath = Accessor.GetModArchivePath(modName);
-		await using ZipArchive archive = await ZipFile.OpenAsync(zipFilePath, ZipArchiveMode.Read);
+		await using ZipArchive archive = await OpenArchiveAsync(modName);
 		await Assert.That(archive.Entries.Count).IsEqualTo(1);
 
 		ModBinaryCacheData processedBinary = await GetProcessedBinaryFromArchiveEntryAsync(archive.Entries[0]);
@@ -76,8 +84,7 @@ internal sealed class ModArchiveProcessorProcessTests : ModArchiveProcessorTests
 		};
 		await Processor.ProcessModBinaryUploadAsync(modName, binaries);
 
-		string zipFilePath = Accessor.GetModArchivePath(modName);
-		await using ZipArchive archive = await ZipFile.OpenAsync(zipFilePath, ZipArchiveMode.Read);
+		await using ZipArchive archive = await OpenArchiveAsync(modName);
 		await Assert.That(archive.Entries.Count).IsEqualTo(2);
 
 		ModBinaryCacheData processedBinary1 = await GetProcessedBinaryFromArchiveEntryAsync(archive.Entries[0]);

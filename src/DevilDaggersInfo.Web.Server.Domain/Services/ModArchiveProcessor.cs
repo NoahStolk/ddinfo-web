@@ -12,40 +12,33 @@ using System.IO.Compression;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Services;
 
-public sealed class ModArchiveProcessor(IFileSystemService fileSystemService, ModArchiveCache modArchiveCache, ModArchiveAccessor modArchiveAccessor, ILogger<ModArchiveProcessor> logger)
+public sealed class ModArchiveProcessor(IFileSystem fileSystem, ModArchiveCache modArchiveCache, ILogger<ModArchiveProcessor> logger)
 {
 	public async Task ProcessModBinaryUploadAsync(string modName, Dictionary<BinaryName, byte[]> binaries)
 	{
 		// Validate if there is enough space.
-		DirectoryInfo modDirectory = new(fileSystemService.GetPath(DataSubDirectory.Mods));
-		long usedSpace = modDirectory.EnumerateFiles("*.*", SearchOption.AllDirectories).Sum(fi => fi.Length);
+		long usedSpace = (await fileSystem.ListAsync(DataSubDirectory.Mods)).Sum(f => f.Size);
 		if (usedSpace > ModConstants.BinaryMaxHostingSpace)
 			logger.LogWarning("File storage limit of {Max} bytes is exceeded.", ModConstants.BinaryMaxHostingSpace.ToString("N0"));
 
 		// Add binaries to new zip archive.
-		string zipFilePath = modArchiveAccessor.GetModArchivePath(modName);
-
-		try
+		byte[] zipBytes;
+		await using (MemoryStream zipStream = new())
 		{
-			await using ZipArchive archive = await ZipFile.OpenAsync(zipFilePath, ZipArchiveMode.Create);
-			foreach (KeyValuePair<BinaryName, byte[]> binary in binaries)
+			await using (ZipArchive archive = new(zipStream, ZipArchiveMode.Create, true))
 			{
-				await using Stream entry = await archive.CreateEntry(binary.Key.ToFullName(modName), CompressionLevel.SmallestSize).OpenAsync();
-				await using MemoryStream ms = new(binary.Value);
-				await ms.CopyToAsync(entry);
+				foreach (KeyValuePair<BinaryName, byte[]> binary in binaries)
+				{
+					await using Stream entry = await archive.CreateEntry(binary.Key.ToFullName(modName), CompressionLevel.SmallestSize).OpenAsync();
+					await using MemoryStream ms = new(binary.Value);
+					await ms.CopyToAsync(entry);
+				}
 			}
-		}
-		catch
-		{
-			if (File.Exists(zipFilePath))
-				File.Delete(zipFilePath);
 
-			throw;
+			zipBytes = zipStream.ToArray();
 		}
 
-		// Read and extract the new zip file to validate it and to fill the cache if everything is OK.
-		byte[] zipBytes = await File.ReadAllBytesAsync(zipFilePath);
-
+		// Extract the new zip file to validate it, and only store it if everything is OK.
 		try
 		{
 			List<ModBinaryCacheData> addedBinaries = (await modArchiveCache.GetArchiveDataByBytesAsync(modName, zipBytes)).Binaries;
@@ -64,12 +57,11 @@ public sealed class ModArchiveProcessor(IFileSystemService fileSystemService, Mo
 		}
 		catch (Exception ex)
 		{
-			if (File.Exists(zipFilePath))
-				File.Delete(zipFilePath);
-
 			// Rethrow any exception as an invalid mod archive exception, so the middleware can handle it.
 			throw new InvalidModArchiveException("Processing the mod archive failed.", ex);
 		}
+
+		await fileSystem.WriteAllBytesAsync(DataSubDirectory.Mods, ModArchiveAccessor.GetModArchiveFileName(modName), zipBytes);
 	}
 
 	/// <summary>
@@ -88,10 +80,11 @@ public sealed class ModArchiveProcessor(IFileSystemService fileSystemService, Mo
 
 		// Determine which binaries to keep.
 		Dictionary<BinaryName, byte[]> keptBinaries = new();
-		string originalArchivePath = modArchiveAccessor.GetModArchivePath(originalModName);
-		if (File.Exists(originalArchivePath))
+		byte[]? originalArchiveBytes = await fileSystem.ReadAllBytesAsync(DataSubDirectory.Mods, ModArchiveAccessor.GetModArchiveFileName(originalModName));
+		if (originalArchiveBytes != null)
 		{
-			await using ZipArchive originalArchive = await ZipFile.OpenAsync(originalArchivePath, ZipArchiveMode.Read);
+			await using MemoryStream originalArchiveStream = new(originalArchiveBytes);
+			await using ZipArchive originalArchive = new(originalArchiveStream, ZipArchiveMode.Read);
 			foreach (ZipArchiveEntry entry in originalArchive.Entries)
 			{
 				// Test if we need to skip (delete) this binary.
@@ -118,7 +111,7 @@ public sealed class ModArchiveProcessor(IFileSystemService fileSystemService, Mo
 		Dictionary<BinaryName, byte[]> combinedBinaries = keptBinaries.Concat(newBinaries).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
 		// Delete the original archive and process the new combined binaries.
-		DeleteModFilesAndClearCache(originalModName);
+		await DeleteModFilesAndClearCacheAsync(originalModName);
 
 		await ProcessModBinaryUploadAsync(newModName, combinedBinaries);
 
@@ -129,21 +122,16 @@ public sealed class ModArchiveProcessor(IFileSystemService fileSystemService, Mo
 	/// Deletes the mod archive and the mod archive cache for this mod, and also clears the memory cache.
 	/// <b>This method does not delete mod screenshot files</b>.
 	/// </summary>
-	public void DeleteModFilesAndClearCache(string modName)
+	public async Task DeleteModFilesAndClearCacheAsync(string modName)
 	{
 		// Delete archive zip file.
-		string archivePath = modArchiveAccessor.GetModArchivePath(modName);
-		if (File.Exists(archivePath))
+		if (await fileSystem.DeleteAsync(DataSubDirectory.Mods, ModArchiveAccessor.GetModArchiveFileName(modName)))
 		{
-			File.Delete(archivePath);
-
 			// Clear entire memory cache (can't clear individual entries).
 			modArchiveCache.Clear();
 		}
 
 		// Clear file cache for this mod.
-		string cachePath = Path.Combine(fileSystemService.GetPath(DataSubDirectory.ModArchiveCache), $"{modName}.json");
-		if (File.Exists(cachePath))
-			File.Delete(cachePath);
+		await fileSystem.DeleteAsync(DataSubDirectory.ModArchiveCache, $"{modName}.json");
 	}
 }

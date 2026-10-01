@@ -11,8 +11,8 @@ internal sealed class ModArchiveCacheTests
 	[Test]
 	public async Task GetModArchiveCacheData()
 	{
-		ModArchiveCache cache = new(new TestData());
-		ModArchiveCacheData data = await cache.GetArchiveDataByFilePathAsync("test.json");
+		ModArchiveCache cache = new(new TestData().FileSystem);
+		ModArchiveCacheData data = await cache.GetArchiveDataByModNameAsync("test");
 		await Assert.That(data.FileSize).IsEqualTo(8400);
 		await Assert.That(data.FileSizeExtracted).IsEqualTo(21891);
 		await Assert.That(data.Binaries.Count).IsEqualTo(1);

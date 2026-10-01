@@ -29,7 +29,7 @@ public sealed class ModService(ApplicationDbContext dbContext, ModArchiveProcess
 		if (addMod.Binaries.Count > 0)
 			await modArchiveProcessor.ProcessModBinaryUploadAsync(addMod.Name, GetBinaryNames(addMod.Binaries.ConvertAll(bd => (bd.Name, bd.Data))));
 
-		modScreenshotProcessor.ProcessModScreenshotUpload(addMod.Name, addMod.Screenshots);
+		await modScreenshotProcessor.ProcessModScreenshotUploadAsync(addMod.Name, addMod.Screenshots);
 
 		ModEntity mod = new()
 		{
@@ -74,12 +74,12 @@ public sealed class ModService(ApplicationDbContext dbContext, ModArchiveProcess
 		if (isUpdated)
 			mod.LastUpdated = DateTime.UtcNow;
 
-		modScreenshotProcessor.MoveScreenshotsDirectory(mod.Name, editMod.Name);
+		await modScreenshotProcessor.MoveScreenshotsAsync(mod.Name, editMod.Name);
 
 		foreach (string screenshotToDelete in editMod.ScreenshotsToDelete)
-			modScreenshotProcessor.DeleteScreenshot(editMod.Name, screenshotToDelete);
+			await modScreenshotProcessor.DeleteScreenshotAsync(editMod.Name, screenshotToDelete);
 
-		modScreenshotProcessor.ProcessModScreenshotUpload(editMod.Name, editMod.Screenshots);
+		await modScreenshotProcessor.ProcessModScreenshotUploadAsync(editMod.Name, editMod.Screenshots);
 
 		mod.ModTypes = editMod.ModTypes?.ToFlagEnum<Entities.Enums.ModTypes>() ?? Entities.Enums.ModTypes.None;
 		mod.HtmlDescription = editMod.HtmlDescription;
@@ -99,8 +99,8 @@ public sealed class ModService(ApplicationDbContext dbContext, ModArchiveProcess
 		if (mod == null)
 			throw new NotFoundException($"Mod with ID '{id}' does not exist.");
 
-		modArchiveProcessor.DeleteModFilesAndClearCache(mod.Name);
-		modScreenshotProcessor.DeleteScreenshotsDirectory(mod.Name);
+		await modArchiveProcessor.DeleteModFilesAndClearCacheAsync(mod.Name);
+		await modScreenshotProcessor.DeleteScreenshotsAsync(mod.Name);
 
 		dbContext.Mods.Remove(mod);
 		await dbContext.SaveChangesAsync();

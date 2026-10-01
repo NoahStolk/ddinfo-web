@@ -1,8 +1,6 @@
 using DevilDaggersInfo.Web.Server.Controllers.Main;
-using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
-using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
+using DevilDaggersInfo.Web.Server.Services;
 using Microsoft.AspNetCore.Mvc;
-using NSubstitute;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Test.Tests.Server;
 
@@ -13,15 +11,15 @@ internal sealed class ModScreenshotsControllerTests : IDisposable
 
 	public ModScreenshotsControllerTests()
 	{
-		string screenshotsDirectory = Path.Combine(_rootDirectory, "Data", "ModScreenshots");
-		Directory.CreateDirectory(Path.Combine(screenshotsDirectory, "mod"));
-		File.WriteAllBytes(Path.Combine(screenshotsDirectory, "mod", "00.png"), [1, 2, 3]);
-		File.WriteAllText(Path.Combine(_rootDirectory, "Data", "secret.json"), "secret");
+		// Use the real file system, so the files outside the mod screenshots directory actually exist.
+		string dataDirectory = Path.Combine(_rootDirectory, "Data");
+		LocalFileSystem fileSystem = new(dataDirectory);
+		Directory.CreateDirectory(Path.Combine(dataDirectory, "ModScreenshots", "mod"));
+		File.WriteAllBytes(Path.Combine(dataDirectory, "ModScreenshots", "mod", "00.png"), [1, 2, 3]);
+		File.WriteAllText(Path.Combine(dataDirectory, "secret.json"), "secret");
 		File.WriteAllText(Path.Combine(_rootDirectory, "appsettings.json"), "secret");
 
-		IFileSystemService fileSystemService = Substitute.For<IFileSystemService>();
-		fileSystemService.GetPath(DataSubDirectory.ModScreenshots).Returns(screenshotsDirectory);
-		_controller = new ModScreenshotsController(fileSystemService);
+		_controller = new ModScreenshotsController(fileSystem);
 	}
 
 	public void Dispose()

@@ -4,7 +4,7 @@ using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Models.ModArchives;
 using DevilDaggersInfo.Web.Server.Domain.Services;
 using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
-using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
+using DevilDaggersInfo.Web.Server.Domain.Test.Utils;
 using DevilDaggersInfo.Web.Server.Domain.Utils;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
@@ -16,30 +16,22 @@ internal abstract class ModArchiveProcessorTests
 {
 	protected ModArchiveProcessorTests()
 	{
-		string modsPath = Path.Combine("Resources", "Mods");
-		string modArchiveCachePath = Path.Combine("Resources", "ModArchiveCache");
-
-		if (Directory.Exists(modsPath))
-			Directory.Delete(modsPath, true);
-
-		if (Directory.Exists(modArchiveCachePath))
-			Directory.Delete(modArchiveCachePath, true);
-
-		IFileSystemService fileSystemService = Substitute.For<IFileSystemService>();
-		fileSystemService.GetPath(DataSubDirectory.Mods).Returns(modsPath);
-		fileSystemService.GetPath(DataSubDirectory.ModArchiveCache).Returns(modArchiveCachePath);
-
-		Directory.CreateDirectory(modsPath);
-		Directory.CreateDirectory(modArchiveCachePath);
-
-		Cache = new ModArchiveCache(fileSystemService);
-		Accessor = new ModArchiveAccessor(fileSystemService, Cache);
-		Processor = new ModArchiveProcessor(fileSystemService, Cache, Accessor, Substitute.For<ILogger<ModArchiveProcessor>>());
+		Cache = new ModArchiveCache(FileSystem);
+		Processor = new ModArchiveProcessor(FileSystem, Cache, Substitute.For<ILogger<ModArchiveProcessor>>());
 	}
 
+	protected InMemoryFileSystem FileSystem { get; } = new();
 	protected ModArchiveCache Cache { get; }
-	protected ModArchiveAccessor Accessor { get; }
 	protected ModArchiveProcessor Processor { get; }
+
+	protected async Task<ZipArchive> OpenArchiveAsync(string modName)
+	{
+		byte[]? bytes = await FileSystem.ReadAllBytesAsync(DataSubDirectory.Mods, ModArchiveAccessor.GetModArchiveFileName(modName));
+		await Assert.That(bytes).IsNotNull().Because($"Mod archive for '{modName}' was not stored.");
+
+		// ! Asserted above.
+		return new ZipArchive(new MemoryStream(bytes!), ZipArchiveMode.Read);
+	}
 
 	[AssertionMethod]
 	protected static async Task AssertBinaryNameAsync(BinaryName binaryName, string name, string modName)

@@ -17,7 +17,7 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 
 [Route("api/mods")]
 [ApiController]
-public sealed class ModsController(ApplicationDbContext dbContext, IFileSystemService fileSystemService, ModArchiveAccessor modArchiveAccessor) : ControllerBase
+public sealed class ModsController(ApplicationDbContext dbContext, IFileSystem fileSystem, ModArchiveAccessor modArchiveAccessor) : ControllerBase
 {
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
@@ -137,11 +137,11 @@ public sealed class ModsController(ApplicationDbContext dbContext, IFileSystemSe
 			return NotFound();
 
 		string fileName = $"{modName}.zip";
-		string path = Path.Combine(fileSystemService.GetPath(DataSubDirectory.Mods), fileName);
-		if (!IoFile.Exists(path))
+		byte[]? contents = await fileSystem.ReadAllBytesAsync(DataSubDirectory.Mods, fileName);
+		if (contents == null)
 			return BadRequest($"Mod file '{fileName}' does not exist.");
 
-		return File(await IoFile.ReadAllBytesAsync(path), MediaTypeNames.Application.Zip, fileName);
+		return File(contents, MediaTypeNames.Application.Zip, fileName);
 	}
 
 	[HttpGet("by-author")]
