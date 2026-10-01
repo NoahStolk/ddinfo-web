@@ -21,4 +21,6 @@
     <ProjectReference Include="..\DevilDaggersInfo.Web.Core.Utils\DevilDaggersInfo.Web.Core.Utils.csproj" />
   </ItemGroup>
 
+  <Import Project="..\BannedFileSystemApis.props" />
+
 </Project>

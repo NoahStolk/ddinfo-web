@@ -1,6 +1,9 @@
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 
+// This is the one class that is allowed to access the disk directly.
+#pragma warning disable RS0030
+
 namespace DevilDaggersInfo.Web.Server.Services;
 
 /// <summary>

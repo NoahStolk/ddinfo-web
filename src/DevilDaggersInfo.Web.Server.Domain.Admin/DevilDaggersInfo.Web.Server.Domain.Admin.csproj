@@ -5,4 +5,6 @@
     <ProjectReference Include="..\DevilDaggersInfo.Web.Server.Domain\DevilDaggersInfo.Web.Server.Domain.csproj" />
   </ItemGroup>
 
+  <Import Project="..\BannedFileSystemApis.props" />
+
 </Project>

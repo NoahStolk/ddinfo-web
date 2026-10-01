@@ -1,0 +1,6 @@
+T:System.IO.File;Use IFileSystem so files can be stored somewhere other than the local disk
+T:System.IO.Directory;Use IFileSystem so files can be stored somewhere other than the local disk
+T:System.IO.FileInfo;Use IFileSystem so files can be stored somewhere other than the local disk
+T:System.IO.DirectoryInfo;Use IFileSystem so files can be stored somewhere other than the local disk
+T:System.IO.FileStream;Use IFileSystem so files can be stored somewhere other than the local disk
+T:System.IO.Compression.ZipFile;Use IFileSystem and open a ZipArchive over the file contents

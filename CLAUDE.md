@@ -30,7 +30,7 @@ dotnet run --project src/DevilDaggersInfo.Web.Server   # https://localhost:5001
 
 **Runtime prerequisites:** every project targets `net10.0`. `global.json` (repository root) pins the SDK to the 10.0.1xx feature band with `rollForward: latestFeature`, so a .NET 10 SDK is required and a .NET 11 SDK will not be picked up. The same file opts `dotnet test` into the Microsoft.Testing.Platform runner (`"test": { "runner": "Microsoft.Testing.Platform" }`) that TUnit builds on — hence `--solution`/`--project` instead of a bare path, and `--treenode-filter` instead of `--filter`.
 
-**Config:** `appsettings.json` (production, with `__PLACEHOLDER__` values injected at deploy time) and `appsettings.Development.json` (non-secret local values) are both tracked; real local secrets go in user secrets (`dotnet user-secrets`). The server binds and validates required option sections at startup (`Authentication`, `CustomLeaderboards`, `Discord`, `MySql`) via `AddValidatedOptions`, so it will not start without them. Database is MySQL (Oracle's `MySql.EntityFrameworkCore` provider, over Connector/NET — note the connection string dialect differs from MySqlConnector's); uploaded/generated files live under a `Data` directory next to the server (see `FileSystemService`).
+**Config:** `appsettings.json` (production, with `__PLACEHOLDER__` values injected at deploy time) and `appsettings.Development.json` (non-secret local values) are both tracked; real local secrets go in user secrets (`dotnet user-secrets`). The server binds and validates required option sections at startup (`Authentication`, `CustomLeaderboards`, `Discord`, `MySql`) via `AddValidatedOptions`, so it will not start without them. Database is MySQL (Oracle's `MySql.EntityFrameworkCore` provider, over Connector/NET — note the connection string dialect differs from MySqlConnector's); uploaded/generated files live under a `Data` directory next to the server (see `LocalFileSystem`).
 
 Database migration scripts: see `docs/setup/generating-database-migration-scripts.md` (requires temporarily adding EF package references to `Web.Server.Domain`).
 
@@ -70,7 +70,9 @@ Adding a Main API endpoint typically touches: DTO in `ApiSpec.Main` → reposito
 
 `HostedServices/` contains `AbstractBackgroundService` subclasses (leaderboard history recording, player name fetching, Discord user ID fetching, Discord log flushing) plus a one-shot `StartupCacheHostedService`. Several are only registered outside the Development environment — check `Program.cs` before assuming a service runs locally. Runtime state is exposed through singleton caches (`ILeaderboardHistoryCache`, `LeaderboardStatisticsCache`, `ModArchiveCache`) and surfaced in the admin portal.
 
-Interfaces in `Domain/Services/Inversion/` (`IFileSystemService`, `IDdLeaderboardService`, `ILogContainerService`, the custom-leaderboard loggers) exist so the domain stays free of hosting/IO concerns; implementations live in `Web.Server/Services` and `Web.Server/Clients`.
+Interfaces in `Domain/Services/Inversion/` (`IFileSystem`, `IDdLeaderboardService`, `ILogContainerService`, the custom-leaderboard loggers) exist so the domain stays free of hosting/IO concerns; implementations live in `Web.Server/Services` and `Web.Server/Clients`.
+
+All `Data/` access goes through `IFileSystem`: files are addressed by `DataSubDirectory` plus a `/`-separated name (e.g. `mod-name/00.png`), there are no directories, and every method is async, so the storage can later move to S3. `LocalFileSystem` is the only class allowed to touch the disk; the server projects import `src/BannedFileSystemApis.props`, which makes `System.IO.File`, `Directory`, `FileInfo`, `DirectoryInfo`, `FileStream` and `ZipFile` a build error (RS0030) elsewhere. Tests use `InMemoryFileSystem`.
 
 ### Client
 
