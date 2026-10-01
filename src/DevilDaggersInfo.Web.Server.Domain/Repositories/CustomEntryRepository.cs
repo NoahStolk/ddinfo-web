@@ -6,21 +6,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Repositories;
 
-public sealed class CustomEntryRepository(ApplicationDbContext dbContext, IFileSystemService fileSystemService)
+public sealed class CustomEntryRepository(ApplicationDbContext dbContext, IFileSystem fileSystem)
 {
 	public async Task<byte[]> GetCustomEntryReplayBufferByIdAsync(int id)
 	{
-		string path = Path.Combine(fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{id}.ddreplay");
-		if (!File.Exists(path))
-			throw new NotFoundException($"Replay file with ID '{id}' could not be found.");
-
-		return await File.ReadAllBytesAsync(path);
+		byte[]? contents = await fileSystem.ReadAllBytesAsync(DataSubDirectory.CustomEntryReplays, $"{id}.ddreplay");
+		return contents ?? throw new NotFoundException($"Replay file with ID '{id}' could not be found.");
 	}
 
 	public async Task<(string FileName, byte[] Contents)> GetCustomEntryReplayByIdAsync(int id)
 	{
-		string path = Path.Combine(fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{id}.ddreplay");
-		if (!File.Exists(path))
+		byte[]? contents = await fileSystem.ReadAllBytesAsync(DataSubDirectory.CustomEntryReplays, $"{id}.ddreplay");
+		if (contents == null)
 			throw new NotFoundException($"Replay file with ID '{id}' could not be found.");
 
 		// ! Navigation property.
@@ -39,16 +36,18 @@ public sealed class CustomEntryRepository(ApplicationDbContext dbContext, IFileS
 			throw new NotFoundException($"Custom entry replay '{id}' could not be found.");
 
 		string fileName = $"{customEntry.SpawnsetId}-{customEntry.SpawnsetName}-{customEntry.PlayerId}-{customEntry.PlayerName}.ddreplay";
-		return (fileName, await File.ReadAllBytesAsync(path));
+		return (fileName, contents);
 	}
 
-	public List<int> GetExistingCustomEntryReplayIds(List<int> ids)
+	public async Task<List<int>> GetExistingCustomEntryReplayIdsAsync(List<int> ids)
 	{
-		return
-		[
-			.. ids
-				.Where(id => File.Exists(Path.Combine(fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{id}.ddreplay")))
-				.Select(id => id),
-		];
+		List<int> existingIds = [];
+		foreach (int id in ids)
+		{
+			if (await fileSystem.ExistsAsync(DataSubDirectory.CustomEntryReplays, $"{id}.ddreplay"))
+				existingIds.Add(id);
+		}
+
+		return existingIds;
 	}
 }

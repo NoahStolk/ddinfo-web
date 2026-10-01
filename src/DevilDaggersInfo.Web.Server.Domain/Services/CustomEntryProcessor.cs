@@ -26,7 +26,7 @@ namespace DevilDaggersInfo.Web.Server.Domain.Services;
 public sealed class CustomEntryProcessor(
 	ApplicationDbContext dbContext,
 	ILogger<CustomEntryProcessor> logger,
-	IFileSystemService fileSystemService,
+	IFileSystem fileSystem,
 	IOptions<CustomLeaderboardsOptions> customLeaderboardsOptions,
 	ICustomLeaderboardHighscoreLogger highscoreLogger,
 	ICustomLeaderboardSubmissionLogger submissionLogger)
@@ -349,7 +349,7 @@ public sealed class CustomEntryProcessor(
 			spawnsetName);
 		Log(uploadRequest, spawnsetName);
 
-		List<int> replayIds = GetExistingReplayIds(entries.ConvertAll(ce => ce.Id));
+		List<int> replayIds = await GetExistingReplayIdsAsync(entries.ConvertAll(ce => ce.Id));
 		return new SuccessfulUploadResponse
 		{
 			SortedEntries = [.. entries.Select((e, i) => ToEntryModel(e, i + 1, customLeaderboard.DaggerFromStat(e), replayIds))],
@@ -383,7 +383,7 @@ public sealed class CustomEntryProcessor(
 		Log(uploadRequest, spawnsetName);
 
 		List<CustomEntryEntity> entries = await GetOrderedEntries(customLeaderboard.Id, customLeaderboard.RankSorting);
-		List<int> replayIds = GetExistingReplayIds(entries.ConvertAll(ce => ce.Id));
+		List<int> replayIds = await GetExistingReplayIdsAsync(entries.ConvertAll(ce => ce.Id));
 
 		int homingStored = uploadRequest.GetFinalHomingValue();
 		return new SuccessfulUploadResponse
@@ -508,7 +508,7 @@ public sealed class CustomEntryProcessor(
 			rankSortingValueDifference);
 		Log(uploadRequest, spawnsetName);
 
-		List<int> replayIds = GetExistingReplayIds(entries.ConvertAll(ce => ce.Id));
+		List<int> replayIds = await GetExistingReplayIdsAsync(entries.ConvertAll(ce => ce.Id));
 
 		return new SuccessfulUploadResponse
 		{
@@ -557,7 +557,7 @@ public sealed class CustomEntryProcessor(
 
 	private async Task WriteReplayFile(int customEntryId, byte[] replayData)
 	{
-		await File.WriteAllBytesAsync(Path.Combine(fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{customEntryId}.ddreplay"), replayData);
+		await fileSystem.WriteAllBytesAsync(DataSubDirectory.CustomEntryReplays, $"{customEntryId}.ddreplay", replayData);
 	}
 
 	private static bool IsReplayTimeAlmostTheSame(int requestTimeAsInt, int databaseTime)
@@ -576,12 +576,8 @@ public sealed class CustomEntryProcessor(
 	/// </summary>
 	private async Task<bool> IsReplayFileTheSame(int customEntryId, byte[] newReplay)
 	{
-		string path = Path.Combine(fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{customEntryId}.ddreplay");
-		if (!File.Exists(path))
-			return false;
-
-		byte[] originalReplay = await File.ReadAllBytesAsync(path);
-		return originalReplay.SequenceEqual(newReplay);
+		byte[]? originalReplay = await fileSystem.ReadAllBytesAsync(DataSubDirectory.CustomEntryReplays, $"{customEntryId}.ddreplay");
+		return originalReplay != null && originalReplay.SequenceEqual(newReplay);
 	}
 
 	private static void UpdateLeaderboardStatistics(CustomLeaderboardEntity customLeaderboard)
@@ -615,9 +611,16 @@ public sealed class CustomEntryProcessor(
 			errorMessage);
 	}
 
-	private List<int> GetExistingReplayIds(List<int> customEntryIds)
+	private async Task<List<int>> GetExistingReplayIdsAsync(List<int> customEntryIds)
 	{
-		return [.. customEntryIds.Where(id => File.Exists(Path.Combine(fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{id}.ddreplay")))];
+		List<int> existingIds = [];
+		foreach (int id in customEntryIds)
+		{
+			if (await fileSystem.ExistsAsync(DataSubDirectory.CustomEntryReplays, $"{id}.ddreplay"))
+				existingIds.Add(id);
+		}
+
+		return existingIds;
 	}
 
 	private static CustomEntry ToEntryModel(CustomEntryEntity customEntry, int rank, CustomLeaderboardDagger? dagger, List<int> replayIds)

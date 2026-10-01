@@ -35,6 +35,6 @@ public sealed class CustomLeaderboardsController(CustomEntryRepository customEnt
 	public async Task<ActionResult<GetCustomLeaderboardDdLive>> GetCustomLeaderboardByIdDdLive(int id)
 	{
 		SortedCustomLeaderboard cl = await customLeaderboardRepository.GetSortedCustomLeaderboardByIdAsync(id);
-		return cl.ToDdLiveApi(customEntryRepository.GetExistingCustomEntryReplayIds(cl.CustomEntries.ConvertAll(ce => ce.Id)));
+		return cl.ToDdLiveApi(await customEntryRepository.GetExistingCustomEntryReplayIdsAsync(cl.CustomEntries.ConvertAll(ce => ce.Id)));
 	}
 }

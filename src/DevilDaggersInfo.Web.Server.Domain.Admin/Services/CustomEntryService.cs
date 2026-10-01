@@ -8,7 +8,7 @@ using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Admin.Services;
 
-public sealed class CustomEntryService(IFileSystemService fileSystemService, ApplicationDbContext dbContext)
+public sealed class CustomEntryService(IFileSystem fileSystem, ApplicationDbContext dbContext)
 {
 	public async Task AddCustomEntryAsync(AddCustomEntry addCustomEntry)
 	{
@@ -94,9 +94,6 @@ public sealed class CustomEntryService(IFileSystemService fileSystemService, App
 		dbContext.CustomEntries.Remove(customEntry);
 		await dbContext.SaveChangesAsync();
 
-		string path = Path.Combine(fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{id}.ddreplay");
-		bool fileExists = File.Exists(path);
-		if (fileExists)
-			File.Delete(path);
+		await fileSystem.DeleteAsync(DataSubDirectory.CustomEntryReplays, $"{id}.ddreplay");
 	}
 }
