@@ -39,9 +39,9 @@
 
 	<ItemGroup Label="Tests">
 		<PackageVersion Include="JetBrains.Annotations" Version="2026.2.0" />
-		<PackageVersion Include="MockQueryable.NSubstitute" Version="10.0.8" />
+		<PackageVersion Include="MockQueryable.NSubstitute" Version="10.0.12" />
 		<PackageVersion Include="NSubstitute" Version="6.2.0" />
-		<PackageVersion Include="TUnit" Version="1.65.38" />
+		<PackageVersion Include="TUnit" Version="1.72.10" />
 	</ItemGroup>
 
 	<ItemGroup Label="Static code analysis">
