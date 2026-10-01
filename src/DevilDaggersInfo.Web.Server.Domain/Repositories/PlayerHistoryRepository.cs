@@ -1,28 +1,28 @@
 using DevilDaggersInfo.Core.Common;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
-using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardHistory;
 using DevilDaggersInfo.Web.Server.Domain.Models.Players;
 using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
+using DevilDaggersInfo.Web.Server.Domain.Utils;
 using Microsoft.EntityFrameworkCore;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Repositories;
 
-public sealed class PlayerHistoryRepository(ApplicationDbContext dbContext, IFileSystemService fileSystemService, ILeaderboardHistoryCache leaderboardHistoryCache)
+public sealed class PlayerHistoryRepository(ApplicationDbContext dbContext, IFileSystem fileSystem, ILeaderboardHistoryCache leaderboardHistoryCache)
 {
-	public PlayerHistory GetPlayerHistoryById(int id)
+	public async Task<PlayerHistory> GetPlayerHistoryByIdAsync(int id)
 	{
 		// TODO: Add caching.
 		// TODO: Alts may be valid. We would need to check if the main account is below the current player and the alt is above it, then it should not be included in illegitimateScoresAbove.
 		// This is kind of annoying to do, so we'll just ignore it for now.
-		List<int> bannedPlayerIds = [.. dbContext.Players.Select(p => new { p.Id, p.BanType }).Where(p => p.BanType != BanType.NotBanned).Select(p => p.Id)];
+		List<int> bannedPlayerIds = await dbContext.Players.Select(p => new { p.Id, p.BanType }).Where(p => p.BanType != BanType.NotBanned).Select(p => p.Id).ToListAsync();
 
-		var player = dbContext.Players
+		var player = await dbContext.Players
 			.AsNoTracking()
 			.Select(p => new { p.Id, p.HidePastUsernames })
-			.FirstOrDefault(p => p.Id == id);
+			.FirstOrDefaultAsync(p => p.Id == id);
 
 		int? bestRank = null;
 
@@ -42,15 +42,11 @@ public sealed class PlayerHistoryRepository(ApplicationDbContext dbContext, IFil
 
 		// The score, rank and activity histories are all built from running state, so these must be processed in
 		// chronological order.
-		List<LeaderboardHistory> leaderboardHistories =
-		[
-			.. fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory)
-				.Where(p => p.EndsWith(".bin"))
-				.Select(leaderboardHistoryCache.GetLeaderboardHistoryByFilePath)
-				.OrderBy(lbh => lbh.DateTime),
-		];
+		List<LeaderboardHistory> leaderboardHistories = [];
+		foreach (string fileName in await HistoryUtils.GetHistoryFileNamesAsync(fileSystem))
+			leaderboardHistories.Add(await leaderboardHistoryCache.GetLeaderboardHistoryAsync(fileName));
 
-		foreach (LeaderboardHistory leaderboard in leaderboardHistories)
+		foreach (LeaderboardHistory leaderboard in leaderboardHistories.OrderBy(lbh => lbh.DateTime))
 		{
 			EntryHistory? entry = leaderboard.Entries.Find(e => e.Id == id);
 			if (entry == null)

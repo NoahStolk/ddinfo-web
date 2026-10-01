@@ -8,6 +8,14 @@ internal sealed class InMemoryFileSystem : IFileSystem
 {
 	private readonly ConcurrentDictionary<(DataSubDirectory Directory, string Name), byte[]> _files = new();
 
+	/// <summary>
+	/// Adds or overwrites a file synchronously, for seeding test data in constructors.
+	/// </summary>
+	public void Seed(DataSubDirectory directory, string name, byte[] contents)
+	{
+		_files[(directory, name)] = contents;
+	}
+
 	public Task<bool> ExistsAsync(DataSubDirectory directory, string name, CancellationToken cancellationToken = default)
 	{
 		return Task.FromResult(_files.ContainsKey((directory, name)));

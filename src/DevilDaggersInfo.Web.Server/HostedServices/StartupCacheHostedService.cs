@@ -1,6 +1,6 @@
-using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
+using DevilDaggersInfo.Web.Server.Domain.Utils;
 using System.Diagnostics;
 using System.Text;
 
@@ -8,7 +8,7 @@ namespace DevilDaggersInfo.Web.Server.HostedServices;
 
 internal sealed class StartupCacheHostedService(
 	IWebHostEnvironment env,
-	IFileSystemService fileSystemService,
+	IFileSystem fileSystem,
 	ILogContainerService logContainerService,
 	LeaderboardStatisticsCache leaderboardStatisticsCache,
 	ILeaderboardHistoryCache leaderboardHistoryCache,
@@ -21,7 +21,7 @@ internal sealed class StartupCacheHostedService(
 		StringBuilder sb = new();
 
 		// Initiate static caches.
-		leaderboardStatisticsCache.Initiate();
+		await leaderboardStatisticsCache.InitiateAsync();
 
 		sb.Append("- `LeaderboardStatisticsCache` initiation done at ").Append(sw.ElapsedMilliseconds.ToString("N0")).AppendLine(" ms");
 
@@ -30,8 +30,8 @@ internal sealed class StartupCacheHostedService(
 		// SpawnsetSummaryCache does not need to be initiated as it is fast enough.
 
 		// LeaderboardHistoryCache will be initiated here.
-		foreach (string historyFilePath in fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory).Where(p => p.EndsWith(".bin")))
-			leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(historyFilePath);
+		foreach (string historyFileName in await HistoryUtils.GetHistoryFileNamesAsync(fileSystem))
+			await leaderboardHistoryCache.GetLeaderboardHistoryAsync(historyFileName);
 
 		sb.Append("- `LeaderboardHistoryCache` initiation done at ").Append(sw.ElapsedMilliseconds.ToString("N0")).AppendLine(" ms");
 

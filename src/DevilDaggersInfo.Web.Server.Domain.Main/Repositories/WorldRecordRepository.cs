@@ -3,16 +3,16 @@ using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Domain.Main.Converters.DomainToApi;
-using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardHistory;
 using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
+using DevilDaggersInfo.Web.Server.Domain.Utils;
 using Microsoft.EntityFrameworkCore;
 using ApiMain = DevilDaggersInfo.Web.ApiSpec.Main.WorldRecords;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Main.Repositories;
 
-public sealed class WorldRecordRepository(ApplicationDbContext dbContext, IFileSystemService fileSystemService, ILeaderboardHistoryCache leaderboardHistoryCache)
+public sealed class WorldRecordRepository(ApplicationDbContext dbContext, IFileSystem fileSystem, ILeaderboardHistoryCache leaderboardHistoryCache)
 {
 	private static readonly DateTime _automationStart = new(2019, 10, 26, 0, 0, 0, DateTimeKind.Utc);
 
@@ -126,8 +126,11 @@ public sealed class WorldRecordRepository(ApplicationDbContext dbContext, IFileS
 		List<BaseWorldRecord> worldRecords = [];
 		int worldRecord = 0;
 
-		List<LeaderboardHistory> history = [.. fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory).Where(p => p.EndsWith(".bin")).Select(f => leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(f)).OrderBy(lbh => lbh.DateTime)];
-		foreach (LeaderboardHistory leaderboard in history)
+		List<LeaderboardHistory> history = [];
+		foreach (string fileName in await HistoryUtils.GetHistoryFileNamesAsync(fileSystem))
+			history.Add(await leaderboardHistoryCache.GetLeaderboardHistoryAsync(fileName));
+
+		foreach (LeaderboardHistory leaderboard in history.OrderBy(lbh => lbh.DateTime))
 		{
 			// Find the WR, if the actual first place is not legit, get second place, etc.
 			EntryHistory? firstLegitPlace = null;

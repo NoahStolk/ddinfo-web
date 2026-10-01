@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 
-public sealed class LeaderboardStatisticsCache(IFileSystemService fileSystemService, ILogger<LeaderboardStatisticsCache> logger)
+public sealed class LeaderboardStatisticsCache(IFileSystem fileSystem, ILogger<LeaderboardStatisticsCache> logger)
 {
 	private readonly List<CompressedEntry> _entries = [];
 
@@ -38,17 +38,19 @@ public sealed class LeaderboardStatisticsCache(IFileSystemService fileSystemServ
 
 	public static IReadOnlyList<Enemy> StatEnemies { get; } = [.. Enemies.GetEnemies(GameConstants.CurrentVersion).Where(e => e.FirstSpawnSecond.HasValue).OrderByDescending(e => e.FirstSpawnSecond)];
 
-	public void Initiate()
+	public async Task InitiateAsync()
 	{
-		string[] paths = fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardStatistics);
-		if (paths.Length == 0)
+		IReadOnlyList<FileEntry> files = await fileSystem.ListAsync(DataSubDirectory.LeaderboardStatistics);
+		if (files.Count == 0)
 		{
 			logger.LogError("No files found in leaderboard statistics directory.");
 			return;
 		}
 
-		string path = paths.OrderByDescending(p => p).First();
-		FileName = Path.GetFileNameWithoutExtension(path);
+		string name = files[^1].Name;
+		byte[] bytes = await fileSystem.ReadAllBytesAsync(DataSubDirectory.LeaderboardStatistics, name) ?? throw new InvalidOperationException($"Leaderboard statistics file '{name}' could not be read.");
+
+		FileName = Path.GetFileNameWithoutExtension(name);
 
 		IsFetched = false;
 
@@ -62,9 +64,9 @@ public sealed class LeaderboardStatisticsCache(IFileSystemService fileSystemServ
 		DaggersFiredStatistics.Clear();
 		DaggersHitStatistics.Clear();
 
-		using (FileStream fs = new(path, FileMode.Open))
+		using (MemoryStream ms = new(bytes))
 		{
-			using BinaryReader br = new(fs);
+			using BinaryReader br = new(ms);
 			while (br.BaseStream.Position <= br.BaseStream.Length - 15)
 			{
 				_entries.Add(new CompressedEntry

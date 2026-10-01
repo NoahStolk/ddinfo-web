@@ -4,7 +4,7 @@ namespace DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 
 public interface ILeaderboardHistoryCache
 {
-	LeaderboardHistory GetLeaderboardHistoryByFilePath(string filePath);
+	Task<LeaderboardHistory> GetLeaderboardHistoryAsync(string fileName);
 
 	int GetCount();
 

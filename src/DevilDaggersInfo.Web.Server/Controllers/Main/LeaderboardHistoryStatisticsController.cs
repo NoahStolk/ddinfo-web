@@ -10,8 +10,8 @@ public sealed class LeaderboardHistoryStatisticsController(LeaderboardHistorySta
 {
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	public List<GetLeaderboardHistoryStatistics> GetLeaderboardHistoryStatistics()
+	public async Task<List<GetLeaderboardHistoryStatistics>> GetLeaderboardHistoryStatistics()
 	{
-		return leaderboardHistoryStatisticsRepository.GetLeaderboardHistoryStatistics();
+		return await leaderboardHistoryStatisticsRepository.GetLeaderboardHistoryStatisticsAsync();
 	}
 }

@@ -44,6 +44,15 @@ internal sealed class TestData : ILeaderboardHistoryCache, IFileSystemService
 		["test"] = """{"FileSize":8400,"FileSizeExtracted":21891,"Binaries":[{"Name":"dd-test-main","Size":21891,"ModBinaryType":1,"Chunks":[{"Name":"dagger6","Size":21855,"AssetType":2,"IsProhibited":false}],"ModifiedLoudnessAssets":null}]}""",
 	};
 
+	public TestData()
+	{
+		// The leaderboard history contents are served by this class as ILeaderboardHistoryCache, so the files only need to exist.
+		foreach (string fileName in _leaderboardHistory.Keys)
+			FileSystem.Seed(DataSubDirectory.LeaderboardHistory, fileName, []);
+	}
+
+	public InMemoryFileSystem FileSystem { get; } = new();
+
 	private static LeaderboardHistory CreateLeaderboardHistory(DateTime dateTime, List<EntryHistory> entries)
 	{
 		return new LeaderboardHistory
@@ -92,9 +101,9 @@ internal sealed class TestData : ILeaderboardHistoryCache, IFileSystemService
 		};
 	}
 
-	public LeaderboardHistory GetLeaderboardHistoryByFilePath(string filePath)
+	public Task<LeaderboardHistory> GetLeaderboardHistoryAsync(string fileName)
 	{
-		return _leaderboardHistory[filePath];
+		return Task.FromResult(_leaderboardHistory[fileName]);
 	}
 
 	public string GetPath(DataSubDirectory subDirectory)

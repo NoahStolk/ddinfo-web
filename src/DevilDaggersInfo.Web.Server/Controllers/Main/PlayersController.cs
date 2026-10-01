@@ -50,9 +50,9 @@ public sealed class PlayersController(
 	[HttpGet("{id}/history")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	public GetPlayerHistory GetPlayerHistoryById([Required, Range(1, int.MaxValue)] int id)
+	public async Task<GetPlayerHistory> GetPlayerHistoryById([Required, Range(1, int.MaxValue)] int id)
 	{
-		return playerHistoryRepository.GetPlayerHistoryById(id).ToMainApi();
+		return (await playerHistoryRepository.GetPlayerHistoryByIdAsync(id)).ToMainApi();
 	}
 
 	[HttpGet("{id}/custom-leaderboard-statistics")]
