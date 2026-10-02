@@ -51,6 +51,4 @@
     <Content Update="Data\ModScreenshots\**\*" CopyToPublishDirectory="Never" />
   </ItemGroup>
 
-  <Import Project="..\BannedFileSystemApis.props" />
-
 </Project>

@@ -11,6 +11,11 @@
 		<LangVersion>14.0</LangVersion>
 	</PropertyGroup>
 
+	<!-- File IO must go through IFileSystem so storage can move off the local disk (RS0030 is an error in .globalconfig). The DevUtil console tools and the tests work with local files by design, so they don't get the list. -->
+	<ItemGroup Condition="!$(MSBuildProjectName.StartsWith('DevilDaggersInfo.DevUtil.')) And !$(MSBuildProjectName.EndsWith('Test'))">
+		<AdditionalFiles Include="$(MSBuildThisFileDirectory)BannedSymbols.txt" />
+	</ItemGroup>
+
 	<PropertyGroup Label="Custom properties">
 		<TailwindBuild>true</TailwindBuild>
 	</PropertyGroup>
