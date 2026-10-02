@@ -82,6 +82,7 @@ Blazor WASM. Pages under `Pages/<Area>/`, reusable components under `Components/
 
 - `.editorconfig`: **tabs** everywhere (spaces only in `.csproj`/`.pubxml`/`.slnx`/`.yml`). Existing code uses `_camelCase` private fields, explicit types over `var`, and file-scoped namespaces.
 - `Directory.Build.props`: `net10.0`, `LangVersion 14.0`, nullable enabled with `WarningsAsErrors=nullable`, `AnalysisMode=All`, implicit usings, invariant globalization. Analyzer warnings (StyleCop, Sonar, Roslynator, Nullable.Extended) are numerous and non-blocking — don't chase pre-existing ones, but don't add new ones either.
+- XML doc comments: every documented member needs a `<summary>`, with `<summary>`, the body and `</summary>` each on their own line. Never add `<returns>`, `<param>` or `<exception>` without a `<summary>`.
 - `Directory.Packages.props`: central package management. Add new packages there as `<PackageVersion>` and reference them without a version in the csproj. Dependabot keeps versions current.
 - Tests use TUnit + NSubstitute + EF Core InMemory (`TestDbContext`, `TestData`, `MockEntities`); test-only analyzer relaxations live in `src/test/Tests.globalconfig`. TUnit assertions are awaited (`await Assert.That(actual).IsEqualTo(expected)`), so test methods return `Task`, and `IsEquivalentTo` needs `CollectionOrdering.Matching` to compare collections in order. TUnit runs tests in parallel, so classes that share the file system or a substituted `DbContext` across their cases are marked `[NotInParallel]`.
 

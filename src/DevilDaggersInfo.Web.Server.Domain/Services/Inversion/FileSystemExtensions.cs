@@ -5,6 +5,9 @@ namespace DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 
 public static class FileSystemExtensions
 {
+	/// <summary>
+	/// Reads the entire file as UTF-8 text.
+	/// </summary>
 	/// <returns>The UTF-8 decoded file contents, or <see langword="null"/> when the file does not exist.</returns>
 	public static async Task<string?> ReadAllTextAsync(this IFileSystem fileSystem, DataSubDirectory directory, string name, CancellationToken cancellationToken = default)
 	{

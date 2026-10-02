@@ -11,6 +11,9 @@ public interface IFileSystem
 {
 	Task<bool> ExistsAsync(DataSubDirectory directory, string name, CancellationToken cancellationToken = default);
 
+	/// <summary>
+	/// Reads the entire file.
+	/// </summary>
 	/// <returns>The file contents, or <see langword="null"/> when the file does not exist.</returns>
 	Task<byte[]?> ReadAllBytesAsync(DataSubDirectory directory, string name, CancellationToken cancellationToken = default);
 
@@ -19,6 +22,9 @@ public interface IFileSystem
 	/// </summary>
 	Task WriteAllBytesAsync(DataSubDirectory directory, string name, byte[] contents, CancellationToken cancellationToken = default);
 
+	/// <summary>
+	/// Deletes the file if it exists.
+	/// </summary>
 	/// <returns>Whether the file existed.</returns>
 	Task<bool> DeleteAsync(DataSubDirectory directory, string name, CancellationToken cancellationToken = default);
 
