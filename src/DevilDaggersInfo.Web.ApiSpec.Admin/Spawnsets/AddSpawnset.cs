@@ -12,7 +12,7 @@ public sealed record AddSpawnset
 	[Range(0, 400)]
 	public required int? MaxDisplayWaves { get; init; }
 
-	[StringLength(2048)]
+	[StringLength(4096)]
 	public required string? HtmlDescription { get; init; }
 
 	[MaxLength(SpawnsetConstants.MaxFileSize, ErrorMessage = SpawnsetConstants.MaxFileSizeErrorMessage)]

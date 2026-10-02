@@ -12,7 +12,7 @@ public sealed record EditMod
 	[StringLength(64)]
 	public required string? TrailerUrl { get; init; }
 
-	[StringLength(2048)]
+	[StringLength(4096)]
 	public required string? HtmlDescription { get; init; }
 
 	public required List<int>? ModTypes { get; init; }

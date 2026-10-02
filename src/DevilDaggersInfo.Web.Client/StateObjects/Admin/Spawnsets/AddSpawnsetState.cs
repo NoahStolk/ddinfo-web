@@ -15,7 +15,7 @@ internal sealed class AddSpawnsetState : IStateObject<AddSpawnset>
 	[Range(0, 400)]
 	public int? MaxDisplayWaves { get; set; }
 
-	[StringLength(2048)]
+	[StringLength(4096)]
 	public string? HtmlDescription { get; set; }
 
 	[MaxLength(SpawnsetConstants.MaxFileSize, ErrorMessage = SpawnsetConstants.MaxFileSizeErrorMessage)]

@@ -18,7 +18,7 @@ public sealed class SpawnsetEntity : IAuditable
 
 	public int? MaxDisplayWaves { get; set; }
 
-	[StringLength(2048)]
+	[StringLength(4096)]
 	public string? HtmlDescription { get; set; }
 
 	public DateTime LastUpdated { get; init; }

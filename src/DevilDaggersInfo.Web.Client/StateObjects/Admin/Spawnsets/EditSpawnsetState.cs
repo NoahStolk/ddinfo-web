@@ -14,7 +14,7 @@ internal sealed class EditSpawnsetState : IStateObject<EditSpawnset>
 	[Range(0, 400)]
 	public int? MaxDisplayWaves { get; set; }
 
-	[StringLength(2048)]
+	[StringLength(4096)]
 	public string? HtmlDescription { get; set; }
 
 	public EditSpawnset ToModel()

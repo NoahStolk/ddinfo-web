@@ -14,7 +14,7 @@ internal sealed class EditModState : IStateObject<EditMod>
 	[StringLength(64)]
 	public string? TrailerUrl { get; set; }
 
-	[StringLength(2048)]
+	[StringLength(4096)]
 	public string? HtmlDescription { get; set; }
 
 	public List<int>? ModTypes { get; set; }
