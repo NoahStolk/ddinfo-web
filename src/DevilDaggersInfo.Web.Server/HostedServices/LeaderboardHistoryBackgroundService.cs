@@ -14,6 +14,9 @@ internal sealed class LeaderboardHistoryBackgroundService(
 	ILogger<LeaderboardHistoryBackgroundService> logger)
 	: AbstractBackgroundService(backgroundServiceMonitor, logger)
 {
+	private const int _leaderboardPageCount = 5;
+	private const int _playersPerPage = 100;
+
 	protected override TimeSpan Interval => TimeSpan.FromMinutes(1);
 
 	protected override async Task ExecuteTaskAsync(CancellationToken stoppingToken)
@@ -25,45 +28,58 @@ internal sealed class LeaderboardHistoryBackgroundService(
 		IDdLeaderboardService.LeaderboardResponse? leaderboard = null;
 		List<IDdLeaderboardService.EntryResponse> entries = [];
 
-		const int leaderboardPageCount = 5;
-		const int playerPerPage = 100;
-		for (int i = 0; i < leaderboardPageCount;)
+		for (int i = 0; i < _leaderboardPageCount; i++)
 		{
-			IDdLeaderboardService.LeaderboardResponse response;
-			try
+			IDdLeaderboardService.LeaderboardResponse? response = await GetLeaderboardPage(_playersPerPage * i + 1, stoppingToken);
+			if (response == null)
 			{
-				response = await leaderboardClient.GetLeaderboard(playerPerPage * i + 1, 100);
-			}
-			catch (DdLeaderboardException ex)
-			{
-				const int interval = 5;
-				Logger.LogWarning(ex, "Couldn't get DD leaderboard (page {Page} of {Total}). Waiting {Interval} seconds...", i, leaderboardPageCount, interval);
-
-				await Task.Delay(TimeSpan.FromSeconds(interval), stoppingToken);
-				continue; // Continue without increasing i, so the request is retried.
+				// Give up and let the next run start over, so an outage doesn't keep this task running (and logging) indefinitely.
+				Logger.LogInformation("Couldn't get DD leaderboard (page {Page} of {Total}). Trying again in {Interval}.", i + 1, _leaderboardPageCount, Interval);
+				return;
 			}
 
 			leaderboard ??= response; // The LeaderboardResponse.Entries property here is unused. We use the entries local instead.
 
 			entries.AddRange(response.Entries);
-
-			i++;
 		}
 
-		if (entries.Count != leaderboardPageCount * playerPerPage)
-			Logger.LogWarning("Leaderboard entries count ({Count}) does not match expected count ({ExpectedCount}). Duplicates and ranks below the expected count will be removed.", entries.Count, leaderboardPageCount * playerPerPage);
+		if (entries.Count != _leaderboardPageCount * _playersPerPage)
+			Logger.LogWarning("Leaderboard entries count ({Count}) does not match expected count ({ExpectedCount}). Duplicates and ranks below the expected count will be removed.", entries.Count, _leaderboardPageCount * _playersPerPage);
 
-		entries = [.. entries.DistinctBy(e => e.Rank).Where(e => e.Rank <= leaderboardPageCount * playerPerPage).OrderBy(e => e.Rank)];
+		entries = [.. entries.DistinctBy(e => e.Rank).Where(e => e.Rank <= _leaderboardPageCount * _playersPerPage).OrderBy(e => e.Rank)];
 
-		if (entries.Count != leaderboardPageCount * playerPerPage)
-			Logger.LogWarning("Leaderboard entries count ({Count}) does not match expected count ({ExpectedCount}). Some ranks appear to be missing.", entries.Count, leaderboardPageCount * playerPerPage);
+		if (entries.Count != _leaderboardPageCount * _playersPerPage)
+			Logger.LogWarning("Leaderboard entries count ({Count}) does not match expected count ({ExpectedCount}). Some ranks appear to be missing.", entries.Count, _leaderboardPageCount * _playersPerPage);
 
-		// ! Loop is endless.
+		// ! Every page was fetched, so the first response is set.
 		LeaderboardHistory historyModel = ConvertToHistoryModel(leaderboard!, entries);
 
 		string fileName = $"{DateTime.UtcNow:yyyyMMddHHmm}.bin";
 		string fullPath = Path.Combine(fileSystemService.GetPath(DataSubDirectory.LeaderboardHistory), fileName);
 		await IoFile.WriteAllBytesAsync(fullPath, historyModel.ToBytes(), stoppingToken);
+	}
+
+	private async Task<IDdLeaderboardService.LeaderboardResponse?> GetLeaderboardPage(int rankStart, CancellationToken stoppingToken)
+	{
+		const int maxAttempts = 3;
+		for (int attempt = 1; attempt <= maxAttempts; attempt++)
+		{
+			try
+			{
+				return await leaderboardClient.GetLeaderboard(rankStart, _playersPerPage);
+			}
+			catch (DdLeaderboardException) when (attempt < maxAttempts)
+			{
+				// Back off 5 seconds, then 10 seconds.
+				await Task.Delay(TimeSpan.FromSeconds(5 << (attempt - 1)), stoppingToken);
+			}
+			catch (DdLeaderboardException)
+			{
+				// The leaderboard service already logged the failure.
+			}
+		}
+
+		return null;
 	}
 
 	private bool HistoryFileExistsForDate(DateTime dateTime)

@@ -14,17 +14,23 @@ internal sealed class DdLeaderboardService : IDdLeaderboardService
 	private static readonly Uri _getUserByIdUrl = new("http://dd.hasmodai.com/dd3/get_user_by_id_public.php");
 
 	private readonly HttpClient _httpClient;
+	private readonly DdLeaderboardCircuitBreaker _circuitBreaker;
 	private readonly ILogger<DdLeaderboardService> _logger;
 
-	public DdLeaderboardService(HttpClient httpClient, ILogger<DdLeaderboardService> logger)
+	public DdLeaderboardService(HttpClient httpClient, DdLeaderboardCircuitBreaker circuitBreaker, ILogger<DdLeaderboardService> logger)
 	{
 		_httpClient = httpClient;
+		_circuitBreaker = circuitBreaker;
 		_logger = logger;
 	}
 
 	private async Task<TResponse> ExecuteAndParse<TResponse>(Func<byte[], TResponse> parser, Uri url, params KeyValuePair<string?, string?>[] parameters)
 		where TResponse : class
 	{
+		if (!_circuitBreaker.TryAcquire())
+			throw new DdLeaderboardException("The leaderboard servers are currently unavailable. Please try again later.");
+
+		byte[] bytes;
 		try
 		{
 			using FormUrlEncodedContent content = new(parameters);
@@ -32,14 +38,31 @@ internal sealed class DdLeaderboardService : IDdLeaderboardService
 			if (!response.IsSuccessStatusCode)
 				throw new DdLeaderboardException($"The leaderboard servers returned an unsuccessful response (HTTP {(int)response.StatusCode} {response.StatusCode}).");
 
-			byte[] bytes = await response.Content.ReadAsByteArrayAsync();
-			return parser(bytes);
+			bytes = await response.Content.ReadAsByteArrayAsync();
 		}
 		catch (Exception ex)
 		{
-			LogError(ex, url, parameters);
-			throw new DdLeaderboardException("The response from the leaderboard servers could not be parsed.");
+			DdLeaderboardException exception = ex as DdLeaderboardException ?? new DdLeaderboardException("The leaderboard servers could not be reached.", ex);
+			RecordFailure(exception, false, url, parameters);
+			throw exception;
 		}
+
+		TResponse result;
+		try
+		{
+			result = parser(bytes);
+		}
+		catch (Exception ex)
+		{
+			DdLeaderboardException exception = new("The response from the leaderboard servers could not be parsed.", ex);
+			RecordFailure(exception, true, url, parameters);
+			throw exception;
+		}
+
+		if (_circuitBreaker.RecordSuccess())
+			_logger.LogWarning("The leaderboard servers are responding again.");
+
+		return result;
 	}
 
 	public async Task<IDdLeaderboardService.LeaderboardResponse> GetLeaderboard(int rankStart, int limit)
@@ -77,14 +100,24 @@ internal sealed class DdLeaderboardService : IDdLeaderboardService
 			new KeyValuePair<string?, string?>("uid", id.ToString()));
 	}
 
-	private void LogError(Exception ex, Uri url, params KeyValuePair<string?, string?>[] parameters)
+	private void RecordFailure(DdLeaderboardException exception, bool isParseError, Uri url, KeyValuePair<string?, string?>[] parameters)
 	{
-		string error = ex switch
+		string parametersString = string.Join(", ", parameters.Select(p => $"{p.Key}: {p.Value}"));
+		switch (_circuitBreaker.RecordFailure())
 		{
-			HttpRequestException => "HTTP error",
-			EndOfStreamException => "incomplete response",
-			_ => "unexpected error",
-		};
-		_logger.LogError(ex, "Error ({Error}) while attempting to fetch data from {Url} with parameters: {Parameters}", error, url, string.Join(", ", parameters.Select(p => $"{p.Key}: {p.Value}")));
+			case DdLeaderboardCircuitBreaker.FailureOutcome.Opened:
+				_logger.LogError(exception, "The leaderboard servers failed {Count} times in a row. Requests will fail immediately, and the servers will be retried every {BreakDuration}. Last failure while fetching data from {Url} with parameters: {Parameters}", DdLeaderboardCircuitBreaker.FailureThreshold, DdLeaderboardCircuitBreaker.BreakDuration, url, parametersString);
+				break;
+
+			// Parse errors outside an outage most likely mean the parser does not handle a response correctly, so these are always reported.
+			case DdLeaderboardCircuitBreaker.FailureOutcome.Closed when isParseError:
+				_logger.LogError(exception, "Error while parsing data from {Url} with parameters: {Parameters}", url, parametersString);
+				break;
+
+			// Transient failures, or failures during an outage that has already been reported.
+			default:
+				_logger.LogInformation(exception, "Error while fetching data from {Url} with parameters: {Parameters}", url, parametersString);
+				break;
+		}
 	}
 }
