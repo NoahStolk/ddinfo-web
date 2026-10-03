@@ -305,6 +305,36 @@ dotnet_diagnostic.RCS1090.severity                                            = 
 # Add parentheses when necessary.
 dotnet_diagnostic.RCS1123.severity                                            = none
 
+# Rename class to match pascal case naming rules.
+dotnet_diagnostic.S101.severity                                               = none
+
+# 'System.Exception' should not be thrown by user code.
+dotnet_diagnostic.S112.severity                                               = none
+
+# Extract the assignment from this expression. (C# 9)
+dotnet_diagnostic.S1121.severity                                              = none
+
+# Unused private types or members should be removed. (C# 9)
+dotnet_diagnostic.S1144.severity                                              = none
+
+# Make this method private or simplify its parameters to not use multidimensional arrays.
+dotnet_diagnostic.S2368.severity                                              = none
+
+# Static fields should not be used in generic types (C# 11 static abstract members).
+dotnet_diagnostic.S2743.severity                                              = none
+
+# Extract this nested ternary operation into an independent statement.
+dotnet_diagnostic.S3358.severity                                              = none
+
+# This class can't be instantiated; make its constructor 'public'. (C# 9)
+dotnet_diagnostic.S3453.severity                                              = none
+
+# Move class into a named namespace. (C# 10)
+dotnet_diagnostic.S3903.severity                                              = none
+
+# Use 'Guid.NewGuid()' or 'Guid.Empty' or add arguments to this GUID instantiation.
+dotnet_diagnostic.S4581.severity                                              = none
+
 # XML comment analysis is disabled due to project configuration.
 dotnet_diagnostic.SA0001.severity                                             = none
 
@@ -397,33 +427,3 @@ dotnet_diagnostic.SA1633.severity                                             = 
 
 # Constructor summary documentation should begin with standard text.
 dotnet_diagnostic.SA1642.severity                                             = none
-
-# Rename class to match pascal case naming rules.
-dotnet_diagnostic.S101.severity                                               = none
-
-# 'System.Exception' should not be thrown by user code.
-dotnet_diagnostic.S112.severity                                               = none
-
-# Extract the assignment from this expression. (C# 9)
-dotnet_diagnostic.S1121.severity                                              = none
-
-# Unused private types or members should be removed. (C# 9)
-dotnet_diagnostic.S1144.severity                                              = none
-
-# Make this method private or simplify its parameters to not use multidimensional arrays.
-dotnet_diagnostic.S2368.severity                                              = none
-
-# Static fields should not be used in generic types (C# 11 static abstract members).
-dotnet_diagnostic.S2743.severity                                              = none
-
-# Extract this nested ternary operation into an independent statement.
-dotnet_diagnostic.S3358.severity                                              = none
-
-# This class can't be instantiated; make its constructor 'public'. (C# 9)
-dotnet_diagnostic.S3453.severity                                              = none
-
-# Move class into a named namespace. (C# 10)
-dotnet_diagnostic.S3903.severity                                              = none
-
-# Use 'Guid.NewGuid()' or 'Guid.Empty' or add arguments to this GUID instantiation.
-dotnet_diagnostic.S4581.severity                                              = none
