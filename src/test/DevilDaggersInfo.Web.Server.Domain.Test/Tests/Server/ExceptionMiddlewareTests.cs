@@ -20,6 +20,18 @@ internal sealed class ExceptionMiddlewareTests
 	}
 
 	[Test]
+	public async Task StatusCodeException_ReturnsProblemDetailsContentType()
+	{
+		ExceptionMiddleware middleware = new(_ => throw new DdLeaderboardException("Unavailable."), NullLogger<ExceptionMiddleware>.Instance);
+		DefaultHttpContext context = new();
+		context.Response.Body = new MemoryStream();
+
+		await middleware.InvokeAsync(context);
+
+		await Assert.That(context.Response.ContentType).IsEqualTo("application/problem+json; charset=utf-8");
+	}
+
+	[Test]
 	public async Task StatusCodeException_IncludesInnerExceptionMessages()
 	{
 		InvalidModArchiveException exception = new("Processing the mod archive failed.", new InvalidOperationException("Invalid binary."));
