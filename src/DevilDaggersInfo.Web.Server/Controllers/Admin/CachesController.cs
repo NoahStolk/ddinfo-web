@@ -31,12 +31,12 @@ public sealed class CachesController(
 	[HttpPost("clear-cache")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public ActionResult ClearCache([FromBody] string cacheType)
+	public async Task<ActionResult> ClearCache([FromBody] string cacheType)
 	{
 		switch (cacheType)
 		{
 			case "LeaderboardHistory": leaderboardHistoryCache.Clear(); break;
-			case "LeaderboardStatistics": leaderboardStatisticsCache.Initiate(); break;
+			case "LeaderboardStatistics": await leaderboardStatisticsCache.InitiateAsync(); break;
 			case "ModArchive": modArchiveCache.Clear(); break;
 			default: return NotFound();
 		}

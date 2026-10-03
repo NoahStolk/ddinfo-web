@@ -40,7 +40,7 @@ The host name and user are GitHub secrets so that they are masked in run logs. T
 
 | Directory  | Contents                                                                        | Written by                                                    |
 |------------|---------------------------------------------------------------------------------|---------------------------------------------------------------|
-| `Data/`    | mods, mod screenshots, custom entry replays, leaderboard history and statistics | `FileSystemService` (relative to the content root)            |
+| `Data/`    | mods, mod screenshots, custom entry replays, leaderboard history and statistics | `LocalFileSystem` (relative to the content root)              |
 | `keys/`    | data protection key ring                                                        | `AddDataProtection().PersistKeysToFileSystem` in `Program.cs` |
 | `logs/`    | stdout logs, when enabled in `web.config`                                       | ASP.NET Core Module                                           |
 

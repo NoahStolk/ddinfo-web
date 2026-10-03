@@ -11,27 +11,23 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Admin;
 [Route("api/admin/file-system")]
 [ApiController]
 [Authorize(Roles = Roles.Admin)]
-public sealed class FileSystemController(IFileSystemService fileSystemService) : ControllerBase
+public sealed class FileSystemController(IFileSystem fileSystem) : ControllerBase
 {
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	public ActionResult<GetFileSystemInfo> GetFileSystemInfo()
+	public async Task<ActionResult<GetFileSystemInfo>> GetFileSystemInfo()
 	{
-		List<GetFileSystemEntry> entries =
-		[
-			.. Enum.GetValues<DataSubDirectory>()
-				.OrderBy(subDir => subDir.ToString())
-				.Select(subDir =>
-				{
-					DirectoryStatistics statistics = GetDirectorySize(fileSystemService.GetPath(subDir));
-					return new GetFileSystemEntry
-					{
-						Count = statistics.FileCount,
-						Size = statistics.Size,
-						Name = subDir.ToString(),
-					};
-				}),
-		];
+		List<GetFileSystemEntry> entries = [];
+		foreach (DataSubDirectory subDir in Enum.GetValues<DataSubDirectory>().OrderBy(subDir => subDir.ToString()))
+		{
+			IReadOnlyList<FileEntry> files = await fileSystem.ListAsync(subDir);
+			entries.Add(new GetFileSystemEntry
+			{
+				Count = files.Count,
+				Size = files.Sum(f => f.Size),
+				Name = subDir.ToString(),
+			});
+		}
 
 		return new GetFileSystemInfo
 		{
@@ -40,13 +36,4 @@ public sealed class FileSystemController(IFileSystemService fileSystemService) :
 			Entries = entries,
 		};
 	}
-
-	private static DirectoryStatistics GetDirectorySize(string folderPath)
-	{
-		DirectoryInfo di = new(folderPath);
-		List<FileInfo> allFiles = [.. di.EnumerateFiles("*.*", SearchOption.AllDirectories)];
-		return new DirectoryStatistics(allFiles.Sum(fi => fi.Length), allFiles.Count);
-	}
-
-	private readonly record struct DirectoryStatistics(long Size, int FileCount);
 }

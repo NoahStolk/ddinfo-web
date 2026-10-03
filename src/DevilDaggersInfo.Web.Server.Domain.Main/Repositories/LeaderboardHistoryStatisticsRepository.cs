@@ -1,21 +1,21 @@
 using DevilDaggersInfo.Core.Common;
 using DevilDaggersInfo.Web.ApiSpec.Main.LeaderboardHistoryStatistics;
-using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardHistory;
 using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
+using DevilDaggersInfo.Web.Server.Domain.Utils;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Main.Repositories;
 
-public sealed class LeaderboardHistoryStatisticsRepository(IFileSystemService fileSystemService, ILeaderboardHistoryCache leaderboardHistoryCache)
+public sealed class LeaderboardHistoryStatisticsRepository(IFileSystem fileSystem, ILeaderboardHistoryCache leaderboardHistoryCache)
 {
-	public List<GetLeaderboardHistoryStatistics> GetLeaderboardHistoryStatistics()
+	public async Task<List<GetLeaderboardHistoryStatistics>> GetLeaderboardHistoryStatisticsAsync()
 	{
-		string? firstPath = fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory).Where(p => p.EndsWith(".bin")).MinBy(p => p);
-		if (firstPath == null)
+		List<string> fileNames = await HistoryUtils.GetHistoryFileNamesAsync(fileSystem);
+		if (fileNames.Count == 0)
 			return [];
 
-		LeaderboardHistory current = leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(firstPath);
+		LeaderboardHistory current = await leaderboardHistoryCache.GetLeaderboardHistoryAsync(fileNames[0]);
 
 		ulong daggersFiredGlobal = current.DaggersFiredGlobal;
 		ulong daggersHitGlobal = current.DaggersHitGlobal;
@@ -38,8 +38,8 @@ public sealed class LeaderboardHistoryStatisticsRepository(IFileSystemService fi
 		while (dateTime < DateTime.UtcNow.AddDays(-dayOffset))
 		{
 			dateTime = dateTime.AddDays(dayOffset);
-			string historyPath = fileSystemService.GetLeaderboardHistoryPathFromDate(dateTime);
-			current = leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(historyPath);
+			string fileName = HistoryUtils.GetHistoryFileNameFromDate(fileNames, dateTime);
+			current = await leaderboardHistoryCache.GetLeaderboardHistoryAsync(fileName);
 
 			bool daggersFiredUpdated = false;
 			bool daggersHitUpdated = false;

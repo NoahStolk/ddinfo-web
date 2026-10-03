@@ -1,11 +1,11 @@
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardHistory;
 using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
-using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
+using System.Text;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Test.Utils;
 
-internal sealed class TestData : ILeaderboardHistoryCache, IFileSystemService
+internal sealed class TestData : ILeaderboardHistoryCache
 {
 	private readonly IReadOnlyDictionary<string, LeaderboardHistory> _leaderboardHistory = new Dictionary<string, LeaderboardHistory>
 	{
@@ -43,6 +43,18 @@ internal sealed class TestData : ILeaderboardHistoryCache, IFileSystemService
 	{
 		["test"] = """{"FileSize":8400,"FileSizeExtracted":21891,"Binaries":[{"Name":"dd-test-main","Size":21891,"ModBinaryType":1,"Chunks":[{"Name":"dagger6","Size":21855,"AssetType":2,"IsProhibited":false}],"ModifiedLoudnessAssets":null}]}""",
 	};
+
+	public TestData()
+	{
+		// The leaderboard history contents are served by this class as ILeaderboardHistoryCache, so the files only need to exist.
+		foreach (string fileName in _leaderboardHistory.Keys)
+			FileSystem.Seed(DataSubDirectory.LeaderboardHistory, fileName, []);
+
+		foreach ((string modName, string json) in _modArchiveCache)
+			FileSystem.Seed(DataSubDirectory.ModArchiveCache, $"{modName}.json", Encoding.UTF8.GetBytes(json));
+	}
+
+	public InMemoryFileSystem FileSystem { get; } = new();
 
 	private static LeaderboardHistory CreateLeaderboardHistory(DateTime dateTime, List<EntryHistory> entries)
 	{
@@ -82,41 +94,9 @@ internal sealed class TestData : ILeaderboardHistoryCache, IFileSystemService
 		};
 	}
 
-	public string[] TryGetFiles(DataSubDirectory subDirectory)
+	public Task<LeaderboardHistory> GetLeaderboardHistoryAsync(string fileName)
 	{
-		return subDirectory switch
-		{
-			DataSubDirectory.LeaderboardHistory => [.. _leaderboardHistory.Keys],
-			DataSubDirectory.ModArchiveCache => [.. _modArchiveCache.Keys],
-			_ => throw new NotImplementedException(),
-		};
-	}
-
-	public LeaderboardHistory GetLeaderboardHistoryByFilePath(string filePath)
-	{
-		return _leaderboardHistory[filePath];
-	}
-
-	public string GetPath(DataSubDirectory subDirectory)
-	{
-		return subDirectory switch
-		{
-			DataSubDirectory.LeaderboardHistory => "LeaderboardHistory",
-			DataSubDirectory.ModArchiveCache => "ModArchiveCache",
-			_ => throw new NotImplementedException(),
-		};
-	}
-
-	public async Task<string?> GetModArchiveCacheDataJsonAsync(string modName)
-	{
-		await Task.Yield();
-		return _modArchiveCache.GetValueOrDefault(modName);
-	}
-
-#pragma warning disable SA1201
-	public string GetLeaderboardHistoryPathFromDate(DateTime dateTime)
-	{
-		throw new NotImplementedException();
+		return Task.FromResult(_leaderboardHistory[fileName]);
 	}
 
 	public int GetCount()
@@ -128,5 +108,4 @@ internal sealed class TestData : ILeaderboardHistoryCache, IFileSystemService
 	{
 		throw new NotImplementedException();
 	}
-#pragma warning restore SA1201
 }

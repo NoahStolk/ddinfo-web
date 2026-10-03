@@ -4,59 +4,55 @@ using DevilDaggersInfo.Web.Server.Domain.Utils;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Services;
 
-public sealed class ModScreenshotProcessor(IFileSystemService fileSystemService)
+public sealed class ModScreenshotProcessor(IFileSystem fileSystem)
 {
-	public void ProcessModScreenshotUpload(string modName, Dictionary<string, byte[]> screenshots)
+	public async Task ProcessModScreenshotUploadAsync(string modName, Dictionary<string, byte[]> screenshots)
 	{
 		if (screenshots.Count == 0)
 			return;
 
-		string modScreenshotsDirectory = Path.Combine(fileSystemService.GetPath(DataSubDirectory.ModScreenshots), modName);
-		Directory.CreateDirectory(modScreenshotsDirectory);
+		string prefix = ModArchiveAccessor.GetModScreenshotsPrefix(modName);
+		HashSet<string> existingNames = [.. (await fileSystem.ListAsync(DataSubDirectory.ModScreenshots, prefix)).Select(f => f.Name)];
 		int i = 0;
-		foreach (byte[] screenshotContents in screenshots.OrderBy(kvp => kvp.Key).Select(kvp => kvp.Value))
+		foreach (byte[] screenshotContents in screenshots.OrderBy(kvp => kvp.Key).Select(kvp => kvp.Value).Where(PngFileUtils.HasValidPngHeader))
 		{
-			if (!PngFileUtils.HasValidPngHeader(screenshotContents))
-				continue;
-
-			string path;
+			string name;
 			do
 			{
-				path = Path.Combine(modScreenshotsDirectory, $"{i:00}.png");
+				name = $"{prefix}{i:00}.png";
 				i++;
 			}
-			while (File.Exists(path));
+			while (existingNames.Contains(name));
 
-			File.WriteAllBytes(path, screenshotContents);
+			await fileSystem.WriteAllBytesAsync(DataSubDirectory.ModScreenshots, name, screenshotContents);
 		}
 	}
 
-	public void DeleteScreenshot(string modName, string screenshotFileName)
+	public async Task DeleteScreenshotAsync(string modName, string screenshotFileName)
 	{
-		string screenshotsDirectory = Path.Combine(fileSystemService.GetPath(DataSubDirectory.ModScreenshots), modName);
-		string screenshotFilePath = Path.Combine(screenshotsDirectory, screenshotFileName);
-		if (File.Exists(screenshotFilePath))
-			File.Delete(screenshotFilePath);
+		await fileSystem.DeleteAsync(DataSubDirectory.ModScreenshots, $"{ModArchiveAccessor.GetModScreenshotsPrefix(modName)}{screenshotFileName}");
 	}
 
-	public void DeleteScreenshotsDirectory(string modName)
+	public async Task DeleteScreenshotsAsync(string modName)
 	{
-		string screenshotsDirectory = Path.Combine(fileSystemService.GetPath(DataSubDirectory.ModScreenshots), modName);
-		if (Directory.Exists(screenshotsDirectory))
-			Directory.Delete(screenshotsDirectory, true);
+		IReadOnlyList<FileEntry> screenshots = await fileSystem.ListAsync(DataSubDirectory.ModScreenshots, ModArchiveAccessor.GetModScreenshotsPrefix(modName));
+		foreach (string name in screenshots.Select(s => s.Name))
+			await fileSystem.DeleteAsync(DataSubDirectory.ModScreenshots, name);
 	}
 
-	public void MoveScreenshotsDirectory(string originalModName, string newModName)
+	public async Task MoveScreenshotsAsync(string originalModName, string newModName)
 	{
 		if (originalModName == newModName)
 			return;
 
-		string screenshotsDirectory = fileSystemService.GetPath(DataSubDirectory.ModScreenshots);
-		string oldScreenshotsDirectory = Path.Combine(screenshotsDirectory, originalModName);
-		if (Directory.Exists(oldScreenshotsDirectory))
+		string originalPrefix = ModArchiveAccessor.GetModScreenshotsPrefix(originalModName);
+		string newPrefix = ModArchiveAccessor.GetModScreenshotsPrefix(newModName);
+		IReadOnlyList<FileEntry> screenshots = await fileSystem.ListAsync(DataSubDirectory.ModScreenshots, originalPrefix);
+		foreach (string name in screenshots.Select(s => s.Name))
 		{
-			string newScreenshotsDirectory = Path.Combine(screenshotsDirectory, newModName);
-			Directory.Move(oldScreenshotsDirectory, newScreenshotsDirectory);
+			byte[] contents = await fileSystem.ReadAllBytesAsync(DataSubDirectory.ModScreenshots, name) ?? throw new InvalidOperationException($"Screenshot '{name}' was listed but could not be read.");
+			await fileSystem.WriteAllBytesAsync(DataSubDirectory.ModScreenshots, $"{newPrefix}{name[originalPrefix.Length..]}", contents);
+			await fileSystem.DeleteAsync(DataSubDirectory.ModScreenshots, name);
 		}
 	}
 }

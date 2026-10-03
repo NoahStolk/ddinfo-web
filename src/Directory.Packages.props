@@ -50,6 +50,7 @@
 	</ItemGroup>
 
 	<ItemGroup Label="Static code analysis">
+		<GlobalPackageReference Include="Microsoft.CodeAnalysis.BannedApiAnalyzers" Version="5.6.0" />
 		<GlobalPackageReference Include="Nullable.Extended.Analyzer" Version="1.16.6891" />
 		<GlobalPackageReference Include="Roslynator.Analyzers" Version="5.0.0" />
 		<GlobalPackageReference Include="SonarAnalyzer.CSharp" Version="10.35.0.4138" />

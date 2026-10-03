@@ -18,7 +18,7 @@ internal sealed class PlayerHistoryRepositoryTests
 			.Options;
 		TestDbContext dbContext = new(options, Substitute.For<IHttpContextAccessor>(), Substitute.For<ILogContainerService>());
 		TestData data = new();
-		_repository = new PlayerHistoryRepository(dbContext, data, data);
+		_repository = new PlayerHistoryRepository(dbContext, data.FileSystem, data);
 	}
 
 	private static DateTime CreateDateTime(int year, int month, int day)
@@ -29,7 +29,7 @@ internal sealed class PlayerHistoryRepositoryTests
 	[Test]
 	public async Task GetPlayerHistory_WithCheater()
 	{
-		PlayerHistory historyPlayer1 = _repository.GetPlayerHistoryById(1);
+		PlayerHistory historyPlayer1 = await _repository.GetPlayerHistoryByIdAsync(1);
 
 		// Verify that this player always has first place, even if a cheater has technically been first in the history at some point.
 		await Assert.That(historyPlayer1.ScoreHistory.Count).IsEqualTo(3);
@@ -46,7 +46,7 @@ internal sealed class PlayerHistoryRepositoryTests
 
 		await Assert.That(historyPlayer1.BestRank).IsEqualTo(1);
 
-		PlayerHistory historyPlayer2 = _repository.GetPlayerHistoryById(2);
+		PlayerHistory historyPlayer2 = await _repository.GetPlayerHistoryByIdAsync(2);
 
 		// Verify that this player always has second place, even if a cheater has technically been first in the history at some point.
 		await Assert.That(historyPlayer2.ScoreHistory.Count).IsEqualTo(2);
@@ -61,7 +61,7 @@ internal sealed class PlayerHistoryRepositoryTests
 
 		await Assert.That(historyPlayer2.BestRank).IsEqualTo(2);
 
-		PlayerHistory historyPlayer3 = _repository.GetPlayerHistoryById(3);
+		PlayerHistory historyPlayer3 = await _repository.GetPlayerHistoryByIdAsync(3);
 
 		// Verify that this player's best rank is 3rd, even if a cheater has always been above them.
 		await Assert.That(historyPlayer3.ScoreHistory.Count).IsEqualTo(1);
@@ -74,7 +74,7 @@ internal sealed class PlayerHistoryRepositoryTests
 
 		await Assert.That(historyPlayer3.BestRank).IsEqualTo(3);
 
-		PlayerHistory historyCheater = _repository.GetPlayerHistoryById(4);
+		PlayerHistory historyCheater = await _repository.GetPlayerHistoryByIdAsync(4);
 
 		// A cheater's history is not affected, except if there is another cheater with a better rank (which we don't test here because we don't care about accurate cheater stats).
 		await Assert.That(historyCheater.ScoreHistory.Count).IsEqualTo(3);

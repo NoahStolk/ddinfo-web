@@ -25,18 +25,17 @@ internal sealed class PlayerHistoryRepositoryOrderingTests : IDisposable
 
 	/// <summary>
 	/// The score, rank and activity histories are built in a single pass that carries running state between iterations,
-	/// so the result depends on the leaderboard history files being processed chronologically. Directory.GetFiles gives
-	/// no ordering guarantee -- NTFS happens to return entries sorted by name while ext4 does not -- so the repository
-	/// must order them itself rather than inheriting an accident of the file system.
+	/// so the result depends on the leaderboard history files being processed chronologically. The repository must order
+	/// them by date itself rather than relying on the order in which the file system lists them.
 	/// </summary>
 	[Test]
 	public async Task GetPlayerHistoryById_IsNotAffectedByFileEnumerationOrder()
 	{
-		string[] chronological = _data.TryGetFiles(DataSubDirectory.LeaderboardHistory);
-		await Assert.That(chronological.Length).IsGreaterThan(2).Because("At least three history files are needed for the scramble to be meaningful.");
+		IReadOnlyList<FileEntry> chronological = await _data.FileSystem.ListAsync(DataSubDirectory.LeaderboardHistory);
+		await Assert.That(chronological.Count).IsGreaterThan(2).Because("At least three history files are needed for the scramble to be meaningful.");
 
 		// A deterministic scramble: every odd index first, then every even one.
-		string[] scrambled =
+		FileEntry[] scrambled =
 		[
 			.. chronological.Where((_, i) => i % 2 == 1),
 			.. chronological.Where((_, i) => i % 2 == 0),
@@ -45,8 +44,8 @@ internal sealed class PlayerHistoryRepositoryOrderingTests : IDisposable
 
 		foreach (int playerId in new[] { 1, 2, 3, 4 })
 		{
-			PlayerHistory expected = CreateRepository(chronological).GetPlayerHistoryById(playerId);
-			PlayerHistory actual = CreateRepository(scrambled).GetPlayerHistoryById(playerId);
+			PlayerHistory expected = await CreateRepository(chronological).GetPlayerHistoryByIdAsync(playerId);
+			PlayerHistory actual = await CreateRepository(scrambled).GetPlayerHistoryByIdAsync(playerId);
 
 			await AssertDatesAreIncreasingAsync(actual, playerId);
 
@@ -76,10 +75,10 @@ internal sealed class PlayerHistoryRepositoryOrderingTests : IDisposable
 		_dbContext.Dispose();
 	}
 
-	private PlayerHistoryRepository CreateRepository(string[] leaderboardHistoryPaths)
+	private PlayerHistoryRepository CreateRepository(IReadOnlyList<FileEntry> leaderboardHistoryFiles)
 	{
-		IFileSystemService fileSystemService = Substitute.For<IFileSystemService>();
-		fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory).Returns(leaderboardHistoryPaths);
-		return new PlayerHistoryRepository(_dbContext, fileSystemService, _data);
+		IFileSystem fileSystem = Substitute.For<IFileSystem>();
+		fileSystem.ListAsync(DataSubDirectory.LeaderboardHistory).Returns(leaderboardHistoryFiles);
+		return new PlayerHistoryRepository(_dbContext, fileSystem, _data);
 	}
 }

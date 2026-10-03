@@ -64,7 +64,7 @@ builder.Services.AddHttpContextAccessor();
 
 // Domain services
 builder.Services.AddScoped<CustomEntryProcessor>();
-builder.Services.AddSingleton<IFileSystemService, FileSystemService>();
+builder.Services.AddSingleton<IFileSystem>(_ => new LocalFileSystem("Data"));
 builder.Services.AddTransient<ModArchiveAccessor>();
 builder.Services.AddTransient<ModArchiveProcessor>();
 builder.Services.AddTransient<ModScreenshotProcessor>();
@@ -142,8 +142,11 @@ if (!builder.Environment.IsDevelopment())
 // Hosted service that runs once after startup.
 builder.Services.AddHostedService<StartupCacheHostedService>();
 
+// Data protection keys are not part of the Data directory, so they are not stored through IFileSystem.
+#pragma warning disable RS0030
 builder.Services.AddDataProtection()
 	.PersistKeysToFileSystem(new DirectoryInfo("keys"));
+#pragma warning restore RS0030
 
 builder.Services.AddAuthentication(options =>
 	{

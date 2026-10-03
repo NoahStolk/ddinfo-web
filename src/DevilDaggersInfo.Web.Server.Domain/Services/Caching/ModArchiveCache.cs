@@ -9,10 +9,8 @@ using System.IO.Compression;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Services.Caching;
 
-public sealed class ModArchiveCache(IFileSystemService fileSystemService)
+public sealed class ModArchiveCache(IFileSystem fileSystem)
 {
-	private readonly Lock _fileStreamLock = new();
-
 	private readonly ConcurrentDictionary<string, ModArchiveCacheData> _cache = new();
 
 	public int Count => _cache.Count;
@@ -33,29 +31,28 @@ public sealed class ModArchiveCache(IFileSystemService fileSystemService)
 		return CreateModArchiveCacheDataFromStream(name, ms, false); // Do not add this to the cache because it is not yet validated.
 	}
 
-	public async Task<ModArchiveCacheData> GetArchiveDataByFilePathAsync(string filePath)
+	public async Task<ModArchiveCacheData> GetArchiveDataByModNameAsync(string modName)
 	{
 		// Check memory cache.
-		string name = Path.GetFileNameWithoutExtension(filePath);
-		if (_cache.TryGetValue(name, out ModArchiveCacheData? cachedData))
+		if (_cache.TryGetValue(modName, out ModArchiveCacheData? cachedData))
 			return cachedData;
 
 		// Check file cache.
-		ModArchiveCacheData? fileCache = await LoadFromFileCacheAsync(name);
+		ModArchiveCacheData? fileCache = await LoadFromFileCacheAsync(modName);
 		if (fileCache != null)
 			return fileCache;
 
 		// Unzip zip file. TODO: This should only be done manually from the admin pages.
-		lock (_fileStreamLock)
-		{
-			using FileStream fs = new(filePath, FileMode.Open);
-			return CreateModArchiveCacheDataFromStream(name, fs, true);
-		}
+		byte[] bytes = await fileSystem.ReadAllBytesAsync(DataSubDirectory.Mods, ModArchiveAccessor.GetModArchiveFileName(modName)) ?? throw new NotFoundException($"Mod archive for mod '{modName}' could not be found.");
+		await using MemoryStream ms = new(bytes);
+		ModArchiveCacheData archiveData = CreateModArchiveCacheDataFromStream(modName, ms, true);
+		await WriteToFileCacheAsync(modName, archiveData);
+		return archiveData;
 	}
 
 	private async Task<ModArchiveCacheData?> LoadFromFileCacheAsync(string name)
 	{
-		string? json = await fileSystemService.GetModArchiveCacheDataJsonAsync(name);
+		string? json = await fileSystem.ReadAllTextAsync(DataSubDirectory.ModArchiveCache, $"{name}.json");
 		if (json == null)
 			return null;
 
@@ -91,12 +88,9 @@ public sealed class ModArchiveCache(IFileSystemService fileSystemService)
 				archiveData.FileSizeExtracted += entry.Length;
 			}
 
+			// Add to memory cache. The caller is responsible for writing the file cache.
 			if (addToCache)
-			{
-				// Add to memory cache and file cache.
 				_cache.TryAdd(name, archiveData);
-				WriteToFileCache(name, archiveData);
-			}
 
 			return archiveData;
 		}
@@ -106,24 +100,16 @@ public sealed class ModArchiveCache(IFileSystemService fileSystemService)
 		}
 	}
 
-	private void WriteToFileCache(string name, ModArchiveCacheData archiveData)
+	private async Task WriteToFileCacheAsync(string name, ModArchiveCacheData archiveData)
 	{
-		string fileCacheDirectory = fileSystemService.GetPath(DataSubDirectory.ModArchiveCache);
-		Directory.CreateDirectory(fileCacheDirectory);
-
-		File.WriteAllText(Path.Combine(fileCacheDirectory, $"{name}.json"), JsonConvert.SerializeObject(archiveData));
+		await fileSystem.WriteAllTextAsync(DataSubDirectory.ModArchiveCache, $"{name}.json", JsonConvert.SerializeObject(archiveData));
 	}
 
 	public async Task LoadEntireFileCacheAsync()
 	{
-		string fileCacheDirectory = fileSystemService.GetPath(DataSubDirectory.ModArchiveCache);
-		Directory.CreateDirectory(fileCacheDirectory);
-
-		foreach (string path in Directory.GetFiles(fileCacheDirectory, "*.json"))
-		{
-			string name = Path.GetFileNameWithoutExtension(path);
-			await LoadFromFileCacheAsync(name);
-		}
+		IReadOnlyList<FileEntry> files = await fileSystem.ListAsync(DataSubDirectory.ModArchiveCache);
+		foreach (FileEntry file in files.Where(f => f.Name.EndsWith(".json", StringComparison.Ordinal)))
+			await LoadFromFileCacheAsync(Path.GetFileNameWithoutExtension(file.Name));
 	}
 
 	public void Clear()

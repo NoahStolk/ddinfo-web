@@ -3,10 +3,10 @@ using DevilDaggersInfo.Web.Server.Domain.Commands.CustomEntries;
 using DevilDaggersInfo.Web.Server.Domain.Configuration;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
-using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Services;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 using DevilDaggersInfo.Web.Server.Domain.Test.Data;
+using DevilDaggersInfo.Web.Server.Domain.Test.Utils;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -14,8 +14,6 @@ using NSubstitute;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Test.Tests.ServerDomain;
 
-// Uploads write replay files named after the custom entry ID, which is the same for every test case.
-[NotInParallel]
 internal sealed class CustomEntryProcessorTests
 {
 	private readonly ApplicationDbContext _dbContext;
@@ -43,11 +41,6 @@ internal sealed class CustomEntryProcessorTests
 		_dbContext.CustomEntries.Returns(mockEntities.MockDbSetCustomEntries);
 		_dbContext.CustomEntryData.Returns(mockEntities.MockDbSetCustomEntryData);
 
-		IFileSystemService fileSystemService = Substitute.For<IFileSystemService>();
-		string replaysPath = Path.Combine("Resources", "Replays");
-		fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays).Returns(replaysPath);
-		Directory.CreateDirectory(replaysPath);
-
 		ILogger<CustomEntryProcessor> customEntryProcessorLogger = Substitute.For<ILogger<CustomEntryProcessor>>();
 
 		const string secret = "0123456789abcdef";
@@ -63,7 +56,7 @@ internal sealed class CustomEntryProcessorTests
 		_customEntryProcessor = new CustomEntryProcessor(
 			dbContext: _dbContext,
 			logger: customEntryProcessorLogger,
-			fileSystemService: fileSystemService,
+			fileSystem: new InMemoryFileSystem(),
 			customLeaderboardsOptions: new OptionsWrapper<CustomLeaderboardsOptions>(options),
 			highscoreLogger: Substitute.For<ICustomLeaderboardHighscoreLogger>(),
 			submissionLogger: Substitute.For<ICustomLeaderboardSubmissionLogger>())

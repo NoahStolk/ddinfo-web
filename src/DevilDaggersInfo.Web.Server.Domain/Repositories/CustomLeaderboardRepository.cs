@@ -162,7 +162,7 @@ public sealed class CustomLeaderboardRepository(ApplicationDbContext dbContext, 
 			throw new NotFoundException($"Custom leaderboard '{id}' could not be found.");
 
 		// ! Navigation property.
-		List<int> existingReplayIds = customEntryRepository.GetExistingCustomEntryReplayIds(customLeaderboard.CustomEntries!.ConvertAll(ce => ce.Id));
+		List<int> existingReplayIds = await customEntryRepository.GetExistingCustomEntryReplayIdsAsync(customLeaderboard.CustomEntries!.ConvertAll(ce => ce.Id));
 
 		// ! Navigation property.
 		return new SortedCustomLeaderboard

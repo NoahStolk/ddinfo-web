@@ -2,13 +2,13 @@ using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Domain.Models.LeaderboardHistory;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
+using DevilDaggersInfo.Web.Server.Domain.Utils;
 using DevilDaggersInfo.Web.Server.Services;
-using DevilDaggersInfo.Web.Server.Utils;
 
 namespace DevilDaggersInfo.Web.Server.HostedServices;
 
 internal sealed class LeaderboardHistoryBackgroundService(
-	IFileSystemService fileSystemService,
+	IFileSystem fileSystem,
 	IDdLeaderboardService leaderboardClient,
 	BackgroundServiceMonitor backgroundServiceMonitor,
 	ILogger<LeaderboardHistoryBackgroundService> logger)
@@ -22,7 +22,7 @@ internal sealed class LeaderboardHistoryBackgroundService(
 	protected override async Task ExecuteTaskAsync(CancellationToken stoppingToken)
 	{
 		// We want to retry until the file exists. We cannot just check the date, because in case the task fails, we want to try again the next minute.
-		if (HistoryFileExistsForDate(DateTime.UtcNow))
+		if (await HistoryFileExistsForDateAsync(DateTime.UtcNow))
 			return;
 
 		IDdLeaderboardService.LeaderboardResponse? leaderboard = null;
@@ -55,8 +55,7 @@ internal sealed class LeaderboardHistoryBackgroundService(
 		LeaderboardHistory historyModel = ConvertToHistoryModel(leaderboard!, entries);
 
 		string fileName = $"{DateTime.UtcNow:yyyyMMddHHmm}.bin";
-		string fullPath = Path.Combine(fileSystemService.GetPath(DataSubDirectory.LeaderboardHistory), fileName);
-		await IoFile.WriteAllBytesAsync(fullPath, historyModel.ToBytes(), stoppingToken);
+		await fileSystem.WriteAllBytesAsync(DataSubDirectory.LeaderboardHistory, fileName, historyModel.ToBytes(), stoppingToken);
 	}
 
 	private async Task<IDdLeaderboardService.LeaderboardResponse?> GetLeaderboardPage(int rankStart, CancellationToken stoppingToken)
@@ -82,16 +81,9 @@ internal sealed class LeaderboardHistoryBackgroundService(
 		return null;
 	}
 
-	private bool HistoryFileExistsForDate(DateTime dateTime)
+	private async Task<bool> HistoryFileExistsForDateAsync(DateTime dateTime)
 	{
-		foreach (string path in Directory.GetFiles(fileSystemService.GetPath(DataSubDirectory.LeaderboardHistory), "*.bin"))
-		{
-			string fileName = Path.GetFileNameWithoutExtension(path);
-			if (HistoryUtils.HistoryFileNameToDateTime(fileName).Date == dateTime.Date)
-				return true;
-		}
-
-		return false;
+		return (await HistoryUtils.GetHistoryFileNamesAsync(fileSystem)).Exists(fileName => HistoryUtils.HistoryFileNameToDateTime(fileName).Date == dateTime.Date);
 	}
 
 	private static LeaderboardHistory ConvertToHistoryModel(IDdLeaderboardService.LeaderboardResponse leaderboard, List<IDdLeaderboardService.EntryResponse> entries)

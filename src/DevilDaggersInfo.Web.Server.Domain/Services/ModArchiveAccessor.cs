@@ -5,32 +5,35 @@ using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Services;
 
-public sealed class ModArchiveAccessor(IFileSystemService fileSystemService, ModArchiveCache modArchiveCache)
+public sealed class ModArchiveAccessor(IFileSystem fileSystem, ModArchiveCache modArchiveCache)
 {
-	public string GetModArchivePath(string modName)
+	/// <summary>
+	/// Returns the name of the mod archive file within <see cref="DataSubDirectory.Mods"/>.
+	/// </summary>
+	public static string GetModArchiveFileName(string modName)
 	{
-		return Path.Combine(fileSystemService.GetPath(DataSubDirectory.Mods), $"{modName}.zip");
+		return $"{modName}.zip";
+	}
+
+	/// <summary>
+	/// Returns the prefix of the mod's screenshot file names within <see cref="DataSubDirectory.ModScreenshots"/>.
+	/// </summary>
+	public static string GetModScreenshotsPrefix(string modName)
+	{
+		return $"{modName}/";
 	}
 
 	public async Task<ModFileSystemData> GetModFileSystemDataAsync(string modName)
 	{
-		string modArchivePath = GetModArchivePath(modName);
-		string modScreenshotsDirectory = Path.Combine(fileSystemService.GetPath(DataSubDirectory.ModScreenshots), modName);
+		ModArchiveCacheData? modArchiveCacheData = await fileSystem.ExistsAsync(DataSubDirectory.Mods, GetModArchiveFileName(modName)) ? await modArchiveCache.GetArchiveDataByModNameAsync(modName) : null;
 
-		ModArchiveCacheData? modArchiveCacheData = File.Exists(modArchivePath) ? await modArchiveCache.GetArchiveDataByFilePathAsync(modArchivePath) : null;
+		string screenshotsPrefix = GetModScreenshotsPrefix(modName);
+		IReadOnlyList<FileEntry> screenshots = await fileSystem.ListAsync(DataSubDirectory.ModScreenshots, screenshotsPrefix);
 
 		return new ModFileSystemData
 		{
 			ModArchive = modArchiveCacheData,
-			ScreenshotFileNames = !Directory.Exists(modScreenshotsDirectory) ? null : GetScreenshotFileNames(modScreenshotsDirectory),
+			ScreenshotFileNames = screenshots.Count == 0 ? null : [.. screenshots.Select(s => s.Name[screenshotsPrefix.Length..])],
 		};
-
-		List<string> GetScreenshotFileNames(string directory)
-		{
-			// ReSharper disable once UseCollectionExpression
-			// error CS8604: Possible null reference argument for parameter 'item' in 'void List<string>.Add(string item)'.
-			// ! LINQ
-			return Directory.GetFiles(directory).Select(Path.GetFileName).ToList()!;
-		}
 	}
 }

@@ -13,7 +13,7 @@ namespace DevilDaggersInfo.Web.Server.Controllers.Main;
 
 [Route("api/custom-entries")]
 [ApiController]
-public sealed class CustomEntriesController(ApplicationDbContext dbContext, IFileSystemService fileSystemService, CustomEntryRepository customEntryRepository) : ControllerBase
+public sealed class CustomEntriesController(ApplicationDbContext dbContext, IFileSystem fileSystem, CustomEntryRepository customEntryRepository) : ControllerBase
 {
 	[HttpGet("{id}/replay-buffer")]
 	[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)] // TODO: Remove incorrect response type FileContentResult.
@@ -38,23 +38,23 @@ public sealed class CustomEntriesController(ApplicationDbContext dbContext, IFil
 	[HttpGet("{id}/data")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public ActionResult<GetCustomEntryData> GetCustomEntryDataById([Required] int id)
+	public async Task<ActionResult<GetCustomEntryData>> GetCustomEntryDataById([Required] int id)
 	{
 		// ! Navigation property.
-		CustomEntryEntity? customEntry = dbContext.CustomEntries
+		CustomEntryEntity? customEntry = await dbContext.CustomEntries
 			.AsNoTracking()
 			.Include(ce => ce.Player)
 			.Include(ce => ce.CustomLeaderboard)
 				.ThenInclude(cl => cl!.Spawnset)
-			.FirstOrDefault(cl => cl.Id == id);
+			.FirstOrDefaultAsync(cl => cl.Id == id);
 		if (customEntry == null)
 			return NotFound();
 
-		CustomEntryDataEntity? customEntryData = dbContext.CustomEntryData
+		CustomEntryDataEntity? customEntryData = await dbContext.CustomEntryData
 			.AsNoTracking()
-			.FirstOrDefault(ced => ced.CustomEntryId == id);
+			.FirstOrDefaultAsync(ced => ced.CustomEntryId == id);
 
 		// ! Navigation property.
-		return customEntry.ToMainApi(customEntryData, customEntry.CustomLeaderboard!.Spawnset!.EffectiveHandLevel, IoFile.Exists(Path.Combine(fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{id}.ddreplay")));
+		return customEntry.ToMainApi(customEntryData, customEntry.CustomLeaderboard!.Spawnset!.EffectiveHandLevel, await fileSystem.ExistsAsync(DataSubDirectory.CustomEntryReplays, $"{id}.ddreplay"));
 	}
 }

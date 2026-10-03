@@ -24,8 +24,8 @@ public sealed class PlayersController(PlayerHistoryRepository playerHistoryRepos
 	[HttpGet("{id}/history")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	public GetPlayerHistory GetPlayerHistoryById([Required, Range(1, int.MaxValue)] int id)
+	public async Task<GetPlayerHistory> GetPlayerHistoryById([Required, Range(1, int.MaxValue)] int id)
 	{
-		return playerHistoryRepository.GetPlayerHistoryById(id).ToClubberApi();
+		return (await playerHistoryRepository.GetPlayerHistoryByIdAsync(id)).ToClubberApi();
 	}
 }

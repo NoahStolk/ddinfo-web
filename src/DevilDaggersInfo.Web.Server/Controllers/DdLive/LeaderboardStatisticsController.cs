@@ -1,7 +1,7 @@
 using DevilDaggersInfo.Web.ApiSpec.DdLive.LeaderboardStatistics;
 using DevilDaggersInfo.Web.Server.Converters.DomainToApi.DdLive;
 using DevilDaggersInfo.Web.Server.Domain.Services.Caching;
-using DevilDaggersInfo.Web.Server.Utils;
+using DevilDaggersInfo.Web.Server.Domain.Utils;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DevilDaggersInfo.Web.Server.Controllers.DdLive;
