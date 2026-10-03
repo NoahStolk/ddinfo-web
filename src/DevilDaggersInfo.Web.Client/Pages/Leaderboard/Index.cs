@@ -40,17 +40,21 @@ public sealed partial class Index
 
 	private async Task FetchLeaderboard()
 	{
+		_apiError = null;
 		try
 		{
 			if (GetLeaderboard != null)
 				_reloading = true;
 
 			GetLeaderboard = await Http.GetLeaderboard(Rank);
-			_reloading = false;
 		}
 		catch (Exception ex)
 		{
 			_apiError = ex.Message;
+		}
+		finally
+		{
+			_reloading = false;
 		}
 	}
 

@@ -7,7 +7,11 @@
 
 <Heading Title="Player Settings" />
 
-@if (GetEntries == null)
+@if (_apiError != null)
+{
+	<p class="pt-2 font-bold">@_apiError</p>
+}
+else if (GetEntries == null)
 {
 	<Loading />
 }

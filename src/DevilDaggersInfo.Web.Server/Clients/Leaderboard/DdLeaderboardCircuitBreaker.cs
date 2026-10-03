@@ -18,13 +18,19 @@ internal sealed class DdLeaderboardCircuitBreaker(TimeProvider timeProvider)
 
 	internal enum FailureOutcome
 	{
-		/// <summary>The circuit is still closed; the failure threshold has not been reached yet.</summary>
+		/// <summary>
+		/// The circuit is still closed; the failure threshold has not been reached yet.
+		/// </summary>
 		Closed,
 
-		/// <summary>This failure reached the threshold and opened the circuit.</summary>
+		/// <summary>
+		/// This failure reached the threshold and opened the circuit.
+		/// </summary>
 		Opened,
 
-		/// <summary>The circuit was already open and the probe request failed.</summary>
+		/// <summary>
+		/// The circuit was already open and the probe request failed.
+		/// </summary>
 		Reopened,
 	}
 
