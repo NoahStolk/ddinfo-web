@@ -21,13 +21,14 @@ internal sealed class ExceptionMiddleware(RequestDelegate next, ILogger<Exceptio
 
 			context.Response.Clear();
 			context.Response.StatusCode = (int)ex.StatusCode;
-			context.Response.ContentType = "application/problem+json; charset=utf-8";
 
-			await context.Response.WriteAsJsonAsync(new ProblemDetails
+			// WriteAsJsonAsync overwrites the content type with application/json unless it is passed explicitly.
+			ProblemDetails problemDetails = new()
 			{
 				Status = (int)ex.StatusCode,
 				Title = ex.ExposeInnerExceptionMessages ? DisplayException(ex) : ex.Message,
-			});
+			};
+			await context.Response.WriteAsJsonAsync(problemDetails, options: null, contentType: "application/problem+json; charset=utf-8");
 		}
 
 		static string DisplayException(Exception ex)

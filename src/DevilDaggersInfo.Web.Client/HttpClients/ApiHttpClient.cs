@@ -44,7 +44,7 @@ public abstract class ApiHttpClient
 	private static async Task<string> ReadErrorMessage(HttpResponseMessage response)
 	{
 		string content = await response.Content.ReadAsStringAsync();
-		if (response.Content.Headers.ContentType?.MediaType != "application/problem+json")
+		if (response.Content.Headers.ContentType?.MediaType is not ("application/problem+json" or "application/json"))
 			return content;
 
 		// Errors thrown by the API are problem details with a displayable title. Validation errors are kept whole, because their title alone doesn't say what is wrong.

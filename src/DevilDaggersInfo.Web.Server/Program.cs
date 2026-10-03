@@ -126,7 +126,7 @@ builder.Services.AddHttpClient<ClubberClient>();
 builder.Services.AddSingleton<DdLeaderboardCircuitBreaker>();
 
 // The default timeout is 100 seconds, which is far too long to keep website visitors waiting during an outage.
-builder.Services.AddHttpClient<IDdLeaderboardService, DdLeaderboardService>(c => c.Timeout = TimeSpan.FromSeconds(15));
+builder.Services.AddHttpClient<IDdLeaderboardService, DdLeaderboardService>(c => c.Timeout = TimeSpan.FromSeconds(8));
 
 // Register this background service first, so it exists last. We want to log when the application exits.
 builder.Services.AddHostedService<DiscordBotService>();
