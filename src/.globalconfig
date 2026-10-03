@@ -202,6 +202,9 @@ dotnet_diagnostic.CA1819.severity                                        = none
 # Use the LoggerMessage delegates.
 dotnet_diagnostic.CA1848.severity                                        = none
 
+# Avoid potentially expensive logging (argument evaluation when logging is disabled).
+dotnet_diagnostic.CA1873.severity                                        = none
+
 # Do not directly await a Task.
 dotnet_diagnostic.CA2007.severity                                        = none
 
