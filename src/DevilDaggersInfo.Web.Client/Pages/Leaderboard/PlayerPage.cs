@@ -73,6 +73,7 @@ public sealed partial class PlayerPage
 	private LineChartDataOptions _activityDeathsOptions = LineChartDataOptions.Default;
 	private LineChartDataOptions _activityTimeOptions = LineChartDataOptions.Default;
 
+	private string? _entryError;
 	private int _pageRankStart;
 	private int _pageRankEnd;
 
@@ -91,10 +92,20 @@ public sealed partial class PlayerPage
 
 	protected override async Task OnParametersSetAsync()
 	{
-		GetEntry = await Http.GetEntryById(Id);
+		_entryError = null;
+		try
+		{
+			GetEntry = await Http.GetEntryById(Id);
 
-		_pageRankStart = (GetEntry.Rank - 1) / 100 * 100 + 1;
-		_pageRankEnd = _pageRankStart + 99;
+			_pageRankStart = (GetEntry.Rank - 1) / 100 * 100 + 1;
+			_pageRankEnd = _pageRankStart + 99;
+		}
+		catch (HttpRequestException ex)
+		{
+			// The leaderboard servers may be down. The rest of the page doesn't depend on them, so keep loading it.
+			GetEntry = null;
+			_entryError = ex.Message;
+		}
 
 		try
 		{

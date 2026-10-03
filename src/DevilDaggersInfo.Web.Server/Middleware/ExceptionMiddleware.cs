@@ -26,7 +26,7 @@ internal sealed class ExceptionMiddleware(RequestDelegate next, ILogger<Exceptio
 			await context.Response.WriteAsJsonAsync(new ProblemDetails
 			{
 				Status = (int)ex.StatusCode,
-				Title = DisplayException(ex),
+				Title = ex.ExposeInnerExceptionMessages ? DisplayException(ex) : ex.Message,
 			});
 		}
 

@@ -12,48 +12,62 @@
 @using DevilDaggersInfo.Web.Client.HttpClients
 @inject MainApiHttpClient Http
 
-@if (GetEntry == null)
+@if (GetEntry == null && _entryError == null)
 {
 	<Loading />
 }
 else
 {
-	<Heading Title="@($"Player - {GetEntry.Username}")" BreakAll="true" />
+	@if (GetEntry == null)
+	{
+		<Heading Title="@($"Player {Id}")" BreakAll="true" />
 
-	<a class="link" href="@($"/leaderboard?Rank={_pageRankStart}")">Back to leaderboard (@_pageRankStart - @_pageRankEnd)</a>
-	<p class="para">@GetEntry.Username is currently rank @GetEntry.Rank.</p>
+		<a class="link" href="/leaderboard">Back to leaderboard</a>
+		<p class="para font-bold">@_entryError</p>
+	}
+	else
+	{
+		<Heading Title="@($"Player - {GetEntry.Username}")" BreakAll="true" />
+
+		<a class="link" href="@($"/leaderboard?Rank={_pageRankStart}")">Back to leaderboard (@_pageRankStart - @_pageRankEnd)</a>
+		<p class="para">@GetEntry.Username is currently rank @GetEntry.Rank.</p>
+	}
+
 	<div class="grid gap-2 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-5">
-		<PlayerCard Title="Personal Best">
-			<DataField CssClass="odd:bg-gray-2 px-1" Name="Time">@MarkupUtils.LeaderboardTime(GetEntry.Time)</DataField>
-			<DataField CssClass="odd:bg-gray-2 px-1" Name="Kills">@GetEntry.Kills.ToString(StringFormats.LeaderboardIntFormat)</DataField>
-			<DataField CssClass="odd:bg-gray-2 px-1" Name="Gems">@GetEntry.Gems.ToString(StringFormats.LeaderboardIntFormat)</DataField>
-			<DataField CssClass="odd:bg-gray-2 px-1" Name="Accuracy">@((GetEntry.DaggersHit / (float)GetEntry.DaggersFired).ToString(StringFormats.AccuracyFormat))</DataField>
-			<DataField CssClass="odd:bg-gray-2 px-1" Name="Daggers hit">@GetEntry.DaggersHit.ToString(StringFormats.LeaderboardIntFormat)</DataField>
-			<DataField CssClass="odd:bg-gray-2 px-1" Name="Daggers fired">@GetEntry.DaggersFired.ToString(StringFormats.LeaderboardIntFormat)</DataField>
-			<DataField CssClass="odd:bg-gray-2 px-1" Name="Death type">@MarkupUtils.DeathString(GetEntry.DeathType)</DataField>
-		</PlayerCard>
-
-		<PlayerCard Title="Total Statistics">
-			<DataField CssClass="odd:bg-gray-2 px-1" Name="Total time">@GetEntry.TimeTotal.ToString(StringFormats.LeaderboardGlobalTimeFormat)</DataField>
-			<DataField CssClass="odd:bg-gray-2 px-1" Name="Total kills">@GetEntry.KillsTotal.ToString(StringFormats.LeaderboardIntFormat)</DataField>
-			<DataField CssClass="odd:bg-gray-2 px-1" Name="Total gems">@GetEntry.GemsTotal.ToString(StringFormats.LeaderboardIntFormat)</DataField>
-			<DataField CssClass="odd:bg-gray-2 px-1" Name="Total accuracy">@((GetEntry.DaggersHitTotal / (float)GetEntry.DaggersFiredTotal).ToString(StringFormats.AccuracyFormat))</DataField>
-			<DataField CssClass="odd:bg-gray-2 px-1" Name="Total daggers hit">@GetEntry.DaggersHitTotal.ToString(StringFormats.LeaderboardIntFormat)</DataField>
-			<DataField CssClass="odd:bg-gray-2 px-1" Name="Total daggers fired">@GetEntry.DaggersFiredTotal.ToString(StringFormats.LeaderboardIntFormat)</DataField>
-			<DataField CssClass="odd:bg-gray-2 px-1" Name="Total deaths">@GetEntry.DeathsTotal.ToString(StringFormats.LeaderboardIntFormat)</DataField>
-		</PlayerCard>
-
-		@if (GetEntry.DeathsTotal > 0)
+		@if (GetEntry != null)
 		{
-			float deathsAsFloat = GetEntry.DeathsTotal;
-
-			<PlayerCard Title="Average Statistics">
-				<DataField CssClass="odd:bg-gray-2 px-1" Name="Average time">@((GetEntry.TimeTotal / deathsAsFloat).ToString(StringFormats.TimeFormat))</DataField>
-				<DataField CssClass="odd:bg-gray-2 px-1" Name="Average kills">@((GetEntry.KillsTotal / deathsAsFloat).ToString(StringFormats.LeaderboardIntAverageFormat))</DataField>
-				<DataField CssClass="odd:bg-gray-2 px-1" Name="Average gems">@((GetEntry.GemsTotal / deathsAsFloat).ToString(StringFormats.LeaderboardIntAverageFormat))</DataField>
-				<DataField CssClass="odd:bg-gray-2 px-1" Name="Average daggers hit" Left="2">@((GetEntry.DaggersHitTotal / deathsAsFloat).ToString(StringFormats.LeaderboardIntAverageFormat))</DataField>
-				<DataField CssClass="odd:bg-gray-2 px-1" Name="Average daggers fired" Left="2">@((GetEntry.DaggersFiredTotal / deathsAsFloat).ToString(StringFormats.LeaderboardIntAverageFormat))</DataField>
+			<PlayerCard Title="Personal Best">
+				<DataField CssClass="odd:bg-gray-2 px-1" Name="Time">@MarkupUtils.LeaderboardTime(GetEntry.Time)</DataField>
+				<DataField CssClass="odd:bg-gray-2 px-1" Name="Kills">@GetEntry.Kills.ToString(StringFormats.LeaderboardIntFormat)</DataField>
+				<DataField CssClass="odd:bg-gray-2 px-1" Name="Gems">@GetEntry.Gems.ToString(StringFormats.LeaderboardIntFormat)</DataField>
+				<DataField CssClass="odd:bg-gray-2 px-1" Name="Accuracy">@((GetEntry.DaggersHit / (float)GetEntry.DaggersFired).ToString(StringFormats.AccuracyFormat))</DataField>
+				<DataField CssClass="odd:bg-gray-2 px-1" Name="Daggers hit">@GetEntry.DaggersHit.ToString(StringFormats.LeaderboardIntFormat)</DataField>
+				<DataField CssClass="odd:bg-gray-2 px-1" Name="Daggers fired">@GetEntry.DaggersFired.ToString(StringFormats.LeaderboardIntFormat)</DataField>
+				<DataField CssClass="odd:bg-gray-2 px-1" Name="Death type">@MarkupUtils.DeathString(GetEntry.DeathType)</DataField>
 			</PlayerCard>
+
+			<PlayerCard Title="Total Statistics">
+				<DataField CssClass="odd:bg-gray-2 px-1" Name="Total time">@GetEntry.TimeTotal.ToString(StringFormats.LeaderboardGlobalTimeFormat)</DataField>
+				<DataField CssClass="odd:bg-gray-2 px-1" Name="Total kills">@GetEntry.KillsTotal.ToString(StringFormats.LeaderboardIntFormat)</DataField>
+				<DataField CssClass="odd:bg-gray-2 px-1" Name="Total gems">@GetEntry.GemsTotal.ToString(StringFormats.LeaderboardIntFormat)</DataField>
+				<DataField CssClass="odd:bg-gray-2 px-1" Name="Total accuracy">@((GetEntry.DaggersHitTotal / (float)GetEntry.DaggersFiredTotal).ToString(StringFormats.AccuracyFormat))</DataField>
+				<DataField CssClass="odd:bg-gray-2 px-1" Name="Total daggers hit">@GetEntry.DaggersHitTotal.ToString(StringFormats.LeaderboardIntFormat)</DataField>
+				<DataField CssClass="odd:bg-gray-2 px-1" Name="Total daggers fired">@GetEntry.DaggersFiredTotal.ToString(StringFormats.LeaderboardIntFormat)</DataField>
+				<DataField CssClass="odd:bg-gray-2 px-1" Name="Total deaths">@GetEntry.DeathsTotal.ToString(StringFormats.LeaderboardIntFormat)</DataField>
+			</PlayerCard>
+
+			@if (GetEntry.DeathsTotal > 0)
+			{
+				float deathsAsFloat = GetEntry.DeathsTotal;
+
+				<PlayerCard Title="Average Statistics">
+					<DataField CssClass="odd:bg-gray-2 px-1" Name="Average time">@((GetEntry.TimeTotal / deathsAsFloat).ToString(StringFormats.TimeFormat))</DataField>
+					<DataField CssClass="odd:bg-gray-2 px-1" Name="Average kills">@((GetEntry.KillsTotal / deathsAsFloat).ToString(StringFormats.LeaderboardIntAverageFormat))</DataField>
+					<DataField CssClass="odd:bg-gray-2 px-1" Name="Average gems">@((GetEntry.GemsTotal / deathsAsFloat).ToString(StringFormats.LeaderboardIntAverageFormat))</DataField>
+					<DataField CssClass="odd:bg-gray-2 px-1" Name="Average daggers hit" Left="2">@((GetEntry.DaggersHitTotal / deathsAsFloat).ToString(StringFormats.LeaderboardIntAverageFormat))</DataField>
+					<DataField CssClass="odd:bg-gray-2 px-1" Name="Average daggers fired" Left="2">@((GetEntry.DaggersFiredTotal / deathsAsFloat).ToString(StringFormats.LeaderboardIntAverageFormat))</DataField>
+				</PlayerCard>
+			}
 		}
 
 		@if (GetPlayer == null)

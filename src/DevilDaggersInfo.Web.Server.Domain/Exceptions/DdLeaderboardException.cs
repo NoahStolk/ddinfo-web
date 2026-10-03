@@ -19,4 +19,7 @@ public sealed class DdLeaderboardException : StatusCodeException
 	}
 
 	public override HttpStatusCode StatusCode => HttpStatusCode.ServiceUnavailable;
+
+	// Inner exceptions are network errors such as timeouts. They are logged, but mean nothing to visitors.
+	public override bool ExposeInnerExceptionMessages => false;
 }

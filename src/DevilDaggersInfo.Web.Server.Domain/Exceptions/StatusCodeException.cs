@@ -19,4 +19,9 @@ public abstract class StatusCodeException : Exception
 	}
 
 	public abstract HttpStatusCode StatusCode { get; }
+
+	/// <summary>
+	/// Whether the messages of inner exceptions are added to the error that is returned to the client.
+	/// </summary>
+	public virtual bool ExposeInnerExceptionMessages => true;
 }

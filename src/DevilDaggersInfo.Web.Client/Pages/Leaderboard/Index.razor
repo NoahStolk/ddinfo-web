@@ -31,6 +31,10 @@ else
 			{
 				<Loading />
 			}
+			else if (_apiError != null)
+			{
+				<span class="font-bold">@_apiError</span>
+			}
 			else
 			{
 				<span>Showing rank @Rank - @(Rank + 99)</span>
