@@ -18,5 +18,5 @@ public sealed class DdLeaderboardException : StatusCodeException
 	{
 	}
 
-	public override HttpStatusCode StatusCode => HttpStatusCode.BadRequest;
+	public override HttpStatusCode StatusCode => HttpStatusCode.ServiceUnavailable;
 }

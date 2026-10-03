@@ -108,6 +108,8 @@ builder.Services.AddTransient<DevilDaggersInfo.Web.Server.Domain.Admin.Repositor
 builder.Services.AddTransient<DevilDaggersInfo.Web.Server.Domain.Admin.Repositories.SpawnsetRepository>();
 builder.Services.AddTransient<DevilDaggersInfo.Web.Server.Domain.Admin.Repositories.UserRepository>();
 
+builder.Services.AddSingleton(TimeProvider.System);
+
 // Monitoring
 builder.Services.AddSingleton<BackgroundServiceMonitor>();
 builder.Services.AddSingleton<ICustomLeaderboardHighscoreLogger, CustomLeaderboardHighscoreLogger>();
@@ -121,7 +123,10 @@ builder.Services.AddSingleton<ModArchiveCache>();
 
 // HTTP services
 builder.Services.AddHttpClient<ClubberClient>();
-builder.Services.AddHttpClient<IDdLeaderboardService, DdLeaderboardService>();
+builder.Services.AddSingleton<DdLeaderboardCircuitBreaker>();
+
+// The default timeout is 100 seconds, which is far too long to keep website visitors waiting during an outage.
+builder.Services.AddHttpClient<IDdLeaderboardService, DdLeaderboardService>(c => c.Timeout = TimeSpan.FromSeconds(15));
 
 // Register this background service first, so it exists last. We want to log when the application exits.
 builder.Services.AddHostedService<DiscordBotService>();
