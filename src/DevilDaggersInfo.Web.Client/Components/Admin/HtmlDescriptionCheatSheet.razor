@@ -1,0 +1,40 @@
+<details class="py-1">
+	<summary class="cursor-pointer select-none text-lg">HTML description cheat sheet</summary>
+
+	<div class="pl-4">
+		@foreach (Example example in _examples)
+		{
+			<h4 class="text-red text-lg pt-4 pb-1">@example.Title</h4>
+			@if (example.Note != null)
+			{
+				<p class="pb-1">@example.Note</p>
+			}
+
+			<div class="grid grid-cols-1 lg:grid-cols-2 gap-2">
+				<pre class="bg-gray-3 font-mono p-2 overflow-x-auto">@example.Html</pre>
+				@* Clicking a link in the preview would navigate away and discard the form, so the preview is not interactive. *@
+				<div class="bg-gray-1 px-1 pointer-events-none">@((MarkupString)example.Html)</div>
+			</div>
+		}
+	</div>
+</details>
+
+@code
+{
+	private static readonly Example[] _examples =
+	[
+		new("ddinfo link", "https://devildaggers.info/ can be omitted.", """<a class="link" href="/custom/mod/1">Text here</a>"""),
+		new("External link", "Use target=\"_blank\" to make the page open in a new browser tab.", """<a target="_blank" class="link" href="https://store.steampowered.com/app/422970/Devil_Daggers/">Text here</a>"""),
+		new("Paragraph", null, """<p class="para">Text here</p>"""),
+		new("Centered text", null, """<p class="text-center">Text here</p>"""),
+		new("List", "py means vertical padding, pl means left padding.", """
+			<ul class="py-2 pl-4">
+			  <li class="list-disc">Item 1</li>
+			  <li class="list-disc">Item 2</li>
+			  <li class="list-disc">Item 3</li>
+			</ul>
+			"""),
+	];
+
+	private sealed record Example(string Title, string? Note, string Html);
+}
