@@ -234,6 +234,9 @@ dotnet_diagnostic.CS4014.severity                                             = 
 dotnet_diagnostic.NX0001.severity                                             = error
 
 # Null-forgiving operator without justification
+dotnet_diagnostic.NX0002.severity                                             = error
+
+# Null-forgiving operator without justification
 dotnet_diagnostic.NX0003.severity                                             = error
 
 # The symbol is banned in this project (see BannedSymbols.txt). File IO must go through IFileSystem.
@@ -245,6 +248,13 @@ dotnet_diagnostic.RZ10012.severity                                            = 
 # Add a way to break out of this method/property's recursion.
 dotnet_diagnostic.S2190.severity                                              = error
 
+########################
+# Diagnostics: Warning #
+########################
+
+# Lines should not be too long. (Default maximumLineLength is 200.)
+dotnet_diagnostic.S103.severity                                               = warning
+
 ###########################
 # Diagnostics: Suggestion #
 ###########################
@@ -252,14 +262,14 @@ dotnet_diagnostic.S2190.severity                                              = 
 # Member is obsolete.
 dotnet_diagnostic.CS0618.severity                                             = suggestion
 
-# Complete the task associated to this 'TODO' comment.
+# Complete the task associated to this to-do comment.
 dotnet_diagnostic.S1135.severity                                              = suggestion
 
 #####################
 # Diagnostics: None #
 #####################
 
-# Do not expose generic lists.
+# Change 'List<T>' into 'Collection<T>', 'ReadOnlyCollection<T>' or 'KeyedCollection<K,V>'.
 dotnet_diagnostic.CA1002.severity                                             = none
 
 # Enum storage should be Int32.
