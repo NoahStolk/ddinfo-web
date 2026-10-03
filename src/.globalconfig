@@ -223,7 +223,9 @@ csharp_space_between_parentheses                                              = 
 csharp_preserve_single_line_blocks                                            = true
 csharp_preserve_single_line_statements                                        = true
 
-# Severity: error
+######################
+# Diagnostics: Error #
+######################
 
 # Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
 dotnet_diagnostic.CS4014.severity                                             = error
@@ -243,7 +245,9 @@ dotnet_diagnostic.RZ10012.severity                                            = 
 # Add a way to break out of this method/property's recursion.
 dotnet_diagnostic.S2190.severity                                              = error
 
-# Severity: suggestion
+###########################
+# Diagnostics: Suggestion #
+###########################
 
 # Member is obsolete.
 dotnet_diagnostic.CS0618.severity                                             = suggestion
@@ -251,7 +255,9 @@ dotnet_diagnostic.CS0618.severity                                             = 
 # Complete the task associated to this 'TODO' comment.
 dotnet_diagnostic.S1135.severity                                              = suggestion
 
-# Severity: none
+#####################
+# Diagnostics: None #
+#####################
 
 # Do not expose generic lists.
 dotnet_diagnostic.CA1002.severity                                             = none
