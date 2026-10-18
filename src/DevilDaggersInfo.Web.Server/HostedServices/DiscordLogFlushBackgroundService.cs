@@ -61,14 +61,7 @@ internal sealed class DiscordLogFlushBackgroundService(
 	{
 		try
 		{
-			string thumbnailImage = highscoreLog.RankSorting switch
-			{
-				CustomLeaderboardRankSorting.TimeAsc or CustomLeaderboardRankSorting.TimeDesc => "stopwatch.png",
-				CustomLeaderboardRankSorting.GemsCollectedAsc or CustomLeaderboardRankSorting.GemsCollectedDesc or CustomLeaderboardRankSorting.GemsDespawnedAsc or CustomLeaderboardRankSorting.GemsDespawnedDesc or CustomLeaderboardRankSorting.GemsEatenAsc or CustomLeaderboardRankSorting.GemsEatenDesc => "gem.png",
-				CustomLeaderboardRankSorting.EnemiesKilledAsc or CustomLeaderboardRankSorting.EnemiesKilledDesc or CustomLeaderboardRankSorting.EnemiesAliveAsc or CustomLeaderboardRankSorting.EnemiesAliveDesc => "skull.png",
-				CustomLeaderboardRankSorting.HomingStoredAsc or CustomLeaderboardRankSorting.HomingStoredDesc or CustomLeaderboardRankSorting.HomingEatenAsc or CustomLeaderboardRankSorting.HomingEatenDesc => "homing.png",
-				_ => "eye2.png",
-			};
+			string thumbnailImage = GetThumbnailImage(highscoreLog.RankSorting);
 
 			DiscordEmbedBuilder builder = new()
 			{
@@ -96,6 +89,34 @@ internal sealed class DiscordLogFlushBackgroundService(
 		{
 			logger.LogError(ex, "Error while attempting to send leaderboard message.");
 		}
+	}
+
+	private static string GetThumbnailImage(CustomLeaderboardRankSorting rankSorting)
+	{
+		return rankSorting switch
+		{
+			CustomLeaderboardRankSorting.TimeAsc or
+				CustomLeaderboardRankSorting.TimeDesc => "stopwatch.png",
+
+			CustomLeaderboardRankSorting.GemsCollectedAsc or
+				CustomLeaderboardRankSorting.GemsCollectedDesc or
+				CustomLeaderboardRankSorting.GemsDespawnedAsc or
+				CustomLeaderboardRankSorting.GemsDespawnedDesc or
+				CustomLeaderboardRankSorting.GemsEatenAsc or
+				CustomLeaderboardRankSorting.GemsEatenDesc => "gem.png",
+
+			CustomLeaderboardRankSorting.EnemiesKilledAsc or
+				CustomLeaderboardRankSorting.EnemiesKilledDesc or
+				CustomLeaderboardRankSorting.EnemiesAliveAsc or
+				CustomLeaderboardRankSorting.EnemiesAliveDesc => "skull.png",
+
+			CustomLeaderboardRankSorting.HomingStoredAsc or
+				CustomLeaderboardRankSorting.HomingStoredDesc or
+				CustomLeaderboardRankSorting.HomingEatenAsc or
+				CustomLeaderboardRankSorting.HomingEatenDesc => "homing.png",
+
+			_ => "eye2.png",
+		};
 	}
 
 	private async Task LogToLogChannel(DiscordChannel logChannel)
