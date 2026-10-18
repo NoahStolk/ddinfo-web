@@ -2,7 +2,7 @@ using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
 using DevilDaggersInfo.Web.Server.Services;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace DevilDaggersInfo.Web.Server.Domain.Test.Tests.Server;
+namespace DevilDaggersInfo.Web.Server.IntegrationTest.Tests.Server;
 
 internal sealed class CustomLeaderboardHighscoreLoggerTests
 {

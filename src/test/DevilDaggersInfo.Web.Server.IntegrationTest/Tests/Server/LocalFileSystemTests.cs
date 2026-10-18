@@ -1,7 +1,7 @@
 using DevilDaggersInfo.Web.Server.Domain.Models.FileSystem;
 using DevilDaggersInfo.Web.Server.Services;
 
-namespace DevilDaggersInfo.Web.Server.Domain.Test.Tests.Server;
+namespace DevilDaggersInfo.Web.Server.IntegrationTest.Tests.Server;
 
 internal sealed class LocalFileSystemTests : IDisposable
 {

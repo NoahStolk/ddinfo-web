@@ -2,6 +2,7 @@
   <Folder Name="/test/">
     <Project Path="test/DevilDaggersInfo.Web.Core.Utils.Test/DevilDaggersInfo.Web.Core.Utils.Test.csproj" />
     <Project Path="test\DevilDaggersInfo.Web.Server.Domain.Test\DevilDaggersInfo.Web.Server.Domain.Test.csproj" />
+    <Project Path="test/DevilDaggersInfo.Web.Server.IntegrationTest/DevilDaggersInfo.Web.Server.IntegrationTest.csproj" />
   </Folder>
   <Project Path="DevilDaggersInfo.DevUtil.DistributeHistoryStats\DevilDaggersInfo.DevUtil.DistributeHistoryStats.csproj" />
   <Project Path="DevilDaggersInfo.DevUtil.FetchLeaderboard\DevilDaggersInfo.DevUtil.FetchLeaderboard.csproj" />
