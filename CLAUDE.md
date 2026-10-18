@@ -16,7 +16,7 @@ All commands run from the repository root. The solution uses the `.slnx` format.
 # Build
 dotnet build src/DevilDaggersInfo.Web.slnx -c Release
 
-# Test
+# Test (the integration tests need a running Docker daemon)
 dotnet test --solution src/DevilDaggersInfo.Web.slnx -c Release --no-build
 
 # Single test / filtered
@@ -72,7 +72,7 @@ Adding a Main API endpoint typically touches: DTO in `ApiSpec.Main` → reposito
 
 Interfaces in `Domain/Services/Inversion/` (`IFileSystem`, `IDdLeaderboardService`, `ILogContainerService`, the custom-leaderboard loggers) exist so the domain stays free of hosting/IO concerns; implementations live in `Web.Server/Services` and `Web.Server/Clients`.
 
-All `Data/` access goes through `IFileSystem`: files are addressed by `DataSubDirectory` plus a `/`-separated name (e.g. `mod-name/00.png`), there are no directories, and every method is async, so the storage can later move to S3. `LocalFileSystem` is the only class allowed to touch the disk: `Microsoft.CodeAnalysis.BannedApiAnalyzers` is a global analyzer, and `Directory.Build.props` gives every project except tests and `DevUtil.*` the list in `src/BannedSymbols.txt`, which bans `System.IO.File`, `Directory`, `FileInfo`, `DirectoryInfo`, `FileStream` and `ZipFile` (RS0030, an error in `src/.globalconfig`). Exempt code with `#pragma warning disable RS0030`, as `LocalFileSystem` and the `keys/` setup in `Program.cs` do. Note that `src/.globalconfig` has the default `global_level` of 100 and `Tests.globalconfig` sets 10, so a rule set in both takes its severity from `src/.globalconfig`. Tests use `InMemoryFileSystem`.
+All `Data/` access goes through `IFileSystem`: files are addressed by `DataSubDirectory` plus a `/`-separated name (e.g. `mod-name/00.png`), there are no directories, and every method is async, so the storage can later move to S3. `LocalFileSystem` is the only class allowed to touch the disk: `Microsoft.CodeAnalysis.BannedApiAnalyzers` is a global analyzer, and `Directory.Build.props` gives every project except tests and `DevUtil.*` the list in `src/BannedSymbols.txt`, which bans `System.IO.File`, `Directory`, `FileInfo`, `DirectoryInfo`, `FileStream` and `ZipFile` (RS0030, an error in `src/.globalconfig`). Exempt code with `#pragma warning disable RS0030`, as `LocalFileSystem` and the `keys/` setup in `Program.cs` do. Note that `src/.globalconfig` has the default `global_level` of 100 and `Tests.globalconfig` sets 10, so a rule set in both takes its severity from `src/.globalconfig`. Domain tests use `InMemoryFileSystem`; integration tests use a real `LocalFileSystem` rooted in a temp directory, because its path resolution is what rejects traversal.
 
 ### Client
 
@@ -84,7 +84,10 @@ Blazor WASM. Pages under `Pages/<Area>/`, reusable components under `Components/
 - `Directory.Build.props`: `net10.0`, `LangVersion 14.0`, nullable enabled with `WarningsAsErrors=nullable`, `AnalysisMode=All`, implicit usings, invariant globalization. Analyzer warnings (StyleCop, Sonar, Roslynator, Nullable.Extended) are numerous and non-blocking — don't chase pre-existing ones, but don't add new ones either.
 - XML doc comments: every documented member needs a `<summary>`, with `<summary>`, the body and `</summary>` each on their own line. Never add `<returns>`, `<param>` or `<exception>` without a `<summary>`.
 - `Directory.Packages.props`: central package management. Add new packages there as `<PackageVersion>` and reference them without a version in the csproj. Dependabot keeps versions current.
-- Tests use TUnit + NSubstitute + EF Core InMemory (`TestDbContext`, `TestData`, `MockEntities`); test-only analyzer relaxations live in `src/test/Tests.globalconfig`. TUnit assertions are awaited (`await Assert.That(actual).IsEqualTo(expected)`), so test methods return `Task`, and `IsEquivalentTo` needs `CollectionOrdering.Matching` to compare collections in order. TUnit runs tests in parallel, so classes that share the file system or a substituted `DbContext` across their cases are marked `[NotInParallel]`.
+- Tests use TUnit + NSubstitute; test-only analyzer relaxations live in `src/test/Tests.globalconfig`. There are two server test projects:
+  - `Web.Server.Domain.Test` references only `Domain` and `Domain.Main` (so it builds without the client or Tailwind) and holds pure unit tests. Its remaining EF InMemory/MockQueryable tests (`TestDbContext`, `TestData`, `MockEntities`) are legacy and are being ported to the integration project; don't add new ones.
+  - `Web.Server.IntegrationTest` boots the real `Program` through `WebApplicationFactory` (`Fixtures/TestApplication`) against a Testcontainers `mariadb:10.3.39` — production's engine and version. Derive DB/HTTP tests from `ApplicationTest`: each class gets its own database and scratch data directory, every table is truncated and the roles re-seeded before each case, and classes are marked `[NotInParallel(nameof(TheClass))]`. Use `App.SeedAsync`, `App.CreateApiClient(jwt)` and `App.CreateJwtAsync(name, roles)`; the app's hosted services are stripped and `IDdLeaderboardService` is a substitute (`App.DdLeaderboardService`). Without Docker these tests are skipped locally, and fail when `CI=true`. Server-internal unit tests that need no database also live here.
+- TUnit assertions are awaited (`await Assert.That(actual).IsEqualTo(expected)`), so test methods return `Task`, and `IsEquivalentTo` needs `CollectionOrdering.Matching` to compare collections in order. TUnit runs tests in parallel, so classes that share the file system or a substituted `DbContext` across their cases are marked `[NotInParallel]`.
 
 ## Reference docs
 

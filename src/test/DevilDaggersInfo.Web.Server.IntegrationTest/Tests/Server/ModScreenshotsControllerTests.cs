@@ -2,7 +2,7 @@ using DevilDaggersInfo.Web.Server.Controllers.Main;
 using DevilDaggersInfo.Web.Server.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DevilDaggersInfo.Web.Server.Domain.Test.Tests.Server;
+namespace DevilDaggersInfo.Web.Server.IntegrationTest.Tests.Server;
 
 internal sealed class ModScreenshotsControllerTests : IDisposable
 {

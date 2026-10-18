@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging.Abstractions;
 using System.Text.Json;
 
-namespace DevilDaggersInfo.Web.Server.Domain.Test.Tests.Server;
+namespace DevilDaggersInfo.Web.Server.IntegrationTest.Tests.Server;
 
 internal sealed class ExceptionMiddlewareTests
 {

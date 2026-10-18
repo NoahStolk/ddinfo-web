@@ -15,8 +15,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!-- TODO: Reference DevilDaggersInfo.Web.Server.Domain or rename the test project. -->
-    <ProjectReference Include="..\..\DevilDaggersInfo.Web.Server\DevilDaggersInfo.Web.Server.csproj" />
+    <!-- Deliberately references only the domain projects. Referencing the server project would pull in the Blazor client,
+         whose build runs the Tailwind CLI. Anything that needs the web layer belongs in DevilDaggersInfo.Web.Server.IntegrationTest. -->
+    <ProjectReference Include="..\..\DevilDaggersInfo.Web.Server.Domain\DevilDaggersInfo.Web.Server.Domain.csproj" />
+    <ProjectReference Include="..\..\DevilDaggersInfo.Web.Server.Domain.Main\DevilDaggersInfo.Web.Server.Domain.Main.csproj" />
   </ItemGroup>
 
   <ItemGroup>

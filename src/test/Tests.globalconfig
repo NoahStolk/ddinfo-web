@@ -10,3 +10,6 @@ dotnet_diagnostic.CA1707.severity = none
 
 # Test classes are instantiated by TUnit through generated code.
 dotnet_diagnostic.CA1812.severity = none
+
+# Pass System.Uri instead of string. Integration tests request relative paths, which read better as strings.
+dotnet_diagnostic.CA2234.severity = none

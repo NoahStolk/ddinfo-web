@@ -3,7 +3,7 @@ using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using Microsoft.Extensions.Logging.Abstractions;
 using System.Net;
 
-namespace DevilDaggersInfo.Web.Server.Domain.Test.Tests.Server;
+namespace DevilDaggersInfo.Web.Server.IntegrationTest.Tests.Server;
 
 internal sealed class DdLeaderboardServiceTests : IDisposable
 {

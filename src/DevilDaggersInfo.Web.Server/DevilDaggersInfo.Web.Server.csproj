@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <InternalsVisibleTo Include="DevilDaggersInfo.Web.Server.Domain.Test" />
+    <InternalsVisibleTo Include="DevilDaggersInfo.Web.Server.IntegrationTest" />
   </ItemGroup>
 
   <ItemGroup>
