@@ -10,12 +10,15 @@ using DevilDaggersInfo.Web.Server.Domain.Test.Utils;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using MockQueryable.NSubstitute;
 using NSubstitute;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Test.Tests.ServerDomain;
 
 internal sealed class CustomEntryProcessorTests
 {
+	private readonly MockEntities _mockEntities = new();
+	private readonly ICustomLeaderboardHighscoreLogger _highscoreLogger = Substitute.For<ICustomLeaderboardHighscoreLogger>();
 	private readonly ApplicationDbContext _dbContext;
 	private readonly CustomEntryProcessor _customEntryProcessor;
 	private readonly AesBase32Wrapper _encryptionWrapper;
@@ -31,15 +34,13 @@ internal sealed class CustomEntryProcessorTests
 
 		_v3Hash = MD5.HashData(spawnsetBinary.ToBytes());
 
-		MockEntities mockEntities = new();
-
 		DbContextOptionsBuilder<ApplicationDbContext> optionsBuilder = new();
 		_dbContext = Substitute.For<ApplicationDbContext>(optionsBuilder.Options, Substitute.For<IHttpContextAccessor>(), Substitute.For<ILogContainerService>());
-		_dbContext.Players.Returns(mockEntities.MockDbSetPlayers);
-		_dbContext.Spawnsets.Returns(mockEntities.MockDbSetSpawnsets);
-		_dbContext.CustomLeaderboards.Returns(mockEntities.MockDbSetCustomLeaderboards);
-		_dbContext.CustomEntries.Returns(mockEntities.MockDbSetCustomEntries);
-		_dbContext.CustomEntryData.Returns(mockEntities.MockDbSetCustomEntryData);
+		_dbContext.Players.Returns(_mockEntities.MockDbSetPlayers);
+		_dbContext.Spawnsets.Returns(_mockEntities.MockDbSetSpawnsets);
+		_dbContext.CustomLeaderboards.Returns(_mockEntities.MockDbSetCustomLeaderboards);
+		_dbContext.CustomEntries.Returns(_mockEntities.MockDbSetCustomEntries);
+		_dbContext.CustomEntryData.Returns(_mockEntities.MockDbSetCustomEntryData);
 
 		ILogger<CustomEntryProcessor> customEntryProcessorLogger = Substitute.For<ILogger<CustomEntryProcessor>>();
 
@@ -58,7 +59,7 @@ internal sealed class CustomEntryProcessorTests
 			logger: customEntryProcessorLogger,
 			fileSystem: new InMemoryFileSystem(),
 			customLeaderboardsOptions: new OptionsWrapper<CustomLeaderboardsOptions>(options),
-			highscoreLogger: Substitute.For<ICustomLeaderboardHighscoreLogger>(),
+			highscoreLogger: _highscoreLogger,
 			submissionLogger: Substitute.For<ICustomLeaderboardSubmissionLogger>())
 		{
 			IsUnitTest = true,
@@ -232,6 +233,40 @@ internal sealed class CustomEntryProcessorTests
 		await _dbContext.ReceivedWithAnyArgs().SaveChangesAsync();
 		await Assert.That(response.Success?.SortedEntries.Count).IsEqualTo(1);
 		await Assert.That(response.Success?.SubmissionType).IsEqualTo(SubmissionType.NewHighscore);
+	}
+
+	[Test]
+	public async Task ProcessUploadRequest_ExistingPlayer_ExistingEntry_NewHighscore_RankDifference()
+	{
+		// Player 1 is at 16.6666 seconds and player 2 is ahead of them at 18 seconds.
+		CustomEntryEntity otherEntry = new()
+		{
+			Id = 2,
+			ClientVersion = TestConstants.DdclVersion,
+			CustomLeaderboardId = 1,
+			CustomLeaderboard = _mockEntities.CustomLeaderboard,
+			PlayerId = 2,
+			Player = _mockEntities.TestPlayer2,
+			Time = 180000,
+			SubmitDate = DateTime.UtcNow,
+		};
+		DbSet<CustomEntryEntity> customEntries = new[] { _mockEntities.CustomEntry, otherEntry }.BuildMockDbSet();
+		_dbContext.CustomEntries.Returns(customEntries);
+
+		UploadRequest uploadRequest = CreateUploadRequest(20, 1, 4, TestConstants.DdclVersion);
+		UploadResponse response = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
+
+		await Assert.That(response.Success?.SubmissionType).IsEqualTo(SubmissionType.NewHighscore);
+		await Assert.That(response.Success?.RankState).IsEqualTo(new UploadResponseScoreState<int>(1, 1));
+		_highscoreLogger.Received(1).LogHighscore(
+			customLeaderboard: Arg.Any<CustomLeaderboardEntity>(),
+			customEntry: Arg.Any<IDaggerStatCustomEntry>(),
+			rank: 1,
+			rankDifference: 1,
+			totalPlayers: 2,
+			playerName: Arg.Any<string>(),
+			spawnsetName: Arg.Any<string>(),
+			valueDifference: Arg.Any<int>());
 	}
 
 	[Test]

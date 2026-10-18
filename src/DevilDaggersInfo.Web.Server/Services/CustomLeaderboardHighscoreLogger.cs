@@ -41,6 +41,7 @@ internal sealed class CustomLeaderboardHighscoreLogger(ILogger<CustomLeaderboard
 		CustomLeaderboardEntity customLeaderboard,
 		IDaggerStatCustomEntry customEntry,
 		int rank,
+		int rankDifference,
 		int totalPlayers,
 		string playerName,
 		string spawnsetName,
@@ -56,7 +57,7 @@ internal sealed class CustomLeaderboardHighscoreLogger(ILogger<CustomLeaderboard
 
 		_highscoreLogs.Add(new CustomLeaderboardHighscoreLog
 		{
-			RankValue = $"{rank}/{totalPlayers}",
+			RankValue = $"{rank}/{totalPlayers} ({rankDifference:+0;-0;+0})",
 			Dagger = dagger,
 			Message = message,
 			CustomLeaderboardId = customLeaderboard.Id,

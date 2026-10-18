@@ -499,13 +499,14 @@ public sealed class CustomEntryProcessor(
 		};
 
 		highscoreLogger.LogHighscore(
-			customLeaderboard,
-			customEntry,
-			rank,
-			entries.Count,
-			uploadRequest.PlayerName,
-			spawnsetName,
-			rankSortingValueDifference);
+			customLeaderboard: customLeaderboard,
+			customEntry: customEntry,
+			rank: rank,
+			rankDifference: rankDiff,
+			totalPlayers: entries.Count,
+			playerName: uploadRequest.PlayerName,
+			spawnsetName: spawnsetName,
+			valueDifference: rankSortingValueDifference);
 		Log(uploadRequest, spawnsetName);
 
 		List<int> replayIds = await GetExistingReplayIdsAsync(entries.ConvertAll(ce => ce.Id));
