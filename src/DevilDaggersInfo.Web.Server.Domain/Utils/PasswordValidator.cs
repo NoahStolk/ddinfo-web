@@ -7,17 +7,9 @@ namespace DevilDaggersInfo.Web.Server.Domain.Utils;
 
 public static partial class PasswordValidator
 {
-	/// <summary>
-	/// Whether the password meets the length and character requirements that <see cref="CreatePasswordHash"/> enforces.
-	/// </summary>
-	public static bool MeetsRequirements(string password)
-	{
-		return PasswordRegex().IsMatch(password);
-	}
-
 	public static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
 	{
-		if (!MeetsRequirements(password))
+		if (!PasswordRegex().IsMatch(password))
 			throw new ArgumentException("Password does not meet the requirements.", nameof(password));
 
 		using HMACSHA512 hmac = new();

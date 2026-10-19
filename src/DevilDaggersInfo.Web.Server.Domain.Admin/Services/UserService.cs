@@ -3,7 +3,6 @@ using DevilDaggersInfo.Web.Server.Domain.Admin.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Services;
-using DevilDaggersInfo.Web.Server.Domain.Utils;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -78,9 +77,6 @@ public sealed class UserService(ApplicationDbContext dbContext, UserManager user
 		UserEntity? user = await dbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
 		if (user == null)
 			throw new NotFoundException();
-
-		if (!PasswordValidator.MeetsRequirements(resetPassword.NewPassword))
-			throw new AdminDomainException("Password must be 12 to 40 characters long and contain at least one uppercase letter, one lowercase letter and one digit.");
 
 		await userManager.UpdatePasswordAsync(id, resetPassword.NewPassword);
 

@@ -148,7 +148,8 @@ internal sealed class AdminUsersTests : ApplicationTest
 	{
 		using HttpResponseMessage response = await _client.PutAsJsonAsync($"api/admin/users/{_targetUserId}/reset-password", new ResetPassword { NewPassword = "short" });
 
-		await Assert.That(response.StatusCode).IsEqualTo(HttpStatusCode.BadRequest).Because(await response.Content.ReadAsStringAsync());
+		// Rejected by the [RegularExpression] on the request, before the action runs.
+		await ProblemAssertions.AssertValidationProblemAsync(response);
 
 		// The old password still works.
 		using HttpClient target = await LoginAsTargetAsync();
