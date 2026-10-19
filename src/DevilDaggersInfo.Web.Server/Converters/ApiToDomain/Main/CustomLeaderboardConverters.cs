@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
-using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
+using System.Diagnostics;
 using MainApi = DevilDaggersInfo.Web.ApiSpec.Main.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Main;
@@ -24,7 +24,8 @@ internal static class CustomLeaderboardConverters
 			MainApi.CustomLeaderboardSorting.Players => CustomLeaderboardSorting.Players,
 			MainApi.CustomLeaderboardSorting.TopPlayer => CustomLeaderboardSorting.TopPlayer,
 			MainApi.CustomLeaderboardSorting.WorldRecord => CustomLeaderboardSorting.WorldRecord,
-			_ => throw new BadRequestException($"'{customLeaderboardSorting}' is not a valid custom leaderboard sorting."),
+			// Model binding rejects undefined enum values in the query string with a validation problem.
+			_ => throw new UnreachableException(),
 		};
 	}
 
@@ -50,7 +51,8 @@ internal static class CustomLeaderboardConverters
 			MainApi.CustomLeaderboardRankSorting.HomingStoredDesc => CustomLeaderboardRankSorting.HomingStoredDesc,
 			MainApi.CustomLeaderboardRankSorting.HomingEatenDesc => CustomLeaderboardRankSorting.HomingEatenDesc,
 
-			_ => throw new BadRequestException($"'{rankSorting}' is not a valid rank sorting."),
+			// Model binding rejects undefined enum values in the query string with a validation problem.
+			_ => throw new UnreachableException(),
 		};
 	}
 }

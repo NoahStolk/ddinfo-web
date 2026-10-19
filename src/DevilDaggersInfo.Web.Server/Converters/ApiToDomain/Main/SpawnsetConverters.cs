@@ -1,5 +1,5 @@
 using DevilDaggersInfo.Web.Server.Domain.Entities.Enums;
-using DevilDaggersInfo.Web.Server.Domain.Exceptions;
+using System.Diagnostics;
 using MainApi = DevilDaggersInfo.Web.ApiSpec.Main.Spawnsets;
 
 namespace DevilDaggersInfo.Web.Server.Converters.ApiToDomain.Main;
@@ -13,7 +13,8 @@ internal static class SpawnsetConverters
 			MainApi.GameMode.Survival => SpawnsetGameMode.Survival,
 			MainApi.GameMode.TimeAttack => SpawnsetGameMode.TimeAttack,
 			MainApi.GameMode.Race => SpawnsetGameMode.Race,
-			_ => throw new BadRequestException($"'{gameMode}' is not a valid game mode."),
+			// Model binding rejects undefined enum values in the query string with a validation problem.
+			_ => throw new UnreachableException(),
 		};
 	}
 }
