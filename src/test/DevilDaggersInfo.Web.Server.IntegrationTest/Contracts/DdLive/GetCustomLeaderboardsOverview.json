@@ -1,0 +1,26 @@
+[
+	{
+		"id": 1,
+		"spawnsetName": "V3",
+		"spawnsetAuthorId": 1,
+		"spawnsetAuthorName": "Player 1",
+		"daggers": {
+			"bronze": 60,
+			"silver": 120,
+			"golden": 250,
+			"devil": 500,
+			"leviathan": 1000
+		},
+		"dateLastPlayed": "2024-01-01T00:00:00",
+		"dateCreated": "2024-01-01T00:00:00",
+		"submitCount": 666,
+		"playerCount": 2,
+		"category": 1,
+		"spawnsetGameMode": 0,
+		"rankSorting": 0,
+		"topPlayerId": 2,
+		"topPlayerName": "Player 2",
+		"worldRecord": 18,
+		"worldRecordDagger": 5
+	}
+]

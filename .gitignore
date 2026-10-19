@@ -285,3 +285,6 @@ tailwind.css.map
 
 # Data protection
 */**/DevilDaggersInfo.Web.Server/keys
+
+# Contract snapshots that a test wrote because they differ from the approved ones. Review, then rename to approve.
+*.received.json

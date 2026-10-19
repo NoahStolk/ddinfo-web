@@ -19,8 +19,6 @@ internal sealed class ErrorResponseContractTests : ApplicationTest
 	[Arguments("api/app/spawnsets/999/buffer", HttpStatusCode.NotFound)]
 	[Arguments("api/app/process-memory/marker?appOperatingSystem=Windows", HttpStatusCode.NotFound)]
 	[Arguments("api/app/process-memory/marker?appOperatingSystem=Mac", HttpStatusCode.BadRequest)]
-	[Arguments("api/custom-leaderboards?gameMode=0&rankSorting=99", HttpStatusCode.BadRequest)]
-	[Arguments("api/custom-leaderboards?gameMode=99&rankSorting=0", HttpStatusCode.BadRequest)]
 	public async Task DomainException_IsReturnedAsAProblemResponse(string route, HttpStatusCode expected)
 	{
 		using HttpClient client = App.CreateApiClient();
@@ -35,6 +33,22 @@ internal sealed class ErrorResponseContractTests : ApplicationTest
 		// The status is repeated in the body, and the exception message becomes the title.
 		await Assert.That(document.RootElement.GetProperty("status").GetInt32()).IsEqualTo((int)expected);
 		await Assert.That(document.RootElement.GetProperty("title").GetString()).IsNotNull();
+	}
+
+	/// <summary>
+	/// Model binding rejects an undefined enum value in the query string before the action runs, so the API-to-domain
+	/// converters never see one. JSON request bodies are not checked this way; see the Admin tests for those.
+	/// </summary>
+	[Test]
+	[Arguments("api/custom-leaderboards?gameMode=0&rankSorting=99")]
+	[Arguments("api/custom-leaderboards?gameMode=99&rankSorting=0")]
+	[Arguments("api/process-memory/marker?operatingSystem=3")]
+	public async Task UndefinedEnumValueInTheQueryString_IsAValidationProblem(string route)
+	{
+		using HttpClient client = App.CreateApiClient();
+		using HttpResponseMessage response = await client.GetAsync(route);
+
+		await ProblemAssertions.AssertValidationProblemAsync(response);
 	}
 
 	[Test]

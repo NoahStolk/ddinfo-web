@@ -1,0 +1,46 @@
+{
+	"audioAudio": {
+		"name": "andrasimpact",
+		"description": "Unused",
+		"tags": [
+			"Andras",
+			"Enemy",
+			"Unused"
+		]
+	},
+	"coreShaders": {
+		"name": "gui",
+		"description": "?",
+		"tags": [
+			"UI"
+		]
+	},
+	"ddModels": {
+		"name": "bat",
+		"description": "?",
+		"tags": [
+			"?"
+		]
+	},
+	"ddModelBindings": {
+		"name": "bat",
+		"description": "Unused",
+		"tags": [
+			"?"
+		]
+	},
+	"ddShaders": {
+		"name": "boid",
+		"description": "?",
+		"tags": [
+			"?"
+		]
+	},
+	"ddTextures": {
+		"name": "blood",
+		"description": "Blood decals",
+		"tags": [
+			"Particles"
+		]
+	}
+}
