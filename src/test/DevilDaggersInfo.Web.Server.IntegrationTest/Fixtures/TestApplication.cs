@@ -183,6 +183,11 @@ internal sealed class TestApplication : WebApplicationFactory<Program>
 
 		scope.ServiceProvider.GetRequiredService<ModArchiveCache>().Clear();
 		scope.ServiceProvider.GetRequiredService<ILeaderboardHistoryCache>().Clear();
+
+		// DiscordLogFlushBackgroundService normally drains these, but the hosted services are removed.
+		ILogContainerService logContainerService = scope.ServiceProvider.GetRequiredService<ILogContainerService>();
+		logContainerService.AuditLogEntries.Clear();
+		logContainerService.LogEntries.Clear();
 	}
 
 	/// <summary>

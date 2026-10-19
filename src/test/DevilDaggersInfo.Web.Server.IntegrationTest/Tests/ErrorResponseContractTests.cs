@@ -19,6 +19,8 @@ internal sealed class ErrorResponseContractTests : ApplicationTest
 	[Arguments("api/app/spawnsets/999/buffer", HttpStatusCode.NotFound)]
 	[Arguments("api/app/process-memory/marker?appOperatingSystem=Windows", HttpStatusCode.NotFound)]
 	[Arguments("api/app/process-memory/marker?appOperatingSystem=Mac", HttpStatusCode.BadRequest)]
+	[Arguments("api/custom-leaderboards?gameMode=0&rankSorting=99", HttpStatusCode.BadRequest)]
+	[Arguments("api/custom-leaderboards?gameMode=99&rankSorting=0", HttpStatusCode.BadRequest)]
 	public async Task DomainException_IsReturnedAsAProblemResponse(string route, HttpStatusCode expected)
 	{
 		using HttpClient client = App.CreateApiClient();
