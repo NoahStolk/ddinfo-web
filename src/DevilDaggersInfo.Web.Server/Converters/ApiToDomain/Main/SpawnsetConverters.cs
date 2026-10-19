@@ -13,6 +13,7 @@ internal static class SpawnsetConverters
 			MainApi.GameMode.Survival => SpawnsetGameMode.Survival,
 			MainApi.GameMode.TimeAttack => SpawnsetGameMode.TimeAttack,
 			MainApi.GameMode.Race => SpawnsetGameMode.Race,
+
 			// Model binding rejects undefined enum values in the query string with a validation problem.
 			_ => throw new UnreachableException(),
 		};

@@ -24,6 +24,7 @@ internal static class CustomLeaderboardConverters
 			MainApi.CustomLeaderboardSorting.Players => CustomLeaderboardSorting.Players,
 			MainApi.CustomLeaderboardSorting.TopPlayer => CustomLeaderboardSorting.TopPlayer,
 			MainApi.CustomLeaderboardSorting.WorldRecord => CustomLeaderboardSorting.WorldRecord,
+
 			// Model binding rejects undefined enum values in the query string with a validation problem.
 			_ => throw new UnreachableException(),
 		};
