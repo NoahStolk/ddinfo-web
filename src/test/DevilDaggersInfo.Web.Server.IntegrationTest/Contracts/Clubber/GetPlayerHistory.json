@@ -1,0 +1,49 @@
+{
+	"bestRank": 1,
+	"hidePastUsernames": false,
+	"usernames": [
+		"Player 1"
+	],
+	"scoreHistory": [
+		{
+			"dateTime": "2022-01-01T00:00:00",
+			"rank": 1,
+			"username": "Player 1",
+			"time": 0.009,
+			"kills": 0,
+			"gems": 0,
+			"deathType": 0,
+			"daggersHit": 0,
+			"daggersFired": 0
+		},
+		{
+			"dateTime": "2022-01-03T00:00:00",
+			"rank": 1,
+			"username": "Player 1",
+			"time": 0.0095,
+			"kills": 0,
+			"gems": 0,
+			"deathType": 0,
+			"daggersHit": 0,
+			"daggersFired": 0
+		},
+		{
+			"dateTime": "2022-01-04T00:00:00",
+			"rank": 1,
+			"username": "Player 1",
+			"time": 0.0098,
+			"kills": 0,
+			"gems": 0,
+			"deathType": 0,
+			"daggersHit": 0,
+			"daggersFired": 0
+		}
+	],
+	"activityHistory": [],
+	"rankHistory": [
+		{
+			"dateTime": "2022-01-01T00:00:00",
+			"rank": 1
+		}
+	]
+}

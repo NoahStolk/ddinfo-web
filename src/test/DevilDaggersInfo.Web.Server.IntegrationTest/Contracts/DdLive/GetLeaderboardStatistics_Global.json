@@ -1,0 +1,37 @@
+{
+	"dateTime": "2024-01-01T00:00:00Z",
+	"isFetched": true,
+	"totalEntries": 12,
+	"statistics": {
+		"times": {
+			"average": 705,
+			"median": 750,
+			"mode": 210
+		},
+		"kills": {
+			"average": 1175,
+			"median": 1250,
+			"mode": 350
+		},
+		"gems": {
+			"average": 515,
+			"median": 550,
+			"mode": 130
+		},
+		"daggersFired": {
+			"average": 11750,
+			"median": 12500,
+			"mode": 3500
+		},
+		"daggersHit": {
+			"average": 2350,
+			"median": 2500,
+			"mode": 700
+		},
+		"accuracy": {
+			"average": 20,
+			"median": 20,
+			"mode": 20
+		}
+	}
+}

@@ -1,0 +1,43 @@
+[
+	{
+		"name": "Hosted",
+		"htmlDescription": null,
+		"trailerUrl": null,
+		"authors": [
+			"Alice",
+			"Bob"
+		],
+		"lastUpdated": "2024-01-01T00:00:00",
+		"assetModTypes": 4,
+		"isHostedOnDdInfo": true,
+		"containsProhibitedAssets": false,
+		"modArchive": {
+			"fileSize": 176,
+			"fileSizeExtracted": 56,
+			"binaries": [
+				{
+					"name": "dd-Hosted-main",
+					"size": 56,
+					"modBinaryType": 1
+				}
+			]
+		},
+		"screenshotFileNames": [
+			"00.png"
+		]
+	},
+	{
+		"name": "NotHosted",
+		"htmlDescription": null,
+		"trailerUrl": null,
+		"authors": [
+			"Bob"
+		],
+		"lastUpdated": "2024-01-01T00:00:00",
+		"assetModTypes": 0,
+		"isHostedOnDdInfo": false,
+		"containsProhibitedAssets": null,
+		"modArchive": null,
+		"screenshotFileNames": []
+	}
+]

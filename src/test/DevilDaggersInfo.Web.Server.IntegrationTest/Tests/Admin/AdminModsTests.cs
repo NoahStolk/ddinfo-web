@@ -20,8 +20,6 @@ namespace DevilDaggersInfo.Web.Server.IntegrationTest.Tests.Admin;
 [NotInParallel(nameof(AdminModsTests))]
 internal sealed class AdminModsTests : ApplicationTest
 {
-	private static readonly byte[] _png = File.ReadAllBytes(Path.Combine("Resources", "Textures", "green.png"));
-
 	// ! Assigned by the before-test hook, which TUnit runs before every test method.
 	private HttpClient _client = null!;
 
@@ -36,16 +34,6 @@ internal sealed class AdminModsTests : ApplicationTest
 	public void DisposeAdminClient()
 	{
 		_client.Dispose();
-	}
-
-	/// <summary>
-	/// A minimal valid DD mod binary: one object binding, which is enough for the archive validation to accept it.
-	/// </summary>
-	private static BinaryData Binary(string name)
-	{
-		DdModBinaryBuilder builder = new();
-		builder.AddObjectBinding($"{name}-binding", [.. "shader = \"boid\""u8]);
-		return new BinaryData { Name = name, Data = builder.Compile() };
 	}
 
 	private static AddMod CreateAddMod(string name, List<BinaryData>? binaries = null, Dictionary<string, byte[]>? screenshots = null)
@@ -111,7 +99,7 @@ internal sealed class AdminModsTests : ApplicationTest
 	[Test]
 	public async Task Add_WritesTheArchiveAndScreenshots_AndIsServedByMainAndDdae()
 	{
-		await AddAsync(CreateAddMod("AdminMod", [Binary("main")], new Dictionary<string, byte[]>(StringComparer.Ordinal) { ["first"] = _png }));
+		await AddAsync(CreateAddMod("AdminMod", [ModFixtures.Binary("main")], new Dictionary<string, byte[]>(StringComparer.Ordinal) { ["first"] = ModFixtures.Png }));
 
 		await Assert.That(await FileExistsAsync(DataSubDirectory.Mods, "AdminMod.zip")).IsTrue();
 		await Assert.That(await FileExistsAsync(DataSubDirectory.ModScreenshots, "AdminMod/00.png")).IsTrue();
@@ -133,7 +121,7 @@ internal sealed class AdminModsTests : ApplicationTest
 		using (HttpResponseMessage screenshot = await anonymous.GetAsync("api/mod-screenshots?modName=AdminMod&fileName=00.png"))
 		{
 			await Assert.That(screenshot.StatusCode).IsEqualTo(HttpStatusCode.OK);
-			await Assert.That(await screenshot.Content.ReadAsByteArrayAsync()).IsEquivalentTo(_png, CollectionOrdering.Matching);
+			await Assert.That(await screenshot.Content.ReadAsByteArrayAsync()).IsEquivalentTo(ModFixtures.Png, CollectionOrdering.Matching);
 		}
 
 		using HttpResponseMessage ddae = await anonymous.GetAsync("api/ddae/mods");
@@ -143,7 +131,7 @@ internal sealed class AdminModsTests : ApplicationTest
 	[Test]
 	public async Task Add_SkipsScreenshotsThatAreNotPng()
 	{
-		await AddAsync(CreateAddMod("AdminMod", screenshots: new Dictionary<string, byte[]>(StringComparer.Ordinal) { ["text"] = "not an image"u8.ToArray(), ["image"] = _png }));
+		await AddAsync(CreateAddMod("AdminMod", screenshots: new Dictionary<string, byte[]>(StringComparer.Ordinal) { ["text"] = "not an image"u8.ToArray(), ["image"] = ModFixtures.Png }));
 
 		(_, string[] screenshotNames) = await GetAdminModAsync(1);
 		await Assert.That(screenshotNames).IsEquivalentTo(["00.png"], CollectionOrdering.Matching);
@@ -169,7 +157,7 @@ internal sealed class AdminModsTests : ApplicationTest
 	[Test]
 	public async Task Add_RejectsDuplicateBinaryNames()
 	{
-		using HttpResponseMessage response = await _client.PostAsJsonAsync("api/admin/mods", CreateAddMod("AdminMod", [Binary("main"), Binary("main")]));
+		using HttpResponseMessage response = await _client.PostAsJsonAsync("api/admin/mods", CreateAddMod("AdminMod", [ModFixtures.Binary("main"), ModFixtures.Binary("main")]));
 
 		await ProblemAssertions.AssertProblemAsync(response, HttpStatusCode.BadRequest, "Binary names must all be unique.");
 		await Assert.That(await FileExistsAsync(DataSubDirectory.Mods, "AdminMod.zip")).IsFalse();
@@ -187,7 +175,7 @@ internal sealed class AdminModsTests : ApplicationTest
 	[Test]
 	public async Task Edit_RenameMovesTheArchiveAndScreenshots()
 	{
-		await AddAsync(CreateAddMod("Before", [Binary("main")], new Dictionary<string, byte[]>(StringComparer.Ordinal) { ["first"] = _png }));
+		await AddAsync(CreateAddMod("Before", [ModFixtures.Binary("main")], new Dictionary<string, byte[]>(StringComparer.Ordinal) { ["first"] = ModFixtures.Png }));
 
 		using (HttpResponseMessage edited = await _client.PutAsJsonAsync("api/admin/mods/1", CreateEditMod("After")))
 			await Assert.That(edited.StatusCode).IsEqualTo(HttpStatusCode.OK).Because(await edited.Content.ReadAsStringAsync());
@@ -205,9 +193,9 @@ internal sealed class AdminModsTests : ApplicationTest
 	[Test]
 	public async Task Edit_AddsAndDeletesBinariesAndScreenshots()
 	{
-		await AddAsync(CreateAddMod("AdminMod", [Binary("main")], new Dictionary<string, byte[]>(StringComparer.Ordinal) { ["first"] = _png }));
+		await AddAsync(CreateAddMod("AdminMod", [ModFixtures.Binary("main")], new Dictionary<string, byte[]>(StringComparer.Ordinal) { ["first"] = ModFixtures.Png }));
 
-		EditMod editMod = CreateEditMod("AdminMod", binariesToDelete: ["dd-AdminMod-main"], binaries: [Binary("second")], screenshotsToDelete: ["00.png"]);
+		EditMod editMod = CreateEditMod("AdminMod", binariesToDelete: ["dd-AdminMod-main"], binaries: [ModFixtures.Binary("second")], screenshotsToDelete: ["00.png"]);
 		using (HttpResponseMessage edited = await _client.PutAsJsonAsync("api/admin/mods/1", editMod))
 			await Assert.That(edited.StatusCode).IsEqualTo(HttpStatusCode.OK).Because(await edited.Content.ReadAsStringAsync());
 
@@ -219,9 +207,9 @@ internal sealed class AdminModsTests : ApplicationTest
 	[Test]
 	public async Task Edit_RejectsAddingABinaryThatAlreadyExists()
 	{
-		await AddAsync(CreateAddMod("AdminMod", [Binary("main")]));
+		await AddAsync(CreateAddMod("AdminMod", [ModFixtures.Binary("main")]));
 
-		using HttpResponseMessage response = await _client.PutAsJsonAsync("api/admin/mods/1", CreateEditMod("AdminMod", binaries: [Binary("main")]));
+		using HttpResponseMessage response = await _client.PutAsJsonAsync("api/admin/mods/1", CreateEditMod("AdminMod", binaries: [ModFixtures.Binary("main")]));
 		await ProblemAssertions.AssertProblemAsync(response, HttpStatusCode.BadRequest, "exact same names");
 	}
 
@@ -233,7 +221,7 @@ internal sealed class AdminModsTests : ApplicationTest
 	[Test]
 	public async Task Edit_RejectedEdit_KeepsTheOriginalArchive()
 	{
-		await AddAsync(CreateAddMod("AdminMod", [Binary("main")]));
+		await AddAsync(CreateAddMod("AdminMod", [ModFixtures.Binary("main")]));
 
 		AudioModBinaryBuilder audio = new();
 		audio.AddAudio("boid", new byte[64], 1.0f);
@@ -257,7 +245,7 @@ internal sealed class AdminModsTests : ApplicationTest
 	[Test]
 	public async Task Edit_DeletingEveryBinary_LeavesTheModWithoutAnArchive()
 	{
-		await AddAsync(CreateAddMod("AdminMod", [Binary("main")]));
+		await AddAsync(CreateAddMod("AdminMod", [ModFixtures.Binary("main")]));
 
 		using (HttpResponseMessage edited = await _client.PutAsJsonAsync("api/admin/mods/1", CreateEditMod("AdminMod", binariesToDelete: ["dd-AdminMod-main"])))
 			await Assert.That(edited.StatusCode).IsEqualTo(HttpStatusCode.OK).Because(await edited.Content.ReadAsStringAsync());
@@ -282,7 +270,7 @@ internal sealed class AdminModsTests : ApplicationTest
 	[Test]
 	public async Task Edit_RejectsABinaryToDeleteThatIsNotAFullBinaryName()
 	{
-		await AddAsync(CreateAddMod("AdminMod", [Binary("main")]));
+		await AddAsync(CreateAddMod("AdminMod", [ModFixtures.Binary("main")]));
 
 		using HttpResponseMessage response = await _client.PutAsJsonAsync("api/admin/mods/1", CreateEditMod("AdminMod", binariesToDelete: ["main"]));
 		await Assert.That(response.StatusCode).IsEqualTo(HttpStatusCode.BadRequest).Because(await response.Content.ReadAsStringAsync());
@@ -300,7 +288,7 @@ internal sealed class AdminModsTests : ApplicationTest
 	[Test]
 	public async Task Delete_RemovesTheArchiveScreenshotsAndAuthorLinks()
 	{
-		await AddAsync(CreateAddMod("AdminMod", [Binary("main")], new Dictionary<string, byte[]>(StringComparer.Ordinal) { ["first"] = _png }));
+		await AddAsync(CreateAddMod("AdminMod", [ModFixtures.Binary("main")], new Dictionary<string, byte[]>(StringComparer.Ordinal) { ["first"] = ModFixtures.Png }));
 
 		using (HttpResponseMessage deleted = await _client.DeleteAsync("api/admin/mods/1"))
 			await Assert.That(deleted.StatusCode).IsEqualTo(HttpStatusCode.OK);

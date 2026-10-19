@@ -1,0 +1,46 @@
+[
+	{
+		"id": 1,
+		"maxDisplayWaves": 5,
+		"htmlDescription": "",
+		"lastUpdated": "2024-01-01T00:00:00",
+		"spawnsetData": {
+			"spawnVersion": 4,
+			"worldVersion": 9,
+			"gameMode": 0,
+			"nonLoopSpawnCount": 90,
+			"loopSpawnCount": 17,
+			"nonLoopLength": 451,
+			"loopLength": 56,
+			"hand": 1,
+			"additionalGems": 0,
+			"timerStart": 0
+		},
+		"name": "V3",
+		"authorName": "Alice",
+		"hasCustomLeaderboard": true,
+		"isPractice": false
+	},
+	{
+		"id": 2,
+		"maxDisplayWaves": null,
+		"htmlDescription": null,
+		"lastUpdated": "2024-01-01T00:00:00",
+		"spawnsetData": {
+			"spawnVersion": 6,
+			"worldVersion": 9,
+			"gameMode": 0,
+			"nonLoopSpawnCount": 1,
+			"loopSpawnCount": 1,
+			"nonLoopLength": 0.001,
+			"loopLength": 0.001,
+			"hand": 1,
+			"additionalGems": 0,
+			"timerStart": 0
+		},
+		"name": "Placeholder",
+		"authorName": "Bob",
+		"hasCustomLeaderboard": false,
+		"isPractice": false
+	}
+]
