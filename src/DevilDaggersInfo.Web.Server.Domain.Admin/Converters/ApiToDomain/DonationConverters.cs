@@ -1,5 +1,5 @@
 using DevilDaggersInfo.Web.ApiSpec.Admin.Donations;
-using System.Diagnostics;
+using DevilDaggersInfo.Web.Server.Domain.Admin.Exceptions;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Admin.Converters.ApiToDomain;
 
@@ -15,7 +15,7 @@ public static class DonationConverters
 			Currency.Gbp => Entities.Enums.Currency.Gbp,
 			Currency.Sgd => Entities.Enums.Currency.Sgd,
 			Currency.Rub => Entities.Enums.Currency.Rub,
-			_ => throw new UnreachableException(),
+			_ => throw new AdminDomainException($"'{currency}' is not a valid currency."),
 		};
 	}
 }

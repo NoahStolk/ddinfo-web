@@ -1,5 +1,5 @@
 using DevilDaggersInfo.Web.ApiSpec.Admin.Players;
-using System.Diagnostics;
+using DevilDaggersInfo.Web.Server.Domain.Admin.Exceptions;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Admin.Converters.ApiToDomain;
 
@@ -15,7 +15,7 @@ public static class PlayerConverters
 			BanType.Boosted => Entities.Enums.BanType.Boosted,
 			BanType.IllegitimateStats => Entities.Enums.BanType.IllegitimateStats,
 			BanType.BlankName => Entities.Enums.BanType.BlankName,
-			_ => throw new UnreachableException(),
+			_ => throw new AdminDomainException($"'{banType}' is not a valid ban type."),
 		};
 	}
 
@@ -27,7 +27,7 @@ public static class PlayerConverters
 			VerticalSync.Off => Entities.Enums.VerticalSync.Off,
 			VerticalSync.On => Entities.Enums.VerticalSync.On,
 			VerticalSync.Adaptive => Entities.Enums.VerticalSync.Adaptive,
-			_ => throw new UnreachableException(),
+			_ => throw new AdminDomainException($"'{verticalSync}' is not a valid vertical sync setting."),
 		};
 	}
 }

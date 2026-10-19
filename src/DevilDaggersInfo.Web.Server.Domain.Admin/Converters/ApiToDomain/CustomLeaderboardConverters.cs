@@ -1,5 +1,5 @@
 using DevilDaggersInfo.Core.CriteriaExpression;
-using System.Diagnostics;
+using DevilDaggersInfo.Web.Server.Domain.Admin.Exceptions;
 using AdminApi = DevilDaggersInfo.Web.ApiSpec.Admin.CustomLeaderboards;
 
 namespace DevilDaggersInfo.Web.Server.Domain.Admin.Converters.ApiToDomain;
@@ -26,7 +26,7 @@ public static class CustomLeaderboardConverters
 			AdminApi.CustomLeaderboardRankSorting.HomingStoredAsc => Entities.Enums.CustomLeaderboardRankSorting.HomingStoredAsc,
 			AdminApi.CustomLeaderboardRankSorting.HomingEatenDesc => Entities.Enums.CustomLeaderboardRankSorting.HomingEatenDesc,
 			AdminApi.CustomLeaderboardRankSorting.HomingEatenAsc => Entities.Enums.CustomLeaderboardRankSorting.HomingEatenAsc,
-			_ => throw new UnreachableException(),
+			_ => throw new AdminDomainException($"'{rankSorting}' is not a valid rank sorting."),
 		};
 	}
 
@@ -42,7 +42,7 @@ public static class CustomLeaderboardConverters
 			AdminApi.CustomLeaderboardCriteriaOperator.GreaterThanOrEqual => CustomLeaderboardCriteriaOperator.GreaterThanOrEqual,
 			AdminApi.CustomLeaderboardCriteriaOperator.Modulo => CustomLeaderboardCriteriaOperator.Modulo,
 			AdminApi.CustomLeaderboardCriteriaOperator.NotEqual => CustomLeaderboardCriteriaOperator.NotEqual,
-			_ => throw new UnreachableException(),
+			_ => throw new AdminDomainException($"'{@operator}' is not a valid criteria operator."),
 		};
 	}
 }
