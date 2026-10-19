@@ -1,4 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
+using NSubstitute;
+using NSubstitute.ClearExtensions;
 
 namespace DevilDaggersInfo.Web.Server.IntegrationTest.Fixtures;
 
@@ -33,6 +35,11 @@ internal abstract class ApplicationTest
 	public async Task InitializeApplicationAsync()
 	{
 		App = await Database.GetApplicationAsync(GetType().Name, ConfigureServices);
+
+		// The substitute is a singleton that outlives each case, and is cleared even when the reset is skipped. Without
+		// this, stubbing a call that an earlier case made throw would invoke that throwing callback during setup.
+		App.DdLeaderboardService.ClearSubstitute(ClearOptions.All);
+
 		if (ResetBeforeEachTest)
 			await App.ResetAsync();
 	}
