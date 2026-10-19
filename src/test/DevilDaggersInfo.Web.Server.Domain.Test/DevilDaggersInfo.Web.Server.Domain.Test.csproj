@@ -7,9 +7,6 @@
 
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" />
-    <PackageReference Include="MockQueryable.NSubstitute" />
     <PackageReference Include="NSubstitute" />
     <PackageReference Include="TUnit" />
   </ItemGroup>
