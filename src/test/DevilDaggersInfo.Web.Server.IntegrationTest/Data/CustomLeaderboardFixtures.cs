@@ -1,3 +1,6 @@
+using DevilDaggersInfo.Core.Common;
+using DevilDaggersInfo.Web.Server.Domain.Converters.CoreToDomain;
+
 namespace DevilDaggersInfo.Web.Server.IntegrationTest.Data;
 
 /// <summary>
@@ -8,8 +11,16 @@ internal static class CustomLeaderboardFixtures
 {
 	internal static byte[] V3SpawnsetFile { get; } = File.ReadAllBytes(Path.Combine("Resources", "Spawnsets", "V3"));
 
+	/// <summary>
+	/// The V3 spawnset row, with its derived columns computed from the file exactly as SpawnsetService does when a
+	/// spawnset is uploaded, so that APIs serving them (in seconds, from game units) see realistic values.
+	/// </summary>
 	internal static SpawnsetEntity Spawnset(int playerId)
 	{
+		SpawnsetBinary binary = SpawnsetBinary.Parse(V3SpawnsetFile);
+		(SpawnSectionInfo preLoopSection, SpawnSectionInfo loopSection) = binary.CalculateSections();
+		EffectivePlayerSettings effectivePlayerSettings = binary.GetEffectivePlayerSettings();
+
 		return new SpawnsetEntity
 		{
 			Id = 1,
@@ -20,19 +31,19 @@ internal static class CustomLeaderboardFixtures
 			MaxDisplayWaves = 5,
 			File = V3SpawnsetFile,
 			Md5Hash = MD5.HashData(V3SpawnsetFile),
-			GameMode = SpawnsetGameMode.Survival,
-			AdditionalGems = 0,
-			HandLevel = SpawnsetHandLevel.Level1,
-			LoopLength = 56,
-			LoopSpawnCount = 17,
-			SpawnVersion = 4,
-			WorldVersion = 9,
-			TimerStart = 0,
-			EffectiveHandLevel = SpawnsetHandLevel.Level1,
-			EffectiveHandMesh = SpawnsetHandLevel.Level1,
-			PreLoopLength = 451,
-			PreLoopSpawnCount = 90,
-			EffectiveGemsOrHoming = 0,
+			GameMode = binary.GameMode.ToDomain(),
+			AdditionalGems = binary.AdditionalGems,
+			HandLevel = binary.HandLevel.ToDomain(),
+			PreLoopLength = preLoopSection.Length.HasValue ? (int)GameTime.FromSeconds(preLoopSection.Length.Value).GameUnits : null,
+			PreLoopSpawnCount = preLoopSection.SpawnCount,
+			LoopLength = loopSection.Length.HasValue ? (int)GameTime.FromSeconds(loopSection.Length.Value).GameUnits : null,
+			LoopSpawnCount = loopSection.SpawnCount,
+			SpawnVersion = binary.SpawnVersion,
+			WorldVersion = binary.WorldVersion,
+			TimerStart = (int)GameTime.FromSeconds(binary.TimerStart).GameUnits,
+			EffectiveHandLevel = effectivePlayerSettings.HandLevel.ToDomain(),
+			EffectiveHandMesh = effectivePlayerSettings.HandMesh.ToDomain(),
+			EffectiveGemsOrHoming = effectivePlayerSettings.GemsOrHoming,
 		};
 	}
 
