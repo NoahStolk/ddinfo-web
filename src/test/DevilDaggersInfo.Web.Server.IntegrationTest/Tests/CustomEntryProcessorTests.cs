@@ -1,70 +1,49 @@
 using DevilDaggersInfo.Core.Encryption;
 using DevilDaggersInfo.Web.Server.Domain.Commands.CustomEntries;
-using DevilDaggersInfo.Web.Server.Domain.Configuration;
 using DevilDaggersInfo.Web.Server.Domain.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Models.CustomLeaderboards;
 using DevilDaggersInfo.Web.Server.Domain.Services;
 using DevilDaggersInfo.Web.Server.Domain.Services.Inversion;
-using DevilDaggersInfo.Web.Server.Domain.Test.Data;
-using DevilDaggersInfo.Web.Server.Domain.Test.Utils;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using MockQueryable.NSubstitute;
+using DevilDaggersInfo.Web.Server.IntegrationTest.Fixtures;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using NSubstitute;
+using System.Web;
 
-namespace DevilDaggersInfo.Web.Server.Domain.Test.Tests.ServerDomain;
+namespace DevilDaggersInfo.Web.Server.IntegrationTest.Tests;
 
-internal sealed class CustomEntryProcessorTests
+// Submissions write replay files named after the custom entry ID, which the reset makes the same for every test case.
+[NotInParallel(nameof(CustomEntryProcessorTests))]
+internal sealed class CustomEntryProcessorTests : ApplicationTest
 {
-	private readonly MockEntities _mockEntities = new();
-	private readonly ICustomLeaderboardHighscoreLogger _highscoreLogger = Substitute.For<ICustomLeaderboardHighscoreLogger>();
-	private readonly ApplicationDbContext _dbContext;
-	private readonly CustomEntryProcessor _customEntryProcessor;
 	private readonly AesBase32Wrapper _encryptionWrapper;
 	private readonly byte[] _mockReplay;
 	private readonly byte[] _v3Hash;
 
 	public CustomEntryProcessorTests()
 	{
-		string spawnsetsPath = Path.Combine("Resources", "Spawnsets");
-		byte[] spawnsetFileContents = File.ReadAllBytes(Path.Combine(spawnsetsPath, "V3"));
+		byte[] spawnsetFileContents = CustomLeaderboardFixtures.V3SpawnsetFile;
 		if (!SpawnsetBinary.TryParse(spawnsetFileContents, out SpawnsetBinary? spawnsetBinary))
 			throw new InvalidOperationException("Spawnset could not be parsed.");
 
 		_v3Hash = MD5.HashData(spawnsetBinary.ToBytes());
+		_mockReplay = BuildMockReplay(spawnsetFileContents);
 
-		DbContextOptionsBuilder<ApplicationDbContext> optionsBuilder = new();
-		_dbContext = Substitute.For<ApplicationDbContext>(optionsBuilder.Options, Substitute.For<IHttpContextAccessor>(), Substitute.For<ILogContainerService>());
-		_dbContext.Players.Returns(_mockEntities.MockDbSetPlayers);
-		_dbContext.Spawnsets.Returns(_mockEntities.MockDbSetSpawnsets);
-		_dbContext.CustomLeaderboards.Returns(_mockEntities.MockDbSetCustomLeaderboards);
-		_dbContext.CustomEntries.Returns(_mockEntities.MockDbSetCustomEntries);
-		_dbContext.CustomEntryData.Returns(_mockEntities.MockDbSetCustomEntryData);
-
-		ILogger<CustomEntryProcessor> customEntryProcessorLogger = Substitute.For<ILogger<CustomEntryProcessor>>();
-
+		// Must match the CustomLeaderboards options the test host is configured with.
 		const string secret = "0123456789abcdef";
 		_encryptionWrapper = new AesBase32Wrapper(secret, secret, secret);
+	}
 
-		CustomLeaderboardsOptions options = new()
-		{
-			InitializationVector = secret,
-			Password = secret,
-			Salt = secret,
-		};
+	/// <summary>
+	/// The host's singleton substitute, which outlives each test case. <see cref="ArrangeAsync"/> clears its calls.
+	/// </summary>
+	private ICustomLeaderboardHighscoreLogger HighscoreLogger => App.Services.GetRequiredService<ICustomLeaderboardHighscoreLogger>();
 
-		_customEntryProcessor = new CustomEntryProcessor(
-			dbContext: _dbContext,
-			logger: customEntryProcessorLogger,
-			fileSystem: new InMemoryFileSystem(),
-			customLeaderboardsOptions: new OptionsWrapper<CustomLeaderboardsOptions>(options),
-			highscoreLogger: _highscoreLogger,
-			submissionLogger: Substitute.For<ICustomLeaderboardSubmissionLogger>())
-		{
-			IsUnitTest = true,
-		};
-		_mockReplay = BuildMockReplay(spawnsetFileContents);
+	// The real logger queues Discord messages. A substitute lets the rank difference it is given be asserted on.
+	protected override void ConfigureServices(IServiceCollection services)
+	{
+		services.RemoveAll<ICustomLeaderboardHighscoreLogger>();
+		services.AddSingleton(Substitute.For<ICustomLeaderboardHighscoreLogger>());
 	}
 
 	private static byte[] BuildMockReplay(byte[] spawnsetFileContents)
@@ -85,6 +64,33 @@ internal sealed class CustomEntryProcessorTests
 		bw.Write(spawnsetFileContents);
 
 		return ms.ToArray();
+	}
+
+	/// <summary>
+	/// Seeds the spawnset, leaderboard, and the two players plus the existing entry that the submission cases are
+	/// written against. The database has already been truncated by the base class.
+	/// </summary>
+	private async Task<TestApplication> ArrangeAsync()
+	{
+		TestApplication app = App;
+		HighscoreLogger.ClearReceivedCalls();
+
+		await app.SeedAsync(dbContext =>
+		{
+			dbContext.Players.Add(EntityFixtures.Player(1, "TestPlayer1"));
+			dbContext.Players.Add(EntityFixtures.Player(2, "TestPlayer2"));
+			dbContext.Spawnsets.Add(CustomLeaderboardFixtures.Spawnset(playerId: 1));
+		});
+
+		await app.SeedAsync(dbContext => dbContext.CustomLeaderboards.Add(CustomLeaderboardFixtures.CustomLeaderboard(spawnsetId: 1)));
+		await app.SeedAsync(dbContext => dbContext.CustomEntries.Add(CustomLeaderboardFixtures.CustomEntry(customLeaderboardId: 1, playerId: 1)));
+
+		return app;
+	}
+
+	private static CustomEntryProcessor GetProcessor(AsyncServiceScope scope)
+	{
+		return scope.ServiceProvider.GetRequiredService<CustomEntryProcessor>();
 	}
 
 	private UploadRequest CreateUploadRequest(float time, int playerId, int status, string clientVersion)
@@ -205,8 +211,12 @@ internal sealed class CustomEntryProcessorTests
 	[Arguments(0, new int[] { })]
 	public async Task TestHomingCount(int expected, int[] homingStored)
 	{
+		TestApplication app = await ArrangeAsync();
+		await using AsyncServiceScope scope = app.CreateScope();
+
 		UploadRequest uploadRequest = CreateUploadRequest(1, 100, 4, TestConstants.DdclVersion, new UploadRequestData { HomingStored = homingStored });
-		UploadResponse response = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
+		UploadResponse response = await GetProcessor(scope).ProcessUploadRequestAsync(uploadRequest);
+
 		await Assert.That(response.Success).IsNotNull();
 		await Assert.That(response.Success?.HomingStoredState.Value).IsEqualTo(expected);
 	}
@@ -214,51 +224,56 @@ internal sealed class CustomEntryProcessorTests
 	[Test]
 	public async Task ProcessUploadRequest_ExistingPlayer_ExistingEntry_NoHighscore()
 	{
-		UploadRequest uploadRequest = CreateUploadRequest(10, 1, 3, TestConstants.DdclVersion);
-		UploadResponse response = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
-		await Assert.That(response.Success).IsNotNull();
+		TestApplication app = await ArrangeAsync();
+		await using AsyncServiceScope scope = app.CreateScope();
 
-		await _dbContext.ReceivedWithAnyArgs().SaveChangesAsync();
+		UploadRequest uploadRequest = CreateUploadRequest(10, 1, 3, TestConstants.DdclVersion);
+		UploadResponse response = await GetProcessor(scope).ProcessUploadRequestAsync(uploadRequest);
+
+		await Assert.That(response.Success).IsNotNull();
 		await Assert.That(response.Success?.SortedEntries.Count).IsEqualTo(1);
 		await Assert.That(response.Success?.SubmissionType).IsEqualTo(SubmissionType.NoHighscore);
+
+		// The existing entry is 166666, which the 10 second run does not beat.
+		await using AsyncServiceScope assertScope = app.CreateScope();
+		ApplicationDbContext dbContext = assertScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+		await Assert.That(await dbContext.CustomEntries.Where(ce => ce.PlayerId == 1).Select(ce => ce.Time).SingleAsync()).IsEqualTo(166666);
 	}
 
 	[Test]
 	public async Task ProcessUploadRequest_ExistingPlayer_ExistingEntry_NewHighscore()
 	{
-		UploadRequest uploadRequest = CreateUploadRequest(20, 1, 4, TestConstants.DdclVersion);
-		UploadResponse response = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
-		await Assert.That(response.Success).IsNotNull();
+		TestApplication app = await ArrangeAsync();
+		await using AsyncServiceScope scope = app.CreateScope();
 
-		await _dbContext.ReceivedWithAnyArgs().SaveChangesAsync();
+		UploadRequest uploadRequest = CreateUploadRequest(20, 1, 4, TestConstants.DdclVersion);
+		UploadResponse response = await GetProcessor(scope).ProcessUploadRequestAsync(uploadRequest);
+
+		await Assert.That(response.Success).IsNotNull();
 		await Assert.That(response.Success?.SortedEntries.Count).IsEqualTo(1);
 		await Assert.That(response.Success?.SubmissionType).IsEqualTo(SubmissionType.NewHighscore);
+
+		await using AsyncServiceScope assertScope = app.CreateScope();
+		ApplicationDbContext dbContext = assertScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+		await Assert.That(await dbContext.CustomEntries.Where(ce => ce.PlayerId == 1).Select(ce => ce.Time).SingleAsync()).IsEqualTo(200000);
 	}
 
 	[Test]
 	public async Task ProcessUploadRequest_ExistingPlayer_ExistingEntry_NewHighscore_RankDifference()
 	{
+		TestApplication app = await ArrangeAsync();
+
 		// Player 1 is at 16.6666 seconds and player 2 is ahead of them at 18 seconds.
-		CustomEntryEntity otherEntry = new()
-		{
-			Id = 2,
-			ClientVersion = TestConstants.DdclVersion,
-			CustomLeaderboardId = 1,
-			CustomLeaderboard = _mockEntities.CustomLeaderboard,
-			PlayerId = 2,
-			Player = _mockEntities.TestPlayer2,
-			Time = 180000,
-			SubmitDate = DateTime.UtcNow,
-		};
-		DbSet<CustomEntryEntity> customEntries = new[] { _mockEntities.CustomEntry, otherEntry }.BuildMockDbSet();
-		_dbContext.CustomEntries.Returns(customEntries);
+		await app.SeedAsync(dbContext => dbContext.CustomEntries.Add(CustomLeaderboardFixtures.CustomEntry(customLeaderboardId: 1, playerId: 2, id: 2, time: 180000)));
+
+		await using AsyncServiceScope scope = app.CreateScope();
 
 		UploadRequest uploadRequest = CreateUploadRequest(20, 1, 4, TestConstants.DdclVersion);
-		UploadResponse response = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
+		UploadResponse response = await GetProcessor(scope).ProcessUploadRequestAsync(uploadRequest);
 
 		await Assert.That(response.Success?.SubmissionType).IsEqualTo(SubmissionType.NewHighscore);
 		await Assert.That(response.Success?.RankState).IsEqualTo(new UploadResponseScoreState<int>(1, 1));
-		_highscoreLogger.Received(1).LogHighscore(
+		HighscoreLogger.Received(1).LogHighscore(
 			customLeaderboard: Arg.Any<CustomLeaderboardEntity>(),
 			customEntry: Arg.Any<IDaggerStatCustomEntry>(),
 			rank: 1,
@@ -272,26 +287,35 @@ internal sealed class CustomEntryProcessorTests
 	[Test]
 	public async Task ProcessUploadRequest_ExistingPlayer_NewEntry()
 	{
-		UploadRequest uploadRequest = CreateUploadRequest(20, 2, 5, TestConstants.DdclVersion);
-		UploadResponse response = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
-		await Assert.That(response.Success).IsNotNull();
+		TestApplication app = await ArrangeAsync();
+		await using AsyncServiceScope scope = app.CreateScope();
 
-		await _dbContext.CustomEntries.Received(1).AddAsync(Arg.Is<CustomEntryEntity>(ce => ce.PlayerId == 2 && ce.Time == 200000));
-		await _dbContext.ReceivedWithAnyArgs().SaveChangesAsync();
+		UploadRequest uploadRequest = CreateUploadRequest(20, 2, 5, TestConstants.DdclVersion);
+		UploadResponse response = await GetProcessor(scope).ProcessUploadRequestAsync(uploadRequest);
+
 		await Assert.That(response.Success?.SubmissionType).IsEqualTo(SubmissionType.FirstScore);
+
+		await using AsyncServiceScope assertScope = app.CreateScope();
+		ApplicationDbContext dbContext = assertScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+		await Assert.That(await dbContext.CustomEntries.Where(ce => ce.PlayerId == 2).Select(ce => ce.Time).SingleAsync()).IsEqualTo(200000);
 	}
 
 	[Test]
 	public async Task ProcessUploadRequest_NewPlayer()
 	{
-		UploadRequest uploadRequest = CreateUploadRequest(30, 3, 3, TestConstants.DdclVersion);
-		UploadResponse response = await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
-		await Assert.That(response.Success).IsNotNull();
+		TestApplication app = await ArrangeAsync();
+		await using AsyncServiceScope scope = app.CreateScope();
 
-		await _dbContext.ReceivedWithAnyArgs().SaveChangesAsync();
-		await _dbContext.Players.Received(1).AddAsync(Arg.Is<PlayerEntity>(p => p.Id == 3 && p.PlayerName == "TestPlayer3"));
-		await _dbContext.CustomEntries.Received(1).AddAsync(Arg.Is<CustomEntryEntity>(ce => ce.PlayerId == 3 && ce.Time == 300000));
+		UploadRequest uploadRequest = CreateUploadRequest(30, 3, 3, TestConstants.DdclVersion);
+		UploadResponse response = await GetProcessor(scope).ProcessUploadRequestAsync(uploadRequest);
+
 		await Assert.That(response.Success?.SubmissionType).IsEqualTo(SubmissionType.FirstScore);
+
+		// The player did not exist and must have been inserted along with the entry.
+		await using AsyncServiceScope assertScope = app.CreateScope();
+		ApplicationDbContext dbContext = assertScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+		await Assert.That(await dbContext.Players.Where(p => p.Id == 3).Select(p => p.PlayerName).SingleAsync()).IsEqualTo("TestPlayer3");
+		await Assert.That(await dbContext.CustomEntries.Where(ce => ce.PlayerId == 3).Select(ce => ce.Time).SingleAsync()).IsEqualTo(300000);
 	}
 
 	[Test]
@@ -306,33 +330,54 @@ internal sealed class CustomEntryProcessorTests
 	[Arguments(8, false)]
 	public async Task ProcessUploadRequest_InvalidStatus(int status, bool accepted)
 	{
+		TestApplication app = await ArrangeAsync();
+		await using AsyncServiceScope scope = app.CreateScope();
+
 		UploadRequest uploadRequest = CreateUploadRequest(30, 3, status, TestConstants.DdclVersion);
 		if (accepted)
-			await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
+			await GetProcessor(scope).ProcessUploadRequestAsync(uploadRequest);
 		else
-			await Assert.That(async () => await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest)).Throws<CustomEntryValidationException>();
+			await Assert.That(async () => await GetProcessor(scope).ProcessUploadRequestAsync(uploadRequest)).Throws<CustomEntryValidationException>();
 	}
 
 	[Test]
 	public async Task ProcessUploadRequest_Outdated()
 	{
+		TestApplication app = await ArrangeAsync();
+		await using AsyncServiceScope scope = app.CreateScope();
+
 		UploadRequest uploadRequest = CreateUploadRequest(10, 1, 4, "0.0.0.0");
-		await Assert.That(async () => await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest))
+		await Assert.That(async () => await GetProcessor(scope).ProcessUploadRequestAsync(uploadRequest))
 			.Throws<CustomEntryValidationException>()
 			.WithMessageContaining("unsupported and outdated");
 
-		await _dbContext.DidNotReceive().SaveChangesAsync();
+		await AssertNothingWasWrittenAsync(app);
 	}
 
 	[Test]
 	public async Task ProcessUploadRequest_InvalidValidation()
 	{
+		TestApplication app = await ArrangeAsync();
+		await using AsyncServiceScope scope = app.CreateScope();
+
 		UploadRequest uploadRequest = CreateUploadRequest(10, 1, 4, TestConstants.DdclVersion, new UploadRequestData(), "Malformed validation");
-		CustomEntryValidationException? ex = await Assert.That(async () => await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest))
+		CustomEntryValidationException? ex = await Assert.That(async () => await GetProcessor(scope).ProcessUploadRequestAsync(uploadRequest))
 			.Throws<CustomEntryValidationException>();
 
-		await _dbContext.DidNotReceive().SaveChangesAsync();
-
 		await Assert.That(ex?.Message).StartsWith("Could not decrypt");
+		await AssertNothingWasWrittenAsync(app);
+	}
+
+	/// <summary>
+	/// The seeded state is one entry for player 1. A rejected submission must leave exactly that behind.
+	/// </summary>
+	private static async Task AssertNothingWasWrittenAsync(TestApplication app)
+	{
+		await using AsyncServiceScope scope = app.CreateScope();
+		ApplicationDbContext dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+		await Assert.That(await dbContext.CustomEntries.CountAsync()).IsEqualTo(1);
+		await Assert.That(await dbContext.CustomEntries.Select(ce => ce.Time).SingleAsync()).IsEqualTo(166666);
+		await Assert.That(await dbContext.Players.CountAsync()).IsEqualTo(2);
 	}
 }
