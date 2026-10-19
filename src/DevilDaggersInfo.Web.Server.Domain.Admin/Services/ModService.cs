@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Core.Mod;
+using DevilDaggersInfo.Core.Mod.Exceptions;
 using DevilDaggersInfo.Web.Core.Utils;
 using DevilDaggersInfo.Web.Server.Domain.Admin.Exceptions;
 using DevilDaggersInfo.Web.Server.Domain.Entities;
@@ -70,7 +71,7 @@ public sealed class ModService(ApplicationDbContext dbContext, ModArchiveProcess
 		if (mod.Name != editMod.Name && await dbContext.Mods.AnyAsync(m => m.Name == editMod.Name))
 			throw new AdminDomainException($"Mod with name '{editMod.Name}' already exists.");
 
-		bool isUpdated = await modArchiveProcessor.TransformBinariesInModArchiveAsync(mod.Name, editMod.Name, editMod.BinariesToDelete.ConvertAll(s => BinaryName.Parse(s, mod.Name)), GetBinaryNames(editMod.Binaries.ConvertAll(bd => (bd.Name, bd.Data))));
+		bool isUpdated = await modArchiveProcessor.TransformBinariesInModArchiveAsync(mod.Name, editMod.Name, ParseBinaryNames(editMod.BinariesToDelete, mod.Name), GetBinaryNames(editMod.Binaries.ConvertAll(bd => (bd.Name, bd.Data))));
 		if (isUpdated)
 			mod.LastUpdated = DateTime.UtcNow;
 
@@ -133,11 +134,42 @@ public sealed class ModService(ApplicationDbContext dbContext, ModArchiveProcess
 
 		foreach ((string name, byte[] data) in binaries)
 		{
-			BinaryName binaryName = new(ModBinaryToc.DetermineType(data), name);
+			ModBinaryType binaryType;
+			try
+			{
+				binaryType = ModBinaryToc.DetermineType(data);
+			}
+			catch (InvalidModBinaryException ex)
+			{
+				throw new InvalidModArchiveException($"Binary '{name}' is not a valid mod binary.", ex);
+			}
+
+			BinaryName binaryName = new(binaryType, name);
 			if (!dict.TryAdd(binaryName, data))
 				throw new InvalidModArchiveException("Binary names must all be unique.");
 		}
 
 		return dict;
+	}
+
+	/// <summary>
+	/// Parses full binary names, such as the ones the admin mod endpoint returns.
+	/// </summary>
+	private static List<BinaryName> ParseBinaryNames(List<string> fullNames, string modName)
+	{
+		List<BinaryName> binaryNames = [];
+		foreach (string fullName in fullNames)
+		{
+			try
+			{
+				binaryNames.Add(BinaryName.Parse(fullName, modName));
+			}
+			catch (ArgumentException ex)
+			{
+				throw new AdminDomainException($"Binary name '{fullName}' is not a full binary name of mod '{modName}'.", ex);
+			}
+		}
+
+		return binaryNames;
 	}
 }

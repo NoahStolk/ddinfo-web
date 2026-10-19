@@ -142,6 +142,10 @@ public sealed class PlayerService(ApplicationDbContext dbContext, IDdLeaderboard
 		if (await dbContext.Spawnsets.AnyAsync(sf => sf.PlayerId == id))
 			throw new AdminDomainException("Player with spawnsets cannot be deleted.");
 
+		// Users.PlayerId has no cascade, so the database would refuse the delete.
+		if (await dbContext.Users.AnyAsync(u => u.PlayerId == id))
+			throw new AdminDomainException("Player that is linked to a user cannot be deleted. Unlink the player from the user first.");
+
 		dbContext.Players.Remove(player);
 		await dbContext.SaveChangesAsync();
 	}

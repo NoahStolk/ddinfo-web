@@ -34,7 +34,7 @@ dotnet run --project src/DevilDaggersInfo.Web.Server   # https://localhost:5001
 
 Database migration scripts: see `docs/setup/generating-database-migration-scripts.md` (requires temporarily adding EF package references to `Web.Server.Domain`).
 
-CI (`.github/workflows/`) builds + tests on PR — including the Tailwind step, so CSS/markup drift is caught — and on push to `main` also packs and pushes `ApiSpec.Admin`, `ApiSpec.Main` and `ApiSpec.Tools` to nuget.org — changes to those three projects are public API surface with their own `<Version>`. Deployment is a separate manual `workflow_dispatch` workflow that publishes on a Windows runner and syncs to IIS with MSDeploy — see `docs/setup/deploying.md`; note that `Data/` and `keys/` on the host are deliberately skipped by the sync.
+CI (`.github/workflows/`) builds + tests on PR — including the Tailwind step, so CSS/markup drift is caught — and on push to `main` also packs and pushes `ApiSpec.Tools` to nuget.org — it is the only packable project, with its own `<PackageId>`/`<Version>`, so changes to it are public API surface for ddinfo-tools. The other `ApiSpec.*` projects are not published, so they can change together with the server (for example, adding validation attributes to `ApiSpec.Admin` DTOs). Deployment is a separate manual `workflow_dispatch` workflow that publishes on a Windows runner and syncs to IIS with MSDeploy — see `docs/setup/deploying.md`; note that `Data/` and `keys/` on the host are deliberately skipped by the sync.
 
 ## Architecture
 

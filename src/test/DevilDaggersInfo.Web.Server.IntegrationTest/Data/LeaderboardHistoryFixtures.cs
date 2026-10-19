@@ -56,9 +56,10 @@ internal static class LeaderboardHistoryFixtures
 	}
 
 	/// <summary>
-	/// Inserts players 1 to 3 and the banned cheater, and writes every snapshot to the application's data root.
+	/// Inserts players 1 to 3 and the cheater, and writes every snapshot to the application's data root. The cheater is
+	/// banned unless a test passes <see cref="BanType.NotBanned"/> to ban them itself.
 	/// </summary>
-	internal static async Task SeedAsync(TestApplication app)
+	internal static async Task SeedAsync(TestApplication app, BanType cheaterBanType = BanType.Cheater)
 	{
 		await app.SeedAsync(dbContext =>
 		{
@@ -67,7 +68,7 @@ internal static class LeaderboardHistoryFixtures
 			dbContext.Players.Add(EntityFixtures.Player(3, "Player 3"));
 
 			PlayerEntity cheater = EntityFixtures.Player(CheaterId, "Cheater");
-			cheater.BanType = BanType.Cheater;
+			cheater.BanType = cheaterBanType;
 			dbContext.Players.Add(cheater);
 		});
 
