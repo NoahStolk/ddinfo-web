@@ -30,7 +30,6 @@ public sealed class DonationsController(DonationRepository donationRepository, D
 	[HttpGet("{id}")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	[Authorize(Roles = Roles.Spawnsets)]
 	public async Task<ActionResult<GetDonation>> GetDonationById(int id)
 	{
 		return await donationRepository.GetDonationAsync(id);
