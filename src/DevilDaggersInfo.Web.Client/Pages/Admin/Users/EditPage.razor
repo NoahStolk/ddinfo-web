@@ -116,9 +116,17 @@
 
 	private static string GeneratePassword()
 	{
-		// ReSharper disable StringLiteralTypo
-		return RandomNumberGenerator.GetString("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", 20);
-		// ReSharper restore StringLiteralTypo
+		// About 3% of random strings have no digit, which the password policy rejects, so draw again until one passes.
+		string password;
+		do
+		{
+			// ReSharper disable StringLiteralTypo
+			password = RandomNumberGenerator.GetString("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", 20);
+			// ReSharper restore StringLiteralTypo
+		}
+		while (!password.Any(char.IsDigit) || !password.Any(char.IsLower) || !password.Any(char.IsUpper));
+
+		return password;
 	}
 
 	private void Dismiss(ref string? errorMessage)
