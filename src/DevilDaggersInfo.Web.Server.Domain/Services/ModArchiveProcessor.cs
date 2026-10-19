@@ -110,12 +110,32 @@ public sealed class ModArchiveProcessor(IFileSystem fileSystem, ModArchiveCache 
 		// Create a dictionary of both kept and new binaries which will be added to the transformed archive.
 		Dictionary<BinaryName, byte[]> combinedBinaries = keptBinaries.Concat(newBinaries).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
-		// Delete the original archive and process the new combined binaries.
-		await DeleteModFilesAndClearCacheAsync(originalModName);
+		// ProcessModBinaryUploadAsync validates through ModArchiveCache, which looks up the mod name before looking at the
+		// bytes, so the caches must not hold the original archive's data when the name has not changed.
+		await ClearCacheAsync(originalModName);
+		await ClearCacheAsync(newModName);
 
+		// A mod without binaries has no archive, just like a mod that was created without any.
+		if (combinedBinaries.Count == 0)
+		{
+			await fileSystem.DeleteAsync(DataSubDirectory.Mods, ModArchiveAccessor.GetModArchiveFileName(originalModName));
+			return hasAnyBinaryContentChanges;
+		}
+
+		// Validate and write the new archive before removing the original one, so that a rejected edit leaves the
+		// original archive in place. When the name has not changed, the new archive replaces the original file.
 		await ProcessModBinaryUploadAsync(newModName, combinedBinaries);
+		if (originalModName != newModName)
+			await fileSystem.DeleteAsync(DataSubDirectory.Mods, ModArchiveAccessor.GetModArchiveFileName(originalModName));
 
 		return hasAnyBinaryContentChanges;
+	}
+
+	private async Task ClearCacheAsync(string modName)
+	{
+		// The memory cache cannot clear individual entries.
+		modArchiveCache.Clear();
+		await fileSystem.DeleteAsync(DataSubDirectory.ModArchiveCache, $"{modName}.json");
 	}
 
 	/// <summary>
