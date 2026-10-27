@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Core.Wiki;
-using DevilDaggersInfo.Core.Wiki.Structs;
 using DSharpPlus.Entities;
+using System.Numerics;
 
 namespace DevilDaggersInfo.Web.Server.HostedServices.DdInfoDiscordBot;
 
@@ -15,8 +15,8 @@ internal static class DiscordColors
 
 	public static DiscordColor None { get; } = new(127, 143, 127);
 
-	private static DiscordColor ToDiscordColor(Color color)
+	private static DiscordColor ToDiscordColor(Vector3 color)
 	{
-		return new DiscordColor(color.R, color.G, color.B);
+		return new DiscordColor(color.X * 255, color.Y * 255, color.Z * 255);
 	}
 }

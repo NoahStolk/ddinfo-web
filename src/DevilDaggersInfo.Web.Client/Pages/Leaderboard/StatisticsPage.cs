@@ -4,6 +4,7 @@ using DevilDaggersInfo.Core.Wiki.Objects;
 using DevilDaggersInfo.Web.ApiSpec.Main.LeaderboardStatistics;
 using DevilDaggersInfo.Web.Client.Core.CanvasChart.Data;
 using DevilDaggersInfo.Web.Client.Core.CanvasChart.Options.BarChart;
+using DevilDaggersInfo.Web.Client.Extensions;
 using DevilDaggersInfo.Web.Client.Utils;
 using Microsoft.AspNetCore.Components;
 

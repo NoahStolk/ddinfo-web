@@ -1,8 +1,9 @@
 using DevilDaggersInfo.Core.Common;
 using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Core.Wiki.Objects;
-using DevilDaggersInfo.Core.Wiki.Structs;
+using DevilDaggersInfo.Web.Client.Extensions;
 using Microsoft.AspNetCore.Components;
+using System.Numerics;
 
 namespace DevilDaggersInfo.Web.Client.Utils;
 
@@ -44,7 +45,7 @@ internal static class MarkupUtils
 		return EnemyString(enemy.Color, enemy.Name, plural);
 	}
 
-	public static MarkupString EnemyString(Color enemyColor, string enemyName, bool plural = false)
+	public static MarkupString EnemyString(Vector3 enemyColor, string enemyName, bool plural = false)
 	{
 		string style = $"color: {enemyColor.HexCode};";
 		return new MarkupString($"""<span style="{style}" class="font-goethe text-lg">{enemyName}{(plural ? "s" : string.Empty)}</span>""");
@@ -52,7 +53,8 @@ internal static class MarkupUtils
 
 	public static MarkupString LeaderboardTime(double timeInSeconds)
 	{
-		return new MarkupString($"""<span class="{Daggers.GetDaggerFromSeconds(GameConstants.CurrentVersion, timeInSeconds).Name.ToLower()} font-goethe text-lg">{timeInSeconds.ToString(StringFormats.TimeFormat)}</span>""");
+		return new MarkupString(
+			$"""<span class="{Daggers.GetDaggerFromSeconds(GameConstants.CurrentVersion, timeInSeconds).Name.ToLower()} font-goethe text-lg">{timeInSeconds.ToString(StringFormats.TimeFormat)}</span>""");
 	}
 
 	public static MarkupString ProhibitedString(bool isProhibited)
