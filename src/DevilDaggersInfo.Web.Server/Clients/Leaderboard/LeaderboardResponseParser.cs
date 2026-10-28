@@ -31,7 +31,10 @@ internal static class LeaderboardResponseParser
 			string username = Encoding.UTF8.GetString(br.ReadBytes(usernameLength));
 			int rank = br.ReadInt32();
 			int id = br.ReadInt32();
-			_ = br.ReadInt32(); // This didn't exist in backend15. Seems like it was added in backend16, and it's still present in dd3. Bytes always seem to be 0x00000000 (tested some top players and banned players).
+
+			// This didn't exist in backend15. Seems like it was added in backend16, and it's still present in dd3. Bytes always seem to be 0x00000000 (tested some top players and banned players).
+			_ = br.ReadInt32();
+
 			int time = br.ReadInt32();
 			int kills = br.ReadInt32();
 			int daggersFired = br.ReadInt32();

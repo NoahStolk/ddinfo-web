@@ -10,7 +10,7 @@ public interface IDdLeaderboardService
 
 	Task<EntryResponse> GetEntryById(int id);
 
-	public record LeaderboardResponse
+	public sealed record LeaderboardResponse
 	{
 		public required DateTime DateTime { get; init; }
 
@@ -31,7 +31,7 @@ public interface IDdLeaderboardService
 		public required List<EntryResponse> Entries { get; init; }
 	}
 
-	public record EntryResponse
+	public sealed record EntryResponse
 	{
 		public required int Rank { get; init; }
 
