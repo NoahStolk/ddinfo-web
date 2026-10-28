@@ -1,13 +1,13 @@
 version: 2
 updates:
-  - package-ecosystem: nuget
+  - package-ecosystem: "nuget"
     directory: "/src"
     schedule:
-      interval: monthly
+      interval: "weekly"
     ignore:
       # Must match the Microsoft.IdentityModel.* version Microsoft.AspNetCore.Authentication.JwtBearer depends on; see Directory.Packages.props.
       - dependency-name: "System.IdentityModel.Tokens.Jwt"
-  - package-ecosystem: github-actions
+  - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: monthly
+      interval: "weekly"
